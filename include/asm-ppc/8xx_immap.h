@@ -319,6 +319,95 @@ DECL|typedef|memctl8xx_t
 )brace
 id|memctl8xx_t
 suffix:semicolon
+multiline_comment|/*-----------------------------------------------------------------------&n; * BR - Memory Controler: Base Register&t;&t;&t;&t;&t;16-9&n; */
+DECL|macro|BR_BA_MSK
+mdefine_line|#define BR_BA_MSK&t;0xffff8000&t;/* Base Address Mask&t;&t;&t;*/
+DECL|macro|BR_AT_MSK
+mdefine_line|#define BR_AT_MSK&t;0x00007000&t;/* Address Type Mask&t;&t;&t;*/
+DECL|macro|BR_PS_MSK
+mdefine_line|#define BR_PS_MSK&t;0x00000c00&t;/* Port Size Mask&t;&t;&t;*/
+DECL|macro|BR_PS_32
+mdefine_line|#define BR_PS_32&t;0x00000000&t;/* 32 bit port size&t;&t;&t;*/
+DECL|macro|BR_PS_16
+mdefine_line|#define BR_PS_16&t;0x00000800&t;/* 16 bit port size&t;&t;&t;*/
+DECL|macro|BR_PS_8
+mdefine_line|#define BR_PS_8&t;&t;0x00000400&t;/*  8 bit port size&t;&t;&t;*/
+DECL|macro|BR_PARE
+mdefine_line|#define BR_PARE&t;&t;0x00000200&t;/* Parity Enable&t;&t;&t;*/
+DECL|macro|BR_WP
+mdefine_line|#define BR_WP&t;&t;0x00000100&t;/* Write Protect&t;&t;&t;*/
+DECL|macro|BR_MS_MSK
+mdefine_line|#define BR_MS_MSK&t;0x000000c0&t;/* Machine Select Mask&t;&t;&t;*/
+DECL|macro|BR_MS_GPCM
+mdefine_line|#define BR_MS_GPCM&t;0x00000000&t;/* G.P.C.M. Machine Select&t;&t;*/
+DECL|macro|BR_MS_UPMA
+mdefine_line|#define BR_MS_UPMA&t;0x00000080&t;/* U.P.M.A Machine Select&t;&t;*/
+DECL|macro|BR_MS_UPMB
+mdefine_line|#define BR_MS_UPMB&t;0x000000c0&t;/* U.P.M.B Machine Select&t;&t;*/
+DECL|macro|BR_V
+mdefine_line|#define BR_V&t;&t;0x00000001&t;/* Bank Valid&t;&t;&t;&t;*/
+multiline_comment|/*-----------------------------------------------------------------------&n; * OR - Memory Controler: Option Register&t;&t;&t;&t;16-11&n; */
+DECL|macro|OR_AM_MSK
+mdefine_line|#define OR_AM_MSK&t;0xffff8000&t;/* Address Mask Mask&t;&t;&t;*/
+DECL|macro|OR_ATM_MSK
+mdefine_line|#define OR_ATM_MSK&t;0x00007000&t;/* Address Type Mask Mask&t;&t;*/
+DECL|macro|OR_CSNT_SAM
+mdefine_line|#define OR_CSNT_SAM&t;0x00000800&t;/* Chip Select Negation Time/ Start&t;*/
+multiline_comment|/* Address Multiplex&t;&t;&t;*/
+DECL|macro|OR_ACS_MSK
+mdefine_line|#define OR_ACS_MSK&t;0x00000600&t;/* Address to Chip Select Setup mask&t;*/
+DECL|macro|OR_ACS_DIV1
+mdefine_line|#define OR_ACS_DIV1&t;0x00000000&t;/* CS is output at the same time&t;*/
+DECL|macro|OR_ACS_DIV4
+mdefine_line|#define OR_ACS_DIV4&t;0x00000400&t;/* CS is output 1/4 a clock later&t;*/
+DECL|macro|OR_ACS_DIV2
+mdefine_line|#define OR_ACS_DIV2&t;0x00000600&t;/* CS is output 1/2 a clock later&t;*/
+DECL|macro|OR_G5LA
+mdefine_line|#define OR_G5LA&t;&t;0x00000400&t;/* Output #GPL5 on #GPL_A5&t;&t;*/
+DECL|macro|OR_G5LS
+mdefine_line|#define OR_G5LS&t;&t;0x00000200&t;/* Drive #GPL high on falling edge of...*/
+DECL|macro|OR_BI
+mdefine_line|#define OR_BI&t;&t;0x00000100&t;/* Burst inhibit&t;&t;&t;*/
+DECL|macro|OR_SCY_MSK
+mdefine_line|#define OR_SCY_MSK&t;0x000000f0&t;/* Cycle Lenght in Clocks&t;&t;*/
+DECL|macro|OR_SCY_0_CLK
+mdefine_line|#define OR_SCY_0_CLK&t;0x00000000&t;/* 0 clock cycles wait states&t;&t;*/
+DECL|macro|OR_SCY_1_CLK
+mdefine_line|#define OR_SCY_1_CLK&t;0x00000010&t;/* 1 clock cycles wait states&t;&t;*/
+DECL|macro|OR_SCY_2_CLK
+mdefine_line|#define OR_SCY_2_CLK&t;0x00000020&t;/* 2 clock cycles wait states&t;&t;*/
+DECL|macro|OR_SCY_3_CLK
+mdefine_line|#define OR_SCY_3_CLK&t;0x00000030&t;/* 3 clock cycles wait states&t;&t;*/
+DECL|macro|OR_SCY_4_CLK
+mdefine_line|#define OR_SCY_4_CLK&t;0x00000040&t;/* 4 clock cycles wait states&t;&t;*/
+DECL|macro|OR_SCY_5_CLK
+mdefine_line|#define OR_SCY_5_CLK&t;0x00000050&t;/* 5 clock cycles wait states&t;&t;*/
+DECL|macro|OR_SCY_6_CLK
+mdefine_line|#define OR_SCY_6_CLK&t;0x00000060&t;/* 6 clock cycles wait states&t;&t;*/
+DECL|macro|OR_SCY_7_CLK
+mdefine_line|#define OR_SCY_7_CLK&t;0x00000070&t;/* 7 clock cycles wait states&t;&t;*/
+DECL|macro|OR_SCY_8_CLK
+mdefine_line|#define OR_SCY_8_CLK&t;0x00000080&t;/* 8 clock cycles wait states&t;&t;*/
+DECL|macro|OR_SCY_9_CLK
+mdefine_line|#define OR_SCY_9_CLK&t;0x00000090&t;/* 9 clock cycles wait states&t;&t;*/
+DECL|macro|OR_SCY_10_CLK
+mdefine_line|#define OR_SCY_10_CLK&t;0x000000a0&t;/* 10 clock cycles wait states&t;&t;*/
+DECL|macro|OR_SCY_11_CLK
+mdefine_line|#define OR_SCY_11_CLK&t;0x000000b0&t;/* 11 clock cycles wait states&t;&t;*/
+DECL|macro|OR_SCY_12_CLK
+mdefine_line|#define OR_SCY_12_CLK&t;0x000000c0&t;/* 12 clock cycles wait states&t;&t;*/
+DECL|macro|OR_SCY_13_CLK
+mdefine_line|#define OR_SCY_13_CLK&t;0x000000d0&t;/* 13 clock cycles wait states&t;&t;*/
+DECL|macro|OR_SCY_14_CLK
+mdefine_line|#define OR_SCY_14_CLK&t;0x000000e0&t;/* 14 clock cycles wait states&t;&t;*/
+DECL|macro|OR_SCY_15_CLK
+mdefine_line|#define OR_SCY_15_CLK&t;0x000000f0&t;/* 15 clock cycles wait states&t;&t;*/
+DECL|macro|OR_SETA
+mdefine_line|#define OR_SETA&t;&t;0x00000008&t;/* External Transfer Acknowledge&t;*/
+DECL|macro|OR_TRLX
+mdefine_line|#define OR_TRLX&t;&t;0x00000004&t;/* Timing Relaxed&t;&t;&t;*/
+DECL|macro|OR_EHTR
+mdefine_line|#define OR_EHTR&t;&t;0x00000002&t;/* Extended Hold Time on Read&t;&t;*/
 multiline_comment|/* System Integration Timers.&n;*/
 DECL|struct|sys_int_timers
 r_typedef
@@ -328,6 +417,13 @@ id|sys_int_timers
 DECL|member|sit_tbscr
 id|ushort
 id|sit_tbscr
+suffix:semicolon
+DECL|member|res0
+r_char
+id|res0
+(braket
+l_int|0x02
+)braket
 suffix:semicolon
 DECL|member|sit_tbreff0
 id|uint
@@ -348,6 +444,13 @@ DECL|member|sit_rtcsc
 id|ushort
 id|sit_rtcsc
 suffix:semicolon
+DECL|member|res2
+r_char
+id|res2
+(braket
+l_int|0x02
+)braket
+suffix:semicolon
 DECL|member|sit_rtc
 id|uint
 id|sit_rtc
@@ -360,9 +463,9 @@ DECL|member|sit_rtcal
 id|uint
 id|sit_rtcal
 suffix:semicolon
-DECL|member|res2
+DECL|member|res3
 r_char
-id|res2
+id|res3
 (braket
 l_int|0x10
 )braket
@@ -371,9 +474,9 @@ DECL|member|sit_piscr
 id|ushort
 id|sit_piscr
 suffix:semicolon
-DECL|member|res3
+DECL|member|res4
 r_char
-id|res3
+id|res4
 (braket
 l_int|2
 )braket
@@ -386,9 +489,9 @@ DECL|member|sit_pitr
 id|uint
 id|sit_pitr
 suffix:semicolon
-DECL|member|res4
+DECL|member|res5
 r_char
-id|res4
+id|res5
 (braket
 l_int|0x34
 )braket
@@ -570,26 +673,85 @@ suffix:semicolon
 multiline_comment|/* The key to unlock registers maintained by keep-alive power.&n;*/
 DECL|macro|KAPWR_KEY
 mdefine_line|#define KAPWR_KEY&t;((unsigned int)0x55ccaa33)
-multiline_comment|/* LCD interface.  MPC821 and MPC823 Only.&n;*/
+multiline_comment|/* Video interface.  MPC823 Only.&n;*/
+DECL|struct|vid823
+r_typedef
+r_struct
+id|vid823
+(brace
+DECL|member|vid_vccr
+id|ushort
+id|vid_vccr
+suffix:semicolon
+DECL|member|res1
+id|ushort
+id|res1
+suffix:semicolon
+DECL|member|vid_vsr
+id|u_char
+id|vid_vsr
+suffix:semicolon
+DECL|member|res2
+id|u_char
+id|res2
+suffix:semicolon
+DECL|member|vid_vcmr
+id|u_char
+id|vid_vcmr
+suffix:semicolon
+DECL|member|res3
+id|u_char
+id|res3
+suffix:semicolon
+DECL|member|vid_vbcb
+id|uint
+id|vid_vbcb
+suffix:semicolon
+DECL|member|res4
+id|uint
+id|res4
+suffix:semicolon
+DECL|member|vid_vfcr0
+id|uint
+id|vid_vfcr0
+suffix:semicolon
+DECL|member|vid_vfaa0
+id|uint
+id|vid_vfaa0
+suffix:semicolon
+DECL|member|vid_vfba0
+id|uint
+id|vid_vfba0
+suffix:semicolon
+DECL|member|vid_vfcr1
+id|uint
+id|vid_vfcr1
+suffix:semicolon
+DECL|member|vid_vfaa1
+id|uint
+id|vid_vfaa1
+suffix:semicolon
+DECL|member|vid_vfba1
+id|uint
+id|vid_vfba1
+suffix:semicolon
+DECL|member|res5
+id|u_char
+id|res5
+(braket
+l_int|0x18
+)braket
+suffix:semicolon
+DECL|typedef|vid823_t
+)brace
+id|vid823_t
+suffix:semicolon
+multiline_comment|/* LCD interface.  823 Only.&n;*/
 DECL|struct|lcd
 r_typedef
 r_struct
 id|lcd
 (brace
-DECL|member|lcd_lcolr
-id|ushort
-id|lcd_lcolr
-(braket
-l_int|16
-)braket
-suffix:semicolon
-DECL|member|res
-r_char
-id|res
-(braket
-l_int|0x20
-)braket
-suffix:semicolon
 DECL|member|lcd_lccr
 id|uint
 id|lcd_lccr
@@ -602,9 +764,9 @@ DECL|member|lcd_lcvcr
 id|uint
 id|lcd_lcvcr
 suffix:semicolon
-DECL|member|res2
+DECL|member|res1
 r_char
-id|res2
+id|res1
 (braket
 l_int|4
 )braket
@@ -621,16 +783,16 @@ DECL|member|lcd_lcsr
 r_char
 id|lcd_lcsr
 suffix:semicolon
-DECL|member|res3
+DECL|member|res2
 r_char
-id|res3
+id|res2
 (braket
 l_int|0x7
 )braket
 suffix:semicolon
-DECL|typedef|lcd8xx_t
+DECL|typedef|lcd823_t
 )brace
-id|lcd8xx_t
+id|lcd823_t
 suffix:semicolon
 multiline_comment|/* I2C&n;*/
 DECL|struct|i2c
@@ -907,11 +1069,15 @@ DECL|member|iop_pddat
 id|ushort
 id|iop_pddat
 suffix:semicolon
+DECL|member|utmode
+id|uint
+id|utmode
+suffix:semicolon
 DECL|member|res4
 r_char
 id|res4
 (braket
-l_int|8
+l_int|4
 )braket
 suffix:semicolon
 DECL|typedef|iop8xx_t
@@ -1041,9 +1207,9 @@ DECL|member|scc_gsmrh
 id|uint
 id|scc_gsmrh
 suffix:semicolon
-DECL|member|scc_pmsr
+DECL|member|scc_psmr
 id|ushort
-id|scc_pmsr
+id|scc_psmr
 suffix:semicolon
 DECL|member|res1
 r_char
@@ -1154,36 +1320,42 @@ DECL|member|fec_addr_low
 id|uint
 id|fec_addr_low
 suffix:semicolon
-multiline_comment|/* LS 32 bits of station address */
+multiline_comment|/* lower 32 bits of station address&t;*/
 DECL|member|fec_addr_high
 id|ushort
 id|fec_addr_high
 suffix:semicolon
-multiline_comment|/* MS 16 bits of address */
+multiline_comment|/* upper 16 bits of station address&t;*/
 DECL|member|res1
 id|ushort
 id|res1
 suffix:semicolon
+multiline_comment|/* reserved&t;&t;&t;&t;*/
 DECL|member|fec_hash_table_high
 id|uint
 id|fec_hash_table_high
 suffix:semicolon
+multiline_comment|/* upper 32-bits of hash table&t;&t;*/
 DECL|member|fec_hash_table_low
 id|uint
 id|fec_hash_table_low
 suffix:semicolon
+multiline_comment|/* lower 32-bits of hash table&t;&t;*/
 DECL|member|fec_r_des_start
 id|uint
 id|fec_r_des_start
 suffix:semicolon
+multiline_comment|/* beginning of Rx descriptor ring&t;*/
 DECL|member|fec_x_des_start
 id|uint
 id|fec_x_des_start
 suffix:semicolon
+multiline_comment|/* beginning of Tx descriptor ring&t;*/
 DECL|member|fec_r_buff_size
 id|uint
 id|fec_r_buff_size
 suffix:semicolon
+multiline_comment|/* Rx buffer size&t;&t;&t;*/
 DECL|member|res2
 id|uint
 id|res2
@@ -1191,30 +1363,37 @@ id|res2
 l_int|9
 )braket
 suffix:semicolon
+multiline_comment|/* reserved&t;&t;&t;&t;*/
 DECL|member|fec_ecntrl
 id|uint
 id|fec_ecntrl
 suffix:semicolon
+multiline_comment|/* ethernet control register&t;&t;*/
 DECL|member|fec_ievent
 id|uint
 id|fec_ievent
 suffix:semicolon
+multiline_comment|/* interrupt event register&t;&t;*/
 DECL|member|fec_imask
 id|uint
 id|fec_imask
 suffix:semicolon
+multiline_comment|/* interrupt mask register&t;&t;*/
 DECL|member|fec_ivec
 id|uint
 id|fec_ivec
 suffix:semicolon
+multiline_comment|/* interrupt level and vector status&t;*/
 DECL|member|fec_r_des_active
 id|uint
 id|fec_r_des_active
 suffix:semicolon
+multiline_comment|/* Rx ring updated flag&t;&t;&t;*/
 DECL|member|fec_x_des_active
 id|uint
 id|fec_x_des_active
 suffix:semicolon
+multiline_comment|/* Tx ring updated flag&t;&t;&t;*/
 DECL|member|res3
 id|uint
 id|res3
@@ -1222,14 +1401,17 @@ id|res3
 l_int|10
 )braket
 suffix:semicolon
+multiline_comment|/* reserved&t;&t;&t;&t;*/
 DECL|member|fec_mii_data
 id|uint
 id|fec_mii_data
 suffix:semicolon
+multiline_comment|/* MII data register&t;&t;&t;*/
 DECL|member|fec_mii_speed
 id|uint
 id|fec_mii_speed
 suffix:semicolon
+multiline_comment|/* MII speed control register&t;&t;*/
 DECL|member|res4
 id|uint
 id|res4
@@ -1237,14 +1419,17 @@ id|res4
 l_int|17
 )braket
 suffix:semicolon
+multiline_comment|/* reserved&t;&t;&t;&t;*/
 DECL|member|fec_r_bound
 id|uint
 id|fec_r_bound
 suffix:semicolon
+multiline_comment|/* end of RAM (read-only)&t;&t;*/
 DECL|member|fec_r_fstart
 id|uint
 id|fec_r_fstart
 suffix:semicolon
+multiline_comment|/* Rx FIFO start address&t;&t;*/
 DECL|member|res5
 id|uint
 id|res5
@@ -1252,10 +1437,12 @@ id|res5
 l_int|6
 )braket
 suffix:semicolon
+multiline_comment|/* reserved&t;&t;&t;&t;*/
 DECL|member|fec_x_fstart
 id|uint
 id|fec_x_fstart
 suffix:semicolon
+multiline_comment|/* Tx FIFO start address&t;&t;*/
 DECL|member|res6
 id|uint
 id|res6
@@ -1263,10 +1450,12 @@ id|res6
 l_int|17
 )braket
 suffix:semicolon
+multiline_comment|/* reserved&t;&t;&t;&t;*/
 DECL|member|fec_fun_code
 id|uint
 id|fec_fun_code
 suffix:semicolon
+multiline_comment|/* fec SDMA function code&t;&t;*/
 DECL|member|res7
 id|uint
 id|res7
@@ -1274,14 +1463,17 @@ id|res7
 l_int|3
 )braket
 suffix:semicolon
+multiline_comment|/* reserved&t;&t;&t;&t;*/
 DECL|member|fec_r_cntrl
 id|uint
 id|fec_r_cntrl
 suffix:semicolon
+multiline_comment|/* Rx control register&t;&t;&t;*/
 DECL|member|fec_r_hash
 id|uint
 id|fec_r_hash
 suffix:semicolon
+multiline_comment|/* Rx hash register&t;&t;&t;*/
 DECL|member|res8
 id|uint
 id|res8
@@ -1289,10 +1481,12 @@ id|res8
 l_int|14
 )braket
 suffix:semicolon
+multiline_comment|/* reserved&t;&t;&t;&t;*/
 DECL|member|fec_x_cntrl
 id|uint
 id|fec_x_cntrl
 suffix:semicolon
+multiline_comment|/* Tx control register&t;&t;&t;*/
 DECL|member|res9
 id|uint
 id|res9
@@ -1300,11 +1494,12 @@ id|res9
 l_int|0x1e
 )braket
 suffix:semicolon
+multiline_comment|/* reserved&t;&t;&t;&t;*/
 DECL|typedef|fec_t
 )brace
 id|fec_t
 suffix:semicolon
-multiline_comment|/* We need this as the fec and fb cmap use the same address space */
+multiline_comment|/* The FEC and LCD color map share the same address space....&n; * I guess we will never see an 823T :-).&n; */
 DECL|union|fec_lcd
 r_union
 id|fec_lcd
@@ -1333,7 +1528,7 @@ id|ushort
 id|cp_cpcr
 suffix:semicolon
 DECL|member|res1
-r_char
+id|u_char
 id|res1
 (braket
 l_int|2
@@ -1344,10 +1539,18 @@ id|ushort
 id|cp_rccr
 suffix:semicolon
 DECL|member|res2
-r_char
+id|u_char
 id|res2
+suffix:semicolon
+DECL|member|cp_rmds
+id|u_char
+id|cp_rmds
+suffix:semicolon
+DECL|member|res3
+id|u_char
+id|res3
 (braket
-l_int|6
+l_int|4
 )braket
 suffix:semicolon
 DECL|member|cp_cpmcr1
@@ -1366,9 +1569,9 @@ DECL|member|cp_cpmcr4
 id|ushort
 id|cp_cpmcr4
 suffix:semicolon
-DECL|member|res3
-r_char
-id|res3
+DECL|member|res4
+id|u_char
+id|res4
 (braket
 l_int|2
 )braket
@@ -1377,9 +1580,9 @@ DECL|member|cp_rter
 id|ushort
 id|cp_rter
 suffix:semicolon
-DECL|member|res4
-r_char
-id|res4
+DECL|member|res5
+id|u_char
+id|res5
 (braket
 l_int|2
 )braket
@@ -1388,9 +1591,9 @@ DECL|member|cp_rtmr
 id|ushort
 id|cp_rtmr
 suffix:semicolon
-DECL|member|res5
-r_char
-id|res5
+DECL|member|res6
+id|u_char
+id|res6
 (braket
 l_int|0x14
 )braket
@@ -1433,9 +1636,9 @@ DECL|member|cp_spmode
 id|ushort
 id|cp_spmode
 suffix:semicolon
-DECL|member|res6
-r_char
-id|res6
+DECL|member|res7
+id|u_char
+id|res7
 (braket
 l_int|4
 )braket
@@ -1444,9 +1647,9 @@ DECL|member|cp_spie
 id|u_char
 id|cp_spie
 suffix:semicolon
-DECL|member|res7
-r_char
-id|res7
+DECL|member|res8
+id|u_char
+id|res8
 (braket
 l_int|3
 )braket
@@ -1455,9 +1658,9 @@ DECL|member|cp_spim
 id|u_char
 id|cp_spim
 suffix:semicolon
-DECL|member|res8
-r_char
-id|res8
+DECL|member|res9
+id|u_char
+id|res9
 (braket
 l_int|2
 )braket
@@ -1466,17 +1669,17 @@ DECL|member|cp_spcom
 id|u_char
 id|cp_spcom
 suffix:semicolon
-DECL|member|res9
-r_char
-id|res9
+DECL|member|res10
+id|u_char
+id|res10
 (braket
 l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* Parallel Interface Port.&n;&t;*/
-DECL|member|res10
-r_char
-id|res10
+DECL|member|res11
+id|u_char
+id|res11
 (braket
 l_int|2
 )braket
@@ -1485,9 +1688,9 @@ DECL|member|cp_pipc
 id|ushort
 id|cp_pipc
 suffix:semicolon
-DECL|member|res11
-r_char
-id|res11
+DECL|member|res12
+id|u_char
+id|res12
 (braket
 l_int|2
 )braket
@@ -1504,9 +1707,9 @@ DECL|member|cp_pbpar
 id|uint
 id|cp_pbpar
 suffix:semicolon
-DECL|member|res12
-r_char
-id|res12
+DECL|member|res13
+id|u_char
+id|res13
 (braket
 l_int|2
 )braket
@@ -1519,12 +1722,31 @@ DECL|member|cp_pbdat
 id|uint
 id|cp_pbdat
 suffix:semicolon
-DECL|member|res13
-r_char
-id|res13
-(braket
-l_int|0x18
-)braket
+multiline_comment|/* Port E - MPC87x/88x only.&n;&t; */
+DECL|member|cp_pedir
+id|uint
+id|cp_pedir
+suffix:semicolon
+DECL|member|cp_pepar
+id|uint
+id|cp_pepar
+suffix:semicolon
+DECL|member|cp_peso
+id|uint
+id|cp_peso
+suffix:semicolon
+DECL|member|cp_peodr
+id|uint
+id|cp_peodr
+suffix:semicolon
+DECL|member|cp_pedat
+id|uint
+id|cp_pedat
+suffix:semicolon
+multiline_comment|/* Communications Processor Timing Register -&n;&t;   Contains RMII Timing for the FECs on MPC87x/88x only.&n;&t;*/
+DECL|member|cp_cptr
+id|uint
+id|cp_cptr
 suffix:semicolon
 multiline_comment|/* Serial Interface and Time Slot Assignment.&n;&t;*/
 DECL|member|cp_simode
@@ -1535,9 +1757,9 @@ DECL|member|cp_sigmr
 id|u_char
 id|cp_sigmr
 suffix:semicolon
-DECL|member|res14
-r_char
-id|res14
+DECL|member|res15
+id|u_char
+id|res15
 suffix:semicolon
 DECL|member|cp_sistr
 id|u_char
@@ -1547,9 +1769,9 @@ DECL|member|cp_sicmr
 id|u_char
 id|cp_sicmr
 suffix:semicolon
-DECL|member|res15
-r_char
-id|res15
+DECL|member|res16
+id|u_char
+id|res16
 (braket
 l_int|4
 )braket
@@ -1562,11 +1784,19 @@ DECL|member|cp_sirp
 id|uint
 id|cp_sirp
 suffix:semicolon
-DECL|member|res16
-r_char
-id|res16
+DECL|member|res17
+id|u_char
+id|res17
 (braket
-l_int|0x10c
+l_int|0xc
+)braket
+suffix:semicolon
+multiline_comment|/* 256 bytes of MPC823 video controller RAM array.&n;&t;*/
+DECL|member|cp_vcram
+id|u_char
+id|cp_vcram
+(braket
+l_int|0x100
 )braket
 suffix:semicolon
 DECL|member|cp_siram
@@ -1576,39 +1806,39 @@ id|cp_siram
 l_int|0x200
 )braket
 suffix:semicolon
-multiline_comment|/* The fast ethernet controller is not really part of the CPM,&n;&t; * but it resides in the address space.&n;&t; *&n;&t; * The colormap for the LCD controller is also located here&n;&t; */
+multiline_comment|/* The fast ethernet controller is not really part of the CPM,&n;&t; * but it resides in the address space.&n;&t; * The LCD color map is also here.&n;&t; */
 DECL|member|fl_un
 r_union
 id|fec_lcd
 id|fl_un
 suffix:semicolon
 DECL|macro|cp_fec
-mdefine_line|#define cp_fec&t;fl_un.fl_un_fec
+mdefine_line|#define cp_fec&t;&t;fl_un.fl_un_fec
 DECL|macro|lcd_cmap
-mdefine_line|#define lcd_cmap fl_un.fl_un_cmap
+mdefine_line|#define lcd_cmap&t;fl_un.fl_un_cmap
 DECL|member|res18
 r_char
 id|res18
 (braket
-l_int|0x1000
+l_int|0xE00
 )braket
 suffix:semicolon
-multiline_comment|/* Dual Ported RAM follows.&n;&t; * There are many different formats for this memory area&n;&t; * depending upon the devices used and options chosen.&n;&t; */
+multiline_comment|/* The DUET family has a second FEC here */
+DECL|member|cp_fec2
+id|fec_t
+id|cp_fec2
+suffix:semicolon
+DECL|macro|cp_fec1
+mdefine_line|#define cp_fec1&t;cp_fec&t;/* consistency macro */
+multiline_comment|/* Dual Ported RAM follows.&n;&t; * There are many different formats for this memory area&n;&t; * depending upon the devices used and options chosen.&n;&t; * Some processors don&squot;t have all of it populated.&n;&t; */
 DECL|member|cp_dpmem
 id|u_char
 id|cp_dpmem
 (braket
-l_int|0x1000
+l_int|0x1C00
 )braket
 suffix:semicolon
 multiline_comment|/* BD / Data / ucode */
-DECL|member|res19
-id|u_char
-id|res19
-(braket
-l_int|0xc00
-)braket
-suffix:semicolon
 DECL|member|cp_dparam
 id|u_char
 id|cp_dparam
@@ -1662,11 +1892,16 @@ id|cark8xx_t
 id|im_clkrstk
 suffix:semicolon
 multiline_comment|/* Clocks and reset keys */
+DECL|member|im_vid
+id|vid823_t
+id|im_vid
+suffix:semicolon
+multiline_comment|/* Video (823 only) */
 DECL|member|im_lcd
-id|lcd8xx_t
+id|lcd823_t
 id|im_lcd
 suffix:semicolon
-multiline_comment|/* LCD (821 and 823 only) */
+multiline_comment|/* LCD (823 only) */
 DECL|member|im_i2c
 id|i2c8xx_t
 id|im_i2c

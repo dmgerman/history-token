@@ -95,6 +95,17 @@ id|notifier_block
 op_star
 id|panic_notifier_list
 suffix:semicolon
+r_extern
+r_int
+(paren
+op_star
+id|panic_blink
+)paren
+(paren
+r_int
+id|time
+)paren
+suffix:semicolon
 id|NORET_TYPE
 r_void
 id|panic
@@ -124,7 +135,7 @@ l_int|2
 )paren
 )paren
 suffix:semicolon
-id|asmlinkage
+id|fastcall
 id|NORET_TYPE
 r_void
 id|do_exit

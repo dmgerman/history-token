@@ -3412,41 +3412,6 @@ suffix:semicolon
 )brace
 )brace
 r_static
-r_int
-id|__init
-DECL|function|prep_request_cascade
-id|prep_request_cascade
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|OpenPIC_Addr
-op_ne
-l_int|NULL
-)paren
-multiline_comment|/* We have a cascade on OpenPIC IRQ 0, Linux IRQ 16 */
-id|openpic_hookup_cascade
-(paren
-id|NUM_8259_INTERRUPTS
-comma
-l_string|&quot;82c59 cascade&quot;
-comma
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|variable|prep_request_cascade
-id|arch_initcall
-c_func
-(paren
-id|prep_request_cascade
-)paren
-suffix:semicolon
-r_static
 r_void
 id|__init
 DECL|function|prep_init_IRQ
@@ -3477,6 +3442,17 @@ id|openpic_init
 c_func
 (paren
 id|NUM_8259_INTERRUPTS
+)paren
+suffix:semicolon
+multiline_comment|/* We have a cascade on OpenPIC IRQ 0, Linux IRQ 16 */
+id|openpic_hookup_cascade
+c_func
+(paren
+id|NUM_8259_INTERRUPTS
+comma
+l_string|&quot;82c59 cascade&quot;
+comma
+id|i8259_irq
 )paren
 suffix:semicolon
 )brace

@@ -787,16 +787,16 @@ mdefine_line|#define MAX_MONO_IMM_SIZE&t;&t;128
 multiline_comment|/*** Macros ***/
 multiline_comment|/* I/O macros */
 DECL|macro|INREG8
-mdefine_line|#define INREG8(addr)&t;      readb((u8 *)(dinfo-&gt;mmio_base + (addr)))
+mdefine_line|#define INREG8(addr)&t;      readb((u8 __iomem *)(dinfo-&gt;mmio_base + (addr)))
 DECL|macro|INREG
-mdefine_line|#define INREG(addr)&t;      readl((u32 *)(dinfo-&gt;mmio_base + (addr)))
+mdefine_line|#define INREG(addr)&t;      readl((u32 __iomem *)(dinfo-&gt;mmio_base + (addr)))
 DECL|macro|OUTREG8
-mdefine_line|#define OUTREG8(addr, val)    writeb((val), (u8 *)(dinfo-&gt;mmio_base + (addr)))
+mdefine_line|#define OUTREG8(addr, val)    writeb((val),(u8 __iomem *)(dinfo-&gt;mmio_base + &bslash;&n;&t;&t;&t;&t;&t;&t;&t;   (addr)))
 DECL|macro|OUTREG
-mdefine_line|#define OUTREG(addr, val)     writel((val), (u32 *)(dinfo-&gt;mmio_base + (addr)))
+mdefine_line|#define OUTREG(addr, val)     writel((val),(u32 __iomem *)(dinfo-&gt;mmio_base + &bslash;&n;                                     (addr)))
 multiline_comment|/* Ring buffer macros */
 DECL|macro|OUT_RING
-mdefine_line|#define OUT_RING(n)&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;writel((n), (u32 *)(dinfo-&gt;ring.virtual + dinfo-&gt;ring_tail));&t;&bslash;&n;&t;dinfo-&gt;ring_tail += 4;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;dinfo-&gt;ring_tail &amp;= dinfo-&gt;ring_tail_mask;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define OUT_RING(n)&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;writel((n), (u32 __iomem *)(dinfo-&gt;ring.virtual + dinfo-&gt;ring_tail));&bslash;&n;&t;dinfo-&gt;ring_tail += 4;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;dinfo-&gt;ring_tail &amp;= dinfo-&gt;ring_tail_mask;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|START_RING
 mdefine_line|#define START_RING(n)&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (dinfo-&gt;ring_space &lt; (n) * 4)&t;&t;&t;&t;&bslash;&n;&t;&t;wait_ring(dinfo,(n) * 4);&t;&t;&t;&t;&bslash;&n;&t;dinfo-&gt;ring_space -= (n) * 4;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|ADVANCE_RING

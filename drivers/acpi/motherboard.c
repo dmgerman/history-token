@@ -74,8 +74,11 @@ id|io_res-&gt;min_base_address
 op_ne
 id|io_res-&gt;max_base_address
 )paren
-r_return
+id|return_VALUE
+c_func
+(paren
 id|AE_OK
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -192,8 +195,11 @@ op_and_assign
 op_complement
 id|IORESOURCE_BUSY
 suffix:semicolon
-r_return
+id|return_VALUE
+c_func
+(paren
 id|AE_OK
+)paren
 suffix:semicolon
 )brace
 DECL|function|acpi_motherboard_add

@@ -50,12 +50,14 @@ suffix:semicolon
 DECL|member|region
 r_int
 r_char
+id|__iomem
 op_star
 id|region
 suffix:semicolon
 DECL|member|regs
 r_int
 r_char
+id|__iomem
 op_star
 id|regs
 suffix:semicolon

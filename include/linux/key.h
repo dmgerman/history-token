@@ -889,6 +889,14 @@ op_star
 id|tsk
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|key_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#else /* CONFIG_KEYS */
 DECL|macro|key_validate
 mdefine_line|#define key_validate(k)&t;&t;&t;0
@@ -914,6 +922,8 @@ DECL|macro|key_fsuid_changed
 mdefine_line|#define key_fsuid_changed(t)&t;&t;do { } while(0)
 DECL|macro|key_fsgid_changed
 mdefine_line|#define key_fsgid_changed(t)&t;&t;do { } while(0)
+DECL|macro|key_init
+mdefine_line|#define key_init()&t;&t;&t;do { } while(0)
 macro_line|#endif /* CONFIG_KEYS */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_KEY_H */

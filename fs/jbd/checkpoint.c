@@ -2009,17 +2009,6 @@ suffix:semicolon
 id|J_ASSERT
 c_func
 (paren
-id|list_empty
-c_func
-(paren
-op_amp
-id|transaction-&gt;t_jcb
-)paren
-)paren
-suffix:semicolon
-id|J_ASSERT
-c_func
-(paren
 id|journal-&gt;j_committing_transaction
 op_ne
 id|transaction

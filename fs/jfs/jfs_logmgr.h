@@ -29,47 +29,47 @@ r_struct
 id|logsuper
 (brace
 DECL|member|magic
-id|u32
+id|__le32
 id|magic
 suffix:semicolon
 multiline_comment|/* 4: log lv identifier */
 DECL|member|version
-id|s32
+id|__le32
 id|version
 suffix:semicolon
 multiline_comment|/* 4: version number */
 DECL|member|serial
-id|s32
+id|__le32
 id|serial
 suffix:semicolon
 multiline_comment|/* 4: log open/mount counter */
 DECL|member|size
-id|s32
+id|__le32
 id|size
 suffix:semicolon
 multiline_comment|/* 4: size in number of LOGPSIZE blocks */
 DECL|member|bsize
-id|s32
+id|__le32
 id|bsize
 suffix:semicolon
 multiline_comment|/* 4: logical block size in byte */
 DECL|member|l2bsize
-id|s32
+id|__le32
 id|l2bsize
 suffix:semicolon
 multiline_comment|/* 4: log2 of bsize */
 DECL|member|flag
-id|u32
+id|__le32
 id|flag
 suffix:semicolon
 multiline_comment|/* 4: option */
 DECL|member|state
-id|u32
+id|__le32
 id|state
 suffix:semicolon
 multiline_comment|/* 4: state - see below */
 DECL|member|end
-id|s32
+id|__le32
 id|end
 suffix:semicolon
 multiline_comment|/* 4: addr of last log record set by logredo */
@@ -129,17 +129,17 @@ r_struct
 (brace
 multiline_comment|/* header */
 DECL|member|page
-id|s32
+id|__le32
 id|page
 suffix:semicolon
 multiline_comment|/* 4: log sequence page number */
 DECL|member|rsrvd
-id|s16
+id|__le16
 id|rsrvd
 suffix:semicolon
 multiline_comment|/* 2: */
 DECL|member|eor
-id|s16
+id|__le16
 id|eor
 suffix:semicolon
 multiline_comment|/* 2: end-of-log offset of lasrt record write */
@@ -148,7 +148,7 @@ DECL|member|h
 id|h
 suffix:semicolon
 DECL|member|data
-id|s32
+id|__le32
 id|data
 (braket
 id|LOGPSIZE
@@ -163,17 +163,17 @@ r_struct
 (brace
 multiline_comment|/* trailer */
 DECL|member|page
-id|s32
+id|__le32
 id|page
 suffix:semicolon
 multiline_comment|/* 4: normally the same as h.page */
 DECL|member|rsrvd
-id|s16
+id|__le16
 id|rsrvd
 suffix:semicolon
 multiline_comment|/* 2: */
 DECL|member|eor
-id|s16
+id|__le16
 id|eor
 suffix:semicolon
 multiline_comment|/* 2: normally the same as h.eor */
@@ -251,27 +251,27 @@ id|lrd
 (brace
 multiline_comment|/*&n;&t; * type independent area&n;&t; */
 DECL|member|logtid
-id|s32
+id|__le32
 id|logtid
 suffix:semicolon
 multiline_comment|/* 4: log transaction identifier */
 DECL|member|backchain
-id|s32
+id|__le32
 id|backchain
 suffix:semicolon
 multiline_comment|/* 4: ptr to prev record of same transaction */
 DECL|member|type
-id|u16
+id|__le16
 id|type
 suffix:semicolon
 multiline_comment|/* 2: record type */
 DECL|member|length
-id|s16
+id|__le16
 id|length
 suffix:semicolon
 multiline_comment|/* 2: length of data in record (in byte) */
 DECL|member|aggregate
-id|u32
+id|__le32
 id|aggregate
 suffix:semicolon
 multiline_comment|/* 4: file system lv/aggregate */
@@ -284,22 +284,22 @@ multiline_comment|/*&n;&t;&t; *      REDOPAGE: after-image&n;&t;&t; *&n;&t;&t; *
 r_struct
 (brace
 DECL|member|fileset
-id|u32
+id|__le32
 id|fileset
 suffix:semicolon
 multiline_comment|/* 4: fileset number */
 DECL|member|inode
-id|u32
+id|__le32
 id|inode
 suffix:semicolon
 multiline_comment|/* 4: inode number */
 DECL|member|type
-id|u16
+id|__le16
 id|type
 suffix:semicolon
 multiline_comment|/* 2: REDOPAGE record type */
 DECL|member|l2linesize
-id|s16
+id|__le16
 id|l2linesize
 suffix:semicolon
 multiline_comment|/* 2: log2 of line size */
@@ -317,22 +317,22 @@ multiline_comment|/*&n;&t;&t; *      NOREDOPAGE: the page is freed&n;&t;&t; *&n;
 r_struct
 (brace
 DECL|member|fileset
-id|s32
+id|__le32
 id|fileset
 suffix:semicolon
 multiline_comment|/* 4: fileset number */
 DECL|member|inode
-id|u32
+id|__le32
 id|inode
 suffix:semicolon
 multiline_comment|/* 4: inode number */
 DECL|member|type
-id|u16
+id|__le16
 id|type
 suffix:semicolon
 multiline_comment|/* 2: NOREDOPAGE record type */
 DECL|member|rsrvd
-id|s16
+id|__le16
 id|rsrvd
 suffix:semicolon
 multiline_comment|/* 2: reserved */
@@ -350,22 +350,22 @@ multiline_comment|/*&n;&t;&t; *      UPDATEMAP: update block allocation map&n;&t
 r_struct
 (brace
 DECL|member|fileset
-id|u32
+id|__le32
 id|fileset
 suffix:semicolon
 multiline_comment|/* 4: fileset number */
 DECL|member|inode
-id|u32
+id|__le32
 id|inode
 suffix:semicolon
 multiline_comment|/* 4: inode number */
 DECL|member|type
-id|u16
+id|__le16
 id|type
 suffix:semicolon
 multiline_comment|/* 2: UPDATEMAP record type */
 DECL|member|nxd
-id|s16
+id|__le16
 id|nxd
 suffix:semicolon
 multiline_comment|/* 2: number of extents */
@@ -383,17 +383,17 @@ multiline_comment|/*&n;&t;&t; *      NOREDOINOEXT: the inode extent is freed&n;&
 r_struct
 (brace
 DECL|member|fileset
-id|s32
+id|__le32
 id|fileset
 suffix:semicolon
 multiline_comment|/* 4: fileset number */
 DECL|member|iagnum
-id|s32
+id|__le32
 id|iagnum
 suffix:semicolon
 multiline_comment|/* 4: IAG number     */
 DECL|member|inoext_idx
-id|s32
+id|__le32
 id|inoext_idx
 suffix:semicolon
 multiline_comment|/* 4: inode extent index */
@@ -411,7 +411,7 @@ multiline_comment|/*&n;&t;&t; *      SYNCPT: log sync point&n;&t;&t; *&n;&t;&t; 
 r_struct
 (brace
 DECL|member|sync
-id|s32
+id|__le32
 id|sync
 suffix:semicolon
 multiline_comment|/* 4: syncpt address (0 = here) */
@@ -424,12 +424,12 @@ multiline_comment|/*&n;&t;&t; *      ? FREEXTENT: free specified extent(s)&n;&t;
 r_struct
 (brace
 DECL|member|type
-id|s32
+id|__le32
 id|type
 suffix:semicolon
 multiline_comment|/* 4: FREEXTENT record type */
 DECL|member|nextent
-id|s32
+id|__le32
 id|nextent
 suffix:semicolon
 multiline_comment|/* 4: number of extents */
@@ -442,12 +442,12 @@ multiline_comment|/*&n;&t;&t; *      ? NOREDOFILE: this file is freed&n;&t;&t; *
 r_struct
 (brace
 DECL|member|fileset
-id|s32
+id|__le32
 id|fileset
 suffix:semicolon
 multiline_comment|/* 4: fileset number */
 DECL|member|inode
-id|u32
+id|__le32
 id|inode
 suffix:semicolon
 multiline_comment|/* 4: inode number */
@@ -459,17 +459,17 @@ multiline_comment|/*&n;&t;&t; *      ? NEWPAGE: &n;&t;&t; *&n;&t;&t; * metadata 
 r_struct
 (brace
 DECL|member|fileset
-id|s32
+id|__le32
 id|fileset
 suffix:semicolon
 multiline_comment|/* 4: fileset number */
 DECL|member|inode
-id|u32
+id|__le32
 id|inode
 suffix:semicolon
 multiline_comment|/* 4: inode number */
 DECL|member|type
-id|s32
+id|__le32
 id|type
 suffix:semicolon
 multiline_comment|/* 4: NEWPAGE record type */
@@ -498,11 +498,11 @@ r_struct
 id|lvd
 (brace
 DECL|member|offset
-id|s16
+id|__le16
 id|offset
 suffix:semicolon
 DECL|member|length
-id|s16
+id|__le16
 id|length
 suffix:semicolon
 )brace
@@ -532,7 +532,7 @@ id|bdev
 suffix:semicolon
 multiline_comment|/* 4: log lv pointer */
 DECL|member|serial
-id|s32
+r_int
 id|serial
 suffix:semicolon
 multiline_comment|/* 4: log mount serial number */

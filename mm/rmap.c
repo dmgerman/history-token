@@ -1568,6 +1568,9 @@ op_logical_neg
 id|anon_vma
 )paren
 suffix:semicolon
+id|vma-&gt;vm_mm-&gt;anon_rss
+op_increment
+suffix:semicolon
 id|anon_vma
 op_assign
 (paren
@@ -2143,6 +2146,9 @@ op_star
 id|pte
 )paren
 )paren
+suffix:semicolon
+id|mm-&gt;anon_rss
+op_decrement
 suffix:semicolon
 )brace
 id|mm-&gt;rss

@@ -90,6 +90,46 @@ id|port
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|parport_pc_via_data
+r_struct
+id|parport_pc_via_data
+(brace
+multiline_comment|/* ISA PnP IRQ routing register 1 */
+DECL|member|via_pci_parport_irq_reg
+id|u8
+id|via_pci_parport_irq_reg
+suffix:semicolon
+multiline_comment|/* ISA PnP DMA request routing register */
+DECL|member|via_pci_parport_dma_reg
+id|u8
+id|via_pci_parport_dma_reg
+suffix:semicolon
+multiline_comment|/* Register and value to enable SuperIO configuration access */
+DECL|member|via_pci_superio_config_reg
+id|u8
+id|via_pci_superio_config_reg
+suffix:semicolon
+DECL|member|via_pci_superio_config_data
+id|u8
+id|via_pci_superio_config_data
+suffix:semicolon
+multiline_comment|/* SuperIO function register number */
+DECL|member|viacfg_function
+id|u8
+id|viacfg_function
+suffix:semicolon
+multiline_comment|/* parallel port control register number */
+DECL|member|viacfg_parport_control
+id|u8
+id|viacfg_parport_control
+suffix:semicolon
+multiline_comment|/* Parallel port base address register */
+DECL|member|viacfg_parport_base
+id|u8
+id|viacfg_parport_base
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|function|parport_pc_write_data
 r_static
 id|__inline__

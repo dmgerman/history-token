@@ -20,8 +20,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/*&n; * This is the multiple IDE interface driver, as evolved from hd.c.&n; * It supports up to four IDE interfaces, on one or more IRQs (usually 14 &amp; 15).&n; * There can be up to two drives per interface, as per the ATA-2 spec.&n; *&n; * Primary i/f:    ide0: major=3;  (hda)         minor=0; (hdb)         minor=64&n; * Secondary i/f:  ide1: major=22; (hdc or hd1a) minor=0; (hdd or hd1b) minor=64&n; * Tertiary i/f:   ide2: major=33; (hde)         minor=0; (hdf)         minor=64&n; * Quaternary i/f: ide3: major=34; (hdg)         minor=0; (hdh)         minor=64&n; */
 multiline_comment|/******************************************************************************&n; * IDE driver configuration options (play with these as desired):&n; *&n; * REALLY_SLOW_IO can be defined in ide.c and ide-cd.c, if necessary&n; */
-DECL|macro|REALLY_FAST_IO
-mdefine_line|#define REALLY_FAST_IO&t;&t;&t;/* define if ide ports are perfect */
 DECL|macro|INITIAL_MULT_COUNT
 mdefine_line|#define INITIAL_MULT_COUNT&t;0&t;/* off=0; on=2,4,8,16,32, etc.. */
 macro_line|#ifndef SUPPORT_SLOW_DATA_PORTS&t;&t;/* 1 to support slow data ports */
@@ -43,14 +41,6 @@ macro_line|#endif
 multiline_comment|/*&n; * Used to indicate &quot;no IRQ&quot;, should be a value that cannot be an IRQ&n; * number.&n; */
 DECL|macro|IDE_NO_IRQ
 mdefine_line|#define IDE_NO_IRQ&t;&t;(-1)
-multiline_comment|/*&n; * IDE_DRIVE_CMD is used to implement many features of the hdparm utility&n; */
-DECL|macro|IDE_DRIVE_CMD
-mdefine_line|#define IDE_DRIVE_CMD&t;&t;&t;99&t;/* (magic) undef to reduce kernel size*/
-DECL|macro|IDE_DRIVE_TASK
-mdefine_line|#define IDE_DRIVE_TASK&t;&t;&t;98
-multiline_comment|/*&n; * IDE_DRIVE_TASKFILE is used to implement many features needed for raw tasks&n; */
-DECL|macro|IDE_DRIVE_TASKFILE
-mdefine_line|#define IDE_DRIVE_TASKFILE&t;&t;97
 multiline_comment|/*&n; *  &quot;No user-serviceable parts&quot; beyond this point  :)&n; *****************************************************************************/
 DECL|typedef|byte
 r_typedef
@@ -76,11 +66,6 @@ mdefine_line|#define IDE_TUNE_DEFAULT&t;0
 multiline_comment|/*&n; * state flags&n; */
 DECL|macro|DMA_PIO_RETRY
 mdefine_line|#define DMA_PIO_RETRY&t;1&t;/* retrying in PIO */
-multiline_comment|/*&n; * Ensure that various configuration flags have compatible settings&n; */
-macro_line|#ifdef REALLY_SLOW_IO
-DECL|macro|REALLY_FAST_IO
-macro_line|#undef REALLY_FAST_IO
-macro_line|#endif
 DECL|macro|HWIF
 mdefine_line|#define HWIF(drive)&t;&t;((ide_hwif_t *)((drive)-&gt;hwif))
 DECL|macro|HWGROUP
@@ -192,14 +177,8 @@ mdefine_line|#define PRD_BYTES       8
 DECL|macro|PRD_ENTRIES
 mdefine_line|#define PRD_ENTRIES&t;256
 multiline_comment|/*&n; * Some more useful definitions&n; */
-DECL|macro|IDE_MAJOR_NAME
-mdefine_line|#define IDE_MAJOR_NAME&t;&quot;hd&quot;&t;/* the same for all i/f; see also genhd.c */
-DECL|macro|MAJOR_NAME
-mdefine_line|#define MAJOR_NAME&t;IDE_MAJOR_NAME
 DECL|macro|PARTN_BITS
 mdefine_line|#define PARTN_BITS&t;6&t;/* number of minor dev bits for partitions */
-DECL|macro|PARTN_MASK
-mdefine_line|#define PARTN_MASK&t;((1&lt;&lt;PARTN_BITS)-1)&t;/* a useful bit mask */
 DECL|macro|MAX_DRIVES
 mdefine_line|#define MAX_DRIVES&t;2&t;/* per interface; 2 assumed by lots of code */
 DECL|macro|SECTOR_SIZE
@@ -340,31 +319,9 @@ op_star
 id|ack_intr
 suffix:semicolon
 multiline_comment|/* acknowledge interrupt */
-DECL|member|priv
-r_void
-op_star
-id|priv
-suffix:semicolon
-multiline_comment|/* interface specific data */
 DECL|member|chipset
 id|hwif_chipset_t
 id|chipset
-suffix:semicolon
-DECL|member|sata_scr
-r_int
-r_int
-id|sata_scr
-(braket
-id|SATA_NR_PORTS
-)braket
-suffix:semicolon
-DECL|member|sata_misc
-r_int
-r_int
-id|sata_misc
-(braket
-id|SATA_NR_PORTS
-)braket
 suffix:semicolon
 DECL|typedef|hw_regs_t
 )brace
@@ -384,6 +341,29 @@ id|hwif_s
 op_star
 op_star
 id|hwifp
+)paren
+suffix:semicolon
+r_int
+id|ide_register_hw_with_fixup
+c_func
+(paren
+id|hw_regs_t
+op_star
+comma
+r_struct
+id|hwif_s
+op_star
+op_star
+comma
+r_void
+(paren
+op_star
+)paren
+(paren
+r_struct
+id|hwif_s
+op_star
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Set up hw_regs_t structure before calling ide_register_hw (optional)&n; */
@@ -1817,13 +1797,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1=doing PIO over DMA 0=doing normal DMA */
-DECL|member|stroke
-r_int
-id|stroke
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* from:  hdx=stroke */
 DECL|member|addressing
 r_int
 id|addressing
@@ -3398,19 +3371,18 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|destroy_proc_ide_drives
-c_func
-(paren
-id|ide_hwif_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|create_proc_ide_interfaces
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_void
+id|destroy_proc_ide_interface
+c_func
+(paren
+id|ide_hwif_t
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -3476,6 +3448,20 @@ id|create_proc_ide_interfaces
 c_func
 (paren
 r_void
+)paren
+(brace
+suffix:semicolon
+)brace
+DECL|function|destroy_proc_ide_interface
+r_static
+r_inline
+r_void
+id|destroy_proc_ide_interface
+c_func
+(paren
+id|ide_hwif_t
+op_star
+id|hwif
 )paren
 (brace
 suffix:semicolon
@@ -3924,23 +3910,6 @@ op_star
 comma
 r_const
 r_char
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Issue a simple drive command&n; * The drive must be selected beforehand.&n; *&n; * (drive, command, nsector, handler)&n; */
-r_extern
-r_void
-id|ide_cmd
-c_func
-(paren
-id|ide_drive_t
-op_star
-comma
-id|u8
-comma
-id|u8
-comma
-id|ide_handler_t
 op_star
 )paren
 suffix:semicolon
@@ -4434,15 +4403,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-id|ide_startstop_t
-id|task_out_intr
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|ide_raw_taskfile
 c_func
@@ -4505,15 +4465,6 @@ id|system_bus_clock
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-id|u8
-id|ide_auto_reduce_xfer
-c_func
-(paren
-id|ide_drive_t
-op_star
 )paren
 suffix:semicolon
 r_extern
@@ -4751,7 +4702,6 @@ op_star
 id|driver
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|ide_pci_setup_ports
 c_func
@@ -4759,22 +4709,15 @@ c_func
 r_struct
 id|pci_dev
 op_star
-id|dev
 comma
 r_struct
 id|ide_pci_device_s
 op_star
-id|d
 comma
 r_int
-id|autodma
-comma
-r_int
-id|pciirq
 comma
 id|ata_index_t
 op_star
-id|index
 )paren
 suffix:semicolon
 r_extern
@@ -4923,22 +4866,13 @@ op_lshift
 l_int|0
 )paren
 comma
-DECL|enumerator|IDEPCI_FLAG_FORCE_MASTER
-id|IDEPCI_FLAG_FORCE_MASTER
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|1
-)paren
-comma
 DECL|enumerator|IDEPCI_FLAG_FORCE_PDC
 id|IDEPCI_FLAG_FORCE_PDC
 op_assign
 (paren
 l_int|1
 op_lshift
-l_int|2
+l_int|1
 )paren
 comma
 )brace
@@ -5039,6 +4973,17 @@ op_star
 comma
 r_int
 r_int
+)paren
+suffix:semicolon
+DECL|member|fixup
+r_void
+(paren
+op_star
+id|fixup
+)paren
+(paren
+id|ide_hwif_t
+op_star
 )paren
 suffix:semicolon
 DECL|member|channels
@@ -5438,6 +5383,31 @@ id|ide_unregister
 r_int
 r_int
 id|index
+)paren
+suffix:semicolon
+r_void
+id|ide_undecoded_slave
+c_func
+(paren
+id|ide_hwif_t
+op_star
+)paren
+suffix:semicolon
+r_int
+id|probe_hwif_init_with_fixup
+c_func
+(paren
+id|ide_hwif_t
+op_star
+comma
+r_void
+(paren
+op_star
+)paren
+(paren
+id|ide_hwif_t
+op_star
+)paren
 )paren
 suffix:semicolon
 r_extern

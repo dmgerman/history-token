@@ -918,8 +918,11 @@ id|device-&gt;power.state
 op_assign
 id|ACPI_STATE_UNKNOWN
 suffix:semicolon
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 r_int
@@ -1457,8 +1460,11 @@ id|device-&gt;flags.wake_capable
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;&t;&t;ACPI hotplug sysfs device file support&n;   -------------------------------------------------------------------------- */

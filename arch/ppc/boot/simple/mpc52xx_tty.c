@@ -5,6 +5,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mpc52xx.h&gt;
 macro_line|#include &lt;asm/mpc52xx_psc.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#if MPC52xx_PF_CONSOLE_PORT == 0
 DECL|macro|MPC52xx_CONSOLE

@@ -348,13 +348,9 @@ id|s
 comma
 l_string|&quot;%d&bslash;n&quot;
 comma
-id|cpuid_to_coherence_id
+id|partition_coherence_id
 c_func
 (paren
-id|smp_processor_id
-c_func
-(paren
-)paren
 )paren
 )paren
 suffix:semicolon

@@ -2210,7 +2210,7 @@ id|flags
 op_or_assign
 id|IORESOURCE_MEM
 suffix:semicolon
-multiline_comment|/* For now, propogate host limits to the bus;&n;&t;&t; * we&squot;ll adjust them later. */
+multiline_comment|/* For now, propagate host limits to the bus;&n;&t;&t; * we&squot;ll adjust them later. */
 macro_line|#if 1
 id|bus-&gt;resource
 (braket

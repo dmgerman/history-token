@@ -1076,6 +1076,9 @@ id|significand
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * VFP_REG_ZERO is a special register number for vfp_get_double&n; * which returns (double)0.0.  This is useful for the compare with&n; * zero instructions.&n; */
+DECL|macro|VFP_REG_ZERO
+mdefine_line|#define VFP_REG_ZERO&t;16
 r_extern
 id|u64
 id|vfp_get_double

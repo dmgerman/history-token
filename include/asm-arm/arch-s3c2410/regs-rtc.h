@@ -8,6 +8,10 @@ DECL|macro|S3C2410_RTCCON
 mdefine_line|#define S3C2410_RTCCON&t;      S3C2410_RTCREG(0x40)
 DECL|macro|S3C2410_RTCCON_RTCEN
 mdefine_line|#define S3C2410_RTCCON_RTCEN  (1&lt;&lt;0)
+DECL|macro|S3C2410_RTCCON_CLKSEL
+mdefine_line|#define S3C2410_RTCCON_CLKSEL (1&lt;&lt;1)
+DECL|macro|S3C2410_RTCCON_CNTSEL
+mdefine_line|#define S3C2410_RTCCON_CNTSEL (1&lt;&lt;2)
 DECL|macro|S3C2410_RTCCON_CLKRST
 mdefine_line|#define S3C2410_RTCCON_CLKRST (1&lt;&lt;3)
 DECL|macro|S3C2410_TICNT

@@ -1,45 +1,58 @@
 multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under the GPL.&n; */
+multiline_comment|/*&n; * __hc32 and __hc16 are &quot;Host Controller&quot; types, they may be equivalent to&n; * __leXX (normally) or __beXX (given OHCI_BIG_ENDIAN), depending on the&n; * host controller implementation.&n; */
+DECL|typedef|__hc32
+r_typedef
+id|__u32
+id|__bitwise
+id|__hc32
+suffix:semicolon
+DECL|typedef|__hc16
+r_typedef
+id|__u16
+id|__bitwise
+id|__hc16
+suffix:semicolon
 multiline_comment|/*&n; * OHCI Endpoint Descriptor (ED) ... holds TD queue&n; * See OHCI spec, section 4.2&n; *&n; * This is a &quot;Queue Head&quot; for those transfers, which is why&n; * both EHCI and UHCI call similar structures a &quot;QH&quot;.&n; */
 DECL|struct|ed
 r_struct
 id|ed
 (brace
-multiline_comment|/* first fields are hardware-specified, le32 */
+multiline_comment|/* first fields are hardware-specified */
 DECL|member|hwINFO
-id|__le32
+id|__hc32
 id|hwINFO
 suffix:semicolon
 multiline_comment|/* endpoint config bitmap */
 multiline_comment|/* info bits defined by hcd */
 DECL|macro|ED_DEQUEUE
-mdefine_line|#define ED_DEQUEUE&t;__constant_cpu_to_le32(1 &lt;&lt; 27)
+mdefine_line|#define ED_DEQUEUE&t;(1 &lt;&lt; 27)
 multiline_comment|/* info bits defined by the hardware */
 DECL|macro|ED_ISO
-mdefine_line|#define ED_ISO&t;&t;__constant_cpu_to_le32(1 &lt;&lt; 15)
+mdefine_line|#define ED_ISO&t;&t;(1 &lt;&lt; 15)
 DECL|macro|ED_SKIP
-mdefine_line|#define ED_SKIP&t;&t;__constant_cpu_to_le32(1 &lt;&lt; 14)
+mdefine_line|#define ED_SKIP&t;&t;(1 &lt;&lt; 14)
 DECL|macro|ED_LOWSPEED
-mdefine_line|#define ED_LOWSPEED&t;__constant_cpu_to_le32(1 &lt;&lt; 13)
+mdefine_line|#define ED_LOWSPEED&t;(1 &lt;&lt; 13)
 DECL|macro|ED_OUT
-mdefine_line|#define ED_OUT&t;&t;__constant_cpu_to_le32(0x01 &lt;&lt; 11)
+mdefine_line|#define ED_OUT&t;&t;(0x01 &lt;&lt; 11)
 DECL|macro|ED_IN
-mdefine_line|#define ED_IN&t;&t;__constant_cpu_to_le32(0x02 &lt;&lt; 11)
+mdefine_line|#define ED_IN&t;&t;(0x02 &lt;&lt; 11)
 DECL|member|hwTailP
-id|__le32
+id|__hc32
 id|hwTailP
 suffix:semicolon
 multiline_comment|/* tail of TD list */
 DECL|member|hwHeadP
-id|__le32
+id|__hc32
 id|hwHeadP
 suffix:semicolon
 multiline_comment|/* head of TD list (hc r/w) */
 DECL|macro|ED_C
-mdefine_line|#define ED_C&t;&t;__constant_cpu_to_le32(0x02)&t;/* toggle carry */
+mdefine_line|#define ED_C&t;&t;(0x02)&t;&t;&t;/* toggle carry */
 DECL|macro|ED_H
-mdefine_line|#define ED_H&t;&t;__constant_cpu_to_le32(0x01)&t;/* halted */
+mdefine_line|#define ED_H&t;&t;(0x01)&t;&t;&t;/* halted */
 DECL|member|hwNextED
-id|__le32
+id|__hc32
 id|hwNextED
 suffix:semicolon
 multiline_comment|/* next ED in list */
@@ -136,9 +149,9 @@ DECL|struct|td
 r_struct
 id|td
 (brace
-multiline_comment|/* first fields are hardware-specified, le32 */
+multiline_comment|/* first fields are hardware-specified */
 DECL|member|hwINFO
-id|__le32
+id|__hc32
 id|hwINFO
 suffix:semicolon
 multiline_comment|/* transfer info bitmask */
@@ -181,17 +194,17 @@ DECL|macro|TD_R
 mdefine_line|#define TD_R        0x00040000&t;&t;&t;/* round: short packets OK? */
 multiline_comment|/* (no hwINFO #defines yet for iso tds) */
 DECL|member|hwCBP
-id|__le32
+id|__hc32
 id|hwCBP
 suffix:semicolon
 multiline_comment|/* Current Buffer Pointer (or 0) */
 DECL|member|hwNextTD
-id|__le32
+id|__hc32
 id|hwNextTD
 suffix:semicolon
 multiline_comment|/* Next TD Pointer */
 DECL|member|hwBE
-id|__le32
+id|__hc32
 id|hwBE
 suffix:semicolon
 multiline_comment|/* Memory Buffer End Pointer */
@@ -199,7 +212,7 @@ multiline_comment|/* PSW is only for ISO */
 DECL|macro|MAXPSW
 mdefine_line|#define MAXPSW 1&t;&t;/* hardware allows 8 */
 DECL|member|hwPSW
-id|__le16
+id|__hc16
 id|hwPSW
 (braket
 id|MAXPSW
@@ -378,7 +391,7 @@ id|ohci_hcca
 DECL|macro|NUM_INTS
 mdefine_line|#define NUM_INTS 32
 DECL|member|int_table
-id|__le32
+id|__hc32
 id|int_table
 (braket
 id|NUM_INTS
@@ -387,14 +400,12 @@ suffix:semicolon
 multiline_comment|/* periodic schedule */
 multiline_comment|/* &n;&t; * OHCI defines u16 frame_no, followed by u16 zero pad.&n;&t; * Since some processors can&squot;t do 16 bit bus accesses,&n;&t; * portable access must be a 32 bit byteswapped access.&n;&t; */
 DECL|member|frame_no
-id|__le32
+id|__hc32
 id|frame_no
 suffix:semicolon
 multiline_comment|/* current frame number */
-DECL|macro|OHCI_FRAME_NO
-mdefine_line|#define OHCI_FRAME_NO(hccap) ((u16)le32_to_cpup(&amp;(hccap)-&gt;frame_no))
 DECL|member|done_head
-id|__le32
+id|__hc32
 id|done_head
 suffix:semicolon
 multiline_comment|/* info returned for an interrupt */
@@ -425,6 +436,8 @@ l_int|256
 )paren
 )paren
 suffix:semicolon
+DECL|macro|ohci_frame_no
+mdefine_line|#define ohci_frame_no(ohci) ((u16)hc32_to_cpup(ohci,&amp;(ohci)-&gt;hcca-&gt;frame_no))
 multiline_comment|/*&n; * This is the structure of the OHCI controller&squot;s memory mapped I/O region.&n; * You must use readl() and writel() (in &lt;asm/io.h&gt;) to access these fields!!&n; * Layout is in section 7 (and appendix B) of the spec.&n; */
 DECL|struct|ohci_regs
 r_struct
@@ -432,77 +445,77 @@ id|ohci_regs
 (brace
 multiline_comment|/* control and status registers (section 7.1) */
 DECL|member|revision
-id|__u32
+id|__hc32
 id|revision
 suffix:semicolon
 DECL|member|control
-id|__u32
+id|__hc32
 id|control
 suffix:semicolon
 DECL|member|cmdstatus
-id|__u32
+id|__hc32
 id|cmdstatus
 suffix:semicolon
 DECL|member|intrstatus
-id|__u32
+id|__hc32
 id|intrstatus
 suffix:semicolon
 DECL|member|intrenable
-id|__u32
+id|__hc32
 id|intrenable
 suffix:semicolon
 DECL|member|intrdisable
-id|__u32
+id|__hc32
 id|intrdisable
 suffix:semicolon
 multiline_comment|/* memory pointers (section 7.2) */
 DECL|member|hcca
-id|__u32
+id|__hc32
 id|hcca
 suffix:semicolon
 DECL|member|ed_periodcurrent
-id|__u32
+id|__hc32
 id|ed_periodcurrent
 suffix:semicolon
 DECL|member|ed_controlhead
-id|__u32
+id|__hc32
 id|ed_controlhead
 suffix:semicolon
 DECL|member|ed_controlcurrent
-id|__u32
+id|__hc32
 id|ed_controlcurrent
 suffix:semicolon
 DECL|member|ed_bulkhead
-id|__u32
+id|__hc32
 id|ed_bulkhead
 suffix:semicolon
 DECL|member|ed_bulkcurrent
-id|__u32
+id|__hc32
 id|ed_bulkcurrent
 suffix:semicolon
 DECL|member|donehead
-id|__u32
+id|__hc32
 id|donehead
 suffix:semicolon
 multiline_comment|/* frame counters (section 7.3) */
 DECL|member|fminterval
-id|__u32
+id|__hc32
 id|fminterval
 suffix:semicolon
 DECL|member|fmremaining
-id|__u32
+id|__hc32
 id|fmremaining
 suffix:semicolon
 DECL|member|fmnumber
-id|__u32
+id|__hc32
 id|fmnumber
 suffix:semicolon
 DECL|member|periodicstart
-id|__u32
+id|__hc32
 id|periodicstart
 suffix:semicolon
 DECL|member|lsthresh
-id|__u32
+id|__hc32
 id|lsthresh
 suffix:semicolon
 multiline_comment|/* Root hub ports (section 7.4) */
@@ -511,21 +524,21 @@ r_struct
 id|ohci_roothub_regs
 (brace
 DECL|member|a
-id|__u32
+id|__hc32
 id|a
 suffix:semicolon
 DECL|member|b
-id|__u32
+id|__hc32
 id|b
 suffix:semicolon
 DECL|member|status
-id|__u32
+id|__hc32
 id|status
 suffix:semicolon
 DECL|macro|MAX_ROOT_PORTS
 mdefine_line|#define MAX_ROOT_PORTS&t;15&t;/* maximum OHCI root hub ports (RH_A_NDP) */
 DECL|member|portstatus
-id|__u32
+id|__hc32
 id|portstatus
 (braket
 id|MAX_ROOT_PORTS
@@ -717,6 +730,13 @@ DECL|struct|ohci_hcd
 r_struct
 id|ohci_hcd
 (brace
+multiline_comment|/*&n;&t; * framework state&n;&t; */
+DECL|member|hcd
+r_struct
+id|usb_hcd
+id|hcd
+suffix:semicolon
+multiline_comment|/* must come first! */
 DECL|member|lock
 id|spinlock_t
 id|lock
@@ -850,17 +870,562 @@ DECL|macro|OHCI_QUIRK_SUPERIO
 mdefine_line|#define&t;OHCI_QUIRK_SUPERIO&t;0x02&t;&t;&t;/* natsemi */
 DECL|macro|OHCI_QUIRK_INITRESET
 mdefine_line|#define&t;OHCI_QUIRK_INITRESET&t;0x04&t;&t;&t;/* SiS, OPTi, ... */
+DECL|macro|OHCI_BIG_ENDIAN
+mdefine_line|#define&t;OHCI_BIG_ENDIAN&t;&t;0x08&t;&t;&t;/* big endian HC */
 singleline_comment|// there are also chip quirks/bugs in init logic
-multiline_comment|/*&n;&t; * framework state&n;&t; */
-DECL|member|hcd
-r_struct
-id|usb_hcd
-id|hcd
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|hcd_to_ohci
 mdefine_line|#define hcd_to_ohci(hcd_ptr) container_of(hcd_ptr, struct ohci_hcd, hcd)
+multiline_comment|/*-------------------------------------------------------------------------*/
+macro_line|#ifndef DEBUG
+DECL|macro|STUB_DEBUG_FILES
+mdefine_line|#define STUB_DEBUG_FILES
+macro_line|#endif&t;/* DEBUG */
+DECL|macro|ohci_dbg
+mdefine_line|#define ohci_dbg(ohci, fmt, args...) &bslash;&n;&t;dev_dbg ((ohci)-&gt;hcd.self.controller , fmt , ## args )
+DECL|macro|ohci_err
+mdefine_line|#define ohci_err(ohci, fmt, args...) &bslash;&n;&t;dev_err ((ohci)-&gt;hcd.self.controller , fmt , ## args )
+DECL|macro|ohci_info
+mdefine_line|#define ohci_info(ohci, fmt, args...) &bslash;&n;&t;dev_info ((ohci)-&gt;hcd.self.controller , fmt , ## args )
+DECL|macro|ohci_warn
+mdefine_line|#define ohci_warn(ohci, fmt, args...) &bslash;&n;&t;dev_warn ((ohci)-&gt;hcd.self.controller , fmt , ## args )
+macro_line|#ifdef OHCI_VERBOSE_DEBUG
+DECL|macro|ohci_vdbg
+macro_line|#&t;define ohci_vdbg ohci_dbg
+macro_line|#else
+DECL|macro|ohci_vdbg
+macro_line|#&t;define ohci_vdbg(ohci, fmt, args...) do { } while (0)
+macro_line|#endif
+multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/*&n; * While most USB host controllers implement their registers and&n; * in-memory communication descriptors in little-endian format,&n; * a minority (notably the IBM STB04XXX and the Motorola MPC5200&n; * processors) implement them in big endian format.&n; *&n; * This attempts to support either format at compile time without a&n; * runtime penalty, or both formats with the additional overhead&n; * of checking a flag bit.&n; */
+macro_line|#ifdef CONFIG_USB_OHCI_BIG_ENDIAN
+macro_line|#ifdef CONFIG_USB_OHCI_LITTLE_ENDIAN
+DECL|macro|big_endian
+mdefine_line|#define big_endian(ohci)&t;(ohci-&gt;flags &amp; OHCI_BIG_ENDIAN) /* either */
+macro_line|#else
+DECL|macro|big_endian
+mdefine_line|#define big_endian(ohci)&t;1&t;&t;/* only big endian */
+macro_line|#endif
+multiline_comment|/*&n; * Big-endian read/write functions are arch-specific.&n; * Other arches can be added if/when they&squot;re needed.&n; */
+macro_line|#if defined(CONFIG_PPC)
+DECL|macro|readl_be
+mdefine_line|#define readl_be(addr)&t;&t;in_be32((__force unsigned *)addr)
+DECL|macro|writel_be
+mdefine_line|#define writel_be(val, addr)&t;out_be32((__force unsigned *)addr, val)
+macro_line|#endif
+DECL|function|ohci_readl
+r_static
+r_inline
+r_int
+r_int
+id|ohci_readl
+(paren
+r_const
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+comma
+id|__hc32
+id|__iomem
+op_star
+id|regs
+)paren
+(brace
+r_return
+id|big_endian
+c_func
+(paren
+id|ohci
+)paren
+ques
+c_cond
+id|readl_be
+(paren
+id|regs
+)paren
+suffix:colon
+id|readl
+(paren
+(paren
+id|__force
+id|u32
+op_star
+)paren
+id|regs
+)paren
+suffix:semicolon
+)brace
+DECL|function|ohci_writel
+r_static
+r_inline
+r_void
+id|ohci_writel
+(paren
+r_const
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+comma
+r_const
+r_int
+r_int
+id|val
+comma
+id|__hc32
+id|__iomem
+op_star
+id|regs
+)paren
+(brace
+id|big_endian
+c_func
+(paren
+id|ohci
+)paren
+ques
+c_cond
+id|writel_be
+(paren
+id|val
+comma
+id|regs
+)paren
+suffix:colon
+id|writel
+(paren
+id|val
+comma
+(paren
+id|__force
+id|u32
+op_star
+)paren
+id|regs
+)paren
+suffix:semicolon
+)brace
+macro_line|#else&t;/* !CONFIG_USB_OHCI_BIG_ENDIAN */
+DECL|macro|big_endian
+mdefine_line|#define big_endian(ohci)&t;0&t;&t;/* only little endian */
+macro_line|#ifdef CONFIG_ARCH_LH7A404
+multiline_comment|/* Marc Singer: at the time this code was written, the LH7A404&n;&t; * had a problem reading the USB host registers.  This&n;&t; * implementation of the ohci_readl function performs the read&n;&t; * twice as a work-around.&n;&t; */
+r_static
+r_inline
+r_int
+r_int
+DECL|function|ohci_readl
+id|ohci_readl
+(paren
+r_const
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+comma
+r_const
+id|__hc32
+op_star
+id|regs
+)paren
+(brace
+op_star
+(paren
+r_volatile
+id|__force
+r_int
+r_int
+op_star
+)paren
+id|regs
+suffix:semicolon
+r_return
+op_star
+(paren
+r_volatile
+id|__force
+r_int
+r_int
+op_star
+)paren
+id|regs
+suffix:semicolon
+)brace
+macro_line|#else
+multiline_comment|/* Standard version of ohci_readl uses standard, platform&n;&t; * specific implementation. */
+r_static
+r_inline
+r_int
+r_int
+DECL|function|ohci_readl
+id|ohci_readl
+(paren
+r_const
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+comma
+id|__hc32
+id|__iomem
+op_star
+id|regs
+)paren
+(brace
+r_return
+id|readl
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+DECL|function|ohci_writel
+r_static
+r_inline
+r_void
+id|ohci_writel
+(paren
+r_const
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+comma
+r_const
+r_int
+r_int
+id|val
+comma
+id|__hc32
+id|__iomem
+op_star
+id|regs
+)paren
+(brace
+id|writel
+(paren
+id|val
+comma
+id|regs
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif&t;/* !CONFIG_USB_OHCI_BIG_ENDIAN */
+multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/* cpu to ohci */
+DECL|function|cpu_to_hc16
+r_static
+r_inline
+id|__hc16
+id|cpu_to_hc16
+(paren
+r_const
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+comma
+r_const
+id|u16
+id|x
+)paren
+(brace
+r_return
+id|big_endian
+c_func
+(paren
+id|ohci
+)paren
+ques
+c_cond
+id|cpu_to_be16
+c_func
+(paren
+id|x
+)paren
+suffix:colon
+id|cpu_to_le16
+c_func
+(paren
+id|x
+)paren
+suffix:semicolon
+)brace
+DECL|function|cpu_to_hc16p
+r_static
+r_inline
+id|__hc16
+id|cpu_to_hc16p
+(paren
+r_const
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+comma
+r_const
+id|u16
+op_star
+id|x
+)paren
+(brace
+r_return
+id|big_endian
+c_func
+(paren
+id|ohci
+)paren
+ques
+c_cond
+id|cpu_to_be16p
+c_func
+(paren
+id|x
+)paren
+suffix:colon
+id|cpu_to_le16p
+c_func
+(paren
+id|x
+)paren
+suffix:semicolon
+)brace
+DECL|function|cpu_to_hc32
+r_static
+r_inline
+id|__hc32
+id|cpu_to_hc32
+(paren
+r_const
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+comma
+r_const
+id|u32
+id|x
+)paren
+(brace
+r_return
+id|big_endian
+c_func
+(paren
+id|ohci
+)paren
+ques
+c_cond
+id|cpu_to_be32
+c_func
+(paren
+id|x
+)paren
+suffix:colon
+id|cpu_to_le32
+c_func
+(paren
+id|x
+)paren
+suffix:semicolon
+)brace
+DECL|function|cpu_to_hc32p
+r_static
+r_inline
+id|__hc32
+id|cpu_to_hc32p
+(paren
+r_const
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+comma
+r_const
+id|u32
+op_star
+id|x
+)paren
+(brace
+r_return
+id|big_endian
+c_func
+(paren
+id|ohci
+)paren
+ques
+c_cond
+id|cpu_to_be32p
+c_func
+(paren
+id|x
+)paren
+suffix:colon
+id|cpu_to_le32p
+c_func
+(paren
+id|x
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* ohci to cpu */
+DECL|function|hc16_to_cpu
+r_static
+r_inline
+id|u16
+id|hc16_to_cpu
+(paren
+r_const
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+comma
+r_const
+id|__hc16
+id|x
+)paren
+(brace
+r_return
+id|big_endian
+c_func
+(paren
+id|ohci
+)paren
+ques
+c_cond
+id|be16_to_cpu
+c_func
+(paren
+id|x
+)paren
+suffix:colon
+id|le16_to_cpu
+c_func
+(paren
+id|x
+)paren
+suffix:semicolon
+)brace
+DECL|function|hc16_to_cpup
+r_static
+r_inline
+id|u16
+id|hc16_to_cpup
+(paren
+r_const
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+comma
+r_const
+id|__hc16
+op_star
+id|x
+)paren
+(brace
+r_return
+id|big_endian
+c_func
+(paren
+id|ohci
+)paren
+ques
+c_cond
+id|be16_to_cpup
+c_func
+(paren
+id|x
+)paren
+suffix:colon
+id|le16_to_cpup
+c_func
+(paren
+id|x
+)paren
+suffix:semicolon
+)brace
+DECL|function|hc32_to_cpu
+r_static
+r_inline
+id|u32
+id|hc32_to_cpu
+(paren
+r_const
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+comma
+r_const
+id|__hc32
+id|x
+)paren
+(brace
+r_return
+id|big_endian
+c_func
+(paren
+id|ohci
+)paren
+ques
+c_cond
+id|be32_to_cpu
+c_func
+(paren
+id|x
+)paren
+suffix:colon
+id|le32_to_cpu
+c_func
+(paren
+id|x
+)paren
+suffix:semicolon
+)brace
+DECL|function|hc32_to_cpup
+r_static
+r_inline
+id|u32
+id|hc32_to_cpup
+(paren
+r_const
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+comma
+r_const
+id|__hc32
+op_star
+id|x
+)paren
+(brace
+r_return
+id|big_endian
+c_func
+(paren
+id|ohci
+)paren
+ques
+c_cond
+id|be32_to_cpup
+c_func
+(paren
+id|x
+)paren
+suffix:colon
+id|le32_to_cpup
+c_func
+(paren
+id|x
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|function|disable
 r_static
@@ -904,8 +1469,10 @@ id|ohci-&gt;fminterval
 op_amp
 l_int|0x0ffff
 suffix:semicolon
-id|writel
+id|ohci_writel
 (paren
+id|ohci
+comma
 (paren
 (paren
 l_int|9
@@ -923,87 +1490,9 @@ id|ohci-&gt;regs-&gt;periodicstart
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#ifndef DEBUG
-DECL|macro|STUB_DEBUG_FILES
-mdefine_line|#define STUB_DEBUG_FILES
-macro_line|#endif&t;/* DEBUG */
-DECL|macro|ohci_dbg
-mdefine_line|#define ohci_dbg(ohci, fmt, args...) &bslash;&n;&t;dev_dbg ((ohci)-&gt;hcd.self.controller , fmt , ## args )
-DECL|macro|ohci_err
-mdefine_line|#define ohci_err(ohci, fmt, args...) &bslash;&n;&t;dev_err ((ohci)-&gt;hcd.self.controller , fmt , ## args )
-DECL|macro|ohci_info
-mdefine_line|#define ohci_info(ohci, fmt, args...) &bslash;&n;&t;dev_info ((ohci)-&gt;hcd.self.controller , fmt , ## args )
-DECL|macro|ohci_warn
-mdefine_line|#define ohci_warn(ohci, fmt, args...) &bslash;&n;&t;dev_warn ((ohci)-&gt;hcd.self.controller , fmt , ## args )
-macro_line|#ifdef OHCI_VERBOSE_DEBUG
-DECL|macro|ohci_vdbg
-macro_line|#&t;define ohci_vdbg ohci_dbg
-macro_line|#else
-DECL|macro|ohci_vdbg
-macro_line|#&t;define ohci_vdbg(ohci, fmt, args...) do { } while (0)
-macro_line|#endif
-multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#ifdef CONFIG_ARCH_LH7A404
-multiline_comment|/* Marc Singer: at the time this code was written, the LH7A404&n;&t; * had a problem reading the USB host registers.  This&n;&t; * implementation of the ohci_readl function performs the read&n;&t; * twice as a work-around.&n;&t; */
-DECL|function|ohci_readl
-r_static
-r_inline
-r_int
-r_int
-id|ohci_readl
-(paren
-r_void
-op_star
-id|regs
-)paren
-(brace
-op_star
-(paren
-r_volatile
-r_int
-r_int
-op_star
-)paren
-id|regs
-suffix:semicolon
-r_return
-op_star
-(paren
-r_volatile
-r_int
-r_int
-op_star
-)paren
-id|regs
-suffix:semicolon
-)brace
-macro_line|#else
-multiline_comment|/* Standard version of ohci_readl uses standard, platform&n;&t; * specific implementation. */
-DECL|function|ohci_readl
-r_static
-r_inline
-r_int
-r_int
-id|ohci_readl
-(paren
-r_void
-id|__iomem
-op_star
-id|regs
-)paren
-(brace
-r_return
-id|readl
-(paren
-id|regs
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* AMD-756 (D2 rev) reports corrupt register contents in some cases.&n; * The erratum (#4) description is incorrect.  AMD&squot;s workaround waits&n; * till some bits (mostly reserved) are clear; ok for all revs.&n; */
 DECL|macro|read_roothub
-mdefine_line|#define read_roothub(hc, register, mask) ({ &bslash;&n;&t;u32 temp = ohci_readl (&amp;hc-&gt;regs-&gt;roothub.register); &bslash;&n;&t;if (temp == -1) &bslash;&n;&t;&t;disable (hc); &bslash;&n;&t;else if (hc-&gt;flags &amp; OHCI_QUIRK_AMD756) &bslash;&n;&t;&t;while (temp &amp; mask) &bslash;&n;&t;&t;&t;temp = ohci_readl (&amp;hc-&gt;regs-&gt;roothub.register); &bslash;&n;&t;temp; })
+mdefine_line|#define read_roothub(hc, register, mask) ({ &bslash;&n;&t;u32 temp = ohci_readl (hc, &amp;hc-&gt;regs-&gt;roothub.register); &bslash;&n;&t;if (temp == -1) &bslash;&n;&t;&t;disable (hc); &bslash;&n;&t;else if (hc-&gt;flags &amp; OHCI_QUIRK_AMD756) &bslash;&n;&t;&t;while (temp &amp; mask) &bslash;&n;&t;&t;&t;temp = ohci_readl (hc, &amp;hc-&gt;regs-&gt;roothub.register); &bslash;&n;&t;temp; })
 DECL|function|roothub_a
 r_static
 id|u32
@@ -1041,6 +1530,8 @@ id|hc
 r_return
 id|ohci_readl
 (paren
+id|hc
+comma
 op_amp
 id|hc-&gt;regs-&gt;roothub.b
 )paren
@@ -1061,6 +1552,8 @@ id|hc
 r_return
 id|ohci_readl
 (paren
+id|hc
+comma
 op_amp
 id|hc-&gt;regs-&gt;roothub.status
 )paren

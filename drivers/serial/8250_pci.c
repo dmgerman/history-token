@@ -9,11 +9,11 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
-macro_line|#include &lt;linux/bitops.h&gt;
-macro_line|#include &lt;linux/8250.h&gt;
 macro_line|#include &lt;linux/8250_pci.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &quot;8250.h&quot;
 multiline_comment|/*&n; * Definitions for PCI support.&n; */
 DECL|macro|FL_BASE_MASK
 mdefine_line|#define FL_BASE_MASK&t;&t;0x0007
@@ -3702,6 +3702,9 @@ comma
 DECL|enumerator|pbn_b1_bt_2_921600
 id|pbn_b1_bt_2_921600
 comma
+DECL|enumerator|pbn_b1_1_1382400
+id|pbn_b1_1_1382400
+comma
 DECL|enumerator|pbn_b1_2_1382400
 id|pbn_b1_2_1382400
 comma
@@ -4561,6 +4564,33 @@ dot
 id|base_baud
 op_assign
 l_int|921600
+comma
+dot
+id|uart_offset
+op_assign
+l_int|8
+comma
+)brace
+comma
+(braket
+id|pbn_b1_1_1382400
+)braket
+op_assign
+(brace
+dot
+id|flags
+op_assign
+id|FL_BASE1
+comma
+dot
+id|num_ports
+op_assign
+l_int|1
+comma
+dot
+id|base_baud
+op_assign
+l_int|1382400
 comma
 dot
 id|uart_offset
@@ -6296,7 +6326,7 @@ id|serial_port.flags
 op_assign
 id|UPF_SKIP_TEST
 op_or
-id|UPF_AUTOPROBE
+id|UPF_BOOT_AUTOCONF
 op_or
 id|UPF_SHARE_IRQ
 suffix:semicolon
@@ -8158,6 +8188,23 @@ comma
 l_int|0
 comma
 id|pbn_b0_bt_1_460800
+)brace
+comma
+multiline_comment|/*&n;&t; * Dell Remote Access Card III - Tim_T_Murphy@Dell.com&n;&t; */
+(brace
+id|PCI_VENDOR_ID_DELL
+comma
+id|PCI_DEVICE_ID_DELL_RACIII
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|pbn_b1_1_1382400
 )brace
 comma
 multiline_comment|/*&n;&t; * RAStel 2 port modem, gerg@moreton.com.au&n;&t; */

@@ -20,8 +20,9 @@ r_void
 id|__raw_writesb
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 comma
 r_const
@@ -38,8 +39,9 @@ r_void
 id|__raw_writesw
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 comma
 r_const
@@ -56,8 +58,9 @@ r_void
 id|__raw_writesl
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 comma
 r_const
@@ -74,8 +77,9 @@ r_void
 id|__raw_readsb
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 comma
 r_void
@@ -91,8 +95,9 @@ r_void
 id|__raw_readsw
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 comma
 r_void
@@ -108,8 +113,9 @@ r_void
 id|__raw_readsl
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 comma
 r_void
@@ -121,17 +127,17 @@ id|longlen
 )paren
 suffix:semicolon
 DECL|macro|__raw_writeb
-mdefine_line|#define __raw_writeb(v,a)&t;(*(volatile unsigned char  *)(a) = (v))
+mdefine_line|#define __raw_writeb(v,a)&t;(*(volatile unsigned char __force  *)(a) = (v))
 DECL|macro|__raw_writew
-mdefine_line|#define __raw_writew(v,a)&t;(*(volatile unsigned short *)(a) = (v))
+mdefine_line|#define __raw_writew(v,a)&t;(*(volatile unsigned short __force *)(a) = (v))
 DECL|macro|__raw_writel
-mdefine_line|#define __raw_writel(v,a)&t;(*(volatile unsigned int   *)(a) = (v))
+mdefine_line|#define __raw_writel(v,a)&t;(*(volatile unsigned int __force   *)(a) = (v))
 DECL|macro|__raw_readb
-mdefine_line|#define __raw_readb(a)&t;&t;(*(volatile unsigned char  *)(a))
+mdefine_line|#define __raw_readb(a)&t;&t;(*(volatile unsigned char __force  *)(a))
 DECL|macro|__raw_readw
-mdefine_line|#define __raw_readw(a)&t;&t;(*(volatile unsigned short *)(a))
+mdefine_line|#define __raw_readw(a)&t;&t;(*(volatile unsigned short __force *)(a))
 DECL|macro|__raw_readl
-mdefine_line|#define __raw_readl(a)&t;&t;(*(volatile unsigned int   *)(a))
+mdefine_line|#define __raw_readl(a)&t;&t;(*(volatile unsigned int __force   *)(a))
 multiline_comment|/*&n; * Bad read/write accesses...&n; */
 r_extern
 r_void
@@ -266,11 +272,11 @@ mdefine_line|#define readw_relaxed(addr) readw(addr)
 DECL|macro|readl_relaxed
 mdefine_line|#define readl_relaxed(addr) readl(addr)
 DECL|macro|readsb
-mdefine_line|#define readsb(p,d,l)&t;&t;__raw_readsb((unsigned int)__mem_pci(p),d,l)
+mdefine_line|#define readsb(p,d,l)&t;&t;__raw_readsb(__mem_pci(p),d,l)
 DECL|macro|readsw
-mdefine_line|#define readsw(p,d,l)&t;&t;__raw_readsw((unsigned int)__mem_pci(p),d,l)
+mdefine_line|#define readsw(p,d,l)&t;&t;__raw_readsw(__mem_pci(p),d,l)
 DECL|macro|readsl
-mdefine_line|#define readsl(p,d,l)&t;&t;__raw_readsl((unsigned int)__mem_pci(p),d,l)
+mdefine_line|#define readsl(p,d,l)&t;&t;__raw_readsl(__mem_pci(p),d,l)
 DECL|macro|writeb
 mdefine_line|#define writeb(v,c)&t;&t;__raw_writeb(v,__mem_pci(c))
 DECL|macro|writew
@@ -278,11 +284,11 @@ mdefine_line|#define writew(v,c)&t;&t;__raw_writew(cpu_to_le16(v),__mem_pci(c))
 DECL|macro|writel
 mdefine_line|#define writel(v,c)&t;&t;__raw_writel(cpu_to_le32(v),__mem_pci(c))
 DECL|macro|writesb
-mdefine_line|#define writesb(p,d,l)&t;&t;__raw_writesb((unsigned int)__mem_pci(p),d,l)
+mdefine_line|#define writesb(p,d,l)&t;&t;__raw_writesb(__mem_pci(p),d,l)
 DECL|macro|writesw
-mdefine_line|#define writesw(p,d,l)&t;&t;__raw_writesw((unsigned int)__mem_pci(p),d,l)
+mdefine_line|#define writesw(p,d,l)&t;&t;__raw_writesw(__mem_pci(p),d,l)
 DECL|macro|writesl
-mdefine_line|#define writesl(p,d,l)&t;&t;__raw_writesl((unsigned int)__mem_pci(p),d,l)
+mdefine_line|#define writesl(p,d,l)&t;&t;__raw_writesl(__mem_pci(p),d,l)
 DECL|macro|memset_io
 mdefine_line|#define memset_io(c,v,l)&t;_memset_io(__mem_pci(c),(v),(l))
 DECL|macro|memcpy_fromio
@@ -496,6 +502,7 @@ macro_line|#endif&t;/* __mem_isa */
 multiline_comment|/*&n; * ioremap and friends.&n; *&n; * ioremap takes a PCI memory address, as specified in&n; * Documentation/IO-mapping.txt.&n; */
 r_extern
 r_void
+id|__iomem
 op_star
 id|__ioremap
 c_func
@@ -518,6 +525,7 @@ id|__iounmap
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren

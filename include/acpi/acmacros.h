@@ -431,7 +431,7 @@ DECL|macro|_VERBOSE_STRUCTURES
 mdefine_line|#define _VERBOSE_STRUCTURES
 multiline_comment|/* Stack and buffer dumping */
 DECL|macro|ACPI_DUMP_STACK_ENTRY
-mdefine_line|#define ACPI_DUMP_STACK_ENTRY(a)        acpi_ex_dump_operand(a)
+mdefine_line|#define ACPI_DUMP_STACK_ENTRY(a)        acpi_ex_dump_operand((a),0)
 DECL|macro|ACPI_DUMP_OPERANDS
 mdefine_line|#define ACPI_DUMP_OPERANDS(a,b,c,d,e)   acpi_ex_dump_operands(a,b,c,d,e,_THIS_MODULE,__LINE__)
 DECL|macro|ACPI_DUMP_ENTRY

@@ -526,6 +526,7 @@ id|hcd
 )paren
 suffix:semicolon
 multiline_comment|/* memory lifecycle */
+multiline_comment|/* Note: The absence of hcd_free reflects a temporary situation;&n;&t; * in the near future hcd_alloc will disappear as well and all&n;&t; * allocations/deallocations will be handled by usbcore.  For the&n;&t; * moment, drivers are required to return a pointer that the core&n;&t; * can pass to kfree, i.e., the struct usb_hcd must be the _first_&n;&t; * member of a larger driver-specific structure. */
 DECL|member|hcd_alloc
 r_struct
 id|usb_hcd
@@ -536,19 +537,6 @@ id|hcd_alloc
 )paren
 (paren
 r_void
-)paren
-suffix:semicolon
-DECL|member|hcd_free
-r_void
-(paren
-op_star
-id|hcd_free
-)paren
-(paren
-r_struct
-id|usb_hcd
-op_star
-id|hcd
 )paren
 suffix:semicolon
 multiline_comment|/* manage i/o requests, device state */
@@ -729,21 +717,6 @@ r_struct
 id|usb_bus
 op_star
 id|bus
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|usb_rh_status_dequeue
-(paren
-r_struct
-id|usb_hcd
-op_star
-id|hcd
-comma
-r_struct
-id|urb
-op_star
-id|urb
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
@@ -1181,6 +1154,15 @@ id|hcd-&gt;self.controller
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|usb_hcd_release
+(paren
+r_struct
+id|usb_bus
+op_star
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|usb_set_device_state

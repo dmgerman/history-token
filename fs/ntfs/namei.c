@@ -199,6 +199,12 @@ multiline_comment|/* Consistency check. */
 r_if
 c_cond
 (paren
+id|is_bad_inode
+c_func
+(paren
+id|dent_inode
+)paren
+op_logical_or
 id|MSEQNO
 c_func
 (paren
@@ -229,7 +235,7 @@ id|name
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Done.&quot;
+l_string|&quot;Done.  (Case 1.)&quot;
 )paren
 suffix:semicolon
 r_return
@@ -242,7 +248,7 @@ id|dent
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t;&t; * We are too indented. Handle imperfect&n;&t;&t;&t;&t; * matches and short file names further below.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * We are too indented.  Handle imperfect&n;&t;&t;&t;&t; * matches and short file names further below.&n;&t;&t;&t;&t; */
 r_goto
 id|handle_name
 suffix:semicolon
@@ -445,6 +451,12 @@ id|FILE_NAME_DOS
 )paren
 (brace
 multiline_comment|/* Case 2. */
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Case 2.&quot;
+)paren
+suffix:semicolon
 id|nls_name.len
 op_assign
 (paren
@@ -490,6 +502,12 @@ multiline_comment|/* Case 3. */
 id|FILE_NAME_ATTR
 op_star
 id|fn
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Case 3.&quot;
+)paren
 suffix:semicolon
 id|kfree
 c_func
@@ -905,6 +923,12 @@ id|new_dent
 op_assign
 id|real_dent
 suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Done.  (Created new dentry.)&quot;
+)paren
+suffix:semicolon
 r_return
 id|new_dent
 suffix:semicolon
@@ -922,19 +946,53 @@ c_cond
 id|real_dent-&gt;d_inode
 )paren
 (brace
-id|BUG_ON
+r_if
+c_cond
+(paren
+id|unlikely
 c_func
 (paren
 id|real_dent-&gt;d_inode
 op_ne
 id|dent_inode
 )paren
+)paren
+(brace
+multiline_comment|/* This can happen because bad inodes are unhashed. */
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|is_bad_inode
+c_func
+(paren
+id|dent_inode
+)paren
+)paren
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|is_bad_inode
+c_func
+(paren
+id|real_dent-&gt;d_inode
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Already have the inode and the dentry attached, decrement&n;&t;&t; * the reference count to balance the ntfs_iget() we did&n;&t;&t; * earlier on.  We found the dentry using d_lookup() so it&n;&t;&t; * cannot be disconnected and thus we do not need to worry&n;&t;&t; * about any NFS/disconnectedness issues here.&n;&t;&t; */
 id|iput
 c_func
 (paren
 id|dent_inode
+)paren
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Done.  (Already had inode and dentry.)&quot;
 )paren
 suffix:semicolon
 r_return
@@ -960,6 +1018,12 @@ c_func
 id|real_dent
 comma
 id|dent_inode
+)paren
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Done.  (Already had negative file dentry.)&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1012,6 +1076,12 @@ c_func
 id|real_dent
 comma
 id|dent_inode
+)paren
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Done.  (Already had negative directory dentry.)&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1078,6 +1148,13 @@ id|real_dent
 )paren
 suffix:semicolon
 multiline_comment|/* Use new_dent as the actual dentry. */
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Done.  (Already had negative, disconnected directory &quot;
+l_string|&quot;dentry.)&quot;
+)paren
+suffix:semicolon
 r_return
 id|new_dent
 suffix:semicolon
@@ -1124,6 +1201,16 @@ id|iput
 c_func
 (paren
 id|dent_inode
+)paren
+suffix:semicolon
+id|ntfs_error
+c_func
+(paren
+id|vol-&gt;sb
+comma
+l_string|&quot;Failed, returning error code %i.&quot;
+comma
+id|err
 )paren
 suffix:semicolon
 r_return

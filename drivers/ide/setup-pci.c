@@ -470,13 +470,7 @@ macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_FORCED */
 r_if
 c_cond
 (paren
-(paren
 id|hwif-&gt;mmio
-)paren
-op_logical_and
-(paren
-id|hwif-&gt;dma_base
-)paren
 )paren
 r_return
 id|hwif-&gt;dma_base
@@ -507,27 +501,12 @@ r_else
 (brace
 id|dma_base
 op_assign
-(paren
-id|hwif-&gt;mmio
-)paren
-ques
-c_cond
-(paren
-(paren
-r_int
-r_int
-)paren
-id|hwif-&gt;hwif_data
-)paren
-suffix:colon
-(paren
 id|pci_resource_start
 c_func
 (paren
 id|dev
 comma
 l_int|4
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -541,16 +520,10 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: dma_base is invalid (0x%04lx)&bslash;n&quot;
+l_string|&quot;%s: dma_base is invalid&bslash;n&quot;
 comma
 id|hwif-&gt;cds-&gt;name
-comma
-id|dma_base
 )paren
-suffix:semicolon
-id|dma_base
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -763,46 +736,7 @@ l_int|0x80
 )paren
 (brace
 multiline_comment|/* simplex device? */
-macro_line|#if 0&t;&t;&t;&t;&t;
 multiline_comment|/*&n; *&t;At this point we haven&squot;t probed the drives so we can&squot;t make the&n; *&t;appropriate decision. Really we should defer this problem&n; *&t;until we tune the drive then try to grab DMA ownership if we want&n; *&t;to be the DMA end. This has to be become dynamic to handle hot&n; *&t;plug.&n; */
-multiline_comment|/* Don&squot;t enable DMA on a simplex channel with no drives */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hwif-&gt;drives
-(braket
-l_int|0
-)braket
-dot
-id|present
-op_logical_and
-op_logical_neg
-id|hwif-&gt;drives
-(braket
-l_int|1
-)braket
-dot
-id|present
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: simplex device with no drives: DMA disabled&bslash;n&quot;
-comma
-id|hwif-&gt;cds-&gt;name
-)paren
-suffix:semicolon
-id|dma_base
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* If our other channel has DMA then we cannot */
-r_else
-macro_line|#endif&t;&t;&t;&t;&t;
 r_if
 c_cond
 (paren
@@ -1624,24 +1558,11 @@ id|PCI_COMMAND_MASTER
 )paren
 (brace
 multiline_comment|/*&n; &t;&t;&t; * Set up BM-DMA capability&n;&t;&t;&t; * (PnP BIOS should have done this)&n; &t;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|d-&gt;flags
-op_amp
-id|IDEPCI_FLAG_FORCE_MASTER
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t; * default DMA off if we had to&n;&t;&t;&t;&t; * configure it here&n;&t;&t;&t;&t; */
+multiline_comment|/* default DMA off if we had to configure it here */
 id|hwif-&gt;autodma
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 id|pci_set_master
 c_func
 (paren
@@ -1741,6 +1662,9 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#ifndef CONFIG_IDEDMA_PCI_AUTO
+macro_line|#warning CONFIG_IDEDMA_PCI_AUTO=n support is obsolete, and will be removed soon.
+macro_line|#endif
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PCI*/
 multiline_comment|/**&n; *&t;ide_setup_pci_controller&t;-&t;set up IDE PCI&n; *&t;@dev: PCI device&n; *&t;@d: IDE PCI data&n; *&t;@noisy: verbose flag&n; *&t;@config: returned as 1 if we configured the hardware&n; *&n; *&t;Set up the PCI and controller side of the IDE interface. This brings&n; *&t;up the PCI side of the device, checks that the device is enabled&n; *&t;and enables it if need be&n; */
 DECL|function|ide_setup_pci_controller
@@ -1766,26 +1690,11 @@ op_star
 id|config
 )paren
 (brace
-r_int
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
 id|u32
 id|class_rev
 suffix:semicolon
 id|u16
 id|pcicmd
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|noautodma
-)paren
-id|ret
-op_assign
-l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -1871,11 +1780,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-multiline_comment|/* default DMA off if we had to configure it here */
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
 op_star
 id|config
 op_assign
@@ -1923,10 +1827,10 @@ id|class_rev
 )paren
 suffix:semicolon
 r_return
-id|ret
+l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ide_pci_setup_ports&t;-&t;configure ports/devices on PCI IDE&n; *&t;@dev: PCI device&n; *&t;@d: IDE pci device info&n; *&t;@autodma: Should we enable DMA&n; *&t;@pciirq: IRQ line&n; *&t;@index: ata index to update&n; *&n; *&t;Scan the interfaces attached to this device and do any&n; *&t;necessary per port setup. Attach the devices and ask the&n; *&t;generic DMA layer to do its work for us.&n; *&n; *&t;Normally called automaticall from do_ide_pci_setup_device,&n; *&t;but is also used directly as a helper function by some controllers&n; *&t;where the chipset setup is not the default PCI IDE one.&n; */
+multiline_comment|/**&n; *&t;ide_pci_setup_ports&t;-&t;configure ports/devices on PCI IDE&n; *&t;@dev: PCI device&n; *&t;@d: IDE pci device info&n; *&t;@pciirq: IRQ line&n; *&t;@index: ata index to update&n; *&n; *&t;Scan the interfaces attached to this device and do any&n; *&t;necessary per port setup. Attach the devices and ask the&n; *&t;generic DMA layer to do its work for us.&n; *&n; *&t;Normally called automaticall from do_ide_pci_setup_device,&n; *&t;but is also used directly as a helper function by some controllers&n; *&t;where the chipset setup is not the default PCI IDE one.&n; */
 DECL|function|ide_pci_setup_ports
 r_void
 id|ide_pci_setup_ports
@@ -1940,9 +1844,6 @@ comma
 id|ide_pci_device_t
 op_star
 id|d
-comma
-r_int
-id|autodma
 comma
 r_int
 id|pciirq
@@ -2151,26 +2052,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|d-&gt;autodma
-op_eq
-id|NOAUTODMA
-)paren
-id|autodma
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|autodma
-)paren
-id|hwif-&gt;autodma
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|d-&gt;init_setup_dma
 )paren
 (brace
@@ -2266,11 +2147,6 @@ id|noisy
 )paren
 (brace
 r_int
-id|autodma
-op_assign
-l_int|0
-suffix:semicolon
-r_int
 id|pciirq
 op_assign
 l_int|0
@@ -2303,9 +2179,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|autodma
-op_assign
 id|ide_setup_pci_controller
 c_func
 (paren
@@ -2318,15 +2191,12 @@ comma
 op_amp
 id|tried_config
 )paren
-)paren
 OL
 l_int|0
 )paren
-(brace
 r_return
 id|index
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Can we trust the reported IRQ?&n;&t; */
 id|pciirq
 op_assign
@@ -2532,8 +2402,6 @@ id|dev
 comma
 id|d
 comma
-id|autodma
-comma
 id|pciirq
 comma
 op_amp
@@ -2582,7 +2450,7 @@ l_int|0xf0
 op_ne
 l_int|0xf0
 )paren
-id|probe_hwif_init
+id|probe_hwif_init_with_fixup
 c_func
 (paren
 op_amp
@@ -2590,6 +2458,8 @@ id|ide_hwifs
 (braket
 id|index_list.b.low
 )braket
+comma
+id|d-&gt;fixup
 )paren
 suffix:semicolon
 r_if
@@ -2603,7 +2473,7 @@ l_int|0xf0
 op_ne
 l_int|0xf0
 )paren
-id|probe_hwif_init
+id|probe_hwif_init_with_fixup
 c_func
 (paren
 op_amp
@@ -2611,6 +2481,8 @@ id|ide_hwifs
 (braket
 id|index_list.b.high
 )braket
+comma
+id|d-&gt;fixup
 )paren
 suffix:semicolon
 id|create_proc_ide_interfaces

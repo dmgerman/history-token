@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/gpio.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 GPIO support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog&n; *&t;13-Sep-2004  BJD  Implemented change of MISCCR&n; *&t;14-Sep-2004  BJD  Added getpin call&n; *&t;14-Sep-2004  BJD  Fixed bug in setpin() call&n; *&t;30-Sep-2004  BJD  Fixed cfgpin() mask bug&n; *&t;01-Oct-2004  BJD  Added getcfg() to get pin configuration&n; *&t;01-Oct-2004  BJD  Fixed mask bug in pullup() call&n; *&t;01-Oct-2004  BJD  Added getirq() to turn pin into irqno&n; *&t;04-Oct-2004  BJD  Added irq filter controls for GPIO&n; */
+multiline_comment|/* linux/arch/arm/mach-s3c2410/gpio.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 GPIO support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog&n; *&t;13-Sep-2004  BJD  Implemented change of MISCCR&n; *&t;14-Sep-2004  BJD  Added getpin call&n; *&t;14-Sep-2004  BJD  Fixed bug in setpin() call&n; *&t;30-Sep-2004  BJD  Fixed cfgpin() mask bug&n; *&t;01-Oct-2004  BJD  Added getcfg() to get pin configuration&n; *&t;01-Oct-2004  BJD  Fixed mask bug in pullup() call&n; *&t;01-Oct-2004  BJD  Added getirq() to turn pin into irqno&n; *&t;04-Oct-2004  BJD  Added irq filter controls for GPIO&n; *&t;05-Nov-2004  BJD  EXPORT_SYMBOL() added for all code&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -119,6 +119,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|s3c2410_gpio_cfgpin
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|s3c2410_gpio_cfgpin
+)paren
+suffix:semicolon
 DECL|function|s3c2410_gpio_getcfg
 r_int
 r_int
@@ -188,6 +195,13 @@ op_amp
 id|mask
 suffix:semicolon
 )brace
+DECL|variable|s3c2410_gpio_getcfg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|s3c2410_gpio_getcfg
+)paren
+suffix:semicolon
 DECL|function|s3c2410_gpio_pullup
 r_void
 id|s3c2410_gpio_pullup
@@ -287,6 +301,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|s3c2410_gpio_pullup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|s3c2410_gpio_pullup
+)paren
+suffix:semicolon
 DECL|function|s3c2410_gpio_setpin
 r_void
 id|s3c2410_gpio_setpin
@@ -377,6 +398,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|s3c2410_gpio_setpin
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|s3c2410_gpio_setpin
+)paren
+suffix:semicolon
 DECL|function|s3c2410_gpio_getpin
 r_int
 r_int
@@ -424,6 +452,13 @@ id|offs
 )paren
 suffix:semicolon
 )brace
+DECL|variable|s3c2410_gpio_getpin
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|s3c2410_gpio_getpin
+)paren
+suffix:semicolon
 DECL|function|s3c2410_modify_misccr
 r_int
 r_int
@@ -488,6 +523,13 @@ r_return
 id|misccr
 suffix:semicolon
 )brace
+DECL|variable|s3c2410_modify_misccr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|s3c2410_modify_misccr
+)paren
+suffix:semicolon
 DECL|function|s3c2410_gpio_getirq
 r_int
 id|s3c2410_gpio_getirq
@@ -564,6 +606,13 @@ op_plus
 id|IRQ_EINT8
 suffix:semicolon
 )brace
+DECL|variable|s3c2410_gpio_getirq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|s3c2410_gpio_getirq
+)paren
+suffix:semicolon
 DECL|function|s3c2410_gpio_irqfilter
 r_int
 id|s3c2410_gpio_irqfilter
@@ -734,4 +783,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|s3c2410_gpio_irqfilter
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|s3c2410_gpio_irqfilter
+)paren
+suffix:semicolon
 eof

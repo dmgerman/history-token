@@ -13,7 +13,7 @@ l_string|&quot;exdump&quot;
 )paren
 multiline_comment|/*&n; * The following routines are used for debug output only&n; */
 macro_line|#if defined(ACPI_DEBUG_OUTPUT) || defined(ACPI_DEBUGGER)
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ex_dump_operand&n; *&n; * PARAMETERS:  *obj_desc         - Pointer to entry to be dumped&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Dump an operand object&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ex_dump_operand&n; *&n; * PARAMETERS:  *obj_desc         - Pointer to entry to be dumped&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Dump an operand object&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ex_dump_operand
 id|acpi_ex_dump_operand
@@ -22,25 +22,16 @@ r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
+comma
+id|u32
+id|depth
 )paren
 (brace
-id|u8
-op_star
-id|buf
-op_assign
-l_int|NULL
-suffix:semicolon
 id|u32
 id|length
 suffix:semicolon
-r_union
-id|acpi_operand_object
-op_star
-op_star
-id|element
-suffix:semicolon
-id|u16
-id|element_index
+id|u32
+id|index
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
@@ -75,10 +66,14 @@ op_logical_neg
 id|obj_desc
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * This usually indicates that something serious is wrong&n;&t;&t; */
-id|acpi_os_printf
+multiline_comment|/*&n;&t;&t; * This could be a null element of a package&n;&t;&t; */
+id|ACPI_DEBUG_PRINT
 (paren
+(paren
+id|ACPI_DB_EXEC
+comma
 l_string|&quot;Null Object Descriptor&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -158,7 +153,31 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* obj_desc is a valid object */
-id|ACPI_DEBUG_PRINT
+r_if
+c_cond
+(paren
+id|depth
+OG
+l_int|0
+)paren
+(brace
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;%*s[%u] &quot;
+comma
+id|depth
+comma
+l_string|&quot; &quot;
+comma
+id|depth
+)paren
+)paren
+suffix:semicolon
+)brace
+id|ACPI_DEBUG_PRINT_RAW
 (paren
 (paren
 id|ACPI_DB_EXEC
@@ -395,23 +414,26 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|buf
+id|index
 op_assign
-id|obj_desc-&gt;buffer.pointer
+l_int|0
 suffix:semicolon
+id|index
+OL
 id|length
-op_decrement
 suffix:semicolon
+id|index
 op_increment
-id|buf
 )paren
 (brace
 id|acpi_os_printf
 (paren
 l_string|&quot; %02x&quot;
 comma
-op_star
-id|buf
+id|obj_desc-&gt;buffer.pointer
+(braket
+id|index
+)braket
 )paren
 suffix:semicolon
 )brace
@@ -443,14 +465,14 @@ id|ACPI_TYPE_PACKAGE
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;Package count %X @ %p&bslash;n&quot;
+l_string|&quot;Package [Len %X] element_array %p&bslash;n&quot;
 comma
 id|obj_desc-&gt;package.count
 comma
 id|obj_desc-&gt;package.elements
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If elements exist, package vector pointer is valid,&n;&t;&t; * and debug_level exceeds 1, dump package&squot;s elements.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If elements exist, package element pointer is valid,&n;&t;&t; * and debug_level exceeds 1, dump package&squot;s elements.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -466,38 +488,32 @@ l_int|1
 r_for
 c_loop
 (paren
-id|element_index
+id|index
 op_assign
 l_int|0
-comma
-id|element
-op_assign
-id|obj_desc-&gt;package.elements
 suffix:semicolon
-id|element_index
+id|index
 OL
 id|obj_desc-&gt;package.count
 suffix:semicolon
+id|index
 op_increment
-id|element_index
-comma
-op_increment
-id|element
 )paren
 (brace
 id|acpi_ex_dump_operand
 (paren
-op_star
-id|element
+id|obj_desc-&gt;package.elements
+(braket
+id|index
+)braket
+comma
+id|depth
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 )brace
 )brace
-id|acpi_os_printf
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -610,9 +626,13 @@ comma
 id|obj_desc-&gt;field.start_field_bit_offset
 )paren
 suffix:semicolon
-id|ACPI_DUMP_STACK_ENTRY
+id|acpi_ex_dump_operand
 (paren
 id|obj_desc-&gt;field.region_obj
+comma
+id|depth
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 r_break
@@ -678,9 +698,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|ACPI_DUMP_STACK_ENTRY
+id|acpi_ex_dump_operand
 (paren
 id|obj_desc-&gt;buffer_field.buffer_obj
+comma
+id|depth
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -817,12 +841,6 @@ id|line_number
 id|acpi_native_uint
 id|i
 suffix:semicolon
-r_union
-id|acpi_operand_object
-op_star
-op_star
-id|obj_desc
-suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;ex_dump_operands&quot;
@@ -897,18 +915,14 @@ id|num_levels
 op_decrement
 )paren
 (brace
-id|obj_desc
-op_assign
-op_amp
+id|acpi_ex_dump_operand
+(paren
 id|operands
 (braket
 id|i
 )braket
-suffix:semicolon
-id|acpi_ex_dump_operand
-(paren
-op_star
-id|obj_desc
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1036,7 +1050,7 @@ id|value
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ex_dump_node&n; *&n; * PARAMETERS:  *Node           - Descriptor to dump&n; *              Flags               - Force display&n; *&n; * DESCRIPTION: Dumps the members of the given.Node&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ex_dump_node&n; *&n; * PARAMETERS:  *Node               - Descriptor to dump&n; *              Flags               - Force display&n; *&n; * DESCRIPTION: Dumps the members of the given.Node&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ex_dump_node
 id|acpi_ex_dump_node

@@ -1487,7 +1487,7 @@ mdefine_line|#define ext2_test_bit(nr, addr) test_bit((nr), (addr))
 DECL|macro|ext2_find_first_zero_bit
 mdefine_line|#define ext2_find_first_zero_bit(addr, size) find_first_zero_bit((addr), (size))
 DECL|macro|ext2_find_next_zero_bit
-mdefine_line|#define ext2_find_next_zero_bit(addr, size, offset) &bslash;&n;                find_next_zero_bit((addr), (size), (offset))
+mdefine_line|#define ext2_find_next_zero_bit(addr, size, offset) &bslash;&n;                find_next_zero_bit((unsigned long *)(addr), (size), (offset))
 macro_line|#else
 DECL|function|ext2_set_bit
 r_static

@@ -1235,11 +1235,6 @@ id|bootable
 op_assign
 id|ON_BOARD
 comma
-dot
-id|flags
-op_assign
-id|IDEPCI_FLAG_FORCE_MASTER
-comma
 )brace
 suffix:semicolon
 DECL|function|cs5530_init_one

@@ -990,6 +990,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_struct
+id|desc_ptr
+id|idt_descr
+suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif
 eof

@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *&t;Video for Linux Two&n; *&n; *&t;A generic video device interface for the LINUX operating system&n; *&t;using a set of device structures/vectors for low level operations.&n; *&n; *&t;This file replaces the videodev.c file that comes with the&n; *&t;regular kernel distribution.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; * Author:&t;Bill Dirks &lt;bdirks@pacbell.net&gt;&n; *&t;&t;based on code by Alan Cox, &lt;alan@cymru.net&gt;&n; *&n; */
 multiline_comment|/*&n; * Video capture interface for Linux&n; *&n; *&t;A generic video device interface for the LINUX operating system&n; *&t;using a set of device structures/vectors for low level operations.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Author:&t;Alan Cox, &lt;alan@redhat.com&gt;&n; *&n; * Fixes:&n; */
-multiline_comment|/*&n; * Video4linux 1/2 integration by Justin Schoeman&n; * &lt;justin@suntiger.ee.up.ac.za&gt;&n; * 2.4 PROCFS support ported from 2.4 kernels by &n; *  I&#xfffd;aki Garc&#xfffd;a Etxebarria &lt;garetxe@euskalnet.net&gt;&n; * Makefile fix by &quot;W. Michael Petullo&quot; &lt;mike@flyn.org&gt;&n; * 2.4 devfs support ported from 2.4 kernels by&n; *  Dan Merillat &lt;dan@merillat.org&gt;&n; * Added Gerd Knorrs v4l1 enhancements (Justin Schoeman)&n; */
+multiline_comment|/*&n; * Video4linux 1/2 integration by Justin Schoeman&n; * &lt;justin@suntiger.ee.up.ac.za&gt;&n; * 2.4 PROCFS support ported from 2.4 kernels by&n; *  I&#xfffd;aki Garc&#xfffd;a Etxebarria &lt;garetxe@euskalnet.net&gt;&n; * Makefile fix by &quot;W. Michael Petullo&quot; &lt;mike@flyn.org&gt;&n; * 2.4 devfs support ported from 2.4 kernels by&n; *  Dan Merillat &lt;dan@merillat.org&gt;&n; * Added Gerd Knorrs v4l1 enhancements (Justin Schoeman)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -42,7 +42,7 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 multiline_comment|/*&n; *&n; *&t;V 4 L 2   D R I V E R   H E L P E R   A P I&n; *&n; */
 multiline_comment|/*&n; *  Video Standard Operations (contributed by Michael Schimek)&n; */
-multiline_comment|/* This is the recommended method to deal with the framerate fields. More &n;   sophisticated drivers will access the fields directly. */
+multiline_comment|/* This is the recommended method to deal with the framerate fields. More&n;   sophisticated drivers will access the fields directly. */
 r_int
 r_int
 DECL|function|v4l2_video_std_fps

@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    mxb.c - v4l2 driver for the Multimedia eXtension Board&n;    &n;    Copyright (C) 1998-2003 Michael Hunold &lt;michael@mihu.de&gt;&n;&n;    Visit http://www.mihu.de/linux/saa7146/mxb/&n;    for further details about this card.&n;    &n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    mxb - v4l2 driver for the Multimedia eXtension Board&n;    &n;    Copyright (C) 1998-2003 Michael Hunold &lt;michael@mihu.de&gt;&n;&n;    Visit http://www.mihu.de/linux/saa7146/mxb/&n;    for further details about this card.&n;    &n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 DECL|macro|DEBUG_VARIABLE
 mdefine_line|#define DEBUG_VARIABLE debug
 macro_line|#include &lt;media/saa7146_vv.h&gt;
@@ -28,12 +28,14 @@ id|freq
 op_assign
 l_int|4148
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|freq
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -51,12 +53,14 @@ id|debug
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -64,7 +68,7 @@ c_func
 (paren
 id|debug
 comma
-l_string|&quot;debug verbosity&quot;
+l_string|&quot;Turn on/off device debugging (default:off).&quot;
 )paren
 suffix:semicolon
 DECL|macro|MXB_INPUTS

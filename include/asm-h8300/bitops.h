@@ -2,7 +2,6 @@ macro_line|#ifndef _H8300_BITOPS_H
 DECL|macro|_H8300_BITOPS_H
 mdefine_line|#define _H8300_BITOPS_H
 multiline_comment|/*&n; * Copyright 1992, Linus Torvalds.&n; * Copyright 2002, Yoshinori Sato&n; */
-macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;&t;/* swab32 */
@@ -191,6 +190,8 @@ DECL|macro|H8300_GEN_TEST_BITOP
 macro_line|#undef H8300_GEN_TEST_BITOP
 DECL|macro|find_first_zero_bit
 mdefine_line|#define find_first_zero_bit(addr, size) &bslash;&n;&t;find_next_zero_bit((addr), (size), 0)
+DECL|macro|ffs
+mdefine_line|#define ffs(x) generic_ffs(x)
 DECL|function|__ffs
 r_static
 id|__inline__
@@ -241,10 +242,6 @@ r_return
 id|result
 suffix:semicolon
 )brace
-DECL|macro|ffs
-mdefine_line|#define ffs(x) generic_ffs(x)
-DECL|macro|fls
-mdefine_line|#define fls(x) generic_fls(x)
 DECL|function|find_next_zero_bit
 r_static
 id|__inline__
@@ -1267,5 +1264,7 @@ mdefine_line|#define minix_test_bit(nr,addr) test_bit(nr,addr)
 DECL|macro|minix_find_first_zero_bit
 mdefine_line|#define minix_find_first_zero_bit(addr,size) find_first_zero_bit(addr,size)
 macro_line|#endif /* __KERNEL__ */
+DECL|macro|fls
+mdefine_line|#define fls(x) generic_fls(x)
 macro_line|#endif /* _H8300_BITOPS_H */
 eof

@@ -478,63 +478,44 @@ id|pm_power_off
 r_void
 )paren
 suffix:semicolon
-r_enum
-(brace
-DECL|enumerator|PM_SUSPEND_ON
-id|PM_SUSPEND_ON
-op_assign
-l_int|0
-comma
-DECL|enumerator|PM_SUSPEND_STANDBY
-id|PM_SUSPEND_STANDBY
-op_assign
-l_int|1
-comma
-multiline_comment|/* NOTE: PM_SUSPEND_MEM == PCI_D3hot */
-DECL|enumerator|PM_SUSPEND_MEM
-id|PM_SUSPEND_MEM
-op_assign
-l_int|3
-comma
-DECL|enumerator|PM_SUSPEND_DISK
-id|PM_SUSPEND_DISK
-op_assign
-l_int|4
-comma
-DECL|enumerator|PM_SUSPEND_MAX
-id|PM_SUSPEND_MAX
-op_assign
-l_int|5
-comma
-)brace
+DECL|typedef|suspend_state_t
+r_typedef
+r_int
+id|__bitwise
+id|suspend_state_t
 suffix:semicolon
-r_enum
-(brace
-DECL|enumerator|PM_DISK_FIRMWARE
-id|PM_DISK_FIRMWARE
-op_assign
-l_int|1
-comma
-DECL|enumerator|PM_DISK_PLATFORM
-id|PM_DISK_PLATFORM
-comma
-DECL|enumerator|PM_DISK_SHUTDOWN
-id|PM_DISK_SHUTDOWN
-comma
-DECL|enumerator|PM_DISK_REBOOT
-id|PM_DISK_REBOOT
-comma
-DECL|enumerator|PM_DISK_MAX
-id|PM_DISK_MAX
-comma
-)brace
+DECL|macro|PM_SUSPEND_ON
+mdefine_line|#define PM_SUSPEND_ON&t;&t;((__force suspend_state_t) 0)
+DECL|macro|PM_SUSPEND_STANDBY
+mdefine_line|#define PM_SUSPEND_STANDBY&t;((__force suspend_state_t) 1)
+DECL|macro|PM_SUSPEND_MEM
+mdefine_line|#define PM_SUSPEND_MEM&t;&t;((__force suspend_state_t) 3)
+DECL|macro|PM_SUSPEND_DISK
+mdefine_line|#define PM_SUSPEND_DISK&t;&t;((__force suspend_state_t) 4)
+DECL|macro|PM_SUSPEND_MAX
+mdefine_line|#define PM_SUSPEND_MAX&t;&t;((__force suspend_state_t) 5)
+DECL|typedef|suspend_disk_method_t
+r_typedef
+r_int
+id|__bitwise
+id|suspend_disk_method_t
 suffix:semicolon
+DECL|macro|PM_DISK_FIRMWARE
+mdefine_line|#define&t;PM_DISK_FIRMWARE&t;((__force suspend_disk_method_t) 1)
+DECL|macro|PM_DISK_PLATFORM
+mdefine_line|#define&t;PM_DISK_PLATFORM&t;((__force suspend_disk_method_t) 2)
+DECL|macro|PM_DISK_SHUTDOWN
+mdefine_line|#define&t;PM_DISK_SHUTDOWN&t;((__force suspend_disk_method_t) 3)
+DECL|macro|PM_DISK_REBOOT
+mdefine_line|#define&t;PM_DISK_REBOOT&t;&t;((__force suspend_disk_method_t) 4)
+DECL|macro|PM_DISK_MAX
+mdefine_line|#define&t;PM_DISK_MAX&t;&t;((__force suspend_disk_method_t) 5)
 DECL|struct|pm_ops
 r_struct
 id|pm_ops
 (brace
 DECL|member|pm_disk_mode
-id|u32
+id|suspend_disk_method_t
 id|pm_disk_mode
 suffix:semicolon
 DECL|member|prepare
@@ -544,7 +525,7 @@ op_star
 id|prepare
 )paren
 (paren
-id|u32
+id|suspend_state_t
 id|state
 )paren
 suffix:semicolon
@@ -555,7 +536,7 @@ op_star
 id|enter
 )paren
 (paren
-id|u32
+id|suspend_state_t
 id|state
 )paren
 suffix:semicolon
@@ -566,7 +547,7 @@ op_star
 id|finish
 )paren
 (paren
-id|u32
+id|suspend_state_t
 id|state
 )paren
 suffix:semicolon
@@ -587,7 +568,7 @@ r_int
 id|pm_suspend
 c_func
 (paren
-id|u32
+id|suspend_state_t
 id|state
 )paren
 suffix:semicolon

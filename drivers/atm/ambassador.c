@@ -8966,7 +8966,8 @@ r_int
 id|err
 suffix:semicolon
 singleline_comment|// read resources from PCI configuration space
-id|u8
+r_int
+r_int
 id|irq
 op_assign
 id|pci_dev-&gt;irq
@@ -9848,6 +9849,14 @@ l_int|0
 comma
 )brace
 )brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|amb_pci_tbl
+)paren
 suffix:semicolon
 DECL|variable|amb_driver
 r_static

@@ -1123,6 +1123,11 @@ r_int
 r_int
 id|sg_reserved_size
 suffix:semicolon
+DECL|member|drain_list
+r_struct
+id|list_head
+id|drain_list
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|RQ_INACTIVE
@@ -2221,6 +2226,8 @@ c_func
 (paren
 id|request_queue_t
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern

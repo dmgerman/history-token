@@ -43,6 +43,11 @@ id|SOLARIS_X86_PARTITION
 op_assign
 id|LINUX_SWAP_PARTITION
 comma
+DECL|enumerator|NEW_SOLARIS_X86_PARTITION
+id|NEW_SOLARIS_X86_PARTITION
+op_assign
+l_int|0xbf
+comma
 DECL|enumerator|DM6_AUX1PARTITION
 id|DM6_AUX1PARTITION
 op_assign

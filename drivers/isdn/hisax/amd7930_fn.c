@@ -1480,7 +1480,7 @@ id|cs-&gt;dlog
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* moves recieved data in sk-buffer */
+multiline_comment|/* moves received data in sk-buffer */
 id|memcpy
 c_func
 (paren
@@ -1509,7 +1509,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* throw damaged packets away, reset recieve-buffer, indicate RX */
+multiline_comment|/* throw damaged packets away, reset receive-buffer, indicate RX */
 id|ptr
 op_assign
 id|cs-&gt;rcvbuf

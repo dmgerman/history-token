@@ -1,6 +1,7 @@
 macro_line|#ifndef _LINUX_CRC_CCITT_H
 DECL|macro|_LINUX_CRC_CCITT_H
 mdefine_line|#define _LINUX_CRC_CCITT_H
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 r_extern
 id|u16
@@ -61,5 +62,6 @@ l_int|0xff
 )braket
 suffix:semicolon
 )brace
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_CRC_CCITT_H */
 eof

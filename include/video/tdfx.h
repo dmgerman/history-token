@@ -421,6 +421,7 @@ id|max_pixclock
 suffix:semicolon
 DECL|member|regbase_virt
 r_void
+id|__iomem
 op_star
 id|regbase_virt
 suffix:semicolon

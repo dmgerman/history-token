@@ -3791,11 +3791,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|fbi-&gt;fb.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|addr
 op_assign
 id|fbi

@@ -4,6 +4,7 @@ DECL|macro|__CPM_8XX__
 mdefine_line|#define __CPM_8XX__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/8xx_immap.h&gt;
+macro_line|#include &lt;asm/ptrace.h&gt;
 multiline_comment|/* CPM Command register.&n;*/
 DECL|macro|CPM_CR_RST
 mdefine_line|#define CPM_CR_RST&t;((ushort)0x8000)
@@ -158,12 +159,30 @@ id|uint
 id|rate
 )paren
 suffix:semicolon
+r_extern
 id|uint
 id|m8xx_cpm_hostalloc
 c_func
 (paren
 id|uint
 id|size
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|m8xx_cpm_hostfree
+c_func
+(paren
+id|uint
+id|start
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|m8xx_cpm_hostdump
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Buffer descriptors used by many of the CPM protocols.&n;*/
@@ -353,6 +372,19 @@ id|ushort
 id|smc_rmask
 suffix:semicolon
 multiline_comment|/* Temporary bit mask */
+DECL|member|res1
+r_char
+id|res1
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* Reserved */
+DECL|member|smc_rpbase
+id|ushort
+id|smc_rpbase
+suffix:semicolon
+multiline_comment|/* Relocation pointer */
 DECL|typedef|smc_uart_t
 )brace
 id|smc_uart_t
@@ -700,6 +732,8 @@ DECL|macro|SCC_GSMRL_ENT
 mdefine_line|#define SCC_GSMRL_ENT&t;&t;((uint)0x00000010)
 DECL|macro|SCC_GSMRL_MODE_ENET
 mdefine_line|#define SCC_GSMRL_MODE_ENET&t;((uint)0x0000000c)
+DECL|macro|SCC_GSMRL_MODE_QMC
+mdefine_line|#define SCC_GSMRL_MODE_QMC&t;((uint)0x0000000a)
 DECL|macro|SCC_GSMRL_MODE_DDCMP
 mdefine_line|#define SCC_GSMRL_MODE_DDCMP&t;((uint)0x00000009)
 DECL|macro|SCC_GSMRL_MODE_BISYNC
@@ -1072,32 +1106,32 @@ mdefine_line|#define SCCE_ENET_TXB&t;((ushort)0x0002)&t;/* A buffer was transmit
 DECL|macro|SCCE_ENET_RXB
 mdefine_line|#define SCCE_ENET_RXB&t;((ushort)0x0001)&t;/* A buffer was received */
 multiline_comment|/* SCC Mode Register (PMSR) as used by Ethernet.&n;*/
-DECL|macro|SCC_PMSR_HBC
-mdefine_line|#define SCC_PMSR_HBC&t;((ushort)0x8000)&t;/* Enable heartbeat */
-DECL|macro|SCC_PMSR_FC
-mdefine_line|#define SCC_PMSR_FC&t;((ushort)0x4000)&t;/* Force collision */
-DECL|macro|SCC_PMSR_RSH
-mdefine_line|#define SCC_PMSR_RSH&t;((ushort)0x2000)&t;/* Receive short frames */
-DECL|macro|SCC_PMSR_IAM
-mdefine_line|#define SCC_PMSR_IAM&t;((ushort)0x1000)&t;/* Check individual hash */
-DECL|macro|SCC_PMSR_ENCRC
-mdefine_line|#define SCC_PMSR_ENCRC&t;((ushort)0x0800)&t;/* Ethernet CRC mode */
-DECL|macro|SCC_PMSR_PRO
-mdefine_line|#define SCC_PMSR_PRO&t;((ushort)0x0200)&t;/* Promiscuous mode */
-DECL|macro|SCC_PMSR_BRO
-mdefine_line|#define SCC_PMSR_BRO&t;((ushort)0x0100)&t;/* Catch broadcast pkts */
-DECL|macro|SCC_PMSR_SBT
-mdefine_line|#define SCC_PMSR_SBT&t;((ushort)0x0080)&t;/* Special backoff timer */
-DECL|macro|SCC_PMSR_LPB
-mdefine_line|#define SCC_PMSR_LPB&t;((ushort)0x0040)&t;/* Set Loopback mode */
-DECL|macro|SCC_PMSR_SIP
-mdefine_line|#define SCC_PMSR_SIP&t;((ushort)0x0020)&t;/* Sample Input Pins */
-DECL|macro|SCC_PMSR_LCW
-mdefine_line|#define SCC_PMSR_LCW&t;((ushort)0x0010)&t;/* Late collision window */
-DECL|macro|SCC_PMSR_NIB22
-mdefine_line|#define SCC_PMSR_NIB22&t;((ushort)0x000a)&t;/* Start frame search */
-DECL|macro|SCC_PMSR_FDE
-mdefine_line|#define SCC_PMSR_FDE&t;((ushort)0x0001)&t;/* Full duplex enable */
+DECL|macro|SCC_PSMR_HBC
+mdefine_line|#define SCC_PSMR_HBC&t;((ushort)0x8000)&t;/* Enable heartbeat */
+DECL|macro|SCC_PSMR_FC
+mdefine_line|#define SCC_PSMR_FC&t;((ushort)0x4000)&t;/* Force collision */
+DECL|macro|SCC_PSMR_RSH
+mdefine_line|#define SCC_PSMR_RSH&t;((ushort)0x2000)&t;/* Receive short frames */
+DECL|macro|SCC_PSMR_IAM
+mdefine_line|#define SCC_PSMR_IAM&t;((ushort)0x1000)&t;/* Check individual hash */
+DECL|macro|SCC_PSMR_ENCRC
+mdefine_line|#define SCC_PSMR_ENCRC&t;((ushort)0x0800)&t;/* Ethernet CRC mode */
+DECL|macro|SCC_PSMR_PRO
+mdefine_line|#define SCC_PSMR_PRO&t;((ushort)0x0200)&t;/* Promiscuous mode */
+DECL|macro|SCC_PSMR_BRO
+mdefine_line|#define SCC_PSMR_BRO&t;((ushort)0x0100)&t;/* Catch broadcast pkts */
+DECL|macro|SCC_PSMR_SBT
+mdefine_line|#define SCC_PSMR_SBT&t;((ushort)0x0080)&t;/* Special backoff timer */
+DECL|macro|SCC_PSMR_LPB
+mdefine_line|#define SCC_PSMR_LPB&t;((ushort)0x0040)&t;/* Set Loopback mode */
+DECL|macro|SCC_PSMR_SIP
+mdefine_line|#define SCC_PSMR_SIP&t;((ushort)0x0020)&t;/* Sample Input Pins */
+DECL|macro|SCC_PSMR_LCW
+mdefine_line|#define SCC_PSMR_LCW&t;((ushort)0x0010)&t;/* Late collision window */
+DECL|macro|SCC_PSMR_NIB22
+mdefine_line|#define SCC_PSMR_NIB22&t;((ushort)0x000a)&t;/* Start frame search */
+DECL|macro|SCC_PSMR_FDE
+mdefine_line|#define SCC_PSMR_FDE&t;((ushort)0x0001)&t;/* Full duplex enable */
 multiline_comment|/* Buffer descriptor control/status used by Ethernet receive.&n;*/
 DECL|macro|BD_ENET_RX_EMPTY
 mdefine_line|#define BD_ENET_RX_EMPTY&t;((ushort)0x8000)
@@ -1168,14 +1202,12 @@ DECL|member|scc_genscc
 id|sccp_t
 id|scc_genscc
 suffix:semicolon
-DECL|member|scc_res1
-id|uint
-id|scc_res1
-suffix:semicolon
-multiline_comment|/* Reserved */
-DECL|member|scc_res2
-id|uint
-id|scc_res2
+DECL|member|res1
+r_char
+id|res1
+(braket
+l_int|8
+)braket
 suffix:semicolon
 multiline_comment|/* Reserved */
 DECL|member|scc_maxidl
@@ -1321,32 +1353,32 @@ mdefine_line|#define UART_SCCM_TX&t;&t;((ushort)0x0002)
 DECL|macro|UART_SCCM_RX
 mdefine_line|#define UART_SCCM_RX&t;&t;((ushort)0x0001)
 multiline_comment|/* The SCC PMSR when used as a UART.&n;*/
-DECL|macro|SCU_PMSR_FLC
-mdefine_line|#define SCU_PMSR_FLC&t;&t;((ushort)0x8000)
-DECL|macro|SCU_PMSR_SL
-mdefine_line|#define SCU_PMSR_SL&t;&t;((ushort)0x4000)
-DECL|macro|SCU_PMSR_CL
-mdefine_line|#define SCU_PMSR_CL&t;&t;((ushort)0x3000)
-DECL|macro|SCU_PMSR_UM
-mdefine_line|#define SCU_PMSR_UM&t;&t;((ushort)0x0c00)
-DECL|macro|SCU_PMSR_FRZ
-mdefine_line|#define SCU_PMSR_FRZ&t;&t;((ushort)0x0200)
-DECL|macro|SCU_PMSR_RZS
-mdefine_line|#define SCU_PMSR_RZS&t;&t;((ushort)0x0100)
-DECL|macro|SCU_PMSR_SYN
-mdefine_line|#define SCU_PMSR_SYN&t;&t;((ushort)0x0080)
-DECL|macro|SCU_PMSR_DRT
-mdefine_line|#define SCU_PMSR_DRT&t;&t;((ushort)0x0040)
-DECL|macro|SCU_PMSR_PEN
-mdefine_line|#define SCU_PMSR_PEN&t;&t;((ushort)0x0010)
-DECL|macro|SCU_PMSR_RPM
-mdefine_line|#define SCU_PMSR_RPM&t;&t;((ushort)0x000c)
-DECL|macro|SCU_PMSR_REVP
-mdefine_line|#define SCU_PMSR_REVP&t;&t;((ushort)0x0008)
-DECL|macro|SCU_PMSR_TPM
-mdefine_line|#define SCU_PMSR_TPM&t;&t;((ushort)0x0003)
-DECL|macro|SCU_PMSR_TEVP
-mdefine_line|#define SCU_PMSR_TEVP&t;&t;((ushort)0x0002)
+DECL|macro|SCU_PSMR_FLC
+mdefine_line|#define SCU_PSMR_FLC&t;&t;((ushort)0x8000)
+DECL|macro|SCU_PSMR_SL
+mdefine_line|#define SCU_PSMR_SL&t;&t;((ushort)0x4000)
+DECL|macro|SCU_PSMR_CL
+mdefine_line|#define SCU_PSMR_CL&t;&t;((ushort)0x3000)
+DECL|macro|SCU_PSMR_UM
+mdefine_line|#define SCU_PSMR_UM&t;&t;((ushort)0x0c00)
+DECL|macro|SCU_PSMR_FRZ
+mdefine_line|#define SCU_PSMR_FRZ&t;&t;((ushort)0x0200)
+DECL|macro|SCU_PSMR_RZS
+mdefine_line|#define SCU_PSMR_RZS&t;&t;((ushort)0x0100)
+DECL|macro|SCU_PSMR_SYN
+mdefine_line|#define SCU_PSMR_SYN&t;&t;((ushort)0x0080)
+DECL|macro|SCU_PSMR_DRT
+mdefine_line|#define SCU_PSMR_DRT&t;&t;((ushort)0x0040)
+DECL|macro|SCU_PSMR_PEN
+mdefine_line|#define SCU_PSMR_PEN&t;&t;((ushort)0x0010)
+DECL|macro|SCU_PSMR_RPM
+mdefine_line|#define SCU_PSMR_RPM&t;&t;((ushort)0x000c)
+DECL|macro|SCU_PSMR_REVP
+mdefine_line|#define SCU_PSMR_REVP&t;&t;((ushort)0x0008)
+DECL|macro|SCU_PSMR_TPM
+mdefine_line|#define SCU_PSMR_TPM&t;&t;((ushort)0x0003)
+DECL|macro|SCU_PSMR_TEVP
+mdefine_line|#define SCU_PSMR_TEVP&t;&t;((ushort)0x0002)
 multiline_comment|/* CPM Transparent mode SCC.&n; */
 DECL|struct|scc_trans
 r_typedef
@@ -1454,21 +1486,27 @@ id|uint
 id|iic_txtmp
 suffix:semicolon
 multiline_comment|/* Internal */
-DECL|member|iic_res
-id|uint
-id|iic_res
+DECL|member|res1
+r_char
+id|res1
+(braket
+l_int|4
+)braket
 suffix:semicolon
-multiline_comment|/* reserved */
+multiline_comment|/* Reserved */
 DECL|member|iic_rpbase
 id|ushort
 id|iic_rpbase
 suffix:semicolon
 multiline_comment|/* Relocation pointer */
-DECL|member|iic_res2
-id|ushort
-id|iic_res2
+DECL|member|res2
+r_char
+id|res2
+(braket
+l_int|2
+)braket
 suffix:semicolon
-multiline_comment|/* reserved */
+multiline_comment|/* Reserved */
 DECL|typedef|iic_t
 )brace
 id|iic_t

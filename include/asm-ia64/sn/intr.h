@@ -17,6 +17,8 @@ DECL|macro|SGI_PCIBR_ERROR
 mdefine_line|#define SGI_PCIBR_ERROR                 (0x33)
 DECL|macro|SGI_ACPI_SCI_INT
 mdefine_line|#define SGI_ACPI_SCI_INT                (0x34)
+DECL|macro|SGI_MMTIMER_VECTOR
+mdefine_line|#define SGI_MMTIMER_VECTOR&t;&t;(0x35)
 DECL|macro|SGI_TIO_ERROR
 mdefine_line|#define SGI_TIO_ERROR&t;&t;&t;(0x36)
 DECL|macro|SGI_XPC_NOTIFY
@@ -113,6 +115,8 @@ r_void
 id|sn_send_IPI_phys
 c_func
 (paren
+r_int
+comma
 r_int
 comma
 r_int

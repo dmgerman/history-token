@@ -2337,6 +2337,11 @@ id|siginfo_t
 op_star
 id|info
 comma
+r_struct
+id|k_sigaction
+op_star
+id|ka
+comma
 id|sigset_t
 op_star
 id|oldset
@@ -2350,19 +2355,6 @@ r_int
 id|in_syscall
 )paren
 (brace
-r_struct
-id|k_sigaction
-op_star
-id|ka
-op_assign
-op_amp
-id|current-&gt;sighand-&gt;action
-(braket
-id|sig
-op_minus
-l_int|1
-)braket
-suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -2404,17 +2396,6 @@ id|in_syscall
 )paren
 r_return
 l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ka-&gt;sa.sa_flags
-op_amp
-id|SA_ONESHOT
-)paren
-id|ka-&gt;sa.sa_handler
-op_assign
-id|SIG_DFL
 suffix:semicolon
 r_if
 c_cond
@@ -2498,7 +2479,6 @@ id|info
 suffix:semicolon
 r_struct
 id|k_sigaction
-op_star
 id|ka
 suffix:semicolon
 r_int
@@ -2553,6 +2533,13 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
+multiline_comment|/* May need to force signal if handle_signal failed to deliver */
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+(brace
 id|signr
 op_assign
 id|get_signal_to_deliver
@@ -2560,6 +2547,9 @@ c_func
 (paren
 op_amp
 id|info
+comma
+op_amp
+id|ka
 comma
 id|regs
 comma
@@ -2585,10 +2575,11 @@ r_if
 c_cond
 (paren
 id|signr
-OG
+op_le
 l_int|0
 )paren
-(brace
+r_break
+suffix:semicolon
 multiline_comment|/* Restart a system call if necessary. */
 r_if
 c_cond
@@ -2645,22 +2636,12 @@ r_case
 op_minus
 id|ERESTARTSYS
 suffix:colon
-id|ka
-op_assign
-op_amp
-id|current-&gt;sighand-&gt;action
-(braket
-id|signr
-op_minus
-l_int|1
-)braket
-suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 (paren
-id|ka-&gt;sa.sa_flags
+id|ka.sa.sa_flags
 op_amp
 id|SA_RESTART
 )paren
@@ -2690,7 +2671,7 @@ r_case
 op_minus
 id|ERESTARTNOINTR
 suffix:colon
-multiline_comment|/* A syscall is just a branch, so all&n;                                   we have to do is fiddle the return&n;                                   pointer. */
+multiline_comment|/* A syscall is just a branch, so all&n;&t;&t;&t;&t;   we have to do is fiddle the return pointer. */
 id|regs-&gt;gr
 (braket
 l_int|31
@@ -2723,6 +2704,9 @@ comma
 op_amp
 id|info
 comma
+op_amp
+id|ka
+comma
 id|oldset
 comma
 id|regs
@@ -2750,6 +2734,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* end of while(1) looping forever if we can&squot;t force a signal */
 multiline_comment|/* Did we come from a system call? */
 r_if
 c_cond

@@ -3474,9 +3474,12 @@ id|dev-&gt;if_port
 op_assign
 id|np-&gt;default_port
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|np-&gt;mcastlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|set_rx_mode
 c_func

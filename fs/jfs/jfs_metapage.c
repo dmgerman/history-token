@@ -17,6 +17,7 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 macro_line|#ifdef CONFIG_JFS_STATISTICS
+r_static
 r_struct
 (brace
 DECL|member|pagealloc
@@ -382,7 +383,7 @@ id|alloc_metapage
 c_func
 (paren
 r_int
-id|no_wait
+id|gfp_mask
 )paren
 (brace
 r_return
@@ -391,12 +392,7 @@ c_func
 (paren
 id|metapage_mempool
 comma
-id|no_wait
-ques
-c_cond
-id|GFP_ATOMIC
-suffix:colon
-id|GFP_NOFS
+id|gfp_mask
 )paren
 suffix:semicolon
 )brace
@@ -1162,11 +1158,9 @@ id|AGGREGATE_I
 (brace
 id|mp
 op_assign
-id|mempool_alloc
+id|alloc_metapage
 c_func
 (paren
-id|metapage_mempool
-comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
@@ -1215,11 +1209,9 @@ id|meta_lock
 suffix:semicolon
 id|mp
 op_assign
-id|mempool_alloc
+id|alloc_metapage
 c_func
 (paren
-id|metapage_mempool
-comma
 id|GFP_NOFS
 )paren
 suffix:semicolon

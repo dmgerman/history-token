@@ -19,7 +19,7 @@ macro_line|#else
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS 224
 DECL|macro|NR_IRQ_VECTORS
-mdefine_line|#define NR_IRQ_VECTORS NR_IRQS
+mdefine_line|#define NR_IRQ_VECTORS 1024
 macro_line|#endif
 DECL|function|irq_canonicalize
 r_static

@@ -296,21 +296,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* Creates table for an individual device node */
-multiline_comment|/* XXX: This isn&squot;t generic, please name it accordingly or add&n; * some ppc_md. hooks for iommu implementations to do what they&n; * need to do. --BenH.&n; */
-r_extern
-r_void
-id|iommu_devnode_init
-c_func
-(paren
-r_struct
-id|device_node
-op_star
-id|dn
-)paren
-suffix:semicolon
 multiline_comment|/* Frees table for an individual device node */
-multiline_comment|/* XXX: This isn&squot;t generic, please name it accordingly or add&n; * some ppc_md. hooks for iommu implementations to do what they&n; * need to do. --BenH.&n; */
 r_extern
 r_void
 id|iommu_free_table
@@ -323,6 +309,20 @@ id|dn
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PPC_MULTIPLATFORM */
+macro_line|#ifdef CONFIG_PPC_PSERIES
+multiline_comment|/* Creates table for an individual device node */
+r_extern
+r_void
+id|iommu_devnode_init_pSeries
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|dn
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_PPC_PSERIES */
 macro_line|#ifdef CONFIG_PPC_ISERIES
 multiline_comment|/* Walks all buses and creates iommu tables */
 r_extern
@@ -349,7 +349,7 @@ suffix:semicolon
 multiline_comment|/* Creates table for an individual device node */
 r_extern
 r_void
-id|iommu_devnode_init
+id|iommu_devnode_init_iSeries
 c_func
 (paren
 r_struct

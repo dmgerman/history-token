@@ -93,11 +93,30 @@ id|m8xx_cpm_reset
 c_func
 (paren
 id|uint
+id|cpm_page
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|m8xx_wdt_handler_install
+c_func
+(paren
+id|bd_t
+op_star
+id|bp
 )paren
 suffix:semicolon
 r_extern
 r_void
 id|rpxfb_alloc_pages
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|cpm_interrupt_init
 c_func
 (paren
 r_void
@@ -257,7 +276,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* A place holder for time base interrupts, if they are ever enabled. */
 DECL|function|timebase_interrupt
-r_void
+id|irqreturn_t
 id|timebase_interrupt
 c_func
 (paren
@@ -279,7 +298,34 @@ id|printk
 l_string|&quot;timebase_interrupt()&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
+DECL|variable|tbint_irqaction
+r_static
+r_struct
+id|irqaction
+id|tbint_irqaction
+op_assign
+(brace
+dot
+id|handler
+op_assign
+id|timebase_interrupt
+comma
+dot
+id|mask
+op_assign
+id|CPU_MASK_NONE
+comma
+dot
+id|name
+op_assign
+l_string|&quot;tbint&quot;
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* The decrementer counts at the system (internal) clock frequency divided by&n; * sixteen, or external oscillator divided by four.  We force the processor&n; * to use system clock divided by sixteen.&n; */
 DECL|function|m8xx_calibrate_decr
 r_void
@@ -549,21 +595,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|request_8xxirq
+id|setup_irq
 c_func
 (paren
 id|DEC_INTERRUPT
 comma
-id|timebase_interrupt
-comma
-l_int|0
-comma
-l_string|&quot;tbint&quot;
-comma
-l_int|NULL
+op_amp
+id|tbint_irqaction
 )paren
-op_ne
-l_int|0
 )paren
 id|panic
 c_func
@@ -571,6 +610,15 @@ c_func
 l_string|&quot;Could not allocate timer IRQ!&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_8xx_WDT
+multiline_comment|/* Install watchdog timer handler early because it might be&n;&t; * already enabled by the bootloader&n;&t; */
+id|m8xx_wdt_handler_install
+c_func
+(paren
+id|binfo
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* The RTC on the MPC8xx is an internal register.&n; * We want to protect this during power down, so we need to unlock,&n; * modify, and re-lock.&n; */
 r_static
@@ -813,6 +861,32 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PCI
+DECL|variable|mbx_i8259_irqaction
+r_static
+r_struct
+id|irqaction
+id|mbx_i8259_irqaction
+op_assign
+(brace
+dot
+id|handler
+op_assign
+id|mbx_i8259_action
+comma
+dot
+id|mask
+op_assign
+id|CPU_MASK_NONE
+comma
+dot
+id|name
+op_assign
+l_string|&quot;i8259 cascade&quot;
+comma
+)brace
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Initialize the internal interrupt controller.  The number of&n; * interrupts supported can vary with the processor type, and the&n; * 82xx family can have up to 64.&n; * External interrupts can be either edge or level triggered, and&n; * need to be initialized by the appropriate driver.&n; */
 r_static
 r_void
@@ -827,22 +901,17 @@ r_void
 r_int
 id|i
 suffix:semicolon
-r_void
-id|cpm_interrupt_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
 id|i
 op_assign
-l_int|0
+id|SIU_IRQ_OFFSET
 suffix:semicolon
 id|i
 OL
+id|SIU_IRQ_OFFSET
+op_plus
 id|NR_SIU_INTS
 suffix:semicolon
 id|i
@@ -858,16 +927,9 @@ op_assign
 op_amp
 id|ppc8xx_pic
 suffix:semicolon
-multiline_comment|/* We could probably incorporate the CPM into the multilevel&n;&t; * interrupt structure.&n;&t; */
 id|cpm_interrupt_init
 c_func
 (paren
-)paren
-suffix:semicolon
-id|unmask_irq
-c_func
-(paren
-id|CPM_INTERRUPT
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_PCI)
@@ -876,15 +938,13 @@ c_loop
 (paren
 id|i
 op_assign
-id|NR_SIU_INTS
+id|I8259_IRQ_OFFSET
 suffix:semicolon
 id|i
 OL
-(paren
-id|NR_SIU_INTS
+id|I8259_IRQ_OFFSET
 op_plus
 id|NR_8259_INTS
-)paren
 suffix:semicolon
 id|i
 op_increment
@@ -899,36 +959,53 @@ op_assign
 op_amp
 id|i8259_pic
 suffix:semicolon
-id|i8259_pic.irq_offset
+id|i8259_pic_irq_offset
 op_assign
-id|NR_SIU_INTS
+id|I8259_IRQ_OFFSET
 suffix:semicolon
 id|i8259_init
 c_func
 (paren
+l_int|0
 )paren
 suffix:semicolon
-id|request_8xxirq
+multiline_comment|/* The i8259 cascade interrupt must be level sensitive. */
+(paren
+(paren
+id|immap_t
+op_star
+)paren
+id|IMAP_ADDR
+)paren
+op_member_access_from_pointer
+id|im_siu_conf.sc_siel
+op_and_assign
+op_complement
+(paren
+l_int|0x80000000
+op_rshift
+id|ISA_BRIDGE_INT
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|setup_irq
 c_func
 (paren
 id|ISA_BRIDGE_INT
 comma
-id|mbx_i8259_action
-comma
-l_int|0
-comma
-l_string|&quot;8259 cascade&quot;
-comma
-l_int|NULL
+op_amp
+id|mbx_i8259_irqaction
 )paren
-suffix:semicolon
+)paren
 id|enable_irq
 c_func
 (paren
 id|ISA_BRIDGE_INT
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif&t;/* CONFIG_PCI */
 )brace
 multiline_comment|/* -------------------------------------------------------------------- */
 multiline_comment|/*&n; * This is a big hack right now, but it may turn into something real&n; * someday.&n; *&n; * For the 8xx boards (at this time anyway), there is nothing to initialize&n; * associated the PROM.  Rather than include all of the prom.c&n; * functions in the image just to get prom_init, all we really need right&n; * now is the initialization of the physical memory region.&n; */
@@ -1080,7 +1157,7 @@ id|_PAGE_IO
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-macro_line|#ifdef CONFIG_HTDMSOUND
+macro_line|#if defined(CONFIG_HTDMSOUND) || defined(CONFIG_RPXTOUCH) || defined(CONFIG_FB_RPX)
 id|io_block_mapping
 c_func
 (paren
@@ -1117,6 +1194,20 @@ comma
 id|PCI_CSR_ADDR
 comma
 id|PCI_CSR_SIZE
+comma
+id|_PAGE_IO
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_NETTA)
+id|io_block_mapping
+c_func
+(paren
+id|_IO_BASE
+comma
+id|_IO_BASE
+comma
+id|_IO_BASE_SIZE
 comma
 id|_PAGE_IO
 )paren

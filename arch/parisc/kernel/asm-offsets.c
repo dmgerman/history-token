@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/pdc.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|DEFINE
 mdefine_line|#define DEFINE(sym, val) &bslash;&n;&t;asm volatile(&quot;&bslash;n-&gt;&quot; #sym &quot; %0 &quot; #val : : &quot;i&quot; (val))
 DECL|macro|BLANK
@@ -3652,6 +3653,48 @@ suffix:semicolon
 id|BLANK
 c_func
 (paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|EXCDATA_IP
+comma
+m_offsetof
+(paren
+r_struct
+id|exception_data
+comma
+id|fault_ip
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|EXCDATA_SPACE
+comma
+m_offsetof
+(paren
+r_struct
+id|exception_data
+comma
+id|fault_space
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|EXCDATA_ADDR
+comma
+m_offsetof
+(paren
+r_struct
+id|exception_data
+comma
+id|fault_addr
+)paren
 )paren
 suffix:semicolon
 r_return

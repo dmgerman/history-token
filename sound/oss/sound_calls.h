@@ -372,22 +372,6 @@ r_int
 id|recording
 )paren
 suffix:semicolon
-r_int
-id|dma_ioctl
-(paren
-r_int
-id|dev
-comma
-r_int
-r_int
-id|cmd
-comma
-r_void
-id|__user
-op_star
-id|arg
-)paren
-suffix:semicolon
 multiline_comment|/*&n; *&t;System calls for the /dev/sequencer&n; */
 r_int
 id|sequencer_read

@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/8xx_immap.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -1431,17 +1432,17 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|cep-&gt;sccp-&gt;scc_pmsr
+id|cep-&gt;sccp-&gt;scc_psmr
 op_or_assign
-id|SCC_PMSR_PRO
+id|SCC_PSMR_PRO
 suffix:semicolon
 )brace
 r_else
 (brace
-id|cep-&gt;sccp-&gt;scc_pmsr
+id|cep-&gt;sccp-&gt;scc_psmr
 op_and_assign
 op_complement
-id|SCC_PMSR_PRO
+id|SCC_PSMR_PRO
 suffix:semicolon
 r_if
 c_cond
@@ -2213,15 +2214,17 @@ r_int
 r_char
 op_star
 )paren
-id|consistent_alloc
+id|dma_alloc_coherent
 c_func
 (paren
-id|GFP_KERNEL
+l_int|NULL
 comma
 id|PAGE_SIZE
 comma
 op_amp
 id|mem_addr
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 multiline_comment|/* BUG: no check for failure */
@@ -2357,12 +2360,12 @@ op_assign
 l_int|0xd555
 suffix:semicolon
 multiline_comment|/* Set processing mode.  Use Ethernet CRC, catch broadcast, and&n;&t; * start frame search 22 bit times after RENA.&n;&t; */
-id|sccp-&gt;scc_pmsr
+id|sccp-&gt;scc_psmr
 op_assign
 (paren
-id|SCC_PMSR_ENCRC
+id|SCC_PSMR_ENCRC
 op_or
-id|SCC_PMSR_NIB22
+id|SCC_PSMR_NIB22
 )paren
 suffix:semicolon
 multiline_comment|/* It is now OK to enable the Ethernet transmitter.&n;&t; * Unfortunately, there are board implementation differences here.&n;&t; */

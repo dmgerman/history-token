@@ -13,14 +13,15 @@ macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/hardware/amba.h&gt;
 macro_line|#include &lt;asm/hardware/amba_clcd.h&gt;
+macro_line|#include &lt;asm/hardware/icst307.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/flash.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/time.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
-macro_line|#ifdef CONFIG_MMC
 macro_line|#include &lt;asm/mach/mmc.h&gt;
-macro_line|#endif
+macro_line|#include &quot;core.h&quot;
+macro_line|#include &quot;clock.h&quot;
 multiline_comment|/*&n; * All IO addresses are mapped onto VA 0xFFFx.xxxx, where x.xxxx&n; * is the (PA &gt;&gt; 12).&n; *&n; * Setup a VA for the Versatile Vectored Interrupt Controller.&n; */
 DECL|macro|VA_VIC_BASE
 mdefine_line|#define VA_VIC_BASE&t;&t; IO_ADDRESS(VERSATILE_VIC_BASE)
@@ -294,8 +295,6 @@ suffix:semicolon
 macro_line|#if 1
 DECL|macro|IRQ_MMCI0A
 mdefine_line|#define IRQ_MMCI0A&t;IRQ_VICSOURCE22
-DECL|macro|IRQ_MMCI1A
-mdefine_line|#define IRQ_MMCI1A&t;IRQ_VICSOURCE23
 DECL|macro|IRQ_AACI
 mdefine_line|#define IRQ_AACI&t;IRQ_VICSOURCE24
 DECL|macro|IRQ_ETH
@@ -305,8 +304,6 @@ mdefine_line|#define PIC_MASK&t;0xFFD00000
 macro_line|#else
 DECL|macro|IRQ_MMCI0A
 mdefine_line|#define IRQ_MMCI0A&t;IRQ_SIC_MMCI0A
-DECL|macro|IRQ_MMCI1A
-mdefine_line|#define IRQ_MMCI1A&t;IRQ_SIC_MMCI1A
 DECL|macro|IRQ_AACI
 mdefine_line|#define IRQ_AACI&t;IRQ_SIC_AACI
 DECL|macro|IRQ_ETH
@@ -315,7 +312,6 @@ DECL|macro|PIC_MASK
 mdefine_line|#define PIC_MASK&t;0
 macro_line|#endif
 DECL|function|versatile_init_irq
-r_static
 r_void
 id|__init
 id|versatile_init_irq
@@ -724,6 +720,36 @@ comma
 id|MT_DEVICE
 )brace
 comma
+macro_line|#ifdef CONFIG_ARCH_VERSATILE_AB
+(brace
+id|IO_ADDRESS
+c_func
+(paren
+id|VERSATILE_GPIO0_BASE
+)paren
+comma
+id|VERSATILE_GPIO0_BASE
+comma
+id|SZ_4K
+comma
+id|MT_DEVICE
+)brace
+comma
+(brace
+id|IO_ADDRESS
+c_func
+(paren
+id|VERSATILE_IB2_BASE
+)paren
+comma
+id|VERSATILE_IB2_BASE
+comma
+id|SZ_64M
+comma
+id|MT_DEVICE
+)brace
+comma
+macro_line|#endif
 macro_line|#ifdef CONFIG_DEBUG_LL
 (brace
 id|IO_ADDRESS
@@ -785,7 +811,6 @@ macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|versatile_map_io
-r_static
 r_void
 id|__init
 id|versatile_map_io
@@ -809,7 +834,7 @@ suffix:semicolon
 )brace
 DECL|macro|VERSATILE_REFCOUNTER
 mdefine_line|#define VERSATILE_REFCOUNTER&t;(IO_ADDRESS(VERSATILE_SYS_BASE) + VERSATILE_SYS_24MHz_OFFSET)
-multiline_comment|/*&n; * This is the VersatilePB sched_clock implementation.  This has&n; * a resolution of 41.7ns, and a maximum value of about 179s.&n; */
+multiline_comment|/*&n; * This is the Versatile sched_clock implementation.  This has&n; * a resolution of 41.7ns, and a maximum value of about 179s.&n; */
 DECL|function|sched_clock
 r_int
 r_int
@@ -1166,9 +1191,7 @@ comma
 suffix:semicolon
 DECL|macro|VERSATILE_SYSMCI
 mdefine_line|#define VERSATILE_SYSMCI&t;(IO_ADDRESS(VERSATILE_SYS_BASE) + VERSATILE_SYS_MCI_OFFSET)
-macro_line|#ifdef CONFIG_MMC
 DECL|function|mmc_status
-r_static
 r_int
 r_int
 id|mmc_status
@@ -1246,39 +1269,201 @@ id|mmc_status
 comma
 )brace
 suffix:semicolon
-DECL|variable|mmc1_plat_data
+multiline_comment|/*&n; * Clock handling&n; */
+DECL|variable|versatile_oscvco_params
 r_static
+r_const
 r_struct
-id|mmc_platform_data
-id|mmc1_plat_data
+id|icst307_params
+id|versatile_oscvco_params
 op_assign
 (brace
 dot
-id|ocr_mask
+id|ref
 op_assign
-id|MMC_VDD_32_33
-op_or
-id|MMC_VDD_33_34
+l_int|24000
 comma
 dot
-id|status
+id|vco_max
 op_assign
-id|mmc_status
+l_int|200000
+comma
+dot
+id|vd_min
+op_assign
+l_int|4
+op_plus
+l_int|8
+comma
+dot
+id|vd_max
+op_assign
+l_int|511
+op_plus
+l_int|8
+comma
+dot
+id|rd_min
+op_assign
+l_int|1
+op_plus
+l_int|2
+comma
+dot
+id|rd_max
+op_assign
+l_int|127
+op_plus
+l_int|2
 comma
 )brace
 suffix:semicolon
+DECL|function|versatile_oscvco_set
+r_static
+r_void
+id|versatile_oscvco_set
+c_func
+(paren
+r_struct
+id|clk
+op_star
+id|clk
+comma
+r_struct
+id|icst307_vco
+id|vco
+)paren
+(brace
+r_int
+r_int
+id|sys_lock
+op_assign
+id|IO_ADDRESS
+c_func
+(paren
+id|VERSATILE_SYS_BASE
+)paren
+op_plus
+id|VERSATILE_SYS_LOCK_OFFSET
+suffix:semicolon
+macro_line|#if defined(CONFIG_ARCH_VERSATILE_PB)
+r_int
+r_int
+id|sys_osc
+op_assign
+id|IO_ADDRESS
+c_func
+(paren
+id|VERSATILE_SYS_BASE
+)paren
+op_plus
+id|VERSATILE_SYS_OSC4_OFFSET
+suffix:semicolon
+macro_line|#elif defined(CONFIG_ARCH_VERSATILE_AB)
+r_int
+r_int
+id|sys_osc
+op_assign
+id|IO_ADDRESS
+c_func
+(paren
+id|VERSATILE_SYS_BASE
+)paren
+op_plus
+id|VERSATILE_SYS_OSC1_OFFSET
+suffix:semicolon
 macro_line|#endif
+id|u32
+id|val
+suffix:semicolon
+id|val
+op_assign
+id|readl
+c_func
+(paren
+id|sys_osc
+)paren
+op_amp
+op_complement
+l_int|0x7ffff
+suffix:semicolon
+id|val
+op_or_assign
+id|vco.v
+op_or
+(paren
+id|vco.r
+op_lshift
+l_int|9
+)paren
+op_or
+(paren
+id|vco.s
+op_lshift
+l_int|16
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+l_int|0xa05f
+comma
+id|sys_lock
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|val
+comma
+id|sys_osc
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+l_int|0
+comma
+id|sys_lock
+)paren
+suffix:semicolon
+)brace
+DECL|variable|versatile_clcd_clk
+r_static
+r_struct
+id|clk
+id|versatile_clcd_clk
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;CLCDCLK&quot;
+comma
+dot
+id|params
+op_assign
+op_amp
+id|versatile_oscvco_params
+comma
+dot
+id|setvco
+op_assign
+id|versatile_oscvco_set
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * CLCD support.&n; */
 DECL|macro|SYS_CLCD_MODE_MASK
 mdefine_line|#define SYS_CLCD_MODE_MASK&t;(3 &lt;&lt; 0)
-DECL|macro|SYS_CLCD_MODE_5551
-mdefine_line|#define SYS_CLCD_MODE_5551&t;(0 &lt;&lt; 0)
-DECL|macro|SYS_CLCD_MODE_565
-mdefine_line|#define SYS_CLCD_MODE_565&t;(1 &lt;&lt; 0)
 DECL|macro|SYS_CLCD_MODE_888
-mdefine_line|#define SYS_CLCD_MODE_888&t;(2 &lt;&lt; 0)
-DECL|macro|SYS_CLCD_MODE_LT
-mdefine_line|#define SYS_CLCD_MODE_LT&t;(3 &lt;&lt; 0)
+mdefine_line|#define SYS_CLCD_MODE_888&t;(0 &lt;&lt; 0)
+DECL|macro|SYS_CLCD_MODE_5551
+mdefine_line|#define SYS_CLCD_MODE_5551&t;(1 &lt;&lt; 0)
+DECL|macro|SYS_CLCD_MODE_565_RLSB
+mdefine_line|#define SYS_CLCD_MODE_565_RLSB&t;(2 &lt;&lt; 0)
+DECL|macro|SYS_CLCD_MODE_565_BLSB
+mdefine_line|#define SYS_CLCD_MODE_565_BLSB&t;(3 &lt;&lt; 0)
 DECL|macro|SYS_CLCD_NLCDIOON
 mdefine_line|#define SYS_CLCD_NLCDIOON&t;(1 &lt;&lt; 2)
 DECL|macro|SYS_CLCD_VDDPOSSWITCH
@@ -1293,6 +1478,8 @@ DECL|macro|SYS_CLCD_ID_UNKNOWN_8_4
 mdefine_line|#define SYS_CLCD_ID_UNKNOWN_8_4&t;(0x01 &lt;&lt; 8)
 DECL|macro|SYS_CLCD_ID_EPSON_2_2
 mdefine_line|#define SYS_CLCD_ID_EPSON_2_2&t;(0x02 &lt;&lt; 8)
+DECL|macro|SYS_CLCD_ID_SANYO_2_5
+mdefine_line|#define SYS_CLCD_ID_SANYO_2_5&t;(0x07 &lt;&lt; 8)
 DECL|macro|SYS_CLCD_ID_VGA
 mdefine_line|#define SYS_CLCD_ID_VGA&t;&t;(0x1f &lt;&lt; 8)
 DECL|variable|vga
@@ -1523,6 +1710,125 @@ l_int|16
 comma
 )brace
 suffix:semicolon
+DECL|variable|sanyo_2_5_in
+r_static
+r_struct
+id|clcd_panel
+id|sanyo_2_5_in
+op_assign
+(brace
+dot
+id|mode
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;Sanyo QVGA Portrait&quot;
+comma
+dot
+id|refresh
+op_assign
+l_int|116
+comma
+dot
+id|xres
+op_assign
+l_int|240
+comma
+dot
+id|yres
+op_assign
+l_int|320
+comma
+dot
+id|pixclock
+op_assign
+l_int|100000
+comma
+dot
+id|left_margin
+op_assign
+l_int|20
+comma
+dot
+id|right_margin
+op_assign
+l_int|10
+comma
+dot
+id|upper_margin
+op_assign
+l_int|2
+comma
+dot
+id|lower_margin
+op_assign
+l_int|2
+comma
+dot
+id|hsync_len
+op_assign
+l_int|10
+comma
+dot
+id|vsync_len
+op_assign
+l_int|2
+comma
+dot
+id|sync
+op_assign
+id|FB_SYNC_HOR_HIGH_ACT
+op_or
+id|FB_SYNC_VERT_HIGH_ACT
+comma
+dot
+id|vmode
+op_assign
+id|FB_VMODE_NONINTERLACED
+comma
+)brace
+comma
+dot
+id|width
+op_assign
+op_minus
+l_int|1
+comma
+dot
+id|height
+op_assign
+op_minus
+l_int|1
+comma
+dot
+id|tim2
+op_assign
+id|TIM2_IVS
+op_or
+id|TIM2_IHS
+op_or
+id|TIM2_IPC
+comma
+dot
+id|cntl
+op_assign
+id|CNTL_LCDTFT
+op_or
+id|CNTL_LCDVCOMP
+c_func
+(paren
+l_int|1
+)paren
+comma
+dot
+id|bpp
+op_assign
+l_int|16
+comma
+)brace
+suffix:semicolon
 DECL|variable|epson_2_2_in
 r_static
 r_struct
@@ -1701,6 +2007,19 @@ c_cond
 (paren
 id|val
 op_eq
+id|SYS_CLCD_ID_SANYO_2_5
+)paren
+id|panel
+op_assign
+op_amp
+id|sanyo_2_5_in
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|val
+op_eq
 id|SYS_CLCD_ID_EPSON_2_2
 )paren
 id|panel
@@ -1732,10 +2051,14 @@ comma
 id|val
 )paren
 suffix:semicolon
-)brace
-r_return
+id|panel
+op_assign
 op_amp
 id|vga
+suffix:semicolon
+)brace
+r_return
+id|panel
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Disable all display connectors on the interface module.&n; */
@@ -1789,6 +2112,54 @@ comma
 id|sys_clcd
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ARCH_VERSATILE_AB
+multiline_comment|/*&n;&t; * If the LCD is Sanyo 2x5 in on the IB2 board, turn the back-light off&n;&t; */
+r_if
+c_cond
+(paren
+id|fb-&gt;panel
+op_eq
+op_amp
+id|sanyo_2_5_in
+)paren
+(brace
+r_int
+r_int
+id|versatile_ib2_ctrl
+op_assign
+id|IO_ADDRESS
+c_func
+(paren
+id|VERSATILE_IB2_CTRL
+)paren
+suffix:semicolon
+r_int
+r_int
+id|ctrl
+suffix:semicolon
+id|ctrl
+op_assign
+id|readl
+c_func
+(paren
+id|versatile_ib2_ctrl
+)paren
+suffix:semicolon
+id|ctrl
+op_and_assign
+op_complement
+l_int|0x01
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|ctrl
+comma
+id|versatile_ib2_ctrl
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * Enable the relevant connector on the interface module.&n; */
 DECL|function|versatile_clcd_enable
@@ -1840,21 +2211,18 @@ id|fb-&gt;fb.var.green.length
 r_case
 l_int|5
 suffix:colon
-macro_line|#if 0
-multiline_comment|/*&n;&t;&t; * For some undocumented reason, we need to select 565 mode&n;&t;&t; * even when using 555 with VGA.  Maybe this is only true&n;&t;&t; * for the VGA output and needs to be done for LCD panels?&n;&t;&t; * I can&squot;t get an explaination from the people who should&n;&t;&t; * know.&n;&t;&t; */
 id|val
 op_or_assign
 id|SYS_CLCD_MODE_5551
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
 r_case
 l_int|6
 suffix:colon
 id|val
 op_or_assign
-id|SYS_CLCD_MODE_565
+id|SYS_CLCD_MODE_565_BLSB
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1892,6 +2260,53 @@ comma
 id|sys_clcd
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ARCH_VERSATILE_AB
+multiline_comment|/*&n;&t; * If the LCD is Sanyo 2x5 in on the IB2 board, turn the back-light on&n;&t; */
+r_if
+c_cond
+(paren
+id|fb-&gt;panel
+op_eq
+op_amp
+id|sanyo_2_5_in
+)paren
+(brace
+r_int
+r_int
+id|versatile_ib2_ctrl
+op_assign
+id|IO_ADDRESS
+c_func
+(paren
+id|VERSATILE_IB2_CTRL
+)paren
+suffix:semicolon
+r_int
+r_int
+id|ctrl
+suffix:semicolon
+id|ctrl
+op_assign
+id|readl
+c_func
+(paren
+id|versatile_ib2_ctrl
+)paren
+suffix:semicolon
+id|ctrl
+op_or_assign
+l_int|0x01
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|ctrl
+comma
+id|versatile_ib2_ctrl
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 )brace
 DECL|variable|framesize
 r_static
@@ -2006,7 +2421,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;Versatile PB&quot;
+l_string|&quot;Versatile&quot;
 comma
 dot
 id|check
@@ -2040,8 +2455,6 @@ id|versatile_clcd_remove
 comma
 )brace
 suffix:semicolon
-DECL|macro|AMBA_DEVICE
-mdefine_line|#define AMBA_DEVICE(name,busid,base,plat)&t;&t;&t;&bslash;&n;static struct amba_device name##_device = {&t;&t;&t;&bslash;&n;&t;.dev&t;&t;= {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.coherent_dma_mask = ~0,&t;&t;&t;&bslash;&n;&t;&t;.bus_id&t;= busid,&t;&t;&t;&t;&bslash;&n;&t;&t;.platform_data = plat,&t;&t;&t;&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.res&t;&t;= {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.start&t;= VERSATILE_##base##_BASE,&t;&t;&bslash;&n;&t;&t;.end&t;= (VERSATILE_##base##_BASE) + SZ_4K - 1,&bslash;&n;&t;&t;.flags&t;= IORESOURCE_MEM,&t;&t;&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.dma_mask&t;= ~0,&t;&t;&t;&t;&t;&bslash;&n;&t;.irq&t;&t;= base##_IRQ,&t;&t;&t;&t;&bslash;&n;&t;/* .dma&t;&t;= base##_DMA,*/&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|AACI_IRQ
 mdefine_line|#define AACI_IRQ&t;{ IRQ_AACI, NO_IRQ }
 DECL|macro|AACI_DMA
@@ -2058,18 +2471,6 @@ DECL|macro|KMI1_IRQ
 mdefine_line|#define KMI1_IRQ&t;{ IRQ_SIC_KMI1, NO_IRQ }
 DECL|macro|KMI1_DMA
 mdefine_line|#define KMI1_DMA&t;{ 0, 0 }
-DECL|macro|UART3_IRQ
-mdefine_line|#define UART3_IRQ&t;{ IRQ_SIC_UART3, NO_IRQ }
-DECL|macro|UART3_DMA
-mdefine_line|#define UART3_DMA&t;{ 0x86, 0x87 }
-DECL|macro|SCI1_IRQ
-mdefine_line|#define SCI1_IRQ&t;{ IRQ_SIC_SCI3, NO_IRQ }
-DECL|macro|SCI1_DMA
-mdefine_line|#define SCI1_DMA&t;{ 0x88, 0x89 }
-DECL|macro|MMCI1_IRQ
-mdefine_line|#define MMCI1_IRQ&t;{ IRQ_MMCI1A, IRQ_SIC_MMCI1B }
-DECL|macro|MMCI1_DMA
-mdefine_line|#define MMCI1_DMA&t;{ 0x85, 0 }
 multiline_comment|/*&n; * These devices are connected directly to the multi-layer AHB switch&n; */
 DECL|macro|SMC_IRQ
 mdefine_line|#define SMC_IRQ&t;&t;{ NO_IRQ, NO_IRQ }
@@ -2104,14 +2505,6 @@ DECL|macro|GPIO1_IRQ
 mdefine_line|#define GPIO1_IRQ&t;{ IRQ_GPIOINT1, NO_IRQ }
 DECL|macro|GPIO1_DMA
 mdefine_line|#define GPIO1_DMA&t;{ 0, 0 }
-DECL|macro|GPIO2_IRQ
-mdefine_line|#define GPIO2_IRQ&t;{ IRQ_GPIOINT2, NO_IRQ }
-DECL|macro|GPIO2_DMA
-mdefine_line|#define GPIO2_DMA&t;{ 0, 0 }
-DECL|macro|GPIO3_IRQ
-mdefine_line|#define GPIO3_IRQ&t;{ IRQ_GPIOINT3, NO_IRQ }
-DECL|macro|GPIO3_DMA
-mdefine_line|#define GPIO3_DMA&t;{ 0, 0 }
 DECL|macro|RTC_IRQ
 mdefine_line|#define RTC_IRQ&t;&t;{ IRQ_RTCINT, NO_IRQ }
 DECL|macro|RTC_DMA
@@ -2150,7 +2543,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MMC
 id|AMBA_DEVICE
 c_func
 (paren
@@ -2164,7 +2556,6 @@ op_amp
 id|mmc0_plat_data
 )paren
 suffix:semicolon
-macro_line|#endif
 id|AMBA_DEVICE
 c_func
 (paren
@@ -2189,45 +2580,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|AMBA_DEVICE
-c_func
-(paren
-id|uart3
-comma
-l_string|&quot;fpga:09&quot;
-comma
-id|UART3
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|AMBA_DEVICE
-c_func
-(paren
-id|sci1
-comma
-l_string|&quot;fpga:0a&quot;
-comma
-id|SCI1
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_MMC
-id|AMBA_DEVICE
-c_func
-(paren
-id|mmc1
-comma
-l_string|&quot;fpga:0b&quot;
-comma
-id|MMCI1
-comma
-op_amp
-id|mmc1_plat_data
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* DevChip Primecells */
 id|AMBA_DEVICE
 c_func
@@ -2329,30 +2681,6 @@ suffix:semicolon
 id|AMBA_DEVICE
 c_func
 (paren
-id|gpio2
-comma
-l_string|&quot;dev:e6&quot;
-comma
-id|GPIO2
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|AMBA_DEVICE
-c_func
-(paren
-id|gpio3
-comma
-l_string|&quot;dev:e7&quot;
-comma
-id|GPIO3
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|AMBA_DEVICE
-c_func
-(paren
 id|rtc
 comma
 l_string|&quot;dev:e8&quot;
@@ -2446,9 +2774,6 @@ op_amp
 id|uart2_device
 comma
 op_amp
-id|uart3_device
-comma
-op_amp
 id|smc_device
 comma
 op_amp
@@ -2470,12 +2795,6 @@ op_amp
 id|gpio1_device
 comma
 op_amp
-id|gpio2_device
-comma
-op_amp
-id|gpio3_device
-comma
-op_amp
 id|rtc_device
 comma
 op_amp
@@ -2487,27 +2806,18 @@ comma
 op_amp
 id|aaci_device
 comma
-macro_line|#ifdef CONFIG_MMC
 op_amp
 id|mmc0_device
 comma
-macro_line|#endif
 op_amp
 id|kmi0_device
 comma
 op_amp
 id|kmi1_device
 comma
-op_amp
-id|sci1_device
-comma
-macro_line|#ifdef CONFIG_MMC
-op_amp
-id|mmc1_device
-comma
-macro_line|#endif
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_LEDS
 DECL|macro|VA_LEDS_BASE
 mdefine_line|#define VA_LEDS_BASE (IO_ADDRESS(VERSATILE_SYS_BASE) + VERSATILE_SYS_LED_OFFSET)
 DECL|function|versatile_leds_event
@@ -2610,8 +2920,8 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif&t;/* CONFIG_LEDS */
 DECL|function|versatile_init
-r_static
 r_void
 id|__init
 id|versatile_init
@@ -2622,6 +2932,13 @@ r_void
 (brace
 r_int
 id|i
+suffix:semicolon
+id|clk_register
+c_func
+(paren
+op_amp
+id|versatile_clcd_clk
+)paren
 suffix:semicolon
 id|platform_device_register
 c_func
@@ -2676,10 +2993,12 @@ id|iomem_resource
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_LEDS
 id|leds_event
 op_assign
 id|versatile_leds_event
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * Where is the timer (VA)?&n; */
 DECL|macro|TIMER0_VA_BASE
@@ -3074,7 +3393,6 @@ id|versatile_timer_irq
 suffix:semicolon
 )brace
 DECL|variable|versatile_timer
-r_static
 r_struct
 id|sys_timer
 id|versatile_timer
@@ -3092,52 +3410,4 @@ id|versatile_gettimeoffset
 comma
 )brace
 suffix:semicolon
-id|MACHINE_START
-c_func
-(paren
-id|VERSATILE_PB
-comma
-l_string|&quot;ARM-Versatile PB&quot;
-)paren
-id|MAINTAINER
-c_func
-(paren
-l_string|&quot;ARM Ltd/Deep Blue Solutions Ltd&quot;
-)paren
-id|BOOT_MEM
-c_func
-(paren
-l_int|0x00000000
-comma
-l_int|0x101f1000
-comma
-l_int|0xf11f1000
-)paren
-id|BOOT_PARAMS
-c_func
-(paren
-l_int|0x00000100
-)paren
-id|MAPIO
-c_func
-(paren
-id|versatile_map_io
-)paren
-id|INITIRQ
-c_func
-(paren
-id|versatile_init_irq
-)paren
-dot
-id|timer
-op_assign
-op_amp
-id|versatile_timer
-comma
-id|INIT_MACHINE
-c_func
-(paren
-id|versatile_init
-)paren
-id|MACHINE_END
 eof

@@ -135,10 +135,10 @@ DECL|macro|ALWAYS_ENABLED
 mdefine_line|#define ALWAYS_ENABLED&t;&t;16
 DECL|macro|ENABLE_REG_32BIT
 mdefine_line|#define ENABLE_REG_32BIT&t;32
-DECL|macro|DOES_NOT_EXIST_ON_1510
-mdefine_line|#define DOES_NOT_EXIST_ON_1510&t;64
-DECL|macro|DOES_NOT_EXIST_ON_1610
-mdefine_line|#define DOES_NOT_EXIST_ON_1610&t;128 /* Including 1710 */
+DECL|macro|CLOCK_IN_OMAP16XX
+mdefine_line|#define CLOCK_IN_OMAP16XX&t;64
+DECL|macro|CLOCK_IN_OMAP1510
+mdefine_line|#define CLOCK_IN_OMAP1510&t;128
 multiline_comment|/* ARM_CKCTL bit shifts */
 DECL|macro|CKCTL_PERDIV_OFFSET
 mdefine_line|#define CKCTL_PERDIV_OFFSET&t;0

@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/s3c2440.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Samsung S3C2440 Mobile CPU support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *&t;24-Aug-2004 BJD  Start of s3c2440 support&n; *&t;12-Oct-2004 BJD&t; Moved clock info out to clock.c&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/s3c2440.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Samsung S3C2440 Mobile CPU support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *&t;24-Aug-2004 BJD  Start of s3c2440 support&n; *&t;12-Oct-2004 BJD&t; Moved clock info out to clock.c&n; *&t;01-Nov-2004 BJD  Fixed clock build code&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/hardware/clock.h&gt;
 macro_line|#include &lt;asm/arch/regs-clock.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
 macro_line|#include &quot;s3c2440.h&quot;
@@ -632,28 +633,28 @@ id|s3c2410_register_clock
 c_func
 (paren
 op_amp
-id|clk_ac97
+id|s3c2440_clk_ac97
 )paren
 suffix:semicolon
 id|s3c2410_register_clock
 c_func
 (paren
 op_amp
-id|clk_cam
+id|s3c2440_clk_cam
 )paren
 suffix:semicolon
 id|clk_disable
 c_func
 (paren
 op_amp
-id|clk_ac97
+id|s3c2440_clk_ac97
 )paren
 suffix:semicolon
 id|clk_disable
 c_func
 (paren
 op_amp
-id|clk_cam
+id|s3c2440_clk_cam
 )paren
 suffix:semicolon
 )brace

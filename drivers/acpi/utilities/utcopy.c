@@ -789,20 +789,20 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Whatever other type -- it is not supported&n;&t;&t; */
+multiline_comment|/* All other types are not supported */
 id|return_ACPI_STATUS
 (paren
 id|AE_SUPPORT
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Must COPY string and buffer contents */
 r_switch
 c_cond
 (paren
 id|external_object-&gt;type
 )paren
 (brace
-multiline_comment|/* Must COPY string and buffer contents */
 r_case
 id|ACPI_TYPE_STRING
 suffix:colon
@@ -825,10 +825,8 @@ op_logical_neg
 id|internal_object-&gt;string.pointer
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
-id|AE_NO_MEMORY
-)paren
+r_goto
+id|error_exit
 suffix:semicolon
 )brace
 id|ACPI_MEMCPY
@@ -863,10 +861,8 @@ op_logical_neg
 id|internal_object-&gt;buffer.pointer
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
-id|AE_NO_MEMORY
-)paren
+r_goto
+id|error_exit
 suffix:semicolon
 )brace
 id|ACPI_MEMCPY
@@ -907,6 +903,18 @@ suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_OK
+)paren
+suffix:semicolon
+id|error_exit
+suffix:colon
+id|acpi_ut_remove_reference
+(paren
+id|internal_object
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
@@ -1437,10 +1445,8 @@ id|status
 )paren
 )paren
 (brace
-r_return
-(paren
-id|status
-)paren
+r_goto
+id|error_exit
 suffix:semicolon
 )brace
 op_star
@@ -1520,15 +1526,12 @@ op_logical_neg
 id|target_object-&gt;package.elements
 )paren
 (brace
-id|ACPI_MEM_FREE
-(paren
-id|target_object
-)paren
-suffix:semicolon
-r_return
-(paren
+id|status
+op_assign
 id|AE_NO_MEMORY
-)paren
+suffix:semicolon
+r_goto
+id|error_exit
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Pass the new package object back to the package walk routine&n;&t;&t; */
@@ -1552,6 +1555,18 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+id|error_exit
+suffix:colon
+id|acpi_ut_remove_reference
+(paren
+id|target_object
+)paren
+suffix:semicolon
 r_return
 (paren
 id|status

@@ -405,6 +405,11 @@ id|status
 )paren
 )paren
 (brace
+id|acpi_ut_remove_reference
+(paren
+id|obj_desc
+)paren
+suffix:semicolon
 r_goto
 id|unlock_and_exit
 suffix:semicolon
@@ -439,6 +444,11 @@ id|status
 )paren
 )paren
 (brace
+id|acpi_ut_remove_reference
+(paren
+id|obj_desc
+)paren
+suffix:semicolon
 r_goto
 id|unlock_and_exit
 suffix:semicolon

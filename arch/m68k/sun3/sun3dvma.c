@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * linux/arch/m68k/mm/sun3dvma.c&n; *&n; * Copyright (C) 2000 Sam Creasey&n; *&n; * Contains common routines for sun3/sun3x DVMA management.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/list.h&gt;

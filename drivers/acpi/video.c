@@ -2712,7 +2712,7 @@ id|acpi_video_dir
 suffix:semicolon
 multiline_comment|/* video devices */
 r_static
-id|ssize_t
+r_int
 DECL|function|acpi_video_device_info_seq_show
 id|acpi_video_device_info_seq_show
 (paren
@@ -2885,7 +2885,7 @@ id|data
 suffix:semicolon
 )brace
 r_static
-id|ssize_t
+r_int
 DECL|function|acpi_video_device_state_seq_show
 id|acpi_video_device_state_seq_show
 (paren
@@ -3257,7 +3257,7 @@ id|count
 suffix:semicolon
 )brace
 r_static
-id|ssize_t
+r_int
 DECL|function|acpi_video_device_brightness_seq_show
 id|acpi_video_device_brightness_seq_show
 (paren
@@ -3609,7 +3609,7 @@ id|count
 suffix:semicolon
 )brace
 r_static
-id|ssize_t
+r_int
 DECL|function|acpi_video_device_EDID_seq_show
 id|acpi_video_device_EDID_seq_show
 (paren
@@ -4316,7 +4316,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* video bus */
 r_static
-id|ssize_t
+r_int
 DECL|function|acpi_video_bus_info_seq_show
 id|acpi_video_bus_info_seq_show
 (paren
@@ -4448,7 +4448,7 @@ id|data
 suffix:semicolon
 )brace
 r_static
-id|ssize_t
+r_int
 DECL|function|acpi_video_bus_ROM_seq_show
 id|acpi_video_bus_ROM_seq_show
 (paren
@@ -4553,7 +4553,7 @@ id|data
 suffix:semicolon
 )brace
 r_static
-id|ssize_t
+r_int
 DECL|function|acpi_video_bus_POST_info_seq_show
 id|acpi_video_bus_POST_info_seq_show
 (paren
@@ -4760,7 +4760,7 @@ id|data
 suffix:semicolon
 )brace
 r_static
-id|ssize_t
+r_int
 DECL|function|acpi_video_bus_POST_seq_show
 id|acpi_video_bus_POST_seq_show
 (paren
@@ -4887,7 +4887,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-id|ssize_t
+r_int
 DECL|function|acpi_video_bus_DOS_seq_show
 id|acpi_video_bus_DOS_seq_show
 (paren
@@ -7196,7 +7196,8 @@ op_logical_or
 op_logical_neg
 id|device-&gt;video
 )paren
-r_return
+id|return_VALUE
+c_func
 (paren
 op_minus
 id|ENOENT

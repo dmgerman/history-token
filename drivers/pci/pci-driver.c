@@ -1307,6 +1307,7 @@ comma
 id|dev_state
 )paren
 suffix:semicolon
+r_else
 id|pci_save_state
 c_func
 (paren

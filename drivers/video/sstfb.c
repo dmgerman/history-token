@@ -4,12 +4,6 @@ multiline_comment|/*&n; * misc notes, TODOs, toASKs, and deep thoughts&n;&n;-TOD
 multiline_comment|/*&n; * debug info&n; * SST_DEBUG : enable debugging&n; * SST_DEBUG_REG : debug registers&n; *   0 :  no debug&n; *   1 : dac calls, [un]set_bits, FbiInit&n; *   2 : insane debug level (log every register read/write)&n; * SST_DEBUG_FUNC : functions&n; *   0 : no debug&n; *   1 : function call / debug ioctl&n; *   2 : variables&n; *   3 : flood . you don&squot;t want to do that. trust me.&n; * SST_DEBUG_VAR : debug display/var structs&n; *   0 : no debug&n; *   1 : dumps display, fb_var&n; *&n; * sstfb specific ioctls:&n; *   &t;&t;toggle vga (0x46db) : toggle vga_pass_through&n; *   &t;&t;fill fb    (0x46dc) : fills fb&n; *   &t;&t;test disp  (0x46de) : draws a test image&n; */
 DECL|macro|SST_DEBUG
 macro_line|#undef SST_DEBUG
-DECL|macro|SST_DEBUG_REG
-mdefine_line|#define SST_DEBUG_REG   0
-DECL|macro|SST_DEBUG_FUNC
-mdefine_line|#define SST_DEBUG_FUNC  0
-DECL|macro|SST_DEBUG_VAR
-mdefine_line|#define SST_DEBUG_VAR   0
 multiline_comment|/* enable 24/32 bpp functions ? (completely untested!) */
 DECL|macro|EN_24_32_BPP
 macro_line|#undef EN_24_32_BPP
@@ -774,7 +768,9 @@ id|u32
 id|__sst_read
 c_func
 (paren
-id|u_long
+id|u8
+id|__iomem
+op_star
 id|vbase
 comma
 id|u32
@@ -811,7 +807,9 @@ r_void
 id|__sst_write
 c_func
 (paren
-id|u_long
+id|u8
+id|__iomem
+op_star
 id|vbase
 comma
 id|u32
@@ -847,7 +845,9 @@ r_void
 id|__sst_set_bits
 c_func
 (paren
-id|u_long
+id|u8
+id|__iomem
+op_star
 id|vbase
 comma
 id|u32
@@ -893,7 +893,9 @@ r_void
 id|__sst_unset_bits
 c_func
 (paren
-id|u_long
+id|u8
+id|__iomem
+op_star
 id|vbase
 comma
 id|u32
@@ -942,7 +944,9 @@ r_int
 id|__sst_wait_idle
 c_func
 (paren
-id|u_long
+id|u8
+id|__iomem
+op_star
 id|vbase
 )paren
 (brace
@@ -1019,7 +1023,9 @@ id|u8
 id|__sst_dac_read
 c_func
 (paren
-id|u_long
+id|u8
+id|__iomem
+op_star
 id|vbase
 comma
 id|u8
@@ -1091,7 +1097,9 @@ r_void
 id|__sst_dac_write
 c_func
 (paren
-id|u_long
+id|u8
+id|__iomem
+op_star
 id|vbase
 comma
 id|u8
@@ -1147,7 +1155,9 @@ id|u32
 id|__dac_i_read
 c_func
 (paren
-id|u_long
+id|u8
+id|__iomem
+op_star
 id|vbase
 comma
 id|u8
@@ -1197,7 +1207,9 @@ r_void
 id|__dac_i_write
 c_func
 (paren
-id|u_long
+id|u8
+id|__iomem
+op_star
 id|vbase
 comma
 id|u8
@@ -4013,12 +4025,11 @@ op_star
 id|memsize
 )paren
 (brace
-id|u_long
+id|u8
+id|__iomem
+op_star
 id|fbbase_virt
 op_assign
-(paren
-id|u_long
-)paren
 id|info-&gt;screen_base
 suffix:semicolon
 multiline_comment|/* force memsize */
@@ -6789,9 +6800,6 @@ suffix:semicolon
 )brace
 id|par-&gt;mmio_vbase
 op_assign
-(paren
-id|u_long
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -6951,11 +6959,6 @@ id|info-&gt;fbops
 op_assign
 op_amp
 id|sstfb_ops
-suffix:semicolon
-id|info-&gt;currcon
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 id|info-&gt;pseudo_palette
 op_assign
@@ -7152,10 +7155,6 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|par-&gt;mmio_vbase
 )paren
 suffix:semicolon
@@ -7254,10 +7253,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|par-&gt;mmio_vbase
 )paren
 suffix:semicolon
@@ -7796,14 +7791,11 @@ op_star
 id|rect
 )paren
 (brace
-r_int
-r_int
+id|u8
+id|__iomem
+op_star
 id|fbbase_virt
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|info-&gt;screen_base
 suffix:semicolon
 r_int
@@ -7831,8 +7823,9 @@ id|height
 op_assign
 id|rect-&gt;height
 suffix:semicolon
-r_int
-r_int
+id|u8
+id|__iomem
+op_star
 id|p
 suffix:semicolon
 r_if

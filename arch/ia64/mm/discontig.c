@@ -2307,6 +2307,7 @@ suffix:semicolon
 multiline_comment|/**&n; * count_node_pages - callback to build per-node memory info structures&n; * @start: physical start of range&n; * @len: length of range&n; * @node: node where this range resides&n; *&n; * Each node has it&squot;s own number of physical pages, DMAable pages, start, and&n; * end page frame number.  This routine will be called by call_pernode_memory()&n; * for each piece of usable memory and will setup these values for each node.&n; * Very similar to build_maps().&n; */
 DECL|function|count_node_pages
 r_static
+id|__init
 r_int
 id|count_node_pages
 c_func
@@ -2453,6 +2454,7 @@ suffix:semicolon
 multiline_comment|/**&n; * paging_init - setup page tables&n; *&n; * paging_init() sets up the page tables for each node of the system and frees&n; * the bootmem allocator memory for general use.&n; */
 DECL|function|paging_init
 r_void
+id|__init
 id|paging_init
 c_func
 (paren

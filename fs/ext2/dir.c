@@ -1312,7 +1312,13 @@ id|PAGE_CACHE_SIZE
 op_minus
 id|offset
 suffix:semicolon
-r_continue
+id|ret
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+r_goto
+id|done
 suffix:semicolon
 )brace
 id|kaddr

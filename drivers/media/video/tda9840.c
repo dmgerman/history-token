@@ -1,11 +1,7 @@
-multiline_comment|/*&n;    tda9840.h - i2c-driver for the tda9840 by SGS Thomson   &n;&n;    Copyright (C) 1998-2003 Michael Hunold &lt;michael@mihu.de&gt;&n;&n;    The tda9840 is a stereo/dual sound processor with digital&n;    identification. It can be found at address 0x84 on the i2c-bus.&n;&n;    For detailed informations download the specifications directly&n;    from SGS Thomson at http://www.st.com&n;    &n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-macro_line|#include &lt;linux/version.h&gt;
+multiline_comment|/*&n;    tda9840 - i2c-driver for the tda9840 by SGS Thomson&n;&n;    Copyright (C) 1998-2003 Michael Hunold &lt;michael@mihu.de&gt;&n;&n;    The tda9840 is a stereo/dual sound processor with digital&n;    identification. It can be found at address 0x84 on the i2c-bus.&n;&n;    For detailed informations download the specifications directly&n;    from SGS Thomson at http://www.st.com&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;  */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/poll.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;tda9840.h&quot;
 DECL|variable|debug
 r_static
@@ -15,16 +11,26 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* insmod parameter */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;Turn on/off device debugging (default:off).&quot;
 )paren
 suffix:semicolon
 DECL|macro|dprintk
-mdefine_line|#define dprintk&t;if (debug) printk
+mdefine_line|#define dprintk(args...) &bslash;&n;            do { if (debug) { printk(&quot;%s: %s()[%d]: &quot;,__stringify(KBUILD_MODNAME), __FUNCTION__, __LINE__); printk(args); } } while (0)
 DECL|macro|SWITCH
 mdefine_line|#define&t;SWITCH&t;&t;0x00
 DECL|macro|LEVEL_ADJUST
@@ -63,6 +69,18 @@ suffix:semicolon
 multiline_comment|/* magic definition of all other variables and things */
 id|I2C_CLIENT_INSMOD
 suffix:semicolon
+DECL|variable|driver
+r_static
+r_struct
+id|i2c_driver
+id|driver
+suffix:semicolon
+DECL|variable|client_template
+r_static
+r_struct
+id|i2c_client
+id|client_template
+suffix:semicolon
 multiline_comment|/* unique ID allocation */
 DECL|variable|tda9840_id
 r_static
@@ -71,16 +89,10 @@ id|tda9840_id
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|driver
-r_static
-r_struct
-id|i2c_driver
-id|driver
-suffix:semicolon
-DECL|function|tda9840_command
+DECL|function|command
 r_static
 r_int
-id|tda9840_command
+id|command
 c_func
 (paren
 r_struct
@@ -99,19 +111,7 @@ id|arg
 (brace
 r_int
 id|result
-op_assign
-l_int|0
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|cmd
-)paren
-(brace
-r_case
-id|TDA9840_SWITCH
-suffix:colon
-(brace
 r_int
 id|byte
 op_assign
@@ -122,10 +122,19 @@ op_star
 )paren
 id|arg
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|cmd
+)paren
+(brace
+r_case
+id|TDA9840_SWITCH
+suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;tda9840.o: TDA9840_SWITCH: 0x%02x&bslash;n&quot;
+l_string|&quot;TDA9840_SWITCH: 0x%02x&bslash;n&quot;
 comma
 id|byte
 )paren
@@ -171,12 +180,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-l_int|0
-op_ne
-(paren
 id|result
 op_assign
 id|i2c_smbus_write_byte_data
@@ -188,42 +191,29 @@ id|SWITCH
 comma
 id|byte
 )paren
-)paren
-)paren
-(brace
-id|printk
-c_func
+suffix:semicolon
+r_if
+c_cond
 (paren
-l_string|&quot;tda9840.o: TDA9840_SWITCH error.&bslash;n&quot;
+id|result
 )paren
-suffix:semicolon
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_case
-id|TDA9840_LEVEL_ADJUST
-suffix:colon
-(brace
-r_int
-id|byte
-op_assign
-op_star
-(paren
-r_int
-op_star
-)paren
-id|arg
-suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;tda9840.o: TDA9840_LEVEL_ADJUST: %d&bslash;n&quot;
+l_string|&quot;i2c_smbus_write_byte() failed, ret:%d&bslash;n&quot;
+comma
+id|result
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|TDA9840_LEVEL_ADJUST
+suffix:colon
+id|dprintk
+c_func
+(paren
+l_string|&quot;TDA9840_LEVEL_ADJUST: %d&bslash;n&quot;
 comma
 id|byte
 )paren
@@ -267,12 +257,6 @@ op_assign
 op_minus
 id|byte
 suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|0
-op_ne
-(paren
 id|result
 op_assign
 id|i2c_smbus_write_byte_data
@@ -284,42 +268,29 @@ id|LEVEL_ADJUST
 comma
 id|byte
 )paren
-)paren
-)paren
-(brace
-id|printk
-c_func
+suffix:semicolon
+r_if
+c_cond
 (paren
-l_string|&quot;tda9840.o: TDA9840_LEVEL_ADJUST error.&bslash;n&quot;
+id|result
 )paren
-suffix:semicolon
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_case
-id|TDA9840_STEREO_ADJUST
-suffix:colon
-(brace
-r_int
-id|byte
-op_assign
-op_star
-(paren
-r_int
-op_star
-)paren
-id|arg
-suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;tda9840.o: TDA9840_STEREO_ADJUST: %d&bslash;n&quot;
+l_string|&quot;i2c_smbus_write_byte() failed, ret:%d&bslash;n&quot;
+comma
+id|result
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|TDA9840_STEREO_ADJUST
+suffix:colon
+id|dprintk
+c_func
+(paren
+l_string|&quot;TDA9840_STEREO_ADJUST: %d&bslash;n&quot;
 comma
 id|byte
 )paren
@@ -363,12 +334,6 @@ op_assign
 op_minus
 id|byte
 suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|0
-op_ne
-(paren
 id|result
 op_assign
 id|i2c_smbus_write_byte_data
@@ -380,40 +345,25 @@ id|STEREO_ADJUST
 comma
 id|byte
 )paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;tda9840.o: TDA9840_STEREO_ADJUST error.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_case
-id|TDA9840_DETECT
-suffix:colon
-(brace
-r_int
-id|byte
-op_assign
-l_int|0x0
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_minus
-l_int|1
-op_eq
+id|result
+)paren
+id|dprintk
+c_func
 (paren
+l_string|&quot;i2c_smbus_write_byte() failed, ret:%d&bslash;n&quot;
+comma
+id|result
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|TDA9840_DETECT
+suffix:colon
 id|byte
 op_assign
 id|i2c_smbus_read_byte_data
@@ -423,18 +373,25 @@ id|client
 comma
 id|STEREO_ADJUST
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|byte
+op_eq
+op_minus
+l_int|1
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
-l_string|&quot;tda9840.o: TDA9840_DETECT error while reading.&bslash;n&quot;
+l_string|&quot;i2c_smbus_read_byte_data() failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 op_minus
-id|EFAULT
+id|EIO
 suffix:semicolon
 )brace
 r_if
@@ -452,18 +409,18 @@ l_int|0x80
 id|dprintk
 c_func
 (paren
-l_string|&quot;tda9840.o: TDA9840_DETECT, register contents invalid.&bslash;n&quot;
+l_string|&quot;TDA9840_DETECT: register contents invalid&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 op_minus
-id|EFAULT
+id|EINVAL
 suffix:semicolon
 )brace
 id|dprintk
 c_func
 (paren
-l_string|&quot;tda9840.o: TDA9840_DETECT, result: 0x%02x (original byte)&bslash;n&quot;
+l_string|&quot;TDA9840_DETECT: byte: 0x%02x&bslash;n&quot;
 comma
 id|byte
 )paren
@@ -479,25 +436,13 @@ op_rshift
 l_int|5
 )paren
 suffix:semicolon
-)brace
 r_case
 id|TDA9840_TEST
 suffix:colon
-(brace
-r_int
-id|byte
-op_assign
-op_star
-(paren
-r_int
-op_star
-)paren
-id|arg
-suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;tda9840.o: TDA9840_TEST: 0x%02x&bslash;n&quot;
+l_string|&quot;TDA9840_TEST: 0x%02x&bslash;n&quot;
 comma
 id|byte
 )paren
@@ -507,12 +452,6 @@ id|byte
 op_and_assign
 l_int|0x3
 suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|0
-op_ne
-(paren
 id|result
 op_assign
 id|i2c_smbus_write_byte_data
@@ -524,24 +463,22 @@ id|TEST
 comma
 id|byte
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
 )paren
-)paren
-(brace
-id|printk
+id|dprintk
 c_func
 (paren
-l_string|&quot;tda9840.o: TDA9840_TEST error.&bslash;n&quot;
+l_string|&quot;i2c_smbus_write_byte() failed, ret:%d&bslash;n&quot;
+comma
+id|result
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EFAULT
+r_break
 suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_default
 suffix:colon
 r_return
@@ -549,14 +486,23 @@ op_minus
 id|ENOIOCTLCMD
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|result
+)paren
+r_return
+op_minus
+id|EIO
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|tda9840_detect
+DECL|function|detect
 r_static
 r_int
-id|tda9840_detect
+id|detect
 c_func
 (paren
 r_struct
@@ -633,7 +579,7 @@ id|client
 id|printk
 c_func
 (paren
-l_string|&quot;tda9840.o: not enough kernel memory.&bslash;n&quot;
+l_string|&quot;not enough kernel memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -641,12 +587,14 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|memset
+multiline_comment|/* fill client structure */
+id|memcpy
 c_func
 (paren
 id|client
 comma
-l_int|0
+op_amp
+id|client_template
 comma
 r_sizeof
 (paren
@@ -655,25 +603,10 @@ id|i2c_client
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* fill client structure */
-id|sprintf
-c_func
-(paren
-id|client-&gt;name
-comma
-l_string|&quot;tda9840 (0x%02x)&quot;
-comma
-id|address
-)paren
-suffix:semicolon
 id|client-&gt;id
 op_assign
 id|tda9840_id
 op_increment
-suffix:semicolon
-id|client-&gt;flags
-op_assign
-l_int|0
 suffix:semicolon
 id|client-&gt;addr
 op_assign
@@ -682,19 +615,6 @@ suffix:semicolon
 id|client-&gt;adapter
 op_assign
 id|adapter
-suffix:semicolon
-id|client-&gt;driver
-op_assign
-op_amp
-id|driver
-suffix:semicolon
-id|i2c_set_clientdata
-c_func
-(paren
-id|client
-comma
-l_int|NULL
-)paren
 suffix:semicolon
 multiline_comment|/* tell the i2c layer a new client has arrived */
 r_if
@@ -728,15 +648,9 @@ id|byte
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|0
-op_ne
-(paren
 id|result
 op_assign
-id|tda9840_command
+id|command
 c_func
 (paren
 id|client
@@ -746,27 +660,10 @@ comma
 op_amp
 id|byte
 )paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;tda9840.o: could not initialize ic #1. continuing anyway. (result:%d)&bslash;n&quot;
-comma
-id|result
-)paren
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-l_int|0
-op_ne
-(paren
 id|result
-op_assign
-id|tda9840_command
+op_add_assign
+id|command
 c_func
 (paren
 id|client
@@ -776,31 +673,14 @@ comma
 op_amp
 id|byte
 )paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;tda9840.o: could not initialize ic #2. continuing anyway. (result:%d)&bslash;n&quot;
-comma
-id|result
-)paren
 suffix:semicolon
-)brace
 id|byte
 op_assign
 id|TDA9840_SET_MONO
 suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|0
-op_ne
-(paren
 id|result
 op_assign
-id|tda9840_command
+id|command
 c_func
 (paren
 id|client
@@ -810,25 +690,29 @@ comma
 op_amp
 id|byte
 )paren
-)paren
-)paren
-(brace
-id|printk
-c_func
+suffix:semicolon
+r_if
+c_cond
 (paren
-l_string|&quot;tda9840.o: could not initialize ic #3. continuing anyway. (result:%d)&bslash;n&quot;
-comma
 id|result
 )paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;could not initialize tda9840&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|printk
 c_func
 (paren
-l_string|&quot;tda9840.o: detected @ 0x%02x on adapter %s&bslash;n&quot;
+l_string|&quot;tda9840: detected @ 0x%02x on adapter %s&bslash;n&quot;
 comma
-l_int|2
-op_star
 id|address
 comma
 op_amp
@@ -842,10 +726,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|tda9840_attach
+DECL|function|attach
 r_static
 r_int
-id|tda9840_attach
+id|attach
 c_func
 (paren
 r_struct
@@ -866,7 +750,7 @@ id|I2C_ALGO_SAA7146
 id|dprintk
 c_func
 (paren
-l_string|&quot;tda9840.o: refusing to probe on unknown adapter [name=&squot;%s&squot;,id=0x%x]&bslash;n&quot;
+l_string|&quot;refusing to probe on unknown adapter [name=&squot;%s&squot;,id=0x%x]&bslash;n&quot;
 comma
 id|adapter-&gt;name
 comma
@@ -888,14 +772,14 @@ op_amp
 id|addr_data
 comma
 op_amp
-id|tda9840_detect
+id|detect
 )paren
 suffix:semicolon
 )brace
-DECL|function|tda9840_detach
+DECL|function|detach
 r_static
 r_int
-id|tda9840_detach
+id|detach
 c_func
 (paren
 r_struct
@@ -905,36 +789,14 @@ id|client
 )paren
 (brace
 r_int
-id|err
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|0
-op_ne
-(paren
-id|err
+id|ret
 op_assign
 id|i2c_detach_client
 c_func
 (paren
 id|client
 )paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;tda9840.o: Client deregistration failed, client not detached.&bslash;n&quot;
-)paren
 suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
 id|kfree
 c_func
 (paren
@@ -942,7 +804,7 @@ id|client
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 DECL|variable|driver
@@ -960,7 +822,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;tda9840 driver&quot;
+l_string|&quot;tda9840&quot;
 comma
 dot
 id|id
@@ -975,25 +837,46 @@ comma
 dot
 id|attach_adapter
 op_assign
-id|tda9840_attach
+id|attach
 comma
 dot
 id|detach_client
 op_assign
-id|tda9840_detach
+id|detach
 comma
 dot
 id|command
 op_assign
-id|tda9840_command
+id|command
 comma
 )brace
 suffix:semicolon
-DECL|function|tda9840_init_module
+DECL|variable|client_template
+r_static
+r_struct
+id|i2c_client
+id|client_template
+op_assign
+(brace
+id|I2C_DEVNAME
+c_func
+(paren
+l_string|&quot;tda9840&quot;
+)paren
+comma
+dot
+id|driver
+op_assign
+op_amp
+id|driver
+comma
+)brace
+suffix:semicolon
+DECL|function|this_module_init
 r_static
 r_int
 id|__init
-id|tda9840_init_module
+id|this_module_init
 c_func
 (paren
 r_void
@@ -1008,11 +891,11 @@ id|driver
 )paren
 suffix:semicolon
 )brace
-DECL|function|tda9840_cleanup_module
+DECL|function|this_module_exit
 r_static
 r_void
 id|__exit
-id|tda9840_cleanup_module
+id|this_module_exit
 c_func
 (paren
 r_void
@@ -1026,18 +909,18 @@ id|driver
 )paren
 suffix:semicolon
 )brace
-DECL|variable|tda9840_init_module
+DECL|variable|this_module_init
 id|module_init
 c_func
 (paren
-id|tda9840_init_module
+id|this_module_init
 )paren
 suffix:semicolon
-DECL|variable|tda9840_cleanup_module
+DECL|variable|this_module_exit
 id|module_exit
 c_func
 (paren
-id|tda9840_cleanup_module
+id|this_module_exit
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR

@@ -13,7 +13,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * Set of msr bits that gdb can change on behalf of a process.&n; */
-macro_line|#if defined(CONFIG_4xx) || defined(CONFIG_BOOKE)
+macro_line|#if defined(CONFIG_40x) || defined(CONFIG_BOOKE)
 DECL|macro|MSR_DEBUGCHANGE
 mdefine_line|#define MSR_DEBUGCHANGE&t;0
 macro_line|#else
@@ -766,14 +766,17 @@ op_ne
 l_int|NULL
 )paren
 (brace
-macro_line|#if defined(CONFIG_4xx) || defined(CONFIG_BOOKE)
+macro_line|#if defined(CONFIG_40x) || defined(CONFIG_BOOKE)
 id|task-&gt;thread.dbcr0
 op_assign
 id|DBCR0_IDM
 op_or
 id|DBCR0_IC
 suffix:semicolon
-multiline_comment|/* MSR.DE should already be set */
+id|regs-&gt;msr
+op_or_assign
+id|MSR_DE
+suffix:semicolon
 macro_line|#else
 id|regs-&gt;msr
 op_or_assign
@@ -810,10 +813,15 @@ op_ne
 l_int|NULL
 )paren
 (brace
-macro_line|#if defined(CONFIG_4xx) || defined(CONFIG_BOOKE)
+macro_line|#if defined(CONFIG_40x) || defined(CONFIG_BOOKE)
 id|task-&gt;thread.dbcr0
 op_assign
 l_int|0
+suffix:semicolon
+id|regs-&gt;msr
+op_and_assign
+op_complement
+id|MSR_DE
 suffix:semicolon
 macro_line|#else
 id|regs-&gt;msr

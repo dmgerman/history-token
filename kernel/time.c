@@ -1785,13 +1785,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|do_settimeofday
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|do_settimeofday
-)paren
-suffix:semicolon
 DECL|function|do_gettimeofday
 r_void
 id|do_gettimeofday
@@ -1940,13 +1933,6 @@ id|NSEC_PER_USEC
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|variable|getnstimeofday
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|getnstimeofday
-)paren
-suffix:semicolon
 macro_line|#if (BITS_PER_LONG &lt; 64)
 DECL|function|get_jiffies_64
 id|u64

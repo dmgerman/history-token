@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 id|MODULE_AUTHOR
@@ -380,6 +381,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * We try to avoid enabling the hardware if it&squot;s not&n; * there, but we don&squot;t know how to test. But we do know&n; * that the PC110 is not a PCI system. So if we find any&n; * PCI devices in the machine, we don&squot;t have a PC110.&n; */
 DECL|function|pc110pad_init
 r_static
 r_int
@@ -390,6 +392,40 @@ c_func
 r_void
 )paren
 (brace
+r_struct
+id|pci_dev
+op_star
+id|dev
+suffix:semicolon
+id|dev
+op_assign
+id|pci_get_device
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev
+)paren
+(brace
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOENT
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

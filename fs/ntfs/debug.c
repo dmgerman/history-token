@@ -453,8 +453,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;NTFS-fs DEBUG: Dumping runlist (values &quot;
-l_string|&quot;in hex):&bslash;n&quot;
+l_string|&quot;NTFS-fs DEBUG: Dumping runlist (values in hex):&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if

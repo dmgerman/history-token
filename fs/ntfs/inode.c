@@ -1004,6 +1004,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|ntfs_destroy_extent_inode
+r_static
 r_void
 id|ntfs_destroy_extent_inode
 c_func
@@ -1722,8 +1723,7 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;Inode is not in use! You should &quot;
-l_string|&quot;run chkdsk.&quot;
+l_string|&quot;Inode is not in use!&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1741,8 +1741,7 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;Inode is an extent inode! You should &quot;
-l_string|&quot;run chkdsk.&quot;
+l_string|&quot;Inode is an extent inode!&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1995,7 +1994,7 @@ c_func
 id|vi-&gt;i_sb
 comma
 l_string|&quot;Failed to lookup attribute list &quot;
-l_string|&quot;attribute. You should run chkdsk.&quot;
+l_string|&quot;attribute.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2052,9 +2051,7 @@ c_func
 id|vi-&gt;i_sb
 comma
 l_string|&quot;Attribute list attribute is &quot;
-l_string|&quot;compressed/encrypted/sparse. Not &quot;
-l_string|&quot;allowed. Corrupt inode. You should &quot;
-l_string|&quot;run chkdsk.&quot;
+l_string|&quot;compressed/encrypted/sparse.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2130,9 +2127,7 @@ c_func
 id|vi-&gt;i_sb
 comma
 l_string|&quot;Attribute list has non &quot;
-l_string|&quot;zero lowest_vcn. Inode is &quot;
-l_string|&quot;corrupt. You should run &quot;
-l_string|&quot;chkdsk.&quot;
+l_string|&quot;zero lowest_vcn.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2180,12 +2175,7 @@ c_func
 id|vi-&gt;i_sb
 comma
 l_string|&quot;Mapping pairs &quot;
-l_string|&quot;decompression failed with &quot;
-l_string|&quot;error code %i. Corrupt &quot;
-l_string|&quot;attribute list in inode.&quot;
-comma
-op_minus
-id|err
+l_string|&quot;decompression failed.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2411,16 +2401,60 @@ multiline_comment|/* Set up the state. */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|ctx-&gt;attr-&gt;non_resident
+)paren
 )paren
 (brace
 id|ntfs_error
 c_func
 (paren
-id|vi-&gt;i_sb
+id|vol-&gt;sb
 comma
-l_string|&quot;$INDEX_ROOT attribute is &quot;
-l_string|&quot;not resident. Not allowed.&quot;
+l_string|&quot;$INDEX_ROOT attribute is not &quot;
+l_string|&quot;resident.&quot;
+)paren
+suffix:semicolon
+r_goto
+id|unm_err_out
+suffix:semicolon
+)brace
+multiline_comment|/* Ensure the attribute name is placed before the value. */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|ctx-&gt;attr-&gt;name_length
+op_logical_and
+(paren
+id|le16_to_cpu
+c_func
+(paren
+id|ctx-&gt;attr-&gt;name_offset
+)paren
+op_ge
+id|le16_to_cpu
+c_func
+(paren
+id|ctx-&gt;attr-&gt;data.resident
+dot
+id|value_offset
+)paren
+)paren
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|vol-&gt;sb
+comma
+l_string|&quot;$INDEX_ROOT attribute name is &quot;
+l_string|&quot;placed after the attribute value.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2463,8 +2497,7 @@ c_func
 id|vi-&gt;i_sb
 comma
 l_string|&quot;Found encrypted and &quot;
-l_string|&quot;compressed attribute. Not &quot;
-l_string|&quot;allowed.&quot;
+l_string|&quot;compressed attribute.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2601,7 +2634,7 @@ c_func
 id|vi-&gt;i_sb
 comma
 l_string|&quot;Indexed attribute is not &quot;
-l_string|&quot;$FILE_NAME. Not allowed.&quot;
+l_string|&quot;$FILE_NAME.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2622,7 +2655,7 @@ c_func
 id|vi-&gt;i_sb
 comma
 l_string|&quot;Index collation rule is not &quot;
-l_string|&quot;COLLATION_FILE_NAME. Not allowed.&quot;
+l_string|&quot;COLLATION_FILE_NAME.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2683,7 +2716,7 @@ id|vi-&gt;i_sb
 comma
 l_string|&quot;Index block size (%u) &gt; &quot;
 l_string|&quot;PAGE_CACHE_SIZE (%ld) is not &quot;
-l_string|&quot;supported. Sorry.&quot;
+l_string|&quot;supported.  Sorry.&quot;
 comma
 id|ni-&gt;itype.index.block_size
 comma
@@ -2714,7 +2747,7 @@ id|vi-&gt;i_sb
 comma
 l_string|&quot;Index block size (%u) &lt; &quot;
 l_string|&quot;NTFS_BLOCK_SIZE (%i) is not &quot;
-l_string|&quot;supported. Sorry.&quot;
+l_string|&quot;supported.  Sorry.&quot;
 comma
 id|ni-&gt;itype.index.block_size
 comma
@@ -2894,8 +2927,7 @@ id|vi-&gt;i_sb
 comma
 l_string|&quot;$INDEX_ALLOCATION &quot;
 l_string|&quot;attribute is not present but &quot;
-l_string|&quot;$INDEX_ROOT indicated it &quot;
-l_string|&quot;is.&quot;
+l_string|&quot;$INDEX_ROOT indicated it is.&quot;
 )paren
 suffix:semicolon
 r_else
@@ -2927,6 +2959,47 @@ id|vi-&gt;i_sb
 comma
 l_string|&quot;$INDEX_ALLOCATION attribute &quot;
 l_string|&quot;is resident.&quot;
+)paren
+suffix:semicolon
+r_goto
+id|unm_err_out
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t; * Ensure the attribute name is placed before the mapping pairs&n;&t;&t; * array.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|ctx-&gt;attr-&gt;name_length
+op_logical_and
+(paren
+id|le16_to_cpu
+c_func
+(paren
+id|ctx-&gt;attr-&gt;name_offset
+)paren
+op_ge
+id|le16_to_cpu
+c_func
+(paren
+id|ctx-&gt;attr-&gt;data.non_resident
+dot
+id|mapping_pairs_offset
+)paren
+)paren
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|vol-&gt;sb
+comma
+l_string|&quot;$INDEX_ALLOCATION attribute name &quot;
+l_string|&quot;is placed after the mapping pairs &quot;
+l_string|&quot;array.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3009,8 +3082,7 @@ id|vi-&gt;i_sb
 comma
 l_string|&quot;First extent of &quot;
 l_string|&quot;$INDEX_ALLOCATION attribute has non &quot;
-l_string|&quot;zero lowest_vcn. Inode is corrupt. &quot;
-l_string|&quot;You should run chkdsk.&quot;
+l_string|&quot;zero lowest_vcn.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3322,8 +3394,7 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;$DATA attribute is &quot;
-l_string|&quot;missing.&quot;
+l_string|&quot;$DATA attribute is missing.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3433,10 +3504,8 @@ id|vi-&gt;i_sb
 comma
 l_string|&quot;Found &quot;
 l_string|&quot;nonstandard compression unit &quot;
-l_string|&quot;(%u instead of 4). Cannot &quot;
-l_string|&quot;handle this. This might &quot;
-l_string|&quot;indicate corruption so you &quot;
-l_string|&quot;should run chkdsk.&quot;
+l_string|&quot;(%u instead of 4).  Cannot &quot;
+l_string|&quot;handle this.&quot;
 comma
 id|ctx-&gt;attr-&gt;data.non_resident
 dot
@@ -3537,8 +3606,7 @@ id|vi-&gt;i_sb
 comma
 l_string|&quot;First extent of $DATA &quot;
 l_string|&quot;attribute has non zero &quot;
-l_string|&quot;lowest_vcn. Inode is corrupt. &quot;
-l_string|&quot;You should run chkdsk.&quot;
+l_string|&quot;lowest_vcn.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3747,12 +3815,11 @@ suffix:colon
 id|ntfs_error
 c_func
 (paren
-id|vi-&gt;i_sb
+id|vol-&gt;sb
 comma
-l_string|&quot;Failed with error code %i. Marking inode 0x%lx &quot;
-l_string|&quot;as bad.&quot;
+l_string|&quot;Failed with error code %i.  Marking corrupt &quot;
+l_string|&quot;inode 0x%lx as bad.  Run chkdsk.&quot;
 comma
-op_minus
 id|err
 comma
 id|vi-&gt;i_ino
@@ -3762,6 +3829,25 @@ id|make_bad_inode
 c_func
 (paren
 id|vi
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_ne
+op_minus
+id|EOPNOTSUPP
+op_logical_and
+id|err
+op_ne
+op_minus
+id|ENOMEM
+)paren
+id|NVolSetErrors
+c_func
+(paren
+id|vol
 )paren
 suffix:semicolon
 r_return
@@ -3991,6 +4077,46 @@ op_logical_neg
 id|ctx-&gt;attr-&gt;non_resident
 )paren
 (brace
+multiline_comment|/* Ensure the attribute name is placed before the value. */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|ctx-&gt;attr-&gt;name_length
+op_logical_and
+(paren
+id|le16_to_cpu
+c_func
+(paren
+id|ctx-&gt;attr-&gt;name_offset
+)paren
+op_ge
+id|le16_to_cpu
+c_func
+(paren
+id|ctx-&gt;attr-&gt;data.resident
+dot
+id|value_offset
+)paren
+)paren
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|vol-&gt;sb
+comma
+l_string|&quot;Attribute name is placed after &quot;
+l_string|&quot;the attribute value.&quot;
+)paren
+suffix:semicolon
+r_goto
+id|unm_err_out
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4010,17 +4136,9 @@ id|vi-&gt;i_sb
 comma
 l_string|&quot;Found mst protected attribute &quot;
 l_string|&quot;or attribute with non-zero flags but &quot;
-l_string|&quot;the attribute is resident (mft_no &quot;
-l_string|&quot;0x%lx, type 0x%x, name_len %i). &quot;
-l_string|&quot;Please report you saw this message &quot;
-l_string|&quot;to linux-ntfs-dev@lists.&quot;
-l_string|&quot;sourceforge.net&quot;
-comma
-id|vi-&gt;i_ino
-comma
-id|ni-&gt;type
-comma
-id|ni-&gt;name_len
+l_string|&quot;the attribute is resident.  Please &quot;
+l_string|&quot;report you saw this message to &quot;
+l_string|&quot;linux-ntfs-dev@lists.sourceforge.net&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4049,6 +4167,46 @@ c_func
 id|ni
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Ensure the attribute name is placed before the mapping pairs&n;&t;&t; * array.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|ctx-&gt;attr-&gt;name_length
+op_logical_and
+(paren
+id|le16_to_cpu
+c_func
+(paren
+id|ctx-&gt;attr-&gt;name_offset
+)paren
+op_ge
+id|le16_to_cpu
+c_func
+(paren
+id|ctx-&gt;attr-&gt;data.non_resident
+dot
+id|mapping_pairs_offset
+)paren
+)paren
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|vol-&gt;sb
+comma
+l_string|&quot;Attribute name is placed after &quot;
+l_string|&quot;the mapping pairs array.&quot;
+)paren
+suffix:semicolon
+r_goto
+id|unm_err_out
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4074,17 +4232,10 @@ id|vi-&gt;i_sb
 comma
 l_string|&quot;Found mst protected &quot;
 l_string|&quot;attribute but the attribute &quot;
-l_string|&quot;is compressed (mft_no 0x%lx, &quot;
-l_string|&quot;type 0x%x, name_len %i). &quot;
-l_string|&quot;Please report you saw this &quot;
-l_string|&quot;message to linux-ntfs-dev@&quot;
-l_string|&quot;lists.sourceforge.net&quot;
-comma
-id|vi-&gt;i_ino
-comma
-id|ni-&gt;type
-comma
-id|ni-&gt;name_len
+l_string|&quot;is compressed.  Please report &quot;
+l_string|&quot;you saw this message to &quot;
+l_string|&quot;linux-ntfs-dev@lists.&quot;
+l_string|&quot;sourceforge.net&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4120,19 +4271,12 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;Found compressed non-&quot;
-l_string|&quot;data or named data attribute &quot;
-l_string|&quot;(mft_no 0x%lx, type 0x%x, &quot;
-l_string|&quot;name_len %i). Please report &quot;
+l_string|&quot;Found compressed &quot;
+l_string|&quot;non-data or named data &quot;
+l_string|&quot;attribute.  Please report &quot;
 l_string|&quot;you saw this message to &quot;
 l_string|&quot;linux-ntfs-dev@lists.&quot;
 l_string|&quot;sourceforge.net&quot;
-comma
-id|vi-&gt;i_ino
-comma
-id|ni-&gt;type
-comma
-id|ni-&gt;name_len
 )paren
 suffix:semicolon
 r_goto
@@ -4152,10 +4296,10 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;Found &quot;
-l_string|&quot;compressed attribute but &quot;
-l_string|&quot;compression is disabled due &quot;
-l_string|&quot;to cluster size (%i) &gt; 4kiB.&quot;
+l_string|&quot;Found compressed &quot;
+l_string|&quot;attribute but compression is &quot;
+l_string|&quot;disabled due to cluster size &quot;
+l_string|&quot;(%i) &gt; 4kiB.&quot;
 comma
 id|vol-&gt;cluster_size
 )paren
@@ -4182,8 +4326,7 @@ c_func
 id|vi-&gt;i_sb
 comma
 l_string|&quot;Found unknown &quot;
-l_string|&quot;compression method or &quot;
-l_string|&quot;corrupt file.&quot;
+l_string|&quot;compression method.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4211,12 +4354,9 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;Found &quot;
-l_string|&quot;nonstandard compression unit &quot;
-l_string|&quot;(%u instead of 4). Cannot &quot;
-l_string|&quot;handle this. This might &quot;
-l_string|&quot;indicate corruption so you &quot;
-l_string|&quot;should run chkdsk.&quot;
+l_string|&quot;Found nonstandard &quot;
+l_string|&quot;compression unit (%u instead &quot;
+l_string|&quot;of 4).  Cannot handle this.&quot;
 comma
 id|ctx-&gt;attr-&gt;data.non_resident
 dot
@@ -4301,17 +4441,10 @@ id|vi-&gt;i_sb
 comma
 l_string|&quot;Found mst protected &quot;
 l_string|&quot;attribute but the attribute &quot;
-l_string|&quot;is encrypted (mft_no 0x%lx, &quot;
-l_string|&quot;type 0x%x, name_len %i). &quot;
-l_string|&quot;Please report you saw this &quot;
-l_string|&quot;message to linux-ntfs-dev@&quot;
-l_string|&quot;lists.sourceforge.net&quot;
-comma
-id|vi-&gt;i_ino
-comma
-id|ni-&gt;type
-comma
-id|ni-&gt;name_len
+l_string|&quot;is encrypted.  Please report &quot;
+l_string|&quot;you saw this message to &quot;
+l_string|&quot;linux-ntfs-dev@lists.&quot;
+l_string|&quot;sourceforge.net&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4350,17 +4483,10 @@ id|vi-&gt;i_sb
 comma
 l_string|&quot;Found mst protected &quot;
 l_string|&quot;attribute but the attribute &quot;
-l_string|&quot;is sparse (mft_no 0x%lx, &quot;
-l_string|&quot;type 0x%x, name_len %i). &quot;
-l_string|&quot;Please report you saw this &quot;
-l_string|&quot;message to linux-ntfs-dev@&quot;
-l_string|&quot;lists.sourceforge.net&quot;
-comma
-id|vi-&gt;i_ino
-comma
-id|ni-&gt;type
-comma
-id|ni-&gt;name_len
+l_string|&quot;is sparse.  Please report &quot;
+l_string|&quot;you saw this message to &quot;
+l_string|&quot;linux-ntfs-dev@lists.&quot;
+l_string|&quot;sourceforge.net&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4386,8 +4512,7 @@ c_func
 id|vi-&gt;i_sb
 comma
 l_string|&quot;First extent of attribute has &quot;
-l_string|&quot;non-zero lowest_vcn. Inode is &quot;
-l_string|&quot;corrupt. You should run chkdsk.&quot;
+l_string|&quot;non-zero lowest_vcn.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4565,13 +4690,13 @@ suffix:colon
 id|ntfs_error
 c_func
 (paren
-id|vi-&gt;i_sb
+id|vol-&gt;sb
 comma
-l_string|&quot;Failed with error code %i while reading &quot;
-l_string|&quot;attribute inode (mft_no 0x%lx, type 0x%x, name_len &quot;
-l_string|&quot;%i.&quot;
+l_string|&quot;Failed with error code %i while reading attribute &quot;
+l_string|&quot;inode (mft_no 0x%lx, type 0x%x, name_len %i).  &quot;
+l_string|&quot;Marking corrupt inode and base inode 0x%lx as bad.  &quot;
+l_string|&quot;Run chkdsk.&quot;
 comma
-op_minus
 id|err
 comma
 id|vi-&gt;i_ino
@@ -4579,12 +4704,34 @@ comma
 id|ni-&gt;type
 comma
 id|ni-&gt;name_len
+comma
+id|base_vi-&gt;i_ino
 )paren
 suffix:semicolon
 id|make_bad_inode
 c_func
 (paren
 id|vi
+)paren
+suffix:semicolon
+id|make_bad_inode
+c_func
+(paren
+id|base_vi
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_ne
+op_minus
+id|ENOMEM
+)paren
+id|NVolSetErrors
+c_func
+(paren
+id|vol
 )paren
 suffix:semicolon
 r_return
@@ -4850,16 +4997,59 @@ multiline_comment|/* Set up the state. */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|ctx-&gt;attr-&gt;non_resident
+)paren
 )paren
 (brace
 id|ntfs_error
 c_func
 (paren
-id|vi-&gt;i_sb
+id|vol-&gt;sb
 comma
-l_string|&quot;$INDEX_ROOT attribute is not resident.  &quot;
-l_string|&quot;Not allowed.&quot;
+l_string|&quot;$INDEX_ROOT attribute is not resident.&quot;
+)paren
+suffix:semicolon
+r_goto
+id|unm_err_out
+suffix:semicolon
+)brace
+multiline_comment|/* Ensure the attribute name is placed before the value. */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|ctx-&gt;attr-&gt;name_length
+op_logical_and
+(paren
+id|le16_to_cpu
+c_func
+(paren
+id|ctx-&gt;attr-&gt;name_offset
+)paren
+op_ge
+id|le16_to_cpu
+c_func
+(paren
+id|ctx-&gt;attr-&gt;data.resident
+dot
+id|value_offset
+)paren
+)paren
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|vol-&gt;sb
+comma
+l_string|&quot;$INDEX_ROOT attribute name is placed &quot;
+l_string|&quot;after the attribute value.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4887,7 +5077,7 @@ c_func
 id|vi-&gt;i_sb
 comma
 l_string|&quot;Found compressed/encrypted/sparse index &quot;
-l_string|&quot;root attribute.  Not allowed.&quot;
+l_string|&quot;root attribute.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -5000,8 +5190,7 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;Index type is not 0 (type is 0x%x).  &quot;
-l_string|&quot;Not allowed.&quot;
+l_string|&quot;Index type is not 0 (type is 0x%x).&quot;
 comma
 id|le32_to_cpu
 c_func
@@ -5308,6 +5497,44 @@ r_goto
 id|unm_err_out
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Ensure the attribute name is placed before the mapping pairs array.&n;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|ctx-&gt;attr-&gt;name_length
+op_logical_and
+(paren
+id|le16_to_cpu
+c_func
+(paren
+id|ctx-&gt;attr-&gt;name_offset
+)paren
+op_ge
+id|le16_to_cpu
+c_func
+(paren
+id|ctx-&gt;attr-&gt;data.non_resident.mapping_pairs_offset
+)paren
+)paren
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|vol-&gt;sb
+comma
+l_string|&quot;$INDEX_ALLOCATION attribute name is &quot;
+l_string|&quot;placed after the mapping pairs array.&quot;
+)paren
+suffix:semicolon
+r_goto
+id|unm_err_out
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5382,8 +5609,7 @@ c_func
 id|vi-&gt;i_sb
 comma
 l_string|&quot;First extent of $INDEX_ALLOCATION &quot;
-l_string|&quot;attribute has non zero lowest_vcn.  Inode is &quot;
-l_string|&quot;corrupt. You should run chkdsk.&quot;
+l_string|&quot;attribute has non zero lowest_vcn.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -5515,8 +5741,8 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;$BITMAP attribute is compressed &quot;
-l_string|&quot;and/or encrypted and/or sparse.&quot;
+l_string|&quot;$BITMAP attribute is compressed and/or &quot;
+l_string|&quot;encrypted and/or sparse.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -5545,8 +5771,8 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;Index bitmap too small (0x%llx) &quot;
-l_string|&quot;for index allocation (0x%llx).&quot;
+l_string|&quot;Index bitmap too small (0x%llx) for &quot;
+l_string|&quot;index allocation (0x%llx).&quot;
 comma
 id|bvi-&gt;i_size
 op_lshift
@@ -5663,7 +5889,6 @@ comma
 l_string|&quot;Failed with error code %i while reading index &quot;
 l_string|&quot;inode (mft_no 0x%lx, name_len %i.&quot;
 comma
-op_minus
 id|err
 comma
 id|vi-&gt;i_ino
@@ -5675,6 +5900,25 @@ id|make_bad_inode
 c_func
 (paren
 id|vi
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_ne
+op_minus
+id|EOPNOTSUPP
+op_logical_and
+id|err
+op_ne
+op_minus
+id|ENOMEM
+)paren
+id|NVolSetErrors
+c_func
+(paren
+id|vol
 )paren
 suffix:semicolon
 r_return
@@ -7279,6 +7523,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|__ntfs_clear_inode
+r_static
 r_void
 id|__ntfs_clear_inode
 c_func
@@ -7891,9 +8136,9 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef NTFS_RW
-multiline_comment|/**&n; * ntfs_truncate - called when the i_size of an ntfs inode is changed&n; * @vi:&t;&t;inode for which the i_size was changed&n; *&n; * We do not support i_size changes yet.&n; *&n; * The kernel guarantees that @vi is a regular file (S_ISREG() is true) and&n; * that the change is allowed.&n; *&n; * This implies for us that @vi is a file inode rather than a directory, index,&n; * or attribute inode as well as that @vi is a base inode.&n; *&n; * Called with -&gt;i_sem held.  In all but one case -&gt;i_alloc_sem is held for&n; * writing.  The only case where -&gt;i_alloc_sem is not held is&n; * mm/filemap.c::generic_file_buffered_write() where vmtruncate() is called&n; * with the current i_size as the offset which means that it is a noop as far&n; * as ntfs_truncate() is concerned.&n; */
+multiline_comment|/**&n; * ntfs_truncate - called when the i_size of an ntfs inode is changed&n; * @vi:&t;&t;inode for which the i_size was changed&n; *&n; * We do not support i_size changes yet.&n; *&n; * The kernel guarantees that @vi is a regular file (S_ISREG() is true) and&n; * that the change is allowed.&n; *&n; * This implies for us that @vi is a file inode rather than a directory, index,&n; * or attribute inode as well as that @vi is a base inode.&n; *&n; * Returns 0 on success or -errno on error.&n; *&n; * Called with -&gt;i_sem held.  In all but one case -&gt;i_alloc_sem is held for&n; * writing.  The only case where -&gt;i_alloc_sem is not held is&n; * mm/filemap.c::generic_file_buffered_write() where vmtruncate() is called&n; * with the current i_size as the offset which means that it is a noop as far&n; * as ntfs_truncate() is concerned.&n; */
 DECL|function|ntfs_truncate
-r_void
+r_int
 id|ntfs_truncate
 c_func
 (paren
@@ -7913,6 +8158,12 @@ c_func
 id|vi
 )paren
 suffix:semicolon
+id|ntfs_volume
+op_star
+id|vol
+op_assign
+id|ni-&gt;vol
+suffix:semicolon
 id|ntfs_attr_search_ctx
 op_star
 id|ctx
@@ -7921,8 +8172,23 @@ id|MFT_RECORD
 op_star
 id|m
 suffix:semicolon
+r_const
+r_char
+op_star
+id|te
+op_assign
+l_string|&quot;  Leaving file length out of sync with i_size.&quot;
+suffix:semicolon
 r_int
 id|err
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Entering for inode 0x%lx.&quot;
+comma
+id|vi-&gt;i_ino
+)paren
 suffix:semicolon
 id|BUG_ON
 c_func
@@ -7960,41 +8226,39 @@ id|m
 )paren
 )paren
 (brace
+id|err
+op_assign
+id|PTR_ERR
+c_func
+(paren
+id|m
+)paren
+suffix:semicolon
 id|ntfs_error
 c_func
 (paren
 id|vi-&gt;i_sb
 comma
 l_string|&quot;Failed to map mft record for inode 0x%lx &quot;
-l_string|&quot;(error code %ld).&quot;
+l_string|&quot;(error code %d).%s&quot;
 comma
 id|vi-&gt;i_ino
 comma
-id|PTR_ERR
-c_func
-(paren
-id|m
-)paren
+id|err
+comma
+id|te
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|PTR_ERR
-c_func
-(paren
-id|m
-)paren
-op_ne
-id|ENOMEM
-)paren
-id|make_bad_inode
-c_func
-(paren
-id|vi
-)paren
+id|ctx
+op_assign
+l_int|NULL
 suffix:semicolon
-r_return
+id|m
+op_assign
+l_int|NULL
+suffix:semicolon
+r_goto
+id|err_out
 suffix:semicolon
 )brace
 id|ctx
@@ -8023,19 +8287,21 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;Failed to allocate a search context: &quot;
-l_string|&quot;Not enough memory&quot;
+l_string|&quot;Failed to allocate a search context for &quot;
+l_string|&quot;inode 0x%lx (not enough memory).%s&quot;
+comma
+id|vi-&gt;i_ino
+comma
+id|te
 )paren
 suffix:semicolon
-singleline_comment|// FIXME: We can&squot;t report an error code upstream.  So what do
-singleline_comment|// we do?!?  make_bad_inode() seems a bit harsh...
-id|unmap_mft_record
-c_func
-(paren
-id|ni
-)paren
+id|err
+op_assign
+op_minus
+id|ENOMEM
 suffix:semicolon
-r_return
+r_goto
+id|err_out
 suffix:semicolon
 )brace
 id|err
@@ -8078,7 +8344,6 @@ op_eq
 op_minus
 id|ENOENT
 )paren
-(brace
 id|ntfs_error
 c_func
 (paren
@@ -8091,15 +8356,7 @@ comma
 id|vi-&gt;i_ino
 )paren
 suffix:semicolon
-id|make_bad_inode
-c_func
-(paren
-id|vi
-)paren
-suffix:semicolon
-)brace
 r_else
-(brace
 id|ntfs_error
 c_func
 (paren
@@ -8113,12 +8370,8 @@ comma
 id|err
 )paren
 suffix:semicolon
-singleline_comment|// FIXME: We can&squot;t report an error code upstream.  So
-singleline_comment|// what do we do?!?  make_bad_inode() seems a bit
-singleline_comment|// harsh...
-)brace
 r_goto
-id|out
+id|err_out
 suffix:semicolon
 )brace
 multiline_comment|/* If the size has not changed there is nothing to do. */
@@ -8138,7 +8391,7 @@ id|vi
 )paren
 )paren
 r_goto
-id|out
+id|done
 suffix:semicolon
 singleline_comment|// TODO: Implement the truncate...
 id|ntfs_error
@@ -8163,7 +8416,7 @@ id|ctx-&gt;attr
 )paren
 )paren
 suffix:semicolon
-id|out
+id|done
 suffix:colon
 id|ntfs_attr_put_search_ctx
 c_func
@@ -8177,7 +8430,94 @@ c_func
 id|ni
 )paren
 suffix:semicolon
+id|NInoClearTruncateFailed
+c_func
+(paren
+id|ni
+)paren
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Done.&quot;
+)paren
+suffix:semicolon
 r_return
+l_int|0
+suffix:semicolon
+id|err_out
+suffix:colon
+r_if
+c_cond
+(paren
+id|err
+op_ne
+op_minus
+id|ENOMEM
+)paren
+(brace
+id|NVolSetErrors
+c_func
+(paren
+id|vol
+)paren
+suffix:semicolon
+id|make_bad_inode
+c_func
+(paren
+id|vi
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ctx
+)paren
+id|ntfs_attr_put_search_ctx
+c_func
+(paren
+id|ctx
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|m
+)paren
+id|unmap_mft_record
+c_func
+(paren
+id|ni
+)paren
+suffix:semicolon
+id|NInoSetTruncateFailed
+c_func
+(paren
+id|ni
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * ntfs_truncate_vfs - wrapper for ntfs_truncate() that has no return value&n; * @vi:&t;&t;inode for which the i_size was changed&n; *&n; * Wrapper for ntfs_truncate() that has no return value.&n; *&n; * See ntfs_truncate() description above for details.&n; */
+DECL|function|ntfs_truncate_vfs
+r_void
+id|ntfs_truncate_vfs
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|vi
+)paren
+(brace
+id|ntfs_truncate
+c_func
+(paren
+id|vi
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ntfs_setattr - called from notify_change() when an attribute is being changed&n; * @dentry:&t;dentry whose attributes to change&n; * @attr:&t;structure describing the attributes and the changes&n; *&n; * We have to trap VFS attempts to truncate the file described by @dentry as&n; * soon as possible, because we do not implement changes in i_size yet.  So we&n; * abort all i_size changes here.&n; *&n; * We also abort all changes of user, group, and mode as we do not implement&n; * the NTFS ACLs yet.&n; *&n; * Called with -&gt;i_sem held.  For the ATTR_SIZE (i.e. -&gt;truncate) case, also&n; * called with -&gt;i_alloc_sem held for writing.&n; *&n; * Basically this is a copy of generic notify_change() and inode_setattr()&n; * functionality, except we intercept and abort changes in i_size.&n; */
@@ -9025,6 +9365,12 @@ id|make_bad_inode
 c_func
 (paren
 id|vi
+)paren
+suffix:semicolon
+id|NVolSetErrors
+c_func
+(paren
+id|ni-&gt;vol
 )paren
 suffix:semicolon
 )brace

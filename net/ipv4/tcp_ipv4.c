@@ -2273,6 +2273,13 @@ r_return
 id|sk
 suffix:semicolon
 )brace
+DECL|variable|tcp_v4_lookup
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|tcp_v4_lookup
+)paren
+suffix:semicolon
 DECL|function|tcp_v4_init_sequence
 r_static
 r_inline

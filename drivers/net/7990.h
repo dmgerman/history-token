@@ -3,24 +3,10 @@ macro_line|#ifndef _7990_H
 DECL|macro|_7990_H
 mdefine_line|#define _7990_H
 multiline_comment|/* The lance only has two register locations. We communicate mostly via memory. */
-DECL|struct|lance_regs
-r_struct
-id|lance_regs
-(brace
-DECL|member|rdp
-r_int
-r_int
-id|rdp
-suffix:semicolon
-multiline_comment|/* Register Data Port */
-DECL|member|rap
-r_int
-r_int
-id|rap
-suffix:semicolon
-multiline_comment|/* Register Address Port */
-)brace
-suffix:semicolon
+DECL|macro|LANCE_RDP
+mdefine_line|#define LANCE_RDP&t;0&t;/* Register Data Port */
+DECL|macro|LANCE_RAP
+mdefine_line|#define LANCE_RAP&t;2&t;/* Register Address Port */
 multiline_comment|/* Transmit/receive ring definitions.&n; * We allow the specific drivers to override these defaults if they want to.&n; * NB: according to lance.c, increasing the number of buffers is a waste&n; * of space and reduces the chance that an upper layer will be able to&n; * reorder queued Tx packets based on priority. [Clearly there is a minimum&n; * limit too: too small and we drop rx packets and can&squot;t tx at full speed.]&n; * 4+4 seems to be the usual setting; the atarilance driver uses 3 and 5.&n; */
 multiline_comment|/* Blast! This won&squot;t work. The problem is that we can&squot;t specify a default&n; * setting because that would cause the lance_init_block struct to be&n; * too long (and overflow the RAM on shared-memory cards like the HP LANCE.&n; */
 macro_line|#ifndef LANCE_LOG_TX_BUFFERS
@@ -242,12 +228,10 @@ r_char
 op_star
 id|name
 suffix:semicolon
-DECL|member|ll
-r_volatile
-r_struct
-id|lance_regs
-op_star
-id|ll
+DECL|member|base
+r_int
+r_int
+id|base
 suffix:semicolon
 DECL|member|init_block
 r_volatile
@@ -583,5 +567,18 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+r_extern
+r_void
+id|lance_poll
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* ndef _7990_H */
 eof

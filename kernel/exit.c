@@ -2966,7 +2966,7 @@ id|PF_DEAD
 suffix:semicolon
 )brace
 DECL|function|do_exit
-id|asmlinkage
+id|fastcall
 id|NORET_TYPE
 r_void
 id|do_exit
@@ -4780,15 +4780,10 @@ c_func
 id|p
 )paren
 suffix:semicolon
-id|read_lock
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;&t; * We are returning to the wait loop without having successfully&n;&t;&t; * removed the process and having released the lock. We cannot&n;&t;&t; * continue, since the &quot;p&quot; task pointer is potentially stale.&n;&t;&t; *&n;&t;&t; * Return -EAGAIN, and do_wait() will restart the loop from the&n;&t;&t; * beginning. Do _not_ re-acquire the lock.&n;&t;&t; */
 r_return
-l_int|0
+op_minus
+id|EAGAIN
 suffix:semicolon
 )brace
 multiline_comment|/* move to end of parent&squot;s list to avoid starvation */
@@ -5416,10 +5411,6 @@ id|ret
 )paren
 r_continue
 suffix:semicolon
-id|flag
-op_assign
-l_int|1
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -5429,6 +5420,10 @@ id|p-&gt;state
 r_case
 id|TASK_TRACED
 suffix:colon
+id|flag
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5445,6 +5440,10 @@ multiline_comment|/*FALLTHROUGH*/
 r_case
 id|TASK_STOPPED
 suffix:colon
+id|flag
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5487,6 +5486,17 @@ id|stat_addr
 comma
 id|ru
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_eq
+op_minus
+id|EAGAIN
+)paren
+r_goto
+id|repeat
 suffix:semicolon
 r_if
 c_cond
@@ -5583,6 +5593,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|flag
+op_assign
+l_int|1
+suffix:semicolon
 id|check_continued
 suffix:colon
 r_if

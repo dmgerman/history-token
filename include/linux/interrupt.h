@@ -324,10 +324,6 @@ id|nr
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifndef invoke_softirq
-DECL|macro|invoke_softirq
-mdefine_line|#define invoke_softirq() do_softirq()
-macro_line|#endif
 multiline_comment|/* Tasklets --- multithreaded analogue of BHs.&n;&n;   Main feature differing them of generic softirqs: tasklet&n;   is running only on one CPU simultaneously.&n;&n;   Main feature differing them of BHs: different tasklets&n;   may be run simultaneously on different CPUs.&n;&n;   Properties:&n;   * If tasklet_schedule() is called, then tasklet is guaranteed&n;     to be executed on some cpu at least once after this.&n;   * If the tasklet is already scheduled, but its excecution is still not&n;     started, it will be executed only once.&n;   * If this tasklet is already running on another CPU (or schedule is called&n;     from tasklet itself), it is rescheduled for later.&n;   * Tasklet is strictly serialized wrt itself, but not&n;     wrt another tasklets. If client needs some intertask synchronization,&n;     he makes it with spinlocks.&n; */
 DECL|struct|tasklet_struct
 r_struct

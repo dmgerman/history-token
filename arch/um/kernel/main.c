@@ -13,11 +13,15 @@ macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;mem_user.h&quot;
 macro_line|#include &quot;signal_user.h&quot;
+macro_line|#include &quot;time_user.h&quot;
+macro_line|#include &quot;irq_user.h&quot;
 macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;mode.h&quot;
 macro_line|#include &quot;choose-mode.h&quot;
 macro_line|#include &quot;uml-config.h&quot;
+macro_line|#include &quot;irq_user.h&quot;
+macro_line|#include &quot;time_user.h&quot;
 multiline_comment|/* Set in set_stklim, which is called from main and __wrap_malloc.&n; * __wrap_malloc only calls it if main hasn&squot;t started.&n; */
 DECL|variable|stacksizelim
 r_int

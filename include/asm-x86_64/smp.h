@@ -133,7 +133,7 @@ id|NR_CPUS
 )braket
 suffix:semicolon
 r_extern
-r_char
+id|u8
 id|phys_proc_id
 (braket
 id|NR_CPUS
@@ -197,23 +197,66 @@ id|APIC_ID
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Some lowlevel functions might want to know about&n; * the real APIC ID &lt;-&gt; CPU # mapping.&n; * AK: why is this volatile?&n; */
+DECL|macro|safe_smp_processor_id
+mdefine_line|#define safe_smp_processor_id() (disable_apic ? 0 : x86_apicid_to_cpu(hard_smp_processor_id()))
+macro_line|#endif /* !ASSEMBLY */
+DECL|macro|NO_PROC_ID
+mdefine_line|#define NO_PROC_ID&t;&t;0xFF&t;&t;/* No processor magic marker */
+macro_line|#endif
+macro_line|#ifndef ASSEMBLY
+multiline_comment|/*&n; * Some lowlevel functions might want to know about&n; * the real APIC ID &lt;-&gt; CPU # mapping.&n; */
 r_extern
-r_volatile
-r_char
+id|u8
 id|x86_cpu_to_apicid
 (braket
 id|NR_CPUS
 )braket
 suffix:semicolon
+multiline_comment|/* physical ID */
+r_extern
+id|u8
+id|x86_cpu_to_log_apicid
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+r_extern
+id|u8
+id|bios_cpu_apicid
+(braket
+)braket
+suffix:semicolon
+DECL|function|cpu_mask_to_apicid
+r_static
+r_inline
+r_int
+r_int
+id|cpu_mask_to_apicid
+c_func
+(paren
+id|cpumask_t
+id|cpumask
+)paren
+(brace
+r_return
+id|cpus_addr
+c_func
+(paren
+id|cpumask
+)paren
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
 DECL|function|x86_apicid_to_cpu
 r_static
 r_inline
-r_char
+r_int
 id|x86_apicid_to_cpu
 c_func
 (paren
-r_char
+id|u8
 id|apicid
 )paren
 (brace
@@ -247,19 +290,25 @@ id|apicid
 r_return
 id|i
 suffix:semicolon
+multiline_comment|/* No entries in x86_cpu_to_apicid?  Either no MPS|ACPI,&n;&t; * or called too early.  Either way, we must be CPU 0. */
+r_if
+c_cond
+(paren
+id|x86_cpu_to_apicid
+(braket
+l_int|0
+)braket
+op_eq
+id|BAD_APICID
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
 )brace
-DECL|macro|safe_smp_processor_id
-mdefine_line|#define safe_smp_processor_id() (disable_apic ? 0 : x86_apicid_to_cpu(hard_smp_processor_id()))
-r_extern
-id|u8
-id|bios_cpu_apicid
-(braket
-)braket
-suffix:semicolon
 DECL|function|cpu_present_to_apicid
 r_static
 r_inline
@@ -293,43 +342,6 @@ id|BAD_APICID
 suffix:semicolon
 )brace
 macro_line|#endif /* !ASSEMBLY */
-DECL|macro|NO_PROC_ID
-mdefine_line|#define NO_PROC_ID&t;&t;0xFF&t;&t;/* No processor magic marker */
-macro_line|#endif
-DECL|macro|INT_DELIVERY_MODE
-mdefine_line|#define INT_DELIVERY_MODE 1     /* logical delivery */
-macro_line|#ifndef ASSEMBLY
-macro_line|#ifdef CONFIG_SMP
-DECL|macro|TARGET_CPUS
-mdefine_line|#define TARGET_CPUS cpu_online_map
-macro_line|#else
-DECL|macro|TARGET_CPUS
-mdefine_line|#define TARGET_CPUS cpumask_of_cpu(0)
-macro_line|#endif
-DECL|function|cpu_mask_to_apicid
-r_static
-r_inline
-r_int
-r_int
-id|cpu_mask_to_apicid
-c_func
-(paren
-id|cpumask_t
-id|cpumask
-)paren
-(brace
-r_return
-id|cpus_addr
-c_func
-(paren
-id|cpumask
-)paren
-(braket
-l_int|0
-)braket
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#ifndef CONFIG_SMP
 DECL|macro|stack_smp_processor_id
 mdefine_line|#define stack_smp_processor_id() 0

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * For the STS-Thompson TDA7432 audio processor chip&n; * &n; * Handles audio functions: volume, balance, tone, loudness&n; * This driver will not complain if used with any &n; * other i2c device with the same address.&n; *&n; * Muting and tone control by Jonathan Isom &lt;jisom@ematic.com&gt;&n; *&n; * Copyright (c) 2000 Eric Sandeen &lt;eric_sandeen@bigfoot.com&gt;&n; * This code is placed under the terms of the GNU General Public License&n; * Based on tda9855.c by Steve VanDeBogart (vandebo@uclink.berkeley.edu)&n; * Which was based on tda8425.c by Greg Alexander (c) 1998&n; *&n; * OPTIONS:&n; * debug    - set to 1 if you&squot;d like to see debug messages&n; *            set to 2 if you&squot;d like to be inundated with debug messages&n; *&n; * loudness - set between 0 and 15 for varying degrees of loudness effect&n; *&n; * maxvol   - set maximium volume to +20db (1), default is 0db(0)&n; *&n; *&n; *  Revision: 0.7 - maxvol module parm to set maximium volume 0db or +20db&n; *  &t;&t;&t;&t;store if muted so we can return it&n; *  &t;&t;&t;&t;change balance only if flaged to&n; *  Revision: 0.6 - added tone controls&n; *  Revision: 0.5 - Fixed odd balance problem&n; *  Revision: 0.4 - added muting&n; *  Revision: 0.3 - Fixed silly reversed volume controls.  :)&n; *  Revision: 0.2 - Cleaned up #defines&n; *&t;&t;&t;fixed volume control&n; *          Added I2C_DRIVERID_TDA7432&n; *&t;&t;&t;added loudness insmod control&n; *  Revision: 0.1 - initial version&n; */
+multiline_comment|/*&n; * For the STS-Thompson TDA7432 audio processor chip&n; *&n; * Handles audio functions: volume, balance, tone, loudness&n; * This driver will not complain if used with any&n; * other i2c device with the same address.&n; *&n; * Muting and tone control by Jonathan Isom &lt;jisom@ematic.com&gt;&n; *&n; * Copyright (c) 2000 Eric Sandeen &lt;eric_sandeen@bigfoot.com&gt;&n; * This code is placed under the terms of the GNU General Public License&n; * Based on tda9855.c by Steve VanDeBogart (vandebo@uclink.berkeley.edu)&n; * Which was based on tda8425.c by Greg Alexander (c) 1998&n; *&n; * OPTIONS:&n; * debug    - set to 1 if you&squot;d like to see debug messages&n; *            set to 2 if you&squot;d like to be inundated with debug messages&n; *&n; * loudness - set between 0 and 15 for varying degrees of loudness effect&n; *&n; * maxvol   - set maximium volume to +20db (1), default is 0db(0)&n; *&n; *&n; *  Revision: 0.7 - maxvol module parm to set maximium volume 0db or +20db&n; *  &t;&t;&t;&t;store if muted so we can return it&n; *  &t;&t;&t;&t;change balance only if flaged to&n; *  Revision: 0.6 - added tone controls&n; *  Revision: 0.5 - Fixed odd balance problem&n; *  Revision: 0.4 - added muting&n; *  Revision: 0.3 - Fixed silly reversed volume controls.  :)&n; *  Revision: 0.2 - Cleaned up #defines&n; *&t;&t;&t;fixed volume control&n; *          Added I2C_DRIVERID_TDA7432&n; *&t;&t;&t;added loudness insmod control&n; *  Revision: 0.1 - initial version&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -214,7 +214,7 @@ mdefine_line|#define TDA7432_LD&t;0x07 /* Loudness                     */
 multiline_comment|/* Masks for bits in TDA7432 subaddresses */
 multiline_comment|/* Many of these not used - just for documentation */
 multiline_comment|/* Subaddress 0x00 - Input selection and bass control */
-multiline_comment|/* Bits 0,1,2 control input:&n; * 0x00 - Stereo input&n; * 0x02 - Mono input&n; * 0x03 - Mute  (Using Attenuators Plays better with modules)&n; * Mono probably isn&squot;t used - I&squot;m guessing only the stereo&n; * input is connected on most cards, so we&squot;ll set it to stereo.&n; * &n; * Bit 3 controls bass cut: 0/1 is non-symmetric/symmetric bass cut&n; * Bit 4 controls bass range: 0/1 is extended/standard bass range&n; * &n; * Highest 3 bits not used&n; */
+multiline_comment|/* Bits 0,1,2 control input:&n; * 0x00 - Stereo input&n; * 0x02 - Mono input&n; * 0x03 - Mute  (Using Attenuators Plays better with modules)&n; * Mono probably isn&squot;t used - I&squot;m guessing only the stereo&n; * input is connected on most cards, so we&squot;ll set it to stereo.&n; *&n; * Bit 3 controls bass cut: 0/1 is non-symmetric/symmetric bass cut&n; * Bit 4 controls bass range: 0/1 is extended/standard bass range&n; *&n; * Highest 3 bits not used&n; */
 DECL|macro|TDA7432_STEREO_IN
 mdefine_line|#define TDA7432_STEREO_IN&t;0
 DECL|macro|TDA7432_MONO_IN
@@ -230,9 +230,9 @@ mdefine_line|#define&t;TDA7432_VOL_0DB&t;&t;0x20
 DECL|macro|TDA7432_LD_ON
 mdefine_line|#define TDA7432_LD_ON&t;&t;1 &lt;&lt; 7
 multiline_comment|/* Subaddress 0x02 - Tone control */
-multiline_comment|/* Bits 0,1,2 control absolute treble gain from 0dB to 14dB&n; * 0x0 is 14dB, 0x7 is 0dB&n; *&n; * Bit 3 controls treble attenuation/gain (sign)&n; * 1 = gain (+)&n; * 0 = attenuation (-)&n; *&n; * Bits 4,5,6 control absolute bass gain from 0dB to 14dB&n; * (This is only true for normal base range, set in 0x00)&n; * 0x0 &lt;&lt; 4 is 14dB, 0x7 is 0dB&n; * &n; * Bit 7 controls bass attenuation/gain (sign)&n; * 1 &lt;&lt; 7 = gain (+)&n; * 0 &lt;&lt; 7 = attenuation (-) &n; *&n; * Example:&n; * 1 1 0 1 0 1 0 1 is +4dB bass, -4dB treble&n; */
+multiline_comment|/* Bits 0,1,2 control absolute treble gain from 0dB to 14dB&n; * 0x0 is 14dB, 0x7 is 0dB&n; *&n; * Bit 3 controls treble attenuation/gain (sign)&n; * 1 = gain (+)&n; * 0 = attenuation (-)&n; *&n; * Bits 4,5,6 control absolute bass gain from 0dB to 14dB&n; * (This is only true for normal base range, set in 0x00)&n; * 0x0 &lt;&lt; 4 is 14dB, 0x7 is 0dB&n; *&n; * Bit 7 controls bass attenuation/gain (sign)&n; * 1 &lt;&lt; 7 = gain (+)&n; * 0 &lt;&lt; 7 = attenuation (-)&n; *&n; * Example:&n; * 1 1 0 1 0 1 0 1 is +4dB bass, -4dB treble&n; */
 DECL|macro|TDA7432_TREBLE_0DB
-mdefine_line|#define TDA7432_TREBLE_0DB&t;&t;0xf 
+mdefine_line|#define TDA7432_TREBLE_0DB&t;&t;0xf
 DECL|macro|TDA7432_TREBLE
 mdefine_line|#define TDA7432_TREBLE&t;&t;&t;7
 DECL|macro|TDA7432_TREBLE_GAIN
@@ -247,7 +247,7 @@ multiline_comment|/* Subaddress 0x03 - Left  Front attenuation */
 multiline_comment|/* Subaddress 0x04 - Left  Rear  attenuation */
 multiline_comment|/* Subaddress 0x05 - Right Front attenuation */
 multiline_comment|/* Subaddress 0x06 - Right Rear  attenuation */
-multiline_comment|/* Bits 0,1,2,3,4 control attenuation from 0dB to -37.5dB&n; * in 1.5dB steps.&n; *&n; * 0x00 is     0dB&n; * 0x1f is -37.5dB&n; *&n; * Bit 5 mutes that channel when set (1 = mute, 0 = unmute)&n; * We&squot;ll use the mute on the input, though (above) &n; * Bits 6,7 unused&n; */
+multiline_comment|/* Bits 0,1,2,3,4 control attenuation from 0dB to -37.5dB&n; * in 1.5dB steps.&n; *&n; * 0x00 is     0dB&n; * 0x1f is -37.5dB&n; *&n; * Bit 5 mutes that channel when set (1 = mute, 0 = unmute)&n; * We&squot;ll use the mute on the input, though (above)&n; * Bits 6,7 unused&n; */
 DECL|macro|TDA7432_ATTEN_0DB
 mdefine_line|#define TDA7432_ATTEN_0DB&t;0x00
 DECL|macro|TDA7432_MUTE
@@ -997,7 +997,7 @@ id|va-&gt;mode
 op_or_assign
 id|VIDEO_SOUND_STEREO
 suffix:semicolon
-multiline_comment|/* Master volume control&n;&t;&t; * V4L volume is min 0, max 65535&n;&t;&t; * TDA7432 Volume: &n;&t;&t; * Min (-79dB) is 0x6f&n;&t;&t; * Max (+20dB) is 0x07 (630)&n;&t;&t; * Max (0dB) is 0x20 (829)&n;&t;&t; * (Mask out bit 7 of vol - it&squot;s for the loudness setting)&n;&t;&t; */
+multiline_comment|/* Master volume control&n;&t;&t; * V4L volume is min 0, max 65535&n;&t;&t; * TDA7432 Volume:&n;&t;&t; * Min (-79dB) is 0x6f&n;&t;&t; * Max (+20dB) is 0x07 (630)&n;&t;&t; * Max (0dB) is 0x20 (829)&n;&t;&t; * (Mask out bit 7 of vol - it&squot;s for the loudness setting)&n;&t;&t; */
 r_if
 c_cond
 (paren

@@ -94,7 +94,7 @@ comma
 dot
 id|action_msg
 op_assign
-l_string|&quot;Dump Voyager Status&bslash;n&quot;
+l_string|&quot;Dump Voyager Status&quot;
 comma
 )brace
 suffix:semicolon

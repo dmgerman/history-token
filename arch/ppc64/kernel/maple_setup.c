@@ -649,13 +649,11 @@ id|pcibios_fixup
 op_assign
 id|maple_pcibios_fixup
 comma
-macro_line|#if 0
 dot
 id|pci_get_legacy_ide_irq
 op_assign
 id|maple_pci_get_legacy_ide_irq
 comma
-macro_line|#endif
 dot
 id|restart
 op_assign

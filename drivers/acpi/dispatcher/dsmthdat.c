@@ -898,6 +898,44 @@ id|object
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Index points to uninitialized object.&n;&t;&t; * This means that either 1) The expected argument was&n;&t;&t; * not passed to the method, or 2) A local variable&n;&t;&t; * was referenced by the method (via the ASL)&n;&t;&t; * before it was initialized.  Either case is an error.&n;&t;&t; */
+multiline_comment|/* If slack enabled, init the local_x/arg_x to an Integer of value zero */
+r_if
+c_cond
+(paren
+id|acpi_gbl_enable_interpreter_slack
+)paren
+(brace
+id|object
+op_assign
+id|acpi_ut_create_internal_object
+(paren
+id|ACPI_TYPE_INTEGER
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|object
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_MEMORY
+)paren
+suffix:semicolon
+)brace
+id|object-&gt;integer.value
+op_assign
+l_int|0
+suffix:semicolon
+id|node-&gt;object
+op_assign
+id|object
+suffix:semicolon
+)brace
+multiline_comment|/* Otherwise, return the error */
+r_else
 r_switch
 c_cond
 (paren

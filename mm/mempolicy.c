@@ -4199,9 +4199,9 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Shared memory backing store policy support.&n; *&n; * Remember policies even when nobody has shared memory mapped.&n; * The policies are kept in Red-Black tree linked from the inode.&n; * They are protected by the sp-&gt;sem semaphore, which should be held&n; * for any accesses to the tree.&n; */
+multiline_comment|/*&n; * Shared memory backing store policy support.&n; *&n; * Remember policies even when nobody has shared memory mapped.&n; * The policies are kept in Red-Black tree linked from the inode.&n; * They are protected by the sp-&gt;lock spinlock, which should be held&n; * for any accesses to the tree.&n; */
 multiline_comment|/* lookup first element intersecting start-end */
-multiline_comment|/* Caller holds sp-&gt;sem */
+multiline_comment|/* Caller holds sp-&gt;lock */
 r_static
 r_struct
 id|sp_node
@@ -4369,7 +4369,7 @@ id|nd
 suffix:semicolon
 )brace
 multiline_comment|/* Insert a new shared policy into the list. */
-multiline_comment|/* Caller holds sp-&gt;sem */
+multiline_comment|/* Caller holds sp-&gt;lock */
 DECL|function|sp_insert
 r_static
 r_void
@@ -4560,11 +4560,20 @@ id|sp_node
 op_star
 id|sn
 suffix:semicolon
-id|down
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sp-&gt;root.rb_node
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+id|spin_lock
 c_func
 (paren
 op_amp
-id|sp-&gt;sem
+id|sp-&gt;lock
 )paren
 suffix:semicolon
 id|sn
@@ -4598,11 +4607,11 @@ op_assign
 id|sn-&gt;policy
 suffix:semicolon
 )brace
-id|up
+id|spin_unlock
 c_func
 (paren
 op_amp
-id|sp-&gt;sem
+id|sp-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -4759,12 +4768,16 @@ id|n
 comma
 op_star
 id|new2
+op_assign
+l_int|NULL
 suffix:semicolon
-id|down
+id|restart
+suffix:colon
+id|spin_lock
 c_func
 (paren
 op_amp
-id|sp-&gt;sem
+id|sp-&gt;lock
 )paren
 suffix:semicolon
 id|n
@@ -4842,6 +4855,20 @@ OG
 id|end
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|new2
+)paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|sp-&gt;lock
+)paren
+suffix:semicolon
 id|new2
 op_assign
 id|sp_alloc
@@ -4860,17 +4887,12 @@ c_cond
 op_logical_neg
 id|new2
 )paren
-(brace
-id|up
-c_func
-(paren
-op_amp
-id|sp-&gt;sem
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
+suffix:semicolon
+r_goto
+id|restart
 suffix:semicolon
 )brace
 id|n-&gt;end
@@ -4884,6 +4906,10 @@ id|sp
 comma
 id|new2
 )paren
+suffix:semicolon
+id|new2
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Old crossing beginning, but not end (easy) */
@@ -4934,13 +4960,34 @@ comma
 r_new
 )paren
 suffix:semicolon
-id|up
+id|spin_unlock
 c_func
 (paren
 op_amp
-id|sp-&gt;sem
+id|sp-&gt;lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|new2
+)paren
+(brace
+id|mpol_free
+c_func
+(paren
+id|new2-&gt;policy
+)paren
+suffix:semicolon
+id|kmem_cache_free
+c_func
+(paren
+id|sn_cache
+comma
+id|new2
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -5103,11 +5150,19 @@ id|rb_node
 op_star
 id|next
 suffix:semicolon
-id|down
+r_if
+c_cond
+(paren
+op_logical_neg
+id|p-&gt;root.rb_node
+)paren
+r_return
+suffix:semicolon
+id|spin_lock
 c_func
 (paren
 op_amp
-id|p-&gt;sem
+id|p-&gt;lock
 )paren
 suffix:semicolon
 id|next
@@ -5172,11 +5227,11 @@ id|n
 )paren
 suffix:semicolon
 )brace
-id|up
+id|spin_unlock
 c_func
 (paren
 op_amp
-id|p-&gt;sem
+id|p-&gt;lock
 )paren
 suffix:semicolon
 )brace

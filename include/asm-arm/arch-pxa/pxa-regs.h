@@ -250,6 +250,10 @@ DECL|macro|DRCMRRXSSDR
 mdefine_line|#define DRCMRRXSSDR&t;DRCMR13
 DECL|macro|DRCMRTXSSDR
 mdefine_line|#define DRCMRTXSSDR&t;DRCMR14
+DECL|macro|DRCMRRXSS2DR
+mdefine_line|#define DRCMRRXSS2DR   DRCMR15
+DECL|macro|DRCMRTXSS2DR
+mdefine_line|#define DRCMRTXSS2DR   DRCMR16
 DECL|macro|DRCMRRXICDR
 mdefine_line|#define DRCMRRXICDR&t;DRCMR17
 DECL|macro|DRCMRTXICDR
@@ -262,6 +266,10 @@ DECL|macro|DRCMRRXMMC
 mdefine_line|#define DRCMRRXMMC&t;DRCMR21
 DECL|macro|DRCMRTXMMC
 mdefine_line|#define DRCMRTXMMC&t;DRCMR22
+DECL|macro|DRCMRRXSS3DR
+mdefine_line|#define DRCMRRXSS3DR   DRCMR66
+DECL|macro|DRCMRTXSS3DR
+mdefine_line|#define DRCMRTXSS3DR   DRCMR67
 DECL|macro|DRCMRUDC
 mdefine_line|#define DRCMRUDC(x)&t;DRCMR((x) + 24)
 DECL|macro|DRCMR_MAPVLD
@@ -737,6 +745,68 @@ mdefine_line|#define SADIV&t;&t;__REG(0x40400060)  /* Audio Clock Divider Regist
 DECL|macro|SADR
 mdefine_line|#define SADR&t;&t;__REG(0x40400080)  /* Serial Audio Data Register (TX and RX FIFO access Register). */
 macro_line|#endif
+DECL|macro|SACR0_RFTH
+mdefine_line|#define SACR0_RFTH(x)&t;(x &lt;&lt; 12)&t;&t;/* Rx FIFO Interrupt or DMA Trigger Threshold */
+DECL|macro|SACR0_TFTH
+mdefine_line|#define SACR0_TFTH(x)&t;(x &lt;&lt; 8)&t;&t;/* Tx FIFO Interrupt or DMA Trigger Threshold */
+DECL|macro|SACR0_STRF
+mdefine_line|#define SACR0_STRF&t;&t;(1 &lt;&lt; 5)&t;&t;/* FIFO Select for EFWR Special Function */
+DECL|macro|SACR0_EFWR
+mdefine_line|#define SACR0_EFWR&t;&t;(1 &lt;&lt; 4)&t;&t;/* Enable EFWR Function  */
+DECL|macro|SACR0_RST
+mdefine_line|#define SACR0_RST&t;&t;(1 &lt;&lt; 3)&t;&t;/* FIFO, i2s Register Reset */
+DECL|macro|SACR0_BCKD
+mdefine_line|#define SACR0_BCKD&t;&t;(1 &lt;&lt; 2) &t;&t;/* Bit Clock Direction */
+DECL|macro|SACR0_ENB
+mdefine_line|#define SACR0_ENB&t;&t;(1 &lt;&lt; 0)&t;&t;/* Enable I2S Link */
+DECL|macro|SACR1_ENLBF
+mdefine_line|#define SACR1_ENLBF&t;&t;(1 &lt;&lt; 5)&t;&t;/* Enable Loopback */
+DECL|macro|SACR1_DRPL
+mdefine_line|#define SACR1_DRPL&t;&t;(1 &lt;&lt; 4) &t;&t;/* Disable Replaying Function */
+DECL|macro|SACR1_DREC
+mdefine_line|#define SACR1_DREC&t;&t;(1 &lt;&lt; 3)&t;&t;/* Disable Recording Function */
+DECL|macro|SACR1_AMSL
+mdefine_line|#define SACR1_AMSL&t;&t;(1 &lt;&lt; 1)&t;&t;/* Specify Alternate Mode */
+DECL|macro|SASR0_I2SOFF
+mdefine_line|#define SASR0_I2SOFF&t;(1 &lt;&lt; 7)&t;&t;/* Controller Status */
+DECL|macro|SASR0_ROR
+mdefine_line|#define SASR0_ROR&t;&t;(1 &lt;&lt; 6)&t;&t;/* Rx FIFO Overrun */
+DECL|macro|SASR0_TUR
+mdefine_line|#define SASR0_TUR&t;&t;(1 &lt;&lt; 5)&t;&t;/* Tx FIFO Underrun */
+DECL|macro|SASR0_RFS
+mdefine_line|#define SASR0_RFS&t;&t;(1 &lt;&lt; 4)&t;&t;/* Rx FIFO Service Request */
+DECL|macro|SASR0_TFS
+mdefine_line|#define SASR0_TFS&t;&t;(1 &lt;&lt; 3)&t;&t;/* Tx FIFO Service Request */
+DECL|macro|SASR0_BSY
+mdefine_line|#define SASR0_BSY&t;&t;(1 &lt;&lt; 2)&t;&t;/* I2S Busy */
+DECL|macro|SASR0_RNE
+mdefine_line|#define SASR0_RNE&t;&t;(1 &lt;&lt; 1)&t;&t;/* Rx FIFO Not Empty */
+DECL|macro|SASR0_TNF
+mdefine_line|#define SASR0_TNF&t;&t;(1 &lt;&lt; 0) &t;&t;/* Tx FIFO Not Empty */
+DECL|macro|SADIV_3_058M
+mdefine_line|#define SADIV_3_058M&t;0x0c&t;&t;&t;/* Serial Clock Divider 3.058MHz */
+DECL|macro|SADIV_2_836M
+mdefine_line|#define SADIV_2_836M&t;0x0d&t;&t;&t;/* 2.836 MHz */
+DECL|macro|SADIV_1_405M
+mdefine_line|#define SADIV_1_405M&t;0x1a&t;&t;&t;/* 1.405 MHz */
+DECL|macro|SADIV_1_026M
+mdefine_line|#define SADIV_1_026M&t;0x24&t;&t;&t;/* 1.026 MHz */
+DECL|macro|SADIV_702K
+mdefine_line|#define SADIV_702K&t;&t;0x34&t;&t;&t;/* 702 kHz */
+DECL|macro|SADIV_513K
+mdefine_line|#define SADIV_513K&t;&t;0x48&t;&t;&t;/* 513 kHz */
+DECL|macro|SAICR_ROR
+mdefine_line|#define SAICR_ROR&t;&t;(1 &lt;&lt; 6)&t;&t;/* Clear Rx FIFO Overrun Interrupt */
+DECL|macro|SAICR_TUR
+mdefine_line|#define SAICR_TUR&t;&t;(1 &lt;&lt; 5)&t;&t;/* Clear Tx FIFO Underrun Interrupt */
+DECL|macro|SAIMR_ROR
+mdefine_line|#define SAIMR_ROR&t;&t;(1 &lt;&lt; 6)&t;&t;/* Enable Rx FIFO Overrun Condition Interrupt */
+DECL|macro|SAIMR_TUR
+mdefine_line|#define SAIMR_TUR&t;&t;(1 &lt;&lt; 5)&t;&t;/* Enable Tx FIFO Underrun Condition Interrupt */
+DECL|macro|SAIMR_RFS
+mdefine_line|#define SAIMR_RFS&t;&t;(1 &lt;&lt; 4)&t;&t;/* Enable Rx FIFO Service Interrupt */
+DECL|macro|SAIMR_TFS
+mdefine_line|#define SAIMR_TFS&t;&t;(1 &lt;&lt; 3)&t;&t;/* Enable Tx FIFO Service Interrupt */
 multiline_comment|/*&n; * AC97 Controller registers&n; */
 DECL|macro|POCR
 mdefine_line|#define POCR&t;&t;__REG(0x40500000)  /* PCM Out Control Register */
@@ -1897,6 +1967,8 @@ DECL|macro|GPIO44_BTCTS
 mdefine_line|#define GPIO44_BTCTS&t;&t;44&t;/* BTUART clear to send */
 DECL|macro|GPIO45_BTRTS
 mdefine_line|#define GPIO45_BTRTS&t;&t;45&t;/* BTUART request to send */
+DECL|macro|GPIO45_AC97_SYSCLK
+mdefine_line|#define GPIO45_AC97_SYSCLK&t;45&t;/* AC97 System Clock */
 DECL|macro|GPIO46_ICPRXD
 mdefine_line|#define GPIO46_ICPRXD&t;&t;46&t;/* ICP receive data */
 DECL|macro|GPIO46_STRXD
@@ -1993,6 +2065,14 @@ DECL|macro|GPIO79_nCS_3
 mdefine_line|#define GPIO79_nCS_3&t;&t;79&t;/* chip select 3 */
 DECL|macro|GPIO80_nCS_4
 mdefine_line|#define GPIO80_nCS_4&t;&t;80&t;/* chip select 4 */
+DECL|macro|GPIO81_NSCLK
+mdefine_line|#define GPIO81_NSCLK&t;&t;81&t;/* NSSP clock */
+DECL|macro|GPIO82_NSFRM
+mdefine_line|#define GPIO82_NSFRM&t;&t;82&t;/* NSSP Frame */
+DECL|macro|GPIO83_NSTXD
+mdefine_line|#define GPIO83_NSTXD&t;&t;83&t;/* NSSP transmit */
+DECL|macro|GPIO84_NSRXD
+mdefine_line|#define GPIO84_NSRXD&t;&t;84&t;/* NSSP receive */
 DECL|macro|GPIO85_nPCE_1
 mdefine_line|#define GPIO85_nPCE_1&t;&t;85&t;/* Card Enable for Card Space (PXA27x) */
 DECL|macro|GPIO92_MMCDAT0
@@ -2034,6 +2114,10 @@ DECL|macro|GPIO_MD_MASK_DIR
 mdefine_line|#define GPIO_MD_MASK_DIR&t;0x080
 DECL|macro|GPIO_MD_MASK_FN
 mdefine_line|#define GPIO_MD_MASK_FN&t;&t;0x300
+DECL|macro|GPIO_DFLT_LOW
+mdefine_line|#define GPIO_DFLT_LOW&t;&t;0x400
+DECL|macro|GPIO_DFLT_HIGH
+mdefine_line|#define GPIO_DFLT_HIGH&t;&t;0x800
 DECL|macro|GPIO1_RTS_MD
 mdefine_line|#define GPIO1_RTS_MD&t;&t;( 1 | GPIO_ALT_FN_1_IN)
 DECL|macro|GPIO6_MMCCLK_MD
@@ -2126,6 +2210,8 @@ DECL|macro|GPIO44_BTCTS_MD
 mdefine_line|#define GPIO44_BTCTS_MD&t;&t;(44 | GPIO_ALT_FN_1_IN)
 DECL|macro|GPIO45_BTRTS_MD
 mdefine_line|#define GPIO45_BTRTS_MD&t;&t;(45 | GPIO_ALT_FN_2_OUT)
+DECL|macro|GPIO45_SYSCLK_AC97_MD
+mdefine_line|#define GPIO45_SYSCLK_AC97_MD&t;&t;(45 | GPIO_ALT_FN_1_OUT)
 DECL|macro|GPIO46_ICPRXD_MD
 mdefine_line|#define GPIO46_ICPRXD_MD&t;(46 | GPIO_ALT_FN_1_IN)
 DECL|macro|GPIO46_STRXD_MD
@@ -2224,6 +2310,22 @@ DECL|macro|GPIO79_pSKTSEL_MD
 mdefine_line|#define GPIO79_pSKTSEL_MD&t;(79 | GPIO_ALT_FN_1_OUT)
 DECL|macro|GPIO80_nCS_4_MD
 mdefine_line|#define GPIO80_nCS_4_MD&t;&t;(80 | GPIO_ALT_FN_2_OUT)
+DECL|macro|GPIO81_NSSP_CLK_OUT
+mdefine_line|#define GPIO81_NSSP_CLK_OUT &t;(81 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO81_NSSP_CLK_IN
+mdefine_line|#define GPIO81_NSSP_CLK_IN  &t;(81 | GPIO_ALT_FN_1_IN)
+DECL|macro|GPIO82_NSSP_FRM_OUT
+mdefine_line|#define GPIO82_NSSP_FRM_OUT &t;(82 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO82_NSSP_FRM_IN
+mdefine_line|#define GPIO82_NSSP_FRM_IN  &t;(82 | GPIO_ALT_FN_1_IN)
+DECL|macro|GPIO83_NSSP_TX
+mdefine_line|#define GPIO83_NSSP_TX      &t;(83 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO83_NSSP_RX
+mdefine_line|#define GPIO83_NSSP_RX      &t;(83 | GPIO_ALT_FN_2_IN)
+DECL|macro|GPIO84_NSSP_TX
+mdefine_line|#define GPIO84_NSSP_TX      &t;(84 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO84_NSSP_RX
+mdefine_line|#define GPIO84_NSSP_RX      &t;(84 | GPIO_ALT_FN_2_IN)
 DECL|macro|GPIO85_nPCE_1_MD
 mdefine_line|#define GPIO85_nPCE_1_MD&t;(85 | GPIO_ALT_FN_1_OUT)
 DECL|macro|GPIO92_MMCDAT0_MD
@@ -2242,6 +2344,10 @@ DECL|macro|GPIO112_MMCCMD_MD
 mdefine_line|#define GPIO112_MMCCMD_MD&t;(112 | GPIO_ALT_FN_1_OUT)
 DECL|macro|GPIO113_AC97_RESET_N_MD
 mdefine_line|#define GPIO113_AC97_RESET_N_MD&t;(113 | GPIO_ALT_FN_2_OUT)
+DECL|macro|GPIO117_I2CSCL_MD
+mdefine_line|#define GPIO117_I2CSCL_MD&t;(117 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO118_I2CSDA_MD
+mdefine_line|#define GPIO118_I2CSDA_MD&t;(118 | GPIO_ALT_FN_1_IN)
 multiline_comment|/*&n; * Power Manager&n; */
 DECL|macro|PMCR
 mdefine_line|#define PMCR&t;&t;__REG(0x40F00000)  /* Power Manager Control Register */
@@ -2404,17 +2510,44 @@ DECL|macro|RCSR_WDR
 mdefine_line|#define RCSR_WDR&t;(1 &lt;&lt; 1)&t;/* Watchdog Reset */
 DECL|macro|RCSR_HWR
 mdefine_line|#define RCSR_HWR&t;(1 &lt;&lt; 0)&t;/* Hardware Reset */
-multiline_comment|/*&n; * SSP Serial Port Registers&n; */
-DECL|macro|SSCR0
-mdefine_line|#define SSCR0&t;&t;__REG(0x41000000)  /* SSP Control Register 0 */
-DECL|macro|SSCR1
-mdefine_line|#define SSCR1&t;&t;__REG(0x41000004)  /* SSP Control Register 1 */
-DECL|macro|SSSR
-mdefine_line|#define SSSR&t;&t;__REG(0x41000008)  /* SSP Status Register */
-DECL|macro|SSITR
-mdefine_line|#define SSITR&t;&t;__REG(0x4100000C)  /* SSP Interrupt Test Register */
-DECL|macro|SSDR
-mdefine_line|#define SSDR&t;&t;__REG(0x41000010)  /* (Write / Read) SSP Data Write Register/SSP Data Read Register */
+DECL|macro|PWER_GPIO
+mdefine_line|#define PWER_GPIO(Nb)&t;(1 &lt;&lt; Nb)&t;/* GPIO [0..15] wake-up enable     */
+DECL|macro|PWER_GPIO0
+mdefine_line|#define PWER_GPIO0&t;PWER_GPIO (0)&t;/* GPIO  [0] wake-up enable        */
+DECL|macro|PWER_GPIO1
+mdefine_line|#define PWER_GPIO1&t;PWER_GPIO (1)&t;/* GPIO  [1] wake-up enable        */
+DECL|macro|PWER_GPIO2
+mdefine_line|#define PWER_GPIO2&t;PWER_GPIO (2)&t;/* GPIO  [2] wake-up enable        */
+DECL|macro|PWER_GPIO3
+mdefine_line|#define PWER_GPIO3&t;PWER_GPIO (3)&t;/* GPIO  [3] wake-up enable        */
+DECL|macro|PWER_GPIO4
+mdefine_line|#define PWER_GPIO4&t;PWER_GPIO (4)&t;/* GPIO  [4] wake-up enable        */
+DECL|macro|PWER_GPIO5
+mdefine_line|#define PWER_GPIO5&t;PWER_GPIO (5)&t;/* GPIO  [5] wake-up enable        */
+DECL|macro|PWER_GPIO6
+mdefine_line|#define PWER_GPIO6&t;PWER_GPIO (6)&t;/* GPIO  [6] wake-up enable        */
+DECL|macro|PWER_GPIO7
+mdefine_line|#define PWER_GPIO7&t;PWER_GPIO (7)&t;/* GPIO  [7] wake-up enable        */
+DECL|macro|PWER_GPIO8
+mdefine_line|#define PWER_GPIO8&t;PWER_GPIO (8)&t;/* GPIO  [8] wake-up enable        */
+DECL|macro|PWER_GPIO9
+mdefine_line|#define PWER_GPIO9&t;PWER_GPIO (9)&t;/* GPIO  [9] wake-up enable        */
+DECL|macro|PWER_GPIO10
+mdefine_line|#define PWER_GPIO10&t;PWER_GPIO (10)&t;/* GPIO [10] wake-up enable        */
+DECL|macro|PWER_GPIO11
+mdefine_line|#define PWER_GPIO11&t;PWER_GPIO (11)&t;/* GPIO [11] wake-up enable        */
+DECL|macro|PWER_GPIO12
+mdefine_line|#define PWER_GPIO12&t;PWER_GPIO (12)&t;/* GPIO [12] wake-up enable        */
+DECL|macro|PWER_GPIO13
+mdefine_line|#define PWER_GPIO13&t;PWER_GPIO (13)&t;/* GPIO [13] wake-up enable        */
+DECL|macro|PWER_GPIO14
+mdefine_line|#define PWER_GPIO14&t;PWER_GPIO (14)&t;/* GPIO [14] wake-up enable        */
+DECL|macro|PWER_GPIO15
+mdefine_line|#define PWER_GPIO15&t;PWER_GPIO (15)&t;/* GPIO [15] wake-up enable        */
+DECL|macro|PWER_RTC
+mdefine_line|#define PWER_RTC&t;0x80000000&t;/* RTC alarm wake-up enable        */
+multiline_comment|/*&n; * SSP Serial Port Registers&n; * PXA250, PXA255, PXA26x and PXA27x SSP controllers are all slightly different.&n; * PXA255, PXA26x and PXA27x have extra ports, registers and bits.&n; */
+multiline_comment|/* Common PXA2xx bits first */
 DECL|macro|SSCR0_DSS
 mdefine_line|#define SSCR0_DSS&t;(0x0000000f)&t;/* Data Size Select (mask) */
 DECL|macro|SSCR0_DataSize
@@ -2467,6 +2600,178 @@ DECL|macro|SSSR_RFS
 mdefine_line|#define SSSR_RFS&t;(1 &lt;&lt; 6)&t;/* Receive FIFO Service Request */
 DECL|macro|SSSR_ROR
 mdefine_line|#define SSSR_ROR&t;(1 &lt;&lt; 7)&t;/* Receive FIFO Overrun */
+DECL|macro|SSCR0_TIM
+mdefine_line|#define SSCR0_TIM&t;&t;(1 &lt;&lt; 23)&t;/* Transmit FIFO Under Run Interrupt Mask */
+DECL|macro|SSCR0_RIM
+mdefine_line|#define SSCR0_RIM&t;&t;(1 &lt;&lt; 22)&t;/* Receive FIFO Over Run interrupt Mask */
+DECL|macro|SSCR0_NCS
+mdefine_line|#define SSCR0_NCS&t;&t;(1 &lt;&lt; 21)&t;/* Network Clock Select */
+DECL|macro|SSCR0_EDSS
+mdefine_line|#define SSCR0_EDSS&t;&t;(1 &lt;&lt; 20)&t;/* Extended Data Size Select */
+multiline_comment|/* extra bits in PXA255, PXA26x and PXA27x SSP ports */
+DECL|macro|SSCR1_TTELP
+mdefine_line|#define SSCR1_TTELP&t;&t;(1 &lt;&lt; 31)&t;/* TXD Tristate Enable Last Phase */
+DECL|macro|SSCR1_TTE
+mdefine_line|#define SSCR1_TTE&t;&t;(1 &lt;&lt; 30)&t;/* TXD Tristate Enable */
+DECL|macro|SSCR1_EBCEI
+mdefine_line|#define SSCR1_EBCEI&t;&t;(1 &lt;&lt; 29)&t;/* Enable Bit Count Error interrupt */
+DECL|macro|SSCR1_SCFR
+mdefine_line|#define SSCR1_SCFR&t;&t;(1 &lt;&lt; 28)&t;/* Slave Clock free Running */
+DECL|macro|SSCR1_ECRA
+mdefine_line|#define SSCR1_ECRA&t;&t;(1 &lt;&lt; 27)&t;/* Enable Clock Request A */
+DECL|macro|SSCR1_ECRB
+mdefine_line|#define SSCR1_ECRB&t;&t;(1 &lt;&lt; 26)&t;/* Enable Clock request B */
+DECL|macro|SSCR1_SCLKDIR
+mdefine_line|#define SSCR1_SCLKDIR&t;(1 &lt;&lt; 25)&t;/* Serial Bit Rate Clock Direction */
+DECL|macro|SSCR1_SFRMDIR
+mdefine_line|#define SSCR1_SFRMDIR&t;(1 &lt;&lt; 24)&t;/* Frame Direction */
+DECL|macro|SSCR1_RWOT
+mdefine_line|#define SSCR1_RWOT&t;&t;(1 &lt;&lt; 23)&t;/* Receive Without Transmit */
+DECL|macro|SSCR1_TRAIL
+mdefine_line|#define SSCR1_TRAIL&t;&t;(1 &lt;&lt; 22)&t;/* Trailing Byte */
+DECL|macro|SSCR1_TSRE
+mdefine_line|#define SSCR1_TSRE&t;&t;(1 &lt;&lt; 21)&t;/* Transmit Service Request Enable */
+DECL|macro|SSCR1_RSRE
+mdefine_line|#define SSCR1_RSRE&t;&t;(1 &lt;&lt; 20)&t;/* Receive Service Request Enable */
+DECL|macro|SSCR1_TINTE
+mdefine_line|#define SSCR1_TINTE&t;&t;(1 &lt;&lt; 19)&t;/* Receiver Time-out Interrupt enable */
+DECL|macro|SSCR1_PINTE
+mdefine_line|#define SSCR1_PINTE&t;&t;(1 &lt;&lt; 18)&t;/* Peripheral Trailing Byte Interupt Enable */
+DECL|macro|SSCR1_STRF
+mdefine_line|#define SSCR1_STRF&t;&t;(1 &lt;&lt; 15)&t;/* Select FIFO or EFWR */
+DECL|macro|SSCR1_EFWR
+mdefine_line|#define SSCR1_EFWR&t;&t;(1 &lt;&lt; 14)&t;/* Enable FIFO Write/Read */
+DECL|macro|SSSR_BCE
+mdefine_line|#define SSSR_BCE&t;&t;(1 &lt;&lt; 23)&t;/* Bit Count Error */
+DECL|macro|SSSR_CSS
+mdefine_line|#define SSSR_CSS&t;&t;(1 &lt;&lt; 22)&t;/* Clock Synchronisation Status */
+DECL|macro|SSSR_TUR
+mdefine_line|#define SSSR_TUR&t;&t;(1 &lt;&lt; 21)&t;/* Transmit FIFO Under Run */
+DECL|macro|SSSR_EOC
+mdefine_line|#define SSSR_EOC&t;&t;(1 &lt;&lt; 20)&t;/* End Of Chain */
+DECL|macro|SSSR_TINT
+mdefine_line|#define SSSR_TINT&t;&t;(1 &lt;&lt; 19)&t;/* Receiver Time-out Interrupt */
+DECL|macro|SSSR_PINT
+mdefine_line|#define SSSR_PINT&t;&t;(1 &lt;&lt; 18)&t;/* Peripheral Trailing Byte Interrupt */
+DECL|macro|SSPSP_DMYSTOP
+mdefine_line|#define SSPSP_DMYSTOP(x)&t;(x &lt;&lt; 23)&t;/* Dummy Stop */
+DECL|macro|SSPSP_SFRMWDTH
+mdefine_line|#define SSPSP_SFRMWDTH(x)&t;(x &lt;&lt; 16)&t;/* Serial Frame Width */
+DECL|macro|SSPSP_SFRMDLY
+mdefine_line|#define SSPSP_SFRMDLY(x)&t;(x &lt;&lt; 9)&t;/* Serial Frame Delay */
+DECL|macro|SSPSP_DMYSTRT
+mdefine_line|#define SSPSP_DMYSTRT(x)&t;(x &lt;&lt; 7)&t;/* Dummy Start */
+DECL|macro|SSPSP_STRTDLY
+mdefine_line|#define SSPSP_STRTDLY(x)&t;(x &lt;&lt; 4)&t;/* Start Delay */
+DECL|macro|SSPSP_ETDS
+mdefine_line|#define SSPSP_ETDS&t;&t;&t;(1 &lt;&lt; 3)&t;/* End of Transfer data State */
+DECL|macro|SSPSP_SFRMP
+mdefine_line|#define SSPSP_SFRMP&t;&t;&t;(1 &lt;&lt; 2)&t;/* Serial Frame Polarity */
+DECL|macro|SSPSP_SCMODE
+mdefine_line|#define SSPSP_SCMODE(x)&t;&t;(x &lt;&lt; 0)&t;/* Serial Bit Rate Clock Mode */
+DECL|macro|SSCR0_P1
+mdefine_line|#define SSCR0_P1&t;__REG(0x41000000)  /* SSP Port 1 Control Register 0 */
+DECL|macro|SSCR1_P1
+mdefine_line|#define SSCR1_P1&t;__REG(0x41000004)  /* SSP Port 1 Control Register 1 */
+DECL|macro|SSSR_P1
+mdefine_line|#define SSSR_P1&t;&t;__REG(0x41000008)  /* SSP Port 1 Status Register */
+DECL|macro|SSITR_P1
+mdefine_line|#define SSITR_P1&t;__REG(0x4100000C)  /* SSP Port 1 Interrupt Test Register */
+DECL|macro|SSDR_P1
+mdefine_line|#define SSDR_P1&t;&t;__REG(0x41000010)  /* (Write / Read) SSP Port 1 Data Write Register/SSP Data Read Register */
+multiline_comment|/* Support existing PXA25x drivers */
+DECL|macro|SSCR0
+mdefine_line|#define SSCR0&t;&t;SSCR0_P1  /* SSP Control Register 0 */
+DECL|macro|SSCR1
+mdefine_line|#define SSCR1&t;&t;SSCR1_P1  /* SSP Control Register 1 */
+DECL|macro|SSSR
+mdefine_line|#define SSSR&t;&t;SSSR_P1&t;  /* SSP Status Register */
+DECL|macro|SSITR
+mdefine_line|#define SSITR&t;&t;SSITR_P1  /* SSP Interrupt Test Register */
+DECL|macro|SSDR
+mdefine_line|#define SSDR&t;&t;SSDR_P1&t;  /* (Write / Read) SSP Data Write Register/SSP Data Read Register */
+multiline_comment|/* PXA27x ports */
+macro_line|#if defined (CONFIG_PXA27x)
+DECL|macro|SSTO_P1
+mdefine_line|#define SSTO_P1&t;&t;__REG(0x41000028)  /* SSP Port 1 Time Out Register */
+DECL|macro|SSPSP_P1
+mdefine_line|#define SSPSP_P1&t;__REG(0x4100002C)  /* SSP Port 1 Programmable Serial Protocol */
+DECL|macro|SSCR0_P2
+mdefine_line|#define SSCR0_P2&t;__REG(0x41700000)  /* SSP Port 2 Control Register 0 */
+DECL|macro|SSCR1_P2
+mdefine_line|#define SSCR1_P2&t;__REG(0x41700004)  /* SSP Port 2 Control Register 1 */
+DECL|macro|SSSR_P2
+mdefine_line|#define SSSR_P2&t;&t;__REG(0x41700008)  /* SSP Port 2 Status Register */
+DECL|macro|SSITR_P2
+mdefine_line|#define SSITR_P2&t;__REG(0x4170000C)  /* SSP Port 2 Interrupt Test Register */
+DECL|macro|SSDR_P2
+mdefine_line|#define SSDR_P2&t;&t;__REG(0x41700010)  /* (Write / Read) SSP Port 2 Data Write Register/SSP Data Read Register */
+DECL|macro|SSTO_P2
+mdefine_line|#define SSTO_P2&t;&t;__REG(0x41700028)  /* SSP Port 2 Time Out Register */
+DECL|macro|SSPSP_P2
+mdefine_line|#define SSPSP_P2&t;__REG(0x4170002C)  /* SSP Port 2 Programmable Serial Protocol */
+DECL|macro|SSCR0_P3
+mdefine_line|#define SSCR0_P3&t;__REG(0x41900000)  /* SSP Port 3 Control Register 0 */
+DECL|macro|SSCR1_P3
+mdefine_line|#define SSCR1_P3&t;__REG(0x41900004)  /* SSP Port 3 Control Register 1 */
+DECL|macro|SSSR_P3
+mdefine_line|#define SSSR_P3&t;&t;__REG(0x41900008)  /* SSP Port 3 Status Register */
+DECL|macro|SSITR_P3
+mdefine_line|#define SSITR_P3&t;__REG(0x4190000C)  /* SSP Port 3 Interrupt Test Register */
+DECL|macro|SSDR_P3
+mdefine_line|#define SSDR_P3&t;&t;__REG(0x41900010)  /* (Write / Read) SSP Port 3 Data Write Register/SSP Data Read Register */
+DECL|macro|SSTO_P3
+mdefine_line|#define SSTO_P3&t;&t;__REG(0x41900028)  /* SSP Port 3 Time Out Register */
+DECL|macro|SSPSP_P3
+mdefine_line|#define SSPSP_P3&t;__REG(0x4190002C)  /* SSP Port 3 Programmable Serial Protocol */
+macro_line|#else /* PXA255 (only port 2) and PXA26x ports*/
+DECL|macro|SSTO_P1
+mdefine_line|#define SSTO_P1&t;&t;__REG(0x41000028)  /* SSP Port 1 Time Out Register */
+DECL|macro|SSPSP_P1
+mdefine_line|#define SSPSP_P1&t;__REG(0x4100002C)  /* SSP Port 1 Programmable Serial Protocol */
+DECL|macro|SSCR0_P2
+mdefine_line|#define SSCR0_P2&t;__REG(0x41400000)  /* SSP Port 2 Control Register 0 */
+DECL|macro|SSCR1_P2
+mdefine_line|#define SSCR1_P2&t;__REG(0x41400004)  /* SSP Port 2 Control Register 1 */
+DECL|macro|SSSR_P2
+mdefine_line|#define SSSR_P2&t;&t;__REG(0x41400008)  /* SSP Port 2 Status Register */
+DECL|macro|SSITR_P2
+mdefine_line|#define SSITR_P2&t;__REG(0x4140000C)  /* SSP Port 2 Interrupt Test Register */
+DECL|macro|SSDR_P2
+mdefine_line|#define SSDR_P2&t;&t;__REG(0x41400010)  /* (Write / Read) SSP Port 2 Data Write Register/SSP Data Read Register */
+DECL|macro|SSTO_P2
+mdefine_line|#define SSTO_P2&t;&t;__REG(0x41400028)  /* SSP Port 2 Time Out Register */
+DECL|macro|SSPSP_P2
+mdefine_line|#define SSPSP_P2&t;__REG(0x4140002C)  /* SSP Port 2 Programmable Serial Protocol */
+DECL|macro|SSCR0_P3
+mdefine_line|#define SSCR0_P3&t;__REG(0x41500000)  /* SSP Port 3 Control Register 0 */
+DECL|macro|SSCR1_P3
+mdefine_line|#define SSCR1_P3&t;__REG(0x41500004)  /* SSP Port 3 Control Register 1 */
+DECL|macro|SSSR_P3
+mdefine_line|#define SSSR_P3&t;&t;__REG(0x41500008)  /* SSP Port 3 Status Register */
+DECL|macro|SSITR_P3
+mdefine_line|#define SSITR_P3&t;__REG(0x4150000C)  /* SSP Port 3 Interrupt Test Register */
+DECL|macro|SSDR_P3
+mdefine_line|#define SSDR_P3&t;&t;__REG(0x41500010)  /* (Write / Read) SSP Port 3 Data Write Register/SSP Data Read Register */
+DECL|macro|SSTO_P3
+mdefine_line|#define SSTO_P3&t;&t;__REG(0x41500028)  /* SSP Port 3 Time Out Register */
+DECL|macro|SSPSP_P3
+mdefine_line|#define SSPSP_P3&t;__REG(0x4150002C)  /* SSP Port 3 Programmable Serial Protocol */
+macro_line|#endif
+DECL|macro|SSCR0_P
+mdefine_line|#define SSCR0_P(x) (*(((x) == 1) ? &amp;SSCR0_P1 : ((x) == 2) ? &amp;SSCR0_P2 : ((x) == 3) ? &amp;SSCR0_P3 : NULL))
+DECL|macro|SSCR1_P
+mdefine_line|#define SSCR1_P(x) (*(((x) == 1) ? &amp;SSCR1_P1 : ((x) == 2) ? &amp;SSCR1_P2 : ((x) == 3) ? &amp;SSCR1_P3 : NULL))
+DECL|macro|SSSR_P
+mdefine_line|#define SSSR_P(x) (*(((x) == 1) ? &amp;SSSR_P1 : ((x) == 2) ? &amp;SSSR_P2 : ((x) == 3) ? &amp;SSSR_P3 : NULL))
+DECL|macro|SSITR_P
+mdefine_line|#define SSITR_P(x) (*(((x) == 1) ? &amp;SSITR_P1 : ((x) == 2) ? &amp;SSITR_P2 : ((x) == 3) ? &amp;SSITR_P3 : NULL))
+DECL|macro|SSDR_P
+mdefine_line|#define SSDR_P(x) (*(((x) == 1) ? &amp;SSDR_P1 : ((x) == 2) ? &amp;SSDR_P2 : ((x) == 3) ? &amp;SSDR_P3 : NULL))
+DECL|macro|SSTO_P
+mdefine_line|#define SSTO_P(x) (*(((x) == 1) ? &amp;SSTO_P1 : ((x) == 2) ? &amp;SSTO_P2 : ((x) == 3) ? &amp;SSTO_P3 : NULL))
+DECL|macro|SSPSP_P
+mdefine_line|#define SSPSP_P(x) (*(((x) == 1) ? &amp;SSPSP_P1 : ((x) == 2) ? &amp;SSPSP_P2 : ((x) == 3) ? &amp;SSPSP_P3 : NULL))
 multiline_comment|/*&n; * MultiMediaCard (MMC) controller&n; */
 DECL|macro|MMC_STRPCL
 mdefine_line|#define MMC_STRPCL&t;__REG(0x41100000)  /* Control to start and stop MMC clock */
@@ -2547,10 +2852,14 @@ DECL|macro|CKEN12_MMC
 mdefine_line|#define CKEN12_MMC&t;(1 &lt;&lt; 12)&t;/* MMC Unit Clock Enable */
 DECL|macro|CKEN11_USB
 mdefine_line|#define CKEN11_USB&t;(1 &lt;&lt; 11)&t;/* USB Unit Clock Enable */
+DECL|macro|CKEN10_ASSP
+mdefine_line|#define CKEN10_ASSP&t;(1 &lt;&lt; 10)&t;/* ASSP (SSP3) Clock Enable */
 DECL|macro|CKEN10_USBHOST
 mdefine_line|#define CKEN10_USBHOST&t;(1 &lt;&lt; 10)&t;/* USB Host Unit Clock Enable */
 DECL|macro|CKEN9_OSTIMER
 mdefine_line|#define CKEN9_OSTIMER&t;(1 &lt;&lt; 9)&t;/* OS Timer Unit Clock Enable */
+DECL|macro|CKEN9_NSSP
+mdefine_line|#define CKEN9_NSSP&t;(1 &lt;&lt; 9)&t;/* NSSP (SSP2) Clock Enable */
 DECL|macro|CKEN8_I2S
 mdefine_line|#define CKEN8_I2S&t;(1 &lt;&lt; 8)&t;/* I2S Unit Clock Enable */
 DECL|macro|CKEN7_BTUART

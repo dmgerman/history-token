@@ -809,11 +809,13 @@ suffix:semicolon
 DECL|member|regs
 r_int
 r_char
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
 DECL|member|fb
 r_char
+id|__iomem
 op_star
 id|fb
 suffix:semicolon

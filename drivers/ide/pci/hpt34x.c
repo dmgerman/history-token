@@ -15,7 +15,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;hpt34x.h&quot;
+DECL|macro|HPT343_DEBUG_DRIVE_INFO
+mdefine_line|#define HPT343_DEBUG_DRIVE_INFO&t;&t;0
 DECL|function|hpt34x_ratemask
 r_static
 id|u8
@@ -218,15 +219,17 @@ id|hi_speed
 comma
 id|lo_speed
 suffix:semicolon
-id|SPLIT_BYTE
-c_func
-(paren
-id|speed
-comma
 id|hi_speed
-comma
+op_assign
+id|speed
+op_rshift
+l_int|4
+suffix:semicolon
 id|lo_speed
-)paren
+op_assign
+id|speed
+op_amp
+l_int|0x0f
 suffix:semicolon
 r_if
 c_cond
@@ -1056,6 +1059,49 @@ op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
 )brace
+DECL|variable|__devinitdata
+r_static
+id|ide_pci_device_t
+id|hpt34x_chipset
+id|__devinitdata
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;HPT34X&quot;
+comma
+dot
+id|init_chipset
+op_assign
+id|init_chipset_hpt34x
+comma
+dot
+id|init_hwif
+op_assign
+id|init_hwif_hpt34x
+comma
+dot
+id|channels
+op_assign
+l_int|2
+comma
+dot
+id|autodma
+op_assign
+id|NOAUTODMA
+comma
+dot
+id|bootable
+op_assign
+id|NEVER_BOARD
+comma
+dot
+id|extra
+op_assign
+l_int|16
+)brace
+suffix:semicolon
 DECL|function|hpt34x_init_one
 r_static
 r_int
@@ -1080,10 +1126,7 @@ op_star
 id|d
 op_assign
 op_amp
-id|hpt34x_chipsets
-(braket
-id|id-&gt;driver_data
-)braket
+id|hpt34x_chipset
 suffix:semicolon
 r_static
 r_char

@@ -1444,11 +1444,17 @@ id|next_state
 op_assign
 id|pr-&gt;power.state
 suffix:semicolon
-multiline_comment|/*&n;&t; * Promotion?&n;&t; * ----------&n;&t; * Track the number of longs (time asleep is greater than threshold)&n;&t; * and promote when the count threshold is reached.  Note that bus&n;&t; * mastering activity may prevent promotions.&n;&t; */
+multiline_comment|/*&n;&t; * Promotion?&n;&t; * ----------&n;&t; * Track the number of longs (time asleep is greater than threshold)&n;&t; * and promote when the count threshold is reached.  Note that bus&n;&t; * mastering activity may prevent promotions.&n;&t; * Do not promote above acpi_cstate_limit.&n;&t; */
 r_if
 c_cond
 (paren
 id|cx-&gt;promotion.state
+op_logical_and
+(paren
+id|cx-&gt;promotion.state
+op_le
+id|acpi_cstate_limit
+)paren
 )paren
 (brace
 r_if
@@ -1555,6 +1561,20 @@ suffix:semicolon
 )brace
 id|end
 suffix:colon
+multiline_comment|/*&n;&t; * Demote if current state exceeds acpi_cstate_limit&n;&t; */
+r_if
+c_cond
+(paren
+id|pr-&gt;power.state
+OG
+id|acpi_cstate_limit
+)paren
+(brace
+id|next_state
+op_assign
+id|acpi_cstate_limit
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * New Cx State?&n;&t; * -------------&n;&t; * If we&squot;re going to start using a new Cx state we must clean up&n;&t; * from the previous and prepare to use the new.&n;&t; */
 r_if
 c_cond
@@ -4028,8 +4048,11 @@ id|transition_latency
 suffix:semicolon
 id|end
 suffix:colon
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|acpi_processor_perf_open_fs
@@ -6623,8 +6646,11 @@ l_string|&quot;no&quot;
 suffix:semicolon
 id|end
 suffix:colon
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|acpi_processor_info_open_fs
@@ -6888,8 +6914,11 @@ suffix:semicolon
 )brace
 id|end
 suffix:colon
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|acpi_processor_power_open_fs
@@ -7110,8 +7139,11 @@ l_int|0
 suffix:semicolon
 id|end
 suffix:colon
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|acpi_processor_throttling_open_fs
@@ -7395,8 +7427,11 @@ id|pr-&gt;limit.thermal.tx
 suffix:semicolon
 id|end
 suffix:colon
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|acpi_processor_limit_open_fs
@@ -10688,6 +10723,7 @@ l_int|NULL
 suffix:semicolon
 macro_line|#endif
 )brace
+multiline_comment|/*&n; * We keep the driver loaded even when ACPI is not running. &n; * This is needed for the powernow-k8 driver, that works even without&n; * ACPI, but needs symbols from this driver&n; */
 r_static
 r_int
 id|__init
@@ -10755,8 +10791,7 @@ id|acpi_processor_dir
 id|return_VALUE
 c_func
 (paren
-op_minus
-id|ENODEV
+l_int|0
 )paren
 suffix:semicolon
 id|acpi_processor_dir-&gt;owner
@@ -10791,8 +10826,7 @@ suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-op_minus
-id|ENODEV
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -10884,6 +10918,18 @@ id|module_exit
 c_func
 (paren
 id|acpi_processor_exit
+)paren
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|acpi_cstate_limit
+comma
+id|acpi_cstate_limit
+comma
+id|uint
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|variable|acpi_processor_set_thermal_limit

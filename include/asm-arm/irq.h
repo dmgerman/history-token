@@ -18,8 +18,15 @@ macro_line|#endif
 r_struct
 id|irqaction
 suffix:semicolon
-DECL|macro|disable_irq_nosync
-mdefine_line|#define disable_irq_nosync(i) disable_irq(i)
+r_extern
+r_void
+id|disable_irq_nosync
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|disable_irq

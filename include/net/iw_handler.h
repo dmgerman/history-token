@@ -8,6 +8,7 @@ multiline_comment|/* ---------------------- THE IMPLEMENTATION -----------------
 multiline_comment|/*&n; * Some of the choice I&squot;ve made are pretty controversials. Defining an&n; * API is very much weighting compromises. This goes into some of the&n; * details and the thinking behind the implementation.&n; *&n; * Implementation goals :&n; * --------------------&n; * The implementation goals were as follow :&n; *&t;o Obvious : you should not need a PhD to understand what&squot;s happening,&n; *&t;&t;the benefit is easier maintainance.&n; *&t;o Flexible : it should accommodate a wide variety of driver&n; *&t;&t;implementations and be as flexible as the old API.&n; *&t;o Lean : it should be efficient memory wise to minimise the impact&n; *&t;&t;on kernel footprint.&n; *&t;o Transparent to user space : the large number of user space&n; *&t;&t;applications that use Wireless Extensions should not need&n; *&t;&t;any modifications.&n; *&n; * Array of functions versus Struct of functions&n; * ---------------------------------------------&n; * 1) Having an array of functions allow the kernel code to access the&n; * handler in a single lookup, which is much more efficient (think hash&n; * table here).&n; * 2) The only drawback is that driver writer may put their handler in&n; * the wrong slot. This is trivial to test (I set the frequency, the&n; * bitrate changes). Once the handler is in the proper slot, it will be&n; * there forever, because the array is only extended at the end.&n; * 3) Backward/forward compatibility : adding new handler just require&n; * extending the array, so you can put newer driver in older kernel&n; * without having to patch the kernel code (and vice versa).&n; *&n; * All handler are of the same generic type&n; * ----------------------------------------&n; * That&squot;s a feature !!!&n; * 1) Having a generic handler allow to have generic code, which is more&n; * efficient. If each of the handler was individually typed I would need&n; * to add a big switch in the kernel (== more bloat). This solution is&n; * more scalable, adding new Wireless Extensions doesn&squot;t add new code.&n; * 2) You can use the same handler in different slots of the array. For&n; * hardware, it may be more efficient or logical to handle multiple&n; * Wireless Extensions with a single function, and the API allow you to&n; * do that. (An example would be a single record on the card to control&n; * both bitrate and frequency, the handler would read the old record,&n; * modify it according to info-&gt;cmd and rewrite it).&n; *&n; * Functions prototype uses union iwreq_data&n; * -----------------------------------------&n; * Some would have prefered functions defined this way :&n; *&t;static int mydriver_ioctl_setrate(struct net_device *dev, &n; *&t;&t;&t;&t;&t;  long rate, int auto)&n; * 1) The kernel code doesn&squot;t &quot;validate&quot; the content of iwreq_data, and&n; * can&squot;t do it (different hardware may have different notion of what a&n; * valid frequency is), so we don&squot;t pretend that we do it.&n; * 2) The above form is not extendable. If I want to add a flag (for&n; * example to distinguish setting max rate and basic rate), I would&n; * break the prototype. Using iwreq_data is more flexible.&n; * 3) Also, the above form is not generic (see above).&n; * 4) I don&squot;t expect driver developper using the wrong field of the&n; * union (Doh !), so static typechecking doesn&squot;t add much value.&n; * 5) Lastly, you can skip the union by doing :&n; *&t;static int mydriver_ioctl_setrate(struct net_device *dev,&n; *&t;&t;&t;&t;&t;  struct iw_request_info *info,&n; *&t;&t;&t;&t;&t;  struct iw_param *rrq,&n; *&t;&t;&t;&t;&t;  char *extra)&n; * And then adding the handler in the array like this :&n; *        (iw_handler) mydriver_ioctl_setrate,             // SIOCSIWRATE&n; *&n; * Using functions and not a registry&n; * ----------------------------------&n; * Another implementation option would have been for every instance to&n; * define a registry (a struct containing all the Wireless Extensions)&n; * and only have a function to commit the registry to the hardware.&n; * 1) This approach can be emulated by the current code, but not&n; * vice versa.&n; * 2) Some drivers don&squot;t keep any configuration in the driver, for them&n; * adding such a registry would be a significant bloat.&n; * 3) The code to translate from Wireless Extension to native format is&n; * needed anyway, so it would not reduce significantely the amount of code.&n; * 4) The current approach only selectively translate Wireless Extensions&n; * to native format and only selectively set, whereas the registry approach&n; * would require to translate all WE and set all parameters for any single&n; * change.&n; * 5) For many Wireless Extensions, the GET operation return the current&n; * dynamic value, not the value that was set.&n; *&n; * This header is &lt;net/iw_handler.h&gt;&n; * ---------------------------------&n; * 1) This header is kernel space only and should not be exported to&n; * user space. Headers in &quot;include/linux/&quot; are exported, headers in&n; * &quot;include/net/&quot; are not.&n; *&n; * Mixed 32/64 bit issues&n; * ----------------------&n; * The Wireless Extensions are designed to be 64 bit clean, by using only&n; * datatypes with explicit storage size.&n; * There are some issues related to kernel and user space using different&n; * memory model, and in particular 64bit kernel with 32bit user space.&n; * The problem is related to struct iw_point, that contains a pointer&n; * that *may* need to be translated.&n; * This is quite messy. The new API doesn&squot;t solve this problem (it can&squot;t),&n; * but is a step in the right direction :&n; * 1) Meta data about each ioctl is easily available, so we know what type&n; * of translation is needed.&n; * 2) The move of data between kernel and user space is only done in a single&n; * place in the kernel, so adding specific hooks in there is possible.&n; * 3) In the long term, it allows to move away from using ioctl as the&n; * user space API.&n; *&n; * So many comments and so few code&n; * --------------------------------&n; * That&squot;s a feature. Comments won&squot;t bloat the resulting kernel binary.&n; */
 multiline_comment|/***************************** INCLUDES *****************************/
 macro_line|#include &lt;linux/wireless.h&gt;&t;&t;/* IOCTL user space API */
+macro_line|#include &lt;linux/if_ether.h&gt;
 multiline_comment|/***************************** VERSION *****************************/
 multiline_comment|/*&n; * This constant is used to know which version of the driver API is&n; * available. Hopefully, this will be pretty stable and no changes&n; * will be needed...&n; * I just plan to increment with each new version.&n; */
 DECL|macro|IW_HANDLER_VERSION
@@ -79,6 +80,9 @@ suffix:semicolon
 multiline_comment|/* More to come ;-) */
 )brace
 suffix:semicolon
+r_struct
+id|net_device
+suffix:semicolon
 multiline_comment|/*&n; * This is how a function handling a Wireless Extension should look&n; * like (both get and set, standard and private).&n; */
 DECL|typedef|iw_handler
 r_typedef
@@ -115,18 +119,15 @@ id|iw_handler_def
 (brace
 multiline_comment|/* Number of handlers defined (more precisely, index of the&n;&t; * last defined handler + 1) */
 DECL|member|num_standard
-r_const
 id|__u16
 id|num_standard
 suffix:semicolon
 DECL|member|num_private
-r_const
 id|__u16
 id|num_private
 suffix:semicolon
 multiline_comment|/* Number of private arg description */
 DECL|member|num_private_args
-r_const
 id|__u16
 id|num_private_args
 suffix:semicolon
@@ -154,7 +155,6 @@ id|private_args
 suffix:semicolon
 multiline_comment|/* This field will be *removed* in the next version of WE */
 DECL|member|spy_offset
-r_const
 r_int
 id|spy_offset
 suffix:semicolon

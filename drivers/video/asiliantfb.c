@@ -3239,17 +3239,6 @@ comma
 id|addr
 )paren
 suffix:semicolon
-multiline_comment|/* Clear the entire framebuffer */
-id|memset
-c_func
-(paren
-id|p-&gt;screen_base
-comma
-l_int|0
-comma
-l_int|0x200000
-)paren
-suffix:semicolon
 id|pci_set_drvdata
 c_func
 (paren

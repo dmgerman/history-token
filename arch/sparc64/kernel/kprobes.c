@@ -4,9 +4,9 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/kprobes.h&gt;
 macro_line|#include &lt;asm/kdebug.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
-multiline_comment|/* We do not have hardware single-stepping on sparc64.&n; * So we implement software single-stepping with breakpoint&n; * traps.  The top-level scheme is similar to that used&n; * in the x86 kprobes implementation.&n; *&n; * In the kprobe-&gt;insn[] array we store the original&n; * instruction at index zero and a break instruction at&n; * index one.&n; *&n; * When we hit a kprobe we:&n; * - Run the pre-handler&n; * - Remember &quot;regs-&gt;tnpc&quot; and interrupt level stored in&n; *   &quot;regs-&gt;tstate&quot; so we can restore them later&n; * - Disable PIL interrupts&n; * - Set regs-&gt;tpc to point to kprobe-&gt;insn[0]&n; * - Set regs-&gt;tnpc to point to kprobe-&gt;insn[1]&n; * - Mark that we are actively in a kprobe&n; *&n; * At this point we wait for the second breakpoint at&n; * kprobe-&gt;insn[1] to hit.  When it does we:&n; * - Run the post-handler&n; * - Set regs-&gt;tpc to &quot;remembered&quot; regs-&gt;tnpc stored above,&n; *   restore the PIL interrupt level in &quot;regs-&gt;tstate&quot; as well&n; * - Make any adjustments necessary to regs-&gt;tnpc in order&n; *   to handle relative branches correctly.  See below.&n; * - Mark that we are no longer actively in a kprobe.&n; */
+multiline_comment|/* We do not have hardware single-stepping on sparc64.&n; * So we implement software single-stepping with breakpoint&n; * traps.  The top-level scheme is similar to that used&n; * in the x86 kprobes implementation.&n; *&n; * In the kprobe-&gt;ainsn.insn[] array we store the original&n; * instruction at index zero and a break instruction at&n; * index one.&n; *&n; * When we hit a kprobe we:&n; * - Run the pre-handler&n; * - Remember &quot;regs-&gt;tnpc&quot; and interrupt level stored in&n; *   &quot;regs-&gt;tstate&quot; so we can restore them later&n; * - Disable PIL interrupts&n; * - Set regs-&gt;tpc to point to kprobe-&gt;ainsn.insn[0]&n; * - Set regs-&gt;tnpc to point to kprobe-&gt;ainsn.insn[1]&n; * - Mark that we are actively in a kprobe&n; *&n; * At this point we wait for the second breakpoint at&n; * kprobe-&gt;ainsn.insn[1] to hit.  When it does we:&n; * - Run the post-handler&n; * - Set regs-&gt;tpc to &quot;remembered&quot; regs-&gt;tnpc stored above,&n; *   restore the PIL interrupt level in &quot;regs-&gt;tstate&quot; as well&n; * - Make any adjustments necessary to regs-&gt;tnpc in order&n; *   to handle relative branches correctly.  See below.&n; * - Mark that we are no longer actively in a kprobe.&n; */
 DECL|function|arch_prepare_kprobe
-r_void
+r_int
 id|arch_prepare_kprobe
 c_func
 (paren
@@ -16,7 +16,7 @@ op_star
 id|p
 )paren
 (brace
-id|p-&gt;insn
+id|p-&gt;ainsn.insn
 (braket
 l_int|0
 )braket
@@ -24,13 +24,28 @@ op_assign
 op_star
 id|p-&gt;addr
 suffix:semicolon
-id|p-&gt;insn
+id|p-&gt;ainsn.insn
 (braket
 l_int|1
 )braket
 op_assign
 id|BREAKPOINT_INSTRUCTION_2
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|arch_remove_kprobe
+r_void
+id|arch_remove_kprobe
+c_func
+(paren
+r_struct
+id|kprobe
+op_star
+id|p
+)paren
+(brace
 )brace
 multiline_comment|/* kprobe_status settings */
 DECL|macro|KPROBE_HIT_ACTIVE
@@ -103,7 +118,7 @@ r_int
 r_int
 )paren
 op_amp
-id|p-&gt;insn
+id|p-&gt;ainsn.insn
 (braket
 l_int|0
 )braket
@@ -115,7 +130,7 @@ r_int
 r_int
 )paren
 op_amp
-id|p-&gt;insn
+id|p-&gt;ainsn.insn
 (braket
 l_int|1
 )braket
@@ -608,7 +623,7 @@ op_assign
 id|real_pc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Called after single-stepping.  p-&gt;addr is the address of the&n; * instruction whose first byte has been replaced by the breakpoint&n; * instruction.  To avoid the SMP problems that can occur when we&n; * temporarily put back the original opcode to single-step, we&n; * single-stepped a copy of the instruction.  The address of this&n; * copy is p-&gt;insn.&n; *&n; * This function prepares to return from the post-single-step&n; * breakpoint trap.&n; */
+multiline_comment|/*&n; * Called after single-stepping.  p-&gt;addr is the address of the&n; * instruction whose first byte has been replaced by the breakpoint&n; * instruction.  To avoid the SMP problems that can occur when we&n; * temporarily put back the original opcode to single-step, we&n; * single-stepped a copy of the instruction.  The address of this&n; * copy is p-&gt;ainsn.insn.&n; *&n; * This function prepares to return from the post-single-step&n; * breakpoint trap.&n; */
 DECL|function|resume_execution
 r_static
 r_void
@@ -629,7 +644,7 @@ id|regs
 id|u32
 id|insn
 op_assign
-id|p-&gt;insn
+id|p-&gt;ainsn.insn
 (braket
 l_int|0
 )braket
@@ -656,7 +671,7 @@ r_int
 r_int
 )paren
 op_amp
-id|p-&gt;insn
+id|p-&gt;ainsn.insn
 (braket
 l_int|0
 )braket

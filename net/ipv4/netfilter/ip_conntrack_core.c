@@ -1145,6 +1145,12 @@ id|ct-&gt;master
 )paren
 suffix:semicolon
 )brace
+id|CONNTRACK_STAT_INC
+c_func
+(paren
+r_delete
+)paren
+suffix:semicolon
 id|WRITE_UNLOCK
 c_func
 (paren
@@ -1184,12 +1190,6 @@ c_func
 (paren
 op_amp
 id|ip_conntrack_count
-)paren
-suffix:semicolon
-id|CONNTRACK_STAT_INC
-c_func
-(paren
-r_delete
 )paren
 suffix:semicolon
 )brace

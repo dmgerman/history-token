@@ -83,6 +83,7 @@ id|jfs_tlocks_low
 suffix:semicolon
 multiline_comment|/* Indicates low number of available tlocks */
 macro_line|#ifdef CONFIG_JFS_STATISTICS
+r_static
 r_struct
 (brace
 DECL|member|txBegin
@@ -307,6 +308,7 @@ mdefine_line|#define TXN_SLEEP(event)&bslash;&n;{&bslash;&n;&t;TXN_SLEEP_DROP_LO
 DECL|macro|TXN_WAKEUP
 mdefine_line|#define TXN_WAKEUP(event) wake_up_all(event)
 multiline_comment|/*&n; *      statistics&n; */
+r_static
 r_struct
 (brace
 DECL|member|maxtid

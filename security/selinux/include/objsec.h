@@ -345,12 +345,6 @@ id|u32
 id|msg_sid
 suffix:semicolon
 multiline_comment|/* default SID for messages received on this interface */
-DECL|member|avcr
-r_struct
-id|avc_entry_ref
-id|avcr
-suffix:semicolon
-multiline_comment|/* reference to permissions */
 )brace
 suffix:semicolon
 DECL|struct|sk_security_struct

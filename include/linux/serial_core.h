@@ -1,4 +1,7 @@
 multiline_comment|/*&n; *  linux/drivers/char/serial_core.h&n; *&n; *  Copyright (C) 2000 Deep Blue Solutions Ltd.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+macro_line|#ifndef LINUX_SERIAL_CORE_H
+DECL|macro|LINUX_SERIAL_CORE_H
+mdefine_line|#define LINUX_SERIAL_CORE_H
 multiline_comment|/*&n; * The type definitions.  These are from Ted Ts&squot;o&squot;s serial.h&n; */
 DECL|macro|PORT_UNKNOWN
 mdefine_line|#define PORT_UNKNOWN&t;0
@@ -88,12 +91,16 @@ mdefine_line|#define PORT_CPM        58
 multiline_comment|/* MPC52xx type numbers */
 DECL|macro|PORT_MPC52xx
 mdefine_line|#define PORT_MPC52xx&t;59
+multiline_comment|/*IBM icom*/
+DECL|macro|PORT_ICOM
+mdefine_line|#define PORT_ICOM      60
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/circ_buf.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 r_struct
 id|uart_port
 suffix:semicolon
@@ -731,7 +738,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|UART_XMIT_SIZE
-mdefine_line|#define UART_XMIT_SIZE 1024
+mdefine_line|#define UART_XMIT_SIZE&t;PAGE_SIZE
 multiline_comment|/*&n; * This is the state information which is only valid when the port&n; * is open; it may be freed by the core driver once the device has&n; * been closed.  Either the low level driver or the core can modify&n; * stuff here.&n; */
 DECL|struct|uart_info
 r_struct
@@ -762,17 +769,6 @@ DECL|macro|UIF_NORMAL_ACTIVE
 mdefine_line|#define UIF_NORMAL_ACTIVE&t;(1 &lt;&lt; 29)
 DECL|macro|UIF_INITIALIZED
 mdefine_line|#define UIF_INITIALIZED&t;&t;(1 &lt;&lt; 31)
-DECL|member|tmpbuf
-r_int
-r_char
-op_star
-id|tmpbuf
-suffix:semicolon
-DECL|member|tmpbuf_sem
-r_struct
-id|semaphore
-id|tmpbuf_sem
-suffix:semicolon
 DECL|member|blocked_open
 r_int
 id|blocked_open
@@ -1481,4 +1477,5 @@ multiline_comment|/*&n; *&t;UART_ENABLE_MS - determine if port should enable mod
 DECL|macro|UART_ENABLE_MS
 mdefine_line|#define UART_ENABLE_MS(port,cflag)&t;((port)-&gt;flags &amp; UPF_HARDPPS_CD || &bslash;&n;&t;&t;&t;&t;&t; (cflag) &amp; CRTSCTS || &bslash;&n;&t;&t;&t;&t;&t; !((cflag) &amp; CLOCAL))
 macro_line|#endif
+macro_line|#endif /* LINUX_SERIAL_CORE_H */
 eof

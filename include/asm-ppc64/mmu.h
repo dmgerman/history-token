@@ -21,6 +21,11 @@ id|mm_context_id_t
 id|id
 suffix:semicolon
 macro_line|#ifdef CONFIG_HUGETLB_PAGE
+DECL|member|huge_pgdir
+id|pgd_t
+op_star
+id|huge_pgdir
+suffix:semicolon
 DECL|member|htlb_segs
 id|u16
 id|htlb_segs

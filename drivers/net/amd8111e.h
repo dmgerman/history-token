@@ -2981,8 +2981,6 @@ mdefine_line|#define TT_MASK&t;&t;&t;0x000c
 DECL|macro|TCC_MASK
 mdefine_line|#define TCC_MASK&t;&t;0x0003
 multiline_comment|/* driver ioctl parameters */
-DECL|macro|PHY_ID
-mdefine_line|#define PHY_ID &t;&t;&t;0x01&t;/* currently it is fixed */
 DECL|macro|AMD8111E_REG_DUMP_LEN
 mdefine_line|#define AMD8111E_REG_DUMP_LEN&t; 13*sizeof(u32) 
 multiline_comment|/* crc generator constants */
@@ -3381,6 +3379,14 @@ DECL|member|ext_phy_option
 r_int
 r_int
 id|ext_phy_option
+suffix:semicolon
+DECL|member|ext_phy_addr
+r_int
+id|ext_phy_addr
+suffix:semicolon
+DECL|member|ext_phy_id
+id|u32
+id|ext_phy_id
 suffix:semicolon
 DECL|member|link_config
 r_struct

@@ -740,7 +740,7 @@ c_cond
 op_minus
 l_int|1
 op_eq
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|nasid
@@ -754,7 +754,7 @@ op_assign
 id|NODEPDA
 c_func
 (paren
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|nasid

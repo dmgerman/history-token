@@ -308,6 +308,13 @@ macro_line|#endif
 multiline_comment|/*&n;     *  Apollo-specific tags&n;     */
 DECL|macro|BI_APOLLO_MODEL
 mdefine_line|#define BI_APOLLO_MODEL         0x8000  /* model (u_long) */
+multiline_comment|/*&n;     *  HP300-specific tags&n;     */
+DECL|macro|BI_HP300_MODEL
+mdefine_line|#define BI_HP300_MODEL&t;&t;0x8000&t;/* model (u_long) */
+DECL|macro|BI_HP300_UART_SCODE
+mdefine_line|#define BI_HP300_UART_SCODE&t;0x8001&t;/* UART select code (u_long) */
+DECL|macro|BI_HP300_UART_ADDR
+mdefine_line|#define BI_HP300_UART_ADDR&t;0x8002&t;/* phys. addr of UART (u_long) */
 multiline_comment|/*&n;     * Stuff for bootinfo interface versioning&n;     *&n;     * At the start of kernel code, a &squot;struct bootversion&squot; is located.&n;     * bootstrap checks for a matching version of the interface before booting&n;     * a kernel, to avoid user confusion if kernel and bootstrap don&squot;t work&n;     * together :-)&n;     *&n;     * If incompatible changes are made to the bootinfo interface, the major&n;     * number below should be stepped (and the minor reset to 0) for the&n;     * appropriate machine. If a change is backward-compatible, the minor&n;     * should be stepped. &quot;Backwards-compatible&quot; means that booting will work,&n;     * but certain features may not.&n;     */
 DECL|macro|BOOTINFOV_MAGIC
 mdefine_line|#define BOOTINFOV_MAGIC&t;&t;&t;0x4249561A&t;/* &squot;BIV^Z&squot; */
@@ -368,6 +375,8 @@ DECL|macro|BVME6000_BOOTI_VERSION
 mdefine_line|#define BVME6000_BOOTI_VERSION MK_BI_VERSION( 2, 0 )
 DECL|macro|Q40_BOOTI_VERSION
 mdefine_line|#define Q40_BOOTI_VERSION      MK_BI_VERSION( 2, 0 )
+DECL|macro|HP300_BOOTI_VERSION
+mdefine_line|#define HP300_BOOTI_VERSION    MK_BI_VERSION( 2, 0 )
 macro_line|#ifdef BOOTINFO_COMPAT_1_0
 multiline_comment|/*&n;     *  Backwards compatibility with bootinfo interface version 1.0&n;     */
 DECL|macro|COMPAT_AMIGA_BOOTI_VERSION

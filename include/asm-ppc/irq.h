@@ -86,11 +86,25 @@ id|irq
 suffix:semicolon
 )brace
 macro_line|#elif defined(CONFIG_8xx)
-multiline_comment|/* The MPC8xx cores have 16 possible interrupts.  There are eight&n; * possible level sensitive interrupts assigned and generated internally&n; * from such devices as CPM, PCMCIA, RTC, PIT, TimeBase and Decrementer.&n; * There are eight external interrupts (IRQs) that can be configured&n; * as either level or edge sensitive.&n; *&n; * On some implementations, there is also the possibility of an 8259&n; * through the PCI and PCI-ISA bridges.&n; */
+multiline_comment|/* Now include the board configuration specific associations.&n;*/
+macro_line|#include &lt;asm/mpc8xx.h&gt;
+multiline_comment|/* The MPC8xx cores have 16 possible interrupts.  There are eight&n; * possible level sensitive interrupts assigned and generated internally&n; * from such devices as CPM, PCMCIA, RTC, PIT, TimeBase and Decrementer.&n; * There are eight external interrupts (IRQs) that can be configured&n; * as either level or edge sensitive.&n; *&n; * On some implementations, there is also the possibility of an 8259&n; * through the PCI and PCI-ISA bridges.&n; *&n; * We are &quot;flattening&quot; the interrupt vectors of the cascaded CPM&n; * and 8259 interrupt controllers so that we can uniquely identify&n; * any interrupt source with a single integer.&n; */
 DECL|macro|NR_SIU_INTS
 mdefine_line|#define NR_SIU_INTS&t;16
+DECL|macro|NR_CPM_INTS
+mdefine_line|#define NR_CPM_INTS&t;32
+macro_line|#ifndef NR_8259_INTS
+DECL|macro|NR_8259_INTS
+mdefine_line|#define NR_8259_INTS 0
+macro_line|#endif
+DECL|macro|SIU_IRQ_OFFSET
+mdefine_line|#define SIU_IRQ_OFFSET&t;&t;0
+DECL|macro|CPM_IRQ_OFFSET
+mdefine_line|#define CPM_IRQ_OFFSET&t;&t;(SIU_IRQ_OFFSET + NR_SIU_INTS)
+DECL|macro|I8259_IRQ_OFFSET
+mdefine_line|#define I8259_IRQ_OFFSET&t;(CPM_IRQ_OFFSET + NR_CPM_INTS)
 DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS&t;(NR_SIU_INTS + NR_8259_INTS)
+mdefine_line|#define NR_IRQS&t;(NR_SIU_INTS + NR_CPM_INTS + NR_8259_INTS)
 multiline_comment|/* These values must be zero-based and map 1:1 with the SIU configuration.&n; * They are used throughout the 8xx I/O subsystem to generate&n; * interrupt masks, flags, and other control patterns.  This is why the&n; * current kernel assumption of the 8259 as the base controller is such&n; * a pain in the butt.&n; */
 DECL|macro|SIU_IRQ0
 mdefine_line|#define&t;SIU_IRQ0&t;(0)&t;/* Highest priority */
@@ -124,8 +138,6 @@ DECL|macro|SIU_IRQ7
 mdefine_line|#define&t;SIU_IRQ7&t;(14)
 DECL|macro|SIU_LEVEL7
 mdefine_line|#define&t;SIU_LEVEL7&t;(15)
-multiline_comment|/* Now include the board configuration specific associations.&n;*/
-macro_line|#include &lt;asm/mpc8xx.h&gt;
 multiline_comment|/* The internal interrupts we can configure as we see fit.&n; * My personal preference is CPM at level 2, which puts it above the&n; * MBX PCI/ISA/IDE interrupts.&n; */
 macro_line|#ifndef PIT_INTERRUPT
 DECL|macro|PIT_INTERRUPT

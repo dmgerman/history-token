@@ -145,6 +145,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|oem_force_hpet_timer
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_HPET_EMULATE_RTC */
 macro_line|#endif
 eof

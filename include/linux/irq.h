@@ -232,7 +232,7 @@ id|str
 )paren
 suffix:semicolon
 r_extern
-id|asmlinkage
+id|fastcall
 r_int
 id|handle_IRQ_event
 c_func
@@ -253,7 +253,7 @@ id|action
 )paren
 suffix:semicolon
 r_extern
-id|asmlinkage
+id|fastcall
 r_int
 r_int
 id|__do_IRQ

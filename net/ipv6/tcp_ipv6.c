@@ -1594,6 +1594,13 @@ r_return
 id|sk
 suffix:semicolon
 )brace
+DECL|variable|tcp_v6_lookup
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|tcp_v6_lookup
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Open request hash tables.&n; */
 DECL|function|tcp_v6_synq_hash
 r_static

@@ -2860,12 +2860,8 @@ multiline_comment|/* signifies legacy directory format */
 )brace
 id|data.leaf.ino
 op_assign
-id|cpu_to_le32
-c_func
-(paren
 op_star
 id|fsn
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *      leaf page does not have enough room for new entry:&n;&t; *&n;&t; *      extend/split the leaf page;&n;&t; *&n;&t; * dtSplitUp() will insert the entry and unpin the leaf page.&n;&t; */
 r_if
@@ -12854,7 +12850,8 @@ multiline_comment|/* entry slot index */
 m_wchar_t
 op_star
 id|kname
-comma
+suffix:semicolon
+id|__le16
 op_star
 id|name
 suffix:semicolon
@@ -13090,10 +13087,11 @@ m_wchar_t
 op_star
 id|kname
 comma
+id|x
+suffix:semicolon
+id|__le16
 op_star
 id|name
-comma
-id|x
 suffix:semicolon
 r_int
 id|klen
@@ -13848,10 +13846,11 @@ id|len
 suffix:semicolon
 m_wchar_t
 op_star
-id|name
-comma
-op_star
 id|kname
+suffix:semicolon
+id|__le16
+op_star
+id|name
 suffix:semicolon
 multiline_comment|/* get entry */
 id|stbl
@@ -13978,7 +13977,7 @@ op_assign
 id|key-&gt;name
 suffix:semicolon
 multiline_comment|/*&n;&t; * move head/only segment&n;&t; */
-id|UniStrncpy_le
+id|UniStrncpy_from_le
 c_func
 (paren
 id|kname
@@ -14024,7 +14023,7 @@ comma
 id|DTSLOTDATALEN
 )paren
 suffix:semicolon
-id|UniStrncpy_le
+id|UniStrncpy_from_le
 c_func
 (paren
 id|kname
@@ -14106,7 +14105,8 @@ suffix:semicolon
 m_wchar_t
 op_star
 id|kname
-comma
+suffix:semicolon
+id|__le16
 op_star
 id|name
 suffix:semicolon
@@ -14235,9 +14235,12 @@ id|h-&gt;next
 suffix:semicolon
 id|lh-&gt;inumber
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|data-&gt;leaf.ino
+)paren
 suffix:semicolon
-multiline_comment|/* little-endian */
 id|lh-&gt;namlen
 op_assign
 id|klen
@@ -14359,7 +14362,7 @@ id|DTIHDRDATALEN
 )paren
 suffix:semicolon
 )brace
-id|UniStrncpy_le
+id|UniStrncpy_to_le
 c_func
 (paren
 id|name
@@ -14489,7 +14492,7 @@ comma
 id|DTSLOTDATALEN
 )paren
 suffix:semicolon
-id|UniStrncpy_le
+id|UniStrncpy_to_le
 c_func
 (paren
 id|t-&gt;name
@@ -15296,7 +15299,7 @@ comma
 id|DTSLOTDATALEN
 )paren
 suffix:semicolon
-id|UniStrncpy
+id|UniStrncpy_le
 c_func
 (paren
 id|d-&gt;name

@@ -456,7 +456,6 @@ DECL|macro|task_running
 macro_line|# define task_running(rq, p)&t;&t;((rq)-&gt;curr == (p))
 macro_line|#endif
 multiline_comment|/*&n; * task_rq_lock - lock the runqueue a given task resides on and disable&n; * interrupts.  Note the ordering: we can safely lookup the task_rq without&n; * explicitly disabling preemption.&n; */
-DECL|function|task_rq_lock
 r_static
 id|runqueue_t
 op_star
@@ -471,6 +470,11 @@ r_int
 r_int
 op_star
 id|flags
+)paren
+id|__acquires
+c_func
+(paren
+id|rq-&gt;lock
 )paren
 (brace
 r_struct
@@ -536,7 +540,6 @@ r_return
 id|rq
 suffix:semicolon
 )brace
-DECL|function|task_rq_unlock
 r_static
 r_inline
 r_void
@@ -551,6 +554,11 @@ r_int
 r_int
 op_star
 id|flags
+)paren
+id|__releases
+c_func
+(paren
+id|rq-&gt;lock
 )paren
 (brace
 id|spin_unlock_irqrestore
@@ -992,7 +1000,6 @@ DECL|macro|schedstat_add
 macro_line|# define schedstat_add(rq, field, amt)&t;do { } while (0);
 macro_line|#endif
 multiline_comment|/*&n; * rq_lock - lock a given runqueue and disable interrupts.&n; */
-DECL|function|this_rq_lock
 r_static
 id|runqueue_t
 op_star
@@ -1000,6 +1007,11 @@ id|this_rq_lock
 c_func
 (paren
 r_void
+)paren
+id|__acquires
+c_func
+(paren
+id|rq-&gt;lock
 )paren
 (brace
 id|runqueue_t
@@ -1029,7 +1041,6 @@ r_return
 id|rq
 suffix:semicolon
 )brace
-DECL|function|rq_unlock
 r_static
 r_inline
 r_void
@@ -1039,6 +1050,11 @@ c_func
 id|runqueue_t
 op_star
 id|rq
+)paren
+id|__releases
+c_func
+(paren
+id|rq-&gt;lock
 )paren
 (brace
 id|spin_unlock_irq
@@ -2416,13 +2432,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|variable|kick_process
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|kick_process
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Return a low guess at the load of a migration-source cpu.&n; *&n; * We want to under-estimate the load of migration sources, to&n; * balance conservatively.&n; */
 DECL|function|source_load
 r_static
@@ -3792,7 +3801,6 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * finish_task_switch - clean up after a task-switch&n; * @prev: the thread we just switched away from.&n; *&n; * We enter this with the runqueue still locked, and finish_arch_switch()&n; * will unlock it along with doing any other architecture-specific cleanup&n; * actions.&n; *&n; * Note that we may have delayed dropping an mm in context_switch(). If&n; * so, we finish that here outside of the runqueue lock.  (Doing it&n; * with the lock held can cause deadlocks; see schedule() for&n; * details.)&n; */
-DECL|function|finish_task_switch
 r_static
 r_void
 id|finish_task_switch
@@ -3801,6 +3809,11 @@ c_func
 id|task_t
 op_star
 id|prev
+)paren
+id|__releases
+c_func
+(paren
+id|rq-&gt;lock
 )paren
 (brace
 id|runqueue_t
@@ -3870,7 +3883,6 @@ id|prev
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * schedule_tail - first thing a freshly forked thread must call.&n; * @prev: the thread we just switched away from.&n; */
-DECL|function|schedule_tail
 id|asmlinkage
 r_void
 id|schedule_tail
@@ -3879,6 +3891,11 @@ c_func
 id|task_t
 op_star
 id|prev
+)paren
+id|__releases
+c_func
+(paren
+id|rq-&gt;lock
 )paren
 (brace
 id|finish_task_switch
@@ -4174,7 +4191,6 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * double_rq_lock - safely lock two runqueues&n; *&n; * Note this does not disable interrupts like task_rq_lock,&n; * you need to do so manually before calling.&n; */
-DECL|function|double_rq_lock
 r_static
 r_void
 id|double_rq_lock
@@ -4188,6 +4204,16 @@ id|runqueue_t
 op_star
 id|rq2
 )paren
+id|__acquires
+c_func
+(paren
+id|rq1-&gt;lock
+)paren
+id|__acquires
+c_func
+(paren
+id|rq2-&gt;lock
+)paren
 (brace
 r_if
 c_cond
@@ -4196,6 +4222,7 @@ id|rq1
 op_eq
 id|rq2
 )paren
+(brace
 id|spin_lock
 c_func
 (paren
@@ -4203,6 +4230,14 @@ op_amp
 id|rq1-&gt;lock
 )paren
 suffix:semicolon
+id|__acquire
+c_func
+(paren
+id|rq2-&gt;lock
+)paren
+suffix:semicolon
+multiline_comment|/* Fake it out ;) */
+)brace
 r_else
 (brace
 r_if
@@ -4248,7 +4283,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * double_rq_unlock - safely unlock two runqueues&n; *&n; * Note this does not restore interrupts like task_rq_unlock,&n; * you need to do so manually after calling.&n; */
-DECL|function|double_rq_unlock
 r_static
 r_void
 id|double_rq_unlock
@@ -4261,6 +4295,16 @@ comma
 id|runqueue_t
 op_star
 id|rq2
+)paren
+id|__releases
+c_func
+(paren
+id|rq1-&gt;lock
+)paren
+id|__releases
+c_func
+(paren
+id|rq2-&gt;lock
 )paren
 (brace
 id|spin_unlock
@@ -4284,9 +4328,15 @@ op_amp
 id|rq2-&gt;lock
 )paren
 suffix:semicolon
+r_else
+id|__release
+c_func
+(paren
+id|rq2-&gt;lock
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * double_lock_balance - lock the busiest runqueue, this_rq is locked already.&n; */
-DECL|function|double_lock_balance
 r_static
 r_void
 id|double_lock_balance
@@ -4299,6 +4349,21 @@ comma
 id|runqueue_t
 op_star
 id|busiest
+)paren
+id|__releases
+c_func
+(paren
+id|this_rq-&gt;lock
+)paren
+id|__acquires
+c_func
+(paren
+id|busiest-&gt;lock
+)paren
+id|__acquires
+c_func
+(paren
+id|this_rq-&gt;lock
 )paren
 (brace
 r_if
@@ -11450,6 +11515,12 @@ id|target
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Since we are going to call schedule() anyway, there&squot;s&n;&t; * no need to preempt or enable interrupts:&n;&t; */
+id|__release
+c_func
+(paren
+id|rq-&gt;lock
+)paren
+suffix:semicolon
 id|_raw_spin_unlock
 c_func
 (paren
@@ -15635,7 +15706,6 @@ macro_line|#else
 DECL|macro|sched_domain_debug
 mdefine_line|#define sched_domain_debug() {}
 macro_line|#endif
-macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * Initial dummy domain for early boot and for hotplug cpu. Being static,&n; * it is initialized to zero, so all balancing flags are cleared which is&n; * what we want.&n; */
 DECL|variable|sched_domain_dummy
 r_static
@@ -15643,7 +15713,6 @@ r_struct
 id|sched_domain
 id|sched_domain_dummy
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_HOTPLUG_CPU
 multiline_comment|/*&n; * Force a reinitialization of the sched domains hierarchy.  The domains&n; * and groups cannot be updated in place without racing with the balancing&n; * code, so we temporarily attach all running cpus to a &quot;dummy&quot; domain&n; * which will prevent rebalancing while the sched domains are recalculated.&n; */
 DECL|function|update_sched_domains
@@ -16145,4 +16214,147 @@ id|__might_sleep
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+DECL|function|normalize_rt_tasks
+r_void
+id|normalize_rt_tasks
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|task_struct
+op_star
+id|p
+suffix:semicolon
+id|prio_array_t
+op_star
+id|array
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|runqueue_t
+op_star
+id|rq
+suffix:semicolon
+id|read_lock_irq
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+id|for_each_process
+(paren
+id|p
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rt_task
+c_func
+(paren
+id|p
+)paren
+)paren
+r_continue
+suffix:semicolon
+id|rq
+op_assign
+id|task_rq_lock
+c_func
+(paren
+id|p
+comma
+op_amp
+id|flags
+)paren
+suffix:semicolon
+id|array
+op_assign
+id|p-&gt;array
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|array
+)paren
+id|deactivate_task
+c_func
+(paren
+id|p
+comma
+id|task_rq
+c_func
+(paren
+id|p
+)paren
+)paren
+suffix:semicolon
+id|__setscheduler
+c_func
+(paren
+id|p
+comma
+id|SCHED_NORMAL
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|array
+)paren
+(brace
+id|__activate_task
+c_func
+(paren
+id|p
+comma
+id|task_rq
+c_func
+(paren
+id|p
+)paren
+)paren
+suffix:semicolon
+id|resched_task
+c_func
+(paren
+id|rq-&gt;curr
+)paren
+suffix:semicolon
+)brace
+id|task_rq_unlock
+c_func
+(paren
+id|rq
+comma
+op_amp
+id|flags
+)paren
+suffix:semicolon
+)brace
+id|read_unlock_irq
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+)brace
+DECL|variable|normalize_rt_tasks
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|normalize_rt_tasks
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
 eof

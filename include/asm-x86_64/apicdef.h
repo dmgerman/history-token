@@ -7,27 +7,27 @@ mdefine_line|#define&t;&t;APIC_DEFAULT_PHYS_BASE&t;0xfee00000
 DECL|macro|APIC_ID
 mdefine_line|#define&t;&t;APIC_ID&t;&t;0x20
 DECL|macro|APIC_ID_MASK
-mdefine_line|#define&t;&t;&t;APIC_ID_MASK&t;&t;(0x0F&lt;&lt;24)
+mdefine_line|#define&t;&t;&t;APIC_ID_MASK&t;&t;(0xFFu&lt;&lt;24)
 DECL|macro|GET_APIC_ID
-mdefine_line|#define&t;&t;&t;GET_APIC_ID(x)&t;&t;(((x)&gt;&gt;24)&amp;0x0F)
+mdefine_line|#define&t;&t;&t;GET_APIC_ID(x)&t;&t;(((x)&gt;&gt;24)&amp;0xFFu)
 DECL|macro|APIC_LVR
 mdefine_line|#define&t;&t;APIC_LVR&t;0x30
 DECL|macro|APIC_LVR_MASK
 mdefine_line|#define&t;&t;&t;APIC_LVR_MASK&t;&t;0xFF00FF
 DECL|macro|GET_APIC_VERSION
-mdefine_line|#define&t;&t;&t;GET_APIC_VERSION(x)&t;((x)&amp;0xFF)
+mdefine_line|#define&t;&t;&t;GET_APIC_VERSION(x)&t;((x)&amp;0xFFu)
 DECL|macro|GET_APIC_MAXLVT
-mdefine_line|#define&t;&t;&t;GET_APIC_MAXLVT(x)&t;(((x)&gt;&gt;16)&amp;0xFF)
+mdefine_line|#define&t;&t;&t;GET_APIC_MAXLVT(x)&t;(((x)&gt;&gt;16)&amp;0xFFu)
 DECL|macro|APIC_INTEGRATED
-mdefine_line|#define&t;&t;&t;APIC_INTEGRATED(x)&t;((x)&amp;0xF0)
+mdefine_line|#define&t;&t;&t;APIC_INTEGRATED(x)&t;((x)&amp;0xF0u)
 DECL|macro|APIC_TASKPRI
 mdefine_line|#define&t;&t;APIC_TASKPRI&t;0x80
 DECL|macro|APIC_TPRI_MASK
-mdefine_line|#define&t;&t;&t;APIC_TPRI_MASK&t;&t;0xFF
+mdefine_line|#define&t;&t;&t;APIC_TPRI_MASK&t;&t;0xFFu
 DECL|macro|APIC_ARBPRI
 mdefine_line|#define&t;&t;APIC_ARBPRI&t;0x90
 DECL|macro|APIC_ARBPRI_MASK
-mdefine_line|#define&t;&t;&t;APIC_ARBPRI_MASK&t;0xFF
+mdefine_line|#define&t;&t;&t;APIC_ARBPRI_MASK&t;0xFFu
 DECL|macro|APIC_PROCPRI
 mdefine_line|#define&t;&t;APIC_PROCPRI&t;0xA0
 DECL|macro|APIC_EOI
@@ -39,15 +39,19 @@ mdefine_line|#define&t;&t;APIC_RRR&t;0xC0
 DECL|macro|APIC_LDR
 mdefine_line|#define&t;&t;APIC_LDR&t;0xD0
 DECL|macro|APIC_LDR_MASK
-mdefine_line|#define&t;&t;&t;APIC_LDR_MASK&t;&t;(0xFF&lt;&lt;24)
+mdefine_line|#define&t;&t;&t;APIC_LDR_MASK&t;&t;(0xFFu&lt;&lt;24)
 DECL|macro|GET_APIC_LOGICAL_ID
-mdefine_line|#define&t;&t;&t;GET_APIC_LOGICAL_ID(x)&t;(((x)&gt;&gt;24)&amp;0xFF)
+mdefine_line|#define&t;&t;&t;GET_APIC_LOGICAL_ID(x)&t;(((x)&gt;&gt;24)&amp;0xFFu)
 DECL|macro|SET_APIC_LOGICAL_ID
 mdefine_line|#define&t;&t;&t;SET_APIC_LOGICAL_ID(x)&t;(((x)&lt;&lt;24))
 DECL|macro|APIC_ALL_CPUS
-mdefine_line|#define&t;&t;&t;APIC_ALL_CPUS&t;&t;0xFF
+mdefine_line|#define&t;&t;&t;APIC_ALL_CPUS&t;&t;0xFFu
 DECL|macro|APIC_DFR
 mdefine_line|#define&t;&t;APIC_DFR&t;0xE0
+DECL|macro|APIC_DFR_CLUSTER
+mdefine_line|#define&t;&t;&t;APIC_DFR_CLUSTER&t;&t;0x0FFFFFFFul
+DECL|macro|APIC_DFR_FLAT
+mdefine_line|#define&t;&t;&t;APIC_DFR_FLAT&t;&t;&t;0xFFFFFFFFul
 DECL|macro|APIC_SPIV
 mdefine_line|#define&t;&t;APIC_SPIV&t;0xF0
 DECL|macro|APIC_SPIV_FOCUS_DISABLED
@@ -100,6 +104,8 @@ DECL|macro|APIC_ICR_BUSY
 mdefine_line|#define&t;&t;&t;APIC_ICR_BUSY&t;&t;0x01000
 DECL|macro|APIC_DEST_LOGICAL
 mdefine_line|#define&t;&t;&t;APIC_DEST_LOGICAL&t;0x00800
+DECL|macro|APIC_DEST_PHYSICAL
+mdefine_line|#define&t;&t;&t;APIC_DEST_PHYSICAL&t;0x00000
 DECL|macro|APIC_DM_FIXED
 mdefine_line|#define&t;&t;&t;APIC_DM_FIXED&t;&t;0x00000
 DECL|macro|APIC_DM_LOWEST
@@ -156,6 +162,8 @@ DECL|macro|APIC_INPUT_POLARITY
 mdefine_line|#define&t;&t;&t;APIC_INPUT_POLARITY&t;&t;(1&lt;&lt;13)
 DECL|macro|APIC_SEND_PENDING
 mdefine_line|#define&t;&t;&t;APIC_SEND_PENDING&t;&t;(1&lt;&lt;12)
+DECL|macro|APIC_MODE_MASK
+mdefine_line|#define&t;&t;&t;APIC_MODE_MASK&t;&t;&t;0x700
 DECL|macro|GET_APIC_DELIVERY_MODE
 mdefine_line|#define&t;&t;&t;GET_APIC_DELIVERY_MODE(x)&t;(((x)&gt;&gt;8)&amp;0x7)
 DECL|macro|SET_APIC_DELIVERY_MODE
@@ -198,6 +206,21 @@ DECL|macro|APIC_BASE
 mdefine_line|#define APIC_BASE (fix_to_virt(FIX_APIC_BASE))
 DECL|macro|MAX_IO_APICS
 mdefine_line|#define MAX_IO_APICS 32
+multiline_comment|/*&n; * All x86-64 systems are xAPIC compatible.&n; * In the following, &quot;apicid&quot; is a physical APIC ID.&n; */
+DECL|macro|XAPIC_DEST_CPUS_SHIFT
+mdefine_line|#define XAPIC_DEST_CPUS_SHIFT&t;4
+DECL|macro|XAPIC_DEST_CPUS_MASK
+mdefine_line|#define XAPIC_DEST_CPUS_MASK&t;((1u &lt;&lt; XAPIC_DEST_CPUS_SHIFT) - 1)
+DECL|macro|XAPIC_DEST_CLUSTER_MASK
+mdefine_line|#define XAPIC_DEST_CLUSTER_MASK&t;(XAPIC_DEST_CPUS_MASK &lt;&lt; XAPIC_DEST_CPUS_SHIFT)
+DECL|macro|APIC_CLUSTER
+mdefine_line|#define APIC_CLUSTER(apicid)&t;((apicid) &amp; XAPIC_DEST_CLUSTER_MASK)
+DECL|macro|APIC_CLUSTERID
+mdefine_line|#define APIC_CLUSTERID(apicid)&t;(APIC_CLUSTER(apicid) &gt;&gt; XAPIC_DEST_CPUS_SHIFT)
+DECL|macro|APIC_CPUID
+mdefine_line|#define APIC_CPUID(apicid)&t;((apicid) &amp; XAPIC_DEST_CPUS_MASK)
+DECL|macro|NUM_APIC_CLUSTERS
+mdefine_line|#define NUM_APIC_CLUSTERS&t;((BAD_APICID + 1) &gt;&gt; XAPIC_DEST_CPUS_SHIFT)
 multiline_comment|/*&n; * the local APIC register structure, memory mapped. Not terribly well&n; * tested, but we might eventually use this one in the future - the&n; * problem why we cannot use it right now is the P5 APIC, it has an&n; * errata which cannot take 8-bit reads and writes, only 32-bit ones ...&n; */
 DECL|macro|u32
 mdefine_line|#define u32 unsigned int

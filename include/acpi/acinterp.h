@@ -1043,14 +1043,17 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * exdump - Scanner debug output routines&n; */
+multiline_comment|/*&n; * exdump - Interpreter debug output routines&n; */
 r_void
 id|acpi_ex_dump_operand
 (paren
 r_union
 id|acpi_operand_object
 op_star
-id|entry_desc
+id|obj_desc
+comma
+id|u32
+id|depth
 )paren
 suffix:semicolon
 r_void

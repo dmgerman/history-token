@@ -528,6 +528,7 @@ r_struct
 id|usb_hcd
 id|hcd
 suffix:semicolon
+multiline_comment|/* must come first! */
 macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* procfs */
 DECL|member|proc_entry

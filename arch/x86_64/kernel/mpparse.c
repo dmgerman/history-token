@@ -1341,6 +1341,11 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|clustered_apic_check
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

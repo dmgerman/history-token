@@ -18,7 +18,7 @@ id|namelen
 suffix:semicolon
 multiline_comment|/* Length of name */
 DECL|member|valuelen
-id|u16
+id|__le16
 id|valuelen
 suffix:semicolon
 multiline_comment|/* Length of value */
@@ -38,7 +38,7 @@ r_struct
 id|jfs_ea_list
 (brace
 DECL|member|size
-id|u32
+id|__le32
 id|size
 suffix:semicolon
 multiline_comment|/* overall size */

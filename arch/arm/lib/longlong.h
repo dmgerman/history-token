@@ -33,13 +33,6 @@ DECL|macro|UDIV_NEEDS_NORMALIZATION
 mdefine_line|#define UDIV_NEEDS_NORMALIZATION 1
 DECL|macro|udiv_qrnnd
 mdefine_line|#define udiv_qrnnd __udiv_qrnnd_c
-r_extern
-r_const
-id|UQItype
-id|__clz_tab
-(braket
-)braket
-suffix:semicolon
 DECL|macro|count_leading_zeros
 mdefine_line|#define count_leading_zeros(count, x) &bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    USItype __xr = (x);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    USItype __a;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    if (SI_TYPE_SIZE &lt;= 32)&t;&t;&t;&t;&t;&t;&bslash;&n;      {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__a = __xr &lt; ((USItype)1&lt;&lt;2*__BITS4)&t;&t;&t;&t;&bslash;&n;&t;  ? (__xr &lt; ((USItype)1&lt;&lt;__BITS4) ? 0 : __BITS4)&t;&t;&bslash;&n;&t;  : (__xr &lt; ((USItype)1&lt;&lt;3*__BITS4) ?  2*__BITS4 : 3*__BITS4);&t;&bslash;&n;      }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;      {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (__a = SI_TYPE_SIZE - 8; __a &gt; 0; __a -= 8)&t;&t;&t;&bslash;&n;&t;  if (((__xr &gt;&gt; __a) &amp; 0xff) != 0)&t;&t;&t;&t;&bslash;&n;&t;    break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;      }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    (count) = SI_TYPE_SIZE - (__clz_tab[__xr &gt;&gt; __a] + __a);&t;&t;&bslash;&n;  } while (0)
 eof

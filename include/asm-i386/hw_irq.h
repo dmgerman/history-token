@@ -33,7 +33,7 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-id|asmlinkage
+id|fastcall
 r_void
 id|reschedule_interrupt
 c_func
@@ -41,7 +41,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-id|asmlinkage
+id|fastcall
 r_void
 id|invalidate_interrupt
 c_func
@@ -49,7 +49,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-id|asmlinkage
+id|fastcall
 r_void
 id|call_function_interrupt
 c_func
@@ -59,7 +59,7 @@ r_void
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-id|asmlinkage
+id|fastcall
 r_void
 id|apic_timer_interrupt
 c_func
@@ -67,7 +67,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-id|asmlinkage
+id|fastcall
 r_void
 id|error_interrupt
 c_func
@@ -75,7 +75,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-id|asmlinkage
+id|fastcall
 r_void
 id|spurious_interrupt
 c_func
@@ -83,13 +83,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
-id|asmlinkage
+id|fastcall
 r_void
 id|thermal_interrupt
 c_func
 (paren
 r_struct
 id|pt_regs
+op_star
 )paren
 suffix:semicolon
 DECL|macro|platform_legacy_irq

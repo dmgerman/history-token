@@ -155,22 +155,22 @@ r_struct
 id|dmaptree
 (brace
 DECL|member|nleafs
-id|s32
+id|__le32
 id|nleafs
 suffix:semicolon
 multiline_comment|/* 4: number of tree leafs      */
 DECL|member|l2nleafs
-id|s32
+id|__le32
 id|l2nleafs
 suffix:semicolon
 multiline_comment|/* 4: l2 number of tree leafs   */
 DECL|member|leafidx
-id|s32
+id|__le32
 id|leafidx
 suffix:semicolon
 multiline_comment|/* 4: index of first tree leaf  */
 DECL|member|height
-id|s32
+id|__le32
 id|height
 suffix:semicolon
 multiline_comment|/* 4: height of the tree        */
@@ -204,17 +204,17 @@ r_struct
 id|dmap
 (brace
 DECL|member|nblocks
-id|s32
+id|__le32
 id|nblocks
 suffix:semicolon
 multiline_comment|/* 4: num blks covered by this dmap     */
 DECL|member|nfree
-id|s32
+id|__le32
 id|nfree
 suffix:semicolon
 multiline_comment|/* 4: num of free blks in this dmap     */
 DECL|member|start
-id|s64
+id|__le64
 id|start
 suffix:semicolon
 multiline_comment|/* 8: starting blkno for this dmap      */
@@ -233,7 +233,7 @@ l_int|1672
 suffix:semicolon
 multiline_comment|/* 1672: pad to 2048 bytes              */
 DECL|member|wmap
-id|u32
+id|__le32
 id|wmap
 (braket
 id|LPERDMAP
@@ -241,7 +241,7 @@ id|LPERDMAP
 suffix:semicolon
 multiline_comment|/* 1024: bits of the working map        */
 DECL|member|pmap
-id|u32
+id|__le32
 id|pmap
 (braket
 id|LPERDMAP
@@ -257,22 +257,22 @@ r_struct
 id|dmapctl
 (brace
 DECL|member|nleafs
-id|s32
+id|__le32
 id|nleafs
 suffix:semicolon
 multiline_comment|/* 4: number of tree leafs      */
 DECL|member|l2nleafs
-id|s32
+id|__le32
 id|l2nleafs
 suffix:semicolon
 multiline_comment|/* 4: l2 number of tree leafs   */
 DECL|member|leafidx
-id|s32
+id|__le32
 id|leafidx
 suffix:semicolon
 multiline_comment|/* 4: index of the first tree leaf      */
 DECL|member|height
-id|s32
+id|__le32
 id|height
 suffix:semicolon
 multiline_comment|/* 4: height of tree            */
@@ -334,72 +334,72 @@ mdefine_line|#define&t;dmt_budmin &t;t1.budmin
 DECL|macro|dmt_stree
 mdefine_line|#define&t;dmt_stree &t;t1.stree
 multiline_comment|/* &n; *&t;on-disk aggregate disk allocation map descriptor.&n; */
-DECL|struct|dbmap
+DECL|struct|dbmap_disk
 r_struct
-id|dbmap
+id|dbmap_disk
 (brace
 DECL|member|dn_mapsize
-id|s64
+id|__le64
 id|dn_mapsize
 suffix:semicolon
 multiline_comment|/* 8: number of blocks in aggregate     */
 DECL|member|dn_nfree
-id|s64
+id|__le64
 id|dn_nfree
 suffix:semicolon
 multiline_comment|/* 8: num free blks in aggregate map    */
 DECL|member|dn_l2nbperpage
-id|s32
+id|__le32
 id|dn_l2nbperpage
 suffix:semicolon
 multiline_comment|/* 4: number of blks per page           */
 DECL|member|dn_numag
-id|s32
+id|__le32
 id|dn_numag
 suffix:semicolon
 multiline_comment|/* 4: total number of ags               */
 DECL|member|dn_maxlevel
-id|s32
+id|__le32
 id|dn_maxlevel
 suffix:semicolon
 multiline_comment|/* 4: number of active ags              */
 DECL|member|dn_maxag
-id|s32
+id|__le32
 id|dn_maxag
 suffix:semicolon
 multiline_comment|/* 4: max active alloc group number     */
 DECL|member|dn_agpref
-id|s32
+id|__le32
 id|dn_agpref
 suffix:semicolon
 multiline_comment|/* 4: preferred alloc group (hint)      */
 DECL|member|dn_aglevel
-id|s32
+id|__le32
 id|dn_aglevel
 suffix:semicolon
 multiline_comment|/* 4: dmapctl level holding the AG      */
 DECL|member|dn_agheigth
-id|s32
+id|__le32
 id|dn_agheigth
 suffix:semicolon
 multiline_comment|/* 4: height in dmapctl of the AG       */
 DECL|member|dn_agwidth
-id|s32
+id|__le32
 id|dn_agwidth
 suffix:semicolon
 multiline_comment|/* 4: width in dmapctl of the AG        */
 DECL|member|dn_agstart
-id|s32
+id|__le32
 id|dn_agstart
 suffix:semicolon
 multiline_comment|/* 4: start tree index at AG height     */
 DECL|member|dn_agl2size
-id|s32
+id|__le32
 id|dn_agl2size
 suffix:semicolon
 multiline_comment|/* 4: l2 num of blks per alloc group    */
 DECL|member|dn_agfree
-id|s64
+id|__le64
 id|dn_agfree
 (braket
 id|MAXAG
@@ -407,7 +407,7 @@ id|MAXAG
 suffix:semicolon
 multiline_comment|/* 8*MAXAG: per AG free count           */
 DECL|member|dn_agsize
-id|s64
+id|__le64
 id|dn_agsize
 suffix:semicolon
 multiline_comment|/* 8: num of blks per alloc group       */
@@ -424,6 +424,92 @@ l_int|3007
 )braket
 suffix:semicolon
 multiline_comment|/* 3007: pad to 4096                    */
+)brace
+suffix:semicolon
+multiline_comment|/* - 4096 -                             */
+DECL|struct|dbmap
+r_struct
+id|dbmap
+(brace
+DECL|member|dn_mapsize
+id|s64
+id|dn_mapsize
+suffix:semicolon
+multiline_comment|/* number of blocks in aggregate     */
+DECL|member|dn_nfree
+id|s64
+id|dn_nfree
+suffix:semicolon
+multiline_comment|/* num free blks in aggregate map    */
+DECL|member|dn_l2nbperpage
+r_int
+id|dn_l2nbperpage
+suffix:semicolon
+multiline_comment|/* number of blks per page           */
+DECL|member|dn_numag
+r_int
+id|dn_numag
+suffix:semicolon
+multiline_comment|/* total number of ags               */
+DECL|member|dn_maxlevel
+r_int
+id|dn_maxlevel
+suffix:semicolon
+multiline_comment|/* number of active ags              */
+DECL|member|dn_maxag
+r_int
+id|dn_maxag
+suffix:semicolon
+multiline_comment|/* max active alloc group number     */
+DECL|member|dn_agpref
+r_int
+id|dn_agpref
+suffix:semicolon
+multiline_comment|/* preferred alloc group (hint)      */
+DECL|member|dn_aglevel
+r_int
+id|dn_aglevel
+suffix:semicolon
+multiline_comment|/* dmapctl level holding the AG      */
+DECL|member|dn_agheigth
+r_int
+id|dn_agheigth
+suffix:semicolon
+multiline_comment|/* height in dmapctl of the AG       */
+DECL|member|dn_agwidth
+r_int
+id|dn_agwidth
+suffix:semicolon
+multiline_comment|/* width in dmapctl of the AG        */
+DECL|member|dn_agstart
+r_int
+id|dn_agstart
+suffix:semicolon
+multiline_comment|/* start tree index at AG height     */
+DECL|member|dn_agl2size
+r_int
+id|dn_agl2size
+suffix:semicolon
+multiline_comment|/* l2 num of blks per alloc group    */
+DECL|member|dn_agfree
+id|s64
+id|dn_agfree
+(braket
+id|MAXAG
+)braket
+suffix:semicolon
+multiline_comment|/* per AG free count           */
+DECL|member|dn_agsize
+id|s64
+id|dn_agsize
+suffix:semicolon
+multiline_comment|/* num of blks per alloc group       */
+DECL|member|dn_maxfreebud
+r_int
+r_char
+id|dn_maxfreebud
+suffix:semicolon
+multiline_comment|/* max free buddy system             */
 )brace
 suffix:semicolon
 multiline_comment|/* - 4096 -                             */

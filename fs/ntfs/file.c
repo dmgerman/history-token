@@ -307,7 +307,7 @@ macro_line|#ifdef NTFS_RW
 dot
 id|truncate
 op_assign
-id|ntfs_truncate
+id|ntfs_truncate_vfs
 comma
 dot
 id|setattr

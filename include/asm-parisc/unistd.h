@@ -1380,7 +1380,7 @@ mdefine_line|#define __NR_remap_file_pages   (__NR_Linux + 227)
 DECL|macro|__NR_semtimedop
 mdefine_line|#define __NR_semtimedop         (__NR_Linux + 228)
 DECL|macro|__NR_mq_open
-mdefine_line|#define __NR_mq_open            (__NR_Linux + 229) /* Keep the mq_* syscalls together */
+mdefine_line|#define __NR_mq_open            (__NR_Linux + 229)
 DECL|macro|__NR_mq_unlink
 mdefine_line|#define __NR_mq_unlink          (__NR_Linux + 230)
 DECL|macro|__NR_mq_timedsend
@@ -1391,8 +1391,64 @@ DECL|macro|__NR_mq_notify
 mdefine_line|#define __NR_mq_notify          (__NR_Linux + 233)
 DECL|macro|__NR_mq_getsetattr
 mdefine_line|#define __NR_mq_getsetattr      (__NR_Linux + 234)
+DECL|macro|__NR_waitid
+mdefine_line|#define __NR_waitid&t;&t;(__NR_Linux + 235)
+DECL|macro|__NR_fadvise64_64
+mdefine_line|#define __NR_fadvise64_64&t;(__NR_Linux + 236)
+DECL|macro|__NR_set_tid_address
+mdefine_line|#define __NR_set_tid_address&t;(__NR_Linux + 237)
+DECL|macro|__NR_setxattr
+mdefine_line|#define __NR_setxattr&t;&t;(__NR_Linux + 238)
+DECL|macro|__NR_lsetxattr
+mdefine_line|#define __NR_lsetxattr&t;&t;(__NR_Linux + 239)
+DECL|macro|__NR_fsetxattr
+mdefine_line|#define __NR_fsetxattr&t;&t;(__NR_Linux + 240)
+DECL|macro|__NR_getxattr
+mdefine_line|#define __NR_getxattr&t;&t;(__NR_Linux + 241)
+DECL|macro|__NR_lgetxattr
+mdefine_line|#define __NR_lgetxattr&t;&t;(__NR_Linux + 242)
+DECL|macro|__NR_fgetxattr
+mdefine_line|#define __NR_fgetxattr&t;&t;(__NR_Linux + 243)
+DECL|macro|__NR_listxattr
+mdefine_line|#define __NR_listxattr&t;&t;(__NR_Linux + 244)
+DECL|macro|__NR_llistxattr
+mdefine_line|#define __NR_llistxattr&t;&t;(__NR_Linux + 245)
+DECL|macro|__NR_flistxattr
+mdefine_line|#define __NR_flistxattr&t;&t;(__NR_Linux + 246)
+DECL|macro|__NR_removexattr
+mdefine_line|#define __NR_removexattr&t;(__NR_Linux + 247)
+DECL|macro|__NR_lremovexattr
+mdefine_line|#define __NR_lremovexattr&t;(__NR_Linux + 248)
+DECL|macro|__NR_fremovexattr
+mdefine_line|#define __NR_fremovexattr&t;(__NR_Linux + 249)
+DECL|macro|__NR_timer_create
+mdefine_line|#define __NR_timer_create&t;(__NR_Linux + 250)
+DECL|macro|__NR_timer_settime
+mdefine_line|#define __NR_timer_settime&t;(__NR_Linux + 251)
+DECL|macro|__NR_timer_gettime
+mdefine_line|#define __NR_timer_gettime&t;(__NR_Linux + 252)
+DECL|macro|__NR_timer_getoverrun
+mdefine_line|#define __NR_timer_getoverrun&t;(__NR_Linux + 253)
+DECL|macro|__NR_timer_delete
+mdefine_line|#define __NR_timer_delete&t;(__NR_Linux + 254)
+DECL|macro|__NR_clock_settime
+mdefine_line|#define __NR_clock_settime&t;(__NR_Linux + 255)
+DECL|macro|__NR_clock_gettime
+mdefine_line|#define __NR_clock_gettime&t;(__NR_Linux + 256)
+DECL|macro|__NR_clock_getres
+mdefine_line|#define __NR_clock_getres&t;(__NR_Linux + 257)
+DECL|macro|__NR_clock_nanosleep
+mdefine_line|#define __NR_clock_nanosleep&t;(__NR_Linux + 258)
+DECL|macro|__NR_tgkill
+mdefine_line|#define __NR_tgkill&t;&t;(__NR_Linux + 259)
+DECL|macro|__NR_mbind
+mdefine_line|#define __NR_mbind&t;&t;(__NR_Linux + 260)
+DECL|macro|__NR_get_mempolicy
+mdefine_line|#define __NR_get_mempolicy&t;(__NR_Linux + 261)
+DECL|macro|__NR_set_mempolicy
+mdefine_line|#define __NR_set_mempolicy&t;(__NR_Linux + 262)
 DECL|macro|__NR_Linux_syscalls
-mdefine_line|#define __NR_Linux_syscalls     235
+mdefine_line|#define __NR_Linux_syscalls     263
 DECL|macro|HPUX_GATEWAY_ADDR
 mdefine_line|#define HPUX_GATEWAY_ADDR       0xC0000004
 DECL|macro|LINUX_GATEWAY_ADDR
@@ -1410,10 +1466,6 @@ macro_line|#endif
 multiline_comment|/* Definition taken from glibc 2.3.3&n; * sysdeps/unix/sysv/linux/hppa/sysdep.h&n; */
 macro_line|#ifdef PIC
 multiline_comment|/* WARNING: CANNOT BE USED IN A NOP! */
-DECL|macro|K_STW_PIC
-macro_line|# define K_STW_PIC stw %r19, -32(%sr0, %sp) ASM_LINE_SEP
-DECL|macro|K_LDW_PIC
-macro_line|# define K_LDW_PIC ldw -32(%sr0, %sp), %r19 ASM_LINE_SEP
 DECL|macro|K_STW_ASM_PIC
 macro_line|# define K_STW_ASM_PIC&t;&quot;       copy %%r19, %%r4&bslash;n&quot;
 DECL|macro|K_LDW_ASM_PIC
@@ -1421,10 +1473,6 @@ macro_line|# define K_LDW_ASM_PIC&t;&quot;       copy %%r4, %%r19&bslash;n&quot;
 DECL|macro|K_USING_GR4
 macro_line|# define K_USING_GR4&t;&quot;%r4&quot;,
 macro_line|#else
-DECL|macro|K_STW_PIC
-macro_line|# define K_STW_PIC ASM_LINE_SEP
-DECL|macro|K_LDW_PIC
-macro_line|# define K_LDW_PIC ASM_LINE_SEP
 DECL|macro|K_STW_ASM_PIC
 macro_line|# define K_STW_ASM_PIC&t;&quot; &bslash;n&quot;
 DECL|macro|K_LDW_ASM_PIC
@@ -1438,7 +1486,7 @@ mdefine_line|#define K_CALL_CLOB_REGS &quot;%r1&quot;, &quot;%r2&quot;, K_USING_
 DECL|macro|K_INLINE_SYSCALL
 macro_line|#undef K_INLINE_SYSCALL
 DECL|macro|K_INLINE_SYSCALL
-mdefine_line|#define K_INLINE_SYSCALL(name, nr, args...)&t;({&t;&t;&t;&bslash;&n;&t;long __sys_res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;register unsigned long __res asm(&quot;r28&quot;);&t;&t;&bslash;&n;&t;&t;K_LOAD_ARGS_##nr(args)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;/* FIXME: HACK stw/ldw r19 around syscall */&t;&t;&bslash;&n;&t;&t;asm volatile(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;K_STW_ASM_PIC&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;&t;ble  0x100(%%sr2, %%r0)&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;&t;ldi %1, %%r20&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;K_LDW_ASM_PIC&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (__res)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;i&quot; (SYS_ify(name)) K_ASM_ARGS_##nr   &t;&bslash;&n;&t;&t;&t;: K_CALL_CLOB_REGS K_CLOB_ARGS_##nr&t;&t;&bslash;&n;&t;&t;);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__sys_res = (long)__res;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( (unsigned long)__sys_res &gt;= (unsigned long)-4095 ){&t;&bslash;&n;&t;&t;errno = -__sys_res);&t;&t;        &t;&t;&bslash;&n;&t;&t;__sys_res = -1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__sys_res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define K_INLINE_SYSCALL(name, nr, args...)&t;({&t;&t;&t;&bslash;&n;&t;long __sys_res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;register unsigned long __res asm(&quot;r28&quot;);&t;&t;&bslash;&n;&t;&t;K_LOAD_ARGS_##nr(args)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;/* FIXME: HACK stw/ldw r19 around syscall */&t;&t;&bslash;&n;&t;&t;asm volatile(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;K_STW_ASM_PIC&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;&t;ble  0x100(%%sr2, %%r0)&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;&t;ldi %1, %%r20&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;K_LDW_ASM_PIC&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (__res)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;i&quot; (SYS_ify(name)) K_ASM_ARGS_##nr   &t;&bslash;&n;&t;&t;&t;: &quot;memory&quot;, K_CALL_CLOB_REGS K_CLOB_ARGS_##nr&t;&bslash;&n;&t;&t;);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__sys_res = (long)__res;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( (unsigned long)__sys_res &gt;= (unsigned long)-4095 ){&t;&bslash;&n;&t;&t;errno = -__sys_res);&t;&t;        &t;&t;&bslash;&n;&t;&t;__sys_res = -1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__sys_res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|K_LOAD_ARGS_0
 mdefine_line|#define K_LOAD_ARGS_0()
 DECL|macro|K_LOAD_ARGS_1

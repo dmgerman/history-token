@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_BUFFER_HEAD_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|enum|bh_state_bits
@@ -171,7 +172,7 @@ multiline_comment|/* associated with another mapping */
 suffix:semicolon
 multiline_comment|/*&n; * macro tricks to expand the set_buffer_foo(), clear_buffer_foo()&n; * and buffer_foo() functions.&n; */
 DECL|macro|BUFFER_FNS
-mdefine_line|#define BUFFER_FNS(bit, name)&t;&t;&t;&t;&t;&t;&bslash;&n;static inline void set_buffer_##name(struct buffer_head *bh)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_bit(BH_##bit, &amp;(bh)-&gt;b_state);&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline void clear_buffer_##name(struct buffer_head *bh)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;clear_bit(BH_##bit, &amp;(bh)-&gt;b_state);&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline int buffer_##name(struct buffer_head *bh)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return test_bit(BH_##bit, &amp;(bh)-&gt;b_state);&t;&t;&t;&bslash;&n;}
+mdefine_line|#define BUFFER_FNS(bit, name)&t;&t;&t;&t;&t;&t;&bslash;&n;static inline void set_buffer_##name(struct buffer_head *bh)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_bit(BH_##bit, &amp;(bh)-&gt;b_state);&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline void clear_buffer_##name(struct buffer_head *bh)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;clear_bit(BH_##bit, &amp;(bh)-&gt;b_state);&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline int buffer_##name(const struct buffer_head *bh)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return test_bit(BH_##bit, &amp;(bh)-&gt;b_state);&t;&t;&t;&bslash;&n;}
 multiline_comment|/*&n; * test_set_buffer_foo() and test_clear_buffer_foo()&n; */
 DECL|macro|TAS_BUFFER_FNS
 mdefine_line|#define TAS_BUFFER_FNS(bit, name)&t;&t;&t;&t;&t;&bslash;&n;static inline int test_set_buffer_##name(struct buffer_head *bh)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return test_and_set_bit(BH_##bit, &amp;(bh)-&gt;b_state);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline int test_clear_buffer_##name(struct buffer_head *bh)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return test_and_clear_bit(BH_##bit, &amp;(bh)-&gt;b_state);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;
@@ -354,6 +355,25 @@ c_func
 r_struct
 id|page
 op_star
+)paren
+suffix:semicolon
+r_struct
+id|buffer_head
+op_star
+id|alloc_page_buffers
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+r_int
+id|size
+comma
+r_int
+id|retry
 )paren
 suffix:semicolon
 r_void
@@ -1002,6 +1022,47 @@ id|loff_t
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * inline definitions&n; */
+DECL|function|attach_page_buffers
+r_static
+r_inline
+r_void
+id|attach_page_buffers
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_struct
+id|buffer_head
+op_star
+id|head
+)paren
+(brace
+id|page_cache_get
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|SetPagePrivate
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|page
+op_member_access_from_pointer
+r_private
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|head
+suffix:semicolon
+)brace
 DECL|function|get_bh
 r_static
 r_inline

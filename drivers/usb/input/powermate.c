@@ -1452,9 +1452,12 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|pm-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|init_input_dev
 c_func

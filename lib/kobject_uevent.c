@@ -7,6 +7,10 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kobject_uevent.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
+DECL|macro|BUFFER_SIZE
+mdefine_line|#define BUFFER_SIZE&t;1024&t;/* buffer for the hotplug env */
+DECL|macro|NUM_ENVP
+mdefine_line|#define NUM_ENVP&t;32&t;/* number of env pointers */
 macro_line|#if defined(CONFIG_KOBJECT_UEVENT) || defined(CONFIG_HOTPLUG)
 DECL|function|action_to_string
 r_static
@@ -78,7 +82,7 @@ id|sock
 op_star
 id|uevent_sock
 suffix:semicolon
-multiline_comment|/**&n; * send_uevent - notify userspace by sending event trough netlink socket&n; *&n; * @signal: signal name&n; * @obj: object path (kobject)&n; * @buf: buffer used to pass auxiliary data like the hotplug environment&n; * @buflen:&n; * gfp_mask:&n; */
+multiline_comment|/**&n; * send_uevent - notify userspace by sending event trough netlink socket&n; *&n; * @signal: signal name&n; * @obj: object path (kobject)&n; * @envp: possible hotplug environment to pass with the message&n; * @gfp_mask:&n; */
 DECL|function|send_uevent
 r_static
 r_int
@@ -95,13 +99,10 @@ r_char
 op_star
 id|obj
 comma
-r_const
-r_void
+r_char
 op_star
-id|buf
-comma
-r_int
-id|buflen
+op_star
+id|envp
 comma
 r_int
 id|gfp_mask
@@ -149,16 +150,15 @@ id|obj
 op_plus
 l_int|1
 suffix:semicolon
-id|len
-op_add_assign
-id|buflen
-suffix:semicolon
+multiline_comment|/* allocate buffer with the maximum possible message size */
 id|skb
 op_assign
 id|alloc_skb
 c_func
 (paren
 id|len
+op_plus
+id|BUFFER_SIZE
 comma
 id|gfp_mask
 )paren
@@ -183,8 +183,6 @@ comma
 id|len
 )paren
 suffix:semicolon
-id|pos
-op_add_assign
 id|sprintf
 c_func
 (paren
@@ -196,19 +194,69 @@ id|signal
 comma
 id|obj
 )paren
+suffix:semicolon
+multiline_comment|/* copy the environment key by key to our continuous buffer */
+r_if
+c_cond
+(paren
+id|envp
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|2
+suffix:semicolon
+id|envp
+(braket
+id|i
+)braket
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|len
+op_assign
+id|strlen
+c_func
+(paren
+id|envp
+(braket
+id|i
+)braket
+)paren
 op_plus
 l_int|1
 suffix:semicolon
-id|memcpy
+id|pos
+op_assign
+id|skb_put
+c_func
+(paren
+id|skb
+comma
+id|len
+)paren
+suffix:semicolon
+id|strcpy
 c_func
 (paren
 id|pos
 comma
-id|buf
-comma
-id|buflen
+id|envp
+(braket
+id|i
+)braket
 )paren
 suffix:semicolon
+)brace
+)brace
 r_return
 id|netlink_broadcast
 c_func
@@ -374,8 +422,6 @@ id|attrpath
 comma
 l_int|NULL
 comma
-l_int|0
-comma
 id|gfp_mask
 )paren
 suffix:semicolon
@@ -387,7 +433,6 @@ id|attrpath
 suffix:semicolon
 )brace
 r_else
-(brace
 id|rc
 op_assign
 id|send_uevent
@@ -399,12 +444,9 @@ id|path
 comma
 l_int|NULL
 comma
-l_int|0
-comma
 id|gfp_mask
 )paren
 suffix:semicolon
-)brace
 m_exit
 suffix:colon
 id|kfree
@@ -544,7 +586,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|kobject_uevent_init
-id|core_initcall
+id|postcore_initcall
 c_func
 (paren
 id|kobject_uevent_init
@@ -568,13 +610,10 @@ r_char
 op_star
 id|obj
 comma
-r_const
-r_void
+r_char
 op_star
-id|buf
-comma
-r_int
-id|buflen
+op_star
+id|envp
 comma
 r_int
 id|gfp_mask
@@ -586,6 +625,15 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_KOBJECT_UEVENT */
 macro_line|#ifdef CONFIG_HOTPLUG
+DECL|variable|hotplug_path
+r_char
+id|hotplug_path
+(braket
+id|HOTPLUG_PATH_LEN
+)braket
+op_assign
+l_string|&quot;/sbin/hotplug&quot;
+suffix:semicolon
 DECL|variable|hotplug_seqnum
 id|u64
 id|hotplug_seqnum
@@ -597,10 +645,6 @@ id|sequence_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-DECL|macro|BUFFER_SIZE
-mdefine_line|#define BUFFER_SIZE&t;1024&t;/* should be enough memory for the env */
-DECL|macro|NUM_ENVP
-mdefine_line|#define NUM_ENVP&t;32&t;/* number of env pointers */
 multiline_comment|/**&n; * kobject_hotplug - notify userspace by executing /sbin/hotplug&n; *&n; * @action: action that is happening (usually &quot;ADD&quot; or &quot;REMOVE&quot;)&n; * @kobj: struct kobject that the action is happening to&n; */
 DECL|function|kobject_hotplug
 r_void
@@ -636,6 +680,10 @@ op_star
 id|buffer
 op_assign
 l_int|NULL
+suffix:semicolon
+r_char
+op_star
+id|seq_buff
 suffix:semicolon
 r_char
 op_star
@@ -999,6 +1047,27 @@ id|name
 op_plus
 l_int|1
 suffix:semicolon
+multiline_comment|/* reserve space for the sequence,&n;&t; * put the real one in after the hotplug call */
+id|envp
+(braket
+id|i
+op_increment
+)braket
+op_assign
+id|seq_buff
+op_assign
+id|scratch
+suffix:semicolon
+id|scratch
+op_add_assign
+id|strlen
+c_func
+(paren
+l_string|&quot;SEQNUM=18446744073709551616&quot;
+)paren
+op_plus
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1074,20 +1143,10 @@ op_amp
 id|sequence_lock
 )paren
 suffix:semicolon
-id|envp
-(braket
-id|i
-op_increment
-)braket
-op_assign
-id|scratch
-suffix:semicolon
-id|scratch
-op_add_assign
 id|sprintf
 c_func
 (paren
-id|scratch
+id|seq_buff
 comma
 l_string|&quot;SEQNUM=%lld&quot;
 comma
@@ -1097,8 +1156,6 @@ r_int
 )paren
 id|seq
 )paren
-op_plus
-l_int|1
 suffix:semicolon
 id|pr_debug
 (paren
@@ -1155,11 +1212,7 @@ id|action_string
 comma
 id|kobj_path
 comma
-id|buffer
-comma
-id|scratch
-op_minus
-id|buffer
+id|envp
 comma
 id|GFP_KERNEL
 )paren

@@ -5,15 +5,12 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
+macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
 multiline_comment|/*&n; * Depending on the hardware on your board and your board design, the&n; * RTC/NVRAM may be accessed either directly (like normal memory) or via&n; * address/data registers.  If your board uses the direct method, set&n; * &squot;nvram_data&squot; to the base address of your nvram and leave &squot;nvram_as0&squot; and&n; * &squot;nvram_as1&squot; NULL.  If your board uses address/data regs to access nvram,&n; * set &squot;nvram_as0&squot; to the address of the lower byte, set &squot;nvram_as1&squot; to the&n; * address of the upper byte (leave NULL if using mc146818), and set&n; * &squot;nvram_data&squot; to the address of the 8-bit data register.&n; *&n; * In order to break the assumption that the RTC and NVRAM are accessed by&n; * the same mechanism, you need to explicitly set &squot;ppc_md.rtc_read_val&squot; and&n; * &squot;ppc_md.rtc_write_val&squot;, otherwise the values of &squot;ppc_md.rtc_read_val&squot;&n; * and &squot;ppc_md.rtc_write_val&squot; will be used.&n; *&n; * Note: Even though the documentation for the various RTC chips say that it&n; * &t; take up to a second before it starts updating once the &squot;R&squot; bit is&n; * &t; cleared, they always seem to update even though we bang on it many&n; * &t; times a second.  This is true, except for the Dallas Semi 1746/1747&n; * &t; (possibly others).  Those chips seem to have a real problem whenever&n; * &t; we set the &squot;R&squot; bit before reading them, they basically stop counting.&n; * &t; &t;&t;&t;&t;&t;--MAG&n; */
-r_extern
-id|spinlock_t
-id|rtc_lock
-suffix:semicolon
 multiline_comment|/*&n; * &squot;todc_info&squot; should be initialized in your *_setup.c file to&n; * point to a fully initialized &squot;todc_info_t&squot; structure.&n; * This structure holds all the register offsets for your particular&n; * TODC/RTC chip.&n; * TODC_ALLOC()/TODC_INIT() will allocate and initialize this table for you.&n; */
 macro_line|#ifdef&t;RTC_FREQ_SELECT
 DECL|macro|RTC_FREQ_SELECT

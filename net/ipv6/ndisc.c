@@ -4940,12 +4940,6 @@ id|neigh-&gt;flags
 op_or_assign
 id|NTF_ROUTER
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *&t;If we where using an &quot;all destinations on link&quot; route&n;&t;&t; *&t;delete it&n;&t;&t; */
-id|rt6_purge_dflt_routers
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 r_if
 c_cond

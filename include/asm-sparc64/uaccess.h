@@ -162,6 +162,7 @@ suffix:semicolon
 r_extern
 r_int
 r_int
+id|__must_check
 id|___copy_from_user
 c_func
 (paren
@@ -201,11 +202,12 @@ r_int
 id|size
 )paren
 suffix:semicolon
-DECL|function|copy_from_user
 r_static
 r_inline
 r_int
 r_int
+id|__must_check
+DECL|function|copy_from_user
 id|copy_from_user
 c_func
 (paren
@@ -264,6 +266,7 @@ mdefine_line|#define __copy_from_user copy_from_user
 r_extern
 r_int
 r_int
+id|__must_check
 id|___copy_to_user
 c_func
 (paren
@@ -303,11 +306,12 @@ r_int
 id|size
 )paren
 suffix:semicolon
-DECL|function|copy_to_user
 r_static
 r_inline
 r_int
 r_int
+id|__must_check
+DECL|function|copy_to_user
 id|copy_to_user
 c_func
 (paren
@@ -366,6 +370,7 @@ mdefine_line|#define __copy_to_user copy_to_user
 r_extern
 r_int
 r_int
+id|__must_check
 id|___copy_in_user
 c_func
 (paren
@@ -406,11 +411,12 @@ r_int
 id|size
 )paren
 suffix:semicolon
-DECL|function|copy_in_user
 r_static
 r_inline
 r_int
 r_int
+id|__must_check
+DECL|function|copy_in_user
 id|copy_in_user
 c_func
 (paren
@@ -469,6 +475,7 @@ mdefine_line|#define __copy_in_user copy_in_user
 r_extern
 r_int
 r_int
+id|__must_check
 id|__bzero_noasi
 c_func
 (paren
@@ -480,11 +487,12 @@ r_int
 r_int
 )paren
 suffix:semicolon
-DECL|function|__clear_user
 r_static
 r_inline
 r_int
 r_int
+id|__must_check
+DECL|function|__clear_user
 id|__clear_user
 c_func
 (paren
@@ -512,6 +520,7 @@ DECL|macro|clear_user
 mdefine_line|#define clear_user __clear_user
 r_extern
 r_int
+id|__must_check
 id|__strncpy_from_user
 c_func
 (paren

@@ -834,13 +834,13 @@ comma
 l_int|4
 )paren
 op_logical_or
-id|j_sb-&gt;s_version
-OG
-id|cpu_to_le32
+id|le32_to_cpu
 c_func
 (paren
-id|JFS_VERSION
+id|j_sb-&gt;s_version
 )paren
+OG
+id|JFS_VERSION
 )paren
 (brace
 id|rc

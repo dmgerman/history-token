@@ -3029,7 +3029,7 @@ id|ha-&gt;host_no
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t; * If PORT UPDATE is global (recieved LIP_OCCURED/LIP_RESET&n;&t;&t; * event etc. earlier indicating loop is down) then process&n;&t;&t; * it.  Otherwise ignore it and Wait for RSCN to come in.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If PORT UPDATE is global (received LIP_OCCURRED/LIP_RESET&n;&t;&t; * event etc. earlier indicating loop is down) then process&n;&t;&t; * it.  Otherwise ignore it and Wait for RSCN to come in.&n;&t;&t; */
 r_if
 c_cond
 (paren

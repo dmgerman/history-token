@@ -3925,13 +3925,4 @@ c_func
 id|tcp_tw_deschedule
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SYSCTL
-DECL|variable|sysctl_tcp_tw_recycle
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sysctl_tcp_tw_recycle
-)paren
-suffix:semicolon
-macro_line|#endif
 eof

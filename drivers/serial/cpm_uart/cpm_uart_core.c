@@ -2689,6 +2689,34 @@ id|pinfo-&gt;tx_bd_base
 op_minus
 id|DPRAM_BASE
 suffix:semicolon
+multiline_comment|/*&n; *  In case SMC1 is being relocated...&n; */
+macro_line|#if defined (CONFIG_I2C_SPI_SMC1_UCODE_PATCH)
+id|up-&gt;smc_rbptr
+op_assign
+id|pinfo-&gt;smcup-&gt;smc_rbase
+suffix:semicolon
+id|up-&gt;smc_tbptr
+op_assign
+id|pinfo-&gt;smcup-&gt;smc_tbase
+suffix:semicolon
+id|up-&gt;smc_rstate
+op_assign
+l_int|0
+suffix:semicolon
+id|up-&gt;smc_tstate
+op_assign
+l_int|0
+suffix:semicolon
+id|up-&gt;smc_brkcr
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* number of break chars */
+id|up-&gt;smc_brkec
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Set up the uart parameters in the&n;&t; * parameter ram.&n;&t; */
 id|cpm_set_smc_fcr
 c_func
@@ -3183,6 +3211,13 @@ id|set_lineif
 op_assign
 id|smc2_lineif
 comma
+macro_line|#ifdef CONFIG_SERIAL_CPM_ALT_SMC2
+dot
+id|is_portb
+op_assign
+l_int|1
+comma
+macro_line|#endif
 )brace
 comma
 (braket

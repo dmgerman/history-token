@@ -14,7 +14,7 @@ DECL|macro|CLCD_UBAS
 mdefine_line|#define CLCD_UBAS &t;&t;0x00000010
 DECL|macro|CLCD_LBAS
 mdefine_line|#define CLCD_LBAS &t;&t;0x00000014
-macro_line|#ifndef CONFIG_ARCH_VERSATILE_PB
+macro_line|#ifndef CONFIG_ARCH_VERSATILE
 DECL|macro|CLCD_IENB
 mdefine_line|#define CLCD_IENB &t;&t;0x00000018
 DECL|macro|CLCD_CNTL
@@ -327,6 +327,7 @@ id|board_data
 suffix:semicolon
 DECL|member|regs
 r_void
+id|__iomem
 op_star
 id|regs
 suffix:semicolon

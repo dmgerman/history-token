@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * experimental driver for simple i2c audio chips.&n; *&n; * Copyright (c) 2000 Gerd Knorr&n; * based on code by:&n; *   Eric Sandeen (eric_sandeen@bigfoot.com) &n; *   Steve VanDeBogart (vandebo@uclink.berkeley.edu)&n; *   Greg Alexander (galexand@acm.org)&n; *&n; * This code is placed under the terms of the GNU General Public License&n; * &n; * OPTIONS:&n; *   debug - set to 1 if you&squot;d like to see debug messages&n; *&n; */
+multiline_comment|/*&n; * experimental driver for simple i2c audio chips.&n; *&n; * Copyright (c) 2000 Gerd Knorr&n; * based on code by:&n; *   Eric Sandeen (eric_sandeen@bigfoot.com)&n; *   Steve VanDeBogart (vandebo@uclink.berkeley.edu)&n; *   Greg Alexander (galexand@acm.org)&n; *&n; * This code is placed under the terms of the GNU General Public License&n; *&n; * OPTIONS:&n; *   debug - set to 1 if you&squot;d like to see debug messages&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1697,7 +1697,7 @@ DECL|macro|TDA9855_LOUD
 mdefine_line|#define TDA9855_LOUD&t;1&lt;&lt;5 /* Loudness, 1==off */
 DECL|macro|TDA9855_SUR
 mdefine_line|#define TDA9855_SUR&t;1&lt;&lt;3 /* Surround / Subwoofer 1==.5(L-R) 0==.5(L+R) */
-multiline_comment|/* Bits 0 to 3 select various combinations&n;                              * of line in and line out, only the &n;                              * interesting ones are defined */
+multiline_comment|/* Bits 0 to 3 select various combinations&n;                              * of line in and line out, only the&n;                              * interesting ones are defined */
 DECL|macro|TDA9855_EXT
 mdefine_line|#define TDA9855_EXT&t;1&lt;&lt;2 /* Selects inputs LIR and LIL.  Pins 41 &amp; 12 */
 DECL|macro|TDA9855_INT
@@ -1942,7 +1942,7 @@ DECL|macro|TDA9873_AD
 mdefine_line|#define TDA9873_AD&t;0x01 /* Adjust                       */
 DECL|macro|TDA9873_PT
 mdefine_line|#define TDA9873_PT&t;0x02 /* Port                         */
-multiline_comment|/* Subaddress 0x00: Switching Data &n; * B7..B0:&n; *&n; * B1, B0: Input source selection&n; *  0,  0  internal&n; *  1,  0  external stereo&n; *  0,  1  external mono&n; */
+multiline_comment|/* Subaddress 0x00: Switching Data&n; * B7..B0:&n; *&n; * B1, B0: Input source selection&n; *  0,  0  internal&n; *  1,  0  external stereo&n; *  0,  1  external mono&n; */
 DECL|macro|TDA9873_INP_MASK
 mdefine_line|#define TDA9873_INP_MASK    3
 DECL|macro|TDA9873_INTERNAL
@@ -1951,7 +1951,7 @@ DECL|macro|TDA9873_EXT_STEREO
 mdefine_line|#define TDA9873_EXT_STEREO  2
 DECL|macro|TDA9873_EXT_MONO
 mdefine_line|#define TDA9873_EXT_MONO    1
-multiline_comment|/*    B3, B2: output signal select&n; * B4    : transmission mode &n; *  0, 0, 1   Mono&n; *  1, 0, 0   Stereo&n; *  1, 1, 1   Stereo (reversed channel)    &n; *  0, 0, 0   Dual AB&n; *  0, 0, 1   Dual AA&n; *  0, 1, 0   Dual BB&n; *  0, 1, 1   Dual BA&n; */
+multiline_comment|/*    B3, B2: output signal select&n; * B4    : transmission mode&n; *  0, 0, 1   Mono&n; *  1, 0, 0   Stereo&n; *  1, 1, 1   Stereo (reversed channel)&n; *  0, 0, 0   Dual AB&n; *  0, 0, 1   Dual AA&n; *  0, 1, 0   Dual BB&n; *  0, 1, 1   Dual BA&n; */
 DECL|macro|TDA9873_TR_MASK
 mdefine_line|#define TDA9873_TR_MASK     (7 &lt;&lt; 2)
 DECL|macro|TDA9873_TR_MONO
@@ -1975,7 +1975,7 @@ multiline_comment|/* Subaddress 0x01:  Adjust/standard */
 multiline_comment|/* Lower 4 bits (C3..C0) control stereo adjustment on R channel (-0.6 - +0.7 dB)&n; * Recommended value is +0 dB&n; */
 DECL|macro|TDA9873_STEREO_ADJ
 mdefine_line|#define&t;TDA9873_STEREO_ADJ&t;0x06 /* 0dB gain */
-multiline_comment|/* Bits C6..C4 control FM stantard  &n; * C6, C5, C4&n; *  0,  0,  0   B/G (PAL FM)&n; *  0,  0,  1   M&n; *  0,  1,  0   D/K(1)&n; *  0,  1,  1   D/K(2)&n; *  1,  0,  0   D/K(3)&n; *  1,  0,  1   I&n; */
+multiline_comment|/* Bits C6..C4 control FM stantard&n; * C6, C5, C4&n; *  0,  0,  0   B/G (PAL FM)&n; *  0,  0,  1   M&n; *  0,  1,  0   D/K(1)&n; *  0,  1,  1   D/K(2)&n; *  1,  0,  0   D/K(3)&n; *  1,  0,  1   I&n; */
 DECL|macro|TDA9873_BG
 mdefine_line|#define TDA9873_BG&t;&t;0
 DECL|macro|TDA9873_M
@@ -2006,15 +2006,15 @@ mdefine_line|#define TDA9873_MOUT_MONO   0
 DECL|macro|TDA9873_MOUT_FMONO
 mdefine_line|#define TDA9873_MOUT_FMONO  0
 DECL|macro|TDA9873_MOUT_DUALA
-mdefine_line|#define TDA9873_MOUT_DUALA  0 
+mdefine_line|#define TDA9873_MOUT_DUALA  0
 DECL|macro|TDA9873_MOUT_DUALB
-mdefine_line|#define TDA9873_MOUT_DUALB  1 &lt;&lt; 3 
+mdefine_line|#define TDA9873_MOUT_DUALB  1 &lt;&lt; 3
 DECL|macro|TDA9873_MOUT_ST
-mdefine_line|#define TDA9873_MOUT_ST     1 &lt;&lt; 4 
+mdefine_line|#define TDA9873_MOUT_ST     1 &lt;&lt; 4
 DECL|macro|TDA9873_MOUT_EXTM
 mdefine_line|#define TDA9873_MOUT_EXTM   (1 &lt;&lt; 4 ) &amp; (1 &lt;&lt; 3)
 DECL|macro|TDA9873_MOUT_EXTL
-mdefine_line|#define TDA9873_MOUT_EXTL   1 &lt;&lt; 5 
+mdefine_line|#define TDA9873_MOUT_EXTL   1 &lt;&lt; 5
 DECL|macro|TDA9873_MOUT_EXTR
 mdefine_line|#define TDA9873_MOUT_EXTR   (1 &lt;&lt; 5 ) &amp; (1 &lt;&lt; 3)
 DECL|macro|TDA9873_MOUT_EXTLR
@@ -6059,6 +6059,19 @@ op_star
 id|adap
 )paren
 (brace
+multiline_comment|/* don&squot;t attach on saa7146 based cards,&n;&t;   because dedicated drivers are used */
+r_if
+c_cond
+(paren
+(paren
+id|adap-&gt;id
+op_amp
+id|I2C_ALGO_SAA7146
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 macro_line|#ifdef I2C_CLASS_TV_ANALOG
 r_if
 c_cond

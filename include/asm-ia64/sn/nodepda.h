@@ -10,6 +10,24 @@ macro_line|#include &lt;asm/sn/pda.h&gt;
 macro_line|#include &lt;asm/sn/bte.h&gt;
 multiline_comment|/*&n; * NUMA Node-Specific Data structures are defined in this file.&n; * In particular, this is the location of the node PDA.&n; * A pointer to the right node PDA is saved in each CPU PDA.&n; */
 multiline_comment|/*&n; * Node-specific data structure.&n; *&n; * One of these structures is allocated on each node of a NUMA system.&n; *&n; * This structure provides a convenient way of keeping together &n; * all per-node data structures. &n; */
+DECL|struct|phys_cpuid
+r_struct
+id|phys_cpuid
+(brace
+DECL|member|nasid
+r_int
+id|nasid
+suffix:semicolon
+DECL|member|subnode
+r_char
+id|subnode
+suffix:semicolon
+DECL|member|slice
+r_char
+id|slice
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|nodepda_s
 r_struct
 id|nodepda_s
@@ -51,6 +69,15 @@ op_star
 id|pernode_pdaindr
 (braket
 id|MAX_COMPACT_NODES
+)braket
+suffix:semicolon
+multiline_comment|/*&n;&t; * Array of physical cpu identifiers. Indexed by cpuid.&n;&t; */
+DECL|member|phys_cpuid
+r_struct
+id|phys_cpuid
+id|phys_cpuid
+(braket
+id|NR_CPUS
 )braket
 suffix:semicolon
 )brace

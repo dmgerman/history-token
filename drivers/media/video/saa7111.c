@@ -48,12 +48,14 @@ id|debug
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1189,7 +1191,7 @@ comma
 (paren
 id|decoder-&gt;reg
 (braket
-l_int|0x0e
+l_int|0x08
 )braket
 op_amp
 l_int|0x3f

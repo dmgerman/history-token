@@ -6478,6 +6478,8 @@ DECL|macro|USB_VENDOR_ID_CYPRESS
 mdefine_line|#define USB_VENDOR_ID_CYPRESS&t;&t;0x04b4
 DECL|macro|USB_DEVICE_ID_CYPRESS_MOUSE
 mdefine_line|#define USB_DEVICE_ID_CYPRESS_MOUSE&t;0x0001
+DECL|macro|USB_DEVICE_ID_CYPRESS_HIDCOM
+mdefine_line|#define USB_DEVICE_ID_CYPRESS_HIDCOM&t;0x5500
 DECL|macro|USB_VENDOR_ID_BERKSHIRE
 mdefine_line|#define USB_VENDOR_ID_BERKSHIRE&t;&t;0x0c98
 DECL|macro|USB_DEVICE_ID_BERKSHIRE_PCWD
@@ -6526,6 +6528,10 @@ DECL|macro|USB_DEVICE_ID_CODEMERCS_IOW48
 mdefine_line|#define USB_DEVICE_ID_CODEMERCS_IOW48  0x1502
 DECL|macro|USB_DEVICE_ID_CODEMERCS_IOW28
 mdefine_line|#define USB_DEVICE_ID_CODEMERCS_IOW28  0x1503
+DECL|macro|USB_VENDOR_ID_DELORME
+mdefine_line|#define USB_VENDOR_ID_DELORME&t;&t;0x1163
+DECL|macro|USB_DEVICE_ID_DELORME_EARTHMATE
+mdefine_line|#define USB_DEVICE_ID_DELORME_EARTHMATE 0x0100
 DECL|struct|hid_blacklist
 r_static
 r_struct
@@ -7095,6 +7101,14 @@ id|HID_QUIRK_2WHEEL_MOUSE_HACK_EXTRA
 )brace
 comma
 (brace
+id|USB_VENDOR_ID_CYPRESS
+comma
+id|USB_DEVICE_ID_CYPRESS_HIDCOM
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
 id|USB_VENDOR_ID_ALPS
 comma
 id|USB_DEVICE_ID_IBM_GAMEPAD
@@ -7192,6 +7206,14 @@ comma
 id|USB_VENDOR_ID_CODEMERCS
 comma
 id|USB_DEVICE_ID_CODEMERCS_IOW28
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_DELORME
+comma
+id|USB_DEVICE_ID_DELORME_EARTHMATE
 comma
 id|HID_QUIRK_IGNORE
 )brace
@@ -8106,13 +8128,19 @@ op_amp
 id|hid-&gt;wait
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|hid-&gt;outlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|hid-&gt;ctrllock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|hid-&gt;version
 op_assign

@@ -115,7 +115,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|asmlinkage
+id|fastcall
 r_void
 id|__down_failed
 c_func
@@ -124,7 +124,7 @@ r_void
 multiline_comment|/* special register calling convention */
 )paren
 suffix:semicolon
-id|asmlinkage
+id|fastcall
 r_int
 id|__down_failed_interruptible
 c_func
@@ -133,7 +133,7 @@ r_void
 multiline_comment|/* params in registers */
 )paren
 suffix:semicolon
-id|asmlinkage
+id|fastcall
 r_int
 id|__down_failed_trylock
 c_func
@@ -142,7 +142,7 @@ r_void
 multiline_comment|/* params in registers */
 )paren
 suffix:semicolon
-id|asmlinkage
+id|fastcall
 r_void
 id|__up_wakeup
 c_func
@@ -151,7 +151,7 @@ r_void
 multiline_comment|/* special register calling convention */
 )paren
 suffix:semicolon
-id|asmlinkage
+id|fastcall
 r_void
 id|__down
 c_func
@@ -162,7 +162,7 @@ op_star
 id|sem
 )paren
 suffix:semicolon
-id|asmlinkage
+id|fastcall
 r_int
 id|__down_interruptible
 c_func
@@ -173,7 +173,7 @@ op_star
 id|sem
 )paren
 suffix:semicolon
-id|asmlinkage
+id|fastcall
 r_int
 id|__down_trylock
 c_func
@@ -184,7 +184,7 @@ op_star
 id|sem
 )paren
 suffix:semicolon
-id|asmlinkage
+id|fastcall
 r_void
 id|__up
 c_func
@@ -229,7 +229,8 @@ c_func
 (paren
 l_string|&quot;&quot;
 )paren
-l_string|&quot;2:&bslash;tcall __down_failed&bslash;n&bslash;t&quot;
+l_string|&quot;2:&bslash;tlea %0,%%eax&bslash;n&bslash;t&quot;
+l_string|&quot;call __down_failed&bslash;n&bslash;t&quot;
 l_string|&quot;jmp 1b&bslash;n&quot;
 id|LOCK_SECTION_END
 suffix:colon
@@ -238,12 +239,10 @@ l_string|&quot;=m&quot;
 id|sem-&gt;count
 )paren
 suffix:colon
-l_string|&quot;c&quot;
-(paren
-id|sem
-)paren
 suffix:colon
 l_string|&quot;memory&quot;
+comma
+l_string|&quot;ax&quot;
 )paren
 suffix:semicolon
 )brace
@@ -285,7 +284,8 @@ c_func
 (paren
 l_string|&quot;&quot;
 )paren
-l_string|&quot;2:&bslash;tcall __down_failed_interruptible&bslash;n&bslash;t&quot;
+l_string|&quot;2:&bslash;tlea %1,%%eax&bslash;n&bslash;t&quot;
+l_string|&quot;call __down_failed_interruptible&bslash;n&bslash;t&quot;
 l_string|&quot;jmp 1b&bslash;n&quot;
 id|LOCK_SECTION_END
 suffix:colon
@@ -299,10 +299,6 @@ l_string|&quot;=m&quot;
 id|sem-&gt;count
 )paren
 suffix:colon
-l_string|&quot;c&quot;
-(paren
-id|sem
-)paren
 suffix:colon
 l_string|&quot;memory&quot;
 )paren
@@ -344,7 +340,8 @@ c_func
 (paren
 l_string|&quot;&quot;
 )paren
-l_string|&quot;2:&bslash;tcall __down_failed_trylock&bslash;n&bslash;t&quot;
+l_string|&quot;2:&bslash;tlea %1,%%eax&bslash;n&bslash;t&quot;
+l_string|&quot;call __down_failed_trylock&bslash;n&bslash;t&quot;
 l_string|&quot;jmp 1b&bslash;n&quot;
 id|LOCK_SECTION_END
 suffix:colon
@@ -358,10 +355,6 @@ l_string|&quot;=m&quot;
 id|sem-&gt;count
 )paren
 suffix:colon
-l_string|&quot;c&quot;
-(paren
-id|sem
-)paren
 suffix:colon
 l_string|&quot;memory&quot;
 )paren
@@ -399,7 +392,8 @@ c_func
 (paren
 l_string|&quot;&quot;
 )paren
-l_string|&quot;2:&bslash;tcall __up_wakeup&bslash;n&bslash;t&quot;
+l_string|&quot;2:&bslash;tlea %0,%%eax&bslash;n&bslash;t&quot;
+l_string|&quot;call __up_wakeup&bslash;n&bslash;t&quot;
 l_string|&quot;jmp 1b&bslash;n&quot;
 id|LOCK_SECTION_END
 l_string|&quot;.subsection 0&bslash;n&quot;
@@ -409,12 +403,10 @@ l_string|&quot;=m&quot;
 id|sem-&gt;count
 )paren
 suffix:colon
-l_string|&quot;c&quot;
-(paren
-id|sem
-)paren
 suffix:colon
 l_string|&quot;memory&quot;
+comma
+l_string|&quot;ax&quot;
 )paren
 suffix:semicolon
 )brace

@@ -177,15 +177,5 @@ op_star
 id|pdev
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|superio_ide_init_iops
-(paren
-r_struct
-id|hwif_s
-op_star
-id|hwif
-)paren
-suffix:semicolon
 macro_line|#endif /* _PARISC_SUPERIO_H */
 eof

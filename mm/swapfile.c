@@ -5442,9 +5442,12 @@ id|p-&gt;inuse_pages
 op_assign
 l_int|0
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|p-&gt;sdev_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|p-&gt;next
 op_assign

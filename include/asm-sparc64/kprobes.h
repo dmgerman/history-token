@@ -14,6 +14,21 @@ DECL|macro|BREAKPOINT_INSTRUCTION_2
 mdefine_line|#define BREAKPOINT_INSTRUCTION_2 0x91d02071 /* ta 0x71 */
 DECL|macro|MAX_INSN_SIZE
 mdefine_line|#define MAX_INSN_SIZE 2
+multiline_comment|/* Architecture specific copy of original instruction*/
+DECL|struct|arch_specific_insn
+r_struct
+id|arch_specific_insn
+(brace
+multiline_comment|/* copy of the original instruction */
+DECL|member|insn
+id|kprobe_opcode_t
+id|insn
+(braket
+id|MAX_INSN_SIZE
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#ifdef CONFIG_KPROBES
 r_extern
 r_int

@@ -4,9 +4,9 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * This is an implementation of the notion of &quot;decrement a&n; * reference count, and return locked if it decremented to zero&quot;.&n; *&n; * This implementation can be used on any architecture that&n; * has a cmpxchg, and where atomic-&gt;value is an int holding&n; * the value of the atomic (i.e. the high bits aren&squot;t used&n; * for a lock or anything like that).&n; *&n; * N.B. ATOMIC_DEC_AND_LOCK gets defined in include/linux/spinlock.h&n; * if spinlocks are empty and thus atomic_dec_and_lock is defined&n; * to be atomic_dec_and_test - in that case we don&squot;t need it&n; * defined here as well.&n; */
 macro_line|#ifndef ATOMIC_DEC_AND_LOCK
-DECL|function|atomic_dec_and_lock
+DECL|function|_atomic_dec_and_lock
 r_int
-id|atomic_dec_and_lock
+id|_atomic_dec_and_lock
 c_func
 (paren
 id|atomic_t
@@ -106,11 +106,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|atomic_dec_and_lock
+DECL|variable|_atomic_dec_and_lock
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|atomic_dec_and_lock
+id|_atomic_dec_and_lock
 )paren
 suffix:semicolon
 macro_line|#endif /* ATOMIC_DEC_AND_LOCK */

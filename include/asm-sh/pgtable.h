@@ -909,7 +909,6 @@ macro_line|#if defined(CONFIG_CPU_SH4) || defined(CONFIG_SH7705_CACHE_32KB)
 DECL|macro|__HAVE_ARCH_PTEP_GET_AND_CLEAR
 mdefine_line|#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
 r_extern
-r_inline
 id|pte_t
 id|ptep_get_and_clear
 c_func

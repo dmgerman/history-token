@@ -537,7 +537,7 @@ DECL|member|res6
 id|u8
 id|res6
 (braket
-l_int|92
+l_int|94
 )braket
 suffix:semicolon
 DECL|member|res7

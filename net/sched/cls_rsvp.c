@@ -22,7 +22,8 @@ macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/route.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
-macro_line|#include &lt;net/pkt_sched.h&gt;
+macro_line|#include &lt;net/act_api.h&gt;
+macro_line|#include &lt;net/pkt_cls.h&gt;
 DECL|macro|RSVP_DST_LEN
 mdefine_line|#define RSVP_DST_LEN&t;1
 DECL|macro|RSVP_ID

@@ -105,10 +105,14 @@ r_extern
 r_int
 id|leases_enable
 comma
-id|dir_notify_enable
-comma
 id|lease_break_time
 suffix:semicolon
+macro_line|#ifdef CONFIG_DNOTIFY
+r_extern
+r_int
+id|dir_notify_enable
+suffix:semicolon
+macro_line|#endif
 DECL|macro|NR_FILE
 mdefine_line|#define NR_FILE  8192&t;/* this can well be larger on a larger system */
 DECL|macro|NR_RESERVED_FILES
@@ -866,7 +870,22 @@ id|assoc_mapping
 suffix:semicolon
 multiline_comment|/* ditto */
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+r_sizeof
+(paren
+r_int
+)paren
+)paren
+)paren
+)paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * On most architectures that alignment is already the case; but&n;&t; * must be enforced here for CRIS, to let the least signficant bit&n;&t; * of struct page&squot;s &quot;mapping&quot; pointer be used for PAGE_MAPPING_ANON.&n;&t; */
 DECL|struct|block_device
 r_struct
 id|block_device
@@ -1236,6 +1255,7 @@ DECL|member|i_generation
 id|__u32
 id|i_generation
 suffix:semicolon
+macro_line|#ifdef CONFIG_DNOTIFY
 DECL|member|i_dnotify_mask
 r_int
 r_int
@@ -1249,6 +1269,7 @@ op_star
 id|i_dnotify
 suffix:semicolon
 multiline_comment|/* for directory notifications */
+macro_line|#endif
 DECL|member|i_state
 r_int
 r_int
@@ -7726,20 +7747,6 @@ id|__user
 op_star
 comma
 r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|page_follow_link
-c_func
-(paren
-r_struct
-id|dentry
-op_star
-comma
-r_struct
-id|nameidata
-op_star
 )paren
 suffix:semicolon
 r_extern

@@ -18,17 +18,19 @@ id|loops
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;mov.l %0,er0&bslash;n&bslash;t&quot;
 l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;dec.l #1,er0&bslash;n&bslash;t&quot;
+l_string|&quot;dec.l #1,%0&bslash;n&bslash;t&quot;
 l_string|&quot;bne 1b&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
+suffix:colon
+l_string|&quot;=r&quot;
 (paren
 id|loops
 )paren
 suffix:colon
-l_string|&quot;er0&quot;
+l_string|&quot;0&quot;
+(paren
+id|loops
+)paren
 )paren
 suffix:semicolon
 )brace

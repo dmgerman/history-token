@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/blockgroup_lock.h&gt;
 macro_line|#include &lt;linux/percpu_counter.h&gt;
 macro_line|#endif
+macro_line|#include &lt;linux/rbtree.h&gt;
 multiline_comment|/*&n; * third extended-fs super-block data in memory&n; */
 DECL|struct|ext3_sb_info
 r_struct
@@ -152,11 +153,6 @@ DECL|member|s_def_hash_version
 r_int
 id|s_def_hash_version
 suffix:semicolon
-DECL|member|s_debts
-id|u8
-op_star
-id|s_debts
-suffix:semicolon
 DECL|member|s_freeblocks_counter
 r_struct
 id|percpu_counter
@@ -176,6 +172,21 @@ DECL|member|s_blockgroup_lock
 r_struct
 id|blockgroup_lock
 id|s_blockgroup_lock
+suffix:semicolon
+multiline_comment|/* root of the per fs reservation window tree */
+DECL|member|s_rsv_window_lock
+id|spinlock_t
+id|s_rsv_window_lock
+suffix:semicolon
+DECL|member|s_rsv_window_root
+r_struct
+id|rb_root
+id|s_rsv_window_root
+suffix:semicolon
+DECL|member|s_rsv_window_head
+r_struct
+id|reserve_window_node
+id|s_rsv_window_head
 suffix:semicolon
 multiline_comment|/* Journaling */
 DECL|member|s_journal_inode

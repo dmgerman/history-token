@@ -1627,6 +1627,27 @@ c_func
 (paren
 id|LPGETSTATUS
 )paren
+multiline_comment|/* ppdev */
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|PPCLAIM
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|PPRELEASE
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|PPEXCL
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|PPYIELD
+)paren
 multiline_comment|/* CDROM stuff */
 id|COMPATIBLE_IOCTL
 c_func

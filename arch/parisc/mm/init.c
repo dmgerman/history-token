@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/pci.h&gt;&t;&t;/* for hppa_dma_ops and pcxl_dma_op
 macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;&t;/* for node_online_map */
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/pdc_chassis.h&gt;
@@ -3358,15 +3359,11 @@ op_assign
 id|pmd_t
 op_star
 )paren
-(paren
-id|PAGE_MASK
-op_amp
-id|pgd_val
+id|pgd_address
 c_func
 (paren
 op_star
 id|pg_dir
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * pmd is physical at this point&n;&t; */
@@ -3402,20 +3399,22 @@ id|pmd
 )paren
 suffix:semicolon
 )brace
-id|pgd_val
+id|__pgd_val_set
 c_func
 (paren
 op_star
 id|pg_dir
-)paren
-op_assign
-id|_PAGE_TABLE
+comma
+id|PxD_FLAG_PRESENT
+op_or
+id|PxD_FLAG_VALID
 op_or
 (paren
 r_int
 r_int
 )paren
 id|pmd
+)paren
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* now change pmd to kernel virtual addresses */
@@ -3440,15 +3439,11 @@ op_assign
 id|pte_t
 op_star
 )paren
-(paren
-id|PAGE_MASK
-op_amp
-id|pmd_val
+id|pmd_address
 c_func
 (paren
 op_star
 id|pmd
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -3473,20 +3468,22 @@ id|GFP_KERNEL
 )paren
 )paren
 suffix:semicolon
-id|pmd_val
+id|__pmd_val_set
 c_func
 (paren
 op_star
 id|pmd
-)paren
-op_assign
-id|_PAGE_TABLE
+comma
+id|PxD_FLAG_PRESENT
+op_or
+id|PxD_FLAG_VALID
 op_or
 (paren
 r_int
 r_int
 )paren
 id|pg_table
+)paren
 suffix:semicolon
 multiline_comment|/* now change pg_table to kernel virtual addresses */
 id|pg_table
@@ -3615,6 +3612,64 @@ id|i
 dot
 id|pages
 suffix:semicolon
+macro_line|#ifdef CONFIG_DISCONTIGMEM
+multiline_comment|/* Need to initialize the pfnnid_map before we can initialize&n;&t;&t;   the zone */
+(brace
+r_int
+id|j
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|j
+op_assign
+(paren
+id|pmem_ranges
+(braket
+id|i
+)braket
+dot
+id|start_pfn
+op_rshift
+id|PFNNID_SHIFT
+)paren
+suffix:semicolon
+id|j
+op_le
+(paren
+(paren
+id|pmem_ranges
+(braket
+id|i
+)braket
+dot
+id|start_pfn
+op_plus
+id|pmem_ranges
+(braket
+id|i
+)braket
+dot
+id|pages
+)paren
+op_rshift
+id|PFNNID_SHIFT
+)paren
+suffix:semicolon
+id|j
+op_increment
+)paren
+(brace
+id|pfnnid_map
+(braket
+id|j
+)braket
+op_assign
+id|i
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 id|free_area_init_node
 c_func
 (paren
@@ -3635,55 +3690,9 @@ id|i
 dot
 id|start_pfn
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DISCONTIGMEM
-(brace
-r_int
-id|j
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|j
-op_assign
-(paren
-id|node_start_pfn
-c_func
-(paren
-id|i
-)paren
-op_rshift
-id|PFNNID_SHIFT
-)paren
-suffix:semicolon
-id|j
-op_le
-(paren
-id|node_end_pfn
-c_func
-(paren
-id|i
-)paren
-op_rshift
-id|PFNNID_SHIFT
-)paren
-suffix:semicolon
-id|j
-op_increment
-)paren
-(brace
-id|pfnnid_map
-(braket
-id|j
-)braket
-op_assign
-id|i
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 )brace
 )brace
 macro_line|#ifdef CONFIG_PA20

@@ -6,9 +6,10 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &quot;power.h&quot;
 r_extern
-id|u32
+id|suspend_disk_method_t
 id|pm_disk_mode
 suffix:semicolon
 r_extern
@@ -844,7 +845,7 @@ r_char
 op_star
 id|p
 suffix:semicolon
-id|u32
+id|suspend_disk_method_t
 id|mode
 op_assign
 l_int|0

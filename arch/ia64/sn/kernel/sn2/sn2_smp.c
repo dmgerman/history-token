@@ -22,6 +22,7 @@ macro_line|#include &lt;asm/numa.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
+macro_line|#include &lt;asm/sn/sn_sal.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/shub_mmr.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
@@ -461,7 +462,7 @@ id|SH_PTC_1
 suffix:semicolon
 id|mynasid
 op_assign
-id|smp_physical_node_id
+id|get_nasid
 c_func
 (paren
 )paren
@@ -804,12 +805,15 @@ id|piows
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; * sn_send_IPI_phys - send an IPI to a Nasid and slice&n; * @physid: physical cpuid to receive the interrupt.&n; * @vector: command to send&n; * @delivery_mode: delivery mechanism&n; *&n; * Sends an IPI (interprocessor interrupt) to the processor specified by&n; * @physid&n; *&n; * @delivery_mode can be one of the following&n; *&n; * %IA64_IPI_DM_INT - pend an interrupt&n; * %IA64_IPI_DM_PMI - pend a PMI&n; * %IA64_IPI_DM_NMI - pend an NMI&n; * %IA64_IPI_DM_INIT - pend an INIT interrupt&n; */
+multiline_comment|/**&n; * sn_send_IPI_phys - send an IPI to a Nasid and slice&n; * @nasid: nasid to receive the interrupt (may be outside partition)&n; * @physid: physical cpuid to receive the interrupt.&n; * @vector: command to send&n; * @delivery_mode: delivery mechanism&n; *&n; * Sends an IPI (interprocessor interrupt) to the processor specified by&n; * @physid&n; *&n; * @delivery_mode can be one of the following&n; *&n; * %IA64_IPI_DM_INT - pend an interrupt&n; * %IA64_IPI_DM_PMI - pend a PMI&n; * %IA64_IPI_DM_NMI - pend an NMI&n; * %IA64_IPI_DM_INIT - pend an INIT interrupt&n; */
 DECL|function|sn_send_IPI_phys
 r_void
 id|sn_send_IPI_phys
 c_func
 (paren
+r_int
+id|nasid
+comma
 r_int
 id|physid
 comma
@@ -821,10 +825,6 @@ id|delivery_mode
 )paren
 (brace
 r_int
-id|nasid
-comma
-id|slice
-comma
 id|val
 suffix:semicolon
 r_int
@@ -837,22 +837,6 @@ r_volatile
 r_int
 op_star
 id|p
-suffix:semicolon
-id|nasid
-op_assign
-id|cpu_physical_id_to_nasid
-c_func
-(paren
-id|physid
-)paren
-suffix:semicolon
-id|slice
-op_assign
-id|cpu_physical_id_to_slice
-c_func
-(paren
-id|physid
-)paren
 suffix:semicolon
 id|p
 op_assign
@@ -992,6 +976,9 @@ id|redirect
 r_int
 id|physid
 suffix:semicolon
+r_int
+id|nasid
+suffix:semicolon
 id|physid
 op_assign
 id|cpu_physical_id
@@ -1000,9 +987,45 @@ c_func
 id|cpuid
 )paren
 suffix:semicolon
+id|nasid
+op_assign
+id|cpuid_to_nasid
+c_func
+(paren
+id|cpuid
+)paren
+suffix:semicolon
+multiline_comment|/* the following is used only when starting cpus at boot time */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|nasid
+op_eq
+op_minus
+l_int|1
+)paren
+)paren
+id|ia64_sn_get_sapic_info
+c_func
+(paren
+id|physid
+comma
+op_amp
+id|nasid
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 id|sn_send_IPI_phys
 c_func
 (paren
+id|nasid
+comma
 id|physid
 comma
 id|vector

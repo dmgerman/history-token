@@ -3871,7 +3871,7 @@ id|printk
 c_func
 (paren
 id|VIOTAPE_KERN_WARN
-l_string|&quot;wierd ack&bslash;n&quot;
+l_string|&quot;weird ack&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

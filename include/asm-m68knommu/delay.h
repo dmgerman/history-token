@@ -1,8 +1,8 @@
 macro_line|#ifndef _M68KNOMMU_DELAY_H
 DECL|macro|_M68KNOMMU_DELAY_H
 mdefine_line|#define _M68KNOMMU_DELAY_H
+multiline_comment|/*&n; * Copyright (C) 1994 Hamish Macdonald&n; * Copyright (C) 2004 Greg Ungerer &lt;gerg@snapgear.com&gt;&n; */
 macro_line|#include &lt;asm/param.h&gt;
-multiline_comment|/*&n; * Copyright (C) 1994 Hamish Macdonald&n; *&n; * Delay routines, using a pre-computed &quot;loops_per_second&quot; value.&n; */
 DECL|function|__delay
 r_extern
 id|__inline__
@@ -55,17 +55,19 @@ id|loops
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n; * Use only for very small delays ( &lt; 1 msec).  Should probably use a&n; * lookup table, really, as the multiplications take much too long with&n; * short delays.  This is a &quot;reasonable&quot; implementation, though (and the&n; * first constant multiplications gets optimized away if the delay is&n; * a constant)  &n; */
+multiline_comment|/*&n; *&t;Ideally we use a 32*32-&gt;64 multiply to calculate the number of&n; *&t;loop iterations, but the older standard 68k and ColdFire do not&n; *&t;have this instruction. So for them we have a clsoe approximation&n; *&t;loop using 32*32-&gt;32 multiplies only. This calculation based on&n; *&t;the ARM version of delay.&n; *&n; *&t;We want to implement:&n; *&n; *&t;loops = (usecs * 0x10c6 * HZ * loops_per_jiffy) / 2^32&n; */
+DECL|macro|HZSCALE
+mdefine_line|#define&t;HZSCALE&t;&t;(268435456 / (1000000/HZ))
 r_extern
 r_int
 r_int
 id|loops_per_jiffy
 suffix:semicolon
-DECL|function|udelay
+DECL|function|_udelay
 r_extern
 id|__inline__
 r_void
-id|udelay
+id|_udelay
 c_func
 (paren
 r_int
@@ -73,88 +75,29 @@ r_int
 id|usecs
 )paren
 (brace
-macro_line|#ifdef CONFIG_M68332
-id|usecs
-op_mul_assign
-l_int|0x000010c6
-suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;mulul %1,%0:%2&quot;
-suffix:colon
-l_string|&quot;=d&quot;
-(paren
-id|usecs
-)paren
-suffix:colon
-l_string|&quot;d&quot;
-(paren
-id|usecs
-)paren
-comma
-l_string|&quot;d&quot;
-(paren
-id|loops_per_jiffy
-op_star
-id|HZ
-)paren
-)paren
-suffix:semicolon
+macro_line|#if defined(CONFIG_M68328) || defined(CONFIG_M68EZ328) || &bslash;&n;    defined(CONFIG_M68VZ328) || defined(CONFIG_M68360) || &bslash;&n;    defined(CONFIG_COLDFIRE)
 id|__delay
 c_func
 (paren
-id|usecs
-)paren
-suffix:semicolon
-macro_line|#elif defined(CONFIG_M68328) || defined(CONFIG_M68EZ328) || &bslash;&n;&t;&t;defined(CONFIG_COLDFIRE) || defined(CONFIG_M68360) || &bslash;&n;&t;&t;defined(CONFIG_M68VZ328)
-r_register
-r_int
-r_int
-id|full_loops
-comma
-id|part_loops
-suffix:semicolon
-id|full_loops
-op_assign
+(paren
 (paren
 (paren
 id|usecs
 op_star
-id|HZ
+id|HZSCALE
 )paren
-op_div
-l_int|1000000
+op_rshift
+l_int|11
 )paren
 op_star
+(paren
 id|loops_per_jiffy
-suffix:semicolon
-id|usecs
-op_mod_assign
-(paren
-l_int|1000000
-op_div
-id|HZ
+op_rshift
+l_int|11
 )paren
-suffix:semicolon
-id|part_loops
-op_assign
-(paren
-id|usecs
-op_star
-id|HZ
-op_star
-id|loops_per_jiffy
 )paren
-op_div
-l_int|1000000
-suffix:semicolon
-id|__delay
-c_func
-(paren
-id|full_loops
-op_plus
-id|part_loops
+op_rshift
+l_int|6
 )paren
 suffix:semicolon
 macro_line|#else
@@ -202,5 +145,16 @@ id|usecs
 suffix:semicolon
 macro_line|#endif
 )brace
+multiline_comment|/*&n; *&t;Moved the udelay() function into library code, no longer inlined.&n; *&t;I had to change the algorithm because we are overflowing now on&n; *&t;the faster ColdFire parts. The code is a little biger, so it makes&n; *&t;sense to library it.&n; */
+r_extern
+r_void
+id|udelay
+c_func
+(paren
+r_int
+r_int
+id|usecs
+)paren
+suffix:semicolon
 macro_line|#endif /* defined(_M68KNOMMU_DELAY_H) */
 eof

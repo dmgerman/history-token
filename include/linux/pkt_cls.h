@@ -1,6 +1,7 @@
 macro_line|#ifndef __LINUX_PKT_CLS_H
 DECL|macro|__LINUX_PKT_CLS_H
 mdefine_line|#define __LINUX_PKT_CLS_H
+macro_line|#include &lt;linux/pkt_sched.h&gt;
 multiline_comment|/* I think i could have done better macros ; for now this is stolen from&n; * some arch/mips code - jhs&n;*/
 DECL|macro|_TC_MAKE32
 mdefine_line|#define _TC_MAKE32(x) ((x))

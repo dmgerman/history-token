@@ -1149,9 +1149,12 @@ c_cond
 op_logical_neg
 id|event
 )paren
-r_return
+id|return_VALUE
+c_func
+(paren
 op_minus
 id|EINVAL
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2057,7 +2060,7 @@ c_cond
 (paren
 id|acpi_disabled
 )paren
-r_return
+id|return_VOID
 suffix:semicolon
 multiline_comment|/* enable workarounds, unless strict ACPI spec. compliance */
 r_if
@@ -2246,7 +2249,7 @@ r_goto
 id|error0
 suffix:semicolon
 )brace
-r_return
+id|return_VOID
 suffix:semicolon
 id|error0
 suffix:colon
@@ -2255,7 +2258,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 r_static
@@ -2542,9 +2545,12 @@ id|PREFIX
 l_string|&quot;Interpreter disabled.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|return_VALUE
+c_func
+(paren
 op_minus
 id|ENODEV
+)paren
 suffix:semicolon
 )brace
 id|firmware_register

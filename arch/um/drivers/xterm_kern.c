@@ -252,6 +252,14 @@ op_amp
 id|data-&gt;sem
 )paren
 suffix:semicolon
+id|free_irq_by_irq_and_dev
+c_func
+(paren
+id|XTERM_IRQ
+comma
+id|data
+)paren
+suffix:semicolon
 id|free_irq
 c_func
 (paren

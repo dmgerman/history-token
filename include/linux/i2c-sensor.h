@@ -20,7 +20,7 @@ id|kind
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* A structure containing the detect information.&n;   normal_i2c: filled in by the module writer. Terminated by I2C_CLIENT_ISA_END.&n;     A list of I2C addresses which should normally be examined.&n;   normal_i2c_range: filled in by the module writer. Terminated by &n;     I2C_CLIENT_ISA_END&n;     A list of pairs of I2C addresses, each pair being an inclusive range of&n;     addresses which should normally be examined.&n;   normal_isa: filled in by the module writer. Terminated by SENSORS_ISA_END.&n;     A list of ISA addresses which should normally be examined.&n;   normal_isa_range: filled in by the module writer. Terminated by &n;     SENSORS_ISA_END&n;     A list of triples. The first two elements are ISA addresses, being an&n;     range of addresses which should normally be examined. The third is the&n;     modulo parameter: only addresses which are 0 module this value relative&n;     to the first address of the range are actually considered.&n;   probe: insmod parameter. Initialize this list with I2C_CLIENT_ISA_END values.&n;     A list of pairs. The first value is a bus number (ANY_I2C_ISA_BUS for&n;     the ISA bus, -1 for any I2C bus), the second is the address. These&n;     addresses are also probed, as if they were in the &squot;normal&squot; list.&n;   probe_range: insmod parameter. Initialize this list with I2C_CLIENT_ISA_END &n;     values.&n;     A list of triples. The first value is a bus number (ANY_I2C_ISA_BUS for&n;     the ISA bus, -1 for any I2C bus), the second and third are addresses. &n;     These form an inclusive range of addresses that are also probed, as&n;     if they were in the &squot;normal&squot; list.&n;   ignore: insmod parameter. Initialize this list with I2C_CLIENT_ISA_END values.&n;     A list of pairs. The first value is a bus number (ANY_I2C_ISA_BUS for&n;     the ISA bus, -1 for any I2C bus), the second is the I2C address. These&n;     addresses are never probed. This parameter overrules &squot;normal&squot; and &n;     &squot;probe&squot;, but not the &squot;force&squot; lists.&n;   ignore_range: insmod parameter. Initialize this list with I2C_CLIENT_ISA_END &n;      values.&n;     A list of triples. The first value is a bus number (ANY_I2C_ISA_BUS for&n;     the ISA bus, -1 for any I2C bus), the second and third are addresses. &n;     These form an inclusive range of I2C addresses that are never probed.&n;     This parameter overrules &squot;normal&squot; and &squot;probe&squot;, but not the &squot;force&squot; lists.&n;   force_data: insmod parameters. A list, ending with an element of which&n;     the force field is NULL.&n;*/
+multiline_comment|/* A structure containing the detect information.&n;   normal_i2c: filled in by the module writer. Terminated by I2C_CLIENT_ISA_END.&n;     A list of I2C addresses which should normally be examined.&n;   normal_isa: filled in by the module writer. Terminated by SENSORS_ISA_END.&n;     A list of ISA addresses which should normally be examined.&n;   probe: insmod parameter. Initialize this list with I2C_CLIENT_ISA_END values.&n;     A list of pairs. The first value is a bus number (ANY_I2C_ISA_BUS for&n;     the ISA bus, -1 for any I2C bus), the second is the address. These&n;     addresses are also probed, as if they were in the &squot;normal&squot; list.&n;   ignore: insmod parameter. Initialize this list with I2C_CLIENT_ISA_END values.&n;     A list of pairs. The first value is a bus number (ANY_I2C_ISA_BUS for&n;     the ISA bus, -1 for any I2C bus), the second is the I2C address. These&n;     addresses are never probed. This parameter overrules &squot;normal&squot; and &n;     &squot;probe&squot;, but not the &squot;force&squot; lists.&n;   force_data: insmod parameters. A list, ending with an element of which&n;     the force field is NULL.&n;*/
 DECL|struct|i2c_address_data
 r_struct
 id|i2c_address_data
@@ -31,23 +31,11 @@ r_int
 op_star
 id|normal_i2c
 suffix:semicolon
-DECL|member|normal_i2c_range
-r_int
-r_int
-op_star
-id|normal_i2c_range
-suffix:semicolon
 DECL|member|normal_isa
 r_int
 r_int
 op_star
 id|normal_isa
-suffix:semicolon
-DECL|member|normal_isa_range
-r_int
-r_int
-op_star
-id|normal_isa_range
 suffix:semicolon
 DECL|member|probe
 r_int
@@ -55,23 +43,11 @@ r_int
 op_star
 id|probe
 suffix:semicolon
-DECL|member|probe_range
-r_int
-r_int
-op_star
-id|probe_range
-suffix:semicolon
 DECL|member|ignore
 r_int
 r_int
 op_star
 id|ignore
-suffix:semicolon
-DECL|member|ignore_range
-r_int
-r_int
-op_star
-id|ignore_range
 suffix:semicolon
 DECL|member|forces
 r_struct
@@ -85,7 +61,7 @@ DECL|macro|SENSORS_MODULE_PARM_FORCE
 mdefine_line|#define SENSORS_MODULE_PARM_FORCE(name) &bslash;&n;  I2C_CLIENT_MODULE_PARM(force_ ## name, &bslash;&n;                      &quot;List of adapter,address pairs which are unquestionably&quot; &bslash;&n;                      &quot; assumed to contain a `&quot; # name &quot;&squot; chip&quot;)
 multiline_comment|/* This defines several insmod variables, and the addr_data structure */
 DECL|macro|SENSORS_INSMOD
-mdefine_line|#define SENSORS_INSMOD &bslash;&n;  I2C_CLIENT_MODULE_PARM(probe, &bslash;&n;                      &quot;List of adapter,address pairs to scan additionally&quot;); &bslash;&n;  I2C_CLIENT_MODULE_PARM(probe_range, &bslash;&n;                      &quot;List of adapter,start-addr,end-addr triples to scan &quot; &bslash;&n;                      &quot;additionally&quot;); &bslash;&n;  I2C_CLIENT_MODULE_PARM(ignore, &bslash;&n;                      &quot;List of adapter,address pairs not to scan&quot;); &bslash;&n;  I2C_CLIENT_MODULE_PARM(ignore_range, &bslash;&n;                      &quot;List of adapter,start-addr,end-addr triples not to &quot; &bslash;&n;                      &quot;scan&quot;); &bslash;&n;&t;static struct i2c_address_data addr_data = {&t;&t;&t;&bslash;&n;&t;&t;&t;.normal_i2c =&t;&t;normal_i2c,&t;&t;&bslash;&n;&t;&t;&t;.normal_i2c_range =&t;normal_i2c_range,&t;&bslash;&n;&t;&t;&t;.normal_isa =&t;&t;normal_isa,&t;&t;&bslash;&n;&t;&t;&t;.normal_isa_range =&t;normal_isa_range,&t;&bslash;&n;&t;&t;&t;.probe =&t;&t;probe,&t;&t;&t;&bslash;&n;&t;&t;&t;.probe_range =&t;&t;probe_range,&t;&t;&bslash;&n;&t;&t;&t;.ignore =&t;&t;ignore,&t;&t;&t;&bslash;&n;&t;&t;&t;.ignore_range =&t;&t;ignore_range,&t;&t;&bslash;&n;&t;&t;&t;.forces =&t;&t;forces,&t;&t;&t;&bslash;&n;&t;&t;}
+mdefine_line|#define SENSORS_INSMOD &bslash;&n;  I2C_CLIENT_MODULE_PARM(probe, &bslash;&n;                      &quot;List of adapter,address pairs to scan additionally&quot;); &bslash;&n;  I2C_CLIENT_MODULE_PARM(ignore, &bslash;&n;                      &quot;List of adapter,address pairs not to scan&quot;); &bslash;&n;&t;static struct i2c_address_data addr_data = {&t;&t;&t;&bslash;&n;&t;&t;&t;.normal_i2c =&t;&t;normal_i2c,&t;&t;&bslash;&n;&t;&t;&t;.normal_isa =&t;&t;normal_isa,&t;&t;&bslash;&n;&t;&t;&t;.probe =&t;&t;probe,&t;&t;&t;&bslash;&n;&t;&t;&t;.ignore =&t;&t;ignore,&t;&t;&t;&bslash;&n;&t;&t;&t;.forces =&t;&t;forces,&t;&t;&t;&bslash;&n;&t;&t;}
 multiline_comment|/* The following functions create an enum with the chip names as elements. &n;   The first element of the enum is any_chip. These are the only macros&n;   a module will want to use. */
 DECL|macro|SENSORS_INSMOD_0
 mdefine_line|#define SENSORS_INSMOD_0 &bslash;&n;  enum chips { any_chip }; &bslash;&n;  I2C_CLIENT_MODULE_PARM(force, &bslash;&n;                      &quot;List of adapter,address pairs to boldly assume &quot; &bslash;&n;                      &quot;to be present&quot;); &bslash;&n;  static struct i2c_force_data forces[] = {{force,any_chip},{NULL}}; &bslash;&n;  SENSORS_INSMOD

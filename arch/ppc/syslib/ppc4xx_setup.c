@@ -26,6 +26,7 @@ macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#include &lt;asm/ppc4xx_pic.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;syslib/gen550.h&gt;
 multiline_comment|/* Function Prototypes */
 r_extern
 r_void
@@ -73,6 +74,27 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#if !defined(CONFIG_BDI_SWITCH)
+multiline_comment|/*&n;&t; * The Abatron BDI JTAG debugger does not tolerate others&n;&t; * mucking with the debug registers.&n;&t; */
+id|mtspr
+c_func
+(paren
+id|SPRN_DBCR0
+comma
+(paren
+id|DBCR0_IDM
+)paren
+)paren
+suffix:semicolon
+id|mtspr
+c_func
+(paren
+id|SPRN_DBSR
+comma
+l_int|0xffffffff
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Setup PCI host bridges */
 macro_line|#ifdef CONFIG_PCI
 id|ppc4xx_find_bridges
@@ -493,130 +515,6 @@ id|tb_ticks_per_jiffy
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SERIAL_TEXT_DEBUG
-multiline_comment|/* We assume that the UART has already been initialized by the&n;   firmware or the boot loader */
-r_static
-r_void
-DECL|function|serial_putc
-id|serial_putc
-c_func
-(paren
-id|u8
-op_star
-id|com_port
-comma
-r_int
-r_char
-id|c
-)paren
-(brace
-r_while
-c_loop
-(paren
-(paren
-id|readb
-c_func
-(paren
-id|com_port
-op_plus
-(paren
-id|UART_LSR
-)paren
-)paren
-op_amp
-id|UART_LSR_THRE
-)paren
-op_eq
-l_int|0
-)paren
-suffix:semicolon
-id|writeb
-c_func
-(paren
-id|c
-comma
-id|com_port
-)paren
-suffix:semicolon
-)brace
-r_static
-r_void
-DECL|function|ppc4xx_progress
-id|ppc4xx_progress
-c_func
-(paren
-r_char
-op_star
-id|s
-comma
-r_int
-r_int
-id|hex
-)paren
-(brace
-r_char
-id|c
-suffix:semicolon
-macro_line|#ifdef SERIAL_DEBUG_IO_BASE
-id|u8
-op_star
-id|com_port
-op_assign
-(paren
-id|u8
-op_star
-)paren
-id|SERIAL_DEBUG_IO_BASE
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|c
-op_assign
-op_star
-id|s
-op_increment
-)paren
-op_ne
-l_char|&squot;&bslash;0&squot;
-)paren
-(brace
-id|serial_putc
-c_func
-(paren
-id|com_port
-comma
-id|c
-)paren
-suffix:semicolon
-)brace
-id|serial_putc
-c_func
-(paren
-id|com_port
-comma
-l_char|&squot;&bslash;r&squot;
-)paren
-suffix:semicolon
-id|serial_putc
-c_func
-(paren
-id|com_port
-comma
-l_char|&squot;&bslash;n&squot;
-)paren
-suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-l_string|&quot;%s&bslash;r&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_SERIAL_TEXT_DEBUG */
 multiline_comment|/*&n; * IDE stuff.&n; * should be generic for every IDE PCI chipset&n; */
 macro_line|#if defined(CONFIG_PCI) &amp;&amp; defined(CONFIG_IDE)
 r_static
@@ -952,10 +850,9 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_SERIAL_TEXT_DEBUG
 id|ppc_md.progress
 op_assign
-id|ppc4xx_progress
+id|gen550_progress
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;**   m8xx_setup.c, prep_setup.c use&n;**     defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)&n;*/
 macro_line|#if defined(CONFIG_PCI) &amp;&amp; defined(CONFIG_IDE)
 id|ppc_ide_md.ide_init_hwif
 op_assign

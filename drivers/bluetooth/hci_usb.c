@@ -170,7 +170,42 @@ c_func
 (paren
 l_int|0x0a5c
 comma
+l_int|0x2009
+)paren
+comma
+dot
+id|driver_info
+op_assign
+id|HCI_RESET
+op_or
+id|HCI_BROKEN_ISOC
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0a5c
+comma
 l_int|0x200a
+)paren
+comma
+dot
+id|driver_info
+op_assign
+id|HCI_RESET
+op_or
+id|HCI_BROKEN_ISOC
+)brace
+comma
+multiline_comment|/* Microsoft Wireless Transceiver for Bluetooth 2.0 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x045e
+comma
+l_int|0x009c
 )paren
 comma
 dot
@@ -197,7 +232,7 @@ op_assign
 id|HCI_RESET
 )brace
 comma
-multiline_comment|/* Digianswer device */
+multiline_comment|/* Digianswer devices */
 (brace
 id|USB_DEVICE
 c_func
@@ -211,6 +246,21 @@ dot
 id|driver_info
 op_assign
 id|HCI_DIGIANSWER
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x08fd
+comma
+l_int|0x0002
+)paren
+comma
+dot
+id|driver_info
+op_assign
+id|HCI_IGNORE
 )brace
 comma
 multiline_comment|/* RTX Telecom based adapter with buggy SCO support */
@@ -3663,6 +3713,33 @@ id|husb
 )paren
 suffix:semicolon
 )brace
+DECL|function|hci_usb_notify
+r_static
+r_void
+id|hci_usb_notify
+c_func
+(paren
+r_struct
+id|hci_dev
+op_star
+id|hdev
+comma
+r_int
+r_int
+id|evt
+)paren
+(brace
+id|BT_DBG
+c_func
+(paren
+l_string|&quot;%s evt %d&quot;
+comma
+id|hdev-&gt;name
+comma
+id|evt
+)paren
+suffix:semicolon
+)brace
 DECL|function|hci_usb_probe
 r_int
 id|hci_usb_probe
@@ -3981,12 +4058,12 @@ id|HCI_DIGIANSWER
 )paren
 id|husb-&gt;ctrl_req
 op_assign
-id|HCI_DIGI_REQ
+id|USB_TYPE_VENDOR
 suffix:semicolon
 r_else
 id|husb-&gt;ctrl_req
 op_assign
-id|HCI_CTRL_REQ
+id|USB_TYPE_CLASS
 suffix:semicolon
 multiline_comment|/* Find isochronous endpoints that we can use */
 id|size
@@ -4216,6 +4293,10 @@ c_func
 l_string|&quot;Can&squot;t set isoc interface settings&quot;
 )paren
 suffix:semicolon
+id|husb-&gt;isoc_iface
+op_assign
+id|isoc_iface
+suffix:semicolon
 id|usb_driver_release_interface
 c_func
 (paren
@@ -4224,6 +4305,10 @@ id|hci_usb_driver
 comma
 id|isoc_iface
 )paren
+suffix:semicolon
+id|husb-&gt;isoc_iface
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -4359,6 +4444,10 @@ suffix:semicolon
 id|hdev-&gt;destruct
 op_assign
 id|hci_usb_destruct
+suffix:semicolon
+id|hdev-&gt;notify
+op_assign
+id|hci_usb_notify
 suffix:semicolon
 id|hdev-&gt;owner
 op_assign

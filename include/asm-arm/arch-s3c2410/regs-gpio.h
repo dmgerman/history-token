@@ -1136,8 +1136,8 @@ DECL|macro|S3C2410_GSTATUS1_2440
 mdefine_line|#define S3C2410_GSTATUS1_2440&t;   (0x32440000)
 DECL|macro|S3C2410_GSTATUS2_WTRESET
 mdefine_line|#define S3C2410_GSTATUS2_WTRESET   (1&lt;&lt;2)
-DECL|macro|S3C2410_GSTATUs2_OFFRESET
-mdefine_line|#define S3C2410_GSTATUs2_OFFRESET  (1&lt;&lt;1)
+DECL|macro|S3C2410_GSTATUS2_OFFRESET
+mdefine_line|#define S3C2410_GSTATUS2_OFFRESET  (1&lt;&lt;1)
 DECL|macro|S3C2410_GSTATUS2_PONRESET
 mdefine_line|#define S3C2410_GSTATUS2_PONRESET  (1&lt;&lt;0)
 macro_line|#endif&t;/* __ASM_ARCH_REGS_GPIO_H */

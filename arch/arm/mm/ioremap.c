@@ -484,6 +484,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Remap an arbitrary physical address space into the kernel virtual&n; * address space. Needed when the kernel wants to access high addresses&n; * directly.&n; *&n; * NOTE! We need to allow non-page-aligned mappings too: we will obviously&n; * have to convert them into an offset in a page-aligned mapping, but the&n; * caller shouldn&squot;t need to know that small detail.&n; *&n; * &squot;flags&squot; are the extra L_PTE_ flags that you want to specify for this&n; * mapping.  See include/asm-arm/proc-armv/pgtable.h for more information.&n; */
 r_void
+id|__iomem
 op_star
 DECL|function|__ioremap
 id|__ioremap
@@ -621,6 +622,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 (paren
@@ -647,6 +649,7 @@ id|__iounmap
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren

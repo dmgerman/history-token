@@ -19034,6 +19034,14 @@ comma
 )brace
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|idt77252_pci_tbl
+)paren
+suffix:semicolon
 DECL|variable|idt77252_driver
 r_static
 r_struct

@@ -93,6 +93,7 @@ id|__readb
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -102,6 +103,7 @@ id|__readw
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -111,6 +113,7 @@ id|__readl
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -123,6 +126,7 @@ id|u8
 id|val
 comma
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -135,6 +139,7 @@ id|u16
 id|val
 comma
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -147,6 +152,7 @@ id|u32
 id|val
 comma
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -190,7 +196,7 @@ mdefine_line|#define writew(v,b)&t;&t;__writew(v,b)
 DECL|macro|writel
 mdefine_line|#define writel(v,b)&t;&t;__writel(v,b)
 DECL|macro|__arch_ioremap
-mdefine_line|#define __arch_ioremap(cookie,sz,c,a)&t;((void *)(cookie))
+mdefine_line|#define __arch_ioremap(cookie,sz,c,a)&t;((void __iomem *)(cookie))
 DECL|macro|__arch_iounmap
 mdefine_line|#define __arch_iounmap(cookie)&t;&t;do { } while (0)
 r_extern

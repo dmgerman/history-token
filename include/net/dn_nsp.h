@@ -281,6 +281,9 @@ r_int
 id|noblock
 comma
 r_int
+id|timeo
+comma
+r_int
 op_star
 id|err
 )paren

@@ -462,7 +462,7 @@ id|pdinfo
 suffix:semicolon
 id|nasid
 op_assign
-id|COMPACT_TO_NASID_NODEID
+id|cnodeid_to_nasid
 c_func
 (paren
 id|i
@@ -752,6 +752,24 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Cannot afford to run out of memory */
+id|memset
+c_func
+(paren
+id|SN_PCIDEV_INFO
+c_func
+(paren
+id|dev
+)paren
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|pcidev_info
+)paren
+)paren
+suffix:semicolon
 id|sn_irq_info
 op_assign
 id|kmalloc
@@ -779,6 +797,20 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Cannot afford to run out of memory */
+id|memset
+c_func
+(paren
+id|sn_irq_info
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|sn_irq_info
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Call to retrieve pci device information needed by kernel. */
 id|status
 op_assign
@@ -1051,6 +1083,8 @@ c_func
 (paren
 id|dev
 )paren
+op_logical_and
+id|sn_irq_info-&gt;irq_irq
 )paren
 (brace
 id|SN_PCIDEV_INFO
@@ -1276,7 +1310,7 @@ id|bs_base
 suffix:semicolon
 id|cnode
 op_assign
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|nasid

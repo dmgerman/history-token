@@ -1764,7 +1764,7 @@ id|hard_trap_info
 )braket
 op_assign
 (brace
-macro_line|#if defined(CONFIG_40x)
+macro_line|#if defined(CONFIG_40x) || defined(CONFIG_BOOKE)
 (brace
 l_int|0x100
 comma
@@ -1872,7 +1872,7 @@ comma
 multiline_comment|/* reserved */
 multiline_comment|/*&n;&t;** 0x1000  PIT&n;&t;** 0x1010  FIT&n;&t;** 0x1020  watchdog&n;&t;** 0x1100  data TLB miss&n;&t;** 0x1200  instruction TLB miss&n;&t;*/
 (brace
-l_int|0x2000
+l_int|0x2002
 comma
 id|SIGTRAP
 )brace
@@ -2187,36 +2187,6 @@ id|ptr
 op_assign
 id|remcomOutBuffer
 suffix:semicolon
-macro_line|#if defined(CONFIG_40x)
-op_star
-id|ptr
-op_increment
-op_assign
-l_char|&squot;S&squot;
-suffix:semicolon
-op_star
-id|ptr
-op_increment
-op_assign
-id|hexchars
-(braket
-id|sigval
-op_rshift
-l_int|4
-)braket
-suffix:semicolon
-op_star
-id|ptr
-op_increment
-op_assign
-id|hexchars
-(braket
-id|sigval
-op_amp
-l_int|0xf
-)braket
-suffix:semicolon
-macro_line|#else
 op_star
 id|ptr
 op_increment
@@ -2352,7 +2322,6 @@ op_increment
 op_assign
 l_char|&squot;;&squot;
 suffix:semicolon
-macro_line|#endif
 op_star
 id|ptr
 op_increment
@@ -3108,22 +3077,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_40x)
-id|strcpy
-c_func
-(paren
-id|remcomOutBuffer
-comma
-l_string|&quot;OK&quot;
-)paren
-suffix:semicolon
-id|putpacket
-c_func
-(paren
-id|remcomOutBuffer
-)paren
-suffix:semicolon
-macro_line|#endif
 id|mtmsr
 c_func
 (paren
@@ -3179,24 +3132,24 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_40x)
-id|regs-&gt;msr
-op_or_assign
-id|MSR_DE
-suffix:semicolon
-id|regs-&gt;dbcr0
-op_or_assign
+macro_line|#if defined(CONFIG_40x) || defined(CONFIG_BOOKE)
+id|mtspr
+c_func
 (paren
-id|DBCR0_IDM
+id|SPRN_DBCR0
+comma
+id|mfspr
+c_func
+(paren
+id|SPRN_DBCR0
+)paren
 op_or
 id|DBCR0_IC
 )paren
 suffix:semicolon
-id|mtmsr
-c_func
-(paren
-id|msr
-)paren
+id|regs-&gt;msr
+op_or_assign
+id|MSR_DE
 suffix:semicolon
 macro_line|#else
 id|regs-&gt;msr

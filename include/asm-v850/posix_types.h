@@ -173,7 +173,7 @@ DECL|typedef|__kernel_fsid_t
 id|__kernel_fsid_t
 suffix:semicolon
 macro_line|#if defined(__KERNEL__) || !defined(__GLIBC__) || (__GLIBC__ &lt; 2)
-macro_line|#include &lt;asm/bitops.h&gt;
+multiline_comment|/* We used to include &lt;asm/bitops.h&gt; here, which seems the right thing, but&n;   it caused nasty include-file definition order problems.  Removing the&n;   include seems to work, so fingers crossed...  */
 DECL|macro|__FD_SET
 macro_line|#undef&t;__FD_SET
 DECL|macro|__FD_SET

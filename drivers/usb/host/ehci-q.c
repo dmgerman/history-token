@@ -1120,6 +1120,23 @@ id|stopped
 op_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+(paren
+op_logical_neg
+id|HCD_IS_RUNNING
+(paren
+id|ehci-&gt;hcd.state
+)paren
+)paren
+)paren
+id|urb-&gt;status
+op_assign
+op_minus
+id|ESHUTDOWN
+suffix:semicolon
 multiline_comment|/* ignore active urbs unless some previous qtd&n;&t;&t;&t; * for the urb faulted (including short read) or&n;&t;&t;&t; * its urb was canceled.  we may patch qh or qtds.&n;&t;&t;&t; */
 r_if
 c_cond

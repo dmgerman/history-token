@@ -125,10 +125,6 @@ id|lock
 )paren
 (brace
 r_int
-r_int
-id|newsize
-suffix:semicolon
-r_int
 r_char
 op_star
 id|buffer
@@ -139,10 +135,6 @@ op_star
 id|ret
 suffix:semicolon
 multiline_comment|/*&n;&t; * round up to the next power of 2, since our &squot;let the indices&n;&t; * wrap&squot; tachnique works only in this case.&n;&t; */
-id|newsize
-op_assign
-id|size
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -163,7 +155,7 @@ OG
 l_int|0x80000000
 )paren
 suffix:semicolon
-id|newsize
+id|size
 op_assign
 id|roundup_pow_of_two
 c_func
@@ -177,7 +169,7 @@ op_assign
 id|kmalloc
 c_func
 (paren
-id|newsize
+id|size
 comma
 id|gfp_mask
 )paren

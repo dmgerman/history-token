@@ -1,7 +1,8 @@
 multiline_comment|/*&n; *  arch/ppc/platforms/pmac_low_i2c.c&n; *&n; *  Copyright (C) 2003 Ben. Herrenschmidt (benh@kernel.crashing.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; *  This file contains some low-level i2c access routines that&n; *  need to be used by various bits of the PowerMac platform code&n; *  at times where the real asynchronous &amp; interrupt driven driver&n; *  cannot be used. The API borrows some semantics from the darwin&n; *  driver in order to ease the implementation of the platform&n; *  properties parser&n; */
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -15,12 +16,12 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pmac_low_i2c.h&gt;
 DECL|macro|MAX_LOW_I2C_HOST
 mdefine_line|#define MAX_LOW_I2C_HOST&t;4
-macro_line|#if 1
+macro_line|#ifdef DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(x...) do {&bslash;&n;&t;&t;printk(KERN_DEBUG &quot;KW:&quot; x);&t;&bslash;&n;&t;} while(0)
 macro_line|#else
-DECL|macro|DBGG
-mdefine_line|#define DBGG(x...)
+DECL|macro|DBG
+mdefine_line|#define DBG(x...)
 macro_line|#endif
 r_struct
 id|low_i2c_host
@@ -76,6 +77,7 @@ suffix:semicolon
 multiline_comment|/* Access function */
 DECL|member|is_open
 r_int
+r_int
 id|is_open
 suffix:colon
 l_int|1
@@ -97,8 +99,9 @@ id|num_channels
 suffix:semicolon
 multiline_comment|/* Number of channels */
 DECL|member|base
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|base
 suffix:semicolon
 multiline_comment|/* For keywest-i2c, base address */
@@ -327,21 +330,15 @@ id|reg
 )paren
 (brace
 r_return
-id|in_8
+id|readb
 c_func
 (paren
-(paren
-(paren
-r_volatile
-id|u8
-op_star
-)paren
 id|host-&gt;base
-)paren
 op_plus
 (paren
 (paren
 (paren
+r_int
 r_int
 )paren
 id|reg
@@ -371,17 +368,12 @@ id|u8
 id|val
 )paren
 (brace
-id|out_8
+id|writeb
 c_func
 (paren
-(paren
-(paren
-r_volatile
-id|u8
-op_star
-)paren
+id|val
+comma
 id|host-&gt;base
-)paren
 op_plus
 (paren
 (paren
@@ -393,8 +385,6 @@ id|reg
 op_lshift
 id|host-&gt;bsteps
 )paren
-comma
-id|val
 )paren
 suffix:semicolon
 (paren
@@ -428,6 +418,8 @@ id|host
 (brace
 r_int
 id|i
+comma
+id|j
 suffix:semicolon
 id|u8
 id|isr
@@ -441,7 +433,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|200000
+l_int|100000
 suffix:semicolon
 id|i
 op_increment
@@ -467,10 +459,24 @@ l_int|0
 r_return
 id|isr
 suffix:semicolon
-id|udelay
+multiline_comment|/* This code is used with the timebase frozen, we cannot rely&n;&t;&t; * on udelay ! For now, just use a bogus loop&n;&t;&t; */
+r_for
+c_loop
+(paren
+id|j
+op_assign
+l_int|1
+suffix:semicolon
+id|j
+OL
+l_int|10000
+suffix:semicolon
+id|j
+op_increment
+)paren
+id|mb
 c_func
 (paren
-l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -514,6 +520,19 @@ id|isr
 (brace
 id|u8
 id|ack
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;kw_handle_interrupt(%s, isr: %x)&bslash;n&quot;
+comma
+id|__kw_state_names
+(braket
+id|state
+)braket
+comma
+id|isr
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1107,14 +1126,6 @@ id|mode_reg
 op_or_assign
 id|KW_I2C_MODE_STANDARDSUB
 suffix:semicolon
-id|kw_write_reg
-c_func
-(paren
-id|reg_subaddr
-comma
-id|subaddr
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1123,14 +1134,6 @@ suffix:colon
 id|mode_reg
 op_or_assign
 id|KW_I2C_MODE_COMBINED
-suffix:semicolon
-id|kw_write_reg
-c_func
-(paren
-id|reg_subaddr
-comma
-id|subaddr
-)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1177,6 +1180,34 @@ c_func
 id|reg_addr
 comma
 id|addr
+)paren
+suffix:semicolon
+multiline_comment|/* Set up the sub address */
+r_if
+c_cond
+(paren
+(paren
+id|mode_reg
+op_amp
+id|KW_I2C_MODE_MODE_MASK
+)paren
+op_eq
+id|KW_I2C_MODE_STANDARDSUB
+op_logical_or
+(paren
+id|mode_reg
+op_amp
+id|KW_I2C_MODE_MODE_MASK
+)paren
+op_eq
+id|KW_I2C_MODE_COMBINED
+)paren
+id|kw_write_reg
+c_func
+(paren
+id|reg_subaddr
+comma
+id|subaddr
 )paren
 suffix:semicolon
 multiline_comment|/* Start sending address &amp; disable interrupt*/
@@ -1268,8 +1299,7 @@ c_func
 l_int|NULL
 )paren
 suffix:semicolon
-r_int
-r_int
+id|u32
 op_star
 id|psteps
 comma
@@ -1339,8 +1369,7 @@ suffix:semicolon
 id|psteps
 op_assign
 (paren
-r_int
-r_int
+id|u32
 op_star
 )paren
 id|get_property
@@ -1429,8 +1458,7 @@ suffix:semicolon
 id|prate
 op_assign
 (paren
-r_int
-r_int
+id|u32
 op_star
 )paren
 id|get_property
@@ -1489,10 +1517,6 @@ id|pmac_low_i2c_mode_std
 suffix:semicolon
 id|host-&gt;base
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren

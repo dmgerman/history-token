@@ -7728,11 +7728,6 @@ id|info
 op_assign
 id|rinfo-&gt;info
 suffix:semicolon
-id|info-&gt;currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|info-&gt;par
 op_assign
 id|rinfo
@@ -9638,7 +9633,19 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-r_break
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;radeonfb: no video RAM reported&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|ENXIO
+suffix:semicolon
+r_goto
+id|err_unmap_rom
 suffix:semicolon
 )brace
 )brace

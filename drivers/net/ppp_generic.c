@@ -8099,9 +8099,12 @@ op_amp
 id|pch-&gt;downl
 )paren
 suffix:semicolon
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|pch-&gt;upl
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|spin_lock_bh
 c_func

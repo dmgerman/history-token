@@ -1518,7 +1518,7 @@ r_return
 id|event
 suffix:semicolon
 )brace
-multiline_comment|/* Create a partial delivery related event.&n; *&n; * 5.3.1.7 SCTP_PARTIAL_DELIVERY_EVENT&n; *&n; *   When a reciever is engaged in a partial delivery of a&n; *   message this notification will be used to inidicate&n; *   various events.&n; */
+multiline_comment|/* Create a partial delivery related event.&n; *&n; * 5.3.1.7 SCTP_PARTIAL_DELIVERY_EVENT&n; *&n; *   When a receiver is engaged in a partial delivery of a&n; *   message this notification will be used to indicate&n; *   various events.&n; */
 DECL|function|sctp_ulpevent_make_pdapi
 r_struct
 id|sctp_ulpevent

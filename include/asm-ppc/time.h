@@ -4,7 +4,8 @@ macro_line|#ifndef __ASM_TIME_H__
 DECL|macro|__ASM_TIME_H__
 mdefine_line|#define __ASM_TIME_H__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/mc146818rtc.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/rtc.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/reg.h&gt;
 multiline_comment|/* time.c */

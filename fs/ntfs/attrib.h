@@ -7,6 +7,7 @@ macro_line|#include &quot;types.h&quot;
 macro_line|#include &quot;layout.h&quot;
 macro_line|#include &quot;inode.h&quot;
 macro_line|#include &quot;runlist.h&quot;
+macro_line|#include &quot;volume.h&quot;
 multiline_comment|/**&n; * ntfs_attr_search_ctx - used in attribute search functions&n; * @mrec:&t;buffer containing mft record to search&n; * @attr:&t;attribute record in @mrec where to begin/continue search&n; * @is_first:&t;if true ntfs_attr_lookup() begins search with @attr, else after&n; *&n; * Structure must be initialized to zero before the first call to one of the&n; * attribute search functions. Initialize @mrec to point to the mft record to&n; * search, and @attr to point to the first attribute within @mrec (not necessary&n; * if calling the _first() functions), and set @is_first to TRUE (not necessary&n; * if calling the _first() functions).&n; *&n; * If @is_first is TRUE, the search begins with @attr. If @is_first is FALSE,&n; * the search begins after @attr. This is so that, after the first call to one&n; * of the search attribute functions, we can call the function again, without&n; * any modification of the search context, to automagically get the next&n; * matching attribute.&n; */
 r_typedef
 r_struct
@@ -221,6 +222,55 @@ c_func
 id|ntfs_attr_search_ctx
 op_star
 id|ctx
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ntfs_attr_size_bounds_check
+c_func
+(paren
+r_const
+id|ntfs_volume
+op_star
+id|vol
+comma
+r_const
+id|ATTR_TYPE
+id|type
+comma
+r_const
+id|s64
+id|size
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ntfs_attr_can_be_non_resident
+c_func
+(paren
+r_const
+id|ntfs_volume
+op_star
+id|vol
+comma
+r_const
+id|ATTR_TYPE
+id|type
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ntfs_attr_can_be_resident
+c_func
+(paren
+r_const
+id|ntfs_volume
+op_star
+id|vol
+comma
+r_const
+id|ATTR_TYPE
+id|type
 )paren
 suffix:semicolon
 r_extern

@@ -10651,6 +10651,14 @@ comma
 )brace
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|hrz_pci_tbl
+)paren
+suffix:semicolon
 DECL|variable|hrz_driver
 r_static
 r_struct

@@ -248,14 +248,6 @@ id|regs
 suffix:semicolon
 r_extern
 r_int
-id|singlestepping_skas
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|new_mm
 c_func
 (paren

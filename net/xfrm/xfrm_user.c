@@ -1503,6 +1503,10 @@ DECL|member|nlmsg_seq
 id|u32
 id|nlmsg_seq
 suffix:semicolon
+DECL|member|nlmsg_flags
+id|u16
+id|nlmsg_flags
+suffix:semicolon
 DECL|member|start_idx
 r_int
 id|start_idx
@@ -1608,7 +1612,7 @@ id|p
 suffix:semicolon
 id|nlh-&gt;nlmsg_flags
 op_assign
-l_int|0
+id|sp-&gt;nlmsg_flags
 suffix:semicolon
 id|p
 op_assign
@@ -1798,6 +1802,10 @@ id|info.nlmsg_seq
 op_assign
 id|cb-&gt;nlh-&gt;nlmsg_seq
 suffix:semicolon
+id|info.nlmsg_flags
+op_assign
+id|NLM_F_MULTI
+suffix:semicolon
 id|info.this_idx
 op_assign
 l_int|0
@@ -1916,6 +1924,10 @@ suffix:semicolon
 id|info.nlmsg_seq
 op_assign
 id|seq
+suffix:semicolon
+id|info.nlmsg_flags
+op_assign
+l_int|0
 suffix:semicolon
 id|info.this_idx
 op_assign
@@ -3477,7 +3489,7 @@ id|nlh
 suffix:semicolon
 id|nlh-&gt;nlmsg_flags
 op_assign
-l_int|0
+id|sp-&gt;nlmsg_flags
 suffix:semicolon
 id|copy_to_user_policy
 c_func
@@ -3568,6 +3580,10 @@ suffix:semicolon
 id|info.nlmsg_seq
 op_assign
 id|cb-&gt;nlh-&gt;nlmsg_seq
+suffix:semicolon
+id|info.nlmsg_flags
+op_assign
+id|NLM_F_MULTI
 suffix:semicolon
 id|info.this_idx
 op_assign
@@ -3688,6 +3704,10 @@ suffix:semicolon
 id|info.nlmsg_seq
 op_assign
 id|seq
+suffix:semicolon
+id|info.nlmsg_flags
+op_assign
+l_int|0
 suffix:semicolon
 id|info.this_idx
 op_assign
@@ -6058,11 +6078,9 @@ id|xfrm_nl
 op_eq
 l_int|NULL
 )paren
-id|panic
-c_func
-(paren
-l_string|&quot;xfrm_user_init: cannot initialize xfrm_nl&bslash;n&quot;
-)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|xfrm_register_km
 c_func

@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/kmod.h&gt;
+macro_line|#include &lt;linux/kobject_uevent.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/dmi.h&gt;
@@ -2178,32 +2178,6 @@ r_void
 r_int
 id|ret
 suffix:semicolon
-multiline_comment|/* Don&squot;t use pnpbios if pnpacpi is used */
-macro_line|#ifdef CONFIG_PNPACPI
-r_if
-c_cond
-(paren
-op_logical_neg
-id|acpi_disabled
-)paren
-(brace
-id|pnpbios_disabled
-op_assign
-l_int|1
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;PnPBIOS: Disabled by pnpacpi&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren

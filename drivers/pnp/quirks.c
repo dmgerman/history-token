@@ -187,6 +187,10 @@ id|res
 op_assign
 id|dev-&gt;dependent
 suffix:semicolon
+r_int
+r_int
+id|tmp
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -223,12 +227,23 @@ id|irq-&gt;next
 )paren
 (brace
 singleline_comment|// Valid irqs are 5, 7, 10
-id|irq-&gt;map
+id|tmp
 op_assign
 l_int|0x04A0
 suffix:semicolon
-)brace
+id|bitmap_copy
+c_func
+(paren
+id|irq-&gt;map
+comma
+op_amp
+id|tmp
+comma
+l_int|16
+)paren
+suffix:semicolon
 singleline_comment|// 0000 0100 1010 0000
+)brace
 r_for
 c_loop
 (paren

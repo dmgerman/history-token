@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/lapb.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/hdlc.h&gt;
+macro_line|#include &lt;net/x25device.h&gt;
 multiline_comment|/* These functions are callbacks called by LAPB layer */
 DECL|function|x25_connect_disconnect
 r_static
@@ -84,25 +85,15 @@ id|ptr
 op_assign
 id|code
 suffix:semicolon
-id|skb-&gt;dev
-op_assign
-id|dev
-suffix:semicolon
 id|skb-&gt;protocol
 op_assign
-id|htons
+id|x25_type_trans
 c_func
 (paren
-id|ETH_P_X25
+id|skb
+comma
+id|dev
 )paren
-suffix:semicolon
-id|skb-&gt;mac.raw
-op_assign
-id|skb-&gt;data
-suffix:semicolon
-id|skb-&gt;pkt_type
-op_assign
-id|PACKET_HOST
 suffix:semicolon
 id|netif_rx
 c_func
@@ -216,25 +207,15 @@ id|ptr
 op_assign
 l_int|0
 suffix:semicolon
-id|skb-&gt;dev
-op_assign
-id|dev
-suffix:semicolon
 id|skb-&gt;protocol
 op_assign
-id|htons
+id|x25_type_trans
 c_func
 (paren
-id|ETH_P_X25
+id|skb
+comma
+id|dev
 )paren
-suffix:semicolon
-id|skb-&gt;mac.raw
-op_assign
-id|skb-&gt;data
-suffix:semicolon
-id|skb-&gt;pkt_type
-op_assign
-id|PACKET_HOST
 suffix:semicolon
 r_return
 id|netif_rx

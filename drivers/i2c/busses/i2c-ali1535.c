@@ -116,7 +116,7 @@ r_int
 r_int
 id|ali1535_smba
 suffix:semicolon
-DECL|variable|i2c_ali1535_sem
+r_static
 id|DECLARE_MUTEX
 c_func
 (paren
@@ -1619,6 +1619,7 @@ id|result
 suffix:semicolon
 )brace
 DECL|function|ali1535_func
+r_static
 id|u32
 id|ali1535_func
 c_func

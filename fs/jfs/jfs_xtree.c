@@ -2755,13 +2755,13 @@ id|ip-&gt;i_mode
 )paren
 op_logical_and
 (paren
-id|sp-&gt;header.maxentry
-OL
-id|cpu_to_le16
+id|le16_to_cpu
 c_func
 (paren
-id|XTROOTMAXSLOT
+id|sp-&gt;header.maxentry
 )paren
+OL
+id|XTROOTMAXSLOT
 )paren
 op_logical_and
 (paren
@@ -5135,11 +5135,6 @@ id|xtlck
 op_assign
 l_int|NULL
 suffix:semicolon
-r_int
-id|rootsplit
-op_assign
-l_int|0
-suffix:semicolon
 id|jfs_info
 c_func
 (paren
@@ -5393,12 +5388,6 @@ id|p-&gt;header.maxentry
 )paren
 )paren
 (brace
-id|rootsplit
-op_assign
-id|p-&gt;header.flag
-op_amp
-id|BT_ROOT
-suffix:semicolon
 multiline_comment|/* xtSpliUp() unpins leaf pages */
 id|split.mp
 op_assign
@@ -5455,11 +5444,38 @@ id|btstack
 r_return
 id|rc
 suffix:semicolon
+multiline_comment|/* get back old page */
+id|XT_GETPAGE
+c_func
+(paren
+id|ip
+comma
+id|bn
+comma
+id|mp
+comma
+id|PSIZE
+comma
+id|p
+comma
+id|rc
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_return
+id|rc
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * if leaf root has been split, original root has been&n;&t;&t; * copied to new child page, i.e., original entry now&n;&t;&t; * resides on the new child page;&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|rootsplit
+id|p-&gt;header.flag
+op_amp
+id|BT_INTERNAL
 )paren
 (brace
 id|ASSERT
@@ -5490,6 +5506,12 @@ id|addressXAD
 c_func
 (paren
 id|xad
+)paren
+suffix:semicolon
+id|XT_PUTPAGE
+c_func
+(paren
+id|mp
 )paren
 suffix:semicolon
 multiline_comment|/* get new child page */
@@ -5565,34 +5587,6 @@ op_amp
 id|tlck-&gt;lock
 suffix:semicolon
 )brace
-)brace
-r_else
-(brace
-multiline_comment|/* get back old page */
-id|XT_GETPAGE
-c_func
-(paren
-id|ip
-comma
-id|bn
-comma
-id|mp
-comma
-id|PSIZE
-comma
-id|p
-comma
-id|rc
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-r_return
-id|rc
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; *      insert the new entry into the leaf page&n;&t; */
@@ -5831,11 +5825,6 @@ id|maplock
 op_star
 id|pxdlock
 suffix:semicolon
-r_int
-id|rootsplit
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n;printf(&quot;xtTailgate: nxoff:0x%lx nxlen:0x%x nxaddr:0x%lx&bslash;n&quot;,&n;        (ulong)xoff, xlen, (ulong)xaddr);&n;*/
 multiline_comment|/* there must exist extent to be tailgated */
 r_if
@@ -6040,12 +6029,6 @@ id|p-&gt;header.maxentry
 )paren
 )paren
 (brace
-id|rootsplit
-op_assign
-id|p-&gt;header.flag
-op_amp
-id|BT_ROOT
-suffix:semicolon
 multiline_comment|/* xtSpliUp() unpins leaf pages */
 id|split.mp
 op_assign
@@ -6102,11 +6085,38 @@ id|btstack
 r_return
 id|rc
 suffix:semicolon
+multiline_comment|/* get back old page */
+id|XT_GETPAGE
+c_func
+(paren
+id|ip
+comma
+id|bn
+comma
+id|mp
+comma
+id|PSIZE
+comma
+id|p
+comma
+id|rc
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_return
+id|rc
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * if leaf root has been split, original root has been&n;&t;&t; * copied to new child page, i.e., original entry now&n;&t;&t; * resides on the new child page;&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|rootsplit
+id|p-&gt;header.flag
+op_amp
+id|BT_INTERNAL
 )paren
 (brace
 id|ASSERT
@@ -6137,6 +6147,12 @@ id|addressXAD
 c_func
 (paren
 id|xad
+)paren
+suffix:semicolon
+id|XT_PUTPAGE
+c_func
+(paren
+id|mp
 )paren
 suffix:semicolon
 multiline_comment|/* get new child page */
@@ -6212,34 +6228,6 @@ op_amp
 id|tlck-&gt;lock
 suffix:semicolon
 )brace
-)brace
-r_else
-(brace
-multiline_comment|/* get back old page */
-id|XT_GETPAGE
-c_func
-(paren
-id|ip
-comma
-id|bn
-comma
-id|mp
-comma
-id|PSIZE
-comma
-id|p
-comma
-id|rc
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-r_return
-id|rc
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; *      insert the new entry into the leaf page&n;&t; */
@@ -6603,10 +6591,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_int
-id|rootsplit
-op_assign
-l_int|0
-comma
 id|newpage
 op_assign
 l_int|0
@@ -7473,12 +7457,6 @@ id|p-&gt;header.maxentry
 )paren
 )paren
 (brace
-id|rootsplit
-op_assign
-id|p-&gt;header.flag
-op_amp
-id|BT_ROOT
-suffix:semicolon
 multiline_comment|/* xtSpliUp() unpins leaf pages */
 id|split.mp
 op_assign
@@ -7535,11 +7513,38 @@ id|btstack
 r_return
 id|rc
 suffix:semicolon
+multiline_comment|/* get back old page */
+id|XT_GETPAGE
+c_func
+(paren
+id|ip
+comma
+id|bn
+comma
+id|mp
+comma
+id|PSIZE
+comma
+id|p
+comma
+id|rc
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_return
+id|rc
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * if leaf root has been split, original root has been&n;&t;&t; * copied to new child page, i.e., original entry now&n;&t;&t; * resides on the new child page;&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|rootsplit
+id|p-&gt;header.flag
+op_amp
+id|BT_INTERNAL
 )paren
 (brace
 id|ASSERT
@@ -7570,6 +7575,12 @@ id|addressXAD
 c_func
 (paren
 id|xad
+)paren
+suffix:semicolon
+id|XT_PUTPAGE
+c_func
+(paren
+id|mp
 )paren
 suffix:semicolon
 multiline_comment|/* get new child page */
@@ -7648,31 +7659,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* get back old page */
-id|XT_GETPAGE
-c_func
-(paren
-id|ip
-comma
-id|bn
-comma
-id|mp
-comma
-id|PSIZE
-comma
-id|p
-comma
-id|rc
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-r_return
-id|rc
-suffix:semicolon
 multiline_comment|/* is nXAD on new page ? */
 r_if
 c_cond
@@ -8154,12 +8140,6 @@ id|p-&gt;header.maxentry
 )paren
 )paren
 (brace
-id|rootsplit
-op_assign
-id|p-&gt;header.flag
-op_amp
-id|BT_ROOT
-suffix:semicolon
 multiline_comment|/*&n;printf(&quot;xtUpdate.updateLeft.split p:0x%p&bslash;n&quot;, p);&n;*/
 multiline_comment|/* xtSpliUp() unpins leaf pages */
 id|split.mp
@@ -8214,11 +8194,38 @@ id|btstack
 r_return
 id|rc
 suffix:semicolon
+multiline_comment|/* get back old page */
+id|XT_GETPAGE
+c_func
+(paren
+id|ip
+comma
+id|bn
+comma
+id|mp
+comma
+id|PSIZE
+comma
+id|p
+comma
+id|rc
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_return
+id|rc
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * if leaf root has been split, original root has been&n;&t;&t; * copied to new child page, i.e., original entry now&n;&t;&t; * resides on the new child page;&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|rootsplit
+id|p-&gt;header.flag
+op_amp
+id|BT_INTERNAL
 )paren
 (brace
 id|ASSERT
@@ -8249,6 +8256,12 @@ id|addressXAD
 c_func
 (paren
 id|xad
+)paren
+suffix:semicolon
+id|XT_PUTPAGE
+c_func
+(paren
+id|mp
 )paren
 suffix:semicolon
 multiline_comment|/* get new child page */
@@ -8324,34 +8337,6 @@ op_amp
 id|tlck-&gt;lock
 suffix:semicolon
 )brace
-)brace
-r_else
-(brace
-multiline_comment|/* get back old page */
-id|XT_GETPAGE
-c_func
-(paren
-id|ip
-comma
-id|bn
-comma
-id|mp
-comma
-id|PSIZE
-comma
-id|p
-comma
-id|rc
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-r_return
-id|rc
-suffix:semicolon
 )brace
 )brace
 r_else

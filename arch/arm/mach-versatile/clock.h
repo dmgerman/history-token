@@ -3,7 +3,7 @@ r_struct
 id|module
 suffix:semicolon
 r_struct
-id|icst525_params
+id|icst307_params
 suffix:semicolon
 DECL|struct|clk
 r_struct
@@ -34,7 +34,7 @@ suffix:semicolon
 DECL|member|params
 r_const
 r_struct
-id|icst525_params
+id|icst307_params
 op_star
 id|params
 suffix:semicolon
@@ -55,7 +55,7 @@ id|clk
 op_star
 comma
 r_struct
-id|icst525_vco
+id|icst307_vco
 id|vco
 )paren
 suffix:semicolon

@@ -23,7 +23,7 @@ multiline_comment|/* &n; *  SDRAM&n; */
 DECL|macro|VERSATILE_SDRAM_BASE
 mdefine_line|#define VERSATILE_SDRAM_BASE           0x00000000
 multiline_comment|/* &n; *  Logic expansion modules&n; * &n; */
-multiline_comment|/* ------------------------------------------------------------------------&n; *  Versatile PB Registers&n; * ------------------------------------------------------------------------&n; * &n; */
+multiline_comment|/* ------------------------------------------------------------------------&n; *  Versatile Registers&n; * ------------------------------------------------------------------------&n; * &n; */
 DECL|macro|VERSATILE_SYS_ID_OFFSET
 mdefine_line|#define VERSATILE_SYS_ID_OFFSET               0x00
 DECL|macro|VERSATILE_SYS_SW_OFFSET
@@ -32,6 +32,7 @@ DECL|macro|VERSATILE_SYS_LED_OFFSET
 mdefine_line|#define VERSATILE_SYS_LED_OFFSET              0x08
 DECL|macro|VERSATILE_SYS_OSC0_OFFSET
 mdefine_line|#define VERSATILE_SYS_OSC0_OFFSET             0x0C
+macro_line|#if defined(CONFIG_ARCH_VERSATILE_PB)
 DECL|macro|VERSATILE_SYS_OSC1_OFFSET
 mdefine_line|#define VERSATILE_SYS_OSC1_OFFSET             0x10
 DECL|macro|VERSATILE_SYS_OSC2_OFFSET
@@ -40,6 +41,10 @@ DECL|macro|VERSATILE_SYS_OSC3_OFFSET
 mdefine_line|#define VERSATILE_SYS_OSC3_OFFSET             0x18
 DECL|macro|VERSATILE_SYS_OSC4_OFFSET
 mdefine_line|#define VERSATILE_SYS_OSC4_OFFSET             0x1C
+macro_line|#elif defined(CONFIG_ARCH_VERSATILE_AB)
+DECL|macro|VERSATILE_SYS_OSC1_OFFSET
+mdefine_line|#define VERSATILE_SYS_OSC1_OFFSET             0x1C
+macro_line|#endif
 DECL|macro|VERSATILE_SYS_LOCK_OFFSET
 mdefine_line|#define VERSATILE_SYS_LOCK_OFFSET             0x20
 DECL|macro|VERSATILE_SYS_100HZ_OFFSET
@@ -100,12 +105,14 @@ DECL|macro|VERSATILE_SYS_OSC0
 mdefine_line|#define VERSATILE_SYS_OSC0                    (VERSATILE_SYS_BASE + VERSATILE_SYS_OSC0_OFFSET)
 DECL|macro|VERSATILE_SYS_OSC1
 mdefine_line|#define VERSATILE_SYS_OSC1                    (VERSATILE_SYS_BASE + VERSATILE_SYS_OSC1_OFFSET)
+macro_line|#if defined(CONFIG_ARCH_VERSATILE_PB)
 DECL|macro|VERSATILE_SYS_OSC2
 mdefine_line|#define VERSATILE_SYS_OSC2                    (VERSATILE_SYS_BASE + VERSATILE_SYS_OSC2_OFFSET)
 DECL|macro|VERSATILE_SYS_OSC3
 mdefine_line|#define VERSATILE_SYS_OSC3                    (VERSATILE_SYS_BASE + VERSATILE_SYS_OSC3_OFFSET)
 DECL|macro|VERSATILE_SYS_OSC4
 mdefine_line|#define VERSATILE_SYS_OSC4                    (VERSATILE_SYS_BASE + VERSATILE_SYS_OSC4_OFFSET)
+macro_line|#endif
 DECL|macro|VERSATILE_SYS_LOCK
 mdefine_line|#define VERSATILE_SYS_LOCK                    (VERSATILE_SYS_BASE + VERSATILE_SYS_LOCK_OFFSET)
 DECL|macro|VERSATILE_SYS_100HZ
@@ -169,7 +176,7 @@ DECL|macro|VERSATILE_SYS_CTRL_RESET_DoC
 mdefine_line|#define VERSATILE_SYS_CTRL_RESET_DoC          0x06
 DECL|macro|VERSATILE_SYS_CTRL_LED
 mdefine_line|#define VERSATILE_SYS_CTRL_LED         (1 &lt;&lt; 0)
-multiline_comment|/* ------------------------------------------------------------------------&n; *  Versatile PB control registers&n; * ------------------------------------------------------------------------&n; */
+multiline_comment|/* ------------------------------------------------------------------------&n; *  Versatile control registers&n; * ------------------------------------------------------------------------&n; */
 multiline_comment|/* &n; * VERSATILE_IDFIELD&n; *&n; * 31:24 = manufacturer (0x41 = ARM)&n; * 23:16 = architecture (0x08 = AHB system bus, ASB processor bus)&n; * 15:12 = FPGA (0x3 = XVC600 or XVC600E)&n; * 11:4  = build value&n; * 3:0   = revision number (0x1 = rev B (AHB))&n; */
 multiline_comment|/*&n; * VERSATILE_SYS_LOCK&n; *     control access to SYS_OSCx, SYS_CFGDATAx, SYS_RESETCTL, &n; *     SYS_CLD, SYS_BOOTCS&n; */
 DECL|macro|VERSATILE_SYS_LOCK_LOCKED
@@ -266,6 +273,8 @@ DECL|macro|VERSATILE_SSP_BASE
 mdefine_line|#define VERSATILE_SSP_BASE             0x101F4000&t;/* Synchronous Serial Port */
 DECL|macro|VERSATILE_SSMC_BASE
 mdefine_line|#define VERSATILE_SSMC_BASE            0x20000000&t;/* SSMC */
+DECL|macro|VERSATILE_IB2_BASE
+mdefine_line|#define VERSATILE_IB2_BASE             0x24000000&t;/* IB2 module */
 DECL|macro|VERSATILE_MBX_BASE
 mdefine_line|#define VERSATILE_MBX_BASE             0x40000000&t;/* MBX */
 DECL|macro|VERSATILE_PCI_BASE
@@ -317,7 +326,7 @@ DECL|macro|VERSATILE_INTREG_OFFSET
 mdefine_line|#define VERSATILE_INTREG_OFFSET&t;&t;0x8&t;/* Interrupt control */
 DECL|macro|VERSATILE_DECODE_OFFSET
 mdefine_line|#define VERSATILE_DECODE_OFFSET&t;&t;0xC&t;/* Fitted logic modules */
-multiline_comment|/* ------------------------------------------------------------------------&n; *  Versatile PB Interrupt Controller - control registers&n; * ------------------------------------------------------------------------&n; * &n; *  Offsets from interrupt controller base &n; * &n; *  System Controller interrupt controller base is&n; * &n; * &t;VERSATILE_IC_BASE&n; * &n; *  Core Module interrupt controller base is&n; * &n; * &t;VERSATILE_SYS_IC &n; * &n; */
+multiline_comment|/* ------------------------------------------------------------------------&n; *  Versatile Interrupt Controller - control registers&n; * ------------------------------------------------------------------------&n; * &n; *  Offsets from interrupt controller base &n; * &n; *  System Controller interrupt controller base is&n; * &n; * &t;VERSATILE_IC_BASE&n; * &n; *  Core Module interrupt controller base is&n; * &n; * &t;VERSATILE_SYS_IC &n; * &n; */
 DECL|macro|VIC_IRQ_STATUS
 mdefine_line|#define VIC_IRQ_STATUS                  0
 DECL|macro|VIC_FIQ_STATUS
@@ -648,6 +657,19 @@ DECL|macro|VERSATILE_CSR_BASE
 mdefine_line|#define VERSATILE_CSR_BASE             0x10000000
 DECL|macro|VERSATILE_CSR_SIZE
 mdefine_line|#define VERSATILE_CSR_SIZE             0x10000000
+macro_line|#ifdef CONFIG_ARCH_VERSATILE_AB
+multiline_comment|/*&n; * IB2 Versatile/AB expansion board definitions&n; */
+DECL|macro|VERSATILE_IB2_CAMERA_BANK
+mdefine_line|#define VERSATILE_IB2_CAMERA_BANK&t;0x24000000
+DECL|macro|VERSATILE_IB2_KBD_DATAREG
+mdefine_line|#define VERSATILE_IB2_KBD_DATAREG&t;0x25000000
+DECL|macro|VERSATILE_IB2_IER
+mdefine_line|#define VERSATILE_IB2_IER&t;&t;0x26000000&t;/* for VICINTSOURCE27 */
+DECL|macro|VERSATILE_IB2_CTRL
+mdefine_line|#define VERSATILE_IB2_CTRL&t;&t;0x27000000
+DECL|macro|VERSATILE_IB2_STAT
+mdefine_line|#define VERSATILE_IB2_STAT&t;&t;0x27000004
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/* &t;END */
 eof

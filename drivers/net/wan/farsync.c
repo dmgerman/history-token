@@ -2131,7 +2131,7 @@ id|INTCSR_9052
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*      Process the result of trying to pass a recieved frame up the stack&n; */
+multiline_comment|/*      Process the result of trying to pass a received frame up the stack&n; */
 r_static
 r_void
 DECL|function|fst_process_rx_status
@@ -2380,6 +2380,45 @@ op_assign
 id|jiffies
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Mark it for our own raw sockets interface&n; */
+DECL|function|farsync_type_trans
+r_static
+r_int
+r_int
+id|farsync_type_trans
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+id|skb-&gt;dev
+op_assign
+id|dev
+suffix:semicolon
+id|skb-&gt;mac.raw
+op_assign
+id|skb-&gt;data
+suffix:semicolon
+id|skb-&gt;pkt_type
+op_assign
+id|PACKET_HOST
+suffix:semicolon
+r_return
+id|htons
+c_func
+(paren
+id|ETH_P_CUST
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*      Rx dma complete interrupt&n; */
 r_static
 r_void
@@ -2501,14 +2540,6 @@ comma
 l_string|&quot;Pushing the frame up the stack&bslash;n&quot;
 )paren
 suffix:semicolon
-id|skb-&gt;mac.raw
-op_assign
-id|skb-&gt;data
-suffix:semicolon
-id|skb-&gt;dev
-op_assign
-id|dev
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2516,23 +2547,17 @@ id|port-&gt;mode
 op_eq
 id|FST_RAW
 )paren
-(brace
-multiline_comment|/*&n;&t;&t; * Mark it for our own raw sockets interface&n;&t;&t; */
 id|skb-&gt;protocol
 op_assign
-id|htons
+id|farsync_type_trans
 c_func
 (paren
-id|ETH_P_CUST
+id|skb
+comma
+id|dev
 )paren
 suffix:semicolon
-id|skb-&gt;pkt_type
-op_assign
-id|PACKET_HOST
-suffix:semicolon
-)brace
 r_else
-(brace
 id|skb-&gt;protocol
 op_assign
 id|hdlc_type_trans
@@ -2540,10 +2565,9 @@ c_func
 (paren
 id|skb
 comma
-id|skb-&gt;dev
+id|dev
 )paren
 suffix:semicolon
-)brace
 id|rx_status
 op_assign
 id|netif_rx
@@ -4666,14 +4690,6 @@ comma
 l_string|&quot;Pushing frame up the stack&bslash;n&quot;
 )paren
 suffix:semicolon
-id|skb-&gt;mac.raw
-op_assign
-id|skb-&gt;data
-suffix:semicolon
-id|skb-&gt;dev
-op_assign
-id|dev
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4681,23 +4697,17 @@ id|port-&gt;mode
 op_eq
 id|FST_RAW
 )paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * Mark it for our own raw sockets interface&n;&t;&t;&t; */
 id|skb-&gt;protocol
 op_assign
-id|htons
+id|farsync_type_trans
 c_func
 (paren
-id|ETH_P_CUST
+id|skb
+comma
+id|dev
 )paren
 suffix:semicolon
-id|skb-&gt;pkt_type
-op_assign
-id|PACKET_HOST
-suffix:semicolon
-)brace
 r_else
-(brace
 id|skb-&gt;protocol
 op_assign
 id|hdlc_type_trans
@@ -4705,10 +4715,9 @@ c_func
 (paren
 id|skb
 comma
-id|skb-&gt;dev
+id|dev
 )paren
 suffix:semicolon
-)brace
 id|rx_status
 op_assign
 id|netif_rx

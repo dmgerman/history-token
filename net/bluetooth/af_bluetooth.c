@@ -25,7 +25,7 @@ DECL|macro|BT_DBG
 mdefine_line|#define BT_DBG(D...)
 macro_line|#endif
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;2.6&quot;
+mdefine_line|#define VERSION &quot;2.7&quot;
 DECL|variable|proc_bt
 r_struct
 id|proc_dir_entry

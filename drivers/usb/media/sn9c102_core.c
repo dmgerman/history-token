@@ -7676,10 +7676,7 @@ l_int|0
 multiline_comment|/* size is page-aligned */
 id|page
 op_assign
-id|page_to_pfn
-c_func
-(paren
-id|vmalloc_to_page
+id|vmalloc_to_pfn
 c_func
 (paren
 (paren
@@ -7687,7 +7684,6 @@ r_void
 op_star
 )paren
 id|pos
-)paren
 )paren
 suffix:semicolon
 r_if

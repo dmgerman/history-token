@@ -66,7 +66,7 @@ r_int
 id|sa11x0_pm_enter
 c_func
 (paren
-id|u32
+id|suspend_state_t
 id|state
 )paren
 (brace
@@ -308,7 +308,7 @@ r_int
 id|sa11x0_pm_prepare
 c_func
 (paren
-id|u32
+id|suspend_state_t
 id|state
 )paren
 (brace
@@ -323,7 +323,7 @@ r_int
 id|sa11x0_pm_finish
 c_func
 (paren
-id|u32
+id|suspend_state_t
 id|state
 )paren
 (brace

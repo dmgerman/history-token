@@ -1310,7 +1310,7 @@ comma
 id|smp_commenced_mask
 )paren
 )paren
-id|rep_nop
+id|cpu_relax
 c_func
 (paren
 )paren
@@ -1439,7 +1439,7 @@ id|cpu_callout_map
 )paren
 r_break
 suffix:semicolon
-id|rep_nop
+id|cpu_relax
 c_func
 (paren
 )paren

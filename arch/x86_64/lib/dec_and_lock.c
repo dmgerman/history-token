@@ -1,9 +1,9 @@
 multiline_comment|/*&n; * x86 version of &quot;atomic_dec_and_lock()&quot; using&n; * the atomic &quot;cmpxchg&quot; instruction.&n; *&n; * (For CPU&squot;s lacking cmpxchg, we use the slow&n; * generic version, and this one never even gets&n; * compiled).&n; */
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-DECL|function|atomic_dec_and_lock
+DECL|function|_atomic_dec_and_lock
 r_int
-id|atomic_dec_and_lock
+id|_atomic_dec_and_lock
 c_func
 (paren
 id|atomic_t

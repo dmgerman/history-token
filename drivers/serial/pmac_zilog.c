@@ -1,8 +1,10 @@
-multiline_comment|/*&n; * linux/drivers/serial/pmac_zilog.c&n; * &n; * Driver for PowerMac Z85c30 based ESCC cell found in the&n; * &quot;macio&quot; ASICs of various PowerMac models&n; * &n; * Copyright (C) 2003 Ben. Herrenschmidt (benh@kernel.crashing.org)&n; *&n; * Derived from drivers/macintosh/macserial.c by Paul Mackerras&n; * and drivers/serial/sunzilog.c by David S. Miller&n; *&n; * Hrm... actually, I ripped most of sunzilog (Thanks David !) and&n; * adapted special tweaks needed for us. I don&squot;t think it&squot;s worth&n; * merging back those though. The DMA code still has to get in&n; * and once done, I expect that driver to remain fairly stable in&n; * the long term, unless we change the driver model again...&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * TODO:   - Add DMA support&n; *         - Defer port shutdown to a few seconds after close&n; *         - maybe put something right into uap-&gt;clk_divisor&n; */
+multiline_comment|/*&n; * linux/drivers/serial/pmac_zilog.c&n; * &n; * Driver for PowerMac Z85c30 based ESCC cell found in the&n; * &quot;macio&quot; ASICs of various PowerMac models&n; * &n; * Copyright (C) 2003 Ben. Herrenschmidt (benh@kernel.crashing.org)&n; *&n; * Derived from drivers/macintosh/macserial.c by Paul Mackerras&n; * and drivers/serial/sunzilog.c by David S. Miller&n; *&n; * Hrm... actually, I ripped most of sunzilog (Thanks David !) and&n; * adapted special tweaks needed for us. I don&squot;t think it&squot;s worth&n; * merging back those though. The DMA code still has to get in&n; * and once done, I expect that driver to remain fairly stable in&n; * the long term, unless we change the driver model again...&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * 2004-08-06 Harald Welte &lt;laforge@gnumonks.org&gt;&n; *&t;- Enable BREAK interrupt&n; *&t;- Add support for sysreq&n; *&n; * TODO:   - Add DMA support&n; *         - Defer port shutdown to a few seconds after close&n; *         - maybe put something right into uap-&gt;clk_divisor&n; */
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 DECL|macro|DEBUG_HARD
 macro_line|#undef DEBUG_HARD
+DECL|macro|USE_CTRL_O_SYSRQ
+macro_line|#undef USE_CTRL_O_SYSRQ
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -19,6 +21,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -28,6 +31,10 @@ macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/dbdma.h&gt;
 macro_line|#include &lt;asm/macio.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#if defined (CONFIG_SERIAL_PMACZILOG_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
+DECL|macro|SUPPORT_SYSRQ
+mdefine_line|#define SUPPORT_SYSRQ
+macro_line|#endif
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &quot;pmac_zilog.h&quot;
@@ -920,14 +927,87 @@ id|ch
 op_eq
 l_int|0
 op_logical_and
-id|uap-&gt;prev_status
+id|uap-&gt;flags
 op_amp
-id|BRK_ABRT
+id|PMACZILOG_FLAG_BREAK
 )paren
-id|r1
-op_or_assign
-id|BRK_ABRT
+(brace
+id|uap-&gt;flags
+op_and_assign
+op_complement
+id|PMACZILOG_FLAG_BREAK
 suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+macro_line|#ifdef USE_CTRL_O_SYSRQ
+multiline_comment|/* Handle the SysRq ^O Hack */
+r_if
+c_cond
+(paren
+id|ch
+op_eq
+l_char|&squot;&bslash;x0f&squot;
+)paren
+(brace
+id|uap-&gt;port.sysrq
+op_assign
+id|jiffies
+op_plus
+id|HZ
+op_star
+l_int|5
+suffix:semicolon
+r_goto
+id|next_char
+suffix:semicolon
+)brace
+macro_line|#endif /* USE_CTRL_O_SYSRQ */
+r_if
+c_cond
+(paren
+id|uap-&gt;port.sysrq
+)paren
+(brace
+r_int
+id|swallow
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|uap-&gt;port.lock
+)paren
+suffix:semicolon
+id|swallow
+op_assign
+id|uart_handle_sysrq_char
+c_func
+(paren
+op_amp
+id|uap-&gt;port
+comma
+id|ch
+comma
+id|regs
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|uap-&gt;port.lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|swallow
+)paren
+r_goto
+id|next_char
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
 multiline_comment|/* A real serial line, record the character and status.  */
 r_if
 c_cond
@@ -1006,17 +1086,9 @@ op_amp
 id|uap-&gt;port
 )paren
 )paren
-(brace
-id|pmz_debug
-c_func
-(paren
-l_string|&quot;pmz: do handle break !&bslash;n&quot;
-)paren
-suffix:semicolon
 r_goto
 id|next_char
 suffix:semicolon
-)brace
 )brace
 r_else
 r_if
@@ -1091,31 +1163,6 @@ op_star
 id|tty-&gt;flip.flag_buf_ptr
 op_assign
 id|TTY_FRAME
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|uart_handle_sysrq_char
-c_func
-(paren
-op_amp
-id|uap-&gt;port
-comma
-id|ch
-comma
-id|regs
-)paren
-)paren
-(brace
-id|pmz_debug
-c_func
-(paren
-l_string|&quot;pmz: sysrq swallowed the char&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|next_char
 suffix:semicolon
 )brace
 r_if
@@ -1394,6 +1441,17 @@ id|uap-&gt;port.info-&gt;delta_msr_wait
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|status
+op_amp
+id|BRK_ABRT
+)paren
+id|uap-&gt;flags
+op_or_assign
+id|PMACZILOG_FLAG_BREAK
+suffix:semicolon
 id|uap-&gt;prev_status
 op_assign
 id|status
@@ -3607,13 +3665,13 @@ id|R14
 op_assign
 id|BRENAB
 suffix:semicolon
-multiline_comment|/* Clear handshaking */
+multiline_comment|/* Clear handshaking, enable BREAK interrupts */
 id|uap-&gt;curregs
 (braket
 id|R15
 )braket
 op_assign
-l_int|0
+id|BRKIE
 suffix:semicolon
 multiline_comment|/* Master interrupt enable */
 id|uap-&gt;curregs
@@ -3951,22 +4009,10 @@ comma
 id|pwr_delay
 )paren
 suffix:semicolon
-id|set_current_state
+id|msleep
 c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
 (paren
 id|pwr_delay
-op_star
-id|HZ
-)paren
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 )brace
@@ -5658,6 +5704,16 @@ id|uap
 )paren
 suffix:semicolon
 )brace
+id|uart_update_timeout
+c_func
+(paren
+id|port
+comma
+id|termios-&gt;c_cflag
+comma
+id|baud
+)paren
+suffix:semicolon
 id|pmz_debug
 c_func
 (paren
@@ -7376,22 +7432,10 @@ comma
 id|pwr_delay
 )paren
 suffix:semicolon
-id|set_current_state
+id|msleep
 c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
 (paren
 id|pwr_delay
-op_star
-id|HZ
-)paren
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 )brace

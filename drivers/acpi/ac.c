@@ -311,8 +311,11 @@ c_cond
 op_logical_neg
 id|ac
 )paren
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -332,8 +335,11 @@ comma
 l_string|&quot;ERROR: Unable to read AC Adapter state&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 id|seq_puts
@@ -389,8 +395,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|acpi_ac_open_fs
@@ -685,7 +694,7 @@ c_cond
 op_logical_neg
 id|ac
 )paren
-r_return
+id|return_VOID
 suffix:semicolon
 r_if
 c_cond

@@ -886,7 +886,7 @@ multiline_comment|/* SLA+W has been transmitted; NOT ACK has been received */
 id|DEB2
 c_func
 (paren
-l_string|&quot;NOT ACK recieved after SLA+W&bslash;n&quot;
+l_string|&quot;NOT ACK received after SLA+W&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pca_stop
@@ -1015,7 +1015,7 @@ multiline_comment|/* Data byte in I2CDAT has been transmitted; NOT ACK has been 
 id|DEB2
 c_func
 (paren
-l_string|&quot;NOT ACK recieved after data byte&bslash;n&quot;
+l_string|&quot;NOT ACK received after data byte&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

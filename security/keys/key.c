@@ -100,6 +100,38 @@ l_string|&quot;dead&quot;
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef KEY_DEBUGGING
+DECL|function|__key_check
+r_void
+id|__key_check
+c_func
+(paren
+r_const
+r_struct
+id|key
+op_star
+id|key
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;__key_check: key %p {%08x} should be {%08x}&bslash;n&quot;
+comma
+id|key
+comma
+id|key-&gt;magic
+comma
+id|KEY_DEBUG_MAGIC
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * get the key quota record for a user, allocating a new record if one doesn&squot;t&n; * already exist&n; */
 DECL|function|key_user_lookup
@@ -2192,13 +2224,6 @@ r_goto
 id|found
 suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|key_serial_lock
-)paren
-suffix:semicolon
 id|not_found
 suffix:colon
 id|key
@@ -2250,6 +2275,8 @@ op_amp
 id|key-&gt;usage
 )paren
 suffix:semicolon
+id|error
+suffix:colon
 id|spin_unlock
 c_func
 (paren
@@ -2257,8 +2284,6 @@ op_amp
 id|key_serial_lock
 )paren
 suffix:semicolon
-id|error
-suffix:colon
 r_return
 id|key
 suffix:semicolon
@@ -3519,8 +3544,7 @@ suffix:semicolon
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * initialise the key management stuff&n; */
 DECL|function|key_init
-r_static
-r_int
+r_void
 id|__init
 id|key_init
 c_func
@@ -3545,22 +3569,12 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_PANIC
 comma
 l_int|NULL
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|key_jar
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Cannot create key jar&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* add the special key types */
@@ -3671,16 +3685,6 @@ op_amp
 id|root_user_keyring
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/* end key_init() */
-DECL|variable|key_init
-id|subsys_initcall
-c_func
-(paren
-id|key_init
-)paren
-suffix:semicolon
 eof

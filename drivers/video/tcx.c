@@ -1672,11 +1672,6 @@ comma
 l_string|&quot;tcx ram&quot;
 )paren
 suffix:semicolon
-id|all-&gt;info.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|all-&gt;info.par
 op_assign
 op_amp

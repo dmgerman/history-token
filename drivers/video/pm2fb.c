@@ -80,6 +80,7 @@ multiline_comment|/* framebuffer memory size */
 DECL|member|v_fb
 r_int
 r_char
+id|__iomem
 op_star
 id|v_fb
 suffix:semicolon
@@ -87,6 +88,7 @@ multiline_comment|/* virtual address of frame buffer */
 DECL|member|v_regs
 r_int
 r_char
+id|__iomem
 op_star
 id|v_regs
 suffix:semicolon
@@ -290,6 +292,7 @@ c_func
 (paren
 r_int
 r_char
+id|__iomem
 op_star
 id|base
 comma
@@ -316,6 +319,7 @@ c_func
 (paren
 r_int
 r_char
+id|__iomem
 op_star
 id|base
 comma
@@ -5524,11 +5528,7 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|pm2fb_fix.smem_start
+id|info-&gt;screen_base
 )paren
 suffix:semicolon
 id|release_mem_region
@@ -5544,11 +5544,7 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|pm2fb_fix.mmio_start
+id|default_par-&gt;v_regs
 )paren
 suffix:semicolon
 id|release_mem_region
@@ -5604,6 +5600,13 @@ op_assign
 op_amp
 id|info-&gt;fix
 suffix:semicolon
+r_struct
+id|pm2fb_par
+op_star
+id|par
+op_assign
+id|info-&gt;par
+suffix:semicolon
 id|unregister_framebuffer
 c_func
 (paren
@@ -5613,11 +5616,7 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|fix-&gt;smem_start
+id|info-&gt;screen_base
 )paren
 suffix:semicolon
 id|release_mem_region
@@ -5631,11 +5630,7 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|fix-&gt;mmio_start
+id|par-&gt;v_regs
 )paren
 suffix:semicolon
 id|release_mem_region

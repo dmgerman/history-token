@@ -479,6 +479,7 @@ suffix:semicolon
 macro_line|#endif
 DECL|member|mmio_vbase
 id|u8
+id|__iomem
 op_star
 id|mmio_vbase
 suffix:semicolon
@@ -494,6 +495,7 @@ suffix:semicolon
 multiline_comment|/* Must die !! */
 DECL|member|neo2200
 id|Neo2200
+id|__iomem
 op_star
 id|neo2200
 suffix:semicolon

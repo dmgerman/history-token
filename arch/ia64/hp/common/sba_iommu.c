@@ -1085,7 +1085,7 @@ c_func
 (paren
 id|bits_wanted
 op_lshift
-id|PAGE_SHIFT
+id|iovp_shift
 )paren
 suffix:semicolon
 r_if
@@ -2068,7 +2068,7 @@ c_func
 (paren
 id|bits_not_wanted
 op_lshift
-id|PAGE_SHIFT
+id|iovp_shift
 )paren
 suffix:semicolon
 r_for

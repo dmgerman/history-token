@@ -3460,14 +3460,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|drive-&gt;stroke
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|lba48
 )paren
 id|set_max

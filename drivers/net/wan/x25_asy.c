@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/x25.h&gt;
 macro_line|#include &lt;linux/lapb.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;x25_asy.h&quot;
+macro_line|#include &lt;net/x25device.h&gt;
 DECL|variable|x25_asy_devs
 r_static
 r_struct
@@ -772,10 +773,6 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* LAPB internal control */
-id|skb-&gt;dev
-op_assign
-id|sl-&gt;dev
-suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -792,16 +789,14 @@ comma
 id|count
 )paren
 suffix:semicolon
-id|skb-&gt;mac.raw
-op_assign
-id|skb-&gt;data
-suffix:semicolon
 id|skb-&gt;protocol
 op_assign
-id|htons
+id|x25_type_trans
 c_func
 (paren
-id|ETH_P_X25
+id|skb
+comma
+id|sl-&gt;dev
 )paren
 suffix:semicolon
 r_if
@@ -1617,25 +1612,15 @@ id|ptr
 op_assign
 l_int|0x01
 suffix:semicolon
-id|skb-&gt;dev
-op_assign
-id|sl-&gt;dev
-suffix:semicolon
 id|skb-&gt;protocol
 op_assign
-id|htons
+id|x25_type_trans
 c_func
 (paren
-id|ETH_P_X25
+id|skb
+comma
+id|sl-&gt;dev
 )paren
-suffix:semicolon
-id|skb-&gt;mac.raw
-op_assign
-id|skb-&gt;data
-suffix:semicolon
-id|skb-&gt;pkt_type
-op_assign
-id|PACKET_HOST
 suffix:semicolon
 id|netif_rx
 c_func
@@ -1721,25 +1706,15 @@ id|ptr
 op_assign
 l_int|0x02
 suffix:semicolon
-id|skb-&gt;dev
-op_assign
-id|sl-&gt;dev
-suffix:semicolon
 id|skb-&gt;protocol
 op_assign
-id|htons
+id|x25_type_trans
 c_func
 (paren
-id|ETH_P_X25
+id|skb
+comma
+id|sl-&gt;dev
 )paren
-suffix:semicolon
-id|skb-&gt;mac.raw
-op_assign
-id|skb-&gt;data
-suffix:semicolon
-id|skb-&gt;pkt_type
-op_assign
-id|PACKET_HOST
 suffix:semicolon
 id|netif_rx
 c_func

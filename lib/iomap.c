@@ -2,13 +2,16 @@ multiline_comment|/*&n; * Implement the default iomap interfaces&n; *&n; * (C) C
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-multiline_comment|/*&n; * Read/write from/to an (offsettable) iomem cookie. It might be a PIO&n; * access or a MMIO access, these functions don&squot;t care. The info is&n; * encoded in the hardware mapping set up by the mapping functions&n; * (or the cookie itself, depending on implementation and hw).&n; *&n; * The generic routines don&squot;t assume any hardware mappings, and just&n; * encode the PIO/MMIO as part of the cookie. They coldly assume that&n; * the MMIO IO mappings are not in the low address range.&n; *&n; * Architectures for which this is not true can&squot;t use this generic&n; * implementation and should do their own copy.&n; *&n; * We encode the physical PIO addresses (0-0xffff) into the&n; * pointer by offsetting them with a constant (0x10000) and&n; * assuming that all the low addresses are always PIO. That means&n; * we can do some sanity checks on the low bits, and don&squot;t&n; * need to just take things for granted.&n; */
+multiline_comment|/*&n; * Read/write from/to an (offsettable) iomem cookie. It might be a PIO&n; * access or a MMIO access, these functions don&squot;t care. The info is&n; * encoded in the hardware mapping set up by the mapping functions&n; * (or the cookie itself, depending on implementation and hw).&n; *&n; * The generic routines don&squot;t assume any hardware mappings, and just&n; * encode the PIO/MMIO as part of the cookie. They coldly assume that&n; * the MMIO IO mappings are not in the low address range.&n; *&n; * Architectures for which this is not true can&squot;t use this generic&n; * implementation and should do their own copy.&n; */
+macro_line|#ifndef HAVE_ARCH_PIO_SIZE
+multiline_comment|/*&n; * We encode the physical PIO addresses (0-0xffff) into the&n; * pointer by offsetting them with a constant (0x10000) and&n; * assuming that all the low addresses are always PIO. That means&n; * we can do some sanity checks on the low bits, and don&squot;t&n; * need to just take things for granted.&n; */
 DECL|macro|PIO_OFFSET
 mdefine_line|#define PIO_OFFSET&t;0x10000UL
 DECL|macro|PIO_MASK
 mdefine_line|#define PIO_MASK&t;0x0ffffUL
 DECL|macro|PIO_RESERVED
 mdefine_line|#define PIO_RESERVED&t;0x40000UL
+macro_line|#endif
 multiline_comment|/*&n; * Ugly macros are a way of life.&n; */
 DECL|macro|VERIFY_PIO
 mdefine_line|#define VERIFY_PIO(port) BUG_ON((port &amp; ~PIO_MASK) != PIO_OFFSET)

@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/coldfire.h&gt;
 macro_line|#include &lt;asm/mcftimer.h&gt;
 macro_line|#include &lt;asm/mcfsim.h&gt;
 macro_line|#include &lt;asm/mcfdma.h&gt;
-macro_line|#include &lt;asm/delay.h&gt;
 multiline_comment|/***************************************************************************/
 r_void
 id|coldfire_tick
@@ -386,7 +385,7 @@ l_int|1
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#elif defined(CONFIG_NETtel)
+macro_line|#elif defined(CONFIG_NETtel) || defined(CONFIG_SCALES)
 multiline_comment|/* Copy command line from FLASH to local buffer... */
 id|memcpy
 c_func
@@ -423,6 +422,31 @@ r_char
 op_star
 )paren
 l_int|0xffe06000
+comma
+id|size
+)paren
+suffix:semicolon
+id|commandp
+(braket
+id|size
+op_minus
+l_int|1
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#elif defined(CONFIG_CANCam)
+multiline_comment|/* Copy command line from FLASH to local buffer... */
+id|memcpy
+c_func
+(paren
+id|commandp
+comma
+(paren
+r_char
+op_star
+)paren
+l_int|0xf0010000
 comma
 id|size
 )paren

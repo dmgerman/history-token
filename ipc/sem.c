@@ -1792,7 +1792,7 @@ c_cond
 (paren
 id|semid
 op_ge
-id|sem_ids.size
+id|sem_ids.entries-&gt;size
 )paren
 (brace
 r_return

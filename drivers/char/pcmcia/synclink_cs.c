@@ -18686,14 +18686,6 @@ comma
 id|size
 )paren
 suffix:semicolon
-id|skb-&gt;dev
-op_assign
-id|info-&gt;netdev
-suffix:semicolon
-id|skb-&gt;mac.raw
-op_assign
-id|skb-&gt;data
-suffix:semicolon
 id|skb-&gt;protocol
 op_assign
 id|hdlc_type_trans
@@ -18701,7 +18693,7 @@ c_func
 (paren
 id|skb
 comma
-id|skb-&gt;dev
+id|info-&gt;netdev
 )paren
 suffix:semicolon
 id|stats-&gt;rx_packets

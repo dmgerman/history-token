@@ -23,62 +23,62 @@ l_int|4
 suffix:semicolon
 multiline_comment|/* 4: magic number */
 DECL|member|s_version
-id|u32
+id|__le32
 id|s_version
 suffix:semicolon
 multiline_comment|/* 4: version number */
 DECL|member|s_size
-id|s64
+id|__le64
 id|s_size
 suffix:semicolon
 multiline_comment|/* 8: aggregate size in hardware/LVM blocks;&n;&t;&t;&t;&t; * VFS: number of blocks&n;&t;&t;&t;&t; */
 DECL|member|s_bsize
-id|s32
+id|__le32
 id|s_bsize
 suffix:semicolon
 multiline_comment|/* 4: aggregate block size in bytes; &n;&t;&t;&t;&t; * VFS: fragment size&n;&t;&t;&t;&t; */
 DECL|member|s_l2bsize
-id|s16
+id|__le16
 id|s_l2bsize
 suffix:semicolon
 multiline_comment|/* 2: log2 of s_bsize */
 DECL|member|s_l2bfactor
-id|s16
+id|__le16
 id|s_l2bfactor
 suffix:semicolon
 multiline_comment|/* 2: log2(s_bsize/hardware block size) */
 DECL|member|s_pbsize
-id|s32
+id|__le32
 id|s_pbsize
 suffix:semicolon
 multiline_comment|/* 4: hardware/LVM block size in bytes */
 DECL|member|s_l2pbsize
-id|s16
+id|__le16
 id|s_l2pbsize
 suffix:semicolon
 multiline_comment|/* 2: log2 of s_pbsize */
 DECL|member|pad
-id|s16
+id|__le16
 id|pad
 suffix:semicolon
 multiline_comment|/* 2: padding necessary for alignment */
 DECL|member|s_agsize
-id|u32
+id|__le32
 id|s_agsize
 suffix:semicolon
 multiline_comment|/* 4: allocation group size in aggr. blocks */
 DECL|member|s_flag
-id|u32
+id|__le32
 id|s_flag
 suffix:semicolon
 multiline_comment|/* 4: aggregate attributes:&n;&t;&t;&t;&t; *    see jfs_filsys.h&n;&t;&t;&t;&t; */
 DECL|member|s_state
-id|u32
+id|__le32
 id|s_state
 suffix:semicolon
 multiline_comment|/* 4: mount/unmount/recovery state: &n;&t;&t;&t;&t; *    see jfs_filsys.h&n;&t;&t;&t;&t; */
 DECL|member|s_compress
-id|s32
+id|__le32
 id|s_compress
 suffix:semicolon
 multiline_comment|/* 4: &gt; 0 if data compression */
@@ -93,12 +93,12 @@ id|s_aim2
 suffix:semicolon
 multiline_comment|/* 8: first extent of secondary&n;&t;&t;&t;&t; *    aggregate inode map&n;&t;&t;&t;&t; */
 DECL|member|s_logdev
-id|u32
+id|__le32
 id|s_logdev
 suffix:semicolon
 multiline_comment|/* 4: device address of log */
 DECL|member|s_logserial
-id|s32
+id|__le32
 id|s_logserial
 suffix:semicolon
 multiline_comment|/* 4: log serial number at aggregate mount */
@@ -119,7 +119,7 @@ id|s_time
 suffix:semicolon
 multiline_comment|/* 8: time last updated */
 DECL|member|s_fsckloglen
-id|s32
+id|__le32
 id|s_fsckloglen
 suffix:semicolon
 multiline_comment|/* 4: Number of filesystem blocks reserved for&n;&t;&t;&t;&t; *    the fsck service log.  &n;&t;&t;&t;&t; *    N.B. These blocks are divided among the&n;&t;&t;&t;&t; *         versions kept.  This is not a per&n;&t;&t;&t;&t; *         version size.&n;&t;&t;&t;&t; *    N.B. These blocks are included in the &n;&t;&t;&t;&t; *         length field of s_fsckpxd.&n;&t;&t;&t;&t; */
@@ -138,7 +138,7 @@ suffix:semicolon
 multiline_comment|/* 11: file system volume name &n;&t;&t;&t;&t; *     N.B. This must be 11 bytes to&n;&t;&t;&t;&t; *          conform with the OS/2 BootSector&n;&t;&t;&t;&t; *          requirements&n;&t;&t;&t;&t; *          Only used when s_version is 1&n;&t;&t;&t;&t; */
 multiline_comment|/* extendfs() parameter under s_state &amp; FM_EXTENDFS */
 DECL|member|s_xsize
-id|s64
+id|__le64
 id|s_xsize
 suffix:semicolon
 multiline_comment|/* 8: extendfs s_size */

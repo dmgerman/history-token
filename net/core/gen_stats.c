@@ -503,6 +503,13 @@ c_func
 id|gnet_stats_start_copy
 )paren
 suffix:semicolon
+DECL|variable|gnet_stats_start_copy_compat
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|gnet_stats_start_copy_compat
+)paren
+suffix:semicolon
 DECL|variable|gnet_stats_copy_basic
 id|EXPORT_SYMBOL
 c_func

@@ -247,16 +247,16 @@ mdefine_line|#define ACA_Q&t;&t;4
 DECL|macro|UNTAGGED
 mdefine_line|#define UNTAGGED&t;5
 multiline_comment|/* task management flags in FCP-2 FCP_CMND IU */
-DECL|macro|CLEAR_ACA
-mdefine_line|#define CLEAR_ACA&t;&t;0x40
-DECL|macro|TARGET_RESET
-mdefine_line|#define TARGET_RESET&t;&t;0x20
-DECL|macro|LOGICAL_UNIT_RESET
-mdefine_line|#define LOGICAL_UNIT_RESET&t;0x10
-DECL|macro|CLEAR_TASK_SET
-mdefine_line|#define CLEAR_TASK_SET&t;&t;0x04
-DECL|macro|ABORT_TASK_SET
-mdefine_line|#define ABORT_TASK_SET&t;&t;0x02
+DECL|macro|FCP_CLEAR_ACA
+mdefine_line|#define FCP_CLEAR_ACA&t;&t;0x40
+DECL|macro|FCP_TARGET_RESET
+mdefine_line|#define FCP_TARGET_RESET&t;0x20
+DECL|macro|FCP_LOGICAL_UNIT_RESET
+mdefine_line|#define FCP_LOGICAL_UNIT_RESET&t;0x10
+DECL|macro|FCP_CLEAR_TASK_SET
+mdefine_line|#define FCP_CLEAR_TASK_SET&t;0x04
+DECL|macro|FCP_ABORT_TASK_SET
+mdefine_line|#define FCP_ABORT_TASK_SET&t;0x02
 DECL|macro|FCP_CDB_LENGTH
 mdefine_line|#define FCP_CDB_LENGTH&t;&t;16
 DECL|macro|ZFCP_DID_MASK

@@ -276,11 +276,6 @@ DECL|member|port_node
 r_int
 id|port_node
 suffix:semicolon
-DECL|member|irq
-r_int
-r_int
-id|irq
-suffix:semicolon
 macro_line|#ifdef CONFIG_SERIO
 DECL|member|serio
 r_struct
@@ -2973,7 +2968,7 @@ op_assign
 id|request_irq
 c_func
 (paren
-id|up-&gt;irq
+id|up-&gt;port.irq
 comma
 id|sunsu_kbd_ms_interrupt
 comma
@@ -2995,7 +2990,7 @@ op_assign
 id|request_irq
 c_func
 (paren
-id|up-&gt;irq
+id|up-&gt;port.irq
 comma
 id|sunsu_serial_interrupt
 comma
@@ -3021,7 +3016,7 @@ c_func
 (paren
 l_string|&quot;su: Cannot register IRQ %d&bslash;n&quot;
 comma
-id|up-&gt;irq
+id|up-&gt;port.irq
 )paren
 suffix:semicolon
 r_return
@@ -3347,7 +3342,7 @@ suffix:semicolon
 id|free_irq
 c_func
 (paren
-id|up-&gt;irq
+id|up-&gt;port.irq
 comma
 id|up
 )paren
@@ -4562,7 +4557,7 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|up-&gt;irq
+id|up-&gt;port.irq
 op_assign
 id|dev-&gt;irqs
 (braket
@@ -4611,7 +4606,7 @@ id|up-&gt;port.mapbase
 op_assign
 id|isa_dev-&gt;resource.start
 suffix:semicolon
-id|up-&gt;irq
+id|up-&gt;port.irq
 op_assign
 id|isa_dev-&gt;irq
 suffix:semicolon
@@ -4729,7 +4724,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * 0x20 is sun4m thing, Dave Redman heritage.&n;&t; * See arch/sparc/kernel/irq.c.&n;&t; */
 mdefine_line|#define IRQ_4M(n)&t;((n)|0x20)
 multiline_comment|/*&n;&t; * There is no intr property on MrCoffee, so hardwire it.&n;&t; */
-id|up-&gt;irq
+id|up-&gt;port.irq
 op_assign
 id|IRQ_4M
 c_func
@@ -5562,7 +5557,7 @@ comma
 id|__irq_itoa
 c_func
 (paren
-id|up-&gt;irq
+id|up-&gt;port.irq
 )paren
 comma
 id|sunsu_type

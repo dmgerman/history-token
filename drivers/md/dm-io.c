@@ -1108,8 +1108,7 @@ c_cond
 op_logical_neg
 id|_io_pool
 )paren
-id|r
-op_assign
+r_return
 op_minus
 id|ENOMEM
 suffix:semicolon

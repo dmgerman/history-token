@@ -6098,11 +6098,6 @@ id|fbi-&gt;fb.monspecs
 op_assign
 id|monspecs
 suffix:semicolon
-id|fbi-&gt;fb.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|fbi-&gt;fb.pseudo_palette
 op_assign
 (paren

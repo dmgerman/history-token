@@ -171,6 +171,7 @@ macro_line|#ifdef __KERNEL__
 multiline_comment|/* diverter functions */
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#ifdef CONFIG_NET_DIVERT
+macro_line|#include &lt;linux/netdevice.h&gt;
 r_int
 id|alloc_divert_blk
 c_func

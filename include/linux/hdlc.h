@@ -923,8 +923,16 @@ op_assign
 id|dev_to_hdlc
 c_func
 (paren
-id|skb-&gt;dev
+id|dev
 )paren
+suffix:semicolon
+id|skb-&gt;mac.raw
+op_assign
+id|skb-&gt;data
+suffix:semicolon
+id|skb-&gt;dev
+op_assign
+id|dev
 suffix:semicolon
 r_if
 c_cond
@@ -944,7 +952,7 @@ id|dev
 suffix:semicolon
 r_else
 r_return
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_HDLC

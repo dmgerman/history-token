@@ -637,9 +637,12 @@ id|card-&gt;hw.fwid
 op_assign
 id|CFID_X25_2X
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|card-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|init_waitqueue_head
 c_func

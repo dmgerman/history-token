@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2003 Gerd Knorr&n; * Copyright (c) 2003 Pavel Machek&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; * $Id: ir-kbd-gpio.c,v 1.10 2004/09/15 16:15:24 kraxel Exp $&n; *&n; * Copyright (c) 2003 Gerd Knorr&n; * Copyright (c) 2003 Pavel Machek&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -248,6 +248,256 @@ op_assign
 id|KEY_BLUE
 comma
 singleline_comment|// unmarked
+)brace
+suffix:semicolon
+multiline_comment|/* Matt Jesson &lt;dvb@jesson.eclipse.co.uk */
+DECL|variable|ir_codes_avermedia_dvbt
+r_static
+id|IR_KEYTAB_TYPE
+id|ir_codes_avermedia_dvbt
+(braket
+id|IR_KEYTAB_SIZE
+)braket
+op_assign
+(brace
+(braket
+l_int|0x28
+)braket
+op_assign
+id|KEY_KP0
+comma
+singleline_comment|//&squot;0&squot; / &squot;enter&squot;
+(braket
+l_int|0x22
+)braket
+op_assign
+id|KEY_KP1
+comma
+singleline_comment|//&squot;1&squot;
+(braket
+l_int|0x12
+)braket
+op_assign
+id|KEY_KP2
+comma
+singleline_comment|//&squot;2&squot; / &squot;up arrow&squot;
+(braket
+l_int|0x32
+)braket
+op_assign
+id|KEY_KP3
+comma
+singleline_comment|//&squot;3&squot;
+(braket
+l_int|0x24
+)braket
+op_assign
+id|KEY_KP4
+comma
+singleline_comment|//&squot;4&squot; / &squot;left arrow&squot;
+(braket
+l_int|0x14
+)braket
+op_assign
+id|KEY_KP5
+comma
+singleline_comment|//&squot;5&squot;
+(braket
+l_int|0x34
+)braket
+op_assign
+id|KEY_KP6
+comma
+singleline_comment|//&squot;6&squot; / &squot;right arrow&squot;
+(braket
+l_int|0x26
+)braket
+op_assign
+id|KEY_KP7
+comma
+singleline_comment|//&squot;7&squot;
+(braket
+l_int|0x16
+)braket
+op_assign
+id|KEY_KP8
+comma
+singleline_comment|//&squot;8&squot; / &squot;down arrow&squot;
+(braket
+l_int|0x36
+)braket
+op_assign
+id|KEY_KP9
+comma
+singleline_comment|//&squot;9&squot;
+(braket
+l_int|0x20
+)braket
+op_assign
+id|KEY_LIST
+comma
+singleline_comment|// &squot;source&squot;
+(braket
+l_int|0x10
+)braket
+op_assign
+id|KEY_TEXT
+comma
+singleline_comment|// &squot;teletext&squot;
+(braket
+l_int|0x00
+)braket
+op_assign
+id|KEY_POWER
+comma
+singleline_comment|// &squot;power&squot;
+(braket
+l_int|0x04
+)braket
+op_assign
+id|KEY_AUDIO
+comma
+singleline_comment|// &squot;audio&squot;
+(braket
+l_int|0x06
+)braket
+op_assign
+id|KEY_ZOOM
+comma
+singleline_comment|// &squot;full screen&squot;
+(braket
+l_int|0x18
+)braket
+op_assign
+id|KEY_VIDEO
+comma
+singleline_comment|// &squot;display&squot;
+(braket
+l_int|0x38
+)braket
+op_assign
+id|KEY_SEARCH
+comma
+singleline_comment|// &squot;loop&squot;
+(braket
+l_int|0x08
+)braket
+op_assign
+id|KEY_INFO
+comma
+singleline_comment|// &squot;preview&squot;
+(braket
+l_int|0x2a
+)braket
+op_assign
+id|KEY_REWIND
+comma
+singleline_comment|// &squot;backward &lt;&lt;&squot;
+(braket
+l_int|0x1a
+)braket
+op_assign
+id|KEY_FASTFORWARD
+comma
+singleline_comment|// &squot;forward &gt;&gt;&squot;
+(braket
+l_int|0x3a
+)braket
+op_assign
+id|KEY_RECORD
+comma
+singleline_comment|// &squot;capture&squot;
+(braket
+l_int|0x0a
+)braket
+op_assign
+id|KEY_MUTE
+comma
+singleline_comment|// &squot;mute&squot;
+(braket
+l_int|0x2c
+)braket
+op_assign
+id|KEY_RECORD
+comma
+singleline_comment|// &squot;record&squot;
+(braket
+l_int|0x1c
+)braket
+op_assign
+id|KEY_PAUSE
+comma
+singleline_comment|// &squot;pause&squot;
+(braket
+l_int|0x3c
+)braket
+op_assign
+id|KEY_STOP
+comma
+singleline_comment|// &squot;stop&squot;
+(braket
+l_int|0x0c
+)braket
+op_assign
+id|KEY_PLAY
+comma
+singleline_comment|// &squot;play&squot;
+(braket
+l_int|0x2e
+)braket
+op_assign
+id|KEY_RED
+comma
+singleline_comment|// &squot;red&squot;
+(braket
+l_int|0x01
+)braket
+op_assign
+id|KEY_BLUE
+comma
+singleline_comment|// &squot;blue&squot; / &squot;cancel&squot;
+(braket
+l_int|0x0e
+)braket
+op_assign
+id|KEY_YELLOW
+comma
+singleline_comment|// &squot;yellow&squot; / &squot;ok&squot;
+(braket
+l_int|0x21
+)braket
+op_assign
+id|KEY_GREEN
+comma
+singleline_comment|// &squot;green&squot;
+(braket
+l_int|0x11
+)braket
+op_assign
+id|KEY_CHANNELDOWN
+comma
+singleline_comment|// &squot;channel -&squot;
+(braket
+l_int|0x31
+)braket
+op_assign
+id|KEY_CHANNELUP
+comma
+singleline_comment|// &squot;channel +&squot;
+(braket
+l_int|0x1e
+)braket
+op_assign
+id|KEY_VOLUMEDOWN
+comma
+singleline_comment|// &squot;volume -&squot;
+(braket
+l_int|0x3e
+)braket
+op_assign
+id|KEY_VOLUMEUP
+comma
+singleline_comment|// &squot;volume +&squot;
 )brace
 suffix:semicolon
 DECL|variable|winfast_codes
@@ -658,6 +908,224 @@ op_assign
 id|KEY_STOP
 comma
 singleline_comment|// freeze
+)brace
+suffix:semicolon
+multiline_comment|/* Attila Kondoros &lt;attila.kondoros@chello.hu&gt; */
+DECL|variable|ir_codes_apac_viewcomp
+r_static
+id|IR_KEYTAB_TYPE
+id|ir_codes_apac_viewcomp
+(braket
+id|IR_KEYTAB_SIZE
+)braket
+op_assign
+(brace
+(braket
+l_int|1
+)braket
+op_assign
+id|KEY_KP1
+comma
+(braket
+l_int|2
+)braket
+op_assign
+id|KEY_KP2
+comma
+(braket
+l_int|3
+)braket
+op_assign
+id|KEY_KP3
+comma
+(braket
+l_int|4
+)braket
+op_assign
+id|KEY_KP4
+comma
+(braket
+l_int|5
+)braket
+op_assign
+id|KEY_KP5
+comma
+(braket
+l_int|6
+)braket
+op_assign
+id|KEY_KP6
+comma
+(braket
+l_int|7
+)braket
+op_assign
+id|KEY_KP7
+comma
+(braket
+l_int|8
+)braket
+op_assign
+id|KEY_KP8
+comma
+(braket
+l_int|9
+)braket
+op_assign
+id|KEY_KP9
+comma
+(braket
+l_int|0
+)braket
+op_assign
+id|KEY_KP0
+comma
+(braket
+l_int|23
+)braket
+op_assign
+id|KEY_LAST
+comma
+singleline_comment|// +100
+(braket
+l_int|10
+)braket
+op_assign
+id|KEY_LIST
+comma
+singleline_comment|// recall
+(braket
+l_int|28
+)braket
+op_assign
+id|KEY_TUNER
+comma
+singleline_comment|// TV/FM
+(braket
+l_int|21
+)braket
+op_assign
+id|KEY_SEARCH
+comma
+singleline_comment|// scan
+(braket
+l_int|18
+)braket
+op_assign
+id|KEY_POWER
+comma
+singleline_comment|// power
+(braket
+l_int|31
+)braket
+op_assign
+id|KEY_VOLUMEDOWN
+comma
+singleline_comment|// vol up
+(braket
+l_int|27
+)braket
+op_assign
+id|KEY_VOLUMEUP
+comma
+singleline_comment|// vol down
+(braket
+l_int|30
+)braket
+op_assign
+id|KEY_CHANNELDOWN
+comma
+singleline_comment|// chn up
+(braket
+l_int|26
+)braket
+op_assign
+id|KEY_CHANNELUP
+comma
+singleline_comment|// chn down
+(braket
+l_int|17
+)braket
+op_assign
+id|KEY_VIDEO
+comma
+singleline_comment|// video
+(braket
+l_int|15
+)braket
+op_assign
+id|KEY_ZOOM
+comma
+singleline_comment|// full screen
+(braket
+l_int|19
+)braket
+op_assign
+id|KEY_MUTE
+comma
+singleline_comment|// mute/unmute
+(braket
+l_int|16
+)braket
+op_assign
+id|KEY_TEXT
+comma
+singleline_comment|// min
+(braket
+l_int|13
+)braket
+op_assign
+id|KEY_STOP
+comma
+singleline_comment|// freeze
+(braket
+l_int|14
+)braket
+op_assign
+id|KEY_RECORD
+comma
+singleline_comment|// record
+(braket
+l_int|29
+)braket
+op_assign
+id|KEY_PLAYPAUSE
+comma
+singleline_comment|// stop
+(braket
+l_int|25
+)braket
+op_assign
+id|KEY_PLAY
+comma
+singleline_comment|// play
+(braket
+l_int|22
+)braket
+op_assign
+id|KEY_GOTO
+comma
+singleline_comment|// osd
+(braket
+l_int|20
+)braket
+op_assign
+id|KEY_REFRESH
+comma
+singleline_comment|// default
+(braket
+l_int|12
+)braket
+op_assign
+id|KEY_KPPLUS
+comma
+singleline_comment|// fine tune &gt;&gt;&gt;&gt;
+(braket
+l_int|24
+)braket
+op_assign
+id|KEY_KPMINUS
+singleline_comment|// fine tune &lt;&lt;&lt;&lt;
 )brace
 suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------------------- */
@@ -1268,6 +1736,29 @@ singleline_comment|// ms
 r_break
 suffix:semicolon
 r_case
+id|BTTV_AVDVBT_761
+suffix:colon
+multiline_comment|/* case BTTV_AVDVBT_771: */
+id|ir_codes
+op_assign
+id|ir_codes_avermedia_dvbt
+suffix:semicolon
+id|ir-&gt;mask_keycode
+op_assign
+l_int|0x0f00c0
+suffix:semicolon
+id|ir-&gt;mask_keydown
+op_assign
+l_int|0x000020
+suffix:semicolon
+id|ir-&gt;polling
+op_assign
+l_int|50
+suffix:semicolon
+singleline_comment|// ms
+r_break
+suffix:semicolon
+r_case
 id|BTTV_PXELVWPLTVPAK
 suffix:colon
 id|ir_codes
@@ -1345,6 +1836,28 @@ id|ir-&gt;mask_keydown
 op_assign
 l_int|0x00200000
 suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|BTTV_APAC_VIEWCOMP
+suffix:colon
+id|ir_codes
+op_assign
+id|ir_codes_apac_viewcomp
+suffix:semicolon
+id|ir-&gt;mask_keycode
+op_assign
+l_int|0x001f00
+suffix:semicolon
+id|ir-&gt;mask_keyup
+op_assign
+l_int|0x008000
+suffix:semicolon
+id|ir-&gt;polling
+op_assign
+l_int|50
+suffix:semicolon
+singleline_comment|// ms
 r_break
 suffix:semicolon
 )brace

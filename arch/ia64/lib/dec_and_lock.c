@@ -5,8 +5,8 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * Decrement REFCOUNT and if the count reaches zero, acquire the spinlock.  Both of these&n; * operations have to be done atomically, so that the count doesn&squot;t drop to zero without&n; * acquiring the spinlock first.&n; */
 r_int
-DECL|function|atomic_dec_and_lock
-id|atomic_dec_and_lock
+DECL|function|_atomic_dec_and_lock
+id|_atomic_dec_and_lock
 (paren
 id|atomic_t
 op_star
@@ -100,11 +100,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|atomic_dec_and_lock
+DECL|variable|_atomic_dec_and_lock
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|atomic_dec_and_lock
+id|_atomic_dec_and_lock
 )paren
 suffix:semicolon
 eof

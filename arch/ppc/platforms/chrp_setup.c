@@ -1560,38 +1560,32 @@ id|address
 suffix:semicolon
 )brace
 )brace
+macro_line|#if defined(CONFIG_VT) &amp;&amp; defined(CONFIG_INPUT_ADBHID) &amp;&amp; defined(XMON)
+DECL|variable|xmon_irqaction
 r_static
-r_int
-id|__init
-DECL|function|chrp_request_cascade
-id|chrp_request_cascade
-c_func
-(paren
-r_void
-)paren
+r_struct
+id|irqaction
+id|xmon_irqaction
+op_assign
 (brace
-multiline_comment|/* We have a cascade on OpenPIC IRQ 0, Linux IRQ 16 */
-id|openpic_hookup_cascade
-c_func
-(paren
-id|NUM_8259_INTERRUPTS
+dot
+id|handler
+op_assign
+id|xmon_irq
 comma
-l_string|&quot;82c59 cascade&quot;
+dot
+id|mask
+op_assign
+id|CPU_MASK_NONE
 comma
-id|i8259_irq
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
+dot
+id|name
+op_assign
+l_string|&quot;XMON break&quot;
+comma
 )brace
-DECL|variable|chrp_request_cascade
-id|arch_initcall
-c_func
-(paren
-id|chrp_request_cascade
-)paren
 suffix:semicolon
+macro_line|#endif
 DECL|function|chrp_init_IRQ
 r_void
 id|__init
@@ -1741,6 +1735,17 @@ c_func
 id|NUM_8259_INTERRUPTS
 )paren
 suffix:semicolon
+multiline_comment|/* We have a cascade on OpenPIC IRQ 0, Linux IRQ 16 */
+id|openpic_hookup_cascade
+c_func
+(paren
+id|NUM_8259_INTERRUPTS
+comma
+l_string|&quot;82c59 cascade&quot;
+comma
+id|i8259_irq
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1814,18 +1819,13 @@ c_cond
 (paren
 id|kbd
 )paren
-id|request_irq
+id|setup_irq
 c_func
 (paren
 id|HYDRA_INT_ADB_NMI
 comma
-id|xmon_irq
-comma
-l_int|0
-comma
-l_string|&quot;XMON break&quot;
-comma
-l_int|0
+op_amp
+id|xmon_irqaction
 )paren
 suffix:semicolon
 macro_line|#endif

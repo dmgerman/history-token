@@ -281,6 +281,17 @@ comma
 id|cpu_present_map
 )paren
 suffix:semicolon
+id|cpu_set
+c_func
+(paren
+id|i
+comma
+id|cpu_sibling_map
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
 op_increment
 id|np
 suffix:semicolon

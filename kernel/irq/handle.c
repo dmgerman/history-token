@@ -236,7 +236,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Have got an event to handle:&n; */
 DECL|function|handle_IRQ_event
-id|asmlinkage
+id|fastcall
 r_int
 id|handle_IRQ_event
 c_func
@@ -348,7 +348,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * do_IRQ handles all normal device IRQ&squot;s (the special&n; * SMP cross-CPU interrupts have their own specific&n; * handlers).&n; */
 DECL|function|__do_IRQ
-id|asmlinkage
+id|fastcall
 r_int
 r_int
 id|__do_IRQ

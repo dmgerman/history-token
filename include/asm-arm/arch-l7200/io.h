@@ -7,11 +7,11 @@ DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT 0xffffffff
 multiline_comment|/*&n; * There are not real ISA nor PCI buses, so we fake it.&n; */
 DECL|macro|__io_pci
-mdefine_line|#define __io_pci(a)             (PCIO_BASE + (a))
+mdefine_line|#define __io_pci(a)&t;&t;((void __iomem *)(PCIO_BASE + (a)))
 DECL|macro|__mem_pci
-mdefine_line|#define __mem_pci(a)            ((unsigned long)(a))
+mdefine_line|#define __mem_pci(a)&t;&t;(a)
 DECL|macro|__mem_isa
-mdefine_line|#define __mem_isa(a)            ((unsigned long)(a))
+mdefine_line|#define __mem_isa(a)&t;&t;(a)
 DECL|macro|__ioaddr
 mdefine_line|#define __ioaddr(p)             __io_pci(p)
 multiline_comment|/*&n; * Generic virtual read/write&n; */

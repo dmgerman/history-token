@@ -40,43 +40,43 @@ r_struct
 id|iag
 (brace
 DECL|member|agstart
-id|s64
+id|__le64
 id|agstart
 suffix:semicolon
 multiline_comment|/* 8: starting block of ag              */
 DECL|member|iagnum
-id|s32
+id|__le32
 id|iagnum
 suffix:semicolon
 multiline_comment|/* 4: inode allocation group number     */
 DECL|member|inofreefwd
-id|s32
+id|__le32
 id|inofreefwd
 suffix:semicolon
 multiline_comment|/* 4: ag inode free list forward        */
 DECL|member|inofreeback
-id|s32
+id|__le32
 id|inofreeback
 suffix:semicolon
 multiline_comment|/* 4: ag inode free list back           */
 DECL|member|extfreefwd
-id|s32
+id|__le32
 id|extfreefwd
 suffix:semicolon
 multiline_comment|/* 4: ag inode extent free list forward */
 DECL|member|extfreeback
-id|s32
+id|__le32
 id|extfreeback
 suffix:semicolon
 multiline_comment|/* 4: ag inode extent free list back    */
 DECL|member|iagfree
-id|s32
+id|__le32
 id|iagfree
 suffix:semicolon
 multiline_comment|/* 4: iag free list                     */
 multiline_comment|/* summary map: 1 bit per inode extent */
 DECL|member|inosmap
-id|s32
+id|__le32
 id|inosmap
 (braket
 id|SMAPSZ
@@ -84,7 +84,7 @@ id|SMAPSZ
 suffix:semicolon
 multiline_comment|/* 16: sum map of mapwords w/ free inodes;&n;&t;&t;&t;&t; *      note: this indicates free and backed&n;&t;&t;&t;&t; *      inodes, if the extent is not backed the&n;&t;&t;&t;&t; *      value will be 1.  if the extent is&n;&t;&t;&t;&t; *      backed but all inodes are being used the&n;&t;&t;&t;&t; *      value will be 1.  if the extent is&n;&t;&t;&t;&t; *      backed but at least one of the inodes is&n;&t;&t;&t;&t; *      free the value will be 0.&n;&t;&t;&t;&t; */
 DECL|member|extsmap
-id|s32
+id|__le32
 id|extsmap
 (braket
 id|SMAPSZ
@@ -92,12 +92,12 @@ id|SMAPSZ
 suffix:semicolon
 multiline_comment|/* 16: sum map of mapwords w/ free extents */
 DECL|member|nfreeinos
-id|s32
+id|__le32
 id|nfreeinos
 suffix:semicolon
 multiline_comment|/* 4: number of free inodes             */
 DECL|member|nfreeexts
-id|s32
+id|__le32
 id|nfreeexts
 suffix:semicolon
 multiline_comment|/* 4: number of free extents            */
@@ -112,7 +112,7 @@ suffix:semicolon
 multiline_comment|/* 1976: pad to 2048 bytes */
 multiline_comment|/* allocation bit map: 1 bit per inode (0 - free, 1 - allocated) */
 DECL|member|wmap
-id|u32
+id|__le32
 id|wmap
 (braket
 id|EXTSPERIAG
@@ -120,7 +120,7 @@ id|EXTSPERIAG
 suffix:semicolon
 multiline_comment|/* 512: working allocation map  */
 DECL|member|pmap
-id|u32
+id|__le32
 id|pmap
 (braket
 id|EXTSPERIAG
@@ -139,75 +139,101 @@ multiline_comment|/* 1024: inode extent addresses */
 suffix:semicolon
 multiline_comment|/* (4096) */
 multiline_comment|/*&n; *&t;per AG control information (in inode map control page)&n; */
-DECL|struct|iagctl
+DECL|struct|iagctl_disk
 r_struct
-id|iagctl
+id|iagctl_disk
 (brace
 DECL|member|inofree
-id|s32
+id|__le32
 id|inofree
 suffix:semicolon
 multiline_comment|/* 4: free inode list anchor            */
 DECL|member|extfree
-id|s32
+id|__le32
 id|extfree
 suffix:semicolon
 multiline_comment|/* 4: free extent list anchor           */
 DECL|member|numinos
-id|s32
+id|__le32
 id|numinos
 suffix:semicolon
 multiline_comment|/* 4: number of backed inodes           */
 DECL|member|numfree
-id|s32
+id|__le32
 id|numfree
 suffix:semicolon
 multiline_comment|/* 4: number of free inodes             */
 )brace
 suffix:semicolon
 multiline_comment|/* (16) */
-multiline_comment|/*&n; *&t;per fileset/aggregate inode map control page&n; */
-DECL|struct|dinomap
+DECL|struct|iagctl
 r_struct
-id|dinomap
+id|iagctl
+(brace
+DECL|member|inofree
+r_int
+id|inofree
+suffix:semicolon
+multiline_comment|/* free inode list anchor            */
+DECL|member|extfree
+r_int
+id|extfree
+suffix:semicolon
+multiline_comment|/* free extent list anchor           */
+DECL|member|numinos
+r_int
+id|numinos
+suffix:semicolon
+multiline_comment|/* number of backed inodes           */
+DECL|member|numfree
+r_int
+id|numfree
+suffix:semicolon
+multiline_comment|/* number of free inodes             */
+)brace
+suffix:semicolon
+multiline_comment|/*&n; *&t;per fileset/aggregate inode map control page&n; */
+DECL|struct|dinomap_disk
+r_struct
+id|dinomap_disk
 (brace
 DECL|member|in_freeiag
-id|s32
+id|__le32
 id|in_freeiag
 suffix:semicolon
 multiline_comment|/* 4: free iag list anchor     */
 DECL|member|in_nextiag
-id|s32
+id|__le32
 id|in_nextiag
 suffix:semicolon
 multiline_comment|/* 4: next free iag number     */
 DECL|member|in_numinos
-id|s32
+id|__le32
 id|in_numinos
 suffix:semicolon
 multiline_comment|/* 4: num of backed inodes */
 DECL|member|in_numfree
-id|s32
+id|__le32
 id|in_numfree
 suffix:semicolon
 multiline_comment|/* 4: num of free backed inodes */
 DECL|member|in_nbperiext
-id|s32
+id|__le32
 id|in_nbperiext
 suffix:semicolon
 multiline_comment|/* 4: num of blocks per inode extent */
 DECL|member|in_l2nbperiext
-id|s32
+id|__le32
 id|in_l2nbperiext
 suffix:semicolon
 multiline_comment|/* 4: l2 of in_nbperiext */
 DECL|member|in_diskblock
-id|s32
+id|__le32
 id|in_diskblock
 suffix:semicolon
 multiline_comment|/* 4: for standalone test driver  */
 DECL|member|in_maxag
-id|s32
+id|__le32
 id|in_maxag
 suffix:semicolon
 multiline_comment|/* 4: for standalone test driver  */
@@ -221,7 +247,7 @@ suffix:semicolon
 multiline_comment|/* 2016: pad to 2048 */
 DECL|member|in_agctl
 r_struct
-id|iagctl
+id|iagctl_disk
 id|in_agctl
 (braket
 id|MAXAG
@@ -231,6 +257,61 @@ multiline_comment|/* 2048: AG control information */
 )brace
 suffix:semicolon
 multiline_comment|/* (4096) */
+DECL|struct|dinomap
+r_struct
+id|dinomap
+(brace
+DECL|member|in_freeiag
+r_int
+id|in_freeiag
+suffix:semicolon
+multiline_comment|/* free iag list anchor     */
+DECL|member|in_nextiag
+r_int
+id|in_nextiag
+suffix:semicolon
+multiline_comment|/* next free iag number     */
+DECL|member|in_numinos
+r_int
+id|in_numinos
+suffix:semicolon
+multiline_comment|/* num of backed inodes */
+DECL|member|in_numfree
+r_int
+id|in_numfree
+suffix:semicolon
+multiline_comment|/* num of free backed inodes */
+DECL|member|in_nbperiext
+r_int
+id|in_nbperiext
+suffix:semicolon
+multiline_comment|/* num of blocks per inode extent */
+DECL|member|in_l2nbperiext
+r_int
+id|in_l2nbperiext
+suffix:semicolon
+multiline_comment|/* l2 of in_nbperiext */
+DECL|member|in_diskblock
+r_int
+id|in_diskblock
+suffix:semicolon
+multiline_comment|/* for standalone test driver  */
+DECL|member|in_maxag
+r_int
+id|in_maxag
+suffix:semicolon
+multiline_comment|/* for standalone test driver  */
+DECL|member|in_agctl
+r_struct
+id|iagctl
+id|in_agctl
+(braket
+id|MAXAG
+)braket
+suffix:semicolon
+multiline_comment|/* AG control information */
+)brace
+suffix:semicolon
 multiline_comment|/*&n; *&t;In-core inode map control page&n; */
 DECL|struct|inomap
 r_struct

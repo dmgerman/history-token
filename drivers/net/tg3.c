@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * tg3.c: Broadcom Tigon3 ethernet driver.&n; *&n; * Copyright (C) 2001, 2002, 2003, 2004 David S. Miller (davem@redhat.com)&n; * Copyright (C) 2001, 2002, 2003 Jeff Garzik (jgarzik@pobox.com)&n; * Copyright (C) 2004 Sun Microsystems Inc.&n; *&n; * Firmware is:&n; * &t;Copyright (C) 2000-2003 Broadcom Corporation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
@@ -48,9 +49,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.11&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.13&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;October 20, 2004&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;November 1, 2004&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
@@ -140,22 +141,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|tg3_debug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|tg3_debug
-comma
-l_string|&quot;Tigon3 bitmapped debugging message enable value&quot;
-)paren
-suffix:semicolon
 DECL|variable|DRV_MODULE_VERSION
 id|MODULE_VERSION
 c_func
@@ -172,6 +157,24 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* -1 == use TG3_DEF_MSG_ENABLE as value */
+id|module_param
+c_func
+(paren
+id|tg3_debug
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|tg3_debug
+comma
+l_string|&quot;Tigon3 bitmapped debugging message enable value&quot;
+)paren
+suffix:semicolon
 DECL|variable|tg3_pci_tbl
 r_static
 r_struct
@@ -771,9 +774,11 @@ comma
 id|tg3_pci_tbl
 )paren
 suffix:semicolon
+r_static
 r_struct
 (brace
 DECL|member|string
+r_const
 r_char
 id|string
 (braket
@@ -1675,6 +1680,54 @@ c_func
 id|MAILBOX_INTERRUPT_0
 op_plus
 id|TG3_64BIT_REG_LOW
+)paren
+suffix:semicolon
+id|tg3_cond_int
+c_func
+(paren
+id|tp
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* tg3_restart_ints&n; *  similar to tg3_enable_ints, but it can return without flushing the&n; *  PIO write which reenables interrupts&n; */
+DECL|function|tg3_restart_ints
+r_static
+r_void
+id|tg3_restart_ints
+c_func
+(paren
+r_struct
+id|tg3
+op_star
+id|tp
+)paren
+(brace
+id|tw32
+c_func
+(paren
+id|TG3PCI_MISC_HOST_CTRL
+comma
+(paren
+id|tp-&gt;misc_host_ctrl
+op_amp
+op_complement
+id|MISC_HOST_CTRL_MASK_PCI_INT
+)paren
+)paren
+suffix:semicolon
+id|tw32_mailbox
+c_func
+(paren
+id|MAILBOX_INTERRUPT_0
+op_plus
+id|TG3_64BIT_REG_LOW
+comma
+l_int|0x00000000
+)paren
+suffix:semicolon
+id|mmiowb
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tg3_cond_int
@@ -9391,12 +9444,57 @@ id|MAC_STATUS_SIGNAL_DET
 )paren
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
+multiline_comment|/* Giver time to negotiate (~200ms) */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|40000
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 id|sg_dig_status
 op_assign
 id|tr32
 c_func
 (paren
 id|SG_DIG_STATUS
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sg_dig_status
+op_amp
+(paren
+l_int|0x3
+)paren
+)paren
+r_break
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|5
+)paren
+suffix:semicolon
+)brace
+id|mac_status
+op_assign
+id|tr32
+c_func
+(paren
+id|MAC_STATUS
 )paren
 suffix:semicolon
 r_if
@@ -11845,6 +11943,11 @@ id|sw_idx
 )paren
 suffix:semicolon
 )brace
+id|mmiowb
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|received
 suffix:semicolon
@@ -12079,7 +12182,7 @@ c_func
 id|netdev
 )paren
 suffix:semicolon
-id|tg3_enable_ints
+id|tg3_restart_ints
 c_func
 (paren
 id|tp
@@ -13905,6 +14008,11 @@ id|dev
 suffix:semicolon
 id|out_unlock
 suffix:colon
+id|mmiowb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -22751,6 +22859,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|tg3TsoFwRodata
+r_static
 id|u32
 id|tg3TsoFwRodata
 (braket
@@ -22810,6 +22919,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|tg3TsoFwData
+r_static
 id|u32
 id|tg3TsoFwData
 (braket
@@ -24757,6 +24867,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|tg3Tso5FwRodata
+r_static
 id|u32
 id|tg3Tso5FwRodata
 (braket
@@ -24815,6 +24926,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|tg3Tso5FwData
+r_static
 id|u32
 id|tg3Tso5FwData
 (braket
@@ -33047,7 +33159,11 @@ id|tg3
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ret
@@ -34758,7 +34874,11 @@ id|tg3
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|memcpy
 c_func
@@ -41488,7 +41608,7 @@ id|tp
 suffix:semicolon
 id|tp-&gt;regs
 op_assign
-id|ioremap
+id|ioremap_nocache
 c_func
 (paren
 id|tg3reg_base

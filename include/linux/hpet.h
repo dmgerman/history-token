@@ -251,6 +251,11 @@ DECL|struct|hpet_data
 r_struct
 id|hpet_data
 (brace
+DECL|member|hd_phys_address
+r_int
+r_int
+id|hd_phys_address
+suffix:semicolon
 DECL|member|hd_address
 r_void
 id|__iomem

@@ -95,7 +95,7 @@ comma
 l_string|&quot;pbe&quot;
 comma
 multiline_comment|/* AMD-defined */
-l_int|NULL
+l_string|&quot;pni&quot;
 comma
 l_int|NULL
 comma

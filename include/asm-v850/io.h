@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-v850/io.h -- Misc I/O operations&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/io.h -- Misc I/O operations&n; *&n; *  Copyright (C) 2001,02,03,04  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03,04  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#ifndef __V850_IO_H__
 DECL|macro|__V850_IO_H__
 mdefine_line|#define __V850_IO_H__
@@ -343,5 +343,9 @@ DECL|macro|phys_to_virt
 mdefine_line|#define phys_to_virt(addr)&t;((void *)__phys_to_virt (addr))
 DECL|macro|virt_to_phys
 mdefine_line|#define virt_to_phys(addr)&t;((unsigned long)__virt_to_phys (addr))
+DECL|macro|memcpy_fromio
+mdefine_line|#define memcpy_fromio(dst, src, len) memcpy (dst, (void *)src, len)
+DECL|macro|memcpy_toio
+mdefine_line|#define memcpy_toio(dst, src, len) memcpy ((void *)dst, src, len)
 macro_line|#endif /* __V850_IO_H__ */
 eof

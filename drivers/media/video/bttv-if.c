@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    $Id: bttv-if.c,v 1.2 2004/09/15 16:15:24 kraxel Exp $&n;&n;    bttv-if.c  --  old gpio interface to other kernel modules&n;                   don&squot;t use in new code, will go away in 2.7&n;&t;&t;   have a look at bttv-gpio.c instead.&n;&n;    bttv - Bt848 frame grabber driver&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler (rjkm@thp.uni-koeln.de)&n;                           &amp; Marcus Metzler (mocm@thp.uni-koeln.de)&n;    (c) 1999-2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;    &n;*/
+multiline_comment|/*&n;    $Id: bttv-if.c,v 1.3 2004/10/13 10:39:00 kraxel Exp $&n;&n;    bttv-if.c  --  old gpio interface to other kernel modules&n;                   don&squot;t use in new code, will go away in 2.7&n;&t;&t;   have a look at bttv-gpio.c instead.&n;&n;    bttv - Bt848 frame grabber driver&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler (rjkm@thp.uni-koeln.de)&n;                           &amp; Marcus Metzler (mocm@thp.uni-koeln.de)&n;    (c) 1999-2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -309,7 +309,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/* prior setting BT848_GPIO_REG_INP is (probably) not needed &n;   because we set direct input on init */
+multiline_comment|/* prior setting BT848_GPIO_REG_INP is (probably) not needed&n;   because we set direct input on init */
 op_star
 id|data
 op_assign
@@ -366,7 +366,7 @@ id|bttvs
 id|card
 )braket
 suffix:semicolon
-multiline_comment|/* prior setting BT848_GPIO_REG_INP is (probably) not needed &n;   because direct input is set on init */
+multiline_comment|/* prior setting BT848_GPIO_REG_INP is (probably) not needed&n;   because direct input is set on init */
 id|gpio_bits
 c_func
 (paren

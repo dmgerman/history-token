@@ -2450,40 +2450,6 @@ suffix:semicolon
 )brace
 multiline_comment|/***************** last of pencam  routines  *******************/
 multiline_comment|/****************************************************************************&n; *  sysfs&n; ***************************************************************************/
-DECL|function|cd_to_stv
-r_static
-r_inline
-r_struct
-id|usb_stv
-op_star
-id|cd_to_stv
-c_func
-(paren
-r_struct
-id|class_device
-op_star
-id|cd
-)paren
-(brace
-r_struct
-id|video_device
-op_star
-id|vdev
-op_assign
-id|to_video_device
-c_func
-(paren
-id|cd
-)paren
-suffix:semicolon
-r_return
-id|video_get_drvdata
-c_func
-(paren
-id|vdev
-)paren
-suffix:semicolon
-)brace
 DECL|macro|stv680_file
 mdefine_line|#define stv680_file(name, variable, field)&t;&t;&t;&t;&bslash;&n;static ssize_t show_##name(struct class_device *class_dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct video_device *vdev = to_video_device(class_dev);&t;&t;&bslash;&n;&t;struct usb_stv *stv = video_get_drvdata(vdev);&t;&t;&t;&bslash;&n;&t;return sprintf(buf, field, stv-&gt;variable);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static CLASS_DEVICE_ATTR(name, S_IRUGO, show_##name, NULL);
 id|stv680_file
@@ -7196,10 +7162,7 @@ l_int|0
 (brace
 id|page
 op_assign
-id|page_to_pfn
-c_func
-(paren
-id|vmalloc_to_page
+id|vmalloc_to_pfn
 c_func
 (paren
 (paren
@@ -7207,7 +7170,6 @@ r_void
 op_star
 )paren
 id|pos
-)paren
 )paren
 suffix:semicolon
 r_if

@@ -1080,11 +1080,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 r_private
 op_member_access_from_pointer
 id|lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|dev-&gt;irq
 op_assign

@@ -334,6 +334,6 @@ DECL|macro|outsw
 mdefine_line|#define outsw(p,d,l)&t;__raw_writesw(__ioaddr(p),d,l)
 multiline_comment|/*&n; * 1:1 mapping for ioremapped regions.&n; */
 DECL|macro|__mem_pci
-mdefine_line|#define __mem_pci(x)&t;((unsigned long)(x))
+mdefine_line|#define __mem_pci(x)&t;(x)
 macro_line|#endif
 eof

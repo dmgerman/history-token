@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * MTD map driver for flash on the DC21285 (the StrongARM-110 companion chip)&n; *&n; * (C) 2000  Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; * &n; * $Id: dc21285.c,v 1.21 2004/09/16 23:27:13 gleixner Exp $&n; */
+multiline_comment|/*&n; * MTD map driver for flash on the DC21285 (the StrongARM-110 companion chip)&n; *&n; * (C) 2000  Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; * &n; * $Id: dc21285.c,v 1.22 2004/11/01 13:39:21 rmk Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -92,17 +92,27 @@ r_int
 id|ofs
 )paren
 (brace
-r_return
+id|map_word
+id|val
+suffix:semicolon
+id|val.x
+(braket
+l_int|0
+)braket
+op_assign
 op_star
 (paren
 r_uint8
 op_star
 )paren
 (paren
-id|map-&gt;map_priv_1
+id|map-&gt;virt
 op_plus
 id|ofs
 )paren
+suffix:semicolon
+r_return
+id|val
 suffix:semicolon
 )brace
 DECL|function|dc21285_read16
@@ -121,17 +131,27 @@ r_int
 id|ofs
 )paren
 (brace
-r_return
+id|map_word
+id|val
+suffix:semicolon
+id|val.x
+(braket
+l_int|0
+)braket
+op_assign
 op_star
 (paren
 r_uint16
 op_star
 )paren
 (paren
-id|map-&gt;map_priv_1
+id|map-&gt;virt
 op_plus
 id|ofs
 )paren
+suffix:semicolon
+r_return
+id|val
 suffix:semicolon
 )brace
 DECL|function|dc21285_read32
@@ -150,17 +170,27 @@ r_int
 id|ofs
 )paren
 (brace
-r_return
+id|map_word
+id|val
+suffix:semicolon
+id|val.x
+(braket
+l_int|0
+)braket
+op_assign
 op_star
 (paren
 r_uint32
 op_star
 )paren
 (paren
-id|map-&gt;map_priv_1
+id|map-&gt;virt
 op_plus
 id|ofs
 )paren
+suffix:semicolon
+r_return
+id|val
 suffix:semicolon
 )brace
 DECL|function|dc21285_copy_from
@@ -196,7 +226,7 @@ r_void
 op_star
 )paren
 (paren
-id|map-&gt;map_priv_1
+id|map-&gt;virt
 op_plus
 id|from
 )paren
@@ -205,10 +235,10 @@ id|len
 )paren
 suffix:semicolon
 )brace
-DECL|function|dc21285_write
+DECL|function|dc21285_write8
 r_static
 r_void
-id|dc21285_write
+id|dc21285_write8
 c_func
 (paren
 r_struct
@@ -216,6 +246,7 @@ id|map_info
 op_star
 id|map
 comma
+r_const
 id|map_word
 id|d
 comma
@@ -255,7 +286,7 @@ r_uint8
 op_star
 )paren
 (paren
-id|map-&gt;map_priv_1
+id|map-&gt;virt
 op_plus
 id|adr
 )paren
@@ -277,6 +308,7 @@ id|map_info
 op_star
 id|map
 comma
+r_const
 id|map_word
 id|d
 comma
@@ -316,7 +348,7 @@ r_uint16
 op_star
 )paren
 (paren
-id|map-&gt;map_priv_1
+id|map-&gt;virt
 op_plus
 id|adr
 )paren
@@ -338,6 +370,7 @@ id|map_info
 op_star
 id|map
 comma
+r_const
 id|map_word
 id|d
 comma
@@ -365,7 +398,7 @@ r_uint32
 op_star
 )paren
 (paren
-id|map-&gt;map_priv_1
+id|map-&gt;virt
 op_plus
 id|adr
 )paren
@@ -408,8 +441,13 @@ OG
 l_int|0
 )paren
 (brace
-r_uint32
+id|map_word
 id|d
+suffix:semicolon
+id|d.x
+(braket
+l_int|0
+)braket
 op_assign
 op_star
 (paren
@@ -473,8 +511,13 @@ OG
 l_int|0
 )paren
 (brace
-r_uint16
+id|map_word
 id|d
+suffix:semicolon
+id|d.x
+(braket
+l_int|0
+)braket
 op_assign
 op_star
 (paren
@@ -530,8 +573,13 @@ id|ssize_t
 id|len
 )paren
 (brace
-r_uint8
+id|map_word
 id|d
+suffix:semicolon
+id|d.x
+(braket
+l_int|0
+)braket
 op_assign
 op_star
 (paren
@@ -594,6 +642,7 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Partition stuff */
+macro_line|#ifdef CONFIG_MTD_PARTITIONS
 DECL|variable|dc21285_parts
 r_static
 r_struct
@@ -601,7 +650,6 @@ id|mtd_partition
 op_star
 id|dc21285_parts
 suffix:semicolon
-macro_line|#ifdef CONFIG_MTD_PARTITIONS
 DECL|variable|probes
 r_static
 r_const
@@ -698,8 +746,6 @@ id|dc21285_map.bankwidth
 op_assign
 l_int|4
 suffix:semicolon
-r_break
-suffix:semicolon
 id|dc21285_map.read
 op_assign
 id|dc21285_read32
@@ -711,6 +757,8 @@ suffix:semicolon
 id|dc21285_map.copy_to
 op_assign
 id|dc21285_copy_to_32
+suffix:semicolon
+r_break
 suffix:semicolon
 r_default
 suffix:colon
@@ -736,13 +784,8 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* Let&squot;s map the flash area */
-id|dc21285_map.map_priv_1
+id|dc21285_map.virt
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -759,7 +802,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dc21285_map.map_priv_1
+id|dc21285_map.virt
 )paren
 (brace
 id|printk
@@ -818,11 +861,7 @@ id|dc21285_mtd
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|dc21285_map.map_priv_1
+id|dc21285_map.virt
 )paren
 suffix:semicolon
 r_return
@@ -847,10 +886,6 @@ comma
 op_amp
 id|dc21285_parts
 comma
-(paren
-r_void
-op_star
-)paren
 l_int|0
 )paren
 suffix:semicolon
@@ -1001,11 +1036,7 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|dc21285_map.map_priv_1
+id|dc21285_map.virt
 )paren
 suffix:semicolon
 )brace

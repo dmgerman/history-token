@@ -2,6 +2,7 @@ multiline_comment|/*&n;   Copyright 2003-2004 Red Hat, Inc.  All rights reserved
 macro_line|#ifndef __LINUX_ATA_H__
 DECL|macro|__LINUX_ATA_H__
 mdefine_line|#define __LINUX_ATA_H__
+macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/* defines only for the constants which don&squot;t work well as enums */
 DECL|macro|ATA_DMA_BOUNDARY
 mdefine_line|#define ATA_DMA_BOUNDARY&t;0xffffUL
@@ -26,25 +27,6 @@ DECL|enumerator|ATA_SECT_SIZE
 id|ATA_SECT_SIZE
 op_assign
 l_int|512
-comma
-DECL|enumerator|ATA_SECT_SIZE_MASK
-id|ATA_SECT_SIZE_MASK
-op_assign
-(paren
-id|ATA_SECT_SIZE
-op_minus
-l_int|1
-)paren
-comma
-DECL|enumerator|ATA_SECT_DWORDS
-id|ATA_SECT_DWORDS
-op_assign
-id|ATA_SECT_SIZE
-op_div
-r_sizeof
-(paren
-id|u32
-)paren
 comma
 DECL|enumerator|ATA_ID_WORDS
 id|ATA_ID_WORDS
@@ -660,6 +642,26 @@ DECL|enumerator|XFER_PIO_0
 id|XFER_PIO_0
 op_assign
 l_int|0x08
+comma
+DECL|enumerator|XFER_SW_DMA_2
+id|XFER_SW_DMA_2
+op_assign
+l_int|0x12
+comma
+DECL|enumerator|XFER_SW_DMA_1
+id|XFER_SW_DMA_1
+op_assign
+l_int|0x11
+comma
+DECL|enumerator|XFER_SW_DMA_0
+id|XFER_SW_DMA_0
+op_assign
+l_int|0x10
+comma
+DECL|enumerator|XFER_PIO_SLOW
+id|XFER_PIO_SLOW
+op_assign
+l_int|0x00
 comma
 multiline_comment|/* ATAPI stuff */
 DECL|enumerator|ATAPI_PKT_DMA

@@ -900,14 +900,6 @@ id|stats-&gt;rx_bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-id|skb-&gt;mac.raw
-op_assign
-id|skb-&gt;data
-suffix:semicolon
-id|skb-&gt;dev
-op_assign
-id|dev
-suffix:semicolon
 id|dev-&gt;last_rx
 op_assign
 id|jiffies

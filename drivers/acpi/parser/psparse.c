@@ -187,19 +187,22 @@ id|walk_state-&gt;parse_flags
 op_amp
 id|ACPI_PARSE_TREE_MASK
 )paren
-op_eq
+op_ne
 id|ACPI_PARSE_DELETE_TREE
 )paren
-op_logical_and
+op_logical_or
 (paren
 id|walk_state-&gt;op_info
 op_member_access_from_pointer
 r_class
-op_ne
+op_eq
 id|AML_CLASS_ARGUMENT
 )paren
 )paren
 (brace
+id|return_VOID
+suffix:semicolon
+)brace
 multiline_comment|/* Make sure that we only delete this subtree */
 r_if
 c_cond
@@ -207,7 +210,7 @@ c_cond
 id|op-&gt;common.parent
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Check if we need to replace the operator and its subtree&n;&t;&t;&t; * with a return value op (placeholder op)&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Check if we need to replace the operator and its subtree&n;&t;&t; * with a return value op (placeholder op)&n;&t;&t; */
 id|parent_info
 op_assign
 id|acpi_ps_get_opcode_info
@@ -231,7 +234,7 @@ suffix:semicolon
 r_case
 id|AML_CLASS_CREATE
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * These opcodes contain term_arg operands. The current&n;&t;&t;&t;&t; * op must be replaced by a placeholder return op&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * These opcodes contain term_arg operands. The current&n;&t;&t;&t; * op must be replaced by a placeholder return op&n;&t;&t;&t; */
 id|replacement_op
 op_assign
 id|acpi_ps_alloc_op
@@ -246,7 +249,8 @@ op_logical_neg
 id|replacement_op
 )paren
 (brace
-id|return_VOID
+r_goto
+id|cleanup
 suffix:semicolon
 )brace
 r_break
@@ -254,7 +258,7 @@ suffix:semicolon
 r_case
 id|AML_CLASS_NAMED_OBJECT
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * These opcodes contain term_arg operands. The current&n;&t;&t;&t;&t; * op must be replaced by a placeholder return op&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * These opcodes contain term_arg operands. The current&n;&t;&t;&t; * op must be replaced by a placeholder return op&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -303,7 +307,8 @@ op_logical_neg
 id|replacement_op
 )paren
 (brace
-id|return_VOID
+r_goto
+id|cleanup
 suffix:semicolon
 )brace
 )brace
@@ -359,7 +364,8 @@ op_logical_neg
 id|replacement_op
 )paren
 (brace
-id|return_VOID
+r_goto
+id|cleanup
 suffix:semicolon
 )brace
 id|replacement_op-&gt;named.data
@@ -390,7 +396,8 @@ op_logical_neg
 id|replacement_op
 )paren
 (brace
-id|return_VOID
+r_goto
+id|cleanup
 suffix:semicolon
 )brace
 )brace
@@ -513,15 +520,14 @@ id|next
 suffix:semicolon
 )brace
 )brace
+id|cleanup
+suffix:colon
 multiline_comment|/* Now we can actually delete the subtree rooted at op */
 id|acpi_ps_delete_parse_tree
 (paren
 id|op
 )paren
 suffix:semicolon
-id|return_VOID
-suffix:semicolon
-)brace
 id|return_VOID
 suffix:semicolon
 )brace
@@ -1164,10 +1170,12 @@ op_logical_neg
 id|pre_op
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
+id|status
+op_assign
 id|AE_NO_MEMORY
-)paren
+suffix:semicolon
+r_goto
+id|close_this_op
 suffix:semicolon
 )brace
 )brace
@@ -1252,10 +1260,12 @@ id|walk_state-&gt;arg_types
 )paren
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
+id|status
+op_assign
 id|AE_AML_NO_OPERAND
-)paren
+suffix:semicolon
+r_goto
+id|close_this_op
 suffix:semicolon
 )brace
 multiline_comment|/* We know that this arg is a name, move to next arg */
@@ -1410,10 +1420,12 @@ op_logical_neg
 id|op
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
+id|status
+op_assign
 id|AE_NO_MEMORY
-)paren
+suffix:semicolon
+r_goto
+id|close_this_op
 suffix:semicolon
 )brace
 r_if
@@ -1868,10 +1880,8 @@ id|status
 )paren
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
+r_goto
+id|close_this_op
 suffix:semicolon
 )brace
 id|op
@@ -2788,9 +2798,15 @@ r_else
 r_if
 c_cond
 (paren
+(paren
 id|status
 op_ne
 id|AE_OK
+)paren
+op_logical_and
+(paren
+id|walk_state-&gt;method_desc
+)paren
 )paren
 (brace
 id|ACPI_REPORT_METHOD_ERROR

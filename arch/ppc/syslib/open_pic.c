@@ -937,6 +937,13 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#ifdef CONFIG_EPIC_SERIAL_MODE
+multiline_comment|/* On platforms that may use EPIC serial mode, the default is enabled. */
+DECL|variable|epic_serial_mode
+r_int
+id|epic_serial_mode
+op_assign
+l_int|1
+suffix:semicolon
 DECL|function|openpic_eicr_set_clk
 r_static
 r_void
@@ -1659,6 +1666,12 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_EPIC_SERIAL_MODE
+r_if
+c_cond
+(paren
+id|epic_serial_mode
+)paren
+(brace
 id|openpic_eicr_set_clk
 c_func
 (paren
@@ -1671,6 +1684,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|openpic_set_priority
 c_func
@@ -2488,6 +2502,30 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&n; * All functions below take an offset&squot;ed irq argument&n; *&n; */
 multiline_comment|/*&n; * Hookup a cascade to the OpenPIC.&n; */
+DECL|variable|openpic_cascade_irqaction
+r_static
+r_struct
+id|irqaction
+id|openpic_cascade_irqaction
+op_assign
+(brace
+dot
+id|handler
+op_assign
+id|no_action
+comma
+dot
+id|flags
+op_assign
+id|SA_INTERRUPT
+comma
+dot
+id|mask
+op_assign
+id|CPU_MASK_NONE
+comma
+)brace
+suffix:semicolon
 r_void
 id|__init
 DECL|function|openpic_hookup_cascade
@@ -2524,18 +2562,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|request_irq
+id|setup_irq
 c_func
 (paren
 id|irq
 comma
-id|no_action
-comma
-id|SA_INTERRUPT
-comma
-id|name
-comma
-l_int|NULL
+op_amp
+id|openpic_cascade_irqaction
 )paren
 )paren
 id|printk

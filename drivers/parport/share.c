@@ -3153,13 +3153,6 @@ c_func
 id|parport_unregister_device
 )paren
 suffix:semicolon
-DECL|variable|parport_get_port
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|parport_get_port
-)paren
-suffix:semicolon
 DECL|variable|parport_put_port
 id|EXPORT_SYMBOL
 c_func

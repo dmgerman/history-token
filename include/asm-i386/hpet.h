@@ -131,6 +131,14 @@ r_void
 suffix:semicolon
 r_extern
 r_int
+id|hpet_reenable
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|is_hpet_enabled
 c_func
 (paren

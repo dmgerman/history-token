@@ -733,40 +733,6 @@ macro_line|#endif
 r_return
 suffix:semicolon
 )brace
-r_static
-r_int
-id|__init
-DECL|function|mvme5100_request_cascade
-id|mvme5100_request_cascade
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifdef CONFIG_MVME5100_IPMC761_PRESENT
-id|openpic_hookup_cascade
-c_func
-(paren
-id|NUM_8259_INTERRUPTS
-comma
-l_string|&quot;82c59 cascade&quot;
-comma
-op_amp
-id|i8259_irq
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|variable|mvme5100_request_cascade
-id|arch_initcall
-c_func
-(paren
-id|mvme5100_request_cascade
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Interrupt setup and service.&n; * Have MPIC on HAWK and cascaded 8259s on Winbond cascaded to MPIC.&n; */
 r_static
 r_void
@@ -817,6 +783,17 @@ c_func
 id|NUM_8259_INTERRUPTS
 )paren
 suffix:semicolon
+id|openpic_hookup_cascade
+c_func
+(paren
+id|NUM_8259_INTERRUPTS
+comma
+l_string|&quot;82c59 cascade&quot;
+comma
+op_amp
+id|i8259_irq
+)paren
+suffix:semicolon
 multiline_comment|/* Map i8259 interrupts. */
 r_for
 c_loop
@@ -845,10 +822,7 @@ suffix:semicolon
 id|i8259_init
 c_func
 (paren
-(paren
-r_int
-)paren
-l_int|NULL
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#else

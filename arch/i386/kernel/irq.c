@@ -74,7 +74,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * do_IRQ handles all normal device IRQ&squot;s (the special&n; * SMP cross-CPU interrupts have their own specific&n; * handlers).&n; */
 DECL|function|do_IRQ
-id|asmlinkage
+id|fastcall
 r_int
 r_int
 id|do_IRQ
@@ -82,6 +82,7 @@ c_func
 (paren
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -89,7 +90,7 @@ multiline_comment|/* high bits used in ret_from_ code */
 r_int
 id|irq
 op_assign
-id|regs.orig_eax
+id|regs-&gt;orig_eax
 op_amp
 l_int|0xff
 suffix:semicolon
@@ -211,6 +212,13 @@ op_ne
 id|irqctx
 )paren
 (brace
+r_int
+id|arg1
+comma
+id|arg2
+comma
+id|ebx
+suffix:semicolon
 multiline_comment|/* build the stack frame on the IRQ stack */
 id|isp
 op_assign
@@ -243,34 +251,39 @@ c_func
 (paren
 )paren
 suffix:semicolon
-op_star
-op_decrement
-id|isp
-op_assign
-(paren
-id|u32
-)paren
-op_amp
-id|regs
-suffix:semicolon
-op_star
-op_decrement
-id|isp
-op_assign
-(paren
-id|u32
-)paren
-id|irq
-suffix:semicolon
 id|asm
 r_volatile
 (paren
 l_string|&quot;       xchgl   %%ebx,%%esp      &bslash;n&quot;
 l_string|&quot;       call    __do_IRQ         &bslash;n&quot;
-l_string|&quot;       xchgl   %%ebx,%%esp      &bslash;n&quot;
+l_string|&quot;       movl   %%ebx,%%esp      &bslash;n&quot;
 suffix:colon
+l_string|&quot;=a&quot;
+(paren
+id|arg1
+)paren
+comma
+l_string|&quot;=d&quot;
+(paren
+id|arg2
+)paren
+comma
+l_string|&quot;=b&quot;
+(paren
+id|ebx
+)paren
 suffix:colon
-l_string|&quot;b&quot;
+l_string|&quot;0&quot;
+(paren
+id|irq
+)paren
+comma
+l_string|&quot;1&quot;
+(paren
+id|regs
+)paren
+comma
+l_string|&quot;2&quot;
 (paren
 id|isp
 )paren
@@ -278,10 +291,6 @@ suffix:colon
 l_string|&quot;memory&quot;
 comma
 l_string|&quot;cc&quot;
-comma
-l_string|&quot;eax&quot;
-comma
-l_string|&quot;edx&quot;
 comma
 l_string|&quot;ecx&quot;
 )paren
@@ -294,7 +303,6 @@ c_func
 (paren
 id|irq
 comma
-op_amp
 id|regs
 )paren
 suffix:semicolon

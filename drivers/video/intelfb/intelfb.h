@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 multiline_comment|/*** Version/name ***/
 DECL|macro|INTELFB_VERSION
-mdefine_line|#define INTELFB_VERSION&t;&t;&t;&quot;0.9.0&quot;
+mdefine_line|#define INTELFB_VERSION&t;&t;&t;&quot;0.9.1&quot;
 DECL|macro|INTELFB_MODULE_NAME
 mdefine_line|#define INTELFB_MODULE_NAME&t;&t;&quot;intelfb&quot;
 DECL|macro|SUPPORTED_CHIPSETS
@@ -31,14 +31,6 @@ macro_line|#endif
 macro_line|#ifndef ALLOCATE_FOR_PANNING
 DECL|macro|ALLOCATE_FOR_PANNING
 mdefine_line|#define ALLOCATE_FOR_PANNING&t;&t;1
-macro_line|#endif
-macro_line|#ifndef BAILOUT_EARLY
-DECL|macro|BAILOUT_EARLY
-mdefine_line|#define BAILOUT_EARLY&t;&t;&t;0
-macro_line|#endif
-macro_line|#ifndef TEST_MODE_TO_HW
-DECL|macro|TEST_MODE_TO_HW
-mdefine_line|#define TEST_MODE_TO_HW&t;&t;&t;0
 macro_line|#endif
 macro_line|#ifndef PREFERRED_MODE
 DECL|macro|PREFERRED_MODE
@@ -102,14 +94,9 @@ macro_line|#endif
 multiline_comment|/* get commonly used pointers */
 DECL|macro|GET_DINFO
 mdefine_line|#define GET_DINFO(info)&t;&t;(info)-&gt;par
-multiline_comment|/* module parameters */
-DECL|macro|INTELFB_INT_PARAM
-mdefine_line|#define INTELFB_INT_PARAM(name, default, desc)&t;&t;&t;&t;&bslash;&n;&t;static int name = default;&t;&t;&t;&t;&t;&bslash;&n;&t;MODULE_PARM(name, &quot;i&quot;);&t;&t;&t;&t;&t;        &bslash;&n;&t;MODULE_PARM_DESC(name, desc);
-DECL|macro|INTELFB_STR_PARAM
-mdefine_line|#define INTELFB_STR_PARAM(name, default, desc)&t;&t;&t;&t;&bslash;&n;&t;static const char *name = default;&t;&t;&t;&t;&bslash;&n;&t;MODULE_PARM(name, &quot;s&quot;);&t;&t;&t;&t;                &bslash;&n;&t;MODULE_PARM_DESC(name, desc);
 multiline_comment|/* misc macros */
-DECL|macro|TEXT_ACCEL
-mdefine_line|#define TEXT_ACCEL(d, v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((d)-&gt;accel &amp;&amp; (d)-&gt;ring_active &amp;&amp;&t;&t;&t;&t;&bslash;&n;&t; ((v)-&gt;accel_flags &amp; FB_ACCELF_TEXT))
+DECL|macro|ACCEL
+mdefine_line|#define ACCEL(d, i)                                                     &bslash;&n;&t;((d)-&gt;accel &amp;&amp; !(d)-&gt;ring_lockup &amp;&amp;                             &bslash;&n;&t; ((i)-&gt;var.accel_flags &amp; FB_ACCELF_TEXT))
 multiline_comment|/*#define NOACCEL_CHIPSET(d)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((d)-&gt;chipset != INTEL_865G)*/
 DECL|macro|NOACCEL_CHIPSET
 mdefine_line|#define NOACCEL_CHIPSET(d)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(0)
@@ -437,7 +424,9 @@ id|u32
 id|physical
 suffix:semicolon
 DECL|member|virtual
-id|u32
+id|u8
+id|__iomem
+op_star
 r_virtual
 suffix:semicolon
 DECL|member|offset
@@ -537,7 +526,9 @@ id|u32
 id|mmio_base_phys
 suffix:semicolon
 DECL|member|mmio_base
-id|u32
+id|u8
+id|__iomem
+op_star
 id|mmio_base
 suffix:semicolon
 multiline_comment|/* fb start offset (in bytes) */
@@ -547,7 +538,9 @@ id|fb_start
 suffix:semicolon
 multiline_comment|/* ring buffer */
 DECL|member|ring_head
-id|u32
+id|u8
+id|__iomem
+op_star
 id|ring_head
 suffix:semicolon
 DECL|member|ring_tail

@@ -18,18 +18,6 @@ op_assign
 id|I2C_CLIENT_END
 )brace
 suffix:semicolon
-DECL|variable|normal_i2c_range
-r_static
-r_int
-r_int
-id|normal_i2c_range
-(braket
-)braket
-op_assign
-(brace
-id|I2C_CLIENT_END
-)brace
-suffix:semicolon
 multiline_comment|/* Address is autodetected, there is no default value */
 DECL|variable|normal_isa
 r_static
@@ -42,18 +30,6 @@ op_assign
 (brace
 l_int|0x0000
 comma
-id|I2C_CLIENT_ISA_END
-)brace
-suffix:semicolon
-DECL|variable|normal_isa_range
-r_static
-r_int
-r_int
-id|normal_isa_range
-(braket
-)braket
-op_assign
-(brace
 id|I2C_CLIENT_ISA_END
 )brace
 suffix:semicolon
@@ -95,44 +71,10 @@ op_assign
 id|normal_i2c
 comma
 dot
-id|normal_i2c_range
-op_assign
-id|normal_i2c_range
-comma
-dot
 id|normal_isa
 op_assign
 id|normal_isa
 comma
-dot
-id|normal_isa_range
-op_assign
-id|normal_isa_range
-comma
-dot
-id|probe
-op_assign
-id|normal_i2c
-comma
-multiline_comment|/* cheat */
-dot
-id|probe_range
-op_assign
-id|normal_i2c_range
-comma
-multiline_comment|/* cheat */
-dot
-id|ignore
-op_assign
-id|normal_i2c
-comma
-multiline_comment|/* cheat */
-dot
-id|ignore_range
-op_assign
-id|normal_i2c_range
-comma
-multiline_comment|/* cheat */
 dot
 id|forces
 op_assign

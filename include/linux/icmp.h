@@ -2,6 +2,7 @@ multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol sui
 macro_line|#ifndef _LINUX_ICMP_H
 DECL|macro|_LINUX_ICMP_H
 mdefine_line|#define&t;_LINUX_ICMP_H
+macro_line|#include &lt;linux/types.h&gt;
 DECL|macro|ICMP_ECHOREPLY
 mdefine_line|#define ICMP_ECHOREPLY&t;&t;0&t;/* Echo Reply&t;&t;&t;*/
 DECL|macro|ICMP_DEST_UNREACH

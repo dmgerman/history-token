@@ -1573,7 +1573,23 @@ op_star
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Manual binding of a device to driver. See drivers/base/bus.c &n; * for information on use.&n; */
+multiline_comment|/*&n; * Manual binding of a device to driver. See drivers/base/bus.c&n; * for information on use.&n; */
+r_extern
+r_int
+id|driver_probe_device
+c_func
+(paren
+r_struct
+id|device_driver
+op_star
+id|drv
+comma
+r_struct
+id|device
+op_star
+id|dev
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|device_bind_driver
@@ -1588,6 +1604,17 @@ suffix:semicolon
 r_extern
 r_void
 id|device_release_driver
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|device_attach
 c_func
 (paren
 r_struct

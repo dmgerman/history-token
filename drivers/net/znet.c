@@ -1448,9 +1448,12 @@ id|znet-&gt;tx_dma
 op_assign
 id|netinfo-&gt;dma2
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|znet-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|znet-&gt;sia_base
 op_assign

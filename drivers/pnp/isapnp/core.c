@@ -2036,6 +2036,10 @@ id|pnp_irq
 op_star
 id|irq
 suffix:semicolon
+r_int
+r_int
+id|bits
+suffix:semicolon
 id|isapnp_peek
 c_func
 (paren
@@ -2064,7 +2068,7 @@ id|irq
 )paren
 r_return
 suffix:semicolon
-id|irq-&gt;map
+id|bits
 op_assign
 (paren
 id|tmp
@@ -2079,6 +2083,17 @@ id|tmp
 (braket
 l_int|0
 )braket
+suffix:semicolon
+id|bitmap_copy
+c_func
+(paren
+id|irq-&gt;map
+comma
+op_amp
+id|bits
+comma
+l_int|16
+)paren
 suffix:semicolon
 r_if
 c_cond

@@ -2695,14 +2695,12 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
-id|destroy_proc_ide_drives
+id|destroy_proc_ide_interface
 c_func
 (paren
 id|hwif
 )paren
 suffix:semicolon
-macro_line|#endif
 id|hwgroup
 op_assign
 id|hwif-&gt;hwgroup
@@ -3381,10 +3379,11 @@ id|ack_intr
 suffix:semicolon
 multiline_comment|/*&n; *&t;hw-&gt;iops = iops;&n; */
 )brace
-multiline_comment|/**&n; *&t;ide_register_hw&t;&t;-&t;register IDE interface&n; *&t;@hw: hardware registers&n; *&t;@hwifp: pointer to returned hwif&n; *&n; *&t;Register an IDE interface, specifying exactly the registers etc.&n; *&t;Set init=1 iff calling before probes have taken place.&n; *&n; *&t;Returns -1 on error.&n; */
-DECL|function|ide_register_hw
+multiline_comment|/**&n; *&t;ide_register_hw_with_fixup&t;-&t;register IDE interface&n; *&t;@hw: hardware registers&n; *&t;@hwifp: pointer to returned hwif&n; *&t;@fixup: fixup function&n; *&n; *&t;Register an IDE interface, specifying exactly the registers etc.&n; *&t;Set init=1 iff calling before probes have taken place.&n; *&n; *&t;Returns -1 on error.&n; */
+DECL|function|ide_register_hw_with_fixup
 r_int
-id|ide_register_hw
+id|ide_register_hw_with_fixup
+c_func
 (paren
 id|hw_regs_t
 op_star
@@ -3394,6 +3393,17 @@ id|ide_hwif_t
 op_star
 op_star
 id|hwifp
+comma
+r_void
+(paren
+op_star
+id|fixup
+)paren
+(paren
+id|ide_hwif_t
+op_star
+id|hwif
+)paren
 )paren
 (brace
 r_int
@@ -3633,10 +3643,12 @@ op_logical_neg
 id|initializing
 )paren
 (brace
-id|probe_hwif_init
+id|probe_hwif_init_with_fixup
 c_func
 (paren
 id|hwif
+comma
+id|fixup
 )paren
 suffix:semicolon
 id|create_proc_ide_interfaces
@@ -3667,6 +3679,40 @@ id|index
 suffix:colon
 op_minus
 l_int|1
+suffix:semicolon
+)brace
+DECL|variable|ide_register_hw_with_fixup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ide_register_hw_with_fixup
+)paren
+suffix:semicolon
+DECL|function|ide_register_hw
+r_int
+id|ide_register_hw
+c_func
+(paren
+id|hw_regs_t
+op_star
+id|hw
+comma
+id|ide_hwif_t
+op_star
+op_star
+id|hwifp
+)paren
+(brace
+r_return
+id|ide_register_hw_with_fixup
+c_func
+(paren
+id|hw
+comma
+id|hwifp
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 )brace
 DECL|variable|ide_register_hw
@@ -7430,7 +7476,7 @@ l_string|&quot;autotune&quot;
 comma
 l_string|&quot;noautotune&quot;
 comma
-l_string|&quot;stroke&quot;
+l_string|&quot;minus8&quot;
 comma
 l_string|&quot;swapdata&quot;
 comma
@@ -7620,7 +7666,7 @@ op_assign
 id|IDE_TUNE_AUTO
 suffix:semicolon
 r_goto
-id|done
+id|obsolete_option
 suffix:semicolon
 r_case
 op_minus
@@ -7632,19 +7678,7 @@ op_assign
 id|IDE_TUNE_NOAUTO
 suffix:semicolon
 r_goto
-id|done
-suffix:semicolon
-r_case
-op_minus
-l_int|8
-suffix:colon
-multiline_comment|/* stroke */
-id|drive-&gt;stroke
-op_assign
-l_int|1
-suffix:semicolon
-r_goto
-id|done
+id|obsolete_option
 suffix:semicolon
 r_case
 op_minus
@@ -8255,7 +8289,7 @@ op_assign
 l_int|1
 suffix:semicolon
 r_goto
-id|done
+id|obsolete_option
 suffix:semicolon
 macro_line|#else
 r_goto
@@ -8272,7 +8306,7 @@ op_assign
 l_int|1
 suffix:semicolon
 r_goto
-id|done
+id|obsolete_option
 suffix:semicolon
 r_case
 op_minus
@@ -8284,7 +8318,7 @@ op_assign
 l_int|1
 suffix:semicolon
 r_goto
-id|done
+id|obsolete_option
 suffix:semicolon
 r_case
 op_minus
@@ -8310,7 +8344,7 @@ op_assign
 id|IDE_TUNE_NOAUTO
 suffix:semicolon
 r_goto
-id|done
+id|obsolete_option
 suffix:semicolon
 r_case
 op_minus
@@ -8336,7 +8370,7 @@ op_assign
 id|IDE_TUNE_AUTO
 suffix:semicolon
 r_goto
-id|done
+id|obsolete_option
 suffix:semicolon
 r_case
 op_minus
@@ -8366,7 +8400,7 @@ op_assign
 l_int|1
 suffix:semicolon
 r_goto
-id|done
+id|obsolete_option
 suffix:semicolon
 r_case
 op_minus
@@ -8477,7 +8511,7 @@ op_assign
 id|ide_forced
 suffix:semicolon
 r_goto
-id|done
+id|obsolete_option
 suffix:semicolon
 r_case
 l_int|0
@@ -8504,6 +8538,17 @@ id|printk
 c_func
 (paren
 l_string|&quot; -- BAD OPTION&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+id|obsolete_option
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot; -- OBSOLETE OPTION, WILL BE REMOVED SOON!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

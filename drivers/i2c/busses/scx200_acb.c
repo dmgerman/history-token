@@ -1443,12 +1443,14 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|scx200_acb_list
+r_static
 r_struct
 id|scx200_acb_iface
 op_star
 id|scx200_acb_list
 suffix:semicolon
 DECL|function|scx200_acb_probe
+r_static
 r_int
 id|scx200_acb_probe
 c_func

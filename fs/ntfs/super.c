@@ -25,6 +25,23 @@ r_int
 r_int
 id|ntfs_nr_compression_users
 suffix:semicolon
+multiline_comment|/* A global default upcase table and a corresponding reference count. */
+DECL|variable|default_upcase
+r_static
+id|ntfschar
+op_star
+id|default_upcase
+op_assign
+l_int|NULL
+suffix:semicolon
+DECL|variable|ntfs_nr_upcase_users
+r_static
+r_int
+r_int
+id|ntfs_nr_upcase_users
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Error constants/strings used in inode.c::ntfs_show_options(). */
 r_typedef
 r_enum
@@ -2646,7 +2663,7 @@ r_return
 id|bh_backup
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * parse_ntfs_boot_sector - parse the boot sector and store the data in @vol&n; * @vol:&t;volume structure to initialise with data from boot sector&n; * @b:&t;&t;boot sector to parse&n; *&n; * Parse the ntfs boot sector @b and store all imporant information therein in&n; * the ntfs super block @vol. Return TRUE on success and FALSE on error.&n; */
+multiline_comment|/**&n; * parse_ntfs_boot_sector - parse the boot sector and store the data in @vol&n; * @vol:&t;volume structure to initialise with data from boot sector&n; * @b:&t;&t;boot sector to parse&n; *&n; * Parse the ntfs boot sector @b and store all imporant information therein in&n; * the ntfs super block @vol.  Return TRUE on success and FALSE on error.&n; */
 DECL|function|parse_ntfs_boot_sector
 r_static
 id|BOOL
@@ -2837,7 +2854,7 @@ c_func
 id|vol-&gt;sb
 comma
 l_string|&quot;Sector sizes above the cluster size are &quot;
-l_string|&quot;not supported. Sorry.&quot;
+l_string|&quot;not supported.  Sorry.&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2858,7 +2875,7 @@ c_func
 id|vol-&gt;sb
 comma
 l_string|&quot;Cluster sizes smaller than the device &quot;
-l_string|&quot;sector size are not supported. Sorry.&quot;
+l_string|&quot;sector size are not supported.  Sorry.&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2953,6 +2970,37 @@ comma
 id|vol-&gt;mft_record_size_bits
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * We cannot support mft record sizes above the PAGE_CACHE_SIZE since&n;&t; * we store $MFT/$DATA, the table of mft records in the page cache.&n;&t; */
+r_if
+c_cond
+(paren
+id|vol-&gt;mft_record_size
+OG
+id|PAGE_CACHE_SIZE
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|vol-&gt;sb
+comma
+l_string|&quot;Mft record size %i (0x%x) exceeds the &quot;
+l_string|&quot;page cache size on your system %lu (0x%lx).  &quot;
+l_string|&quot;This is not supported.  Sorry.&quot;
+comma
+id|vol-&gt;mft_record_size
+comma
+id|vol-&gt;mft_record_size
+comma
+id|PAGE_CACHE_SIZE
+comma
+id|PAGE_CACHE_SIZE
+)paren
+suffix:semicolon
+r_return
+id|FALSE
+suffix:semicolon
+)brace
 id|clusters_per_index_record
 op_assign
 id|b-&gt;clusters_per_index_record
@@ -3070,7 +3118,7 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;Cannot handle 64-bit clusters. Sorry.&quot;
+l_string|&quot;Cannot handle 64-bit clusters.  Sorry.&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3128,8 +3176,8 @@ c_func
 id|vol-&gt;sb
 comma
 l_string|&quot;Volume size (%lluTiB) is too &quot;
-l_string|&quot;large for this architecture. Maximum &quot;
-l_string|&quot;supported is 2TiB. Sorry.&quot;
+l_string|&quot;large for this architecture.  &quot;
+l_string|&quot;Maximum supported is 2TiB.  Sorry.&quot;
 comma
 (paren
 r_int
@@ -3171,7 +3219,7 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;MFT LCN is beyond end of volume. Weird.&quot;
+l_string|&quot;MFT LCN is beyond end of volume.  Weird.&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3215,7 +3263,7 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;MFTMirr LCN is beyond end of volume. &quot;
+l_string|&quot;MFTMirr LCN is beyond end of volume.  &quot;
 l_string|&quot;Weird.&quot;
 )paren
 suffix:semicolon
@@ -3710,7 +3758,7 @@ r_return
 id|TRUE
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * check_mft_mirror - compare contents of the mft mirror with the mft&n; * @vol:&t;ntfs super block describing device whose mft mirror to check&n; *&n; * Return TRUE on success or FALSE on error.&n; */
+multiline_comment|/**&n; * check_mft_mirror - compare contents of the mft mirror with the mft&n; * @vol:&t;ntfs super block describing device whose mft mirror to check&n; *&n; * Return TRUE on success or FALSE on error.&n; *&n; * Note, this function also results in the mft mirror runlist being completely&n; * mapped into memory.  The mft mirror write code requires this and will BUG()&n; * should it find an unmapped runlist element.&n; */
 DECL|function|check_mft_mirror
 r_static
 id|BOOL
@@ -8820,6 +8868,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * The complete super operations.&n; */
 DECL|variable|ntfs_sops
+r_static
 r_struct
 id|super_operations
 id|ntfs_sops
@@ -10098,21 +10147,6 @@ id|kmem_cache_t
 op_star
 id|ntfs_index_ctx_cache
 suffix:semicolon
-multiline_comment|/* A global default upcase table and a corresponding reference count. */
-DECL|variable|default_upcase
-id|ntfschar
-op_star
-id|default_upcase
-op_assign
-l_int|NULL
-suffix:semicolon
-DECL|variable|ntfs_nr_upcase_users
-r_int
-r_int
-id|ntfs_nr_upcase_users
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* Driver wide semaphore. */
 DECL|variable|ntfs_lock
 id|DECLARE_MUTEX
@@ -10818,6 +10852,13 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;NTFS 1.2/3.x driver - Copyright (c) 2001-2004 Anton Altaparmakov&quot;
+)paren
+suffix:semicolon
+DECL|variable|NTFS_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|NTFS_VERSION
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

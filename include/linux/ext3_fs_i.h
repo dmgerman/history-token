@@ -3,7 +3,57 @@ macro_line|#ifndef _LINUX_EXT3_FS_I
 DECL|macro|_LINUX_EXT3_FS_I
 mdefine_line|#define _LINUX_EXT3_FS_I
 macro_line|#include &lt;linux/rwsem.h&gt;
-multiline_comment|/*&n; * second extended file system inode data in memory&n; */
+macro_line|#include &lt;linux/rbtree.h&gt;
+macro_line|#include &lt;linux/seqlock.h&gt;
+DECL|struct|reserve_window
+r_struct
+id|reserve_window
+(brace
+DECL|member|_rsv_start
+id|__u32
+id|_rsv_start
+suffix:semicolon
+multiline_comment|/* First byte reserved */
+DECL|member|_rsv_end
+id|__u32
+id|_rsv_end
+suffix:semicolon
+multiline_comment|/* Last byte reserved or 0 */
+)brace
+suffix:semicolon
+DECL|struct|reserve_window_node
+r_struct
+id|reserve_window_node
+(brace
+DECL|member|rsv_node
+r_struct
+id|rb_node
+id|rsv_node
+suffix:semicolon
+DECL|member|rsv_goal_size
+id|atomic_t
+id|rsv_goal_size
+suffix:semicolon
+DECL|member|rsv_alloc_hit
+id|atomic_t
+id|rsv_alloc_hit
+suffix:semicolon
+DECL|member|rsv_seqlock
+id|seqlock_t
+id|rsv_seqlock
+suffix:semicolon
+DECL|member|rsv_window
+r_struct
+id|reserve_window
+id|rsv_window
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|rsv_start
+mdefine_line|#define rsv_start rsv_window._rsv_start
+DECL|macro|rsv_end
+mdefine_line|#define rsv_end rsv_window._rsv_end
+multiline_comment|/*&n; * third extended file system inode data in memory&n; */
 DECL|struct|ext3_inode_info
 r_struct
 id|ext3_inode_info
@@ -66,16 +116,12 @@ DECL|member|i_next_alloc_goal
 id|__u32
 id|i_next_alloc_goal
 suffix:semicolon
-macro_line|#ifdef EXT3_PREALLOCATE
-DECL|member|i_prealloc_block
-id|__u32
-id|i_prealloc_block
+multiline_comment|/* block reservation window */
+DECL|member|i_rsv_window
+r_struct
+id|reserve_window_node
+id|i_rsv_window
 suffix:semicolon
-DECL|member|i_prealloc_count
-id|__u32
-id|i_prealloc_count
-suffix:semicolon
-macro_line|#endif
 DECL|member|i_dir_start_lookup
 id|__u32
 id|i_dir_start_lookup

@@ -1006,6 +1006,11 @@ l_string|&quot;Null Index Object during field prep&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+id|acpi_ut_delete_object_desc
+(paren
+id|obj_desc
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_AML_INTERNAL

@@ -1551,11 +1551,6 @@ r_int
 id|count
 )paren
 (brace
-r_int
-id|length
-comma
-id|ret
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2246,8 +2241,6 @@ id|sclp_tty_write
 c_func
 (paren
 id|sclp_tty
-comma
-l_int|0
 comma
 id|start
 comma

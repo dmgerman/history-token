@@ -1446,6 +1446,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Changes to the entropy data is put into a queue rather than being added to&n; * the entropy counts directly.  This is presumably to avoid doing heavy&n; * hashing calculations during an interrupt in add_timer_randomness().&n; * Instead, the entropy is only added to the pool by keventd.&n; */
 DECL|function|batch_entropy_store
+r_static
 r_void
 id|batch_entropy_store
 c_func
@@ -1598,13 +1599,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|variable|batch_entropy_store
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|batch_entropy_store
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Flush out the accumulated entropy operations, adding entropy to the passed&n; * store (normally random_state).  If that store has enough entropy, alternate&n; * between randomizing the data of the primary and secondary stores.&n; */
 DECL|function|batch_entropy_process
 r_static
@@ -1904,19 +1898,6 @@ r_if
 c_cond
 (paren
 id|time
-op_ne
-l_int|0
-)paren
-(brace
-r_if
-c_cond
-(paren
-r_sizeof
-(paren
-id|time
-)paren
-OG
-l_int|4
 )paren
 id|num
 op_xor_assign
@@ -1924,19 +1905,20 @@ op_xor_assign
 id|u32
 )paren
 (paren
+(paren
 id|time
 op_rshift
-l_int|32
+l_int|31
+)paren
+op_rshift
+l_int|1
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|time
 op_assign
 id|jiffies
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Calculate number of bits of randomness we probably added.&n;&t; * We take into account the first, second and third-order deltas&n;&t; * in order to make our estimate.&n;&t; */
 r_if
 c_cond
@@ -2114,13 +2096,6 @@ id|scancode
 suffix:semicolon
 )brace
 )brace
-DECL|variable|add_keyboard_randomness
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|add_keyboard_randomness
-)paren
-suffix:semicolon
 DECL|function|add_mouse_randomness
 r_void
 id|add_mouse_randomness
@@ -2186,13 +2161,6 @@ id|irq
 )paren
 suffix:semicolon
 )brace
-DECL|variable|add_interrupt_randomness
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|add_interrupt_randomness
-)paren
-suffix:semicolon
 DECL|function|add_disk_randomness
 r_void
 id|add_disk_randomness

@@ -23,34 +23,32 @@ id|smp_num_siblings
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* Package ID of each logical CPU */
 DECL|variable|phys_proc_id
-r_char
+id|u8
 id|phys_proc_id
 (braket
 id|NR_CPUS
 )braket
+op_assign
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+id|NR_CPUS
+op_minus
+l_int|1
+)braket
+op_assign
+id|BAD_APICID
+)brace
 suffix:semicolon
-multiline_comment|/* Package ID of each logical CPU */
 multiline_comment|/* Bitmask of currently online CPUs */
 DECL|variable|cpu_online_map
 id|cpumask_t
 id|cpu_online_map
-suffix:semicolon
-multiline_comment|/* which logical CPU number maps to which CPU (physical APIC ID) */
-DECL|variable|x86_cpu_to_apicid
-r_volatile
-r_char
-id|x86_cpu_to_apicid
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-DECL|variable|x86_cpu_to_apicid
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|x86_cpu_to_apicid
-)paren
 suffix:semicolon
 DECL|variable|cpu_callin_map
 r_static
@@ -2301,6 +2299,20 @@ suffix:semicolon
 multiline_comment|/* was set by cpu_init() */
 id|cpucount
 op_decrement
+suffix:semicolon
+id|x86_cpu_to_apicid
+(braket
+id|cpu
+)braket
+op_assign
+id|BAD_APICID
+suffix:semicolon
+id|x86_cpu_to_log_apicid
+(braket
+id|cpu
+)braket
+op_assign
+id|BAD_APICID
 suffix:semicolon
 )brace
 )brace

@@ -37,6 +37,14 @@ r_int
 suffix:semicolon
 r_extern
 r_void
+id|early_idt_handler
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|mcheck_init
 c_func
 (paren

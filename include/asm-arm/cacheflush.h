@@ -376,9 +376,16 @@ id|mm
 r_if
 c_cond
 (paren
-id|current-&gt;active_mm
-op_eq
-id|mm
+id|cpu_isset
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+id|mm-&gt;cpu_vm_mask
+)paren
 )paren
 id|__cpuc_flush_user_all
 c_func
@@ -410,9 +417,16 @@ id|end
 r_if
 c_cond
 (paren
-id|current-&gt;active_mm
-op_eq
-id|vma-&gt;vm_mm
+id|cpu_isset
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+id|vma-&gt;vm_mm-&gt;cpu_vm_mask
+)paren
 )paren
 id|__cpuc_flush_user_range
 c_func
@@ -451,9 +465,16 @@ id|user_addr
 r_if
 c_cond
 (paren
-id|current-&gt;active_mm
-op_eq
-id|vma-&gt;vm_mm
+id|cpu_isset
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+id|vma-&gt;vm_mm-&gt;cpu_vm_mask
+)paren
 )paren
 (brace
 r_int
@@ -507,5 +528,43 @@ mdefine_line|#define flush_icache_user_range(vma,page,addr,len) &bslash;&n;&t;fl
 multiline_comment|/*&n; * We don&squot;t appear to need to do anything here.  In fact, if we did, we&squot;d&n; * duplicate cache flushing elsewhere performed by flush_dcache_page().&n; */
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma,page)&t;do { } while (0)
+DECL|macro|__cacheid_present
+mdefine_line|#define __cacheid_present(val)&t;&t;(val != read_cpuid(CPUID_ID))
+DECL|macro|__cacheid_vivt
+mdefine_line|#define __cacheid_vivt(val)&t;&t;((val &amp; (15 &lt;&lt; 25)) != (14 &lt;&lt; 25))
+DECL|macro|__cacheid_vipt
+mdefine_line|#define __cacheid_vipt(val)&t;&t;((val &amp; (15 &lt;&lt; 25)) == (14 &lt;&lt; 25))
+DECL|macro|__cacheid_vipt_nonaliasing
+mdefine_line|#define __cacheid_vipt_nonaliasing(val)&t;((val &amp; (15 &lt;&lt; 25 | 1 &lt;&lt; 23)) == (14 &lt;&lt; 25))
+DECL|macro|__cacheid_vipt_aliasing
+mdefine_line|#define __cacheid_vipt_aliasing(val)&t;((val &amp; (15 &lt;&lt; 25 | 1 &lt;&lt; 23)) == (14 &lt;&lt; 25 | 1 &lt;&lt; 23))
+macro_line|#if defined(CONFIG_CPU_CACHE_VIVT) &amp;&amp; !defined(CONFIG_CPU_CACHE_VIPT)
+DECL|macro|cache_is_vivt
+mdefine_line|#define cache_is_vivt()&t;&t;&t;1
+DECL|macro|cache_is_vipt
+mdefine_line|#define cache_is_vipt()&t;&t;&t;0
+DECL|macro|cache_is_vipt_nonaliasing
+mdefine_line|#define cache_is_vipt_nonaliasing()&t;0
+DECL|macro|cache_is_vipt_aliasing
+mdefine_line|#define cache_is_vipt_aliasing()&t;0
+macro_line|#elif defined(CONFIG_CPU_CACHE_VIPT)
+DECL|macro|cache_is_vivt
+mdefine_line|#define cache_is_vivt()&t;&t;&t;0
+DECL|macro|cache_is_vipt
+mdefine_line|#define cache_is_vipt()&t;&t;&t;1
+DECL|macro|cache_is_vipt_nonaliasing
+mdefine_line|#define cache_is_vipt_nonaliasing()&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int __val = read_cpuid(CPUID_CACHETYPE);&t;&bslash;&n;&t;&t;__cacheid_vipt_nonaliasing(__val);&t;&t;&t;&bslash;&n;&t;})
+DECL|macro|cache_is_vipt_aliasing
+mdefine_line|#define cache_is_vipt_aliasing()&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int __val = read_cpuid(CPUID_CACHETYPE);&t;&bslash;&n;&t;&t;__cacheid_vipt_aliasing(__val);&t;&t;&t;&t;&bslash;&n;&t;})
+macro_line|#else
+DECL|macro|cache_is_vivt
+mdefine_line|#define cache_is_vivt()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int __val = read_cpuid(CPUID_CACHETYPE);&t;&bslash;&n;&t;&t;(!__cacheid_present(__val)) || __cacheid_vivt(__val);&t;&bslash;&n;&t;})
+DECL|macro|cache_is_vipt
+mdefine_line|#define cache_is_vipt()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int __val = read_cpuid(CPUID_CACHETYPE);&t;&bslash;&n;&t;&t;__cacheid_present(__val) &amp;&amp; __cacheid_vipt(__val);&t;&bslash;&n;&t;})
+DECL|macro|cache_is_vipt_nonaliasing
+mdefine_line|#define cache_is_vipt_nonaliasing()&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int __val = read_cpuid(CPUID_CACHETYPE);&t;&bslash;&n;&t;&t;__cacheid_present(__val) &amp;&amp;&t;&t;&t;&t;&bslash;&n;&t;&t; __cacheid_vipt_nonaliasing(__val);&t;&t;&t;&bslash;&n;&t;})
+DECL|macro|cache_is_vipt_aliasing
+mdefine_line|#define cache_is_vipt_aliasing()&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int __val = read_cpuid(CPUID_CACHETYPE);&t;&bslash;&n;&t;&t;__cacheid_present(__val) &amp;&amp;&t;&t;&t;&t;&bslash;&n;&t;&t; __cacheid_vipt_aliasing(__val);&t;&t;&t;&bslash;&n;&t;})
+macro_line|#endif
 macro_line|#endif
 eof

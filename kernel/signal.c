@@ -621,7 +621,6 @@ suffix:semicolon
 )brace
 DECL|function|__sigqueue_alloc
 r_static
-r_inline
 r_struct
 id|sigqueue
 op_star
@@ -3675,6 +3674,8 @@ r_struct
 id|task_struct
 op_star
 id|p
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|retval

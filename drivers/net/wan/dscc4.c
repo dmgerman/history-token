@@ -1663,10 +1663,6 @@ c_cond
 id|skb
 )paren
 (brace
-id|skb-&gt;dev
-op_assign
-id|dev
-suffix:semicolon
 id|skb-&gt;protocol
 op_assign
 id|hdlc_type_trans
@@ -1676,10 +1672,6 @@ id|skb
 comma
 id|dev
 )paren
-suffix:semicolon
-id|skb-&gt;mac.raw
-op_assign
-id|skb-&gt;data
 suffix:semicolon
 id|rx_fd-&gt;data
 op_assign

@@ -4865,11 +4865,6 @@ id|TILE_SHIFT
 op_plus
 id|i
 suffix:semicolon
-id|fb_info.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|fb_info.fbops
 op_assign
 op_amp

@@ -353,6 +353,14 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|clustered_apic_check
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|check_nmi_watchdog
 c_func
@@ -393,8 +401,6 @@ mdefine_line|#define NMI_LOCAL_APIC&t;2
 DECL|macro|NMI_INVALID
 mdefine_line|#define NMI_INVALID&t;3
 macro_line|#endif /* CONFIG_X86_LOCAL_APIC */
-DECL|macro|clustered_apic_mode
-mdefine_line|#define clustered_apic_mode 0
 DECL|macro|esr_disable
 mdefine_line|#define esr_disable 0
 r_extern

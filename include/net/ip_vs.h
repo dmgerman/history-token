@@ -4,7 +4,7 @@ DECL|macro|_IP_VS_H
 mdefine_line|#define _IP_VS_H
 macro_line|#include &lt;asm/types.h&gt;&t;&t;/* For __uXX types */
 DECL|macro|IP_VS_VERSION_CODE
-mdefine_line|#define IP_VS_VERSION_CODE&t;0x010200
+mdefine_line|#define IP_VS_VERSION_CODE&t;0x010201
 DECL|macro|NVERSION
 mdefine_line|#define NVERSION(version)&t;&t;&t;&bslash;&n;&t;(version &gt;&gt; 16) &amp; 0xFF,&t;&t;&t;&bslash;&n;&t;(version &gt;&gt; 8) &amp; 0xFF,&t;&t;&t;&bslash;&n;&t;version &amp; 0xFF
 multiline_comment|/*&n; *      Virtual Service Flags&n; */

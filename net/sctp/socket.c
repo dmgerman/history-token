@@ -16109,7 +16109,7 @@ id|skb
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Clean up any messages pending delivery due to partial&n;&t; * delivery.   Three cases:&n;&t; * 1) No partial deliver;  no work.&n;&t; * 2) Peeling off partial delivery; keep pd_lobby in new pd_lobby.&n;&t; * 3) Peeling off non-partial delivery; move pd_lobby to recieve_queue.&n;&t; */
+multiline_comment|/* Clean up any messages pending delivery due to partial&n;&t; * delivery.   Three cases:&n;&t; * 1) No partial deliver;  no work.&n;&t; * 2) Peeling off partial delivery; keep pd_lobby in new pd_lobby.&n;&t; * 3) Peeling off non-partial delivery; move pd_lobby to receive_queue.&n;&t; */
 id|skb_queue_head_init
 c_func
 (paren

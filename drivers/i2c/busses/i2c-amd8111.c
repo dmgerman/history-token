@@ -94,6 +94,7 @@ DECL|macro|AMD_EC_CMD_QR
 mdefine_line|#define AMD_EC_CMD_QR&t;0x84&t;/* query EC */
 multiline_comment|/*&n; * ACPI 2.0 chapter 13 access of registers of the EC&n; */
 DECL|function|amd_ec_wait_write
+r_static
 r_int
 r_int
 id|amd_ec_wait_write
@@ -160,6 +161,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|amd_ec_wait_read
+r_static
 r_int
 r_int
 id|amd_ec_wait_read
@@ -227,6 +229,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|amd_ec_read
+r_static
 r_int
 r_int
 id|amd_ec_read
@@ -322,6 +325,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|amd_ec_write
+r_static
 r_int
 r_int
 id|amd_ec_write
@@ -484,6 +488,7 @@ mdefine_line|#define AMD_SMB_PRTCL_I2C_BLOCK_DATA&t;0x4a
 DECL|macro|AMD_SMB_PRTCL_PEC
 mdefine_line|#define AMD_SMB_PRTCL_PEC&t;&t;0x80
 DECL|function|amd8111_access
+r_static
 id|s32
 id|amd8111_access
 c_func
@@ -1330,6 +1335,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|amd8111_func
+r_static
 id|u32
 id|amd8111_func
 c_func

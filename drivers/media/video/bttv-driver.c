@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    $Id: bttv-driver.c,v 1.22 2004/10/12 07:33:22 kraxel Exp $&n;&n;    bttv - Bt848 frame grabber driver&n;    &n;    Copyright (C) 1996,97,98 Ralph  Metzler &lt;rjkm@thp.uni-koeln.de&gt;&n;                           &amp; Marcus Metzler &lt;mocm@thp.uni-koeln.de&gt;&n;    (c) 1999-2002 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;    &n;    some v4l2 code lines are taken from Justin&squot;s bttv2 driver which is&n;    (c) 2000 Justin Schoeman &lt;justin@suntiger.ee.up.ac.za&gt;&n;    &n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;    &n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;    &n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    $Id: bttv-driver.c,v 1.23 2004/10/13 10:39:00 kraxel Exp $&n;&n;    bttv - Bt848 frame grabber driver&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler &lt;rjkm@thp.uni-koeln.de&gt;&n;                           &amp; Marcus Metzler &lt;mocm@thp.uni-koeln.de&gt;&n;    (c) 1999-2002 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    some v4l2 code lines are taken from Justin&squot;s bttv2 driver which is&n;    (c) 2000 Justin Schoeman &lt;justin@suntiger.ee.up.ac.za&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -3249,7 +3249,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ----------------------------------------------------------------------- */
 multiline_comment|/* If Bt848a or Bt849, use PLL for PAL/SECAM and crystal for NTSC          */
-multiline_comment|/* Frequency = (F_input / PLL_X) * PLL_I.PLL_F/PLL_C &n;   PLL_X = Reference pre-divider (0=1, 1=2) &n;   PLL_C = Post divider (0=6, 1=4)&n;   PLL_I = Integer input &n;   PLL_F = Fractional input &n;   &n;   F_input = 28.636363 MHz: &n;   PAL (CLKx2 = 35.46895 MHz): PLL_X = 1, PLL_I = 0x0E, PLL_F = 0xDCF9, PLL_C = 0&n;*/
+multiline_comment|/* Frequency = (F_input / PLL_X) * PLL_I.PLL_F/PLL_C&n;   PLL_X = Reference pre-divider (0=1, 1=2)&n;   PLL_C = Post divider (0=6, 1=4)&n;   PLL_I = Integer input&n;   PLL_F = Fractional input&n;&n;   F_input = 28.636363 MHz:&n;   PAL (CLKx2 = 35.46895 MHz): PLL_X = 1, PLL_I = 0x0E, PLL_F = 0xDCF9, PLL_C = 0&n;*/
 DECL|function|set_pll_freq
 r_static
 r_void
@@ -7462,16 +7462,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|bttv_call_i2c_clients
-c_func
-(paren
-id|btv
-comma
-id|cmd
-comma
-id|v
-)paren
-suffix:semicolon
 id|btv-&gt;tvnorm
 op_assign
 id|v-&gt;norm

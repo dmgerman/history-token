@@ -135,7 +135,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * fls: find last bit set.&n; */
 DECL|function|generic_fls
-r_extern
+r_static
 id|__inline__
 r_int
 id|generic_fls
@@ -264,7 +264,7 @@ id|r
 suffix:semicolon
 )brace
 DECL|function|get_bitmask_order
-r_extern
+r_static
 id|__inline__
 r_int
 id|get_bitmask_order

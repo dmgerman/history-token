@@ -106,8 +106,6 @@ mdefine_line|#define PHY_INTERRUPT&t;&t;12&t;/* = IRQ6&t;&t;&t;*/
 DECL|macro|IDE0_INTERRUPT
 mdefine_line|#define&t;IDE0_INTERRUPT&t;&t;13
 macro_line|#ifdef CONFIG_IDE
-DECL|macro|ide_request_irq
-mdefine_line|#define ide_request_irq(irq,hand,flg,dev,id)    &bslash;&n;        request_8xxirq((irq),(hand),(flg),(dev),(id))
 macro_line|#endif
 multiline_comment|/*-----------------------------------------------------------------------&n; * CPM Ethernet through SCCx.&n; *-----------------------------------------------------------------------&n; *&n; */
 multiline_comment|/***  TQM823L, TQM850L  ***********************************************/

@@ -853,24 +853,10 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* We only have one iommu table on the mac for now, which makes&n;&t; * things simple. Setup all PCI devices to point to this table&n;&t; */
-r_while
-c_loop
-(paren
-(paren
-id|dev
-op_assign
-id|pci_find_device
+id|for_each_pci_dev
 c_func
 (paren
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
 id|dev
-)paren
-)paren
-op_ne
-l_int|NULL
 )paren
 (brace
 multiline_comment|/* We must use pci_device_to_OF_node() to make sure that&n;&t;&t; * we get the real &quot;final&quot; pointer to the device in the&n;&t;&t; * pci_dev sysdata and not the temporary PHB one&n;&t;&t; */

@@ -93,7 +93,7 @@ id|pid_max_min
 comma
 id|pid_max_max
 suffix:semicolon
-macro_line|#if defined(CONFIG_X86_LOCAL_APIC) &amp;&amp; defined(__i386__)
+macro_line|#if defined(CONFIG_X86_LOCAL_APIC) &amp;&amp; defined(CONFIG_X86)
 DECL|variable|unknown_nmi_panic
 r_int
 id|unknown_nmi_panic
@@ -1489,7 +1489,7 @@ comma
 dot
 id|maxlen
 op_assign
-id|KMOD_PATH_LEN
+id|HOTPLUG_PATH_LEN
 comma
 dot
 id|mode
@@ -2472,7 +2472,7 @@ id|proc_dointvec
 comma
 )brace
 comma
-macro_line|#if defined(CONFIG_X86_LOCAL_APIC) &amp;&amp; defined(__i386__)
+macro_line|#if defined(CONFIG_X86_LOCAL_APIC) &amp;&amp; defined(CONFIG_X86)
 (brace
 dot
 id|ctl_name
@@ -3800,6 +3800,7 @@ id|proc_dointvec
 comma
 )brace
 comma
+macro_line|#ifdef CONFIG_DNOTIFY
 (brace
 dot
 id|ctl_name
@@ -3838,6 +3839,7 @@ id|proc_dointvec
 comma
 )brace
 comma
+macro_line|#endif
 (brace
 dot
 id|ctl_name

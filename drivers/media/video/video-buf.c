@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: video-buf.c,v 1.12 2004/10/11 14:53:13 kraxel Exp $&n; *&n; * generic helper functions for video4linux capture buffers, to handle&n; * memory management and PCI DMA.  Right now bttv + saa7134 use it.&n; *&n; * The functions expect the hardware being able to scatter gatter&n; * (i.e. the buffers are not linear in physical memory, but fragmented&n; * into PAGE_SIZE chunks).  They also assume the driver does not need&n; * to touch the video data (thus it is probably not useful for USB 1.1&n; * as data often must be uncompressed by the drivers).&n; * &n; * (c) 2001-2004 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SUSE Labs]&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; */
+multiline_comment|/*&n; * $Id: video-buf.c,v 1.13 2004/10/13 10:39:00 kraxel Exp $&n; *&n; * generic helper functions for video4linux capture buffers, to handle&n; * memory management and PCI DMA.  Right now bttv + saa7134 use it.&n; *&n; * The functions expect the hardware being able to scatter gatter&n; * (i.e. the buffers are not linear in physical memory, but fragmented&n; * into PAGE_SIZE chunks).  They also assume the driver does not need&n; * to touch the video data (thus it is probably not useful for USB 1.1&n; * as data often must be uncompressed by the drivers).&n; *&n; * (c) 2001-2004 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SUSE Labs]&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -5099,7 +5099,7 @@ op_member_access_from_pointer
 id|buf_release
 c_func
 (paren
-id|vma-&gt;vm_file
+id|vma-&gt;vm_file-&gt;private_data
 comma
 id|map-&gt;q-&gt;bufs
 (braket

@@ -7,7 +7,7 @@ mdefine_line|#define IO_SPACE_LIMIT 0xffff
 multiline_comment|/*&n; * Generic virtual read/write&n; */
 multiline_comment|/*#define outsw   __arch_writesw&n;#define outsl   __arch_writesl&n;#define outsb   __arch_writesb&n;#define insb    __arch_readsb&n;#define insw    __arch_readsw&n;#define insl    __arch_readsl*/
 DECL|macro|__io
-mdefine_line|#define __io(a)&t;&t;&t;(a)
+mdefine_line|#define __io(a)&t;&t;&t;((void __iomem *)(a))
 DECL|macro|__mem_pci
 mdefine_line|#define __mem_pci(a)            (a) 
 macro_line|#endif

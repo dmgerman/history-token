@@ -28,6 +28,7 @@ macro_line|#include &lt;linux/capi.h&gt;
 macro_line|#include &lt;linux/kernelcapi.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/isdn/capiutil.h&gt;
 macro_line|#include &lt;linux/isdn/capicmd.h&gt;
@@ -99,29 +100,41 @@ op_assign
 id|CAPINC_NR_PORTS
 suffix:semicolon
 macro_line|#endif /* CONFIG_ISDN_CAPI_MIDDLEWARE */
-id|MODULE_PARM
+id|module_param_named
 c_func
 (paren
+id|major
+comma
 id|capi_major
 comma
-l_string|&quot;i&quot;
+id|uint
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_CAPI_MIDDLEWARE
-id|MODULE_PARM
+id|module_param_named
 c_func
 (paren
+id|ttymajor
+comma
 id|capi_ttymajor
 comma
-l_string|&quot;i&quot;
+id|uint
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_named
 c_func
 (paren
+id|ttyminors
+comma
 id|capi_ttyminors
 comma
-l_string|&quot;i&quot;
+id|uint
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_ISDN_CAPI_MIDDLEWARE */
