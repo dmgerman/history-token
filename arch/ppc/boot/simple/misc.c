@@ -240,11 +240,6 @@ id|TotalMemory
 op_assign
 l_int|0
 suffix:semicolon
-id|serial_fixups
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SERIAL_8250_CONSOLE
 id|com_port
 op_assign
@@ -1158,6 +1153,21 @@ r_return
 id|rec
 suffix:semicolon
 )brace
+r_void
+id|__attribute__
+(paren
+(paren
+id|weak
+)paren
+)paren
+DECL|function|board_isa_init
+id|board_isa_init
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 multiline_comment|/* Allow decompress_kernel to be hooked into.  This is the default. */
 r_void
 op_star
@@ -1191,6 +1201,11 @@ op_star
 id|ign2
 )paren
 (brace
+id|board_isa_init
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|decompress_kernel
 c_func

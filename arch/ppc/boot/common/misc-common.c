@@ -2398,6 +2398,26 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Very simple inb/outb routines.  We declare ISA_io to be 0 above, and&n; * then modify it on platforms which need to.  We do it like this&n; * because on some platforms we give inb/outb an exact location, and&n; * on others it&squot;s an offset from a given location. -- Tom&n; */
+DECL|function|ISA_init
+r_void
+id|ISA_init
+c_func
+(paren
+r_int
+r_int
+id|base
+)paren
+(brace
+id|ISA_io
+op_assign
+(paren
+r_int
+r_char
+op_star
+)paren
+id|base
+suffix:semicolon
+)brace
 r_void
 DECL|function|outb
 id|outb
