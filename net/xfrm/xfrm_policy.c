@@ -2509,13 +2509,6 @@ id|polp
 op_assign
 id|pol-&gt;next
 suffix:semicolon
-id|atomic_dec
-c_func
-(paren
-op_amp
-id|pol-&gt;refcnt
-)paren
-suffix:semicolon
 r_return
 id|pol
 suffix:semicolon
@@ -2794,6 +2787,12 @@ c_func
 (paren
 op_amp
 id|xfrm_policy_lock
+)paren
+suffix:semicolon
+id|xfrm_pol_put
+c_func
+(paren
+id|newp
 )paren
 suffix:semicolon
 )brace

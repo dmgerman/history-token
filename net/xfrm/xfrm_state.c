@@ -4017,6 +4017,12 @@ comma
 id|pol
 )paren
 suffix:semicolon
+id|xfrm_pol_put
+c_func
+(paren
+id|pol
+)paren
+suffix:semicolon
 id|err
 op_assign
 l_int|0
