@@ -4802,7 +4802,7 @@ op_star
 id|ka
 op_assign
 op_amp
-id|current-&gt;sig-&gt;action
+id|current-&gt;sighand-&gt;action
 (braket
 id|signr
 op_minus
@@ -4967,7 +4967,7 @@ suffix:semicolon
 id|ka
 op_assign
 op_amp
-id|current-&gt;sig-&gt;action
+id|current-&gt;sighand-&gt;action
 (braket
 id|signr
 op_minus
@@ -5083,9 +5083,9 @@ id|SIGSTOP
 suffix:colon
 (brace
 r_struct
-id|signal_struct
+id|sighand_struct
 op_star
-id|sig
+id|sighand
 suffix:semicolon
 id|current-&gt;state
 op_assign
@@ -5095,18 +5095,18 @@ id|current-&gt;exit_code
 op_assign
 id|signr
 suffix:semicolon
-id|sig
+id|sighand
 op_assign
-id|current-&gt;parent-&gt;sig
+id|current-&gt;parent-&gt;sighand
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|sig
+id|sighand
 op_logical_and
 op_logical_neg
 (paren
-id|sig-&gt;action
+id|sighand-&gt;action
 (braket
 id|SIGCHLD
 op_minus
@@ -5184,15 +5184,10 @@ suffix:semicolon
 multiline_comment|/* FALLTHRU */
 r_default
 suffix:colon
-id|sig_exit
+id|do_group_exit
 c_func
 (paren
 id|signr
-comma
-id|exit_code
-comma
-op_amp
-id|info
 )paren
 suffix:semicolon
 multiline_comment|/* NOTREACHED */
