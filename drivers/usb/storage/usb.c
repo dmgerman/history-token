@@ -3075,7 +3075,7 @@ suffix:semicolon
 multiline_comment|/* now register&t;*/
 id|us-&gt;host
 op_assign
-id|scsi_register
+id|scsi_host_alloc
 c_func
 (paren
 op_amp
@@ -3403,7 +3403,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* finish SCSI host removal sequence */
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|us-&gt;host

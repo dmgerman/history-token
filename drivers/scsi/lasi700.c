@@ -617,7 +617,7 @@ comma
 id|driver_name
 )paren
 suffix:semicolon
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|host

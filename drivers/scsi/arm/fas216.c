@@ -10870,6 +10870,12 @@ comma
 id|CMD_RESETCHIP
 )paren
 suffix:semicolon
+id|scsi_host_put
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * fas216_release - release all resources for FAS/NCR/AMD SCSI ic.&n; * @host: a driver-specific filled-out structure&n; *&n; * release all resources and put everything to bed for FAS/NCR/AMD SCSI ic.&n; */
 DECL|function|fas216_release
