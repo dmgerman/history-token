@@ -2322,6 +2322,14 @@ comma
 id|dev
 )paren
 suffix:semicolon
+r_class
+op_assign
+id|dev
+op_member_access_from_pointer
+r_class
+op_rshift
+l_int|8
+suffix:semicolon
 r_switch
 c_cond
 (paren
