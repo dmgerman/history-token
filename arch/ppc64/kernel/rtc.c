@@ -30,23 +30,6 @@ id|piranha_simulator
 suffix:semicolon
 multiline_comment|/*&n; *&t;We sponge a minor off of the misc major. No need slurping&n; *&t;up another valuable major dev number for this. If you add&n; *&t;an ioctl, make sure you don&squot;t conflict with SPARC&squot;s RTC&n; *&t;ioctls.&n; */
 r_static
-id|loff_t
-id|rtc_llseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-suffix:semicolon
-r_static
 id|ssize_t
 id|rtc_read
 c_func
@@ -57,6 +40,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -169,29 +153,6 @@ l_int|31
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Now all the various file operations that we export.&n; */
-DECL|function|rtc_llseek
-r_static
-id|loff_t
-id|rtc_llseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
 DECL|function|rtc_read
 r_static
 id|ssize_t
@@ -204,6 +165,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -340,6 +302,7 @@ comma
 (paren
 r_struct
 id|rtc_time
+id|__user
 op_star
 )paren
 id|arg
@@ -526,6 +489,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -584,6 +548,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -619,6 +584,14 @@ op_star
 id|file
 )paren
 (brace
+id|nonseekable_open
+c_func
+(paren
+id|inode
+comma
+id|file
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -660,7 +633,7 @@ comma
 dot
 id|llseek
 op_assign
-id|rtc_llseek
+id|no_llseek
 comma
 dot
 id|read

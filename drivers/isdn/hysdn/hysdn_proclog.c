@@ -589,21 +589,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_amp
-id|file-&gt;f_pos
-op_ne
-id|off
-)paren
-multiline_comment|/* fs error check */
-r_return
-(paren
-op_minus
-id|ESPIPE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|count
 OG
 (paren
@@ -1238,8 +1223,12 @@ c_func
 )paren
 suffix:semicolon
 r_return
+id|nonseekable_open
+c_func
 (paren
-l_int|0
+id|ino
+comma
+id|filep
 )paren
 suffix:semicolon
 )brace

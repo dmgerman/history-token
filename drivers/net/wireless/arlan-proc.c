@@ -1586,6 +1586,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_int
@@ -2863,6 +2867,8 @@ comma
 id|buffer
 comma
 id|lenp
+comma
+id|ppos
 )paren
 suffix:semicolon
 r_else
@@ -2907,6 +2913,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_int
@@ -3071,6 +3081,8 @@ comma
 id|buffer
 comma
 id|lenp
+comma
+id|ppos
 )paren
 suffix:semicolon
 r_return
@@ -3103,6 +3115,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_int
@@ -3237,6 +3253,8 @@ comma
 id|buffer
 comma
 id|lenp
+comma
+id|ppos
 )paren
 suffix:semicolon
 r_return
@@ -3269,6 +3287,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_int
@@ -3403,6 +3425,8 @@ comma
 id|buffer
 comma
 id|lenp
+comma
+id|ppos
 )paren
 suffix:semicolon
 r_return
@@ -3435,6 +3459,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_int
@@ -3569,6 +3597,8 @@ comma
 id|buffer
 comma
 id|lenp
+comma
+id|ppos
 )paren
 suffix:semicolon
 r_return
@@ -3610,6 +3640,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_int
@@ -3710,6 +3744,8 @@ comma
 id|buffer
 comma
 id|lenp
+comma
+id|ppos
 )paren
 suffix:semicolon
 )brace
@@ -3739,6 +3775,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_int
@@ -3841,6 +3881,8 @@ comma
 id|buffer
 comma
 id|lenp
+comma
+id|ppos
 )paren
 suffix:semicolon
 )brace

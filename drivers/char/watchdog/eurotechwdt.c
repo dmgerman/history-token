@@ -495,19 +495,6 @@ op_star
 id|ppos
 )paren
 (brace
-multiline_comment|/*  Can&squot;t seek (pwrite) on this device  */
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -903,7 +890,13 @@ c_func
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|nonseekable_open
+c_func
+(paren
+id|inode
+comma
+id|file
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * eurwdt_release:&n; * @inode: inode to board&n; * @file: file handle to board&n; *&n; * The watchdog has a configurable API. There is a religious dispute&n; * between people who want their watchdog to be able to shut down and&n; * those who want to be sure if the watchdog manager dies the machine&n; * reboots. In the former case we disable the counters, in the latter&n; * case you have to open it again very soon.&n; */

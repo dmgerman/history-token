@@ -166,6 +166,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 suffix:semicolon
 r_static
@@ -193,6 +197,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 suffix:semicolon
 DECL|variable|appldata_sysctl_header
@@ -1104,6 +1112,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_int
@@ -1122,7 +1134,8 @@ op_logical_neg
 op_star
 id|lenp
 op_logical_or
-id|filp-&gt;f_pos
+op_star
+id|ppos
 )paren
 (brace
 op_star
@@ -1279,7 +1292,8 @@ id|lenp
 op_assign
 id|len
 suffix:semicolon
-id|filp-&gt;f_pos
+op_star
+id|ppos
 op_add_assign
 id|len
 suffix:semicolon
@@ -1314,6 +1328,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_int
@@ -1334,7 +1352,8 @@ op_logical_neg
 op_star
 id|lenp
 op_logical_or
-id|filp-&gt;f_pos
+op_star
+id|ppos
 )paren
 (brace
 op_star
@@ -1505,7 +1524,8 @@ id|lenp
 op_assign
 id|len
 suffix:semicolon
-id|filp-&gt;f_pos
+op_star
+id|ppos
 op_add_assign
 id|len
 suffix:semicolon
@@ -1540,6 +1560,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_struct
@@ -1682,7 +1706,8 @@ op_logical_neg
 op_star
 id|lenp
 op_logical_or
-id|filp-&gt;f_pos
+op_star
+id|ppos
 )paren
 (brace
 op_star
@@ -2032,7 +2057,8 @@ id|lenp
 op_assign
 id|len
 suffix:semicolon
-id|filp-&gt;f_pos
+op_star
+id|ppos
 op_add_assign
 id|len
 suffix:semicolon

@@ -305,7 +305,13 @@ c_func
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|nonseekable_open
+c_func
+(paren
+id|inode
+comma
+id|file
+)paren
 suffix:semicolon
 )brace
 DECL|function|scx200_wdt_release
@@ -456,18 +462,6 @@ op_star
 id|ppos
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
 multiline_comment|/* check for a magic close character */
 r_if
 c_cond

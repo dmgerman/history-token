@@ -334,6 +334,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 suffix:semicolon
 macro_line|#endif

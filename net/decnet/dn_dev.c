@@ -615,6 +615,9 @@ op_star
 comma
 r_int
 op_star
+comma
+id|loff_t
+op_star
 )paren
 suffix:semicolon
 r_static
@@ -1678,6 +1681,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 macro_line|#ifdef CONFIG_DECNET_ROUTER
@@ -1734,6 +1741,8 @@ comma
 id|buffer
 comma
 id|lenp
+comma
+id|ppos
 )paren
 suffix:semicolon
 r_if

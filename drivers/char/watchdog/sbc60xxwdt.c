@@ -355,21 +355,6 @@ op_star
 id|ppos
 )paren
 (brace
-multiline_comment|/* We can&squot;t seek */
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
 multiline_comment|/* See if we got the magic character &squot;V&squot; and reload the timer */
 r_if
 c_cond
@@ -473,6 +458,14 @@ op_star
 id|file
 )paren
 (brace
+id|nonseekable_open
+c_func
+(paren
+id|inode
+comma
+id|file
+)paren
+suffix:semicolon
 multiline_comment|/* Just in case we&squot;re already talking to someone... */
 r_if
 c_cond

@@ -345,7 +345,13 @@ c_func
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|nonseekable_open
+c_func
+(paren
+id|inode
+comma
+id|file
+)paren
 suffix:semicolon
 )brace
 DECL|function|softdog_release
@@ -438,19 +444,6 @@ op_star
 id|ppos
 )paren
 (brace
-multiline_comment|/*  Can&squot;t seek (pwrite) on this device  */
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Refresh the timer.&n;&t; */
 r_if
 c_cond
