@@ -39,7 +39,37 @@ DECL|typedef|pxa_dma_desc
 )brace
 id|pxa_dma_desc
 suffix:semicolon
-multiline_comment|/*&n; * DMA registration&n; */
+macro_line|#if defined(CONFIG_PXA27x)
+DECL|macro|PXA_DMA_CHANNELS
+mdefine_line|#define PXA_DMA_CHANNELS&t;32
+DECL|macro|PXA_DMA_NBCH
+mdefine_line|#define PXA_DMA_NBCH(prio)&t;((prio == DMA_PRIO_LOW) ? 16 : 8)
+r_typedef
+r_enum
+(brace
+DECL|enumerator|DMA_PRIO_HIGH
+id|DMA_PRIO_HIGH
+op_assign
+l_int|0
+comma
+DECL|enumerator|DMA_PRIO_MEDIUM
+id|DMA_PRIO_MEDIUM
+op_assign
+l_int|8
+comma
+DECL|enumerator|DMA_PRIO_LOW
+id|DMA_PRIO_LOW
+op_assign
+l_int|16
+DECL|typedef|pxa_dma_prio
+)brace
+id|pxa_dma_prio
+suffix:semicolon
+macro_line|#elif defined(CONFIG_PXA25x)
+DECL|macro|PXA_DMA_CHANNELS
+mdefine_line|#define PXA_DMA_CHANNELS&t;16
+DECL|macro|PXA_DMA_NBCH
+mdefine_line|#define PXA_DMA_NBCH(prio)&t;((prio == DMA_PRIO_LOW) ? 8 : 4)
 r_typedef
 r_enum
 (brace
@@ -61,6 +91,8 @@ DECL|typedef|pxa_dma_prio
 )brace
 id|pxa_dma_prio
 suffix:semicolon
+macro_line|#endif
+multiline_comment|/*&n; * DMA registration&n; */
 r_int
 id|pxa_request_dma
 (paren
