@@ -681,7 +681,6 @@ id|__write_unlock
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Hard IRQ locking */
-macro_line|#ifdef CONFIG_SMP
 DECL|variable|synchronize_irq
 id|EXPORT_SYMBOL
 c_func
@@ -689,7 +688,6 @@ c_func
 id|synchronize_irq
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#if defined(CONFIG_MCOUNT)
 r_extern
 r_void
@@ -704,16 +702,6 @@ id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|mcount
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Uniprocessor clock frequency */
-macro_line|#ifndef CONFIG_SMP
-DECL|variable|up_clock_tick
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|up_clock_tick
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -806,7 +794,6 @@ id|_do_write_unlock
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SMP
 DECL|variable|smp_call_function
 id|EXPORT_SYMBOL
 c_func
@@ -814,7 +801,21 @@ c_func
 id|smp_call_function
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* CONFIG_SMP */
+multiline_comment|/* Uniprocessor clock frequency */
+macro_line|#ifndef CONFIG_SMP
+r_extern
+r_int
+r_int
+id|up_clock_tick
+suffix:semicolon
+DECL|variable|up_clock_tick
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|up_clock_tick
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* semaphores */
 DECL|variable|down
