@@ -9464,6 +9464,12 @@ id|err
 r_int
 id|j
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|delta
+)paren
 id|pmc-&gt;mca_sfcount
 (braket
 id|sfmode
