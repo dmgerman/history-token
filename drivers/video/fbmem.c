@@ -6225,6 +6225,10 @@ id|fb_info-&gt;pixmap.scan_align
 op_assign
 l_int|1
 suffix:semicolon
+id|fb_info-&gt;pixmap.access_align
+op_assign
+l_int|4
+suffix:semicolon
 id|fb_info-&gt;pixmap.flags
 op_assign
 id|FB_PIXMAP_DEFAULT
@@ -6292,6 +6296,10 @@ suffix:semicolon
 id|fb_info-&gt;sprite.scan_align
 op_assign
 l_int|1
+suffix:semicolon
+id|fb_info-&gt;sprite.access_align
+op_assign
+l_int|4
 suffix:semicolon
 id|fb_info-&gt;sprite.flags
 op_assign
