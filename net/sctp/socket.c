@@ -11411,11 +11411,10 @@ id|sk
 op_member_access_from_pointer
 id|bind_hash
 suffix:semicolon
-id|hlist_del
+id|__sk_del_bind_node
 c_func
 (paren
-op_amp
-id|sk-&gt;sk_bind_node
+id|sk
 )paren
 suffix:semicolon
 id|sctp_sk
