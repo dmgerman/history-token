@@ -1327,6 +1327,12 @@ op_star
 id|dma_mask
 suffix:semicolon
 multiline_comment|/* dma mask (if dma&squot;able device) */
+DECL|member|dma_pools
+r_struct
+id|list_head
+id|dma_pools
+suffix:semicolon
+multiline_comment|/* dma pools (if dma&squot;ble) */
 DECL|member|release
 r_void
 (paren
