@@ -1032,7 +1032,6 @@ c_loop
 id|count
 op_decrement
 )paren
-(brace
 op_star
 id|buf
 op_increment
@@ -1046,7 +1045,6 @@ op_star
 )paren
 id|portp
 suffix:semicolon
-)brace
 )brace
 )brace
 DECL|function|_insw

@@ -1,5 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/m32r/kernel/io_oaks32r.c&n; *&n; *  Typical I/O routines for OAKS32R board.&n; *&n; *  Copyright (c) 2001-2004  Hiroyuki Kondo, Hirokazu Takata,&n; *                            Hitoshi Yamamoto, Mamoru Sakugawa&n; */
-multiline_comment|/* $Id$ */
+multiline_comment|/*&n; *  linux/arch/m32r/kernel/io_oaks32r.c&n; *&n; *  Typical I/O routines for OAKS32R board.&n; *&n; *  Copyright (c) 2001-2004  Hiroyuki Kondo, Hirokazu Takata,&n; *                           Hitoshi Yamamoto, Mamoru Sakugawa&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/m32r.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -8,7 +7,7 @@ DECL|macro|PORT2ADDR
 mdefine_line|#define PORT2ADDR(port)  _port2addr(port)
 DECL|function|_port2addr
 r_static
-id|__inline__
+r_inline
 r_void
 op_star
 id|_port2addr
@@ -33,7 +32,7 @@ suffix:semicolon
 )brace
 DECL|function|_port2addr_ne
 r_static
-id|__inline__
+r_inline
 r_void
 op_star
 id|_port2addr_ne
@@ -64,7 +63,7 @@ suffix:semicolon
 )brace
 DECL|function|delay
 r_static
-id|__inline__
+r_inline
 r_void
 id|delay
 c_func
@@ -88,7 +87,7 @@ DECL|macro|PORT2ADDR_NE
 mdefine_line|#define PORT2ADDR_NE(port)  _port2addr_ne(port)
 DECL|function|_ne_inb
 r_static
-id|__inline__
+r_inline
 r_int
 r_char
 id|_ne_inb
@@ -116,7 +115,7 @@ suffix:semicolon
 )brace
 DECL|function|_ne_inw
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 id|_ne_inw
@@ -167,7 +166,7 @@ suffix:semicolon
 )brace
 DECL|function|_ne_insb
 r_static
-id|__inline__
+r_inline
 r_void
 id|_ne_insb
 c_func
@@ -218,7 +217,7 @@ suffix:semicolon
 )brace
 DECL|function|_ne_outb
 r_static
-id|__inline__
+r_inline
 r_void
 id|_ne_outb
 c_func
@@ -250,7 +249,7 @@ suffix:semicolon
 )brace
 DECL|function|_ne_outw
 r_static
-id|__inline__
+r_inline
 r_void
 id|_ne_outw
 c_func
@@ -952,7 +951,6 @@ c_loop
 id|count
 op_decrement
 )paren
-(brace
 op_star
 id|buf
 op_increment
@@ -966,7 +964,6 @@ op_star
 )paren
 id|portp
 suffix:semicolon
-)brace
 )brace
 )brace
 DECL|function|_insw
@@ -1210,7 +1207,6 @@ c_loop
 id|count
 op_decrement
 )paren
-(brace
 op_star
 (paren
 r_volatile
@@ -1224,7 +1220,6 @@ op_star
 id|buf
 op_increment
 suffix:semicolon
-)brace
 )brace
 )brace
 DECL|function|_outsw
@@ -1312,7 +1307,6 @@ c_loop
 id|count
 op_decrement
 )paren
-(brace
 op_star
 (paren
 r_volatile
@@ -1326,7 +1320,6 @@ op_star
 id|buf
 op_increment
 suffix:semicolon
-)brace
 )brace
 )brace
 DECL|function|_outsl
@@ -1375,7 +1368,6 @@ c_loop
 id|count
 op_decrement
 )paren
-(brace
 op_star
 (paren
 r_volatile
@@ -1389,6 +1381,5 @@ op_star
 id|buf
 op_increment
 suffix:semicolon
-)brace
 )brace
 eof
