@@ -4621,6 +4621,27 @@ r_else
 r_if
 c_cond
 (paren
+id|media
+op_eq
+l_int|0xf0
+op_logical_and
+id|FAT_FIRST_ENT
+c_func
+(paren
+id|sb
+comma
+l_int|0xf8
+)paren
+op_eq
+id|first
+)paren
+(brace
+multiline_comment|/* bad, reported with a MO disk on win95/me */
+)brace
+r_else
+r_if
+c_cond
+(paren
 id|first
 op_eq
 l_int|0
