@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * &t;NET3&t;Protocol independent device support routines.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Derived from the non IP parts of dev.c 1.0.19&n; * &t;&t;Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&n; *&t;Additional Authors:&n; *&t;&t;Florian la Roche &lt;rzsfl@rz.uni-sb.de&gt;&n; *&t;&t;Alan Cox &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;David Hinds &lt;dhinds@allegro.stanford.edu&gt;&n; *&t;&t;Alexey Kuznetsov &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&t;&t;Adam Sulmicki &lt;adam@cfar.umd.edu&gt;&n; *              Pekka Riikonen &lt;priikone@poesidon.pspt.fi&gt;&n; *&n; *&t;Changes:&n; *              D.J. Barrow     :       Fixed bug where dev-&gt;refcnt gets set to 2&n; *                                      if register_netdev gets called before&n; *                                      net_dev_init &amp; also removed a few lines&n; *                                      of code in the process.&n; *&t;&t;Alan Cox&t;:&t;device private ioctl copies fields back.&n; *&t;&t;Alan Cox&t;:&t;Transmit queue code does relevant stunts to&n; *&t;&t;&t;&t;&t;keep the queue safe.&n; *&t;&t;Alan Cox&t;:&t;Fixed double lock.&n; *&t;&t;Alan Cox&t;:&t;Fixed promisc NULL pointer trap&n; *&t;&t;????????&t;:&t;Support the full private ioctl range&n; *&t;&t;Alan Cox&t;:&t;Moved ioctl permission check into drivers&n; *&t;&t;Tim Kordas&t;:&t;SIOCADDMULTI/SIOCDELMULTI&n; *&t;&t;Alan Cox&t;:&t;100 backlog just doesn&squot;t cut it when&n; *&t;&t;&t;&t;&t;you start doing multicast video 8)&n; *&t;&t;Alan Cox&t;:&t;Rewrote net_bh and list manager.&n; *&t;&t;Alan Cox&t;: &t;Fix ETH_P_ALL echoback lengths.&n; *&t;&t;Alan Cox&t;:&t;Took out transmit every packet pass&n; *&t;&t;&t;&t;&t;Saved a few bytes in the ioctl handler&n; *&t;&t;Alan Cox&t;:&t;Network driver sets packet type before calling netif_rx. Saves&n; *&t;&t;&t;&t;&t;a function call a packet.&n; *&t;&t;Alan Cox&t;:&t;Hashed net_bh()&n; *&t;&t;Richard Kooijman:&t;Timestamp fixes.&n; *&t;&t;Alan Cox&t;:&t;Wrong field in SIOCGIFDSTADDR&n; *&t;&t;Alan Cox&t;:&t;Device lock protection.&n; *&t;&t;Alan Cox&t;: &t;Fixed nasty side effect of device close changes.&n; *&t;&t;Rudi Cilibrasi&t;:&t;Pass the right thing to set_mac_address()&n; *&t;&t;Dave Miller&t;:&t;32bit quantity for the device lock to make it work out&n; *&t;&t;&t;&t;&t;on a Sparc.&n; *&t;&t;Bjorn Ekwall&t;:&t;Added KERNELD hack.&n; *&t;&t;Alan Cox&t;:&t;Cleaned up the backlog initialise.&n; *&t;&t;Craig Metz&t;:&t;SIOCGIFCONF fix if space for under&n; *&t;&t;&t;&t;&t;1 device.&n; *&t;    Thomas Bogendoerfer :&t;Return ENODEV for dev_open, if there&n; *&t;&t;&t;&t;&t;is no device open function.&n; *&t;&t;Andi Kleen&t;:&t;Fix error reporting for SIOCGIFCONF&n; *&t;    Michael Chastain&t;:&t;Fix signed/unsigned for SIOCGIFCONF&n; *&t;&t;Cyrus Durgin&t;:&t;Cleaned for KMOD&n; *&t;&t;Adam Sulmicki   :&t;Bug Fix : Network Device Unload&n; *&t;&t;&t;&t;&t;A network device unload needs to purge&n; *&t;&t;&t;&t;&t;the backlog queue.&n; *&t;Paul Rusty Russell&t;:&t;SIOCSIFNAME&n; *              Pekka Riikonen  :&t;Netdev boot-time settings code&n; *              Andrew Morton   :       Make unregister_netdevice wait indefinitely on dev-&gt;refcnt&n; * &t;&t;J Hadi Salim&t;:&t;- Backlog queue sampling&n; *&t;&t;&t;&t;        - netif_rx() feedback&t;&n; */
+multiline_comment|/*&n; * &t;NET3&t;Protocol independent device support routines.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Derived from the non IP parts of dev.c 1.0.19&n; * &t;&t;Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&n; *&t;Additional Authors:&n; *&t;&t;Florian la Roche &lt;rzsfl@rz.uni-sb.de&gt;&n; *&t;&t;Alan Cox &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;David Hinds &lt;dhinds@allegro.stanford.edu&gt;&n; *&t;&t;Alexey Kuznetsov &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&t;&t;Adam Sulmicki &lt;adam@cfar.umd.edu&gt;&n; *              Pekka Riikonen &lt;priikone@poesidon.pspt.fi&gt;&n; *&n; *&t;Changes:&n; *              D.J. Barrow     :       Fixed bug where dev-&gt;refcnt gets set&n; *              &t;&t;&t;to 2 if register_netdev gets called&n; *              &t;&t;&t;before net_dev_init &amp; also removed a&n; *              &t;&t;&t;few lines of code in the process.&n; *&t;&t;Alan Cox&t;:&t;device private ioctl copies fields back.&n; *&t;&t;Alan Cox&t;:&t;Transmit queue code does relevant&n; *&t;&t;&t;&t;&t;stunts to keep the queue safe.&n; *&t;&t;Alan Cox&t;:&t;Fixed double lock.&n; *&t;&t;Alan Cox&t;:&t;Fixed promisc NULL pointer trap&n; *&t;&t;????????&t;:&t;Support the full private ioctl range&n; *&t;&t;Alan Cox&t;:&t;Moved ioctl permission check into&n; *&t;&t;&t;&t;&t;drivers&n; *&t;&t;Tim Kordas&t;:&t;SIOCADDMULTI/SIOCDELMULTI&n; *&t;&t;Alan Cox&t;:&t;100 backlog just doesn&squot;t cut it when&n; *&t;&t;&t;&t;&t;you start doing multicast video 8)&n; *&t;&t;Alan Cox&t;:&t;Rewrote net_bh and list manager.&n; *&t;&t;Alan Cox&t;: &t;Fix ETH_P_ALL echoback lengths.&n; *&t;&t;Alan Cox&t;:&t;Took out transmit every packet pass&n; *&t;&t;&t;&t;&t;Saved a few bytes in the ioctl handler&n; *&t;&t;Alan Cox&t;:&t;Network driver sets packet type before&n; *&t;&t;&t;&t;&t;calling netif_rx. Saves a function&n; *&t;&t;&t;&t;&t;call a packet.&n; *&t;&t;Alan Cox&t;:&t;Hashed net_bh()&n; *&t;&t;Richard Kooijman:&t;Timestamp fixes.&n; *&t;&t;Alan Cox&t;:&t;Wrong field in SIOCGIFDSTADDR&n; *&t;&t;Alan Cox&t;:&t;Device lock protection.&n; *&t;&t;Alan Cox&t;: &t;Fixed nasty side effect of device close&n; *&t;&t;&t;&t;&t;changes.&n; *&t;&t;Rudi Cilibrasi&t;:&t;Pass the right thing to&n; *&t;&t;&t;&t;&t;set_mac_address()&n; *&t;&t;Dave Miller&t;:&t;32bit quantity for the device lock to&n; *&t;&t;&t;&t;&t;make it work out on a Sparc.&n; *&t;&t;Bjorn Ekwall&t;:&t;Added KERNELD hack.&n; *&t;&t;Alan Cox&t;:&t;Cleaned up the backlog initialise.&n; *&t;&t;Craig Metz&t;:&t;SIOCGIFCONF fix if space for under&n; *&t;&t;&t;&t;&t;1 device.&n; *&t;    Thomas Bogendoerfer :&t;Return ENODEV for dev_open, if there&n; *&t;&t;&t;&t;&t;is no device open function.&n; *&t;&t;Andi Kleen&t;:&t;Fix error reporting for SIOCGIFCONF&n; *&t;    Michael Chastain&t;:&t;Fix signed/unsigned for SIOCGIFCONF&n; *&t;&t;Cyrus Durgin&t;:&t;Cleaned for KMOD&n; *&t;&t;Adam Sulmicki   :&t;Bug Fix : Network Device Unload&n; *&t;&t;&t;&t;&t;A network device unload needs to purge&n; *&t;&t;&t;&t;&t;the backlog queue.&n; *&t;Paul Rusty Russell&t;:&t;SIOCSIFNAME&n; *              Pekka Riikonen  :&t;Netdev boot-time settings code&n; *              Andrew Morton   :       Make unregister_netdevice wait&n; *              &t;&t;&t;indefinitely on dev-&gt;refcnt&n; * &t;&t;J Hadi Salim&t;:&t;- Backlog queue sampling&n; *&t;&t;&t;&t;        - netif_rx() feedback&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -103,8 +103,6 @@ r_struct
 id|packet_type
 op_star
 id|ptype_all
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* Taps */
 macro_line|#ifdef OFFLINE_SAMPLE
@@ -158,8 +156,6 @@ r_struct
 id|notifier_block
 op_star
 id|netdev_chain
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n; *&t;Device drivers call our routines to queue packets here. We empty the&n; *&t;queue in the local softnet handler.&n; */
 DECL|variable|__cacheline_aligned
@@ -181,16 +177,14 @@ r_int
 id|netdev_fastroute_obstacles
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/******************************************************************************************&n;&n;&t;&t;Protocol management and registration routines&n;&n;*******************************************************************************************/
+multiline_comment|/*******************************************************************************&n;&n;&t;&t;Protocol management and registration routines&n;&n;*******************************************************************************/
 multiline_comment|/*&n; *&t;For efficiency&n; */
 DECL|variable|netdev_nit
 r_int
 id|netdev_nit
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; *&t;Add a protocol ID to the list. Now that the input handler is&n; *&t;smarter we can dispense with all the messy stuff that used to be&n; *&t;here.&n; *&n; *&t;BEWARE!!! Protocol handlers, mangling input packets,&n; *&t;MUST BE last in hash buckets and checking protocol handlers&n; *&t;MUST start from promiscous ptype_all chain in net_bh.&n; *&t;It is true now, do not change it.&n; *&t;Explantion follows: if protocol handler, mangling packet, will&n; *&t;be the first on list, it is not able to sense, that packet&n; *&t;is cloned and should be copied-on-write, so that it will&n; *&t;change it and subsequent readers will get broken packet.&n; *&t;&t;&t;&t;&t;&t;&t;--ANK (980803)&n; */
-multiline_comment|/**&n; *&t;dev_add_pack - add packet handler&n; *&t;@pt: packet type declaration&n; * &n; *&t;Add a protocol handler to the networking stack. The passed &amp;packet_type&n; *&t;is linked into kernel lists and may not be freed until it has been&n; *&t;removed from the kernel lists.&n; */
+multiline_comment|/**&n; *&t;dev_add_pack - add packet handler&n; *&t;@pt: packet type declaration&n; *&n; *&t;Add a protocol handler to the networking stack. The passed &amp;packet_type&n; *&t;is linked into kernel lists and may not be freed until it has been&n; *&t;removed from the kernel lists.&n; */
 DECL|function|dev_add_pack
 r_void
 id|dev_add_pack
@@ -216,11 +210,8 @@ multiline_comment|/* Hack to detect packet socket */
 r_if
 c_cond
 (paren
-(paren
 id|pt-&gt;data
-)paren
 op_logical_and
-(paren
 (paren
 r_int
 )paren
@@ -229,7 +220,6 @@ id|pt-&gt;data
 )paren
 op_ne
 l_int|1
-)paren
 )paren
 (brace
 id|netdev_fastroute_obstacles
@@ -301,7 +291,7 @@ id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;dev_remove_pack&t; - remove packet handler&n; *&t;@pt: packet type declaration&n; * &n; *&t;Remove a protocol handler that was previously added to the kernel&n; *&t;protocol handlers by dev_add_pack(). The passed &amp;packet_type is removed&n; *&t;from the kernel lists and can be freed or reused once this function&n; *&t;returns.&n; */
+multiline_comment|/**&n; *&t;dev_remove_pack&t; - remove packet handler&n; *&t;@pt: packet type declaration&n; *&n; *&t;Remove a protocol handler that was previously added to the kernel&n; *&t;protocol handlers by dev_add_pack(). The passed &amp;packet_type is removed&n; *&t;from the kernel lists and can be freed or reused once this function&n; *&t;returns.&n; */
 DECL|function|dev_remove_pack
 r_void
 id|dev_remove_pack
@@ -347,7 +337,6 @@ id|ptype_all
 suffix:semicolon
 )brace
 r_else
-(brace
 id|pt1
 op_assign
 op_amp
@@ -362,17 +351,12 @@ op_amp
 l_int|15
 )braket
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
 suffix:semicolon
-(paren
 op_star
 id|pt1
-)paren
-op_ne
-l_int|NULL
 suffix:semicolon
 id|pt1
 op_assign
@@ -392,10 +376,8 @@ c_cond
 (paren
 id|pt
 op_eq
-(paren
 op_star
 id|pt1
-)paren
 )paren
 (brace
 op_star
@@ -413,22 +395,11 @@ id|netdev_fastroute_obstacles
 op_decrement
 suffix:semicolon
 macro_line|#endif
-id|br_write_unlock_bh
-c_func
-(paren
-id|BR_NETPROTO_LOCK
-)paren
-suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 )brace
-id|br_write_unlock_bh
-c_func
-(paren
-id|BR_NETPROTO_LOCK
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -436,6 +407,14 @@ id|KERN_WARNING
 l_string|&quot;dev_remove_pack: %p not found.&bslash;n&quot;
 comma
 id|pt
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|br_write_unlock_bh
+c_func
+(paren
+id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 )brace
@@ -585,17 +564,14 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
+r_return
 id|i
 op_ge
 id|NETDEV_BOOT_SETUP_MAX
-)paren
-r_return
+ques
+c_cond
 l_int|0
-suffix:semicolon
-r_return
+suffix:colon
 l_int|1
 suffix:semicolon
 )brace
@@ -615,13 +591,11 @@ r_struct
 id|netdev_boot_setup
 op_star
 id|s
+op_assign
+id|dev_boot_setup
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-id|s
-op_assign
-id|dev_boot_setup
 suffix:semicolon
 r_for
 c_loop
@@ -890,8 +864,8 @@ comma
 id|netdev_boot_setup
 )paren
 suffix:semicolon
-multiline_comment|/*****************************************************************************************&n;&n;&t;&t;&t;    Device Interface Subroutines&n;&n;******************************************************************************************/
-multiline_comment|/**&n; *&t;__dev_get_by_name&t;- find a device by its name &n; *&t;@name: name to find&n; *&n; *&t;Find an interface by name. Must be called under RTNL semaphore&n; *&t;or @dev_base_lock. If the name is found a pointer to the device&n; *&t;is returned. If the name is not found then %NULL is returned. The&n; *&t;reference counters are not incremented so the caller must be&n; *&t;careful with locks.&n; */
+multiline_comment|/*******************************************************************************&n;&n;&t;&t;&t;    Device Interface Subroutines&n;&n;*******************************************************************************/
+multiline_comment|/**&n; *&t;__dev_get_by_name&t;- find a device by its name&n; *&t;@name: name to find&n; *&n; *&t;Find an interface by name. Must be called under RTNL semaphore&n; *&t;or @dev_base_lock. If the name is found a pointer to the device&n; *&t;is returned. If the name is not found then %NULL is returned. The&n; *&t;reference counters are not incremented so the caller must be&n; *&t;careful with locks.&n; */
 DECL|function|__dev_get_by_name
 r_struct
 id|net_device
@@ -918,17 +892,15 @@ op_assign
 id|dev_base
 suffix:semicolon
 id|dev
-op_ne
-l_int|NULL
 suffix:semicolon
 id|dev
 op_assign
 id|dev-&gt;next
 )paren
-(brace
 r_if
 c_cond
 (paren
+op_logical_neg
 id|strncmp
 c_func
 (paren
@@ -938,18 +910,14 @@ id|name
 comma
 id|IFNAMSIZ
 )paren
-op_eq
-l_int|0
 )paren
+r_break
+suffix:semicolon
 r_return
 id|dev
 suffix:semicolon
 )brace
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;dev_get_by_name&t;&t;- find a device by its name&n; *&t;@name: name to find&n; *&n; *&t;Find an interface by name. This can be called from any &n; *&t;context and does its own locking. The returned handle has&n; *&t;the usage count incremented and the caller must use dev_put() to&n; *&t;release it when it is no longer needed. %NULL is returned if no&n; *&t;matching device is found.&n; */
+multiline_comment|/**&n; *&t;dev_get_by_name&t;&t;- find a device by its name&n; *&t;@name: name to find&n; *&n; *&t;Find an interface by name. This can be called from any&n; *&t;context and does its own locking. The returned handle has&n; *&t;the usage count incremented and the caller must use dev_put() to&n; *&t;release it when it is no longer needed. %NULL is returned if no&n; *&t;matching device is found.&n; */
 DECL|function|dev_get_by_name
 r_struct
 id|net_device
@@ -1005,8 +973,8 @@ r_return
 id|dev
 suffix:semicolon
 )brace
-multiline_comment|/* &n;   Return value is changed to int to prevent illegal usage in future.&n;   It is still legal to use to check for device existence.&n;&n;   User should understand, that the result returned by this function&n;   is meaningless, if it was not issued under rtnl semaphore.&n; */
-multiline_comment|/**&n; *&t;dev_get&t;-&t;test if a device exists&n; *&t;@name:&t;name to test for&n; *&n; *&t;Test if a name exists. Returns true if the name is found. In order&n; *&t;to be sure the name is not allocated or removed during the test the&n; *&t;caller must hold the rtnl semaphore.&n; *&n; *&t;This function primarily exists for back compatibility with older&n; *&t;drivers. &n; */
+multiline_comment|/*&n;   Return value is changed to int to prevent illegal usage in future.&n;   It is still legal to use to check for device existence.&n;&n;   User should understand, that the result returned by this function&n;   is meaningless, if it was not issued under rtnl semaphore.&n; */
+multiline_comment|/**&n; *&t;dev_get&t;-&t;test if a device exists&n; *&t;@name:&t;name to test for&n; *&n; *&t;Test if a name exists. Returns true if the name is found. In order&n; *&t;to be sure the name is not allocated or removed during the test the&n; *&t;caller must hold the rtnl semaphore.&n; *&n; *&t;This function primarily exists for back compatibility with older&n; *&t;drivers.&n; */
 DECL|function|dev_get
 r_int
 id|dev_get
@@ -1076,14 +1044,11 @@ op_assign
 id|dev_base
 suffix:semicolon
 id|dev
-op_ne
-l_int|NULL
 suffix:semicolon
 id|dev
 op_assign
 id|dev-&gt;next
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -1091,15 +1056,13 @@ id|dev-&gt;ifindex
 op_eq
 id|ifindex
 )paren
+r_break
+suffix:semicolon
 r_return
 id|dev
 suffix:semicolon
 )brace
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;dev_get_by_index - find a device by its ifindex&n; *&t;@ifindex: index of device&n; *&n; *&t;Search for an interface by index. Returns NULL if the device&n; *&t;is not found or a pointer to the device. The device returned has &n; *&t;had a reference added and the pointer is safe until the user calls&n; *&t;dev_put to indicate they have finished with it.&n; */
+multiline_comment|/**&n; *&t;dev_get_by_index - find a device by its ifindex&n; *&t;@ifindex: index of device&n; *&n; *&t;Search for an interface by index. Returns NULL if the device&n; *&t;is not found or a pointer to the device. The device returned has&n; *&t;had a reference added and the pointer is safe until the user calls&n; *&t;dev_put to indicate they have finished with it.&n; */
 DECL|function|dev_get_by_index
 r_struct
 id|net_device
@@ -1188,14 +1151,11 @@ op_assign
 id|dev_base
 suffix:semicolon
 id|dev
-op_ne
-l_int|NULL
 suffix:semicolon
 id|dev
 op_assign
 id|dev-&gt;next
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -1203,6 +1163,7 @@ id|dev-&gt;type
 op_eq
 id|type
 op_logical_and
+op_logical_neg
 id|memcmp
 c_func
 (paren
@@ -1212,18 +1173,14 @@ id|ha
 comma
 id|dev-&gt;addr_len
 )paren
-op_eq
-l_int|0
 )paren
+r_break
+suffix:semicolon
 r_return
 id|dev
 suffix:semicolon
 )brace
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;dev_alloc_name - allocate a name for a device&n; *&t;@dev: device &n; *&t;@name: name format string&n; *&n; *&t;Passed a format string - eg &quot;lt%d&quot; it will try and find a suitable&n; *&t;id. Not efficient for many devices, not called a lot. The caller&n; *&t;must hold the dev_base or rtnl lock while allocating the name and&n; *&t;adding the device in order to avoid duplicates. Returns the number&n; *&t;of the unit assigned or a negative errno code.&n; */
+multiline_comment|/**&n; *&t;dev_alloc_name - allocate a name for a device&n; *&t;@dev: device&n; *&t;@name: name format string&n; *&n; *&t;Passed a format string - eg &quot;lt%d&quot; it will try and find a suitable&n; *&t;id. Not efficient for many devices, not called a lot. The caller&n; *&t;must hold the dev_base or rtnl lock while allocating the name and&n; *&t;adding the device in order to avoid duplicates. Returns the number&n; *&t;of the unit assigned or a negative errno code.&n; */
 DECL|function|dev_alloc_name
 r_int
 id|dev_alloc_name
@@ -1326,13 +1283,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|__dev_get_by_name
 c_func
 (paren
 id|buf
 )paren
-op_eq
-l_int|NULL
 )paren
 (brace
 id|strcpy
@@ -1354,7 +1310,7 @@ id|ENFILE
 suffix:semicolon
 multiline_comment|/* Over 100 of the things .. bail out! */
 )brace
-multiline_comment|/**&n; *&t;dev_alloc - allocate a network device and name&n; *&t;@name: name format string&n; *&t;@err: error return pointer&n; *&n; *&t;Passed a format string, eg. &quot;lt%d&quot;, it will allocate a network device&n; *&t;and space for the name. %NULL is returned if no memory is available.&n; *&t;If the allocation succeeds then the name is assigned and the &n; *&t;device pointer returned. %NULL is returned if the name allocation&n; *&t;failed. The cause of an error is returned as a negative errno code&n; *&t;in the variable @err points to.&n; *&n; *&t;The caller must hold the @dev_base or RTNL locks when doing this in&n; *&t;order to avoid duplicate name allocations.&n; */
+multiline_comment|/**&n; *&t;dev_alloc - allocate a network device and name&n; *&t;@name: name format string&n; *&t;@err: error return pointer&n; *&n; *&t;Passed a format string, eg. &quot;lt%d&quot;, it will allocate a network device&n; *&t;and space for the name. %NULL is returned if no memory is available.&n; *&t;If the allocation succeeds then the name is assigned and the&n; *&t;device pointer returned. %NULL is returned if the name allocation&n; *&t;failed. The cause of an error is returned as a negative errno code&n; *&t;in the variable @err points to.&n; *&n; *&t;The caller must hold the @dev_base or RTNL locks when doing this in&n; *&t;order to avoid duplicate name allocations.&n; */
 DECL|function|dev_alloc
 r_struct
 id|net_device
@@ -1382,8 +1338,8 @@ c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|net_device
+op_star
+id|dev
 )paren
 comma
 id|GFP_KERNEL
@@ -1392,21 +1348,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dev
-op_eq
-l_int|NULL
 )paren
-(brace
 op_star
 id|err
 op_assign
 op_minus
 id|ENOBUFS
 suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
+r_else
+(brace
 id|memset
 c_func
 (paren
@@ -1416,8 +1368,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-r_struct
-id|net_device
+op_star
+id|dev
 )paren
 )paren
 suffix:semicolon
@@ -1447,9 +1399,11 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_return
+id|dev
+op_assign
 l_int|NULL
 suffix:semicolon
+)brace
 )brace
 r_return
 id|dev
@@ -1589,7 +1543,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;dev_open&t;- prepare an interface for use. &n; *&t;@dev:&t;device to open&n; *&n; *&t;Takes a device from down to up state. The device&squot;s private open&n; *&t;function is invoked and then the multicast lists are loaded. Finally&n; *&t;the device is moved into the up state and a %NETDEV_UP message is&n; *&t;sent to the netdev notifier chain.&n; *&n; *&t;Calling this function on an active interface is a nop. On a failure&n; *&t;a negative errno code is returned.&n; */
+multiline_comment|/**&n; *&t;dev_open&t;- prepare an interface for use.&n; *&t;@dev:&t;device to open&n; *&n; *&t;Takes a device from down to up state. The device&squot;s private open&n; *&t;function is invoked and then the multicast lists are loaded. Finally&n; *&t;the device is moved into the up state and a %NETDEV_UP message is&n; *&t;sent to the netdev notifier chain.&n; *&n; *&t;Calling this function on an active interface is a nop. On a failure&n; *&t;a negative errno code is returned.&n; */
 DECL|function|dev_open
 r_int
 id|dev_open
@@ -1663,8 +1617,6 @@ r_if
 c_cond
 (paren
 id|ret
-op_ne
-l_int|0
 op_logical_and
 id|dev-&gt;owner
 )paren
@@ -1688,9 +1640,8 @@ multiline_comment|/*&n;&t; *&t;If it went open OK then:&n;&t; */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ret
-op_eq
-l_int|0
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; *&t;Set the flags.&n;&t;&t; */
@@ -1707,7 +1658,7 @@ op_amp
 id|dev-&gt;state
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *&t;Initialize multicasting status &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *&t;Initialize multicasting status&n;&t;&t; */
 id|dev_mc_upload
 c_func
 (paren
@@ -1879,7 +1830,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-multiline_comment|/**&n; *&t;dev_close - shutdown an interface.&n; *&t;@dev: device to shutdown&n; *&n; *&t;This function moves an active device into down state. A &n; *&t;%NETDEV_GOING_DOWN is sent to the netdev notifier chain. The device&n; *&t;is then deactivated and finally a %NETDEV_DOWN is sent to the notifier&n; *&t;chain.&n; */
+multiline_comment|/**&n; *&t;dev_close - shutdown an interface.&n; *&t;@dev: device to shutdown&n; *&n; *&t;This function moves an active device into down state. A&n; *&t;%NETDEV_GOING_DOWN is sent to the netdev notifier chain. The device&n; *&t;is then deactivated and finally a %NETDEV_DOWN is sent to the notifier&n; *&t;chain.&n; */
 DECL|function|dev_close
 r_int
 id|dev_close
@@ -2109,8 +2060,6 @@ op_assign
 id|ptype_all
 suffix:semicolon
 id|ptype
-op_ne
-l_int|NULL
 suffix:semicolon
 id|ptype
 op_assign
@@ -2131,7 +2080,6 @@ id|ptype-&gt;dev
 )paren
 op_logical_and
 (paren
-(paren
 r_struct
 id|sock
 op_star
@@ -2140,17 +2088,10 @@ id|ptype-&gt;data
 op_ne
 id|skb-&gt;sk
 )paren
-)paren
 (brace
 r_struct
 id|sk_buff
 op_star
-id|skb2
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|skb2
 op_assign
 id|skb_clone
@@ -2160,9 +2101,12 @@ id|skb
 comma
 id|GFP_ATOMIC
 )paren
-)paren
-op_eq
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|skb2
 )paren
 r_break
 suffix:semicolon
@@ -2191,7 +2135,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;protocol %04x is buggy, dev %s&bslash;n&quot;
+l_string|&quot;protocol %04x is &quot;
+l_string|&quot;buggy, dev %s&bslash;n&quot;
 comma
 id|skb2-&gt;protocol
 comma
@@ -2247,12 +2192,10 @@ id|skb
 )paren
 (brace
 r_int
-id|offset
-suffix:semicolon
-r_int
 r_int
 id|csum
 suffix:semicolon
+r_int
 id|offset
 op_assign
 id|skb-&gt;h.raw
@@ -2349,10 +2292,10 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_HIGHMEM
 multiline_comment|/* Actually, we should eliminate this check as soon as we know, that:&n; * 1. IOMMU is present and allows to map all the memory.&n; * 2. No high memory really exists on this machine.&n; */
+DECL|function|illegal_highdma
 r_static
 r_inline
 r_int
-DECL|function|illegal_highdma
 id|illegal_highdma
 c_func
 (paren
@@ -2429,7 +2372,7 @@ macro_line|#else
 DECL|macro|illegal_highdma
 mdefine_line|#define illegal_highdma(dev, skb)&t;(0)
 macro_line|#endif
-multiline_comment|/**&n; *&t;dev_queue_xmit - transmit a buffer&n; *&t;@skb: buffer to transmit&n; *&t;&n; *&t;Queue a buffer for transmission to a network device. The caller must&n; *&t;have set the device and priority and built the buffer before calling this &n; *&t;function. The function can be called from an interrupt.&n; *&n; *&t;A negative errno code is returned on a failure. A success does not&n; *&t;guarantee the frame will be transmitted as it may be dropped due&n; *&t;to congestion or traffic shaping.&n; */
+multiline_comment|/**&n; *&t;dev_queue_xmit - transmit a buffer&n; *&t;@skb: buffer to transmit&n; *&n; *&t;Queue a buffer for transmission to a network device. The caller must&n; *&t;have set the device and priority and built the buffer before calling&n; *&t;this function. The function can be called from an interrupt.&n; *&n; *&t;A negative errno code is returned on a failure. A success does not&n; *&t;guarantee the frame will be transmitted as it may be dropped due&n; *&t;to congestion or traffic shaping.&n; */
 DECL|function|dev_queue_xmit
 r_int
 id|dev_queue_xmit
@@ -2452,6 +2395,12 @@ r_struct
 id|Qdisc
 op_star
 id|q
+suffix:semicolon
+r_int
+id|rc
+op_assign
+op_minus
+id|ENOMEM
 suffix:semicolon
 r_if
 c_cond
@@ -2478,21 +2427,10 @@ id|skb
 comma
 id|GFP_ATOMIC
 )paren
-op_ne
-l_int|0
 )paren
-(brace
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
+r_goto
+id|out_kfree_skb
 suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 multiline_comment|/* Fragmented skb is linearized if device does not support SG,&n;&t; * or if at least one of fragments is in highmem and device&n;&t; * does not support DMA from it.&n;&t; */
 r_if
 c_cond
@@ -2529,21 +2467,10 @@ id|skb
 comma
 id|GFP_ATOMIC
 )paren
-op_ne
-l_int|0
 )paren
-(brace
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
+r_goto
+id|out_kfree_skb
 suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 multiline_comment|/* If packet is not checksummed and device does not support&n;&t; * checksumming for this protocol, complete checksumming here.&n;&t; */
 r_if
 c_cond
@@ -2598,9 +2525,8 @@ id|skb
 op_eq
 l_int|NULL
 )paren
-r_return
-op_minus
-id|ENOMEM
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Grab device queue */
@@ -2621,8 +2547,7 @@ c_cond
 id|q-&gt;enqueue
 )paren
 (brace
-r_int
-id|ret
+id|rc
 op_assign
 id|q
 op_member_access_from_pointer
@@ -2647,18 +2572,22 @@ op_amp
 id|dev-&gt;queue_lock
 )paren
 suffix:semicolon
-r_return
-id|ret
+id|rc
+op_assign
+id|rc
 op_eq
 id|NET_XMIT_BYPASS
 ques
 c_cond
 id|NET_XMIT_SUCCESS
 suffix:colon
-id|ret
+id|rc
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
-multiline_comment|/* The device has no queue. Common case for software devices:&n;&t;   loopback, all the sorts of tunnels...&n;&n;&t;   Really, it is unlikely that xmit_lock protection is necessary here.&n;&t;   (f.e. loopback and IP tunnels are clean ignoring statistics counters.)&n;&t;   However, it is possible, that they rely on protection&n;&t;   made by us here.&n;&n;&t;   Check this and shot the lock. It is not prone from deadlocks.&n;&t;   Either shot noqueue qdisc, it is even simpler 8)&n;&t; */
+multiline_comment|/* The device has no queue. Common case for software devices:&n;&t;   loopback, all the sorts of tunnels...&n;&n;&t;   Really, it is unlikely that xmit_lock protection is necessary here.&n;&t;   (f.e. loopback and IP tunnels are clean ignoring statistics&n;&t;   counters.)&n;&t;   However, it is possible, that they rely on protection&n;&t;   made by us here.&n;&n;&t;   Check this and shot the lock. It is not prone from deadlocks.&n;&t;   Either shot noqueue qdisc, it is even simpler 8)&n;&t; */
 r_if
 c_cond
 (paren
@@ -2725,9 +2654,14 @@ comma
 id|dev
 )paren
 suffix:semicolon
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dev
 op_member_access_from_pointer
 id|hard_start_xmit
@@ -2737,8 +2671,6 @@ id|skb
 comma
 id|dev
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 id|dev-&gt;xmit_lock_owner
@@ -2753,8 +2685,8 @@ op_amp
 id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 )brace
 )brace
@@ -2782,25 +2714,19 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Virtual device %s asks to queue packet!&bslash;n&quot;
+l_string|&quot;Virtual device %s asks to &quot;
+l_string|&quot;queue packet!&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENETDOWN
+r_goto
+id|out_enetdown
 suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Recursion is detected! It is possible, unfortunately */
+multiline_comment|/* Recursion is detected! It is possible,&n;&t;&t;&t; * unfortunately */
 r_if
 c_cond
 (paren
@@ -2813,7 +2739,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Dead loop on virtual device %s, fix it urgently!&bslash;n&quot;
+l_string|&quot;Dead loop on virtual device &quot;
+l_string|&quot;%s, fix it urgently!&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -2827,15 +2754,25 @@ op_amp
 id|dev-&gt;queue_lock
 )paren
 suffix:semicolon
+id|out_enetdown
+suffix:colon
+id|rc
+op_assign
+op_minus
+id|ENETDOWN
+suffix:semicolon
+id|out_kfree_skb
+suffix:colon
 id|kfree_skb
 c_func
 (paren
 id|skb
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
-op_minus
-id|ENETDOWN
+id|rc
 suffix:semicolon
 )brace
 multiline_comment|/*=======================================================================&n;&t;&t;&t;Receiver routines&n;  =======================================================================*/
@@ -2908,8 +2845,6 @@ DECL|variable|netdev_fc_xoff
 r_int
 r_int
 id|netdev_fc_xoff
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|netdev_fc_lock
 id|spinlock_t
@@ -3449,7 +3384,7 @@ id|next_tick
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/**&n; *&t;netif_rx&t;-&t;post buffer to the network code&n; *&t;@skb: buffer to post&n; *&n; *&t;This function receives a packet from a device driver and queues it for&n; *&t;the upper (protocol) levels to process.  It always succeeds. The buffer&n; *&t;may be dropped during processing for congestion control or by the &n; *&t;protocol layers.&n; *      &n; *&t;return values:&n; *&t;NET_RX_SUCCESS&t;(no congestion)           &n; *&t;NET_RX_CN_LOW     (low congestion) &n; *&t;NET_RX_CN_MOD     (moderate congestion)&n; *&t;NET_RX_CN_HIGH    (high congestion) &n; *&t;NET_RX_DROP    (packet was dropped)&n; *      &n; *      &n; */
+multiline_comment|/**&n; *&t;netif_rx&t;-&t;post buffer to the network code&n; *&t;@skb: buffer to post&n; *&n; *&t;This function receives a packet from a device driver and queues it for&n; *&t;the upper (protocol) levels to process.  It always succeeds. The buffer&n; *&t;may be dropped during processing for congestion control or by the&n; *&t;protocol layers.&n; *&n; *&t;return values:&n; *&t;NET_RX_SUCCESS&t;(no congestion)&n; *&t;NET_RX_CN_LOW   (low congestion)&n; *&t;NET_RX_CN_MOD   (moderate congestion)&n; *&t;NET_RX_CN_HIGH  (high congestion)&n; *&t;NET_RX_DROP     (packet was dropped)&n; *&n; */
 DECL|function|netif_rx
 r_int
 id|netif_rx
@@ -3481,9 +3416,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|skb-&gt;stamp.tv_sec
-op_eq
-l_int|0
 )paren
 id|do_gettimeofday
 c_func
@@ -3614,9 +3548,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|queue-&gt;throttle
-op_eq
-l_int|0
 )paren
 (brace
 id|queue-&gt;throttle
@@ -3719,12 +3652,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|skb
-op_eq
-l_int|NULL
 )paren
-r_return
-id|ret
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -3743,20 +3675,10 @@ id|skb
 comma
 id|GFP_ATOMIC
 )paren
-op_ne
-l_int|0
 )paren
-(brace
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
+r_goto
+id|out_kfree
 suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
-)brace
 multiline_comment|/* The assumption (correct one) is that old protocols&n;&t;   did not depened on BHs different of NET_BH and TIMER_BH.&n;&t; */
 multiline_comment|/* Emulate NET_BH with special spinlock */
 id|spin_lock
@@ -3804,8 +3726,21 @@ op_amp
 id|net_bh_lock
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|ret
+suffix:semicolon
+id|out_kfree
+suffix:colon
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 DECL|function|skb_bond
@@ -3906,8 +3841,6 @@ r_while
 c_loop
 (paren
 id|clist
-op_ne
-l_int|NULL
 )paren
 (brace
 r_struct
@@ -3924,14 +3857,13 @@ suffix:semicolon
 id|BUG_TRAP
 c_func
 (paren
+op_logical_neg
 id|atomic_read
 c_func
 (paren
 op_amp
 id|skb-&gt;users
 )paren
-op_eq
-l_int|0
 )paren
 suffix:semicolon
 id|__kfree_skb
@@ -3990,8 +3922,6 @@ r_while
 c_loop
 (paren
 id|head
-op_ne
-l_int|NULL
 )paren
 (brace
 r_struct
@@ -4252,9 +4182,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|skb-&gt;stamp.tv_sec
-op_eq
-l_int|0
 )paren
 id|do_gettimeofday
 c_func
@@ -4423,12 +4352,8 @@ r_if
 c_cond
 (paren
 id|skb-&gt;dev-&gt;br_port
-op_ne
-l_int|NULL
 op_logical_and
 id|br_handle_frame_hook
-op_ne
-l_int|NULL
 )paren
 (brace
 r_return
@@ -4693,9 +4618,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|skb
-op_eq
-l_int|NULL
 )paren
 r_goto
 id|job_done
@@ -5030,6 +4954,8 @@ c_func
 suffix:semicolon
 )brace
 )brace
+id|out
+suffix:colon
 id|local_irq_enable
 c_func
 (paren
@@ -5061,16 +4987,8 @@ comma
 id|NET_RX_SOFTIRQ
 )paren
 suffix:semicolon
-id|local_irq_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-id|br_read_unlock
-c_func
-(paren
-id|BR_NETPROTO_LOCK
-)paren
+r_goto
+id|out
 suffix:semicolon
 )brace
 DECL|variable|gifconf_list
@@ -5142,7 +5060,7 @@ r_struct
 id|ifreq
 id|ifr
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Fetch the caller&squot;s info block. &n;&t; */
+multiline_comment|/*&n;&t; *&t;Fetch the caller&squot;s info block.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5274,7 +5192,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Fetch the caller&squot;s info block. &n;&t; */
+multiline_comment|/*&n;&t; *&t;Fetch the caller&squot;s info block.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5305,7 +5223,7 @@ id|len
 op_assign
 id|ifc.ifc_len
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Loop over the interfaces, and write an info block for each. &n;&t; */
+multiline_comment|/*&n;&t; *&t;Loop over the interfaces, and write an info block for each.&n;&t; */
 id|total
 op_assign
 l_int|0
@@ -5318,8 +5236,6 @@ op_assign
 id|dev_base
 suffix:semicolon
 id|dev
-op_ne
-l_int|NULL
 suffix:semicolon
 id|dev
 op_assign
@@ -5356,11 +5272,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|pos
-op_eq
-l_int|NULL
 )paren
-(brace
 id|done
 op_assign
 id|gifconf_list
@@ -5375,9 +5289,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|done
 op_assign
 id|gifconf_list
@@ -5396,7 +5308,6 @@ op_minus
 id|total
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5404,12 +5315,10 @@ id|done
 OL
 l_int|0
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|total
 op_add_assign
 id|done
@@ -5417,14 +5326,13 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n;&t; *&t;All done.  Write the updated control block back to the caller. &n;&t; */
+multiline_comment|/*&n;&t; *&t;All done.  Write the updated control block back to the caller.&n;&t; */
 id|ifc.ifc_len
 op_assign
 id|total
 suffix:semicolon
-r_if
-c_cond
-(paren
+multiline_comment|/*&n;&t; * &t;Both BSD and Solaris return 0 here, so we do too.&n;&t; */
+r_return
 id|copy_to_user
 c_func
 (paren
@@ -5439,13 +5347,11 @@ r_struct
 id|ifconf
 )paren
 )paren
-)paren
-r_return
+ques
+c_cond
 op_minus
 id|EFAULT
-suffix:semicolon
-multiline_comment|/* &n;&t; * &t;Both BSD and Solaris return 0 here, so we do too.&n;&t; */
-r_return
+suffix:colon
 l_int|0
 suffix:semicolon
 )brace
@@ -5472,7 +5378,6 @@ id|net_device_stats
 op_star
 id|stats
 op_assign
-(paren
 id|dev-&gt;get_stats
 ques
 c_cond
@@ -5485,7 +5390,6 @@ id|dev
 )paren
 suffix:colon
 l_int|NULL
-)paren
 suffix:semicolon
 r_int
 id|size
@@ -5502,7 +5406,9 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;%6s:%8lu %7lu %4lu %4lu %4lu %5lu %10lu %9lu %8lu %7lu %4lu %4lu %4lu %5lu %7lu %10lu&bslash;n&quot;
+l_string|&quot;%6s:%8lu %7lu %4lu %4lu %4lu %5lu &quot;
+l_string|&quot;%10lu %9lu %8lu %7lu %4lu %4lu %4lu &quot;
+l_string|&quot;%5lu %7lu %10lu&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -5570,7 +5476,7 @@ r_return
 id|size
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Called from the PROCfs module. This now uses the new arbitrary sized /proc/net interface&n; *&t;to create /proc/net/dev&n; */
+multiline_comment|/*&n; *&t;Called from the PROCfs module. This now uses the new arbitrary sized&n; *&t;/proc/net interface to create /proc/net/dev&n; */
 DECL|function|dev_get_info
 r_static
 r_int
@@ -5650,8 +5556,6 @@ op_assign
 id|dev_base
 suffix:semicolon
 id|dev
-op_ne
-l_int|NULL
 suffix:semicolon
 id|dev
 op_assign
@@ -5730,11 +5634,9 @@ suffix:semicolon
 multiline_comment|/* Start of wanted data */
 id|len
 op_sub_assign
-(paren
 id|offset
 op_minus
 id|begin
-)paren
 suffix:semicolon
 multiline_comment|/* Start slop */
 r_if
@@ -5836,7 +5738,8 @@ id|buffer
 op_plus
 id|len
 comma
-l_string|&quot;%08x %08x %08x %08x %08x %08x %08x %08x %08x&bslash;n&quot;
+l_string|&quot;%08x %08x %08x %08x %08x %08x &quot;
+l_string|&quot;%08x %08x %08x&bslash;n&quot;
 comma
 id|netdev_rx_stat
 (braket
@@ -6300,8 +6203,8 @@ id|flags
 op_amp
 id|IFF_UP
 )paren
-multiline_comment|/* Bit is different  ? */
 (brace
+multiline_comment|/* Bit is different  ? */
 id|ret
 op_assign
 (paren
@@ -6323,9 +6226,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ret
-op_eq
-l_int|0
 )paren
 id|dev_mc_upload
 c_func
@@ -6477,7 +6379,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Perform the SIOCxIFxxx calls. &n; */
+multiline_comment|/*&n; *&t;Perform the SIOCxIFxxx calls.&n; */
 DECL|function|dev_ifsioc
 r_static
 r_int
@@ -6494,18 +6396,12 @@ r_int
 id|cmd
 )paren
 (brace
-r_struct
-id|net_device
-op_star
-id|dev
-suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
+r_struct
+id|net_device
+op_star
 id|dev
 op_assign
 id|__dev_get_by_name
@@ -6513,9 +6409,12 @@ c_func
 (paren
 id|ifr-&gt;ifr_name
 )paren
-)paren
-op_eq
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
 )paren
 r_return
 op_minus
@@ -6594,7 +6493,7 @@ suffix:semicolon
 r_case
 id|SIOCGIFMETRIC
 suffix:colon
-multiline_comment|/* Get the metric on the interface (currently unused) */
+multiline_comment|/* Get the metric on the interface&n;&t;&t;&t;&t;&t;   (currently unused) */
 id|ifr-&gt;ifr_metric
 op_assign
 l_int|0
@@ -6605,7 +6504,7 @@ suffix:semicolon
 r_case
 id|SIOCSIFMETRIC
 suffix:colon
-multiline_comment|/* Set the metric on the interface (currently unused) */
+multiline_comment|/* Set the metric on the interface&n;&t;&t;&t;&t;&t;   (currently unused) */
 r_return
 op_minus
 id|EOPNOTSUPP
@@ -6661,6 +6560,10 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+id|err
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6679,16 +6582,10 @@ id|ifr-&gt;ifr_mtu
 )paren
 suffix:semicolon
 r_else
-(brace
 id|dev-&gt;mtu
 op_assign
 id|ifr-&gt;ifr_mtu
 suffix:semicolon
-id|err
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6739,9 +6636,8 @@ suffix:colon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dev-&gt;set_mac_address
-op_eq
-l_int|NULL
 )paren
 r_return
 op_minus
@@ -6919,9 +6815,8 @@ suffix:colon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dev-&gt;set_multicast_list
-op_eq
-l_int|NULL
 op_logical_or
 id|ifr-&gt;ifr_hwaddr.sa_family
 op_ne
@@ -6966,9 +6861,8 @@ suffix:colon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dev-&gt;set_multicast_list
-op_eq
-l_int|NULL
 op_logical_or
 id|ifr-&gt;ifr_hwaddr.sa_family
 op_ne
@@ -7173,6 +7067,11 @@ op_eq
 id|SIOCWANDEV
 )paren
 (brace
+id|err
+op_assign
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7182,18 +7081,14 @@ id|dev-&gt;do_ioctl
 r_if
 c_cond
 (paren
-op_logical_neg
 id|netif_device_present
 c_func
 (paren
 id|dev
 )paren
 )paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-r_return
+id|err
+op_assign
 id|dev
 op_member_access_from_pointer
 id|do_ioctl
@@ -7206,20 +7101,27 @@ comma
 id|cmd
 )paren
 suffix:semicolon
-)brace
-r_return
+r_else
+id|err
+op_assign
 op_minus
-id|EOPNOTSUPP
+id|ENODEV
 suffix:semicolon
 )brace
 )brace
-r_return
+r_else
+id|err
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+r_return
+id|err
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *&t;This function handles all &quot;interface&quot;-type I/O control requests. The actual&n; *&t;&squot;doing&squot; part of this is dev_ifsioc above.&n; */
-multiline_comment|/**&n; *&t;dev_ioctl&t;-&t;network device ioctl&n; *&t;@cmd: command to issue&n; *&t;@arg: pointer to a struct ifreq in user space&n; *&n; *&t;Issue ioctl functions to devices. This is normally called by the&n; *&t;user space syscall interfaces but can sometimes be useful for &n; *&t;other purposes. The return value is the return from the syscall if&n; *&t;positive or a negative errno code on error.&n; */
+multiline_comment|/**&n; *&t;dev_ioctl&t;-&t;network device ioctl&n; *&t;@cmd: command to issue&n; *&t;@arg: pointer to a struct ifreq in user space&n; *&n; *&t;Issue ioctl functions to devices. This is normally called by the&n; *&t;user space syscall interfaces but can sometimes be useful for&n; *&t;other purposes. The return value is the return from the syscall if&n; *&t;positive or a negative errno code on error.&n; */
 DECL|function|dev_ioctl
 r_int
 id|dev_ioctl
@@ -7287,7 +7189,6 @@ id|cmd
 op_eq
 id|SIOCGIFNAME
 )paren
-(brace
 r_return
 id|dev_ifname
 c_func
@@ -7300,7 +7201,6 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -7352,7 +7252,7 @@ id|colon
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;See which interface the caller is talking about. &n;&t; */
+multiline_comment|/*&n;&t; *&t;See which interface the caller is talking about.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -7450,7 +7350,8 @@ id|ifreq
 )paren
 )paren
 )paren
-r_return
+id|ret
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
@@ -7554,7 +7455,8 @@ id|ifreq
 )paren
 )paren
 )paren
-r_return
+id|ret
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
@@ -7674,11 +7576,11 @@ suffix:semicolon
 r_case
 id|SIOCGIFMEM
 suffix:colon
-multiline_comment|/* Get the per device memory space. We can add this but currently&n;&t;&t;&t;   do not support it */
+multiline_comment|/* Get the per device memory space. We can add this but&n;&t;&t;&t; * currently do not support it */
 r_case
 id|SIOCSIFMEM
 suffix:colon
-multiline_comment|/* Set the per device memory buffer space. Not applicable in our case */
+multiline_comment|/* Set the per device memory buffer space.&n;&t;&t;&t; * Not applicable in our case */
 r_case
 id|SIOCSIFLINK
 suffix:colon
@@ -7769,7 +7671,8 @@ id|ifreq
 )paren
 )paren
 )paren
-r_return
+id|ret
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
@@ -7801,11 +7704,9 @@ c_func
 id|cmd
 )paren
 op_logical_or
-(paren
 id|cmd
 op_eq
 id|SIOCGIWENCODE
-)paren
 )paren
 (brace
 r_if
@@ -7818,12 +7719,10 @@ c_func
 id|CAP_NET_ADMIN
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EPERM
 suffix:semicolon
-)brace
 )brace
 id|dev_load
 c_func
@@ -7880,7 +7779,8 @@ id|ifreq
 )paren
 )paren
 )paren
-r_return
+id|ret
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
@@ -7930,13 +7830,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|__dev_get_by_index
 c_func
 (paren
 id|ifindex
 )paren
-op_eq
-l_int|NULL
 )paren
 r_return
 id|ifindex
@@ -7950,7 +7849,7 @@ id|dev_boot_phase
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/**&n; *&t;register_netdevice&t;- register a network device&n; *&t;@dev: device to register&n; *&t;&n; *&t;Take a completed network device structure and add it to the kernel&n; *&t;interfaces. A %NETDEV_REGISTER message is sent to the netdev notifier&n; *&t;chain. 0 is returned on success. A negative errno code is returned&n; *&t;on a failure to set up the device, or if the name is a duplicate.&n; *&n; *&t;Callers must hold the rtnl semaphore.  See the comment at the&n; *&t;end of Space.c for details about the locking.  You may want&n; *&t;register_netdev() instead of this.&n; *&n; *&t;BUGS:&n; *&t;The locking appears insufficient to guarantee two parallel registers&n; *&t;will not get the same name.&n; */
+multiline_comment|/**&n; *&t;register_netdevice&t;- register a network device&n; *&t;@dev: device to register&n; *&n; *&t;Take a completed network device structure and add it to the kernel&n; *&t;interfaces. A %NETDEV_REGISTER message is sent to the netdev notifier&n; *&t;chain. 0 is returned on success. A negative errno code is returned&n; *&t;on a failure to set up the device, or if the name is a duplicate.&n; *&n; *&t;Callers must hold the rtnl semaphore.  See the comment at the&n; *&t;end of Space.c for details about the locking.  You may want&n; *&t;register_netdev() instead of this.&n; *&n; *&t;BUGS:&n; *&t;The locking appears insufficient to guarantee two parallel registers&n; *&t;will not get the same name.&n; */
 r_int
 id|net_dev_init
 c_func
@@ -7978,11 +7877,9 @@ op_star
 op_star
 id|dp
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_DIVERT
 r_int
 id|ret
 suffix:semicolon
-macro_line|#endif
 id|spin_lock_init
 c_func
 (paren
@@ -8032,8 +7929,8 @@ c_cond
 (paren
 id|ret
 )paren
-r_return
-id|ret
+r_goto
+id|out
 suffix:semicolon
 macro_line|#endif /* CONFIG_NET_DIVERT */
 id|dev-&gt;iflink
@@ -8042,6 +7939,11 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* Init, if this function is available */
+id|ret
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8054,23 +7956,10 @@ c_func
 (paren
 id|dev
 )paren
-op_ne
-l_int|0
 )paren
-(brace
-macro_line|#ifdef CONFIG_NET_DIVERT
-id|free_divert_blk
-c_func
-(paren
-id|dev
-)paren
+r_goto
+id|out_err
 suffix:semicolon
-macro_line|#endif
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
 id|dev-&gt;ifindex
 op_assign
 id|dev_new_index
@@ -8091,6 +7980,11 @@ op_assign
 id|dev-&gt;ifindex
 suffix:semicolon
 multiline_comment|/* Check for existence, and append to tail of chain */
+id|ret
+op_assign
+op_minus
+id|EEXIST
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -8121,6 +8015,7 @@ id|d
 op_eq
 id|dev
 op_logical_or
+op_logical_neg
 id|strcmp
 c_func
 (paren
@@ -8128,31 +8023,17 @@ id|d-&gt;name
 comma
 id|dev-&gt;name
 )paren
-op_eq
-l_int|0
 )paren
-(brace
-macro_line|#ifdef CONFIG_NET_DIVERT
-id|free_divert_blk
-c_func
-(paren
-id|dev
-)paren
+r_goto
+id|out_err
 suffix:semicolon
-macro_line|#endif
-r_return
-op_minus
-id|EEXIST
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;&t; *&t;nil rebuild_header routine,&n;&t; *&t;that should be never called and used as just bug trap.&n;&t; */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dev-&gt;rebuild_header
-op_eq
-l_int|NULL
 )paren
 id|dev-&gt;rebuild_header
 op_assign
@@ -8227,8 +8108,23 @@ comma
 l_string|&quot;register&quot;
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
-l_int|0
+id|ret
+suffix:semicolon
+id|out_err
+suffix:colon
+macro_line|#ifdef CONFIG_NET_DIVERT
+id|free_divert_blk
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;netdev_finish_unregister - complete unregistration&n; *&t;@dev: device&n; *&n; *&t;Destroy and free a dead device. A value of zero is returned on&n; *&t;success.&n; */
@@ -8246,25 +8142,22 @@ id|dev
 id|BUG_TRAP
 c_func
 (paren
+op_logical_neg
 id|dev-&gt;ip_ptr
-op_eq
-l_int|NULL
 )paren
 suffix:semicolon
 id|BUG_TRAP
 c_func
 (paren
+op_logical_neg
 id|dev-&gt;ip6_ptr
-op_eq
-l_int|NULL
 )paren
 suffix:semicolon
 id|BUG_TRAP
 c_func
 (paren
+op_logical_neg
 id|dev-&gt;dn_ptr
-op_eq
-l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -8385,9 +8278,8 @@ suffix:semicolon
 id|BUG_TRAP
 c_func
 (paren
+op_logical_neg
 id|dev-&gt;deadbeaf
-op_eq
-l_int|0
 )paren
 suffix:semicolon
 id|dev-&gt;deadbeaf
@@ -8452,16 +8344,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|d
-op_eq
-l_int|NULL
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;unregister_netdevice: device %s/%p never was registered&bslash;n&quot;
+l_string|&quot;unregister_netdevice: device %s/%p never &quot;
+l_string|&quot;was registered&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -8489,9 +8381,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dev_boot_phase
-op_eq
-l_int|0
 )paren
 (brace
 macro_line|#ifdef CONFIG_NET_FASTROUTE
@@ -8554,9 +8445,8 @@ multiline_comment|/* Notifier chain MUST detach us from master device. */
 id|BUG_TRAP
 c_func
 (paren
+op_logical_neg
 id|dev-&gt;master
-op_eq
-l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_DIVERT
@@ -8592,7 +8482,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;unregister_netdevice: holding %s refcnt=%d&bslash;n&quot;
+l_string|&quot;unregister_netdevice: holding %s &quot;
+l_string|&quot;refcnt=%d&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -8607,14 +8498,8 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif
-id|dev_put
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Last reference is our one */
@@ -8630,21 +8515,14 @@ id|dev-&gt;refcnt
 op_eq
 l_int|1
 )paren
-(brace
-id|dev_put
-c_func
-(paren
-id|dev
-)paren
+r_goto
+id|out
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 macro_line|#ifdef NET_REFCNT_DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;unregister_netdevice: waiting %s refcnt=%d&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -8658,7 +8536,7 @@ id|dev-&gt;refcnt
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* EXPLANATION. If dev-&gt;refcnt is not now 1 (our own reference)&n;&t;   it means that someone in the kernel still has a reference&n;&t;   to this device and we cannot release it.&n;&n;&t;   &quot;New style&quot; devices have destructors, hence we can return from this&n;&t;   function and destructor will do all the work later.  As of kernel 2.4.0&n;&t;   there are very few &quot;New Style&quot; devices.&n;&n;&t;   &quot;Old style&quot; devices expect that the device is free of any references&n;&t;   upon exit from this function.&n;&t;   We cannot return from this function until all such references have&n;&t;   fallen away.  This is because the caller of this function will probably&n;&t;   immediately kfree(*dev) and then be unloaded via sys_delete_module.&n;&n;&t;   So, we linger until all references fall away.  The duration of the&n;&t;   linger is basically unbounded! It is driven by, for example, the&n;&t;   current setting of sysctl_ipfrag_time.&n;&n;&t;   After 1 second, we start to rebroadcast unregister notifications&n;&t;   in hope that careless clients will release the device.&n;&n;&t; */
+multiline_comment|/* EXPLANATION. If dev-&gt;refcnt is not now 1 (our own reference)&n;&t;   it means that someone in the kernel still has a reference&n;&t;   to this device and we cannot release it.&n;&n;&t;   &quot;New style&quot; devices have destructors, hence we can return from this&n;&t;   function and destructor will do all the work later. As of kernel&n;&t;   2.4.0 there are very few &quot;New Style&quot; devices.&n;&n;&t;   &quot;Old style&quot; devices expect that the device is free of any references&n;&t;   upon exit from this function.&n;&t;   We cannot return from this function until all such references have&n;&t;   fallen away. This is because the caller of this function will&n;&t;   probably immediately kfree(*dev) and then be unloaded via&n;&t;   sys_delete_module.&n;&n;&t;   So, we linger until all references fall away.  The duration of the&n;&t;   linger is basically unbounded! It is driven by, for example, the&n;&t;   current setting of sysctl_ipfrag_time.&n;&n;&t;   After 1 second, we start to rebroadcast unregister notifications&n;&t;   in hope that careless clients will release the device.&n;&n;&t; */
 id|now
 op_assign
 id|warning_time
@@ -8739,8 +8617,8 @@ id|printk
 c_func
 (paren
 id|KERN_EMERG
-l_string|&quot;unregister_netdevice: waiting for %s to &quot;
-l_string|&quot;become free. Usage count = %d&bslash;n&quot;
+l_string|&quot;unregister_netdevice: waiting for &quot;
+l_string|&quot;%s to become free. Usage count = %d&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -8758,6 +8636,8 @@ id|jiffies
 suffix:semicolon
 )brace
 )brace
+id|out
+suffix:colon
 id|dev_put
 c_func
 (paren
@@ -8768,7 +8648,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Initialize the DEV module. At boot time this walks the device list and&n; *&t;unhooks any devices that fail to initialise (normally hardware not &n; *&t;present) and leaves us with a valid list of present and active devices.&n; *&n; */
+multiline_comment|/*&n; *&t;Initialize the DEV module. At boot time this walks the device list and&n; *&t;unhooks any devices that fail to initialise (normally hardware not&n; *&t;present) and leaves us with a valid list of present and active devices.&n; *&n; */
 r_extern
 r_void
 id|net_device_init
@@ -9033,7 +8913,7 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * Check boot time settings for the device.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Check boot time settings for the device.&n;&t;&t; */
 id|netdev_boot_setup_check
 c_func
 (paren
@@ -9094,9 +8974,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dev-&gt;rebuild_header
-op_eq
-l_int|NULL
 )paren
 id|dev-&gt;rebuild_header
 op_assign
