@@ -5,7 +5,6 @@ multiline_comment|/* The i386 irq.h has a struct task_struct in a prototype with
 r_struct
 id|task_struct
 suffix:semicolon
-macro_line|#include &quot;asm/arch/irq.h&quot;
 macro_line|#include &quot;asm/ptrace.h&quot;
 DECL|macro|NR_IRQS
 macro_line|#undef NR_IRQS
