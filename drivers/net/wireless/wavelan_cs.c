@@ -5824,7 +5824,7 @@ suffix:semicolon
 macro_line|#endif&t;/* SET_MAC_ADDRESS */
 macro_line|#ifdef WIRELESS_EXT&t;/* If wireless extension exist in the kernel */
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Frequency setting (for hardware able of it)&n; * It&squot;s a bit complicated and you don&squot;t really want to look into it...&n; * (called in wavelan_ioctl)&n; */
+multiline_comment|/*&n; * Frequency setting (for hardware able of it)&n; * It&squot;s a bit complicated and you don&squot;t really want to look into it...&n; */
 r_static
 r_inline
 r_int
@@ -9380,6 +9380,39 @@ op_assign
 l_int|2000000
 suffix:semicolon
 multiline_comment|/* 2 Mb/s */
+multiline_comment|/* Event capability (kernel + driver) */
+id|range-&gt;event_capa
+(braket
+l_int|0
+)braket
+op_assign
+(paren
+id|IW_EVENT_CAPA_MASK
+c_func
+(paren
+l_int|0x8B02
+)paren
+op_or
+id|IW_EVENT_CAPA_MASK
+c_func
+(paren
+l_int|0x8B04
+)paren
+op_or
+id|IW_EVENT_CAPA_MASK
+c_func
+(paren
+l_int|0x8B06
+)paren
+)paren
+suffix:semicolon
+id|range-&gt;event_capa
+(braket
+l_int|1
+)braket
+op_assign
+id|IW_EVENT_CAPA_K_1
+suffix:semicolon
 multiline_comment|/* Disable interrupts and save flags. */
 id|spin_lock_irqsave
 c_func
@@ -10490,58 +10523,22 @@ comma
 dot
 id|standard
 op_assign
-(paren
-id|iw_handler
-op_star
-)paren
 id|wavelan_handler
 comma
 dot
 r_private
 op_assign
-(paren
-id|iw_handler
-op_star
-)paren
 id|wavelan_private_handler
 comma
 dot
 id|private_args
 op_assign
-(paren
-r_struct
-id|iw_priv_args
-op_star
-)paren
 id|wavelan_private_args
 comma
 dot
-id|spy_offset
+id|get_wireless_stats
 op_assign
-(paren
-(paren
-r_void
-op_star
-)paren
-(paren
-op_amp
-(paren
-(paren
-id|net_local
-op_star
-)paren
-l_int|NULL
-)paren
-op_member_access_from_pointer
-id|spy_data
-)paren
-op_minus
-(paren
-r_void
-op_star
-)paren
-l_int|NULL
-)paren
+id|wavelan_get_wireless_stats
 comma
 )brace
 suffix:semicolon
@@ -17659,11 +17656,6 @@ suffix:semicolon
 macro_line|#ifdef WIRELESS_EXT&t;/* If wireless extension exist in the kernel */
 id|dev-&gt;wireless_handlers
 op_assign
-(paren
-r_struct
-id|iw_handler_def
-op_star
-)paren
 op_amp
 id|wavelan_handler_def
 suffix:semicolon
@@ -17671,10 +17663,16 @@ id|dev-&gt;do_ioctl
 op_assign
 id|wavelan_ioctl
 suffix:semicolon
-multiline_comment|/* old wireless extensions */
-id|dev-&gt;get_wireless_stats
+multiline_comment|/* ethtool */
+id|lp-&gt;wireless_data.spy_data
 op_assign
-id|wavelan_get_wireless_stats
+op_amp
+id|lp-&gt;spy_data
+suffix:semicolon
+id|dev-&gt;wireless_data
+op_assign
+op_amp
+id|lp-&gt;wireless_data
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Other specific data */

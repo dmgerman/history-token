@@ -4033,6 +4033,11 @@ r_struct
 id|iw_spy_data
 id|spy_data
 suffix:semicolon
+DECL|member|wireless_data
+r_struct
+id|iw_public_data
+id|wireless_data
+suffix:semicolon
 macro_line|#endif /* WIRELESS_EXT */
 macro_line|#ifdef MICSUPPORT
 multiline_comment|/* MIC stuff */
@@ -12080,17 +12085,8 @@ op_amp
 id|airo_ioctl
 suffix:semicolon
 macro_line|#ifdef WIRELESS_EXT
-id|dev-&gt;get_wireless_stats
-op_assign
-id|airo_get_wireless_stats
-suffix:semicolon
 id|dev-&gt;wireless_handlers
 op_assign
-(paren
-r_struct
-id|iw_handler_def
-op_star
-)paren
 op_amp
 id|airo_handler_def
 suffix:semicolon
@@ -12205,6 +12201,12 @@ id|dev-&gt;base_addr
 op_assign
 id|ethdev-&gt;base_addr
 suffix:semicolon
+macro_line|#ifdef WIRELESS_EXT
+id|dev-&gt;wireless_data
+op_assign
+id|ethdev-&gt;wireless_data
+suffix:semicolon
+macro_line|#endif /* WIRELESS_EXT */
 id|memcpy
 c_func
 (paren
@@ -12617,19 +12619,20 @@ op_amp
 id|airo_ioctl
 suffix:semicolon
 macro_line|#ifdef WIRELESS_EXT
-id|dev-&gt;get_wireless_stats
-op_assign
-id|airo_get_wireless_stats
-suffix:semicolon
 id|dev-&gt;wireless_handlers
 op_assign
-(paren
-r_struct
-id|iw_handler_def
-op_star
-)paren
 op_amp
 id|airo_handler_def
+suffix:semicolon
+id|ai-&gt;wireless_data.spy_data
+op_assign
+op_amp
+id|ai-&gt;spy_data
+suffix:semicolon
+id|dev-&gt;wireless_data
+op_assign
+op_amp
+id|ai-&gt;wireless_data
 suffix:semicolon
 macro_line|#endif /* WIRELESS_EXT */
 id|dev-&gt;change_mtu
@@ -15213,7 +15216,7 @@ id|exitrx
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef IW_WIRELESS_SPY&t;&t;/* defined in iw_handler.h */
+macro_line|#ifdef WIRELESS_SPY
 r_if
 c_cond
 (paren
@@ -15350,7 +15353,7 @@ id|wstats
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* IW_WIRELESS_SPY */
+macro_line|#endif /* WIRELESS_SPY */
 id|OUT4500
 c_func
 (paren
@@ -16579,7 +16582,7 @@ id|len
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef IW_WIRELESS_SPY&t;&t;/* defined in iw_handler.h */
+macro_line|#ifdef WIRELESS_SPY
 r_if
 c_cond
 (paren
@@ -16629,7 +16632,7 @@ id|wstats
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* IW_WIRELESS_SPY */
+macro_line|#endif /* WIRELESS_SPY */
 id|skb-&gt;dev
 op_assign
 id|ai-&gt;dev
@@ -33149,6 +33152,52 @@ id|range-&gt;avg_qual.noise
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Event capability (kernel + driver) */
+id|range-&gt;event_capa
+(braket
+l_int|0
+)braket
+op_assign
+(paren
+id|IW_EVENT_CAPA_K_0
+op_or
+id|IW_EVENT_CAPA_MASK
+c_func
+(paren
+id|SIOCGIWTHRSPY
+)paren
+op_or
+id|IW_EVENT_CAPA_MASK
+c_func
+(paren
+id|SIOCGIWAP
+)paren
+op_or
+id|IW_EVENT_CAPA_MASK
+c_func
+(paren
+id|SIOCGIWSCAN
+)paren
+)paren
+suffix:semicolon
+id|range-&gt;event_capa
+(braket
+l_int|1
+)braket
+op_assign
+id|IW_EVENT_CAPA_K_1
+suffix:semicolon
+id|range-&gt;event_capa
+(braket
+l_int|4
+)braket
+op_assign
+id|IW_EVENT_CAPA_MASK
+c_func
+(paren
+id|IWEVTXDROP
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -34795,12 +34844,33 @@ id|current_ev
 comma
 id|extra
 op_plus
-id|IW_SCAN_MAX_DATA
+id|dwrq-&gt;length
 comma
 op_amp
 id|BSSList
 )paren
 suffix:semicolon
+multiline_comment|/* Check if there is space for one more entry */
+r_if
+c_cond
+(paren
+(paren
+id|extra
+op_plus
+id|dwrq-&gt;length
+op_minus
+id|current_ev
+)paren
+op_le
+id|IW_EV_ADDR_LEN
+)paren
+(brace
+multiline_comment|/* Ask user space to try again with a bigger buffer */
+r_return
+op_minus
+id|E2BIG
+suffix:semicolon
+)brace
 multiline_comment|/* Read next entry */
 id|rc
 op_assign
@@ -35459,59 +35529,22 @@ comma
 dot
 id|standard
 op_assign
-(paren
-id|iw_handler
-op_star
-)paren
 id|airo_handler
 comma
 dot
 r_private
 op_assign
-(paren
-id|iw_handler
-op_star
-)paren
 id|airo_private_handler
 comma
 dot
 id|private_args
 op_assign
-(paren
-r_struct
-id|iw_priv_args
-op_star
-)paren
 id|airo_private_args
 comma
 dot
-id|spy_offset
+id|get_wireless_stats
 op_assign
-(paren
-(paren
-r_void
-op_star
-)paren
-(paren
-op_amp
-(paren
-(paren
-r_struct
-id|airo_info
-op_star
-)paren
-l_int|NULL
-)paren
-op_member_access_from_pointer
-id|spy_data
-)paren
-op_minus
-(paren
-r_void
-op_star
-)paren
-l_int|NULL
-)paren
+id|airo_get_wireless_stats
 comma
 )brace
 suffix:semicolon

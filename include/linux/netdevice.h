@@ -600,10 +600,18 @@ id|dev
 suffix:semicolon
 multiline_comment|/* List of functions to handle Wireless Extensions (instead of ioctl).&n;&t; * See &lt;net/iw_handler.h&gt; for details. Jean II */
 DECL|member|wireless_handlers
+r_const
 r_struct
 id|iw_handler_def
 op_star
 id|wireless_handlers
+suffix:semicolon
+multiline_comment|/* Instance data managed by the core of Wireless Extensions. */
+DECL|member|wireless_data
+r_struct
+id|iw_public_data
+op_star
+id|wireless_data
 suffix:semicolon
 DECL|member|ethtool_ops
 r_struct

@@ -1,9 +1,9 @@
-multiline_comment|/*&n; * This file define a set of standard wireless extensions&n; *&n; * Version :&t;16&t;2.4.03&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; * Copyright (c) 1997-2002 Jean Tourrilhes, All Rights Reserved.&n; */
+multiline_comment|/*&n; * This file define a set of standard wireless extensions&n; *&n; * Version :&t;17&t;21.6.04&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; * Copyright (c) 1997-2004 Jean Tourrilhes, All Rights Reserved.&n; */
 macro_line|#ifndef _LINUX_WIRELESS_H
 DECL|macro|_LINUX_WIRELESS_H
 mdefine_line|#define _LINUX_WIRELESS_H
 multiline_comment|/************************** DOCUMENTATION **************************/
-multiline_comment|/*&n; * Initial APIs (1996 -&gt; onward) :&n; * -----------------------------&n; * Basically, the wireless extensions are for now a set of standard ioctl&n; * call + /proc/net/wireless&n; *&n; * The entry /proc/net/wireless give statistics and information on the&n; * driver.&n; * This is better than having each driver having its entry because&n; * its centralised and we may remove the driver module safely.&n; *&n; * Ioctl are used to configure the driver and issue commands.  This is&n; * better than command line options of insmod because we may want to&n; * change dynamically (while the driver is running) some parameters.&n; *&n; * The ioctl mechanimsm are copied from standard devices ioctl.&n; * We have the list of command plus a structure descibing the&n; * data exchanged...&n; * Note that to add these ioctl, I was obliged to modify :&n; *&t;# net/core/dev.c (two place + add include)&n; *&t;# net/ipv4/af_inet.c (one place + add include)&n; *&n; * /proc/net/wireless is a copy of /proc/net/dev.&n; * We have a structure for data passed from the driver to /proc/net/wireless&n; * Too add this, I&squot;ve modified :&n; *&t;# net/core/dev.c (two other places)&n; *&t;# include/linux/netdevice.h (one place)&n; *&t;# include/linux/proc_fs.h (one place)&n; *&n; * New driver API (2002 -&gt; onward) :&n; * -------------------------------&n; * This file is only concerned with the user space API and common definitions.&n; * The new driver API is defined and documented in :&n; *&t;# include/net/iw_handler.h&n; *&n; * Note as well that /proc/net/wireless implementation has now moved in :&n; *&t;# include/linux/wireless.c&n; *&n; * Wireless Events (2002 -&gt; onward) :&n; * --------------------------------&n; * Events are defined at the end of this file, and implemented in :&n; *&t;# include/linux/wireless.c&n; *&n; * Other comments :&n; * --------------&n; * Do not add here things that are redundant with other mechanisms&n; * (drivers init, ifconfig, /proc/net/dev, ...) and with are not&n; * wireless specific.&n; *&n; * These wireless extensions are not magic : each driver has to provide&n; * support for them...&n; *&n; * IMPORTANT NOTE : As everything in the kernel, this is very much a&n; * work in progress. Contact me if you have ideas of improvements...&n; */
+multiline_comment|/*&n; * Initial APIs (1996 -&gt; onward) :&n; * -----------------------------&n; * Basically, the wireless extensions are for now a set of standard ioctl&n; * call + /proc/net/wireless&n; *&n; * The entry /proc/net/wireless give statistics and information on the&n; * driver.&n; * This is better than having each driver having its entry because&n; * its centralised and we may remove the driver module safely.&n; *&n; * Ioctl are used to configure the driver and issue commands.  This is&n; * better than command line options of insmod because we may want to&n; * change dynamically (while the driver is running) some parameters.&n; *&n; * The ioctl mechanimsm are copied from standard devices ioctl.&n; * We have the list of command plus a structure descibing the&n; * data exchanged...&n; * Note that to add these ioctl, I was obliged to modify :&n; *&t;# net/core/dev.c (two place + add include)&n; *&t;# net/ipv4/af_inet.c (one place + add include)&n; *&n; * /proc/net/wireless is a copy of /proc/net/dev.&n; * We have a structure for data passed from the driver to /proc/net/wireless&n; * Too add this, I&squot;ve modified :&n; *&t;# net/core/dev.c (two other places)&n; *&t;# include/linux/netdevice.h (one place)&n; *&t;# include/linux/proc_fs.h (one place)&n; *&n; * New driver API (2002 -&gt; onward) :&n; * -------------------------------&n; * This file is only concerned with the user space API and common definitions.&n; * The new driver API is defined and documented in :&n; *&t;# include/net/iw_handler.h&n; *&n; * Note as well that /proc/net/wireless implementation has now moved in :&n; *&t;# net/core/wireless.c&n; *&n; * Wireless Events (2002 -&gt; onward) :&n; * --------------------------------&n; * Events are defined at the end of this file, and implemented in :&n; *&t;# net/core/wireless.c&n; *&n; * Other comments :&n; * --------------&n; * Do not add here things that are redundant with other mechanisms&n; * (drivers init, ifconfig, /proc/net/dev, ...) and with are not&n; * wireless specific.&n; *&n; * These wireless extensions are not magic : each driver has to provide&n; * support for them...&n; *&n; * IMPORTANT NOTE : As everything in the kernel, this is very much a&n; * work in progress. Contact me if you have ideas of improvements...&n; */
 multiline_comment|/***************************** INCLUDES *****************************/
 multiline_comment|/* To minimise problems in user space, I might remove those headers&n; * at some point. Jean II */
 macro_line|#include &lt;linux/types.h&gt;&t;&t;/* for &quot;caddr_t&quot; et al&t;&t;*/
@@ -12,8 +12,8 @@ macro_line|#include &lt;linux/if.h&gt;&t;&t;&t;/* for IFNAMSIZ and co... */
 multiline_comment|/***************************** VERSION *****************************/
 multiline_comment|/*&n; * This constant is used to know the availability of the wireless&n; * extensions and to know which version of wireless extensions it is&n; * (there is some stuff that will be added in the future...)&n; * I just plan to increment with each new version.&n; */
 DECL|macro|WIRELESS_EXT
-mdefine_line|#define WIRELESS_EXT&t;16
-multiline_comment|/*&n; * Changes :&n; *&n; * V2 to V3&n; * --------&n; *&t;Alan Cox start some incompatibles changes. I&squot;ve integrated a bit more.&n; *&t;- Encryption renamed to Encode to avoid US regulation problems&n; *&t;- Frequency changed from float to struct to avoid problems on old 386&n; *&n; * V3 to V4&n; * --------&n; *&t;- Add sensitivity&n; *&n; * V4 to V5&n; * --------&n; *&t;- Missing encoding definitions in range&n; *&t;- Access points stuff&n; *&n; * V5 to V6&n; * --------&n; *&t;- 802.11 support (ESSID ioctls)&n; *&n; * V6 to V7&n; * --------&n; *&t;- define IW_ESSID_MAX_SIZE and IW_MAX_AP&n; *&n; * V7 to V8&n; * --------&n; *&t;- Changed my e-mail address&n; *&t;- More 802.11 support (nickname, rate, rts, frag)&n; *&t;- List index in frequencies&n; *&n; * V8 to V9&n; * --------&n; *&t;- Support for &squot;mode of operation&squot; (ad-hoc, managed...)&n; *&t;- Support for unicast and multicast power saving&n; *&t;- Change encoding to support larger tokens (&gt;64 bits)&n; *&t;- Updated iw_params (disable, flags) and use it for NWID&n; *&t;- Extracted iw_point from iwreq for clarity&n; *&n; * V9 to V10&n; * ---------&n; *&t;- Add PM capability to range structure&n; *&t;- Add PM modifier : MAX/MIN/RELATIVE&n; *&t;- Add encoding option : IW_ENCODE_NOKEY&n; *&t;- Add TxPower ioctls (work like TxRate)&n; *&n; * V10 to V11&n; * ----------&n; *&t;- Add WE version in range (help backward/forward compatibility)&n; *&t;- Add retry ioctls (work like PM)&n; *&n; * V11 to V12&n; * ----------&n; *&t;- Add SIOCSIWSTATS to get /proc/net/wireless programatically&n; *&t;- Add DEV PRIVATE IOCTL to avoid collisions in SIOCDEVPRIVATE space&n; *&t;- Add new statistics (frag, retry, beacon)&n; *&t;- Add average quality (for user space calibration)&n; *&n; * V12 to V13&n; * ----------&n; *&t;- Document creation of new driver API.&n; *&t;- Extract union iwreq_data from struct iwreq (for new driver API).&n; *&t;- Rename SIOCSIWNAME as SIOCSIWCOMMIT&n; *&n; * V13 to V14&n; * ----------&n; *&t;- Wireless Events support : define struct iw_event&n; *&t;- Define additional specific event numbers&n; *&t;- Add &quot;addr&quot; and &quot;param&quot; fields in union iwreq_data&n; *&t;- AP scanning stuff (SIOCSIWSCAN and friends)&n; *&n; * V14 to V15&n; * ----------&n; *&t;- Add IW_PRIV_TYPE_ADDR for struct sockaddr private arg&n; *&t;- Make struct iw_freq signed (both m &amp; e), add explicit padding&n; *&t;- Add IWEVCUSTOM for driver specific event/scanning token&n; *&t;- Add IW_MAX_GET_SPY for driver returning a lot of addresses&n; *&t;- Add IW_TXPOW_RANGE for range of Tx Powers&n; *&t;- Add IWEVREGISTERED &amp; IWEVEXPIRED events for Access Points&n; *&t;- Add IW_MODE_MONITOR for passive monitor&n; *&n; * V15 to V16&n; * ----------&n; *&t;- Increase the number of bitrates in iw_range to 32 (for 802.11g)&n; *&t;- Increase the number of frequencies in iw_range to 32 (for 802.11b+a)&n; *&t;- Reshuffle struct iw_range for increases, add filler&n; *&t;- Increase IW_MAX_AP to 64 for driver returning a lot of addresses&n; *&t;- Remove IW_MAX_GET_SPY because conflict with enhanced spy support&n; *&t;- Add SIOCSIWTHRSPY/SIOCGIWTHRSPY and &quot;struct iw_thrspy&quot;&n; *&t;- Add IW_ENCODE_TEMP and iw_range-&gt;encoding_login_index&n; */
+mdefine_line|#define WIRELESS_EXT&t;17
+multiline_comment|/*&n; * Changes :&n; *&n; * V2 to V3&n; * --------&n; *&t;Alan Cox start some incompatibles changes. I&squot;ve integrated a bit more.&n; *&t;- Encryption renamed to Encode to avoid US regulation problems&n; *&t;- Frequency changed from float to struct to avoid problems on old 386&n; *&n; * V3 to V4&n; * --------&n; *&t;- Add sensitivity&n; *&n; * V4 to V5&n; * --------&n; *&t;- Missing encoding definitions in range&n; *&t;- Access points stuff&n; *&n; * V5 to V6&n; * --------&n; *&t;- 802.11 support (ESSID ioctls)&n; *&n; * V6 to V7&n; * --------&n; *&t;- define IW_ESSID_MAX_SIZE and IW_MAX_AP&n; *&n; * V7 to V8&n; * --------&n; *&t;- Changed my e-mail address&n; *&t;- More 802.11 support (nickname, rate, rts, frag)&n; *&t;- List index in frequencies&n; *&n; * V8 to V9&n; * --------&n; *&t;- Support for &squot;mode of operation&squot; (ad-hoc, managed...)&n; *&t;- Support for unicast and multicast power saving&n; *&t;- Change encoding to support larger tokens (&gt;64 bits)&n; *&t;- Updated iw_params (disable, flags) and use it for NWID&n; *&t;- Extracted iw_point from iwreq for clarity&n; *&n; * V9 to V10&n; * ---------&n; *&t;- Add PM capability to range structure&n; *&t;- Add PM modifier : MAX/MIN/RELATIVE&n; *&t;- Add encoding option : IW_ENCODE_NOKEY&n; *&t;- Add TxPower ioctls (work like TxRate)&n; *&n; * V10 to V11&n; * ----------&n; *&t;- Add WE version in range (help backward/forward compatibility)&n; *&t;- Add retry ioctls (work like PM)&n; *&n; * V11 to V12&n; * ----------&n; *&t;- Add SIOCSIWSTATS to get /proc/net/wireless programatically&n; *&t;- Add DEV PRIVATE IOCTL to avoid collisions in SIOCDEVPRIVATE space&n; *&t;- Add new statistics (frag, retry, beacon)&n; *&t;- Add average quality (for user space calibration)&n; *&n; * V12 to V13&n; * ----------&n; *&t;- Document creation of new driver API.&n; *&t;- Extract union iwreq_data from struct iwreq (for new driver API).&n; *&t;- Rename SIOCSIWNAME as SIOCSIWCOMMIT&n; *&n; * V13 to V14&n; * ----------&n; *&t;- Wireless Events support : define struct iw_event&n; *&t;- Define additional specific event numbers&n; *&t;- Add &quot;addr&quot; and &quot;param&quot; fields in union iwreq_data&n; *&t;- AP scanning stuff (SIOCSIWSCAN and friends)&n; *&n; * V14 to V15&n; * ----------&n; *&t;- Add IW_PRIV_TYPE_ADDR for struct sockaddr private arg&n; *&t;- Make struct iw_freq signed (both m &amp; e), add explicit padding&n; *&t;- Add IWEVCUSTOM for driver specific event/scanning token&n; *&t;- Add IW_MAX_GET_SPY for driver returning a lot of addresses&n; *&t;- Add IW_TXPOW_RANGE for range of Tx Powers&n; *&t;- Add IWEVREGISTERED &amp; IWEVEXPIRED events for Access Points&n; *&t;- Add IW_MODE_MONITOR for passive monitor&n; *&n; * V15 to V16&n; * ----------&n; *&t;- Increase the number of bitrates in iw_range to 32 (for 802.11g)&n; *&t;- Increase the number of frequencies in iw_range to 32 (for 802.11b+a)&n; *&t;- Reshuffle struct iw_range for increases, add filler&n; *&t;- Increase IW_MAX_AP to 64 for driver returning a lot of addresses&n; *&t;- Remove IW_MAX_GET_SPY because conflict with enhanced spy support&n; *&t;- Add SIOCSIWTHRSPY/SIOCGIWTHRSPY and &quot;struct iw_thrspy&quot;&n; *&t;- Add IW_ENCODE_TEMP and iw_range-&gt;encoding_login_index&n; *&n; * V16 to V17&n; * ----------&n; *&t;- Add flags to frequency -&gt; auto/fixed&n; *&t;- Document (struct iw_quality *)-&gt;updated, add new flags (INVALID)&n; *&t;- Wireless Event capability in struct iw_range&n; *&t;- Add support for relative TxPower (yick !)&n; */
 multiline_comment|/**************************** CONSTANTS ****************************/
 multiline_comment|/* -------------------------- IOCTL LIST -------------------------- */
 multiline_comment|/* Wireless Identification */
@@ -115,12 +115,12 @@ mdefine_line|#define SIOCSIWPOWER&t;0x8B2C&t;&t;/* set Power Management settings
 DECL|macro|SIOCGIWPOWER
 mdefine_line|#define SIOCGIWPOWER&t;0x8B2D&t;&t;/* get Power Management settings */
 multiline_comment|/* -------------------- DEV PRIVATE IOCTL LIST -------------------- */
-multiline_comment|/* These 16 ioctl are wireless device private.&n; * Each driver is free to use them for whatever purpose it chooses,&n; * however the driver *must* export the description of those ioctls&n; * with SIOCGIWPRIV and *must* use arguments as defined below.&n; * If you don&squot;t follow those rules, DaveM is going to hate you (reason :&n; * it make mixed 32/64bit operation impossible).&n; */
+multiline_comment|/* These 32 ioctl are wireless device private, for 16 commands.&n; * Each driver is free to use them for whatever purpose it chooses,&n; * however the driver *must* export the description of those ioctls&n; * with SIOCGIWPRIV and *must* use arguments as defined below.&n; * If you don&squot;t follow those rules, DaveM is going to hate you (reason :&n; * it make mixed 32/64bit operation impossible).&n; */
 DECL|macro|SIOCIWFIRSTPRIV
 mdefine_line|#define SIOCIWFIRSTPRIV&t;0x8BE0
 DECL|macro|SIOCIWLASTPRIV
 mdefine_line|#define SIOCIWLASTPRIV&t;0x8BFF
-multiline_comment|/* Previously, we were using SIOCDEVPRIVATE, but we now have our&n; * separate range because of collisions with other tools such as&n; * &squot;mii-tool&squot;.&n; * We now have 32 commands, so a bit more space ;-).&n; * Also, all &squot;odd&squot; commands are only usable by root and don&squot;t return the&n; * content of ifr/iwr to user (but you are not obliged to use the set/get&n; * convention, just use every other two command).&n; * And I repeat : you are not obliged to use them with iwspy, but you&n; * must be compliant with it.&n; */
+multiline_comment|/* Previously, we were using SIOCDEVPRIVATE, but we now have our&n; * separate range because of collisions with other tools such as&n; * &squot;mii-tool&squot;.&n; * We now have 32 commands, so a bit more space ;-).&n; * Also, all &squot;odd&squot; commands are only usable by root and don&squot;t return the&n; * content of ifr/iwr to user (but you are not obliged to use the set/get&n; * convention, just use every other two command). More details in iwpriv.c.&n; * And I repeat : you are not forced to use them with iwpriv, but you&n; * must be compliant with it.&n; */
 multiline_comment|/* ------------------------- IOCTL STUFF ------------------------- */
 multiline_comment|/* The first and the last (range) */
 DECL|macro|SIOCIWFIRST
@@ -204,6 +204,24 @@ DECL|macro|IW_MODE_SECOND
 mdefine_line|#define IW_MODE_SECOND&t;5&t;/* Secondary master/repeater (backup) */
 DECL|macro|IW_MODE_MONITOR
 mdefine_line|#define IW_MODE_MONITOR&t;6&t;/* Passive monitor (listen only) */
+multiline_comment|/* Statistics flags (bitmask in updated) */
+DECL|macro|IW_QUAL_QUAL_UPDATED
+mdefine_line|#define IW_QUAL_QUAL_UPDATED&t;0x1&t;/* Value was updated since last read */
+DECL|macro|IW_QUAL_LEVEL_UPDATED
+mdefine_line|#define IW_QUAL_LEVEL_UPDATED&t;0x2
+DECL|macro|IW_QUAL_NOISE_UPDATED
+mdefine_line|#define IW_QUAL_NOISE_UPDATED&t;0x4
+DECL|macro|IW_QUAL_QUAL_INVALID
+mdefine_line|#define IW_QUAL_QUAL_INVALID&t;0x10&t;/* Driver doesn&squot;t provide value */
+DECL|macro|IW_QUAL_LEVEL_INVALID
+mdefine_line|#define IW_QUAL_LEVEL_INVALID&t;0x20
+DECL|macro|IW_QUAL_NOISE_INVALID
+mdefine_line|#define IW_QUAL_NOISE_INVALID&t;0x40
+multiline_comment|/* Frequency flags */
+DECL|macro|IW_FREQ_AUTO
+mdefine_line|#define IW_FREQ_AUTO&t;&t;0x00&t;/* Let the driver decides */
+DECL|macro|IW_FREQ_FIXED
+mdefine_line|#define IW_FREQ_FIXED&t;&t;0x01&t;/* Force a specific value */
 multiline_comment|/* Maximum number of size of encoding token available&n; * they are listed in the range structure */
 DECL|macro|IW_MAX_ENCODING_SIZES
 mdefine_line|#define IW_MAX_ENCODING_SIZES&t;8
@@ -265,6 +283,8 @@ DECL|macro|IW_TXPOW_DBM
 mdefine_line|#define IW_TXPOW_DBM&t;&t;0x0000&t;/* Value is in dBm */
 DECL|macro|IW_TXPOW_MWATT
 mdefine_line|#define IW_TXPOW_MWATT&t;&t;0x0001&t;/* Value is in mW */
+DECL|macro|IW_TXPOW_RELATIVE
+mdefine_line|#define IW_TXPOW_RELATIVE&t;0x0002&t;/* Value is in arbitrary units */
 DECL|macro|IW_TXPOW_RANGE
 mdefine_line|#define IW_TXPOW_RANGE&t;&t;0x1000&t;/* Range of value between min/max */
 multiline_comment|/* Retry limits and lifetime flags available */
@@ -309,6 +329,23 @@ mdefine_line|#define IW_SCAN_MAX_DATA&t;4096&t;/* In bytes */
 multiline_comment|/* Max number of char in custom event - use multiple of them if needed */
 DECL|macro|IW_CUSTOM_MAX
 mdefine_line|#define IW_CUSTOM_MAX&t;&t;256&t;/* In bytes */
+multiline_comment|/* Event capability macros - in (struct iw_range *)-&gt;event_capa&n; * Because we have more than 32 possible events, we use an array of&n; * 32 bit bitmasks. Note : 32 bits = 0x20 = 2^5. */
+DECL|macro|IW_EVENT_CAPA_BASE
+mdefine_line|#define IW_EVENT_CAPA_BASE(cmd)&t;&t;((cmd &gt;= SIOCIWFIRSTPRIV) ? &bslash;&n;&t;&t;&t;&t;&t; (cmd - SIOCIWFIRSTPRIV + 0x60) : &bslash;&n;&t;&t;&t;&t;&t; (cmd - SIOCSIWCOMMIT))
+DECL|macro|IW_EVENT_CAPA_INDEX
+mdefine_line|#define IW_EVENT_CAPA_INDEX(cmd)&t;(IW_EVENT_CAPA_BASE(cmd) &gt;&gt; 5)
+DECL|macro|IW_EVENT_CAPA_MASK
+mdefine_line|#define IW_EVENT_CAPA_MASK(cmd)&t;&t;(1 &lt;&lt; (IW_EVENT_CAPA_BASE(cmd) &amp; 0x1F))
+multiline_comment|/* Event capability constants - event autogenerated by the kernel&n; * This list is valid for most 802.11 devices, customise as needed... */
+DECL|macro|IW_EVENT_CAPA_K_0
+mdefine_line|#define IW_EVENT_CAPA_K_0&t;(IW_EVENT_CAPA_MASK(0x8B04) | &bslash;&n;&t;&t;&t;&t; IW_EVENT_CAPA_MASK(0x8B06) | &bslash;&n;&t;&t;&t;&t; IW_EVENT_CAPA_MASK(0x8B1A))
+DECL|macro|IW_EVENT_CAPA_K_1
+mdefine_line|#define IW_EVENT_CAPA_K_1&t;(IW_EVENT_CAPA_MASK(0x8B2A))
+multiline_comment|/* &quot;Easy&quot; macro to set events in iw_range (less efficient) */
+DECL|macro|IW_EVENT_CAPA_SET
+mdefine_line|#define IW_EVENT_CAPA_SET(event_capa, cmd) (event_capa[IW_EVENT_CAPA_INDEX(cmd)] |= IW_EVENT_CAPA_MASK(cmd))
+DECL|macro|IW_EVENT_CAPA_SET_KERNEL
+mdefine_line|#define IW_EVENT_CAPA_SET_KERNEL(event_capa) {event_capa[0] |= IW_EVENT_CAPA_K_0; event_capa[1] |= IW_EVENT_CAPA_K_1; }
 multiline_comment|/****************************** TYPES ******************************/
 multiline_comment|/* --------------------------- SUBTYPES --------------------------- */
 multiline_comment|/*&n; *&t;Generic format for most parameters that fit in an int&n; */
@@ -382,11 +419,11 @@ id|__u8
 id|i
 suffix:semicolon
 multiline_comment|/* List index (when in range struct) */
-DECL|member|pad
+DECL|member|flags
 id|__u8
-id|pad
+id|flags
 suffix:semicolon
-multiline_comment|/* Unused - just for alignement */
+multiline_comment|/* Flags (fixed/auto) */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Quality of the link&n; */
@@ -701,10 +738,10 @@ DECL|member|old_num_frequency
 id|__u8
 id|old_num_frequency
 suffix:semicolon
-multiline_comment|/* Filler to keep &quot;version&quot; at the same offset */
-DECL|member|old_freq
-id|__s32
-id|old_freq
+multiline_comment|/* Wireless event capability bitmasks */
+DECL|member|event_capa
+id|__u32
+id|event_capa
 (braket
 l_int|6
 )braket
