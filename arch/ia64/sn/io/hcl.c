@@ -1864,12 +1864,6 @@ id|from
 comma
 id|name
 comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
 l_int|1
 )paren
 suffix:semicolon
@@ -2699,15 +2693,6 @@ multiline_comment|/* start dir */
 id|lookup_path
 comma
 multiline_comment|/* path */
-l_int|0
-comma
-multiline_comment|/* major */
-l_int|0
-comma
-multiline_comment|/* minor */
-l_int|0
-comma
-multiline_comment|/* char | block */
 l_int|1
 )paren
 suffix:semicolon
@@ -2768,15 +2753,6 @@ multiline_comment|/* start dir */
 id|path
 comma
 multiline_comment|/* path */
-l_int|0
-comma
-multiline_comment|/* major */
-l_int|0
-comma
-multiline_comment|/* minor */
-l_int|0
-comma
-multiline_comment|/* char | block */
 l_int|1
 )paren
 suffix:semicolon
@@ -2830,15 +2806,6 @@ multiline_comment|/* start dir */
 id|path
 comma
 multiline_comment|/* path */
-l_int|0
-comma
-multiline_comment|/* major */
-l_int|0
-comma
-multiline_comment|/* minor */
-l_int|0
-comma
-multiline_comment|/* char | block */
 l_int|1
 )paren
 suffix:semicolon
@@ -2903,15 +2870,6 @@ multiline_comment|/* start dir */
 l_string|&quot;block&quot;
 comma
 multiline_comment|/* path */
-l_int|0
-comma
-multiline_comment|/* major */
-l_int|0
-comma
-multiline_comment|/* minor */
-id|DEVFS_SPECIAL_BLK
-comma
-multiline_comment|/* char | block */
 l_int|1
 )paren
 suffix:semicolon
@@ -2951,15 +2909,6 @@ multiline_comment|/* start dir */
 l_string|&quot;char&quot;
 comma
 multiline_comment|/* path */
-l_int|0
-comma
-multiline_comment|/* major */
-l_int|0
-comma
-multiline_comment|/* minor */
-id|DEVFS_SPECIAL_CHR
-comma
-multiline_comment|/* char | block */
 l_int|1
 )paren
 suffix:semicolon
