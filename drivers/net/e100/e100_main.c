@@ -12852,7 +12852,7 @@ id|info
 )paren
 r_return
 op_minus
-id|EFAULT
+id|ENOMEM
 suffix:semicolon
 id|memset
 c_func
@@ -13287,6 +13287,19 @@ op_assign
 id|bdp-&gt;eeprom_size
 op_star
 l_int|2
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ecmd.offset
+OG
+id|ecmd.offset
+op_plus
+id|ecmd.len
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -14622,7 +14635,7 @@ id|strings
 )paren
 r_return
 op_minus
-id|EFAULT
+id|ENOMEM
 suffix:semicolon
 id|memset
 c_func
