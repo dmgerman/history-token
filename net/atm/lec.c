@@ -3387,7 +3387,7 @@ suffix:semicolon
 id|skb_pull
 c_func
 (paren
-id|skb-&gt;data
+id|skb
 comma
 l_int|2
 )paren
