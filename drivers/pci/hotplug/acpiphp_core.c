@@ -81,7 +81,7 @@ id|debug
 comma
 r_bool
 comma
-l_int|644
+l_int|0644
 )paren
 suffix:semicolon
 multiline_comment|/* export the attention callback registration methods */
