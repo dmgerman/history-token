@@ -6353,7 +6353,7 @@ id|system.sys_mac_addr
 comma
 op_amp
 (paren
-id|bond-&gt;device-&gt;dev_addr
+id|bond-&gt;dev-&gt;dev_addr
 )paren
 )paren
 )paren
@@ -6397,7 +6397,7 @@ r_struct
 id|mac_addr
 op_star
 )paren
-id|bond-&gt;device-&gt;dev_addr
+id|bond-&gt;dev-&gt;dev_addr
 )paren
 suffix:semicolon
 singleline_comment|// initialize how many times this module is called in one second(should be about every 100ms)
@@ -6663,7 +6663,7 @@ r_struct
 id|mac_addr
 op_star
 )paren
-id|bond-&gt;device-&gt;dev_addr
+id|bond-&gt;dev-&gt;dev_addr
 )paren
 suffix:semicolon
 id|aggregator-&gt;aggregator_identifier
@@ -8319,7 +8319,7 @@ id|data-&gt;h_dest
 l_int|5
 )braket
 op_xor
-id|bond-&gt;device-&gt;dev_addr
+id|bond-&gt;dev-&gt;dev_addr
 (braket
 l_int|5
 )braket

@@ -85,18 +85,18 @@ id|slave_id
 suffix:semicolon
 multiline_comment|/* Used as an IN param to the BOND_SLAVE_INFO_QUERY ioctl */
 DECL|member|slave_name
-r_char
+id|__s8
 id|slave_name
 (braket
 id|IFNAMSIZ
 )braket
 suffix:semicolon
 DECL|member|link
-r_char
+id|__s8
 id|link
 suffix:semicolon
 DECL|member|state
-r_char
+id|__s8
 id|state
 suffix:semicolon
 DECL|member|link_failure_count

@@ -534,7 +534,7 @@ id|KERN_ERR
 id|DRV_NAME
 l_string|&quot;: Error: %s: Failed to allocate TLB hash table&bslash;n&quot;
 comma
-id|bond-&gt;device-&gt;name
+id|bond-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 id|_unlock_tx_hashtbl
@@ -1463,7 +1463,7 @@ r_return
 id|rx_slave
 suffix:semicolon
 )brace
-multiline_comment|/* teach the switch the mac of a disabled slave&n; * on the primary for fault tolerance&n; *&n; * Caller must hold bond-&gt;ptrlock for write or bond lock for write&n; */
+multiline_comment|/* teach the switch the mac of a disabled slave&n; * on the primary for fault tolerance&n; *&n; * Caller must hold bond-&gt;curr_slave_lock for write or bond lock for write&n; */
 DECL|function|rlb_teach_disabled_mac_on_primary
 r_static
 r_void
@@ -1485,7 +1485,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|bond-&gt;current_slave
+id|bond-&gt;curr_active_slave
 )paren
 (brace
 r_return
@@ -1505,7 +1505,7 @@ suffix:semicolon
 id|dev_set_promiscuity
 c_func
 (paren
-id|bond-&gt;current_slave-&gt;dev
+id|bond-&gt;curr_active_slave-&gt;dev
 comma
 l_int|1
 )paren
@@ -1518,7 +1518,7 @@ suffix:semicolon
 id|alb_send_learning_packets
 c_func
 (paren
-id|bond-&gt;current_slave
+id|bond-&gt;curr_active_slave
 comma
 id|addr
 )paren
@@ -1726,7 +1726,7 @@ id|write_lock
 c_func
 (paren
 op_amp
-id|bond-&gt;ptrlock
+id|bond-&gt;curr_slave_lock
 )paren
 suffix:semicolon
 r_if
@@ -1734,7 +1734,7 @@ c_cond
 (paren
 id|slave
 op_ne
-id|bond-&gt;current_slave
+id|bond-&gt;curr_active_slave
 )paren
 (brace
 id|rlb_teach_disabled_mac_on_primary
@@ -1750,7 +1750,7 @@ id|write_unlock
 c_func
 (paren
 op_amp
-id|bond-&gt;ptrlock
+id|bond-&gt;curr_slave_lock
 )paren
 suffix:semicolon
 )brace
@@ -2186,7 +2186,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/*update all clients using this src_ip, that are not assigned&n;&t;&t; * to the team&squot;s address (current_slave) and have a known&n;&t;&t; * unicast mac address.&n;&t;&t; */
+multiline_comment|/*update all clients using this src_ip, that are not assigned&n;&t;&t; * to the team&squot;s address (curr_active_slave) and have a known&n;&t;&t; * unicast mac address.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2201,7 +2201,7 @@ c_func
 (paren
 id|client_info-&gt;slave-&gt;dev-&gt;dev_addr
 comma
-id|bond-&gt;device-&gt;dev_addr
+id|bond-&gt;dev-&gt;dev_addr
 comma
 id|ETH_ALEN
 )paren
@@ -2407,20 +2407,20 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* the entry is already assigned to some other client,&n;&t;&t;&t; * move the old client to primary (current_slave) so&n;&t;&t;&t; * that the new client can be assigned to this entry.&n;&t;&t;&t; */
+multiline_comment|/* the entry is already assigned to some other client,&n;&t;&t;&t; * move the old client to primary (curr_active_slave) so&n;&t;&t;&t; * that the new client can be assigned to this entry.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
-id|bond-&gt;current_slave
+id|bond-&gt;curr_active_slave
 op_logical_and
 id|client_info-&gt;slave
 op_ne
-id|bond-&gt;current_slave
+id|bond-&gt;curr_active_slave
 )paren
 (brace
 id|client_info-&gt;slave
 op_assign
-id|bond-&gt;current_slave
+id|bond-&gt;curr_active_slave
 suffix:semicolon
 id|rlb_update_client
 c_func
@@ -2553,7 +2553,7 @@ r_return
 id|assigned_slave
 suffix:semicolon
 )brace
-multiline_comment|/* chooses (and returns) transmit channel for arp reply&n; * does not choose channel for other arp types since they are&n; * sent on the current_slave&n; */
+multiline_comment|/* chooses (and returns) transmit channel for arp reply&n; * does not choose channel for other arp types since they are&n; * sent on the curr_active_slave&n; */
 DECL|function|rlb_arp_xmit
 r_static
 r_struct
@@ -2951,7 +2951,7 @@ id|KERN_ERR
 id|DRV_NAME
 l_string|&quot;: Error: %s: Failed to allocate RLB hash table&bslash;n&quot;
 comma
-id|bond-&gt;device-&gt;name
+id|bond-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 id|_unlock_rx_hashtbl
@@ -3010,7 +3010,7 @@ id|ETH_P_ARP
 suffix:semicolon
 id|pk_type-&gt;dev
 op_assign
-id|bond-&gt;device
+id|bond-&gt;dev
 suffix:semicolon
 id|pk_type-&gt;func
 op_assign
@@ -3357,7 +3357,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Caller must hold bond lock for write or ptrlock for write*/
+multiline_comment|/* Caller must hold bond lock for write or curr_slave_lock for write*/
 DECL|function|alb_swap_mac_addr
 r_static
 r_void
@@ -3601,7 +3601,7 @@ c_func
 (paren
 id|slave-&gt;perm_hwaddr
 comma
-id|bond-&gt;device-&gt;dev_addr
+id|bond-&gt;dev-&gt;dev_addr
 comma
 id|ETH_ALEN
 )paren
@@ -3726,7 +3726,7 @@ c_func
 (paren
 id|slave-&gt;perm_hwaddr
 comma
-id|bond-&gt;device-&gt;dev_addr
+id|bond-&gt;dev-&gt;dev_addr
 comma
 id|ETH_ALEN
 )paren
@@ -4046,14 +4046,14 @@ c_func
 (paren
 id|sa.sa_data
 comma
-id|bond-&gt;device-&gt;dev_addr
+id|bond-&gt;dev-&gt;dev_addr
 comma
-id|bond-&gt;device-&gt;addr_len
+id|bond-&gt;dev-&gt;addr_len
 )paren
 suffix:semicolon
 id|sa.sa_family
 op_assign
-id|bond-&gt;device-&gt;type
+id|bond-&gt;dev-&gt;type
 suffix:semicolon
 multiline_comment|/* unwind from head to the slave that failed */
 id|stop_at
@@ -4357,7 +4357,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* make sure that the current_slave and the slaves list do&n;&t; * not change during tx&n;&t; */
+multiline_comment|/* make sure that the curr_active_slave and the slaves list do&n;&t; * not change during tx&n;&t; */
 id|read_lock
 c_func
 (paren
@@ -4395,7 +4395,7 @@ id|read_lock
 c_func
 (paren
 op_amp
-id|bond-&gt;ptrlock
+id|bond-&gt;curr_slave_lock
 )paren
 suffix:semicolon
 r_switch
@@ -4645,7 +4645,7 @@ id|tx_slave
 multiline_comment|/* unbalanced or unassigned, send through primary */
 id|tx_slave
 op_assign
-id|bond-&gt;current_slave
+id|bond-&gt;curr_active_slave
 suffix:semicolon
 id|bond_info-&gt;unbalanced_load
 op_add_assign
@@ -4673,7 +4673,7 @@ c_cond
 (paren
 id|tx_slave
 op_ne
-id|bond-&gt;current_slave
+id|bond-&gt;curr_active_slave
 )paren
 (brace
 id|memcpy
@@ -4725,7 +4725,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|bond-&gt;ptrlock
+id|bond-&gt;curr_slave_lock
 )paren
 suffix:semicolon
 id|read_unlock
@@ -4831,12 +4831,12 @@ op_ge
 id|BOND_ALB_LP_TICKS
 )paren
 (brace
-multiline_comment|/* change of current_slave involves swapping of mac addresses.&n;&t;&t; * in order to avoid this swapping from happening while&n;&t;&t; * sending the learning packets, the ptrlock must be held for&n;&t;&t; * read.&n;&t;&t; */
+multiline_comment|/* change of curr_active_slave involves swapping of mac addresses.&n;&t;&t; * in order to avoid this swapping from happening while&n;&t;&t; * sending the learning packets, the curr_slave_lock must be held for&n;&t;&t; * read.&n;&t;&t; */
 id|read_lock
 c_func
 (paren
 op_amp
-id|bond-&gt;ptrlock
+id|bond-&gt;curr_slave_lock
 )paren
 suffix:semicolon
 id|bond_for_each_slave
@@ -4862,7 +4862,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|bond-&gt;ptrlock
+id|bond-&gt;curr_slave_lock
 )paren
 suffix:semicolon
 id|bond_info-&gt;lp_counter
@@ -4883,7 +4883,7 @@ id|read_lock
 c_func
 (paren
 op_amp
-id|bond-&gt;ptrlock
+id|bond-&gt;curr_slave_lock
 )paren
 suffix:semicolon
 id|bond_for_each_slave
@@ -4911,7 +4911,7 @@ c_cond
 (paren
 id|slave
 op_eq
-id|bond-&gt;current_slave
+id|bond-&gt;curr_active_slave
 )paren
 (brace
 id|SLAVE_TLB_INFO
@@ -4936,7 +4936,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|bond-&gt;ptrlock
+id|bond-&gt;curr_slave_lock
 )paren
 suffix:semicolon
 id|bond_info-&gt;tx_rebalance_counter
@@ -4951,12 +4951,12 @@ c_cond
 id|bond_info-&gt;rlb_enabled
 )paren
 (brace
-multiline_comment|/* the following code changes the promiscuity of the&n;&t;&t; * the current_slave. It needs to be locked with a&n;&t;&t; * write lock to protect from other code that also&n;&t;&t; * sets the promiscuity.&n;&t;&t; */
+multiline_comment|/* the following code changes the promiscuity of the&n;&t;&t; * the curr_active_slave. It needs to be locked with a&n;&t;&t; * write lock to protect from other code that also&n;&t;&t; * sets the promiscuity.&n;&t;&t; */
 id|write_lock
 c_func
 (paren
 op_amp
-id|bond-&gt;ptrlock
+id|bond-&gt;curr_slave_lock
 )paren
 suffix:semicolon
 r_if
@@ -4980,7 +4980,7 @@ multiline_comment|/* If the primary was set to promiscuous mode&n;&t;&t;&t; * be
 id|dev_set_promiscuity
 c_func
 (paren
-id|bond-&gt;current_slave-&gt;dev
+id|bond-&gt;curr_active_slave-&gt;dev
 comma
 op_minus
 l_int|1
@@ -4995,7 +4995,7 @@ id|write_unlock
 c_func
 (paren
 op_amp
-id|bond-&gt;ptrlock
+id|bond-&gt;curr_slave_lock
 )paren
 suffix:semicolon
 r_if
@@ -5087,7 +5087,7 @@ id|bond-&gt;lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* assumption: called before the slave is attched to the bond&n; * and not locked by the bond lock&n; */
+multiline_comment|/* assumption: called before the slave is attached to the bond&n; * and not locked by the bond lock&n; */
 DECL|function|bond_alb_init_slave
 r_int
 id|bond_alb_init_slave
@@ -5352,7 +5352,7 @@ multiline_comment|/* If the updelay module parameter is smaller than the&n;&t;&t
 )brace
 )brace
 )brace
-multiline_comment|/**&n; * bond_alb_handle_active_change - assign new current_slave&n; * @bond: our bonding struct&n; * @new_slave: new slave to assign&n; *&n; * Set the bond-&gt;current_slave to @new_slave and handle&n; * mac address swapping and promiscuity changes as needed.&n; *&n; * Caller must hold bond ptrlock for write (or bond lock for write)&n; */
+multiline_comment|/**&n; * bond_alb_handle_active_change - assign new curr_active_slave&n; * @bond: our bonding struct&n; * @new_slave: new slave to assign&n; *&n; * Set the bond-&gt;curr_active_slave to @new_slave and handle&n; * mac address swapping and promiscuity changes as needed.&n; *&n; * Caller must hold bond curr_slave_lock for write (or bond lock for write)&n; */
 DECL|function|bond_alb_handle_active_change
 r_void
 id|bond_alb_handle_active_change
@@ -5384,7 +5384,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|bond-&gt;current_slave
+id|bond-&gt;curr_active_slave
 op_eq
 id|new_slave
 )paren
@@ -5395,7 +5395,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|bond-&gt;current_slave
+id|bond-&gt;curr_active_slave
 op_logical_and
 id|bond-&gt;alb_info.primary_is_promisc
 )paren
@@ -5403,7 +5403,7 @@ id|bond-&gt;alb_info.primary_is_promisc
 id|dev_set_promiscuity
 c_func
 (paren
-id|bond-&gt;current_slave-&gt;dev
+id|bond-&gt;curr_active_slave-&gt;dev
 comma
 op_minus
 l_int|1
@@ -5420,9 +5420,9 @@ suffix:semicolon
 )brace
 id|swap_slave
 op_assign
-id|bond-&gt;current_slave
+id|bond-&gt;curr_active_slave
 suffix:semicolon
-id|bond-&gt;current_slave
+id|bond-&gt;curr_active_slave
 op_assign
 id|new_slave
 suffix:semicolon
@@ -5442,7 +5442,7 @@ l_int|0
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* set the new current_slave to the bonds mac address&n;&t; * i.e. swap mac addresses of old current_slave and new current_slave&n;&t; */
+multiline_comment|/* set the new curr_active_slave to the bonds mac address&n;&t; * i.e. swap mac addresses of old curr_active_slave and new curr_active_slave&n;&t; */
 r_if
 c_cond
 (paren
@@ -5470,7 +5470,7 @@ c_func
 (paren
 id|swap_slave-&gt;dev-&gt;dev_addr
 comma
-id|bond-&gt;device-&gt;dev_addr
+id|bond-&gt;dev-&gt;dev_addr
 comma
 id|ETH_ALEN
 )paren
@@ -5485,7 +5485,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* current_slave must be set before calling alb_swap_mac_addr */
+multiline_comment|/* curr_active_slave must be set before calling alb_swap_mac_addr */
 r_if
 c_cond
 (paren
@@ -5512,7 +5512,7 @@ c_func
 (paren
 id|new_slave
 comma
-id|bond-&gt;device-&gt;dev_addr
+id|bond-&gt;dev-&gt;dev_addr
 comma
 id|bond-&gt;alb_info.rlb_enabled
 )paren
@@ -5523,7 +5523,7 @@ c_func
 (paren
 id|new_slave
 comma
-id|bond-&gt;device-&gt;dev_addr
+id|bond-&gt;dev-&gt;dev_addr
 )paren
 suffix:semicolon
 )brace
@@ -5625,11 +5625,11 @@ comma
 id|bond_dev-&gt;addr_len
 )paren
 suffix:semicolon
-multiline_comment|/* If there is no current_slave there is nothing else to do.&n;&t; * Otherwise we&squot;ll need to pass the new address to it and handle&n;&t; * duplications.&n;&t; */
+multiline_comment|/* If there is no curr_active_slave there is nothing else to do.&n;&t; * Otherwise we&squot;ll need to pass the new address to it and handle&n;&t; * duplications.&n;&t; */
 r_if
 c_cond
 (paren
-id|bond-&gt;current_slave
+id|bond-&gt;curr_active_slave
 op_eq
 l_int|NULL
 )paren
@@ -5684,7 +5684,7 @@ id|bond
 comma
 id|swap_slave
 comma
-id|bond-&gt;current_slave
+id|bond-&gt;curr_active_slave
 )paren
 suffix:semicolon
 )brace
@@ -5693,7 +5693,7 @@ r_else
 id|alb_set_slave_mac_addr
 c_func
 (paren
-id|bond-&gt;current_slave
+id|bond-&gt;curr_active_slave
 comma
 id|bond_dev-&gt;dev_addr
 comma
@@ -5703,7 +5703,7 @@ suffix:semicolon
 id|alb_send_learning_packets
 c_func
 (paren
-id|bond-&gt;current_slave
+id|bond-&gt;curr_active_slave
 comma
 id|bond_dev-&gt;dev_addr
 )paren
@@ -5720,7 +5720,7 @@ c_func
 (paren
 id|bond
 comma
-id|bond-&gt;current_slave
+id|bond-&gt;curr_active_slave
 )paren
 suffix:semicolon
 )brace

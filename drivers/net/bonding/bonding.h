@@ -30,6 +30,13 @@ DECL|struct|slave
 r_struct
 id|slave
 (brace
+DECL|member|dev
+r_struct
+id|net_device
+op_star
+id|dev
+suffix:semicolon
+multiline_comment|/* first - usefull for panic debug */
 DECL|member|next
 r_struct
 id|slave
@@ -42,34 +49,26 @@ id|slave
 op_star
 id|prev
 suffix:semicolon
-DECL|member|dev
-r_struct
-id|net_device
-op_star
-id|dev
-suffix:semicolon
 DECL|member|delay
-r_int
+id|s16
 id|delay
 suffix:semicolon
 DECL|member|jiffies
-r_int
-r_int
+id|u32
 id|jiffies
 suffix:semicolon
 DECL|member|link
-r_char
+id|s8
 id|link
 suffix:semicolon
 multiline_comment|/* one of BOND_LINK_XXXX */
 DECL|member|state
-r_char
+id|s8
 id|state
 suffix:semicolon
 multiline_comment|/* one of BOND_STATE_XXXX */
 DECL|member|original_flags
-r_int
-r_int
+id|u32
 id|original_flags
 suffix:semicolon
 DECL|member|link_failure_count
@@ -104,28 +103,29 @@ id|tlb_info
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Here are the locking policies for the two bonding locks:&n; *&n; * 1) Get bond-&gt;lock when reading/writing slave list.&n; * 2) Get bond-&gt;ptrlock when reading/writing bond-&gt;current_slave.&n; *    (It is unnecessary when the write-lock is put with bond-&gt;lock.)&n; * 3) When we lock with bond-&gt;ptrlock, we must lock with bond-&gt;lock&n; *    beforehand.&n; */
+multiline_comment|/*&n; * Here are the locking policies for the two bonding locks:&n; *&n; * 1) Get bond-&gt;lock when reading/writing slave list.&n; * 2) Get bond-&gt;curr_slave_lock when reading/writing bond-&gt;curr_active_slave.&n; *    (It is unnecessary when the write-lock is put with bond-&gt;lock.)&n; * 3) When we lock with bond-&gt;curr_slave_lock, we must lock with bond-&gt;lock&n; *    beforehand.&n; */
 DECL|struct|bonding
 r_struct
 id|bonding
 (brace
+DECL|member|dev
+r_struct
+id|net_device
+op_star
+id|dev
+suffix:semicolon
+multiline_comment|/* first - usefull for panic debug */
 DECL|member|first_slave
 r_struct
 id|slave
 op_star
 id|first_slave
 suffix:semicolon
-DECL|member|current_slave
+DECL|member|curr_active_slave
 r_struct
 id|slave
 op_star
-id|current_slave
-suffix:semicolon
-DECL|member|primary_slave
-r_struct
-id|slave
-op_star
-id|primary_slave
+id|curr_active_slave
 suffix:semicolon
 DECL|member|current_arp_slave
 r_struct
@@ -133,8 +133,14 @@ id|slave
 op_star
 id|current_arp_slave
 suffix:semicolon
+DECL|member|primary_slave
+r_struct
+id|slave
+op_star
+id|primary_slave
+suffix:semicolon
 DECL|member|slave_cnt
-r_int
+id|s32
 id|slave_cnt
 suffix:semicolon
 multiline_comment|/* never change this value outside the attach/detach wrappers */
@@ -142,9 +148,9 @@ DECL|member|lock
 id|rwlock_t
 id|lock
 suffix:semicolon
-DECL|member|ptrlock
+DECL|member|curr_slave_lock
 id|rwlock_t
-id|ptrlock
+id|curr_slave_lock
 suffix:semicolon
 DECL|member|mii_timer
 r_struct
@@ -157,7 +163,7 @@ id|timer_list
 id|arp_timer
 suffix:semicolon
 DECL|member|kill_timers
-r_int
+id|s8
 id|kill_timers
 suffix:semicolon
 DECL|member|stats
@@ -166,15 +172,15 @@ id|net_device_stats
 id|stats
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
-DECL|member|bond_proc_file
+DECL|member|proc_entry
 r_struct
 id|proc_dir_entry
 op_star
-id|bond_proc_file
+id|proc_entry
 suffix:semicolon
-DECL|member|procdir_name
+DECL|member|proc_file_name
 r_char
-id|procdir_name
+id|proc_file_name
 (braket
 id|IFNAMSIZ
 )braket
@@ -185,12 +191,6 @@ r_struct
 id|list_head
 id|bond_list
 suffix:semicolon
-DECL|member|device
-r_struct
-id|net_device
-op_star
-id|device
-suffix:semicolon
 DECL|member|mc_list
 r_struct
 id|dev_mc_list
@@ -198,8 +198,7 @@ op_star
 id|mc_list
 suffix:semicolon
 DECL|member|flags
-r_int
-r_int
+id|u16
 id|flags
 suffix:semicolon
 DECL|member|ad_info
