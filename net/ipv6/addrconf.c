@@ -15396,7 +15396,7 @@ DECL|member|addrconf_vars
 id|ctl_table
 id|addrconf_vars
 (braket
-l_int|18
+id|__NET_IPV6_MAX
 )braket
 suffix:semicolon
 DECL|member|addrconf_dev

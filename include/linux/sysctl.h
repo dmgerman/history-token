@@ -1564,6 +1564,8 @@ id|NET_IPV4_CONF_ARP_IGNORE
 op_assign
 l_int|19
 comma
+DECL|enumerator|__NET_IPV4_CONF_MAX
+id|__NET_IPV4_CONF_MAX
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ipv4/netfilter */
@@ -1900,6 +1902,9 @@ DECL|enumerator|NET_IPV6_FORCE_MLD_VERSION
 id|NET_IPV6_FORCE_MLD_VERSION
 op_assign
 l_int|17
+comma
+DECL|enumerator|__NET_IPV6_MAX
+id|__NET_IPV6_MAX
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ipv6/icmp */

@@ -5645,7 +5645,7 @@ DECL|member|devinet_vars
 id|ctl_table
 id|devinet_vars
 (braket
-l_int|20
+id|__NET_IPV4_CONF_MAX
 )braket
 suffix:semicolon
 DECL|member|devinet_dev
