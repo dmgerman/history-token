@@ -30,6 +30,10 @@ DECL|macro|DELL_VENDOR_ID
 mdefine_line|#define DELL_VENDOR_ID&t;&t;0x413c
 DECL|macro|DELL_AXIM_ID
 mdefine_line|#define DELL_AXIM_ID&t;&t;0x4001
+DECL|macro|FSC_VENDOR_ID
+mdefine_line|#define FSC_VENDOR_ID&t;&t;0x0bf8
+DECL|macro|FSC_LOOX_ID
+mdefine_line|#define FSC_LOOX_ID&t;&t;0x1001
 DECL|macro|HP_VENDOR_ID
 mdefine_line|#define HP_VENDOR_ID&t;&t;0x03f0
 DECL|macro|HP_JORNADA_548_ID
