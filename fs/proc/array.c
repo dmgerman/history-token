@@ -1162,11 +1162,12 @@ c_cond
 id|mm
 )paren
 (brace
-id|atomic_inc
+id|mm
+op_assign
+id|mmgrab
 c_func
 (paren
-op_amp
-id|mm-&gt;mm_users
+id|mm
 )paren
 suffix:semicolon
 )brace

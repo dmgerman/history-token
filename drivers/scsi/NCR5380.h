@@ -626,7 +626,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef NCR5380_proc_info
+r_static
 r_int
 id|NCR5380_proc_info
 c_func
@@ -655,7 +655,6 @@ r_int
 id|inout
 )paren
 suffix:semicolon
-macro_line|#endif
 r_static
 r_void
 id|NCR5380_reselect

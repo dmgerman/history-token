@@ -1344,7 +1344,8 @@ id|lockdata
 suffix:semicolon
 multiline_comment|/* Actual lock (used only on one side of the lock) */
 DECL|member|SavedIrql
-id|u32
+r_int
+r_int
 id|SavedIrql
 suffix:semicolon
 multiline_comment|/* Previous IRQL when the spin lock is taken */

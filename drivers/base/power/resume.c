@@ -351,4 +351,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|device_resume
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|device_resume
+)paren
+suffix:semicolon
 eof
