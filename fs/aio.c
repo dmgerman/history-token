@@ -2541,9 +2541,11 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|schedule_work
+id|queue_work
 c_func
 (paren
+id|aio_wq
+comma
 op_amp
 id|ctx-&gt;wq
 )paren
