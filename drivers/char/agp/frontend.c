@@ -8,7 +8,10 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &lt;linux/agpgart.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &quot;agp.h&quot;
 DECL|variable|agp_fe
 r_static
