@@ -140,6 +140,16 @@ DECL|macro|H_SET_PURR
 mdefine_line|#define H_SET_PURR&t;&t;0xF4
 DECL|macro|H_PIC
 mdefine_line|#define H_PIC&t;&t;        0xF8
+DECL|macro|H_REG_CRQ
+mdefine_line|#define H_REG_CRQ&t;&t;0xFC
+DECL|macro|H_FREE_CRQ
+mdefine_line|#define H_FREE_CRQ&t;&t;0x100
+DECL|macro|H_VIO_SIGNAL
+mdefine_line|#define H_VIO_SIGNAL&t;&t;0x104
+DECL|macro|H_SEND_CRQ
+mdefine_line|#define H_SEND_CRQ&t;&t;0x108
+DECL|macro|H_COPY_RDMA
+mdefine_line|#define H_COPY_RDMA             0x110
 DECL|macro|H_POLL_PENDING
 mdefine_line|#define H_POLL_PENDING&t;        0x1D8
 multiline_comment|/* plpar_hcall() -- Generic call interface using above opcodes&n; *&n; * The actual call interface is a hypervisor call instruction with&n; * the opcode in R3 and input args in R4-R7.&n; * Status is returned in R3 with variable output values in R4-R11.&n; * Only H_PTE_READ with H_READ_4 uses R6-R11 so we ignore it for now&n; * and return only two out args which MUST ALWAYS BE PROVIDED.&n; */
