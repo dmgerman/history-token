@@ -167,7 +167,7 @@ c_func
 (paren
 id|bh_result
 comma
-id|inode-&gt;i_sb
+id|sb
 comma
 id|phys
 )paren
@@ -221,7 +221,7 @@ op_mod
 id|MSDOS_SB
 c_func
 (paren
-id|inode-&gt;i_sb
+id|sb
 )paren
 op_member_access_from_pointer
 id|cluster_size
@@ -304,7 +304,7 @@ c_func
 (paren
 id|bh_result
 comma
-id|inode-&gt;i_sb
+id|sb
 comma
 id|phys
 )paren

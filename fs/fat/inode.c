@@ -1986,7 +1986,7 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Directory %ld: &quot;
+l_string|&quot;Directory %lu: &quot;
 l_string|&quot;exceeded the maximum size of directory&quot;
 comma
 id|inode-&gt;i_ino
@@ -5013,7 +5013,7 @@ id|inode-&gt;i_nlink
 id|printk
 c_func
 (paren
-l_string|&quot;directory %d: i_nlink == 0&bslash;n&quot;
+l_string|&quot;directory %lu: i_nlink == 0&bslash;n&quot;
 comma
 id|inode-&gt;i_ino
 )paren
