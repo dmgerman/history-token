@@ -884,14 +884,12 @@ id|CPU_MASK_NONE
 suffix:semicolon
 multiline_comment|/* This is for the new dynamic CPU boot code */
 DECL|variable|cpu_callin_map
-r_volatile
 id|cpumask_t
 id|cpu_callin_map
 op_assign
 id|CPU_MASK_NONE
 suffix:semicolon
 DECL|variable|cpu_callout_map
-r_volatile
 id|cpumask_t
 id|cpu_callout_map
 op_assign
