@@ -36,9 +36,8 @@ suffix:semicolon
 id|acpi_native_uint
 id|i
 suffix:semicolon
-id|ACPI_FUNCTION_NAME
+id|ACPI_FUNCTION_ENTRY
 (paren
-l_string|&quot;ev_get_gpe_event_info&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* A NULL gpe_block means use the FADT-defined GPE block(s) */
