@@ -1766,7 +1766,7 @@ id|MAJOR_NR
 suffix:semicolon
 id|disk-&gt;first_minor
 op_assign
-l_int|0
+id|i
 suffix:semicolon
 id|disk-&gt;minor_shift
 op_assign

@@ -3,6 +3,8 @@ DECL|macro|_LINUX_HDREG_H
 mdefine_line|#define _LINUX_HDREG_H
 multiline_comment|/*&n; * This file contains some defines for the AT-hd-controller.&n; * Various sources.&n; */
 multiline_comment|/* ide.c has its own port definitions in &quot;ide.h&quot; */
+DECL|macro|HD_IRQ
+mdefine_line|#define HD_IRQ&t;&t;14
 multiline_comment|/* Hd controller regs. Ref: IBM AT Bios-listing */
 DECL|macro|HD_DATA
 mdefine_line|#define HD_DATA&t;&t;0x1f0&t;&t;/* _CTL when writing */

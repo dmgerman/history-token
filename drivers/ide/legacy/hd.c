@@ -25,8 +25,6 @@ mdefine_line|#define MAJOR_NR HD_MAJOR
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device)&gt;&gt;6)
 macro_line|#include &lt;linux/blk.h&gt;
-DECL|macro|HD_IRQ
-mdefine_line|#define HD_IRQ 14&t;/* the standard disk interrupt */
 macro_line|#ifdef __arm__
 DECL|macro|HD_IRQ
 macro_line|#undef  HD_IRQ

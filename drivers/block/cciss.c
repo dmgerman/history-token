@@ -11265,7 +11265,7 @@ id|disk
 id|n
 )braket
 op_assign
-id|disk_alloc
+id|alloc_disk
 c_func
 (paren
 )paren
