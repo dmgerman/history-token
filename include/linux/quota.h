@@ -274,7 +274,7 @@ mdefine_line|#define DQF_ANY_DQUOT_DIRTY_B 17
 DECL|macro|DQF_INFO_DIRTY
 mdefine_line|#define DQF_INFO_DIRTY (1 &lt;&lt; DQF_INFO_DIRTY_B)&t;/* Is info dirty? */
 DECL|macro|DQF_ANY_DQUOT_DIRTY
-mdefine_line|#define DQF_ANY_DQUOT_DIRTY (1 &lt;&lt; DQF_ANY_DQUOT_DIRTY B)&t;/* Is any dquot dirty? */
+mdefine_line|#define DQF_ANY_DQUOT_DIRTY (1 &lt;&lt; DQF_ANY_DQUOT_DIRTY_B) /* Is any dquot dirty? */
 DECL|function|mark_info_dirty
 r_extern
 r_inline
