@@ -14129,7 +14129,7 @@ c_func
 id|alsa_card_intel8x0_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-intel8x0=enable,index,id,ac97_clock */
+multiline_comment|/* format is: snd-intel8x0=enable,index,id,ac97_clock,mpu_port */
 DECL|function|alsa_card_intel8x0_setup
 r_static
 r_int
@@ -14222,6 +14222,23 @@ id|nr_dev
 )paren
 op_eq
 l_int|2
+macro_line|#ifdef SUPPORT_MIDI
+op_logical_and
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|mpu_port
+(braket
+id|nr_dev
+)braket
+)paren
+op_eq
+l_int|2
+macro_line|#endif
 )paren
 suffix:semicolon
 id|nr_dev
