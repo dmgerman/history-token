@@ -1232,9 +1232,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|timeout
-op_ge
+id|time_before_eq
+c_func
+(paren
 id|jiffies
+comma
+id|timeout
+)paren
 )paren
 suffix:semicolon
 id|restore_flags
