@@ -908,7 +908,7 @@ id|NFSD_Svc
 )braket
 op_assign
 (brace
-l_string|&quot;svc&quot;
+l_string|&quot;.svc&quot;
 comma
 op_amp
 id|transaction_ops
@@ -921,7 +921,7 @@ id|NFSD_Add
 )braket
 op_assign
 (brace
-l_string|&quot;add&quot;
+l_string|&quot;.add&quot;
 comma
 op_amp
 id|transaction_ops
@@ -934,7 +934,7 @@ id|NFSD_Del
 )braket
 op_assign
 (brace
-l_string|&quot;del&quot;
+l_string|&quot;.del&quot;
 comma
 op_amp
 id|transaction_ops
@@ -947,7 +947,7 @@ id|NFSD_Export
 )braket
 op_assign
 (brace
-l_string|&quot;export&quot;
+l_string|&quot;.export&quot;
 comma
 op_amp
 id|transaction_ops
@@ -960,7 +960,7 @@ id|NFSD_Unexport
 )braket
 op_assign
 (brace
-l_string|&quot;unexport&quot;
+l_string|&quot;.unexport&quot;
 comma
 op_amp
 id|transaction_ops
@@ -973,7 +973,7 @@ id|NFSD_Getfd
 )braket
 op_assign
 (brace
-l_string|&quot;getfd&quot;
+l_string|&quot;.getfd&quot;
 comma
 op_amp
 id|transaction_ops
@@ -988,7 +988,7 @@ id|NFSD_Getfs
 )braket
 op_assign
 (brace
-l_string|&quot;getfs&quot;
+l_string|&quot;.getfs&quot;
 comma
 op_amp
 id|transaction_ops
