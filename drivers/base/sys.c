@@ -582,6 +582,12 @@ op_assign
 op_amp
 id|cls-&gt;kset
 suffix:semicolon
+multiline_comment|/* But make sure we point to the right type for sysfs translation */
+id|sysdev-&gt;kobj.ktype
+op_assign
+op_amp
+id|ktype_sysdev
+suffix:semicolon
 multiline_comment|/* set the kobject name */
 id|snprintf
 c_func
