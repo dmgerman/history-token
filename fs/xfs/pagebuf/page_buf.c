@@ -6929,7 +6929,7 @@ id|ctl-&gt;data
 suffix:semicolon
 id|ret
 op_assign
-id|proc_doulongvec_minmax
+id|proc_dointvec_minmax
 c_func
 (paren
 id|ctl
