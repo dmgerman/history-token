@@ -2887,16 +2887,14 @@ multiline_comment|/* Same comment as in irttp_do_data_indication() */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|err
-op_ne
-op_minus
-id|ENOMEM
 )paren
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Either no handler, or -ENOMEM */
+multiline_comment|/* Either no handler, or handler returns an error */
 id|dev_kfree_skb
 c_func
 (paren
@@ -5488,9 +5486,6 @@ r_if
 c_cond
 (paren
 id|err
-op_eq
-op_minus
-id|ENOMEM
 )paren
 (brace
 id|IRDA_DEBUG

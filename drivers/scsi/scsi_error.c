@@ -2525,12 +2525,28 @@ c_func
 id|BUS_RESET_SETTLE_TIME
 )paren
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|scmd-&gt;device-&gt;host-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|scsi_report_bus_reset
 c_func
 (paren
 id|scmd-&gt;device-&gt;host
 comma
 id|scmd-&gt;device-&gt;channel
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|scmd-&gt;device-&gt;host-&gt;host_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -2629,12 +2645,28 @@ c_func
 id|HOST_RESET_SETTLE_TIME
 )paren
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|scmd-&gt;device-&gt;host-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|scsi_report_bus_reset
 c_func
 (paren
 id|scmd-&gt;device-&gt;host
 comma
 id|scmd-&gt;device-&gt;channel
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|scmd-&gt;device-&gt;host-&gt;host_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -4360,7 +4392,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function:    scsi_report_bus_reset()&n; *&n; * Purpose:     Utility function used by low-level drivers to report that&n; *&t;&t;they have observed a bus reset on the bus being handled.&n; *&n; * Arguments:   shost       - Host in question&n; *&t;&t;channel     - channel on which reset was observed.&n; *&n; * Returns:     Nothing&n; *&n; * Lock status: No locks are assumed held.&n; *&n; * Notes:       This only needs to be called if the reset is one which&n; *&t;&t;originates from an unknown location.  Resets originated&n; *&t;&t;by the mid-level itself don&squot;t need to call this, but there&n; *&t;&t;should be no harm.&n; *&n; *&t;&t;The main purpose of this is to make sure that a CHECK_CONDITION&n; *&t;&t;is properly treated.&n; */
+multiline_comment|/*&n; * Function:    scsi_report_bus_reset()&n; *&n; * Purpose:     Utility function used by low-level drivers to report that&n; *&t;&t;they have observed a bus reset on the bus being handled.&n; *&n; * Arguments:   shost       - Host in question&n; *&t;&t;channel     - channel on which reset was observed.&n; *&n; * Returns:     Nothing&n; *&n; * Lock status: Host lock must be held.&n; *&n; * Notes:       This only needs to be called if the reset is one which&n; *&t;&t;originates from an unknown location.  Resets originated&n; *&t;&t;by the mid-level itself don&squot;t need to call this, but there&n; *&t;&t;should be no harm.&n; *&n; *&t;&t;The main purpose of this is to make sure that a CHECK_CONDITION&n; *&t;&t;is properly treated.&n; */
 DECL|function|scsi_report_bus_reset
 r_void
 id|scsi_report_bus_reset
@@ -4380,7 +4412,7 @@ id|scsi_device
 op_star
 id|sdev
 suffix:semicolon
-id|shost_for_each_device
+id|__shost_for_each_device
 c_func
 (paren
 id|sdev
@@ -4407,7 +4439,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * Function:    scsi_report_device_reset()&n; *&n; * Purpose:     Utility function used by low-level drivers to report that&n; *&t;&t;they have observed a device reset on the device being handled.&n; *&n; * Arguments:   shost       - Host in question&n; *&t;&t;channel     - channel on which reset was observed&n; *&t;&t;target&t;    - target on which reset was observed&n; *&n; * Returns:     Nothing&n; *&n; * Lock status: No locks are assumed held.&n; *&n; * Notes:       This only needs to be called if the reset is one which&n; *&t;&t;originates from an unknown location.  Resets originated&n; *&t;&t;by the mid-level itself don&squot;t need to call this, but there&n; *&t;&t;should be no harm.&n; *&n; *&t;&t;The main purpose of this is to make sure that a CHECK_CONDITION&n; *&t;&t;is properly treated.&n; */
+multiline_comment|/*&n; * Function:    scsi_report_device_reset()&n; *&n; * Purpose:     Utility function used by low-level drivers to report that&n; *&t;&t;they have observed a device reset on the device being handled.&n; *&n; * Arguments:   shost       - Host in question&n; *&t;&t;channel     - channel on which reset was observed&n; *&t;&t;target&t;    - target on which reset was observed&n; *&n; * Returns:     Nothing&n; *&n; * Lock status: Host lock must be held&n; *&n; * Notes:       This only needs to be called if the reset is one which&n; *&t;&t;originates from an unknown location.  Resets originated&n; *&t;&t;by the mid-level itself don&squot;t need to call this, but there&n; *&t;&t;should be no harm.&n; *&n; *&t;&t;The main purpose of this is to make sure that a CHECK_CONDITION&n; *&t;&t;is properly treated.&n; */
 DECL|function|scsi_report_device_reset
 r_void
 id|scsi_report_device_reset
@@ -4430,7 +4462,7 @@ id|scsi_device
 op_star
 id|sdev
 suffix:semicolon
-id|shost_for_each_device
+id|__shost_for_each_device
 c_func
 (paren
 id|sdev

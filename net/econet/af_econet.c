@@ -4171,7 +4171,9 @@ id|sk
 r_goto
 id|drop
 suffix:semicolon
-r_return
+r_if
+c_cond
+(paren
 id|ec_queue_packet
 c_func
 (paren
@@ -4187,6 +4189,12 @@ id|hdr-&gt;cb
 comma
 id|hdr-&gt;port
 )paren
+)paren
+r_goto
+id|drop
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 id|drop
 suffix:colon
@@ -4197,7 +4205,7 @@ id|skb
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|NET_RX_DROP
 suffix:semicolon
 )brace
 DECL|variable|econet_packet_type

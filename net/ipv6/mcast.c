@@ -18,6 +18,8 @@ macro_line|#include &lt;linux/route.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/netfilter.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv6.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/snmp.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
@@ -6222,6 +6224,9 @@ c_func
 id|skb-&gt;dev
 )paren
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 id|payload_len
 op_assign
 id|skb-&gt;tail
@@ -6279,12 +6284,30 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-id|dev_queue_xmit
+id|err
+op_assign
+id|NF_HOOK
 c_func
 (paren
+id|PF_INET6
+comma
+id|NF_IP6_LOCAL_OUT
+comma
 id|skb
+comma
+l_int|NULL
+comma
+id|skb-&gt;dev
+comma
+id|dev_queue_xmit
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|err
+)paren
 id|ICMP6_INC_STATS
 c_func
 (paren
@@ -8138,12 +8161,31 @@ c_func
 id|skb-&gt;dev
 )paren
 suffix:semicolon
-id|dev_queue_xmit
+id|err
+op_assign
+id|NF_HOOK
 c_func
 (paren
+id|PF_INET6
+comma
+id|NF_IP6_LOCAL_OUT
+comma
 id|skb
+comma
+l_int|NULL
+comma
+id|skb-&gt;dev
+comma
+id|dev_queue_xmit
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|err
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -8176,6 +8218,7 @@ comma
 id|Icmp6OutMsgs
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

@@ -1170,6 +1170,11 @@ id|u8
 id|ctl
 suffix:semicolon
 multiline_comment|/* cache of ATA control register */
+DECL|member|last_ctl
+id|u8
+id|last_ctl
+suffix:semicolon
+multiline_comment|/* Cache last written value */
 DECL|member|bus_state
 r_int
 r_int
@@ -2509,6 +2514,10 @@ id|ap-&gt;ctl
 op_and_assign
 op_complement
 id|ATA_NIEN
+suffix:semicolon
+id|ap-&gt;last_ctl
+op_assign
+id|ap-&gt;ctl
 suffix:semicolon
 r_if
 c_cond

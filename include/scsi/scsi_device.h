@@ -15,20 +15,26 @@ r_struct
 id|scsi_mode_data
 suffix:semicolon
 multiline_comment|/*&n; * sdev state&n; */
+DECL|enum|scsi_device_state
 r_enum
+id|scsi_device_state
 (brace
-DECL|enumerator|SDEV_ADD
-id|SDEV_ADD
+DECL|enumerator|SDEV_CREATED
+id|SDEV_CREATED
 comma
-DECL|enumerator|SDEV_DEL
-id|SDEV_DEL
+multiline_comment|/* device created but not added to sysfs&n;&t;&t;&t;&t; * Only internal commands allowed (for inq) */
+DECL|enumerator|SDEV_RUNNING
+id|SDEV_RUNNING
 comma
+multiline_comment|/* device properly configured&n;&t;&t;&t;&t; * All commands allowed */
 DECL|enumerator|SDEV_CANCEL
 id|SDEV_CANCEL
 comma
-DECL|enumerator|SDEV_RECOVERY
-id|SDEV_RECOVERY
+multiline_comment|/* beginning to delete device&n;&t;&t;&t;&t; * Only error handler commands allowed */
+DECL|enumerator|SDEV_DEL
+id|SDEV_DEL
 comma
+multiline_comment|/* device deleted &n;&t;&t;&t;&t; * no commands allowed */
 )brace
 suffix:semicolon
 DECL|struct|scsi_device
@@ -396,8 +402,8 @@ id|class_device
 id|sdev_classdev
 suffix:semicolon
 DECL|member|sdev_state
-r_int
-r_int
+r_enum
+id|scsi_device_state
 id|sdev_state
 suffix:semicolon
 )brace
