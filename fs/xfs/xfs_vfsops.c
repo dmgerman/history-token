@@ -750,22 +750,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|mp-&gt;m_logdev_targp
-op_ne
-l_int|NULL
-)paren
-op_logical_and
-(paren
-id|mp-&gt;m_logdev_targp
-op_ne
-id|mp-&gt;m_ddev_targp
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|ap-&gt;logbufs
 op_ne
 l_int|0
@@ -897,7 +881,6 @@ comma
 id|ap-&gt;fsname
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Pull in the &squot;wsync&squot; and &squot;ino64&squot; mount options before we do the real&n;&t; * work of mounting and recovery.  The arg pointer will&n;&t; * be NULL when we are being called from the root mount code.&n;&t; */
 r_if
 c_cond
