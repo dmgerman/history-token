@@ -2477,6 +2477,16 @@ comma
 id|PAGE_SIZE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|0
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|buf
 (braket
 id|len
@@ -2491,7 +2501,7 @@ op_plus
 l_int|1
 )braket
 op_assign
-l_int|0x00
+l_int|0
 suffix:semicolon
 r_return
 id|len
@@ -2573,6 +2583,16 @@ comma
 id|PAGE_SIZE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|0
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|buf
 (braket
 id|len
@@ -2587,7 +2607,7 @@ op_plus
 l_int|1
 )braket
 op_assign
-l_int|0x00
+l_int|0
 suffix:semicolon
 r_return
 id|len
@@ -2669,6 +2689,16 @@ comma
 id|PAGE_SIZE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|0
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|buf
 (braket
 id|len
@@ -2683,7 +2713,7 @@ op_plus
 l_int|1
 )braket
 op_assign
-l_int|0x00
+l_int|0
 suffix:semicolon
 r_return
 id|len
@@ -2732,7 +2762,7 @@ id|claimed
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* FIXME should get called for each new configuration not just the&n;&t; * first one for a device. switching configs (or altesettings) should&n;&t; * undo driverfs and HCD state for the previous interfaces.&n;&t; */
+multiline_comment|/* FIXME should get called for each new configuration not just the&n;&t; * first one for a device. switching configs (or altsettings) should&n;&t; * undo driverfs and HCD state for the previous interfaces.&n;&t; */
 r_for
 c_loop
 (paren
