@@ -165,7 +165,6 @@ DECL|macro|put_thread_info
 mdefine_line|#define put_thread_info(ti) put_task_struct((ti)-&gt;task)
 macro_line|#else /* !__ASSEMBLY__ */
 multiline_comment|/* how to get the thread information struct from ASM */
-multiline_comment|/* only works on the process stack. otherwise get it via the PDA. */
 DECL|macro|GET_THREAD_INFO
 mdefine_line|#define GET_THREAD_INFO(reg) &bslash;&n;&t;movq %gs:pda_kernelstack,reg ; &bslash;&n;&t;subq $(THREAD_SIZE-PDA_STACKOFFSET),reg
 macro_line|#endif
@@ -210,10 +209,12 @@ DECL|macro|_TIF_FORK
 mdefine_line|#define _TIF_FORK&t;&t;(1&lt;&lt;TIF_FORK)
 DECL|macro|_TIF_ABI_PENDING
 mdefine_line|#define _TIF_ABI_PENDING&t;(1&lt;&lt;TIF_ABI_PENDING)
+multiline_comment|/* work to do on interrupt/exception return */
 DECL|macro|_TIF_WORK_MASK
-mdefine_line|#define _TIF_WORK_MASK&t;&t;0x0000FFFE&t;/* work to do on interrupt/exception return */
+mdefine_line|#define _TIF_WORK_MASK    (0x0000FFFF &amp; ~(_TIF_SYSCALL_TRACE|_TIF_SINGLESTEP))
+multiline_comment|/* work to do on any return to user space */
 DECL|macro|_TIF_ALLWORK_MASK
-mdefine_line|#define _TIF_ALLWORK_MASK&t;0x0000FFFF&t;/* work to do on any return to u-space */
+mdefine_line|#define _TIF_ALLWORK_MASK 0x0000FFFF&t;
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define PREEMPT_ACTIVE     0x4000000
 multiline_comment|/*&n; * Thread-synchronous status.&n; *&n; * This is different from the flags in that nobody else&n; * ever touches our thread-synchronous status, so we don&squot;t&n; * have to worry about atomic accesses.&n; */
