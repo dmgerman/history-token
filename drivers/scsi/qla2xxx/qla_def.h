@@ -381,6 +381,14 @@ r_uint8
 id|err_id
 suffix:semicolon
 multiline_comment|/* error id */
+DECL|macro|SRB_ERR_PORT
+mdefine_line|#define SRB_ERR_PORT&t;1&t;&t;/* Request failed -- &quot;port down&quot; */
+DECL|macro|SRB_ERR_LOOP
+mdefine_line|#define SRB_ERR_LOOP&t;2&t;&t;/* Request failed -- &quot;loop down&quot; */
+DECL|macro|SRB_ERR_DEVICE
+mdefine_line|#define SRB_ERR_DEVICE&t;3&t;&t;/* Request failed -- &quot;device error&quot; */
+DECL|macro|SRB_ERR_OTHER
+mdefine_line|#define SRB_ERR_OTHER&t;4
 multiline_comment|/* Segment/entries counts */
 DECL|member|req_cnt
 r_uint16
