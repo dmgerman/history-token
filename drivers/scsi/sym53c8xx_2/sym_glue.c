@@ -9,7 +9,7 @@ DECL|macro|NAME53C8XX
 mdefine_line|#define NAME53C8XX&t;&quot;sym53c8xx&quot;
 r_static
 r_int
-id|__init
+id|__devinit
 DECL|function|pci_get_base_address
 id|pci_get_base_address
 c_func
@@ -412,7 +412,7 @@ macro_line|#ifndef SYM_OPT_NO_BUS_MEMORY_MAPPING
 DECL|function|pci_map_mem
 r_static
 id|u_long
-id|__init
+id|__devinit
 id|pci_map_mem
 c_func
 (paren
@@ -479,7 +479,7 @@ suffix:semicolon
 DECL|function|pci_unmap_mem
 r_static
 r_void
-id|__init
+id|__devinit
 id|pci_unmap_mem
 c_func
 (paren
@@ -6703,7 +6703,7 @@ macro_line|#endif /* SYM_LINUX_DYNAMIC_DMA_MAPPING */
 multiline_comment|/*&n; *  Host attach and initialisations.&n; *&n; *  Allocate host data and ncb structure.&n; *  Request IO region and remap MMIO region.&n; *  Do chip initialization.&n; *  If all is OK, install interrupt handling and&n; *  start the timer daemon.&n; */
 r_static
 r_int
-id|__init
+id|__devinit
 DECL|function|sym_attach
 id|sym_attach
 (paren
@@ -7527,7 +7527,7 @@ macro_line|#if SYM_CONF_NVRAM_SUPPORT
 DECL|function|sym_get_nvram
 r_static
 r_void
-id|__init
+id|__devinit
 id|sym_get_nvram
 c_func
 (paren
@@ -8322,7 +8322,7 @@ macro_line|#endif
 multiline_comment|/*&n; *  Read and check the PCI configuration for any detected NCR &n; *  boards and save data for attaching after all boards have &n; *  been detected.&n; */
 r_static
 r_int
-id|__init
+id|__devinit
 DECL|function|sym53c8xx_pci_init
 id|sym53c8xx_pci_init
 c_func
