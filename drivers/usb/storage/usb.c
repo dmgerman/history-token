@@ -62,11 +62,6 @@ r_static
 r_int
 id|my_host_number
 suffix:semicolon
-multiline_comment|/*&n; * kernel thread actions&n; */
-DECL|macro|US_ACT_COMMAND
-mdefine_line|#define US_ACT_COMMAND&t;&t;1
-DECL|macro|US_ACT_EXIT
-mdefine_line|#define US_ACT_EXIT&t;&t;5
 multiline_comment|/* The list of structures and the protective lock for them */
 DECL|variable|us_list
 r_struct
@@ -1421,14 +1416,15 @@ multiline_comment|/* our device has gone - pretend not ready */
 r_if
 c_cond
 (paren
-id|atomic_read
+op_logical_neg
+id|test_bit
 c_func
 (paren
+id|DEV_ATTACHED
+comma
 op_amp
-id|us-&gt;device_state
+id|us-&gt;bitflags
 )paren
-op_eq
-id|US_STATE_DETACHED
 )paren
 (brace
 id|US_DEBUGP
@@ -1554,7 +1550,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* atomic_read(&amp;us-&gt;device_state) == STATE_DETACHED */
+multiline_comment|/* test_bit(DEV_ATTACHED, &amp;us-&gt;bitflags) */
 multiline_comment|/* Handle those devices which need us to fake &n;&t;&t;&t; * their inquiry data */
 r_if
 c_cond
@@ -2611,15 +2607,13 @@ l_int|NULL
 )paren
 op_logical_and
 (paren
-(paren
-id|atomic_read
+id|test_bit
 c_func
 (paren
+id|DEV_ATTACHED
+comma
 op_amp
-id|ss-&gt;device_state
-)paren
-op_eq
-id|US_STATE_ATTACHED
+id|ss-&gt;bitflags
 )paren
 op_logical_or
 op_logical_neg
@@ -2678,13 +2672,13 @@ id|ss-&gt;pusb_dev
 op_assign
 id|dev
 suffix:semicolon
-id|atomic_set
+id|set_bit
 c_func
 (paren
-op_amp
-id|ss-&gt;device_state
+id|DEV_ATTACHED
 comma
-id|US_STATE_ATTACHED
+op_amp
+id|ss-&gt;bitflags
 )paren
 suffix:semicolon
 multiline_comment|/* copy over the endpoint data */
@@ -3577,13 +3571,13 @@ comma
 id|US_STATE_IDLE
 )paren
 suffix:semicolon
-id|atomic_set
+id|set_bit
 c_func
 (paren
-op_amp
-id|ss-&gt;device_state
+id|DEV_ATTACHED
 comma
-id|US_STATE_ATTACHED
+op_amp
+id|ss-&gt;bitflags
 )paren
 suffix:semicolon
 id|ss-&gt;pid
@@ -3796,13 +3790,13 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|atomic_set
+id|clear_bit
 c_func
 (paren
-op_amp
-id|ss-&gt;device_state
+id|DEV_ATTACHED
 comma
-id|US_STATE_DETACHED
+op_amp
+id|ss-&gt;bitflags
 )paren
 suffix:semicolon
 id|ss-&gt;pusb_dev
@@ -4000,13 +3994,13 @@ id|ss-&gt;pusb_dev
 op_assign
 l_int|NULL
 suffix:semicolon
-id|atomic_set
+id|clear_bit
 c_func
 (paren
-op_amp
-id|ss-&gt;sm_state
+id|DEV_ATTACHED
 comma
-id|US_STATE_DETACHED
+op_amp
+id|ss-&gt;bitflags
 )paren
 suffix:semicolon
 multiline_comment|/* unlock access to the device data structure */
