@@ -3675,8 +3675,34 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* XXX: RFC2461 7.1.1:&n;&t; &t; *&t;If the IP source address is the unspecified address, &n;&t;&t; *&t;there MUST NOT be source link-layer address option &n;&t;&t; *&t;in the message.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|addr_type
+op_eq
+id|IPV6_ADDR_ANY
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ICMP6 NS: bad DAD packet (link-layer address option)&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
 )brace
-multiline_comment|/* XXX: RFC2461 7.1.1:&n;&t; * &t;If the IP source address is the unspecified address, there&n;&t; *&t;MUST NOT be source link-layer address option in the message.&n;&t; *&n;&t; *&t;NOTE! Linux kernel &lt; 2.4.4 broke this rule.&n;&t; */
+)brace
 r_if
 c_cond
 (paren
