@@ -430,33 +430,12 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* signal.h */
-DECL|macro|_IA32_NSIG
-mdefine_line|#define _IA32_NSIG&t;       64
-DECL|macro|_IA32_NSIG_BPW
-mdefine_line|#define _IA32_NSIG_BPW&t;       32
-DECL|macro|_IA32_NSIG_WORDS
-mdefine_line|#define _IA32_NSIG_WORDS&t;       (_IA32_NSIG / _IA32_NSIG_BPW)
 DECL|macro|IA32_SET_SA_HANDLER
 mdefine_line|#define IA32_SET_SA_HANDLER(ka,handler,restorer)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;((ka)-&gt;sa.sa_handler = (__sighandler_t)&t;&t;&bslash;&n;&t;&t;&t;&t;&t;(((unsigned long)(restorer) &lt;&lt; 32)&t;&bslash;&n;&t;&t;&t;&t;&t; | ((handler) &amp; 0xffffffff)))
 DECL|macro|IA32_SA_HANDLER
 mdefine_line|#define IA32_SA_HANDLER(ka)&t;((unsigned long) (ka)-&gt;sa.sa_handler &amp; 0xffffffff)
 DECL|macro|IA32_SA_RESTORER
 mdefine_line|#define IA32_SA_RESTORER(ka)&t;((unsigned long) (ka)-&gt;sa.sa_handler &gt;&gt; 32)
-r_typedef
-r_struct
-(brace
-DECL|member|sig
-r_int
-r_int
-id|sig
-(braket
-id|_IA32_NSIG_WORDS
-)braket
-suffix:semicolon
-DECL|typedef|sigset32_t
-)brace
-id|sigset32_t
-suffix:semicolon
 DECL|struct|sigaction32
 r_struct
 id|sigaction32
@@ -479,19 +458,12 @@ id|sa_restorer
 suffix:semicolon
 multiline_comment|/* Another 32 bit pointer */
 DECL|member|sa_mask
-id|sigset32_t
+id|compat_sigset_t
 id|sa_mask
 suffix:semicolon
 multiline_comment|/* A 32 bit mask */
 )brace
 suffix:semicolon
-DECL|typedef|old_sigset32_t
-r_typedef
-r_int
-r_int
-id|old_sigset32_t
-suffix:semicolon
-multiline_comment|/* at least 32 bits */
 DECL|struct|old_sigaction32
 r_struct
 id|old_sigaction32
@@ -503,7 +475,7 @@ id|sa_handler
 suffix:semicolon
 multiline_comment|/* Really a pointer, but need to deal&n;&t;&t;&t;&t;&t;     with 32 bits */
 DECL|member|sa_mask
-id|old_sigset32_t
+id|compat_old_sigset_t
 id|sa_mask
 suffix:semicolon
 multiline_comment|/* A 32 bit mask */

@@ -240,5 +240,20 @@ id|l_pid
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|typedef|compat_old_sigset_t
+r_typedef
+id|u32
+id|compat_old_sigset_t
+suffix:semicolon
+multiline_comment|/* at least 32 bits */
+DECL|macro|_COMPAT_NSIG
+mdefine_line|#define _COMPAT_NSIG&t;&t;64
+DECL|macro|_COMPAT_NSIG_BPW
+mdefine_line|#define _COMPAT_NSIG_BPW&t;32
+DECL|typedef|compat_sigset_word
+r_typedef
+id|u32
+id|compat_sigset_word
+suffix:semicolon
 macro_line|#endif /* _ASM_IA64_COMPAT_H */
 eof

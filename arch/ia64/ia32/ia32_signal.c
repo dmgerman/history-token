@@ -183,7 +183,7 @@ r_int
 r_int
 id|extramask
 (braket
-id|_IA32_NSIG_WORDS
+id|_COMPAT_NSIG_WORDS
 op_minus
 l_int|1
 )braket
@@ -2818,7 +2818,7 @@ r_int
 DECL|function|ia32_rt_sigsuspend
 id|ia32_rt_sigsuspend
 (paren
-id|sigset32_t
+id|compat_sigset_t
 op_star
 id|uset
 comma
@@ -3007,7 +3007,7 @@ id|ia32_rt_sigsuspend
 c_func
 (paren
 (paren
-id|sigset32_t
+id|compat_sigset_t
 op_star
 )paren
 op_amp
@@ -3135,7 +3135,7 @@ id|sigsetsize
 op_ne
 r_sizeof
 (paren
-id|sigset32_t
+id|compat_sigset_t
 )paren
 )paren
 r_return
@@ -3194,7 +3194,7 @@ id|act-&gt;sa_mask
 comma
 r_sizeof
 (paren
-id|sigset32_t
+id|compat_sigset_t
 )paren
 )paren
 suffix:semicolon
@@ -3308,7 +3308,7 @@ id|old_ka.sa.sa_mask
 comma
 r_sizeof
 (paren
-id|sigset32_t
+id|compat_sigset_t
 )paren
 )paren
 suffix:semicolon
@@ -3345,11 +3345,11 @@ id|sys32_rt_sigprocmask
 r_int
 id|how
 comma
-id|sigset32_t
+id|compat_sigset_t
 op_star
 id|set
 comma
-id|sigset32_t
+id|compat_sigset_t
 op_star
 id|oset
 comma
@@ -3529,13 +3529,13 @@ c_func
 id|how
 comma
 (paren
-id|sigset32_t
+id|compat_sigset_t
 op_star
 )paren
 id|set
 comma
 (paren
-id|sigset32_t
+id|compat_sigset_t
 op_star
 )paren
 id|oset
@@ -3553,7 +3553,7 @@ r_int
 DECL|function|sys32_rt_sigtimedwait
 id|sys32_rt_sigtimedwait
 (paren
-id|sigset32_t
+id|compat_sigset_t
 op_star
 id|uthese
 comma
@@ -3636,7 +3636,7 @@ id|uthese
 comma
 r_sizeof
 (paren
-id|sigset32_t
+id|compat_sigset_t
 )paren
 )paren
 )paren
@@ -3873,7 +3873,7 @@ c_cond
 id|act
 )paren
 (brace
-id|old_sigset32_t
+id|compat_old_sigset_t
 id|mask
 suffix:semicolon
 id|ret
@@ -5075,7 +5075,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|_IA32_NSIG_WORDS
+id|_COMPAT_NSIG_WORDS
 OG
 l_int|1
 )paren
@@ -5990,7 +5990,7 @@ id|frame-&gt;sc.oldmask
 )paren
 op_logical_or
 (paren
-id|_IA32_NSIG_WORDS
+id|_COMPAT_NSIG_WORDS
 OG
 l_int|1
 op_logical_and
