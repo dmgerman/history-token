@@ -31,11 +31,11 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 DECL|macro|IFORCE_MAX_LENGTH
 mdefine_line|#define IFORCE_MAX_LENGTH&t;16
-macro_line|#if defined(CONFIG_INPUT_IFORCE_232) || defined(CONFIG_INPUT_IFORCE_232_MODULE)
+macro_line|#if defined(CONFIG_JOYSTICK_IFORCE_232) || defined(CONFIG_JOYSTICK_IFORCE_232_MODULE)
 DECL|macro|IFORCE_232
 mdefine_line|#define IFORCE_232&t;1
 macro_line|#endif
-macro_line|#if defined(CONFIG_INPUT_IFORCE_USB) || defined(CONFIG_INPUT_IFORCE_USB_MODULE)
+macro_line|#if defined(CONFIG_JOYSTICK_IFORCE_USB) || defined(CONFIG_JOYSTICK_IFORCE_USB_MODULE)
 DECL|macro|IFORCE_USB
 mdefine_line|#define IFORCE_USB&t;2
 macro_line|#endif

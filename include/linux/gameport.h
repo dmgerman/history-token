@@ -219,7 +219,7 @@ op_star
 id|gameport
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_INPUT_GAMEPORT) || defined(CONFIG_INPUT_GAMEPORT_MODULE)
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 r_void
 id|gameport_register_port
 c_func
