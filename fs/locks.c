@@ -4989,6 +4989,7 @@ id|inode
 op_assign
 id|filp-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
+macro_line|#ifdef CONFIG_MMU
 multiline_comment|/* Don&squot;t allow mandatory locks on files that may be memory mapped&n;&t; * and shared.&n;&t; */
 r_if
 c_cond
@@ -5041,6 +5042,7 @@ id|out
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 id|error
 op_assign
 id|flock_to_posix_lock

@@ -1476,6 +1476,13 @@ comma
 id|runtime-&gt;dma_bytes
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|dpcm-&gt;timer
+)paren
+suffix:semicolon
 id|dpcm-&gt;timer.data
 op_assign
 (paren

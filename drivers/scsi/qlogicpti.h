@@ -52,90 +52,6 @@ DECL|macro|QLOGICPTI_REQ_QUEUE_LEN
 mdefine_line|#define QLOGICPTI_REQ_QUEUE_LEN&t;255&t;/* must be power of two - 1 */
 DECL|macro|QLOGICPTI_MAX_SG
 mdefine_line|#define QLOGICPTI_MAX_SG(ql)&t;(4 + ((ql) &gt; 0) ? 7*((ql) - 1) : 0)
-macro_line|#ifndef NULL
-DECL|macro|NULL
-mdefine_line|#define NULL (0)
-macro_line|#endif
-r_int
-id|qlogicpti_detect
-c_func
-(paren
-id|Scsi_Host_Template
-op_star
-)paren
-suffix:semicolon
-r_int
-id|qlogicpti_release
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-r_const
-r_char
-op_star
-id|qlogicpti_info
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-r_int
-id|qlogicpti_queuecommand
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-r_void
-(paren
-op_star
-id|done
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-)paren
-suffix:semicolon
-r_int
-id|qlogicpti_queuecommand_slow
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-r_void
-(paren
-op_star
-id|done
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-)paren
-suffix:semicolon
-r_int
-id|qlogicpti_abort
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_int
-id|qlogicpti_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* mailbox command complete status codes */
 DECL|macro|MBOX_COMMAND_COMPLETE
 mdefine_line|#define MBOX_COMMAND_COMPLETE&t;&t;0x4000
@@ -1212,16 +1128,6 @@ DECL|macro|HCCTRL_B1ENAB
 mdefine_line|#define HCCTRL_B1ENAB           0x0008      /* Breakpoint 1 enable              */
 DECL|macro|HCCTRL_B0ENAB
 mdefine_line|#define HCCTRL_B0ENAB           0x0004      /* Breakpoint 0 enable              */
-macro_line|#ifdef CONFIG_SPARC64
-DECL|macro|QLOGICPTI_HIGHMEM_IO
-mdefine_line|#define QLOGICPTI_HIGHMEM_IO 1
-macro_line|#else
-multiline_comment|/* Sparc32&squot;s iommu code cannot handle highmem pages yet. */
-DECL|macro|QLOGICPTI_HIGHMEM_IO
-mdefine_line|#define QLOGICPTI_HIGHMEM_IO 0
-macro_line|#endif
-DECL|macro|QLOGICPTI
-mdefine_line|#define QLOGICPTI {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.detect&t;&t;=&t;qlogicpti_detect,&t;&t;&bslash;&n;&t;.release&t;=&t;qlogicpti_release,&t;&t;&bslash;&n;&t;.info&t;&t;=&t;qlogicpti_info,&t;&t;&t;&bslash;&n;&t;.queuecommand&t;=&t;qlogicpti_queuecommand_slow,&t;&bslash;&n;&t;.eh_abort_handler&t;=&t;qlogicpti_abort,&t;&bslash;&n;&t;.eh_bus_reset_handler&t;=&t;qlogicpti_reset,&t;&bslash;&n;&t;.can_queue&t;=&t;QLOGICPTI_REQ_QUEUE_LEN,&t;&bslash;&n;&t;.this_id&t;=&t;7,&t;&t;&t;&t;&bslash;&n;&t;.sg_tablesize&t;=&t;QLOGICPTI_MAX_SG(QLOGICPTI_REQ_QUEUE_LEN), &bslash;&n;&t;.cmd_per_lun&t;=&t;1,&t;&t;&t;&t;&bslash;&n;&t;.use_clustering&t;=&t;ENABLE_CLUSTERING,&t;&t;&bslash;&n;&t;.highmem_io&t;=&t;QLOGICPTI_HIGHMEM_IO,&t;&t;&bslash;&n;}
 multiline_comment|/* For our interrupt engine. */
 DECL|macro|for_each_qlogicpti
 mdefine_line|#define for_each_qlogicpti(qp) &bslash;&n;        for((qp) = qptichain; (qp); (qp) = (qp)-&gt;next)

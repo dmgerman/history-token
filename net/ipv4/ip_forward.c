@@ -123,6 +123,8 @@ op_logical_neg
 id|xfrm_policy_check
 c_func
 (paren
+l_int|NULL
+comma
 id|XFRM_POLICY_FWD
 comma
 id|skb

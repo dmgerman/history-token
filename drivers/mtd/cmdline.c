@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: cmdline.c,v 1.4 2002/09/13 01:18:38 jamey Exp $&n; *&n; * Read flash partition table from command line&n; *&n; * Copyright 2002 SYSGO Real-Time Solutions GmbH&n; *&n; * The format for the command line is as follows:&n; * &n; * mtdparts=&lt;mtddef&gt;[;&lt;mtddef]&n; * &lt;mtddef&gt;  := &lt;mtd-id&gt;:&lt;partdef&gt;[,&lt;partdef&gt;]&n; * &lt;partdef&gt; := &lt;size&gt;[@offset][&lt;name&gt;][ro]&n; * &lt;mtd-id&gt;  := unique id used in mapping driver/device&n; * &lt;size&gt;    := standard linux memsize OR &quot;-&quot; to denote all remaining space&n; * &lt;name&gt;    := &squot;(&squot; NAME &squot;)&squot;&n; * &n; * Examples:&n; * &n; * 1 NOR Flash, with 1 single writable partition:&n; * edb7312-nor:-&n; * &n; * 1 NOR Flash with 2 partitions, 1 NAND with one&n; * edb7312-nor:256k(ARMboot)ro,-(root);edb7312-nand:-(home)&n; */
+multiline_comment|/*&n; * $Id: cmdline.c,v 1.5 2002/11/06 22:40:04 rmk Exp $&n; *&n; * Read flash partition table from command line&n; *&n; * Copyright 2002 SYSGO Real-Time Solutions GmbH&n; *&n; * The format for the command line is as follows:&n; * &n; * mtdparts=&lt;mtddef&gt;[;&lt;mtddef]&n; * &lt;mtddef&gt;  := &lt;mtd-id&gt;:&lt;partdef&gt;[,&lt;partdef&gt;]&n; * &lt;partdef&gt; := &lt;size&gt;[@offset][&lt;name&gt;][ro]&n; * &lt;mtd-id&gt;  := unique id used in mapping driver/device&n; * &lt;size&gt;    := standard linux memsize OR &quot;-&quot; to denote all remaining space&n; * &lt;name&gt;    := &squot;(&squot; NAME &squot;)&squot;&n; * &n; * Examples:&n; * &n; * 1 NOR Flash, with 1 single writable partition:&n; * edb7312-nor:-&n; * &n; * 1 NOR Flash with 2 partitions, 1 NAND with one&n; * edb7312-nor:256k(ARMboot)ro,-(root);edb7312-nand:-(home)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -171,6 +171,25 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|size
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|ERRP
+l_string|&quot;couldn&squot;t parse number from input string&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|size
 OL
 id|PAGE_SIZE
@@ -225,6 +244,25 @@ op_amp
 id|s
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|offset
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|ERRP
+l_string|&quot;couldn&squot;t parse number from input string&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* now look for name */
 r_if
@@ -776,6 +814,18 @@ id|this_mtd
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|parts
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * An error occurred. We&squot;re either:&n;&t;&t;&t; * a) out of memory, or&n;&t;&t;&t; * b) in the middle of the partition spec&n;&t;&t;&t; * Either way, this mtd is hosed and we&squot;re&n;&t;&t;&t; * unlikely to succeed in parsing any more&n;&t;&t;&t; */
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* enter results */
 id|this_mtd-&gt;parts
 op_assign

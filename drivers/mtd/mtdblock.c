@@ -1522,12 +1522,6 @@ op_amp
 id|mtd_queue
 )paren
 suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-id|mtd_queue.queue_lock
-)paren
-suffix:semicolon
 r_struct
 id|mtdblk_dev
 op_star
@@ -1535,6 +1529,12 @@ op_star
 id|p
 op_assign
 id|req-&gt;rq_disk-&gt;private_data
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+id|mtd_queue.queue_lock
+)paren
 suffix:semicolon
 id|mtdblk
 op_assign
@@ -2217,7 +2217,7 @@ c_func
 (paren
 id|disk-&gt;disk_name
 comma
-l_string|&quot;mtd%d&quot;
+l_string|&quot;mtdblock%d&quot;
 comma
 id|mtd-&gt;index
 )paren

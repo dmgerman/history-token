@@ -49,9 +49,6 @@ DECL|macro|XFS_MAX_BMAP_LEN_BB
 mdefine_line|#define XFS_MAX_BMAP_LEN_BB&t;1024
 DECL|macro|XFS_MAX_BMAP_LEN_BYTES
 mdefine_line|#define XFS_MAX_BMAP_LEN_BYTES&t;524288
-multiline_comment|/*&n; * Maximum size (in inodes) for the nfs refcache&n; */
-DECL|macro|XFS_REFCACHE_SIZE_MAX
-mdefine_line|#define XFS_REFCACHE_SIZE_MAX&t;512
 multiline_comment|/*&n; * Convert the given file system block to a disk block.&n; * We have to treat it differently based on whether the&n; * file is a real time file or not, because the bmap code&n; * does.&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_FSB_TO_DB)
 id|xfs_daddr_t
@@ -182,54 +179,6 @@ id|write
 comma
 r_int
 id|relock
-)paren
-suffix:semicolon
-r_void
-id|xfs_refcache_insert
-c_func
-(paren
-r_struct
-id|xfs_inode
-op_star
-id|ip
-)paren
-suffix:semicolon
-r_void
-id|xfs_refcache_purge_ip
-c_func
-(paren
-r_struct
-id|xfs_inode
-op_star
-id|ip
-)paren
-suffix:semicolon
-r_void
-id|xfs_refcache_purge_mp
-c_func
-(paren
-r_struct
-id|xfs_mount
-op_star
-id|mp
-)paren
-suffix:semicolon
-r_void
-id|xfs_refcache_purge_some
-c_func
-(paren
-r_struct
-id|xfs_mount
-op_star
-id|mp
-)paren
-suffix:semicolon
-r_void
-id|xfs_refcache_resize
-c_func
-(paren
-r_int
-id|xfs_refcache_new_size
 )paren
 suffix:semicolon
 r_int

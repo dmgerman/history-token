@@ -24,6 +24,7 @@ macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;net/raw.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
 DECL|variable|raw_v4_htable
 r_struct
@@ -799,6 +800,31 @@ op_star
 id|skb
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|xfrm_policy_check
+c_func
+(paren
+id|sk
+comma
+id|XFRM_POLICY_IN
+comma
+id|skb
+)paren
+)paren
+(brace
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+id|NET_RX_DROP
+suffix:semicolon
+)brace
 id|skb_push
 c_func
 (paren
@@ -1586,7 +1612,7 @@ id|IPPROTO_RAW
 suffix:semicolon
 id|err
 op_assign
-id|ip_route_output_key
+id|ip_route_output_flow
 c_func
 (paren
 op_amp
@@ -1594,6 +1620,12 @@ id|rt
 comma
 op_amp
 id|fl
+comma
+id|sk
+comma
+id|msg-&gt;msg_flags
+op_amp
+id|MSG_DONTWAIT
 )paren
 suffix:semicolon
 )brace

@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/raid/md.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
-macro_line|#include &lt;linux/raid/xor.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt; /* for invalidate_bdev */
 macro_line|#include &lt;linux/init.h&gt;
@@ -3928,6 +3927,7 @@ id|rdev
 comma
 id|tmp
 )paren
+(brace
 id|super_90_sync
 c_func
 (paren
@@ -3936,6 +3936,11 @@ comma
 id|rdev
 )paren
 suffix:semicolon
+id|rdev-&gt;sb_loaded
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 )brace
 DECL|function|md_update_sb
 r_static
@@ -6082,7 +6087,7 @@ op_amp
 id|mddev-&gt;active
 )paren
 OG
-l_int|1
+l_int|2
 )paren
 (brace
 id|printk
@@ -6228,6 +6233,10 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|mddev-&gt;pers
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6877,8 +6886,50 @@ id|startdev
 )paren
 )paren
 suffix:semicolon
-r_goto
-m_abort
+r_return
+id|err
+suffix:semicolon
+)brace
+multiline_comment|/* NOTE: this can only work for 0.90.0 superblocks */
+id|sb
+op_assign
+(paren
+id|mdp_super_t
+op_star
+)paren
+id|page_address
+c_func
+(paren
+id|start_rdev-&gt;sb_page
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sb-&gt;major_version
+op_ne
+l_int|0
+op_logical_or
+id|sb-&gt;minor_version
+op_ne
+l_int|90
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;md: can only autostart 0.90.0 arrays&bslash;n&quot;
+)paren
+suffix:semicolon
+id|export_rdev
+c_func
+(paren
+id|start_rdev
+)paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 r_if
@@ -6900,8 +6951,14 @@ id|start_rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
-r_goto
-m_abort
+id|export_rdev
+c_func
+(paren
+id|start_rdev
+)paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 id|list_add
@@ -7024,22 +7081,6 @@ c_func
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-m_abort
-suffix:colon
-r_if
-c_cond
-(paren
-id|start_rdev
-)paren
-id|export_rdev
-c_func
-(paren
-id|start_rdev
-)paren
-suffix:semicolon
-r_return
-id|err
 suffix:semicolon
 )brace
 DECL|macro|BAD_VERSION
@@ -11015,7 +11056,7 @@ c_cond
 (paren
 id|mddev-&gt;curr_resync
 OG
-l_int|1
+l_int|2
 )paren
 id|sz
 op_add_assign
@@ -11035,6 +11076,10 @@ c_cond
 id|mddev-&gt;curr_resync
 op_eq
 l_int|1
+op_logical_or
+id|mddev-&gt;curr_resync
+op_eq
+l_int|2
 )paren
 id|sz
 op_add_assign
@@ -12479,9 +12524,6 @@ c_func
 id|KERN_INFO
 l_string|&quot;md: stopping all md devices.&bslash;n&quot;
 )paren
-suffix:semicolon
-r_return
-id|NOTIFY_DONE
 suffix:semicolon
 id|ITERATE_MDDEV
 c_func

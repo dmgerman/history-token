@@ -11,7 +11,7 @@ multiline_comment|/* Deal with broken BIOS&squot;es that neglect to enable passi
 DECL|function|quirk_passive_release
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_passive_release
 c_func
 (paren
@@ -112,7 +112,7 @@ multiline_comment|/* Exported */
 DECL|function|quirk_isa_dma_hangs
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_isa_dma_hangs
 c_func
 (paren
@@ -150,7 +150,7 @@ multiline_comment|/*&n; *&t;Chipsets where PCI-&gt;PCI transfers vanish or hang&
 DECL|function|quirk_nopcipci
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_nopcipci
 c_func
 (paren
@@ -189,7 +189,7 @@ multiline_comment|/*&n; *&t;Triton requires workarounds to be used by the driver
 DECL|function|quirk_triton
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_triton
 c_func
 (paren
@@ -228,7 +228,7 @@ multiline_comment|/*&n; *&t;VIA Apollo KT133 needs PCI latency patch&n; *&t;Made
 DECL|function|quirk_vialatency
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_vialatency
 c_func
 (paren
@@ -393,7 +393,7 @@ multiline_comment|/*&n; *&t;VIA Apollo VP3 needs ETBF on BT848/878&n; */
 DECL|function|quirk_viaetbf
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_viaetbf
 c_func
 (paren
@@ -431,7 +431,7 @@ suffix:semicolon
 DECL|function|quirk_vsfx
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_vsfx
 c_func
 (paren
@@ -470,7 +470,7 @@ multiline_comment|/*&n; *&t;Natoma has some interesting boundary conditions with
 DECL|function|quirk_natoma
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_natoma
 c_func
 (paren
@@ -509,7 +509,7 @@ multiline_comment|/*&n; *  S3 868 and 968 chips report region size equal to 32M,
 DECL|function|quirk_s3_64M
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_s3_64M
 c_func
 (paren
@@ -559,7 +559,7 @@ suffix:semicolon
 DECL|function|quirk_io_region
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_io_region
 c_func
 (paren
@@ -636,7 +636,7 @@ multiline_comment|/*&n; * Let&squot;s make the southbridge information explicit 
 DECL|function|quirk_ali7101_acpi
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_ali7101_acpi
 c_func
 (paren
@@ -702,7 +702,7 @@ multiline_comment|/*&n; * PIIX4 ACPI: Two IO regions pointed to by longwords at&
 DECL|function|quirk_piix4_acpi
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_piix4_acpi
 c_func
 (paren
@@ -768,7 +768,7 @@ multiline_comment|/*&n; * VIA ACPI: One IO region pointed to by longword at&n; *
 DECL|function|quirk_vt82c586_acpi
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_vt82c586_acpi
 c_func
 (paren
@@ -836,7 +836,7 @@ multiline_comment|/*&n; * VIA VT82C686 ACPI: Three IO region pointed to by (long
 DECL|function|quirk_vt82c686_acpi
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_vt82c686_acpi
 c_func
 (paren
@@ -926,7 +926,7 @@ multiline_comment|/*&n; * VIA 686A/B: If an IO-APIC is active, we need to route 
 DECL|function|quirk_via_ioapic
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_via_ioapic
 c_func
 (paren
@@ -990,7 +990,7 @@ multiline_comment|/*&n; * FIXME: it is questionable that quirk_via_acpi&n; * is 
 DECL|function|quirk_via_acpi
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_via_acpi
 c_func
 (paren
@@ -1038,7 +1038,7 @@ suffix:semicolon
 DECL|function|quirk_via_irqpic
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_via_irqpic
 c_func
 (paren
@@ -1111,7 +1111,7 @@ multiline_comment|/*&n; * PIIX3 USB: We have to disable USB interrupts that are&
 DECL|function|quirk_piix3_usb
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_piix3_usb
 c_func
 (paren
@@ -1154,7 +1154,7 @@ multiline_comment|/*&n; * VIA VT82C598 has its device ID settable and many BIOSe
 DECL|function|quirk_vt82c598_id
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_vt82c598_id
 c_func
 (paren
@@ -1190,7 +1190,7 @@ multiline_comment|/*&n; * CardBus controllers have a legacy base address that en
 DECL|function|quirk_cardbus_legacy
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_cardbus_legacy
 c_func
 (paren
@@ -1230,7 +1230,7 @@ multiline_comment|/*&n; * The AMD io apic can hang the box when an apic irq is m
 DECL|function|quirk_amd_ioapic
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_amd_ioapic
 c_func
 (paren
@@ -1282,7 +1282,7 @@ multiline_comment|/*&n; * Following the PCI ordering rules is optional on the AM
 DECL|function|quirk_amd_ordering
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_amd_ordering
 c_func
 (paren
@@ -1375,7 +1375,7 @@ multiline_comment|/*&n; *&t;DreamWorks provided workaround for Dunord I-3000 pro
 DECL|function|quirk_dunord
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_dunord
 (paren
 r_struct
@@ -1413,7 +1413,7 @@ suffix:semicolon
 DECL|function|quirk_transparent_bridge
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_transparent_bridge
 c_func
 (paren
@@ -1429,14 +1429,14 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  The main table of quirks.&n; */
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_struct
 id|pci_fixup
 id|pci_fixups
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 (brace

@@ -3491,6 +3491,13 @@ op_star
 id|SNDRV_SERIAL_MAX_OUTS
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|uart-&gt;buffer_timer
+)paren
+suffix:semicolon
 id|uart-&gt;buffer_timer.function
 op_assign
 id|snd_uart16550_buffer_timer

@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;    A driver for PCMCIA IDE/ATA disk cards&n;&n;    ide_cs.c 1.26 1999/11/16 02:10:49&n;&n;    The contents of this file are subject to the Mozilla Public&n;    License Version 1.1 (the &quot;License&quot;); you may not use this file&n;    except in compliance with the License. You may obtain a copy of&n;    the License at http://www.mozilla.org/MPL/&n;&n;    Software distributed under the License is distributed on an &quot;AS&n;    IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, either express or&n;    implied. See the License for the specific language governing&n;    rights and limitations under the License.&n;&n;    The initial developer of the original code is David A. Hinds&n;    &lt;dhinds@pcmcia.sourceforge.org&gt;.  Portions created by David A. Hinds&n;    are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n;&n;    Alternatively, the contents of this file may be used under the&n;    terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in which&n;    case the provisions of the GPL are applicable instead of the&n;    above.  If you wish to allow the use of your version of this file&n;    only under the terms of the GPL and not to allow others to use&n;    your version of this file under the MPL, indicate your decision&n;    by deleting the provisions above and replace them with the notice&n;    and other provisions required by the GPL.  If you do not delete&n;    the provisions above, a recipient may use your version of this&n;    file under either the MPL or the GPL.&n;    &n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    A driver for PCMCIA IDE/ATA disk cards&n;&n;    ide-cs.c 1.3 2002/10/26 05:45:31&n;&n;    The contents of this file are subject to the Mozilla Public&n;    License Version 1.1 (the &quot;License&quot;); you may not use this file&n;    except in compliance with the License. You may obtain a copy of&n;    the License at http://www.mozilla.org/MPL/&n;&n;    Software distributed under the License is distributed on an &quot;AS&n;    IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, either express or&n;    implied. See the License for the specific language governing&n;    rights and limitations under the License.&n;&n;    The initial developer of the original code is David A. Hinds&n;    &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David A. Hinds&n;    are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n;&n;    Alternatively, the contents of this file may be used under the&n;    terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n;    which case the provisions of the GPL are applicable instead of the&n;    above.  If you wish to allow the use of your version of this file&n;    only under the terms of the GPL and not to allow others to use&n;    your version of this file under the MPL, indicate your decision&n;    by deleting the provisions above and replace them with the notice&n;    and other provisions required by the GPL.  If you do not delete&n;    the provisions above, a recipient may use your version of this&n;    file under either the MPL or the GPL.&n;    &n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -8,9 +8,9 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
@@ -19,45 +19,37 @@ macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/ds.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
-macro_line|#ifdef PCMCIA_DEBUG
-DECL|variable|pc_debug
-r_static
-r_int
-id|pc_debug
-op_assign
-id|PCMCIA_DEBUG
-suffix:semicolon
-id|MODULE_PARM
+macro_line|#include &lt;pcmcia/ciscode.h&gt;
+multiline_comment|/*====================================================================*/
+multiline_comment|/* Module parameters */
+id|MODULE_AUTHOR
 c_func
 (paren
-id|pc_debug
-comma
-l_string|&quot;i&quot;
+l_string|&quot;David Hinds &lt;dahinds@users.sourceforge.net&gt;&quot;
 )paren
 suffix:semicolon
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
-DECL|variable|version
-r_static
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;ide_cs.c 1.26 1999/11/16 02:10:49 (David Hinds)&quot;
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;PCMCIA ATA/IDE card driver&quot;
+)paren
 suffix:semicolon
-macro_line|#else
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...)
-macro_line|#endif
-multiline_comment|/*====================================================================*/
-multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual MPL/GPL&quot;
+)paren
+suffix:semicolon
+DECL|macro|INT_MODULE_PARM
+mdefine_line|#define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, &quot;i&quot;)
 multiline_comment|/* Bit map of interrupts to choose from */
-DECL|variable|irq_mask
-r_static
-id|u_int
+id|INT_MODULE_PARM
+c_func
+(paren
 id|irq_mask
-op_assign
+comma
 l_int|0xdeb8
+)paren
 suffix:semicolon
 DECL|variable|irq_list
 r_static
@@ -75,25 +67,34 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|irq_mask
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
 id|irq_list
 comma
 l_string|&quot;1-4i&quot;
 )paren
 suffix:semicolon
-id|MODULE_LICENSE
+macro_line|#ifdef PCMCIA_DEBUG
+id|INT_MODULE_PARM
 c_func
 (paren
-l_string|&quot;GPL&quot;
+id|pc_debug
+comma
+id|PCMCIA_DEBUG
 )paren
 suffix:semicolon
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
+DECL|variable|version
+r_static
+r_char
+op_star
+id|version
+op_assign
+l_string|&quot;ide-cs.c 1.3 2002/10/26 05:45:31 (David Hinds)&quot;
+suffix:semicolon
+macro_line|#else
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG(n, args...)
+macro_line|#endif
 multiline_comment|/*====================================================================*/
 DECL|variable|ide_major
 r_static
@@ -112,11 +113,9 @@ id|IDE2_MAJOR
 comma
 id|IDE3_MAJOR
 comma
-macro_line|#ifdef IDE4_MAJOR
 id|IDE4_MAJOR
 comma
 id|IDE5_MAJOR
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|struct|ide_info_t
@@ -143,16 +142,6 @@ suffix:semicolon
 DECL|typedef|ide_info_t
 )brace
 id|ide_info_t
-suffix:semicolon
-r_static
-r_void
-id|ide_config
-c_func
-(paren
-id|dev_link_t
-op_star
-id|link
-)paren
 suffix:semicolon
 r_static
 r_void
@@ -660,14 +649,16 @@ mdefine_line|#define CS_CHECK(fn, args...) &bslash;&n;while ((last_ret=CardServi
 DECL|macro|CFG_CHECK
 mdefine_line|#define CFG_CHECK(fn, args...) &bslash;&n;if (CardServices(fn, args) != 0) goto next_entry
 DECL|function|idecs_register
+r_static
 r_int
 id|idecs_register
+c_func
 (paren
 r_int
-id|arg1
+id|io
 comma
 r_int
-id|arg2
+id|ctl
 comma
 r_int
 id|irq
@@ -685,12 +676,12 @@ comma
 (paren
 id|ide_ioreg_t
 )paren
-id|arg1
+id|io
 comma
 (paren
 id|ide_ioreg_t
 )paren
-id|arg2
+id|ctl
 comma
 l_int|NULL
 )paren
@@ -703,7 +694,6 @@ id|hw.chipset
 op_assign
 id|ide_pci
 suffix:semicolon
-multiline_comment|/* this enables IRQ sharing w/ PCI irqs */
 r_return
 id|ide_register_hw
 c_func
@@ -775,13 +765,14 @@ comma
 id|last_fn
 comma
 id|hd
-op_assign
-op_minus
-l_int|1
 comma
 id|io_base
 comma
 id|ctl_base
+comma
+id|is_kme
+op_assign
+l_int|0
 suffix:semicolon
 id|DEBUG
 c_func
@@ -863,6 +854,76 @@ id|parse.config.rmask
 (braket
 l_int|0
 )braket
+suffix:semicolon
+id|tuple.DesiredTuple
+op_assign
+id|CISTPL_MANFID
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|CardServices
+c_func
+(paren
+id|GetFirstTuple
+comma
+id|handle
+comma
+op_amp
+id|tuple
+)paren
+op_logical_and
+op_logical_neg
+id|CardServices
+c_func
+(paren
+id|GetTupleData
+comma
+id|handle
+comma
+op_amp
+id|tuple
+)paren
+op_logical_and
+op_logical_neg
+id|CardServices
+c_func
+(paren
+id|ParseTuple
+comma
+id|handle
+comma
+op_amp
+id|tuple
+comma
+op_amp
+id|parse
+)paren
+)paren
+id|is_kme
+op_assign
+(paren
+(paren
+id|parse.manfid.manf
+op_eq
+id|MANFID_KME
+)paren
+op_logical_and
+(paren
+(paren
+id|parse.manfid.card
+op_eq
+id|PRODID_KME_KXLC005_A
+)paren
+op_logical_or
+(paren
+id|parse.manfid.card
+op_eq
+id|PRODID_KME_KXLC005_B
+)paren
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Configure card */
 id|link-&gt;state
@@ -1141,6 +1202,13 @@ id|base
 suffix:semicolon
 id|link-&gt;io.NumPorts2
 op_assign
+(paren
+id|is_kme
+)paren
+ques
+c_cond
+l_int|2
+suffix:colon
 l_int|1
 suffix:semicolon
 id|CFG_CHECK
@@ -1352,10 +1420,40 @@ comma
 id|link-&gt;io.NumPorts2
 )paren
 suffix:semicolon
+multiline_comment|/* disable drive interrupts during IDE probe */
+id|outb
+c_func
+(paren
+l_int|0x02
+comma
+id|ctl_base
+)paren
+suffix:semicolon
+multiline_comment|/* special setup for KXLC005 card */
+r_if
+c_cond
+(paren
+id|is_kme
+)paren
+id|outb
+c_func
+(paren
+l_int|0x81
+comma
+id|ctl_base
+op_plus
+l_int|1
+)paren
+suffix:semicolon
 multiline_comment|/* retry registration in case device is still spinning up */
 r_for
 c_loop
 (paren
+id|hd
+op_assign
+op_minus
+l_int|1
+comma
 id|i
 op_assign
 l_int|0
@@ -1368,20 +1466,6 @@ id|i
 op_increment
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|ctl_base
-)paren
-id|outb
-c_func
-(paren
-l_int|0x02
-comma
-id|ctl_base
-)paren
-suffix:semicolon
-multiline_comment|/* Set nIEN = disable device interrupts */
 id|hd
 op_assign
 id|idecs_register
@@ -1411,11 +1495,6 @@ op_eq
 l_int|0x20
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|ctl_base
-)paren
 id|outb
 c_func
 (paren
@@ -1489,7 +1568,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;ide_cs: ide_register() at 0x%03x &amp; 0x%03x&quot;
+l_string|&quot;ide-cs: ide_register() at 0x%3x &amp; 0x%3x&quot;
 l_string|&quot;, irq %u failed&bslash;n&quot;
 comma
 id|io_base
@@ -1549,7 +1628,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide_cs: %s: Vcc = %d.%d, Vpp = %d.%d&bslash;n&quot;
+l_string|&quot;ide-cs: %s: Vcc = %d.%d, Vpp = %d.%d&bslash;n&quot;
 comma
 id|info-&gt;node.dev_name
 comma
@@ -1599,6 +1678,11 @@ id|u_long
 )paren
 id|link
 )paren
+suffix:semicolon
+id|link-&gt;state
+op_and_assign
+op_complement
+id|DEV_CONFIG_PENDING
 suffix:semicolon
 )brace
 multiline_comment|/* ide_config */
@@ -1650,9 +1734,7 @@ c_func
 id|info-&gt;hd
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
+multiline_comment|/* deal with brain dead IDE resource management */
 id|request_region
 c_func
 (paren
@@ -1660,7 +1742,7 @@ id|link-&gt;io.BasePort1
 comma
 id|link-&gt;io.NumPorts1
 comma
-l_string|&quot;ide-cs&quot;
+id|info-&gt;node.dev_name
 )paren
 suffix:semicolon
 r_if
@@ -1675,9 +1757,12 @@ id|link-&gt;io.BasePort2
 comma
 id|link-&gt;io.NumPorts2
 comma
-l_string|&quot;ide-cs&quot;
+id|info-&gt;node.dev_name
 )paren
 suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
+)brace
 id|info-&gt;ndev
 op_assign
 l_int|0
@@ -1922,13 +2007,13 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;ide_cs: Card Services release &quot;
+l_string|&quot;ide-cs: Card Services release &quot;
 l_string|&quot;does not match!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
 )brace
 id|register_pccard_driver
@@ -1963,7 +2048,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;ide_cs: unloading&bslash;n&quot;
+l_string|&quot;ide-cs: unloading&bslash;n&quot;
 )paren
 suffix:semicolon
 id|unregister_pccard_driver

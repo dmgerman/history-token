@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;ultrastor.c&t;Copyright (C) 1992 David B. Gentzel&n; *&t;Low-level SCSI driver for UltraStor 14F, 24F, and 34F&n; *&t;by David B. Gentzel, Whitfield Software Services, Carnegie, PA&n; *&t;    (gentzel@nova.enet.dec.com)&n; *  scatter/gather added by Scott Taylor (n217cg@tamuts.tamu.edu)&n; *  24F and multiple command support by John F. Carr (jfc@athena.mit.edu)&n; *    John&squot;s work modified by Caleb Epstein (cae@jpmorgan.com) and &n; *    Eric Youngdale (ericy@cais.com).&n; *&t;Thanks to UltraStor for providing the necessary documentation&n; */
+multiline_comment|/*&n; *&t;ultrastor.c&t;Copyright (C) 1992 David B. Gentzel&n; *&t;Low-level SCSI driver for UltraStor 14F, 24F, and 34F&n; *&t;by David B. Gentzel, Whitfield Software Services, Carnegie, PA&n; *&t;    (gentzel@nova.enet.dec.com)&n; *  scatter/gather added by Scott Taylor (n217cg@tamuts.tamu.edu)&n; *  24F and multiple command support by John F. Carr (jfc@athena.mit.edu)&n; *    John&squot;s work modified by Caleb Epstein (cae@jpmorgan.com) and &n; *    Eric Youngdale (ericy@cais.com).&n; *&t;Thanks to UltraStor for providing the necessary documentation&n; *&n; *  This is an old driver, for the 14F and 34F you should be using the&n; *  u14-34f driver instead.&n; */
 multiline_comment|/*&n; * TODO:&n; *&t;1. Find out why scatter/gather is limited to 16 requests per command.&n; *         This is fixed, at least on the 24F, as of version 1.12 - CAE.&n; *&t;2. Look at command linking (mscp.command_link and&n; *&t;   mscp.command_link_id).  (Does not work with many disks, &n; *&t;&t;&t;&t;and no performance increase.  ERY).&n; *&t;3. Allow multiple adapters.&n; */
 multiline_comment|/*&n; * NOTES:&n; *    The UltraStor 14F, 24F, and 34F are a family of intelligent, high&n; *    performance SCSI-2 host adapters.  They all support command queueing&n; *    and scatter/gather I/O.  Some of them can also emulate the standard&n; *    WD1003 interface for use with OS&squot;s which don&squot;t support SCSI.  Here&n; *    is the scoop on the various models:&n; *&t;14F - ISA first-party DMA HA with floppy support and WD1003 emulation.&n; *&t;14N - ISA HA with floppy support.  I think that this is a non-DMA&n; *&t;      HA.  Nothing further known.&n; *&t;24F - EISA Bus Master HA with floppy support and WD1003 emulation.&n; *&t;34F - VL-Bus Bus Master HA with floppy support (no WD1003 emulation).&n; *&n; *    The 14F, 24F, and 34F are supported by this driver.&n; *&n; *    Places flagged with a triple question-mark are things which are either&n; *    unfinished, questionable, or wrong.&n; */
 multiline_comment|/* Changes from version 1.11 alpha to 1.12&n; *&n; * Increased the size of the scatter-gather list to 33 entries for&n; * the 24F adapter (it was 16).  I don&squot;t have the specs for the 14F&n; * or the 34F, so they may support larger s-g lists as well.&n; *&n; * Caleb Epstein &lt;cae@jpmorgan.com&gt;&n; */
@@ -47,13 +47,11 @@ r_typedef
 r_struct
 (brace
 DECL|member|address
-r_int
-r_int
+id|u32
 id|address
 suffix:semicolon
 DECL|member|num_bytes
-r_int
-r_int
+id|u32
 id|num_bytes
 suffix:semicolon
 DECL|typedef|ultrastor_sg_list
@@ -195,8 +193,7 @@ id|target_status
 suffix:semicolon
 multiline_comment|/* non-zero indicates target error */
 DECL|member|PACKED
-r_int
-r_int
+id|u32
 id|sense_data
 id|PACKED
 suffix:semicolon
@@ -608,6 +605,7 @@ op_star
 id|SCpnt
 )paren
 suffix:semicolon
+multiline_comment|/* Always called with host lock held */
 DECL|function|find_and_clear_bit_16
 r_static
 r_inline
@@ -623,21 +621,6 @@ id|field
 (brace
 r_int
 id|rv
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -674,12 +657,6 @@ l_string|&quot;1&quot;
 op_star
 id|field
 )paren
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -732,13 +709,13 @@ id|reg
 suffix:semicolon
 )brace
 macro_line|#if ULTRASTOR_DEBUG &amp; (UD_COMMAND | UD_ABORT)
+multiline_comment|/* Always called with the host lock held */
 DECL|function|log_ultrastor_abort
 r_static
 r_void
 id|log_ultrastor_abort
 c_func
 (paren
-r_register
 r_struct
 id|ultrastor_config
 op_star
@@ -757,24 +734,8 @@ l_int|80
 op_assign
 l_string|&quot;abort %d (%x); MSCP free pool: %x;&quot;
 suffix:semicolon
-r_register
 r_int
 id|i
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -883,12 +844,6 @@ id|command
 )braket
 comma
 id|config-&gt;mscp_free
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -1605,7 +1560,6 @@ op_star
 id|tpnt
 )paren
 (brace
-r_register
 r_int
 id|i
 suffix:semicolon
@@ -2081,6 +2035,7 @@ id|FALSE
 suffix:semicolon
 )brace
 DECL|function|ultrastor_detect
+r_static
 r_int
 id|ultrastor_detect
 c_func
@@ -2109,6 +2064,7 @@ id|tpnt
 suffix:semicolon
 )brace
 DECL|function|ultrastor_info
+r_static
 r_const
 r_char
 op_star
@@ -2199,7 +2155,6 @@ r_void
 id|build_sg_list
 c_func
 (paren
-r_register
 r_struct
 id|mscp
 op_star
@@ -2321,6 +2276,7 @@ id|transfer_length
 suffix:semicolon
 )brace
 DECL|function|ultrastor_queuecommand
+r_static
 r_int
 id|ultrastor_queuecommand
 c_func
@@ -2340,7 +2296,6 @@ op_star
 )paren
 )paren
 (brace
-r_register
 r_struct
 id|mscp
 op_star
@@ -2354,10 +2309,6 @@ macro_line|#endif
 r_int
 r_int
 id|status
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 multiline_comment|/* Next test is for debugging; &quot;can&squot;t happen&quot; */
 r_if
@@ -2431,8 +2382,6 @@ id|config.mscp
 id|mscp_index
 )braket
 suffix:semicolon
-macro_line|#if 1
-multiline_comment|/* This way is faster.  */
 op_star
 (paren
 r_int
@@ -2449,20 +2398,6 @@ op_lshift
 l_int|3
 )paren
 suffix:semicolon
-macro_line|#else
-id|my_mscp-&gt;opcode
-op_assign
-id|OP_SCSI
-suffix:semicolon
-id|my_mscp-&gt;xdir
-op_assign
-id|DTD_SCSI
-suffix:semicolon
-id|my_mscp-&gt;dcn
-op_assign
-id|FALSE
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Tape drives don&squot;t work properly if the cache is used.  The SCSI&n;       READ command for a tape doesn&squot;t have a block offset, and the adapter&n;       incorrectly assumes that all reads from the tape read the same&n;       blocks.  Results will depend on read buffer size and other disk&n;       activity. &n;&n;       ???  Which other device types should never use the cache?   */
 id|my_mscp-&gt;ca
 op_assign
@@ -2585,7 +2520,7 @@ op_star
 )paren
 id|my_mscp
 suffix:semicolon
-multiline_comment|/* Find free OGM slot.  On 24F, look for OGM status byte == 0.&n;       On 14F and 34F, wait for local interrupt pending flag to clear.  */
+multiline_comment|/* Find free OGM slot.  On 24F, look for OGM status byte == 0.&n;       On 14F and 34F, wait for local interrupt pending flag to clear. &n;       &n;       FIXME: now we are using new_eh we should punt here and let the&n;       midlayer sort it out */
 id|retry
 suffix:colon
 r_if
@@ -2655,18 +2590,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* To avoid race conditions, make the code to write to the adapter&n;       atomic.  This simplifies the abort code.  */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* To avoid race conditions, keep the code to write to the adapter&n;       atomic.  This simplifies the abort code.  Right now the&n;       scsi mid layer has the host_lock already held&n;     */
 r_if
 c_cond
 (paren
@@ -2689,17 +2613,9 @@ suffix:colon
 l_int|1
 )paren
 )paren
-(brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_goto
 id|retry
 suffix:semicolon
-)brace
 id|status
 op_assign
 id|xchgb
@@ -2722,12 +2638,6 @@ op_ne
 l_int|0xff
 )paren
 (brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 macro_line|#if ULTRASTOR_DEBUG &amp; (UD_COMMAND | UD_ABORT)
 id|printk
 c_func
@@ -2842,12 +2752,6 @@ id|config.doorbell_address
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 macro_line|#if (ULTRASTOR_DEBUG &amp; UD_COMMAND)
 id|printk
 c_func
@@ -2862,6 +2766,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* This code must deal with 2 cases:&n;&n;   1. The command has not been written to the OGM.  In this case, set&n;   the abort flag and return.&n;&n;   2. The command has been written to the OGM and is stuck somewhere in&n;   the adapter.&n;&n;   2a.  On a 24F, ask the adapter to abort the command.  It will interrupt&n;   when it does.&n;&n;   2b.  Call the command&squot;s done procedure.&n;&n; */
 DECL|function|ultrastor_abort
+r_static
 r_int
 id|ultrastor_abort
 c_func
@@ -2907,6 +2812,10 @@ r_int
 r_char
 id|old_aborted
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_void
 (paren
 op_star
@@ -2917,6 +2826,13 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|SCpnt-&gt;host
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2924,7 +2840,7 @@ id|config.slot
 )paren
 (brace
 r_return
-id|SCSI_ABORT_SNOOZE
+id|FAILED
 suffix:semicolon
 )brace
 multiline_comment|/* Do not attempt an abort for the 24f */
@@ -2937,7 +2853,7 @@ id|SCpnt-&gt;host_scribble
 )paren
 (brace
 r_return
-id|SCSI_ABORT_NOT_RUNNING
+id|FAILED
 suffix:semicolon
 )brace
 id|mscp_index
@@ -2991,15 +2907,12 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+id|host-&gt;host_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|strcpy
@@ -3159,9 +3072,11 @@ l_int|28
 )paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_lock_irqsave
 c_func
 (paren
+id|host-&gt;host_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3198,33 +3113,21 @@ l_int|1
 )paren
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
 l_string|&quot;Ux4F: abort while completed command pending&bslash;n&quot;
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_lock_irqsave
 c_func
 (paren
+id|host-&gt;host_lock
+comma
 id|flags
 )paren
 suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* FIXME: Ewww... need to think about passing host around properly */
 id|ultrastor_interrupt
 c_func
 (paren
@@ -3235,16 +3138,17 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+id|host-&gt;host_lock
+comma
 id|flags
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_SUCCESS
+id|SUCCESS
 suffix:semicolon
-multiline_comment|/* FIXME - is this correct? -ERY */
 )brace
 macro_line|#endif
 id|old_aborted
@@ -3270,7 +3174,7 @@ op_eq
 l_int|0xff
 )paren
 r_return
-id|SCSI_ABORT_SUCCESS
+id|SUCCESS
 suffix:semicolon
 multiline_comment|/* On 24F, send an abort MSCP request.  The adapter will interrupt&n;       and the interrupt handler will call done.  */
 r_if
@@ -3293,15 +3197,12 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+id|host-&gt;host_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outl
@@ -3320,13 +3221,12 @@ comma
 id|config.ogm_address
 )paren
 suffix:semicolon
-id|inb
+id|udelay
 c_func
 (paren
-l_int|0xc80
+l_int|8
 )paren
 suffix:semicolon
-multiline_comment|/* delay */
 id|outb
 c_func
 (paren
@@ -3374,14 +3274,17 @@ id|icm_addr
 )paren
 suffix:semicolon
 macro_line|#endif
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+id|host-&gt;host_lock
+comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: add a wait for the abort to complete */
 r_return
-id|SCSI_ABORT_PENDING
+id|SUCCESS
 suffix:semicolon
 )brace
 macro_line|#if ULTRASTOR_DEBUG &amp; UD_ABORT
@@ -3492,39 +3395,58 @@ id|DID_ABORT
 op_lshift
 l_int|16
 suffix:semicolon
-multiline_comment|/* I worry about reentrancy in scsi.c  */
+multiline_comment|/* Take the host lock to guard against scsi layer re-entry */
+id|spin_lock_irqsave
+c_func
+(paren
+id|host-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|done
 c_func
 (paren
 id|SCpnt
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|host-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Need to set a timeout here in case command never completes.  */
 r_return
-id|SCSI_ABORT_SUCCESS
+id|SUCCESS
 suffix:semicolon
 )brace
-DECL|function|ultrastor_reset
+DECL|function|ultrastor_host_reset
+r_static
 r_int
-id|ultrastor_reset
+id|ultrastor_host_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
 id|SCpnt
-comma
-r_int
-r_int
-id|reset_flags
 )paren
 (brace
 r_int
 r_int
 id|flags
 suffix:semicolon
-r_register
 r_int
 id|i
+suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|SCpnt-&gt;host
 suffix:semicolon
 macro_line|#if (ULTRASTOR_DEBUG &amp; UD_RESET)
 id|printk
@@ -3541,19 +3463,15 @@ id|config.slot
 )paren
 (brace
 r_return
-id|SCSI_RESET_PUNT
+id|FAILED
 suffix:semicolon
 )brace
-multiline_comment|/* Do not attempt a reset for the 24f */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+id|host-&gt;host_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Reset the adapter and SCSI bus.  The SCSI bus reset can be&n;       inhibited by clearing ultrastor_bus_reset before probe.  */
@@ -3719,7 +3637,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* FIXME - if the device implements soft resets, then the command&n;       will still be running.  ERY */
+multiline_comment|/* FIXME - if the device implements soft resets, then the command&n;       will still be running.  ERY  &n;       &n;       Even bigger deal with new_eh! &n;     */
 id|memset
 c_func
 (paren
@@ -3748,9 +3666,11 @@ op_complement
 l_int|0
 suffix:semicolon
 macro_line|#endif
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+id|host-&gt;host_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3870,7 +3790,6 @@ r_int
 id|mscp_index
 suffix:semicolon
 macro_line|#endif
-r_register
 r_struct
 id|mscp
 op_star

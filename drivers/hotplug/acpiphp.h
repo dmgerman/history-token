@@ -6,13 +6,13 @@ macro_line|#include &quot;include/acpi.h&quot;
 macro_line|#include &quot;pci_hotplug.h&quot;
 macro_line|#include &quot;acpi_bus.h&quot;
 DECL|macro|dbg
-mdefine_line|#define dbg(format, arg...)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (acpiphp_debug)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk (KERN_DEBUG &quot;%s: &quot; format &quot;&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;&t;MY_NAME , ## arg); &t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define dbg(format, arg...)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (acpiphp_debug)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(KERN_DEBUG &quot;%s: &quot; format,&t;&bslash;&n;&t;&t;&t;&t;MY_NAME , ## arg); &t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|err
-mdefine_line|#define err(format, arg...) printk (KERN_ERR &quot;%s: &quot; format &quot;&bslash;n&quot;, MY_NAME , ## arg)
+mdefine_line|#define err(format, arg...) printk(KERN_ERR &quot;%s: &quot; format, MY_NAME , ## arg)
 DECL|macro|info
-mdefine_line|#define info(format, arg...) printk (KERN_INFO &quot;%s: &quot; format &quot;&bslash;n&quot;, MY_NAME , ## arg)
+mdefine_line|#define info(format, arg...) printk(KERN_INFO &quot;%s: &quot; format, MY_NAME , ## arg)
 DECL|macro|warn
-mdefine_line|#define warn(format, arg...) printk (KERN_WARNING &quot;%s: &quot; format &quot;&bslash;n&quot;, MY_NAME , ## arg)
+mdefine_line|#define warn(format, arg...) printk(KERN_WARNING &quot;%s: &quot; format, MY_NAME , ## arg)
 DECL|macro|SLOT_MAGIC
 mdefine_line|#define SLOT_MAGIC&t;0x67267322
 multiline_comment|/* name size which is used for entries in pcihpfs */

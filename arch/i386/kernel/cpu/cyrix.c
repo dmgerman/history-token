@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &quot;cpu.h&quot;
 multiline_comment|/*&n; * Read NSC/Cyrix DEVID registers (DIR) to get more detailed info. about the CPU&n; */
 DECL|function|do_cyrix_devid
@@ -753,7 +754,7 @@ suffix:semicolon
 r_case
 l_int|4
 suffix:colon
-multiline_comment|/* MediaGX/GXm */
+multiline_comment|/* MediaGX/GXm or Geode GXM/GXLV/GX1 */
 macro_line|#ifdef CONFIG_PCI
 multiline_comment|/* It isn&squot;t really a PCI quirk directly, but the cure is the&n;&t;&t;   same. The MediaGX has deep magic SMM stuff that handles the&n;&t;&t;   SB emulation. It thows away the fifo on disable_dma() which&n;&t;&t;   is wrong and ruins the audio. &n;&n;&t;&t;   Bug2: VSA1 has a wrap bug so that using maximum sized DMA &n;&t;&t;   causes bad things. According to NatSemi VSA2 has another&n;&t;&t;   bug to do with &squot;hlt&squot;. I&squot;ve not seen any boards using VSA2&n;&t;&t;   and X doesn&squot;t seem to support it either so who cares 8).&n;&t;&t;   VSA1 we work around however.&n;&t;&t;*/
 id|printk
@@ -773,38 +774,7 @@ op_assign
 l_int|16
 suffix:semicolon
 multiline_comment|/* Yep 16K integrated cache thats it */
-multiline_comment|/* GXm supports extended cpuid levels &squot;ala&squot; AMD */
-r_if
-c_cond
-(paren
-id|c-&gt;cpuid_level
-op_eq
-l_int|2
-)paren
-(brace
-multiline_comment|/* Enable Natsemi MMX extensions */
-id|setCx86
-c_func
-(paren
-id|CX86_CCR7
-comma
-id|getCx86
-c_func
-(paren
-id|CX86_CCR7
-)paren
-op_or
-l_int|1
-)paren
-suffix:semicolon
-id|get_model_name
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
-multiline_comment|/* get CPU marketing name */
-multiline_comment|/*&n;&t;&t;&t; *  The 5510/5520 companion chips have a funky PIT&n;&t;&t;&t; *  that breaks the TSC synchronizing, so turn it off&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  The 5510/5520 companion chips have a funky PIT.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -828,14 +798,41 @@ comma
 l_int|NULL
 )paren
 )paren
-id|clear_bit
+id|pit_latch_buggy
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* GXm supports extended cpuid levels &squot;ala&squot; AMD */
+r_if
+c_cond
+(paren
+id|c-&gt;cpuid_level
+op_eq
+l_int|2
+)paren
+(brace
+multiline_comment|/* Enable cxMMX extensions (GX1 Datasheet 54) */
+id|setCx86
 c_func
 (paren
-id|X86_FEATURE_TSC
+id|CX86_CCR7
 comma
-id|c-&gt;x86_capability
+id|getCx86
+c_func
+(paren
+id|CX86_CCR7
+)paren
+op_or
+l_int|1
 )paren
 suffix:semicolon
+id|get_model_name
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+multiline_comment|/* get CPU marketing name */
 r_return
 suffix:semicolon
 )brace
@@ -877,16 +874,6 @@ l_int|1
 suffix:colon
 l_int|2
 suffix:semicolon
-macro_line|#ifndef CONFIG_CS5520
-id|clear_bit
-c_func
-(paren
-id|X86_FEATURE_TSC
-comma
-id|c-&gt;x86_capability
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 r_break
 suffix:semicolon

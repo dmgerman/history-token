@@ -24802,6 +24802,13 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Set up timer */
+id|init_timer
+c_func
+(paren
+op_amp
+id|lp-&gt;timer
+)paren
+suffix:semicolon
 id|lp-&gt;timer.expires
 op_assign
 id|jiffies

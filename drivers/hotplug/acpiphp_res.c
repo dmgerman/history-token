@@ -780,7 +780,7 @@ op_assign
 id|max-&gt;next
 )paren
 (brace
-multiline_comment|/* If not big enough we could probably just bail, &n;&t;&t;   instead we&squot;ll continue to the next. */
+multiline_comment|/* If not big enough we could probably just bail,&n;&t;&t;   instead we&squot;ll continue to the next. */
 r_if
 c_cond
 (paren
@@ -1104,7 +1104,7 @@ id|node-&gt;next
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: req_size =%x node=%p, base=%x, length=%x&quot;
+l_string|&quot;%s: req_size =%x node=%p, base=%x, length=%x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1144,7 +1144,7 @@ l_int|1
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: not aligned&quot;
+l_string|&quot;%s: not aligned&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1234,7 +1234,7 @@ id|size
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: too big&quot;
+l_string|&quot;%s: too big&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1281,7 +1281,7 @@ multiline_comment|/* End of too big on top end */
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: got one!!!&quot;
+l_string|&quot;%s: got one!!!&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1337,7 +1337,7 @@ r_return
 id|node
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * get_resource_with_base - get resource with specific base address&n; *&n; * this function &n; * returns the first node of &quot;size&quot; length located at specified base address.&n; * If it finds a node larger than &quot;size&quot; it will split it up.&n; *&n; * size must be a power of two.&n; *&n; */
+multiline_comment|/**&n; * get_resource_with_base - get resource with specific base address&n; *&n; * this function&n; * returns the first node of &quot;size&quot; length located at specified base address.&n; * If it finds a node larger than &quot;size&quot; it will split it up.&n; *&n; * size must be a power of two.&n; *&n; */
 DECL|function|acpiphp_get_resource_with_base
 r_struct
 id|pci_resource
@@ -1417,7 +1417,7 @@ id|node-&gt;next
 id|dbg
 c_func
 (paren
-l_string|&quot;: 1st req_base=%x req_size =%x node=%p, base=%x, length=%x&quot;
+l_string|&quot;: 1st req_base=%x req_size =%x node=%p, base=%x, length=%x&bslash;n&quot;
 comma
 (paren
 id|u32
@@ -1473,7 +1473,7 @@ id|base
 id|dbg
 c_func
 (paren
-l_string|&quot;: split 1&quot;
+l_string|&quot;: split 1&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* this one isn&squot;t base aligned properly&n;&t;&t;&t;   so we&squot;ll make a new entry and split it up */
@@ -1541,7 +1541,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;: 2nd req_base=%x req_size =%x node=%p, base=%x, length=%x&quot;
+l_string|&quot;: 2nd req_base=%x req_size =%x node=%p, base=%x, length=%x&bslash;n&quot;
 comma
 (paren
 id|u32
@@ -1572,7 +1572,7 @@ id|size
 id|dbg
 c_func
 (paren
-l_string|&quot;: split 2&quot;
+l_string|&quot;: split 2&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* this one is longer than we need&n;&t;&t;&t;   so we&squot;ll make a new entry and split it up */
@@ -1617,7 +1617,7 @@ multiline_comment|/* End of too big on top end */
 id|dbg
 c_func
 (paren
-l_string|&quot;: got one!!!&quot;
+l_string|&quot;: got one!!!&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* If we got here, then it is the right size&n;&t;&t;   Now take it out of the list */
@@ -1713,7 +1713,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;*head-&gt;next = %p&quot;
+l_string|&quot;*head-&gt;next = %p&bslash;n&quot;
 comma
 (paren
 op_star
@@ -1741,7 +1741,7 @@ multiline_comment|/* only one item on the list, already sorted! */
 id|dbg
 c_func
 (paren
-l_string|&quot;*head-&gt;base = 0x%x&quot;
+l_string|&quot;*head-&gt;base = 0x%x&bslash;n&quot;
 comma
 (paren
 id|u32
@@ -1757,7 +1757,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;*head-&gt;next-&gt;base = 0x%x&quot;
+l_string|&quot;*head-&gt;next-&gt;base = 0x%x&bslash;n&quot;
 comma
 (paren
 id|u32
@@ -1933,7 +1933,7 @@ multiline_comment|/* Combine */
 id|dbg
 c_func
 (paren
-l_string|&quot;8..&quot;
+l_string|&quot;8..&bslash;n&quot;
 )paren
 suffix:semicolon
 id|node1-&gt;length
@@ -2180,7 +2180,7 @@ id|p
 id|dbg
 c_func
 (paren
-l_string|&quot;[%02d] %08x - %08x&quot;
+l_string|&quot;[%02d] %08x - %08x&bslash;n&quot;
 comma
 id|cnt
 op_increment
@@ -2220,7 +2220,7 @@ id|bridge
 id|dbg
 c_func
 (paren
-l_string|&quot;I/O resource:&quot;
+l_string|&quot;I/O resource:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dump_resource
@@ -2232,7 +2232,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;MEM resource:&quot;
+l_string|&quot;MEM resource:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dump_resource
@@ -2244,7 +2244,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;PMEM resource:&quot;
+l_string|&quot;PMEM resource:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dump_resource
@@ -2256,7 +2256,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;BUS resource:&quot;
+l_string|&quot;BUS resource:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dump_resource
@@ -2280,7 +2280,7 @@ id|func
 id|dbg
 c_func
 (paren
-l_string|&quot;I/O resource:&quot;
+l_string|&quot;I/O resource:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dump_resource
@@ -2292,7 +2292,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;MEM resource:&quot;
+l_string|&quot;MEM resource:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dump_resource
@@ -2304,7 +2304,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;PMEM resource:&quot;
+l_string|&quot;PMEM resource:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dump_resource
@@ -2316,7 +2316,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;BUS resource:&quot;
+l_string|&quot;BUS resource:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dump_resource

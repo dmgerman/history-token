@@ -2808,10 +2808,6 @@ id|string
 l_int|64
 )braket
 suffix:semicolon
-id|srb-&gt;resid
-op_assign
-l_int|0
-suffix:semicolon
 id|len
 op_assign
 id|srb-&gt;request_bufflen
@@ -2995,6 +2991,16 @@ l_string|&quot;Status = %02X&bslash;n&quot;
 comma
 id|status
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+op_ne
+id|USB_STOR_XFER_GOOD
+)paren
+r_return
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 r_if
 c_cond

@@ -565,6 +565,11 @@ id|readpages
 )paren
 (paren
 r_struct
+id|file
+op_star
+id|filp
+comma
+r_struct
 id|address_space
 op_star
 id|mapping

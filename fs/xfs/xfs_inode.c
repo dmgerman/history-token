@@ -12042,11 +12042,6 @@ comma
 id|vmap
 )paren
 suffix:semicolon
-id|vp-&gt;v_flag
-op_or_assign
-id|VPURGE
-suffix:semicolon
-multiline_comment|/* OK for vn_purge */
 id|XFS_MOUNT_IUNLOCK
 c_func
 (paren

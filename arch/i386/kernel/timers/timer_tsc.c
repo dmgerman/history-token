@@ -116,6 +116,19 @@ r_void
 r_int
 id|count
 suffix:semicolon
+r_int
+id|countmp
+suffix:semicolon
+r_static
+r_int
+id|count1
+op_assign
+l_int|0
+comma
+id|count2
+op_assign
+id|LATCH
+suffix:semicolon
 multiline_comment|/*&n;&t; * It is important that these two operations happen almost at&n;&t; * the same time. We do the RDTSC stuff first, since it&squot;s&n;&t; * faster. To avoid any inconsistencies, we need interrupts&n;&t; * disabled locally.&n;&t; */
 multiline_comment|/*&n;&t; * Interrupts are just disabled locally since the timer irq&n;&t; * has the SA_INTERRUPT flag set. -arca&n;&t; */
 multiline_comment|/* read Pentium cycle counter */
@@ -167,6 +180,104 @@ op_amp
 id|i8253_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pit_latch_buggy
+)paren
+(brace
+multiline_comment|/* get center value of last 3 time lutch */
+r_if
+c_cond
+(paren
+(paren
+id|count2
+op_ge
+id|count
+op_logical_and
+id|count
+op_ge
+id|count1
+)paren
+op_logical_or
+(paren
+id|count1
+op_ge
+id|count
+op_logical_and
+id|count
+op_ge
+id|count2
+)paren
+)paren
+(brace
+id|count2
+op_assign
+id|count1
+suffix:semicolon
+id|count1
+op_assign
+id|count
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|count1
+op_ge
+id|count2
+op_logical_and
+id|count2
+op_ge
+id|count
+)paren
+op_logical_or
+(paren
+id|count
+op_ge
+id|count2
+op_logical_and
+id|count2
+op_ge
+id|count1
+)paren
+)paren
+(brace
+id|countmp
+op_assign
+id|count
+suffix:semicolon
+id|count
+op_assign
+id|count2
+suffix:semicolon
+id|count2
+op_assign
+id|count1
+suffix:semicolon
+id|count1
+op_assign
+id|countmp
+suffix:semicolon
+)brace
+r_else
+(brace
+id|count2
+op_assign
+id|count1
+suffix:semicolon
+id|count1
+op_assign
+id|count
+suffix:semicolon
+id|count
+op_assign
+id|count1
+suffix:semicolon
+)brace
+)brace
 id|count
 op_assign
 (paren
@@ -230,7 +341,7 @@ comma
 l_int|0x61
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Now let&squot;s take care of CTC channel 2&n;&t; *&n;&t; * Set the Gate high, program CTC channel 2 for mode 0,&n;&t; * (interrupt on terminal count mode), binary count,&n;&t; * load 5 * LATCH count, (LSB and MSB) to begin countdown.&n;&t; */
+multiline_comment|/*&n;&t; * Now let&squot;s take care of CTC channel 2&n;&t; *&n;&t; * Set the Gate high, program CTC channel 2 for mode 0,&n;&t; * (interrupt on terminal count mode), binary count,&n;&t; * load 5 * LATCH count, (LSB and MSB) to begin countdown.&n;&t; *&n;&t; * Some devices need a delay here.&n;&t; */
 id|outb
 c_func
 (paren
@@ -240,7 +351,7 @@ l_int|0x43
 )paren
 suffix:semicolon
 multiline_comment|/* binary, mode 0, LSB/MSB, Ch 2 */
-id|outb
+id|outb_p
 c_func
 (paren
 id|CALIBRATE_LATCH
@@ -251,7 +362,7 @@ l_int|0x42
 )paren
 suffix:semicolon
 multiline_comment|/* LSB of count */
-id|outb
+id|outb_p
 c_func
 (paren
 id|CALIBRATE_LATCH
@@ -738,11 +849,6 @@ r_void
 (brace
 multiline_comment|/*&n;&t; * If we have APM enabled or the CPU clock speed is variable&n;&t; * (CPU stops clock on HLT or slows clock to save power)&n;&t; * then the TSC timestamps may diverge by up to 1 jiffy from&n;&t; * &squot;real time&squot; but nothing will break.&n;&t; * The most frequent case is that the CPU is &quot;woken&quot; from a halt&n;&t; * state by the timer interrupt itself, so we get 0 error. In the&n;&t; * rare cases where a driver would &quot;wake&quot; the CPU and request a&n;&t; * timestamp, the maximum error is &lt; 1 jiffy. But timestamps are&n;&t; * still perfectly ordered.&n;&t; * Note that the TSC counter will be reset if APM suspends&n;&t; * to disk; this won&squot;t break the kernel, though, &squot;cuz we&squot;re&n;&t; * smart.  See arch/i386/kernel/apm.c.&n;&t; */
 multiline_comment|/*&n; &t; *&t;Firstly we have to do a CPU check for chips with&n; &t; * &t;a potentially buggy TSC. At this point we haven&squot;t run&n; &t; *&t;the ident/bugs checks so we must run this hook as it&n; &t; *&t;may turn off the TSC flag.&n; &t; *&n; &t; *&t;NOTE: this doesnt yet handle SMP 486 machines where only&n; &t; *&t;some CPU&squot;s have a TSC. Thats never worked and nobody has&n; &t; *&t;moaned if you have the only one in the world - you fix it!&n; &t; */
-id|dodgy_tsc
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

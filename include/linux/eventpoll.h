@@ -2,13 +2,6 @@ multiline_comment|/*&n; *  include/linux/eventpoll.h ( Efficent event polling im
 macro_line|#ifndef _LINUX_EVENTPOLL_H
 DECL|macro|_LINUX_EVENTPOLL_H
 mdefine_line|#define _LINUX_EVENTPOLL_H
-multiline_comment|/* Forward declarations to avoid compiler errors */
-r_struct
-id|file
-suffix:semicolon
-r_struct
-id|pollfd
-suffix:semicolon
 multiline_comment|/* Valid opcodes to issue to sys_epoll_ctl() */
 DECL|macro|EP_CTL_ADD
 mdefine_line|#define EP_CTL_ADD 1
@@ -16,6 +9,14 @@ DECL|macro|EP_CTL_DEL
 mdefine_line|#define EP_CTL_DEL 2
 DECL|macro|EP_CTL_MOD
 mdefine_line|#define EP_CTL_MOD 3
+macro_line|#ifdef __KERNEL__
+multiline_comment|/* Forward declarations to avoid compiler errors */
+r_struct
+id|file
+suffix:semicolon
+r_struct
+id|pollfd
+suffix:semicolon
 multiline_comment|/* Kernel space functions implementing the user space &quot;epoll&quot; API */
 id|asmlinkage
 r_int
@@ -76,5 +77,6 @@ op_star
 id|file
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* #ifdef __KERNEL__ */
+macro_line|#endif /* #ifndef _LINUX_EVENTPOLL_H */
 eof

@@ -350,6 +350,16 @@ r_static
 r_struct
 id|timer_list
 id|yam_timer
+op_assign
+id|TIMER_INITIALIZER
+c_func
+(paren
+l_int|NULL
+comma
+l_int|0
+comma
+l_int|0
+)paren
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|macro|RBR

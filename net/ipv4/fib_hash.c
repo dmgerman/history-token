@@ -4791,9 +4791,16 @@ id|fi-&gt;fib_priority
 comma
 id|mask
 comma
+(paren
+id|fi-&gt;fib_advmss
+ques
+c_cond
 id|fi-&gt;fib_advmss
 op_plus
 l_int|40
+suffix:colon
+l_int|0
+)paren
 comma
 id|fi-&gt;fib_window
 comma

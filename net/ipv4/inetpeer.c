@@ -143,13 +143,15 @@ r_struct
 id|timer_list
 id|peer_periodic_timer
 op_assign
-(brace
-dot
-id|function
-op_assign
-op_amp
+id|TIMER_INITIALIZER
+c_func
+(paren
 id|peer_check_expire
-)brace
+comma
+l_int|0
+comma
+l_int|0
+)paren
 suffix:semicolon
 multiline_comment|/* Exported for sysctl_net_ipv4.  */
 DECL|variable|inet_peer_gc_mintime

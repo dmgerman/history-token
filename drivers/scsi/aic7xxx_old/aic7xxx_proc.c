@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|BLS
 mdefine_line|#define&t;BLS&t;(&amp;aic7xxx_buffer[size])
 DECL|macro|HDRB
-mdefine_line|#define HDRB &bslash;&n;&quot;             0 - 4K     4 - 16K    16 - 64K   64 - 256K   256K - 1M    1M+&quot;
+mdefine_line|#define HDRB &bslash;&n;&quot;               0 - 4K   4 - 16K   16 - 64K  64 - 256K  256K - 1M        1M+&quot;
 macro_line|#ifdef PROC_DEBUG
 r_extern
 r_int
@@ -190,11 +190,6 @@ r_int
 r_char
 id|tindex
 suffix:semicolon
-r_struct
-id|list_head
-op_star
-id|list_item
-suffix:semicolon
 id|HBAptr
 op_assign
 l_int|NULL
@@ -300,20 +295,20 @@ id|size
 op_assign
 l_int|4096
 suffix:semicolon
-id|list_for_each
+id|list_for_each_entry
 c_func
 (paren
-id|list_item
+id|aic_dev
 comma
 op_amp
 id|p-&gt;aic_devs
+comma
+id|list
 )paren
-(brace
 id|size
 op_add_assign
 l_int|512
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -418,49 +413,6 @@ comma
 id|AIC7XXX_H_VERSION
 )paren
 suffix:semicolon
-id|size
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|BLS
-comma
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-id|size
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|BLS
-comma
-l_string|&quot;Compile Options:&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_AIC7XXX_OLD_TCQ_ON_BY_DEFAULT
-id|size
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|BLS
-comma
-l_string|&quot;  TCQ Enabled By Default : Enabled&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#else
-id|size
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|BLS
-comma
-l_string|&quot;  TCQ Enabled By Default : Disabled&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|size
 op_add_assign
 id|sprintf
@@ -1055,7 +1007,7 @@ id|BLS
 comma
 l_string|&quot;Default Tag Queue Depth: %d&bslash;n&quot;
 comma
-id|AIC7XXX_CMDS_PER_DEVICE
+id|aic7xxx_default_queue_depth
 )paren
 suffix:semicolon
 id|size
@@ -1161,28 +1113,17 @@ comma
 l_string|&quot;Statistics:&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
-id|list_for_each
+id|list_for_each_entry
 c_func
 (paren
-id|list_item
+id|aic_dev
 comma
 op_amp
 id|p-&gt;aic_devs
-)paren
-(brace
-id|aic_dev
-op_assign
-id|list_entry
-c_func
-(paren
-id|list_item
-comma
-r_struct
-id|aic_dev_data
 comma
 id|list
 )paren
-suffix:semicolon
+(brace
 id|sdptr
 op_assign
 id|aic_dev-&gt;SDptr
@@ -1425,6 +1366,12 @@ dot
 id|options
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sdptr-&gt;simple_tags
+)paren
+(brace
 id|size
 op_add_assign
 id|sprintf
@@ -1432,7 +1379,55 @@ c_func
 (paren
 id|BLS
 comma
-l_string|&quot;  Total transfers %ld (%ld reads and %ld writes)&bslash;n&quot;
+l_string|&quot;  Tagged Command Queueing Enabled, Ordered Tags %s&bslash;n&quot;
+comma
+id|sdptr-&gt;ordered_tags
+ques
+c_cond
+l_string|&quot;Enabled&quot;
+suffix:colon
+l_string|&quot;Disabled&quot;
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|aic_dev-&gt;barrier_total
+)paren
+(brace
+id|size
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|BLS
+comma
+l_string|&quot;  Total transfers %ld:&bslash;n    (%ld/%ld/%ld/%ld reads/writes/REQ_BARRIER/Ordered Tags)&bslash;n&quot;
+comma
+id|aic_dev-&gt;r_total
+op_plus
+id|aic_dev-&gt;w_total
+comma
+id|aic_dev-&gt;r_total
+comma
+id|aic_dev-&gt;w_total
+comma
+id|aic_dev-&gt;barrier_total
+comma
+id|aic_dev-&gt;ordered_total
+)paren
+suffix:semicolon
+)brace
+r_else
+id|size
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|BLS
+comma
+l_string|&quot;  Total transfers %ld:&bslash;n    (%ld/%ld reads/writes)&bslash;n&quot;
 comma
 id|aic_dev-&gt;r_total
 op_plus
@@ -1491,7 +1486,7 @@ c_func
 (paren
 id|BLS
 comma
-l_string|&quot; %7ld&quot;
+l_string|&quot; %10ld&quot;
 comma
 id|aic_dev-&gt;r_bins
 (braket
@@ -1546,7 +1541,7 @@ c_func
 (paren
 id|BLS
 comma
-l_string|&quot; %7ld&quot;
+l_string|&quot; %10ld&quot;
 comma
 id|aic_dev-&gt;w_bins
 (braket
