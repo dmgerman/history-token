@@ -1540,6 +1540,11 @@ id|new_dir
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Like most other Unix systems, set the ctime for inodes on a&n; &t; * rename.&n;&t; * ext2_dec_count() will mark the inode dirty.&n;&t; */
+id|old_inode-&gt;i_ctime
+op_assign
+id|CURRENT_TIME
+suffix:semicolon
 id|ext2_delete_entry
 (paren
 id|old_de
