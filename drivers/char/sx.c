@@ -3942,6 +3942,13 @@ id|hi_hstat
 op_ne
 id|HS_IDLE_CLOSED
 )paren
+op_logical_and
+op_logical_neg
+(paren
+id|port-&gt;gs.tty-&gt;termios-&gt;c_cflag
+op_amp
+id|CLOCAL
+)paren
 )paren
 (brace
 multiline_comment|/* Are we blocking in open?*/
@@ -3990,6 +3997,13 @@ id|port-&gt;gs.flags
 op_amp
 id|ASYNC_CALLOUT_NOHUP
 )paren
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|port-&gt;gs.tty-&gt;termios-&gt;c_cflag
+op_amp
+id|CLOCAL
 )paren
 )paren
 (brace
@@ -6592,6 +6606,8 @@ id|serial_struct
 op_eq
 l_int|0
 )paren
+id|rc
+op_assign
 id|gs_getserial
 c_func
 (paren

@@ -2604,6 +2604,8 @@ id|serial_struct
 op_eq
 l_int|0
 )paren
+id|rc
+op_assign
 id|gs_getserial
 c_func
 (paren

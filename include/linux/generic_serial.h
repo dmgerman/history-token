@@ -449,7 +449,7 @@ op_star
 id|sp
 )paren
 suffix:semicolon
-r_void
+r_int
 id|gs_getserial
 c_func
 (paren

@@ -316,6 +316,9 @@ c_cond
 (paren
 id|from_user
 )paren
+r_if
+c_cond
+(paren
 id|copy_from_user
 (paren
 id|port-&gt;xmit_buf
@@ -326,7 +329,19 @@ id|buf
 comma
 id|c
 )paren
+)paren
+(brace
+id|up
+(paren
+op_amp
+id|port-&gt;port_write_sem
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
 r_else
 id|memcpy
 (paren
@@ -3718,6 +3733,9 @@ r_struct
 id|serial_struct
 id|sio
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -3732,6 +3750,10 @@ r_struct
 id|serial_struct
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -3825,7 +3847,7 @@ suffix:semicolon
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *      Generate the serial struct info.&n; */
 DECL|function|gs_getserial
-r_void
+r_int
 id|gs_getserial
 c_func
 (paren
@@ -3921,6 +3943,9 @@ op_amp
 id|sio
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -3935,6 +3960,13 @@ r_struct
 id|serial_struct
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|gs_got_break
