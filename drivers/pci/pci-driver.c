@@ -192,9 +192,6 @@ r_struct
 id|device
 op_star
 id|dev
-comma
-id|u32
-id|flags
 )paren
 (brace
 r_struct
