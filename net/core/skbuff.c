@@ -762,6 +762,12 @@ suffix:semicolon
 id|C
 c_func
 (paren
+id|real_dev
+)paren
+suffix:semicolon
+id|C
+c_func
+(paren
 id|h
 )paren
 suffix:semicolon
@@ -1050,6 +1056,12 @@ op_member_access_from_pointer
 id|dev
 op_assign
 id|old-&gt;dev
+suffix:semicolon
+r_new
+op_member_access_from_pointer
+id|real_dev
+op_assign
+id|old-&gt;real_dev
 suffix:semicolon
 r_new
 op_member_access_from_pointer

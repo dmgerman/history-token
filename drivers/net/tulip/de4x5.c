@@ -7701,9 +7701,6 @@ id|jiffies
 suffix:semicolon
 )brace
 )brace
-r_return
-id|IRQ_HANDLED
-suffix:semicolon
 )brace
 multiline_comment|/*&n;** Calculate the hash code and update the logical address filter&n;** from a list of ethernet multicast addresses.&n;** Little endian crc one liner from Matt Thomas, DEC.&n;*/
 r_static

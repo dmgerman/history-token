@@ -3911,10 +3911,16 @@ c_cond
 (paren
 id|dev-&gt;master
 )paren
+(brace
+id|skb-&gt;real_dev
+op_assign
+id|skb-&gt;dev
+suffix:semicolon
 id|skb-&gt;dev
 op_assign
 id|dev-&gt;master
 suffix:semicolon
+)brace
 )brace
 DECL|function|net_tx_action
 r_static
