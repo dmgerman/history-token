@@ -30,7 +30,7 @@ DECL|macro|UDSL_ASSERT
 mdefine_line|#define UDSL_ASSERT(x)&t;BUG_ON(!(x))
 macro_line|#else
 DECL|macro|UDSL_ASSERT
-mdefine_line|#define UDSL_ASSERT(x)&t;warn(&quot;failed assertion &squot;&quot; #x &quot;&squot; at line %d&quot;, __LINE__)
+mdefine_line|#define UDSL_ASSERT(x)&t;do { if (!(x)) warn(&quot;failed assertion &squot;&quot; #x &quot;&squot; at line %d&quot;, __LINE__); } while(0)
 macro_line|#endif
 macro_line|#ifdef VERBOSE_DEBUG
 r_static
@@ -5394,11 +5394,29 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|udsl_usb_exit
+r_static
+r_void
+id|__exit
+id|udsl_usb_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 DECL|variable|udsl_usb_init
 id|module_init
 c_func
 (paren
 id|udsl_usb_init
+)paren
+suffix:semicolon
+DECL|variable|udsl_usb_exit
+id|module_exit
+c_func
+(paren
+id|udsl_usb_exit
 )paren
 suffix:semicolon
 DECL|variable|DRIVER_AUTHOR

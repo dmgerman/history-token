@@ -1309,13 +1309,6 @@ l_int|6
 )paren
 )paren
 (brace
-id|del_timer
-c_func
-(paren
-op_amp
-id|instance-&gt;poll_timer
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2960,6 +2953,21 @@ id|fw1
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* In case we failed, set state back to NO_FIRMWARE so that&n;&t;   another later attempt may work. Otherwise, we never actually&n;&t;   manage to recover if, for example, the firmware is on /usr and&n;&t;   we look for it too early. */
+id|speedtch_got_firmware
+c_func
+(paren
+id|instance
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
+suffix:semicolon
 id|udsl_put_instance
 c_func
 (paren
@@ -3032,6 +3040,7 @@ op_amp
 id|instance-&gt;u.serialize
 )paren
 suffix:semicolon
+macro_line|#ifdef USE_FW_LOADER
 id|udsl_get_instance
 c_func
 (paren
@@ -3039,7 +3048,12 @@ op_amp
 id|instance-&gt;u
 )paren
 suffix:semicolon
-macro_line|#ifdef USE_FW_LOADER
+id|try_module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|kernel_thread
@@ -3072,6 +3086,19 @@ comma
 id|ret
 )paren
 suffix:semicolon
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
+suffix:semicolon
+id|udsl_put_instance
+c_func
+(paren
+op_amp
+id|instance-&gt;u
+)paren
+suffix:semicolon
 multiline_comment|/* Just pretend it never happened... hope modem_run happens */
 macro_line|#endif&t;&t;&t;&t;/* USE_FW_LOADER */
 id|speedtch_got_firmware
@@ -3080,13 +3107,6 @@ c_func
 id|instance
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|udsl_put_instance
-c_func
-(paren
-op_amp
-id|instance-&gt;u
 )paren
 suffix:semicolon
 )brace
