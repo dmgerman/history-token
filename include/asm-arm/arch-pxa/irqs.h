@@ -173,7 +173,7 @@ multiline_comment|/*&n; * Figure out the MAX IRQ number.&n; *&n; * If we have an
 macro_line|#ifdef CONFIG_SA1111
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;(IRQ_S1_BVD1_STSCHG + 1)
-macro_line|#elif defined(CONFIG_ARCH_LUBBOCK)
+macro_line|#elif defined(CONFIG_ARCH_LUBBOCK) || &bslash;&n;      defined(CONFIG_MACH_MAINSTONE)
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;(IRQ_BOARD_END)
 macro_line|#else
@@ -199,4 +199,34 @@ DECL|macro|LUBBOCK_USB_DISC_IRQ
 mdefine_line|#define LUBBOCK_USB_DISC_IRQ&t;LUBBOCK_IRQ(6)  /* usb disconnect */
 DECL|macro|LUBBOCK_LAST_IRQ
 mdefine_line|#define LUBBOCK_LAST_IRQ&t;LUBBOCK_IRQ(6)
+DECL|macro|MAINSTONE_IRQ
+mdefine_line|#define MAINSTONE_IRQ(x)&t;(IRQ_BOARD_START + (x))
+DECL|macro|MAINSTONE_MMC_IRQ
+mdefine_line|#define MAINSTONE_MMC_IRQ&t;MAINSTONE_IRQ(0)
+DECL|macro|MAINSTONE_USIM_IRQ
+mdefine_line|#define MAINSTONE_USIM_IRQ&t;MAINSTONE_IRQ(1)
+DECL|macro|MAINSTONE_USBC_IRQ
+mdefine_line|#define MAINSTONE_USBC_IRQ&t;MAINSTONE_IRQ(2)
+DECL|macro|MAINSTONE_ETHERNET_IRQ
+mdefine_line|#define MAINSTONE_ETHERNET_IRQ&t;MAINSTONE_IRQ(3)
+DECL|macro|MAINSTONE_AC97_IRQ
+mdefine_line|#define MAINSTONE_AC97_IRQ&t;MAINSTONE_IRQ(4)
+DECL|macro|MAINSTONE_PEN_IRQ
+mdefine_line|#define MAINSTONE_PEN_IRQ&t;MAINSTONE_IRQ(5)
+DECL|macro|MAINSTONE_MSINS_IRQ
+mdefine_line|#define MAINSTONE_MSINS_IRQ&t;MAINSTONE_IRQ(6)
+DECL|macro|MAINSTONE_EXBRD_IRQ
+mdefine_line|#define MAINSTONE_EXBRD_IRQ&t;MAINSTONE_IRQ(7)
+DECL|macro|MAINSTONE_S0_CD_IRQ
+mdefine_line|#define MAINSTONE_S0_CD_IRQ&t;MAINSTONE_IRQ(9)
+DECL|macro|MAINSTONE_S0_STSCHG_IRQ
+mdefine_line|#define MAINSTONE_S0_STSCHG_IRQ&t;MAINSTONE_IRQ(10)
+DECL|macro|MAINSTONE_S0_IRQ
+mdefine_line|#define MAINSTONE_S0_IRQ&t;MAINSTONE_IRQ(11)
+DECL|macro|MAINSTONE_S1_CD_IRQ
+mdefine_line|#define MAINSTONE_S1_CD_IRQ&t;MAINSTONE_IRQ(13)
+DECL|macro|MAINSTONE_S1_STSCHG_IRQ
+mdefine_line|#define MAINSTONE_S1_STSCHG_IRQ&t;MAINSTONE_IRQ(14)
+DECL|macro|MAINSTONE_S1_IRQ
+mdefine_line|#define MAINSTONE_S1_IRQ&t;MAINSTONE_IRQ(15)
 eof
