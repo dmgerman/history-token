@@ -184,7 +184,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------*/
-multiline_comment|/**&n; * usb_submit_urb - asynchronously issue a transfer request for an endpoint&n; * @urb: pointer to the urb describing the request&n; * @mem_flags: the type of memory to allocate, see kmalloc() for a list&n; *&t;of valid options for this.&n; *&n; * This submits a transfer request, and transfers control of the URB&n; * describing that request to the USB subsystem.  Request completion will&n; * indicated later, asynchronously, by calling the completion handler.&n; * This call may be issued in interrupt context.&n; *&n; * The caller must have correctly initialized the URB before submitting&n; * it.  Functions such as usb_fill_bulk_urb() and usb_fill_control_urb() are&n; * available to ensure that most fields are correctly initialized, for&n; * the particular kind of transfer, although they will not initialize&n; * any transfer flags.&n; *&n; * Successful submissions return 0; otherwise this routine returns a&n; * negative error number.  If the submission is successful, the complete&n; * fuction of the urb will be called when the USB host driver is&n; * finished with the urb (either a successful transmission, or some&n; * error case.)&n; *&n; * Unreserved Bandwidth Transfers:&n; *&n; * Bulk or control requests complete only once.  When the completion&n; * function is called, control of the URB is returned to the device&n; * driver which issued the request.  The completion handler may then&n; * immediately free or reuse that URB.&n; *&n; * Bulk URBs will be queued if the USB_QUEUE_BULK transfer flag is set&n; * in the URB.  This can be used to maximize bandwidth utilization by&n; * letting the USB controller start work on the next URB without any&n; * delay to report completion (scheduling and processing an interrupt)&n; * and then submit that next request.&n; *&n; * For control endpoints, the synchronous usb_control_msg() call is&n; * often used (in non-interrupt context) instead of this call.&n; *&n; * Reserved Bandwidth Transfers:&n; *&n; * Periodic URBs (interrupt or isochronous) are completed repeatedly,&n; * until the original request is aborted.  When the completion callback&n; * indicates the URB has been unlinked (with a special status code),&n; * control of that URB returns to the device driver.  Otherwise, the&n; * completion handler does not control the URB, and should not change&n; * any of its fields.&n; *&n; * Note that isochronous URBs should be submitted in a &quot;ring&quot; data&n; * structure (using urb-&gt;next) to ensure that they are resubmitted&n; * appropriately.&n; *&n; * If the USB subsystem can&squot;t reserve sufficient bandwidth to perform&n; * the periodic request, and bandwidth reservation is being done for&n; * this controller, submitting such a periodic request will fail.&n; *&n; * Memory Flags:&n; *&n; * General rules for how to decide which mem_flags to use:&n; * &n; * Basically the rules are the same as for kmalloc.  There are four&n; * different possible values; GFP_KERNEL, GFP_NOFS, GFP_NOIO and&n; * GFP_ATOMIC.&n; *&n; * GFP_NOFS is not ever used, as it has not been implemented yet.&n; *&n; * There are three situations you must use GFP_ATOMIC.&n; *    a) you are inside a completion handler, an interrupt, bottom half,&n; *       tasklet or timer.&n; *    b) you are holding a spinlock or rwlock (does not apply to&n; *       semaphores)&n; *    c) current-&gt;state != TASK_RUNNING, this is the case only after&n; *       you&squot;ve changed it.&n; * &n; * GFP_NOIO is used in the block io path and error handling of storage&n; * devices.&n; *&n; * All other situations use GFP_KERNEL.&n; *&n; * Specfic rules for how to decide which mem_flags to use:&n; *&n; *    - start_xmit, timeout, and receive methods of network drivers must&n; *      use GFP_ATOMIC (spinlock)&n; *    - queuecommand methods of scsi drivers must use GFP_ATOMIC (spinlock)&n; *    - If you use a kernel thread with a network driver you must use&n; *      GFP_NOIO, unless b) or c) apply&n; *    - After you have done a down() you use GFP_KERNEL, unless b) or c)&n; *      apply or your are in a storage driver&squot;s block io path&n; *    - probe and disconnect use GFP_KERNEL unless b) or c) apply&n; *    - Changing firmware on a running storage or net device uses&n; *      GFP_NOIO, unless b) or c) apply&n; *&n; */
+multiline_comment|/**&n; * usb_submit_urb - asynchronously issue a transfer request for an endpoint&n; * @urb: pointer to the urb describing the request&n; * @mem_flags: the type of memory to allocate, see kmalloc() for a list&n; *&t;of valid options for this.&n; *&n; * This submits a transfer request, and transfers control of the URB&n; * describing that request to the USB subsystem.  Request completion will&n; * indicated later, asynchronously, by calling the completion handler.&n; * This call may be issued in interrupt context.&n; *&n; * The caller must have correctly initialized the URB before submitting&n; * it.  Functions such as usb_fill_bulk_urb() and usb_fill_control_urb() are&n; * available to ensure that most fields are correctly initialized, for&n; * the particular kind of transfer, although they will not initialize&n; * any transfer flags.&n; *&n; * Successful submissions return 0; otherwise this routine returns a&n; * negative error number.  If the submission is successful, the complete()&n; * fuction of the urb will be called when the USB host driver is&n; * finished with the urb (either a successful transmission, or some&n; * error case.)&n; *&n; * Unreserved Bandwidth Transfers:&n; *&n; * Bulk or control requests complete only once.  When the completion&n; * function is called, control of the URB is returned to the device&n; * driver which issued the request.  The completion handler may then&n; * immediately free or reuse that URB.&n; *&n; * Bulk URBs may be queued by submitting an URB to an endpoint before&n; * previous ones complete.  This can maximize bandwidth utilization by&n; * letting the USB controller start work on the next URB without any&n; * delay to report completion (scheduling and processing an interrupt)&n; * and then submit that next request.&n; *&n; * For control endpoints, the synchronous usb_control_msg() call is&n; * often used (in non-interrupt context) instead of this call.&n; *&n; * Reserved Bandwidth Transfers:&n; *&n; * Periodic URBs (interrupt or isochronous) are performed repeatedly.&n; *&n; * For interrupt requests this is (currently) automagically done&n; * until the original request is aborted.  When the completion callback&n; * indicates the URB has been unlinked (with a special status code),&n; * control of that URB returns to the device driver.  Otherwise, the&n; * completion handler does not control the URB, and should not change&n; * any of its fields.&n; *&n; * For isochronous requests, the completion handler is expected to&n; * submit an urb, typically resubmitting its parameter, until drivers&n; * stop wanting data transfers.  (For example, audio playback might have&n; * finished, or a webcam turned off.)&n; *&n; * If the USB subsystem can&squot;t reserve sufficient bandwidth to perform&n; * the periodic request, and bandwidth reservation is being done for&n; * this controller, submitting such a periodic request will fail.&n; *&n; * Memory Flags:&n; *&n; * General rules for how to decide which mem_flags to use:&n; * &n; * Basically the rules are the same as for kmalloc.  There are four&n; * different possible values; GFP_KERNEL, GFP_NOFS, GFP_NOIO and&n; * GFP_ATOMIC.&n; *&n; * GFP_NOFS is not ever used, as it has not been implemented yet.&n; *&n; * There are three situations you must use GFP_ATOMIC.&n; *    a) you are inside a completion handler, an interrupt, bottom half,&n; *       tasklet or timer.&n; *    b) you are holding a spinlock or rwlock (does not apply to&n; *       semaphores)&n; *    c) current-&gt;state != TASK_RUNNING, this is the case only after&n; *       you&squot;ve changed it.&n; * &n; * GFP_NOIO is used in the block io path and error handling of storage&n; * devices.&n; *&n; * All other situations use GFP_KERNEL.&n; *&n; * Specfic rules for how to decide which mem_flags to use:&n; *&n; *    - start_xmit, timeout, and receive methods of network drivers must&n; *      use GFP_ATOMIC (spinlock)&n; *    - queuecommand methods of scsi drivers must use GFP_ATOMIC (spinlock)&n; *    - If you use a kernel thread with a network driver you must use&n; *      GFP_NOIO, unless b) or c) apply&n; *    - After you have done a down() you use GFP_KERNEL, unless b) or c)&n; *      apply or your are in a storage driver&squot;s block io path&n; *    - probe and disconnect use GFP_KERNEL unless b) or c) apply&n; *    - Changing firmware on a running storage or net device uses&n; *      GFP_NOIO, unless b) or c) apply&n; *&n; */
 DECL|function|usb_submit_urb
 r_int
 id|usb_submit_urb
@@ -534,11 +534,6 @@ op_assign
 id|USB_ASYNC_UNLINK
 suffix:semicolon
 singleline_comment|// affects later unlinks
-id|allowed
-op_or_assign
-id|USB_NO_FSBR
-suffix:semicolon
-singleline_comment|// only affects UHCI
 r_switch
 c_cond
 (paren
@@ -546,35 +541,45 @@ id|temp
 )paren
 (brace
 r_case
-id|PIPE_CONTROL
-suffix:colon
-id|allowed
-op_or_assign
-id|USB_DISABLE_SPD
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
 id|PIPE_BULK
 suffix:colon
 id|allowed
 op_or_assign
-id|USB_DISABLE_SPD
-op_or
-id|USB_QUEUE_BULK
-op_or
-id|USB_ZERO_PACKET
-op_or
 id|URB_NO_INTERRUPT
 suffix:semicolon
-r_break
+r_if
+c_cond
+(paren
+id|is_out
+)paren
+id|allowed
+op_or_assign
+id|USB_ZERO_PACKET
 suffix:semicolon
+multiline_comment|/* FALLTHROUGH */
 r_case
-id|PIPE_INTERRUPT
+id|PIPE_CONTROL
 suffix:colon
 id|allowed
 op_or_assign
-id|USB_DISABLE_SPD
+id|USB_NO_FSBR
+suffix:semicolon
+multiline_comment|/* only affects UHCI */
+multiline_comment|/* FALLTHROUGH */
+r_default
+suffix:colon
+(brace
+)brace
+multiline_comment|/* all non-iso endpoints */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_out
+)paren
+id|allowed
+op_or_assign
+id|URB_SHORT_NOT_OK
 suffix:semicolon
 r_break
 suffix:semicolon

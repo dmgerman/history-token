@@ -3699,10 +3699,6 @@ id|PENCAM_TIMEOUT
 op_star
 l_int|2
 suffix:semicolon
-id|urb-&gt;transfer_flags
-op_or_assign
-id|USB_QUEUE_BULK
-suffix:semicolon
 id|stv680-&gt;urb
 (braket
 id|i

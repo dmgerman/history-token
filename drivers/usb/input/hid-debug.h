@@ -2447,6 +2447,13 @@ suffix:semicolon
 DECL|function|hid_dump_device
 r_static
 r_void
+id|__attribute__
+c_func
+(paren
+(paren
+id|unused
+)paren
+)paren
 id|hid_dump_device
 c_func
 (paren
@@ -2669,6 +2676,13 @@ suffix:semicolon
 DECL|function|hid_dump_input
 r_static
 r_void
+id|__attribute__
+c_func
+(paren
+(paren
+id|unused
+)paren
+)paren
 id|hid_dump_input
 c_func
 (paren

@@ -255,10 +255,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|warn
 c_func
 (paren
-l_string|&quot;usb_control/bulk_msg: timeout&bslash;n&quot;
+l_string|&quot;usb_control/bulk_msg: timeout&quot;
 )paren
 suffix:semicolon
 id|usb_unlink_urb

@@ -754,8 +754,6 @@ id|USB_IRDA_HEADER
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_QUEUE_BULK
-op_or
 id|USB_ASYNC_UNLINK
 suffix:semicolon
 id|urb-&gt;timeout
@@ -1216,8 +1214,6 @@ suffix:semicolon
 multiline_comment|/* Note : unlink *must* be Asynchronous because of the code in &n;&t; * irda_usb_net_timeout() -&gt; call in irq - Jean II */
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_QUEUE_BULK
-op_or
 id|USB_ASYNC_UNLINK
 suffix:semicolon
 multiline_comment|/* This flag (USB_ZERO_PACKET) indicates that what we send is not&n;&t; * a continuous stream of data but separate packets.&n;&t; * In this case, the USB layer will insert an empty USB frame (TD)&n;&t; * after each of our packets that is exact multiple of the frame size.&n;&t; * This is how the dongle will detect the end of packet - Jean II */
@@ -2188,10 +2184,6 @@ id|irda_usb_receive
 comma
 id|skb
 )paren
-suffix:semicolon
-id|urb-&gt;transfer_flags
-op_assign
-id|USB_QUEUE_BULK
 suffix:semicolon
 multiline_comment|/* Note : unlink *must* be synchronous because of the code in &n;&t; * irda_usb_net_close() -&gt; free the skb - Jean II */
 id|urb-&gt;status

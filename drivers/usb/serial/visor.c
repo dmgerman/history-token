@@ -1159,10 +1159,6 @@ comma
 id|port
 )paren
 suffix:semicolon
-id|urb-&gt;transfer_flags
-op_or_assign
-id|USB_QUEUE_BULK
-suffix:semicolon
 multiline_comment|/* send it down the pipe */
 id|status
 op_assign

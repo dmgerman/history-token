@@ -8,7 +8,7 @@ macro_line|#include &lt;asm/mach/pci.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 multiline_comment|/*&n; * The following macro is used to lookup irqs in a standard table&n; * format for those systems that do not already have PCI&n; * interrupts properly routed.  We assume 1 &lt;= pin &lt;= 4&n; */
 DECL|macro|PCI_IRQ_TABLE_LOOKUP
-mdefine_line|#define PCI_IRQ_TABLE_LOOKUP(minid,maxid)&t;&t;&t; &bslash;&n;({ int _ctl_ = -1;&t;&t;&t;&t;&t;&t; &bslash;&n;   if (idsel &gt;= minid &amp;&amp; idsel &lt;= maxid &amp;&amp; pin &gt;= 1 &amp;&amp; pin &lt;= 4) &bslash;&n;      _ctl_ = pci_irq_table[idsel - minid][pin-1];&t;&t; &bslash;&n;   _ctl_; })
+mdefine_line|#define PCI_IRQ_TABLE_LOOKUP(minid,maxid)&t;&bslash;&n;({ int _ctl_ = -1;&t;&t;&t;&t;&bslash;&n;   unsigned int _idsel = idsel - minid;&t;&t;&bslash;&n;   if (_idsel &lt;= maxid)&t;&t;&t;&t;&bslash;&n;      _ctl_ = pci_irq_table[_idsel][pin-1];&t;&bslash;&n;   _ctl_; })
 DECL|macro|INTA
 mdefine_line|#define INTA&t;IRQ_IQ80310_INTA
 DECL|macro|INTB
@@ -116,6 +116,14 @@ id|pin
 id|irq_table
 op_star
 id|pci_irq_table
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|pin
+template_param
+l_int|4
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -257,6 +265,14 @@ id|pin
 id|irq_table
 op_star
 id|pci_irq_table
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|pin
+template_param
+l_int|4
+)paren
 suffix:semicolon
 r_if
 c_cond

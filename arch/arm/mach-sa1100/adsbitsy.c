@@ -86,9 +86,11 @@ r_return
 id|ret
 suffix:semicolon
 multiline_comment|/*&n;&t; * Enable PWM control for LCD&n;&t; */
-id|SKPCR
-op_or_assign
+id|sa1111_enable_device
+c_func
+(paren
 id|SKPCR_PWMCLKEN
+)paren
 suffix:semicolon
 id|SKPWM0
 op_assign

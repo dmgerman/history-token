@@ -9413,7 +9413,6 @@ c_cond
 id|rq_data_dir
 c_func
 (paren
-op_amp
 id|cmd-&gt;request
 )paren
 op_eq
@@ -14608,7 +14607,6 @@ comma
 id|rq_data_dir
 c_func
 (paren
-op_amp
 id|cmd-&gt;request
 )paren
 op_eq

@@ -608,7 +608,7 @@ op_logical_and
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_DISABLE_SPD
+id|URB_SHORT_NOT_OK
 )paren
 )paren
 id|urb-&gt;status
@@ -739,7 +739,7 @@ op_logical_and
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_DISABLE_SPD
+id|URB_SHORT_NOT_OK
 )paren
 )paren
 id|urb-&gt;status
@@ -3105,7 +3105,7 @@ op_logical_neg
 (paren
 id|last_qtd-&gt;urb-&gt;transfer_flags
 op_amp
-id|USB_DISABLE_SPD
+id|URB_SHORT_NOT_OK
 )paren
 op_logical_and
 (paren
