@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: compr_zlib.c,v 1.23 2003/05/26 09:15:19 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: compr_zlib.c,v 1.24 2003/10/04 08:33:06 dwmw2 Exp $&n; *&n; */
 macro_line|#if !defined(__KERNEL__) &amp;&amp; !defined(__ECOS)
 macro_line|#error &quot;The userspace support got too messy and was removed. Update your mkfs.jffs2&quot;
 macro_line|#endif

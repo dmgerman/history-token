@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: super.c,v 1.79 2003/05/27 22:35:42 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: super.c,v 1.90 2003/10/11 11:47:23 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -13,8 +13,10 @@ macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
+r_static
 r_void
 id|jffs2_put_super
+c_func
 (paren
 r_struct
 id|super_block
@@ -209,6 +211,12 @@ dot
 id|clear_inode
 op_assign
 id|jffs2_clear_inode
+comma
+dot
+id|dirty_inode
+op_assign
+id|jffs2_dirty_inode
+comma
 )brace
 suffix:semicolon
 DECL|function|jffs2_sb_compare
@@ -548,16 +556,12 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|sb
-op_assign
+r_return
 id|ERR_PTR
 c_func
 (paren
 id|ret
 )paren
-suffix:semicolon
-r_goto
-id|out_put1
 suffix:semicolon
 )brace
 id|sb-&gt;s_flags
@@ -575,8 +579,6 @@ c_func
 id|c
 )paren
 suffix:semicolon
-id|out_put1
-suffix:colon
 id|put_mtd_device
 c_func
 (paren
@@ -1113,6 +1115,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|jffs2_put_super
+r_static
 r_void
 id|jffs2_put_super
 (paren
@@ -1167,12 +1170,10 @@ op_amp
 id|c-&gt;alloc_sem
 )paren
 suffix:semicolon
-id|jffs2_flush_wbuf
+id|jffs2_flush_wbuf_pad
 c_func
 (paren
 id|c
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|up
@@ -1200,15 +1201,10 @@ c_func
 id|c-&gt;blocks
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|c-&gt;wbuf
-)paren
-id|kfree
+id|jffs2_nand_flash_cleanup
 c_func
 (paren
-id|c-&gt;wbuf
+id|c
 )paren
 suffix:semicolon
 id|kfree
@@ -1330,7 +1326,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;JFFS2 version 2.1. (C) 2001, 2002 Red Hat, Inc.&bslash;n&quot;
+l_string|&quot;JFFS2 version 2.2.&quot;
+macro_line|#ifdef CONFIG_FS_JFFS2_NAND
+l_string|&quot; (NAND)&quot;
+macro_line|#endif
+l_string|&quot; (C) 2001-2003 Red Hat, Inc.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|jffs2_inode_cachep
