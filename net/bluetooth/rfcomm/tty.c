@@ -1031,6 +1031,8 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* ---- Device IOCTLs ---- */
+DECL|macro|NOCAP_FLAGS
+mdefine_line|#define NOCAP_FLAGS ((1 &lt;&lt; RFCOMM_REUSE_DLC) | (1 &lt;&lt; RFCOMM_RELEASE_ONHUP))
 DECL|function|rfcomm_create_dev
 r_static
 r_int
@@ -1100,6 +1102,24 @@ r_if
 c_cond
 (paren
 id|req.flags
+op_ne
+id|NOCAP_FLAGS
+op_logical_and
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_NET_ADMIN
+)paren
+)paren
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|req.flags
 op_amp
 (paren
 l_int|1
@@ -1108,6 +1128,18 @@ id|RFCOMM_REUSE_DLC
 )paren
 )paren
 (brace
+multiline_comment|/* Socket must be connected */
+r_if
+c_cond
+(paren
+id|sk-&gt;state
+op_ne
+id|BT_CONNECTED
+)paren
+r_return
+op_minus
+id|EBADFD
+suffix:semicolon
 id|dlc
 op_assign
 id|rfcomm_pi
@@ -1251,6 +1283,20 @@ id|req.dev_id
 comma
 id|req.flags
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_NET_ADMIN
+)paren
+)paren
+r_return
+op_minus
+id|EPERM
 suffix:semicolon
 r_if
 c_cond
