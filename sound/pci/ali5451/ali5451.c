@@ -224,7 +224,7 @@ id|SNDRV_ENABLED
 l_string|&quot;,default:32,allows:{{1,32}}&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *  Debug part definations&n; */
+multiline_comment|/*&n; *  Debug part definitions&n; */
 singleline_comment|//#define ALI_DEBUG
 macro_line|#ifdef ALI_DEBUG
 DECL|macro|snd_ali_printk
