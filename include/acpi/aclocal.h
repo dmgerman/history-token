@@ -580,6 +580,13 @@ id|acpi_gpe_block_info
 op_star
 id|next
 suffix:semicolon
+DECL|member|xrupt_block
+r_struct
+id|acpi_gpe_xrupt_info
+op_star
+id|xrupt_block
+suffix:semicolon
+multiline_comment|/* Backpointer to interrupt block */
 DECL|member|register_info
 r_struct
 id|acpi_gpe_register_info

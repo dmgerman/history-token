@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;evgpe&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_get_gpe_event_info&n; *&n; * PARAMETERS:  gpe_number          - Raw GPE number&n; *              owning_gpe_block    - Block ptr.  NULL for GPE0/GPE1&n; *&n; * RETURN:      A GPE event_info struct. NULL if not a valid GPE&n; *&n; * DESCRIPTION: Returns the event_info struct associated with this GPE.&n; *              Validates the gpe_block and the gpe_number&n; *&n; *              Should be called only when the GPE lists are semaphore locked&n; *              and not subject to change.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_get_gpe_event_info&n; *&n; * PARAMETERS:  gpe_device          - Device node.  NULL for GPE0/GPE1&n; *              gpe_number          - Raw GPE number&n; *&n; * RETURN:      A GPE event_info struct. NULL if not a valid GPE&n; *&n; * DESCRIPTION: Returns the event_info struct associated with this GPE.&n; *              Validates the gpe_block and the gpe_number&n; *&n; *              Should be called only when the GPE lists are semaphore locked&n; *              and not subject to change.&n; *&n; ******************************************************************************/
 r_struct
 id|acpi_gpe_event_info
 op_star
@@ -35,6 +35,11 @@ id|gpe_block
 suffix:semicolon
 id|acpi_native_uint
 id|i
+suffix:semicolon
+id|ACPI_FUNCTION_NAME
+(paren
+l_string|&quot;ev_get_gpe_event_info&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* A NULL gpe_block means use the FADT-defined GPE block(s) */
 r_if
@@ -189,7 +194,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_gpe_detect&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      INTERRUPT_HANDLED or INTERRUPT_NOT_HANDLED&n; *&n; * DESCRIPTION: Detect if any GP events have occurred.  This function is&n; *              executed at interrupt level.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_gpe_detect&n; *&n; * PARAMETERS:  gpe_xrupt_list      - Interrupt block for this interrupt.&n; *                                    Can have multiple GPE blocks attached.&n; *&n; * RETURN:      INTERRUPT_HANDLED or INTERRUPT_NOT_HANDLED&n; *&n; * DESCRIPTION: Detect if any GP events have occurred.  This function is&n; *              executed at interrupt level.&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_ev_gpe_detect
 id|acpi_ev_gpe_detect
@@ -489,7 +494,7 @@ id|int_status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_asynch_execute_gpe_method&n; *&n; * PARAMETERS:  gpe_event_info - Info for this GPE&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Perform the actual execution of a GPE control method.  This&n; *              function is called from an invocation of acpi_os_queue_for_execution&n; *              (and therefore does NOT execute at interrupt level) so that&n; *              the control method itself is not executed in the context of&n; *              an interrupt handler.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_asynch_execute_gpe_method&n; *&n; * PARAMETERS:  Context (gpe_event_info) - Info for this GPE&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Perform the actual execution of a GPE control method.  This&n; *              function is called from an invocation of acpi_os_queue_for_execution&n; *              (and therefore does NOT execute at interrupt level) so that&n; *              the control method itself is not executed in the context of&n; *              an interrupt handler.&n; *&n; ******************************************************************************/
 r_static
 r_void
 id|ACPI_SYSTEM_XFACE

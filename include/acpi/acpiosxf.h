@@ -41,35 +41,6 @@ id|argument
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Types specific to the OS service interfaces&n; */
-r_typedef
-id|u32
-DECL|typedef|OSD_HANDLER
-(paren
-id|ACPI_SYSTEM_XFACE
-op_star
-id|OSD_HANDLER
-)paren
-(paren
-r_void
-op_star
-id|context
-)paren
-suffix:semicolon
-r_typedef
-r_void
-DECL|typedef|OSD_EXECUTION_CALLBACK
-(paren
-id|ACPI_SYSTEM_XFACE
-op_star
-id|OSD_EXECUTION_CALLBACK
-)paren
-(paren
-r_void
-op_star
-id|context
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * OSL Initialization and shutdown primitives&n; */
 id|acpi_status
 id|acpi_os_initialize
@@ -205,10 +176,6 @@ id|u32
 id|flags
 )paren
 suffix:semicolon
-DECL|macro|ACPI_NOT_ISR
-mdefine_line|#define ACPI_NOT_ISR        1
-DECL|macro|ACPI_ISR
-mdefine_line|#define ACPI_ISR            0
 multiline_comment|/*&n; * Memory allocation and mapping&n; */
 r_void
 op_star

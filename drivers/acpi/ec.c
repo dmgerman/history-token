@@ -1390,7 +1390,7 @@ l_int|NULL
 comma
 id|ec-&gt;gpe_bit
 comma
-l_int|0
+id|ACPI_NOT_ISR
 )paren
 suffix:semicolon
 )brace
@@ -1436,7 +1436,7 @@ l_int|NULL
 comma
 id|ec-&gt;gpe_bit
 comma
-l_int|0
+id|ACPI_ISR
 )paren
 suffix:semicolon
 id|status

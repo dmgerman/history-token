@@ -39,15 +39,14 @@ l_string|&quot;ev_sci_xrupt_handler&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We are guaranteed by the ACPI CA initialization/shutdown code that&n;&t; * if this interrupt handler is installed, ACPI is enabled.&n;&t; */
-multiline_comment|/*&n;&t; * Fixed acpi_events:&n;&t; * Check for and dispatch any Fixed acpi_events that have occurred&n;&t; */
+multiline_comment|/*&n;&t; * Fixed Events:&n;&t; * Check for and dispatch any Fixed Events that have occurred&n;&t; */
 id|interrupt_handled
 op_or_assign
 id|acpi_ev_fixed_event_detect
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* TBD: What if there are no GPEs defined? */
-multiline_comment|/*&n;&t; * GPEs:&n;&t; * Check for and dispatch any GPEs that have occurred&n;&t; */
+multiline_comment|/*&n;&t; * General Purpose Events:&n;&t; * Check for and dispatch any GPEs that have occurred&n;&t; */
 id|interrupt_handled
 op_or_assign
 id|acpi_ev_gpe_detect
