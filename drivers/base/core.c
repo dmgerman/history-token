@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;base.h&quot;
+macro_line|#include &quot;power/power.h&quot;
 DECL|variable|platform_notify
 r_int
 (paren
@@ -793,6 +794,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|device_pm_add
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* notify platform of device entry */
 r_if
 c_cond
@@ -926,6 +933,12 @@ op_star
 id|parent
 op_assign
 id|dev-&gt;parent
+suffix:semicolon
+id|device_pm_remove
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|down_write
 c_func

@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_PM_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * Power management requests&n; */
 r_enum
 (brace
@@ -215,6 +216,7 @@ mdefine_line|#define PM_IS_ACTIVE() (pm_active != 0)
 multiline_comment|/*&n; * Register a device with power management&n; */
 r_struct
 id|pm_dev
+id|__deprecated
 op_star
 id|pm_register
 c_func
@@ -232,6 +234,7 @@ id|callback
 suffix:semicolon
 multiline_comment|/*&n; * Unregister a device with power management&n; */
 r_void
+id|__deprecated
 id|pm_unregister
 c_func
 (paren
@@ -243,6 +246,7 @@ id|dev
 suffix:semicolon
 multiline_comment|/*&n; * Unregister all devices with matching callback&n; */
 r_void
+id|__deprecated
 id|pm_unregister_all
 c_func
 (paren
@@ -252,6 +256,7 @@ id|callback
 suffix:semicolon
 multiline_comment|/*&n; * Send a request to a single device&n; */
 r_int
+id|__deprecated
 id|pm_send
 c_func
 (paren
@@ -270,6 +275,7 @@ id|data
 suffix:semicolon
 multiline_comment|/*&n; * Send a request to all devices&n; */
 r_int
+id|__deprecated
 id|pm_send_all
 c_func
 (paren
@@ -488,6 +494,91 @@ r_void
 op_star
 id|pm_power_off
 )paren
+(paren
+r_void
+)paren
+suffix:semicolon
+r_struct
+id|device
+suffix:semicolon
+DECL|struct|dev_pm_info
+r_struct
+id|dev_pm_info
+(brace
+macro_line|#ifdef&t;CONFIG_PM
+DECL|member|power_state
+id|u32
+id|power_state
+suffix:semicolon
+DECL|member|saved_state
+id|u8
+op_star
+id|saved_state
+suffix:semicolon
+DECL|member|pm_users
+id|atomic_t
+id|pm_users
+suffix:semicolon
+DECL|member|pm_parent
+r_struct
+id|device
+op_star
+id|pm_parent
+suffix:semicolon
+DECL|member|entry
+r_struct
+id|list_head
+id|entry
+suffix:semicolon
+macro_line|#endif
+)brace
+suffix:semicolon
+r_extern
+r_void
+id|device_pm_set_parent
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_struct
+id|device
+op_star
+id|parent
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|device_pm_suspend
+c_func
+(paren
+id|u32
+id|state
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|device_pm_power_down
+c_func
+(paren
+id|u32
+id|state
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|device_pm_power_up
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|device_pm_resume
+c_func
 (paren
 r_void
 )paren

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;base.h&quot;
+macro_line|#include &quot;power/power.h&quot;
 DECL|macro|to_dev
 mdefine_line|#define to_dev(node) container_of(node,struct device,bus_list)
 DECL|macro|to_drv
@@ -984,6 +985,9 @@ id|list_head
 op_star
 id|entry
 suffix:semicolon
+r_int
+id|error
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1026,10 +1030,8 @@ c_func
 id|entry
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
+id|error
+op_assign
 id|bus_match
 c_func
 (paren
@@ -1037,9 +1039,38 @@ id|dev
 comma
 id|drv
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error
 )paren
+multiline_comment|/* success, driver matched */
 r_return
 l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+op_ne
+op_minus
+id|ENODEV
+)paren
+multiline_comment|/* driver matched but the probe failed */
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: probe of %s failed with error %d&bslash;n&quot;
+comma
+id|drv-&gt;name
+comma
+id|dev-&gt;bus_id
+comma
+id|error
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -1047,7 +1078,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;driver_attach - try to bind driver to devices.&n; *&t;@drv:&t;driver.&n; *&n; *&t;Walk the list of devices that the bus has on it and try to match&n; *&t;the driver with each one.&n; *&t;If bus_match() returns 0 and the @dev-&gt;driver is set, we&squot;ve found&n; *&t;a compatible pair.&n; *&n; *&t;Note that we ignore the error from bus_match(), since it&squot;s perfectly&n; *&t;valid for a driver not to bind to any devices.&n; */
+multiline_comment|/**&n; *&t;driver_attach - try to bind driver to devices.&n; *&t;@drv:&t;driver.&n; *&n; *&t;Walk the list of devices that the bus has on it and try to match&n; *&t;the driver with each one.&n; *&t;If bus_match() returns 0 and the @dev-&gt;driver is set, we&squot;ve found&n; *&t;a compatible pair.&n; *&n; *&t;Note that we ignore the -ENODEV error from bus_match(), since it&squot;s &n; *&t;perfectly valid for a driver not to bind to any devices.&n; */
 DECL|function|driver_attach
 r_void
 id|driver_attach
@@ -1070,6 +1101,9 @@ r_struct
 id|list_head
 op_star
 id|entry
+suffix:semicolon
+r_int
+id|error
 suffix:semicolon
 r_if
 c_cond
@@ -1111,12 +1145,40 @@ op_logical_neg
 id|dev-&gt;driver
 )paren
 (brace
+id|error
+op_assign
 id|bus_match
 c_func
 (paren
 id|dev
 comma
 id|drv
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+op_logical_and
+(paren
+id|error
+op_ne
+op_minus
+id|ENODEV
+)paren
+)paren
+multiline_comment|/* driver matched but the probe failed */
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: probe of %s failed with error %d&bslash;n&quot;
+comma
+id|drv-&gt;name
+comma
+id|dev-&gt;bus_id
+comma
+id|error
 )paren
 suffix:semicolon
 )brace
@@ -1161,6 +1223,12 @@ c_func
 (paren
 op_amp
 id|dev-&gt;driver_list
+)paren
+suffix:semicolon
+id|device_detach_shutdown
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 r_if

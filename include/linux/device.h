@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|DEVICE_NAME_SIZE
@@ -46,32 +47,6 @@ id|RESUME_RESTORE_STATE
 comma
 DECL|enumerator|RESUME_ENABLE
 id|RESUME_ENABLE
-comma
-)brace
-suffix:semicolon
-DECL|enum|device_state
-r_enum
-id|device_state
-(brace
-DECL|enumerator|DEVICE_UNINITIALIZED
-id|DEVICE_UNINITIALIZED
-op_assign
-l_int|0
-comma
-DECL|enumerator|DEVICE_INITIALIZED
-id|DEVICE_INITIALIZED
-op_assign
-l_int|1
-comma
-DECL|enumerator|DEVICE_REGISTERED
-id|DEVICE_REGISTERED
-op_assign
-l_int|2
-comma
-DECL|enumerator|DEVICE_GONE
-id|DEVICE_GONE
-op_assign
-l_int|3
 comma
 )brace
 suffix:semicolon
@@ -790,6 +765,7 @@ r_struct
 r_class
 op_star
 comma
+r_const
 r_struct
 id|class_attribute
 op_star
@@ -804,6 +780,7 @@ r_struct
 r_class
 op_star
 comma
+r_const
 r_struct
 id|class_attribute
 op_star
@@ -1034,6 +1011,7 @@ r_struct
 id|class_device
 op_star
 comma
+r_const
 r_struct
 id|class_device_attribute
 op_star
@@ -1048,6 +1026,7 @@ r_struct
 id|class_device
 op_star
 comma
+r_const
 r_struct
 id|class_device_attribute
 op_star
@@ -1193,6 +1172,11 @@ op_star
 id|platform_data
 suffix:semicolon
 multiline_comment|/* Platform specific data (e.g. ACPI,&n;&t;&t;&t;&t;&t;   BIOS data relevant to device) */
+DECL|member|power
+r_struct
+id|dev_pm_info
+id|power
+suffix:semicolon
 DECL|member|power_state
 id|u32
 id|power_state
@@ -1205,6 +1189,11 @@ op_star
 id|saved_state
 suffix:semicolon
 multiline_comment|/* saved device state */
+DECL|member|detach_state
+id|u32
+id|detach_state
+suffix:semicolon
+multiline_comment|/* State to enter when device is&n;&t;&t;&t;&t;&t;   detached from its driver. */
 DECL|member|dma_mask
 id|u64
 op_star
