@@ -242,6 +242,9 @@ comma
 DECL|enumerator|FE2000VX
 id|FE2000VX
 comma
+DECL|enumerator|ALLIED8139
+id|ALLIED8139
+comma
 DECL|enumerator|RTL8129
 id|RTL8129
 comma
@@ -316,6 +319,12 @@ id|RTL8139_CAPS
 comma
 (brace
 l_string|&quot;AboCom FE2000VX (RealTek RTL8139)&quot;
+comma
+id|RTL8139_CAPS
+)brace
+comma
+(brace
+l_string|&quot;Allied Telesyn 8139 CardBus&quot;
 comma
 id|RTL8139_CAPS
 )brace
@@ -465,6 +474,22 @@ comma
 l_int|0
 comma
 id|FE2000VX
+)brace
+comma
+(brace
+l_int|0x1259
+comma
+l_int|0xa117
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|ALLIED8139
 )brace
 comma
 macro_line|#ifdef CONFIG_8139TOO_8129
