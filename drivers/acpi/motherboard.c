@@ -1,4 +1,5 @@
 multiline_comment|/* &n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
+multiline_comment|/* Purpose: Prevent PCMCIA cards from using motherboard resources. */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -21,6 +22,7 @@ mdefine_line|#define ACPI_MB_HID2&t;&t;&t;&quot;PNP0C02&quot;
 multiline_comment|/**&n; * Doesn&squot;t care about legacy IO ports, only IO ports beyond 0x1000 are reserved&n; * Doesn&squot;t care about the failure of &squot;request_region&squot;, since other may reserve &n; * the io ports as well&n; */
 DECL|macro|IS_RESERVED_ADDR
 mdefine_line|#define IS_RESERVED_ADDR(base, len) &bslash;&n;&t;(((len) &gt; 0) &amp;&amp; ((base) &gt; 0) &amp;&amp; ((base) + (len) &lt; IO_SPACE_LIMIT) &bslash;&n;&t;&amp;&amp; ((base) + (len) &gt; PCIBIOS_MIN_IO))
+multiline_comment|/*&n; * Clearing the flag (IORESOURCE_BUSY) allows drivers to use&n; * the io ports if they really know they can use it, while&n; * still preventing hotplug PCI devices from using it. &n; */
 r_static
 id|acpi_status
 DECL|function|acpi_reserve_io_ranges
@@ -36,6 +38,13 @@ op_star
 id|data
 )paren
 (brace
+r_struct
+id|resource
+op_star
+id|requested_res
+op_assign
+l_int|NULL
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
 (paren
@@ -96,6 +105,8 @@ id|io_res-&gt;range_length
 )paren
 )paren
 suffix:semicolon
+id|requested_res
+op_assign
 id|request_region
 c_func
 (paren
@@ -153,6 +164,8 @@ id|fixed_io_res-&gt;range_length
 )paren
 )paren
 suffix:semicolon
+id|requested_res
+op_assign
 id|request_region
 c_func
 (paren
@@ -169,6 +182,16 @@ r_else
 (brace
 multiline_comment|/* Memory mapped IO? */
 )brace
+r_if
+c_cond
+(paren
+id|requested_res
+)paren
+id|requested_res-&gt;flags
+op_and_assign
+op_complement
+id|IORESOURCE_BUSY
+suffix:semicolon
 r_return
 id|AE_OK
 suffix:semicolon
