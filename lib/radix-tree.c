@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 multiline_comment|/*&n; * Radix tree node definition.&n; */
 DECL|macro|RADIX_TREE_MAP_SHIFT
-mdefine_line|#define RADIX_TREE_MAP_SHIFT  7
+mdefine_line|#define RADIX_TREE_MAP_SHIFT  6
 DECL|macro|RADIX_TREE_MAP_SIZE
 mdefine_line|#define RADIX_TREE_MAP_SIZE  (1UL &lt;&lt; RADIX_TREE_MAP_SHIFT)
 DECL|macro|RADIX_TREE_MAP_MASK

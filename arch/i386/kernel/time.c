@@ -31,6 +31,10 @@ suffix:semicolon
 macro_line|#include &quot;do_timer.h&quot;
 multiline_comment|/*&n; * for x86_do_profile()&n; */
 macro_line|#include &lt;linux/irq.h&gt;
+DECL|variable|jiffies_64
+id|u64
+id|jiffies_64
+suffix:semicolon
 DECL|variable|cpu_khz
 r_int
 r_int

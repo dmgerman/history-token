@@ -37,7 +37,7 @@ l_int|0
 suffix:semicolon
 id|cpu
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 id|cpu
 op_increment
@@ -46,11 +46,7 @@ id|res
 op_add_assign
 id|proto-&gt;stats
 (braket
-id|cpu_logical_map
-c_func
-(paren
 id|cpu
-)paren
 )braket
 dot
 id|inuse
@@ -590,7 +586,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
@@ -602,11 +598,7 @@ id|ptr
 (braket
 l_int|2
 op_star
-id|cpu_logical_map
-c_func
-(paren
 id|i
-)paren
 op_star
 id|size
 )braket
@@ -618,11 +610,7 @@ id|ptr
 (paren
 l_int|2
 op_star
-id|cpu_logical_map
-c_func
-(paren
 id|i
-)paren
 op_plus
 l_int|1
 )paren

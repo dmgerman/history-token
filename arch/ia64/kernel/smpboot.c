@@ -110,13 +110,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* Total count of live CPUs */
-DECL|variable|smp_num_cpus
-r_int
-id|smp_num_cpus
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/* Bitmask of currently online CPUs */
 DECL|variable|cpu_online_map
 r_volatile
@@ -1572,10 +1565,6 @@ id|cpu_online_map
 op_assign
 l_int|1
 suffix:semicolon
-id|smp_num_cpus
-op_assign
-l_int|1
-suffix:semicolon
 r_goto
 id|smp_done
 suffix:semicolon
@@ -1701,12 +1690,6 @@ id|cpu
 )paren
 suffix:semicolon
 )brace
-id|smp_num_cpus
-op_assign
-id|cpucount
-op_plus
-l_int|1
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Allow the user to impress friends.&n;&t;&t; */
 id|printk
 c_func
@@ -1898,10 +1881,6 @@ suffix:semicolon
 id|max_cpus
 op_assign
 l_int|0
-suffix:semicolon
-id|smp_num_cpus
-op_assign
-l_int|1
 suffix:semicolon
 )brace
 )brace

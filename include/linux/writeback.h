@@ -127,6 +127,26 @@ id|inode
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * mm/page-writeback.c&n; */
+r_extern
+r_int
+id|dirty_background_ratio
+suffix:semicolon
+r_extern
+r_int
+id|dirty_async_ratio
+suffix:semicolon
+r_extern
+r_int
+id|dirty_sync_ratio
+suffix:semicolon
+r_extern
+r_int
+id|dirty_writeback_centisecs
+suffix:semicolon
+r_extern
+r_int
+id|dirty_expire_centisecs
+suffix:semicolon
 r_void
 id|balance_dirty_pages
 c_func

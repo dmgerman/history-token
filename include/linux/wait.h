@@ -19,6 +19,47 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+DECL|typedef|wait_queue_t
+r_typedef
+r_struct
+id|__wait_queue
+id|wait_queue_t
+suffix:semicolon
+DECL|typedef|wait_queue_func_t
+r_typedef
+r_int
+(paren
+op_star
+id|wait_queue_func_t
+)paren
+(paren
+id|wait_queue_t
+op_star
+id|wait
+comma
+r_int
+id|mode
+comma
+r_int
+id|sync
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|default_wake_function
+c_func
+(paren
+id|wait_queue_t
+op_star
+id|wait
+comma
+r_int
+id|mode
+comma
+r_int
+id|sync
+)paren
+suffix:semicolon
 DECL|struct|__wait_queue
 r_struct
 id|__wait_queue
@@ -36,18 +77,16 @@ id|task_struct
 op_star
 id|task
 suffix:semicolon
+DECL|member|func
+id|wait_queue_func_t
+id|func
+suffix:semicolon
 DECL|member|task_list
 r_struct
 id|list_head
 id|task_list
 suffix:semicolon
 )brace
-suffix:semicolon
-DECL|typedef|wait_queue_t
-r_typedef
-r_struct
-id|__wait_queue
-id|wait_queue_t
 suffix:semicolon
 DECL|struct|__wait_queue_head
 r_struct
@@ -72,11 +111,11 @@ id|wait_queue_head_t
 suffix:semicolon
 multiline_comment|/*&n; * Macros for declaration and initialisaton of the datatypes&n; */
 DECL|macro|__WAITQUEUE_INITIALIZER
-mdefine_line|#define __WAITQUEUE_INITIALIZER(name, tsk) {&t;&t;&t;&t;&bslash;&n;&t;task:&t;&t;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;task_list:&t;{ NULL, NULL } }
+mdefine_line|#define __WAITQUEUE_INITIALIZER(name, tsk) {&t;&t;&t;&t;&bslash;&n;&t;task:&t;&t;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;func:&t;&t;default_wake_function,&t;&t;&t;&t;&bslash;&n;&t;task_list:&t;{ NULL, NULL } }
 DECL|macro|DECLARE_WAITQUEUE
 mdefine_line|#define DECLARE_WAITQUEUE(name, tsk)&t;&t;&t;&t;&t;&bslash;&n;&t;wait_queue_t name = __WAITQUEUE_INITIALIZER(name, tsk)
 DECL|macro|__WAIT_QUEUE_HEAD_INITIALIZER
-mdefine_line|#define __WAIT_QUEUE_HEAD_INITIALIZER(name) {&t;&t;&t;&t;&bslash;&n;&t;lock:&t;&t;SPIN_LOCK_UNLOCKED,&t;&t;&t;&bslash;&n;&t;task_list:&t;{ &amp;(name).task_list, &amp;(name).task_list } }
+mdefine_line|#define __WAIT_QUEUE_HEAD_INITIALIZER(name) {&t;&t;&t;&t;&bslash;&n;&t;lock:&t;&t;SPIN_LOCK_UNLOCKED,&t;&t;&t;&t;&bslash;&n;&t;task_list:&t;{ &amp;(name).task_list, &amp;(name).task_list } }
 DECL|macro|DECLARE_WAIT_QUEUE_HEAD
 mdefine_line|#define DECLARE_WAIT_QUEUE_HEAD(name) &bslash;&n;&t;wait_queue_head_t name = __WAIT_QUEUE_HEAD_INITIALIZER(name)
 DECL|function|init_waitqueue_head
@@ -127,6 +166,38 @@ suffix:semicolon
 id|q-&gt;task
 op_assign
 id|p
+suffix:semicolon
+id|q-&gt;func
+op_assign
+id|default_wake_function
+suffix:semicolon
+)brace
+DECL|function|init_waitqueue_func_entry
+r_static
+r_inline
+r_void
+id|init_waitqueue_func_entry
+c_func
+(paren
+id|wait_queue_t
+op_star
+id|q
+comma
+id|wait_queue_func_t
+id|func
+)paren
+(brace
+id|q-&gt;flags
+op_assign
+l_int|0
+suffix:semicolon
+id|q-&gt;task
+op_assign
+l_int|NULL
+suffix:semicolon
+id|q-&gt;func
+op_assign
+id|func
 suffix:semicolon
 )brace
 DECL|function|waitqueue_active
@@ -234,6 +305,8 @@ id|old-&gt;task_list
 )paren
 suffix:semicolon
 )brace
+DECL|macro|add_wait_queue_cond
+mdefine_line|#define add_wait_queue_cond(q, wait, cond) &bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long flags;&t;&t;&t;&t;&bslash;&n;&t;&t;int _raced = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;spin_lock_irqsave(&amp;(q)-&gt;lock, flags);&t;&bslash;&n;&t;&t;(wait)-&gt;flags = 0;&t;&t;&t;&t;&bslash;&n;&t;&t;__add_wait_queue((q), (wait));&t;&t;&t;&bslash;&n;&t;&t;rmb();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!(cond)) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;_raced = 1;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__remove_wait_queue((q), (wait));&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;spin_lock_irqrestore(&amp;(q)-&gt;lock, flags);&t;&bslash;&n;&t;&t;_raced;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

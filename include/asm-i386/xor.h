@@ -87,21 +87,21 @@ l_string|&quot;       addl $128, %2         ;&bslash;n&quot;
 l_string|&quot;       decl %0               ;&bslash;n&quot;
 l_string|&quot;       jnz 1b                ;&bslash;n&quot;
 suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|lines
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p1
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p2
 )paren
+suffix:colon
 suffix:colon
 l_string|&quot;memory&quot;
 )paren
@@ -186,26 +186,26 @@ l_string|&quot;       addl $128, %3         ;&bslash;n&quot;
 l_string|&quot;       decl %0               ;&bslash;n&quot;
 l_string|&quot;       jnz 1b                ;&bslash;n&quot;
 suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|lines
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p1
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p2
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p3
 )paren
+suffix:colon
 suffix:colon
 l_string|&quot;memory&quot;
 )paren
@@ -296,31 +296,31 @@ l_string|&quot;       addl $128, %4         ;&bslash;n&quot;
 l_string|&quot;       decl %0               ;&bslash;n&quot;
 l_string|&quot;       jnz 1b                ;&bslash;n&quot;
 suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|lines
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p1
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p2
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p3
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p4
 )paren
+suffix:colon
 suffix:colon
 l_string|&quot;memory&quot;
 )paren
@@ -380,9 +380,12 @@ l_int|108
 suffix:semicolon
 id|FPU_SAVE
 suffix:semicolon
+multiline_comment|/* need to save/restore p4/p5 manually otherwise gcc&squot;s 10 argument&n;&t;   limit gets exceeded (+ counts as two arguments) */
 id|__asm__
 id|__volatile__
 (paren
+l_string|&quot;  pushl %4&bslash;n&quot;
+l_string|&quot;  pushl %5&bslash;n&quot;
 DECL|macro|BLOCK
 macro_line|#undef BLOCK
 DECL|macro|BLOCK
@@ -416,28 +419,29 @@ l_string|&quot;       addl $128, %4         ;&bslash;n&quot;
 l_string|&quot;       addl $128, %5         ;&bslash;n&quot;
 l_string|&quot;       decl %0               ;&bslash;n&quot;
 l_string|&quot;       jnz 1b                ;&bslash;n&quot;
+l_string|&quot;&t;popl %5&bslash;n&quot;
+l_string|&quot;&t;popl %4&bslash;n&quot;
 suffix:colon
-suffix:colon
-l_string|&quot;g&quot;
+l_string|&quot;+r&quot;
 (paren
 id|lines
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p1
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p2
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p3
 )paren
-comma
+suffix:colon
 l_string|&quot;r&quot;
 (paren
 id|p4
@@ -539,21 +543,21 @@ l_string|&quot;       addl $64, %2         ;&bslash;n&quot;
 l_string|&quot;       decl %0              ;&bslash;n&quot;
 l_string|&quot;       jnz 1b               ;&bslash;n&quot;
 suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|lines
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p1
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p2
 )paren
+suffix:colon
 suffix:colon
 l_string|&quot;memory&quot;
 )paren
@@ -646,26 +650,26 @@ l_string|&quot;       addl $64, %3         ;&bslash;n&quot;
 l_string|&quot;       decl %0              ;&bslash;n&quot;
 l_string|&quot;       jnz 1b               ;&bslash;n&quot;
 suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|lines
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p1
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p2
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p3
 )paren
+suffix:colon
 suffix:colon
 l_string|&quot;memory&quot;
 )paren
@@ -772,31 +776,31 @@ l_string|&quot;       addl $64, %4         ;&bslash;n&quot;
 l_string|&quot;       decl %0              ;&bslash;n&quot;
 l_string|&quot;       jnz 1b               ;&bslash;n&quot;
 suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|lines
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p1
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p2
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p3
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p4
 )paren
+suffix:colon
 suffix:colon
 l_string|&quot;memory&quot;
 )paren
@@ -856,9 +860,12 @@ l_int|108
 suffix:semicolon
 id|FPU_SAVE
 suffix:semicolon
+multiline_comment|/* need to save p4/p5 manually to not exceed gcc&squot;s 10 argument limit */
 id|__asm__
 id|__volatile__
 (paren
+l_string|&quot;&t;pushl %4&bslash;n&quot;
+l_string|&quot;&t;pushl %5&bslash;n&quot;
 l_string|&quot; .align 32,0x90             ;&bslash;n&quot;
 l_string|&quot; 1:                         ;&bslash;n&quot;
 l_string|&quot;       movq   (%1), %%mm0   ;&bslash;n&quot;
@@ -916,28 +923,29 @@ l_string|&quot;       addl $64, %4         ;&bslash;n&quot;
 l_string|&quot;       addl $64, %5         ;&bslash;n&quot;
 l_string|&quot;       decl %0              ;&bslash;n&quot;
 l_string|&quot;       jnz 1b               ;&bslash;n&quot;
+l_string|&quot;&t;popl %5&bslash;n&quot;
+l_string|&quot;&t;popl %4&bslash;n&quot;
 suffix:colon
-suffix:colon
-l_string|&quot;g&quot;
+l_string|&quot;+g&quot;
 (paren
 id|lines
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p1
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p2
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p3
 )paren
-comma
+suffix:colon
 l_string|&quot;r&quot;
 (paren
 id|p4
@@ -1021,6 +1029,8 @@ DECL|macro|XMMS_SAVE
 mdefine_line|#define XMMS_SAVE&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ ( &t;&t;&t;&bslash;&n;&t;&t;&quot;movl %%cr0,%0&t;&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;clts&t;&t;&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;movups %%xmm0,(%1)&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;movups %%xmm1,0x10(%1)&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;movups %%xmm2,0x20(%1)&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;movups %%xmm3,0x30(%1)&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (cr0)&t;&t;&t;&bslash;&n;&t;&t;: &quot;r&quot; (xmm_save) &t;&t;&bslash;&n;&t;&t;: &quot;memory&quot;)
 DECL|macro|XMMS_RESTORE
 mdefine_line|#define XMMS_RESTORE&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ ( &t;&t;&t;&bslash;&n;&t;&t;&quot;sfence&t;&t;&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;movups (%1),%%xmm0&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;movups 0x10(%1),%%xmm1&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;movups 0x20(%1),%%xmm2&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;movups 0x30(%1),%%xmm3&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;movl &t;%0,%%cr0&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;:&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;r&quot; (cr0), &quot;r&quot; (xmm_save)&t;&bslash;&n;&t;&t;: &quot;memory&quot;)
+DECL|macro|ALIGN16
+mdefine_line|#define ALIGN16 __attribute__((aligned(16)))
 DECL|macro|OFFS
 mdefine_line|#define OFFS(x)&t;&t;&quot;16*(&quot;#x&quot;)&quot;
 DECL|macro|PF_OFFS
@@ -1087,6 +1097,7 @@ l_int|16
 op_star
 l_int|4
 )braket
+id|ALIGN16
 suffix:semicolon
 r_int
 id|cr0
@@ -1137,21 +1148,21 @@ l_string|&quot;       addl $256, %2           ;&bslash;n&quot;
 l_string|&quot;       decl %0                 ;&bslash;n&quot;
 l_string|&quot;       jnz 1b                  ;&bslash;n&quot;
 suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|lines
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p1
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p2
 )paren
+suffix:colon
 suffix:colon
 l_string|&quot;memory&quot;
 )paren
@@ -1200,6 +1211,7 @@ l_int|16
 op_star
 l_int|4
 )braket
+id|ALIGN16
 suffix:semicolon
 r_int
 id|cr0
@@ -1251,26 +1263,26 @@ l_string|&quot;       addl $256, %3           ;&bslash;n&quot;
 l_string|&quot;       decl %0                 ;&bslash;n&quot;
 l_string|&quot;       jnz 1b                  ;&bslash;n&quot;
 suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|lines
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p1
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p2
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p3
 )paren
+suffix:colon
 suffix:colon
 l_string|&quot;memory&quot;
 )paren
@@ -1324,6 +1336,7 @@ l_int|16
 op_star
 l_int|4
 )braket
+id|ALIGN16
 suffix:semicolon
 r_int
 id|cr0
@@ -1376,31 +1389,31 @@ l_string|&quot;       addl $256, %4           ;&bslash;n&quot;
 l_string|&quot;       decl %0                 ;&bslash;n&quot;
 l_string|&quot;       jnz 1b                  ;&bslash;n&quot;
 suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|lines
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p1
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p2
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p3
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p4
 )paren
+suffix:colon
 suffix:colon
 l_string|&quot;memory&quot;
 )paren
@@ -1459,15 +1472,19 @@ l_int|16
 op_star
 l_int|4
 )braket
+id|ALIGN16
 suffix:semicolon
 r_int
 id|cr0
 suffix:semicolon
 id|XMMS_SAVE
 suffix:semicolon
+multiline_comment|/* need to save p4/p5 manually to not exceed gcc&squot;s 10 argument limit */
 id|__asm__
 id|__volatile__
 (paren
+l_string|&quot; pushl %4&bslash;n&quot;
+l_string|&quot; pushl %5&bslash;n&quot;
 DECL|macro|BLOCK
 macro_line|#undef BLOCK
 DECL|macro|BLOCK
@@ -1511,28 +1528,29 @@ l_string|&quot;       addl $256, %4           ;&bslash;n&quot;
 l_string|&quot;       addl $256, %5           ;&bslash;n&quot;
 l_string|&quot;       decl %0                 ;&bslash;n&quot;
 l_string|&quot;       jnz 1b                  ;&bslash;n&quot;
+l_string|&quot;&t;popl %5&bslash;n&quot;
+l_string|&quot;&t;popl %4&bslash;n&quot;
 suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|lines
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p1
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p2
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;+r&quot;
 (paren
 id|p3
 )paren
-comma
+suffix:colon
 l_string|&quot;r&quot;
 (paren
 id|p4

@@ -433,8 +433,8 @@ op_star
 )paren
 suffix:semicolon
 DECL|member|agp_alloc_page
-r_int
-r_int
+r_void
+op_star
 (paren
 op_star
 id|agp_alloc_page
@@ -450,8 +450,8 @@ op_star
 id|agp_destroy_page
 )paren
 (paren
-r_int
-r_int
+r_void
+op_star
 )paren
 suffix:semicolon
 DECL|member|suspend

@@ -6788,7 +6788,7 @@ l_int|0
 suffix:semicolon
 id|cpu
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 id|cpu
 op_increment
@@ -6797,11 +6797,7 @@ id|counter
 op_add_assign
 id|sockets_in_use
 (braket
-id|cpu_logical_map
-c_func
-(paren
 id|cpu
-)paren
 )braket
 dot
 id|counter

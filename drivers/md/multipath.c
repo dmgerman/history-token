@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/raid/multipath.h&gt;
+macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|MAJOR_NR
@@ -841,12 +842,9 @@ r_static
 r_int
 id|multipath_make_request
 (paren
-id|mddev_t
+id|request_queue_t
 op_star
-id|mddev
-comma
-r_int
-id|rw
+id|q
 comma
 r_struct
 id|bio
@@ -854,6 +852,12 @@ op_star
 id|bio
 )paren
 (brace
+id|mddev_t
+op_star
+id|mddev
+op_assign
+id|q-&gt;queuedata
+suffix:semicolon
 id|multipath_conf_t
 op_star
 id|conf
@@ -879,18 +883,6 @@ id|multipath_info
 op_star
 id|multipath
 suffix:semicolon
-multiline_comment|/*&n; * make_request() can abort the operation when READA is being&n; * used and no empty request is available.&n; *&n; * Currently, just replace the command with READ/WRITE.&n; */
-r_if
-c_cond
-(paren
-id|rw
-op_eq
-id|READA
-)paren
-id|rw
-op_assign
-id|READ
-suffix:semicolon
 id|mp_bh
 op_assign
 id|multipath_alloc_mpbh
@@ -908,7 +900,11 @@ id|mddev
 suffix:semicolon
 id|mp_bh-&gt;cmd
 op_assign
-id|rw
+id|bio_data_dir
+c_func
+(paren
+id|bio
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * read balancing logic:&n;&t; */
 id|multipath
@@ -937,7 +933,11 @@ id|multipath-&gt;bdev
 suffix:semicolon
 id|real_bio-&gt;bi_rw
 op_assign
-id|rw
+id|bio_data_dir
+c_func
+(paren
+id|bio
+)paren
 suffix:semicolon
 id|real_bio-&gt;bi_end_io
 op_assign
@@ -2608,10 +2608,6 @@ c_func
 id|KERN_INFO
 l_string|&quot;dirty sb detected, updating.&bslash;n&quot;
 )paren
-suffix:semicolon
-id|mddev-&gt;sb_dirty
-op_assign
-l_int|0
 suffix:semicolon
 id|md_update_sb
 c_func

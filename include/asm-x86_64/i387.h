@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
+macro_line|#include &lt;asm/thread_info.h&gt;
 r_extern
 r_void
 id|fpu_init
@@ -32,6 +33,49 @@ op_star
 id|buf
 )paren
 suffix:semicolon
+DECL|function|need_signal_i387
+r_static
+r_inline
+r_int
+id|need_signal_i387
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|me
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|me-&gt;used_math
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|me-&gt;used_math
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_thread_flag
+c_func
+(paren
+id|TIF_USEDFPU
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * FPU lazy state save handling...&n; */
 DECL|macro|kernel_fpu_end
 mdefine_line|#define kernel_fpu_end() stts()

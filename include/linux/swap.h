@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 DECL|macro|SWAP_FLAG_PREFER
 mdefine_line|#define SWAP_FLAG_PREFER&t;0x8000&t;/* set if swap priority specified */
@@ -106,6 +107,30 @@ DECL|typedef|swp_entry_t
 id|swp_entry_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+multiline_comment|/*&n; * A swap extent maps a range of a swapfile&squot;s PAGE_SIZE pages onto a range of&n; * disk blocks.  A list of swap extents maps the entire swapfile.  (Where the&n; * term `swapfile&squot; refers to either a blockdevice or an IS_REG file.  Apart&n; * from setup, they&squot;re handled identically.&n; *&n; * We always assume that blocks are of size PAGE_SIZE.&n; */
+DECL|struct|swap_extent
+r_struct
+id|swap_extent
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|start_page
+id|pgoff_t
+id|start_page
+suffix:semicolon
+DECL|member|nr_pages
+id|pgoff_t
+id|nr_pages
+suffix:semicolon
+DECL|member|start_block
+id|sector_t
+id|start_block
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Max bad pages in the new format..&n; */
 DECL|macro|__swapoffset
 mdefine_line|#define __swapoffset(x) ((unsigned long)&amp;((union swap_header *)0)-&gt;x)
@@ -151,7 +176,7 @@ DECL|macro|SWAP_MAP_MAX
 mdefine_line|#define SWAP_MAP_MAX&t;0x7fff
 DECL|macro|SWAP_MAP_BAD
 mdefine_line|#define SWAP_MAP_BAD&t;0x8000
-multiline_comment|/*&n; * The in-memory structure used to track swap areas.&n; */
+multiline_comment|/*&n; * The in-memory structure used to track swap areas.&n; * extent_list.prev points at the lowest-index extent.  That list is&n; * sorted.&n; */
 DECL|struct|swap_info_struct
 r_struct
 id|swap_info_struct
@@ -170,6 +195,27 @@ r_struct
 id|file
 op_star
 id|swap_file
+suffix:semicolon
+DECL|member|bdev
+r_struct
+id|block_device
+op_star
+id|bdev
+suffix:semicolon
+DECL|member|extent_list
+r_struct
+id|list_head
+id|extent_list
+suffix:semicolon
+DECL|member|nr_extents
+r_int
+id|nr_extents
+suffix:semicolon
+DECL|member|curr_swap_extent
+r_struct
+id|swap_extent
+op_star
+id|curr_swap_extent
 suffix:semicolon
 DECL|member|old_block_size
 r_int
@@ -385,29 +431,45 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* linux/mm/page_io.c */
-r_extern
-r_void
-id|rw_swap_page
+r_int
+id|swap_readpage
 c_func
 (paren
-r_int
+r_struct
+id|file
+op_star
+id|file
 comma
 r_struct
 id|page
 op_star
+id|page
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|rw_swap_page_nolock
+r_int
+id|swap_writepage
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
+r_int
+id|rw_swap_page_sync
 c_func
 (paren
 r_int
+id|rw
 comma
 id|swp_entry_t
+id|entry
 comma
-r_char
+r_struct
+id|page
 op_star
+id|page
 )paren
 suffix:semicolon
 multiline_comment|/* linux/mm/page_alloc.c */
@@ -568,38 +630,11 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|get_swaphandle_info
-c_func
-(paren
-id|swp_entry_t
-comma
-r_int
-r_int
-op_star
-comma
-r_struct
-id|inode
-op_star
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|swap_duplicate
 c_func
 (paren
 id|swp_entry_t
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|swap_count
-c_func
-(paren
-r_struct
-id|page
-op_star
 )paren
 suffix:semicolon
 r_extern
@@ -628,6 +663,29 @@ id|free_swap_and_cache
 c_func
 (paren
 id|swp_entry_t
+)paren
+suffix:semicolon
+id|sector_t
+id|map_swap_page
+c_func
+(paren
+r_struct
+id|swap_info_struct
+op_star
+id|p
+comma
+id|pgoff_t
+id|offset
+)paren
+suffix:semicolon
+r_struct
+id|swap_info_struct
+op_star
+id|get_swap_info_struct
+c_func
+(paren
+r_int
+id|type
 )paren
 suffix:semicolon
 DECL|struct|swap_list_t

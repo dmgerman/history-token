@@ -506,13 +506,6 @@ c_func
 id|kernel_flag
 )paren
 suffix:semicolon
-DECL|variable|smp_num_cpus
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|smp_num_cpus
-)paren
-suffix:semicolon
 DECL|variable|cpu_online_map
 id|EXPORT_SYMBOL
 c_func

@@ -9,7 +9,6 @@ id|event
 suffix:semicolon
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/capability.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -305,17 +304,6 @@ id|schedule
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|schedule_task
-c_func
-(paren
-r_struct
-id|tq_struct
-op_star
-id|task
 )paren
 suffix:semicolon
 r_extern

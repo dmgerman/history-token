@@ -162,7 +162,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
@@ -171,11 +171,7 @@ id|sum
 op_add_assign
 id|kstat.irqs
 (braket
-id|cpu_logical_map
-c_func
-(paren
 id|i
-)paren
 )braket
 (braket
 id|irq

@@ -11624,7 +11624,10 @@ l_int|0
 suffix:semicolon
 id|x
 OL
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 op_star
 (paren
 id|LOGO_W

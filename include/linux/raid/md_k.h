@@ -179,73 +179,6 @@ macro_line|#error MD doesnt handle bigger kdev yet
 macro_line|#endif
 DECL|macro|MAX_MD_DEVS
 mdefine_line|#define MAX_MD_DEVS  (1&lt;&lt;MINORBITS)&t;/* Max number of md dev */
-multiline_comment|/*&n; * Maps a kdev to an mddev/subdev. How &squot;data&squot; is handled is up to&n; * the personality. (eg. HSM uses this to identify individual LVs)&n; */
-DECL|struct|dev_mapping_s
-r_typedef
-r_struct
-id|dev_mapping_s
-(brace
-DECL|member|mddev
-id|mddev_t
-op_star
-id|mddev
-suffix:semicolon
-DECL|member|data
-r_void
-op_star
-id|data
-suffix:semicolon
-DECL|typedef|dev_mapping_t
-)brace
-id|dev_mapping_t
-suffix:semicolon
-r_extern
-id|dev_mapping_t
-id|mddev_map
-(braket
-id|MAX_MD_DEVS
-)braket
-suffix:semicolon
-DECL|function|kdev_to_mddev
-r_static
-r_inline
-id|mddev_t
-op_star
-id|kdev_to_mddev
-(paren
-id|kdev_t
-id|dev
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|major
-c_func
-(paren
-id|dev
-)paren
-op_ne
-id|MD_MAJOR
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|mddev_map
-(braket
-id|minor
-c_func
-(paren
-id|dev
-)paren
-)braket
-dot
-id|mddev
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * options passed in raidrun:&n; */
 DECL|macro|MAX_CHUNK_SIZE
 mdefine_line|#define MAX_CHUNK_SIZE (4096*1024)
@@ -655,10 +588,6 @@ id|mdp_super_t
 op_star
 id|sb
 suffix:semicolon
-DECL|member|nb_dev
-r_int
-id|nb_dev
-suffix:semicolon
 DECL|member|disks
 r_struct
 id|list_head
@@ -668,14 +597,17 @@ DECL|member|sb_dirty
 r_int
 id|sb_dirty
 suffix:semicolon
-DECL|member|param
-id|mdu_param_t
-id|param
-suffix:semicolon
 DECL|member|ro
 r_int
 id|ro
 suffix:semicolon
+DECL|member|sync_thread
+r_struct
+id|mdk_thread_s
+op_star
+id|sync_thread
+suffix:semicolon
+multiline_comment|/* doing resync or reconstruct */
 DECL|member|curr_resync
 r_int
 r_int
@@ -694,33 +626,29 @@ r_int
 id|resync_mark_cnt
 suffix:semicolon
 multiline_comment|/* blocks written at resync_mark */
-DECL|member|name
-r_char
-op_star
-id|name
-suffix:semicolon
+multiline_comment|/* recovery_running is 0 for no recovery/resync,&n;&t; * 1 for active recovery&n;&t; * 2 for active resync&n;&t; * -error for an error (e.g. -EINTR)&n;&t; * it can only be set &gt; 0 under reconfig_sem&n;&t; */
 DECL|member|recovery_running
 r_int
 id|recovery_running
 suffix:semicolon
+DECL|member|in_sync
+r_int
+id|in_sync
+suffix:semicolon
+multiline_comment|/* know to not need resync */
 DECL|member|reconfig_sem
 r_struct
 id|semaphore
 id|reconfig_sem
 suffix:semicolon
-DECL|member|recovery_sem
-r_struct
-id|semaphore
-id|recovery_sem
-suffix:semicolon
-DECL|member|resync_sem
-r_struct
-id|semaphore
-id|resync_sem
-suffix:semicolon
 DECL|member|active
 id|atomic_t
 id|active
+suffix:semicolon
+DECL|member|spare
+id|mdp_disk_t
+op_star
+id|spare
 suffix:semicolon
 DECL|member|recovery_active
 id|atomic_t
@@ -731,6 +659,11 @@ DECL|member|recovery_wait
 id|wait_queue_head_t
 id|recovery_wait
 suffix:semicolon
+DECL|member|queue
+id|request_queue_t
+id|queue
+suffix:semicolon
+multiline_comment|/* for plugging ... */
 DECL|member|all_mddevs
 r_struct
 id|list_head
@@ -754,12 +687,9 @@ op_star
 id|make_request
 )paren
 (paren
-id|mddev_t
+id|request_queue_t
 op_star
-id|mddev
-comma
-r_int
-id|rw
+id|q
 comma
 r_struct
 id|bio
@@ -841,30 +771,6 @@ id|descriptor
 comma
 r_int
 id|state
-)paren
-suffix:semicolon
-DECL|member|stop_resync
-r_int
-(paren
-op_star
-id|stop_resync
-)paren
-(paren
-id|mddev_t
-op_star
-id|mddev
-)paren
-suffix:semicolon
-DECL|member|restart_resync
-r_int
-(paren
-op_star
-id|restart_resync
-)paren
-(paren
-id|mddev_t
-op_star
-id|mddev
 )paren
 suffix:semicolon
 DECL|member|sync_request
@@ -974,57 +880,12 @@ mdefine_line|#define ITERATE_RDEV_GENERIC(head,field,rdev,tmp)&t;&t;&t;&bslash;&
 multiline_comment|/*&n; * iterates through the &squot;same array disks&squot; ringlist&n; */
 DECL|macro|ITERATE_RDEV
 mdefine_line|#define ITERATE_RDEV(mddev,rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;ITERATE_RDEV_GENERIC((mddev)-&gt;disks,same_set,rdev,tmp)
-multiline_comment|/*&n; * Same as above, but assumes that the device has rdev-&gt;desc_nr numbered&n; * from 0 to mddev-&gt;nb_dev, and iterates through rdevs in ascending order.&n; */
-DECL|macro|ITERATE_RDEV_ORDERED
-mdefine_line|#define ITERATE_RDEV_ORDERED(mddev,rdev,i)&t;&t;&t;&t;&bslash;&n;&t;for (i = 0; rdev = find_rdev_nr(mddev, i), i &lt; mddev-&gt;nb_dev; i++)
 multiline_comment|/*&n; * Iterates through all &squot;RAID managed disks&squot;&n; */
 DECL|macro|ITERATE_RDEV_ALL
 mdefine_line|#define ITERATE_RDEV_ALL(rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;ITERATE_RDEV_GENERIC(all_raid_disks,all,rdev,tmp)
 multiline_comment|/*&n; * Iterates through &squot;pending RAID disks&squot;&n; */
 DECL|macro|ITERATE_RDEV_PENDING
 mdefine_line|#define ITERATE_RDEV_PENDING(rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;ITERATE_RDEV_GENERIC(pending_raid_disks,pending,rdev,tmp)
-multiline_comment|/*&n; * iterates through all used mddevs in the system.&n; */
-DECL|macro|ITERATE_MDDEV
-mdefine_line|#define ITERATE_MDDEV(mddev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (tmp = all_mddevs.next;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;mddev = list_entry(tmp, mddev_t, all_mddevs),&t;&bslash;&n;&t;&t;&t;tmp = tmp-&gt;next, tmp-&gt;prev != &amp;all_mddevs&t;&bslash;&n;&t;&t;; )
-DECL|function|lock_mddev
-r_static
-r_inline
-r_int
-id|lock_mddev
-(paren
-id|mddev_t
-op_star
-id|mddev
-)paren
-(brace
-r_return
-id|down_interruptible
-c_func
-(paren
-op_amp
-id|mddev-&gt;reconfig_sem
-)paren
-suffix:semicolon
-)brace
-DECL|function|unlock_mddev
-r_static
-r_inline
-r_void
-id|unlock_mddev
-(paren
-id|mddev_t
-op_star
-id|mddev
-)paren
-(brace
-id|up
-c_func
-(paren
-op_amp
-id|mddev-&gt;reconfig_sem
-)paren
-suffix:semicolon
-)brace
 DECL|macro|xchg_values
 mdefine_line|#define xchg_values(x,y) do { __typeof__(x) __tmp = x; &bslash;&n;&t;&t;&t;&t;x = y; y = __tmp; } while (0)
 DECL|struct|mdk_thread_s

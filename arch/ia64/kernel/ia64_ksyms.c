@@ -337,14 +337,6 @@ c_func
 id|ia64_cpu_to_sapicid
 )paren
 suffix:semicolon
-macro_line|#include &lt;linux/smp.h&gt;
-DECL|variable|smp_num_cpus
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|smp_num_cpus
-)paren
-suffix:semicolon
 macro_line|#include &lt;asm/smplock.h&gt;
 DECL|variable|kernel_flag
 id|EXPORT_SYMBOL

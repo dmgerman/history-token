@@ -3,6 +3,7 @@ DECL|macro|__LINUX_HUB_H
 mdefine_line|#define __LINUX_HUB_H
 multiline_comment|/*&n; * Hub protocol and driver data structures.&n; *&n; * Some of these are known to the &quot;virtual root hub&quot; code&n; * in host controller drivers.&n; */
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;&t;/* likely()/unlikely() */
 multiline_comment|/*&n; * Hub request types&n; */
 DECL|macro|USB_RT_HUB

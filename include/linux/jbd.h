@@ -377,6 +377,13 @@ id|JBDDirty
 comma
 id|jbddirty
 )paren
+id|BUFFER_FNS
+c_func
+(paren
+id|Freed
+comma
+id|freed
+)paren
 DECL|function|jh2bh
 r_static
 r_inline

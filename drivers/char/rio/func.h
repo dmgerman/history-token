@@ -2,6 +2,7 @@ multiline_comment|/*&n;** ------------------------------------------------------
 macro_line|#ifndef __func_h_def
 DECL|macro|__func_h_def
 mdefine_line|#define __func_h_def
+macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#ifdef SCCS_LABELS
 macro_line|#ifndef lint
 DECL|variable|_func_h_sccs_

@@ -159,7 +159,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/xqm.h&gt;
+macro_line|#include &lt;linux/dqblk_xfs.h&gt;
 macro_line|#include &lt;linux/dqblk_v1.h&gt;
 macro_line|#include &lt;linux/dqblk_v2.h&gt;
 multiline_comment|/*&n; * Data for one user/group kept in memory&n; */

@@ -23,6 +23,10 @@ macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;asm/stackframe.h&gt;
 macro_line|#include &lt;asm/sysmips.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+DECL|variable|jiffies_64
+id|u64
+id|jiffies_64
+suffix:semicolon
 r_extern
 id|asmlinkage
 r_void

@@ -1,4 +1,4 @@
-multiline_comment|/*  x86-64 MTRR (Memory Type Range Register) driver.&n;&t;Based largely upon arch/i386/kernel/mtrr.c&n;&n;    Copyright (C) 1997-2000  Richard Gooch&n;&t;Copyright (C) 2002 Dave Jones.&n;&n;    This library is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU Library General Public&n;    License as published by the Free Software Foundation; either&n;    version 2 of the License, or (at your option) any later version.&n;&n;    This library is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;    Library General Public License for more details.&n;&n;    You should have received a copy of the GNU Library General Public&n;    License along with this library; if not, write to the Free&n;    Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;&t;(For earlier history, see arch/i386/kernel/mtrr.c)&n;&t;September 2001&t;Dave Jones &lt;davej@suse.de&gt;&n;&t;&t;Initial rewrite for x86-64.&n;&n;*/
+multiline_comment|/*  x86-64 MTRR (Memory Type Range Register) driver.&n;&t;Based largely upon arch/i386/kernel/mtrr.c&n;&n;    Copyright (C) 1997-2000  Richard Gooch&n;&t;Copyright (C) 2002 Dave Jones.&n;&n;    This library is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU Library General Public&n;    License as published by the Free Software Foundation; either&n;    version 2 of the License, or (at your option) any later version.&n;&n;    This library is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;    Library General Public License for more details.&n;&n;    You should have received a copy of the GNU Library General Public&n;    License along with this library; if not, write to the Free&n;    Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;&t;(For earlier history, see arch/i386/kernel/mtrr.c)&n;&t;v2.00&t;September 2001&t;Dave Jones &lt;davej@suse.de&gt;&n;&t;&t;Initial rewrite for x86-64.&n;&t;  Removal of non-Intel style MTRR code.&n;&t;v2.01  June 2002  Dave Jones &lt;davej@suse.de&gt;&n;&t;  Removal of redundant abstraction layer.&n;&t;  64-bit fixes.&n;*/
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -35,51 +35,23 @@ macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 DECL|macro|MTRR_VERSION
-mdefine_line|#define MTRR_VERSION            &quot;2.00 (20020207)&quot;
+mdefine_line|#define MTRR_VERSION &quot;2.01 (20020605)&quot;
 DECL|macro|TRUE
 mdefine_line|#define TRUE  1
 DECL|macro|FALSE
 mdefine_line|#define FALSE 0
-DECL|macro|MTRRcap_MSR
-mdefine_line|#define MTRRcap_MSR     0x0fe
-DECL|macro|MTRRdefType_MSR
-mdefine_line|#define MTRRdefType_MSR 0x2ff
-DECL|macro|MTRRphysBase_MSR
-mdefine_line|#define MTRRphysBase_MSR(reg) (0x200 + 2 * (reg))
-DECL|macro|MTRRphysMask_MSR
-mdefine_line|#define MTRRphysMask_MSR(reg) (0x200 + 2 * (reg) + 1)
+DECL|macro|MSR_MTRRphysBase
+mdefine_line|#define MSR_MTRRphysBase(reg) (0x200 + 2 * (reg))
+DECL|macro|MSR_MTRRphysMask
+mdefine_line|#define MSR_MTRRphysMask(reg) (0x200 + 2 * (reg) + 1)
 DECL|macro|NUM_FIXED_RANGES
 mdefine_line|#define NUM_FIXED_RANGES 88
-DECL|macro|MTRRfix64K_00000_MSR
-mdefine_line|#define MTRRfix64K_00000_MSR 0x250
-DECL|macro|MTRRfix16K_80000_MSR
-mdefine_line|#define MTRRfix16K_80000_MSR 0x258
-DECL|macro|MTRRfix16K_A0000_MSR
-mdefine_line|#define MTRRfix16K_A0000_MSR 0x259
-DECL|macro|MTRRfix4K_C0000_MSR
-mdefine_line|#define MTRRfix4K_C0000_MSR 0x268
-DECL|macro|MTRRfix4K_C8000_MSR
-mdefine_line|#define MTRRfix4K_C8000_MSR 0x269
-DECL|macro|MTRRfix4K_D0000_MSR
-mdefine_line|#define MTRRfix4K_D0000_MSR 0x26a
-DECL|macro|MTRRfix4K_D8000_MSR
-mdefine_line|#define MTRRfix4K_D8000_MSR 0x26b
-DECL|macro|MTRRfix4K_E0000_MSR
-mdefine_line|#define MTRRfix4K_E0000_MSR 0x26c
-DECL|macro|MTRRfix4K_E8000_MSR
-mdefine_line|#define MTRRfix4K_E8000_MSR 0x26d
-DECL|macro|MTRRfix4K_F0000_MSR
-mdefine_line|#define MTRRfix4K_F0000_MSR 0x26e
-DECL|macro|MTRRfix4K_F8000_MSR
-mdefine_line|#define MTRRfix4K_F8000_MSR 0x26f
-macro_line|#ifdef CONFIG_SMP
 DECL|macro|MTRR_CHANGE_MASK_FIXED
 mdefine_line|#define MTRR_CHANGE_MASK_FIXED     0x01
 DECL|macro|MTRR_CHANGE_MASK_VARIABLE
 mdefine_line|#define MTRR_CHANGE_MASK_VARIABLE  0x02
 DECL|macro|MTRR_CHANGE_MASK_DEFTYPE
 mdefine_line|#define MTRR_CHANGE_MASK_DEFTYPE   0x04
-macro_line|#endif
 DECL|typedef|mtrr_type
 r_typedef
 id|u8
@@ -92,15 +64,11 @@ DECL|macro|set_mtrr
 mdefine_line|#define set_mtrr(reg,base,size,type) set_mtrr_smp (reg, base, size, type)
 macro_line|#else
 DECL|macro|set_mtrr
-mdefine_line|#define set_mtrr(reg,base,size,type) (*set_mtrr_up) (reg, base, size, type, &bslash;&n;&t;&t;&t;&t;&t;&t;       TRUE)
+mdefine_line|#define set_mtrr(reg,base,size,type) set_mtrr_up (reg, base, size, type, TRUE)
 macro_line|#endif
 macro_line|#if defined(CONFIG_PROC_FS) || defined(CONFIG_DEVFS_FS)
 DECL|macro|USERSPACE_INTERFACE
 mdefine_line|#define USERSPACE_INTERFACE
-macro_line|#endif
-macro_line|#ifndef USERSPACE_INTERFACE
-DECL|macro|compute_ascii
-mdefine_line|#define compute_ascii() while (0)
 macro_line|#endif
 macro_line|#ifdef USERSPACE_INTERFACE
 DECL|variable|ascii_buffer
@@ -115,6 +83,16 @@ r_int
 r_int
 id|ascii_buf_bytes
 suffix:semicolon
+r_static
+r_void
+id|compute_ascii
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|compute_ascii
+mdefine_line|#define compute_ascii() while (0)
 macro_line|#endif
 DECL|variable|usage_table
 r_static
@@ -126,41 +104,27 @@ suffix:semicolon
 r_static
 id|DECLARE_MUTEX
 (paren
-id|main_lock
+id|mtrr_lock
 )paren
 suffix:semicolon
-multiline_comment|/*  Private functions  */
-macro_line|#ifdef USERSPACE_INTERFACE
-r_static
-r_void
-id|compute_ascii
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|struct|set_mtrr_context
 r_struct
 id|set_mtrr_context
 (brace
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
 DECL|member|deftype_lo
-r_int
-r_int
+id|u32
 id|deftype_lo
 suffix:semicolon
 DECL|member|deftype_hi
-r_int
-r_int
+id|u32
 id|deftype_hi
 suffix:semicolon
+DECL|member|flags
+id|u64
+id|flags
+suffix:semicolon
 DECL|member|cr4val
-r_int
-r_int
+id|u64
 id|cr4val
 suffix:semicolon
 )brace
@@ -177,8 +141,7 @@ op_star
 id|ctxt
 )paren
 (brace
-r_int
-r_int
+id|u64
 id|cr0
 suffix:semicolon
 multiline_comment|/* Disable interrupts locally */
@@ -197,7 +160,7 @@ multiline_comment|/*  Save value of CR4 and clear Page Global Enable (bit 7)  */
 r_if
 c_cond
 (paren
-id|cpu_has_ge
+id|cpu_has_pge
 )paren
 (brace
 id|ctxt-&gt;cr4val
@@ -251,7 +214,7 @@ multiline_comment|/*  Disable MTRRs, and set the default type to uncached  */
 id|rdmsr
 c_func
 (paren
-id|MTRRdefType_MSR
+id|MSR_MTRRdefType
 comma
 id|ctxt-&gt;deftype_lo
 comma
@@ -261,7 +224,7 @@ suffix:semicolon
 id|wrmsr
 c_func
 (paren
-id|MTRRdefType_MSR
+id|MSR_MTRRdefType
 comma
 id|ctxt-&gt;deftype_lo
 op_amp
@@ -293,7 +256,7 @@ multiline_comment|/*  Restore MTRRdefType  */
 id|wrmsr
 c_func
 (paren
-id|MTRRdefType_MSR
+id|MSR_MTRRdefType
 comma
 id|ctxt-&gt;deftype_lo
 comma
@@ -341,15 +304,14 @@ id|get_num_var_ranges
 r_void
 )paren
 (brace
-r_int
-r_int
+id|u32
 id|config
 comma
 id|dummy
 suffix:semicolon
 id|rdmsr
 (paren
-id|MTRRcap_MSR
+id|MSR_MTRRcap
 comma
 id|config
 comma
@@ -373,15 +335,14 @@ id|have_wrcomb
 r_void
 )paren
 (brace
-r_int
-r_int
+id|u32
 id|config
 comma
 id|dummy
 suffix:semicolon
 id|rdmsr
 (paren
-id|MTRRcap_MSR
+id|MSR_MTRRcap
 comma
 id|config
 comma
@@ -403,7 +364,7 @@ suffix:semicolon
 DECL|variable|size_or_mask
 DECL|variable|size_and_mask
 r_static
-id|u32
+id|u64
 id|size_or_mask
 comma
 id|size_and_mask
@@ -417,13 +378,11 @@ r_int
 r_int
 id|reg
 comma
-r_int
-r_int
+id|u64
 op_star
 id|base
 comma
-r_int
-r_int
+id|u32
 op_star
 id|size
 comma
@@ -432,8 +391,7 @@ op_star
 id|type
 )paren
 (brace
-r_int
-r_int
+id|u32
 id|mask_lo
 comma
 id|mask_hi
@@ -442,9 +400,13 @@ id|base_lo
 comma
 id|base_hi
 suffix:semicolon
+id|u64
+id|newsize
+suffix:semicolon
 id|rdmsr
 (paren
-id|MTRRphysMask_MSR
+id|MSR_MTRRphysMask
+c_func
 (paren
 id|reg
 )paren
@@ -487,7 +449,8 @@ suffix:semicolon
 )brace
 id|rdmsr
 (paren
-id|MTRRphysBase_MSR
+id|MSR_MTRRphysBase
+c_func
 (paren
 id|reg
 )paren
@@ -498,28 +461,38 @@ id|base_hi
 )paren
 suffix:semicolon
 multiline_comment|/* Work out the shifted address mask. */
-id|mask_lo
+id|newsize
 op_assign
-id|size_or_mask
-op_or
+(paren
+id|u64
+)paren
 id|mask_hi
 op_lshift
-(paren
 l_int|32
-op_minus
-id|PAGE_SHIFT
-)paren
 op_or
+(paren
 id|mask_lo
-op_rshift
-id|PAGE_SHIFT
+op_amp
+op_complement
+l_int|0x800
+)paren
 suffix:semicolon
-multiline_comment|/* This works correctly if size is a power of two, i.e. a&n;       contiguous range. */
+id|newsize
+op_assign
+op_complement
+id|newsize
+op_plus
+l_int|1
+suffix:semicolon
 op_star
 id|size
 op_assign
-op_minus
-id|mask_lo
+(paren
+id|u32
+)paren
+id|newsize
+op_rshift
+id|PAGE_SHIFT
 suffix:semicolon
 op_star
 id|base
@@ -544,6 +517,7 @@ op_amp
 l_int|0xff
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Set variable MTRR register on the local CPU.&n; *  &lt;reg&gt; The register to set.&n; *  &lt;base&gt; The base address of the region.&n; *  &lt;size&gt; The size of the region. If this is 0 the region is disabled.&n; *  &lt;type&gt; The type of the region.&n; *  &lt;do_safe&gt; If TRUE, do the change safely. If FALSE, safety measures should&n; *  be done externally.&n; */
 DECL|function|set_mtrr_up
 r_static
 r_void
@@ -553,12 +527,10 @@ r_int
 r_int
 id|reg
 comma
-r_int
-r_int
+id|u64
 id|base
 comma
-r_int
-r_int
+id|u32
 id|size
 comma
 id|mtrr_type
@@ -567,7 +539,6 @@ comma
 r_int
 id|do_safe
 )paren
-multiline_comment|/*  [SUMMARY] Set variable MTRR register on the local CPU.&n;    &lt;reg&gt; The register to set.&n;    &lt;base&gt; The base address of the region.&n;    &lt;size&gt; The size of the region. If this is 0 the region is disabled.&n;    &lt;type&gt; The type of the region.&n;    &lt;do_safe&gt; If TRUE, do the change safely. If FALSE, safety measures should&n;    be done externally.&n;    [RETURNS] Nothing.&n;*/
 (brace
 r_struct
 id|set_mtrr_context
@@ -595,7 +566,8 @@ l_int|0
 multiline_comment|/* The invalid bit is kept in the mask, so we simply clear the&n;&t;   relevant mask register to disable a range. */
 id|wrmsr
 (paren
-id|MTRRphysMask_MSR
+id|MSR_MTRRphysMask
+c_func
 (paren
 id|reg
 )paren
@@ -610,7 +582,8 @@ r_else
 (brace
 id|wrmsr
 (paren
-id|MTRRphysBase_MSR
+id|MSR_MTRRphysBase
+c_func
 (paren
 id|reg
 )paren
@@ -636,21 +609,30 @@ id|PAGE_SHIFT
 suffix:semicolon
 id|wrmsr
 (paren
-id|MTRRphysMask_MSR
+id|MSR_MTRRphysMask
+c_func
 (paren
 id|reg
 )paren
 comma
+(paren
 op_minus
 id|size
+op_minus
+l_int|1
+)paren
 op_lshift
 id|PAGE_SHIFT
 op_or
 l_int|0x800
 comma
 (paren
+(paren
 op_minus
 id|size
+op_minus
+l_int|1
+)paren
 op_amp
 id|size_and_mask
 )paren
@@ -681,23 +663,19 @@ r_struct
 id|mtrr_var_range
 (brace
 DECL|member|base_lo
-r_int
-r_int
+id|u32
 id|base_lo
 suffix:semicolon
 DECL|member|base_hi
-r_int
-r_int
+id|u32
 id|base_hi
 suffix:semicolon
 DECL|member|mask_lo
-r_int
-r_int
+id|u32
 id|mask_lo
 suffix:semicolon
 DECL|member|mask_hi
-r_int
-r_int
+id|u32
 id|mask_hi
 suffix:semicolon
 )brace
@@ -721,7 +699,8 @@ id|vr
 (brace
 id|rdmsr
 (paren
-id|MTRRphysBase_MSR
+id|MSR_MTRRphysBase
+c_func
 (paren
 id|index
 )paren
@@ -733,7 +712,8 @@ id|vr-&gt;base_hi
 suffix:semicolon
 id|rdmsr
 (paren
-id|MTRRphysMask_MSR
+id|MSR_MTRRphysMask
+c_func
 (paren
 id|index
 )paren
@@ -745,10 +725,10 @@ id|vr-&gt;mask_hi
 suffix:semicolon
 )brace
 multiline_comment|/*  Set the MSR pair relating to a var range. Returns TRUE if&n;    changes are made  */
+DECL|function|set_mtrr_var_range_testing
 r_static
 r_int
 id|__init
-DECL|function|set_mtrr_var_range_testing
 id|set_mtrr_var_range_testing
 (paren
 r_int
@@ -761,8 +741,7 @@ op_star
 id|vr
 )paren
 (brace
-r_int
-r_int
+id|u32
 id|lo
 comma
 id|hi
@@ -774,7 +753,8 @@ id|FALSE
 suffix:semicolon
 id|rdmsr
 (paren
-id|MTRRphysBase_MSR
+id|MSR_MTRRphysBase
+c_func
 (paren
 id|index
 )paren
@@ -790,31 +770,32 @@ c_cond
 (paren
 id|vr-&gt;base_lo
 op_amp
-l_int|0xfffff0ffUL
+l_int|0xfffff0ff
 )paren
 op_ne
 (paren
 id|lo
 op_amp
-l_int|0xfffff0ffUL
+l_int|0xfffff0ff
 )paren
 op_logical_or
 (paren
 id|vr-&gt;base_hi
 op_amp
-l_int|0xfUL
+l_int|0x000fffff
 )paren
 op_ne
 (paren
 id|hi
 op_amp
-l_int|0xfUL
+l_int|0x000fffff
 )paren
 )paren
 (brace
 id|wrmsr
 (paren
-id|MTRRphysBase_MSR
+id|MSR_MTRRphysBase
+c_func
 (paren
 id|index
 )paren
@@ -831,7 +812,8 @@ suffix:semicolon
 )brace
 id|rdmsr
 (paren
-id|MTRRphysMask_MSR
+id|MSR_MTRRphysMask
+c_func
 (paren
 id|index
 )paren
@@ -847,31 +829,32 @@ c_cond
 (paren
 id|vr-&gt;mask_lo
 op_amp
-l_int|0xfffff800UL
+l_int|0xfffff800
 )paren
 op_ne
 (paren
 id|lo
 op_amp
-l_int|0xfffff800UL
+l_int|0xfffff800
 )paren
 op_logical_or
 (paren
 id|vr-&gt;mask_hi
 op_amp
-l_int|0xfUL
+l_int|0x000fffff
 )paren
 op_ne
 (paren
 id|hi
 op_amp
-l_int|0xfUL
+l_int|0x000fffff
 )paren
 )paren
 (brace
 id|wrmsr
 (paren
-id|MTRRphysMask_MSR
+id|MSR_MTRRphysMask
+c_func
 (paren
 id|index
 )paren
@@ -901,14 +884,12 @@ op_star
 id|frs
 )paren
 (brace
-r_int
-r_int
+id|u32
 op_star
 id|p
 op_assign
 (paren
-r_int
-r_int
+id|u32
 op_star
 )paren
 id|frs
@@ -918,7 +899,7 @@ id|i
 suffix:semicolon
 id|rdmsr
 (paren
-id|MTRRfix64K_00000_MSR
+id|MSR_MTRRfix64K_00000
 comma
 id|p
 (braket
@@ -947,7 +928,7 @@ op_increment
 )paren
 id|rdmsr
 (paren
-id|MTRRfix16K_80000_MSR
+id|MSR_MTRRfix16K_80000
 op_plus
 id|i
 comma
@@ -986,7 +967,7 @@ op_increment
 )paren
 id|rdmsr
 (paren
-id|MTRRfix4K_C0000_MSR
+id|MSR_MTRRfix4K_C0000
 op_plus
 id|i
 comma
@@ -1021,14 +1002,12 @@ op_star
 id|frs
 )paren
 (brace
-r_int
-r_int
+id|u32
 op_star
 id|p
 op_assign
 (paren
-r_int
-r_int
+id|u32
 op_star
 )paren
 id|frs
@@ -1041,15 +1020,20 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_int
-r_int
+id|u32
 id|lo
 comma
 id|hi
 suffix:semicolon
+id|printk
+(paren
+id|KERN_INFO
+l_string|&quot;mtrr: rdmsr 64K_00000&bslash;n&quot;
+)paren
+suffix:semicolon
 id|rdmsr
 (paren
-id|MTRRfix64K_00000_MSR
+id|MSR_MTRRfix64K_00000
 comma
 id|lo
 comma
@@ -1074,9 +1058,29 @@ op_ne
 id|hi
 )paren
 (brace
+id|printk
+(paren
+id|KERN_INFO
+l_string|&quot;mtrr: Writing %x:%x to 64K MSR. lohi were %x:%x&bslash;n&quot;
+comma
+id|p
+(braket
+l_int|0
+)braket
+comma
+id|p
+(braket
+l_int|1
+)braket
+comma
+id|lo
+comma
+id|hi
+)paren
+suffix:semicolon
 id|wrmsr
 (paren
-id|MTRRfix64K_00000_MSR
+id|MSR_MTRRfix64K_00000
 comma
 id|p
 (braket
@@ -1094,6 +1098,12 @@ op_assign
 id|TRUE
 suffix:semicolon
 )brace
+id|printk
+(paren
+id|KERN_INFO
+l_string|&quot;mtrr: rdmsr 16K_80000&bslash;n&quot;
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1111,7 +1121,7 @@ op_increment
 (brace
 id|rdmsr
 (paren
-id|MTRRfix16K_80000_MSR
+id|MSR_MTRRfix16K_80000
 op_plus
 id|i
 comma
@@ -1146,9 +1156,39 @@ op_ne
 id|hi
 )paren
 (brace
+id|printk
+(paren
+id|KERN_INFO
+l_string|&quot;mtrr: Writing %x:%x to 16K MSR%d. lohi were %x:%x&bslash;n&quot;
+comma
+id|p
+(braket
+l_int|2
+op_plus
+id|i
+op_star
+l_int|2
+)braket
+comma
+id|p
+(braket
+l_int|3
+op_plus
+id|i
+op_star
+l_int|2
+)braket
+comma
+id|i
+comma
+id|lo
+comma
+id|hi
+)paren
+suffix:semicolon
 id|wrmsr
 (paren
-id|MTRRfix16K_80000_MSR
+id|MSR_MTRRfix16K_80000
 op_plus
 id|i
 comma
@@ -1177,6 +1217,12 @@ id|TRUE
 suffix:semicolon
 )brace
 )brace
+id|printk
+(paren
+id|KERN_INFO
+l_string|&quot;mtrr: rdmsr 4K_C0000&bslash;n&quot;
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1194,8 +1240,20 @@ op_increment
 (brace
 id|rdmsr
 (paren
-id|MTRRfix4K_C0000_MSR
+id|MSR_MTRRfix4K_C0000
 op_plus
+id|i
+comma
+id|lo
+comma
+id|hi
+)paren
+suffix:semicolon
+id|printk
+(paren
+id|KERN_INFO
+l_string|&quot;mtrr: MTRRfix4K_C0000+%d = %x:%x&bslash;n&quot;
+comma
 id|i
 comma
 id|lo
@@ -1229,9 +1287,39 @@ op_ne
 id|hi
 )paren
 (brace
+id|printk
+(paren
+id|KERN_INFO
+l_string|&quot;mtrr: Writing %x:%x to 4K MSR%d. lohi were %x:%x&bslash;n&quot;
+comma
+id|p
+(braket
+l_int|6
+op_plus
+id|i
+op_star
+l_int|2
+)braket
+comma
+id|p
+(braket
+l_int|7
+op_plus
+id|i
+op_star
+l_int|2
+)braket
+comma
+id|i
+comma
+id|lo
+comma
+id|hi
+)paren
+suffix:semicolon
 id|wrmsr
 (paren
-id|MTRRfix4K_C0000_MSR
+id|MSR_MTRRfix4K_C0000
 op_plus
 id|i
 comma
@@ -1286,14 +1374,14 @@ id|fixed_ranges
 id|NUM_FIXED_RANGES
 )braket
 suffix:semicolon
+DECL|member|def_type
+id|mtrr_type
+id|def_type
+suffix:semicolon
 DECL|member|enabled
 r_int
 r_char
 id|enabled
-suffix:semicolon
-DECL|member|def_type
-id|mtrr_type
-id|def_type
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1321,8 +1409,7 @@ id|mtrr_var_range
 op_star
 id|vrs
 suffix:semicolon
-r_int
-r_int
+id|u32
 id|lo
 comma
 id|dummy
@@ -1332,6 +1419,7 @@ op_assign
 id|state-&gt;num_var_ranges
 op_assign
 id|get_num_var_ranges
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1397,7 +1485,7 @@ id|state-&gt;fixed_ranges
 suffix:semicolon
 id|rdmsr
 (paren
-id|MTRRdefType_MSR
+id|MSR_MTRRdefType
 comma
 id|lo
 comma
@@ -1447,10 +1535,10 @@ id|state-&gt;var_ranges
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Set the MTRR state for this CPU.&n; *  &lt;state&gt; The MTRR state information to read.&n; *  &lt;ctxt&gt; Some relevant CPU context.&n; *  [NOTE] The CPU must already be in a safe state for MTRR changes.&n; *  [RETURNS] 0 if no changes made, else a mask indication what was changed.&n; */
 DECL|function|set_mtrr_state
 r_static
-r_int
-r_int
+id|u64
 id|__init
 id|set_mtrr_state
 (paren
@@ -1464,14 +1552,12 @@ id|set_mtrr_context
 op_star
 id|ctxt
 )paren
-multiline_comment|/*  [SUMMARY] Set the MTRR state for this CPU.&n;    &lt;state&gt; The MTRR state information to read.&n;    &lt;ctxt&gt; Some relevant CPU context.&n;    [NOTE] The CPU must already be in a safe state for MTRR changes.&n;    [RETURNS] 0 if no changes made, else a mask indication what was changed.&n;*/
 (brace
 r_int
 r_int
 id|i
 suffix:semicolon
-r_int
-r_int
+id|u64
 id|change_mask
 op_assign
 l_int|0
@@ -1590,13 +1676,11 @@ r_struct
 id|set_mtrr_data
 (brace
 DECL|member|smp_base
-r_int
-r_int
+id|u64
 id|smp_base
 suffix:semicolon
 DECL|member|smp_size
-r_int
-r_int
+id|u32
 id|smp_size
 suffix:semicolon
 DECL|member|smp_reg
@@ -1610,6 +1694,7 @@ id|smp_type
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Synchronisation handler. Executed by &quot;other&quot; CPUs.&n; */
 DECL|function|ipi_handler
 r_static
 r_void
@@ -1619,7 +1704,6 @@ r_void
 op_star
 id|info
 )paren
-multiline_comment|/*  [SUMMARY] Synchronisation handler. Executed by &quot;other&quot; CPUs.&n;    [RETURNS] Nothing.&n;*/
 (brace
 r_struct
 id|set_mtrr_data
@@ -1655,10 +1739,7 @@ id|barrier
 )paren
 suffix:semicolon
 multiline_comment|/*  The master has cleared me to execute  */
-(paren
-op_star
 id|set_mtrr_up
-)paren
 (paren
 id|data-&gt;smp_reg
 comma
@@ -1704,12 +1785,10 @@ r_int
 r_int
 id|reg
 comma
-r_int
-r_int
+id|u64
 id|base
 comma
-r_int
-r_int
+id|u32
 id|size
 comma
 id|mtrr_type
@@ -1819,10 +1898,7 @@ id|wait_barrier_execute
 op_assign
 id|FALSE
 suffix:semicolon
-(paren
-op_star
 id|set_mtrr_up
-)paren
 (paren
 id|reg
 comma
@@ -1870,8 +1946,7 @@ r_void
 id|__init
 id|mtrr_state_warn
 (paren
-r_int
-r_int
+id|u32
 id|mask
 )paren
 (brace
@@ -1928,8 +2003,8 @@ suffix:semicolon
 macro_line|#endif  /*  CONFIG_SMP  */
 DECL|function|attrib_to_str
 r_static
-r_char
 r_inline
+r_char
 op_star
 id|attrib_to_str
 (paren
@@ -2061,20 +2136,15 @@ id|compute_ascii
 suffix:semicolon
 macro_line|#endif
 )brace
-DECL|function|generic_get_free_region
+multiline_comment|/*&n; * Get a free MTRR.&n; * returns the index of the region on success, else -1 on error.&n;*/
+DECL|function|get_free_region
 r_static
 r_int
-id|generic_get_free_region
+id|get_free_region
+c_func
 (paren
-r_int
-r_int
-id|base
-comma
-r_int
-r_int
-id|size
+r_void
 )paren
-multiline_comment|/*  [SUMMARY] Get a free MTRR.&n;    &lt;base&gt; The starting (base) address of the region.&n;    &lt;size&gt; The size (in bytes) of the region.&n;    [RETURNS] The index of the region on success, else -1 on error.&n;*/
 (brace
 r_int
 id|i
@@ -2084,10 +2154,10 @@ suffix:semicolon
 id|mtrr_type
 id|ltype
 suffix:semicolon
-r_int
-r_int
+id|u64
 id|lbase
-comma
+suffix:semicolon
+id|u32
 id|lsize
 suffix:semicolon
 id|max
@@ -2111,10 +2181,7 @@ op_increment
 id|i
 )paren
 (brace
-(paren
-op_star
 id|get_mtrr
-)paren
 (paren
 id|i
 comma
@@ -2144,36 +2211,15 @@ op_minus
 id|ENOSPC
 suffix:semicolon
 )brace
-DECL|variable|get_free_region
-r_static
-r_int
-(paren
-op_star
-id|get_free_region
-)paren
-(paren
-r_int
-r_int
-id|base
-comma
-r_int
-r_int
-id|size
-)paren
-op_assign
-id|generic_get_free_region
-suffix:semicolon
-multiline_comment|/**&n; *&t;mtrr_add_page - Add a memory type region&n; *&t;@base: Physical base address of region in pages (4 KB)&n; *&t;@size: Physical size of region in pages (4 KB)&n; *&t;@type: Type of MTRR desired&n; *&t;@increment: If this is true do usage counting on the region&n; *&n; *&t;Memory type region registers control the caching on newer Intel and&n; *&t;non Intel processors. This function allows drivers to request an&n; *&t;MTRR is added. The details and hardware specifics of each processor&squot;s&n; *&t;implementation are hidden from the caller, but nevertheless the &n; *&t;caller should expect to need to provide a power of two size on an&n; *&t;equivalent power of two boundary.&n; *&n; *&t;If the region cannot be added either because all regions are in use&n; *&t;or the CPU cannot support it a negative value is returned. On success&n; *&t;the register number for this entry is returned, but should be treated&n; *&t;as a cookie only.&n; *&n; *&t;On a multiprocessor machine the changes are made to all processors.&n; *&t;This is required on x86 by the Intel processors.&n; *&n; *&t;The available types are&n; *&n; *&t;%MTRR_TYPE_UNCACHABLE&t;-&t;No caching&n; *&n; *&t;%MTRR_TYPE_WRBACK&t;-&t;Write data back in bursts whenever&n; *&n; *&t;%MTRR_TYPE_WRCOMB&t;-&t;Write data back soon but allow bursts&n; *&n; *&t;%MTRR_TYPE_WRTHROUGH&t;-&t;Cache reads but not writes&n; *&n; *&t;BUGS: Needs a quiet flag for the cases where drivers do not mind&n; *&t;failures and do not wish system log messages to be sent.&n; */
+multiline_comment|/**&n; *&t;mtrr_add_page - Add a memory type region&n; *&t;@base: Physical base address of region in pages (4 KB)&n; *&t;@size: Physical size of region in pages (4 KB)&n; *&t;@type: Type of MTRR desired&n; *&t;@increment: If this is true do usage counting on the region&n; *&t;Returns The MTRR register on success, else a negative number&n; *&t;indicating the error code.&n; *&n; *&t;Memory type region registers control the caching on newer&n; *&t;processors. This function allows drivers to request an MTRR is added.&n; *&t;The caller should expect to need to provide a power of two size on&n; *&t;an equivalent power of two boundary.&n; *&n; *&t;If the region cannot be added either because all regions are in use&n; *&t;or the CPU cannot support it a negative value is returned. On success&n; *&t;the register number for this entry is returned, but should be treated&n; *&t;as a cookie only.&n; *&n; *&t;On a multiprocessor machine the changes are made to all processors.&n; *&n; *&t;The available types are&n; *&n; *&t;%MTRR_TYPE_UNCACHABLE&t;-&t;No caching&n; *&t;%MTRR_TYPE_WRBACK&t;-&t;Write data back in bursts whenever&n; *&t;%MTRR_TYPE_WRCOMB&t;-&t;Write data back soon but allow bursts&n; *&t;%MTRR_TYPE_WRTHROUGH&t;-&t;Cache reads but not writes&n; *&n; *&t;BUGS: Needs a quiet flag for the cases where drivers do not mind&n; *&t;failures and do not wish system log messages to be sent.&n; */
 DECL|function|mtrr_add_page
 r_int
 id|mtrr_add_page
 (paren
-r_int
-r_int
+id|u64
 id|base
 comma
-r_int
-r_int
+id|u32
 id|size
 comma
 r_int
@@ -2184,7 +2230,6 @@ r_char
 id|increment
 )paren
 (brace
-multiline_comment|/*  [SUMMARY] Add an MTRR entry.&n;    &lt;base&gt; The starting (base, in pages) address of the region.&n;    &lt;size&gt; The size of the region. (in pages)&n;    &lt;type&gt; The type of the new region.&n;    &lt;increment&gt; If true and the region already exists, the usage count will be&n;    incremented.&n;    [RETURNS] The MTRR register on success, else a negative number indicating&n;    the error code.&n;    [NOTE] This routine uses a spinlock.&n;*/
 r_int
 id|i
 comma
@@ -2193,13 +2238,13 @@ suffix:semicolon
 id|mtrr_type
 id|ltype
 suffix:semicolon
-r_int
-r_int
+id|u64
 id|lbase
 comma
-id|lsize
-comma
 id|last
+suffix:semicolon
+id|u32
+id|lsize
 suffix:semicolon
 r_if
 c_cond
@@ -2214,7 +2259,7 @@ l_int|0x100
 id|printk
 (paren
 id|KERN_WARNING
-l_string|&quot;mtrr: cannot set region below 1 MiB (0x%lx000,0x%lx000)&bslash;n&quot;
+l_string|&quot;mtrr: cannot set region below 1 MiB (0x%lx000,0x%x000)&bslash;n&quot;
 comma
 id|base
 comma
@@ -2279,7 +2324,7 @@ id|last
 id|printk
 (paren
 id|KERN_WARNING
-l_string|&quot;mtrr: base(0x%lx000) is not aligned on a size(0x%lx000) boundary&bslash;n&quot;
+l_string|&quot;mtrr: base(0x%lx000) is not aligned on a size(0x%x000) boundary&bslash;n&quot;
 comma
 id|base
 comma
@@ -2323,6 +2368,7 @@ id|MTRR_TYPE_WRCOMB
 op_logical_and
 op_logical_neg
 id|have_wrcomb
+c_func
 (paren
 )paren
 )paren
@@ -2379,7 +2425,7 @@ multiline_comment|/*  Search for existing MTRR  */
 id|down
 (paren
 op_amp
-id|main_lock
+id|mtrr_lock
 )paren
 suffix:semicolon
 r_for
@@ -2397,10 +2443,7 @@ op_increment
 id|i
 )paren
 (brace
-(paren
-op_star
 id|get_mtrr
-)paren
 (paren
 id|i
 comma
@@ -2468,14 +2511,14 @@ id|lsize
 id|up
 (paren
 op_amp
-id|main_lock
+id|mtrr_lock
 )paren
 suffix:semicolon
 id|printk
 (paren
 id|KERN_WARNING
-l_string|&quot;mtrr: 0x%lx000,0x%lx000 overlaps existing&quot;
-l_string|&quot; 0x%lx000,0x%lx000&bslash;n&quot;
+l_string|&quot;mtrr: 0x%lx000,0x%x000 overlaps existing&quot;
+l_string|&quot; 0x%lx000,0x%x000&bslash;n&quot;
 comma
 id|base
 comma
@@ -2512,12 +2555,12 @@ suffix:semicolon
 id|up
 (paren
 op_amp
-id|main_lock
+id|mtrr_lock
 )paren
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;mtrr: type mismatch for %lx000,%lx000 old: %s new: %s&bslash;n&quot;
+l_string|&quot;mtrr: type mismatch for %lx000,%x000 old: %s new: %s&bslash;n&quot;
 comma
 id|base
 comma
@@ -2557,7 +2600,7 @@ suffix:semicolon
 id|up
 (paren
 op_amp
-id|main_lock
+id|mtrr_lock
 )paren
 suffix:semicolon
 r_return
@@ -2567,14 +2610,9 @@ suffix:semicolon
 multiline_comment|/*  Search for an empty MTRR  */
 id|i
 op_assign
-(paren
-op_star
 id|get_free_region
-)paren
+c_func
 (paren
-id|base
-comma
-id|size
 )paren
 suffix:semicolon
 r_if
@@ -2588,7 +2626,7 @@ l_int|0
 id|up
 (paren
 op_amp
-id|main_lock
+id|mtrr_lock
 )paren
 suffix:semicolon
 id|printk
@@ -2625,24 +2663,22 @@ suffix:semicolon
 id|up
 (paren
 op_amp
-id|main_lock
+id|mtrr_lock
 )paren
 suffix:semicolon
 r_return
 id|i
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;mtrr_add - Add a memory type region&n; *&t;@base: Physical base address of region&n; *&t;@size: Physical size of region&n; *&t;@type: Type of MTRR desired&n; *&t;@increment: If this is true do usage counting on the region&n; *&n; *&t;Memory type region registers control the caching on newer Intel and&n; *&t;non Intel processors. This function allows drivers to request an&n; *&t;MTRR is added. The details and hardware specifics of each processor&squot;s&n; *&t;implementation are hidden from the caller, but nevertheless the &n; *&t;caller should expect to need to provide a power of two size on an&n; *&t;equivalent power of two boundary.&n; *&n; *&t;If the region cannot be added either because all regions are in use&n; *&t;or the CPU cannot support it a negative value is returned. On success&n; *&t;the register number for this entry is returned, but should be treated&n; *&t;as a cookie only.&n; *&n; *&t;On a multiprocessor machine the changes are made to all processors.&n; *&t;This is required on x86 by the Intel processors.&n; *&n; *&t;The available types are&n; *&n; *&t;%MTRR_TYPE_UNCACHABLE&t;-&t;No caching&n; *&n; *&t;%MTRR_TYPE_WRBACK&t;-&t;Write data back in bursts whenever&n; *&n; *&t;%MTRR_TYPE_WRCOMB&t;-&t;Write data back soon but allow bursts&n; *&n; *&t;%MTRR_TYPE_WRTHROUGH&t;-&t;Cache reads but not writes&n; *&n; *&t;BUGS: Needs a quiet flag for the cases where drivers do not mind&n; *&t;failures and do not wish system log messages to be sent.&n; */
+multiline_comment|/**&n; *&t;mtrr_add - Add a memory type region&n; *&t;@base: Physical base address of region&n; *&t;@size: Physical size of region&n; *&t;@type: Type of MTRR desired&n; *&t;@increment: If this is true do usage counting on the region&n; *&t;Return the MTRR register on success, else a negative numbe&n; *&t;indicating the error code.&n; *&n; *&t;Memory type region registers control the caching on newer processors.&n; *&t;This function allows drivers to request an MTRR is added.&n; *&t;The caller should expect to need to provide a power of two size on&n; *&t;an equivalent power of two boundary.&n; *&n; *&t;If the region cannot be added either because all regions are in use&n; *&t;or the CPU cannot support it a negative value is returned. On success&n; *&t;the register number for this entry is returned, but should be treated&n; *&t;as a cookie only.&n; *&n; *&t;On a multiprocessor machine the changes are made to all processors.&n; *&t;This is required on x86 by the Intel processors.&n; *&n; *&t;The available types are&n; *&n; *&t;%MTRR_TYPE_UNCACHABLE&t;-&t;No caching&n; *&t;%MTRR_TYPE_WRBACK&t;-&t;Write data back in bursts whenever&n; *&t;%MTRR_TYPE_WRCOMB&t;-&t;Write data back soon but allow bursts&n; *&t;%MTRR_TYPE_WRTHROUGH&t;-&t;Cache reads but not writes&n; *&n; *&t;BUGS: Needs a quiet flag for the cases where drivers do not mind&n; *&t;failures and do not wish system log messages to be sent.&n; */
 DECL|function|mtrr_add
 r_int
 id|mtrr_add
 (paren
-r_int
-r_int
+id|u64
 id|base
 comma
-r_int
-r_int
+id|u32
 id|size
 comma
 r_int
@@ -2653,7 +2689,6 @@ r_char
 id|increment
 )paren
 (brace
-multiline_comment|/*  [SUMMARY] Add an MTRR entry.&n;    &lt;base&gt; The starting (base) address of the region.&n;    &lt;size&gt; The size (in bytes) of the region.&n;    &lt;type&gt; The type of the new region.&n;    &lt;increment&gt; If true and the region already exists, the usage count will be&n;    incremented.&n;    [RETURNS] The MTRR register on success, else a negative number indicating&n;    the error code.&n;*/
 r_if
 c_cond
 (paren
@@ -2685,7 +2720,7 @@ l_string|&quot;mtrr: size and base must be multiples of 4 kiB&bslash;n&quot;
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;mtrr: size: 0x%lx  base: 0x%lx&bslash;n&quot;
+l_string|&quot;mtrr: size: 0x%x  base: 0x%lx&bslash;n&quot;
 comma
 id|size
 comma
@@ -2722,15 +2757,12 @@ id|mtrr_del_page
 r_int
 id|reg
 comma
-r_int
-r_int
+id|u64
 id|base
 comma
-r_int
-r_int
+id|u32
 id|size
 )paren
-multiline_comment|/*  [SUMMARY] Delete MTRR/decrement usage count.&n;    &lt;reg&gt; The register. If this is less than 0 then &lt;&lt;base&gt;&gt; and &lt;&lt;size&gt;&gt; must&n;    be supplied.&n;    &lt;base&gt; The base address of the region. This is ignored if &lt;&lt;reg&gt;&gt; is &gt;= 0.&n;    &lt;size&gt; The size of the region. This is ignored if &lt;&lt;reg&gt;&gt; is &gt;= 0.&n;    [RETURNS] The register on success, else a negative number indicating&n;    the error code.&n;    [NOTE] This routine uses a spinlock.&n;*/
 (brace
 r_int
 id|i
@@ -2740,10 +2772,10 @@ suffix:semicolon
 id|mtrr_type
 id|ltype
 suffix:semicolon
-r_int
-r_int
+id|u64
 id|lbase
-comma
+suffix:semicolon
+id|u32
 id|lsize
 suffix:semicolon
 id|max
@@ -2755,7 +2787,7 @@ suffix:semicolon
 id|down
 (paren
 op_amp
-id|main_lock
+id|mtrr_lock
 )paren
 suffix:semicolon
 r_if
@@ -2782,10 +2814,7 @@ op_increment
 id|i
 )paren
 (brace
-(paren
-op_star
 id|get_mtrr
-)paren
 (paren
 id|i
 comma
@@ -2830,12 +2859,12 @@ l_int|0
 id|up
 (paren
 op_amp
-id|main_lock
+id|mtrr_lock
 )paren
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;mtrr: no MTRR for %lx000,%lx000 found&bslash;n&quot;
+l_string|&quot;mtrr: no MTRR for %lx000,%x000 found&bslash;n&quot;
 comma
 id|base
 comma
@@ -2859,7 +2888,7 @@ id|max
 id|up
 (paren
 op_amp
-id|main_lock
+id|mtrr_lock
 )paren
 suffix:semicolon
 id|printk
@@ -2874,10 +2903,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-(paren
-op_star
 id|get_mtrr
-)paren
 (paren
 id|reg
 comma
@@ -2902,7 +2928,7 @@ l_int|1
 id|up
 (paren
 op_amp
-id|main_lock
+id|mtrr_lock
 )paren
 suffix:semicolon
 id|printk
@@ -2931,7 +2957,7 @@ l_int|1
 id|up
 (paren
 op_amp
-id|main_lock
+id|mtrr_lock
 )paren
 suffix:semicolon
 id|printk
@@ -2975,7 +3001,7 @@ suffix:semicolon
 id|up
 (paren
 op_amp
-id|main_lock
+id|mtrr_lock
 )paren
 suffix:semicolon
 r_return
@@ -2990,15 +3016,12 @@ id|mtrr_del
 r_int
 id|reg
 comma
-r_int
-r_int
+id|u64
 id|base
 comma
-r_int
-r_int
+id|u32
 id|size
 )paren
-multiline_comment|/*  [SUMMARY] Delete MTRR/decrement usage count.&n;    &lt;reg&gt; The register. If this is less than 0 then &lt;&lt;base&gt;&gt; and &lt;&lt;size&gt;&gt; must&n;    be supplied.&n;    &lt;base&gt; The base address of the region. This is ignored if &lt;&lt;reg&gt;&gt; is &gt;= 0.&n;    &lt;size&gt; The size of the region. This is ignored if &lt;&lt;reg&gt;&gt; is &gt;= 0.&n;    [RETURNS] The register on success, else a negative number indicating&n;    the error code.&n;*/
 (brace
 r_if
 c_cond
@@ -3031,7 +3054,7 @@ l_string|&quot;mtrr: size and base must be multiples of 4 kiB&bslash;n&quot;
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;mtrr: size: 0x%lx  base: 0x%lx&bslash;n&quot;
+l_string|&quot;mtrr: size: 0x%x  base: 0x%lx&bslash;n&quot;
 comma
 id|size
 comma
@@ -3064,20 +3087,15 @@ r_static
 r_int
 id|mtrr_file_add
 (paren
-r_int
-r_int
+id|u64
 id|base
 comma
-r_int
-r_int
+id|u32
 id|size
 comma
 r_int
 r_int
 id|type
-comma
-r_char
-id|increment
 comma
 r_struct
 id|file
@@ -3201,7 +3219,7 @@ l_string|&quot;mtrr: size and base must be multiples of 4 kiB&bslash;n&quot;
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;mtrr: size: 0x%lx  base: 0x%lx&bslash;n&quot;
+l_string|&quot;mtrr: size: 0x%x  base: 0x%lx&bslash;n&quot;
 comma
 id|size
 comma
@@ -3257,12 +3275,10 @@ r_static
 r_int
 id|mtrr_file_del
 (paren
-r_int
-r_int
+id|u64
 id|base
 comma
-r_int
-r_int
+id|u32
 id|size
 comma
 r_struct
@@ -3322,7 +3338,7 @@ l_string|&quot;mtrr: size and base must be multiples of 4 kiB&bslash;n&quot;
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;mtrr: size: 0x%lx  base: 0x%lx&bslash;n&quot;
+l_string|&quot;mtrr: size: 0x%x  base: 0x%lx&bslash;n&quot;
 comma
 id|size
 comma
@@ -3505,16 +3521,13 @@ r_int
 id|i
 comma
 id|err
-suffix:semicolon
-r_int
-r_int
+comma
 id|reg
 suffix:semicolon
-r_int
-r_int
-r_int
+id|u64
 id|base
-comma
+suffix:semicolon
+id|u32
 id|size
 suffix:semicolon
 r_char
@@ -3784,7 +3797,7 @@ l_string|&quot;mtrr: size and base must be multiples of 4 kiB&bslash;n&quot;
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;mtrr: size: 0x%Lx  base: 0x%Lx&bslash;n&quot;
+l_string|&quot;mtrr: size: 0x%x  base: 0x%lx&bslash;n&quot;
 comma
 id|size
 comma
@@ -3896,15 +3909,10 @@ op_assign
 id|mtrr_add_page
 (paren
 (paren
-r_int
-r_int
+id|u64
 )paren
 id|base
 comma
-(paren
-r_int
-r_int
-)paren
 id|size
 comma
 id|i
@@ -4036,8 +4044,6 @@ comma
 id|sentry.size
 comma
 id|sentry.type
-comma
-l_int|1
 comma
 id|file
 comma
@@ -4285,10 +4291,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-(paren
-op_star
 id|get_mtrr
-)paren
 (paren
 id|gentry.regnum
 comma
@@ -4411,8 +4414,6 @@ comma
 id|sentry.size
 comma
 id|sentry.type
-comma
-l_int|1
 comma
 id|file
 comma
@@ -4660,10 +4661,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-(paren
-op_star
 id|get_mtrr
-)paren
 (paren
 id|gentry.regnum
 comma
@@ -4748,10 +4746,6 @@ l_int|NULL
 r_return
 l_int|0
 suffix:semicolon
-id|lock_kernel
-(paren
-)paren
-suffix:semicolon
 id|max
 op_assign
 id|get_num_var_ranges
@@ -4813,10 +4807,6 @@ id|i
 suffix:semicolon
 )brace
 )brace
-id|unlock_kernel
-(paren
-)paren
-suffix:semicolon
 id|kfree
 (paren
 id|fcount
@@ -4892,10 +4882,10 @@ suffix:semicolon
 id|mtrr_type
 id|type
 suffix:semicolon
-r_int
-r_int
+id|u64
 id|base
-comma
+suffix:semicolon
+id|u32
 id|size
 suffix:semicolon
 id|ascii_buf_bytes
@@ -4923,10 +4913,7 @@ id|i
 op_increment
 )paren
 (brace
-(paren
-op_star
 id|get_mtrr
-)paren
 (paren
 id|i
 comma
@@ -4999,7 +4986,7 @@ id|ascii_buffer
 op_plus
 id|ascii_buf_bytes
 comma
-l_string|&quot;reg%02i: base=0x%05lx000 (%4liMB), size=%4li%cB: %s, count=%d&bslash;n&quot;
+l_string|&quot;reg%02i: base=0x%05lx000 (%4liMB), size=%4i%cB: %s, count=%d&bslash;n&quot;
 comma
 id|i
 comma
@@ -5141,20 +5128,7 @@ op_assign
 op_complement
 id|size_or_mask
 op_amp
-l_int|0xfff00000
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* FIXME: This is to make it work on Athlon during debugging. */
-id|size_or_mask
-op_assign
-l_int|0xff000000
-suffix:semicolon
-multiline_comment|/* 36 bits */
-id|size_and_mask
-op_assign
-l_int|0x00f00000
+l_int|0xfffffffffff00000
 suffix:semicolon
 )brace
 id|printk
@@ -5168,8 +5142,7 @@ macro_line|#ifdef CONFIG_SMP
 DECL|variable|__initdata
 r_static
 r_volatile
-r_int
-r_int
+id|u32
 id|smp_changes_mask
 id|__initdata
 op_assign
@@ -5216,10 +5189,10 @@ id|mtrr_init_secondary_cpu
 r_void
 )paren
 (brace
-r_int
-r_int
+id|u64
 id|mask
-comma
+suffix:semicolon
+r_int
 id|count
 suffix:semicolon
 r_struct

@@ -1021,13 +1021,6 @@ c_func
 id|smp_hw_index
 )paren
 suffix:semicolon
-DECL|variable|smp_num_cpus
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|smp_num_cpus
-)paren
-suffix:semicolon
 DECL|variable|synchronize_irq
 id|EXPORT_SYMBOL
 c_func

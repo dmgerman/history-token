@@ -1,7 +1,7 @@
 macro_line|#ifndef __LINUX_BRLOCK_H
 DECL|macro|__LINUX_BRLOCK_H
 mdefine_line|#define __LINUX_BRLOCK_H
-multiline_comment|/*&n; * &squot;Big Reader&squot; read-write spinlocks.&n; *&n; * super-fast read/write locks, with write-side penalty. The point&n; * is to have a per-CPU read/write lock. Readers lock their CPU-local&n; * readlock, writers must lock all locks to get write access. These&n; * CPU-read-write locks are semantically identical to normal rwlocks.&n; * Memory usage is higher as well. (NR_CPUS*L1_CACHE_BYTES bytes)&n; *&n; * The most important feature is that these spinlocks do not cause&n; * cacheline ping-pong in the &squot;most readonly data&squot; case.&n; *&n; * Copyright 2000, Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; * Registry idea and naming [ crutial! :-) ] by:&n; *&n; *                 David S. Miller &lt;davem@redhat.com&gt;&n; *&n; * David has an implementation that doesnt use atomic operations in&n; * the read branch via memory ordering tricks - i guess we need to&n; * split this up into a per-arch thing? The atomicity issue is a&n; * secondary item in profiles, at least on x86 platforms.&n; *&n; * The atomic op version overhead is indeed a big deal on&n; * load-locked/store-conditional cpus (ALPHA/MIPS/PPC) and&n; * compare-and-swap cpus (Sparc64).  So we control which&n; * implementation to use with a __BRLOCK_USE_ATOMICS define. -DaveM&n; */
+multiline_comment|/*&n; * &squot;Big Reader&squot; read-write spinlocks.&n; *&n; * super-fast read/write locks, with write-side penalty. The point&n; * is to have a per-CPU read/write lock. Readers lock their CPU-local&n; * readlock, writers must lock all locks to get write access. These&n; * CPU-read-write locks are semantically identical to normal rwlocks.&n; * Memory usage is higher as well. (NR_CPUS*L1_CACHE_BYTES bytes)&n; *&n; * The most important feature is that these spinlocks do not cause&n; * cacheline ping-pong in the &squot;most readonly data&squot; case.&n; *&n; * Copyright 2000, Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; * Registry idea and naming [ crutial! :-) ] by:&n; *&n; *                 David S. Miller &lt;davem@redhat.com&gt;&n; *&n; * David has an implementation that doesnt use atomic operations in&n; * the read branch via memory ordering tricks - i guess we need to&n; * split this up into a per-arch thing? The atomicity issue is a&n; * secondary item in profiles, at least on x86 platforms.&n; *&n; * The atomic op version overhead is indeed a big deal on&n; * load-locked/store-conditional cpus (ALPHA/MIPS/PPC) and&n; * compare-and-swap cpus (Sparc64).  So we control which&n; * implementation to use with a __BRLOCK_USE_ATOMICS define. -DaveM&n; *&n; * Added BR_LLC_LOCK for use in net/core/ext8022.c -acme&n; */
 multiline_comment|/* Register bigreader lock indices here. */
 DECL|enum|brlock_indices
 r_enum
@@ -12,6 +12,9 @@ id|BR_GLOBALIRQ_LOCK
 comma
 DECL|enumerator|BR_NETPROTO_LOCK
 id|BR_NETPROTO_LOCK
+comma
+DECL|enumerator|BR_LLC_LOCK
+id|BR_LLC_LOCK
 comma
 DECL|enumerator|__BR_END
 id|__BR_END

@@ -1429,7 +1429,13 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-r_else
+multiline_comment|/* Do nothing, just unlock */
+id|spin_unlock_irq
+c_func
+(paren
+id|drive-&gt;channel-&gt;lock
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -8,10 +8,16 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/lowcore.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/kernel.h&gt;
-DECL|macro|prepare_to_switch
-mdefine_line|#define prepare_to_switch()&t;do { } while(0)
+DECL|macro|prepare_arch_schedule
+mdefine_line|#define prepare_arch_schedule(prev)&t;&t;do { } while (0)
+DECL|macro|finish_arch_schedule
+mdefine_line|#define finish_arch_schedule(prev)&t;&t;do { } while (0)
+DECL|macro|prepare_arch_switch
+mdefine_line|#define prepare_arch_switch(rq)&t;&t;&t;do { } while (0)
+DECL|macro|finish_arch_switch
+mdefine_line|#define finish_arch_switch(rq)&t;&t;&t;spin_unlock_irq(&amp;(rq)-&gt;lock)
 DECL|macro|switch_to
-mdefine_line|#define switch_to(prev,next) do {&t;&t;&t;&t;&t;     &bslash;&n;&t;if (prev == next)&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;save_fp_regs1(&amp;prev-&gt;thread.fp_regs);&t;&t;&t;&t;     &bslash;&n;&t;restore_fp_regs1(&amp;next-&gt;thread.fp_regs);&t;&t;&t;     &bslash;&n;&t;resume(prev,next);&t;&t;&t;&t;&t;&t;     &bslash;&n;} while (0)
+mdefine_line|#define switch_to(prev,next,last) do {&t;&t;&t;&t;&t;     &bslash;&n;&t;if (prev == next)&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;save_fp_regs1(&amp;prev-&gt;thread.fp_regs);&t;&t;&t;&t;     &bslash;&n;&t;restore_fp_regs1(&amp;next-&gt;thread.fp_regs);&t;&t;&t;     &bslash;&n;&t;resume(prev,next);&t;&t;&t;&t;&t;&t;     &bslash;&n;} while (0)
 r_struct
 id|task_struct
 suffix:semicolon

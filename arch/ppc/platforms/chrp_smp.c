@@ -121,6 +121,7 @@ id|frozen
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* FIXME: Hotplug cpu breaks all this --RR */
 r_if
 c_cond
 (paren
@@ -140,7 +141,10 @@ op_amp
 id|ready
 )paren
 OL
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 )paren
 id|barrier
 c_func
@@ -205,7 +209,10 @@ op_amp
 id|ready
 )paren
 OL
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 )paren
 id|barrier
 c_func

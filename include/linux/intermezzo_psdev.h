@@ -107,7 +107,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|ISLENTO
-mdefine_line|#define ISLENTO(minor) (current-&gt;pid == upc_comms[minor].uc_pid &bslash;&n;                || current-&gt;p_pptr-&gt;pid == upc_comms[minor].uc_pid)
+mdefine_line|#define ISLENTO(minor) (current-&gt;pid == upc_comms[minor].uc_pid &bslash;&n;                || current-&gt;parent-&gt;pid == upc_comms[minor].uc_pid)
 r_extern
 r_struct
 id|upc_comm

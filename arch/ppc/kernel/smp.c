@@ -37,12 +37,6 @@ r_volatile
 r_int
 id|smp_commenced
 suffix:semicolon
-DECL|variable|smp_num_cpus
-r_int
-id|smp_num_cpus
-op_assign
-l_int|1
-suffix:semicolon
 DECL|variable|smp_tb_synchronized
 r_int
 id|smp_tb_synchronized
@@ -188,24 +182,6 @@ id|smp_call_function_interrupt
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_void
-id|smp_message_pass
-c_func
-(paren
-r_int
-id|target
-comma
-r_int
-id|msg
-comma
-r_int
-r_int
-id|data
-comma
-r_int
-id|wait
 )paren
 suffix:semicolon
 r_static
@@ -528,10 +504,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|smp_num_cpus
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Structure and data for smp_call_function(). This is designed to minimise&n; * static memory requirements. It also looks cleaner.&n; * Stolen from the i386 version.&n; */
 DECL|variable|call_lock
@@ -609,10 +581,14 @@ id|wait
 )paren
 multiline_comment|/*&n; * [SUMMARY] Run a function on all other CPUs.&n; * &lt;func&gt; The function to run. This must be fast and non-blocking.&n; * &lt;info&gt; An arbitrary pointer to pass to the function.&n; * &lt;nonatomic&gt; currently unused.&n; * &lt;wait&gt; If true, wait (atomically) until function has completed on other CPUs.&n; * [RETURNS] 0 on success, else a negative status code. Does not return until&n; * remote CPUs are nearly ready to execute &lt;&lt;func&gt;&gt; or are or have executed.&n; *&n; * You must not call this function with disabled interrupts or from a&n; * hardware interrupt handler or from a bottom half handler.&n; */
 (brace
+multiline_comment|/* FIXME: get cpu lock with hotplug cpus, or change this to&n;           bitmask. --RR */
 r_if
 c_cond
 (paren
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 op_le
 l_int|1
 )paren
@@ -688,7 +664,10 @@ id|MSG_ALL_BUT_SELF
 )paren
 id|ncpus
 op_assign
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 op_minus
 l_int|1
 suffix:semicolon
@@ -702,7 +681,10 @@ id|MSG_ALL
 )paren
 id|ncpus
 op_assign
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 suffix:semicolon
 id|data.func
 op_assign
@@ -1003,10 +985,6 @@ c_func
 l_string|&quot;Entering SMP Mode...&bslash;n&quot;
 )paren
 suffix:semicolon
-id|smp_num_cpus
-op_assign
-l_int|1
-suffix:semicolon
 id|smp_store_cpu_info
 c_func
 (paren
@@ -1293,9 +1271,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|smp_num_cpus
-op_increment
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -1351,10 +1326,14 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: Not with hotplug CPUS --RR */
 r_if
 c_cond
 (paren
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 OL
 l_int|2
 )paren
@@ -1455,7 +1434,7 @@ l_int|1
 suffix:semicolon
 id|i
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
@@ -1739,13 +1718,17 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* if the smp_ops-&gt;setup_cpu function has not already synched the&n;&t; * timebases with a nicer hardware-based method, do so now&n;&t; *&n;&t; * I am open to suggestions for improvements to this method&n;&t; * -- Troy &lt;hozer@drgw.net&gt;&n;&t; *&n;&t; * NOTE: if you are debugging, set smp_tb_synchronized for now&n;&t; * since if this code runs pretty early and needs all cpus that&n;&t; * reported in in smp_callin_map to be working&n;&t; *&n;&t; * NOTE2: this code doesn&squot;t seem to work on &gt; 2 cpus. -- paulus/BenH&n;&t; */
+multiline_comment|/* FIXME: This doesn&squot;t work with hotplug CPUs --RR */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|smp_tb_synchronized
 op_logical_and
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 op_eq
 l_int|2
 )paren
@@ -1803,6 +1786,21 @@ c_func
 id|tb_ticks_per_jiffy
 )paren
 suffix:semicolon
+multiline_comment|/* Set online before we acknowledge. */
+id|set_bit
+c_func
+(paren
+id|cpu
+comma
+op_amp
+id|cpu_online_map
+)paren
+suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|cpu_callin_map
 (braket
 id|cpu
@@ -1816,16 +1814,6 @@ id|setup_cpu
 c_func
 (paren
 id|cpu
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * This cpu is now &quot;online&quot;.  Only set them online&n;&t; * before they enter the loop below since write access&n;&t; * to the below variable is _not_ guaranteed to be&n;&t; * atomic.&n;&t; *   -- Cort &lt;cort@fsmlabs.com&gt;&n;&t; */
-id|cpu_online_map
-op_or_assign
-l_int|1UL
-op_lshift
-id|smp_processor_id
-c_func
-(paren
 )paren
 suffix:semicolon
 r_while
@@ -1846,7 +1834,10 @@ c_cond
 op_logical_neg
 id|smp_tb_synchronized
 op_logical_and
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 op_eq
 l_int|2
 )paren

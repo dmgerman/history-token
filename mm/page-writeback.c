@@ -10,13 +10,18 @@ macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
-multiline_comment|/*&n; * The maximum number of pages to writeout in a single bdflush/kupdate&n; * operation.  We do this so we don&squot;t hold I_LOCK against an inode for&n; * enormous amounts of time, which would block a userspace task which has&n; * been forced to throttle against that inode.&n; */
+multiline_comment|/*&n; * The maximum number of pages to writeout in a single bdflush/kupdate&n; * operation.  We do this so we don&squot;t hold I_LOCK against an inode for&n; * enormous amounts of time, which would block a userspace task which has&n; * been forced to throttle against that inode.  Also, the code reevaluates&n; * the dirty each time it has written this many pages.&n; */
 DECL|macro|MAX_WRITEBACK_PAGES
 mdefine_line|#define MAX_WRITEBACK_PAGES&t;1024
-multiline_comment|/*&n; * Memory thresholds, in percentages&n; * FIXME: expose these via /proc or whatever.&n; */
+multiline_comment|/*&n; * After a CPU has dirtied this many pages, balance_dirty_pages_ratelimited&n; * will look to see if it needs to force writeback or throttling.  Probably&n; * should be scaled by memory size.&n; */
+DECL|macro|RATELIMIT_PAGES
+mdefine_line|#define RATELIMIT_PAGES&t;&t;1000
+multiline_comment|/*&n; * When balance_dirty_pages decides that the caller needs to perform some&n; * non-background writeback, this is how many pages it will attempt to write.&n; * It should be somewhat larger than RATELIMIT_PAGES to ensure that reasonably&n; * large amounts of I/O are submitted.&n; */
+DECL|macro|SYNC_WRITEBACK_PAGES
+mdefine_line|#define SYNC_WRITEBACK_PAGES&t;1500
+multiline_comment|/*&n; * Dirty memory thresholds, in percentages&n; */
 multiline_comment|/*&n; * Start background writeback (via pdflush) at this level&n; */
 DECL|variable|dirty_background_ratio
-r_static
 r_int
 id|dirty_background_ratio
 op_assign
@@ -24,7 +29,6 @@ l_int|40
 suffix:semicolon
 multiline_comment|/*&n; * The generator of dirty data starts async writeback at this level&n; */
 DECL|variable|dirty_async_ratio
-r_static
 r_int
 id|dirty_async_ratio
 op_assign
@@ -32,11 +36,28 @@ l_int|50
 suffix:semicolon
 multiline_comment|/*&n; * The generator of dirty data performs sync writeout at this level&n; */
 DECL|variable|dirty_sync_ratio
-r_static
 r_int
 id|dirty_sync_ratio
 op_assign
 l_int|60
+suffix:semicolon
+multiline_comment|/*&n; * The interval between `kupdate&squot;-style writebacks.&n; */
+DECL|variable|dirty_writeback_centisecs
+r_int
+id|dirty_writeback_centisecs
+op_assign
+l_int|5
+op_star
+l_int|100
+suffix:semicolon
+multiline_comment|/*&n; * The largest amount of time for which data is allowed to remain dirty&n; */
+DECL|variable|dirty_expire_centisecs
+r_int
+id|dirty_expire_centisecs
+op_assign
+l_int|30
+op_star
+l_int|100
 suffix:semicolon
 r_static
 r_void
@@ -138,7 +159,7 @@ id|sync_thresh
 r_int
 id|nr_to_write
 op_assign
-l_int|1500
+id|SYNC_WRITEBACK_PAGES
 suffix:semicolon
 id|writeback_unlocked_inodes
 c_func
@@ -171,7 +192,7 @@ id|async_thresh
 r_int
 id|nr_to_write
 op_assign
-l_int|1500
+id|SYNC_WRITEBACK_PAGES
 suffix:semicolon
 id|writeback_unlocked_inodes
 c_func
@@ -262,7 +283,7 @@ dot
 id|count
 op_increment
 op_ge
-l_int|1000
+id|RATELIMIT_PAGES
 )paren
 (brace
 id|ratelimits
@@ -426,23 +447,13 @@ id|ps.nr_dirty
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The interval between `kupdate&squot;-style writebacks.&n; *&n; * Traditional kupdate writes back data which is 30-35 seconds old.&n; * This one does that, but it also writes back just 1/6th of the dirty&n; * data.  This is to avoid great I/O storms.&n; *&n; * We chunk the writes up and yield, to permit any throttled page-allocators&n; * to perform their I/O against a large file.&n; */
-DECL|variable|wb_writeback_jifs
-r_static
-r_int
-id|wb_writeback_jifs
-op_assign
-l_int|5
-op_star
-id|HZ
-suffix:semicolon
 DECL|variable|wb_timer
 r_static
 r_struct
 id|timer_list
 id|wb_timer
 suffix:semicolon
-multiline_comment|/*&n; * Periodic writeback of &quot;old&quot; data.&n; *&n; * Define &quot;old&quot;: the first time one of an inode&squot;s pages is dirtied, we mark the&n; * dirtying-time in the inode&squot;s address_space.  So this periodic writeback code&n; * just walks the superblock inode list, writing back any inodes which are&n; * older than a specific point in time.&n; *&n; * Try to run once per wb_writeback_jifs jiffies.  But if a writeback event&n; * takes longer than a wb_writeback_jifs interval, then leave a one-second&n; * gap.&n; *&n; * older_than_this takes precedence over nr_to_write.  So we&squot;ll only write back&n; * all dirty pages if they are all attached to &quot;old&quot; mappings.&n; */
+multiline_comment|/*&n; * Periodic writeback of &quot;old&quot; data.&n; *&n; * Define &quot;old&quot;: the first time one of an inode&squot;s pages is dirtied, we mark the&n; * dirtying-time in the inode&squot;s address_space.  So this periodic writeback code&n; * just walks the superblock inode list, writing back any inodes which are&n; * older than a specific point in time.&n; *&n; * Try to run once per dirty_writeback_centisecs.  But if a writeback event&n; * takes longer than a dirty_writeback_centisecs interval, then leave a&n; * one-second gap.&n; *&n; * older_than_this takes precedence over nr_to_write.  So we&squot;ll only write back&n; * all dirty pages if they are all attached to &quot;old&quot; mappings.&n; */
 DECL|function|wb_kupdate
 r_static
 r_void
@@ -489,9 +500,13 @@ id|oldest_jif
 op_assign
 id|jiffies
 op_minus
-l_int|30
+(paren
+id|dirty_expire_centisecs
 op_star
 id|HZ
+)paren
+op_div
+l_int|100
 suffix:semicolon
 id|start_jif
 op_assign
@@ -501,7 +516,13 @@ id|next_jif
 op_assign
 id|start_jif
 op_plus
-id|wb_writeback_jifs
+(paren
+id|dirty_writeback_centisecs
+op_star
+id|HZ
+)paren
+op_div
+l_int|100
 suffix:semicolon
 id|nr_to_write
 op_assign
@@ -615,7 +636,13 @@ id|wb_timer.expires
 op_assign
 id|jiffies
 op_plus
-id|wb_writeback_jifs
+(paren
+id|dirty_writeback_centisecs
+op_star
+id|HZ
+)paren
+op_div
+l_int|100
 suffix:semicolon
 id|wb_timer.data
 op_assign

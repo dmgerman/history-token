@@ -11,8 +11,7 @@ macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 DECL|macro|__vsyscall
 mdefine_line|#define __vsyscall(nr) __attribute__ ((unused,__section__(&quot;.vsyscall_&quot; #nr)))
-DECL|macro|NO_VSYSCALL
-mdefine_line|#define NO_VSYSCALL 1
+singleline_comment|//#define NO_VSYSCALL 1
 macro_line|#ifdef NO_VSYSCALL
 macro_line|#include &lt;asm/unistd.h&gt;
 DECL|variable|__section_vxtime_sequence

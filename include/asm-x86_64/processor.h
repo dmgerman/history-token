@@ -56,25 +56,6 @@ DECL|member|x86_mask
 id|__u8
 id|x86_mask
 suffix:semicolon
-multiline_comment|/* We know that wp_works_ok = 1, hlt_works_ok = 1, hard_math = 1,&n;     etc... */
-DECL|member|wp_works_ok
-r_char
-id|wp_works_ok
-suffix:semicolon
-multiline_comment|/* It doesn&squot;t on 386&squot;s */
-DECL|member|hlt_works_ok
-r_char
-id|hlt_works_ok
-suffix:semicolon
-multiline_comment|/* Problems on some 486Dx4&squot;s and old 386&squot;s */
-DECL|member|hard_math
-r_char
-id|hard_math
-suffix:semicolon
-DECL|member|rfu
-r_char
-id|rfu
-suffix:semicolon
 DECL|member|cpuid_level
 r_int
 id|cpuid_level
@@ -106,18 +87,6 @@ r_int
 id|x86_cache_size
 suffix:semicolon
 multiline_comment|/* in KB - valid for CPUS which support this&n;&t;&t;&t;&t;    call  */
-DECL|member|fdiv_bug
-r_int
-id|fdiv_bug
-suffix:semicolon
-DECL|member|f00f_bug
-r_int
-id|f00f_bug
-suffix:semicolon
-DECL|member|coma_bug
-r_int
-id|coma_bug
-suffix:semicolon
 DECL|member|loops_per_jiffy
 r_int
 r_int
@@ -868,14 +837,10 @@ DECL|member|ioperm
 r_int
 id|ioperm
 suffix:semicolon
-DECL|member|io_bitmap
+DECL|member|io_bitmap_ptr
 id|u32
-id|io_bitmap
-(braket
-id|IO_BITMAP_SIZE
-op_plus
-l_int|1
-)braket
+op_star
+id|io_bitmap_ptr
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -827,4 +827,11 @@ c_func
 id|out_of_line_bug
 )paren
 suffix:semicolon
+DECL|variable|init_level4_pgt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|init_level4_pgt
+)paren
+suffix:semicolon
 eof

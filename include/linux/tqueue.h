@@ -147,6 +147,18 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/* Schedule a tq to run in process context */
+r_extern
+r_int
+id|schedule_task
+c_func
+(paren
+r_struct
+id|tq_struct
+op_star
+id|task
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Call all &quot;bottom halfs&quot; on a given list.&n; */
 r_extern
 r_void

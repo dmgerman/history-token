@@ -105,7 +105,10 @@ suffix:semicolon
 multiline_comment|/* Use fast mode if only one CPU is online */
 id|tlb-&gt;nr
 op_assign
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 OG
 l_int|1
 ques
