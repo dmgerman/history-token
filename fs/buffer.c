@@ -1551,11 +1551,20 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * FIXME: what about destroy_dirty_buffers?&n;&t; * We really want to use invalidate_inode_pages2() for&n;&t; * that, but not until that&squot;s cleaned up.&n;&t; */
+id|current-&gt;flags
+op_or_assign
+id|PF_INVALIDATE
+suffix:semicolon
 id|invalidate_inode_pages
 c_func
 (paren
 id|bdev-&gt;bd_inode
 )paren
+suffix:semicolon
+id|current-&gt;flags
+op_and_assign
+op_complement
+id|PF_INVALIDATE
 suffix:semicolon
 )brace
 DECL|function|__invalidate_buffers
