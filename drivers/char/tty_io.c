@@ -472,26 +472,6 @@ id|routine
 )paren
 (brace
 macro_line|#ifdef TTY_PARANOIA_CHECK
-r_static
-r_const
-r_char
-id|badmagic
-(braket
-)braket
-op_assign
-id|KERN_WARNING
-l_string|&quot;Warning: bad magic number for tty struct (%s) in %s&bslash;n&quot;
-suffix:semicolon
-r_static
-r_const
-r_char
-id|badtty
-(braket
-)braket
-op_assign
-id|KERN_WARNING
-l_string|&quot;Warning: null TTY for (%s) in %s&bslash;n&quot;
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -502,12 +482,19 @@ id|tty
 id|printk
 c_func
 (paren
-id|badtty
+id|KERN_WARNING
+l_string|&quot;null TTY for (%d:%d) in %s&bslash;n&quot;
 comma
-id|cdevname
+id|imajor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
+)paren
+comma
+id|iminor
+c_func
+(paren
+id|inode
 )paren
 comma
 id|routine
@@ -528,12 +515,19 @@ id|TTY_MAGIC
 id|printk
 c_func
 (paren
-id|badmagic
+id|KERN_WARNING
+l_string|&quot;bad magic number for tty struct (%d:%d) in %s&bslash;n&quot;
 comma
-id|cdevname
+id|imajor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
+)paren
+comma
+id|iminor
+c_func
+(paren
+id|inode
 )paren
 comma
 id|routine

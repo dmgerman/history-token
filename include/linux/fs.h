@@ -5248,16 +5248,6 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_const
-r_char
-op_star
-id|cdevname
-c_func
-(paren
-id|kdev_t
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|init_special_inode
 c_func
