@@ -16880,7 +16880,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|emu-&gt;fx8010.etram_pages.bytes
+op_div
+l_int|2
+)paren
 op_eq
 id|size
 )paren
