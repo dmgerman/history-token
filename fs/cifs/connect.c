@@ -8171,7 +8171,7 @@ r_if
 c_cond
 (paren
 id|smb_buffer-&gt;Flags2
-op_and_assign
+op_amp
 id|SMBFLG2_UNICODE
 )paren
 (brace
@@ -9599,7 +9599,7 @@ r_if
 c_cond
 (paren
 id|smb_buffer-&gt;Flags2
-op_and_assign
+op_amp
 id|SMBFLG2_UNICODE
 )paren
 (brace
@@ -11208,7 +11208,7 @@ r_if
 c_cond
 (paren
 id|smb_buffer-&gt;Flags2
-op_and_assign
+op_amp
 id|SMBFLG2_UNICODE
 )paren
 (brace
@@ -13016,7 +13016,7 @@ r_if
 c_cond
 (paren
 id|smb_buffer-&gt;Flags2
-op_and_assign
+op_amp
 id|SMBFLG2_UNICODE
 )paren
 (brace
@@ -14055,7 +14055,7 @@ r_if
 c_cond
 (paren
 id|smb_buffer-&gt;Flags2
-op_and_assign
+op_amp
 id|SMBFLG2_UNICODE
 )paren
 (brace
