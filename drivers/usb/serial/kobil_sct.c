@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  KOBIL USB Smart Card Terminal Driver&n; *&n; *  Copyright (C) 2002  KOBIL Systems GmbH &n; *  Author: Thomas Wahrenbruch&n; *&n; *  Contact: linuxusb@kobil.de&n; *&n; *  This program is largely derived from work by the linux-usb group&n; *  and associated source files.  Please see the usb/serial files for&n; *  individual credits and copyrights.&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  Thanks to Greg Kroah-Hartman (greg@kroah.com) for his help and&n; *  patience.&n; *&n; * Supported readers: USB TWIN, KAAN Standard Plus and SecOVID Reader Plus&n; * (Adapter K), B1 Professional and KAAN Professional (Adapter B)&n; * &n; * (28/05/2003) tw&n; *      Add support for KAAN SIM&n; *&n; * (12/09/2002) tw&n; *      Adapted to 2.5.&n; *&n; * (11/08/2002) tw&n; *      Initial version.&n; */
+multiline_comment|/*&n; *  KOBIL USB Smart Card Terminal Driver&n; *&n; *  Copyright (C) 2002  KOBIL Systems GmbH &n; *  Author: Thomas Wahrenbruch&n; *&n; *  Contact: linuxusb@kobil.de&n; *&n; *  This program is largely derived from work by the linux-usb group&n; *  and associated source files.  Please see the usb/serial files for&n; *  individual credits and copyrights.&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  Thanks to Greg Kroah-Hartman (greg@kroah.com) for his help and&n; *  patience.&n; *&n; * Supported readers: USB TWIN, KAAN Standard Plus and SecOVID Reader Plus&n; * (Adapter K), B1 Professional and KAAN Professional (Adapter B)&n; * &n; * (21/05/2004) tw&n; *      Fix bug with P&squot;n&squot;P readers&n; *&n; * (28/05/2003) tw&n; *      Add support for KAAN SIM&n; *&n; * (12/09/2002) tw&n; *      Adapted to 2.5.&n; *&n; * (11/08/2002) tw&n; *      Initial version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -32,7 +32,7 @@ macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 multiline_comment|/* Version Information */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;28/05/2003&quot;
+mdefine_line|#define DRIVER_VERSION &quot;21/05/2004&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;KOBIL Systems GmbH - http:
 singleline_comment|//www.kobil.com&quot;
@@ -1384,6 +1384,46 @@ id|result
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|priv-&gt;device_type
+op_eq
+id|KOBIL_USBTWIN_PRODUCT_ID
+op_logical_or
+id|priv-&gt;device_type
+op_eq
+id|KOBIL_ADAPTER_B_PRODUCT_ID
+op_logical_or
+id|priv-&gt;device_type
+op_eq
+id|KOBIL_KAAN_SIM_PRODUCT_ID
+)paren
+(brace
+singleline_comment|// start reading (Adapter B &squot;cause PNP string)
+id|result
+op_assign
+id|usb_submit_urb
+c_func
+(paren
+id|port-&gt;interrupt_in_urb
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - port %d Send read URB returns: %i&quot;
+comma
+id|__FUNCTION__
+comma
+id|port-&gt;number
+comma
+id|result
+)paren
+suffix:semicolon
+)brace
 id|kfree
 c_func
 (paren
@@ -1868,6 +1908,30 @@ l_int|4
 )paren
 )paren
 (brace
+singleline_comment|// stop reading (except TWIN and KAAN SIM)
+r_if
+c_cond
+(paren
+(paren
+id|priv-&gt;device_type
+op_eq
+id|KOBIL_ADAPTER_B_PRODUCT_ID
+)paren
+op_logical_or
+(paren
+id|priv-&gt;device_type
+op_eq
+id|KOBIL_ADAPTER_K_PRODUCT_ID
+)paren
+)paren
+(brace
+id|usb_unlink_urb
+c_func
+(paren
+id|port-&gt;interrupt_in_urb
+)paren
+suffix:semicolon
+)brace
 id|todo
 op_assign
 id|priv-&gt;filled
@@ -1909,14 +1973,14 @@ comma
 id|length
 )paren
 suffix:semicolon
-id|usb_fill_bulk_urb
+id|usb_fill_int_urb
 c_func
 (paren
 id|port-&gt;write_urb
 comma
 id|port-&gt;serial-&gt;dev
 comma
-id|usb_sndbulkpipe
+id|usb_sndintpipe
 c_func
 (paren
 id|port-&gt;serial-&gt;dev
@@ -1931,6 +1995,8 @@ comma
 id|kobil_write_callback
 comma
 id|port
+comma
+l_int|8
 )paren
 suffix:semicolon
 id|priv-&gt;cur_pos
@@ -1997,7 +2063,28 @@ id|port-&gt;interrupt_in_urb-&gt;dev
 op_assign
 id|port-&gt;serial-&gt;dev
 suffix:semicolon
-singleline_comment|// start reading
+singleline_comment|// start reading (except TWIN and KAAN SIM)
+r_if
+c_cond
+(paren
+(paren
+id|priv-&gt;device_type
+op_eq
+id|KOBIL_ADAPTER_B_PRODUCT_ID
+)paren
+op_logical_or
+(paren
+id|priv-&gt;device_type
+op_eq
+id|KOBIL_ADAPTER_K_PRODUCT_ID
+)paren
+)paren
+(brace
+singleline_comment|// someone sets the dev to 0 if the close method has been called
+id|port-&gt;interrupt_in_urb-&gt;dev
+op_assign
+id|port-&gt;serial-&gt;dev
+suffix:semicolon
 id|result
 op_assign
 id|usb_submit_urb
@@ -2020,6 +2107,7 @@ comma
 id|result
 )paren
 suffix:semicolon
+)brace
 )brace
 r_return
 id|count
