@@ -1173,6 +1173,19 @@ op_assign
 op_amp
 id|q-&gt;elevator
 suffix:semicolon
+multiline_comment|/*&n;&t; * the main clearing point for q-&gt;last_merge is on retrieval of&n;&t; * request by driver (it calls elv_next_request()), but it _can_&n;&t; * also happen here if a request is added to the queue but later&n;&t; * deleted without ever being given to driver (merged with another&n;&t; * request).&n;&t; */
+r_if
+c_cond
+(paren
+op_amp
+id|rq-&gt;queuelist
+op_eq
+id|q-&gt;last_merge
+)paren
+id|q-&gt;last_merge
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren

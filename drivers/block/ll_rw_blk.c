@@ -4984,25 +4984,6 @@ id|req-&gt;rl
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|q
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|q-&gt;last_merge
-op_eq
-op_amp
-id|req-&gt;queuelist
-)paren
-id|q-&gt;last_merge
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Request may not have originated from ll_rw_blk. if not,&n;&t; * it didn&squot;t come out of our reserved rq pools&n;&t; */
 r_if
 c_cond
