@@ -6882,10 +6882,6 @@ id|len
 r_register
 id|u32
 id|_crc
-id|__asm
-(paren
-l_string|&quot;ax&quot;
-)paren
 suffix:semicolon
 id|_crc
 op_assign
@@ -6895,8 +6891,8 @@ id|__asm
 id|__volatile
 (paren
 l_string|&quot;xorl&t;%%ebx, %%ebx&bslash;n&quot;
-l_string|&quot;movl&t;%1, %%esi&bslash;n&quot;
-l_string|&quot;movl&t;%2, %%ecx&bslash;n&quot;
+l_string|&quot;movl&t;%2, %%esi&bslash;n&quot;
+l_string|&quot;movl&t;%3, %%ecx&bslash;n&quot;
 l_string|&quot;movl&t;$crc32tab, %%edi&bslash;n&quot;
 l_string|&quot;shrl&t;$2, %%ecx&bslash;n&quot;
 l_string|&quot;jz&t;1f&bslash;n&quot;
@@ -6926,7 +6922,7 @@ l_string|&quot;xorl&t;(%%edi,%%ebx,4), %%eax&bslash;n&quot;
 l_string|&quot;decl&t;%%ecx&bslash;n&quot;
 l_string|&quot;jnz&t;0b&bslash;n&quot;
 l_string|&quot;1:&bslash;n&quot;
-l_string|&quot;movl&t;%2, %%ecx&bslash;n&quot;
+l_string|&quot;movl&t;%3, %%ecx&bslash;n&quot;
 l_string|&quot;andl&t;$3, %%ecx&bslash;n&quot;
 l_string|&quot;jz&t;2f&bslash;n&quot;
 l_string|&quot;movb&t;%%al, %%bl&bslash;n&quot;
@@ -6947,8 +6943,12 @@ l_string|&quot;xorb&t;2(%%esi), %%bl&bslash;n&quot;
 l_string|&quot;xorl&t;(%%edi,%%ebx,4), %%eax&bslash;n&quot;
 l_string|&quot;2:&bslash;n&quot;
 suffix:colon
+l_string|&quot;=a&quot;
+(paren
+id|_crc
+)paren
 suffix:colon
-l_string|&quot;a&quot;
+l_string|&quot;0&quot;
 (paren
 id|_crc
 )paren
@@ -6963,8 +6963,6 @@ l_string|&quot;g&quot;
 id|len
 )paren
 suffix:colon
-l_string|&quot;ax&quot;
-comma
 l_string|&quot;bx&quot;
 comma
 l_string|&quot;cx&quot;
