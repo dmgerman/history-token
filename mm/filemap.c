@@ -2552,12 +2552,13 @@ c_func
 id|page
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Mark the page accessed if we read the beginning.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * When (part of) the same page is read multiple times&n;&t;&t; * in succession, only mark it as accessed the first time.&n;&t;&t; */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|offset
+id|ra.prev_page
+op_ne
+id|index
 )paren
 id|mark_page_accessed
 c_func

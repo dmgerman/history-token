@@ -87,6 +87,11 @@ id|ra-&gt;ra_pages
 op_assign
 id|mapping-&gt;backing_dev_info-&gt;ra_pages
 suffix:semicolon
+id|ra-&gt;prev_page
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Return max readahead size for this inode in number-of-pages.&n; */
 DECL|function|get_max_readahead
@@ -1407,6 +1412,10 @@ id|RA_FLAG_INCACHE
 id|newsize
 op_assign
 l_int|1
+suffix:semicolon
+id|ra-&gt;prev_page
+op_assign
+id|offset
 suffix:semicolon
 r_goto
 id|out
