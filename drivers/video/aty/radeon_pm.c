@@ -12640,7 +12640,13 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;radeonfb: switching to D2 state...&bslash;n&quot;
+l_string|&quot;radeonfb (%s): switching to D2 state...&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|rinfo-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Disable dynamic power management of clocks for the&n;&t;&t; * duration of the suspend/resume process&n;&t;&t; */
@@ -12825,7 +12831,13 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;radeonfb: switching to D0 state...&bslash;n&quot;
+l_string|&quot;radeonfb (%s): switching to D0 state...&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|rinfo-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Switch back PCI powermanagment to D0 */
@@ -13088,6 +13100,9 @@ id|rinfo
 op_assign
 id|info-&gt;par
 suffix:semicolon
+id|u8
+id|agp
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -13136,7 +13151,13 @@ id|susdisking
 id|printk
 c_func
 (paren
-l_string|&quot;suspending to disk but state = %d&bslash;n&quot;
+l_string|&quot;radeonfb (%s): suspending to disk but state = %d&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 comma
 id|state
 )paren
@@ -13214,6 +13235,80 @@ op_amp
 id|rinfo-&gt;lvds_timer
 )paren
 suffix:semicolon
+multiline_comment|/* Disable AGP. The AGP host should have done it, but since ordering&n;&t; * isn&squot;t always properly guaranteed in this specific case, let&squot;s make&n;&t; * sure it&squot;s disabled on card side now. Ultimately, when merging fbdev&n;&t; * and dri into some common infrastructure, this will be handled&n;&t; * more nicely. The host bridge side will (or will not) be dealt with&n;&t; * by the bridge AGP driver, we don&squot;t attempt to touch it here.&n;&t; */
+id|agp
+op_assign
+id|pci_find_capability
+c_func
+(paren
+id|pdev
+comma
+id|PCI_CAP_ID_AGP
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|agp
+)paren
+(brace
+id|u32
+id|cmd
+suffix:semicolon
+id|pci_read_config_dword
+c_func
+(paren
+id|pdev
+comma
+id|agp
+op_plus
+id|PCI_AGP_COMMAND
+comma
+op_amp
+id|cmd
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cmd
+op_amp
+id|PCI_AGP_COMMAND_AGP
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;radeonfb (%s): AGP was enabled, &quot;
+l_string|&quot;disabling ...&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
+)paren
+suffix:semicolon
+id|cmd
+op_and_assign
+op_complement
+id|PCI_AGP_COMMAND_AGP
+suffix:semicolon
+id|pci_write_config_dword
+c_func
+(paren
+id|pdev
+comma
+id|agp
+op_plus
+id|PCI_AGP_COMMAND
+comma
+id|cmd
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* If we support wakeup from poweroff, we save all regs we can including cfg&n;&t; * space&n;&t; */
 r_if
 c_cond
@@ -13348,6 +13443,7 @@ id|LVDS_DIGON
 )paren
 )paren
 suffix:semicolon
+)brace
 singleline_comment|// FIXME: Use PCI layer
 r_for
 c_loop
@@ -13366,7 +13462,7 @@ id|i
 id|pci_read_config_dword
 c_func
 (paren
-id|rinfo-&gt;pdev
+id|pdev
 comma
 id|i
 op_star
@@ -13379,7 +13475,12 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
+id|pci_disable_device
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* If we support D2, we go to it (should be fixed later with a flag forcing&n;&t; * D3 only for some laptops)&n;&t; */
 r_if
