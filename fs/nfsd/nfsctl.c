@@ -857,8 +857,6 @@ id|argsize
 comma
 id|respsize
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|lock_kernel
 (paren
 )paren
@@ -1267,8 +1265,6 @@ id|unlock_kernel
 (paren
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -1298,6 +1294,10 @@ op_assign
 id|do_nfsservctl
 suffix:colon
 id|handle_sys_nfsservctl
+comma
+id|owner
+suffix:colon
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
