@@ -2,6 +2,7 @@ multiline_comment|/* -*- linux-c -*-&n; * sysctl_net_core.c: sysctl interface to
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#ifdef CONFIG_SYSCTL
 r_extern
 r_int
