@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 singleline_comment|// #define DEBUG
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;0.4.11&quot;
+mdefine_line|#define DRIVER_VERSION &quot;0.4.13&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB Scanner Driver&quot;
 macro_line|#include &lt;linux/usb.h&gt;
@@ -126,7 +126,7 @@ l_int|0x1a20
 )paren
 )brace
 comma
-multiline_comment|/* Unknown - Oliver Schwartz */
+multiline_comment|/* Prisa 310U */
 (brace
 id|USB_DEVICE
 c_func
@@ -427,6 +427,17 @@ l_int|0x4004
 comma
 multiline_comment|/* E+ Pro */
 multiline_comment|/* Avision */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0638
+comma
+l_int|0x0268
+)paren
+)brace
+comma
+multiline_comment|/* iVina 1200U */
 (brace
 id|USB_DEVICE
 c_func
@@ -754,6 +765,17 @@ l_int|0x2016
 )brace
 comma
 multiline_comment|/* ColorPage HR6X */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0458
+comma
+l_int|0x2018
+)paren
+)brace
+comma
+multiline_comment|/* ColorPage HR7X */
 multiline_comment|/* Hewlett Packard */
 (brace
 id|USB_DEVICE
@@ -939,6 +961,17 @@ c_func
 (paren
 l_int|0x03f0
 comma
+l_int|0x1411
+)paren
+)brace
+comma
+multiline_comment|/* PSC 750 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x03f0
+comma
 l_int|0x2005
 )paren
 )brace
@@ -955,18 +988,17 @@ l_int|0x2205
 )brace
 comma
 multiline_comment|/* ScanJet 3500c */
-multiline_comment|/* iVina */
 (brace
 id|USB_DEVICE
 c_func
 (paren
-l_int|0x0638
+l_int|0x03f0
 comma
-l_int|0x0268
+l_int|0x2f11
 )paren
 )brace
 comma
-multiline_comment|/* 1200U */
+multiline_comment|/* PSC 1210 */
 multiline_comment|/* Lexmark */
 (brace
 id|USB_DEVICE
@@ -1049,6 +1081,17 @@ l_int|0x30cf
 )brace
 comma
 multiline_comment|/* ScanMaker 4800 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a7
+comma
+l_int|0x0224
+)paren
+)brace
+comma
+multiline_comment|/* Scanport 3000 (actually Visioneer?)*/
 multiline_comment|/* The following SCSI-over-USB Microtek devices are supported by the&n;&t;   microtek driver: Enable SCSI and USB Microtek in kernel config */
 singleline_comment|//&t;{ USB_DEVICE(0x05da, 0x0099) },&t;/* ScanMaker X6 - X6U */
 singleline_comment|//&t;{ USB_DEVICE(0x05da, 0x0094) },&t;/* Phantom 336CX - C3 */
@@ -1255,6 +1298,17 @@ c_func
 (paren
 l_int|0x055f
 comma
+l_int|0x0401
+)paren
+)brace
+comma
+multiline_comment|/* P 3600 A3 Pro */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x055f
+comma
 l_int|0x0873
 )paren
 )brace
@@ -1284,7 +1338,30 @@ l_int|0x4000
 )brace
 comma
 multiline_comment|/* Coolscan LS 40 ED */
+multiline_comment|/* Pacific Image Electronics */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x05e3
+comma
+l_int|0x0120
+)paren
+)brace
+comma
+multiline_comment|/* PrimeFilm 1800u */
 multiline_comment|/* Plustek */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b3
+comma
+l_int|0x0001
+)paren
+)brace
+comma
+multiline_comment|/* 1212U */
 (brace
 id|USB_DEVICE
 c_func
@@ -1361,7 +1438,7 @@ l_int|0x0013
 )paren
 )brace
 comma
-multiline_comment|/* Unknown */
+multiline_comment|/* UT12 */
 (brace
 id|USB_DEVICE
 c_func
@@ -1428,6 +1505,17 @@ l_int|0x0401
 )brace
 comma
 multiline_comment|/* OpticPro 1248U (another one) */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b3
+comma
+l_int|0x0403
+)paren
+)brace
+comma
+multiline_comment|/* U16B */
 multiline_comment|/* Primax/Colorado */
 (brace
 id|USB_DEVICE
@@ -1961,6 +2049,28 @@ c_func
 l_int|0x04a7
 comma
 l_int|0x0221
+)paren
+)brace
+comma
+multiline_comment|/* OneTouch 5300 USB */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a7
+comma
+l_int|0x0224
+)paren
+)brace
+comma
+multiline_comment|/* OneTouch 4800 USB */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a7
+comma
+l_int|0x0226
 )paren
 )brace
 comma
