@@ -769,6 +769,32 @@ comma
 id|US_FL_SINGLE_LUN
 )paren
 comma
+macro_line|#ifdef CONFIG_USB_STORAGE_ISD200
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x054c
+comma
+l_int|0x002b
+comma
+l_int|0x0100
+comma
+l_int|0x0110
+comma
+l_string|&quot;Sony&quot;
+comma
+l_string|&quot;Portable USB Harddrive V2&quot;
+comma
+id|US_SC_ISD200
+comma
+id|US_PR_BULK
+comma
+id|isd200_Initialization
+comma
+l_int|0
+)paren
+comma
+macro_line|#endif
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -941,56 +967,6 @@ comma
 l_int|0
 )paren
 comma
-multiline_comment|/* This Pentax still camera is not conformant&n; * to the USB storage specification: -&n; * - It does not like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; * Tested on Rev. 10.00 (0x1000)&n; * Submitted by James Courtier-Dutton &lt;James@superbug.demon.co.uk&gt;&n; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0a17
-comma
-l_int|0x0004
-comma
-l_int|0x1000
-comma
-l_int|0x1000
-comma
-l_string|&quot;Pentax&quot;
-comma
-l_string|&quot;Optio 2/3/400&quot;
-comma
-id|US_SC_DEVICE
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-id|US_FL_FIX_INQUIRY
-)paren
-comma
-multiline_comment|/* Submitted by Per Winkvist &lt;per.winkvist@uk.com&gt; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0a17
-comma
-l_int|0x006
-comma
-l_int|0x1000
-comma
-l_int|0x9009
-comma
-l_string|&quot;Pentax&quot;
-comma
-l_string|&quot;Optio S&quot;
-comma
-id|US_SC_8070
-comma
-id|US_PR_CBI
-comma
-l_int|NULL
-comma
-id|US_FL_FIX_INQUIRY
-)paren
-comma
 macro_line|#ifdef CONFIG_USB_STORAGE_ISD200
 id|UNUSUAL_DEV
 c_func
@@ -1078,30 +1054,6 @@ comma
 l_string|&quot;In-System&quot;
 comma
 l_string|&quot;USB Storage Adapter V2&quot;
-comma
-id|US_SC_ISD200
-comma
-id|US_PR_BULK
-comma
-id|isd200_Initialization
-comma
-l_int|0
-)paren
-comma
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x054c
-comma
-l_int|0x002b
-comma
-l_int|0x0100
-comma
-l_int|0x0110
-comma
-l_string|&quot;Sony&quot;
-comma
-l_string|&quot;Portable USB Harddrive V2&quot;
 comma
 id|US_SC_ISD200
 comma
@@ -1212,32 +1164,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_INQUIRY
-)paren
-comma
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x05e3
-comma
-l_int|0x0700
-comma
-l_int|0x0000
-comma
-l_int|0x9999
-comma
-l_string|&quot;Unknown&quot;
-comma
-l_string|&quot;GL641USB based CF Card reader&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_BULK
-comma
-l_int|NULL
-comma
-id|US_FL_FIX_INQUIRY
-op_or
-id|US_FL_MODE_XLATE
 )paren
 comma
 multiline_comment|/* Reported by Hanno Boeck &lt;hanno@gmx.de&gt;&n; * Taken from the Lycoris Kernel */
@@ -1709,31 +1635,6 @@ comma
 id|US_FL_MODE_XLATE
 )paren
 comma
-multiline_comment|/* Submitted by Olaf Hering &lt;olh@suse.de&gt; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x07c4
-comma
-l_int|0xa109
-comma
-l_int|0x0000
-comma
-l_int|0xffff
-comma
-l_string|&quot;Datafab Systems, Inc.&quot;
-comma
-l_string|&quot;USB to CF + SM Combo (LC1)&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_DATAFAB
-comma
-l_int|NULL
-comma
-id|US_FL_MODE_XLATE
-)paren
-comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_USB_STORAGE_SDDR55
 multiline_comment|/* Contributed by Peter Waechtler */
@@ -1759,6 +1660,33 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_INQUIRY
+)paren
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_USB_STORAGE_DATAFAB
+multiline_comment|/* Submitted by Olaf Hering &lt;olh@suse.de&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x07c4
+comma
+l_int|0xa109
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;Datafab Systems, Inc.&quot;
+comma
+l_string|&quot;USB to CF + SM Combo (LC1)&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_DATAFAB
+comma
+l_int|NULL
+comma
+id|US_FL_MODE_XLATE
 )paren
 comma
 macro_line|#endif
@@ -1812,6 +1740,56 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
+multiline_comment|/* Submitted by Hartmut Wahl &lt;hwahl@hwahl.de&gt;*/
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0839
+comma
+l_int|0x000a
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;Samsung&quot;
+comma
+l_string|&quot;Digimax 410&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
+multiline_comment|/* Aiptek PocketCAM 3Mega&n; * Nicolas DUPEUX &lt;nicolas@dupeux.net&gt; &n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x08ca
+comma
+l_int|0x2011
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;AIPTEK&quot;
+comma
+l_string|&quot;PocketCAM 3Mega&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_MODE_XLATE
+)paren
+comma
 multiline_comment|/* aeb */
 id|UNUSUAL_DEV
 c_func
@@ -1835,31 +1813,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_CAPACITY
-)paren
-comma
-multiline_comment|/* Submitted by Hartmut Wahl &lt;hwahl@hwahl.de&gt;*/
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0839
-comma
-l_int|0x000a
-comma
-l_int|0x0001
-comma
-l_int|0x0001
-comma
-l_string|&quot;Samsung&quot;
-comma
-l_string|&quot;Digimax 410&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_BULK
-comma
-l_int|NULL
-comma
-id|US_FL_FIX_INQUIRY
 )paren
 comma
 id|UNUSUAL_DEV
@@ -1910,41 +1863,42 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
+multiline_comment|/* This Pentax still camera is not conformant&n; * to the USB storage specification: -&n; * - It does not like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; * Tested on Rev. 10.00 (0x1000)&n; * Submitted by James Courtier-Dutton &lt;James@superbug.demon.co.uk&gt;&n; */
 id|UNUSUAL_DEV
 c_func
 (paren
-l_int|0x0a16
+l_int|0x0a17
 comma
-l_int|0x8888
+l_int|0x0004
 comma
-l_int|0x0100
+l_int|0x1000
 comma
-l_int|0x0100
+l_int|0x1000
 comma
-l_string|&quot;IBM&quot;
+l_string|&quot;Pentax&quot;
 comma
-l_string|&quot;IBM USB Memory Key&quot;
+l_string|&quot;Optio 2/3/400&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_DEVICE
 comma
-id|US_PR_BULK
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
-multiline_comment|/* Pentax Optio S digital camera&n; * adapted from http://www2.goldfisch.at/knowledge/233&n; * (Peter Pilsl &lt;pilsl@goldfisch.at&gt;)&n; * by Christoph Weidemann &lt;cweidema@indiana.edu&gt; */
+multiline_comment|/* Submitted by Per Winkvist &lt;per.winkvist@uk.com&gt; */
 id|UNUSUAL_DEV
 c_func
 (paren
 l_int|0x0a17
 comma
-l_int|0x0006
+l_int|0x006
 comma
-l_int|0x0000
+l_int|0x1000
 comma
-l_int|0xffff
+l_int|0x9009
 comma
 l_string|&quot;Pentax&quot;
 comma
@@ -1952,12 +1906,10 @@ l_string|&quot;Optio S&quot;
 comma
 id|US_SC_8070
 comma
-id|US_PR_CB
+id|US_PR_CBI
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
-op_or
 id|US_FL_FIX_INQUIRY
 )paren
 comma
@@ -1987,33 +1939,6 @@ l_int|0
 )paren
 comma
 macro_line|#endif
-multiline_comment|/* EasyDisk support. Submitted by Stanislav Karchebny &lt;berk@madfire.net&gt; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x1065
-comma
-l_int|0x2136
-comma
-l_int|0x0000
-comma
-l_int|0x0001
-comma
-l_string|&quot;Global Channel Solutions&quot;
-comma
-l_string|&quot;EasyDisk EDxxxx&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_BULK
-comma
-l_int|NULL
-comma
-id|US_FL_MODE_XLATE
-op_or
-id|US_FL_FIX_INQUIRY
-)paren
-comma
 multiline_comment|/* Reported by Kevin Cernekee &lt;kpc-usbdev@gelato.uiuc.edu&gt;&n; * Tested on hardware version 1.10.&n; * Entry is needed only for the initializer function override.&n; */
 id|UNUSUAL_DEV
 c_func
@@ -2090,29 +2015,4 @@ id|US_FL_SINGLE_LUN
 )paren
 comma
 macro_line|#endif
-multiline_comment|/* Aiptek PocketCAM 3Mega&n; * Nicolas DUPEUX &lt;nicolas@dupeux.net&gt; &n; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x08ca
-comma
-l_int|0x2011
-comma
-l_int|0x0000
-comma
-l_int|0x9999
-comma
-l_string|&quot;AIPTEK&quot;
-comma
-l_string|&quot;PocketCAM 3Mega&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_BULK
-comma
-l_int|NULL
-comma
-id|US_FL_MODE_XLATE
-)paren
-comma
 eof

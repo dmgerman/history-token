@@ -89,6 +89,9 @@ DECL|macro|US_STATE_ABORTING
 mdefine_line|#define US_STATE_ABORTING&t;4
 DECL|macro|USB_STOR_STRING_LEN
 mdefine_line|#define USB_STOR_STRING_LEN 32
+multiline_comment|/*&n; * We provide a DMA-mapped I/O buffer for use with small USB transfers.&n; * It turns out that CB[I] needs a 12-byte buffer and Bulk-only needs a&n; * 31-byte buffer.  But Freecom needs a 64-byte buffer, so that&squot;s the&n; * size we&squot;ll allocate.&n; */
+DECL|macro|US_IOBUF_SIZE
+mdefine_line|#define US_IOBUF_SIZE&t;&t;64&t;/* Size of the DMA-mapped I/O buffer */
 DECL|typedef|trans_cmnd
 r_typedef
 r_int
@@ -173,6 +176,13 @@ op_star
 id|pusb_intf
 suffix:semicolon
 multiline_comment|/* this interface */
+DECL|member|unusual_dev
+r_struct
+id|us_unusual_dev
+op_star
+id|unusual_dev
+suffix:semicolon
+multiline_comment|/* device-filter entry     */
 DECL|member|flags
 r_int
 r_int
@@ -300,16 +310,6 @@ r_int
 id|sm_state
 suffix:semicolon
 multiline_comment|/* what we are doing&t; */
-multiline_comment|/* interrupt communications data */
-DECL|member|irqdata
-r_int
-r_char
-id|irqdata
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* data from USB IRQ&t; */
 multiline_comment|/* control and bulk communications data */
 DECL|member|current_urb
 r_struct
@@ -317,12 +317,12 @@ id|urb
 op_star
 id|current_urb
 suffix:semicolon
-multiline_comment|/* non-int USB requests */
-DECL|member|dr
+multiline_comment|/* USB requests&t; */
+DECL|member|cr
 r_struct
 id|usb_ctrlrequest
 op_star
-id|dr
+id|cr
 suffix:semicolon
 multiline_comment|/* control requests&t; */
 DECL|member|current_sg
@@ -330,28 +330,37 @@ r_struct
 id|usb_sg_request
 id|current_sg
 suffix:semicolon
-multiline_comment|/* scatter-gather USB   */
-multiline_comment|/* the semaphore for sleeping the control thread */
+multiline_comment|/* scatter-gather req.  */
+DECL|member|iobuf
+r_int
+r_char
+op_star
+id|iobuf
+suffix:semicolon
+multiline_comment|/* I/O buffer&t;&t; */
+DECL|member|cr_dma
+id|dma_addr_t
+id|cr_dma
+suffix:semicolon
+multiline_comment|/* buffer DMA addresses */
+DECL|member|iobuf_dma
+id|dma_addr_t
+id|iobuf_dma
+suffix:semicolon
+multiline_comment|/* mutual exclusion structures */
 DECL|member|sema
 r_struct
 id|semaphore
 id|sema
 suffix:semicolon
 multiline_comment|/* to sleep thread on   */
-multiline_comment|/* mutual exclusion structures */
 DECL|member|notify
 r_struct
 id|completion
 id|notify
 suffix:semicolon
 multiline_comment|/* thread begin/end&t;    */
-DECL|member|unusual_dev
-r_struct
-id|us_unusual_dev
-op_star
-id|unusual_dev
-suffix:semicolon
-multiline_comment|/* If unusual device       */
+multiline_comment|/* subdriver information */
 DECL|member|extra
 r_void
 op_star
