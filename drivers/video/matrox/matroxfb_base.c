@@ -5011,11 +5011,6 @@ id|crtc2.lock
 suffix:semicolon
 id|crtc2
 op_assign
-(paren
-r_struct
-id|matroxfb_dh_fb_info
-op_star
-)paren
 id|ACCESS_FBINFO
 c_func
 (paren

@@ -4227,8 +4227,7 @@ c_func
 id|crtc2.info
 )paren
 op_assign
-op_amp
-id|m2info-&gt;fbcon
+id|m2info
 suffix:semicolon
 id|up_write
 c_func
@@ -4358,7 +4357,7 @@ r_int
 id|id
 suffix:semicolon
 r_struct
-id|fb_info
+id|matroxfb_dh_fb_info
 op_star
 id|crtc2
 suffix:semicolon
@@ -4386,8 +4385,7 @@ c_cond
 (paren
 id|crtc2
 op_eq
-op_amp
-id|m2info-&gt;fbcon
+id|m2info
 )paren
 id|ACCESS_FBINFO
 c_func
@@ -4413,8 +4411,7 @@ c_cond
 (paren
 id|crtc2
 op_ne
-op_amp
-id|m2info-&gt;fbcon
+id|m2info
 )paren
 (brace
 id|printk
@@ -4425,8 +4422,7 @@ l_string|&quot;matroxfb_crtc2: Internal consistency check failed: crtc2 mismatch
 comma
 id|crtc2
 comma
-op_amp
-id|m2info-&gt;fbcon
+id|m2info
 )paren
 suffix:semicolon
 id|printk
@@ -4621,6 +4617,12 @@ id|crtc2
 )paren
 (brace
 id|matroxfb_dh_deregisterfb
+c_func
+(paren
+id|crtc2
+)paren
+suffix:semicolon
+id|kfree
 c_func
 (paren
 id|crtc2

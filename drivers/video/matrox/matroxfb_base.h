@@ -1460,6 +1460,9 @@ suffix:semicolon
 r_struct
 id|matroxfb_driver
 suffix:semicolon
+r_struct
+id|matroxfb_dh_fb_info
+suffix:semicolon
 DECL|struct|matrox_fb_info
 r_struct
 id|matrox_fb_info
@@ -1509,7 +1512,7 @@ r_struct
 (brace
 DECL|member|info
 r_struct
-id|fb_info
+id|matroxfb_dh_fb_info
 op_star
 id|info
 suffix:semicolon
