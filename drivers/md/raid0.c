@@ -284,7 +284,7 @@ id|tmp1
 r_int
 id|j
 op_assign
-id|rdev1-&gt;sb-&gt;this_disk.raid_disk
+id|rdev1-&gt;raid_disk
 suffix:semicolon
 r_if
 c_cond

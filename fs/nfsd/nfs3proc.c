@@ -421,6 +421,8 @@ id|resp-&gt;fh
 comma
 op_amp
 id|resp-&gt;access
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|RETURN_STATUS
@@ -993,6 +995,8 @@ comma
 id|argp-&gt;createmode
 comma
 id|argp-&gt;verf
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|RETURN_STATUS
@@ -1897,6 +1901,8 @@ op_amp
 id|count
 comma
 id|argp-&gt;verf
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|memcpy
@@ -2050,6 +2056,8 @@ op_amp
 id|count
 comma
 id|argp-&gt;verf
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|memcpy
