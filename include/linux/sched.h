@@ -988,12 +988,14 @@ suffix:semicolon
 multiline_comment|/* for vfork() */
 DECL|member|set_child_tid
 r_int
+id|__user
 op_star
 id|set_child_tid
 suffix:semicolon
 multiline_comment|/* CLONE_CHILD_SETTID */
 DECL|member|clear_child_tid
 r_int
+id|__user
 op_star
 id|clear_child_tid
 suffix:semicolon
@@ -2049,9 +2051,11 @@ c_func
 (paren
 r_const
 id|stack_t
+id|__user
 op_star
 comma
 id|stack_t
+id|__user
 op_star
 comma
 r_int
@@ -2454,9 +2458,11 @@ r_int
 r_int
 comma
 r_int
+id|__user
 op_star
 comma
 r_int
+id|__user
 op_star
 )paren
 suffix:semicolon

@@ -57,6 +57,7 @@ op_star
 id|iocb
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -79,6 +80,7 @@ id|iocb
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -507,6 +509,7 @@ id|move_addr_to_kernel
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|uaddr
 comma
@@ -579,10 +582,12 @@ r_int
 id|klen
 comma
 r_void
+id|__user
 op_star
 id|uaddr
 comma
 r_int
+id|__user
 op_star
 id|ulen
 )paren
@@ -1929,6 +1934,7 @@ op_star
 id|iocb
 comma
 r_char
+id|__user
 op_star
 id|ubuf
 comma
@@ -2066,6 +2072,7 @@ id|iocb
 comma
 r_const
 r_char
+id|__user
 op_star
 id|ubuf
 comma
@@ -2178,6 +2185,7 @@ id|x-&gt;async_iov.iov_base
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|ubuf
@@ -4198,10 +4206,9 @@ r_int
 id|protocol
 comma
 r_int
+id|__user
+op_star
 id|usockvec
-(braket
-l_int|2
-)braket
 )paren
 (brace
 r_struct
@@ -4453,6 +4460,7 @@ id|fd
 comma
 r_struct
 id|sockaddr
+id|__user
 op_star
 id|umyaddr
 comma
@@ -4693,10 +4701,12 @@ id|fd
 comma
 r_struct
 id|sockaddr
+id|__user
 op_star
 id|upeer_sockaddr
 comma
 r_int
+id|__user
 op_star
 id|upeer_addrlen
 )paren
@@ -4948,6 +4958,7 @@ id|fd
 comma
 r_struct
 id|sockaddr
+id|__user
 op_star
 id|uservaddr
 comma
@@ -5083,10 +5094,12 @@ id|fd
 comma
 r_struct
 id|sockaddr
+id|__user
 op_star
 id|usockaddr
 comma
 r_int
+id|__user
 op_star
 id|usockaddr_len
 )paren
@@ -5213,10 +5226,12 @@ id|fd
 comma
 r_struct
 id|sockaddr
+id|__user
 op_star
 id|usockaddr
 comma
 r_int
+id|__user
 op_star
 id|usockaddr_len
 )paren
@@ -5344,6 +5359,7 @@ r_int
 id|fd
 comma
 r_void
+id|__user
 op_star
 id|buff
 comma
@@ -5355,6 +5371,7 @@ id|flags
 comma
 r_struct
 id|sockaddr
+id|__user
 op_star
 id|addr
 comma
@@ -5527,6 +5544,7 @@ r_int
 id|fd
 comma
 r_void
+id|__user
 op_star
 id|buff
 comma
@@ -5566,6 +5584,7 @@ r_int
 id|fd
 comma
 r_void
+id|__user
 op_star
 id|ubuf
 comma
@@ -5577,10 +5596,12 @@ id|flags
 comma
 r_struct
 id|sockaddr
+id|__user
 op_star
 id|addr
 comma
 r_int
+id|__user
 op_star
 id|addr_len
 )paren
@@ -5751,6 +5772,7 @@ r_int
 id|fd
 comma
 r_void
+id|__user
 op_star
 id|ubuf
 comma
@@ -5796,6 +5818,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -5939,10 +5962,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -6164,6 +6189,7 @@ id|fd
 comma
 r_struct
 id|msghdr
+id|__user
 op_star
 id|msg
 comma
@@ -6173,12 +6199,14 @@ id|flags
 (brace
 r_struct
 id|compat_msghdr
+id|__user
 op_star
 id|msg_compat
 op_assign
 (paren
 r_struct
 id|compat_msghdr
+id|__user
 op_star
 )paren
 id|msg
@@ -6536,6 +6564,7 @@ op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Careful! Before this, msg_sys.msg_control contains a user pointer.&n;&t;&t; * Afterwards, it will be a kernel pointer. Thus the compiler-assisted&n;&t;&t; * checking falls down on this.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -6544,6 +6573,11 @@ c_func
 (paren
 id|ctl_buf
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|msg_sys.msg_control
 comma
 id|ctl_len
@@ -6649,6 +6683,7 @@ id|fd
 comma
 r_struct
 id|msghdr
+id|__user
 op_star
 id|msg
 comma
@@ -6659,12 +6694,14 @@ id|flags
 (brace
 r_struct
 id|compat_msghdr
+id|__user
 op_star
 id|msg_compat
 op_assign
 (paren
 r_struct
 id|compat_msghdr
+id|__user
 op_star
 )paren
 id|msg
@@ -6715,10 +6752,12 @@ suffix:semicolon
 multiline_comment|/* user mode address pointers */
 r_struct
 id|sockaddr
+id|__user
 op_star
 id|uaddr
 suffix:semicolon
 r_int
+id|__user
 op_star
 id|uaddr_len
 suffix:semicolon
@@ -6854,6 +6893,11 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Save the user-mode address (verify_iovec will change the&n;&t; *&t;kernel msghdr to use the kernel address space)&n;&t; */
 id|uaddr
 op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|msg_sys.msg_name
 suffix:semicolon
 id|uaddr_len
@@ -7151,6 +7195,7 @@ id|call
 comma
 r_int
 r_int
+id|__user
 op_star
 id|args
 )paren
@@ -7257,6 +7302,7 @@ comma
 (paren
 r_struct
 id|sockaddr
+id|__user
 op_star
 )paren
 id|a1
@@ -7282,6 +7328,7 @@ comma
 (paren
 r_struct
 id|sockaddr
+id|__user
 op_star
 )paren
 id|a1
@@ -7322,12 +7369,14 @@ comma
 (paren
 r_struct
 id|sockaddr
+id|__user
 op_star
 )paren
 id|a1
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|a
@@ -7351,12 +7400,14 @@ comma
 (paren
 r_struct
 id|sockaddr
+id|__user
 op_star
 )paren
 id|a1
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|a
@@ -7380,12 +7431,14 @@ comma
 (paren
 r_struct
 id|sockaddr
+id|__user
 op_star
 )paren
 id|a1
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|a
@@ -7415,6 +7468,7 @@ l_int|2
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|a
@@ -7437,6 +7491,7 @@ id|a0
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|a1
@@ -7466,6 +7521,7 @@ id|a0
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|a1
@@ -7483,6 +7539,7 @@ comma
 (paren
 r_struct
 id|sockaddr
+id|__user
 op_star
 )paren
 id|a
@@ -7510,6 +7567,7 @@ id|a0
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|a1
@@ -7539,6 +7597,7 @@ id|a0
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|a1
@@ -7556,6 +7615,7 @@ comma
 (paren
 r_struct
 id|sockaddr
+id|__user
 op_star
 )paren
 id|a
@@ -7565,6 +7625,7 @@ l_int|4
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|a
@@ -7609,6 +7670,7 @@ l_int|2
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|a
@@ -7643,6 +7705,7 @@ l_int|2
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|a
@@ -7652,6 +7715,7 @@ l_int|3
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|a
@@ -7675,6 +7739,7 @@ comma
 (paren
 r_struct
 id|msghdr
+id|__user
 op_star
 )paren
 id|a1
@@ -7700,6 +7765,7 @@ comma
 (paren
 r_struct
 id|msghdr
+id|__user
 op_star
 )paren
 id|a1

@@ -2407,6 +2407,7 @@ id|count
 suffix:semicolon
 DECL|member|buf
 r_char
+id|__user
 op_star
 id|buf
 suffix:semicolon
@@ -2800,6 +2801,7 @@ comma
 id|read_actor_t
 comma
 r_void
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -6047,6 +6049,7 @@ id|kiocb
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -6065,6 +6068,7 @@ op_star
 comma
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -6181,6 +6185,7 @@ comma
 id|read_actor_t
 comma
 r_void
+id|__user
 op_star
 )paren
 suffix:semicolon
