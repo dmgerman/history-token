@@ -26838,7 +26838,7 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;ticket 0x%lx lsn %s&bslash;n&quot;
+l_string|&quot;ticket 0x%lx lsn %s commit_lsn %s&bslash;n&quot;
 comma
 (paren
 r_int
@@ -26851,6 +26851,13 @@ c_func
 (paren
 op_amp
 id|tp-&gt;t_lsn
+)paren
+comma
+id|xfs_fmtlsn
+c_func
+(paren
+op_amp
+id|tp-&gt;t_commit_lsn
 )paren
 )paren
 suffix:semicolon

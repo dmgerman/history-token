@@ -943,7 +943,12 @@ DECL|member|t_lsn
 id|xfs_lsn_t
 id|t_lsn
 suffix:semicolon
-multiline_comment|/* log seq num of trans commit*/
+multiline_comment|/* log seq num of start of&n;&t;&t;&t;&t;&t;&t; * transaction. */
+DECL|member|t_commit_lsn
+id|xfs_lsn_t
+id|t_commit_lsn
+suffix:semicolon
+multiline_comment|/* log seq num of end of &n;&t;&t;&t;&t;&t;&t; * transaction. */
 DECL|member|t_mountp
 r_struct
 id|xfs_mount

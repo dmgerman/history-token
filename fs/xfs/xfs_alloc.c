@@ -11577,7 +11577,7 @@ id|tp
 suffix:semicolon
 id|lsn
 op_assign
-id|bsy-&gt;busy_tp-&gt;t_lsn
+id|bsy-&gt;busy_tp-&gt;t_commit_lsn
 suffix:semicolon
 id|mutex_spinunlock
 c_func
