@@ -46,13 +46,11 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Variables to be preserved over suspend */
-DECL|variable|pagedir_order_check
-r_static
+r_extern
 r_int
 id|pagedir_order_check
 suffix:semicolon
-DECL|variable|nr_copy_pages_check
-r_static
+r_extern
 r_int
 id|nr_copy_pages_check
 suffix:semicolon
@@ -73,36 +71,25 @@ id|dev_t
 id|resume_device
 suffix:semicolon
 multiline_comment|/* Local variables that should not be affected by save */
-DECL|variable|__nosavedata
+r_extern
 r_int
 r_int
-id|pmdisk_pages
-id|__nosavedata
-op_assign
-l_int|0
+id|nr_copy_pages
 suffix:semicolon
 multiline_comment|/* Suspend pagedir is allocated before final copy, therefore it&n;   must be freed after resume &n;&n;   Warning: this is evil. There are actually two pagedirs at time of&n;   resume. One is &quot;pagedir_save&quot;, which is empty frame allocated at&n;   time of suspend, that must be freed. Second is &quot;pagedir_nosave&quot;, &n;   allocated at time of resume, that travels through memory not to&n;   collide with anything.&n; */
-DECL|variable|__nosavedata
+r_extern
 id|suspend_pagedir_t
 op_star
-id|pm_pagedir_nosave
-id|__nosavedata
-op_assign
-l_int|NULL
+id|pagedir_nosave
 suffix:semicolon
-DECL|variable|pagedir_save
-r_static
+r_extern
 id|suspend_pagedir_t
 op_star
 id|pagedir_save
 suffix:semicolon
-DECL|variable|__nosavedata
-r_static
+r_extern
 r_int
 id|pagedir_order
-id|__nosavedata
-op_assign
-l_int|0
 suffix:semicolon
 DECL|struct|pmdisk_info
 r_struct
@@ -514,7 +501,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|pmdisk_pages
+id|nr_copy_pages
 suffix:semicolon
 id|i
 op_increment
@@ -523,7 +510,7 @@ op_increment
 id|entry
 op_assign
 (paren
-id|pm_pagedir_nosave
+id|pagedir_nosave
 op_plus
 id|i
 )paren
@@ -545,7 +532,7 @@ r_else
 r_break
 suffix:semicolon
 (paren
-id|pm_pagedir_nosave
+id|pagedir_nosave
 op_plus
 id|i
 )paren
@@ -584,7 +571,7 @@ c_func
 (paren
 l_string|&quot;Writing data to swap (%d pages): &quot;
 comma
-id|pmdisk_pages
+id|nr_copy_pages
 )paren
 suffix:semicolon
 r_for
@@ -596,7 +583,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|pmdisk_pages
+id|nr_copy_pages
 op_logical_and
 op_logical_neg
 id|error
@@ -627,7 +614,7 @@ id|write_swap_page
 c_func
 (paren
 (paren
-id|pm_pagedir_nosave
+id|pagedir_nosave
 op_plus
 id|i
 )paren
@@ -637,7 +624,7 @@ comma
 op_amp
 (paren
 (paren
-id|pm_pagedir_nosave
+id|pagedir_nosave
 op_plus
 id|i
 )paren
@@ -719,7 +706,7 @@ op_assign
 r_int
 r_int
 )paren
-id|pm_pagedir_nosave
+id|pagedir_nosave
 suffix:semicolon
 r_int
 id|error
@@ -732,7 +719,7 @@ op_assign
 id|SUSPEND_PD_PAGES
 c_func
 (paren
-id|pmdisk_pages
+id|nr_copy_pages
 )paren
 suffix:semicolon
 r_int
@@ -955,7 +942,7 @@ c_func
 suffix:semicolon
 id|pmdisk_info.image_pages
 op_assign
-id|pmdisk_pages
+id|nr_copy_pages
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;write_header - Fill and write the suspend header.&n; *&t;@entry:&t;Location of the last swap entry used.&n; *&n; *&t;Allocate a page, fill header, write header. &n; *&n; *&t;@entry is the location of the last pagedir entry written on &n; *&t;entrance. On exit, it contains the location of the header. &n; */
@@ -1297,7 +1284,7 @@ id|n
 op_increment
 suffix:semicolon
 )brace
-id|pmdisk_pages
+id|nr_copy_pages
 op_assign
 id|n
 suffix:semicolon
@@ -1391,7 +1378,7 @@ c_func
 (paren
 id|n
 op_ne
-id|pmdisk_pages
+id|nr_copy_pages
 )paren
 suffix:semicolon
 )brace
@@ -1426,7 +1413,7 @@ id|pagedir_save
 suffix:semicolon
 id|i
 OL
-id|pmdisk_pages
+id|nr_copy_pages
 suffix:semicolon
 id|i
 op_increment
@@ -1504,11 +1491,11 @@ c_func
 id|SUSPEND_PD_PAGES
 c_func
 (paren
-id|pmdisk_pages
+id|nr_copy_pages
 )paren
 )paren
 suffix:semicolon
-id|pmdisk_pages
+id|nr_copy_pages
 op_add_assign
 l_int|1
 op_lshift
@@ -1524,7 +1511,7 @@ c_func
 id|SUSPEND_PD_PAGES
 c_func
 (paren
-id|pmdisk_pages
+id|nr_copy_pages
 )paren
 )paren
 op_minus
@@ -1540,7 +1527,7 @@ id|order
 op_add_assign
 id|diff
 suffix:semicolon
-id|pmdisk_pages
+id|nr_copy_pages
 op_add_assign
 l_int|1
 op_lshift
@@ -1620,7 +1607,7 @@ op_star
 id|PAGE_SIZE
 )paren
 suffix:semicolon
-id|pm_pagedir_nosave
+id|pagedir_nosave
 op_assign
 id|pagedir_save
 suffix:semicolon
@@ -1659,7 +1646,7 @@ id|pagedir_save
 suffix:semicolon
 id|i
 OL
-id|pmdisk_pages
+id|nr_copy_pages
 suffix:semicolon
 id|i
 op_increment
@@ -1756,7 +1743,7 @@ c_func
 )paren
 OL
 (paren
-id|pmdisk_pages
+id|nr_copy_pages
 op_plus
 id|PAGES_FOR_IO
 )paren
@@ -1808,7 +1795,7 @@ c_cond
 id|i.freeswap
 OL
 (paren
-id|pmdisk_pages
+id|nr_copy_pages
 op_plus
 id|PAGES_FOR_IO
 )paren
@@ -1864,7 +1851,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|pm_pagedir_nosave
+id|pagedir_nosave
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1884,7 +1871,7 @@ c_func
 (paren
 l_string|&quot;pmdisk: (pages needed: %d + %d free: %d)&bslash;n&quot;
 comma
-id|pmdisk_pages
+id|nr_copy_pages
 comma
 id|PAGES_FOR_IO
 comma
@@ -1973,7 +1960,7 @@ suffix:semicolon
 )brace
 id|nr_copy_pages_check
 op_assign
-id|pmdisk_pages
+id|nr_copy_pages
 suffix:semicolon
 id|pagedir_order_check
 op_assign
@@ -1997,7 +1984,7 @@ c_func
 (paren
 l_string|&quot;pmdisk: %d pages copied&bslash;n&quot;
 comma
-id|pmdisk_pages
+id|nr_copy_pages
 )paren
 suffix:semicolon
 r_return
@@ -2056,7 +2043,7 @@ id|BUG_ON
 (paren
 id|nr_copy_pages_check
 op_ne
-id|pmdisk_pages
+id|nr_copy_pages
 )paren
 suffix:semicolon
 id|BUG_ON
@@ -2706,7 +2693,7 @@ op_minus
 id|EPERM
 suffix:semicolon
 )brace
-id|pmdisk_pages
+id|nr_copy_pages
 op_assign
 id|pmdisk_info.image_pages
 suffix:semicolon
@@ -2768,7 +2755,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|pm_pagedir_nosave
+id|pagedir_nosave
 op_assign
 (paren
 r_struct
@@ -2858,7 +2845,7 @@ c_func
 r_int
 r_int
 )paren
-id|pm_pagedir_nosave
+id|pagedir_nosave
 comma
 id|pagedir_order
 )paren
@@ -2896,7 +2883,7 @@ c_func
 (paren
 l_string|&quot;Reading image data (%d pages): &quot;
 comma
-id|pmdisk_pages
+id|nr_copy_pages
 )paren
 suffix:semicolon
 r_for
@@ -2908,11 +2895,11 @@ l_int|0
 comma
 id|p
 op_assign
-id|pm_pagedir_nosave
+id|pagedir_nosave
 suffix:semicolon
 id|i
 OL
-id|pmdisk_pages
+id|nr_copy_pages
 op_logical_and
 op_logical_neg
 id|error
@@ -3075,7 +3062,7 @@ c_func
 r_int
 r_int
 )paren
-id|pm_pagedir_nosave
+id|pagedir_nosave
 comma
 id|pagedir_order
 )paren

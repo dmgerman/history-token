@@ -68,12 +68,10 @@ id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* Variables to be preserved over suspend */
 DECL|variable|pagedir_order_check
-r_static
 r_int
 id|pagedir_order_check
 suffix:semicolon
 DECL|variable|nr_copy_pages_check
-r_static
 r_int
 id|nr_copy_pages_check
 suffix:semicolon
@@ -117,13 +115,11 @@ op_assign
 l_int|NULL
 suffix:semicolon
 DECL|variable|pagedir_save
-r_static
 id|suspend_pagedir_t
 op_star
 id|pagedir_save
 suffix:semicolon
 DECL|variable|__nosavedata
-r_static
 r_int
 id|pagedir_order
 id|__nosavedata

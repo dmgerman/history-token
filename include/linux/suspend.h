@@ -119,18 +119,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|nr_copy_pages
-id|__nosavedata
-suffix:semicolon
-r_extern
-id|suspend_pagedir_t
-op_star
-id|pagedir_nosave
-id|__nosavedata
-suffix:semicolon
 macro_line|#else&t;/* CONFIG_SOFTWARE_SUSPEND */
 DECL|function|software_suspend
 r_static
