@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Driver for Digigram VX soundcards&n; *&n; * PCM part&n
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/asoundef.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -1227,8 +1228,6 @@ comma
 id|i
 comma
 id|cur_state
-comma
-id|delay
 suffix:semicolon
 multiline_comment|/* Check the pipe is not already in the requested state */
 r_if
