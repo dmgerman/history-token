@@ -14,7 +14,6 @@ macro_line|#elif defined(CONFIG_8260)
 macro_line|#include &lt;asm/mpc8260.h&gt;
 macro_line|#endif
 macro_line|#include &quot;nonstdio.h&quot;
-macro_line|#include &quot;zlib.h&quot;
 multiline_comment|/* The linker tells us where the image is. */
 r_extern
 r_char

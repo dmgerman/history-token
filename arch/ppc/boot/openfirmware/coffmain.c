@@ -4,7 +4,6 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &quot;nonstdio.h&quot;
 macro_line|#include &quot;of1275.h&quot;
-macro_line|#include &quot;zlib.h&quot;
 multiline_comment|/* Passed from the linker */
 r_extern
 r_char
