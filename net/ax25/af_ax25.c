@@ -581,8 +581,7 @@ id|sk
 op_assign
 id|s-&gt;sk
 suffix:semicolon
-multiline_comment|/* XXX Sleeps with spinlock held, use refcounts instead. XXX */
-id|lock_sock
+id|sock_hold
 c_func
 (paren
 id|sk
