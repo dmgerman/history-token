@@ -645,6 +645,11 @@ l_int|1
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* flags for neigh_update() */
+DECL|macro|NEIGH_UPDATE_F_OVERRIDE
+mdefine_line|#define NEIGH_UPDATE_F_OVERRIDE&t;&t;&t;0x00000001
+DECL|macro|NEIGH_UPDATE_F_ADMIN
+mdefine_line|#define NEIGH_UPDATE_F_ADMIN&t;&t;&t;0x80000000
 r_extern
 r_void
 id|neigh_table_init
@@ -758,11 +763,8 @@ comma
 id|u8
 r_new
 comma
-r_int
-id|override
-comma
-r_int
-id|arp
+id|u32
+id|flags
 )paren
 suffix:semicolon
 r_extern

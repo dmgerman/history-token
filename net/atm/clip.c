@@ -393,9 +393,7 @@ l_int|NULL
 comma
 id|NUD_NONE
 comma
-l_int|0
-comma
-l_int|0
+id|NEIGH_UPDATE_F_ADMIN
 )paren
 suffix:semicolon
 r_if
@@ -2825,9 +2823,9 @@ id|llc_oui
 comma
 id|NUD_PERMANENT
 comma
-l_int|1
-comma
-l_int|0
+id|NEIGH_UPDATE_F_OVERRIDE
+op_or
+id|NEIGH_UPDATE_F_ADMIN
 )paren
 suffix:semicolon
 id|neigh_release

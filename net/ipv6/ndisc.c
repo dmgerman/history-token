@@ -4231,8 +4231,11 @@ suffix:colon
 id|NUD_STALE
 comma
 id|msg-&gt;icmph.icmp6_override
-comma
-l_int|1
+ques
+c_cond
+id|NEIGH_UPDATE_F_OVERRIDE
+suffix:colon
+l_int|0
 )paren
 suffix:semicolon
 id|neigh_release
@@ -4908,9 +4911,7 @@ id|lladdr
 comma
 id|NUD_STALE
 comma
-l_int|1
-comma
-l_int|1
+id|NEIGH_UPDATE_F_OVERRIDE
 )paren
 suffix:semicolon
 )brace
@@ -5478,9 +5479,7 @@ id|lladdr
 comma
 id|NUD_STALE
 comma
-l_int|1
-comma
-l_int|1
+id|NEIGH_UPDATE_F_OVERRIDE
 )paren
 suffix:semicolon
 r_if

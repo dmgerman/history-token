@@ -3309,7 +3309,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* Generic update routine.&n;   -- lladdr is new lladdr or NULL, if it is not supplied.&n;   -- new    is new state.&n;   -- override == 1 allows to override existing lladdr, if it is different.&n;   -- arp == 0 means that the change is administrative.&n;&n;   Caller MUST hold reference count on the entry.&n; */
+multiline_comment|/* Generic update routine.&n;   -- lladdr is new lladdr or NULL, if it is not supplied.&n;   -- new    is new state.&n;   -- flags&n;&t;NEIGH_UPDATE_F_OVERRIDE allows to override existing lladdr,&n;&t;&t;&t;&t;if it is different.&n;&t;NEIGH_UPDATE_F_ADMIN&t;means that the change is administrative.&n;&n;   Caller MUST hold reference count on the entry.&n; */
 DECL|function|neigh_update
 r_int
 id|neigh_update
@@ -3328,11 +3328,8 @@ comma
 id|u8
 r_new
 comma
-r_int
-id|override
-comma
-r_int
-id|arp
+id|u32
+id|flags
 )paren
 (brace
 id|u8
@@ -3376,7 +3373,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|arp
+op_logical_neg
+(paren
+id|flags
+op_amp
+id|NEIGH_UPDATE_F_ADMIN
+)paren
 op_logical_and
 (paren
 id|old
@@ -3494,7 +3496,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|override
+(paren
+id|flags
+op_amp
+id|NEIGH_UPDATE_F_OVERRIDE
+)paren
 )paren
 r_goto
 id|out
@@ -3859,9 +3865,7 @@ id|lladdr
 comma
 id|NUD_STALE
 comma
-l_int|1
-comma
-l_int|1
+id|NEIGH_UPDATE_F_OVERRIDE
 )paren
 suffix:semicolon
 r_return
@@ -5670,9 +5674,9 @@ l_int|NULL
 comma
 id|NUD_FAILED
 comma
-l_int|1
-comma
-l_int|0
+id|NEIGH_UPDATE_F_OVERRIDE
+op_or
+id|NEIGH_UPDATE_F_ADMIN
 )paren
 suffix:semicolon
 id|neigh_release
@@ -6112,9 +6116,16 @@ l_int|NULL
 comma
 id|ndm-&gt;ndm_state
 comma
+(paren
 id|override
-comma
+ques
+c_cond
+id|NEIGH_UPDATE_F_OVERRIDE
+suffix:colon
 l_int|0
+)paren
+op_or
+id|NEIGH_UPDATE_F_ADMIN
 )paren
 suffix:semicolon
 )brace
