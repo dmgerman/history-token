@@ -124,6 +124,7 @@ id|ext_int_pfault
 suffix:semicolon
 macro_line|#endif
 DECL|variable|kstack_depth_to_print
+r_static
 r_int
 id|kstack_depth_to_print
 op_assign

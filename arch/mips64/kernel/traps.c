@@ -194,12 +194,6 @@ id|mips4_available
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|kstack_depth_to_print
-r_int
-id|kstack_depth_to_print
-op_assign
-l_int|24
-suffix:semicolon
 multiline_comment|/*&n; * These constant is for searching for possible module text segments.&n; * MODULE_RANGE is a guess of how much space is likely to be vmalloced.&n; */
 DECL|macro|MODULE_RANGE
 mdefine_line|#define MODULE_RANGE (8*1024*1024)

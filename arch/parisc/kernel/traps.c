@@ -58,12 +58,6 @@ DECL|macro|VMALLOC_OFFSET
 mdefine_line|#define VMALLOC_OFFSET (8*1024*1024)
 DECL|macro|MODULE_RANGE
 mdefine_line|#define MODULE_RANGE (8*1024*1024)
-DECL|variable|kstack_depth_to_print
-r_int
-id|kstack_depth_to_print
-op_assign
-l_int|24
-suffix:semicolon
 DECL|function|printbinary
 r_static
 r_void
