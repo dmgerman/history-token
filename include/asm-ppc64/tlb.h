@@ -21,6 +21,9 @@ op_star
 id|tlb
 )paren
 suffix:semicolon
+multiline_comment|/* Avoid pulling in another include just for this */
+DECL|macro|check_pgt_cache
+mdefine_line|#define check_pgt_cache()&t;do { } while (0)
 multiline_comment|/* Get the generic bits... */
 macro_line|#include &lt;asm-generic/tlb.h&gt;
 multiline_comment|/* Nothing needed here in fact... */

@@ -1581,7 +1581,7 @@ suffix:semicolon
 )brace
 id|printk
 (paren
-l_string|&quot;Freeing unused kernel memory: %dk freed&bslash;n&quot;
+l_string|&quot;Freeing unused kernel memory: %luk freed&bslash;n&quot;
 comma
 (paren
 op_amp

@@ -27,7 +27,6 @@ macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/iSeries/LparData.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
-macro_line|#include &quot;local_irq.h&quot;
 r_void
 id|enable_irq
 c_func
@@ -111,15 +110,6 @@ r_int
 id|ppc_spurious_interrupts
 op_assign
 l_int|0
-suffix:semicolon
-DECL|variable|ppc_irq_action
-r_struct
-id|irqaction
-op_star
-id|ppc_irq_action
-(braket
-id|NR_IRQS
-)braket
 suffix:semicolon
 DECL|variable|lpEvent_count
 r_int
