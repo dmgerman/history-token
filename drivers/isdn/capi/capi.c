@@ -6043,9 +6043,13 @@ id|drv-&gt;driver_name
 op_assign
 l_string|&quot;capi_nc&quot;
 suffix:semicolon
-id|drv-&gt;name
+id|drv-&gt;devfs_name
 op_assign
 l_string|&quot;capi/&quot;
+suffix:semicolon
+id|drv-&gt;name
+op_assign
+l_string|&quot;capi&quot;
 suffix:semicolon
 id|drv-&gt;major
 op_assign
@@ -6983,7 +6987,7 @@ l_int|0
 comma
 l_int|NULL
 comma
-l_string|&quot;capi20&quot;
+l_string|&quot;capi&quot;
 )paren
 suffix:semicolon
 id|devfs_mk_cdev
