@@ -1250,6 +1250,7 @@ comma
 l_int|0
 )paren
 comma
+multiline_comment|/* The entry was here before I took over, and had US_SC_RBC. It turns&n; * out that isn&squot;t needed. Additionally, Torsten Eriksson&n; * &lt;Torsten.Eriksson@bergianska.se&gt; is able to use his device fine&n; * without this entry at all - but I don&squot;t suspect that will be true&n; * for all users (the protocol is likely needed), so is staying at&n; * this time. - Phil Dibowitz &lt;phil@ipom.com&gt;&n; */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -1265,7 +1266,7 @@ l_string|&quot;LaCie&quot;
 comma
 l_string|&quot;USB Hard Disk&quot;
 comma
-id|US_SC_RBC
+id|US_SC_DEVICE
 comma
 id|US_PR_CB
 comma
