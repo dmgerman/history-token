@@ -1067,10 +1067,6 @@ id|pte_t
 id|pte
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|local
 op_assign
 l_int|0
@@ -1303,10 +1299,6 @@ suffix:semicolon
 r_int
 r_int
 id|context
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 r_int
 id|i
@@ -2357,6 +2349,13 @@ r_int
 op_star
 id|dprof_buffer
 suffix:semicolon
+r_void
+id|initialize_paca_hardware_interrupt_stack
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|mem_init
 r_void
 id|__init
@@ -2709,7 +2708,7 @@ id|mem_init_done
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* set the last page of each hardware interrupt stack to be protected       */
+multiline_comment|/* set the last page of each hardware interrupt stack to be protected */
 id|initialize_paca_hardware_interrupt_stack
 c_func
 (paren
@@ -2929,6 +2928,42 @@ id|len
 )paren
 suffix:semicolon
 )brace
+r_extern
+id|pte_t
+op_star
+id|find_linux_pte
+c_func
+(paren
+id|pgd_t
+op_star
+id|pgdir
+comma
+r_int
+r_int
+id|ea
+)paren
+suffix:semicolon
+r_int
+id|__hash_page
+c_func
+(paren
+r_int
+r_int
+id|ea
+comma
+r_int
+r_int
+id|access
+comma
+r_int
+r_int
+id|vsid
+comma
+id|pte_t
+op_star
+id|ptep
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This is called at the end of handling a user page fault, when the&n; * fault has been handled by updating a PTE in the linux page tables.&n; * We use it to preload an HPTE into the hash table corresponding to&n; * the updated linux PTE.&n; */
 DECL|function|update_mmu_cache
 r_void
