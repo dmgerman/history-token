@@ -8661,9 +8661,16 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* make sure we don&squot;t swamp the stripe cache if someone else&n;&t;&t; * is trying to get access&n;&t;&t; */
-id|yield
+id|set_current_state
 c_func
 (paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
 )paren
 suffix:semicolon
 )brace
