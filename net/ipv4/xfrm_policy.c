@@ -916,12 +916,7 @@ op_star
 id|type
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|type-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|type-&gt;owner

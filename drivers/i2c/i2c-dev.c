@@ -2,7 +2,7 @@ multiline_comment|/*&n;    i2c-dev.c - i2c-bus driver, char device interface  &n
 multiline_comment|/* Note that this is a complete rewrite of Simon Vogl&squot;s i2c-dev module.&n;   But I have used so much of his original code and ideas that it seems&n;   only fair to recognize him as co-author -- Frodo */
 multiline_comment|/* The I2C_RDWR ioctl code is written by Kolja Waschk &lt;waschk@telos.de&gt; */
 multiline_comment|/* The devfs code is contributed by Philipp Matthias Hahn &n;   &lt;pmhahn@titan.lahn.de&gt; */
-multiline_comment|/* $Id: i2c-dev.c,v 1.46 2002/07/06 02:07:39 mds Exp $ */
+multiline_comment|/* $Id: i2c-dev.c,v 1.48 2002/10/01 14:10:04 ac9410 Exp $ */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -1953,57 +1953,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|i2cdev_cleanup
-r_static
-r_void
-id|i2cdev_cleanup
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|res
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|res
-op_assign
-id|i2c_del_driver
-c_func
-(paren
-op_amp
-id|i2cdev_driver
-)paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;i2c-dev.o: Driver deregistration failed, &quot;
-l_string|&quot;module not removed.&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-id|devfs_remove
-c_func
-(paren
-l_string|&quot;i2c&quot;
-)paren
-suffix:semicolon
-id|unregister_chrdev
-c_func
-(paren
-id|I2C_MAJOR
-comma
-l_string|&quot;i2c&quot;
-)paren
-suffix:semicolon
-)brace
 DECL|function|i2c_dev_init
 r_int
 id|__init
@@ -2110,8 +2059,38 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
+DECL|function|i2c_dev_exit
+r_static
+r_void
+id|__exit
+id|i2c_dev_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|i2c_del_driver
+c_func
+(paren
+op_amp
+id|i2cdev_driver
+)paren
 suffix:semicolon
+id|devfs_remove
+c_func
+(paren
+l_string|&quot;i2c&quot;
+)paren
+suffix:semicolon
+id|unregister_chrdev
+c_func
+(paren
+id|I2C_MAJOR
+comma
+l_string|&quot;i2c&quot;
+)paren
+suffix:semicolon
+)brace
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -2137,11 +2116,11 @@ c_func
 id|i2c_dev_init
 )paren
 suffix:semicolon
-DECL|variable|i2cdev_cleanup
+DECL|variable|i2c_dev_exit
 id|module_exit
 c_func
 (paren
-id|i2cdev_cleanup
+id|i2c_dev_exit
 )paren
 suffix:semicolon
 eof

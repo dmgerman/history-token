@@ -503,12 +503,7 @@ comma
 id|file
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|mse-&gt;ops-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|mse-&gt;ops-&gt;owner
@@ -656,10 +651,8 @@ r_if
 c_cond
 (paren
 id|ret
-op_logical_and
-id|mse-&gt;ops-&gt;owner
 )paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|mse-&gt;ops-&gt;owner

@@ -16,16 +16,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
-macro_line|#ifdef CONFIG_I2C
-r_extern
-r_int
-id|i2c_init_all
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_FB
 r_extern
 r_void
@@ -3100,13 +3090,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_I2C
-id|i2c_init_all
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#if defined (CONFIG_FB)
 id|fbmem_init
 c_func

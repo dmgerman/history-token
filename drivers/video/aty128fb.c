@@ -6164,7 +6164,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_ALL_PPC
-multiline_comment|/* vmode and cmode depreciated */
+multiline_comment|/* vmode and cmode deprecated */
 r_if
 c_cond
 (paren

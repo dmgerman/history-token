@@ -2934,7 +2934,7 @@ op_eq
 l_int|0
 )paren
 r_goto
-id|clear_TF
+id|clear_TF_reenable
 suffix:semicolon
 r_if
 c_cond
@@ -3026,6 +3026,16 @@ l_int|0UL
 )paren
 suffix:semicolon
 r_return
+suffix:semicolon
+id|clear_TF_reenable
+suffix:colon
+id|set_tsk_thread_flag
+c_func
+(paren
+id|tsk
+comma
+id|TIF_SINGLESTEP
+)paren
 suffix:semicolon
 id|clear_TF
 suffix:colon

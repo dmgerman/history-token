@@ -3,6 +3,9 @@ DECL|macro|__UM_SLIP_H
 mdefine_line|#define __UM_SLIP_H
 DECL|macro|BUF_SIZE
 mdefine_line|#define BUF_SIZE 1500
+multiline_comment|/* two bytes each for a (pathological) max packet of escaped chars +  * &n;  * terminating END char + initial END char                            */
+DECL|macro|ENC_BUF_SIZE
+mdefine_line|#define ENC_BUF_SIZE (2 * BUF_SIZE + 2)
 DECL|struct|slip_data
 r_struct
 id|slip_data
@@ -36,18 +39,25 @@ DECL|member|slave
 r_int
 id|slave
 suffix:semicolon
-multiline_comment|/* two bytes each for a (pathological) max packet of escaped chars + &n;&t; * terminating END char + inital END char&n;&t; */
-DECL|member|buf
+DECL|member|ibuf
 r_char
-id|buf
+id|ibuf
 (braket
-l_int|2
-op_star
-id|BUF_SIZE
-op_plus
-l_int|2
+id|ENC_BUF_SIZE
 )braket
 suffix:semicolon
+DECL|member|obuf
+r_char
+id|obuf
+(braket
+id|ENC_BUF_SIZE
+)braket
+suffix:semicolon
+DECL|member|more
+r_int
+id|more
+suffix:semicolon
+multiline_comment|/* more data: do not read fd until ibuf has been drained */
 DECL|member|pos
 r_int
 id|pos

@@ -439,6 +439,24 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|field
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Couldn&squot;t allocate field&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|ret
 op_assign
 id|hid_set_field

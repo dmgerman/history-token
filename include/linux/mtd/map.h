@@ -320,19 +320,12 @@ c_func
 id|mtd
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MODULES
-r_if
-c_cond
-(paren
-id|map-&gt;fldrv-&gt;module
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|map-&gt;fldrv-&gt;module
 )paren
 suffix:semicolon
-macro_line|#endif
 id|kfree
 c_func
 (paren

@@ -183,6 +183,7 @@ op_or
 id|S_IRUGO
 )paren
 comma
+macro_line|#ifdef CONFIG_MMU
 id|E
 c_func
 (paren
@@ -195,6 +196,7 @@ op_or
 id|S_IRUGO
 )paren
 comma
+macro_line|#endif
 id|E
 c_func
 (paren
@@ -332,27 +334,6 @@ op_member_access_from_pointer
 id|type
 suffix:semicolon
 )brace
-id|ssize_t
-id|proc_pid_read_maps
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-comma
-r_struct
-id|file
-op_star
-comma
-r_char
-op_star
-comma
-r_int
-comma
-id|loff_t
-op_star
-)paren
-suffix:semicolon
 r_int
 id|proc_pid_stat
 c_func
@@ -1584,6 +1565,29 @@ id|inode
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_MMU
+r_extern
+id|ssize_t
+id|proc_pid_read_maps
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+comma
+r_struct
+id|file
+op_star
+comma
+r_char
+op_star
+comma
+r_int
+comma
+id|loff_t
+op_star
+)paren
+suffix:semicolon
 DECL|function|pid_maps_read
 r_static
 id|ssize_t
@@ -1662,6 +1666,7 @@ id|pid_maps_read
 comma
 )brace
 suffix:semicolon
+macro_line|#endif /* CONFIG_MMU */
 r_extern
 r_struct
 id|seq_operations
@@ -4891,6 +4896,7 @@ id|proc_pid_statm
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef CONFIG_MMU
 r_case
 id|PROC_PID_MAPS
 suffix:colon
@@ -4901,6 +4907,7 @@ id|proc_maps_operations
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif
 r_case
 id|PROC_PID_MEM
 suffix:colon

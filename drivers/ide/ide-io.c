@@ -3105,9 +3105,6 @@ multiline_comment|/* for atari only: POSSIBLY BROKEN HERE(?) */
 id|ide_get_lock
 c_func
 (paren
-op_amp
-id|ide_intr_lock
-comma
 id|ide_intr
 comma
 id|hwgroup
@@ -3269,8 +3266,6 @@ multiline_comment|/* for atari only */
 id|ide_release_lock
 c_func
 (paren
-op_amp
-id|ide_intr_lock
 )paren
 suffix:semicolon
 id|hwgroup-&gt;busy

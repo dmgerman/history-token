@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#ifdef CONFIG_AMIGA
 macro_line|#include &lt;asm/amigahw.h&gt;
@@ -1268,15 +1269,10 @@ id|h-&gt;hostdata
 l_int|0
 )braket
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -1291,7 +1287,7 @@ id|target
 )paren
 )paren
 (brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1318,7 +1314,7 @@ op_lshift
 id|target
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -4591,15 +4587,10 @@ id|host
 )paren
 suffix:semicolon
 multiline_comment|/* The NCR chip _must_ be idle to run the test scripts */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -4616,7 +4607,7 @@ comma
 id|host-&gt;host_no
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -4713,7 +4704,7 @@ id|printk
 l_string|&quot; started&bslash;n&quot;
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -4870,7 +4861,7 @@ id|DSPS_REG
 )paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -5109,7 +5100,7 @@ id|i
 r_continue
 suffix:semicolon
 macro_line|#endif
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -5128,7 +5119,7 @@ comma
 id|host-&gt;host_no
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -5216,7 +5207,7 @@ op_or
 id|DCNTL_STD
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -5354,7 +5345,7 @@ comma
 id|host-&gt;host_no
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -5383,7 +5374,7 @@ comma
 id|host-&gt;host_no
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -5400,7 +5391,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -5721,14 +5712,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
+id|local_irq_save
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -5750,7 +5737,8 @@ id|flags
 suffix:semicolon
 multiline_comment|/* &n;         * process_issue_queue_running is cleared in process_issue_queue &n;&t; * once it can&squot;t do more work, and process_issue_queue exits with &n;&t; * interrupts disabled.&n;&t; */
 )brace
-id|restore_flags
+id|local_irq_restore
+c_func
 (paren
 id|flags
 )paren
@@ -5841,15 +5829,10 @@ id|host-&gt;host_no
 )paren
 suffix:semicolon
 macro_line|#endif
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|found
@@ -6177,7 +6160,7 @@ c_func
 id|c
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -6259,15 +6242,10 @@ id|host
 )paren
 suffix:semicolon
 multiline_comment|/*&n;     * Find the break point corresponding to this address, and &n;     * dump the appropriate debugging information to standard &n;     * output.  &n;     */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|dsp
@@ -6335,7 +6313,7 @@ id|DMODE_MAN
 )paren
 suffix:semicolon
 multiline_comment|/*&n;     * And update the DSP register, using the size of the old &n;     * instruction in bytes.&n;     */
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -10354,15 +10332,10 @@ c_func
 id|host
 )paren
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Disable scsi chip and s/w level 7 ints */
@@ -10750,7 +10723,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* Anything needed for your hardware? */
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -11179,14 +11152,10 @@ r_int
 id|my_free_page
 )paren
 suffix:semicolon
-id|save_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
+id|local_irq_save
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|tmp-&gt;next
@@ -11197,21 +11166,17 @@ id|hostdata-&gt;free
 op_assign
 id|tmp
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
+c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
 )brace
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|tmp
@@ -11234,7 +11199,7 @@ op_assign
 id|tmp-&gt;next
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -11859,15 +11824,10 @@ id|wdtr_message
 )paren
 )paren
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|hostdata-&gt;initiate_wdtr
@@ -11879,7 +11839,7 @@ op_lshift
 id|cmd-&gt;target
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -11944,15 +11904,10 @@ id|tmp-&gt;flags
 op_or_assign
 id|CMD_FLAG_SDTR
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|hostdata-&gt;initiate_sdtr
@@ -11964,7 +11919,7 @@ op_lshift
 id|cmd-&gt;target
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -13094,15 +13049,10 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -13186,7 +13136,8 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
+c_func
 (paren
 id|flags
 )paren
@@ -13233,7 +13184,8 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
+c_func
 (paren
 id|flags
 )paren
@@ -13287,7 +13239,8 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
+c_func
 (paren
 id|flags
 )paren
@@ -13400,7 +13353,8 @@ op_star
 id|cmd
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
+c_func
 (paren
 id|flags
 )paren
@@ -13485,15 +13439,10 @@ id|hostdata-&gt;dsa
 )paren
 suffix:semicolon
 macro_line|#endif
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* &n;     * Work around race condition : if an interrupt fired and we &n;     * got disabled forget about this command.&n;     */
@@ -13542,7 +13491,8 @@ c_func
 id|tmp
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
+c_func
 (paren
 id|flags
 )paren
@@ -13715,7 +13665,8 @@ c_func
 id|tmp
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
+c_func
 (paren
 id|flags
 )paren
@@ -13782,7 +13733,7 @@ id|ISTAT_10_SIGP
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -13856,7 +13807,7 @@ suffix:semicolon
 multiline_comment|/*&n;     * We run (with interrupts disabled) until we&squot;re sure that none of &n;     * the host adapters have anything that can be done, at which point &n;     * we set process_issue_queue_running to 0 and exit.&n;     *&n;     * Interrupts are enabled before doing various other internal &n;     * instructions, after we&squot;ve decided that we need to run through&n;     * the loop again.&n;     *&n;     */
 r_do
 (brace
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -13896,7 +13847,7 @@ id|host-&gt;hostdata
 l_int|0
 )braket
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -14158,7 +14109,8 @@ c_cond
 op_logical_neg
 id|done
 )paren
-id|restore_flags
+id|local_irq_restore
+c_func
 (paren
 id|flags
 )paren
@@ -15057,15 +15009,10 @@ id|host-&gt;host_no
 )paren
 suffix:semicolon
 multiline_comment|/*&n;    * Traverse our list of running commands, and look&n;    * for those with valid (non-0xff ff) status and message&n;    * bytes encoded in the result which signify command&n;    * completion.&n;    */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|restart
@@ -15298,7 +15245,7 @@ r_goto
 id|restart
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -17418,15 +17365,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* XXX - should we do this, or can we get away with writing dsp? */
@@ -17448,7 +17390,7 @@ op_or
 id|DCNTL_STD
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -18369,15 +18311,10 @@ r_return
 id|SCSI_ABORT_BUSY
 suffix:semicolon
 )brace
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#if 0
@@ -18525,7 +18462,7 @@ comma
 id|me-&gt;pid
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -18674,7 +18611,7 @@ comma
 id|cmd-&gt;pid
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -18693,7 +18630,7 @@ comma
 id|cmd-&gt;host-&gt;host_no
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -18799,7 +18736,7 @@ id|cmd-&gt;lun
 )braket
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -18890,15 +18827,10 @@ c_func
 id|host
 )paren
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|ncr_halt
@@ -19061,7 +18993,7 @@ l_int|1
 op_decrement
 id|hostdata-&gt;resets
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -19098,7 +19030,7 @@ id|nuke_list
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -20252,15 +20184,10 @@ op_star
 )paren
 id|cmd-&gt;SCp.ptr
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -20335,7 +20262,7 @@ comma
 id|cmd-&gt;lun
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -20459,14 +20386,10 @@ op_assign
 id|next_dsa
 )paren
 (brace
-id|save_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
+id|local_irq_save
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -20532,7 +20455,7 @@ l_string|&quot;&quot;
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -21046,14 +20969,10 @@ c_func
 id|host
 )paren
 suffix:semicolon
-id|save_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
+id|local_irq_save
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Get in a state where we can reset the SCSI bus */
@@ -21080,7 +20999,8 @@ id|disable
 id|host
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
+c_func
 (paren
 id|flags
 )paren
@@ -21116,14 +21036,10 @@ c_func
 id|host
 )paren
 suffix:semicolon
-id|save_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
+id|local_irq_save
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|NCR53c7x0_write8
@@ -21149,7 +21065,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
+c_func
 (paren
 id|flags
 )paren
@@ -21186,14 +21103,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
+id|local_irq_save
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|ncr_scsi_reset
@@ -21217,7 +21130,7 @@ id|hostdata-&gt;soft_reset
 id|host
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -21517,15 +21430,10 @@ comma
 op_star
 id|tmp
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -21562,7 +21470,7 @@ id|hostdata-&gt;state
 op_assign
 id|STATE_DISABLED
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -21679,15 +21587,10 @@ c_func
 id|host
 )paren
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Stage 0 : eat all interrupts&n;       Stage 1 : set ABORT&n;       Stage 2 : eat all but abort interrupts&n;       Stage 3 : eat all interrupts&n;     */
@@ -21850,7 +21753,7 @@ id|hostdata-&gt;state
 op_assign
 id|STATE_HALTED
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -22046,16 +21949,11 @@ op_decrement
 id|count
 )paren
 (brace
-id|save_flags
+multiline_comment|/*&n; * By copying the event we&squot;re currently examining with interrupts&n; * disabled, we can do multiple printk(), etc. operations and &n; * still be guaranteed that they&squot;re happening on the same &n; * event structure.&n; */
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * By copying the event we&squot;re currently examining with interrupts&n; * disabled, we can do multiple printk(), etc. operations and &n; * still be guaranteed that they&squot;re happening on the same &n; * event structure.&n; */
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#if 0
@@ -22095,7 +21993,7 @@ id|event
 )paren
 suffix:semicolon
 macro_line|#endif
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

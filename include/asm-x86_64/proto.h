@@ -261,6 +261,21 @@ r_char
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|map_syscall32
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|address
+)paren
+suffix:semicolon
 DECL|macro|round_up
 mdefine_line|#define round_up(x,y) (((x) + (y) - 1) &amp; ~((y)-1))
 DECL|macro|round_down

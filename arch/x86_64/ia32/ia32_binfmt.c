@@ -16,6 +16,12 @@ macro_line|#include &lt;asm/fpu32.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
+DECL|macro|ELF_NAME
+mdefine_line|#define ELF_NAME &quot;elf/i386&quot;
+DECL|macro|AT_SYSINFO
+mdefine_line|#define AT_SYSINFO 32
+DECL|macro|ARCH_DLINFO
+mdefine_line|#define ARCH_DLINFO NEW_AUX_ENT(AT_SYSINFO, 0xffffe000)
 r_struct
 id|file
 suffix:semicolon

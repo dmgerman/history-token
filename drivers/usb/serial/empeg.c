@@ -527,10 +527,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed submitting read urb, error %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - failed submitting read urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -615,7 +617,7 @@ id|port-&gt;read_urb
 suffix:semicolon
 )brace
 multiline_comment|/* Uncomment the following line if you want to see some statistics in your syslog */
-multiline_comment|/* info (&quot;Bytes In = %d  Bytes Out = %d&quot;, bytes_in, bytes_out); */
+multiline_comment|/* dev_info (port-&gt;dev, &quot;Bytes In = %d  Bytes Out = %d&bslash;n&quot;, bytes_in, bytes_out); */
 )brace
 DECL|function|empeg_write
 r_static
@@ -813,10 +815,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s no more kernel memory...&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s no more kernel memory...&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -916,10 +920,12 @@ c_cond
 id|status
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - usb_submit_urb(write bulk) failed with status = %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - usb_submit_urb(write bulk) failed with status = %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1470,10 +1476,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed resubmitting read urb, error %d&quot;
+id|urb-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - failed resubmitting read urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1553,10 +1561,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed submitting read urb, error %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - failed submitting read urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma

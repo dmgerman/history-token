@@ -164,6 +164,8 @@ DECL|macro|TIF_SIGPENDING
 mdefine_line|#define TIF_SIGPENDING&t;&t;2&t;/* signal pending */
 DECL|macro|TIF_NEED_RESCHED
 mdefine_line|#define TIF_NEED_RESCHED&t;3&t;/* rescheduling necessary */
+DECL|macro|TIF_SINGLESTEP
+mdefine_line|#define TIF_SINGLESTEP&t;&t;4&t;/* reenable singlestep on user return*/
 DECL|macro|TIF_USEDFPU
 mdefine_line|#define TIF_USEDFPU&t;&t;16&t;/* FPU was used by this task this quantum */
 DECL|macro|TIF_POLLING_NRFLAG
@@ -176,6 +178,8 @@ DECL|macro|_TIF_NOTIFY_RESUME
 mdefine_line|#define _TIF_NOTIFY_RESUME&t;(1&lt;&lt;TIF_NOTIFY_RESUME)
 DECL|macro|_TIF_SIGPENDING
 mdefine_line|#define _TIF_SIGPENDING&t;&t;(1&lt;&lt;TIF_SIGPENDING)
+DECL|macro|_TIF_SINGLESTEP
+mdefine_line|#define _TIF_SINGLESTEP&t;&t;(1&lt;&lt;TIF_SINGLESTEP)
 DECL|macro|_TIF_NEED_RESCHED
 mdefine_line|#define _TIF_NEED_RESCHED&t;(1&lt;&lt;TIF_NEED_RESCHED)
 DECL|macro|_TIF_USEDFPU

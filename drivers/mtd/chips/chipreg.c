@@ -274,22 +274,13 @@ c_func
 id|map
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MODULES
 multiline_comment|/* We decrease the use count here. It may have been a &n;&t;   probe-only module, which is no longer required from this&n;&t;   point, having given us a handle on (and increased the use&n;&t;   count of) the actual driver code.&n;&t;*/
-r_if
-c_cond
-(paren
-id|drv-&gt;module
-)paren
-(brace
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|drv-&gt;module
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren
