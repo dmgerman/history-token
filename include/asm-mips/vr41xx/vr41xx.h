@@ -144,8 +144,8 @@ DECL|macro|INT3_CASCADE_IRQ
 mdefine_line|#define INT3_CASCADE_IRQ&t;MIPS_CPU_IRQ(5)
 DECL|macro|INT4_CASCADE_IRQ
 mdefine_line|#define INT4_CASCADE_IRQ&t;MIPS_CPU_IRQ(6)
-DECL|macro|MIPS_COUNTER_IRQ
-mdefine_line|#define MIPS_COUNTER_IRQ&t;MIPS_CPU_IRQ(7)
+DECL|macro|TIMER_IRQ
+mdefine_line|#define TIMER_IRQ&t;&t;MIPS_CPU_IRQ(7)
 multiline_comment|/* SYINT1 Interrupt Numbers */
 DECL|macro|SYSINT1_IRQ_BASE
 mdefine_line|#define SYSINT1_IRQ_BASE&t;8
