@@ -554,6 +554,20 @@ id|system_subsys.rwsem
 )paren
 suffix:semicolon
 )brace
+DECL|variable|sysdev_driver_register
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sysdev_driver_register
+)paren
+suffix:semicolon
+DECL|variable|sysdev_driver_unregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sysdev_driver_unregister
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;sys_device_register - add a system device to the tree&n; *&t;@sysdev:&t;device in question&n; *&n; */
 DECL|function|sys_device_register
 r_int

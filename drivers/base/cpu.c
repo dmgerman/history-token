@@ -18,6 +18,13 @@ l_string|&quot;cpu&quot;
 comma
 )brace
 suffix:semicolon
+DECL|variable|cpu_sysdev_class
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_sysdev_class
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * register_cpu - Setup a driverfs device for a CPU.&n; * @num - CPU number to use when creating the device.&n; *&n; * Initialize and register the CPU device.&n; */
 DECL|function|register_cpu
 r_int
