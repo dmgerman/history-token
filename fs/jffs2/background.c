@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: background.c,v 1.29 2002/06/07 10:04:28 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: background.c,v 1.33 2002/11/12 09:44:30 dwmw2 Exp $&n; *&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -341,7 +341,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current_sig_lock
 )paren
 suffix:semicolon
 id|siginitsetinv
@@ -383,7 +383,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current_sig_lock
 )paren
 suffix:semicolon
 r_if
@@ -425,7 +425,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Put_super will send a SIGKILL and then wait on the sem. &n;                 */
+multiline_comment|/* Put_super will send a SIGKILL and then wait on the sem. &n;&t;&t; */
 r_while
 c_loop
 (paren
@@ -442,14 +442,12 @@ suffix:semicolon
 r_int
 r_int
 id|signr
-op_assign
-l_int|0
 suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current_sig_lock
 )paren
 suffix:semicolon
 id|signr
@@ -468,7 +466,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current_sig_lock
 )paren
 suffix:semicolon
 r_switch
@@ -583,7 +581,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current_sig_lock
 )paren
 suffix:semicolon
 id|siginitsetinv
@@ -619,7 +617,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current_sig_lock
 )paren
 suffix:semicolon
 id|D1
@@ -653,52 +651,54 @@ op_star
 id|c
 )paren
 (brace
-r_uint32
-id|gcnodeofs
+r_int
+id|ret
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
-multiline_comment|/* Don&squot;t count any progress we&squot;ve already made through the gcblock&n;&t;   as dirty space, for the purposes of this calculation */
 r_if
 c_cond
 (paren
-id|c-&gt;gcblock
-op_logical_and
-id|c-&gt;gcblock-&gt;gc_node
+id|c-&gt;unchecked_size
 )paren
-id|gcnodeofs
-op_assign
-id|c-&gt;gcblock-&gt;gc_node-&gt;flash_offset
-op_amp
-op_complement
-l_int|3
-op_amp
+(brace
+id|D1
+c_func
 (paren
-id|c-&gt;sector_size
-op_minus
-l_int|1
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;thread_should_wake(): unchecked_size %d, checked_ino #%d&bslash;n&quot;
+comma
+id|c-&gt;unchecked_size
+comma
+id|c-&gt;checked_ino
+)paren
 )paren
 suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|c-&gt;nr_free_blocks
 op_plus
 id|c-&gt;nr_erasing_blocks
-template_param
+OL
+id|JFFS2_RESERVED_BLOCKS_GCTRIGGER
+op_logical_and
+(paren
+id|c-&gt;dirty_size
+OG
 id|c-&gt;sector_size
+)paren
 )paren
 id|ret
 op_assign
 l_int|1
-suffix:semicolon
-r_else
-id|ret
-op_assign
-l_int|0
 suffix:semicolon
 id|D1
 c_func
@@ -707,17 +707,13 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;thread_should_wake(): nr_free_blocks %d, nr_erasing_blocks %d, dirty_size 0x%x (mod 0x%x): %s&bslash;n&quot;
+l_string|&quot;thread_should_wake(): nr_free_blocks %d, nr_erasing_blocks %d, dirty_size 0x%x: %s&bslash;n&quot;
 comma
 id|c-&gt;nr_free_blocks
 comma
 id|c-&gt;nr_erasing_blocks
 comma
 id|c-&gt;dirty_size
-comma
-id|c-&gt;dirty_size
-op_minus
-id|gcnodeofs
 comma
 id|ret
 ques

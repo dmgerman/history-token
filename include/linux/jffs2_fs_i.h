@@ -1,8 +1,9 @@
-multiline_comment|/* $Id: jffs2_fs_i.h,v 1.12 2002/03/06 13:59:21 dwmw2 Exp $ */
+multiline_comment|/* $Id: jffs2_fs_i.h,v 1.15 2002/11/12 09:42:49 dwmw2 Exp $ */
 macro_line|#ifndef _JFFS2_FS_I
 DECL|macro|_JFFS2_FS_I
 mdefine_line|#define _JFFS2_FS_I
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/rbtree.h&gt;
 DECL|struct|jffs2_inode_info
 r_struct
 id|jffs2_inode_info
@@ -19,11 +20,10 @@ r_uint32
 id|highest_version
 suffix:semicolon
 multiline_comment|/* List of data fragments which make up the file */
-DECL|member|fraglist
+DECL|member|fragtree
 r_struct
-id|jffs2_node_frag
-op_star
-id|fraglist
+id|rb_root
+id|fragtree
 suffix:semicolon
 multiline_comment|/* There may be one datanode which isn&squot;t referenced by any of the&n;&t;   above fragments, if it contains a metadata update but no actual&n;&t;   data - or if this is a directory inode */
 multiline_comment|/* This also holds the _only_ dnode for symlinks/device nodes, &n;&t;   etc. */
