@@ -450,7 +450,7 @@ id|dp-&gt;dl_flock
 op_assign
 l_int|NULL
 suffix:semicolon
-id|dp-&gt;dl_stp
+id|dp-&gt;dl_vfs_file
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -610,7 +610,7 @@ id|file
 op_star
 id|filp
 op_assign
-id|dp-&gt;dl_stp-&gt;st_vfs_file
+id|dp-&gt;dl_vfs_file
 suffix:semicolon
 id|dprintk
 c_func
@@ -620,19 +620,7 @@ comma
 id|dp
 )paren
 suffix:semicolon
-id|release_stateid_lockowners
-c_func
-(paren
-id|dp-&gt;dl_stp
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|dp-&gt;dl_stp
-)paren
-suffix:semicolon
-id|dp-&gt;dl_stp
+id|dp-&gt;dl_vfs_file
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -672,7 +660,7 @@ multiline_comment|/* delayed nfsd_close */
 r_if
 c_cond
 (paren
-id|dp-&gt;dl_stp
+id|dp-&gt;dl_vfs_file
 )paren
 id|nfs4_close_delegation
 c_func
@@ -680,7 +668,6 @@ c_func
 id|dp
 )paren
 suffix:semicolon
-)brace
 r_else
 (brace
 id|dprintk
@@ -728,12 +715,18 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n; * SETCLIENTID state &n; */
 multiline_comment|/* Hash tables for nfs4_clientid state */
+DECL|macro|CLIENT_HASH_BITS
 mdefine_line|#define CLIENT_HASH_BITS                 4
+DECL|macro|CLIENT_HASH_SIZE
 mdefine_line|#define CLIENT_HASH_SIZE                (1 &lt;&lt; CLIENT_HASH_BITS)
+DECL|macro|CLIENT_HASH_MASK
 mdefine_line|#define CLIENT_HASH_MASK                (CLIENT_HASH_SIZE - 1)
+DECL|macro|clientid_hashval
 mdefine_line|#define clientid_hashval(id) &bslash;&n;&t;((id) &amp; CLIENT_HASH_MASK)
+DECL|macro|clientstr_hashval
 mdefine_line|#define clientstr_hashval(name, namelen) &bslash;&n;&t;(opaque_hashval((name), (namelen)) &amp; CLIENT_HASH_MASK)
 multiline_comment|/*&n; * reclaim_str_hashtbl[] holds known client info from previous reset/reboot&n; * used in reboot/reset lease grace period processing&n; *&n; * conf_id_hashtbl[], and conf_str_hashtbl[] hold confirmed&n; * setclientid_confirmed info. &n; *&n; * unconf_str_hastbl[] and unconf_id_hashtbl[] hold unconfirmed &n; * setclientid info.&n; *&n; * client_lru holds client queue ordered by nfs4_client.cl_time&n; * for lease renewal.&n; *&n; * close_lru holds (open) stateowner queue ordered by nfs4_stateowner.so_time&n; * for last close replay.&n; */
+DECL|variable|reclaim_str_hashtbl
 r_static
 r_struct
 id|list_head
@@ -742,12 +735,14 @@ id|reclaim_str_hashtbl
 id|CLIENT_HASH_SIZE
 )braket
 suffix:semicolon
+DECL|variable|reclaim_str_hashtbl_size
 r_static
 r_int
 id|reclaim_str_hashtbl_size
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|conf_id_hashtbl
 r_static
 r_struct
 id|list_head
@@ -756,6 +751,7 @@ id|conf_id_hashtbl
 id|CLIENT_HASH_SIZE
 )braket
 suffix:semicolon
+DECL|variable|conf_str_hashtbl
 r_static
 r_struct
 id|list_head
@@ -764,6 +760,7 @@ id|conf_str_hashtbl
 id|CLIENT_HASH_SIZE
 )braket
 suffix:semicolon
+DECL|variable|unconf_str_hashtbl
 r_static
 r_struct
 id|list_head
@@ -772,6 +769,7 @@ id|unconf_str_hashtbl
 id|CLIENT_HASH_SIZE
 )braket
 suffix:semicolon
+DECL|variable|unconf_id_hashtbl
 r_static
 r_struct
 id|list_head
@@ -780,11 +778,13 @@ id|unconf_id_hashtbl
 id|CLIENT_HASH_SIZE
 )braket
 suffix:semicolon
+DECL|variable|client_lru
 r_static
 r_struct
 id|list_head
 id|client_lru
 suffix:semicolon
+DECL|variable|close_lru
 r_static
 r_struct
 id|list_head
@@ -793,6 +793,7 @@ suffix:semicolon
 r_static
 r_inline
 r_void
+DECL|function|renew_client
 id|renew_client
 c_func
 (paren
@@ -834,6 +835,7 @@ suffix:semicolon
 multiline_comment|/* SETCLIENTID and SETCLIENTID_CONFIRM Helper functions */
 r_static
 r_int
+DECL|function|STALE_CLIENTID
 id|STALE_CLIENTID
 c_func
 (paren
@@ -872,6 +874,7 @@ r_inline
 r_struct
 id|nfs4_client
 op_star
+DECL|function|alloc_client
 id|alloc_client
 c_func
 (paren
@@ -975,6 +978,7 @@ suffix:semicolon
 r_static
 r_inline
 r_void
+DECL|function|free_client
 id|free_client
 c_func
 (paren
@@ -1009,6 +1013,7 @@ id|clp
 suffix:semicolon
 )brace
 r_void
+DECL|function|put_nfs4_client
 id|put_nfs4_client
 c_func
 (paren
@@ -1037,6 +1042,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|expire_client
 id|expire_client
 c_func
 (paren
@@ -1250,6 +1256,7 @@ r_static
 r_struct
 id|nfs4_client
 op_star
+DECL|function|create_client
 id|create_client
 c_func
 (paren
@@ -1345,6 +1352,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|copy_verf
 id|copy_verf
 c_func
 (paren
@@ -1374,6 +1382,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|copy_clid
 id|copy_clid
 c_func
 (paren
@@ -1399,6 +1408,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|copy_cred
 id|copy_cred
 c_func
 (paren
@@ -1434,6 +1444,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|cmp_name
 id|cmp_name
 c_func
 (paren
@@ -1481,6 +1492,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|cmp_verf
 id|cmp_verf
 c_func
 (paren
@@ -1511,6 +1523,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|cmp_clid
 id|cmp_clid
 c_func
 (paren
@@ -1540,6 +1553,7 @@ suffix:semicolon
 multiline_comment|/* XXX what about NGROUP */
 r_static
 r_int
+DECL|function|cmp_creds
 (def_block
 id|cmp_creds
 c_func
@@ -1564,6 +1578,7 @@ suffix:semicolon
 )def_block
 r_static
 r_void
+DECL|function|gen_clid
 id|gen_clid
 c_func
 (paren
@@ -1585,6 +1600,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|gen_confirm
 id|gen_confirm
 c_func
 (paren
@@ -1629,6 +1645,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|check_name
 id|check_name
 c_func
 (paren
@@ -1672,6 +1689,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_void
+DECL|function|add_to_unconfirmed
 id|add_to_unconfirmed
 c_func
 (paren
@@ -1742,6 +1760,7 @@ c_func
 suffix:semicolon
 )brace
 r_void
+DECL|function|move_to_confirmed
 id|move_to_confirmed
 c_func
 (paren
@@ -1834,6 +1853,7 @@ r_static
 r_struct
 id|nfs4_client
 op_star
+DECL|function|find_confirmed_client
 id|find_confirmed_client
 c_func
 (paren
@@ -1895,6 +1915,7 @@ r_static
 r_struct
 id|nfs4_client
 op_star
+DECL|function|find_unconfirmed_client
 id|find_unconfirmed_client
 c_func
 (paren
@@ -1955,6 +1976,7 @@ suffix:semicolon
 multiline_comment|/* a helper function for parse_callback */
 r_static
 r_int
+DECL|function|parse_octet
 id|parse_octet
 c_func
 (paren
@@ -2107,6 +2129,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* parse and set the setclientid ipv4 callback address */
 r_int
+DECL|function|parse_ipv4
 id|parse_ipv4
 c_func
 (paren
@@ -2303,6 +2326,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_void
+DECL|function|gen_callback
 id|gen_callback
 c_func
 (paren
@@ -2412,6 +2436,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * RFC 3010 has a complex implmentation description of processing a &n; * SETCLIENTID request consisting of 5 bullets, labeled as &n; * CASE0 - CASE4 below.&n; *&n; * NOTES:&n; * &t;callback information will be processed in a future patch&n; *&n; *&t;an unconfirmed record is added when:&n; *      NORMAL (part of CASE 4): there is no confirmed nor unconfirmed record.&n; *&t;CASE 1: confirmed record found with matching name, principal,&n; *&t;&t;verifier, and clientid.&n; *&t;CASE 2: confirmed record found with matching name, principal,&n; *&t;&t;and there is no unconfirmed record with matching&n; *&t;&t;name and principal&n; *&n; *      an unconfirmed record is replaced when:&n; *&t;CASE 3: confirmed record found with matching name, principal,&n; *&t;&t;and an unconfirmed record is found with matching &n; *&t;&t;name, principal, and with clientid and&n; *&t;&t;confirm that does not match the confirmed record.&n; *&t;CASE 4: there is no confirmed record with matching name and &n; *&t;&t;principal. there is an unconfirmed record with &n; *&t;&t;matching name, principal.&n; *&n; *&t;an unconfirmed record is deleted when:&n; *&t;CASE 1: an unconfirmed record that matches input name, verifier,&n; *&t;&t;and confirmed clientid.&n; *&t;CASE 4: any unconfirmed records with matching name and principal&n; *&t;&t;that exist after an unconfirmed record has been replaced&n; *&t;&t;as described above.&n; *&n; */
 r_int
+DECL|function|nfsd4_setclientid
 id|nfsd4_setclientid
 c_func
 (paren
@@ -3104,6 +3129,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * RFC 3010 has a complex implmentation description of processing a &n; * SETCLIENTID_CONFIRM request consisting of 4 bullets describing&n; * processing on a DRC miss, labeled as CASE1 - CASE4 below.&n; *&n; * NOTE: callback information will be processed here in a future patch&n; */
 r_int
+DECL|function|nfsd4_setclientid_confirm
 id|nfsd4_setclientid_confirm
 c_func
 (paren
@@ -3595,11 +3621,17 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n; * Open owner state (share locks)&n; */
 multiline_comment|/* hash tables for nfs4_stateowner */
+DECL|macro|OWNER_HASH_BITS
 mdefine_line|#define OWNER_HASH_BITS              8
+DECL|macro|OWNER_HASH_SIZE
 mdefine_line|#define OWNER_HASH_SIZE             (1 &lt;&lt; OWNER_HASH_BITS)
+DECL|macro|OWNER_HASH_MASK
 mdefine_line|#define OWNER_HASH_MASK             (OWNER_HASH_SIZE - 1)
+DECL|macro|ownerid_hashval
 mdefine_line|#define ownerid_hashval(id) &bslash;&n;        ((id) &amp; OWNER_HASH_MASK)
+DECL|macro|ownerstr_hashval
 mdefine_line|#define ownerstr_hashval(clientid, ownername) &bslash;&n;        (((clientid) + opaque_hashval((ownername.data), (ownername.len))) &amp; OWNER_HASH_MASK)
+DECL|variable|ownerid_hashtbl
 r_static
 r_struct
 id|list_head
@@ -3608,6 +3640,7 @@ id|ownerid_hashtbl
 id|OWNER_HASH_SIZE
 )braket
 suffix:semicolon
+DECL|variable|ownerstr_hashtbl
 r_static
 r_struct
 id|list_head
@@ -3617,15 +3650,24 @@ id|OWNER_HASH_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* hash table for nfs4_file */
+DECL|macro|FILE_HASH_BITS
 mdefine_line|#define FILE_HASH_BITS                   8
+DECL|macro|FILE_HASH_SIZE
 mdefine_line|#define FILE_HASH_SIZE                  (1 &lt;&lt; FILE_HASH_BITS)
+DECL|macro|FILE_HASH_MASK
 mdefine_line|#define FILE_HASH_MASK                  (FILE_HASH_SIZE - 1)
 multiline_comment|/* hash table for (open)nfs4_stateid */
+DECL|macro|STATEID_HASH_BITS
 mdefine_line|#define STATEID_HASH_BITS              10
+DECL|macro|STATEID_HASH_SIZE
 mdefine_line|#define STATEID_HASH_SIZE              (1 &lt;&lt; STATEID_HASH_BITS)
+DECL|macro|STATEID_HASH_MASK
 mdefine_line|#define STATEID_HASH_MASK              (STATEID_HASH_SIZE - 1)
+DECL|macro|file_hashval
 mdefine_line|#define file_hashval(x) &bslash;&n;        hash_ptr(x, FILE_HASH_BITS)
+DECL|macro|stateid_hashval
 mdefine_line|#define stateid_hashval(owner_id, file_id)  &bslash;&n;        (((owner_id) + (file_id)) &amp; STATEID_HASH_MASK)
+DECL|variable|file_hashtbl
 r_static
 r_struct
 id|list_head
@@ -3634,6 +3676,7 @@ id|file_hashtbl
 id|FILE_HASH_SIZE
 )braket
 suffix:semicolon
+DECL|variable|stateid_hashtbl
 r_static
 r_struct
 id|list_head
@@ -3648,6 +3691,7 @@ r_inline
 r_struct
 id|nfs4_file
 op_star
+DECL|function|alloc_init_file
 id|alloc_init_file
 c_func
 (paren
@@ -3752,6 +3796,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|release_all_files
 id|release_all_files
 c_func
 (paren
@@ -3853,6 +3898,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+DECL|variable|stateowner_slab
 id|kmem_cache_t
 op_star
 id|stateowner_slab
@@ -3861,6 +3907,7 @@ l_int|NULL
 suffix:semicolon
 r_static
 r_int
+DECL|function|nfsd4_init_slabs
 id|nfsd4_init_slabs
 c_func
 (paren
@@ -3914,6 +3961,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|nfsd4_free_slabs
 id|nfsd4_free_slabs
 c_func
 (paren
@@ -3950,6 +3998,7 @@ id|status
 suffix:semicolon
 )brace
 r_void
+DECL|function|nfs4_free_stateowner
 id|nfs4_free_stateowner
 c_func
 (paren
@@ -3995,6 +4044,7 @@ r_inline
 r_struct
 id|nfs4_stateowner
 op_star
+DECL|function|alloc_stateowner
 id|alloc_stateowner
 c_func
 (paren
@@ -4083,6 +4133,7 @@ r_static
 r_struct
 id|nfs4_stateowner
 op_star
+DECL|function|alloc_init_open_stateowner
 id|alloc_init_open_stateowner
 c_func
 (paren
@@ -4271,6 +4322,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|release_stateid_lockowners
 id|release_stateid_lockowners
 c_func
 (paren
@@ -4327,6 +4379,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|unhash_stateowner
 id|unhash_stateowner
 c_func
 (paren
@@ -4430,6 +4483,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|release_stateowner
 id|release_stateowner
 c_func
 (paren
@@ -4462,6 +4516,7 @@ suffix:semicolon
 r_static
 r_inline
 r_void
+DECL|function|init_stateid
 id|init_stateid
 c_func
 (paren
@@ -4616,6 +4671,7 @@ suffix:semicolon
 multiline_comment|/*&n;* Because nfsd_close() can call locks_remove_flock() which removes leases,&n;* delay nfsd_close() for delegations from the nfsd_open() clientid&n;* until the delegation is reaped.&n;*/
 r_static
 r_void
+DECL|function|release_stateid
 id|release_stateid
 c_func
 (paren
@@ -4697,9 +4753,15 @@ id|stp-&gt;st_stateowner-&gt;so_client-&gt;cl_clientid
 )paren
 )paren
 (brace
-id|dp-&gt;dl_stp
+id|dp-&gt;dl_vfs_file
 op_assign
+id|stp-&gt;st_vfs_file
+suffix:semicolon
+id|release_stateid_lockowners
+c_func
+(paren
 id|stp
+)paren
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -4762,6 +4824,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|release_file
 id|release_file
 c_func
 (paren
@@ -4795,6 +4858,7 @@ id|fp
 suffix:semicolon
 )brace
 r_void
+DECL|function|move_to_close_lru
 id|move_to_close_lru
 c_func
 (paren
@@ -4837,6 +4901,7 @@ c_func
 suffix:semicolon
 )brace
 r_void
+DECL|function|release_state_owner
 id|release_state_owner
 c_func
 (paren
@@ -4931,6 +4996,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|cmp_owner_str
 id|cmp_owner_str
 c_func
 (paren
@@ -4980,6 +5046,7 @@ r_static
 r_struct
 id|nfs4_stateowner
 op_star
+DECL|function|find_openstateowner_str
 id|find_openstateowner_str
 c_func
 (paren
@@ -5042,6 +5109,7 @@ r_static
 r_struct
 id|nfs4_file
 op_star
+DECL|function|find_file
 id|find_file
 c_func
 (paren
@@ -5095,9 +5163,12 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|macro|TEST_ACCESS
 mdefine_line|#define TEST_ACCESS(x) ((x &gt; 0 || x &lt; 4)?1:0)
+DECL|macro|TEST_DENY
 mdefine_line|#define TEST_DENY(x) ((x &gt;= 0 || x &lt; 5)?1:0)
 r_void
+DECL|function|set_access
 id|set_access
 c_func
 (paren
@@ -5154,6 +5225,7 @@ suffix:semicolon
 )brace
 )brace
 r_void
+DECL|function|set_deny
 id|set_deny
 c_func
 (paren
@@ -5211,6 +5283,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|test_share
 id|test_share
 c_func
 (paren
@@ -5273,6 +5346,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Called to check deny when READ with all zero stateid or&n; * WRITE with all zero or all one stateid&n; */
 r_int
+DECL|function|nfs4_share_conflict
 id|nfs4_share_conflict
 c_func
 (paren
@@ -5368,6 +5442,7 @@ suffix:semicolon
 r_static
 r_inline
 r_void
+DECL|function|nfs4_file_downgrade
 id|nfs4_file_downgrade
 c_func
 (paren
@@ -5411,6 +5486,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Recall a delegation&n; */
 r_static
 r_int
+DECL|function|do_recall
 id|do_recall
 c_func
 (paren
@@ -5444,6 +5520,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Spawn a thread to perform a recall on the delegation represented&n; * by the lease (file_lock)&n; *&n; * Called from break_lease() with lock_kernel() held.&n; * Note: we assume break_lease will only call this *once* for any given&n; * lease.&n; */
 r_static
+DECL|function|nfsd_break_deleg_cb
 r_void
 id|nfsd_break_deleg_cb
 c_func
@@ -5594,6 +5671,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The file_lock is being reapd.&n; *&n; * Called by locks_free_lock() with lock_kernel() held.&n; */
 r_static
+DECL|function|nfsd_release_deleg_cb
 r_void
 id|nfsd_release_deleg_cb
 c_func
@@ -5671,6 +5749,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set the delegation file_lock back pointer.&n; *&n; * Called from __setlease() with lock_kernel() held.&n; */
 r_static
+DECL|function|nfsd_copy_lock_deleg_cb
 r_void
 id|nfsd_copy_lock_deleg_cb
 c_func
@@ -5723,6 +5802,7 @@ op_assign
 r_new
 suffix:semicolon
 )brace
+DECL|variable|nfsd_lease_mng_ops
 r_struct
 id|lock_manager_operations
 id|nfsd_lease_mng_ops
@@ -5747,6 +5827,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * nfsd4_process_open1()&n; * &t;lookup stateowner.&n; * &t;&t;found:&n; * &t;&t;&t;check confirmed &n; * &t;&t;&t;&t;confirmed:&n; * &t;&t;&t;&t;&t;check seqid&n; * &t;&t;&t;&t;not confirmed:&n; * &t;&t;&t;&t;&t;delete owner&n; * &t;&t;&t;&t;&t;create new owner&n; * &t;&t;notfound:&n; * &t;&t;&t;verify clientid&n; * &t;&t;&t;create new owner&n; *&n; * called with nfs4_lock_state() held.&n; */
 r_int
+DECL|function|nfsd4_process_open1
 id|nfsd4_process_open1
 c_func
 (paren
@@ -6007,6 +6088,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|nfs4_check_deleg_recall
 id|nfs4_check_deleg_recall
 c_func
 (paren
@@ -6111,6 +6193,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|nfs4_check_open
 id|nfs4_check_open
 c_func
 (paren
@@ -6213,6 +6296,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|nfs4_new_open
 id|nfs4_new_open
 c_func
 (paren
@@ -6326,6 +6410,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|nfs4_upgrade_open
 id|nfs4_upgrade_open
 c_func
 (paren
@@ -6516,6 +6601,7 @@ suffix:semicolon
 multiline_comment|/* decrement seqid on successful reclaim, it will be bumped in encode_open */
 r_static
 r_void
+DECL|function|nfs4_set_claim_prev
 id|nfs4_set_claim_prev
 c_func
 (paren
@@ -6563,6 +6649,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Attempt to hand out a delegation.&n; */
 r_static
 r_void
+DECL|function|nfs4_open_delegation
 id|nfs4_open_delegation
 c_func
 (paren
@@ -6836,6 +6923,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * called with nfs4_lock_state() held.&n; */
 r_int
+DECL|function|nfsd4_process_open2
 id|nfsd4_process_open2
 c_func
 (paren
@@ -7261,6 +7349,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
+DECL|variable|laundromat_work
 r_static
 r_struct
 id|work_struct
@@ -7287,6 +7376,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 r_int
+DECL|function|nfsd4_renew
 id|nfsd4_renew
 c_func
 (paren
@@ -7413,6 +7503,7 @@ id|status
 suffix:semicolon
 )brace
 id|time_t
+DECL|function|nfs4_laundromat
 id|nfs4_laundromat
 c_func
 (paren
@@ -7761,6 +7852,7 @@ id|clientid_val
 suffix:semicolon
 )brace
 r_void
+DECL|function|laundromat_main
 id|laundromat_main
 c_func
 (paren
@@ -7803,6 +7895,7 @@ multiline_comment|/* search ownerid_hashtbl[] and close_lru for stateid owner&n;
 r_struct
 id|nfs4_stateowner
 op_star
+DECL|function|find_openstateowner_id
 id|find_openstateowner_id
 c_func
 (paren
@@ -7866,6 +7959,7 @@ suffix:semicolon
 r_static
 r_inline
 r_int
+DECL|function|nfs4_check_fh
 id|nfs4_check_fh
 c_func
 (paren
@@ -7888,6 +7982,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|STALE_STATEID
 id|STALE_STATEID
 c_func
 (paren
@@ -7927,6 +8022,7 @@ suffix:semicolon
 r_static
 r_inline
 r_int
+DECL|function|access_permit_read
 id|access_permit_read
 c_func
 (paren
@@ -7958,6 +8054,7 @@ suffix:semicolon
 r_static
 r_inline
 r_int
+DECL|function|access_permit_write
 id|access_permit_write
 c_func
 (paren
@@ -7987,6 +8084,7 @@ id|access_bmap
 suffix:semicolon
 )brace
 r_static
+DECL|function|nfs4_check_openmode
 r_int
 id|nfs4_check_openmode
 c_func
@@ -8060,6 +8158,7 @@ suffix:semicolon
 r_static
 r_inline
 r_int
+DECL|function|nfs4_check_delegmode
 id|nfs4_check_delegmode
 c_func
 (paren
@@ -8098,6 +8197,7 @@ suffix:semicolon
 r_static
 r_inline
 r_int
+DECL|function|check_special_stateids
 id|check_special_stateids
 c_func
 (paren
@@ -8198,6 +8298,7 @@ multiline_comment|/*&n; * Allow READ/WRITE during grace period on recovered stat
 r_static
 r_inline
 r_int
+DECL|function|io_during_grace_disallowed
 id|io_during_grace_disallowed
 c_func
 (paren
@@ -8235,6 +8336,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;* Checks for stateid operations&n;*/
 r_int
+DECL|function|nfs4_preprocess_stateid_op
 id|nfs4_preprocess_stateid_op
 c_func
 (paren
@@ -8649,6 +8751,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n; * Checks for sequence id mutating operations. &n; */
 r_int
+DECL|function|nfs4_preprocess_seqid_op
 id|nfs4_preprocess_seqid_op
 c_func
 (paren
@@ -9083,6 +9186,7 @@ id|out
 suffix:semicolon
 )brace
 r_int
+DECL|function|nfsd4_open_confirm
 id|nfsd4_open_confirm
 c_func
 (paren
@@ -9262,6 +9366,7 @@ suffix:semicolon
 multiline_comment|/*&n; * unset all bits in union bitmap (bmap) that&n; * do not exist in share (from successful OPEN_DOWNGRADE)&n; */
 r_static
 r_void
+DECL|function|reset_union_bmap_access
 id|reset_union_bmap_access
 c_func
 (paren
@@ -9316,6 +9421,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|reset_union_bmap_deny
 id|reset_union_bmap_deny
 c_func
 (paren
@@ -9369,6 +9475,7 @@ suffix:semicolon
 )brace
 )brace
 r_int
+DECL|function|nfsd4_open_downgrade
 id|nfsd4_open_downgrade
 c_func
 (paren
@@ -9619,6 +9726,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * nfs4_unlock_state() called after encode&n; */
 r_int
+DECL|function|nfsd4_close
 id|nfsd4_close
 c_func
 (paren
@@ -9762,6 +9870,7 @@ id|status
 suffix:semicolon
 )brace
 r_int
+DECL|function|nfsd4_delegreturn
 id|nfsd4_delegreturn
 c_func
 (paren
@@ -9838,15 +9947,21 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * Lock owner state (byte-range locks)&n; */
+DECL|macro|LOFF_OVERFLOW
 mdefine_line|#define LOFF_OVERFLOW(start, len)      ((u64)(len) &gt; ~(u64)(start))
+DECL|macro|LOCK_HASH_BITS
 mdefine_line|#define LOCK_HASH_BITS              8
+DECL|macro|LOCK_HASH_SIZE
 mdefine_line|#define LOCK_HASH_SIZE             (1 &lt;&lt; LOCK_HASH_BITS)
+DECL|macro|LOCK_HASH_MASK
 mdefine_line|#define LOCK_HASH_MASK             (LOCK_HASH_SIZE - 1)
+DECL|macro|lockownerid_hashval
 mdefine_line|#define lockownerid_hashval(id) &bslash;&n;        ((id) &amp; LOCK_HASH_MASK)
 r_static
 r_inline
 r_int
 r_int
+DECL|function|lock_ownerstr_hashval
 id|lock_ownerstr_hashval
 c_func
 (paren
@@ -9886,6 +10001,7 @@ op_amp
 id|LOCK_HASH_MASK
 suffix:semicolon
 )brace
+DECL|variable|lock_ownerid_hashtbl
 r_static
 r_struct
 id|list_head
@@ -9894,6 +10010,7 @@ id|lock_ownerid_hashtbl
 id|LOCK_HASH_SIZE
 )braket
 suffix:semicolon
+DECL|variable|lock_ownerstr_hashtbl
 r_static
 r_struct
 id|list_head
@@ -9902,6 +10019,7 @@ id|lock_ownerstr_hashtbl
 id|LOCK_HASH_SIZE
 )braket
 suffix:semicolon
+DECL|variable|lockstateid_hashtbl
 r_static
 r_struct
 id|list_head
@@ -9913,6 +10031,7 @@ suffix:semicolon
 r_struct
 id|nfs4_stateid
 op_star
+DECL|function|find_stateid
 id|find_stateid
 c_func
 (paren
@@ -10100,6 +10219,7 @@ r_static
 r_struct
 id|nfs4_delegation
 op_star
+DECL|function|find_delegation_stateid
 id|find_delegation_stateid
 c_func
 (paren
@@ -10203,6 +10323,7 @@ multiline_comment|/*&n; * TODO: Linux file offsets are _signed_ 64-bit quantitie
 r_static
 r_inline
 r_void
+DECL|function|nfs4_transform_lock_offset
 id|nfs4_transform_lock_offset
 c_func
 (paren
@@ -10236,6 +10357,7 @@ id|OFFSET_MAX
 suffix:semicolon
 )brace
 r_int
+DECL|function|nfs4_verify_lock_stateowner
 id|nfs4_verify_lock_stateowner
 c_func
 (paren
@@ -10311,6 +10433,7 @@ suffix:semicolon
 r_static
 r_inline
 r_void
+DECL|function|nfs4_set_lock_denied
 id|nfs4_set_lock_denied
 c_func
 (paren
@@ -10430,6 +10553,7 @@ r_static
 r_struct
 id|nfs4_stateowner
 op_star
+DECL|function|find_lockstateowner
 id|find_lockstateowner
 c_func
 (paren
@@ -10511,6 +10635,7 @@ r_static
 r_struct
 id|nfs4_stateowner
 op_star
+DECL|function|find_lockstateowner_str
 id|find_lockstateowner_str
 c_func
 (paren
@@ -10588,6 +10713,7 @@ r_static
 r_struct
 id|nfs4_stateowner
 op_star
+DECL|function|alloc_init_lock_stateowner
 id|alloc_init_lock_stateowner
 c_func
 (paren
@@ -10781,6 +10907,7 @@ suffix:semicolon
 r_struct
 id|nfs4_stateid
 op_star
+DECL|function|alloc_init_lock_stateid
 id|alloc_init_lock_stateid
 c_func
 (paren
@@ -10950,6 +11077,7 @@ id|stp
 suffix:semicolon
 )brace
 r_int
+DECL|function|check_lock_length
 id|check_lock_length
 c_func
 (paren
@@ -10992,6 +11120,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *  LOCK operation &n; */
 r_int
+DECL|function|nfsd4_lock
 id|nfsd4_lock
 c_func
 (paren
@@ -11752,6 +11881,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * LOCKT operation&n; */
 r_int
+DECL|function|nfsd4_lockt
 id|nfsd4_lockt
 c_func
 (paren
@@ -12100,6 +12230,7 @@ id|status
 suffix:semicolon
 )brace
 r_int
+DECL|function|nfsd4_locku
 id|nfsd4_locku
 c_func
 (paren
@@ -12403,6 +12534,7 @@ suffix:semicolon
 multiline_comment|/*&n; * returns&n; * &t;1: locks held by lockowner&n; * &t;0: no locks held by lockowner&n; */
 r_static
 r_int
+DECL|function|check_for_locks
 id|check_for_locks
 c_func
 (paren
@@ -12499,6 +12631,7 @@ id|status
 suffix:semicolon
 )brace
 r_int
+DECL|function|nfsd4_release_lockowner
 id|nfsd4_release_lockowner
 c_func
 (paren
@@ -12662,6 +12795,7 @@ r_inline
 r_struct
 id|nfs4_client_reclaim
 op_star
+DECL|function|alloc_reclaim
 id|alloc_reclaim
 c_func
 (paren
@@ -12733,6 +12867,7 @@ suffix:semicolon
 multiline_comment|/*&n; * failure =&gt; all reset bets are off, nfserr_no_grace...&n; */
 r_static
 r_int
+DECL|function|nfs4_client_to_reclaim
 id|nfs4_client_to_reclaim
 c_func
 (paren
@@ -12835,6 +12970,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|nfs4_release_reclaim
 id|nfs4_release_reclaim
 c_func
 (paren
@@ -12941,6 +13077,7 @@ multiline_comment|/*&n; * called from OPEN, CLAIM_PREVIOUS with a new clientid. 
 r_struct
 id|nfs4_client_reclaim
 op_star
+DECL|function|nfs4_find_reclaim_client
 id|nfs4_find_reclaim_client
 c_func
 (paren
@@ -13044,6 +13181,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;* Called from OPEN. Look for clientid in reclaim list.&n;*/
 r_int
+DECL|function|nfs4_check_open_reclaim
 id|nfs4_check_open_reclaim
 c_func
 (paren
@@ -13082,6 +13220,7 @@ suffix:semicolon
 multiline_comment|/* &n; * Start and stop routines&n; */
 r_static
 r_void
+DECL|function|__nfs4_state_init
 id|__nfs4_state_init
 c_func
 (paren
@@ -13452,6 +13591,7 @@ id|HZ
 suffix:semicolon
 )brace
 r_int
+DECL|function|nfs4_state_init
 id|nfs4_state_init
 c_func
 (paren
@@ -13498,6 +13638,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_int
+DECL|function|nfs4_in_grace
 id|nfs4_in_grace
 c_func
 (paren
@@ -13514,6 +13655,7 @@ id|grace_end
 suffix:semicolon
 )brace
 r_void
+DECL|function|set_no_grace
 id|set_no_grace
 c_func
 (paren
@@ -13535,6 +13677,7 @@ c_func
 suffix:semicolon
 )brace
 id|time_t
+DECL|function|nfs4_lease_time
 id|nfs4_lease_time
 c_func
 (paren
@@ -13547,6 +13690,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|__nfs4_state_shutdown
 id|__nfs4_state_shutdown
 c_func
 (paren
@@ -13845,6 +13989,7 @@ id|free_delegation
 suffix:semicolon
 )brace
 r_void
+DECL|function|nfs4_state_shutdown
 id|nfs4_state_shutdown
 c_func
 (paren
@@ -13879,6 +14024,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Called when leasetime is changed.&n; *&n; * if nfsd is not started, simply set the global lease.&n; *&n; * if nfsd(s) are running, lease change requires nfsv4 state to be reset.&n; * e.g: boot_time is reset, existing nfs4_client structs are&n; * used to fill reclaim_str_hashtbl, then all state (except for the&n; * reclaim_str_hashtbl) is re-initialized.&n; *&n; * if the old lease time is greater than the new lease time, the grace&n; * period needs to be set to the old lease time to allow clients to reclaim&n; * their state. XXX - we may want to set the grace period == lease time&n; * after an initial grace period == old lease time&n; *&n; * if an error occurs in this process, the new lease is set, but the server&n; * will not honor OPEN or LOCK reclaims, and will return nfserr_no_grace&n; * which means OPEN/LOCK/READ/WRITE will fail during grace period.&n; *&n; * clients will attempt to reset all state with SETCLIENTID/CONFIRM, and&n; * OPEN and LOCK reclaims.&n; */
 r_void
+DECL|function|nfs4_reset_lease
 id|nfs4_reset_lease
 c_func
 (paren

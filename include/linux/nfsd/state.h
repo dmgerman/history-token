@@ -168,11 +168,11 @@ id|file_lock
 op_star
 id|dl_flock
 suffix:semicolon
-DECL|member|dl_stp
+DECL|member|dl_vfs_file
 r_struct
-id|nfs4_stateid
+id|file
 op_star
-id|dl_stp
+id|dl_vfs_file
 suffix:semicolon
 DECL|member|dl_type
 id|u32
