@@ -24,11 +24,7 @@ r_return
 id|__inline_memcpy
 c_func
 (paren
-id|__io_virt
-c_func
-(paren
 id|dst
-)paren
 comma
 id|src
 comma
@@ -61,11 +57,7 @@ c_func
 (paren
 id|dst
 comma
-id|__io_virt
-c_func
-(paren
 id|src
-)paren
 comma
 id|len
 )paren
