@@ -669,12 +669,11 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|driver_setup
 r_static
 r_struct
 id|qla_driver_setup
 id|driver_setup
-id|__initdata
 suffix:semicolon
 multiline_comment|/*&n; * convert scsi data direction to request_t control flags&n; */
 r_static

@@ -14613,7 +14613,7 @@ suffix:semicolon
 multiline_comment|/* This is called by parport_pc_find_nonpci_ports (in asm/parport.h) */
 r_static
 r_int
-id|__init
+id|__devinit
 id|__attribute__
 c_func
 (paren

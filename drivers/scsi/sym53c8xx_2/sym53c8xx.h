@@ -19,8 +19,6 @@ multiline_comment|/*&n; *  These options are not tunable from &squot;make config
 macro_line|#if 1
 DECL|macro|SYM_LINUX_PROC_INFO_SUPPORT
 mdefine_line|#define&t;SYM_LINUX_PROC_INFO_SUPPORT
-DECL|macro|SYM_LINUX_BOOT_COMMAND_LINE_SUPPORT
-mdefine_line|#define SYM_LINUX_BOOT_COMMAND_LINE_SUPPORT
 DECL|macro|SYM_LINUX_USER_COMMAND_SUPPORT
 mdefine_line|#define SYM_LINUX_USER_COMMAND_SUPPORT
 DECL|macro|SYM_LINUX_USER_INFO_SUPPORT
@@ -97,17 +95,9 @@ DECL|member|host_id
 id|u_char
 id|host_id
 suffix:semicolon
-DECL|member|reverse_probe
-id|u_char
-id|reverse_probe
-suffix:semicolon
 DECL|member|verbose
 id|u_char
 id|verbose
-suffix:semicolon
-DECL|member|debug
-id|u_short
-id|debug
 suffix:semicolon
 DECL|member|settle_delay
 id|u_char
@@ -147,6 +137,8 @@ DECL|macro|SYM_SETUP_SCSI_BUS_CHECK
 mdefine_line|#define SYM_SETUP_SCSI_BUS_CHECK&t;sym_driver_setup.scsi_bus_check
 DECL|macro|SYM_SETUP_HOST_ID
 mdefine_line|#define SYM_SETUP_HOST_ID&t;&t;sym_driver_setup.host_id
+DECL|macro|boot_verbose
+mdefine_line|#define boot_verbose&t;&t;&t;sym_driver_setup.verbose
 multiline_comment|/* Always enable parity. */
 DECL|macro|SYM_SETUP_PCI_PARITY
 mdefine_line|#define SYM_SETUP_PCI_PARITY&t;&t;1
@@ -154,45 +146,18 @@ DECL|macro|SYM_SETUP_SCSI_PARITY
 mdefine_line|#define SYM_SETUP_SCSI_PARITY&t;&t;1
 multiline_comment|/*&n; *  Initial setup.&n; *&n; *  Can be overriden at startup by a command line.&n; */
 DECL|macro|SYM_LINUX_DRIVER_SETUP
-mdefine_line|#define SYM_LINUX_DRIVER_SETUP&t;{&t;&t;&t;&t;&bslash;&n;&t;.max_tag&t;= CONFIG_SCSI_SYM53C8XX_DEFAULT_TAGS,&t;&bslash;&n;&t;.burst_order&t;= 7,&t;&t;&t;&t;&t;&bslash;&n;&t;.scsi_led&t;= 1,&t;&t;&t;&t;&t;&bslash;&n;&t;.scsi_diff&t;= 1,&t;&t;&t;&t;&t;&bslash;&n;&t;.irq_mode&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.scsi_bus_check&t;= 1,&t;&t;&t;&t;&t;&bslash;&n;&t;.host_id&t;= 7,&t;&t;&t;&t;&t;&bslash;&n;&t;.reverse_probe&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.verbose&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.debug&t;&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.settle_delay&t;= 3,&t;&t;&t;&t;&t;&bslash;&n;&t;.use_nvram&t;= 1,&t;&t;&t;&t;&t;&bslash;&n;}
-multiline_comment|/*&n; *  Boot fail safe setup.&n; *&n; *  Override initial setup from boot command line:&n; *    sym53c8xx=safe:y&n; */
-DECL|macro|SYM_LINUX_DRIVER_SAFE_SETUP
-mdefine_line|#define SYM_LINUX_DRIVER_SAFE_SETUP {&t;&t;&t;&t;&bslash;&n;&t;.max_tag&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.burst_order&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.scsi_led&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.scsi_diff&t;= 1,&t;&t;&t;&t;&t;&bslash;&n;&t;.irq_mode&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.scsi_bus_check&t;= 2,&t;&t;&t;&t;&t;&bslash;&n;&t;.host_id&t;= 7,&t;&t;&t;&t;&t;&bslash;&n;&t;.reverse_probe&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.verbose&t;= 2,&t;&t;&t;&t;&t;&bslash;&n;&t;.debug&t;&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.settle_delay&t;= 10,&t;&t;&t;&t;&t;&bslash;&n;&t;.use_nvram&t;= 1,&t;&t;&t;&t;&t;&bslash;&n;}
-multiline_comment|/*&n; *  This structure is initialized from linux config options.&n; *  It can be overridden at boot-up by the boot command line.&n; */
-macro_line|#ifdef SYM_GLUE_C
-r_struct
-id|sym_driver_setup
-DECL|variable|sym_driver_setup
-id|sym_driver_setup
-op_assign
-id|SYM_LINUX_DRIVER_SETUP
-suffix:semicolon
-macro_line|#ifdef SYM_LINUX_DEBUG_CONTROL_SUPPORT
-DECL|variable|sym_debug_flags
-id|u_int
-id|sym_debug_flags
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
-macro_line|#else
+mdefine_line|#define SYM_LINUX_DRIVER_SETUP&t;{&t;&t;&t;&t;&bslash;&n;&t;.max_tag&t;= CONFIG_SCSI_SYM53C8XX_DEFAULT_TAGS,&t;&bslash;&n;&t;.burst_order&t;= 7,&t;&t;&t;&t;&t;&bslash;&n;&t;.scsi_led&t;= 1,&t;&t;&t;&t;&t;&bslash;&n;&t;.scsi_diff&t;= 1,&t;&t;&t;&t;&t;&bslash;&n;&t;.irq_mode&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.scsi_bus_check&t;= 1,&t;&t;&t;&t;&t;&bslash;&n;&t;.host_id&t;= 7,&t;&t;&t;&t;&t;&bslash;&n;&t;.verbose&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.settle_delay&t;= 3,&t;&t;&t;&t;&t;&bslash;&n;&t;.use_nvram&t;= 1,&t;&t;&t;&t;&t;&bslash;&n;}
 r_extern
 r_struct
 id|sym_driver_setup
 id|sym_driver_setup
 suffix:semicolon
-macro_line|#ifdef SYM_LINUX_DEBUG_CONTROL_SUPPORT
 r_extern
-id|u_int
+r_int
+r_int
 id|sym_debug_flags
 suffix:semicolon
-macro_line|#endif
-macro_line|#endif /* SYM_GLUE_C */
-macro_line|#ifdef SYM_LINUX_DEBUG_CONTROL_SUPPORT
 DECL|macro|DEBUG_FLAGS
 mdefine_line|#define DEBUG_FLAGS&t;sym_debug_flags
-macro_line|#endif
-DECL|macro|boot_verbose
-mdefine_line|#define boot_verbose&t;sym_driver_setup.verbose
 macro_line|#endif /* SYM53C8XX_H */
 eof

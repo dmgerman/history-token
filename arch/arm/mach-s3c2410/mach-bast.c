@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-bast.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     14-Sep-2004 BJD  USB power control&n; *     20-Aug-2004 BJD  Added s3c2410_board struct&n; *     18-Aug-2004 BJD  Added platform devices from default set&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to v2.6 kernel&n; *     06-Jan-2003 BJD  Updates for &lt;arch/map.h&gt;&n; *     18-Jan-2003 BJD  Added serial port configuration&n; *     05-Oct-2004 BJD  Power management code&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-bast.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     14-Sep-2004 BJD  USB power control&n; *     20-Aug-2004 BJD  Added s3c2410_board struct&n; *     18-Aug-2004 BJD  Added platform devices from default set&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to v2.6 kernel&n; *     06-Jan-2003 BJD  Updates for &lt;arch/map.h&gt;&n; *     18-Jan-2003 BJD  Added serial port configuration&n; *     05-Oct-2004 BJD  Power management code&n; *     04-Nov-2004 BJD  Updated serial port clocks&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -20,6 +20,7 @@ macro_line|#include &lt;asm/arch/regs-serial.h&gt;
 macro_line|#include &lt;asm/arch/regs-gpio.h&gt;
 macro_line|#include &lt;asm/arch/regs-mem.h&gt;
 macro_line|#include &quot;s3c2410.h&quot;
+macro_line|#include &quot;clock.h&quot;
 macro_line|#include &quot;devs.h&quot;
 macro_line|#include &quot;cpu.h&quot;
 macro_line|#include &quot;usb-simtec.h&quot;
@@ -899,18 +900,68 @@ DECL|macro|ULCON
 mdefine_line|#define ULCON S3C2410_LCON_CS8 | S3C2410_LCON_PNONE | S3C2410_LCON_STOPB
 DECL|macro|UFCON
 mdefine_line|#define UFCON S3C2410_UFCON_RXTRIG8 | S3C2410_UFCON_FIFOMODE
-multiline_comment|/* base baud rate for all our UARTs */
-DECL|variable|bast_serial_clock
+DECL|variable|bast_serial_clocks
 r_static
-r_int
-r_int
-id|bast_serial_clock
+r_struct
+id|s3c24xx_uart_clksrc
+id|bast_serial_clocks
+(braket
+)braket
 op_assign
-l_int|24
-op_star
-l_int|1000
-op_star
-l_int|1000
+(brace
+(braket
+l_int|0
+)braket
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;uclk&quot;
+comma
+dot
+id|divisor
+op_assign
+l_int|1
+comma
+dot
+id|min_baud
+op_assign
+l_int|0
+comma
+dot
+id|max_baud
+op_assign
+l_int|0
+comma
+)brace
+comma
+(braket
+l_int|1
+)braket
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;pclk&quot;
+comma
+dot
+id|divisor
+op_assign
+l_int|1
+comma
+dot
+id|min_baud
+op_assign
+l_int|0
+comma
+dot
+id|max_baud
+op_assign
+l_float|0.
+)brace
+)brace
 suffix:semicolon
 DECL|variable|bast_uartcfgs
 r_static
@@ -937,12 +988,6 @@ op_assign
 l_int|0
 comma
 dot
-id|clock
-op_assign
-op_amp
-id|bast_serial_clock
-comma
-dot
 id|ucon
 op_assign
 id|UCON
@@ -957,6 +1002,19 @@ id|ufcon
 op_assign
 id|UFCON
 comma
+dot
+id|clocks
+op_assign
+id|bast_serial_clocks
+comma
+dot
+id|clocks_size
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|bast_serial_clocks
+)paren
 )brace
 comma
 (braket
@@ -975,12 +1033,6 @@ op_assign
 l_int|0
 comma
 dot
-id|clock
-op_assign
-op_amp
-id|bast_serial_clock
-comma
-dot
 id|ucon
 op_assign
 id|UCON
@@ -995,6 +1047,19 @@ id|ufcon
 op_assign
 id|UFCON
 comma
+dot
+id|clocks
+op_assign
+id|bast_serial_clocks
+comma
+dot
+id|clocks_size
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|bast_serial_clocks
+)paren
 )brace
 comma
 multiline_comment|/* port 2 is not actually used */
@@ -1014,12 +1079,6 @@ op_assign
 l_int|0
 comma
 dot
-id|clock
-op_assign
-op_amp
-id|bast_serial_clock
-comma
-dot
 id|ucon
 op_assign
 id|UCON
@@ -1034,6 +1093,19 @@ id|ufcon
 op_assign
 id|UFCON
 comma
+dot
+id|clocks
+op_assign
+id|bast_serial_clocks
+comma
+dot
+id|clocks_size
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|bast_serial_clocks
+)paren
 )brace
 )brace
 suffix:semicolon
@@ -1152,6 +1224,33 @@ op_amp
 id|bast_device_nor
 )brace
 suffix:semicolon
+DECL|variable|bast_clocks
+r_static
+r_struct
+id|clk
+op_star
+id|bast_clocks
+(braket
+)braket
+op_assign
+(brace
+op_amp
+id|s3c24xx_dclk0
+comma
+op_amp
+id|s3c24xx_dclk1
+comma
+op_amp
+id|s3c24xx_clkout0
+comma
+op_amp
+id|s3c24xx_clkout1
+comma
+op_amp
+id|s3c24xx_uclk
+comma
+)brace
+suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_struct
@@ -1173,6 +1272,20 @@ c_func
 (paren
 id|bast_devices
 )paren
+comma
+dot
+id|clocks
+op_assign
+id|bast_clocks
+comma
+dot
+id|clocks_count
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|bast_clocks
+)paren
 )brace
 suffix:semicolon
 DECL|function|bast_map_io
@@ -1184,6 +1297,46 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* initialise the clocks */
+id|s3c24xx_dclk0.parent
+op_assign
+l_int|NULL
+suffix:semicolon
+id|s3c24xx_dclk0.rate
+op_assign
+l_int|12
+op_star
+l_int|1000
+op_star
+l_int|1000
+suffix:semicolon
+id|s3c24xx_dclk1.parent
+op_assign
+l_int|NULL
+suffix:semicolon
+id|s3c24xx_dclk1.rate
+op_assign
+l_int|24
+op_star
+l_int|1000
+op_star
+l_int|1000
+suffix:semicolon
+id|s3c24xx_clkout0.parent
+op_assign
+op_amp
+id|s3c24xx_dclk0
+suffix:semicolon
+id|s3c24xx_clkout1.parent
+op_assign
+op_amp
+id|s3c24xx_dclk1
+suffix:semicolon
+id|s3c24xx_uclk.parent
+op_assign
+op_amp
+id|s3c24xx_clkout1
+suffix:semicolon
 id|s3c24xx_init_io
 c_func
 (paren

@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  drivers/cpufreq/cpufreq_ondemand.c&n; *&n; *  Copyright (C)  2001 Russell King&n; *            (C)  2003 Venkatesh Pallipadi &lt;venkatesh.pallipadi@intel.com&gt;.&n; *                      Jun Nakajima &lt;jun.nakajima@intel.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -15,7 +14,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 multiline_comment|/*&n; * dbs is used in this file as a shortform for demandbased switching&n; * It helps to keep variable names smaller, simpler&n; */
@@ -147,6 +145,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|dbs_tuners_ins
+r_static
 r_struct
 id|dbs_tuners
 id|dbs_tuners_ins
@@ -225,7 +224,7 @@ id|MIN_SAMPLING_RATE
 suffix:semicolon
 )brace
 DECL|macro|define_one_ro
-mdefine_line|#define define_one_ro(_name) &t;&t;&t;&t;&t;&bslash;&n;static struct freq_attr _name = { &t;&t;&t;&t;&bslash;&n;&t;.attr = { .name = __stringify(_name), .mode = 0444 }, &t;&bslash;&n;&t;.show = show_##_name, &t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define define_one_ro(_name) &t;&t;&t;&t;&t;&bslash;&n;static struct freq_attr _name =  &t;&t;&t;&t;&bslash;&n;__ATTR(_name, 0444, show_##_name, NULL)
 DECL|variable|sampling_rate_max
 id|define_one_ro
 c_func
@@ -314,13 +313,6 @@ op_amp
 id|input
 )paren
 suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|dbs_sem
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -328,15 +320,21 @@ id|ret
 op_ne
 l_int|1
 )paren
-r_goto
-id|out
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|dbs_sem
+)paren
 suffix:semicolon
 id|dbs_tuners_ins.sampling_down_factor
 op_assign
 id|input
 suffix:semicolon
-id|out
-suffix:colon
 id|up
 c_func
 (paren
@@ -409,15 +407,23 @@ id|input
 OL
 id|MIN_SAMPLING_RATE
 )paren
-r_goto
-id|out
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|dbs_sem
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|dbs_tuners_ins.sampling_rate
 op_assign
 id|input
 suffix:semicolon
-id|out
-suffix:colon
 id|up
 c_func
 (paren
@@ -494,15 +500,23 @@ id|input
 op_le
 id|dbs_tuners_ins.down_threshold
 )paren
-r_goto
-id|out
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|dbs_sem
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|dbs_tuners_ins.up_threshold
 op_assign
 id|input
 suffix:semicolon
-id|out
-suffix:colon
 id|up
 c_func
 (paren
@@ -579,15 +593,23 @@ id|input
 op_ge
 id|dbs_tuners_ins.up_threshold
 )paren
-r_goto
-id|out
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|dbs_sem
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|dbs_tuners_ins.down_threshold
 op_assign
 id|input
 suffix:semicolon
-id|out
-suffix:colon
 id|up
 c_func
 (paren
@@ -600,7 +622,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|macro|define_one_rw
-mdefine_line|#define define_one_rw(_name) &t;&t;&t;&t;&t;&bslash;&n;static struct freq_attr _name = { &t;&t;&t;&t;&bslash;&n;&t;.attr = { .name = __stringify(_name), .mode = 0644 }, &t;&bslash;&n;&t;.show = show_##_name, &t;&t;&t;&t;&t;&bslash;&n;&t;.store = store_##_name, &t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define define_one_rw(_name) &bslash;&n;static struct freq_attr _name = &bslash;&n;__ATTR(_name, 0644, show_##_name, store_##_name)
 DECL|variable|sampling_rate
 id|define_one_rw
 c_func

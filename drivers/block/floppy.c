@@ -18209,11 +18209,12 @@ DECL|member|param2
 r_int
 id|param2
 suffix:semicolon
-DECL|variable|config_params
+DECL|variable|__initdata
 )brace
 id|config_params
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 (brace

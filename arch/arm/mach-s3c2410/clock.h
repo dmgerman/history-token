@@ -26,6 +26,10 @@ r_char
 op_star
 id|name
 suffix:semicolon
+DECL|member|id
+r_int
+id|id
+suffix:semicolon
 DECL|member|used
 id|atomic_t
 id|used

@@ -370,7 +370,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|PFX
 l_string|&quot;cpu%d, init lo 0x%x, hi 0x%x&bslash;n&quot;
 comma
 id|smp_processor_id
@@ -461,8 +460,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;writing fid 0x%x, lo 0x%x, hi 0x%x&bslash;n&quot;
 comma
 id|fid
@@ -623,8 +620,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;writing vid 0x%x, lo 0x%x, hi 0x%x&bslash;n&quot;
 comma
 id|vid
@@ -885,8 +880,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;transitioned (cpu%d): new fid 0x%x, vid 0x%x&bslash;n&quot;
 comma
 id|smp_processor_id
@@ -932,8 +925,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;ph1 (cpu%d): start, currfid 0x%x, currvid 0x%x, reqvid 0x%x, rvo 0x%x&bslash;n&quot;
 comma
 id|smp_processor_id
@@ -961,8 +952,6 @@ id|reqvid
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;ph1: curr 0x%x, req vid 0x%x&bslash;n&quot;
 comma
 id|data-&gt;currvid
@@ -1013,8 +1002,6 @@ r_else
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;ph1: changing vid for rvo, req 0x%x&bslash;n&quot;
 comma
 id|data-&gt;currvid
@@ -1082,8 +1069,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;ph1 complete, currfid 0x%x, currvid 0x%x&bslash;n&quot;
 comma
 id|data-&gt;currfid
@@ -1182,8 +1167,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;ph2 (cpu%d): starting, currfid 0x%x, currvid 0x%x, reqfid 0x%x&bslash;n&quot;
 comma
 id|smp_processor_id
@@ -1417,8 +1400,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;ph2 complete, currfid 0x%x, currvid 0x%x&bslash;n&quot;
 comma
 id|data-&gt;currfid
@@ -1459,8 +1440,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;ph3 (cpu%d): starting, currfid 0x%x, currvid 0x%x&bslash;n&quot;
 comma
 id|smp_processor_id
@@ -1567,8 +1546,6 @@ id|data-&gt;currvid
 id|dprintk
 c_func
 (paren
-id|KERN_ERR
-id|PFX
 l_string|&quot;ph3 failed, currvid 0x%x&bslash;n&quot;
 comma
 id|data-&gt;currvid
@@ -1589,8 +1566,6 @@ id|data-&gt;currfid
 id|dprintk
 c_func
 (paren
-id|KERN_ERR
-id|PFX
 l_string|&quot;ph3 failed, currfid changed 0x%x&bslash;n&quot;
 comma
 id|data-&gt;currfid
@@ -1603,8 +1578,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;ph3 complete, currfid 0x%x, currvid 0x%x&bslash;n&quot;
 comma
 id|data-&gt;currfid
@@ -2517,8 +2490,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;cfid 0x%x, cvid 0x%x&bslash;n&quot;
 comma
 id|data-&gt;currfid
@@ -2581,8 +2552,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_ERR
-id|PFX
 l_string|&quot;currfid/vid do not match PST, ignoring&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2672,8 +2641,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;found PSB header at 0x%p&bslash;n&quot;
 comma
 id|psb
@@ -2682,8 +2649,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;table vers: 0x%x&bslash;n&quot;
 comma
 id|psb-&gt;tableversion
@@ -2713,8 +2678,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;flags: 0x%x&bslash;n&quot;
 comma
 id|psb-&gt;flags1
@@ -2746,8 +2709,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;voltage stabilization time: %d(*20us)&bslash;n&quot;
 comma
 id|data-&gt;vstable
@@ -2756,8 +2717,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;flags2: 0x%x&bslash;n&quot;
 comma
 id|psb-&gt;flags2
@@ -2814,8 +2773,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;ramp voltage offset: %d&bslash;n&quot;
 comma
 id|data-&gt;rvo
@@ -2824,8 +2781,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;isochronous relief time: %d&bslash;n&quot;
 comma
 id|data-&gt;irt
@@ -2834,8 +2789,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;maximum voltage step: %d - 0x%x&bslash;n&quot;
 comma
 id|mvs
@@ -2846,8 +2799,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;numpst: 0x%x&bslash;n&quot;
 comma
 id|psb-&gt;numpst
@@ -2931,8 +2882,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;plllocktime: 0x%x (units 1us)&bslash;n&quot;
 comma
 id|psb-&gt;plllocktime
@@ -2941,8 +2890,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;maxfid: 0x%x&bslash;n&quot;
 comma
 id|psb-&gt;maxfid
@@ -2951,8 +2898,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;maxvid: 0x%x&bslash;n&quot;
 comma
 id|psb-&gt;maxvid
@@ -2969,8 +2914,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;numpstates: 0x%x&bslash;n&quot;
 comma
 id|data-&gt;numps
@@ -3157,8 +3100,6 @@ id|data-&gt;cpu
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;register performance failed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3179,8 +3120,6 @@ l_int|1
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;No ACPI P-States&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3207,9 +3146,11 @@ id|ACPI_ADR_SPACE_FIXED_HARDWARE
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
-l_string|&quot;Invalid control/status registers&bslash;n&quot;
+l_string|&quot;Invalid control/status registers (%x - %x)&bslash;n&quot;
+comma
+id|data-&gt;acpi_data.control_register.space_id
+comma
+id|data-&gt;acpi_data.status_register.space_id
 )paren
 suffix:semicolon
 r_goto
@@ -3249,8 +3190,6 @@ id|powernow_table
 id|dprintk
 c_func
 (paren
-id|KERN_ERR
-id|PFX
 l_string|&quot;powernow_table memory alloc failure&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3304,8 +3243,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;   %d : fid 0x%x, vid 0x%x&bslash;n&quot;
 comma
 id|i
@@ -3390,8 +3327,6 @@ l_int|1000
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;invalid freq %u kHz, ignoring&bslash;n&quot;
 comma
 id|powernow_table
@@ -3426,8 +3361,6 @@ l_int|0x1f
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;invalid vid %u, ignoring&bslash;n&quot;
 comma
 id|vid
@@ -3511,8 +3444,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;double low frequency table entry, ignoring it.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3792,8 +3723,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;cpu %d transition to index %u&bslash;n&quot;
 comma
 id|smp_processor_id
@@ -3834,8 +3763,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;table matched fid 0x%x, giving vid 0x%x&bslash;n&quot;
 comma
 id|fid
@@ -3874,8 +3801,6 @@ id|fid
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;target matches current values (fid 0x%x, vid 0x%x)&bslash;n&quot;
 comma
 id|fid
@@ -3906,8 +3831,6 @@ id|HI_FID_TABLE_BOTTOM
 id|printk
 c_func
 (paren
-id|KERN_ERR
-id|PFX
 l_string|&quot;ignoring illegal change in lo freq table-%x to 0x%x&bslash;n&quot;
 comma
 id|data-&gt;currfid
@@ -3922,8 +3845,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;cpu %d, changing to fid 0x%x, vid 0x%x&bslash;n&quot;
 comma
 id|smp_processor_id
@@ -4140,8 +4061,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;targ: cpu %d, %d kHz, min %d, max %d, relation %d&bslash;n&quot;
 comma
 id|pol-&gt;cpu
@@ -4177,8 +4096,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;targ: curr fid 0x%x, vid 0x%x&bslash;n&quot;
 comma
 id|data-&gt;currfid
@@ -4682,8 +4599,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;policy current frequency %d kHz&bslash;n&quot;
 comma
 id|pol-&gt;cur
@@ -4738,8 +4653,6 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;cpu_init done, current fid 0x%x, vid 0x%x&bslash;n&quot;
 comma
 id|data-&gt;currfid
@@ -5144,8 +5057,6 @@ r_void
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;exit&bslash;n&quot;
 )paren
 suffix:semicolon

@@ -3116,8 +3116,12 @@ id|dev
 suffix:semicolon
 id|dev-&gt;parent
 op_assign
+id|get_device
+c_func
+(paren
 op_amp
 id|shost-&gt;shost_gendev
+)paren
 suffix:semicolon
 id|dev-&gt;release
 op_assign

@@ -7,6 +7,8 @@ macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
+DECL|macro|dprintk
+mdefine_line|#define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_DRIVER, &quot;longrun&quot;, msg)
 DECL|variable|longrun_driver
 r_static
 r_struct
@@ -52,6 +54,16 @@ comma
 id|msr_hi
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;longrun flags are %x - %x&bslash;n&quot;
+comma
+id|msr_lo
+comma
+id|msr_hi
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -72,6 +84,16 @@ id|rdmsr
 c_func
 (paren
 id|MSR_TMTA_LONGRUN_CTRL
+comma
+id|msr_lo
+comma
+id|msr_hi
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;longrun ctrl is %x - %x&bslash;n&quot;
 comma
 id|msr_lo
 comma
@@ -446,6 +468,14 @@ op_amp
 id|edx
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;cpuid eax is %u&bslash;n&quot;
+comma
+id|eax
+)paren
+suffix:semicolon
 r_return
 (paren
 id|eax
@@ -597,6 +627,18 @@ op_star
 l_int|1000
 suffix:semicolon
 multiline_comment|/* to kHz */
+id|dprintk
+c_func
+(paren
+l_string|&quot;longrun table interface told %u - %u kHz&bslash;n&quot;
+comma
+op_star
+id|low_freq
+comma
+op_star
+id|high_freq
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -633,6 +675,15 @@ op_star
 id|high_freq
 op_star
 l_int|1000
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;high frequency is %u kHz&bslash;n&quot;
+comma
+op_star
+id|high_freq
+)paren
 suffix:semicolon
 multiline_comment|/* get current borders */
 id|rdmsr
@@ -755,6 +806,16 @@ id|save_hi
 )paren
 suffix:semicolon
 )brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;percentage is %u %%, freq is %u MHz&bslash;n&quot;
+comma
+id|ecx
+comma
+id|eax
+)paren
+suffix:semicolon
 multiline_comment|/* performance_pctg = (current_freq - low_freq)/(high_freq - low_freq)&n;&t; * eqals&n;&t; * low_freq * ( 1 - perf_pctg) = (cur_freq - high_freq * perf_pctg)&n;&t; *&n;&t; * high_freq * perf_pctg is stored tempoarily into &quot;ebx&quot;.&n;&t; */
 id|ebx
 op_assign
@@ -820,6 +881,15 @@ op_star
 l_int|1000
 suffix:semicolon
 multiline_comment|/* back to kHz */
+id|dprintk
+c_func
+(paren
+l_string|&quot;low frequency is %u kHz&bslash;n&quot;
+comma
+op_star
+id|low_freq
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -923,6 +923,7 @@ id|dev
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|p
 suffix:semicolon
@@ -1109,6 +1110,7 @@ id|dev
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|p
 suffix:semicolon
@@ -1208,6 +1210,7 @@ id|dev
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|p
 suffix:semicolon

@@ -281,8 +281,11 @@ DECL|macro|__BVEC_END
 mdefine_line|#define __BVEC_END(bio)&t;&t;bio_iovec_idx((bio), (bio)-&gt;bi_vcnt - 1)
 DECL|macro|__BVEC_START
 mdefine_line|#define __BVEC_START(bio)&t;bio_iovec_idx((bio), (bio)-&gt;bi_idx)
+multiline_comment|/*&n; * allow arch override, for eg virtualized architectures (put in asm/io.h)&n; */
+macro_line|#ifndef BIOVEC_PHYS_MERGEABLE
 DECL|macro|BIOVEC_PHYS_MERGEABLE
 mdefine_line|#define BIOVEC_PHYS_MERGEABLE(vec1, vec2)&t;&bslash;&n;&t;((bvec_to_phys((vec1)) + (vec1)-&gt;bv_len) == bvec_to_phys((vec2)))
+macro_line|#endif
 DECL|macro|BIOVEC_VIRT_MERGEABLE
 mdefine_line|#define BIOVEC_VIRT_MERGEABLE(vec1, vec2)&t;&bslash;&n;&t;((((bvec_to_phys((vec1)) + (vec1)-&gt;bv_len) | bvec_to_phys((vec2))) &amp; (BIO_VMERGE_BOUNDARY - 1)) == 0)
 DECL|macro|__BIO_SEG_BOUNDARY

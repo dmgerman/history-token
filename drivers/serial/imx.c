@@ -1,23 +1,24 @@
 multiline_comment|/*&n; *  linux/drivers/serial/imx.c&n; *&n; *  Driver for Motorola IMX serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Author: Sascha Hauer &lt;sascha@saschahauer.de&gt;&n; *  Copyright (C) 2004 Pengutronix&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#if defined(CONFIG_SERIAL_IMX_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
+DECL|macro|SUPPORT_SYSRQ
+mdefine_line|#define SUPPORT_SYSRQ
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/tty_flip.h&gt;
+macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/arch/serial.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
-macro_line|#if defined(CONFIG_SERIAL_IMX_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
-DECL|macro|SUPPORT_SYSRQ
-mdefine_line|#define SUPPORT_SYSRQ
-macro_line|#endif
-macro_line|#include &lt;linux/serial_core.h&gt;
 multiline_comment|/* We&squot;ve been assigned a range on the &quot;Low-density serial ports&quot; major */
 DECL|macro|SERIAL_IMX_MAJOR
 mdefine_line|#define SERIAL_IMX_MAJOR&t;204
@@ -830,24 +831,15 @@ suffix:semicolon
 )brace
 id|error_return
 suffix:colon
-op_star
-id|tty-&gt;flip.flag_buf_ptr
-op_increment
-op_assign
-id|flg
-suffix:semicolon
-op_star
-id|tty-&gt;flip.char_buf_ptr
-op_increment
-op_assign
+id|tty_insert_flip_char
+c_func
 (paren
-r_int
-r_char
-)paren
+id|tty
+comma
 id|rx
-suffix:semicolon
-id|tty-&gt;flip.count
-op_increment
+comma
+id|flg
+)paren
 suffix:semicolon
 r_if
 c_cond

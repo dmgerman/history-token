@@ -15,7 +15,7 @@ mdefine_line|#define&t;MCFDMA_BASE1&t;&t;0x240&t;&t;/* Base address of DMA 1 */
 macro_line|#elif defined(CONFIG_M5272)
 DECL|macro|MCFDMA_BASE0
 mdefine_line|#define&t;MCFDMA_BASE0&t;&t;0x0e0&t;&t;/* Base address of DMA 0 */
-macro_line|#elif defined(CONFIG_M5282)
+macro_line|#elif defined(CONFIG_M527x) || defined(CONFIG_M528x)
 multiline_comment|/* These are relative to the IPSBAR, not MBAR */
 DECL|macro|MCFDMA_BASE0
 mdefine_line|#define&t;MCFDMA_BASE0&t;&t;0x100&t;&t;/* Base address of DMA 0 */

@@ -8391,7 +8391,9 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|cfq_exit
+r_static
 r_void
+id|__exit
 id|cfq_exit
 c_func
 (paren

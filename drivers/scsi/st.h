@@ -3,8 +3,9 @@ DECL|macro|_ST_H
 mdefine_line|#define _ST_H
 macro_line|#include &lt;linux/completion.h&gt;
 multiline_comment|/* The tape buffer descriptor. */
-r_typedef
+DECL|struct|st_buffer
 r_struct
+id|st_buffer
 (brace
 DECL|member|in_use
 r_int
@@ -109,9 +110,7 @@ l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* MUST BE last item */
-DECL|typedef|ST_buffer
 )brace
-id|ST_buffer
 suffix:semicolon
 multiline_comment|/* The tape buffer fragment descriptor */
 DECL|struct|st_buf_fragment
@@ -132,8 +131,9 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* The tape mode definition */
-r_typedef
+DECL|struct|st_modedef
 r_struct
+id|st_modedef
 (brace
 DECL|member|defined
 r_int
@@ -192,9 +192,7 @@ l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* Auto-rewind and non-rewind devices */
-DECL|typedef|ST_mode
 )brace
-id|ST_mode
 suffix:semicolon
 multiline_comment|/* Number of modes can be changed by changing ST_NBR_MODE_BITS. The maximum&n;   number of modes is 16 (ST_NBR_MODE_BITS 4) */
 DECL|macro|ST_NBR_MODE_BITS
@@ -210,8 +208,9 @@ mdefine_line|#define ST_MAX_TAPES 128
 DECL|macro|ST_MAX_TAPE_ENTRIES
 mdefine_line|#define ST_MAX_TAPE_ENTRIES  (ST_MAX_TAPES &lt;&lt; (ST_NBR_MODE_BITS + 1))
 multiline_comment|/* The status related to each partition */
-r_typedef
+DECL|struct|st_partstat
 r_struct
+id|st_partstat
 (brace
 DECL|member|rw
 r_int
@@ -246,15 +245,16 @@ DECL|member|drv_file
 r_int
 id|drv_file
 suffix:semicolon
-DECL|typedef|ST_partstat
+DECL|variable|ST_partstat
 )brace
 id|ST_partstat
 suffix:semicolon
 DECL|macro|ST_NBR_PARTITIONS
 mdefine_line|#define ST_NBR_PARTITIONS 4
 multiline_comment|/* The tape drive descriptor */
-r_typedef
+DECL|struct|scsi_tape
 r_struct
+id|scsi_tape
 (brace
 DECL|member|driver
 r_struct
@@ -281,7 +281,8 @@ id|wait
 suffix:semicolon
 multiline_comment|/* For SCSI commands */
 DECL|member|buffer
-id|ST_buffer
+r_struct
+id|st_buffer
 op_star
 id|buffer
 suffix:semicolon
@@ -394,7 +395,8 @@ suffix:semicolon
 multiline_comment|/* the maximum page number reachable by the HBA */
 multiline_comment|/* Mode characteristics */
 DECL|member|modes
-id|ST_mode
+r_struct
+id|st_modedef
 id|modes
 (braket
 id|ST_NBR_MODES
@@ -419,7 +421,8 @@ id|nbr_partitions
 suffix:semicolon
 multiline_comment|/* zero until partition support enabled */
 DECL|member|ps
-id|ST_partstat
+r_struct
+id|st_partstat
 id|ps
 (braket
 id|ST_NBR_PARTITIONS
@@ -578,9 +581,7 @@ id|gendisk
 op_star
 id|disk
 suffix:semicolon
-DECL|typedef|Scsi_Tape
 )brace
-id|Scsi_Tape
 suffix:semicolon
 multiline_comment|/* Bit masks for use_pf */
 DECL|macro|USE_PF
