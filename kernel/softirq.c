@@ -441,13 +441,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|variable|raise_softirq
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|raise_softirq
-)paren
-suffix:semicolon
 DECL|function|open_softirq
 r_void
 id|open_softirq
