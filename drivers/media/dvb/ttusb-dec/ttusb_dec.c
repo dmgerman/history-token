@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/firmware.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;dmxdev.h&quot;
 macro_line|#include &quot;dvb_demux.h&quot;
 macro_line|#include &quot;dvb_i2c.h&quot;
