@@ -2683,7 +2683,6 @@ op_amp
 id|ide_lock
 )paren
 suffix:semicolon
-macro_line|#if !defined(CONFIG_DMA_NONPCI)
 r_if
 c_cond
 (paren
@@ -2728,7 +2727,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* !(CONFIG_DMA_NONPCI) */
 id|old_hwif
 op_assign
 op_star
@@ -10267,7 +10265,6 @@ c_func
 id|index
 )paren
 suffix:semicolon
-macro_line|#if !defined(CONFIG_DMA_NONPCI)
 r_if
 c_cond
 (paren
@@ -10291,7 +10288,6 @@ id|index
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* !(CONFIG_DMA_NONPCI) */
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
 id|proc_ide_destroy
