@@ -441,6 +441,11 @@ DECL|member|present
 id|u32
 id|present
 suffix:semicolon
+DECL|member|kobj
+r_struct
+id|kobject
+id|kobj
+suffix:semicolon
 DECL|member|bus_list
 r_struct
 id|list_head
