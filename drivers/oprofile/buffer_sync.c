@@ -318,8 +318,7 @@ multiline_comment|/* Optimisation. We can manage without taking the dcookie sem&
 DECL|function|fast_get_dcookie
 r_static
 r_inline
-r_int
-r_int
+id|u32
 id|fast_get_dcookie
 c_func
 (paren
@@ -334,8 +333,7 @@ op_star
 id|vfsmnt
 )paren
 (brace
-r_int
-r_int
+id|u32
 id|cookie
 suffix:semicolon
 r_if
@@ -345,8 +343,7 @@ id|dentry-&gt;d_cookie
 )paren
 r_return
 (paren
-r_int
-r_int
+id|u32
 )paren
 id|dentry
 suffix:semicolon
@@ -368,8 +365,7 @@ suffix:semicolon
 multiline_comment|/* Look up the dcookie for the task&squot;s first VM_EXECUTABLE mapping,&n; * which corresponds loosely to &quot;application name&quot;. This is&n; * not strictly necessary but allows oprofile to associate&n; * shared-library samples with particular applications&n; */
 DECL|function|get_exec_dcookie
 r_static
-r_int
-r_int
+id|u32
 id|get_exec_dcookie
 c_func
 (paren
@@ -379,8 +375,7 @@ op_star
 id|mm
 )paren
 (brace
-r_int
-r_int
+id|u32
 id|cookie
 op_assign
 l_int|0
@@ -453,8 +448,7 @@ suffix:semicolon
 multiline_comment|/* Convert the EIP value of a sample into a persistent dentry/offset&n; * pair that can then be added to the global event buffer. We make&n; * sure to do this lookup before a mm-&gt;mmap modification happens so&n; * we don&squot;t lose track.&n; */
 DECL|function|lookup_dcookie
 r_static
-r_int
-r_int
+id|u32
 id|lookup_dcookie
 c_func
 (paren
@@ -472,8 +466,7 @@ op_star
 id|offset
 )paren
 (brace
-r_int
-r_int
+id|u32
 id|cookie
 op_assign
 l_int|0
@@ -567,8 +560,7 @@ suffix:semicolon
 )brace
 DECL|variable|last_cookie
 r_static
-r_int
-r_int
+id|u32
 id|last_cookie
 op_assign
 op_complement
@@ -617,8 +609,7 @@ c_func
 id|pid_t
 id|pid
 comma
-r_int
-r_int
+id|u32
 id|cookie
 )paren
 (brace
@@ -653,8 +644,7 @@ r_void
 id|add_cookie_switch
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|cookie
 )paren
 (brace
@@ -722,8 +712,7 @@ op_star
 id|s
 )paren
 (brace
-r_int
-r_int
+id|u32
 id|cookie
 suffix:semicolon
 id|off_t
@@ -993,8 +982,7 @@ id|task_struct
 op_star
 r_new
 suffix:semicolon
-r_int
-r_int
+id|u32
 id|cookie
 suffix:semicolon
 r_int

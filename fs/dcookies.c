@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * dcookies.c&n; *&n; * Copyright 2002 John Levon &lt;levon@movementarian.org&gt;&n; *&n; * Persistent cookie-path mappings. These are used by&n; * profilers to convert a per-task EIP value into something&n; * non-transitory that can be processed at a later date.&n; * This is done by locking the dentry/vfsmnt pair in the&n; * kernel until released by the tasks needing the persistent&n; * objects. The tag is simply an unsigned long that refers&n; * to the pair and can be looked up from userspace.&n; */
+multiline_comment|/*&n; * dcookies.c&n; *&n; * Copyright 2002 John Levon &lt;levon@movementarian.org&gt;&n; *&n; * Persistent cookie-path mappings. These are used by&n; * profilers to convert a per-task EIP value into something&n; * non-transitory that can be processed at a later date.&n; * This is done by locking the dentry/vfsmnt pair in the&n; * kernel until released by the tasks needing the persistent&n; * objects. The tag is simply an u32 that refers&n; * to the pair and can be looked up from userspace.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -91,8 +91,7 @@ multiline_comment|/* The dentry is locked, its address will do for the cookie */
 DECL|function|dcookie_value
 r_static
 r_inline
-r_int
-r_int
+id|u32
 id|dcookie_value
 c_func
 (paren
@@ -104,8 +103,7 @@ id|dcs
 (brace
 r_return
 (paren
-r_int
-r_int
+id|u32
 )paren
 id|dcs-&gt;dentry
 suffix:semicolon
@@ -116,8 +114,7 @@ r_int
 id|dcookie_hash
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|dcookie
 )paren
 (brace
@@ -143,8 +140,7 @@ op_star
 id|find_dcookie
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|dcookie
 )paren
 (brace
@@ -357,8 +353,7 @@ id|vfsmount
 op_star
 id|vfsmnt
 comma
-r_int
-r_int
+id|u32
 op_star
 id|cookie
 )paren
@@ -464,8 +459,7 @@ r_int
 id|sys_lookup_dcookie
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|cookie
 comma
 r_char
