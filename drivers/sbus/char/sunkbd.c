@@ -2225,8 +2225,6 @@ id|keycode
 comma
 id|pt_regs
 comma
-id|kbd
-comma
 id|tty
 )paren
 suffix:semicolon
