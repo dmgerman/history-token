@@ -178,11 +178,7 @@ r_return
 suffix:semicolon
 id|old
 op_assign
-op_amp
-id|pr-&gt;power.states
-(braket
 id|pr-&gt;power.state
-)braket
 suffix:semicolon
 r_new
 op_assign
@@ -192,6 +188,11 @@ id|pr-&gt;power.states
 id|state
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|old
+)paren
 id|old-&gt;promotion.count
 op_assign
 l_int|0
@@ -203,6 +204,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Cleanup from old state. */
+r_if
+c_cond
+(paren
+id|old
+)paren
+(brace
 r_switch
 c_cond
 (paren
@@ -234,6 +241,7 @@ id|ACPI_MTX_DO_NOT_LOCK
 suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Prepare to use new state. */
 r_switch
@@ -270,7 +278,7 @@ suffix:semicolon
 )brace
 id|pr-&gt;power.state
 op_assign
-id|state
+r_new
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -361,13 +369,16 @@ suffix:semicolon
 )brace
 id|cx
 op_assign
-op_amp
-(paren
-id|pr-&gt;power.states
-(braket
 id|pr-&gt;power.state
-)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cx
 )paren
+r_goto
+id|easy_out
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check BM Activity&n;&t; * -----------------&n;&t; * Check for bus mastering activity (if required), record, and check&n;&t; * for demotion.&n;&t; */
 r_if
@@ -670,6 +681,8 @@ suffix:semicolon
 id|next_state
 op_assign
 id|pr-&gt;power.state
+op_minus
+id|pr-&gt;power.states
 suffix:semicolon
 multiline_comment|/*&n;&t; * Promotion?&n;&t; * ----------&n;&t; * Track the number of longs (time asleep is greater than threshold)&n;&t; * and promote when the count threshold is reached.  Note that bus&n;&t; * mastering activity may prevent promotions.&n;&t; * Do not promote above max_cstate.&n;&t; */
 r_if
@@ -792,21 +805,30 @@ multiline_comment|/*&n;&t; * Demote if current state exceeds max_cstate&n;&t; */
 r_if
 c_cond
 (paren
-id|pr-&gt;power.state
+id|pr-&gt;power.state-&gt;type
 OG
 id|max_cstate
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|cx-&gt;demotion.state
+)paren
 id|next_state
 op_assign
-id|max_cstate
+id|cx-&gt;demotion.state
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * New Cx State?&n;&t; * -------------&n;&t; * If we&squot;re going to start using a new Cx state we must clean up&n;&t; * from the previous and prepare to use the new.&n;&t; */
 r_if
 c_cond
 (paren
+op_amp
+id|pr-&gt;power.states
+(braket
 id|next_state
+)braket
 op_ne
 id|pr-&gt;power.state
 )paren
@@ -816,6 +838,27 @@ c_func
 id|pr
 comma
 id|next_state
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+id|easy_out
+suffix:colon
+multiline_comment|/* do C1 instead of busy loop */
+r_if
+c_cond
+(paren
+id|pm_idle_save
+)paren
+id|pm_idle_save
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
+id|safe_halt
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -855,7 +898,11 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * C0/C1&n;&t; * -----&n;&t; */
 id|pr-&gt;power.state
 op_assign
+op_amp
+id|pr-&gt;power.states
+(braket
 id|ACPI_STATE_C1
+)braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * C1/C2&n;&t; * -----&n;&t; * Set the default C1 promotion and C2 demotion policies, where we&n;&t; * promote from C1 to C2 after several (10) successive C1 transitions,&n;&t; * as we cannot (currently) measure the time spent in C1. Demote from&n;&t; * C2 to C1 anytime we experience a &squot;short&squot; (time spent in C2 is less&n;&t; * than the C2 transtion latency).  Note the simplifying assumption&n;&t; * that the &squot;cost&squot; of a transition is amortized when we sleep for at&n;&t; * least as long as the transition&squot;s latency (thus the total transition&n;&t; * time is two times the latency).&n;&t; *&n;&t; * TBD: Measure C1 sleep times by instrumenting the core IRQ handler.&n;&t; * TBD: Demote to default C-State after long periods of activity.&n;&t; * TBD: Investigate policy&squot;s use of CPU utilization -vs- sleep duration.&n;&t; */
 r_if
@@ -1707,10 +1754,17 @@ c_func
 id|seq
 comma
 l_string|&quot;active state:            %d&bslash;n&quot;
-l_string|&quot;max_cstate:              %d&bslash;n&quot;
+l_string|&quot;max_cstate:              C%d&bslash;n&quot;
 l_string|&quot;bus master activity:     %08x&bslash;n&quot;
 comma
 id|pr-&gt;power.state
+ques
+c_cond
+id|pr-&gt;power.state
+op_minus
+id|pr-&gt;power.states
+suffix:colon
+l_int|0
 comma
 id|max_cstate
 comma
@@ -1748,7 +1802,11 @@ comma
 l_string|&quot;   %c%d:                  &quot;
 comma
 (paren
+op_amp
+id|pr-&gt;power.states
+(braket
 id|i
+)braket
 op_eq
 id|pr-&gt;power.state
 ques

@@ -103,7 +103,9 @@ r_struct
 id|acpi_processor_power
 (brace
 DECL|member|state
-id|u32
+r_struct
+id|acpi_processor_cx
+op_star
 id|state
 suffix:semicolon
 DECL|member|default_state
