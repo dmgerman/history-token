@@ -1699,6 +1699,11 @@ id|pm-&gt;input.event
 op_assign
 id|powermate_input_event
 suffix:semicolon
+id|pm-&gt;input.dev
+op_assign
+op_amp
+id|intf-&gt;dev
+suffix:semicolon
 id|input_register_device
 c_func
 (paren

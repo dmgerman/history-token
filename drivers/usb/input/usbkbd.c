@@ -1994,6 +1994,11 @@ id|kbd-&gt;dev.id.version
 op_assign
 id|dev-&gt;descriptor.bcdDevice
 suffix:semicolon
+id|kbd-&gt;dev.dev
+op_assign
+op_amp
+id|iface-&gt;dev
+suffix:semicolon
 r_if
 c_cond
 (paren

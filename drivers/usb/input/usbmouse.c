@@ -822,6 +822,11 @@ id|mouse-&gt;dev.id.version
 op_assign
 id|dev-&gt;descriptor.bcdDevice
 suffix:semicolon
+id|mouse-&gt;dev.dev
+op_assign
+op_amp
+id|intf-&gt;dev
+suffix:semicolon
 r_if
 c_cond
 (paren
