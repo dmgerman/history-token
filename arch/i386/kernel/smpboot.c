@@ -13,9 +13,9 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
-macro_line|#include &quot;smpboot_hooks.h&quot;
 macro_line|#include &lt;mach_apic.h&gt;
 macro_line|#include &lt;mach_wakecpu.h&gt;
+macro_line|#include &lt;smpboot_hooks.h&gt;
 multiline_comment|/* Set if we find a B stepping CPU */
 DECL|variable|smp_b_stepping
 r_static
@@ -3630,7 +3630,7 @@ id|apicid
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Cleanup possible dangling ends...&n;&t; */
-id|smpboot_setup_warm_reset_vector
+id|smpboot_restore_warm_reset_vector
 c_func
 (paren
 )paren
