@@ -203,6 +203,16 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_int
+r_int
+id|ext2_count_dirs
+(paren
+r_struct
+id|super_block
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|ext2_check_blocks_bitmap
 (paren
