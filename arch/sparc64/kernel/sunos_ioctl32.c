@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;asm/kbio.h&gt;
 multiline_comment|/* Use this to get at 32-bit user passed pointers. */
 DECL|macro|A
@@ -212,7 +213,7 @@ id|IFNAMSIZ
 suffix:semicolon
 multiline_comment|/* Just fits the size */
 DECL|member|ifru_data
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|ifru_data
 suffix:semicolon
 DECL|member|ifr_ifru
@@ -231,7 +232,7 @@ id|ifc_len
 suffix:semicolon
 multiline_comment|/* size of buffer       */
 DECL|member|ifcbuf
-id|__kernel_caddr_t32
+id|compat_caddr_t
 id|ifcbuf
 suffix:semicolon
 )brace
