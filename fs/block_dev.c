@@ -2567,10 +2567,11 @@ suffix:semicolon
 id|p
 op_assign
 id|disk-&gt;part
-op_plus
+(braket
 id|part
 op_minus
 l_int|1
+)braket
 suffix:semicolon
 id|bdev-&gt;bd_inode-&gt;i_data.backing_dev_info
 op_assign
@@ -2585,6 +2586,9 @@ id|disk-&gt;flags
 op_amp
 id|GENHD_FL_UP
 )paren
+op_logical_or
+op_logical_neg
+id|p
 op_logical_or
 op_logical_neg
 id|p-&gt;nr_sects

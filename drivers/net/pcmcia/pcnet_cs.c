@@ -333,7 +333,7 @@ id|cmd
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|ei_irq_wrapper
 c_func
 (paren
@@ -5732,7 +5732,7 @@ suffix:semicolon
 multiline_comment|/*====================================================================*/
 DECL|function|ei_irq_wrapper
 r_static
-r_void
+id|irqreturn_t
 id|ei_irq_wrapper
 c_func
 (paren
@@ -5768,6 +5768,10 @@ id|dev_id
 comma
 id|regs
 )paren
+suffix:semicolon
+multiline_comment|/* FIXME! Was it really ours? */
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|ei_watchdog

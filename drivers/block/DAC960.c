@@ -3547,6 +3547,10 @@ comma
 l_string|&quot;DMA mask out of range&quot;
 )paren
 suffix:semicolon
+id|Controller-&gt;BounceBufferLimit
+op_assign
+id|DAC690_V1_PciDmaMask
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4376,6 +4380,10 @@ id|Controller
 comma
 l_string|&quot;DMA mask out of range&quot;
 )paren
+suffix:semicolon
+id|Controller-&gt;BounceBufferLimit
+op_assign
+id|DAC690_V2_PciDmaMask
 suffix:semicolon
 multiline_comment|/* This is a temporary dma mapping, used only in the scope of this function */
 id|CommandMailbox
@@ -9102,6 +9110,14 @@ id|DAC960_RequestFunction
 comma
 op_amp
 id|Controller-&gt;queue_lock
+)paren
+suffix:semicolon
+id|blk_queue_bounce_limit
+c_func
+(paren
+id|RequestQueue
+comma
+id|Controller-&gt;BounceBufferLimit
 )paren
 suffix:semicolon
 id|RequestQueue-&gt;queuedata

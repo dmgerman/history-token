@@ -97,9 +97,12 @@ comma
 op_star
 id|prev
 suffix:semicolon
-DECL|member|devfs_handle
-id|devfs_handle_t
-id|devfs_handle
+DECL|member|devfs_name
+r_char
+id|devfs_name
+(braket
+l_int|64
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon

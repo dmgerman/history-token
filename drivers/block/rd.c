@@ -7,9 +7,13 @@ macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/genhd.h&gt;
+macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_bdev() */
 macro_line|#include &lt;linux/backing-dev.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* The RAM disk size is now a parameter */
@@ -1376,26 +1380,12 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|devfs_remove
-c_func
-(paren
-l_string|&quot;rd/%d&quot;
-comma
-id|i
-)paren
-suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 id|put_disk
 c_func
 (paren
 id|initrd_disk
-)paren
-suffix:semicolon
-id|devfs_remove
-c_func
-(paren
-l_string|&quot;rd/initrd&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1514,6 +1504,14 @@ comma
 l_string|&quot;initrd&quot;
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|initrd_disk-&gt;devfs_name
+comma
+l_string|&quot;rd/initrd&quot;
+)paren
+suffix:semicolon
 macro_line|#endif
 r_for
 c_loop
@@ -1616,12 +1614,6 @@ id|rd_disks
 id|i
 )braket
 suffix:semicolon
-r_char
-id|name
-(braket
-l_int|16
-)braket
-suffix:semicolon
 multiline_comment|/* rd_size is given in kB */
 id|disk-&gt;major
 op_assign
@@ -1651,6 +1643,16 @@ comma
 id|i
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|disk-&gt;devfs_name
+comma
+l_string|&quot;rd/%d&quot;
+comma
+id|i
+)paren
+suffix:semicolon
 id|set_capacity
 c_func
 (paren
@@ -1661,55 +1663,6 @@ op_star
 l_int|2
 )paren
 suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|name
-comma
-l_string|&quot;rd/%d&quot;
-comma
-id|i
-)paren
-suffix:semicolon
-id|devfs_register
-c_func
-(paren
-l_int|NULL
-comma
-id|name
-comma
-id|DEVFS_FL_DEFAULT
-comma
-id|disk-&gt;major
-comma
-id|disk-&gt;first_minor
-comma
-id|S_IFBLK
-op_or
-id|S_IRUSR
-op_or
-id|S_IWUSR
-comma
-id|disk-&gt;fops
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|NUM_RAMDISKS
-suffix:semicolon
-id|i
-op_increment
-)paren
 id|add_disk
 c_func
 (paren
@@ -1719,6 +1672,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 multiline_comment|/* We ought to separate initrd operations here */
 id|set_capacity
@@ -1741,29 +1695,6 @@ id|add_disk
 c_func
 (paren
 id|initrd_disk
-)paren
-suffix:semicolon
-id|devfs_register
-c_func
-(paren
-l_int|NULL
-comma
-l_string|&quot;rd/initrd&quot;
-comma
-id|DEVFS_FL_DEFAULT
-comma
-id|RAMDISK_MAJOR
-comma
-id|INITRD_MINOR
-comma
-id|S_IFBLK
-op_or
-id|S_IRUSR
-comma
-op_amp
-id|rd_bd_op
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif

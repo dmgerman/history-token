@@ -23,14 +23,6 @@ mdefine_line|#define down_write down
 DECL|macro|up_write
 mdefine_line|#define up_write up
 macro_line|#endif
-macro_line|#ifndef LockPage
-DECL|macro|LockPage
-mdefine_line|#define LockPage(page)&t;&t;set_bit(PG_locked, &amp;(page)-&gt;flags)
-macro_line|#endif
-macro_line|#ifndef UnlockPage
-DECL|macro|UnlockPage
-mdefine_line|#define UnlockPage(page)&t;unlock_page(page)
-macro_line|#endif
 DECL|function|i830_print_status_page
 r_static
 r_inline
@@ -616,16 +608,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|IS_ERR
+c_func
 (paren
-r_int
-r_int
-)paren
 id|buf_priv
 op_member_access_from_pointer
 r_virtual
-OG
-op_minus
-l_int|1024UL
+)paren
 )paren
 (brace
 multiline_comment|/* Real error */
@@ -637,13 +626,13 @@ l_string|&quot;mmap error&bslash;n&quot;
 suffix:semicolon
 id|retcode
 op_assign
+id|PTR_ERR
+c_func
 (paren
-r_int
-r_int
-)paren
 id|buf_priv
 op_member_access_from_pointer
 r_virtual
+)paren
 suffix:semicolon
 id|buf_priv
 op_member_access_from_pointer
@@ -1901,15 +1890,7 @@ c_func
 (paren
 l_int|0x02080
 comma
-id|virt_to_bus
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|dev_priv-&gt;hw_status_page
-)paren
+id|dev_priv-&gt;dma_status_page
 )paren
 suffix:semicolon
 id|DRM_DEBUG

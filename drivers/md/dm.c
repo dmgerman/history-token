@@ -17,7 +17,7 @@ op_assign
 id|DM_NAME
 suffix:semicolon
 DECL|macro|MAX_DEVICES
-mdefine_line|#define MAX_DEVICES (1 &lt;&lt; KDEV_MINOR_BITS)
+mdefine_line|#define MAX_DEVICES 1024
 DECL|variable|major
 r_static
 r_int

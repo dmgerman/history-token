@@ -3965,7 +3965,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This is the serial driver&squot;s interrupt routine.&n; *&n; * Arjan thinks the old way was overly complex, so it got simplified.&n; * Alan disagrees, saying that need the complexity to handle the weird&n; * nature of ISA shared interrupts.  (This is a special exception.)&n; *&n; * In order to handle ISA shared interrupts properly, we need to check&n; * that all ports have been serviced, and therefore the ISA interrupt&n; * line has been de-asserted.&n; *&n; * This means we need to loop through all ports. checking that they&n; * don&squot;t have an interrupt pending.&n; */
 DECL|function|serial8250_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|serial8250_interrupt
 c_func
 (paren
@@ -4159,6 +4159,10 @@ c_func
 (paren
 l_string|&quot;end.&bslash;n&quot;
 )paren
+suffix:semicolon
+multiline_comment|/* FIXME! Was it really ours? */
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * To support ISA shared interrupts, we need to have one interrupt&n; * handler that ensures that the IRQ line has been deasserted&n; * before returning.  Failing to do this will result in the IRQ&n; * line being stuck active, and, since ISA irqs are edge triggered,&n; * no more IRQs will be seen.&n; */

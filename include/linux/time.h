@@ -58,6 +58,12 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/seqlock.h&gt;
+macro_line|#include &lt;linux/timex.h&gt;
+macro_line|#include &lt;asm/div64.h&gt;
+macro_line|#ifndef div_long_long_rem
+DECL|macro|div_long_long_rem
+mdefine_line|#define div_long_long_rem(dividend,divisor,remainder) ({ &bslash;&n;&t;&t;       u64 result = dividend;&t;&t;&bslash;&n;&t;&t;       *remainder = do_div(result,divisor); &bslash;&n;&t;&t;       result; })
+macro_line|#endif
 multiline_comment|/*&n; * Have the 32 bit jiffies value wrap 5 minutes after boot&n; * so jiffies wrap bugs show up earlier.&n; */
 DECL|macro|INITIAL_JIFFIES
 mdefine_line|#define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
@@ -77,6 +83,21 @@ macro_line|#ifndef NSEC_PER_USEC
 DECL|macro|NSEC_PER_USEC
 mdefine_line|#define NSEC_PER_USEC (1000L)
 macro_line|#endif
+multiline_comment|/*&n; * We want to do realistic conversions of time so we need to use the same&n; * values the update wall clock code uses as the jiffie size.  This value&n; * is: TICK_NSEC(TICK_USEC) (both of which are defined in timex.h).  This &n; * is a constant and is in nanoseconds.  We will used scaled math and&n; * with a scales defined here as SEC_JIFFIE_SC,  USEC_JIFFIE_SC and &n; * NSEC_JIFFIE_SC.  Note that these defines contain nothing but&n; * constants and so are computed at compile time.  SHIFT_HZ (computed in&n; * timex.h) adjusts the scaling for different HZ values.&n; */
+DECL|macro|SEC_JIFFIE_SC
+mdefine_line|#define SEC_JIFFIE_SC (30 - SHIFT_HZ)
+DECL|macro|NSEC_JIFFIE_SC
+mdefine_line|#define NSEC_JIFFIE_SC (SEC_JIFFIE_SC + 30)
+DECL|macro|USEC_JIFFIE_SC
+mdefine_line|#define USEC_JIFFIE_SC (SEC_JIFFIE_SC + 20)
+DECL|macro|SEC_CONVERSION
+mdefine_line|#define SEC_CONVERSION ((unsigned long)(((u64)NSEC_PER_SEC &lt;&lt; SEC_JIFFIE_SC) /&bslash;&n;                            (u64)TICK_NSEC(TICK_USEC))) 
+DECL|macro|NSEC_CONVERSION
+mdefine_line|#define NSEC_CONVERSION ((unsigned long)(((u64)1 &lt;&lt; NSEC_JIFFIE_SC) / &bslash;&n;                            (u64)TICK_NSEC(TICK_USEC))) 
+DECL|macro|USEC_CONVERSION
+mdefine_line|#define USEC_CONVERSION &bslash;&n;               ((unsigned long)(((u64)NSEC_PER_USEC &lt;&lt; USEC_JIFFIE_SC)/ &bslash;&n;                                 (u64)TICK_NSEC(TICK_USEC))) 
+DECL|macro|MAX_SEC_IN_JIFFIES
+mdefine_line|#define MAX_SEC_IN_JIFFIES &bslash;&n;    (u32)((u64)((u64)MAX_JIFFY_OFFSET * TICK_NSEC(TICK_USEC)) / NSEC_PER_SEC)
 r_static
 id|__inline__
 r_int
@@ -101,41 +122,55 @@ r_int
 id|nsec
 op_assign
 id|value-&gt;tv_nsec
+op_plus
+id|TICK_NSEC
+c_func
+(paren
+id|TICK_USEC
+)paren
+op_minus
+l_int|1
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|sec
 op_ge
+id|MAX_SEC_IN_JIFFIES
+)paren
+r_return
+id|MAX_JIFFY_OFFSET
+suffix:semicolon
+r_return
 (paren
-id|MAX_JIFFY_OFFSET
-op_div
-id|HZ
+(paren
+(paren
+id|u64
 )paren
-)paren
-r_return
-id|MAX_JIFFY_OFFSET
-suffix:semicolon
-id|nsec
-op_add_assign
-l_int|1000000000L
-op_div
-id|HZ
-op_minus
-l_int|1
-suffix:semicolon
-id|nsec
-op_div_assign
-l_int|1000000000L
-op_div
-id|HZ
-suffix:semicolon
-r_return
-id|HZ
-op_star
 id|sec
+op_star
+id|SEC_CONVERSION
+)paren
 op_plus
+(paren
+(paren
+(paren
+id|u64
+)paren
 id|nsec
+op_star
+id|NSEC_CONVERSION
+)paren
+op_rshift
+(paren
+id|NSEC_JIFFIE_SC
+op_minus
+id|SEC_JIFFIE_SC
+)paren
+)paren
+)paren
+op_rshift
+id|SEC_JIFFIE_SC
 suffix:semicolon
 )brace
 r_static
@@ -155,25 +190,33 @@ op_star
 id|value
 )paren
 (brace
-id|value-&gt;tv_nsec
+multiline_comment|/*&n;&t; * Convert jiffies to nanoseconds and seperate with&n;&t; * one divide.&n;&t; */
+id|u64
+id|nsec
 op_assign
 (paren
-id|jiffies
-op_mod
-id|HZ
+id|u64
 )paren
+id|jiffies
 op_star
+id|TICK_NSEC
+c_func
 (paren
-l_int|1000000000L
-op_div
-id|HZ
+id|TICK_USEC
 )paren
 suffix:semicolon
 id|value-&gt;tv_sec
 op_assign
-id|jiffies
-op_div
-id|HZ
+id|div_long_long_rem
+c_func
+(paren
+id|nsec
+comma
+id|NSEC_PER_SEC
+comma
+op_amp
+id|value-&gt;tv_nsec
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Same for &quot;timeval&quot; */
@@ -201,41 +244,53 @@ r_int
 id|usec
 op_assign
 id|value-&gt;tv_usec
+op_plus
+id|USEC_PER_SEC
+op_div
+id|HZ
+op_minus
+l_int|1
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|sec
 op_ge
+id|MAX_SEC_IN_JIFFIES
+)paren
+r_return
+id|MAX_JIFFY_OFFSET
+suffix:semicolon
+r_return
 (paren
-id|MAX_JIFFY_OFFSET
-op_div
-id|HZ
+(paren
+(paren
+id|u64
 )paren
-)paren
-r_return
-id|MAX_JIFFY_OFFSET
-suffix:semicolon
-id|usec
-op_add_assign
-l_int|1000000L
-op_div
-id|HZ
-op_minus
-l_int|1
-suffix:semicolon
-id|usec
-op_div_assign
-l_int|1000000L
-op_div
-id|HZ
-suffix:semicolon
-r_return
-id|HZ
-op_star
 id|sec
+op_star
+id|SEC_CONVERSION
+)paren
 op_plus
+(paren
+(paren
+(paren
+id|u64
+)paren
 id|usec
+op_star
+id|USEC_CONVERSION
+)paren
+op_rshift
+(paren
+id|USEC_JIFFIE_SC
+op_minus
+id|SEC_JIFFIE_SC
+)paren
+)paren
+)paren
+op_rshift
+id|SEC_JIFFIE_SC
 suffix:semicolon
 )brace
 r_static
@@ -255,25 +310,37 @@ op_star
 id|value
 )paren
 (brace
-id|value-&gt;tv_usec
+multiline_comment|/*&n;&t; * Convert jiffies to nanoseconds and seperate with&n;&t; * one divide.&n;&t; */
+id|u64
+id|nsec
 op_assign
 (paren
-id|jiffies
-op_mod
-id|HZ
+id|u64
 )paren
+id|jiffies
 op_star
+id|TICK_NSEC
+c_func
 (paren
-l_int|1000000L
-op_div
-id|HZ
+id|TICK_USEC
 )paren
 suffix:semicolon
 id|value-&gt;tv_sec
 op_assign
-id|jiffies
-op_div
-id|HZ
+id|div_long_long_rem
+c_func
+(paren
+id|nsec
+comma
+id|NSEC_PER_SEC
+comma
+op_amp
+id|value-&gt;tv_usec
+)paren
+suffix:semicolon
+id|value-&gt;tv_usec
+op_div_assign
+id|NSEC_PER_USEC
 suffix:semicolon
 )brace
 DECL|function|timespec_equal
@@ -426,6 +493,11 @@ r_extern
 r_struct
 id|timespec
 id|xtime
+suffix:semicolon
+r_extern
+r_struct
+id|timespec
+id|wall_to_monotonic
 suffix:semicolon
 r_extern
 id|seqlock_t
@@ -602,6 +674,10 @@ DECL|macro|CLOCK_MONOTONIC_HR
 mdefine_line|#define CLOCK_MONOTONIC_HR&t;  5
 DECL|macro|MAX_CLOCKS
 mdefine_line|#define MAX_CLOCKS 6
+DECL|macro|CLOCKS_MASK
+mdefine_line|#define CLOCKS_MASK  (CLOCK_REALTIME | CLOCK_MONOTONIC | &bslash;&n;                     CLOCK_REALTIME_HR | CLOCK_MONOTONIC_HR)
+DECL|macro|CLOCKS_MONO
+mdefine_line|#define CLOCKS_MONO (CLOCK_MONOTONIC &amp; CLOCK_MONOTONIC_HR)
 multiline_comment|/*&n; * The various flags for setting POSIX.1b interval timers.&n; */
 DECL|macro|TIMER_ABSTIME
 mdefine_line|#define TIMER_ABSTIME 0x01

@@ -15,7 +15,6 @@ macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -7663,6 +7662,14 @@ comma
 l_string|&quot;aztcd&quot;
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|azt_disk-&gt;devfs_name
+comma
+l_string|&quot;aztcd&quot;
+)paren
+suffix:semicolon
 id|azt_disk-&gt;queue
 op_assign
 op_amp
@@ -7672,30 +7679,6 @@ id|add_disk
 c_func
 (paren
 id|azt_disk
-)paren
-suffix:semicolon
-id|devfs_register
-c_func
-(paren
-l_int|NULL
-comma
-l_string|&quot;aztcd&quot;
-comma
-id|DEVFS_FL_DEFAULT
-comma
-id|azt_disk-&gt;major
-comma
-id|azt_disk-&gt;first_minor
-comma
-id|S_IFBLK
-op_or
-id|S_IRUGO
-op_or
-id|S_IWUGO
-comma
-id|azt_disk-&gt;fops
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|azt_invalidate_buffers
@@ -7777,12 +7760,6 @@ c_func
 r_void
 )paren
 (brace
-id|devfs_remove
-c_func
-(paren
-l_string|&quot;aztcd&quot;
-)paren
-suffix:semicolon
 id|del_gendisk
 c_func
 (paren

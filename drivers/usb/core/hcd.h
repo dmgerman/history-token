@@ -808,7 +808,7 @@ id|usb_operations
 id|usb_hcd_operations
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|usb_hcd_irq
 (paren
 r_int

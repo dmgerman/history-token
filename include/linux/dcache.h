@@ -889,10 +889,6 @@ op_amp
 id|dentry-&gt;d_count
 )paren
 suffix:semicolon
-id|dentry-&gt;d_vfs_flags
-op_or_assign
-id|DCACHE_REFERENCED
-suffix:semicolon
 )brace
 r_return
 id|dentry

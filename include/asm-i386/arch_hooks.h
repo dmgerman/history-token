@@ -1,6 +1,7 @@
 macro_line|#ifndef _ASM_ARCH_HOOKS_H
 DECL|macro|_ASM_ARCH_HOOKS_H
 mdefine_line|#define _ASM_ARCH_HOOKS_H
+macro_line|#include &lt;linux/interrupt.h&gt;
 multiline_comment|/*&n; *&t;linux/include/asm/arch_hooks.h&n; *&n; *&t;define the architecture specific hooks &n; */
 multiline_comment|/* these aren&squot;t arch hooks, they are generic routines&n; * that can be used by the hooks */
 r_extern
@@ -28,7 +29,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|timer_interrupt
 c_func
 (paren

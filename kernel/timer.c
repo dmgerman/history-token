@@ -1518,11 +1518,25 @@ id|TICK_USEC
 )paren
 suffix:semicolon
 multiline_comment|/* USER_HZ period (nsec) */
-multiline_comment|/* The current time */
+multiline_comment|/* &n; * The current time &n; * wall_to_monotonic is what we need to add to xtime (or xtime corrected &n; * for sub jiffie times) to get to monotonic time.  Monotonic is pegged at zero&n; * at zero at system boot time, so wall_to_monotonic will be negative,&n; * however, we will ALWAYS keep the tv_nsec part positive so we can use&n; * the usual normalization.&n; */
 DECL|variable|xtime
 r_struct
 id|timespec
 id|xtime
+id|__attribute__
+(paren
+(paren
+id|aligned
+(paren
+l_int|16
+)paren
+)paren
+)paren
+suffix:semicolon
+DECL|variable|wall_to_monotonic
+r_struct
+id|timespec
+id|wall_to_monotonic
 id|__attribute__
 (paren
 (paren
@@ -1733,6 +1747,9 @@ l_int|0
 id|xtime.tv_sec
 op_decrement
 suffix:semicolon
+id|wall_to_monotonic.tv_sec
+op_increment
+suffix:semicolon
 id|time_state
 op_assign
 id|TIME_OOP
@@ -1771,6 +1788,9 @@ l_int|0
 (brace
 id|xtime.tv_sec
 op_increment
+suffix:semicolon
+id|wall_to_monotonic.tv_sec
+op_decrement
 suffix:semicolon
 id|time_state
 op_assign

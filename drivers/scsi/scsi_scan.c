@@ -6465,12 +6465,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|devfs_remove
-c_func
-(paren
-id|sdev-&gt;devfs_name
-)paren
-suffix:semicolon
 id|scsi_device_unregister
 c_func
 (paren

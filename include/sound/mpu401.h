@@ -249,7 +249,7 @@ mdefine_line|#define MPU401C(mpu) (mpu)-&gt;cport
 DECL|macro|MPU401D
 mdefine_line|#define MPU401D(mpu) (mpu)-&gt;port
 multiline_comment|/*&n;&n; */
-r_void
+id|irqreturn_t
 id|snd_mpu401_uart_interrupt
 c_func
 (paren

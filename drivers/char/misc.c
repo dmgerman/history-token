@@ -562,12 +562,6 @@ id|miscdevice
 op_star
 id|c
 suffix:semicolon
-r_char
-id|buf
-(braket
-l_int|256
-)braket
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -725,15 +719,27 @@ op_amp
 l_int|7
 )paren
 suffix:semicolon
-multiline_comment|/* yuck, yet another stupid special-casing.  We should rather&n;&t;   add -&gt;devfs_name to avoid this mess. */
+multiline_comment|/*&n;&t; * please use it if you want to do fancy things with your&n;&t; * name...&n;&t; */
+r_if
+c_cond
+(paren
+id|misc-&gt;devfs_name
+(braket
+l_int|0
+)braket
+op_eq
+l_char|&squot;&bslash;0&squot;
+)paren
+(brace
+multiline_comment|/* yuck, yet another stupid special-casing.&n;&t;&t;   whos actually using this?  Please switch over&n;&t;&t;   to -&gt;devfs_name ASAP */
 id|snprintf
 c_func
 (paren
-id|buf
+id|misc-&gt;devfs_name
 comma
 r_sizeof
 (paren
-id|buf
+id|misc-&gt;devfs_name
 )paren
 comma
 id|strchr
@@ -752,14 +758,13 @@ comma
 id|misc-&gt;name
 )paren
 suffix:semicolon
-id|misc-&gt;devfs_handle
-op_assign
+)brace
 id|devfs_register
 c_func
 (paren
 l_int|NULL
 comma
-id|buf
+id|misc-&gt;devfs_name
 comma
 l_int|0
 comma
@@ -862,9 +867,10 @@ id|misc-&gt;prev
 op_assign
 l_int|NULL
 suffix:semicolon
-id|devfs_unregister
+id|devfs_remove
+c_func
 (paren
-id|misc-&gt;devfs_handle
+id|misc-&gt;devfs_name
 )paren
 suffix:semicolon
 r_if

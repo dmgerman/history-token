@@ -2123,7 +2123,8 @@ op_star
 id|file
 )paren
 suffix:semicolon
-id|devfs_handle_t
+multiline_comment|/* will go away once devfs_register gets sanitized */
+r_void
 id|input_register_minor
 c_func
 (paren
@@ -2136,14 +2137,6 @@ id|minor
 comma
 r_int
 id|minor_base
-)paren
-suffix:semicolon
-r_void
-id|input_unregister_minor
-c_func
-(paren
-id|devfs_handle_t
-id|handle
 )paren
 suffix:semicolon
 r_void

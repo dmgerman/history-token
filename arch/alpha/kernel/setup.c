@@ -23,9 +23,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#endif
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;

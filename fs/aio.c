@@ -593,7 +593,7 @@ id|ctx-&gt;mm
 comma
 id|info-&gt;mmap_base
 comma
-id|info-&gt;mmap_size
+id|nr_pages
 comma
 l_int|1
 comma
