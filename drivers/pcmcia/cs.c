@@ -9547,15 +9547,13 @@ comma
 id|options
 )paren
 suffix:semicolon
+r_return
 id|class_register
 c_func
 (paren
 op_amp
 id|pcmcia_socket_class
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|exit_pcmcia_cs
