@@ -3421,11 +3421,6 @@ op_amp
 id|ps
 )paren
 suffix:semicolon
-id|blk_run_queues
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * A zone is low on free memory, so wake its kswapd task to service it.&n; */

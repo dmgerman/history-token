@@ -9,7 +9,7 @@ DECL|macro|EXT3_JOURNAL
 mdefine_line|#define EXT3_JOURNAL(inode)&t;(EXT3_SB((inode)-&gt;i_sb)-&gt;s_journal)
 multiline_comment|/* Define the number of blocks we need to account to a transaction to&n; * modify one block of data.&n; * &n; * We may have to touch one inode, one bitmap buffer, up to three&n; * indirection blocks, the group and superblock summaries, and the data&n; * block to complete the transaction.  */
 DECL|macro|EXT3_SINGLEDATA_TRANS_BLOCKS
-mdefine_line|#define EXT3_SINGLEDATA_TRANS_BLOCKS&t;8
+mdefine_line|#define EXT3_SINGLEDATA_TRANS_BLOCKS&t;8U
 multiline_comment|/* Extended attributes may touch two data buffers, two bitmap buffers,&n; * and two group and summaries. */
 DECL|macro|EXT3_XATTR_TRANS_BLOCKS
 mdefine_line|#define EXT3_XATTR_TRANS_BLOCKS&t;&t;8
@@ -32,10 +32,10 @@ DECL|macro|EXT3_DELETE_TRANS_BLOCKS
 mdefine_line|#define EXT3_DELETE_TRANS_BLOCKS&t;(2 * EXT3_DATA_TRANS_BLOCKS + 64)
 multiline_comment|/* Define an arbitrary limit for the amount of data we will anticipate&n; * writing to any given transaction.  For unbounded transactions such as&n; * write(2) and truncate(2) we can write more than this, but we always&n; * start off at the maximum transaction size and grow the transaction&n; * optimistically as we go. */
 DECL|macro|EXT3_MAX_TRANS_DATA
-mdefine_line|#define EXT3_MAX_TRANS_DATA&t;&t;64
+mdefine_line|#define EXT3_MAX_TRANS_DATA&t;&t;64U
 multiline_comment|/* We break up a large truncate or write transaction once the handle&squot;s&n; * buffer credits gets this low, we need either to extend the&n; * transaction or to start a new one.  Reserve enough space here for&n; * inode, bitmap, superblock, group and indirection updates for at least&n; * one block, plus two quota updates.  Quota allocations are not&n; * needed. */
 DECL|macro|EXT3_RESERVE_TRANS_BLOCKS
-mdefine_line|#define EXT3_RESERVE_TRANS_BLOCKS&t;12
+mdefine_line|#define EXT3_RESERVE_TRANS_BLOCKS&t;12U
 DECL|macro|EXT3_INDEX_EXTRA_TRANS_BLOCKS
 mdefine_line|#define EXT3_INDEX_EXTRA_TRANS_BLOCKS&t;8
 r_int
