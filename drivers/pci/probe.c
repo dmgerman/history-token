@@ -2414,7 +2414,7 @@ id|dev-&gt;dev.release
 op_assign
 id|pci_release_dev
 suffix:semicolon
-id|pci_get_dev
+id|pci_dev_get
 c_func
 (paren
 id|dev

@@ -473,7 +473,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|pci_get_dev
+id|pci_dev_get
 c_func
 (paren
 id|pci_dev
@@ -494,7 +494,7 @@ c_cond
 (paren
 id|error
 )paren
-id|pci_put_dev
+id|pci_dev_put
 c_func
 (paren
 id|pci_dev
@@ -558,7 +558,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|pci_put_dev
+id|pci_dev_put
 c_func
 (paren
 id|pci_dev
@@ -1758,12 +1758,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_get_dev - increments the reference count of the pci device structure&n; * @dev: the device being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; *&n; * Drivers for PCI devices should normally record such references in&n; * their probe() methods, when they bind to a device, and release&n; * them by calling pci_put_dev(), in their disconnect() methods.&n; *&n; * A pointer to the device with the incremented reference counter is returned.&n; */
-DECL|function|pci_get_dev
+multiline_comment|/**&n; * pci_dev_get - increments the reference count of the pci device structure&n; * @dev: the device being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; *&n; * Drivers for PCI devices should normally record such references in&n; * their probe() methods, when they bind to a device, and release&n; * them by calling pci_dev_put(), in their disconnect() methods.&n; *&n; * A pointer to the device with the incremented reference counter is returned.&n; */
+DECL|function|pci_dev_get
 r_struct
 id|pci_dev
 op_star
-id|pci_get_dev
+id|pci_dev_get
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -1811,10 +1812,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_put_dev - release a use of the pci device structure&n; * @dev: device that&squot;s been disconnected&n; *&n; * Must be called when a user of a device is finished with it.  When the last&n; * user of the device calls this function, the memory of the device is freed.&n; */
-DECL|function|pci_put_dev
+multiline_comment|/**&n; * pci_dev_put - release a use of the pci device structure&n; * @dev: device that&squot;s been disconnected&n; *&n; * Must be called when a user of a device is finished with it.  When the last&n; * user of the device calls this function, the memory of the device is freed.&n; */
+DECL|function|pci_dev_put
 r_void
-id|pci_put_dev
+id|pci_dev_put
 c_func
 (paren
 r_struct
@@ -1920,18 +1921,18 @@ c_func
 id|pci_bus_type
 )paren
 suffix:semicolon
-DECL|variable|pci_get_dev
+DECL|variable|pci_dev_get
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|pci_get_dev
+id|pci_dev_get
 )paren
 suffix:semicolon
-DECL|variable|pci_put_dev
+DECL|variable|pci_dev_put
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|pci_put_dev
+id|pci_dev_put
 )paren
 suffix:semicolon
 eof
