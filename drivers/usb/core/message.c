@@ -3677,11 +3677,23 @@ comma
 id|iface
 )paren
 suffix:semicolon
+multiline_comment|/* 9.1.1.5 says:&n;&t; *&n;&t; *&t;Configuring a device or changing an alternate setting&n;&t; *&t;causes all of the status and configuration values&n;&t; *&t;associated with endpoints in the affected interfaces to&n;&t; *&t;be set to their default values. This includes setting&n;&t; *&t;the data toggle of any endpoint using data toggles to&n;&t; *&t;the value DATA0.&n;&t; *&n;&t; * Some devices take this too literally and don&squot;t reset the data&n;&t; * toggles if the new altsetting is the same as the old one (the&n;&t; * command isn&squot;t &quot;changing&quot; an alternate setting).  We will manually&n;&t; * reset the toggles when the new and old altsettings are the same.&n;&t; * Most devices won&squot;t need this, but fortunately it doesn&squot;t happen&n;&t; * often.&n;&t; */
+r_if
+c_cond
+(paren
+id|iface-&gt;cur_altsetting
+op_eq
+id|alt
+)paren
+id|manual
+op_assign
+l_int|1
+suffix:semicolon
 id|iface-&gt;cur_altsetting
 op_assign
 id|alt
 suffix:semicolon
-multiline_comment|/* If the interface only has one altsetting and the device didn&squot;t&n;&t; * accept the request, we attempt to carry out the equivalent action&n;&t; * by manually clearing the HALT feature for each endpoint in the&n;&t; * new altsetting.&n;&t; */
+multiline_comment|/* If the interface only has one altsetting and the device didn&squot;t&n;&t; * accept the request (or whenever the old altsetting is the same&n;&t; * as the new one), we attempt to carry out the equivalent action&n;&t; * by manually clearing the HALT feature for each endpoint in the&n;&t; * new altsetting.&n;&t; */
 r_if
 c_cond
 (paren
