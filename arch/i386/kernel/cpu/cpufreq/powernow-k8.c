@@ -2146,6 +2146,18 @@ id|j
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|data-&gt;powernow_table
+(braket
+id|j
+)braket
+dot
+id|frequency
+op_ne
+id|CPUFREQ_ENTRY_INVALID
+)paren
 id|printk
 c_func
 (paren
@@ -3322,7 +3334,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;invalid freq %u kHz&bslash;n&quot;
+l_string|&quot;invalid freq %u kHz, ignoring&bslash;n&quot;
 comma
 id|powernow_table
 (braket
