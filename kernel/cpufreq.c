@@ -299,7 +299,7 @@ DECL|macro|cpufreq_per_cpu_attr_read
 mdefine_line|#define cpufreq_per_cpu_attr_read(file_name, object) &t;&t;&t;&bslash;&n;static ssize_t show_##file_name &t;&t;&t;&t;&t;&bslash;&n;(struct device *dev, char *buf)&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int value = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!dev)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;down(&amp;cpufreq_driver_sem);&t;&t;&t;&t;&t;&bslash;&n;&t;if (cpufreq_driver)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;value = cpufreq_driver-&gt;policy[to_cpu_nr(dev)].object;&t;&bslash;&n;&t;up(&amp;cpufreq_driver_sem);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return sprintf (buf, &quot;%u&bslash;n&quot;, value);&t;&t;&t;&t;&bslash;&n;}
 multiline_comment|/**&n; * cpufreq_per_cpu_attr_write() / store_##file_name() - sysfs write access&n; */
 DECL|macro|cpufreq_per_cpu_attr_write
-mdefine_line|#define cpufreq_per_cpu_attr_write(file_name, object)&t;&t;&t;&bslash;&n;static ssize_t store_##file_name&t;&t;&t;&t;&t;&bslash;&n;(struct device *dev, const char *buf)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int ret = -EINVAL;&t;&t;&t;&t;&t;&bslash;&n;&t;struct cpufreq_policy policy;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!dev)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ret = cpufreq_get_policy(&amp;policy, to_cpu_nr(dev));&t;&t;&bslash;&n;&t;if (ret)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return ret;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ret = sscanf (buf, &quot;%u&quot;, &amp;policy.object);&t;&t;&t;&bslash;&n;&t;if (ret != 1)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ret = cpufreq_set_policy(&amp;policy);&t;&t;&t;&t;&bslash;&n;&t;if (ret)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return ret;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return strlen(buf);&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define cpufreq_per_cpu_attr_write(file_name, object)&t;&t;&t;&bslash;&n;static ssize_t store_##file_name&t;&t;&t;&t;&t;&bslash;&n;(struct device *dev, const char *buf, size_t count)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int ret = -EINVAL;&t;&t;&t;&t;&t;&bslash;&n;&t;struct cpufreq_policy policy;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!dev)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ret = cpufreq_get_policy(&amp;policy, to_cpu_nr(dev));&t;&t;&bslash;&n;&t;if (ret)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return ret;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ret = sscanf (buf, &quot;%u&quot;, &amp;policy.object);&t;&t;&t;&bslash;&n;&t;if (ret != 1)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ret = cpufreq_set_policy(&amp;policy);&t;&t;&t;&t;&bslash;&n;&t;if (ret)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return ret;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return count;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 multiline_comment|/**&n; * show_scaling_governor - show the current policy for the specified CPU&n; */
 DECL|function|show_scaling_governor
 r_static
@@ -400,9 +400,9 @@ id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * store_scaling_governor - store policy for the specified CPU&n; */
-DECL|function|store_scaling_governor
 r_static
 id|ssize_t
+DECL|function|store_scaling_governor
 id|store_scaling_governor
 (paren
 r_struct
@@ -414,6 +414,9 @@ r_const
 r_char
 op_star
 id|buf
+comma
+r_int
+id|count
 )paren
 (brace
 r_int
@@ -521,11 +524,7 @@ r_return
 id|ret
 suffix:semicolon
 r_return
-id|strlen
-c_func
-(paren
-id|buf
-)paren
+id|count
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * cpufreq_per_cpu_attr_ro - read-only cpufreq per-CPU file&n; */
