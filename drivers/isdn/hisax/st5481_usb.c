@@ -142,7 +142,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 )brace
@@ -461,9 +461,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|urb-&gt;status
 OL
 l_int|0
+)paren
 )paren
 (brace
 r_if
@@ -473,6 +477,11 @@ id|urb-&gt;status
 op_ne
 op_minus
 id|ENOENT
+op_logical_and
+id|urb-&gt;status
+op_ne
+op_minus
+id|ESHUTDOWN
 )paren
 (brace
 id|WARN
@@ -879,11 +888,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* ======================================================================&n; * initialization&n; */
-DECL|function|st5481_setup_usb
 r_int
-id|__devinit
-id|st5481_setup_usb
-c_func
 (paren
 r_struct
 id|st5481_adapter
@@ -1302,7 +1307,6 @@ suffix:semicolon
 multiline_comment|/*&n; *  Initialize the adapter.&n; */
 DECL|function|st5481_start
 r_void
-id|__devinit
 id|st5481_start
 c_func
 (paren
@@ -1409,7 +1413,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Reset the adapter to default values.&n; */
 DECL|function|st5481_stop
 r_void
-id|__devexit
 id|st5481_stop
 c_func
 (paren
@@ -1445,7 +1448,6 @@ suffix:semicolon
 multiline_comment|/* ======================================================================&n; * isochronous USB  helpers&n; */
 r_static
 r_void
-id|__devinit
 DECL|function|fill_isoc_urb
 id|fill_isoc_urb
 c_func
@@ -1577,7 +1579,6 @@ suffix:semicolon
 )brace
 )brace
 r_int
-id|__devinit
 DECL|function|st5481_setup_isocpipes
 id|st5481_setup_isocpipes
 c_func
@@ -1899,9 +1900,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|urb-&gt;status
 OL
 l_int|0
+)paren
 )paren
 (brace
 r_if
@@ -1911,6 +1916,11 @@ id|urb-&gt;status
 op_ne
 op_minus
 id|ENOENT
+op_logical_and
+id|urb-&gt;status
+op_ne
+op_minus
+id|ESHUTDOWN
 )paren
 (brace
 id|WARN
@@ -2173,13 +2183,12 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 )brace
 DECL|function|st5481_setup_in
 r_int
-id|__devinit
 id|st5481_setup_in
 c_func
 (paren
