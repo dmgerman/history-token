@@ -9409,6 +9409,10 @@ id|dev_tty_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
 suffix:semicolon
+id|dev_tty_driver.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|dev_tty_driver.driver_name
 op_assign
 l_string|&quot;/dev/tty&quot;
@@ -9463,6 +9467,10 @@ id|dev_syscons_driver
 op_assign
 id|dev_tty_driver
 suffix:semicolon
+id|dev_syscons_driver.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|dev_syscons_driver.driver_name
 op_assign
 l_string|&quot;/dev/console&quot;
@@ -9509,6 +9517,10 @@ macro_line|#ifdef CONFIG_UNIX98_PTYS
 id|dev_ptmx_driver
 op_assign
 id|dev_tty_driver
+suffix:semicolon
+id|dev_ptmx_driver.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|dev_ptmx_driver.driver_name
 op_assign
@@ -9557,6 +9569,10 @@ macro_line|#ifdef CONFIG_VT
 id|dev_console_driver
 op_assign
 id|dev_tty_driver
+suffix:semicolon
+id|dev_console_driver.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|dev_console_driver.driver_name
 op_assign
@@ -9691,13 +9707,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MOXA_SMARTIO
-id|mxser_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif&t;
 macro_line|#ifdef CONFIG_MOXA_INTELLIO
 id|moxa_init
 c_func

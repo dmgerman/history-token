@@ -113,7 +113,6 @@ c_func
 (paren
 id|reg_num
 comma
-op_star
 id|regs.SASR
 )paren
 suffix:semicolon
@@ -122,7 +121,6 @@ op_assign
 id|inb
 c_func
 (paren
-op_star
 id|regs.SCMD
 )paren
 suffix:semicolon
@@ -152,7 +150,6 @@ c_func
 (paren
 id|WD_TRANSFER_COUNT_MSB
 comma
-op_star
 id|regs.SASR
 )paren
 suffix:semicolon
@@ -161,7 +158,6 @@ op_assign
 id|inb
 c_func
 (paren
-op_star
 id|regs.SCMD
 )paren
 op_lshift
@@ -172,7 +168,6 @@ op_or_assign
 id|inb
 c_func
 (paren
-op_star
 id|regs.SCMD
 )paren
 op_lshift
@@ -183,7 +178,6 @@ op_or_assign
 id|inb
 c_func
 (paren
-op_star
 id|regs.SCMD
 )paren
 suffix:semicolon
@@ -207,7 +201,6 @@ r_return
 id|inb
 c_func
 (paren
-op_star
 id|regs.SASR
 )paren
 suffix:semicolon
@@ -235,7 +228,6 @@ c_func
 (paren
 id|reg_num
 comma
-op_star
 id|regs.SASR
 )paren
 suffix:semicolon
@@ -244,7 +236,6 @@ c_func
 (paren
 id|value
 comma
-op_star
 id|regs.SCMD
 )paren
 suffix:semicolon
@@ -270,7 +261,6 @@ c_func
 (paren
 id|WD_TRANSFER_COUNT_MSB
 comma
-op_star
 id|regs.SASR
 )paren
 suffix:semicolon
@@ -285,7 +275,6 @@ l_int|16
 op_amp
 l_int|0xff
 comma
-op_star
 id|regs.SCMD
 )paren
 suffix:semicolon
@@ -300,7 +289,6 @@ l_int|8
 op_amp
 l_int|0xff
 comma
-op_star
 id|regs.SCMD
 )paren
 suffix:semicolon
@@ -311,7 +299,6 @@ id|value
 op_amp
 l_int|0xff
 comma
-op_star
 id|regs.SCMD
 )paren
 suffix:semicolon
@@ -346,7 +333,6 @@ c_func
 (paren
 id|WD_CDB_1
 comma
-op_star
 id|regs.SASR
 )paren
 suffix:semicolon
@@ -372,7 +358,6 @@ id|cmnd
 id|i
 )braket
 comma
-op_star
 id|regs.SCMD
 )paren
 suffix:semicolon
@@ -5333,17 +5318,13 @@ id|CTRL_POLLED
 suffix:semicolon
 )brace
 r_int
-DECL|function|wd33c93_reset
-id|wd33c93_reset
+DECL|function|wd33c93_host_reset
+id|wd33c93_host_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
 id|SCpnt
-comma
-r_int
-r_int
-id|reset_flags
 )paren
 (brace
 r_struct
@@ -5495,7 +5476,7 @@ id|instance-&gt;irq
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|SUCCESS
 suffix:semicolon
 )brace
 r_int
@@ -5630,7 +5611,7 @@ id|cmd
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_SUCCESS
+id|SUCCESS
 suffix:semicolon
 )brace
 id|prev
@@ -5930,7 +5911,7 @@ id|cmd
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_SUCCESS
+id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Case 3: If the command is currently disconnected from the bus,&n; * we&squot;re not going to expend much effort here: Let&squot;s just return&n; * an ABORT_SNOOZE and hope for the best...&n; */
@@ -5968,7 +5949,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;returning ABORT_SNOOZE. &quot;
+l_string|&quot;Abort SNOOZE. &quot;
 )paren
 suffix:semicolon
 id|enable_irq
@@ -5978,7 +5959,7 @@ id|cmd-&gt;device-&gt;host-&gt;irq
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_SNOOZE
+id|FAILED
 suffix:semicolon
 )brace
 id|tmp
@@ -6014,7 +5995,7 @@ id|instance-&gt;host_no
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_NOT_RUNNING
+id|FAILED
 suffix:semicolon
 )brace
 DECL|macro|MAX_WD33C93_HOSTS
@@ -6217,7 +6198,7 @@ suffix:semicolon
 id|__setup
 c_func
 (paren
-l_string|&quot;wd33c9=&quot;
+l_string|&quot;wd33c93=&quot;
 comma
 id|wd33c93_setup
 )paren
@@ -8135,11 +8116,11 @@ r_void
 )paren
 (brace
 )brace
-DECL|variable|wd33c93_reset
+DECL|variable|wd33c93_host_reset
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|wd33c93_reset
+id|wd33c93_host_reset
 )paren
 suffix:semicolon
 DECL|variable|wd33c93_init

@@ -950,7 +950,7 @@ r_return
 id|BEFS_ERR
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * befs_find_key - Search for a key within a node&n; * @sb: Filesystem superblock&n; * @node: Node to find the key within&n; * @key: Keystring to search for&n; * @value: If key is found, the value stored with the key is put here&n; *&n; * finds exact match if one exists, and returns BEFS_BT_MATCH&n; * If no exact match, finds first key in node that is greater&n; * (alpabeticly) than the search key and returns BEFS_BT_PARMATCH&n; * (for partial match, I guess). Can you think of something better to&n; * call it?&n; *&n; * If no key was a match or greater than the search key, return&n; * BEFS_BT_NOT_FOUND.&n; *&n; * Use binary search instead of a linear.&n; */
+multiline_comment|/**&n; * befs_find_key - Search for a key within a node&n; * @sb: Filesystem superblock&n; * @node: Node to find the key within&n; * @key: Keystring to search for&n; * @value: If key is found, the value stored with the key is put here&n; *&n; * finds exact match if one exists, and returns BEFS_BT_MATCH&n; * If no exact match, finds first key in node that is greater&n; * (alphabetically) than the search key and returns BEFS_BT_PARMATCH&n; * (for partial match, I guess). Can you think of something better to&n; * call it?&n; *&n; * If no key was a match or greater than the search key, return&n; * BEFS_BT_NOT_FOUND.&n; *&n; * Use binary search instead of a linear.&n; */
 r_static
 r_int
 DECL|function|befs_find_key
@@ -1257,7 +1257,7 @@ r_return
 id|BEFS_BT_PARMATCH
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * befs_btree_read - Traverse leafnodes of a btree&n; * @sb: Filesystem superblock&n; * @ds: Datastream containing btree&n; * @key_no: Key number (alphabetical order) of key to read&n; * @bufsize: Size of the buffer to return key in&n; * @keybuf: Pointer to a buffer to put the key in&n; * @keysize: Length of the returned key&n; * @value: Value stored with the returned key&n; *&n; * Heres how it works: Key_no is the index of the key/value pair to &n; * retun in keybuf/value.&n; * Bufsize is the size of keybuf (BEFS_NAME_LEN+1 is a good size). Keysize is &n; * the number of charecters in the key (just a convience).&n; *&n; * Algorithm:&n; *   Get the first leafnode of the tree. See if the requested key is in that&n; *   node. If not, follow the node-&gt;right link to the next leafnode. Repeat &n; *   until the (key_no)th key is found or the tree is out of keys.&n; */
+multiline_comment|/**&n; * befs_btree_read - Traverse leafnodes of a btree&n; * @sb: Filesystem superblock&n; * @ds: Datastream containing btree&n; * @key_no: Key number (alphabetical order) of key to read&n; * @bufsize: Size of the buffer to return key in&n; * @keybuf: Pointer to a buffer to put the key in&n; * @keysize: Length of the returned key&n; * @value: Value stored with the returned key&n; *&n; * Heres how it works: Key_no is the index of the key/value pair to &n; * return in keybuf/value.&n; * Bufsize is the size of keybuf (BEFS_NAME_LEN+1 is a good size). Keysize is &n; * the number of charecters in the key (just a convenience).&n; *&n; * Algorithm:&n; *   Get the first leafnode of the tree. See if the requested key is in that&n; *   node. If not, follow the node-&gt;right link to the next leafnode. Repeat &n; *   until the (key_no)th key is found or the tree is out of keys.&n; */
 r_int
 DECL|function|befs_btree_read
 id|befs_btree_read
@@ -1776,7 +1776,7 @@ r_return
 id|BEFS_ERR
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * befs_btree_seekleaf - Find the first leafnode in the btree&n; * @sb: Filesystem superblock&n; * @ds: Datastream containing btree&n; * @bt_super: Pointer to the uperblock of the btree&n; * @this_node: Buffer to return the leafnode in&n; * @node_off: Pointer to offset of current node within datastream. Modified&n; * &t;&t;by the function.&n; *&n; *&n; * Helper function for btree traverse. Moves the current position to the &n; * start of the first leaf node.&n; *&n; * Also checks for an empty tree. If there are no keys, returns BEFS_BT_EMPTY.&n; */
+multiline_comment|/**&n; * befs_btree_seekleaf - Find the first leafnode in the btree&n; * @sb: Filesystem superblock&n; * @ds: Datastream containing btree&n; * @bt_super: Pointer to the superblock of the btree&n; * @this_node: Buffer to return the leafnode in&n; * @node_off: Pointer to offset of current node within datastream. Modified&n; * &t;&t;by the function.&n; *&n; *&n; * Helper function for btree traverse. Moves the current position to the &n; * start of the first leaf node.&n; *&n; * Also checks for an empty tree. If there are no keys, returns BEFS_BT_EMPTY.&n; */
 r_static
 r_int
 DECL|function|befs_btree_seekleaf
@@ -2055,7 +2055,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * befs_bt_keylen_index - Finds start of keylen index in a node&n; * @node: Pointer to the node structure to find the keylen index within&n; *&n; * Returns a pointer to the start of the key length index array&n; * of the B+tree node *@node&n; *&n; * &quot;The length of all the keys in the node is added to the size of the&n; * header and then rounded up to a multiple of four to get the begining&n; * of the key length index&quot; (p.88, practical filesystem design).&n; *&n; * Exept that rounding up to 8 works, and rounding up to 4 doesn&squot;t.&n; */
+multiline_comment|/**&n; * befs_bt_keylen_index - Finds start of keylen index in a node&n; * @node: Pointer to the node structure to find the keylen index within&n; *&n; * Returns a pointer to the start of the key length index array&n; * of the B+tree node *@node&n; *&n; * &quot;The length of all the keys in the node is added to the size of the&n; * header and then rounded up to a multiple of four to get the beginning&n; * of the key length index&quot; (p.88, practical filesystem design).&n; *&n; * Except that rounding up to 8 works, and rounding up to 4 doesn&squot;t.&n; */
 r_static
 id|u16
 op_star
@@ -2321,7 +2321,7 @@ op_plus
 id|prev_key_end
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * befs_compare_strings - compare two strings&n; * @key1: pointer to the first key to be compared &n; * @keylen1: length in bytes of key1&n; * @key2: pointer to the second key to be compared&n; * @kelen2: lenght in bytes of key2&n; *&n; * Returns 0 if @key1 and @key2 are equal.&n; * Returns &gt;0 if @key1 is greater.&n; * Returns &lt;0 if @key2 is greater..&n; */
+multiline_comment|/**&n; * befs_compare_strings - compare two strings&n; * @key1: pointer to the first key to be compared &n; * @keylen1: length in bytes of key1&n; * @key2: pointer to the second key to be compared&n; * @kelen2: length in bytes of key2&n; *&n; * Returns 0 if @key1 and @key2 are equal.&n; * Returns &gt;0 if @key1 is greater.&n; * Returns &lt;0 if @key2 is greater..&n; */
 r_static
 r_int
 DECL|function|befs_compare_strings

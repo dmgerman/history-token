@@ -835,6 +835,16 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|scsi_rescan_device
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|scsi_get_device_flags
 c_func

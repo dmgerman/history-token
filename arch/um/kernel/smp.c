@@ -16,7 +16,6 @@ macro_line|#include &quot;linux/err.h&quot;
 macro_line|#include &quot;asm/smp.h&quot;
 macro_line|#include &quot;asm/processor.h&quot;
 macro_line|#include &quot;asm/spinlock.h&quot;
-macro_line|#include &quot;asm/softirq.h&quot;
 macro_line|#include &quot;asm/hardirq.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
