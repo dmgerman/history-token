@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * eth1394.c -- Ethernet driver for Linux IEEE-1394 Subsystem&n; * &n; * Copyright (C) 2001-2003 Ben Collins &lt;bcollins@debian.org&gt;&n; *               2000 Bonin Franck &lt;boninf@free.fr&gt;&n; *               2003 Steve Kinneberg &lt;kinnebergsteve@acmsystems.com&gt;&n; *&n; * Mainly based on work by Emanuel Pirker and Andreas E. Bombe&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
+multiline_comment|/*&n; * eth1394.c -- Ethernet driver for Linux IEEE-1394 Subsystem&n; *&n; * Copyright (C) 2001-2003 Ben Collins &lt;bcollins@debian.org&gt;&n; *               2000 Bonin Franck &lt;boninf@free.fr&gt;&n; *               2003 Steve Kinneberg &lt;kinnebergsteve@acmsystems.com&gt;&n; *&n; * Mainly based on work by Emanuel Pirker and Andreas E. Bombe&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
 multiline_comment|/* This driver intends to support RFC 2734, which describes a method for&n; * transporting IPv4 datagrams over IEEE-1394 serial busses. This driver&n; * will ultimately support that method, but currently falls short in&n; * several areas.&n; *&n; * TODO:&n; * RFC 2734 related:&n; * - Add MCAP. Limited Multicast exists only to 224.0.0.1 and 224.0.0.2.&n; *&n; * Non-RFC 2734 related:&n; * - Handle fragmented skb&squot;s coming from the networking layer.&n; * - Move generic GASP reception to core 1394 code&n; * - Convert kmalloc/kfree for link fragments to use kmem_cache_* instead&n; * - Stability improvements&n; * - Performance enhancements&n; * - Consider garbage collecting old partial datagrams after X amount of time&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -49,7 +49,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 1175 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 1198 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 DECL|struct|fragment_info
 r_struct
@@ -636,11 +636,6 @@ id|eth1394_priv
 op_star
 id|priv
 op_assign
-(paren
-r_struct
-id|eth1394_priv
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int
@@ -899,11 +894,6 @@ id|eth1394_priv
 op_star
 id|priv
 op_assign
-(paren
-r_struct
-id|eth1394_priv
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_if
@@ -1785,11 +1775,6 @@ id|eth1394_priv
 op_star
 id|priv
 op_assign
-(paren
-r_struct
-id|eth1394_priv
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_struct
@@ -2915,7 +2900,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-macro_line|#endif&t;
+macro_line|#endif
 r_default
 suffix:colon
 id|ETH1394_PRINT
@@ -3333,11 +3318,6 @@ id|eth1394_priv
 op_star
 id|priv
 op_assign
-(paren
-r_struct
-id|eth1394_priv
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 id|u64
@@ -5770,7 +5750,7 @@ id|jiffies
 suffix:semicolon
 )brace
 multiline_comment|/******************************************&n; * Datagram transmission code&n; ******************************************/
-multiline_comment|/* Convert a standard ARP packet to 1394 ARP. The first 8 bytes (the entire&n; * arphdr) is the same format as the ip1394 header, so they overlap.  The rest&n; * needs to be munged a bit.  The remainder of the arphdr is formatted based&n; * on hwaddr len and ipaddr len.  We know what they&squot;ll be, so it&squot;s easy to&n; * judge.  &n; *&n; * Now that the EUI is used for the hardware address all we need to do to make&n; * this work for 1394 is to insert 2 quadlets that contain max_rec size,&n; * speed, and unicast FIFO address information between the sender_unique_id&n; * and the IP addresses.&n; */
+multiline_comment|/* Convert a standard ARP packet to 1394 ARP. The first 8 bytes (the entire&n; * arphdr) is the same format as the ip1394 header, so they overlap.  The rest&n; * needs to be munged a bit.  The remainder of the arphdr is formatted based&n; * on hwaddr len and ipaddr len.  We know what they&squot;ll be, so it&squot;s easy to&n; * judge.&n; *&n; * Now that the EUI is used for the hardware address all we need to do to make&n; * this work for 1394 is to insert 2 quadlets that contain max_rec size,&n; * speed, and unicast FIFO address information between the sender_unique_id&n; * and the IP addresses.&n; */
 DECL|function|ether1394_arp_to_1394arp
 r_static
 r_inline
@@ -6581,10 +6561,6 @@ c_func
 id|packet
 )paren
 suffix:semicolon
-id|packet-&gt;data
-op_assign
-l_int|NULL
-suffix:semicolon
 id|hpsb_free_packet
 c_func
 (paren
@@ -6794,11 +6770,6 @@ id|eth1394_priv
 op_star
 id|priv
 op_assign
-(paren
-r_struct
-id|eth1394_priv
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int
@@ -7022,11 +6993,6 @@ id|eth1394_priv
 op_star
 id|priv
 op_assign
-(paren
-r_struct
-id|eth1394_priv
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int
@@ -7738,7 +7704,7 @@ id|strcpy
 (paren
 id|info.version
 comma
-l_string|&quot;$Rev: 1175 $&quot;
+l_string|&quot;$Rev: 1198 $&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME XXX provide sane businfo */

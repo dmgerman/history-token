@@ -186,7 +186,7 @@ r_int
 op_star
 id|last_used_cmd
 suffix:semicolon
-multiline_comment|/* For ISO Transmit with &n;&t;&t;&t;&t;&t;variable sized packets only ! */
+multiline_comment|/* For ISO Transmit with&n;&t;&t;&t;&t;&t;variable sized packets only ! */
 DECL|member|ctrlClear
 r_int
 id|ctrlClear
@@ -2230,7 +2230,7 @@ comma
 l_int|0x40000000
 )paren
 suffix:semicolon
-multiline_comment|/* Set the context match register to match on all tags, &n;&t;   sync for sync tag, and listen to d-&gt;channel */
+multiline_comment|/* Set the context match register to match on all tags,&n;&t;   sync for sync tag, and listen to d-&gt;channel */
 id|reg_write
 c_func
 (paren
@@ -2736,7 +2736,7 @@ comma
 id|timeStamp
 )paren
 suffix:semicolon
-macro_line|#endif&t;
+macro_line|#endif
 )brace
 DECL|function|wakeup_dma_it_ctx
 r_void
@@ -4872,7 +4872,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * I change the way it works so that it returns &n;&t;&t; * the last received frame.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * I change the way it works so that it returns&n;&t;&t; * the last received frame.&n;&t;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -5884,7 +5884,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *&t;This maps the vmalloced and reserved buffer to user space.&n; *&n; *  FIXME: &n; *  - PAGE_READONLY should suffice!?&n; *  - remap_page_range is kind of inefficient for page by page remapping.&n; *    But e.g. pte_alloc() does not work in modules ... :-(&n; */
+multiline_comment|/*&n; *&t;This maps the vmalloced and reserved buffer to user space.&n; *&n; *  FIXME:&n; *  - PAGE_READONLY should suffice!?&n; *  - remap_page_range is kind of inefficient for page by page remapping.&n; *    But e.g. pte_alloc() does not work in modules ... :-(&n; */
 DECL|function|video1394_mmap
 r_int
 id|video1394_mmap
@@ -7168,7 +7168,7 @@ id|ret
 id|PRINT_G
 c_func
 (paren
-id|KERN_INFO
+id|KERN_CRIT
 comma
 l_string|&quot;Error unregistering ioctl32 translations&quot;
 )paren
@@ -7237,6 +7237,15 @@ suffix:semicolon
 id|video1394_cdev.owner
 op_assign
 id|THIS_MODULE
+suffix:semicolon
+id|kobject_set_name
+c_func
+(paren
+op_amp
+id|video1394_cdev.kobj
+comma
+id|VIDEO1394_DRIVER_NAME
+)paren
 suffix:semicolon
 id|ret
 op_assign

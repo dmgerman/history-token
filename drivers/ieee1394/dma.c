@@ -842,6 +842,7 @@ id|dma-&gt;direction
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_MMU
 multiline_comment|/* nopage() handler for mmap access */
 r_static
 r_struct
@@ -1087,4 +1088,32 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#else /* CONFIG_MMU */
+DECL|function|dma_region_mmap
+r_int
+id|dma_region_mmap
+c_func
+(paren
+r_struct
+id|dma_region
+op_star
+id|dma
+comma
+r_struct
+id|file
+op_star
+id|file
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+)paren
+(brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_MMU */
 eof

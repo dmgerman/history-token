@@ -882,7 +882,7 @@ suffix:semicolon
 id|host_count
 op_decrement
 suffix:semicolon
-multiline_comment|/* &n;                   FIXME: address ranges should be removed &n;                   and fileinfo states should be initialized&n;                   (including setting generation to &n;                   internal-generation ...)&n;                */
+multiline_comment|/*&n;                   FIXME: address ranges should be removed&n;                   and fileinfo states should be initialized&n;                   (including setting generation to&n;                   internal-generation ...)&n;                */
 )brace
 id|spin_unlock_irqrestore
 c_func
@@ -4243,7 +4243,7 @@ suffix:semicolon
 r_return
 id|RCODE_CONFLICT_ERROR
 suffix:semicolon
-multiline_comment|/* A resource conflict was detected. &n;                                                        The request may be retried */
+multiline_comment|/* A resource conflict was detected.&n;                                                        The request may be retried */
 )brace
 r_if
 c_cond
@@ -4345,7 +4345,7 @@ suffix:semicolon
 r_return
 id|RCODE_CONFLICT_ERROR
 suffix:semicolon
-multiline_comment|/* A resource conflict was detected. &n;                                                        The request may be retried */
+multiline_comment|/* A resource conflict was detected.&n;                                                        The request may be retried */
 )brace
 id|req-&gt;free_data
 op_assign
@@ -5092,7 +5092,7 @@ suffix:semicolon
 r_return
 id|RCODE_CONFLICT_ERROR
 suffix:semicolon
-multiline_comment|/* A resource conflict was detected. &n;                                                        The request my be retried */
+multiline_comment|/* A resource conflict was detected.&n;                                                        The request my be retried */
 )brace
 id|size
 op_assign
@@ -5164,7 +5164,7 @@ suffix:semicolon
 r_return
 id|RCODE_CONFLICT_ERROR
 suffix:semicolon
-multiline_comment|/* A resource conflict was detected. &n;                                                        The request may be retried */
+multiline_comment|/* A resource conflict was detected.&n;                                                        The request may be retried */
 )brace
 id|req-&gt;free_data
 op_assign
@@ -6200,7 +6200,7 @@ suffix:semicolon
 r_return
 id|RCODE_CONFLICT_ERROR
 suffix:semicolon
-multiline_comment|/* A resource conflict was detected. &n;                                                        The request may be retried */
+multiline_comment|/* A resource conflict was detected.&n;                                                        The request may be retried */
 )brace
 id|size
 op_assign
@@ -6272,7 +6272,7 @@ suffix:semicolon
 r_return
 id|RCODE_CONFLICT_ERROR
 suffix:semicolon
-multiline_comment|/* A resource conflict was detected. &n;                                                        The request may be retried */
+multiline_comment|/* A resource conflict was detected.&n;                                                        The request may be retried */
 )brace
 id|req-&gt;free_data
 op_assign
@@ -7556,7 +7556,7 @@ suffix:semicolon
 r_return
 id|RCODE_CONFLICT_ERROR
 suffix:semicolon
-multiline_comment|/* A resource conflict was detected. &n;                                                        The request may be retried */
+multiline_comment|/* A resource conflict was detected.&n;                                                        The request may be retried */
 )brace
 id|size
 op_assign
@@ -7628,7 +7628,7 @@ suffix:semicolon
 r_return
 id|RCODE_CONFLICT_ERROR
 suffix:semicolon
-multiline_comment|/* A resource conflict was detected. &n;                                                        The request may be retried */
+multiline_comment|/* A resource conflict was detected.&n;                                                        The request may be retried */
 )brace
 id|req-&gt;free_data
 op_assign
@@ -9139,7 +9139,7 @@ id|another_host
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* another host with valid address-entry containing &n;           same addressrange */
+multiline_comment|/* another host with valid address-entry containing&n;           same addressrange */
 id|list_for_each_entry
 c_func
 (paren
@@ -13566,7 +13566,7 @@ comma
 id|addr_list
 )paren
 suffix:semicolon
-multiline_comment|/* another host with valid address-entry containing &n;                   same addressrange? */
+multiline_comment|/* another host with valid address-entry containing&n;                   same addressrange? */
 id|list_for_each_entry
 c_func
 (paren
@@ -14261,6 +14261,15 @@ id|raw1394_cdev.owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
+id|kobject_set_name
+c_func
+(paren
+op_amp
+id|raw1394_cdev.kobj
+comma
+id|RAW1394_DEVICE_NAME
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|cdev_add
@@ -14280,7 +14289,6 @@ c_cond
 id|ret
 )paren
 (brace
-multiline_comment|/* jmc: leaves reference to (static) raw1394_cdev */
 id|HPSB_ERR
 c_func
 (paren

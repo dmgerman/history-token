@@ -595,7 +595,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/** &n; * hpsb_free_tlabel - free an allocated transaction label&n; * @packet: packet whos tlabel/tpool needs to be cleared&n; *&n; * Frees the transaction label allocated with hpsb_get_tlabel().  The&n; * tlabel has to be freed after the transaction is complete (i.e. response&n; * was received for a split transaction or packet was sent for a unified&n; * transaction).&n; *&n; * A tlabel must not be freed twice.&n; */
+multiline_comment|/**&n; * hpsb_free_tlabel - free an allocated transaction label&n; * @packet: packet whos tlabel/tpool needs to be cleared&n; *&n; * Frees the transaction label allocated with hpsb_get_tlabel().  The&n; * tlabel has to be freed after the transaction is complete (i.e. response&n; * was received for a split transaction or packet was sent for a unified&n; * transaction).&n; *&n; * A tlabel must not be freed twice.&n; */
 DECL|function|hpsb_free_tlabel
 r_void
 id|hpsb_free_tlabel
@@ -975,14 +975,7 @@ op_assign
 id|hpsb_alloc_packet
 c_func
 (paren
-(paren
 id|length
-op_plus
-l_int|3
-)paren
-op_amp
-op_complement
-l_int|3
 )paren
 suffix:semicolon
 r_if
@@ -1097,14 +1090,7 @@ op_assign
 id|hpsb_alloc_packet
 c_func
 (paren
-(paren
 id|length
-op_plus
-l_int|3
-)paren
-op_amp
-op_complement
-l_int|3
 )paren
 suffix:semicolon
 r_if
@@ -1269,14 +1255,7 @@ op_assign
 id|hpsb_alloc_packet
 c_func
 (paren
-(paren
 id|length
-op_plus
-l_int|3
-)paren
-op_amp
-op_complement
-l_int|3
 )paren
 suffix:semicolon
 r_if

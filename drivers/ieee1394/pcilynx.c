@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * ti_pcilynx.c - Texas Instruments PCILynx driver&n; * Copyright (C) 1999,2000 Andreas Bombe &lt;andreas.bombe@munich.netsurf.de&gt;,&n; *                         Stephan Linz &lt;linz@mazet.de&gt;&n; *                         Manfred Weihs &lt;weihs@ict.tuwien.ac.at&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
-multiline_comment|/*&n; * Contributions:&n; *&n; * Manfred Weihs &lt;weihs@ict.tuwien.ac.at&gt;&n; *        reading bus info block (containing GUID) from serial &n; *            eeprom via i2c and storing it in config ROM&n; *        Reworked code for initiating bus resets&n; *            (long, short, with or without hold-off)&n; *        Enhancements in async and iso send code&n; */
+multiline_comment|/*&n; * Contributions:&n; *&n; * Manfred Weihs &lt;weihs@ict.tuwien.ac.at&gt;&n; *        reading bus info block (containing GUID) from serial&n; *            eeprom via i2c and storing it in config ROM&n; *        Reworked code for initiating bus resets&n; *            (long, short, with or without hold-off)&n; *        Enhancements in async and iso send code&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -2131,14 +2131,7 @@ c_func
 id|d-&gt;queue.next
 )paren
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|packet-&gt;driver_list
-)paren
-suffix:semicolon
-id|list_add_tail
+id|list_move_tail
 c_func
 (paren
 op_amp
@@ -2202,7 +2195,6 @@ id|pcl.pcl_status
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef __BIG_ENDIAN
 id|pcl.buffer
 (braket
 l_int|0
@@ -2216,20 +2208,14 @@ l_int|14
 op_or
 id|packet-&gt;header_size
 suffix:semicolon
-macro_line|#else
+macro_line|#ifdef __BIG_ENDIAN
 id|pcl.buffer
 (braket
 l_int|0
 )braket
 dot
 id|control
-op_assign
-id|packet-&gt;speed_code
-op_lshift
-l_int|14
-op_or
-id|packet-&gt;header_size
-op_or
+op_or_assign
 id|PCL_BIGENDIAN
 suffix:semicolon
 macro_line|#endif
@@ -3492,7 +3478,7 @@ c_func
 id|lynx-&gt;async.pcl_queue.next
 )paren
 suffix:semicolon
-id|list_del
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -3653,7 +3639,7 @@ c_func
 id|packet_list.next
 )paren
 suffix:semicolon
-id|list_del
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -4463,7 +4449,7 @@ r_return
 id|newoffs
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * do not DMA if count is too small because this will have a serious impact &n; * on performance - the value 2400 was found by experiment and may not work&n; * everywhere as good as here - use mem_mindma option for modules to change &n; */
+multiline_comment|/*&n; * do not DMA if count is too small because this will have a serious impact&n; * on performance - the value 2400 was found by experiment and may not work&n; * everywhere as good as here - use mem_mindma option for modules to change&n; */
 DECL|variable|mem_mindma
 r_static
 r_int
@@ -6053,7 +6039,7 @@ c_func
 id|lynx-&gt;async.pcl_queue.next
 )paren
 suffix:semicolon
-id|list_del
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -6305,7 +6291,7 @@ c_func
 id|lynx-&gt;iso_send.pcl_queue.next
 )paren
 suffix:semicolon
-id|list_del
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -8022,6 +8008,17 @@ id|pcl.async_error_next
 op_assign
 id|PCL_NEXT_INVALID
 suffix:semicolon
+id|pcl.buffer
+(braket
+l_int|0
+)braket
+dot
+id|control
+op_assign
+id|PCL_CMD_RCV
+op_or
+l_int|16
+suffix:semicolon
 macro_line|#ifdef __BIG_ENDIAN
 id|pcl.buffer
 (braket
@@ -8029,48 +8026,21 @@ l_int|0
 )braket
 dot
 id|control
-op_assign
-id|PCL_CMD_RCV
-op_or
-l_int|16
-suffix:semicolon
-id|pcl.buffer
-(braket
-l_int|1
-)braket
-dot
-id|control
-op_assign
-id|PCL_LAST_BUFF
-op_or
-l_int|4080
-suffix:semicolon
-macro_line|#else
-id|pcl.buffer
-(braket
-l_int|0
-)braket
-dot
-id|control
-op_assign
-id|PCL_CMD_RCV
-op_or
+op_or_assign
 id|PCL_BIGENDIAN
-op_or
-l_int|16
-suffix:semicolon
-id|pcl.buffer
-(braket
-l_int|1
-)braket
-dot
-id|control
-op_assign
-id|PCL_LAST_BUFF
-op_or
-l_int|4080
 suffix:semicolon
 macro_line|#endif
+id|pcl.buffer
+(braket
+l_int|1
+)braket
+dot
+id|control
+op_assign
+id|PCL_LAST_BUFF
+op_or
+l_int|4080
+suffix:semicolon
 id|pcl.buffer
 (braket
 l_int|0

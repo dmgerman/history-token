@@ -11,12 +11,7 @@ r_struct
 id|hpsb_packet
 (brace
 multiline_comment|/* This struct is basically read-only for hosts with the exception of&n;         * the data buffer contents and xnext - see below. */
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-multiline_comment|/* This can be used for host driver internal linking. */
+multiline_comment|/* This can be used for host driver internal linking.&n;&t; *&n;&t; * NOTE: This must be left in init state when the driver is done&n;&t; * with it (e.g. by using list_del_init()), since the core does&n;&t; * some sanity checks to make sure the packet is not on a&n;&t; * driver_list when free&squot;ing it. */
 DECL|member|driver_list
 r_struct
 id|list_head
@@ -48,14 +43,13 @@ id|packed
 )paren
 id|type
 suffix:semicolon
-multiline_comment|/* Okay, this is core internal and a no care for hosts.&n;         * queued   = queued for sending&n;         * pending  = sent, waiting for response&n;         * complete = processing completed, successful or not&n;         * incoming = incoming packet&n;         */
+multiline_comment|/* Okay, this is core internal and a no care for hosts.&n;         * queued   = queued for sending&n;         * pending  = sent, waiting for response&n;         * complete = processing completed, successful or not&n;         */
 r_enum
 (brace
 DECL|enumerator|hpsb_unused
 DECL|enumerator|hpsb_queued
 DECL|enumerator|hpsb_pending
 DECL|enumerator|hpsb_complete
-DECL|enumerator|hpsb_incoming
 id|hpsb_unused
 comma
 id|hpsb_queued
@@ -63,8 +57,6 @@ comma
 id|hpsb_pending
 comma
 id|hpsb_complete
-comma
-id|hpsb_incoming
 DECL|member|state
 )brace
 id|__attribute__
@@ -159,6 +151,13 @@ DECL|member|complete_data
 r_void
 op_star
 id|complete_data
+suffix:semicolon
+multiline_comment|/* XXX This is just a hack at the moment */
+DECL|member|skb
+r_struct
+id|sk_buff
+op_star
+id|skb
 suffix:semicolon
 multiline_comment|/* Store jiffies for implementing bus timeouts. */
 DECL|member|sendtime
@@ -371,7 +370,7 @@ id|quadlet_t
 id|sid
 )paren
 suffix:semicolon
-multiline_comment|/* &n; * Notify completion of SelfID stage to the core and report new physical ID&n; * and whether host is root now.&n; */
+multiline_comment|/*&n; * Notify completion of SelfID stage to the core and report new physical ID&n; * and whether host is root now.&n; */
 r_void
 id|hpsb_selfid_complete
 c_func

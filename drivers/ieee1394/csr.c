@@ -754,7 +754,7 @@ l_int|0x3f1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * HI == seconds (bits 0:2)&n; * LO == fraction units of 1/8000 of a second, as per 1394 (bits 19:31)&n; *&n; * Convert to units and then to HZ, for comparison to jiffies.&n; *&n; * By default this will end up being 800 units, or 100ms (125usec per&n; * unit).&n; *&n; * NOTE: The spec says 1/8000, but also says we can compute based on 1/8192&n; * like CSR specifies. Should make our math less complex.&n; */
+multiline_comment|/*&n; * HI == seconds (bits 0:2)&n; * LO == fraction units of 1/8000 of a second, as per 1394 (bits 19:31)&n; *&n; * Convert to units and then to HZ, for comparison to jiffies.&n; *&n; * By default this will end up being 800 units, or 100ms (125usec per&n; * unit).&n; *&n; * NOTE: The spec says 1/8000, but also says we can compute based on 1/8192&n; * like CSR specifies. Should make our math less complex.&n; */
 DECL|function|calculate_expire
 r_static
 r_inline

@@ -43,7 +43,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 1170 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 1200 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/*&n; * Module load parameter definitions&n; */
 multiline_comment|/*&n; * Change max_speed on module load if you have a bad IEEE-1394&n; * controller that has trouble running 2KB packets at 400mb.&n; *&n; * NOTE: On certain OHCI parts I have seen short packets on async transmit&n; * (probably due to PCI latency/throughput issues with the part). You can&n; * bump down the speed if you are running into problems.&n; */
@@ -150,7 +150,7 @@ comma
 l_string|&quot;Exclusive login to sbp2 device (default = 1)&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * SCSI inquiry hack for really badly behaved sbp2 devices. Turn this on&n; * if your sbp2 device is not properly handling the SCSI inquiry command.&n; * This hack makes the inquiry look more like a typical MS Windows&n; * inquiry.&n; * &n; * If force_inquiry_hack=1 is required for your device to work,&n; * please submit the logged sbp2_firmware_revision value of this device to&n; * the linux1394-devel mailing list.&n; */
+multiline_comment|/*&n; * SCSI inquiry hack for really badly behaved sbp2 devices. Turn this on&n; * if your sbp2 device is not properly handling the SCSI inquiry command.&n; * This hack makes the inquiry look more like a typical MS Windows&n; * inquiry.&n; *&n; * If force_inquiry_hack=1 is required for your device to work,&n; * please submit the logged sbp2_firmware_revision value of this device to&n; * the linux1394-devel mailing list.&n; */
 DECL|variable|force_inquiry_hack
 r_static
 r_int
@@ -285,7 +285,7 @@ DECL|macro|SBP2_NOTICE
 mdefine_line|#define SBP2_NOTICE(fmt, args...)&t;HPSB_NOTICE(&quot;sbp2: &quot;fmt, ## args)
 DECL|macro|SBP2_WARN
 mdefine_line|#define SBP2_WARN(fmt, args...)&t;&t;HPSB_WARN(&quot;sbp2: &quot;fmt, ## args)
-macro_line|#else 
+macro_line|#else
 DECL|macro|SBP2_DEBUG
 mdefine_line|#define SBP2_DEBUG(fmt, args...)
 DECL|macro|SBP2_INFO
@@ -1378,7 +1378,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * This function finds the sbp2_command for a given outstanding command&n; * orb.Only looks at the inuse list.&n; */
+multiline_comment|/*&n; * This function finds the sbp2_command for a given outstanding command&n; * orb.Only looks at the inuse list.&n; */
 DECL|function|sbp2util_find_command_for_orb
 r_static
 r_struct
@@ -1487,7 +1487,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * This function finds the sbp2_command for a given outstanding SCpnt.&n; * Only looks at the inuse list.&n; */
+multiline_comment|/*&n; * This function finds the sbp2_command for a given outstanding SCpnt.&n; * Only looks at the inuse list.&n; */
 DECL|function|sbp2util_find_command_for_SCpnt
 r_static
 r_struct
@@ -2136,7 +2136,7 @@ id|scsi_id
 )paren
 )paren
 (brace
-multiline_comment|/* &n;&t;&t; * Ok, reconnect has failed. Perhaps we didn&squot;t&n;&t;&t; * reconnect fast enough. Try doing a regular login, but&n;&t;&t; * first do a logout just in case of any weirdness.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Ok, reconnect has failed. Perhaps we didn&squot;t&n;&t;&t; * reconnect fast enough. Try doing a regular login, but&n;&t;&t; * first do a logout just in case of any weirdness.&n;&t;&t; */
 id|sbp2_logout_device
 c_func
 (paren
@@ -2154,10 +2154,10 @@ id|scsi_id
 )paren
 (brace
 multiline_comment|/* Login failed too, just fail, and the backend&n;&t;&t;&t; * will call our sbp2_remove for us */
-id|SBP2_INFO
+id|SBP2_ERR
 c_func
 (paren
-l_string|&quot;sbp2_reconnect_device failed!&quot;
+l_string|&quot;Failed to reconnect to sbp2 device!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4414,7 +4414,7 @@ c_func
 l_string|&quot;sbp2_login_device: written&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Wait for login status (up to 20 seconds)... &n;&t; */
+multiline_comment|/*&n;&t; * Wait for login status (up to 20 seconds)...&n;&t; */
 r_if
 c_cond
 (paren
@@ -4732,6 +4732,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_int
+id|error
+op_assign
 id|hpsb_node_write
 c_func
 (paren
@@ -4744,7 +4747,18 @@ comma
 l_int|8
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_return
+id|error
+suffix:semicolon
 multiline_comment|/* Wait for device to logout...1 second. */
+r_if
+c_cond
+(paren
 id|sbp2util_down_timeout
 c_func
 (paren
@@ -4753,6 +4767,10 @@ id|scsi_id-&gt;sbp2_login_complete
 comma
 id|HZ
 )paren
+)paren
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 id|SBP2_INFO
 c_func
@@ -4945,6 +4963,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_int
+id|error
+op_assign
 id|hpsb_node_write
 c_func
 (paren
@@ -4956,6 +4977,14 @@ id|data
 comma
 l_int|8
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_return
+id|error
 suffix:semicolon
 multiline_comment|/*&n;&t; * Wait for reconnect status (up to 1 second)...&n;&t; */
 r_if
@@ -5036,7 +5065,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|SBP2_INFO
+id|HPSB_DEBUG
 c_func
 (paren
 l_string|&quot;Reconnected to SBP-2 device&quot;
@@ -5046,7 +5075,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This function is called in order to set the busy timeout (number of&n; * retries to attempt) on the sbp2 device. &n; */
+multiline_comment|/*&n; * This function is called in order to set the busy timeout (number of&n; * retries to attempt) on the sbp2 device.&n; */
 DECL|function|sbp2_set_busy_timeout
 r_static
 r_int
@@ -5105,7 +5134,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This function is called to parse sbp2 device&squot;s config rom unit&n; * directory. Used to determine things like sbp2 management agent offset,&n; * and command set used (SCSI or RBC). &n; */
+multiline_comment|/*&n; * This function is called to parse sbp2 device&squot;s config rom unit&n; * directory. Used to determine things like sbp2 management agent offset,&n; * and command set used (SCSI or RBC).&n; */
 DECL|function|sbp2_parse_unit_directory
 r_static
 r_void
@@ -5618,7 +5647,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|SBP2_ERR
+id|HPSB_DEBUG
 c_func
 (paren
 l_string|&quot;Node &quot;
@@ -5654,7 +5683,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This function is called in order to perform a SBP-2 agent reset. &n; */
+multiline_comment|/*&n; * This function is called in order to perform a SBP-2 agent reset.&n; */
 DECL|function|sbp2_agent_reset
 r_static
 r_int
@@ -6642,7 +6671,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This function is called in order to begin a regular SBP-2 command. &n; */
+multiline_comment|/*&n; * This function is called in order to begin a regular SBP-2 command.&n; */
 DECL|function|sbp2_link_orb_command
 r_static
 r_int
@@ -6929,7 +6958,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This function is called in order to begin a regular SBP-2 command. &n; */
+multiline_comment|/*&n; * This function is called in order to begin a regular SBP-2 command.&n; */
 DECL|function|sbp2_send_command
 r_static
 r_int
@@ -7041,7 +7070,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The scsi stack sends down a request_bufflen which does not match the&n;&t; * length field in the scsi cdb. This causes some sbp2 devices to &n;&t; * reject this inquiry command. Fix the request_bufflen. &n;&t; */
+multiline_comment|/*&n;&t; * The scsi stack sends down a request_bufflen which does not match the&n;&t; * length field in the scsi cdb. This causes some sbp2 devices to&n;&t; * reject this inquiry command. Fix the request_bufflen.&n;&t; */
 r_if
 c_cond
 (paren
@@ -8213,7 +8242,7 @@ r_return
 id|RCODE_ADDRESS_ERROR
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Put response into scsi_id status fifo... &n;&t; */
+multiline_comment|/*&n;&t; * Put response into scsi_id status fifo...&n;&t; */
 id|memcpy
 c_func
 (paren
@@ -8366,7 +8395,7 @@ id|scsi_id-&gt;status_block.ORB_offset_hi_misc
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Initiate a fetch agent reset. &n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Initiate a fetch agent reset.&n;&t;&t;&t;&t; */
 id|SBP2_DEBUG
 c_func
 (paren
@@ -8392,7 +8421,7 @@ id|command-&gt;command_orb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Check here to see if there are no commands in-use. If there are none, we can&n;&t;&t; * null out last orb so that next time around we write directly to the orb pointer... &n;&t;&t; * Quick start saves one 1394 bus transaction.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Check here to see if there are no commands in-use. If there are none, we can&n;&t;&t; * null out last orb so that next time around we write directly to the orb pointer...&n;&t;&t; * Quick start saves one 1394 bus transaction.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -8412,7 +8441,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* &n;&t;&t; * It&squot;s probably a login/logout/reconnect status.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * It&squot;s probably a login/logout/reconnect status.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -8489,7 +8518,7 @@ id|RCODE_COMPLETE
 suffix:semicolon
 )brace
 multiline_comment|/**************************************&n; * SCSI interface related section&n; **************************************/
-multiline_comment|/*&n; * This routine is the main request entry routine for doing I/O. It is &n; * called from the scsi stack directly.&n; */
+multiline_comment|/*&n; * This routine is the main request entry routine for doing I/O. It is&n; * called from the scsi stack directly.&n; */
 DECL|function|sbp2scsi_queuecommand
 r_static
 r_int
@@ -9391,7 +9420,7 @@ id|command-&gt;Current_SCpnt
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t; * Initiate a fetch agent reset. &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Initiate a fetch agent reset.&n;&t;&t; */
 id|sbp2_agent_reset
 c_func
 (paren

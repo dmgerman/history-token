@@ -388,7 +388,7 @@ op_star
 id|ne
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This will fill in the given, pre-initialised hpsb_packet with the current&n; * information from the node entry (host, node ID, generation number).  It will&n; * return false if the node owning the GUID is not accessible (and not modify the &n; * hpsb_packet) and return true otherwise.&n; *&n; * Note that packet sending may still fail in hpsb_send_packet if a bus reset&n; * happens while you are trying to set up the packet (due to obsolete generation&n; * number).  It will at least reliably fail so that you don&squot;t accidentally and&n; * unknowingly send your packet to the wrong node.&n; */
+multiline_comment|/*&n; * This will fill in the given, pre-initialised hpsb_packet with the current&n; * information from the node entry (host, node ID, generation number).  It will&n; * return false if the node owning the GUID is not accessible (and not modify the&n; * hpsb_packet) and return true otherwise.&n; *&n; * Note that packet sending may still fail in hpsb_send_packet if a bus reset&n; * happens while you are trying to set up the packet (due to obsolete generation&n; * number).  It will at least reliably fail so that you don&squot;t accidentally and&n; * unknowingly send your packet to the wrong node.&n; */
 r_void
 id|hpsb_node_fill_packet
 c_func
