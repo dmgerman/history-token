@@ -2184,6 +2184,17 @@ r_int
 id|len
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|tcp_rcv_space_adjust
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+suffix:semicolon
 DECL|enum|tcp_ack_state_t
 r_enum
 id|tcp_ack_state_t

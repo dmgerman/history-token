@@ -1255,6 +1255,25 @@ DECL|member|rcv_rtt_est
 )brace
 id|rcv_rtt_est
 suffix:semicolon
+multiline_comment|/* Receiver queue space */
+r_struct
+(brace
+DECL|member|space
+r_int
+id|space
+suffix:semicolon
+DECL|member|seq
+id|__u32
+id|seq
+suffix:semicolon
+DECL|member|time
+id|__u32
+id|time
+suffix:semicolon
+DECL|member|rcvq_space
+)brace
+id|rcvq_space
+suffix:semicolon
 multiline_comment|/* TCP Westwood structure */
 r_struct
 (brace

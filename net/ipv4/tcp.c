@@ -5617,6 +5617,12 @@ id|tp-&gt;copied_seq
 op_assign
 id|seq
 suffix:semicolon
+id|tcp_rcv_space_adjust
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 multiline_comment|/* Clean up data we have read: This will do ACK frames. */
 r_if
 c_cond
@@ -6555,6 +6561,12 @@ suffix:semicolon
 id|len
 op_sub_assign
 id|used
+suffix:semicolon
+id|tcp_rcv_space_adjust
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 id|skip_copy
 suffix:colon
