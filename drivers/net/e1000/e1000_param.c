@@ -1427,14 +1427,23 @@ id|bd
 op_ne
 id|OPTION_UNSET
 )paren
+op_logical_and
+(paren
+id|AutoNeg
+(braket
+id|bd
+)braket
+op_ne
+l_int|0x20
+)paren
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;AutoNeg not valid for fiber adapters, &quot;
-l_string|&quot;parameter ignored&bslash;n&quot;
+l_string|&quot;AutoNeg other than Full/1000 is &quot;
+l_string|&quot;not valid for fiber adapters, parameter ignored&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
