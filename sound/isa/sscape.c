@@ -2166,7 +2166,7 @@ id|VERIFY_READ
 comma
 id|code
 comma
-l_int|65536
+id|SSCAPE_MICROCODE_SIZE
 )paren
 )paren
 op_ne
@@ -2188,7 +2188,7 @@ id|sscape
 comma
 id|code
 comma
-l_int|65536
+id|SSCAPE_MICROCODE_SIZE
 )paren
 )paren
 op_eq
