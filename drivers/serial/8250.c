@@ -5459,6 +5459,8 @@ id|flags
 suffix:semicolon
 r_int
 r_int
+id|baud
+comma
 id|quot
 suffix:semicolon
 r_switch
@@ -5558,9 +5560,9 @@ id|UART_LCR_SPAR
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t; * Ask the core to calculate the divisor for us.&n;&t; */
-id|quot
+id|baud
 op_assign
-id|uart_get_divisor
+id|uart_get_baud_rate
 c_func
 (paren
 id|port
@@ -5568,6 +5570,22 @@ comma
 id|termios
 comma
 id|old
+comma
+l_int|0
+comma
+id|port-&gt;uartclk
+op_div
+l_int|16
+)paren
+suffix:semicolon
+id|quot
+op_assign
+id|uart_get_divisor
+c_func
+(paren
+id|port
+comma
+id|baud
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Work around a bug in the Oxford Semiconductor 952 rev B&n;&t; * chip which causes it to seriously miscalculate baud rates&n;&t; * when DLL is 0.&n;&t; */
@@ -5609,17 +5627,9 @@ id|UART_USE_FIFO
 r_if
 c_cond
 (paren
-(paren
-id|up-&gt;port.uartclk
-op_div
-id|quot
-)paren
+id|baud
 OL
-(paren
 l_int|2400
-op_star
-l_int|16
-)paren
 )paren
 id|fcr
 op_assign
@@ -5680,7 +5690,7 @@ id|port
 comma
 id|termios-&gt;c_cflag
 comma
-id|quot
+id|baud
 )paren
 suffix:semicolon
 id|up-&gt;port.read_status_mask

@@ -845,7 +845,7 @@ id|cflag
 comma
 r_int
 r_int
-id|quot
+id|baud
 )paren
 suffix:semicolon
 r_int
@@ -887,15 +887,9 @@ id|uart_port
 op_star
 id|port
 comma
-r_struct
-id|termios
-op_star
-id|termios
-comma
-r_struct
-id|termios
-op_star
-id|old_termios
+r_int
+r_int
+id|baud
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Console helpers.&n; */
