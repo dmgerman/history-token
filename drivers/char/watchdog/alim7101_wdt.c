@@ -820,7 +820,6 @@ l_string|&quot;: Watchdog timer is now enabled with no heartbeat - should reboot
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 r_return
 id|NOTIFY_DONE
 suffix:semicolon
@@ -833,10 +832,19 @@ id|notifier_block
 id|wdt_notifier
 op_assign
 (brace
+dot
+id|notifier_call
+op_assign
 id|wdt_notify_sys
 comma
+dot
+id|next
+op_assign
 l_int|0
 comma
+dot
+id|priority
+op_assign
 l_int|0
 )brace
 suffix:semicolon
@@ -935,7 +943,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/* Set the WDT in the PMU to 1 second */
 id|pci_write_config_byte
 c_func
@@ -979,7 +986,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-suffix:semicolon
 id|pci_read_config_byte
 c_func
 (paren
@@ -1016,7 +1022,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-suffix:semicolon
 id|init_timer
 c_func
 (paren
@@ -1075,7 +1080,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1101,8 +1105,6 @@ c_func
 (paren
 id|alim7101_wdt_unload
 )paren
-suffix:semicolon
-id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
