@@ -1364,11 +1364,6 @@ id|gid_t
 id|va_gid
 suffix:semicolon
 multiline_comment|/* owner group id */
-DECL|member|va_fsid
-id|xfs_dev_t
-id|va_fsid
-suffix:semicolon
-multiline_comment|/* file system id (dev for now) */
 DECL|member|va_nodeid
 id|xfs_ino_t
 id|va_nodeid
