@@ -422,6 +422,36 @@ r_return
 id|bh-&gt;b_private
 suffix:semicolon
 )brace
+DECL|macro|HAVE_JOURNAL_CALLBACK_STATUS
+mdefine_line|#define HAVE_JOURNAL_CALLBACK_STATUS
+DECL|struct|journal_callback
+r_struct
+id|journal_callback
+(brace
+DECL|member|jcb_list
+r_struct
+id|list_head
+id|jcb_list
+suffix:semicolon
+DECL|member|jcb_func
+r_void
+(paren
+op_star
+id|jcb_func
+)paren
+(paren
+r_struct
+id|journal_callback
+op_star
+id|jcb
+comma
+r_int
+id|error
+)paren
+suffix:semicolon
+multiline_comment|/* user data goes here */
+)brace
+suffix:semicolon
 r_struct
 id|jbd_revoke_table_s
 suffix:semicolon
@@ -450,6 +480,12 @@ multiline_comment|/* Field for caller&squot;s use to track errors through large 
 DECL|member|h_err
 r_int
 id|h_err
+suffix:semicolon
+multiline_comment|/* List of application registered callbacks for this handle.&n;&t; * The function(s) will be called after the transaction that&n;&t; * this handle is part of has been committed to disk.&n;&t; */
+DECL|member|h_jcb
+r_struct
+id|list_head
+id|h_jcb
 suffix:semicolon
 multiline_comment|/* Flags */
 DECL|member|h_sync
@@ -632,6 +668,12 @@ multiline_comment|/* How many handles used this transaction? */
 DECL|member|t_handle_count
 r_int
 id|t_handle_count
+suffix:semicolon
+multiline_comment|/* List of registered callback functions for this transaction.&n;&t; * Called when the transaction is committed. */
+DECL|member|t_jcb
+r_struct
+id|list_head
+id|t_jcb
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1372,6 +1414,34 @@ id|journal_flush
 (paren
 id|journal_t
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|journal_callback_set
+c_func
+(paren
+id|handle_t
+op_star
+id|handle
+comma
+r_void
+(paren
+op_star
+id|fn
+)paren
+(paren
+r_struct
+id|journal_callback
+op_star
+comma
+r_int
+)paren
+comma
+r_struct
+id|journal_callback
+op_star
+id|jcb
 )paren
 suffix:semicolon
 r_extern

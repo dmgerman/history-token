@@ -2269,7 +2269,7 @@ id|write
 )paren
 (brace
 r_case
-l_int|1
+id|VM_FAULT_MINOR
 suffix:colon
 id|tsk-&gt;min_flt
 op_increment
@@ -2277,7 +2277,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|2
+id|VM_FAULT_MAJOR
 suffix:colon
 id|tsk-&gt;maj_flt
 op_increment
@@ -2285,35 +2285,35 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0
+id|VM_FAULT_SIGBUS
 suffix:colon
-r_if
+r_return
+id|i
+ques
 c_cond
-(paren
 id|i
-)paren
-r_return
-id|i
-suffix:semicolon
-r_return
+suffix:colon
 op_minus
 id|EFAULT
 suffix:semicolon
-r_default
+r_case
+id|VM_FAULT_OOM
 suffix:colon
-(brace
-)brace
-r_if
+r_return
+id|i
+ques
 c_cond
-(paren
 id|i
-)paren
-r_return
-id|i
-suffix:semicolon
-r_return
+suffix:colon
 op_minus
 id|ENOMEM
+suffix:semicolon
+r_default
+suffix:colon
+id|BUG
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 id|spin_lock
@@ -2716,7 +2716,7 @@ c_func
 id|page
 )paren
 )paren
-id|SetPageDirty
+id|set_page_dirty
 c_func
 (paren
 id|page
@@ -4354,9 +4354,8 @@ id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 r_return
-l_int|1
+id|VM_FAULT_MINOR
 suffix:semicolon
-multiline_comment|/* Minor fault */
 )brace
 )brace
 id|pte_unmap
@@ -4499,9 +4498,8 @@ id|old_page
 )paren
 suffix:semicolon
 r_return
-l_int|1
+id|VM_FAULT_MINOR
 suffix:semicolon
-multiline_comment|/* Minor fault */
 id|bad_wp_page
 suffix:colon
 id|pte_unmap
@@ -4526,9 +4524,9 @@ comma
 id|address
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * This should really halt the system so it can be debugged or&n;&t; * at least the kernel stops what it&squot;s doing before it corrupts&n;&t; * data, but for the moment just pretend this is OOM.&n;&t; */
 r_return
-op_minus
-l_int|1
+id|VM_FAULT_OOM
 suffix:semicolon
 id|no_mem
 suffix:colon
@@ -4539,8 +4537,7 @@ id|old_page
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|VM_FAULT_OOM
 suffix:semicolon
 )brace
 DECL|function|vmtruncate_list
@@ -5067,7 +5064,7 @@ suffix:semicolon
 r_int
 id|ret
 op_assign
-l_int|1
+id|VM_FAULT_MINOR
 suffix:semicolon
 id|pte_unmap
 c_func
@@ -5119,9 +5116,6 @@ id|page
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Back out if somebody else faulted in this pte while&n;&t;&t;&t; * we released the page table lock.&n;&t;&t;&t; */
-r_int
-id|retval
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -5139,8 +5133,9 @@ comma
 id|address
 )paren
 suffix:semicolon
-id|retval
-op_assign
+r_if
+c_cond
+(paren
 id|pte_same
 c_func
 (paren
@@ -5149,12 +5144,15 @@ id|page_table
 comma
 id|orig_pte
 )paren
-ques
-c_cond
-op_minus
-l_int|1
-suffix:colon
-l_int|1
+)paren
+id|ret
+op_assign
+id|VM_FAULT_OOM
+suffix:semicolon
+r_else
+id|ret
+op_assign
+id|VM_FAULT_MINOR
 suffix:semicolon
 id|pte_unmap
 c_func
@@ -5170,13 +5168,13 @@ id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 r_return
-id|retval
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* Had to read the page from swap area: Major fault */
 id|ret
 op_assign
-l_int|2
+id|VM_FAULT_MAJOR
 suffix:semicolon
 )brace
 id|lock_page
@@ -5243,7 +5241,7 @@ id|page
 )paren
 suffix:semicolon
 r_return
-l_int|1
+id|VM_FAULT_MINOR
 suffix:semicolon
 )brace
 multiline_comment|/* The page isn&squot;t present yet, go ahead with the fault. */
@@ -5514,7 +5512,7 @@ id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 r_return
-l_int|1
+id|VM_FAULT_MINOR
 suffix:semicolon
 )brace
 id|mm-&gt;rss
@@ -5584,14 +5582,12 @@ id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 r_return
-l_int|1
+id|VM_FAULT_MINOR
 suffix:semicolon
-multiline_comment|/* Minor fault */
 id|no_mem
 suffix:colon
 r_return
-op_minus
-l_int|1
+id|VM_FAULT_OOM
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * do_no_page() tries to create a new page mapping. It aggressively&n; * tries to share with existing pages, but makes a separate copy if&n; * the &quot;write_access&quot; parameter is true in order to avoid the next&n; * page fault.&n; *&n; * As this is called only for pages that do not currently exist, we&n; * do not need to flush old virtual caches or the TLB.&n; *&n; * This is called with the MM semaphore held and the page table&n; * spinlock held. Exit with the spinlock released.&n; */
@@ -5690,16 +5686,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* no page was available -- either SIGBUS or OOM */
 r_if
 c_cond
 (paren
 id|new_page
 op_eq
-l_int|NULL
+id|NOPAGE_SIGBUS
 )paren
-multiline_comment|/* no page was available -- SIGBUS */
 r_return
-l_int|0
+id|VM_FAULT_SIGBUS
 suffix:semicolon
 r_if
 c_cond
@@ -5709,8 +5705,7 @@ op_eq
 id|NOPAGE_OOM
 )paren
 r_return
-op_minus
-l_int|1
+id|VM_FAULT_OOM
 suffix:semicolon
 multiline_comment|/*&n;&t; * Should we do an early C-O-W break?&n;&t; */
 r_if
@@ -5751,8 +5746,7 @@ id|new_page
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|VM_FAULT_OOM
 suffix:semicolon
 )brace
 id|copy_user_highpage
@@ -5894,7 +5888,7 @@ id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 r_return
-l_int|1
+id|VM_FAULT_MINOR
 suffix:semicolon
 )brace
 multiline_comment|/* no need to invalidate: a not-present page shouldn&squot;t be cached */
@@ -5916,9 +5910,8 @@ id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 r_return
-l_int|2
+id|VM_FAULT_MAJOR
 suffix:semicolon
-multiline_comment|/* Major fault */
 )brace
 multiline_comment|/*&n; * These routines also need to handle stuff like marking pages dirty&n; * and/or accessed for architectures that don&squot;t do it in hardware (most&n; * RISC architectures).  The early dirtying is also good on the i386.&n; *&n; * There is also a hook called &quot;update_mmu_cache()&quot; that architectures&n; * with external mmu caches can use to update those (ie the Sparc or&n; * PowerPC hashed page tables that act as extended TLBs).&n; *&n; * Note the &quot;page_table_lock&quot;. It is to protect against kswapd removing&n; * pages from under us. Note that kswapd only ever _removes_ pages, never&n; * adds them. As such, once we have noticed that the page is not present,&n; * we can drop the lock early.&n; *&n; * The adding of pages is protected by the MM semaphore (which we hold),&n; * so we don&squot;t need to worry about a page being suddenly been added into&n; * our VM.&n; *&n; * We enter with the pagetable spinlock held, we are supposed to&n; * release it when done.&n; */
 DECL|function|handle_pte_fault
@@ -6096,7 +6089,7 @@ id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 r_return
-l_int|1
+id|VM_FAULT_MINOR
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * By the time we get here, we already hold the mm semaphore&n; */
@@ -6216,8 +6209,7 @@ id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|VM_FAULT_OOM
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Allocate page middle directory.&n; *&n; * We&squot;ve already handled the fast-path in-line, and we own the&n; * page table lock.&n; *&n; * On a two-level page table, this ends up actually being entirely&n; * optimized away.&n; */

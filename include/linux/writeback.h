@@ -34,14 +34,36 @@ id|PF_FLUSHER
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * fs/fs-writeback.c&n; */
-DECL|macro|WB_SYNC_NONE
-mdefine_line|#define WB_SYNC_NONE&t;0&t;/* Don&squot;t wait on anything */
-DECL|macro|WB_SYNC_LAST
-mdefine_line|#define WB_SYNC_LAST&t;1&t;/* Wait on the last-written mapping */
-DECL|macro|WB_SYNC_ALL
-mdefine_line|#define WB_SYNC_ALL&t;2&t;/* Wait on every mapping */
-DECL|macro|WB_SYNC_HOLD
-mdefine_line|#define WB_SYNC_HOLD&t;3&t;/* Hold the inode on sb_dirty for sys_sync() */
+DECL|enum|writeback_sync_modes
+r_enum
+id|writeback_sync_modes
+(brace
+DECL|enumerator|WB_SYNC_NONE
+id|WB_SYNC_NONE
+op_assign
+l_int|0
+comma
+multiline_comment|/* Don&squot;t wait on anything */
+DECL|enumerator|WB_SYNC_LAST
+id|WB_SYNC_LAST
+op_assign
+l_int|1
+comma
+multiline_comment|/* Wait on the last-written mapping */
+DECL|enumerator|WB_SYNC_ALL
+id|WB_SYNC_ALL
+op_assign
+l_int|2
+comma
+multiline_comment|/* Wait on every mapping */
+DECL|enumerator|WB_SYNC_HOLD
+id|WB_SYNC_HOLD
+op_assign
+l_int|3
+comma
+multiline_comment|/* Hold the inode on sb_dirty for sys_sync() */
+)brace
+suffix:semicolon
 r_void
 id|writeback_unlocked_inodes
 c_func
@@ -50,7 +72,8 @@ r_int
 op_star
 id|nr_to_write
 comma
-r_int
+r_enum
+id|writeback_sync_modes
 id|sync_mode
 comma
 r_int
@@ -99,6 +122,7 @@ r_int
 id|wait
 )paren
 suffix:semicolon
+multiline_comment|/* writeback.h requires fs.h; it, too, is not included from here. */
 DECL|function|wait_on_inode
 r_static
 r_inline
@@ -127,6 +151,7 @@ id|inode
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * mm/page-writeback.c&n; */
+multiline_comment|/* These 5 are exported to sysctl. */
 r_extern
 r_int
 id|dirty_background_ratio
@@ -200,5 +225,11 @@ op_star
 id|nr_to_write
 )paren
 suffix:semicolon
+multiline_comment|/* pdflush.c */
+r_extern
+r_int
+id|nr_pdflush_threads
+suffix:semicolon
+multiline_comment|/* Global so it can be exported to sysctl&n;&t;&t;&t;&t;   read-only. */
 macro_line|#endif&t;&t;/* WRITEBACK_H */
 eof

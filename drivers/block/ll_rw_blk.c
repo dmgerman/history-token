@@ -2886,7 +2886,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|list_splice
+id|list_splice_init
 c_func
 (paren
 op_amp
@@ -2894,13 +2894,6 @@ id|blk_plug_list
 comma
 op_amp
 id|local_plug_list
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|blk_plug_list
 )paren
 suffix:semicolon
 id|spin_unlock_irq

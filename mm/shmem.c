@@ -1610,13 +1610,6 @@ c_loop
 (paren
 id|inode
 op_logical_and
-(paren
-id|PageWriteback
-c_func
-(paren
-id|page
-)paren
-op_logical_or
 id|move_from_swap_cache
 c_func
 (paren
@@ -1627,9 +1620,8 @@ comma
 id|inode-&gt;i_mapping
 )paren
 )paren
-)paren
 (brace
-multiline_comment|/*&n;&t;&t; * Yield for kswapd, and try again - but we&squot;re still&n;&t;&t; * holding the page lock - ugh! fix this up later on.&n;&t;&t; * Beware of inode being unlinked or truncated: just&n;&t;&t; * leave try_to_unuse to delete_from_swap_cache if so.&n;&t;&t; *&n;&t;&t; * AKPM: We now wait on writeback too.  Note that it&squot;s&n;&t;&t; * the page lock which prevents new writeback from starting.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Yield for kswapd, and try again - but we&squot;re still&n;&t;&t; * holding the page lock - ugh! fix this up later on.&n;&t;&t; * Beware of inode being unlinked or truncated: just&n;&t;&t; * leave try_to_unuse to delete_from_swap_cache if so.&n;&t;&t; */
 id|spin_unlock
 c_func
 (paren
@@ -1637,22 +1629,6 @@ op_amp
 id|info-&gt;lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|PageWriteback
-c_func
-(paren
-id|page
-)paren
-)paren
-id|wait_on_page_writeback
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_else
 id|yield
 c_func
 (paren
@@ -2355,6 +2331,12 @@ id|page
 )paren
 suffix:semicolon
 id|unlock_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|page_cache_release
 c_func
 (paren
 id|page
