@@ -2891,7 +2891,7 @@ op_star
 )paren
 id|dev-&gt;data
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|data-&gt;int_urb
@@ -4831,7 +4831,7 @@ singleline_comment|// FIXME:  can&squot;t cancel here; it&squot;s synchronous, a
 singleline_comment|// should have happened earlier in any case (interrupt
 singleline_comment|// handling needs to be generic)
 singleline_comment|// cancel irq urb first
-id|usb_unlink_urb
+id|usb_kill_urb
 (paren
 id|priv-&gt;irq_urb
 )paren
