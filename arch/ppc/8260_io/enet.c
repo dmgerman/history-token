@@ -1617,6 +1617,10 @@ id|j
 comma
 id|err
 suffix:semicolon
+r_void
+op_star
+id|dpaddr
+suffix:semicolon
 r_int
 r_char
 op_star
@@ -1859,7 +1863,7 @@ op_or_assign
 id|CMX_CLK_ROUTE
 suffix:semicolon
 multiline_comment|/* Allocate space for the buffer descriptors in the DP ram.&n;&t; * These are relative offsets in the DP ram address space.&n;&t; * Initialize base addresses for the buffer descriptors.&n;&t; */
-id|i
+id|dpaddr
 op_assign
 id|cpm2_dpalloc
 c_func
@@ -1876,7 +1880,11 @@ l_int|8
 suffix:semicolon
 id|ep-&gt;sen_genscc.scc_rbase
 op_assign
-id|i
+id|cpm2_dpram_offset
+c_func
+(paren
+id|dpaddr
+)paren
 suffix:semicolon
 id|cep-&gt;rx_bd_base
 op_assign
@@ -1884,13 +1892,9 @@ op_assign
 id|cbd_t
 op_star
 )paren
-op_amp
-id|immap-&gt;im_dprambase
-(braket
-id|i
-)braket
+id|dpaddr
 suffix:semicolon
-id|i
+id|dpaddr
 op_assign
 id|cpm2_dpalloc
 c_func
@@ -1907,7 +1911,11 @@ l_int|8
 suffix:semicolon
 id|ep-&gt;sen_genscc.scc_tbase
 op_assign
-id|i
+id|cpm2_dpram_offset
+c_func
+(paren
+id|dpaddr
+)paren
 suffix:semicolon
 id|cep-&gt;tx_bd_base
 op_assign
@@ -1915,11 +1923,7 @@ op_assign
 id|cbd_t
 op_star
 )paren
-op_amp
-id|immap-&gt;im_dprambase
-(braket
-id|i
-)braket
+id|dpaddr
 suffix:semicolon
 id|cep-&gt;dirty_tx
 op_assign

@@ -530,6 +530,10 @@ id|dpmemsz
 comma
 id|memsz
 suffix:semicolon
+id|u8
+op_star
+id|dp_mem
+suffix:semicolon
 id|uint
 id|dp_addr
 suffix:semicolon
@@ -563,7 +567,7 @@ op_plus
 id|pinfo-&gt;tx_nrfifos
 )paren
 suffix:semicolon
-id|dp_addr
+id|dp_mem
 op_assign
 id|cpm2_dpalloc
 c_func
@@ -576,9 +580,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dp_addr
+id|dp_mem
 op_eq
-id|CPM_DP_NOSPACE
+l_int|NULL
 )paren
 (brace
 id|printk
@@ -593,6 +597,14 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|dp_addr
+op_assign
+id|cpm2_dpram_offset
+c_func
+(paren
+id|dp_mem
+)paren
+suffix:semicolon
 id|memsz
 op_assign
 id|L1_CACHE_ALIGN
@@ -640,7 +652,6 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-multiline_comment|/* We cant really from memory allocated via cpm2_dpalloc,&n;&t; * fix this if in the future we can */
 r_if
 c_cond
 (paren
@@ -649,7 +660,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* XXX cpm_dpalloc does not yet free */
+id|cpm2_dpfree
+c_func
+(paren
+id|dp_mem
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -697,11 +713,7 @@ r_volatile
 id|cbd_t
 op_star
 )paren
-(paren
-id|DPRAM_BASE
-op_plus
-id|dp_addr
-)paren
+id|dp_mem
 suffix:semicolon
 id|pinfo-&gt;tx_bd_base
 op_assign
@@ -750,7 +762,13 @@ comma
 id|pinfo-&gt;dma_addr
 )paren
 suffix:semicolon
-multiline_comment|/* XXX cannot free dpmem yet */
+id|cpm2_dpfree
+c_func
+(paren
+op_amp
+id|pinfo-&gt;dp_addr
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Setup any dynamic params in the uart desc */
 DECL|function|cpm_uart_init_portdesc
