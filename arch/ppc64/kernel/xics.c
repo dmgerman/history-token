@@ -2406,7 +2406,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpu_present_at_boot
+id|cpu_present
 c_func
 (paren
 id|i
