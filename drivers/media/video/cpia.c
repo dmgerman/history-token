@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * cpia CPiA driver&n; *&n; * Supports CPiA based Video Camera&squot;s.&n; *&n; * (C) Copyright 1999-2000 Peter Pregler&n; * (C) Copyright 1999-2000 Scott J. Bertin&n; * (C) Copyright 1999-2000 Johannes Erdfelt &lt;johannes@erdfelt.com&gt;&n; * (C) Copyright 2000 STMicroelectronics&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-multiline_comment|/* #define _CPIA_DEBUG_&t;&t;define for verbose debug output */
+multiline_comment|/* define _CPIA_DEBUG_ for verbose debug output (see cpia.h) */
+multiline_comment|/* #define _CPIA_DEBUG_  1 */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -8390,7 +8391,7 @@ c_cond
 (paren
 id|retval
 )paren
-id|LOG
+id|DBG
 c_func
 (paren
 l_string|&quot;%x - failed&bslash;n&quot;
@@ -11256,7 +11257,7 @@ op_ne
 id|EOL
 )paren
 (brace
-id|LOG
+id|DBG
 c_func
 (paren
 l_string|&quot;EOL not found giving up after %d/%d&quot;
@@ -15473,6 +15474,11 @@ op_star
 id|ops
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ops-&gt;owner
+)paren
 id|module_put
 c_func
 (paren
@@ -15540,6 +15546,25 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|cam-&gt;open_count
+OG
+l_int|0
+)paren
+(brace
+id|DBG
+c_func
+(paren
+l_string|&quot;Camera already open&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 op_logical_neg
 id|try_module_get
 c_func
@@ -15558,29 +15583,6 @@ op_amp
 id|cam-&gt;busy_lock
 )paren
 suffix:semicolon
-id|err
-op_assign
-op_minus
-id|EBUSY
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cam-&gt;open_count
-OG
-l_int|0
-)paren
-(brace
-id|DBG
-c_func
-(paren
-l_string|&quot;Camera already open&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|oops
-suffix:semicolon
-)brace
 id|err
 op_assign
 op_minus
@@ -15685,6 +15687,11 @@ r_goto
 id|oops
 suffix:semicolon
 )brace
+id|err
+op_assign
+op_minus
+id|EINTR
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -15695,9 +15702,8 @@ id|current
 )paren
 )paren
 (brace
-r_return
-op_minus
-id|EINTR
+r_goto
+id|oops
 suffix:semicolon
 )brace
 multiline_comment|/* Set ownership of /proc/cpia/videoX to current user */
@@ -16627,6 +16633,38 @@ op_assign
 l_int|80
 suffix:semicolon
 )brace
+multiline_comment|/* Adjust flicker control if necessary */
+r_if
+c_cond
+(paren
+id|cam-&gt;params.flickerControl.allowableOverExposure
+OL
+l_int|0
+)paren
+(brace
+id|cam-&gt;params.flickerControl.allowableOverExposure
+op_assign
+op_minus
+id|find_over_exposure
+c_func
+(paren
+id|cam-&gt;params.colourParams.brightness
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|cam-&gt;params.flickerControl.flickerMode
+op_ne
+l_int|0
+)paren
+(brace
+id|cam-&gt;cmd_queue
+op_or_assign
+id|COMMAND_SETFLICKERCTRL
+suffix:semicolon
+)brace
 multiline_comment|/* queue command to update camera */
 id|cam-&gt;cmd_queue
 op_or_assign
@@ -17170,7 +17208,7 @@ id|frame
 op_assign
 id|arg
 suffix:semicolon
-singleline_comment|//DBG(&quot;VIDIOCSYNC: %d&bslash;n&quot;, frame);
+singleline_comment|//DBG(&quot;VIDIOCSYNC: %d&bslash;n&quot;, *frame);
 r_if
 c_cond
 (paren
@@ -17268,44 +17306,38 @@ suffix:semicolon
 r_case
 id|VIDIOCGCAPTURE
 suffix:colon
+(brace
+r_struct
+id|video_capture
+op_star
+id|vc
+op_assign
+id|arg
+suffix:semicolon
 id|DBG
 c_func
 (paren
 l_string|&quot;VIDIOCGCAPTURE&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|copy_to_user
-c_func
-(paren
-id|arg
-comma
-op_amp
-id|cam-&gt;vc
-comma
-r_sizeof
-(paren
-r_struct
-id|video_capture
-)paren
-)paren
-)paren
-id|retval
+op_star
+id|vc
 op_assign
-op_minus
-id|EFAULT
+id|cam-&gt;vc
 suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 r_case
 id|VIDIOCSCAPTURE
 suffix:colon
 (brace
 r_struct
 id|video_capture
+op_star
 id|vc
+op_assign
+id|arg
 suffix:semicolon
 id|DBG
 c_func
@@ -17316,33 +17348,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|copy_from_user
-c_func
-(paren
-op_amp
-id|vc
-comma
-id|arg
-comma
-r_sizeof
-(paren
-id|vc
-)paren
-)paren
-)paren
-(brace
-id|retval
-op_assign
-op_minus
-id|EFAULT
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|vc.decimation
+id|vc-&gt;decimation
 op_ne
 l_int|0
 )paren
@@ -17359,7 +17365,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|vc.flags
+id|vc-&gt;flags
 op_ne
 l_int|0
 )paren
@@ -17374,9 +17380,9 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Clip to the resolution we can set for the ROI&n;&t;&t;   (every 8 columns and 4 rows) */
-id|vc.x
+id|vc-&gt;x
 op_assign
-id|vc.x
+id|vc-&gt;x
 op_amp
 op_complement
 (paren
@@ -17384,9 +17390,9 @@ id|__u32
 )paren
 l_int|7
 suffix:semicolon
-id|vc.y
+id|vc-&gt;y
 op_assign
-id|vc.y
+id|vc-&gt;y
 op_amp
 op_complement
 (paren
@@ -17394,9 +17400,9 @@ id|__u32
 )paren
 l_int|3
 suffix:semicolon
-id|vc.width
+id|vc-&gt;width
 op_assign
-id|vc.width
+id|vc-&gt;width
 op_amp
 op_complement
 (paren
@@ -17404,9 +17410,9 @@ id|__u32
 )paren
 l_int|7
 suffix:semicolon
-id|vc.height
+id|vc-&gt;height
 op_assign
-id|vc.height
+id|vc-&gt;height
 op_amp
 op_complement
 (paren
@@ -17417,23 +17423,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|vc.width
+id|vc-&gt;width
 op_eq
 l_int|0
 op_logical_or
-id|vc.height
+id|vc-&gt;height
 op_eq
 l_int|0
 op_logical_or
-id|vc.x
+id|vc-&gt;x
 op_plus
-id|vc.width
+id|vc-&gt;width
 OG
 id|cam-&gt;vw.width
 op_logical_or
-id|vc.y
+id|vc-&gt;y
 op_plus
-id|vc.height
+id|vc-&gt;height
 OG
 id|cam-&gt;vw.height
 )paren
@@ -17451,13 +17457,13 @@ c_func
 (paren
 l_string|&quot;%d,%d/%dx%d&bslash;n&quot;
 comma
-id|vc.x
+id|vc-&gt;x
 comma
-id|vc.y
+id|vc-&gt;y
 comma
-id|vc.width
+id|vc-&gt;width
 comma
-id|vc.height
+id|vc-&gt;height
 )paren
 suffix:semicolon
 id|down
@@ -17469,19 +17475,19 @@ id|cam-&gt;param_lock
 suffix:semicolon
 id|cam-&gt;vc.x
 op_assign
-id|vc.x
+id|vc-&gt;x
 suffix:semicolon
 id|cam-&gt;vc.y
 op_assign
-id|vc.y
+id|vc-&gt;y
 suffix:semicolon
 id|cam-&gt;vc.width
 op_assign
-id|vc.width
+id|vc-&gt;width
 suffix:semicolon
 id|cam-&gt;vc.height
 op_assign
-id|vc.height
+id|vc-&gt;height
 suffix:semicolon
 id|set_vw_size
 c_func
@@ -17516,25 +17522,34 @@ suffix:colon
 (brace
 r_struct
 id|video_unit
+op_star
 id|vu
+op_assign
+id|arg
 suffix:semicolon
-id|vu.video
+id|DBG
+c_func
+(paren
+l_string|&quot;VIDIOCGUNIT&bslash;n&quot;
+)paren
+suffix:semicolon
+id|vu-&gt;video
 op_assign
 id|cam-&gt;vdev.minor
 suffix:semicolon
-id|vu.vbi
+id|vu-&gt;vbi
 op_assign
 id|VIDEO_NO_UNIT
 suffix:semicolon
-id|vu.radio
+id|vu-&gt;radio
 op_assign
 id|VIDEO_NO_UNIT
 suffix:semicolon
-id|vu.audio
+id|vu-&gt;audio
 op_assign
 id|VIDEO_NO_UNIT
 suffix:semicolon
-id|vu.teletext
+id|vu-&gt;teletext
 op_assign
 id|VIDEO_NO_UNIT
 suffix:semicolon
@@ -18579,14 +18594,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
-id|create_proc_cpia_cam
-c_func
-(paren
-id|camera
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* get version information from camera: open/reset/close */
 multiline_comment|/* open cpia */
 r_if
@@ -18637,6 +18644,14 @@ c_func
 id|camera-&gt;lowlevel_data
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+id|create_proc_cpia_cam
+c_func
+(paren
+id|camera
+)paren
+suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -18712,6 +18727,12 @@ c_cond
 id|cam-&gt;open_count
 )paren
 (brace
+id|put_cam
+c_func
+(paren
+id|cam-&gt;ops
+)paren
+suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -18792,13 +18813,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_VIDEO_CPIA_PP
-id|cpia_pp_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_KMOD
 macro_line|#ifdef CONFIG_VIDEO_CPIA_PP_MODULE
 id|request_module
@@ -18817,6 +18831,13 @@ l_string|&quot;cpia_usb&quot;
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif&t;/* CONFIG_KMOD */
+macro_line|#ifdef CONFIG_VIDEO_CPIA_PP
+id|cpia_pp_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_VIDEO_CPIA_USB
 id|cpia_usb_init
 c_func
