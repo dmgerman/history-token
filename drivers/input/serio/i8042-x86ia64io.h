@@ -768,7 +768,7 @@ comma
 dot
 id|ids
 op_assign
-l_string|&quot;PNP0303&quot;
+l_string|&quot;PNP0303,PNP030B&quot;
 comma
 dot
 id|ops
@@ -798,7 +798,7 @@ comma
 dot
 id|ids
 op_assign
-l_string|&quot;PNP0F13&quot;
+l_string|&quot;PNP0F13,SYN0801&quot;
 comma
 dot
 id|ops
