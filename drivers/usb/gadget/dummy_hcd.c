@@ -48,6 +48,16 @@ id|driver_desc
 op_assign
 l_string|&quot;USB Host+Gadget Emulator&quot;
 suffix:semicolon
+DECL|variable|gadget_name
+r_static
+r_const
+r_char
+id|gadget_name
+(braket
+)braket
+op_assign
+l_string|&quot;dummy_udc&quot;
+suffix:semicolon
 DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 (paren
@@ -2228,7 +2238,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * SLAVE side init ... the layer above hardware, which&n;&t; * can&squot;t enumerate without help from the driver we&squot;re binding.&n;&t; */
 id|dum-&gt;gadget.name
 op_assign
-id|driver_name
+id|gadget_name
 suffix:semicolon
 id|dum-&gt;gadget.ops
 op_assign
