@@ -20,22 +20,8 @@ DECL|macro|cpu_reset
 mdefine_line|#define cpu_reset&t;&t;&t;__cpu_fn(CPU_NAME,_reset)
 DECL|macro|cpu_do_idle
 mdefine_line|#define cpu_do_idle&t;&t;&t;__cpu_fn(CPU_NAME,_do_idle)
-DECL|macro|cpu_cache_clean_invalidate_all
-mdefine_line|#define cpu_cache_clean_invalidate_all&t;__cpu_fn(CPU_NAME,_cache_clean_invalidate_all)
-DECL|macro|cpu_cache_clean_invalidate_range
-mdefine_line|#define cpu_cache_clean_invalidate_range __cpu_fn(CPU_NAME,_cache_clean_invalidate_range)
-DECL|macro|cpu_dcache_invalidate_range
-mdefine_line|#define cpu_dcache_invalidate_range&t;__cpu_fn(CPU_NAME,_dcache_invalidate_range)
-DECL|macro|cpu_dcache_clean_range
-mdefine_line|#define cpu_dcache_clean_range&t;&t;__cpu_fn(CPU_NAME,_dcache_clean_range)
-DECL|macro|cpu_dcache_clean_page
-mdefine_line|#define cpu_dcache_clean_page&t;&t;__cpu_fn(CPU_NAME,_dcache_clean_page)
-DECL|macro|cpu_dcache_clean_entry
-mdefine_line|#define cpu_dcache_clean_entry&t;&t;__cpu_fn(CPU_NAME,_dcache_clean_entry)
-DECL|macro|cpu_icache_invalidate_range
-mdefine_line|#define cpu_icache_invalidate_range&t;__cpu_fn(CPU_NAME,_icache_invalidate_range)
-DECL|macro|cpu_icache_invalidate_page
-mdefine_line|#define cpu_icache_invalidate_page&t;__cpu_fn(CPU_NAME,_icache_invalidate_page)
+DECL|macro|cpu_dcache_clean_area
+mdefine_line|#define cpu_dcache_clean_area&t;&t;__cpu_fn(CPU_NAME,_dcache_clean_area)
 DECL|macro|cpu_set_pgd
 mdefine_line|#define cpu_set_pgd&t;&t;&t;__cpu_fn(CPU_NAME,_set_pgd)
 DECL|macro|cpu_set_pte
@@ -47,16 +33,6 @@ r_struct
 id|mm_struct
 suffix:semicolon
 multiline_comment|/* declare all the functions as extern */
-r_extern
-r_void
-id|cpu_data_abort
-c_func
-(paren
-r_int
-r_int
-id|pc
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|cpu_check_bugs
@@ -91,99 +67,13 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|cpu_cache_clean_invalidate_all
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|cpu_cache_clean_invalidate_range
-c_func
-(paren
-r_int
-r_int
-id|address
-comma
-r_int
-r_int
-id|end
-comma
-r_int
-id|flags
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|cpu_dcache_invalidate_range
-c_func
-(paren
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|end
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|cpu_dcache_clean_range
-c_func
-(paren
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|end
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|cpu_dcache_clean_page
+id|cpu_dcache_clean_area
 c_func
 (paren
 r_void
 op_star
-id|virt_page
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|cpu_dcache_clean_entry
-c_func
-(paren
-r_int
-r_int
-id|address
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|cpu_icache_invalidate_range
-c_func
-(paren
-r_int
-r_int
-id|start
 comma
 r_int
-r_int
-id|end
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|cpu_icache_invalidate_page
-c_func
-(paren
-r_void
-op_star
-id|virt_page
 )paren
 suffix:semicolon
 r_extern

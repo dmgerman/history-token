@@ -198,6 +198,13 @@ id|cpu_user_fns
 id|cpu_user
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef MULTI_CACHE
+DECL|variable|cpu_cache
+r_struct
+id|cpu_cache_fns
+id|cpu_cache
+suffix:semicolon
+macro_line|#endif
 DECL|variable|aux_device_present
 r_int
 r_char
@@ -995,6 +1002,13 @@ id|cpu_user
 op_assign
 op_star
 id|list-&gt;user
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef MULTI_CACHE
+id|cpu_cache
+op_assign
+op_star
+id|list-&gt;cache
 suffix:semicolon
 macro_line|#endif
 id|printk
