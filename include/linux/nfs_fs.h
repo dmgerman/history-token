@@ -1201,7 +1201,7 @@ suffix:semicolon
 multiline_comment|/*&n; * linux/fs/mount_clnt.c&n; * (Used only by nfsroot module)&n; */
 r_extern
 r_int
-id|nfs_mount
+id|nfsroot_mount
 c_func
 (paren
 r_struct
@@ -1214,23 +1214,10 @@ comma
 r_struct
 id|nfs_fh
 op_star
-)paren
-suffix:semicolon
-r_extern
+comma
 r_int
-id|nfs3_mount
-c_func
-(paren
-r_struct
-id|sockaddr_in
-op_star
 comma
-r_char
-op_star
-comma
-r_struct
-id|nfs_fh
-op_star
+r_int
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * inline functions&n; */
