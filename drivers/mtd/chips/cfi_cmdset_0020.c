@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common Flash Interface support:&n; *   ST Advanced Architecture Command Set (ID 0x0020)&n; *&n; * (C) 2000 Red Hat. GPL&squot;d&n; *&n; * $Id: cfi_cmdset_0020.c,v 1.13 2004/07/12 21:52:50 dwmw2 Exp $&n; * &n; * 10/10/2000&t;Nicolas Pitre &lt;nico@cam.org&gt;&n; * &t;- completely revamped method functions so they are aware and&n; * &t;  independent of the flash geometry (buswidth, interleave, etc.)&n; * &t;- scalability vs code size is completely set at compile-time&n; * &t;  (see include/linux/mtd/cfi.h for selection)&n; *&t;- optimized write buffer method&n; * 06/21/2002&t;Joern Engel &lt;joern@wh.fh-wedel.de&gt; and others&n; *&t;- modified Intel Command Set 0x0001 to support ST Advanced Architecture&n; *&t;  (command set 0x0020)&n; *&t;- added a writev function&n; */
+multiline_comment|/*&n; * Common Flash Interface support:&n; *   ST Advanced Architecture Command Set (ID 0x0020)&n; *&n; * (C) 2000 Red Hat. GPL&squot;d&n; *&n; * $Id: cfi_cmdset_0020.c,v 1.14 2004/07/20 02:44:25 dwmw2 Exp $&n; * &n; * 10/10/2000&t;Nicolas Pitre &lt;nico@cam.org&gt;&n; * &t;- completely revamped method functions so they are aware and&n; * &t;  independent of the flash geometry (buswidth, interleave, etc.)&n; * &t;- scalability vs code size is completely set at compile-time&n; * &t;  (see include/linux/mtd/cfi.h for selection)&n; *&t;- optimized write buffer method&n; * 06/21/2002&t;Joern Engel &lt;joern@wh.fh-wedel.de&gt; and others&n; *&t;- modified Intel Command Set 0x0001 to support ST Advanced Architecture&n; *&t;  (command set 0x0020)&n; *&t;- added a writev function&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -6788,12 +6788,6 @@ id|cfi
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|cfi_staa_init
-mdefine_line|#define cfi_staa_init init_module
-DECL|macro|cfi_staa_exit
-mdefine_line|#define cfi_staa_exit cleanup_module
-macro_line|#endif
 DECL|variable|im_name
 r_static
 r_char
