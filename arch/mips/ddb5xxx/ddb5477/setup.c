@@ -8,9 +8,10 @@ macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;&t;&t;/* for ROOT_DEV */
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/param.h&gt;&t;/* for HZ */
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/bcache.h&gt;
@@ -400,13 +401,7 @@ suffix:semicolon
 macro_line|#if defined(CONFIG_BLK_DEV_INITRD)
 id|ROOT_DEV
 op_assign
-id|MKDEV
-c_func
-(paren
-id|RAMDISK_MAJOR
-comma
-l_int|0
-)paren
+id|Root_RAM0
 suffix:semicolon
 id|initrd_start
 op_assign

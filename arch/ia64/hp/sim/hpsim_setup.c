@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
@@ -94,11 +95,7 @@ id|cmdline_p
 (brace
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
-l_int|0x0801
-)paren
+id|Root_SDA1
 suffix:semicolon
 multiline_comment|/* default to first SCSI drive */
 id|register_console

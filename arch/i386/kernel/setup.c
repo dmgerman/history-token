@@ -12,6 +12,7 @@ macro_line|#endif
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
@@ -2462,11 +2463,7 @@ suffix:semicolon
 macro_line|#endif
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
 id|ORIG_ROOT_DEV
-)paren
 suffix:semicolon
 id|drive_info
 op_assign

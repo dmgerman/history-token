@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
@@ -575,11 +576,7 @@ macro_line|#endif /* CONFIG_SERIAL &amp;&amp; !CONFIG_SERIAL_SGI_L1_PROTOCOL */
 multiline_comment|/*&n;&t; * we set the default root device to /dev/hda&n;&t; * to make simulation easy&n;&t; */
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
-l_int|0x0301
-)paren
+id|Root_HDA1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Create the PDAs and NODEPDAs for all the cpus.&n;&t; */
 id|sn_init_pdas

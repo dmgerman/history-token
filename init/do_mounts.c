@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/fd.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/nfs_mount.h&gt;
@@ -235,7 +236,7 @@ l_int|64
 suffix:semicolon
 multiline_comment|/* this is initialized in init/main.c */
 DECL|variable|ROOT_DEV
-id|kdev_t
+id|dev_t
 id|ROOT_DEV
 suffix:semicolon
 DECL|variable|do_devfs
@@ -1306,10 +1307,14 @@ id|ch
 suffix:semicolon
 id|ROOT_DEV
 op_assign
+id|kdev_t_to_nr
+c_func
+(paren
 id|name_to_kdev_t
 c_func
 (paren
 id|line
+)paren
 )paren
 suffix:semicolon
 id|memset
@@ -1746,7 +1751,11 @@ id|root_device_name
 comma
 id|kdevname
 (paren
+id|to_kdev_t
+c_func
+(paren
 id|ROOT_DEV
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1763,7 +1772,11 @@ comma
 id|kdevname
 c_func
 (paren
+id|to_kdev_t
+c_func
+(paren
 id|ROOT_DEV
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1776,7 +1789,11 @@ comma
 id|kdevname
 c_func
 (paren
+id|to_kdev_t
+c_func
+(paren
 id|ROOT_DEV
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1796,7 +1813,11 @@ l_string|&quot;/root&quot;
 suffix:semicolon
 id|ROOT_DEV
 op_assign
+id|kdev_t_to_nr
+c_func
+(paren
 id|current-&gt;fs-&gt;pwdmnt-&gt;mnt_sb-&gt;s_dev
+)paren
 suffix:semicolon
 id|printk
 c_func
@@ -1878,7 +1899,7 @@ r_char
 op_star
 id|name
 comma
-id|kdev_t
+id|dev_t
 id|dev
 comma
 r_char
@@ -1921,11 +1942,7 @@ id|S_IFBLK
 op_or
 l_int|0600
 comma
-id|kdev_t_to_nr
-c_func
-(paren
 id|dev
-)paren
 )paren
 suffix:semicolon
 id|handle
@@ -1935,24 +1952,21 @@ c_func
 (paren
 l_int|NULL
 comma
-id|kdev_none
-c_func
-(paren
+op_logical_neg
 id|dev
-)paren
 ques
 c_cond
 id|devfs_name
 suffix:colon
 l_int|NULL
 comma
-id|major
+id|MAJOR
 c_func
 (paren
 id|dev
 )paren
 comma
-id|minor
+id|MINOR
 c_func
 (paren
 id|dev
@@ -3248,7 +3262,7 @@ c_func
 (paren
 l_string|&quot;/dev/ram&quot;
 comma
-id|mk_kdev
+id|MKDEV
 c_func
 (paren
 id|RAMDISK_MAJOR
@@ -3695,7 +3709,7 @@ macro_line|#ifdef CONFIG_ROOT_NFS
 r_if
 c_cond
 (paren
-id|major
+id|MAJOR
 c_func
 (paren
 id|ROOT_DEV
@@ -3721,7 +3735,11 @@ l_string|&quot;/root&quot;
 suffix:semicolon
 id|ROOT_DEV
 op_assign
+id|kdev_t_to_nr
+c_func
+(paren
 id|current-&gt;fs-&gt;pwdmnt-&gt;mnt_sb-&gt;s_dev
+)paren
 suffix:semicolon
 id|printk
 c_func
@@ -3741,13 +3759,7 @@ l_string|&quot;VFS: Unable to mount root fs via NFS, trying floppy.&bslash;n&quo
 suffix:semicolon
 id|ROOT_DEV
 op_assign
-id|mk_kdev
-c_func
-(paren
-id|FLOPPY_MAJOR
-comma
-l_int|0
-)paren
+id|Root_FD0
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -3771,7 +3783,7 @@ macro_line|#ifdef CONFIG_BLK_DEV_FD
 r_if
 c_cond
 (paren
-id|major
+id|MAJOR
 c_func
 (paren
 id|ROOT_DEV
@@ -3801,13 +3813,7 @@ l_int|1
 (brace
 id|ROOT_DEV
 op_assign
-id|mk_kdev
-c_func
-(paren
-id|RAMDISK_MAJOR
-comma
-l_int|1
-)paren
+id|Root_RAM1
 suffix:semicolon
 id|create_dev
 c_func
@@ -3980,17 +3986,6 @@ r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-id|kdev_t
-id|ram0
-op_assign
-id|mk_kdev
-c_func
-(paren
-id|RAMDISK_MAJOR
-comma
-l_int|0
-)paren
-suffix:semicolon
 r_int
 id|error
 suffix:semicolon
@@ -4004,7 +3999,7 @@ c_func
 (paren
 l_string|&quot;/dev/root.old&quot;
 comma
-id|ram0
+id|Root_RAM0
 comma
 l_int|NULL
 )paren
@@ -4099,11 +4094,7 @@ c_cond
 (paren
 id|real_root_dev
 op_eq
-id|kdev_t_to_nr
-c_func
-(paren
-id|ram0
-)paren
+id|Root_RAM0
 )paren
 (brace
 id|sys_chdir
@@ -4117,11 +4108,7 @@ suffix:semicolon
 )brace
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
 id|real_root_dev
-)paren
 suffix:semicolon
 id|mount_root
 c_func
@@ -4271,7 +4258,7 @@ c_func
 (paren
 l_string|&quot;/dev/ram&quot;
 comma
-id|mk_kdev
+id|MKDEV
 c_func
 (paren
 id|RAMDISK_MAJOR
@@ -4287,7 +4274,7 @@ c_func
 (paren
 l_string|&quot;/dev/initrd&quot;
 comma
-id|mk_kdev
+id|MKDEV
 c_func
 (paren
 id|RAMDISK_MAJOR
@@ -4319,7 +4306,7 @@ r_void
 r_int
 id|is_floppy
 op_assign
-id|major
+id|MAJOR
 c_func
 (paren
 id|ROOT_DEV
@@ -4340,11 +4327,7 @@ l_int|0
 suffix:semicolon
 id|real_root_dev
 op_assign
-id|kdev_t_to_nr
-c_func
-(paren
 id|ROOT_DEV
-)paren
 suffix:semicolon
 macro_line|#endif
 id|sys_mkdir
@@ -4431,20 +4414,9 @@ c_func
 (paren
 )paren
 op_logical_and
-op_logical_neg
-id|kdev_same
-c_func
-(paren
 id|ROOT_DEV
-comma
-id|mk_kdev
-c_func
-(paren
-id|RAMDISK_MAJOR
-comma
-l_int|0
-)paren
-)paren
+op_ne
+id|Root_RAM0
 )paren
 (brace
 id|handle_initrd
@@ -4473,13 +4445,7 @@ l_int|0
 )paren
 id|ROOT_DEV
 op_assign
-id|mk_kdev
-c_func
-(paren
-id|RAMDISK_MAJOR
-comma
-l_int|0
-)paren
+id|Root_RAM0
 suffix:semicolon
 id|mount_root
 c_func

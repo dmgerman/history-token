@@ -24,6 +24,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -2262,11 +2263,7 @@ id|i
 suffix:semicolon
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
 id|ORIG_ROOT_DEV
-)paren
 suffix:semicolon
 id|drive_info
 op_assign

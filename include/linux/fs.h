@@ -6071,16 +6071,6 @@ id|sb
 )paren
 suffix:semicolon
 r_extern
-id|kdev_t
-id|ROOT_DEV
-suffix:semicolon
-r_extern
-r_char
-id|root_device_name
-(braket
-)braket
-suffix:semicolon
-r_extern
 r_int
 id|dcache_dir_open
 c_func
