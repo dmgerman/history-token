@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Driver for CS4232 on NEC PC9800 series&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *                   Osamu Tomita &lt;tomita@cinet.co.jp&gt;&n; *                   Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
+multiline_comment|/*&n; *  Driver for CS4232 on NEC PC9800 series&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *                   Osamu Tomita &lt;tomita@cinet.co.jp&gt;&n; *                   Takashi Iwai &lt;tiwai@suse.de&gt;&n; *                   Hideaki Okubo &lt;okubo@msh.biglobe.ne.jp&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -1624,6 +1624,18 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|outb
+c_func
+(paren
+id|dma1
+(braket
+id|dev
+)braket
+comma
+l_int|0x29
+)paren
+suffix:semicolon
+multiline_comment|/* dma1 boundary 64KB */
 r_if
 c_cond
 (paren
@@ -1644,10 +1656,33 @@ id|dev
 op_ge
 l_int|0
 )paren
+(brace
+id|outb
+c_func
+(paren
+l_int|0
+comma
+l_int|0x5f
+)paren
+suffix:semicolon
+multiline_comment|/* wait */
+id|outb
+c_func
+(paren
+id|dma2
+(braket
+id|dev
+)braket
+comma
+l_int|0x29
+)paren
+suffix:semicolon
+multiline_comment|/* dma2 boundary 64KB */
 id|intr_bits
 op_or_assign
 l_int|0x04
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
