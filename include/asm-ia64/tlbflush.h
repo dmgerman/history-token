@@ -10,7 +10,7 @@ multiline_comment|/*&n; * Now for some TLB flushing routines.  This is the kind 
 multiline_comment|/*&n; * Flush everything (kernel mapping may also have changed due to&n; * vmalloc/vfree).&n; */
 r_extern
 r_void
-id|__flush_tlb_all
+id|local_flush_tlb_all
 (paren
 r_void
 )paren
@@ -23,13 +23,57 @@ id|smp_flush_tlb_all
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|smp_flush_tlb_mm
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+suffix:semicolon
 DECL|macro|flush_tlb_all
 macro_line|# define flush_tlb_all()&t;smp_flush_tlb_all()
 macro_line|#else
 DECL|macro|flush_tlb_all
-macro_line|# define flush_tlb_all()&t;__flush_tlb_all()
+macro_line|# define flush_tlb_all()&t;local_flush_tlb_all()
 macro_line|#endif
-multiline_comment|/*&n; * Flush a specified user mapping&n; */
+r_static
+r_inline
+r_void
+DECL|function|local_flush_tlb_mm
+id|local_flush_tlb_mm
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|mm
+op_eq
+id|current-&gt;active_mm
+)paren
+(brace
+id|get_new_mmu_context
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
+id|reload_context
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n; * Flush a specified user mapping.  This is called, e.g., as a result of fork() and&n; * exit().  fork() ends up here because the copy-on-write mechanism needs to write-protect&n; * the PTEs of the parent task.&n; */
 r_static
 r_inline
 r_void
@@ -45,9 +89,11 @@ id|mm
 r_if
 c_cond
 (paren
+op_logical_neg
 id|mm
 )paren
-(brace
+r_return
+suffix:semicolon
 id|mm-&gt;context
 op_assign
 l_int|0
@@ -55,26 +101,33 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mm
+id|atomic_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mm_users
+)paren
 op_eq
-id|current-&gt;active_mm
+l_int|0
 )paren
-(brace
-multiline_comment|/* This is called, e.g., as a result of exec().  */
-id|get_new_mmu_context
+r_return
+suffix:semicolon
+multiline_comment|/* happens as a result of exit_mmap() */
+macro_line|#ifdef CONFIG_SMP
+id|smp_flush_tlb_mm
 c_func
 (paren
 id|mm
 )paren
 suffix:semicolon
-id|reload_context
+macro_line|#else
+id|local_flush_tlb_mm
 c_func
 (paren
 id|mm
 )paren
 suffix:semicolon
-)brace
-)brace
+macro_line|#endif
 )brace
 r_extern
 r_void
