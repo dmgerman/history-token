@@ -2422,6 +2422,20 @@ id|sb-&gt;u.generic_sbp
 op_assign
 id|sbi
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|sbi
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|ext2_super_block
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * See what the current blocksize for the device is, and&n;&t; * use that as the blocksize.  Otherwise (or if the blocksize&n;&t; * is smaller than the default) use the default.&n;&t; * This is important for devices that have a hardware&n;&t; * sectorsize that is larger than the default.&n;&t; */
 id|sbi-&gt;s_mount_opt
 op_assign
