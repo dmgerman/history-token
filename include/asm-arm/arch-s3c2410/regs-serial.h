@@ -1,13 +1,13 @@
-multiline_comment|/* linux/include/asm-arm/arch-s3c2410/regs-serial.h&n; *&n; *  From linux/include/asm-arm/hardware/serial_s3c2410.h&n; *&n; *  Internal header file for Samsung S3C2410 serial ports (UART0-2)&n; *&n; *  Copyright (C) 2002 Shane Nay (shane@minirl.com)&n; *&n; *  Additional defines, (c) 2003 Simtec Electronics (linux@simtec.co.uk)&n; *&n; *  Adapted from:&n; *&n; *  Internal header file for MX1ADS serial ports (UART1 &amp; 2)&n; *&n; *  Copyright (C) 2002 Shane Nay (shane@minirl.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/* linux/include/asm-arm/arch-s3c2410/regs-serial.h&n; *&n; *  From linux/include/asm-arm/hardware/serial_s3c2410.h&n; *&n; *  Internal header file for Samsung S3C2410 serial ports (UART0-2)&n; *&n; *  Copyright (C) 2002 Shane Nay (shane@minirl.com)&n; *&n; *  Additional defines, (c) 2003 Simtec Electronics (linux@simtec.co.uk)&n; *&n; *  Adapted from:&n; *&n; *  Internal header file for MX1ADS serial ports (UART1 &amp; 2)&n; *&n; *  Copyright (C) 2002 Shane Nay (shane@minirl.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Modifications:&n; *     10-Mar-2005 LCVR  Changed S3C2410_VA to S3C24XX_VA (s3c2400 support)&n; */
 macro_line|#ifndef __ASM_ARM_REGS_SERIAL_H
 DECL|macro|__ASM_ARM_REGS_SERIAL_H
 mdefine_line|#define __ASM_ARM_REGS_SERIAL_H
-DECL|macro|S3C2410_VA_UART0
-mdefine_line|#define S3C2410_VA_UART0      (S3C2410_VA_UART)
-DECL|macro|S3C2410_VA_UART1
-mdefine_line|#define S3C2410_VA_UART1      (S3C2410_VA_UART + 0x4000 )
-DECL|macro|S3C2410_VA_UART2
-mdefine_line|#define S3C2410_VA_UART2      (S3C2410_VA_UART + 0x8000 )
+DECL|macro|S3C24XX_VA_UART0
+mdefine_line|#define S3C24XX_VA_UART0      (S3C24XX_VA_UART)
+DECL|macro|S3C24XX_VA_UART1
+mdefine_line|#define S3C24XX_VA_UART1      (S3C24XX_VA_UART + 0x4000 )
+DECL|macro|S3C24XX_VA_UART2
+mdefine_line|#define S3C24XX_VA_UART2      (S3C24XX_VA_UART + 0x8000 )
 DECL|macro|S3C2410_PA_UART0
 mdefine_line|#define S3C2410_PA_UART0      (S3C2410_PA_UART)
 DECL|macro|S3C2410_PA_UART1

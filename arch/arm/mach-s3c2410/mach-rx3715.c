@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-rx3715.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.handhelds.org/projects/rx3715.html&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *&t;16-Sep-2004 BJD Copied from mach-h1940.c&n; *&t;25-Oct-2004 BJD Updates for 2.6.10-rc1&n; *&t;10-Jan-2005 BJD Removed include of s3c2410.h s3c2440.h&n; *&t;14-Jan-2005 BJD Added new clock init&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-rx3715.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.handhelds.org/projects/rx3715.html&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *&t;16-Sep-2004 BJD  Copied from mach-h1940.c&n; *&t;25-Oct-2004 BJD  Updates for 2.6.10-rc1&n; *&t;10-Jan-2005 BJD  Removed include of s3c2410.h s3c2440.h&n; *&t;14-Jan-2005 BJD  Added new clock init&n; *&t;10-Mar-2005 LCVR Changed S3C2410_VA to S3C24XX_VA&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -35,7 +35,7 @@ op_assign
 (brace
 multiline_comment|/* dump ISA space somewhere unused */
 (brace
-id|S3C2410_VA_ISA_WORD
+id|S3C24XX_VA_ISA_WORD
 comma
 id|S3C2410_CS3
 comma
@@ -45,7 +45,7 @@ id|MT_DEVICE
 )brace
 comma
 (brace
-id|S3C2410_VA_ISA_BYTE
+id|S3C24XX_VA_ISA_BYTE
 comma
 id|S3C2410_CS3
 comma
@@ -316,7 +316,7 @@ id|S3C2410_SDRAM_PA
 comma
 id|S3C2410_PA_UART
 comma
-id|S3C2410_VA_UART
+id|S3C24XX_VA_UART
 )paren
 id|BOOT_PARAMS
 c_func
