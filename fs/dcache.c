@@ -137,7 +137,7 @@ id|dentry_stat.nr_dentry
 op_decrement
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Release the dentry&squot;s inode, using the fileystem&n; * d_iput() operation if defined.&n; * Called with dcache_lock held, drops it.&n; */
+multiline_comment|/*&n; * Release the dentry&squot;s inode, using the filesystem&n; * d_iput() operation if defined.&n; * Called with dcache_lock held, drops it.&n; */
 DECL|function|dentry_iput
 r_static
 r_inline
