@@ -5667,7 +5667,6 @@ suffix:semicolon
 id|k
 op_increment
 )paren
-(brace
 id|blk_dev
 (braket
 id|SD_MAJOR
@@ -5681,17 +5680,6 @@ id|queue
 op_assign
 l_int|NULL
 suffix:semicolon
-id|blk_clear
-c_func
-(paren
-id|SD_MAJOR
-c_func
-(paren
-id|k
-)paren
-)paren
-suffix:semicolon
-)brace
 id|sd_template.dev_max
 op_assign
 l_int|0

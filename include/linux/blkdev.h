@@ -1274,15 +1274,6 @@ id|request_queue_t
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_int
-op_star
-id|blk_size
-(braket
-id|MAX_BLKDEV
-)braket
-suffix:semicolon
-multiline_comment|/* in units of 1024 bytes */
 DECL|macro|MAX_PHYS_SEGMENTS
 mdefine_line|#define MAX_PHYS_SEGMENTS 128
 DECL|macro|MAX_HW_SEGMENTS
@@ -1307,25 +1298,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|function|blk_clear
-r_static
-r_inline
-r_void
-id|blk_clear
-c_func
-(paren
-r_int
-id|major
-)paren
-(brace
-id|blk_size
-(braket
-id|major
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 DECL|function|queue_hardsect_size
 r_static
 r_inline

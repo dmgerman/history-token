@@ -47,15 +47,6 @@ id|MAX_BLKDEV
 )braket
 suffix:semicolon
 multiline_comment|/* initialized by blk_dev_init() */
-multiline_comment|/*&n; * blk_size contains the size of all block-devices in units of 1024 byte&n; * blocks:&n; *&n; * blk_size[MAJOR][MINOR]&n; *&n; * if (!blk_size[MAJOR]) then no minor size checking is done.&n; */
-DECL|variable|blk_size
-r_int
-op_star
-id|blk_size
-(braket
-id|MAX_BLKDEV
-)braket
-suffix:semicolon
 multiline_comment|/*&n; * How many reqeusts do we allocate per queue,&n; * and how many do we &quot;batch&quot; on freeing them?&n; */
 DECL|variable|queue_nr_requests
 DECL|variable|batch_requests

@@ -10146,12 +10146,6 @@ comma
 l_string|&quot;fd&quot;
 )paren
 suffix:semicolon
-id|blk_clear
-c_func
-(paren
-id|MAJOR_NR
-)paren
-suffix:semicolon
 )brace
 macro_line|#endif
 eof

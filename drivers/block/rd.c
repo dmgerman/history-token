@@ -1563,12 +1563,6 @@ comma
 l_string|&quot;ramdisk&quot;
 )paren
 suffix:semicolon
-id|blk_clear
-c_func
-(paren
-id|MAJOR_NR
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* This is the registration and initialization section of the RAM disk driver */
 DECL|function|rd_init

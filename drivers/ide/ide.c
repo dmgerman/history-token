@@ -7694,12 +7694,6 @@ id|queue
 op_assign
 l_int|NULL
 suffix:semicolon
-id|blk_clear
-c_func
-(paren
-id|hwif-&gt;major
-)paren
-suffix:semicolon
 id|gd
 op_assign
 id|hwif-&gt;drives

@@ -6601,12 +6601,6 @@ id|MAJOR_NR
 )paren
 )paren
 suffix:semicolon
-id|blk_clear
-c_func
-(paren
-id|MAJOR_NR
-)paren
-suffix:semicolon
 id|release_region
 c_func
 (paren

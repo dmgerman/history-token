@@ -3581,12 +3581,6 @@ c_func
 id|scsi_CDs
 )paren
 suffix:semicolon
-id|blk_clear
-c_func
-(paren
-id|MAJOR_NR
-)paren
-suffix:semicolon
 id|sr_template.dev_max
 op_assign
 l_int|0

@@ -5717,12 +5717,6 @@ id|FTL_MAJOR
 )paren
 )paren
 suffix:semicolon
-id|blk_clear
-c_func
-(paren
-id|FTL_MAJOR
-)paren
-suffix:semicolon
 )brace
 DECL|variable|init_ftl
 id|module_init

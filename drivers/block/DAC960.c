@@ -7769,13 +7769,6 @@ id|MajorNumber
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Remove the Disk Partitions array, Partition Sizes array, Block Sizes&n;    array, Max Sectors per Request array, and Max Segments per Request array.&n;  */
-id|blk_clear
-c_func
-(paren
-id|MajorNumber
-)paren
-suffix:semicolon
 )brace
 DECL|function|disk_size
 r_static
