@@ -1521,13 +1521,6 @@ l_string|&quot;aacraid: unable to register &bslash;&quot;aac&bslash;&quot; devic
 suffix:semicolon
 )brace
 )brace
-r_template
-op_member_access_from_pointer
-id|present
-op_assign
-id|aac_count
-suffix:semicolon
-multiline_comment|/* # of cards of this type found */
 r_return
 id|aac_count
 suffix:semicolon

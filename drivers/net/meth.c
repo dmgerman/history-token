@@ -3727,10 +3727,6 @@ r_else
 id|device_present
 op_increment
 suffix:semicolon
-macro_line|#ifndef METH_DEBUG
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
-macro_line|#endif
 r_return
 id|device_present
 ques

@@ -65,6 +65,7 @@ c_func
 id|ip_vs_conn_out_get
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_VS_PROTO_TCP
 DECL|variable|ip_vs_tcp_conn_listen
 id|EXPORT_SYMBOL
 c_func
@@ -72,6 +73,7 @@ c_func
 id|ip_vs_tcp_conn_listen
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|ip_vs_conn_put
 id|EXPORT_SYMBOL
 c_func

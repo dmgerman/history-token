@@ -623,7 +623,7 @@ c_func
 id|skb-&gt;dst
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_INET
+macro_line|#ifdef CONFIG_XFRM
 id|secpath_put
 c_func
 (paren

@@ -5,13 +5,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-DECL|variable|bad_dma_address
-id|dma_addr_t
-id|bad_dma_address
-op_assign
-op_minus
-l_int|1UL
-suffix:semicolon
 multiline_comment|/* Map a set of buffers described by scatterlist in streaming&n; * mode for DMA.  This is the scatter-gather version of the&n; * above pci_map_single interface.  Here the scatter gather list&n; * elements are each tagged with the appropriate dma address&n; * and length.  They are obtained via sg_dma_{address,length}(SG).&n; *&n; * NOTE: An implementation may be able to use a smaller number of&n; *       DMA address/length pairs than there are SG table elements.&n; *       (for example via virtual mapping capabilities)&n; *       The routine returns the number of addr/length pairs actually&n; *       used, at most nents.&n; *&n; * Device ownership issues as mentioned above for pci_map_single are&n; * the same here.&n; */
 DECL|function|pci_map_sg
 r_int
@@ -95,34 +88,6 @@ comma
 id|direction
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|s-&gt;dma_address
-op_eq
-id|bad_dma_address
-)paren
-)paren
-(brace
-id|pci_unmap_sg
-c_func
-(paren
-id|hwdev
-comma
-id|sg
-comma
-id|i
-comma
-id|direction
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 )brace
 r_return
 id|nents

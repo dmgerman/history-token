@@ -196,6 +196,7 @@ c_func
 id|ip6_find_1stfragopt
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_XFRM
 DECL|variable|xfrm6_rcv
 id|EXPORT_SYMBOL
 c_func
@@ -203,6 +204,7 @@ c_func
 id|xfrm6_rcv
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|rt6_lookup
 id|EXPORT_SYMBOL
 c_func

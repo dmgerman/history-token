@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -5763,19 +5762,6 @@ id|link-&gt;priv
 op_assign
 id|info
 suffix:semicolon
-multiline_comment|/* Initialize the dev_link_t structure */
-id|link-&gt;release.function
-op_assign
-op_amp
-id|nsp_cs_release
-suffix:semicolon
-id|link-&gt;release.data
-op_assign
-(paren
-id|u_long
-)paren
-id|link
-suffix:semicolon
 multiline_comment|/* The io structure describes IO port mapping */
 id|link-&gt;io.NumPorts1
 op_assign
@@ -6055,13 +6041,6 @@ l_int|NULL
 r_return
 suffix:semicolon
 )brace
-id|del_timer
-c_func
-(paren
-op_amp
-id|link-&gt;release
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6073,9 +6052,6 @@ id|DEV_CONFIG
 id|nsp_cs_release
 c_func
 (paren
-(paren
-id|u_long
-)paren
 id|link
 )paren
 suffix:semicolon
@@ -7146,9 +7122,6 @@ suffix:semicolon
 id|nsp_cs_release
 c_func
 (paren
-(paren
-id|u_long
-)paren
 id|link
 )paren
 suffix:semicolon
@@ -7167,20 +7140,11 @@ r_void
 id|nsp_cs_release
 c_func
 (paren
-id|u_long
-id|arg
-)paren
-(brace
 id|dev_link_t
 op_star
 id|link
-op_assign
-(paren
-id|dev_link_t
-op_star
 )paren
-id|arg
-suffix:semicolon
+(brace
 id|scsi_info_t
 op_star
 id|info
@@ -7432,17 +7396,10 @@ id|stop
 op_assign
 l_int|1
 suffix:semicolon
-id|mod_timer
+id|nsp_cs_release
 c_func
 (paren
-op_amp
-id|link-&gt;release
-comma
-id|jiffies
-op_plus
-id|HZ
-op_div
-l_int|20
+id|link
 )paren
 suffix:semicolon
 )brace
@@ -7691,9 +7648,6 @@ id|DEV_CONFIG
 id|nsp_cs_release
 c_func
 (paren
-(paren
-id|u_long
-)paren
 id|dev_list
 )paren
 suffix:semicolon

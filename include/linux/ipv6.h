@@ -117,7 +117,7 @@ l_int|0
 )braket
 suffix:semicolon
 DECL|macro|rt0_type
-mdefine_line|#define rt0_type&t;&t;rt_hdr.type;
+mdefine_line|#define rt0_type&t;&t;rt_hdr.type
 )brace
 suffix:semicolon
 DECL|struct|ipv6_auth_hdr

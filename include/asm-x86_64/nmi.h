@@ -106,15 +106,5 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|default_do_nmi
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
 macro_line|#endif /* ASM_NMI_H */
 eof

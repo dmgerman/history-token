@@ -5144,10 +5144,6 @@ id|sh-&gt;max_sectors
 op_assign
 id|MPT_SCSI_MAX_SECTORS
 suffix:semicolon
-id|sh-&gt;highmem_io
-op_assign
-l_int|1
-suffix:semicolon
 id|sh-&gt;this_id
 op_assign
 id|this-&gt;pfacts

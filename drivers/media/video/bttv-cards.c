@@ -6857,8 +6857,9 @@ op_assign
 l_int|2
 )brace
 comma
+dot
 id|gpiomask
-suffix:colon
+op_assign
 l_int|0
 )brace
 comma
@@ -7278,8 +7279,9 @@ id|video_inputs
 op_assign
 l_int|3
 comma
+dot
 id|audio_inputs
-suffix:colon
+op_assign
 l_int|2
 comma
 dot
@@ -7509,8 +7511,9 @@ id|video_inputs
 op_assign
 l_int|4
 comma
+dot
 id|audio_inputs
-suffix:colon
+op_assign
 l_int|3
 comma
 dot

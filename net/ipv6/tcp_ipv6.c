@@ -3091,7 +3091,7 @@ suffix:semicolon
 )brace
 id|dst
 op_assign
-id|ip6_route_output
+id|ip6_dst_lookup
 c_func
 (paren
 id|sk
@@ -3224,6 +3224,10 @@ op_assign
 id|np-&gt;opt-&gt;opt_flen
 op_plus
 id|np-&gt;opt-&gt;opt_nflen
+suffix:semicolon
+id|tp-&gt;ext2_header_len
+op_assign
+id|dst-&gt;header_len
 suffix:semicolon
 id|tp-&gt;mss_clamp
 op_assign
@@ -3695,7 +3699,7 @@ id|inet-&gt;sport
 suffix:semicolon
 id|dst
 op_assign
-id|ip6_route_output
+id|ip6_dst_lookup
 c_func
 (paren
 id|sk
@@ -4199,7 +4203,7 @@ suffix:semicolon
 )brace
 id|dst
 op_assign
-id|ip6_route_output
+id|ip6_dst_lookup
 c_func
 (paren
 id|sk
@@ -4890,7 +4894,7 @@ suffix:semicolon
 multiline_comment|/* sk = NULL, but it is safe for now. RST socket required. */
 id|buff-&gt;dst
 op_assign
-id|ip6_route_output
+id|ip6_dst_lookup
 c_func
 (paren
 l_int|NULL
@@ -5276,7 +5280,7 @@ id|t1-&gt;source
 suffix:semicolon
 id|buff-&gt;dst
 op_assign
-id|ip6_route_output
+id|ip6_dst_lookup
 c_func
 (paren
 l_int|NULL
@@ -6515,7 +6519,7 @@ id|sport
 suffix:semicolon
 id|dst
 op_assign
-id|ip6_route_output
+id|ip6_dst_lookup
 c_func
 (paren
 id|sk
@@ -6792,6 +6796,10 @@ op_assign
 id|newnp-&gt;opt-&gt;opt_nflen
 op_plus
 id|newnp-&gt;opt-&gt;opt_flen
+suffix:semicolon
+id|newtp-&gt;ext2_header_len
+op_assign
+id|dst-&gt;header_len
 suffix:semicolon
 id|tcp_sync_mss
 c_func
@@ -8262,7 +8270,7 @@ suffix:semicolon
 )brace
 id|dst
 op_assign
-id|ip6_route_output
+id|ip6_dst_lookup
 c_func
 (paren
 id|sk
@@ -8486,7 +8494,7 @@ l_int|NULL
 (brace
 id|dst
 op_assign
-id|ip6_route_output
+id|ip6_dst_lookup
 c_func
 (paren
 id|sk
