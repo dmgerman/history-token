@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * USB Host-to-Host Links&n; * Copyright (C) 2000-2001 by David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; */
-multiline_comment|/*&n; * This is used for &quot;USB networking&quot;, connecting USB hosts as peers.&n; *&n; * It can be used with USB &quot;network cables&quot;, for IP-over-USB communications;&n; * Ethernet speeds without the Ethernet.  USB devices (including some PDAs)&n; * can support such links directly, replacing device-specific protocols&n; * with Internet standard ones.&n; *&n; * The links can be bridged using the Ethernet bridging (net/bridge)&n; * support as appropriate.  Devices currently supported include:&n; *&n; *&t;- AnchorChip 2720&n; *&t;- Belkin F5U104 (custom)&n; *&t;- &quot;Linux Devices&quot; (like iPaq and similar SA-1100 based PDAs)&n; *&t;- NetChip 1080 (interoperates with NetChip Win32 drivers)&n; *&t;- Prolific PL-2301/2302 (replaces &quot;plusb&quot; driver)&n; *&n; * USB devices can implement their side of this protocol at the cost&n; * of two bulk endpoints; it&squot;s not restricted to &quot;cable&quot; applications.&n; * See the LINUXDEV support.&n; *&n; * &n; * TODO:&n; *&n; * This needs to be retested for bulk queuing problems ... earlier versions&n; * seemed to find different types of problems in each HCD.  Once they&squot;re fixed,&n; * re-enable queues to get higher bandwidth utilization (without needing&n; * to tweak MTU for larger packets).&n; *&n; * Add support for more &quot;network cable&quot; chips; interop with their Win32&n; * drivers may be a good thing.  Test the AnchorChip 2720 support..&n; * Figure out the initialization protocol used by the Prolific chips,&n; * for better robustness ... there&squot;s some powerup/reset handshake that&squot;s&n; * needed when only one end reboots.&n; *&n; * Use interrupt on PL230x to detect peer connect/disconnect, and call&n; * netif_carrier_{on,off} (?) appropriately.  For Net1080, detect peer&n; * connect/disconnect with async control messages.&n; *&n; * Find some way to report &quot;peer connected&quot; network hotplug events; it&squot;ll&n; * likely mean updating the networking layer.  (This has been discussed&n; * on the netdev list...)&n; *&n; * Craft smarter hotplug policy scripts ... ones that know how to arrange&n; * bridging with &quot;brctl&quot;, and can handle static and dynamic (&quot;pump&quot;) setups.&n; * Use those &quot;peer connected&quot; events.&n; *&n; *&n; * CHANGELOG:&n; *&n; * 13-sep-2000&t;experimental, new&n; * 10-oct-2000&t;usb_device_id table created. &n; * 28-oct-2000&t;misc fixes; mostly, discard more TTL-mangled rx packets.&n; * 01-nov-2000&t;usb_device_id table and probing api update by&n; *&t;&t;Adam J. Richter &lt;adam@yggdrasil.com&gt;.&n; * 18-dec-2000&t;(db) tx watchdog, &quot;net1080&quot; renaming to &quot;usbnet&quot;, device_info&n; *&t;&t;and prolific support, isolate net1080-specific bits, cleanup.&n; *&t;&t;fix unlink_urbs oops in D3 PM resume code path.&n; * 02-feb-2001&t;(db) fix tx skb sharing, packet length, match_flags, ...&n; * 08-feb-2001&t;stubbed in &quot;linuxdev&quot;, maybe the SA-1100 folk can use it;&n; *&t;&t;AnchorChips 2720 support (from spec) for testing;&n; *&t;&t;fix bit-ordering problem with ethernet multicast addr&n; * 19-feb-2001  Support for clearing halt conditions. SA1100 UDC support&n; *&t;&t;updates. Oleg Drokin (green@iXcelerator.com)&n; * 25-mar-2001&t;More SA-1100 updates, including workaround for ip problem&n; *&t;&t;expecting cleared skb-&gt;cb and framing change to match latest&n; *&t;&t;handhelds.org version (Oleg).  Enable device IDs from the&n; *&t;&t;Win32 Belkin driver; other cleanups (db).&n; * 16-jul-2001&t;Bugfixes for uhci oops-on-unplug, Belkin support, various&n; *&t;&t;cleanups for problems not yet seen in the field. (db)&n; *&n; *-------------------------------------------------------------------------*/
+multiline_comment|/*&n; * This is used for &quot;USB networking&quot;, connecting USB hosts as peers.&n; *&n; * It can be used with USB &quot;network cables&quot;, for IP-over-USB communications;&n; * Ethernet speeds without the Ethernet.  USB devices (including some PDAs)&n; * can support such links directly, replacing device-specific protocols&n; * with Internet standard ones.&n; *&n; * The links can be bridged using the Ethernet bridging (net/bridge)&n; * support as appropriate.  Devices currently supported include:&n; *&n; *&t;- AnchorChip 2720&n; *&t;- Belkin, eTEK (interops with Win32 drivers)&n; *&t;- &quot;Linux Devices&quot; (like iPaq and similar SA-1100 based PDAs)&n; *&t;- NetChip 1080 (interoperates with NetChip Win32 drivers)&n; *&t;- Prolific PL-2301/2302 (replaces &quot;plusb&quot; driver)&n; *&n; * USB devices can implement their side of this protocol at the cost&n; * of two bulk endpoints; it&squot;s not restricted to &quot;cable&quot; applications.&n; * See the LINUXDEV support.&n; *&n; * &n; * TODO:&n; *&n; * This needs to be retested for bulk queuing problems ... earlier versions&n; * seemed to find different types of problems in each HCD.  Once they&squot;re fixed,&n; * re-enable queues to get higher bandwidth utilization (without needing&n; * to tweak MTU for larger packets).&n; *&n; * Add support for more &quot;network cable&quot; chips; interop with their Win32&n; * drivers may be a good thing.  Test the AnchorChip 2720 support..&n; * Figure out the initialization protocol used by the Prolific chips,&n; * for better robustness ... there&squot;s some powerup/reset handshake that&squot;s&n; * needed when only one end reboots.&n; *&n; * Use interrupt on PL230x to detect peer connect/disconnect, and call&n; * netif_carrier_{on,off} (?) appropriately.  For Net1080, detect peer&n; * connect/disconnect with async control messages.&n; *&n; * Find some way to report &quot;peer connected&quot; network hotplug events; it&squot;ll&n; * likely mean updating the networking layer.  (This has been discussed&n; * on the netdev list...)&n; *&n; * Craft smarter hotplug policy scripts ... ones that know how to arrange&n; * bridging with &quot;brctl&quot;, and can handle static and dynamic (&quot;pump&quot;) setups.&n; * Use those &quot;peer connected&quot; events.&n; *&n; *&n; * CHANGELOG:&n; *&n; * 13-sep-2000&t;experimental, new&n; * 10-oct-2000&t;usb_device_id table created. &n; * 28-oct-2000&t;misc fixes; mostly, discard more TTL-mangled rx packets.&n; * 01-nov-2000&t;usb_device_id table and probing api update by&n; *&t;&t;Adam J. Richter &lt;adam@yggdrasil.com&gt;.&n; * 18-dec-2000&t;(db) tx watchdog, &quot;net1080&quot; renaming to &quot;usbnet&quot;, device_info&n; *&t;&t;and prolific support, isolate net1080-specific bits, cleanup.&n; *&t;&t;fix unlink_urbs oops in D3 PM resume code path.&n; * 02-feb-2001&t;(db) fix tx skb sharing, packet length, match_flags, ...&n; * 08-feb-2001&t;stubbed in &quot;linuxdev&quot;, maybe the SA-1100 folk can use it;&n; *&t;&t;AnchorChips 2720 support (from spec) for testing;&n; *&t;&t;fix bit-ordering problem with ethernet multicast addr&n; * 19-feb-2001  Support for clearing halt conditions. SA1100 UDC support&n; *&t;&t;updates. Oleg Drokin (green@iXcelerator.com)&n; * 25-mar-2001&t;More SA-1100 updates, including workaround for ip problem&n; *&t;&t;expecting cleared skb-&gt;cb and framing change to match latest&n; *&t;&t;handhelds.org version (Oleg).  Enable device IDs from the&n; *&t;&t;Win32 Belkin driver; other cleanups (db).&n; * 16-jul-2001&t;Bugfixes for uhci oops-on-unplug, Belkin support, various&n; *&t;&t;cleanups for problems not yet seen in the field. (db)&n; * 17-oct-2001&t;Handle &quot;Advance USBNET&quot; product, like Belkin/eTEK devices,&n; *&t;&t;from Ioannis Mavroukakis &lt;i.mavroukakis@btinternet.com&gt;;&n; *&t;&t;rx unlinks somehow weren&squot;t async; minor cleanup.&n; *&n; *-------------------------------------------------------------------------*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -19,8 +19,8 @@ macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
 DECL|macro|CONFIG_USB_AN2720
 mdefine_line|#define&t;CONFIG_USB_AN2720
-DECL|macro|CONFIG_USB_BELKIN_F5U104
-mdefine_line|#define&t;CONFIG_USB_BELKIN_F5U104
+DECL|macro|CONFIG_USB_BELKIN
+mdefine_line|#define&t;CONFIG_USB_BELKIN
 DECL|macro|CONFIG_USB_LINUXDEV
 mdefine_line|#define&t;CONFIG_USB_LINUXDEV
 DECL|macro|CONFIG_USB_NET1080
@@ -41,7 +41,7 @@ DECL|macro|TX_QLEN
 mdefine_line|#define&t;TX_QLEN&t;&t;1
 macro_line|#endif
 singleline_comment|// packets are always ethernet inside
-singleline_comment|// ... except they can be bigger (up to 64K with this framing)
+singleline_comment|// ... except they can be bigger (limit of 64K with NetChip framing)
 DECL|macro|MIN_PACKET
 mdefine_line|#define MIN_PACKET&t;sizeof(struct ethhdr)
 DECL|macro|MAX_PACKET
@@ -170,8 +170,10 @@ DECL|member|flags
 r_int
 id|flags
 suffix:semicolon
-DECL|macro|FLAG_FRAMING
-mdefine_line|#define FLAG_FRAMING&t;0x0001&t;&t;/* guard against device dropouts */ 
+DECL|macro|FLAG_FRAMING_NC
+mdefine_line|#define FLAG_FRAMING_NC&t;0x0001&t;&t;/* guard against device dropouts */ 
+DECL|macro|FLAG_NO_SETINT
+mdefine_line|#define FLAG_NO_SETINT&t;0x0010&t;&t;/* device can&squot;t set_interface() */
 multiline_comment|/* reset device ... can sleep */
 DECL|member|reset
 r_int
@@ -342,7 +344,7 @@ id|__packed__
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// packets may use FLAG_FRAMING and optional pad
+singleline_comment|// packets may use FLAG_FRAMING_NC and optional pad
 DECL|macro|FRAMED_SIZE
 mdefine_line|#define FRAMED_SIZE(mtu) (sizeof (struct nc_header) &bslash;&n;&t;&t;&t;&t;+ sizeof (struct ethhdr) &bslash;&n;&t;&t;&t;&t;+ (mtu) &bslash;&n;&t;&t;&t;&t;+ 1 &bslash;&n;&t;&t;&t;&t;+ sizeof (struct nc_trailer))
 DECL|macro|MIN_FRAMED
@@ -381,8 +383,8 @@ comma
 suffix:semicolon
 macro_line|#endif&t;/* CONFIG_USB_AN2720 */
 "&f;"
-macro_line|#ifdef&t;CONFIG_USB_BELKIN_F5U104
-multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * Belkin F5U104 ... two NetChip 2280 devices + Atmel microcontroller&n; *&n; *-------------------------------------------------------------------------*/
+macro_line|#ifdef&t;CONFIG_USB_BELKIN
+multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * Belkin F5U104 ... two NetChip 2280 devices + Atmel microcontroller&n; *&n; * ... also two eTEK designs, including one sold as &quot;Advance USBNET&quot;&n; *&n; *-------------------------------------------------------------------------*/
 DECL|variable|belkin_info
 r_static
 r_const
@@ -393,7 +395,7 @@ op_assign
 (brace
 id|description
 suffix:colon
-l_string|&quot;Belkin USB Direct Connect (F5U104)&quot;
+l_string|&quot;Belkin, eTEK, or compatible&quot;
 comma
 id|in
 suffix:colon
@@ -410,7 +412,7 @@ l_int|64
 comma
 )brace
 suffix:semicolon
-macro_line|#endif&t;/* CONFIG_USB_BELKIN_F5U104 */
+macro_line|#endif&t;/* CONFIG_USB_BELKIN */
 "&f;"
 macro_line|#ifdef&t;CONFIG_USB_LINUXDEV
 multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * This could talk to a device that uses Linux, such as a PDA or&n; * an embedded system, or in fact to any &quot;smart&quot; device using this&n; * particular mapping of USB and Ethernet.&n; *&n; * Such a Linux host would need a &quot;USB Device Controller&quot; hardware&n; * (not &quot;USB Host Controller&quot;), and a network driver talking to that&n; * hardware.&n; *&n; * One example is Intel&squot;s SA-1100 chip, which integrates basic USB&n; * support (arch/arm/sa1100/usb-eth.c); it&squot;s used in the iPaq PDA.&n; *&n; *-------------------------------------------------------------------------*/
@@ -1516,7 +1518,7 @@ l_string|&quot;NetChip TurboCONNECT&quot;
 comma
 id|flags
 suffix:colon
-id|FLAG_FRAMING
+id|FLAG_FRAMING_NC
 comma
 id|reset
 suffix:colon
@@ -1796,11 +1798,7 @@ c_cond
 (paren
 id|new_mtu
 op_le
-r_sizeof
-(paren
-r_struct
-id|ethhdr
-)paren
+id|MIN_PACKET
 op_logical_or
 id|new_mtu
 OG
@@ -1818,7 +1816,7 @@ c_cond
 id|dev-&gt;driver_info-&gt;flags
 )paren
 op_amp
-id|FLAG_FRAMING
+id|FLAG_FRAMING_NC
 )paren
 )paren
 (brace
@@ -2039,20 +2037,23 @@ suffix:semicolon
 r_int
 id|size
 suffix:semicolon
-id|size
-op_assign
+r_if
+c_cond
 (paren
 id|dev-&gt;driver_info-&gt;flags
 op_amp
-id|FLAG_FRAMING
+id|FLAG_FRAMING_NC
 )paren
-ques
-c_cond
+id|size
+op_assign
 id|FRAMED_SIZE
 (paren
 id|dev-&gt;net.mtu
 )paren
-suffix:colon
+suffix:semicolon
+r_else
+id|size
+op_assign
 (paren
 r_sizeof
 (paren
@@ -2146,10 +2147,22 @@ comma
 id|skb
 )paren
 suffix:semicolon
+id|urb-&gt;transfer_flags
+op_or_assign
+id|USB_ASYNC_UNLINK
+suffix:semicolon
 macro_line|#ifdef&t;REALLY_QUEUE
 id|urb-&gt;transfer_flags
 op_or_assign
 id|USB_QUEUE_BULK
+suffix:semicolon
+macro_line|#endif
+macro_line|#if 0
+singleline_comment|// Idle-but-posted reads with UHCI really chew up
+singleline_comment|// PCI bandwidth unless FSBR is disabled
+id|urb-&gt;transfer_flags
+op_or_assign
+id|USB_NO_FSBR
 suffix:semicolon
 macro_line|#endif
 id|spin_lock_irqsave
@@ -2275,7 +2288,7 @@ c_cond
 (paren
 id|dev-&gt;driver_info-&gt;flags
 op_amp
-id|FLAG_FRAMING
+id|FLAG_FRAMING_NC
 )paren
 (brace
 r_struct
@@ -3311,7 +3324,7 @@ id|devdbg
 (paren
 id|dev
 comma
-l_string|&quot;open: enable queueing (rx %d, tx %d) mtu %d %sframed&quot;
+l_string|&quot;open: enable queueing (rx %d, tx %d) mtu %d %s framing&quot;
 comma
 id|RX_QLEN
 comma
@@ -3322,13 +3335,13 @@ comma
 (paren
 id|info-&gt;flags
 op_amp
-id|FLAG_FRAMING
+id|FLAG_FRAMING_NC
 )paren
 ques
 c_cond
-l_string|&quot;&quot;
+l_string|&quot;NetChip&quot;
 suffix:colon
-l_string|&quot;un&quot;
+l_string|&quot;raw&quot;
 )paren
 suffix:semicolon
 singleline_comment|// delay posting reads until we&squot;re fully open
@@ -3809,7 +3822,7 @@ c_cond
 (paren
 id|info-&gt;flags
 op_amp
-id|FLAG_FRAMING
+id|FLAG_FRAMING_NC
 )paren
 (brace
 r_struct
@@ -3900,7 +3913,7 @@ c_cond
 (paren
 id|info-&gt;flags
 op_amp
-id|FLAG_FRAMING
+id|FLAG_FRAMING_NC
 )paren
 (brace
 id|header
@@ -3996,6 +4009,8 @@ op_eq
 l_int|0
 )paren
 (brace
+singleline_comment|// not all hardware behaves with USB_ZERO_PACKET,
+singleline_comment|// so we add an extra one-byte packet
 r_if
 c_cond
 (paren
@@ -4066,13 +4081,9 @@ comma
 id|skb
 )paren
 suffix:semicolon
-singleline_comment|// Idle-but-posted reads with UHCI really chew up
-singleline_comment|// PCI bandwidth unless FSBR is disabled
 id|urb-&gt;transfer_flags
 op_or_assign
 id|USB_ASYNC_UNLINK
-op_or
-id|USB_NO_FSBR
 suffix:semicolon
 macro_line|#ifdef&t;REALLY_QUEUE
 id|urb-&gt;transfer_flags
@@ -4094,7 +4105,7 @@ c_cond
 (paren
 id|info-&gt;flags
 op_amp
-id|FLAG_FRAMING
+id|FLAG_FRAMING_NC
 )paren
 (brace
 id|header-&gt;packet_id
@@ -4728,6 +4739,18 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+singleline_comment|// more sanity (unless the device is broken)
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|info-&gt;flags
+op_amp
+id|FLAG_NO_SETINT
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -4751,6 +4774,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 )brace
 singleline_comment|// set up our own records
 r_if
@@ -5005,6 +5029,68 @@ comma
 )brace
 comma
 macro_line|#endif
+macro_line|#ifdef&t;CONFIG_USB_BELKIN
+(brace
+id|USB_DEVICE
+(paren
+l_int|0x050d
+comma
+l_int|0x0004
+)paren
+comma
+singleline_comment|// Belkin
+id|driver_info
+suffix:colon
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|belkin_info
+comma
+)brace
+comma
+(brace
+id|USB_DEVICE
+(paren
+l_int|0x056c
+comma
+l_int|0x8100
+)paren
+comma
+singleline_comment|// eTEK
+id|driver_info
+suffix:colon
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|belkin_info
+comma
+)brace
+comma
+(brace
+id|USB_DEVICE
+(paren
+l_int|0x0525
+comma
+l_int|0x9901
+)paren
+comma
+singleline_comment|// Advance USBNET (eTEK)
+id|driver_info
+suffix:colon
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|belkin_info
+comma
+)brace
+comma
+macro_line|#endif
 singleline_comment|// GeneSys GL620USB (www.genesyslogic.com.tw)
 singleline_comment|// (patch exists against an older driver version)
 macro_line|#ifdef&t;CONFIG_USB_LINUXDEV
@@ -5049,48 +5135,6 @@ r_int
 )paren
 op_amp
 id|net1080_info
-comma
-)brace
-comma
-macro_line|#endif
-macro_line|#ifdef&t;CONFIG_USB_BELKIN_F5U104
-(brace
-id|USB_DEVICE
-(paren
-l_int|0x050d
-comma
-l_int|0x0004
-)paren
-comma
-singleline_comment|// Belkin
-id|driver_info
-suffix:colon
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|belkin_info
-comma
-)brace
-comma
-(brace
-id|USB_DEVICE
-(paren
-l_int|0x056c
-comma
-l_int|0x8100
-)paren
-comma
-singleline_comment|// eTEK
-id|driver_info
-suffix:colon
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|belkin_info
 comma
 )brace
 comma
@@ -5276,6 +5320,8 @@ id|module_exit
 id|usbnet_exit
 )paren
 suffix:semicolon
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
 id|MODULE_AUTHOR
 (paren
 l_string|&quot;David Brownell &lt;dbrownell@users.sourceforge.net&gt;&quot;
@@ -5283,11 +5329,10 @@ l_string|&quot;David Brownell &lt;dbrownell@users.sourceforge.net&gt;&quot;
 suffix:semicolon
 id|MODULE_DESCRIPTION
 (paren
-l_string|&quot;USB Host-to-Host Link Drivers (Belkin, Linux, NetChip, Prolific, ...)&quot;
+l_string|&quot;USB Host-to-Host Link Drivers (numerous vendors)&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
-c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren

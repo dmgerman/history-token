@@ -420,7 +420,7 @@ macro_line|#ifdef __i386__
 DECL|macro|TSC_PRESENT
 mdefine_line|#define TSC_PRESENT&t;(test_bit(X86_FEATURE_TSC, &amp;boot_cpu_data.x86_capability))
 DECL|macro|GET_TIME
-mdefine_line|#define GET_TIME(x)&t;do { if (TSC_PRESENT) rdtscl(x); else outb(0, 0x43); x = inb(0x40); x |= inb(0x40) &lt;&lt; 8; } while (0)
+mdefine_line|#define GET_TIME(x)&t;do { if (TSC_PRESENT) rdtscl(x); else { outb(0, 0x43); x = inb(0x40); x |= inb(0x40) &lt;&lt; 8; } } while (0)
 DECL|macro|DELTA
 mdefine_line|#define DELTA(x,y)&t;(TSC_PRESENT?((y)-(x)):((x)-(y)+((x)&lt;(y)?1193180L/HZ:0)))
 DECL|macro|TIME_NAME
@@ -2724,6 +2724,23 @@ l_string|&quot;M&quot;
 suffix:colon
 l_string|&quot;k&quot;
 comma
+id|port-&gt;speed
+OG
+l_int|10000
+ques
+c_cond
+(paren
+id|port-&gt;loop
+op_star
+l_int|1000
+)paren
+op_div
+(paren
+id|port-&gt;speed
+op_div
+l_int|1000
+)paren
+suffix:colon
 (paren
 id|port-&gt;loop
 op_star

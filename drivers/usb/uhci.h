@@ -718,6 +718,12 @@ r_int
 id|inserttime
 suffix:semicolon
 multiline_comment|/* In jiffies */
+DECL|member|fsbrtime
+r_int
+r_int
+id|fsbrtime
+suffix:semicolon
+multiline_comment|/* In jiffies */
 DECL|member|queue_list
 r_struct
 id|list_head
