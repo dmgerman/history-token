@@ -1,4 +1,4 @@
-multiline_comment|/* Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines, Corp.&n; * Copyright (c) 2001-2002 Intel Corp.&n; * Copyright (c) 2001-2002 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * These functions interface with the sockets layer to implement the&n; * SCTP Extensions for the Sockets API.&n; * &n; * Note that the descriptions from the specification are USER level&n; * functions--this file is the functions which populate the struct proto&n; * for SCTP which is the BOTTOM of the sockets interface.&n; * &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Narasimha Budihal     &lt;narsi@refcode.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Daisy Chang           &lt;daisyc@us.ibm.com&gt;&n; *    Sridhar Samudrala     &lt;samudrala@us.ibm.com&gt;&n; *    Inaky Perez-Gonzalez  &lt;inaky.gonzalez@intel.com&gt;&n; * &n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines, Corp.&n; * Copyright (c) 2001-2002 Intel Corp.&n; * Copyright (c) 2001-2002 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions interface with the sockets layer to implement the&n; * SCTP Extensions for the Sockets API.&n; *&n; * Note that the descriptions from the specification are USER level&n; * functions--this file is the functions which populate the struct proto&n; * for SCTP which is the BOTTOM of the sockets interface.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Narasimha Budihal     &lt;narsi@refcode.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Daisy Chang           &lt;daisyc@us.ibm.com&gt;&n; *    Sridhar Samudrala     &lt;samudrala@us.ibm.com&gt;&n; *    Inaky Perez-Gonzalez  &lt;inaky.gonzalez@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
@@ -13,21 +13,12 @@ macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/route.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
-macro_line|#include &lt;net/inet_common.h&gt; 
+macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;linux/socket.h&gt; /* for sa_family_t */
 macro_line|#include &lt;net/sock.h&gt;
-macro_line|#include &lt;net/sctp/sctp.h&gt; 
+macro_line|#include &lt;net/sctp/sctp.h&gt;
+multiline_comment|/* WARNING:  Please do not remove the SCTP_STATIC attribute to&n; * any of the functions below as they are used to export functions&n; * used by a project regression testsuite.&n; */
 multiline_comment|/* Forward declarations for internal helper functions. */
-r_static
-r_void
-id|__sctp_write_space
-c_func
-(paren
-id|sctp_association_t
-op_star
-id|asoc
-)paren
-suffix:semicolon
 r_static
 r_int
 id|sctp_writeable
@@ -216,21 +207,6 @@ op_star
 id|sk
 )paren
 suffix:semicolon
-r_static
-id|sctp_bind_bucket_t
-op_star
-id|sctp_bucket_create
-c_func
-(paren
-id|sctp_bind_hashbucket_t
-op_star
-id|head
-comma
-r_int
-r_int
-id|snum
-)paren
-suffix:semicolon
 multiline_comment|/* API 3.1.2 bind() - UDP Style Syntax&n; * The syntax of bind() is,&n; *&n; *   ret = bind(int sd, struct sockaddr *addr, int addrlen);&n; *&n; *   sd      - the socket descriptor returned by socket().&n; *   addr    - the address structure (struct sockaddr_in or struct&n; *             sockaddr_in6 [RFC 2553]),&n; *   addrlen - the size of the address structure.&n; *&n; * The caller should use struct sockaddr_storage described in RFC 2553&n; * to represent addr for portability reason.&n; */
 DECL|function|sctp_bind
 r_int
@@ -334,7 +310,7 @@ r_int
 suffix:semicolon
 multiline_comment|/* Bind a local address either to an endpoint or to an association.  */
 DECL|function|sctp_do_bind
-r_static
+id|SCTP_STATIC
 r_int
 id|sctp_do_bind
 c_func
@@ -1586,7 +1562,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Helper for tunneling sys_bindx() requests through sctp_setsockopt()&n; *&n; * Basically do nothing but copying the addresses from user to kernel&n; * land and invoking sctp_bindx on the sk. This is used for tunneling&n; * the sctp_bindx() [sys_bindx()] request through sctp_setsockopt()&n; * from userspace.&n; *&n; * Note I don&squot;t use move_addr_to_kernel(): the reason is we would be&n; * iterating over an array of struct sockaddr_storage passing always&n; * what we know is a good size (sizeof (struct sock...)), so it is&n; * pointless. Instead check the whole area for read access and copy&n; * it.&n; *&n; * We don&squot;t use copy_from_user() for optimization: we first do the&n; * sanity checks (buffer size -fast- and access check-healthy&n; * pointer); if all of those succeed, then we can alloc the memory&n; * (expensive operation) needed to copy the data to kernel. Then we do&n; * the copying without checking the user space area&n; * (__copy_from_user()).&n; *&n; * On exit there is no need to do sockfd_put(), sys_setsockopt() does&n; * it.&n; *&n; * sk        The sk of the socket&n; * addrs     The pointer to the addresses in user land&n; * addrssize Size of the addrs buffer&n; * op        Operation to perform (add or remove, see the flags of&n; *           sctp_bindx)&n; *&n; * Returns 0 if ok, &lt;0 errno code on error.&n; */
 DECL|function|sctp_setsockopt_bindx
-r_static
+id|SCTP_STATIC
 r_int
 id|sctp_setsockopt_bindx
 c_func
@@ -1776,7 +1752,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* API 3.1.4 close() - UDP Style Syntax&n; * Applications use close() to perform graceful shutdown (as described in&n; * Section 10.1 of [SCTP]) on ALL the associations currently represented&n; * by a UDP-style socket.&n; *&n; * The syntax is&n; *&n; *   ret = close(int sd);&n; *&n; *   sd      - the socket descriptor of the associations to be closed.&n; *&n; * To gracefully shutdown a specific association represented by the&n; * UDP-style socket, an application should use the sendmsg() call,&n; * passing no user data, but including the appropriate flag in the&n; * ancillary data (see Section xxxx).&n; *&n; * If sd in the close() call is a branched-off socket representing only&n; * one association, the shutdown is performed on that association only.&n; */
 DECL|function|sctp_close
-r_static
+id|SCTP_STATIC
 r_void
 id|sctp_close
 c_func
@@ -1934,7 +1910,7 @@ suffix:semicolon
 multiline_comment|/* API 3.1.3 sendmsg() - UDP Style Syntax&n; *&n; * An application uses sendmsg() and recvmsg() calls to transmit data to&n; * and receive data from its peer.&n; *&n; *  ssize_t sendmsg(int socket, const struct msghdr *message,&n; *                  int flags);&n; *&n; *  socket  - the socket descriptor of the endpoint.&n; *  message - pointer to the msghdr structure which contains a single&n; *            user message and possibly some ancillary data.&n; *&n; *            See Section 5 for complete description of the data&n; *            structures.&n; *&n; *  flags   - flags sent or received with the user message, see Section&n; *            5 for complete description of the flags.&n; *&n; * NB: The argument &squot;msg&squot; is a user space address.&n; */
 multiline_comment|/* BUG:  We do not implement timeouts.  */
 multiline_comment|/* BUG:  We do not implement the equivalent of wait_for_tcp_memory(). */
-r_static
+id|SCTP_STATIC
 r_int
 id|sctp_msghdr_parse
 c_func
@@ -1949,7 +1925,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|function|sctp_sendmsg
-r_static
+id|SCTP_STATIC
 r_int
 id|sctp_sendmsg
 c_func
@@ -3192,7 +3168,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|function|sctp_recvmsg
-r_static
+id|SCTP_STATIC
 r_int
 id|sctp_recvmsg
 c_func
@@ -3735,7 +3711,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* API 6.2 setsockopt(), getsockopt()&n; *&n; * Applications use setsockopt() and getsockopt() to set or retrieve&n; * socket options.  Socket options are used to change the default&n; * behavior of sockets calls.  They are described in Section 7.&n; *&n; * The syntax is:&n; *&n; *   ret = getsockopt(int sd, int level, int optname, void *optval,&n; *                    int *optlen);&n; *   ret = setsockopt(int sd, int level, int optname, const void *optval,&n; *                    int optlen);&n; *&n; *   sd      - the socket descript.&n; *   level   - set to IPPROTO_SCTP for all SCTP options.&n; *   optname - the option name.&n; *   optval  - the buffer to store the value of the option.&n; *   optlen  - the size of the buffer.&n; */
 DECL|function|sctp_setsockopt
-r_static
+id|SCTP_STATIC
 r_int
 id|sctp_setsockopt
 c_func
@@ -4071,7 +4047,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* FIXME: Write comments. */
 DECL|function|sctp_connect
-r_static
+id|SCTP_STATIC
 r_int
 id|sctp_connect
 c_func
@@ -4098,7 +4074,7 @@ multiline_comment|/* STUB */
 )brace
 multiline_comment|/* FIXME: Write comments. */
 DECL|function|sctp_disconnect
-r_static
+id|SCTP_STATIC
 r_int
 id|sctp_disconnect
 c_func
@@ -4120,7 +4096,7 @@ multiline_comment|/* STUB */
 )brace
 multiline_comment|/* FIXME: Write comments. */
 DECL|function|sctp_accept
-r_static
+id|SCTP_STATIC
 r_struct
 id|sock
 op_star
@@ -4157,7 +4133,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* FIXME: Write Comments. */
 DECL|function|sctp_ioctl
-r_static
+id|SCTP_STATIC
 r_int
 id|sctp_ioctl
 c_func
@@ -4183,7 +4159,7 @@ multiline_comment|/* STUB */
 )brace
 multiline_comment|/* This is the function which gets called during socket creation to&n; * initialized the SCTP-specific portion of the sock.&n; * The sock structure should already be zero-filled memory.&n; */
 DECL|function|sctp_init_sock
-r_static
+id|SCTP_STATIC
 r_int
 id|sctp_init_sock
 c_func
@@ -4367,7 +4343,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Cleanup any SCTP per socket resources.  */
 DECL|function|sctp_destroy_sock
-r_static
+id|SCTP_STATIC
 r_int
 id|sctp_destroy_sock
 c_func
@@ -4413,7 +4389,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* FIXME: Comments needed.  */
 DECL|function|sctp_shutdown
-r_static
+id|SCTP_STATIC
 r_void
 id|sctp_shutdown
 c_func
@@ -5020,7 +4996,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Helper routine to branch off an association to a new socket.  */
 DECL|function|sctp_do_peeloff
-r_static
+id|SCTP_STATIC
 r_int
 id|sctp_do_peeloff
 c_func
@@ -5377,7 +5353,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|sctp_getsockopt
-r_static
+id|SCTP_STATIC
 r_int
 id|sctp_getsockopt
 c_func
@@ -5656,6 +5632,21 @@ id|sk
 multiline_comment|/* STUB */
 )brace
 multiline_comment|/* Check if port is acceptable.  Possibly find first available port.&n; *&n; * The port hash table (contained in the &squot;global&squot; SCTP protocol storage&n; * returned by sctp_protocol_t * sctp_get_protocol()). The hash&n; * table is an array of 4096 lists (sctp_bind_hashbucket_t). Each&n; * list (the list number is the port number hashed out, so as you&n; * would expect from a hash function, all the ports in a given list have&n; * such a number that hashes out to the same list number; you were&n; * expecting that, right?); so each list has a set of ports, with a&n; * link to the socket (struct sock) that uses it, the port number and&n; * a fastreuse flag (FIXME: NPI ipg).&n; */
+r_static
+id|sctp_bind_bucket_t
+op_star
+id|sctp_bucket_create
+c_func
+(paren
+id|sctp_bind_hashbucket_t
+op_star
+id|head
+comma
+r_int
+r_int
+id|snum
+)paren
+suffix:semicolon
 DECL|function|sctp_get_port_local
 r_static
 r_int
@@ -6325,7 +6316,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * 3.1.3 listen() - UDP Style Syntax&n; *&n; *   By default, new associations are not accepted for UDP style sockets.&n; *   An application uses listen() to mark a socket as being able to&n; *   accept new associations.&n; */
 DECL|function|sctp_seqpacket_listen
-r_static
+id|SCTP_STATIC
 r_int
 id|sctp_seqpacket_listen
 c_func
@@ -7082,7 +7073,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Parse out IPPROTO_SCTP CMSG headers.  Perform only minimal validation.&n; *&n; * From RFC 2292&n; * 4.2 The cmsghdr Structure *&n; *&n; * When ancillary data is sent or received, any number of ancillary data&n; * objects can be specified by the msg_control and msg_controllen members of&n; * the msghdr structure, because each object is preceded by&n; * a cmsghdr structure defining the object&squot;s length (the cmsg_len member).&n; * Historically Berkeley-derived implementations have passed only one object&n; * at a time, but this API allows multiple objects to be&n; * passed in a single call to sendmsg() or recvmsg(). The following example&n; * shows two ancillary data objects in a control buffer.&n; *&n; *   |&lt;--------------------------- msg_controllen --------------------------&gt;|&n; *   |                                                                       |&n; *&n; *   |&lt;----- ancillary data object -----&gt;|&lt;----- ancillary data object -----&gt;|&n; *&n; *   |&lt;---------- CMSG_SPACE() ---------&gt;|&lt;---------- CMSG_SPACE() ---------&gt;|&n; *   |                                   |                                   |&n; *&n; *   |&lt;---------- cmsg_len ----------&gt;|  |&lt;--------- cmsg_len -----------&gt;|  |&n; *&n; *   |&lt;--------- CMSG_LEN() ---------&gt;|  |&lt;-------- CMSG_LEN() ----------&gt;|  |&n; *   |                                |  |                                |  |&n; *&n; *   +-----+-----+-----+--+-----------+--+-----+-----+-----+--+-----------+--+&n; *   |cmsg_|cmsg_|cmsg_|XX|           |XX|cmsg_|cmsg_|cmsg_|XX|           |XX|&n; *&n; *   |len  |level|type |XX|cmsg_data[]|XX|len  |level|type |XX|cmsg_data[]|XX|&n; *&n; *   +-----+-----+-----+--+-----------+--+-----+-----+-----+--+-----------+--+&n; *    ^&n; *    |&n; *&n; * msg_control&n; * points here&n; */
 DECL|function|sctp_msghdr_parse
-r_static
+id|SCTP_STATIC
 r_int
 id|sctp_msghdr_parse
 c_func
@@ -8114,6 +8105,118 @@ id|chunk
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* If sndbuf has changed, wake up per association sndbuf waiters.  */
+DECL|function|__sctp_write_space
+r_static
+r_void
+id|__sctp_write_space
+c_func
+(paren
+id|sctp_association_t
+op_star
+id|asoc
+)paren
+(brace
+r_struct
+id|sock
+op_star
+id|sk
+op_assign
+id|asoc-&gt;base.sk
+suffix:semicolon
+r_struct
+id|socket
+op_star
+id|sock
+op_assign
+id|sk-&gt;socket
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|sctp_wspace
+c_func
+(paren
+id|asoc
+)paren
+OG
+l_int|0
+)paren
+op_logical_and
+id|sock
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|waitqueue_active
+c_func
+(paren
+op_amp
+id|asoc-&gt;wait
+)paren
+)paren
+id|wake_up_interruptible
+c_func
+(paren
+op_amp
+id|asoc-&gt;wait
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sctp_writeable
+c_func
+(paren
+id|sk
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|sk-&gt;sleep
+op_logical_and
+id|waitqueue_active
+c_func
+(paren
+id|sk-&gt;sleep
+)paren
+)paren
+id|wake_up_interruptible
+c_func
+(paren
+id|sk-&gt;sleep
+)paren
+suffix:semicolon
+multiline_comment|/* Note that we try to include the Async I/O support&n;&t;&t;&t; * here by modeling from the current TCP/UDP code.&n;&t;&t;&t; * We have not tested with it yet.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|sock-&gt;fasync_list
+op_logical_and
+op_logical_neg
+(paren
+id|sk-&gt;shutdown
+op_amp
+id|SEND_SHUTDOWN
+)paren
+)paren
+id|sock_wake_async
+c_func
+(paren
+id|sock
+comma
+l_int|2
+comma
+id|POLL_OUT
+)paren
+suffix:semicolon
+)brace
+)brace
+)brace
 multiline_comment|/* Do accounting for the sndbuf space.&n; * Decrement the used sndbuf space of the corresponding association by the&n; * data size which was just transmitted(freed).&n; */
 DECL|function|sctp_wfree
 r_static
@@ -8424,118 +8527,6 @@ suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
-)brace
-multiline_comment|/* If sndbuf has changed, wake up per association sndbuf waiters.  */
-DECL|function|__sctp_write_space
-r_static
-r_void
-id|__sctp_write_space
-c_func
-(paren
-id|sctp_association_t
-op_star
-id|asoc
-)paren
-(brace
-r_struct
-id|sock
-op_star
-id|sk
-op_assign
-id|asoc-&gt;base.sk
-suffix:semicolon
-r_struct
-id|socket
-op_star
-id|sock
-op_assign
-id|sk-&gt;socket
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|sctp_wspace
-c_func
-(paren
-id|asoc
-)paren
-OG
-l_int|0
-)paren
-op_logical_and
-id|sock
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|waitqueue_active
-c_func
-(paren
-op_amp
-id|asoc-&gt;wait
-)paren
-)paren
-id|wake_up_interruptible
-c_func
-(paren
-op_amp
-id|asoc-&gt;wait
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sctp_writeable
-c_func
-(paren
-id|sk
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|sk-&gt;sleep
-op_logical_and
-id|waitqueue_active
-c_func
-(paren
-id|sk-&gt;sleep
-)paren
-)paren
-id|wake_up_interruptible
-c_func
-(paren
-id|sk-&gt;sleep
-)paren
-suffix:semicolon
-multiline_comment|/* Note that we try to include the Async I/O support&n;&t;&t;&t; * here by modeling from the current TCP/UDP code.&n;&t;&t;&t; * We have not tested with it yet.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|sock-&gt;fasync_list
-op_logical_and
-op_logical_neg
-(paren
-id|sk-&gt;shutdown
-op_amp
-id|SEND_SHUTDOWN
-)paren
-)paren
-id|sock_wake_async
-c_func
-(paren
-id|sock
-comma
-l_int|2
-comma
-id|POLL_OUT
-)paren
-suffix:semicolon
-)brace
-)brace
 )brace
 multiline_comment|/* If socket sndbuf has changed, wake up all per association waiters.  */
 DECL|function|sctp_write_space
