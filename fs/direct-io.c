@@ -3059,10 +3059,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
 )brace
+r_else
+(brace
 id|finished_one_bio
 c_func
 (paren
@@ -3102,6 +3101,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ret
+op_eq
+l_int|0
+op_logical_and
 id|dio-&gt;result
 )paren
 id|ret
@@ -3114,8 +3117,7 @@ c_func
 id|dio
 )paren
 suffix:semicolon
-id|out
-suffix:colon
+)brace
 r_return
 id|ret
 suffix:semicolon
