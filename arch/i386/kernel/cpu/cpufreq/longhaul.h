@@ -336,67 +336,7 @@ comma
 multiline_comment|/* 1111 -&gt;  6.5x */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * VIA C3 Samuel2 Stepping 1-&gt;15 &amp; VIA C3 Ezra&n; */
-DECL|variable|ezra_clock_ratio
-r_static
-r_int
-id|__initdata
-id|ezra_clock_ratio
-(braket
-l_int|16
-)braket
-op_assign
-(brace
-l_int|100
-comma
-multiline_comment|/* 0000 -&gt; 10.0x */
-l_int|30
-comma
-multiline_comment|/* 0001 -&gt;  3.0x */
-l_int|40
-comma
-multiline_comment|/* 0010 -&gt;  4.0x */
-l_int|90
-comma
-multiline_comment|/* 0011 -&gt;  9.0x */
-l_int|95
-comma
-multiline_comment|/* 0100 -&gt;  9.5x */
-l_int|35
-comma
-multiline_comment|/* 0101 -&gt;  3.5x */
-l_int|45
-comma
-multiline_comment|/* 0110 -&gt;  4.5x */
-l_int|55
-comma
-multiline_comment|/* 0111 -&gt;  5.5x */
-l_int|60
-comma
-multiline_comment|/* 1000 -&gt;  6.0x */
-l_int|70
-comma
-multiline_comment|/* 1001 -&gt;  7.0x */
-l_int|80
-comma
-multiline_comment|/* 1010 -&gt;  8.0x */
-l_int|50
-comma
-multiline_comment|/* 1011 -&gt;  5.0x */
-l_int|65
-comma
-multiline_comment|/* 1100 -&gt;  6.5x */
-l_int|75
-comma
-multiline_comment|/* 1101 -&gt;  7.5x */
-l_int|85
-comma
-multiline_comment|/* 1110 -&gt;  8.5x */
-l_int|120
-comma
-multiline_comment|/* 1111 -&gt; 12.0x */
-)brace
-suffix:semicolon
+multiline_comment|/*&n; * VIA C3 Samuel2 Stepping 1-&gt;15&n; */
 DECL|variable|samuel2_eblcr
 r_static
 r_int
@@ -455,6 +395,67 @@ multiline_comment|/* 1110 -&gt; 13.0x */
 l_int|65
 comma
 multiline_comment|/* 1111 -&gt;  6.5x */
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * VIA C3 Ezra&n; */
+DECL|variable|ezra_clock_ratio
+r_static
+r_int
+id|__initdata
+id|ezra_clock_ratio
+(braket
+l_int|16
+)braket
+op_assign
+(brace
+l_int|100
+comma
+multiline_comment|/* 0000 -&gt; 10.0x */
+l_int|30
+comma
+multiline_comment|/* 0001 -&gt;  3.0x */
+l_int|40
+comma
+multiline_comment|/* 0010 -&gt;  4.0x */
+l_int|90
+comma
+multiline_comment|/* 0011 -&gt;  9.0x */
+l_int|95
+comma
+multiline_comment|/* 0100 -&gt;  9.5x */
+l_int|35
+comma
+multiline_comment|/* 0101 -&gt;  3.5x */
+l_int|45
+comma
+multiline_comment|/* 0110 -&gt;  4.5x */
+l_int|55
+comma
+multiline_comment|/* 0111 -&gt;  5.5x */
+l_int|60
+comma
+multiline_comment|/* 1000 -&gt;  6.0x */
+l_int|70
+comma
+multiline_comment|/* 1001 -&gt;  7.0x */
+l_int|80
+comma
+multiline_comment|/* 1010 -&gt;  8.0x */
+l_int|50
+comma
+multiline_comment|/* 1011 -&gt;  5.0x */
+l_int|65
+comma
+multiline_comment|/* 1100 -&gt;  6.5x */
+l_int|75
+comma
+multiline_comment|/* 1101 -&gt;  7.5x */
+l_int|85
+comma
+multiline_comment|/* 1110 -&gt;  8.5x */
+l_int|120
+comma
+multiline_comment|/* 1111 -&gt; 12.0x */
 )brace
 suffix:semicolon
 DECL|variable|ezra_eblcr
