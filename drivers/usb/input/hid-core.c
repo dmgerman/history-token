@@ -6431,7 +6431,7 @@ id|USB_VENDOR_ID_MGE
 comma
 id|USB_DEVICE_ID_MGE_UPS
 comma
-id|HID_QUIRK_HIDDEV
+id|HID_QUIRK_IGNORE
 )brace
 comma
 (brace
@@ -6439,7 +6439,7 @@ id|USB_VENDOR_ID_MGE
 comma
 id|USB_DEVICE_ID_MGE_UPS1
 comma
-id|HID_QUIRK_HIDDEV
+id|HID_QUIRK_IGNORE
 )brace
 comma
 (brace
