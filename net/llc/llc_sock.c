@@ -18,6 +18,7 @@ macro_line|#include &lt;net/llc_if.h&gt;
 macro_line|#include &lt;net/llc_sap.h&gt;
 macro_line|#include &lt;net/llc_pdu.h&gt;
 macro_line|#include &lt;net/llc_conn.h&gt;
+macro_line|#include &lt;net/llc_mac.h&gt;
 macro_line|#include &lt;linux/llc.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
@@ -36,14 +37,6 @@ id|u16
 id|llc_ui_sap_link_no_max
 (braket
 l_int|256
-)braket
-suffix:semicolon
-DECL|variable|llc_ui_addrany
-r_static
-id|u8
-id|llc_ui_addrany
-(braket
-id|IFHWADDRLEN
 )braket
 suffix:semicolon
 DECL|variable|llc_ui_addrnull
@@ -154,62 +147,6 @@ id|llc_ui_sap_link_no_max
 id|sap
 )braket
 op_increment
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;llc_ui_mac_match - determines if two mac addresses are the same&n; *&t;@mac1: First mac address to compare.&n; *&t;@mac2: Second mac address to compare.&n; *&n; *&t;Determines if two given mac address are the same.  Returns 0 if there&n; *&t;is not a complete match up to len, 1 if a complete match up to len is&n; *&t;found.&n; */
-DECL|function|llc_ui_mac_match
-r_static
-id|__inline__
-id|u8
-id|llc_ui_mac_match
-c_func
-(paren
-id|u8
-op_star
-id|mac1
-comma
-id|u8
-op_star
-id|mac2
-)paren
-(brace
-r_return
-op_logical_neg
-id|memcmp
-c_func
-(paren
-id|mac1
-comma
-id|mac2
-comma
-id|IFHWADDRLEN
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;llc_ui_mac_null - determines if a address is a null mac address&n; *&t;@mac: Mac address to test if null.&n; *&n; *&t;Determines if a given address is a null mac address.  Returns 0 if the&n; *&t;address is not a null mac, 1 if the address is a null mac.&n; */
-DECL|function|llc_ui_mac_null
-r_static
-id|__inline__
-id|u8
-id|llc_ui_mac_null
-c_func
-(paren
-id|u8
-op_star
-id|mac
-)paren
-(brace
-r_return
-op_logical_neg
-id|memcmp
-c_func
-(paren
-id|mac
-comma
-id|llc_ui_addrany
-comma
-id|IFHWADDRLEN
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_ui_addr_null - determines if a address structure is null&n; *&t;@addr: Address to test if null.&n; */
@@ -937,13 +874,13 @@ id|llc_ui-&gt;addr.sllc_dsap
 op_eq
 id|daddr-&gt;lsap
 op_logical_and
-id|llc_ui_mac_null
+id|llc_mac_null
 c_func
 (paren
 id|llc_ui-&gt;addr.sllc_mmac
 )paren
 op_logical_and
-id|llc_ui_mac_match
+id|llc_mac_match
 c_func
 (paren
 id|llc_ui-&gt;addr.sllc_smac
@@ -951,7 +888,7 @@ comma
 id|laddr-&gt;mac
 )paren
 op_logical_and
-id|llc_ui_mac_match
+id|llc_mac_match
 c_func
 (paren
 id|llc_ui-&gt;addr.sllc_dmac
@@ -1036,7 +973,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|llc_ui_mac_null
+id|llc_mac_null
 c_func
 (paren
 id|llc_ui-&gt;addr.sllc_smac
@@ -1047,14 +984,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|llc_ui_mac_null
+id|llc_mac_null
 c_func
 (paren
 id|llc_ui-&gt;addr.sllc_mmac
 )paren
 op_logical_and
 op_logical_neg
-id|llc_ui_mac_match
+id|llc_mac_match
 c_func
 (paren
 id|llc_ui-&gt;addr.sllc_mmac
@@ -1073,13 +1010,13 @@ c_cond
 id|dev
 op_logical_and
 op_logical_neg
-id|llc_ui_mac_null
+id|llc_mac_null
 c_func
 (paren
 id|llc_ui-&gt;addr.sllc_mmac
 )paren
 op_logical_and
-id|llc_ui_mac_match
+id|llc_mac_match
 c_func
 (paren
 id|llc_ui-&gt;addr.sllc_mmac
@@ -1087,7 +1024,7 @@ comma
 id|laddr-&gt;mac
 )paren
 op_logical_and
-id|llc_ui_mac_match
+id|llc_mac_match
 c_func
 (paren
 id|llc_ui-&gt;addr.sllc_smac
@@ -1110,7 +1047,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|llc_ui_mac_match
+id|llc_mac_match
 c_func
 (paren
 id|llc_ui-&gt;addr.sllc_smac
@@ -1146,7 +1083,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|llc_ui_mac_null
+id|llc_mac_null
 c_func
 (paren
 id|llc_ui-&gt;addr.sllc_dmac
@@ -2027,7 +1964,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|llc_ui_mac_null
+id|llc_mac_null
 c_func
 (paren
 id|addr-&gt;sllc_smac
@@ -2171,7 +2108,7 @@ c_cond
 op_logical_neg
 id|dev
 op_logical_and
-id|llc_ui_mac_null
+id|llc_mac_null
 c_func
 (paren
 id|addr-&gt;sllc_mmac
@@ -2212,7 +2149,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|llc_ui_mac_null
+id|llc_mac_null
 c_func
 (paren
 id|addr-&gt;sllc_mmac
@@ -6510,7 +6447,7 @@ comma
 id|s-&gt;type
 comma
 op_logical_neg
-id|llc_ui_mac_null
+id|llc_mac_null
 c_func
 (paren
 id|llc_ui-&gt;addr.sllc_mmac
@@ -6528,7 +6465,7 @@ c_cond
 (paren
 id|llc_ui-&gt;dev
 op_logical_and
-id|llc_ui_mac_null
+id|llc_mac_null
 c_func
 (paren
 id|llc_ui-&gt;addr.sllc_mmac
@@ -6550,7 +6487,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|llc_ui_mac_null
+id|llc_mac_null
 c_func
 (paren
 id|llc_ui-&gt;addr.sllc_mmac

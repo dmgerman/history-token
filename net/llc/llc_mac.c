@@ -21,6 +21,13 @@ macro_line|#else
 DECL|macro|dprintk
 mdefine_line|#define dprintk(args...)
 macro_line|#endif
+DECL|variable|llc_mac_null_var
+id|u8
+id|llc_mac_null_var
+(braket
+id|IFHWADDRLEN
+)braket
+suffix:semicolon
 r_static
 r_void
 id|fix_up_incoming_skb
