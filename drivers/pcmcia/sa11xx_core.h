@@ -64,6 +64,11 @@ DECL|struct|sa1100_pcmcia_socket
 r_struct
 id|sa1100_pcmcia_socket
 (brace
+DECL|member|socket
+r_struct
+id|pcmcia_socket
+id|socket
+suffix:semicolon
 multiline_comment|/*&n;&t; * Info from low level handler&n;&t; */
 DECL|member|dev
 r_struct

@@ -117,7 +117,8 @@ r_void
 id|release_cis_mem
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -140,7 +141,7 @@ op_member_access_from_pointer
 id|set_mem_map
 c_func
 (paren
-id|s-&gt;sock
+id|s
 comma
 op_amp
 id|s-&gt;cis_mem
@@ -189,7 +190,8 @@ DECL|function|set_cis_map
 id|set_cis_map
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -308,7 +310,7 @@ op_member_access_from_pointer
 id|set_mem_map
 c_func
 (paren
-id|s-&gt;sock
+id|s
 comma
 id|mem
 )paren
@@ -358,7 +360,8 @@ r_int
 id|read_cis_mem
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -802,7 +805,8 @@ r_void
 id|write_cis_mem
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -1169,7 +1173,8 @@ r_void
 id|read_cis_cache
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -1382,7 +1387,8 @@ DECL|function|remove_cis_cache
 id|remove_cis_cache
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -1449,7 +1455,8 @@ r_void
 id|destroy_cis_cache
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -1510,7 +1517,8 @@ r_int
 id|verify_cis_cache
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -1629,7 +1637,8 @@ op_star
 id|cis
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -1787,7 +1796,8 @@ op_star
 id|tuple
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -2003,7 +2013,8 @@ r_int
 id|follow_link
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -2330,7 +2341,8 @@ op_star
 id|tuple
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -2900,7 +2912,8 @@ op_star
 id|tuple
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon

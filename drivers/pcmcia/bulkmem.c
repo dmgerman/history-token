@@ -43,7 +43,8 @@ id|client_t
 op_star
 id|mtd
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -334,7 +335,8 @@ id|client_t
 op_star
 id|mtd
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -966,7 +968,7 @@ op_member_access_from_pointer
 id|set_mem_map
 c_func
 (paren
-id|win-&gt;sock-&gt;sock
+id|win-&gt;sock
 comma
 op_amp
 id|win-&gt;ctl
@@ -990,7 +992,8 @@ op_star
 id|req
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -1036,7 +1039,7 @@ op_member_access_from_pointer
 id|set_socket
 c_func
 (paren
-id|s-&gt;sock
+id|s
 comma
 op_amp
 id|s-&gt;socket
@@ -1063,7 +1066,8 @@ op_star
 id|req
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -1112,7 +1116,7 @@ op_member_access_from_pointer
 id|set_socket
 c_func
 (paren
-id|s-&gt;sock
+id|s
 comma
 op_amp
 id|s-&gt;socket
@@ -1750,7 +1754,8 @@ op_star
 id|rgn
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 op_assign
@@ -1905,7 +1910,8 @@ id|reg
 id|memory_handle_t
 id|list
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -2285,7 +2291,8 @@ op_star
 id|mh
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -2313,12 +2320,12 @@ id|CS_BAD_HANDLE
 suffix:semicolon
 id|s
 op_assign
-id|SOCKET
-c_func
 (paren
 op_star
 id|handle
 )paren
+op_member_access_from_pointer
+id|Socket
 suffix:semicolon
 r_if
 c_cond
