@@ -508,6 +508,10 @@ r_typedef
 r_struct
 id|isdn_net_local_s
 (brace
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|magic
 id|ulong
 id|magic

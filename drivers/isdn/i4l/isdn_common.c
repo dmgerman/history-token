@@ -8150,7 +8150,7 @@ id|isdn_ctrl_release
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * file_operations for major 43, /dev/isdn*&n; * stolen from drivers/char/misc.c&n; */
+multiline_comment|/*&n; * file_operations for major 45, /dev/isdn*&n; * stolen from drivers/char/misc.c&n; */
 r_static
 r_int
 DECL|function|isdn_open
