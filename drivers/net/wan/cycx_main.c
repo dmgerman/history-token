@@ -1016,42 +1016,6 @@ r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This routine is called by the protocol-specific modules when network&n; * interface is being open.  The only reason we need this, is because we&n; * have to call MOD_INC_USE_COUNT, but cannot include &squot;module.h&squot; where it&squot;s&n; * defined more than once into the same kernel module.&n; */
-DECL|function|cyclomx_mod_inc_use_count
-r_void
-id|cyclomx_mod_inc_use_count
-c_func
-(paren
-r_struct
-id|cycx_device
-op_star
-id|card
-)paren
-(brace
-op_increment
-id|card-&gt;open_cnt
-suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * This routine is called by the protocol-specific modules when network&n; * interface is being closed.  The only reason we need this, is because we&n; * have to call MOD_DEC_USE_COUNT, but cannot include &squot;module.h&squot; where it&squot;s&n; * defined more than once into the same kernel module.&n; */
-DECL|function|cyclomx_mod_dec_use_count
-r_void
-id|cyclomx_mod_dec_use_count
-c_func
-(paren
-r_struct
-id|cycx_device
-op_star
-id|card
-)paren
-(brace
-op_decrement
-id|card-&gt;open_cnt
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
 multiline_comment|/* Set WAN device state.  */
 DECL|function|cyclomx_set_state
 r_void
