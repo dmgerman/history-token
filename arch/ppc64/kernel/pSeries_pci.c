@@ -2679,11 +2679,14 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Failed to request IO&quot;
-l_string|&quot;on hose %d&bslash;n&quot;
+l_string|&quot;Failed to request IO on &quot;
+l_string|&quot;PCI domain %d&bslash;n&quot;
 comma
-l_int|0
-multiline_comment|/* FIXME */
+id|pci_domain_nr
+c_func
+(paren
+id|bus
+)paren
 )paren
 suffix:semicolon
 r_for
@@ -2752,11 +2755,14 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Failed to request MEM&quot;
-l_string|&quot;on hose %d&bslash;n&quot;
+l_string|&quot;Failed to request MEM on &quot;
+l_string|&quot;PCI domain %d&bslash;n&quot;
 comma
-l_int|0
-multiline_comment|/* FIXME */
+id|pci_domain_nr
+c_func
+(paren
+id|bus
+)paren
 )paren
 suffix:semicolon
 )brace
