@@ -3,6 +3,8 @@ DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;16
 DECL|macro|IRQ_ISA_KEYBOARD
 mdefine_line|#define IRQ_ISA_KEYBOARD&t; 1
+DECL|macro|RTC_IRQ
+mdefine_line|#define RTC_IRQ&t;&t;&t; 8
 DECL|macro|AUX_IRQ
 mdefine_line|#define AUX_IRQ&t;&t;&t;12
 DECL|macro|IRQ_HARDDISK

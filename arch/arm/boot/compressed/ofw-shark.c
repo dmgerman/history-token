@@ -60,7 +60,7 @@ id|tag_core
 suffix:semicolon
 id|tag-&gt;u.core.flags
 op_assign
-id|FLAG_READONLY
+l_int|1
 suffix:semicolon
 id|tag-&gt;u.core.pagesize
 op_assign
