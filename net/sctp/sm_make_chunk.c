@@ -246,11 +246,7 @@ id|retval
 op_assign
 l_int|NULL
 suffix:semicolon
-id|addrs.v
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* Convert the provided bind address list to raw format */
+multiline_comment|/* Convert the provided bind address list to raw format. */
 id|addrs
 op_assign
 id|sctp_bind_addrs_to_raw
@@ -263,15 +259,6 @@ id|addrs_len
 comma
 id|gfp
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|addrs.v
-)paren
-r_goto
-id|nodata
 suffix:semicolon
 id|init.init_tag
 op_assign
@@ -542,6 +529,7 @@ id|retval
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* Note: there may be no addresses to embed. */
 id|addrs
 op_assign
 id|sctp_bind_addrs_to_raw
@@ -555,15 +543,6 @@ id|addrs_len
 comma
 id|gfp
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|addrs.v
-)paren
-r_goto
-id|nomem_rawaddr
 suffix:semicolon
 id|initack.init_tag
 op_assign
@@ -777,14 +756,17 @@ id|cookie
 suffix:semicolon
 id|nomem_cookie
 suffix:colon
+r_if
+c_cond
+(paren
+id|addrs.v
+)paren
 id|kfree
 c_func
 (paren
 id|addrs.v
 )paren
 suffix:semicolon
-id|nomem_rawaddr
-suffix:colon
 r_return
 id|retval
 suffix:semicolon
@@ -4966,6 +4948,31 @@ id|SCTP_IERROR_NOMEM
 suffix:semicolon
 r_goto
 id|fail
+suffix:semicolon
+)brace
+multiline_comment|/* Also, add the destination address. */
+r_if
+c_cond
+(paren
+id|list_empty
+c_func
+(paren
+op_amp
+id|retval-&gt;base.bind_addr.address_list
+)paren
+)paren
+(brace
+id|sctp_add_bind_addr
+c_func
+(paren
+op_amp
+id|retval-&gt;base.bind_addr
+comma
+op_amp
+id|chunk-&gt;dest
+comma
+id|GFP_ATOMIC
+)paren
 suffix:semicolon
 )brace
 id|retval-&gt;next_tsn
