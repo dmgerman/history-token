@@ -713,15 +713,6 @@ id|i2c_client
 op_star
 )paren
 suffix:semicolon
-DECL|member|data
-r_void
-op_star
-id|data
-suffix:semicolon
-multiline_comment|/* private data for the adapter&t;&t;&t;*/
-multiline_comment|/* some data fields that are used by all types&t;*/
-multiline_comment|/* these data fields are readonly to the public&t;*/
-multiline_comment|/* and can be set via the i2c_ioctl call&t;*/
 multiline_comment|/* data fields that are valid for all devices&t;*/
 DECL|member|bus
 r_struct
@@ -773,6 +764,53 @@ macro_line|#endif /* def CONFIG_PROC_FS */
 suffix:semicolon
 DECL|macro|to_i2c_adapter
 mdefine_line|#define to_i2c_adapter(d) container_of(d, struct i2c_adapter, dev)
+DECL|function|i2c_get_adapdata
+r_static
+r_inline
+r_void
+op_star
+id|i2c_get_adapdata
+(paren
+r_struct
+id|i2c_adapter
+op_star
+id|dev
+)paren
+(brace
+r_return
+id|dev_get_drvdata
+(paren
+op_amp
+id|dev-&gt;dev
+)paren
+suffix:semicolon
+)brace
+DECL|function|i2c_set_adapdata
+r_static
+r_inline
+r_void
+id|i2c_set_adapdata
+(paren
+r_struct
+id|i2c_adapter
+op_star
+id|dev
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+r_return
+id|dev_set_drvdata
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+id|data
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*flags for the driver struct: */
 DECL|macro|I2C_DF_NOTIFY
 mdefine_line|#define I2C_DF_NOTIFY&t;0x01&t;&t;/* notify on bus (de/a)ttaches &t;*/
