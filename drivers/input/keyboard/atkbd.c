@@ -2576,7 +2576,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|atkbd_scroll
+id|atkbd-&gt;scroll
 )paren
 (brace
 id|input_regs
