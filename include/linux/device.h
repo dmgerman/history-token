@@ -43,16 +43,6 @@ id|RESUME_ENABLE
 comma
 )brace
 suffix:semicolon
-r_enum
-(brace
-DECL|enumerator|REMOVE_NOTIFY
-id|REMOVE_NOTIFY
-comma
-DECL|enumerator|REMOVE_FREE_RESOURCES
-id|REMOVE_FREE_RESOURCES
-comma
-)brace
-suffix:semicolon
 r_struct
 id|device
 suffix:semicolon
@@ -305,9 +295,6 @@ r_struct
 id|device
 op_star
 id|dev
-comma
-id|u32
-id|flags
 )paren
 suffix:semicolon
 DECL|member|suspend

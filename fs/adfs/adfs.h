@@ -593,7 +593,13 @@ id|block
 op_add_assign
 id|off
 op_lshift
-id|sb-&gt;u.adfs_sb.s_log2sharesize
+id|ADFS_SB
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|s_log2sharesize
 suffix:semicolon
 )brace
 r_return

@@ -56,6 +56,18 @@ r_int
 r_int
 id|w_counter
 suffix:semicolon
+DECL|member|fasync_readers
+r_struct
+id|fasync_struct
+op_star
+id|fasync_readers
+suffix:semicolon
+DECL|member|fasync_writers
+r_struct
+id|fasync_struct
+op_star
+id|fasync_writers
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Differs from PIPE_BUF in that PIPE_SIZE is the length of the actual&n;   memory allocation, whereas PIPE_BUF makes atomicity guarantees.  */
@@ -83,6 +95,10 @@ DECL|macro|PIPE_RCOUNTER
 mdefine_line|#define PIPE_RCOUNTER(inode)&t;((inode).i_pipe-&gt;r_counter)
 DECL|macro|PIPE_WCOUNTER
 mdefine_line|#define PIPE_WCOUNTER(inode)&t;((inode).i_pipe-&gt;w_counter)
+DECL|macro|PIPE_FASYNC_READERS
+mdefine_line|#define PIPE_FASYNC_READERS(inode)     (&amp;((inode).i_pipe-&gt;fasync_readers))
+DECL|macro|PIPE_FASYNC_WRITERS
+mdefine_line|#define PIPE_FASYNC_WRITERS(inode)     (&amp;((inode).i_pipe-&gt;fasync_writers))
 DECL|macro|PIPE_EMPTY
 mdefine_line|#define PIPE_EMPTY(inode)&t;(PIPE_LEN(inode) == 0)
 DECL|macro|PIPE_FULL

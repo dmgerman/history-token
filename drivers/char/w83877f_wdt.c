@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;W83877F Computer Watchdog Timer driver for Linux 2.4.x&n; *&n; *      Based on acquirewdt.c by Alan Cox,&n; *           and sbc60xxwdt.c by Jakob Oestergaard &lt;jakob@ostenfeld.dk&gt;&n; *     &n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;The authors do NOT admit liability nor provide warranty for &n; *&t;any of this software. This material is provided &quot;AS-IS&quot; in &n; *      the hope that it may be useful for others.&n; *&n; *&t;(c) Copyright 2001    Scott Jennings &lt;management@oro.net&gt;&n; *&n; *           4/19 - 2001      [Initial revision]&n; *&n; *&n; *  Theory of operation:&n; *  A Watchdog Timer (WDT) is a hardware circuit that can &n; *  reset the computer system in case of a software fault.&n; *  You probably knew that already.&n; *&n; *  Usually a userspace daemon will notify the kernel WDT driver&n; *  via the /proc/watchdog special device file that userspace is&n; *  still alive, at regular intervals.  When such a notification&n; *  occurs, the driver will usually tell the hardware watchdog&n; *  that everything is in order, and that the watchdog should wait&n; *  for yet another little while to reset the system.&n; *  If userspace fails (RAM error, kernel bug, whatever), the&n; *  notifications cease to occur, and the hardware watchdog will&n; *  reset the system (causing a reboot) after the timeout occurs.&n; *&n; *  This WDT driver is different from most other Linux WDT&n; *  drivers in that the driver will ping the watchdog by itself,&n; *  because this particular WDT has a very short timeout (1.6&n; *  seconds) and it would be insane to count on any userspace&n; *  daemon always getting scheduled within that time frame.&n; */
+multiline_comment|/*&n; *&t;W83877F Computer Watchdog Timer driver for Linux 2.4.x&n; *&n; *      Based on acquirewdt.c by Alan Cox,&n; *           and sbc60xxwdt.c by Jakob Oestergaard &lt;jakob@ostenfeld.dk&gt;&n; *     &n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;The authors do NOT admit liability nor provide warranty for &n; *&t;any of this software. This material is provided &quot;AS-IS&quot; in &n; *      the hope that it may be useful for others.&n; *&n; *&t;(c) Copyright 2001    Scott Jennings &lt;linuxdrivers@oro.net&gt;&n; *&n; *           4/19 - 2001      [Initial revision]&n; *           9/27 - 2001      Added spinlocking&n; *&n; *&n; *  Theory of operation:&n; *  A Watchdog Timer (WDT) is a hardware circuit that can &n; *  reset the computer system in case of a software fault.&n; *  You probably knew that already.&n; *&n; *  Usually a userspace daemon will notify the kernel WDT driver&n; *  via the /proc/watchdog special device file that userspace is&n; *  still alive, at regular intervals.  When such a notification&n; *  occurs, the driver will usually tell the hardware watchdog&n; *  that everything is in order, and that the watchdog should wait&n; *  for yet another little while to reset the system.&n; *  If userspace fails (RAM error, kernel bug, whatever), the&n; *  notifications cease to occur, and the hardware watchdog will&n; *  reset the system (causing a reboot) after the timeout occurs.&n; *&n; *  This WDT driver is different from most other Linux WDT&n; *  drivers in that the driver will ping the watchdog by itself,&n; *  because this particular WDT has a very short timeout (1.6&n; *  seconds) and it would be insane to count on any userspace&n; *  daemon always getting scheduled within that time frame.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -64,12 +64,18 @@ suffix:semicolon
 DECL|variable|wdt_is_open
 r_static
 r_int
+r_int
 id|wdt_is_open
 suffix:semicolon
 DECL|variable|wdt_expect_close
 r_static
 r_int
 id|wdt_expect_close
+suffix:semicolon
+DECL|variable|wdt_spinlock
+r_static
+id|spinlock_t
+id|wdt_spinlock
 suffix:semicolon
 multiline_comment|/*&n; *&t;Whack the dog&n; */
 DECL|function|wdt_timer_ping
@@ -96,6 +102,14 @@ id|next_heartbeat
 )paren
 )paren
 (brace
+multiline_comment|/* Ping the WDT */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|wdt_spinlock
+)paren
+suffix:semicolon
 multiline_comment|/* Ping the WDT by reading from WDT_PING */
 id|inb_p
 c_func
@@ -115,6 +129,13 @@ c_func
 (paren
 op_amp
 id|timer
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|wdt_spinlock
 )paren
 suffix:semicolon
 )brace
@@ -140,6 +161,19 @@ r_int
 id|writeval
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|wdt_spinlock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* buy some time */
 id|inb_p
 c_func
@@ -190,6 +224,15 @@ c_func
 id|DISABLE_W83877F
 comma
 id|ENABLE_W83877F_PORT
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|wdt_spinlock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -432,7 +475,14 @@ multiline_comment|/* Just in case we&squot;re already talking to someone... */
 r_if
 c_cond
 (paren
+id|test_and_set_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|wdt_is_open
+)paren
 )paren
 (brace
 r_return
@@ -441,10 +491,6 @@ id|EBUSY
 suffix:semicolon
 )brace
 multiline_comment|/* Good, fire up the show */
-id|wdt_is_open
-op_assign
-l_int|1
-suffix:semicolon
 id|wdt_startup
 c_func
 (paren
@@ -792,6 +838,13 @@ op_assign
 op_minus
 id|EBUSY
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|wdt_spinlock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -935,10 +988,24 @@ c_func
 id|w83877f_wdt_unload
 )paren
 suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Scott and Bill Jennings&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Driver for watchdog timer in w83877f chip&quot;
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 eof

@@ -1647,6 +1647,11 @@ multiline_comment|/* void (*suspend)(struct usb_device *dev); */
 multiline_comment|/* void (*resume)(struct usb_device *dev); */
 )brace
 suffix:semicolon
+r_extern
+r_struct
+id|bus_type
+id|usb_bus_type
+suffix:semicolon
 multiline_comment|/*&n; * use these in module_init()/module_exit()&n; * and don&squot;t forget MODULE_DEVICE_TABLE(usb, ...)&n; */
 r_extern
 r_int

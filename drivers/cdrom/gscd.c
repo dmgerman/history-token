@@ -3208,7 +3208,7 @@ c_func
 (paren
 id|gscd_port
 comma
-l_int|4
+id|GSCD_IO_EXTENT
 )paren
 suffix:semicolon
 id|printk
@@ -3269,6 +3269,11 @@ suffix:semicolon
 r_int
 id|result
 suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3290,18 +3295,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|gscd_port
 comma
-l_int|4
+id|GSCD_IO_EXTENT
+comma
+l_string|&quot;gscd&quot;
 )paren
 )paren
 (brace
 id|printk
+c_func
 (paren
-l_string|&quot;GSCD: Init failed, I/O port (%X) already in use.&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;GSCD: Init failed, I/O port (%X) already&quot;
+l_string|&quot; in use.&bslash;n&quot;
 comma
 id|gscd_port
 )paren
@@ -3330,12 +3341,17 @@ l_int|0x09
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;GSCD: DMA kann ich noch nicht!&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EIO
+suffix:semicolon
+r_goto
+id|err_out1
 suffix:semicolon
 )brace
 r_if
@@ -3366,13 +3382,20 @@ l_int|0
 )paren
 (brace
 id|printk
+c_func
 (paren
-l_string|&quot;GSCD: GoldStar CD-ROM Drive is not found.&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;GSCD: GoldStar CD-ROM Drive is&quot;
+l_string|&quot; not found.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EIO
+suffix:semicolon
+r_goto
+id|err_out1
 suffix:semicolon
 )brace
 )brace
@@ -3393,13 +3416,20 @@ l_int|0x09
 )paren
 (brace
 id|printk
+c_func
 (paren
-l_string|&quot;GSCD: GoldStar Interface Adapter does not exist or H/W error&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;GSCD: GoldStar Interface Adapter does not &quot;
+l_string|&quot;exist or H/W error&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EIO
+suffix:semicolon
+r_goto
+id|err_out1
 suffix:semicolon
 )brace
 multiline_comment|/* reset all drives */
@@ -3467,15 +3497,22 @@ l_int|0
 )paren
 (brace
 id|printk
+c_func
 (paren
-l_string|&quot;GSCD: Unable to get major %d for GoldStar CD-ROM&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;GSCD: Unable to get major %d for GoldStar &quot;
+l_string|&quot;CD-ROM&bslash;n&quot;
 comma
 id|MAJOR_NR
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EIO
+suffix:semicolon
+r_goto
+id|err_out1
 suffix:semicolon
 )brace
 id|devfs_register
@@ -3526,16 +3563,6 @@ id|gscdPresent
 op_assign
 l_int|1
 suffix:semicolon
-id|request_region
-c_func
-(paren
-id|gscd_port
-comma
-l_int|4
-comma
-l_string|&quot;gscd&quot;
-)paren
-suffix:semicolon
 id|register_disk
 c_func
 (paren
@@ -3566,6 +3593,19 @@ l_string|&quot;GSCD: GoldStar CD-ROM Drive found.&bslash;n&quot;
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|err_out1
+suffix:colon
+id|release_region
+c_func
+(paren
+id|gscd_port
+comma
+id|GSCD_IO_EXTENT
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|gscd_hsg2msf

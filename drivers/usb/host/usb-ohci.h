@@ -974,6 +974,12 @@ id|pci_dev
 op_star
 id|ohci_dev
 suffix:semicolon
+DECL|member|slot_name
+r_const
+r_char
+op_star
+id|slot_name
+suffix:semicolon
 DECL|member|pci_latency
 id|u8
 id|pci_latency
@@ -1041,6 +1047,9 @@ suffix:semicolon
 singleline_comment|// #define ohci_to_usb(ohci)&t;((ohci)-&gt;usb)
 DECL|macro|usb_to_ohci
 mdefine_line|#define usb_to_ohci(usb)&t;((struct ohci_device *)(usb)-&gt;hcpriv)
+multiline_comment|/* For initializing controller (mask in an HCFS mode too) */
+DECL|macro|OHCI_CONTROL_INIT
+mdefine_line|#define OHCI_CONTROL_INIT &bslash;&n;&t;(OHCI_CTRL_CBSR &amp; 0x3) | OHCI_CTRL_IE | OHCI_CTRL_PLE
 multiline_comment|/* hcd */
 multiline_comment|/* endpoint */
 r_static
@@ -1194,10 +1203,6 @@ macro_line|#&t;define OHCI_MEM_FLAGS&t;SLAB_POISON
 macro_line|#else
 DECL|macro|OHCI_MEM_FLAGS
 macro_line|#&t;define OHCI_MEM_FLAGS&t;0
-macro_line|#endif
-macro_line|#ifndef CONFIG_PCI
-macro_line|#&t;error &quot;usb-ohci currently requires PCI-based controllers&quot;
-multiline_comment|/* to support non-PCI OHCIs, you need custom bus/mem/... glue */
 macro_line|#endif
 multiline_comment|/* Recover a TD/ED using its collision chain */
 r_static
@@ -2072,4 +2077,31 @@ id|dev-&gt;dma
 )paren
 suffix:semicolon
 )brace
+r_extern
+id|spinlock_t
+id|usb_ed_lock
+suffix:semicolon
+r_extern
+r_void
+id|dl_done_list
+(paren
+id|ohci_t
+op_star
+id|ohci
+comma
+id|td_t
+op_star
+id|td_list
+)paren
+suffix:semicolon
+r_extern
+id|td_t
+op_star
+id|dl_reverse_done_list
+(paren
+id|ohci_t
+op_star
+id|ohci
+)paren
+suffix:semicolon
 eof

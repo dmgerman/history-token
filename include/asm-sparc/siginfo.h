@@ -6,6 +6,8 @@ DECL|macro|HAVE_ARCH_SIGINFO_T
 mdefine_line|#define HAVE_ARCH_SIGINFO_T
 DECL|macro|HAVE_ARCH_COPY_SIGINFO
 mdefine_line|#define HAVE_ARCH_COPY_SIGINFO
+DECL|macro|HAVE_ARCH_COPY_SIGINFO_TO_USER
+mdefine_line|#define HAVE_ARCH_COPY_SIGINFO_TO_USER
 macro_line|#include &lt;asm-generic/siginfo.h&gt;
 DECL|struct|siginfo
 r_typedef

@@ -11,25 +11,25 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * Flags for irregular SCSI devices that need special treatment&n; */
 DECL|macro|BLIST_NOLUN
-mdefine_line|#define BLIST_NOLUN     &t;0x001&t;/* Don&squot;t scan for LUNs */
+mdefine_line|#define BLIST_NOLUN&t;&t;0x001&t;/* Don&squot;t scan for LUNs */
 DECL|macro|BLIST_FORCELUN
-mdefine_line|#define BLIST_FORCELUN  &t;0x002&t;/* Known to have LUNs, force sanning */
+mdefine_line|#define BLIST_FORCELUN&t;&t;0x002&t;/* Known to have LUNs, force sanning */
 DECL|macro|BLIST_BORKEN
-mdefine_line|#define BLIST_BORKEN    &t;0x004&t;/* Flag for broken handshaking */
+mdefine_line|#define BLIST_BORKEN&t;&t;0x004&t;/* Flag for broken handshaking */
 DECL|macro|BLIST_KEY
-mdefine_line|#define BLIST_KEY       &t;0x008&t;/* Needs to be unlocked by special command */
+mdefine_line|#define BLIST_KEY&t;&t;0x008&t;/* Needs to be unlocked by special command */
 DECL|macro|BLIST_SINGLELUN
-mdefine_line|#define BLIST_SINGLELUN &t;0x010&t;/* LUNs should better not be used in parallel */
+mdefine_line|#define BLIST_SINGLELUN&t;&t;0x010&t;/* LUNs should better not be used in parallel */
 DECL|macro|BLIST_NOTQ
 mdefine_line|#define BLIST_NOTQ&t;&t;0x020&t;/* Buggy Tagged Command Queuing */
 DECL|macro|BLIST_SPARSELUN
-mdefine_line|#define BLIST_SPARSELUN &t;0x040&t;/* Non consecutive LUN numbering */
+mdefine_line|#define BLIST_SPARSELUN&t;&t;0x040&t;/* Non consecutive LUN numbering */
 DECL|macro|BLIST_MAX5LUN
 mdefine_line|#define BLIST_MAX5LUN&t;&t;0x080&t;/* Avoid LUNS &gt;= 5 */
 DECL|macro|BLIST_ISDISK
-mdefine_line|#define BLIST_ISDISK    &t;0x100&t;/* Treat as (removable) disk */
+mdefine_line|#define BLIST_ISDISK&t;&t;0x100&t;/* Treat as (removable) disk */
 DECL|macro|BLIST_ISROM
-mdefine_line|#define BLIST_ISROM     &t;0x200&t;/* Treat as (removable) CD-ROM */
+mdefine_line|#define BLIST_ISROM&t;&t;0x200&t;/* Treat as (removable) CD-ROM */
 DECL|macro|BLIST_LARGELUN
 mdefine_line|#define BLIST_LARGELUN&t;&t;0x400&t;/* LUNs larger than 7 despite reporting as SCSI 2 */
 DECL|macro|BLIST_INQUIRY_36
@@ -318,7 +318,7 @@ comma
 id|BLIST_NOLUN
 )brace
 comma
-multiline_comment|/*Responds to all lun */
+multiline_comment|/* Responds to all lun */
 (brace
 l_string|&quot;NEC&quot;
 comma
@@ -600,7 +600,7 @@ comma
 id|BLIST_NOLUN
 )brace
 comma
-multiline_comment|/* Locks up if polled for lun != 0  &n;&t;&t;&t;&t;&t;&t;&t;&t; * extra reset */
+multiline_comment|/* Locks up if polled for lun != 0 extra reset */
 (brace
 l_string|&quot;YAMAHA&quot;
 comma

@@ -7,6 +7,8 @@ DECL|macro|SIGEV_PAD_SIZE
 mdefine_line|#define SIGEV_PAD_SIZE&t;((SIGEV_MAX_SIZE/sizeof(int)) - 4)
 DECL|macro|HAVE_ARCH_COPY_SIGINFO
 mdefine_line|#define HAVE_ARCH_COPY_SIGINFO
+DECL|macro|HAVE_ARCH_COPY_SIGINFO_TO_USER
+mdefine_line|#define HAVE_ARCH_COPY_SIGINFO_TO_USER
 macro_line|#include &lt;asm-generic/siginfo.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/string.h&gt;

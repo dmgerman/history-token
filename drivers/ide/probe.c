@@ -2516,7 +2516,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ATA DISK drive&bslash;n&quot;
+l_string|&quot;DISK drive&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize our quirk list. */
@@ -3041,9 +3041,12 @@ suffix:semicolon
 r_struct
 id|ata_channel
 op_star
-id|hwif
+id|ch
 op_assign
 id|drive-&gt;channel
+suffix:semicolon
+id|u8
+id|select
 suffix:semicolon
 r_if
 c_cond
@@ -3075,7 +3078,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;probing for %s: present=%d, type=%d, probetype=%s&bslash;n&quot;
+l_string|&quot;probing for %s: present=%d, type=%02x, probetype=%s&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
@@ -3106,7 +3109,7 @@ multiline_comment|/* needed for some systems (e.g. crw9624 as drive0 with disk a
 id|SELECT_DRIVE
 c_func
 (paren
-id|hwif
+id|ch
 comma
 id|drive
 )paren
@@ -3117,14 +3120,18 @@ c_func
 l_int|50
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|select
+op_assign
 id|IN_BYTE
 c_func
 (paren
 id|IDE_SELECT_REG
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|select
 op_ne
 id|drive-&gt;select.all
 op_logical_and
@@ -3143,10 +3150,10 @@ l_int|0
 id|SELECT_DRIVE
 c_func
 (paren
-id|hwif
+id|ch
 comma
 op_amp
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 l_int|0
 )braket
@@ -3339,9 +3346,6 @@ c_func
 )paren
 )paren
 suffix:semicolon
-(paren
-r_void
-)paren
 id|GET_STAT
 c_func
 (paren
@@ -3366,10 +3370,10 @@ l_int|0
 id|SELECT_DRIVE
 c_func
 (paren
-id|hwif
+id|ch
 comma
 op_amp
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 l_int|0
 )braket

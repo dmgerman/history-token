@@ -243,20 +243,18 @@ DECL|macro|ATA_F_NODMA
 mdefine_line|#define ATA_F_NODMA&t;0x002&t;/* no DMA mode supported at all */
 DECL|macro|ATA_F_NOADMA
 mdefine_line|#define ATA_F_NOADMA&t;0x004&t;/* DMA has to be enabled explicitely */
-DECL|macro|ATA_F_FDMA
-mdefine_line|#define ATA_F_FDMA&t;0x008&t;/* force autodma */
 DECL|macro|ATA_F_FIXIRQ
-mdefine_line|#define ATA_F_FIXIRQ&t;0x010&t;/* fixed irq wiring */
+mdefine_line|#define ATA_F_FIXIRQ&t;0x008&t;/* fixed irq wiring */
 DECL|macro|ATA_F_SER
-mdefine_line|#define ATA_F_SER&t;0x020&t;/* serialize on first and second channel interrupts */
+mdefine_line|#define ATA_F_SER&t;0x010&t;/* serialize on first and second channel interrupts */
 DECL|macro|ATA_F_IRQ
-mdefine_line|#define ATA_F_IRQ&t;0x040&t;/* trust IRQ information from config */
+mdefine_line|#define ATA_F_IRQ&t;0x020&t;/* trust IRQ information from config */
 DECL|macro|ATA_F_PHACK
-mdefine_line|#define ATA_F_PHACK&t;0x080&t;/* apply PROMISE hacks */
+mdefine_line|#define ATA_F_PHACK&t;0x040&t;/* apply PROMISE hacks */
 DECL|macro|ATA_F_HPTHACK
-mdefine_line|#define ATA_F_HPTHACK&t;0x100&t;/* apply HPT366 hacks */
+mdefine_line|#define ATA_F_HPTHACK&t;0x080&t;/* apply HPT366 hacks */
 DECL|macro|ATA_F_SIMPLEX
-mdefine_line|#define ATA_F_SIMPLEX&t;0x200&t;/* force treatment as simple device */
+mdefine_line|#define ATA_F_SIMPLEX&t;0x100&t;/* force treatment as simple device */
 DECL|struct|ata_pci_device
 r_struct
 id|ata_pci_device

@@ -20,6 +20,24 @@ DECL|macro|NBD_SET_SIZE_BLOCKS
 mdefine_line|#define NBD_SET_SIZE_BLOCKS&t;_IO( 0xab, 7 )
 DECL|macro|NBD_DISCONNECT
 mdefine_line|#define NBD_DISCONNECT  _IO( 0xab, 8 )
+r_enum
+(brace
+DECL|enumerator|NBD_CMD_READ
+id|NBD_CMD_READ
+op_assign
+l_int|0
+comma
+DECL|enumerator|NBD_CMD_WRITE
+id|NBD_CMD_WRITE
+op_assign
+l_int|1
+comma
+DECL|enumerator|NBD_CMD_DISC
+id|NBD_CMD_DISC
+op_assign
+l_int|2
+)brace
+suffix:semicolon
 macro_line|#ifdef MAJOR_NR
 macro_line|#include &lt;asm/semaphore.h&gt;
 DECL|macro|LOCAL_END_REQUEST
@@ -35,6 +53,8 @@ r_int
 id|requests_out
 suffix:semicolon
 macro_line|#endif
+DECL|macro|nbd_cmd
+mdefine_line|#define nbd_cmd(req) ((req)-&gt;cmd[0])
 r_static
 r_void
 DECL|function|nbd_end_request
@@ -191,6 +211,10 @@ r_int
 id|magic
 suffix:semicolon
 multiline_comment|/* FIXME: not if debugging is off&t;*/
+DECL|member|queue_lock
+id|spinlock_t
+id|queue_lock
+suffix:semicolon
 DECL|member|queue_head
 r_struct
 id|list_head

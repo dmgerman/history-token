@@ -45,6 +45,9 @@ comma
 DECL|enumerator|INTEL_I830_M
 id|INTEL_I830_M
 comma
+DECL|enumerator|INTEL_I845_G
+id|INTEL_I845_G
+comma
 DECL|enumerator|INTEL_I840
 id|INTEL_I840
 comma

@@ -808,6 +808,10 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -817,6 +821,10 @@ l_int|1
 comma
 l_string|&quot;MixCOM watchdog&quot;
 )paren
+)paren
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 id|ret
 op_assign
@@ -832,9 +840,19 @@ c_cond
 (paren
 id|ret
 )paren
+(brace
+id|release_region
+c_func
+(paren
+id|watchdog_port
+comma
+l_int|1
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
+)brace
 id|printk
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/scsi/ide-scsi.c&t;Version 0.9&t;&t;Jul   4, 1999&n; *&n; * Copyright (C) 1996 - 1999 Gadi Oxman &lt;gadio@netvision.net.il&gt;&n; */
+multiline_comment|/*&n; * Copyright (C) 1996 - 1999 Gadi Oxman &lt;gadio@netvision.net.il&gt;&n; */
 multiline_comment|/*&n; * Emulation of a SCSI host adapter for IDE ATAPI devices.&n; *&n; * With this driver, one can use the Linux SCSI drivers instead of the&n; * native IDE ATAPI drivers.&n; *&n; * Ver 0.1   Dec  3 96   Initial version.&n; * Ver 0.2   Jan 26 97   Fixed bug in cleanup_module() and added emulation&n; *                        of MODE_SENSE_6/MODE_SELECT_6 for cdroms. Thanks&n; *                        to Janos Farkas for pointing this out.&n; *                       Avoid using bitfields in structures for m68k.&n; *                       Added Scatter/Gather and DMA support.&n; * Ver 0.4   Dec  7 97   Add support for ATAPI PD/CD drives.&n; *                       Use variable timeout for each command.&n; * Ver 0.5   Jan  2 98   Fix previous PD/CD support.&n; *                       Allow disabling of SCSI-6 to SCSI-10 transformation.&n; * Ver 0.6   Jan 27 98   Allow disabling of SCSI command translation layer&n; *                        for access through /dev/sg.&n; *                       Fix MODE_SENSE_6/MODE_SELECT_6/INQUIRY translation.&n; * Ver 0.7   Dec 04 98   Ignore commands where lun != 0 to avoid multiple&n; *                        detection of devices with CONFIG_SCSI_MULTI_LUN&n; * Ver 0.8   Feb 05 99   Optical media need translation too. Reverse 0.7.&n; * Ver 0.9   Jul 04 99   Fix a bug in SG_SET_TRANSFORM.&n; */
 DECL|macro|IDESCSI_VERSION
 mdefine_line|#define IDESCSI_VERSION &quot;0.9&quot;
@@ -17,19 +17,11 @@ macro_line|#include &lt;linux/atapi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;scsi/sg.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;sd.h&quot;
-macro_line|#include &lt;scsi/sg.h&gt;
-DECL|macro|IDESCSI_DEBUG_LOG
-mdefine_line|#define IDESCSI_DEBUG_LOG&t;&t;0
-multiline_comment|/*&n; *&t;Packet command status bits.&n; */
-DECL|macro|PC_DMA_IN_PROGRESS
-mdefine_line|#define PC_DMA_IN_PROGRESS&t;&t;0&t;/* 1 while DMA in progress */
-DECL|macro|PC_WRITING
-mdefine_line|#define PC_WRITING&t;&t;&t;1&t;/* Data direction */
-DECL|macro|PC_TRANSFORM
-mdefine_line|#define PC_TRANSFORM&t;&t;&t;2&t;/* transform SCSI commands */
+multiline_comment|/* FIXME: Right now we always register a single scsi host for every single&n; * device. We should be just registering a single scsi host per ATA host chip&n; * and deal properly with channels! The reentrancy efforts are therefore not&n; * quite right done now.&n; */
 multiline_comment|/*&n; *&t;SCSI command transformation layer&n; */
 DECL|macro|IDESCSI_TRANSFORM
 mdefine_line|#define IDESCSI_TRANSFORM&t;&t;0&t;/* Enable/Disable transformation */
@@ -930,6 +922,7 @@ r_static
 r_inline
 r_void
 id|idescsi_free_bio
+c_func
 (paren
 r_struct
 id|bio
@@ -1019,32 +1012,6 @@ l_string|&quot;]&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|idescsi_private
-r_static
-r_inline
-id|idescsi_scsi_t
-op_star
-id|idescsi_private
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-id|host
-)paren
-(brace
-r_return
-(paren
-id|idescsi_scsi_t
-op_star
-)paren
-op_amp
-id|host
-(braket
-l_int|1
-)braket
-suffix:semicolon
-)brace
 DECL|function|idescsi_end_request
 r_static
 r_int
@@ -1076,11 +1043,14 @@ id|idescsi_scsi_t
 op_star
 id|scsi
 op_assign
-id|idescsi_private
-c_func
 (paren
-id|host
+id|idescsi_scsi_t
+op_star
 )paren
+id|host-&gt;hostdata
+(braket
+l_int|0
+)braket
 suffix:semicolon
 r_struct
 id|atapi_packet_command
@@ -1331,6 +1301,7 @@ id|flags
 )paren
 suffix:semicolon
 id|idescsi_free_bio
+c_func
 (paren
 id|rq-&gt;bio
 )paren
@@ -1414,11 +1385,14 @@ id|idescsi_scsi_t
 op_star
 id|scsi
 op_assign
-id|idescsi_private
-c_func
 (paren
-id|host
+id|idescsi_scsi_t
+op_star
 )paren
+id|host-&gt;hostdata
+(braket
+l_int|0
+)braket
 suffix:semicolon
 id|byte
 id|status
@@ -1439,14 +1413,14 @@ r_int
 r_int
 id|temp
 suffix:semicolon
-macro_line|#if IDESCSI_DEBUG_LOG
+macro_line|#ifdef DEBUG
 id|printk
 (paren
 id|KERN_INFO
 l_string|&quot;ide-scsi: Reached idescsi_pc_intr interrupt handler&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDESCSI_DEBUG_LOG */
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1459,7 +1433,7 @@ id|pc-&gt;flags
 )paren
 )paren
 (brace
-macro_line|#if IDESCSI_DEBUG_LOG
+macro_line|#ifdef DEBUG
 id|printk
 (paren
 l_string|&quot;ide-scsi: %s: DMA complete&bslash;n&quot;
@@ -1467,7 +1441,7 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif /* IDESCSI_DEBUG_LOG */
+macro_line|#endif
 id|pc-&gt;actually_transferred
 op_assign
 id|pc-&gt;request_transfer
@@ -1721,7 +1695,7 @@ r_return
 id|ide_started
 suffix:semicolon
 )brace
-macro_line|#if IDESCSI_DEBUG_LOG
+macro_line|#ifdef DEBUG
 id|printk
 (paren
 id|KERN_NOTICE
@@ -1869,11 +1843,14 @@ id|idescsi_scsi_t
 op_star
 id|scsi
 op_assign
-id|idescsi_private
-c_func
 (paren
-id|host
+id|idescsi_scsi_t
+op_star
 )paren
+id|host-&gt;hostdata
+(braket
+l_int|0
+)braket
 suffix:semicolon
 r_struct
 id|atapi_packet_command
@@ -2018,11 +1995,14 @@ id|idescsi_scsi_t
 op_star
 id|scsi
 op_assign
-id|idescsi_private
-c_func
 (paren
-id|host
+id|idescsi_scsi_t
+op_star
 )paren
+id|host-&gt;hostdata
+(braket
+l_int|0
+)braket
 suffix:semicolon
 r_int
 id|bcount
@@ -2252,11 +2232,12 @@ id|sector_t
 id|block
 )paren
 (brace
-macro_line|#if IDESCSI_DEBUG_LOG
+macro_line|#ifdef DEBUG
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;rq_status: %d, rq_dev: %u, cmd: %d, errors: %d&bslash;n&quot;
+l_string|&quot;rq_status: %d, cmd: %d, errors: %d&bslash;n&quot;
 comma
 id|rq-&gt;rq_status
 comma
@@ -2264,17 +2245,16 @@ comma
 r_int
 r_int
 )paren
-id|rq-&gt;rq_dev
-comma
 id|rq-&gt;cmd
 comma
 id|rq-&gt;errors
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;sector: %ld, nr_sectors: %ld, current_nr_sectors: %ld&bslash;n&quot;
+l_string|&quot;sector: %lu, nr_sectors: %lu, current_nr_sectors: %lu&bslash;n&quot;
 comma
 id|rq-&gt;sector
 comma
@@ -2359,10 +2339,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|idescsi_ide_release
+DECL|function|idescsi_release
 r_static
 r_void
-id|idescsi_ide_release
+id|idescsi_release
 c_func
 (paren
 r_struct
@@ -2415,6 +2395,19 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+id|kfree
+c_func
+(paren
+(paren
+id|idescsi_scsi_t
+op_star
+)paren
+id|host-&gt;hostdata
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
 id|scsi_unregister
 c_func
 (paren
@@ -2451,11 +2444,11 @@ id|drive
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;IDE subdriver functions, registered with ide.c&n; */
-DECL|variable|idescsi_driver
+DECL|variable|ata_ops
 r_static
 r_struct
 id|ata_operations
-id|idescsi_driver
+id|ata_ops
 op_assign
 (brace
 id|owner
@@ -2470,10 +2463,6 @@ id|cleanup
 suffix:colon
 id|idescsi_cleanup
 comma
-id|standby
-suffix:colon
-l_int|NULL
-comma
 id|do_request
 suffix:colon
 id|idescsi_do_request
@@ -2482,35 +2471,25 @@ id|end_request
 suffix:colon
 id|idescsi_end_request
 comma
-id|ioctl
-suffix:colon
-l_int|NULL
-comma
 id|open
 suffix:colon
 id|idescsi_open
 comma
 id|release
 suffix:colon
-id|idescsi_ide_release
-comma
-id|check_media_change
-suffix:colon
-l_int|NULL
+id|idescsi_release
 comma
 id|revalidate
 suffix:colon
 id|idescsi_revalidate
 comma
-id|capacity
-suffix:colon
-l_int|NULL
-comma
 )brace
 suffix:semicolon
 DECL|function|idescsi_detect
+r_static
 r_int
 id|idescsi_detect
+c_func
 (paren
 id|Scsi_Host_Template
 op_star
@@ -2522,15 +2501,17 @@ id|register_ata_driver
 c_func
 (paren
 op_amp
-id|idescsi_driver
+id|ata_ops
 )paren
 suffix:semicolon
 )brace
 DECL|function|idescsi_info
+r_static
 r_const
 r_char
 op_star
 id|idescsi_info
+c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -2538,13 +2519,23 @@ op_star
 id|host
 )paren
 (brace
+r_static
+r_const
+r_char
+op_star
+id|msg
+op_assign
+l_string|&quot;SCSI host adapter emulation for ATAPI devices&quot;
+suffix:semicolon
 r_return
-l_string|&quot;SCSI host adapter emulation for IDE ATAPI devices&quot;
+id|msg
 suffix:semicolon
 )brace
 DECL|function|idescsi_ioctl
+r_static
 r_int
 id|idescsi_ioctl
+c_func
 (paren
 id|Scsi_Device
 op_star
@@ -2562,11 +2553,14 @@ id|idescsi_scsi_t
 op_star
 id|scsi
 op_assign
-id|idescsi_private
-c_func
 (paren
-id|dev-&gt;host
+id|idescsi_scsi_t
+op_star
 )paren
+id|dev-&gt;host-&gt;hostdata
+(braket
+l_int|0
+)braket
 suffix:semicolon
 r_if
 c_cond
@@ -2644,6 +2638,7 @@ r_struct
 id|bio
 op_star
 id|idescsi_kmalloc_bio
+c_func
 (paren
 r_int
 id|count
@@ -2750,6 +2745,7 @@ suffix:semicolon
 m_abort
 suffix:colon
 id|idescsi_free_bio
+c_func
 (paren
 id|first_bh
 )paren
@@ -2926,7 +2922,7 @@ l_int|NULL
 r_return
 l_int|NULL
 suffix:semicolon
-macro_line|#if IDESCSI_DEBUG_LOG
+macro_line|#ifdef DEBUG
 id|printk
 (paren
 l_string|&quot;ide-scsi: %s: building DMA table, %d segments, %dkB total&bslash;n&quot;
@@ -3009,7 +3005,7 @@ l_int|NULL
 r_return
 l_int|NULL
 suffix:semicolon
-macro_line|#if IDESCSI_DEBUG_LOG
+macro_line|#ifdef DEBUG
 id|printk
 (paren
 l_string|&quot;ide-scsi: %s: building DMA table for a single buffer (%dkB)&bslash;n&quot;
@@ -3097,11 +3093,14 @@ id|idescsi_scsi_t
 op_star
 id|scsi
 op_assign
-id|idescsi_private
-c_func
 (paren
-id|host
+id|idescsi_scsi_t
+op_star
 )paren
+id|host-&gt;hostdata
+(braket
+l_int|0
+)braket
 suffix:semicolon
 r_if
 c_cond
@@ -3136,8 +3135,10 @@ id|scsi-&gt;transform
 suffix:semicolon
 )brace
 DECL|function|idescsi_queue
+r_static
 r_int
 id|idescsi_queue
+c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -3158,11 +3159,14 @@ id|idescsi_scsi_t
 op_star
 id|scsi
 op_assign
-id|idescsi_private
-c_func
 (paren
-id|cmd-&gt;host
+id|idescsi_scsi_t
+op_star
 )paren
+id|cmd-&gt;host-&gt;hostdata
+(braket
+l_int|0
+)braket
 suffix:semicolon
 r_struct
 id|ata_device
@@ -3492,8 +3496,10 @@ suffix:semicolon
 )brace
 multiline_comment|/* FIXME: This needs further investigation.&n; */
 DECL|function|idescsi_device_reset
+r_static
 r_int
 id|idescsi_device_reset
+c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -3505,8 +3511,10 @@ id|SUCCESS
 suffix:semicolon
 )brace
 DECL|function|idescsi_bios
+r_static
 r_int
 id|idescsi_bios
+c_func
 (paren
 id|Disk
 op_star
@@ -3524,11 +3532,14 @@ id|idescsi_scsi_t
 op_star
 id|scsi
 op_assign
-id|idescsi_private
-c_func
 (paren
-id|disk-&gt;device-&gt;host
+id|idescsi_scsi_t
+op_star
 )paren
+id|disk-&gt;device-&gt;host-&gt;hostdata
+(braket
+l_int|0
+)braket
 suffix:semicolon
 r_struct
 id|ata_device
@@ -3573,10 +3584,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|idescsi_template
+DECL|variable|template
 r_static
 id|Scsi_Host_Template
-id|idescsi_template
+r_template
 op_assign
 (brace
 id|module
@@ -3641,10 +3652,10 @@ id|emulated
 suffix:colon
 l_int|1
 comma
+multiline_comment|/* FIXME: Buggy generic SCSI code doesn&squot;t remove /proc/entires! */
 id|proc_name
 suffix:colon
-l_string|&quot;ide-scsi&quot;
-comma
+l_string|&quot;atapi&quot;
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Driver initialization.&n; */
@@ -3684,7 +3695,7 @@ id|scsi_register
 c_func
 (paren
 op_amp
-id|idescsi_template
+r_template
 comma
 r_sizeof
 (paren
@@ -3695,9 +3706,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|host
-op_eq
-l_int|NULL
 )paren
 (brace
 id|printk
@@ -3717,15 +3727,20 @@ id|drive-&gt;last_lun
 op_plus
 l_int|1
 suffix:semicolon
+id|host-&gt;max_id
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|ide_register_subdriver
+c_func
 (paren
 id|drive
 comma
 op_amp
-id|idescsi_driver
+id|ata_ops
 )paren
 )paren
 (brace
@@ -3756,13 +3771,31 @@ l_int|0
 suffix:semicolon
 id|scsi
 op_assign
-id|idescsi_private
+id|kmalloc
 c_func
 (paren
-id|host
+r_sizeof
+(paren
+op_star
+id|scsi
+)paren
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
+id|host-&gt;hostdata
+(braket
+l_int|0
+)braket
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|scsi
+suffix:semicolon
 id|memset
+c_func
 (paren
 id|scsi
 comma
@@ -3770,7 +3803,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|idescsi_scsi_t
+op_star
+id|scsi
 )paren
 )paren
 suffix:semicolon
@@ -3817,7 +3851,7 @@ op_amp
 id|scsi-&gt;transform
 )paren
 suffix:semicolon
-macro_line|#if IDESCSI_DEBUG_LOG
+macro_line|#ifdef DEBUG
 id|set_bit
 c_func
 (paren
@@ -3844,7 +3878,7 @@ id|scsi_register_host
 c_func
 (paren
 op_amp
-id|idescsi_template
+r_template
 )paren
 suffix:semicolon
 )brace
@@ -3862,14 +3896,14 @@ id|unregister_ata_driver
 c_func
 (paren
 op_amp
-id|idescsi_driver
+id|ata_ops
 )paren
 suffix:semicolon
 id|scsi_unregister_host
 c_func
 (paren
 op_amp
-id|idescsi_template
+r_template
 )paren
 suffix:semicolon
 )brace

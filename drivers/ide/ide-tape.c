@@ -481,19 +481,6 @@ DECL|typedef|idetape_chrdev_direction_t
 )brace
 id|idetape_chrdev_direction_t
 suffix:semicolon
-multiline_comment|/*&n; *&t;Packet command flag bits.&n; */
-DECL|macro|PC_ABORT
-mdefine_line|#define&t;PC_ABORT&t;&t;&t;0&t;/* Set when an error is considered normal - We won&squot;t retry */
-DECL|macro|PC_WAIT_FOR_DSC
-mdefine_line|#define PC_WAIT_FOR_DSC&t;&t;&t;1&t;/* 1 When polling for DSC on a media access command */
-DECL|macro|PC_DMA_RECOMMENDED
-mdefine_line|#define PC_DMA_RECOMMENDED&t;&t;2&t;/* 1 when we prefer to use DMA if possible */
-DECL|macro|PC_DMA_IN_PROGRESS
-mdefine_line|#define&t;PC_DMA_IN_PROGRESS&t;&t;3&t;/* 1 while DMA in progress */
-DECL|macro|PC_DMA_ERROR
-mdefine_line|#define&t;PC_DMA_ERROR&t;&t;&t;4&t;/* 1 when encountered problem during DMA */
-DECL|macro|PC_WRITING
-mdefine_line|#define&t;PC_WRITING&t;&t;&t;5&t;/* Data direction */
 multiline_comment|/*&n; *&t;Capabilities and Mechanical Status Page&n; */
 r_typedef
 r_struct

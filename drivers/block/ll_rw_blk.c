@@ -6609,22 +6609,37 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Free request slots per queue.&n;&t; * (Half for reads, half for writes)&n;&t; */
 id|queue_nr_requests
 op_assign
-l_int|64
+(paren
+id|total_ram
+op_rshift
+l_int|8
+)paren
+op_amp
+op_complement
+l_int|15
+suffix:semicolon
+multiline_comment|/* One per quarter-megabyte */
+r_if
+c_cond
+(paren
+id|queue_nr_requests
+OL
+l_int|32
+)paren
+id|queue_nr_requests
+op_assign
+l_int|32
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|total_ram
+id|queue_nr_requests
 OG
-id|MB
-c_func
-(paren
-l_int|32
-)paren
+l_int|512
 )paren
 id|queue_nr_requests
 op_assign
-l_int|256
+l_int|512
 suffix:semicolon
 multiline_comment|/*&n;&t; * Batch frees according to queue length&n;&t; */
 r_if

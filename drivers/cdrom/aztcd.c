@@ -6623,8 +6623,19 @@ suffix:semicolon
 r_int
 id|st
 suffix:semicolon
+r_void
+op_star
+id|status
+op_assign
+l_int|NULL
+suffix:semicolon
 r_int
 id|i
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|ret
 op_assign
 l_int|0
 suffix:semicolon
@@ -6639,6 +6650,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;aztcd: no Aztech CD-ROM Initialization&quot;
 )paren
 suffix:semicolon
@@ -6648,13 +6660,17 @@ id|EIO
 suffix:semicolon
 )brace
 id|printk
+c_func
 (paren
-l_string|&quot;aztcd: AZTECH, ORCHID, OKANO, WEARNES, TXC, CyDROM CD-ROM Driver&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;aztcd: AZTECH, ORCHID, OKANO, WEARNES, TXC, CyDROM &quot;
+l_string|&quot;CD-ROM Driver&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;aztcd: (C) 1994-98 W.Zimmermann&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6688,8 +6704,11 @@ id|azt_port
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
-l_string|&quot;aztcd: If you have problems, read /usr/src/linux/Documentation/cdrom/aztcd&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;aztcd: If you have problems, read /usr/src/linux/&quot;
+l_string|&quot;Documentation/cdrom/aztcd&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef AZT_SW32&t;&t;&t;/*CDROM connected to Soundwave32 card */
@@ -6780,7 +6799,7 @@ op_minus
 l_int|1
 )paren
 (brace
-multiline_comment|/* autoprobing */
+multiline_comment|/* autoprobing for proprietary interface  */
 r_for
 c_loop
 (paren
@@ -6817,29 +6836,32 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;aztcd: Autoprobing BaseAddress=0x%x &bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;aztcd: Autoprobing BaseAddress=0x%x&quot;
+l_string|&quot;&bslash;n&quot;
 comma
 id|azt_port
-)paren
-suffix:semicolon
-id|st
-op_assign
-id|check_region
-c_func
-(paren
-id|azt_port
-comma
-l_int|4
 )paren
 suffix:semicolon
 multiline_comment|/*proprietary interfaces need 4 bytes */
 r_if
 c_cond
 (paren
-id|st
+op_logical_neg
+id|request_region
+c_func
+(paren
+id|azt_port
+comma
+l_int|4
+comma
+l_string|&quot;aztcd&quot;
 )paren
+)paren
+(brace
 r_continue
 suffix:semicolon
+)brace
 id|outb
 c_func
 (paren
@@ -6915,8 +6937,23 @@ id|DATA_PORT
 op_eq
 id|AFL_OP_OK
 )paren
+(brace
+multiline_comment|/* OK drive found */
 r_break
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Drive not found on this port - try next one */
+id|release_region
+c_func
+(paren
+id|azt_port
+comma
+l_int|4
+)paren
+suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -6940,6 +6977,7 @@ l_int|16
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;aztcd: no AZTECH CD-ROM drive found&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6967,38 +7005,46 @@ op_eq
 l_int|0x170
 )paren
 )paren
-id|st
+id|status
 op_assign
-id|check_region
+id|request_region
 c_func
 (paren
 id|azt_port
 comma
 l_int|8
+comma
+l_string|&quot;aztcd&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*IDE-interfaces need 8 bytes */
 r_else
-id|st
+id|status
 op_assign
-id|check_region
+id|request_region
 c_func
 (paren
 id|azt_port
 comma
 l_int|4
+comma
+l_string|&quot;aztcd&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*proprietary interfaces need 4 bytes */
 r_if
 c_cond
 (paren
-id|st
+op_logical_neg
+id|status
 )paren
 (brace
 id|printk
+c_func
 (paren
-l_string|&quot;aztcd: conflict, I/O port (%X) already used&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;aztcd: conflict, I/O port (%X) &quot;
+l_string|&quot;already used&bslash;n&quot;
 comma
 id|azt_port
 )paren
@@ -7113,13 +7159,21 @@ l_int|0x79
 )paren
 (brace
 id|printk
+c_func
 (paren
-l_string|&quot;aztcd: no AZTECH CD-ROM drive found-Try boot parameter aztcd=&lt;BaseAddress&gt;,0x79&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;aztcd: no AZTECH CD-ROM &quot;
+l_string|&quot;drive found-Try boot parameter aztcd=&quot;
+l_string|&quot;&lt;BaseAddress&gt;,0x79&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EIO
+suffix:semicolon
+r_goto
+id|err_out
 suffix:semicolon
 )brace
 macro_line|#else
@@ -7134,8 +7188,11 @@ macro_line|#endif
 r_else
 (brace
 id|printk
+c_func
 (paren
-l_string|&quot;aztcd: drive reset - please wait&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;aztcd: drive reset - &quot;
+l_string|&quot;please wait&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
@@ -7218,13 +7275,20 @@ id|AFL_OP_OK
 (brace
 multiline_comment|/*OP_OK? */
 id|printk
+c_func
 (paren
-l_string|&quot;aztcd: no AZTECH CD-ROM drive found&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;aztcd: no AZTECH &quot;
+l_string|&quot;CD-ROM drive found&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EIO
+suffix:semicolon
+r_goto
+id|err_out
 suffix:semicolon
 )brace
 r_for
@@ -7264,21 +7328,29 @@ l_int|1
 )paren
 (brace
 id|printk
+c_func
 (paren
-l_string|&quot;aztcd: Drive Status Error Status=%x&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;aztcd: Drive Status&quot;
+l_string|&quot; Error Status=%x&bslash;n&quot;
 comma
 id|st
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EIO
+suffix:semicolon
+r_goto
+id|err_out
 suffix:semicolon
 )brace
 macro_line|#ifdef AZT_DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;aztcd: Status = %x&bslash;n&quot;
 comma
 id|st
@@ -7652,9 +7724,13 @@ c_func
 l_string|&quot;Aborted&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EIO
+suffix:semicolon
+r_goto
+id|err_out
 suffix:semicolon
 )brace
 )brace
@@ -7703,14 +7779,20 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;aztcd: Unable to get major %d for Aztech CD-ROM&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;aztcd: Unable to get major %d for Aztech&quot;
+l_string|&quot; CD-ROM&bslash;n&quot;
 comma
 id|MAJOR_NR
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EIO
+suffix:semicolon
+r_goto
+id|err_out
 suffix:semicolon
 )brace
 id|blk_init_queue
@@ -7761,44 +7843,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|azt_port
-op_eq
-l_int|0x1f0
-)paren
-op_logical_or
-(paren
-id|azt_port
-op_eq
-l_int|0x170
-)paren
-)paren
-id|request_region
-c_func
-(paren
-id|azt_port
-comma
-l_int|8
-comma
-l_string|&quot;aztcd&quot;
-)paren
-suffix:semicolon
-multiline_comment|/*IDE-interface */
-r_else
-id|request_region
-c_func
-(paren
-id|azt_port
-comma
-l_int|4
-comma
-l_string|&quot;aztcd&quot;
-)paren
-suffix:semicolon
-multiline_comment|/*proprietary interface */
 id|azt_invalidate_buffers
 c_func
 (paren
@@ -7817,6 +7861,49 @@ r_return
 (paren
 l_int|0
 )paren
+suffix:semicolon
+id|err_out
+suffix:colon
+r_if
+c_cond
+(paren
+(paren
+id|azt_port
+op_eq
+l_int|0x1f0
+)paren
+op_logical_or
+(paren
+id|azt_port
+op_eq
+l_int|0x170
+)paren
+)paren
+(brace
+id|SWITCH_IDE_MASTER
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|azt_port
+comma
+l_int|8
+)paren
+suffix:semicolon
+multiline_comment|/*IDE-interface */
+)brace
+r_else
+id|release_region
+c_func
+(paren
+id|azt_port
+comma
+l_int|4
+)paren
+suffix:semicolon
+multiline_comment|/*proprietary interface */
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|aztcd_exit

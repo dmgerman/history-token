@@ -51,6 +51,8 @@ comma
 r_int
 )paren
 suffix:semicolon
+DECL|macro|TIMEOUT_VALUE
+mdefine_line|#define TIMEOUT_VALUE&t;(6*HZ)
 DECL|macro|HD_DELAY
 mdefine_line|#define&t;HD_DELAY&t;0
 DECL|macro|MAX_ERRORS
@@ -3931,7 +3933,7 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUEST
+id|do_hd_request
 comma
 op_amp
 id|hd_lock

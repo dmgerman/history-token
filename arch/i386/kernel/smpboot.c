@@ -366,7 +366,7 @@ l_int|0
 r_goto
 id|valid_k7
 suffix:semicolon
-multiline_comment|/* Athlon 662, Duron 671, and Athlon &gt;model 7 have capability bit */
+multiline_comment|/*&n;&t;&t; * Athlon 662, Duron 671, and Athlon &gt;model 7 have capability bit.&n;&t;&t; * It&squot;s worth noting that the A5 stepping (662) of some Athlon XP&squot;s&n;&t;&t; * have the MP bit set.&n;&t;&t; * See http://www.heise.de/newsticker/data/jow-18.10.01-000 for more.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1970,6 +1970,7 @@ macro_line|#endif
 DECL|function|wakeup_secondary_via_NMI
 r_static
 r_int
+id|__init
 id|wakeup_secondary_via_NMI
 c_func
 (paren
@@ -2157,6 +2158,7 @@ suffix:semicolon
 DECL|function|wakeup_secondary_via_INIT
 r_static
 r_int
+id|__init
 id|wakeup_secondary_via_INIT
 c_func
 (paren

@@ -371,8 +371,6 @@ id|remove
 c_func
 (paren
 id|dev
-comma
-id|REMOVE_FREE_RESOURCES
 )paren
 suffix:semicolon
 id|spin_lock

@@ -1369,6 +1369,11 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1378,6 +1383,8 @@ comma
 id|EFI_RTC_VERSION
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|misc_register
 c_func
 (paren
@@ -1385,6 +1392,25 @@ op_amp
 id|efi_rtc_dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;driver/efirtc: can&squot;t misc_register on minor=%d&bslash;n&quot;
+comma
+id|EFI_RTC_MINOR
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 id|create_proc_read_entry
 (paren
 l_string|&quot;driver/efirtc&quot;
