@@ -3402,13 +3402,7 @@ id|pci_dev
 op_assign
 l_int|NULL
 suffix:semicolon
-r_extern
 r_int
-id|numnodes
-suffix:semicolon
-r_int
-id|cnode
-comma
 id|ret
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
