@@ -20,6 +20,14 @@ DECL|variable|smp_found_config
 r_int
 id|smp_found_config
 suffix:semicolon
+DECL|variable|maxcpus
+r_int
+r_int
+id|__initdata
+id|maxcpus
+op_assign
+id|NR_CPUS
+suffix:semicolon
 DECL|variable|acpi_found_madt
 r_int
 id|acpi_found_madt
@@ -327,6 +335,48 @@ suffix:semicolon
 id|boot_cpu_id
 op_assign
 id|m-&gt;mpc_apicid
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|num_processors
+op_ge
+id|NR_CPUS
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;WARNING: NR_CPUS limit of %i reached.&quot;
+l_string|&quot; Processor ignored.&bslash;n&quot;
+comma
+id|NR_CPUS
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|num_processors
+op_ge
+id|maxcpus
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;WARNING: maxcpus limit of %i reached.&quot;
+l_string|&quot; Processor ignored.&bslash;n&quot;
+comma
+id|maxcpus
+)paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 id|num_processors
