@@ -35,6 +35,11 @@ id|ide_drive_t
 op_star
 id|drive
 suffix:semicolon
+DECL|member|driver
+id|ide_driver_t
+op_star
+id|driver
+suffix:semicolon
 DECL|member|disk
 r_struct
 id|gendisk
@@ -58,7 +63,7 @@ suffix:semicolon
 DECL|macro|to_ide_disk
 mdefine_line|#define to_ide_disk(obj) container_of(obj, struct ide_disk_obj, kref)
 DECL|macro|ide_disk_g
-mdefine_line|#define ide_disk_g(disk) ((disk)-&gt;private_data)
+mdefine_line|#define ide_disk_g(disk) &bslash;&n;&t;container_of((disk)-&gt;private_data, struct ide_disk_obj, driver)
 DECL|function|ide_disk_get
 r_static
 r_struct
@@ -6152,9 +6157,19 @@ id|idkp-&gt;drive
 op_assign
 id|drive
 suffix:semicolon
+id|idkp-&gt;driver
+op_assign
+op_amp
+id|idedisk_driver
+suffix:semicolon
 id|idkp-&gt;disk
 op_assign
 id|g
+suffix:semicolon
+id|g-&gt;private_data
+op_assign
+op_amp
+id|idkp-&gt;driver
 suffix:semicolon
 id|drive-&gt;driver_data
 op_assign
@@ -6265,10 +6280,6 @@ id|g-&gt;fops
 op_assign
 op_amp
 id|idedisk_ops
-suffix:semicolon
-id|g-&gt;private_data
-op_assign
-id|idkp
 suffix:semicolon
 id|add_disk
 c_func

@@ -1381,6 +1381,11 @@ id|ide_drive_t
 op_star
 id|drive
 suffix:semicolon
+DECL|member|driver
+id|ide_driver_t
+op_star
+id|driver
+suffix:semicolon
 DECL|member|disk
 r_struct
 id|gendisk

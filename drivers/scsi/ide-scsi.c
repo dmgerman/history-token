@@ -150,6 +150,11 @@ id|ide_drive_t
 op_star
 id|drive
 suffix:semicolon
+DECL|member|driver
+id|ide_driver_t
+op_star
+id|driver
+suffix:semicolon
 DECL|member|disk
 r_struct
 id|gendisk
@@ -198,7 +203,7 @@ id|idescsi_ref_sem
 )paren
 suffix:semicolon
 DECL|macro|ide_scsi_g
-mdefine_line|#define ide_scsi_g(disk)&t;((disk)-&gt;private_data)
+mdefine_line|#define ide_scsi_g(disk) &bslash;&n;&t;container_of((disk)-&gt;private_data, struct ide_scsi_obj, driver)
 DECL|function|ide_scsi_get
 r_static
 r_struct
@@ -1555,6 +1560,19 @@ id|ide_preempt
 suffix:semicolon
 )brace
 r_static
+r_int
+id|idescsi_end_request
+c_func
+(paren
+id|ide_drive_t
+op_star
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_static
 id|ide_startstop_t
 DECL|function|idescsi_atapi_error
 id|idescsi_atapi_error
@@ -1615,13 +1633,7 @@ suffix:semicolon
 id|rq-&gt;errors
 op_increment
 suffix:semicolon
-id|DRIVER
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|end_request
+id|idescsi_end_request
 c_func
 (paren
 id|drive
@@ -1674,13 +1686,7 @@ id|rq-&gt;errors
 op_or_assign
 id|ERROR_MAX
 suffix:semicolon
-id|DRIVER
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|end_request
+id|idescsi_end_request
 c_func
 (paren
 id|drive
@@ -5815,6 +5821,11 @@ id|idescsi-&gt;drive
 op_assign
 id|drive
 suffix:semicolon
+id|idescsi-&gt;driver
+op_assign
+op_amp
+id|idescsi_driver
+suffix:semicolon
 id|idescsi-&gt;host
 op_assign
 id|host
@@ -5822,6 +5833,11 @@ suffix:semicolon
 id|idescsi-&gt;disk
 op_assign
 id|g
+suffix:semicolon
+id|g-&gt;private_data
+op_assign
+op_amp
+id|idescsi-&gt;driver
 suffix:semicolon
 id|err
 op_assign
@@ -5852,10 +5868,6 @@ id|g-&gt;fops
 op_assign
 op_amp
 id|idescsi_ops
-suffix:semicolon
-id|g-&gt;private_data
-op_assign
-id|idescsi
 suffix:semicolon
 id|ide_register_region
 c_func

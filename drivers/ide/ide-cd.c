@@ -30,7 +30,7 @@ suffix:semicolon
 DECL|macro|to_ide_cd
 mdefine_line|#define to_ide_cd(obj) container_of(obj, struct cdrom_info, kref) 
 DECL|macro|ide_cd_g
-mdefine_line|#define ide_cd_g(disk)&t;((disk)-&gt;private_data)
+mdefine_line|#define ide_cd_g(disk) &bslash;&n;&t;container_of((disk)-&gt;private_data, struct cdrom_info, driver)
 DECL|function|ide_cd_get
 r_static
 r_struct
@@ -13986,9 +13986,19 @@ id|info-&gt;drive
 op_assign
 id|drive
 suffix:semicolon
+id|info-&gt;driver
+op_assign
+op_amp
+id|ide_cdrom_driver
+suffix:semicolon
 id|info-&gt;disk
 op_assign
 id|g
+suffix:semicolon
+id|g-&gt;private_data
+op_assign
+op_amp
+id|info-&gt;driver
 suffix:semicolon
 id|drive-&gt;driver_data
 op_assign
@@ -14162,10 +14172,6 @@ id|g-&gt;fops
 op_assign
 op_amp
 id|idecd_ops
-suffix:semicolon
-id|g-&gt;private_data
-op_assign
-id|info
 suffix:semicolon
 id|g-&gt;flags
 op_or_assign
