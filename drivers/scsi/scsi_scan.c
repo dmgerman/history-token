@@ -1979,8 +1979,8 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * scsi_alloc_sdev - allocate and setup a Scsi_Device&n; *&n; * Description:&n; *     Allocate, initialize for io, and return a pointer to a Scsi_Device.&n; *     Stores the @shost, @channel, @id, and @lun in the Scsi_Device, and&n; *     adds Scsi_Device to the appropriate list.&n; *&n; * Return value:&n; *     Scsi_Device pointer, or NULL on failure.&n; **/
 DECL|function|scsi_alloc_sdev
-r_static
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|scsi_alloc_sdev
 c_func
@@ -2000,22 +2000,20 @@ id|uint
 id|lun
 )paren
 (brace
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdev
 suffix:semicolon
 id|sdev
 op_assign
-(paren
-id|Scsi_Device
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
-id|Scsi_Device
+op_star
+id|sdev
 )paren
 comma
 id|GFP_ATOMIC
@@ -2166,12 +2164,12 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * scsi_free_sdev - cleanup and free a Scsi_Device&n; * @sdev:&t;cleanup and free this Scsi_Device&n; *&n; * Description:&n; *     Undo the actions in scsi_alloc_sdev, including removing @sdev from&n; *     the list, and freeing @sdev.&n; **/
 DECL|function|scsi_free_sdev
-r_static
 r_void
 id|scsi_free_sdev
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdev
 )paren
