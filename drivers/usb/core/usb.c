@@ -710,6 +710,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+multiline_comment|/* this is mainly to lock against usbfs */
 id|lock_kernel
 c_func
 (paren
