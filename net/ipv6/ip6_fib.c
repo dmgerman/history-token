@@ -1176,7 +1176,6 @@ id|RTF_ALLONLINK
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * The top fib of ip6 routing table includes ip6_null_entry.&n;&t;&t; */
 id|fn-&gt;leaf
 op_assign
 id|rt
