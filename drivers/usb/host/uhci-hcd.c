@@ -4107,17 +4107,7 @@ id|urb-&gt;pipe
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Set the flag on the last packet */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|urb-&gt;transfer_flags
-op_amp
-id|URB_NO_INTERRUPT
-)paren
-)paren
+multiline_comment|/* Set the interrupt-on-completion flag on the last packet.&n;&t; * A more-or-less typical 4 KB URB (= size of one memory page)&n;&t; * will require about 3 ms to transfer; that&squot;s a little on the&n;&t; * fast side but not enough to justify delaying an interrupt&n;&t; * more than 2 or 3 URBs, so we will ignore the URB_NO_INTERRUPT&n;&t; * flag setting. */
 id|td-&gt;status
 op_or_assign
 id|cpu_to_le32
