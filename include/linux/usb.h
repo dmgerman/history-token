@@ -120,23 +120,30 @@ id|extralen
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * struct usb_interface - what usb device drivers talk to&n; * @altsetting: array of interface descriptors, one for each alternate&n; * &t;setting that may be selected.  Each one includes a set of&n; * &t;endpoint configurations and will be in numberic order,&n; * &t;0..num_altsetting.&n; * @num_altsetting: number of altsettings defined.&n; * @act_altsetting: index of current altsetting.  this number is always&n; *&t;less than num_altsetting.  after the device is configured, each&n; *&t;interface uses its default setting of zero.&n; * @driver: the USB driver that is bound to this interface.&n; * @minor: the minor number assigned to this interface, if this&n; *&t;interface is bound to a driver that uses the USB major number.&n; *&t;If this interface does not use the USB major, this field should&n; *&t;be unused.  The driver should set this value in the probe()&n; *&t;function of the driver, after it has been assigned a minor&n; *&t;number from the USB core by calling usb_register_dev().&n; * @dev: driver model&squot;s view of this device&n; * @class_dev: driver model&squot;s class view of this device.&n; * @released: wait for the interface to be released when changing&n; *&t;configurations.&n; *&n; * USB device drivers attach to interfaces on a physical device.  Each&n; * interface encapsulates a single high level function, such as feeding&n; * an audio stream to a speaker or reporting a change in a volume control.&n; * Many USB devices only have one interface.  The protocol used to talk to&n; * an interface&squot;s endpoints can be defined in a usb &quot;class&quot; specification,&n; * or by a product&squot;s vendor.  The (default) control endpoint is part of&n; * every interface, but is never listed among the interface&squot;s descriptors.&n; *&n; * The driver that is bound to the interface can use standard driver model&n; * calls such as dev_get_drvdata() on the dev member of this structure.&n; *&n; * Each interface may have alternate settings.  The initial configuration&n; * of a device sets the first of these, but the device driver can change&n; * that setting using usb_set_interface().  Alternate settings are often&n; * used to control the the use of periodic endpoints, such as by having&n; * different endpoints use different amounts of reserved USB bandwidth.&n; * All standards-conformant USB devices that use isochronous endpoints&n; * will use them in non-default settings.&n; */
+multiline_comment|/**&n; * struct usb_interface - what usb device drivers talk to&n; * @altsetting: array of interface structures, one for each alternate&n; * &t;setting that may be selected.  Each one includes a set of&n; * &t;endpoint configurations.  They will be in no particular order.&n; * @num_altsetting: number of altsettings defined.&n; * @cur_altsetting: the current altsetting.&n; * @act_altsetting: index of current altsetting.  This number is always&n; *&t;less than num_altsetting.  After the device is configured, each&n; *&t;interface uses its default setting of zero.&n; *&t;NOTE: act_altsetting is deprecated.  Use cur_altsetting instead.&n; * @driver: the USB driver that is bound to this interface.&n; * @minor: the minor number assigned to this interface, if this&n; *&t;interface is bound to a driver that uses the USB major number.&n; *&t;If this interface does not use the USB major, this field should&n; *&t;be unused.  The driver should set this value in the probe()&n; *&t;function of the driver, after it has been assigned a minor&n; *&t;number from the USB core by calling usb_register_dev().&n; * @dev: driver model&squot;s view of this device&n; * @class_dev: driver model&squot;s class view of this device.&n; * @released: wait for the interface to be released when changing&n; *&t;configurations.&n; *&n; * USB device drivers attach to interfaces on a physical device.  Each&n; * interface encapsulates a single high level function, such as feeding&n; * an audio stream to a speaker or reporting a change in a volume control.&n; * Many USB devices only have one interface.  The protocol used to talk to&n; * an interface&squot;s endpoints can be defined in a usb &quot;class&quot; specification,&n; * or by a product&squot;s vendor.  The (default) control endpoint is part of&n; * every interface, but is never listed among the interface&squot;s descriptors.&n; *&n; * The driver that is bound to the interface can use standard driver model&n; * calls such as dev_get_drvdata() on the dev member of this structure.&n; *&n; * Each interface may have alternate settings.  The initial configuration&n; * of a device sets altsetting 0, but the device driver can change&n; * that setting using usb_set_interface().  Alternate settings are often&n; * used to control the the use of periodic endpoints, such as by having&n; * different endpoints use different amounts of reserved USB bandwidth.&n; * All standards-conformant USB devices that use isochronous endpoints&n; * will use them in non-default settings.&n; *&n; * The USB specification says that alternate setting numbers must run from&n; * 0 to one less than the total number of alternate settings.  But some&n; * devices manage to mess this up, and the structures aren&squot;t necessarily&n; * stored in numerical order anyhow.  Use usb_altnum_to_altsetting() to&n; * look up an alternate setting in the altsetting array based on its number.&n; */
 DECL|struct|usb_interface
 r_struct
 id|usb_interface
 (brace
-multiline_comment|/* array of alternate settings for this interface.&n;&t; * these will be in numeric order, 0..num_altsettting&n;&t; */
+multiline_comment|/* array of alternate settings for this interface,&n;&t; * stored in no particular order */
 DECL|member|altsetting
 r_struct
 id|usb_host_interface
 op_star
 id|altsetting
 suffix:semicolon
+DECL|member|cur_altsetting
+r_struct
+id|usb_host_interface
+op_star
+id|cur_altsetting
+suffix:semicolon
+multiline_comment|/* the currently&n;&t;&t;&t;&t;&t; * active alternate setting */
 DECL|member|act_altsetting
 r_int
 id|act_altsetting
 suffix:semicolon
-multiline_comment|/* active alternate setting */
+multiline_comment|/* index of active alternate setting: DEPRECATED */
 DECL|member|num_altsetting
 r_int
 id|num_altsetting
@@ -229,7 +236,7 @@ suffix:semicolon
 multiline_comment|/* this maximum is arbitrary */
 DECL|macro|USB_MAXINTERFACES
 mdefine_line|#define USB_MAXINTERFACES&t;32
-multiline_comment|/* USB_DT_CONFIG: Configuration descriptor information.&n; *&n; * USB_DT_OTHER_SPEED_CONFIG is the same descriptor, except that the&n; * descriptor type is different.  Highspeed-capable devices can look&n; * different depending on what speed they&squot;re currently running.  Only&n; * devices with a USB_DT_DEVICE_QUALIFIER have an OTHER_SPEED_CONFIG.&n; */
+multiline_comment|/**&n; * struct usb_host_config - representation of a device&squot;s configuration&n; * @desc: the device&squot;s configuration descriptor.&n; * @interface: array of usb_interface structures, one for each interface&n; *&t;in the configuration.  The number of interfaces is stored in&n; *&t;desc.bNumInterfaces.&n; * @extra: pointer to buffer containing all extra descriptors associated&n; *&t;with this configuration (those preceding the first interface&n; *&t;descriptor).&n; * @extralen: length of the extra descriptors buffer.&n; *&n; * USB devices may have multiple configurations, but only one can be active&n; * at any time.  Each encapsulates a different operational environment;&n; * for example, a dual-speed device would have separate configurations for&n; * full-speed and high-speed operation.  The number of configurations&n; * available is stored in the device descriptor as bNumConfigurations.&n; *&n; * A configuration can contain multiple interfaces.  Each corresponds to&n; * a different function of the USB device, and all are available whenever&n; * the configuration is active.  The USB standard says that interfaces&n; * are supposed to be numbered from 0 to desc.bNumInterfaces-1, but a lot&n; * of devices get this wrong.  In addition, the interface array is not&n; * guaranteed to be sorted in numerical order.  Use usb_ifnum_to_if() to&n; * look up an interface entry based on its number.&n; *&n; * Device drivers should not attempt to activate configurations.  The choice&n; * of which configuration to install is a policy decision based on such&n; * considerations as available power, functionality provided, and the user&squot;s&n; * desires (expressed through hotplug scripts).  However, drivers can call&n; * usb_reset_configuration() to reinitialize the current configuration and&n; * all its interfaces.&n; */
 DECL|struct|usb_host_config
 r_struct
 id|usb_host_config
@@ -239,7 +246,7 @@ r_struct
 id|usb_config_descriptor
 id|desc
 suffix:semicolon
-multiline_comment|/* the interfaces associated with this configuration&n;&t; * these will be in numeric order, 0..desc.bNumInterfaces&n;&t; */
+multiline_comment|/* the interfaces associated with this configuration,&n;&t; * stored in no particular order */
 DECL|member|interface
 r_struct
 id|usb_interface
@@ -792,6 +799,23 @@ id|dev
 comma
 r_int
 id|ifnum
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|usb_host_interface
+op_star
+id|usb_altnum_to_altsetting
+c_func
+(paren
+r_struct
+id|usb_interface
+op_star
+id|intf
+comma
+r_int
+r_int
+id|altnum
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * usb_make_path - returns stable device path in the usb tree&n; * @dev: the device whose path is being constructed&n; * @buf: where to put the string&n; * @size: how big is &quot;buf&quot;?&n; *&n; * Returns length of the string (&gt; 0) or negative if size was too small.&n; *&n; * This identifier is intended to be &quot;stable&quot;, reflecting physical paths in&n; * hardware such as physical bus addresses for host controllers or ports on&n; * USB hubs.  That makes it stay the same until systems are physically&n; * reconfigured, by re-cabling a tree of USB devices or by moving USB host&n; * controllers.  Adding and removing devices, including virtual root hubs&n; * in host controller driver modules, does not change these path identifers;&n; * neither does rebooting or re-enumerating.  These are more useful identifiers&n; * than changeable (&quot;unstable&quot;) ones like bus numbers or device addresses.&n; *&n; * With a partial exception for devices connected to USB 2.0 root hubs, these&n; * identifiers are also predictable.  So long as the device tree isn&squot;t changed,&n; * plugging any USB device into a given hub port always gives it the same path.&n; * Because of the use of &quot;companion&quot; controllers, devices connected to ports on&n; * USB 2.0 root hubs (EHCI host controllers) will get one path ID if they are&n; * high speed, and a different one if they are full or low speed.&n; */
