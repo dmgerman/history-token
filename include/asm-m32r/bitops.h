@@ -1262,7 +1262,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * find_first_zero_bit - find the first zero bit in a memory region&n; * @addr: The address to start the search at&n; * @size: The maximum size to search&n; *&n; * Returns the bit-number of the first zero bit, not the number of the byte&n; * containing a bit.&n; */
 DECL|macro|find_first_zero_bit
-mdefine_line|#define find_first_zero_bit(addr, size) &bslash;&n;        find_next_zero_bit((addr), (size), 0)
+mdefine_line|#define find_first_zero_bit(addr, size) &bslash;&n;&t;find_next_zero_bit((addr), (size), 0)
 multiline_comment|/**&n; * find_next_zero_bit - find the first zero bit in a memory region&n; * @addr: The address to base the search on&n; * @offset: The bitnumber to start searching at&n; * @size: The maximum size to search&n; */
 DECL|function|find_next_zero_bit
 r_static
@@ -1705,6 +1705,7 @@ r_int
 id|find_next_bit
 c_func
 (paren
+r_const
 r_int
 r_int
 op_star

@@ -24,7 +24,6 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/*&n; * Linux has a controller-independent x86 interrupt architecture.&n; * every controller has a &squot;controller-template&squot;, that is used&n; * by the main code to do the right thing. Each driver-visible&n; * interrupt source is transparently wired to the apropriate&n; * controller. Thus drivers need not be aware of the&n; * interrupt-controller.&n; *&n; * Various interrupt controllers we handle: 8259 PIC, SMP IO-APIC,&n; * PIIX4&squot;s internal 8259 PIC and SGI&squot;s Visual Workstation Cobalt (IO-)APIC.&n; * (IO-APICs assumed to be messaging to Pentium local-APICs)&n; *&n; * the code is designed to be easily extended with new/different&n; * interrupt controllers, without having to do assembly magic.&n; */
@@ -1649,9 +1648,11 @@ id|action-&gt;flags
 op_assign
 id|irqflags
 suffix:semicolon
+id|cpus_clear
+c_func
+(paren
 id|action-&gt;mask
-op_assign
-l_int|0
+)paren
 suffix:semicolon
 id|action-&gt;name
 op_assign
@@ -3296,7 +3297,7 @@ c_func
 (paren
 l_string|&quot;irq&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* create /proc/irq/prof_cpu_mask */

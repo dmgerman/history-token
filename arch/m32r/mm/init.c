@@ -105,7 +105,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Free swap:       %6dkB&bslash;n&quot;
+l_string|&quot;Free swap:       %6ldkB&bslash;n&quot;
 comma
 id|nr_swap_pages
 op_lshift

@@ -24,7 +24,7 @@ mdefine_line|#define COMMAND_LINE&t;&t;((char *) (PARAM+0x100))
 DECL|macro|SCREEN_INFO
 mdefine_line|#define SCREEN_INFO&t;&t;(*(struct screen_info *) (PARAM+0x200))
 DECL|macro|COMMAND_LINE_SIZE
-mdefine_line|#define COMMAND_LINE_SIZE&t;(256)
+mdefine_line|#define COMMAND_LINE_SIZE&t;(512)
 DECL|macro|RAMDISK_IMAGE_START_MASK
 mdefine_line|#define RAMDISK_IMAGE_START_MASK&t;(0x07FF)
 DECL|macro|RAMDISK_PROMPT_FLAG

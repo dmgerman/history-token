@@ -21,7 +21,7 @@ id|version
 (braket
 )braket
 op_assign
-l_string|&quot;SMSC LAN91C111 Driver (v2.0), (Linux Kernel 2.4 + Support for Odd Byte) 09/24/01 -      by Pramod Bhardwaj (pramod.bhardwaj@smsc.com)&bslash;n&bslash;n&quot;
+l_string|&quot;SMSC LAN91C111 Driver (v2.0), (Linux Kernel 2.4 + Support for Odd Byte) 09/24/01 -      by Pramod Bhardwaj (pramod.bhardwaj@smsc.com)&bslash;n&quot;
 suffix:semicolon
 macro_line|#ifdef MODULE
 macro_line|#include &lt;linux/module.h&gt;
@@ -605,8 +605,8 @@ id|regs
 )paren
 suffix:semicolon
 multiline_comment|/*&n; . This is a separate procedure to handle the receipt of a packet, to&n; . leave the interrupt code looking slightly cleaner&n;*/
-r_inline
 r_static
+r_inline
 r_void
 id|smc_rcv
 c_func
@@ -618,8 +618,8 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/*&n; . This handles a TX interrupt, which is only called when an error&n; . relating to a packet is sent.&n;*/
-r_inline
 r_static
+r_inline
 r_void
 id|smc_tx
 c_func
@@ -3916,7 +3916,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-multiline_comment|/*&n;         *      Best would be to use synchronize_irq(); spin_lock() here&n;         *      lets make it work first..&n;         */
+multiline_comment|/*&n;&t; *      Best would be to use synchronize_irq(); spin_lock() here&n;&t; *      lets make it work first..&n;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -4633,6 +4633,7 @@ suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------&n; .&n; . smc_rcv -  receive a packet from the card&n; .&n; . There is ( at least ) a packet waiting to be read from&n; . chip-memory.&n; .&n; . o Read the status&n; . o If an error, record it&n; . o otherwise, read in the packet&n; --------------------------------------------------------------&n;*/
 DECL|function|smc_rcv
 r_static
+r_inline
 r_void
 id|smc_rcv
 c_func
@@ -4845,7 +4846,7 @@ id|skb-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
-multiline_comment|/* =&gt;&n;    ODD-BYTE ISSUE : The odd byte problem has been fixed in the LAN91C111 Rev B.&n;&t;&t;So we check if the Chip Revision, stored in smsc_local-&gt;ChipRev, is = 1.&n;&t;&t;If so then we increment the packet length only if RS_ODDFRAME is set.&n;&t;&t;If the Chip&squot;s revision is equal to 0, then we blindly increment the packet length&n;&t;&t;by 1, thus always assuming that the packet is odd length, leaving the higher layer&n;&t;&t;to decide the actual length.&n;&t;&t;&t;-- Pramod&n;&t;&t;&lt;= */
+multiline_comment|/* =&gt;&n;&t;&t;   ODD-BYTE ISSUE : The odd byte problem has been fixed in the LAN91C111 Rev B.&n;&t;&t;   So we check if the Chip Revision, stored in smsc_local-&gt;ChipRev, is = 1.&n;&t;&t;   If so then we increment the packet length only if RS_ODDFRAME is set.&n;&t;&t;   If the Chip&squot;s revision is equal to 0, then we blindly increment the packet length&n;&t;&t;   by 1, thus always assuming that the packet is odd length, leaving the higher layer&n;&t;&t;   to decide the actual length.&n;&t;&t;   -- Pramod&n;&t;&t;   &lt;= */
 r_if
 c_cond
 (paren
@@ -5116,6 +5117,7 @@ suffix:semicolon
 multiline_comment|/*************************************************************************&n; . smc_tx&n; .&n; . Purpose:  Handle a transmit error message.   This will only be called&n; .   when an error, because of the AUTO_RELEASE mode.&n; .&n; . Algorithm:&n; .&t;Save pointer and packet no&n; .&t;Get the packet no from the top of the queue&n; .&t;check if it&squot;s valid ( if not, is this an error??? )&n; .&t;read the status word&n; .&t;record the error&n; .&t;( resend?  Not really, since we don&squot;t want old packets around )&n; .&t;Restore saved values&n; ************************************************************************/
 DECL|function|smc_tx
 r_static
+r_inline
 r_void
 id|smc_tx
 c_func
@@ -6099,6 +6101,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_struct
@@ -7102,6 +7108,8 @@ comma
 id|buffer
 comma
 id|lenp
+comma
+id|ppos
 )paren
 )paren
 op_ne

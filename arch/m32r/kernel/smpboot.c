@@ -28,8 +28,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|cpumask_t
 id|cpu_initialized
 suffix:semicolon
 multiline_comment|/*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*/
@@ -47,7 +46,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Bitmask of physically existing CPUs */
 DECL|variable|phys_cpu_present_map
-id|cpumask_t
+id|physid_mask_t
 id|phys_cpu_present_map
 suffix:semicolon
 multiline_comment|/* Bitmask of currently online CPUs */
@@ -355,7 +354,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|cpu_set
+id|physid_set
 c_func
 (paren
 id|bsp_phys_id
@@ -476,7 +475,7 @@ suffix:semicolon
 id|phys_id
 op_increment
 )paren
-id|cpu_set
+id|physid_set
 c_func
 (paren
 id|phys_id
@@ -533,7 +532,11 @@ c_func
 (paren
 l_string|&quot;CPU present map : %lx&bslash;n&quot;
 comma
+id|physids_coerce
+c_func
+(paren
 id|phys_cpu_present_map
+)paren
 )paren
 suffix:semicolon
 r_for
@@ -565,7 +568,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpu_isset
+id|physid_isset
 c_func
 (paren
 id|phys_id
@@ -614,7 +617,7 @@ op_minus
 l_int|1
 )paren
 (brace
-id|cpu_clear
+id|physid_clear
 c_func
 (paren
 id|phys_id
@@ -873,9 +876,9 @@ multiline_comment|/* Send Startup IPI */
 id|send_IPI_mask_phys
 c_func
 (paren
+id|cpumask_of_cpu
+c_func
 (paren
-l_int|1
-op_lshift
 id|phys_id
 )paren
 comma
@@ -1214,9 +1217,13 @@ op_increment
 r_if
 c_cond
 (paren
+id|cpus_equal
+c_func
+(paren
 id|cpu_callin_map
-op_eq
+comma
 id|cpu_online_map
+)paren
 )paren
 r_break
 suffix:semicolon
@@ -1230,9 +1237,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|cpus_equal
+c_func
+(paren
 id|cpu_callin_map
-op_ne
+comma
 id|cpu_online_map
+)paren
 )paren
 id|BUG
 c_func
@@ -1275,30 +1287,12 @@ c_cond
 id|cpucount
 )paren
 (brace
-r_for
-c_loop
+id|for_each_cpu_mask
+c_func
 (paren
 id|cpu_id
-op_assign
-l_int|0
-suffix:semicolon
-id|cpu_id
-OL
-id|NR_CPUS
-suffix:semicolon
-id|cpu_id
-op_increment
-)paren
-r_if
-c_cond
-(paren
+comma
 id|cpu_online_map
-op_amp
-(paren
-l_int|1
-op_lshift
-id|cpu_id
-)paren
 )paren
 id|bogosum
 op_add_assign

@@ -84,7 +84,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* [us] */
-macro_line|#if defined(CONFIG_CHIP_M32102) || defined(CONFIG_CHIP_XNUX2) &bslash;&n;&t;|| defined(CONFIG_CHIP_VDEC2) || defined(CONFIG_CHIP_M32700) &bslash;&n;        || defined(CONFIG_CHIP_OPSP)
+macro_line|#if defined(CONFIG_CHIP_M32102) || defined(CONFIG_CHIP_XNUX2) &bslash;&n;&t;|| defined(CONFIG_CHIP_VDEC2) || defined(CONFIG_CHIP_M32700) &bslash;&n;&t;|| defined(CONFIG_CHIP_OPSP)
 macro_line|#ifndef CONFIG_SMP
 r_int
 r_int
@@ -437,7 +437,7 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;         * This is revolting. We need to set &quot;xtime&quot; correctly. However, the&n;         * value in this location is the value at the most recent update of&n;         * wall time.  Discover what correction gettimeofday() would have&n;         * made, and then undo it!&n;         */
+multiline_comment|/*&n;&t; * This is revolting. We need to set &quot;xtime&quot; correctly. However, the&n;&t; * value in this location is the value at the most recent update of&n;&t; * wall time.  Discover what correction gettimeofday() would have&n;&t; * made, and then undo it!&n;&t; */
 id|nsec
 op_sub_assign
 id|do_gettimeoffset
@@ -744,7 +744,7 @@ id|timer_interrupt
 comma
 id|SA_INTERRUPT
 comma
-l_int|0
+id|CPU_MASK_NONE
 comma
 l_string|&quot;MFT2&quot;
 comma
@@ -882,7 +882,7 @@ op_assign
 op_minus
 id|xtime.tv_nsec
 suffix:semicolon
-macro_line|#if defined(CONFIG_CHIP_M32102) || defined(CONFIG_CHIP_XNUX2) &bslash;&n;&t;|| defined(CONFIG_CHIP_VDEC2) || defined(CONFIG_CHIP_M32700) &bslash;&n;        || defined(CONFIG_CHIP_OPSP)
+macro_line|#if defined(CONFIG_CHIP_M32102) || defined(CONFIG_CHIP_XNUX2) &bslash;&n;&t;|| defined(CONFIG_CHIP_VDEC2) || defined(CONFIG_CHIP_M32700) &bslash;&n;&t;|| defined(CONFIG_CHIP_OPSP)
 multiline_comment|/* M32102 MFT setup */
 id|setup_irq
 c_func

@@ -167,7 +167,6 @@ id|HZ
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * 4294 = 2^32 / 10^6&n; */
 DECL|function|__udelay
 r_void
 id|__udelay
@@ -183,8 +182,29 @@ c_func
 (paren
 id|usecs
 op_star
-l_int|4294UL
+l_int|0x000010c7
 )paren
 suffix:semicolon
+multiline_comment|/* 2**32 / 1000000 (rounded up) */
+)brace
+DECL|function|__ndelay
+r_void
+id|__ndelay
+c_func
+(paren
+r_int
+r_int
+id|nsecs
+)paren
+(brace
+id|__const_udelay
+c_func
+(paren
+id|nsecs
+op_star
+l_int|0x00005
+)paren
+suffix:semicolon
+multiline_comment|/* 2**32 / 1000000000 (rounded up) */
 )brace
 eof

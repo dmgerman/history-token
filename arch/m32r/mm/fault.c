@@ -21,7 +21,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/m32r.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
@@ -250,6 +249,40 @@ id|mm
 r_goto
 id|bad_area_nosemaphore
 suffix:semicolon
+multiline_comment|/* When running in the kernel we expect faults to occur only to&n;&t; * addresses in user space.  All other faults represent errors in the&n;&t; * kernel and should generate an OOPS.  Unfortunatly, in the case of an&n;&t; * erroneous fault occuring in a code path which already holds mmap_sem&n;&t; * we will deadlock attempting to validate the fault against the&n;&t; * address space.  Luckily the kernel only validly references user&n;&t; * space from well defined areas of code, which are listed in the&n;&t; * exceptions table.&n;&t; *&n;&t; * As the vast majority of faults will be valid we will only perform&n;&t; * the source reference check when there is a possibilty of a deadlock.&n;&t; * Attempt to lock the address space, if we cannot we then validate the&n;&t; * source.  If this is invalid we can skip the address space check,&n;&t; * thus avoiding the deadlock.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|down_read_trylock
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|error_code
+op_amp
+l_int|4
+)paren
+op_eq
+l_int|0
+op_logical_and
+op_logical_neg
+id|search_exception_tables
+c_func
+(paren
+id|regs-&gt;psw
+)paren
+)paren
+r_goto
+id|bad_area_nosemaphore
+suffix:semicolon
 id|down_read
 c_func
 (paren
@@ -257,6 +290,7 @@ op_amp
 id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
+)brace
 id|vma
 op_assign
 id|find_vma
@@ -540,6 +574,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|address
@@ -836,6 +871,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|address
