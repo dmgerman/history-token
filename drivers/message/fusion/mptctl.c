@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/compat.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;&t;/* needed for access to Scsi_Host struct */
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
@@ -10556,6 +10557,7 @@ id|kfw32
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -10715,12 +10717,14 @@ id|karg32
 suffix:semicolon
 r_struct
 id|mpt_ioctl_command32
+id|__user
 op_star
 id|uarg
 op_assign
 (paren
 r_struct
 id|mpt_ioctl_command32
+id|__user
 op_star
 )paren
 id|arg
@@ -10773,6 +10777,7 @@ id|karg32
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -10897,6 +10902,7 @@ id|karg.replyFrameBufPtr
 op_assign
 (paren
 r_char
+id|__user
 op_star
 )paren
 (paren
@@ -10909,6 +10915,7 @@ id|karg.dataInBufPtr
 op_assign
 (paren
 r_char
+id|__user
 op_star
 )paren
 (paren
@@ -10921,6 +10928,7 @@ id|karg.dataOutBufPtr
 op_assign
 (paren
 r_char
+id|__user
 op_star
 )paren
 (paren
@@ -10933,6 +10941,7 @@ id|karg.senseDataPtr
 op_assign
 (paren
 r_char
+id|__user
 op_star
 )paren
 (paren
