@@ -953,7 +953,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* Generic routines. */
 r_void
-id|agp_generic_agp_enable
+id|agp_generic_enable
 c_func
 (paren
 id|u32

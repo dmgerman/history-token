@@ -1136,7 +1136,7 @@ id|v3_devs
 )paren
 suffix:semicolon
 r_return
-id|agp_generic_agp_enable
+id|agp_generic_enable
 c_func
 (paren
 id|mode
