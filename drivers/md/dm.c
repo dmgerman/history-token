@@ -437,6 +437,11 @@ id|dm_stripe
 id|xx
 c_func
 (paren
+id|kcopyd
+)paren
+id|xx
+c_func
+(paren
 id|dm_interface
 )paren
 DECL|macro|xx
