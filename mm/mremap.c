@@ -618,6 +618,11 @@ id|src
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|dst
+)paren
 id|pte_unmap
 c_func
 (paren

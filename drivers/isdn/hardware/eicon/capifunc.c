@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: capifunc.c,v 1.61 2004/03/26 19:48:48 armin Exp $&n; *&n; * ISDN interface module for Eicon active cards DIVA.&n; * CAPI Interface common functions&n; * &n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de) &n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: capifunc.c,v 1.61.4.2 2004/05/05 16:09:25 armin Exp $&n; *&n; * ISDN interface module for Eicon active cards DIVA.&n; * CAPI Interface common functions&n; * &n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de) &n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;os_capi.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
@@ -3961,6 +3961,11 @@ r_int
 r_int
 id|mem_len
 suffix:semicolon
+r_int
+id|nconn
+op_assign
+id|rp-&gt;level3cnt
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4010,7 +4015,70 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|nconn
+op_le
+l_int|0
+)paren
+id|nconn
+op_assign
+id|ctrl-&gt;profile.nbchannel
+op_star
+op_minus
+id|nconn
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nconn
+op_eq
+l_int|0
+)paren
+id|nconn
+op_assign
+id|ctrl-&gt;profile.nbchannel
+suffix:semicolon
+id|DBG_LOG
+c_func
+(paren
+(paren
+l_string|&quot;CAPI_REGISTER - Id = %d&quot;
+comma
+id|appl
+)paren
+)paren
+id|DBG_LOG
+c_func
+(paren
+(paren
+l_string|&quot;  MaxLogicalConnections = %d(%d)&quot;
+comma
+id|nconn
+comma
 id|rp-&gt;level3cnt
+)paren
+)paren
+id|DBG_LOG
+c_func
+(paren
+(paren
+l_string|&quot;  MaxBDataBuffers       = %d&quot;
+comma
+id|rp-&gt;datablkcnt
+)paren
+)paren
+id|DBG_LOG
+c_func
+(paren
+(paren
+l_string|&quot;  MaxBDataLength        = %d&quot;
+comma
+id|rp-&gt;datablklen
+)paren
+)paren
+r_if
+c_cond
+(paren
+id|nconn
 template_param
 l_int|255
 op_logical_or
@@ -4062,13 +4130,13 @@ multiline_comment|/* appl already registered */
 multiline_comment|/* alloc memory */
 id|bnum
 op_assign
-id|rp-&gt;level3cnt
+id|nconn
 op_star
 id|rp-&gt;datablkcnt
 suffix:semicolon
 id|xnum
 op_assign
-id|rp-&gt;level3cnt
+id|nconn
 op_star
 id|MAX_DATA_B3
 suffix:semicolon
@@ -4133,6 +4201,15 @@ op_star
 id|rp-&gt;datablklen
 suffix:semicolon
 multiline_comment|/* xbuffer_ptr[xnum] */
+id|DBG_LOG
+c_func
+(paren
+(paren
+l_string|&quot;  Allocated Memory      = %d&quot;
+comma
+id|mem_len
+)paren
+)paren
 r_if
 c_cond
 (paren
@@ -4299,51 +4376,6 @@ op_add_assign
 id|rp-&gt;datablklen
 suffix:semicolon
 )brace
-id|DBG_LOG
-c_func
-(paren
-(paren
-l_string|&quot;CAPI_REGISTER - Id = %d&quot;
-comma
-id|appl
-)paren
-)paren
-id|DBG_LOG
-c_func
-(paren
-(paren
-l_string|&quot;  MaxLogicalConnections = %d&quot;
-comma
-id|rp-&gt;level3cnt
-)paren
-)paren
-id|DBG_LOG
-c_func
-(paren
-(paren
-l_string|&quot;  MaxBDataBuffers       = %d&quot;
-comma
-id|rp-&gt;datablkcnt
-)paren
-)paren
-id|DBG_LOG
-c_func
-(paren
-(paren
-l_string|&quot;  MaxBDataLength        = %d&quot;
-comma
-id|rp-&gt;datablklen
-)paren
-)paren
-id|DBG_LOG
-c_func
-(paren
-(paren
-l_string|&quot;  Allocated Memory      = %d&quot;
-comma
-id|mem_len
-)paren
-)paren
 multiline_comment|/* initialize application data */
 id|diva_os_enter_spin_lock
 c_func
@@ -4423,7 +4455,7 @@ op_assign
 (paren
 id|byte
 )paren
-id|rp-&gt;level3cnt
+id|nconn
 suffix:semicolon
 id|this-&gt;MaxNCCIData
 op_assign

@@ -1374,71 +1374,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The Intel 440GX hall of shame. &n; *&n; * On many (all we have checked) of these boxes the $PIRQ table is wrong.&n; * The MP1.4 table is right however and so SMP kernels tend to work. &n; */
-DECL|function|broken_pirq
-r_static
-id|__init
-r_int
-id|broken_pirq
-c_func
-(paren
-r_struct
-id|dmi_blacklist
-op_star
-id|d
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot; *** Possibly defective BIOS detected (irqtable)&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot; *** Many BIOSes matching this signature have incorrect IRQ routing tables.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot; *** If you see IRQ problems, in particular SCSI resets and hangs at boot&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot; *** contact your hardware vendor and ask about updates.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot; *** Building an SMP kernel may evade the bug some of the time.&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_X86_IO_APIC
-(brace
-r_extern
-r_int
-id|skip_ioapic_setup
-suffix:semicolon
-id|skip_ioapic_setup
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * ASUS K7V-RM has broken ACPI table defining sleep modes&n; */
 DECL|function|broken_acpi_Sx
 r_static
@@ -1800,8 +1735,75 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * early nForce2 reference BIOS shipped with a&n; * bogus ACPI IRQ0 -&gt; pin2 interrupt override -- ignore it&n; */
+DECL|function|ignore_timer_override
+r_static
+id|__init
+r_int
+id|ignore_timer_override
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+r_extern
+r_int
+id|acpi_skip_timer_override
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;%s detected: BIOS IRQ0 pin2 override&quot;
+l_string|&quot; will be ignored&bslash;n&quot;
+comma
+id|d-&gt;ident
+)paren
+suffix:semicolon
+id|acpi_skip_timer_override
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif
 macro_line|#ifdef&t;CONFIG_ACPI_PCI
+DECL|function|disable_acpi_irq
+r_static
+id|__init
+r_int
+id|disable_acpi_irq
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;%s detected: force use of acpi=noirq&bslash;n&quot;
+comma
+id|d-&gt;ident
+)paren
+suffix:semicolon
+id|acpi_noirq_set
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|disable_acpi_pci
 r_static
 id|__init
@@ -1824,7 +1826,7 @@ comma
 id|d-&gt;ident
 )paren
 suffix:semicolon
-id|acpi_noirq_set
+id|acpi_disable_pci
 c_func
 (paren
 )paren

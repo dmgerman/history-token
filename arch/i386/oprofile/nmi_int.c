@@ -756,11 +756,27 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 multiline_comment|/* We walk a thin line between law and rape here.&n;&t; * We need to be careful to install our NMI handler&n;&t; * without actually triggering any NMIs as this will&n;&t; * break the core code horrifically.&n;&t; */
-id|disable_lapic_nmi_watchdog
+r_if
+c_cond
+(paren
+id|reserve_lapic_nmi
+c_func
+(paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|free_msrs
 c_func
 (paren
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
 multiline_comment|/* We need to serialize save and setup for HT because the subset&n;&t; * of msrs are distinct for save and setup operations&n;&t; */
 id|on_each_cpu
 c_func
@@ -1036,7 +1052,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|enable_lapic_nmi_watchdog
+id|release_lapic_nmi
 c_func
 (paren
 )paren

@@ -278,8 +278,8 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|disable_lapic_nmi_watchdog
+r_int
+id|reserve_lapic_nmi
 c_func
 (paren
 r_void
@@ -287,7 +287,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|enable_lapic_nmi_watchdog
+id|release_lapic_nmi
 c_func
 (paren
 r_void
