@@ -1091,20 +1091,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* setup system timer */
-id|memset
-c_func
-(paren
-op_amp
-id|opl3-&gt;tlist
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|opl3-&gt;tlist
-)paren
-)paren
-suffix:semicolon
 id|init_timer
 c_func
 (paren

@@ -1129,6 +1129,15 @@ comma
 )brace
 comma
 (brace
+id|ICE1712_SUBDEVICE_STDSP24_MEDIA7_1
+comma
+l_string|&quot;Hoontech STA DSP24 Media 7.1&quot;
+comma
+id|snd_ice1712_hoontech_init
+comma
+)brace
+comma
+(brace
 )brace
 multiline_comment|/* terminator */
 )brace
