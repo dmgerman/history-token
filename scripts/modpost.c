@@ -1664,6 +1664,23 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
+multiline_comment|/* ignore __this_module, it will be resolved shortly */
+r_if
+c_cond
+(paren
+id|strcmp
+c_func
+(paren
+id|symname
+comma
+id|MODULE_SYMBOL_PREFIX
+l_string|&quot;__this_module&quot;
+)paren
+op_eq
+l_int|0
+)paren
+r_break
+suffix:semicolon
 macro_line|#ifdef STT_REGISTER
 r_if
 c_cond
@@ -2236,6 +2253,78 @@ c_func
 id|b
 comma
 l_string|&quot;MODULE_INFO(vermagic, VERMAGIC_STRING);&bslash;n&quot;
+)paren
+suffix:semicolon
+id|buf_printf
+c_func
+(paren
+id|b
+comma
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|buf_printf
+c_func
+(paren
+id|b
+comma
+l_string|&quot;struct module __this_module&bslash;n&quot;
+)paren
+suffix:semicolon
+id|buf_printf
+c_func
+(paren
+id|b
+comma
+l_string|&quot;__attribute__((section(&bslash;&quot;.gnu.linkonce.this_module&bslash;&quot;))) = {&bslash;n&quot;
+)paren
+suffix:semicolon
+id|buf_printf
+c_func
+(paren
+id|b
+comma
+l_string|&quot; .name = __stringify(KBUILD_MODNAME),&bslash;n&quot;
+)paren
+suffix:semicolon
+id|buf_printf
+c_func
+(paren
+id|b
+comma
+l_string|&quot; .init = init_module,&bslash;n&quot;
+)paren
+suffix:semicolon
+id|buf_printf
+c_func
+(paren
+id|b
+comma
+l_string|&quot;#ifdef CONFIG_MODULE_UNLOAD&bslash;n&quot;
+)paren
+suffix:semicolon
+id|buf_printf
+c_func
+(paren
+id|b
+comma
+l_string|&quot; .exit = cleanup_module,&bslash;n&quot;
+)paren
+suffix:semicolon
+id|buf_printf
+c_func
+(paren
+id|b
+comma
+l_string|&quot;#endif&bslash;n&quot;
+)paren
+suffix:semicolon
+id|buf_printf
+c_func
+(paren
+id|b
+comma
+l_string|&quot;};&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
