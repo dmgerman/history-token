@@ -214,6 +214,8 @@ id|scsi_allocate_request
 c_func
 (paren
 id|sdev
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -1026,6 +1028,8 @@ id|scsi_allocate_request
 c_func
 (paren
 id|sdev
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if

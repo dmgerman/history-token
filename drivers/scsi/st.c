@@ -1529,6 +1529,8 @@ id|scsi_allocate_request
 c_func
 (paren
 id|STp-&gt;device
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if

@@ -88,7 +88,7 @@ l_string|&quot;Enclosure        &quot;
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Function:    scsi_allocate_request&n; *&n; * Purpose:     Allocate a request descriptor.&n; *&n; * Arguments:   device    - device for which we want a request&n; *&n; * Lock status: No locks assumed to be held.  This function is SMP-safe.&n; *&n; * Returns:     Pointer to request block.&n; *&n; * Notes:       With the new queueing code, it becomes important&n; *              to track the difference between a command and a&n; *              request.  A request is a pending item in the queue that&n; *              has not yet reached the top of the queue.&n; *&n; * XXX(hch):&t;Need to add a gfp_mask argument.&n; */
+multiline_comment|/*&n; * Function:    scsi_allocate_request&n; *&n; * Purpose:     Allocate a request descriptor.&n; *&n; * Arguments:   device&t;&t;- device for which we want a request&n; *&t;&t;gfp_mask&t;- allocation flags passed to kmalloc&n; *&n; * Lock status: No locks assumed to be held.  This function is SMP-safe.&n; *&n; * Returns:     Pointer to request block.&n; */
 DECL|function|scsi_allocate_request
 r_struct
 id|scsi_request
@@ -100,6 +100,9 @@ r_struct
 id|scsi_device
 op_star
 id|sdev
+comma
+r_int
+id|gfp_mask
 )paren
 (brace
 r_const
@@ -142,7 +145,7 @@ c_func
 (paren
 id|size
 comma
-id|GFP_ATOMIC
+id|gfp_mask
 )paren
 suffix:semicolon
 r_if
