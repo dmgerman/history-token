@@ -12,9 +12,7 @@ macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/in_route.h&gt;
 macro_line|#include &lt;net/route.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
-macro_line|#ifndef _SNMP_H
 macro_line|#include &lt;net/snmp.h&gt;
-macro_line|#endif
 r_struct
 id|sock
 suffix:semicolon
