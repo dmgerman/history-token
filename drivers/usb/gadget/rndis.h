@@ -27,8 +27,8 @@ DECL|macro|RNDIS_STATUS_MEDIA_DISCONNECT
 mdefine_line|#define RNDIS_STATUS_MEDIA_DISCONNECT&t;0x4001000CU&t;/* Device disconnected */
 multiline_comment|/* For all not specified status messages:&n; * RNDIS_STATUS_Xxx -&gt; NDIS_STATUS_Xxx &n; */
 multiline_comment|/* Message Set for Connectionless (802.3) Devices */
-DECL|macro|REMOTE_NDIS_INIZIALIZE_MSG
-mdefine_line|#define REMOTE_NDIS_INIZIALIZE_MSG&t;0x00000002U&t;/* Initialize device */
+DECL|macro|REMOTE_NDIS_INITIALIZE_MSG
+mdefine_line|#define REMOTE_NDIS_INITIALIZE_MSG&t;0x00000002U&t;/* Initialize device */
 DECL|macro|REMOTE_NDIS_HALT_MSG
 mdefine_line|#define REMOTE_NDIS_HALT_MSG&t;&t;0x00000003U
 DECL|macro|REMOTE_NDIS_QUERY_MSG
@@ -683,6 +683,12 @@ DECL|member|media_state
 id|u32
 id|media_state
 suffix:semicolon
+DECL|member|host_mac
+r_const
+id|u8
+op_star
+id|host_mac
+suffix:semicolon
 DECL|member|dev
 r_struct
 id|net_device
@@ -870,6 +876,19 @@ r_int
 id|configNr
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|rndis_set_host_mac
+(paren
+r_int
+id|configNr
+comma
+r_const
+id|u8
+op_star
+id|addr
+)paren
+suffix:semicolon
 r_int
 id|__init
 id|rndis_init
@@ -878,7 +897,6 @@ r_void
 )paren
 suffix:semicolon
 r_void
-id|__exit
 id|rndis_exit
 (paren
 r_void

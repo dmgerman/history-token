@@ -179,6 +179,13 @@ DECL|member|rndis_config
 r_int
 id|rndis_config
 suffix:semicolon
+DECL|member|host_mac
+id|u8
+id|host_mac
+(braket
+id|ETH_ALEN
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* This version autoconfigures as much as possible at run-time.&n; *&n; * It also ASSUMES a self-powered device, without remote wakeup,&n; * although remote wakeup support would make sense.&n; */
@@ -215,7 +222,7 @@ DECL|macro|SIMPLE_VENDOR_NUM
 mdefine_line|#define&t;SIMPLE_VENDOR_NUM&t;0x049f
 DECL|macro|SIMPLE_PRODUCT_NUM
 mdefine_line|#define&t;SIMPLE_PRODUCT_NUM&t;0x505a
-multiline_comment|/* For hardware that can talk RNDIS and either of the above protocols,&n; * use this ID ... the windows INF files will know it.  Unless it&squot;s&n; * used with CDC Ethernet, Linux hosts will need updates to choose the&n; * non-MSFT configuration, either in the kernel (2.4) or else from a&n; * hotplug script (2.6).&n; */
+multiline_comment|/* For hardware that can talk RNDIS and either of the above protocols,&n; * use this ID ... the windows INF files will know it.  Unless it&squot;s&n; * used with CDC Ethernet, Linux 2.4 hosts will need updates to choose&n; * the non-RNDIS configuration.&n; */
 DECL|macro|RNDIS_VENDOR_NUM
 mdefine_line|#define RNDIS_VENDOR_NUM&t;0x0525&t;/* NetChip */
 DECL|macro|RNDIS_PRODUCT_NUM
@@ -4124,6 +4131,13 @@ op_assign
 id|ep-&gt;driver_data
 suffix:semicolon
 multiline_comment|/* received RNDIS command from CDC_SEND_ENCAPSULATED_COMMAND */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|dev-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4146,6 +4160,13 @@ comma
 l_string|&quot;%s: rndis parse error&bslash;n&quot;
 comma
 id|__FUNCTION__
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dev-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -4716,7 +4737,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|dev-&gt;cdc
+op_logical_or
+id|dev-&gt;rndis
+)paren
 op_logical_and
 id|ctrl-&gt;wIndex
 op_ne
@@ -4724,7 +4749,16 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* if carrier is on, data interface is active. */
+multiline_comment|/* for CDC, iff carrier is on, data interface is active. */
+r_if
+c_cond
+(paren
+id|dev-&gt;rndis
+op_logical_or
+id|ctrl-&gt;wIndex
+op_ne
+l_int|1
+)paren
 op_star
 (paren
 id|u8
@@ -4732,24 +4766,26 @@ op_star
 )paren
 id|req-&gt;buf
 op_assign
+l_int|0
+suffix:semicolon
+r_else
+op_star
 (paren
-(paren
-id|ctrl-&gt;wIndex
-op_eq
-l_int|1
+id|u8
+op_star
 )paren
-op_logical_and
+id|req-&gt;buf
+op_assign
 id|netif_carrier_ok
 (paren
 id|dev-&gt;net
-)paren
 )paren
 ques
 c_cond
 l_int|1
 suffix:colon
 l_int|0
-comma
+suffix:semicolon
 id|value
 op_assign
 id|min
@@ -4917,6 +4953,7 @@ op_assign
 id|rndis_response_complete
 suffix:semicolon
 )brace
+multiline_comment|/* else stalls ... spec says to avoid that */
 )brace
 r_break
 suffix:semicolon
@@ -5056,6 +5093,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME RNDIS should enter RNDIS_UNINITIALIZED */
 multiline_comment|/* next we may get setup() calls to enumerate new connections;&n;&t; * or an unbind() during shutdown (including removing module).&n;&t; */
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -8192,26 +8230,22 @@ c_func
 id|net-&gt;dev_addr
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;DEV_CONFIG_CDC
-multiline_comment|/* ... another address for the host, on the other end of the&n;&t; * link, gets exported through CDC (see CDC spec table 41)&n;&t; */
+multiline_comment|/* ... another address for the host, on the other end of the&n;&t; * link, gets exported through CDC (see CDC spec table 41)&n;&t; * and RNDIS.&n;&t; */
 r_if
 c_cond
 (paren
 id|cdc
+op_logical_or
+id|rndis
 )paren
 (brace
-id|u8
-id|node_id
-(braket
-id|ETH_ALEN
-)braket
-suffix:semicolon
 id|random_ether_addr
 c_func
 (paren
-id|node_id
+id|dev-&gt;host_mac
 )paren
 suffix:semicolon
+macro_line|#ifdef&t;DEV_CONFIG_CDC
 id|snprintf
 (paren
 id|ethaddr
@@ -8221,39 +8255,39 @@ id|ethaddr
 comma
 l_string|&quot;%02X%02X%02X%02X%02X%02X&quot;
 comma
-id|node_id
+id|dev-&gt;host_mac
 (braket
 l_int|0
 )braket
 comma
-id|node_id
+id|dev-&gt;host_mac
 (braket
 l_int|1
 )braket
 comma
-id|node_id
+id|dev-&gt;host_mac
 (braket
 l_int|2
 )braket
 comma
-id|node_id
+id|dev-&gt;host_mac
 (braket
 l_int|3
 )braket
 comma
-id|node_id
+id|dev-&gt;host_mac
 (braket
 l_int|4
 )braket
 comma
-id|node_id
+id|dev-&gt;host_mac
 (braket
 l_int|5
 )braket
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
+)brace
 r_if
 c_cond
 (paren
@@ -8491,22 +8525,50 @@ l_int|5
 )braket
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;DEV_CONFIG_CDC
 r_if
 c_cond
 (paren
 id|cdc
+op_logical_or
+id|rndis
 )paren
 id|INFO
 (paren
 id|dev
 comma
-l_string|&quot;CDC host enet %s&bslash;n&quot;
+l_string|&quot;HOST MAC %02x:%02x:%02x:%02x:%02x:%02x&bslash;n&quot;
 comma
-id|ethaddr
+id|dev-&gt;host_mac
+(braket
+l_int|0
+)braket
+comma
+id|dev-&gt;host_mac
+(braket
+l_int|1
+)braket
+comma
+id|dev-&gt;host_mac
+(braket
+l_int|2
+)braket
+comma
+id|dev-&gt;host_mac
+(braket
+l_int|3
+)braket
+comma
+id|dev-&gt;host_mac
+(braket
+l_int|4
+)braket
+comma
+id|dev-&gt;host_mac
+(braket
+l_int|5
+)braket
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef&t;CONFIG_USB_ETH_RNDIS
 r_if
 c_cond
@@ -8552,6 +8614,13 @@ id|fail
 suffix:semicolon
 )brace
 multiline_comment|/* these set up a lot of the OIDs that RNDIS needs */
+id|rndis_set_host_mac
+(paren
+id|dev-&gt;rndis_config
+comma
+id|dev-&gt;host_mac
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
