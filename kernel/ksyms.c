@@ -2690,6 +2690,13 @@ c_func
 id|__bdevname
 )paren
 suffix:semicolon
+DECL|variable|bdevname
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bdevname
+)paren
+suffix:semicolon
 DECL|variable|cdevname
 id|EXPORT_SYMBOL
 c_func
