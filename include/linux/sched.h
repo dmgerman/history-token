@@ -499,11 +499,6 @@ DECL|member|cpu_vm_mask
 id|cpumask_t
 id|cpu_vm_mask
 suffix:semicolon
-DECL|member|swap_address
-r_int
-r_int
-id|swap_address
-suffix:semicolon
 DECL|member|saved_auxv
 r_int
 r_int

@@ -970,7 +970,7 @@ c_cond
 (paren
 id|rdwr_arg.nmsgs
 OG
-l_int|42
+id|I2C_RDRW_IOCTL_MAX_MSGS
 )paren
 r_return
 op_minus
@@ -2111,7 +2111,7 @@ c_cond
 id|adap-&gt;dev.parent
 op_eq
 op_amp
-id|legacy_bus
+id|platform_bus
 )paren
 id|i2c_dev-&gt;class_dev.dev
 op_assign

@@ -23,6 +23,8 @@ DECL|macro|cpus_equal
 mdefine_line|#define cpus_equal(map1, map2)&t;&t;(cpus_coerce(map1) == cpus_coerce(map2))
 DECL|macro|cpus_empty
 mdefine_line|#define cpus_empty(map)&t;&t;&t;(cpus_coerce(map) == 0UL)
+DECL|macro|cpus_addr
+mdefine_line|#define cpus_addr(map)&t;&t;&t;(&amp;(map))
 DECL|macro|cpus_weight
 mdefine_line|#define cpus_weight(map)&t;&t;(cpus_coerce(map) ? 1UL : 0UL)
 DECL|macro|cpus_shift_right

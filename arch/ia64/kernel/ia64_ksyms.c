@@ -830,7 +830,7 @@ id|unw_access_pr
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-macro_line|# if __GNUC__ &lt; 3 || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &lt; 4)
+macro_line|# if __GNUC__ &lt; 3 || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &lt; 3)
 multiline_comment|/*&n; * This is not a normal routine and we don&squot;t want a function descriptor for it, so we use&n; * a fake declaration here.&n; */
 r_extern
 r_char

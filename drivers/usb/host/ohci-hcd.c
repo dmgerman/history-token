@@ -469,9 +469,10 @@ id|PIPE_ISOCHRONOUS
 id|u16
 id|frame
 op_assign
-id|le16_to_cpu
+id|OHCI_FRAME_NO
+c_func
 (paren
-id|ohci-&gt;hcca-&gt;frame_no
+id|ohci-&gt;hcca
 )paren
 suffix:semicolon
 multiline_comment|/* delay a few frames before the first TD */
@@ -640,7 +641,7 @@ id|urb_priv-&gt;ed-&gt;state
 op_eq
 id|ED_OPER
 )paren
-id|start_urb_unlink
+id|start_ed_unlink
 (paren
 id|ohci
 comma
@@ -959,9 +960,10 @@ id|hcd
 )paren
 suffix:semicolon
 r_return
-id|le16_to_cpu
+id|OHCI_FRAME_NO
+c_func
 (paren
-id|ohci-&gt;hcca-&gt;frame_no
+id|ohci-&gt;hcca
 )paren
 suffix:semicolon
 )brace
@@ -1845,9 +1847,10 @@ id|finish_unlinks
 (paren
 id|ohci
 comma
-id|le16_to_cpu
+id|OHCI_FRAME_NO
+c_func
 (paren
-id|ohci-&gt;hcca-&gt;frame_no
+id|ohci-&gt;hcca
 )paren
 comma
 id|ptregs

@@ -4253,17 +4253,6 @@ c_func
 id|tiaddr
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|atomic_dec_and_test
-c_func
-(paren
-op_amp
-id|ti-&gt;task-&gt;thread.refcount
-)paren
-)paren
-(brace
 multiline_comment|/* We are deleting a mapping, so the flush here is mandatory. */
 id|sun4c_flush_page
 c_func
@@ -4333,7 +4322,6 @@ c_func
 id|entry
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|sun4c_init_buckets
 r_static

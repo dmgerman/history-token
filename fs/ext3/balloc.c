@@ -2044,8 +2044,8 @@ op_assign
 op_minus
 id|ENOSPC
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * First, test whether the goal block is free.&n;&t; */

@@ -491,6 +491,34 @@ mdefine_line|#define __NR_remap_file_pages&t;&t;(__NR_SYSCALL_BASE+253)
 multiline_comment|/* 254 for set_thread_area */
 multiline_comment|/* 255 for get_thread_area */
 multiline_comment|/* 256 for set_tid_address */
+DECL|macro|__NR_timer_create
+mdefine_line|#define __NR_timer_create&t;&t;(__NR_SYSCALL_BASE+257)
+DECL|macro|__NR_timer_settime
+mdefine_line|#define __NR_timer_settime&t;&t;(__NR_SYSCALL_BASE+258)
+DECL|macro|__NR_timer_gettime
+mdefine_line|#define __NR_timer_gettime&t;&t;(__NR_SYSCALL_BASE+259)
+DECL|macro|__NR_timer_getoverrun
+mdefine_line|#define __NR_timer_getoverrun&t;&t;(__NR_SYSCALL_BASE+260)
+DECL|macro|__NR_timer_delete
+mdefine_line|#define __NR_timer_delete&t;&t;(__NR_SYSCALL_BASE+261)
+DECL|macro|__NR_clock_settime
+mdefine_line|#define __NR_clock_settime&t;&t;(__NR_SYSCALL_BASE+262)
+DECL|macro|__NR_clock_gettime
+mdefine_line|#define __NR_clock_gettime&t;&t;(__NR_SYSCALL_BASE+263)
+DECL|macro|__NR_clock_getres
+mdefine_line|#define __NR_clock_getres&t;&t;(__NR_SYSCALL_BASE+264)
+DECL|macro|__NR_clock_nanosleep
+mdefine_line|#define __NR_clock_nanosleep&t;&t;(__NR_SYSCALL_BASE+265)
+DECL|macro|__NR_statfs64
+mdefine_line|#define __NR_statfs64&t;&t;&t;(__NR_SYSCALL_BASE+266)
+DECL|macro|__NR_fstatfs64
+mdefine_line|#define __NR_fstatfs64&t;&t;&t;(__NR_SYSCALL_BASE+267)
+DECL|macro|__NR_tgkill
+mdefine_line|#define __NR_tgkill&t;&t;&t;(__NR_SYSCALL_BASE+268)
+DECL|macro|__NR_utimes
+mdefine_line|#define __NR_utimes&t;&t;&t;(__NR_SYSCALL_BASE+269)
+DECL|macro|__NR_fadvise64_64
+mdefine_line|#define __NR_fadvise64_64&t;&t;(__NR_SYSCALL_BASE+270)
 multiline_comment|/*&n; * The following SWIs are ARM private.&n; */
 DECL|macro|__ARM_NR_BASE
 mdefine_line|#define __ARM_NR_BASE&t;&t;&t;(__NR_SYSCALL_BASE+0x0f0000)

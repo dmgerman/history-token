@@ -3106,7 +3106,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* On all revisions PXB bus lock must be disabled for IDE */
+multiline_comment|/* On all revisions below 5 PXB bus lock must be disabled for IDE */
 r_else
 r_if
 c_cond
@@ -3118,6 +3118,10 @@ l_int|1
 op_lshift
 l_int|14
 )paren
+op_logical_and
+id|rev
+OL
+l_int|5
 )paren
 (brace
 id|no_piix_dma

@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/mmzone.h&gt;
 r_extern
 r_volatile
-r_char
+id|u8
 id|cpu_to_node_map
 (braket
 id|NR_CPUS

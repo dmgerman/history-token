@@ -23,37 +23,20 @@ r_int
 id|word
 )paren
 (brace
-r_register
 r_int
 r_int
 id|result
-id|asm
-c_func
-(paren
-l_string|&quot;er0&quot;
-)paren
 suffix:semicolon
-r_register
-r_int
-r_int
-id|_word
-id|asm
-c_func
-(paren
-l_string|&quot;er1&quot;
-)paren
-suffix:semicolon
-id|_word
+id|result
 op_assign
-id|word
+op_minus
+l_int|1
 suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;sub.l %0,%0&bslash;n&bslash;t&quot;
-l_string|&quot;dec.l #1,%0&bslash;n&quot;
 l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;shlr.l %1&bslash;n&bslash;t&quot;
+l_string|&quot;shlr.l %2&bslash;n&bslash;t&quot;
 l_string|&quot;adds #1,%0&bslash;n&bslash;t&quot;
 l_string|&quot;bcs 1b&quot;
 suffix:colon
@@ -62,9 +45,14 @@ l_string|&quot;=r&quot;
 id|result
 )paren
 suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|result
+)paren
+comma
 l_string|&quot;r&quot;
 (paren
-id|_word
+id|word
 )paren
 )paren
 suffix:semicolon
@@ -97,9 +85,6 @@ id|b_addr
 suffix:semicolon
 id|b_addr
 op_assign
-op_amp
-(paren
-(paren
 (paren
 r_volatile
 r_int
@@ -107,31 +92,15 @@ r_char
 op_star
 )paren
 id|addr
-)paren
-(braket
-(paren
-(paren
-id|nr
-op_rshift
-l_int|3
-)paren
-op_amp
-op_complement
-l_int|3
-)paren
 op_plus
-l_int|3
-op_minus
 (paren
 (paren
 id|nr
 op_rshift
 l_int|3
 )paren
-op_amp
+op_xor
 l_int|3
-)paren
-)braket
 )paren
 suffix:semicolon
 id|__asm__
@@ -196,9 +165,6 @@ id|b_addr
 suffix:semicolon
 id|b_addr
 op_assign
-op_amp
-(paren
-(paren
 (paren
 r_volatile
 r_int
@@ -206,31 +172,15 @@ r_char
 op_star
 )paren
 id|addr
-)paren
-(braket
-(paren
-(paren
-id|nr
-op_rshift
-l_int|3
-)paren
-op_amp
-op_complement
-l_int|3
-)paren
 op_plus
-l_int|3
-op_minus
 (paren
 (paren
 id|nr
 op_rshift
 l_int|3
 )paren
-op_amp
+op_xor
 l_int|3
-)paren
-)braket
 )paren
 suffix:semicolon
 id|__asm__
@@ -289,9 +239,6 @@ id|b_addr
 suffix:semicolon
 id|b_addr
 op_assign
-op_amp
-(paren
-(paren
 (paren
 r_volatile
 r_int
@@ -299,31 +246,15 @@ r_char
 op_star
 )paren
 id|addr
-)paren
-(braket
-(paren
-(paren
-id|nr
-op_rshift
-l_int|3
-)paren
-op_amp
-op_complement
-l_int|3
-)paren
 op_plus
-l_int|3
-op_minus
 (paren
 (paren
 id|nr
 op_rshift
 l_int|3
 )paren
-op_amp
+op_xor
 l_int|3
-)paren
-)braket
 )paren
 suffix:semicolon
 id|__asm__
@@ -376,6 +307,27 @@ id|addr
 (brace
 r_return
 (paren
+op_star
+(paren
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+id|addr
+op_plus
+(paren
+(paren
+id|nr
+op_rshift
+l_int|3
+)paren
+op_xor
+l_int|3
+)paren
+)paren
+op_amp
 (paren
 l_int|1UL
 op_lshift
@@ -384,43 +336,6 @@ id|nr
 op_amp
 l_int|7
 )paren
-)paren
-op_amp
-(paren
-(paren
-(paren
-r_const
-r_volatile
-r_int
-r_char
-op_star
-)paren
-id|addr
-)paren
-(braket
-(paren
-(paren
-id|nr
-op_rshift
-l_int|3
-)paren
-op_amp
-op_complement
-l_int|3
-)paren
-op_plus
-l_int|3
-op_minus
-(paren
-(paren
-id|nr
-op_rshift
-l_int|3
-)paren
-op_amp
-l_int|3
-)paren
-)braket
 )paren
 )paren
 op_ne
@@ -446,14 +361,10 @@ op_star
 id|addr
 )paren
 (brace
-r_register
 r_int
 id|retval
-id|__asm__
-c_func
-(paren
-l_string|&quot;er0&quot;
-)paren
+op_assign
+l_int|0
 suffix:semicolon
 r_volatile
 r_int
@@ -470,8 +381,6 @@ r_char
 op_star
 )paren
 id|addr
-suffix:semicolon
-id|a
 op_add_assign
 (paren
 (paren
@@ -479,30 +388,15 @@ id|nr
 op_rshift
 l_int|3
 )paren
-op_amp
-op_complement
+op_xor
 l_int|3
-)paren
-op_plus
-(paren
-l_int|3
-op_minus
-(paren
-(paren
-id|nr
-op_rshift
-l_int|3
-)paren
-op_amp
-l_int|3
-)paren
 )paren
 suffix:semicolon
+"&bslash;"
 id|__asm__
 c_func
 (paren
-l_string|&quot;mov.l %2,er3&bslash;n&bslash;t&quot;
-l_string|&quot;sub.l %0,%0&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %4,er3&bslash;n&bslash;t&quot;
 l_string|&quot;stc ccr,r3h&bslash;n&bslash;t&quot;
 l_string|&quot;orc #0x80,ccr&bslash;n&bslash;t&quot;
 l_string|&quot;btst r3l,%1&bslash;n&bslash;t&quot;
@@ -523,6 +417,17 @@ op_star
 id|a
 )paren
 suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|retval
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
+id|a
+)paren
+comma
 l_string|&quot;g&quot;
 (paren
 id|nr
@@ -556,14 +461,10 @@ op_star
 id|addr
 )paren
 (brace
-r_register
 r_int
 id|retval
-id|__asm__
-c_func
-(paren
-l_string|&quot;er0&quot;
-)paren
+op_assign
+l_int|0
 suffix:semicolon
 r_volatile
 r_int
@@ -580,8 +481,6 @@ r_char
 op_star
 )paren
 id|addr
-suffix:semicolon
-id|a
 op_add_assign
 (paren
 (paren
@@ -589,30 +488,15 @@ id|nr
 op_rshift
 l_int|3
 )paren
-op_amp
-op_complement
+op_xor
 l_int|3
-)paren
-op_plus
-(paren
-l_int|3
-op_minus
-(paren
-(paren
-id|nr
-op_rshift
-l_int|3
-)paren
-op_amp
-l_int|3
-)paren
 )paren
 suffix:semicolon
+"&bslash;"
 id|__asm__
 c_func
 (paren
-l_string|&quot;mov.l %2,er3&bslash;n&bslash;t&quot;
-l_string|&quot;sub.l %0,%0&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %4,er3&bslash;n&bslash;t&quot;
 l_string|&quot;btst r3l,%1&bslash;n&bslash;t&quot;
 l_string|&quot;bset r3l,%1&bslash;n&bslash;t&quot;
 l_string|&quot;beq 1f&bslash;n&bslash;t&quot;
@@ -630,6 +514,17 @@ op_star
 id|a
 )paren
 suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|retval
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
+id|a
+)paren
+comma
 l_string|&quot;g&quot;
 (paren
 id|nr
@@ -663,14 +558,10 @@ op_star
 id|addr
 )paren
 (brace
-r_register
 r_int
 id|retval
-id|__asm__
-c_func
-(paren
-l_string|&quot;er0&quot;
-)paren
+op_assign
+l_int|0
 suffix:semicolon
 r_volatile
 r_int
@@ -687,8 +578,6 @@ r_char
 op_star
 )paren
 id|addr
-suffix:semicolon
-id|a
 op_add_assign
 (paren
 (paren
@@ -696,30 +585,15 @@ id|nr
 op_rshift
 l_int|3
 )paren
-op_amp
-op_complement
+op_xor
 l_int|3
-)paren
-op_plus
-(paren
-l_int|3
-op_minus
-(paren
-(paren
-id|nr
-op_rshift
-l_int|3
-)paren
-op_amp
-l_int|3
-)paren
 )paren
 suffix:semicolon
+"&bslash;"
 id|__asm__
 c_func
 (paren
-l_string|&quot;mov.l %2,er3&bslash;n&bslash;t&quot;
-l_string|&quot;sub.l %0,%0&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %4,er3&bslash;n&bslash;t&quot;
 l_string|&quot;stc ccr,r3h&bslash;n&bslash;t&quot;
 l_string|&quot;orc #0x80,ccr&bslash;n&bslash;t&quot;
 l_string|&quot;btst r3l,%1&bslash;n&bslash;t&quot;
@@ -734,12 +608,23 @@ l_string|&quot;=r&quot;
 id|retval
 )paren
 comma
-l_string|&quot;=m&quot;
+l_string|&quot;+m&quot;
 (paren
 op_star
 id|a
 )paren
 suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|retval
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
+id|a
+)paren
+comma
 l_string|&quot;g&quot;
 (paren
 id|nr
@@ -773,14 +658,10 @@ op_star
 id|addr
 )paren
 (brace
-r_register
 r_int
 id|retval
-id|__asm__
-c_func
-(paren
-l_string|&quot;er0&quot;
-)paren
+op_assign
+l_int|0
 suffix:semicolon
 r_volatile
 r_int
@@ -797,8 +678,6 @@ r_char
 op_star
 )paren
 id|addr
-suffix:semicolon
-id|a
 op_add_assign
 (paren
 (paren
@@ -806,30 +685,15 @@ id|nr
 op_rshift
 l_int|3
 )paren
-op_amp
-op_complement
+op_xor
 l_int|3
-)paren
-op_plus
-(paren
-l_int|3
-op_minus
-(paren
-(paren
-id|nr
-op_rshift
-l_int|3
-)paren
-op_amp
-l_int|3
-)paren
 )paren
 suffix:semicolon
+"&bslash;"
 id|__asm__
 c_func
 (paren
-l_string|&quot;mov.l %2,er3&bslash;n&bslash;t&quot;
-l_string|&quot;sub.l %0,%0&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %4,er3&bslash;n&bslash;t&quot;
 l_string|&quot;btst r3l,%1&bslash;n&bslash;t&quot;
 l_string|&quot;bclr r3l,%1&bslash;n&bslash;t&quot;
 l_string|&quot;beq 1f&bslash;n&bslash;t&quot;
@@ -847,6 +711,17 @@ op_star
 id|a
 )paren
 suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|retval
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
+id|a
+)paren
+comma
 l_string|&quot;g&quot;
 (paren
 id|nr
@@ -880,14 +755,10 @@ op_star
 id|addr
 )paren
 (brace
-r_register
 r_int
 id|retval
-id|__asm__
-c_func
-(paren
-l_string|&quot;er0&quot;
-)paren
+op_assign
+l_int|0
 suffix:semicolon
 r_volatile
 r_int
@@ -904,8 +775,6 @@ r_char
 op_star
 )paren
 id|addr
-suffix:semicolon
-id|a
 op_add_assign
 (paren
 (paren
@@ -913,30 +782,15 @@ id|nr
 op_rshift
 l_int|3
 )paren
-op_amp
-op_complement
+op_xor
 l_int|3
-)paren
-op_plus
-(paren
-l_int|3
-op_minus
-(paren
-(paren
-id|nr
-op_rshift
-l_int|3
-)paren
-op_amp
-l_int|3
-)paren
 )paren
 suffix:semicolon
+"&bslash;"
 id|__asm__
 c_func
 (paren
-l_string|&quot;mov.l %2,er3&bslash;n&bslash;t&quot;
-l_string|&quot;sub.l %0,%0&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %4,er3&bslash;n&bslash;t&quot;
 l_string|&quot;stc ccr,r3h&bslash;n&bslash;t&quot;
 l_string|&quot;orc #0x80,ccr&bslash;n&bslash;t&quot;
 l_string|&quot;btst r3l,%1&bslash;n&bslash;t&quot;
@@ -957,6 +811,17 @@ op_star
 id|a
 )paren
 suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|retval
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
+id|a
+)paren
+comma
 l_string|&quot;g&quot;
 (paren
 id|nr
@@ -990,14 +855,10 @@ op_star
 id|addr
 )paren
 (brace
-r_register
 r_int
 id|retval
-id|__asm__
-c_func
-(paren
-l_string|&quot;er0&quot;
-)paren
+op_assign
+l_int|0
 suffix:semicolon
 r_volatile
 r_int
@@ -1014,8 +875,6 @@ r_char
 op_star
 )paren
 id|addr
-suffix:semicolon
-id|a
 op_add_assign
 (paren
 (paren
@@ -1023,30 +882,15 @@ id|nr
 op_rshift
 l_int|3
 )paren
-op_amp
-op_complement
+op_xor
 l_int|3
-)paren
-op_plus
-(paren
-l_int|3
-op_minus
-(paren
-(paren
-id|nr
-op_rshift
-l_int|3
-)paren
-op_amp
-l_int|3
-)paren
 )paren
 suffix:semicolon
+"&bslash;"
 id|__asm__
 c_func
 (paren
-l_string|&quot;mov.l %2,er3&bslash;n&bslash;t&quot;
-l_string|&quot;sub.l %0,%0&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %4,er3&bslash;n&bslash;t&quot;
 l_string|&quot;btst r3l,%1&bslash;n&bslash;t&quot;
 l_string|&quot;bnot r3l,%1&bslash;n&bslash;t&quot;
 l_string|&quot;beq 1f&bslash;n&bslash;t&quot;
@@ -1064,6 +908,17 @@ op_star
 id|a
 )paren
 suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|retval
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
+id|a
+)paren
+comma
 l_string|&quot;g&quot;
 (paren
 id|nr
@@ -1273,12 +1128,12 @@ id|tmp
 )paren
 suffix:semicolon
 )brace
-DECL|function|ffs
+DECL|function|__ffs
 r_static
 id|__inline__
 r_int
 r_int
-id|ffs
+id|__ffs
 c_func
 (paren
 r_int
@@ -1286,37 +1141,20 @@ r_int
 id|word
 )paren
 (brace
-r_register
 r_int
 r_int
 id|result
-id|asm
-c_func
-(paren
-l_string|&quot;er0&quot;
-)paren
 suffix:semicolon
-r_register
-r_int
-r_int
-id|_word
-id|asm
-c_func
-(paren
-l_string|&quot;er1&quot;
-)paren
-suffix:semicolon
-id|_word
+id|result
 op_assign
-id|word
+op_minus
+l_int|1
 suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;sub.l %0,%0&bslash;n&bslash;t&quot;
-l_string|&quot;dec.l #1,%0&bslash;n&quot;
 l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;shlr.l %1&bslash;n&bslash;t&quot;
+l_string|&quot;shlr.l %2&bslash;n&bslash;t&quot;
 l_string|&quot;adds #1,%0&bslash;n&bslash;t&quot;
 l_string|&quot;bcc 1b&quot;
 suffix:colon
@@ -1325,9 +1163,14 @@ l_string|&quot;=r&quot;
 id|result
 )paren
 suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|result
+)paren
+comma
 l_string|&quot;r&quot;
 (paren
-id|_word
+id|word
 )paren
 )paren
 suffix:semicolon
@@ -1335,9 +1178,8 @@ r_return
 id|result
 suffix:semicolon
 )brace
-DECL|macro|__ffs
-mdefine_line|#define __ffs(x) ffs(x)
-multiline_comment|/*&n; * fls: find last bit set.&n; */
+DECL|macro|ffs
+mdefine_line|#define ffs(x) generic_ffs(x)
 DECL|macro|fls
 mdefine_line|#define fls(x) generic_fls(x)
 multiline_comment|/*&n; * Every architecture must define this function. It&squot;s the fastest&n; * way of searching a 140-bit bitmap where the first 100 bits are&n; * unlikely to be set. It&squot;s guaranteed that at least one of the 140&n; * bits is cleared.&n; */
@@ -1550,6 +1392,8 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|macro|ext2_set_bit_atomic
+mdefine_line|#define ext2_set_bit_atomic(lock, nr, addr) ext2_set_bit(nr, addr)
 DECL|function|ext2_clear_bit
 r_static
 id|__inline__
@@ -1637,6 +1481,8 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|macro|ext2_clear_bit_atomic
+mdefine_line|#define ext2_clear_bit_atomic(lock, nr, addr) ext2_set_bit(nr, addr)
 DECL|function|ext2_test_bit
 r_static
 id|__inline__
@@ -1940,13 +1786,6 @@ DECL|macro|minix_test_bit
 mdefine_line|#define minix_test_bit(nr,addr) test_bit(nr,addr)
 DECL|macro|minix_find_first_zero_bit
 mdefine_line|#define minix_find_first_zero_bit(addr,size) find_first_zero_bit(addr,size)
-multiline_comment|/**&n; * hweightN - returns the hamming weight of a N-bit word&n; * @x: the word to weigh&n; *&n; * The Hamming Weight of a number is the total number of bits set in it.&n; */
-DECL|macro|hweight32
-mdefine_line|#define hweight32(x) generic_hweight32(x)
-DECL|macro|hweight16
-mdefine_line|#define hweight16(x) generic_hweight16(x)
-DECL|macro|hweight8
-mdefine_line|#define hweight8(x) generic_hweight8(x)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _H8300_BITOPS_H */
 eof

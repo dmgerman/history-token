@@ -1,8 +1,32 @@
+multiline_comment|/*&n;   Driver for the Microtune 7202D Frontend&n;*/
+multiline_comment|/*&n;   This driver needs a copy of the Avermedia firmware. The version tested&n;   is part of the Avermedia DVB-T 1.3.26.3 Application. If the software is&n;   installed in Windows the file will be in the /Program Files/AVerTV DVB-T/&n;   directory and is called sc_main.mc. Alternatively it can &quot;extracted&quot; from&n;   the install cab files. Copy this file to &squot;/usr/lib/hotplug/firmware/sc_main.mc&squot;.&n;   With this version of the file the first 10 bytes are discarded and the&n;   next 0x4000 loaded. This may change in future versions.&n; */
+DECL|macro|__KERNEL_SYSCALLS__
+mdefine_line|#define __KERNEL_SYSCALLS__
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/unistd.h&gt;
+macro_line|#include &lt;linux/fcntl.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &quot;dvb_frontend.h&quot;
 macro_line|#include &quot;dvb_functions.h&quot;
+macro_line|#ifndef DVB_SP887X_FIRMWARE_FILE
+DECL|macro|DVB_SP887X_FIRMWARE_FILE
+mdefine_line|#define DVB_SP887X_FIRMWARE_FILE &quot;/usr/lib/hotplug/firmware/sc_main.mc&quot;
+macro_line|#endif
+DECL|variable|sp887x_firmware
+r_static
+r_char
+op_star
+id|sp887x_firmware
+op_assign
+id|DVB_SP887X_FIRMWARE_FILE
+suffix:semicolon
 macro_line|#if 0
 mdefine_line|#define dprintk(x...) printk(x)
 macro_line|#else
@@ -70,6 +94,11 @@ id|FE_CAN_QAM_64
 op_or
 id|FE_CAN_RECOVER
 )brace
+suffix:semicolon
+DECL|variable|errno
+r_static
+r_int
+id|errno
 suffix:semicolon
 r_static
 DECL|function|i2c_writebytes
@@ -558,6 +587,14 @@ op_star
 id|fe
 )paren
 (brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|sp887x_writereg
 c_func
 (paren
@@ -601,6 +638,14 @@ op_star
 id|fe
 )paren
 (brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|sp887x_writereg
 c_func
 (paren
@@ -645,6 +690,14 @@ id|fe
 )paren
 (brace
 multiline_comment|/* setup AGC parameters */
+id|dprintk
+c_func
+(paren
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|sp887x_writereg
 c_func
 (paren
@@ -786,7 +839,6 @@ l_int|0x000
 )paren
 suffix:semicolon
 )brace
-macro_line|#include &quot;sp887x_firm.h&quot;
 DECL|macro|BLOCKSIZE
 mdefine_line|#define BLOCKSIZE 30
 multiline_comment|/**&n; *  load firmware and setup MPEG interface...&n; */
@@ -805,10 +857,39 @@ id|u8
 id|buf
 (braket
 id|BLOCKSIZE
+op_plus
+l_int|2
 )braket
 suffix:semicolon
 r_int
+r_char
+op_star
+id|firmware
+op_assign
+l_int|NULL
+suffix:semicolon
+r_int
 id|i
+suffix:semicolon
+r_int
+id|fd
+suffix:semicolon
+r_int
+id|filesize
+suffix:semicolon
+r_int
+id|fw_size
+suffix:semicolon
+id|mm_segment_t
+id|fs
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
 multiline_comment|/* soft reset */
 id|sp887x_writereg
@@ -824,6 +905,209 @@ suffix:semicolon
 id|sp887x_microcontroller_stop
 (paren
 id|fe
+)paren
+suffix:semicolon
+id|fs
+op_assign
+id|get_fs
+c_func
+(paren
+)paren
+suffix:semicolon
+singleline_comment|// Load the firmware
+id|set_fs
+c_func
+(paren
+id|get_ds
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+id|fd
+op_assign
+id|open
+c_func
+(paren
+id|sp887x_firmware
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fd
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: Unable to open firmware %s&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|sp887x_firmware
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+id|filesize
+op_assign
+id|lseek
+c_func
+(paren
+id|fd
+comma
+l_int|0L
+comma
+l_int|2
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|filesize
+op_le
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: Firmware %s is empty&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|sp887x_firmware
+)paren
+suffix:semicolon
+id|sys_close
+c_func
+(paren
+id|fd
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+id|fw_size
+op_assign
+l_int|0x4000
+suffix:semicolon
+singleline_comment|// allocate buffer for it
+id|firmware
+op_assign
+id|vmalloc
+c_func
+(paren
+id|fw_size
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|firmware
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: Out of memory loading firmware&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|sys_close
+c_func
+(paren
+id|fd
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+singleline_comment|// read it!
+singleline_comment|// read the first 16384 bytes from the file
+singleline_comment|// ignore the first 10 bytes
+id|lseek
+c_func
+(paren
+id|fd
+comma
+l_int|10
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|read
+c_func
+(paren
+id|fd
+comma
+id|firmware
+comma
+id|fw_size
+)paren
+op_ne
+id|fw_size
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: Failed to read firmware&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|vfree
+c_func
+(paren
+id|firmware
+)paren
+suffix:semicolon
+id|sys_close
+c_func
+(paren
+id|fd
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+id|sys_close
+c_func
+(paren
+id|fd
+)paren
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|fs
 )paren
 suffix:semicolon
 id|printk
@@ -865,10 +1149,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-r_sizeof
-(paren
-id|sp887x_firm
-)paren
+id|fw_size
 suffix:semicolon
 id|i
 op_add_assign
@@ -890,17 +1171,11 @@ id|i
 op_plus
 id|c
 OG
-r_sizeof
-(paren
-id|sp887x_firm
-)paren
+id|fw_size
 )paren
 id|c
 op_assign
-r_sizeof
-(paren
-id|sp887x_firm
-)paren
+id|fw_size
 op_minus
 id|i
 suffix:semicolon
@@ -930,11 +1205,9 @@ id|buf
 l_int|2
 )braket
 comma
-op_amp
-id|sp887x_firm
-(braket
+id|firmware
+op_plus
 id|i
-)braket
 comma
 id|c
 )paren
@@ -976,11 +1249,23 @@ comma
 id|err
 )paren
 suffix:semicolon
+id|vfree
+c_func
+(paren
+id|firmware
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
 )brace
 )brace
+id|vfree
+c_func
+(paren
+id|firmware
+)paren
+suffix:semicolon
 multiline_comment|/* don&squot;t write RS bytes between packets */
 id|sp887x_writereg
 c_func

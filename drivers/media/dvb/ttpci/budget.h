@@ -141,9 +141,9 @@ suffix:semicolon
 DECL|macro|MAKE_BUDGET_INFO
 mdefine_line|#define MAKE_BUDGET_INFO(x_var,x_name,x_type) &bslash;&n;static struct budget_info x_var ## _info = { &bslash;&n;&t;.name=x_name,&t;&bslash;&n;&t;.type=x_type };&t;&bslash;&n;static struct saa7146_pci_extension_data x_var = { &bslash;&n;&t;.ext_priv = &amp;x_var ## _info, &bslash;&n;&t;.ext = &amp;budget_extension };
 DECL|macro|TS_WIDTH
-mdefine_line|#define TS_WIDTH  (4*188)
+mdefine_line|#define TS_WIDTH  (376)
 DECL|macro|TS_HEIGHT
-mdefine_line|#define TS_HEIGHT (1024/4)
+mdefine_line|#define TS_HEIGHT (512)
 DECL|macro|TS_BUFLEN
 mdefine_line|#define TS_BUFLEN (TS_WIDTH*TS_HEIGHT)
 DECL|macro|TS_MAX_PACKETS

@@ -1,4 +1,4 @@
-multiline_comment|/* &n;&n;&t;NxtWave Communications - NXT6000 demodulator driver&n;&t;&n;&t;This driver currently supports:&n;&t;&n;&t;Alps TDME7 (Tuner: MITEL SP5659)&n;&t;Alps TDED4 (Tuner: TI ALP510, external Nxt6000)&n;&t;Comtech DVBT-6k07 (PLL IC: SP5730)&n;&n;    Copyright (C) 2002-2003 Florian Schirmer &lt;schirmer@taytron.net&gt;&n;    Copyright (C) 2003 Paul Andreassen &lt;paul@andreassen.com.au&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
+multiline_comment|/* &n;&n;&t;NxtWave Communications - NXT6000 demodulator driver&n;&t;&n;&t;This driver currently supports:&n;&t;&n;&t;Alps TDME7 (Tuner: MITEL SP5659)&n;&t;Alps TDED4 (Tuner: TI ALP510, external Nxt6000)&n;&t;Comtech DVBT-6k07 (PLL IC: SP5730)&n;&n;    Copyright (C) 2002-2003 Florian Schirmer &lt;jolt@tuxbox.org&gt;&n;    Copyright (C) 2003 Paul Andreassen &lt;paul@andreassen.com.au&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -130,7 +130,6 @@ id|FE_CAN_HIERARCHY_AUTO
 comma
 )brace
 suffix:semicolon
-macro_line|#pragma pack(1)
 DECL|struct|nxt6000_config
 r_struct
 id|nxt6000_config
@@ -153,7 +152,6 @@ id|clock_inversion
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#pragma pack()
 DECL|macro|TUNER_TYPE_ALP510
 mdefine_line|#define TUNER_TYPE_ALP510&t;0
 DECL|macro|TUNER_TYPE_SP5659
@@ -161,7 +159,7 @@ mdefine_line|#define TUNER_TYPE_SP5659&t;1
 DECL|macro|TUNER_TYPE_SP5730
 mdefine_line|#define TUNER_TYPE_SP5730&t;2
 DECL|macro|FE2NXT
-mdefine_line|#define FE2NXT(fe) ((struct nxt6000_config *)&amp;(fe-&gt;data))
+mdefine_line|#define FE2NXT(fe) ((struct nxt6000_config *)((fe)-&gt;data))
 DECL|macro|FREQ2DIV
 mdefine_line|#define FREQ2DIV(freq) ((freq + 36166667) / 166667)
 DECL|macro|dprintk
@@ -2030,7 +2028,7 @@ comma
 l_int|0xBB
 )paren
 suffix:semicolon
-singleline_comment|// CHECKME
+multiline_comment|/* CHECKME */
 id|nxt6000_writereg
 c_func
 (paren
@@ -2169,16 +2167,7 @@ id|fe
 id|u8
 id|val
 suffix:semicolon
-singleline_comment|//&t;printk(&quot;RS_COR_STAT: 0x%02X&bslash;n&quot;, nxt6000_readreg(fe, RS_COR_STAT));
-singleline_comment|//&t;printk(&quot;VIT_SYNC_STATUS: 0x%02X&bslash;n&quot;, nxt6000_readreg(fe, VIT_SYNC_STATUS));
-singleline_comment|//&t;printk(&quot;OFDM_COR_STAT: 0x%02X&bslash;n&quot;, nxt6000_readreg(fe, OFDM_COR_STAT));
-singleline_comment|//&t;printk(&quot;OFDM_SYR_STAT: 0x%02X&bslash;n&quot;, nxt6000_readreg(fe, OFDM_SYR_STAT));
-singleline_comment|//&t;printk(&quot;OFDM_TPS_RCVD_1: 0x%02X&bslash;n&quot;, nxt6000_readreg(fe, OFDM_TPS_RCVD_1));
-singleline_comment|//&t;printk(&quot;OFDM_TPS_RCVD_2: 0x%02X&bslash;n&quot;, nxt6000_readreg(fe, OFDM_TPS_RCVD_2));
-singleline_comment|//&t;printk(&quot;OFDM_TPS_RCVD_3: 0x%02X&bslash;n&quot;, nxt6000_readreg(fe, OFDM_TPS_RCVD_3));
-singleline_comment|//&t;printk(&quot;OFDM_TPS_RCVD_4: 0x%02X&bslash;n&quot;, nxt6000_readreg(fe, OFDM_TPS_RCVD_4));
-singleline_comment|//&t;printk(&quot;OFDM_TPS_RESERVED_1: 0x%02X&bslash;n&quot;, nxt6000_readreg(fe, OFDM_TPS_RESERVED_1));
-singleline_comment|//&t;printk(&quot;OFDM_TPS_RESERVED_2: 0x%02X&bslash;n&quot;, nxt6000_readreg(fe, OFDM_TPS_RESERVED_2));
+multiline_comment|/*&n;&t;printk(&quot;RS_COR_STAT: 0x%02X&bslash;n&quot;, nxt6000_readreg(fe, RS_COR_STAT));&n;&t;printk(&quot;VIT_SYNC_STATUS: 0x%02X&bslash;n&quot;, nxt6000_readreg(fe, VIT_SYNC_STATUS));&n;&t;printk(&quot;OFDM_COR_STAT: 0x%02X&bslash;n&quot;, nxt6000_readreg(fe, OFDM_COR_STAT));&n;&t;printk(&quot;OFDM_SYR_STAT: 0x%02X&bslash;n&quot;, nxt6000_readreg(fe, OFDM_SYR_STAT));&n;&t;printk(&quot;OFDM_TPS_RCVD_1: 0x%02X&bslash;n&quot;, nxt6000_readreg(fe, OFDM_TPS_RCVD_1));&n;&t;printk(&quot;OFDM_TPS_RCVD_2: 0x%02X&bslash;n&quot;, nxt6000_readreg(fe, OFDM_TPS_RCVD_2));&n;&t;printk(&quot;OFDM_TPS_RCVD_3: 0x%02X&bslash;n&quot;, nxt6000_readreg(fe, OFDM_TPS_RCVD_3));&n;&t;printk(&quot;OFDM_TPS_RCVD_4: 0x%02X&bslash;n&quot;, nxt6000_readreg(fe, OFDM_TPS_RCVD_4));&n;&t;printk(&quot;OFDM_TPS_RESERVED_1: 0x%02X&bslash;n&quot;, nxt6000_readreg(fe, OFDM_TPS_RESERVED_1));&n;&t;printk(&quot;OFDM_TPS_RESERVED_2: 0x%02X&bslash;n&quot;, nxt6000_readreg(fe, OFDM_TPS_RESERVED_2));&n;*/
 id|printk
 c_func
 (paren
@@ -2296,6 +2285,8 @@ c_func
 (paren
 l_string|&quot; VITERBI CODERATE: 5/6,&quot;
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 l_int|0x04
@@ -2432,6 +2423,8 @@ c_func
 (paren
 l_string|&quot; CoreState: WAIT_PPM,&quot;
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 l_int|0x01
@@ -2639,6 +2632,8 @@ c_func
 l_string|&quot; TPSLP: 5/6,&quot;
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 l_int|0x04
 suffix:colon
@@ -2708,6 +2703,8 @@ c_func
 (paren
 l_string|&quot; TPSHP: 5/6,&quot;
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 l_int|0x04
@@ -2811,7 +2808,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-singleline_comment|// Strange magic required to gain access to RF_AGC_STATUS
+multiline_comment|/* Strange magic required to gain access to RF_AGC_STATUS */
 id|nxt6000_readreg
 c_func
 (paren
@@ -3077,8 +3074,22 @@ r_case
 id|FE_READ_SIGNAL_STRENGTH
 suffix:colon
 (brace
-singleline_comment|//&t;&t;&t;s16 *signal = (s16 *)arg;
-singleline_comment|//&t;&t;*signal=(((signed char)readreg(client, 0x16))+128)&lt;&lt;8;
+id|s16
+op_star
+id|signal
+op_assign
+(paren
+id|s16
+op_star
+)paren
+id|arg
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;*signal=(((signed char)readreg(client, 0x16))+128)&lt;&lt;8;&n;*/
+op_star
+id|signal
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3087,9 +3098,22 @@ r_case
 id|FE_READ_SNR
 suffix:colon
 (brace
-singleline_comment|//&t;&t;&t;s16 *snr = (s16 *)arg;
-singleline_comment|//&t;&t;*snr=readreg(client, 0x24)&lt;&lt;8;
-singleline_comment|//&t;&t;*snr|=readreg(client, 0x25);
+id|s16
+op_star
+id|snr
+op_assign
+(paren
+id|s16
+op_star
+)paren
+id|arg
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;*snr=readreg(client, 0x24)&lt;&lt;8;&n;&t;&t;&t;*snr|=readreg(client, 0x25);&n;*/
+op_star
+id|snr
+op_assign
+l_int|0
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -3391,13 +3415,57 @@ l_int|0
 suffix:semicolon
 r_struct
 id|nxt6000_config
-id|nxt
+op_star
+id|pnxt
 suffix:semicolon
 id|dprintk
 c_func
 (paren
 l_string|&quot;nxt6000: attach&bslash;n&quot;
 )paren
+suffix:semicolon
+id|pnxt
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+id|demod_addr_tbl
+)paren
+op_star
+r_sizeof
+(paren
+r_struct
+id|nxt6000_config
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|NULL
+op_eq
+id|pnxt
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;nxt6000: no memory for private data.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+op_star
+id|data
+op_assign
+id|pnxt
 suffix:semicolon
 r_for
 c_loop
@@ -3417,6 +3485,17 @@ id|addr_nr
 op_increment
 )paren
 (brace
+r_struct
+id|nxt6000_config
+op_star
+id|nxt
+op_assign
+op_amp
+id|pnxt
+(braket
+id|addr_nr
+)braket
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3460,15 +3539,15 @@ op_eq
 l_int|0
 )paren
 (brace
-id|nxt.tuner_addr
+id|nxt-&gt;tuner_addr
 op_assign
 l_int|0xC0
 suffix:semicolon
-id|nxt.tuner_type
+id|nxt-&gt;tuner_type
 op_assign
 id|TUNER_TYPE_ALP510
 suffix:semicolon
-id|nxt.clock_inversion
+id|nxt-&gt;clock_inversion
 op_assign
 l_int|1
 suffix:semicolon
@@ -3477,7 +3556,7 @@ c_func
 (paren
 l_string|&quot;nxt6000: detected TI ALP510 tuner at 0x%02X&bslash;n&quot;
 comma
-id|nxt.tuner_addr
+id|nxt-&gt;tuner_addr
 )paren
 suffix:semicolon
 )brace
@@ -3505,15 +3584,15 @@ op_eq
 l_int|0
 )paren
 (brace
-id|nxt.tuner_addr
+id|nxt-&gt;tuner_addr
 op_assign
 l_int|0xC2
 suffix:semicolon
-id|nxt.tuner_type
+id|nxt-&gt;tuner_type
 op_assign
 id|TUNER_TYPE_SP5659
 suffix:semicolon
-id|nxt.clock_inversion
+id|nxt-&gt;clock_inversion
 op_assign
 l_int|0
 suffix:semicolon
@@ -3522,7 +3601,7 @@ c_func
 (paren
 l_string|&quot;nxt6000: detected MITEL SP5659 tuner at 0x%02X&bslash;n&quot;
 comma
-id|nxt.tuner_addr
+id|nxt-&gt;tuner_addr
 )paren
 suffix:semicolon
 )brace
@@ -3550,15 +3629,15 @@ op_eq
 l_int|0
 )paren
 (brace
-id|nxt.tuner_addr
+id|nxt-&gt;tuner_addr
 op_assign
 l_int|0xC0
 suffix:semicolon
-id|nxt.tuner_type
+id|nxt-&gt;tuner_type
 op_assign
 id|TUNER_TYPE_SP5730
 suffix:semicolon
-id|nxt.clock_inversion
+id|nxt-&gt;clock_inversion
 op_assign
 l_int|0
 suffix:semicolon
@@ -3567,7 +3646,7 @@ c_func
 (paren
 l_string|&quot;nxt6000: detected SP5730 tuner at 0x%02X&bslash;n&quot;
 comma
-id|nxt.tuner_addr
+id|nxt-&gt;tuner_addr
 )paren
 suffix:semicolon
 )brace
@@ -3582,7 +3661,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|nxt.demod_addr
+id|nxt-&gt;demod_addr
 op_assign
 id|demod_addr_tbl
 (braket
@@ -3610,17 +3689,7 @@ comma
 r_void
 op_star
 )paren
-(paren
-op_star
-(paren
-(paren
-id|u32
-op_star
-)paren
-op_amp
 id|nxt
-)paren
-)paren
 comma
 op_amp
 id|nxt6000_info
@@ -3630,18 +3699,27 @@ id|fe_count
 op_increment
 suffix:semicolon
 )brace
-r_return
+r_if
+c_cond
 (paren
 id|fe_count
-OG
+op_eq
 l_int|0
 )paren
-ques
-c_cond
-l_int|0
-suffix:colon
+(brace
+id|kfree
+c_func
+(paren
+id|pnxt
+)paren
+suffix:semicolon
+r_return
 op_minus
 id|ENODEV
+suffix:semicolon
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|nxt6000_detach
@@ -3660,6 +3738,18 @@ op_star
 id|data
 )paren
 (brace
+r_struct
+id|nxt6000_config
+op_star
+id|pnxt
+op_assign
+(paren
+r_struct
+id|nxt6000_config
+op_star
+)paren
+id|data
+suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -3672,6 +3762,12 @@ c_func
 id|nxt6000_ioctl
 comma
 id|i2c
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|pnxt
 )paren
 suffix:semicolon
 )brace

@@ -10077,7 +10077,6 @@ suffix:semicolon
 DECL|function|au1000_remove
 r_static
 r_void
-id|__devinit
 id|au1000_remove
 c_func
 (paren

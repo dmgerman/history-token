@@ -90,6 +90,8 @@ r_struct
 id|pt_regs
 )paren
 suffix:semicolon
+DECL|macro|platform_legacy_irq
+mdefine_line|#define platform_legacy_irq(irq)&t;((irq) &lt; 16)
 macro_line|#endif
 r_void
 id|mask_irq

@@ -550,23 +550,6 @@ DECL|enumerator|__REQ_PM_SHUTDOWN
 id|__REQ_PM_SHUTDOWN
 comma
 multiline_comment|/* shutdown request */
-DECL|enumerator|__REQ_IDETAPE_PC1
-id|__REQ_IDETAPE_PC1
-comma
-multiline_comment|/* packet command (first stage) */
-DECL|enumerator|__REQ_IDETAPE_PC2
-id|__REQ_IDETAPE_PC2
-comma
-multiline_comment|/* packet command (second stage) */
-DECL|enumerator|__REQ_IDETAPE_READ
-id|__REQ_IDETAPE_READ
-comma
-DECL|enumerator|__REQ_IDETAPE_WRITE
-id|__REQ_IDETAPE_WRITE
-comma
-DECL|enumerator|__REQ_IDETAPE_READ_BUFFER
-id|__REQ_IDETAPE_READ_BUFFER
-comma
 DECL|enumerator|__REQ_NR_BITS
 id|__REQ_NR_BITS
 comma
@@ -617,16 +600,6 @@ DECL|macro|REQ_PM_RESUME
 mdefine_line|#define REQ_PM_RESUME&t;(1 &lt;&lt; __REQ_PM_RESUME)
 DECL|macro|REQ_PM_SHUTDOWN
 mdefine_line|#define REQ_PM_SHUTDOWN&t;(1 &lt;&lt; __REQ_PM_SHUTDOWN)
-DECL|macro|REQ_IDETAPE_PC1
-mdefine_line|#define REQ_IDETAPE_PC1 (1 &lt;&lt; __REQ_IDETAPE_PC1)
-DECL|macro|REQ_IDETAPE_PC2
-mdefine_line|#define REQ_IDETAPE_PC2 (1 &lt;&lt; __REQ_IDETAPE_PC2)
-DECL|macro|REQ_IDETAPE_READ
-mdefine_line|#define REQ_IDETAPE_READ&t;(1 &lt;&lt; __REQ_IDETAPE_READ)
-DECL|macro|REQ_IDETAPE_WRITE
-mdefine_line|#define REQ_IDETAPE_WRITE&t;(1 &lt;&lt; __REQ_IDETAPE_WRITE)
-DECL|macro|REQ_IDETAPE_READ_BUFFER
-mdefine_line|#define REQ_IDETAPE_READ_BUFFER&t;(1 &lt;&lt; __REQ_IDETAPE_READ_BUFFER)
 multiline_comment|/*&n; * State information carried for REQ_PM_SUSPEND and REQ_PM_RESUME&n; * requests. Some step values could eventually be made generic.&n; */
 DECL|struct|request_pm_state
 r_struct

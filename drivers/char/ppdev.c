@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/ppdev.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 DECL|macro|PP_VERSION
 mdefine_line|#define PP_VERSION &quot;ppdev: user-space parallel port driver&quot;
 DECL|macro|CHRDEV
@@ -3128,6 +3129,13 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|PP_MAJOR
+id|MODULE_ALIAS_CHARDEV_MAJOR
+c_func
+(paren
+id|PP_MAJOR
 )paren
 suffix:semicolon
 eof

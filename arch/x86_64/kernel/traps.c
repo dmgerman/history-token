@@ -972,6 +972,21 @@ op_eq
 l_int|NULL
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|tsk
+)paren
+id|rsp
+op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
+id|tsk-&gt;thread.rsp
+suffix:semicolon
+r_else
 id|rsp
 op_assign
 (paren
@@ -1580,6 +1595,17 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* make sure back scroll still works */
+r_if
+c_cond
+(paren
+id|panic_on_oops
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;Oops&quot;
+)paren
+suffix:semicolon
 )brace
 DECL|function|__die
 r_void
@@ -1646,11 +1672,10 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/* Execute summary in case the oops scrolled away */
+multiline_comment|/* Executive summary in case the oops scrolled away */
 id|printk
 c_func
 (paren
-id|KERN_EMERG
 l_string|&quot;RIP &quot;
 )paren
 suffix:semicolon
@@ -3807,4 +3832,34 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Actual parsing is done early in setup.c. */
+DECL|function|oops_dummy
+r_static
+r_int
+id|__init
+id|oops_dummy
+c_func
+(paren
+r_char
+op_star
+id|s
+)paren
+(brace
+id|panic_on_oops
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;oops=&quot;
+comma
+id|oops_dummy
+)paren
+suffix:semicolon
 eof

@@ -1603,10 +1603,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ip-&gt;i_sb
-op_assign
-l_int|NULL
-suffix:semicolon
 id|ip-&gt;i_nlink
 op_assign
 l_int|1
@@ -1661,10 +1657,6 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* handle bad return by returning NULL for ip */
-id|ip-&gt;i_sb
-op_assign
-l_int|NULL
-suffix:semicolon
 id|ip-&gt;i_nlink
 op_assign
 l_int|1

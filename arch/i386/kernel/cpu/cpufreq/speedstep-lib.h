@@ -7,7 +7,7 @@ mdefine_line|#define SPEEDSTEP_PROCESSOR_PIII_C&t;&t;0x00000002  /* Coppermine c
 DECL|macro|SPEEDSTEP_PROCESSOR_PIII_T
 mdefine_line|#define SPEEDSTEP_PROCESSOR_PIII_T &t;&t;0x00000003  /* Tualatin core */
 DECL|macro|SPEEDSTEP_PROCESSOR_P4M
-mdefine_line|#define SPEEDSTEP_PROCESSOR_P4M&t;&t;&t;0x00000004  /* P4-M with 100 MHz FSB */
+mdefine_line|#define SPEEDSTEP_PROCESSOR_P4M&t;&t;&t;0x00000004  /* P4-M  */
 multiline_comment|/* speedstep states -- only two of them */
 DECL|macro|SPEEDSTEP_HIGH
 mdefine_line|#define SPEEDSTEP_HIGH                  0x00000000

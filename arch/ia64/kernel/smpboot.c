@@ -1504,7 +1504,7 @@ macro_line|#ifdef CONFIG_NUMA
 multiline_comment|/* on which node is each logical CPU (one cacheline even for 64 CPUs) */
 DECL|variable|__cacheline_aligned
 r_volatile
-r_char
+id|u8
 id|cpu_to_node_map
 (braket
 id|NR_CPUS

@@ -501,6 +501,8 @@ id|CPUFREQ_POSTCHANGE
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Centaur decided to make life a little more tricky.&n; * Only longhaul v1 is allowed to read EBLCR BSEL[0:1].&n; * Samuel2 and above have to try and guess what the FSB is.&n; * We do this by assuming we booted at maximum multiplier, and interpolate&n; * between that value multiplied by possible FSBs and cpu_mhz which&n; * was calculated at boot time. Really ugly, but no other way to do this.&n; */
+DECL|macro|ROUNDING
+mdefine_line|#define ROUNDING&t;0xf
 DECL|function|_guess
 r_static
 r_int
@@ -546,9 +548,15 @@ l_int|2
 )paren
 suffix:semicolon
 id|target
+op_add_assign
+id|ROUNDING
+op_div
+l_int|2
+suffix:semicolon
+id|target
 op_and_assign
 op_complement
-l_int|0xf
+id|ROUNDING
 suffix:semicolon
 r_return
 id|target
@@ -572,9 +580,6 @@ id|cpu_khz
 op_div
 l_int|1000
 )paren
-op_amp
-op_complement
-l_int|0xf
 suffix:semicolon
 r_int
 id|i
@@ -592,6 +597,17 @@ l_int|100
 comma
 l_int|133
 )brace
+suffix:semicolon
+id|speed
+op_add_assign
+id|ROUNDING
+op_div
+l_int|2
+suffix:semicolon
+id|speed
+op_and_assign
+op_complement
+id|ROUNDING
 suffix:semicolon
 r_for
 c_loop

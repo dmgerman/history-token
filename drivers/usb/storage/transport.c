@@ -2301,6 +2301,12 @@ op_assign
 id|srb-&gt;request_bufflen
 suffix:semicolon
 r_int
+r_int
+id|pipe
+op_assign
+l_int|0
+suffix:semicolon
+r_int
 id|result
 suffix:semicolon
 multiline_comment|/* COMMAND STAGE */
@@ -2372,8 +2378,6 @@ c_cond
 id|transfer_length
 )paren
 (brace
-r_int
-r_int
 id|pipe
 op_assign
 id|srb-&gt;sc_data_direction
@@ -2491,8 +2495,6 @@ id|INQUIRY
 r_return
 id|USB_STOR_TRANSPORT_GOOD
 suffix:semicolon
-r_else
-(brace
 r_if
 c_cond
 (paren
@@ -2501,14 +2503,12 @@ id|us-&gt;iobuf
 l_int|0
 )braket
 )paren
-r_return
-id|USB_STOR_TRANSPORT_FAILED
+r_goto
+id|Failed
 suffix:semicolon
-r_else
 r_return
 id|USB_STOR_TRANSPORT_GOOD
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* If not UFI, we interpret the data as a result code &n;&t; * The first byte should always be a 0x0&n;&t; * The second byte &amp; 0x0F should be 0x0 for good, otherwise error &n;&t; */
 r_if
@@ -2555,18 +2555,31 @@ suffix:semicolon
 r_case
 l_int|0x01
 suffix:colon
-r_return
-id|USB_STOR_TRANSPORT_FAILED
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-id|USB_STOR_TRANSPORT_ERROR
+r_goto
+id|Failed
 suffix:semicolon
 )brace
-multiline_comment|/* we should never get here, but if we do, we&squot;re in trouble */
 r_return
 id|USB_STOR_TRANSPORT_ERROR
+suffix:semicolon
+multiline_comment|/* the CBI spec requires that the bulk pipe must be cleared&n;&t; * following any data-in/out command failure (section 2.4.3.1.3)&n;&t; */
+id|Failed
+suffix:colon
+r_if
+c_cond
+(paren
+id|pipe
+)paren
+id|usb_stor_clear_halt
+c_func
+(paren
+id|us
+comma
+id|pipe
+)paren
+suffix:semicolon
+r_return
+id|USB_STOR_TRANSPORT_FAILED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Control/Bulk transport&n; */
@@ -2841,6 +2854,10 @@ r_int
 id|transfer_length
 op_assign
 id|srb-&gt;request_bufflen
+suffix:semicolon
+r_int
+r_int
+id|residue
 suffix:semicolon
 r_int
 id|result
@@ -3148,10 +3165,18 @@ r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 multiline_comment|/* check bulk status */
+id|residue
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|bcs-&gt;Residue
+)paren
+suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;Bulk Status S 0x%x T 0x%x R %d Stat 0x%x&bslash;n&quot;
+l_string|&quot;Bulk Status S 0x%x T 0x%x R %u Stat 0x%x&bslash;n&quot;
 comma
 id|le32_to_cpu
 c_func
@@ -3161,7 +3186,7 @@ id|bcs-&gt;Signature
 comma
 id|bcs-&gt;Tag
 comma
-id|bcs-&gt;Residue
+id|residue
 comma
 id|bcs-&gt;Status
 )paren
@@ -3206,6 +3231,30 @@ r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
+multiline_comment|/* try to compute the actual residue, based on how much data&n;&t; * was really transferred and what the device tells us */
+id|residue
+op_assign
+id|min
+c_func
+(paren
+id|residue
+comma
+id|transfer_length
+)paren
+suffix:semicolon
+id|srb-&gt;resid
+op_assign
+id|max
+c_func
+(paren
+id|srb-&gt;resid
+comma
+(paren
+r_int
+)paren
+id|residue
+)paren
+suffix:semicolon
 multiline_comment|/* based on the status code, we report good or bad */
 r_switch
 c_cond

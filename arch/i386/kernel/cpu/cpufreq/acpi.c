@@ -2325,12 +2325,16 @@ op_increment
 r_if
 c_cond
 (paren
+(paren
 id|perf-&gt;states
 (braket
 id|i
 )braket
 dot
 id|transition_latency
+op_star
+l_int|1000
+)paren
 OG
 id|policy-&gt;cpuinfo.transition_latency
 )paren
@@ -2342,6 +2346,8 @@ id|i
 )braket
 dot
 id|transition_latency
+op_star
+l_int|1000
 suffix:semicolon
 )brace
 id|policy-&gt;governor

@@ -8462,6 +8462,33 @@ c_func
 id|conf
 )paren
 suffix:semicolon
+multiline_comment|/* read-ahead size must cover a whole stripe, which is&n;&t; * (n-1) * chunksize where &squot;n&squot; is the number of raid devices&n;&t; */
+(brace
+r_int
+id|stripe
+op_assign
+(paren
+id|mddev-&gt;raid_disks
+op_minus
+l_int|1
+)paren
+op_star
+id|mddev-&gt;chunk_size
+op_div
+id|PAGE_CACHE_SIZE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mddev-&gt;queue-&gt;backing_dev_info.ra_pages
+OL
+id|stripe
+)paren
+id|mddev-&gt;queue-&gt;backing_dev_info.ra_pages
+op_assign
+id|stripe
+suffix:semicolon
+)brace
 multiline_comment|/* Ok, everything is just fine now */
 id|mddev-&gt;array_size
 op_assign
