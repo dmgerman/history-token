@@ -1925,6 +1925,8 @@ c_func
 op_amp
 id|info-&gt;scsi.SCp
 )paren
+op_logical_and
+id|bytes_transferred
 )paren
 (brace
 id|printk
