@@ -533,7 +533,7 @@ l_int|0
 )paren
 id|ret
 op_assign
-id|pci_controller_init
+id|pci_is_controller
 c_func
 (paren
 id|namebuf
