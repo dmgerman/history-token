@@ -92,10 +92,6 @@ comma
 id|S_IFSOCK
 )brace
 suffix:semicolon
-DECL|macro|VN_LOCK
-mdefine_line|#define VN_LOCK(vp)&t;&t;spin_lock(&amp;(vp)-&gt;v_lock)
-DECL|macro|VN_UNLOCK
-mdefine_line|#define VN_UNLOCK(vp)&t;&t;spin_unlock(&amp;(vp)-&gt;v_lock)
 r_void
 DECL|function|vn_init
 id|vn_init
@@ -593,7 +589,7 @@ r_return
 id|vp
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * &quot;revalidate&quot; the linux inode.&n; */
+multiline_comment|/*&n; * Revalidate the Linux inode from the vnode.&n; */
 r_int
 DECL|function|vn_revalidate
 id|vn_revalidate
@@ -630,19 +626,19 @@ op_star
 id|__return_address
 )paren
 suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|vp-&gt;v_fbhv
+op_ne
+l_int|NULL
+)paren
+suffix:semicolon
 id|va.va_mask
 op_assign
 id|XFS_AT_STAT
 op_or
 id|XFS_AT_GENCOUNT
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|vp-&gt;v_bh.bh_first
-op_ne
-l_int|NULL
-)paren
 suffix:semicolon
 id|VOP_GETATTR
 c_func
@@ -672,12 +668,6 @@ id|LINVFS_GET_IP
 c_func
 (paren
 id|vp
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|inode
 )paren
 suffix:semicolon
 id|inode-&gt;i_mode
@@ -990,7 +980,6 @@ id|vp
 r_int
 id|vcnt
 suffix:semicolon
-multiline_comment|/* REFERENCED */
 r_int
 id|cache
 suffix:semicolon

@@ -2,6 +2,21 @@ multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Ri
 macro_line|#ifndef __XFS_VNODE_H__
 DECL|macro|__XFS_VNODE_H__
 mdefine_line|#define __XFS_VNODE_H__
+r_struct
+id|uio
+suffix:semicolon
+r_struct
+id|file
+suffix:semicolon
+r_struct
+id|vattr
+suffix:semicolon
+r_struct
+id|page_buf_bmap_s
+suffix:semicolon
+r_struct
+id|attrlist_cursor_kern
+suffix:semicolon
 multiline_comment|/*&n; * Vnode types (unrelated to on-disk inodes).  VNON means no type.&n; */
 DECL|enum|vtype
 r_typedef
@@ -58,12 +73,20 @@ id|vtype_t
 suffix:semicolon
 DECL|typedef|vnumber_t
 r_typedef
-id|__u64
+id|xfs_ino_t
 id|vnumber_t
 suffix:semicolon
-multiline_comment|/*&n; * Define the type of behavior head used by vnodes.&n; */
-DECL|macro|vn_bhv_head_t
-mdefine_line|#define vn_bhv_head_t&t;bhv_head_t
+DECL|typedef|vname_t
+r_typedef
+r_struct
+id|dentry
+id|vname_t
+suffix:semicolon
+DECL|typedef|vn_bhv_head_t
+r_typedef
+id|bhv_head_t
+id|vn_bhv_head_t
+suffix:semicolon
 multiline_comment|/*&n; * MP locking protocols:&n; *&t;v_flag, v_vfsp&t;&t;&t;&t;VN_LOCK/VN_UNLOCK&n; *&t;v_type&t;&t;&t;&t;&t;read-only or fs-dependent&n; */
 DECL|struct|vnode
 r_typedef
@@ -80,14 +103,14 @@ r_enum
 id|vtype
 id|v_type
 suffix:semicolon
-multiline_comment|/* vnode type&t;&t;*/
+multiline_comment|/* vnode type */
 DECL|member|v_vfsp
 r_struct
 id|vfs
 op_star
 id|v_vfsp
 suffix:semicolon
-multiline_comment|/* ptr to containing VFS*/
+multiline_comment|/* ptr to containing VFS */
 DECL|member|v_number
 id|vnumber_t
 id|v_number
@@ -102,13 +125,13 @@ DECL|member|v_lock
 id|spinlock_t
 id|v_lock
 suffix:semicolon
-multiline_comment|/* don&squot;t use VLOCK on Linux */
+multiline_comment|/* VN_LOCK/VN_UNLOCK */
 DECL|member|v_inode
 r_struct
 id|inode
 id|v_inode
 suffix:semicolon
-multiline_comment|/* linux inode */
+multiline_comment|/* Linux inode */
 macro_line|#ifdef CONFIG_XFS_VNODE_TRACING
 DECL|member|v_trace
 r_struct
@@ -122,6 +145,63 @@ DECL|typedef|vnode_t
 )brace
 id|vnode_t
 suffix:semicolon
+DECL|macro|v_fbhv
+mdefine_line|#define v_fbhv&t;&t;&t;v_bh.bh_first&t;       /* first behavior */
+DECL|macro|v_fops
+mdefine_line|#define v_fops&t;&t;&t;v_bh.bh_first-&gt;bd_ops  /* first behavior ops */
+DECL|macro|VNODE_POSITION_BASE
+mdefine_line|#define VNODE_POSITION_BASE&t;BHV_POSITION_BASE&t;/* chain bottom */
+DECL|macro|VNODE_POSITION_TOP
+mdefine_line|#define VNODE_POSITION_TOP&t;BHV_POSITION_TOP&t;/* chain top */
+DECL|macro|VNODE_POSITION_INVALID
+mdefine_line|#define VNODE_POSITION_INVALID&t;BHV_POSITION_INVALID&t;/* invalid pos. num */
+r_typedef
+r_enum
+(brace
+DECL|enumerator|VN_BHV_UNKNOWN
+id|VN_BHV_UNKNOWN
+comma
+multiline_comment|/* not specified */
+DECL|enumerator|VN_BHV_XFS
+id|VN_BHV_XFS
+comma
+multiline_comment|/* xfs */
+DECL|enumerator|VN_BHV_END
+id|VN_BHV_END
+multiline_comment|/* housekeeping end-of-range */
+DECL|typedef|vn_bhv_t
+)brace
+id|vn_bhv_t
+suffix:semicolon
+DECL|macro|VNODE_POSITION_XFS
+mdefine_line|#define VNODE_POSITION_XFS&t;(VNODE_POSITION_BASE)
+multiline_comment|/*&n; * Macros for dealing with the behavior descriptor inside of the vnode.&n; */
+DECL|macro|BHV_TO_VNODE
+mdefine_line|#define BHV_TO_VNODE(bdp)&t;((vnode_t *)BHV_VOBJ(bdp))
+DECL|macro|BHV_TO_VNODE_NULL
+mdefine_line|#define BHV_TO_VNODE_NULL(bdp)&t;((vnode_t *)BHV_VOBJNULL(bdp))
+DECL|macro|VNODE_TO_FIRST_BHV
+mdefine_line|#define VNODE_TO_FIRST_BHV(vp)&t;&t;(BHV_HEAD_FIRST(&amp;(vp)-&gt;v_bh))
+DECL|macro|VN_BHV_HEAD
+mdefine_line|#define VN_BHV_HEAD(vp)&t;&t;&t;((bhv_head_t *)(&amp;((vp)-&gt;v_bh)))
+DECL|macro|VN_BHV_READ_LOCK
+mdefine_line|#define VN_BHV_READ_LOCK(bhp)&t;&t;BHV_READ_LOCK(bhp)
+DECL|macro|VN_BHV_READ_UNLOCK
+mdefine_line|#define VN_BHV_READ_UNLOCK(bhp)&t;&t;BHV_READ_UNLOCK(bhp)
+DECL|macro|VN_BHV_WRITE_LOCK
+mdefine_line|#define VN_BHV_WRITE_LOCK(bhp)&t;&t;BHV_WRITE_LOCK(bhp)
+DECL|macro|VN_BHV_NOT_READ_LOCKED
+mdefine_line|#define VN_BHV_NOT_READ_LOCKED(bhp)&t;BHV_NOT_READ_LOCKED(bhp)
+DECL|macro|VN_BHV_NOT_WRITE_LOCKED
+mdefine_line|#define VN_BHV_NOT_WRITE_LOCKED(bhp)&t;BHV_NOT_WRITE_LOCKED(bhp)
+DECL|macro|vn_bhv_head_init
+mdefine_line|#define vn_bhv_head_init(bhp,name)&t;bhv_head_init(bhp,name)
+DECL|macro|vn_bhv_remove
+mdefine_line|#define vn_bhv_remove(bhp,bdp)&t;&t;bhv_remove(bhp,bdp)
+DECL|macro|vn_bhv_lookup
+mdefine_line|#define vn_bhv_lookup(bhp,ops)&t;&t;bhv_lookup(bhp,ops)
+DECL|macro|vn_bhv_lookup_unlocked
+mdefine_line|#define vn_bhv_lookup_unlocked(bhp,ops) bhv_lookup_unlocked(bhp,ops)
 multiline_comment|/*&n; * Vnode to Linux inode mapping.&n; */
 DECL|macro|LINVFS_GET_VP
 mdefine_line|#define LINVFS_GET_VP(inode)&t;((vnode_t *)list_entry(inode, vnode_t, v_inode))
@@ -147,17 +227,16 @@ DECL|macro|VTTOIF
 mdefine_line|#define VTTOIF(T)&t;(vttoif_tab[(int)(T)])
 DECL|macro|MAKEIMODE
 mdefine_line|#define MAKEIMODE(T, M) (VTTOIF(T) | ((M) &amp; ~S_IFMT))
-multiline_comment|/*&n; * Vnode flags.&n; *&n; * The vnode flags fall into two categories:&n; * 1) Local only -&n; *    Flags that are relevant only to a particular cell&n; * 2) Single system image -&n; *    Flags that must be maintained coherent across all cells&n; */
-multiline_comment|/* Local only flags */
+multiline_comment|/*&n; * Vnode flags.&n; */
 DECL|macro|VINACT
 mdefine_line|#define VINACT&t;&t;       0x1&t;/* vnode is being inactivated&t;*/
 DECL|macro|VRECLM
 mdefine_line|#define VRECLM&t;&t;       0x2&t;/* vnode is being reclaimed&t;*/
 DECL|macro|VWAIT
-mdefine_line|#define VWAIT&t;&t;       0x4&t;/* waiting for VINACT&n;&t;&t;&t;&t;&t;   or VRECLM to finish */
+mdefine_line|#define VWAIT&t;&t;       0x4&t;/* waiting for VINACT/VRECLM to end */
 DECL|macro|VMODIFIED
-mdefine_line|#define VMODIFIED&t;       0x8&t;/* xfs inode state possibly different&n;&t;&t;&t;&t;&t; * from linux inode state.&n;&t;&t;&t;&t;&t; */
-multiline_comment|/* Single system image flags */
+mdefine_line|#define VMODIFIED&t;       0x8&t;/* XFS inode state possibly differs */
+multiline_comment|/* to the Linux inode state.&t;*/
 DECL|macro|VROOT
 mdefine_line|#define VROOT&t;&t;  0x100000&t;/* root of its file system&t;*/
 DECL|macro|VNOSWAP
@@ -172,7 +251,6 @@ DECL|macro|VDOCMP
 mdefine_line|#define VDOCMP&t;&t; 0x2000000&t;/* Vnode has special VOP_CMP impl. */
 DECL|macro|VSHARE
 mdefine_line|#define VSHARE&t;&t; 0x4000000&t;/* vnode part of global cache&t;*/
-multiline_comment|/* VSHARE applies to local cell only */
 DECL|macro|VFRLOCKS
 mdefine_line|#define VFRLOCKS&t; 0x8000000&t;/* vnode has FR locks applied&t;*/
 DECL|macro|VENF_LOCKING
@@ -243,56 +321,6 @@ l_int|4
 DECL|typedef|vchange_t
 )brace
 id|vchange_t
-suffix:semicolon
-multiline_comment|/*&n; * Macros for dealing with the behavior descriptor inside of the vnode.&n; */
-DECL|macro|BHV_TO_VNODE
-mdefine_line|#define BHV_TO_VNODE(bdp)&t;((vnode_t *)BHV_VOBJ(bdp))
-DECL|macro|BHV_TO_VNODE_NULL
-mdefine_line|#define BHV_TO_VNODE_NULL(bdp)&t;((vnode_t *)BHV_VOBJNULL(bdp))
-DECL|macro|VNODE_TO_FIRST_BHV
-mdefine_line|#define VNODE_TO_FIRST_BHV(vp)&t;&t;(BHV_HEAD_FIRST(&amp;(vp)-&gt;v_bh))
-DECL|macro|VN_BHV_HEAD
-mdefine_line|#define VN_BHV_HEAD(vp)&t;&t;&t;((vn_bhv_head_t *)(&amp;((vp)-&gt;v_bh)))
-DECL|macro|VN_BHV_READ_LOCK
-mdefine_line|#define VN_BHV_READ_LOCK(bhp)&t;&t;BHV_READ_LOCK(bhp)
-DECL|macro|VN_BHV_READ_UNLOCK
-mdefine_line|#define VN_BHV_READ_UNLOCK(bhp)&t;&t;BHV_READ_UNLOCK(bhp)
-DECL|macro|VN_BHV_WRITE_LOCK
-mdefine_line|#define VN_BHV_WRITE_LOCK(bhp)&t;&t;BHV_WRITE_LOCK(bhp)
-DECL|macro|VN_BHV_NOT_READ_LOCKED
-mdefine_line|#define VN_BHV_NOT_READ_LOCKED(bhp)&t;BHV_NOT_READ_LOCKED(bhp)
-DECL|macro|VN_BHV_NOT_WRITE_LOCKED
-mdefine_line|#define VN_BHV_NOT_WRITE_LOCKED(bhp)&t;BHV_NOT_WRITE_LOCKED(bhp)
-DECL|macro|vn_bhv_head_init
-mdefine_line|#define vn_bhv_head_init(bhp,name)&t;bhv_head_init(bhp,name)
-DECL|macro|vn_bhv_head_reinit
-mdefine_line|#define vn_bhv_head_reinit(bhp)&t;&t;bhv_head_reinit(bhp)
-DECL|macro|vn_bhv_insert_initial
-mdefine_line|#define vn_bhv_insert_initial(bhp,bdp)&t;bhv_insert_initial(bhp,bdp)
-DECL|macro|vn_bhv_remove
-mdefine_line|#define vn_bhv_remove(bhp,bdp)&t;&t;bhv_remove(bhp,bdp)
-DECL|macro|vn_bhv_lookup
-mdefine_line|#define vn_bhv_lookup(bhp,ops)&t;&t;bhv_lookup(bhp,ops)
-DECL|macro|vn_bhv_lookup_unlocked
-mdefine_line|#define vn_bhv_lookup_unlocked(bhp,ops) bhv_lookup_unlocked(bhp,ops)
-DECL|macro|v_fbhv
-mdefine_line|#define v_fbhv&t;&t;v_bh.bh_first&t;       /* first behavior */
-DECL|macro|v_fops
-mdefine_line|#define v_fops&t;&t;v_bh.bh_first-&gt;bd_ops  /* ops for first behavior */
-r_struct
-id|uio
-suffix:semicolon
-r_struct
-id|file
-suffix:semicolon
-r_struct
-id|vattr
-suffix:semicolon
-r_struct
-id|page_buf_bmap_s
-suffix:semicolon
-r_struct
-id|attrlist_cursor_kern
 suffix:semicolon
 DECL|typedef|vop_open_t
 r_typedef
@@ -501,8 +529,7 @@ id|vop_lookup_t
 id|bhv_desc_t
 op_star
 comma
-r_struct
-id|dentry
+id|vname_t
 op_star
 comma
 id|vnode_t
@@ -530,8 +557,7 @@ id|vop_create_t
 id|bhv_desc_t
 op_star
 comma
-r_struct
-id|dentry
+id|vname_t
 op_star
 comma
 r_struct
@@ -558,8 +584,7 @@ id|vop_remove_t
 id|bhv_desc_t
 op_star
 comma
-r_struct
-id|dentry
+id|vname_t
 op_star
 comma
 r_struct
@@ -581,8 +606,7 @@ comma
 id|vnode_t
 op_star
 comma
-r_struct
-id|dentry
+id|vname_t
 op_star
 comma
 r_struct
@@ -601,15 +625,13 @@ id|vop_rename_t
 id|bhv_desc_t
 op_star
 comma
-r_struct
-id|dentry
+id|vname_t
 op_star
 comma
 id|vnode_t
 op_star
 comma
-r_struct
-id|dentry
+id|vname_t
 op_star
 comma
 r_struct
@@ -628,8 +650,7 @@ id|vop_mkdir_t
 id|bhv_desc_t
 op_star
 comma
-r_struct
-id|dentry
+id|vname_t
 op_star
 comma
 r_struct
@@ -656,8 +677,7 @@ id|vop_rmdir_t
 id|bhv_desc_t
 op_star
 comma
-r_struct
-id|dentry
+id|vname_t
 op_star
 comma
 r_struct
@@ -699,8 +719,7 @@ id|vop_symlink_t
 id|bhv_desc_t
 op_star
 comma
-r_struct
-id|dentry
+id|vname_t
 op_star
 comma
 r_struct
@@ -1693,7 +1712,16 @@ mdefine_line|#define VN_HOLD(vp)&t;&t;((void)vn_hold(vp))
 DECL|macro|VN_RELE
 mdefine_line|#define VN_RELE(vp)&t;&t;(iput(LINVFS_GET_IP(vp)))
 macro_line|#endif&t;/* ! (defined(CONFIG_XFS_VNODE_TRACING) */
+multiline_comment|/*&n; * Vname handling macros.&n; */
+DECL|macro|VNAME
+mdefine_line|#define VNAME(dentry)&t;&t;((char *) (dentry)-&gt;d_name.name)
+DECL|macro|VNAMELEN
+mdefine_line|#define VNAMELEN(dentry)&t;((dentry)-&gt;d_name.len)
 multiline_comment|/*&n; * Vnode spinlock manipulation.&n; */
+DECL|macro|VN_LOCK
+mdefine_line|#define VN_LOCK(vp)&t;&t;spin_lock(&amp;(vp)-&gt;v_lock)
+DECL|macro|VN_UNLOCK
+mdefine_line|#define VN_UNLOCK(vp)&t;&t;spin_unlock(&amp;(vp)-&gt;v_lock)
 DECL|macro|VN_FLAGSET
 mdefine_line|#define VN_FLAGSET(vp,b)&t;vn_flagset(vp,b)
 DECL|macro|VN_FLAGCLR

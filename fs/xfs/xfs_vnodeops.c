@@ -45,7 +45,6 @@ DECL|macro|xfs_ctrunc_trace
 mdefine_line|#define xfs_ctrunc_trace(tag, ip)
 macro_line|#endif /* DEBUG */
 multiline_comment|/*&n; * For xfs, we check that the file isn&squot;t too big to be opened by this kernel.&n; * No other open action is required for regular files.&t;Devices are handled&n; * through the specfs file system, pipes through fifofs.  Device and&n; * fifo vnodes are &quot;wrapped&quot; by specfs and fifofs vnodes, respectively,&n; * when a new vnode is first looked up or created.&n; */
-multiline_comment|/*ARGSUSED*/
 id|STATIC
 r_int
 DECL|function|xfs_open
@@ -154,7 +153,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * xfs_getattr&n; */
-multiline_comment|/*ARGSUSED*/
 r_int
 DECL|function|xfs_getattr
 id|xfs_getattr
@@ -201,7 +199,7 @@ c_func
 (paren
 id|vp
 comma
-l_string|&quot;xfs_getattr&quot;
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
@@ -796,8 +794,7 @@ suffix:semicolon
 id|uint
 id|qflags
 suffix:semicolon
-r_struct
-id|xfs_dquot
+id|xfs_dquot_t
 op_star
 id|udqp
 comma
@@ -826,7 +823,7 @@ c_func
 (paren
 id|vp
 comma
-l_string|&quot;xfs_setattr&quot;
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
@@ -3179,9 +3176,7 @@ r_return
 id|code
 suffix:semicolon
 )brace
-multiline_comment|/* xfs_setattr */
 multiline_comment|/*&n; * xfs_access&n; * Null conversion from vnode mode bits to inode mode bits, as in efs.&n; */
-multiline_comment|/*ARGSUSED*/
 id|STATIC
 r_int
 DECL|function|xfs_access
@@ -3216,7 +3211,7 @@ c_func
 id|bdp
 )paren
 comma
-l_string|&quot;xfs_access&quot;
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
@@ -3266,7 +3261,6 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * xfs_readlink&n; *&n; */
-multiline_comment|/*ARGSUSED*/
 id|STATIC
 r_int
 DECL|function|xfs_readlink
@@ -3347,7 +3341,7 @@ c_func
 (paren
 id|vp
 comma
-l_string|&quot;xfs_readlink&quot;
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
@@ -3707,7 +3701,6 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * xfs_fsync&n; *&n; * This is called to sync the inode and its data out to disk.&n; * We need to hold the I/O lock while flushing the data, and&n; * the inode lock while flushing the inode.  The inode lock CANNOT&n; * be held while flushing the data, so acquire after we&squot;re done&n; * with that.&n; */
-multiline_comment|/*ARGSUSED*/
 id|STATIC
 r_int
 DECL|function|xfs_fsync
@@ -3739,11 +3732,9 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
-multiline_comment|/* REFERENCED */
 r_int
 id|error2
 suffix:semicolon
-multiline_comment|/* REFERENCED */
 r_int
 id|syncall
 suffix:semicolon
@@ -3768,7 +3759,7 @@ c_func
 (paren
 id|vp
 comma
-l_string|&quot;xfs_fsync&quot;
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
@@ -5775,7 +5766,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*ARGSUSED*/
 id|STATIC
 r_int
 DECL|function|xfs_release
@@ -5956,7 +5946,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * xfs_inactive&n; *&n; * This is called when the vnode reference count for the vnode&n; * goes to zero.  If the file has been unlinked, then it must&n; * now be truncated.  Also, we clear all of the read-ahead state&n; * kept for the inode here since the file is now closed.&n; */
-multiline_comment|/*ARGSUSED*/
 id|STATIC
 r_int
 DECL|function|xfs_inactive
@@ -5976,7 +5965,6 @@ id|xfs_inode_t
 op_star
 id|ip
 suffix:semicolon
-multiline_comment|/* REFERENCED */
 id|vnode_t
 op_star
 id|vp
@@ -6011,7 +5999,7 @@ c_func
 (paren
 id|vp
 comma
-l_string|&quot;xfs_inactive&quot;
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
@@ -6861,7 +6849,6 @@ id|VN_INACTIVE_CACHE
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * xfs_lookup&n; */
-multiline_comment|/*ARGSUSED*/
 id|STATIC
 r_int
 DECL|function|xfs_lookup
@@ -6872,8 +6859,7 @@ id|bhv_desc_t
 op_star
 id|dir_bdp
 comma
-r_struct
-id|dentry
+id|vname_t
 op_star
 id|dentry
 comma
@@ -6932,7 +6918,7 @@ c_func
 (paren
 id|dir_vp
 comma
-l_string|&quot;xfs_lookup&quot;
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
@@ -7195,8 +7181,7 @@ id|bhv_desc_t
 op_star
 id|dir_bdp
 comma
-r_struct
-id|dentry
+id|vname_t
 op_star
 id|dentry
 comma
@@ -7218,11 +7203,11 @@ r_char
 op_star
 id|name
 op_assign
+id|VNAME
+c_func
 (paren
-r_char
-op_star
+id|dentry
 )paren
-id|dentry-&gt;d_name.name
 suffix:semicolon
 id|vnode_t
 op_star
@@ -7278,8 +7263,7 @@ suffix:semicolon
 id|xfs_prid_t
 id|prid
 suffix:semicolon
-r_struct
-id|xfs_dquot
+id|xfs_dquot_t
 op_star
 id|udqp
 comma
@@ -7311,26 +7295,26 @@ c_func
 id|dir_bdp
 )paren
 suffix:semicolon
-id|dp
-op_assign
-id|XFS_BHVTOI
-c_func
-(paren
-id|dir_bdp
-)paren
-suffix:semicolon
 id|vn_trace_entry
 c_func
 (paren
 id|dir_vp
 comma
-l_string|&quot;xfs_create&quot;
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
 op_star
 )paren
 id|__return_address
+)paren
+suffix:semicolon
+id|dp
+op_assign
+id|XFS_BHVTOI
+c_func
+(paren
+id|dir_bdp
 )paren
 suffix:semicolon
 id|dm_di_mode
@@ -7345,7 +7329,11 @@ id|vap-&gt;va_type
 suffix:semicolon
 id|namelen
 op_assign
-id|dentry-&gt;d_name.len
+id|VNAMELEN
+c_func
+(paren
+id|dentry
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -8254,8 +8242,7 @@ id|xfs_inode_t
 op_star
 id|dp
 comma
-r_struct
-id|dentry
+id|vname_t
 op_star
 id|dentry
 comma
@@ -8498,6 +8485,7 @@ multiline_comment|/*&n; * The following routine will lock n inodes in exclusive 
 r_void
 DECL|function|xfs_lock_inodes
 id|xfs_lock_inodes
+c_func
 (paren
 id|xfs_inode_t
 op_star
@@ -8886,8 +8874,7 @@ id|bhv_desc_t
 op_star
 id|dir_bdp
 comma
-r_struct
-id|dentry
+id|vname_t
 op_star
 id|dentry
 comma
@@ -8904,11 +8891,11 @@ r_char
 op_star
 id|name
 op_assign
+id|VNAME
+c_func
 (paren
-r_char
-op_star
+id|dentry
 )paren
-id|dentry-&gt;d_name.name
 suffix:semicolon
 id|xfs_inode_t
 op_star
@@ -8961,7 +8948,6 @@ suffix:semicolon
 r_int
 id|namelen
 suffix:semicolon
-multiline_comment|/*&t;bhv_desc_t&t;&t;*bdp; */
 id|dir_vp
 op_assign
 id|BHV_TO_VNODE
@@ -8975,7 +8961,7 @@ c_func
 (paren
 id|dir_vp
 comma
-l_string|&quot;xfs_remove&quot;
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
@@ -9014,7 +9000,11 @@ id|EIO
 suffix:semicolon
 id|namelen
 op_assign
-id|dentry-&gt;d_name.len
+id|VNAMELEN
+c_func
+(paren
+id|dentry
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -9127,7 +9117,7 @@ c_func
 id|ip
 )paren
 comma
-l_string|&quot;xfs_remove&quot;
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
@@ -9807,7 +9797,7 @@ c_func
 id|ip
 )paren
 comma
-l_string|&quot;xfs_remove&quot;
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
@@ -9958,8 +9948,7 @@ id|vnode_t
 op_star
 id|src_vp
 comma
-r_struct
-id|dentry
+id|vname_t
 op_star
 id|dentry
 comma
@@ -10020,11 +10009,11 @@ r_char
 op_star
 id|target_name
 op_assign
+id|VNAME
+c_func
 (paren
-r_char
-op_star
+id|dentry
 )paren
-id|dentry-&gt;d_name.name
 suffix:semicolon
 r_int
 id|target_namelen
@@ -10042,7 +10031,21 @@ c_func
 (paren
 id|target_dir_vp
 comma
-l_string|&quot;xfs_link&quot;
+id|__FUNCTION__
+comma
+(paren
+id|inst_t
+op_star
+)paren
+id|__return_address
+)paren
+suffix:semicolon
+id|vn_trace_entry
+c_func
+(paren
+id|src_vp
+comma
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
@@ -10053,7 +10056,11 @@ id|__return_address
 suffix:semicolon
 id|target_namelen
 op_assign
-id|dentry-&gt;d_name.len
+id|VNAMELEN
+c_func
+(paren
+id|dentry
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -10069,18 +10076,18 @@ c_func
 id|ENAMETOOLONG
 )paren
 suffix:semicolon
-id|vn_trace_entry
+r_if
+c_cond
+(paren
+id|src_vp-&gt;v_type
+op_eq
+id|VDIR
+)paren
+r_return
+id|XFS_ERROR
 c_func
 (paren
-id|src_vp
-comma
-l_string|&quot;xfs_link&quot;
-comma
-(paren
-id|inst_t
-op_star
-)paren
-id|__return_address
+id|EPERM
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * For now, manually find the XFS behavior descriptor for&n;&t; * the source vnode.  If it doesn&squot;t exist then something&n;&t; * is wrong and we should just return an error.&n;&t; * Eventually we need to figure out how link is going to&n;&t; * work in the face of stacked vnodes.&n;&t; */
@@ -10740,8 +10747,7 @@ id|bhv_desc_t
 op_star
 id|dir_bdp
 comma
-r_struct
-id|dentry
+id|vname_t
 op_star
 id|dentry
 comma
@@ -10763,11 +10769,11 @@ r_char
 op_star
 id|dir_name
 op_assign
+id|VNAME
+c_func
 (paren
-r_char
-op_star
+id|dentry
 )paren
-id|dentry-&gt;d_name.name
 suffix:semicolon
 id|xfs_inode_t
 op_star
@@ -10829,8 +10835,7 @@ suffix:semicolon
 id|xfs_prid_t
 id|prid
 suffix:semicolon
-r_struct
-id|xfs_dquot
+id|xfs_dquot_t
 op_star
 id|udqp
 comma
@@ -10884,7 +10889,11 @@ id|EIO
 suffix:semicolon
 id|dir_namelen
 op_assign
-id|dentry-&gt;d_name.len
+id|VNAMELEN
+c_func
+(paren
+id|dentry
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -10962,7 +10971,7 @@ c_func
 (paren
 id|dir_vp
 comma
-l_string|&quot;xfs_mkdir&quot;
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
@@ -11775,8 +11784,7 @@ id|bhv_desc_t
 op_star
 id|dir_bdp
 comma
-r_struct
-id|dentry
+id|vname_t
 op_star
 id|dentry
 comma
@@ -11789,11 +11797,11 @@ r_char
 op_star
 id|name
 op_assign
+id|VNAME
+c_func
 (paren
-r_char
-op_star
+id|dentry
 )paren
-id|dentry-&gt;d_name.name
 suffix:semicolon
 id|xfs_inode_t
 op_star
@@ -11812,7 +11820,6 @@ id|xfs_mount_t
 op_star
 id|mp
 suffix:semicolon
-multiline_comment|/*&t;bhv_desc_t&t;&t;*bdp;*/
 r_int
 id|error
 suffix:semicolon
@@ -11870,7 +11877,7 @@ c_func
 (paren
 id|dir_vp
 comma
-l_string|&quot;xfs_rmdir&quot;
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
@@ -11903,7 +11910,11 @@ id|EIO
 suffix:semicolon
 id|namelen
 op_assign
-id|dentry-&gt;d_name.len
+id|VNAMELEN
+c_func
+(paren
+id|dentry
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -12728,7 +12739,6 @@ id|std_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * xfs_readdir&n; *&n; * Read dp&squot;s entries starting at uiop-&gt;uio_offset and translate them into&n; * bufsize bytes worth of struct dirents starting at bufbase.&n; */
-multiline_comment|/*ARGSUSED*/
 id|STATIC
 r_int
 DECL|function|xfs_readdir
@@ -12782,7 +12792,7 @@ c_func
 id|dir_bdp
 )paren
 comma
-l_string|&quot;xfs_readdir&quot;
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
@@ -12913,8 +12923,7 @@ id|bhv_desc_t
 op_star
 id|dir_bdp
 comma
-r_struct
-id|dentry
+id|vname_t
 op_star
 id|dentry
 comma
@@ -13015,8 +13024,7 @@ suffix:semicolon
 id|xfs_prid_t
 id|prid
 suffix:semicolon
-r_struct
-id|xfs_dquot
+id|xfs_dquot_t
 op_star
 id|udqp
 comma
@@ -13030,11 +13038,11 @@ r_char
 op_star
 id|link_name
 op_assign
+id|VNAME
+c_func
 (paren
-r_char
-op_star
+id|dentry
 )paren
-id|dentry-&gt;d_name.name
 suffix:semicolon
 r_int
 id|link_namelen
@@ -13081,7 +13089,7 @@ c_func
 (paren
 id|dir_vp
 comma
-l_string|&quot;xfs_symlink&quot;
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
@@ -13112,7 +13120,11 @@ id|EIO
 suffix:semicolon
 id|link_namelen
 op_assign
-id|dentry-&gt;d_name.len
+id|VNAMELEN
+c_func
+(paren
+id|dentry
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -14352,7 +14364,7 @@ c_func
 id|bdp
 )paren
 comma
-l_string|&quot;xfs_fid2&quot;
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
@@ -15263,7 +15275,7 @@ c_func
 (paren
 id|vp
 comma
-l_string|&quot;xfs_reclaim&quot;
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
@@ -15839,7 +15851,7 @@ c_func
 id|ip
 )paren
 comma
-l_string|&quot;xfs_alloc_file_space&quot;
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
@@ -16545,7 +16557,7 @@ r_goto
 id|retry
 suffix:semicolon
 multiline_comment|/* Maybe DMAPI app. has made space */
-multiline_comment|/* else fall through with error = xfs_dm_send_data_event result. */
+multiline_comment|/* else fall through with error from xfs_dm_send_data_event */
 )brace
 r_return
 id|error
@@ -17081,7 +17093,7 @@ c_func
 id|ip
 )paren
 comma
-l_string|&quot;xfs_free_file_space&quot;
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
@@ -18055,7 +18067,7 @@ c_func
 (paren
 id|vp
 comma
-l_string|&quot;xfs_change_file_space&quot;
+id|__FUNCTION__
 comma
 (paren
 id|inst_t
@@ -18595,6 +18607,14 @@ id|vnodeops_t
 id|xfs_vnodeops
 op_assign
 (brace
+id|BHV_IDENTITY_INIT
+c_func
+(paren
+id|VN_BHV_XFS
+comma
+id|VNODE_POSITION_XFS
+)paren
+comma
 dot
 id|vop_open
 op_assign
