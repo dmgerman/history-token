@@ -1908,6 +1908,10 @@ op_ne
 l_int|0
 )paren
 suffix:semicolon
+id|rq-&gt;cmd_len
+op_assign
+l_int|6
+suffix:semicolon
 id|err
 op_assign
 id|blk_do_rq
