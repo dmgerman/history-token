@@ -3687,12 +3687,14 @@ id|block_device_operations
 id|stram_fops
 op_assign
 (brace
+dot
 id|open
-suffix:colon
+op_assign
 id|stram_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|stram_release
 comma
 )brace

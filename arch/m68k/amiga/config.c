@@ -609,16 +609,19 @@ id|console
 id|amiga_console_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;debug&quot;
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 id|CON_PRINTBUFFER
 comma
+dot
 id|index
-suffix:colon
+op_assign
 op_minus
 l_int|1
 comma
@@ -688,8 +691,9 @@ DECL|variable|mb_resources
 id|mb_resources
 op_assign
 (brace
+dot
 id|_ciab
-suffix:colon
+op_assign
 (brace
 l_string|&quot;CIA B&quot;
 comma
@@ -698,8 +702,9 @@ comma
 l_int|0x00bfdfff
 )brace
 comma
+dot
 id|_ciaa
-suffix:colon
+op_assign
 (brace
 l_string|&quot;CIA A&quot;
 comma
@@ -708,8 +713,9 @@ comma
 l_int|0x00bfefff
 )brace
 comma
+dot
 id|_custom
-suffix:colon
+op_assign
 (brace
 l_string|&quot;Custom I/O&quot;
 comma
@@ -718,8 +724,9 @@ comma
 l_int|0x00dfffff
 )brace
 comma
+dot
 id|_kickstart
-suffix:colon
+op_assign
 (brace
 l_string|&quot;Kickstart ROM&quot;
 comma
