@@ -20481,8 +20481,6 @@ op_add_assign
 l_int|4
 )paren
 (brace
-suffix:semicolon
-)brace
 id|writel
 c_func
 (paren
@@ -20493,6 +20491,7 @@ op_plus
 id|temp1
 )paren
 suffix:semicolon
+)brace
 )brace
 r_for
 c_loop
