@@ -50,6 +50,13 @@ l_string|&quot;IBM DSP&quot;
 id|ID
 c_func
 (paren
+l_string|&quot;NSC6001&quot;
+comma
+l_string|&quot;National Semiconductor Serial Port with Fast IR&quot;
+)paren
+id|ID
+c_func
+(paren
 l_string|&quot;PNP0000&quot;
 comma
 l_string|&quot;AT Interrupt Controller&quot;
@@ -389,6 +396,13 @@ c_func
 l_string|&quot;PNP0701&quot;
 comma
 l_string|&quot;Standard floppy controller supporting MS Device Bay Spec&quot;
+)paren
+id|ID
+c_func
+(paren
+l_string|&quot;PNP0802&quot;
+comma
+l_string|&quot;Microsoft Sound System or Compatible Device (obsolete)&quot;
 )paren
 id|ID
 c_func
@@ -1068,13 +1082,6 @@ c_func
 l_string|&quot;PNP8001&quot;
 comma
 l_string|&quot;Novell/Anthem NE3200&quot;
-)paren
-id|ID
-c_func
-(paren
-l_string|&quot;PNP0802&quot;
-comma
-l_string|&quot;Microsoft Sound System or Compatible Device (obsolete)&quot;
 )paren
 id|ID
 c_func
