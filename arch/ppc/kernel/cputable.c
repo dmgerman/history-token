@@ -1636,6 +1636,39 @@ comma
 id|__setup_cpu_ppc970
 )brace
 comma
+(brace
+multiline_comment|/* PPC970FX */
+l_int|0xffff0000
+comma
+l_int|0x003c0000
+comma
+l_string|&quot;PPC970FX&quot;
+comma
+id|CPU_FTR_COMMON
+op_or
+id|CPU_FTR_SPLIT_ID_CACHE
+op_or
+id|CPU_FTR_USE_TB
+op_or
+id|CPU_FTR_HPTE_TABLE
+op_or
+id|CPU_FTR_ALTIVEC_COMP
+op_or
+id|CPU_FTR_CAN_NAP
+comma
+id|COMMON_PPC
+op_or
+id|PPC_FEATURE_64
+op_or
+id|PPC_FEATURE_ALTIVEC_COMP
+comma
+l_int|128
+comma
+l_int|128
+comma
+id|__setup_cpu_ppc970
+)brace
+comma
 macro_line|#endif /* CONFIG_POWER4 */
 macro_line|#ifdef CONFIG_8xx
 (brace
