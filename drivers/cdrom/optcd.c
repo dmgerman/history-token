@@ -15,9 +15,9 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR OPTICS_CDROM_MAJOR
 DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;opt_queue)
+mdefine_line|#define QUEUE (opt_queue)
 DECL|macro|CURRENT
-mdefine_line|#define CURRENT elv_next_request(&amp;opt_queue)
+mdefine_line|#define CURRENT elv_next_request(opt_queue)
 "&f;"
 multiline_comment|/* Debug support */
 multiline_comment|/* Don&squot;t forget to add new debug flags here. */
@@ -454,6 +454,7 @@ DECL|variable|opt_queue
 r_static
 r_struct
 id|request_queue
+op_star
 id|opt_queue
 suffix:semicolon
 multiline_comment|/* Timer routine: wake up when desired flag goes low,&n;   or when timeout expires. */
@@ -8478,22 +8479,54 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+id|opt_queue
+op_assign
 id|blk_init_queue
 c_func
 (paren
-op_amp
-id|opt_queue
-comma
 id|do_optcd_request
 comma
 op_amp
 id|optcd_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|opt_queue
+)paren
+(brace
+id|unregister_blkdev
+c_func
+(paren
+id|MAJOR_NR
+comma
+l_string|&quot;optcd&quot;
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|optcd_port
+comma
+l_int|4
+)paren
+suffix:semicolon
+id|put_disk
+c_func
+(paren
+id|optcd_disk
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|blk_queue_hardsect_size
 c_func
 (paren
-op_amp
 id|opt_queue
 comma
 l_int|2048
@@ -8501,7 +8534,6 @@ l_int|2048
 suffix:semicolon
 id|optcd_disk-&gt;queue
 op_assign
-op_amp
 id|opt_queue
 suffix:semicolon
 id|add_disk
@@ -8573,7 +8605,6 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-op_amp
 id|opt_queue
 )paren
 suffix:semicolon

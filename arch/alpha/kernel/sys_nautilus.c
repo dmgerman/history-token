@@ -591,10 +591,6 @@ id|hose-&gt;bus
 op_assign
 id|bus
 suffix:semicolon
-id|hose-&gt;last_busno
-op_assign
-id|bus-&gt;subordinate
-suffix:semicolon
 id|irongate
 op_assign
 id|pci_find_slot

@@ -6972,7 +6972,6 @@ suffix:semicolon
 id|blk_plug_device
 c_func
 (paren
-op_amp
 id|conf-&gt;mddev-&gt;queue
 )paren
 suffix:semicolon
@@ -7567,7 +7566,6 @@ op_logical_neg
 id|blk_queue_plugged
 c_func
 (paren
-op_amp
 id|mddev-&gt;queue
 )paren
 op_logical_and
@@ -7911,7 +7909,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|mddev-&gt;queue.unplug_fn
+id|mddev-&gt;queue-&gt;unplug_fn
 op_assign
 id|raid5_unplug_device
 suffix:semicolon

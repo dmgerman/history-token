@@ -184,7 +184,6 @@ r_return
 id|pte
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_HIGHPTE&t;/* Save a few cycles on the sane machines */
 DECL|function|page_table_present
 r_static
 r_inline
@@ -252,10 +251,6 @@ id|pmd
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|macro|page_table_present
-mdefine_line|#define page_table_present(mm, addr)&t;(1)
-macro_line|#endif
 DECL|function|alloc_one_pte_map
 r_static
 r_inline

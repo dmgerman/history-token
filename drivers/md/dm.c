@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright (C) 2001, 2002 Sistina Software (UK) Limited
 macro_line|#include &quot;dm.h&quot;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
@@ -102,6 +103,7 @@ id|flags
 suffix:semicolon
 DECL|member|queue
 id|request_queue_t
+op_star
 id|queue
 suffix:semicolon
 DECL|member|disk
@@ -2245,14 +2247,38 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|md-&gt;queue.queuedata
+id|md-&gt;queue
+op_assign
+id|blk_alloc_queue
+c_func
+(paren
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|md-&gt;queue
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|md
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+id|md-&gt;queue-&gt;queuedata
 op_assign
 id|md
 suffix:semicolon
 id|blk_queue_make_request
 c_func
 (paren
-op_amp
 id|md-&gt;queue
 comma
 id|dm_request
@@ -2283,6 +2309,12 @@ id|free_minor
 c_func
 (paren
 id|minor
+)paren
+suffix:semicolon
+id|blk_put_queue
+c_func
+(paren
+id|md-&gt;queue
 )paren
 suffix:semicolon
 id|kfree
@@ -2322,6 +2354,12 @@ c_func
 id|minor
 )paren
 suffix:semicolon
+id|blk_put_queue
+c_func
+(paren
+id|md-&gt;queue
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -2347,7 +2385,6 @@ id|dm_blk_dops
 suffix:semicolon
 id|md-&gt;disk-&gt;queue
 op_assign
-op_amp
 id|md-&gt;queue
 suffix:semicolon
 id|md-&gt;disk-&gt;private_data
@@ -2433,6 +2470,12 @@ c_func
 id|md-&gt;disk
 )paren
 suffix:semicolon
+id|blk_put_queue
+c_func
+(paren
+id|md-&gt;queue
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -2510,7 +2553,6 @@ id|request_queue_t
 op_star
 id|q
 op_assign
-op_amp
 id|md-&gt;queue
 suffix:semicolon
 id|sector_t
@@ -3492,12 +3534,14 @@ c_func
 id|dm_exit
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|major
 comma
-l_string|&quot;i&quot;
+id|uint
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

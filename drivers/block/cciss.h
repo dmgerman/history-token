@@ -273,6 +273,7 @@ suffix:semicolon
 DECL|member|queue
 r_struct
 id|request_queue
+op_star
 id|queue
 suffix:semicolon
 singleline_comment|//* pointers to command and error info pool */ 
@@ -769,6 +770,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|CCISS_LOCK
-mdefine_line|#define CCISS_LOCK(i)&t;(hba[i]-&gt;queue.queue_lock)
+mdefine_line|#define CCISS_LOCK(i)&t;(hba[i]-&gt;queue-&gt;queue_lock)
 macro_line|#endif /* CCISS_H */
 eof

@@ -164,7 +164,7 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|macro|CURRENT
-mdefine_line|#define CURRENT elv_next_request(&amp;swim_queue)
+mdefine_line|#define CURRENT elv_next_request(swim_queue)
 DECL|variable|drive_names
 r_static
 r_char
@@ -462,6 +462,7 @@ DECL|variable|swim_queue
 r_static
 r_struct
 id|request_queue
+op_star
 id|swim_queue
 suffix:semicolon
 multiline_comment|/*&n; * SWIM IOP initialization&n; */
@@ -543,18 +544,37 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
+id|swim_queue
+op_assign
 id|blk_init_queue
 c_func
 (paren
-op_amp
-id|swim_queue
-comma
 id|do_fd_request
 comma
 op_amp
 id|swim_iop_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|swim_queue
+)paren
+(brace
+id|unregister_blkdev
+c_func
+(paren
+id|FLOPPY_MAJOR
+comma
+l_string|&quot;fd&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -586,6 +606,20 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;SWIM-IOP: IOP channel already in use; can&squot;t initialize.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|unregister_blkdev
+c_func
+(paren
+id|FLOPPY_MAJOR
+comma
+l_string|&quot;fd&quot;
+)paren
+suffix:semicolon
+id|blk_cleanup_queue
+c_func
+(paren
+id|swim_queue
 )paren
 suffix:semicolon
 r_return
@@ -852,7 +886,6 @@ id|i
 suffix:semicolon
 id|disk-&gt;queue
 op_assign
-op_amp
 id|swim_queue
 suffix:semicolon
 id|set_capacity

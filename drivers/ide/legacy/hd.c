@@ -106,14 +106,15 @@ DECL|variable|hd_queue
 r_static
 r_struct
 id|request_queue
+op_star
 id|hd_queue
 suffix:semicolon
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR HD_MAJOR
 DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;hd_queue)
+mdefine_line|#define QUEUE (hd_queue)
 DECL|macro|CURRENT
-mdefine_line|#define CURRENT elv_next_request(&amp;hd_queue)
+mdefine_line|#define CURRENT elv_next_request(hd_queue)
 DECL|macro|TIMEOUT_VALUE
 mdefine_line|#define TIMEOUT_VALUE&t;(6*HZ)
 DECL|macro|HD_DELAY
@@ -3074,22 +3075,40 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+id|hd_queue
+op_assign
 id|blk_init_queue
 c_func
 (paren
-op_amp
-id|hd_queue
-comma
 id|do_hd_request
 comma
 op_amp
 id|hd_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hd_queue
+)paren
+(brace
+id|unegister_blkdev
+c_func
+(paren
+id|MAJOR_NR
+comma
+l_string|&quot;hd&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|blk_queue_max_sectors
 c_func
 (paren
-op_amp
 id|hd_queue
 comma
 l_int|255
@@ -3109,7 +3128,6 @@ suffix:semicolon
 id|blk_queue_hardsect_size
 c_func
 (paren
-op_amp
 id|hd_queue
 comma
 l_int|512
@@ -3454,7 +3472,6 @@ id|p-&gt;cyl
 suffix:semicolon
 id|disk-&gt;queue
 op_assign
-op_amp
 id|hd_queue
 suffix:semicolon
 id|p-&gt;unit
@@ -3678,7 +3695,6 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-op_amp
 id|hd_queue
 )paren
 suffix:semicolon

@@ -580,6 +580,13 @@ c_func
 id|lookup_mnt
 )paren
 suffix:semicolon
+DECL|variable|lookup_create
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|lookup_create
+)paren
+suffix:semicolon
 DECL|variable|path_lookup
 id|EXPORT_SYMBOL
 c_func

@@ -336,12 +336,17 @@ id|RTC_FREQ_SELECT
 op_amp
 l_int|0x3f
 suffix:semicolon
+multiline_comment|/* Test includes known working values on various platforms&n;           where 0x26 is wrong; we refuse to change those. */
 r_if
 c_cond
 (paren
 id|x
 op_ne
 l_int|0x26
+op_logical_and
+id|x
+op_ne
+l_int|0x25
 op_logical_and
 id|x
 op_ne

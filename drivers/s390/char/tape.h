@@ -538,6 +538,7 @@ id|tape_blk_data
 multiline_comment|/* Block device request queue. */
 DECL|member|request_queue
 id|request_queue_t
+op_star
 id|request_queue
 suffix:semicolon
 DECL|member|request_queue_lock

@@ -6179,8 +6179,7 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;Return the current floppy capacity to ide.c.&n; */
 DECL|function|idefloppy_capacity
 r_static
-r_int
-r_int
+id|sector_t
 id|idefloppy_capacity
 (paren
 id|ide_drive_t
@@ -7384,7 +7383,6 @@ suffix:semicolon
 id|blk_queue_max_sectors
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 l_int|64
@@ -7411,7 +7409,6 @@ l_int|0
 id|blk_queue_max_sectors
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 l_int|64
@@ -8289,6 +8286,21 @@ id|floppy
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
+multiline_comment|/* do not scan partitions twice if this is a removable device */
+r_if
+c_cond
+(paren
+id|drive-&gt;attach
+)paren
+(brace
+id|drive-&gt;attach
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_return
 id|test_and_clear_bit
 c_func
@@ -8593,6 +8605,10 @@ id|g-&gt;fops
 op_assign
 op_amp
 id|idefloppy_ops
+suffix:semicolon
+id|drive-&gt;attach
+op_assign
+l_int|1
 suffix:semicolon
 id|add_disk
 c_func

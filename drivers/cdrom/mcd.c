@@ -45,14 +45,15 @@ DECL|variable|mcd_queue
 r_static
 r_struct
 id|request_queue
+op_star
 id|mcd_queue
 suffix:semicolon
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR MITSUMI_CDROM_MAJOR
 DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;mcd_queue)
+mdefine_line|#define QUEUE (mcd_queue)
 DECL|macro|CURRENT
-mdefine_line|#define CURRENT elv_next_request(&amp;mcd_queue)
+mdefine_line|#define CURRENT elv_next_request(mcd_queue)
 DECL|macro|QUICK_LOOP_DELAY
 mdefine_line|#define QUICK_LOOP_DELAY udelay(45)&t;/* use udelay */
 DECL|macro|QUICK_LOOP_COUNT
@@ -4454,17 +4455,25 @@ r_goto
 id|out_region
 suffix:semicolon
 )brace
+id|mcd_queue
+op_assign
 id|blk_init_queue
 c_func
 (paren
-op_amp
-id|mcd_queue
-comma
 id|do_mcd_request
 comma
 op_amp
 id|mcd_spinlock
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mcd_queue
+)paren
+r_goto
+id|out_queue
 suffix:semicolon
 multiline_comment|/* check for card */
 id|outb
@@ -4923,7 +4932,6 @@ suffix:semicolon
 )brace
 id|disk-&gt;queue
 op_assign
-op_amp
 id|mcd_queue
 suffix:semicolon
 id|add_disk
@@ -4951,7 +4959,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|out_probe
+id|out_queue
 suffix:colon
 id|release_region
 c_func
@@ -4959,6 +4967,14 @@ c_func
 id|mcd_port
 comma
 l_int|4
+)paren
+suffix:semicolon
+id|out_probe
+suffix:colon
+id|blk_cleanup_queue
+c_func
+(paren
+id|mcd_queue
 )paren
 suffix:semicolon
 id|out_region
@@ -4969,13 +4985,6 @@ c_func
 id|MAJOR_NR
 comma
 l_string|&quot;mcd&quot;
-)paren
-suffix:semicolon
-id|blk_cleanup_queue
-c_func
-(paren
-op_amp
-id|mcd_queue
 )paren
 suffix:semicolon
 id|put_disk
@@ -6799,7 +6808,6 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-op_amp
 id|mcd_queue
 )paren
 suffix:semicolon

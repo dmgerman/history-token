@@ -1034,6 +1034,22 @@ id|dentry
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|dentry
+op_star
+id|lookup_create
+c_func
+(paren
+r_struct
+id|nameidata
+op_star
+id|nd
+comma
+r_int
+id|is_dir
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif&t;/* __LINUX_DCACHE_H */
 eof

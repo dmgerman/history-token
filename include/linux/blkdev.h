@@ -974,6 +974,10 @@ id|blk_queue_tag
 op_star
 id|queue_tags
 suffix:semicolon
+DECL|member|refcnt
+id|atomic_t
+id|refcnt
+suffix:semicolon
 multiline_comment|/*&n;&t; * sg stuff&n;&t; */
 DECL|member|sg_timeout
 r_int
@@ -1007,6 +1011,8 @@ DECL|macro|QUEUE_FLAG_READFULL
 mdefine_line|#define&t;QUEUE_FLAG_READFULL&t;3&t;/* write queue has been filled */
 DECL|macro|QUEUE_FLAG_WRITEFULL
 mdefine_line|#define QUEUE_FLAG_WRITEFULL&t;4&t;/* read queue has been filled */
+DECL|macro|QUEUE_FLAG_DEAD
+mdefine_line|#define QUEUE_FLAG_DEAD&t;&t;5&t;/* queue being torn down */
 DECL|macro|blk_queue_plugged
 mdefine_line|#define blk_queue_plugged(q)&t;!list_empty(&amp;(q)-&gt;plug_list)
 DECL|macro|blk_queue_tagged
@@ -1734,18 +1740,13 @@ id|req
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * get ready for proper ref counting&n; */
-DECL|macro|blk_put_queue
-mdefine_line|#define blk_put_queue(q)&t;do { } while (0)
 multiline_comment|/*&n; * Access functions for manipulating queue properties&n; */
 r_extern
-r_int
+id|request_queue_t
+op_star
 id|blk_init_queue
 c_func
 (paren
-id|request_queue_t
-op_star
-comma
 id|request_fn_proc
 op_star
 comma
@@ -1953,6 +1954,24 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_int
+id|blk_get_queue
+c_func
+(paren
+id|request_queue_t
+op_star
+)paren
+suffix:semicolon
+id|request_queue_t
+op_star
+id|blk_alloc_queue
+c_func
+(paren
+r_int
+)paren
+suffix:semicolon
+DECL|macro|blk_put_queue
+mdefine_line|#define blk_put_queue(q) blk_cleanup_queue((q))
 multiline_comment|/*&n; * tag stuff&n; */
 DECL|macro|blk_queue_tag_depth
 mdefine_line|#define blk_queue_tag_depth(q)&t;&t;((q)-&gt;queue_tags-&gt;busy)

@@ -4874,6 +4874,21 @@ id|num_pages
 op_assign
 l_int|1
 suffix:semicolon
+singleline_comment|// No blocks were claimed before, so do it now.
+id|reiserfs_claim_blocks_to_be_allocated
+c_func
+(paren
+id|inode-&gt;i_sb
+comma
+l_int|1
+op_lshift
+(paren
+id|PAGE_CACHE_SHIFT
+op_minus
+id|inode-&gt;i_blkbits
+)paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Prepare for writing into the region, read in all the&n;&t;   partially overwritten pages, if needed. And lock the pages,&n;&t;   so that nobody else can access these until we are done.&n;&t;   We get number of actual blocks needed as a result.*/
 id|blocks_to_allocate
