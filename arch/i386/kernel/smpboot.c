@@ -198,6 +198,13 @@ id|c
 op_assign
 id|boot_cpu_data
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|id
+op_ne
+l_int|0
+)paren
 id|identify_cpu
 c_func
 (paren
