@@ -661,9 +661,9 @@ id|opcode
 suffix:semicolon
 )brace
 macro_line|#endif  
-DECL|function|print_command
+DECL|function|__scsi_print_command
 r_void
-id|print_command
+id|__scsi_print_command
 (paren
 r_int
 r_char
@@ -730,8 +730,8 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&n; *&t;print_status - print scsi status description&n; *&t;@scsi_status: scsi status value&n; *&n; *&t;If the status is recognized, the description is printed.&n; *&t;Otherwise &quot;Unknown status&quot; is output. No trailing space.&n; *&t;If CONFIG_SCSI_CONSTANTS is not set, then print status in hex&n; *&t;(e.g. &quot;0x2&quot; for Check Condition).&n; **/
 r_void
-DECL|function|print_status
-id|print_status
+DECL|function|scsi_print_status
+id|scsi_print_status
 c_func
 (paren
 r_int
@@ -4833,9 +4833,9 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-DECL|function|print_sense
+DECL|function|scsi_print_sense
 r_void
-id|print_sense
+id|scsi_print_sense
 c_func
 (paren
 r_const
@@ -4860,9 +4860,9 @@ id|cmd-&gt;request
 )paren
 suffix:semicolon
 )brace
-DECL|function|print_req_sense
+DECL|function|scsi_print_req_sense
 r_void
-id|print_req_sense
+id|scsi_print_req_sense
 c_func
 (paren
 r_const
@@ -4987,9 +4987,9 @@ suffix:semicolon
 DECL|macro|NO_EXTENDED_MSGS
 mdefine_line|#define NO_EXTENDED_MSGS (sizeof(two_byte_msgs)  / sizeof (const char *))
 macro_line|#endif /* (CONSTANTS &amp; CONST_MSG) */
-DECL|function|print_msg
+DECL|function|scsi_print_msg
 r_int
-id|print_msg
+id|scsi_print_msg
 (paren
 r_const
 r_int
@@ -5474,9 +5474,9 @@ r_return
 id|len
 suffix:semicolon
 )brace
-DECL|function|print_Scsi_Cmnd
+DECL|function|scsi_print_command
 r_void
-id|print_Scsi_Cmnd
+id|scsi_print_command
 c_func
 (paren
 r_struct
@@ -5503,7 +5503,7 @@ c_func
 l_string|&quot;        command = &quot;
 )paren
 suffix:semicolon
-id|print_command
+id|__scsi_print_command
 c_func
 (paren
 id|cmd-&gt;cmnd
@@ -5522,9 +5522,9 @@ id|hostbyte_table
 op_assign
 initialization_block
 suffix:semicolon
-DECL|function|print_hostbyte
+DECL|function|scsi_print_hostbyte
 r_void
-id|print_hostbyte
+id|scsi_print_hostbyte
 c_func
 (paren
 r_int
@@ -5622,9 +5622,9 @@ id|scsiresult
 suffix:semicolon
 )brace
 macro_line|#else
-DECL|function|print_hostbyte
+DECL|function|scsi_print_hostbyte
 r_void
-id|print_hostbyte
+id|scsi_print_hostbyte
 c_func
 (paren
 r_int
@@ -5668,9 +5668,9 @@ id|driversuggest_table
 op_assign
 initialization_block
 suffix:semicolon
-DECL|function|print_driverbyte
+DECL|function|scsi_print_driverbyte
 r_void
-id|print_driverbyte
+id|scsi_print_driverbyte
 c_func
 (paren
 r_int
@@ -5810,9 +5810,9 @@ l_string|&quot;invalid&quot;
 suffix:semicolon
 )brace
 macro_line|#else
-DECL|function|print_driverbyte
+DECL|function|scsi_print_driverbyte
 r_void
-id|print_driverbyte
+id|scsi_print_driverbyte
 c_func
 (paren
 r_int
