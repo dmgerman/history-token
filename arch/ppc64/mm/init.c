@@ -1711,14 +1711,12 @@ id|guard_page
 comma
 id|index
 suffix:semicolon
-id|ppc_md
-dot
-id|progress
+id|ppc64_boot_msg
 c_func
 (paren
-l_string|&quot;MM:init&quot;
+l_int|0x100
 comma
-l_int|0
+l_string|&quot;MM Init&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Reserve all contexts &lt; FIRST_USER_CONTEXT for kernel use.&n;&t; * The range of contexts [FIRST_USER_CONTEXT, NUM_USER_CONTEXT)&n;&t; * are stored on a stack/queue for easy allocation and deallocation.&n;&t; */
@@ -1812,14 +1810,12 @@ id|guard_page
 )paren
 suffix:semicolon
 )brace
-id|ppc_md
-dot
-id|progress
+id|ppc64_boot_msg
 c_func
 (paren
-l_string|&quot;MM:exit&quot;
+l_int|0x100
 comma
-l_int|0x211
+l_string|&quot;MM Init Done&quot;
 )paren
 suffix:semicolon
 )brace
