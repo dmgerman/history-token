@@ -904,34 +904,38 @@ DECL|macro|ACPI_BITREG_RT_CLOCK_STATUS
 mdefine_line|#define ACPI_BITREG_RT_CLOCK_STATUS             0x05
 DECL|macro|ACPI_BITREG_WAKE_STATUS
 mdefine_line|#define ACPI_BITREG_WAKE_STATUS                 0x06
+DECL|macro|ACPI_BITREG_PCIEXP_WAKE_STATUS
+mdefine_line|#define ACPI_BITREG_PCIEXP_WAKE_STATUS          0x07
 DECL|macro|ACPI_BITREG_TIMER_ENABLE
-mdefine_line|#define ACPI_BITREG_TIMER_ENABLE                0x07
+mdefine_line|#define ACPI_BITREG_TIMER_ENABLE                0x08
 DECL|macro|ACPI_BITREG_GLOBAL_LOCK_ENABLE
-mdefine_line|#define ACPI_BITREG_GLOBAL_LOCK_ENABLE          0x08
+mdefine_line|#define ACPI_BITREG_GLOBAL_LOCK_ENABLE          0x09
 DECL|macro|ACPI_BITREG_POWER_BUTTON_ENABLE
-mdefine_line|#define ACPI_BITREG_POWER_BUTTON_ENABLE         0x09
+mdefine_line|#define ACPI_BITREG_POWER_BUTTON_ENABLE         0x0A
 DECL|macro|ACPI_BITREG_SLEEP_BUTTON_ENABLE
-mdefine_line|#define ACPI_BITREG_SLEEP_BUTTON_ENABLE         0x0A
+mdefine_line|#define ACPI_BITREG_SLEEP_BUTTON_ENABLE         0x0B
 DECL|macro|ACPI_BITREG_RT_CLOCK_ENABLE
-mdefine_line|#define ACPI_BITREG_RT_CLOCK_ENABLE             0x0B
+mdefine_line|#define ACPI_BITREG_RT_CLOCK_ENABLE             0x0C
 DECL|macro|ACPI_BITREG_WAKE_ENABLE
-mdefine_line|#define ACPI_BITREG_WAKE_ENABLE                 0x0C
+mdefine_line|#define ACPI_BITREG_WAKE_ENABLE                 0x0D
+DECL|macro|ACPI_BITREG_PCIEXP_WAKE_DISABLE
+mdefine_line|#define ACPI_BITREG_PCIEXP_WAKE_DISABLE         0x0E
 DECL|macro|ACPI_BITREG_SCI_ENABLE
-mdefine_line|#define ACPI_BITREG_SCI_ENABLE                  0x0D
+mdefine_line|#define ACPI_BITREG_SCI_ENABLE                  0x0F
 DECL|macro|ACPI_BITREG_BUS_MASTER_RLD
-mdefine_line|#define ACPI_BITREG_BUS_MASTER_RLD              0x0E
+mdefine_line|#define ACPI_BITREG_BUS_MASTER_RLD              0x10
 DECL|macro|ACPI_BITREG_GLOBAL_LOCK_RELEASE
-mdefine_line|#define ACPI_BITREG_GLOBAL_LOCK_RELEASE         0x0F
+mdefine_line|#define ACPI_BITREG_GLOBAL_LOCK_RELEASE         0x11
 DECL|macro|ACPI_BITREG_SLEEP_TYPE_A
-mdefine_line|#define ACPI_BITREG_SLEEP_TYPE_A                0x10
+mdefine_line|#define ACPI_BITREG_SLEEP_TYPE_A                0x12
 DECL|macro|ACPI_BITREG_SLEEP_TYPE_B
-mdefine_line|#define ACPI_BITREG_SLEEP_TYPE_B                0x11
+mdefine_line|#define ACPI_BITREG_SLEEP_TYPE_B                0x13
 DECL|macro|ACPI_BITREG_SLEEP_ENABLE
-mdefine_line|#define ACPI_BITREG_SLEEP_ENABLE                0x12
+mdefine_line|#define ACPI_BITREG_SLEEP_ENABLE                0x14
 DECL|macro|ACPI_BITREG_ARB_DISABLE
-mdefine_line|#define ACPI_BITREG_ARB_DISABLE                 0x13
+mdefine_line|#define ACPI_BITREG_ARB_DISABLE                 0x15
 DECL|macro|ACPI_BITREG_MAX
-mdefine_line|#define ACPI_BITREG_MAX                         0x13
+mdefine_line|#define ACPI_BITREG_MAX                         0x15
 DECL|macro|ACPI_NUM_BITREG
 mdefine_line|#define ACPI_NUM_BITREG                         ACPI_BITREG_MAX + 1
 multiline_comment|/*&n; * External ACPI object definition&n; */
@@ -2126,6 +2130,10 @@ suffix:semicolon
 DECL|member|address_length
 id|u64
 id|address_length
+suffix:semicolon
+DECL|member|type_specific_attributes
+id|u64
+id|type_specific_attributes
 suffix:semicolon
 DECL|member|resource_source
 r_struct

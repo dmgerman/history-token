@@ -4,6 +4,7 @@ macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acinterp.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
 macro_line|#include &lt;acpi/acevents.h&gt;
+macro_line|#include &lt;acpi/amlcode.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_UTILITIES
 id|ACPI_MODULE_NAME
@@ -1335,10 +1336,47 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ACPI_TYPE_REGION
-suffix:colon
-r_case
 id|ACPI_TYPE_LOCAL_REFERENCE
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * The target of an Index (a package, string, or buffer) must track&n;&t;&t;&t; * changes to the ref count of the index.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|object-&gt;reference.opcode
+op_eq
+id|AML_INDEX_OP
+)paren
+(brace
+id|status
+op_assign
+id|acpi_ut_create_update_state_and_push
+(paren
+id|object-&gt;reference.object
+comma
+id|action
+comma
+op_amp
+id|state_list
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_goto
+id|error_exit
+suffix:semicolon
+)brace
+)brace
+r_break
+suffix:semicolon
+r_case
+id|ACPI_TYPE_REGION
 suffix:colon
 r_default
 suffix:colon

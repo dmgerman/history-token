@@ -951,6 +951,15 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; * Add a reference to the target package/buffer/string for the life&n;&t;&t; * of the index.&n;&t;&t; */
+id|acpi_ut_add_reference
+(paren
+id|operand
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
 multiline_comment|/* Complete the Index reference object */
 id|return_desc-&gt;reference.opcode
 op_assign

@@ -1840,6 +1840,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;                              FS Interface (/proc)&n;   -------------------------------------------------------------------------- */
 DECL|variable|acpi_ec_dir
+r_static
 r_struct
 id|proc_dir_entry
 op_star

@@ -47,6 +47,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+r_static
 r_int
 id|acpi_fan_add
 (paren
@@ -56,6 +57,7 @@ op_star
 id|device
 )paren
 suffix:semicolon
+r_static
 r_int
 id|acpi_fan_remove
 (paren
@@ -120,6 +122,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                              FS Interface (/proc)&n;   -------------------------------------------------------------------------- */
 DECL|variable|acpi_fan_dir
+r_static
 r_struct
 id|proc_dir_entry
 op_star
@@ -145,11 +148,6 @@ id|acpi_fan
 op_star
 id|fan
 op_assign
-(paren
-r_struct
-id|acpi_fan
-op_star
-)paren
 id|seq
 op_member_access_from_pointer
 r_private
@@ -168,12 +166,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|fan
 )paren
-r_goto
-id|end
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -186,9 +181,15 @@ op_amp
 id|state
 )paren
 )paren
-r_goto
-id|end
+id|seq_printf
+c_func
+(paren
+id|seq
+comma
+l_string|&quot;status:                  ERROR&bslash;n&quot;
+)paren
 suffix:semicolon
+r_else
 id|seq_printf
 c_func
 (paren
@@ -205,8 +206,7 @@ suffix:colon
 l_string|&quot;off&quot;
 )paren
 suffix:semicolon
-id|end
-suffix:colon
+)brace
 id|return_VALUE
 c_func
 (paren
@@ -674,6 +674,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;                                 Driver Interface&n;   -------------------------------------------------------------------------- */
+r_static
 r_int
 DECL|function|acpi_fan_add
 id|acpi_fan_add
@@ -892,6 +893,7 @@ id|result
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|acpi_fan_remove
 id|acpi_fan_remove
@@ -970,6 +972,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
 id|__init
 DECL|function|acpi_fan_init
@@ -1056,6 +1059,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 id|__exit
 DECL|function|acpi_fan_exit

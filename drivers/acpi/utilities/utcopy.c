@@ -1311,6 +1311,17 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+r_case
+id|ACPI_TYPE_LOCAL_REFERENCE
+suffix:colon
+multiline_comment|/*&n;&t;&t; * We copied the reference object, so we now must add a reference&n;&t;&t; * to the object pointed to by the reference&n;&t;&t; */
+id|acpi_ut_add_reference
+(paren
+id|source_desc-&gt;reference.object
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* Nothing to do for other simple objects */

@@ -374,6 +374,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|proc_dir
+r_static
 r_struct
 id|proc_dir_entry
 op_star
@@ -4298,6 +4299,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|ibms
+r_static
 r_struct
 id|ibm_struct
 id|ibms

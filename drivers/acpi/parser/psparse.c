@@ -2934,9 +2934,11 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_PARSE
 comma
-l_string|&quot;return_value=%p, State=%p&bslash;n&quot;
+l_string|&quot;return_value=%p, implicit_value=%p State=%p&bslash;n&quot;
 comma
 id|walk_state-&gt;return_desc
+comma
+id|walk_state-&gt;implicit_return_obj
 comma
 id|walk_state
 )paren
@@ -2966,6 +2968,31 @@ id|status
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t;&t; * There is another walk state, restart it.&n;&t;&t;&t;&t; * If the method return value is not used by the parent,&n;&t;&t;&t;&t; * The object is deleted&n;&t;&t;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|previous_walk_state-&gt;return_desc
+)paren
+(brace
+id|status
+op_assign
+id|acpi_ds_restart_control_method
+(paren
+id|walk_state
+comma
+id|previous_walk_state-&gt;implicit_return_obj
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * We have a valid return value, delete any implicit&n;&t;&t;&t;&t;&t; * return value.&n;&t;&t;&t;&t;&t; */
+id|acpi_ds_clear_implicit_return
+(paren
+id|previous_walk_state
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|acpi_ds_restart_control_method
@@ -2975,6 +3002,7 @@ comma
 id|previous_walk_state-&gt;return_desc
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3008,6 +3036,23 @@ c_cond
 id|previous_walk_state-&gt;caller_return_desc
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|previous_walk_state-&gt;implicit_return_obj
+)paren
+(brace
+op_star
+(paren
+id|previous_walk_state-&gt;caller_return_desc
+)paren
+op_assign
+id|previous_walk_state-&gt;implicit_return_obj
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* NULL if no return value */
 op_star
 (paren
 id|previous_walk_state-&gt;caller_return_desc
@@ -3015,9 +3060,10 @@ id|previous_walk_state-&gt;caller_return_desc
 op_assign
 id|previous_walk_state-&gt;return_desc
 suffix:semicolon
-multiline_comment|/* NULL if no return value */
+)brace
 )brace
 r_else
+(brace
 r_if
 c_cond
 (paren
@@ -3030,6 +3076,20 @@ id|acpi_ut_remove_reference
 id|previous_walk_state-&gt;return_desc
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|previous_walk_state-&gt;implicit_return_obj
+)paren
+(brace
+multiline_comment|/* Caller doesn&squot;t want it, must delete it */
+id|acpi_ut_remove_reference
+(paren
+id|previous_walk_state-&gt;implicit_return_obj
+)paren
+suffix:semicolon
+)brace
 )brace
 id|acpi_ds_delete_walk_state
 (paren
