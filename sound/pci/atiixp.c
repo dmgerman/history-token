@@ -815,6 +815,28 @@ comma
 l_int|0
 )brace
 comma
+multiline_comment|/* SB200 */
+(brace
+l_int|0x1002
+comma
+l_int|0x4361
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* SB300 */
+(brace
+l_int|0
+comma
+)brace
 )brace
 suffix:semicolon
 id|MODULE_DEVICE_TABLE
