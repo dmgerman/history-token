@@ -264,7 +264,7 @@ id|ignored
 suffix:semicolon
 r_extern
 r_void
-id|setup_legacy
+id|serial_fixups
 c_func
 (paren
 r_void
@@ -544,7 +544,7 @@ id|tulip_pci_base
 comma
 id|tulip_base
 suffix:semicolon
-id|setup_legacy
+id|serial_fixups
 c_func
 (paren
 )paren
