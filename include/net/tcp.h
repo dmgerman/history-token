@@ -3900,9 +3900,15 @@ id|ack_seq
 suffix:semicolon
 multiline_comment|/* Sequence number ACK&squot;d&t;*/
 DECL|member|tso_factor
-id|__u32
+id|__u16
 id|tso_factor
 suffix:semicolon
+multiline_comment|/* If &gt; 1, TSO frame&t;&t;*/
+DECL|member|tso_mss
+id|__u16
+id|tso_mss
+suffix:semicolon
+multiline_comment|/* MSS that FACTOR&squot;s in terms of*/
 )brace
 suffix:semicolon
 DECL|macro|TCP_SKB_CB
