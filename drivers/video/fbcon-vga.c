@@ -382,7 +382,7 @@ id|u16
 op_star
 )paren
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sy
 op_star
@@ -396,7 +396,7 @@ id|u16
 op_star
 )paren
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|dy
 op_star
@@ -442,7 +442,7 @@ id|u16
 op_star
 )paren
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sy
 op_star
@@ -460,7 +460,7 @@ id|u16
 op_star
 )paren
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|dy
 op_star
@@ -516,7 +516,7 @@ id|u16
 op_star
 )paren
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 (paren
 id|sy
@@ -540,7 +540,7 @@ id|u16
 op_star
 )paren
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 (paren
 id|dy
@@ -631,7 +631,7 @@ id|u16
 op_star
 )paren
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sy
 op_star
@@ -732,7 +732,7 @@ id|u16
 op_star
 )paren
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|y
 op_star
@@ -818,7 +818,7 @@ id|u16
 op_star
 )paren
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|y
 op_star
@@ -932,7 +932,7 @@ id|u16
 op_star
 )paren
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|y
 op_star

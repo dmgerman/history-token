@@ -33,7 +33,7 @@ id|row
 )paren
 (brace
 r_return
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|HGA_ROWADDR
 c_func
@@ -135,7 +135,7 @@ id|p-&gt;next_line
 (brace
 id|src
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sy
 op_star
@@ -149,7 +149,7 @@ id|width
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|dy
 op_star

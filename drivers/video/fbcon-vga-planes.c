@@ -352,7 +352,7 @@ id|width
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|dx
 op_plus
@@ -362,7 +362,7 @@ id|p-&gt;line_length
 suffix:semicolon
 id|src
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sx
 op_plus
@@ -433,7 +433,7 @@ id|width
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|dx
 op_plus
@@ -451,7 +451,7 @@ id|p-&gt;line_length
 suffix:semicolon
 id|src
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sx
 op_plus
@@ -622,7 +622,7 @@ id|p
 suffix:semicolon
 id|where
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sx
 op_plus
@@ -742,7 +742,7 @@ r_char
 op_star
 id|where
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|xx
 op_plus
@@ -956,7 +956,7 @@ r_char
 op_star
 id|where
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|xx
 op_plus
@@ -1170,7 +1170,7 @@ l_int|0xff
 suffix:semicolon
 id|where
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|xx
 op_plus
@@ -1429,7 +1429,7 @@ l_int|0xff
 suffix:semicolon
 id|where
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|xx
 op_plus
@@ -1597,7 +1597,7 @@ r_char
 op_star
 id|where
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|xx
 op_plus

@@ -186,13 +186,13 @@ id|bytes
 id|fb_memmove
 c_func
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|dy
 op_star
 id|linesize
 comma
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sy
 op_star
@@ -226,7 +226,7 @@ id|sx
 (brace
 id|src
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sy
 op_star
@@ -238,7 +238,7 @@ l_int|4
 suffix:semicolon
 id|dst
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|dy
 op_star
@@ -292,7 +292,7 @@ r_else
 (brace
 id|src
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 (paren
 id|sy
@@ -310,7 +310,7 @@ id|bytes
 suffix:semicolon
 id|dst
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 (paren
 id|dy
@@ -425,10 +425,10 @@ suffix:semicolon
 id|u32
 id|bgx
 suffix:semicolon
-multiline_comment|/*&t;if(p-&gt;screen_base!=0xFDD00020)&n;&t;&t;mac_boom(1);*/
+multiline_comment|/*&t;if(p-&gt;fb_info-&gt;screen_base!=0xFDD00020)&n;&t;&t;mac_boom(1);*/
 id|dest
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sy
 op_star
@@ -627,7 +627,7 @@ id|bgx
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|yy
 op_star
@@ -843,7 +843,7 @@ id|bgx
 suffix:semicolon
 id|dest0
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|yy
 op_star
@@ -1076,7 +1076,7 @@ id|rows
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|yy
 op_star

@@ -6039,10 +6039,6 @@ comma
 id|info
 )paren
 suffix:semicolon
-id|display-&gt;screen_base
-op_assign
-id|zinfo-&gt;fbmem
-suffix:semicolon
 id|display-&gt;visual
 op_assign
 id|fix.visual

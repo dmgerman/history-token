@@ -710,7 +710,7 @@ multiline_comment|/*  Special (but often used) case: Moving whole lines can be&n
 id|fast_memmove
 c_func
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|dy
 op_star
@@ -722,7 +722,7 @@ c_func
 id|p
 )paren
 comma
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sy
 op_star
@@ -870,7 +870,7 @@ id|upwards
 (brace
 id|src
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sy
 op_star
@@ -892,7 +892,7 @@ l_int|1
 suffix:semicolon
 id|dst
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|dy
 op_star
@@ -1063,7 +1063,7 @@ l_int|1
 (brace
 id|src
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sy
 op_star
@@ -1085,7 +1085,7 @@ l_int|16
 suffix:semicolon
 id|dst
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|dy
 op_star
@@ -1123,7 +1123,7 @@ suffix:semicolon
 )brace
 id|src
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sy
 op_star
@@ -1145,7 +1145,7 @@ l_int|1
 suffix:semicolon
 id|dst
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|dy
 op_star
@@ -1277,7 +1277,7 @@ id|upwards
 (brace
 id|src
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sy
 op_star
@@ -1299,7 +1299,7 @@ l_int|1
 suffix:semicolon
 id|dst
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|dy
 op_star
@@ -1376,7 +1376,7 @@ l_int|1
 suffix:semicolon
 id|src
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sy
 op_star
@@ -1398,7 +1398,7 @@ l_int|1
 suffix:semicolon
 id|dst
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|dy
 op_star
@@ -1637,7 +1637,7 @@ suffix:semicolon
 id|memset_even_8p
 c_func
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|offset
 comma
@@ -1723,7 +1723,7 @@ l_int|1
 suffix:semicolon
 id|start
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|offset
 suffix:semicolon
@@ -1920,7 +1920,7 @@ id|p
 id|dest
 op_assign
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 (paren
 (paren
@@ -1975,7 +1975,7 @@ r_else
 id|dest
 op_assign
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|yy
 op_star
@@ -2202,7 +2202,7 @@ id|p
 id|dest0
 op_assign
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 (paren
 (paren
@@ -2237,7 +2237,7 @@ r_else
 id|dest0
 op_assign
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|yy
 op_star
@@ -2478,7 +2478,7 @@ id|p
 id|dest
 op_assign
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 (paren
 (paren
@@ -2513,7 +2513,7 @@ r_else
 id|dest
 op_assign
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|yy
 op_star
@@ -2759,7 +2759,7 @@ suffix:semicolon
 id|memset_even_8p
 c_func
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|offset
 comma
