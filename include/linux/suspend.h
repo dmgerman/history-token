@@ -7,6 +7,7 @@ macro_line|#endif
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 r_extern
 r_int
 r_char
