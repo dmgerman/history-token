@@ -7,6 +7,20 @@ r_struct
 id|i2o_driver
 id|i2o_exec_driver
 suffix:semicolon
+r_static
+r_int
+id|i2o_exec_lct_notify
+c_func
+(paren
+r_struct
+id|i2o_controller
+op_star
+id|c
+comma
+id|u32
+id|change_ind
+)paren
+suffix:semicolon
 multiline_comment|/* Module internal functions from other sources */
 r_extern
 r_int
@@ -1222,6 +1236,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;i2o_exec_lct_notify - Send a asynchronus LCT NOTIFY request&n; *&t;@c: I2O controller to which the request should be send&n; *&t;@change_ind: change indicator&n; *&n; *&t;This function sends a LCT NOTIFY request to the I2O controller with&n; *&t;the change indicator change_ind. If the change_ind == 0 the controller&n; *&t;replies immediately after the request. If change_ind &gt; 0 the reply is&n; *&t;send after change indicator of the LCT is &gt; change_ind.&n; */
 DECL|function|i2o_exec_lct_notify
+r_static
 r_int
 id|i2o_exec_lct_notify
 c_func
@@ -1515,13 +1530,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|i2o_exec_lct_get
-)paren
-suffix:semicolon
-DECL|variable|i2o_exec_lct_notify
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|i2o_exec_lct_notify
 )paren
 suffix:semicolon
 eof

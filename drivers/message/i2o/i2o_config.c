@@ -44,12 +44,6 @@ id|i2o_config_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-DECL|variable|i2o_wait_queue
-r_struct
-id|wait_queue
-op_star
-id|i2o_wait_queue
-suffix:semicolon
 DECL|macro|MODINC
 mdefine_line|#define MODINC(x,y) ((x) = ((x) + 1) % (y))
 DECL|struct|sg_simple_element
@@ -141,6 +135,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*&n; *&t;Each of these describes an i2o message handler. They are&n; *&t;multiplexed by the i2o_core code&n; */
 DECL|variable|i2o_config_driver
+r_static
 r_struct
 id|i2o_driver
 id|i2o_config_driver
