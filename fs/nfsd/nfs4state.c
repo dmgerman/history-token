@@ -6205,23 +6205,6 @@ comma
 id|st_perfile
 )paren
 (brace
-multiline_comment|/* have we seen this open owner */
-r_if
-c_cond
-(paren
-id|local-&gt;st_stateowner
-op_eq
-id|sop
-)paren
-(brace
-op_star
-id|stpp
-op_assign
-id|local
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
 multiline_comment|/* ignore lock owners */
 r_if
 c_cond
@@ -6231,6 +6214,19 @@ op_eq
 l_int|0
 )paren
 r_continue
+suffix:semicolon
+multiline_comment|/* remember if we have seen this open owner */
+r_if
+c_cond
+(paren
+id|local-&gt;st_stateowner
+op_eq
+id|sop
+)paren
+op_star
+id|stpp
+op_assign
+id|local
 suffix:semicolon
 multiline_comment|/* check for conflicting share reservations */
 r_if
