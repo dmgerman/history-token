@@ -1589,27 +1589,6 @@ mdefine_line|#define IS_PIC_BUSNUM_SOFT(ps, bus)&t;((ps)-&gt;bs_busnum == (bus))
 multiline_comment|/*&n; * Runtime checks for workarounds.&n; */
 DECL|macro|PCIBR_WAR_ENABLED
 mdefine_line|#define PCIBR_WAR_ENABLED(pv, pcibr_soft) &bslash;&n;&t;((1 &lt;&lt; XWIDGET_PART_REV_NUM_REV(pcibr_soft-&gt;bs_rev_num)) &amp; pv)
-multiline_comment|/*&n; * Defines for individual WARs. Each is a bitmask of applicable&n; * part revision numbers. (1 &lt;&lt; 1) == rev A, (1 &lt;&lt; 2) == rev B,&n; * (3 &lt;&lt; 1) == (rev A or rev B), etc&n; */
-DECL|macro|PV854697
-mdefine_line|#define PV854697 (~0)     /* PIC: write 64bit regs as 64bits. permanent */
-DECL|macro|PV854827
-mdefine_line|#define PV854827 (~0)     /* PIC: fake widget 0xf presence bit. permanent */
-DECL|macro|PV855271
-mdefine_line|#define PV855271 (1 &lt;&lt; 1) /* PIC: use virt chan iff 64-bit device. */
-DECL|macro|PV878674
-mdefine_line|#define PV878674 (~0)     /* PIC: Dont allow 64bit PIOs.  permanent */
-DECL|macro|PV855272
-mdefine_line|#define PV855272 (1 &lt;&lt; 1) /* PIC: runaway interrupt WAR */
-DECL|macro|PV856155
-mdefine_line|#define PV856155 (1 &lt;&lt; 1) /* PIC: arbitration WAR */
-DECL|macro|PV856864
-mdefine_line|#define PV856864 (1 &lt;&lt; 1) /* PIC: lower timeout to free TNUMs quicker */
-DECL|macro|PV856866
-mdefine_line|#define PV856866 (1 &lt;&lt; 1) /* PIC: avoid rrb&squot;s 0/1/8/9. */
-DECL|macro|PV862253
-mdefine_line|#define PV862253 (1 &lt;&lt; 1) /* PIC: don&squot;t enable write req RAM parity checking */
-DECL|macro|PV867308
-mdefine_line|#define PV867308 (3 &lt;&lt; 1) /* PIC: make LLP error interrupts FATAL for PIC */
 multiline_comment|/* defines for pcibr_soft_s-&gt;bs_bridge_mode */
 DECL|macro|PCIBR_BRIDGEMODE_PCI_33
 mdefine_line|#define PCIBR_BRIDGEMODE_PCI_33&t;&t;0x0

@@ -2,7 +2,6 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_ADDRS_H
 DECL|macro|_ASM_IA64_SN_ADDRS_H
 mdefine_line|#define _ASM_IA64_SN_ADDRS_H
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/sn2/addrs.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/sn/types.h&gt;
@@ -97,7 +96,7 @@ mdefine_line|#define REMOTE_HUB_PI_S(_n, _sn, _r, _d) HUB_S(REMOTE_HUB_PI_ADDR((
 macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * The following macros are used to get to a hub/bridge register, given&n; * the base of the register space.&n; */
 DECL|macro|HUB_REG_PTR
-mdefine_line|#define HUB_REG_PTR(_base, _off)&t;&bslash;&n;&t;(HUBREG_CAST ((__psunsigned_t)(_base) + (__psunsigned_t)(_off)))
+mdefine_line|#define HUB_REG_PTR(_base, _off)&t;&bslash;&n;&t;(HUBREG_CAST ((unsigned long)(_base) + (__psunsigned_t)(_off)))
 DECL|macro|HUB_REG_PTR_L
 mdefine_line|#define HUB_REG_PTR_L(_base, _off)&t;&bslash;&n;&t;HUB_L(HUB_REG_PTR((_base), (_off)))
 DECL|macro|HUB_REG_PTR_S

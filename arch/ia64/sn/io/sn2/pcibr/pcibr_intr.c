@@ -57,6 +57,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 r_int
+r_int
 id|pcibr_intr_bits
 c_func
 (paren
@@ -138,6 +139,7 @@ id|vertex_hdl_t
 )paren
 suffix:semicolon
 multiline_comment|/* =====================================================================&n; *    INTERRUPT MANAGEMENT&n; */
+r_int
 r_int
 DECL|function|pcibr_intr_bits
 id|pcibr_intr_bits

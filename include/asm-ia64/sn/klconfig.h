@@ -81,15 +81,18 @@ r_struct
 id|console_s
 (brace
 DECL|member|uart_base
-id|__psunsigned_t
+r_int
+r_int
 id|uart_base
 suffix:semicolon
 DECL|member|config_base
-id|__psunsigned_t
+r_int
+r_int
 id|config_base
 suffix:semicolon
 DECL|member|memory_base
-id|__psunsigned_t
+r_int
+r_int
 id|memory_base
 suffix:semicolon
 DECL|member|baud
@@ -210,7 +213,7 @@ DECL|macro|KL_CONFIG_INFO
 mdefine_line|#define KL_CONFIG_INFO(_nasid) root_lboard[nasid_to_cnodeid(_nasid)]
 multiline_comment|/* --- New Macros for the changed kl_config_hdr_t structure --- */
 DECL|macro|PTR_CH_CONS_INFO
-mdefine_line|#define PTR_CH_CONS_INFO(_k)&t;((console_t *)&bslash;&n;&t;&t;&t;((__psunsigned_t)_k + (_k-&gt;ch_cons_off)))
+mdefine_line|#define PTR_CH_CONS_INFO(_k)&t;((console_t *)&bslash;&n;&t;&t;&t;((unsigned long)_k + (_k-&gt;ch_cons_off)))
 DECL|macro|KL_CONFIG_CH_CONS_INFO
 mdefine_line|#define KL_CONFIG_CH_CONS_INFO(_n)   PTR_CH_CONS_INFO(KL_CONFIG_HDR(_n))
 multiline_comment|/* ------------------------------------------------------------- */

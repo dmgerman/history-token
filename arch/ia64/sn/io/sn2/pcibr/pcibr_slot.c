@@ -429,6 +429,7 @@ op_logical_neg
 id|pcibr_soft
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 r_if
@@ -444,6 +445,7 @@ id|slot
 )paren
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/* If we have a host slot (eg:- IOC3 has 2 PCI slots and the initialization&n;     * is done by the host slot then we are done.&n;     */
@@ -490,6 +492,7 @@ id|idword
 )paren
 )paren
 r_return
+op_minus
 id|ENODEV
 suffix:semicolon
 id|slotp
@@ -553,6 +556,7 @@ op_eq
 l_int|0xFFFF
 )paren
 r_return
+op_minus
 id|ENODEV
 suffix:semicolon
 id|htype
@@ -723,6 +727,7 @@ id|pcibr_infoh
 )paren
 (brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
@@ -1836,9 +1841,7 @@ id|PCI_STAT_CAP_LIST
 )paren
 (brace
 r_return
-(paren
 l_int|NULL
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;     * Read up the capabilities head pointer from the configuration header.&n;     * Capabilities are stored as a linked list in the lower 48 dwords of&n;     * config space and are dword aligned. (Note: spec states the least two&n;     * significant bits of the next pointer must be ignored,  so we mask&n;     * with 0xfc).&n;     */
@@ -1892,7 +1895,6 @@ id|capability
 (brace
 r_return
 (paren
-(paren
 id|cfg_p
 )paren
 (paren
@@ -1903,7 +1905,6 @@ op_star
 id|cfgw
 op_plus
 id|cap_nxt
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -1930,9 +1931,7 @@ op_increment
 suffix:semicolon
 )brace
 r_return
-(paren
 l_int|NULL
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * pcibr_slot_info_free&n; *&t;Remove all the PCI infrastructural information associated&n; * &t;with a particular PCI device.&n; */
@@ -1972,6 +1971,7 @@ op_logical_neg
 id|pcibr_soft
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 r_if
@@ -1987,6 +1987,7 @@ id|slot
 )paren
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 id|nfunc
@@ -2072,6 +2073,7 @@ id|slot
 )paren
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 r_if
@@ -2091,6 +2093,7 @@ OL
 l_int|1
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 r_if
@@ -2109,6 +2112,7 @@ id|bss_infos
 )paren
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 id|PCIBR_DEBUG_ALWAYS
@@ -2447,6 +2451,7 @@ op_logical_neg
 id|pcibr_soft
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 r_if
@@ -2462,6 +2467,7 @@ id|slot
 )paren
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/* allocate address space,&n;     * for windows that have not been&n;     * previously assigned.&n;     */
@@ -2497,6 +2503,7 @@ OL
 l_int|1
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 id|pcibr_infoh
@@ -2515,6 +2522,7 @@ op_logical_neg
 id|pcibr_infoh
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/*&n;     * Try to make the DevIO windows not&n;     * overlap by pushing the &quot;io&quot; and &quot;hi&quot;&n;     * allocation areas up to the next one&n;     * or two megabyte bound. This also&n;     * keeps them from being zero.&n;     *&n;     * DO NOT do this with &quot;pci_lo&quot; since&n;     * the entire &quot;lo&quot; area is only a&n;     * megabyte, total ...&n;     */
@@ -3323,6 +3331,7 @@ op_logical_neg
 id|pcibr_soft
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 r_if
@@ -3338,6 +3347,7 @@ id|slot
 )paren
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/*&n;     * Adjustments to Device(x) and init of bss_device shadow&n;     */
@@ -3463,6 +3473,7 @@ op_logical_neg
 id|pcibr_soft
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 r_if
@@ -3478,6 +3489,7 @@ id|slot
 )paren
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 id|slotp
@@ -3526,6 +3538,7 @@ id|pcibr_infoh
 )paren
 (brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
@@ -3722,6 +3735,7 @@ op_logical_neg
 id|pcibr_soft
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 r_if
@@ -3737,6 +3751,7 @@ id|slot
 )paren
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 r_if
@@ -3751,6 +3766,7 @@ id|has_host
 )paren
 (brace
 r_return
+op_minus
 id|EPERM
 suffix:semicolon
 )brace
@@ -4014,6 +4030,7 @@ op_logical_neg
 id|pcibr_soft
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 r_if
@@ -4029,6 +4046,7 @@ id|slot
 )paren
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 r_if
@@ -4042,6 +4060,7 @@ dot
 id|has_host
 )paren
 r_return
+op_minus
 id|EPERM
 suffix:semicolon
 id|nfunc
@@ -4417,9 +4436,7 @@ id|tmp_slot
 suffix:semicolon
 )brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * pcibr_probe_slot_pic: read a config space word&n; * while trapping any errors; return zero if&n; * all went OK, or nonzero if there was an error.&n; * The value read, if any, is passed back&n; * through the valp parameter.&n; */

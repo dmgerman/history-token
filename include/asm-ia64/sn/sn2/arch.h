@@ -2,7 +2,6 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_SN2_ARCH_H
 DECL|macro|_ASM_IA64_SN_SN2_ARCH_H
 mdefine_line|#define _ASM_IA64_SN_SN2_ARCH_H
-macro_line|#include &lt;asm/types.h&gt;
 DECL|macro|CPUS_PER_NODE
 mdefine_line|#define CPUS_PER_NODE           4       /* CPUs on a single hub */
 DECL|macro|CPUS_PER_SUBNODE

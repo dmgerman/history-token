@@ -79,15 +79,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|xvolinfo
-op_le
-l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;xswitch_vertex_init: out of memory&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;xswitch_vertex_init(): Unable to &quot;
+l_string|&quot;allocate memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

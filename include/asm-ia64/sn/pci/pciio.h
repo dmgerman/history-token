@@ -346,6 +346,7 @@ id|byte_count_max
 comma
 multiline_comment|/* maximum size of a mapping */
 r_int
+r_int
 id|flags
 )paren
 suffix:semicolon
@@ -412,6 +413,7 @@ id|byte_count
 comma
 multiline_comment|/* map this many bytes */
 r_int
+r_int
 id|flags
 )paren
 suffix:semicolon
@@ -445,6 +447,7 @@ op_star
 id|mapp
 comma
 multiline_comment|/* in case a piomap was needed */
+r_int
 r_int
 id|flags
 )paren
@@ -516,6 +519,7 @@ id|byte_count_max
 comma
 multiline_comment|/* max size of a mapping */
 r_int
+r_int
 id|flags
 )paren
 suffix:semicolon
@@ -577,6 +581,7 @@ r_int
 id|byte_count
 comma
 multiline_comment|/* length */
+r_int
 r_int
 id|flags
 )paren
@@ -743,9 +748,11 @@ id|conn
 comma
 multiline_comment|/* pci connection point */
 r_int
+r_int
 id|reg
 comma
 multiline_comment|/* register byte offset */
+r_int
 r_int
 id|size
 )paren
@@ -761,9 +768,11 @@ id|conn
 comma
 multiline_comment|/* pci connection point */
 r_int
+r_int
 id|reg
 comma
 multiline_comment|/* register byte offset */
+r_int
 r_int
 id|size
 comma
@@ -1147,6 +1156,7 @@ op_star
 id|driver_prefix
 comma
 multiline_comment|/* driver prefix */
+r_int
 r_int
 id|flags
 )paren

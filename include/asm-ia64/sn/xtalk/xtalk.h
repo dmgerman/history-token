@@ -108,6 +108,7 @@ id|byte_count_max
 comma
 multiline_comment|/* maximum size of a mapping */
 r_int
+r_int
 id|flags
 )paren
 suffix:semicolon
@@ -170,6 +171,7 @@ id|byte_count
 comma
 multiline_comment|/* map this many bytes */
 r_int
+r_int
 id|flags
 )paren
 suffix:semicolon
@@ -200,6 +202,7 @@ id|xtalk_piomapp
 comma
 multiline_comment|/* RETURNS mapping resources */
 r_int
+r_int
 id|flags
 )paren
 suffix:semicolon
@@ -229,6 +232,7 @@ r_int
 id|byte_count_max
 comma
 multiline_comment|/* max size of a mapping */
+r_int
 r_int
 id|flags
 )paren
@@ -275,6 +279,7 @@ id|alenlist
 comma
 multiline_comment|/* map this address/length list */
 r_int
+r_int
 id|flags
 )paren
 suffix:semicolon
@@ -309,6 +314,7 @@ id|byte_count
 comma
 multiline_comment|/* length */
 r_int
+r_int
 id|flags
 )paren
 suffix:semicolon
@@ -329,6 +335,7 @@ id|alenlist_t
 id|palenlist
 comma
 multiline_comment|/* system address/length list */
+r_int
 r_int
 id|flags
 )paren
@@ -531,6 +538,7 @@ comma
 r_int
 id|byte_count
 comma
+r_int
 r_int
 id|flags
 )paren

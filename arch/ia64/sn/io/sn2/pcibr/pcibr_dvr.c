@@ -48,8 +48,6 @@ macro_line|#if PCIBR_SOFT_LIST
 DECL|variable|pcibr_list
 id|pcibr_list_p
 id|pcibr_list
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 r_extern
@@ -2501,28 +2499,6 @@ c_func
 id|pcibr_vhdl
 comma
 id|INFO_LBL_PCIBR_ASIC_REV
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-multiline_comment|/* Remove the character device associated with this bridge */
-id|hwgraph_edge_remove
-c_func
-(paren
-id|pcibr_vhdl
-comma
-id|EDGE_LBL_CONTROLLER
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-multiline_comment|/* Remove the PCI bridge vertex */
-id|hwgraph_edge_remove
-c_func
-(paren
-id|xconn
-comma
-id|EDGE_LBL_PCI
 comma
 l_int|NULL
 )paren
@@ -5637,9 +5613,7 @@ id|PCI64_ATTR_SWAP
 suffix:semicolon
 )brace
 r_return
-(paren
 id|attributes
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*ARGSUSED */
@@ -7728,9 +7702,7 @@ id|pci_addr
 )paren
 suffix:semicolon
 r_return
-(paren
 id|pci_addr
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -7903,9 +7875,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-(paren
 id|pci_addr
-)paren
 suffix:semicolon
 )brace
 id|PCIBR_DEBUG
@@ -8109,9 +8079,7 @@ id|pci_addr
 )paren
 suffix:semicolon
 r_return
-(paren
 id|pci_addr
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -8252,9 +8220,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-(paren
 id|pci_addr
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* our flags conflict with Device(x).&n;&t;     */
@@ -8436,9 +8402,7 @@ id|pcibr_dmamap
 )paren
 (brace
 r_return
-(paren
 id|pcibr_dmamap-&gt;bd_pci_addr
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* =====================================================================&n; *    CONFIGURATION MANAGEMENT&n; */
@@ -8946,9 +8910,7 @@ id|devreg
 suffix:semicolon
 )brace
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * PIC has 16 RBARs per bus; meaning it can have a total of 16 outstanding &n; * split transactions.  If the functions on the bus have requested a total &n; * of 16 or less, then we can give them what they requested (ie. 100%). &n; * Otherwise we have make sure each function can get at least one buffer&n; * and then divide the rest of the buffers up among the functions as ``A &n; * PERCENTAGE OF WHAT THEY REQUESTED&squot;&squot; (i.e. 0% - 100% of a function&squot;s&n; * pcix_type0_status.max_out_split).  This percentage does not include the&n; * one RBAR that all functions get by default.&n; */
@@ -9037,6 +8999,7 @@ suffix:semicolon
 r_else
 (brace
 r_return
+op_minus
 id|ENODEV
 suffix:semicolon
 )brace

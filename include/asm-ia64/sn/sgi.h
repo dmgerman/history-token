@@ -5,8 +5,6 @@ mdefine_line|#define _ASM_IA64_SN_SGI_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;&t;&t;/* for copy_??_user */
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/sn/hwgfs.h&gt;
 DECL|typedef|vertex_hdl_t
 r_typedef
@@ -65,6 +63,27 @@ DECL|macro|CPU_NONE
 mdefine_line|#define CPU_NONE&t;&t;(-1)
 DECL|macro|GRAPH_VERTEX_NONE
 mdefine_line|#define GRAPH_VERTEX_NONE ((vertex_hdl_t)-1)
+multiline_comment|/*&n; * Defines for individual WARs. Each is a bitmask of applicable&n; * part revision numbers. (1 &lt;&lt; 1) == rev A, (1 &lt;&lt; 2) == rev B,&n; * (3 &lt;&lt; 1) == (rev A or rev B), etc&n; */
+DECL|macro|PV854697
+mdefine_line|#define PV854697 (~0)     /* PIC: write 64bit regs as 64bits. permanent */
+DECL|macro|PV854827
+mdefine_line|#define PV854827 (~0UL)   /* PIC: fake widget 0xf presence bit. permanent */
+DECL|macro|PV855271
+mdefine_line|#define PV855271 (1 &lt;&lt; 1) /* PIC: use virt chan iff 64-bit device. */
+DECL|macro|PV878674
+mdefine_line|#define PV878674 (~0)     /* PIC: Dont allow 64bit PIOs.  permanent */
+DECL|macro|PV855272
+mdefine_line|#define PV855272 (1 &lt;&lt; 1) /* PIC: runaway interrupt WAR */
+DECL|macro|PV856155
+mdefine_line|#define PV856155 (1 &lt;&lt; 1) /* PIC: arbitration WAR */
+DECL|macro|PV856864
+mdefine_line|#define PV856864 (1 &lt;&lt; 1) /* PIC: lower timeout to free TNUMs quicker */
+DECL|macro|PV856866
+mdefine_line|#define PV856866 (1 &lt;&lt; 1) /* PIC: avoid rrb&squot;s 0/1/8/9. */
+DECL|macro|PV862253
+mdefine_line|#define PV862253 (1 &lt;&lt; 1) /* PIC: don&squot;t enable write req RAM parity checking */
+DECL|macro|PV867308
+mdefine_line|#define PV867308 (3 &lt;&lt; 1) /* PIC: make LLP error interrupts FATAL for PIC */
 multiline_comment|/*&n; * No code is complete without an Assertion macro&n; */
 macro_line|#if defined(DISABLE_ASSERT)
 DECL|macro|ASSERT

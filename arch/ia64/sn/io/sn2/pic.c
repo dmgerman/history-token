@@ -378,7 +378,8 @@ id|peer_widget_info
 )paren
 (brace
 r_return
-l_int|0
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|memset
@@ -1535,7 +1536,7 @@ id|pcibr_soft
 )paren
 r_return
 op_minus
-l_int|1
+id|ENOMEM
 suffix:semicolon
 id|self
 op_assign
@@ -1568,7 +1569,7 @@ id|pcibr_soft
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|ENOMEM
 suffix:semicolon
 )brace
 id|memset

@@ -7,7 +7,7 @@ r_extern
 l_string|&quot;C&quot;
 (brace
 macro_line|#endif
-macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/ksys/elsc.h&gt;
 DECL|macro|MODULE_MAX

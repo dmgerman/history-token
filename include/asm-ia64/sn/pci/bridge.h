@@ -1271,7 +1271,8 @@ r_union
 (brace
 multiline_comment|/* make all access sizes available. */
 DECL|member|c
-id|uchar_t
+r_int
+r_char
 id|c
 (braket
 l_int|0x1000
@@ -1313,7 +1314,8 @@ multiline_comment|/* 0x02{0000,,,7FFF} */
 r_union
 (brace
 DECL|member|c
-id|uchar_t
+r_int
+r_char
 id|c
 (braket
 l_int|0x100
@@ -1368,7 +1370,8 @@ r_union
 (brace
 multiline_comment|/* make all access sizes available. */
 DECL|member|c
-id|uchar_t
+r_int
+r_char
 id|c
 (braket
 l_int|0x1000
@@ -1406,7 +1409,8 @@ suffix:semicolon
 r_union
 (brace
 DECL|member|c
-id|uchar_t
+r_int
+r_char
 id|c
 (braket
 l_int|0x100
@@ -1465,7 +1469,8 @@ multiline_comment|/* 0x030000-0x030007 -- PCI Interrupt Acknowledge Cycle */
 r_union
 (brace
 DECL|member|c
-id|uchar_t
+r_int
+r_char
 id|c
 (braket
 l_int|8
@@ -1506,7 +1511,8 @@ id|b_pci_iack
 suffix:semicolon
 multiline_comment|/* 0x030000-0x030007 */
 DECL|member|_pad_030007
-id|uchar_t
+r_int
+r_char
 id|_pad_030007
 (braket
 l_int|0x04fff8
@@ -1536,7 +1542,8 @@ r_union
 (brace
 multiline_comment|/* make all access sizes available. */
 DECL|member|c
-id|uchar_t
+r_int
+r_char
 id|c
 (braket
 l_int|0x100000
@@ -1586,7 +1593,8 @@ r_union
 (brace
 multiline_comment|/* make all access sizes available. */
 DECL|member|c
-id|uchar_t
+r_int
+r_char
 id|c
 (braket
 l_int|0x400000
