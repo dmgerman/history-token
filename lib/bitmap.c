@@ -361,6 +361,7 @@ c_func
 id|bitmap_complement
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * bitmap_shift_write - logical right shift of the bits in a bitmap&n; *   @dst - destination bitmap&n; *   @src - source bitmap&n; *   @nbits - shift by this many bits&n; *   @bits - bitmap size, in bits&n; *&n; * Shifting right (dividing) means moving bits in the MS -&gt; LS bit&n; * direction.  Zeros are fed into the vacated MS positions and the&n; * LS bits shifted off the bottom are lost.&n; */
 DECL|function|bitmap_shift_right
 r_void
 id|bitmap_shift_right
@@ -466,6 +467,7 @@ c_func
 id|bitmap_shift_right
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * bitmap_shift_left - logical left shift of the bits in a bitmap&n; *   @dst - destination bitmap&n; *   @src - source bitmap&n; *   @nbits - shift by this many bits&n; *   @bits - bitmap size, in bits&n; *&n; * Shifting left (multiplying) means moving bits in the LS -&gt; MS&n; * direction.  Zeros are fed into the vacated LS bit positions&n; * and those MS bits shifted off the top are lost.&n; */
 DECL|function|bitmap_shift_left
 r_void
 id|bitmap_shift_left
@@ -1323,7 +1325,7 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
-id|bitmap_shift_right
+id|bitmap_shift_left
 c_func
 (paren
 id|maskp
