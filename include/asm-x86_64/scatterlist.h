@@ -29,5 +29,10 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|ISA_DMA_THRESHOLD
 mdefine_line|#define ISA_DMA_THRESHOLD (0x00ffffff)
+multiline_comment|/* These macros should be used after a pci_map_sg call has been done&n; * to get bus addresses of each of the SG entries and their lengths.&n; * You should only work with the number of sg entries pci_map_sg&n; * returns.&n; */
+DECL|macro|sg_dma_address
+mdefine_line|#define sg_dma_address(sg)     ((sg)-&gt;dma_address)
+DECL|macro|sg_dma_len
+mdefine_line|#define sg_dma_len(sg)         ((sg)-&gt;length)
 macro_line|#endif 
 eof

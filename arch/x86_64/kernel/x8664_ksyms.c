@@ -29,6 +29,7 @@ macro_line|#include &lt;asm/nmi.h&gt;
 macro_line|#include &lt;asm/kdebug.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 r_extern
 id|spinlock_t
 id|rtc_lock
@@ -971,6 +972,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|clear_page
+)paren
+suffix:semicolon
+DECL|variable|flush_tlb_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_tlb_page
+)paren
+suffix:semicolon
+DECL|variable|flush_tlb_all
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|flush_tlb_all
 )paren
 suffix:semicolon
 eof

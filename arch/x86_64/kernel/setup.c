@@ -184,7 +184,7 @@ l_string|&quot;pic1&quot;
 comma
 l_int|0x20
 comma
-l_int|0x3f
+l_int|0x21
 comma
 id|IORESOURCE_BUSY
 )brace
@@ -224,7 +224,7 @@ l_string|&quot;pic2&quot;
 comma
 l_int|0xa0
 comma
-l_int|0xbf
+l_int|0xa1
 comma
 id|IORESOURCE_BUSY
 )brace
