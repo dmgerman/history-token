@@ -278,7 +278,7 @@ mdefine_line|#define STACK_ADD(sp, items) ((elf_addr_t *)(sp) + (items))
 DECL|macro|STACK_ROUND
 mdefine_line|#define STACK_ROUND(sp, items) &bslash;&n;&t;((15 + (unsigned long) ((sp) + (items))) &amp;~ 15UL)
 DECL|macro|STACK_ALLOC
-mdefine_line|#define STACK_ALLOC(sp, len) ({ elf_addr_t *old_sp = sp; sp += len; old_sp; })
+mdefine_line|#define STACK_ALLOC(sp, len) ({ elf_addr_t *old_sp = (elf_addr_t *)sp; sp += len; old_sp; })
 macro_line|#else
 DECL|macro|STACK_ADD
 mdefine_line|#define STACK_ADD(sp, items) ((elf_addr_t *)(sp) - (items))
