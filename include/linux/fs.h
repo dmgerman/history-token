@@ -1086,6 +1086,7 @@ r_struct
 id|address_space
 id|i_data
 suffix:semicolon
+macro_line|#ifdef CONFIG_QUOTA
 DECL|member|i_dquot
 r_struct
 id|dquot
@@ -1095,6 +1096,7 @@ id|i_dquot
 id|MAXQUOTAS
 )braket
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* These three should probably be a union */
 DECL|member|i_devices
 r_struct

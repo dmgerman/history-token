@@ -231,6 +231,7 @@ id|inode-&gt;i_generation
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_QUOTA
 id|memset
 c_func
 (paren
@@ -245,6 +246,7 @@ id|inode-&gt;i_dquot
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|inode-&gt;i_pipe
 op_assign
 l_int|NULL
