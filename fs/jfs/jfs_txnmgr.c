@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
 macro_line|#include &quot;jfs_metapage.h&quot;
@@ -9183,14 +9184,6 @@ id|jfsIOwait
 suffix:semicolon
 r_do
 (brace
-id|DECLARE_WAITQUEUE
-c_func
-(paren
-id|wq
-comma
-id|current
-)paren
-suffix:semicolon
 id|LAZY_LOCK
 c_func
 (paren
@@ -9271,6 +9264,37 @@ id|WorkDone
 r_goto
 id|restart
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+(brace
+id|LAZY_UNLOCK
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|refrigerator
+c_func
+(paren
+id|PF_IOTHREAD
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|DECLARE_WAITQUEUE
+c_func
+(paren
+id|wq
+comma
+id|current
+)paren
+suffix:semicolon
 id|add_wait_queue
 c_func
 (paren
@@ -9312,6 +9336,7 @@ op_amp
 id|wq
 )paren
 suffix:semicolon
+)brace
 )brace
 r_while
 c_loop
@@ -9835,14 +9860,6 @@ id|jfsIOwait
 suffix:semicolon
 r_do
 (brace
-id|DECLARE_WAITQUEUE
-c_func
-(paren
-id|wq
-comma
-id|current
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * write each inode on the anonymous inode list&n;&t;&t; */
 id|TXN_LOCK
 c_func
@@ -9987,6 +10004,36 @@ op_amp
 id|TxAnchor.anon_list
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+(brace
+id|TXN_UNLOCK
+c_func
+(paren
+)paren
+suffix:semicolon
+id|refrigerator
+c_func
+(paren
+id|PF_IOTHREAD
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|DECLARE_WAITQUEUE
+c_func
+(paren
+id|wq
+comma
+id|current
+)paren
+suffix:semicolon
 id|add_wait_queue
 c_func
 (paren
@@ -10027,6 +10074,7 @@ op_amp
 id|wq
 )paren
 suffix:semicolon
+)brace
 )brace
 r_while
 c_loop
