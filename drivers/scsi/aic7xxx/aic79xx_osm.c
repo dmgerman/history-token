@@ -9488,7 +9488,17 @@ id|host-&gt;unique_id
 op_assign
 id|ahd-&gt;unit
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,4)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
+id|scsi_set_device
+c_func
+(paren
+id|host
+comma
+op_amp
+id|ahd-&gt;dev_softc-&gt;dev
+)paren
+suffix:semicolon
+macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,4)
 id|scsi_set_pci_device
 c_func
 (paren
@@ -17424,6 +17434,10 @@ id|ahd
 comma
 id|cmd
 )paren
+suffix:semicolon
+id|hscb-&gt;lun
+op_assign
+id|cmd-&gt;device-&gt;lun
 suffix:semicolon
 id|scb-&gt;hscb-&gt;task_management
 op_assign

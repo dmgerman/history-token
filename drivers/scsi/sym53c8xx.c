@@ -16967,12 +16967,13 @@ op_minus
 l_int|4
 )paren
 suffix:semicolon
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|instance
 comma
-id|device-&gt;pdev
+op_amp
+id|device-&gt;pdev-&gt;dev
 )paren
 suffix:semicolon
 id|np-&gt;check_integrity

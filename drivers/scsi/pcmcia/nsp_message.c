@@ -19,7 +19,7 @@ r_int
 r_int
 id|base
 op_assign
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 suffix:semicolon
 r_int
 r_char

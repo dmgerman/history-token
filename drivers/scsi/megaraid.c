@@ -9010,12 +9010,13 @@ id|host-&gt;max_sectors
 op_assign
 l_int|1024
 suffix:semicolon
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|host
 comma
-id|pdev
+op_amp
+id|pdev-&gt;dev
 )paren
 suffix:semicolon
 id|megaCfg

@@ -920,12 +920,13 @@ id|start
 )paren
 )paren
 suffix:semicolon
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|HostAdapter
 comma
-id|PciDev
+op_amp
+id|PciDev-&gt;dev
 )paren
 suffix:semicolon
 id|HostAdapter-&gt;irq
