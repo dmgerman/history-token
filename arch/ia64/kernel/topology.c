@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/node.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/mmzone.h&gt;
 macro_line|#include &lt;asm/numa.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
