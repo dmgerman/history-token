@@ -2000,6 +2000,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -2014,6 +2017,11 @@ r_sizeof
 id|bb-&gt;version
 )paren
 )paren
+)paren
+id|ret
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 )brace
