@@ -1154,6 +1154,13 @@ l_string|&quot;Broadcom Blutonium firmware driver ver &quot;
 id|VERSION
 )paren
 suffix:semicolon
+DECL|variable|VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|VERSION
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
