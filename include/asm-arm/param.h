@@ -2,12 +2,12 @@ multiline_comment|/*&n; *  linux/include/asm-arm/param.h&n; *&n; *  Copyright (C
 macro_line|#ifndef __ASM_PARAM_H
 DECL|macro|__ASM_PARAM_H
 mdefine_line|#define __ASM_PARAM_H
-macro_line|#include &lt;asm/arch/param.h&gt;&t;/* for HZ */
-macro_line|#ifndef __KERNEL_HZ
-DECL|macro|__KERNEL_HZ
-mdefine_line|#define __KERNEL_HZ&t;100
-macro_line|#endif
 macro_line|#ifdef __KERNEL__
+macro_line|# include &lt;asm/arch/param.h&gt;&t;&t;/* for __KERNEL_HZ */
+macro_line|# ifndef __KERNEL_HZ
+DECL|macro|__KERNEL_HZ
+macro_line|# define __KERNEL_HZ&t;100
+macro_line|# endif
 DECL|macro|HZ
 macro_line|# define HZ&t;&t;__KERNEL_HZ&t;/* Internal kernel timer frequency */
 DECL|macro|USER_HZ
