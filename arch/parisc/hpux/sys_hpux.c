@@ -320,7 +320,7 @@ id|tmp
 suffix:semicolon
 multiline_comment|/* Changed to hpux_ustat */
 r_struct
-id|statfs
+id|kstatfs
 id|sbuf
 suffix:semicolon
 r_int
