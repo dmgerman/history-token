@@ -1774,7 +1774,7 @@ l_int|0x1001
 comma
 l_int|0x1000
 comma
-l_int|0x9009
+l_int|0x5009
 comma
 l_string|&quot;Casio&quot;
 comma
