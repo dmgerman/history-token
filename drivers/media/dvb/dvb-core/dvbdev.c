@@ -787,7 +787,7 @@ id|S_IRUSR
 op_or
 id|S_IWUSR
 comma
-l_string|&quot;dvb/adapter%d%s%d&quot;
+l_string|&quot;dvb/adapter%d/%s%d&quot;
 comma
 id|adap-&gt;num
 comma
@@ -802,7 +802,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;DVB: register adapter%d%s%d @ minor: %i (0x%02x)&bslash;n&quot;
+l_string|&quot;DVB: register adapter%d/%s%d @ minor: %i (0x%02x)&bslash;n&quot;
 comma
 id|adap-&gt;num
 comma
@@ -858,7 +858,7 @@ id|dvbdev
 id|devfs_remove
 c_func
 (paren
-l_string|&quot;dvb/adapter%d%s%d&quot;
+l_string|&quot;dvb/adapter%d/%s%d&quot;
 comma
 id|dvbdev-&gt;adapter-&gt;num
 comma
