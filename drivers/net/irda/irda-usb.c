@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#include &lt;net/irda/irda-usb.h&gt;
+macro_line|#include &quot;irda-usb.h&quot;
 multiline_comment|/*------------------------------------------------------------------*/
 DECL|variable|qos_mtt_bits
 r_static
