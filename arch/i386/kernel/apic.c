@@ -17,6 +17,7 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &lt;mach_apic.h&gt;
+macro_line|#include &quot;io_ports.h&quot;
 DECL|function|apic_intr_init
 r_void
 id|__init
@@ -2628,7 +2629,7 @@ c_func
 (paren
 l_int|0x00
 comma
-l_int|0x43
+id|PIT_MODE
 )paren
 suffix:semicolon
 id|count
@@ -2636,7 +2637,7 @@ op_assign
 id|inb_p
 c_func
 (paren
-l_int|0x40
+id|PIT_CH0
 )paren
 suffix:semicolon
 id|count
@@ -2644,7 +2645,7 @@ op_or_assign
 id|inb_p
 c_func
 (paren
-l_int|0x40
+id|PIT_CH0
 )paren
 op_lshift
 l_int|8
