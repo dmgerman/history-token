@@ -494,8 +494,6 @@ suffix:semicolon
 r_int
 r_int
 id|fh
-comma
-id|fh_s
 suffix:semicolon
 r_int
 id|err
@@ -1088,8 +1086,6 @@ id|tp-&gt;ops-&gt;kind
 r_goto
 id|errout
 suffix:semicolon
-id|fh_s
-op_assign
 id|fh
 op_assign
 id|tp-&gt;ops
@@ -1148,7 +1144,7 @@ id|n
 comma
 id|tp
 comma
-id|fh_s
+id|fh
 comma
 id|RTM_DELTFILTER
 )paren
@@ -1248,7 +1244,7 @@ id|n
 comma
 id|tp
 comma
-id|fh_s
+id|fh
 comma
 id|RTM_DELTFILTER
 )paren
