@@ -2100,7 +2100,7 @@ id|enable
 suffix:semicolon
 multiline_comment|/* Helper functions for low-level code (drivers/pci/setup-[bus,res].c) */
 r_void
-id|pbus_assign_resources
+id|pci_bus_assign_resources
 c_func
 (paren
 r_struct
@@ -2110,7 +2110,7 @@ id|bus
 )paren
 suffix:semicolon
 r_void
-id|pbus_size_bridges
+id|pci_bus_size_bridges
 c_func
 (paren
 r_struct
