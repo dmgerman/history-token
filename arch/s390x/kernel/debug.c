@@ -1753,9 +1753,6 @@ id|size
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|rc
-suffix:semicolon
 id|file_private_info_t
 op_star
 id|p_info
@@ -1841,9 +1838,6 @@ id|size
 r_if
 c_cond
 (paren
-(paren
-id|rc
-op_assign
 id|copy_to_user
 c_func
 (paren
@@ -1858,9 +1852,9 @@ comma
 id|size
 )paren
 )paren
-)paren
 r_return
-id|rc
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 id|count

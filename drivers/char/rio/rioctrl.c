@@ -273,8 +273,6 @@ r_if
 c_cond
 (paren
 id|rv
-OL
-l_int|0
 )paren
 r_return
 id|COPYFAIL
@@ -337,8 +335,6 @@ r_if
 c_cond
 (paren
 id|rv
-OL
-l_int|0
 )paren
 r_return
 id|COPYFAIL

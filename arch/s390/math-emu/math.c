@@ -57,9 +57,9 @@ mdefine_line|#define mathemu_put_user(x, p) &bslash;&n;        do { &bslash;&n; 
 DECL|macro|mathemu_get_user
 mdefine_line|#define mathemu_get_user(x, p) &bslash;&n;        do { &bslash;&n;                if (get_user((x),(p))) &bslash;&n;                        return SIGSEGV; &bslash;&n;        } while (0)
 DECL|macro|mathemu_copy_from_user
-mdefine_line|#define mathemu_copy_from_user(d, s, n)&bslash;&n;        do { &bslash;&n;                if (copy_from_user((d),(s),(n)) == -EFAULT) &bslash;&n;                        return SIGSEGV; &bslash;&n;        } while (0)
+mdefine_line|#define mathemu_copy_from_user(d, s, n)&bslash;&n;        do { &bslash;&n;                if (copy_from_user((d),(s),(n)) != 0) &bslash;&n;                        return SIGSEGV; &bslash;&n;        } while (0)
 DECL|macro|mathemu_copy_to_user
-mdefine_line|#define mathemu_copy_to_user(d, s, n) &bslash;&n;        do { &bslash;&n;                if (copy_to_user((d),(s),(n)) == -EFAULT) &bslash;&n;                        return SIGSEGV; &bslash;&n;        } while (0)
+mdefine_line|#define mathemu_copy_to_user(d, s, n) &bslash;&n;        do { &bslash;&n;                if (copy_to_user((d),(s),(n)) != 0) &bslash;&n;                        return SIGSEGV; &bslash;&n;        } while (0)
 DECL|function|display_emulation_not_implemented
 r_static
 r_void

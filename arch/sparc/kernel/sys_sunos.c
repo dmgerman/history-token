@@ -2019,6 +2019,12 @@ id|uts_sem
 suffix:semicolon
 r_return
 id|ret
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|sunos_nosys

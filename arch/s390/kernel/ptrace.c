@@ -306,6 +306,12 @@ id|copyaddr
 comma
 id|len
 )paren
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 r_else
@@ -335,9 +341,6 @@ id|copyaddr
 comma
 id|len
 )paren
-op_eq
-op_minus
-id|EFAULT
 ques
 c_cond
 op_minus
@@ -368,9 +371,6 @@ id|realuseraddr
 comma
 id|len
 )paren
-op_eq
-op_minus
-id|EFAULT
 ques
 c_cond
 op_minus

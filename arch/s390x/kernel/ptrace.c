@@ -362,12 +362,7 @@ id|len
 suffix:semicolon
 id|retval
 op_assign
-(paren
 id|retval
-op_eq
-op_minus
-id|EFAULT
-)paren
 ques
 c_cond
 op_minus
