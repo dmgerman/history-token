@@ -212,6 +212,13 @@ id|ENOENT
 )brace
 comma
 (brace
+id|ERRinvlevel
+comma
+op_minus
+id|EOPNOTSUPP
+)brace
+comma
+(brace
 id|ERRdirnotempty
 comma
 op_minus
