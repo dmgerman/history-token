@@ -162,11 +162,6 @@ id|bus
 suffix:semicolon
 id|child
 op_assign
-(paren
-r_struct
-id|pci_bus
-op_star
-)paren
 id|pci_add_new_bus
 c_func
 (paren
