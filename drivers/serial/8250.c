@@ -412,7 +412,7 @@ id|up-&gt;port.iotype
 )paren
 (brace
 r_case
-id|SERIAL_IO_HUB6
+id|UPIO_HUB6
 suffix:colon
 id|outb
 c_func
@@ -436,7 +436,7 @@ l_int|1
 )paren
 suffix:semicolon
 r_case
-id|SERIAL_IO_MEM
+id|UPIO_MEM
 suffix:colon
 r_return
 id|readb
@@ -490,7 +490,7 @@ id|up-&gt;port.iotype
 )paren
 (brace
 r_case
-id|SERIAL_IO_HUB6
+id|UPIO_HUB6
 suffix:colon
 id|outb
 c_func
@@ -517,7 +517,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SERIAL_IO_MEM
+id|UPIO_MEM
 suffix:colon
 id|writeb
 c_func
@@ -6730,7 +6730,7 @@ id|up-&gt;port.iotype
 )paren
 (brace
 r_case
-id|SERIAL_IO_MEM
+id|UPIO_MEM
 suffix:colon
 r_if
 c_cond
@@ -6767,10 +6767,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SERIAL_IO_HUB6
+id|UPIO_HUB6
 suffix:colon
 r_case
-id|SERIAL_IO_PORT
+id|UPIO_PORT
 suffix:colon
 op_star
 id|res
@@ -6846,7 +6846,7 @@ id|up-&gt;port.iotype
 )paren
 (brace
 r_case
-id|SERIAL_IO_MEM
+id|UPIO_MEM
 suffix:colon
 r_if
 c_cond
@@ -6893,10 +6893,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SERIAL_IO_HUB6
+id|UPIO_HUB6
 suffix:colon
 r_case
-id|SERIAL_IO_PORT
+id|UPIO_PORT
 suffix:colon
 id|start
 op_assign
@@ -7006,7 +7006,7 @@ id|up-&gt;port.iotype
 )paren
 (brace
 r_case
-id|SERIAL_IO_MEM
+id|UPIO_MEM
 suffix:colon
 r_if
 c_cond
@@ -7058,10 +7058,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SERIAL_IO_HUB6
+id|UPIO_HUB6
 suffix:colon
 r_case
-id|SERIAL_IO_PORT
+id|UPIO_PORT
 suffix:colon
 id|start
 op_assign
