@@ -1,7 +1,7 @@
 multiline_comment|/* Linux driver for NAND Flash Translation Layer      */
 multiline_comment|/* (c) 1999 Machine Vision Holdings, Inc.             */
 multiline_comment|/* Author: David Woodhouse &lt;dwmw2@infradead.org&gt;      */
-multiline_comment|/* $Id: nftlcore.c,v 1.92 2003/05/23 11:41:47 dwmw2 Exp $ */
+multiline_comment|/* $Id: nftlcore.c,v 1.94 2003/06/23 12:00:08 dwmw2 Exp $ */
 multiline_comment|/*&n;  The contents of this file are distributed under the GNU General&n;  Public License version 2. The author places no additional&n;  restrictions of any kind on it.&n; */
 DECL|macro|PRERELEASE
 mdefine_line|#define PRERELEASE
@@ -288,6 +288,11 @@ r_if
 c_cond
 (paren
 id|add_mtd_blktrans_dev
+c_func
+(paren
+op_amp
+id|nftl-&gt;mbd
+)paren
 )paren
 (brace
 r_if
@@ -2662,10 +2667,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|nftl_ioctl
+DECL|function|nftl_getgeo
 r_static
 r_int
-id|nftl_ioctl
+id|nftl_getgeo
 c_func
 (paren
 r_struct
@@ -2674,22 +2679,9 @@ op_star
 id|dev
 comma
 r_struct
-id|inode
+id|hd_geometry
 op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|file
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|geo
 )paren
 (brace
 r_struct
@@ -2703,67 +2695,21 @@ op_star
 )paren
 id|dev
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|cmd
-)paren
-(brace
-r_case
-id|HDIO_GETGEO
-suffix:colon
-(brace
-r_struct
-id|hd_geometry
-id|g
-suffix:semicolon
-id|g.heads
+id|geo-&gt;heads
 op_assign
 id|nftl-&gt;heads
 suffix:semicolon
-id|g.sectors
+id|geo-&gt;sectors
 op_assign
 id|nftl-&gt;sectors
 suffix:semicolon
-id|g.cylinders
+id|geo-&gt;cylinders
 op_assign
 id|nftl-&gt;cylinders
 suffix:semicolon
-id|g.start
-op_assign
+r_return
 l_int|0
 suffix:semicolon
-r_return
-id|copy_to_user
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-op_amp
-id|g
-comma
-r_sizeof
-id|g
-)paren
-ques
-c_cond
-op_minus
-id|EFAULT
-suffix:colon
-l_int|0
-suffix:semicolon
-)brace
-r_default
-suffix:colon
-r_return
-op_minus
-id|ENOTTY
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * Module stuff&n; *&n; ****************************************************************************/
 DECL|variable|nftl_tr
@@ -2788,9 +2734,9 @@ op_assign
 id|NFTL_PARTN_BITS
 comma
 dot
-id|ioctl
+id|getgeo
 op_assign
-id|nftl_ioctl
+id|nftl_getgeo
 comma
 dot
 id|readsect
@@ -2840,7 +2786,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;NFTL driver: nftlcore.c $Revision: 1.92 $, nftlmount.c %s&bslash;n&quot;
+l_string|&quot;NFTL driver: nftlcore.c $Revision: 1.94 $, nftlmount.c %s&bslash;n&quot;
 comma
 id|nftlmountrev
 )paren
