@@ -74,7 +74,7 @@ id|pciehp_debug
 comma
 r_bool
 comma
-l_int|644
+l_int|0644
 )paren
 suffix:semicolon
 id|module_param
@@ -84,7 +84,7 @@ id|pciehp_poll_mode
 comma
 r_bool
 comma
-l_int|644
+l_int|0644
 )paren
 suffix:semicolon
 id|module_param
@@ -94,7 +94,7 @@ id|pciehp_poll_time
 comma
 r_int
 comma
-l_int|644
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

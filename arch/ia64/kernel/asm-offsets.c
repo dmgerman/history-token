@@ -2001,17 +2001,6 @@ suffix:semicolon
 id|DEFINE
 c_func
 (paren
-id|CLONE_IDLETASK_BIT
-comma
-l_int|12
-)paren
-suffix:semicolon
-macro_line|#if CLONE_IDLETASK != (1 &lt;&lt; 12)
-macro_line|# error &quot;CLONE_IDLETASK_BIT incorrect, please fix&quot;
-macro_line|#endif
-id|DEFINE
-c_func
-(paren
 id|CLONE_SETTLS_BIT
 comma
 l_int|19

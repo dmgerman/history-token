@@ -4,6 +4,7 @@ DECL|macro|__UM_THREAD_INFO_H
 mdefine_line|#define __UM_THREAD_INFO_H
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/types.h&gt;
 DECL|struct|thread_info
 r_struct
 id|thread_info
@@ -74,6 +75,20 @@ id|thread_info
 op_star
 id|ti
 suffix:semicolon
+r_int
+r_int
+id|mask
+op_assign
+id|PAGE_SIZE
+op_star
+(paren
+l_int|1
+op_lshift
+id|CONFIG_KERNEL_STACK_ORDER
+)paren
+op_minus
+l_int|1
+suffix:semicolon
 id|__asm__
 c_func
 (paren
@@ -87,7 +102,7 @@ suffix:colon
 l_string|&quot;0&quot;
 (paren
 op_complement
-l_int|16383UL
+id|mask
 )paren
 )paren
 suffix:semicolon
@@ -97,11 +112,11 @@ suffix:semicolon
 )brace
 multiline_comment|/* thread information allocation */
 DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE (4*PAGE_SIZE)
+mdefine_line|#define THREAD_SIZE ((1 &lt;&lt; CONFIG_KERNEL_STACK_ORDER) * PAGE_SIZE)
 DECL|macro|alloc_thread_info
-mdefine_line|#define alloc_thread_info(tsk) ((struct thread_info *) &bslash;&n;&t;__get_free_pages(GFP_KERNEL,2))
+mdefine_line|#define alloc_thread_info(tsk) &bslash;&n;&t;((struct thread_info *) kmalloc(THREAD_SIZE, GFP_KERNEL))
 DECL|macro|free_thread_info
-mdefine_line|#define free_thread_info(ti) free_pages((unsigned long) (ti), 2)
+mdefine_line|#define free_thread_info(ti) kfree(ti)
 DECL|macro|get_thread_info
 mdefine_line|#define get_thread_info(ti) get_task_struct((ti)-&gt;task)
 DECL|macro|put_thread_info
@@ -117,6 +132,8 @@ DECL|macro|TIF_NEED_RESCHED
 mdefine_line|#define TIF_NEED_RESCHED&t;2&t;/* rescheduling necessary */
 DECL|macro|TIF_POLLING_NRFLAG
 mdefine_line|#define TIF_POLLING_NRFLAG      3       /* true if poll_idle() is polling &n;&t;&t;&t;&t;&t; * TIF_NEED_RESCHED &n;&t;&t;&t;&t;&t; */
+DECL|macro|TIF_RESTART_BLOCK
+mdefine_line|#define TIF_RESTART_BLOCK &t;4
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1 &lt;&lt; TIF_SYSCALL_TRACE)
 DECL|macro|_TIF_SIGPENDING
@@ -125,6 +142,8 @@ DECL|macro|_TIF_NEED_RESCHED
 mdefine_line|#define _TIF_NEED_RESCHED&t;(1 &lt;&lt; TIF_NEED_RESCHED)
 DECL|macro|_TIF_POLLING_NRFLAG
 mdefine_line|#define _TIF_POLLING_NRFLAG     (1 &lt;&lt; TIF_POLLING_NRFLAG)
+DECL|macro|_TIF_RESTART_BLOCK
+mdefine_line|#define _TIF_RESTART_BLOCK&t;(1 &lt;&lt; TIF_RESTART_BLOCK)
 macro_line|#endif
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

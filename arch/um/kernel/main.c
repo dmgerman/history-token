@@ -1,9 +1,10 @@
-multiline_comment|/* &n; * Copyright (C) 2000, 2001 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+multiline_comment|/*&n; * Copyright (C) 2000, 2001 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &lt;unistd.h&gt;
-macro_line|#include &lt;stdio.h&gt; 
+macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;string.h&gt;
 macro_line|#include &lt;signal.h&gt;
+macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;sys/resource.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
 macro_line|#include &lt;sys/user.h&gt;
@@ -17,7 +18,7 @@ macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;mode.h&quot;
 macro_line|#include &quot;choose-mode.h&quot;
 macro_line|#include &quot;uml-config.h&quot;
-multiline_comment|/* Set in set_stklim, which is called from main and __wrap_malloc.  &n; * __wrap_malloc only calls it if main hasn&squot;t started.&n; */
+multiline_comment|/* Set in set_stklim, which is called from main and __wrap_malloc.&n; * __wrap_malloc only calls it if main hasn&squot;t started.&n; */
 DECL|variable|stacksizelim
 r_int
 r_int
@@ -276,7 +277,7 @@ id|ret
 comma
 id|i
 suffix:semicolon
-multiline_comment|/* Enable all signals except SIGIO - in some environments, we can &n;&t; * enter with some signals blocked&n;&t; */
+multiline_comment|/* Enable all signals except SIGIO - in some environments, we can&n;&t; * enter with some signals blocked&n;&t; */
 id|sigemptyset
 c_func
 (paren
@@ -494,10 +495,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|new_argv
 op_assign
 id|malloc
@@ -515,7 +512,11 @@ r_char
 op_star
 )paren
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|new_argv
 op_eq
 l_int|NULL
 )paren
@@ -547,10 +548,6 @@ id|i
 op_increment
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
 id|new_argv
 (braket
 id|i
@@ -564,7 +561,14 @@ id|argv
 id|i
 )braket
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|new_argv
+(braket
+id|i
+)braket
 op_eq
 l_int|NULL
 )paren
@@ -715,9 +719,14 @@ r_int
 id|size
 )paren
 (brace
+r_void
+op_star
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|CAN_KMALLOC
 c_func
 (paren
@@ -725,6 +734,25 @@ c_func
 )paren
 (brace
 r_return
+id|__real_malloc
+c_func
+(paren
+id|size
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|size
+op_le
+id|PAGE_SIZE
+)paren
+(brace
+multiline_comment|/* finding contiguos pages can be hard*/
+id|ret
+op_assign
 id|um_kmalloc
 c_func
 (paren
@@ -733,12 +761,30 @@ id|size
 suffix:semicolon
 )brace
 r_else
-r_return
-id|__real_malloc
+id|ret
+op_assign
+id|um_vmalloc
 c_func
 (paren
 id|size
 )paren
+suffix:semicolon
+multiline_comment|/* glibc people insist that if malloc fails, errno should be&n;&t; * set by malloc as well. So we do.&n;&t; */
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+l_int|NULL
+)paren
+(brace
+id|errno
+op_assign
+id|ENOMEM
+suffix:semicolon
+)brace
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|__wrap_calloc
@@ -803,6 +849,11 @@ r_void
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|high_physmem
+suffix:semicolon
 DECL|function|__wrap_free
 r_void
 id|__wrap_free
@@ -813,6 +864,17 @@ op_star
 id|ptr
 )paren
 (brace
+r_int
+r_int
+id|addr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|ptr
+suffix:semicolon
+multiline_comment|/* We need to know how the allocation happened, so it can be correctly&n;&t; * freed.  This is done by seeing what region of memory the pointer is&n;&t; * in -&n;&t; * &t;physical memory - kmalloc/kfree&n;&t; *&t;kernel virtual memory - vmalloc/vfree&n;&t; * &t;anywhere else - malloc/free&n;&t; * If kmalloc is not yet possible, then the kernel memory regions&n;&t; * may not be set up yet, and the variables not initialized.  So,&n;&t; * free is called.&n;&t; */
 r_if
 c_cond
 (paren
@@ -822,7 +884,55 @@ c_func
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+(paren
+id|addr
+op_ge
+id|uml_physmem
+)paren
+op_logical_and
+(paren
+id|addr
+op_le
+id|high_physmem
+)paren
+)paren
+(brace
 id|kfree
+c_func
+(paren
+id|ptr
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|addr
+op_ge
+id|start_vm
+)paren
+op_logical_and
+(paren
+id|addr
+op_le
+id|end_vm
+)paren
+)paren
+(brace
+id|vfree
+c_func
+(paren
+id|ptr
+)paren
+suffix:semicolon
+)brace
+r_else
+id|__real_free
 c_func
 (paren
 id|ptr

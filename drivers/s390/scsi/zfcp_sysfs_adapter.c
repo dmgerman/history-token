@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/drivers/s390/scsi/zfcp_sysfs_adapter.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * sysfs adapter related routines&n; *&n; * (C) Copyright IBM Corp. 2003, 2004&n; *&n; * Authors:&n; *      Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *&t;Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 DECL|macro|ZFCP_SYSFS_ADAPTER_C_REVISION
-mdefine_line|#define ZFCP_SYSFS_ADAPTER_C_REVISION &quot;$Revision: 1.33 $&quot;
+mdefine_line|#define ZFCP_SYSFS_ADAPTER_C_REVISION &quot;$Revision: 1.36 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA                   ZFCP_LOG_AREA_CONFIG
@@ -17,25 +17,15 @@ l_int|25
 )braket
 op_assign
 (brace
-(brace
 l_string|&quot;&lt;error&gt;&quot;
-)brace
 comma
-(brace
 l_string|&quot;point-to-point&quot;
-)brace
 comma
-(brace
 l_string|&quot;fabric&quot;
-)brace
 comma
-(brace
 l_string|&quot;arbitrated loop&quot;
-)brace
 comma
-(brace
 l_string|&quot;fabric (virt. adapter)&quot;
-)brace
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * ZFCP_DEFINE_ADAPTER_ATTR&n; * @_name:   name of show attribute&n; * @_format: format string&n; * @_value:  value to print&n; *&n; * Generates attributes for an adapter.&n; */
@@ -169,79 +159,20 @@ comma
 id|adapter-&gt;scsi_host_no
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * zfcp_sysfs_adapter_in_recovery_show - recovery state of adapter&n; * @dev: pointer to belonging device&n; * @buf: pointer to input buffer&n; *&n; * Show function of &quot;in_recovery&quot; attribute of adapter. Will be&n; * &quot;0&quot; if no error recovery is pending for adapter, otherwise &quot;1&quot;.&n; */
-r_static
-id|ssize_t
-DECL|function|zfcp_sysfs_adapter_in_recovery_show
-id|zfcp_sysfs_adapter_in_recovery_show
+id|ZFCP_DEFINE_ADAPTER_ATTR
 c_func
 (paren
-r_struct
-id|device
-op_star
-id|dev
+id|in_recovery
 comma
-r_char
-op_star
-id|buf
-)paren
-(brace
-r_struct
-id|zfcp_adapter
-op_star
-id|adapter
-suffix:semicolon
-id|adapter
-op_assign
-id|dev_get_drvdata
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
+l_string|&quot;%d&bslash;n&quot;
+comma
 id|atomic_test_mask
-c_func
 (paren
 id|ZFCP_STATUS_COMMON_ERP_INUSE
 comma
 op_amp
 id|adapter-&gt;status
 )paren
-)paren
-r_return
-id|sprintf
-c_func
-(paren
-id|buf
-comma
-l_string|&quot;1&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-r_return
-id|sprintf
-c_func
-(paren
-id|buf
-comma
-l_string|&quot;0&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_static
-id|DEVICE_ATTR
-c_func
-(paren
-id|in_recovery
-comma
-id|S_IRUGO
-comma
-id|zfcp_sysfs_adapter_in_recovery_show
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * zfcp_sysfs_port_add_store - add a port to sysfs tree&n; * @dev: pointer to belonging device&n; * @buf: pointer to input buffer&n; * @count: number of bytes in buffer&n; *&n; * Store function of the &quot;port_add&quot; attribute of an adapter.&n; */
@@ -416,6 +347,9 @@ ques
 c_cond
 id|retval
 suffix:colon
+(paren
+id|ssize_t
+)paren
 id|count
 suffix:semicolon
 )brace
@@ -681,6 +615,9 @@ ques
 c_cond
 id|retval
 suffix:colon
+(paren
+id|ssize_t
+)paren
 id|count
 suffix:semicolon
 )brace
@@ -858,6 +795,9 @@ ques
 c_cond
 id|retval
 suffix:colon
+(paren
+id|ssize_t
+)paren
 id|count
 suffix:semicolon
 )brace

@@ -1,5 +1,6 @@
 multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &lt;stdlib.h&gt;
+macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;setjmp.h&gt;
@@ -20,6 +21,58 @@ macro_line|#include &quot;sysdep/sigcontext.h&quot;
 macro_line|#include &quot;os.h&quot;
 macro_line|#include &quot;proc_mm.h&quot;
 macro_line|#include &quot;skas_ptrace.h&quot;
+macro_line|#include &quot;chan_user.h&quot;
+macro_line|#include &quot;signal_user.h&quot;
+DECL|function|is_skas_winch
+r_int
+id|is_skas_winch
+c_func
+(paren
+r_int
+id|pid
+comma
+r_int
+id|fd
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pid
+op_ne
+id|getpid
+c_func
+(paren
+)paren
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|register_winch_irq
+c_func
+(paren
+op_minus
+l_int|1
+comma
+id|fd
+comma
+op_minus
+l_int|1
+comma
+id|data
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* These are set once at boot time and not changed thereafter */
 DECL|variable|exec_regs
 r_int
 r_int
@@ -116,6 +169,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*To use the same value of using_sysemu as the caller, ask it that value (in local_using_sysemu)*/
 DECL|function|handle_trap
 r_static
 r_void
@@ -129,6 +183,9 @@ r_union
 id|uml_pt_regs
 op_star
 id|regs
+comma
+r_int
+id|local_using_sysemu
 )paren
 (brace
 r_int
@@ -145,6 +202,14 @@ c_func
 (paren
 id|regs-&gt;skas.regs
 )paren
+suffix:semicolon
+id|UPT_SYSCALL_NR
+c_func
+(paren
+id|regs
+)paren
+op_assign
+id|syscall_nr
 suffix:semicolon
 r_if
 c_cond
@@ -165,14 +230,13 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|UPT_SYSCALL_NR
-c_func
+r_if
+c_cond
 (paren
-id|regs
+op_logical_neg
+id|local_using_sysemu
 )paren
-op_assign
-id|syscall_nr
-suffix:semicolon
+(brace
 id|err
 op_assign
 id|ptrace
@@ -236,6 +300,9 @@ id|errno
 )paren
 suffix:semicolon
 )brace
+id|CATCH_EINTR
+c_func
+(paren
 id|err
 op_assign
 id|waitpid
@@ -247,6 +314,7 @@ op_amp
 id|status
 comma
 id|WUNTRACED
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -288,6 +356,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+)brace
 id|handle_syscall
 c_func
 (paren
@@ -295,10 +364,6 @@ id|regs
 )paren
 suffix:semicolon
 )brace
-DECL|variable|userspace_pid
-r_int
-id|userspace_pid
-suffix:semicolon
 DECL|function|userspace_tramp
 r_static
 r_int
@@ -346,12 +411,23 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Each element set once, and only accessed by a single processor anyway */
+DECL|macro|NR_CPUS
+mdefine_line|#define NR_CPUS 1
+DECL|variable|userspace_pid
+r_int
+id|userspace_pid
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
 DECL|function|start_userspace
 r_void
 id|start_userspace
 c_func
 (paren
-r_void
+r_int
+id|cpu
 )paren
 (brace
 r_void
@@ -468,6 +544,9 @@ suffix:semicolon
 )brace
 r_do
 (brace
+id|CATCH_EINTR
+c_func
+(paren
 id|n
 op_assign
 id|waitpid
@@ -479,6 +558,7 @@ op_amp
 id|status
 comma
 id|WUNTRACED
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -575,6 +655,9 @@ id|errno
 suffix:semicolon
 )brace
 id|userspace_pid
+(braket
+id|cpu
+)braket
 op_assign
 id|pid
 suffix:semicolon
@@ -596,13 +679,51 @@ comma
 id|status
 comma
 id|op
+comma
+id|pid
+op_assign
+id|userspace_pid
+(braket
+l_int|0
+)braket
 suffix:semicolon
+r_int
+id|local_using_sysemu
+suffix:semicolon
+multiline_comment|/*To prevent races if using_sysemu changes under us.*/
 id|restore_registers
 c_func
 (paren
 id|regs
 )paren
 suffix:semicolon
+id|local_using_sysemu
+op_assign
+id|get_using_sysemu
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|local_using_sysemu
+)paren
+id|err
+op_assign
+id|ptrace
+c_func
+(paren
+id|PTRACE_SYSEMU
+comma
+id|pid
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_else
 id|err
 op_assign
 id|ptrace
@@ -610,7 +731,7 @@ c_func
 (paren
 id|PTRACE_SYSCALL
 comma
-id|userspace_pid
+id|pid
 comma
 l_int|0
 comma
@@ -626,7 +747,14 @@ id|err
 id|panic
 c_func
 (paren
-l_string|&quot;userspace - PTRACE_SYSCALL failed, errno = %d&bslash;n&quot;
+l_string|&quot;userspace - PTRACE_%s failed, errno = %d&bslash;n&quot;
+comma
+id|local_using_sysemu
+ques
+c_cond
+l_string|&quot;SYSEMU&quot;
+suffix:colon
+l_string|&quot;SYSCALL&quot;
 comma
 id|errno
 )paren
@@ -638,17 +766,21 @@ c_loop
 l_int|1
 )paren
 (brace
+id|CATCH_EINTR
+c_func
+(paren
 id|err
 op_assign
 id|waitpid
 c_func
 (paren
-id|userspace_pid
+id|pid
 comma
 op_amp
 id|status
 comma
 id|WUNTRACED
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -704,7 +836,7 @@ suffix:colon
 id|handle_segv
 c_func
 (paren
-id|userspace_pid
+id|pid
 )paren
 suffix:semicolon
 r_break
@@ -715,9 +847,11 @@ suffix:colon
 id|handle_trap
 c_func
 (paren
-id|userspace_pid
+id|pid
 comma
 id|regs
+comma
+id|local_using_sysemu
 )paren
 suffix:semicolon
 r_break
@@ -736,6 +870,9 @@ id|SIGBUS
 suffix:colon
 r_case
 id|SIGFPE
+suffix:colon
+r_case
+id|SIGWINCH
 suffix:colon
 id|user_signal
 c_func
@@ -779,6 +916,32 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+multiline_comment|/*Now we ended the syscall, so re-read local_using_sysemu.*/
+id|local_using_sysemu
+op_assign
+id|get_using_sysemu
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|local_using_sysemu
+)paren
+id|op
+op_assign
+id|singlestepping_skas
+c_func
+(paren
+)paren
+ques
+c_cond
+id|PTRACE_SINGLESTEP
+suffix:colon
+id|PTRACE_SYSEMU
+suffix:semicolon
+r_else
 id|op
 op_assign
 id|singlestepping_skas
@@ -798,7 +961,7 @@ c_func
 (paren
 id|op
 comma
-id|userspace_pid
+id|pid
 comma
 l_int|0
 comma
@@ -814,8 +977,15 @@ id|err
 id|panic
 c_func
 (paren
-l_string|&quot;userspace - PTRACE_SYSCALL failed, &quot;
+l_string|&quot;userspace - PTRACE_%s failed, &quot;
 l_string|&quot;errno = %d&bslash;n&quot;
+comma
+id|local_using_sysemu
+ques
+c_cond
+l_string|&quot;SYSEMU&quot;
+suffix:colon
+l_string|&quot;SYSCALL&quot;
 comma
 id|errno
 )paren
@@ -852,6 +1022,10 @@ r_int
 )paren
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|jmp_buf
 id|switch_buf
 comma
@@ -869,12 +1043,28 @@ op_assign
 op_amp
 id|fork_buf
 suffix:semicolon
+multiline_comment|/* Somewhat subtle - siglongjmp restores the signal mask before doing&n;&t; * the longjmp.  This means that when jumping from one stack to another&n;&t; * when the target stack has interrupts enabled, an interrupt may occur&n;&t; * on the source stack.  This is bad when starting up a process because&n;&t; * it&squot;s not supposed to get timer ticks until it has been scheduled.&n;&t; * So, we disable interrupts around the sigsetjmp to ensure that&n;&t; * they can&squot;t happen until we get back here where they are safe.&n;&t; */
+id|flags
+op_assign
+id|get_signals
+c_func
+(paren
+)paren
+suffix:semicolon
+id|block_signals
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-m_setjmp
+id|sigsetjmp
+c_func
 (paren
 id|fork_buf
+comma
+l_int|1
 )paren
 op_eq
 l_int|0
@@ -889,6 +1079,12 @@ id|handler
 )paren
 suffix:semicolon
 )brace
+id|set_signals
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 id|remove_sigstack
 c_func
 (paren
@@ -934,15 +1130,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-m_setjmp
+id|sigsetjmp
+c_func
 (paren
 id|buf
+comma
+l_int|1
 )paren
 op_eq
 l_int|0
 )paren
 (brace
-m_longjmp
+id|siglongjmp
+c_func
 (paren
 op_star
 id|fork_buf
@@ -958,6 +1158,9 @@ r_int
 id|move_registers
 c_func
 (paren
+r_int
+id|pid
+comma
 r_int
 id|int_op
 comma
@@ -983,7 +1186,7 @@ c_func
 (paren
 id|int_op
 comma
-id|userspace_pid
+id|pid
 comma
 l_int|0
 comma
@@ -1006,7 +1209,7 @@ c_func
 (paren
 id|fp_op
 comma
-id|userspace_pid
+id|pid
 comma
 l_int|0
 comma
@@ -1077,6 +1280,11 @@ op_assign
 id|move_registers
 c_func
 (paren
+id|userspace_pid
+(braket
+l_int|0
+)braket
+comma
 id|PTRACE_GETREGS
 comma
 id|fp_op
@@ -1097,6 +1305,7 @@ c_func
 (paren
 l_string|&quot;save_registers - saving registers failed, errno = %d&bslash;n&quot;
 comma
+op_minus
 id|err
 )paren
 suffix:semicolon
@@ -1154,6 +1363,11 @@ op_assign
 id|move_registers
 c_func
 (paren
+id|userspace_pid
+(braket
+l_int|0
+)braket
+comma
 id|PTRACE_SETREGS
 comma
 id|fp_op
@@ -1175,6 +1389,7 @@ c_func
 l_string|&quot;restore_registers - saving registers failed, &quot;
 l_string|&quot;errno = %d&bslash;n&quot;
 comma
+op_minus
 id|err
 )paren
 suffix:semicolon
@@ -1217,15 +1432,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-m_setjmp
+id|sigsetjmp
+c_func
 (paren
 id|my_buf
+comma
+l_int|1
 )paren
 op_eq
 l_int|0
 )paren
 (brace
-m_longjmp
+id|siglongjmp
+c_func
 (paren
 op_star
 id|next_buf
@@ -1303,9 +1522,12 @@ id|initial_jmpbuf
 suffix:semicolon
 id|n
 op_assign
-m_setjmp
+id|sigsetjmp
+c_func
 (paren
 id|initial_jmpbuf
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -1361,7 +1583,8 @@ id|cb_proc
 id|cb_arg
 )paren
 suffix:semicolon
-m_longjmp
+id|siglongjmp
+c_func
 (paren
 op_star
 id|cb_back
@@ -1404,7 +1627,8 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-m_longjmp
+id|siglongjmp
+c_func
 (paren
 op_star
 op_star
@@ -1516,15 +1740,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-m_setjmp
+id|sigsetjmp
+c_func
 (paren
 id|here
+comma
+l_int|1
 )paren
 op_eq
 l_int|0
 )paren
 (brace
-m_longjmp
+id|siglongjmp
+c_func
 (paren
 id|initial_jmpbuf
 comma
@@ -1563,7 +1791,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-m_longjmp
+id|siglongjmp
+c_func
 (paren
 id|initial_jmpbuf
 comma
@@ -1584,7 +1813,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-m_longjmp
+id|siglongjmp
+c_func
 (paren
 id|initial_jmpbuf
 comma
@@ -1615,12 +1845,16 @@ c_func
 (paren
 l_string|&quot;/proc/mm&quot;
 comma
+id|of_cloexec
+c_func
+(paren
 id|of_write
 c_func
 (paren
 id|OPENFLAGS
 c_func
 (paren
+)paren
 )paren
 )paren
 comma
@@ -1636,8 +1870,7 @@ l_int|0
 )paren
 (brace
 r_return
-op_minus
-id|errno
+id|fd
 suffix:semicolon
 )brace
 r_if
@@ -1705,9 +1938,10 @@ id|printk
 c_func
 (paren
 l_string|&quot;new_mm : /proc/mm copy_segments failed, &quot;
-l_string|&quot;errno = %d&bslash;n&quot;
+l_string|&quot;err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|n
 )paren
 suffix:semicolon
 )brace
@@ -1728,6 +1962,7 @@ id|mm_fd
 r_int
 id|err
 suffix:semicolon
+macro_line|#warning need cpu pid in switch_mm_skas
 id|err
 op_assign
 id|ptrace
@@ -1736,6 +1971,9 @@ c_func
 id|PTRACE_SWITCH_MM
 comma
 id|userspace_pid
+(braket
+l_int|0
+)braket
 comma
 l_int|0
 comma
@@ -1766,10 +2004,14 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#warning need to loop over userspace_pids in kill_off_processes_skas
 id|os_kill_process
 c_func
 (paren
 id|userspace_pid
+(braket
+l_int|0
+)braket
 comma
 l_int|1
 )paren

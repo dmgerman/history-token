@@ -653,6 +653,7 @@ comma
 id|hugetlb_setup
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SYSCTL
 DECL|function|update_and_free_page
 r_static
 r_void
@@ -1027,7 +1028,6 @@ r_return
 id|nr_huge_pages
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SYSCTL
 DECL|function|hugetlb_sysctl_handler
 r_int
 id|hugetlb_sysctl_handler

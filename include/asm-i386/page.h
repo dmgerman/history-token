@@ -248,6 +248,10 @@ r_return
 id|order
 suffix:semicolon
 )brace
+r_extern
+r_int
+id|sysctl_legacy_va_layout
+suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#ifdef __ASSEMBLY__
 DECL|macro|__PAGE_OFFSET

@@ -2,7 +2,6 @@ multiline_comment|/*&n; * Copyright (C) 2001 Lennert Buytenhek (buytenh@gnu.org)
 macro_line|#include &quot;linux/init.h&quot;
 macro_line|#include &quot;linux/netdevice.h&quot;
 macro_line|#include &quot;linux/etherdevice.h&quot;
-macro_line|#include &quot;linux/init.h&quot;
 macro_line|#include &quot;net_kern.h&quot;
 macro_line|#include &quot;net_user.h&quot;
 macro_line|#include &quot;etap.h&quot;

@@ -2448,8 +2448,6 @@ comma
 op_amp
 id|contig_page_data
 comma
-l_int|NULL
-comma
 id|zones_size
 comma
 id|__pa

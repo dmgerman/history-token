@@ -9,9 +9,7 @@ r_struct
 id|task_struct
 suffix:semicolon
 macro_line|#include &quot;linux/config.h&quot;
-macro_line|#include &quot;linux/signal.h&quot;
 macro_line|#include &quot;asm/ptrace.h&quot;
-macro_line|#include &quot;asm/siginfo.h&quot;
 macro_line|#include &quot;choose-mode.h&quot;
 r_struct
 id|mm_struct
@@ -19,56 +17,7 @@ suffix:semicolon
 DECL|macro|current_text_addr
 mdefine_line|#define current_text_addr() ((void *) 0)
 DECL|macro|cpu_relax
-mdefine_line|#define cpu_relax()&t;do ; while (0)
-macro_line|#ifdef CONFIG_MODE_TT
-DECL|struct|proc_tt_mode
-r_struct
-id|proc_tt_mode
-(brace
-DECL|member|extern_pid
-r_int
-id|extern_pid
-suffix:semicolon
-DECL|member|tracing
-r_int
-id|tracing
-suffix:semicolon
-DECL|member|switch_pipe
-r_int
-id|switch_pipe
-(braket
-l_int|2
-)braket
-suffix:semicolon
-DECL|member|singlestep_syscall
-r_int
-id|singlestep_syscall
-suffix:semicolon
-DECL|member|vm_seq
-r_int
-id|vm_seq
-suffix:semicolon
-)brace
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_MODE_SKAS
-DECL|struct|proc_skas_mode
-r_struct
-id|proc_skas_mode
-(brace
-DECL|member|switch_buf
-r_void
-op_star
-id|switch_buf
-suffix:semicolon
-DECL|member|fork_buf
-r_void
-op_star
-id|fork_buf
-suffix:semicolon
-)brace
-suffix:semicolon
-macro_line|#endif
+mdefine_line|#define cpu_relax()   barrier()
 DECL|struct|thread_struct
 r_struct
 id|thread_struct
@@ -99,6 +48,11 @@ suffix:semicolon
 DECL|member|err
 r_int
 id|err
+suffix:semicolon
+DECL|member|trap_no
+r_int
+r_int
+id|trap_no
 suffix:semicolon
 DECL|member|fault_addr
 r_void
@@ -134,16 +88,55 @@ suffix:semicolon
 r_union
 (brace
 macro_line|#ifdef CONFIG_MODE_TT
-DECL|member|tt
 r_struct
-id|proc_tt_mode
+(brace
+DECL|member|extern_pid
+r_int
+id|extern_pid
+suffix:semicolon
+DECL|member|tracing
+r_int
+id|tracing
+suffix:semicolon
+DECL|member|switch_pipe
+r_int
+id|switch_pipe
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|singlestep_syscall
+r_int
+id|singlestep_syscall
+suffix:semicolon
+DECL|member|vm_seq
+r_int
+id|vm_seq
+suffix:semicolon
+DECL|member|tt
+)brace
 id|tt
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_MODE_SKAS
-DECL|member|skas
 r_struct
-id|proc_skas_mode
+(brace
+DECL|member|switch_buf
+r_void
+op_star
+id|switch_buf
+suffix:semicolon
+DECL|member|fork_buf
+r_void
+op_star
+id|fork_buf
+suffix:semicolon
+DECL|member|mm_count
+r_int
+id|mm_count
+suffix:semicolon
+DECL|member|skas
+)brace
 id|skas
 suffix:semicolon
 macro_line|#endif
@@ -252,17 +245,6 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|free_task_struct
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|release_thread
 c_func
 (paren
@@ -312,6 +294,17 @@ id|u
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|prepare_to_copy
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+suffix:semicolon
+r_extern
 r_int
 r_int
 id|thread_saved_pc
@@ -323,6 +316,25 @@ op_star
 id|t
 )paren
 suffix:semicolon
+DECL|function|mm_copy_segments
+r_static
+r_inline
+r_void
+id|mm_copy_segments
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|from_mm
+comma
+r_struct
+id|mm_struct
+op_star
+id|new_mm
+)paren
+(brace
+)brace
 DECL|macro|init_stack
 mdefine_line|#define init_stack&t;(init_thread_union.stack)
 multiline_comment|/*&n; * User space process size: 3GB (default).&n; */

@@ -3522,6 +3522,19 @@ id|proc_modules_operations
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_SCHEDSTATS
+id|create_seq_entry
+c_func
+(paren
+l_string|&quot;schedstat&quot;
+comma
+l_int|0
+comma
+op_amp
+id|proc_schedstat_operations
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_PROC_KCORE
 id|proc_root_kcore
 op_assign

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003 Jeff Dike (jdike@addtoit.com)&n; * Licensed under the GPL&n; */
 macro_line|#ifndef __UM_PAGE_H
 DECL|macro|__UM_PAGE_H
 mdefine_line|#define __UM_PAGE_H
@@ -5,7 +6,6 @@ r_struct
 id|page
 suffix:semicolon
 macro_line|#include &quot;asm/arch/page.h&quot;
-macro_line|#include &quot;asm/bug.h&quot;
 DECL|macro|__pa
 macro_line|#undef __pa
 DECL|macro|__va
@@ -40,7 +40,7 @@ mdefine_line|#define __va_space (8*1024*1024)
 r_extern
 r_int
 r_int
-id|region_pa
+id|to_phys
 c_func
 (paren
 r_void
@@ -51,7 +51,7 @@ suffix:semicolon
 r_extern
 r_void
 op_star
-id|region_va
+id|to_virt
 c_func
 (paren
 r_int
@@ -60,64 +60,21 @@ id|phys
 )paren
 suffix:semicolon
 DECL|macro|__pa
-mdefine_line|#define __pa(virt) region_pa((void *) (virt))
+mdefine_line|#define __pa(virt) to_phys((void *) virt)
 DECL|macro|__va
-mdefine_line|#define __va(phys) region_va((unsigned long) (phys))
-r_extern
-r_int
-r_int
-id|page_to_pfn
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|page
-op_star
-id|pfn_to_page
-c_func
-(paren
-r_int
-r_int
-id|pfn
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|page
-op_star
-id|phys_to_page
-c_func
-(paren
-r_int
-r_int
-id|phys
-)paren
-suffix:semicolon
-DECL|macro|virt_to_page
-mdefine_line|#define virt_to_page(v) (phys_to_page(__pa(v)))
-r_extern
-r_struct
-id|page
-op_star
-id|page_mem_map
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-)paren
-suffix:semicolon
+mdefine_line|#define __va(phys) to_virt((unsigned long) phys)
+DECL|macro|page_to_pfn
+mdefine_line|#define page_to_pfn(page) ((page) - mem_map)
+DECL|macro|pfn_to_page
+mdefine_line|#define pfn_to_page(pfn) (mem_map + (pfn))
+DECL|macro|phys_to_pfn
+mdefine_line|#define phys_to_pfn(p) ((p) &gt;&gt; PAGE_SHIFT)
+DECL|macro|pfn_to_phys
+mdefine_line|#define pfn_to_phys(pfn) ((pfn) &lt;&lt; PAGE_SHIFT)
 DECL|macro|pfn_valid
-mdefine_line|#define pfn_valid(pfn) (page_mem_map(pfn_to_page(pfn)) != NULL)
+mdefine_line|#define pfn_valid(pfn) ((pfn) &lt; max_mapnr)
 DECL|macro|virt_addr_valid
-mdefine_line|#define virt_addr_valid(v) pfn_valid(__pa(v) &gt;&gt; PAGE_SHIFT)
+mdefine_line|#define virt_addr_valid(v) pfn_valid(phys_to_pfn(__pa(v)))
 r_extern
 r_struct
 id|page
@@ -139,5 +96,21 @@ id|order
 suffix:semicolon
 DECL|macro|HAVE_ARCH_VALIDATE
 mdefine_line|#define HAVE_ARCH_VALIDATE
+r_extern
+r_void
+id|arch_free_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+id|order
+)paren
+suffix:semicolon
+DECL|macro|HAVE_ARCH_FREE_PAGE
+mdefine_line|#define HAVE_ARCH_FREE_PAGE
 macro_line|#endif
 eof

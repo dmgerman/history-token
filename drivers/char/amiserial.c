@@ -1176,7 +1176,7 @@ macro_line|#if (defined(SERIAL_DEBUG_OPEN) || defined(SERIAL_DEBUG_INTR))
 id|printk
 c_func
 (paren
-l_string|&quot;ttyS%02d CD now %s...&quot;
+l_string|&quot;ttyS%d CD now %s...&quot;
 comma
 id|info-&gt;line
 comma
@@ -8122,7 +8122,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ttyS%02d is the amiga builtin serial port&bslash;n&quot;
+l_string|&quot;ttyS%d is the amiga builtin serial port&bslash;n&quot;
 comma
 id|state-&gt;line
 )paren

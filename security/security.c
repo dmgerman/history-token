@@ -113,7 +113,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; * security_scaffolding_startup - initialzes the security scaffolding framework&n; *&n; * This should be called early in the kernel initialization sequence.&n; */
+multiline_comment|/**&n; * security_scaffolding_startup - initializes the security scaffolding framework&n; *&n; * This should be called early in the kernel initialization sequence.&n; */
 DECL|function|security_scaffolding_startup
 r_int
 id|__init
@@ -393,7 +393,7 @@ id|ops
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * capable - calls the currently loaded security module&squot;s capable() function with the specified capability&n; * @cap: the requested capability level.&n; *&n; * This function calls the currently loaded security module&squot;s cabable()&n; * function with a pointer to the current task and the specified @cap value.&n; *&n; * This allows the security module to implement the capable function call&n; * however it chooses to.&n; */
+multiline_comment|/**&n; * capable - calls the currently loaded security module&squot;s capable() function with the specified capability&n; * @cap: the requested capability level.&n; *&n; * This function calls the currently loaded security module&squot;s capable()&n; * function with a pointer to the current task and the specified @cap value.&n; *&n; * This allows the security module to implement the capable function call&n; * however it chooses to.&n; */
 DECL|function|capable
 r_int
 id|capable

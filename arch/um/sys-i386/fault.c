@@ -1,18 +1,37 @@
-multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+multiline_comment|/* &n; * Copyright (C) 2002 - 2004 Jeff Dike (jdike@addtoit.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &quot;sysdep/ptrace.h&quot;
 macro_line|#include &quot;sysdep/sigcontext.h&quot;
-r_extern
+multiline_comment|/* These two are from asm-um/uaccess.h and linux/module.h, check them. */
+DECL|struct|exception_table_entry
+r_struct
+id|exception_table_entry
+(brace
+DECL|member|insn
 r_int
 r_int
-id|search_exception_table
+id|insn
+suffix:semicolon
+DECL|member|fixup
+r_int
+r_int
+id|fixup
+suffix:semicolon
+)brace
+suffix:semicolon
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|search_exception_tables
 c_func
 (paren
 r_int
 r_int
-id|addr
+id|add
 )paren
 suffix:semicolon
+multiline_comment|/* Compare this to arch/i386/mm/extable.c:fixup_exception() */
 DECL|function|arch_fixup
 r_int
 id|arch_fixup
@@ -34,8 +53,10 @@ id|sc
 op_assign
 id|sc_ptr
 suffix:semicolon
-r_int
-r_int
+r_const
+r_struct
+id|exception_table_entry
+op_star
 id|fixup
 suffix:semicolon
 id|fixup
@@ -56,7 +77,7 @@ l_int|0
 (brace
 id|sc-&gt;eip
 op_assign
-id|fixup
+id|fixup-&gt;fixup
 suffix:semicolon
 r_return
 l_int|1

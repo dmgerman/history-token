@@ -1,7 +1,6 @@
 macro_line|#ifndef __ASM_MACH_IPI_H
 DECL|macro|__ASM_MACH_IPI_H
 mdefine_line|#define __ASM_MACH_IPI_H
-r_inline
 r_void
 id|send_IPI_mask_sequence
 c_func

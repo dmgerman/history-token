@@ -4,7 +4,7 @@ DECL|macro|ZFCP_EXT_H
 mdefine_line|#define ZFCP_EXT_H
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_EXT_REVISION
-mdefine_line|#define ZFCP_EXT_REVISION &quot;$Revision: 1.51 $&quot;
+mdefine_line|#define ZFCP_EXT_REVISION &quot;$Revision: 1.53 $&quot;
 macro_line|#include &quot;zfcp_def.h&quot;
 r_extern
 r_struct
@@ -666,7 +666,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/******************************** FCP ****************************************/
+multiline_comment|/******************************* FC/FCP **************************************/
 r_extern
 r_int
 id|zfcp_nameserver_enqueue
@@ -684,6 +684,28 @@ c_func
 (paren
 r_struct
 id|zfcp_erp_action
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|zfcp_check_ct_response
+c_func
+(paren
+r_struct
+id|ct_hdr
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|zfcp_handle_els_rjt
+c_func
+(paren
+id|u32
+comma
+r_struct
+id|zfcp_ls_rjt_par
 op_star
 )paren
 suffix:semicolon

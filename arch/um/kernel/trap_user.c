@@ -1,11 +1,9 @@
 multiline_comment|/* &n; * Copyright (C) 2000, 2001, 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;errno.h&gt;
-macro_line|#include &lt;fcntl.h&gt;
 macro_line|#include &lt;setjmp.h&gt;
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;sys/time.h&gt;
-macro_line|#include &lt;sys/ioctl.h&gt;
 macro_line|#include &lt;sys/ptrace.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -50,9 +48,16 @@ comma
 id|SIGCONT
 )paren
 suffix:semicolon
-r_while
-c_loop
+r_do
+(brace
+r_int
+id|n
+suffix:semicolon
+id|CATCH_EINTR
+c_func
 (paren
+id|n
+op_assign
 id|waitpid
 c_func
 (paren
@@ -62,10 +67,15 @@ l_int|NULL
 comma
 l_int|0
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|n
 OG
 l_int|0
 )paren
-(brace
 id|kill
 c_func
 (paren
@@ -73,6 +83,17 @@ id|pid
 comma
 id|SIGCONT
 )paren
+suffix:semicolon
+r_else
+r_break
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+(brace
 suffix:semicolon
 )brace
 )brace
@@ -382,6 +403,21 @@ l_int|0
 )brace
 comma
 (braket
+id|SIGWINCH
+)braket
+(brace
+dot
+id|handler
+op_assign
+id|winch
+comma
+dot
+id|is_irq
+op_assign
+l_int|1
+)brace
+comma
+(braket
 id|SIGBUS
 )braket
 (brace
@@ -503,10 +539,6 @@ suffix:semicolon
 r_extern
 r_int
 id|timer_irq_inited
-comma
-id|missed_ticks
-(braket
-)braket
 suffix:semicolon
 DECL|function|alarm_handler
 r_void
@@ -531,15 +563,6 @@ id|timer_irq_inited
 r_return
 suffix:semicolon
 )brace
-id|missed_ticks
-(braket
-id|cpu
-c_func
-(paren
-)paren
-)braket
-op_increment
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -603,7 +626,8 @@ id|buf
 op_assign
 id|b
 suffix:semicolon
-m_longjmp
+id|siglongjmp
+c_func
 (paren
 op_star
 id|buf

@@ -1,4 +1,4 @@
-macro_line|#include &lt;arpa/inet.h&gt;
+macro_line|#include &lt;netinet/in.h&gt;
 macro_line|#include &lt;stdint.h&gt;
 macro_line|#include &lt;ctype.h&gt;
 macro_line|#include &lt;errno.h&gt;

@@ -8991,7 +8991,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ttyS%02d at irq 0x%02x is an %s&bslash;n&quot;
+l_string|&quot;ttyS%d at irq 0x%02x is an %s&bslash;n&quot;
 comma
 id|i
 comma

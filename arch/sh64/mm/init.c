@@ -322,6 +322,16 @@ id|MAX_LOW_PFN
 op_minus
 id|START_PFN
 suffix:semicolon
+id|NODE_DATA
+c_func
+(paren
+l_int|0
+)paren
+op_member_access_from_pointer
+id|node_mem_map
+op_assign
+l_int|NULL
+suffix:semicolon
 id|free_area_init_node
 c_func
 (paren
@@ -332,8 +342,6 @@ c_func
 (paren
 l_int|0
 )paren
-comma
-l_int|0
 comma
 id|zones_size
 comma

@@ -1,6 +1,6 @@
-macro_line|#ifndef __UM_MODULE_H
-DECL|macro|__UM_MODULE_H
-mdefine_line|#define __UM_MODULE_H
+macro_line|#ifndef __UM_MODULE_I386_H
+DECL|macro|__UM_MODULE_I386_H
+mdefine_line|#define __UM_MODULE_I386_H
 multiline_comment|/* UML is simple */
 DECL|struct|mod_arch_specific
 r_struct

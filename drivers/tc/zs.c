@@ -2527,7 +2527,7 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
 (paren
-l_string|&quot;starting up ttyS%02d (irq %d)...&quot;
+l_string|&quot;starting up ttyS%d (irq %d)...&quot;
 comma
 id|info-&gt;line
 comma
@@ -5699,7 +5699,7 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
 (paren
-l_string|&quot;rs_close ttyS%02d, count = %d&bslash;n&quot;
+l_string|&quot;rs_close ttyS%d, count = %d&bslash;n&quot;
 comma
 id|info-&gt;line
 comma
@@ -5750,7 +5750,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;rs_close: bad serial port count for ttyS%02d: %d&bslash;n&quot;
+l_string|&quot;rs_close: bad serial port count for ttyS%d: %d&bslash;n&quot;
 comma
 id|info-&gt;line
 comma
@@ -6341,7 +6341,7 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
 (paren
-l_string|&quot;block_til_ready before block: ttyS%02d, count = %d&bslash;n&quot;
+l_string|&quot;block_til_ready before block: ttyS%d, count = %d&bslash;n&quot;
 comma
 id|info-&gt;line
 comma
@@ -6512,7 +6512,7 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
 (paren
-l_string|&quot;block_til_ready blocking: ttyS%02d, count = %d&bslash;n&quot;
+l_string|&quot;block_til_ready blocking: ttyS%d, count = %d&bslash;n&quot;
 comma
 id|info-&gt;line
 comma
@@ -6560,7 +6560,7 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
 (paren
-l_string|&quot;block_til_ready after blocking: ttyS%02d, count = %d&bslash;n&quot;
+l_string|&quot;block_til_ready after blocking: ttyS%d, count = %d&bslash;n&quot;
 comma
 id|info-&gt;line
 comma
@@ -7788,7 +7788,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ttyS%02d at 0x%08x (irq = %d)&quot;
+l_string|&quot;ttyS%d at 0x%08x (irq = %d)&quot;
 comma
 id|info-&gt;line
 comma

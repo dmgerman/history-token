@@ -3,6 +3,7 @@ macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
 macro_line|#include &lt;sys/ptrace.h&gt;
 macro_line|#include &quot;mem_user.h&quot;
+macro_line|#include &quot;mem.h&quot;
 macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;os.h&quot;
 macro_line|#include &quot;proc_mm.h&quot;
@@ -40,15 +41,15 @@ r_struct
 id|proc_mm_op
 id|map
 suffix:semicolon
-r_struct
-id|mem_region
-op_star
-id|region
+id|__u64
+id|offset
 suffix:semicolon
 r_int
 id|prot
 comma
 id|n
+comma
+id|phys_fd
 suffix:semicolon
 id|prot
 op_assign
@@ -79,12 +80,15 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
-id|region
+id|phys_fd
 op_assign
-id|phys_region
+id|phys_mapping
 c_func
 (paren
 id|phys
+comma
+op_amp
+id|offset
 )paren
 suffix:semicolon
 id|map
@@ -133,16 +137,12 @@ comma
 dot
 id|fd
 op_assign
-id|region-&gt;fd
+id|phys_fd
 comma
 dot
 id|offset
 op_assign
-id|phys_offset
-c_func
-(paren
-id|phys
-)paren
+id|offset
 )brace
 )brace
 )brace
@@ -178,9 +178,10 @@ id|map
 id|printk
 c_func
 (paren
-l_string|&quot;map : /proc/mm map failed, errno = %d&bslash;n&quot;
+l_string|&quot;map : /proc/mm map failed, err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|n
 )paren
 suffix:semicolon
 )brace
@@ -266,13 +267,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|n
-op_ne
-l_int|0
-)paren
-op_logical_and
-(paren
 id|n
 op_ne
 r_sizeof
@@ -280,12 +274,33 @@ r_sizeof
 id|unmap
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|n
+OL
+l_int|0
+)paren
+(brace
+r_return
+id|n
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|n
+OG
+l_int|0
 )paren
 (brace
 r_return
 op_minus
-id|errno
+id|EIO
 suffix:semicolon
+)brace
 )brace
 r_return
 l_int|0
@@ -421,13 +436,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|n
-op_ne
-l_int|0
-)paren
-op_logical_and
-(paren
 id|n
 op_ne
 r_sizeof
@@ -435,8 +443,19 @@ r_sizeof
 id|protect
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|n
+op_eq
+l_int|0
 )paren
 (brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -446,15 +465,16 @@ id|must_succeed
 id|panic
 c_func
 (paren
-l_string|&quot;protect failed, errno = %d&quot;
+l_string|&quot;protect failed, err = %d&quot;
 comma
-id|errno
+op_minus
+id|n
 )paren
 suffix:semicolon
 )brace
 r_return
 op_minus
-id|errno
+id|EIO
 suffix:semicolon
 )brace
 r_return

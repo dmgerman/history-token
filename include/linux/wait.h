@@ -227,6 +227,9 @@ id|q-&gt;task_list
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Used to distinguish between sync and async io wait context:&n; * sync i/o typically specifies a NULL wait queue entry or a wait&n; * queue entry bound to a task (current task) to wake up.&n; * aio specifies a wait queue entry with an async notification&n; * callback routine, not associated with any task.&n; */
+DECL|macro|is_sync_wait
+mdefine_line|#define is_sync_wait(wait)&t;(!(wait) || ((wait)-&gt;task))
 r_extern
 r_void
 id|FASTCALL

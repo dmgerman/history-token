@@ -4,7 +4,7 @@ DECL|macro|ZFCP_DEF_H
 mdefine_line|#define ZFCP_DEF_H
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_DEF_REVISION
-mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.81 $&quot;
+mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.83 $&quot;
 multiline_comment|/*************************** INCLUDES *****************************************/
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -614,24 +614,13 @@ DECL|macro|ZFCP_LS_RJT_COMMAND_NOT_SUPPORTED
 mdefine_line|#define ZFCP_LS_RJT_COMMAND_NOT_SUPPORTED&t;0x0B
 DECL|macro|ZFCP_LS_RJT_VENDOR_UNIQUE_ERROR
 mdefine_line|#define ZFCP_LS_RJT_VENDOR_UNIQUE_ERROR&t;&t;0xFF
-DECL|struct|zfcp_ls_rjt
+DECL|struct|zfcp_ls_rjt_par
 r_struct
-id|zfcp_ls_rjt
+id|zfcp_ls_rjt_par
 (brace
-DECL|member|code
+DECL|member|action
 id|u8
-id|code
-suffix:semicolon
-DECL|member|field
-id|u8
-id|field
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|reserved
-id|u8
-id|reserved
+id|action
 suffix:semicolon
 DECL|member|reason_code
 id|u8
@@ -1191,6 +1180,22 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+DECL|struct|zfcp_rc_entry
+r_struct
+id|zfcp_rc_entry
+(brace
+DECL|member|code
+id|u8
+id|code
+suffix:semicolon
+DECL|member|description
+r_const
+r_char
+op_star
+id|description
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * FC-GS-2 stuff&n; */
 DECL|macro|ZFCP_CT_REVISION
 mdefine_line|#define ZFCP_CT_REVISION&t;&t;0x01
@@ -1202,12 +1207,12 @@ DECL|macro|ZFCP_CT_SYNCHRONOUS
 mdefine_line|#define ZFCP_CT_SYNCHRONOUS&t;&t;0x00
 DECL|macro|ZFCP_CT_GID_PN
 mdefine_line|#define ZFCP_CT_GID_PN&t;&t;&t;0x0121
-DECL|macro|ZFCP_CT_GA_NXT
-mdefine_line|#define ZFCP_CT_GA_NXT&t;&t;&t;0x0100
 DECL|macro|ZFCP_CT_MAX_SIZE
 mdefine_line|#define ZFCP_CT_MAX_SIZE&t;&t;0x1020
 DECL|macro|ZFCP_CT_ACCEPT
 mdefine_line|#define ZFCP_CT_ACCEPT&t;&t;&t;0x8002
+DECL|macro|ZFCP_CT_REJECT
+mdefine_line|#define ZFCP_CT_REJECT&t;&t;&t;0x8001
 multiline_comment|/*&n; * FC-GS-4 stuff&n; */
 DECL|macro|ZFCP_CT_TIMEOUT
 mdefine_line|#define ZFCP_CT_TIMEOUT&t;&t;&t;(3 * R_A_TOV)
@@ -2098,7 +2103,7 @@ suffix:semicolon
 suffix:semicolon
 DECL|typedef|zfcp_send_els_handler_t
 r_typedef
-r_int
+r_void
 (paren
 op_star
 id|zfcp_send_els_handler_t

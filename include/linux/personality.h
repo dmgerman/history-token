@@ -70,6 +70,11 @@ id|MMAP_PAGE_ZERO
 op_assign
 l_int|0x0100000
 comma
+DECL|enumerator|ADDR_COMPAT_LAYOUT
+id|ADDR_COMPAT_LAYOUT
+op_assign
+l_int|0x0200000
+comma
 DECL|enumerator|READ_IMPLIES_EXEC
 id|READ_IMPLIES_EXEC
 op_assign

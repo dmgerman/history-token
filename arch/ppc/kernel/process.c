@@ -2212,9 +2212,6 @@ id|do_fork
 c_func
 (paren
 id|clone_flags
-op_amp
-op_complement
-id|CLONE_IDLETASK
 comma
 id|usp
 comma

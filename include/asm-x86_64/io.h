@@ -293,14 +293,105 @@ DECL|macro|__raw_readl
 mdefine_line|#define __raw_readl readl
 DECL|macro|__raw_readq
 mdefine_line|#define __raw_readq readq
-DECL|macro|writeb
-mdefine_line|#define writeb(b,addr) (*(volatile unsigned char *) (addr) = (b))
-DECL|macro|writew
-mdefine_line|#define writew(b,addr) (*(volatile unsigned short *) (addr) = (b))
+macro_line|#ifdef CONFIG_UNORDERED_IO
+DECL|function|__writel
+r_static
+r_inline
+r_void
+id|__writel
+c_func
+(paren
+id|u32
+id|val
+comma
+r_void
+op_star
+id|addr
+)paren
+(brace
+r_volatile
+id|u32
+op_star
+id|target
+op_assign
+id|addr
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;movnti %1,%0&quot;
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+op_star
+id|target
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|val
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|function|__writeq
+r_static
+r_inline
+r_void
+id|__writeq
+c_func
+(paren
+id|u64
+id|val
+comma
+r_void
+op_star
+id|addr
+)paren
+(brace
+r_volatile
+id|u64
+op_star
+id|target
+op_assign
+id|addr
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;movnti %1,%0&quot;
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+op_star
+id|target
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|val
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|macro|writeq
+mdefine_line|#define writeq(val,addr) __writeq((val),(void *)(addr))
+DECL|macro|writel
+mdefine_line|#define writel(val,addr) __writel((val),(void *)(addr))
+macro_line|#else
 DECL|macro|writel
 mdefine_line|#define writel(b,addr) (*(volatile unsigned int *) (addr) = (b))
 DECL|macro|writeq
 mdefine_line|#define writeq(b,addr) (*(volatile unsigned long *) (addr) = (b))
+macro_line|#endif
+DECL|macro|writeb
+mdefine_line|#define writeb(b,addr) (*(volatile unsigned char *) (addr) = (b))
+DECL|macro|writew
+mdefine_line|#define writew(b,addr) (*(volatile unsigned short *) (addr) = (b))
 DECL|macro|__raw_writeb
 mdefine_line|#define __raw_writeb writeb
 DECL|macro|__raw_writew
@@ -521,13 +612,12 @@ DECL|macro|dma_cache_wback_inv
 mdefine_line|#define dma_cache_wback_inv(_start,_size)&t;do { } while (0)
 DECL|macro|flush_write_buffers
 mdefine_line|#define flush_write_buffers() 
-multiline_comment|/* Disable vmerge for now. Need to fix the block layer code&n;   to check for non iommu addresses first.&n;   When the IOMMU is force it is safe to enable. */
 r_extern
 r_int
-id|iommu_merge
+id|iommu_bio_merge
 suffix:semicolon
 DECL|macro|BIO_VMERGE_BOUNDARY
-mdefine_line|#define BIO_VMERGE_BOUNDARY (iommu_merge ? 4096 : 0)
+mdefine_line|#define BIO_VMERGE_BOUNDARY iommu_bio_merge
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

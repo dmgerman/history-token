@@ -37,18 +37,14 @@ DECL|macro|PG_writeback
 mdefine_line|#define PG_writeback&t;&t;13&t;/* Page is under writeback */
 DECL|macro|PG_nosave
 mdefine_line|#define PG_nosave&t;&t;14&t;/* Used for system suspend/resume */
-DECL|macro|PG_maplock
-mdefine_line|#define PG_maplock&t;&t;15&t;/* Lock bit for rmap to ptes */
+DECL|macro|PG_compound
+mdefine_line|#define PG_compound&t;&t;15&t;/* Part of a compound page */
 DECL|macro|PG_swapcache
 mdefine_line|#define PG_swapcache&t;&t;16&t;/* Swap page: swp_entry_t in private */
 DECL|macro|PG_mappedtodisk
 mdefine_line|#define PG_mappedtodisk&t;&t;17&t;/* Has blocks allocated on-disk */
 DECL|macro|PG_reclaim
 mdefine_line|#define PG_reclaim&t;&t;18&t;/* To be reclaimed asap */
-DECL|macro|PG_compound
-mdefine_line|#define PG_compound&t;&t;19&t;/* Part of a compound page */
-DECL|macro|PG_anon
-mdefine_line|#define PG_anon&t;&t;&t;20&t;/* Anonymous: anon_vma in mapping */
 multiline_comment|/*&n; * Global page accounting.  One instance per CPU.  Only unsigned longs are&n; * allowed.&n; */
 DECL|struct|page_state
 r_struct
@@ -416,6 +412,8 @@ DECL|macro|SetPageReserved
 mdefine_line|#define SetPageReserved(page)&t;set_bit(PG_reserved, &amp;(page)-&gt;flags)
 DECL|macro|ClearPageReserved
 mdefine_line|#define ClearPageReserved(page)&t;clear_bit(PG_reserved, &amp;(page)-&gt;flags)
+DECL|macro|__ClearPageReserved
+mdefine_line|#define __ClearPageReserved(page)&t;__clear_bit(PG_reserved, &amp;(page)-&gt;flags)
 DECL|macro|SetPagePrivate
 mdefine_line|#define SetPagePrivate(page)&t;set_bit(PG_private, &amp;(page)-&gt;flags)
 DECL|macro|ClearPagePrivate
@@ -462,12 +460,6 @@ DECL|macro|SetPageCompound
 mdefine_line|#define SetPageCompound(page)&t;set_bit(PG_compound, &amp;(page)-&gt;flags)
 DECL|macro|ClearPageCompound
 mdefine_line|#define ClearPageCompound(page)&t;clear_bit(PG_compound, &amp;(page)-&gt;flags)
-DECL|macro|PageAnon
-mdefine_line|#define PageAnon(page)&t;&t;test_bit(PG_anon, &amp;(page)-&gt;flags)
-DECL|macro|SetPageAnon
-mdefine_line|#define SetPageAnon(page)&t;set_bit(PG_anon, &amp;(page)-&gt;flags)
-DECL|macro|ClearPageAnon
-mdefine_line|#define ClearPageAnon(page)&t;clear_bit(PG_anon, &amp;(page)-&gt;flags)
 macro_line|#ifdef CONFIG_SWAP
 DECL|macro|PageSwapCache
 mdefine_line|#define PageSwapCache(page)&t;test_bit(PG_swapcache, &amp;(page)-&gt;flags)

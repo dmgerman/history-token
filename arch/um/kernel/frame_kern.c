@@ -2,7 +2,6 @@ multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * 
 macro_line|#include &quot;asm/ptrace.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
 macro_line|#include &quot;asm/signal.h&quot;
-macro_line|#include &quot;asm/uaccess.h&quot;
 macro_line|#include &quot;asm/ucontext.h&quot;
 macro_line|#include &quot;frame_kern.h&quot;
 macro_line|#include &quot;sigcontext.h&quot;
@@ -98,6 +97,12 @@ id|restorer
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_int
+id|userspace_pid
+(braket
+)braket
+suffix:semicolon
 DECL|function|copy_sc_to_user
 r_static
 r_int
@@ -147,6 +152,11 @@ comma
 id|copy_sc_to_user_skas
 c_func
 (paren
+id|userspace_pid
+(braket
+l_int|0
+)braket
+comma
 id|to
 comma
 id|fp

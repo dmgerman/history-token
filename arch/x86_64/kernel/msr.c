@@ -510,7 +510,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#else /* ! CONFIG_SMP */
+macro_line|#else&t;&t;&t;&t;/* ! CONFIG_SMP */
 DECL|function|do_wrmsr
 r_static
 r_inline
@@ -577,7 +577,7 @@ id|edx
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* ! CONFIG_SMP */
+macro_line|#endif&t;&t;&t;&t;/* ! CONFIG_SMP */
 DECL|function|msr_seek
 r_static
 id|loff_t
@@ -671,11 +671,16 @@ op_star
 id|ppos
 )paren
 (brace
-r_char
+id|u32
 id|__user
 op_star
 id|tmp
 op_assign
+(paren
+id|u32
+id|__user
+op_star
+)paren
 id|buf
 suffix:semicolon
 id|u32
@@ -781,11 +786,18 @@ id|EFAULT
 suffix:semicolon
 id|tmp
 op_add_assign
-l_int|8
+l_int|2
 suffix:semicolon
 )brace
 r_return
+(paren
+(paren
+r_char
+id|__user
+op_star
+)paren
 id|tmp
+)paren
 op_minus
 id|buf
 suffix:semicolon
@@ -816,11 +828,17 @@ id|ppos
 )paren
 (brace
 r_const
-r_char
+id|u32
 id|__user
 op_star
 id|tmp
 op_assign
+(paren
+r_const
+id|u32
+id|__user
+op_star
+)paren
 id|buf
 suffix:semicolon
 id|u32
@@ -924,11 +942,18 @@ id|err
 suffix:semicolon
 id|tmp
 op_add_assign
-l_int|8
+l_int|2
 suffix:semicolon
 )brace
 r_return
+(paren
+(paren
+r_char
+id|__user
+op_star
+)paren
 id|tmp
+)paren
 op_minus
 id|buf
 suffix:semicolon
@@ -950,6 +975,7 @@ op_star
 id|file
 )paren
 (brace
+r_int
 r_int
 id|cpu
 op_assign

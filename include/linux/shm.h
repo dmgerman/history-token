@@ -97,6 +97,8 @@ DECL|macro|SHM_RND
 mdefine_line|#define&t;SHM_RND&t;&t;020000&t;/* round attach address to SHMLBA boundary */
 DECL|macro|SHM_REMAP
 mdefine_line|#define&t;SHM_REMAP&t;040000&t;/* take-over region on attach */
+DECL|macro|SHM_EXEC
+mdefine_line|#define&t;SHM_EXEC&t;0100000&t;/* execution access */
 multiline_comment|/* super user shmctl commands */
 DECL|macro|SHM_LOCK
 mdefine_line|#define SHM_LOCK &t;11

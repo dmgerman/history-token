@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/limits.h&gt;
 macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#ifdef CONFIG_ROOT_NFS
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#endif
@@ -389,6 +390,12 @@ id|ctl_table
 id|pty_table
 (braket
 )braket
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef HAVE_ARCH_PICK_MMAP_LAYOUT
+DECL|variable|sysctl_legacy_va_layout
+r_int
+id|sysctl_legacy_va_layout
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* /proc declarations: */
@@ -1049,7 +1056,7 @@ comma
 dot
 id|mode
 op_assign
-l_int|0644
+l_int|0444
 comma
 dot
 id|proc_handler
@@ -3291,6 +3298,58 @@ id|zero
 comma
 )brace
 comma
+macro_line|#ifdef HAVE_ARCH_PICK_MMAP_LAYOUT
+(brace
+dot
+id|ctl_name
+op_assign
+id|VM_LEGACY_VA_LAYOUT
+comma
+dot
+id|procname
+op_assign
+l_string|&quot;legacy_va_layout&quot;
+comma
+dot
+id|data
+op_assign
+op_amp
+id|sysctl_legacy_va_layout
+comma
+dot
+id|maxlen
+op_assign
+r_sizeof
+(paren
+id|sysctl_legacy_va_layout
+)paren
+comma
+dot
+id|mode
+op_assign
+l_int|0644
+comma
+dot
+id|proc_handler
+op_assign
+op_amp
+id|proc_dointvec
+comma
+dot
+id|strategy
+op_assign
+op_amp
+id|sysctl_intvec
+comma
+dot
+id|extra1
+op_assign
+op_amp
+id|zero
+comma
+)brace
+comma
+macro_line|#endif
 (brace
 dot
 id|ctl_name

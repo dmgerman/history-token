@@ -1082,6 +1082,16 @@ multiline_comment|/* The allocator is very picky about the address of the first&
 macro_line|#if ((PAGE_OFFSET &gt;&gt; PAGE_SHIFT) &amp; ((1UL &lt;&lt; (MAX_ORDER - 1)) - 1))
 macro_line|#error MAX_ORDER is too large for given PAGE_OFFSET (use CONFIG_FORCE_MAX_ZONEORDER to change it)
 macro_line|#endif
+id|NODE_DATA
+c_func
+(paren
+l_int|0
+)paren
+op_member_access_from_pointer
+id|node_mem_map
+op_assign
+l_int|NULL
+suffix:semicolon
 id|free_area_init_node
 (paren
 l_int|0
@@ -1091,8 +1101,6 @@ c_func
 (paren
 l_int|0
 )paren
-comma
-l_int|0
 comma
 id|zones_size
 comma

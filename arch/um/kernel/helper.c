@@ -3,12 +3,12 @@ macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;errno.h&gt;
-macro_line|#include &lt;fcntl.h&gt;
 macro_line|#include &lt;sched.h&gt;
 macro_line|#include &lt;sys/signal.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
+macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;os.h&quot;
 DECL|struct|helper_data
 r_struct
@@ -85,6 +85,9 @@ id|argv
 op_assign
 id|data-&gt;argv
 suffix:semicolon
+r_int
+id|errval
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -133,6 +136,10 @@ comma
 id|argv
 )paren
 suffix:semicolon
+id|errval
+op_assign
+id|errno
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -146,17 +153,17 @@ comma
 id|errno
 )paren
 suffix:semicolon
-id|write
+id|os_write_file
 c_func
 (paren
 id|data-&gt;fd
 comma
 op_amp
-id|errno
+id|errval
 comma
 r_sizeof
 (paren
-id|errno
+id|errval
 )paren
 )paren
 suffix:semicolon
@@ -294,25 +301,26 @@ r_if
 c_cond
 (paren
 id|err
+OL
+l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;run_helper : pipe failed, errno = %d&bslash;n&quot;
+l_string|&quot;run_helper : pipe failed, err = %d&bslash;n&quot;
 comma
 op_minus
 id|err
 )paren
 suffix:semicolon
-r_return
-id|err
+r_goto
+id|out_free
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|fcntl
+id|err
+op_assign
+id|os_set_exec_close
 c_func
 (paren
 id|fds
@@ -320,25 +328,28 @@ id|fds
 l_int|1
 )braket
 comma
-id|F_SETFD
-comma
 l_int|1
 )paren
-op_ne
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
 l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;run_helper : setting FD_CLOEXEC failed, errno = %d&bslash;n&quot;
+l_string|&quot;run_helper : setting FD_CLOEXEC failed, err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|err
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|errno
+r_goto
+id|out_close
 suffix:semicolon
 )brace
 id|sp
@@ -412,12 +423,16 @@ comma
 id|errno
 )paren
 suffix:semicolon
-r_return
+id|err
+op_assign
 op_minus
 id|errno
 suffix:semicolon
+r_goto
+id|out_close
+suffix:semicolon
 )brace
-id|close
+id|os_close_file
 c_func
 (paren
 id|fds
@@ -428,7 +443,7 @@ l_int|1
 suffix:semicolon
 id|n
 op_assign
-id|read
+id|os_read_file
 c_func
 (paren
 id|fds
@@ -456,14 +471,18 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;run_helper : read on pipe failed, errno = %d&bslash;n&quot;
+l_string|&quot;run_helper : read on pipe failed, err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|n
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|errno
+id|err
+op_assign
+id|n
+suffix:semicolon
+r_goto
+id|out_kill
 suffix:semicolon
 )brace
 r_else
@@ -475,6 +494,11 @@ op_ne
 l_int|0
 )paren
 (brace
+id|CATCH_EINTR
+c_func
+(paren
+id|n
+op_assign
 id|waitpid
 c_func
 (paren
@@ -484,11 +508,12 @@ l_int|NULL
 comma
 l_int|0
 )paren
+)paren
 suffix:semicolon
 id|pid
 op_assign
 op_minus
-id|err
+id|errno
 suffix:semicolon
 )brace
 r_if
@@ -516,6 +541,49 @@ id|stack
 suffix:semicolon
 r_return
 id|pid
+suffix:semicolon
+id|out_kill
+suffix:colon
+id|os_kill_process
+c_func
+(paren
+id|pid
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|out_close
+suffix:colon
+id|os_close_file
+c_func
+(paren
+id|fds
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+id|os_close_file
+c_func
+(paren
+id|fds
+(braket
+l_int|1
+)braket
+)paren
+suffix:semicolon
+id|out_free
+suffix:colon
+id|free_stack
+c_func
+(paren
+id|stack
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 DECL|function|run_helper_thread
@@ -681,8 +749,13 @@ c_func
 (paren
 l_string|&quot;run_helper_thread - wait failed, errno = %d&bslash;n&quot;
 comma
-id|pid
+id|errno
 )paren
+suffix:semicolon
+id|pid
+op_assign
+op_minus
+id|errno
 suffix:semicolon
 )brace
 r_if

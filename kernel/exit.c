@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/namespace.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
@@ -153,14 +154,6 @@ id|proc_dentry
 suffix:semicolon
 id|repeat
 suffix:colon
-id|BUG_ON
-c_func
-(paren
-id|p-&gt;state
-OL
-id|TASK_ZOMBIE
-)paren
-suffix:semicolon
 id|atomic_dec
 c_func
 (paren
@@ -2910,13 +2903,10 @@ id|state
 op_assign
 id|TASK_DEAD
 suffix:semicolon
+r_else
 id|tsk-&gt;state
 op_assign
 id|state
-suffix:semicolon
-id|tsk-&gt;flags
-op_or_assign
-id|PF_DEAD
 suffix:semicolon
 multiline_comment|/*&n;&t; * Clear these here so that update_process_times() won&squot;t try to deliver&n;&t; * itimer, profile or rlimit signals to this task while it is in late exit.&n;&t; */
 id|tsk-&gt;it_virt_value
@@ -2936,17 +2926,18 @@ id|rlim_cur
 op_assign
 id|RLIM_INFINITY
 suffix:semicolon
-multiline_comment|/*&n;&t; * In the preemption case it must be impossible for the task&n;&t; * to get runnable again, so use &quot;_raw_&quot; unlock to keep&n;&t; * preempt_count elevated until we schedule().&n;&t; *&n;&t; * To avoid deadlock on SMP, interrupts must be unmasked.  If we&n;&t; * don&squot;t, subsequently called functions (e.g, wait_task_inactive()&n;&t; * via release_task()) will spin, with interrupt flags&n;&t; * unwittingly blocked, until the other task sleeps.  That task&n;&t; * may itself be waiting for smp_call_function() to answer and&n;&t; * complete, and with interrupts blocked that will never happen.&n;&t; */
-id|_raw_write_unlock
+multiline_comment|/*&n;&t; * Get a reference to it so that we can set the state&n;&t; * as the last step. The state-setting only matters if the&n;&t; * current task is releasing itself, to trigger the final&n;&t; * put_task_struct() in finish_task_switch(). (thread self-reap)&n;&t; */
+id|get_task_struct
+c_func
+(paren
+id|tsk
+)paren
+suffix:semicolon
+id|write_unlock_irq
 c_func
 (paren
 op_amp
 id|tasklist_lock
-)paren
-suffix:semicolon
-id|local_irq_enable
-c_func
-(paren
 )paren
 suffix:semicolon
 id|list_for_each_safe
@@ -2994,7 +2985,59 @@ id|state
 op_eq
 id|TASK_DEAD
 )paren
+(brace
+id|lock_cpu_hotplug
+c_func
+(paren
+)paren
+suffix:semicolon
 id|release_task
+c_func
+(paren
+id|tsk
+)paren
+suffix:semicolon
+id|write_lock_irq
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * No preemption may happen from this point on,&n;&t;&t; * or CPU hotplug (and task exit) breaks:&n;&t;&t; */
+id|unlock_cpu_hotplug
+c_func
+(paren
+)paren
+suffix:semicolon
+id|tsk-&gt;state
+op_assign
+id|state
+suffix:semicolon
+id|_raw_write_unlock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+r_else
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|tsk-&gt;flags
+op_or_assign
+id|PF_DEAD
+suffix:semicolon
+id|put_task_struct
 c_func
 (paren
 id|tsk

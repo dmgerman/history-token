@@ -5,6 +5,7 @@ mdefine_line|#define __LINE_H__
 macro_line|#include &quot;linux/list.h&quot;
 macro_line|#include &quot;linux/workqueue.h&quot;
 macro_line|#include &quot;linux/tty.h&quot;
+macro_line|#include &quot;linux/interrupt.h&quot;
 macro_line|#include &quot;asm/semaphore.h&quot;
 macro_line|#include &quot;chan_user.h&quot;
 macro_line|#include &quot;mconsole_kern.h&quot;
@@ -16,6 +17,11 @@ DECL|member|name
 r_char
 op_star
 id|name
+suffix:semicolon
+DECL|member|device_name
+r_char
+op_star
+id|device_name
 suffix:semicolon
 DECL|member|devfs_name
 r_char
@@ -160,42 +166,6 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|LINES_INIT
 mdefine_line|#define LINES_INIT(n) {  num :&t;&t;n }
-r_extern
-r_void
-id|line_interrupt
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|data
-comma
-r_struct
-id|pt_regs
-op_star
-id|unused
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|line_write_interrupt
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|data
-comma
-r_struct
-id|pt_regs
-op_star
-id|unused
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|line_close

@@ -2717,10 +2717,6 @@ c_func
 id|node
 )paren
 comma
-id|vmem_map
-op_plus
-id|pfn_offset
-comma
 id|zones_size
 comma
 id|pfn_offset

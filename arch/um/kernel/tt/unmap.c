@@ -1,8 +1,5 @@
 multiline_comment|/* &n; * Copyright (C) 2000 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
-macro_line|#include &lt;stdio.h&gt;
-macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
-macro_line|#include &quot;user.h&quot;
 DECL|function|switcheroo
 r_int
 id|switcheroo

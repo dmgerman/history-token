@@ -11,7 +11,7 @@ id|cpumask_t
 id|cpu_online_map
 suffix:semicolon
 DECL|macro|smp_processor_id
-mdefine_line|#define smp_processor_id() (current-&gt;thread_info-&gt;cpu)
+mdefine_line|#define smp_processor_id() (current_thread-&gt;cpu)
 DECL|macro|cpu_logical_map
 mdefine_line|#define cpu_logical_map(n) (n)
 DECL|macro|cpu_number_map

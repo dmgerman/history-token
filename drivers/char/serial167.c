@@ -9895,7 +9895,7 @@ multiline_comment|/* info-&gt;timeout */
 id|printk
 c_func
 (paren
-l_string|&quot;ttyS%1d &quot;
+l_string|&quot;ttyS%d &quot;
 comma
 id|info-&gt;line
 )paren

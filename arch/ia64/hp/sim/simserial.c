@@ -3985,7 +3985,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ttyS%02d at 0x%04lx (irq = %d) is a %s&bslash;n&quot;
+l_string|&quot;ttyS%d at 0x%04lx (irq = %d) is a %s&bslash;n&quot;
 comma
 id|state-&gt;line
 comma

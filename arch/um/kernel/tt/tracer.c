@@ -79,7 +79,7 @@ id|data
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 )brace
 DECL|function|tracer_winch_handler
@@ -92,15 +92,17 @@ r_int
 id|sig
 )paren
 (brace
+r_int
+id|n
+suffix:semicolon
 r_char
 id|c
 op_assign
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|write
+id|n
+op_assign
+id|os_write_file
 c_func
 (paren
 id|tracer_winch
@@ -116,6 +118,11 @@ r_sizeof
 id|c
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|n
 op_ne
 r_sizeof
 (paren
@@ -126,9 +133,10 @@ id|c
 id|printk
 c_func
 (paren
-l_string|&quot;tracer_winch_handler - write failed, errno = %d&bslash;n&quot;
+l_string|&quot;tracer_winch_handler - write failed, err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|n
 )paren
 suffix:semicolon
 )brace
@@ -162,12 +170,14 @@ r_if
 c_cond
 (paren
 id|err
+OL
+l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;setup_tracer_winch : os_pipe failed, errno = %d&bslash;n&quot;
+l_string|&quot;setup_tracer_winch : os_pipe failed, err = %d&bslash;n&quot;
 comma
 op_minus
 id|err
@@ -595,11 +605,14 @@ id|tracer_panic
 c_func
 (paren
 l_string|&quot;sleeping_process_signal : Failed to &quot;
-l_string|&quot;continue pid %d, errno = %d&bslash;n&quot;
+l_string|&quot;continue pid %d, signal = %d, &quot;
+l_string|&quot;errno = %d&bslash;n&quot;
 comma
 id|pid
 comma
 id|sig
+comma
+id|errno
 )paren
 suffix:semicolon
 )brace
@@ -635,7 +648,7 @@ l_string|&quot;PTRACE_SYSCALL pid %d, errno = %d&bslash;n&quot;
 comma
 id|pid
 comma
-id|sig
+id|errno
 )paren
 suffix:semicolon
 )brace
@@ -886,6 +899,9 @@ comma
 id|init_proc
 )paren
 suffix:semicolon
+id|CATCH_EINTR
+c_func
+(paren
 id|n
 op_assign
 id|waitpid
@@ -897,6 +913,7 @@ op_amp
 id|status
 comma
 id|WUNTRACED
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1075,6 +1092,7 @@ l_string|&quot;errno = %d&bslash;n&quot;
 comma
 id|debugger_parent
 comma
+op_minus
 id|err
 )paren
 suffix:semicolon
@@ -1134,9 +1152,8 @@ c_loop
 l_int|1
 )paren
 (brace
-r_if
-c_cond
-(paren
+id|CATCH_EINTR
+c_func
 (paren
 id|pid
 op_assign
@@ -1152,6 +1169,11 @@ comma
 id|WUNTRACED
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pid
 op_le
 l_int|0
 )paren
@@ -2115,7 +2137,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_else
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;Unknown debug option : &squot;%s&squot;&bslash;n&quot;

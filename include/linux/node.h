@@ -8,11 +8,6 @@ DECL|struct|node
 r_struct
 id|node
 (brace
-DECL|member|cpumap
-id|cpumask_t
-id|cpumap
-suffix:semicolon
-multiline_comment|/* Bitmap of CPUs on the Node */
 DECL|member|sysdev
 r_struct
 id|sys_device

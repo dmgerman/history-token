@@ -296,6 +296,7 @@ id|level
 comma
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -304,7 +305,7 @@ r_int
 id|old
 op_assign
 (paren
-id|regs.eflags
+id|regs-&gt;eflags
 op_rshift
 l_int|12
 )paren
@@ -346,10 +347,10 @@ op_minus
 id|EPERM
 suffix:semicolon
 )brace
-id|regs.eflags
+id|regs-&gt;eflags
 op_assign
 (paren
-id|regs.eflags
+id|regs-&gt;eflags
 op_amp
 op_complement
 l_int|0x3000UL

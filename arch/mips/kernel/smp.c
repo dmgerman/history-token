@@ -783,44 +783,6 @@ id|cpu_callin_map
 )paren
 suffix:semicolon
 )brace
-DECL|function|fork_by_hand
-r_static
-r_struct
-id|task_struct
-op_star
-id|__init
-id|fork_by_hand
-c_func
-(paren
-r_void
-)paren
-(brace
-r_struct
-id|pt_regs
-id|regs
-suffix:semicolon
-multiline_comment|/*&n;&t; * don&squot;t care about the eip and regs settings since&n;&t; * we&squot;ll never reschedule the forked task.&n;&t; */
-r_return
-id|copy_process
-c_func
-(paren
-id|CLONE_VM
-op_or
-id|CLONE_IDLETASK
-comma
-l_int|0
-comma
-op_amp
-id|regs
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Startup the CPU with this logical number&n; */
 DECL|function|do_boot_cpu
 r_static
@@ -841,9 +803,10 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * The following code is purely to make sure&n;&t; * Linux can schedule processes on this slave.&n;&t; */
 id|idle
 op_assign
-id|fork_by_hand
+id|fork_idle
 c_func
 (paren
+id|cpu
 )paren
 suffix:semicolon
 r_if
@@ -861,27 +824,6 @@ c_func
 l_string|&quot;failed fork for CPU %d&bslash;n&quot;
 comma
 id|cpu
-)paren
-suffix:semicolon
-id|wake_up_forked_process
-c_func
-(paren
-id|idle
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * We remove it from the pidhash and the runqueue once we&squot;ve&n;&t; * got the process:&n;&t; */
-id|init_idle
-c_func
-(paren
-id|idle
-comma
-id|cpu
-)paren
-suffix:semicolon
-id|unhash_process
-c_func
-(paren
-id|idle
 )paren
 suffix:semicolon
 id|prom_boot_secondary

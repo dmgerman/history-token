@@ -84,6 +84,7 @@ id|sigsetsize
 comma
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -175,14 +176,13 @@ id|saveset
 comma
 id|newset
 comma
-op_amp
 id|regs
 comma
-id|regs.rip
+id|regs-&gt;rip
 )paren
 suffix:semicolon
 macro_line|#endif 
-id|regs.rax
+id|regs-&gt;rax
 op_assign
 op_minus
 id|EINTR
@@ -208,7 +208,6 @@ c_cond
 id|do_signal
 c_func
 (paren
-op_amp
 id|regs
 comma
 op_amp
@@ -240,6 +239,7 @@ id|uoss
 comma
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -251,7 +251,7 @@ id|uss
 comma
 id|uoss
 comma
-id|regs.rsp
+id|regs-&gt;rsp
 )paren
 suffix:semicolon
 )brace
@@ -535,6 +535,7 @@ c_func
 (paren
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -559,7 +560,7 @@ id|__user
 op_star
 )paren
 (paren
-id|regs.rsp
+id|regs-&gt;rsp
 op_minus
 l_int|8
 )paren
@@ -648,7 +649,6 @@ c_cond
 id|restore_sigcontext
 c_func
 (paren
-op_amp
 id|regs
 comma
 op_amp
@@ -692,7 +692,7 @@ id|frame-&gt;uc.uc_stack
 comma
 l_int|NULL
 comma
-id|regs.rsp
+id|regs-&gt;rsp
 )paren
 op_eq
 op_minus
@@ -709,7 +709,6 @@ suffix:colon
 id|signal_fault
 c_func
 (paren
-op_amp
 id|regs
 comma
 id|frame

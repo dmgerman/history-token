@@ -316,6 +316,13 @@ DECL|macro|FSF_HBA_PORTSTATE_LINKDOWN
 mdefine_line|#define FSF_HBA_PORTSTATE_LINKDOWN&t;&t;0x00000006
 DECL|macro|FSF_HBA_PORTSTATE_ERROR
 mdefine_line|#define FSF_HBA_PORTSTATE_ERROR&t;&t;&t;0x00000007
+multiline_comment|/* IO states of adapter */
+DECL|macro|FSF_IOSTAT_NPORT_RJT
+mdefine_line|#define FSF_IOSTAT_NPORT_RJT&t;&t;&t;0x00000004
+DECL|macro|FSF_IOSTAT_FABRIC_RJT
+mdefine_line|#define FSF_IOSTAT_FABRIC_RJT&t;&t;&t;0x00000005
+DECL|macro|FSF_IOSTAT_LS_RJT
+mdefine_line|#define FSF_IOSTAT_LS_RJT&t;&t;&t;0x00000009
 r_struct
 id|fsf_queue_designator
 suffix:semicolon

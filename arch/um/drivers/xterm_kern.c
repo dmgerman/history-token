@@ -1,9 +1,12 @@
 multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/errno.h&quot;
 macro_line|#include &quot;linux/slab.h&quot;
+macro_line|#include &quot;linux/signal.h&quot;
+macro_line|#include &quot;linux/interrupt.h&quot;
 macro_line|#include &quot;asm/semaphore.h&quot;
 macro_line|#include &quot;asm/irq.h&quot;
 macro_line|#include &quot;irq_user.h&quot;
+macro_line|#include &quot;irq_kern.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;os.h&quot;
 macro_line|#include &quot;xterm.h&quot;
@@ -32,7 +35,7 @@ suffix:semicolon
 suffix:semicolon
 DECL|function|xterm_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|xterm_interrupt
 c_func
 (paren
@@ -80,6 +83,7 @@ id|EAGAIN
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|xterm-&gt;new_fd
@@ -92,6 +96,9 @@ c_func
 op_amp
 id|xterm-&gt;sem
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|xterm_fd
@@ -230,8 +237,12 @@ comma
 id|err
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|err
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|down
@@ -258,6 +269,8 @@ id|pid_out
 op_assign
 id|data-&gt;pid
 suffix:semicolon
+id|out
+suffix:colon
 id|kfree
 c_func
 (paren

@@ -49,6 +49,8 @@ DECL|macro|PT_REGS_SYSCALL_NR
 mdefine_line|#define PT_REGS_SYSCALL_NR(r) UPT_SYSCALL_NR(&amp;(r)-&gt;regs)
 DECL|macro|PT_REGS_SC
 mdefine_line|#define PT_REGS_SC(r) UPT_SC(&amp;(r)-&gt;regs)
+DECL|macro|instruction_pointer
+mdefine_line|#define instruction_pointer(regs) PT_REGS_IP(regs)
 r_struct
 id|task_struct
 suffix:semicolon

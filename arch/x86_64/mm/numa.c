@@ -734,8 +734,6 @@ c_func
 id|nodeid
 )paren
 comma
-l_int|NULL
-comma
 id|zones
 comma
 id|start_pfn

@@ -178,7 +178,7 @@ c_cond
 id|ptrace
 c_func
 (paren
-id|PTRACE_POKEUSR
+id|PTRACE_POKEUSER
 comma
 id|pid
 comma
@@ -200,8 +200,8 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;write_debugregs - ptrace failed, &quot;
-l_string|&quot;errno = %d&bslash;n&quot;
+l_string|&quot;write_debugregs - ptrace failed on &quot;
+l_string|&quot;register %d, errno = %d&bslash;n&quot;
 comma
 id|errno
 )paren
@@ -276,7 +276,7 @@ op_assign
 id|ptrace
 c_func
 (paren
-id|PTRACE_PEEKUSR
+id|PTRACE_PEEKUSER
 comma
 id|pid
 comma

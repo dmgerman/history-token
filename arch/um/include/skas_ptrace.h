@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+multiline_comment|/* &n; * Copyright (C) 2000, 2001, 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#ifndef __SKAS_PTRACE_H
 DECL|macro|__SKAS_PTRACE_H
 mdefine_line|#define __SKAS_PTRACE_H

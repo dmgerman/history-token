@@ -5,18 +5,17 @@ macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;sched.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;stdarg.h&gt;
-macro_line|#include &lt;fcntl.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;setjmp.h&gt;
 macro_line|#include &lt;sys/time.h&gt;
 macro_line|#include &lt;sys/ptrace.h&gt;
-macro_line|#include &lt;sys/ioctl.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/user.h&gt;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;user.h&quot;
@@ -139,6 +138,7 @@ id|SA_ONSTACK
 suffix:colon
 l_int|0
 suffix:semicolon
+multiline_comment|/* NODEFER is set here because SEGV isn&squot;t turned back on when the&n;&t; * handler is ready to receive signals.  This causes any segfault&n;&t; * during a copy_user to kill the process because the fault is blocked.&n;&t; */
 id|set_handler
 c_func
 (paren
@@ -150,6 +150,8 @@ id|__sighandler_t
 id|sig_handler
 comma
 id|flags
+op_or
+id|SA_NODEFER
 comma
 id|SIGUSR1
 comma
@@ -311,27 +313,6 @@ id|flags
 comma
 op_minus
 l_int|1
-)paren
-suffix:semicolon
-(paren
-r_void
-)paren
-id|CHOOSE_MODE
-c_func
-(paren
-id|signal
-c_func
-(paren
-id|SIGCHLD
-comma
-id|SIG_IGN
-)paren
-comma
-(paren
-r_void
-op_star
-)paren
-l_int|0
 )paren
 suffix:semicolon
 id|signal
@@ -581,13 +562,11 @@ l_int|0
 )paren
 (brace
 r_return
-op_minus
-id|errno
+id|new_pid
 suffix:semicolon
 )brace
-r_while
-c_loop
-(paren
+id|CATCH_EINTR
+c_func
 (paren
 id|err
 op_assign
@@ -601,19 +580,8 @@ id|status
 comma
 l_int|0
 )paren
-OL
-l_int|0
 )paren
-op_logical_and
-(paren
-id|errno
-op_eq
-id|EINTR
-)paren
-)paren
-(brace
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -655,7 +623,10 @@ id|SIGKILL
 id|panic
 c_func
 (paren
-l_string|&quot;outer trampoline didn&squot;t exit with SIGKILL&quot;
+l_string|&quot;outer trampoline didn&squot;t exit with SIGKILL, &quot;
+l_string|&quot;status = %d&quot;
+comma
+id|status
 )paren
 suffix:semicolon
 )brace
@@ -687,7 +658,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|read
+id|os_read_file
 c_func
 (paren
 id|fd
@@ -905,6 +876,9 @@ id|errno
 )paren
 suffix:semicolon
 )brace
+id|CATCH_EINTR
+c_func
+(paren
 id|n
 op_assign
 id|waitpid
@@ -916,6 +890,7 @@ op_amp
 id|status
 comma
 id|WUNTRACED
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1023,6 +998,9 @@ id|errno
 )paren
 suffix:semicolon
 )brace
+id|CATCH_EINTR
+c_func
+(paren
 id|n
 op_assign
 id|waitpid
@@ -1034,6 +1012,7 @@ op_amp
 id|status
 comma
 l_int|0
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1089,6 +1068,294 @@ id|errno
 )paren
 suffix:semicolon
 )brace
+)brace
+DECL|variable|force_sysemu_disabled
+r_static
+r_int
+id|force_sysemu_disabled
+op_assign
+l_int|0
+suffix:semicolon
+DECL|function|nosysemu_cmd_param
+r_static
+r_int
+id|__init
+id|nosysemu_cmd_param
+c_func
+(paren
+r_char
+op_star
+id|str
+comma
+r_int
+op_star
+id|add
+)paren
+(brace
+id|force_sysemu_disabled
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|__uml_setup
+c_func
+(paren
+l_string|&quot;nosysemu&quot;
+comma
+id|nosysemu_cmd_param
+comma
+l_string|&quot;nosysemu&bslash;n&quot;
+l_string|&quot;    Turns off syscall emulation patch for ptrace (SYSEMU) on.&bslash;n&quot;
+l_string|&quot;    SYSEMU is a performance-patch introduced by Laurent Vivier. It changes&bslash;n&quot;
+l_string|&quot;    behaviour of ptrace() and helps reducing host context switch rate.&bslash;n&quot;
+l_string|&quot;    To make it working, you need a kernel patch for your host, too.&bslash;n&quot;
+l_string|&quot;    See http://perso.wanadoo.fr/laurent.vivier/UML/ for further information.&bslash;n&quot;
+)paren
+suffix:semicolon
+DECL|function|check_sysemu
+r_static
+r_void
+id|__init
+id|check_sysemu
+c_func
+(paren
+r_void
+)paren
+(brace
+r_void
+op_star
+id|stack
+suffix:semicolon
+r_int
+id|pid
+comma
+id|n
+comma
+id|status
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mode_tt
+)paren
+r_return
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Checking syscall emulation patch for ptrace...&quot;
+)paren
+suffix:semicolon
+id|sysemu_supported
+op_assign
+l_int|0
+suffix:semicolon
+id|pid
+op_assign
+id|start_ptraced_child
+c_func
+(paren
+op_amp
+id|stack
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ptrace
+c_func
+(paren
+id|PTRACE_SYSEMU
+comma
+id|pid
+comma
+l_int|0
+comma
+l_int|0
+)paren
+op_ge
+l_int|0
+)paren
+(brace
+r_struct
+id|user_regs_struct
+id|regs
+suffix:semicolon
+id|CATCH_EINTR
+c_func
+(paren
+id|n
+op_assign
+id|waitpid
+c_func
+(paren
+id|pid
+comma
+op_amp
+id|status
+comma
+id|WUNTRACED
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|n
+OL
+l_int|0
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;check_ptrace : wait failed, errno = %d&quot;
+comma
+id|errno
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|WIFSTOPPED
+c_func
+(paren
+id|status
+)paren
+op_logical_or
+(paren
+id|WSTOPSIG
+c_func
+(paren
+id|status
+)paren
+op_ne
+id|SIGTRAP
+)paren
+)paren
+(brace
+id|panic
+c_func
+(paren
+l_string|&quot;check_ptrace : expected SIGTRAP, &quot;
+l_string|&quot;got status = %d&quot;
+comma
+id|status
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ptrace
+c_func
+(paren
+id|PTRACE_GETREGS
+comma
+id|pid
+comma
+l_int|0
+comma
+op_amp
+id|regs
+)paren
+OL
+l_int|0
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;check_ptrace : failed to read child &quot;
+l_string|&quot;registers, errno = %d&quot;
+comma
+id|errno
+)paren
+suffix:semicolon
+id|regs.orig_eax
+op_assign
+id|pid
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ptrace
+c_func
+(paren
+id|PTRACE_SETREGS
+comma
+id|pid
+comma
+l_int|0
+comma
+op_amp
+id|regs
+)paren
+OL
+l_int|0
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;check_ptrace : failed to modify child &quot;
+l_string|&quot;registers, errno = %d&quot;
+comma
+id|errno
+)paren
+suffix:semicolon
+id|stop_ptraced_child
+c_func
+(paren
+id|pid
+comma
+id|stack
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|sysemu_supported
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;found&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|stop_ptraced_child
+c_func
+(paren
+id|pid
+comma
+id|stack
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|sysemu_supported
+op_assign
+l_int|0
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;missing&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+id|set_using_sysemu
+c_func
+(paren
+op_logical_neg
+id|force_sysemu_disabled
+)paren
+suffix:semicolon
 )brace
 DECL|function|check_ptrace
 r_void
@@ -1160,6 +1427,9 @@ id|errno
 )paren
 suffix:semicolon
 )brace
+id|CATCH_EINTR
+c_func
+(paren
 id|n
 op_assign
 id|waitpid
@@ -1171,6 +1441,7 @@ op_amp
 id|status
 comma
 id|WUNTRACED
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1295,6 +1566,11 @@ c_func
 l_string|&quot;OK&bslash;n&quot;
 )paren
 suffix:semicolon
+id|check_sysemu
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|run_kernel_thread
 r_int
@@ -1335,9 +1611,12 @@ id|buf
 suffix:semicolon
 id|n
 op_assign
-m_setjmp
+id|sigsetjmp
+c_func
 (paren
 id|buf
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -1542,13 +1821,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|access
+id|os_access
 c_func
 (paren
 l_string|&quot;/proc/mm&quot;
 comma
-id|W_OK
+id|OS_ACC_W_OK
 )paren
+OL
+l_int|0
 )paren
 (brace
 id|printf

@@ -157,8 +157,6 @@ r_int
 id|ip
 suffix:semicolon
 r_int
-id|err
-comma
 id|pid
 suffix:semicolon
 id|pid
@@ -179,25 +177,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|ip
-op_assign
 id|IP_RESTART_SYSCALL
 c_func
 (paren
-id|ip
-)paren
-suffix:semicolon
-id|err
-op_assign
-id|ptrace
-c_func
-(paren
-id|PTRACE_POKEUSER
-comma
-id|pid
-comma
-id|PT_IP_OFFSET
-comma
 id|ip
 )paren
 suffix:semicolon
@@ -224,6 +206,8 @@ c_func
 (paren
 l_string|&quot;real_wait_return : Failed to restart system &quot;
 l_string|&quot;call, errno = %d&bslash;n&quot;
+comma
+id|errno
 )paren
 suffix:semicolon
 )brace
@@ -293,6 +277,8 @@ c_func
 (paren
 l_string|&quot;real_wait_return : gdb failed to wait, &quot;
 l_string|&quot;errno = %d&bslash;n&quot;
+comma
+id|errno
 )paren
 suffix:semicolon
 )brace

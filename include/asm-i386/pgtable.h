@@ -981,17 +981,6 @@ DECL|macro|__HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
 mdefine_line|#define  __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
 DECL|macro|ptep_set_access_flags
 mdefine_line|#define ptep_set_access_flags(__vma, __address, __ptep, __entry, __dirty) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;if (__dirty) {&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;&t;(__ptep)-&gt;pte_low = (__entry).pte_low;&t;  &t;  &bslash;&n;&t;&t;&t;flush_tlb_page(__vma, __address);&t;&t;  &bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;} while (0)
-multiline_comment|/* Encode and de-code a swap entry */
-DECL|macro|__swp_type
-mdefine_line|#define __swp_type(x)&t;&t;&t;(((x).val &gt;&gt; 1) &amp; 0x1f)
-DECL|macro|__swp_offset
-mdefine_line|#define __swp_offset(x)&t;&t;&t;((x).val &gt;&gt; 8)
-DECL|macro|__swp_entry
-mdefine_line|#define __swp_entry(type, offset)&t;((swp_entry_t) { ((type) &lt;&lt; 1) | ((offset) &lt;&lt; 8) })
-DECL|macro|__pte_to_swp_entry
-mdefine_line|#define __pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { (pte).pte_low })
-DECL|macro|__swp_entry_to_pte
-mdefine_line|#define __swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val })
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|kern_addr_valid

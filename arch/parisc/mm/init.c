@@ -3626,8 +3626,6 @@ c_func
 id|i
 )paren
 comma
-l_int|NULL
-comma
 id|zones_size
 comma
 id|pmem_ranges

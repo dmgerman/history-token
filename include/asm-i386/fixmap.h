@@ -3,6 +3,10 @@ macro_line|#ifndef _ASM_FIXMAP_H
 DECL|macro|_ASM_FIXMAP_H
 mdefine_line|#define _ASM_FIXMAP_H
 macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/* used by vmalloc.c, vsyscall.lds.S.&n; *&n; * Leave one empty page between vmalloc&squot;ed areas and&n; * the start of the fixmap.&n; */
+DECL|macro|__FIXADDR_TOP
+mdefine_line|#define __FIXADDR_TOP&t;0xfffff000
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/acpi.h&gt;
 macro_line|#include &lt;asm/apicdef.h&gt;
@@ -160,9 +164,8 @@ DECL|macro|set_fixmap_nocache
 mdefine_line|#define set_fixmap_nocache(idx, phys) &bslash;&n;&t;&t;__set_fixmap(idx, phys, PAGE_KERNEL_NOCACHE)
 DECL|macro|clear_fixmap
 mdefine_line|#define clear_fixmap(idx) &bslash;&n;&t;&t;__set_fixmap(idx, 0, __pgprot(0))
-multiline_comment|/*&n; * used by vmalloc.c.&n; *&n; * Leave one empty page between vmalloc&squot;ed areas and&n; * the start of the fixmap.&n; */
 DECL|macro|FIXADDR_TOP
-mdefine_line|#define FIXADDR_TOP&t;(0xfffff000UL)
+mdefine_line|#define FIXADDR_TOP&t;((unsigned long)__FIXADDR_TOP)
 DECL|macro|__FIXADDR_SIZE
 mdefine_line|#define __FIXADDR_SIZE&t;(__end_of_permanent_fixed_addresses &lt;&lt; PAGE_SHIFT)
 DECL|macro|FIXADDR_START
@@ -254,5 +257,6 @@ id|vaddr
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif
 eof

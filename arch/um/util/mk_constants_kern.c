@@ -1,5 +1,6 @@
 macro_line|#include &quot;linux/kernel.h&quot;
 macro_line|#include &quot;linux/stringify.h&quot;
+macro_line|#include &quot;linux/time.h&quot;
 macro_line|#include &quot;asm/page.h&quot;
 r_extern
 r_void
@@ -133,6 +134,14 @@ c_func
 l_string|&quot;UM_KERN_DEBUG&quot;
 comma
 id|KERN_DEBUG
+)paren
+suffix:semicolon
+id|print_constant_int
+c_func
+(paren
+l_string|&quot;UM_NSEC_PER_SEC&quot;
+comma
+id|NSEC_PER_SEC
 )paren
 suffix:semicolon
 id|print_tail
