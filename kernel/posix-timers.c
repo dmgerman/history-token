@@ -453,6 +453,15 @@ op_amp
 id|now
 )paren
 suffix:semicolon
+r_do
+(brace
+id|posix_bump_timer
+c_func
+(paren
+id|timr
+)paren
+suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
@@ -465,11 +474,6 @@ comma
 op_amp
 id|now
 )paren
-)paren
-id|posix_bump_timer
-c_func
-(paren
-id|timr
 )paren
 suffix:semicolon
 id|timr-&gt;it_overrun_last
@@ -1650,9 +1654,6 @@ id|cur_setting
 )paren
 (brace
 r_int
-id|sub_expires
-suffix:semicolon
-r_int
 r_int
 id|expires
 suffix:semicolon
@@ -1764,8 +1765,6 @@ op_amp
 id|timr-&gt;it_timer
 )paren
 )paren
-id|sub_expires
-op_assign
 id|expires
 op_assign
 l_int|0

@@ -5,6 +5,7 @@ DECL|macro|CONFIG_X86_PAE
 macro_line|#undef CONFIG_X86_PAE
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 multiline_comment|/* &n; * I&squot;m cheating here.  It is known that the two boot PTE pages are &n; * allocated next to each other.  I&squot;m pretending that they&squot;re just&n; * one big array. &n; */
@@ -78,6 +79,12 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_char
+op_star
+id|vaddr
+op_assign
+id|virtual_source
+suffix:semicolon
 id|pte
 op_assign
 id|boot_vaddr_to_pte
@@ -122,6 +129,18 @@ id|PAGE_SHIFT
 comma
 id|PAGE_KERNEL
 )paren
+)paren
+suffix:semicolon
+id|__flush_tlb_one
+c_func
+(paren
+op_amp
+id|vaddr
+(braket
+id|i
+op_star
+id|PAGE_SIZE
+)braket
 )paren
 suffix:semicolon
 )brace

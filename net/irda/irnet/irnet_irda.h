@@ -90,6 +90,8 @@ id|__u32
 comma
 r_char
 op_star
+comma
+id|__u16
 )paren
 suffix:semicolon
 multiline_comment|/* ----------------------- IRDA SUBROUTINES ----------------------- */
@@ -397,7 +399,7 @@ r_void
 id|irnet_discovery_indication
 c_func
 (paren
-id|discovery_t
+id|discinfo_t
 op_star
 comma
 id|DISCOVERY_MODE
@@ -411,7 +413,7 @@ r_void
 id|irnet_expiry_indication
 c_func
 (paren
-id|discovery_t
+id|discinfo_t
 op_star
 comma
 id|DISCOVERY_MODE

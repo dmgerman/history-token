@@ -777,13 +777,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Read the characters into the buffer */
-r_while
-c_loop
-(paren
-id|count
-op_decrement
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -799,6 +792,12 @@ id|dev-&gt;enable_rx
 )paren
 )paren
 (brace
+r_while
+c_loop
+(paren
+id|count
+op_decrement
+)paren
 multiline_comment|/* Unwrap and destuff one byte */
 id|async_unwrap_char
 c_func
@@ -819,6 +818,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_while
+c_loop
+(paren
+id|count
+op_decrement
+)paren
+(brace
 multiline_comment|/* rx not enabled: save the raw bytes and never&n;&t;&t;&t; * trigger any netif_rx. The received bytes are flushed&n;&t;&t;&t; * later when we re-enable rx but might be read meanwhile&n;&t;&t;&t; * by the dongle driver.&n;&t;&t;&t; */
 id|dev-&gt;rx_buff.data
 (braket
@@ -830,7 +836,6 @@ op_star
 id|cp
 op_increment
 suffix:semicolon
-)brace
 multiline_comment|/* What should we do when the buffer is full? */
 r_if
 c_cond
@@ -847,6 +852,7 @@ id|dev-&gt;rx_buff.len
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 )brace
 r_return
 l_int|0
@@ -1503,17 +1509,18 @@ op_star
 id|dev
 )paren
 (brace
-id|dev-&gt;rx_buff.truesize
-op_assign
-id|SIRBUF_ALLOCSIZE
-suffix:semicolon
 id|dev-&gt;tx_buff.truesize
 op_assign
 id|SIRBUF_ALLOCSIZE
 suffix:semicolon
-id|dev-&gt;rx_buff.head
+id|dev-&gt;rx_buff.truesize
 op_assign
-id|kmalloc
+id|IRDA_SKB_MAX_MTU
+suffix:semicolon
+multiline_comment|/* Bootstrap ZeroCopy Rx */
+id|dev-&gt;rx_buff.skb
+op_assign
+id|__dev_alloc_skb
 c_func
 (paren
 id|dev-&gt;rx_buff.truesize
@@ -1524,7 +1531,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;rx_buff.head
+id|dev-&gt;rx_buff.skb
 op_eq
 l_int|NULL
 )paren
@@ -1532,16 +1539,19 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|memset
+id|skb_reserve
 c_func
 (paren
-id|dev-&gt;rx_buff.head
+id|dev-&gt;rx_buff.skb
 comma
-l_int|0
-comma
-id|dev-&gt;rx_buff.truesize
+l_int|1
 )paren
 suffix:semicolon
+id|dev-&gt;rx_buff.head
+op_assign
+id|dev-&gt;rx_buff.skb-&gt;data
+suffix:semicolon
+multiline_comment|/* No need to memset the buffer, unless you are really pedantic */
 id|dev-&gt;tx_buff.head
 op_assign
 id|kmalloc
@@ -1560,11 +1570,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|kfree
+id|kfree_skb
 c_func
 (paren
-id|dev-&gt;rx_buff.head
+id|dev-&gt;rx_buff.skb
 )paren
+suffix:semicolon
+id|dev-&gt;rx_buff.skb
+op_assign
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;rx_buff.head
 op_assign
@@ -1574,6 +1588,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+multiline_comment|/* Hu ??? This should not be here, Martin ? */
 id|memset
 c_func
 (paren
@@ -1629,12 +1644,12 @@ id|dev
 r_if
 c_cond
 (paren
-id|dev-&gt;rx_buff.head
+id|dev-&gt;rx_buff.skb
 )paren
-id|kfree
+id|kfree_skb
 c_func
 (paren
-id|dev-&gt;rx_buff.head
+id|dev-&gt;rx_buff.skb
 )paren
 suffix:semicolon
 r_if
@@ -1651,6 +1666,10 @@ suffix:semicolon
 id|dev-&gt;rx_buff.head
 op_assign
 id|dev-&gt;tx_buff.head
+op_assign
+l_int|NULL
+suffix:semicolon
+id|dev-&gt;rx_buff.skb
 op_assign
 l_int|NULL
 suffix:semicolon

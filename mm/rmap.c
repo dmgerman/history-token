@@ -1400,7 +1400,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * try_to_unmap - try to remove all page table mappings to a page&n; * @page: the page to get unmapped&n; *&n; * Tries to remove all the page table entries which are mapping this&n; * page, used in the pageout path.  Caller must hold zone-&gt;lru_lock&n; * and the page lock.  Return values are:&n; *&n; * SWAP_SUCCESS&t;- we succeeded in removing all mappings&n; * SWAP_AGAIN&t;- we missed a trylock, try again later&n; * SWAP_FAIL&t;- the page is unswappable&n; * SWAP_ERROR&t;- an error occurred&n; */
+multiline_comment|/**&n; * try_to_unmap - try to remove all page table mappings to a page&n; * @page: the page to get unmapped&n; *&n; * Tries to remove all the page table entries which are mapping this&n; * page, used in the pageout path.  Caller must hold zone-&gt;lru_lock&n; * and the page lock.  Return values are:&n; *&n; * SWAP_SUCCESS&t;- we succeeded in removing all mappings&n; * SWAP_AGAIN&t;- we missed a trylock, try again later&n; * SWAP_FAIL&t;- the page is unswappable&n; */
 DECL|function|try_to_unmap
 r_int
 id|try_to_unmap
@@ -1691,16 +1691,6 @@ suffix:colon
 id|ret
 op_assign
 id|SWAP_FAIL
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-r_case
-id|SWAP_ERROR
-suffix:colon
-id|ret
-op_assign
-id|SWAP_ERROR
 suffix:semicolon
 r_goto
 id|out

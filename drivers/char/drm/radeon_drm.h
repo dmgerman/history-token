@@ -898,7 +898,7 @@ mdefine_line|#define DRM_IOCTL_RADEON_INDIRECT   DRM_IOWR(0x4d, drm_radeon_indir
 DECL|macro|DRM_IOCTL_RADEON_TEXTURE
 mdefine_line|#define DRM_IOCTL_RADEON_TEXTURE    DRM_IOWR(0x4e, drm_radeon_texture_t)
 DECL|macro|DRM_IOCTL_RADEON_VERTEX2
-mdefine_line|#define DRM_IOCTL_RADEON_VERTEX2    DRM_IOW( 0x4f, drm_radeon_vertex_t)
+mdefine_line|#define DRM_IOCTL_RADEON_VERTEX2    DRM_IOW( 0x4f, drm_radeon_vertex2_t)
 DECL|macro|DRM_IOCTL_RADEON_CMDBUF
 mdefine_line|#define DRM_IOCTL_RADEON_CMDBUF     DRM_IOW( 0x50, drm_radeon_cmd_buffer_t)
 DECL|macro|DRM_IOCTL_RADEON_GETPARAM
@@ -936,7 +936,6 @@ DECL|enumerator|RADEON_INIT_R200_CP
 id|RADEON_INIT_R200_CP
 op_assign
 l_int|0x03
-comma
 DECL|member|func
 )brace
 id|func

@@ -343,6 +343,8 @@ DECL|macro|DRM_IOREMAPFREE
 mdefine_line|#define DRM_IOREMAPFREE(map)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ( (map)-&gt;handle &amp;&amp; (map)-&gt;size )&t;&t;&t;&bslash;&n;&t;&t;&t;DRM(ioremapfree)( (map)-&gt;handle, (map)-&gt;size );&t;&bslash;&n;&t;} while (0)
 DECL|macro|DRM_FIND_MAP
 mdefine_line|#define DRM_FIND_MAP(_map, _o)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct list_head *_list;&t;&t;&t;&t;&t;&bslash;&n;&t;list_for_each( _list, &amp;dev-&gt;maplist-&gt;head ) {&t;&t;&t;&bslash;&n;&t;&t;drm_map_list_t *_entry = (drm_map_list_t *)_list;&t;&bslash;&n;&t;&t;if ( _entry-&gt;map &amp;&amp;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     _entry-&gt;map-&gt;offset == (_o) ) {&t;&t;&t;&bslash;&n;&t;&t;&t;(_map) = _entry-&gt;map;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n; &t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
+DECL|macro|DRM_DROP_MAP
+mdefine_line|#define DRM_DROP_MAP(_map)
 multiline_comment|/* Internal types and structures */
 DECL|macro|DRM_ARRAY_SIZE
 mdefine_line|#define DRM_ARRAY_SIZE(x) (sizeof(x)/sizeof(x[0]))
@@ -358,6 +360,8 @@ DECL|macro|DRM_WAITCOUNT
 mdefine_line|#define DRM_WAITCOUNT(dev,idx) DRM_BUFCOUNT(&amp;dev-&gt;queuelist[idx]-&gt;waitlist)
 DECL|macro|DRM_GET_PRIV_SAREA
 mdefine_line|#define DRM_GET_PRIV_SAREA(_dev, _ctx, _map) do {&t;&bslash;&n;&t;(_map) = (_dev)-&gt;context_sareas[_ctx];&t;&t;&bslash;&n;} while(0)
+DECL|macro|LOCK_TEST_WITH_RETURN
+mdefine_line|#define LOCK_TEST_WITH_RETURN( dev, filp )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( !_DRM_LOCK_IS_HELD( dev-&gt;lock.hw_lock-&gt;lock ) ||&t;&t;&bslash;&n;&t;     dev-&gt;lock.filp != filp ) {&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &quot;%s called without lock held&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;   __FUNCTION__ );&t;&t;&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|typedef|drm_ioctl_t
 r_typedef
 r_int
@@ -574,11 +578,13 @@ id|wait_queue_head_t
 id|dma_wait
 suffix:semicolon
 multiline_comment|/* Processes waiting&t;&t;     */
-DECL|member|pid
-id|pid_t
-id|pid
+DECL|member|filp
+r_struct
+id|file
+op_star
+id|filp
 suffix:semicolon
-multiline_comment|/* PID of holding process&t;     */
+multiline_comment|/* Pointer to holding file descr&t;     */
 DECL|member|context
 r_int
 id|context
@@ -1059,11 +1065,13 @@ op_star
 id|hw_lock
 suffix:semicolon
 multiline_comment|/* Hardware lock&t;&t;   */
-DECL|member|pid
-id|pid_t
-id|pid
+DECL|member|filp
+r_struct
+id|file
+op_star
+id|filp
 suffix:semicolon
-multiline_comment|/* PID of lock holder (0=kernel)   */
+multiline_comment|/* File descr of lock holder (0=kernel)   */
 DECL|member|lock_queue
 id|wait_queue_head_t
 id|lock_queue
@@ -1373,6 +1381,11 @@ DECL|typedef|drm_map_list_t
 )brace
 id|drm_map_list_t
 suffix:semicolon
+DECL|typedef|drm_local_map_t
+r_typedef
+id|drm_map_t
+id|drm_local_map_t
+suffix:semicolon
 macro_line|#if __HAVE_VBL_IRQ
 DECL|struct|drm_vbl_sig
 r_typedef
@@ -1661,6 +1674,11 @@ suffix:semicolon
 DECL|member|vbl_sigs
 id|drm_vbl_sig_t
 id|vbl_sigs
+suffix:semicolon
+DECL|member|vbl_pending
+r_int
+r_int
+id|vbl_pending
 suffix:semicolon
 macro_line|#endif
 DECL|member|ctx_start
@@ -3634,12 +3652,10 @@ c_func
 id|reclaim_buffers
 )paren
 (paren
-id|drm_device_t
+r_struct
+id|file
 op_star
-id|dev
-comma
-id|pid_t
-id|pid
+id|filp
 )paren
 suffix:semicolon
 macro_line|#if __HAVE_OLD_DMA
@@ -3688,9 +3704,10 @@ c_func
 id|dma_enqueue
 )paren
 (paren
-id|drm_device_t
+r_struct
+id|file
 op_star
-id|dev
+id|filp
 comma
 id|drm_dma_t
 op_star
@@ -3705,9 +3722,10 @@ c_func
 id|dma_get_buffers
 )paren
 (paren
-id|drm_device_t
+r_struct
+id|file
 op_star
-id|dev
+id|filp
 comma
 id|drm_dma_t
 op_star

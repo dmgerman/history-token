@@ -1,4 +1,6 @@
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 multiline_comment|/* list of externed timers */
 r_extern
@@ -43,6 +45,63 @@ comma
 l_int|NULL
 comma
 )brace
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_char
+id|clock_override
+(braket
+l_int|10
+)braket
+id|__initdata
+suffix:semicolon
+DECL|function|clock_setup
+r_static
+r_int
+id|__init
+id|clock_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|str
+)paren
+(brace
+id|strncpy
+c_func
+(paren
+id|clock_override
+comma
+id|str
+comma
+l_int|10
+)paren
+suffix:semicolon
+id|clock_override
+(braket
+l_int|9
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
+suffix:semicolon
+)brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;clock=&quot;
+comma
+id|clock_setup
+)paren
 suffix:semicolon
 multiline_comment|/* iterates through the list of timers, returning the first &n; * one that initializes successfully.&n; */
 DECL|function|select_timer
@@ -91,6 +150,7 @@ op_member_access_from_pointer
 id|init
 c_func
 (paren
+id|clock_override
 )paren
 op_eq
 l_int|0

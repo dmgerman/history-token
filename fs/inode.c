@@ -4510,7 +4510,7 @@ op_mul_assign
 r_sizeof
 (paren
 r_struct
-id|list_head
+id|hlist_head
 )paren
 suffix:semicolon
 r_for

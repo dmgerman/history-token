@@ -306,10 +306,13 @@ suffix:semicolon
 id|DRM_DEBUG
 c_func
 (paren
-l_string|&quot;pid = %d, device = 0x%x, open_count = %d&bslash;n&quot;
+l_string|&quot;pid = %d, device = 0x%lx, open_count = %d&bslash;n&quot;
 comma
 id|current-&gt;pid
 comma
+(paren
+r_int
+)paren
 id|dev-&gt;device
 comma
 id|dev-&gt;open_count
@@ -357,10 +360,13 @@ suffix:semicolon
 id|DRM_DEBUG
 c_func
 (paren
-l_string|&quot;fd = %d, device = 0x%x&bslash;n&quot;
+l_string|&quot;fd = %d, device = 0x%lx&bslash;n&quot;
 comma
 id|fd
 comma
+(paren
+r_int
+)paren
 id|dev-&gt;device
 )paren
 suffix:semicolon

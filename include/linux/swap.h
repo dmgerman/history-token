@@ -576,28 +576,6 @@ op_star
 )paren
 )paren
 suffix:semicolon
-r_int
-id|FASTCALL
-c_func
-(paren
-id|page_over_rsslimit
-c_func
-(paren
-r_struct
-id|page
-op_star
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* return values of try_to_unmap */
-DECL|macro|SWAP_SUCCESS
-mdefine_line|#define&t;SWAP_SUCCESS&t;0
-DECL|macro|SWAP_AGAIN
-mdefine_line|#define&t;SWAP_AGAIN&t;1
-DECL|macro|SWAP_FAIL
-mdefine_line|#define&t;SWAP_FAIL&t;2
-DECL|macro|SWAP_ERROR
-mdefine_line|#define&t;SWAP_ERROR&t;3
 multiline_comment|/* linux/mm/shmem.c */
 r_extern
 r_int
@@ -615,8 +593,17 @@ id|page
 suffix:semicolon
 macro_line|#else
 DECL|macro|page_referenced
-mdefine_line|#define page_referenced(page) &bslash;&n;&t;TestClearPageReferenced(page)
+mdefine_line|#define page_referenced(page)&t;TestClearPageReferenced(page)
+DECL|macro|try_to_unmap
+mdefine_line|#define try_to_unmap(page)&t;SWAP_FAIL
 macro_line|#endif /* CONFIG_MMU */
+multiline_comment|/* return values of try_to_unmap */
+DECL|macro|SWAP_SUCCESS
+mdefine_line|#define&t;SWAP_SUCCESS&t;0
+DECL|macro|SWAP_AGAIN
+mdefine_line|#define&t;SWAP_AGAIN&t;1
+DECL|macro|SWAP_FAIL
+mdefine_line|#define&t;SWAP_FAIL&t;2
 macro_line|#ifdef CONFIG_SWAP
 multiline_comment|/* linux/mm/page_io.c */
 r_extern
@@ -677,18 +664,6 @@ id|show_swap_cache_info
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|add_to_swap_cache
-c_func
-(paren
-r_struct
-id|page
-op_star
-comma
-id|swp_entry_t
 )paren
 suffix:semicolon
 r_extern
