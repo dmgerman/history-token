@@ -37,8 +37,8 @@ DECL|macro|PG_writeback
 mdefine_line|#define PG_writeback&t;&t;13&t;/* Page is under writeback */
 DECL|macro|PG_nosave
 mdefine_line|#define PG_nosave&t;&t;14&t;/* Used for system suspend/resume */
-DECL|macro|PG_chainlock
-mdefine_line|#define PG_chainlock&t;&t;15&t;/* lock bit for -&gt;pte_chain */
+DECL|macro|PG_maplock
+mdefine_line|#define PG_maplock&t;&t;15&t;/* Lock bit for rmap to ptes */
 DECL|macro|PG_direct
 mdefine_line|#define PG_direct&t;&t;16&t;/* -&gt;pte_chain points directly at pte */
 DECL|macro|PG_mappedtodisk

@@ -15,7 +15,7 @@ macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* for try_to_release_page(),&
 macro_line|#include &lt;linux/mm_inline.h&gt;
 macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
-macro_line|#include &lt;linux/rmap-locking.h&gt;
+macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;linux/topology.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
@@ -404,7 +404,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Must be called with page&squot;s pte_chain_lock held. */
+multiline_comment|/* Must be called with page&squot;s rmap lock held. */
 DECL|function|page_mapping_inuse
 r_static
 r_inline
@@ -813,7 +813,7 @@ id|page
 r_goto
 id|keep_locked
 suffix:semicolon
-id|pte_chain_lock
+id|rmap_lock
 c_func
 (paren
 id|page
@@ -840,7 +840,7 @@ id|page
 )paren
 (brace
 multiline_comment|/* In active use or really unfreeable.  Activate it. */
-id|pte_chain_unlock
+id|rmap_unlock
 c_func
 (paren
 id|page
@@ -876,7 +876,7 @@ id|page
 )paren
 )paren
 (brace
-id|pte_chain_unlock
+id|rmap_unlock
 c_func
 (paren
 id|page
@@ -895,7 +895,7 @@ id|page
 r_goto
 id|activate_locked
 suffix:semicolon
-id|pte_chain_lock
+id|rmap_lock
 c_func
 (paren
 id|page
@@ -955,7 +955,7 @@ id|page
 r_case
 id|SWAP_FAIL
 suffix:colon
-id|pte_chain_unlock
+id|rmap_unlock
 c_func
 (paren
 id|page
@@ -967,7 +967,7 @@ suffix:semicolon
 r_case
 id|SWAP_AGAIN
 suffix:colon
-id|pte_chain_unlock
+id|rmap_unlock
 c_func
 (paren
 id|page
@@ -983,7 +983,7 @@ suffix:semicolon
 multiline_comment|/* try to free the page below */
 )brace
 )brace
-id|pte_chain_unlock
+id|rmap_unlock
 c_func
 (paren
 id|page
@@ -2242,7 +2242,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|pte_chain_lock
+id|rmap_lock
 c_func
 (paren
 id|page
@@ -2258,7 +2258,7 @@ id|page
 )paren
 )paren
 (brace
-id|pte_chain_unlock
+id|rmap_unlock
 c_func
 (paren
 id|page
@@ -2277,7 +2277,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|pte_chain_unlock
+id|rmap_unlock
 c_func
 (paren
 id|page
