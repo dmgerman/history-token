@@ -1127,11 +1127,13 @@ r_int
 id|rtattr_strcmp
 c_func
 (paren
+r_const
 r_struct
 id|rtattr
 op_star
 id|rta
 comma
+r_const
 r_char
 op_star
 id|str
@@ -1324,7 +1326,7 @@ id|data
 )paren
 suffix:semicolon
 DECL|macro|RTA_PUT
-mdefine_line|#define RTA_PUT(skb, attrtype, attrlen, data) &bslash;&n;({ if (skb_tailroom(skb) &lt; (int)RTA_SPACE(attrlen)) goto rtattr_failure; &bslash;&n;   __rta_fill(skb, attrtype, attrlen, data); })
+mdefine_line|#define RTA_PUT(skb, attrtype, attrlen, data) &bslash;&n;({&t;if (unlikely(skb_tailroom(skb) &lt; (int)RTA_SPACE(attrlen))) &bslash;&n;&t;&t; goto rtattr_failure; &bslash;&n;   &t;__rta_fill(skb, attrtype, attrlen, data); }) 
 r_static
 r_inline
 r_struct
@@ -1392,7 +1394,7 @@ id|rta
 suffix:semicolon
 )brace
 DECL|macro|__RTA_PUT
-mdefine_line|#define __RTA_PUT(skb, attrtype, attrlen) &bslash;&n;({ if (skb_tailroom(skb) &lt; (int)RTA_SPACE(attrlen)) goto rtattr_failure; &bslash;&n;   __rta_reserve(skb, attrtype, attrlen); })
+mdefine_line|#define __RTA_PUT(skb, attrtype, attrlen) &bslash;&n;({ &t;if (unlikely(skb_tailroom(skb) &lt; (int)RTA_SPACE(attrlen))) &bslash;&n;&t;&t;goto rtattr_failure; &bslash;&n;   &t;__rta_reserve(skb, attrtype, attrlen); })
 r_extern
 r_void
 id|rtmsg_ifinfo
@@ -1452,9 +1454,9 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|ASSERT_RTNL
-mdefine_line|#define ASSERT_RTNL() do { if (down_trylock(&amp;rtnl_sem) == 0)  { up(&amp;rtnl_sem); &bslash;&n;printk(&quot;RTNL: assertion failed at &quot; __FILE__ &quot;(%d)&bslash;n&quot;, __LINE__); } &bslash;&n;&t;&t;   } while(0)
+mdefine_line|#define ASSERT_RTNL() do { &bslash;&n;&t;if (unlikely(down_trylock(&amp;rtnl_sem) == 0)) { &bslash;&n;&t;&t;up(&amp;rtnl_sem); &bslash;&n;&t;&t;printk(KERN_ERR &quot;RTNL: assertion failed at %s (%d)&bslash;n&quot;, &bslash;&n;&t;&t;       __FILE__,  __LINE__); &bslash;&n;&t;&t;dump_stack(); &bslash;&n;&t;} &bslash;&n;} while(0)
 DECL|macro|BUG_TRAP
-mdefine_line|#define BUG_TRAP(x) if (!(x)) { printk(&quot;KERNEL: assertion (&quot; #x &quot;) failed at &quot; __FILE__ &quot;(%d)&bslash;n&quot;, __LINE__); }
+mdefine_line|#define BUG_TRAP(x) do { &bslash;&n;&t;if (unlikely(!(x))) { &bslash;&n;&t;&t;printk(KERN_ERR &quot;KERNEL: assertion (%s) failed at %s (%d)&bslash;n&quot;, &bslash;&n;&t;&t;&t;#x,  __FILE__ , __LINE__); &bslash;&n;&t;} &bslash;&n;} while(0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif&t;/* __LINUX_RTNETLINK_H */
 eof

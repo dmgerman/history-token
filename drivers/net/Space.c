@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Holds initial configuration information for devices.&n; *&n; * Version:&t;@(#)Space.c&t;1.0.7&t;08/12/93&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Donald J. Becker, &lt;becker@scyld.com&gt;&n; *&n; * Changelog:&n; *&t;&t;Paul Gortmaker (03/2002)&n;&t;&t;- struct init cleanup, enable multiple ISA autoprobes.&n; *&t;&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - 09/1999&n; *&t;&t;- fix sbni: s/device/net_device/&n; *&t;&t;Paul Gortmaker (06/98): &n; *&t;&t; - sort probes in a sane way, make sure all (safe) probes&n; *&t;&t;   get run once &amp; failed autoprobes don&squot;t autoprobe again.&n; *&n; *&t;FIXME:&n; *&t;&t;Phase out placeholder dev entries put in the linked list&n; *&t;&t;here in favour of drivers using init_etherdev(NULL, ...)&n; *&t;&t;combined with a single find_all_devs() function (for 2.3)&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Holds initial configuration information for devices.&n; *&n; * Version:&t;@(#)Space.c&t;1.0.7&t;08/12/93&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Donald J. Becker, &lt;becker@scyld.com&gt;&n; *&n; * Changelog:&n; *&t;&t;Stephen Hemminger (09/2003)&n; *&t;&t;- get rid of pre-linked dev list, dynamic device allocation&n; *&t;&t;Paul Gortmaker (03/2002)&n; *&t;&t;- struct init cleanup, enable multiple ISA autoprobes.&n; *&t;&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - 09/1999&n; *&t;&t;- fix sbni: s/device/net_device/&n; *&t;&t;Paul Gortmaker (06/98): &n; *&t;&t; - sort probes in a sane way, make sure all (safe) probes&n; *&t;&t;   get run once &amp; failed autoprobes don&squot;t autoprobe again.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
@@ -607,7 +607,8 @@ r_int
 id|sbni_probe
 c_func
 (paren
-r_void
+r_int
+id|unit
 )paren
 suffix:semicolon
 DECL|struct|devprobe
@@ -666,9 +667,6 @@ id|base_addr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -692,28 +690,10 @@ id|dev
 op_eq
 l_int|0
 )paren
-(brace
 multiline_comment|/* probe given addr */
-id|ret
-op_assign
-id|alloc_divert_blk
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-r_return
-id|ret
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -742,27 +722,9 @@ id|p-&gt;status
 op_eq
 l_int|0
 )paren
-(brace
-id|ret
-op_assign
-id|alloc_divert_blk
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-r_return
-id|ret
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
 )brace
 id|p
 op_increment
@@ -1324,7 +1286,8 @@ id|__init
 id|ethif_probe
 c_func
 (paren
-r_void
+r_int
+id|unit
 )paren
 (brace
 r_struct
@@ -1355,6 +1318,16 @@ id|dev
 r_return
 op_minus
 id|ENOMEM
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|dev-&gt;name
+comma
+l_string|&quot;eth%d&quot;
+comma
+id|unit
+)paren
 suffix:semicolon
 id|netdev_boot_setup_check
 c_func
@@ -1518,7 +1491,8 @@ r_int
 id|trif_probe
 c_func
 (paren
-r_void
+r_int
+id|unit
 )paren
 (brace
 r_struct
@@ -1549,6 +1523,16 @@ id|dev
 r_return
 op_minus
 id|ENOMEM
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|dev-&gt;name
+comma
+l_string|&quot;tr%d&quot;
+comma
+id|unit
+)paren
 suffix:semicolon
 id|netdev_boot_setup_check
 c_func
@@ -1685,6 +1669,7 @@ c_cond
 id|sbni_probe
 c_func
 (paren
+id|num
 )paren
 )paren
 r_break
@@ -1711,6 +1696,7 @@ c_cond
 id|trif_probe
 c_func
 (paren
+id|num
 )paren
 )paren
 r_break
@@ -1736,6 +1722,7 @@ c_cond
 id|ethif_probe
 c_func
 (paren
+id|num
 )paren
 )paren
 r_break
