@@ -573,7 +573,7 @@ l_int|NULL
 )paren
 (brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -599,7 +599,7 @@ id|page
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|get_page
@@ -3306,7 +3306,7 @@ id|size-&gt;num_entries
 suffix:semicolon
 id|agp_bridge-&gt;gatt_table_real
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pci_read_config_dword
 c_func
