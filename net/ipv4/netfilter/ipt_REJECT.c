@@ -771,7 +771,7 @@ c_cond
 (paren
 id|nskb-&gt;len
 OG
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|nskb-&gt;dst
@@ -801,7 +801,7 @@ l_int|NULL
 comma
 id|nskb-&gt;dst-&gt;dev
 comma
-id|ip_finish_output
+id|dst_output
 )paren
 suffix:semicolon
 r_return
