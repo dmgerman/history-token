@@ -5,7 +5,7 @@ r_char
 op_star
 id|verstr
 op_assign
-l_string|&quot;20040318&quot;
+l_string|&quot;20040403&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -4915,7 +4915,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Can&squot;t allocate tape buffer.&bslash;n&quot;
+l_string|&quot;%s: Can&squot;t allocate one page tape buffer.&bslash;n&quot;
 comma
 id|name
 )paren
@@ -6358,6 +6358,21 @@ id|STp-&gt;restr_dma
 )paren
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: Can&squot;t allocate %d byte tape buffer.&bslash;n&quot;
+comma
+id|tape_name
+c_func
+(paren
+id|STp
+)paren
+comma
+id|bufsize
+)paren
+suffix:semicolon
 id|retval
 op_assign
 (paren
@@ -9461,8 +9476,10 @@ id|retval
 suffix:semicolon
 )brace
 "&f;"
+id|DEB
+c_func
+(paren
 multiline_comment|/* Set the driver options */
-DECL|function|st_log_options
 r_static
 r_void
 id|st_log_options
@@ -9479,6 +9496,11 @@ comma
 r_char
 op_star
 id|name
+)paren
+(brace
+r_if
+(paren
+id|debugging
 )paren
 (brace
 id|printk
@@ -9545,9 +9567,6 @@ comma
 id|STp-&gt;immediate
 )paren
 suffix:semicolon
-id|DEB
-c_func
-(paren
 id|printk
 c_func
 (paren
@@ -9559,8 +9578,9 @@ comma
 id|debugging
 )paren
 suffix:semicolon
-)paren
 )brace
+)brace
+)paren
 DECL|function|st_set_options
 r_static
 r_int
@@ -9855,7 +9875,6 @@ id|MT_ST_DEBUGGING
 op_ne
 l_int|0
 suffix:semicolon
-)paren
 id|st_log_options
 c_func
 (paren
@@ -9866,6 +9885,7 @@ comma
 id|name
 )paren
 suffix:semicolon
+)paren
 )brace
 r_else
 r_if
@@ -10108,7 +10128,6 @@ id|debugging
 op_assign
 id|value
 suffix:semicolon
-)paren
 id|st_log_options
 c_func
 (paren
@@ -10119,6 +10138,7 @@ comma
 id|name
 )paren
 suffix:semicolon
+)paren
 )brace
 r_else
 r_if
@@ -10165,6 +10185,9 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+id|DEBC
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -10172,6 +10195,7 @@ id|KERN_INFO
 l_string|&quot;%s: Default block size disabled.&bslash;n&quot;
 comma
 id|name
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -10181,6 +10205,9 @@ id|STm-&gt;default_blksize
 op_assign
 id|value
 suffix:semicolon
+id|DEBC
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -10190,6 +10217,7 @@ comma
 id|name
 comma
 id|STm-&gt;default_blksize
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -10256,6 +10284,9 @@ id|MT_ST_SET_LONG_TIMEOUT
 op_star
 id|HZ
 suffix:semicolon
+id|DEBC
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -10271,6 +10302,7 @@ op_complement
 id|MT_ST_SET_LONG_TIMEOUT
 )paren
 )paren
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -10281,6 +10313,9 @@ id|value
 op_star
 id|HZ
 suffix:semicolon
+id|DEBC
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -10290,6 +10325,7 @@ comma
 id|name
 comma
 id|value
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -10424,6 +10460,9 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+id|DEBC
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -10431,6 +10470,7 @@ id|KERN_INFO
 l_string|&quot;%s: Density default disabled.&bslash;n&quot;
 comma
 id|name
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -10442,6 +10482,9 @@ id|value
 op_amp
 l_int|0xff
 suffix:semicolon
+id|DEBC
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -10451,6 +10494,7 @@ comma
 id|name
 comma
 id|STm-&gt;default_density
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -10497,6 +10541,9 @@ id|STp-&gt;default_drvbuffer
 op_assign
 l_int|0xff
 suffix:semicolon
+id|DEBC
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -10504,6 +10551,7 @@ id|KERN_INFO
 l_string|&quot;%s: Drive buffer default disabled.&bslash;n&quot;
 comma
 id|name
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -10515,6 +10563,9 @@ id|value
 op_amp
 l_int|7
 suffix:semicolon
+id|DEBC
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -10524,6 +10575,7 @@ comma
 id|name
 comma
 id|STp-&gt;default_drvbuffer
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -10566,6 +10618,9 @@ id|STm-&gt;default_compression
 op_assign
 id|ST_DONT_TOUCH
 suffix:semicolon
+id|DEBC
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -10573,6 +10628,7 @@ id|KERN_INFO
 l_string|&quot;%s: Compression default disabled.&bslash;n&quot;
 comma
 id|name
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -10600,6 +10656,9 @@ l_int|0xff00
 op_rshift
 l_int|8
 suffix:semicolon
+id|DEBC
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -10609,6 +10668,7 @@ comma
 id|name
 comma
 id|STp-&gt;c_algo
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -10637,6 +10697,9 @@ suffix:colon
 id|ST_NO
 )paren
 suffix:semicolon
+id|DEBC
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -10649,6 +10712,7 @@ comma
 id|value
 op_amp
 l_int|1
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -18012,6 +18076,8 @@ suffix:semicolon
 id|priority
 op_assign
 id|GFP_KERNEL
+op_or
+id|__GFP_NOWARN
 suffix:semicolon
 r_if
 c_cond
@@ -18126,15 +18192,6 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;st: failed to enlarge buffer to %d bytes.&bslash;n&quot;
-comma
-id|new_size
-)paren
-suffix:semicolon
 id|DEB
 c_func
 (paren
@@ -18189,27 +18246,6 @@ l_int|0
 )braket
 dot
 id|page
-)paren
-suffix:semicolon
-id|DEBC
-c_func
-(paren
-id|printk
-c_func
-(paren
-id|ST_DEB_MSG
-l_string|&quot;st: Succeeded to enlarge buffer at %p to %d bytes (segs %d-&gt;%d, %d).&bslash;n&quot;
-comma
-id|STbuffer
-comma
-id|got
-comma
-id|STbuffer-&gt;orig_frp_segs
-comma
-id|STbuffer-&gt;frp_segs
-comma
-id|b_size
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -18284,34 +18320,6 @@ dot
 id|length
 suffix:semicolon
 )brace
-id|DEB
-c_func
-(paren
-r_if
-(paren
-id|debugging
-op_logical_and
-id|STbuffer-&gt;orig_frp_segs
-OL
-id|STbuffer-&gt;frp_segs
-)paren
-id|printk
-c_func
-(paren
-id|ST_DEB_MSG
-l_string|&quot;st: Buffer at %p normalized to %d bytes (segs %d-&gt;%d).&bslash;n&quot;
-comma
-id|STbuffer
-comma
-id|STbuffer-&gt;buffer_size
-comma
-id|STbuffer-&gt;frp_segs
-comma
-id|STbuffer-&gt;orig_frp_segs
-)paren
-suffix:semicolon
-)paren
-multiline_comment|/* end DEB */
 id|STbuffer-&gt;frp_segs
 op_assign
 id|STbuffer-&gt;orig_frp_segs
@@ -18502,24 +18510,13 @@ c_cond
 (paren
 id|do_count
 )paren
-(brace
 multiline_comment|/* Should never happen */
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;st: append_to_buffer overflow (left %d).&bslash;n&quot;
-comma
-id|do_count
-)paren
-suffix:semicolon
 r_return
 (paren
 op_minus
 id|EIO
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -18708,24 +18705,13 @@ c_cond
 (paren
 id|do_count
 )paren
-(brace
 multiline_comment|/* Should never happen */
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;st: from_buffer overflow (left %d).&bslash;n&quot;
-comma
-id|do_count
-)paren
-suffix:semicolon
 r_return
 (paren
 op_minus
 id|EIO
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -18817,25 +18803,6 @@ id|src_seg
 )braket
 dot
 id|length
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|src_seg
-op_eq
-id|st_bp-&gt;frp_segs
-)paren
-(brace
-multiline_comment|/* Should never happen */
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;st: move_buffer offset overflow.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 id|st_bp-&gt;buffer_bytes
