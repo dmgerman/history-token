@@ -375,6 +375,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|hvc_console_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifndef MIN
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
