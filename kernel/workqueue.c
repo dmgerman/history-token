@@ -1330,6 +1330,11 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+id|unlock_cpu_hotplug
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Was there any error during startup? If yes then clean up:&n;&t; */
 r_if
 c_cond
@@ -1348,11 +1353,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|unlock_cpu_hotplug
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|wq
 suffix:semicolon
