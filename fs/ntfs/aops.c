@@ -770,7 +770,7 @@ id|ni
 id|panic
 c_func
 (paren
-l_string|&quot;NTFS: $MFT/$DATA run list has been unmapped! This is a &quot;
+l_string|&quot;NTFS: $MFT/$DATA runlist has been unmapped! This is a &quot;
 l_string|&quot;very serious bug! Cannot continue...&quot;
 )paren
 suffix:semicolon
@@ -1011,7 +1011,7 @@ id|LCN_HOLE
 r_goto
 id|handle_hole
 suffix:semicolon
-multiline_comment|/* If first try and run list unmapped, map and retry. */
+multiline_comment|/* If first try and runlist unmapped, map and retry. */
 r_if
 c_cond
 (paren
@@ -1027,7 +1027,7 @@ id|is_retry
 op_assign
 id|TRUE
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Attempt to map run list, dropping lock for&n;&t;&t;&t;&t; * the duration.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Attempt to map runlist, dropping lock for&n;&t;&t;&t;&t; * the duration.&n;&t;&t;&t;&t; */
 id|up_read
 c_func
 (paren
@@ -2354,7 +2354,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* If first try and run list unmapped, map and retry. */
+multiline_comment|/* If first try and runlist unmapped, map and retry. */
 r_if
 c_cond
 (paren
@@ -2370,7 +2370,7 @@ id|is_retry
 op_assign
 id|TRUE
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Attempt to map run list, dropping lock for&n;&t;&t;&t; * the duration.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Attempt to map runlist, dropping lock for&n;&t;&t;&t; * the duration.&n;&t;&t;&t; */
 id|up_read
 c_func
 (paren
@@ -5317,7 +5317,7 @@ id|is_retry
 op_assign
 id|TRUE
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * Attempt to map run list, dropping&n;&t;&t;&t;&t;&t; * lock for the duration.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * Attempt to map runlist, dropping&n;&t;&t;&t;&t;&t; * lock for the duration.&n;&t;&t;&t;&t;&t; */
 id|up_read
 c_func
 (paren

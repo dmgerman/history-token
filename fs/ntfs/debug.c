@@ -408,7 +408,7 @@ id|err_buf_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Dump a run list. Caller has to provide synchronisation for @rl. */
+multiline_comment|/* Dump a runlist. Caller has to provide synchronisation for @rl. */
 DECL|function|ntfs_debug_dump_runlist
 r_void
 id|ntfs_debug_dump_runlist
@@ -453,7 +453,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;NTFS-fs DEBUG: Dumping run list (values &quot;
+l_string|&quot;NTFS-fs DEBUG: Dumping runlist (values &quot;
 l_string|&quot;in hex):&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -575,7 +575,7 @@ ques
 c_cond
 l_string|&quot;&quot;
 suffix:colon
-l_string|&quot; (run list end)&quot;
+l_string|&quot; (runlist end)&quot;
 )paren
 suffix:semicolon
 )brace
@@ -621,7 +621,7 @@ ques
 c_cond
 l_string|&quot;&quot;
 suffix:colon
-l_string|&quot; (run list end)&quot;
+l_string|&quot; (runlist end)&quot;
 )paren
 suffix:semicolon
 r_if

@@ -75,7 +75,7 @@ DECL|member|runlist
 id|runlist
 id|runlist
 suffix:semicolon
-multiline_comment|/* If state has the NI_NonResident bit set,&n;&t;&t;&t;&t;   the run list of the unnamed data attribute&n;&t;&t;&t;&t;   (if a file) or of the index allocation&n;&t;&t;&t;&t;   attribute (directory) or of the attribute&n;&t;&t;&t;&t;   described by the fake inode (if NInoAttr()).&n;&t;&t;&t;&t;   If runlist.rl is NULL, the run list has not&n;&t;&t;&t;&t;   been read in yet or has been unmapped. If&n;&t;&t;&t;&t;   NI_NonResident is clear, the attribute is&n;&t;&t;&t;&t;   resident (file and fake inode) or there is&n;&t;&t;&t;&t;   no $I30 index allocation attribute&n;&t;&t;&t;&t;   (small directory). In the latter case&n;&t;&t;&t;&t;   runlist.rl is always NULL.*/
+multiline_comment|/* If state has the NI_NonResident bit set,&n;&t;&t;&t;&t;   the runlist of the unnamed data attribute&n;&t;&t;&t;&t;   (if a file) or of the index allocation&n;&t;&t;&t;&t;   attribute (directory) or of the attribute&n;&t;&t;&t;&t;   described by the fake inode (if NInoAttr()).&n;&t;&t;&t;&t;   If runlist.rl is NULL, the runlist has not&n;&t;&t;&t;&t;   been read in yet or has been unmapped. If&n;&t;&t;&t;&t;   NI_NonResident is clear, the attribute is&n;&t;&t;&t;&t;   resident (file and fake inode) or there is&n;&t;&t;&t;&t;   no $I30 index allocation attribute&n;&t;&t;&t;&t;   (small directory). In the latter case&n;&t;&t;&t;&t;   runlist.rl is always NULL.*/
 multiline_comment|/*&n;&t; * The following fields are only valid for real inodes and extent&n;&t; * inodes.&n;&t; */
 DECL|member|mrec_lock
 r_struct

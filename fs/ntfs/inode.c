@@ -2056,7 +2056,7 @@ r_goto
 id|unm_err_out
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Setup the run list. No need for locking as we have&n;&t;&t;&t; * exclusive access to the inode at this time.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Setup the runlist. No need for locking as we have&n;&t;&t;&t; * exclusive access to the inode at this time.&n;&t;&t;&t; */
 id|ni-&gt;attr_list_rl.rl
 op_assign
 id|decompress_mapping_pairs
@@ -6051,7 +6051,7 @@ r_goto
 id|put_err_out
 suffix:semicolon
 )brace
-multiline_comment|/* Setup the run list. */
+multiline_comment|/* Setup the runlist. */
 id|ni-&gt;attr_list_rl.rl
 op_assign
 id|decompress_mapping_pairs
@@ -6546,7 +6546,7 @@ r_goto
 id|put_err_out
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Decompress the mapping pairs array of this extent and merge&n;&t;&t; * the result into the existing run list. No need for locking&n;&t;&t; * as we have exclusive access to the inode at this time and we&n;&t;&t; * are a mount in progress task, too.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Decompress the mapping pairs array of this extent and merge&n;&t;&t; * the result into the existing runlist. No need for locking&n;&t;&t; * as we have exclusive access to the inode at this time and we&n;&t;&t; * are a mount in progress task, too.&n;&t;&t; */
 id|nrl
 op_assign
 id|decompress_mapping_pairs
@@ -6867,7 +6867,7 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Failed to load the complete run list &quot;
+l_string|&quot;Failed to load the complete runlist &quot;
 l_string|&quot;for $MFT/$DATA. Driver bug or &quot;
 l_string|&quot;corrupt $MFT. Run chkdsk.&quot;
 )paren

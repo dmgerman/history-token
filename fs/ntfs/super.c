@@ -3945,7 +3945,7 @@ c_func
 id|mirr_page
 )paren
 suffix:semicolon
-multiline_comment|/* Construct the mft mirror run list by hand. */
+multiline_comment|/* Construct the mft mirror runlist by hand. */
 id|rl2
 (braket
 l_int|0
@@ -4015,7 +4015,7 @@ id|length
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Because we have just read all of the mft mirror, we know we have&n;&t; * mapped the full run list for it.&n;&t; */
+multiline_comment|/*&n;&t; * Because we have just read all of the mft mirror, we know we have&n;&t; * mapped the full runlist for it.&n;&t; */
 id|mirr_ni
 op_assign
 id|NTFS_I
@@ -4035,7 +4035,7 @@ id|rl
 op_assign
 id|mirr_ni-&gt;runlist.rl
 suffix:semicolon
-multiline_comment|/* Compare the two run lists.  They must be identical. */
+multiline_comment|/* Compare the two runlists.  They must be identical. */
 id|i
 op_assign
 l_int|0

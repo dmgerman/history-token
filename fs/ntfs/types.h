@@ -51,7 +51,7 @@ DECL|typedef|runlist_element
 )brace
 id|runlist_element
 suffix:semicolon
-multiline_comment|/**&n; * runlist - in memory vcn to lcn mapping array including a read/write lock&n; * @rl:&t;&t;pointer to an array of run list elements&n; * @lock:&t;read/write spinlock for serializing access to @rl&n; *&n; */
+multiline_comment|/**&n; * runlist - in memory vcn to lcn mapping array including a read/write lock&n; * @rl:&t;&t;pointer to an array of runlist elements&n; * @lock:&t;read/write spinlock for serializing access to @rl&n; *&n; */
 r_typedef
 r_struct
 (brace

@@ -1789,7 +1789,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * We have the run list, and all the destination pages we need to fill.&n;&t; * Now read the first compression block.&n;&t; */
+multiline_comment|/*&n;&t; * We have the runlist, and all the destination pages we need to fill.&n;&t; * Now read the first compression block.&n;&t; */
 id|cur_page
 op_assign
 l_int|0
@@ -1964,7 +1964,7 @@ id|is_retry
 op_assign
 id|TRUE
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Attempt to map run list, dropping lock for the&n;&t;&t;&t; * duration.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Attempt to map runlist, dropping lock for the&n;&t;&t;&t; * duration.&n;&t;&t;&t; */
 id|up_read
 c_func
 (paren
