@@ -154,30 +154,6 @@ op_star
 id|naca
 suffix:semicolon
 r_extern
-r_int
-r_int
-id|_ASR
-suffix:semicolon
-r_extern
-r_inline
-r_void
-id|make_ste
-c_func
-(paren
-r_int
-r_int
-id|stab
-comma
-r_int
-r_int
-id|esid
-comma
-r_int
-r_int
-id|vsid
-)paren
-suffix:semicolon
-r_extern
 r_char
 id|_stext
 (braket
@@ -3150,7 +3126,7 @@ op_assign
 id|hpte_find_pSeries
 suffix:semicolon
 )brace
-multiline_comment|/* Handle a fault by adding an HPTE &n; * If the address can&squot;t be determined to be valid&n; * via Linux page tables, return 1.  If handled&n; * return 0&n; */
+multiline_comment|/*&n; * Handle a fault by adding an HPTE. If the address can&squot;t be determined&n; * to be valid via Linux page tables, return 1. If handled return 0&n; */
 DECL|function|hash_page
 r_int
 id|hash_page
@@ -3225,11 +3201,9 @@ c_func
 id|ea
 )paren
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 id|regionid
 op_assign
 id|REGION_ID
@@ -3258,19 +3232,9 @@ id|mm
 op_eq
 l_int|NULL
 )paren
-(brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_MM
-comma
-l_string|&quot;hash_page returning; mm = 0&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
-)brace
 id|vsid
 op_assign
 id|get_vsid
@@ -3350,7 +3314,7 @@ macro_line|#endif
 r_case
 id|KERNEL_REGION_ID
 suffix:colon
-multiline_comment|/* As htab_initialize is now, we shouldn&squot;t ever get here since&n;&t;&t; * we&squot;re bolting the entire 0xC0... region.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * As htab_initialize is now, we shouldn&squot;t ever get here since&n;&t;&t; * we&squot;re bolting the entire 0xC0... region.&n;&t;&t; */
 id|udbg_printf
 c_func
 (paren
@@ -3473,7 +3437,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Acquire the hash table lock to guarantee that the linux&n;&t; * pte we fetch will not change&n;&t; */
+multiline_comment|/*&n;&t; * Acquire the hash table lock to guarantee that the linux&n;&t; * pte we fetch will not change&n;&t; */
 id|spin_lock
 c_func
 (paren
