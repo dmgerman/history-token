@@ -3678,10 +3678,7 @@ id|len
 op_assign
 l_int|1024
 op_minus
-id|udev-&gt;epmaxpacketin
-(braket
-l_int|0
-)braket
+id|udev-&gt;descriptor.bMaxPacketSize0
 suffix:semicolon
 id|expected
 op_assign
@@ -3710,10 +3707,7 @@ suffix:semicolon
 singleline_comment|// device descriptor size == 18 bytes 
 id|len
 op_assign
-id|udev-&gt;epmaxpacketin
-(braket
-l_int|0
-)braket
+id|udev-&gt;descriptor.bMaxPacketSize0
 suffix:semicolon
 r_switch
 c_cond
