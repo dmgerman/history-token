@@ -69,7 +69,7 @@ DECL|macro|CPU_ABORT_HANDLER
 macro_line|#  define CPU_ABORT_HANDLER v5tj_early_abort
 macro_line|# endif
 macro_line|#endif
-macro_line|#ifdef CONFIG_CPU_ABORT_EV5T
+macro_line|#ifdef CONFIG_CPU_ABRT_EV5T
 macro_line|# ifdef CPU_ABORT_HANDLER
 DECL|macro|MULTI_ABORT
 macro_line|#  define MULTI_ABORT 1
