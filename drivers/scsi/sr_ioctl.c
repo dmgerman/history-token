@@ -9,9 +9,13 @@ macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_dbg.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_eh.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
+macro_line|#include &lt;scsi/scsi_request.h&gt;
 macro_line|#include &quot;sr.h&quot;
 macro_line|#if 0
 mdefine_line|#define DEBUG
@@ -238,7 +242,7 @@ id|trk1_te.cdte_addr.msf.frame
 suffix:semicolon
 id|cgc.data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 id|cgc.timeout
 op_assign
@@ -569,7 +573,7 @@ id|cd-&gt;cdi.name
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG
-id|print_req_sense
+id|scsi_print_req_sense
 c_func
 (paren
 l_string|&quot;sr&quot;
@@ -617,13 +621,13 @@ op_minus
 id|EDRIVE_CANT_DO_THIS
 suffix:semicolon
 macro_line|#ifdef DEBUG
-id|print_command
+id|__scsi_print_command
 c_func
 (paren
 id|cgc-&gt;cmd
 )paren
 suffix:semicolon
-id|print_req_sense
+id|scsi_print_req_sense
 c_func
 (paren
 l_string|&quot;sr&quot;
@@ -645,13 +649,13 @@ comma
 id|cd-&gt;cdi.name
 )paren
 suffix:semicolon
-id|print_command
+id|__scsi_print_command
 c_func
 (paren
 id|cgc-&gt;cmd
 )paren
 suffix:semicolon
-id|print_req_sense
+id|scsi_print_req_sense
 c_func
 (paren
 l_string|&quot;sr&quot;
@@ -753,7 +757,7 @@ l_int|1
 suffix:semicolon
 id|cgc.data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 id|cgc.timeout
 op_assign
@@ -836,7 +840,7 @@ multiline_comment|/* eject */
 suffix:semicolon
 id|cgc.data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 id|cgc.timeout
 op_assign
@@ -1223,7 +1227,7 @@ l_int|24
 suffix:semicolon
 id|cgc.data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|cgc.timeout
 op_assign
@@ -1375,7 +1379,7 @@ suffix:semicolon
 multiline_comment|/* LSB */
 id|cgc.data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 id|cgc.timeout
 op_assign
@@ -1537,7 +1541,7 @@ l_int|1
 suffix:semicolon
 id|cgc.data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|result
 op_assign
@@ -1631,7 +1635,7 @@ l_int|12
 suffix:semicolon
 id|cgc.data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|result
 op_assign
@@ -1800,7 +1804,7 @@ id|ti-&gt;cdti_ind1
 suffix:semicolon
 id|cgc.data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 id|result
 op_assign
@@ -2088,7 +2092,7 @@ id|blksize
 suffix:semicolon
 id|cgc.data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|cgc.timeout
 op_assign
@@ -2328,7 +2332,7 @@ id|blksize
 suffix:semicolon
 id|cgc.data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|cgc.timeout
 op_assign
