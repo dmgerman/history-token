@@ -3973,8 +3973,6 @@ c_func
 (paren
 id|mp
 comma
-l_int|NULL
-comma
 op_amp
 id|inlast
 comma
@@ -4051,8 +4049,6 @@ id|xfs_bulkstat
 c_func
 (paren
 id|mp
-comma
-l_int|NULL
 comma
 op_amp
 id|inlast

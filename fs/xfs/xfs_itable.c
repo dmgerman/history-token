@@ -23,6 +23,12 @@ macro_line|#include &quot;xfs_inode.h&quot;
 macro_line|#include &quot;xfs_ialloc.h&quot;
 macro_line|#include &quot;xfs_itable.h&quot;
 macro_line|#include &quot;xfs_error.h&quot;
+macro_line|#ifndef HAVE_USERACC
+DECL|macro|useracc
+mdefine_line|#define useracc(ubuffer, size, flags, foo) (0)
+DECL|macro|unuseracc
+mdefine_line|#define unuseracc(ubuffer, size, flags)
+macro_line|#endif
 multiline_comment|/*&n; * Return stat information for one inode.&n; * Return 0 if ok, else errno.&n; */
 r_int
 multiline_comment|/* error status */
@@ -35,11 +41,6 @@ op_star
 id|mp
 comma
 multiline_comment|/* mount point for filesystem */
-id|xfs_trans_t
-op_star
-id|tp
-comma
-multiline_comment|/* transaction pointer */
 id|xfs_ino_t
 id|ino
 comma
@@ -216,7 +217,7 @@ c_func
 (paren
 id|mp
 comma
-id|tp
+l_int|NULL
 comma
 id|ino
 comma
@@ -859,11 +860,6 @@ op_star
 id|mp
 comma
 multiline_comment|/* mount point for filesystem */
-id|xfs_trans_t
-op_star
-id|tp
-comma
-multiline_comment|/* transaction pointer */
 id|xfs_ino_t
 op_star
 id|lastinop
@@ -1197,7 +1193,6 @@ op_rshift
 id|mp-&gt;m_sb.sb_inopblog
 suffix:semicolon
 multiline_comment|/*&n;&t; * Lock down the user&squot;s buffer. If a buffer was not sent, as in the case&n;&t; * disk quota code calls here, we skip this.&n;&t; */
-macro_line|#if defined(HAVE_USERACC)
 r_if
 c_cond
 (paren
@@ -1230,7 +1225,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n;&t; * Allocate a page-sized buffer for inode btree records.&n;&t; * We could try allocating something smaller, but for normal&n;&t; * calls we&squot;ll always (potentially) need the whole page.&n;&t; */
 id|irbuf
 op_assign
@@ -1287,7 +1281,7 @@ c_func
 (paren
 id|mp
 comma
-id|tp
+l_int|NULL
 comma
 id|agno
 comma
@@ -1335,7 +1329,7 @@ c_func
 (paren
 id|mp
 comma
-id|tp
+l_int|NULL
 comma
 id|agbp
 comma
@@ -1797,11 +1791,9 @@ comma
 id|XFS_BTREE_NOERROR
 )paren
 suffix:semicolon
-id|xfs_trans_brelse
+id|xfs_buf_relse
 c_func
 (paren
-id|tp
-comma
 id|agbp
 )paren
 suffix:semicolon
@@ -2086,11 +2078,9 @@ c_cond
 (paren
 id|bp
 )paren
-id|xfs_trans_brelse
+id|xfs_buf_relse
 c_func
 (paren
-id|tp
-comma
 id|bp
 )paren
 suffix:semicolon
@@ -2101,7 +2091,7 @@ c_func
 (paren
 id|mp
 comma
-id|tp
+l_int|NULL
 comma
 id|ip
 comma
@@ -2284,8 +2274,6 @@ c_func
 (paren
 id|mp
 comma
-id|tp
-comma
 id|ino
 comma
 id|ubufp
@@ -2379,11 +2367,9 @@ c_cond
 (paren
 id|bp
 )paren
-id|xfs_trans_brelse
+id|xfs_buf_relse
 c_func
 (paren
-id|tp
-comma
 id|bp
 )paren
 suffix:semicolon
@@ -2435,7 +2421,6 @@ comma
 id|NBPC
 )paren
 suffix:semicolon
-macro_line|#if defined(HAVE_USERACC)
 r_if
 c_cond
 (paren
@@ -2457,7 +2442,6 @@ id|B_PHYS
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 op_star
 id|ubcountp
 op_assign
@@ -2570,8 +2554,6 @@ c_func
 (paren
 id|mp
 comma
-l_int|NULL
-comma
 id|ino
 comma
 op_amp
@@ -2618,8 +2600,6 @@ id|xfs_bulkstat
 c_func
 (paren
 id|mp
-comma
-l_int|NULL
 comma
 id|lastinop
 comma
@@ -2724,11 +2704,6 @@ op_star
 id|mp
 comma
 multiline_comment|/* mount point for filesystem */
-id|xfs_trans_t
-op_star
-id|tp
-comma
-multiline_comment|/* transaction pointer */
 id|xfs_ino_t
 op_star
 id|lastino
@@ -2915,7 +2890,7 @@ c_func
 (paren
 id|mp
 comma
-id|tp
+l_int|NULL
 comma
 id|agno
 comma
@@ -2966,7 +2941,7 @@ c_func
 (paren
 id|mp
 comma
-id|tp
+l_int|NULL
 comma
 id|agbp
 comma
@@ -3018,11 +2993,9 @@ id|cur
 op_assign
 l_int|NULL
 suffix:semicolon
-id|xfs_trans_brelse
+id|xfs_buf_relse
 c_func
 (paren
-id|tp
-comma
 id|agbp
 )paren
 suffix:semicolon
@@ -3073,11 +3046,9 @@ op_eq
 l_int|0
 )paren
 (brace
-id|xfs_trans_brelse
+id|xfs_buf_relse
 c_func
 (paren
-id|tp
-comma
 id|agbp
 )paren
 suffix:semicolon
@@ -3255,11 +3226,9 @@ id|cur
 op_assign
 l_int|NULL
 suffix:semicolon
-id|xfs_trans_brelse
+id|xfs_buf_relse
 c_func
 (paren
-id|tp
-comma
 id|agbp
 )paren
 suffix:semicolon
@@ -3377,11 +3346,9 @@ c_cond
 (paren
 id|agbp
 )paren
-id|xfs_trans_brelse
+id|xfs_buf_relse
 c_func
 (paren
-id|tp
-comma
 id|agbp
 )paren
 suffix:semicolon
