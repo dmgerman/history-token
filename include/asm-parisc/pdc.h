@@ -730,8 +730,13 @@ DECL|macro|PDC_TYPE_SYSTEM_MAP
 mdefine_line|#define PDC_TYPE_SYSTEM_MAP&t; 1 /* 32-bit, but supports PDC_SYSTEM_MAP */
 DECL|macro|PDC_TYPE_SNAKE
 mdefine_line|#define PDC_TYPE_SNAKE&t;&t; 2 /* Doesn&squot;t support SYSTEM_MAP */
+macro_line|#ifdef CONFIG_PARISC64
 DECL|macro|is_pdc_pat
-mdefine_line|#define is_pdc_pat()    (pdc_type == PDC_TYPE_PAT)
+mdefine_line|#define is_pdc_pat()    (PDC_TYPE_PAT == pdc_type)
+macro_line|#else
+DECL|macro|is_pdc_pat
+mdefine_line|#define is_pdc_pat()    (0)
+macro_line|#endif
 DECL|struct|pdc_chassis_info
 r_struct
 id|pdc_chassis_info

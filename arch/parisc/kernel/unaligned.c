@@ -658,7 +658,7 @@ macro_line|#endif
 id|DPRINTF
 c_func
 (paren
-l_string|&quot;val = 0xllx&bslash;n&quot;
+l_string|&quot;val = 0x%llx&bslash;n&quot;
 comma
 id|val
 )paren
