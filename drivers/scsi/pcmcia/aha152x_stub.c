@@ -10,10 +10,9 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &lt;../drivers/scsi/scsi.h&gt;
-macro_line|#include &lt;../drivers/scsi/hosts.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
-macro_line|#include &lt;../drivers/scsi/aha152x.h&gt;
+macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
@@ -273,12 +272,11 @@ id|dev_link_t
 op_star
 )paren
 suffix:semicolon
-DECL|variable|driver_template
-r_static
+DECL|macro|driver_template
+mdefine_line|#define driver_template aha152x_driver_template
+r_extern
 id|Scsi_Host_Template
-id|driver_template
-op_assign
-id|AHA152X
+id|aha152x_driver_template
 suffix:semicolon
 DECL|variable|dev_list
 r_static
