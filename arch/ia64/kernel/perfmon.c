@@ -39,6 +39,25 @@ mdefine_line|#define PFM_RELOAD_SHORT_RESET&t;2
 multiline_comment|/*&n; * Misc macros and definitions&n; */
 DECL|macro|PMU_FIRST_COUNTER
 mdefine_line|#define PMU_FIRST_COUNTER&t;4
+DECL|macro|PMU_MAX_PMCS
+mdefine_line|#define PMU_MAX_PMCS&t;&t;256
+DECL|macro|PMU_MAX_PMDS
+mdefine_line|#define PMU_MAX_PMDS&t;&t;256
+multiline_comment|/*&n; * type of a PMU register (bitmask).&n; * bitmask structure:&n; * &t;bit0   : register implemented&n; * &t;bit1   : end marker &n; * &t;bit2-3 : reserved&n; * &t;bit4-7 : register type&n; * &t;bit8-31: reserved&n; */
+DECL|macro|PFM_REG_IMPL
+mdefine_line|#define PFM_REG_IMPL&t;&t;0x1 /* register implemented */
+DECL|macro|PFM_REG_END
+mdefine_line|#define PFM_REG_END&t;&t;0x2 /* end marker */
+DECL|macro|PFM_REG_MONITOR
+mdefine_line|#define PFM_REG_MONITOR&t;&t;(0x1&lt;&lt;4|PFM_REG_IMPL) /* a PMC with a pmc.pm field only */
+DECL|macro|PFM_REG_COUNTING
+mdefine_line|#define PFM_REG_COUNTING&t;(0x2&lt;&lt;4|PFM_REG_IMPL) /* a PMC with a pmc.pm AND pmc.oi, a PMD used as a counter */
+DECL|macro|PFM_REG_CONTROL
+mdefine_line|#define PFM_REG_CONTROL&t;&t;(0x3&lt;&lt;4|PFM_REG_IMPL) /* PMU control register */
+DECL|macro|PFM_REG_CONFIG
+mdefine_line|#define&t;PFM_REG_CONFIG&t;&t;(0x4&lt;&lt;4|PFM_REG_IMPL) /* refine configuration */
+DECL|macro|PFM_REG_BUFFER
+mdefine_line|#define PFM_REG_BUFFER&t; &t;(0x5&lt;&lt;4|PFM_REG_IMPL) /* PMD used as buffer */
 DECL|macro|PFM_IS_DISABLED
 mdefine_line|#define PFM_IS_DISABLED() pmu_conf.pfm_is_disabled
 DECL|macro|PMC_OVFL_NOTIFY
@@ -47,9 +66,9 @@ DECL|macro|PFM_FL_INHERIT_MASK
 mdefine_line|#define PFM_FL_INHERIT_MASK&t;(PFM_FL_INHERIT_NONE|PFM_FL_INHERIT_ONCE|PFM_FL_INHERIT_ALL)
 multiline_comment|/* i assume unsigned */
 DECL|macro|PMC_IS_IMPL
-mdefine_line|#define PMC_IS_IMPL(i)&t;  (i&lt;pmu_conf.num_pmcs &amp;&amp; pmu_conf.impl_regs[i&gt;&gt;6] &amp; (1UL&lt;&lt; (i) %64))
+mdefine_line|#define PMC_IS_IMPL(i)&t;  (i&lt; PMU_MAX_PMCS &amp;&amp; (pmu_conf.pmc_desc[i].type &amp; PFM_REG_IMPL))
 DECL|macro|PMD_IS_IMPL
-mdefine_line|#define PMD_IS_IMPL(i)&t;  (i&lt;pmu_conf.num_pmds &amp;&amp;  pmu_conf.impl_regs[4+(i&gt;&gt;6)] &amp; (1UL&lt;&lt;(i) % 64))
+mdefine_line|#define PMD_IS_IMPL(i)&t;  (i&lt; PMU_MAX_PMDS &amp;&amp; (pmu_conf.pmd_desc[i].type &amp; PFM_REG_IMPL))
 multiline_comment|/* XXX: these three assume that register i is implemented */
 DECL|macro|PMD_IS_COUNTING
 mdefine_line|#define PMD_IS_COUNTING(i) (pmu_conf.pmd_desc[i].type == PFM_REG_COUNTING)
@@ -57,6 +76,14 @@ DECL|macro|PMC_IS_COUNTING
 mdefine_line|#define PMC_IS_COUNTING(i) (pmu_conf.pmc_desc[i].type == PFM_REG_COUNTING)
 DECL|macro|PMC_IS_MONITOR
 mdefine_line|#define PMC_IS_MONITOR(i)  (pmu_conf.pmc_desc[i].type == PFM_REG_MONITOR)
+DECL|macro|PMC_DFL_VAL
+mdefine_line|#define PMC_DFL_VAL(i)     pmu_conf.pmc_desc[i].default_value
+DECL|macro|PMC_RSVD_MASK
+mdefine_line|#define PMC_RSVD_MASK(i)   pmu_conf.pmc_desc[i].reserved_mask
+DECL|macro|PMD_PMD_DEP
+mdefine_line|#define PMD_PMD_DEP(i)&t;   pmu_conf.pmd_desc[i].dep_pmd[0]
+DECL|macro|PMC_PMD_DEP
+mdefine_line|#define PMC_PMD_DEP(i)&t;   pmu_conf.pmc_desc[i].dep_pmd[0]
 multiline_comment|/* k assume unsigned */
 DECL|macro|IBR_IS_IMPL
 mdefine_line|#define IBR_IS_IMPL(k)&t;  (k&lt;pmu_conf.num_ibrs)
@@ -247,41 +274,6 @@ DECL|macro|LOCK_PSB
 mdefine_line|#define LOCK_PSB(p)&t;spin_lock(&amp;(p)-&gt;psb_lock)
 DECL|macro|UNLOCK_PSB
 mdefine_line|#define UNLOCK_PSB(p)&t;spin_unlock(&amp;(p)-&gt;psb_lock)
-multiline_comment|/*&n; * The possible type of a PMU register&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|PFM_REG_NOTIMPL
-id|PFM_REG_NOTIMPL
-comma
-multiline_comment|/* not implemented */
-DECL|enumerator|PFM_REG_NONE
-id|PFM_REG_NONE
-comma
-multiline_comment|/* end marker */
-DECL|enumerator|PFM_REG_MONITOR
-id|PFM_REG_MONITOR
-comma
-multiline_comment|/* a PMC with a pmc.pm field only */
-DECL|enumerator|PFM_REG_COUNTING
-id|PFM_REG_COUNTING
-comma
-multiline_comment|/* a PMC with a pmc.pm AND pmc.oi, a PMD used as a counter */
-DECL|enumerator|PFM_REG_CONTROL
-id|PFM_REG_CONTROL
-comma
-multiline_comment|/* PMU control register */
-DECL|enumerator|PFM_REG_CONFIG
-id|PFM_REG_CONFIG
-comma
-multiline_comment|/* refine configuration */
-DECL|enumerator|PFM_REG_BUFFER
-id|PFM_REG_BUFFER
-multiline_comment|/* PMD used as buffer */
-DECL|typedef|pfm_pmu_reg_type_t
-)brace
-id|pfm_pmu_reg_type_t
-suffix:semicolon
 multiline_comment|/*&n; * 64-bit software counter structure&n; */
 r_typedef
 r_struct
@@ -629,13 +621,26 @@ r_typedef
 r_struct
 (brace
 DECL|member|type
-id|pfm_pmu_reg_type_t
+r_int
+r_int
 id|type
 suffix:semicolon
 DECL|member|pm_pos
 r_int
 id|pm_pos
 suffix:semicolon
+DECL|member|default_value
+r_int
+r_int
+id|default_value
+suffix:semicolon
+multiline_comment|/* power-on default value */
+DECL|member|reserved_mask
+r_int
+r_int
+id|reserved_mask
+suffix:semicolon
+multiline_comment|/* bitmask of reserved bits */
 DECL|member|read_check
 r_int
 (paren
@@ -1078,16 +1083,6 @@ id|ctl_table_header
 op_star
 id|pfm_sysctl_header
 suffix:semicolon
-DECL|variable|reset_pmcs
-r_static
-r_int
-r_int
-id|reset_pmcs
-(braket
-id|IA64_NUM_PMC_REGS
-)braket
-suffix:semicolon
-multiline_comment|/* contains PAL reset values for PMCS */
 r_static
 r_void
 id|pfm_vm_close
@@ -1135,7 +1130,7 @@ suffix:semicolon
 multiline_comment|/*&n; * forward declarations&n; */
 r_static
 r_void
-id|ia64_reset_pmu
+id|pfm_reset_pmu
 c_func
 (paren
 r_struct
@@ -7871,7 +7866,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* reset all registers to stable quiet state */
-id|ia64_reset_pmu
+id|pfm_reset_pmu
 c_func
 (paren
 id|task
@@ -8153,10 +8148,11 @@ id|abort_mission
 suffix:semicolon
 id|tmp.reg_value
 op_assign
-id|reset_pmcs
-(braket
+id|PMC_DFL_VAL
+c_func
+(paren
 id|cnum
-)braket
+)paren
 suffix:semicolon
 id|PFM_REG_RETFLAG_SET
 c_func
@@ -10368,6 +10364,46 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;CPU%-2d syst_wide        : %d&bslash;n&quot;
+comma
+id|i
+comma
+id|per_cpu
+c_func
+(paren
+id|pfm_syst_wide
+comma
+id|i
+)paren
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;CPU%-2d dcr_pp           : %d&bslash;n&quot;
+comma
+id|i
+comma
+id|per_cpu
+c_func
+(paren
+id|pfm_dcr_pp
+comma
+id|i
+)paren
+)paren
+suffix:semicolon
 )brace
 id|LOCK_PFS
 c_func
@@ -11676,8 +11712,8 @@ suffix:semicolon
 multiline_comment|/*&n; * XXX: make this routine able to work with non current context&n; */
 r_static
 r_void
-DECL|function|ia64_reset_pmu
-id|ia64_reset_pmu
+DECL|function|pfm_reset_pmu
+id|pfm_reset_pmu
 c_func
 (paren
 r_struct
@@ -11699,10 +11735,6 @@ op_star
 id|ctx
 op_assign
 id|t-&gt;pfm_context
-suffix:semicolon
-r_int
-r_int
-id|mask
 suffix:semicolon
 r_int
 id|i
@@ -11733,16 +11765,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * install reset values for PMC. We skip PMC0 (done above)&n;&t; * XX: good up to 64 PMCS&n;&t; */
-id|mask
-op_assign
-id|pmu_conf.impl_regs
-(braket
-l_int|0
-)braket
-op_rshift
-l_int|1
-suffix:semicolon
+multiline_comment|/*&n;&t; * install reset values for PMC. We skip PMC0 (done above)&n;&t; */
 r_for
 c_loop
 (paren
@@ -11750,12 +11773,19 @@ id|i
 op_assign
 l_int|1
 suffix:semicolon
-id|mask
+(paren
+id|pmu_conf.pmc_desc
+(braket
+id|i
+)braket
+dot
+id|type
+op_amp
+id|PFM_REG_END
+)paren
+op_eq
+l_int|0
 suffix:semicolon
-id|mask
-op_rshift_assign
-l_int|1
-comma
 id|i
 op_increment
 )paren
@@ -11763,58 +11793,62 @@ op_increment
 r_if
 c_cond
 (paren
-id|mask
+(paren
+id|pmu_conf.pmc_desc
+(braket
+id|i
+)braket
+dot
+id|type
 op_amp
-l_int|0x1
+id|PFM_REG_IMPL
 )paren
-(brace
+op_eq
+l_int|0
+)paren
+r_continue
+suffix:semicolon
 id|ia64_set_pmc
 c_func
 (paren
 id|i
 comma
-id|reset_pmcs
-(braket
+id|PMC_DFL_VAL
+c_func
+(paren
 id|i
-)braket
+)paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * When restoring context, we must restore ALL pmcs, even the ones &n;&t;&t;&t; * that the task does not use to avoid leaks and possibly corruption&n;&t;&t;&t; * of the sesion because of configuration conflicts. So here, we &n;&t;&t;&t; * initialize the entire set used in the context switch restore routine.&n;&t; &t;&t; */
+multiline_comment|/*&n;&t;&t; * When restoring context, we must restore ALL pmcs, even the ones &n;&t;&t; * that the task does not use to avoid leaks and possibly corruption&n;&t;&t; * of the sesion because of configuration conflicts. So here, we &n;&t;&t; * initialize the entire set used in the context switch restore routine.&n;&t; &t; */
 id|t-&gt;pmc
 (braket
 id|i
 )braket
 op_assign
-id|reset_pmcs
-(braket
+id|PMC_DFL_VAL
+c_func
+(paren
 id|i
-)braket
+)paren
 suffix:semicolon
 id|DBprintk
 c_func
 (paren
 (paren
-l_string|&quot; pmc[%d]=0x%lx&bslash;n&quot;
+l_string|&quot;pmc[%d]=0x%lx&bslash;n&quot;
 comma
 id|i
 comma
-id|reset_pmcs
+id|t-&gt;pmc
 (braket
 id|i
 )braket
 )paren
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;&t; * clear reset values for PMD. &n;&t; * XXX: good up to 64 PMDS. Suppose that zero is a valid value.&n;&t; */
-id|mask
-op_assign
-id|pmu_conf.impl_regs
-(braket
-l_int|4
-)braket
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -11822,12 +11856,19 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|mask
+(paren
+id|pmu_conf.pmd_desc
+(braket
+id|i
+)braket
+dot
+id|type
+op_amp
+id|PFM_REG_END
+)paren
+op_eq
+l_int|0
 suffix:semicolon
-id|mask
-op_rshift_assign
-l_int|1
-comma
 id|i
 op_increment
 )paren
@@ -11835,10 +11876,21 @@ op_increment
 r_if
 c_cond
 (paren
-id|mask
+(paren
+id|pmu_conf.pmd_desc
+(braket
+id|i
+)braket
+dot
+id|type
 op_amp
-l_int|0x1
+id|PFM_REG_IMPL
 )paren
+op_eq
+l_int|0
+)paren
+r_continue
+suffix:semicolon
 id|ia64_set_pmd
 c_func
 (paren
@@ -13490,76 +13542,6 @@ op_assign
 l_string|&quot;perfmon&quot;
 )brace
 suffix:semicolon
-r_static
-r_void
-DECL|function|pfm_pmu_snapshot
-id|pfm_pmu_snapshot
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|IA64_NUM_PMC_REGS
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|i
-op_ge
-id|pmu_conf.num_pmcs
-)paren
-r_break
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|PMC_IS_IMPL
-c_func
-(paren
-id|i
-)paren
-)paren
-id|reset_pmcs
-(braket
-id|i
-)braket
-op_assign
-id|ia64_get_pmc
-c_func
-(paren
-id|i
-)paren
-suffix:semicolon
-)brace
-macro_line|#ifdef CONFIG_MCKINLEY
-multiline_comment|/*&n;&t; * set the &squot;stupid&squot; enable bit to power the PMU!&n;&t; */
-id|reset_pmcs
-(braket
-l_int|4
-)braket
-op_or_assign
-l_int|1UL
-op_lshift
-l_int|23
-suffix:semicolon
-macro_line|#endif
-)brace
 multiline_comment|/*&n; * perfmon initialization routine, called from the initcall() table&n; */
 r_int
 id|__init
@@ -13637,6 +13619,7 @@ id|pm_info.pal_perf_mon_info_s.width
 op_minus
 l_int|1
 suffix:semicolon
+multiline_comment|/*&n;&t; * XXX: use the pfm_*_desc tables instead and simply verify with PAL&n;&t; */
 id|pmu_conf.max_counters
 op_assign
 id|pm_info.pal_perf_mon_info_s.generic
@@ -13744,20 +13727,14 @@ id|pmu_conf.num_dbrs
 op_lshift_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * take a snapshot of all PMU registers. PAL is supposed&n;&t; * to configure them with stable/safe values, i.e., not&n;&t; * capturing anything.&n;&t; * We take a snapshot now, before we make any modifications. This&n;&t; * will become our master copy. Then we will reuse the snapshot&n;&t; * to reset the PMU in pfm_enable(). Using this technique, perfmon&n;&t; * does NOT have to know about the specific values to program for&n;&t; * the PMC/PMD. The safe values may be different from one CPU model to&n;&t; * the other.&n;&t; */
-id|pfm_pmu_snapshot
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * setup the register configuration descriptions for the CPU&n;&t; */
 id|pmu_conf.pmc_desc
 op_assign
-id|pmc_desc
+id|pfm_pmc_desc
 suffix:semicolon
 id|pmu_conf.pmd_desc
 op_assign
-id|pmd_desc
+id|pfm_pmd_desc
 suffix:semicolon
 multiline_comment|/* we are all set */
 id|pmu_conf.pfm_is_disabled
@@ -13815,6 +13792,9 @@ id|perfmon_init_percpu
 r_void
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13838,6 +13818,126 @@ id|ia64_set_pmv
 c_func
 (paren
 id|IA64_PERFMON_VECTOR
+)paren
+suffix:semicolon
+id|ia64_srlz_d
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * we first initialize the PMU to a stable state.&n;&t; * the values may have been changed from their power-up&n;&t; * values by software executed before the kernel took over.&n;&t; *&n;&t; * At this point, pmu_conf has not yet been initialized&n;&t; *&n;&t; * On McKinley, this code is ineffective until PMC4 is initialized.&n;&t; */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|1
+suffix:semicolon
+(paren
+id|pfm_pmc_desc
+(braket
+id|i
+)braket
+dot
+id|type
+op_amp
+id|PFM_REG_END
+)paren
+op_eq
+l_int|0
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|pfm_pmc_desc
+(braket
+id|i
+)braket
+dot
+id|type
+op_amp
+id|PFM_REG_IMPL
+)paren
+op_eq
+l_int|0
+)paren
+r_continue
+suffix:semicolon
+id|ia64_set_pmc
+c_func
+(paren
+id|i
+comma
+id|PMC_DFL_VAL
+c_func
+(paren
+id|i
+)paren
+)paren
+suffix:semicolon
+)brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+(paren
+id|pfm_pmd_desc
+(braket
+id|i
+)braket
+dot
+id|type
+op_amp
+id|PFM_REG_END
+)paren
+op_eq
+l_int|0
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|pfm_pmd_desc
+(braket
+id|i
+)braket
+dot
+id|type
+op_amp
+id|PFM_REG_IMPL
+)paren
+op_eq
+l_int|0
+)paren
+r_continue
+suffix:semicolon
+id|ia64_set_pmd
+c_func
+(paren
+id|i
+comma
+l_int|0UL
+)paren
+suffix:semicolon
+)brace
+id|ia64_set_pmc
+c_func
+(paren
+l_int|0
+comma
+l_int|1UL
 )paren
 suffix:semicolon
 id|ia64_srlz_d
