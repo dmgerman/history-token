@@ -527,6 +527,32 @@ op_star
 id|zone
 )paren
 suffix:semicolon
+r_int
+id|zone_watermark_ok
+c_func
+(paren
+r_struct
+id|zone
+op_star
+id|z
+comma
+r_int
+id|order
+comma
+r_int
+r_int
+id|mark
+comma
+r_int
+id|alloc_type
+comma
+r_int
+id|can_try_harder
+comma
+r_int
+id|gfp_high
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * zone_idx() returns 0 for the ZONE_DMA zone, 1 for the ZONE_NORMAL zone, etc.&n; */
 DECL|macro|zone_idx
 mdefine_line|#define zone_idx(zone)&t;&t;((zone) - (zone)-&gt;zone_pgdat-&gt;node_zones)
