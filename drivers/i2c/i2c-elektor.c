@@ -414,33 +414,7 @@ id|mmapped
 r_if
 c_cond
 (paren
-id|check_region
-c_func
-(paren
-id|base
-comma
-l_int|2
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;i2c-elektor.o: requested I/O region (0x%X:2) is in use.&bslash;n&quot;
-comma
-id|base
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-r_else
-(brace
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -450,6 +424,20 @@ l_int|2
 comma
 l_string|&quot;i2c (isa bus adapter)&quot;
 )paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;i2c-elektor.o: requested I/O region (0x%X:2) &quot;
+l_string|&quot;is in use.&bslash;n&quot;
+comma
+id|base
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 )brace
@@ -507,7 +495,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|pcf_isa_exit
 r_static
 r_void
 id|pcf_isa_exit
@@ -556,7 +543,6 @@ l_int|2
 suffix:semicolon
 )brace
 )brace
-DECL|function|pcf_isa_reg
 r_static
 r_int
 id|pcf_isa_reg
@@ -572,7 +558,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|pcf_isa_unreg
 r_static
 r_int
 id|pcf_isa_unreg
@@ -588,7 +573,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|pcf_isa_inc_use
 r_static
 r_void
 id|pcf_isa_inc_use
@@ -605,7 +589,6 @@ id|MOD_INC_USE_COUNT
 suffix:semicolon
 macro_line|#endif
 )brace
-DECL|function|pcf_isa_dec_use
 r_static
 r_void
 id|pcf_isa_dec_use
@@ -623,7 +606,6 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/* ------------------------------------------------------------------------&n; * Encapsulate the above functions in the correct operations structure.&n; * This is only done when more than one hardware adapter is supported.&n; */
-DECL|variable|pcf_isa_data
 r_static
 r_struct
 id|i2c_algo_pcf_data
@@ -672,7 +654,6 @@ l_int|100
 comma
 )brace
 suffix:semicolon
-DECL|variable|pcf_isa_ops
 r_static
 r_struct
 id|i2c_adapter
@@ -717,7 +698,6 @@ id|pcf_isa_unreg
 comma
 )brace
 suffix:semicolon
-DECL|function|i2c_pcfisa_init
 r_int
 id|__init
 id|i2c_pcfisa_init
@@ -1020,7 +1000,6 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-DECL|function|init_module
 r_int
 id|init_module
 c_func
@@ -1035,7 +1014,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
 r_void
 id|cleanup_module
 c_func

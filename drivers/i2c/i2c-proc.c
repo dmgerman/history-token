@@ -3048,6 +3048,7 @@ id|addr
 op_increment
 )paren
 (brace
+multiline_comment|/* XXX: WTF is going on here??? */
 r_if
 c_cond
 (paren
