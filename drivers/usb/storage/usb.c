@@ -817,6 +817,13 @@ op_star
 )paren
 id|__us
 suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|us-&gt;host
+suffix:semicolon
 id|lock_kernel
 c_func
 (paren
@@ -855,11 +862,6 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-r_struct
-id|Scsi_Host
-op_star
-id|host
-suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
@@ -886,6 +888,16 @@ c_func
 l_string|&quot;*** thread awakened.&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* lock the device pointers */
+id|down
+c_func
+(paren
+op_amp
+(paren
+id|us-&gt;dev_semaphore
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* if us-&gt;srb is NULL, we are being asked to exit */
 r_if
 c_cond
@@ -901,13 +913,18 @@ c_func
 l_string|&quot;-- exit command received&bslash;n&quot;
 )paren
 suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+(paren
+id|us-&gt;dev_semaphore
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|host
-op_assign
-id|us-&gt;srb-&gt;device-&gt;host
-suffix:semicolon
 multiline_comment|/* lock access to the state */
 id|scsi_lock
 c_func
@@ -934,27 +951,6 @@ r_goto
 id|SkipForAbort
 suffix:semicolon
 )brace
-multiline_comment|/* set the state and release the lock */
-id|us-&gt;sm_state
-op_assign
-id|US_STATE_RUNNING
-suffix:semicolon
-id|scsi_unlock
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-multiline_comment|/* lock the device pointers */
-id|down
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;dev_semaphore
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* don&squot;t do anything if we are disconnecting */
 r_if
 c_cond
@@ -975,15 +971,22 @@ c_func
 l_string|&quot;No command during disconnect&bslash;n&quot;
 )paren
 suffix:semicolon
-id|us-&gt;srb-&gt;result
-op_assign
-id|DID_BAD_TARGET
-op_lshift
-l_int|16
+r_goto
+id|SkipForDisconnect
 suffix:semicolon
 )brace
+multiline_comment|/* set the state and release the lock */
+id|us-&gt;sm_state
+op_assign
+id|US_STATE_RUNNING
+suffix:semicolon
+id|scsi_unlock
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 multiline_comment|/* reject the command if the direction indicator &n;&t;&t; * is UNKNOWN&n;&t;&t; */
-r_else
 r_if
 c_cond
 (paren
@@ -1154,16 +1157,6 @@ id|us
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* unlock the device pointers */
-id|up
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;dev_semaphore
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* lock access to the state */
 id|scsi_lock
 c_func
@@ -1228,6 +1221,8 @@ id|us-&gt;notify
 )paren
 suffix:semicolon
 multiline_comment|/* empty the queue, reset the state, and release the lock */
+id|SkipForDisconnect
+suffix:colon
 id|us-&gt;srb
 op_assign
 l_int|NULL
@@ -1240,6 +1235,16 @@ id|scsi_unlock
 c_func
 (paren
 id|host
+)paren
+suffix:semicolon
+multiline_comment|/* unlock the device pointers */
+id|up
+c_func
+(paren
+op_amp
+(paren
+id|us-&gt;dev_semaphore
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1301,19 +1306,13 @@ id|us-&gt;ifnum
 op_assign
 id|intf-&gt;cur_altsetting-&gt;desc.bInterfaceNumber
 suffix:semicolon
-multiline_comment|/* Store our private data in the interface and increment the&n;&t; * device&squot;s reference count */
+multiline_comment|/* Store our private data in the interface */
 id|usb_set_intfdata
 c_func
 (paren
 id|intf
 comma
 id|us
-)paren
-suffix:semicolon
-id|usb_get_dev
-c_func
-(paren
-id|us-&gt;pusb_dev
 )paren
 suffix:semicolon
 multiline_comment|/* Allocate the device-related DMA-mapped buffers */
@@ -2552,6 +2551,53 @@ op_amp
 id|us-&gt;dev_semaphore
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Since this is a new device, we need to register a SCSI&n;&t; * host definition with the higher SCSI layers.&n;&t; */
+id|us-&gt;host
+op_assign
+id|scsi_host_alloc
+c_func
+(paren
+op_amp
+id|usb_stor_host_template
+comma
+r_sizeof
+(paren
+id|us
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|us-&gt;host
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|USB_STORAGE
+l_string|&quot;Unable to allocate the scsi host&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
+multiline_comment|/* Set the hostdata to prepare for scanning */
+id|us-&gt;host-&gt;hostdata
+(braket
+l_int|0
+)braket
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|us
+suffix:semicolon
 multiline_comment|/* Start up our control thread */
 id|us-&gt;sm_state
 op_assign
@@ -2603,62 +2649,14 @@ id|us-&gt;notify
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Since this is a new device, we need to register a SCSI&n;&t; * host definition with the higher SCSI layers.&n;&t; */
-id|us-&gt;host
-op_assign
-id|scsi_host_alloc
-c_func
-(paren
-op_amp
-id|usb_stor_host_template
-comma
-r_sizeof
-(paren
-id|us
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|us-&gt;host
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|USB_STORAGE
-l_string|&quot;Unable to register the scsi host&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
-multiline_comment|/* Set the hostdata to prepare for scanning */
-id|us-&gt;host-&gt;hostdata
-(braket
-l_int|0
-)braket
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|us
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Dissociate from the USB device */
-DECL|function|dissociate_dev
-r_static
+multiline_comment|/* Release all our dynamic resources */
+DECL|function|usb_stor_release_resources
 r_void
-id|dissociate_dev
+id|usb_stor_release_resources
 c_func
 (paren
 r_struct
@@ -2675,6 +2673,14 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+multiline_comment|/* Kill the control thread.  The SCSI host must already have been&n;&t; * removed so it won&squot;t try to queue any more commands.&n;&t; */
+r_if
+c_cond
+(paren
+id|us-&gt;pid
+)paren
+(brace
+multiline_comment|/* Wait for the thread to be idle */
 id|down
 c_func
 (paren
@@ -2682,129 +2688,6 @@ op_amp
 id|us-&gt;dev_semaphore
 )paren
 suffix:semicolon
-multiline_comment|/* Free the device-related DMA-mapped buffers */
-r_if
-c_cond
-(paren
-id|us-&gt;cr
-)paren
-(brace
-id|usb_buffer_free
-c_func
-(paren
-id|us-&gt;pusb_dev
-comma
-r_sizeof
-(paren
-op_star
-id|us-&gt;cr
-)paren
-comma
-id|us-&gt;cr
-comma
-id|us-&gt;cr_dma
-)paren
-suffix:semicolon
-id|us-&gt;cr
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|us-&gt;iobuf
-)paren
-(brace
-id|usb_buffer_free
-c_func
-(paren
-id|us-&gt;pusb_dev
-comma
-id|US_IOBUF_SIZE
-comma
-id|us-&gt;iobuf
-comma
-id|us-&gt;iobuf_dma
-)paren
-suffix:semicolon
-id|us-&gt;iobuf
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-multiline_comment|/* Remove our private data from the interface and decrement the&n;&t; * device&squot;s reference count */
-id|usb_set_intfdata
-c_func
-(paren
-id|us-&gt;pusb_intf
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|usb_put_dev
-c_func
-(paren
-id|us-&gt;pusb_dev
-)paren
-suffix:semicolon
-id|us-&gt;pusb_dev
-op_assign
-l_int|NULL
-suffix:semicolon
-id|us-&gt;pusb_intf
-op_assign
-l_int|NULL
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|us-&gt;dev_semaphore
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Release all our static and dynamic resources */
-DECL|function|usb_stor_release_resources
-r_void
-id|usb_stor_release_resources
-c_func
-(paren
-r_struct
-id|us_data
-op_star
-id|us
-)paren
-(brace
-multiline_comment|/*&n;&t; * The host must already have been removed&n;&t; * and dissociate_dev() must have been called.&n;&t; */
-multiline_comment|/* Finish the SCSI host removal sequence */
-r_if
-c_cond
-(paren
-id|us-&gt;host
-)paren
-(brace
-id|us-&gt;host-&gt;hostdata
-(braket
-l_int|0
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-id|scsi_host_put
-c_func
-(paren
-id|us-&gt;host
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Kill the control thread&n;&t; *&n;&t; * Enqueue the command, wake up the thread, and wait for &n;&t; * notification that it has exited.&n;&t; */
-r_if
-c_cond
-(paren
-id|us-&gt;pid
-)paren
-(brace
 id|US_DEBUGP
 c_func
 (paren
@@ -2819,26 +2702,42 @@ op_ne
 id|US_STATE_IDLE
 )paren
 suffix:semicolon
+multiline_comment|/* If the SCSI midlayer queued a final command just before&n;&t;&t; * scsi_remove_host() was called, us-&gt;srb might not be&n;&t;&t; * NULL.  We can overwrite it safely, because the midlayer&n;&t;&t; * will not wait for the command to finish.  Also the&n;&t;&t; * control thread will already have been awakened.&n;&t;&t; * That&squot;s okay, an extra up() on us-&gt;sema won&squot;t hurt.&n;&t;&t; *&n;&t;&t; * Enqueue the command, wake up the thread, and wait for &n;&t;&t; * notification that it has exited.&n;&t;&t; */
+id|scsi_lock
+c_func
+(paren
+id|us-&gt;host
+)paren
+suffix:semicolon
 id|us-&gt;srb
 op_assign
 l_int|NULL
+suffix:semicolon
+id|scsi_unlock
+c_func
+(paren
+id|us-&gt;host
+)paren
 suffix:semicolon
 id|up
 c_func
 (paren
 op_amp
-(paren
-id|us-&gt;sema
+id|us-&gt;dev_semaphore
 )paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|us-&gt;sema
 )paren
 suffix:semicolon
 id|wait_for_completion
 c_func
 (paren
 op_amp
-(paren
 id|us-&gt;notify
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2864,6 +2763,18 @@ id|us-&gt;extra
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Finish the host removal sequence */
+r_if
+c_cond
+(paren
+id|us-&gt;host
+)paren
+id|scsi_host_put
+c_func
+(paren
+id|us-&gt;host
+)paren
+suffix:semicolon
 multiline_comment|/* Free the extra data and the URB */
 r_if
 c_cond
@@ -2887,19 +2798,81 @@ c_func
 id|us-&gt;current_urb
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* Dissociate from the USB device */
+DECL|function|dissociate_dev
+r_static
+r_void
+id|dissociate_dev
+c_func
+(paren
+r_struct
+id|us_data
+op_star
+id|us
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- %s&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+multiline_comment|/* Free the device-related DMA-mapped buffers */
+r_if
+c_cond
+(paren
+id|us-&gt;cr
+)paren
+id|usb_buffer_free
+c_func
+(paren
+id|us-&gt;pusb_dev
+comma
+r_sizeof
+(paren
+op_star
+id|us-&gt;cr
+)paren
+comma
+id|us-&gt;cr
+comma
+id|us-&gt;cr_dma
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|us-&gt;iobuf
+)paren
+id|usb_buffer_free
+c_func
+(paren
+id|us-&gt;pusb_dev
+comma
+id|US_IOBUF_SIZE
+comma
+id|us-&gt;iobuf
+comma
+id|us-&gt;iobuf_dma
+)paren
+suffix:semicolon
+multiline_comment|/* Remove our private data from the interface */
+id|usb_set_intfdata
+c_func
+(paren
+id|us-&gt;pusb_intf
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 multiline_comment|/* Free the structure itself */
 id|kfree
 c_func
 (paren
 id|us
-)paren
-suffix:semicolon
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- %s finished&bslash;n&quot;
-comma
-id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
@@ -3033,6 +3006,13 @@ op_amp
 (paren
 id|us-&gt;notify
 )paren
+)paren
+suffix:semicolon
+id|init_waitqueue_head
+c_func
+(paren
+op_amp
+id|us-&gt;dev_reset_wait
 )paren
 suffix:semicolon
 multiline_comment|/* Associate the us_data structure with the USB device */
@@ -3276,13 +3256,13 @@ c_func
 l_string|&quot;storage_probe() failed&bslash;n&quot;
 )paren
 suffix:semicolon
-id|dissociate_dev
+id|usb_stor_release_resources
 c_func
 (paren
 id|us
 )paren
 suffix:semicolon
-id|usb_stor_release_resources
+id|dissociate_dev
 c_func
 (paren
 id|us
@@ -3322,7 +3302,7 @@ c_func
 l_string|&quot;storage_disconnect() called&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Prevent new USB transfers and stop the current command */
+multiline_comment|/* Prevent new USB transfers, stop the current command, and&n;&t; * interrupt a device-reset delay */
 id|set_bit
 c_func
 (paren
@@ -3338,11 +3318,26 @@ c_func
 id|us
 )paren
 suffix:semicolon
-multiline_comment|/* Dissociate from the USB device */
-id|dissociate_dev
+id|wake_up
 c_func
 (paren
-id|us
+op_amp
+id|us-&gt;dev_reset_wait
+)paren
+suffix:semicolon
+multiline_comment|/* Wait for the current command to finish, then remove the host */
+id|down
+c_func
+(paren
+op_amp
+id|us-&gt;dev_semaphore
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|us-&gt;dev_semaphore
 )paren
 suffix:semicolon
 id|scsi_remove_host
@@ -3351,9 +3346,14 @@ c_func
 id|us-&gt;host
 )paren
 suffix:semicolon
-multiline_comment|/* TODO: somehow, wait for the device to&n;&t; * be &squot;idle&squot; (tasklet completion) */
-multiline_comment|/* Release all our other resources */
+multiline_comment|/* Wait for everything to become idle and release all our resources */
 id|usb_stor_release_resources
+c_func
+(paren
+id|us
+)paren
+suffix:semicolon
+id|dissociate_dev
 c_func
 (paren
 id|us
@@ -3443,104 +3443,6 @@ op_amp
 id|usb_storage_driver
 )paren
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* While there are still virtual hosts, unregister them&n;&t; * Note that it&squot;s important to do this completely before removing&n;&t; * the structures because of possible races with the /proc&n;&t; * interface&n;&t; */
-r_for
-c_loop
-(paren
-id|next
-op_assign
-id|us_list
-suffix:semicolon
-id|next
-suffix:semicolon
-id|next
-op_assign
-id|next-&gt;next
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- calling scsi_unregister_host()&bslash;n&quot;
-)paren
-suffix:semicolon
-id|scsi_unregister_host
-c_func
-(paren
-op_amp
-id|usb_stor_host_template
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* While there are still structures, free them.  Note that we are&n;&t; * now race-free, since these structures can no longer be accessed&n;&t; * from either the SCSI command layer or the /proc interface&n;&t; */
-r_while
-c_loop
-(paren
-id|us_list
-)paren
-(brace
-multiline_comment|/* keep track of where the next one is */
-id|next
-op_assign
-id|us_list-&gt;next
-suffix:semicolon
-multiline_comment|/* If there&squot;s extra data in the us_data structure then&n;&t;&t; * free that first */
-r_if
-c_cond
-(paren
-id|us_list-&gt;extra
-)paren
-(brace
-multiline_comment|/* call the destructor routine, if it exists */
-r_if
-c_cond
-(paren
-id|us_list-&gt;extra_destructor
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- calling extra_destructor()&bslash;n&quot;
-)paren
-suffix:semicolon
-id|us_list
-op_member_access_from_pointer
-id|extra_destructor
-c_func
-(paren
-id|us_list-&gt;extra
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* destroy the extra data */
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- freeing the data structure&bslash;n&quot;
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|us_list-&gt;extra
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* free the structure itself */
-id|kfree
-(paren
-id|us_list
-)paren
-suffix:semicolon
-multiline_comment|/* advance the list pointer */
-id|us_list
-op_assign
-id|next
-suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 DECL|variable|usb_stor_init
 id|module_init

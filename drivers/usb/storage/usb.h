@@ -352,7 +352,7 @@ DECL|member|iobuf_dma
 id|dma_addr_t
 id|iobuf_dma
 suffix:semicolon
-multiline_comment|/* mutual exclusion structures */
+multiline_comment|/* mutual exclusion and synchronization structures */
 DECL|member|sema
 r_struct
 id|semaphore
@@ -364,7 +364,12 @@ r_struct
 id|completion
 id|notify
 suffix:semicolon
-multiline_comment|/* thread begin/end&t;    */
+multiline_comment|/* thread begin/end&t; */
+DECL|member|dev_reset_wait
+id|wait_queue_head_t
+id|dev_reset_wait
+suffix:semicolon
+multiline_comment|/* wait during reset    */
 multiline_comment|/* subdriver information */
 DECL|member|extra
 r_void
