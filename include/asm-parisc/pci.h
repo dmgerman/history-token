@@ -336,6 +336,8 @@ macro_line|#endif
 multiline_comment|/*&n;** used by drivers/pci/pci.c:pci_do_scan_bus()&n;**   0 == check if bridge is numbered before re-numbering.&n;**   1 == pci_do_scan_bus() should automatically number all PCI-PCI bridges.&n;**&n;** REVISIT:&n;**   To date, only alpha sets this to one. We&squot;ll need to set this&n;**   to zero for legacy platforms and one for PAT platforms.&n;*/
 DECL|macro|pcibios_assign_all_busses
 mdefine_line|#define pcibios_assign_all_busses()     (pdc_type == PDC_TYPE_PAT)
+DECL|macro|pcibios_scan_all_fns
+mdefine_line|#define pcibios_scan_all_fns(a, b)&t;0
 DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO          0x10
 DECL|macro|PCIBIOS_MIN_MEM
