@@ -4830,7 +4830,12 @@ multiline_comment|/* It seems that we have to set the current state to&n;&t;&t; 
 id|__set_current_state
 c_func
 (paren
+id|signals_allowed
+ques
+c_cond
 id|TASK_INTERRUPTIBLE
+suffix:colon
+id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
