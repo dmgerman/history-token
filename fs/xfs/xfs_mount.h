@@ -218,7 +218,7 @@ id|xfs_send_destroy_t
 )paren
 (paren
 r_struct
-id|bhv_desc
+id|vnode
 op_star
 comma
 id|dm_right_t
@@ -318,7 +318,7 @@ mdefine_line|#define XFS_SEND_DATA(mp, ev,bdp,off,len,fl,lock) &bslash;&n;&t;(*(
 DECL|macro|XFS_SEND_MMAP
 mdefine_line|#define XFS_SEND_MMAP(mp, vma,fl) &bslash;&n;&t;(*(mp)-&gt;m_dm_ops.xfs_send_mmap)(vma,fl)
 DECL|macro|XFS_SEND_DESTROY
-mdefine_line|#define XFS_SEND_DESTROY(mp, bdp,right) &bslash;&n;&t;(*(mp)-&gt;m_dm_ops.xfs_send_destroy)(bdp,right)
+mdefine_line|#define XFS_SEND_DESTROY(mp, vp,right) &bslash;&n;&t;(*(mp)-&gt;m_dm_ops.xfs_send_destroy)(vp,right)
 DECL|macro|XFS_SEND_NAMESP
 mdefine_line|#define XFS_SEND_NAMESP(mp, ev,b1,r1,b2,r2,n1,n2,mode,rval,fl) &bslash;&n;&t;(*(mp)-&gt;m_dm_ops.xfs_send_namesp)(ev,b1,r1,b2,r2,n1,n2,mode,rval,fl)
 DECL|macro|XFS_SEND_UNMOUNT
