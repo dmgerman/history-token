@@ -201,5 +201,15 @@ op_star
 id|skb
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|llc_station_ack_tmr_cb
+c_func
+(paren
+r_int
+r_int
+id|timeout_data
+)paren
+suffix:semicolon
 macro_line|#endif /* LLC_ACTN_H */
 eof
