@@ -503,6 +503,38 @@ id|tp-&gt;rcv_wup
 op_assign
 id|tp-&gt;rcv_nxt
 suffix:semicolon
+multiline_comment|/* Make sure we do not exceed the maximum possible&n;&t; * scaled window.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tp-&gt;rcv_wscale
+)paren
+id|new_win
+op_assign
+id|min
+c_func
+(paren
+id|new_win
+comma
+id|MAX_TCP_WINDOW
+)paren
+suffix:semicolon
+r_else
+id|new_win
+op_assign
+id|min
+c_func
+(paren
+id|new_win
+comma
+(paren
+l_int|65535U
+op_lshift
+id|tp-&gt;rcv_wscale
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* RFC1323 scaling applied */
 id|new_win
 op_rshift_assign
@@ -1019,7 +1051,7 @@ suffix:semicolon
 id|TCP_INC_STATS
 c_func
 (paren
-id|TcpOutSegs
+id|TCP_MIB_OUTSEGS
 )paren
 suffix:semicolon
 id|err
@@ -3562,7 +3594,7 @@ multiline_comment|/* Update global TCP statistics. */
 id|TCP_INC_STATS
 c_func
 (paren
-id|TcpRetransSegs
+id|TCP_MIB_RETRANSSEGS
 )paren
 suffix:semicolon
 macro_line|#if FASTRETRANS_DEBUG &gt; 0
@@ -3764,14 +3796,14 @@ id|TCP_CA_Loss
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPFastRetrans
+id|LINUX_MIB_TCPFASTRETRANS
 )paren
 suffix:semicolon
 r_else
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPSlowStartRetrans
+id|LINUX_MIB_TCPSLOWSTARTRETRANS
 )paren
 suffix:semicolon
 r_if
@@ -3939,7 +3971,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPForwardRetrans
+id|LINUX_MIB_TCPFORWARDRETRANS
 )paren
 suffix:semicolon
 )brace
@@ -4198,7 +4230,7 @@ id|skb
 id|NET_INC_STATS
 c_func
 (paren
-id|TCPAbortFailed
+id|LINUX_MIB_TCPABORTFAILED
 )paren
 suffix:semicolon
 r_return
@@ -4298,7 +4330,7 @@ id|skb
 id|NET_INC_STATS
 c_func
 (paren
-id|TCPAbortFailed
+id|LINUX_MIB_TCPABORTFAILED
 )paren
 suffix:semicolon
 )brace
@@ -4905,7 +4937,7 @@ suffix:semicolon
 id|TCP_INC_STATS
 c_func
 (paren
-id|TcpOutSegs
+id|TCP_MIB_OUTSEGS
 )paren
 suffix:semicolon
 r_return
@@ -5330,7 +5362,7 @@ suffix:semicolon
 id|TCP_INC_STATS
 c_func
 (paren
-id|TcpActiveOpens
+id|TCP_MIB_ACTIVEOPENS
 )paren
 suffix:semicolon
 multiline_comment|/* Timer for repeating the SYN until an answer. */

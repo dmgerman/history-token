@@ -3898,7 +3898,7 @@ id|nr_frags
 )paren
 id|frag
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|extsts
 op_assign

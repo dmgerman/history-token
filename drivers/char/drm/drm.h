@@ -230,6 +230,7 @@ suffix:semicolon
 multiline_comment|/**&lt; Length of name buffer */
 DECL|member|name
 r_char
+id|__user
 op_star
 id|name
 suffix:semicolon
@@ -241,6 +242,7 @@ suffix:semicolon
 multiline_comment|/**&lt; Length of date buffer */
 DECL|member|date
 r_char
+id|__user
 op_star
 id|date
 suffix:semicolon
@@ -252,6 +254,7 @@ suffix:semicolon
 multiline_comment|/**&lt; Length of desc buffer */
 DECL|member|desc
 r_char
+id|__user
 op_star
 id|desc
 suffix:semicolon
@@ -273,6 +276,7 @@ suffix:semicolon
 multiline_comment|/**&lt; Length of unique */
 DECL|member|unique
 r_char
+id|__user
 op_star
 id|unique
 suffix:semicolon
@@ -293,6 +297,7 @@ suffix:semicolon
 multiline_comment|/**&lt; Length of user-space structures */
 DECL|member|version
 id|drm_version_t
+id|__user
 op_star
 id|version
 suffix:semicolon
@@ -820,6 +825,7 @@ suffix:semicolon
 multiline_comment|/**&lt; Entries in list */
 DECL|member|list
 id|drm_buf_desc_t
+id|__user
 op_star
 id|list
 suffix:semicolon
@@ -839,6 +845,7 @@ id|count
 suffix:semicolon
 DECL|member|list
 r_int
+id|__user
 op_star
 id|list
 suffix:semicolon
@@ -869,6 +876,7 @@ suffix:semicolon
 multiline_comment|/**&lt; Amount of buffer in use (for DMA) */
 DECL|member|address
 r_void
+id|__user
 op_star
 id|address
 suffix:semicolon
@@ -890,12 +898,14 @@ suffix:semicolon
 multiline_comment|/**&lt; Length of the buffer list */
 DECL|member|virtual
 r_void
+id|__user
 op_star
 r_virtual
 suffix:semicolon
 multiline_comment|/**&lt; Mmap&squot;d area in user-virtual */
 DECL|member|list
 id|drm_buf_pub_t
+id|__user
 op_star
 id|list
 suffix:semicolon
@@ -922,12 +932,14 @@ suffix:semicolon
 multiline_comment|/**&lt; Number of buffers to send */
 DECL|member|send_indices
 r_int
+id|__user
 op_star
 id|send_indices
 suffix:semicolon
 multiline_comment|/**&lt; List of handles to buffers */
 DECL|member|send_sizes
 r_int
+id|__user
 op_star
 id|send_sizes
 suffix:semicolon
@@ -949,12 +961,14 @@ suffix:semicolon
 multiline_comment|/**&lt; Desired size for buffers */
 DECL|member|request_indices
 r_int
+id|__user
 op_star
 id|request_indices
 suffix:semicolon
 multiline_comment|/**&lt; Buffer information */
 DECL|member|request_sizes
 r_int
+id|__user
 op_star
 id|request_sizes
 suffix:semicolon
@@ -1013,6 +1027,7 @@ id|count
 suffix:semicolon
 DECL|member|contexts
 id|drm_ctx_t
+id|__user
 op_star
 id|contexts
 suffix:semicolon

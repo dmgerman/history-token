@@ -1151,7 +1151,7 @@ id|stdout_node
 comma
 l_string|&quot;name&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1213,7 +1213,7 @@ id|stdout_node
 comma
 l_string|&quot;reg&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

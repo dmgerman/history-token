@@ -7228,7 +7228,7 @@ l_int|1024
 suffix:semicolon
 id|lp-&gt;dma_buff
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

@@ -2308,7 +2308,7 @@ id|svc_safe_getnetobj
 c_func
 (paren
 r_struct
-id|iovec
+id|kvec
 op_star
 id|argv
 comma
@@ -2387,7 +2387,7 @@ id|svc_safe_putnetobj
 c_func
 (paren
 r_struct
-id|iovec
+id|kvec
 op_star
 id|resv
 comma
@@ -2539,7 +2539,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 op_star
 id|argv
 op_assign
@@ -2550,7 +2550,7 @@ l_int|0
 )braket
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 id|iov
 suffix:semicolon
 multiline_comment|/* data to compute the checksum over: */
@@ -2765,7 +2765,7 @@ op_star
 id|p
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 id|iov
 suffix:semicolon
 id|svc_putu32
@@ -3521,7 +3521,7 @@ id|authp
 )paren
 (brace
 r_struct
-id|iovec
+id|kvec
 op_star
 id|argv
 op_assign
@@ -3532,7 +3532,7 @@ l_int|0
 )braket
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 op_star
 id|resv
 op_assign
@@ -4542,7 +4542,7 @@ id|xdr_netobj
 id|mic
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 op_star
 id|resv
 suffix:semicolon

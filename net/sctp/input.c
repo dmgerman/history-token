@@ -187,7 +187,7 @@ multiline_comment|/* CRC failure, dump it. */
 id|SCTP_INC_STATS_BH
 c_func
 (paren
-id|SctpChecksumErrors
+id|SCTP_MIB_CHECKSUMERRORS
 )paren
 suffix:semicolon
 r_return
@@ -284,7 +284,7 @@ suffix:semicolon
 id|SCTP_INC_STATS_BH
 c_func
 (paren
-id|SctpInSCTPPacks
+id|SCTP_MIB_INSCTPPACKS
 )paren
 suffix:semicolon
 id|sh
@@ -481,7 +481,7 @@ id|skb
 id|SCTP_INC_STATS_BH
 c_func
 (paren
-id|SctpOutOfBlues
+id|SCTP_MIB_OUTOFBLUES
 )paren
 suffix:semicolon
 r_goto
@@ -1117,7 +1117,7 @@ id|asoc-&gt;c.peer_vtag
 id|ICMP_INC_STATS_BH
 c_func
 (paren
-id|IcmpInErrors
+id|ICMP_MIB_INERRORS
 )paren
 suffix:semicolon
 r_goto
@@ -1153,7 +1153,7 @@ id|sk
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|LockDroppedIcmps
+id|LINUX_MIB_LOCKDROPPEDICMPS
 )paren
 suffix:semicolon
 op_star
@@ -1376,7 +1376,7 @@ l_int|8
 id|ICMP_INC_STATS_BH
 c_func
 (paren
-id|IcmpInErrors
+id|ICMP_MIB_INERRORS
 )paren
 suffix:semicolon
 r_return
@@ -1443,7 +1443,7 @@ id|sk
 id|ICMP_INC_STATS_BH
 c_func
 (paren
-id|IcmpInErrors
+id|ICMP_MIB_INERRORS
 )paren
 suffix:semicolon
 r_return

@@ -697,7 +697,7 @@ r_int
 id|verbose_level
 )paren
 suffix:semicolon
-macro_line|#if AHD_TARGET_MODE
+macro_line|#ifdef AHD_TARGET_MODE
 r_static
 r_void
 id|ahd_setup_target_msgin
@@ -5463,7 +5463,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#if AHD_TARGET_MODE
+macro_line|#ifdef AHD_TARGET_MODE
 r_else
 (brace
 r_if
@@ -22617,7 +22617,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-macro_line|#if AHD_TARGET_MODE
+macro_line|#ifdef AHD_TARGET_MODE
 r_int
 id|j
 suffix:semicolon
@@ -22683,7 +22683,7 @@ id|M_DEVBUF
 suffix:semicolon
 )brace
 )brace
-macro_line|#if AHD_TARGET_MODE
+macro_line|#ifdef AHD_TARGET_MODE
 r_if
 c_cond
 (paren
@@ -28323,7 +28323,7 @@ comma
 id|CLRSCSIINT
 )paren
 suffix:semicolon
-macro_line|#if NEEDS_MORE_TESTING
+macro_line|#ifdef NEEDS_MORE_TESTING
 multiline_comment|/*&n;&t; * Always enable abort on incoming L_Qs if this feature is&n;&t; * supported.  We use this to catch invalid SCB references.&n;&t; */
 r_if
 c_cond
@@ -31069,7 +31069,7 @@ op_ne
 l_int|0
 )paren
 (brace
-macro_line|#if AHD_TARGET_MODE
+macro_line|#ifdef AHD_TARGET_MODE
 r_int
 id|group
 suffix:semicolon
@@ -34052,7 +34052,7 @@ c_func
 id|ahd
 )paren
 suffix:semicolon
-macro_line|#if AHD_TARGET_MODE
+macro_line|#ifdef AHD_TARGET_MODE
 r_if
 c_cond
 (paren

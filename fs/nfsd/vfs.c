@@ -2419,7 +2419,7 @@ id|loff_t
 id|offset
 comma
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vec
 comma
@@ -2592,6 +2592,12 @@ c_func
 op_amp
 id|file
 comma
+(paren
+r_struct
+id|iovec
+id|__user
+op_star
+)paren
 id|vec
 comma
 id|vlen
@@ -2710,7 +2716,7 @@ id|loff_t
 id|offset
 comma
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vec
 comma
@@ -2909,6 +2915,12 @@ c_func
 op_amp
 id|file
 comma
+(paren
+r_struct
+id|iovec
+id|__user
+op_star
+)paren
 id|vec
 comma
 id|vlen

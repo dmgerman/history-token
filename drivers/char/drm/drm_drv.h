@@ -1101,7 +1101,7 @@ l_int|1
 )brace
 comma
 macro_line|#endif
-macro_line|#if __HAVE_VBL_IRQ
+macro_line|#ifdef __HAVE_VBL_IRQ
 (braket
 id|DRM_IOCTL_NR
 c_func
@@ -3224,6 +3224,18 @@ id|arg
 )paren
 (brace
 id|drm_version_t
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
+suffix:semicolon
+id|drm_version_t
 id|version
 suffix:semicolon
 r_int
@@ -3238,11 +3250,7 @@ c_func
 op_amp
 id|version
 comma
-(paren
-id|drm_version_t
-op_star
-)paren
-id|arg
+id|argp
 comma
 r_sizeof
 (paren
@@ -3298,11 +3306,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-id|drm_version_t
-op_star
-)paren
-id|arg
+id|argp
 comma
 op_amp
 id|version
@@ -4427,6 +4431,7 @@ id|lock
 comma
 (paren
 id|drm_lock_t
+id|__user
 op_star
 )paren
 id|arg
@@ -4874,6 +4879,7 @@ id|lock
 comma
 (paren
 id|drm_lock_t
+id|__user
 op_star
 )paren
 id|arg
@@ -4926,7 +4932,7 @@ macro_line|#if __HAVE_KERNEL_CTX_SWITCH
 multiline_comment|/* We no longer really hold it, but if we are the next&n;&t; * agent to request it then we should just be able to&n;&t; * take it immediately and not eat the ioctl.&n;&t; */
 id|dev-&gt;lock.filp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 (brace
 id|__volatile__

@@ -3864,7 +3864,7 @@ id|sound
 comma
 l_string|&quot;sub-frame&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -4074,7 +4074,7 @@ id|sound
 comma
 l_string|&quot;device-id&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

@@ -227,6 +227,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -346,6 +347,7 @@ op_star
 id|filp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -473,7 +475,7 @@ id|aliases_nodes
 )paren
 id|p
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_else
 id|p
@@ -720,7 +722,7 @@ c_loop
 (paren
 id|s
 op_assign
-l_int|0
+l_int|NULL
 comma
 id|p
 op_assign
@@ -1917,6 +1919,7 @@ id|filp
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1983,7 +1986,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -2518,7 +2521,7 @@ id|simple_strtoul
 (paren
 id|tmp
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|16
 )paren
@@ -2631,7 +2634,7 @@ id|simple_strtoul
 (paren
 id|tmp
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|16
 )paren
@@ -2726,7 +2729,7 @@ id|simple_strtoul
 (paren
 id|tmp
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|16
 )paren
@@ -2769,7 +2772,7 @@ id|simple_strtoul
 (paren
 id|tchars
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|16
 )paren

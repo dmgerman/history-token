@@ -47,9 +47,9 @@ mdefine_line|#define le2be16(x)&t;(((x)&lt;&lt;8 &amp; 0xff00) | ((x)&gt;&gt;8 &
 DECL|macro|le2be16dbl
 mdefine_line|#define le2be16dbl(x)&t;(((x)&lt;&lt;8 &amp; 0xff00ff00) | ((x)&gt;&gt;8 &amp; 0x00ff00ff))
 DECL|macro|IOCTL_IN
-mdefine_line|#define IOCTL_IN(arg, ret) &bslash;&n;&t;do { int error = get_user(ret, (int *)(arg)); &bslash;&n;&t;&t;if (error) return error; &bslash;&n;&t;} while (0)
+mdefine_line|#define IOCTL_IN(arg, ret) &bslash;&n;&t;do { int error = get_user(ret, (int __user *)(arg)); &bslash;&n;&t;&t;if (error) return error; &bslash;&n;&t;} while (0)
 DECL|macro|IOCTL_OUT
-mdefine_line|#define IOCTL_OUT(arg, ret)&t;ioctl_return((int *)(arg), ret)
+mdefine_line|#define IOCTL_OUT(arg, ret)&t;ioctl_return((int __user *)(arg), ret)
 DECL|function|ioctl_return
 r_static
 r_inline
@@ -58,6 +58,7 @@ id|ioctl_return
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|addr
 comma
@@ -465,6 +466,7 @@ id|ct_ulaw
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 comma
 r_int
@@ -487,6 +489,7 @@ id|ct_alaw
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 comma
 r_int
@@ -509,6 +512,7 @@ id|ct_s8
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 comma
 r_int
@@ -531,6 +535,7 @@ id|ct_u8
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 comma
 r_int
@@ -553,6 +558,7 @@ id|ct_s16be
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 comma
 r_int
@@ -575,6 +581,7 @@ id|ct_u16be
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 comma
 r_int
@@ -597,6 +604,7 @@ id|ct_s16le
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 comma
 r_int
@@ -619,6 +627,7 @@ id|ct_u16le
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 comma
 r_int

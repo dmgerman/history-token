@@ -1555,7 +1555,7 @@ suffix:semicolon
 op_star
 id|pipep
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|vx_init_rmh
 c_func
@@ -2045,7 +2045,7 @@ id|vx_pipe_t
 op_star
 id|pipe
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -2270,7 +2270,7 @@ id|chip-&gt;playback_pipes
 id|pipe-&gt;number
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|vx_free_pipe
 c_func
@@ -4061,7 +4061,7 @@ id|chip-&gt;capture_pipes
 id|pipe-&gt;number
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pipe_out_monitoring
 op_assign
@@ -4096,11 +4096,11 @@ id|chip-&gt;playback_pipes
 id|pipe-&gt;number
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pipe-&gt;monitoring_pipe
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -5152,7 +5152,7 @@ id|chip-&gt;playback_pipes
 suffix:semicolon
 id|chip-&gt;playback_pipes
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -5169,7 +5169,7 @@ id|chip-&gt;capture_pipes
 suffix:semicolon
 id|chip-&gt;capture_pipes
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

@@ -182,6 +182,7 @@ id|length
 suffix:semicolon
 DECL|member|buffer
 r_void
+id|__user
 op_star
 id|buffer
 suffix:semicolon

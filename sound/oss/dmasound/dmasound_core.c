@@ -327,6 +327,7 @@ id|trans
 comma
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -354,6 +355,7 @@ id|ct_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 comma
 r_int
@@ -685,7 +687,8 @@ id|copy_to_user
 c_func
 (paren
 (paren
-r_int
+r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -981,7 +984,7 @@ id|sq-&gt;buffers
 suffix:semicolon
 id|sq-&gt;buffers
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 op_minus
@@ -1074,7 +1077,7 @@ id|setup_func
 r_void
 )paren
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|hard_frame
@@ -1409,6 +1412,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -1961,6 +1965,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|dst
 comma
@@ -3979,6 +3984,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -4820,6 +4826,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma

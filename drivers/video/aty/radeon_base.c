@@ -1646,7 +1646,7 @@ id|dp
 comma
 l_string|&quot;ATY,RefCLK&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1694,7 +1694,7 @@ id|dp
 comma
 l_string|&quot;ATY,SCLK&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1727,7 +1727,7 @@ id|dp
 comma
 l_string|&quot;ATY,MCLK&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

@@ -4059,7 +4059,7 @@ id|u-&gt;urb
 suffix:semicolon
 id|u-&gt;urb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -4076,7 +4076,7 @@ id|u-&gt;buf
 suffix:semicolon
 id|u-&gt;buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -4177,7 +4177,7 @@ id|subs-&gt;tmpbuf
 suffix:semicolon
 id|subs-&gt;tmpbuf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|subs-&gt;nurbs

@@ -3221,7 +3221,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE_PARM
 id|MODULE_PARM
 c_func
 (paren
@@ -3288,7 +3287,6 @@ comma
 l_string|&quot;(ignored)&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Module code fixed by David Weinehall */
 DECL|function|init_module
 r_int

@@ -2438,6 +2438,8 @@ r_struct
 id|islpci_mgmtframe
 op_star
 id|response
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|response_op
@@ -3466,8 +3468,7 @@ id|DOT11_OID_DOT1XENABLE
 comma
 id|OID_INL_DOT11D_CONFORMANCE
 comma
-id|OID_INL_OUTPUTPOWER
-comma
+multiline_comment|/* Do not initialize this - fw &lt; 1.0.4.3 rejects it&n;&t;OID_INL_OUTPUTPOWER,&n;&t;*/
 )brace
 suffix:semicolon
 multiline_comment|/* update the MAC addr. */
@@ -3486,6 +3487,8 @@ r_struct
 id|islpci_mgmtframe
 op_star
 id|res
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|ret

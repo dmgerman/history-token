@@ -416,13 +416,7 @@ l_int|0x7
 suffix:semicolon
 id|vma-&gt;vm_flags
 op_assign
-id|VM_READ
-op_or
-id|VM_WRITE
-op_or
-id|VM_MAYREAD
-op_or
-id|VM_MAYWRITE
+id|VM_DATA_DEFAULT_FLAGS
 op_or
 id|VM_GROWSUP
 suffix:semicolon
@@ -635,7 +629,7 @@ id|page
 op_star
 id|page
 suffix:semicolon
-multiline_comment|/*&n;&t; * EFI uses 4KB pages while the kernel can use 4KB  or bigger.&n;&t; * Thus EFI and the kernel may have different page sizes. It is&n;&t; * therefore possible to have the initrd share the same page as&n;&t; * the end of the kernel (given current setup).&n;&t; *&n;&t; * To avoid freeing/using the wrong page (kernel sized) we:&n;&t; *&t;- align up the beginning of initrd&n;&t; *&t;- align down the end of initrd&n;&t; *&n;&t; *  |             |&n;&t; *  |=============| a000&n;&t; *  |             |&n;&t; *  |             |&n;&t; *  |             | 9000&n;&t; *  |/////////////|&n;&t; *  |/////////////|&n;&t; *  |=============| 8000&n;&t; *  |///INITRD////|&n;&t; *  |/////////////|&n;&t; *  |/////////////| 7000&n;&t; *  |             |&n;&t; *  |KKKKKKKKKKKKK|&n;&t; *  |=============| 6000&n;&t; *  |KKKKKKKKKKKKK|&n;&t; *  |KKKKKKKKKKKKK|&n;&t; *  K=kernel using 8KB pages&n;&t; *&n;&t; * In this example, we must free page 8000 ONLY. So we must align up&n;&t; * initrd_start and keep initrd_end as is.&n;&t; */
+multiline_comment|/*&n;&t; * EFI uses 4KB pages while the kernel can use 4KB or bigger.&n;&t; * Thus EFI and the kernel may have different page sizes. It is&n;&t; * therefore possible to have the initrd share the same page as&n;&t; * the end of the kernel (given current setup).&n;&t; *&n;&t; * To avoid freeing/using the wrong page (kernel sized) we:&n;&t; *&t;- align up the beginning of initrd&n;&t; *&t;- align down the end of initrd&n;&t; *&n;&t; *  |             |&n;&t; *  |=============| a000&n;&t; *  |             |&n;&t; *  |             |&n;&t; *  |             | 9000&n;&t; *  |/////////////|&n;&t; *  |/////////////|&n;&t; *  |=============| 8000&n;&t; *  |///INITRD////|&n;&t; *  |/////////////|&n;&t; *  |/////////////| 7000&n;&t; *  |             |&n;&t; *  |KKKKKKKKKKKKK|&n;&t; *  |=============| 6000&n;&t; *  |KKKKKKKKKKKKK|&n;&t; *  |KKKKKKKKKKKKK|&n;&t; *  K=kernel using 8KB pages&n;&t; *&n;&t; * In this example, we must free page 8000 ONLY. So we must align up&n;&t; * initrd_start and keep initrd_end as is.&n;&t; */
 id|start
 op_assign
 id|PAGE_ALIGN
@@ -2457,7 +2451,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* setup gate pages before we free up boot memory... */
 macro_line|#ifdef CONFIG_IA32_SUPPORT
 id|ia32_boot_gdt_init
 c_func

@@ -5017,9 +5017,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|macro|hub_suspend
-mdefine_line|#define&t;hub_suspend&t;&t;0
+mdefine_line|#define&t;hub_suspend&t;&t;NULL
 DECL|macro|hub_resume
-mdefine_line|#define&t;hub_resume&t;&t;0
+mdefine_line|#define&t;hub_resume&t;&t;NULL
 DECL|macro|remote_wakeup
 mdefine_line|#define&t;remote_wakeup(x)&t;0
 macro_line|#endif&t;/* CONFIG_USB_SUSPEND */

@@ -56,7 +56,7 @@ id|xdr_buf
 (brace
 DECL|member|head
 r_struct
-id|iovec
+id|kvec
 id|head
 (braket
 l_int|1
@@ -454,7 +454,7 @@ r_return
 id|p
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Adjust iovec to reflect end of xdr&squot;ed data (RPC client XDR)&n; */
+multiline_comment|/*&n; * Adjust kvec to reflect end of xdr&squot;ed data (RPC client XDR)&n; */
 r_static
 r_inline
 r_int
@@ -463,7 +463,7 @@ id|xdr_adjust_iovec
 c_func
 (paren
 r_struct
-id|iovec
+id|kvec
 op_star
 id|iov
 comma
@@ -495,7 +495,7 @@ id|xdr_shift_iovec
 c_func
 (paren
 r_struct
-id|iovec
+id|kvec
 op_star
 comma
 r_int
@@ -513,7 +513,7 @@ id|xdr_kmap
 c_func
 (paren
 r_struct
-id|iovec
+id|kvec
 op_star
 comma
 r_struct
@@ -571,7 +571,7 @@ id|xdr_buf_from_iov
 c_func
 (paren
 r_struct
-id|iovec
+id|kvec
 op_star
 comma
 r_struct
@@ -757,11 +757,11 @@ suffix:semicolon
 multiline_comment|/* end of available buffer space */
 DECL|member|iov
 r_struct
-id|iovec
+id|kvec
 op_star
 id|iov
 suffix:semicolon
-multiline_comment|/* pointer to the current iovec */
+multiline_comment|/* pointer to the current kvec */
 )brace
 suffix:semicolon
 r_extern

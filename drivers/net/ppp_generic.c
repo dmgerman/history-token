@@ -1225,7 +1225,7 @@ l_int|0
 (brace
 id|file-&gt;private_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -1358,7 +1358,7 @@ id|sk_buff
 op_star
 id|skb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ret
 op_assign
@@ -4786,7 +4786,7 @@ id|list
 multiline_comment|/* nowhere to send the packet, just drop it */
 id|ppp-&gt;xmit_pending
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|kfree_skb
 c_func
@@ -4855,7 +4855,7 @@ id|skb
 )paren
 id|ppp-&gt;xmit_pending
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -4869,7 +4869,7 @@ id|skb
 suffix:semicolon
 id|ppp-&gt;xmit_pending
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|spin_unlock_bh
@@ -4901,7 +4901,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_PPP_MULTILINK */
 id|ppp-&gt;xmit_pending
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|kfree_skb
 c_func
@@ -8298,7 +8298,7 @@ suffix:semicolon
 multiline_comment|/* should never happen */
 id|chan-&gt;ppp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * This ensures that we have returned from any calls into the&n;&t; * the channel&squot;s start_xmit or ioctl routine before we proceed.&n;&t; */
 id|down_write
@@ -8317,7 +8317,7 @@ id|pch-&gt;downl
 suffix:semicolon
 id|pch-&gt;chan
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|spin_unlock_bh
 c_func
@@ -9199,7 +9199,7 @@ id|ppp-&gt;xc_state
 suffix:semicolon
 id|ppp-&gt;xc_state
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ppp-&gt;rstate
 op_assign
@@ -9215,7 +9215,7 @@ id|ppp-&gt;rc_state
 suffix:semicolon
 id|ppp-&gt;rc_state
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ppp_unlock
 c_func
@@ -9361,7 +9361,7 @@ id|ce
 suffix:semicolon
 )brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Register a compressor */
@@ -9559,7 +9559,7 @@ id|compressor
 op_star
 id|cp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|spin_lock
 c_func
@@ -10160,7 +10160,7 @@ id|ppp-&gt;dev
 suffix:semicolon
 id|ppp-&gt;dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ppp_unlock
 c_func
@@ -10289,7 +10289,7 @@ id|ppp-&gt;vj
 suffix:semicolon
 id|ppp-&gt;vj
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|skb_queue_purge
@@ -10347,7 +10347,7 @@ id|ppp-&gt;active_filter
 suffix:semicolon
 id|ppp-&gt;active_filter
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PPP_FILTER */
@@ -10508,7 +10508,7 @@ id|pch
 suffix:semicolon
 )brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Connect a PPP channel to a PPP interface unit.&n; */

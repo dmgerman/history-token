@@ -2727,6 +2727,18 @@ id|retval
 op_assign
 id|TW_IOCTL_ERROR_OS_EFAULT
 suffix:semicolon
+r_void
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
+suffix:semicolon
 multiline_comment|/* Only let one of these through at a time */
 r_if
 c_cond
@@ -2757,11 +2769,7 @@ c_func
 op_amp
 id|driver_command
 comma
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|argp
 comma
 r_sizeof
 (paren
@@ -2856,11 +2864,7 @@ c_func
 (paren
 id|tw_ioctl
 comma
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|argp
 comma
 id|driver_command.buffer_length
 op_plus
@@ -2908,7 +2912,7 @@ id|tw_dev-&gt;srb
 id|request_id
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Flag chrdev ioctl */
 id|tw_dev-&gt;chrdev_request_id
@@ -3792,11 +3796,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|argp
 comma
 id|tw_ioctl
 comma

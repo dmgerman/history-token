@@ -5472,7 +5472,7 @@ ques
 c_cond
 id|state-&gt;card
 suffix:colon
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|dmabuf
@@ -6099,7 +6099,7 @@ ques
 c_cond
 id|state-&gt;card
 suffix:colon
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|dmabuf

@@ -17645,7 +17645,7 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-macro_line|#if AIC7XXX_NOT_YET 
+macro_line|#ifdef AIC7XXX_NOT_YET 
 r_case
 id|TRACEPOINT2
 suffix:colon
@@ -34945,7 +34945,7 @@ id|PAGE_MASK
 suffix:semicolon
 id|temp_p-&gt;maddr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -36378,7 +36378,7 @@ l_int|0
 suffix:semicolon
 id|temp_p-&gt;maddr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|temp_p-&gt;pci_bus
 op_assign

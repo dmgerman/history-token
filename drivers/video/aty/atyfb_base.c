@@ -7124,7 +7124,7 @@ id|par-&gt;save_framebuffer
 suffix:semicolon
 id|par-&gt;save_framebuffer
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_break
@@ -7244,7 +7244,7 @@ id|par-&gt;save_framebuffer
 suffix:semicolon
 id|par-&gt;save_framebuffer
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Restore display */

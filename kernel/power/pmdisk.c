@@ -3211,7 +3211,7 @@ l_string|&quot;number of cpus&quot;
 suffix:semicolon
 )brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|check_header

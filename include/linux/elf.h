@@ -3,6 +3,11 @@ DECL|macro|_LINUX_ELF_H
 mdefine_line|#define _LINUX_ELF_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
+macro_line|#ifndef elf_read_implies_exec
+multiline_comment|/* Executables for which elf_read_implies_exec() returns TRUE will&n;     have the READ_IMPLIES_EXEC personality flag set automatically.&n;     Override in asm/elf.h as needed.  */
+DECL|macro|elf_read_implies_exec
+macro_line|# define elf_read_implies_exec(ex, have_pt_gnu_stack)&t;0
+macro_line|#endif
 multiline_comment|/* 32-bit ELF base types. */
 DECL|typedef|Elf32_Addr
 r_typedef

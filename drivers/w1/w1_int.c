@@ -116,7 +116,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Failed to allocate %d bytes for new w1 device.&bslash;n&quot;
+l_string|&quot;Failed to allocate %zd bytes for new w1 device.&bslash;n&quot;
 comma
 r_sizeof
 (paren

@@ -2927,7 +2927,7 @@ id|np-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|np-&gt;tx_ring
 (braket
@@ -3037,7 +3037,7 @@ id|np-&gt;rx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Allocate the rx buffers */
@@ -3856,7 +3856,7 @@ id|np-&gt;tx_skbuff
 id|entry
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|entry
 op_assign
@@ -8764,7 +8764,7 @@ id|np-&gt;rx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -8822,7 +8822,7 @@ id|np-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

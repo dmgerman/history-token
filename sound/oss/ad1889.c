@@ -1546,7 +1546,7 @@ l_int|16
 )brace
 comma
 (brace
-l_int|0
+l_int|NULL
 )brace
 )brace
 suffix:semicolon
@@ -4747,7 +4747,7 @@ c_func
 (paren
 l_string|&quot;driver/ad1889&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 op_eq
@@ -4838,7 +4838,7 @@ c_func
 (paren
 id|pcidev
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_return

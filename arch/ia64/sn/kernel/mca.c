@@ -443,6 +443,16 @@ id|SAL_PLAT_SPECIFIC_ERR_SECT_GUID
 )paren
 op_eq
 l_int|0
+op_logical_or
+id|efi_guidcmp
+c_func
+(paren
+id|guid
+comma
+id|SAL_PLAT_MEM_DEV_ERR_SECT_GUID
+)paren
+op_eq
+l_int|0
 )paren
 r_return
 id|sn_platform_plat_specific_err_print

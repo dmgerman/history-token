@@ -173,7 +173,7 @@ c_func
 id|u_int
 id|ipi
 comma
-id|u_int
+id|cpumask_t
 id|cpumask
 )paren
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * &n; * ATM Lan Emulation Daemon vs. driver interface&n; *&n; * carnil@cs.tut.fi&n; *&n; */
+multiline_comment|/*&n; * &n; * ATM Lan Emulation Daemon vs. driver interface&n; *&n; * mkiiskila@yahoo.com&n; *&n; */
 macro_line|#ifndef _ATMLEC_H_
 DECL|macro|_ATMLEC_H_
 mdefine_line|#define _ATMLEC_H_

@@ -52,10 +52,7 @@ r_static
 r_char
 op_star
 id|setup_strings
-op_assign
-l_int|0
 suffix:semicolon
-macro_line|#ifdef MODULE_PARM
 id|MODULE_PARM
 c_func
 (paren
@@ -64,7 +61,6 @@ comma
 l_string|&quot;s&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|read_3393
 r_static
 r_inline
@@ -1031,7 +1027,7 @@ id|hostdata-&gt;input_Q
 suffix:semicolon
 id|prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_while
 c_loop
@@ -5662,7 +5658,7 @@ id|hostdata-&gt;input_Q
 suffix:semicolon
 id|prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_while
 c_loop
@@ -6495,7 +6491,7 @@ c_func
 (paren
 id|setup_strings
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|detect_count
