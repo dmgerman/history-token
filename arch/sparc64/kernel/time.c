@@ -672,7 +672,8 @@ l_string|&quot;sub&t;%1, 0x8, %1&bslash;n&bslash;t&quot;
 l_string|&quot;ldxa&t;[%1] %5, %4&bslash;n&bslash;t&quot;
 l_string|&quot;cmp&t;%4, %2&bslash;n&bslash;t&quot;
 l_string|&quot;bl,a,pn&t;%%xcc, 1f&bslash;n&bslash;t&quot;
-l_string|&quot; add&t;%3, 1, %3&bslash;n&bslash;t&quot;
+l_string|&quot; add&t;%3, 1, %3&bslash;n&quot;
+l_string|&quot;1:&bslash;n&bslash;t&quot;
 l_string|&quot;sllx&t;%3, 32, %3&bslash;n&bslash;t&quot;
 l_string|&quot;or&t;%3, %4, %0&bslash;n&bslash;t&quot;
 suffix:colon
