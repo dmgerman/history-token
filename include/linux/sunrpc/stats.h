@@ -249,9 +249,11 @@ r_struct
 id|svc_stat
 op_star
 id|s
+comma
 r_struct
 id|file_operations
 op_star
+id|f
 )paren
 (brace
 r_return
@@ -282,11 +284,13 @@ c_func
 r_struct
 id|seq_file
 op_star
+id|seq
 comma
 r_const
 r_struct
 id|svc_stat
 op_star
+id|st
 )paren
 (brace
 )brace
