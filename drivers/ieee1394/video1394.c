@@ -6912,7 +6912,7 @@ id|devfs_handle
 comma
 id|name
 comma
-id|DEVFS_FL_AUTO_OWNER
+id|DEVFS_FL_DEFAULT
 comma
 id|IEEE1394_MAJOR
 comma
