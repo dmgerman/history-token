@@ -3501,12 +3501,6 @@ r_struct
 id|atm_vcc
 op_star
 id|atm_vcc
-comma
-r_int
-id|vpi
-comma
-r_int
-id|vci
 )paren
 (brace
 r_int
@@ -3566,6 +3560,16 @@ op_minus
 l_int|1
 suffix:semicolon
 singleline_comment|// hush gcc
+r_int
+id|vpi
+op_assign
+id|atm_vcc-&gt;vpi
+suffix:semicolon
+r_int
+id|vci
+op_assign
+id|atm_vcc-&gt;vci
+suffix:semicolon
 id|PRINTD
 (paren
 id|DBG_FLOW
@@ -3606,50 +3610,6 @@ id|EINVAL
 suffix:semicolon
 )brace
 macro_line|#endif
-singleline_comment|// deal with possibly wildcarded VCs
-id|error
-op_assign
-id|atm_find_ci
-(paren
-id|atm_vcc
-comma
-op_amp
-id|vpi
-comma
-op_amp
-id|vci
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-(brace
-id|PRINTD
-(paren
-id|DBG_WARN
-op_or
-id|DBG_VCC
-comma
-l_string|&quot;atm_find_ci failed!&quot;
-)paren
-suffix:semicolon
-r_return
-id|error
-suffix:semicolon
-)brace
-id|PRINTD
-(paren
-id|DBG_VCC
-comma
-l_string|&quot;atm_find_ci gives %x %x&quot;
-comma
-id|vpi
-comma
-id|vci
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4492,16 +4452,6 @@ id|dev-&gt;vcc_sf
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// set elements of vcc
-id|atm_vcc-&gt;vpi
-op_assign
-id|vpi
-suffix:semicolon
-singleline_comment|// 0
-id|atm_vcc-&gt;vci
-op_assign
-id|vci
-suffix:semicolon
 singleline_comment|// indicate readiness
 id|set_bit
 c_func
