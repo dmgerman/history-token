@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;linux/libata.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;sata_sis&quot;
