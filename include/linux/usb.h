@@ -1846,17 +1846,6 @@ id|size
 suffix:semicolon
 r_extern
 r_int
-id|usb_get_device_descriptor
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|usb_get_status
 c_func
 (paren
