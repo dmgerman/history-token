@@ -78,6 +78,7 @@ id|STAB0_VIRT_ADDR
 )paren
 comma
 macro_line|#endif
+macro_line|#if NR_CPUS &gt; 1
 id|PACAINITDATA
 c_func
 (paren
@@ -120,6 +121,7 @@ comma
 l_int|0
 )paren
 comma
+macro_line|#if NR_CPUS &gt; 4
 id|PACAINITDATA
 c_func
 (paren
@@ -176,6 +178,7 @@ comma
 l_int|0
 )paren
 comma
+macro_line|#if NR_CPUS &gt; 8
 id|PACAINITDATA
 c_func
 (paren
@@ -1858,6 +1861,9 @@ comma
 l_int|0
 )paren
 comma
+macro_line|#endif
+macro_line|#endif
+macro_line|#endif
 macro_line|#endif
 macro_line|#endif
 )brace

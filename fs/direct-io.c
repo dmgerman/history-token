@@ -552,8 +552,8 @@ r_if
 c_cond
 (paren
 id|dio-&gt;lock_type
-op_ne
-id|DIO_NO_LOCKING
+op_eq
+id|DIO_LOCKING
 )paren
 id|up_read
 c_func
@@ -4000,7 +4000,7 @@ id|dio
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/*&n;&t; * For block device access DIO_NO_LOCKING is used,&n;&t; *&t;neither readers nor writers do any locking at all&n;&t; * For regular files using DIO_LOCKING,&n;&t; *&t;readers need to grab i_sem and i_alloc_sem&n;&t; *&t;writers need to grab i_alloc_sem only (i_sem is already held)&n;&t; * For regular files using DIO_OWN_LOCKING,&n;&t; *&t;readers need to grab i_alloc_sem only (i_sem is already held)&n;&t; *&t;writers need to grab i_alloc_sem only&n;&t; */
+multiline_comment|/*&n;&t; * For block device access DIO_NO_LOCKING is used,&n;&t; *&t;neither readers nor writers do any locking at all&n;&t; * For regular files using DIO_LOCKING,&n;&t; *&t;readers need to grab i_sem and i_alloc_sem&n;&t; *&t;writers need to grab i_alloc_sem only (i_sem is already held)&n;&t; * For regular files using DIO_OWN_LOCKING,&n;&t; *&t;neither readers nor writers take any locks here&n;&t; *&t;(i_sem is already held and release for writers here)&n;&t; */
 id|dio-&gt;lock_type
 op_assign
 id|dio_lock_type
@@ -4074,13 +4074,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|down_read
-c_func
-(paren
-op_amp
-id|inode-&gt;i_alloc_sem
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4102,8 +4095,13 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-r_else
-(brace
+r_if
+c_cond
+(paren
+id|dio_lock_type
+op_eq
+id|DIO_LOCKING
+)paren
 id|down_read
 c_func
 (paren
@@ -4111,7 +4109,6 @@ op_amp
 id|inode-&gt;i_alloc_sem
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;&t; * For file extending writes updating i_size before data&n;&t; * writeouts complete can expose uninitialized blocks. So&n;&t; * even for AIO, we need to wait for i/o to complete before&n;&t; * returning in this case.&n;&t; */
 id|dio-&gt;is_async

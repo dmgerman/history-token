@@ -25,7 +25,9 @@ suffix:semicolon
 multiline_comment|/* Variables for selection control. */
 multiline_comment|/* Use a dynamic buffer, instead of static (Dec 1994) */
 DECL|variable|sel_cons
-r_int
+r_struct
+id|vc_data
+op_star
 id|sel_cons
 suffix:semicolon
 multiline_comment|/* must not be disallocated */
@@ -127,12 +129,7 @@ r_return
 id|inverse_translate
 c_func
 (paren
-id|vc_cons
-(braket
 id|sel_cons
-)braket
-dot
-id|d
 comma
 id|screen_glyph
 c_func
@@ -357,6 +354,18 @@ op_star
 id|tty
 )paren
 (brace
+r_struct
+id|vc_data
+op_star
+id|vc
+op_assign
+id|vc_cons
+(braket
+id|fg_console
+)braket
+dot
+id|d
+suffix:semicolon
 r_int
 id|sel_mode
 comma
@@ -379,12 +388,6 @@ comma
 id|ps
 comma
 id|pe
-suffix:semicolon
-r_int
-r_int
-id|currcons
-op_assign
-id|fg_console
 suffix:semicolon
 id|poke_blanked_console
 c_func
@@ -487,7 +490,7 @@ c_func
 (paren
 id|xs
 comma
-id|video_num_columns
+id|vc-&gt;vc_cols
 op_minus
 l_int|1
 )paren
@@ -499,7 +502,7 @@ c_func
 (paren
 id|ys
 comma
-id|video_num_lines
+id|vc-&gt;vc_rows
 op_minus
 l_int|1
 )paren
@@ -511,7 +514,7 @@ c_func
 (paren
 id|xe
 comma
-id|video_num_columns
+id|vc-&gt;vc_cols
 op_minus
 l_int|1
 )paren
@@ -523,7 +526,7 @@ c_func
 (paren
 id|ye
 comma
-id|video_num_lines
+id|vc-&gt;vc_rows
 op_minus
 l_int|1
 )paren
@@ -532,7 +535,7 @@ id|ps
 op_assign
 id|ys
 op_star
-id|video_size_row
+id|vc-&gt;vc_size_row
 op_plus
 (paren
 id|xs
@@ -544,7 +547,7 @@ id|pe
 op_assign
 id|ye
 op_star
-id|video_size_row
+id|vc-&gt;vc_size_row
 op_plus
 (paren
 id|xe
@@ -632,7 +635,12 @@ c_cond
 (paren
 id|sel_cons
 op_ne
+id|vc_cons
+(braket
 id|fg_console
+)braket
+dot
+id|d
 )paren
 (brace
 id|clear_selection
@@ -642,7 +650,12 @@ c_func
 suffix:semicolon
 id|sel_cons
 op_assign
+id|vc_cons
+(braket
 id|fg_console
+)braket
+dot
+id|d
 suffix:semicolon
 )brace
 r_switch
@@ -741,7 +754,7 @@ op_logical_neg
 (paren
 id|ps
 op_mod
-id|video_size_row
+id|vc-&gt;vc_size_row
 )paren
 )paren
 r_break
@@ -823,7 +836,7 @@ op_plus
 l_int|2
 )paren
 op_mod
-id|video_size_row
+id|vc-&gt;vc_size_row
 )paren
 )paren
 r_break
@@ -841,17 +854,17 @@ id|ps
 op_minus
 id|ps
 op_mod
-id|video_size_row
+id|vc-&gt;vc_size_row
 suffix:semicolon
 id|new_sel_end
 op_assign
 id|pe
 op_plus
-id|video_size_row
+id|vc-&gt;vc_size_row
 op_minus
 id|pe
 op_mod
-id|video_size_row
+id|vc-&gt;vc_size_row
 op_minus
 l_int|2
 suffix:semicolon
@@ -898,7 +911,7 @@ c_func
 (paren
 id|new_sel_end
 comma
-id|video_size_row
+id|vc-&gt;vc_size_row
 )paren
 op_logical_and
 id|isspace
@@ -945,7 +958,7 @@ c_func
 (paren
 id|pe
 comma
-id|video_size_row
+id|vc-&gt;vc_size_row
 )paren
 )paren
 r_break
@@ -1216,7 +1229,7 @@ op_plus
 l_int|2
 )paren
 op_mod
-id|video_size_row
+id|vc-&gt;vc_size_row
 )paren
 )paren
 (brace

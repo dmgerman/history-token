@@ -440,9 +440,9 @@ suffix:semicolon
 multiline_comment|/* Only applies to POWER3, but should be safe on RS64 */
 id|mmcr0
 op_or_assign
-id|MMCR0_PMC1INTCONTROL
+id|MMCR0_PMC1CE
 op_or
-id|MMCR0_PMCNINTCONTROL
+id|MMCR0_PMCjCE
 suffix:semicolon
 id|mtspr
 c_func

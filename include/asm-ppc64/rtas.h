@@ -650,5 +650,7 @@ r_int
 r_int
 id|rtas_rmo_buf
 suffix:semicolon
+DECL|macro|GLOBAL_INTERRUPT_QUEUE
+mdefine_line|#define GLOBAL_INTERRUPT_QUEUE 9005
 macro_line|#endif /* _PPC64_RTAS_H */
 eof

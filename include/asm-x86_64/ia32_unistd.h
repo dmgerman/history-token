@@ -570,7 +570,14 @@ DECL|macro|__NR_ia32_kexec
 mdefine_line|#define __NR_ia32_kexec&t;&t;283
 DECL|macro|__NR_ia32_waitid
 mdefine_line|#define __NR_ia32_waitid&t;&t;284
+multiline_comment|/* #define __NR_sys_setaltroot&t;285 */
+DECL|macro|__NR_ia32_add_key
+mdefine_line|#define __NR_ia32_add_key&t;&t;286
+DECL|macro|__NR_ia32_request_key
+mdefine_line|#define __NR_ia32_request_key&t;287
+DECL|macro|__NR_ia32_keyctl
+mdefine_line|#define __NR_ia32_keyctl&t;&t;288
 DECL|macro|IA32_NR_syscalls
-mdefine_line|#define IA32_NR_syscalls 285&t;/* must be &gt; than biggest syscall! */
+mdefine_line|#define IA32_NR_syscalls 290&t;/* must be &gt; than biggest syscall! */
 macro_line|#endif /* _ASM_X86_64_IA32_UNISTD_H_ */
 eof

@@ -1431,12 +1431,6 @@ op_assign
 op_amp
 id|dev_info
 suffix:semicolon
-id|client_reg.Attributes
-op_assign
-id|INFO_IO_CLIENT
-op_or
-id|INFO_CARD_SHARE
-suffix:semicolon
 id|client_reg.EventMask
 op_assign
 id|CS_EVENT_CARD_INSERTION
@@ -3657,6 +3651,19 @@ suffix:semicolon
 id|dev-&gt;base_addr
 op_assign
 id|link-&gt;io.BasePort1
+suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|handle_to_dev
+c_func
+(paren
+id|handle
+)paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6339,18 +6346,12 @@ op_amp
 id|netwave_driver
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|dev_list
 op_ne
 l_int|NULL
-)paren
-multiline_comment|/* Critical situation */
-id|printk
-c_func
-(paren
-l_string|&quot;netwave_cs: devices remaining when removing module&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

@@ -4,39 +4,11 @@ DECL|macro|_ASM_PCI_BRIDGE_H
 mdefine_line|#define _ASM_PCI_BRIDGE_H
 macro_line|#include &lt;linux/pci.h&gt;
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
-r_struct
-id|device_node
-suffix:semicolon
-r_struct
-id|pci_controller
-suffix:semicolon
-multiline_comment|/* Get the PCI host controller for an OF device */
-r_extern
-r_struct
-id|pci_controller
-op_star
-id|pci_find_hose_for_OF_device
-c_func
-(paren
-r_struct
-id|device_node
-op_star
-id|node
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Structure of a PCI controller (host bridge)&n; */
 DECL|struct|pci_controller
 r_struct
 id|pci_controller
 (brace
-DECL|member|what
-r_char
-id|what
-(braket
-l_int|8
-)braket
-suffix:semicolon
-multiline_comment|/* Eye catcher      */
 DECL|member|bus
 r_struct
 id|pci_bus
@@ -123,10 +95,6 @@ id|mem_resources
 l_int|3
 )braket
 suffix:semicolon
-DECL|member|mem_resource_count
-r_int
-id|mem_resource_count
-suffix:semicolon
 DECL|member|global_number
 r_int
 id|global_number
@@ -151,28 +119,6 @@ r_int
 id|dma_window_size
 suffix:semicolon
 )brace
-suffix:semicolon
-multiline_comment|/*&n; * pci_device_loc returns the bus number and device/function number&n; * for a device on a PCI bus, given its device_node struct.&n; * It returns 0 if OK, -1 on error.&n; */
-r_extern
-r_int
-id|pci_device_loc
-c_func
-(paren
-r_struct
-id|device_node
-op_star
-id|dev
-comma
-r_int
-r_char
-op_star
-id|bus_ptr
-comma
-r_int
-r_char
-op_star
-id|devfn_ptr
-)paren
 suffix:semicolon
 r_struct
 id|device_node
@@ -207,14 +153,7 @@ id|device_node
 op_star
 id|dn
 op_assign
-(paren
-r_struct
-id|device_node
-op_star
-)paren
-(paren
 id|dev-&gt;sysdata
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -225,11 +164,7 @@ id|dev-&gt;devfn
 op_logical_and
 id|dn-&gt;busno
 op_eq
-(paren
 id|dev-&gt;bus-&gt;number
-op_amp
-l_int|0xff
-)paren
 )paren
 r_return
 id|dn

@@ -707,6 +707,12 @@ c_func
 id|size
 comma
 id|VM_IOREMAP
+op_or
+(paren
+id|flags
+op_lshift
+l_int|20
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1004,7 +1010,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|p-&gt;flags
+op_rshift
+l_int|20
+)paren
 op_logical_and
 id|p-&gt;phys_addr
 OL

@@ -123,6 +123,7 @@ l_string|&quot;IRCOMM_CONN&quot;
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_IRDA_DEBUG
 DECL|variable|ircomm_event
 r_static
 r_char
@@ -162,6 +163,7 @@ l_string|&quot;IRCOMM_CONTROL_INDICATION&quot;
 comma
 )brace
 suffix:semicolon
+macro_line|#endif /* CONFIG_IRDA_DEBUG */
 DECL|variable|state
 r_static
 r_int

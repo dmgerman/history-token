@@ -9,6 +9,7 @@ macro_line|#include &quot;linux/init.h&quot;
 macro_line|#include &quot;linux/ptrace.h&quot;
 macro_line|#include &quot;asm/semaphore.h&quot;
 macro_line|#include &quot;asm/pgtable.h&quot;
+macro_line|#include &quot;asm/pgalloc.h&quot;
 macro_line|#include &quot;asm/tlbflush.h&quot;
 macro_line|#include &quot;asm/a.out.h&quot;
 macro_line|#include &quot;asm/current.h&quot;
@@ -60,6 +61,10 @@ suffix:semicolon
 id|pgd_t
 op_star
 id|pgd
+suffix:semicolon
+id|pud_t
+op_star
+id|pud
 suffix:semicolon
 id|pmd_t
 op_star
@@ -198,12 +203,22 @@ comma
 id|page
 )paren
 suffix:semicolon
+id|pud
+op_assign
+id|pud_offset
+c_func
+(paren
+id|pgd
+comma
+id|page
+)paren
+suffix:semicolon
 id|pmd
 op_assign
 id|pmd_offset
 c_func
 (paren
-id|pgd
+id|pud
 comma
 id|page
 )paren
@@ -274,6 +289,36 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|pgd
+op_assign
+id|pgd_offset
+c_func
+(paren
+id|mm
+comma
+id|page
+)paren
+suffix:semicolon
+id|pud
+op_assign
+id|pud_offset
+c_func
+(paren
+id|pgd
+comma
+id|page
+)paren
+suffix:semicolon
+id|pmd
+op_assign
+id|pmd_offset
+c_func
+(paren
+id|pud
+comma
+id|page
+)paren
+suffix:semicolon
 id|pte
 op_assign
 id|pte_offset_kernel

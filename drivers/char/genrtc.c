@@ -81,6 +81,7 @@ id|irq_active
 suffix:semicolon
 macro_line|#ifdef CONFIG_GEN_RTC_X
 DECL|variable|genrtc_task
+r_static
 r_struct
 id|work_struct
 id|genrtc_task

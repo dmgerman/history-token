@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * arch/arm/mach-ixp4xx/ixdp425-pci.c &n; *&n; * IXDP425 board-level PCI initialization&n; *&n; * Copyright (C) 2002 Intel Corporation.&n; * Copyright (C) 2003-2004 MontaVista Software, Inc.&n; *&n; * Maintainer: Deepak Saxena &lt;dsaxena@plexity.net&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

@@ -125,6 +125,30 @@ r_int
 r_int
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/*&n;&t; * Route an interrupt to a CPU&n;&t; */
+DECL|member|set_cpu
+r_void
+(paren
+op_star
+id|set_cpu
+)paren
+(paren
+r_struct
+id|irqdesc
+op_star
+id|desc
+comma
+r_int
+r_int
+id|irq
+comma
+r_int
+r_int
+id|cpu
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|struct|irqdesc
@@ -230,6 +254,23 @@ id|unused
 suffix:colon
 l_int|25
 suffix:semicolon
+DECL|member|procdir
+r_struct
+id|proc_dir_entry
+op_star
+id|procdir
+suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+DECL|member|affinity
+id|cpumask_t
+id|affinity
+suffix:semicolon
+DECL|member|cpu
+r_int
+r_int
+id|cpu
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * IRQ lock detection&n;&t; */
 DECL|member|lck_cnt
 r_int

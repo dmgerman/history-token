@@ -64,9 +64,9 @@ id|hw
 )paren
 suffix:semicolon
 multiline_comment|/******************************************************************************&n; * Raises the EEPROM&squot;s clock input.&n; *&n; * hw - Struct containing variables accessed by shared code&n; * eecd_reg - EECD&squot;s current value&n; *****************************************************************************/
-DECL|function|ixgb_raise_clock
 r_static
 r_void
+DECL|function|ixgb_raise_clock
 id|ixgb_raise_clock
 c_func
 (paren
@@ -110,9 +110,9 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Lowers the EEPROM&squot;s clock input.&n; *&n; * hw - Struct containing variables accessed by shared code&n; * eecd_reg - EECD&squot;s current value&n; *****************************************************************************/
-DECL|function|ixgb_lower_clock
 r_static
 r_void
+DECL|function|ixgb_lower_clock
 id|ixgb_lower_clock
 c_func
 (paren
@@ -226,10 +226,12 @@ id|data
 op_amp
 id|mask
 )paren
+(brace
 id|eecd_reg
 op_or_assign
 id|IXGB_EECD_DI
 suffix:semicolon
+)brace
 id|IXGB_WRITE_REG
 c_func
 (paren
@@ -276,7 +278,9 @@ c_loop
 (paren
 id|mask
 )paren
+(brace
 suffix:semicolon
+)brace
 multiline_comment|/* We leave the &quot;DI&quot; bit set to &quot;0&quot; when we leave this routine. */
 id|eecd_reg
 op_and_assign
@@ -297,9 +301,9 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Shift data bits in from the EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code&n; *****************************************************************************/
-DECL|function|ixgb_shift_in_bits
 r_static
 r_uint16
+DECL|function|ixgb_shift_in_bits
 id|ixgb_shift_in_bits
 c_func
 (paren
@@ -396,10 +400,12 @@ id|eecd_reg
 op_amp
 id|IXGB_EECD_DO
 )paren
+(brace
 id|data
 op_or_assign
 l_int|1
 suffix:semicolon
+)brace
 id|ixgb_lower_clock
 c_func
 (paren
@@ -415,9 +421,9 @@ id|data
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Prepares EEPROM for access&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Lowers EEPROM clock. Clears input pin. Sets the chip select pin. This&n; * function should be called before issuing a command to the EEPROM.&n; *****************************************************************************/
-DECL|function|ixgb_setup_eeprom
 r_static
 r_void
+DECL|function|ixgb_setup_eeprom
 id|ixgb_setup_eeprom
 c_func
 (paren
@@ -479,9 +485,9 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Returns EEPROM to a &quot;standby&quot; state&n; *&n; * hw - Struct containing variables accessed by shared code&n; *****************************************************************************/
-DECL|function|ixgb_standby_eeprom
 r_static
 r_void
+DECL|function|ixgb_standby_eeprom
 id|ixgb_standby_eeprom
 c_func
 (paren
@@ -598,9 +604,9 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Raises then lowers the EEPROM&squot;s clock pin&n; *&n; * hw - Struct containing variables accessed by shared code&n; *****************************************************************************/
-DECL|function|ixgb_clock_eeprom
 r_static
 r_void
+DECL|function|ixgb_clock_eeprom
 id|ixgb_clock_eeprom
 c_func
 (paren
@@ -670,9 +676,9 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Terminates a command by lowering the EEPROM&squot;s chip select pin&n; *&n; * hw - Struct containing variables accessed by shared code&n; *****************************************************************************/
-DECL|function|ixgb_cleanup_eeprom
 r_static
 r_void
+DECL|function|ixgb_cleanup_eeprom
 id|ixgb_cleanup_eeprom
 c_func
 (paren
@@ -724,9 +730,9 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Waits for the EEPROM to finish the current command.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * The command is done when the EEPROM&squot;s data out pin goes high.&n; *&n; * Returns:&n; *      TRUE: EEPROM data pin is high before timeout.&n; *      FALSE:  Time expired.&n; *****************************************************************************/
-DECL|function|ixgb_wait_eeprom_command
 r_static
 id|boolean_t
+DECL|function|ixgb_wait_eeprom_command
 id|ixgb_wait_eeprom_command
 c_func
 (paren
@@ -782,11 +788,13 @@ id|eecd_reg
 op_amp
 id|IXGB_EECD_DO
 )paren
+(brace
 r_return
 (paren
 id|TRUE
 )paren
 suffix:semicolon
+)brace
 id|udelay
 c_func
 (paren
@@ -807,8 +815,8 @@ id|FALSE
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Verifies that the EEPROM has a valid checksum&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Reads the first 64 16 bit words of the EEPROM and sums the values read.&n; * If the the sum of the 64 16 bit words is 0xBABA, the EEPROM&squot;s checksum is&n; * valid.&n; *&n; * Returns:&n; *  TRUE: Checksum is valid&n; *  FALSE: Checksum is not valid.&n; *****************************************************************************/
-DECL|function|ixgb_validate_eeprom_checksum
 id|boolean_t
+DECL|function|ixgb_validate_eeprom_checksum
 id|ixgb_validate_eeprom_checksum
 c_func
 (paren
@@ -844,6 +852,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|checksum
 op_add_assign
 id|ixgb_read_eeprom
@@ -854,6 +863,7 @@ comma
 id|i
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -864,11 +874,13 @@ r_uint16
 )paren
 id|EEPROM_SUM
 )paren
+(brace
 r_return
 (paren
 id|TRUE
 )paren
 suffix:semicolon
+)brace
 r_else
 r_return
 (paren
@@ -877,8 +889,8 @@ id|FALSE
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Calculates the EEPROM checksum and writes it to the EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Sums the first 63 16 bit words of the EEPROM. Subtracts the sum from 0xBABA.&n; * Writes the difference to word offset 63 of the EEPROM.&n; *****************************************************************************/
-DECL|function|ixgb_update_eeprom_checksum
 r_void
+DECL|function|ixgb_update_eeprom_checksum
 id|ixgb_update_eeprom_checksum
 c_func
 (paren
@@ -910,6 +922,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|checksum
 op_add_assign
 id|ixgb_read_eeprom
@@ -920,6 +933,7 @@ comma
 id|i
 )paren
 suffix:semicolon
+)brace
 id|checksum
 op_assign
 (paren
@@ -943,8 +957,8 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Writes a 16 bit word to a given offset in the EEPROM.&n; *&n; * hw - Struct containing variables accessed by shared code&n; * reg - offset within the EEPROM to be written to&n; * data - 16 bit word to be writen to the EEPROM&n; *&n; * If ixgb_update_eeprom_checksum is not called after this function, the&n; * EEPROM will most likely contain an invalid checksum.&n; *&n; *****************************************************************************/
-DECL|function|ixgb_write_eeprom
 r_void
+DECL|function|ixgb_write_eeprom
 id|ixgb_write_eeprom
 c_func
 (paren
@@ -1072,8 +1086,8 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Reads a 16 bit word from the EEPROM.&n; *&n; * hw - Struct containing variables accessed by shared code&n; * offset - offset of 16 bit word in the EEPROM to read&n; *&n; * Returns:&n; *  The 16-bit value read from the eeprom&n; *****************************************************************************/
-DECL|function|ixgb_read_eeprom
 r_uint16
+DECL|function|ixgb_read_eeprom
 id|ixgb_read_eeprom
 c_func
 (paren
@@ -1141,8 +1155,8 @@ id|data
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Reads eeprom and stores data in shared structure.&n; * Validates eeprom checksum and eeprom signature.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Returns:&n; *      TRUE: if eeprom read is successful&n; *      FALSE: otherwise.&n; *****************************************************************************/
-DECL|function|ixgb_get_eeprom_data
 id|boolean_t
+DECL|function|ixgb_get_eeprom_data
 id|ixgb_get_eeprom_data
 c_func
 (paren
@@ -1280,23 +1294,18 @@ l_string|&quot;ixgb_ee: Signature invalid.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 id|FALSE
-)paren
 suffix:semicolon
 )brace
 r_return
-(paren
 id|TRUE
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Local function to check if the eeprom signature is good&n; * If the eeprom signature is good, calls ixgb)get_eeprom_data.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Returns:&n; *      TRUE: eeprom signature was good and the eeprom read was successful&n; *      FALSE: otherwise.&n; ******************************************************************************/
-DECL|function|ixgb_check_and_get_eeprom_data
 r_static
 id|boolean_t
+DECL|function|ixgb_check_and_get_eeprom_data
 id|ixgb_check_and_get_eeprom_data
-c_func
 (paren
 r_struct
 id|ixgb_hw
@@ -1354,8 +1363,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/******************************************************************************&n; * return a word from the eeprom&n; *&n; * hw - Struct containing variables accessed by shared code&n; * index - Offset of eeprom word&n; *&n; * Returns:&n; *          Word at indexed offset in eeprom, if valid, 0 otherwise.&n; ******************************************************************************/
-DECL|function|ixgb_get_eeprom_word
 r_uint16
+DECL|function|ixgb_get_eeprom_word
 id|ixgb_get_eeprom_word
 c_func
 (paren
@@ -1389,23 +1398,19 @@ id|TRUE
 )paren
 (brace
 r_return
-(paren
 id|hw-&gt;eeprom
 (braket
 id|index
 )braket
-)paren
 suffix:semicolon
 )brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the mac address from EEPROM&n; *&n; * hw       - Struct containing variables accessed by shared code&n; * mac_addr - Ethernet Address if EEPROM contents are valid, 0 otherwise&n; *&n; * Returns: None.&n; ******************************************************************************/
-DECL|function|ixgb_get_ee_mac_addr
 r_void
+DECL|function|ixgb_get_ee_mac_addr
 id|ixgb_get_ee_mac_addr
 c_func
 (paren
@@ -1494,8 +1499,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/******************************************************************************&n; * return the compatibility flags from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Returns:&n; *          compatibility flags if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
-DECL|function|ixgb_get_ee_compatibility
 r_uint16
+DECL|function|ixgb_get_ee_compatibility
 id|ixgb_get_ee_compatibility
 c_func
 (paren
@@ -1528,20 +1533,18 @@ id|hw
 op_eq
 id|TRUE
 )paren
+(brace
 r_return
-(paren
 id|ee_map-&gt;compatibility
-)paren
 suffix:semicolon
+)brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the Printed Board Assembly number from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Returns:&n; *          PBA number if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
-DECL|function|ixgb_get_ee_pba_number
 r_uint32
+DECL|function|ixgb_get_ee_pba_number
 id|ixgb_get_ee_pba_number
 c_func
 (paren
@@ -1562,6 +1565,7 @@ id|hw
 op_eq
 id|TRUE
 )paren
+(brace
 r_return
 (paren
 id|le16_to_cpu
@@ -1587,15 +1591,14 @@ l_int|16
 )paren
 )paren
 suffix:semicolon
+)brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the Initialization Control Word 1 from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Returns:&n; *          Initialization Control Word 1 if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
-DECL|function|ixgb_get_ee_init_ctrl_reg_1
 r_uint16
+DECL|function|ixgb_get_ee_init_ctrl_reg_1
 id|ixgb_get_ee_init_ctrl_reg_1
 c_func
 (paren
@@ -1628,20 +1631,18 @@ id|hw
 op_eq
 id|TRUE
 )paren
+(brace
 r_return
-(paren
 id|ee_map-&gt;init_ctrl_reg_1
-)paren
 suffix:semicolon
+)brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the Initialization Control Word 2 from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Returns:&n; *          Initialization Control Word 2 if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
-DECL|function|ixgb_get_ee_init_ctrl_reg_2
 r_uint16
+DECL|function|ixgb_get_ee_init_ctrl_reg_2
 id|ixgb_get_ee_init_ctrl_reg_2
 c_func
 (paren
@@ -1674,20 +1675,18 @@ id|hw
 op_eq
 id|TRUE
 )paren
+(brace
 r_return
-(paren
 id|ee_map-&gt;init_ctrl_reg_2
-)paren
 suffix:semicolon
+)brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the Subsystem Id from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Returns:&n; *          Subsystem Id if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
-DECL|function|ixgb_get_ee_subsystem_id
 r_uint16
+DECL|function|ixgb_get_ee_subsystem_id
 id|ixgb_get_ee_subsystem_id
 c_func
 (paren
@@ -1720,20 +1719,18 @@ id|hw
 op_eq
 id|TRUE
 )paren
+(brace
 r_return
-(paren
 id|ee_map-&gt;subsystem_id
-)paren
 suffix:semicolon
+)brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the Sub Vendor Id from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Returns:&n; *          Sub Vendor Id if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
-DECL|function|ixgb_get_ee_subvendor_id
 r_uint16
+DECL|function|ixgb_get_ee_subvendor_id
 id|ixgb_get_ee_subvendor_id
 c_func
 (paren
@@ -1766,20 +1763,18 @@ id|hw
 op_eq
 id|TRUE
 )paren
+(brace
 r_return
-(paren
 id|ee_map-&gt;subvendor_id
-)paren
 suffix:semicolon
+)brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the Device Id from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Returns:&n; *          Device Id if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
-DECL|function|ixgb_get_ee_device_id
 r_uint16
+DECL|function|ixgb_get_ee_device_id
 id|ixgb_get_ee_device_id
 c_func
 (paren
@@ -1812,20 +1807,18 @@ id|hw
 op_eq
 id|TRUE
 )paren
+(brace
 r_return
-(paren
 id|ee_map-&gt;device_id
-)paren
 suffix:semicolon
+)brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the Vendor Id from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Returns:&n; *          Device Id if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
-DECL|function|ixgb_get_ee_vendor_id
 r_uint16
+DECL|function|ixgb_get_ee_vendor_id
 id|ixgb_get_ee_vendor_id
 c_func
 (paren
@@ -1858,20 +1851,18 @@ id|hw
 op_eq
 id|TRUE
 )paren
+(brace
 r_return
-(paren
 id|ee_map-&gt;vendor_id
-)paren
 suffix:semicolon
+)brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the Software Defined Pins Register from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Returns:&n; *          SDP Register if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
-DECL|function|ixgb_get_ee_swdpins_reg
 r_uint16
+DECL|function|ixgb_get_ee_swdpins_reg
 id|ixgb_get_ee_swdpins_reg
 c_func
 (paren
@@ -1904,20 +1895,18 @@ id|hw
 op_eq
 id|TRUE
 )paren
+(brace
 r_return
-(paren
 id|ee_map-&gt;swdpins_reg
-)paren
 suffix:semicolon
+)brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the D3 Power Management Bits from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Returns:&n; *          D3 Power Management Bits if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
-DECL|function|ixgb_get_ee_d3_power
 r_uint8
+DECL|function|ixgb_get_ee_d3_power
 id|ixgb_get_ee_d3_power
 c_func
 (paren
@@ -1950,20 +1939,18 @@ id|hw
 op_eq
 id|TRUE
 )paren
+(brace
 r_return
-(paren
 id|ee_map-&gt;d3_power
-)paren
 suffix:semicolon
+)brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the D0 Power Management Bits from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Returns:&n; *          D0 Power Management Bits if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
-DECL|function|ixgb_get_ee_d0_power
 r_uint8
+DECL|function|ixgb_get_ee_d0_power
 id|ixgb_get_ee_d0_power
 c_func
 (paren
@@ -1996,15 +1983,13 @@ id|hw
 op_eq
 id|TRUE
 )paren
+(brace
 r_return
-(paren
 id|ee_map-&gt;d0_power
-)paren
 suffix:semicolon
+)brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 eof

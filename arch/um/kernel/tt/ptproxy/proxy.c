@@ -339,9 +339,11 @@ suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
+macro_line|#ifdef __NR_waitpid
 r_case
 id|__NR_waitpid
 suffix:colon
+macro_line|#endif
 r_case
 id|__NR_wait4
 suffix:colon
@@ -614,14 +616,16 @@ c_cond
 (paren
 id|syscall
 op_eq
-id|__NR_waitpid
+id|__NR_wait4
 )paren
+macro_line|#ifdef __NR_waitpid
 op_logical_or
 (paren
 id|syscall
 op_eq
-id|__NR_wait4
+id|__NR_waitpid
 )paren
+macro_line|#endif
 )paren
 (brace
 id|debugger_wait

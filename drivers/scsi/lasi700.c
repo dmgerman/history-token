@@ -21,7 +21,6 @@ macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_transport.h&gt;
 macro_line|#include &lt;scsi/scsi_transport_spi.h&gt;
-macro_line|#include &quot;lasi700.h&quot;
 macro_line|#include &quot;53c700.h&quot;
 id|MODULE_AUTHOR
 c_func
@@ -41,6 +40,20 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|macro|LASI_700_SVERSION
+mdefine_line|#define LASI_700_SVERSION 0x00071
+DECL|macro|LASI_710_SVERSION
+mdefine_line|#define LASI_710_SVERSION 0x00082
+DECL|macro|LASI700_ID_TABLE
+mdefine_line|#define LASI700_ID_TABLE {&t;&t;&t;&bslash;&n;&t;.hw_type&t;= HPHW_FIO,&t;&t;&bslash;&n;&t;.sversion&t;= LASI_700_SVERSION,&t;&bslash;&n;&t;.hversion&t;= HVERSION_ANY_ID,&t;&bslash;&n;&t;.hversion_rev&t;= HVERSION_REV_ANY_ID,&t;&bslash;&n;}
+DECL|macro|LASI710_ID_TABLE
+mdefine_line|#define LASI710_ID_TABLE {&t;&t;&t;&bslash;&n;&t;.hw_type&t;= HPHW_FIO,&t;&t;&bslash;&n;&t;.sversion&t;= LASI_710_SVERSION,&t;&bslash;&n;&t;.hversion&t;= HVERSION_ANY_ID,&t;&bslash;&n;&t;.hversion_rev&t;= HVERSION_REV_ANY_ID,&t;&bslash;&n;}
+DECL|macro|LASI700_CLOCK
+mdefine_line|#define LASI700_CLOCK&t;25
+DECL|macro|LASI710_CLOCK
+mdefine_line|#define LASI710_CLOCK&t;40
+DECL|macro|LASI_SCSI_CORE_OFFSET
+mdefine_line|#define LASI_SCSI_CORE_OFFSET 0x100
 DECL|variable|lasi700_ids
 r_static
 r_struct

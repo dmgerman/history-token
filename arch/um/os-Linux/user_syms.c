@@ -121,6 +121,10 @@ c_func
 id|strstr
 )paren
 suffix:semicolon
+multiline_comment|/* Here, instead, I can provide a fake prototype. Yes, someone cares: genksyms.&n; * However, the modules will use the CRC defined *here*, no matter if it is&n; * good; so the versions of these symbols will always match&n; */
+DECL|macro|EXPORT_SYMBOL_PROTO
+mdefine_line|#define EXPORT_SYMBOL_PROTO(sym)       &bslash;&n;       int sym(void);                  &bslash;&n;       EXPORT_SYMBOL(sym);
+macro_line|#ifdef SUBARCH_i386
 DECL|variable|vsyscall_ehdr
 id|EXPORT_SYMBOL
 c_func
@@ -135,9 +139,7 @@ c_func
 id|vsyscall_end
 )paren
 suffix:semicolon
-multiline_comment|/* Here, instead, I can provide a fake prototype. Yes, someone cares: genksyms.&n; * However, the modules will use the CRC defined *here*, no matter if it is&n; * good; so the versions of these symbols will always match&n; */
-DECL|macro|EXPORT_SYMBOL_PROTO
-mdefine_line|#define EXPORT_SYMBOL_PROTO(sym)       &bslash;&n;       int sym(void);                  &bslash;&n;       EXPORT_SYMBOL(sym);
+macro_line|#endif
 DECL|variable|__errno_location
 id|EXPORT_SYMBOL_PROTO
 c_func

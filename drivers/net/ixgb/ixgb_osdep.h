@@ -63,16 +63,16 @@ mdefine_line|#define DEBUGOUT3 DEBUGOUT2
 DECL|macro|DEBUGOUT7
 mdefine_line|#define DEBUGOUT7 DEBUGOUT3
 DECL|macro|IXGB_WRITE_REG
-mdefine_line|#define IXGB_WRITE_REG(a, reg, value) ( &bslash;&n;    writel((value), ((a)-&gt;hw_addr + IXGB_##reg)))
+mdefine_line|#define IXGB_WRITE_REG(a, reg, value) ( &bslash;&n;&t;writel((value), ((a)-&gt;hw_addr + IXGB_##reg)))
 DECL|macro|IXGB_READ_REG
-mdefine_line|#define IXGB_READ_REG(a, reg) ( &bslash;&n;    readl((a)-&gt;hw_addr + IXGB_##reg))
+mdefine_line|#define IXGB_READ_REG(a, reg) ( &bslash;&n;&t;readl((a)-&gt;hw_addr + IXGB_##reg))
 DECL|macro|IXGB_WRITE_REG_ARRAY
-mdefine_line|#define IXGB_WRITE_REG_ARRAY(a, reg, offset, value) ( &bslash;&n;    writel((value), ((a)-&gt;hw_addr + IXGB_##reg + ((offset) &lt;&lt; 2))))
+mdefine_line|#define IXGB_WRITE_REG_ARRAY(a, reg, offset, value) ( &bslash;&n;&t;writel((value), ((a)-&gt;hw_addr + IXGB_##reg + ((offset) &lt;&lt; 2))))
 DECL|macro|IXGB_READ_REG_ARRAY
-mdefine_line|#define IXGB_READ_REG_ARRAY(a, reg, offset) ( &bslash;&n;    readl((a)-&gt;hw_addr + IXGB_##reg + ((offset) &lt;&lt; 2)))
+mdefine_line|#define IXGB_READ_REG_ARRAY(a, reg, offset) ( &bslash;&n;&t;readl((a)-&gt;hw_addr + IXGB_##reg + ((offset) &lt;&lt; 2)))
 DECL|macro|IXGB_WRITE_FLUSH
 mdefine_line|#define IXGB_WRITE_FLUSH(a) IXGB_READ_REG(a, STATUS)
 DECL|macro|IXGB_MEMCPY
 mdefine_line|#define IXGB_MEMCPY memcpy
-macro_line|#endif&t;&t;&t;&t;/* _IXGB_OSDEP_H_ */
+macro_line|#endif /* _IXGB_OSDEP_H_ */
 eof

@@ -105,6 +105,24 @@ id|cluster_cnt
 id|NUM_APIC_CLUSTERS
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|boot_cpu_data.x86_vendor
+op_eq
+id|X86_VENDOR_AMD
+)paren
+(brace
+multiline_comment|/* AMD always uses flat mode right now */
+id|genapic
+op_assign
+op_amp
+id|apic_flat
+suffix:semicolon
+r_goto
+id|print
+suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
@@ -244,6 +262,8 @@ op_assign
 op_amp
 id|apic_cluster
 suffix:semicolon
+id|print
+suffix:colon
 id|printk
 c_func
 (paren

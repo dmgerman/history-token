@@ -293,6 +293,10 @@ macro_line|# elif defined (CONFIG_IA64_HP_ZX1)
 r_return
 l_string|&quot;hpzx1&quot;
 suffix:semicolon
+macro_line|# elif defined (CONFIG_IA64_HP_ZX1_SWIOTLB)
+r_return
+l_string|&quot;hpzx1_swiotlb&quot;
+suffix:semicolon
 macro_line|# elif defined (CONFIG_IA64_SGI_SN2)
 r_return
 l_string|&quot;sn2&quot;

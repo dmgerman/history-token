@@ -10355,6 +10355,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * The serial driver boot-time initialization code!&n; */
 DECL|function|espserial_init
+r_static
 r_int
 id|__init
 id|espserial_init

@@ -1933,8 +1933,12 @@ id|socket
 (brace
 id|u32
 id|val
+comma
+id|val_orig
 suffix:semicolon
 multiline_comment|/* make sure that memory burst is active */
+id|val_orig
+op_assign
 id|val
 op_assign
 id|config_readl
@@ -1945,6 +1949,32 @@ comma
 id|TI113X_SYSTEM_CONTROL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|disable_clkrun
+op_logical_and
+id|PCI_FUNC
+c_func
+(paren
+id|socket-&gt;dev-&gt;devfn
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Yenta: Disabling CLKRUN feature&bslash;n&quot;
+)paren
+suffix:semicolon
+id|val
+op_or_assign
+id|TI113X_SCR_KEEPCLK
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1967,6 +1997,14 @@ id|val
 op_or_assign
 id|TI122X_SCR_MRBURSTUP
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|val_orig
+op_ne
+id|val
+)paren
 id|config_writel
 c_func
 (paren
@@ -1977,7 +2015,6 @@ comma
 id|val
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * for EnE bridges only: clear testbit TLTEnable. this makes the&n;&t; * RME Hammerfall DSP sound card working.&n;&t; */
 r_if
 c_cond
