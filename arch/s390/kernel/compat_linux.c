@@ -4871,6 +4871,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SYSCTL
 DECL|struct|__sysctl_args32
 r_struct
 id|__sysctl_args32
@@ -5151,6 +5152,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|struct|stat64_emu31
 r_struct
 id|stat64_emu31

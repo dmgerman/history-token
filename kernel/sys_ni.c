@@ -357,4 +357,9 @@ c_func
 (paren
 id|sys32_ipc
 )paren
+id|cond_syscall
+c_func
+(paren
+id|sys32_sysctl
+)paren
 eof

@@ -6624,24 +6624,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-macro_line|#else /* CONFIG_SYSCTL */
-DECL|function|sys32_sysctl
-id|asmlinkage
-r_int
-id|sys32_sysctl
-c_func
-(paren
-r_struct
-id|sysctl_args32
-op_star
-id|args
-)paren
-(brace
-r_return
-op_minus
-id|ENOSYS
-suffix:semicolon
-)brace
 macro_line|#endif /* CONFIG_SYSCTL */
 DECL|function|sys32_newuname
 id|asmlinkage

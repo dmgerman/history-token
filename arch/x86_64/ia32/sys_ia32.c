@@ -3541,6 +3541,7 @@ op_minus
 id|ERESTARTNOHAND
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SYSCTL
 DECL|struct|sysctl_ia32
 r_struct
 id|sysctl_ia32
@@ -3597,12 +3598,6 @@ op_star
 id|args32
 )paren
 (brace
-macro_line|#ifndef CONFIG_SYSCTL
-r_return
-op_minus
-id|ENOSYS
-suffix:semicolon
-macro_line|#else
 r_struct
 id|sysctl_ia32
 id|a32
@@ -3850,8 +3845,8 @@ suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
-macro_line|#endif
 )brace
+macro_line|#endif
 multiline_comment|/* warning: next two assume little endian */
 id|asmlinkage
 r_int

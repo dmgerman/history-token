@@ -10234,6 +10234,7 @@ l_int|4
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_SYSCTL
 id|asmlinkage
 r_int
 DECL|function|sys32_sysctl
@@ -10246,7 +10247,6 @@ op_star
 id|args
 )paren
 (brace
-macro_line|#ifdef CONFIG_SYSCTL
 r_struct
 id|sysctl32
 id|a32
@@ -10466,13 +10466,8 @@ suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
-macro_line|#else
-r_return
-op_minus
-id|ENOSYS
-suffix:semicolon
-macro_line|#endif
 )brace
+macro_line|#endif
 id|asmlinkage
 r_int
 DECL|function|sys32_newuname
