@@ -1,4 +1,4 @@
-multiline_comment|/*&n;**  IA64 System Bus Adapter (SBA) I/O MMU manager&n;**&n;**&t;(c) Copyright 2002-2003 Alex Williamson&n;**&t;(c) Copyright 2002-2003 Grant Grundler&n;**&t;(c) Copyright 2002-2003 Hewlett-Packard Company&n;**&n;**&t;Portions (c) 2000 Grant Grundler (from parisc I/O MMU code)&n;**&t;Portions (c) 1999 Dave S. Miller (from sparc64 I/O MMU code)&n;**&n;**&t;This program is free software; you can redistribute it and/or modify&n;**&t;it under the terms of the GNU General Public License as published by&n;**      the Free Software Foundation; either version 2 of the License, or&n;**      (at your option) any later version.&n;**&n;**&n;** This module initializes the IOC (I/O Controller) found on HP&n;** McKinley machines and their successors.&n;**&n;*/
+multiline_comment|/*&n;**  IA64 System Bus Adapter (SBA) I/O MMU manager&n;**&n;**&t;(c) Copyright 2002-2004 Alex Williamson&n;**&t;(c) Copyright 2002-2003 Grant Grundler&n;**&t;(c) Copyright 2002-2004 Hewlett-Packard Company&n;**&n;**&t;Portions (c) 2000 Grant Grundler (from parisc I/O MMU code)&n;**&t;Portions (c) 1999 Dave S. Miller (from sparc64 I/O MMU code)&n;**&n;**&t;This program is free software; you can redistribute it and/or modify&n;**&t;it under the terms of the GNU General Public License as published by&n;**      the Free Software Foundation; either version 2 of the License, or&n;**      (at your option) any later version.&n;**&n;**&n;** This module initializes the IOC (I/O Controller) found on HP&n;** McKinley machines and their successors.&n;**&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -18,17 +18,16 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/page.h&gt;&t;&t;/* PAGE_OFFSET */
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/system.h&gt;&t;&t;/* wmb() */
+macro_line|#include &lt;asm/bitops.h&gt;&t;&t;/* hweight64() */
 macro_line|#include &lt;asm/acpi-ext.h&gt;
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;IOC: &quot;
+multiline_comment|/*&n;** Enabling timing search of the pdir resource map.  Output in /proc.&n;** Disabled by default to optimize performance.&n;*/
+DECL|macro|PDIR_SEARCH_TIMING
+macro_line|#undef PDIR_SEARCH_TIMING
 multiline_comment|/*&n;** This option allows cards capable of 64bit DMA to bypass the IOMMU.  If&n;** not defined, all DMA will be 32bit and go through the TLB.&n;** There&squot;s potentially a conflict in the bio merge code with us&n;** advertising an iommu, but then bypassing it.  Since I/O MMU bypassing&n;** appears to give more performance than bio-level virtual merging, we&squot;ll&n;** do the former for now.&n;*/
 DECL|macro|ALLOW_IOV_BYPASS
 mdefine_line|#define ALLOW_IOV_BYPASS
-macro_line|#ifdef CONFIG_PROC_FS
-multiline_comment|/* turn it off for now; without per-CPU counters, it&squot;s too much of a scalability bottleneck: */
-DECL|macro|SBA_PROC_FS
-macro_line|# define SBA_PROC_FS 0
-macro_line|#endif
 multiline_comment|/*&n;** If a device prefetches beyond the end of a valid pdir entry, it will cause&n;** a hard failure, ie. MCA.  Version 3.0 and later of the zx1 LBA should&n;** disconnect on 4k boundaries and prevent such issues.  If the device is&n;** particularly agressive, this option will keep the entire pdir valid such&n;** that prefetching will hit a valid address.  This could severely impact&n;** error containment, and is therefore off by default.  The page that is&n;** used for spill-over is poisoned, so that should help debugging somewhat.&n;*/
 DECL|macro|FULL_VALID_PDIR
 macro_line|#undef FULL_VALID_PDIR
@@ -127,13 +126,25 @@ mdefine_line|#define IOC_PDIR_BASE&t;0x320
 multiline_comment|/* AGP GART driver looks for this */
 DECL|macro|ZX1_SBA_IOMMU_COOKIE
 mdefine_line|#define ZX1_SBA_IOMMU_COOKIE&t;0x0000badbadc0ffeeUL
-multiline_comment|/*&n;** IOC supports 4/8/16/64KB page sizes (see TCNFG register)&n;** It&squot;s safer (avoid memory corruption) to keep DMA page mappings&n;** equivalently sized to VM PAGE_SIZE.&n;**&n;** We really can&squot;t avoid generating a new mapping for each&n;** page since the Virtual Coherence Index has to be generated&n;** and updated for each page.&n;**&n;** IOVP_SIZE could only be greater than PAGE_SIZE if we are&n;** confident the drivers really only touch the next physical&n;** page iff that driver instance owns it.&n;*/
-DECL|macro|IOVP_SIZE
-mdefine_line|#define IOVP_SIZE&t;PAGE_SIZE
-DECL|macro|IOVP_SHIFT
-mdefine_line|#define IOVP_SHIFT&t;PAGE_SHIFT
-DECL|macro|IOVP_MASK
-mdefine_line|#define IOVP_MASK&t;PAGE_MASK
+multiline_comment|/*&n;** The zx1 IOC supports 4/8/16/64KB page sizes (see TCNFG register)&n;**&n;** Some IOCs (sx1000) can run at the above pages sizes, but are&n;** really only supported using the IOC at a 4k page size.&n;**&n;** iovp_size could only be greater than PAGE_SIZE if we are&n;** confident the drivers really only touch the next physical&n;** page iff that driver instance owns it.&n;*/
+DECL|variable|iovp_size
+r_static
+r_int
+r_int
+id|iovp_size
+suffix:semicolon
+DECL|variable|iovp_shift
+r_static
+r_int
+r_int
+id|iovp_shift
+suffix:semicolon
+DECL|variable|iovp_mask
+r_static
+r_int
+r_int
+id|iovp_mask
+suffix:semicolon
 DECL|struct|ioc
 r_struct
 id|ioc
@@ -232,7 +243,7 @@ id|DELAYED_RESOURCE_CNT
 )braket
 suffix:semicolon
 macro_line|#endif
-macro_line|#if SBA_PROC_FS
+macro_line|#ifdef PDIR_SEARCH_TIMING
 DECL|macro|SBA_SEARCH_SAMPLE
 mdefine_line|#define SBA_SEARCH_SAMPLE&t;0x100
 DECL|member|avg_search
@@ -249,68 +260,6 @@ r_int
 id|avg_idx
 suffix:semicolon
 multiline_comment|/* current index into avg_search */
-DECL|member|used_pages
-r_int
-r_int
-id|used_pages
-suffix:semicolon
-DECL|member|msingle_calls
-r_int
-r_int
-id|msingle_calls
-suffix:semicolon
-DECL|member|msingle_pages
-r_int
-r_int
-id|msingle_pages
-suffix:semicolon
-DECL|member|msg_calls
-r_int
-r_int
-id|msg_calls
-suffix:semicolon
-DECL|member|msg_pages
-r_int
-r_int
-id|msg_pages
-suffix:semicolon
-DECL|member|usingle_calls
-r_int
-r_int
-id|usingle_calls
-suffix:semicolon
-DECL|member|usingle_pages
-r_int
-r_int
-id|usingle_pages
-suffix:semicolon
-DECL|member|usg_calls
-r_int
-r_int
-id|usg_calls
-suffix:semicolon
-DECL|member|usg_pages
-r_int
-r_int
-id|usg_pages
-suffix:semicolon
-macro_line|#ifdef ALLOW_IOV_BYPASS
-DECL|member|msingle_bypass
-r_int
-r_int
-id|msingle_bypass
-suffix:semicolon
-DECL|member|usingle_bypass
-r_int
-r_int
-id|usingle_bypass
-suffix:semicolon
-DECL|member|msg_bypass
-r_int
-r_int
-id|msg_bypass
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/* Stuff we don&squot;t need in performance path */
 DECL|member|next
@@ -392,7 +341,7 @@ macro_line|# define GET_IOC(dev)&t;NULL
 macro_line|#endif
 multiline_comment|/*&n;** DMA_CHUNK_SIZE is used by the SCSI mid-layer to break up&n;** (or rather not merge) DMA&squot;s into managable chunks.&n;** On parisc, this is more of the software/tuning constraint&n;** rather than the HW. I/O MMU allocation alogorithms can be&n;** faster with smaller size is (to some degree).&n;*/
 DECL|macro|DMA_CHUNK_SIZE
-mdefine_line|#define DMA_CHUNK_SIZE  (BITS_PER_LONG*PAGE_SIZE)
+mdefine_line|#define DMA_CHUNK_SIZE  (BITS_PER_LONG*iovp_size)
 DECL|macro|ROUNDUP
 mdefine_line|#define ROUNDUP(x,y) ((x + ((y)-1)) &amp; ~((y)-1))
 multiline_comment|/************************************&n;** SBA register read and write support&n;**&n;** BE WARNED: register writes are posted.&n;**  (ie follow writes which must reach HW with a read)&n;**&n;*/
@@ -934,16 +883,73 @@ DECL|macro|PAGES_PER_RANGE
 mdefine_line|#define PAGES_PER_RANGE 1&t;/* could increase this to 4 or 8 if needed */
 multiline_comment|/* Convert from IOVP to IOVA and vice versa. */
 DECL|macro|SBA_IOVA
-mdefine_line|#define SBA_IOVA(ioc,iovp,offset,hint_reg) ((ioc-&gt;ibase) | (iovp) | (offset) |&t;&t;&bslash;&n;&t;&t;&t;&t;&t;    ((hint_reg)&lt;&lt;(ioc-&gt;hint_shift_pdir)))
+mdefine_line|#define SBA_IOVA(ioc,iovp,offset,hint_reg) ((ioc-&gt;ibase) | (iovp) | (offset))
 DECL|macro|SBA_IOVP
-mdefine_line|#define SBA_IOVP(ioc,iova) (((iova) &amp; ioc-&gt;hint_mask_pdir) &amp; ~(ioc-&gt;ibase))
-multiline_comment|/* FIXME : review these macros to verify correctness and usage */
+mdefine_line|#define SBA_IOVP(ioc,iova) ((iova) &amp; ~(ioc-&gt;ibase))
+DECL|macro|PDIR_ENTRY_SIZE
+mdefine_line|#define PDIR_ENTRY_SIZE&t;sizeof(u64)
 DECL|macro|PDIR_INDEX
-mdefine_line|#define PDIR_INDEX(iovp)   ((iovp)&gt;&gt;IOVP_SHIFT)
+mdefine_line|#define PDIR_INDEX(iovp)   ((iovp)&gt;&gt;iovp_shift)
 DECL|macro|RESMAP_MASK
 mdefine_line|#define RESMAP_MASK(n)    ~(~0UL &lt;&lt; (n))
 DECL|macro|RESMAP_IDX_MASK
 mdefine_line|#define RESMAP_IDX_MASK   (sizeof(unsigned long) - 1)
+multiline_comment|/**&n; * For most cases the normal get_order is sufficient, however it limits us&n; * to PAGE_SIZE being the minimum mapping alignment and TC flush granularity.&n; * It only incurs about 1 clock cycle to use this one with the static variable&n; * and makes the code more intuitive.&n; */
+r_static
+id|SBA_INLINE
+r_int
+DECL|function|get_iovp_order
+id|get_iovp_order
+(paren
+r_int
+r_int
+id|size
+)paren
+(brace
+r_int
+r_float
+id|d
+op_assign
+id|size
+op_minus
+l_int|1
+suffix:semicolon
+r_int
+id|order
+suffix:semicolon
+id|order
+op_assign
+id|ia64_getf_exp
+c_func
+(paren
+id|d
+)paren
+suffix:semicolon
+id|order
+op_assign
+id|order
+op_minus
+id|iovp_shift
+op_minus
+l_int|0xffff
+op_plus
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|order
+OL
+l_int|0
+)paren
+id|order
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+id|order
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * sba_search_bitmap - find free space in IO PDIR resource bitmap&n; * @ioc: IO MMU structure which owns the pdir we are interested in.&n; * @bits_wanted: number of entries we need.&n; *&n; * Find consecutive free bits in resource bitmap.&n; * Each bit represents one entry in the IO Pdir.&n; * Cool perf optimization: search for log2(size) bits at a time.&n; */
 r_static
 id|SBA_INLINE
@@ -1113,12 +1119,12 @@ id|o
 op_assign
 l_int|1
 op_lshift
-id|get_order
+id|get_iovp_order
 c_func
 (paren
 id|bits_wanted
 op_lshift
-id|PAGE_SHIFT
+id|iovp_shift
 )paren
 suffix:semicolon
 id|uint
@@ -1351,9 +1357,9 @@ id|pages_needed
 op_assign
 id|size
 op_rshift
-id|IOVP_SHIFT
+id|iovp_shift
 suffix:semicolon
-macro_line|#if SBA_PROC_FS
+macro_line|#ifdef PDIR_SEARCH_TIMING
 r_int
 r_int
 id|itc_start
@@ -1377,18 +1383,6 @@ suffix:semicolon
 id|ASSERT
 c_func
 (paren
-(paren
-id|pages_needed
-op_star
-id|IOVP_SIZE
-)paren
-op_le
-id|DMA_CHUNK_SIZE
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
 id|pages_needed
 op_le
 id|BITS_PER_LONG
@@ -1403,7 +1397,7 @@ op_eq
 id|size
 op_amp
 op_complement
-id|IOVP_MASK
+id|iovp_mask
 )paren
 )paren
 suffix:semicolon
@@ -1478,10 +1472,7 @@ id|ioc-&gt;pdir_base
 (braket
 id|pide
 op_star
-r_sizeof
-(paren
-id|u64
-)paren
+id|PDIR_ENTRY_SIZE
 op_plus
 l_int|7
 )braket
@@ -1532,51 +1523,18 @@ comma
 id|ioc-&gt;res_bitshift
 )paren
 suffix:semicolon
-macro_line|#if SBA_PROC_FS
-(brace
-r_int
-r_int
-id|itc_end
-op_assign
-id|ia64_get_itc
-c_func
-(paren
-)paren
-suffix:semicolon
-r_int
-r_int
-id|tmp
-op_assign
-id|itc_end
-op_minus
-id|itc_start
-suffix:semicolon
-multiline_comment|/* check for roll over */
-id|itc_start
-op_assign
-(paren
-id|itc_end
-OL
-id|itc_start
-)paren
-ques
-c_cond
-op_minus
-(paren
-id|tmp
-)paren
-suffix:colon
-(paren
-id|tmp
-)paren
-suffix:semicolon
-)brace
+macro_line|#ifdef PDIR_SEARCH_TIMING
 id|ioc-&gt;avg_search
 (braket
 id|ioc-&gt;avg_idx
 op_increment
 )braket
 op_assign
+id|ia64_get_itc
+c_func
+(paren
+)paren
+op_minus
 id|itc_start
 suffix:semicolon
 id|ioc-&gt;avg_idx
@@ -1584,10 +1542,6 @@ op_and_assign
 id|SBA_SEARCH_SAMPLE
 op_minus
 l_int|1
-suffix:semicolon
-id|ioc-&gt;used_pages
-op_add_assign
-id|pages_needed
 suffix:semicolon
 macro_line|#endif
 r_return
@@ -1677,7 +1631,7 @@ id|bits_not_wanted
 op_assign
 id|size
 op_rshift
-id|IOVP_SHIFT
+id|iovp_shift
 suffix:semicolon
 multiline_comment|/* 3-bits &quot;bit&quot; address plus 2 (or 3) bits for &quot;byte&quot; == bit in word */
 r_int
@@ -1726,12 +1680,6 @@ op_star
 id|res_ptr
 )paren
 suffix:semicolon
-macro_line|#if SBA_PROC_FS
-id|ioc-&gt;used_pages
-op_sub_assign
-id|bits_not_wanted
-suffix:semicolon
-macro_line|#endif
 id|ASSERT
 c_func
 (paren
@@ -1752,7 +1700,7 @@ c_func
 (paren
 id|bits_not_wanted
 op_star
-id|IOVP_SIZE
+id|iovp_size
 )paren
 op_le
 id|DMA_CHUNK_SIZE
@@ -1971,7 +1919,7 @@ op_eq
 id|byte_cnt
 op_amp
 op_complement
-id|IOVP_MASK
+id|iovp_mask
 )paren
 )paren
 suffix:semicolon
@@ -2012,7 +1960,7 @@ c_cond
 (paren
 id|byte_cnt
 op_le
-id|IOVP_SIZE
+id|iovp_size
 )paren
 (brace
 id|ASSERT
@@ -2025,7 +1973,7 @@ id|ioc-&gt;pdir_size
 suffix:semicolon
 id|iovp
 op_or_assign
-id|IOVP_SHIFT
+id|iovp_shift
 suffix:semicolon
 multiline_comment|/* set &quot;size&quot; field for PCOM */
 macro_line|#ifndef FULL_VALID_PDIR
@@ -2060,13 +2008,13 @@ r_else
 id|u32
 id|t
 op_assign
-id|get_order
+id|get_iovp_order
 c_func
 (paren
 id|byte_cnt
 )paren
 op_plus
-id|PAGE_SHIFT
+id|iovp_shift
 suffix:semicolon
 id|iovp
 op_or_assign
@@ -2125,7 +2073,7 @@ op_increment
 suffix:semicolon
 id|byte_cnt
 op_sub_assign
-id|IOVP_SIZE
+id|iovp_size
 suffix:semicolon
 )brace
 r_while
@@ -2241,29 +2189,6 @@ l_int|0
 )paren
 (brace
 multiline_comment|/*&n; &t;&t;** Device is bit capable of DMA&squot;ing to the buffer...&n;&t;&t;** just return the PCI address of ptr&n; &t;&t;*/
-macro_line|#if SBA_PROC_FS
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|ioc-&gt;res_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|ioc-&gt;msingle_bypass
-op_increment
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|ioc-&gt;res_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 id|DBG_BYPASS
 c_func
 (paren
@@ -2310,9 +2235,9 @@ id|addr
 )paren
 op_amp
 op_complement
-id|IOVP_MASK
+id|iovp_mask
 suffix:semicolon
-multiline_comment|/* round up to nearest IOVP_SIZE */
+multiline_comment|/* round up to nearest iovp_size */
 id|size
 op_assign
 (paren
@@ -2321,10 +2246,10 @@ op_plus
 id|offset
 op_plus
 op_complement
-id|IOVP_MASK
+id|iovp_mask
 )paren
 op_amp
-id|IOVP_MASK
+id|iovp_mask
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -2354,17 +2279,6 @@ l_string|&quot;Sanity check failed&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if SBA_PROC_FS
-id|ioc-&gt;msingle_calls
-op_increment
-suffix:semicolon
-id|ioc-&gt;msingle_pages
-op_add_assign
-id|size
-op_rshift
-id|IOVP_SHIFT
-suffix:semicolon
-macro_line|#endif
 id|pide
 op_assign
 id|sba_alloc_range
@@ -2382,7 +2296,7 @@ id|dma_addr_t
 )paren
 id|pide
 op_lshift
-id|IOVP_SHIFT
+id|iovp_shift
 suffix:semicolon
 id|DBG_RUN
 c_func
@@ -2462,11 +2376,11 @@ id|pdir_start
 suffix:semicolon
 id|addr
 op_add_assign
-id|IOVP_SIZE
+id|iovp_size
 suffix:semicolon
 id|size
 op_sub_assign
-id|IOVP_SIZE
+id|iovp_size
 suffix:semicolon
 id|pdir_start
 op_increment
@@ -2580,29 +2494,6 @@ id|ioc-&gt;ibase
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;** Address does not fall w/in IOVA, must be bypassing&n;&t;&t;*/
-macro_line|#if SBA_PROC_FS
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|ioc-&gt;res_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|ioc-&gt;usingle_bypass
-op_increment
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|ioc-&gt;res_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 id|DBG_BYPASS
 c_func
 (paren
@@ -2643,7 +2534,7 @@ op_assign
 id|iova
 op_amp
 op_complement
-id|IOVP_MASK
+id|iovp_mask
 suffix:semicolon
 id|DBG_RUN
 c_func
@@ -2676,7 +2567,7 @@ c_func
 (paren
 id|size
 comma
-id|IOVP_SIZE
+id|iovp_size
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -2688,17 +2579,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#if SBA_PROC_FS
-id|ioc-&gt;usingle_calls
-op_increment
-suffix:semicolon
-id|ioc-&gt;usingle_pages
-op_add_assign
-id|size
-op_rshift
-id|IOVP_SHIFT
-suffix:semicolon
-macro_line|#endif
 macro_line|#if DELAYED_RESOURCE_CNT &gt; 0
 id|d
 op_assign
@@ -2851,7 +2731,7 @@ c_cond
 (paren
 id|size
 op_le
-id|IOVP_SIZE
+id|iovp_size
 )paren
 (brace
 id|addr
@@ -2910,7 +2790,7 @@ c_func
 (paren
 id|byte_cnt
 comma
-id|IOVP_SIZE
+id|iovp_size
 )paren
 )paren
 suffix:semicolon
@@ -2919,7 +2799,7 @@ op_increment
 suffix:semicolon
 id|byte_cnt
 op_sub_assign
-id|IOVP_SIZE
+id|iovp_size
 suffix:semicolon
 )brace
 r_while
@@ -3246,7 +3126,7 @@ r_int
 id|pide
 op_amp
 op_complement
-id|IOVP_MASK
+id|iovp_mask
 suffix:semicolon
 id|startsg-&gt;dma_address
 op_assign
@@ -3269,7 +3149,7 @@ id|ioc-&gt;pdir_base
 (braket
 id|pide
 op_rshift
-id|IOVP_SHIFT
+id|iovp_shift
 )braket
 )paren
 suffix:semicolon
@@ -3325,17 +3205,9 @@ c_func
 (paren
 id|cnt
 comma
-id|IOVP_SIZE
+id|iovp_size
 )paren
 suffix:semicolon
-macro_line|#if SBA_PROC_FS
-id|ioc-&gt;msg_pages
-op_add_assign
-id|cnt
-op_rshift
-id|IOVP_SHIFT
-suffix:semicolon
-macro_line|#endif
 r_do
 (brace
 id|sba_io_pdir_entry
@@ -3348,11 +3220,11 @@ id|vaddr
 suffix:semicolon
 id|vaddr
 op_add_assign
-id|IOVP_SIZE
+id|iovp_size
 suffix:semicolon
 id|cnt
 op_sub_assign
-id|IOVP_SIZE
+id|iovp_size
 suffix:semicolon
 id|pdirp
 op_increment
@@ -3387,9 +3259,9 @@ r_return
 id|n_mappings
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** Two address ranges are DMA contiguous *iff* &quot;end of prev&quot; and&n;** &quot;start of next&quot; are both on a page boundry.&n;**&n;** (shift left is a quick trick to mask off upper bits)&n;*/
+multiline_comment|/*&n;** Two address ranges are DMA contiguous *iff* &quot;end of prev&quot; and&n;** &quot;start of next&quot; are both on an IOV page boundary.&n;**&n;** (shift left is a quick trick to mask off upper bits)&n;*/
 DECL|macro|DMA_CONTIG
-mdefine_line|#define DMA_CONTIG(__X, __Y) &bslash;&n;&t;(((((unsigned long) __X) | ((unsigned long) __Y)) &lt;&lt; (BITS_PER_LONG - PAGE_SHIFT)) == 0UL)
+mdefine_line|#define DMA_CONTIG(__X, __Y) &bslash;&n;&t;(((((unsigned long) __X) | ((unsigned long) __Y)) &lt;&lt; (BITS_PER_LONG - iovp_shift)) == 0UL)
 multiline_comment|/**&n; * sba_coalesce_chunks - preprocess the SG list&n; * @ioc: IO MMU structure which owns the pdir we are interested in.&n; * @startsg:  list of IOVA/size pairs&n; * @nents: number of entries in startsg list&n; *&n; * First pass is to walk the SG list and determine where the breaks are&n; * in the DMA stream. Allocates PDIR entries but does not fill them.&n; * Returns the number of DMA chunks.&n; *&n; * Doing the fill separate from the coalescing/allocation keeps the&n; * code simpler. Future enhancement could make one pass through&n; * the sglist do both.&n; */
 r_static
 id|SBA_INLINE
@@ -3491,7 +3363,7 @@ op_assign
 id|vaddr
 op_amp
 op_complement
-id|IOVP_MASK
+id|iovp_mask
 suffix:semicolon
 multiline_comment|/* PARANOID: clear entries */
 id|startsg-&gt;dma_address
@@ -3547,10 +3419,10 @@ op_plus
 id|startsg-&gt;length
 op_plus
 op_complement
-id|IOVP_MASK
+id|iovp_mask
 )paren
 op_amp
-id|IOVP_MASK
+id|iovp_mask
 )paren
 OG
 id|DMA_CHUNK_SIZE
@@ -3599,7 +3471,7 @@ op_assign
 (paren
 id|vcontig_len
 OG
-id|IOVP_SIZE
+id|iovp_size
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -3661,10 +3533,10 @@ op_plus
 id|dma_offset
 op_plus
 op_complement
-id|IOVP_MASK
+id|iovp_mask
 )paren
 op_amp
-id|IOVP_MASK
+id|iovp_mask
 suffix:semicolon
 id|ASSERT
 c_func
@@ -3691,7 +3563,7 @@ comma
 id|dma_len
 )paren
 op_lshift
-id|IOVP_SHIFT
+id|iovp_shift
 )paren
 op_or
 id|dma_offset
@@ -3829,29 +3701,6 @@ id|sg
 )paren
 suffix:semicolon
 )brace
-macro_line|#if SBA_PROC_FS
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|ioc-&gt;res_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|ioc-&gt;msg_bypass
-op_increment
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|ioc-&gt;res_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|filled
 suffix:semicolon
@@ -3888,9 +3737,6 @@ comma
 id|dir
 )paren
 suffix:semicolon
-macro_line|#if SBA_PROC_FS
-multiline_comment|/*&n;&t;&t;** Should probably do some stats counting, but trying to&n;&t;&t;** be precise quickly starts wasting CPU time.&n;&t;&t;*/
-macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
@@ -3934,11 +3780,6 @@ l_string|&quot;Check before sba_map_sg()&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#if SBA_PROC_FS
-id|ioc-&gt;msg_calls
-op_increment
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t;** First coalesce the chunks and allocate I/O pdir space&n;&t;**&n;&t;** If this is one DMA stream, we can properly map using the&n;&t;** correct virtual address associated with each DMA page.&n;&t;** w/o this association, we wouldn&squot;t have coherent DMA!&n;&t;** Access to the virtual address is what forces a two pass algorithm.&n;&t;*/
 id|coalesced
@@ -4093,11 +3934,6 @@ c_func
 id|ioc
 )paren
 suffix:semicolon
-macro_line|#if SBA_PROC_FS
-id|ioc-&gt;usg_calls
-op_increment
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef ASSERT_PDIR_SANITY
 id|spin_lock_irqsave
 c_func
@@ -4146,28 +3982,6 @@ comma
 id|dir
 )paren
 suffix:semicolon
-macro_line|#if SBA_PROC_FS
-multiline_comment|/*&n;&t;&t;** This leaves inconsistent data in the stats, but we can&squot;t&n;&t;&t;** tell which sg lists were mapped by map_single and which&n;&t;&t;** were coalesced to a single entry.  The stats are fun,&n;&t;&t;** but speed is more important.&n;&t;&t;*/
-id|ioc-&gt;usg_pages
-op_add_assign
-(paren
-(paren
-id|sglist-&gt;dma_address
-op_amp
-op_complement
-id|IOVP_MASK
-)paren
-op_plus
-id|sglist-&gt;dma_length
-op_plus
-id|IOVP_SIZE
-op_minus
-l_int|1
-)paren
-op_rshift
-id|PAGE_SHIFT
-suffix:semicolon
-macro_line|#endif
 id|sglist
 op_increment
 suffix:semicolon
@@ -4228,12 +4042,7 @@ op_star
 id|ioc
 )paren
 (brace
-id|u32
-id|iova_space_mask
-suffix:semicolon
 r_int
-id|iov_order
-comma
 id|tcnfg
 suffix:semicolon
 r_int
@@ -4268,10 +4077,8 @@ op_amp
 op_complement
 l_int|0x1UL
 suffix:semicolon
-id|ioc-&gt;iov_size
+id|ioc-&gt;imask
 op_assign
-op_complement
-(paren
 id|READ_REG
 c_func
 (paren
@@ -4279,25 +4086,108 @@ id|ioc-&gt;ioc_hpa
 op_plus
 id|IOC_IMASK
 )paren
-op_amp
-l_int|0xFFFFFFFFUL
-)paren
+op_or
+l_int|0xFFFFFFFF00000000UL
+suffix:semicolon
+id|ioc-&gt;iov_size
+op_assign
+op_complement
+id|ioc-&gt;imask
 op_plus
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;** iov_order is always based on a 1GB IOVA space since we want to&n;&t;** turn on the other half for AGP GART.&n;&t;*/
-id|iov_order
-op_assign
-id|get_order
+id|DBG_INIT
 c_func
 (paren
+l_string|&quot;%s() hpa %p IOV base 0x%lx mask 0x%lx (%dMB)&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|ioc-&gt;ioc_hpa
+comma
+id|ioc-&gt;ibase
+comma
+id|ioc-&gt;imask
+comma
 id|ioc-&gt;iov_size
 op_rshift
-(paren
-id|IOVP_SHIFT
-op_minus
-id|PAGE_SHIFT
+l_int|20
 )paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|iovp_size
+)paren
+(brace
+r_case
+l_int|4
+op_star
+l_int|1024
+suffix:colon
+id|tcnfg
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|8
+op_star
+l_int|1024
+suffix:colon
+id|tcnfg
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|16
+op_star
+l_int|1024
+suffix:colon
+id|tcnfg
+op_assign
+l_int|2
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|64
+op_star
+l_int|1024
+suffix:colon
+id|tcnfg
+op_assign
+l_int|3
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|panic
+c_func
+(paren
+id|PFX
+l_string|&quot;Unsupported IOTLB page size %ldK&quot;
+comma
+id|iovp_size
+op_rshift
+l_int|10
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|WRITE_REG
+c_func
+(paren
+id|tcnfg
+comma
+id|ioc-&gt;ioc_hpa
+op_plus
+id|IOC_TCNFG
 )paren
 suffix:semicolon
 id|ioc-&gt;pdir_size
@@ -4305,53 +4195,10 @@ op_assign
 (paren
 id|ioc-&gt;iov_size
 op_div
-id|IOVP_SIZE
+id|iovp_size
 )paren
 op_star
-r_sizeof
-(paren
-id|u64
-)paren
-suffix:semicolon
-id|DBG_INIT
-c_func
-(paren
-l_string|&quot;%s() hpa %p IOV %dMB (%d bits) PDIR size 0x%x&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|ioc-&gt;ioc_hpa
-comma
-id|ioc-&gt;iov_size
-op_rshift
-l_int|20
-comma
-id|iov_order
-op_plus
-id|PAGE_SHIFT
-comma
-id|ioc-&gt;pdir_size
-)paren
-suffix:semicolon
-multiline_comment|/* FIXME : DMA HINTs not used */
-id|ioc-&gt;hint_shift_pdir
-op_assign
-id|iov_order
-op_plus
-id|PAGE_SHIFT
-suffix:semicolon
-id|ioc-&gt;hint_mask_pdir
-op_assign
-op_complement
-(paren
-l_int|0x3
-op_lshift
-(paren
-id|iov_order
-op_plus
-id|PAGE_SHIFT
-)paren
-)paren
+id|PDIR_ENTRY_SIZE
 suffix:semicolon
 id|ioc-&gt;pdir_base
 op_assign
@@ -4397,32 +4244,34 @@ suffix:semicolon
 id|DBG_INIT
 c_func
 (paren
-l_string|&quot;%s() pdir %p size %x hint_shift_pdir %x hint_mask_pdir %lx&bslash;n&quot;
+l_string|&quot;%s() IOV page size %ldK pdir %p size %x&bslash;n&quot;
 comma
 id|__FUNCTION__
+comma
+id|iovp_size
+op_rshift
+l_int|10
 comma
 id|ioc-&gt;pdir_base
 comma
 id|ioc-&gt;pdir_size
-comma
-id|ioc-&gt;hint_shift_pdir
-comma
-id|ioc-&gt;hint_mask_pdir
 )paren
 suffix:semicolon
 id|ASSERT
 c_func
 (paren
-(paren
+id|ALIGN
+c_func
 (paren
 (paren
 r_int
 r_int
 )paren
 id|ioc-&gt;pdir_base
-)paren
-op_amp
-id|PAGE_MASK
+comma
+l_int|4
+op_star
+l_int|1024
 )paren
 op_eq
 (paren
@@ -4444,162 +4293,6 @@ comma
 id|ioc-&gt;ioc_hpa
 op_plus
 id|IOC_PDIR_BASE
-)paren
-suffix:semicolon
-id|DBG_INIT
-c_func
-(paren
-l_string|&quot; base %p&bslash;n&quot;
-comma
-id|ioc-&gt;pdir_base
-)paren
-suffix:semicolon
-multiline_comment|/* build IMASK for IOC and Elroy */
-id|iova_space_mask
-op_assign
-l_int|0xffffffff
-suffix:semicolon
-id|iova_space_mask
-op_lshift_assign
-(paren
-id|iov_order
-op_plus
-id|PAGE_SHIFT
-)paren
-suffix:semicolon
-id|ioc-&gt;imask
-op_assign
-id|iova_space_mask
-suffix:semicolon
-id|DBG_INIT
-c_func
-(paren
-l_string|&quot;%s() IOV base 0x%lx mask 0x%0lx&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|ioc-&gt;ibase
-comma
-id|ioc-&gt;imask
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;** FIXME: Hint registers are programmed with default hint&n;&t;** values during boot, so hints should be sane even if we&n;&t;** can&squot;t reprogram them the way drivers want.&n;&t;*/
-id|WRITE_REG
-c_func
-(paren
-id|ioc-&gt;imask
-comma
-id|ioc-&gt;ioc_hpa
-op_plus
-id|IOC_IMASK
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;** Setting the upper bits makes checking for bypass addresses&n;&t;** a little faster later on.&n;&t;*/
-id|ioc-&gt;imask
-op_or_assign
-l_int|0xFFFFFFFF00000000UL
-suffix:semicolon
-multiline_comment|/* Set I/O PDIR Page size to system page size */
-r_switch
-c_cond
-(paren
-id|PAGE_SHIFT
-)paren
-(brace
-r_case
-l_int|12
-suffix:colon
-id|tcnfg
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-multiline_comment|/*  4K */
-r_case
-l_int|13
-suffix:colon
-id|tcnfg
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-multiline_comment|/*  8K */
-r_case
-l_int|14
-suffix:colon
-id|tcnfg
-op_assign
-l_int|2
-suffix:semicolon
-r_break
-suffix:semicolon
-multiline_comment|/* 16K */
-r_case
-l_int|16
-suffix:colon
-id|tcnfg
-op_assign
-l_int|3
-suffix:semicolon
-r_break
-suffix:semicolon
-multiline_comment|/* 64K */
-r_default
-suffix:colon
-id|panic
-c_func
-(paren
-id|PFX
-l_string|&quot;Unsupported system page size %d&quot;
-comma
-l_int|1
-op_lshift
-id|PAGE_SHIFT
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-id|WRITE_REG
-c_func
-(paren
-id|tcnfg
-comma
-id|ioc-&gt;ioc_hpa
-op_plus
-id|IOC_TCNFG
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;** Program the IOC&squot;s ibase and enable IOVA translation&n;&t;** Bit zero == enable bit.&n;&t;*/
-id|WRITE_REG
-c_func
-(paren
-id|ioc-&gt;ibase
-op_or
-l_int|1
-comma
-id|ioc-&gt;ioc_hpa
-op_plus
-id|IOC_IBASE
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;** Clear I/O TLB of any possible entries.&n;&t;** (Yes. This is a bit paranoid...but so what)&n;&t;*/
-id|WRITE_REG
-c_func
-(paren
-id|ioc-&gt;ibase
-op_or
-(paren
-id|iov_order
-op_plus
-id|PAGE_SHIFT
-)paren
-comma
-id|ioc-&gt;ioc_hpa
-op_plus
-id|IOC_PCOM
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;** If an AGP device is present, only use half of the IOV space&n;&t;** for PCI DMA.  Unfortunately we can&squot;t know ahead of time&n;&t;** whether GART support will actually be used, for now we&n;&t;** can just key on an AGP device found in the system.&n;&t;** We program the next pdir index after we stop w/ a key for&n;&t;** the GART code to handshake on.&n;&t;*/
@@ -4725,7 +4418,7 @@ comma
 id|get_order
 c_func
 (paren
-id|IOVP_SIZE
+id|iovp_size
 )paren
 )paren
 suffix:semicolon
@@ -4757,7 +4450,7 @@ id|poison_addr
 OL
 id|addr
 op_plus
-id|IOVP_SIZE
+id|iovp_size
 suffix:semicolon
 id|poison_addr
 op_add_assign
@@ -4805,10 +4498,7 @@ OL
 (paren
 id|ioc-&gt;pdir_size
 op_div
-r_sizeof
-(paren
-id|u64
-)paren
+id|PDIR_ENTRY_SIZE
 )paren
 suffix:semicolon
 id|index
@@ -4832,6 +4522,56 @@ id|prefetch_spill_page
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Clear I/O TLB of any possible entries */
+id|WRITE_REG
+c_func
+(paren
+id|ioc-&gt;ibase
+op_or
+(paren
+id|get_iovp_order
+c_func
+(paren
+id|ioc-&gt;iov_size
+)paren
+op_plus
+id|iovp_shift
+)paren
+comma
+id|ioc-&gt;ioc_hpa
+op_plus
+id|IOC_PCOM
+)paren
+suffix:semicolon
+id|READ_REG
+c_func
+(paren
+id|ioc-&gt;ioc_hpa
+op_plus
+id|IOC_PCOM
+)paren
+suffix:semicolon
+multiline_comment|/* Enable IOVA translation */
+id|WRITE_REG
+c_func
+(paren
+id|ioc-&gt;ibase
+op_or
+l_int|1
+comma
+id|ioc-&gt;ioc_hpa
+op_plus
+id|IOC_IBASE
+)paren
+suffix:semicolon
+id|READ_REG
+c_func
+(paren
+id|ioc-&gt;ioc_hpa
+op_plus
+id|IOC_IBASE
+)paren
+suffix:semicolon
 )brace
 r_static
 r_void
@@ -4858,10 +4598,7 @@ id|ioc-&gt;res_size
 op_assign
 id|ioc-&gt;pdir_size
 op_div
-r_sizeof
-(paren
-id|u64
-)paren
+id|PDIR_ENTRY_SIZE
 suffix:semicolon
 multiline_comment|/* entries */
 id|ioc-&gt;res_size
@@ -4966,10 +4703,7 @@ id|ioc-&gt;pdir_base
 (paren
 id|ioc-&gt;pdir_size
 op_div
-r_sizeof
-(paren
-id|u64
-)paren
+id|PDIR_ENTRY_SIZE
 )paren
 op_minus
 l_int|1
@@ -5164,6 +4898,86 @@ id|ioc-&gt;dma_mask
 op_assign
 l_int|0xFFFFFFFFFFUL
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|iovp_shift
+)paren
+(brace
+multiline_comment|/* 64k is max iommu page size */
+id|iovp_shift
+op_assign
+id|min
+c_func
+(paren
+id|PAGE_SHIFT
+comma
+l_int|16
+)paren
+suffix:semicolon
+id|iovp_size
+op_assign
+(paren
+l_int|1
+op_lshift
+id|iovp_shift
+)paren
+suffix:semicolon
+id|iovp_mask
+op_assign
+op_complement
+(paren
+id|iovp_size
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+)brace
+r_static
+r_void
+id|__init
+DECL|function|ioc_sx1000_init
+id|ioc_sx1000_init
+c_func
+(paren
+r_struct
+id|ioc
+op_star
+id|ioc
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|iovp_shift
+)paren
+(brace
+id|iovp_shift
+op_assign
+l_int|12
+suffix:semicolon
+multiline_comment|/* 4K for now */
+id|iovp_size
+op_assign
+(paren
+l_int|1
+op_lshift
+id|iovp_shift
+)paren
+suffix:semicolon
+id|iovp_mask
+op_assign
+op_complement
+(paren
+id|iovp_size
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|typedef|initfunc
 r_typedef
@@ -5219,12 +5033,16 @@ comma
 id|REO_IOC_ID
 comma
 l_string|&quot;REO&quot;
+comma
+id|ioc_sx1000_init
 )brace
 comma
 (brace
 id|SX1000_IOC_ID
 comma
 l_string|&quot;sx1000&quot;
+comma
+id|ioc_sx1000_init
 )brace
 comma
 )brace
@@ -5342,6 +5160,30 @@ op_assign
 l_int|0xFFFFFFFFFFFFFFFFUL
 suffix:semicolon
 multiline_comment|/* conservative */
+r_if
+c_cond
+(paren
+id|iovp_shift
+)paren
+(brace
+id|iovp_size
+op_assign
+(paren
+l_int|1
+op_lshift
+id|iovp_shift
+)paren
+suffix:semicolon
+id|iovp_mask
+op_assign
+op_complement
+(paren
+id|iovp_size
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -5389,6 +5231,22 @@ id|ioc
 suffix:semicolon
 )brace
 )brace
+id|DBG_INIT
+c_func
+(paren
+l_string|&quot;%s: PAGE_SIZE %ldK, iovp_size %ldK&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|PAGE_SIZE
+op_rshift
+l_int|10
+comma
+id|iovp_size
+op_rshift
+l_int|10
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5466,7 +5324,7 @@ c_cond
 r_int
 )paren
 op_complement
-id|IOVP_MASK
+id|iovp_mask
 OG
 (paren
 r_int
@@ -5476,7 +5334,7 @@ id|ia64_max_iommu_merge_mask
 id|ia64_max_iommu_merge_mask
 op_assign
 op_complement
-id|IOVP_MASK
+id|iovp_mask
 suffix:semicolon
 id|MAX_DMA_ADDRESS
 op_assign
@@ -5518,7 +5376,7 @@ id|ioc
 suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n;**&n;**   SBA initialization code (HW and SW)&n;**&n;**   o identify SBA chip itself&n;**   o FIXME: initialize DMA hints for reasonable defaults&n;**&n;**************************************************************************/
-macro_line|#if SBA_PROC_FS
+macro_line|#ifdef CONFIG_PROC_FS
 r_static
 r_void
 op_star
@@ -5651,31 +5509,23 @@ op_assign
 id|v
 suffix:semicolon
 r_int
-id|total_pages
+r_int
+op_star
+id|res_ptr
 op_assign
 (paren
 r_int
-)paren
-(paren
-id|ioc-&gt;res_size
-op_lshift
-l_int|3
-)paren
-suffix:semicolon
-multiline_comment|/* 8 bits per byte */
 r_int
+op_star
+)paren
+id|ioc-&gt;res_map
+suffix:semicolon
 r_int
 id|i
+comma
+id|used
 op_assign
 l_int|0
-comma
-id|avg
-op_assign
-l_int|0
-comma
-id|min
-comma
-id|max
 suffix:semicolon
 id|seq_printf
 c_func
@@ -5708,51 +5558,61 @@ c_func
 (paren
 id|s
 comma
-l_string|&quot;IO PDIR size    : %d bytes (%d entries)&bslash;n&quot;
+l_string|&quot;IOVA size       : %d MB&bslash;n&quot;
 comma
+id|ioc-&gt;iov_size
+op_div
 (paren
-r_int
+l_int|1024
+op_star
+l_int|1024
 )paren
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
 (paren
+id|s
+comma
+l_string|&quot;IOVA page size  : %ld kb&bslash;n&quot;
+comma
+id|iovp_size
+op_div
+l_int|1024
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
 (paren
 id|ioc-&gt;res_size
-op_lshift
-l_int|3
-)paren
-op_star
+op_div
 r_sizeof
 (paren
-id|u64
-)paren
-)paren
-comma
-multiline_comment|/* 8 bits/byte */
-id|total_pages
-)paren
-suffix:semicolon
-id|seq_printf
-c_func
-(paren
-id|s
-comma
-l_string|&quot;IO PDIR entries : %ld free  %ld used (%d%%)&bslash;n&quot;
-comma
-id|total_pages
-op_minus
-id|ioc-&gt;used_pages
-comma
-id|ioc-&gt;used_pages
-comma
-(paren
+r_int
 r_int
 )paren
-(paren
-id|ioc-&gt;used_pages
-op_star
-l_int|100
-op_div
-id|total_pages
 )paren
+suffix:semicolon
+op_increment
+id|i
+comma
+op_increment
+id|res_ptr
+)paren
+id|used
+op_add_assign
+id|hweight64
+c_func
+(paren
+op_star
+id|res_ptr
 )paren
 suffix:semicolon
 id|seq_printf
@@ -5760,16 +5620,39 @@ c_func
 (paren
 id|s
 comma
-l_string|&quot;Resource bitmap : %d bytes (%d pages)&bslash;n&quot;
-comma
-id|ioc-&gt;res_size
+l_string|&quot;PDIR size       : %d entries&bslash;n&quot;
 comma
 id|ioc-&gt;res_size
 op_lshift
 l_int|3
 )paren
 suffix:semicolon
-multiline_comment|/* 8 bits per byte */
+id|seq_printf
+c_func
+(paren
+id|s
+comma
+l_string|&quot;PDIR used       : %d entries&bslash;n&quot;
+comma
+id|used
+)paren
+suffix:semicolon
+macro_line|#ifdef PDIR_SEARCH_TIMING
+(brace
+r_int
+r_int
+id|i
+op_assign
+l_int|0
+comma
+id|avg
+op_assign
+l_int|0
+comma
+id|min
+comma
+id|max
+suffix:semicolon
 id|min
 op_assign
 id|max
@@ -5845,7 +5728,7 @@ c_func
 (paren
 id|s
 comma
-l_string|&quot;  Bitmap search : %ld/%ld/%ld (min/avg/max CPU Cycles)&bslash;n&quot;
+l_string|&quot;Bitmap search   : %ld/%ld/%ld (min/avg/max CPU Cycles)&bslash;n&quot;
 comma
 id|min
 comma
@@ -5854,142 +5737,18 @@ comma
 id|max
 )paren
 suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#ifndef ALLOW_IOV_BYPASS
 id|seq_printf
 c_func
 (paren
 id|s
 comma
-l_string|&quot;pci_map_single(): %12ld calls  %12ld pages (avg %d/1000)&bslash;n&quot;
-comma
-id|ioc-&gt;msingle_calls
-comma
-id|ioc-&gt;msingle_pages
-comma
-(paren
-r_int
-)paren
-(paren
-(paren
-id|ioc-&gt;msingle_pages
-op_star
-l_int|1000
-)paren
-op_div
-id|ioc-&gt;msingle_calls
-)paren
-)paren
-suffix:semicolon
-macro_line|#ifdef ALLOW_IOV_BYPASS
-id|seq_printf
-c_func
-(paren
-id|s
-comma
-l_string|&quot;pci_map_single(): %12ld bypasses&bslash;n&quot;
-comma
-id|ioc-&gt;msingle_bypass
+l_string|&quot;IOVA bypass disabled&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|seq_printf
-c_func
-(paren
-id|s
-comma
-l_string|&quot;pci_unmap_single: %12ld calls  %12ld pages (avg %d/1000)&bslash;n&quot;
-comma
-id|ioc-&gt;usingle_calls
-comma
-id|ioc-&gt;usingle_pages
-comma
-(paren
-r_int
-)paren
-(paren
-(paren
-id|ioc-&gt;usingle_pages
-op_star
-l_int|1000
-)paren
-op_div
-id|ioc-&gt;usingle_calls
-)paren
-)paren
-suffix:semicolon
-macro_line|#ifdef ALLOW_IOV_BYPASS
-id|seq_printf
-c_func
-(paren
-id|s
-comma
-l_string|&quot;pci_unmap_single: %12ld bypasses&bslash;n&quot;
-comma
-id|ioc-&gt;usingle_bypass
-)paren
-suffix:semicolon
-macro_line|#endif
-id|seq_printf
-c_func
-(paren
-id|s
-comma
-l_string|&quot;pci_map_sg()    : %12ld calls  %12ld pages (avg %d/1000)&bslash;n&quot;
-comma
-id|ioc-&gt;msg_calls
-comma
-id|ioc-&gt;msg_pages
-comma
-(paren
-r_int
-)paren
-(paren
-(paren
-id|ioc-&gt;msg_pages
-op_star
-l_int|1000
-)paren
-op_div
-id|ioc-&gt;msg_calls
-)paren
-)paren
-suffix:semicolon
-macro_line|#ifdef ALLOW_IOV_BYPASS
-id|seq_printf
-c_func
-(paren
-id|s
-comma
-l_string|&quot;pci_map_sg()    : %12ld bypasses&bslash;n&quot;
-comma
-id|ioc-&gt;msg_bypass
-)paren
-suffix:semicolon
-macro_line|#endif
-id|seq_printf
-c_func
-(paren
-id|s
-comma
-l_string|&quot;pci_unmap_sg()  : %12ld calls  %12ld pages (avg %d/1000)&bslash;n&quot;
-comma
-id|ioc-&gt;usg_calls
-comma
-id|ioc-&gt;usg_pages
-comma
-(paren
-r_int
-)paren
-(paren
-(paren
-id|ioc-&gt;usg_pages
-op_star
-l_int|1000
-)paren
-op_div
-id|ioc-&gt;usg_calls
-)paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -6079,184 +5838,6 @@ id|seq_release
 )brace
 suffix:semicolon
 r_static
-r_int
-DECL|function|ioc_map_show
-id|ioc_map_show
-c_func
-(paren
-r_struct
-id|seq_file
-op_star
-id|s
-comma
-r_void
-op_star
-id|v
-)paren
-(brace
-r_struct
-id|ioc
-op_star
-id|ioc
-op_assign
-id|v
-suffix:semicolon
-r_int
-r_int
-id|i
-comma
-op_star
-id|res_ptr
-op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-id|ioc-&gt;res_map
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|ioc-&gt;res_size
-op_div
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-op_increment
-id|i
-comma
-op_increment
-id|res_ptr
-)paren
-id|seq_printf
-c_func
-(paren
-id|s
-comma
-l_string|&quot;%s%08x&quot;
-comma
-(paren
-id|i
-op_amp
-l_int|7
-)paren
-ques
-c_cond
-l_string|&quot; &quot;
-suffix:colon
-l_string|&quot;&bslash;n   &quot;
-comma
-op_star
-id|res_ptr
-)paren
-suffix:semicolon
-id|seq_printf
-c_func
-(paren
-id|s
-comma
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|variable|ioc_map_ops
-r_static
-r_struct
-id|seq_operations
-id|ioc_map_ops
-op_assign
-(brace
-dot
-id|start
-op_assign
-id|ioc_start
-comma
-dot
-id|next
-op_assign
-id|ioc_next
-comma
-dot
-id|stop
-op_assign
-id|ioc_stop
-comma
-dot
-id|show
-op_assign
-id|ioc_map_show
-)brace
-suffix:semicolon
-r_static
-r_int
-DECL|function|ioc_map_open
-id|ioc_map_open
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|file
-)paren
-(brace
-r_return
-id|seq_open
-c_func
-(paren
-id|file
-comma
-op_amp
-id|ioc_map_ops
-)paren
-suffix:semicolon
-)brace
-DECL|variable|ioc_map_fops
-r_static
-r_struct
-id|file_operations
-id|ioc_map_fops
-op_assign
-(brace
-dot
-id|open
-op_assign
-id|ioc_map_open
-comma
-dot
-id|read
-op_assign
-id|seq_read
-comma
-dot
-id|llseek
-op_assign
-id|seq_lseek
-comma
-dot
-id|release
-op_assign
-id|seq_release
-)brace
-suffix:semicolon
-r_static
 r_void
 id|__init
 DECL|function|ioc_proc_init
@@ -6313,28 +5894,6 @@ id|entry-&gt;proc_fops
 op_assign
 op_amp
 id|ioc_fops
-suffix:semicolon
-id|entry
-op_assign
-id|create_proc_entry
-c_func
-(paren
-l_string|&quot;bitmap&quot;
-comma
-l_int|0
-comma
-id|dir
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|entry
-)paren
-id|entry-&gt;proc_fops
-op_assign
-op_amp
-id|ioc_map_fops
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -6721,7 +6280,7 @@ id|b
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if SBA_PROC_FS
+macro_line|#ifdef CONFIG_PROC_FS
 id|ioc_proc_init
 c_func
 (paren
@@ -6792,6 +6351,88 @@ c_func
 l_string|&quot;nosbagart&quot;
 comma
 id|nosbagart
+)paren
+suffix:semicolon
+r_static
+r_int
+id|__init
+DECL|function|sba_page_override
+id|sba_page_override
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+r_int
+r_int
+id|page_size
+suffix:semicolon
+id|page_size
+op_assign
+id|memparse
+c_func
+(paren
+id|str
+comma
+op_amp
+id|str
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|page_size
+)paren
+(brace
+r_case
+l_int|4096
+suffix:colon
+r_case
+l_int|8192
+suffix:colon
+r_case
+l_int|16384
+suffix:colon
+r_case
+l_int|65536
+suffix:colon
+id|iovp_shift
+op_assign
+id|ffs
+c_func
+(paren
+id|page_size
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;%s: unknown/unsupported iommu page size %ld&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|page_size
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;sbapagesize=&quot;
+comma
+id|sba_page_override
 )paren
 suffix:semicolon
 DECL|variable|sba_map_single
