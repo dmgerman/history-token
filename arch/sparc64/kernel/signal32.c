@@ -78,7 +78,7 @@ DECL|member|extramask
 r_int
 id|extramask
 (braket
-id|_NSIG_WORDS32
+id|_COMPAT_NSIG_WORDS
 op_minus
 l_int|1
 )braket
@@ -116,7 +116,7 @@ DECL|member|extramask
 r_int
 id|extramask
 (braket
-id|_NSIG_WORDS32
+id|_COMPAT_NSIG_WORDS
 op_minus
 l_int|1
 )braket
@@ -156,7 +156,7 @@ id|pt_regs32
 id|regs
 suffix:semicolon
 DECL|member|mask
-id|sigset_t32
+id|compat_sigset_t
 id|mask
 suffix:semicolon
 DECL|member|fpu_save
@@ -419,7 +419,7 @@ r_void
 id|_sigpause32_common
 c_func
 (paren
-id|old_sigset_t32
+id|compat_old_sigset_t
 id|set
 comma
 r_struct
@@ -565,7 +565,7 @@ id|oldset
 comma
 id|set
 suffix:semicolon
-id|sigset_t32
+id|compat_sigset_t
 id|set32
 suffix:semicolon
 multiline_comment|/* XXX: Don&squot;t preclude handling different sized sigset_t&squot;s.  */
@@ -1073,7 +1073,7 @@ suffix:semicolon
 r_int
 id|seta
 (braket
-id|_NSIG_WORDS32
+id|_COMPAT_NSIG_WORDS
 )braket
 suffix:semicolon
 r_int
@@ -1396,7 +1396,7 @@ op_amp
 id|sf-&gt;extramask
 comma
 (paren
-id|_NSIG_WORDS32
+id|_COMPAT_NSIG_WORDS
 op_minus
 l_int|1
 )paren
@@ -1604,7 +1604,7 @@ suffix:semicolon
 r_int
 id|seta
 (braket
-id|_NSIG_WORDS32
+id|_COMPAT_NSIG_WORDS
 )braket
 suffix:semicolon
 r_int
@@ -1746,7 +1746,7 @@ op_plus
 l_int|1
 comma
 (paren
-id|_NSIG_WORDS32
+id|_COMPAT_NSIG_WORDS
 op_minus
 l_int|1
 )paren
@@ -2064,7 +2064,7 @@ suffix:semicolon
 id|sigset_t
 id|set
 suffix:semicolon
-id|sigset_t32
+id|compat_sigset_t
 id|seta
 suffix:semicolon
 id|stack_t
@@ -2381,7 +2381,7 @@ id|sf-&gt;mask
 comma
 r_sizeof
 (paren
-id|sigset_t32
+id|compat_sigset_t
 )paren
 )paren
 suffix:semicolon
@@ -2802,7 +2802,7 @@ suffix:semicolon
 r_int
 id|seta
 (braket
-id|_NSIG_WORDS32
+id|_COMPAT_NSIG_WORDS
 )braket
 suffix:semicolon
 r_int
@@ -3077,7 +3077,7 @@ op_plus
 l_int|1
 comma
 (paren
-id|_NSIG_WORDS32
+id|_COMPAT_NSIG_WORDS
 op_minus
 l_int|1
 )paren
@@ -3929,7 +3929,7 @@ suffix:semicolon
 r_int
 id|seta
 (braket
-id|_NSIG_WORDS32
+id|_COMPAT_NSIG_WORDS
 )braket
 suffix:semicolon
 multiline_comment|/* 1. Make sure everything is clean */
@@ -4394,7 +4394,7 @@ op_plus
 l_int|1
 comma
 (paren
-id|_NSIG_WORDS32
+id|_COMPAT_NSIG_WORDS
 op_minus
 l_int|1
 )paren
@@ -6640,7 +6640,7 @@ id|i
 comma
 id|err
 suffix:semicolon
-id|sigset_t32
+id|compat_sigset_t
 id|seta
 suffix:semicolon
 multiline_comment|/* 1. Make sure everything is clean */
@@ -7145,7 +7145,7 @@ id|seta
 comma
 r_sizeof
 (paren
-id|sigset_t32
+id|compat_sigset_t
 )paren
 )paren
 suffix:semicolon

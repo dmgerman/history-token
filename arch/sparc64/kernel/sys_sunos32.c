@@ -6463,7 +6463,7 @@ c_cond
 id|act
 )paren
 (brace
-id|old_sigset_t32
+id|compat_old_sigset_t
 id|mask
 suffix:semicolon
 r_if
