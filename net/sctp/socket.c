@@ -6976,28 +6976,22 @@ id|HZ
 op_star
 l_int|1000
 suffix:semicolon
-multiline_comment|/* Initialize default event subscriptions.&n;&t; * the struct sock is initialized to zero, so only&n;&t; * enable the events needed.  By default, UDP-style&n;&t; * sockets enable io and association change notifications.&n;&t; */
-r_if
-c_cond
-(paren
-id|sctp_style
+multiline_comment|/* Initialize default event subscriptions. By default, all the&n;&t; * options are off. &n;&t; */
+id|memset
 c_func
 (paren
-id|sk
+op_amp
+id|sp-&gt;subscribe
 comma
-id|UDP
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|sctp_event_subscribe
 )paren
 )paren
-(brace
-id|sp-&gt;subscribe.sctp_data_io_event
-op_assign
-l_int|1
 suffix:semicolon
-id|sp-&gt;subscribe.sctp_association_event
-op_assign
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/* Default Peer Address Parameters.  These defaults can&n;&t; * be modified via SCTP_PEER_ADDR_PARAMS&n;&t; */
 id|sp-&gt;paddrparam.spp_hbinterval
 op_assign
