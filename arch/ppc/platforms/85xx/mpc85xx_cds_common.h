@@ -22,6 +22,11 @@ DECL|macro|CM_CSR
 mdefine_line|#define CM_CSR&t;(1)
 DECL|macro|CM_RST
 mdefine_line|#define CM_RST&t;(2)
+multiline_comment|/* CDS NVRAM/RTC */
+DECL|macro|CDS_RTC_ADDR
+mdefine_line|#define CDS_RTC_ADDR&t;(0xf8000000)
+DECL|macro|CDS_RTC_SIZE
+mdefine_line|#define CDS_RTC_SIZE&t;(8 * 1024)
 multiline_comment|/* PCI config */
 DECL|macro|PCI1_CFG_ADDR_OFFSET
 mdefine_line|#define PCI1_CFG_ADDR_OFFSET&t;(0x8000)

@@ -24,6 +24,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
+macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -1158,6 +1159,11 @@ id|PCIBIOS_SUCCESSFUL
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PCI */
+id|TODC_ALLOC
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* ************************************************************************&n; *&n; * Setup the architecture&n; *&n; */
 r_static
 r_void
@@ -1244,6 +1250,27 @@ id|CM_VER
 )braket
 comma
 id|cds_pci_slot
+)paren
+suffix:semicolon
+multiline_comment|/* Setup TODC access */
+id|TODC_INIT
+c_func
+(paren
+id|TODC_TYPE_DS1743
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|ioremap
+c_func
+(paren
+id|CDS_RTC_ADDR
+comma
+id|CDS_RTC_SIZE
+)paren
+comma
+l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* Set loops_per_jiffy to a half-way reasonable value,&n;&t;   for use until calibrate_delay gets called. */
@@ -1676,21 +1703,29 @@ id|ppc_md.find_end_of_memory
 op_assign
 id|mpc85xx_find_end_of_memory
 suffix:semicolon
-id|ppc_md.time_init
-op_assign
-l_int|NULL
-suffix:semicolon
-id|ppc_md.set_rtc_time
-op_assign
-l_int|NULL
-suffix:semicolon
-id|ppc_md.get_rtc_time
-op_assign
-l_int|NULL
-suffix:semicolon
 id|ppc_md.calibrate_decr
 op_assign
 id|mpc85xx_calibrate_decr
+suffix:semicolon
+id|ppc_md.time_init
+op_assign
+id|todc_time_init
+suffix:semicolon
+id|ppc_md.set_rtc_time
+op_assign
+id|todc_set_rtc_time
+suffix:semicolon
+id|ppc_md.get_rtc_time
+op_assign
+id|todc_get_rtc_time
+suffix:semicolon
+id|ppc_md.nvram_read_val
+op_assign
+id|todc_direct_read_val
+suffix:semicolon
+id|ppc_md.nvram_write_val
+op_assign
+id|todc_direct_write_val
 suffix:semicolon
 macro_line|#if defined(CONFIG_SERIAL_8250) &amp;&amp; defined(CONFIG_SERIAL_TEXT_DEBUG)
 id|ppc_md.progress
