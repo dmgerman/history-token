@@ -247,6 +247,12 @@ r_char
 id|pkt_type
 suffix:semicolon
 multiline_comment|/* packet type - old, new, etc */
+DECL|member|mode
+r_int
+r_char
+id|mode
+suffix:semicolon
+multiline_comment|/* current mode byte */
 )brace
 suffix:semicolon
 macro_line|#endif /* _SYNAPTICS_H */

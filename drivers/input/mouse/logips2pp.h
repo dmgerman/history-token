@@ -12,16 +12,6 @@ op_star
 id|psmouse
 )paren
 suffix:semicolon
-r_void
-id|ps2pp_set_800dpi
-c_func
-(paren
-r_struct
-id|psmouse
-op_star
-id|psmouse
-)paren
-suffix:semicolon
 r_int
 id|ps2pp_init
 c_func
