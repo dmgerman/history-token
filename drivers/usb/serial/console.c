@@ -399,7 +399,6 @@ suffix:semicolon
 )brace
 id|port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 l_int|0
