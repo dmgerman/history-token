@@ -918,6 +918,8 @@ DECL|macro|FATTR4_WORD1_TIME_MODIFY
 mdefine_line|#define FATTR4_WORD1_TIME_MODIFY        (1 &lt;&lt; 21)
 DECL|macro|FATTR4_WORD1_TIME_MODIFY_SET
 mdefine_line|#define FATTR4_WORD1_TIME_MODIFY_SET    (1 &lt;&lt; 22)
+DECL|macro|FATTR4_WORD1_MOUNTED_ON_FILEID
+mdefine_line|#define FATTR4_WORD1_MOUNTED_ON_FILEID  (1 &lt;&lt; 23)
 DECL|macro|NFSPROC4_NULL
 mdefine_line|#define NFSPROC4_NULL 0
 DECL|macro|NFSPROC4_COMPOUND
