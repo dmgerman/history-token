@@ -3771,7 +3771,6 @@ c_func
 id|clp
 )paren
 suffix:semicolon
-multiline_comment|/* umap_free(&amp;(clp-&gt;cl_umap)); */
 id|exp_unexport_all
 c_func
 (paren

@@ -82,12 +82,6 @@ id|cl_addr
 id|NFSCLNT_ADDRMAX
 )braket
 suffix:semicolon
-DECL|member|cl_umap
-r_struct
-id|svc_uidmap
-op_star
-id|cl_umap
-suffix:semicolon
 DECL|member|cl_export
 r_struct
 id|list_head
