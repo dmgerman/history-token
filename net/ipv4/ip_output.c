@@ -33,6 +33,7 @@ macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/inetpeer.h&gt;
 macro_line|#include &lt;linux/igmp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
+macro_line|#include &lt;linux/netfilter_bridge.h&gt;
 macro_line|#include &lt;linux/mroute.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
 multiline_comment|/*&n; *      Shall we try to damage output packets if routing dev changes?&n; */
@@ -1749,6 +1750,8 @@ comma
 id|left
 comma
 id|len
+comma
+id|ll_rs
 suffix:semicolon
 r_int
 id|offset
@@ -2268,6 +2271,40 @@ op_plus
 id|hlen
 suffix:semicolon
 multiline_comment|/* Where to start from */
+macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
+multiline_comment|/* for bridged IP traffic encapsulated inside f.e. a vlan header,&n;&t; * we need to make room for the encapsulating header */
+id|ll_rs
+op_assign
+id|LL_RESERVED_SPACE
+c_func
+(paren
+id|rt-&gt;u.dst.dev
+op_plus
+id|nf_bridge_pad
+c_func
+(paren
+id|skb
+)paren
+)paren
+suffix:semicolon
+id|mtu
+op_sub_assign
+id|nf_bridge_pad
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+macro_line|#else
+id|ll_rs
+op_assign
+id|LL_RESERVED_SPACE
+c_func
+(paren
+id|rt-&gt;u.dst.dev
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; *&t;Fragment the datagram.&n;&t; */
 id|offset
 op_assign
@@ -2347,11 +2384,7 @@ id|len
 op_plus
 id|hlen
 op_plus
-id|LL_RESERVED_SPACE
-c_func
-(paren
-id|rt-&gt;u.dst.dev
-)paren
+id|ll_rs
 comma
 id|GFP_ATOMIC
 )paren
@@ -2394,11 +2427,7 @@ c_func
 (paren
 id|skb2
 comma
-id|LL_RESERVED_SPACE
-c_func
-(paren
-id|rt-&gt;u.dst.dev
-)paren
+id|ll_rs
 )paren
 suffix:semicolon
 id|skb_put
