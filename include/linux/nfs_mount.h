@@ -8,7 +8,9 @@ macro_line|#include &lt;linux/nfs2.h&gt;
 macro_line|#include &lt;linux/nfs3.h&gt;
 multiline_comment|/*&n; * WARNING!  Do not delete or change the order of these fields.  If&n; * a new field is required then add it to the end.  The version field&n; * tracks which fields are present.  This will ensure some measure of&n; * mount-to-kernel version compatibility.  Some of these aren&squot;t used yet&n; * but here they are anyway.&n; */
 DECL|macro|NFS_MOUNT_VERSION
-mdefine_line|#define NFS_MOUNT_VERSION&t;5
+mdefine_line|#define NFS_MOUNT_VERSION&t;6
+DECL|macro|NFS_MAX_CONTEXT_LEN
+mdefine_line|#define NFS_MAX_CONTEXT_LEN&t;256
 DECL|struct|nfs_mount_data
 r_struct
 id|nfs_mount_data
@@ -110,6 +112,16 @@ r_int
 id|pseudoflavor
 suffix:semicolon
 multiline_comment|/* 5 */
+DECL|member|context
+r_char
+id|context
+(braket
+id|NFS_MAX_CONTEXT_LEN
+op_plus
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* 6 */
 )brace
 suffix:semicolon
 multiline_comment|/* bits in the flags field */
