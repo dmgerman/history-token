@@ -12,7 +12,7 @@ macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/hci_core.h&gt;
 macro_line|#include &lt;net/bluetooth/l2cap.h&gt;
 macro_line|#include &quot;bnep.h&quot;
-macro_line|#ifndef CONFIG_BNEP_DEBUG
+macro_line|#ifndef CONFIG_BLUEZ_BNEP_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
@@ -102,7 +102,7 @@ op_star
 id|dev
 )paren
 (brace
-macro_line|#ifdef CONFIG_BNEP_MC_FILTER
+macro_line|#ifdef CONFIG_BLUEZ_BNEP_MC_FILTER
 r_struct
 id|bnep_session
 op_star
@@ -500,7 +500,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BNEP_MC_FILTER
+macro_line|#ifdef CONFIG_BLUEZ_BNEP_MC_FILTER
 DECL|function|bnep_net_mc_filter
 r_static
 r_inline
@@ -568,7 +568,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_BNEP_PROTO_FILTER
+macro_line|#ifdef CONFIG_BLUEZ_BNEP_PROTO_FILTER
 multiline_comment|/* Determine ether protocol. Based on eth_type_trans. */
 DECL|function|bnep_net_eth_proto
 r_static
@@ -778,7 +778,7 @@ comma
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BNEP_MC_FILTER
+macro_line|#ifdef CONFIG_BLUEZ_BNEP_MC_FILTER
 r_if
 c_cond
 (paren
@@ -802,7 +802,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_BNEP_PROTO_FILTER
+macro_line|#ifdef CONFIG_BLUEZ_BNEP_PROTO_FILTER
 r_if
 c_cond
 (paren

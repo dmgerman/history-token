@@ -18,7 +18,7 @@ macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;bnep.h&quot;
-macro_line|#ifndef CONFIG_BNEP_DEBUG
+macro_line|#ifndef CONFIG_BLUEZ_BNEP_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
