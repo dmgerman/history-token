@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;&t;/* Must be before iograph.h to get MAX_PORT_NUM */
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/hcl_util.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
@@ -3727,12 +3726,45 @@ c_cond
 op_logical_neg
 id|pciio_info
 )paren
-id|NEW
+(brace
+id|pciio_info
+op_assign
+id|kmalloc
 c_func
+(paren
+r_sizeof
+(paren
+op_star
 (paren
 id|pciio_info
 )paren
+)paren
+comma
+id|GFP_KERNEL
+)paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pciio_info
+)paren
+id|memset
+c_func
+(paren
+id|pciio_info
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+(paren
+id|pciio_info
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
 id|ASSERT
 c_func
 (paren
@@ -3799,7 +3831,7 @@ id|pciio_info
 )paren
 (brace
 multiline_comment|/* NOTE : pciio_info is a structure within the pcibr_info&n;     *&t;      and not a pointer to memory allocated on the heap !!&n;     */
-id|BZERO
+id|memset
 c_func
 (paren
 (paren
@@ -3807,6 +3839,8 @@ r_char
 op_star
 )paren
 id|pciio_info
+comma
+l_int|0
 comma
 r_sizeof
 (paren

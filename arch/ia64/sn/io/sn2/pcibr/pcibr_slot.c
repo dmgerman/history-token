@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -8,7 +8,6 @@ macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
@@ -1156,20 +1155,9 @@ suffix:semicolon
 id|pcibr_slot_func_info_resp_t
 id|funcp
 suffix:semicolon
-r_extern
-r_void
-id|snia_kmem_free
-c_func
-(paren
-r_void
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 id|slotp
 op_assign
-id|snia_kmem_zalloc
+id|kmalloc
 c_func
 (paren
 r_sizeof
@@ -1178,7 +1166,7 @@ op_star
 id|slotp
 )paren
 comma
-l_int|0
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -1495,16 +1483,10 @@ r_return
 id|EFAULT
 suffix:semicolon
 )brace
-id|snia_kmem_free
+id|kfree
 c_func
 (paren
 id|slotp
-comma
-r_sizeof
-(paren
-op_star
-id|slotp
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -2193,12 +2175,51 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|NEWA
+id|pcibr_infoh
+op_assign
+id|kmalloc
+c_func
+(paren
+id|nfunc
+op_star
+r_sizeof
+(paren
+op_star
+(paren
+id|pcibr_infoh
+)paren
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pcibr_infoh
+)paren
+(brace
+r_return
+id|ENOMEM
+suffix:semicolon
+)brace
+id|memset
 c_func
 (paren
 id|pcibr_infoh
 comma
+l_int|0
+comma
 id|nfunc
+op_star
+r_sizeof
+(paren
+op_star
+(paren
+id|pcibr_infoh
+)paren
+)paren
 )paren
 suffix:semicolon
 id|pcibr_soft-&gt;bs_slot
@@ -3467,12 +3488,10 @@ id|slot
 dot
 id|bss_infos
 suffix:semicolon
-id|DELA
+id|kfree
 c_func
 (paren
 id|pcibr_infoh
-comma
-id|nfunc
 )paren
 suffix:semicolon
 id|pcibr_soft-&gt;bs_slot
@@ -5054,12 +5073,47 @@ OL
 l_int|1
 )paren
 (brace
-id|NEWA
+id|pcibr_infoh
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+(paren
+id|pcibr_infoh
+)paren
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pcibr_infoh
+)paren
+(brace
+r_return
+id|ENOMEM
+suffix:semicolon
+)brace
+id|memset
 c_func
 (paren
 id|pcibr_infoh
 comma
-l_int|1
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+(paren
+id|pcibr_infoh
+)paren
+)paren
 )paren
 suffix:semicolon
 id|pcibr_soft-&gt;bs_slot
@@ -6575,7 +6629,7 @@ op_amp
 id|pcibr_info-&gt;f_c
 )paren
 suffix:semicolon
-id|DEL
+id|kfree
 c_func
 (paren
 id|pcibr_info

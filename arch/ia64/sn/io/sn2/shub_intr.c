@@ -11,7 +11,6 @@ macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/hcl_util.h&gt;
 macro_line|#include &lt;asm/sn/intr.h&gt;
@@ -236,7 +235,7 @@ suffix:semicolon
 )brace
 id|intr_hdl
 op_assign
-id|snia_kmem_alloc_node
+id|kmalloc
 c_func
 (paren
 r_sizeof
@@ -245,15 +244,27 @@ r_struct
 id|hub_intr_s
 )paren
 comma
-id|KM_NOSLEEP
-comma
-id|cnode
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 id|ASSERT_ALWAYS
 c_func
 (paren
 id|intr_hdl
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|intr_hdl
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|hub_intr_s
+)paren
 )paren
 suffix:semicolon
 id|xtalk_info

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -7,7 +7,6 @@ macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
@@ -41,12 +40,7 @@ op_star
 id|new_ptr
 )paren
 (brace
-id|FIXME
-c_func
-(paren
-l_string|&quot;compare_and_swap_ptr : NOT ATOMIC&quot;
-)paren
-suffix:semicolon
+multiline_comment|/* FIXME - compare_and_swap_ptr NOT ATOMIC */
 r_if
 c_cond
 (paren
@@ -686,7 +680,7 @@ id|wid_num
 l_int|0
 )braket
 suffix:semicolon
-singleline_comment|// find a matching BAR
+multiline_comment|/* find a matching BAR */
 r_for
 c_loop
 (paren
@@ -777,7 +771,7 @@ id|p
 op_increment
 suffix:semicolon
 )brace
-singleline_comment|// if no matching BAR, return without doing anything.
+multiline_comment|/* if no matching BAR, return without doing anything. */
 r_if
 c_cond
 (paren
@@ -800,7 +794,7 @@ id|p-&gt;flush_addr
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// force an interrupt.
+multiline_comment|/* force an interrupt. */
 op_star
 (paren
 id|bridgereg_t
@@ -812,7 +806,7 @@ id|p-&gt;force_int_addr
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// wait for the interrupt to come back.
+multiline_comment|/* wait for the interrupt to come back. */
 r_while
 c_loop
 (paren
@@ -821,7 +815,7 @@ op_ne
 l_int|0x10f
 )paren
 suffix:semicolon
-singleline_comment|// okay, everything is synched up.
+multiline_comment|/* okay, everything is synched up. */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -1098,10 +1092,20 @@ l_string|&quot;&quot;
 )paren
 )paren
 suffix:semicolon
-id|NEW
+id|pcibr_intr
+op_assign
+id|kmalloc
 c_func
 (paren
+r_sizeof
+(paren
+op_star
+(paren
 id|pcibr_intr
+)paren
+)paren
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -1112,6 +1116,22 @@ id|pcibr_intr
 )paren
 r_return
 l_int|NULL
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|pcibr_intr
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+(paren
+id|pcibr_intr
+)paren
+)paren
+)paren
 suffix:semicolon
 id|pcibr_intr-&gt;bi_dev
 op_assign
@@ -1308,31 +1328,16 @@ op_star
 id|xtalk_intr_p
 )paren
 (brace
-macro_line|#ifdef SUPPORT_PRINTING_V_FORMAT
 id|printk
 c_func
 (paren
 id|KERN_ALERT
-l_string|&quot;pcibr_intr_alloc %v: unable to get xtalk interrupt resources&quot;
+l_string|&quot;pcibr_intr_alloc %s: &quot;
+l_string|&quot;unable to get xtalk interrupt resources&quot;
 comma
-id|xconn_vhdl
+id|pcibr_soft-&gt;bs_name
 )paren
 suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-id|KERN_ALERT
-l_string|&quot;pcibr_intr_alloc 0x%p: unable to get xtalk interrupt resources&quot;
-comma
-(paren
-r_void
-op_star
-)paren
-id|xconn_vhdl
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* yes, we leak resources here. */
 r_return
 l_int|0
@@ -1449,10 +1454,57 @@ l_int|1
 op_lshift
 id|pcibr_int_bit
 suffix:semicolon
-id|NEW
+id|intr_entry
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+(paren
+id|intr_entry
+)paren
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|intr_entry
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ALERT
+l_string|&quot;pcibr_intr_alloc %s: &quot;
+l_string|&quot;unable to get memory&quot;
+comma
+id|pcibr_soft-&gt;bs_name
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|memset
 c_func
 (paren
 id|intr_entry
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+(paren
+id|intr_entry
+)paren
+)paren
 )paren
 suffix:semicolon
 id|intr_entry-&gt;il_next
@@ -1575,7 +1627,7 @@ id|pcibr_intr
 )paren
 (brace
 multiline_comment|/* first entry on list was erased,&n;&t;&t; * and we replaced it, so we&n;&t;&t; * don&squot;t need our intr_entry.&n;&t;&t; */
-id|DEL
+id|kfree
 c_func
 (paren
 id|intr_entry
@@ -1684,7 +1736,7 @@ id|pcibr_intr
 )paren
 (brace
 multiline_comment|/* an entry on list was erased,&n;&t;&t;     * and we replaced it, so we&n;&t;&t;     * don&squot;t need our intr_entry.&n;&t;&t;     */
-id|DEL
+id|kfree
 c_func
 (paren
 id|intr_entry
@@ -1762,16 +1814,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#if DEBUG &amp;&amp; INTR_DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;%v pcibr_intr_alloc complete&bslash;n&quot;
-comma
-id|pconn_vhdl
-)paren
-suffix:semicolon
-macro_line|#endif
 id|hub_intr
 op_assign
 (paren
@@ -1982,7 +2024,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|DEL
+id|kfree
 c_func
 (paren
 id|pcibr_intr

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -7,7 +7,6 @@ macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
@@ -132,10 +131,45 @@ id|GRAPH_SUCCESS
 )paren
 )paren
 (brace
-id|NEW
+id|hint
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+(paren
+id|hint
+)paren
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hint
+)paren
+r_goto
+id|abnormal_exit
+suffix:semicolon
+id|memset
 c_func
 (paren
 id|hint
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+(paren
+id|hint
+)paren
+)paren
 )paren
 suffix:semicolon
 id|hint-&gt;rrb_alloc_funct
@@ -216,15 +250,7 @@ id|ainfo
 suffix:semicolon
 id|abnormal_exit
 suffix:colon
-macro_line|#ifdef LATER
-id|printf
-c_func
-(paren
-l_string|&quot;SHOULD NOT BE HERE&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-id|DEL
+id|kfree
 c_func
 (paren
 id|hint
@@ -578,10 +604,20 @@ r_uint64
 op_star
 id|subdevp
 suffix:semicolon
-id|NEW
+id|subdevp
+op_assign
+id|kmalloc
 c_func
 (paren
+r_sizeof
+(paren
+op_star
+(paren
 id|subdevp
+)paren
+)paren
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -606,6 +642,22 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|memset
+c_func
+(paren
+id|subdevp
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+(paren
+id|subdevp
+)paren
+)paren
+)paren
+suffix:semicolon
 op_star
 id|subdevp
 op_assign
@@ -647,7 +699,7 @@ id|subdevp
 )paren
 r_return
 suffix:semicolon
-id|DEL
+id|kfree
 c_func
 (paren
 id|subdevp

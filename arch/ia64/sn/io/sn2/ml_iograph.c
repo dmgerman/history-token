@@ -7,7 +7,6 @@ macro_line|#include &lt;asm/sn/sn_sal.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/hcl_util.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
@@ -74,22 +73,9 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-r_extern
-r_void
-op_star
-id|snia_kmem_zalloc
-c_func
-(paren
-r_int
-id|size
-comma
-r_int
-id|flag
-)paren
-suffix:semicolon
 id|xvolinfo
 op_assign
-id|snia_kmem_zalloc
+id|kmalloc
 c_func
 (paren
 r_sizeof
@@ -101,7 +87,38 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-id|mutex_init
+r_if
+c_cond
+(paren
+id|xvolinfo
+op_le
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;xswitch_vertex_init: out of memory&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|memset
+c_func
+(paren
+id|xvolinfo
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|xswitch_vol_s
+)paren
+)paren
+suffix:semicolon
+id|init_MUTEX
 c_func
 (paren
 op_amp
@@ -183,16 +200,17 @@ op_amp
 id|xvolinfo
 )paren
 suffix:semicolon
-id|snia_kmem_free
+r_if
+c_cond
+(paren
+id|xvolinfo
+OG
+l_int|0
+)paren
+id|kfree
 c_func
 (paren
 id|xvolinfo
-comma
-r_sizeof
-(paren
-r_struct
-id|xswitch_vol_s
-)paren
 )paren
 suffix:semicolon
 )brace

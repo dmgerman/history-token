@@ -9,7 +9,6 @@ macro_line|#include &lt;asm/sn/intr.h&gt;
 macro_line|#include &lt;asm/sn/sn2/sn_private.h&gt;
 macro_line|#include &lt;asm/sn/sn2/shubio.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/pci/bridge.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -11,7 +11,6 @@ macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
@@ -2665,10 +2664,47 @@ suffix:colon
 id|rfunc
 suffix:semicolon
 multiline_comment|/*&n;     * Create a pciio_info_s for this device.  pciio_device_info_new()&n;     * will set the c_slot (which is suppose to represent the external&n;     * slot (i.e the slot number silk screened on the back of the I/O&n;     * brick)).  So for PIC we need to adjust this &quot;internal slot&quot; num&n;     * passed into us, into its external representation.  See comment&n;     * for the PCIBR_DEVICE_TO_SLOT macro for more information.&n;     */
-id|NEW
+id|pcibr_info
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+(paren
+id|pcibr_info
+)paren
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pcibr_info
+)paren
+(brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+id|memset
 c_func
 (paren
 id|pcibr_info
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+(paren
+id|pcibr_info
+)paren
+)paren
 )paren
 suffix:semicolon
 id|pciio_device_info_new
@@ -3899,10 +3935,20 @@ id|rev
 )paren
 suffix:semicolon
 multiline_comment|/*&n;     * allocate soft state structure, fill in some&n;     * fields, and hook it up to our vertex.&n;     */
-id|NEW
+id|pcibr_soft
+op_assign
+id|kmalloc
 c_func
 (paren
+r_sizeof
+(paren
+op_star
+(paren
 id|pcibr_soft
+)paren
+)paren
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -3915,10 +3961,22 @@ id|ret_softp
 op_assign
 id|pcibr_soft
 suffix:semicolon
-id|BZERO
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pcibr_soft
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+id|memset
 c_func
 (paren
 id|pcibr_soft
+comma
+l_int|0
 comma
 r_sizeof
 op_star
@@ -4145,10 +4203,46 @@ multiline_comment|/*&n;     * link all the pcibr_soft structs&n;     */
 id|pcibr_list_p
 id|self
 suffix:semicolon
-id|NEW
+id|self
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+(paren
+id|self
+)paren
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|self
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+id|memset
 c_func
 (paren
 id|self
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+(paren
+id|self
+)paren
+)paren
 )paren
 suffix:semicolon
 id|self-&gt;bl_soft
@@ -6893,7 +6987,7 @@ id|pcibr_soft-&gt;bsi_err_intr
 )paren
 suffix:semicolon
 multiline_comment|/* Clear the software state maintained by the bridge driver for this&n;     * bridge.&n;     */
-id|DEL
+id|kfree
 c_func
 (paren
 id|pcibr_soft
@@ -8895,10 +8989,59 @@ comma
 id|s
 )paren
 suffix:semicolon
-id|NEW
+id|pcibr_piomap
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+(paren
+id|pcibr_piomap
+)paren
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pcibr_piomap
+)paren
+(brace
+id|PCIBR_DEBUG_ALWAYS
+c_func
+(paren
+(paren
+id|PCIBR_DEBUG_PIOMAP
+comma
+id|pconn_vhdl
+comma
+l_string|&quot;pcibr_piomap_alloc: malloc fails&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+id|memset
 c_func
 (paren
 id|pcibr_piomap
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+(paren
+id|pcibr_piomap
+)paren
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -9616,7 +9759,7 @@ id|PCIBR_DEBUG_PIOMAP
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_piospace_alloc: request 0x%x to big&bslash;n&quot;
+l_string|&quot;pcibr_piospace_alloc: request 0x%lx to big&bslash;n&quot;
 comma
 id|req_size
 )paren
@@ -9626,10 +9769,59 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|NEW
+id|piosp
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+(paren
+id|piosp
+)paren
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|piosp
+)paren
+(brace
+id|PCIBR_DEBUG_ALWAYS
+c_func
+(paren
+(paren
+id|PCIBR_DEBUG_PIOMAP
+comma
+id|pconn_vhdl
+comma
+l_string|&quot;pcibr_piospace_alloc: malloc fails&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|memset
 c_func
 (paren
 id|piosp
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+(paren
+id|piosp
+)paren
+)paren
 )paren
 suffix:semicolon
 id|piosp-&gt;free
@@ -10489,10 +10681,16 @@ l_string|&quot;pcibr_dmamap_alloc: unable to use direct64&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* PIC only supports 64-bit direct mapping in PCI-X mode. */
+multiline_comment|/* PIC in PCI-X mode only supports 64-bit direct mapping so&n;&t; * don&squot;t fall thru and try 32-bit direct mapping or 32-bit&n;&t; * page mapping&n;&t; */
 r_if
 c_cond
 (paren
+id|IS_PIC_SOFT
+c_func
+(paren
+id|pcibr_soft
+)paren
+op_logical_and
 id|IS_PCIX
 c_func
 (paren
@@ -10500,7 +10698,7 @@ id|pcibr_soft
 )paren
 )paren
 (brace
-id|DEL
+id|kfree
 c_func
 (paren
 id|pcibr_dmamap

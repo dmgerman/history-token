@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -7,7 +7,6 @@ macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
@@ -68,114 +67,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * copy inventory_t from conn_v to peer_conn_v&n; */
-r_int
-DECL|function|pic_bus1_inventory_dup
-id|pic_bus1_inventory_dup
-c_func
-(paren
-id|vertex_hdl_t
-id|conn_v
-comma
-id|vertex_hdl_t
-id|peer_conn_v
-)paren
-(brace
-id|inventory_t
-op_star
-id|pinv
-comma
-op_star
-id|peer_pinv
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hwgraph_info_get_LBL
-c_func
-(paren
-id|conn_v
-comma
-id|INFO_LBL_INVENT
-comma
-(paren
-id|arbitrary_info_t
-op_star
-)paren
-op_amp
-id|pinv
-)paren
-op_eq
-id|GRAPH_SUCCESS
-)paren
-(brace
-id|NEW
-c_func
-(paren
-id|peer_pinv
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|peer_pinv
-comma
-id|pinv
-comma
-r_sizeof
-(paren
-id|inventory_t
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hwgraph_info_add_LBL
-c_func
-(paren
-id|peer_conn_v
-comma
-id|INFO_LBL_INVENT
-comma
-(paren
-id|arbitrary_info_t
-)paren
-id|peer_pinv
-)paren
-op_ne
-id|GRAPH_SUCCESS
-)paren
-(brace
-id|DEL
-c_func
-(paren
-id|peer_pinv
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;pic_bus1_inventory_dup: cannot get INFO_LBL_INVENT from 0x%lx&bslash;n &quot;
-comma
-(paren
-r_uint64
-)paren
-id|conn_v
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * copy xwidget_info_t from conn_v to peer_conn_v&n; */
 r_int
 DECL|function|pic_bus1_widget_info_dup
@@ -264,11 +155,52 @@ op_eq
 id|GRAPH_SUCCESS
 )paren
 (brace
-id|NEW
+id|peer_widget_info
+op_assign
+id|kmalloc
 c_func
+(paren
+r_sizeof
+(paren
+op_star
 (paren
 id|peer_widget_info
 )paren
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|peer_widget_info
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|memset
+c_func
+(paren
+id|peer_widget_info
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+(paren
+id|peer_widget_info
+)paren
+)paren
+)paren
+suffix:semicolon
+id|peer_widget_info-&gt;w_fingerprint
+op_assign
+id|widget_info_fingerprint
 suffix:semicolon
 id|peer_widget_info-&gt;w_vertex
 op_assign
@@ -342,7 +274,7 @@ op_ne
 id|GRAPH_SUCCESS
 )paren
 (brace
-id|DEL
+id|kfree
 c_func
 (paren
 id|peer_widget_info
@@ -671,31 +603,6 @@ id|peer_conn_v
 )paren
 suffix:semicolon
 multiline_comment|/* Now hang appropiate stuff off of the new&n;&t;&t;&t;     * vertex.&t;We bail out if we cannot add something.&n;&t;&t;&t;     * In that case, we don&squot;t remove the newly added&n;&t;&t;&t;     * vertex but that should be safe and we don&squot;t&n;&t;&t;&t;     * really expect the additions to fail anyway.&n;&t;&t;&t;     */
-macro_line|#if 0
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pic_bus1_inventory_dup
-c_func
-(paren
-id|conn_v
-comma
-id|peer_conn_v
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
-id|pic_bus1_device_desc_dup
-c_func
-(paren
-id|conn_v
-comma
-id|peer_conn_v
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

@@ -118,6 +118,8 @@ id|cpu_cookie_t
 suffix:semicolon
 DECL|macro|CPU_NONE
 mdefine_line|#define CPU_NONE&t;&t;(-1)
+DECL|macro|GRAPH_VERTEX_NONE
+mdefine_line|#define GRAPH_VERTEX_NONE ((vertex_hdl_t)-1)
 multiline_comment|/*&n; * mutext support mapping&n; */
 DECL|macro|mutex_spinlock_init
 mdefine_line|#define mutex_spinlock_init(s)&t;spin_lock_init(s)
@@ -183,77 +185,6 @@ mdefine_line|#define ASSERT_ALWAYS(expr)&t;do {&bslash;&n;        if(!(expr)) { 
 macro_line|#endif&t;/* DISABLE_ASSERT */
 DECL|macro|PRINT_PANIC
 mdefine_line|#define PRINT_PANIC&t;&t;panic
-multiline_comment|/* print_register() defs */
-multiline_comment|/*&n; * register values&n; * map between numeric values and symbolic values&n; */
-DECL|struct|reg_values
-r_struct
-id|reg_values
-(brace
-DECL|member|rv_value
-r_int
-r_int
-r_int
-id|rv_value
-suffix:semicolon
-DECL|member|rv_name
-r_char
-op_star
-id|rv_name
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * register descriptors are used for formatted prints of register values&n; * rd_mask and rd_shift must be defined, other entries may be null&n; */
-DECL|struct|reg_desc
-r_struct
-id|reg_desc
-(brace
-DECL|member|rd_mask
-r_int
-r_int
-r_int
-id|rd_mask
-suffix:semicolon
-multiline_comment|/* mask to extract field */
-DECL|member|rd_shift
-r_int
-id|rd_shift
-suffix:semicolon
-multiline_comment|/* shift for extracted value, - &gt;&gt;, + &lt;&lt; */
-DECL|member|rd_name
-r_char
-op_star
-id|rd_name
-suffix:semicolon
-multiline_comment|/* field name */
-DECL|member|rd_format
-r_char
-op_star
-id|rd_format
-suffix:semicolon
-multiline_comment|/* format to print field */
-DECL|member|rd_values
-r_struct
-id|reg_values
-op_star
-id|rd_values
-suffix:semicolon
-multiline_comment|/* symbolic names of values */
-)brace
-suffix:semicolon
-r_extern
-r_void
-id|print_register
-c_func
-(paren
-r_int
-r_int
-r_int
-comma
-r_struct
-id|reg_desc
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/******************************************&n; * Definitions that do not exist in linux *&n; ******************************************/
 DECL|macro|DELAY
 mdefine_line|#define DELAY(a)
