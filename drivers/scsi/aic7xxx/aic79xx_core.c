@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Core routines and tables shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2002 Justin T. Gibbs.&n; * Copyright (c) 2000-2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx.c#157 $&n; *&n; * $FreeBSD$&n; */
+multiline_comment|/*&n; * Core routines and tables shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2002 Justin T. Gibbs.&n; * Copyright (c) 2000-2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx.c#161 $&n; *&n; * $FreeBSD$&n; */
 macro_line|#ifdef __linux__
 macro_line|#include &quot;aic79xx_osm.h&quot;
 macro_line|#include &quot;aic79xx_inline.h&quot;
@@ -5925,6 +5925,31 @@ r_if
 c_cond
 (paren
 (paren
+id|lqistat1
+op_amp
+id|LQICRCI_NLQ
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * This status can be delayed during some&n;&t;&t; * streaming operations.  The SCSIPHASE&n;&t;&t; * handler has already dealt with this case&n;&t;&t; * so just clear the error.&n;&t;&t; */
+id|ahd_outb
+c_func
+(paren
+id|ahd
+comma
+id|CLRLQIINT1
+comma
+id|CLRLQICRCI_NLQ
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
 id|status
 op_amp
 id|BUSFREE
@@ -7394,25 +7419,6 @@ c_func
 l_string|&quot;SCB not valid during LQOBUSFREE&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Return the LQO manager to its idle loop.  It will&n;&t;&t; * not do this automatically if the busfree occurs&n;&t;&t; * after the first REQ of either the LQ or command&n;&t;&t; * packet or between the LQ and command packet.&n;&t;&t; */
-id|ahd_outb
-c_func
-(paren
-id|ahd
-comma
-id|LQCTL2
-comma
-id|ahd_inb
-c_func
-(paren
-id|ahd
-comma
-id|LQCTL2
-)paren
-op_or
-id|LQOTOIDLE
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Clear the status.&n;&t;&t; */
 id|ahd_outb
 c_func
@@ -7464,6 +7470,12 @@ op_complement
 id|ENSELO
 )paren
 suffix:semicolon
+id|ahd_flush_device_writes
+c_func
+(paren
+id|ahd
+)paren
+suffix:semicolon
 id|ahd_outb
 c_func
 (paren
@@ -7472,6 +7484,25 @@ comma
 id|CLRSINT0
 comma
 id|CLRSELDO
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Return the LQO manager to its idle loop.  It will&n;&t;&t; * not do this automatically if the busfree occurs&n;&t;&t; * after the first REQ of either the LQ or command&n;&t;&t; * packet or between the LQ and command packet.&n;&t;&t; */
+id|ahd_outb
+c_func
+(paren
+id|ahd
+comma
+id|LQCTL2
+comma
+id|ahd_inb
+c_func
+(paren
+id|ahd
+comma
+id|LQCTL2
+)paren
+op_or
+id|LQOTOIDLE
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Update the waiting for selection queue so&n;&t;&t; * we restart on the correct SCB.&n;&t;&t; */
@@ -7521,10 +7552,6 @@ comma
 id|WAITING_TID_TAIL
 )paren
 suffix:semicolon
-id|next
-op_assign
-id|SCB_LIST_NULL
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7542,6 +7569,10 @@ id|WAITING_TID_TAIL
 comma
 id|scbid
 )paren
+suffix:semicolon
+id|next
+op_assign
+id|SCB_LIST_NULL
 suffix:semicolon
 )brace
 r_else
@@ -7775,6 +7806,12 @@ id|printf
 c_func
 (paren
 l_string|&quot;Unexpected PKT busfree condition&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ahd_dump_card_state
+c_func
+(paren
+id|ahd
 )paren
 suffix:semicolon
 id|ahd_abort_scbs
@@ -21661,7 +21698,7 @@ comma
 id|sxfrctl1
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If a recovery action has forced a chip reset,&n;&t; * re-initialize the chip to our likeing.&n;&t; */
+multiline_comment|/*&n;&t; * If a recovery action has forced a chip reset,&n;&t; * re-initialize the chip to our liking.&n;&t; */
 r_if
 c_cond
 (paren
@@ -28663,6 +28700,9 @@ op_star
 id|ahd
 )paren
 (brace
+id|ahd_mode_state
+id|saved_modes
+suffix:semicolon
 id|u_int
 id|intstat
 suffix:semicolon
@@ -28679,10 +28719,6 @@ suffix:semicolon
 id|ahd-&gt;flags
 op_or_assign
 id|AHD_ALL_INTERRUPTS
-suffix:semicolon
-id|intstat
-op_assign
-l_int|0
 suffix:semicolon
 id|paused
 op_assign
@@ -28726,6 +28762,24 @@ id|ahd_clear_critical_section
 c_func
 (paren
 id|ahd
+)paren
+suffix:semicolon
+id|saved_modes
+op_assign
+id|ahd_save_modes
+c_func
+(paren
+id|ahd
+)paren
+suffix:semicolon
+id|ahd_set_modes
+c_func
+(paren
+id|ahd
+comma
+id|AHD_MODE_SCSI
+comma
+id|AHD_MODE_SCSI
 )paren
 suffix:semicolon
 r_if
@@ -28836,33 +28890,6 @@ op_or
 id|ENSELO
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|intstat
-op_eq
-l_int|0xFF
-op_logical_and
-(paren
-id|ahd-&gt;features
-op_amp
-id|AHD_REMOVABLE
-)paren
-op_ne
-l_int|0
-)paren
-r_break
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-op_decrement
-id|maxloops
-op_logical_and
-(paren
-(paren
-(paren
 id|intstat
 op_assign
 id|ahd_inb
@@ -28872,7 +28899,31 @@ id|ahd
 comma
 id|INTSTAT
 )paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+op_decrement
+id|maxloops
+op_logical_and
+(paren
+id|intstat
+op_ne
+l_int|0xFF
+op_logical_or
+(paren
+id|ahd-&gt;features
+op_amp
+id|AHD_REMOVABLE
 )paren
+op_eq
+l_int|0
+)paren
+op_logical_and
+(paren
+(paren
+id|intstat
 op_amp
 id|INT_PEND
 )paren
@@ -28936,6 +28987,14 @@ id|ahd-&gt;flags
 op_and_assign
 op_complement
 id|AHD_ALL_INTERRUPTS
+suffix:semicolon
+id|ahd_restore_modes
+c_func
+(paren
+id|ahd
+comma
+id|saved_modes
+)paren
 suffix:semicolon
 )brace
 r_int
