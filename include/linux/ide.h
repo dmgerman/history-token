@@ -34,7 +34,7 @@ macro_line|# define DISK_RECOVERY_TIME&t;0&t;/*  for hardware that needs it */
 macro_line|#endif
 macro_line|#ifndef OK_TO_RESET_CONTROLLER&t;&t;/* 1 needed for good error recovery */
 DECL|macro|OK_TO_RESET_CONTROLLER
-macro_line|# define OK_TO_RESET_CONTROLLER&t;1&t;/* 0 for use with AH2372A/B interface */
+macro_line|# define OK_TO_RESET_CONTROLLER&t;0&t;/* 0 for use with AH2372A/B interface */
 macro_line|#endif
 macro_line|#ifndef FANCY_STATUS_DUMPS&t;&t;/* 1 for human-readable drive errors */
 DECL|macro|FANCY_STATUS_DUMPS
@@ -578,28 +578,9 @@ r_int
 id|sleep
 suffix:semicolon
 multiline_comment|/* sleep until this time */
-multiline_comment|/* Flags requesting/indicating one of the following special commands&n;&t; * executed on the request queue.&n;&t; */
-DECL|macro|ATA_SPECIAL_GEOMETRY
-mdefine_line|#define ATA_SPECIAL_GEOMETRY&t;&t;0x01
-DECL|macro|ATA_SPECIAL_RECALIBRATE
-mdefine_line|#define ATA_SPECIAL_RECALIBRATE&t;&t;0x02
-DECL|macro|ATA_SPECIAL_MMODE
-mdefine_line|#define ATA_SPECIAL_MMODE&t;&t;0x04
-DECL|macro|ATA_SPECIAL_TUNE
-mdefine_line|#define ATA_SPECIAL_TUNE&t;&t;0x08
-DECL|member|special_cmd
-r_int
-r_char
-id|special_cmd
-suffix:semicolon
-DECL|member|mult_req
+DECL|member|XXX_tune_req
 id|u8
-id|mult_req
-suffix:semicolon
-multiline_comment|/* requested multiple sector setting */
-DECL|member|tune_req
-id|u8
-id|tune_req
+id|XXX_tune_req
 suffix:semicolon
 multiline_comment|/* requested drive tuning setting */
 DECL|member|using_dma
@@ -1541,6 +1522,12 @@ id|byte
 id|bus_state
 suffix:semicolon
 multiline_comment|/* power state of the IDE bus */
+DECL|member|poll_timeout
+r_int
+r_int
+id|poll_timeout
+suffix:semicolon
+multiline_comment|/* timeout value during polled operations */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Register new hardware with ide&n; */
@@ -1697,15 +1684,16 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|macro|ata_pending_commands
-mdefine_line|#define ata_pending_commands(drive)&t;(0)
+macro_line|# define ata_pending_commands(drive)&t;(0)
 DECL|macro|ata_can_queue
-mdefine_line|#define ata_can_queue(drive)&t;&t;(1)
+macro_line|# define ata_can_queue(drive)&t;&t;(1)
 macro_line|#endif
 DECL|struct|hwgroup_s
 r_typedef
 r_struct
 id|hwgroup_s
 (brace
+multiline_comment|/* FIXME: We should look for busy request queues instead of looking at&n;&t; * the !NULL state of this field.&n;&t; */
 DECL|member|handler
 id|ide_startstop_t
 (paren
@@ -1749,12 +1737,6 @@ id|timer_list
 id|timer
 suffix:semicolon
 multiline_comment|/* failsafe timer */
-DECL|member|poll_timeout
-r_int
-r_int
-id|poll_timeout
-suffix:semicolon
-multiline_comment|/* timeout value during long polls */
 DECL|member|expiry
 r_int
 (paren
@@ -2222,35 +2204,11 @@ id|ata_device
 op_star
 )paren
 suffix:semicolon
-DECL|member|pre_reset
-r_void
-(paren
-op_star
-id|pre_reset
-)paren
-(paren
-r_struct
-id|ata_device
-op_star
-)paren
-suffix:semicolon
 DECL|member|capacity
 id|sector_t
 (paren
 op_star
 id|capacity
-)paren
-(paren
-r_struct
-id|ata_device
-op_star
-)paren
-suffix:semicolon
-DECL|member|special
-id|ide_startstop_t
-(paren
-op_star
-id|special
 )paren
 (paren
 r_struct
@@ -2752,34 +2710,6 @@ op_star
 suffix:semicolon
 r_extern
 id|ide_startstop_t
-id|set_geometry_intr
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_struct
-id|request
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|ide_startstop_t
-id|set_multmode_intr
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_struct
-id|request
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|ide_startstop_t
 id|task_no_data_intr
 c_func
 (paren
@@ -2812,16 +2742,10 @@ c_func
 r_struct
 id|ata_device
 op_star
-id|drive
 comma
 r_struct
 id|ata_taskfile
 op_star
-id|cmd
-comma
-id|byte
-op_star
-id|buf
 )paren
 suffix:semicolon
 r_extern
