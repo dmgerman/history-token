@@ -3712,7 +3712,6 @@ suffix:semicolon
 )brace
 DECL|function|atm_proc_exit
 r_void
-id|__exit
 id|atm_proc_exit
 c_func
 (paren
