@@ -2,7 +2,7 @@ multiline_comment|/* zoltrix radio plus driver for Linux radio support&n; * (c) 
 macro_line|#include &lt;linux/module.h&gt;&t;/* Modules                        */
 macro_line|#include &lt;linux/init.h&gt;&t;&t;/* Initdata                       */
 macro_line|#include &lt;linux/ioport.h&gt;&t;/* check_region, request_region   */
-macro_line|#include &lt;linux/delay.h&gt;&t;/* udelay                 */
+macro_line|#include &lt;linux/delay.h&gt;&t;/* udelay, msleep                 */
 macro_line|#include &lt;asm/io.h&gt;&t;&t;/* outb, outb_p                   */
 macro_line|#include &lt;asm/uaccess.h&gt;&t;/* copy to/from user              */
 macro_line|#include &lt;linux/videodev.h&gt;&t;/* kernel radio structs           */
@@ -59,23 +59,6 @@ id|lock
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* local things */
-DECL|function|sleep_delay
-r_static
-r_void
-id|sleep_delay
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/* Sleep nicely for +/- 10 mS */
-id|schedule
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 DECL|function|zol_setvol
 r_static
 r_int
@@ -164,9 +147,10 @@ comma
 id|io
 )paren
 suffix:semicolon
-id|sleep_delay
+id|msleep
 c_func
 (paren
+l_int|10
 )paren
 suffix:semicolon
 id|inb
@@ -688,14 +672,10 @@ comma
 id|io
 )paren
 suffix:semicolon
-id|sleep_delay
+id|msleep
 c_func
 (paren
-)paren
-suffix:semicolon
-id|sleep_delay
-c_func
-(paren
+l_int|20
 )paren
 suffix:semicolon
 id|a
@@ -706,9 +686,10 @@ c_func
 id|io
 )paren
 suffix:semicolon
-id|sleep_delay
+id|msleep
 c_func
 (paren
+l_int|10
 )paren
 suffix:semicolon
 id|b
@@ -811,14 +792,10 @@ comma
 id|io
 )paren
 suffix:semicolon
-id|sleep_delay
+id|msleep
 c_func
 (paren
-)paren
-suffix:semicolon
-id|sleep_delay
-c_func
-(paren
+l_int|20
 )paren
 suffix:semicolon
 id|x1
@@ -829,9 +806,10 @@ c_func
 id|io
 )paren
 suffix:semicolon
-id|sleep_delay
+id|msleep
 c_func
 (paren
+l_int|10
 )paren
 suffix:semicolon
 id|x2
@@ -1575,14 +1553,10 @@ comma
 id|io
 )paren
 suffix:semicolon
-id|sleep_delay
+id|msleep
 c_func
 (paren
-)paren
-suffix:semicolon
-id|sleep_delay
-c_func
-(paren
+l_int|20
 )paren
 suffix:semicolon
 id|inb
