@@ -3,6 +3,7 @@ DECL|macro|__ASM_SMP_H
 mdefine_line|#define __ASM_SMP_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
 multiline_comment|/* HACK: Cabrio WHAMI return value is bogus if more than 8 bits used.. :-( */
 r_static
@@ -58,7 +59,6 @@ id|__r0
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
-macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 DECL|struct|cpuinfo_alpha
 r_struct
@@ -145,17 +145,37 @@ r_int
 id|cpu_present_mask
 suffix:semicolon
 r_extern
+r_volatile
+r_int
+r_int
+id|cpu_online_map
+suffix:semicolon
+r_extern
 r_int
 id|smp_num_cpus
 suffix:semicolon
-DECL|macro|cpu_online_map
-mdefine_line|#define cpu_online_map&t;&t;cpu_present_mask
-DECL|macro|num_online_cpus
-mdefine_line|#define num_online_cpus()&t;(smp_num_cpus)
-DECL|macro|cpu_online
-mdefine_line|#define cpu_online(cpu)&t;&t;(cpu_present_mask &amp; (1&lt;&lt;(cpu)))
 DECL|macro|cpu_possible
-mdefine_line|#define cpu_possible(cpu)&t;cpu_online(cpu)
+mdefine_line|#define cpu_possible(cpu)&t;(cpu_present_mask &amp; (1UL &lt;&lt; (cpu)))
+DECL|macro|cpu_online
+mdefine_line|#define cpu_online(cpu)&t;&t;(cpu_online_map &amp; (1UL &lt;&lt; (cpu)))
+r_static
+r_inline
+r_int
+DECL|function|num_online_cpus
+id|num_online_cpus
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|hweight64
+c_func
+(paren
+id|cpu_online_map
+)paren
+suffix:semicolon
+)brace
 r_extern
 r_int
 id|smp_call_function_on_cpu

@@ -6,13 +6,13 @@ multiline_comment|/*&n; * This tag identifies where the SMP configuration&n; * i
 DECL|macro|SMP_MAGIC_IDENT
 mdefine_line|#define SMP_MAGIC_IDENT&t;((&squot;_&squot;&lt;&lt;24)|(&squot;P&squot;&lt;&lt;16)|(&squot;M&squot;&lt;&lt;8)|&squot;_&squot;)
 multiline_comment|/*&n; * a maximum of 16 APICs with the current APIC ID architecture.&n; */
-macro_line|#ifdef CONFIG_X86_NUMA
+macro_line|#if defined(CONFIG_X86_NUMAQ) || defined (CONFIG_X86_SUMMIT)
 DECL|macro|MAX_APICS
 mdefine_line|#define MAX_APICS 256
-macro_line|#else /* !CONFIG_X86_NUMA */
+macro_line|#else
 DECL|macro|MAX_APICS
 mdefine_line|#define MAX_APICS 16
-macro_line|#endif /* CONFIG_X86_NUMA */
+macro_line|#endif
 DECL|macro|MAX_MPC_ENTRY
 mdefine_line|#define MAX_MPC_ENTRY 1024
 DECL|struct|intel_mp_floating

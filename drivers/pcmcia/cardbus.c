@@ -931,17 +931,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pci_enable_device
-c_func
-(paren
-id|dev
-)paren
-)paren
-r_continue
-suffix:semicolon
 id|strcpy
 c_func
 (paren
@@ -950,7 +939,7 @@ comma
 id|dev-&gt;slot_name
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: Do we need to enable the expansion ROM? */
+multiline_comment|/* We need to assign resources for expansion ROM. */
 r_for
 c_loop
 (paren
@@ -978,7 +967,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|res-&gt;flags
+op_logical_neg
+id|res-&gt;start
+op_logical_and
+id|res-&gt;end
 )paren
 id|pci_assign_resource
 c_func
@@ -1006,11 +998,28 @@ c_cond
 (paren
 id|irq_pin
 )paren
-(brace
 id|dev-&gt;irq
 op_assign
 id|irq
 suffix:semicolon
+multiline_comment|/* pci_enable_device needs to be called after pci_assign_resource */
+multiline_comment|/* because it returns an error if (!res-&gt;start &amp;&amp; res-&gt;end).      */
+r_if
+c_cond
+(paren
+id|pci_enable_device
+c_func
+(paren
+id|dev
+)paren
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|irq_pin
+)paren
 id|pci_writeb
 c_func
 (paren
@@ -1021,7 +1030,6 @@ comma
 id|irq
 )paren
 suffix:semicolon
-)brace
 id|device_register
 c_func
 (paren

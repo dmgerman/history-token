@@ -1144,8 +1144,6 @@ id|u
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* will die */
-macro_line|#include &lt;linux/coda_fs_i.h&gt;
 DECL|struct|fown_struct
 r_struct
 id|fown_struct
@@ -4310,8 +4308,6 @@ r_void
 op_star
 )paren
 suffix:semicolon
-DECL|macro|kern_umount
-mdefine_line|#define kern_umount mntput
 r_extern
 r_int
 id|vfs_statfs
@@ -5004,6 +5000,18 @@ id|bdev-&gt;bd_dev
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_struct
+id|block_device
+op_star
+id|lookup_bdev
+c_func
+(paren
+r_const
+r_char
+op_star
+)paren
+suffix:semicolon
 r_extern
 r_struct
 id|block_device

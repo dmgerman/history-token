@@ -4322,6 +4322,11 @@ op_assign
 id|TTY_DRIVER_MAGIC
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|driver_name
 op_assign
 l_string|&quot;usbserial&quot;

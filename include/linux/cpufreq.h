@@ -321,7 +321,7 @@ multiline_comment|/* deprecated */
 DECL|macro|cpufreq_register
 mdefine_line|#define cpufreq_register(x)   cpufreq_register_driver(x)
 DECL|macro|cpufreq_unregister
-mdefine_line|#define cpufreq_unregister(x) cpufreq_unregister_driver(NULL)
+mdefine_line|#define cpufreq_unregister() cpufreq_unregister_driver(NULL)
 r_void
 id|cpufreq_notify_transition
 c_func

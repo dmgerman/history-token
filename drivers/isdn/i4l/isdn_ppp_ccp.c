@@ -818,7 +818,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpp
+id|ccp
 )paren
 r_return
 l_int|NULL
