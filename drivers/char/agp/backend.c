@@ -192,10 +192,10 @@ id|result
 suffix:semicolon
 id|memory
 op_assign
-id|virt_to_phys
-c_func
 (paren
-id|high_memory
+id|num_physpages
+op_lshift
+id|PAGE_SHIFT
 )paren
 op_rshift
 l_int|20
