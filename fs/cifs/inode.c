@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   fs/cifs/inode.c&n; *&n; *   Copyright (c) International Business Machines  Corp., 2002&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   fs/cifs/inode.c&n; *&n; *   Copyright (C) International Business Machines  Corp., 2002,2003&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
@@ -1585,6 +1585,23 @@ c_cond
 id|rc
 op_eq
 op_minus
+id|ENOENT
+)paren
+(brace
+id|d_drop
+c_func
+(paren
+id|direntry
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+op_minus
 id|ETXTBSY
 )paren
 (brace
@@ -2785,6 +2802,9 @@ id|cifs_sb-&gt;tcon-&gt;ses-&gt;capabilities
 op_amp
 id|CAP_UNIX
 )paren
+(brace
+id|rc
+op_assign
 id|cifs_get_inode_info_unix
 c_func
 (paren
@@ -2796,7 +2816,32 @@ comma
 id|direntry-&gt;d_sb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;error on getting revalidate info %d&quot;
+comma
+id|rc
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&t;&t;&t;if(rc != -ENOENT)&n;&t;&t;&t;&t;rc = 0; */
+multiline_comment|/* BB should we cache info on certain errors? */
+)brace
+)brace
 r_else
+(brace
+id|rc
+op_assign
 id|cifs_get_inode_info
 c_func
 (paren
@@ -2810,6 +2855,29 @@ comma
 id|direntry-&gt;d_sb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;error on getting revalidate info %d&quot;
+comma
+id|rc
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&t;&t;&t;if(rc != -ENOENT)&n;&t;&t;&t;&t;rc = 0; */
+multiline_comment|/* BB should we cache info on certain errors? */
+)brace
+)brace
+multiline_comment|/* should we remap certain errors, access denied?, to zero */
 multiline_comment|/* BB if not oplocked, invalidate inode pages if mtime has changed */
 r_if
 c_cond

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   fs/cifs/dir.c&n; *&n; *   vfs operations that deal with dentries&n; * &n; *   Copyright (c) International Business Machines  Corp., 2002&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   fs/cifs/dir.c&n; *&n; *   vfs operations that deal with dentries&n; * &n; *   Copyright (C) International Business Machines  Corp., 2002,2003&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -500,6 +500,11 @@ id|cifsInodeInfo
 op_star
 id|pCifsInode
 suffix:semicolon
+r_int
+id|disposition
+op_assign
+id|FILE_OVERWRITE_IF
+suffix:semicolon
 id|xid
 op_assign
 id|GetXid
@@ -598,6 +603,88 @@ id|desiredAccess
 op_assign
 id|GENERIC_ALL
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|nd-&gt;intent.open.flags
+op_amp
+(paren
+id|O_CREAT
+op_or
+id|O_EXCL
+)paren
+)paren
+op_eq
+(paren
+id|O_CREAT
+op_or
+id|O_EXCL
+)paren
+)paren
+(brace
+id|disposition
+op_assign
+id|FILE_CREATE
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|nd-&gt;intent.open.flags
+op_amp
+(paren
+id|O_CREAT
+op_or
+id|O_TRUNC
+)paren
+)paren
+op_eq
+(paren
+id|O_CREAT
+op_or
+id|O_TRUNC
+)paren
+)paren
+(brace
+id|disposition
+op_assign
+id|FILE_OVERWRITE_IF
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|nd-&gt;intent.open.flags
+op_amp
+id|O_CREAT
+)paren
+op_eq
+id|O_CREAT
+)paren
+(brace
+id|disposition
+op_assign
+id|FILE_OPEN_IF
+suffix:semicolon
+)brace
+r_else
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Create flag not set in create function&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* BB add processing to set equivalent of mode - e.g. via CreateX with ACLs */
 r_if
@@ -633,7 +720,7 @@ id|pTcon
 comma
 id|full_path
 comma
-id|FILE_OVERWRITE_IF
+id|disposition
 comma
 id|desiredAccess
 comma
@@ -882,7 +969,7 @@ id|fileHandle
 suffix:semicolon
 id|pCifsFile-&gt;pid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|pCifsFile-&gt;pInode
 op_assign
@@ -1309,6 +1396,29 @@ id|direntry
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|nd
+)paren
+(brace
+multiline_comment|/* BB removeme */
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;In lookup nd flags 0x%x open intent flags 0x%x&quot;
+comma
+id|nd-&gt;flags
+comma
+id|nd-&gt;intent.open.flags
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* BB removeme BB */
 multiline_comment|/* BB Add check of incoming data - e.g. frame not longer than maximum SMB - let server check the namelen BB */
 multiline_comment|/* check whether path exists */
 id|cifs_sb
