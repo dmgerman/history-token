@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;dev_table.h&n; *&n; *&t;Global definitions for devic
 macro_line|#ifndef _DEV_TABLE_H_
 DECL|macro|_DEV_TABLE_H_
 mdefine_line|#define _DEV_TABLE_H_
+macro_line|#include &lt;linux/spinlock.h&gt;
 multiline_comment|/*&n; * Sound card numbers 27 to 999. (1 to 26 are defined in soundcard.h)&n; * Numbers 1000 to N are reserved for driver&squot;s internal use.&n; */
 DECL|macro|SNDCARD_DESKPROXL
 mdefine_line|#define SNDCARD_DESKPROXL&t;&t;27&t;/* Compaq Deskpro XL */
@@ -203,6 +204,10 @@ suffix:semicolon
 DECL|member|qtail
 r_int
 id|qtail
+suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
 suffix:semicolon
 DECL|member|cfrag
 r_int
@@ -773,7 +778,7 @@ r_void
 op_star
 id|portc
 suffix:semicolon
-multiline_comment|/* Driver spesific info */
+multiline_comment|/* Driver specific info */
 DECL|member|dmap_in
 DECL|member|dmap_out
 r_struct
@@ -1317,6 +1322,7 @@ multiline_comment|/* MIDI input scanner variables */
 DECL|macro|MI_MAX
 mdefine_line|#define MI_MAX&t;10
 DECL|member|m_busy
+r_volatile
 r_int
 id|m_busy
 suffix:semicolon
