@@ -932,11 +932,6 @@ id|quirks
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
-id|class_rev
-op_assign
-l_int|0
-suffix:semicolon
 r_const
 r_char
 op_star
@@ -962,21 +957,6 @@ r_sizeof
 id|dev-&gt;product
 )paren
 )paren
-suffix:semicolon
-id|pci_read_config_dword
-c_func
-(paren
-id|ap-&gt;host_set-&gt;pdev
-comma
-id|PCI_CLASS_REVISION
-comma
-op_amp
-id|class_rev
-)paren
-suffix:semicolon
-id|class_rev
-op_and_assign
-l_int|0xff
 suffix:semicolon
 multiline_comment|/* ATAPI specifies that empty space is blank-filled; remove blanks */
 r_while
@@ -1064,17 +1044,9 @@ multiline_comment|/* limit requests to 15 sectors */
 r_if
 c_cond
 (paren
-(paren
-id|class_rev
-op_le
-l_int|0x01
-)paren
-op_logical_and
-(paren
 id|quirks
 op_amp
 id|SIL_QUIRK_MOD15WRITE
-)paren
 )paren
 (brace
 id|printk
@@ -1100,7 +1072,6 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* limit to udma5 */
-multiline_comment|/* is this for (class_rev &lt;= 0x01) only, too? */
 r_if
 c_cond
 (paren
