@@ -1228,7 +1228,7 @@ l_int|0x1
 )paren
 op_logical_and
 (paren
-id|fizup
+id|fixup
 op_assign
 id|search_extables_range
 c_func
