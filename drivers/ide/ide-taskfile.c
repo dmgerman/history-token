@@ -905,6 +905,7 @@ id|ide_started
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ
 r_case
 id|WIN_READDMA_QUEUED
 suffix:colon
@@ -912,9 +913,7 @@ r_case
 id|WIN_READDMA_QUEUED_EXT
 suffix:colon
 r_return
-id|hwif
-op_member_access_from_pointer
-id|ide_dma_queued_read
+id|__ide_dma_queued_read
 c_func
 (paren
 id|drive
@@ -927,14 +926,13 @@ r_case
 id|WIN_WRITEDMA_QUEUED_EXT
 suffix:colon
 r_return
-id|hwif
-op_member_access_from_pointer
-id|ide_dma_queued_write
+id|__ide_dma_queued_write
 c_func
 (paren
 id|drive
 )paren
 suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 (brace

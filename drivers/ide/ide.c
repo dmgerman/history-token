@@ -3047,28 +3047,6 @@ id|hwif-&gt;ide_dma_timeout
 op_assign
 id|old_hwif.ide_dma_timeout
 suffix:semicolon
-id|hwif-&gt;ide_dma_queued_on
-op_assign
-id|old_hwif.ide_dma_queued_on
-suffix:semicolon
-id|hwif-&gt;ide_dma_queued_off
-op_assign
-id|old_hwif.ide_dma_queued_off
-suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ
-id|hwif-&gt;ide_dma_queued_read
-op_assign
-id|old_hwif.ide_dma_queued_read
-suffix:semicolon
-id|hwif-&gt;ide_dma_queued_write
-op_assign
-id|old_hwif.ide_dma_queued_write
-suffix:semicolon
-id|hwif-&gt;ide_dma_queued_start
-op_assign
-id|old_hwif.ide_dma_queued_start
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 macro_line|#if 0
 id|hwif-&gt;iops
