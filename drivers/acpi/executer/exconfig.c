@@ -773,9 +773,11 @@ comma
 (paren
 id|acpi_physical_address
 )paren
+(paren
 id|i
 op_plus
 id|address
+)paren
 comma
 l_int|8
 comma
@@ -874,9 +876,11 @@ comma
 (paren
 id|acpi_physical_address
 )paren
+(paren
 id|i
 op_plus
 id|address
+)paren
 comma
 l_int|8
 comma

@@ -175,6 +175,22 @@ id|max_length
 suffix:semicolon
 multiline_comment|/*&n; * exfield - ACPI AML (p-code) execution - field manipulation&n; */
 id|acpi_status
+id|acpi_ex_common_buffer_setup
+(paren
+r_union
+id|acpi_operand_object
+op_star
+id|obj_desc
+comma
+id|u32
+id|buffer_length
+comma
+id|u32
+op_star
+id|datum_count
+)paren
+suffix:semicolon
+id|acpi_status
 id|acpi_ex_extract_from_field
 (paren
 r_union

@@ -2246,8 +2246,11 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INIT
 comma
-l_string|&quot;GPE %02d to %02d [%4.4s] %d regs at %8.8X%8.8X on int %d&bslash;n&quot;
+l_string|&quot;GPE %02X to %02X [%4.4s] %u regs at %8.8X%8.8X on int 0x%X&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|gpe_block-&gt;block_base_number
 comma
 (paren
