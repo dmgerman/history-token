@@ -1358,15 +1358,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;-&gt; %s&bslash;n&quot;
-comma
-id|collected
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

@@ -918,7 +918,7 @@ c_func
 (paren
 l_string|&quot;/dev&quot;
 comma
-l_int|0700
+l_int|0755
 comma
 l_int|0
 comma
