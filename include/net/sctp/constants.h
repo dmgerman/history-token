@@ -107,15 +107,12 @@ comma
 DECL|enumerator|SCTP_EVENT_TIMEOUT_AUTOCLOSE
 id|SCTP_EVENT_TIMEOUT_AUTOCLOSE
 comma
-DECL|enumerator|SCTP_EVENT_TIMEOUT_PMTU_RAISE
-id|SCTP_EVENT_TIMEOUT_PMTU_RAISE
-comma
 DECL|typedef|sctp_event_timeout_t
 )brace
 id|sctp_event_timeout_t
 suffix:semicolon
 DECL|macro|SCTP_EVENT_TIMEOUT_MAX
-mdefine_line|#define SCTP_EVENT_TIMEOUT_MAX&t;&t;SCTP_EVENT_TIMEOUT_PMTU_RAISE
+mdefine_line|#define SCTP_EVENT_TIMEOUT_MAX&t;&t;SCTP_EVENT_TIMEOUT_AUTOCLOSE
 DECL|macro|SCTP_NUM_TIMEOUT_TYPES
 mdefine_line|#define SCTP_NUM_TIMEOUT_TYPES&t;&t;(SCTP_EVENT_TIMEOUT_MAX + 1)
 r_typedef
@@ -523,11 +520,6 @@ DECL|macro|SCTP_DEFAULT_TIMEOUT_SACK
 mdefine_line|#define SCTP_DEFAULT_TIMEOUT_SACK&t;((200 * HZ) / 1000)
 DECL|macro|SCTP_DEFAULT_TIMEOUT_SACK_MAX
 mdefine_line|#define SCTP_DEFAULT_TIMEOUT_SACK_MAX&t;((500 * HZ) / 1000) /* 500 ms */
-multiline_comment|/* How long do we wait before attempting to raise the PMTU?  */
-DECL|macro|SCTP_DEFAULT_TIMEOUT_PMTU_RAISE
-mdefine_line|#define SCTP_DEFAULT_TIMEOUT_PMTU_RAISE (10 * 60 * HZ) /* 10 Minutes */
-DECL|macro|SCTP_DEFAULT_TIMEOUT_PMTU_RAISE_MIN
-mdefine_line|#define SCTP_DEFAULT_TIMEOUT_PMTU_RAISE_MIN (10 * 60 * HZ) /* 10 Minutes */
 multiline_comment|/* RTO.Initial              - 3  seconds&n; * RTO.Min                  - 1  second&n; * RTO.Max                  - 60 seconds&n; * RTO.Alpha                - 1/8&n; * RTO.Beta                 - 1/4&n; */
 DECL|macro|SCTP_RTO_INITIAL
 mdefine_line|#define SCTP_RTO_INITIAL&t;(3 * HZ)
@@ -648,6 +640,23 @@ DECL|macro|SCTP_ADDR4_PEERSUPP
 mdefine_line|#define SCTP_ADDR4_PEERSUPP&t;0x00000002&t;/* IPv4 address is supported by&n;&t;&t;&t;&t;&t;&t;   peer */
 DECL|macro|SCTP_ADDR6_PEERSUPP
 mdefine_line|#define SCTP_ADDR6_PEERSUPP&t;0x00000004&t;/* IPv6 address is supported by&n;&t;&t;&t;&t;&t;&t;   peer */
+multiline_comment|/* Reasons to retransmit. */
+r_typedef
+r_enum
+(brace
+DECL|enumerator|SCTP_RETRANSMIT_T3_RTX
+id|SCTP_RETRANSMIT_T3_RTX
+comma
+DECL|enumerator|SCTP_RETRANSMIT_FAST_RTX
+id|SCTP_RETRANSMIT_FAST_RTX
+comma
+DECL|enumerator|SCTP_RETRANSMIT_PMTU_DISCOVERY
+id|SCTP_RETRANSMIT_PMTU_DISCOVERY
+comma
+DECL|typedef|sctp_retransmit_reason_t
+)brace
+id|sctp_retransmit_reason_t
+suffix:semicolon
 multiline_comment|/* Reasons to lower cwnd. */
 r_typedef
 r_enum

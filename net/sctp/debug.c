@@ -410,8 +410,6 @@ l_string|&quot;TIMEOUT_SACK&quot;
 comma
 l_string|&quot;TIMEOUT_AUTOCLOSE&quot;
 comma
-l_string|&quot;TIMEOUT_PMTU_RAISE&quot;
-comma
 )brace
 suffix:semicolon
 multiline_comment|/* Lookup timer debug name. */

@@ -324,13 +324,6 @@ id|sp-&gt;autoclose
 op_star
 id|HZ
 suffix:semicolon
-id|ep-&gt;timeouts
-(braket
-id|SCTP_EVENT_TIMEOUT_PMTU_RAISE
-)braket
-op_assign
-id|SCTP_DEFAULT_TIMEOUT_PMTU_RAISE
-suffix:semicolon
 multiline_comment|/* Set up the default send/receive buffer space.  */
 multiline_comment|/* FIXME - Should the min and max window size be configurable&n;&t; * sysctl parameters as opposed to be constants?&n;&t; */
 id|sk-&gt;rcvbuf

@@ -377,6 +377,27 @@ id|sctp_endpoint_t
 op_star
 )paren
 suffix:semicolon
+r_extern
+id|sctp_association_t
+op_star
+id|__sctp_lookup_association
+c_func
+(paren
+r_const
+r_union
+id|sctp_addr
+op_star
+comma
+r_const
+r_union
+id|sctp_addr
+op_star
+comma
+id|sctp_transport_t
+op_star
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * sctp_hashdriver.c&n; */
 r_extern
 r_void

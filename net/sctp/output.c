@@ -87,6 +87,10 @@ id|packet-&gt;has_cookie_echo
 op_assign
 l_int|0
 suffix:semicolon
+id|packet-&gt;ipfragok
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* We might need to call the prepend_handler right away.  */
 r_if
 c_cond
@@ -157,6 +161,10 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|packet-&gt;has_cookie_echo
+op_assign
+l_int|0
+suffix:semicolon
+id|packet-&gt;ipfragok
 op_assign
 l_int|0
 suffix:semicolon
@@ -456,6 +464,10 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* The packet is too big but we can&n;&t;&t;&t;&t; * not fragment it--we have to just&n;&t;&t;&t;&t; * transmit and rely on IP&n;&t;&t;&t;&t; * fragmentation.&n;&t;&t;&t;&t; */
+id|packet-&gt;ipfragok
+op_assign
+l_int|1
+suffix:semicolon
 r_goto
 id|append
 suffix:semicolon
@@ -1140,6 +1152,12 @@ id|sk
 )paren
 )paren
 suffix:semicolon
+id|sctp_assoc_sync_pmtu
+c_func
+(paren
+id|asoc
+)paren
+suffix:semicolon
 )brace
 id|nskb-&gt;dst
 op_assign
@@ -1172,6 +1190,8 @@ id|transport-&gt;af_specific-&gt;queue_xmit
 )paren
 (paren
 id|nskb
+comma
+id|packet-&gt;ipfragok
 )paren
 suffix:semicolon
 id|out

@@ -80,6 +80,9 @@ r_struct
 id|sk_buff
 op_star
 id|skb
+comma
+r_int
+id|ipfragok
 )paren
 (brace
 r_struct

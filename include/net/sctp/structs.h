@@ -417,6 +417,9 @@ r_struct
 id|sk_buff
 op_star
 id|skb
+comma
+r_int
+id|ipfragok
 )paren
 suffix:semicolon
 DECL|member|setsockopt
@@ -1651,6 +1654,11 @@ DECL|member|has_cookie_echo
 r_int
 id|has_cookie_echo
 suffix:semicolon
+multiline_comment|/* SCTP cannot fragment this packet. So let ip fragment it. */
+DECL|member|ipfragok
+r_int
+id|ipfragok
+suffix:semicolon
 DECL|member|malloced
 r_int
 id|malloced
@@ -2414,7 +2422,7 @@ comma
 id|sctp_transport_t
 op_star
 comma
-id|__u8
+id|sctp_retransmit_reason_t
 )paren
 suffix:semicolon
 r_void
@@ -3706,6 +3714,14 @@ op_star
 comma
 id|__u16
 id|sid
+)paren
+suffix:semicolon
+r_void
+id|sctp_assoc_sync_pmtu
+c_func
+(paren
+id|sctp_association_t
+op_star
 )paren
 suffix:semicolon
 r_int
