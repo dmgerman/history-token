@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;video/fbcon.h&gt;
-macro_line|#include &lt;video/fbcon-cfb16.h&gt;
 DECL|variable|colreg
 r_static
 id|u32
@@ -310,6 +309,8 @@ id|anakinfb_fix.id
 suffix:semicolon
 id|fb_info.node
 op_assign
+id|NODEV
+suffix:semicolon
 id|fb_info.currcon
 op_assign
 op_minus

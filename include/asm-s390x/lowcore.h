@@ -64,6 +64,8 @@ DECL|macro|__LC_CPUADDR
 mdefine_line|#define __LC_CPUADDR                    0xD98
 DECL|macro|__LC_IPLDEV
 mdefine_line|#define __LC_IPLDEV                     0xDB8
+DECL|macro|__LC_JIFFY_TIMER
+mdefine_line|#define __LC_JIFFY_TIMER&t;&t;0xDC0
 DECL|macro|__LC_PANIC_MAGIC
 mdefine_line|#define __LC_PANIC_MAGIC                0xE00
 DECL|macro|__LC_AREGS_SAVE_AREA
@@ -86,7 +88,7 @@ mdefine_line|#define _MCCK_PSW_MASK       0x0400000180000000
 DECL|macro|_IO_PSW_MASK
 mdefine_line|#define _IO_PSW_MASK         0x0400000180000000
 DECL|macro|_USER_PSW_MASK
-mdefine_line|#define _USER_PSW_MASK       0x0701C00180000000
+mdefine_line|#define _USER_PSW_MASK       0x0705C00180000000
 DECL|macro|_WAIT_PSW_MASK
 mdefine_line|#define _WAIT_PSW_MASK       0x0706000180000000
 DECL|macro|_DW_PSW_MASK
@@ -518,9 +520,9 @@ suffix:semicolon
 multiline_comment|/* 0xdbc was lsw word of ipl_device until a bug was found DJB */
 multiline_comment|/* entry.S sensitive area end */
 multiline_comment|/* SMP info area: defined by DJB */
-DECL|member|jiffy_timer_cc
+DECL|member|jiffy_timer
 id|__u64
-id|jiffy_timer_cc
+id|jiffy_timer
 suffix:semicolon
 multiline_comment|/* 0xdc0 */
 DECL|member|ext_call_fast
@@ -716,14 +718,14 @@ id|lowcore_ptr
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
 DECL|macro|get_cpu_lowcore
-mdefine_line|#define get_cpu_lowcore(cpu)    S390_lowcore
+mdefine_line|#define get_cpu_lowcore(cpu)      (&amp;S390_lowcore)
 DECL|macro|safe_get_cpu_lowcore
-mdefine_line|#define safe_get_cpu_lowcore(cpu) S390_lowcore
+mdefine_line|#define safe_get_cpu_lowcore(cpu) (&amp;S390_lowcore)
 macro_line|#else
 DECL|macro|get_cpu_lowcore
-mdefine_line|#define get_cpu_lowcore(cpu)    (*lowcore_ptr[cpu])
+mdefine_line|#define get_cpu_lowcore(cpu)      (lowcore_ptr[(cpu)])
 DECL|macro|safe_get_cpu_lowcore
-mdefine_line|#define safe_get_cpu_lowcore(cpu) &bslash;&n;        ((cpu)==smp_processor_id() ? S390_lowcore:(*lowcore_ptr[(cpu)]))
+mdefine_line|#define safe_get_cpu_lowcore(cpu) &bslash;&n;        ((cpu) == smp_processor_id() ? &amp;S390_lowcore : lowcore_ptr[(cpu)])
 macro_line|#endif
 macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|__PANIC_MAGIC

@@ -20,7 +20,7 @@ macro_line|#endif
 macro_line|#include &quot;ov511.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.60 for Linux 2.5&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.60a for Linux 2.5&quot;
 DECL|macro|EMAIL
 mdefine_line|#define EMAIL &quot;mmcclell@bigfoot.com&quot;
 DECL|macro|DRIVER_AUTHOR
@@ -17516,9 +17516,35 @@ id|ov-&gt;wq
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Resubmit this URB */
 id|urb-&gt;dev
 op_assign
 id|ov-&gt;dev
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|i
+op_assign
+id|usb_submit_urb
+c_func
+(paren
+id|urb
+comma
+id|GFP_ATOMIC
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+id|err
+c_func
+(paren
+l_string|&quot;usb_submit_urb() ret %d&quot;
+comma
+id|i
+)paren
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -17997,6 +18023,10 @@ id|ov-&gt;packet_size
 op_star
 id|FRAMES_PER_DESC
 suffix:semicolon
+id|urb-&gt;interval
+op_assign
+l_int|1
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -18037,54 +18067,6 @@ suffix:semicolon
 id|ov-&gt;streaming
 op_assign
 l_int|1
-suffix:semicolon
-id|ov-&gt;sbuf
-(braket
-id|OV511_NUMSBUF
-op_minus
-l_int|1
-)braket
-dot
-id|urb-&gt;next
-op_assign
-id|ov-&gt;sbuf
-(braket
-l_int|0
-)braket
-dot
-id|urb
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|n
-op_assign
-l_int|0
-suffix:semicolon
-id|n
-OL
-id|OV511_NUMSBUF
-op_minus
-l_int|1
-suffix:semicolon
-id|n
-op_increment
-)paren
-id|ov-&gt;sbuf
-(braket
-id|n
-)braket
-dot
-id|urb-&gt;next
-op_assign
-id|ov-&gt;sbuf
-(braket
-id|n
-op_plus
-l_int|1
-)braket
-dot
-id|urb
 suffix:semicolon
 r_for
 c_loop

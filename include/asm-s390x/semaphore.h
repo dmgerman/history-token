@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  include/asm-s390/semaphore.h&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *&n; *  Derived from &quot;include/asm-i386/semaphore.h&quot;&n; *    (C) Copyright 1996 Linus Torvalds&n; */
+multiline_comment|/*&n; *  include/asm-s390x/semaphore.h&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *&n; *  Derived from &quot;include/asm-i386/semaphore.h&quot;&n; *    (C) Copyright 1996 Linus Torvalds&n; */
 macro_line|#ifndef _S390_SEMAPHORE_H
 DECL|macro|_S390_SEMAPHORE_H
 mdefine_line|#define _S390_SEMAPHORE_H
@@ -14,20 +14,14 @@ DECL|member|count
 id|atomic_t
 id|count
 suffix:semicolon
-DECL|member|sleepers
-r_int
-id|sleepers
-suffix:semicolon
 DECL|member|wait
 id|wait_queue_head_t
 id|wait
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|__SEM_DEBUG_INIT
-mdefine_line|#define __SEM_DEBUG_INIT(name)
 DECL|macro|__SEMAPHORE_INITIALIZER
-mdefine_line|#define __SEMAPHORE_INITIALIZER(name,count) &bslash;&n;{ ATOMIC_INIT(count), 0, __WAIT_QUEUE_HEAD_INITIALIZER((name).wait) &bslash;&n;&t;__SEM_DEBUG_INIT(name) }
+mdefine_line|#define __SEMAPHORE_INITIALIZER(name,count) &bslash;&n;&t;{ ATOMIC_INIT(count), __WAIT_QUEUE_HEAD_INITIALIZER((name).wait) }
 DECL|macro|__MUTEX_INITIALIZER
 mdefine_line|#define __MUTEX_INITIALIZER(name) &bslash;&n;&t;__SEMAPHORE_INITIALIZER(name,1)
 DECL|macro|__DECLARE_SEMAPHORE_GENERIC
@@ -112,42 +106,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|asmlinkage
-r_void
-id|__down_failed
-c_func
-(paren
-r_void
-multiline_comment|/* special register calling convention */
-)paren
-suffix:semicolon
-id|asmlinkage
-r_int
-id|__down_failed_interruptible
-c_func
-(paren
-r_void
-multiline_comment|/* params in registers */
-)paren
-suffix:semicolon
-id|asmlinkage
-r_int
-id|__down_failed_trylock
-c_func
-(paren
-r_void
-multiline_comment|/* params in registers */
-)paren
-suffix:semicolon
-id|asmlinkage
-r_void
-id|__up_wakeup
-c_func
-(paren
-r_void
-multiline_comment|/* special register calling convention */
-)paren
-suffix:semicolon
 id|asmlinkage
 r_void
 id|__down
@@ -280,32 +238,50 @@ id|sem
 )paren
 (brace
 r_int
-id|ret
-op_assign
-l_int|0
+id|old_val
+comma
+id|new_val
 suffix:semicolon
-r_if
-c_cond
+multiline_comment|/*&n;&t; * This inline assembly atomically implements the equivalent&n;&t; * to the following C code:&n;&t; *   old_val = sem-&gt;count.counter;&n;&t; *   if ((new_val = old_val) &gt; 0)&n;&t; *       sem-&gt;count.counter = --new_val;&n;&t; * In the ppc code this is called atomic_dec_if_positive.&n;&t; */
+id|__asm__
+id|__volatile__
 (paren
-id|atomic_dec_return
-c_func
+l_string|&quot;   l    %0,0(%3)&bslash;n&quot;
+l_string|&quot;0: ltr  %1,%0&bslash;n&quot;
+l_string|&quot;   jle  1f&bslash;n&quot;
+l_string|&quot;   ahi  %1,-1&bslash;n&quot;
+l_string|&quot;   cs   %0,%1,0(%3)&bslash;n&quot;
+l_string|&quot;   jl   0b&bslash;n&quot;
+l_string|&quot;1:&quot;
+suffix:colon
+l_string|&quot;=&amp;d&quot;
+(paren
+id|old_val
+)paren
+comma
+l_string|&quot;=&amp;d&quot;
+(paren
+id|new_val
+)paren
+comma
+l_string|&quot;+m&quot;
+(paren
+id|sem-&gt;count.counter
+)paren
+suffix:colon
+l_string|&quot;a&quot;
 (paren
 op_amp
-id|sem-&gt;count
+id|sem-&gt;count.counter
 )paren
-OL
-l_int|0
-)paren
-id|ret
-op_assign
-id|__down_trylock
-c_func
-(paren
-id|sem
+suffix:colon
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return
-id|ret
+id|old_val
+op_le
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|up

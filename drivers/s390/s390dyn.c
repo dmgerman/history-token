@@ -1,7 +1,8 @@
-multiline_comment|/*&n; *  arch/s390/kernel/s390dyn.c&n; *   S/390 dynamic device attachment&n; *&n; *  S390 version&n; *    Copyright (C) 2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/s390dyn.c&n; *   S/390 dynamic device attachment&n; *&n; *  S390 version&n; *    Copyright (C) 2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/s390io.h&gt;
 macro_line|#include &lt;asm/s390dyn.h&gt;
@@ -24,10 +25,10 @@ id|dyn_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-DECL|function|s390_device_register_internal
 r_static
 r_inline
 r_int
+DECL|function|s390_device_register_internal
 id|s390_device_register_internal
 c_func
 (paren
@@ -75,7 +76,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/*&n;                 * We don&squot;t allow multiple drivers to register&n;                 * for the same device number&n;                 */
+multiline_comment|/*&n;&t;&t; * We don&squot;t allow multiple drivers to register&n;&t;&t; * for the same device number&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -131,8 +132,9 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-multiline_comment|/*&n;         * no collision found, enqueue&n;         */
+multiline_comment|/*&n;&t; * no collision found, enqueue&n;&t; */
 id|list_add
+c_func
 (paren
 op_amp
 id|drinfo-&gt;list
@@ -145,8 +147,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|s390_device_register
 r_int
+DECL|function|s390_device_register
 id|s390_device_register
 c_func
 (paren
@@ -185,6 +187,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 id|spin_lock_irqsave
+c_func
 (paren
 op_amp
 id|dyn_lock
@@ -213,10 +216,10 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|s390_device_unregister_internal
 r_static
 r_inline
 r_int
+DECL|function|s390_device_unregister_internal
 id|s390_device_unregister_internal
 c_func
 (paren
@@ -262,6 +265,7 @@ id|dreg
 )paren
 (brace
 id|list_del
+c_func
 (paren
 op_amp
 id|dreg-&gt;list
@@ -277,8 +281,8 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-DECL|function|s390_device_unregister
 r_int
+DECL|function|s390_device_unregister
 id|s390_device_unregister
 c_func
 (paren
@@ -335,11 +339,11 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|s390_search_devreg_internal
 r_static
 r_inline
 id|devreg_t
 op_star
+DECL|function|s390_search_devreg_internal
 id|s390_search_devreg_internal
 c_func
 (paren
@@ -497,9 +501,9 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|function|s390_search_devreg
 id|devreg_t
 op_star
+DECL|function|s390_search_devreg
 id|s390_search_devreg
 c_func
 (paren

@@ -171,10 +171,12 @@ multiline_comment|/* release */
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 DECL|variable|fs3270_devfs_dir
+r_static
 id|devfs_handle_t
 id|fs3270_devfs_dir
 suffix:semicolon
 DECL|variable|fs3270_devfs_tub
+r_static
 id|devfs_handle_t
 id|fs3270_devfs_tub
 suffix:semicolon
@@ -204,7 +206,7 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;tub%.3x&quot;
+l_string|&quot;tub%.4x&quot;
 comma
 id|tubp-&gt;devno
 )paren
@@ -239,7 +241,7 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;tty%.3x&quot;
+l_string|&quot;tty%.4x&quot;
 comma
 id|tubp-&gt;devno
 )paren
@@ -284,7 +286,7 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;tub%.3x&quot;
+l_string|&quot;tub%.4x&quot;
 comma
 id|tubp-&gt;devno
 )paren
@@ -316,7 +318,7 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;tty%.3x&quot;
+l_string|&quot;tty%.4x&quot;
 comma
 id|tubp-&gt;devno
 )paren
@@ -872,6 +874,7 @@ l_int|0
 )paren
 )paren
 (brace
+macro_line|#warning FIXME: [kj] use set_current_state instead of current-&gt;state=
 id|current-&gt;state
 op_assign
 id|TASK_INTERRUPTIBLE
@@ -890,6 +893,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#warning FIXME: [kj] use set_current_state instead of current-&gt;state=
 id|current-&gt;state
 op_assign
 id|TASK_RUNNING

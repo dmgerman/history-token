@@ -62,14 +62,6 @@ r_struct
 id|_raw3215_info
 suffix:semicolon
 multiline_comment|/* forward declaration ... */
-DECL|variable|raw3215_condevice
-r_int
-id|raw3215_condevice
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/* preset console device */
 multiline_comment|/*&n; * Request types for a 3215 device&n; */
 r_typedef
 r_enum
@@ -2178,6 +2170,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Wait until length bytes are available int the output buffer.&n; * Has to be called with the s390irq lock held. Can be called&n; * disabled.&n; */
 DECL|function|raw3215_make_room
+r_static
 r_void
 id|raw3215_make_room
 c_func
@@ -3026,6 +3019,7 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
+macro_line|#warning FIXME: use set_current_state instead of current-&gt;state=
 id|current-&gt;state
 op_assign
 id|TASK_INTERRUPTIBLE
@@ -3038,6 +3032,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: what if schedule is interrupted by a signal,&n;&t;&t; * shouldn&squot;t we loop here? */
 id|schedule
 c_func
 (paren
@@ -3138,7 +3133,7 @@ id|ENODEV
 r_if
 c_cond
 (paren
-id|get_dev_info
+id|get_dev_info_by_irq
 c_func
 (paren
 id|irq
@@ -3328,6 +3323,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|con3215_device
+r_static
 id|kdev_t
 id|con3215_device
 c_func
@@ -3339,7 +3335,7 @@ id|c
 )paren
 (brace
 r_return
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|TTY_MAJOR
@@ -3352,6 +3348,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * panic() calls console_unblank before the system enters a&n; * disabled, endless loop.&n; */
 DECL|function|con3215_unblank
+r_static
 r_void
 id|con3215_unblank
 c_func
@@ -3485,7 +3482,7 @@ id|line
 suffix:semicolon
 id|line
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -4292,10 +4289,12 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_TN3215_CONSOLE
 id|raw3215_info
 op_star
 id|raw
 suffix:semicolon
+macro_line|#endif
 id|raw3215_req
 op_star
 id|req

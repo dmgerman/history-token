@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -61,6 +62,29 @@ op_star
 id|ohci
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|hc_start
+(paren
+id|ohci_t
+op_star
+id|ohci
+comma
+r_struct
+id|device
+op_star
+id|parent_dev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|hc_reset
+(paren
+id|ohci_t
+op_star
+id|ohci
+)paren
+suffix:semicolon
 DECL|variable|sa1111_ohci
 r_static
 id|ohci_t
@@ -83,6 +107,33 @@ id|usb_rst
 op_assign
 l_int|0
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+id|__FILE__
+l_string|&quot;: starting SA-1111 OHCI USB Controller&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_SA1100_BADGE4
+r_if
+c_cond
+(paren
+id|machine_is_badge4
+c_func
+(paren
+)paren
+)paren
+multiline_comment|/* power the bus */
+id|badge4_set_5V
+c_func
+(paren
+id|BADGE4_5V_USB
+comma
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -137,6 +188,56 @@ op_assign
 id|usb_rst
 suffix:semicolon
 )brace
+DECL|function|sa1111_ohci_unconfigure
+r_static
+r_void
+id|__exit
+id|sa1111_ohci_unconfigure
+c_func
+(paren
+r_void
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+id|__FILE__
+l_string|&quot;: stopping SA-1111 OHCI USB Controller&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Put the USB host controller into reset.&n;&t; */
+id|USB_RESET
+op_or_assign
+id|USB_RESET_FORCEIFRESET
+op_or
+id|USB_RESET_FORCEHCRESET
+suffix:semicolon
+multiline_comment|/*&n;&t; * Stop the USB clock.&n;&t; */
+id|SKPCR
+op_and_assign
+op_complement
+id|SKPCR_UCLKEN
+suffix:semicolon
+macro_line|#ifdef CONFIG_SA1100_BADGE4
+r_if
+c_cond
+(paren
+id|machine_is_badge4
+c_func
+(paren
+)paren
+)paren
+id|badge4_set_5V
+c_func
+(paren
+id|BADGE4_5V_USB
+comma
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
 DECL|function|sa1111_ohci_init
 r_static
 r_int
@@ -161,25 +262,40 @@ op_minus
 id|ENODEV
 suffix:semicolon
 multiline_comment|/*&n;&t; * Request memory resources.&n;&t; */
-singleline_comment|//&t;if (!request_mem_region(_USB_OHCI_OP_BASE, _USB_EXTENT, &quot;usb-ohci&quot;))
-singleline_comment|//&t;&t;return -EBUSY;
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_mem_region
+c_func
+(paren
+id|_USB_OHCI_OP_BASE
+comma
+id|_USB_EXTENT
+comma
+l_string|&quot;usb-ohci&quot;
+)paren
+)paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
 id|sa1111_ohci_configure
 c_func
 (paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Initialise the generic OHCI driver.&n;&t; */
+id|sa1111_ohci
+op_assign
+l_int|0
+suffix:semicolon
 id|ret
 op_assign
 id|hc_add_ohci
 c_func
 (paren
-(paren
-r_struct
-id|pci_dev
-op_star
-)paren
-l_int|1
+id|SA1111_FAKE_PCIDEV
 comma
 id|NIRQHCIM
 comma
@@ -204,10 +320,33 @@ r_if
 c_cond
 (paren
 id|ret
-op_eq
-l_int|0
+op_logical_or
+op_logical_neg
+id|sa1111_ohci
 )paren
 (brace
+id|sa1111_ohci
+op_assign
+l_int|0
+suffix:semicolon
+id|sa1111_ohci_unconfigure
+c_func
+(paren
+)paren
+suffix:semicolon
+id|release_mem_region
+c_func
+(paren
+id|_USB_OHCI_OP_BASE
+comma
+id|_USB_EXTENT
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -234,46 +373,30 @@ id|hc_remove_ohci
 id|sa1111_ohci
 )paren
 suffix:semicolon
+id|sa1111_ohci
+op_assign
+l_int|0
+suffix:semicolon
+id|sa1111_ohci_unconfigure
+c_func
+(paren
+)paren
+suffix:semicolon
+id|release_mem_region
+c_func
+(paren
+id|_USB_OHCI_OP_BASE
+comma
+id|_USB_EXTENT
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-macro_line|#ifdef&t;DEBUG
-id|ohci_dump
-(paren
-id|ohci
-comma
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_BADGE4
-r_if
-c_cond
-(paren
-id|machine_is_badge4
-c_func
-(paren
-)paren
-)paren
-(brace
-multiline_comment|/* found the controller, so now power the bus */
-id|badge4_set_5V
-c_func
-(paren
-id|BADGE4_5V_USB
-comma
-l_int|1
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-)brace
-singleline_comment|//&t;else
-singleline_comment|//&t;&t;release_mem_region(_USB_OHCI_OP_BASE, _USB_EXTENT);
 r_return
-id|ret
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|sa1111_ohci_exit
@@ -286,47 +409,52 @@ c_func
 r_void
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+id|__FUNCTION__
+l_string|&quot;: cleaning up&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sa1111_ohci
+)paren
+(brace
 id|hc_remove_ohci
 c_func
 (paren
 id|sa1111_ohci
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Put the USB host controller into reset.&n;&t; */
-id|USB_RESET
-op_or_assign
-id|USB_RESET_FORCEIFRESET
-op_or
-id|USB_RESET_FORCEHCRESET
-suffix:semicolon
-multiline_comment|/*&n;&t; * Stop the USB clock.&n;&t; */
-id|SKPCR
-op_and_assign
-op_complement
-id|SKPCR_UCLKEN
-suffix:semicolon
-multiline_comment|/*&n;&t; * Release memory resources.&n;&t; */
-singleline_comment|//&t;release_mem_region(_USB_OHCI_OP_BASE, _USB_EXTENT);
-macro_line|#ifdef CONFIG_SA1100_BADGE4
-r_if
-c_cond
-(paren
-id|machine_is_badge4
-c_func
-(paren
-)paren
-)paren
-(brace
-id|badge4_set_5V
-c_func
-(paren
-id|BADGE4_5V_USB
-comma
+id|sa1111_ohci
+op_assign
 l_int|0
-)paren
 suffix:semicolon
 )brace
-macro_line|#endif
+id|sa1111_ohci_unconfigure
+c_func
+(paren
+)paren
+suffix:semicolon
+id|release_mem_region
+c_func
+(paren
+id|_USB_OHCI_OP_BASE
+comma
+id|_USB_EXTENT
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+id|__FUNCTION__
+l_string|&quot;: exiting&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 DECL|variable|sa1111_ohci_init
 id|module_init
@@ -340,6 +468,12 @@ id|module_exit
 c_func
 (paren
 id|sa1111_ohci_exit
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

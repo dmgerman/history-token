@@ -72,6 +72,7 @@ r_if
 c_cond
 (paren
 id|nr
+op_decrement
 op_le
 l_int|0
 )paren
@@ -97,8 +98,6 @@ comma
 l_string|&quot;+&amp;a&quot;
 (paren
 id|nr
-op_minus
-l_int|1
 )paren
 suffix:colon
 l_string|&quot;a&quot;

@@ -1,6 +1,6 @@
-macro_line|#ifndef _ASMS390X_SCATTERLIST_H
-DECL|macro|_ASMS390X_SCATTERLIST_H
-mdefine_line|#define _ASMS390X_SCATTERLIST_H
+macro_line|#ifndef _ASMS390_SCATTERLIST_H
+DECL|macro|_ASMS390_SCATTERLIST_H
+mdefine_line|#define _ASMS390_SCATTERLIST_H
 DECL|struct|scatterlist
 r_struct
 id|scatterlist

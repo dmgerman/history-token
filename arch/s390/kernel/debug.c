@@ -196,48 +196,6 @@ id|file
 )paren
 suffix:semicolon
 r_static
-r_struct
-id|proc_dir_entry
-op_star
-id|debug_create_proc_dir_entry
-c_func
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-id|root
-comma
-r_const
-r_char
-op_star
-id|name
-comma
-id|mode_t
-id|mode
-comma
-r_struct
-id|file_operations
-op_star
-id|fops
-)paren
-suffix:semicolon
-r_static
-r_void
-id|debug_delete_proc_dir_entry
-c_func
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-id|root
-comma
-r_struct
-id|proc_dir_entry
-op_star
-id|entry
-)paren
-suffix:semicolon
-r_static
 id|debug_info_t
 op_star
 id|debug_info_create
@@ -609,10 +567,6 @@ id|file_operations
 id|debug_file_ops
 op_assign
 (brace
-id|owner
-suffix:colon
-id|THIS_MODULE
-comma
 id|read
 suffix:colon
 id|debug_output
@@ -966,6 +920,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 id|memset
 c_func
 (paren
@@ -983,6 +938,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_PROC_FS */
 id|atomic_set
 c_func
 (paren
@@ -1351,6 +1307,7 @@ id|db_info-&gt;ref_count
 )paren
 )paren
 (brace
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -1362,6 +1319,7 @@ comma
 id|db_info-&gt;name
 )paren
 suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -1384,28 +1342,37 @@ id|db_info-&gt;views
 (braket
 id|i
 )braket
-op_ne
+op_eq
 l_int|NULL
 )paren
-id|debug_delete_proc_dir_entry
+r_continue
+suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+id|remove_proc_entry
+c_func
 (paren
-id|db_info-&gt;proc_root_entry
-comma
 id|db_info-&gt;proc_entries
 (braket
 id|i
 )braket
-)paren
-suffix:semicolon
-)brace
-id|debug_delete_proc_dir_entry
-c_func
-(paren
-id|debug_proc_root_entry
+op_member_access_from_pointer
+id|name
 comma
 id|db_info-&gt;proc_root_entry
 )paren
 suffix:semicolon
+macro_line|#endif
+)brace
+macro_line|#ifdef CONFIG_PROC_FS
+id|remove_proc_entry
+c_func
+(paren
+id|db_info-&gt;proc_root_entry-&gt;name
+comma
+id|debug_proc_root_entry
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2042,6 +2009,8 @@ l_string|&quot;debug_open&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+id|MOD_INC_USE_COUNT
+suffix:semicolon
 id|down
 c_func
 (paren
@@ -2143,6 +2112,7 @@ op_logical_neg
 id|debug_info_snapshot
 )paren
 (brace
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -2150,6 +2120,7 @@ id|KERN_ERR
 l_string|&quot;debug_open: debug_info_copy failed (out of mem)&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 id|rc
 op_assign
 op_minus
@@ -2180,6 +2151,7 @@ op_eq
 l_int|0
 )paren
 (brace
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -2187,6 +2159,7 @@ id|KERN_ERR
 l_string|&quot;debug_open: kmalloc failed&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 id|debug_info_free
 c_func
 (paren
@@ -2256,6 +2229,15 @@ op_amp
 id|debug_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_ne
+l_int|0
+)paren
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -2316,93 +2298,12 @@ c_func
 id|file-&gt;private_data
 )paren
 suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* success */
-)brace
-multiline_comment|/*&n; * debug_create_proc_dir_entry:&n; * - initializes proc-dir-entry and registers it&n; */
-DECL|function|debug_create_proc_dir_entry
-r_static
-r_struct
-id|proc_dir_entry
-op_star
-id|debug_create_proc_dir_entry
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-id|root
-comma
-r_const
-r_char
-op_star
-id|name
-comma
-id|mode_t
-id|mode
-comma
-r_struct
-id|file_operations
-op_star
-id|fops
-)paren
-(brace
-r_struct
-id|proc_dir_entry
-op_star
-id|rc
-op_assign
-id|create_proc_entry
-c_func
-(paren
-id|name
-comma
-id|mode
-comma
-id|root
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-op_logical_and
-id|fops
-)paren
-id|rc-&gt;proc_fops
-op_assign
-id|fops
-suffix:semicolon
-r_return
-id|rc
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * delete_proc_dir_entry:&n; */
-DECL|function|debug_delete_proc_dir_entry
-r_static
-r_void
-id|debug_delete_proc_dir_entry
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-id|root
-comma
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_entry
-)paren
-(brace
-id|remove_proc_entry
-c_func
-(paren
-id|proc_entry-&gt;name
-comma
-id|root
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * debug_register:&n; * - creates and initializes debug area for the caller&n; * - returns handle for debug area&n; */
 DECL|function|debug_register
@@ -2494,6 +2395,7 @@ op_amp
 id|debug_flush_view
 )paren
 suffix:semicolon
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -2509,6 +2411,7 @@ comma
 id|rc-&gt;name
 )paren
 suffix:semicolon
+macro_line|#endif
 id|out
 suffix:colon
 r_if
@@ -2569,6 +2472,7 @@ op_amp
 id|debug_lock
 )paren
 suffix:semicolon
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -2578,6 +2482,7 @@ comma
 id|id-&gt;name
 )paren
 suffix:semicolon
+macro_line|#endif
 id|debug_info_put
 c_func
 (paren
@@ -3454,6 +3359,7 @@ op_logical_neg
 id|initialized
 )paren
 (brace
+macro_line|#ifdef CONFIG_PROC_FS
 id|debug_proc_root_entry
 op_assign
 id|proc_mkdir
@@ -3464,6 +3370,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_PROC_FS */
 id|printk
 c_func
 (paren
@@ -3636,18 +3543,35 @@ id|id-&gt;proc_entries
 id|i
 )braket
 op_assign
-id|debug_create_proc_dir_entry
+id|create_proc_entry
 c_func
 (paren
-id|id-&gt;proc_root_entry
-comma
 id|view-&gt;name
 comma
 id|mode
 comma
+id|id-&gt;proc_root_entry
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|id-&gt;proc_entries
+(braket
+id|i
+)braket
+op_ne
+l_int|NULL
+)paren
+id|id-&gt;proc_entries
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|proc_fops
+op_assign
 op_amp
 id|debug_file_ops
-)paren
 suffix:semicolon
 id|rc
 op_assign
@@ -3757,17 +3681,21 @@ l_int|1
 suffix:semicolon
 r_else
 (brace
-id|debug_delete_proc_dir_entry
+macro_line|#ifdef CONFIG_PROC_FS
+id|remove_proc_entry
 c_func
 (paren
-id|id-&gt;proc_root_entry
-comma
 id|id-&gt;proc_entries
 (braket
 id|i
 )braket
+op_member_access_from_pointer
+id|name
+comma
+id|id-&gt;proc_root_entry
 )paren
 suffix:semicolon
+macro_line|#endif
 id|id-&gt;views
 (braket
 id|i
@@ -5115,14 +5043,16 @@ l_string|&quot;debug_cleanup_module: &bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|debug_delete_proc_dir_entry
+macro_line|#ifdef CONFIG_PROC_FS
+id|remove_proc_entry
 c_func
 (paren
-l_int|NULL
+id|debug_proc_root_entry-&gt;name
 comma
-id|debug_proc_root_entry
+l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_PROC_FS */
 r_return
 suffix:semicolon
 )brace

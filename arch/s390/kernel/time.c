@@ -19,18 +19,20 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/* change this if you have some constant time drift */
 DECL|macro|USECS_PER_JIFFY
-mdefine_line|#define USECS_PER_JIFFY ((signed long)1000000/HZ)
+mdefine_line|#define USECS_PER_JIFFY     ((unsigned long) 1000000/HZ)
 DECL|macro|CLK_TICKS_PER_JIFFY
-mdefine_line|#define CLK_TICKS_PER_JIFFY ((signed long)USECS_PER_JIFFY&lt;&lt;12)
+mdefine_line|#define CLK_TICKS_PER_JIFFY ((unsigned long) USECS_PER_JIFFY &lt;&lt; 12)
 DECL|macro|TICK_SIZE
 mdefine_line|#define TICK_SIZE tick
+DECL|variable|ext_int_info_timer
+r_static
+id|ext_int_info_t
+id|ext_int_info_timer
+suffix:semicolon
 DECL|variable|init_timer_cc
-DECL|variable|last_timer_cc
 r_static
 r_uint64
 id|init_timer_cc
-comma
-id|last_timer_cc
 suffix:semicolon
 r_extern
 id|rwlock_t
@@ -46,7 +48,7 @@ r_void
 id|tod_to_timeval
 c_func
 (paren
-r_uint64
+id|__u64
 id|todval
 comma
 r_struct
@@ -134,6 +136,8 @@ l_string|&quot;4&quot;
 suffix:semicolon
 )brace
 DECL|function|do_gettimeoffset
+r_static
+r_inline
 r_int
 r_int
 id|do_gettimeoffset
@@ -143,36 +147,50 @@ r_void
 )paren
 (brace
 id|__u64
-id|timer_cc
+id|now
 suffix:semicolon
 id|asm
-r_volatile
 (paren
-l_string|&quot;STCK %0&quot;
+l_string|&quot;STCK 0(%0)&quot;
 suffix:colon
-l_string|&quot;=m&quot;
+suffix:colon
+l_string|&quot;a&quot;
 (paren
-id|timer_cc
+op_amp
+id|now
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* We require the offset from the previous interrupt */
-r_return
+id|now
+op_assign
 (paren
-(paren
-r_int
-r_int
-)paren
-(paren
-(paren
-id|timer_cc
+id|now
 op_minus
-id|last_timer_cc
+id|init_timer_cc
 )paren
 op_rshift
 l_int|12
+suffix:semicolon
+multiline_comment|/* We require the offset from the latest update of xtime */
+id|now
+op_sub_assign
+(paren
+id|__u64
 )paren
+id|wall_jiffies
+op_star
+id|USECS_PER_JIFFY
+suffix:semicolon
+r_return
+(paren
+r_int
+r_int
 )paren
+id|now
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This version of gettimeofday has microsecond resolution.&n; */
@@ -197,10 +215,6 @@ id|usec
 comma
 id|sec
 suffix:semicolon
-r_int
-r_int
-id|lost_ticks
-suffix:semicolon
 id|read_lock_irqsave
 c_func
 (paren
@@ -210,39 +224,18 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|lost_ticks
-op_assign
-id|jiffies
-op_minus
-id|wall_jiffies
-suffix:semicolon
-id|usec
-op_assign
-id|do_gettimeoffset
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|lost_ticks
-)paren
-id|usec
-op_add_assign
-(paren
-id|USECS_PER_JIFFY
-op_star
-id|lost_ticks
-)paren
-suffix:semicolon
 id|sec
 op_assign
 id|xtime.tv_sec
 suffix:semicolon
 id|usec
-op_add_assign
+op_assign
 id|xtime.tv_usec
+op_plus
+id|do_gettimeoffset
+c_func
+(paren
+)paren
 suffix:semicolon
 id|read_unlock_irqrestore
 c_func
@@ -357,9 +350,10 @@ id|__u16
 id|boot_cpu_addr
 suffix:semicolon
 macro_line|#endif
-DECL|function|do_timer_interrupt
+DECL|function|do_comparator_interrupt
+r_static
 r_void
-id|do_timer_interrupt
+id|do_comparator_interrupt
 c_func
 (paren
 r_struct
@@ -387,36 +381,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;         * reset timer to 10ms minus time already elapsed&n;         * since timer-interrupt pending&n;         */
-macro_line|#ifdef CONFIG_SMP
-r_if
-c_cond
-(paren
-id|S390_lowcore.cpu_data.cpu_addr
-op_eq
-id|boot_cpu_addr
-)paren
-(brace
-id|write_lock
-c_func
-(paren
-op_amp
-id|xtime_lock
-)paren
-suffix:semicolon
-id|last_timer_cc
-op_assign
-id|S390_lowcore.jiffy_timer_cc
-suffix:semicolon
-)brace
-macro_line|#else
-id|last_timer_cc
-op_assign
-id|S390_lowcore.jiffy_timer_cc
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* set clock comparator */
-id|S390_lowcore.jiffy_timer_cc
+multiline_comment|/*&n;&t; * set clock comparator for next tick&n;&t; */
+id|S390_lowcore.jiffy_timer
 op_add_assign
 id|CLK_TICKS_PER_JIFFY
 suffix:semicolon
@@ -428,37 +394,10 @@ suffix:colon
 suffix:colon
 l_string|&quot;m&quot;
 (paren
-id|S390_lowcore.jiffy_timer_cc
+id|S390_lowcore.jiffy_timer
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * In the SMP case we use the local timer interrupt to do the&n; * profiling, except when we simulate SMP mode on a uniprocessor&n; * system, in that case we have to call the local interrupt handler.&n; */
-macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* when SMP, do smp_local_timer_interrupt for *all* CPUs,&n;           but only do the rest for the boot CPU */
-id|smp_local_timer_interrupt
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
-macro_line|#else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|user_mode
-c_func
-(paren
-id|regs
-)paren
-)paren
-id|s390_do_profile
-c_func
-(paren
-id|regs-&gt;psw.addr
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
@@ -467,7 +406,30 @@ id|S390_lowcore.cpu_data.cpu_addr
 op_eq
 id|boot_cpu_addr
 )paren
-macro_line|#endif
+id|write_lock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
+id|update_process_times
+c_func
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|S390_lowcore.cpu_data.cpu_addr
+op_eq
+id|boot_cpu_addr
+)paren
 (brace
 id|do_timer
 c_func
@@ -475,7 +437,6 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 id|write_unlock
 c_func
 (paren
@@ -483,8 +444,15 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
+macro_line|#else
+id|do_timer
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+macro_line|#endif
 id|irq_exit
 c_func
 (paren
@@ -495,28 +463,18 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Start the clock comparator on the current CPU&n; */
-DECL|variable|cr0
-r_static
-r_int
-id|cr0
-id|__attribute__
-(paren
-(paren
-id|aligned
-(paren
-l_int|8
-)paren
-)paren
-)paren
-suffix:semicolon
-DECL|function|init_100hz_timer
+DECL|function|init_cpu_timer
 r_void
-id|init_100hz_timer
+id|init_cpu_timer
 c_func
 (paren
 r_void
 )paren
 (brace
+r_int
+r_int
+id|cr0
+suffix:semicolon
 multiline_comment|/* allow clock comparator timer interrupt */
 id|asm
 r_volatile
@@ -550,21 +508,19 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* set clock comparator */
-multiline_comment|/* read the TOD clock */
-id|asm
-r_volatile
+id|S390_lowcore.jiffy_timer
+op_assign
 (paren
-l_string|&quot;STCK %0&quot;
-suffix:colon
-l_string|&quot;=m&quot;
-(paren
-id|S390_lowcore.jiffy_timer_cc
+id|__u64
 )paren
-)paren
+id|jiffies
+op_star
+id|CLK_TICKS_PER_JIFFY
 suffix:semicolon
-id|S390_lowcore.jiffy_timer_cc
+id|S390_lowcore.jiffy_timer
 op_add_assign
+id|init_timer_cc
+op_plus
 id|CLK_TICKS_PER_JIFFY
 suffix:semicolon
 id|asm
@@ -575,7 +531,7 @@ suffix:colon
 suffix:colon
 l_string|&quot;m&quot;
 (paren
-id|S390_lowcore.jiffy_timer_cc
+id|S390_lowcore.jiffy_timer
 )paren
 )paren
 suffix:semicolon
@@ -590,6 +546,9 @@ c_func
 r_void
 )paren
 (brace
+id|__u64
+id|set_time_cc
+suffix:semicolon
 r_int
 id|cc
 suffix:semicolon
@@ -597,7 +556,7 @@ multiline_comment|/* kick the TOD clock */
 id|asm
 r_volatile
 (paren
-l_string|&quot;STCK %1&bslash;n&bslash;t&quot;
+l_string|&quot;STCK 0(%1)&bslash;n&bslash;t&quot;
 l_string|&quot;IPM  %0&bslash;n&bslash;t&quot;
 l_string|&quot;SRL  %0,28&quot;
 suffix:colon
@@ -605,11 +564,16 @@ l_string|&quot;=r&quot;
 (paren
 id|cc
 )paren
-comma
-l_string|&quot;=m&quot;
+suffix:colon
+l_string|&quot;a&quot;
 (paren
+op_amp
 id|init_timer_cc
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_switch
@@ -661,39 +625,13 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* request the 0x1004 external interrupt */
-r_if
-c_cond
-(paren
-id|register_external_interrupt
-c_func
-(paren
-l_int|0x1004
-comma
-id|do_timer_interrupt
-)paren
-op_ne
-l_int|0
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Couldn&squot;t request external interrupts 0x1004&quot;
-)paren
-suffix:semicolon
-id|init_100hz_timer
-c_func
-(paren
-)paren
-suffix:semicolon
-id|init_timer_cc
+multiline_comment|/* set xtime */
+id|set_time_cc
 op_assign
-id|S390_lowcore.jiffy_timer_cc
-suffix:semicolon
 id|init_timer_cc
-op_sub_assign
-l_int|0x8126d60e46000000LL
 op_minus
+l_int|0x8126d60e46000000LL
+op_plus
 (paren
 l_int|0x3c26700LL
 op_star
@@ -705,10 +643,39 @@ suffix:semicolon
 id|tod_to_timeval
 c_func
 (paren
-id|init_timer_cc
+id|set_time_cc
 comma
 op_amp
 id|xtime
+)paren
+suffix:semicolon
+multiline_comment|/* request the 0x1004 external interrupt */
+r_if
+c_cond
+(paren
+id|register_early_external_interrupt
+c_func
+(paren
+l_int|0x1004
+comma
+id|do_comparator_interrupt
+comma
+op_amp
+id|ext_int_info_timer
+)paren
+op_ne
+l_int|0
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;Couldn&squot;t request external interrupt 0x1004&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* init CPU timer */
+id|init_cpu_timer
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
