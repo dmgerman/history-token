@@ -3090,6 +3090,16 @@ comma
 id|USB_DEVICE
 c_func
 (paren
+id|FTDI_VID
+comma
+id|FTDI_PIEGROUP_PID
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
 id|SEALEVEL_VID
 comma
 id|SEALEVEL_2101_PID
