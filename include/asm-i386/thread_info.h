@@ -4,6 +4,7 @@ DECL|macro|_ASM_THREAD_INFO_H
 mdefine_line|#define _ASM_THREAD_INFO_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/processor.h&gt;
@@ -150,6 +151,7 @@ c_func
 (paren
 l_string|&quot;esp&quot;
 )paren
+id|__attribute_used__
 suffix:semicolon
 multiline_comment|/* thread information allocation */
 macro_line|#ifdef CONFIG_DEBUG_STACK_USAGE
