@@ -841,6 +841,10 @@ r_const
 r_char
 op_star
 id|name
+comma
+id|snd_info_entry_t
+op_star
+id|parent
 )paren
 (brace
 r_return
@@ -863,6 +867,10 @@ r_const
 r_char
 op_star
 id|name
+comma
+id|snd_info_entry_t
+op_star
+id|parent
 )paren
 (brace
 r_return

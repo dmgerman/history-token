@@ -27,9 +27,8 @@ DECL|member|no_active_sensing
 r_int
 r_int
 id|no_active_sensing
-suffix:colon
-l_int|1
 suffix:semicolon
+multiline_comment|/* avoid bit-field */
 DECL|member|reserved
 r_int
 r_char
@@ -39,6 +38,13 @@ l_int|16
 )braket
 suffix:semicolon
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 DECL|macro|CVT_sndrv_rawmidi_params
 mdefine_line|#define CVT_sndrv_rawmidi_params()&bslash;&n;{&bslash;&n;&t;COPY(stream);&bslash;&n;&t;COPY(buffer_size);&bslash;&n;&t;COPY(avail_min);&bslash;&n;&t;COPY(no_active_sensing);&bslash;&n;}
@@ -55,6 +61,13 @@ id|s32
 id|tv_usec
 suffix:semicolon
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 DECL|struct|sndrv_rawmidi_status32
 r_struct
@@ -86,6 +99,13 @@ l_int|16
 )braket
 suffix:semicolon
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 DECL|macro|CVT_sndrv_rawmidi_status
 mdefine_line|#define CVT_sndrv_rawmidi_status()&bslash;&n;{&bslash;&n;&t;COPY(stream);&bslash;&n;&t;COPY(tstamp.tv_sec);&bslash;&n;&t;COPY(tstamp.tv_usec);&bslash;&n;&t;COPY(avail);&bslash;&n;&t;COPY(xruns);&bslash;&n;}
@@ -101,6 +121,26 @@ id|DEFINE_ALSA_IOCTL
 c_func
 (paren
 id|rawmidi_status
+)paren
+suffix:semicolon
+id|DEFINE_ALSA_IOCTL_ENTRY
+c_func
+(paren
+id|rawmidi_params
+comma
+id|rawmidi_params
+comma
+id|SNDRV_RAWMIDI_IOCTL_PARAMS
+)paren
+suffix:semicolon
+id|DEFINE_ALSA_IOCTL_ENTRY
+c_func
+(paren
+id|rawmidi_status
+comma
+id|rawmidi_status
+comma
+id|SNDRV_RAWMIDI_IOCTL_STATUS
 )paren
 suffix:semicolon
 DECL|macro|AP

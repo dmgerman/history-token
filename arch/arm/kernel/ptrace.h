@@ -10,7 +10,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|ptrace_set_bpt
 c_func
 (paren

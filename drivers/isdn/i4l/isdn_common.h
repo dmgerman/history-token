@@ -1,4 +1,5 @@
 multiline_comment|/* $Id: isdn_common.h,v 1.21.6.1 2001/09/23 22:24:31 kai Exp $&n; *&n; * header for Linux ISDN subsystem&n; * common used functions and debugging-switches (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+macro_line|#include &lt;linux/isdn.h&gt;
 DECL|macro|ISDN_DEBUG_MODEM_OPEN
 macro_line|#undef  ISDN_DEBUG_MODEM_OPEN
 DECL|macro|ISDN_DEBUG_MODEM_IOCTL
@@ -520,6 +521,14 @@ c_func
 (paren
 r_int
 id|sl
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|isdn_hard_header_len
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 eof

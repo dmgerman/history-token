@@ -400,6 +400,13 @@ id|ptr
 suffix:semicolon
 multiline_comment|/* pointer to data (note: maybe 64-bit) */
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Instrument cluster type */
 DECL|typedef|sndrv_seq_instr_cluster_t
@@ -802,6 +809,13 @@ id|event
 suffix:semicolon
 multiline_comment|/* quoted event */
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* sequencer event */
 DECL|struct|sndrv_seq_event
@@ -1050,6 +1064,45 @@ r_char
 id|reserved
 (braket
 l_int|24
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* system running information */
+DECL|struct|sndrv_seq_running_info
+r_struct
+id|sndrv_seq_running_info
+(brace
+DECL|member|client
+r_int
+r_char
+id|client
+suffix:semicolon
+multiline_comment|/* client id */
+DECL|member|big_endian
+r_int
+r_char
+id|big_endian
+suffix:semicolon
+multiline_comment|/* 1 = big-endian */
+DECL|member|cpu_mode
+r_int
+r_char
+id|cpu_mode
+suffix:semicolon
+multiline_comment|/* 4 = 32bit, 8 = 64bit */
+DECL|member|pad
+r_int
+r_char
+id|pad
+suffix:semicolon
+multiline_comment|/* reserved */
+DECL|member|reserved
+r_int
+r_char
+id|reserved
+(braket
+l_int|12
 )braket
 suffix:semicolon
 )brace
@@ -2129,6 +2182,8 @@ DECL|macro|SNDRV_SEQ_IOCTL_CLIENT_ID
 mdefine_line|#define SNDRV_SEQ_IOCTL_CLIENT_ID&t;_IOR (&squot;S&squot;, 0x01, int)
 DECL|macro|SNDRV_SEQ_IOCTL_SYSTEM_INFO
 mdefine_line|#define SNDRV_SEQ_IOCTL_SYSTEM_INFO&t;_IOWR(&squot;S&squot;, 0x02, struct sndrv_seq_system_info)
+DECL|macro|SNDRV_SEQ_IOCTL_RUNNING_MODE
+mdefine_line|#define SNDRV_SEQ_IOCTL_RUNNING_MODE&t;_IOWR(&squot;S&squot;, 0x03, struct sndrv_seq_running_info)
 DECL|macro|SNDRV_SEQ_IOCTL_GET_CLIENT_INFO
 mdefine_line|#define SNDRV_SEQ_IOCTL_GET_CLIENT_INFO&t;_IOWR(&squot;S&squot;, 0x10, struct sndrv_seq_client_info)
 DECL|macro|SNDRV_SEQ_IOCTL_SET_CLIENT_INFO

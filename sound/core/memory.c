@@ -2166,6 +2166,10 @@ c_func
 (paren
 id|buf
 comma
+(paren
+r_void
+op_star
+)paren
 id|src
 comma
 id|c
@@ -2301,6 +2305,10 @@ suffix:semicolon
 id|memcpy_toio
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|dst
 comma
 id|buf
@@ -2331,7 +2339,7 @@ multiline_comment|/*&n; * A dirty hack... when the kernel code is fixed this sho
 macro_line|#ifdef __i386__
 DECL|macro|get_phys_addr
 mdefine_line|#define get_phys_addr(x) virt_to_phys(x)
-macro_line|#else /* ppc */
+macro_line|#else /* ppc and x86-64 */
 DECL|macro|get_phys_addr
 mdefine_line|#define get_phys_addr(x) virt_to_bus(x)
 macro_line|#endif

@@ -18,6 +18,7 @@ macro_line|#endif
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
+macro_line|#include &lt;sound/pcm_params.h&gt;
 macro_line|#include &lt;sound/mpu401.h&gt;
 macro_line|#include &lt;sound/opl3.h&gt;
 DECL|macro|SNDRV_LEGACY_AUTO_PROBE

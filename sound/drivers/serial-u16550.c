@@ -42,8 +42,10 @@ DECL|macro|SNDRV_SERIAL_MS124W_SA
 mdefine_line|#define SNDRV_SERIAL_MS124W_SA 2   /* Midiator MS-124W in S/A mode */
 DECL|macro|SNDRV_SERIAL_MS124W_MB
 mdefine_line|#define SNDRV_SERIAL_MS124W_MB 3   /* Midiator MS-124W in M/B mode */
+DECL|macro|SNDRV_SERIAL_GENERIC
+mdefine_line|#define SNDRV_SERIAL_GENERIC 4     /* Generic Interface */
 DECL|macro|SNDRV_SERIAL_MAX_ADAPTOR
-mdefine_line|#define SNDRV_SERIAL_MAX_ADAPTOR SNDRV_SERIAL_MS124W_MB
+mdefine_line|#define SNDRV_SERIAL_MAX_ADAPTOR SNDRV_SERIAL_GENERIC
 DECL|variable|adaptor_names
 r_static
 r_char
@@ -60,6 +62,8 @@ comma
 l_string|&quot;MS-124W S/A&quot;
 comma
 l_string|&quot;MS-124W M/B&quot;
+comma
+l_string|&quot;Generic&quot;
 )brace
 suffix:semicolon
 DECL|variable|snd_index
@@ -172,6 +176,31 @@ DECL|variable|snd_outs
 r_static
 r_int
 id|snd_outs
+(braket
+id|SNDRV_CARDS
+)braket
+op_assign
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+(paren
+id|SNDRV_CARDS
+op_minus
+l_int|1
+)paren
+)braket
+op_assign
+l_int|1
+)brace
+suffix:semicolon
+multiline_comment|/* 1 to 16 */
+DECL|variable|snd_ins
+r_static
+r_int
+id|snd_ins
 (braket
 id|SNDRV_CARDS
 )braket
@@ -451,10 +480,41 @@ comma
 l_string|&quot;Number of MIDI outputs.&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|snd_ins
+comma
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|SNDRV_CARDS
+)paren
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|snd_ins
+comma
+l_string|&quot;Number of MIDI inputs.&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
 id|snd_outs
+comma
+id|SNDRV_ENABLED
+l_string|&quot;,allows:{{1,16}},dialog:list&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_SYNTAX
+c_func
+(paren
+id|snd_ins
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{1,16}},dialog:list&quot;
@@ -488,15 +548,17 @@ c_func
 id|snd_adaptor
 comma
 id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0=Soundcanvas,1=MS-124T,2=MS-124W S/A,3=MS-124W M/B}},dialog:list&quot;
+l_string|&quot;,allows:{{0=Soundcanvas,1=MS-124T,2=MS-124W S/A,3=MS-124W M/B,4=Generic}},dialog:list&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*#define SNDRV_SERIAL_MS124W_MB_NOCOMBO 1*/
 multiline_comment|/* Address outs as 0-3 instead of bitmap */
 DECL|macro|SNDRV_SERIAL_MAX_OUTS
 mdefine_line|#define SNDRV_SERIAL_MAX_OUTS&t;16&t;&t;/* max 64, min 16 */
+DECL|macro|SNDRV_SERIAL_MAX_INS
+mdefine_line|#define SNDRV_SERIAL_MAX_INS&t;16&t;&t;/* max 64, min 16 */
 DECL|macro|TX_BUFF_SIZE
-mdefine_line|#define TX_BUFF_SIZE&t;&t;(1&lt;&lt;9)&t;&t;/* Must be 2^n */
+mdefine_line|#define TX_BUFF_SIZE&t;&t;(1&lt;&lt;15)&t;&t;/* Must be 2^n */
 DECL|macro|TX_BUFF_MASK
 mdefine_line|#define TX_BUFF_MASK&t;&t;(TX_BUFF_SIZE - 1)
 DECL|macro|SERIAL_MODE_NOT_OPENED
@@ -536,6 +598,9 @@ DECL|member|midi_input
 id|snd_rawmidi_substream_t
 op_star
 id|midi_input
+(braket
+id|SNDRV_SERIAL_MAX_INS
+)braket
 suffix:semicolon
 DECL|member|filemode
 r_int
@@ -608,6 +673,16 @@ singleline_comment|// type of adaptor
 DECL|member|adaptor
 r_int
 id|adaptor
+suffix:semicolon
+singleline_comment|// inputs
+DECL|member|prev_in
+r_int
+id|prev_in
+suffix:semicolon
+DECL|member|rstatus
+r_int
+r_char
+id|rstatus
 suffix:semicolon
 singleline_comment|// outputs
 DECL|member|prev_out
@@ -815,6 +890,14 @@ id|c
 comma
 id|status
 suffix:semicolon
+r_int
+id|substream
+suffix:semicolon
+multiline_comment|/* recall previous stream */
+id|substream
+op_assign
+id|uart-&gt;prev_in
+suffix:semicolon
 multiline_comment|/* Read Loop */
 r_while
 c_loop
@@ -845,18 +928,130 @@ op_plus
 id|UART_RX
 )paren
 suffix:semicolon
+multiline_comment|/* keep track of last status byte */
 r_if
 c_cond
+(paren
+id|c
+op_amp
+l_int|0x80
+)paren
+(brace
+id|uart-&gt;rstatus
+op_assign
+id|c
+suffix:semicolon
+)brace
+multiline_comment|/* handle stream switch */
+r_if
+c_cond
+(paren
+id|uart-&gt;adaptor
+op_eq
+id|SNDRV_SERIAL_GENERIC
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|uart-&gt;rstatus
+op_eq
+l_int|0xf5
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|c
+op_le
+id|SNDRV_SERIAL_MAX_INS
+op_logical_and
+id|c
+OG
+l_int|0
+)paren
+id|substream
+op_assign
+id|c
+op_minus
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|c
+op_ne
+l_int|0xf5
+)paren
+id|uart-&gt;rstatus
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* prevent future bytes from being interpreted as streams */
+)brace
+r_else
+r_if
+c_cond
+(paren
 (paren
 id|uart-&gt;filemode
 op_amp
 id|SERIAL_MODE_INPUT_OPEN
+)paren
+op_logical_and
+(paren
+id|uart-&gt;midi_input
+(braket
+id|substream
+)braket
+op_ne
+l_int|NULL
+)paren
 )paren
 (brace
 id|snd_rawmidi_receive
 c_func
 (paren
 id|uart-&gt;midi_input
+(braket
+id|substream
+)braket
+comma
+op_amp
+id|c
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|uart-&gt;filemode
+op_amp
+id|SERIAL_MODE_INPUT_OPEN
+)paren
+op_logical_and
+(paren
+id|uart-&gt;midi_input
+(braket
+id|substream
+)braket
+op_ne
+l_int|NULL
+)paren
+)paren
+(brace
+id|snd_rawmidi_receive
+c_func
+(paren
+id|uart-&gt;midi_input
+(braket
+id|substream
+)braket
 comma
 op_amp
 id|c
@@ -883,6 +1078,11 @@ id|uart-&gt;base
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* remember the last stream */
+id|uart-&gt;prev_in
+op_assign
+id|substream
+suffix:semicolon
 multiline_comment|/* no need of check SERIAL_MODE_OUTPUT_OPEN because if not,&n;&t;   buffer is never filled. */
 multiline_comment|/* Check write status */
 r_if
@@ -904,6 +1104,10 @@ c_cond
 id|uart-&gt;adaptor
 op_eq
 id|SNDRV_SERIAL_MS124W_SA
+op_logical_or
+id|uart-&gt;adaptor
+op_eq
+id|SNDRV_SERIAL_GENERIC
 )paren
 (brace
 multiline_comment|/* Can&squot;t use FIFO, must send only when CTS is true */
@@ -1566,6 +1770,27 @@ multiline_comment|/* Enable Modem status interrupt */
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|uart-&gt;adaptor
+op_eq
+id|SNDRV_SERIAL_GENERIC
+)paren
+(brace
+id|byte
+op_assign
+id|UART_IER_RDI
+multiline_comment|/* Enable Receiver data interrupt */
+op_or
+id|UART_IER_MSI
+multiline_comment|/* Enable Modem status interrupt */
+op_or
+id|UART_IER_THRI
+multiline_comment|/* Enable Transmitter holding register empty interupt */
+suffix:semicolon
+)brace
+r_else
 (brace
 id|byte
 op_assign
@@ -1883,6 +2108,9 @@ op_or_assign
 id|SERIAL_MODE_INPUT_OPEN
 suffix:semicolon
 id|uart-&gt;midi_input
+(braket
+id|substream-&gt;number
+)braket
 op_assign
 id|substream
 suffix:semicolon
@@ -1945,6 +2173,9 @@ op_complement
 id|SERIAL_MODE_INPUT_OPEN
 suffix:semicolon
 id|uart-&gt;midi_input
+(braket
+id|substream-&gt;number
+)braket
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2287,9 +2518,15 @@ l_int|0
 multiline_comment|/* Buffer empty? */
 op_logical_and
 (paren
+(paren
 id|uart-&gt;adaptor
 op_ne
 id|SNDRV_SERIAL_MS124W_SA
+op_logical_and
+id|uart-&gt;adaptor
+op_ne
+id|SNDRV_SERIAL_GENERIC
+)paren
 op_logical_or
 (paren
 id|uart-&gt;fifo_count
@@ -2457,6 +2694,13 @@ suffix:semicolon
 r_char
 id|first
 suffix:semicolon
+r_static
+r_int
+r_int
+id|lasttime
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Interupts are disabled during the updating of the tx_buff,&n;&t; * since it is &squot;bad&squot; to have two processes updating the same&n;&t; * variables (ie buff_in &amp; buff_out)&n;&t; */
 id|spin_lock_irqsave
 c_func
@@ -2602,16 +2846,6 @@ c_loop
 l_int|1
 )paren
 (brace
-multiline_comment|/* buffer full? */
-r_if
-c_cond
-(paren
-id|uart-&gt;buff_in_count
-op_ge
-id|TX_BUFF_SIZE
-)paren
-r_break
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2630,6 +2864,7 @@ l_int|1
 )paren
 r_break
 suffix:semicolon
+multiline_comment|/* Also send F5 after 3 seconds with no data to handle device disconnect */
 r_if
 c_cond
 (paren
@@ -2637,15 +2872,43 @@ id|first
 op_eq
 l_int|0
 op_logical_and
+(paren
 id|uart-&gt;adaptor
 op_eq
 id|SNDRV_SERIAL_SOUNDCANVAS
+op_logical_or
+id|uart-&gt;adaptor
+op_eq
+id|SNDRV_SERIAL_GENERIC
+)paren
 op_logical_and
+(paren
 id|uart-&gt;prev_out
 op_ne
 id|substream-&gt;number
+op_logical_or
+id|jiffies
+op_minus
+id|lasttime
+OG
+l_int|3
+op_star
+id|HZ
+)paren
 )paren
 (brace
+multiline_comment|/* We will need three bytes of data here (worst case). */
+r_if
+c_cond
+(paren
+id|uart-&gt;buff_in_count
+op_ge
+id|TX_BUFF_SIZE
+op_minus
+l_int|3
+)paren
+r_break
+suffix:semicolon
 multiline_comment|/* Roland Soundcanvas part selection */
 multiline_comment|/* If this substream of the data is different previous&n;&t;&t;&t;&t;   substream in this uart, send the change part event */
 id|uart-&gt;prev_out
@@ -2680,9 +2943,17 @@ multiline_comment|/* If midi_byte is a data byte, send the previous status byte 
 r_if
 c_cond
 (paren
+(paren
 id|midi_byte
 OL
 l_int|0x80
+)paren
+op_logical_and
+(paren
+id|uart-&gt;adaptor
+op_eq
+id|SNDRV_SERIAL_SOUNDCANVAS
+)paren
 )paren
 id|snd_uart16550_output_byte
 c_func
@@ -2698,6 +2969,16 @@ id|uart-&gt;prev_out
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* buffer full? */
+r_if
+c_cond
+(paren
+id|uart-&gt;buff_in_count
+op_ge
+id|TX_BUFF_SIZE
+)paren
+r_break
+suffix:semicolon
 multiline_comment|/* send midi byte */
 id|snd_uart16550_output_byte
 c_func
@@ -2732,6 +3013,10 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+id|lasttime
+op_assign
+id|jiffies
+suffix:semicolon
 )brace
 id|spin_unlock_irqrestore
 c_func
@@ -3175,6 +3460,14 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+id|uart-&gt;prev_in
+op_assign
+l_int|0
+suffix:semicolon
+id|uart-&gt;rstatus
+op_assign
+l_int|0
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -3326,6 +3619,9 @@ comma
 r_int
 id|outs
 comma
+r_int
+id|ins
+comma
 id|snd_rawmidi_t
 op_star
 op_star
@@ -3356,7 +3652,7 @@ id|device
 comma
 id|outs
 comma
-l_int|1
+id|ins
 comma
 op_amp
 id|rrawmidi
@@ -3473,6 +3769,13 @@ id|dev
 r_case
 id|SNDRV_SERIAL_SOUNDCANVAS
 suffix:colon
+id|snd_ins
+(braket
+id|dev
+)braket
+op_assign
+l_int|1
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -3482,6 +3785,13 @@ r_case
 id|SNDRV_SERIAL_MS124W_SA
 suffix:colon
 id|snd_outs
+(braket
+id|dev
+)braket
+op_assign
+l_int|1
+suffix:semicolon
+id|snd_ins
 (braket
 id|dev
 )braket
@@ -3500,6 +3810,18 @@ id|dev
 op_assign
 l_int|16
 suffix:semicolon
+id|snd_ins
+(braket
+id|dev
+)braket
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SNDRV_SERIAL_GENERIC
+suffix:colon
 r_break
 suffix:semicolon
 r_default
@@ -3541,6 +3863,35 @@ comma
 id|SNDRV_SERIAL_MAX_OUTS
 comma
 id|snd_outs
+(braket
+id|dev
+)braket
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|snd_ins
+(braket
+id|dev
+)braket
+template_param
+id|SNDRV_SERIAL_MAX_INS
+)paren
+(brace
+id|snd_printk
+c_func
+(paren
+l_string|&quot;Count of inputs is out of range 1-%d (%d)&bslash;n&quot;
+comma
+id|SNDRV_SERIAL_MAX_INS
+comma
+id|snd_ins
 (braket
 id|dev
 )braket
@@ -3714,6 +4065,11 @@ id|snd_outs
 id|dev
 )braket
 comma
+id|snd_ins
+(braket
+id|dev
+)braket
+comma
 op_amp
 id|uart-&gt;rmidi
 )paren
@@ -3737,7 +4093,7 @@ c_func
 (paren
 id|card-&gt;longname
 comma
-l_string|&quot;%s at 0x%lx, irq %d speed %d div %d outs %d adaptor %s&quot;
+l_string|&quot;%s at 0x%lx, irq %d speed %d div %d outs %d ins %d adaptor %s&quot;
 comma
 id|card-&gt;shortname
 comma
@@ -3753,6 +4109,11 @@ r_int
 id|uart-&gt;divisor
 comma
 id|snd_outs
+(braket
+id|dev
+)braket
+comma
+id|snd_ins
 (braket
 id|dev
 )braket
@@ -3936,7 +4297,7 @@ c_func
 id|alsa_card_serial_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-serial=snd_enable,snd_index,snd_id,&n;&t;&t;&t; snd_port,snd_irq,snd_speed,snd_base,snd_outs */
+multiline_comment|/* format is: snd-serial=snd_enable,snd_index,snd_id,&n;&t;&t;&t; snd_port,snd_irq,snd_speed,snd_base,snd_outs,&n; &t;&t;&t; snd_ins,snd_adaptor */
 DECL|function|alsa_card_serial_setup
 r_static
 r_int
@@ -4087,6 +4448,21 @@ id|str
 comma
 op_amp
 id|snd_outs
+(braket
+id|nr_dev
+)braket
+)paren
+op_eq
+l_int|2
+op_logical_and
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|snd_ins
 (braket
 id|nr_dev
 )braket

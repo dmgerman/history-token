@@ -24,8 +24,6 @@ DECL|macro|SLAB_USER
 mdefine_line|#define&t;SLAB_USER&t;&t;GFP_USER
 DECL|macro|SLAB_KERNEL
 mdefine_line|#define&t;SLAB_KERNEL&t;&t;GFP_KERNEL
-DECL|macro|SLAB_NFS
-mdefine_line|#define&t;SLAB_NFS&t;&t;GFP_NFS
 DECL|macro|SLAB_DMA
 mdefine_line|#define&t;SLAB_DMA&t;&t;GFP_DMA
 DECL|macro|SLAB_LEVEL_MASK
