@@ -430,11 +430,11 @@ l_int|16
 )braket
 op_assign
 (brace
-l_string|&quot;write-through&quot;
+l_string|&quot;VIVT write-through&quot;
 comma
-l_string|&quot;write-back&quot;
+l_string|&quot;VIVT write-back&quot;
 comma
-l_string|&quot;write-back&quot;
+l_string|&quot;VIVT write-back&quot;
 comma
 l_string|&quot;undefined 3&quot;
 comma
@@ -442,9 +442,9 @@ l_string|&quot;undefined 4&quot;
 comma
 l_string|&quot;undefined 5&quot;
 comma
-l_string|&quot;write-back&quot;
+l_string|&quot;VIVT write-back&quot;
 comma
-l_string|&quot;write-back&quot;
+l_string|&quot;VIVT write-back&quot;
 comma
 l_string|&quot;undefined 8&quot;
 comma
@@ -458,7 +458,7 @@ l_string|&quot;undefined 12&quot;
 comma
 l_string|&quot;undefined 13&quot;
 comma
-l_string|&quot;undefined 14&quot;
+l_string|&quot;VIPT write-back&quot;
 comma
 l_string|&quot;undefined 15&quot;
 comma
@@ -503,7 +503,7 @@ l_string|&quot;undefined 12&quot;
 comma
 l_string|&quot;undefined 13&quot;
 comma
-l_string|&quot;undefined 14&quot;
+l_string|&quot;cp15 c7 ops&quot;
 comma
 l_string|&quot;undefined 15&quot;
 comma
@@ -548,7 +548,7 @@ l_string|&quot;undefined 12&quot;
 comma
 l_string|&quot;undefined 13&quot;
 comma
-l_string|&quot;undefined 14&quot;
+l_string|&quot;format C&quot;
 comma
 l_string|&quot;undefined 15&quot;
 comma
@@ -580,7 +580,7 @@ l_string|&quot;5TE&quot;
 comma
 l_string|&quot;5TEJ&quot;
 comma
-l_string|&quot;?(9)&quot;
+l_string|&quot;6TEJ&quot;
 comma
 l_string|&quot;?(10)&quot;
 comma

@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/q40_master.h&gt;
 macro_line|#include &lt;asm/q40ints.h&gt;
 multiline_comment|/* &n; * Q40 IRQs are defined as follows: &n; *            3,4,5,6,7,10,11,14,15 : ISA dev IRQs&n; *            16-31: reserved&n; *            32   : keyboard int&n; *            33   : frame int (50/200 Hz periodic timer)&n; *            34   : sample int (10/20 KHz periodic timer)&n; *          &n;*/

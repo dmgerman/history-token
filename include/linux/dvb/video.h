@@ -135,6 +135,8 @@ id|type
 suffix:semicolon
 DECL|macro|VIDEO_EVENT_SIZE_CHANGED
 mdefine_line|#define VIDEO_EVENT_SIZE_CHANGED 1
+DECL|macro|VIDEO_EVENT_FRAME_RATE_CHANGED
+mdefine_line|#define VIDEO_EVENT_FRAME_RATE_CHANGED&t;2
 DECL|member|timestamp
 id|time_t
 id|timestamp
@@ -145,6 +147,12 @@ DECL|member|size
 id|video_size_t
 id|size
 suffix:semicolon
+DECL|member|frame_rate
+r_int
+r_int
+id|frame_rate
+suffix:semicolon
+multiline_comment|/* in frames per 1000sec */
 DECL|member|u
 )brace
 id|u
@@ -388,5 +396,7 @@ DECL|macro|VIDEO_SET_ATTRIBUTES
 mdefine_line|#define VIDEO_SET_ATTRIBUTES       _IO(&squot;o&squot;, 53)
 DECL|macro|VIDEO_GET_SIZE
 mdefine_line|#define VIDEO_GET_SIZE             _IOR(&squot;o&squot;, 55, video_size_t)
+DECL|macro|VIDEO_GET_FRAME_RATE
+mdefine_line|#define VIDEO_GET_FRAME_RATE       _IOR(&squot;o&squot;, 56, unsigned int)
 macro_line|#endif /*_DVBVIDEO_H_*/
 eof

@@ -446,7 +446,6 @@ op_assign
 r_void
 op_star
 )paren
-op_amp
 id|hci_vhci-&gt;hdev
 suffix:semicolon
 id|skb-&gt;pkt_type
@@ -619,7 +618,7 @@ id|total
 op_add_assign
 id|len
 suffix:semicolon
-id|hci_vhci-&gt;hdev.stat.byte_tx
+id|hci_vhci-&gt;hdev-&gt;stat.byte_tx
 op_add_assign
 id|len
 suffix:semicolon
@@ -632,7 +631,7 @@ id|skb-&gt;pkt_type
 r_case
 id|HCI_COMMAND_PKT
 suffix:colon
-id|hci_vhci-&gt;hdev.stat.cmd_tx
+id|hci_vhci-&gt;hdev-&gt;stat.cmd_tx
 op_increment
 suffix:semicolon
 r_break
@@ -640,7 +639,7 @@ suffix:semicolon
 r_case
 id|HCI_ACLDATA_PKT
 suffix:colon
-id|hci_vhci-&gt;hdev.stat.acl_tx
+id|hci_vhci-&gt;hdev-&gt;stat.acl_tx
 op_increment
 suffix:semicolon
 r_break
@@ -648,7 +647,7 @@ suffix:semicolon
 r_case
 id|HCI_SCODATA_PKT
 suffix:colon
-id|hci_vhci-&gt;hdev.stat.cmd_tx
+id|hci_vhci-&gt;hdev-&gt;stat.cmd_tx
 op_increment
 suffix:semicolon
 r_break
@@ -1072,8 +1071,32 @@ suffix:semicolon
 multiline_comment|/* Initialize and register HCI device */
 id|hdev
 op_assign
-op_amp
+id|hci_alloc_dev
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hdev
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|hci_vhci
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|hci_vhci-&gt;hdev
+op_assign
+id|hdev
 suffix:semicolon
 id|hdev-&gt;type
 op_assign
@@ -1125,6 +1148,12 @@ c_func
 id|hci_vhci
 )paren
 suffix:semicolon
+id|hci_free_dev
+c_func
+(paren
+id|hdev
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EBUSY
@@ -1173,7 +1202,6 @@ c_cond
 id|hci_unregister_dev
 c_func
 (paren
-op_amp
 id|hci_vhci-&gt;hdev
 )paren
 OL
@@ -1185,10 +1213,16 @@ c_func
 (paren
 l_string|&quot;Can&squot;t unregister HCI device %s&quot;
 comma
-id|hci_vhci-&gt;hdev.name
+id|hci_vhci-&gt;hdev-&gt;name
 )paren
 suffix:semicolon
 )brace
+id|hci_free_dev
+c_func
+(paren
+id|hci_vhci-&gt;hdev
+)paren
+suffix:semicolon
 id|file-&gt;private_data
 op_assign
 l_int|NULL

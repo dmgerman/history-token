@@ -102,7 +102,6 @@ r_int
 id|line
 suffix:semicolon
 DECL|member|flags
-r_volatile
 r_int
 r_int
 id|flags

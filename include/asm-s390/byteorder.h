@@ -199,11 +199,6 @@ l_string|&quot;d&quot;
 (paren
 id|x
 )paren
-comma
-l_string|&quot;m&quot;
-(paren
-id|x
-)paren
 )paren
 suffix:semicolon
 r_return

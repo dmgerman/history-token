@@ -591,6 +591,8 @@ id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Set user creds for this exportpoint */
+id|error
+op_assign
 id|nfsd_setuser
 c_func
 (paren
@@ -599,6 +601,24 @@ comma
 id|exp
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+(brace
+id|error
+op_assign
+id|nfserrno
+c_func
+(paren
+id|error
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Look up the dentry using the NFS file handle.&n;&t;&t; */
 id|error
 op_assign

@@ -140,8 +140,6 @@ suffix:semicolon
 multiline_comment|/* token */
 )brace
 suffix:semicolon
-DECL|macro|GSS_SEQ_WIN
-mdefine_line|#define GSS_SEQ_WIN&t;5
 multiline_comment|/* The gss_cl_ctx struct holds all the information the rpcsec_gss client&n; * code needs to know about a single security context.  In particular,&n; * gc_gss_ctx is the context handle that is used to do gss-api calls, while&n; * gc_wire_ctx is the context handle that is used to identify the context on&n; * the wire when communicating with a server. */
 DECL|struct|gss_cl_ctx
 r_struct

@@ -10,8 +10,8 @@ macro_line|#include &lt;asm/iSeries/HvLpConfig.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
-DECL|macro|MODULE_VERSION
-mdefine_line|#define MODULE_VERSION &quot;1.0&quot;
+DECL|macro|MODULE_VERS
+mdefine_line|#define MODULE_VERS &quot;1.0&quot;
 DECL|macro|MODULE_NAME
 mdefine_line|#define MODULE_NAME &quot;lparcfg&quot;
 DECL|variable|proc_ppc64_lparcfg

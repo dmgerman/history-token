@@ -204,7 +204,7 @@ comma
 dot
 id|sg_tablesize
 op_assign
-id|ATA_MAX_PRD
+id|LIBATA_MAX_PRD
 comma
 dot
 id|max_sectors

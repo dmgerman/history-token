@@ -980,7 +980,7 @@ id|LANCE_IRQ
 comma
 id|lance_interrupt
 comma
-l_int|0
+id|SA_INTERRUPT
 comma
 l_string|&quot;SUN3 Lance&quot;
 comma
@@ -1468,8 +1468,6 @@ id|DREG
 )paren
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1913,6 +1911,18 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+id|DPRINTK
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;%s: transmit start.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Transmitter timeout, serious problems. */
 r_if
@@ -3765,8 +3775,6 @@ multiline_comment|/* We stop the LANCE here -- it occasionally polls&n;&t;   mem
 id|DREG
 op_assign
 id|CSR0_STOP
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

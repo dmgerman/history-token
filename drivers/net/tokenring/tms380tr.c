@@ -30,6 +30,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/trdevice.h&gt;
+macro_line|#include &lt;linux/firmware.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -37,7 +38,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;tms380tr.h&quot;&t;&t;/* Our Stuff */
-macro_line|#include &quot;tms380tr_microcode.h&quot;&t;/* TI microcode for COMMprocessor */
 multiline_comment|/* Use 0 for production, 1 for verification, 2 for debug, and&n; * 3 for very verbose debug.&n; */
 macro_line|#ifndef TMS380TR_DEBUG
 DECL|macro|TMS380TR_DEBUG
@@ -50,6 +50,12 @@ r_int
 id|tms380tr_debug
 op_assign
 id|TMS380TR_DEBUG
+suffix:semicolon
+DECL|variable|tms_device
+r_static
+r_struct
+id|device
+id|tms_device
 suffix:semicolon
 multiline_comment|/* Index to functions, as function prototypes.&n; * Alphabetical by function name.&n; */
 multiline_comment|/* &quot;A&quot; */
@@ -250,19 +256,19 @@ id|dev
 suffix:semicolon
 multiline_comment|/* &quot;H&quot; */
 r_static
-r_void
+r_int
 id|tms380tr_hardware_send_packet
 c_func
 (paren
 r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
 id|net_device
 op_star
 id|dev
-comma
-r_struct
-id|net_local
-op_star
-id|tp
 )paren
 suffix:semicolon
 multiline_comment|/* &quot;I&quot; */
@@ -797,6 +803,13 @@ op_amp
 id|tp-&gt;lock
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|tp-&gt;timer
+)paren
+suffix:semicolon
 multiline_comment|/* Reset the hardware here. Don&squot;t forget to set the station address. */
 r_if
 c_cond
@@ -872,13 +885,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-id|init_timer
-c_func
-(paren
-op_amp
-id|tp-&gt;timer
-)paren
-suffix:semicolon
 id|tp-&gt;timer.expires
 op_assign
 id|jiffies
@@ -1385,17 +1391,6 @@ suffix:semicolon
 id|tp-&gt;MaxPacketSize
 op_assign
 id|DEFAULT_PACKET_SIZE
-suffix:semicolon
-id|skb_queue_head_init
-c_func
-(paren
-op_amp
-id|tp-&gt;SendSkbQueue
-)paren
-suffix:semicolon
-id|tp-&gt;QueueSkb
-op_assign
-id|MAX_TX_QUEUE
 suffix:semicolon
 multiline_comment|/* Create circular chain of transmit lists */
 r_for
@@ -2454,85 +2449,54 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-multiline_comment|/*&n;&t; * Block transmits from overlapping. &n;&t; */
+r_int
+id|err
+suffix:semicolon
+id|err
+op_assign
+id|tms380tr_hardware_send_packet
+c_func
+(paren
+id|skb
+comma
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tp-&gt;TplFree-&gt;NextTPLPtr-&gt;BusyFlag
+)paren
+(brace
 id|netif_stop_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tp-&gt;QueueSkb
-op_eq
-l_int|0
-)paren
-(brace
-r_return
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Return with tbusy set: queue full */
-id|tp-&gt;QueueSkb
-op_decrement
-suffix:semicolon
-id|skb_queue_tail
-c_func
-(paren
-op_amp
-id|tp-&gt;SendSkbQueue
-comma
-id|skb
-)paren
-suffix:semicolon
-id|tms380tr_hardware_send_packet
-c_func
-(paren
-id|dev
-comma
-id|tp
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tp-&gt;QueueSkb
-OG
-l_int|0
-)paren
-(brace
-id|netif_wake_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 )brace
 r_return
 (paren
-l_int|0
+id|err
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Move frames from internal skb queue into adapter tx queue&n; */
+multiline_comment|/*&n; * Move frames into adapter tx queue&n; */
 DECL|function|tms380tr_hardware_send_packet
 r_static
-r_void
+r_int
 id|tms380tr_hardware_send_packet
 c_func
 (paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
 r_struct
 id|net_device
 op_star
 id|dev
-comma
-r_struct
-id|net_local
-op_star
-id|tp
 )paren
 (brace
 id|TPL
@@ -2551,11 +2515,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -2564,14 +2523,19 @@ id|dmabuf
 comma
 id|newbuf
 suffix:semicolon
-r_for
-c_loop
+r_struct
+id|net_local
+op_star
+id|tp
+op_assign
 (paren
-suffix:semicolon
-suffix:semicolon
+r_struct
+id|net_local
+op_star
 )paren
-(brace
-multiline_comment|/* Try to get a free TPL from the chain.&n;&t;&t; *&n;&t;&t; * NOTE: We *must* always leave one unused TPL in the chain, &n;&t;&t; * because otherwise the adapter might send frames twice.&n;&t;&t; */
+id|dev-&gt;priv
+suffix:semicolon
+multiline_comment|/* Try to get a free TPL from the chain.&n;&t; *&n;&t; * NOTE: We *must* always leave one unused TPL in the chain,&n;&t; * because otherwise the adapter might send frames twice.&n;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2586,8 +2550,8 @@ c_cond
 (paren
 id|tp-&gt;TplFree-&gt;NextTPLPtr-&gt;BusyFlag
 )paren
-multiline_comment|/* No free TPL */
 (brace
+multiline_comment|/* No free TPL */
 r_if
 c_cond
 (paren
@@ -2614,41 +2578,9 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Send first buffer from queue */
-id|skb
-op_assign
-id|skb_dequeue
-c_func
-(paren
-op_amp
-id|tp-&gt;SendSkbQueue
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb
-op_eq
-l_int|NULL
-)paren
-(brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|tp-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|tp-&gt;QueueSkb
-op_increment
-suffix:semicolon
 id|dmabuf
 op_assign
 l_int|0
@@ -2873,8 +2805,8 @@ comma
 id|flags
 )paren
 suffix:semicolon
-)brace
 r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Write the given value to the &squot;Status&squot; field of the specified TPL.&n; * NOTE: This function should be used whenever the status of any TPL must be&n; * modified by the driver, because the compiler may otherwise change the&n; * order of instructions such that writing the TPL status may be executed at&n; * an undesireable time. When this function is used, the status is always&n; * written when the function is called.&n; */
@@ -3062,10 +2994,6 @@ id|jiffies
 )paren
 op_logical_and
 (paren
-id|tp-&gt;QueueSkb
-OL
-id|MAX_TX_QUEUE
-op_logical_or
 id|tp-&gt;TplFree
 op_ne
 id|tp-&gt;TplBusy
@@ -5058,20 +4986,83 @@ r_int
 r_int
 op_star
 id|fw_ptr
-op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-op_amp
-id|tms380tr_code
 suffix:semicolon
 r_int
 r_int
 id|count
 comma
 id|c
+comma
+id|count2
+suffix:semicolon
+r_const
+r_struct
+id|firmware
+op_star
+id|fw_entry
+op_assign
+l_int|NULL
+suffix:semicolon
+id|strncpy
+c_func
+(paren
+id|tms_device.bus_id
+comma
+id|dev-&gt;name
+comma
+id|BUS_ID_SIZE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|request_firmware
+c_func
+(paren
+op_amp
+id|fw_entry
+comma
+l_string|&quot;tms380tr.bin&quot;
+comma
+op_amp
+id|tms_device
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ALERT
+l_string|&quot;%s: firmware %s is missing, cannot start.&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+l_string|&quot;tms380tr.bin&quot;
+)paren
+suffix:semicolon
+r_return
+(paren
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+id|fw_ptr
+op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
+id|fw_entry-&gt;data
+suffix:semicolon
+id|count2
+op_assign
+id|fw_entry-&gt;size
+op_div
+l_int|2
 suffix:semicolon
 multiline_comment|/* Hardware adapter reset */
 id|SIFWRITEW
@@ -5183,9 +5174,22 @@ c_func
 l_int|40
 )paren
 suffix:semicolon
+id|count
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Download firmware via DIO interface: */
 r_do
 (brace
+r_if
+c_cond
+(paren
+id|count2
+OL
+l_int|3
+)paren
+r_continue
+suffix:semicolon
 multiline_comment|/* Download first address part */
 id|SIFWRITEW
 c_func
@@ -5199,6 +5203,9 @@ suffix:semicolon
 id|fw_ptr
 op_increment
 suffix:semicolon
+id|count2
+op_decrement
+suffix:semicolon
 multiline_comment|/* Download second address part */
 id|SIFWRITEW
 c_func
@@ -5211,6 +5218,9 @@ id|SIFADD
 suffix:semicolon
 id|fw_ptr
 op_increment
+suffix:semicolon
+id|count2
+op_decrement
 suffix:semicolon
 r_if
 c_cond
@@ -5230,6 +5240,18 @@ id|fw_ptr
 op_increment
 suffix:semicolon
 multiline_comment|/* Download block data */
+id|count2
+op_decrement
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+OG
+id|count2
+)paren
+r_continue
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5253,6 +5275,9 @@ id|SIFINC
 suffix:semicolon
 id|fw_ptr
 op_increment
+suffix:semicolon
+id|count2
+op_decrement
 suffix:semicolon
 )brace
 )brace
@@ -5285,6 +5310,17 @@ comma
 id|SIFACL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|fw_entry
+)paren
+id|release_firmware
+c_func
+(paren
+id|fw_entry
+)paren
+suffix:semicolon
 r_return
 (paren
 l_int|1
@@ -5302,6 +5338,17 @@ l_int|0
 (brace
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|fw_entry
+)paren
+id|release_firmware
+c_func
+(paren
+id|fw_entry
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -7145,11 +7192,9 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s: Adapter closed (Reopening),&quot;
-l_string|&quot;QueueSkb %d, CurrentRingStat %x&bslash;n&quot;
+l_string|&quot;CurrentRingStat %x&bslash;n&quot;
 comma
 id|dev-&gt;name
-comma
-id|tp-&gt;QueueSkb
 comma
 id|tp-&gt;CurrentRingStatus
 )paren
@@ -7986,11 +8031,6 @@ id|TPL
 op_star
 id|tpl
 suffix:semicolon
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
 multiline_comment|/*&n;&t; * NOTE: There must not be an active TRANSMIT command pending, when&n;&t; * this function is called.&n;&t; */
 r_if
 c_cond
@@ -8075,43 +8115,6 @@ id|dev_kfree_skb_any
 c_func
 (paren
 id|tpl-&gt;Skb
-)paren
-suffix:semicolon
-)brace
-r_for
-c_loop
-(paren
-suffix:semicolon
-suffix:semicolon
-)paren
-(brace
-id|skb
-op_assign
-id|skb_dequeue
-c_func
-(paren
-op_amp
-id|tp-&gt;SendSkbQueue
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb
-op_eq
-l_int|NULL
-)paren
-(brace
-r_break
-suffix:semicolon
-)brace
-id|tp-&gt;QueueSkb
-op_increment
-suffix:semicolon
-id|dev_kfree_skb_any
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 )brace
@@ -8364,26 +8367,17 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* &quot;free&quot; TPL */
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tp-&gt;TplFree-&gt;NextTPLPtr-&gt;BusyFlag
+)paren
+(brace
 id|netif_wake_queue
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tp-&gt;QueueSkb
-OL
-id|MAX_TX_QUEUE
-)paren
-(brace
-id|tms380tr_hardware_send_packet
-c_func
-(paren
-id|dev
-comma
-id|tp
 )paren
 suffix:semicolon
 )brace
@@ -9280,12 +9274,6 @@ comma
 id|PCI_DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|dev-&gt;priv
-)paren
-suffix:semicolon
 )brace
 DECL|function|tmsdev_init
 r_int
@@ -9307,57 +9295,11 @@ op_star
 id|pdev
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|dev-&gt;priv
-op_eq
-l_int|NULL
-)paren
-(brace
 r_struct
 id|net_local
 op_star
 id|tms_local
 suffix:semicolon
-id|dev-&gt;priv
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|net_local
-)paren
-comma
-id|GFP_KERNEL
-op_or
-id|GFP_DMA
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;priv
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: Out of memory for DMA&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -9451,7 +9393,6 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* These can be overridden by the card driver if needed */
 id|dev-&gt;open

@@ -1011,7 +1011,7 @@ id|x
 id|alternative_input
 c_func
 (paren
-id|ASM_NOP4
+id|ASM_NOP5
 comma
 l_string|&quot;prefetchw (%1)&quot;
 comma

@@ -205,6 +205,7 @@ id|dev
 )paren
 (brace
 r_int
+r_int
 id|start
 suffix:semicolon
 multiline_comment|/* wait for registers to be programmed */
@@ -236,13 +237,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-op_minus
+comma
 id|start
-OG
+op_plus
 id|HZ
 op_div
 l_int|20
+)paren
 )paren
 (brace
 id|DEB_S
@@ -299,13 +304,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-op_minus
+comma
 id|start
-OG
+op_plus
 id|HZ
 op_div
 l_int|4
+)paren
 )paren
 (brace
 id|DEB_S

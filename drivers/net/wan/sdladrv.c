@@ -1267,7 +1267,9 @@ suffix:semicolon
 multiline_comment|/******* Kernel Loadable Module Entry Points ********************************/
 multiline_comment|/*============================================================================&n; * Module &squot;insert&squot; entry point.&n; * o print announcement&n; * o initialize static data&n; * o calibrate SDLA shared memory access delay.&n; *&n; * Return:&t;0&t;Ok&n; *&t;&t;&lt; 0&t;error.&n; * Context:&t;process&n; */
 DECL|function|sdladrv_init
+r_static
 r_int
+id|__init
 id|sdladrv_init
 c_func
 (paren
@@ -1341,11 +1343,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 multiline_comment|/*============================================================================&n; * Module &squot;remove&squot; entry point.&n; * o release all remaining system resources&n; */
 DECL|function|sdladrv_cleanup
 r_static
 r_void
+id|__exit
 id|sdladrv_cleanup
 c_func
 (paren
@@ -1367,7 +1369,6 @@ c_func
 id|sdladrv_cleanup
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/******* Kernel APIs ********************************************************/
 multiline_comment|/*============================================================================&n; * Set up adapter.&n; * o detect adapter type&n; * o verify hardware configuration options&n; * o check for hardware conflicts&n; * o set up adapter shared memory&n; * o test adapter memory&n; * o load firmware&n; * Return:&t;0&t;ok.&n; *&t;&t;&lt; 0&t;error&n; */
 DECL|variable|sdla_setup

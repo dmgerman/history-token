@@ -44,6 +44,8 @@ mdefine_line|#define set_msi_irq_affinity&t;set_msi_affinity
 macro_line|#else
 DECL|macro|set_msi_irq_affinity
 mdefine_line|#define set_msi_irq_affinity&t;NULL
+macro_line|#endif
+macro_line|#ifndef CONFIG_IRQBALANCE
 DECL|function|move_msi
 r_static
 r_inline

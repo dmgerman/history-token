@@ -172,7 +172,7 @@ suffix:semicolon
 DECL|function|read_pci_config_16
 r_static
 r_inline
-id|u8
+id|u16
 id|read_pci_config_16
 c_func
 (paren

@@ -969,7 +969,6 @@ id|iommu_aperture
 op_assign
 l_int|1
 suffix:semicolon
-suffix:semicolon
 id|aper_order
 op_assign
 (paren

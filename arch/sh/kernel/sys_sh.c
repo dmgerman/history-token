@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/msg.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
@@ -1131,27 +1132,6 @@ id|loff_t
 id|pos
 )paren
 (brace
-r_extern
-id|asmlinkage
-id|ssize_t
-id|sys_pread64
-c_func
-(paren
-r_int
-r_int
-id|fd
-comma
-r_char
-op_star
-id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|pos
-)paren
-suffix:semicolon
 r_return
 id|sys_pread64
 c_func
@@ -1191,28 +1171,6 @@ id|loff_t
 id|pos
 )paren
 (brace
-r_extern
-id|asmlinkage
-id|ssize_t
-id|sys_pwrite64
-c_func
-(paren
-r_int
-r_int
-id|fd
-comma
-r_const
-r_char
-op_star
-id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|pos
-)paren
-suffix:semicolon
 r_return
 id|sys_pwrite64
 c_func

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
@@ -3330,26 +3331,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-r_extern
-id|asmlinkage
-r_int
-id|sys_rt_sigprocmask
-(paren
-r_int
-id|how
-comma
-id|sigset_t
-op_star
-id|set
-comma
-id|sigset_t
-op_star
-id|oset
-comma
-r_int
-id|sigsetsize
-)paren
-suffix:semicolon
 id|asmlinkage
 r_int
 DECL|function|sys32_rt_sigprocmask
@@ -3540,26 +3521,6 @@ id|sigsetsize
 )paren
 (brace
 r_extern
-id|asmlinkage
-r_int
-id|sys_rt_sigtimedwait
-(paren
-r_const
-id|sigset_t
-op_star
-comma
-id|siginfo_t
-op_star
-comma
-r_const
-r_struct
-id|timespec
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|copy_siginfo_to_user32
 (paren
@@ -3716,19 +3677,6 @@ op_star
 id|uinfo
 )paren
 (brace
-r_extern
-id|asmlinkage
-r_int
-id|sys_rt_sigqueueinfo
-(paren
-r_int
-comma
-r_int
-comma
-id|siginfo_t
-op_star
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|copy_siginfo_from_user32

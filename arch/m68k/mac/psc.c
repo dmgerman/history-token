@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/macintosh.h&gt; 
 macro_line|#include &lt;asm/macints.h&gt; 
 macro_line|#include &lt;asm/mac_psc.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 DECL|macro|DEBUG_PSC
 mdefine_line|#define DEBUG_PSC
 DECL|variable|psc_present

@@ -1,10 +1,9 @@
 macro_line|#include &lt;asm/types.h&gt;
-DECL|variable|__initdata
+DECL|variable|dsp_bootcode
 id|u8
 id|dsp_bootcode
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 l_int|0x08

@@ -11,8 +11,6 @@ DECL|macro|HB_NOLOCK
 mdefine_line|#define HB_NOLOCK&t;0&t;/* No concurent access prevention */
 DECL|macro|HB_LOCK
 mdefine_line|#define HB_LOCK&t;&t;1&t;/* Prevent concurent write with global lock */
-DECL|macro|HB_SORTED
-mdefine_line|#define HB_SORTED&t;4&t;/* Not yet supported */
 multiline_comment|/*&n; * Hash defines&n; */
 DECL|macro|HASHBIN_SIZE
 mdefine_line|#define HASHBIN_SIZE   8
@@ -161,6 +159,7 @@ comma
 r_int
 id|hashv
 comma
+r_const
 r_char
 op_star
 id|name
@@ -178,6 +177,7 @@ comma
 r_int
 id|hashv
 comma
+r_const
 r_char
 op_star
 id|name
@@ -219,6 +219,7 @@ comma
 r_int
 id|hashv
 comma
+r_const
 r_char
 op_star
 id|name
@@ -236,6 +237,7 @@ comma
 r_int
 id|hashv
 comma
+r_const
 r_char
 op_star
 id|name
@@ -253,6 +255,7 @@ comma
 r_int
 id|hashv
 comma
+r_const
 r_char
 op_star
 id|name

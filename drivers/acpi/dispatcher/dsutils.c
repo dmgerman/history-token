@@ -434,7 +434,7 @@ comma
 id|walk_state
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Attempt to resolve each of the valid operands&n;&t; * Method arguments are passed by value, not by reference&n;&t; */
+multiline_comment|/*&n;&t; * Attempt to resolve each of the valid operands&n;&t; * Method arguments are passed by reference, not by value.  This means&n;&t; * that the actual objects are passed, not copies of the objects.&n;&t; */
 r_for
 c_loop
 (paren

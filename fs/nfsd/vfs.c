@@ -6063,7 +6063,7 @@ id|nfserr_eof
 op_logical_or
 id|err
 op_eq
-id|nfserr_readdir_nospc
+id|nfserr_toosmall
 )paren
 id|err
 op_assign

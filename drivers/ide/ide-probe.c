@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -3199,6 +3200,11 @@ id|max_sectors
 op_assign
 l_int|256
 suffix:semicolon
+r_int
+id|max_sg_entries
+op_assign
+id|PRD_ENTRIES
+suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Our default set up assumes the normal IDE case,&n;&t; *&t;that is 64K segmenting, standard PRD setup&n;&t; *&t;and LBA28. Some drivers then impose their own&n;&t; *&t;limits and LBA48 we could raise it but as yet&n;&t; *&t;do not.&n;&t; */
 id|q
 op_assign
@@ -3270,22 +3276,33 @@ comma
 id|max_sectors
 )paren
 suffix:semicolon
-multiline_comment|/* IDE DMA can do PRD_ENTRIES number of segments. */
+macro_line|#ifdef CONFIG_PCI
+multiline_comment|/* When we have an IOMMU, we may have a problem where pci_map_sg()&n;&t; * creates segments that don&squot;t completely match our boundary&n;&t; * requirements and thus need to be broken up again. Because it&n;&t; * doesn&squot;t align properly neither, we may actually have to break up&n;&t; * to more segments than what was we got in the first place, a max&n;&t; * worst case is twice as many.&n;&t; * This will be fixed once we teach pci_map_sg() about our boundary&n;&t; * requirements, hopefully soon&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|PCI_DMA_BUS_IS_PHYS
+)paren
+id|max_sg_entries
+op_rshift_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif /* CONFIG_PCI */
 id|blk_queue_max_hw_segments
 c_func
 (paren
 id|q
 comma
-id|PRD_ENTRIES
+id|max_sg_entries
 )paren
 suffix:semicolon
-multiline_comment|/* This is a driver limit and could be eliminated. */
 id|blk_queue_max_phys_segments
 c_func
 (paren
 id|q
 comma
-id|PRD_ENTRIES
+id|max_sg_entries
 )paren
 suffix:semicolon
 multiline_comment|/* assign drive and gendisk queue */

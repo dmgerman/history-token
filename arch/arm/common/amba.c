@@ -1185,6 +1185,7 @@ r_return
 id|data.dev
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;amba_request_regions - request all mem regions associated with device&n; *&t;@dev: amba_device structure for device&n; *&t;@name: name, or NULL to use driver name&n; */
 DECL|function|amba_request_regions
 r_int
 id|amba_request_regions
@@ -1210,6 +1211,16 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|name
+)paren
+id|name
+op_assign
+id|dev-&gt;dev.driver-&gt;name
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_mem_region
 c_func
 (paren
@@ -1229,6 +1240,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;amba_release_regions - release mem regions assoicated with device&n; *&t;@dev: amba_device structure for device&n; *&n; *&t;Release regions claimed by a successful call to amba_request_regions.&n; */
 DECL|function|amba_release_regions
 r_void
 id|amba_release_regions

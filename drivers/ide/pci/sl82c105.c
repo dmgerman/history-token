@@ -1711,19 +1711,6 @@ id|hwif-&gt;autodma
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace
-r_extern
-r_void
-id|ide_setup_pci_device
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
-id|ide_pci_device_t
-op_star
-)paren
-suffix:semicolon
 DECL|function|sl82c105_init_one
 r_static
 r_int

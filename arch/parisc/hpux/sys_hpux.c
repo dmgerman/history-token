@@ -3,22 +3,13 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-r_int
-r_int
-id|sys_brk
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
 DECL|function|hpux_brk
 r_int
 r_int
@@ -92,19 +83,6 @@ op_star
 id|stat_loc
 )paren
 (brace
-r_extern
-r_int
-id|sys_waitpid
-c_func
-(paren
-r_int
-comma
-r_int
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 r_return
 id|sys_waitpid
 c_func
@@ -654,20 +632,6 @@ id|kpath
 )paren
 suffix:semicolon
 multiline_comment|/* just fake it, beginning of structures match */
-r_extern
-r_int
-id|sys_statfs
-c_func
-(paren
-r_const
-r_char
-op_star
-comma
-r_struct
-id|statfs
-op_star
-)paren
-suffix:semicolon
 id|error
 op_assign
 id|sys_statfs
@@ -943,26 +907,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-r_int
-id|sys_sethostname
-c_func
-(paren
-r_char
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_int
-id|sys_gethostname
-c_func
-(paren
-r_char
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/*  Note: HP-UX just uses the old suser() function to check perms&n; *  in this system call.  We&squot;ll use capable(CAP_SYS_ADMIN).&n; */
 DECL|function|hpux_utssys
 r_int

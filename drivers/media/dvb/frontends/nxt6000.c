@@ -3252,9 +3252,6 @@ suffix:semicolon
 r_case
 id|FE_INIT
 suffix:colon
-r_case
-id|FE_RESET
-suffix:colon
 id|nxt6000_reset
 c_func
 (paren
@@ -3267,6 +3264,11 @@ c_func
 id|fe
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|FE_RESET
+suffix:colon
 r_break
 suffix:semicolon
 r_case

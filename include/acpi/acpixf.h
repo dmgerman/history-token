@@ -827,6 +827,7 @@ id|sleep_state
 )paren
 suffix:semicolon
 id|acpi_status
+id|asmlinkage
 id|acpi_enter_sleep_state
 (paren
 id|u8

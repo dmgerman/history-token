@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
@@ -21,28 +22,6 @@ macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 DECL|macro|_BLOCKABLE
 mdefine_line|#define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
-id|asmlinkage
-r_int
-id|sys_wait4
-c_func
-(paren
-id|pid_t
-id|pid
-comma
-r_int
-r_int
-op_star
-id|stat_addr
-comma
-r_int
-id|options
-comma
-r_struct
-id|rusage
-op_star
-id|ru
-)paren
-suffix:semicolon
 id|asmlinkage
 r_int
 id|do_signal

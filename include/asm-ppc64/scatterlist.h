@@ -35,6 +35,10 @@ id|dma_length
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|sg_dma_address
+mdefine_line|#define sg_dma_address(sg)&t;((sg)-&gt;dma_address)
+DECL|macro|sg_dma_len
+mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;dma_length)
 DECL|macro|ISA_DMA_THRESHOLD
 mdefine_line|#define ISA_DMA_THRESHOLD&t;(~0UL)
 macro_line|#endif /* !(_PPC64_SCATTERLIST_H) */
