@@ -158,12 +158,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/*******************************************************************&n; * Helper macros for extracting data from pci structures.  &n; *   PCI_GET_PHB_PTR(struct pci_dev*)    returns the Phb pointer.&n; *   PCI_GET_PHB_NUMBER(struct pci_dev*) returns the Phb number.&n; *   PCI_GET_BUS_NUMBER(struct pci_dev*) returns the bus number.&n; *******************************************************************/
 DECL|macro|PCI_GET_PHB_PTR
 mdefine_line|#define PCI_GET_PHB_PTR(dev)    (((struct device_node *)(dev)-&gt;sysdata)-&gt;phb)
-DECL|macro|PCI_GET_PHB_NUMBER
-mdefine_line|#define PCI_GET_PHB_NUMBER(dev) (((dev)-&gt;bus-&gt;number&amp;0x00FFFF00)&gt;&gt;8)
-DECL|macro|PCI_GET_BUS_NUMBER
-mdefine_line|#define PCI_GET_BUS_NUMBER(dev) ((dev)-&gt;bus-&gt;number&amp;0x0000FF)
 macro_line|#endif /* __PPC_KERNEL_PCI_H__ */
 eof
