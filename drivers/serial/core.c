@@ -5908,7 +5908,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|uart_type
 r_static
 r_const
@@ -5959,6 +5958,7 @@ r_return
 id|str
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|uart_line_info
 r_static
 r_int
