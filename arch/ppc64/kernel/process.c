@@ -121,6 +121,16 @@ op_star
 id|fpregs
 )paren
 (brace
+multiline_comment|/*&n;&t; * XXX temporary workaround until threaded coredumps for ppc64&n;&t; * are implemented - Anton&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|regs
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
