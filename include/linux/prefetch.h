@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Generic cache management functions. Everything is arc
 macro_line|#ifndef _LINUX_PREFETCH_H
 DECL|macro|_LINUX_PREFETCH_H
 mdefine_line|#define _LINUX_PREFETCH_H
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 multiline_comment|/*&n;&t;prefetch(x) attempts to pre-emptively get the memory pointed to&n;&t;by address &quot;x&quot; into the CPU L1 cache. &n;&t;prefetch(x) should not cause any kind of exception, prefetch(0) is&n;&t;specifically ok.&n;&n;&t;prefetch() should be defined by the architecture, if not, the &n;&t;#define below provides a no-op define.&t;&n;&t;&n;&t;There are 3 prefetch() macros:&n;&t;&n;&t;prefetch(x)  &t;- prefetches the cacheline at &quot;x&quot; for read&n;&t;prefetchw(x)&t;- prefetches the cacheline at &quot;x&quot; for write&n;&t;spin_lock_prefetch(x) - prefectches the spinlock *x for taking&n;&t;&n;&t;there is also PREFETCH_STRIDE which is the architecure-prefered &n;&t;&quot;lookahead&quot; size for prefetching streamed operations.&n;&t;&n;*/
@@ -48,5 +49,56 @@ macro_line|#ifndef PREFETCH_STRIDE
 DECL|macro|PREFETCH_STRIDE
 mdefine_line|#define PREFETCH_STRIDE (4*L1_CACHE_BYTES)
 macro_line|#endif
+DECL|function|prefetch_range
+r_static
+r_inline
+r_void
+id|prefetch_range
+c_func
+(paren
+r_void
+op_star
+id|addr
+comma
+r_int
+id|len
+)paren
+(brace
+macro_line|#ifdef ARCH_HAS_PREFETCH
+r_char
+op_star
+id|cp
+suffix:semicolon
+r_char
+op_star
+id|end
+op_assign
+id|addr
+op_plus
+id|len
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|cp
+op_assign
+id|addr
+suffix:semicolon
+id|cp
+OL
+id|end
+suffix:semicolon
+id|cp
+op_add_assign
+id|PREFETCH_STRIDE
+)paren
+id|prefetch
+c_func
+(paren
+id|cp
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
 macro_line|#endif
 eof
