@@ -221,17 +221,22 @@ id|dparent
 )paren
 suffix:semicolon
 r_else
-(brace
-multiline_comment|/* must be &quot;..&quot; */
-multiline_comment|/* checking mountpoint crossing is very different when stepping up */
 r_if
 c_cond
 (paren
 id|dparent
-op_eq
+op_ne
 id|exp-&gt;ex_dentry
 )paren
-(brace
+id|dentry
+op_assign
+id|dget
+c_func
+(paren
+id|dparent-&gt;d_parent
+)paren
+suffix:semicolon
+r_else
 r_if
 c_cond
 (paren
@@ -253,6 +258,7 @@ suffix:semicolon
 multiline_comment|/* .. == . just like at / */
 r_else
 (brace
+multiline_comment|/* checking mountpoint crossing is very different when stepping up */
 r_struct
 id|svc_export
 op_star
@@ -322,9 +328,8 @@ r_for
 c_loop
 (paren
 suffix:semicolon
+op_logical_neg
 id|exp2
-op_eq
-l_int|NULL
 op_logical_and
 id|dp-&gt;d_parent
 op_ne
@@ -349,9 +354,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|exp2
-op_eq
-l_int|NULL
 )paren
 (brace
 id|dput
@@ -380,17 +384,6 @@ id|mntput
 c_func
 (paren
 id|mnt
-)paren
-suffix:semicolon
-)brace
-)brace
-r_else
-id|dentry
-op_assign
-id|dget
-c_func
-(paren
-id|dparent-&gt;d_parent
 )paren
 suffix:semicolon
 )brace
