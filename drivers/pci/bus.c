@@ -182,7 +182,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_bus_add_devices - insert newly discovered PCI devices&n; * @bus: bus to check for new devices&n; *&n; * Add newly discovered PCI devices (which are on the bus-&gt;devices&n; * list) to the global PCI device list, add the sysfs and procfs&n; * entries.  Where a bridge is found, add the discovered bus to&n; * the parents list of child buses, and recurse.&n; *&n; * Call hotplug for each new devices.&n; */
+multiline_comment|/**&n; * pci_bus_add_devices - insert newly discovered PCI devices&n; * @bus: bus to check for new devices&n; *&n; * Add newly discovered PCI devices (which are on the bus-&gt;devices&n; * list) to the global PCI device list, add the sysfs and procfs&n; * entries.  Where a bridge is found, add the discovered bus to&n; * the parents list of child buses, and recurse (breadth-first&n; * to be compatible with 2.4)&n; *&n; * Call hotplug for each new devices.&n; */
 DECL|function|pci_bus_add_devices
 r_void
 id|__devinit
@@ -254,6 +254,29 @@ id|pci_create_sysfs_dev_files
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+)brace
+id|list_for_each_entry
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|bus-&gt;devices
+comma
+id|bus_list
+)paren
+(brace
+id|BUG_ON
+c_func
+(paren
+id|list_empty
+c_func
+(paren
+op_amp
+id|dev-&gt;global_list
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If there is an unattached subordinate bus, attach&n;&t;&t; * it and then scan for unattached PCI devices.&n;&t;&t; */
