@@ -42,12 +42,6 @@ id|main_revision
 op_assign
 l_string|&quot;$Revision: 1.40 $&quot;
 suffix:semicolon
-DECL|variable|errno
-r_int
-id|errno
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|major
 r_static
 r_int
