@@ -422,7 +422,7 @@ id|es7000_plat
 op_assign
 l_int|1
 suffix:semicolon
-id|platform_rename_gsi
+id|ioapic_renumber_irq
 op_assign
 id|es7000_rename_gsi
 suffix:semicolon
