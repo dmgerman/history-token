@@ -942,15 +942,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|__pgprot
-c_func
-(paren
-id|prot
-)paren
-op_and_assign
-op_complement
-id|_PAGE_NX
-suffix:semicolon
 id|err
 op_assign
 id|__change_page_attr
