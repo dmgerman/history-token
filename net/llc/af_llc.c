@@ -1,28 +1,12 @@
 multiline_comment|/*&n; * af_llc.c - LLC User Interface SAPs&n; * Description:&n; *   Functions in this module are implementation of socket based llc&n; *   communications for the Linux operating system. Support of llc class&n; *   one and class two is provided via SOCK_DGRAM and SOCK_STREAM&n; *   respectively.&n; *&n; *   An llc2 connection is (mac + sap), only one llc2 sap connection&n; *   is allowed per mac. Though one sap may have multiple mac + sap&n; *   connections.&n; *&n; * Copyright (c) 2001 by Jay Schulist &lt;jschlst@samba.org&gt;&n; *&t;&t; 2002 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/socket.h&gt;
-macro_line|#include &lt;linux/sockios.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/ioctls.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/inetdevice.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;net/sock.h&gt;
-macro_line|#include &lt;net/llc_if.h&gt;
 macro_line|#include &lt;net/llc_sap.h&gt;
 macro_line|#include &lt;net/llc_pdu.h&gt;
 macro_line|#include &lt;net/llc_conn.h&gt;
 macro_line|#include &lt;net/llc_mac.h&gt;
 macro_line|#include &lt;net/llc_main.h&gt;
-macro_line|#include &lt;net/llc_proc.h&gt;
-macro_line|#include &lt;linux/llc.h&gt;
-macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/* remember: uninitialized global data is zeroed because its in .bss */
@@ -4357,22 +4341,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|rc
-op_assign
-id|llc_proc_init
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-r_goto
-id|out
-suffix:semicolon
 id|llc_ui_sap_last_autoport
 op_assign
 id|LLC_SAP_DYN_START
@@ -4390,14 +4358,8 @@ c_func
 id|llc_ui_banner
 )paren
 suffix:semicolon
-id|rc
-op_assign
-l_int|0
-suffix:semicolon
-id|out
-suffix:colon
 r_return
-id|rc
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|llc_ui_exit
@@ -4413,11 +4375,6 @@ id|sock_unregister
 c_func
 (paren
 id|PF_LLC
-)paren
-suffix:semicolon
-id|llc_proc_exit
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
