@@ -1497,7 +1497,7 @@ r_new
 )paren
 suffix:semicolon
 DECL|member|kernel_context_switch_unlock
-r_int
+r_void
 (paren
 op_star
 id|kernel_context_switch_unlock
@@ -1507,6 +1507,10 @@ r_struct
 id|drm_device
 op_star
 id|dev
+comma
+id|drm_lock_t
+op_star
+id|lock
 )paren
 suffix:semicolon
 DECL|member|vblank_wait
