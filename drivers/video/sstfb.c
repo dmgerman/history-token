@@ -1562,7 +1562,7 @@ id|info
 )paren
 (brace
 multiline_comment|/* clear screen */
-id|memset_io
+id|fb_memset
 c_func
 (paren
 id|info-&gt;screen_base
@@ -8122,7 +8122,7 @@ c_func
 (paren
 id|mem
 comma
-l_string|&quot;Size of frame buffer memory in MiB (1, 2, 4 MB, default=autodetect)&quot;
+l_string|&quot;Size of frame buffer memory in MB (1, 2, 4 MB, default=autodetect)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
