@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
@@ -34,6 +35,7 @@ macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#ifdef NETIF_F_TSO
 macro_line|#include &lt;net/checksum.h&gt;
@@ -49,6 +51,8 @@ DECL|macro|BAR_1
 mdefine_line|#define BAR_1&t;&t;1
 DECL|macro|BAR_5
 mdefine_line|#define BAR_5&t;&t;5
+DECL|macro|INTEL_E1000_ETHERNET_DEVICE
+mdefine_line|#define INTEL_E1000_ETHERNET_DEVICE(device_id) {&bslash;&n;&t;PCI_DEVICE(PCI_VENDOR_ID_INTEL, device_id)}
 r_struct
 id|e1000_adapter
 suffix:semicolon
@@ -68,7 +72,7 @@ DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(nlevel, klevel, fmt, args...) &bslash;&n;&t;(void)((NETIF_MSG_##nlevel &amp; adapter-&gt;msg_enable) &amp;&amp; &bslash;&n;&t;printk(KERN_##klevel PFX &quot;%s: %s: &quot; fmt, adapter-&gt;netdev-&gt;name, &bslash;&n;&t;&t;__FUNCTION__ , ## args))
 DECL|macro|E1000_MAX_INTR
 mdefine_line|#define E1000_MAX_INTR 10
-multiline_comment|/* How many descriptors for TX and RX ? */
+multiline_comment|/* TX/RX descriptor defines */
 DECL|macro|E1000_DEFAULT_TXD
 mdefine_line|#define E1000_DEFAULT_TXD                  256
 DECL|macro|E1000_MAX_TXD
@@ -106,15 +110,13 @@ DECL|macro|E1000_TX_HEAD_ADDR_SHIFT
 mdefine_line|#define E1000_TX_HEAD_ADDR_SHIFT 7
 DECL|macro|E1000_PBA_TX_MASK
 mdefine_line|#define E1000_PBA_TX_MASK 0xFFFF0000
-multiline_comment|/* Flow Control High-Watermark: 5688 bytes below Rx FIFO size */
+multiline_comment|/* Flow Control Watermarks */
 DECL|macro|E1000_FC_HIGH_DIFF
-mdefine_line|#define E1000_FC_HIGH_DIFF 0x1638
-multiline_comment|/* Flow Control Low-Watermark: 5696 bytes below Rx FIFO size */
+mdefine_line|#define E1000_FC_HIGH_DIFF 0x1638  /* High: 5688 bytes below Rx FIFO size */
 DECL|macro|E1000_FC_LOW_DIFF
-mdefine_line|#define E1000_FC_LOW_DIFF 0x1640
-multiline_comment|/* Flow Control Pause Time: 858 usec */
+mdefine_line|#define E1000_FC_LOW_DIFF 0x1640   /* Low:  5696 bytes below Rx FIFO size */
 DECL|macro|E1000_FC_PAUSE_TIME
-mdefine_line|#define E1000_FC_PAUSE_TIME 0x0680
+mdefine_line|#define E1000_FC_PAUSE_TIME 0x0680 /* 858 usec */
 multiline_comment|/* How many Tx Descriptors do we need to call netif_wake_queue ? */
 DECL|macro|E1000_TX_QUEUE_WAKE
 mdefine_line|#define E1000_TX_QUEUE_WAKE&t;16
@@ -148,19 +150,17 @@ DECL|member|dma
 r_uint64
 id|dma
 suffix:semicolon
-DECL|member|length
-r_int
-r_int
-id|length
-suffix:semicolon
 DECL|member|time_stamp
 r_int
 r_int
 id|time_stamp
 suffix:semicolon
+DECL|member|length
+r_uint16
+id|length
+suffix:semicolon
 DECL|member|next_to_watch
-r_int
-r_int
+r_uint16
 id|next_to_watch
 suffix:semicolon
 )brace

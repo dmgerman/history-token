@@ -2028,6 +2028,19 @@ r_int
 id|new_mtu
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+r_static
+r_void
+id|natsemi_poll_controller
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
 r_static
 r_void
 id|__set_rx_mode
@@ -2932,6 +2945,13 @@ id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+op_amp
+id|natsemi_poll_controller
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -10054,6 +10074,43 @@ op_amp
 id|np-&gt;stats
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+DECL|function|natsemi_poll_controller
+r_static
+r_void
+id|natsemi_poll_controller
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+id|disable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+id|intr_handler
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|enable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|macro|HASH_TABLE
 mdefine_line|#define HASH_TABLE&t;0x200
 DECL|function|__set_rx_mode

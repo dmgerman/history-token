@@ -2,41 +2,16 @@ multiline_comment|/* orinoco.h&n; * &n; * Common definitions to all pieces of th
 macro_line|#ifndef _ORINOCO_H
 DECL|macro|_ORINOCO_H
 mdefine_line|#define _ORINOCO_H
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;0.13e&quot;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/wireless.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &quot;hermes.h&quot;
-multiline_comment|/* Workqueue / task queue backwards compatibility stuff */
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,41)
-macro_line|#include &lt;linux/workqueue.h&gt;
-macro_line|#else
-macro_line|#include &lt;linux/tqueue.h&gt;
-DECL|macro|work_struct
-mdefine_line|#define work_struct tq_struct
-DECL|macro|INIT_WORK
-mdefine_line|#define INIT_WORK INIT_TQUEUE
-DECL|macro|schedule_work
-mdefine_line|#define schedule_work schedule_task
-macro_line|#endif
-multiline_comment|/* Interrupt handler backwards compatibility stuff */
-macro_line|#ifndef IRQ_NONE
-DECL|macro|IRQ_NONE
-mdefine_line|#define IRQ_NONE
-DECL|macro|IRQ_HANDLED
-mdefine_line|#define IRQ_HANDLED
-DECL|typedef|irqreturn_t
-r_typedef
-r_void
-id|irqreturn_t
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* To enable debug messages */
 singleline_comment|//#define ORINOCO_DEBUG&t;&t;3
-macro_line|#if (! defined (WIRELESS_EXT)) || (WIRELESS_EXT &lt; 10)
-macro_line|#error &quot;orinoco driver requires Wireless extensions v10 or later.&quot;
-macro_line|#endif /* (! defined (WIRELESS_EXT)) || (WIRELESS_EXT &lt; 10) */
 DECL|macro|WIRELESS_SPY
 mdefine_line|#define WIRELESS_SPY&t;&t;
 singleline_comment|// enable iwspy support
@@ -68,8 +43,6 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|macro|ORINOCO_INTEN
-mdefine_line|#define ORINOCO_INTEN&t; &t;( HERMES_EV_RX | HERMES_EV_ALLOC | HERMES_EV_TX | &bslash;&n;&t;&t;&t;&t;HERMES_EV_TXEXC | HERMES_EV_WTERR | HERMES_EV_INFO | &bslash;&n;&t;&t;&t;&t;HERMES_EV_INFDROP )
 DECL|struct|orinoco_private
 r_struct
 id|orinoco_private
@@ -344,6 +317,9 @@ DECL|macro|TRACE_ENTER
 mdefine_line|#define TRACE_ENTER(devname) DEBUG(2, &quot;%s: -&gt; %s()&bslash;n&quot;, devname, __FUNCTION__);
 DECL|macro|TRACE_EXIT
 mdefine_line|#define TRACE_EXIT(devname)  DEBUG(2, &quot;%s: &lt;- %s()&bslash;n&quot;, devname, __FUNCTION__);
+multiline_comment|/********************************************************************/
+multiline_comment|/* Exported prototypes                                              */
+multiline_comment|/********************************************************************/
 r_extern
 r_struct
 id|net_device

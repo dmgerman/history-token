@@ -2319,7 +2319,6 @@ id|val
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|rtl8139_start_thread
 c_func
@@ -6870,7 +6869,6 @@ suffix:semicolon
 )brace
 DECL|function|rtl8139_start_thread
 r_static
-r_inline
 r_void
 id|rtl8139_start_thread
 c_func

@@ -7,20 +7,8 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-DECL|macro|TX_2X_PAGES
-mdefine_line|#define TX_2X_PAGES 12
-DECL|macro|TX_1X_PAGES
-mdefine_line|#define TX_1X_PAGES 6
-multiline_comment|/* Should always use two Tx slots to get back-to-back transmits. */
-DECL|macro|EI_PINGPONG
-mdefine_line|#define EI_PINGPONG
-macro_line|#ifdef EI_PINGPONG
 DECL|macro|TX_PAGES
-mdefine_line|#define TX_PAGES TX_2X_PAGES
-macro_line|#else
-DECL|macro|TX_PAGES
-mdefine_line|#define TX_PAGES TX_1X_PAGES
-macro_line|#endif
+mdefine_line|#define TX_PAGES 12&t;/* Two Tx slots */
 DECL|macro|ETHER_ADDR_LEN
 mdefine_line|#define ETHER_ADDR_LEN 6
 multiline_comment|/* The 8390 specific per-packet-header format. */

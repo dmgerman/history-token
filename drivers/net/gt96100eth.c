@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * Copyright 2000, 2001 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;stevel@mvista.com or source@mvista.com&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Ethernet driver for the MIPS GT96100 Advanced Communication Controller.&n; * &n; *  Revision history&n; *    &n; *    11.11.2001  Moved to 2.4.14, ppopov@mvista.com.  Modified driver to add&n; *                proper gt96100A support.&n; *    12.05.2001  Moved eth port 0 to irq 3 (mapped to GT_SERINT0 on EV96100A)&n; *                in order for both ports to work. Also cleaned up boot&n; *                option support (mac address string parsing), fleshed out&n; *                gt96100_cleanup_module(), and other general code cleanups&n; *                &lt;stevel@mvista.com&gt;.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -117,30 +116,6 @@ id|u16
 id|data
 )paren
 suffix:semicolon
-macro_line|#if 0
-r_static
-r_void
-id|dump_tx_ring
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_static
-r_void
-id|dump_rx_ring
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-macro_line|#endif
 r_static
 r_int
 id|gt96100_init_module
@@ -310,6 +285,11 @@ r_int
 id|gt96100_probe1
 c_func
 (paren
+r_struct
+id|pci_dev
+op_star
+id|pci
+comma
 r_int
 id|port_num
 )paren
@@ -655,10 +635,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;  DMA memory allocation, derived from pci_alloc_consistent.&n;*/
+DECL|function|dmaalloc
 r_static
 r_void
 op_star
-DECL|function|dmaalloc
 id|dmaalloc
 c_func
 (paren
@@ -748,9 +728,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|dmafree
 r_static
 r_void
-DECL|function|dmafree
 id|dmafree
 c_func
 (paren
@@ -791,9 +771,9 @@ id|size
 )paren
 suffix:semicolon
 )brace
+DECL|function|gt96100_delay
 r_static
 r_void
-DECL|function|gt96100_delay
 id|gt96100_delay
 c_func
 (paren
@@ -1442,137 +1422,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if 0
-singleline_comment|// These routines work, just disabled to avoid compile warnings
-r_static
-r_void
-id|dump_tx_ring
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-r_struct
-id|gt96100_private
-op_star
-id|gp
-op_assign
-id|netdev_priv
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-id|dbg
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;%s: txno/txni/cnt=%d/%d/%d&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|gp-&gt;tx_next_out
-comma
-id|gp-&gt;tx_next_in
-comma
-id|gp-&gt;tx_count
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|TX_RING_SIZE
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|dump_tx_desc
-c_func
-(paren
-l_int|0
-comma
-id|dev
-comma
-id|i
-)paren
-suffix:semicolon
-)brace
-r_static
-r_void
-id|dump_rx_ring
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-r_struct
-id|gt96100_private
-op_star
-id|gp
-op_assign
-id|netdev_priv
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-id|dbg
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;%s: rxno=%d&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|gp-&gt;rx_next_out
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|RX_RING_SIZE
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|dump_rx_desc
-c_func
-(paren
-l_int|0
-comma
-id|dev
-comma
-id|i
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 r_static
 r_void
 DECL|function|dump_MII
@@ -3143,6 +2992,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Init GT96100 ethernet controller driver&n; */
 DECL|function|gt96100_init_module
+r_static
 r_int
 id|gt96100_init_module
 c_func
@@ -3150,6 +3000,11 @@ c_func
 r_void
 )paren
 (brace
+r_struct
+id|pci_dev
+op_star
+id|pci
+suffix:semicolon
 r_int
 id|i
 comma
@@ -3157,62 +3012,41 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-id|u16
-id|vendor_id
-comma
-id|device_id
-suffix:semicolon
 id|u32
 id|cpuConfig
 suffix:semicolon
-macro_line|#ifndef CONFIG_MIPS_GT96100ETH
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-macro_line|#endif
-singleline_comment|// probe for GT96100 by reading PCI0 vendor/device ID register
-id|pcibios_read_config_word
-c_func
-(paren
-l_int|0
-comma
-l_int|0
-comma
-id|PCI_VENDOR_ID
-comma
-op_amp
-id|vendor_id
-)paren
-suffix:semicolon
-id|pcibios_read_config_word
-c_func
-(paren
-l_int|0
-comma
-l_int|0
-comma
-id|PCI_DEVICE_ID
-comma
-op_amp
-id|device_id
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * Stupid probe because this really isn&squot;t a PCI device&n;&t; */
 r_if
 c_cond
 (paren
-id|vendor_id
-op_ne
-id|PCI_VENDOR_ID_MARVELL
-op_logical_or
+op_logical_neg
 (paren
-id|device_id
-op_ne
+id|pci
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_VENDOR_ID_MARVELL
+comma
 id|PCI_DEVICE_ID_MARVELL_GT96100
+comma
+l_int|NULL
+)paren
+)paren
 op_logical_and
-id|device_id
-op_ne
+op_logical_neg
+(paren
+id|pci
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_VENDOR_ID_MARVELL
+comma
 id|PCI_DEVICE_ID_MARVELL_GT96100A
+comma
+l_int|NULL
+)paren
 )paren
 )paren
 (brace
@@ -3276,27 +3110,32 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|retval
 op_or_assign
 id|gt96100_probe1
 c_func
 (paren
+id|pci
+comma
 id|i
 )paren
 suffix:semicolon
-)brace
 r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|function|gt96100_probe1
 r_static
 r_int
 id|__init
-DECL|function|gt96100_probe1
 id|gt96100_probe1
 c_func
 (paren
+r_struct
+id|pci_dev
+op_star
+id|pci
+comma
 r_int
 id|port_num
 )paren
@@ -3357,7 +3196,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: irq unknown - probing not supported&bslash;n&quot;
 comma
-id|__FUNCTION_
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -3365,12 +3204,10 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|pcibios_read_config_byte
+id|pci_read_config_byte
 c_func
 (paren
-l_int|0
-comma
-l_int|0
+id|pci
 comma
 id|PCI_REVISION_ID
 comma
@@ -3411,7 +3248,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * not sure what&squot;s this about -- probably &n;&t;&t; * a gt bug&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * not sure what&squot;s this about -- probably a gt bug&n;&t;&t; */
 id|phy_addr
 op_assign
 id|port_num
@@ -6289,10 +6126,7 @@ id|u32
 id|txOwn
 )paren
 (brace
-singleline_comment|//dump_tx_ring(dev);
-singleline_comment|// DMA is not finished writing descriptor???
-singleline_comment|// Leave and come back later to pick-up where
-singleline_comment|// we left off.
+multiline_comment|/*&n;&t;&t;&t; * DMA is not finished writing descriptor???&n;&t;&t;&t; * Leave and come back later to pick-up where&n;&t;&t;&t; * we left off.&n;&t;&t;&t; */
 r_break
 suffix:semicolon
 )brace
@@ -6420,7 +6254,7 @@ l_int|2
 comma
 l_string|&quot;%s: Tx Ring was full, queue waked&bslash;n&quot;
 comma
-id|__FUNCTION_
+id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
@@ -6849,9 +6683,9 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;: Link up, waking queue.&bslash;n&quot;
+l_string|&quot;%s: Link up, waking queue.&bslash;n&quot;
 comma
-id|__FUNCTION_
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|netif_wake_queue
@@ -6885,7 +6719,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;Link down, stopping queue.&bslash;n&quot;
+l_string|&quot;%s: Link down, stopping queue.&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -7491,7 +7325,11 @@ r_struct
 id|gt96100_private
 op_star
 )paren
-id|gtif-&gt;dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|gtif-&gt;dev
+)paren
 suffix:semicolon
 id|unregister_netdev
 c_func
@@ -7554,7 +7392,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifndef MODULE
 DECL|function|gt96100_setup
 r_static
 r_int
@@ -7695,7 +7532,6 @@ comma
 id|gt96100_setup
 )paren
 suffix:semicolon
-macro_line|#endif /* !MODULE */
 DECL|variable|gt96100_init_module
 id|module_init
 c_func
