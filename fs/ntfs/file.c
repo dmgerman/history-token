@@ -70,14 +70,46 @@ op_assign
 id|generic_file_read
 comma
 multiline_comment|/* Read from file. */
+dot
+id|aio_read
+op_assign
+id|generic_file_aio_read
+comma
+multiline_comment|/* Async read from file. */
+dot
+id|readv
+op_assign
+id|generic_file_readv
+comma
+multiline_comment|/* Read from file. */
 macro_line|#ifdef NTFS_RW
 dot
 id|write
 op_assign
 id|generic_file_write
 comma
-multiline_comment|/* Write to a file. */
-macro_line|#endif
+multiline_comment|/* Write to file. */
+dot
+id|aio_write
+op_assign
+id|generic_file_aio_write
+comma
+multiline_comment|/* Async write to file. */
+dot
+id|writev
+op_assign
+id|generic_file_writev
+comma
+multiline_comment|/* Write to file. */
+multiline_comment|/*.release&t;= ,*/
+multiline_comment|/* Last file is closed.  See&n;&t;&t;&t;&t;&t;&t;     fs/ext2/file.c::&n;&t;&t;&t;&t;&t;&t;     ext2_release_file() for&n;&t;&t;&t;&t;&t;&t;     how to use this to discard&n;&t;&t;&t;&t;&t;&t;     preallocated space for&n;&t;&t;&t;&t;&t;&t;     write opened files. */
+multiline_comment|/*.fsync&t;= ,*/
+multiline_comment|/* Sync a file to disk.  See&n;&t;&t;&t;&t;&t;&t;     fs/buffer.c::sys_fsync()&n;&t;&t;&t;&t;&t;&t;     and file_fsync(). */
+multiline_comment|/*.aio_fsync&t;= ,*/
+multiline_comment|/* Sync all outstanding async&n;&t;&t;&t;&t;&t;&t;     i/o operations on a&n;&t;&t;&t;&t;&t;&t;     kiocb. */
+macro_line|#endif /* NTFS_RW */
+multiline_comment|/*.ioctl&t;= ,*/
+multiline_comment|/* Perform function on the&n;&t;&t;&t;&t;&t;&t;     mounted filesystem. */
 dot
 id|mmap
 op_assign
@@ -85,17 +117,19 @@ id|generic_file_mmap
 comma
 multiline_comment|/* Mmap file. */
 dot
-id|sendfile
-op_assign
-id|generic_file_sendfile
-comma
-multiline_comment|/* Zero-copy data send with the&n;&t;&t;&t;&t;&t;&t;   data source being on the&n;&t;&t;&t;&t;&t;&t;   ntfs partition. We don&squot;t&n;&t;&t;&t;&t;&t;&t;   need to care about the data&n;&t;&t;&t;&t;&t;&t;   destination. */
-dot
 id|open
 op_assign
 id|ntfs_file_open
 comma
 multiline_comment|/* Open file. */
+dot
+id|sendfile
+op_assign
+id|generic_file_sendfile
+comma
+multiline_comment|/* Zero-copy data send with&n;&t;&t;&t;&t;&t;&t;     the data source being on&n;&t;&t;&t;&t;&t;&t;     the ntfs partition.  We&n;&t;&t;&t;&t;&t;&t;     do not need to care about&n;&t;&t;&t;&t;&t;&t;     the data destination. */
+multiline_comment|/*.sendpage&t;= ,*/
+multiline_comment|/* Zero-copy data send with&n;&t;&t;&t;&t;&t;&t;     the data destination being&n;&t;&t;&t;&t;&t;&t;     on the ntfs partition.  We&n;&t;&t;&t;&t;&t;&t;     do not need to care about&n;&t;&t;&t;&t;&t;&t;     the data source. */
 )brace
 suffix:semicolon
 DECL|variable|ntfs_file_inode_ops
@@ -115,7 +149,7 @@ id|setattr
 op_assign
 id|ntfs_setattr
 comma
-macro_line|#endif
+macro_line|#endif /* NTFS_RW */
 )brace
 suffix:semicolon
 DECL|variable|ntfs_empty_file_ops
