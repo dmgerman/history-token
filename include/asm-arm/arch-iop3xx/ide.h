@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-arm/arch-iop310/ide.h&n; *&n; * Generic IDE functions for IOP310 systems&n; *&n; * Author: Deepak Saxena &lt;dsaxena@mvista.com&gt;&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; *&n; * 09/26/2001 - Sharon Baartmans&n; * &t;Fixed so it actually works.&n; */
+multiline_comment|/*&n; * include/asm-arm/arch-iop3xx/ide.h&n; *&n; * Generic IDE functions for IOP310 systems&n; *&n; * Author: Deepak Saxena &lt;dsaxena@mvista.com&gt;&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; *&n; * 09/26/2001 - Sharon Baartmans&n; * &t;Fixed so it actually works.&n; */
 macro_line|#ifndef _ASM_ARCH_IDE_H_
 DECL|macro|_ASM_ARCH_IDE_H_
 mdefine_line|#define _ASM_ARCH_IDE_H_

@@ -604,7 +604,6 @@ suffix:colon
 l_string|&quot;user&quot;
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_CPU_32)
 (brace
 r_int
 r_int
@@ -649,7 +648,6 @@ id|dac
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 DECL|function|show_fpregs
 r_void
@@ -823,41 +821,12 @@ r_int
 r_int
 id|nr_thread_info
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_32
 DECL|macro|EXTRA_TASK_STRUCT
 mdefine_line|#define EXTRA_TASK_STRUCT&t;4
 DECL|macro|ll_alloc_task_struct
 mdefine_line|#define ll_alloc_task_struct() ((struct thread_info *) __get_free_pages(GFP_KERNEL,1))
 DECL|macro|ll_free_task_struct
 mdefine_line|#define ll_free_task_struct(p) free_pages((unsigned long)(p),1)
-macro_line|#else
-r_extern
-r_int
-r_int
-id|get_page_8k
-c_func
-(paren
-r_int
-id|priority
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|free_page_8k
-c_func
-(paren
-r_int
-r_int
-id|page
-)paren
-suffix:semicolon
-DECL|macro|EXTRA_TASK_STRUCT
-mdefine_line|#define EXTRA_TASK_STRUCT&t;0
-DECL|macro|ll_alloc_task_struct
-mdefine_line|#define ll_alloc_task_struct()&t;((struct task_struct *)get_page_8k(GFP_KERNEL))
-DECL|macro|ll_free_task_struct
-mdefine_line|#define ll_free_task_struct(p)  free_page_8k((unsigned long)(p))
-macro_line|#endif
 DECL|function|alloc_thread_info
 r_struct
 id|thread_info

@@ -20,4 +20,12 @@ mdefine_line|#define push            lsr
 DECL|macro|byte
 mdefine_line|#define byte(x)         ((3-x)*8)
 macro_line|#endif
+multiline_comment|/*&n; * Data preload for architectures that support it&n; */
+macro_line|#if __LINUX_ARM_ARCH__ &gt;= 5
+DECL|macro|PLD
+mdefine_line|#define PLD(code...)&t;code
+macro_line|#else
+DECL|macro|PLD
+mdefine_line|#define PLD(code...)
+macro_line|#endif
 eof

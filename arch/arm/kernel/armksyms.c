@@ -333,22 +333,6 @@ comma
 id|send_sig
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_26
-DECL|variable|fpundefinstr
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|fpundefinstr
-)paren
-suffix:semicolon
-DECL|variable|ret_from_exception
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ret_from_exception
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_VT
 DECL|variable|kd_mksound
 id|EXPORT_SYMBOL
@@ -394,7 +378,6 @@ c_func
 id|udelay
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_32
 DECL|variable|__ioremap
 id|EXPORT_SYMBOL
 c_func
@@ -409,7 +392,6 @@ c_func
 id|__iounmap
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|kernel_thread
 id|EXPORT_SYMBOL
 c_func
@@ -767,7 +749,6 @@ id|__memzero
 )paren
 suffix:semicolon
 multiline_comment|/* user mem (segment) */
-macro_line|#if defined(CONFIG_CPU_32)
 DECL|variable|__arch_copy_from_user
 id|EXPORT_SYMBOL
 c_func
@@ -818,22 +799,6 @@ c_func
 id|consistent_sync
 )paren
 suffix:semicolon
-macro_line|#elif defined(CONFIG_CPU_26)
-DECL|variable|uaccess_kernel
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|uaccess_kernel
-)paren
-suffix:semicolon
-DECL|variable|uaccess_user
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|uaccess_user
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|__get_user_1
 id|EXPORT_SYMBOL_NOVERS
 c_func
