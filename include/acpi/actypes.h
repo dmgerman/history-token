@@ -790,41 +790,71 @@ DECL|macro|ACPI_GPE_MAX
 mdefine_line|#define ACPI_GPE_MAX                    0xFF
 DECL|macro|ACPI_NUM_GPE
 mdefine_line|#define ACPI_NUM_GPE                    256
-multiline_comment|/*&n; * GPE info flags - Per GPE&n; * +---------+-+-+-+&n; * |Bits 8:3 |2|1|0|&n; * +---------+-+-+-+&n; *          | | | |&n; *          | | | +- Edge or Level Triggered&n; *          | | +--- Type: Wake or Runtime&n; *          | +----- Enabled for wake?&n; *          +--------&lt;Reserved&gt;&n; */
+DECL|macro|ACPI_GPE_ENABLE
+mdefine_line|#define ACPI_GPE_ENABLE                 0
+DECL|macro|ACPI_GPE_DISABLE
+mdefine_line|#define ACPI_GPE_DISABLE                1
+multiline_comment|/*&n; * GPE info flags - Per GPE&n; * +-+-+-+---+---+-+&n; * |7|6|5|4:3|2:1|0|&n; * +-+-+-+---+---+-+&n; *  | | |  |   |  |&n; *  | | |  |   |  +--- Interrupt type: Edge or Level Triggered&n; *  | | |  |   +--- Type: Wake-only, Runtime-only, or wake/runtime&n; *  | | |  +--- Type of dispatch -- to method, handler, or none&n; *  | | +--- Enabled for runtime?&n; *  | +--- Enabled for wake?&n; *  +--- System state when GPE ocurred (running/waking)&n; */
 DECL|macro|ACPI_GPE_XRUPT_TYPE_MASK
-mdefine_line|#define ACPI_GPE_XRUPT_TYPE_MASK        (u8) 1
+mdefine_line|#define ACPI_GPE_XRUPT_TYPE_MASK        (u8) 0x01
 DECL|macro|ACPI_GPE_LEVEL_TRIGGERED
-mdefine_line|#define ACPI_GPE_LEVEL_TRIGGERED        (u8) 1
+mdefine_line|#define ACPI_GPE_LEVEL_TRIGGERED        (u8) 0x01
 DECL|macro|ACPI_GPE_EDGE_TRIGGERED
-mdefine_line|#define ACPI_GPE_EDGE_TRIGGERED         (u8) 0
+mdefine_line|#define ACPI_GPE_EDGE_TRIGGERED         (u8) 0x00
 DECL|macro|ACPI_GPE_TYPE_MASK
-mdefine_line|#define ACPI_GPE_TYPE_MASK              (u8) 2
+mdefine_line|#define ACPI_GPE_TYPE_MASK              (u8) 0x06
+DECL|macro|ACPI_GPE_TYPE_WAKE_RUN
+mdefine_line|#define ACPI_GPE_TYPE_WAKE_RUN          (u8) 0x06
 DECL|macro|ACPI_GPE_TYPE_WAKE
-mdefine_line|#define ACPI_GPE_TYPE_WAKE              (u8) 2
+mdefine_line|#define ACPI_GPE_TYPE_WAKE              (u8) 0x02
 DECL|macro|ACPI_GPE_TYPE_RUNTIME
-mdefine_line|#define ACPI_GPE_TYPE_RUNTIME           (u8) 0       /* Default */
+mdefine_line|#define ACPI_GPE_TYPE_RUNTIME           (u8) 0x04    /* Default */
+DECL|macro|ACPI_GPE_DISPATCH_MASK
+mdefine_line|#define ACPI_GPE_DISPATCH_MASK          (u8) 0x18
+DECL|macro|ACPI_GPE_DISPATCH_HANDLER
+mdefine_line|#define ACPI_GPE_DISPATCH_HANDLER       (u8) 0x08
+DECL|macro|ACPI_GPE_DISPATCH_METHOD
+mdefine_line|#define ACPI_GPE_DISPATCH_METHOD        (u8) 0x10
+DECL|macro|ACPI_GPE_DISPATCH_NOT_USED
+mdefine_line|#define ACPI_GPE_DISPATCH_NOT_USED      (u8) 0x00    /* Default */
+DECL|macro|ACPI_GPE_RUN_ENABLE_MASK
+mdefine_line|#define ACPI_GPE_RUN_ENABLE_MASK        (u8) 0x20
+DECL|macro|ACPI_GPE_RUN_ENABLED
+mdefine_line|#define ACPI_GPE_RUN_ENABLED            (u8) 0x20
+DECL|macro|ACPI_GPE_RUN_DISABLED
+mdefine_line|#define ACPI_GPE_RUN_DISABLED           (u8) 0x00    /* Default */
+DECL|macro|ACPI_GPE_WAKE_ENABLE_MASK
+mdefine_line|#define ACPI_GPE_WAKE_ENABLE_MASK       (u8) 0x40
+DECL|macro|ACPI_GPE_WAKE_ENABLED
+mdefine_line|#define ACPI_GPE_WAKE_ENABLED           (u8) 0x40
+DECL|macro|ACPI_GPE_WAKE_DISABLED
+mdefine_line|#define ACPI_GPE_WAKE_DISABLED          (u8) 0x00    /* Default */
 DECL|macro|ACPI_GPE_ENABLE_MASK
-mdefine_line|#define ACPI_GPE_ENABLE_MASK            (u8) 4
-DECL|macro|ACPI_GPE_ENABLED
-mdefine_line|#define ACPI_GPE_ENABLED                (u8) 4
-DECL|macro|ACPI_GPE_DISABLED
-mdefine_line|#define ACPI_GPE_DISABLED               (u8) 0       /* Default */
+mdefine_line|#define ACPI_GPE_ENABLE_MASK            (u8) 0x60    /* Both run/wake */
+DECL|macro|ACPI_GPE_SYSTEM_MASK
+mdefine_line|#define ACPI_GPE_SYSTEM_MASK            (u8) 0x80
+DECL|macro|ACPI_GPE_SYSTEM_RUNNING
+mdefine_line|#define ACPI_GPE_SYSTEM_RUNNING         (u8) 0x80
+DECL|macro|ACPI_GPE_SYSTEM_WAKING
+mdefine_line|#define ACPI_GPE_SYSTEM_WAKING          (u8) 0x00
 multiline_comment|/*&n; * Flags for GPE and Lock interfaces&n; */
 DECL|macro|ACPI_EVENT_WAKE_ENABLE
-mdefine_line|#define ACPI_EVENT_WAKE_ENABLE          0x2
+mdefine_line|#define ACPI_EVENT_WAKE_ENABLE          0x2             /* acpi_gpe_enable */
 DECL|macro|ACPI_EVENT_WAKE_DISABLE
-mdefine_line|#define ACPI_EVENT_WAKE_DISABLE         0x2
+mdefine_line|#define ACPI_EVENT_WAKE_DISABLE         0x2             /* acpi_gpe_disable */
 DECL|macro|ACPI_NOT_ISR
 mdefine_line|#define ACPI_NOT_ISR                    0x1
 DECL|macro|ACPI_ISR
 mdefine_line|#define ACPI_ISR                        0x0
 multiline_comment|/* Notify types */
 DECL|macro|ACPI_SYSTEM_NOTIFY
-mdefine_line|#define ACPI_SYSTEM_NOTIFY              0
+mdefine_line|#define ACPI_SYSTEM_NOTIFY              0x1
 DECL|macro|ACPI_DEVICE_NOTIFY
-mdefine_line|#define ACPI_DEVICE_NOTIFY              1
+mdefine_line|#define ACPI_DEVICE_NOTIFY              0x2
+DECL|macro|ACPI_ALL_NOTIFY
+mdefine_line|#define ACPI_ALL_NOTIFY                 0x3
 DECL|macro|ACPI_MAX_NOTIFY_HANDLER_TYPE
-mdefine_line|#define ACPI_MAX_NOTIFY_HANDLER_TYPE    1
+mdefine_line|#define ACPI_MAX_NOTIFY_HANDLER_TYPE    0x3
 DECL|macro|ACPI_MAX_SYS_NOTIFY
 mdefine_line|#define ACPI_MAX_SYS_NOTIFY             0x7f
 multiline_comment|/* Address Space (Operation Region) Types */
@@ -1205,19 +1235,6 @@ id|context
 )paren
 suffix:semicolon
 r_typedef
-DECL|typedef|acpi_gpe_handler
-r_void
-(paren
-op_star
-id|acpi_gpe_handler
-)paren
-(paren
-r_void
-op_star
-id|context
-)paren
-suffix:semicolon
-r_typedef
 DECL|typedef|acpi_notify_handler
 r_void
 (paren
@@ -1423,6 +1440,8 @@ DECL|macro|ACPI_VALID_UID
 mdefine_line|#define ACPI_VALID_UID                  0x0008
 DECL|macro|ACPI_VALID_CID
 mdefine_line|#define ACPI_VALID_CID                  0x0010
+DECL|macro|ACPI_VALID_SXDS
+mdefine_line|#define ACPI_VALID_SXDS                 0x0020
 DECL|macro|ACPI_COMMON_OBJ_INFO
 mdefine_line|#define ACPI_COMMON_OBJ_INFO &bslash;&n;&t;acpi_object_type                    type;           /* ACPI object type */ &bslash;&n;&t;acpi_name                           name            /* ACPI object Name */
 DECL|struct|acpi_obj_info_header
@@ -1442,14 +1461,6 @@ id|acpi_device_info
 DECL|member|ACPI_COMMON_OBJ_INFO
 id|ACPI_COMMON_OBJ_INFO
 suffix:semicolon
-DECL|member|highest_dstates
-id|u8
-id|highest_dstates
-(braket
-l_int|4
-)braket
-suffix:semicolon
-multiline_comment|/* _sx_d values 0xFF indicates not valid */
 DECL|member|valid
 id|u32
 id|valid
@@ -1477,6 +1488,14 @@ id|acpi_device_id
 id|unique_id
 suffix:semicolon
 multiline_comment|/* _UID value if any */
+DECL|member|highest_dstates
+id|u8
+id|highest_dstates
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* _sx_d values: 0xFF indicates not valid */
 DECL|member|compatibility_id
 r_struct
 id|acpi_compatible_id_list

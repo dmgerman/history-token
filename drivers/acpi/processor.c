@@ -7965,16 +7965,6 @@ comma
 l_string|&quot;ACPI CPU throttle&quot;
 )paren
 suffix:semicolon
-id|request_region
-c_func
-(paren
-id|acpi_fadt.xpm_tmr_blk.address
-comma
-l_int|4
-comma
-l_string|&quot;ACPI timer&quot;
-)paren
-suffix:semicolon
 )brace
 id|acpi_processor_get_power_info
 c_func

@@ -49,11 +49,6 @@ id|acpi_walk_state
 op_star
 id|walk_state
 suffix:semicolon
-r_union
-id|acpi_parse_object
-op_star
-id|arg
-suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;ds_execute_arguments&quot;
@@ -128,8 +123,6 @@ id|aml_length
 comma
 l_int|NULL
 comma
-l_int|NULL
-comma
 l_int|1
 )paren
 suffix:semicolon
@@ -191,15 +184,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* Get and init the Op created above */
-id|arg
-op_assign
-id|op-&gt;common.value.arg
-suffix:semicolon
 id|op-&gt;common.node
-op_assign
-id|node
-suffix:semicolon
-id|arg-&gt;common.node
 op_assign
 id|node
 suffix:semicolon
@@ -274,8 +259,6 @@ comma
 id|aml_start
 comma
 id|aml_length
-comma
-l_int|NULL
 comma
 l_int|NULL
 comma

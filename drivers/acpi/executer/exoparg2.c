@@ -40,6 +40,9 @@ id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
+id|u32
+id|value
+suffix:semicolon
 id|acpi_status
 id|status
 op_assign
@@ -79,6 +82,19 @@ id|operand
 l_int|0
 )braket
 suffix:semicolon
+multiline_comment|/* Second value is the notify value */
+id|value
+op_assign
+(paren
+id|u32
+)paren
+id|operand
+(braket
+l_int|1
+)braket
+op_member_access_from_pointer
+id|integer.value
+suffix:semicolon
 multiline_comment|/* Notifies allowed on this object? */
 r_if
 c_cond
@@ -111,6 +127,41 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_GPE_NOTIFY_CHECK
+multiline_comment|/*&n;&t;&t; * GPE method wake/notify check.  Here, we want to ensure that we&n;&t;&t; * don&squot;t receive any &quot;device_wake&quot; Notifies from a GPE _Lxx or _Exx&n;&t;&t; * GPE method during system runtime.  If we do, the GPE is marked&n;&t;&t; * as &quot;wake-only&quot; and disabled.&n;&t;&t; *&n;&t;&t; * 1) Is the Notify() value == device_wake?&n;&t;&t; * 2) Is this a GPE deferred method?  (An _Lxx or _Exx method)&n;&t;&t; * 3) Did the original GPE happen at system runtime?&n;&t;&t; *    (versus during wake)&n;&t;&t; *&n;&t;&t; * If all three cases are true, this is a wake-only GPE that should&n;&t;&t; * be disabled at runtime.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|value
+op_eq
+l_int|2
+)paren
+multiline_comment|/* device_wake */
+(brace
+id|status
+op_assign
+id|acpi_ev_check_for_wake_only_gpe
+(paren
+id|walk_state-&gt;gpe_event_info
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+multiline_comment|/* AE_WAKE_ONLY_GPE only error, means ignore this notify */
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
+)paren
+)brace
+)brace
+macro_line|#endif
 multiline_comment|/*&n;&t;&t; * Dispatch the notify to the appropriate handler&n;&t;&t; * NOTE: the request is queued for execution after this method&n;&t;&t; * completes.  The notify handlers are NOT invoked synchronously&n;&t;&t; * from this thread -- because handlers may in turn run other&n;&t;&t; * control methods.&n;&t;&t; */
 id|status
 op_assign
@@ -118,15 +169,7 @@ id|acpi_ev_queue_notify_request
 (paren
 id|node
 comma
-(paren
-id|u32
-)paren
-id|operand
-(braket
-l_int|1
-)braket
-op_member_access_from_pointer
-id|integer.value
+id|value
 )paren
 suffix:semicolon
 r_break
@@ -1312,6 +1355,35 @@ id|AML_LOGICAL
 )paren
 multiline_comment|/* logical_op (Operand0, Operand1) */
 (brace
+multiline_comment|/* Both operands must be of the same type */
+r_if
+c_cond
+(paren
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|operand
+(braket
+l_int|0
+)braket
+)paren
+op_ne
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|operand
+(braket
+l_int|1
+)braket
+)paren
+)paren
+(brace
+id|status
+op_assign
+id|AE_AML_OPERAND_TYPE
+suffix:semicolon
+r_goto
+id|cleanup
+suffix:semicolon
+)brace
 id|logical_result
 op_assign
 id|acpi_ex_do_logical_op
@@ -1322,15 +1394,11 @@ id|operand
 (braket
 l_int|0
 )braket
-op_member_access_from_pointer
-id|integer.value
 comma
 id|operand
 (braket
 l_int|1
 )braket
-op_member_access_from_pointer
-id|integer.value
 )paren
 suffix:semicolon
 r_goto
