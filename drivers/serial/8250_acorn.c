@@ -225,7 +225,7 @@ id|ec-&gt;irq
 suffix:semicolon
 id|port.flags
 op_assign
-id|UPF_AUTOPROBE
+id|UPF_BOOT_AUTOCONF
 op_or
 id|UPF_SHARE_IRQ
 suffix:semicolon

@@ -8863,7 +8863,7 @@ id|port
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Register a set of serial devices attached to a platform device.  The&n; * list is terminated with a zero flags entry, which means we expect&n; * all entries to have at least UPF_AUTOPROBE set.&n; */
+multiline_comment|/*&n; * Register a set of serial devices attached to a platform device.  The&n; * list is terminated with a zero flags entry, which means we expect&n; * all entries to have at least UPF_BOOT_AUTOCONF set.&n; */
 DECL|function|serial8250_probe
 r_static
 r_int
@@ -9231,7 +9231,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|serial8250_remove
+)paren
 comma
 dot
 id|suspend
@@ -9245,10 +9249,7 @@ id|serial8250_resume
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * This &quot;device&quot; covers _all_ ISA 8250-compatible serial devices listed&n; * in the table in include/asm-*/
-id|serial.h
-op_star
-op_div
+multiline_comment|/*&n; * This &quot;device&quot; covers _all_ ISA 8250-compatible serial devices listed&n; * in the table in include/asm/serial.h&n; */
 DECL|variable|serial8250_isa_devs
 r_static
 r_struct

@@ -6296,7 +6296,7 @@ id|serial_port.flags
 op_assign
 id|UPF_SKIP_TEST
 op_or
-id|UPF_AUTOPROBE
+id|UPF_BOOT_AUTOCONF
 op_or
 id|UPF_SHARE_IRQ
 suffix:semicolon
