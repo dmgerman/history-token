@@ -9190,6 +9190,4 @@ c_func
 id|NCR_700_intr
 )paren
 suffix:semicolon
-id|no_module_init
-suffix:semicolon
 eof
