@@ -664,12 +664,19 @@ r_int
 id|resume_detect
 suffix:semicolon
 multiline_comment|/* Need a Global Resume */
-DECL|member|saved_framenumber
+DECL|member|frame_number
 r_int
 r_int
-id|saved_framenumber
+id|frame_number
 suffix:semicolon
-multiline_comment|/* Save during PM suspend */
+multiline_comment|/* As of last check */
+DECL|member|is_stopped
+r_int
+r_int
+id|is_stopped
+suffix:semicolon
+DECL|macro|UHCI_IS_STOPPED
+mdefine_line|#define UHCI_IS_STOPPED&t;&t;9999&t;&t;/* Larger than a frame # */
 multiline_comment|/* Support for port suspend/resume/reset */
 DECL|member|port_c_suspend
 r_int

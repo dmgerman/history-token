@@ -1102,10 +1102,6 @@ suffix:semicolon
 id|__le32
 id|newlink
 suffix:semicolon
-r_int
-r_int
-id|age
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1262,8 +1258,6 @@ id|qh-&gt;urbp
 op_assign
 l_int|NULL
 suffix:semicolon
-id|age
-op_assign
 id|uhci_get_current_frame_number
 c_func
 (paren
@@ -1273,7 +1267,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|age
+id|uhci-&gt;frame_number
+op_plus
+id|uhci-&gt;is_stopped
 op_ne
 id|uhci-&gt;qh_remove_age
 )paren
@@ -1286,7 +1282,7 @@ id|uhci
 suffix:semicolon
 id|uhci-&gt;qh_remove_age
 op_assign
-id|age
+id|uhci-&gt;frame_number
 suffix:semicolon
 )brace
 multiline_comment|/* Check to see if the remove list is empty. Set the IOC bit */
@@ -2073,10 +2069,6 @@ id|urb_priv
 op_star
 id|urbp
 suffix:semicolon
-r_int
-r_int
-id|age
-suffix:semicolon
 id|urbp
 op_assign
 (paren
@@ -2120,8 +2112,6 @@ comma
 id|urb
 )paren
 suffix:semicolon
-id|age
-op_assign
 id|uhci_get_current_frame_number
 c_func
 (paren
@@ -2131,7 +2121,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|age
+id|uhci-&gt;frame_number
+op_plus
+id|uhci-&gt;is_stopped
 op_ne
 id|uhci-&gt;td_remove_age
 )paren
@@ -2144,7 +2136,7 @@ id|uhci
 suffix:semicolon
 id|uhci-&gt;td_remove_age
 op_assign
-id|age
+id|uhci-&gt;frame_number
 suffix:semicolon
 )brace
 multiline_comment|/* Check to see if the remove list is empty. Set the IOC bit */
@@ -4488,14 +4480,17 @@ c_cond
 (paren
 id|limits
 )paren
-id|urb-&gt;start_frame
-op_assign
-(paren
+(brace
 id|uhci_get_current_frame_number
 c_func
 (paren
 id|uhci
 )paren
+suffix:semicolon
+id|urb-&gt;start_frame
+op_assign
+(paren
+id|uhci-&gt;frame_number
 op_plus
 l_int|10
 )paren
@@ -4506,6 +4501,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+)brace
 r_else
 id|urb-&gt;start_frame
 op_assign
@@ -5883,10 +5879,6 @@ id|urb_priv
 op_star
 id|urbp
 suffix:semicolon
-r_int
-r_int
-id|age
-suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -5925,8 +5917,6 @@ comma
 id|urb
 )paren
 suffix:semicolon
-id|age
-op_assign
 id|uhci_get_current_frame_number
 c_func
 (paren
@@ -5936,7 +5926,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|age
+id|uhci-&gt;frame_number
+op_plus
+id|uhci-&gt;is_stopped
 op_ne
 id|uhci-&gt;urb_remove_age
 )paren
@@ -5949,7 +5941,7 @@ id|uhci
 suffix:semicolon
 id|uhci-&gt;urb_remove_age
 op_assign
-id|age
+id|uhci-&gt;frame_number
 suffix:semicolon
 )brace
 multiline_comment|/* If we&squot;re the first, set the next interrupt bit */
