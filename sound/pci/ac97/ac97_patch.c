@@ -10511,11 +10511,11 @@ r_int
 r_int
 id|val
 suffix:semicolon
-multiline_comment|/* CM9761 has no Master and PCM volume although the register reacts */
+multiline_comment|/* CM9761 has no PCM volume although the register reacts */
+multiline_comment|/* Master volume seems to have _some_ influence on the analog&n;&t; * input sounds&n;&t; */
 id|ac97-&gt;flags
 op_or_assign
-id|AC97_HAS_NO_MASTER_VOL
-op_or
+multiline_comment|/*AC97_HAS_NO_MASTER_VOL |*/
 id|AC97_HAS_NO_PCM_VOL
 suffix:semicolon
 id|snd_ac97_write_cache
@@ -10525,7 +10525,7 @@ id|ac97
 comma
 id|AC97_MASTER
 comma
-l_int|0x8000
+l_int|0x8808
 )paren
 suffix:semicolon
 id|snd_ac97_write_cache
@@ -10535,7 +10535,7 @@ id|ac97
 comma
 id|AC97_PCM
 comma
-l_int|0x8000
+l_int|0x8808
 )paren
 suffix:semicolon
 id|ac97-&gt;spec.dev_flags
@@ -10633,6 +10633,7 @@ comma
 l_int|0x05c0
 )paren
 suffix:semicolon
+multiline_comment|/* Don&squot;t set 0x0200 here.  This results in the silent analog output */
 id|snd_ac97_write_cache
 c_func
 (paren
@@ -10640,7 +10641,7 @@ id|ac97
 comma
 id|AC97_CM9761_SPDIF_CTRL
 comma
-l_int|0x0209
+l_int|0x0009
 )paren
 suffix:semicolon
 id|ac97-&gt;rates
@@ -10687,6 +10688,7 @@ op_lshift
 l_int|4
 )paren
 suffix:semicolon
+multiline_comment|/* front on */
 id|snd_ac97_write_cache
 c_func
 (paren
