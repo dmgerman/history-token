@@ -39,13 +39,6 @@ DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB 2.0 &squot;Enhanced&squot; Host Controller (EHCI) Driver&quot;
 singleline_comment|// #define EHCI_VERBOSE_DEBUG
 singleline_comment|// #define have_split_iso
-macro_line|#ifdef&t;CONFIG_DEBUG_SLAB
-DECL|macro|EHCI_SLAB_FLAGS
-macro_line|#&t;define&t;EHCI_SLAB_FLAGS&t;&t;(SLAB_POISON)
-macro_line|#else
-DECL|macro|EHCI_SLAB_FLAGS
-macro_line|#&t;define&t;EHCI_SLAB_FLAGS&t;&t;0
-macro_line|#endif
 multiline_comment|/* magic numbers that can affect system performance */
 DECL|macro|EHCI_TUNE_CERR
 mdefine_line|#define&t;EHCI_TUNE_CERR&t;&t;3&t;/* 0-3 qtd retries; 0 == don&squot;t stop */
@@ -356,8 +349,6 @@ id|ehci_mem_init
 (paren
 id|ehci
 comma
-id|EHCI_SLAB_FLAGS
-op_or
 id|SLAB_KERNEL
 )paren
 )paren

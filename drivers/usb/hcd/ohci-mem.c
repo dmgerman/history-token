@@ -84,13 +84,6 @@ id|hcd
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#ifdef&t;CONFIG_DEBUG_SLAB
-DECL|macro|OHCI_MEM_FLAGS
-macro_line|#&t;define OHCI_MEM_FLAGS&t;SLAB_POISON
-macro_line|#else
-DECL|macro|OHCI_MEM_FLAGS
-macro_line|#&t;define OHCI_MEM_FLAGS&t;0
-macro_line|#endif
 macro_line|#ifndef CONFIG_PCI
 macro_line|#&t;error &quot;usb-ohci currently requires PCI-based controllers&quot;
 multiline_comment|/* to support non-PCI OHCIs, you need custom bus/mem/... glue */
@@ -615,8 +608,6 @@ l_int|0
 multiline_comment|/* no page-crossing issues */
 comma
 id|GFP_KERNEL
-op_or
-id|OHCI_MEM_FLAGS
 )paren
 suffix:semicolon
 r_if
@@ -650,8 +641,6 @@ l_int|0
 multiline_comment|/* no page-crossing issues */
 comma
 id|GFP_KERNEL
-op_or
-id|OHCI_MEM_FLAGS
 )paren
 suffix:semicolon
 r_if
