@@ -25,6 +25,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/generic_serial.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#if BITS_PER_LONG != 32
 macro_line|#  error FIXME: this driver only works on 32-bit platforms
 macro_line|#endif
