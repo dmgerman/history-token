@@ -1429,6 +1429,10 @@ id|rename
 suffix:colon
 id|minix_rename
 comma
+id|getattr
+suffix:colon
+id|minix_getattr
+comma
 )brace
 suffix:semicolon
 eof

@@ -591,6 +591,10 @@ id|follow_link
 suffix:colon
 id|page_follow_link
 comma
+id|getattr
+suffix:colon
+id|sysv_getattr
+comma
 )brace
 suffix:semicolon
 DECL|function|sysv_set_inode

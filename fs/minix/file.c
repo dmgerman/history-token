@@ -54,6 +54,10 @@ id|truncate
 suffix:colon
 id|minix_truncate
 comma
+id|getattr
+suffix:colon
+id|minix_getattr
+comma
 )brace
 suffix:semicolon
 DECL|function|minix_sync_file

@@ -1366,6 +1366,13 @@ c_func
 id|generic_read_dir
 )paren
 suffix:semicolon
+DECL|variable|generic_fillattr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_fillattr
+)paren
+suffix:semicolon
 DECL|variable|generic_file_llseek
 id|EXPORT_SYMBOL
 c_func

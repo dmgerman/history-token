@@ -175,6 +175,10 @@ id|revalidate
 suffix:colon
 id|EIO_ERROR
 comma
+id|getattr
+suffix:colon
+id|EIO_ERROR
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * When a filesystem is unable to read an inode due to an I/O error in&n; * its read_inode() function, it can call make_bad_inode() to return a&n; * set of stubs which will return EIO errors as required. &n; *&n; * We only need to do limited initialisation: all other fields are&n; * preinitialised to zero automatically.&n; */
