@@ -3795,6 +3795,12 @@ r_goto
 id|maybe_retry
 suffix:semicolon
 r_case
+id|DID_IMM_RETRY
+suffix:colon
+r_return
+id|NEEDS_RETRY
+suffix:semicolon
+r_case
 id|DID_ERROR
 suffix:colon
 r_if

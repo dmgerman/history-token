@@ -471,6 +471,8 @@ DECL|macro|DID_PASSTHROUGH
 mdefine_line|#define DID_PASSTHROUGH 0x0a&t;/* Force command past mid-layer            */
 DECL|macro|DID_SOFT_ERROR
 mdefine_line|#define DID_SOFT_ERROR  0x0b&t;/* The low level driver just wish a retry  */
+DECL|macro|DID_IMM_RETRY
+mdefine_line|#define DID_IMM_RETRY   0x0c&t;/* Retry without decrementing retry count  */
 DECL|macro|DRIVER_OK
 mdefine_line|#define DRIVER_OK       0x00&t;/* Driver status                           */
 multiline_comment|/*&n; *  These indicate the error that occurred, and what is available.&n; */
