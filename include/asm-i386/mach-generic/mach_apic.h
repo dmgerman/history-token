@@ -46,5 +46,7 @@ DECL|macro|check_apicid_used
 mdefine_line|#define check_apicid_used (genapic-&gt;check_apicid_used)
 DECL|macro|cpu_mask_to_apicid
 mdefine_line|#define cpu_mask_to_apicid (genapic-&gt;cpu_mask_to_apicid)
+DECL|macro|enable_apic_mode
+mdefine_line|#define enable_apic_mode (genapic-&gt;enable_apic_mode)
 macro_line|#endif /* __ASM_MACH_APIC_H */
 eof

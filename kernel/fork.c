@@ -42,7 +42,7 @@ id|tsk
 suffix:semicolon
 r_extern
 r_void
-id|exit_semundo
+id|exit_sem
 c_func
 (paren
 r_struct
@@ -3729,28 +3729,32 @@ id|retval
 r_goto
 id|bad_fork_cleanup_namespace
 suffix:semicolon
-r_if
-c_cond
+id|p-&gt;set_child_tid
+op_assign
 (paren
 id|clone_flags
 op_amp
 id|CLONE_CHILD_SETTID
 )paren
-id|p-&gt;set_child_tid
-op_assign
+ques
+c_cond
 id|child_tidptr
+suffix:colon
+l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * Clear TID on mm_release()?&n;&t; */
-r_if
-c_cond
+id|p-&gt;clear_child_tid
+op_assign
 (paren
 id|clone_flags
 op_amp
 id|CLONE_CHILD_CLEARTID
 )paren
-id|p-&gt;clear_child_tid
-op_assign
+ques
+c_cond
 id|child_tidptr
+suffix:colon
+l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * Syscall tracing should be turned off in the child regardless&n;&t; * of CLONE_PTRACE.&n;&t; */
 id|clear_tsk_thread_flag
@@ -4211,7 +4215,7 @@ suffix:semicolon
 multiline_comment|/* blocking */
 id|bad_fork_cleanup_semundo
 suffix:colon
-id|exit_semundo
+id|exit_sem
 c_func
 (paren
 id|p

@@ -877,7 +877,7 @@ op_star
 id|tcon
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 id|FSData
 comma

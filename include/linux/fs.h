@@ -29,7 +29,7 @@ r_struct
 id|poll_table_struct
 suffix:semicolon
 r_struct
-id|statfs
+id|kstatfs
 suffix:semicolon
 r_struct
 id|vm_area_struct
@@ -3490,7 +3490,7 @@ id|super_block
 op_star
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 )paren
 suffix:semicolon
@@ -4190,7 +4190,7 @@ id|super_block
 op_star
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 )paren
 suffix:semicolon
@@ -6829,7 +6829,7 @@ id|super_block
 op_star
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 )paren
 suffix:semicolon

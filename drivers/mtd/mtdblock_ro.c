@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * $Id: mtdblock_ro.c,v 1.17 2003/05/18 19:27:27 dwmw2 Exp $&n; *&n; * (C) 2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * Simple read-only (writable only for RAM) mtdblock driver&n; */
+multiline_comment|/*&n; * $Id: mtdblock_ro.c,v 1.18 2003/06/23 12:00:08 dwmw2 Exp $&n; *&n; * (C) 2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * Simple read-only (writable only for RAM) mtdblock driver&n; */
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/blktrans.h&gt;

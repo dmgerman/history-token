@@ -304,6 +304,22 @@ op_star
 id|bus
 )paren
 suffix:semicolon
+multiline_comment|/* Set the name of the bus as it appears in /proc/bus/pci */
+r_extern
+r_int
+id|pci_name_bus
+c_func
+(paren
+r_char
+op_star
+id|name
+comma
+r_struct
+id|pci_bus
+op_star
+id|bus
+)paren
+suffix:semicolon
 r_struct
 id|vm_area_struct
 suffix:semicolon

@@ -443,4 +443,9 @@ op_star
 id|wrapped_parent
 )paren
 suffix:semicolon
+multiline_comment|/* Lock for read/write access to pci device and bus lists */
+r_extern
+id|spinlock_t
+id|pci_bus_lock
+suffix:semicolon
 eof

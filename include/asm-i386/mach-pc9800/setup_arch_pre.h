@@ -76,12 +76,12 @@ id|tick_usec
 op_assign
 id|TICK_USEC
 suffix:semicolon
-multiline_comment|/* ACTHZ          period (usec) */
+multiline_comment|/* USER_HZ period (usec) */
 id|tick_nsec
 op_assign
 id|TICK_NSEC
 suffix:semicolon
-multiline_comment|/* USER_HZ period (nsec) */
+multiline_comment|/* ACTHZ period (nsec) */
 id|pc9800_misc_flags
 op_assign
 id|PC9800_MISC_FLAGS

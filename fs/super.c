@@ -1543,7 +1543,7 @@ id|ustat
 id|tmp
 suffix:semicolon
 r_struct
-id|statfs
+id|kstatfs
 id|sbuf
 suffix:semicolon
 r_int

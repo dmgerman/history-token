@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt; /* sector_div */
 multiline_comment|/*&n; * These constants control the amount of freespace that suspend and&n; * resume the process accounting system, and the time delay between&n; * each check.&n; * Turned into sysctl-controllable parameters. AV, 12/11/98&n; */
 DECL|variable|acct_parm
 r_int
@@ -119,7 +120,7 @@ id|file
 )paren
 (brace
 r_struct
-id|statfs
+id|kstatfs
 id|sbuf
 suffix:semicolon
 r_int
@@ -127,6 +128,12 @@ id|res
 suffix:semicolon
 r_int
 id|act
+suffix:semicolon
+id|sector_t
+id|resume
+suffix:semicolon
+id|sector_t
+id|suspend
 suffix:semicolon
 id|spin_lock
 c_func
@@ -174,16 +181,40 @@ id|sbuf
 r_return
 id|res
 suffix:semicolon
+id|suspend
+op_assign
+id|sbuf.f_blocks
+op_star
+id|SUSPEND
+suffix:semicolon
+id|resume
+op_assign
+id|sbuf.f_blocks
+op_star
+id|RESUME
+suffix:semicolon
+id|sector_div
+c_func
+(paren
+id|suspend
+comma
+l_int|100
+)paren
+suffix:semicolon
+id|sector_div
+c_func
+(paren
+id|resume
+comma
+l_int|100
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|sbuf.f_bavail
 op_le
-id|SUSPEND
-op_star
-id|sbuf.f_blocks
-op_div
-l_int|100
+id|suspend
 )paren
 id|act
 op_assign
@@ -196,11 +227,7 @@ c_cond
 (paren
 id|sbuf.f_bavail
 op_ge
-id|RESUME
-op_star
-id|sbuf.f_blocks
-op_div
-l_int|100
+id|resume
 )paren
 id|act
 op_assign

@@ -358,11 +358,15 @@ DECL|member|f_namelen
 id|s32
 id|f_namelen
 suffix:semicolon
+DECL|member|f_frsize
+id|s32
+id|f_frsize
+suffix:semicolon
 DECL|member|f_spare
 id|s32
 id|f_spare
 (braket
-l_int|6
+l_int|5
 )braket
 suffix:semicolon
 )brace

@@ -467,6 +467,10 @@ suffix:semicolon
 id|pid_t
 id|pid
 suffix:semicolon
+id|sub_info-&gt;retval
+op_assign
+l_int|0
+suffix:semicolon
 id|pid
 op_assign
 id|kernel_thread
@@ -476,8 +480,6 @@ id|____call_usermodehelper
 comma
 id|sub_info
 comma
-id|CLONE_VFORK
-op_or
 id|SIGCHLD
 )paren
 suffix:semicolon
@@ -493,18 +495,13 @@ op_assign
 id|pid
 suffix:semicolon
 r_else
+multiline_comment|/* We don&squot;t have a SIGCHLD signal handler, so this&n;&t;&t; * always returns -ECHILD, but the important thing is&n;&t;&t; * that it blocks. */
 id|sys_wait4
 c_func
 (paren
 id|pid
 comma
-(paren
-r_int
-r_int
-op_star
-)paren
-op_amp
-id|sub_info-&gt;retval
+l_int|NULL
 comma
 l_int|0
 comma
@@ -611,7 +608,7 @@ id|sub_info-&gt;complete
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * call_usermodehelper - start a usermode application&n; * @path: pathname for the application&n; * @argv: null-terminated argument list&n; * @envp: null-terminated environment list&n; * @wait: wait for the application to finish and return status.&n; *&n; * Runs a user-space application.  The application is started&n; * asynchronously if wait is not set, and runs as a child of keventd.&n; * (ie. it runs with full root capabilities).&n; *&n; * Must be called from process context.  Returns a negative error code&n; * if program was not execed successfully, or (exitcode &lt;&lt; 8 + signal)&n; * of the application (0 if wait is not set).&n; */
+multiline_comment|/**&n; * call_usermodehelper - start a usermode application&n; * @path: pathname for the application&n; * @argv: null-terminated argument list&n; * @envp: null-terminated environment list&n; * @wait: wait for the application to finish and return status.&n; *&n; * Runs a user-space application.  The application is started&n; * asynchronously if wait is not set, and runs as a child of keventd.&n; * (ie. it runs with full root capabilities).&n; *&n; * Must be called from process context.  Returns a negative error code&n; * if program was not execed successfully, or 0.&n; */
 DECL|function|call_usermodehelper
 r_int
 id|call_usermodehelper

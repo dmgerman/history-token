@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: dir.c,v 1.76 2003/05/26 09:50:38 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: dir.c,v 1.77 2003/06/05 14:42:24 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1759,14 +1759,11 @@ suffix:semicolon
 multiline_comment|/* Work out where to put the dirent node now. */
 id|writtenlen
 op_assign
+id|PAD
+c_func
 (paren
 id|writtenlen
-op_plus
-l_int|3
 )paren
-op_amp
-op_complement
-l_int|3
 suffix:semicolon
 id|phys_ofs
 op_add_assign
@@ -3362,14 +3359,11 @@ suffix:semicolon
 multiline_comment|/* Work out where to put the dirent node now. */
 id|writtenlen
 op_assign
+id|PAD
+c_func
 (paren
 id|writtenlen
-op_plus
-l_int|3
 )paren
-op_amp
-op_complement
-l_int|3
 suffix:semicolon
 id|phys_ofs
 op_add_assign

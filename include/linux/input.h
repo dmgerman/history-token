@@ -645,6 +645,8 @@ DECL|macro|BTN_FORWARD
 mdefine_line|#define BTN_FORWARD&t;&t;0x115
 DECL|macro|BTN_BACK
 mdefine_line|#define BTN_BACK&t;&t;0x116
+DECL|macro|BTN_TASK
+mdefine_line|#define BTN_TASK&t;&t;0x117
 DECL|macro|BTN_JOYSTICK
 mdefine_line|#define BTN_JOYSTICK&t;&t;0x120
 DECL|macro|BTN_TRIGGER

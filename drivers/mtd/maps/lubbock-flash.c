@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: lubbock-flash.c,v 1.8 2003/05/21 12:45:19 dwmw2 Exp $&n; *&n; * Map driver for the Lubbock developer platform.&n; *&n; * Author:&t;Nicolas Pitre&n; * Copyright:&t;(C) 2001 MontaVista Software Inc.&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; * $Id: lubbock-flash.c,v 1.9 2003/06/23 11:48:18 dwmw2 Exp $&n; *&n; * Map driver for the Lubbock developer platform.&n; *&n; * Author:&t;Nicolas Pitre&n; * Copyright:&t;(C) 2001 MontaVista Software Inc.&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -119,8 +119,6 @@ l_int|0x00140000
 )brace
 )brace
 suffix:semicolon
-DECL|macro|NB_OF
-mdefine_line|#define NB_OF(x)  (sizeof(x)/sizeof(x[0]))
 DECL|variable|mymtds
 r_static
 r_struct
@@ -596,7 +594,7 @@ id|i
 comma
 id|lubbock_partitions
 comma
-id|NB_OF
+id|ARRAY_SIZE
 c_func
 (paren
 id|lubbock_partitions

@@ -88,7 +88,7 @@ DECL|macro|TICK_NSEC
 mdefine_line|#define TICK_NSEC (SH_DIV (1000000UL * 1000, ACTHZ, 8))
 multiline_comment|/* TICK_USEC is the time between ticks in usec assuming fake USER_HZ */
 DECL|macro|TICK_USEC
-mdefine_line|#define TICK_USEC ((TICK_NSEC + 1000UL/2) / 1000UL)
+mdefine_line|#define TICK_USEC ((1000000UL + USER_HZ/2) / USER_HZ)
 multiline_comment|/* TICK_USEC_TO_NSEC is the time between ticks in nsec assuming real ACTHZ and&t;*/
 multiline_comment|/* a value TUSEC for TICK_USEC (can be set bij adjtimex)&t;&t;*/
 DECL|macro|TICK_USEC_TO_NSEC

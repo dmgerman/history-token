@@ -116,6 +116,7 @@ c_func
 (paren
 id|busno
 comma
+op_amp
 id|pci_root_ops
 comma
 l_int|NULL
@@ -136,6 +137,7 @@ id|suba
 op_plus
 l_int|1
 comma
+op_amp
 id|pci_root_ops
 comma
 l_int|NULL
@@ -193,6 +195,7 @@ c_func
 (paren
 id|busno
 comma
+op_amp
 id|pci_root_ops
 comma
 l_int|NULL

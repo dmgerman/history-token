@@ -59,8 +59,26 @@ op_star
 )paren
 op_assign
 (brace
-macro_line|#ifdef CONFIG_ACORN_PARTITION
-id|acorn_partition
+multiline_comment|/*&n;&t; * Probe partition formats with tables at disk address 0&n;&t; * that also have an ADFS boot block at 0xdc0.&n;&t; */
+macro_line|#ifdef CONFIG_ACORN_PARTITION_ICS
+id|adfspart_check_ICS
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_ACORN_PARTITION_POWERTEC
+id|adfspart_check_POWERTEC
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_ACORN_PARTITION_EESOX
+id|adfspart_check_EESOX
+comma
+macro_line|#endif
+multiline_comment|/*&n;&t; * Now move on to formats that only have partition info at&n;&t; * disk address 0xdc0.  Since these may also have stale&n;&t; * PC/BIOS partition tables, they need to come before&n;&t; * the msdos entry.&n;&t; */
+macro_line|#ifdef CONFIG_ACORN_PARTITION_CUMANA
+id|adfspart_check_CUMANA
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_ACORN_PARTITION_ADFS
+id|adfspart_check_ADFS
 comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_EFI_PARTITION

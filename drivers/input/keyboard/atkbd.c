@@ -1378,7 +1378,7 @@ mdefine_line|#define ATKBD_CMD_ENABLE&t;0x00f4
 DECL|macro|ATKBD_CMD_RESET_DIS
 mdefine_line|#define ATKBD_CMD_RESET_DIS&t;0x00f5
 DECL|macro|ATKBD_CMD_RESET_BAT
-mdefine_line|#define ATKBD_CMD_RESET_BAT&t;0x01ff
+mdefine_line|#define ATKBD_CMD_RESET_BAT&t;0x02ff
 DECL|macro|ATKBD_CMD_SETALL_MB
 mdefine_line|#define ATKBD_CMD_SETALL_MB&t;0x00f8
 DECL|macro|ATKBD_CMD_RESEND
@@ -2038,6 +2038,10 @@ op_logical_and
 id|command
 op_eq
 id|ATKBD_CMD_RESET_BAT
+op_logical_and
+id|timeout
+OG
+l_int|100000
 )paren
 id|timeout
 op_assign
@@ -2117,6 +2121,21 @@ l_int|1
 op_minus
 id|i
 )braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|command
+op_eq
+id|ATKBD_CMD_RESET_BAT
+op_logical_and
+id|atkbd-&gt;cmdcnt
+op_eq
+l_int|1
+)paren
+id|atkbd-&gt;cmdcnt
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond

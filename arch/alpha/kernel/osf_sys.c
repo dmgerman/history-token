@@ -762,7 +762,7 @@ id|linux_to_osf_statfs
 c_func
 (paren
 r_struct
-id|statfs
+id|kstatfs
 op_star
 id|linux_stat
 comma
@@ -789,10 +789,9 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* mount flags */
-multiline_comment|/* Linux doesn&squot;t provide a &quot;fundamental filesystem block size&quot;: */
 id|tmp_stat.f_fsize
 op_assign
-id|linux_stat-&gt;f_bsize
+id|linux_stat-&gt;f_frsize
 suffix:semicolon
 id|tmp_stat.f_bsize
 op_assign
@@ -880,7 +879,7 @@ id|bufsiz
 )paren
 (brace
 r_struct
-id|statfs
+id|kstatfs
 id|linux_stat
 suffix:semicolon
 r_int

@@ -2858,7 +2858,7 @@ id|load_bias
 suffix:semicolon
 id|reloc_func_desc
 op_assign
-id|load_addr
+id|load_bias
 suffix:semicolon
 )brace
 )brace

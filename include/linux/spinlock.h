@@ -90,7 +90,6 @@ DECL|macro|_raw_spin_unlock
 mdefine_line|#define _raw_spin_unlock(x) &bslash;&n;&t;do { &bslash;&n;&t; &t;CHECK_LOCK(x); &bslash;&n;&t;&t;if (!(x)-&gt;lock&amp;&amp;(x)-&gt;babble) { &bslash;&n;&t;&t;&t;(x)-&gt;babble--; &bslash;&n;&t;&t;&t;printk(&quot;%s:%d: spin_unlock(%s:%p) not locked&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;&t;__FILE__,__LINE__, (x)-&gt;module, (x));&bslash;&n;&t;&t;} &bslash;&n;&t;&t;(x)-&gt;lock = 0; &bslash;&n;&t;} while (0)
 macro_line|#else
 multiline_comment|/*&n; * gcc versions before ~2.95 have a nasty bug with empty initializers.&n; */
-macro_line|#if (__GNUC__ &gt; 2)
 DECL|typedef|spinlock_t
 r_typedef
 r_struct
@@ -100,21 +99,6 @@ id|spinlock_t
 suffix:semicolon
 DECL|macro|SPIN_LOCK_UNLOCKED
 mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) { }
-macro_line|#else
-DECL|member|gcc_is_buggy
-DECL|typedef|spinlock_t
-r_typedef
-r_struct
-(brace
-r_int
-id|gcc_is_buggy
-suffix:semicolon
-)brace
-id|spinlock_t
-suffix:semicolon
-DECL|macro|SPIN_LOCK_UNLOCKED
-mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) { 0 }
-macro_line|#endif
 multiline_comment|/*&n; * If CONFIG_SMP is unset, declare the _raw_* definitions as nops&n; */
 DECL|macro|spin_lock_init
 mdefine_line|#define spin_lock_init(lock)&t;do { (void)(lock); } while(0)

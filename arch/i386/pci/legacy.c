@@ -134,6 +134,7 @@ id|n
 suffix:semicolon
 id|bus-&gt;ops
 op_assign
+op_amp
 id|pci_root_ops
 suffix:semicolon
 id|dev-&gt;bus
@@ -205,6 +206,7 @@ c_func
 (paren
 id|n
 comma
+op_amp
 id|pci_root_ops
 comma
 l_int|NULL
@@ -243,7 +245,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|pci_root_ops
+id|raw_pci_ops
 )paren
 (brace
 id|printk

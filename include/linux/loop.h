@@ -7,6 +7,9 @@ mdefine_line|#define LO_NAME_SIZE&t;64
 DECL|macro|LO_KEY_SIZE
 mdefine_line|#define LO_KEY_SIZE&t;32
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/bio.h&gt;
+macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 multiline_comment|/* Possible states of device */
 r_enum
 (brace
@@ -20,6 +23,9 @@ DECL|enumerator|Lo_rundown
 id|Lo_rundown
 comma
 )brace
+suffix:semicolon
+r_struct
+id|loop_func_table
 suffix:semicolon
 DECL|struct|loop_device
 r_struct
@@ -36,14 +42,6 @@ suffix:semicolon
 DECL|member|lo_offset
 r_int
 id|lo_offset
-suffix:semicolon
-DECL|member|lo_encrypt_type
-r_int
-id|lo_encrypt_type
-suffix:semicolon
-DECL|member|lo_encrypt_key_size
-r_int
-id|lo_encrypt_key_size
 suffix:semicolon
 DECL|member|lo_flags
 r_int
@@ -91,6 +89,16 @@ id|lo_encrypt_key
 (braket
 id|LO_KEY_SIZE
 )braket
+suffix:semicolon
+DECL|member|lo_encrypt_key_size
+r_int
+id|lo_encrypt_key_size
+suffix:semicolon
+DECL|member|lo_encryption
+r_struct
+id|loop_func_table
+op_star
+id|lo_encryption
 suffix:semicolon
 DECL|member|lo_init
 id|__u32
@@ -493,30 +501,11 @@ r_int
 id|arg
 )paren
 suffix:semicolon
-multiline_comment|/* lock and unlock manage the module use counts */
-DECL|member|lock
-r_void
-(paren
-op_star
-id|lock
-)paren
-(paren
+DECL|member|owner
 r_struct
-id|loop_device
+id|module
 op_star
-)paren
-suffix:semicolon
-DECL|member|unlock
-r_void
-(paren
-op_star
-id|unlock
-)paren
-(paren
-r_struct
-id|loop_device
-op_star
-)paren
+id|owner
 suffix:semicolon
 )brace
 suffix:semicolon

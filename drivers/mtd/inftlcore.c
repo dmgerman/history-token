@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * inftlcore.c -- Linux driver for Inverse Flash Translation Layer (INFTL)&n; *&n; * (C) Copyright 2002, Greg Ungerer (gerg@snapgear.com)&n; *&n; * Based heavily on the nftlcore.c code which is:&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * Author: David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: inftlcore.c,v 1.9 2003/05/23 11:41:47 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/* &n; * inftlcore.c -- Linux driver for Inverse Flash Translation Layer (INFTL)&n; *&n; * (C) Copyright 2002, Greg Ungerer (gerg@snapgear.com)&n; *&n; * Based heavily on the nftlcore.c code which is:&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * Author: David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: inftlcore.c,v 1.11 2003/06/23 12:00:08 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -301,6 +301,11 @@ r_if
 c_cond
 (paren
 id|add_mtd_blktrans_dev
+c_func
+(paren
+op_amp
+id|inftl-&gt;mbd
+)paren
 )paren
 (brace
 r_if
@@ -3350,10 +3355,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|inftl_ioctl
+DECL|function|inftl_getgeo
 r_static
 r_int
-id|inftl_ioctl
+id|inftl_getgeo
 c_func
 (paren
 r_struct
@@ -3362,22 +3367,9 @@ op_star
 id|dev
 comma
 r_struct
-id|inode
+id|hd_geometry
 op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|file
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|geo
 )paren
 (brace
 r_struct
@@ -3391,67 +3383,21 @@ op_star
 )paren
 id|dev
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|cmd
-)paren
-(brace
-r_case
-id|HDIO_GETGEO
-suffix:colon
-(brace
-r_struct
-id|hd_geometry
-id|g
-suffix:semicolon
-id|g.heads
+id|geo-&gt;heads
 op_assign
 id|nftl-&gt;heads
 suffix:semicolon
-id|g.sectors
+id|geo-&gt;sectors
 op_assign
 id|nftl-&gt;sectors
 suffix:semicolon
-id|g.cylinders
+id|geo-&gt;cylinders
 op_assign
 id|nftl-&gt;cylinders
 suffix:semicolon
-id|g.start
-op_assign
+r_return
 l_int|0
 suffix:semicolon
-r_return
-id|copy_to_user
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-op_amp
-id|g
-comma
-r_sizeof
-id|g
-)paren
-ques
-c_cond
-op_minus
-id|EFAULT
-suffix:colon
-l_int|0
-suffix:semicolon
-)brace
-r_default
-suffix:colon
-r_return
-op_minus
-id|ENOTTY
-suffix:semicolon
-)brace
 )brace
 DECL|variable|inftl_tr
 r_struct
@@ -3475,9 +3421,9 @@ op_assign
 id|INFTL_PARTN_BITS
 comma
 dot
-id|ioctl
+id|getgeo
 op_assign
-id|inftl_ioctl
+id|inftl_getgeo
 comma
 dot
 id|readsect
@@ -3525,7 +3471,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;INFTL: inftlcore.c $Revision: 1.9 $, &quot;
+l_string|&quot;INFTL: inftlcore.c $Revision: 1.11 $, &quot;
 l_string|&quot;inftlmount.c %s&bslash;n&quot;
 comma
 id|inftlmountrev

@@ -401,15 +401,6 @@ macro_line|#else
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(n, args...)
 macro_line|#endif
-DECL|variable|version
-r_static
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;xirc2ps_cs.c 1.31 1998/12/09 19:32:55 (dd9jn+kvh)&quot;
-suffix:semicolon
-multiline_comment|/* !--- CVS revision */
 DECL|macro|KDBG_XIRC
 mdefine_line|#define KDBG_XIRC KERN_DEBUG   &quot;xirc2ps_cs: &quot;
 DECL|macro|KERR_XIRC

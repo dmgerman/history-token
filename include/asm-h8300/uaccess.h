@@ -4,6 +4,7 @@ mdefine_line|#define __H8300_UACCESS_H
 multiline_comment|/*&n; * User space memory access functions&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 DECL|macro|VERIFY_READ
 mdefine_line|#define VERIFY_READ&t;0

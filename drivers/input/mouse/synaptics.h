@@ -2,7 +2,6 @@ multiline_comment|/*&n; * Synaptics TouchPad PS/2 mouse driver&n; *&n; * This pr
 macro_line|#ifndef _SYNAPTICS_H
 DECL|macro|_SYNAPTICS_H
 mdefine_line|#define _SYNAPTICS_H
-macro_line|#ifdef CONFIG_MOUSE_PS2_SYNAPTICS
 r_extern
 r_void
 id|synaptics_process_byte
@@ -41,59 +40,6 @@ op_star
 id|psmouse
 )paren
 suffix:semicolon
-macro_line|#else
-DECL|function|synaptics_process_byte
-r_static
-r_inline
-r_void
-id|synaptics_process_byte
-c_func
-(paren
-r_struct
-id|psmouse
-op_star
-id|psmouse
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-)brace
-DECL|function|synaptics_init
-r_static
-r_inline
-r_int
-id|synaptics_init
-c_func
-(paren
-r_struct
-id|psmouse
-op_star
-id|psmouse
-)paren
-(brace
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-DECL|function|synaptics_disconnect
-r_static
-r_inline
-r_void
-id|synaptics_disconnect
-c_func
-(paren
-r_struct
-id|psmouse
-op_star
-id|psmouse
-)paren
-(brace
-)brace
-macro_line|#endif
 multiline_comment|/* synaptics queries */
 DECL|macro|SYN_QUE_IDENTIFY
 mdefine_line|#define SYN_QUE_IDENTIFY&t;&t;0x00

@@ -862,7 +862,6 @@ op_assign
 id|wastage
 suffix:semicolon
 )brace
-macro_line|#if DEBUG
 DECL|macro|slab_error
 mdefine_line|#define slab_error(cachep, msg) __slab_error(__FUNCTION__, cachep, msg)
 DECL|function|__slab_error
@@ -904,7 +903,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n; * Start the reap timer running on the target CPU.  We run at around 1 to 2Hz.&n; * Add the CPU number into the expiry time to minimize the possibility of the&n; * CPUs getting into lockstep and contending for the global cache chain lock.&n; */
 DECL|function|start_cpu_timer
 r_static
@@ -4286,6 +4284,9 @@ op_star
 id|cachep
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4335,13 +4336,12 @@ id|cachep
 )paren
 )paren
 (brace
-id|printk
+id|slab_error
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;kmem_cache_destroy: Can&squot;t free all objects %p&bslash;n&quot;
-comma
 id|cachep
+comma
+l_string|&quot;Can&squot;t free all objects&quot;
 )paren
 suffix:semicolon
 id|down
@@ -4372,10 +4372,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-(brace
-r_int
-id|i
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4410,7 +4406,6 @@ id|cachep-&gt;lists.shared
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 id|kmem_cache_free
 c_func
 (paren
@@ -6362,6 +6357,7 @@ id|cachep-&gt;flags
 op_amp
 id|SLAB_POISON
 )paren
+(brace
 id|check_poison_obj
 c_func
 (paren
@@ -6370,6 +6366,17 @@ comma
 id|objp
 )paren
 suffix:semicolon
+id|poison_obj
+c_func
+(paren
+id|cachep
+comma
+id|objp
+comma
+id|POISON_BEFORE
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

@@ -2,6 +2,8 @@ multiline_comment|/*&n; *  linux/arch/arm/kernel/suspend.c&n; *&n; * This progra
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * Tell the linker that pm_do_suspend may not be present.&n; */

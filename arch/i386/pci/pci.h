@@ -73,7 +73,6 @@ suffix:semicolon
 r_extern
 r_struct
 id|pci_ops
-op_star
 id|pci_root_ops
 suffix:semicolon
 multiline_comment|/* pci-irq.c */
