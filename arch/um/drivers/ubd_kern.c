@@ -270,14 +270,6 @@ r_struct
 id|openflags
 id|openflags
 suffix:semicolon
-DECL|member|real
-id|devfs_handle_t
-id|real
-suffix:semicolon
-DECL|member|fake
-id|devfs_handle_t
-id|fake
-suffix:semicolon
 DECL|member|cow
 r_struct
 id|cow
@@ -288,7 +280,7 @@ suffix:semicolon
 DECL|macro|DEFAULT_COW
 mdefine_line|#define DEFAULT_COW { &bslash;&n;&t;.file =&t;&t;&t;NULL, &bslash;&n;        .fd =&t;&t;&t;-1, &bslash;&n;        .bitmap =&t;&t;NULL, &bslash;&n;&t;.bitmap_offset =&t;0, &bslash;&n;        .data_offset =&t;&t;0, &bslash;&n;}
 DECL|macro|DEFAULT_UBD
-mdefine_line|#define DEFAULT_UBD { &bslash;&n;&t;.file = &t;&t;NULL, &bslash;&n;&t;.is_dir =&t;&t;0, &bslash;&n;&t;.count =&t;&t;0, &bslash;&n;&t;.fd =&t;&t;&t;-1, &bslash;&n;&t;.size =&t;&t;&t;-1, &bslash;&n;&t;.boot_openflags =&t;OPEN_FLAGS, &bslash;&n;&t;.openflags =&t;&t;OPEN_FLAGS, &bslash;&n;&t;.real =&t;&t;&t;NULL, &bslash;&n;&t;.fake =&t;&t;&t;NULL, &bslash;&n;        .cow =&t;&t;&t;DEFAULT_COW, &bslash;&n;}
+mdefine_line|#define DEFAULT_UBD { &bslash;&n;&t;.file = &t;&t;NULL, &bslash;&n;&t;.is_dir =&t;&t;0, &bslash;&n;&t;.count =&t;&t;0, &bslash;&n;&t;.fd =&t;&t;&t;-1, &bslash;&n;&t;.size =&t;&t;&t;-1, &bslash;&n;&t;.boot_openflags =&t;OPEN_FLAGS, &bslash;&n;&t;.openflags =&t;&t;OPEN_FLAGS, &bslash;&n;        .cow =&t;&t;&t;DEFAULT_COW, &bslash;&n;}
 DECL|variable|ubd_dev
 r_struct
 id|ubd
@@ -1998,13 +1990,6 @@ id|gendisk
 op_star
 op_star
 id|disk_out
-comma
-id|devfs_handle_t
-id|dir_handle
-comma
-id|devfs_handle_t
-op_star
-id|handle_out
 )paren
 (brace
 r_char
@@ -2154,15 +2139,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Initialized in an initcall, and unchanged thereafter */
-DECL|variable|ubd_dir_handle
-id|devfs_handle_t
-id|ubd_dir_handle
-suffix:semicolon
-DECL|variable|ubd_fake_dir_handle
-id|devfs_handle_t
-id|ubd_fake_dir_handle
-suffix:semicolon
 DECL|function|ubd_add
 r_static
 r_int
@@ -2260,11 +2236,6 @@ id|ubd_gendisk
 (braket
 id|n
 )braket
-comma
-id|ubd_dir_handle
-comma
-op_amp
-id|dev-&gt;real
 )paren
 suffix:semicolon
 r_if
@@ -2299,11 +2270,6 @@ id|fake_gendisk
 (braket
 id|n
 )braket
-comma
-id|ubd_fake_dir_handle
-comma
-op_amp
-id|dev-&gt;fake
 )paren
 suffix:semicolon
 )brace
@@ -2819,21 +2785,14 @@ id|n
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;real
-op_ne
-l_int|NULL
-)paren
-(brace
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|dev-&gt;real
+l_string|&quot;ubd/%d&quot;
+comma
+id|n
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2870,21 +2829,14 @@ id|n
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;fake
-op_ne
-l_int|NULL
-)paren
-(brace
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|dev-&gt;fake
+l_string|&quot;ubd/%d&quot;
+comma
+id|n
 )paren
 suffix:semicolon
-)brace
 )brace
 op_star
 id|dev
@@ -2981,8 +2933,6 @@ r_void
 r_int
 id|i
 suffix:semicolon
-id|ubd_dir_handle
-op_assign
 id|devfs_mk_dir
 c_func
 (paren
@@ -3058,8 +3008,6 @@ comma
 id|fake_major
 )paren
 suffix:semicolon
-id|ubd_fake_dir_handle
-op_assign
 id|devfs_mk_dir
 c_func
 (paren
