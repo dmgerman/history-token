@@ -3021,7 +3021,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Map status to standard result codes&n; *&n; * &lt;status&gt; is (td-&gt;status &amp; 0xFE0000) [a.k.a. uhci_status_bits(td-&gt;status)]&n; * &lt;dir_out&gt; is True for output TDs and False for input TDs.&n; */
+multiline_comment|/*&n; * Map status to standard result codes&n; *&n; * &lt;status&gt; is (td-&gt;status &amp; 0xF60000) [a.k.a. uhci_status_bits(td-&gt;status)]&n; * Note: status does not include the TD_CTRL_NAK bit.&n; * &lt;dir_out&gt; is True for output TDs and False for input TDs.&n; */
 DECL|function|uhci_map_status
 r_static
 r_int
@@ -3072,7 +3072,7 @@ id|dir_out
 )paren
 r_return
 op_minus
-id|ETIMEDOUT
+id|EPROTO
 suffix:semicolon
 r_else
 r_return
@@ -3080,18 +3080,6 @@ op_minus
 id|EILSEQ
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|status
-op_amp
-id|TD_CTRL_NAK
-)paren
-multiline_comment|/* NAK */
-r_return
-op_minus
-id|ETIMEDOUT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3128,20 +3116,17 @@ r_return
 op_minus
 id|EPIPE
 suffix:semicolon
-r_if
-c_cond
+id|WARN_ON
+c_func
 (paren
 id|status
 op_amp
 id|TD_CTRL_ACTIVE
 )paren
+suffix:semicolon
 multiline_comment|/* Active */
 r_return
 l_int|0
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Control transfers&n; */
@@ -3258,7 +3243,7 @@ id|status
 op_or_assign
 id|TD_CTRL_LS
 suffix:semicolon
-multiline_comment|/*&n;&t; * Build the TD for the control request&n;&t; */
+multiline_comment|/*&n;&t; * Build the TD for the control request setup packet&n;&t; */
 id|td
 op_assign
 id|uhci_alloc_td
@@ -3862,7 +3847,7 @@ op_assign
 id|head-&gt;prev
 suffix:semicolon
 r_goto
-id|status_phase
+id|status_stage
 suffix:semicolon
 )brace
 id|tmp
@@ -3882,7 +3867,7 @@ comma
 id|list
 )paren
 suffix:semicolon
-multiline_comment|/* The first TD is the SETUP phase, check the status, but skip */
+multiline_comment|/* The first TD is the SETUP stage, check the status, but skip */
 multiline_comment|/*  the count */
 id|status
 op_assign
@@ -4068,7 +4053,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-id|status_phase
+id|status_stage
 suffix:colon
 id|td
 op_assign
@@ -4083,7 +4068,7 @@ comma
 id|list
 )paren
 suffix:semicolon
-multiline_comment|/* Control status phase */
+multiline_comment|/* Control status stage */
 id|status
 op_assign
 id|td_status
@@ -4116,6 +4101,14 @@ r_return
 l_int|0
 suffix:semicolon
 macro_line|#endif
+id|status
+op_assign
+id|uhci_status_bits
+c_func
+(paren
+id|status
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4130,11 +4123,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|uhci_status_bits
-c_func
-(paren
 id|status
-)paren
 )paren
 r_goto
 id|td_error
