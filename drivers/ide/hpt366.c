@@ -15,7 +15,7 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
+macro_line|#include &quot;ata-timing.h&quot;
 DECL|macro|DISPLAY_HPT366_TIMINGS
 mdefine_line|#define DISPLAY_HPT366_TIMINGS
 multiline_comment|/* various tuning parameters */
@@ -2633,17 +2633,17 @@ id|pio
 suffix:semicolon
 id|pio
 op_assign
-id|ide_get_best_pio_mode
+id|ata_timing_mode
 c_func
 (paren
 id|drive
 comma
-l_int|255
-comma
-l_int|5
-comma
-l_int|NULL
+id|XFER_PIO
+op_or
+id|XFER_EPIO
 )paren
+op_minus
+id|XFER_PIO_0
 suffix:semicolon
 r_if
 c_cond
@@ -4458,15 +4458,7 @@ c_cond
 id|state
 )paren
 (brace
-(paren
-r_void
-)paren
-id|ide_do_reset
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
+singleline_comment|// reset drives...
 id|pci_write_config_byte
 c_func
 (paren
@@ -4524,15 +4516,7 @@ l_int|0x80
 )paren
 )paren
 suffix:semicolon
-(paren
-r_void
-)paren
-id|ide_do_reset
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
+singleline_comment|// reset drives...
 )brace
 r_return
 l_int|0

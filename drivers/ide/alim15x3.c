@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
+macro_line|#include &quot;ata-timing.h&quot;
 DECL|macro|DISPLAY_ALI_TIMINGS
 mdefine_line|#define DISPLAY_ALI_TIMINGS
 macro_line|#if defined(DISPLAY_ALI_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
@@ -1486,8 +1486,10 @@ id|byte
 id|pio
 )paren
 (brace
-id|ide_pio_data_t
-id|d
+r_struct
+id|ata_timing
+op_star
+id|t
 suffix:semicolon
 id|ide_hwif_t
 op_star
@@ -1549,38 +1551,55 @@ id|cd_dma_fifo
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pio
+op_eq
+l_int|255
+)paren
 id|pio
 op_assign
-id|ide_get_best_pio_mode
+id|ata_timing_mode
 c_func
 (paren
 id|drive
 comma
+id|XFER_PIO
+op_or
+id|XFER_EPIO
+)paren
+suffix:semicolon
+r_else
+id|pio
+op_assign
+id|XFER_PIO_0
+op_plus
+id|min_t
+c_func
+(paren
+id|byte
+comma
 id|pio
 comma
-l_int|5
-comma
-op_amp
-id|d
+l_int|4
+)paren
+suffix:semicolon
+id|t
+op_assign
+id|ata_timing_data
+c_func
+(paren
+id|pio
 )paren
 suffix:semicolon
 id|s_time
 op_assign
-id|ide_pio_timings
-(braket
-id|pio
-)braket
-dot
-id|setup_time
+id|t-&gt;setup
 suffix:semicolon
 id|a_time
 op_assign
-id|ide_pio_timings
-(braket
-id|pio
-)braket
-dot
-id|active_time
+id|t-&gt;active
 suffix:semicolon
 r_if
 c_cond
@@ -1630,12 +1649,7 @@ l_int|0
 suffix:semicolon
 id|c_time
 op_assign
-id|ide_pio_timings
-(braket
-id|pio
-)braket
-dot
-id|cycle_time
+id|t-&gt;cycle
 suffix:semicolon
 macro_line|#if 0
 r_if
@@ -1857,7 +1871,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * setup   active  rec&n;&t; * { 70,   165,    365 },   PIO Mode 0&n;&t; * { 50,   125,    208 },   PIO Mode 1&n;&t; * { 30,   100,    110 },   PIO Mode 2&n;&t; * { 30,   80,     70  },   PIO Mode 3 with IORDY&n;&t; * { 25,   70,     25  },   PIO Mode 4 with IORDY  ns&n;&t; * { 20,   50,     30  }    PIO Mode 5 with IORDY (nonstandard)&n;&t; */
 )brace
 DECL|function|ali15x3_tune_chipset
 r_static

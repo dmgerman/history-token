@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide-timing.h&quot;
+macro_line|#include &quot;ata-timing.h&quot;
 DECL|macro|VIA_IDE_ENABLE
 mdefine_line|#define VIA_IDE_ENABLE&t;&t;0x40
 DECL|macro|VIA_IDE_CONFIG
@@ -1707,7 +1707,7 @@ r_char
 id|dn
 comma
 r_struct
-id|ide_timing
+id|ata_timing
 op_star
 id|timing
 )paren
@@ -2066,7 +2066,7 @@ l_int|1
 )paren
 suffix:semicolon
 r_struct
-id|ide_timing
+id|ata_timing
 id|t
 comma
 id|p
@@ -2177,7 +2177,7 @@ op_assign
 id|T
 suffix:semicolon
 )brace
-id|ide_timing_compute
+id|ata_timing_compute
 c_func
 (paren
 id|drive
@@ -2198,7 +2198,7 @@ c_cond
 id|peer-&gt;present
 )paren
 (brace
-id|ide_timing_compute
+id|ata_timing_compute
 c_func
 (paren
 id|peer
@@ -2213,7 +2213,7 @@ comma
 id|UT
 )paren
 suffix:semicolon
-id|ide_timing_merge
+id|ata_timing_merge
 c_func
 (paren
 op_amp
@@ -2315,7 +2315,7 @@ c_func
 (paren
 id|drive
 comma
-id|ide_find_best_mode
+id|ata_timing_mode
 c_func
 (paren
 id|drive
@@ -2336,9 +2336,11 @@ id|drive
 comma
 id|XFER_PIO_0
 op_plus
-id|MIN
+id|min_t
 c_func
 (paren
+id|byte
+comma
 id|pio
 comma
 l_int|5
@@ -2383,7 +2385,7 @@ suffix:semicolon
 r_int
 id|speed
 op_assign
-id|ide_find_best_mode
+id|ata_timing_mode
 c_func
 (paren
 id|drive

@@ -5416,10 +5416,7 @@ l_string|&quot;ide-tape: I/O error in request sense command&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|ide_do_reset
-(paren
-id|drive
-)paren
+id|ide_stopped
 suffix:semicolon
 )brace
 macro_line|#if IDETAPE_DEBUG_LOG
@@ -5545,9 +5542,6 @@ id|KERN_ERR
 l_string|&quot;ide-tape: DMA disabled, reverting to PIO&bslash;n&quot;
 )paren
 suffix:semicolon
-(paren
-r_void
-)paren
 id|HWIF
 c_func
 (paren
@@ -5563,10 +5557,7 @@ id|drive
 )paren
 suffix:semicolon
 r_return
-id|ide_do_reset
-(paren
-id|drive
-)paren
+id|ide_stopped
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
@@ -5606,10 +5597,7 @@ l_string|&quot;ide-tape: CoD != 0 in idetape_pc_intr&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|ide_do_reset
-(paren
-id|drive
-)paren
+id|ide_stopped
 suffix:semicolon
 )brace
 r_if
@@ -5654,10 +5642,7 @@ l_string|&quot;Write&quot;
 )paren
 suffix:semicolon
 r_return
-id|ide_do_reset
-(paren
-id|drive
-)paren
+id|ide_stopped
 suffix:semicolon
 )brace
 r_if
@@ -6007,10 +5992,7 @@ l_string|&quot;ide-tape: (IO,CoD) != (0,1) while issuing a packet command&bslash
 )paren
 suffix:semicolon
 r_return
-id|ide_do_reset
-(paren
-id|drive
-)paren
+id|ide_stopped
 suffix:semicolon
 )brace
 id|tape-&gt;cmd_start_time
@@ -8500,10 +8482,7 @@ suffix:semicolon
 r_else
 (brace
 r_return
-id|ide_do_reset
-(paren
-id|drive
-)paren
+id|ide_stopped
 suffix:semicolon
 )brace
 )brace

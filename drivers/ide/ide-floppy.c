@@ -3046,10 +3046,7 @@ l_string|&quot;ide-floppy: I/O error in request sense command&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|ide_do_reset
-(paren
-id|drive
-)paren
+id|ide_stopped
 suffix:semicolon
 )brace
 id|idefloppy_retry_pc
@@ -3110,9 +3107,6 @@ id|KERN_ERR
 l_string|&quot;ide-floppy: The floppy wants to issue more interrupts in DMA mode&bslash;n&quot;
 )paren
 suffix:semicolon
-(paren
-r_void
-)paren
 id|HWIF
 c_func
 (paren
@@ -3128,10 +3122,7 @@ id|drive
 )paren
 suffix:semicolon
 r_return
-id|ide_do_reset
-(paren
-id|drive
-)paren
+id|ide_stopped
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
@@ -3171,10 +3162,7 @@ l_string|&quot;ide-floppy: CoD != 0 in idefloppy_pc_intr&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|ide_do_reset
-(paren
-id|drive
-)paren
+id|ide_stopped
 suffix:semicolon
 )brace
 r_if
@@ -3219,10 +3207,7 @@ l_string|&quot;Write&quot;
 )paren
 suffix:semicolon
 r_return
-id|ide_do_reset
-(paren
-id|drive
-)paren
+id|ide_stopped
 suffix:semicolon
 )brace
 r_if
@@ -3470,10 +3455,7 @@ l_string|&quot;ide-floppy: (IO,CoD) != (0,1) while issuing a packet command&bsla
 )paren
 suffix:semicolon
 r_return
-id|ide_do_reset
-(paren
-id|drive
-)paren
+id|ide_stopped
 suffix:semicolon
 )brace
 id|ide_set_handler
@@ -3608,10 +3590,7 @@ l_string|&quot;ide-floppy: (IO,CoD) != (0,1) while issuing a packet command&bsla
 )paren
 suffix:semicolon
 r_return
-id|ide_do_reset
-(paren
-id|drive
-)paren
+id|ide_stopped
 suffix:semicolon
 )brace
 multiline_comment|/* &n;&t; * The following delay solves a problem with ATAPI Zip 100 drives where the&n;&t; * Busy flag was apparently being deasserted before the unit was ready to&n;&t; * receive data. This was happening on a 1200 MHz Athlon system. 10/26/01&n;&t; * 25msec is too short, 40 and 50msec work well. idefloppy_pc_intr will &n;&t; * not be actually used until after the packet is moved in about 50 msec.&n;&t; */

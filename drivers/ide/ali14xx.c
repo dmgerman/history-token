@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
+macro_line|#include &quot;ata-timing.h&quot;
 multiline_comment|/* port addresses for auto-detection */
 DECL|macro|ALI_NUM_PORTS
 mdefine_line|#define ALI_NUM_PORTS 4
@@ -215,8 +215,6 @@ l_int|0x00
 )brace
 )brace
 suffix:semicolon
-DECL|macro|ALI_MAX_PIO
-mdefine_line|#define ALI_MAX_PIO 4
 multiline_comment|/* timing parameter registers for each drive */
 DECL|member|reg1
 DECL|member|reg2
@@ -411,37 +409,61 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|ide_pio_data_t
-id|d
+r_struct
+id|ata_timing
+op_star
+id|t
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pio
+op_eq
+l_int|255
+)paren
 id|pio
 op_assign
-id|ide_get_best_pio_mode
+id|ata_timing_mode
 c_func
 (paren
 id|drive
 comma
+id|XFER_PIO
+op_or
+id|XFER_EPIO
+)paren
+suffix:semicolon
+r_else
+id|pio
+op_assign
+id|XFER_PIO_0
+op_plus
+id|min_t
+c_func
+(paren
+id|byte
+comma
 id|pio
 comma
-id|ALI_MAX_PIO
-comma
-op_amp
-id|d
+l_int|4
+)paren
+suffix:semicolon
+id|t
+op_assign
+id|ata_timing_data
+c_func
+(paren
+id|pio
 )paren
 suffix:semicolon
 multiline_comment|/* calculate timing, according to PIO mode */
 id|time1
 op_assign
-id|d.cycle_time
+id|t-&gt;cycle
 suffix:semicolon
 id|time2
 op_assign
-id|ide_pio_timings
-(braket
-id|pio
-)braket
-dot
-id|active_time
+id|t-&gt;active
 suffix:semicolon
 id|param3
 op_assign
@@ -478,7 +500,7 @@ c_cond
 (paren
 id|pio
 OL
-l_int|3
+id|XFER_PIO_3
 )paren
 (brace
 id|param3
@@ -498,6 +520,8 @@ comma
 id|drive-&gt;name
 comma
 id|pio
+op_minus
+id|XFER_PIO_0
 comma
 id|time1
 comma

@@ -29,7 +29,7 @@ macro_line|#include &lt;asm/ide.h&gt;
 macro_line|#include &lt;asm/8xx_immap.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
+macro_line|#include &quot;ata-timing.h&quot;
 r_static
 r_int
 id|identify
@@ -192,6 +192,30 @@ comma
 macro_line|#endif /* IDE1_BASE_OFFSET */
 macro_line|#endif&t;/* IDE0_BASE_OFFSET */
 )brace
+suffix:semicolon
+DECL|struct|ide_pio_timings_s
+r_typedef
+r_struct
+id|ide_pio_timings_s
+(brace
+DECL|member|setup_time
+r_int
+id|setup_time
+suffix:semicolon
+multiline_comment|/* Address setup (ns) minimum */
+DECL|member|active_time
+r_int
+id|active_time
+suffix:semicolon
+multiline_comment|/* Active pulse (ns) minimum */
+DECL|member|cycle_time
+r_int
+id|cycle_time
+suffix:semicolon
+multiline_comment|/* Cycle time (ns) minimum = (setup + active + recovery) */
+DECL|typedef|ide_pio_timings_t
+)brace
+id|ide_pio_timings_t
 suffix:semicolon
 DECL|variable|ide_pio_clocks
 id|ide_pio_timings_t
@@ -627,6 +651,21 @@ op_star
 )paren
 id|__res
 suffix:semicolon
+r_struct
+id|ata_timing
+op_star
+id|t
+suffix:semicolon
+id|t
+op_assign
+id|ata_timing_data
+c_func
+(paren
+id|i
+op_plus
+id|XFER_PIO_0
+)paren
+suffix:semicolon
 id|hold_time
 (braket
 id|i
@@ -651,12 +690,7 @@ id|setup_time
 op_assign
 id|PCMCIA_MK_CLKS
 (paren
-id|ide_pio_timings
-(braket
-id|i
-)braket
-dot
-id|setup_time
+id|t-&gt;setup
 comma
 id|binfo-&gt;bi_busfreq
 )paren
@@ -670,12 +704,7 @@ id|active_time
 op_assign
 id|PCMCIA_MK_CLKS
 (paren
-id|ide_pio_timings
-(braket
-id|i
-)braket
-dot
-id|active_time
+id|t-&gt;active
 comma
 id|binfo-&gt;bi_busfreq
 )paren
@@ -689,12 +718,7 @@ id|cycle_time
 op_assign
 id|PCMCIA_MK_CLKS
 (paren
-id|ide_pio_timings
-(braket
-id|i
-)braket
-dot
-id|cycle_time
+id|t-&gt;cycle
 comma
 id|binfo-&gt;bi_busfreq
 )paren
@@ -734,33 +758,16 @@ id|i
 dot
 id|cycle_time
 comma
-id|ide_pio_timings
-(braket
-id|i
-)braket
-dot
-id|setup_time
+id|t-&gt;setup
 comma
-id|ide_pio_timings
-(braket
-id|i
-)braket
-dot
-id|active_time
+id|t-&gt;active
 comma
-id|ide_pio_timings
-(braket
-id|i
-)braket
-dot
 id|hold_time
-comma
-id|ide_pio_timings
 (braket
 id|i
 )braket
-dot
-id|cycle_time
+comma
+id|t-&gt;cycle
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1435,9 +1442,6 @@ id|byte
 id|pio
 )paren
 (brace
-id|ide_pio_data_t
-id|d
-suffix:semicolon
 macro_line|#if defined(CONFIG_IDE_8xx_PCCARD) || defined(CONFIG_IDE_8xx_DIRECT)
 r_volatile
 id|pcmconf8xx_t
@@ -1452,20 +1456,26 @@ comma
 id|reg
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|pio
+op_eq
+l_int|255
+)paren
 id|pio
 op_assign
-id|ide_get_best_pio_mode
+id|ata_timing_mode
 c_func
 (paren
 id|drive
 comma
-id|pio
-comma
-l_int|4
-comma
-op_amp
-id|d
+id|XFER_PIO
+op_or
+id|XFER_EPIO
 )paren
+op_minus
+id|XFER_PIO_0
 suffix:semicolon
 macro_line|#if 1
 id|printk

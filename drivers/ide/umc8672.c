@@ -14,7 +14,7 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
+macro_line|#include &quot;ata-timing.h&quot;
 multiline_comment|/*&n; * Default speeds.  These can be changed with &quot;auto-tune&quot; and/or hdparm.&n; */
 DECL|macro|UMC_DRIVE0
 mdefine_line|#define UMC_DRIVE0      1              /* DOS measured drive speeds */
@@ -466,18 +466,38 @@ l_int|1
 dot
 id|hwgroup
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pio
+op_eq
+l_int|255
+)paren
 id|pio
 op_assign
-id|ide_get_best_pio_mode
+id|ata_timing_mode
 c_func
 (paren
 id|drive
 comma
+id|XFER_PIO
+op_or
+id|XFER_EPIO
+)paren
+op_minus
+id|XFER_PIO_0
+suffix:semicolon
+r_else
+id|pio
+op_assign
+id|min_t
+c_func
+(paren
+id|byte
+comma
 id|pio
 comma
 l_int|4
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|printk
