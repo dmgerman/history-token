@@ -29,7 +29,7 @@ r_static
 r_int
 id|cards_limit
 op_assign
-id|SNDRV_CARDS
+l_int|1
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 DECL|variable|device_mode
@@ -111,7 +111,7 @@ c_func
 (paren
 id|cards_limit
 comma
-l_string|&quot;Count of soundcards installed in the system.&quot;
+l_string|&quot;Count of auto-loadable soundcards.&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_SYNTAX
@@ -148,6 +148,7 @@ l_string|&quot;default:0666,base:8&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* this one holds the actual max. card number currently available.&n; * as default, it&squot;s identical with cards_limit option.  when more&n; * modules are loaded manually, this limit number increases, too.&n; */
 DECL|variable|snd_ecards_limit
 r_int
 id|snd_ecards_limit
@@ -914,8 +915,11 @@ l_string|&quot;controlC&quot;
 comma
 l_int|8
 )paren
+op_logical_or
+id|card-&gt;number
+op_ge
+id|cards_limit
 )paren
-multiline_comment|/* created in sound.c */
 id|devfs_mk_cdev
 c_func
 (paren
@@ -1050,6 +1054,23 @@ comma
 id|mptr-&gt;name
 )paren
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|card-&gt;number
+op_ge
+id|cards_limit
+)paren
+id|devfs_remove
+c_func
+(paren
+l_string|&quot;snd/%s&quot;
+comma
+id|mptr-&gt;name
+)paren
+suffix:semicolon
+multiline_comment|/* manualy created */
 macro_line|#endif
 id|list_del
 c_func
