@@ -1,4 +1,4 @@
-multiline_comment|/* generic HDLC line discipline for Linux&n; *&n; * Written by Paul Fulghum paulkf@microgate.com&n; * for Microgate Corporation&n; *&n; * Microgate and SyncLink are registered trademarks of Microgate Corporation&n; *&n; * Adapted from ppp.c, written by Michael Callahan &lt;callahan@maths.ox.ac.uk&gt;,&n; *&t;Al Longyear &lt;longyear@netcom.com&gt;, Paul Mackerras &lt;Paul.Mackerras@cs.anu.edu.au&gt;&n; *&n; * Original release 01/11/99&n; * $Id: n_hdlc.c,v 4.8 2003/05/06 21:18:51 paulkf Exp $&n; *&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * This module implements the tty line discipline N_HDLC for use with&n; * tty device drivers that support bit-synchronous HDLC communications.&n; *&n; * All HDLC data is frame oriented which means:&n; *&n; * 1. tty write calls represent one complete transmit frame of data&n; *    The device driver should accept the complete frame or none of &n; *    the frame (busy) in the write method. Each write call should have&n; *    a byte count in the range of 2-65535 bytes (2 is min HDLC frame&n; *    with 1 addr byte and 1 ctrl byte). The max byte count of 65535&n; *    should include any crc bytes required. For example, when using&n; *    CCITT CRC32, 4 crc bytes are required, so the maximum size frame&n; *    the application may transmit is limited to 65531 bytes. For CCITT&n; *    CRC16, the maximum application frame size would be 65533.&n; *&n; *&n; * 2. receive callbacks from the device driver represents&n; *    one received frame. The device driver should bypass&n; *    the tty flip buffer and call the line discipline receive&n; *    callback directly to avoid fragmenting or concatenating&n; *    multiple frames into a single receive callback.&n; *&n; *    The HDLC line discipline queues the receive frames in separate&n; *    buffers so complete receive frames can be returned by the&n; *    tty read calls.&n; *&n; * 3. tty read calls returns an entire frame of data or nothing.&n; *    &n; * 4. all send and receive data is considered raw. No processing&n; *    or translation is performed by the line discipline, regardless&n; *    of the tty flags&n; *&n; * 5. When line discipline is queried for the amount of receive&n; *    data available (FIOC), 0 is returned if no data available,&n; *    otherwise the count of the next available frame is returned.&n; *    (instead of the sum of all received frame counts).&n; *&n; * These conventions allow the standard tty programming interface&n; * to be used for synchronous HDLC applications when used with&n; * this line discipline (or another line discipline that is frame&n; * oriented such as N_PPP).&n; *&n; * The SyncLink driver (synclink.c) implements both asynchronous&n; * (using standard line discipline N_TTY) and synchronous HDLC&n; * (using N_HDLC) communications, with the latter using the above&n; * conventions.&n; *&n; * This implementation is very basic and does not maintain&n; * any statistics. The main point is to enforce the raw data&n; * and frame orientation of HDLC communications.&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
+multiline_comment|/* generic HDLC line discipline for Linux&n; *&n; * Written by Paul Fulghum paulkf@microgate.com&n; * for Microgate Corporation&n; *&n; * Microgate and SyncLink are registered trademarks of Microgate Corporation&n; *&n; * Adapted from ppp.c, written by Michael Callahan &lt;callahan@maths.ox.ac.uk&gt;,&n; *&t;Al Longyear &lt;longyear@netcom.com&gt;,&n; *&t;Paul Mackerras &lt;Paul.Mackerras@cs.anu.edu.au&gt;&n; *&n; * Original release 01/11/99&n; * $Id: n_hdlc.c,v 4.8 2003/05/06 21:18:51 paulkf Exp $&n; *&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * This module implements the tty line discipline N_HDLC for use with&n; * tty device drivers that support bit-synchronous HDLC communications.&n; *&n; * All HDLC data is frame oriented which means:&n; *&n; * 1. tty write calls represent one complete transmit frame of data&n; *    The device driver should accept the complete frame or none of &n; *    the frame (busy) in the write method. Each write call should have&n; *    a byte count in the range of 2-65535 bytes (2 is min HDLC frame&n; *    with 1 addr byte and 1 ctrl byte). The max byte count of 65535&n; *    should include any crc bytes required. For example, when using&n; *    CCITT CRC32, 4 crc bytes are required, so the maximum size frame&n; *    the application may transmit is limited to 65531 bytes. For CCITT&n; *    CRC16, the maximum application frame size would be 65533.&n; *&n; *&n; * 2. receive callbacks from the device driver represents&n; *    one received frame. The device driver should bypass&n; *    the tty flip buffer and call the line discipline receive&n; *    callback directly to avoid fragmenting or concatenating&n; *    multiple frames into a single receive callback.&n; *&n; *    The HDLC line discipline queues the receive frames in separate&n; *    buffers so complete receive frames can be returned by the&n; *    tty read calls.&n; *&n; * 3. tty read calls returns an entire frame of data or nothing.&n; *    &n; * 4. all send and receive data is considered raw. No processing&n; *    or translation is performed by the line discipline, regardless&n; *    of the tty flags&n; *&n; * 5. When line discipline is queried for the amount of receive&n; *    data available (FIOC), 0 is returned if no data available,&n; *    otherwise the count of the next available frame is returned.&n; *    (instead of the sum of all received frame counts).&n; *&n; * These conventions allow the standard tty programming interface&n; * to be used for synchronous HDLC applications when used with&n; * this line discipline (or another line discipline that is frame&n; * oriented such as N_PPP).&n; *&n; * The SyncLink driver (synclink.c) implements both asynchronous&n; * (using standard line discipline N_TTY) and synchronous HDLC&n; * (using N_HDLC) communications, with the latter using the above&n; * conventions.&n; *&n; * This implementation is very basic and does not maintain&n; * any statistics. The main point is to enforce the raw data&n; * and frame orientation of HDLC communications.&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
 DECL|macro|HDLC_MAGIC
 mdefine_line|#define HDLC_MAGIC 0x239e
 DECL|macro|HDLC_VERSION
@@ -19,38 +19,17 @@ DECL|macro|VERSION
 mdefine_line|#define VERSION(major,minor,patch) (((((major)&lt;&lt;8)+(minor))&lt;&lt;8)+(patch))
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
+macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;&t;/* used in new tty drivers */
 macro_line|#include &lt;linux/signal.h&gt;&t;/* used in new tty drivers */
+macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/termios.h&gt;
-macro_line|#include &lt;linux/if.h&gt;
-macro_line|#include &lt;linux/ioctl.h&gt;
-macro_line|#ifdef CONFIG_KERNELD
-macro_line|#include &lt;linux/kerneld.h&gt;
-macro_line|#endif
-DECL|macro|GET_USER
-mdefine_line|#define GET_USER(error,value,addr) error = get_user(value,addr)
-DECL|macro|COPY_FROM_USER
-mdefine_line|#define COPY_FROM_USER(error,dest,src,size) error = copy_from_user(dest,src,size) ? -EFAULT : 0
-DECL|macro|PUT_USER
-mdefine_line|#define PUT_USER(error,value,addr) error = put_user(value,addr)
-DECL|macro|COPY_TO_USER
-mdefine_line|#define COPY_TO_USER(error,dest,src,size) error = copy_to_user(dest,src,size) ? -EFAULT : 0
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|typedef|rw_ret_t
-r_typedef
-id|ssize_t
-id|rw_ret_t
-suffix:semicolon
-DECL|typedef|rw_count_t
-r_typedef
-r_int
-id|rw_count_t
-suffix:semicolon
 multiline_comment|/*&n; * Buffers for individual HDLC frames&n; */
 DECL|macro|MAX_HDLC_FRAME_SIZE
 mdefine_line|#define MAX_HDLC_FRAME_SIZE 65535 
@@ -60,14 +39,13 @@ DECL|macro|MAX_RX_BUF_COUNT
 mdefine_line|#define MAX_RX_BUF_COUNT 60
 DECL|macro|DEFAULT_TX_BUF_COUNT
 mdefine_line|#define DEFAULT_TX_BUF_COUNT 1
-DECL|struct|_n_hdlc_buf
-r_typedef
+DECL|struct|n_hdlc_buf
 r_struct
-id|_n_hdlc_buf
+id|n_hdlc_buf
 (brace
 DECL|member|link
 r_struct
-id|_n_hdlc_buf
+id|n_hdlc_buf
 op_star
 id|link
 suffix:semicolon
@@ -82,24 +60,23 @@ id|buf
 l_int|1
 )braket
 suffix:semicolon
-DECL|typedef|N_HDLC_BUF
 )brace
-id|N_HDLC_BUF
 suffix:semicolon
 DECL|macro|N_HDLC_BUF_SIZE
-mdefine_line|#define&t;N_HDLC_BUF_SIZE&t;(sizeof(N_HDLC_BUF)+maxframe)
-DECL|struct|_n_hdlc_buf_list
-r_typedef
+mdefine_line|#define&t;N_HDLC_BUF_SIZE&t;(sizeof(struct n_hdlc_buf) + maxframe)
+DECL|struct|n_hdlc_buf_list
 r_struct
-id|_n_hdlc_buf_list
+id|n_hdlc_buf_list
 (brace
 DECL|member|head
-id|N_HDLC_BUF
+r_struct
+id|n_hdlc_buf
 op_star
 id|head
 suffix:semicolon
 DECL|member|tail
-id|N_HDLC_BUF
+r_struct
+id|n_hdlc_buf
 op_star
 id|tail
 suffix:semicolon
@@ -111,11 +88,9 @@ DECL|member|spinlock
 id|spinlock_t
 id|spinlock
 suffix:semicolon
-DECL|typedef|N_HDLC_BUF_LIST
 )brace
-id|N_HDLC_BUF_LIST
 suffix:semicolon
-multiline_comment|/*&n; * Per device instance data structure&n; */
+multiline_comment|/**&n; * struct n_hdlc - per device instance data structure&n; * @magic - magic value for structure&n; * @flags - miscellaneous control flags&n; * @tty - ptr to TTY structure&n; * @backup_tty - TTY to use if tty gets closed&n; * @tbusy - reentrancy flag for tx wakeup code&n; * @woke_up - FIXME: describe this field&n; * @tbuf - currently transmitting tx buffer&n; * @tx_buf_list - list of pending transmit frame buffers&n; * @rx_buf_list - list of received frame buffers&n; * @tx_free_buf_list - list unused transmit frame buffers&n; * @rx_free_buf_list - list unused received frame buffers&n; */
 DECL|struct|n_hdlc
 r_struct
 id|n_hdlc
@@ -124,61 +99,56 @@ DECL|member|magic
 r_int
 id|magic
 suffix:semicolon
-multiline_comment|/* magic value for structure&t;*/
 DECL|member|flags
 id|__u32
 id|flags
 suffix:semicolon
-multiline_comment|/* miscellaneous control flags&t;*/
 DECL|member|tty
 r_struct
 id|tty_struct
 op_star
 id|tty
 suffix:semicolon
-multiline_comment|/* ptr to TTY structure&t;*/
 DECL|member|backup_tty
 r_struct
 id|tty_struct
 op_star
 id|backup_tty
 suffix:semicolon
-multiline_comment|/* TTY to use if tty gets closed */
 DECL|member|tbusy
 r_int
 id|tbusy
 suffix:semicolon
-multiline_comment|/* reentrancy flag for tx wakeup code */
 DECL|member|woke_up
 r_int
 id|woke_up
 suffix:semicolon
 DECL|member|tbuf
-id|N_HDLC_BUF
+r_struct
+id|n_hdlc_buf
 op_star
 id|tbuf
 suffix:semicolon
-multiline_comment|/* currently transmitting tx buffer */
 DECL|member|tx_buf_list
-id|N_HDLC_BUF_LIST
+r_struct
+id|n_hdlc_buf_list
 id|tx_buf_list
 suffix:semicolon
-multiline_comment|/* list of pending transmit frame buffers */
 DECL|member|rx_buf_list
-id|N_HDLC_BUF_LIST
+r_struct
+id|n_hdlc_buf_list
 id|rx_buf_list
 suffix:semicolon
-multiline_comment|/* list of received frame buffers */
 DECL|member|tx_free_buf_list
-id|N_HDLC_BUF_LIST
+r_struct
+id|n_hdlc_buf_list
 id|tx_free_buf_list
 suffix:semicolon
-multiline_comment|/* list unused transmit frame buffers */
 DECL|member|rx_free_buf_list
-id|N_HDLC_BUF_LIST
+r_struct
+id|n_hdlc_buf_list
 id|rx_free_buf_list
 suffix:semicolon
-multiline_comment|/* list unused received frame buffers */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * HDLC buffer list manipulation functions&n; */
@@ -187,7 +157,8 @@ r_void
 id|n_hdlc_buf_list_init
 c_func
 (paren
-id|N_HDLC_BUF_LIST
+r_struct
+id|n_hdlc_buf_list
 op_star
 id|list
 )paren
@@ -197,22 +168,26 @@ r_void
 id|n_hdlc_buf_put
 c_func
 (paren
-id|N_HDLC_BUF_LIST
+r_struct
+id|n_hdlc_buf_list
 op_star
 id|list
 comma
-id|N_HDLC_BUF
+r_struct
+id|n_hdlc_buf
 op_star
 id|buf
 )paren
 suffix:semicolon
 r_static
-id|N_HDLC_BUF
+r_struct
+id|n_hdlc_buf
 op_star
 id|n_hdlc_buf_get
 c_func
 (paren
-id|N_HDLC_BUF_LIST
+r_struct
+id|n_hdlc_buf_list
 op_star
 id|list
 )paren
@@ -225,22 +200,6 @@ op_star
 id|n_hdlc_alloc
 (paren
 r_void
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|debuglevel
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|maxframe
-comma
-l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* debug level can be set by insmod for debugging purposes */
@@ -261,42 +220,50 @@ l_int|4096
 suffix:semicolon
 multiline_comment|/* TTY callbacks */
 r_static
-id|rw_ret_t
+r_int
 id|n_hdlc_tty_read
 c_func
 (paren
 r_struct
 id|tty_struct
 op_star
+id|tty
 comma
 r_struct
 id|file
 op_star
+id|file
 comma
 id|__u8
 op_star
+id|buf
 comma
-id|rw_count_t
+r_int
+id|nr
 )paren
 suffix:semicolon
 r_static
-id|rw_ret_t
+r_int
 id|n_hdlc_tty_write
 c_func
 (paren
 r_struct
 id|tty_struct
 op_star
+id|tty
 comma
 r_struct
 id|file
 op_star
+id|file
 comma
 r_const
 id|__u8
 op_star
+id|buf
 comma
-id|rw_count_t
+r_int
+id|nr
 )paren
 suffix:semicolon
 r_static
@@ -307,22 +274,27 @@ c_func
 r_struct
 id|tty_struct
 op_star
+id|tty
 comma
 r_struct
 id|file
 op_star
+id|file
 comma
 r_int
 r_int
+id|cmd
 comma
 r_int
 r_int
+id|arg
 )paren
 suffix:semicolon
 r_static
 r_int
 r_int
 id|n_hdlc_tty_poll
+c_func
 (paren
 r_struct
 id|tty_struct
@@ -342,24 +314,29 @@ suffix:semicolon
 r_static
 r_int
 id|n_hdlc_tty_open
+c_func
 (paren
 r_struct
 id|tty_struct
 op_star
+id|tty
 )paren
 suffix:semicolon
 r_static
 r_void
 id|n_hdlc_tty_close
+c_func
 (paren
 r_struct
 id|tty_struct
 op_star
+id|tty
 )paren
 suffix:semicolon
 r_static
 r_int
 id|n_hdlc_tty_room
+c_func
 (paren
 r_struct
 id|tty_struct
@@ -370,6 +347,7 @@ suffix:semicolon
 r_static
 r_void
 id|n_hdlc_tty_receive
+c_func
 (paren
 r_struct
 id|tty_struct
@@ -392,6 +370,7 @@ suffix:semicolon
 r_static
 r_void
 id|n_hdlc_tty_wakeup
+c_func
 (paren
 r_struct
 id|tty_struct
@@ -405,16 +384,6 @@ DECL|macro|tty2n_hdlc
 mdefine_line|#define tty2n_hdlc(tty)&t;((struct n_hdlc *) ((tty)-&gt;disc_data))
 DECL|macro|n_hdlc2tty
 mdefine_line|#define n_hdlc2tty(n_hdlc)&t;((n_hdlc)-&gt;tty)
-multiline_comment|/* Define this string only once for all macro invocations */
-DECL|variable|szVersion
-r_static
-r_char
-id|szVersion
-(braket
-)braket
-op_assign
-id|HDLC_VERSION
-suffix:semicolon
 DECL|variable|n_hdlc_ldisc
 r_static
 r_struct
@@ -484,11 +453,12 @@ id|n_hdlc_tty_wakeup
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* n_hdlc_release()&n; *&n; *&t;release an n_hdlc per device line discipline info structure&n; *&n; */
+multiline_comment|/**&n; * n_hdlc_release - release an n_hdlc per device line discipline info structure&n; * @n_hdlc - per device line discipline info structure&n; */
 DECL|function|n_hdlc_release
 r_static
 r_void
 id|n_hdlc_release
+c_func
 (paren
 r_struct
 id|n_hdlc
@@ -506,7 +476,8 @@ id|n_hdlc2tty
 id|n_hdlc
 )paren
 suffix:semicolon
-id|N_HDLC_BUF
+r_struct
+id|n_hdlc_buf
 op_star
 id|buf
 suffix:semicolon
@@ -708,7 +679,7 @@ id|n_hdlc
 suffix:semicolon
 )brace
 multiline_comment|/* end of n_hdlc_release() */
-multiline_comment|/* n_hdlc_tty_close()&n; *&n; *&t;Called when the line discipline is changed to something&n; *&t;else, the tty is closed, or the tty detects a hangup.&n; */
+multiline_comment|/**&n; * n_hdlc_tty_close - line discipline close&n; * @tty - pointer to tty info structure&n; *&n; * Called when the line discipline is changed to something&n; * else, the tty is closed, or the tty detects a hangup.&n; */
 DECL|function|n_hdlc_tty_close
 r_static
 r_void
@@ -847,7 +818,7 @@ id|__LINE__
 suffix:semicolon
 )brace
 multiline_comment|/* end of n_hdlc_tty_close() */
-multiline_comment|/* n_hdlc_tty_open&n; * &n; * &t;called when line discipline changed to n_hdlc&n; * &t;&n; * Arguments:&t;tty&t;pointer to tty info structure&n; * Return Value:&t;0 if success, otherwise error code&n; */
+multiline_comment|/**&n; * n_hdlc_tty_open - called when line discipline changed to n_hdlc&n; * @tty - pointer to tty info structure&n; *&n; * Returns 0 if success, otherwise error code&n; */
 DECL|function|n_hdlc_tty_open
 r_static
 r_int
@@ -994,11 +965,12 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* end of n_tty_hdlc_open() */
-multiline_comment|/* n_hdlc_send_frames()&n; * &n; * &t;send frames on pending send buffer list until the&n; * &t;driver does not accept a frame (busy)&n; * &t;this function is called after adding a frame to the&n; * &t;send buffer list and by the tty wakeup callback&n; * &t;&n; * Arguments:&t;&t;n_hdlc&t;&t;pointer to ldisc instance data&n; * &t;&t;&t;tty&t;&t;pointer to tty instance data&n; * Return Value:&t;None&n; */
+multiline_comment|/**&n; * n_hdlc_send_frames - send frames on pending send buffer list&n; * @n_hdlc - pointer to ldisc instance data&n; * @tty - pointer to tty instance data&n; *&n; * Send frames on pending send buffer list until the driver does not accept a&n; * frame (busy) this function is called after adding a frame to the send buffer&n; * list and by the tty wakeup callback.&n; */
 DECL|function|n_hdlc_send_frames
 r_static
 r_void
 id|n_hdlc_send_frames
+c_func
 (paren
 r_struct
 id|n_hdlc
@@ -1019,7 +991,8 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|N_HDLC_BUF
+r_struct
+id|n_hdlc_buf
 op_star
 id|tbuf
 suffix:semicolon
@@ -1333,11 +1306,12 @@ id|__LINE__
 suffix:semicolon
 )brace
 multiline_comment|/* end of n_hdlc_send_frames() */
-multiline_comment|/* n_hdlc_tty_wakeup()&n; *&n; *&t;Callback for transmit wakeup. Called when low level&n; *&t;device driver can accept more send data.&n; *&n; * Arguments:&t;&t;tty&t;pointer to associated tty instance data&n; * Return Value:&t;None&n; */
+multiline_comment|/**&n; * n_hdlc_tty_wakeup - Callback for transmit wakeup&n; * @tty&t;- pointer to associated tty instance data&n; *&n; * Called when low level device driver can accept more send data.&n; */
 DECL|function|n_hdlc_tty_wakeup
 r_static
 r_void
 id|n_hdlc_tty_wakeup
+c_func
 (paren
 r_struct
 id|tty_struct
@@ -1351,6 +1325,7 @@ op_star
 id|n_hdlc
 op_assign
 id|tty2n_hdlc
+c_func
 (paren
 id|tty
 )paren
@@ -1409,11 +1384,12 @@ id|tty
 suffix:semicolon
 )brace
 multiline_comment|/* end of n_hdlc_tty_wakeup() */
-multiline_comment|/* n_hdlc_tty_room()&n; * &n; *&t;Callback function from tty driver. Return the amount of &n; *&t;space left in the receiver&squot;s buffer to decide if remote&n; *&t;transmitter is to be throttled.&n; *&n; * Arguments:&t;&t;tty&t;pointer to associated tty instance data&n; * Return Value:&t;number of bytes left in receive buffer&n; */
+multiline_comment|/**&n; * n_hdlc_tty_room - Return the amount of space left in the receiver&squot;s buffer&n; * @tty&t;- pointer to associated tty instance data&n; *&n; * Callback function from tty driver. Return the amount of space left in the&n; * receiver&squot;s buffer to decide if remote transmitter is to be throttled.&n; */
 DECL|function|n_hdlc_tty_room
 r_static
 r_int
 id|n_hdlc_tty_room
+c_func
 (paren
 r_struct
 id|tty_struct
@@ -1445,7 +1421,7 @@ l_int|65536
 suffix:semicolon
 )brace
 multiline_comment|/* end of n_hdlc_tty_root() */
-multiline_comment|/* n_hdlc_tty_receive()&n; * &n; * &t;Called by tty low level driver when receive data is&n; * &t;available. Data is interpreted as one HDLC frame.&n; * &t;&n; * Arguments:&t; &t;tty&t;&t;pointer to tty isntance data&n; * &t;&t;&t;data&t;&t;pointer to received data&n; * &t;&t;&t;flags&t;&t;pointer to flags for data&n; * &t;&t;&t;count&t;&t;count of received data in bytes&n; * &t;&n; * Return Value:&t;None&n; */
+multiline_comment|/**&n; * n_hdlc_tty_receive - Called by tty driver when receive data is available&n; * @tty&t;- pointer to tty instance data&n; * @data - pointer to received data&n; * @flags - pointer to flags for data&n; * @count - count of received data in bytes&n; *&n; * Called by tty low level driver when receive data is available. Data is&n; * interpreted as one HDLC frame.&n; */
 DECL|function|n_hdlc_tty_receive
 r_static
 r_void
@@ -1482,7 +1458,8 @@ id|tty
 )paren
 suffix:semicolon
 r_register
-id|N_HDLC_BUF
+r_struct
+id|n_hdlc_buf
 op_star
 id|buf
 suffix:semicolon
@@ -1597,10 +1574,6 @@ id|MAX_RX_BUF_COUNT
 )paren
 id|buf
 op_assign
-(paren
-id|N_HDLC_BUF
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -1688,11 +1661,12 @@ id|POLL_IN
 suffix:semicolon
 )brace
 multiline_comment|/* end of n_hdlc_tty_receive() */
-multiline_comment|/* n_hdlc_tty_read()&n; * &n; * &t;Called to retreive one frame of data (if available)&n; * &t;&n; * Arguments:&n; * &n; * &t;tty&t;&t;pointer to tty instance data&n; * &t;file&t;&t;pointer to open file object&n; * &t;buf&t;&t;pointer to returned data buffer&n; * &t;nr&t;&t;size of returned data buffer&n; * &t;&n; * Return Value:&n; * &n; * &t;Number of bytes returned or error code&n; */
+multiline_comment|/**&n; * n_hdlc_tty_read - Called to retreive one frame of data (if available)&n; * @tty - pointer to tty instance data&n; * @file - pointer to open file object&n; * @buf - pointer to returned data buffer&n; * @nr - size of returned data buffer&n; * &t;&n; * Returns the number of bytes returned or error code.&n; */
 DECL|function|n_hdlc_tty_read
 r_static
-id|rw_ret_t
+r_int
 id|n_hdlc_tty_read
+c_func
 (paren
 r_struct
 id|tty_struct
@@ -1708,7 +1682,7 @@ id|__u8
 op_star
 id|buf
 comma
-id|rw_count_t
+r_int
 id|nr
 )paren
 (brace
@@ -1726,10 +1700,11 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
-id|rw_ret_t
+r_int
 id|ret
 suffix:semicolon
-id|N_HDLC_BUF
+r_struct
+id|n_hdlc_buf
 op_star
 id|rbuf
 suffix:semicolon
@@ -1901,50 +1876,36 @@ id|rbuf-&gt;count
 OG
 id|nr
 )paren
-(brace
 multiline_comment|/* frame too large for caller&squot;s buffer (discard frame) */
 id|ret
 op_assign
-(paren
-id|rw_ret_t
-)paren
 op_minus
 id|EOVERFLOW
 suffix:semicolon
-)brace
 r_else
 (brace
 multiline_comment|/* Copy the data to the caller&squot;s buffer */
-id|COPY_TO_USER
+r_if
+c_cond
+(paren
+id|copy_to_user
 c_func
 (paren
-id|error
-comma
 id|buf
 comma
 id|rbuf-&gt;buf
 comma
 id|rbuf-&gt;count
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
 )paren
 id|ret
 op_assign
-(paren
-id|rw_ret_t
-)paren
-id|error
+op_minus
+id|EFAULT
 suffix:semicolon
 r_else
 id|ret
 op_assign
-(paren
-id|rw_ret_t
-)paren
 id|rbuf-&gt;count
 suffix:semicolon
 )brace
@@ -1979,11 +1940,12 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* end of n_hdlc_tty_read() */
-multiline_comment|/* n_hdlc_tty_write()&n; * &n; * &t;write a single frame of data to device&n; * &t;&n; * Arguments:&t;tty&t;pointer to associated tty device instance data&n; * &t;&t;file&t;pointer to file object data&n; * &t;&t;data&t;pointer to transmit data (one frame)&n; * &t;&t;count&t;size of transmit frame in bytes&n; * &t;&t;&n; * Return Value:&t;number of bytes written (or error code)&n; */
+multiline_comment|/**&n; * n_hdlc_tty_write - write a single frame of data to device&n; * @tty&t;- pointer to associated tty device instance data&n; * @file - pointer to file object data&n; * @data - pointer to transmit data (one frame)&n; * @count - size of transmit frame in bytes&n; * &t;&t;&n; * Returns the number of bytes written (or error code).&n; */
 DECL|function|n_hdlc_tty_write
 r_static
-id|rw_ret_t
+r_int
 id|n_hdlc_tty_write
+c_func
 (paren
 r_struct
 id|tty_struct
@@ -2000,7 +1962,7 @@ id|__u8
 op_star
 id|data
 comma
-id|rw_count_t
+r_int
 id|count
 )paren
 (brace
@@ -2027,7 +1989,8 @@ comma
 id|current
 )paren
 suffix:semicolon
-id|N_HDLC_BUF
+r_struct
+id|n_hdlc_buf
 op_star
 id|tbuf
 suffix:semicolon
@@ -2228,21 +2191,18 @@ id|error
 )paren
 (brace
 multiline_comment|/* Retrieve the user&squot;s buffer */
-id|COPY_FROM_USER
+r_if
+c_cond
 (paren
-id|error
-comma
+id|copy_from_user
+c_func
+(paren
 id|tbuf-&gt;buf
 comma
 id|data
 comma
 id|count
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
 )paren
 (brace
 multiline_comment|/* return tx buffer to free list */
@@ -2254,6 +2214,11 @@ id|n_hdlc-&gt;tx_free_buf_list
 comma
 id|tbuf
 )paren
+suffix:semicolon
+id|error
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 r_else
@@ -2289,11 +2254,12 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/* end of n_hdlc_tty_write() */
-multiline_comment|/* n_hdlc_tty_ioctl()&n; *&n; *&t;Process IOCTL system call for the tty device.&n; *&n; * Arguments:&n; *&n; *&t;tty&t;&t;pointer to tty instance data&n; *&t;file&t;&t;pointer to open file object for device&n; *&t;cmd&t;&t;IOCTL command code&n; *&t;arg&t;&t;argument for IOCTL call (cmd dependent)&n; *&n; * Return Value:&t;Command dependent&n; */
+multiline_comment|/**&n; * n_hdlc_tty_ioctl - process IOCTL system call for the tty device.&n; * @tty - pointer to tty instance data&n; * @file - pointer to open file object for device&n; * @cmd - IOCTL command code&n; * @arg - argument for IOCTL call (cmd dependent)&n; *&n; * Returns command dependent result.&n; */
 DECL|function|n_hdlc_tty_ioctl
 r_static
 r_int
 id|n_hdlc_tty_ioctl
+c_func
 (paren
 r_struct
 id|tty_struct
@@ -2413,10 +2379,11 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|PUT_USER
-(paren
 id|error
-comma
+op_assign
+id|put_user
+c_func
+(paren
 id|count
 comma
 (paren
@@ -2475,10 +2442,11 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|PUT_USER
-(paren
 id|error
-comma
+op_assign
+id|put_user
+c_func
+(paren
 id|count
 comma
 (paren
@@ -2513,12 +2481,13 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/* end of n_hdlc_tty_ioctl() */
-multiline_comment|/* n_hdlc_tty_poll()&n; * &n; * &t;TTY callback for poll system call. Determine which &n; * &t;operations (read/write) will not block and return&n; * &t;info to caller.&n; * &t;&n; * Arguments:&n; * &n; * &t;tty&t;&t;pointer to tty instance data&n; * &t;filp&t;&t;pointer to open file object for device&n; * &t;poll_table&t;wait queue for operations&n; * &n; * Return Value:&n; * &n; * &t;bit mask containing info on which ops will not block&n; */
+multiline_comment|/**&n; * n_hdlc_tty_poll - TTY callback for poll system call&n; * @tty - pointer to tty instance data&n; * @filp - pointer to open file object for device&n; * @poll_table - wait queue for operations&n; * &n; * Determine which operations (read/write) will not block and return info&n; * to caller.&n; * Returns a bit mask containing info on which ops will not block.&n; */
 DECL|function|n_hdlc_tty_poll
 r_static
 r_int
 r_int
 id|n_hdlc_tty_poll
+c_func
 (paren
 r_struct
 id|tty_struct
@@ -2672,42 +2641,37 @@ id|mask
 suffix:semicolon
 )brace
 multiline_comment|/* end of n_hdlc_tty_poll() */
-multiline_comment|/* n_hdlc_alloc()&n; * &n; * &t;Allocate an n_hdlc instance data structure&n; *&n; * Arguments:&t;&t;None&n; * Return Value:&t;pointer to structure if success, otherwise 0&t;&n; */
+multiline_comment|/**&n; * n_hdlc_alloc - allocate an n_hdlc instance data structure&n; *&n; * Returns a pointer to newly created structure if success, otherwise %NULL&n; */
 DECL|function|n_hdlc_alloc
 r_static
 r_struct
 id|n_hdlc
 op_star
 id|n_hdlc_alloc
+c_func
 (paren
 r_void
 )paren
 (brace
 r_struct
-id|n_hdlc
-op_star
-id|n_hdlc
-suffix:semicolon
-id|N_HDLC_BUF
+id|n_hdlc_buf
 op_star
 id|buf
 suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|n_hdlc
-op_assign
-(paren
 r_struct
 id|n_hdlc
 op_star
-)paren
+id|n_hdlc
+op_assign
 id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
-r_struct
+op_star
 id|n_hdlc
 )paren
 comma
@@ -2783,10 +2747,6 @@ op_increment
 (brace
 id|buf
 op_assign
-(paren
-id|N_HDLC_BUF
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -2848,10 +2808,6 @@ op_increment
 (brace
 id|buf
 op_assign
-(paren
-id|N_HDLC_BUF
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -2909,14 +2865,15 @@ id|n_hdlc
 suffix:semicolon
 )brace
 multiline_comment|/* end of n_hdlc_alloc() */
-multiline_comment|/* n_hdlc_buf_list_init()&n; * &n; * &t;initialize specified HDLC buffer list&n; * &t;&n; * Arguments:&t; &t;list&t;pointer to buffer list&n; * Return Value:&t;None&t;&n; */
+multiline_comment|/**&n; * n_hdlc_buf_list_init - initialize specified HDLC buffer list&n; * @list - pointer to buffer list&n; */
 DECL|function|n_hdlc_buf_list_init
 r_static
 r_void
 id|n_hdlc_buf_list_init
 c_func
 (paren
-id|N_HDLC_BUF_LIST
+r_struct
+id|n_hdlc_buf_list
 op_star
 id|list
 )paren
@@ -2930,7 +2887,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|N_HDLC_BUF_LIST
+op_star
+id|list
 )paren
 )paren
 suffix:semicolon
@@ -2943,18 +2901,20 @@ id|list-&gt;spinlock
 suffix:semicolon
 )brace
 multiline_comment|/* end of n_hdlc_buf_list_init() */
-multiline_comment|/* n_hdlc_buf_put()&n; * &n; * &t;add specified HDLC buffer to tail of specified list&n; * &t;&n; * Arguments:&n; * &n; * &t;list&t;pointer to buffer list&n; * &t;buf&t;pointer to buffer&n; * &n; * Return Value:&t;None&t;&n; */
+multiline_comment|/**&n; * n_hdlc_buf_put - add specified HDLC buffer to tail of specified list&n; * @list - pointer to buffer list&n; * @buf&t;- pointer to buffer&n; */
 DECL|function|n_hdlc_buf_put
 r_static
 r_void
 id|n_hdlc_buf_put
 c_func
 (paren
-id|N_HDLC_BUF_LIST
+r_struct
+id|n_hdlc_buf_list
 op_star
 id|list
 comma
-id|N_HDLC_BUF
+r_struct
+id|n_hdlc_buf
 op_star
 id|buf
 )paren
@@ -3012,15 +2972,17 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/* end of n_hdlc_buf_put() */
-multiline_comment|/* n_hdlc_buf_get()&n; * &n; * &t;remove and return an HDLC buffer from the&n; * &t;head of the specified HDLC buffer list&n; * &t;&n; * Arguments:&n; * &n; * &t;list&t;pointer to HDLC buffer list&n; * &t;&n; * Return Value:&n; * &n; * &t;pointer to HDLC buffer if available, otherwise NULL&n; */
+multiline_comment|/**&n; * n_hdlc_buf_get - remove and return an HDLC buffer from list&n; * @list - pointer to HDLC buffer list&n; * &n; * Remove and return an HDLC buffer from the head of the specified HDLC buffer&n; * list.&n; * Returns a pointer to HDLC buffer if available, otherwise %NULL.&n; */
 DECL|function|n_hdlc_buf_get
 r_static
-id|N_HDLC_BUF
+r_struct
+id|n_hdlc_buf
 op_star
 id|n_hdlc_buf_get
 c_func
 (paren
-id|N_HDLC_BUF_LIST
+r_struct
+id|n_hdlc_buf_list
 op_star
 id|list
 )paren
@@ -3029,7 +2991,8 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|N_HDLC_BUF
+r_struct
+id|n_hdlc_buf
 op_star
 id|buf
 suffix:semicolon
@@ -3086,6 +3049,52 @@ id|buf
 suffix:semicolon
 )brace
 multiline_comment|/* end of n_hdlc_buf_get() */
+DECL|variable|__initdata
+r_static
+r_char
+id|hdlc_banner
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;HDLC line discipline: version &quot;
+id|HDLC_VERSION
+l_string|&quot;, maxframe=%u&bslash;n&quot;
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_char
+id|hdlc_register_ok
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;N_HDLC line discipline registered.&bslash;n&quot;
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_char
+id|hdlc_register_fail
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_ERR
+l_string|&quot;error registering line discipline: %d&bslash;n&quot;
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_char
+id|hdlc_init_fail
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;N_HDLC: init failure %d&bslash;n&quot;
+suffix:semicolon
 DECL|function|n_hdlc_init
 r_static
 r_int
@@ -3126,9 +3135,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;HDLC line discipline: version %s, maxframe=%u&bslash;n&quot;
-comma
-id|szVersion
+id|hdlc_banner
 comma
 id|maxframe
 )paren
@@ -3151,16 +3158,16 @@ op_logical_neg
 id|status
 )paren
 id|printk
+c_func
 (paren
-id|KERN_INFO
-l_string|&quot;N_HDLC line discipline registered.&bslash;n&quot;
+id|hdlc_register_ok
 )paren
 suffix:semicolon
 r_else
 id|printk
+c_func
 (paren
-id|KERN_ERR
-l_string|&quot;error registering line discipline: %d&bslash;n&quot;
+id|hdlc_register_fail
 comma
 id|status
 )paren
@@ -3173,19 +3180,38 @@ id|status
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;N_HDLC: init failure %d&bslash;n&quot;
+id|hdlc_init_fail
 comma
 id|status
 )paren
 suffix:semicolon
 r_return
-(paren
 id|status
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* end of init_module() */
+DECL|variable|__exitdata
+r_static
+r_char
+id|hdlc_unregister_ok
+(braket
+)braket
+id|__exitdata
+op_assign
+id|KERN_INFO
+l_string|&quot;N_HDLC: line discipline unregistered&bslash;n&quot;
+suffix:semicolon
+DECL|variable|__exitdata
+r_static
+r_char
+id|hdlc_unregister_fail
+(braket
+)braket
+id|__exitdata
+op_assign
+id|KERN_ERR
+l_string|&quot;N_HDLC: can&squot;t unregister line discipline (err = %d)&bslash;n&quot;
+suffix:semicolon
 DECL|function|n_hdlc_exit
 r_static
 r_void
@@ -3196,14 +3222,8 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|status
-suffix:semicolon
 multiline_comment|/* Release tty registration of line discipline */
-r_if
-c_cond
-(paren
-(paren
+r_int
 id|status
 op_assign
 id|tty_register_ldisc
@@ -3213,12 +3233,16 @@ id|N_HDLC
 comma
 l_int|NULL
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
 )paren
 id|printk
 c_func
 (paren
-l_string|&quot;N_HDLC: can&squot;t unregister line discipline (err = %d)&bslash;n&quot;
+id|hdlc_unregister_fail
 comma
 id|status
 )paren
@@ -3227,7 +3251,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;N_HDLC: line discipline unregistered&bslash;n&quot;
+id|hdlc_unregister_ok
 )paren
 suffix:semicolon
 )brace
@@ -3249,6 +3273,28 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Paul Fulghum paulkf@microgate.com&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|debuglevel
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|maxframe
+comma
+l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 eof
