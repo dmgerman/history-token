@@ -44,6 +44,8 @@ DECL|macro|H_READ_4
 mdefine_line|#define H_READ_4&t;&t;(1UL&lt;&lt;(63-26))&t;/* Return 4 PTEs */
 DECL|macro|H_AVPN
 mdefine_line|#define H_AVPN&t;&t;&t;(1UL&lt;&lt;(63-32))&t;/* An avpn is provided as a sanity test */
+DECL|macro|H_ANDCOND
+mdefine_line|#define H_ANDCOND&t;&t;(1UL&lt;&lt;(63-33))
 DECL|macro|H_ICACHE_INVALIDATE
 mdefine_line|#define H_ICACHE_INVALIDATE&t;(1UL&lt;&lt;(63-40))&t;/* icbi, etc.  (ignored for IO pages) */
 DECL|macro|H_ICACHE_SYNCHRONIZE
@@ -2385,39 +2387,24 @@ op_amp
 id|dummy2
 )paren
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/*&n;&t; * NOTE: we explicitly do not check return status here because it is&n;&t; * &quot;normal&quot; for early boot code to map io regions for which a partition&n;&t; * has no access.  However, we will die if we actually fault on these&n;&t; * &quot;permission denied&quot; pages.&n;&t; */
 r_if
 c_cond
 (paren
 id|lpar_rc
-op_ne
-id|H_Success
+op_eq
+id|H_PTEG_Full
 )paren
 (brace
-id|udbg_printf
-c_func
+r_while
+c_loop
 (paren
-l_string|&quot;flags=%lx, slot=%lx, dword0=%lx, dword1=%lx, rc=%d&bslash;n&quot;
-comma
-id|flags
-comma
-id|slot
-comma
-id|local_hpte.dw0.dword0
-comma
-id|local_hpte.dw1.dword1
-comma
-id|lpar_rc
+l_int|1
 )paren
-suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
+(brace
 suffix:semicolon
 )brace
-macro_line|#endif
+)brace
+multiline_comment|/*&n;&t; * NOTE: we explicitly do not check return status here because it is&n;&t; * &quot;normal&quot; for early boot code to map io regions for which a partition&n;&t; * has no access.  However, we will die if we actually fault on these&n;&t; * &quot;permission denied&quot; pages.&n;&t; */
 )brace
 DECL|function|pSeries_lpar_insert_hpte
 r_static
@@ -2627,39 +2614,14 @@ id|lpar_rc
 op_ne
 id|H_Success
 )paren
-(brace
-id|udbg_printf
+id|panic
 c_func
 (paren
-l_string|&quot;error on pte enter lpar rc = %ld&bslash;n&quot;
+l_string|&quot;Bad return code from pte enter rc = %lx&bslash;n&quot;
 comma
 id|lpar_rc
 )paren
 suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;ent: s=%lx, dw0=%lx, dw1=%lx&bslash;n&quot;
-comma
-id|slot
-comma
-id|lhpte.dw0.dword0
-comma
-id|lhpte.dw1.dword1
-)paren
-suffix:semicolon
-id|PPCDBG_ENTER_DEBUGGER
-c_func
-(paren
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;error on pte enter&quot;
-)paren
-suffix:semicolon
-)brace
 r_return
 id|slot
 suffix:semicolon
@@ -2682,15 +2644,112 @@ r_int
 id|hpte_group
 )paren
 (brace
-multiline_comment|/* XXX take spinlock */
+r_int
+r_int
+id|slot_offset
+suffix:semicolon
+r_int
+r_int
+id|lpar_rc
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_int
+r_int
+id|dummy1
+comma
+id|dummy2
+suffix:semicolon
+multiline_comment|/* pick a random slot to start at */
+id|slot_offset
+op_assign
+id|mftb
+c_func
+(paren
+)paren
+op_amp
+l_int|0x7
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|HPTES_PER_GROUP
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+multiline_comment|/* dont remove a bolted entry */
+id|lpar_rc
+op_assign
+id|plpar_pte_remove
+c_func
+(paren
+id|H_ANDCOND
+comma
+id|hpte_group
+op_plus
+id|slot_offset
+comma
+(paren
+l_int|0x1UL
+op_lshift
+l_int|4
+)paren
+comma
+op_amp
+id|dummy1
+comma
+op_amp
+id|dummy2
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|lpar_rc
+op_eq
+id|H_Success
+)paren
+r_return
+id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|lpar_rc
+op_ne
+id|H_Not_Found
+)paren
 id|panic
 c_func
 (paren
-l_string|&quot;pSeries_lpar_remove_hpte&quot;
+l_string|&quot;Bad return code from pte remove rc = %lx&bslash;n&quot;
+comma
+id|lpar_rc
 )paren
 suffix:semicolon
+id|slot_offset
+op_increment
+suffix:semicolon
+id|slot_offset
+op_and_assign
+l_int|0x7
+suffix:semicolon
 )brace
-multiline_comment|/* NOTE: for updatepp ops we are fortunate that the linux &quot;newpp&quot; bits and&n; * the low 3 bits of flags happen to line up.  So no transform is needed.&n; * We can probably optimize here and assume the high bits of newpp are&n; * already zero.  For now I am paranoid.&n; */
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * NOTE: for updatepp ops we are fortunate that the linux &quot;newpp&quot; bits and&n; * the low 3 bits of flags happen to line up.  So no transform is needed.&n; * We can probably optimize here and assume the high bits of newpp are&n; * already zero.  For now I am paranoid.&n; */
 DECL|function|pSeries_lpar_hpte_updatepp
 r_static
 r_int
@@ -2790,8 +2849,7 @@ id|lpar_rc
 op_ne
 id|H_Success
 )paren
-(brace
-id|udbg_printf
+id|panic
 c_func
 (paren
 l_string|&quot;bad return code from pte protect rc = %lx&bslash;n&quot;
@@ -2799,14 +2857,6 @@ comma
 id|lpar_rc
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-suffix:semicolon
-suffix:semicolon
-)paren
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2869,23 +2919,14 @@ id|lpar_rc
 op_ne
 id|H_Success
 )paren
-(brace
-id|udbg_printf
+id|panic
 c_func
 (paren
-l_string|&quot;error on pte read in get_hpte0 rc = %lx&bslash;n&quot;
+l_string|&quot;Error on pte read in get_hpte0 rc = %lx&bslash;n&quot;
 comma
 id|lpar_rc
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-suffix:semicolon
-suffix:semicolon
-)paren
-suffix:semicolon
-)brace
 r_return
 id|dword0
 suffix:semicolon
@@ -3122,7 +3163,7 @@ l_int|1
 id|panic
 c_func
 (paren
-l_string|&quot;count not find page to bolt&bslash;n&quot;
+l_string|&quot;updateboltedpp: Could not find page to bolt&bslash;n&quot;
 )paren
 suffix:semicolon
 id|flags
@@ -3150,23 +3191,14 @@ id|lpar_rc
 op_ne
 id|H_Success
 )paren
-(brace
-id|udbg_printf
+id|panic
 c_func
 (paren
-l_string|&quot;bad return code from pte bolted protect rc = %lx&bslash;n&quot;
+l_string|&quot;Bad return code from pte bolted protect rc = %lx&bslash;n&quot;
 comma
 id|lpar_rc
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-suffix:semicolon
-suffix:semicolon
-)paren
-suffix:semicolon
-)brace
 )brace
 DECL|function|pSeries_lpar_hpte_invalidate
 r_static
@@ -3198,10 +3230,6 @@ suffix:semicolon
 r_int
 r_int
 id|lpar_rc
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 r_int
 r_int
@@ -3282,23 +3310,14 @@ id|lpar_rc
 op_ne
 id|H_Success
 )paren
-(brace
-id|udbg_printf
+id|panic
 c_func
 (paren
-l_string|&quot;bad return code from invalidate rc = %lx&bslash;n&quot;
+l_string|&quot;Bad return code from invalidate rc = %lx&bslash;n&quot;
 comma
 id|lpar_rc
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-suffix:semicolon
-suffix:semicolon
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Take a spinlock around flushes to avoid bouncing the hypervisor tlbie&n; * lock.&n; */
 DECL|function|pSeries_lpar_flush_hash_range

@@ -960,21 +960,6 @@ id|_PAGE_GROUP_IX
 op_rshift
 l_int|12
 suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;updatepp cpu %d ea %lx vsid should be %lx&bslash;n&quot;
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|ea
-comma
-id|vsid
-)paren
-suffix:semicolon
 multiline_comment|/* XXX fix large pte flag */
 r_if
 c_cond
