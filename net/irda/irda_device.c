@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
-macro_line|#include &lt;linux/wireless.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/ioctls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
