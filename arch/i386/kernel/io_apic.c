@@ -7102,7 +7102,7 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;Called after all the initialization is done. If we didnt find any&n; *&t;APIC bugs then we can allow the modify fast path&n; */
 DECL|function|io_apic_bug_finalize
 r_static
-r_void
+r_int
 id|__init
 id|io_apic_bug_finalize
 c_func
@@ -7124,6 +7124,9 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|io_apic_bug_finalize
 id|late_initcall
