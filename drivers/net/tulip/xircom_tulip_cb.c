@@ -1252,6 +1252,17 @@ id|dev
 )paren
 suffix:semicolon
 r_static
+r_void
+id|xircom_media_change
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_static
 id|irqreturn_t
 id|xircom_interrupt
 c_func
@@ -3518,6 +3529,13 @@ id|netif_start_queue
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* Check current media state */
+id|xircom_media_change
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4821,6 +4839,12 @@ suffix:colon
 l_string|&quot;half&quot;
 )paren
 suffix:semicolon
+id|netif_carrier_on
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|newcsr6
 op_assign
 id|csr6
@@ -4864,6 +4888,12 @@ id|KERN_DEBUG
 l_string|&quot;%s: Link is down&bslash;n&quot;
 comma
 id|dev-&gt;name
+)paren
+suffix:semicolon
+id|netif_carrier_off
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 )brace
