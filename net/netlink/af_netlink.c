@@ -5132,7 +5132,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|variable|netlink_proto_init
-id|subsys_initcall
+id|core_initcall
 c_func
 (paren
 id|netlink_proto_init
