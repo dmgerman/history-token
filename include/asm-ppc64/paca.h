@@ -12,11 +12,6 @@ macro_line|#include&t;&lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include&t;&lt;asm/rtas.h&gt;
 macro_line|#include&t;&lt;asm/mmu.h&gt;
 macro_line|#include&t;&lt;asm/processor.h&gt;
-multiline_comment|/* A paca entry is required for each logical processor.  On systems&n; * that support hardware multi-threading, this is equal to twice the&n; * number of physical processors.  On LPAR systems, we are required&n; * to have space for the maximum number of logical processors we&n; * could ever possibly have.  Currently, we are limited to allocating&n; * 24 processors to a partition which gives 48 logical processors on&n; * an HMT box.  Therefore, we reserve this many paca entries.&n; */
-DECL|macro|MAX_PROCESSORS
-mdefine_line|#define MAX_PROCESSORS 24
-DECL|macro|MAX_PACAS
-mdefine_line|#define MAX_PACAS MAX_PROCESSORS * 2
 r_extern
 r_struct
 id|paca_struct
