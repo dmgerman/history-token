@@ -79,11 +79,6 @@ r_typedef
 r_struct
 id|_alpha_agp_info
 (brace
-DECL|member|type
-r_enum
-id|chipset_type
-id|type
-suffix:semicolon
 DECL|member|hose
 r_struct
 id|pci_controller
