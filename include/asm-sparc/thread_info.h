@@ -167,7 +167,7 @@ mdefine_line|#define get_thread_info(ti)&t;get_task_struct((ti)-&gt;task)
 DECL|macro|put_thread_info
 mdefine_line|#define put_thread_info(ti)&t;put_task_struct((ti)-&gt;task)
 macro_line|#endif /* __ASSEMBLY__ */
-multiline_comment|/*&n; * Size of kernel stack for each process.&n; * Observe the order of get_free_pages() in alloc_thread_info().&n; * The sun4 has 8K stack too, because it&squot;s short on memory, and 16K is a waste.&n; *&n; * XXX Watch how INIT_THREAD_SIZE evolves in linux/sched.h and elsewhere.&n; *     On 2.5.24 it happens to match 8192 magically.&n; */
+multiline_comment|/*&n; * Size of kernel stack for each process.&n; * Observe the order of get_free_pages() in alloc_thread_info().&n; * The sun4 has 8K stack too, because it&squot;s short on memory, and 16K is a waste.&n; */
 DECL|macro|THREAD_SIZE
 mdefine_line|#define THREAD_SIZE&t;&t;8192
 multiline_comment|/*&n; * Offsets in thread_info structure, used in assembly code&n; * The &quot;#define REGWIN_SZ 0x40&quot; was abolished, so no multiplications.&n; */
