@@ -2,7 +2,6 @@ multiline_comment|/*&n; * linux/arch/arm/mach-iop3xx/iop331-setup.c&n; *&n; * Au
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/device.h&gt;

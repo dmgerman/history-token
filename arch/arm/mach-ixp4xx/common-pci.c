@@ -16,7 +16,6 @@ macro_line|#include &lt;asm/sizes.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mach/pci.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
-macro_line|#include &lt;asm/sizes.h&gt;
 multiline_comment|/*&n; * IXP4xx PCI read function is dependent on whether we are &n; * running A0 or B0 (AppleGate) silicon.&n; */
 DECL|variable|ixp4xx_pci_read
 r_int
