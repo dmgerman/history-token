@@ -184,9 +184,6 @@ id|sysent
 )braket
 op_assign
 (brace
-l_int|0x9c
-comma
-multiline_comment|/* pushf */
 l_int|0x51
 comma
 multiline_comment|/* push %ecx */
@@ -206,6 +203,9 @@ comma
 l_int|0x34
 comma
 multiline_comment|/* sysenter */
+l_int|0x00
+comma
+multiline_comment|/* align return point */
 multiline_comment|/* System call restart point is here! (SYSENTER_RETURN - 2) */
 l_int|0xeb
 comma
@@ -222,9 +222,6 @@ multiline_comment|/* pop %edx */
 l_int|0x59
 comma
 multiline_comment|/* pop %ecx */
-l_int|0x9d
-comma
-multiline_comment|/* popf - restore TF */
 l_int|0xc3
 multiline_comment|/* ret */
 )brace

@@ -79,52 +79,6 @@ DECL|macro|APIC_BROADCAST_ID
 mdefine_line|#define APIC_BROADCAST_ID     (x86_summit ? 0xFF : 0x0F)
 DECL|macro|check_apicid_used
 mdefine_line|#define check_apicid_used(bitmap, apicid) (0)
-DECL|function|summit_check
-r_static
-r_inline
-r_void
-id|summit_check
-c_func
-(paren
-r_char
-op_star
-id|oem
-comma
-r_char
-op_star
-id|productid
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strncmp
-c_func
-(paren
-id|oem
-comma
-l_string|&quot;IBM ENSW&quot;
-comma
-l_int|8
-)paren
-op_logical_and
-op_logical_neg
-id|strncmp
-c_func
-(paren
-id|str
-comma
-l_string|&quot;VIGIL SMP&quot;
-comma
-l_int|9
-)paren
-)paren
-id|x86_summit
-op_assign
-l_int|1
-suffix:semicolon
-)brace
 DECL|function|clustered_apic_check
 r_static
 r_inline
@@ -183,6 +137,29 @@ r_return
 id|mps_cpu
 suffix:semicolon
 )brace
+DECL|function|ioapic_phys_id_map
+r_static
+r_inline
+id|ulong
+id|ioapic_phys_id_map
+c_func
+(paren
+id|ulong
+id|phys_map
+)paren
+(brace
+multiline_comment|/* For clustered we don&squot;t have a good way to do this yet - hack */
+r_return
+(paren
+id|x86_summit
+ques
+c_cond
+l_int|0x0F
+suffix:colon
+id|phys_map
+)paren
+suffix:semicolon
+)brace
 DECL|function|apicid_to_phys_cpu_present
 r_static
 r_inline
@@ -231,6 +208,19 @@ op_lshift
 id|apicid
 )paren
 suffix:semicolon
+)brace
+DECL|macro|wakeup_secondary_cpu
+mdefine_line|#define wakeup_secondary_cpu(apicid, start_eip) &bslash;&n;&t;wakeup_secondary_via_INIT(apicid, start_eip)
+DECL|function|setup_portio_remap
+r_static
+r_inline
+r_void
+id|setup_portio_remap
+c_func
+(paren
+r_void
+)paren
+(brace
 )brace
 macro_line|#endif /* __ASM_MACH_APIC_H */
 eof
