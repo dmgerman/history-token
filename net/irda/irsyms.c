@@ -250,15 +250,6 @@ c_func
 id|irda_notify_init
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|variable|proc_irda
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|proc_irda
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|irda_param_insert
 id|EXPORT_SYMBOL
 c_func
