@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File:&t;mca.c&n; * Purpose:&t;Generic MCA handling layer&n; *&n; * Updated for latest kernel&n; * Copyright (C) 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Copyright (C) 2002 Dell Inc.&n; * Copyright (C) Matt Domsch (Matt_Domsch@dell.com)&n; *&n; * Copyright (C) 2002 Intel&n; * Copyright (C) Jenna Hall (jenna.s.hall@intel.com)&n; *&n; * Copyright (C) 2001 Intel&n; * Copyright (C) Fred Lewis (frederick.v.lewis@intel.com)&n; *&n; * Copyright (C) 2000 Intel&n; * Copyright (C) Chuck Fleckenstein (cfleck@co.intel.com)&n; *&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) Vijay Chander(vijay@engr.sgi.com)&n; *&n; * 03/04/15 D. Mosberger Added INIT backtrace support.&n; * 02/03/25 M. Domsch&t;GUID cleanups&n; *&n; * 02/01/04 J. Hall&t;Aligned MCA stack to 16 bytes, added platform vs. CPU&n; *&t;&t;&t;error flag, set SAL default return values, changed&n; *&t;&t;&t;error record structure to linked list, added init call&n; *&t;&t;&t;to sal_get_state_info_size().&n; *&n; * 01/01/03 F. Lewis    Added setup of CMCI and CPEI IRQs, logging of corrected&n; *                      platform errors, completed code for logging of&n; *                      corrected &amp; uncorrected machine check errors, and&n; *                      updated for conformance with Nov. 2000 revision of the&n; *                      SAL 3.0 spec.&n; * 00/03/29 C. Fleckenstein  Fixed PAL/SAL update issues, began MCA bug fixes, logging issues,&n; *                           added min save state dump, added INIT handler.&n; *&n; * 2003-12-08 Keith Owens &lt;kaos@sgi.com&gt;&n; *            smp_call_function() must not be called from interrupt context (can&n; *            deadlock on tasklist_lock).  Use keventd to call smp_call_function().&n; */
+multiline_comment|/*&n; * File:&t;mca.c&n; * Purpose:&t;Generic MCA handling layer&n; *&n; * Updated for latest kernel&n; * Copyright (C) 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Copyright (C) 2002 Dell Inc.&n; * Copyright (C) Matt Domsch (Matt_Domsch@dell.com)&n; *&n; * Copyright (C) 2002 Intel&n; * Copyright (C) Jenna Hall (jenna.s.hall@intel.com)&n; *&n; * Copyright (C) 2001 Intel&n; * Copyright (C) Fred Lewis (frederick.v.lewis@intel.com)&n; *&n; * Copyright (C) 2000 Intel&n; * Copyright (C) Chuck Fleckenstein (cfleck@co.intel.com)&n; *&n; * Copyright (C) 1999, 2004 Silicon Graphics, Inc.&n; * Copyright (C) Vijay Chander(vijay@engr.sgi.com)&n; *&n; * 03/04/15 D. Mosberger Added INIT backtrace support.&n; * 02/03/25 M. Domsch&t;GUID cleanups&n; *&n; * 02/01/04 J. Hall&t;Aligned MCA stack to 16 bytes, added platform vs. CPU&n; *&t;&t;&t;error flag, set SAL default return values, changed&n; *&t;&t;&t;error record structure to linked list, added init call&n; *&t;&t;&t;to sal_get_state_info_size().&n; *&n; * 01/01/03 F. Lewis    Added setup of CMCI and CPEI IRQs, logging of corrected&n; *                      platform errors, completed code for logging of&n; *                      corrected &amp; uncorrected machine check errors, and&n; *                      updated for conformance with Nov. 2000 revision of the&n; *                      SAL 3.0 spec.&n; * 00/03/29 C. Fleckenstein  Fixed PAL/SAL update issues, began MCA bug fixes, logging issues,&n; *                           added min save state dump, added INIT handler.&n; *&n; * 2003-12-08 Keith Owens &lt;kaos@sgi.com&gt;&n; *            smp_call_function() must not be called from interrupt context (can&n; *            deadlock on tasklist_lock).  Use keventd to call smp_call_function().&n; *&n; * 2004-02-01 Keith Owens &lt;kaos@sgi.com&gt;&n; *            Avoid deadlock when using printk() for MCA and INIT records.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -389,8 +389,9 @@ id|u64
 id|size
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *  ia64_mca_log_sal_error_record&n; *&n; *  This function retrieves a specified error record type from SAL,&n; *  wakes up any processes waiting for error records, and sends it to&n; *  the system log.&n; *&n; *  Inputs  :   sal_info_type   (Type of error record MCA/CMC/CPE/INIT)&n; *  Outputs :   platform error status&n; */
-r_int
+multiline_comment|/*&n; *  ia64_mca_log_sal_error_record&n; *&n; *  This function retrieves a specified error record type from SAL&n; *  and wakes up any processes waiting for error records.&n; *&n; *  Inputs  :   sal_info_type   (Type of error record MCA/CMC/CPE/INIT)&n; *  &t;&t;called_from_init (1 for boot processing)&n; */
+r_static
+r_void
 DECL|function|ia64_mca_log_sal_error_record
 id|ia64_mca_log_sal_error_record
 c_func
@@ -410,7 +411,34 @@ id|u64
 id|size
 suffix:semicolon
 r_int
-id|platform_err
+id|irq_safe
+op_assign
+id|sal_info_type
+op_ne
+id|SAL_INFO_TYPE_MCA
+op_logical_and
+id|sal_info_type
+op_ne
+id|SAL_INFO_TYPE_INIT
+suffix:semicolon
+r_static
+r_const
+r_char
+op_star
+r_const
+id|rec_name
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;MCA&quot;
+comma
+l_string|&quot;INIT&quot;
+comma
+l_string|&quot;CMC&quot;
+comma
+l_string|&quot;CPE&quot;
+)brace
 suffix:semicolon
 id|size
 op_assign
@@ -430,9 +458,7 @@ op_logical_neg
 id|size
 )paren
 r_return
-l_int|0
 suffix:semicolon
-multiline_comment|/* TODO:&n;&t; * 1. analyze error logs to determine recoverability&n;&t; * 2. perform error recovery procedures, if applicable&n;&t; * 3. set ia64_os_mca_recovery_successful flag, if applicable&n;&t; */
 id|salinfo_log_wakeup
 c_func
 (paren
@@ -443,17 +469,39 @@ comma
 id|size
 )paren
 suffix:semicolon
-id|platform_err
-op_assign
-id|ia64_log_print
-c_func
+r_if
+c_cond
 (paren
-id|sal_info_type
-comma
-(paren
-id|prfunc_t
+id|irq_safe
+op_logical_or
+id|called_from_init
 )paren
 id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;CPU %d: SAL log contains %s error record&bslash;n&quot;
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+id|sal_info_type
+OL
+id|ARRAY_SIZE
+c_func
+(paren
+id|rec_name
+)paren
+ques
+c_cond
+id|rec_name
+(braket
+id|sal_info_type
+)braket
+suffix:colon
+l_string|&quot;UNKNOWN&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Clear logs from corrected errors in case there&squot;s no user-level logger */
@@ -473,9 +521,6 @@ c_func
 (paren
 id|sal_info_type
 )paren
-suffix:semicolon
-r_return
-id|platform_err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * platform dependent error handling&n; */
@@ -3153,31 +3198,13 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|platform_err
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* Get the MCA error record and log it */
-id|platform_err
-op_assign
 id|ia64_mca_log_sal_error_record
 c_func
 (paren
 id|SAL_INFO_TYPE_MCA
 comma
 l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; *  Do Platform-specific mca error handling if required.&n;&t; */
-r_if
-c_cond
-(paren
-id|platform_err
-)paren
-id|mca_handler_platform
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Wakeup all the processors which are spinning in the rendezvous&n;&t; *  loop.&n;&t; */
@@ -4004,6 +4031,11 @@ id|pal_min_state_area_t
 op_star
 id|ms
 suffix:semicolon
+id|oops_in_progress
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* avoid deadlock in printk, but it makes recovery dodgy */
 id|printk
 c_func
 (paren
@@ -4450,6 +4482,17 @@ suffix:semicolon
 r_int
 id|s
 suffix:semicolon
+r_int
+id|irq_safe
+op_assign
+id|sal_info_type
+op_ne
+id|SAL_INFO_TYPE_MCA
+op_logical_and
+id|sal_info_type
+op_ne
+id|SAL_INFO_TYPE_INIT
+suffix:semicolon
 id|IA64_LOG_LOCK
 c_func
 (paren
@@ -4497,6 +4540,12 @@ c_func
 id|sal_info_type
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|irq_safe
+)paren
+(brace
 id|IA64_MCA_DEBUG
 c_func
 (paren
@@ -4508,6 +4557,7 @@ comma
 id|total_len
 )paren
 suffix:semicolon
+)brace
 op_star
 id|buffer
 op_assign
