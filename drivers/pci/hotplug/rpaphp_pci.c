@@ -1292,6 +1292,18 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+id|strcpy
+c_func
+(paren
+id|slot-&gt;name
+comma
+id|pci_name
+c_func
+(paren
+id|slot-&gt;bridge
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* find slot&squot;s pci_dev if it&squot;s not empty */
 r_if
 c_cond
