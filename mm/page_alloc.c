@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/pagevec.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 DECL|variable|totalram_pages
 r_int
 r_int
@@ -2522,6 +2523,10 @@ id|ret-&gt;nr_reverse_maps
 op_add_assign
 id|ps-&gt;nr_reverse_maps
 suffix:semicolon
+id|ret-&gt;nr_mapped
+op_add_assign
+id|ps-&gt;nr_mapped
+suffix:semicolon
 )brace
 )brace
 DECL|function|get_zone_counts
@@ -2625,7 +2630,7 @@ c_func
 suffix:semicolon
 id|val-&gt;bufferram
 op_assign
-id|get_page_cache_size
+id|nr_blockdev_pages
 c_func
 (paren
 )paren

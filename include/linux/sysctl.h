@@ -409,6 +409,12 @@ op_assign
 l_int|55
 comma
 multiline_comment|/* int: PID # limit */
+DECL|enumerator|KERN_HUGETLB_PAGE_NUM
+id|KERN_HUGETLB_PAGE_NUM
+op_assign
+l_int|56
+comma
+multiline_comment|/* int: Number of available Huge Pages */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */

@@ -77,6 +77,8 @@ id|pgd_t
 suffix:semicolon
 DECL|macro|pte_val
 mdefine_line|#define pte_val(x)&t;((x).pte_low | ((unsigned long long)(x).pte_high &lt;&lt; 32))
+DECL|macro|HPAGE_SHIFT
+mdefine_line|#define HPAGE_SHIFT&t;21
 macro_line|#else
 DECL|member|pte_low
 DECL|typedef|pte_t
@@ -116,9 +118,19 @@ id|pgd_t
 suffix:semicolon
 DECL|macro|pte_val
 mdefine_line|#define pte_val(x)&t;((x).pte_low)
+DECL|macro|HPAGE_SHIFT
+mdefine_line|#define HPAGE_SHIFT&t;22
 macro_line|#endif
 DECL|macro|PTE_MASK
 mdefine_line|#define PTE_MASK&t;PAGE_MASK
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
+DECL|macro|HPAGE_SIZE
+mdefine_line|#define HPAGE_SIZE&t;((1UL) &lt;&lt; HPAGE_SHIFT)
+DECL|macro|HPAGE_MASK
+mdefine_line|#define HPAGE_MASK&t;(~(HPAGE_SIZE - 1))
+DECL|macro|HUGETLB_PAGE_ORDER
+mdefine_line|#define HUGETLB_PAGE_ORDER&t;(HPAGE_SHIFT - PAGE_SHIFT)
+macro_line|#endif
 DECL|member|pgprot
 DECL|typedef|pgprot_t
 r_typedef
