@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;mach_mpparse.h&gt;
+macro_line|#ifdef CONFIG_NUMA
 DECL|function|setup_pci_node_map_for_wpeg
 r_static
 r_void
@@ -297,7 +298,7 @@ suffix:semicolon
 )def_block
 DECL|function|build_detail_arrays
 r_static
-r_void
+r_int
 id|__init
 (def_block
 id|build_detail_arrays
@@ -332,6 +333,40 @@ id|scal_detail_size
 comma
 id|rio_detail_size
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|rth-&gt;num_scal_dev
+OG
+id|MAX_NUMNODES
+)paren
+op_logical_or
+(paren
+id|rth-&gt;num_rio_dev
+OG
+id|MAX_NUMNODES
+op_star
+l_int|2
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s: MAX_NUMNODES too low!  Defined as %d, but system has %d nodes.&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|MAX_NUMNODES
+comma
+id|rth-&gt;num_scal_dev
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -350,7 +385,9 @@ comma
 id|rth-&gt;version
 )paren
 suffix:semicolon
-multiline_comment|/* Fall through to default to version 2 spec */
+r_return
+l_int|1
+suffix:semicolon
 r_case
 l_int|2
 suffix:colon
@@ -466,6 +503,9 @@ id|i
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 )def_block
 DECL|function|setup_summit
@@ -644,7 +684,9 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Deal with the ugly version 2/3 pointer arithmetic */
+r_if
+c_cond
+(paren
 id|build_detail_arrays
 c_func
 (paren
@@ -654,6 +696,8 @@ id|scal_devs
 comma
 id|rio_devs
 )paren
+)paren
+r_return
 suffix:semicolon
 r_for
 c_loop
@@ -697,4 +741,5 @@ id|rio_devs
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_NUMA */
 eof

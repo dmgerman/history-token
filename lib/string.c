@@ -233,6 +233,8 @@ r_while
 c_loop
 (paren
 id|count
+OG
+l_int|1
 )paren
 (brace
 op_star

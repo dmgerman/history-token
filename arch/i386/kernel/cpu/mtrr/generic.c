@@ -7,6 +7,7 @@ macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/cpufeature.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &quot;mtrr.h&quot;
 DECL|struct|mtrr_state
 r_struct
@@ -1248,6 +1249,33 @@ op_amp
 id|set_atomicity_lock
 )paren
 suffix:semicolon
+multiline_comment|/*  Enter the no-fill (CD=1, NW=0) cache mode and flush caches. */
+id|cr0
+op_assign
+id|read_cr0
+c_func
+(paren
+)paren
+op_or
+l_int|0x40000000
+suffix:semicolon
+multiline_comment|/* set CD flag */
+id|wbinvd
+c_func
+(paren
+)paren
+suffix:semicolon
+id|write_cr0
+c_func
+(paren
+id|cr0
+)paren
+suffix:semicolon
+id|wbinvd
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*  Save value of CR4 and clear Page Global Enable (bit 7)  */
 r_if
 c_cond
@@ -1280,28 +1308,8 @@ l_int|7
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*  Disable and flush caches. Note that wbinvd flushes the TLBs as&n;&t;    a side-effect  */
-id|cr0
-op_assign
-id|read_cr0
-c_func
-(paren
-)paren
-op_or
-l_int|0x40000000
-suffix:semicolon
-id|wbinvd
-c_func
-(paren
-)paren
-suffix:semicolon
-id|write_cr0
-c_func
-(paren
-id|cr0
-)paren
-suffix:semicolon
-id|wbinvd
+multiline_comment|/* Flush all TLBs via a mov %cr3, %reg; mov %reg, %cr3 */
+id|__flush_tlb
 c_func
 (paren
 )paren
@@ -1342,6 +1350,11 @@ r_void
 (brace
 multiline_comment|/*  Flush caches and TLBs  */
 id|wbinvd
+c_func
+(paren
+)paren
+suffix:semicolon
+id|__flush_tlb
 c_func
 (paren
 )paren

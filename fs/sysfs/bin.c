@@ -191,8 +191,6 @@ c_func
 id|userbuf
 comma
 id|buffer
-op_plus
-id|offs
 comma
 id|count
 )paren
@@ -376,8 +374,6 @@ id|copy_from_user
 c_func
 (paren
 id|buffer
-op_plus
-id|offs
 comma
 id|userbuf
 comma

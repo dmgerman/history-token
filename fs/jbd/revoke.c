@@ -1490,7 +1490,9 @@ l_string|&quot;cancelled existing revoke on &quot;
 l_string|&quot;blocknr %llu&bslash;n&quot;
 comma
 (paren
-id|u64
+r_int
+r_int
+r_int
 )paren
 id|bh-&gt;b_blocknr
 )paren

@@ -846,6 +846,72 @@ op_assign
 id|size
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * blk_queue_stack_limits - inherit underlying queue limits for stacked drivers&n; * @t:&t;the stacking driver (top)&n; * @b:  the underlying device (bottom)&n; **/
+DECL|function|blk_queue_stack_limits
+r_void
+id|blk_queue_stack_limits
+c_func
+(paren
+id|request_queue_t
+op_star
+id|t
+comma
+id|request_queue_t
+op_star
+id|b
+)paren
+(brace
+id|t-&gt;max_sectors
+op_assign
+id|min
+c_func
+(paren
+id|t-&gt;max_sectors
+comma
+id|b-&gt;max_sectors
+)paren
+suffix:semicolon
+id|t-&gt;max_phys_segments
+op_assign
+id|min
+c_func
+(paren
+id|t-&gt;max_phys_segments
+comma
+id|b-&gt;max_phys_segments
+)paren
+suffix:semicolon
+id|t-&gt;max_hw_segments
+op_assign
+id|min
+c_func
+(paren
+id|t-&gt;max_hw_segments
+comma
+id|b-&gt;max_hw_segments
+)paren
+suffix:semicolon
+id|t-&gt;max_segment_size
+op_assign
+id|min
+c_func
+(paren
+id|t-&gt;max_segment_size
+comma
+id|b-&gt;max_segment_size
+)paren
+suffix:semicolon
+id|t-&gt;hardsect_size
+op_assign
+id|max
+c_func
+(paren
+id|t-&gt;hardsect_size
+comma
+id|b-&gt;hardsect_size
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * blk_queue_segment_boundary - set boundary rules for segment merging&n; * @q:  the request queue for the device&n; * @mask:  the memory boundary mask&n; **/
 DECL|function|blk_queue_segment_boundary
 r_void
@@ -3843,12 +3909,16 @@ macro_line|#elif defined(CONFIG_IOSCHED_DEADLINE)
 op_amp
 id|iosched_deadline
 suffix:semicolon
-macro_line|#else
+macro_line|#elif defined(CONFIG_IOSCHED_NOOP)
 op_amp
 id|elevator_noop
 suffix:semicolon
+macro_line|#else
+l_int|NULL
+suffix:semicolon
+macro_line|#error &quot;You must have at least 1 I/O scheduler selected&quot;
 macro_line|#endif
-macro_line|#if defined(CONFIG_IOSCHED_AS) || defined(CONFIG_IOSCHED_DEADLINE)
+macro_line|#if defined(CONFIG_IOSCHED_AS) || defined(CONFIG_IOSCHED_DEADLINE) || defined (CONFIG_IOSCHED_NOOP)
 DECL|function|elevator_setup
 r_static
 r_int
@@ -3899,6 +3969,25 @@ op_amp
 id|iosched_as
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_IOSCHED_NOOP
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|str
+comma
+l_string|&quot;noop&quot;
+)paren
+)paren
+id|chosen_elevator
+op_assign
+op_amp
+id|elevator_noop
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
@@ -3911,7 +4000,7 @@ comma
 id|elevator_setup
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_IOSCHED_AS || CONFIG_IOSCHED_DEADLINE */
+macro_line|#endif /* CONFIG_IOSCHED_AS || CONFIG_IOSCHED_DEADLINE || CONFIG_IOSCHED_NOOP */
 DECL|function|blk_alloc_queue
 id|request_queue_t
 op_star
@@ -9795,6 +9884,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|blk_queue_hardsect_size
+)paren
+suffix:semicolon
+DECL|variable|blk_queue_stack_limits
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|blk_queue_stack_limits
 )paren
 suffix:semicolon
 DECL|variable|blk_queue_segment_boundary

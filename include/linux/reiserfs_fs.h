@@ -1915,6 +1915,8 @@ multiline_comment|/* inode flags stored in sd_attrs (nee sd_reserved) */
 multiline_comment|/* we want common flags to have the same values as in ext2,&n;   so chattr(1) will work without problems */
 DECL|macro|REISERFS_IMMUTABLE_FL
 mdefine_line|#define REISERFS_IMMUTABLE_FL EXT2_IMMUTABLE_FL
+DECL|macro|REISERFS_APPEND_FL
+mdefine_line|#define REISERFS_APPEND_FL    EXT2_APPEND_FL
 DECL|macro|REISERFS_SYNC_FL
 mdefine_line|#define REISERFS_SYNC_FL      EXT2_SYNC_FL
 DECL|macro|REISERFS_NOATIME_FL
@@ -1927,9 +1929,8 @@ DECL|macro|REISERFS_UNRM_FL
 mdefine_line|#define REISERFS_UNRM_FL      EXT2_UNRM_FL
 DECL|macro|REISERFS_COMPR_FL
 mdefine_line|#define REISERFS_COMPR_FL     EXT2_COMPR_FL
-multiline_comment|/* persistent flag to disable tails on per-file basic.&n;   Note, that is inheritable: mark directory with this and&n;   all new files inside will not have tails. &n;&n;   Teodore Tso allocated EXT2_NODUMP_FL (0x00008000) for this. Change&n;   numeric constant to ext2 macro when available. */
 DECL|macro|REISERFS_NOTAIL_FL
-mdefine_line|#define REISERFS_NOTAIL_FL    (0x00008000) /* EXT2_NOTAIL_FL */
+mdefine_line|#define REISERFS_NOTAIL_FL    EXT2_NOTAIL_FL
 multiline_comment|/* persistent flags that file inherits from the parent directory */
 DECL|macro|REISERFS_INHERIT_MASK
 mdefine_line|#define REISERFS_INHERIT_MASK ( REISERFS_IMMUTABLE_FL |&t;&bslash;&n;&t;&t;&t;&t;REISERFS_SYNC_FL |&t;&bslash;&n;&t;&t;&t;&t;REISERFS_NOATIME_FL |&t;&bslash;&n;&t;&t;&t;&t;REISERFS_NODUMP_FL |&t;&bslash;&n;&t;&t;&t;&t;REISERFS_SECRM_FL |&t;&bslash;&n;&t;&t;&t;&t;REISERFS_COMPR_FL |&t;&bslash;&n;&t;&t;&t;&t;REISERFS_NOTAIL_FL )

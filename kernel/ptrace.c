@@ -712,6 +712,12 @@ comma
 id|bytes
 )paren
 suffix:semicolon
+id|set_page_dirty_lock
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
