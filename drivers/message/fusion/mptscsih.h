@@ -283,10 +283,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|macro|PROC_SCSI_DECL
-mdefine_line|#define PROC_SCSI_DECL  .proc_name = &quot;mptscsih&quot;,
-DECL|macro|MPT_SCSIHOST
-mdefine_line|#define MPT_SCSIHOST {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;PROC_SCSI_DECL&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.proc_info&t;&t;&t;= x_scsi_proc_info,&t;&bslash;&n;&t;.name&t;&t;&t;&t;= &quot;MPT SCSI Host&quot;,&t;&bslash;&n;&t;.detect&t;&t;&t;&t;= x_scsi_detect,&t;&bslash;&n;&t;.release&t;&t;&t;= x_scsi_release,&t;&bslash;&n;&t;.info&t;&t;&t;&t;= x_scsi_info,&t;&t;&bslash;&n;&t;.command&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.queuecommand&t;&t;&t;= x_scsi_queuecommand,&t;&bslash;&n;&t;.slave_alloc&t;&t;&t;= x_scsi_slave_alloc,&t;&bslash;&n;&t;.slave_configure&t;&t;= x_scsi_slave_configure,&t;&bslash;&n;&t;.slave_destroy&t;&t;&t;= x_scsi_slave_destroy,&t;&bslash;&n;&t;.eh_strategy_handler&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.eh_abort_handler&t;&t;= x_scsi_abort,&t;&t;&bslash;&n;&t;.eh_device_reset_handler&t;= x_scsi_dev_reset,&t;&bslash;&n;&t;.eh_bus_reset_handler&t;&t;= x_scsi_bus_reset,&t;&bslash;&n;&t;.eh_host_reset_handler&t;&t;= x_scsi_host_reset,&t;&bslash;&n;&t;.bios_param&t;&t;&t;= x_scsi_bios_param,&t;&bslash;&n;&t;.can_queue&t;&t;&t;= MPT_SCSI_CAN_QUEUE,&t;&bslash;&n;&t;.this_id&t;&t;&t;= -1,&t;&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;&t;= MPT_SCSI_SG_DEPTH,&t;&bslash;&n;&t;.max_sectors&t;&t;&t;= MPT_SCSI_MAX_SECTORS,&t;&bslash;&n;&t;.cmd_per_lun&t;&t;&t;= MPT_SCSI_CMD_PER_LUN,&t;&bslash;&n;&t;.unchecked_isa_dma&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.use_clustering&t;&t;&t;= ENABLE_CLUSTERING,&t;&bslash;&n;}
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*  include/scsi/scsi.h may not be quite complete...  */
 macro_line|#ifndef RESERVE_10

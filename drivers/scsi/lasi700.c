@@ -711,7 +711,33 @@ r_static
 id|Scsi_Host_Template
 id|driver_template
 op_assign
-id|LASI700_SCSI
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;LASI SCSI 53c700&quot;
+comma
+dot
+id|proc_name
+op_assign
+l_string|&quot;lasi700&quot;
+comma
+dot
+id|detect
+op_assign
+id|lasi700_detect
+comma
+dot
+id|release
+op_assign
+id|lasi700_release
+comma
+dot
+id|this_id
+op_assign
+l_int|7
+comma
+)brace
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
 eof

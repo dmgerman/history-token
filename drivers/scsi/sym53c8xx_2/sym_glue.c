@@ -9683,24 +9683,6 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; *    Initialize driver general stuff.&n;&t; */
-macro_line|#ifdef SYM_LINUX_PROC_INFO_SUPPORT
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,3,27)
-id|tpnt-&gt;proc_dir
-op_assign
-op_amp
-id|proc_scsi_sym53c8xx
-suffix:semicolon
-macro_line|#else
-id|tpnt-&gt;proc_name
-op_assign
-id|NAME53C8XX
-suffix:semicolon
-macro_line|#endif
-id|tpnt-&gt;proc_info
-op_assign
-id|sym53c8xx_proc_info
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef SYM_LINUX_BOOT_COMMAND_LINE_SUPPORT
 macro_line|#ifdef MODULE
 r_if
@@ -10381,7 +10363,6 @@ r_return
 id|attach_count
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 multiline_comment|/*&n; *  Linux release module stuff.&n; *&n; *  Called before unloading the module.&n; *  Detach the host.&n; *  We have to free resources and halt the NCR chip.&n; *&n; */
 DECL|function|sym_detach
 r_static
@@ -10590,7 +10571,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* MODULE */
 multiline_comment|/*&n; * For bigots to keep silent. :)&n; */
 macro_line|#ifdef MODULE_LICENSE
 id|MODULE_LICENSE
@@ -10601,16 +10581,99 @@ l_string|&quot;Dual BSD/GPL&quot;
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Driver host template.&n; */
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,0)
-r_static
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,0) || defined(MODULE)
 DECL|variable|driver_template
+r_static
 id|Scsi_Host_Template
 id|driver_template
 op_assign
-id|SYM53C8XX
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;sym53c8xx&quot;
+comma
+dot
+id|detect
+op_assign
+id|sym53c8xx_detect
+comma
+dot
+id|release
+op_assign
+id|sym53c8xx_release
+comma
+dot
+id|info
+op_assign
+id|sym53c8xx_info
+comma
+dot
+id|queuecommand
+op_assign
+id|sym53c8xx_queue_command
+comma
+dot
+id|slave_configure
+op_assign
+id|sym53c8xx_slave_configure
+comma
+dot
+id|eh_abort_handler
+op_assign
+id|sym53c8xx_eh_abort_handler
+comma
+dot
+id|eh_device_reset_handler
+op_assign
+id|sym53c8xx_eh_device_reset_handler
+comma
+dot
+id|eh_bus_reset_handler
+op_assign
+id|sym53c8xx_eh_bus_reset_handler
+comma
+dot
+id|eh_host_reset_handler
+op_assign
+id|sym53c8xx_eh_host_reset_handler
+comma
+dot
+id|this_id
+op_assign
+l_int|7
+comma
+dot
+id|use_clustering
+op_assign
+id|DISABLE_CLUSTERING
+comma
+dot
+id|highmem_io
+op_assign
+l_int|1
+comma
+macro_line|#ifdef SYM_LINUX_PROC_INFO_SUPPORT
+dot
+id|proc_info
+op_assign
+id|sym53c8xx_proc_info
+comma
+macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,3,27)
+dot
+id|proc_dir
+op_assign
+op_amp
+id|proc_scsi_sym53c8xx
+comma
+macro_line|#else
+dot
+id|proc_name
+op_assign
+id|NAME53C8XX
+comma
+macro_line|#endif
+macro_line|#endif
+)brace
 suffix:semicolon
 macro_line|#include &quot;../scsi_module.c&quot;
-macro_line|#endif
 eof

@@ -1910,8 +1910,5 @@ op_star
 id|tw_dev
 )paren
 suffix:semicolon
-multiline_comment|/* Scsi_Host_Template Initializer */
-DECL|macro|TWXXXX
-mdefine_line|#define TWXXXX {&t;&t;&t;&t;&t;&bslash;&n;&t;.proc_name&t;= &quot;3w-xxxx&quot;,&t;&t;&t;&bslash;&n;&t;.proc_info&t;= tw_scsi_proc_info,&t;&t;&bslash;&n;&t;.name&t;&t;= &quot;3ware Storage Controller&quot;,&t;&bslash;&n;&t;.detect&t;&t;= tw_scsi_detect,&t;&t;&bslash;&n;&t;.release&t;= tw_scsi_release,&t;&t;&bslash;&n;&t;.queuecommand&t;= tw_scsi_queue,&t;&t;&bslash;&n;&t;.eh_abort_handler&t;= tw_scsi_eh_abort,&t;&bslash;&n;&t;.eh_host_reset_handler&t;= tw_scsi_eh_reset,&t;&bslash;&n;&t;.bios_param&t;= tw_scsi_biosparam,&t;&t;&bslash;&n;&t;.can_queue&t;= TW_Q_LENGTH-2,&t;&t;&bslash;&n;&t;.this_id&t;= -1,&t;&t;&t;&t;&bslash;&n;&t;.sg_tablesize&t;= TW_MAX_SGL_LENGTH,&t;&t;&bslash;&n;&t;.max_sectors    = TW_MAX_SECTORS,&t;&t;&bslash;&n;&t;.cmd_per_lun&t;= TW_MAX_CMDS_PER_LUN,&t;&t;&bslash;&n;&t;.present&t;= 0,&t;&t;&t;&t;&bslash;&n;&t;.unchecked_isa_dma&t;= 0,&t;&t;&t;&bslash;&n;&t;.use_clustering&t;= ENABLE_CLUSTERING,&t;&t;&bslash;&n;&t;.emulated&t;= 1,&t;&t;&t;&t;&bslash;&n;&t;.highmem_io&t;= 1&t;&t;&t;&t;&bslash;&n;}
 macro_line|#endif /* _3W_XXXX_H */
 eof

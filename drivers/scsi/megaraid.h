@@ -115,8 +115,6 @@ DECL|macro|MAX_SPAN_DEPTH
 mdefine_line|#define MAX_SPAN_DEPTH&t;&t;&t;8
 DECL|macro|NVIRT_CHAN
 mdefine_line|#define NVIRT_CHAN&t;&t;4&t;/* # of virtual channels to represent&n;&t;&t;&t;&t;&t;   up to 60 logical drives */
-DECL|macro|MEGARAID
-mdefine_line|#define MEGARAID&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.name =&t;&t;&t;&t;&quot;MegaRAID&quot;,&t;&t;&bslash;&n;&t;.proc_info =&t;&t;&t;megaraid_proc_info,&t;&bslash;&n;&t;.detect =&t;&t;&t;megaraid_detect,&t;&bslash;&n;&t;.release =&t;&t;&t;megaraid_release,&t;&bslash;&n;&t;.info =&t;&t;&t;&t;megaraid_info,&t;&t;&bslash;&n;&t;.command =&t;&t;&t;megaraid_command,&t;&bslash;&n;&t;.queuecommand =&t;&t;&t;megaraid_queue,&t;&t;&bslash;&n;&t;.bios_param =&t;&t;&t;megaraid_biosparam,&t;&bslash;&n;&t;.max_sectors =&t;&t;&t;MAX_SECTORS_PER_IO,&t;&bslash;&n;&t;.can_queue =&t;&t;&t;MAX_COMMANDS,&t;&t;&bslash;&n;&t;.this_id =&t;&t;&t;DEFAULT_INITIATOR_ID,&t;&bslash;&n;&t;.sg_tablesize =&t;&t;&t;MAX_SGLIST,&t;&t;&bslash;&n;&t;.cmd_per_lun =&t;&t;&t;DEF_CMD_PER_LUN,&t;&bslash;&n;&t;.present =  &t;&t;&t;0,&t;&t;&t;&bslash;&n;&t;.unchecked_isa_dma =&t;&t;0,&t;&t;&t;&bslash;&n;&t;.use_clustering =&t;&t;ENABLE_CLUSTERING,&t;&bslash;&n;&t;.eh_abort_handler =&t;&t;megaraid_abort,&t;&t;&bslash;&n;&t;.eh_device_reset_handler =&t;megaraid_reset,&t;&t;&bslash;&n;&t;.eh_bus_reset_handler =&t;&t;megaraid_reset,&t;&t;&bslash;&n;&t;.eh_host_reset_handler =&t;megaraid_reset,&t;&t;&bslash;&n;&t;.highmem_io =&t;&t;&t;1,&t;&t;&t;&bslash;&n;}
 r_typedef
 r_struct
 (brace

@@ -15020,18 +15020,77 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * --- Loadable Driver Support&n; */
-macro_line|#if ASC_LINUX_KERNEL24
-r_static
-macro_line|#endif
-macro_line|#if ASC_LINUX_KERNEL24 || (ASC_LINUX_KERNEL22 &amp;&amp; defined(MODULE))
 DECL|variable|driver_template
+r_static
 id|Scsi_Host_Template
 id|driver_template
 op_assign
-id|ADVANSYS
+(brace
+dot
+id|proc_name
+op_assign
+l_string|&quot;advansys&quot;
+comma
+dot
+id|proc_info
+op_assign
+id|advansys_proc_info
+comma
+dot
+id|name
+op_assign
+l_string|&quot;advansys&quot;
+comma
+dot
+id|detect
+op_assign
+id|advansys_detect
+comma
+dot
+id|release
+op_assign
+id|advansys_release
+comma
+dot
+id|info
+op_assign
+id|advansys_info
+comma
+dot
+id|queuecommand
+op_assign
+id|advansys_queuecommand
+comma
+dot
+id|eh_bus_reset_handler
+op_assign
+id|advansys_reset
+comma
+dot
+id|bios_param
+op_assign
+id|advansys_biosparam
+comma
+dot
+id|slave_configure
+op_assign
+id|advansys_slave_configure
+comma
+multiline_comment|/*&n;     * Because the driver may control an ISA adapter &squot;unchecked_isa_dma&squot;&n;     * must be set. The flag will be cleared in advansys_detect for non-ISA&n;     * adapters. Refer to the comment in scsi_module.c for more information.&n;     */
+dot
+id|unchecked_isa_dma
+op_assign
+l_int|1
+comma
+multiline_comment|/*&n;     * All adapters controlled by this driver are capable of large&n;     * scatter-gather lists. According to the mid-level SCSI documentation&n;     * this obviates any performance gain provided by setting&n;     * &squot;use_clustering&squot;. But empirically while CPU utilization is increased&n;     * by enabling clustering, I/O throughput increases as well.&n;     */
+dot
+id|use_clustering
+op_assign
+id|ENABLE_CLUSTERING
+comma
+)brace
 suffix:semicolon
-macro_line|# include &quot;scsi_module.c&quot;
-macro_line|#endif
+macro_line|#include &quot;scsi_module.c&quot;
 multiline_comment|/*&n; * --- Miscellaneous Driver Functions&n; */
 multiline_comment|/*&n; * First-level interrupt handler.&n; *&n; * &squot;dev_id&squot; is a pointer to the interrupting adapter&squot;s asc_board_t. Because&n; * all boards are currently checked for interrupts on each interrupt, &squot;dev_id&squot;&n; * is not referenced. &squot;dev_id&squot; could be used to identify an interrupt passed&n; * to the AdvanSys driver which is for a device sharing an interrupt with&n; * an AdvanSys adapter.&n; */
 id|STATIC

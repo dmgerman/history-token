@@ -123,11 +123,6 @@ multiline_comment|/*&n;    * Some handy macros&n;    */
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,20) || defined CONFIG_HIGHIO
 DECL|macro|IPS_HIGHIO
 mdefine_line|#define IPS_HIGHIO
-DECL|macro|IPS_HIGHMEM_IO
-mdefine_line|#define IPS_HIGHMEM_IO     .highmem_io = 1,
-macro_line|#else
-DECL|macro|IPS_HIGHMEM_IO
-mdefine_line|#define IPS_HIGHMEM_IO
 macro_line|#endif
 DECL|macro|IPS_HA
 mdefine_line|#define IPS_HA(x)                   ((ips_ha_t *) x-&gt;hostdata)
@@ -704,8 +699,6 @@ id|geom
 )braket
 )paren
 suffix:semicolon
-DECL|macro|IPS
-mdefine_line|#define IPS {&t;&bslash;&n;&t;.detect&t;&t;&t;&t;= ips_detect,&t;&bslash;&n;&t;.release&t;&t;&t;= ips_release,&t;&bslash;&n;&t;.info&t;&t;&t;&t;= ips_info,&t;&bslash;&n;&t;.queuecommand&t;&t;&t;= ips_queue,&t;&bslash;&n;&t;.eh_abort_handler&t;&t;= ips_eh_abort,&t;&bslash;&n;&t;.eh_host_reset_handler&t;&t;= ips_eh_reset,&t;&bslash;&n;&t;.bios_param&t;&t;&t;= ips_biosparam,&bslash;&n;&t;.select_queue_depths&t;&t;= ips_select_queue_depth, &bslash;&n;&t;.can_queue&t;&t;&t;= 0,&t;&t;&bslash;&n;&t;.this_id&t;&t;&t;= -1,&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;&t;= IPS_MAX_SG,&t;&bslash;&n;&t;.cmd_per_lun&t;&t;&t;= 16,&t;&t;&bslash;&n;&t;.present&t;&t;&t;= 0,&t;&t;&bslash;&n;&t;.unchecked_isa_dma&t;&t;= 0,&t;&t;&bslash;&n;&t;.use_clustering&t;&t;&t;= ENABLE_CLUSTERING,&bslash;&n;&t;.use_new_eh_code&t;&t;= 1, &bslash;&n;&t;IPS_HIGHMEM_IO &bslash;&n;}
 macro_line|#else
 r_static
 r_int
@@ -740,8 +733,6 @@ op_star
 id|SDptr
 )paren
 suffix:semicolon
-DECL|macro|IPS
-mdefine_line|#define IPS {&t;&bslash;&n;&t;.detect&t;&t;&t;= ips_detect,&t;&t;&bslash;&n;&t;.release&t;&t;= ips_release,&t;&t;&bslash;&n;&t;.info&t;&t;&t;= ips_info,&t;&t;&bslash;&n;&t;.queuecommand&t;&t;= ips_queue,&t;&t;&bslash;&n;&t;.eh_abort_handler&t;= ips_eh_abort,&t;&t;&bslash;&n;&t;.eh_host_reset_handler&t;= ips_eh_reset,&t;&t;&bslash;&n;&t;.slave_configure&t;= ips_slave_configure,&t;&bslash;&n;&t;.bios_param&t;&t;= ips_biosparam,&t;&bslash;&n;&t;.can_queue&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.this_id&t;&t;= -1,&t;&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;= IPS_MAX_SG,&t;&t;&bslash;&n;&t;.cmd_per_lun&t;&t;= 3,&t;&t;&t;&bslash;&n;&t;.present&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.unchecked_isa_dma&t;= 0,&t;&t;&t;&bslash;&n;&t;.use_clustering&t;&t;= ENABLE_CLUSTERING,&t;&bslash;&n;&t;.highmem_io&t;&t;= 1 &bslash;&n;}
 macro_line|#endif
 multiline_comment|/*&n; * Raid Command Formats&n; */
 r_typedef
