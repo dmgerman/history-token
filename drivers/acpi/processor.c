@@ -5368,7 +5368,7 @@ c_cond
 (paren
 id|object.processor.pblk_length
 OL
-l_int|6
+l_int|4
 )paren
 id|ACPI_DEBUG_PRINT
 c_func
@@ -5396,6 +5396,13 @@ id|pr-&gt;throttling.duty_width
 op_assign
 id|acpi_fadt.duty_width
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|object.processor.pblk_length
+op_ge
+l_int|5
+)paren
 id|pr-&gt;power.states
 (braket
 id|ACPI_STATE_C2
@@ -5407,6 +5414,13 @@ id|object.processor.pblk_address
 op_plus
 l_int|4
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|object.processor.pblk_length
+op_ge
+l_int|6
+)paren
 id|pr-&gt;power.states
 (braket
 id|ACPI_STATE_C3
