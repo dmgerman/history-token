@@ -346,7 +346,7 @@ multiline_comment|/* Don&squot;t enqueue while not enough space for reply */
 id|dprintk
 c_func
 (paren
-l_string|&quot;svc: socket %p  no space, %d &gt; %ld, not enqueued&bslash;n&quot;
+l_string|&quot;svc: socket %p  no space, %d*2 &gt; %ld, not enqueued&bslash;n&quot;
 comma
 id|svsk-&gt;sk_sk
 comma
@@ -2068,6 +2068,21 @@ id|svsk-&gt;sk_sendto
 op_assign
 id|svc_udp_sendto
 suffix:semicolon
+multiline_comment|/* initialise setting must have enough space to&n;&t; * receive and respond to one request.  &n;&t; * svc_udp_recvfrom will re-adjust if necessary&n;&t; */
+id|svc_sock_setbufsize
+c_func
+(paren
+id|svsk-&gt;sk_sock
+comma
+l_int|3
+op_star
+id|svsk-&gt;sk_server-&gt;sv_bufsz
+comma
+l_int|3
+op_star
+id|svsk-&gt;sk_server-&gt;sv_bufsz
+)paren
+suffix:semicolon
 id|set_bit
 c_func
 (paren
@@ -2547,6 +2562,12 @@ id|SK_CONN
 comma
 op_amp
 id|svsk-&gt;sk_flags
+)paren
+suffix:semicolon
+id|svc_sock_enqueue
+c_func
+(paren
+id|svsk
 )paren
 suffix:semicolon
 id|slen
@@ -3611,6 +3632,21 @@ suffix:semicolon
 id|svsk-&gt;sk_tcplen
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* initialise setting must have enough space to&n;&t;&t; * receive and respond to one request.  &n;&t;&t; * svc_tcp_recvfrom will re-adjust if necessary&n;&t;&t; */
+id|svc_sock_setbufsize
+c_func
+(paren
+id|svsk-&gt;sk_sock
+comma
+l_int|3
+op_star
+id|svsk-&gt;sk_server-&gt;sv_bufsz
+comma
+l_int|3
+op_star
+id|svsk-&gt;sk_server-&gt;sv_bufsz
+)paren
 suffix:semicolon
 id|set_bit
 c_func
@@ -4842,7 +4878,7 @@ c_func
 (paren
 id|sock
 comma
-l_int|5
+l_int|64
 )paren
 )paren
 OL

@@ -509,11 +509,7 @@ r_int
 r_int
 id|sb_offset
 suffix:semicolon
-DECL|member|alias_device
-r_int
-id|alias_device
-suffix:semicolon
-multiline_comment|/* device alias to the same disk */
+multiline_comment|/* A device can be in one of three states based on two flags:&n;&t; * Not working:   faulty==1 in_sync==0&n;&t; * Fully working: faulty==0 in_sync==1&n;&t; * Working, but not&n;&t; * in sync with array&n;&t; *                faulty==0 in_sync==0&n;&t; *&n;&t; * It can never have faulty==1, in_sync==1&n;&t; * This reduces the burden of testing multiple flags in many cases&n;&t; */
 DECL|member|faulty
 r_int
 id|faulty
@@ -534,6 +530,11 @@ r_int
 id|raid_disk
 suffix:semicolon
 multiline_comment|/* role of device in array */
+DECL|member|nr_pending
+id|atomic_t
+id|nr_pending
+suffix:semicolon
+multiline_comment|/* number of pending requests.&n;&t;&t;&t;&t;&t; * only maintained for arrays that&n;&t;&t;&t;&t;&t; * support hot removal&n;&t;&t;&t;&t;&t; */
 )brace
 suffix:semicolon
 DECL|typedef|mdk_personality_t
@@ -675,10 +676,9 @@ DECL|member|active
 id|atomic_t
 id|active
 suffix:semicolon
-DECL|member|spare
-id|mdk_rdev_t
-op_star
-id|spare
+DECL|member|spares
+r_int
+id|spares
 suffix:semicolon
 DECL|member|degraded
 r_int
@@ -772,8 +772,9 @@ op_star
 id|mddev
 )paren
 suffix:semicolon
+multiline_comment|/* error_handler must set -&gt;faulty and clear -&gt;in_sync&n;&t; * if appropriate, and should abort recovery if needed &n;&t; */
 DECL|member|error_handler
-r_int
+r_void
 (paren
 op_star
 id|error_handler
@@ -783,10 +784,9 @@ id|mddev_t
 op_star
 id|mddev
 comma
-r_struct
-id|block_device
+id|mdk_rdev_t
 op_star
-id|bdev
+id|rdev
 )paren
 suffix:semicolon
 DECL|member|hot_add_disk
@@ -818,30 +818,6 @@ id|mddev
 comma
 r_int
 id|number
-)paren
-suffix:semicolon
-DECL|member|spare_write
-r_int
-(paren
-op_star
-id|spare_write
-)paren
-(paren
-id|mddev_t
-op_star
-id|mddev
-)paren
-suffix:semicolon
-DECL|member|spare_inactive
-r_int
-(paren
-op_star
-id|spare_inactive
-)paren
-(paren
-id|mddev_t
-op_star
-id|mddev
 )paren
 suffix:semicolon
 DECL|member|spare_active
@@ -941,8 +917,6 @@ mdefine_line|#define ITERATE_RDEV(mddev,rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;IT
 multiline_comment|/*&n; * Iterates through &squot;pending RAID disks&squot;&n; */
 DECL|macro|ITERATE_RDEV_PENDING
 mdefine_line|#define ITERATE_RDEV_PENDING(rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;ITERATE_RDEV_GENERIC(pending_raid_disks,rdev,tmp)
-DECL|macro|xchg_values
-mdefine_line|#define xchg_values(x,y) do { __typeof__(x) __tmp = x; &bslash;&n;&t;&t;&t;&t;x = y; y = __tmp; } while (0)
 DECL|struct|mdk_thread_s
 r_typedef
 r_struct

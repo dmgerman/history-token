@@ -260,6 +260,19 @@ id|deftype_lo
 comma
 id|deftype_hi
 suffix:semicolon
+r_static
+id|spinlock_t
+id|set_atomicity_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|set_atomicity_lock
+)paren
+suffix:semicolon
 multiline_comment|/*  Save value of CR4 and clear Page Global Enable (bit 7)  */
 r_if
 c_cond
@@ -466,6 +479,13 @@ id|write_cr4
 c_func
 (paren
 id|cr4
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|set_atomicity_lock
 )paren
 suffix:semicolon
 )brace
