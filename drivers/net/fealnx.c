@@ -147,6 +147,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;/* Processor type for cache alignment. */
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -3013,173 +3014,6 @@ l_string|&quot;fealnx: remove for unknown device&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|m80x_read_tick
-r_int
-r_int
-id|m80x_read_tick
-c_func
-(paren
-r_void
-)paren
-multiline_comment|/* function: Reads the Timer tick count register which decrements by 2 from  */
-multiline_comment|/*           65536 to 0 every 1/36.414 of a second. Each 2 decrements of the */
-multiline_comment|/*           count represents 838 nsec&squot;s.                                    */
-multiline_comment|/* input   : none.                                                           */
-multiline_comment|/* output  : none.                                                           */
-(brace
-r_int
-r_char
-id|tmp
-suffix:semicolon
-r_int
-id|value
-suffix:semicolon
-id|writeb
-c_func
-(paren
-(paren
-r_char
-)paren
-l_int|0x06
-comma
-l_int|0x43
-)paren
-suffix:semicolon
-singleline_comment|// Command 8254 to latch T0&squot;s count
-singleline_comment|// now read the count.
-id|tmp
-op_assign
-(paren
-r_int
-r_char
-)paren
-id|readb
-c_func
-(paren
-l_int|0x40
-)paren
-suffix:semicolon
-id|value
-op_assign
-(paren
-(paren
-r_int
-)paren
-id|tmp
-)paren
-op_lshift
-l_int|8
-suffix:semicolon
-id|tmp
-op_assign
-(paren
-r_int
-r_char
-)paren
-id|readb
-c_func
-(paren
-l_int|0x40
-)paren
-suffix:semicolon
-id|value
-op_or_assign
-(paren
-(paren
-(paren
-r_int
-)paren
-id|tmp
-)paren
-op_amp
-l_int|0xff
-)paren
-suffix:semicolon
-r_return
-(paren
-id|value
-)paren
-suffix:semicolon
-)brace
-DECL|function|m80x_delay
-r_void
-id|m80x_delay
-c_func
-(paren
-r_int
-r_int
-id|interval
-)paren
-multiline_comment|/* function: to wait for a specified time.                                   */
-multiline_comment|/* input   : interval ... the specified time.                                */
-multiline_comment|/* output  : none.                                                           */
-(brace
-r_int
-r_int
-id|interval1
-comma
-id|interval2
-comma
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|interval1
-op_assign
-id|m80x_read_tick
-c_func
-(paren
-)paren
-suffix:semicolon
-singleline_comment|// get initial value
-r_do
-(brace
-id|interval2
-op_assign
-id|m80x_read_tick
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|interval1
-OL
-id|interval2
-)paren
-id|interval1
-op_assign
-id|interval2
-suffix:semicolon
-op_increment
-id|i
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-(paren
-(paren
-id|interval1
-op_minus
-id|interval2
-)paren
-OL
-(paren
-id|ushort
-)paren
-id|interval
-)paren
-op_logical_and
-(paren
-id|i
-OL
-l_int|65535
-)paren
-)paren
-suffix:semicolon
-)brace
 DECL|function|m80x_send_cmd_to_phy
 r_static
 id|ulong
@@ -3347,7 +3181,7 @@ comma
 id|miiport
 )paren
 suffix:semicolon
-id|m80x_delay
+id|udelay
 c_func
 (paren
 l_int|30
@@ -3489,12 +3323,9 @@ comma
 id|miiport
 )paren
 suffix:semicolon
-id|m80x_delay
+id|udelay
 c_func
 (paren
-(paren
-r_int
-)paren
 l_int|30
 )paren
 suffix:semicolon
@@ -4138,8 +3969,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-singleline_comment|// delay
-id|m80x_delay
+id|udelay
 c_func
 (paren
 l_int|100
@@ -4190,8 +4020,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-singleline_comment|// delay
-id|m80x_delay
+id|udelay
 c_func
 (paren
 l_int|100
