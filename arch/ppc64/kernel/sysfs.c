@@ -10,6 +10,214 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 multiline_comment|/* PMC stuff */
+multiline_comment|/*&n; * Enabling PMCs will slow partition context switch times so we only do&n; * it the first time we write to the PMCs.&n; */
+r_static
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_char
+comma
+id|pmcs_enabled
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_ISERIES
+DECL|function|ppc64_enable_pmcs
+r_void
+id|ppc64_enable_pmcs
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* XXX Implement for iseries */
+)brace
+macro_line|#else
+DECL|function|ppc64_enable_pmcs
+r_void
+id|ppc64_enable_pmcs
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|hid0
+suffix:semicolon
+r_int
+r_int
+id|set
+comma
+id|reset
+suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+multiline_comment|/* Only need to enable them once */
+r_if
+c_cond
+(paren
+id|__get_cpu_var
+c_func
+(paren
+id|pmcs_enabled
+)paren
+)paren
+r_return
+suffix:semicolon
+id|__get_cpu_var
+c_func
+(paren
+id|pmcs_enabled
+)paren
+op_assign
+l_int|1
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|systemcfg-&gt;platform
+)paren
+(brace
+r_case
+id|PLATFORM_PSERIES
+suffix:colon
+id|hid0
+op_assign
+id|mfspr
+c_func
+(paren
+id|HID0
+)paren
+suffix:semicolon
+id|hid0
+op_or_assign
+l_int|1UL
+op_lshift
+(paren
+l_int|63
+op_minus
+l_int|20
+)paren
+suffix:semicolon
+multiline_comment|/* POWER4 requires the following sequence */
+id|asm
+r_volatile
+(paren
+l_string|&quot;sync&bslash;n&quot;
+l_string|&quot;mtspr&t;%1, %0&bslash;n&quot;
+l_string|&quot;mfspr&t;%0, %1&bslash;n&quot;
+l_string|&quot;mfspr&t;%0, %1&bslash;n&quot;
+l_string|&quot;mfspr&t;%0, %1&bslash;n&quot;
+l_string|&quot;mfspr&t;%0, %1&bslash;n&quot;
+l_string|&quot;mfspr&t;%0, %1&bslash;n&quot;
+l_string|&quot;mfspr&t;%0, %1&bslash;n&quot;
+l_string|&quot;isync&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|hid0
+)paren
+suffix:colon
+l_string|&quot;i&quot;
+(paren
+id|HID0
+)paren
+comma
+l_string|&quot;0&quot;
+(paren
+id|hid0
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PLATFORM_PSERIES_LPAR
+suffix:colon
+id|set
+op_assign
+l_int|1UL
+op_lshift
+l_int|63
+suffix:semicolon
+id|reset
+op_assign
+l_int|0
+suffix:semicolon
+id|ret
+op_assign
+id|plpar_hcall_norets
+c_func
+(paren
+id|H_PERFMON
+comma
+id|set
+comma
+id|reset
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;H_PERFMON call returned %d&quot;
+comma
+id|ret
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* instruct hypervisor to maintain PMCs */
+r_if
+c_cond
+(paren
+id|cur_cpu_spec-&gt;firmware_features
+op_amp
+id|FW_FEATURE_SPLPAR
+)paren
+(brace
+r_char
+op_star
+id|ptr
+op_assign
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|paca
+(braket
+id|smp_processor_id
+c_func
+(paren
+)paren
+)braket
+dot
+id|xLpPaca
+suffix:semicolon
+id|ptr
+(braket
+l_int|0xBB
+)braket
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 multiline_comment|/* XXX convert to rusty&squot;s on_one_cpu */
 DECL|function|run_on_cpu
 r_static
@@ -87,7 +295,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|macro|SYSFS_PMCSETUP
-mdefine_line|#define SYSFS_PMCSETUP(NAME, ADDRESS) &bslash;&n;static unsigned long read_##NAME(unsigned long junk) &bslash;&n;{ &bslash;&n;&t;return mfspr(ADDRESS); &bslash;&n;} &bslash;&n;static unsigned long write_##NAME(unsigned long val) &bslash;&n;{ &bslash;&n;&t;mtspr(ADDRESS, val); &bslash;&n;&t;return 0; &bslash;&n;} &bslash;&n;static ssize_t show_##NAME(struct sys_device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct cpu *cpu = container_of(dev, struct cpu, sysdev); &bslash;&n;&t;unsigned long val = run_on_cpu(cpu-&gt;sysdev.id, read_##NAME, 0); &bslash;&n;&t;return sprintf(buf, &quot;%lx&bslash;n&quot;, val); &bslash;&n;} &bslash;&n;static ssize_t store_##NAME(struct sys_device *dev, const char *buf, &bslash;&n;&t;&t;&t;    size_t count) &bslash;&n;{ &bslash;&n;&t;struct cpu *cpu = container_of(dev, struct cpu, sysdev); &bslash;&n;&t;unsigned long val; &bslash;&n;&t;int ret = sscanf(buf, &quot;%lx&quot;, &amp;val); &bslash;&n;&t;if (ret != 1) &bslash;&n;&t;&t;return -EINVAL; &bslash;&n;&t;run_on_cpu(cpu-&gt;sysdev.id, write_##NAME, val); &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define SYSFS_PMCSETUP(NAME, ADDRESS) &bslash;&n;static unsigned long read_##NAME(unsigned long junk) &bslash;&n;{ &bslash;&n;&t;return mfspr(ADDRESS); &bslash;&n;} &bslash;&n;static unsigned long write_##NAME(unsigned long val) &bslash;&n;{ &bslash;&n;&t;ppc64_enable_pmcs(); &bslash;&n;&t;mtspr(ADDRESS, val); &bslash;&n;&t;return 0; &bslash;&n;} &bslash;&n;static ssize_t show_##NAME(struct sys_device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct cpu *cpu = container_of(dev, struct cpu, sysdev); &bslash;&n;&t;unsigned long val = run_on_cpu(cpu-&gt;sysdev.id, read_##NAME, 0); &bslash;&n;&t;return sprintf(buf, &quot;%lx&bslash;n&quot;, val); &bslash;&n;} &bslash;&n;static ssize_t store_##NAME(struct sys_device *dev, const char *buf, &bslash;&n;&t;&t;&t;    size_t count) &bslash;&n;{ &bslash;&n;&t;struct cpu *cpu = container_of(dev, struct cpu, sysdev); &bslash;&n;&t;unsigned long val; &bslash;&n;&t;int ret = sscanf(buf, &quot;%lx&quot;, &amp;val); &bslash;&n;&t;if (ret != 1) &bslash;&n;&t;&t;return -EINVAL; &bslash;&n;&t;run_on_cpu(cpu-&gt;sysdev.id, write_##NAME, val); &bslash;&n;&t;return count; &bslash;&n;}
 id|SYSFS_PMCSETUP
 c_func
 (paren
