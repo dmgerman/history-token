@@ -816,8 +816,6 @@ id|len
 r_if
 c_cond
 (paren
-id|len
-op_logical_and
 id|name
 (braket
 id|len
@@ -828,7 +826,8 @@ op_eq
 l_char|&squot; &squot;
 )paren
 r_return
-l_int|0
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -838,7 +837,8 @@ op_ge
 l_int|256
 )paren
 r_return
-l_int|0
+op_minus
+id|ENAMETOOLONG
 suffix:semicolon
 multiline_comment|/* MS-DOS &quot;device special files&quot; */
 r_if
@@ -911,7 +911,8 @@ l_int|3
 )paren
 )paren
 r_return
-l_int|0
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 r_if
@@ -981,12 +982,13 @@ l_int|3
 )paren
 )paren
 r_return
-l_int|0
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 )brace
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|vfat_find_form
@@ -2985,10 +2987,8 @@ id|slots
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
+id|res
+op_assign
 id|vfat_valid_longname
 c_func
 (paren
@@ -2996,10 +2996,14 @@ id|name
 comma
 id|len
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|res
 )paren
 r_return
-op_minus
-id|EINVAL
+id|res
 suffix:semicolon
 r_if
 c_cond
