@@ -648,7 +648,7 @@ l_string|&quot;USB 2 HS-CF&quot;
 comma
 l_string|&quot;1.95&quot;
 comma
-id|BLIST_SPARSELUN
+id|BLIST_FORCELUN
 )brace
 comma
 (brace
