@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   fs/cifs_debug.c&n; *&n; *   Copyright (c) International Business Machines  Corp., 2000,2002&n; *&n; *   Modified by Steve French (sfrench@us.ibm.com)&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   fs/cifs_debug.c&n; *&n; *   Copyright (C) International Business Machines  Corp., 2000,2003&n; *&n; *   Modified by Steve French (sfrench@us.ibm.com)&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
@@ -359,7 +359,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;n%d) Name: %s  Domain: %s Mounts: %d ServerOS: %s  ServerNOS: %s&bslash;n&bslash;tCapabilities: 0x%x&quot;
+l_string|&quot;&bslash;n%d) Name: %s  Domain: %s Mounts: %d ServerOS: %s  &bslash;n&bslash;tServerNOS: %s&bslash;tCapabilities: 0x%x&quot;
 comma
 id|i
 comma
@@ -398,7 +398,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;tLocal Users To Same Server: %d SecMode: 0x%x&quot;
+l_string|&quot;&bslash;n&bslash;tLocal Users To Same Server: %d SecMode: 0x%x&quot;
 comma
 id|atomic_read
 c_func
@@ -565,6 +565,25 @@ id|buf
 op_add_assign
 id|length
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tcon-&gt;tidStatus
+op_eq
+id|CifsNeedReconnect
+)paren
+(brace
+id|buf
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;&bslash;tDISCONNECTED &quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 id|read_unlock
 c_func
