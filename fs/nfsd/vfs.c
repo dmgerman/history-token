@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#ifdef CONFIG_NFSD_V3
@@ -3907,22 +3908,10 @@ comma
 id|current-&gt;pid
 )paren
 suffix:semicolon
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-(paren
-id|HZ
-op_plus
-l_int|99
-)paren
-op_div
-l_int|100
+l_int|10
 )paren
 suffix:semicolon
 id|dprintk
