@@ -1243,7 +1243,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Given a directory entry, enter it into the fname rb tree.&n; */
 DECL|function|ext3_htree_store_dirent
-r_void
+r_int
 id|ext3_htree_store_dirent
 c_func
 (paren
@@ -1327,6 +1327,16 @@ id|len
 comma
 id|GFP_KERNEL
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|new_fn
+)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|memset
 c_func
@@ -1430,6 +1440,7 @@ op_assign
 id|new_fn
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -1518,6 +1529,9 @@ comma
 op_amp
 id|info-&gt;root
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is a helper function for ext3_dx_readdir.  It calls filldir&n; * for all entres on the fname linked list.  (Normally there is only&n; * one entry on the linked list, unless there are 62 bit hash collisions.)&n; */
