@@ -13165,7 +13165,11 @@ id|p-&gt;local.connected
 op_assign
 id|isdn_ppp_wakeup_daemon
 suffix:semicolon
-id|p-&gt;local.disconnected
+id|p-&gt;local.bind
+op_assign
+id|isdn_ppp_bind
+suffix:semicolon
+id|p-&gt;local.unbind
 op_assign
 id|isdn_ppp_free
 suffix:semicolon
