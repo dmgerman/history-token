@@ -57,14 +57,14 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * This is ridiculous, but we want the strings in&n; * the .init section so that they don&squot;t take up&n; * real memory.. Parse the same file multiple times&n; * to get all the info.&n; */
 DECL|macro|VENDOR
-mdefine_line|#define VENDOR( vendor, name )&t;&t;static char __vendorstr_##vendor[] __initdata = name;
+mdefine_line|#define VENDOR( vendor, name )&t;&t;static char __vendorstr_##vendor[] __devinitdata = name;
 DECL|macro|ENDVENDOR
 mdefine_line|#define ENDVENDOR()
 DECL|macro|DEVICE
-mdefine_line|#define DEVICE( vendor, device, name ) &t;static char __devicestr_##vendor##device[] __initdata = name;
+mdefine_line|#define DEVICE( vendor, device, name ) &t;static char __devicestr_##vendor##device[] __devinitdata = name;
 macro_line|#include &quot;devlist.h&quot;
 DECL|macro|VENDOR
-mdefine_line|#define VENDOR( vendor, name )&t;&t;static struct pci_device_info __devices_##vendor[] __initdata = {
+mdefine_line|#define VENDOR( vendor, name )&t;&t;static struct pci_device_info __devices_##vendor[] __devinitdata = {
 DECL|macro|ENDVENDOR
 mdefine_line|#define ENDVENDOR()&t;&t;&t;};
 DECL|macro|DEVICE
@@ -74,7 +74,7 @@ DECL|variable|pci_vendor_list
 r_static
 r_struct
 id|pci_vendor_info
-id|__initdata
+id|__devinitdata
 id|pci_vendor_list
 (braket
 )braket
@@ -359,7 +359,7 @@ suffix:semicolon
 macro_line|#else
 DECL|function|pci_name_device
 r_void
-id|__init
+id|__devinit
 id|pci_name_device
 c_func
 (paren
