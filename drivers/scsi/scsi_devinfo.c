@@ -252,6 +252,17 @@ id|BLIST_NOLUN
 comma
 multiline_comment|/* responds to all lun */
 (brace
+l_string|&quot;MICROTEK&quot;
+comma
+l_string|&quot;ScanMakerIII&quot;
+comma
+l_string|&quot;2.30&quot;
+comma
+id|BLIST_NOLUN
+)brace
+comma
+multiline_comment|/* responds to all lun */
+(brace
 l_string|&quot;NEC&quot;
 comma
 l_string|&quot;CD-ROM DRIVE:841&quot;
