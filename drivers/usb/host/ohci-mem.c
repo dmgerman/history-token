@@ -873,6 +873,12 @@ id|ed
 )paren
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+(paren
+op_amp
+id|ed-&gt;td_list
+)paren
+suffix:semicolon
 id|ed-&gt;dma
 op_assign
 id|dma

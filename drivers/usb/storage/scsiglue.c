@@ -4,11 +4,6 @@ macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &lt;linux/slab.h&gt;
-multiline_comment|/*&n; * kernel thread actions&n; */
-DECL|macro|US_ACT_COMMAND
-mdefine_line|#define US_ACT_COMMAND&t;&t;1
-DECL|macro|US_ACT_EXIT
-mdefine_line|#define US_ACT_EXIT&t;&t;5
 multiline_comment|/***********************************************************************&n; * Host functions &n; ***********************************************************************/
 DECL|function|host_info
 r_static
@@ -502,14 +497,15 @@ multiline_comment|/* if the device was removed, then we&squot;re already reset *
 r_if
 c_cond
 (paren
-id|atomic_read
+op_logical_neg
+id|test_bit
 c_func
 (paren
+id|DEV_ATTACHED
+comma
 op_amp
-id|us-&gt;sm_state
+id|us-&gt;bitflags
 )paren
-op_eq
-id|US_STATE_DETACHED
 )paren
 r_return
 id|SUCCESS
@@ -633,14 +629,15 @@ multiline_comment|/* if the device has been removed, this worked */
 r_if
 c_cond
 (paren
-id|atomic_read
+op_logical_neg
+id|test_bit
 c_func
 (paren
+id|DEV_ATTACHED
+comma
 op_amp
-id|us-&gt;sm_state
+id|us-&gt;bitflags
 )paren
-op_eq
-id|US_STATE_DETACHED
 )paren
 (brace
 id|US_DEBUGP
@@ -1027,20 +1024,20 @@ c_func
 l_string|&quot;     Attached: %s&bslash;n&quot;
 comma
 (paren
-id|atomic_read
+id|test_bit
 c_func
 (paren
+id|DEV_ATTACHED
+comma
 op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_DETACHED
+id|us-&gt;bitflags
 )paren
 ques
 c_cond
 l_string|&quot;Yes&quot;
 suffix:colon
 l_string|&quot;No&quot;
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Calculate start of next buffer, and return value.&n;&t; */
