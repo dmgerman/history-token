@@ -3,8 +3,7 @@ macro_line|#ifndef _ASM_BCACHE_H
 DECL|macro|_ASM_BCACHE_H
 mdefine_line|#define _ASM_BCACHE_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_BOARD_SCACHE
-multiline_comment|/* Some R4000 / R4400 / R4600 / R5000 machines may have a non-dma-coherent,&n;   chipset implemented caches.  On machines with other CPUs the CPU does the &n;   cache thing itself. */
+multiline_comment|/* Some R4000 / R4400 / R4600 / R5000 machines may have a non-dma-coherent,&n;   chipset implemented caches.  On machines with other CPUs the CPU does the&n;   cache thing itself. */
 DECL|struct|bcache_ops
 r_struct
 id|bcache_ops
@@ -79,6 +78,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BOARD_SCACHE
 r_extern
 r_struct
 id|bcache_ops
@@ -86,7 +86,7 @@ op_star
 id|bcops
 suffix:semicolon
 DECL|function|bc_enable
-r_extern
+r_static
 r_inline
 r_void
 id|bc_enable
@@ -104,7 +104,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|bc_disable
-r_extern
+r_static
 r_inline
 r_void
 id|bc_disable
@@ -122,7 +122,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|bc_wback_inv
-r_extern
+r_static
 r_inline
 r_void
 id|bc_wback_inv
@@ -149,7 +149,7 @@ id|size
 suffix:semicolon
 )brace
 DECL|function|bc_inv
-r_extern
+r_static
 r_inline
 r_void
 id|bc_inv

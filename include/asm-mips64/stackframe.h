@@ -1,21 +1,22 @@
-multiline_comment|/* $Id: stackframe.h,v 1.3 1999/12/04 03:59:12 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 1995, 1996, 1999 Ralf Baechle&n; * Copyright (C) 1994, 1995, 1996 Paul M. Antoine.&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
-macro_line|#ifndef _ASM_STACKFRAME_H
-DECL|macro|_ASM_STACKFRAME_H
-mdefine_line|#define _ASM_STACKFRAME_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 1995, 1996, 1999 Ralf Baechle&n; * Copyright (C) 1994, 1995, 1996 Paul M. Antoine.&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
+macro_line|#ifndef __ASM_STACKFRAME_H
+DECL|macro|__ASM_STACKFRAME_H
+mdefine_line|#define __ASM_STACKFRAME_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/asm.h&gt;
 macro_line|#include &lt;asm/offset.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|__str2
 mdefine_line|#define __str2(x) #x
 DECL|macro|__str
 mdefine_line|#define __str(x) __str2(x)
 DECL|macro|save_static
 mdefine_line|#define save_static(frame)                               &bslash;&n;&t;__asm__ __volatile__(                            &bslash;&n;&t;&t;&quot;sd&bslash;t$16,&quot;__str(PT_R16)&quot;(%0)&bslash;n&bslash;t&quot;        &bslash;&n;&t;&t;&quot;sd&bslash;t$17,&quot;__str(PT_R17)&quot;(%0)&bslash;n&bslash;t&quot;        &bslash;&n;&t;&t;&quot;sd&bslash;t$18,&quot;__str(PT_R18)&quot;(%0)&bslash;n&bslash;t&quot;        &bslash;&n;&t;&t;&quot;sd&bslash;t$19,&quot;__str(PT_R19)&quot;(%0)&bslash;n&bslash;t&quot;        &bslash;&n;&t;&t;&quot;sd&bslash;t$20,&quot;__str(PT_R20)&quot;(%0)&bslash;n&bslash;t&quot;        &bslash;&n;&t;&t;&quot;sd&bslash;t$21,&quot;__str(PT_R21)&quot;(%0)&bslash;n&bslash;t&quot;        &bslash;&n;&t;&t;&quot;sd&bslash;t$22,&quot;__str(PT_R22)&quot;(%0)&bslash;n&bslash;t&quot;        &bslash;&n;&t;&t;&quot;sd&bslash;t$23,&quot;__str(PT_R23)&quot;(%0)&bslash;n&bslash;t&quot;        &bslash;&n;&t;&t;&quot;sd&bslash;t$30,&quot;__str(PT_R30)&quot;(%0)&bslash;n&bslash;t&quot;        &bslash;&n;&t;&t;: /* No outputs */                       &bslash;&n;&t;&t;: &quot;r&quot; (frame))
-macro_line|#endif /* _LANGUAGE_C */
-macro_line|#ifdef _LANGUAGE_ASSEMBLY
+macro_line|#endif /* !__ASSEMBLY__ */
+macro_line|#ifdef __ASSEMBLY__
 dot
 id|macro
 id|SAVE_AT
@@ -231,6 +232,176 @@ id|sp
 )paren
 dot
 id|endm
+macro_line|#ifdef CONFIG_SMP
+dot
+id|macro
+id|get_saved_sp
+multiline_comment|/* SMP variation */
+id|dmfc0
+id|k1
+comma
+id|CP0_CONTEXT
+id|dsra
+id|k1
+comma
+l_int|23
+id|lui
+id|k0
+comma
+op_mod
+id|hi
+c_func
+(paren
+id|pgd_current
+)paren
+id|daddiu
+id|k0
+comma
+op_mod
+id|lo
+c_func
+(paren
+id|pgd_current
+)paren
+id|dsubu
+id|k1
+comma
+id|k0
+id|lui
+id|k0
+comma
+op_mod
+id|hi
+c_func
+(paren
+id|kernelsp
+)paren
+id|daddu
+id|k1
+comma
+id|k0
+id|ld
+id|k1
+comma
+op_mod
+id|lo
+c_func
+(paren
+id|kernelsp
+)paren
+(paren
+id|k1
+)paren
+dot
+id|endm
+dot
+id|macro
+id|set_saved_sp
+id|stackp
+id|temp
+id|temp2
+id|lw
+"&bslash;"
+id|temp
+comma
+id|TI_CPU
+c_func
+(paren
+id|gp
+)paren
+id|dsll
+"&bslash;"
+id|temp
+comma
+l_int|3
+id|lui
+"&bslash;"
+id|temp2
+comma
+op_mod
+id|hi
+c_func
+(paren
+id|kernelsp
+)paren
+id|daddu
+"&bslash;"
+id|temp
+comma
+"&bslash;"
+id|temp2
+id|sd
+"&bslash;"
+id|stackp
+comma
+op_mod
+id|lo
+c_func
+(paren
+id|kernelsp
+)paren
+(paren
+"&bslash;"
+id|temp
+)paren
+dot
+id|endm
+macro_line|#else
+dot
+id|macro
+id|get_saved_sp
+multiline_comment|/* Uniprocessor variation */
+id|lui
+id|k1
+comma
+op_mod
+id|hi
+c_func
+(paren
+id|kernelsp
+)paren
+id|ld
+id|k1
+comma
+op_mod
+id|lo
+c_func
+(paren
+id|kernelsp
+)paren
+(paren
+id|k1
+)paren
+dot
+id|endm
+dot
+id|macro
+id|set_saved_sp
+id|stackp
+id|temp
+id|temp2
+id|sd
+"&bslash;"
+id|stackp
+comma
+id|kernelsp
+dot
+id|endm
+macro_line|#endif
+dot
+id|macro
+id|declare_saved_sp
+dot
+id|comm
+id|kernelsp
+comma
+id|NR_CPUS
+op_star
+l_int|8
+comma
+l_int|8
+dot
+id|endm
 dot
 id|macro
 id|SAVE_SOME
@@ -264,82 +435,7 @@ dot
 id|set
 id|reorder
 multiline_comment|/* Called from user mode, new stack. */
-macro_line|#ifndef CONFIG_SMP
-id|lui
-id|k1
-comma
-op_mod
-id|hi
-c_func
-(paren
-id|kernelsp
-)paren
-id|ld
-id|k1
-comma
-op_mod
-id|lo
-c_func
-(paren
-id|kernelsp
-)paren
-(paren
-id|k1
-)paren
-macro_line|#else
-id|mfc0
-id|k0
-comma
-id|CP0_WATCHLO
-id|mfc0
-id|k1
-comma
-id|CP0_WATCHHI
-id|dsll32
-id|k0
-comma
-id|k0
-comma
-l_int|0
-multiline_comment|/* Get rid of sign extension */
-id|dsrl32
-id|k0
-comma
-id|k0
-comma
-l_int|0
-multiline_comment|/* Get rid of sign extension */
-id|dsll32
-id|k1
-comma
-id|k1
-comma
-l_int|0
-op_logical_or
-id|k1
-comma
-id|k1
-comma
-id|k0
-id|li
-id|k0
-comma
-id|K0BASE
-op_logical_or
-id|k1
-comma
-id|k1
-comma
-id|k0
-id|daddiu
-id|k1
-comma
-id|k1
-comma
-id|KERNEL_STACK_SIZE
-op_minus
-l_int|32
-macro_line|#endif
+id|get_saved_sp
 l_int|8
 suffix:colon
 id|move
@@ -378,7 +474,7 @@ c_func
 (paren
 id|sp
 )paren
-id|dmfc0
+id|mfc0
 id|v1
 comma
 id|CP0_STATUS
@@ -408,7 +504,7 @@ c_func
 (paren
 id|sp
 )paren
-id|dmfc0
+id|mfc0
 id|v1
 comma
 id|CP0_CAUSE
@@ -803,7 +899,7 @@ op_logical_or
 id|v0
 comma
 id|t0
-id|dmtc0
+id|mtc0
 id|v0
 comma
 id|CP0_STATUS
@@ -996,6 +1092,6 @@ comma
 id|CP0_STATUS
 dot
 id|endm
-macro_line|#endif /* _LANGUAGE_ASSEMBLY */
-macro_line|#endif /* _ASM_STACKFRAME_H */
+macro_line|#endif /* __ASSEMBLY__ */
+macro_line|#endif /* __ASM_STACKFRAME_H */
 eof

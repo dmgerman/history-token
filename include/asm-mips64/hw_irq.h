@@ -1,2 +1,101 @@
-multiline_comment|/* This exists merely to satisfy &lt;linux/irq.h&gt;.  There is&n;   nothing that would go here of general interest.&n;&n;   Everything of consequence is in arch/alpha/kernel/irq_impl.h,&n;   to be used only in arch/alpha/kernel/.  */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000, 2001, 2002 by Ralf Baechle&n; */
+macro_line|#ifndef __ASM_HW_IRQ_H
+DECL|macro|__ASM_HW_IRQ_H
+mdefine_line|#define __ASM_HW_IRQ_H
+macro_line|#include &lt;linux/profile.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
+r_extern
+r_void
+id|mask_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|unmask_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|disable_8259A_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|enable_8259A_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|i8259A_irq_pending
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|make_8259A_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|init_8259A
+c_func
+(paren
+r_int
+id|aeoi
+)paren
+suffix:semicolon
+macro_line|#include &lt;asm/atomic.h&gt;
+r_extern
+id|atomic_t
+id|irq_err_count
+suffix:semicolon
+multiline_comment|/* This may not be apropriate for all machines, we&squot;ll see ...  */
+DECL|function|hw_resend_irq
+r_static
+r_inline
+r_void
+id|hw_resend_irq
+c_func
+(paren
+r_struct
+id|hw_interrupt_type
+op_star
+id|h
+comma
+r_int
+r_int
+id|i
+)paren
+(brace
+)brace
+macro_line|#endif /* __ASM_HW_IRQ_H */
 eof

@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_MSGBUF_H
 DECL|macro|_ASM_MSGBUF_H
 mdefine_line|#define _ASM_MSGBUF_H
-multiline_comment|/* &n; * The msqid64_ds structure for alpha architecture.&n; * Note extra padding because this structure is passed back and forth&n; * between kernel and user space.&n; *&n; * Pad space is left for:&n; * - 2 miscellaneous 64-bit values&n; */
+multiline_comment|/*&n; * The msqid64_ds structure for alpha architecture.&n; * Note extra padding because this structure is passed back and forth&n; * between kernel and user space.&n; *&n; * Pad space is left for:&n; * - 2 miscellaneous 64-bit values&n; */
 DECL|struct|msqid64_ds
 r_struct
 id|msqid64_ds
@@ -16,16 +16,31 @@ id|__kernel_time_t
 id|msg_stime
 suffix:semicolon
 multiline_comment|/* last msgsnd time */
+DECL|member|__unused1
+r_int
+r_int
+id|__unused1
+suffix:semicolon
 DECL|member|msg_rtime
 id|__kernel_time_t
 id|msg_rtime
 suffix:semicolon
 multiline_comment|/* last msgrcv time */
+DECL|member|__unused2
+r_int
+r_int
+id|__unused2
+suffix:semicolon
 DECL|member|msg_ctime
 id|__kernel_time_t
 id|msg_ctime
 suffix:semicolon
 multiline_comment|/* last change time */
+DECL|member|__unused3
+r_int
+r_int
+id|__unused3
+suffix:semicolon
 DECL|member|msg_cbytes
 r_int
 r_int
@@ -54,15 +69,15 @@ id|__kernel_pid_t
 id|msg_lrpid
 suffix:semicolon
 multiline_comment|/* last receive pid */
-DECL|member|__unused1
+DECL|member|__unused4
 r_int
 r_int
-id|__unused1
+id|__unused4
 suffix:semicolon
-DECL|member|__unused2
+DECL|member|__unused5
 r_int
 r_int
-id|__unused2
+id|__unused5
 suffix:semicolon
 )brace
 suffix:semicolon

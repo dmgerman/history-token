@@ -152,9 +152,19 @@ macro_line|#endif
 macro_line|#endif
 DECL|typedef|dma_addr_t
 r_typedef
-r_int
-r_int
+id|u64
 id|dma_addr_t
+suffix:semicolon
+DECL|typedef|dma64_addr_t
+r_typedef
+id|u64
+id|dma64_addr_t
+suffix:semicolon
+DECL|typedef|phys_t
+r_typedef
+r_int
+r_int
+id|phys_t
 suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */

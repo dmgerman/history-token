@@ -11,7 +11,6 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/cachectl.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/floppy.h&gt;
-macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -283,60 +282,6 @@ r_return
 l_int|0x3f0
 suffix:semicolon
 )brace
-multiline_comment|/* Pure 2^n version of get_order */
-DECL|function|__get_order
-r_static
-r_int
-id|__get_order
-c_func
-(paren
-r_int
-r_int
-id|size
-)paren
-(brace
-r_int
-id|order
-suffix:semicolon
-id|size
-op_assign
-(paren
-id|size
-op_minus
-l_int|1
-)paren
-op_rshift
-(paren
-id|PAGE_SHIFT
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-id|order
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-r_do
-(brace
-id|size
-op_rshift_assign
-l_int|1
-suffix:semicolon
-id|order
-op_increment
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|size
-)paren
-suffix:semicolon
-r_return
-id|order
-suffix:semicolon
-)brace
 DECL|function|std_fd_dma_mem_alloc
 r_static
 r_int
@@ -352,7 +297,7 @@ id|size
 r_int
 id|order
 op_assign
-id|__get_order
+id|get_order
 c_func
 (paren
 id|size
@@ -396,7 +341,7 @@ c_func
 (paren
 id|addr
 comma
-id|__get_order
+id|get_order
 c_func
 (paren
 id|size

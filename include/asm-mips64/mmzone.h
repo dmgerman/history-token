@@ -71,10 +71,20 @@ DECL|macro|MIPS64_NR
 mdefine_line|#define MIPS64_NR(kaddr) (((unsigned long)(kaddr) &gt; (unsigned long)high_memory)&bslash;&n;&t;&t;? (max_mapnr + 1) : (LOCAL_MAP_NR((kaddr)) + &bslash;&n;&t;&t;(((unsigned long)ADDR_TO_MAPBASE((kaddr)) - PAGE_OFFSET) / &bslash;&n;&t;&t;sizeof(struct page))))
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;((KVADDR_TO_NID((unsigned long)addr) &gt; &bslash;&n;&t;-1) ? 0 : (test_bit(LOCAL_MAP_NR((addr)), &bslash;&n;&t;NODE_DATA(KVADDR_TO_NID((unsigned long)addr))-&gt;valid_addr_bitmap)))
+DECL|macro|pfn_to_page
+mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + (pfn))
+DECL|macro|page_to_pfn
+mdefine_line|#define page_to_pfn(page) &bslash;&n;&t;((((page)-(page)-&gt;zone-&gt;zone_mem_map) + (page)-&gt;zone-&gt;zone_start_pfn) &bslash;&n;&t; &lt;&lt; PAGE_SHIFT)
 DECL|macro|virt_to_page
-mdefine_line|#define virt_to_page(kaddr)&t;(mem_map + MIPS64_NR(kaddr))
-DECL|macro|VALID_PAGE
-mdefine_line|#define VALID_PAGE(page)&t;((page - mem_map) &lt; max_mapnr)
+mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(MIPS64_NR(kaddr))
+DECL|macro|pfn_valid
+mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &lt; max_mapnr)
+DECL|macro|virt_addr_valid
+mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
+DECL|macro|pte_pfn
+mdefine_line|#define pte_pfn(x)&t;&t;((unsigned long)((x).pte &gt;&gt; PAGE_SHIFT))
+DECL|macro|pfn_pte
+mdefine_line|#define pfn_pte(pfn, prot)&t;__pte(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot))
 macro_line|#endif /* CONFIG_DISCONTIGMEM */
 macro_line|#endif /* _ASM_MMZONE_H_ */
 eof

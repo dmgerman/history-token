@@ -4,9 +4,9 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/floppy.h&gt;
@@ -117,6 +117,7 @@ c_func
 id|mips_machtype
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_EISA
 DECL|variable|EISA_bus
 id|EXPORT_SYMBOL
 c_func
@@ -124,6 +125,7 @@ c_func
 id|EISA_bus
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * String functions&n; */
 DECL|variable|memcmp
 id|EXPORT_SYMBOL_NOVERS
@@ -195,13 +197,6 @@ c_func
 id|strrchr
 )paren
 suffix:semicolon
-DECL|variable|strsep
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|strsep
-)paren
-suffix:semicolon
 DECL|variable|strpbrk
 id|EXPORT_SYMBOL_NOVERS
 c_func
@@ -214,20 +209,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|_clear_page
-)paren
-suffix:semicolon
-DECL|variable|enable_irq
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|enable_irq
-)paren
-suffix:semicolon
-DECL|variable|disable_irq
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|disable_irq
 )paren
 suffix:semicolon
 DECL|variable|kernel_thread
@@ -294,37 +275,6 @@ c_func
 id|__strnlen_user_asm
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Functions to control caches.&n; */
-DECL|variable|_flush_page_to_ram
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|_flush_page_to_ram
-)paren
-suffix:semicolon
-DECL|variable|_flush_cache_l1
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|_flush_cache_l1
-)paren
-suffix:semicolon
-macro_line|#ifndef CONFIG_COHERENT_IO
-DECL|variable|_dma_cache_wback_inv
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|_dma_cache_wback_inv
-)paren
-suffix:semicolon
-DECL|variable|_dma_cache_inv
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|_dma_cache_inv
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|invalid_pte_table
 id|EXPORT_SYMBOL
 c_func
@@ -332,84 +282,9 @@ c_func
 id|invalid_pte_table
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Base address of ports for Intel style I/O.&n; */
-macro_line|#if defined (CONFIG_PCI) || defined (CONFIG_ISA)
-DECL|variable|mips_io_port_base
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|mips_io_port_base
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * Kernel hacking ...&n; */
 macro_line|#include &lt;asm/branch.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-r_int
-id|register_fpe
-c_func
-(paren
-r_void
-(paren
-op_star
-id|handler
-)paren
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-r_int
-r_int
-id|fcr31
-)paren
-)paren
-suffix:semicolon
-r_int
-id|unregister_fpe
-c_func
-(paren
-r_void
-(paren
-op_star
-id|handler
-)paren
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-r_int
-r_int
-id|fcr31
-)paren
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_MIPS_FPE_MODULE
-DECL|variable|__compute_return_epc
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__compute_return_epc
-)paren
-suffix:semicolon
-DECL|variable|register_fpe
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|register_fpe
-)paren
-suffix:semicolon
-DECL|variable|unregister_fpe
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|unregister_fpe
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_VT
 DECL|variable|screen_info
 id|EXPORT_SYMBOL
@@ -424,13 +299,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|get_wchan
-)paren
-suffix:semicolon
-DECL|variable|_flush_tlb_page
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|_flush_tlb_page
 )paren
 suffix:semicolon
 eof

@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IPCBUF_H
 DECL|macro|_ASM_IPCBUF_H
 mdefine_line|#define _ASM_IPCBUF_H
-multiline_comment|/* &n; * The ipc64_perm structure for alpha architecture.&n; * Note extra padding because this structure is passed back and forth&n; * between kernel and user space.&n; *&n; * Pad space is left for:&n; * - 32-bit seq&n; * - 2 miscellaneous 64-bit values&n; */
+multiline_comment|/*&n; * The ipc64_perm structure for alpha architecture.&n; * Note extra padding because this structure is passed back and forth&n; * between kernel and user space.&n; *&n; * Pad space is left for:&n; * - 32-bit seq&n; * - 2 miscellaneous 64-bit values&n; */
 DECL|struct|ipc64_perm
 r_struct
 id|ipc64_perm

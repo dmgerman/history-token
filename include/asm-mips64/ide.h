@@ -1,17 +1,18 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * This file contains the MIPS architecture specific IDE code.&n; *&n; * Copyright (C) 1994-1996  Linus Torvalds &amp; authors&n; */
-multiline_comment|/*&n; *  This file contains the MIPS architecture specific IDE code.&n; */
 macro_line|#ifndef __ASM_IDE_H
 DECL|macro|__ASM_IDE_H
 mdefine_line|#define __ASM_IDE_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifndef MAX_HWIFS
 macro_line|# ifdef CONFIG_PCI
 DECL|macro|MAX_HWIFS
-macro_line|#  define MAX_HWIFS&t;10
+mdefine_line|#define MAX_HWIFS&t;10
 macro_line|# else
 DECL|macro|MAX_HWIFS
-macro_line|#  define MAX_HWIFS&t;6
+mdefine_line|#define MAX_HWIFS&t;6
 macro_line|# endif
 macro_line|#endif
 DECL|struct|ide_ops
@@ -215,11 +216,21 @@ c_func
 (paren
 op_amp
 id|hw
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+DECL|macro|__ide_mm_insw
+mdefine_line|#define __ide_mm_insw   ide_insw
+DECL|macro|__ide_mm_insl
+mdefine_line|#define __ide_mm_insl   ide_insl
+DECL|macro|__ide_mm_outsw
+mdefine_line|#define __ide_mm_outsw  ide_outsw
+DECL|macro|__ide_mm_outsl
+mdefine_line|#define __ide_mm_outsl  ide_outsl
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_IDE_H */
 eof
