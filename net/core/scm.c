@@ -626,12 +626,14 @@ id|data
 (brace
 r_struct
 id|cmsghdr
+id|__user
 op_star
 id|cm
 op_assign
 (paren
 r_struct
 id|cmsghdr
+id|__user
 op_star
 )paren
 id|msg-&gt;msg_control
@@ -821,12 +823,14 @@ id|scm
 (brace
 r_struct
 id|cmsghdr
+id|__user
 op_star
 id|cm
 op_assign
 (paren
 r_struct
 id|cmsghdr
+id|__user
 op_star
 )paren
 id|msg-&gt;msg_control
@@ -850,6 +854,7 @@ op_assign
 id|scm-&gt;fp-&gt;fp
 suffix:semicolon
 r_int
+id|__user
 op_star
 id|cmfptr
 suffix:semicolon
@@ -867,7 +872,7 @@ id|MSG_CMSG_COMPAT
 op_amp
 id|msg-&gt;msg_flags
 )paren
-r_return
+(brace
 id|scm_detach_fds_compat
 c_func
 (paren
@@ -876,6 +881,9 @@ comma
 id|scm
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -928,6 +936,7 @@ id|cmfptr
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|CMSG_DATA
