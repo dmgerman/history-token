@@ -49,7 +49,7 @@ DECL|macro|MULTI_TLB
 macro_line|#undef MULTI_TLB
 DECL|macro|v3_tlb_flags
 mdefine_line|#define v3_tlb_flags&t;(TLB_V3_FULL | TLB_V3_PAGE)
-macro_line|#if defined(CONFIG_CPU_ARM610) || defined(CONFIG_CPU_ARM710)
+macro_line|#ifdef CONFIG_CPU_TLB_V3
 DECL|macro|v3_possible_flags
 macro_line|# define v3_possible_flags&t;v3_tlb_flags
 DECL|macro|v3_always_flags
@@ -69,7 +69,7 @@ macro_line|# define v3_always_flags&t;(-1UL)
 macro_line|#endif
 DECL|macro|v4_tlb_flags
 mdefine_line|#define v4_tlb_flags&t;(TLB_V4_U_FULL | TLB_V4_U_PAGE)
-macro_line|#if defined(CONFIG_CPU_ARM720T)
+macro_line|#ifdef CONFIG_CPU_TLB_V4WT
 DECL|macro|v4_possible_flags
 macro_line|# define v4_possible_flags&t;v4_tlb_flags
 DECL|macro|v4_always_flags
@@ -89,7 +89,7 @@ macro_line|# define v4_always_flags&t;(-1UL)
 macro_line|#endif
 DECL|macro|v4wbi_tlb_flags
 mdefine_line|#define v4wbi_tlb_flags&t;(TLB_WB | TLB_DCLEAN | &bslash;&n;&t;&t;&t; TLB_V4_I_FULL | TLB_V4_D_FULL | &bslash;&n;&t;&t;&t; TLB_V4_I_PAGE | TLB_V4_D_PAGE)
-macro_line|#if defined(CONFIG_CPU_ARM920T) || defined(CONFIG_CPU_ARM922T) || &bslash;&n;    defined(CONFIG_CPU_ARM926T) || defined(CONFIG_CPU_ARM1020) || &bslash;&n;    defined(CONFIG_CPU_XSCALE)
+macro_line|#ifdef CONFIG_CPU_TLB_V4WBI
 DECL|macro|v4wbi_possible_flags
 macro_line|# define v4wbi_possible_flags&t;v4wbi_tlb_flags
 DECL|macro|v4wbi_always_flags
@@ -109,7 +109,7 @@ macro_line|# define v4wbi_always_flags&t;(-1UL)
 macro_line|#endif
 DECL|macro|v4wb_tlb_flags
 mdefine_line|#define v4wb_tlb_flags&t;(TLB_WB | TLB_DCLEAN | &bslash;&n;&t;&t;&t; TLB_V4_I_FULL | TLB_V4_D_FULL | &bslash;&n;&t;&t;&t; TLB_V4_D_PAGE)
-macro_line|#if defined(CONFIG_CPU_SA110) || defined(CONFIG_CPU_SA1100)
+macro_line|#ifdef CONFIG_CPU_TLB_V4WB
 DECL|macro|v4wb_possible_flags
 macro_line|# define v4wb_possible_flags&t;v4wb_tlb_flags
 DECL|macro|v4wb_always_flags
@@ -129,7 +129,7 @@ macro_line|# define v4wb_always_flags&t;(-1UL)
 macro_line|#endif
 DECL|macro|v6wbi_tlb_flags
 mdefine_line|#define v6wbi_tlb_flags (TLB_WB | TLB_DCLEAN | &bslash;&n;&t;&t;&t; TLB_V6_I_FULL | TLB_V6_D_FULL | &bslash;&n;&t;&t;&t; TLB_V6_I_PAGE | TLB_V6_D_PAGE | &bslash;&n;&t;&t;&t; TLB_V6_I_ASID | TLB_V6_D_ASID)
-macro_line|#if defined(CONFIG_CPU_V6)
+macro_line|#ifdef CONFIG_CPU_TLB_V6
 DECL|macro|v6wbi_possible_flags
 macro_line|# define v6wbi_possible_flags&t;v6wbi_tlb_flags
 DECL|macro|v6wbi_always_flags

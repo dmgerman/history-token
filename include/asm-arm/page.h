@@ -21,7 +21,7 @@ DECL|macro|_USER
 macro_line|#undef _USER
 DECL|macro|MULTI_USER
 macro_line|#undef MULTI_USER
-macro_line|#if defined(CONFIG_CPU_ARM610) || defined(CONFIG_CPU_ARM710)
+macro_line|#ifdef CONFIG_CPU_COPY_V3
 macro_line|# ifdef _USER
 DECL|macro|MULTI_USER
 macro_line|#  define MULTI_USER 1
@@ -30,7 +30,7 @@ DECL|macro|_USER
 macro_line|#  define _USER v3
 macro_line|# endif
 macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_ARM720T)
+macro_line|#ifdef CONFIG_CPU_COPY_V4WT
 macro_line|# ifdef _USER
 DECL|macro|MULTI_USER
 macro_line|#  define MULTI_USER 1
@@ -39,7 +39,7 @@ DECL|macro|_USER
 macro_line|#  define _USER v4wt
 macro_line|# endif
 macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_ARM920T) || defined(CONFIG_CPU_ARM922T) || &bslash;&n;    defined(CONFIG_CPU_ARM926T) || defined(CONFIG_CPU_SA110)   || &bslash;&n;    defined(CONFIG_CPU_ARM1020)
+macro_line|#ifdef CONFIG_CPU_COPY_V4WB
 macro_line|# ifdef _USER
 DECL|macro|MULTI_USER
 macro_line|#  define MULTI_USER 1
@@ -48,7 +48,7 @@ DECL|macro|_USER
 macro_line|#  define _USER v4wb
 macro_line|# endif
 macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_SA1100)
+macro_line|#ifdef CONFIG_CPU_SA1100
 macro_line|# ifdef _USER
 DECL|macro|MULTI_USER
 macro_line|#  define MULTI_USER 1
@@ -57,7 +57,7 @@ DECL|macro|_USER
 macro_line|#  define _USER v4_mc
 macro_line|# endif
 macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_XSCALE)
+macro_line|#ifdef CONFIG_CPU_XSCALE
 macro_line|# ifdef _USER
 DECL|macro|MULTI_USER
 macro_line|#  define MULTI_USER 1

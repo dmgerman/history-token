@@ -11,8 +11,6 @@ DECL|macro|CPU_NAME
 macro_line|#undef CPU_NAME
 multiline_comment|/*&n; * CPU_NAME - the prefix for CPU related functions&n; */
 macro_line|#ifdef CONFIG_CPU_32
-DECL|macro|CPU_INCLUDE_NAME
-macro_line|# define CPU_INCLUDE_NAME &quot;asm/cpu-multi32.h&quot;
 macro_line|# ifdef CONFIG_CPU_ARM610
 macro_line|#  ifdef CPU_NAME
 DECL|macro|MULTI_CPU
@@ -112,6 +110,39 @@ DECL|macro|CPU_NAME
 macro_line|#   define CPU_NAME cpu_arm1020
 macro_line|#  endif
 macro_line|# endif
+macro_line|# ifdef CONFIG_CPU_ARM1020E
+macro_line|#  ifdef CPU_NAME
+DECL|macro|MULTI_CPU
+macro_line|#   undef  MULTI_CPU
+DECL|macro|MULTI_CPU
+macro_line|#   define MULTI_CPU
+macro_line|#  else
+DECL|macro|CPU_NAME
+macro_line|#   define CPU_NAME cpu_arm1020e
+macro_line|#  endif
+macro_line|# endif
+macro_line|# ifdef CONFIG_CPU_ARM1022
+macro_line|#  ifdef CPU_NAME
+DECL|macro|MULTI_CPU
+macro_line|#   undef  MULTI_CPU
+DECL|macro|MULTI_CPU
+macro_line|#   define MULTI_CPU
+macro_line|#  else
+DECL|macro|CPU_NAME
+macro_line|#   define CPU_NAME cpu_arm1022
+macro_line|#  endif
+macro_line|# endif
+macro_line|# ifdef CONFIG_CPU_ARM1026
+macro_line|#  ifdef CPU_NAME
+DECL|macro|MULTI_CPU
+macro_line|#   undef  MULTI_CPU
+DECL|macro|MULTI_CPU
+macro_line|#   define MULTI_CPU
+macro_line|#  else
+DECL|macro|CPU_NAME
+macro_line|#   define CPU_NAME cpu_arm1026
+macro_line|#  endif
+macro_line|# endif
 macro_line|# ifdef CONFIG_CPU_XSCALE
 macro_line|#  ifdef CPU_NAME
 DECL|macro|MULTI_CPU
@@ -125,12 +156,10 @@ macro_line|#  endif
 macro_line|# endif
 macro_line|#endif
 macro_line|#ifndef MULTI_CPU
-DECL|macro|CPU_INCLUDE_NAME
-macro_line|#undef CPU_INCLUDE_NAME
-DECL|macro|CPU_INCLUDE_NAME
-mdefine_line|#define CPU_INCLUDE_NAME &quot;asm/cpu-single.h&quot;
+macro_line|#include &quot;asm/cpu-single.h&quot;
+macro_line|#else
+macro_line|#include &quot;asm/cpu-multi32.h&quot;
 macro_line|#endif
-macro_line|#include CPU_INCLUDE_NAME
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_PROCFNS_H */
 eof
