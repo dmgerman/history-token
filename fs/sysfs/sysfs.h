@@ -201,6 +201,17 @@ r_struct
 id|rw_semaphore
 id|sysfs_rename_sem
 suffix:semicolon
+r_extern
+r_struct
+id|super_block
+op_star
+id|sysfs_sb
+suffix:semicolon
+r_extern
+r_struct
+id|file_operations
+id|sysfs_dir_operations
+suffix:semicolon
 DECL|struct|sysfs_symlink
 r_struct
 id|sysfs_symlink
