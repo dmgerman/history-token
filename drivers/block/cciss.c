@@ -59,6 +59,7 @@ macro_line|#include &quot;cciss.h&quot;
 macro_line|#include &lt;linux/cciss_ioctl.h&gt;
 multiline_comment|/* define the PCI info for the cards we can control */
 DECL|variable|cciss_pci_device_id
+r_static
 r_const
 r_struct
 id|pci_device_id
@@ -14469,6 +14470,7 @@ multiline_comment|/* id_table */
 suffix:semicolon
 multiline_comment|/*&n; *  This is it.  Register the PCI driver information for the cards we control&n; *  the OS will call our registered routines when it finds one of our cards. &n; */
 DECL|function|cciss_init
+r_static
 r_int
 id|__init
 id|cciss_init
@@ -14495,30 +14497,11 @@ id|cciss_pci_driver
 )paren
 suffix:semicolon
 )brace
-DECL|function|init_cciss_module
-r_static
-r_int
-id|__init
-id|init_cciss_module
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-(paren
-id|cciss_init
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|cleanup_cciss_module
+DECL|function|cciss_cleanup
 r_static
 r_void
 id|__exit
-id|cleanup_cciss_module
+id|cciss_cleanup
 c_func
 (paren
 r_void
@@ -14593,18 +14576,18 @@ id|proc_root_driver
 )paren
 suffix:semicolon
 )brace
-DECL|variable|init_cciss_module
+DECL|variable|cciss_init
 id|module_init
 c_func
 (paren
-id|init_cciss_module
+id|cciss_init
 )paren
 suffix:semicolon
-DECL|variable|cleanup_cciss_module
+DECL|variable|cciss_cleanup
 id|module_exit
 c_func
 (paren
-id|cleanup_cciss_module
+id|cciss_cleanup
 )paren
 suffix:semicolon
 eof
