@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/arch/mux.h&gt;
 macro_line|#include &lt;asm/arch/usb.h&gt;
 macro_line|#include &lt;asm/arch/board.h&gt;
 multiline_comment|/* These routines should handle the standard chip-specific modes&n; * for usb0/1/2 ports, covering basic mux and transceiver setup.&n; * Call omap_usb_init() once, from INIT_MACHINE().&n; *&n; * Some board-*.c files will need to set up additional mux options,&n; * like for suspend handling, vbus sensing, GPIOs, and the D+ pullup.&n; */
-multiline_comment|/* TESTED ON:&n; *  - 1611B H2 (with usb1 mini-AB) using standard Mini-B or OTG cables&n; *  - 1510 Innovator UDC with bundled usb0 cable&n; *  - 1510 Innovator OHCI with bundled usb1/usb2 cable&n; *  - 1510 Innovator OHCI with custom usb0 cable, feeding 5V VBUS&n; *  - 1710 custom development board using alternate pin group&n; */
+multiline_comment|/* TESTED ON:&n; *  - 1611B H2 (with usb1 mini-AB) using standard Mini-B or OTG cables&n; *  - 5912 OSK OHCI (with usb0 standard-A), standard A-to-B cables&n; *  - 5912 OSK UDC, with *nonstandard* A-to-A cable&n; *  - 1510 Innovator UDC with bundled usb0 cable&n; *  - 1510 Innovator OHCI with bundled usb1/usb2 cable&n; *  - 1510 Innovator OHCI with custom usb0 cable, feeding 5V VBUS&n; *  - 1710 custom development board using alternate pin group&n; *  - 1710 H3 (with usb1 mini-AB) using standard Mini-B or OTG cables&n; */
 multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#ifdef&t;CONFIG_ARCH_OMAP_OTG
 DECL|variable|xceiv
@@ -152,34 +152,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * VP and VM are needed for all active usb0 configurations.&n;&t; * USB0_VP and USB0_VM are always set on 1510, there&squot;s no muxing&n;&t; * available for them.&n;&t; */
-r_if
-c_cond
-(paren
-id|nwires
-op_ge
-l_int|2
-op_logical_and
-op_logical_neg
-id|cpu_is_omap15xx
-c_func
-(paren
-)paren
-)paren
-(brace
-id|omap_cfg_reg
-c_func
-(paren
-id|AA9_USB0_VP
-)paren
-suffix:semicolon
-id|omap_cfg_reg
-c_func
-(paren
-id|R9_USB0_VM
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -200,6 +172,8 @@ op_eq
 l_int|2
 )paren
 (brace
+singleline_comment|// omap_cfg_reg(P9_USB_DP);
+singleline_comment|// omap_cfg_reg(R8_USB_DM);
 r_if
 c_cond
 (paren
@@ -209,12 +183,12 @@ c_func
 )paren
 )paren
 (brace
-multiline_comment|/* This works for OHCI on 1510-Innovator */
+multiline_comment|/* This works on 1510-Innovator */
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* NOTE:  host OR device mode for now, no OTG */
+multiline_comment|/* NOTES:&n;&t;&t; *  - peripheral should configure VBUS detection!&n;&t;&t; *  - only peripherals may use the internal D+/D- pulldowns&n;&t;&t; *  - OTG support on this port not yet written&n;&t;&t; */
 id|USB_TRANSCEIVER_CTRL_REG
 op_and_assign
 op_complement
@@ -227,23 +201,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|is_device
 )paren
-(brace
-id|omap_cfg_reg
-c_func
-(paren
-id|R18_1510_USB_GPIO0
-)paren
-suffix:semicolon
-singleline_comment|// omap_cfg_reg(USB0_VBUS);
-singleline_comment|// USB_TRANSCEIVER_CTRL_REG.CONF_USB0_PORT_R = 7
-)brace
-r_else
-multiline_comment|/* host mode needs D+ and D- pulldowns */
 id|USB_TRANSCEIVER_CTRL_REG
-op_and_assign
-op_complement
+op_or_assign
 (paren
 l_int|3
 op_lshift
@@ -257,6 +219,26 @@ l_int|16
 suffix:semicolon
 )brace
 multiline_comment|/* alternate pin config, external transceiver */
+r_if
+c_cond
+(paren
+id|cpu_is_omap15xx
+c_func
+(paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;no usb0 alt pin config on 15xx&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|omap_cfg_reg
 c_func
 (paren
@@ -275,16 +257,7 @@ c_func
 id|W5_USB0_SE0
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ARCH_OMAP_USB_SPEED
-multiline_comment|/* FIXME: there&squot;s good chance that pin V9 is used for MMC2 port cmddir */
-id|omap_cfg_reg
-c_func
-(paren
-id|V9_USB0_SPEED
-)paren
-suffix:semicolon
-singleline_comment|// omap_cfg_reg(V9_USB0_SUSP);
-macro_line|#endif
+multiline_comment|/* NOTE:  SPEED and SUSP aren&squot;t configured here */
 r_if
 c_cond
 (paren
@@ -297,6 +270,18 @@ c_func
 (paren
 id|Y5_USB0_RCV
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nwires
+op_ne
+l_int|6
+)paren
+id|USB_TRANSCEIVER_CTRL_REG
+op_and_assign
+op_complement
+id|CONF_USB2_UNI_R
 suffix:semicolon
 r_switch
 c_cond
@@ -329,7 +314,18 @@ id|syscon1
 op_assign
 l_int|3
 suffix:semicolon
-multiline_comment|/* REVISIT: Is CONF_USB2_UNI_R only needed when nwires = 6? */
+id|omap_cfg_reg
+c_func
+(paren
+id|AA9_USB0_VP
+)paren
+suffix:semicolon
+id|omap_cfg_reg
+c_func
+(paren
+id|R9_USB0_VM
+)paren
+suffix:semicolon
 id|USB_TRANSCEIVER_CTRL_REG
 op_or_assign
 id|CONF_USB2_UNI_R
@@ -440,7 +436,12 @@ r_else
 r_if
 c_cond
 (paren
-id|cpu_is_omap16xx
+id|cpu_is_omap1610
+c_func
+(paren
+)paren
+op_logical_or
+id|cpu_is_omap5912
 c_func
 (paren
 )paren
@@ -456,6 +457,24 @@ id|omap_cfg_reg
 c_func
 (paren
 id|R13_1610_USB1_SPEED
+)paren
+suffix:semicolon
+singleline_comment|// SUSP
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|cpu_is_omap1710
+c_func
+(paren
+)paren
+)paren
+(brace
+id|omap_cfg_reg
+c_func
+(paren
+id|R13_1710_USB1_SE0
 )paren
 suffix:semicolon
 singleline_comment|// SUSP
@@ -579,6 +598,7 @@ id|syscon1
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* NOTE erratum: must leave USB2_UNI_R set if usb0 in use */
 r_if
 c_cond
 (paren
@@ -608,16 +628,6 @@ id|USB_TRANSCEIVER_CTRL_REG
 op_and_assign
 op_complement
 id|CONF_USB2_UNI_R
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|nwires
-op_eq
-l_int|0
-)paren
-r_return
-l_int|0
 suffix:semicolon
 multiline_comment|/* external transceiver */
 r_if
@@ -1209,6 +1219,10 @@ comma
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
+DECL|macro|ULPD_CLOCK_CTRL_REG
+mdefine_line|#define ULPD_CLOCK_CTRL_REG&t;__REG16(ULPD_CLOCK_CTRL)
+DECL|macro|ULPD_SOFT_REQ_REG
+mdefine_line|#define ULPD_SOFT_REQ_REG&t;__REG16(ULPD_SOFT_REQ)
 singleline_comment|// FIXME correct answer depends on hmc_mode,
 singleline_comment|// as does any nonzero value for config-&gt;otg port number
 macro_line|#ifdef&t;CONFIG_USB_GADGET_OMAP
@@ -1355,17 +1369,6 @@ l_int|16
 )paren
 multiline_comment|/* B_ASE0_BRST */
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|config-&gt;otg
-op_logical_or
-id|config-&gt;register_host
-)paren
-id|syscon
-op_or_assign
-id|UHOST_EN
-suffix:semicolon
 macro_line|#ifdef&t;CONFIG_USB_OTG
 r_if
 c_cond
@@ -1377,6 +1380,14 @@ op_or_assign
 id|OTG_EN
 suffix:semicolon
 macro_line|#endif
+id|pr_debug
+c_func
+(paren
+l_string|&quot;USB_TRANSCEIVER_CTRL_REG = %03x&bslash;n&quot;
+comma
+id|USB_TRANSCEIVER_CTRL_REG
+)paren
+suffix:semicolon
 id|pr_debug
 c_func
 (paren
@@ -1506,7 +1517,21 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* don&squot;t clock unused USB controllers  */
+multiline_comment|/* leave USB clocks/controllers off until needed */
+id|ULPD_SOFT_REQ_REG
+op_and_assign
+op_complement
+id|SOFT_USB_CLK_REQ
+suffix:semicolon
+id|ULPD_CLOCK_CTRL_REG
+op_and_assign
+op_complement
+id|USB_MCLK_EN
+suffix:semicolon
+id|ULPD_CLOCK_CTRL_REG
+op_or_assign
+id|DIS_USB_PVCI_CLK
+suffix:semicolon
 id|syscon
 op_assign
 id|OTG_SYSCON_1_REG
@@ -1537,6 +1562,7 @@ id|udc_device.dev.platform_data
 op_assign
 id|config
 suffix:semicolon
+multiline_comment|/* FIXME patch IRQ numbers for omap730 */
 id|status
 op_assign
 id|platform_device_register
@@ -1579,6 +1605,23 @@ id|ohci_device.dev.platform_data
 op_assign
 id|config
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cpu_is_omap730
+c_func
+(paren
+)paren
+)paren
+id|ohci_resources
+(braket
+l_int|1
+)braket
+dot
+id|start
+op_assign
+id|INT_730_USB_HHC_1
+suffix:semicolon
 id|status
 op_assign
 id|platform_device_register
@@ -1615,6 +1658,10 @@ op_and_assign
 op_complement
 id|OTG_IDLE_EN
 suffix:semicolon
+id|otg_device.dev.platform_data
+op_assign
+id|config
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1641,7 +1688,19 @@ op_amp
 id|otg_device
 )paren
 suffix:semicolon
-singleline_comment|// ...
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|pr_debug
+c_func
+(paren
+l_string|&quot;can&squot;t register OTG device, %d&bslash;n&quot;
+comma
+id|status
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif
 id|pr_debug
@@ -1679,12 +1738,6 @@ id|config
 macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#ifdef&t;CONFIG_ARCH_OMAP1510
-DECL|macro|ULPD_SOFT_REQ_REG
-mdefine_line|#define ULPD_SOFT_REQ_REG&t;__REG16(ULPD_SOFT_REQ)
-DECL|macro|SOFT_UDC_REQ
-mdefine_line|#define SOFT_UDC_REQ&t;&t;(1 &lt;&lt; 4)
-DECL|macro|SOFT_DPLL_REQ
-mdefine_line|#define SOFT_DPLL_REQ&t;&t;(1 &lt;&lt; 0)
 DECL|macro|ULPD_DPLL_CTRL_REG
 mdefine_line|#define ULPD_DPLL_CTRL_REG&t;__REG16(ULPD_DPLL_CTRL)
 DECL|macro|DPLL_IOB
@@ -2045,7 +2098,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;USB: No board-specific platform config found&bslash;n&quot;
+l_string|&quot;USB: No board-specific &quot;
+l_string|&quot;platform config found&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
