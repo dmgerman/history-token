@@ -1321,6 +1321,12 @@ r_int
 id|spdif_ctls
 suffix:semicolon
 multiline_comment|/* SPDIF control bits */
+DECL|member|spdif_in_enable
+r_int
+r_int
+id|spdif_in_enable
+suffix:semicolon
+multiline_comment|/* SPDIF input enable? */
 )brace
 suffix:semicolon
 multiline_comment|/* direction */

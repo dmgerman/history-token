@@ -112,6 +112,19 @@ id|hda_nid_t
 id|nid
 )paren
 suffix:semicolon
+r_int
+id|snd_hda_create_spdif_in_ctls
+c_func
+(paren
+r_struct
+id|hda_codec
+op_star
+id|codec
+comma
+id|hda_nid_t
+id|nid
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * input MUX helper&n; */
 DECL|macro|HDA_MAX_NUM_INPUTS
 mdefine_line|#define HDA_MAX_NUM_INPUTS&t;8
@@ -468,6 +481,16 @@ id|knew
 suffix:semicolon
 r_int
 id|snd_hda_resume_spdif_out
+c_func
+(paren
+r_struct
+id|hda_codec
+op_star
+id|codec
+)paren
+suffix:semicolon
+r_int
+id|snd_hda_resume_spdif_in
 c_func
 (paren
 r_struct
