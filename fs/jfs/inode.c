@@ -127,19 +127,6 @@ op_assign
 op_amp
 id|jfs_dir_operations
 suffix:semicolon
-id|inode-&gt;i_mapping-&gt;a_ops
-op_assign
-op_amp
-id|jfs_aops
-suffix:semicolon
-id|mapping_set_gfp_mask
-c_func
-(paren
-id|inode-&gt;i_mapping
-comma
-id|GFP_NOFS
-)paren
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -659,10 +646,9 @@ suffix:semicolon
 id|s32
 id|xlen
 suffix:semicolon
-multiline_comment|/*&n;&t; * If this is a special inode (imap, dmap) or directory,&n;&t; * the lock should already be taken&n;&t; */
+multiline_comment|/*&n;&t; * If this is a special inode (imap, dmap)&n;&t; * the lock should already be taken&n;&t; */
 id|take_locks
 op_assign
-(paren
 (paren
 id|JFS_IP
 c_func
@@ -673,14 +659,6 @@ op_member_access_from_pointer
 id|fileset
 op_ne
 id|AGGREGATE_I
-)paren
-op_logical_and
-op_logical_neg
-id|S_ISDIR
-c_func
-(paren
-id|ip-&gt;i_mode
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Take appropriate lock on inode&n;&t; */
@@ -709,25 +687,6 @@ id|ip
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Don&squot;t try to do xtLookup when there is no xtree&n;&t; */
-r_if
-c_cond
-(paren
-id|S_ISDIR
-c_func
-(paren
-id|ip-&gt;i_mode
-)paren
-op_logical_and
-id|jfs_dirtable_inline
-c_func
-(paren
-id|ip
-)paren
-)paren
-r_goto
-id|unlock
-suffix:semicolon
 r_if
 c_cond
 (paren
