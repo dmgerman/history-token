@@ -31485,6 +31485,13 @@ c_func
 op_amp
 id|hw_stats-&gt;rx_errors
 )paren
+op_plus
+id|get_stat64
+c_func
+(paren
+op_amp
+id|hw_stats-&gt;rx_discards
+)paren
 suffix:semicolon
 id|stats-&gt;tx_errors
 op_assign
