@@ -691,6 +691,15 @@ op_assign
 id|srb-&gt;request_bufflen
 suffix:semicolon
 )brace
+multiline_comment|/* According to the linux-scsi people, any command sent which&n;&t; * violates this invariant is a bug.  In the hopes of removing&n;&t; * all the complex logic above, let&squot;s find them and eliminate them.&n;&t; */
+id|BUG_ON
+c_func
+(paren
+id|len
+op_ne
+id|srb-&gt;request_bufflen
+)paren
+suffix:semicolon
 r_return
 id|len
 suffix:semicolon
