@@ -51,31 +51,31 @@ id|NFS_OK
 op_assign
 l_int|0
 comma
-multiline_comment|/* v2 v3 */
+multiline_comment|/* v2 v3 v4 */
 DECL|enumerator|NFSERR_PERM
 id|NFSERR_PERM
 op_assign
 l_int|1
 comma
-multiline_comment|/* v2 v3 */
+multiline_comment|/* v2 v3 v4 */
 DECL|enumerator|NFSERR_NOENT
 id|NFSERR_NOENT
 op_assign
 l_int|2
 comma
-multiline_comment|/* v2 v3 */
+multiline_comment|/* v2 v3 v4 */
 DECL|enumerator|NFSERR_IO
 id|NFSERR_IO
 op_assign
 l_int|5
 comma
-multiline_comment|/* v2 v3 */
+multiline_comment|/* v2 v3 v4 */
 DECL|enumerator|NFSERR_NXIO
 id|NFSERR_NXIO
 op_assign
 l_int|6
 comma
-multiline_comment|/* v2 v3 */
+multiline_comment|/* v2 v3 v4 */
 DECL|enumerator|NFSERR_EAGAIN
 id|NFSERR_EAGAIN
 op_assign
@@ -87,67 +87,67 @@ id|NFSERR_ACCES
 op_assign
 l_int|13
 comma
-multiline_comment|/* v2 v3 */
+multiline_comment|/* v2 v3 v4 */
 DECL|enumerator|NFSERR_EXIST
 id|NFSERR_EXIST
 op_assign
 l_int|17
 comma
-multiline_comment|/* v2 v3 */
+multiline_comment|/* v2 v3 v4 */
 DECL|enumerator|NFSERR_XDEV
 id|NFSERR_XDEV
 op_assign
 l_int|18
 comma
-multiline_comment|/*    v3 */
+multiline_comment|/*    v3 v4 */
 DECL|enumerator|NFSERR_NODEV
 id|NFSERR_NODEV
 op_assign
 l_int|19
 comma
-multiline_comment|/* v2 v3 */
+multiline_comment|/* v2 v3 v4 */
 DECL|enumerator|NFSERR_NOTDIR
 id|NFSERR_NOTDIR
 op_assign
 l_int|20
 comma
-multiline_comment|/* v2 v3 */
+multiline_comment|/* v2 v3 v4 */
 DECL|enumerator|NFSERR_ISDIR
 id|NFSERR_ISDIR
 op_assign
 l_int|21
 comma
-multiline_comment|/* v2 v3 */
+multiline_comment|/* v2 v3 v4 */
 DECL|enumerator|NFSERR_INVAL
 id|NFSERR_INVAL
 op_assign
 l_int|22
 comma
-multiline_comment|/* v2 v3 that Sun forgot */
+multiline_comment|/* v2 v3 v4 */
 DECL|enumerator|NFSERR_FBIG
 id|NFSERR_FBIG
 op_assign
 l_int|27
 comma
-multiline_comment|/* v2 v3 */
+multiline_comment|/* v2 v3 v4 */
 DECL|enumerator|NFSERR_NOSPC
 id|NFSERR_NOSPC
 op_assign
 l_int|28
 comma
-multiline_comment|/* v2 v3 */
+multiline_comment|/* v2 v3 v4 */
 DECL|enumerator|NFSERR_ROFS
 id|NFSERR_ROFS
 op_assign
 l_int|30
 comma
-multiline_comment|/* v2 v3 */
+multiline_comment|/* v2 v3 v4 */
 DECL|enumerator|NFSERR_MLINK
 id|NFSERR_MLINK
 op_assign
 l_int|31
 comma
-multiline_comment|/*    v3 */
+multiline_comment|/*    v3 v4 */
 DECL|enumerator|NFSERR_OPNOTSUPP
 id|NFSERR_OPNOTSUPP
 op_assign
@@ -159,25 +159,25 @@ id|NFSERR_NAMETOOLONG
 op_assign
 l_int|63
 comma
-multiline_comment|/* v2 v3 */
+multiline_comment|/* v2 v3 v4 */
 DECL|enumerator|NFSERR_NOTEMPTY
 id|NFSERR_NOTEMPTY
 op_assign
 l_int|66
 comma
-multiline_comment|/* v2 v3 */
+multiline_comment|/* v2 v3 v4 */
 DECL|enumerator|NFSERR_DQUOT
 id|NFSERR_DQUOT
 op_assign
 l_int|69
 comma
-multiline_comment|/* v2 v3 */
+multiline_comment|/* v2 v3 v4 */
 DECL|enumerator|NFSERR_STALE
 id|NFSERR_STALE
 op_assign
 l_int|70
 comma
-multiline_comment|/* v2 v3 */
+multiline_comment|/* v2 v3 v4 */
 DECL|enumerator|NFSERR_REMOTE
 id|NFSERR_REMOTE
 op_assign
@@ -195,7 +195,7 @@ id|NFSERR_BADHANDLE
 op_assign
 l_int|10001
 comma
-multiline_comment|/*    v3 */
+multiline_comment|/*    v3 v4 */
 DECL|enumerator|NFSERR_NOT_SYNC
 id|NFSERR_NOT_SYNC
 op_assign
@@ -207,36 +207,210 @@ id|NFSERR_BAD_COOKIE
 op_assign
 l_int|10003
 comma
-multiline_comment|/*    v3 */
+multiline_comment|/*    v3 v4 */
 DECL|enumerator|NFSERR_NOTSUPP
 id|NFSERR_NOTSUPP
 op_assign
 l_int|10004
 comma
-multiline_comment|/*    v3 */
+multiline_comment|/*    v3 v4 */
 DECL|enumerator|NFSERR_TOOSMALL
 id|NFSERR_TOOSMALL
 op_assign
 l_int|10005
 comma
-multiline_comment|/*    v3 */
+multiline_comment|/*    v3 v4 */
 DECL|enumerator|NFSERR_SERVERFAULT
 id|NFSERR_SERVERFAULT
 op_assign
 l_int|10006
 comma
-multiline_comment|/*    v3 */
+multiline_comment|/*    v3 v4 */
 DECL|enumerator|NFSERR_BADTYPE
 id|NFSERR_BADTYPE
 op_assign
 l_int|10007
 comma
-multiline_comment|/*    v3 */
+multiline_comment|/*    v3 v4 */
 DECL|enumerator|NFSERR_JUKEBOX
 id|NFSERR_JUKEBOX
 op_assign
 l_int|10008
-multiline_comment|/*    v3 */
+comma
+multiline_comment|/*    v3 v4 */
+DECL|enumerator|NFSERR_SAME
+id|NFSERR_SAME
+op_assign
+l_int|10009
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_DENIED
+id|NFSERR_DENIED
+op_assign
+l_int|10010
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_EXPIRED
+id|NFSERR_EXPIRED
+op_assign
+l_int|10011
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_LOCKED
+id|NFSERR_LOCKED
+op_assign
+l_int|10012
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_GRACE
+id|NFSERR_GRACE
+op_assign
+l_int|10013
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_FHEXPIRED
+id|NFSERR_FHEXPIRED
+op_assign
+l_int|10014
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_SHARE_DENIED
+id|NFSERR_SHARE_DENIED
+op_assign
+l_int|10015
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_WRONGSEC
+id|NFSERR_WRONGSEC
+op_assign
+l_int|10016
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_CLID_INUSE
+id|NFSERR_CLID_INUSE
+op_assign
+l_int|10017
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_RESOURCE
+id|NFSERR_RESOURCE
+op_assign
+l_int|10018
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_MOVED
+id|NFSERR_MOVED
+op_assign
+l_int|10019
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_NOFILEHANDLE
+id|NFSERR_NOFILEHANDLE
+op_assign
+l_int|10020
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_MINOR_VERS_MISMATCH
+id|NFSERR_MINOR_VERS_MISMATCH
+op_assign
+l_int|10021
+comma
+multiline_comment|/* v4 */
+DECL|enumerator|NFSERR_STALE_CLIENTID
+id|NFSERR_STALE_CLIENTID
+op_assign
+l_int|10022
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_STALE_STATEID
+id|NFSERR_STALE_STATEID
+op_assign
+l_int|10023
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_OLD_STATEID
+id|NFSERR_OLD_STATEID
+op_assign
+l_int|10024
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_BAD_STATEID
+id|NFSERR_BAD_STATEID
+op_assign
+l_int|10025
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_BAD_SEQID
+id|NFSERR_BAD_SEQID
+op_assign
+l_int|10026
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_NOT_SAME
+id|NFSERR_NOT_SAME
+op_assign
+l_int|10027
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_LOCK_RANGE
+id|NFSERR_LOCK_RANGE
+op_assign
+l_int|10028
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_SYMLINK
+id|NFSERR_SYMLINK
+op_assign
+l_int|10029
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_READDIR_NOSPC
+id|NFSERR_READDIR_NOSPC
+op_assign
+l_int|10030
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_LEASE_MOVED
+id|NFSERR_LEASE_MOVED
+op_assign
+l_int|10031
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_ATTRNOTSUPP
+id|NFSERR_ATTRNOTSUPP
+op_assign
+l_int|10032
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_NO_GRACE
+id|NFSERR_NO_GRACE
+op_assign
+l_int|10033
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_RECLAIM_BAD
+id|NFSERR_RECLAIM_BAD
+op_assign
+l_int|10034
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_RECLAIM_CONFLICT
+id|NFSERR_RECLAIM_CONFLICT
+op_assign
+l_int|10035
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_BAD_XDR
+id|NFSERR_BAD_XDR
+op_assign
+l_int|10036
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_LOCKS_HELD
+id|NFSERR_LOCKS_HELD
+op_assign
+l_int|10037
+multiline_comment|/*       v4 */
 )brace
 suffix:semicolon
 multiline_comment|/* NFSv2 file types - beware, these are not the same in NFSv3 */
