@@ -135,7 +135,7 @@ suffix:semicolon
 DECL|macro|msg_lock
 mdefine_line|#define msg_lock(id)&t;((struct msg_queue*)ipc_lock(&amp;msg_ids,id))
 DECL|macro|msg_unlock
-mdefine_line|#define msg_unlock(id)&t;ipc_unlock(&amp;msg_ids,id)
+mdefine_line|#define msg_unlock(msq)&t;ipc_unlock(&amp;(msq)-&gt;q_perm)
 DECL|macro|msg_rmid
 mdefine_line|#define msg_rmid(id)&t;((struct msg_queue*)ipc_rmid(&amp;msg_ids,id))
 DECL|macro|msg_checkid
@@ -251,20 +251,14 @@ id|msq
 suffix:semicolon
 id|msq
 op_assign
-(paren
-r_struct
-id|msg_queue
-op_star
-)paren
-id|kmalloc
+id|ipc_rcu_alloc
+c_func
 (paren
 r_sizeof
 (paren
 op_star
 id|msq
 )paren
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -309,10 +303,16 @@ c_cond
 id|retval
 )paren
 (brace
-id|kfree
+id|ipc_rcu_free
 c_func
 (paren
 id|msq
+comma
+r_sizeof
+(paren
+op_star
+id|msq
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -350,10 +350,16 @@ c_func
 id|msq
 )paren
 suffix:semicolon
-id|kfree
+id|ipc_rcu_free
 c_func
 (paren
 id|msq
+comma
+r_sizeof
+(paren
+op_star
+id|msq
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -411,7 +417,7 @@ suffix:semicolon
 id|msg_unlock
 c_func
 (paren
-id|id
+id|msq
 )paren
 suffix:semicolon
 r_return
@@ -1169,7 +1175,7 @@ suffix:semicolon
 id|msg_unlock
 c_func
 (paren
-id|id
+id|msq
 )paren
 suffix:semicolon
 id|tmp
@@ -1236,10 +1242,16 @@ c_func
 id|msq
 )paren
 suffix:semicolon
-id|kfree
+id|ipc_rcu_free
 c_func
 (paren
 id|msq
+comma
+r_sizeof
+(paren
+r_struct
+id|msg_queue
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1415,7 +1427,7 @@ suffix:semicolon
 id|msg_unlock
 c_func
 (paren
-id|id
+id|msq
 )paren
 suffix:semicolon
 )brace
@@ -2185,7 +2197,7 @@ suffix:semicolon
 id|msg_unlock
 c_func
 (paren
-id|msqid
+id|msq
 )paren
 suffix:semicolon
 r_if
@@ -2416,7 +2428,7 @@ suffix:semicolon
 id|msg_unlock
 c_func
 (paren
-id|msqid
+id|msq
 )paren
 suffix:semicolon
 r_break
@@ -2454,7 +2466,7 @@ suffix:colon
 id|msg_unlock
 c_func
 (paren
-id|msqid
+id|msq
 )paren
 suffix:semicolon
 r_goto
@@ -2465,7 +2477,7 @@ suffix:colon
 id|msg_unlock
 c_func
 (paren
-id|msqid
+id|msq
 )paren
 suffix:semicolon
 r_return
@@ -2927,7 +2939,7 @@ suffix:semicolon
 id|msg_unlock
 c_func
 (paren
-id|msqid
+id|msq
 )paren
 suffix:semicolon
 id|schedule
@@ -3063,7 +3075,7 @@ suffix:colon
 id|msg_unlock
 c_func
 (paren
-id|msqid
+id|msq
 )paren
 suffix:semicolon
 id|out_free
@@ -3467,7 +3479,7 @@ suffix:semicolon
 id|msg_unlock
 c_func
 (paren
-id|msqid
+id|msq
 )paren
 suffix:semicolon
 id|out_success
@@ -3525,11 +3537,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_struct
-id|msg_queue
-op_star
-id|t
-suffix:semicolon
 multiline_comment|/* no message waiting. Prepare for pipelined&n;&t;&t; * receive.&n;&t;&t; */
 r_if
 c_cond
@@ -3604,7 +3611,7 @@ suffix:semicolon
 id|msg_unlock
 c_func
 (paren
-id|msqid
+id|msq
 )paren
 suffix:semicolon
 id|schedule
@@ -3640,7 +3647,7 @@ r_goto
 id|out_success
 suffix:semicolon
 )brace
-id|t
+id|msq
 op_assign
 id|msg_lock
 c_func
@@ -3648,20 +3655,6 @@ c_func
 id|msqid
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|t
-op_eq
-l_int|NULL
-)paren
-(brace
-id|msqid
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 id|msg
 op_assign
 (paren
@@ -3686,16 +3679,13 @@ multiline_comment|/* our message arived while we waited for&n;&t;&t;&t; * the sp
 r_if
 c_cond
 (paren
-id|msqid
-op_ne
-op_minus
-l_int|1
+id|msq
 )paren
 (brace
 id|msg_unlock
 c_func
 (paren
-id|msqid
+id|msq
 )paren
 suffix:semicolon
 )brace
@@ -3723,10 +3713,8 @@ id|EAGAIN
 r_if
 c_cond
 (paren
-id|msqid
-op_eq
-op_minus
-l_int|1
+op_logical_neg
+id|msq
 )paren
 (brace
 id|BUG
@@ -3767,16 +3755,13 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|msqid
-op_ne
-op_minus
-l_int|1
+id|msq
 )paren
 (brace
 id|msg_unlock
 c_func
 (paren
-id|msqid
+id|msq
 )paren
 suffix:semicolon
 )brace
@@ -3934,7 +3919,7 @@ suffix:semicolon
 id|msg_unlock
 c_func
 (paren
-id|i
+id|msq
 )paren
 suffix:semicolon
 id|pos

@@ -35,11 +35,7 @@ suffix:semicolon
 DECL|macro|shm_lock
 mdefine_line|#define shm_lock(id)&t;((struct shmid_kernel*)ipc_lock(&amp;shm_ids,id))
 DECL|macro|shm_unlock
-mdefine_line|#define shm_unlock(id)&t;ipc_unlock(&amp;shm_ids,id)
-DECL|macro|shm_lockall
-mdefine_line|#define shm_lockall()&t;ipc_lockall(&amp;shm_ids)
-DECL|macro|shm_unlockall
-mdefine_line|#define shm_unlockall()&t;ipc_unlockall(&amp;shm_ids)
+mdefine_line|#define shm_unlock(shp)&t;ipc_unlock(&amp;(shp)-&gt;shm_perm)
 DECL|macro|shm_get
 mdefine_line|#define shm_get(id)&t;((struct shmid_kernel*)ipc_get(&amp;shm_ids,id))
 DECL|macro|shm_buildid
@@ -314,7 +310,7 @@ suffix:semicolon
 id|shm_unlock
 c_func
 (paren
-id|id
+id|shp
 )paren
 suffix:semicolon
 )brace
@@ -368,7 +364,7 @@ suffix:semicolon
 id|shm_unlock
 c_func
 (paren
-id|shp-&gt;id
+id|shp
 )paren
 suffix:semicolon
 r_if
@@ -402,9 +398,16 @@ c_func
 id|shp
 )paren
 suffix:semicolon
-id|kfree
+id|ipc_rcu_free
+c_func
 (paren
 id|shp
+comma
+r_sizeof
+(paren
+r_struct
+id|shmid_kernel
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -498,7 +501,7 @@ r_else
 id|shm_unlock
 c_func
 (paren
-id|id
+id|shp
 )paren
 suffix:semicolon
 id|up
@@ -661,20 +664,14 @@ id|ENOSPC
 suffix:semicolon
 id|shp
 op_assign
-(paren
-r_struct
-id|shmid_kernel
-op_star
-)paren
-id|kmalloc
+id|ipc_rcu_alloc
+c_func
 (paren
 r_sizeof
 (paren
 op_star
 id|shp
 )paren
-comma
-id|GFP_USER
 )paren
 suffix:semicolon
 r_if
@@ -719,10 +716,16 @@ c_cond
 id|error
 )paren
 (brace
-id|kfree
+id|ipc_rcu_free
 c_func
 (paren
 id|shp
+comma
+r_sizeof
+(paren
+op_star
+id|shp
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -882,8 +885,9 @@ op_add_assign
 id|numpages
 suffix:semicolon
 id|shm_unlock
+c_func
 (paren
-id|id
+id|shp
 )paren
 suffix:semicolon
 r_return
@@ -907,10 +911,16 @@ c_func
 id|shp
 )paren
 suffix:semicolon
-id|kfree
+id|ipc_rcu_free
 c_func
 (paren
 id|shp
+comma
+r_sizeof
+(paren
+op_star
+id|shp
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -1113,7 +1123,7 @@ suffix:semicolon
 id|shm_unlock
 c_func
 (paren
-id|id
+id|shp
 )paren
 suffix:semicolon
 )brace
@@ -1792,11 +1802,6 @@ op_amp
 id|shm_ids.sem
 )paren
 suffix:semicolon
-id|shm_lockall
-c_func
-(paren
-)paren
-suffix:semicolon
 id|shm_info.used_ids
 op_assign
 id|shm_ids.in_use
@@ -1825,11 +1830,6 @@ suffix:semicolon
 id|err
 op_assign
 id|shm_ids.max_id
-suffix:semicolon
-id|shm_unlockall
-c_func
-(paren
-)paren
 suffix:semicolon
 id|up
 c_func
@@ -2054,7 +2054,7 @@ suffix:semicolon
 id|shm_unlock
 c_func
 (paren
-id|shmid
+id|shp
 )paren
 suffix:semicolon
 r_if
@@ -2221,7 +2221,7 @@ suffix:semicolon
 id|shm_unlock
 c_func
 (paren
-id|shmid
+id|shp
 )paren
 suffix:semicolon
 r_goto
@@ -2329,7 +2329,7 @@ suffix:semicolon
 id|shm_unlock
 c_func
 (paren
-id|shmid
+id|shp
 )paren
 suffix:semicolon
 )brace
@@ -2507,7 +2507,7 @@ suffix:colon
 id|shm_unlock
 c_func
 (paren
-id|shmid
+id|shp
 )paren
 suffix:semicolon
 id|out_up
@@ -2527,7 +2527,7 @@ suffix:colon
 id|shm_unlock
 c_func
 (paren
-id|shmid
+id|shp
 )paren
 suffix:semicolon
 id|out
@@ -2775,7 +2775,7 @@ id|err
 id|shm_unlock
 c_func
 (paren
-id|shmid
+id|shp
 )paren
 suffix:semicolon
 r_goto
@@ -2798,7 +2798,7 @@ id|acc_mode
 id|shm_unlock
 c_func
 (paren
-id|shmid
+id|shp
 )paren
 suffix:semicolon
 id|err
@@ -2824,7 +2824,7 @@ suffix:semicolon
 id|shm_unlock
 c_func
 (paren
-id|shmid
+id|shp
 )paren
 suffix:semicolon
 id|down_write
@@ -2974,7 +2974,7 @@ r_else
 id|shm_unlock
 c_func
 (paren
-id|shmid
+id|shp
 )paren
 suffix:semicolon
 id|up
@@ -3324,7 +3324,7 @@ suffix:semicolon
 id|shm_unlock
 c_func
 (paren
-id|i
+id|shp
 )paren
 suffix:semicolon
 id|pos

@@ -11,7 +11,7 @@ macro_line|#include &quot;util.h&quot;
 DECL|macro|sem_lock
 mdefine_line|#define sem_lock(id)&t;((struct sem_array*)ipc_lock(&amp;sem_ids,id))
 DECL|macro|sem_unlock
-mdefine_line|#define sem_unlock(id)&t;ipc_unlock(&amp;sem_ids,id)
+mdefine_line|#define sem_unlock(sma)&t;ipc_unlock(&amp;(sma)-&gt;sem_perm)
 DECL|macro|sem_rmid
 mdefine_line|#define sem_rmid(id)&t;((struct sem_array*)ipc_rmid(&amp;sem_ids,id))
 DECL|macro|sem_checkid
@@ -217,12 +217,7 @@ id|sem
 suffix:semicolon
 id|sma
 op_assign
-(paren
-r_struct
-id|sem_array
-op_star
-)paren
-id|ipc_alloc
+id|ipc_rcu_alloc
 c_func
 (paren
 id|size
@@ -281,7 +276,7 @@ c_cond
 id|retval
 )paren
 (brace
-id|ipc_free
+id|ipc_rcu_free
 c_func
 (paren
 id|sma
@@ -324,7 +319,7 @@ c_func
 id|sma
 )paren
 suffix:semicolon
-id|ipc_free
+id|ipc_rcu_free
 c_func
 (paren
 id|sma
@@ -372,7 +367,7 @@ suffix:semicolon
 id|sem_unlock
 c_func
 (paren
-id|id
+id|sma
 )paren
 suffix:semicolon
 r_return
@@ -590,7 +585,7 @@ suffix:semicolon
 id|sem_unlock
 c_func
 (paren
-id|id
+id|sma
 )paren
 suffix:semicolon
 )brace
@@ -676,7 +671,7 @@ id|nsems
 id|sem_unlock
 c_func
 (paren
-id|semid
+id|smanew
 )paren
 suffix:semicolon
 r_return
@@ -700,7 +695,7 @@ id|flg
 id|sem_unlock
 c_func
 (paren
-id|semid
+id|smanew
 )paren
 suffix:semicolon
 r_return
@@ -1533,7 +1528,7 @@ multiline_comment|/* doesn&squot;t sleep */
 id|sem_unlock
 c_func
 (paren
-id|id
+id|sma
 )paren
 suffix:semicolon
 id|used_sems
@@ -1564,7 +1559,7 @@ c_func
 id|sma
 )paren
 suffix:semicolon
-id|ipc_free
+id|ipc_rcu_free
 c_func
 (paren
 id|sma
@@ -1699,6 +1694,11 @@ id|err
 op_assign
 op_minus
 id|EINVAL
+suffix:semicolon
+r_struct
+id|sem_array
+op_star
+id|sma
 suffix:semicolon
 r_switch
 c_cond
@@ -1851,11 +1851,6 @@ id|SEM_STAT
 suffix:colon
 (brace
 r_struct
-id|sem_array
-op_star
-id|sma
-suffix:semicolon
-r_struct
 id|semid64_ds
 id|tbuf
 suffix:semicolon
@@ -1964,7 +1959,7 @@ suffix:semicolon
 id|sem_unlock
 c_func
 (paren
-id|semid
+id|sma
 )paren
 suffix:semicolon
 r_if
@@ -2003,7 +1998,7 @@ suffix:colon
 id|sem_unlock
 c_func
 (paren
-id|semid
+id|sma
 )paren
 suffix:semicolon
 r_return
@@ -2167,7 +2162,7 @@ id|SEMMSL_FAST
 id|sem_unlock
 c_func
 (paren
-id|semid
+id|sma
 )paren
 suffix:semicolon
 id|sem_io
@@ -2250,7 +2245,7 @@ suffix:semicolon
 id|sem_unlock
 c_func
 (paren
-id|semid
+id|sma
 )paren
 suffix:semicolon
 id|err
@@ -2301,7 +2296,7 @@ suffix:semicolon
 id|sem_unlock
 c_func
 (paren
-id|semid
+id|sma
 )paren
 suffix:semicolon
 r_if
@@ -2552,7 +2547,7 @@ suffix:semicolon
 id|sem_unlock
 c_func
 (paren
-id|semid
+id|sma
 )paren
 suffix:semicolon
 r_if
@@ -2753,7 +2748,7 @@ suffix:colon
 id|sem_unlock
 c_func
 (paren
-id|semid
+id|sma
 )paren
 suffix:semicolon
 id|out_free
@@ -3128,7 +3123,7 @@ suffix:semicolon
 id|sem_unlock
 c_func
 (paren
-id|semid
+id|sma
 )paren
 suffix:semicolon
 id|err
@@ -3142,7 +3137,7 @@ suffix:colon
 id|sem_unlock
 c_func
 (paren
-id|semid
+id|sma
 )paren
 suffix:semicolon
 id|err
@@ -3161,7 +3156,7 @@ suffix:colon
 id|sem_unlock
 c_func
 (paren
-id|semid
+id|sma
 )paren
 suffix:semicolon
 r_return
@@ -3775,7 +3770,7 @@ suffix:semicolon
 id|sem_unlock
 c_func
 (paren
-id|semid
+id|sma
 )paren
 suffix:semicolon
 id|unlock_semundo
@@ -4439,11 +4434,6 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-r_struct
-id|sem_array
-op_star
-id|tmp
-suffix:semicolon
 id|queue.status
 op_assign
 op_minus
@@ -4460,7 +4450,7 @@ suffix:semicolon
 id|sem_unlock
 c_func
 (paren
-id|semid
+id|sma
 )paren
 suffix:semicolon
 id|unlock_semundo
@@ -4478,7 +4468,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|tmp
+id|sma
 op_assign
 id|sem_lock
 c_func
@@ -4489,7 +4479,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tmp
+id|sma
 op_eq
 l_int|NULL
 )paren
@@ -4611,7 +4601,7 @@ suffix:colon
 id|sem_unlock
 c_func
 (paren
-id|semid
+id|sma
 )paren
 suffix:semicolon
 id|out_semundo_free
@@ -4915,7 +4905,7 @@ l_int|NULL
 id|sem_unlock
 c_func
 (paren
-id|semid
+id|sma
 )paren
 suffix:semicolon
 )brace
@@ -5161,7 +5151,7 @@ suffix:colon
 id|sem_unlock
 c_func
 (paren
-id|semid
+id|sma
 )paren
 suffix:semicolon
 )brace
@@ -5317,7 +5307,7 @@ suffix:semicolon
 id|sem_unlock
 c_func
 (paren
-id|i
+id|sma
 )paren
 suffix:semicolon
 id|pos
