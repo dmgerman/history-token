@@ -2997,7 +2997,7 @@ id|allocated_size
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * We are done with the mft record, so we release it. Otherwise&n;&t;&t; *&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We are done with the mft record, so we release it. Otherwise&n;&t;&t; * we would deadlock in ntfs_attr_iget().&n;&t;&t; */
 id|put_attr_search_ctx
 c_func
 (paren

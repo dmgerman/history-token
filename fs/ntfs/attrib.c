@@ -6617,7 +6617,7 @@ id|ctx-&gt;ntfs_ino
 op_ne
 id|ctx-&gt;base_ntfs_ino
 )paren
-id|unmap_mft_record
+id|unmap_extent_mft_record
 c_func
 (paren
 id|ctx-&gt;ntfs_ino
@@ -6705,7 +6705,7 @@ id|ctx-&gt;ntfs_ino
 op_ne
 id|ctx-&gt;base_ntfs_ino
 )paren
-id|unmap_mft_record
+id|unmap_extent_mft_record
 c_func
 (paren
 id|ctx-&gt;ntfs_ino

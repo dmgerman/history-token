@@ -1509,7 +1509,7 @@ c_func
 id|base_ntfs_ino
 )paren
 suffix:semicolon
-multiline_comment|/* Map, pin and lock the mft record. */
+multiline_comment|/* Map, pin, and lock the mft record. */
 id|mrec
 op_assign
 id|map_mft_record
