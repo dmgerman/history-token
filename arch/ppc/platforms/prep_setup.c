@@ -4058,6 +4058,7 @@ op_assign
 id|_PREP_Motorola
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PREP_PRESIDUAL
 multiline_comment|/* Switch off all residual data processing if the user requests it */
 r_if
 c_cond
@@ -4076,6 +4077,7 @@ id|res
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Initialise progress early to get maximum benefit */
 id|prep_set_bat
 c_func
