@@ -22,6 +22,8 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -84,6 +86,7 @@ macro_line|#endif
 macro_line|#if defined(CONFIG_SCSI_ZALON) || defined(CONFIG_SCSI_ZALON_MODULE)
 DECL|macro|ENABLE_SCSI_ZALON
 mdefine_line|#define ENABLE_SCSI_ZALON
+macro_line|#include &lt;asm/parisc-device.h&gt;
 macro_line|#include &quot;zalon.h&quot;
 macro_line|#endif
 macro_line|#include &quot;ncr53c8xx.h&quot;
@@ -1380,9 +1383,9 @@ id|p_scripth
 suffix:semicolon
 multiline_comment|/*  bus addresses.&t;&t;*/
 multiline_comment|/*----------------------------------------------------------------&n;&t;**&t;General controller parameters and configuration.&n;&t;**----------------------------------------------------------------&n;&t;*/
-DECL|member|pdev
-id|pcidev_t
-id|pdev
+DECL|member|dev
+id|device_t
+id|dev
 suffix:semicolon
 DECL|member|device_id
 id|u_short
@@ -9312,7 +9315,7 @@ op_assign
 id|__m_calloc_dma
 c_func
 (paren
-id|device-&gt;pdev
+id|device-&gt;dev
 comma
 r_sizeof
 (paren
@@ -9338,9 +9341,9 @@ c_func
 id|np
 )paren
 suffix:semicolon
-id|np-&gt;pdev
+id|np-&gt;dev
 op_assign
-id|device-&gt;pdev
+id|device-&gt;dev
 suffix:semicolon
 id|np-&gt;p_ncb
 op_assign
@@ -9824,16 +9827,14 @@ op_minus
 l_int|4
 )paren
 suffix:semicolon
-macro_line|#ifndef ENABLE_SCSI_ZALON
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|instance
 comma
-id|device-&gt;pdev
+id|device-&gt;dev
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef SCSI_NCR_INTEGRITY_CHECKING
 id|np-&gt;check_integrity
 op_assign
@@ -29546,13 +29547,10 @@ id|device.host_id
 op_assign
 id|driver_setup.host_id
 suffix:semicolon
-id|device.pdev
+id|device.dev
 op_assign
-id|ccio_get_fake
-c_func
-(paren
-id|dev
-)paren
+op_amp
+id|dev-&gt;dev
 suffix:semicolon
 id|device.slot.bus
 op_assign
@@ -29720,7 +29718,58 @@ DECL|variable|driver_template
 id|Scsi_Host_Template
 id|driver_template
 op_assign
-id|SCSI_ZALON
+(brace
+dot
+id|proc_name
+op_assign
+l_string|&quot;zalon720&quot;
+comma
+dot
+id|detect
+op_assign
+id|zalon7xx_detect
+comma
+dot
+id|release
+op_assign
+id|zalon7xx_release
+comma
+dot
+id|info
+op_assign
+id|ncr53c8xx_info
+comma
+dot
+id|queuecommand
+op_assign
+id|ncr53c8xx_queue_command
+comma
+dot
+id|can_queue
+op_assign
+id|SCSI_NCR_CAN_QUEUE
+comma
+dot
+id|this_id
+op_assign
+l_int|7
+comma
+dot
+id|sg_tablesize
+op_assign
+id|SCSI_NCR_SG_TABLESIZE
+comma
+dot
+id|cmd_per_lun
+op_assign
+id|SCSI_NCR_CMD_PER_LUN
+comma
+dot
+id|use_clustering
+op_assign
+id|DISABLE_CLUSTERING
+comma
+)brace
 suffix:semicolon
 macro_line|#else
 DECL|variable|driver_template

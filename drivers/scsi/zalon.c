@@ -429,16 +429,19 @@ id|parisc_driver
 id|zalon_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;GSC SCSI (Zalon)&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|zalon_tbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|zalon_scsi_callback
 comma
 )brace

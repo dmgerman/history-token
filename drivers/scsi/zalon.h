@@ -72,8 +72,6 @@ macro_line|#else
 DECL|macro|zalon7xx_release
 mdefine_line|#define zalon7xx_release NULL
 macro_line|#endif
-DECL|macro|SCSI_ZALON
-mdefine_line|#define SCSI_ZALON { proc_name:&t;&t;&quot;zalon720&quot;,&t;&bslash;&n;&t;&t;&t;detect:         zalon7xx_detect,&t;&bslash;&n;&t;&t;&t;release:        zalon7xx_release,&t;&bslash;&n;&t;&t;&t;info:           ncr53c8xx_info, &t;&bslash;&n;&t;&t;&t;queuecommand:   ncr53c8xx_queue_command,&bslash;&n;&t;&t;&t;bios_param:     scsicam_bios_param,&t;&bslash;&n;&t;&t;&t;can_queue:      SCSI_NCR_CAN_QUEUE,&t;&bslash;&n;&t;&t;&t;this_id:        7,&t;&t;&t;&bslash;&n;&t;&t;&t;sg_tablesize:   SCSI_NCR_SG_TABLESIZE,&t;&bslash;&n;&t;&t;&t;cmd_per_lun:    SCSI_NCR_CMD_PER_LUN,&t;&bslash;&n;&t;&t;&t;use_clustering: DISABLE_CLUSTERING} 
 DECL|macro|GSC_SCSI_ZALON_OFFSET
 mdefine_line|#define GSC_SCSI_ZALON_OFFSET 0x800
 DECL|macro|IO_MODULE_EIM
