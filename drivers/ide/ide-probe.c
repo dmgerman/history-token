@@ -684,6 +684,47 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * it&squot;s an ata drive, build command list&n;&t; */
+id|drive-&gt;queue_depth
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ_DEPTH
+id|drive-&gt;queue_depth
+op_assign
+id|CONFIG_BLK_DEV_IDE_TCQ_DEPTH
+suffix:semicolon
+macro_line|#else
+id|drive-&gt;queue_depth
+op_assign
+id|drive-&gt;id-&gt;queue_depth
+op_plus
+l_int|1
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|drive-&gt;queue_depth
+template_param
+id|IDE_MAX_TAG
+)paren
+id|drive-&gt;queue_depth
+op_assign
+id|IDE_MAX_TAG
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ide_init_commandlist
+c_func
+(paren
+id|drive
+)paren
+)paren
+r_goto
+id|err_misc
+suffix:semicolon
 r_return
 suffix:semicolon
 id|err_misc
@@ -2755,7 +2796,7 @@ c_func
 (paren
 id|q
 comma
-id|PRD_ENTRIES
+id|PRD_SEGMENTS
 )paren
 suffix:semicolon
 multiline_comment|/* This is a driver limit and could be eliminated. */
@@ -2764,7 +2805,7 @@ c_func
 (paren
 id|q
 comma
-id|PRD_ENTRIES
+id|PRD_SEGMENTS
 )paren
 suffix:semicolon
 )brace

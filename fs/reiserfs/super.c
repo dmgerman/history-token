@@ -3642,11 +3642,6 @@ suffix:semicolon
 singleline_comment|//
 singleline_comment|// ok, reiserfs signature (old or new) found in at the given offset
 singleline_comment|//    
-id|brelse
-(paren
-id|bh
-)paren
-suffix:semicolon
 id|sb_set_blocksize
 (paren
 id|s
@@ -3656,6 +3651,11 @@ c_func
 (paren
 id|rs
 )paren
+)paren
+suffix:semicolon
+id|brelse
+(paren
+id|bh
 )paren
 suffix:semicolon
 id|bh
@@ -3756,7 +3756,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;dev %s: Unfinished reiserfsck --rebuild-tree run detected. Please run&bslash;n&quot;
-l_string|&quot;reiserfsck --rebuild-tree and wait for a completion. If that fais&bslash;n&quot;
+l_string|&quot;reiserfsck --rebuild-tree and wait for a completion. If that fails&bslash;n&quot;
 l_string|&quot;get newer reiserfsprogs package&bslash;n&quot;
 comma
 id|s-&gt;s_id

@@ -1,13 +1,9 @@
-multiline_comment|/********************************************************************************&n; *                  QLOGIC LINUX SOFTWARE&n; *&n; * QLogic ISP1x80/1x160 device driver for Linux 2.3.x (redhat 6.X).&n; *&n; * COPYRIGHT (C) 1999-2000 QLOGIC CORPORATION    &n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the Qlogic&squot;s Linux Software License. See below.&n; *&n; * This program is WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  &n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; *&n; * 1. Redistribution&squot;s or source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification, immediately at the beginning of the file.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; ********************************************************************************/
-multiline_comment|/*****************************************************************************************&n;&t;&t;&t;QLOGIC CORPORATION SOFTWARE&n;           &quot;GNU&quot; GENERAL PUBLIC LICENSE&n;    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION&n;                 AND MODIFICATION&n;&n;This GNU General Public License (&quot;License&quot;) applies solely to QLogic Linux &n;Software (&quot;Software&quot;) and may be distributed under the terms of this License.  &n; &n;1. You may copy and distribute verbatim copies of the Software&squot;s source code as &n;you receive it, in any medium, provided that you conspicuously and appropriately &n;publish on each copy an appropriate copyright notice and disclaimer of warranty;&n;keep intact all the notices that refer to this License and to the absence of any&n;warranty; and give any other recipients of the Software a copy of this License along&n;with the Software. &n;&n;You may charge a fee for the physical act of transferring a copy, and you may at your&n;option offer warranty protection in exchange for a fee.&n; &n;2. You may modify your copy or copies of the Software or any portion of it, thus forming&n;a work based on the Software, and copy and distribute such modifications or work under&n;the terms of Section 1 above, provided that you also meet all of these conditions:&n; &n;* a) You must cause the modified files to carry prominent notices stating that you&n;changed the files and the date of any change. &n;&n;* b) You must cause any work that you distribute or publish that in whole or in part&n;contains or is derived from the Software or any part thereof, to be licensed as a&n;whole at no charge to all third parties under the terms of this License. &n;&n;* c) If the modified Software normally reads commands interactively when run, you&n;must cause it, when started running for such interactive use in the most ordinary way,&n;to print or display an announcement including an appropriate copyright notice and a &n;notice that there is no warranty (or else, saying that you provide a warranty) and that&n;users may redistribute the Software under these conditions, and telling the user how to&n;view a copy of this License. (Exception:if the Software itself is interactive but does &n;not normally print such an announcement, your work based on the Software is not required&n;to print an announcement.) &n;&n;These requirements apply to the modified work as a whole. If identifiable sections of&n;that work are not derived from the Software, and can be reasonably considered independent&n;and separate works in themselves, then this License, and its terms, do not apply to those&n;sections when you distribute them as separate works. But when you distribute the same&n;sections as part of a whole which is a work based on the Software, the distribution of the&n;whole must be on the terms of this License, whose permissions for other licensees extend&n;to the entire whole, and thus to each and every part regardless of who wrote it. &n;&n;3. You may copy and distribute the Software (or a work based on it, under Section 2) in &n;object code or executable form under the terms of Sections 1 and 2 above provided that&n;you also do one of the following: &n;&n;* a) Accompany it with the complete corresponding machine-readable source code, which must&n;be distributed under the terms of Sections 1 and 2 above on a medium customarily used for&n;software interchange; or, &n;&n;* b) Accompany it with a written offer, valid for at least three years, to give any third&n;party, for a charge no more than your cost of physically performing source distribution,&n;a complete machine-readable copy of the corresponding source code, to be distributed under&n;the terms of Sections 1 and 2 above on a medium customarily used for software interchange;&n;or,&n;&n;* c) Accompany it with the information you received as to the offer to distribute &n;corresponding source code. (This alternative is allowed only for noncommercial distribution&n;and only if you received the Software in object code or executable form with such an offer,&n;in accord with Subsection b above.) &n;&n;The source code for a work means the preferred form of the work for making modifications&n;to it. For an executable work, complete source code means all the source code for all &n;modules it contains, plus any associated interface definition files, plus the scripts used&n;to control compilation and installation of the executable.     &n;&n;If distribution of executable or object code is made by offering access to copy from a &n;designated place, then offering equivalent access to copy the source code from the same&n;place counts as distribution of the source code, even though third parties are not &n;compelled to copy the source along with the object code. &n;&n;4. You may not copy, modify, sublicense, or distribute the Software except as expressly &n;provided under this License. Any attempt otherwise to copy, modify, sublicense or &n;distribute the Software is void, and will automatically terminate your rights under this&n;License. However, parties who have received copies, or rights, from you under this License&n;will not have their licenses terminated so long as such parties remain in full compliance. &n;&n;5. This license grants you world wide, royalty free non-exclusive rights to modify or &n;distribute the Software or its derivative works. These actions are prohibited by law &n;if you do not accept this License. Therefore, by modifying or distributing the Software&n;(or any work based on the Software), you indicate your acceptance of this License to do&n;so, and all its terms and conditions for copying, distributing or modifying the Software&n;or works based on it.&n; &n;6. Each time you redistribute the Software (or any work based on the Software), the &n;recipient automatically receives a license from the original licensor to copy, distribute&n;or modify the Software subject to these terms and conditions. You may not impose any &n;further restrictions on the recipients&squot; exercise of the rights granted herein. You are&n;not responsible for enforcing compliance by third parties to this License.&n; &n;7. If, as a consequence of a court judgment or allegation of patent infringement or for&n;any other reason (not limited to patent issues), conditions are imposed on you &n;(whether by court order, agreement or otherwise) that contradict the conditions of this&n;License, they do not excuse you from the conditions of this License. If you cannot &n;distribute so as to satisfy simultaneously your obligations under this License &n;and any other pertinent obligations, then as a consequence you may not distribute the&n;Software at all.    &n;&n;If any portion of this section is held invalid or unenforceable under any particular &n;circumstance, the balance of the section is intended to apply and the section as a whole&n;is intended to apply in other circumstances. &n;NO WARRANTY&n;&n;11. THE SOFTWARE IS PROVIDED WITHOUT A WARRANTY OF ANY KIND. THERE IS NO &n;WARRANTY FOR THE SOFTWARE, TO THE EXTENT PERMITTED BY APPLICABLE LAW. &n;EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR &n;OTHER PARTIES PROVIDE THE SOFTWARE &quot;AS IS&quot; WITHOUT WARRANTY OF ANY KIND, &n;EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED &n;WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE &n;ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH YOU. &n;SHOULD THE SOFTWARE PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL &n;NECESSARY SERVICING, REPAIR OR CORRECTION.&n; &n;12. IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING &n;WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR &n;REDISTRIBUTE THE SOFTWARE AS PERMITTED ABOVE, BE LIABLE TO YOU FOR &n;DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL &n;DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE SOFTWARE (INCLUDING &n;BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR &n;LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE SOFTWARE TO &n;OPERATE WITH ANY OTHER SOFTWARES), EVEN IF SUCH HOLDER OR OTHER PARTY HAS &n;BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. &n;END OF TERMS AND CONDITIONS &n;&n;*******************************************************************************************/
-multiline_comment|/****************************************************************************&n;    Revision History:&n;    Rev. 3.00       Jan 17, 1999    DG  Qlogic&n;&t;   - Added 64-bit support.&n;    Rev. 2.07       Nov 9, 1999     DG  Qlogic&n;&t;   - Added new routine to set target parameters for ISP12160. &n;    Rev. 2.06       Sept 10, 1999     DG  Qlogic&n;       - Added support for ISP12160 Ultra 3 chip.&n;    Rev. 2.03       August 3, 1999    Fred Lewis, Intel DuPont&n;&t;- Modified code to remove errors generated when compiling with&n;&t;  Cygnus IA64 Compiler.&n;        - Changed conversion of pointers to unsigned longs instead of integers.&n;        - Changed type of I/O port variables from uint32_t to unsigned long.&n;        - Modified OFFSET macro to work with 64-bit as well as 32-bit.&n;        - Changed sprintf and printk format specifiers for pointers to %p.&n;        - Changed some int to long type casts where needed in sprintf &amp; printk.&n;        - Added l modifiers to sprintf and printk format specifiers for longs.&n;        - Removed unused local variables.&n;    Rev. 1.20       June 8, 1999      DG,  Qlogic&n;         Changes to support RedHat release 6.0 (kernel 2.2.5).  &n;       - Added SCSI exclusive access lock (io_request_lock) when accessing &n;         the adapter.&n;       - Added changes for the new LINUX interface template. Some new error&n;         handling routines have been added to the template, but for now we&n;         will use the old ones.&n;    -   Initial Beta Release.  &n;*****************************************************************************/
-macro_line|#include &lt;linux/module.h&gt;
+multiline_comment|/******************************************************************************&n;*                  QLOGIC LINUX SOFTWARE&n;*&n;* QLogic  QLA1280 (Ultra2)  and  QLA12160 (Ultra3) SCSI driver&n;* Copyright (C) 2000 Qlogic Corporation (www.qlogic.com)&n;* Copyright (C) 2001-2002 Jes Sorensen, Wild Open Source Inc.&n;*&n;* This program is free software; you can redistribute it and/or modify it&n;* under the terms of the GNU General Public License as published by the&n;* Free Software Foundation; either version 2, or (at your option) any&n;* later version.&n;*&n;* This program is distributed in the hope that it will be useful, but&n;* WITHOUT ANY WARRANTY; without even the implied warranty of&n;* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;* General Public License for more details.&n;*&n;******************************************************************************/
 DECL|macro|QLA1280_VERSION
-mdefine_line|#define QLA1280_VERSION      &quot; 3.00-Beta&quot;
-macro_line|#include &lt;stdarg.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/byteorder.h&gt;
+mdefine_line|#define QLA1280_VERSION      &quot;3.23.19 Beta&quot;
+multiline_comment|/******************************************************************************&n;    Revision History:&n;    Rev  3.23.19 Beta April 11, 2002, Linus Torvalds&n;&t;- Do qla1280_pci_config() before calling request_irq() and&n;&t;  request_region()&n;&t;- Use pci_dma_hi32() to handle upper word of DMA addresses instead&n;&t;  of large shifts&n;&t;- Hand correct arguments to free_irq() in case of failure&n;    Rev  3.23.18 Beta April 11, 2002, Jes Sorensen&n;&t;- Run source through Lindent and clean up the output&n;    Rev  3.23.17 Beta April 11, 2002, Jes Sorensen&n;&t;- Update SCSI firmware to qla1280 v8.15.00 and qla12160 v10.04.32&n;    Rev  3.23.16 Beta March 19, 2002, Jes Sorensen&n;&t;- Rely on mailbox commands generating interrupts - do not&n;&t;  run qla1280_isr() from ql1280_mailbox_command()&n;&t;- Remove device_reg_t&n;&t;- Integrate ql12160_set_target_parameters() with 1280 version&n;&t;- Make qla1280_setup() non static&n;&t;- Do not call qla1280_check_for_dead_scsi_bus() on every I/O request&n;&t;  sent to the card - this command pauses the firmare!!!&n;    Rev  3.23.15 Beta March 19, 2002, Jes Sorensen&n;&t;- Clean up qla1280.h - remove obsolete QL_DEBUG_LEVEL_x definitions&n;&t;- Remove a pile of pointless and confusing (srb_t **) and&n;&t;  (scsi_lu_t *) typecasts&n;&t;- Explicit mark that we do not use the new error handling (for now)&n;&t;- Remove scsi_qla_host_t and use &squot;struct&squot; instead&n;&t;- Remove in_abort, watchdog_enabled, dpc, dpc_sched, bios_enabled,&n;&t;  pci_64bit_slot flags which weren&squot;t used for anything anyway&n;&t;- Grab host-&gt;host_lock while calling qla1280_isr() from abort()&n;&t;- Use spin_lock()/spin_unlock() in qla1280_intr_handler() - we&n;&t;  do not need to save/restore flags in the interrupt handler&n;&t;- Enable interrupts early (before any mailbox access) in preparation&n;&t;  for cleaning up the mailbox handling&n;    Rev  3.23.14 Beta March 14, 2002, Jes Sorensen&n;&t;- Further cleanups. Remove all trace of QL_DEBUG_LEVEL_x and replace&n;&t;  it with proper use of dprintk().&n;&t;- Make qla1280_print_scsi_cmd() and qla1280_dump_buffer() both take&n;&t;  a debug level argument to determine if data is to be printed&n;&t;- Add KERN_* info to printk()&n;    Rev  3.23.13 Beta March 14, 2002, Jes Sorensen&n;&t;- Significant cosmetic cleanups&n;&t;- Change debug code to use dprintk() and remove #if mess&n;    Rev  3.23.12 Beta March 13, 2002, Jes Sorensen&n;&t;- More cosmetic cleanups, fix places treating return as function&n;&t;- use cpu_relax() in qla1280_debounce_register()&n;    Rev  3.23.11 Beta March 13, 2002, Jes Sorensen&n;&t;- Make it compile under 2.5.5&n;    Rev  3.23.10 Beta October 1, 2001, Jes Sorensen&n;&t;- Do no typecast short * to long * in QL1280BoardTbl, this&n;&t;  broke miserably on big endian boxes&n;    Rev  3.23.9 Beta September 30, 2001, Jes Sorensen&n;&t;- Remove pre 2.2 hack for checking for reentrance in interrupt handler&n;&t;- Make data types used to receive from SCSI_{BUS,TCN,LUN}_32&n;&t;  unsigned int to match the types from struct scsi_cmnd&n;    Rev  3.23.8 Beta September 29, 2001, Jes Sorensen&n;&t;- Remove bogus timer_t typedef from qla1280.h&n;&t;- Remove obsolete pre 2.2 PCI setup code, use proper #define&squot;s&n;&t;  for PCI_ values, call pci_set_master()&n;&t;- Fix memleak of qla1280_buffer on module unload&n;&t;- Only compile module parsing code #ifdef MODULE - should be&n;&t;  changed to use individual MODULE_PARM&squot;s later&n;&t;- Remove dummy_buffer that was never modified nor printed&n;&t;- ENTER()/LEAVE() are noops unless QL_DEBUG_LEVEL_3, hence remove&n;&t;  #ifdef QL_DEBUG_LEVEL_3/#endif around ENTER()/LEAVE() calls&n;&t;- Remove &bslash;r from print statements, this is Linux, not DOS&n;&t;- Remove obsolete QLA1280_{SCSILU,INTR,RING}_{LOCK,UNLOCK}&n;&t;  dummy macros&n;&t;- Remove C++ compile hack in header file as Linux driver are not&n;&t;  supposed to be compiled as C++&n;&t;- Kill MS_64BITS macro as it makes the code more readable&n;&t;- Remove unnecessary flags.in_interrupts bit&n;    Rev  3.23.7 Beta August 20, 2001, Jes Sorensen&n;&t;- Dont&squot; check for set flags on q-&gt;q_flag one by one in qla1280_next()&n;        - Check whether the interrupt was generated by the QLA1280 before&n;          doing any processing&n;&t;- qla1280_status_entry(): Only zero out part of sense_buffer that&n;&t;  is not being copied into&n;&t;- Remove more superflouous typecasts&n;&t;- qla1280_32bit_start_scsi() replace home-brew memcpy() with memcpy()&n;    Rev  3.23.6 Beta August 20, 2001, Tony Luck, Intel&n;        - Don&squot;t walk the entire list in qla1280_putq_t() just to directly&n;&t;  grab the pointer to the last element afterwards&n;    Rev  3.23.5 Beta August 9, 2001, Jes Sorensen&n;&t;- Don&squot;t use SA_INTERRUPT, it&squot;s use is deprecated for this kinda driver&n;    Rev  3.23.4 Beta August 8, 2001, Jes Sorensen&n;&t;- Set dev-&gt;max_sectors to 1024&n;    Rev  3.23.3 Beta August 6, 2001, Jes Sorensen&n;&t;- Provide compat macros for pci_enable_device(), pci_find_subsys()&n;&t;  and scsi_set_pci_device()&n;&t;- Call scsi_set_pci_device() for all devices&n;&t;- Reduce size of kernel version dependant device probe code&n;&t;- Move duplicate probe/init code to seperate function&n;&t;- Handle error if qla1280_mem_alloc() fails&n;&t;- Kill OFFSET() macro and use Linux&squot;s PCI definitions instead&n;        - Kill private structure defining PCI config space (struct config_reg)&n;&t;- Only allocate I/O port region if not in MMIO mode&n;&t;- Remove duplicate (unused) sanity check of sife of srb_t&n;    Rev  3.23.2 Beta August 6, 2001, Jes Sorensen&n;&t;- Change home-brew memset() implementations to use memset()&n;        - Remove all references to COMTRACE() - accessing a PC&squot;s COM2 serial&n;          port directly is not legal under Linux.&n;    Rev  3.23.1 Beta April 24, 2001, Jes Sorensen&n;        - Remove pre 2.2 kernel support&n;        - clean up 64 bit DMA setting to use 2.4 API (provide backwards compat)&n;        - Fix MMIO access to use readl/writel instead of directly&n;          dereferencing pointers&n;        - Nuke MSDOS debugging code&n;        - Change true/false data types to int from uint8_t&n;        - Use int for counters instead of uint8_t etc.&n;        - Clean up size &amp; byte order conversion macro usage&n;    Rev  3.23 Beta January 11, 2001 BN Qlogic&n;        - Added check of device_id when handling non&n;          QLA12160s during detect().&n;    Rev  3.22 Beta January 5, 2001 BN Qlogic&n;        - Changed queue_task() to schedule_task()&n;          for kernels 2.4.0 and higher.&n;          Note: 2.4.0-testxx kernels released prior to&n;                the actual 2.4.0 kernel release on January 2001&n;                will get compile/link errors with schedule_task().&n;                Please update your kernel to released 2.4.0 level,&n;                or comment lines in this file flagged with  3.22&n;                to resolve compile/link error of schedule_task().&n;        - Added -DCONFIG_SMP in addition to -D__SMP__&n;          in Makefile for 2.4.0 builds of driver as module.&n;    Rev  3.21 Beta January 4, 2001 BN Qlogic&n;        - Changed criteria of 64/32 Bit mode of HBA&n;          operation according to BITS_PER_LONG rather&n;          than HBA&squot;s NVRAM setting of &gt;4Gig memory bit;&n;          so that the HBA auto-configures without the need&n;          to setup each system individually.&n;    Rev  3.20 Beta December 5, 2000 BN Qlogic&n;        - Added priority handling to IA-64  onboard SCSI&n;          ISP12160 chip for kernels greater than 2.3.18.&n;        - Added irqrestore for qla1280_intr_handler.&n;        - Enabled /proc/scsi/qla1280 interface.&n;        - Clear /proc/scsi/qla1280 counters in detect().&n;    Rev  3.19 Beta October 13, 2000 BN Qlogic&n;        - Declare driver_template for new kernel&n;          (2.4.0 and greater) scsi initialization scheme.&n;        - Update /proc/scsi entry for 2.3.18 kernels and&n;          above as qla1280&n;    Rev  3.18 Beta October 10, 2000 BN Qlogic&n;        - Changed scan order of adapters to map&n;          the QLA12160 followed by the QLA1280.&n;    Rev  3.17 Beta September 18, 2000 BN Qlogic&n;        - Removed warnings for 32 bit 2.4.x compiles&n;        - Corrected declared size for request and response&n;          DMA addresses that are kept in each ha&n;    Rev. 3.16 Beta  August 25, 2000   BN  Qlogic&n;        - Corrected 64 bit addressing issue on IA-64&n;          where the upper 32 bits were not properly&n;          passed to the RISC engine.&n;    Rev. 3.15 Beta  August 22, 2000   BN  Qlogic&n;        - Modified qla1280_setup_chip to properly load&n;          ISP firmware for greater that 4 Gig memory on IA-64&n;    Rev. 3.14 Beta  August 16, 2000   BN  Qlogic&n;        - Added setting of dma_mask to full 64 bit&n;          if flags.enable_64bit_addressing is set in NVRAM&n;    Rev. 3.13 Beta  August 16, 2000   BN  Qlogic&n;        - Use new PCI DMA mapping APIs for 2.4.x kernel&n;    Rev. 3.12       July 18, 2000    Redhat &amp; BN Qlogic&n;        - Added check of pci_enable_device to detect() for 2.3.x&n;        - Use pci_resource_start() instead of&n;          pdev-&gt;resource[0].start in detect() for 2.3.x&n;        - Updated driver version&n;    Rev. 3.11       July 14, 2000    BN  Qlogic&n;&t;- Updated SCSI Firmware to following versions:&n;&t;  qla1x80:   8.13.08&n;&t;  qla1x160:  10.04.08&n;&t;- Updated driver version to 3.11&n;    Rev. 3.10    June 23, 2000   BN Qlogic&n;        - Added filtering of AMI SubSys Vendor ID devices&n;    Rev. 3.9&n;        - DEBUG_QLA1280 undefined and  new version  BN Qlogic&n;    Rev. 3.08b      May 9, 2000    MD Dell&n;        - Added logic to check against AMI subsystem vendor ID&n;&t;Rev. 3.08       May 4, 2000    DG  Qlogic&n;        - Added logic to check for PCI subsystem ID.&n;&t;Rev. 3.07       Apr 24, 2000    DG &amp; BN  Qlogic&n;&t;   - Updated SCSI Firmware to following versions:&n;&t;     qla12160:   10.01.19&n;&t;&t; qla1280:     8.09.00&n;&t;Rev. 3.06       Apr 12, 2000    DG &amp; BN  Qlogic&n;&t;   - Internal revision; not released&n;    Rev. 3.05       Mar 28, 2000    DG &amp; BN  Qlogic&n;       - Edit correction for virt_to_bus and PROC.&n;    Rev. 3.04       Mar 28, 2000    DG &amp; BN  Qlogic&n;       - Merge changes from ia64 port.&n;    Rev. 3.03       Mar 28, 2000    BN  Qlogic&n;       - Increase version to reflect new code drop with compile fix&n;         of issue with inclusion of linux/spinlock for 2.3 kernels&n;    Rev. 3.02       Mar 15, 2000    BN  Qlogic&n;       - Merge qla1280_proc_info from 2.10 code base&n;    Rev. 3.01       Feb 10, 2000    BN  Qlogic&n;       - Corrected code to compile on a 2.2.x kernel.&n;    Rev. 3.00       Jan 17, 2000    DG  Qlogic&n;&t;   - Added 64-bit support.&n;    Rev. 2.07       Nov 9, 1999     DG  Qlogic&n;&t;   - Added new routine to set target parameters for ISP12160.&n;    Rev. 2.06       Sept 10, 1999     DG  Qlogic&n;       - Added support for ISP12160 Ultra 3 chip.&n;    Rev. 2.03       August 3, 1999    Fred Lewis, Intel DuPont&n;&t;- Modified code to remove errors generated when compiling with&n;&t;  Cygnus IA64 Compiler.&n;        - Changed conversion of pointers to unsigned longs instead of integers.&n;        - Changed type of I/O port variables from uint32_t to unsigned long.&n;        - Modified OFFSET macro to work with 64-bit as well as 32-bit.&n;        - Changed sprintf and printk format specifiers for pointers to %p.&n;        - Changed some int to long type casts where needed in sprintf &amp; printk.&n;        - Added l modifiers to sprintf and printk format specifiers for longs.&n;        - Removed unused local variables.&n;    Rev. 1.20       June 8, 1999      DG,  Qlogic&n;         Changes to support RedHat release 6.0 (kernel 2.2.5).&n;       - Added SCSI exclusive access lock (io_request_lock) when accessing&n;         the adapter.&n;       - Added changes for the new LINUX interface template. Some new error&n;         handling routines have been added to the template, but for now we&n;         will use the old ones.&n;    -   Initial Beta Release.&n;*****************************************************************************/
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -21,9 +17,18 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/tqueue.h&gt;
-multiline_comment|/* MRS #include &lt;linux/tasks.h&gt; */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,95)
-macro_line|# include &lt;linux/bios32.h&gt;
+macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#ifndef KERNEL_VERSION
+DECL|macro|KERNEL_VERSION
+mdefine_line|#define KERNEL_VERSION(x,y,z) (((x)&lt;&lt;16)+((y)&lt;&lt;8)+(z))
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,18)
+macro_line|#include &lt;linux/pci_ids.h&gt;
 macro_line|#endif
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;scsi.h&quot;
@@ -31,19 +36,13 @@ macro_line|#include &quot;hosts.h&quot;
 DECL|macro|UNIQUE_FW_NAME
 mdefine_line|#define UNIQUE_FW_NAME
 macro_line|#include &quot;qla1280.h&quot;
-macro_line|#include &quot;ql12160_fw.h&quot;                     /* ISP RISC code */
+macro_line|#include &quot;ql12160_fw.h&quot;&t;&t;/* ISP RISC codes */
 macro_line|#include &quot;ql1280_fw.h&quot;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;        /* for kmalloc() */
-macro_line|#ifndef KERNEL_VERSION
-DECL|macro|KERNEL_VERSION
-macro_line|#  define KERNEL_VERSION(x,y,z) (((x)&lt;&lt;16)+((y)&lt;&lt;8)+(z))
-macro_line|#endif
-multiline_comment|/*&n; * Compile time Options: &n; *            0 - Disable and 1 - Enable &n; */
-DECL|macro|QLA1280_64BIT_SUPPORT
-mdefine_line|#define  QLA1280_64BIT_SUPPORT         1   /* 64-bit Support */
+multiline_comment|/*&n; * Compile time Options:&n; *            0 - Disable and 1 - Enable&n; */
 DECL|macro|QL1280_TARGET_MODE_SUPPORT
-mdefine_line|#define  QL1280_TARGET_MODE_SUPPORT    0   /* Target mode support */
+mdefine_line|#define  QL1280_TARGET_MODE_SUPPORT    0&t;/* Target mode support */
+DECL|macro|QL1280_LUN_SUPPORT
+mdefine_line|#define  QL1280_LUN_SUPPORT            0
 DECL|macro|WATCHDOGTIMER
 mdefine_line|#define  WATCHDOGTIMER                 0
 DECL|macro|MEMORY_MAPPED_IO
@@ -57,93 +56,164 @@ mdefine_line|#define  DEBUG_PRINT_NVRAM             0
 DECL|macro|LOADING_RISC_ACTIVITY
 mdefine_line|#define  LOADING_RISC_ACTIVITY         0
 DECL|macro|AUTO_ESCALATE_RESET
-mdefine_line|#define  AUTO_ESCALATE_RESET           0   /* Automatically escalate resets */
+mdefine_line|#define  AUTO_ESCALATE_RESET           0&t;/* Automatically escalate resets */
 DECL|macro|AUTO_ESCALATE_ABORT
-mdefine_line|#define  AUTO_ESCALATE_ABORT           0   /* Automatically escalate aborts */
+mdefine_line|#define  AUTO_ESCALATE_ABORT           0&t;/* Automatically escalate aborts */
 DECL|macro|STOP_ON_ERROR
-mdefine_line|#define  STOP_ON_ERROR                 0   /* Stop on aborts and resets  */
+mdefine_line|#define  STOP_ON_ERROR                 0&t;/* Stop on aborts and resets  */
 DECL|macro|STOP_ON_RESET
-mdefine_line|#define  STOP_ON_RESET                 0 
+mdefine_line|#define  STOP_ON_RESET                 0
 DECL|macro|STOP_ON_ABORT
-mdefine_line|#define  STOP_ON_ABORT                 0 
-DECL|macro|DYNAMIC_MEM_ALLOC
-macro_line|#undef   DYNAMIC_MEM_ALLOC
+mdefine_line|#define  STOP_ON_ABORT                 0
+DECL|macro|QLA1280_PROFILE
+mdefine_line|#define  QLA1280_PROFILE               1&t;/* 3.20 */
 DECL|macro|DEBUG_QLA1280
-mdefine_line|#define  DEBUG_QLA1280                 0    /* Debugging  */
-multiline_comment|/* #define CHECKSRBSIZE */
-multiline_comment|/*&n; * These macros to assist programming&n; */
-DECL|macro|BZERO
-mdefine_line|#define&t;BZERO(ptr, amt)&t;&t;memset(ptr, 0, amt)
-DECL|macro|BCOPY
-mdefine_line|#define&t;BCOPY(src, dst, amt)&t;memcpy(dst, src, amt)
-DECL|macro|KMALLOC
-mdefine_line|#define&t;KMALLOC(siz)&t;kmalloc((siz), GFP_ATOMIC)
-DECL|macro|KMFREE
-mdefine_line|#define&t;KMFREE(ip,siz)&t;kfree((ip))
-DECL|macro|SYS_DELAY
-mdefine_line|#define&t;SYS_DELAY(x)&t;&t;udelay(x);barrier()
-DECL|macro|QLA1280_DELAY
-mdefine_line|#define QLA1280_DELAY(sec)  mdelay(sec * 1000)
-DECL|macro|VIRT_TO_BUS
-mdefine_line|#define VIRT_TO_BUS(a) virt_to_bus((a))
-macro_line|#if  QLA1280_64BIT_SUPPORT
-macro_line|#if  BITS_PER_LONG &lt;= 32
-DECL|macro|VIRT_TO_BUS_LOW
-mdefine_line|#define  VIRT_TO_BUS_LOW(a) (uint32_t)virt_to_bus((a))
-DECL|macro|VIRT_TO_BUS_HIGH
-mdefine_line|#define  VIRT_TO_BUS_HIGH(a) (uint32_t)(0x0)
-macro_line|#else
-DECL|macro|VIRT_TO_BUS_LOW
-mdefine_line|#define  VIRT_TO_BUS_LOW(a) (uint32_t)(0xffffffff &amp; virt_to_bus((a)))
-DECL|macro|VIRT_TO_BUS_HIGH
-mdefine_line|#define  VIRT_TO_BUS_HIGH(a) (uint32_t)(0xffffffff &amp; (virt_to_bus((a))&gt;&gt;32))
+mdefine_line|#define  DEBUG_QLA1280                 0
+multiline_comment|/*&n; * Missing PCI ID&squot;s&n; */
+macro_line|#ifndef PCI_DEVICE_ID_QLOGIC_ISP1080
+DECL|macro|PCI_DEVICE_ID_QLOGIC_ISP1080
+mdefine_line|#define PCI_DEVICE_ID_QLOGIC_ISP1080&t;0x1080
 macro_line|#endif
-macro_line|#endif  /* QLA1280_64BIT_SUPPORT */
-DECL|macro|STATIC
-mdefine_line|#define STATIC     
+macro_line|#ifndef PCI_DEVICE_ID_QLOGIC_ISP1240
+DECL|macro|PCI_DEVICE_ID_QLOGIC_ISP1240
+mdefine_line|#define PCI_DEVICE_ID_QLOGIC_ISP1240&t;0x1240
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_QLOGIC_ISP1280
+DECL|macro|PCI_DEVICE_ID_QLOGIC_ISP1280
+mdefine_line|#define PCI_DEVICE_ID_QLOGIC_ISP1280&t;0x1280
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_QLOGIC_ISP10160
+DECL|macro|PCI_DEVICE_ID_QLOGIC_ISP10160
+mdefine_line|#define PCI_DEVICE_ID_QLOGIC_ISP10160&t;0x1016
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_QLOGIC_ISP12160
+DECL|macro|PCI_DEVICE_ID_QLOGIC_ISP12160
+mdefine_line|#define PCI_DEVICE_ID_QLOGIC_ISP12160&t;0x1216
+macro_line|#endif
+macro_line|#ifndef PCI_VENDOR_ID_AMI
+DECL|macro|PCI_VENDOR_ID_AMI
+mdefine_line|#define PCI_VENDOR_ID_AMI               0x101e
+macro_line|#endif
+macro_line|#if (BITS_PER_LONG == 64) || defined CONFIG_HIGHMEM
+DECL|macro|QLA_64BIT_PTR
+mdefine_line|#define QLA_64BIT_PTR&t;1
+macro_line|#endif
+multiline_comment|/* 3.16 */
+macro_line|#ifdef QLA_64BIT_PTR
+DECL|macro|pci_dma_lo32
+mdefine_line|#define pci_dma_lo32(a)&t;&t;(a &amp; 0xffffffff)
+DECL|macro|pci_dma_hi32
+mdefine_line|#define pci_dma_hi32(a)&t;&t;(a &gt;&gt; 32)
+macro_line|#else
+DECL|macro|pci_dma_lo32
+mdefine_line|#define pci_dma_lo32(a)&t;&t;(a &amp; 0xffffffff)
+DECL|macro|pci_dma_hi32
+mdefine_line|#define pci_dma_hi32(a)&t;&t;0
+macro_line|#endif
 DECL|macro|NVRAM_DELAY
-mdefine_line|#define NVRAM_DELAY() udelay(500) /* 2 microsecond delay */
+mdefine_line|#define NVRAM_DELAY()&t;&t;udelay(500)&t;/* 2 microsecond delay */
+DECL|macro|CACHE_FLUSH
+mdefine_line|#define CACHE_FLUSH(a)&t;&t;RD_REG_WORD(a)
+DECL|macro|INVALID_HANDLE
+mdefine_line|#define INVALID_HANDLE&t;&t;(MAX_OUTSTANDING_COMMANDS + 1)
+multiline_comment|/*&n; * Compat macros&n; */
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 4, 0)
+DECL|macro|pci_set_dma_mask
+mdefine_line|#define pci_set_dma_mask(dev, mask)&t;&t;dev-&gt;dma_mask = mask;
+DECL|macro|pci_present
+mdefine_line|#define pci_present()&t;&t;&t;&t;pcibios_present()
+DECL|macro|pci_enable_device
+mdefine_line|#define pci_enable_device(pdev)&t;&t;&t;0
+DECL|macro|pci_find_subsys
+mdefine_line|#define pci_find_subsys(id, dev, sid, sdev, pdev) pci_find_device(id,dev,pdev)
+DECL|macro|scsi_set_pci_device
+mdefine_line|#define scsi_set_pci_device(host, pdev)
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,18)
+DECL|typedef|dma_addr_t
+r_typedef
+r_int
+r_int
+id|dma_addr_t
+suffix:semicolon
+r_static
+r_inline
 r_void
-id|qla1280_device_queue_depth
+op_star
+DECL|function|pci_alloc_consistent
+id|pci_alloc_consistent
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|pci_dev
 op_star
+id|hwdev
 comma
-id|Scsi_Device
+r_int
+id|size
+comma
+id|dma_addr_t
 op_star
+id|dma_handle
+)paren
+(brace
+r_void
+op_star
+id|virt_ptr
+suffix:semicolon
+id|virt_ptr
+op_assign
+id|kmalloc
+c_func
+(paren
+id|size
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
-DECL|macro|CACHE_FLUSH
-mdefine_line|#define  CACHE_FLUSH(a) (RD_REG_WORD(a))
-DECL|macro|INVALID_HANDLE
-mdefine_line|#define  INVALID_HANDLE    (MAX_OUTSTANDING_COMMANDS+1)
-DECL|macro|MSW
-mdefine_line|#define  MSW(x)          (uint16_t)((uint32_t)(x) &gt;&gt; 16)
-DECL|macro|LSW
-mdefine_line|#define  LSW(x)          (uint16_t)(x)
-DECL|macro|MSB
-mdefine_line|#define  MSB(x)          (uint8_t)((uint16_t)(x) &gt;&gt; 8)
-DECL|macro|LSB
-mdefine_line|#define  LSB(x)          (uint8_t)(x)
-macro_line|#if  BITS_PER_LONG &lt;= 32
-DECL|macro|LS_64BITS
-mdefine_line|#define  LS_64BITS(x) (uint32_t)(x)
-DECL|macro|MS_64BITS
-mdefine_line|#define  MS_64BITS(x) (uint32_t)(0x0)
-macro_line|#else
-DECL|macro|LS_64BITS
-mdefine_line|#define  LS_64BITS(x) (uint32_t)(0xffffffff &amp; (x))
-DECL|macro|MS_64BITS
-mdefine_line|#define  MS_64BITS(x) (uint32_t)(0xffffffff &amp; ((x)&gt;&gt;32) )
+r_if
+c_cond
+(paren
+op_logical_neg
+id|virt_ptr
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+op_star
+id|dma_handle
+op_assign
+id|virt_to_bus
+c_func
+(paren
+id|virt_ptr
+)paren
+suffix:semicolon
+r_return
+id|virt_ptr
+suffix:semicolon
+)brace
+DECL|macro|pci_free_consistent
+mdefine_line|#define pci_free_consistent(cookie, size, ptr, dma_ptr)&t;kfree(ptr)
+DECL|macro|pci_map_single
+mdefine_line|#define pci_map_single(cookie, address, size, dir)&t;virt_to_bus(address)
+DECL|macro|pci_map_sg
+mdefine_line|#define pci_map_sg(cookie, scatter, ents, dir)&t;&t;ents
+DECL|macro|pci_unmap_single
+mdefine_line|#define pci_unmap_single(cookie, address, size, dir)
+DECL|macro|pci_unmap_sg
+mdefine_line|#define pci_unmap_sg(cookie, scatter, ents, dir)
+DECL|macro|pci_resource_start
+mdefine_line|#define pci_resource_start(dev, i)&t;&t;&t;dev-&gt;base_address[i]
 macro_line|#endif
 multiline_comment|/*&n; *  QLogic Driver Support Function Prototypes.&n; */
-id|STATIC
+r_static
 r_void
 id|qla1280_done
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
 id|srb_t
@@ -155,21 +225,22 @@ op_star
 op_star
 )paren
 suffix:semicolon
-id|STATIC
+r_static
 r_void
 id|qla1280_next
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
 id|scsi_lu_t
 op_star
 comma
-r_uint8
+r_int
 )paren
 suffix:semicolon
-id|STATIC
+r_static
 r_void
 id|qla1280_putq_t
 c_func
@@ -181,7 +252,7 @@ id|srb_t
 op_star
 )paren
 suffix:semicolon
-id|STATIC
+r_static
 r_void
 id|qla1280_done_q_put
 c_func
@@ -198,7 +269,20 @@ op_star
 op_star
 )paren
 suffix:semicolon
-id|STATIC
+r_static
+r_void
+id|qla1280_device_queue_depth
+c_func
+(paren
+r_struct
+id|scsi_qla_host
+op_star
+comma
+id|Scsi_Device
+op_star
+)paren
+suffix:semicolon
+r_static
 r_void
 id|qla1280_select_queue_depth
 c_func
@@ -211,20 +295,7 @@ id|Scsi_Device
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef  QLA1280_UNUSED 
-r_static
-r_void
-id|qla1280_dump_regs
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-id|host
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if  STOP_ON_ERROR 
+macro_line|#if STOP_ON_ERROR
 r_static
 r_void
 id|qla1280_panic
@@ -240,33 +311,25 @@ id|host
 )paren
 suffix:semicolon
 macro_line|#endif
-r_void
-id|qla1280_print_scsi_cmd
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-)paren
-suffix:semicolon
-id|STATIC
+r_static
 r_void
 id|qla1280_abort_queue_single
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
-r_uint32
+r_int
 comma
-r_uint32
+r_int
 comma
-r_uint32
+r_int
 comma
 r_uint32
 )paren
 suffix:semicolon
-id|STATIC
+r_static
 r_int
 id|qla1280_return_status
 c_func
@@ -280,7 +343,7 @@ op_star
 id|cp
 )paren
 suffix:semicolon
-id|STATIC
+r_static
 r_void
 id|qla1280_removeq
 c_func
@@ -294,17 +357,17 @@ op_star
 id|sp
 )paren
 suffix:semicolon
-id|STATIC
+r_static
 r_void
 id|qla1280_mem_free
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
 suffix:semicolon
-r_static
 r_void
 id|qla1280_do_dpc
 c_func
@@ -314,18 +377,7 @@ op_star
 id|p
 )paren
 suffix:semicolon
-macro_line|#ifdef  QLA1280_UNUSED 
-r_static
-r_void
-id|qla1280_set_flags
-c_func
-(paren
-r_char
-op_star
-id|s
-)paren
-suffix:semicolon
-macro_line|#endif
+macro_line|#ifdef MODULE
 r_static
 r_char
 op_star
@@ -339,16 +391,6 @@ r_char
 op_star
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,0)
-id|STATIC
-r_inline
-r_void
-id|mdelay
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
 macro_line|#endif
 r_static
 r_inline
@@ -356,7 +398,8 @@ r_void
 id|qla1280_enable_intrs
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 suffix:semicolon
@@ -366,13 +409,14 @@ r_void
 id|qla1280_disable_intrs
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  QLogic ISP1280 Hardware Support Function Prototypes.&n; */
-id|STATIC
-r_uint8
+r_static
+r_int
 id|qla1280_initialize_adapter
 c_func
 (paren
@@ -382,77 +426,85 @@ op_star
 id|ha
 )paren
 suffix:semicolon
-id|STATIC
-r_uint8
+r_static
+r_int
 id|qla1280_enable_tgt
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
-r_uint8
+r_int
 )paren
 suffix:semicolon
-id|STATIC
-r_uint8
+r_static
+r_int
 id|qla1280_isp_firmware
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 suffix:semicolon
-id|STATIC
-r_uint8
+r_static
+r_int
 id|qla1280_pci_config
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 suffix:semicolon
-id|STATIC
-r_uint8
+r_static
+r_int
 id|qla1280_chip_diag
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 suffix:semicolon
-id|STATIC
-r_uint8
+r_static
+r_int
 id|qla1280_setup_chip
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 suffix:semicolon
-id|STATIC
-r_uint8
+r_static
+r_int
 id|qla1280_init_rings
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 suffix:semicolon
-id|STATIC
-r_uint8
+r_static
+r_int
 id|qla1280_nvram_config
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 suffix:semicolon
-id|STATIC
-r_uint8
+r_static
+r_int
 id|qla1280_mailbox_command
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
 r_uint8
@@ -461,144 +513,164 @@ r_uint16
 op_star
 )paren
 suffix:semicolon
-id|STATIC
-r_uint8
+r_static
+r_int
 id|qla1280_bus_reset
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
-r_uint8
+r_int
 )paren
 suffix:semicolon
-id|STATIC
-r_uint8
+r_static
+r_int
 id|qla1280_device_reset
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
-r_uint8
+r_int
 comma
-r_uint32
+r_int
 )paren
 suffix:semicolon
-id|STATIC
-r_uint8
+r_static
+r_int
 id|qla1280_abort_device
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
-r_uint8
+r_int
 comma
-r_uint32
+r_int
 comma
-r_uint32
+r_int
 )paren
 suffix:semicolon
-id|STATIC
-r_uint8
+r_static
+r_int
 id|qla1280_abort_command
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
 id|srb_t
-op_star
-)paren
-comma
-macro_line|#if  QLA1280_64BIT_SUPPORT
-id|qla1280_64bit_start_scsi
-c_func
-(paren
-id|scsi_qla_host_t
-op_star
-comma
-id|srb_t
-op_star
-)paren
-comma
-macro_line|#endif
-id|qla1280_32bit_start_scsi
-c_func
-(paren
-id|scsi_qla_host_t
-op_star
-comma
-id|srb_t
-op_star
-)paren
-comma
-id|qla1280_abort_isp
-c_func
-(paren
-id|scsi_qla_host_t
 op_star
 )paren
 suffix:semicolon
-id|STATIC
+r_static
+r_int
+id|qla1280_abort_isp
+c_func
+(paren
+r_struct
+id|scsi_qla_host
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
+id|qla1280_64bit_start_scsi
+c_func
+(paren
+r_struct
+id|scsi_qla_host
+op_star
+comma
+id|srb_t
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
+id|qla1280_32bit_start_scsi
+c_func
+(paren
+r_struct
+id|scsi_qla_host
+op_star
+comma
+id|srb_t
+op_star
+)paren
+suffix:semicolon
+r_static
 r_void
 id|qla1280_nv_write
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
 r_uint16
 )paren
-comma
-id|qla1280_nv_delay
-c_func
-(paren
-id|scsi_qla_host_t
-op_star
-)paren
-comma
+suffix:semicolon
+r_static
+r_void
 id|qla1280_poll
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
-comma
+suffix:semicolon
+r_static
+r_void
 id|qla1280_reset_adapter
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
-comma
+suffix:semicolon
+r_static
+r_void
 id|qla1280_marker
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
-r_uint8
+r_int
 comma
-r_uint32
+r_int
 comma
-r_uint32
+r_int
 comma
-r_uint8
+id|u8
 )paren
-comma
+suffix:semicolon
+r_static
+r_void
 id|qla1280_isp_cmd
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
-comma
+suffix:semicolon
+r_static
+r_void
 id|qla1280_isr
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
 id|srb_t
@@ -609,18 +681,24 @@ id|srb_t
 op_star
 op_star
 )paren
-comma
+suffix:semicolon
+r_static
+r_void
 id|qla1280_rst_aen
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
-comma
+suffix:semicolon
+r_static
+r_void
 id|qla1280_status_entry
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
 id|sts_entry_t
@@ -634,11 +712,14 @@ id|srb_t
 op_star
 op_star
 )paren
-comma
+suffix:semicolon
+r_static
+r_void
 id|qla1280_error_entry
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
 id|response_t
@@ -652,41 +733,53 @@ id|srb_t
 op_star
 op_star
 )paren
-comma
+suffix:semicolon
+r_static
+r_void
 id|qla1280_restart_queues
 c_func
 (paren
-id|scsi_qla_host_t
-op_star
-)paren
-comma
-id|qla1280_abort_queues
-c_func
-(paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 suffix:semicolon
-id|STATIC
+r_static
+r_void
+id|qla1280_abort_queues
+c_func
+(paren
+r_struct
+id|scsi_qla_host
+op_star
+)paren
+suffix:semicolon
+r_static
 r_uint16
 id|qla1280_get_nvram_word
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
 r_uint32
 )paren
-comma
+suffix:semicolon
+r_static
+r_uint16
 id|qla1280_nvram_request
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
 r_uint32
 )paren
-comma
+suffix:semicolon
+r_static
+r_uint16
 id|qla1280_debounce_register
 c_func
 (paren
@@ -695,76 +788,48 @@ r_uint16
 op_star
 )paren
 suffix:semicolon
-id|STATIC
+r_static
 id|request_t
 op_star
 id|qla1280_req_pkt
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|qla1280_check_for_dead_scsi_bus
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
-id|ha
 comma
-id|srb_t
-op_star
-id|sp
+r_int
+r_int
 )paren
 suffix:semicolon
-id|STATIC
-r_uint8
+r_static
+r_int
 id|qla1280_mem_alloc
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
 suffix:semicolon
-id|STATIC
-r_uint8
-id|qla1280_register_with_Linux
-c_func
-(paren
-id|scsi_qla_host_t
-op_star
-id|ha
-comma
-r_uint8
-id|maxchannels
-)paren
-suffix:semicolon
-id|STATIC
-r_uint8
-id|qla12160_set_target_parameters
-c_func
-(paren
-id|scsi_qla_host_t
-op_star
-comma
-r_uint32
-comma
-r_uint32
-comma
-r_uint32
-comma
-id|nvram160_t
-op_star
-)paren
-suffix:semicolon
-id|STATIC
+r_static
 r_void
 id|qla12160_get_target_parameters
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
 r_uint32
@@ -774,55 +839,69 @@ comma
 r_uint32
 )paren
 suffix:semicolon
-macro_line|#if QL1280_TARGET_MODE_SUPPORT
-id|STATIC
+macro_line|#if QL1280_LUN_SUPPORT
+r_static
 r_void
 id|qla1280_enable_lun
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
-r_uint8
+r_int
 comma
-r_uint32
+r_int
 )paren
-comma
+suffix:semicolon
+macro_line|#endif
+macro_line|#if QL1280_TARGET_MODE_SUPPORT
+r_static
+r_void
 id|qla1280_notify_ack
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
 id|notify_entry_t
 op_star
 )paren
-comma
+suffix:semicolon
+r_static
+r_void
 id|qla1280_immed_notify
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
 id|notify_entry_t
 op_star
 )paren
-comma
+suffix:semicolon
+r_static
+r_void
 id|qla1280_accept_io
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
 id|ctio_ret_entry_t
 op_star
 )paren
-comma
-macro_line|#if  QLA1280_64BIT_SUPPORT
+suffix:semicolon
+r_static
+r_void
 id|qla1280_64bit_continue_io
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
 id|atio_entry_t
@@ -833,12 +912,14 @@ comma
 id|paddr32_t
 op_star
 )paren
-comma
-macro_line|#endif
+suffix:semicolon
+r_static
+r_void
 id|qla1280_32bit_continue_io
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
 id|atio_entry_t
@@ -849,138 +930,117 @@ comma
 id|paddr32_t
 op_star
 )paren
-comma
+suffix:semicolon
+r_static
+r_void
 id|qla1280_atio_entry
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
 id|atio_entry_t
 op_star
 )paren
-comma
+suffix:semicolon
+r_static
+r_void
 id|qla1280_notify_entry
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 comma
 id|notify_entry_t
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif  /* QLA1280_TARGET_MODE_SUPPORT */
+macro_line|#endif&t;&t;&t;&t;/* QLA1280_TARGET_MODE_SUPPORT */
 macro_line|#ifdef QL_DEBUG_ROUTINES
 multiline_comment|/*&n; *  Driver Debug Function Prototypes.&n; */
-id|STATIC
-r_uint8
+r_static
+id|u8
 id|qla1280_getbyte
 c_func
 (paren
-r_uint8
+id|u8
 op_star
 )paren
 suffix:semicolon
-id|STATIC
-r_uint16
+r_static
+id|u16
 id|qla1280_getword
 c_func
 (paren
-r_uint16
+id|u16
 op_star
 )paren
 suffix:semicolon
-id|STATIC
-r_uint32
+r_static
+id|u32
 id|qla1280_getdword
 c_func
 (paren
-r_uint32
+id|u32
 op_star
 )paren
 suffix:semicolon
-id|STATIC
+r_static
 r_void
 id|qla1280_putbyte
 c_func
 (paren
-r_uint8
+id|u8
 op_star
 comma
-r_uint8
+id|u8
 )paren
-comma
+suffix:semicolon
+r_static
+r_void
 id|qla1280_putword
 c_func
 (paren
-r_uint16
+id|u16
 op_star
 comma
-r_uint16
+id|u8
 )paren
-comma
+suffix:semicolon
+r_static
+r_void
 id|qla1280_putdword
 c_func
 (paren
-r_uint32
+id|u32
 op_star
 comma
-r_uint32
-)paren
-comma
-id|qla1280_print
-c_func
-(paren
-id|caddr_t
-)paren
-comma
-id|qla1280_output_number
-c_func
-(paren
-r_uint32
-comma
-r_uint8
-)paren
-comma
-id|qla1280_putc
-c_func
-(paren
-r_uint8
-)paren
-comma
-id|qla1280_dump_buffer
-c_func
-(paren
-id|caddr_t
-comma
-r_uint32
+id|u32
 )paren
 suffix:semicolon
-DECL|variable|debug_buff
+r_static
+r_void
+id|__qla1280_print_scsi_cmd
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+)paren
+suffix:semicolon
+r_static
+r_void
+id|__qla1280_dump_buffer
+c_func
+(paren
 r_char
-id|debug_buff
-(braket
-l_int|80
-)braket
+op_star
+comma
+id|u32
+)paren
 suffix:semicolon
-macro_line|#if DEBUG_QLA1280 
-DECL|variable|ql_debug_print
-id|STATIC
-r_uint8
-id|ql_debug_print
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#else
-DECL|variable|ql_debug_print
-id|STATIC
-r_uint8
-id|ql_debug_print
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * insmod needs to find the variable and make it point to something&n; */
 macro_line|#ifdef MODULE
@@ -992,7 +1052,6 @@ id|options
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,1,18)
 multiline_comment|/* insmod qla1280 options=verbose&quot; */
 id|MODULE_PARM
 c_func
@@ -1003,56 +1062,82 @@ l_string|&quot;s&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * Just in case someone uses commas to separate items on the insmod&n; * command line, we define a dummy buffer here to avoid having insmod&n; * write wild stuff into our code segment&n; */
-DECL|variable|dummy_buffer
-r_static
-r_char
-id|dummy_buffer
-(braket
-l_int|60
-)braket
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,18)
+multiline_comment|/*&n; * Our directory Entry in /proc/scsi for the user to&n; * access the driver.&n; */
+multiline_comment|/* Need to add in proc_fs.h     PROC_SCSI_QL1280 */
+DECL|macro|PROC_SCSI_QL1280
+mdefine_line|#define PROC_SCSI_QL1280  PROC_SCSI_QLOGICISP
+DECL|variable|proc_scsi_qla1280
+r_struct
+id|proc_dir_entry
+id|proc_scsi_qla1280
 op_assign
-l_string|&quot;Please don&squot;t add commas in your insmod command!!&bslash;n&quot;
+(brace
+id|PROC_SCSI_QL1280
+comma
+l_int|7
+comma
+l_string|&quot;qla1280&quot;
+comma
+id|S_IFDIR
+op_or
+id|S_IRUGO
+op_or
+id|S_IXUGO
+comma
+l_int|2
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* We use the Scsi_Pointer structure that&squot;s included with each command&n; * SCSI_Cmnd as a scratchpad for our SRB.&n; *&n; * SCp will always point to the SRB structure (defined in qla1280.h).&n; * It is define as follows:&n; *  - SCp.ptr  -- &gt; pointer back to the cmd&n; *  - SCp.this_residual --&gt; used as forward pointer to next srb&n; *  - SCp.buffer --&gt; used as backward pointer to next srb&n; *  - SCp.buffers_residual --&gt; used as flags field&n; *  - SCp.have_data_in --&gt; not used&n; *  - SCp.sent_command --&gt; not used&n; *  - SCp.phase --&gt; not used&n; */
 DECL|macro|CMD_SP
-mdefine_line|#define&t;CMD_SP(Cmnd)&t;&t;(&amp;(Cmnd)-&gt;SCp)
-DECL|macro|CMD_XFRLEN
-mdefine_line|#define&t;CMD_XFRLEN(Cmnd)&t;(Cmnd)-&gt;request_bufflen
+mdefine_line|#define&t;CMD_SP(Cmnd)&t;&t;&amp;Cmnd-&gt;SCp
 DECL|macro|CMD_CDBLEN
-mdefine_line|#define&t;CMD_CDBLEN(Cmnd)&t;(Cmnd)-&gt;cmd_len
+mdefine_line|#define&t;CMD_CDBLEN(Cmnd)&t;Cmnd-&gt;cmd_len
 DECL|macro|CMD_CDBP
-mdefine_line|#define&t;CMD_CDBP(Cmnd)&t;&t;(Cmnd)-&gt;cmnd
+mdefine_line|#define&t;CMD_CDBP(Cmnd)&t;&t;Cmnd-&gt;cmnd
 DECL|macro|CMD_SNSP
-mdefine_line|#define&t;CMD_SNSP(Cmnd)&t;&t;(Cmnd)-&gt;sense_buffer
+mdefine_line|#define&t;CMD_SNSP(Cmnd)&t;&t;Cmnd-&gt;sense_buffer
 DECL|macro|CMD_SNSLEN
-mdefine_line|#define&t;CMD_SNSLEN(Cmnd)&t;(sizeof (Cmnd)-&gt;sense_buffer)
+mdefine_line|#define&t;CMD_SNSLEN(Cmnd)&t;sizeof(Cmnd-&gt;sense_buffer)
 DECL|macro|CMD_RESULT
-mdefine_line|#define&t;CMD_RESULT(Cmnd)&t;((Cmnd)-&gt;result)
+mdefine_line|#define&t;CMD_RESULT(Cmnd)&t;Cmnd-&gt;result
 DECL|macro|CMD_HANDLE
-mdefine_line|#define&t;CMD_HANDLE(Cmnd)&t;((Cmnd)-&gt;host_scribble)
+mdefine_line|#define&t;CMD_HANDLE(Cmnd)&t;Cmnd-&gt;host_scribble
 multiline_comment|/*****************************************/
 multiline_comment|/*   ISP Boards supported by this driver */
 multiline_comment|/*****************************************/
-DECL|macro|QLA1280_VENDOR_ID
-mdefine_line|#define QLA1280_VENDOR_ID   0x1077
-DECL|macro|QLA1080_DEVICE_ID
-mdefine_line|#define QLA1080_DEVICE_ID   0x1080
-DECL|macro|QLA1240_DEVICE_ID
-mdefine_line|#define QLA1240_DEVICE_ID   0x1240
-DECL|macro|QLA1280_DEVICE_ID
-mdefine_line|#define QLA1280_DEVICE_ID   0x1280
-DECL|macro|QLA12160_DEVICE_ID
-mdefine_line|#define QLA12160_DEVICE_ID  0x1216
-DECL|macro|QLA10160_DEVICE_ID
-mdefine_line|#define QLA10160_DEVICE_ID  0x1016
 DECL|macro|NUM_OF_ISP_DEVICES
-mdefine_line|#define NUM_OF_ISP_DEVICES        6
-DECL|struct|_qlaboards
-r_typedef
+mdefine_line|#define NUM_OF_ISP_DEVICES&t;6
+DECL|struct|qla_boards
 r_struct
-id|_qlaboards
+id|qla_boards
 (brace
 DECL|member|bdName
 r_int
@@ -1102,14 +1187,12 @@ op_star
 id|fwver
 suffix:semicolon
 multiline_comment|/* Ptr to F/W version array    */
-DECL|typedef|qla_boards_t
 )brace
-id|qla_boards_t
 suffix:semicolon
-DECL|variable|QLBoardTbl
+DECL|variable|ql1280_board_tbl
 r_struct
-id|_qlaboards
-id|QLBoardTbl
+id|qla_boards
+id|ql1280_board_tbl
 (braket
 id|NUM_OF_ISP_DEVICES
 )braket
@@ -1117,9 +1200,35 @@ op_assign
 (brace
 multiline_comment|/* Name ,  Board PCI Device ID,         Number of ports */
 (brace
+l_string|&quot;QLA12160 &quot;
+comma
+id|PCI_DEVICE_ID_QLOGIC_ISP12160
+comma
+l_int|2
+comma
+op_amp
+id|fw12160i_code01
+(braket
+l_int|0
+)braket
+comma
+op_amp
+id|fw12160i_length01
+comma
+op_amp
+id|fw12160i_addr01
+comma
+op_amp
+id|fw12160i_version_str
+(braket
+l_int|0
+)braket
+)brace
+comma
+(brace
 l_string|&quot;QLA1080 &quot;
 comma
-id|QLA1080_DEVICE_ID
+id|PCI_DEVICE_ID_QLOGIC_ISP1080
 comma
 l_int|1
 comma
@@ -1129,11 +1238,6 @@ id|fw1280ei_code01
 l_int|0
 )braket
 comma
-(paren
-r_int
-r_int
-op_star
-)paren
 op_amp
 id|fw1280ei_length01
 comma
@@ -1150,7 +1254,7 @@ comma
 (brace
 l_string|&quot;QLA1240 &quot;
 comma
-id|QLA1240_DEVICE_ID
+id|PCI_DEVICE_ID_QLOGIC_ISP1240
 comma
 l_int|2
 comma
@@ -1160,11 +1264,6 @@ id|fw1280ei_code01
 l_int|0
 )braket
 comma
-(paren
-r_int
-r_int
-op_star
-)paren
 op_amp
 id|fw1280ei_length01
 comma
@@ -1181,7 +1280,7 @@ comma
 (brace
 l_string|&quot;QLA1280 &quot;
 comma
-id|QLA1280_DEVICE_ID
+id|PCI_DEVICE_ID_QLOGIC_ISP1280
 comma
 l_int|2
 comma
@@ -1191,11 +1290,6 @@ id|fw1280ei_code01
 l_int|0
 )braket
 comma
-(paren
-r_int
-r_int
-op_star
-)paren
 op_amp
 id|fw1280ei_length01
 comma
@@ -1210,40 +1304,9 @@ l_int|0
 )brace
 comma
 (brace
-l_string|&quot;QLA12160 &quot;
-comma
-id|QLA12160_DEVICE_ID
-comma
-l_int|2
-comma
-op_amp
-id|fw12160i_code01
-(braket
-l_int|0
-)braket
-comma
-(paren
-r_int
-r_int
-op_star
-)paren
-op_amp
-id|fw12160i_length01
-comma
-op_amp
-id|fw12160i_addr01
-comma
-op_amp
-id|fw12160i_version_str
-(braket
-l_int|0
-)braket
-)brace
-comma
-(brace
 l_string|&quot;QLA10160 &quot;
 comma
-id|QLA10160_DEVICE_ID
+id|PCI_DEVICE_ID_QLOGIC_ISP10160
 comma
 l_int|1
 comma
@@ -1253,11 +1316,6 @@ id|fw12160i_code01
 l_int|0
 )braket
 comma
-(paren
-r_int
-r_int
-op_star
-)paren
 op_amp
 id|fw12160i_length01
 comma
@@ -1283,20 +1341,20 @@ suffix:semicolon
 DECL|variable|qla1280_verbose
 r_static
 r_int
-r_int
 id|qla1280_verbose
 op_assign
-l_int|1L
+l_int|1
 suffix:semicolon
 DECL|variable|qla1280_hostlist
 r_static
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|qla1280_hostlist
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef QLA1280_PROFILE
+macro_line|#if QLA1280_PROFILE
 DECL|variable|qla1280_buffer_size
 r_static
 r_int
@@ -1313,63 +1371,62 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3 
-DECL|macro|ENTER
-mdefine_line|#define ENTER(x)&t;sprintf(debug_buff,&quot;qla1280 : Entering %s()&bslash;n&bslash;r&quot;, x); &bslash;&n;                        qla1280_print(debug_buff);
-DECL|macro|LEAVE
-mdefine_line|#define LEAVE(x)&t;sprintf(debug_buff,&quot;qla1280 : Leaving %s()&bslash;n&bslash;r&quot;, x); &bslash;&n;                        qla1280_print(debug_buff);
-DECL|macro|ENTER_INTR
-mdefine_line|#define ENTER_INTR(x)&t;sprintf(debug_buff,&quot;qla1280 : Entering %s()&bslash;n&bslash;r&quot;, x); &bslash;&n;                        qla1280_print(debug_buff);
-DECL|macro|LEAVE_INTR
-mdefine_line|#define LEAVE_INTR(x)&t;sprintf(debug_buff,&quot;qla1280 : Leaving %s()&bslash;n&bslash;r&quot;, x); &bslash;&n;                        qla1280_print(debug_buff);
-DECL|macro|DEBUG3
-mdefine_line|#define DEBUG3(x)&t;x
-macro_line|#else
-DECL|macro|ENTER
-mdefine_line|#define ENTER(x)
-DECL|macro|LEAVE
-mdefine_line|#define LEAVE(x)
-DECL|macro|ENTER_INTR
-mdefine_line|#define ENTER_INTR(x)
-DECL|macro|LEAVE_INTR
-mdefine_line|#define LEAVE_INTR(x)
-DECL|macro|DEBUG3
-mdefine_line|#define DEBUG3(x)
-macro_line|#endif
-macro_line|#if  DEBUG_QLA1280  
-DECL|macro|COMTRACE
-mdefine_line|#define COMTRACE(x)
-multiline_comment|/* #define COMTRACE(x)     qla1280_putc(x); */
+macro_line|#if DEBUG_QLA1280
+DECL|variable|ql_debug_print
+r_static
+r_int
+id|ql_debug_print
+op_assign
+l_int|1
+suffix:semicolon
+DECL|variable|debug_buff
+r_char
+id|debug_buff
+(braket
+l_int|80
+)braket
+suffix:semicolon
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(x)&t;x
+DECL|variable|ql_debug_level
+r_static
+r_int
+id|ql_debug_level
+op_assign
+l_int|0
+suffix:semicolon
+DECL|macro|dprintk
+mdefine_line|#define dprintk(level, format, a...)&t;&bslash;&n;&t;if ((ql_debug_level &gt;= level) &amp;&amp; ql_debug_print) printk(KERN_DEBUG format, ##a)
+DECL|macro|qla1280_dump_buffer
+mdefine_line|#define qla1280_dump_buffer(level, buf, size)&t;&bslash;&n;&t;if (ql_debug_level &gt;= level) __qla1280_dump_buffer(buf, size)
+DECL|macro|qla1280_dump_print_cmd
+mdefine_line|#define qla1280_dump_print_cmd(level, cmd)&t;&bslash;&n;&t;if (ql_debug_level &gt;= level) __qla1280_print_scsi_cmd(cmd)
 macro_line|#else
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(x)
-DECL|macro|COMTRACE
-mdefine_line|#define COMTRACE(x)
+DECL|macro|ql_debug_level
+mdefine_line|#define ql_debug_level&t;&t;&t;0
+DECL|macro|dprintk
+mdefine_line|#define dprintk(level, format, a...)&t;do{}while(0)
+DECL|macro|qla1280_dump_buffer
+mdefine_line|#define qla1280_dump_buffer(a, b, c)&t;do{}while(0)
+DECL|macro|qla1280_print_scsi_cmd
+mdefine_line|#define qla1280_print_scsi_cmd(a, b)&t;do{}while(0)
 macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_2 
-DECL|macro|DEBUG2
-mdefine_line|#define DEBUG2(x)&t;x
-macro_line|#else
-DECL|macro|DEBUG2
-mdefine_line|#define DEBUG2(x)
-macro_line|#endif
-DECL|macro|DEBUG5
-mdefine_line|#define DEBUG5(x)
-macro_line|#if (BITS_PER_LONG==64)
-DECL|macro|OFFSET
-macro_line|#   define OFFSET(w)   (((uint64_t) &amp;w) &amp; 0xFF)   /* 256 byte offsets */
-macro_line|#else
-DECL|macro|OFFSET
-macro_line|#   define OFFSET(w)   (((uint32_t) &amp;w) &amp; 0xFF)   /* 256 byte offsets */
-macro_line|#endif
+DECL|macro|ENTER
+mdefine_line|#define ENTER(x)&t;&t;dprintk(3, &quot;qla1280 : Entering %s()&bslash;n&quot;, x);
+DECL|macro|LEAVE
+mdefine_line|#define LEAVE(x)&t;&t;dprintk(3, &quot;qla1280 : Leaving %s()&bslash;n&quot;, x);
+DECL|macro|ENTER_INTR
+mdefine_line|#define ENTER_INTR(x)&t;&t;dprintk(3, &quot;qla1280 : Entering %s()&bslash;n&quot;, x);
+DECL|macro|LEAVE_INTR
+mdefine_line|#define LEAVE_INTR(x)&t;&t;dprintk(3, &quot;qla1280 : Leaving %s()&bslash;n&quot;, x);
 DECL|macro|SCSI_BUS_32
-mdefine_line|#define SCSI_BUS_32(scp)   ((scp)-&gt;channel)
+mdefine_line|#define SCSI_BUS_32(scp)&t;scp-&gt;channel
 DECL|macro|SCSI_TCN_32
-mdefine_line|#define SCSI_TCN_32(scp)    ((scp)-&gt;target)
+mdefine_line|#define SCSI_TCN_32(scp)&t;scp-&gt;target
 DECL|macro|SCSI_LUN_32
-mdefine_line|#define SCSI_LUN_32(scp)    ((scp)-&gt;lun)
+mdefine_line|#define SCSI_LUN_32(scp)&t;scp-&gt;lun
 multiline_comment|/****************************************************************************/
 multiline_comment|/*  LINUX -  Loadable Module Functions.                                     */
 multiline_comment|/****************************************************************************/
@@ -1393,23 +1450,18 @@ id|HBAptr
 )paren
 (brace
 r_return
-(paren
 op_minus
 id|ENOSYS
-)paren
 suffix:semicolon
 multiline_comment|/* Currently this is a no-op */
 )brace
 multiline_comment|/*************************************************************************&n; * qla1280_proc_info&n; *&n; * Description:&n; *   Return information to handle /proc support for the driver.&n; *&n; * buffer - ptrs to a page buffer&n; *&n; * Returns:&n; *************************************************************************/
-macro_line|#ifdef QLA1280_PROFILE
 DECL|macro|PROC_BUF
-mdefine_line|#define&t;PROC_BUF&t;(&amp;qla1280_buffer[size])
-DECL|macro|LUN_ID
-mdefine_line|#define LUN_ID       (targ_lun&gt;&gt;(MAX_T_BITS+MAX_L_BITS)),((targ_lun&gt;&gt;MAX_L_BITS)&amp;0xf), targ_lun&amp;0x7 
-macro_line|#endif
+mdefine_line|#define&t;PROC_BUF&t;&amp;qla1280_buffer[len]
 r_int
 DECL|function|qla1280_proc_info
 id|qla1280_proc_info
+c_func
 (paren
 r_char
 op_star
@@ -1433,13 +1485,14 @@ r_int
 id|inout
 )paren
 (brace
-macro_line|#ifdef QLA1280_PROFILE
+macro_line|#if QLA1280_PROFILE
 r_struct
 id|Scsi_Host
 op_star
 id|host
 suffix:semicolon
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 suffix:semicolon
@@ -1448,35 +1501,32 @@ id|size
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|targ_lun
-suffix:semicolon
 id|scsi_lu_t
 op_star
 id|up
 suffix:semicolon
 r_int
-id|no_devices
+id|len
+op_assign
+l_int|0
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Entering proc_info 0x%p,0x%lx,0x%x,0x%x&bslash;n&quot;
+r_struct
+id|qla_boards
+op_star
+id|bdp
+suffix:semicolon
+r_uint32
+id|b
 comma
-id|buffer
+id|t
 comma
-id|offset
-comma
-id|length
-comma
-id|hostno
-)paren
+id|l
 suffix:semicolon
 id|host
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* find the host they want to look at */
+multiline_comment|/* Find the host that was specified */
 r_for
 c_loop
 (paren
@@ -1498,9 +1548,8 @@ id|ha
 op_assign
 id|ha-&gt;next
 )paren
-(brace
 suffix:semicolon
-)brace
+multiline_comment|/* if host wasn&squot;t found then exit */
 r_if
 c_cond
 (paren
@@ -1509,13 +1558,14 @@ id|ha
 )paren
 (brace
 id|size
-op_add_assign
+op_assign
 id|sprintf
 c_func
 (paren
 id|buffer
 comma
-l_string|&quot;Can&squot;t find adapter for host number %d&bslash;n&quot;
+l_string|&quot;Can&squot;t find adapter for host &quot;
+l_string|&quot;number %d&bslash;n&quot;
 comma
 id|hostno
 )paren
@@ -1529,17 +1579,13 @@ id|length
 )paren
 (brace
 r_return
-(paren
 id|size
-)paren
 suffix:semicolon
 )brace
 r_else
 (brace
 r_return
-(paren
-id|length
-)paren
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -1554,10 +1600,16 @@ id|inout
 op_eq
 id|TRUE
 )paren
-multiline_comment|/* Has data been written to the file? */
 (brace
-r_return
+multiline_comment|/* Has data been written to the file? */
+id|printk
+c_func
 (paren
+id|KERN_INFO
+l_string|&quot;qla1280_proc: has data been written to the file.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
 id|qla1280_set_info
 c_func
 (paren
@@ -1567,64 +1619,15 @@ id|length
 comma
 id|host
 )paren
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/* compute number of active devices */
-id|no_devices
-op_assign
-l_int|0
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|targ_lun
-op_assign
-l_int|0
-suffix:semicolon
-id|targ_lun
-OL
-id|MAX_EQ
-suffix:semicolon
-id|targ_lun
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|up
-op_assign
-id|ha-&gt;dev
-(braket
-id|targ_lun
-)braket
-)paren
-op_eq
-l_int|NULL
-)paren
-(brace
-r_continue
-suffix:semicolon
-)brace
-id|no_devices
-op_increment
-suffix:semicolon
-)brace
-multiline_comment|/* size = 112 * no_devices; */
-id|size
-op_assign
-l_int|4096
-suffix:semicolon
-multiline_comment|/* round up to the next page */
-multiline_comment|/* &n;   * if our old buffer is the right size use it otherwise &n;   * allocate a new one.&n;   */
+multiline_comment|/*&n;&t; * if our old buffer is the right size use it otherwise&n;&t; * allocate a new one.&n;&t; */
 r_if
 c_cond
 (paren
 id|qla1280_buffer_size
 op_ne
-id|size
+id|PAGE_SIZE
 )paren
 (brace
 multiline_comment|/* deallocate this buffer and get a new one */
@@ -1636,9 +1639,13 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|kfree
+id|free_page
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|qla1280_buffer
 )paren
 suffix:semicolon
@@ -1649,11 +1656,13 @@ suffix:semicolon
 )brace
 id|qla1280_buffer
 op_assign
-id|kmalloc
+(paren
+r_char
+op_star
+)paren
+id|get_free_page
 c_func
 (paren
-id|size
-comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
@@ -1682,88 +1691,65 @@ r_return
 id|size
 suffix:semicolon
 )brace
+multiline_comment|/* save the size of our buffer */
 id|qla1280_buffer_size
 op_assign
-id|size
+id|PAGE_SIZE
+suffix:semicolon
+multiline_comment|/* 3.20 clear the buffer we use for proc display */
+id|memset
+c_func
+(paren
+id|qla1280_buffer
+comma
+l_int|0
+comma
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+multiline_comment|/* start building the print buffer */
+id|bdp
+op_assign
+op_amp
+id|ql1280_board_tbl
+(braket
+id|ha-&gt;devnum
+)braket
 suffix:semicolon
 id|size
 op_assign
-l_int|0
-suffix:semicolon
-id|size
-op_add_assign
 id|sprintf
 c_func
 (paren
 id|PROC_BUF
 comma
-l_string|&quot;Qlogic 1280/1080 SCSI driver version: &quot;
-)paren
-suffix:semicolon
-multiline_comment|/* 43 bytes */
-id|size
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|PROC_BUF
+l_string|&quot;QLogic PCI to SCSI Adapter for ISP 1280/12160:&bslash;n&quot;
+l_string|&quot;        Firmware version: %2d.%02d.%02d, Driver version %s&bslash;n&quot;
 comma
-l_string|&quot;%5s, &quot;
-comma
-id|QLA1280_VERSION
-)paren
-suffix:semicolon
-multiline_comment|/* 5        */
-id|size
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|PROC_BUF
-comma
-l_string|&quot;Qlogic Firmware version: &quot;
-)paren
-suffix:semicolon
-multiline_comment|/* 25       */
-id|size
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|PROC_BUF
-comma
-l_string|&quot;%2d.%2d.%2d&quot;
-comma
-id|_firmware_version
+id|bdp-&gt;fwver
 (braket
 l_int|0
 )braket
 comma
-multiline_comment|/* 8        */
-id|ql12_firmware_version
+id|bdp-&gt;fwver
 (braket
 l_int|1
 )braket
 comma
-id|ql12_firmware_version
+id|bdp-&gt;fwver
 (braket
 l_int|2
 )braket
-)paren
-suffix:semicolon
-id|size
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|PROC_BUF
 comma
-l_string|&quot;&bslash;n&quot;
+id|QLA1280_VERSION
 )paren
 suffix:semicolon
-multiline_comment|/* 1       */
-id|size
+id|len
 op_add_assign
+id|size
+suffix:semicolon
+id|size
+op_assign
 id|sprintf
 c_func
 (paren
@@ -1771,44 +1757,60 @@ id|PROC_BUF
 comma
 l_string|&quot;SCSI Host Adapter Information: %s&bslash;n&quot;
 comma
-id|QLBoardTbl
-(braket
-id|ha-&gt;devnum
-)braket
-dot
-id|bdName
+id|bdp-&gt;bdName
 )paren
 suffix:semicolon
-id|size
+id|len
 op_add_assign
+id|size
+suffix:semicolon
+id|size
+op_assign
 id|sprintf
 c_func
 (paren
 id|PROC_BUF
 comma
-l_string|&quot;Request Queue = 0x%lx, Response Queue = 0x%lx&bslash;n&quot;
+l_string|&quot;Request Queue = 0x%p, Response Queue = 0x%p&bslash;n&quot;
 comma
+(paren
+r_void
+op_star
+)paren
 id|ha-&gt;request_dma
 comma
+(paren
+r_void
+op_star
+)paren
 id|ha-&gt;response_dma
 )paren
 suffix:semicolon
-id|size
+id|len
 op_add_assign
+id|size
+suffix:semicolon
+id|size
+op_assign
 id|sprintf
 c_func
 (paren
 id|PROC_BUF
 comma
-l_string|&quot;Request Queue count= 0x%x, Response Queue count= 0x%x&bslash;n&quot;
+l_string|&quot;Request Queue count= 0x%x, Response &quot;
+l_string|&quot;Queue count= 0x%x&bslash;n&quot;
 comma
 id|REQUEST_ENTRY_CNT
 comma
 id|RESPONSE_ENTRY_CNT
 )paren
 suffix:semicolon
-id|size
+id|len
 op_add_assign
+id|size
+suffix:semicolon
+id|size
+op_assign
 id|sprintf
 c_func
 (paren
@@ -1819,8 +1821,12 @@ comma
 id|ha-&gt;actthreads
 )paren
 suffix:semicolon
-id|size
+id|len
 op_add_assign
+id|size
+suffix:semicolon
+id|size
+op_assign
 id|sprintf
 c_func
 (paren
@@ -1831,8 +1837,12 @@ comma
 id|ha-&gt;qthreads
 )paren
 suffix:semicolon
-id|size
+id|len
 op_add_assign
+id|size
+suffix:semicolon
+id|size
+op_assign
 id|sprintf
 c_func
 (paren
@@ -1843,8 +1853,12 @@ comma
 id|ha-&gt;req_q_cnt
 )paren
 suffix:semicolon
-id|size
+id|len
 op_add_assign
+id|size
+suffix:semicolon
+id|size
+op_assign
 id|sprintf
 c_func
 (paren
@@ -1854,112 +1868,157 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* 1       */
-id|size
+id|len
 op_add_assign
+id|size
+suffix:semicolon
+id|size
+op_assign
 id|sprintf
 c_func
 (paren
 id|PROC_BUF
 comma
-l_string|&quot;Attached devices:&bslash;n&quot;
+l_string|&quot;SCSI device Information:&bslash;n&quot;
 )paren
+suffix:semicolon
+id|len
+op_add_assign
+id|size
 suffix:semicolon
 multiline_comment|/* scan for all equipment stats */
 r_for
 c_loop
 (paren
-id|targ_lun
+id|b
 op_assign
 l_int|0
 suffix:semicolon
-id|targ_lun
+id|b
 OL
-id|MAX_EQ
+id|MAX_BUSES
 suffix:semicolon
-id|targ_lun
+id|b
+op_increment
+)paren
+r_for
+c_loop
+(paren
+id|t
+op_assign
+l_int|0
+suffix:semicolon
+id|t
+OL
+id|MAX_TARGETS
+suffix:semicolon
+id|t
 op_increment
 )paren
 (brace
+r_for
+c_loop
+(paren
+id|l
+op_assign
+l_int|0
+suffix:semicolon
+id|l
+OL
+id|MAX_LUNS
+suffix:semicolon
+id|l
+op_increment
+)paren
+(brace
+id|up
+op_assign
+id|LU_Q
+c_func
+(paren
+id|ha
+comma
+id|b
+comma
+id|t
+comma
+id|l
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|up
-op_assign
-id|ha-&gt;dev
-(braket
-id|targ_lun
-)braket
-)paren
 op_eq
 l_int|NULL
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
+multiline_comment|/* unused device/lun */
 r_if
 c_cond
 (paren
 id|up-&gt;io_cnt
 op_eq
 l_int|0
+op_logical_or
+id|up-&gt;io_cnt
+OL
+l_int|2
 )paren
-(brace
-id|size
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|PROC_BUF
-comma
-l_string|&quot;(%2d:%2d:%2d) No stats&bslash;n&quot;
-comma
-id|LUN_ID
-)paren
-suffix:semicolon
 r_continue
 suffix:semicolon
-)brace
 multiline_comment|/* total reads since boot */
 multiline_comment|/* total writes since boot */
 multiline_comment|/* total requests since boot  */
 id|size
-op_add_assign
+op_assign
 id|sprintf
-c_func
 (paren
 id|PROC_BUF
 comma
-l_string|&quot;Total requests %ld,&quot;
+l_string|&quot;(%2d:%2d:%2d): Total reqs %ld,&quot;
+comma
+id|b
+comma
+id|t
+comma
+id|l
 comma
 id|up-&gt;io_cnt
 )paren
 suffix:semicolon
+id|len
+op_add_assign
+id|size
+suffix:semicolon
 multiline_comment|/* current number of pending requests */
 id|size
-op_add_assign
+op_assign
 id|sprintf
 c_func
 (paren
 id|PROC_BUF
 comma
-l_string|&quot;(%2d:%2d:%2d) pending requests %d,&quot;
-comma
-id|LUN_ID
+l_string|&quot; Pend reqs %d,&quot;
 comma
 id|up-&gt;q_outcnt
 )paren
 suffix:semicolon
+id|len
+op_add_assign
+id|size
+suffix:semicolon
+macro_line|#if 0
 multiline_comment|/* avg response time */
 id|size
-op_add_assign
+op_assign
 id|sprintf
 c_func
 (paren
 id|PROC_BUF
 comma
-l_string|&quot;Avg response time %ld%%,&quot;
+l_string|&quot; Avg resp time %ld%%,&quot;
 comma
 (paren
 id|up-&gt;resp_time
@@ -1970,15 +2029,19 @@ op_star
 l_int|100
 )paren
 suffix:semicolon
+id|len
+op_add_assign
+id|size
+suffix:semicolon
 multiline_comment|/* avg active time */
 id|size
-op_add_assign
+op_assign
 id|sprintf
 c_func
 (paren
 id|PROC_BUF
 comma
-l_string|&quot;Avg active time %ld%%&bslash;n&quot;
+l_string|&quot; Avg active time %ld%%&bslash;n&quot;
 comma
 (paren
 id|up-&gt;act_time
@@ -1989,11 +2052,37 @@ op_star
 l_int|100
 )paren
 suffix:semicolon
+macro_line|#else
+id|size
+op_assign
+id|sprintf
+c_func
+(paren
+id|PROC_BUF
+comma
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+id|len
+op_add_assign
+id|size
+suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-id|size
+id|len
+op_ge
+id|qla1280_buffer_size
+)paren
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|len
 op_ge
 id|qla1280_buffer_size
 )paren
@@ -2011,14 +2100,18 @@ c_cond
 (paren
 id|offset
 OG
-id|size
+id|len
 op_minus
 l_int|1
 )paren
 (brace
-id|kfree
+id|free_page
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|qla1280_buffer
 )paren
 suffix:semicolon
@@ -2053,7 +2146,7 @@ multiline_comment|/* Start of wanted data */
 r_if
 c_cond
 (paren
-id|size
+id|len
 op_minus
 id|offset
 OL
@@ -2062,328 +2155,79 @@ id|length
 (brace
 id|length
 op_assign
-id|size
+id|len
 op_minus
 id|offset
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 r_return
-(paren
 id|length
-)paren
 suffix:semicolon
+macro_line|#else
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#endif
 )brace
-multiline_comment|/**************************************************************************&n; * qla1280_detect&n; *    This routine will probe for Qlogic 1280 SCSI host adapters.&n; *    It returns the number of host adapters of a particular&n; *    type that were found.&t; It also initialize all data necessary for &n; *    the driver.  It is passed-in the host number, so that it&n; *    knows where its first entry is in the scsi_hosts[] array.&n; *&n; * Input:&n; *     template - pointer to SCSI template&n; *&n; * Returns:&n; *  num - number of host adapters found.  &n; **************************************************************************/
-r_int
-DECL|function|qla1280_detect
-id|qla1280_detect
+multiline_comment|/**************************************************************************&n; * qla1280_do_device_init&n; *    This routine will register the device with the SCSI subsystem,&n; *    initialize the host adapter structure and call the device init&n; *    routines.&n; *&n; * Input:&n; *     pdev      - pointer to struct pci_dev for adapter&n; *     template  - pointer to SCSI template&n; *     devnum    - the device number&n; *     bdp       - pointer to struct _qlaboards&n; *     num_hosts - the host number&n; *&n; * Returns:&n; *  host - pointer to SCSI host structure&n; **************************************************************************/
+r_struct
+id|Scsi_Host
+op_star
+DECL|function|qla1280_do_device_init
+id|qla1280_do_device_init
 c_func
 (paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
 id|Scsi_Host_Template
 op_star
 r_template
-)paren
-(brace
+comma
+r_int
+id|devnum
+comma
+r_struct
+id|qla_boards
+op_star
+id|bdp
+comma
 r_int
 id|num_hosts
-op_assign
-l_int|0
-suffix:semicolon
+)paren
+(brace
 r_struct
 id|Scsi_Host
 op_star
 id|host
 suffix:semicolon
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
-comma
-op_star
-id|cur_ha
 suffix:semicolon
 r_struct
-id|_qlaboards
-op_star
-id|bdp
-suffix:semicolon
-r_int
-id|i
-comma
-id|j
-suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,1,95)
-r_int
-r_int
-id|piobase
-suffix:semicolon
-r_int
-r_char
-id|pci_bus
-comma
-id|pci_devfn
-comma
-id|pci_irq
-suffix:semicolon
-id|config_reg_t
-op_star
-id|cfgp
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
-id|device_reg_t
+id|device_reg
 op_star
 id|reg
 suffix:semicolon
-r_char
-op_star
-id|cp
-suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,1,95)
-r_struct
-id|pci_dev
-op_star
-id|pdev
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#else
-r_int
-id|index
-suffix:semicolon
-macro_line|#endif
-id|ENTER
-c_func
-(paren
-l_string|&quot;qla1280_detect&quot;
-)paren
-suffix:semicolon
-macro_line|#ifdef CHECKSRBSIZE
-r_if
-c_cond
-(paren
-r_sizeof
-(paren
-id|srb_t
-)paren
-OG
-r_sizeof
-(paren
-id|Scsi_Pointer
-)paren
-)paren
-(brace
 id|printk
 c_func
 (paren
-l_string|&quot;Redefine SRB - its too big&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#ifdef MODULE
-id|DEBUG
-c_func
-(paren
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_string|&quot;qla1x160: Initializing ISP12160 on PCI bus %i, dev %i&bslash;n&quot;
 comma
-l_string|&quot;DEBUG: qla1280_detect starts at address = %p&bslash;n&quot;
+id|pdev-&gt;bus-&gt;number
 comma
-id|qla1280_detect
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
+id|PCI_SLOT
 c_func
 (paren
-id|qla1280_print
-c_func
-(paren
-id|debug_buff
+id|pdev-&gt;devfn
+)paren
 )paren
 suffix:semicolon
-)paren
-multiline_comment|/*&n;    * If we are called as a module, the qla1280 pointer may not be null&n;    * and it would point to our bootup string, just like on the lilo&n;    * command line.  IF not NULL, then process this config string with&n;    * qla1280_setup&n;    *&n;    * Boot time Options&n;    * To add options at boot time add a line to your lilo.conf file like:&n;    * append=&quot;qla1280=verbose,max_tags:{{255,255,255,255},{255,255,255,255}}&quot;&n;    * which will result in the first four devices on the first two&n;    * controllers being set to a tagged queue depth of 32.&n;    */
-r_if
-c_cond
-(paren
-id|options
-)paren
-(brace
-id|qla1280_setup
-c_func
-(paren
-id|options
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|dummy_buffer
-(braket
-l_int|0
-)braket
-op_ne
-l_char|&squot;P&squot;
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;qla1280: Please read the file /usr/src/linux/drivers&quot;
-l_string|&quot;/scsi/README.qla1280&bslash;n&quot;
-l_string|&quot;qla1280: to see the proper way to specify options to the qla1280 &quot;
-l_string|&quot;module&bslash;n&quot;
-l_string|&quot;qla1280: Specifically, don&squot;t use any commas when passing arguments to&bslash;n&quot;
-l_string|&quot;qla1280: insmod or else it might trash certain memory areas.&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-r_if
-c_cond
-(paren
-(paren
-r_int
-)paren
-op_logical_neg
-id|pcibios_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;scsi: PCI not present&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* end of IF */
-id|bdp
-op_assign
-op_amp
-id|QLBoardTbl
-(braket
-l_int|0
-)braket
-suffix:semicolon
-id|qla1280_hostlist
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#if 0
-r_template
-op_member_access_from_pointer
-id|proc_dir
-op_assign
-op_amp
-id|proc_scsi_qla1280
-suffix:semicolon
-macro_line|#else
-r_template
-op_member_access_from_pointer
-id|proc_name
-op_assign
-l_string|&quot;qla1280&quot;
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Try and find each different type of adapter we support */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|bdp-&gt;device_id
-op_ne
-l_int|0
-op_logical_and
-id|i
-OL
-id|NUM_OF_ISP_DEVICES
-suffix:semicolon
-id|i
-op_increment
-comma
-id|bdp
-op_increment
-)paren
-(brace
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,1,95)
-r_while
-c_loop
-(paren
-(paren
-id|pdev
-op_assign
-id|pci_find_device
-c_func
-(paren
-id|QLA1280_VENDOR_ID
-comma
-id|bdp-&gt;device_id
-comma
-id|pdev
-)paren
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pci_enable_device
-c_func
-(paren
-id|pdev
-)paren
-)paren
-r_continue
-suffix:semicolon
-macro_line|#else
-r_while
-c_loop
-(paren
-op_logical_neg
-(paren
-id|pcibios_find_device
-c_func
-(paren
-id|QLA1280_VENDOR_ID
-comma
-id|bdp-&gt;device_id
-comma
-id|index
-op_increment
-comma
-op_amp
-id|pci_bus
-comma
-op_amp
-id|pci_devfn
-)paren
-)paren
-)paren
-(brace
-macro_line|#endif
-multiline_comment|/* found a adapter */
 id|host
 op_assign
 id|scsi_register
@@ -2393,7 +2237,8 @@ r_template
 comma
 r_sizeof
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 )paren
 )paren
 suffix:semicolon
@@ -2411,8 +2256,8 @@ id|KERN_WARNING
 l_string|&quot;qla1280: Failed to register host, aborting.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|error
 suffix:semicolon
 )brace
 id|scsi_set_pci_device
@@ -2426,59 +2271,31 @@ suffix:semicolon
 id|ha
 op_assign
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 id|host-&gt;hostdata
 suffix:semicolon
 multiline_comment|/* Clear our data area */
-r_for
-c_loop
+id|memset
+c_func
 (paren
-id|j
-op_assign
+id|ha
+comma
 l_int|0
 comma
-id|cp
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|ha
-suffix:semicolon
-id|j
-OL
 r_sizeof
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
+)paren
 )paren
 suffix:semicolon
-id|j
-op_increment
-)paren
-(brace
-op_star
-id|cp
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* Sanitize the information from PCI BIOS.  */
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,1,95)
 id|host-&gt;irq
 op_assign
 id|pdev-&gt;irq
-suffix:semicolon
-id|host-&gt;io_port
-op_assign
-id|pci_resource_start
-c_func
-(paren
-id|pdev
-comma
-l_int|0
-)paren
 suffix:semicolon
 id|ha-&gt;pci_bus
 op_assign
@@ -2492,74 +2309,15 @@ id|ha-&gt;pdev
 op_assign
 id|pdev
 suffix:semicolon
-macro_line|#else
-id|pcibios_read_config_byte
-c_func
-(paren
-id|pci_bus
-comma
-id|pci_devfn
-comma
-id|OFFSET
-c_func
-(paren
-id|cfgp-&gt;interrupt_line
-)paren
-comma
-op_amp
-id|pci_irq
-)paren
-suffix:semicolon
-id|pcibios_read_config_dword
-c_func
-(paren
-id|pci_bus
-comma
-id|pci_devfn
-comma
-id|OFFSET
-c_func
-(paren
-id|cfgp-&gt;base_port
-)paren
-comma
-op_amp
-id|piobase
-)paren
-suffix:semicolon
-id|host-&gt;irq
-op_assign
-id|pci_irq
-suffix:semicolon
-id|host-&gt;io_port
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|piobase
-suffix:semicolon
-id|host-&gt;io_port
-op_and_assign
-id|PCI_BASE_ADDRESS_IO_MASK
-suffix:semicolon
-id|ha-&gt;pci_bus
-op_assign
-id|pci_bus
-suffix:semicolon
-id|ha-&gt;pci_device_fn
-op_assign
-id|pci_devfn
-suffix:semicolon
-macro_line|#endif
 id|ha-&gt;device_id
 op_assign
 id|bdp-&gt;device_id
 suffix:semicolon
 id|ha-&gt;devnum
 op_assign
-id|i
+id|devnum
 suffix:semicolon
+multiline_comment|/* specifies microcode load address */
 r_if
 c_cond
 (paren
@@ -2574,22 +2332,18 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;qla1280: Failed to allocate memory for adapter&bslash;n&quot;
+l_string|&quot;qla1x160: Failed to get memory&bslash;n&quot;
 )paren
+suffix:semicolon
+r_goto
+id|error
 suffix:semicolon
 )brace
 id|ha-&gt;ports
 op_assign
 id|bdp-&gt;numPorts
 suffix:semicolon
-id|ha-&gt;iobase
-op_assign
-(paren
-id|device_reg_t
-op_star
-)paren
-id|host-&gt;io_port
-suffix:semicolon
+multiline_comment|/* following needed for all cases of OS versions */
 id|ha-&gt;host
 op_assign
 id|host
@@ -2597,6 +2351,183 @@ suffix:semicolon
 id|ha-&gt;host_no
 op_assign
 id|host-&gt;host_no
+suffix:semicolon
+id|host-&gt;can_queue
+op_assign
+l_int|0xfffff
+suffix:semicolon
+multiline_comment|/* unlimited  */
+id|host-&gt;cmd_per_lun
+op_assign
+l_int|1
+suffix:semicolon
+id|host-&gt;select_queue_depths
+op_assign
+id|qla1280_select_queue_depth
+suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,18)
+id|host-&gt;base
+op_assign
+(paren
+r_int
+r_char
+op_star
+)paren
+id|ha-&gt;mmpbase
+suffix:semicolon
+macro_line|#else
+id|host-&gt;base
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|ha-&gt;mmpbase
+suffix:semicolon
+macro_line|#endif
+id|host-&gt;max_channel
+op_assign
+id|bdp-&gt;numPorts
+op_minus
+l_int|1
+suffix:semicolon
+id|host-&gt;max_lun
+op_assign
+id|MAX_LUNS
+op_minus
+l_int|1
+suffix:semicolon
+id|host-&gt;max_id
+op_assign
+id|MAX_TARGETS
+suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,7)
+id|host-&gt;max_sectors
+op_assign
+l_int|1024
+suffix:semicolon
+macro_line|#endif
+id|ha-&gt;instance
+op_assign
+id|num_hosts
+suffix:semicolon
+id|host-&gt;unique_id
+op_assign
+id|ha-&gt;instance
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|qla1280_pci_config
+c_func
+(paren
+id|ha
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;qla1x160: Unable to configure PCI&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|error_mem_alloced
+suffix:semicolon
+)brace
+multiline_comment|/* Disable ISP interrupts. */
+id|qla1280_disable_intrs
+c_func
+(paren
+id|ha
+)paren
+suffix:semicolon
+multiline_comment|/* Register the IRQ with Linux (sharable) */
+r_if
+c_cond
+(paren
+id|request_irq
+c_func
+(paren
+id|host-&gt;irq
+comma
+id|qla1280_intr_handler
+comma
+id|SA_SHIRQ
+comma
+l_string|&quot;qla1280&quot;
+comma
+id|ha
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;qla1280 : Failed to reserve interrupt %d already &quot;
+l_string|&quot;in use&bslash;n&quot;
+comma
+id|host-&gt;irq
+)paren
+suffix:semicolon
+r_goto
+id|error_mem_alloced
+suffix:semicolon
+)brace
+macro_line|#if !MEMORY_MAPPED_IO
+multiline_comment|/* Register the I/O space with Linux */
+r_if
+c_cond
+(paren
+id|check_region
+c_func
+(paren
+id|host-&gt;io_port
+comma
+l_int|0xff
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;qla1280 : Failed to reserve i/o region 0x%04lx-0x%04lx&quot;
+l_string|&quot; already in use&bslash;n&quot;
+comma
+id|host-&gt;io_port
+comma
+id|host-&gt;io_port
+op_plus
+l_int|0xff
+)paren
+suffix:semicolon
+id|free_irq
+c_func
+(paren
+id|host-&gt;irq
+comma
+id|ha
+)paren
+suffix:semicolon
+r_goto
+id|error_mem_alloced
+suffix:semicolon
+)brace
+id|request_region
+c_func
+(paren
+id|host-&gt;io_port
+comma
+l_int|0xff
+comma
+l_string|&quot;qla1280&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+id|reg
+op_assign
+id|ha-&gt;iobase
 suffix:semicolon
 multiline_comment|/* load the F/W, read paramaters, and init the H/W */
 r_if
@@ -2613,46 +2544,181 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;qla1280: Failed to initialized adapter&bslash;n&quot;
+l_string|&quot;qla1x160:Failed to initialize adapter&bslash;n&quot;
 )paren
 suffix:semicolon
+r_goto
+id|error_mem_alloced
+suffix:semicolon
+)brace
+multiline_comment|/* set our host ID  (need to do something about our two IDs) */
+id|host-&gt;this_id
+op_assign
+id|ha-&gt;bus_settings
+(braket
+l_int|0
+)braket
+dot
+id|id
+suffix:semicolon
+r_return
+id|host
+suffix:semicolon
+id|error_mem_alloced
+suffix:colon
 id|qla1280_mem_free
 c_func
 (paren
 id|ha
 )paren
 suffix:semicolon
+id|error
+suffix:colon
+r_if
+c_cond
+(paren
+id|host
+)paren
+(brace
 id|scsi_unregister
 c_func
 (paren
 id|host
 )paren
 suffix:semicolon
-r_continue
+)brace
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
-id|host-&gt;max_channel
+multiline_comment|/**************************************************************************&n; * qla1280_detect&n; *    This routine will probe for Qlogic 1280 SCSI host adapters.&n; *    It returns the number of host adapters of a particular&n; *    type that were found.&t; It also initialize all data necessary for&n; *    the driver.  It is passed-in the host number, so that it&n; *    knows where its first entry is in the scsi_hosts[] array.&n; *&n; * Input:&n; *     template - pointer to SCSI template&n; *&n; * Returns:&n; *  num - number of host adapters found.&n; **************************************************************************/
+r_int
+DECL|function|qla1280_detect
+id|qla1280_detect
+c_func
+(paren
+id|Scsi_Host_Template
+op_star
+r_template
+)paren
+(brace
+r_struct
+id|pci_dev
+op_star
+id|pdev
 op_assign
-id|bdp-&gt;numPorts
-op_minus
-l_int|1
+l_int|NULL
 suffix:semicolon
-id|ha-&gt;instance
-op_assign
+r_struct
+id|Scsi_Host
+op_star
+id|host
+suffix:semicolon
+r_struct
+id|scsi_qla_host
+op_star
+id|ha
+comma
+op_star
+id|cur_ha
+suffix:semicolon
+r_struct
+id|qla_boards
+op_star
+id|bdp
+suffix:semicolon
+r_uint16
+id|subsys_vendor
+comma
+id|subsys_device
+suffix:semicolon
+r_int
 id|num_hosts
+op_assign
+l_int|0
 suffix:semicolon
-multiline_comment|/* Register our resources with Linux */
+r_int
+id|devnum
+op_assign
+l_int|0
+suffix:semicolon
+id|ENTER
+c_func
+(paren
+l_string|&quot;qla1280_detect&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|qla1280_register_with_Linux
+r_sizeof
+(paren
+id|srb_t
+)paren
+OG
+r_sizeof
+(paren
+id|Scsi_Pointer
+)paren
+)paren
+(brace
+id|printk
 c_func
 (paren
-id|ha
-comma
-id|bdp-&gt;numPorts
-op_minus
+id|KERN_WARNING
+l_string|&quot;qla1280_detect: [WARNING] srb_t too big&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#ifdef MODULE
+id|dprintk
+c_func
+(paren
 l_int|1
+comma
+l_string|&quot;DEBUG: qla1280_detect starts at address = %p&bslash;n&quot;
+comma
+id|qla1280_detect
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * If we are called as a module, the qla1280 pointer may not be null&n;&t; * and it would point to our bootup string, just like on the lilo&n;&t; * command line.  IF not NULL, then process this config string with&n;&t; * qla1280_setup&n;&t; *&n;&t; * Boot time Options&n;&t; * To add options at boot time add a line to your lilo.conf file like:&n;&t; * append=&quot;qla1280=verbose,max_tags:{{255,255,255,255},{255,255,255,255}}&quot;&n;&t; * which will result in the first four devices on the first two&n;&t; * controllers being set to a tagged queue depth of 32.&n;&t; */
+r_if
+c_cond
+(paren
+id|options
+)paren
+id|qla1280_setup
+c_func
+(paren
+id|options
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;qla1280: Please read the file /usr/src/linux/drivers&quot;
+l_string|&quot;/scsi/README.qla1280&bslash;n&quot;
+l_string|&quot;qla1280: to see the proper way to specify options to the qla1280 &quot;
+l_string|&quot;module&bslash;n&quot;
+l_string|&quot;qla1280: Specifically, don&squot;t use any commas when passing &quot;
+l_string|&quot;arguments to&bslash;n&quot;
+l_string|&quot;qla1280: insmod or else it might trash certain memory areas.&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pci_present
+c_func
+(paren
 )paren
 )paren
 (brace
@@ -2660,74 +2726,354 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;qla1280: Failed to register our resources&bslash;n&quot;
+l_string|&quot;scsi: PCI not present&bslash;n&quot;
 )paren
 suffix:semicolon
-id|qla1280_mem_free
-c_func
-(paren
-id|ha
-)paren
+r_return
+l_int|0
 suffix:semicolon
-id|scsi_unregister
+)brace
+id|bdp
+op_assign
+op_amp
+id|ql1280_board_tbl
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|qla1280_hostlist
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,18)
+r_template
+op_member_access_from_pointer
+id|proc_dir
+op_assign
+op_amp
+id|proc_scsi_qla1280
+suffix:semicolon
+macro_line|#else
+r_template
+op_member_access_from_pointer
+id|proc_name
+op_assign
+l_string|&quot;qla1280&quot;
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* 3.20 */
+multiline_comment|/* First Initialize QLA12160 on PCI Bus 1 Dev 2 */
+r_while
+c_loop
+(paren
+(paren
+id|pdev
+op_assign
+id|pci_find_subsys
 c_func
 (paren
-id|host
+id|PCI_VENDOR_ID_QLOGIC
+comma
+id|bdp-&gt;device_id
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|pdev
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/* find QLA12160 device on PCI bus=1 slot=2 */
+r_if
+c_cond
+(paren
+(paren
+id|pdev-&gt;bus-&gt;number
+op_ne
+l_int|1
+)paren
+op_logical_or
+(paren
+id|PCI_SLOT
+c_func
+(paren
+id|pdev-&gt;devfn
+)paren
+op_ne
+l_int|2
+)paren
+)paren
+r_continue
+suffix:semicolon
+multiline_comment|/* Bypass all AMI SUBSYS VENDOR IDs */
+r_if
+c_cond
+(paren
+id|pdev-&gt;subsystem_vendor
+op_eq
+id|PCI_VENDOR_ID_AMI
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;qla1x160: Skip AMI SubSys Vendor ID Chip&bslash;n&quot;
 )paren
 suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|reg
+r_if
+c_cond
+(paren
+id|pci_enable_device
+c_func
+(paren
+id|pdev
+)paren
+)paren
+r_goto
+id|find_devices
+suffix:semicolon
+id|host
 op_assign
-id|ha-&gt;iobase
-suffix:semicolon
-multiline_comment|/* Disable ISP interrupts. */
-id|qla1280_disable_intrs
+id|qla1280_do_device_init
 c_func
 (paren
+id|pdev
+comma
+r_template
+comma
+id|devnum
+comma
+id|bdp
+comma
+id|num_hosts
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|host
+)paren
+r_continue
+suffix:semicolon
 id|ha
-)paren
-suffix:semicolon
-multiline_comment|/* Insure mailbox registers are free. */
-id|WRT_REG_WORD
-c_func
+op_assign
 (paren
-op_amp
-id|reg-&gt;semaphore
-comma
-l_int|0
+r_struct
+id|scsi_qla_host
+op_star
 )paren
+id|host-&gt;hostdata
 suffix:semicolon
-id|WRT_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;host_cmd
-comma
-id|HC_CLR_RISC_INT
-)paren
-suffix:semicolon
-id|WRT_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;host_cmd
-comma
-id|HC_CLR_HOST_INT
-)paren
-suffix:semicolon
-multiline_comment|/* Enable chip interrupts. */
-id|qla1280_enable_intrs
-c_func
-(paren
+multiline_comment|/* this preferred device will always be the first one found */
+id|cur_ha
+op_assign
+id|qla1280_hostlist
+op_assign
 id|ha
-)paren
 suffix:semicolon
-multiline_comment|/* Insert new entry into the list of adapters */
-id|ha-&gt;next
+id|num_hosts
+op_increment
+suffix:semicolon
+)brace
+id|find_devices
+suffix:colon
+id|pdev
 op_assign
 l_int|NULL
+suffix:semicolon
+multiline_comment|/* Try and find each different type of adapter we support */
+r_for
+c_loop
+(paren
+id|devnum
+op_assign
+l_int|0
+suffix:semicolon
+id|bdp-&gt;device_id
+op_ne
+l_int|0
+op_logical_and
+id|devnum
+OL
+id|NUM_OF_ISP_DEVICES
+suffix:semicolon
+id|devnum
+op_increment
+comma
+id|bdp
+op_increment
+)paren
+(brace
+multiline_comment|/* PCI_SUBSYSTEM_IDS supported */
+r_while
+c_loop
+(paren
+(paren
+id|pdev
+op_assign
+id|pci_find_subsys
+c_func
+(paren
+id|PCI_VENDOR_ID_QLOGIC
+comma
+id|bdp-&gt;device_id
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|pdev
+)paren
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pci_enable_device
+c_func
+(paren
+id|pdev
+)paren
+)paren
+r_continue
+suffix:semicolon
+multiline_comment|/* found an adapter */
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,18)
+id|subsys_vendor
+op_assign
+id|pdev-&gt;subsystem_vendor
+suffix:semicolon
+id|subsys_device
+op_assign
+id|pdev-&gt;subsystem_device
+suffix:semicolon
+macro_line|#else
+id|pci_read_config_word
+c_func
+(paren
+id|pdev
+comma
+id|PCI_SUBSYSTEM_VENDOR_ID
+comma
+op_amp
+id|subsys_vendor
+)paren
+suffix:semicolon
+id|pci_read_config_word
+c_func
+(paren
+id|pdev
+comma
+id|PCI_SUBSYSTEM_ID
+comma
+op_amp
+id|subsys_device
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/*&n;&t;&t;&t; * skip QLA12160 already initialized on&n;&t;&t;&t; * PCI Bus 1 Dev 2 since we already initialized&n;&t;&t;&t; * and presented it&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|bdp-&gt;device_id
+op_eq
+id|PCI_DEVICE_ID_QLOGIC_ISP12160
+)paren
+op_logical_and
+(paren
+id|pdev-&gt;bus-&gt;number
+op_eq
+l_int|1
+)paren
+op_logical_and
+(paren
+id|PCI_SLOT
+c_func
+(paren
+id|pdev-&gt;devfn
+)paren
+op_eq
+l_int|2
+)paren
+)paren
+r_continue
+suffix:semicolon
+multiline_comment|/* Bypass all AMI SUBSYS VENDOR IDs */
+r_if
+c_cond
+(paren
+id|subsys_vendor
+op_eq
+id|PCI_VENDOR_ID_AMI
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;qla1x160: Skip AMI SubSys Vendor ID Chip&bslash;n&quot;
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;qla1x160: Supported Device Found VID=%x &quot;
+l_string|&quot;DID=%x SSVID=%x SSDID=%x&bslash;n&quot;
+comma
+id|pdev-&gt;vendor
+comma
+id|pdev-&gt;device
+comma
+id|subsys_vendor
+comma
+id|subsys_device
+)paren
+suffix:semicolon
+id|host
+op_assign
+id|qla1280_do_device_init
+c_func
+(paren
+id|pdev
+comma
+r_template
+comma
+id|devnum
+comma
+id|bdp
+comma
+id|num_hosts
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|host
+)paren
+r_continue
+suffix:semicolon
+id|ha
+op_assign
+(paren
+r_struct
+id|scsi_qla_host
+op_star
+)paren
+id|host-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond
@@ -2757,12 +3103,10 @@ id|cur_ha-&gt;next
 op_ne
 l_int|NULL
 )paren
-(brace
 id|cur_ha
 op_assign
 id|cur_ha-&gt;next
 suffix:semicolon
-)brace
 id|cur_ha-&gt;next
 op_assign
 id|ha
@@ -2785,193 +3129,6 @@ r_return
 id|num_hosts
 suffix:semicolon
 )brace
-multiline_comment|/**************************************************************************&n;*   qla1280_register_with_Linux&n;*&n;* Description:&n;*   Free the passed in Scsi_Host memory structures prior to unloading the&n;*   module.&n;*&n;* Input:&n;*     ha - pointer to host adapter structure&n;*     maxchannels - MAX number of channels.&n;*&n;* Returns:&n;*  0 - Sucessfully reserved resources.&n;*  1 - Failed to reserved a resource.&n;**************************************************************************/
-DECL|function|qla1280_register_with_Linux
-id|STATIC
-r_uint8
-id|qla1280_register_with_Linux
-c_func
-(paren
-id|scsi_qla_host_t
-op_star
-id|ha
-comma
-r_uint8
-id|maxchannels
-)paren
-(brace
-r_struct
-id|Scsi_Host
-op_star
-id|host
-op_assign
-id|ha-&gt;host
-suffix:semicolon
-id|host-&gt;can_queue
-op_assign
-l_int|0xfffff
-suffix:semicolon
-multiline_comment|/* unlimited  */
-id|host-&gt;cmd_per_lun
-op_assign
-l_int|1
-suffix:semicolon
-id|host-&gt;select_queue_depths
-op_assign
-id|qla1280_select_queue_depth
-suffix:semicolon
-id|host-&gt;n_io_port
-op_assign
-l_int|0xFF
-suffix:semicolon
-id|host-&gt;base
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|ha-&gt;mmpbase
-suffix:semicolon
-id|host-&gt;max_channel
-op_assign
-id|maxchannels
-suffix:semicolon
-id|host-&gt;max_lun
-op_assign
-id|MAX_LUNS
-op_minus
-l_int|1
-suffix:semicolon
-id|host-&gt;unique_id
-op_assign
-id|ha-&gt;instance
-suffix:semicolon
-id|host-&gt;max_id
-op_assign
-id|MAX_TARGETS
-suffix:semicolon
-id|host-&gt;unique_id
-op_assign
-id|ha-&gt;instance
-suffix:semicolon
-multiline_comment|/* set our host ID  (need to do something about our two IDs) */
-id|host-&gt;this_id
-op_assign
-id|ha-&gt;bus_settings
-(braket
-l_int|0
-)braket
-dot
-id|id
-suffix:semicolon
-multiline_comment|/* Register the IRQ with Linux (sharable) */
-r_if
-c_cond
-(paren
-id|request_irq
-c_func
-(paren
-id|host-&gt;irq
-comma
-id|qla1280_intr_handler
-comma
-id|SA_INTERRUPT
-op_or
-id|SA_SHIRQ
-comma
-l_string|&quot;qla1280&quot;
-comma
-id|ha
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;qla1280 : Failed to reserved interrupt %d already in use&bslash;n&quot;
-comma
-id|host-&gt;irq
-)paren
-suffix:semicolon
-id|qla1280_mem_free
-c_func
-(paren
-id|ha
-)paren
-suffix:semicolon
-id|scsi_unregister
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/* Register the I/O space with Linux */
-r_if
-c_cond
-(paren
-id|check_region
-c_func
-(paren
-id|host-&gt;io_port
-comma
-l_int|0xff
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;qla1280 : Failed to reserved i/o region 0x%04lx-0x%04lx already in use&bslash;n&quot;
-comma
-id|host-&gt;io_port
-comma
-id|host-&gt;io_port
-op_plus
-l_int|0xff
-)paren
-suffix:semicolon
-id|free_irq
-c_func
-(paren
-id|host-&gt;irq
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|qla1280_mem_free
-c_func
-(paren
-id|ha
-)paren
-suffix:semicolon
-id|scsi_unregister
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|request_region
-c_func
-(paren
-id|host-&gt;io_port
-comma
-l_int|0xff
-comma
-l_string|&quot;qla1280&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/**************************************************************************&n; *   qla1280_release&n; *   Free the passed in Scsi_Host memory structures prior to unloading the&n; *   module.&n; **************************************************************************/
 r_int
 DECL|function|qla1280_release
@@ -2984,12 +3141,14 @@ op_star
 id|host
 )paren
 (brace
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 op_assign
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 id|host-&gt;hostdata
@@ -3006,11 +3165,9 @@ c_cond
 op_logical_neg
 id|ha-&gt;flags.online
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 multiline_comment|/* turn-off interrupts on the card */
 id|WRT_REG_WORD
 c_func
@@ -3027,7 +3184,6 @@ c_cond
 (paren
 id|host-&gt;irq
 )paren
-(brace
 id|free_irq
 c_func
 (paren
@@ -3036,52 +3192,12 @@ comma
 id|ha
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* release io space registers  */
-r_if
-c_cond
-(paren
-id|host-&gt;io_port
-)paren
-(brace
-id|release_region
-c_func
-(paren
-id|host-&gt;io_port
-comma
-l_int|0xff
-)paren
-suffix:semicolon
-)brace
 macro_line|#if MEMORY_MAPPED_IO
 r_if
 c_cond
 (paren
 id|ha-&gt;mmpbase
 )paren
-(brace
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,0)
-id|vfree
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-(paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|ha-&gt;mmpbase
-)paren
-op_amp
-id|PAGE_MASK
-)paren
-)paren
-suffix:semicolon
-macro_line|#else
 id|iounmap
 c_func
 (paren
@@ -3102,9 +3218,22 @@ id|PAGE_MASK
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
-)brace
-macro_line|#endif /* MEMORY_MAPPED_IO */
+macro_line|#else
+multiline_comment|/* release io space registers  */
+r_if
+c_cond
+(paren
+id|host-&gt;io_port
+)paren
+id|release_region
+c_func
+(paren
+id|host-&gt;io_port
+comma
+l_int|0xff
+)paren
+suffix:semicolon
+macro_line|#endif&t;&t;&t;&t;/* MEMORY_MAPPED_IO */
 id|qla1280_mem_free
 c_func
 (paren
@@ -3137,7 +3266,7 @@ id|host
 (brace
 r_static
 r_char
-id|qla1280_buffer
+id|qla1280_scsi_name_buffer
 (braket
 l_int|125
 )braket
@@ -3146,18 +3275,20 @@ r_char
 op_star
 id|bp
 suffix:semicolon
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 suffix:semicolon
-id|qla_boards_t
+r_struct
+id|qla_boards
 op_star
 id|bdp
 suffix:semicolon
 id|bp
 op_assign
 op_amp
-id|qla1280_buffer
+id|qla1280_scsi_name_buffer
 (braket
 l_int|0
 )braket
@@ -3165,7 +3296,8 @@ suffix:semicolon
 id|ha
 op_assign
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 id|host-&gt;hostdata
@@ -3173,7 +3305,7 @@ suffix:semicolon
 id|bdp
 op_assign
 op_amp
-id|QLBoardTbl
+id|ql1280_board_tbl
 (braket
 id|ha-&gt;devnum
 )braket
@@ -3187,22 +3319,17 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|qla1280_buffer
+id|qla1280_scsi_name_buffer
 )paren
 )paren
 suffix:semicolon
 id|sprintf
-c_func
 (paren
 id|bp
 comma
-l_string|&quot;QLogic %sPCI to SCSI Host Adapter: bus %d device %d irq %d&bslash;n&quot;
+l_string|&quot;QLogic %s PCI to SCSI Host Adapter: bus %d device %d irq %d&bslash;n&quot;
 l_string|&quot;       Firmware version: %2d.%02d.%02d, Driver version %s&quot;
 comma
-(paren
-r_char
-op_star
-)paren
 op_amp
 id|bdp-&gt;bdName
 (braket
@@ -3264,7 +3391,8 @@ op_star
 )paren
 )paren
 (brace
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 suffix:semicolon
@@ -3272,44 +3400,23 @@ id|srb_t
 op_star
 id|sp
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,95)
-r_int
-r_int
-id|cpu_flags
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_struct
 id|Scsi_Host
 op_star
 id|host
 suffix:semicolon
-r_uint32
-id|b
+r_int
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 suffix:semicolon
 id|scsi_lu_t
 op_star
 id|q
 suffix:semicolon
-id|u_long
-id|handle
-suffix:semicolon
-id|ENTER
-c_func
-(paren
-l_string|&quot;qla1280_queuecommand&quot;
-)paren
-suffix:semicolon
-id|COMTRACE
-c_func
-(paren
-l_char|&squot;C&squot;
-)paren
+multiline_comment|/*ENTER(&quot;qla1280_queuecommand&quot;);&n;&t; */
 id|host
 op_assign
 id|cmd-&gt;host
@@ -3317,7 +3424,8 @@ suffix:semicolon
 id|ha
 op_assign
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 id|host-&gt;hostdata
@@ -3350,25 +3458,23 @@ id|cmd-&gt;flags
 op_eq
 l_int|0
 )paren
-multiline_comment|/* new command */
 (brace
+multiline_comment|/* new command */
 id|sp-&gt;flags
 op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|DEBUG5
-c_func
-(paren
 id|qla1280_print_scsi_cmd
 c_func
 (paren
+l_int|5
+comma
 id|cmd
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Generate LU queue on bus, target, LUN */
-id|b
+id|bus
 op_assign
 id|SCSI_BUS_32
 c_func
@@ -3376,7 +3482,7 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-id|t
+id|target
 op_assign
 id|SCSI_TCN_32
 c_func
@@ -3384,7 +3490,7 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-id|l
+id|lun
 op_assign
 id|SCSI_LUN_32
 c_func
@@ -3403,18 +3509,17 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 )paren
 )paren
 op_eq
 l_int|NULL
 )paren
 (brace
-id|DRIVER_LOCK
 r_if
 c_cond
 (paren
@@ -3425,7 +3530,7 @@ op_assign
 id|scsi_lu_t
 op_star
 )paren
-id|KMALLOC
+id|kmalloc
 c_func
 (paren
 r_sizeof
@@ -3433,6 +3538,8 @@ r_sizeof
 r_struct
 id|scsi_lu
 )paren
+comma
+id|GFP_ATOMIC
 )paren
 )paren
 )paren
@@ -3442,19 +3549,21 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 )paren
 op_assign
 id|q
 suffix:semicolon
-id|BZERO
+id|memset
 c_func
 (paren
 id|q
+comma
+l_int|0
 comma
 r_sizeof
 (paren
@@ -3463,31 +3572,20 @@ id|scsi_lu
 )paren
 )paren
 suffix:semicolon
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|sprintf
-c_func
+l_int|1
+comma
+l_string|&quot;Allocate new device queue 0x%p&bslash;n&quot;
+comma
 (paren
-id|debug_buff
-comma
-l_string|&quot;Allocate new device queue 0x%x&bslash;n&quot;
-comma
+r_void
+op_star
+)paren
 id|q
 )paren
-)paren
 suffix:semicolon
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-id|debug_buff
-)paren
-)paren
-suffix:semicolon
-id|DRIVER_UNLOCK
 )brace
 r_else
 (brace
@@ -3497,14 +3595,9 @@ c_func
 id|cmd
 )paren
 op_assign
-(paren
-r_int
-)paren
-(paren
 id|DID_BUS_BUSY
 op_lshift
 l_int|16
-)paren
 suffix:semicolon
 id|qla1280_done_q_put
 c_func
@@ -3518,6 +3611,19 @@ op_amp
 id|ha-&gt;done_q_last
 )paren
 suffix:semicolon
+multiline_comment|/* 3.22 */
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,0)&t;/* 3.22 */
+id|queue_task
+c_func
+(paren
+op_amp
+id|ha-&gt;run_qla_bh
+comma
+op_amp
+id|tq_scheduler
+)paren
+suffix:semicolon
+macro_line|#else&t;&t;&t;&t;/* 3.22 */
 id|schedule_task
 c_func
 (paren
@@ -3525,11 +3631,8 @@ op_amp
 id|ha-&gt;run_qla_bh
 )paren
 suffix:semicolon
-id|ha-&gt;flags.dpc_sched
-op_assign
-id|TRUE
-suffix:semicolon
-id|DRIVER_UNLOCK
+multiline_comment|/* 3.22 */
+macro_line|#endif&t;&t;&t;&t;/* 3.22 */
 r_return
 l_int|0
 suffix:semicolon
@@ -3537,10 +3640,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Set an invalid handle until we issue the command to ISP */
 multiline_comment|/* then we will set the real handle value.                 */
-id|handle
-op_assign
-id|INVALID_HANDLE
-suffix:semicolon
 id|CMD_HANDLE
 c_func
 (paren
@@ -3552,17 +3651,7 @@ r_int
 r_char
 op_star
 )paren
-id|handle
-suffix:semicolon
-multiline_comment|/* Bookkeeping information */
-id|sp-&gt;r_start
-op_assign
-id|jiffies
-suffix:semicolon
-multiline_comment|/* time the request was received */
-id|sp-&gt;u_start
-op_assign
-l_int|0
+id|INVALID_HANDLE
 suffix:semicolon
 multiline_comment|/* add the command to our queue */
 id|ha-&gt;qthreads
@@ -3576,34 +3665,26 @@ comma
 id|sp
 )paren
 suffix:semicolon
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280_queuecmd: queue pid=%d, hndl=0x%x&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280_QC: t=%x CDB=%x I/OSize=0x%x haQueueCount=0x%lx&bslash;n&quot;
 comma
-id|cmd-&gt;pid
+id|target
 comma
-id|handle
-)paren
-)paren
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-id|debug_buff
-)paren
+id|cmd-&gt;cmnd
+(braket
+l_int|0
+)braket
+comma
+id|cmd-&gt;request_bufflen
+comma
+id|ha-&gt;qthreads
 )paren
 suffix:semicolon
 multiline_comment|/* send command to adapter */
-id|DRIVER_LOCK
 r_if
 c_cond
 (paren
@@ -3617,17 +3698,9 @@ c_func
 id|ha
 )paren
 suffix:semicolon
-id|DRIVER_UNLOCK
-id|LEAVE
-c_func
-(paren
-l_string|&quot;qla1280_queuecommand&quot;
-)paren
-suffix:semicolon
+multiline_comment|/*LEAVE(&quot;qla1280_queuecommand&quot;); */
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n; *   qla1200_abort&n; *     Abort the speciifed SCSI command(s).&n; **************************************************************************/
@@ -3641,7 +3714,8 @@ op_star
 id|cmd
 )paren
 (brace
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 suffix:semicolon
@@ -3649,25 +3723,18 @@ id|srb_t
 op_star
 id|sp
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,95)
-r_int
-r_int
-id|cpu_flags
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_struct
 id|Scsi_Host
 op_star
 id|host
 suffix:semicolon
-r_uint32
-id|b
+r_int
+r_int
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 suffix:semicolon
 id|scsi_lu_t
 op_star
@@ -3686,10 +3753,12 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|u_long
+r_int
+r_char
+op_star
 id|handle
 suffix:semicolon
-id|u_short
+id|u16
 id|data
 suffix:semicolon
 id|ENTER
@@ -3698,15 +3767,11 @@ c_func
 l_string|&quot;qla1280_abort&quot;
 )paren
 suffix:semicolon
-id|COMTRACE
-c_func
-(paren
-l_char|&squot;A&squot;
-)paren
 id|ha
 op_assign
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 id|cmd-&gt;host-&gt;hostdata
@@ -3715,7 +3780,6 @@ id|host
 op_assign
 id|cmd-&gt;host
 suffix:semicolon
-id|DRIVER_LOCK
 multiline_comment|/* Get the SCSI request ptr */
 id|sp
 op_assign
@@ -3731,9 +3795,6 @@ id|cmd
 suffix:semicolon
 id|handle
 op_assign
-(paren
-id|u_long
-)paren
 id|CMD_HANDLE
 c_func
 (paren
@@ -3748,18 +3809,21 @@ id|qla1280_verbose
 id|printk
 c_func
 (paren
-l_string|&quot;scsi(%d): ABORT Command=0x%lx, handle=0x%lx&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;scsi(%li): ABORT Command=0x%p, handle=0x%p&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|ha-&gt;host_no
 comma
 (paren
-r_int
+r_void
+op_star
 )paren
 id|cmd
 comma
+(paren
+r_void
+op_star
+)paren
 id|handle
 )paren
 suffix:semicolon
@@ -3769,14 +3833,9 @@ c_cond
 (paren
 id|handle
 op_eq
-l_int|0L
+l_int|NULL
 )paren
 (brace
-id|COMTRACE
-c_func
-(paren
-l_char|&squot;a&squot;
-)paren
 multiline_comment|/* we never got this command */
 id|printk
 c_func
@@ -3785,7 +3844,6 @@ id|KERN_INFO
 l_string|&quot;qla1280: Aborting a NULL handle&bslash;n&quot;
 )paren
 suffix:semicolon
-id|DRIVER_UNLOCK
 r_return
 id|SCSI_ABORT_NOT_RUNNING
 suffix:semicolon
@@ -3800,19 +3858,13 @@ op_amp
 id|ha-&gt;iobase-&gt;istatus
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * The io_request_lock is held when the reset handler is called, hence&n;&t; * the interrupt handler cannot be running in parallel as it also&n;&t; * grabs the lock. No reason to play funny games with set_bit() in&n;&t; * order to test for interrupt handler entry as the driver used to&n;&t; * do here.&n;&t; * /Jes&n;&t; */
 r_if
 c_cond
-(paren
-op_logical_neg
-(paren
-id|ha-&gt;flags.in_isr
-)paren
-op_logical_and
 (paren
 id|data
 op_amp
 id|RISC_INT
-)paren
 )paren
 (brace
 multiline_comment|/* put any pending command in done queue */
@@ -3821,37 +3873,27 @@ c_func
 (paren
 id|ha
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|ha-&gt;done_q_first
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|ha-&gt;done_q_last
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * This seems unnecessary, it&squot;s not used below! / Jes&n;&t; */
+macro_line|#ifdef UNUSED
 id|handle
 op_assign
-(paren
-id|u_long
-)paren
 id|CMD_HANDLE
 c_func
 (paren
 id|cmd
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Generate LU queue on bus, target, LUN */
-id|b
+id|bus
 op_assign
 id|SCSI_BUS_32
 c_func
@@ -3859,7 +3901,7 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-id|t
+id|target
 op_assign
 id|SCSI_TCN_32
 c_func
@@ -3867,7 +3909,7 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-id|l
+id|lun
 op_assign
 id|SCSI_LUN_32
 c_func
@@ -3886,44 +3928,30 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 )paren
 )paren
 op_eq
 l_int|NULL
 )paren
 (brace
-id|COMTRACE
-c_func
-(paren
-l_char|&squot;a&squot;
-)paren
 multiline_comment|/* No lun queue -- command must not be active */
-id|DRIVER_UNLOCK
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;qla1280 (%d:%d:%d): No LUN queue for the specified device&bslash;n&quot;
+l_string|&quot;qla1280 (%d:%d:%d): No LUN queue for the &quot;
+l_string|&quot;specified device&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
-id|b
+id|bus
 comma
-(paren
-r_int
-)paren
-id|t
+id|target
 comma
-(paren
-r_int
-)paren
-id|l
+id|lun
 )paren
 suffix:semicolon
 r_return
@@ -3942,15 +3970,13 @@ id|SRB_ABORTED
 )paren
 )paren
 (brace
-id|DRIVER_UNLOCK
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;qla1280_abort: Abort escalayted - returning SCSI_ABORT_SNOOZE.&bslash;n&bslash;r&quot;
-)paren
+l_int|1
+comma
+l_string|&quot;qla1280_abort: Abort escalayted - returning &quot;
+l_string|&quot;SCSI_ABORT_SNOOZE.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3968,67 +3994,43 @@ id|SRB_ABORT_PENDING
 )paren
 )paren
 (brace
-id|COMTRACE
-c_func
-(paren
-l_char|&squot;a&squot;
-)paren
-id|DRIVER_UNLOCK
 r_if
 c_cond
 (paren
 id|qla1280_verbose
 )paren
-(brace
 id|printk
 c_func
 (paren
-l_string|&quot;scsi(): Command has a pending abort message - ABORT_PENDING.&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;qla1280: Command has a pending abort message - ABORT_PENDING.&bslash;n&bslash;r&quot;
-)paren
+id|KERN_WARNING
+l_string|&quot;scsi(): Command has a pending abort &quot;
+l_string|&quot;message - ABORT_PENDING.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 id|SCSI_ABORT_PENDING
 suffix:semicolon
 )brace
-macro_line|#if  STOP_ON_ABORT 
+macro_line|#if STOP_ON_ABORT
 id|printk
 c_func
 (paren
-l_string|&quot;Scsi layer issued a ABORT command= 0x%x&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;Scsi layer issued a ABORT command= 0x%p&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|cmd
 )paren
 suffix:semicolon
-id|DEBUG2
-c_func
-(paren
 id|qla1280_print_scsi_cmd
 c_func
 (paren
+l_int|2
+comma
 id|cmd
-)paren
 )paren
 suffix:semicolon
 macro_line|#endif
-id|ha-&gt;flags.in_abort
-op_assign
-id|TRUE
-suffix:semicolon
-multiline_comment|/*&n;    * Normally, would would need to search our queue for the specified command&n;    * but; since our sp contains the cmd ptr, we can just remove it from our&n;    * LUN queue.&n;    */
+multiline_comment|/*&n;&t; * Normally, would would need to search our queue for the specified command&n;&t; * but; since our sp contains the cmd ptr, we can just remove it from our&n;&t; * LUN queue.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4048,22 +4050,12 @@ c_cond
 (paren
 id|qla1280_verbose
 )paren
-(brace
 id|printk
 c_func
 (paren
-l_string|&quot;scsi(): Command returned from queue aborted.&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;qla1280: Command returned from queue aborted.&bslash;n&bslash;r&quot;
-)paren
+id|KERN_WARNING
+l_string|&quot;scsi(): Command returned from queue &quot;
+l_string|&quot;aborted.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Remove srb from SCSI LU queue. */
@@ -4138,14 +4130,12 @@ id|i
 id|found
 op_increment
 suffix:semicolon
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;qla1280: RISC aborting command.&bslash;n&bslash;r&quot;
-)paren
+l_int|1
+comma
+l_string|&quot;qla1280: RISC aborting command.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|qla1280_abort_command
@@ -4165,7 +4155,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#if  STOP_ON_ABORT 
+macro_line|#if STOP_ON_ABORT
 id|qla1280_panic
 c_func
 (paren
@@ -4187,28 +4177,14 @@ op_assign
 id|SCSI_ABORT_NOT_RUNNING
 suffix:semicolon
 multiline_comment|/* no action - we don&squot;t have command */
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280_abort: Aborted status returned = 0x%x.&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280_abort: Aborted status returned = 0x%x.&bslash;n&quot;
 comma
 id|return_status
-)paren
-)paren
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-id|debug_buff
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -4216,64 +4192,545 @@ c_cond
 (paren
 id|ha-&gt;done_q_first
 )paren
-(brace
 id|qla1280_done
 c_func
 (paren
 id|ha
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|ha-&gt;done_q_first
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|ha-&gt;done_q_last
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|found
 )paren
-(brace
 id|qla1280_restart_queues
 c_func
 (paren
 id|ha
 )paren
 suffix:semicolon
-)brace
-id|ha-&gt;flags.in_abort
-op_assign
-id|FALSE
-suffix:semicolon
-id|DRIVER_UNLOCK
 id|LEAVE
 c_func
 (paren
 l_string|&quot;qla1280_abort&quot;
 )paren
 suffix:semicolon
-id|COMTRACE
-c_func
-(paren
-l_char|&squot;a&squot;
-)paren
 r_return
 id|return_status
 suffix:semicolon
 )brace
-multiline_comment|/**************************************************************************&n; * qla1200_reset&n; *    The reset function will reset the SCSI bus and abort any executing&n; *    commands. &n; *&n; * Input:&n; *      cmd = Linux SCSI command packet of the command that cause the&n; *            bus reset.&n; *      flags = SCSI bus reset option flags (see scsi.h)&n; *&n; * Returns:&n; *      DID_RESET in cmd.host_byte of aborted command(s) &n; *&n; * Note:&n; *      Resetting the bus always succeeds - is has to, otherwise the&n; *      kernel will panic! Try a surgical technique - sending a BUS&n; *      DEVICE RESET message - on the offending target before pulling&n; *      the SCSI bus reset line.&n; **************************************************************************/
+r_int
+DECL|function|qla1280_new_abort
+id|qla1280_new_abort
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+)paren
+(brace
+r_struct
+id|scsi_qla_host
+op_star
+id|ha
+suffix:semicolon
+id|srb_t
+op_star
+id|sp
+suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|host
+suffix:semicolon
+r_int
+id|bus
+comma
+id|target
+comma
+id|lun
+suffix:semicolon
+id|scsi_lu_t
+op_star
+id|q
+suffix:semicolon
+r_int
+r_int
+id|cpu_flags
+suffix:semicolon
+r_int
+id|return_status
+op_assign
+id|SCSI_ABORT_SUCCESS
+suffix:semicolon
+r_int
+id|found
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_int
+r_char
+op_star
+id|handle
+suffix:semicolon
+id|u16
+id|data
+suffix:semicolon
+id|ENTER
+c_func
+(paren
+l_string|&quot;qla1280_abort&quot;
+)paren
+suffix:semicolon
+id|host
+op_assign
+id|cmd-&gt;host
+suffix:semicolon
+id|ha
+op_assign
+(paren
+r_struct
+id|scsi_qla_host
+op_star
+)paren
+id|host-&gt;hostdata
+suffix:semicolon
+multiline_comment|/* Get the SCSI request ptr */
+id|sp
+op_assign
+(paren
+id|srb_t
+op_star
+)paren
+id|CMD_SP
+c_func
+(paren
+id|cmd
+)paren
+suffix:semicolon
+id|handle
+op_assign
+id|CMD_HANDLE
+c_func
+(paren
+id|cmd
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|qla1280_verbose
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;scsi(%li): ABORT Command=0x%p, handle=0x%p&bslash;n&quot;
+comma
+id|ha-&gt;host_no
+comma
+id|cmd
+comma
+id|handle
+)paren
+suffix:semicolon
+multiline_comment|/* Check for pending interrupts. */
+r_if
+c_cond
+(paren
+id|handle
+op_eq
+l_int|NULL
+)paren
+(brace
+multiline_comment|/* we never got this command */
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;qla1280: Aborting a NULL handle&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|SUCCESS
+suffix:semicolon
+multiline_comment|/* no action - we don&squot;t have command */
+)brace
+id|spin_lock_irqsave
+(paren
+id|ha-&gt;host-&gt;host_lock
+comma
+id|cpu_flags
+)paren
+suffix:semicolon
+id|data
+op_assign
+id|qla1280_debounce_register
+c_func
+(paren
+op_amp
+id|ha-&gt;iobase-&gt;istatus
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * We grab the host lock in the interrupt handler to&n;&t; * prevent racing here.&n;&t; *&n;&t; * Then again, running the interrupt handler from here is somewhat&n;&t; * questionable.&n;&t; * /Jes&n;&t; */
+r_if
+c_cond
+(paren
+id|data
+op_amp
+id|RISC_INT
+)paren
+(brace
+multiline_comment|/* put any pending command in done queue */
+id|qla1280_isr
+c_func
+(paren
+id|ha
+comma
+op_amp
+id|ha-&gt;done_q_first
+comma
+op_amp
+id|ha-&gt;done_q_last
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Generate LU queue on bus, target, LUN */
+id|bus
+op_assign
+id|SCSI_BUS_32
+c_func
+(paren
+id|cmd
+)paren
+suffix:semicolon
+id|target
+op_assign
+id|SCSI_TCN_32
+c_func
+(paren
+id|cmd
+)paren
+suffix:semicolon
+id|lun
+op_assign
+id|SCSI_LUN_32
+c_func
+(paren
+id|cmd
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|q
+op_assign
+id|LU_Q
+c_func
+(paren
+id|ha
+comma
+id|bus
+comma
+id|target
+comma
+id|lun
+)paren
+)paren
+op_eq
+l_int|NULL
+)paren
+(brace
+multiline_comment|/* No lun queue -- command must not be active */
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;qla1280 (%d:%d:%d): No LUN queue for the &quot;
+l_string|&quot;specified device&bslash;n&quot;
+comma
+id|bus
+comma
+id|target
+comma
+id|lun
+)paren
+suffix:semicolon
+id|return_status
+op_assign
+id|SUCCESS
+suffix:semicolon
+multiline_comment|/* no action - we don&squot;t have command */
+r_goto
+id|out
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|sp-&gt;flags
+op_amp
+id|SRB_ABORT_PENDING
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|qla1280_verbose
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;scsi(): Command has a pending abort &quot;
+l_string|&quot;message - ABORT_PENDING.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|return_status
+op_assign
+id|SCSI_ABORT_PENDING
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+macro_line|#if STOP_ON_ABORT
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Scsi layer issued a ABORT command= 0x%p&bslash;n&quot;
+comma
+id|cmd
+)paren
+suffix:semicolon
+id|qla1280_print_scsi_cmd
+c_func
+(paren
+l_int|2
+comma
+id|cmd
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/*&n;&t; * Normally, would would need to search our queue for the specified command&n;&t; * but; since our sp contains the cmd ptr, we can just remove it from our&n;&t; * LUN queue.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sp-&gt;flags
+op_amp
+id|SRB_SENT
+)paren
+)paren
+(brace
+id|found
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|qla1280_verbose
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;scsi(): Command returned from queue &quot;
+l_string|&quot;aborted.&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Remove srb from SCSI LU queue. */
+id|qla1280_removeq
+c_func
+(paren
+id|q
+comma
+id|sp
+)paren
+suffix:semicolon
+id|sp-&gt;flags
+op_or_assign
+id|SRB_ABORTED
+suffix:semicolon
+id|CMD_RESULT
+c_func
+(paren
+id|cmd
+)paren
+op_assign
+id|DID_ABORT
+op_lshift
+l_int|16
+suffix:semicolon
+id|qla1280_done_q_put
+c_func
+(paren
+id|sp
+comma
+op_amp
+id|ha-&gt;done_q_first
+comma
+op_amp
+id|ha-&gt;done_q_last
+)paren
+suffix:semicolon
+id|return_status
+op_assign
+id|SUCCESS
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* find the command in our active list */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|1
+suffix:semicolon
+id|i
+OL
+id|MAX_OUTSTANDING_COMMANDS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|sp
+op_eq
+id|ha-&gt;outstanding_cmds
+(braket
+id|i
+)braket
+)paren
+(brace
+id|found
+op_increment
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;qla1280: RISC aborting command.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|qla1280_abort_command
+c_func
+(paren
+id|ha
+comma
+id|sp
+)paren
+suffix:semicolon
+id|return_status
+op_assign
+id|SCSI_ABORT_PENDING
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+)brace
+macro_line|#if STOP_ON_ABORT
+id|qla1280_panic
+c_func
+(paren
+l_string|&quot;qla1280_abort&quot;
+comma
+id|ha-&gt;host
+)paren
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|found
+op_eq
+l_int|0
+)paren
+id|return_status
+op_assign
+id|SUCCESS
+suffix:semicolon
+multiline_comment|/* no action - we don&squot;t have the command */
+id|dprintk
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;qla1280_abort: Aborted status returned = 0x%x.&bslash;n&quot;
+comma
+id|return_status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ha-&gt;done_q_first
+)paren
+id|qla1280_done
+c_func
+(paren
+id|ha
+comma
+op_amp
+id|ha-&gt;done_q_first
+comma
+op_amp
+id|ha-&gt;done_q_last
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|found
+)paren
+id|qla1280_restart_queues
+c_func
+(paren
+id|ha
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ha-&gt;host-&gt;host_lock
+comma
+id|cpu_flags
+)paren
+suffix:semicolon
+id|LEAVE
+c_func
+(paren
+l_string|&quot;qla1280_abort&quot;
+)paren
+suffix:semicolon
+r_return
+id|return_status
+suffix:semicolon
+)brace
+multiline_comment|/**************************************************************************&n; * qla1200_reset&n; *    The reset function will reset the SCSI bus and abort any executing&n; *    commands.&n; *&n; * Input:&n; *      cmd = Linux SCSI command packet of the command that cause the&n; *            bus reset.&n; *      flags = SCSI bus reset option flags (see scsi.h)&n; *&n; * Returns:&n; *      DID_RESET in cmd.host_byte of aborted command(s)&n; *&n; * Note:&n; *      Resetting the bus always succeeds - is has to, otherwise the&n; *      kernel will panic! Try a surgical technique - sending a BUS&n; *      DEVICE RESET message - on the offending target before pulling&n; *      the SCSI bus reset line.&n; **************************************************************************/
 r_int
 DECL|function|qla1280_reset
 id|qla1280_reset
@@ -4288,24 +4745,17 @@ r_int
 id|flags
 )paren
 (brace
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,95)
 r_int
-r_int
-id|cpu_flags
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
-r_uint32
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 suffix:semicolon
 id|srb_t
 op_star
@@ -4345,7 +4795,7 @@ id|action
 op_assign
 id|ADAPTER_RESET
 suffix:semicolon
-id|u_short
+id|u16
 id|data
 suffix:semicolon
 id|scsi_lu_t
@@ -4361,11 +4811,6 @@ c_func
 l_string|&quot;qla1280_reset&quot;
 )paren
 suffix:semicolon
-id|COMTRACE
-c_func
-(paren
-l_char|&squot;R&squot;
-)paren
 r_if
 c_cond
 (paren
@@ -4374,16 +4819,12 @@ id|qla1280_verbose
 id|printk
 c_func
 (paren
-l_string|&quot;scsi(): Resetting Cmnd=0x%lx, Handle=0x%lx, flags=0x%x&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;scsi(): Resetting Cmnd=0x%p, Handle=0x%p, &quot;
+l_string|&quot;flags=0x%x&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|cmd
 comma
-(paren
-r_int
-)paren
 id|CMD_HANDLE
 c_func
 (paren
@@ -4416,7 +4857,8 @@ suffix:semicolon
 id|ha
 op_assign
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 id|cmd-&gt;host-&gt;hostdata
@@ -4433,7 +4875,7 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-macro_line|#if  STOP_ON_RESET 
+macro_line|#if STOP_ON_RESET
 id|qla1280_panic
 c_func
 (paren
@@ -4442,8 +4884,7 @@ comma
 id|ha-&gt;host
 )paren
 suffix:semicolon
-macro_line|#endif 
-id|DRIVER_LOCK
+macro_line|#endif
 multiline_comment|/* Check for pending interrupts. */
 id|data
 op_assign
@@ -4454,46 +4895,27 @@ op_amp
 id|ha-&gt;iobase-&gt;istatus
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * The io_request_lock is held when the reset handler is called, hence&n;&t; * the interrupt handler cannot be running in parallel as it also&n;&t; * grabs the lock. /Jes&n;&t; */
 r_if
 c_cond
-(paren
-op_logical_neg
-(paren
-id|ha-&gt;flags.in_isr
-)paren
-op_logical_and
 (paren
 id|data
 op_amp
 id|RISC_INT
 )paren
-)paren
-(brace
 id|qla1280_isr
 c_func
 (paren
 id|ha
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|ha-&gt;done_q_first
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|ha-&gt;done_q_last
 )paren
 suffix:semicolon
-)brace
-id|DRIVER_UNLOCK
-multiline_comment|/*&n;    * Determine the suggested action that the mid-level driver wants&n;    * us to perform.&n;    */
+multiline_comment|/*&n;&t; * Determine the suggested action that the mid-level driver wants&n;&t; * us to perform.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4503,30 +4925,21 @@ c_func
 id|cmd
 )paren
 op_eq
-(paren
-r_int
-r_char
-op_star
-)paren
-l_int|0
+l_int|NULL
 )paren
 (brace
-multiline_comment|/* &n;        * if mid-level driver called reset with a orphan SCSI_Cmnd &n;        * (i.e. a command that&squot;s not pending ), so perform the &n;        * function specified.&n;        */
+multiline_comment|/*&n;&t;&t; * if mid-level driver called reset with a orphan SCSI_Cmnd&n;&t;&t; * (i.e. a command that&squot;s not pending), so perform the&n;&t;&t; * function specified.&n;&t;&t; */
 r_if
 c_cond
-(paren
 (paren
 id|flags
 op_amp
 id|SCSI_RESET_SUGGEST_HOST_RESET
 )paren
-)paren
-(brace
 id|action
 op_assign
 id|ADAPTER_RESET
 suffix:semicolon
-)brace
 r_else
 id|action
 op_assign
@@ -4535,7 +4948,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* &n;        * Mid-level driver has called reset with this SCSI_Cmnd and &n;        * its pending.&n;        */
+multiline_comment|/*&n;&t;&t; * Mid-level driver has called reset with this SCSI_Cmnd and&n;&t;&t; * its pending.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4543,12 +4956,10 @@ id|flags
 op_amp
 id|SCSI_RESET_SUGGEST_HOST_RESET
 )paren
-(brace
 id|action
 op_assign
 id|ADAPTER_RESET
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -4557,19 +4968,17 @@ id|flags
 op_amp
 id|SCSI_RESET_SUGGEST_BUS_RESET
 )paren
-(brace
 id|action
 op_assign
 id|BUS_RESET
 suffix:semicolon
-)brace
 r_else
 id|action
 op_assign
 id|DEVICE_RESET
 suffix:semicolon
 )brace
-id|b
+id|bus
 op_assign
 id|SCSI_BUS_32
 c_func
@@ -4577,7 +4986,7 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-id|t
+id|target
 op_assign
 id|SCSI_TCN_32
 c_func
@@ -4585,7 +4994,7 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-id|l
+id|lun
 op_assign
 id|SCSI_LUN_32
 c_func
@@ -4600,11 +5009,11 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 )paren
 suffix:semicolon
 macro_line|#if AUTO_ESCALATE_RESET
@@ -4628,12 +5037,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;qla1280(%d): Bus device reset already sent to &quot;
+l_string|&quot;qla1280(%ld): Bus device reset already sent to &quot;
 l_string|&quot;device, escalating.&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|ha-&gt;host_no
 )paren
 suffix:semicolon
@@ -4662,12 +5068,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;qla1280(%d):Have already attempted to reach &quot;
+l_string|&quot;qla1280(%ld):Have already attempted to reach &quot;
 l_string|&quot;device with abort device&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|ha-&gt;host_no
 )paren
 suffix:semicolon
@@ -4675,12 +5078,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;qla1280(%d):message, will escalate to BUS &quot;
+l_string|&quot;qla1280(%ld):message, will escalate to BUS &quot;
 l_string|&quot;RESET.&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|ha-&gt;host_no
 )paren
 suffix:semicolon
@@ -4690,8 +5090,7 @@ id|BUS_RESET
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n;    *  By this point, we want to already know what we are going to do,&n;    *  so we only need to perform the course of action.&n;    */
-id|DRIVER_LOCK
+multiline_comment|/*&n;&t; *  By this point, we want to already know what we are going to do,&n;&t; *  so we only need to perform the course of action.&n;&t; */
 id|result
 op_assign
 id|SCSI_RESET_ERROR
@@ -4732,27 +5131,16 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;scsi(%d:%d:%d:%d): Queueing abort device command.&bslash;n&quot;
+l_string|&quot;scsi(%ld:%d:%d:%d): Queueing abort device &quot;
+l_string|&quot;command.&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|ha-&gt;host_no
 comma
-(paren
-r_int
-)paren
-id|b
+id|bus
 comma
-(paren
-r_int
-)paren
-id|t
+id|target
 comma
-(paren
-r_int
-)paren
-id|l
+id|lun
 )paren
 suffix:semicolon
 id|qla1280_abort_queue_single
@@ -4760,11 +5148,11 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 comma
 id|DID_ABORT
 )paren
@@ -4777,21 +5165,19 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 )paren
 op_eq
 l_int|0
 )paren
-(brace
 id|result
 op_assign
 id|SCSI_RESET_PENDING
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -4806,27 +5192,16 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;scsi(%d:%d:%d:%d): Queueing device reset command.&bslash;n&quot;
+l_string|&quot;scsi(%ld:%d:%d:%d): Queueing device reset &quot;
+l_string|&quot;command.&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|ha-&gt;host_no
 comma
-(paren
-r_int
-)paren
-id|b
+id|bus
 comma
-(paren
-r_int
-)paren
-id|t
+id|target
 comma
-(paren
-r_int
-)paren
-id|l
+id|lun
 )paren
 suffix:semicolon
 id|ha-&gt;flags.in_reset
@@ -4836,15 +5211,15 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|l
+id|lun
 op_assign
 l_int|0
 suffix:semicolon
-id|l
+id|lun
 OL
 id|MAX_LUNS
 suffix:semicolon
-id|l
+id|lun
 op_increment
 )paren
 id|qla1280_abort_queue_single
@@ -4852,11 +5227,11 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 comma
 id|DID_ABORT
 )paren
@@ -4869,19 +5244,17 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 )paren
 op_eq
 l_int|0
 )paren
-(brace
 id|result
 op_assign
 id|SCSI_RESET_PENDING
 suffix:semicolon
-)brace
 id|q-&gt;q_flag
 op_or_assign
 id|QLA1280_QRESET
@@ -4900,27 +5273,16 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;qla1280(%d:%d:%d:%d): Issuing BUS DEVICE RESET.&bslash;n&quot;
+l_string|&quot;qla1280(%ld:%d:%d:%d): Issuing BUS &quot;
+l_string|&quot;DEVICE RESET.&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|ha-&gt;host_no
 comma
-(paren
-r_int
-)paren
-id|b
+id|bus
 comma
-(paren
-r_int
-)paren
-id|t
+id|target
 comma
-(paren
-r_int
-)paren
-id|l
+id|lun
 )paren
 suffix:semicolon
 id|ha-&gt;flags.in_reset
@@ -4930,29 +5292,29 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|t
+id|target
 op_assign
 l_int|0
 suffix:semicolon
-id|t
+id|target
 OL
 id|MAX_TARGETS
 suffix:semicolon
-id|t
+id|target
 op_increment
 )paren
 r_for
 c_loop
 (paren
-id|l
+id|lun
 op_assign
 l_int|0
 suffix:semicolon
-id|l
+id|lun
 OL
 id|MAX_LUNS
 suffix:semicolon
-id|l
+id|lun
 op_increment
 )paren
 id|qla1280_abort_queue_single
@@ -4960,11 +5322,11 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 comma
 id|DID_RESET
 )paren
@@ -4974,10 +5336,10 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 )paren
 suffix:semicolon
-multiline_comment|/*&n;                * The bus reset routine returns all the outstanding commands back&n;                * with &quot;DID_RESET&quot; in the status field after a short delay&n;                * by the firmware. If the mid-level time out the SCSI reset before&n;                * our delay we may need to ignore it.&n;                */
+multiline_comment|/*&n;&t;&t; * The bus reset routine returns all the outstanding commands&n;&t;&t; * back with &quot;DID_RESET&quot; in the status field after a short&n;&t;&t; * delay by the firmware. If the mid-level time out the SCSI&n;&t;&t; * reset before our delay we may need to ignore it.&n;&t;&t; */
 multiline_comment|/* result = SCSI_RESET_PENDING | SCSI_RESET_BUS_RESET; */
 id|result
 op_assign
@@ -4985,6 +5347,7 @@ id|SCSI_RESET_SUCCESS
 op_or
 id|SCSI_RESET_BUS_RESET
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Wheeeee!!!&n;&t;&t; */
 id|mdelay
 c_func
 (paren
@@ -5012,14 +5375,9 @@ c_func
 id|cmd
 )paren
 op_assign
-(paren
-r_int
-)paren
-(paren
 id|DID_BUS_BUSY
 op_lshift
 l_int|16
-)paren
 suffix:semicolon
 (paren
 op_star
@@ -5054,54 +5412,32 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;scsi(%d:%d:%d:%d): Issued an ADAPTER RESET.&bslash;n&quot;
+l_string|&quot;scsi(%ld:%d:%d:%d): Issued an ADAPTER &quot;
+l_string|&quot;RESET.&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|ha-&gt;host_no
 comma
-(paren
-r_int
-)paren
-id|b
+id|bus
 comma
-(paren
-r_int
-)paren
-id|t
+id|target
 comma
-(paren
-r_int
-)paren
-id|l
+id|lun
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;scsi(%d:%d:%d:%d): I/O processing will continue automatically.&bslash;n&quot;
+l_string|&quot;scsi(%ld:%d:%d:%d): I/O processing will &quot;
+l_string|&quot;continue automatically.&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|ha-&gt;host_no
 comma
-(paren
-r_int
-)paren
-id|b
+id|bus
 comma
-(paren
-r_int
-)paren
-id|t
+id|target
 comma
-(paren
-r_int
-)paren
-id|l
+id|lun
 )paren
 suffix:semicolon
 )brace
@@ -5109,7 +5445,7 @@ id|ha-&gt;flags.reset_active
 op_assign
 id|TRUE
 suffix:semicolon
-multiline_comment|/* &n;                * We restarted all of the commands automatically, so the mid-level code can expect &n;                * completions momentitarily.&n;                */
+multiline_comment|/*&n;&t;&t; * We restarted all of the commands automatically, so the&n;&t;&t; * mid-level code can expect completions momentitarily.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5121,14 +5457,12 @@ id|ha
 op_eq
 l_int|0
 )paren
-(brace
 id|result
 op_assign
 id|SCSI_RESET_SUCCESS
 op_or
 id|SCSI_RESET_HOST_RESET
 suffix:semicolon
-)brace
 id|ha-&gt;flags.reset_active
 op_assign
 id|FALSE
@@ -5139,30 +5473,18 @@ c_cond
 (paren
 id|ha-&gt;done_q_first
 )paren
-(brace
 id|qla1280_done
 c_func
 (paren
 id|ha
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|ha-&gt;done_q_first
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|ha-&gt;done_q_last
 )paren
 suffix:semicolon
-)brace
 id|qla1280_restart_queues
 c_func
 (paren
@@ -5173,24 +5495,16 @@ id|ha-&gt;flags.in_reset
 op_assign
 id|FALSE
 suffix:semicolon
-id|DRIVER_UNLOCK
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|printk
-c_func
-(paren
+l_int|1
+comma
 l_string|&quot;RESET returning %d&bslash;n&quot;
 comma
 id|result
 )paren
-)paren
 suffix:semicolon
-id|COMTRACE
-c_func
-(paren
-l_char|&squot;r&squot;
-)paren
 id|LEAVE
 c_func
 (paren
@@ -5201,7 +5515,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/**************************************************************************&n; * qla1200_biosparam&n; *   Return the disk geometry for the given SCSI device.&n; **************************************************************************/
+multiline_comment|/**************************************************************************&n; * qla1280_biosparam&n; *   Return the disk geometry for the given SCSI device.&n; **************************************************************************/
 r_int
 DECL|function|qla1280_biosparam
 id|qla1280_biosparam
@@ -5271,7 +5585,7 @@ op_star
 id|sectors
 )paren
 suffix:semicolon
-multiline_comment|/* if (cylinders &gt; 1023)&n;        cylinders = 1023; */
+multiline_comment|/* if (cylinders &gt; 1023)&n;&t;&t;   cylinders = 1023; */
 )brace
 id|geom
 (braket
@@ -5295,14 +5609,12 @@ op_assign
 id|cylinders
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n; * qla1280_intr_handler&n; *   Handles the H/W interrupt&n; **************************************************************************/
-DECL|function|qla1280_intr_handler
 r_void
+DECL|function|qla1280_intr_handler
 id|qla1280_intr_handler
 c_func
 (paren
@@ -5319,104 +5631,39 @@ op_star
 id|regs
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,95)
-r_int
-r_int
-id|cpu_flags
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 suffix:semicolon
-id|u_short
-id|data
-suffix:semicolon
-id|device_reg_t
+r_struct
+id|device_reg
 op_star
 id|reg
 suffix:semicolon
+id|u16
+id|data
+suffix:semicolon
 id|ENTER_INTR
-c_func
 (paren
 l_string|&quot;qla1280_intr_handler&quot;
 )paren
 suffix:semicolon
-id|COMTRACE
-c_func
-(paren
-l_char|&squot;I&squot;
-)paren
 id|ha
 op_assign
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 id|dev_id
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ha
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;scsi(): Interrupt with NULL host ptr&bslash;n&quot;
-)paren
-suffix:semicolon
-id|COMTRACE
-c_func
-(paren
-l_char|&squot;X&squot;
-)paren
-r_return
-suffix:semicolon
-)brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,95)
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 id|ha-&gt;host-&gt;host_lock
-comma
-id|cpu_flags
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|test_and_set_bit
-c_func
-(paren
-id|QLA1280_IN_ISR_BIT
-comma
-op_amp
-id|ha-&gt;flags
-)paren
-)paren
-(brace
-id|COMTRACE
-c_func
-(paren
-l_char|&squot;X&squot;
-)paren
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ha-&gt;host-&gt;host_lock
-comma
-id|cpu_flags
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|ha-&gt;isr_count
 op_increment
 suffix:semicolon
@@ -5424,7 +5671,6 @@ id|reg
 op_assign
 id|ha-&gt;iobase
 suffix:semicolon
-multiline_comment|/* disable our interrupt. */
 id|WRT_REG_WORD
 c_func
 (paren
@@ -5434,6 +5680,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* disable our interrupt. */
 id|data
 op_assign
 id|qla1280_debounce_register
@@ -5447,59 +5694,38 @@ multiline_comment|/* Check for pending interrupts. */
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
 id|data
 op_amp
 id|RISC_INT
 )paren
-)paren
 (brace
-multiline_comment|/* spurious interrupts can happen legally */
-id|DEBUG
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;scsi(%d): Spurious interrupt - ignoring&bslash;n&quot;
-comma
-(paren
-r_int
-)paren
-id|ha-&gt;host_no
-)paren
-)paren
-suffix:semicolon
-id|COMTRACE
-c_func
-(paren
-l_char|&squot;X&squot;
-)paren
-)brace
-r_else
 id|qla1280_isr
 c_func
 (paren
 id|ha
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|ha-&gt;done_q_first
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|ha-&gt;done_q_last
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* spurious interrupts can happen legally */
+id|dprintk
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;scsi(%ld): Spurious interrupt - ignoring&bslash;n&quot;
+comma
+id|ha-&gt;host_no
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5510,258 +5736,19 @@ c_func
 (paren
 id|ha
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|ha-&gt;done_q_first
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|ha-&gt;done_q_last
 )paren
 suffix:semicolon
-id|clear_bit
-c_func
-(paren
-id|QLA1280_IN_ISR_BIT
-comma
-op_amp
-id|ha-&gt;flags
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 id|ha-&gt;host-&gt;host_lock
-comma
-id|cpu_flags
 )paren
 suffix:semicolon
-macro_line|#else  /* LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,95) */
-r_if
-c_cond
-(paren
-id|test_bit
-c_func
-(paren
-id|QLA1280_IN_ISR_BIT
-comma
-(paren
-r_int
-op_star
-)paren
-op_amp
-id|ha-&gt;flags
-)paren
-)paren
-(brace
-id|COMTRACE
-c_func
-(paren
-l_char|&squot;X&squot;
-)paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;scsi(%d): Already in interrupt - returning &bslash;n&quot;
-comma
-(paren
-r_int
-)paren
-id|ha-&gt;host_no
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|set_bit
-c_func
-(paren
-id|QLA1280_IN_ISR_BIT
-comma
-(paren
-r_int
-op_star
-)paren
-op_amp
-id|ha-&gt;flags
-)paren
-suffix:semicolon
-id|ha-&gt;isr_count
-op_increment
-suffix:semicolon
-id|reg
-op_assign
-id|ha-&gt;iobase
-suffix:semicolon
-multiline_comment|/* disable our interrupt. */
-id|WRT_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;ictrl
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|data
-op_assign
-id|qla1280_debounce_register
-c_func
-(paren
-op_amp
-id|reg-&gt;istatus
-)paren
-suffix:semicolon
-multiline_comment|/* Check for pending interrupts. */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|data
-op_amp
-id|RISC_INT
-)paren
-)paren
-(brace
-multiline_comment|/* spurious interrupts can happen legally */
-id|DEBUG
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;scsi(%d): Spurious interrupt - ignoring&bslash;n&quot;
-comma
-(paren
-r_int
-)paren
-id|ha-&gt;host_no
-)paren
-)paren
-suffix:semicolon
-id|COMTRACE
-c_func
-(paren
-l_char|&squot;X&squot;
-)paren
-)brace
-r_else
-id|qla1280_isr
-c_func
-(paren
-id|ha
-comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
-op_amp
-id|ha-&gt;done_q_first
-comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
-op_amp
-id|ha-&gt;done_q_last
-)paren
-suffix:semicolon
-multiline_comment|/* if no work to do then call the SCSI mid-level right away */
-r_if
-c_cond
-(paren
-id|ha-&gt;done_q_first
-)paren
-(brace
-id|qla1280_done
-c_func
-(paren
-id|ha
-comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
-op_amp
-id|ha-&gt;done_q_first
-comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
-op_amp
-id|ha-&gt;done_q_last
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Schedule the DPC routine */
-r_if
-c_cond
-(paren
-id|ha-&gt;flags.isp_abort_needed
-op_logical_or
-id|ha-&gt;flags.reset_marker
-op_logical_or
-id|ha-&gt;done_q_first
-)paren
-(brace
-id|ha-&gt;run_qla_bh.data
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|ha
-suffix:semicolon
-id|ha-&gt;run_qla_bh.routine
-op_assign
-id|qla1280_do_dpc
-suffix:semicolon
-id|COMTRACE
-c_func
-(paren
-l_char|&squot;P&squot;
-)paren
-id|schedule_task
-c_func
-(paren
-op_amp
-id|ha-&gt;run_qla_bh
-)paren
-suffix:semicolon
-id|ha-&gt;flags.dpc_sched
-op_assign
-id|TRUE
-suffix:semicolon
-)brace
-id|clear_bit
-c_func
-(paren
-id|QLA1280_IN_ISR_BIT
-comma
-(paren
-r_int
-op_star
-)paren
-op_amp
-id|ha-&gt;flags
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* enable our interrupt. */
 id|WRT_REG_WORD
 c_func
@@ -5769,16 +5756,13 @@ c_func
 op_amp
 id|reg-&gt;ictrl
 comma
+(paren
 id|ISP_EN_INT
-op_plus
+op_or
 id|ISP_EN_RISC
 )paren
-suffix:semicolon
-id|COMTRACE
-c_func
-(paren
-l_char|&squot;i&squot;
 )paren
+suffix:semicolon
 id|LEAVE_INTR
 c_func
 (paren
@@ -5786,10 +5770,9 @@ l_string|&quot;qla1280_intr_handler&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**************************************************************************&n; *   qla1280_do_dpc&n; *&n; * Description:&n; * This routine is a task that is schedule by the interrupt handler &n; * to perform the background processing for interrupts.  We put it &n; * on a task queue that is consumed whenever the scheduler runs; that&squot;s&n; * so you can do anything (i.e. put the process to sleep etc).  In fact, the &n; * mid-level tries to sleep when it reaches the driver threshold &n; * &quot;host-&gt;can_queue&quot;. This can cause a panic if we were in our interrupt&n; * code .&n; **************************************************************************/
-DECL|function|qla1280_do_dpc
-r_static
+multiline_comment|/**************************************************************************&n; *   qla1280_do_dpc&n; *&n; * Description:&n; * This routine is a task that is schedule by the interrupt handler&n; * to perform the background processing for interrupts.  We put it&n; * on a task queue that is consumed whenever the scheduler runs; that&squot;s&n; * so you can do anything (i.e. put the process to sleep etc).  In fact, the&n; * mid-level tries to sleep when it reaches the driver threshold&n; * &quot;host-&gt;can_queue&quot;. This can cause a panic if we were in our interrupt&n; * code .&n; **************************************************************************/
 r_void
+DECL|function|qla1280_do_dpc
 id|qla1280_do_dpc
 c_func
 (paren
@@ -5798,30 +5781,22 @@ op_star
 id|p
 )paren
 (brace
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 op_assign
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 id|p
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,1,95)
 r_int
 r_int
 id|cpu_flags
-op_assign
-l_int|0
 suffix:semicolon
-macro_line|#endif
-id|COMTRACE
-c_func
-(paren
-l_char|&squot;p&squot;
-)paren
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,1,95)
 id|spin_lock_irqsave
 c_func
 (paren
@@ -5830,7 +5805,6 @@ comma
 id|cpu_flags
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5863,28 +5837,13 @@ c_func
 (paren
 id|ha
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|ha-&gt;done_q_first
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|ha-&gt;done_q_last
 )paren
 suffix:semicolon
-id|ha-&gt;flags.dpc_sched
-op_assign
-id|FALSE
-suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -5893,16 +5852,16 @@ comma
 id|cpu_flags
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/**************************************************************************&n; *   qla1280_device_queue_depth&n; *&n; * Description:&n; *   Determines the queue depth for a given device.  There are two ways&n; *   a queue depth can be obtained for a tagged queueing device.  One&n; *   way is the default queue depth which is determined by whether&n; *   If it is defined, then it is used&n; *   as the default queue depth.  Otherwise, we use either 4 or 8 as the&n; *   default queue depth (dependent on the number of hardware SCBs).&n; **************************************************************************/
-DECL|function|qla1280_device_queue_depth
-id|STATIC
+r_static
 r_void
+DECL|function|qla1280_device_queue_depth
 id|qla1280_device_queue_depth
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|p
 comma
@@ -5973,11 +5932,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;scsi(%d:%d:%d:%d): Enabled tagged queuing, queue depth %d.&bslash;n&quot;
+l_string|&quot;scsi(%li:%d:%d:%d): Enabled tagged queuing, &quot;
+l_string|&quot;queue depth %d.&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|p-&gt;host_no
 comma
 id|device-&gt;channel
@@ -6004,7 +5961,7 @@ id|device-&gt;lun
 suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n; *   qla1280_select_queue_depth&n; *&n; *   Sets the queue depth for each SCSI device hanging off the input&n; *   host adapter.  We use a queue depth of 2 for devices that do not&n; *   support tagged queueing.&n; **************************************************************************/
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_select_queue_depth
 id|qla1280_select_queue_depth
@@ -6024,12 +5981,14 @@ id|Scsi_Device
 op_star
 id|device
 suffix:semicolon
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
-id|p
+id|ha
 op_assign
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 id|host-&gt;hostdata
@@ -6064,14 +6023,26 @@ op_eq
 id|host
 )paren
 id|qla1280_device_queue_depth
-c_func
 (paren
-id|p
+id|ha
 comma
 id|device
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|scsi_devs
+)paren
+id|qla1280_check_for_dead_scsi_bus
+c_func
+(paren
+id|ha
+comma
+id|scsi_devs-&gt;channel
+)paren
+suffix:semicolon
 id|LEAVE
 c_func
 (paren
@@ -6079,55 +6050,16 @@ l_string|&quot;qla1280_select_queue_depth&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*--------------------------**&n;** Driver Support Routines  **&n;**--------------------------*/
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,0)
-multiline_comment|/*&n; * mdelay&n; *      Delay in milliseconds &n; *&n; * Input:&n; *      milliseconds  = delay &n; */
-DECL|function|mdelay
-id|STATIC
-r_inline
-r_void
-id|mdelay
-c_func
-(paren
-r_int
-id|milliseconds
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|milliseconds
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|udelay
-c_func
-(paren
-l_int|1000
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
+multiline_comment|/*&n; * Driver Support Routines&n; */
 multiline_comment|/*&n; * qla1280_done&n; *      Process completed commands.&n; *&n; * Input:&n; *      ha           = adapter block pointer.&n; *      done_q_first = done queue first pointer.&n; *      done_q_last  = done queue last pointer.&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_done
 id|qla1280_done
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
@@ -6150,37 +6082,23 @@ id|scsi_lu_t
 op_star
 id|q
 suffix:semicolon
-r_uint32
-id|b
+r_int
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 suffix:semicolon
 id|Scsi_Cmnd
 op_star
 id|cmd
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,95)
-r_int
-r_int
-id|cpu_flags
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_done&quot;
 )paren
 suffix:semicolon
-id|COMTRACE
-c_func
-(paren
-l_char|&squot;D&squot;
-)paren
-id|DRIVER_LOCK
 r_while
 c_loop
 (paren
@@ -6226,7 +6144,7 @@ id|cmd
 op_assign
 id|sp-&gt;cmd
 suffix:semicolon
-id|b
+id|bus
 op_assign
 id|SCSI_BUS_32
 c_func
@@ -6234,7 +6152,7 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-id|t
+id|target
 op_assign
 id|SCSI_TCN_32
 c_func
@@ -6242,7 +6160,7 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-id|l
+id|lun
 op_assign
 id|SCSI_LUN_32
 c_func
@@ -6257,11 +6175,11 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 )paren
 suffix:semicolon
 multiline_comment|/* Decrement outstanding commands on device. */
@@ -6280,7 +6198,7 @@ id|q-&gt;q_outcnt
 OL
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|hiwat
@@ -6292,19 +6210,6 @@ op_complement
 id|QLA1280_QBUSY
 suffix:semicolon
 )brace
-id|q-&gt;resp_time
-op_add_assign
-id|jiffies
-op_minus
-id|sp-&gt;r_start
-suffix:semicolon
-multiline_comment|/* Lun bookkeeping information */
-id|q-&gt;act_time
-op_add_assign
-id|jiffies
-op_minus
-id|sp-&gt;u_start
-suffix:semicolon
 id|q-&gt;io_cnt
 op_increment
 suffix:semicolon
@@ -6315,11 +6220,9 @@ id|sp-&gt;dir
 op_amp
 id|BIT_5
 )paren
-(brace
 id|q-&gt;r_cnt
 op_increment
 suffix:semicolon
-)brace
 r_else
 id|q-&gt;w_cnt
 op_increment
@@ -6352,9 +6255,9 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
 l_int|0
 comma
@@ -6399,6 +6302,66 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* 3.13   64 and 32 bit */
+multiline_comment|/* Release memory used for this I/O */
+r_if
+c_cond
+(paren
+id|cmd-&gt;use_sg
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;S/G unmap_sg cmd=%p&bslash;n&quot;
+comma
+id|cmd
+)paren
+suffix:semicolon
+id|pci_unmap_sg
+c_func
+(paren
+id|ha-&gt;pdev
+comma
+id|cmd-&gt;request_buffer
+comma
+id|cmd-&gt;use_sg
+comma
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|cmd-&gt;sc_data_direction
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|cmd-&gt;request_bufflen
+)paren
+(brace
+multiline_comment|/*dprintk(1, &quot;No S/G unmap_single cmd=%x saved_dma_handle=%lx&bslash;n&quot;,&n;&t;&t;&t;  cmd, sp-&gt;saved_dma_handle); */
+id|pci_unmap_single
+c_func
+(paren
+id|ha-&gt;pdev
+comma
+id|sp-&gt;saved_dma_handle
+comma
+id|cmd-&gt;request_bufflen
+comma
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|cmd-&gt;sc_data_direction
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Call the mid-level driver interrupt handler */
 id|CMD_HANDLE
 c_func
@@ -6406,22 +6369,11 @@ c_func
 id|sp-&gt;cmd
 )paren
 op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ha-&gt;actthreads
 op_decrement
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,95)
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 (paren
 op_star
 (paren
@@ -6434,25 +6386,6 @@ id|scsi_done
 id|cmd
 )paren
 suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#else
-(paren
-op_star
-(paren
-id|cmd
-)paren
-op_member_access_from_pointer
-id|scsi_done
-)paren
-(paren
-id|cmd
-)paren
-suffix:semicolon
-macro_line|#endif
 id|qla1280_next
 c_func
 (paren
@@ -6460,16 +6393,10 @@ id|ha
 comma
 id|q
 comma
-id|b
+id|bus
 )paren
 suffix:semicolon
 )brace
-id|DRIVER_UNLOCK
-id|COMTRACE
-c_func
-(paren
-l_char|&squot;d&squot;
-)paren
 id|LEAVE
 c_func
 (paren
@@ -6478,9 +6405,9 @@ l_string|&quot;qla1280_done&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Translates a ISP error to a Linux SCSI error&n; */
-DECL|function|qla1280_return_status
-id|STATIC
+r_static
 r_int
+DECL|function|qla1280_return_status
 id|qla1280_return_status
 c_func
 (paren
@@ -6499,7 +6426,7 @@ op_assign
 id|DID_ERROR
 suffix:semicolon
 macro_line|#if DEBUG_QLA1280_INTR
-id|STATIC
+r_static
 r_char
 op_star
 id|reason
@@ -6528,7 +6455,7 @@ comma
 l_string|&quot;DID_BAD_INTR&quot;
 )brace
 suffix:semicolon
-macro_line|#endif /* DEBUG_QLA1280_INTR */
+macro_line|#endif&t;&t;&t;&t;/* DEBUG_QLA1280_INTR */
 id|ENTER
 c_func
 (paren
@@ -6536,7 +6463,7 @@ l_string|&quot;qla1280_return_status&quot;
 )paren
 suffix:semicolon
 macro_line|#if DEBUG_QLA1280_INTR
-multiline_comment|/*&n;    DEBUG(printk(&quot;qla1280_return_status: compl status = 0x%04x&bslash;n&quot;, sts-&gt;comp_status));&n;    */
+multiline_comment|/*&n;&t;  dprintk(1, &quot;qla1280_return_status: compl status = 0x%04x&bslash;n&quot;,&n;&t;  sts-&gt;comp_status);&n;&t;*/
 macro_line|#endif
 r_switch
 c_cond
@@ -6677,36 +6604,38 @@ suffix:semicolon
 r_case
 id|CS_DATA_OVERRUN
 suffix:colon
-macro_line|#ifdef QL_DEBUG_LEVEL_2 
-id|printk
+id|dprintk
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;Data overrun 0x%x&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|sts-&gt;residual_length
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;&bslash;n&bslash;rqla1280_isr: response packet data&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_isr: response packet data&bslash;n&quot;
 )paren
 suffix:semicolon
 id|qla1280_dump_buffer
 c_func
 (paren
+l_int|2
+comma
 (paren
-id|caddr_t
+r_char
+op_star
 )paren
 id|sts
 comma
 id|RESPONSE_ENTRY_SIZE
 )paren
 suffix:semicolon
-macro_line|#endif
 id|host_status
 op_assign
 id|DID_ERROR
@@ -6720,11 +6649,7 @@ r_if
 c_cond
 (paren
 (paren
-id|CMD_XFRLEN
-c_func
-(paren
-id|cp
-)paren
+id|cp-&gt;request_bufflen
 op_minus
 id|sts-&gt;residual_length
 )paren
@@ -6735,7 +6660,9 @@ id|cp-&gt;underflow
 id|printk
 c_func
 (paren
-l_string|&quot;scsi: Underflow detected - retrying command.&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;scsi: Underflow detected - retrying &quot;
+l_string|&quot;command.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|host_status
@@ -6760,12 +6687,12 @@ r_break
 suffix:semicolon
 )brace
 macro_line|#if DEBUG_QLA1280_INTR
-id|sprintf
+id|dprintk
 c_func
 (paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 ISP status: host status (%s) scsi status %x&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 ISP status: host status (%s) scsi status %x&bslash;n&quot;
 comma
 id|reason
 (braket
@@ -6773,12 +6700,6 @@ id|host_status
 )braket
 comma
 id|sts-&gt;scsi_status
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-id|debug_buff
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -6803,7 +6724,7 @@ l_int|16
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * qla1280_done_q_put&n; *      Place SRB command on done queue.&n; *&n; * Input:&n; *      sp           = srb pointer.&n; *      done_q_first = done queue first pointer.&n; *      done_q_last  = done queue last pointer.&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_done_q_put
 id|qla1280_done_q_put
@@ -6824,24 +6745,13 @@ op_star
 id|done_q_last
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,95)
-r_int
-r_int
-id|cpu_flags
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_put_done_q&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Place block on done queue */
-id|DRIVER_LOCK
 id|sp-&gt;s_next
 op_assign
 l_int|NULL
@@ -6878,24 +6788,22 @@ id|done_q_last
 op_assign
 id|sp
 suffix:semicolon
-id|DRIVER_UNLOCK
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 id|LEAVE
 c_func
 (paren
 l_string|&quot;qla1280_put_done_q&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
-multiline_comment|/*&n; * qla1280_next&n; *      Retrieve and process next job in the queue.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *      q  = SCSI LU pointer.&n; *      b  = SCSI bus number.&n; *      SCSI_LU_Q lock must be already obtained and no other locks.&n; *&n; * Output:&n; *      Releases SCSI_LU_Q upon exit.&n; */
-id|STATIC
+multiline_comment|/*&n; * qla1280_next&n; *      Retrieve and process next job in the queue.&n; *&n; * Input:&n; *      ha   = adapter block pointer.&n; *      q    = SCSI LU pointer.&n; *      bus  = SCSI bus number.&n; *      SCSI_LU_Qlock must be already obtained and no other locks.&n; *&n; * Output:&n; *      Releases SCSI_LU_Qupon exit.&n; */
+r_static
 r_void
 DECL|function|qla1280_next
 id|qla1280_next
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
@@ -6903,35 +6811,25 @@ id|scsi_lu_t
 op_star
 id|q
 comma
-r_uint8
-id|b
+r_int
+id|bus
 )paren
 (brace
 id|srb_t
 op_star
 id|sp
 suffix:semicolon
-r_uint32
+r_int
 id|cnt
-suffix:semicolon
-r_uint8
+comma
 id|status
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,95)
-r_int
-r_int
-id|cpu_flags
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_next&quot;
 )paren
 suffix:semicolon
-id|DRIVER_LOCK
 r_while
 c_loop
 (paren
@@ -6946,27 +6844,23 @@ l_int|NULL
 )paren
 op_logical_and
 multiline_comment|/* we have a queue pending */
+multiline_comment|/* device not busy/suspended */
 op_logical_neg
 (paren
 id|q-&gt;q_flag
 op_amp
+(paren
 id|QLA1280_QBUSY
-)paren
-op_logical_and
-multiline_comment|/* device not busy */
-op_logical_neg
-id|ha-&gt;flags.abort_isp_active
-op_logical_and
-multiline_comment|/* not resetting the adapter */
-op_logical_neg
-(paren
-id|q-&gt;q_flag
-op_amp
+op_or
 id|QLA1280_QSUSP
 )paren
 )paren
-multiline_comment|/* device not suspended */
+op_logical_and
+op_logical_neg
+id|ha-&gt;flags.abort_isp_active
+)paren
 (brace
+multiline_comment|/* not resetting the adapter */
 multiline_comment|/* Remove srb from SCSI LU queue. */
 id|qla1280_removeq
 c_func
@@ -6976,30 +6870,16 @@ comma
 id|sp
 )paren
 suffix:semicolon
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;starting request 0x%p&lt;-(0x%p)&bslash;n&bslash;r&quot;
+l_string|&quot;starting request 0x%p&lt;-(0x%p)&bslash;n&quot;
 comma
 id|q
 comma
 id|sp
-)paren
-)paren
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-id|debug_buff
-)paren
 )paren
 suffix:semicolon
 (brace
@@ -7014,7 +6894,7 @@ id|q-&gt;q_outcnt
 op_ge
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|hiwat
@@ -7023,7 +6903,7 @@ id|q-&gt;q_flag
 op_or_assign
 id|QLA1280_QBUSY
 suffix:semicolon
-macro_line|#if  QLA1280_64BIT_SUPPORT
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,18)
 r_if
 c_cond
 (paren
@@ -7056,8 +6936,8 @@ c_cond
 (paren
 id|status
 )paren
-multiline_comment|/* if couldn&squot;t start the request */
 (brace
+multiline_comment|/* if couldn&squot;t start the request */
 r_if
 c_cond
 (paren
@@ -7066,13 +6946,6 @@ op_eq
 l_int|1
 )paren
 (brace
-multiline_comment|/* Release SCSI LU queue specific lock */
-id|QLA1280_SCSILU_UNLOCK
-c_func
-(paren
-id|q
-)paren
-suffix:semicolon
 multiline_comment|/* Wait for 30 sec for command to be accepted. */
 r_for
 c_loop
@@ -7087,7 +6960,7 @@ id|cnt
 op_decrement
 )paren
 (brace
-macro_line|#if  QLA1280_64BIT_SUPPORT
+macro_line|#if QLA_64BIT_PTR
 r_if
 c_cond
 (paren
@@ -7121,10 +6994,8 @@ c_cond
 op_logical_neg
 id|status
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 multiline_comment|/* Go check for pending interrupts. */
 id|qla1280_poll
 c_func
@@ -7132,7 +7003,7 @@ c_func
 id|ha
 )paren
 suffix:semicolon
-id|SYS_DELAY
+id|udelay
 c_func
 (paren
 l_int|5
@@ -7168,7 +7039,6 @@ op_amp
 id|SRB_WATCHDOG
 )paren
 id|qla1280_timeout_remove
-c_func
 (paren
 id|ha
 comma
@@ -7176,31 +7046,15 @@ id|sp
 )paren
 suffix:semicolon
 macro_line|#endif
-id|COMTRACE
-c_func
-(paren
-l_char|&squot;M&squot;
-)paren
 id|CMD_HANDLE
 c_func
 (paren
 id|sp-&gt;cmd
 )paren
 op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Call the mid-level driver interrupt handler */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,95)
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 (paren
 op_star
 (paren
@@ -7211,32 +7065,6 @@ id|scsi_done
 )paren
 (paren
 id|sp-&gt;cmd
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#else
-(paren
-op_star
-(paren
-id|sp-&gt;cmd
-)paren
-op_member_access_from_pointer
-id|scsi_done
-)paren
-(paren
-id|sp-&gt;cmd
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Acquire LU queue specific lock */
-id|QLA1280_SCSILU_LOCK
-c_func
-(paren
-id|q
 )paren
 suffix:semicolon
 r_if
@@ -7248,14 +7076,6 @@ id|q-&gt;q_outcnt
 op_decrement
 suffix:semicolon
 )brace
-r_else
-multiline_comment|/* Acquire LU queue specific lock */
-id|QLA1280_SCSILU_LOCK
-c_func
-(paren
-id|q
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -7283,7 +7103,7 @@ id|q-&gt;q_outcnt
 OL
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|hiwat
@@ -7299,14 +7119,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|DRIVER_UNLOCK
-multiline_comment|/* Release SCSI LU queue specific lock */
-id|QLA1280_SCSILU_UNLOCK
-c_func
-(paren
-id|q
-)paren
-suffix:semicolon
 id|LEAVE
 c_func
 (paren
@@ -7314,8 +7126,8 @@ l_string|&quot;qla1280_next&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * qla1280_putq_t&n; *      Add the standard SCB job to the top of standard SCB commands.&n; *&n; * Input:&n; *      q  = SCSI LU pointer.&n; *      sp = srb pointer.&n; *      SCSI_LU_Q lock must be already obtained.&n; */
-id|STATIC
+multiline_comment|/*&n; * qla1280_putq_t&n; *      Add the standard SCB job to the top of standard SCB commands.&n; *&n; * Input:&n; *      q  = SCSI LU pointer.&n; *      sp = srb pointer.&n; *      SCSI_LU_Qlock must be already obtained.&n; */
+r_static
 r_void
 DECL|function|qla1280_putq_t
 id|qla1280_putq_t
@@ -7330,51 +7142,30 @@ op_star
 id|sp
 )paren
 (brace
-id|srb_t
-op_star
-id|srb_p
-suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,95)
-r_int
-r_int
-id|cpu_flags
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_putq_t&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-id|DRIVER_LOCK
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|sprintf
-c_func
+l_int|1
+comma
+l_string|&quot;Adding to device q=0x%p&lt;-(0x%p)sp&bslash;n&quot;
+comma
 (paren
-id|debug_buff
-comma
-l_string|&quot;Adding to device 0x%p&lt;-(0x%p)&bslash;n&bslash;r&quot;
-comma
+r_void
+op_star
+)paren
 id|q
 comma
+(paren
+r_void
+op_star
+)paren
 id|sp
-)paren
-)paren
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-id|debug_buff
-)paren
 )paren
 suffix:semicolon
 id|sp-&gt;s_next
@@ -7387,8 +7178,8 @@ c_cond
 op_logical_neg
 id|q-&gt;q_first
 )paren
-multiline_comment|/* If queue empty */
 (brace
+multiline_comment|/* If queue empty */
 id|sp-&gt;s_prev
 op_assign
 l_int|NULL
@@ -7400,54 +7191,6 @@ suffix:semicolon
 id|q-&gt;q_last
 op_assign
 id|sp
-suffix:semicolon
-)brace
-r_else
-(brace
-id|srb_p
-op_assign
-id|q-&gt;q_first
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|srb_p
-)paren
-id|srb_p
-op_assign
-id|srb_p-&gt;s_next
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|srb_p
-)paren
-(brace
-id|sp-&gt;s_prev
-op_assign
-id|srb_p-&gt;s_prev
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|srb_p-&gt;s_prev
-)paren
-id|srb_p-&gt;s_prev-&gt;s_next
-op_assign
-id|sp
-suffix:semicolon
-r_else
-id|q-&gt;q_first
-op_assign
-id|sp
-suffix:semicolon
-id|srb_p-&gt;s_prev
-op_assign
-id|sp
-suffix:semicolon
-id|sp-&gt;s_next
-op_assign
-id|srb_p
 suffix:semicolon
 )brace
 r_else
@@ -7465,19 +7208,15 @@ op_assign
 id|sp
 suffix:semicolon
 )brace
-)brace
-id|DRIVER_UNLOCK
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 id|LEAVE
 c_func
 (paren
 l_string|&quot;qla1280_putq_t&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
-multiline_comment|/*&n; * qla1280_removeq&n; *      Function used to remove a command block from the&n; *      LU queue.&n; *&n; * Input:&n; *      q  = SCSI LU pointer.&n; *      sp = srb pointer.&n; *      SCSI_LU_Q lock must be already obtained.&n; */
-id|STATIC
+multiline_comment|/*&n; * qla1280_removeq&n; *      Function used to remove a command block from the&n; *      LU queue.&n; *&n; * Input:&n; *      q  = SCSI LU pointer.&n; *      sp = srb pointer.&n; *      SCSI_LU_Qlock must be already obtained.&n; */
+r_static
 r_void
 DECL|function|qla1280_removeq
 id|qla1280_removeq
@@ -7492,41 +7231,18 @@ op_star
 id|sp
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,95)
-r_int
-r_int
-id|cpu_flags
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;Removing from device_q (0x%p)-&gt;(0x%p)&bslash;n&bslash;r&quot;
+l_string|&quot;Removing from device_q (0x%p)-&gt;(0x%p)&bslash;n&quot;
 comma
 id|q
 comma
 id|sp
 )paren
-)paren
 suffix:semicolon
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-id|debug_buff
-)paren
-)paren
-suffix:semicolon
-id|DRIVER_LOCK
 r_if
 c_cond
 (paren
@@ -7574,160 +7290,152 @@ id|q-&gt;q_first-&gt;s_prev
 op_assign
 l_int|NULL
 suffix:semicolon
-id|DRIVER_UNLOCK
 )brace
 multiline_comment|/*&n;* qla1280_mem_alloc&n;*      Allocates adapter memory.&n;*&n;* Returns:&n;*      0  = success.&n;*      1  = failure.&n;*/
-id|STATIC
-r_uint8
+r_static
+r_int
 DECL|function|qla1280_mem_alloc
 id|qla1280_mem_alloc
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
 (brace
-r_uint8
+r_int
 id|status
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
+id|dma_addr_t
+id|dma_handle
+suffix:semicolon
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_mem_alloc&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef DYNAMIC_MEM_ALLOC
+multiline_comment|/* 3.13 */
+multiline_comment|/* get consistent memory allocated for request and response rings */
 id|ha-&gt;request_ring
 op_assign
-id|qla1280_alloc_phys
+id|pci_alloc_consistent
 c_func
 (paren
-id|REQUEST_ENTRY_SIZE
-op_star
+id|ha-&gt;pdev
+comma
+(paren
+(paren
 id|REQUEST_ENTRY_CNT
-comma
-op_amp
-id|ha-&gt;request_dma
+op_plus
+l_int|1
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ha-&gt;request_ring
-)paren
-(brace
-id|ha-&gt;response_ring
-op_assign
-id|qla1280_alloc_phys
-c_func
-(paren
-id|RESPONSE_ENTRY_SIZE
 op_star
-id|RESPONSE_ENTRY_CNT
+(paren
+r_sizeof
+(paren
+id|request_t
+)paren
+)paren
+)paren
 comma
 op_amp
-id|ha-&gt;response_dma
+id|dma_handle
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ha-&gt;response_ring
-)paren
-(brace
-id|status
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-)brace
-macro_line|#else
+op_logical_neg
 id|ha-&gt;request_ring
-op_assign
-op_amp
-id|ha-&gt;req
-(braket
-l_int|0
-)braket
+)paren
+r_goto
+id|error
 suffix:semicolon
 id|ha-&gt;request_dma
 op_assign
-id|VIRT_TO_BUS
-c_func
-(paren
-op_amp
-id|ha-&gt;req
-(braket
-l_int|0
-)braket
-)paren
+id|dma_handle
 suffix:semicolon
 id|ha-&gt;response_ring
 op_assign
+id|pci_alloc_consistent
+c_func
+(paren
+id|ha-&gt;pdev
+comma
+(paren
+(paren
+id|RESPONSE_ENTRY_CNT
+op_plus
+l_int|1
+)paren
+op_star
+(paren
+r_sizeof
+(paren
+id|response_t
+)paren
+)paren
+)paren
+comma
 op_amp
-id|ha-&gt;res
-(braket
-l_int|0
-)braket
+id|dma_handle
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ha-&gt;request_ring
+)paren
+r_goto
+id|error
 suffix:semicolon
 id|ha-&gt;response_dma
 op_assign
-id|VIRT_TO_BUS
-c_func
-(paren
-op_amp
-id|ha-&gt;res
-(braket
-l_int|0
-)braket
-)paren
+id|dma_handle
 suffix:semicolon
 id|status
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
+id|error
+suffix:colon
 r_if
 c_cond
 (paren
 id|status
 )paren
-(brace
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
-id|qla1280_print
+id|dprintk
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;qla1280_mem_alloc: **** FAILED ****&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-)brace
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-r_else
 id|LEAVE
 c_func
 (paren
 l_string|&quot;qla1280_mem_alloc&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * qla1280_mem_free&n; *      Frees adapter allocated memory.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_mem_free
 id|qla1280_mem_free
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
@@ -7736,12 +7444,12 @@ id|scsi_lu_t
 op_star
 id|q
 suffix:semicolon
-r_uint32
-id|b
+r_int
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 suffix:semicolon
 id|ENTER
 c_func
@@ -7759,15 +7467,15 @@ multiline_comment|/* Free device queues. */
 r_for
 c_loop
 (paren
-id|b
+id|bus
 op_assign
 l_int|0
 suffix:semicolon
-id|b
+id|bus
 OL
 id|MAX_BUSES
 suffix:semicolon
-id|b
+id|bus
 op_increment
 )paren
 (brace
@@ -7778,11 +7486,11 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|id
@@ -7793,29 +7501,29 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|t
+id|target
 op_assign
 l_int|0
 suffix:semicolon
-id|t
+id|target
 OL
 id|MAX_TARGETS
 suffix:semicolon
-id|t
+id|target
 op_increment
 )paren
 r_for
 c_loop
 (paren
-id|l
+id|lun
 op_assign
 l_int|0
 suffix:semicolon
-id|l
+id|lun
 OL
 id|MAX_LUNS
 suffix:semicolon
-id|l
+id|lun
 op_increment
 )paren
 r_if
@@ -7826,11 +7534,11 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 )paren
 op_ne
 l_int|NULL
@@ -7840,16 +7548,16 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 )paren
 op_ne
 id|q
 )paren
-id|KMFREE
+id|kfree
 c_func
 (paren
 id|LU_Q
@@ -7857,60 +7565,125 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
-)paren
-comma
-r_sizeof
-(paren
-r_struct
-id|scsi_lu
+id|lun
 )paren
 )paren
 suffix:semicolon
-id|KMFREE
+id|kfree
 c_func
 (paren
 id|q
-comma
-r_sizeof
-(paren
-r_struct
-id|scsi_lu
-)paren
 )paren
 suffix:semicolon
 )brace
 r_for
 c_loop
 (paren
-id|b
+id|bus
 op_assign
 l_int|0
 suffix:semicolon
-id|b
+id|bus
 OL
 id|MAX_EQ
 suffix:semicolon
-id|b
+id|bus
 op_increment
 )paren
-(brace
 id|ha-&gt;dev
 (braket
-id|b
+id|bus
 )braket
 op_assign
-(paren
-id|scsi_lu_t
-op_star
-)paren
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/* 3.13 */
+multiline_comment|/* free consistent memory allocated for request and response rings */
+r_if
+c_cond
+(paren
+id|ha-&gt;request_ring
+)paren
+id|pci_free_consistent
+c_func
+(paren
+id|ha-&gt;pdev
+comma
+(paren
+(paren
+id|REQUEST_ENTRY_CNT
+op_plus
+l_int|1
+)paren
+op_star
+(paren
+r_sizeof
+(paren
+id|request_t
+)paren
+)paren
+)paren
+comma
+id|ha-&gt;request_ring
+comma
+id|ha-&gt;request_dma
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ha-&gt;response_ring
+)paren
+id|pci_free_consistent
+c_func
+(paren
+id|ha-&gt;pdev
+comma
+(paren
+(paren
+id|RESPONSE_ENTRY_CNT
+op_plus
+l_int|1
+)paren
+op_star
+(paren
+r_sizeof
+(paren
+id|response_t
+)paren
+)paren
+)paren
+comma
+id|ha-&gt;response_ring
+comma
+id|ha-&gt;response_dma
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|qla1280_buffer
+)paren
+(brace
+id|free_page
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|qla1280_buffer
+)paren
+suffix:semicolon
+id|qla1280_buffer
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 id|LEAVE
 c_func
@@ -7922,30 +7695,28 @@ suffix:semicolon
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                QLogic ISP1280 Hardware Support Functions.                */
 multiline_comment|/****************************************************************************/
-multiline_comment|/*&n; * qla2100_enable_intrs&n; * qla2100_disable_intrs&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *&n; * Returns:&n; *      None      &n; */
-DECL|function|qla1280_enable_intrs
+multiline_comment|/*&n;    * qla2100_enable_intrs&n;    * qla2100_disable_intrs&n;    *&n;    * Input:&n;    *      ha = adapter block pointer.&n;    *&n;    * Returns:&n;    *      None&n;  */
 r_static
 r_inline
 r_void
+DECL|function|qla1280_enable_intrs
 id|qla1280_enable_intrs
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
 (brace
-id|device_reg_t
+r_struct
+id|device_reg
 op_star
 id|reg
 suffix:semicolon
 id|reg
 op_assign
 id|ha-&gt;iobase
-suffix:semicolon
-id|ha-&gt;flags.interrupts_on
-op_assign
-l_int|1
 suffix:semicolon
 multiline_comment|/* enable risc and host interrupts */
 id|WRT_REG_WORD
@@ -7956,35 +7727,45 @@ id|reg-&gt;ictrl
 comma
 (paren
 id|ISP_EN_INT
-op_plus
+op_or
 id|ISP_EN_RISC
 )paren
 )paren
 suffix:semicolon
+id|ha-&gt;flags.ints_enabled
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#if 0
+id|printk
+c_func
+(paren
+l_string|&quot;Enabling ints&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
-DECL|function|qla1280_disable_intrs
 r_static
 r_inline
 r_void
+DECL|function|qla1280_disable_intrs
 id|qla1280_disable_intrs
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
 (brace
-id|device_reg_t
+r_struct
+id|device_reg
 op_star
 id|reg
 suffix:semicolon
 id|reg
 op_assign
 id|ha-&gt;iobase
-suffix:semicolon
-id|ha-&gt;flags.interrupts_on
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* disable risc and host interrupts */
 id|WRT_REG_WORD
@@ -7996,38 +7777,49 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|ha-&gt;flags.ints_enabled
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#if 0
+id|printk
+c_func
+(paren
+l_string|&quot;Disabling ints&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * qla1280_initialize_adapter&n; *      Initialize board.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *&n; * Returns:&n; *      0 = success&n; */
-id|STATIC
-r_uint8
+r_static
+r_int
 DECL|function|qla1280_initialize_adapter
 id|qla1280_initialize_adapter
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
 (brace
-id|device_reg_t
+r_struct
+id|device_reg
 op_star
 id|reg
 suffix:semicolon
-r_uint8
+r_int
 id|status
 suffix:semicolon
-multiline_comment|/* uint8_t      cnt; */
-r_uint8
-id|b
+r_int
+id|bus
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_initialize_adapter&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Clear adapter flags. */
 id|ha-&gt;flags.online
 op_assign
@@ -8049,48 +7841,21 @@ id|ha-&gt;flags.abort_isp_active
 op_assign
 id|FALSE
 suffix:semicolon
-id|ha-&gt;flags.watchdog_enabled
+id|ha-&gt;flags.ints_enabled
 op_assign
 id|FALSE
 suffix:semicolon
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|printk
-c_func
-(paren
+l_int|1
+comma
 l_string|&quot;Configure PCI space for adapter...&bslash;n&quot;
 )paren
-)paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|status
-op_assign
-id|qla1280_pci_config
-c_func
-(paren
-id|ha
-)paren
-)paren
-)paren
-(brace
 id|reg
 op_assign
 id|ha-&gt;iobase
-suffix:semicolon
-multiline_comment|/* Disable ISP interrupts. */
-id|WRT_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;ictrl
-comma
-l_int|0
-)paren
 suffix:semicolon
 multiline_comment|/* Insure mailbox registers are free. */
 id|WRT_REG_WORD
@@ -8129,11 +7894,10 @@ id|qla1280_verbose
 id|printk
 c_func
 (paren
-l_string|&quot;scsi(%d): Determining if RISC is loaded...&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;scsi(%li): Determining if RISC is &quot;
+l_string|&quot;loaded...&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|ha-&gt;host_no
 )paren
 suffix:semicolon
@@ -8155,11 +7919,9 @@ id|qla1280_verbose
 id|printk
 c_func
 (paren
-l_string|&quot;scsi(%d): Verifying chip...&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;scsi(%ld): Verifying chip...&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|ha-&gt;host_no
 )paren
 suffix:semicolon
@@ -8171,7 +7933,6 @@ op_logical_neg
 id|status
 op_assign
 id|qla1280_chip_diag
-c_func
 (paren
 id|ha
 )paren
@@ -8186,11 +7947,9 @@ id|qla1280_verbose
 id|printk
 c_func
 (paren
-l_string|&quot;scsi(%d): Setup chip...&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;scsi(%ld): Setup chip...&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|ha-&gt;host_no
 )paren
 suffix:semicolon
@@ -8203,6 +7962,20 @@ id|ha
 )paren
 suffix:semicolon
 )brace
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;initialize: isp_firmware() failed!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|status
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -8220,11 +7993,9 @@ id|qla1280_verbose
 id|printk
 c_func
 (paren
-l_string|&quot;scsi(%d): Configure NVRAM parameters...&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;scsi(%ld): Configure NVRAM parameters...&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|ha-&gt;host_no
 )paren
 suffix:semicolon
@@ -8249,33 +8020,34 @@ id|ha
 )paren
 (brace
 multiline_comment|/* Issue SCSI reset. */
+multiline_comment|/* dg 03/13 if we can&squot;t reset twice then bus is dead */
 r_for
 c_loop
 (paren
-id|b
+id|bus
 op_assign
 l_int|0
 suffix:semicolon
-id|b
+id|bus
 OL
 id|ha-&gt;ports
 suffix:semicolon
-id|b
+id|bus
 op_increment
 )paren
+(brace
 r_if
 c_cond
 (paren
 op_logical_neg
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|disable_scsi_reset
 )paren
 (brace
-multiline_comment|/* dg 03/13 if we can&squot;t reset twice then bus is dead */
 r_if
 c_cond
 (paren
@@ -8284,9 +8056,10 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 )paren
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -8295,19 +8068,21 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 )paren
 )paren
 (brace
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|scsi_bus_dead
 op_assign
 id|TRUE
 suffix:semicolon
+)brace
+)brace
 )brace
 )brace
 r_do
@@ -8320,21 +8095,21 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|b
+id|bus
 op_assign
 l_int|0
 suffix:semicolon
-id|b
+id|bus
 OL
 id|ha-&gt;ports
 suffix:semicolon
-id|b
+id|bus
 op_increment
 )paren
 (brace
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|reset_marker
@@ -8346,7 +8121,7 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
 l_int|0
 comma
@@ -8371,15 +8146,15 @@ multiline_comment|/* Enable host adapter target mode. */
 r_for
 c_loop
 (paren
-id|b
+id|bus
 op_assign
 l_int|0
 suffix:semicolon
-id|b
+id|bus
 OL
 id|ha-&gt;ports
 suffix:semicolon
-id|b
+id|bus
 op_increment
 )paren
 (brace
@@ -8395,12 +8170,48 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 )paren
 )paren
 )paren
 (brace
-multiline_comment|/* for (cnt = 0; cnt &lt; MAX_LUNS; cnt++)&n;                            {&n;                                qla1280_enable_lun(ha, b, cnt);&n;                                 qla1280_poll(ha);&n;                            }*/
+macro_line|#if 0
+r_int
+id|cnt
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|cnt
+op_assign
+l_int|0
+suffix:semicolon
+id|cnt
+OL
+id|MAX_LUNS
+suffix:semicolon
+id|cnt
+op_increment
+)paren
+(brace
+id|qla1280_enable_lun
+c_func
+(paren
+id|ha
+comma
+id|bus
+comma
+id|cnt
+)paren
+suffix:semicolon
+id|qla1280_poll
+c_func
+(paren
+id|ha
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 )brace
 r_else
 r_break
@@ -8413,98 +8224,155 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-)brace
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
+r_else
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;scsi(%li): initialize: pci probe failed!&bslash;n&quot;
+comma
+id|ha-&gt;host_no
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|status
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_initialize_adapter: **** FAILED ****&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_initialize_adapter: **** FAILED ****&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-r_else
 id|LEAVE
 c_func
 (paren
 l_string|&quot;qla1280_initialize_adapter&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * qla1280_enable_tgt&n; *      Enable target mode.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *      b  = SCSI bus number.&n; *&n; * Returns:&n; *      0 = success.&n; */
-id|STATIC
-r_uint8
+multiline_comment|/*&n; * qla1280_enable_tgt&n; *      Enable target mode.&n; *&n; * Input:&n; *      ha   = adapter block pointer.&n; *      bus  = SCSI bus number.&n; *&n; * Returns:&n; *      0 = success.&n; */
+r_static
+r_int
 DECL|function|qla1280_enable_tgt
 id|qla1280_enable_tgt
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
-r_uint8
-id|b
+r_int
+id|bus
 )paren
 (brace
-r_uint8
+r_int
 id|status
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*  uint16_t    mb[MAILBOX_REGISTER_COUNT]; */
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_enable_tgt: entered&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_enable_tgt: entered&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Enable target mode. */
+macro_line|#if 0
+id|mb
+(braket
+l_int|0
+)braket
+op_assign
+id|MBC_ENABLE_TARGET_MODE
+suffix:semicolon
+id|mb
+(braket
+l_int|1
+)braket
+op_assign
+id|BIT_15
+suffix:semicolon
+id|mb
+(braket
+l_int|2
+)braket
+op_assign
+(paren
+r_uint16
+)paren
+(paren
+id|bus
+op_lshift
+l_int|15
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|qla1280_mailbox_command
+c_func
+(paren
+id|ha
+comma
+id|BIT_2
+op_or
+id|BIT_1
+op_or
+id|BIT_0
+comma
+op_amp
+id|mb
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Enable target mode. */
-multiline_comment|/*&n;    mb[0] = MBC_ENABLE_TARGET_MODE;&n;    mb[1] = BIT_15;&n;    mb[2] = (uint16_t)(b &lt;&lt; 15);&n;    status = qla1280_mailbox_command(ha, BIT_2|BIT_1|BIT_0, &amp;mb[0]);&n;    */
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
 r_if
 c_cond
 (paren
 id|status
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_enable_tgt: **** FAILED ****&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_enable_tgt: **** FAILED ****&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 r_else
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_enable_tgt: exiting normally&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_enable_tgt: exiting normally&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ISP Firmware Test&n; *      Checks if present version of RISC firmware is older than&n; *      driver firmware.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *&n; * Returns:&n; *      0 = firmware does not need to be loaded.&n; */
-id|STATIC
-r_uint8
+r_static
+r_int
 DECL|function|qla1280_isp_firmware
 id|qla1280_isp_firmware
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
@@ -8523,18 +8391,18 @@ r_uint16
 op_star
 id|wptr
 suffix:semicolon
-r_uint8
-id|chksum
-suffix:semicolon
-r_uint8
-id|cnt
-suffix:semicolon
-r_uint8
+r_int
 id|status
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* dg 2/27 always loads RISC */
+r_int
+id|cnt
+suffix:semicolon
+r_uint8
+id|chksum
+suffix:semicolon
 r_uint16
 id|mb
 (braket
@@ -8556,14 +8424,12 @@ op_star
 )paren
 id|ha-&gt;response_ring
 suffix:semicolon
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|printk
-c_func
-(paren
+l_int|1
+comma
 l_string|&quot;qla1280_isp_firmware: Reading NVRAM&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|chksum
@@ -8594,7 +8460,6 @@ op_star
 id|wptr
 op_assign
 id|qla1280_get_nvram_word
-c_func
 (paren
 id|ha
 comma
@@ -8625,23 +8490,20 @@ id|wptr
 op_increment
 suffix:semicolon
 )brace
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|printk
-c_func
-(paren
+l_int|1
+comma
 l_string|&quot;qla1280_isp_firmware: Completed Reading NVRAM&bslash;n&quot;
 )paren
-)paren
 suffix:semicolon
-macro_line|#if defined(QL_DEBUG_LEVEL_3)
-id|sprintf
+id|dprintk
 c_func
 (paren
-id|debug_buff
+l_int|3
 comma
-l_string|&quot;qla1280_isp_firmware: NVRAM Magic ID= %c %c %c&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280_isp_firmware: NVRAM Magic ID= %c %c %c&bslash;n&quot;
 comma
 (paren
 r_char
@@ -8663,13 +8525,6 @@ l_int|2
 )braket
 )paren
 suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-id|debug_buff
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Bad NVRAM data, load RISC code. */
 r_if
 c_cond
@@ -8713,7 +8568,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;qla1280_isp_firmware: Bad checksum or magic number or version in NVRAM.&bslash;n&quot;
+l_string|&quot;qla1280_isp_firmware: Bad checksum or magic &quot;
+l_string|&quot;number or version in NVRAM.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ha-&gt;flags.disable_risc_code_load
@@ -8732,14 +8588,15 @@ c_cond
 id|ha-&gt;flags.disable_risc_code_load
 )paren
 (brace
-macro_line|#if defined(QL_DEBUG_LEVEL_3)
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_isp_firmware: Telling RISC to verify checksum of loaded BIOS code.&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_isp_firmware: Telling RISC to verify checksum &quot;
+l_string|&quot;of loaded BIOS code.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Verify checksum of loaded RISC code. */
 id|mb
 (braket
@@ -8755,7 +8612,7 @@ l_int|1
 )braket
 op_assign
 op_star
-id|QLBoardTbl
+id|ql1280_board_tbl
 (braket
 id|ha-&gt;devnum
 )braket
@@ -8788,14 +8645,15 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* Start firmware execution. */
-macro_line|#if defined(QL_DEBUG_LEVEL_3)
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_isp_firmware: Startng F/W execution.&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_isp_firmware: Startng F/W &quot;
+l_string|&quot;execution.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|mb
 (braket
 l_int|0
@@ -8810,7 +8668,7 @@ l_int|1
 )braket
 op_assign
 op_star
-id|QLBoardTbl
+id|ql1280_board_tbl
 (braket
 id|ha-&gt;devnum
 )braket
@@ -8845,14 +8703,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|printk
-c_func
-(paren
+l_int|1
+comma
 l_string|&quot;qla1280: NVRAM configured to load RISC load.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|status
@@ -8860,19 +8716,19 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
 r_if
 c_cond
 (paren
 id|status
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_isp_firmware: **** Load RISC code ****&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_isp_firmware: **** Load RISC code ****&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|LEAVE
 c_func
 (paren
@@ -8884,25 +8740,18 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * PCI configuration&n; *      Setup device PCI configuration registers.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *&n; * Returns:&n; *      0 = success.&n; */
-id|STATIC
-r_uint8
+r_static
+r_int
 DECL|function|qla1280_pci_config
 id|qla1280_pci_config
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
 (brace
-r_uint8
-id|status
-op_assign
-l_int|1
-suffix:semicolon
-r_uint32
-id|command
-suffix:semicolon
 macro_line|#if MEMORY_MAPPED_IO
 r_uint32
 id|page_offset
@@ -8913,14 +8762,13 @@ r_uint32
 id|mmapbase
 suffix:semicolon
 macro_line|#endif
-id|config_reg_t
-op_star
-id|creg
-op_assign
-l_int|0
-suffix:semicolon
 r_uint16
 id|buf_wd
+suffix:semicolon
+r_int
+id|status
+op_assign
+l_int|1
 suffix:semicolon
 id|ENTER
 c_func
@@ -8928,151 +8776,108 @@ c_func
 l_string|&quot;qla1280_pci_config&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Get command register. */
-r_if
-c_cond
-(paren
-id|pci_read_config_word
+id|pci_set_master
 c_func
 (paren
 id|ha-&gt;pdev
-comma
-id|OFFSET
-c_func
-(paren
-id|creg-&gt;command
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Set Bus Master Enable, Memory Address Space Enable and&n;&t; * reset any error bits, in the command register.&n;&t; */
+id|pci_read_config_word
+(paren
+id|ha-&gt;pdev
+comma
+id|PCI_COMMAND
 comma
 op_amp
 id|buf_wd
 )paren
-op_eq
-id|PCIBIOS_SUCCESSFUL
-)paren
-(brace
-id|command
-op_assign
-id|buf_wd
-suffix:semicolon
-multiline_comment|/*&n;        * Set Bus Master Enable, Memory Address Space Enable and&n;        * reset any error bits.&n;        */
-id|buf_wd
-op_and_assign
-op_complement
-l_int|0x7
 suffix:semicolon
 macro_line|#if MEMORY_MAPPED_IO
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|printk
-c_func
-(paren
+l_int|1
+comma
 l_string|&quot;qla1280: MEMORY MAPPED IO is enabled.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|buf_wd
 op_or_assign
-id|BIT_2
+id|PCI_COMMAND_MEMORY
 op_plus
-id|BIT_1
-op_plus
-id|BIT_0
+id|PCI_COMMAND_IO
 suffix:semicolon
 macro_line|#else
 id|buf_wd
 op_or_assign
-id|BIT_2
-op_plus
-id|BIT_0
+id|PCI_COMMAND_IO
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
 id|pci_write_config_word
-c_func
 (paren
 id|ha-&gt;pdev
 comma
-id|OFFSET
-c_func
-(paren
-id|creg-&gt;command
-)paren
+id|PCI_COMMAND
 comma
 id|buf_wd
 )paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;qla1280: Could not write config word.&bslash;n&quot;
-)paren
 suffix:semicolon
-)brace
-multiline_comment|/* Get expansion ROM address. */
-r_if
-c_cond
-(paren
+multiline_comment|/*&n;&t; * Reset expansion ROM address decode enable.&n;&t; */
 id|pci_read_config_word
-c_func
 (paren
 id|ha-&gt;pdev
 comma
-id|OFFSET
-c_func
-(paren
-id|creg-&gt;expansion_rom
-)paren
+id|PCI_ROM_ADDRESS
 comma
 op_amp
 id|buf_wd
 )paren
-op_eq
-id|PCIBIOS_SUCCESSFUL
-)paren
-(brace
-multiline_comment|/* Reset expansion ROM address decode enable. */
+suffix:semicolon
 id|buf_wd
 op_and_assign
 op_complement
-id|BIT_0
+id|PCI_ROM_ADDRESS_ENABLE
 suffix:semicolon
-r_if
-c_cond
-(paren
 id|pci_write_config_word
-c_func
 (paren
 id|ha-&gt;pdev
 comma
-id|OFFSET
-c_func
-(paren
-id|creg-&gt;expansion_rom
-)paren
+id|PCI_ROM_ADDRESS
 comma
 id|buf_wd
 )paren
-op_eq
-id|PCIBIOS_SUCCESSFUL
-)paren
-(brace
-macro_line|#if MEMORY_MAPPED_IO
-multiline_comment|/* Get memory mapped I/O address. */
-id|pci_read_config_dword
+suffix:semicolon
+id|ha-&gt;host-&gt;io_port
+op_assign
+id|pci_resource_start
 c_func
 (paren
 id|ha-&gt;pdev
 comma
-id|OFFSET
-c_func
-(paren
-id|cfgp-&gt;mem_base_addr
+l_int|0
 )paren
+suffix:semicolon
+id|ha-&gt;host-&gt;io_port
+op_and_assign
+id|PCI_BASE_ADDRESS_IO_MASK
+suffix:semicolon
+id|ha-&gt;iobase
+op_assign
+(paren
+r_struct
+id|device_reg
+op_star
+)paren
+id|ha-&gt;host-&gt;io_port
+suffix:semicolon
+macro_line|#if MEMORY_MAPPED_IO
+multiline_comment|/*&n;&t; * Get memory mapped I/O address.&n;&t; */
+id|pci_read_config_word
+(paren
+id|ha-&gt;pdev
+comma
+id|PCI_BASE_ADDRESS_1
 comma
 op_amp
 id|mmapbase
@@ -9082,7 +8887,7 @@ id|mmapbase
 op_and_assign
 id|PCI_BASE_ADDRESS_MEM_MASK
 suffix:semicolon
-multiline_comment|/* Find proper memory chunk for memory map I/O reg. */
+multiline_comment|/*&n;&t; * Find proper memory chunk for memory map I/O reg.&n;&t; */
 id|base
 op_assign
 id|mmapbase
@@ -9095,11 +8900,10 @@ id|mmapbase
 op_minus
 id|base
 suffix:semicolon
-multiline_comment|/* Get virtual address for I/O registers. */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,0)
+multiline_comment|/*&n;&t; * Get virtual address for I/O registers.&n;&t; */
 id|ha-&gt;mmpbase
 op_assign
-id|ioremap_nocache
+id|ioremap
 c_func
 (paren
 id|base
@@ -9109,20 +8913,6 @@ op_plus
 l_int|256
 )paren
 suffix:semicolon
-macro_line|#else
-id|ha-&gt;mmpbase
-op_assign
-id|vremap
-c_func
-(paren
-id|base
-comma
-id|page_offset
-op_plus
-l_int|256
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9139,15 +8929,12 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else /* MEMORY_MAPPED_IO */
+macro_line|#else&t;&t;&t;&t;/* MEMORY_MAPPED_IO */
 id|status
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif /* MEMORY_MAPPED_IO */
-)brace
-)brace
-)brace
+macro_line|#endif&t;&t;&t;&t;/* MEMORY_MAPPED_IO */
 id|LEAVE
 c_func
 (paren
@@ -9159,59 +8946,53 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Chip diagnostics&n; *      Test chip for proper operation.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *&n; * Returns:&n; *      0 = success.&n; */
-id|STATIC
-r_uint8
+r_static
+r_int
 DECL|function|qla1280_chip_diag
 id|qla1280_chip_diag
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
 (brace
-id|device_reg_t
-op_star
-id|reg
-op_assign
-id|ha-&gt;iobase
-suffix:semicolon
-r_uint8
-id|status
-op_assign
-l_int|0
-suffix:semicolon
-r_uint16
-id|data
-suffix:semicolon
-r_uint32
-id|cnt
-suffix:semicolon
 r_uint16
 id|mb
 (braket
 id|MAILBOX_REGISTER_COUNT
 )braket
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|sprintf
+r_struct
+id|device_reg
+op_star
+id|reg
+op_assign
+id|ha-&gt;iobase
+suffix:semicolon
+r_int
+id|status
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|cnt
+suffix:semicolon
+r_uint16
+id|data
+suffix:semicolon
+id|dprintk
 c_func
 (paren
-id|debug_buff
+l_int|3
 comma
-l_string|&quot;qla1280_chip_diag: testing device at 0x%p &bslash;n&bslash;r&quot;
+l_string|&quot;qla1280_chip_diag: testing device at 0x%p &bslash;n&quot;
 comma
 op_amp
 id|reg-&gt;id_l
 )paren
 suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-id|debug_buff
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Soft reset chip and wait for it to finish. */
 id|WRT_REG_WORD
 c_func
@@ -9231,6 +9012,7 @@ op_amp
 id|reg-&gt;ictrl
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * This is *AWESOME*&n;&t; */
 r_for
 c_loop
 (paren
@@ -9248,7 +9030,7 @@ id|cnt
 op_decrement
 )paren
 (brace
-id|SYS_DELAY
+id|udelay
 c_func
 (paren
 l_int|5
@@ -9271,14 +9053,14 @@ id|cnt
 )paren
 (brace
 multiline_comment|/* Reset register not cleared by chip reset. */
-macro_line|#if defined(QL_DEBUG_LEVEL_3)
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_chip_diag: reset register cleared by chip reset&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_chip_diag: reset register cleared by chip reset&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|WRT_REG_WORD
 c_func
 (paren
@@ -9288,7 +9070,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Reset RISC and disable BIOS which&n;        allows RISC to execute out of RAM. */
+multiline_comment|/* Reset RISC and disable BIOS which&n;&t;&t;   allows RISC to execute out of RAM. */
 id|WRT_REG_WORD
 c_func
 (paren
@@ -9325,6 +9107,7 @@ op_amp
 id|reg-&gt;mailbox0
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * I *LOVE* this code!&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -9342,7 +9125,7 @@ id|cnt
 op_decrement
 )paren
 (brace
-id|SYS_DELAY
+id|udelay
 c_func
 (paren
 l_int|5
@@ -9365,14 +9148,14 @@ id|cnt
 )paren
 (brace
 multiline_comment|/* Check product ID of chip */
-macro_line|#if defined(QL_DEBUG_LEVEL_3)
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_chip_diag: Checking product ID of chip&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_chip_diag: Checking product ID of chip&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9428,7 +9211,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;qla1280: Wrong product ID = 0x%x,0x%x,0x%x,0x%x&bslash;n&quot;
+l_string|&quot;qla1280: Wrong product ID = 0x%x,0x%x,0x%x,&quot;
+l_string|&quot;0x%x&bslash;n&quot;
 comma
 id|RD_REG_WORD
 c_func
@@ -9466,14 +9250,19 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|DEBUG
+multiline_comment|/*&n;&t;&t;&t;&t; * Enable ints early!!!&n;&t;&t;&t;&t; */
+id|qla1280_enable_intrs
 c_func
 (paren
-id|printk
-c_func
-(paren
-l_string|&quot;qla1280_chip_diag: Checking mailboxes of chip&bslash;n&quot;
+id|ha
 )paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;qla1280_chip_diag: Checking mailboxes of chip&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Wrap Incoming Mailboxes Test. */
@@ -9545,7 +9334,6 @@ c_func
 (paren
 id|ha
 comma
-(paren
 id|BIT_7
 op_or
 id|BIT_6
@@ -9561,7 +9349,6 @@ op_or
 id|BIT_1
 op_or
 id|BIT_0
-)paren
 comma
 op_amp
 id|mb
@@ -9602,14 +9389,7 @@ l_int|4
 )braket
 op_ne
 l_int|0x55AA
-)paren
-id|status
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_logical_or
 id|mb
 (braket
 l_int|5
@@ -9642,7 +9422,6 @@ id|status
 op_eq
 l_int|1
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -9653,7 +9432,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-)brace
 r_else
 id|status
 op_assign
@@ -9665,45 +9443,48 @@ id|status
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
 r_if
 c_cond
 (paren
 id|status
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_chip_diag: **** FAILED ****&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_chip_diag: **** FAILED ****&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 r_else
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_chip_diag: exiting normally&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_chip_diag: exiting normally&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Setup chip&n; *      Load and start RISC firmware.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *&n; * Returns:&n; *      0 = success.&n; */
-id|STATIC
-r_uint8
+DECL|macro|DUMP_IT_BACK
+mdefine_line|#define DUMP_IT_BACK 0&t;&t;/* for debug of RISC loading */
+r_static
+r_int
 DECL|function|qla1280_setup_chip
 id|qla1280_setup_chip
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
 (brace
-r_uint8
+r_int
 id|status
 op_assign
 l_int|0
@@ -9724,80 +9505,62 @@ id|mb
 id|MAILBOX_REGISTER_COUNT
 )braket
 suffix:semicolon
-macro_line|#ifdef QLA1280_UNUSED
-r_uint8
-op_star
-id|sp
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-macro_line|#endif
 r_uint16
 id|cnt
 suffix:semicolon
 r_int
 id|num
 suffix:semicolon
+macro_line|#if DUMP_IT_BACK
+r_int
+id|i
+suffix:semicolon
+r_uint8
+op_star
+id|sp
+suffix:semicolon
 r_uint8
 op_star
 id|tbuf
 suffix:semicolon
-id|u_long
+macro_line|#ifdef QLA_64BIT_PTR
+id|dma_addr_t
 id|p_tbuf
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
+macro_line|#else
+r_uint32
+id|p_tbuf
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_setup_chip&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-(paren
+multiline_comment|/* 3.13 */
+macro_line|#if DUMP_IT_BACK
+multiline_comment|/* get consistent memory allocated for setup_chip */
 id|tbuf
 op_assign
-(paren
-r_uint8
-op_star
-)paren
-id|KMALLOC
+id|pci_alloc_consistent
 c_func
 (paren
+id|ha-&gt;pdev
+comma
 l_int|8000
-)paren
-)paren
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;setup_chip: couldn&squot;t alloacte memory&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
+comma
+op_amp
 id|p_tbuf
-op_assign
-id|VIRT_TO_BUS
-c_func
-(paren
-id|tbuf
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Load RISC code. */
-multiline_comment|/* &n;    risc_address      = ql12_risc_code_addr01;&n;    risc_code_address = &amp;ql12_risc_code01[0];&n;    risc_code_size    = ql12_risc_code_length01;&n;    */
 id|risc_address
 op_assign
 op_star
-id|QLBoardTbl
+id|ql1280_board_tbl
 (braket
 id|ha-&gt;devnum
 )braket
@@ -9806,7 +9569,7 @@ id|fwstart
 suffix:semicolon
 id|risc_code_address
 op_assign
-id|QLBoardTbl
+id|ql1280_board_tbl
 (braket
 id|ha-&gt;devnum
 )braket
@@ -9818,55 +9581,22 @@ op_assign
 (paren
 r_int
 )paren
-(paren
 op_star
-id|QLBoardTbl
+id|ql1280_board_tbl
 (braket
 id|ha-&gt;devnum
 )braket
 dot
 id|fwlen
-op_amp
-l_int|0xffff
-)paren
 suffix:semicolon
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|printk
-c_func
-(paren
-l_string|&quot;qla1280: DMAing RISC code (%d) words.&bslash;n&quot;
+l_int|1
 comma
-(paren
-r_int
-)paren
-id|risc_code_size
-)paren
-)paren
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-id|sprintf
-c_func
-(paren
-id|debug_buff
-comma
-l_string|&quot;qla1280_setup_chip:  Loading RISC code size =(%ld).&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280_setup_chip: DMA RISC code (%i) words&bslash;n&quot;
 comma
 id|risc_code_size
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-id|debug_buff
-)paren
 )paren
 suffix:semicolon
 id|num
@@ -9901,15 +9631,13 @@ id|cnt
 op_assign
 id|risc_code_size
 suffix:semicolon
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280_setup_chip:  loading risc @ =(0x%p),%d,%d(0x%x).&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280_setup_chip:  loading risc @ =(0x%p),&quot;
+l_string|&quot;%d,%d(0x%x)&bslash;n&quot;
 comma
 id|risc_code_address
 comma
@@ -9920,53 +9648,23 @@ comma
 id|risc_address
 )paren
 suffix:semicolon
-)paren
-id|DEBUG
+id|memcpy
 c_func
 (paren
-id|qla1280_print
-c_func
-(paren
-id|debug_buff
-)paren
-)paren
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;qla1280_setup_chip:  loading risc @ =code=(0x%p),cnt=%d,seg=%d,addr=0x%x&bslash;n&bslash;r&quot;
-comma
-id|risc_code_address
-comma
-id|cnt
-comma
-id|num
-comma
-id|risc_address
-)paren
-)paren
-suffix:semicolon
-id|BCOPY
-c_func
-(paren
-(paren
-id|caddr_t
-)paren
-id|risc_code_address
-comma
-(paren
-id|caddr_t
-)paren
 id|ha-&gt;request_ring
+comma
+id|risc_code_address
 comma
 (paren
 id|cnt
 op_lshift
 l_int|1
 )paren
+)paren
+suffix:semicolon
+id|flush_cache_all
+c_func
+(paren
 )paren
 suffix:semicolon
 id|mb
@@ -9976,7 +9674,6 @@ l_int|0
 op_assign
 id|MBC_LOAD_RAM
 suffix:semicolon
-multiline_comment|/* mb[0] = MBC_LOAD_RAM_A64; */
 id|mb
 (braket
 l_int|1
@@ -9996,9 +9693,6 @@ id|mb
 l_int|3
 )braket
 op_assign
-(paren
-r_uint16
-)paren
 id|ha-&gt;request_dma
 op_amp
 l_int|0xffff
@@ -10008,9 +9702,6 @@ id|mb
 l_int|2
 )braket
 op_assign
-(paren
-r_uint16
-)paren
 (paren
 id|ha-&gt;request_dma
 op_rshift
@@ -10024,46 +9715,34 @@ id|mb
 l_int|7
 )braket
 op_assign
-(paren
-r_uint16
-)paren
-(paren
-id|MS_64BITS
+id|pci_dma_hi32
 c_func
 (paren
 id|ha-&gt;request_dma
 )paren
 op_amp
 l_int|0xffff
-)paren
 suffix:semicolon
 id|mb
 (braket
 l_int|6
 )braket
 op_assign
-(paren
-r_uint16
-)paren
-(paren
-id|MS_64BITS
+id|pci_dma_hi32
 c_func
 (paren
 id|ha-&gt;request_dma
 )paren
 op_rshift
 l_int|16
-)paren
-op_amp
-l_int|0xffff
 suffix:semicolon
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|printk
-c_func
-(paren
-l_string|&quot;qla1280_setup_chip: op=%d  0x%lx = 0x%4x,0x%4x,0x%4x,0x%4x&bslash;n&quot;
+l_int|1
+comma
+l_string|&quot;qla1280_setup_chip: op=%d  0x%p = 0x%4x,0x%4x,&quot;
+l_string|&quot;0x%4x,0x%4x&bslash;n&quot;
 comma
 id|mb
 (braket
@@ -10091,7 +9770,6 @@ id|mb
 (braket
 l_int|3
 )braket
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -10127,20 +9805,20 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Failed to load partial segment of f/w&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* dump it back */
-macro_line|#if 0
+macro_line|#if DUMP_IT_BACK
 id|mb
 (braket
 l_int|0
 )braket
 op_assign
-id|MBC_DUMP_RAM_A64
+id|MBC_READ_RAM_WORD
 suffix:semicolon
 id|mb
 (braket
@@ -10161,9 +9839,6 @@ id|mb
 l_int|3
 )braket
 op_assign
-(paren
-r_uint16
-)paren
 id|p_tbuf
 op_amp
 l_int|0xffff
@@ -10173,9 +9848,6 @@ id|mb
 l_int|2
 )braket
 op_assign
-(paren
-r_uint16
-)paren
 (paren
 id|p_tbuf
 op_rshift
@@ -10189,13 +9861,10 @@ id|mb
 l_int|7
 )braket
 op_assign
-(paren
-r_uint16
-)paren
+id|pci_dma_hi32
+c_func
 (paren
 id|p_tbuf
-op_rshift
-l_int|32
 )paren
 op_amp
 l_int|0xffff
@@ -10205,16 +9874,13 @@ id|mb
 l_int|6
 )braket
 op_assign
-(paren
-r_uint16
-)paren
+id|pci_dma_hi32
+c_func
 (paren
 id|p_tbuf
-op_rshift
-l_int|48
 )paren
-op_amp
-l_int|0xffff
+op_rshift
+l_int|16
 suffix:semicolon
 r_if
 c_cond
@@ -10249,6 +9915,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Failed to dump partial segment of f/w&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -10299,13 +9966,34 @@ id|i
 id|printk
 c_func
 (paren
-l_string|&quot;qla1280 : firmware compare error @ byte (0x%x)&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;qla1280_setup_chip: FW &quot;
+l_string|&quot;compare error @ byte(0x%x) loop#=%x&bslash;n&quot;
 comma
 id|i
+comma
+id|num
 )paren
 suffix:semicolon
-r_break
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;setup_chip: FWbyte=%x  &quot;
+l_string|&quot;FWfromChip=%x&bslash;n&quot;
+comma
+id|sp
+(braket
+id|i
+)braket
+comma
+id|tbuf
+(braket
+id|i
+)braket
+)paren
 suffix:semicolon
+multiline_comment|/*break; */
 )brace
 )brace
 macro_line|#endif
@@ -10329,186 +10017,6 @@ id|num
 op_increment
 suffix:semicolon
 )brace
-macro_line|#ifdef QLA1280_UNUSED
-id|DEBUG
-c_func
-(paren
-id|ql_debug_print
-op_assign
-l_int|0
-suffix:semicolon
-)paren
-(brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|ql12_risc_code_length01
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|mb
-(braket
-l_int|0
-)braket
-op_assign
-l_int|0x4
-suffix:semicolon
-id|mb
-(braket
-l_int|1
-)braket
-op_assign
-id|ql12_risc_code_addr01
-op_plus
-id|i
-suffix:semicolon
-id|mb
-(braket
-l_int|2
-)braket
-op_assign
-id|ql12_risc_code01
-(braket
-id|i
-)braket
-suffix:semicolon
-id|status
-op_assign
-id|qla1280_mailbox_command
-c_func
-(paren
-id|ha
-comma
-id|BIT_2
-op_or
-id|BIT_1
-op_or
-id|BIT_0
-comma
-op_amp
-id|mb
-(braket
-l_int|0
-)braket
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|status
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;qla1280 : firmware load failure&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-id|mb
-(braket
-l_int|0
-)braket
-op_assign
-l_int|0x5
-suffix:semicolon
-id|mb
-(braket
-l_int|1
-)braket
-op_assign
-id|ql12_risc_code_addr01
-op_plus
-id|i
-suffix:semicolon
-id|mb
-(braket
-l_int|2
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-id|status
-op_assign
-id|qla1280_mailbox_command
-c_func
-(paren
-id|ha
-comma
-id|BIT_2
-op_or
-id|BIT_1
-op_or
-id|BIT_0
-comma
-op_amp
-id|mb
-(braket
-l_int|0
-)braket
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|status
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;qla1280 : firmware dump failure&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|mb
-(braket
-l_int|2
-)braket
-op_ne
-id|ql12_risc_code01
-(braket
-id|i
-)braket
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;qla1280 : firmware compare error @ (0x%x)&bslash;n&quot;
-comma
-id|ql12_risc_code_addr01
-op_plus
-id|i
-)paren
-suffix:semicolon
-)brace
-)brace
-)brace
-id|DEBUG
-c_func
-(paren
-id|ql_debug_print
-op_assign
-l_int|1
-suffix:semicolon
-)paren
-macro_line|#endif
 multiline_comment|/* Verify checksum of loaded RISC code. */
 r_if
 c_cond
@@ -10517,16 +10025,15 @@ op_logical_neg
 id|status
 )paren
 (brace
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|printk
-c_func
-(paren
-l_string|&quot;qla1280_setup_chip: Verifying checksum of loaded RISC code.&bslash;n&quot;
+l_int|1
+comma
+l_string|&quot;qla1280_setup_chip: Verifying checksum of &quot;
+l_string|&quot;loaded RISC code.&bslash;n&quot;
 )paren
 suffix:semicolon
-)paren
 id|mb
 (braket
 l_int|0
@@ -10541,7 +10048,7 @@ l_int|1
 )braket
 op_assign
 op_star
-id|QLBoardTbl
+id|ql1280_board_tbl
 (braket
 id|ha-&gt;devnum
 )braket
@@ -10574,16 +10081,14 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* Start firmware execution. */
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;qla1280_setup_chip: start firmware running.&bslash;n&bslash;r&quot;
+l_int|1
+comma
+l_string|&quot;qla1280_setup_chip: start firmware running.&bslash;n&quot;
 )paren
 suffix:semicolon
-)paren
 id|mb
 (braket
 l_int|0
@@ -10591,14 +10096,13 @@ l_int|0
 op_assign
 id|MBC_EXECUTE_FIRMWARE
 suffix:semicolon
-multiline_comment|/* mb[1] = ql12_risc_code_addr01; */
 id|mb
 (braket
 l_int|1
 )braket
 op_assign
 op_star
-id|QLBoardTbl
+id|ql1280_board_tbl
 (braket
 id|ha-&gt;devnum
 )braket
@@ -10626,78 +10130,83 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;qla1280_setup_chip: Failed checksum.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|KMFREE
+multiline_comment|/* 3.13 */
+macro_line|#if DUMP_IT_BACK
+multiline_comment|/* free consistent memory allocated for setup_chip */
+id|pci_free_consistent
 c_func
 (paren
-id|tbuf
+id|ha-&gt;pdev
 comma
 l_int|8000
+comma
+id|tbuf
+comma
+id|p_tbuf
 )paren
 suffix:semicolon
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
+macro_line|#endif
 r_if
 c_cond
 (paren
 id|status
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_setup_chip: **** FAILED ****&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_setup_chip: **** FAILED ****&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-r_else
 id|LEAVE
 c_func
 (paren
 l_string|&quot;qla1280_setup_chip&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Initialize rings&n; *&n; * Input:&n; *      ha                = adapter block pointer.&n; *      ha-&gt;request_ring  = request ring virtual address&n; *      ha-&gt;response_ring = response ring virtual address&n; *      ha-&gt;request_dma   = request ring physical address&n; *      ha-&gt;response_dma  = response ring physical address&n; *&n; * Returns:&n; *      0 = success.&n; */
-id|STATIC
-r_uint8
+r_static
+r_int
 DECL|function|qla1280_init_rings
 id|qla1280_init_rings
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
 (brace
-r_uint8
-id|status
-op_assign
-l_int|0
-suffix:semicolon
-r_uint16
-id|cnt
-suffix:semicolon
 r_uint16
 id|mb
 (braket
 id|MAILBOX_REGISTER_COUNT
 )braket
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
+r_int
+id|status
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|cnt
+suffix:semicolon
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_init_rings&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Clear outstanding commands array. */
 r_for
 c_loop
@@ -10753,14 +10262,9 @@ id|mb
 l_int|3
 )braket
 op_assign
-(paren
-r_uint16
-)paren
-id|LS_64BITS
-c_func
-(paren
 id|ha-&gt;request_dma
-)paren
+op_amp
+l_int|0xffff
 suffix:semicolon
 id|mb
 (braket
@@ -10768,17 +10272,12 @@ l_int|2
 )braket
 op_assign
 (paren
-r_uint16
-)paren
-(paren
-id|LS_64BITS
-c_func
-(paren
 id|ha-&gt;request_dma
-)paren
 op_rshift
 l_int|16
 )paren
+op_amp
+l_int|0xffff
 suffix:semicolon
 id|mb
 (braket
@@ -10792,32 +10291,26 @@ id|mb
 l_int|7
 )braket
 op_assign
-(paren
-r_uint16
-)paren
-id|MS_64BITS
+id|pci_dma_hi32
 c_func
 (paren
 id|ha-&gt;request_dma
 )paren
+op_amp
+l_int|0xffff
 suffix:semicolon
 id|mb
 (braket
 l_int|6
 )braket
 op_assign
-(paren
-r_uint16
-)paren
-(paren
-id|MS_64BITS
+id|pci_dma_hi32
 c_func
 (paren
 id|ha-&gt;request_dma
 )paren
 op_rshift
 l_int|16
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -10883,14 +10376,9 @@ id|mb
 l_int|3
 )braket
 op_assign
-(paren
-r_uint16
-)paren
-id|LS_64BITS
-c_func
-(paren
 id|ha-&gt;response_dma
-)paren
+op_amp
+l_int|0xffff
 suffix:semicolon
 id|mb
 (braket
@@ -10898,17 +10386,12 @@ l_int|2
 )braket
 op_assign
 (paren
-r_uint16
-)paren
-(paren
-id|LS_64BITS
-c_func
-(paren
 id|ha-&gt;response_dma
-)paren
 op_rshift
 l_int|16
 )paren
+op_amp
+l_int|0xffff
 suffix:semicolon
 id|mb
 (braket
@@ -10922,32 +10405,26 @@ id|mb
 l_int|7
 )braket
 op_assign
-(paren
-r_uint16
-)paren
-id|MS_64BITS
+id|pci_dma_hi32
 c_func
 (paren
 id|ha-&gt;response_dma
 )paren
+op_amp
+l_int|0xffff
 suffix:semicolon
 id|mb
 (braket
 l_int|6
 )braket
 op_assign
-(paren
-r_uint16
-)paren
-(paren
-id|MS_64BITS
+id|pci_dma_hi32
 c_func
 (paren
 id|ha-&gt;response_dma
 )paren
 op_rshift
 l_int|16
-)paren
 suffix:semicolon
 id|status
 op_assign
@@ -10978,45 +10455,44 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
 r_if
 c_cond
 (paren
 id|status
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_init_rings: **** FAILED ****&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_init_rings: **** FAILED ****&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-r_else
 id|LEAVE
 c_func
 (paren
 l_string|&quot;qla1280_init_rings&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * NVRAM configuration.&n; *&n; * Input:&n; *      ha                = adapter block pointer.&n; *      ha-&gt;request_ring  = request ring virtual address&n; *&n; * Output:&n; *      host adapters parameters in host adapter block&n; *&n; * Returns:&n; *      0 = success.&n; */
-id|STATIC
-r_uint8
+r_static
+r_int
 DECL|function|qla1280_nvram_config
 id|qla1280_nvram_config
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
 (brace
-id|device_reg_t
+r_struct
+id|device_reg
 op_star
 id|reg
 op_assign
@@ -11032,17 +10508,20 @@ op_star
 )paren
 id|ha-&gt;response_ring
 suffix:semicolon
-r_uint8
+r_int
 id|status
 op_assign
 l_int|0
 suffix:semicolon
-r_uint32
-id|b
+r_int
+id|cnt
+suffix:semicolon
+r_int
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 suffix:semicolon
 r_uint16
 op_star
@@ -11055,16 +10534,13 @@ id|MAILBOX_REGISTER_COUNT
 )braket
 suffix:semicolon
 r_uint8
-id|cnt
-suffix:semicolon
-r_uint8
 id|chksum
 suffix:semicolon
-r_uint32
+r_int
 id|nvsize
 suffix:semicolon
-macro_line|#if defined(QL_DEBUG_ROUTINES) &amp;&amp; !defined(QL_DEBUG_LEVEL_4)
-r_uint8
+macro_line|#if DEBUG_PRINT_NVRAM
+r_int
 id|saved_print_status
 op_assign
 id|ql_debug_print
@@ -11076,14 +10552,8 @@ c_func
 l_string|&quot;qla1280_nvram_config&quot;
 )paren
 suffix:semicolon
-macro_line|#if defined(QL_DEBUG_ROUTINES) &amp;&amp; !defined(QL_DEBUG_LEVEL_4)
-id|ql_debug_print
-op_assign
-id|FALSE
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Verify valid NVRAM checksum. */
-macro_line|#if  USE_NVRAM_DEFAULTS
+macro_line|#if USE_NVRAM_DEFAULTS
 id|chksum
 op_assign
 l_int|1
@@ -11106,13 +10576,12 @@ c_cond
 (paren
 id|ha-&gt;device_id
 op_eq
-id|QLA12160_DEVICE_ID
+id|PCI_DEVICE_ID_QLOGIC_ISP12160
 op_logical_or
 id|ha-&gt;device_id
 op_eq
-id|QLA10160_DEVICE_ID
+id|PCI_DEVICE_ID_QLOGIC_ISP10160
 )paren
-(brace
 id|nvsize
 op_assign
 r_sizeof
@@ -11122,7 +10591,6 @@ id|nvram160_t
 op_div
 l_int|2
 suffix:semicolon
-)brace
 r_else
 id|nvsize
 op_assign
@@ -11223,34 +10691,29 @@ OL
 l_int|1
 )paren
 (brace
-macro_line|#if  USE_NVRAM_DEFAULTS
-id|DEBUG
+macro_line|#if USE_NVRAM_DEFAULTS
+id|dprintk
 c_func
 (paren
-id|printk
-c_func
-(paren
+l_int|1
+comma
 l_string|&quot;Using defaults for NVRAM&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 macro_line|#else
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|printk
-c_func
-(paren
+l_int|1
+comma
 l_string|&quot;Using defaults for NVRAM: &bslash;n&quot;
 )paren
-)paren
 suffix:semicolon
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|printk
-c_func
-(paren
+l_int|1
+comma
 l_string|&quot;checksum=0x%x, Id=%c, version=0x%x&bslash;n&quot;
 comma
 id|chksum
@@ -11262,43 +10725,19 @@ l_int|0
 comma
 id|nv-&gt;version
 )paren
-)paren
 suffix:semicolon
-macro_line|#if defined(QL_DEBUG_LEVEL_3)
-multiline_comment|/* ql_debug_print = 1;&n;        qla1280_dump_buffer((caddr_t)ha-&gt;response_ring, REQUEST_ENTRY_SIZE);&n;        ql_debug_print = 0; */
-macro_line|#endif
-id|wptr
-op_assign
+id|memset
+c_func
 (paren
-r_uint16
-op_star
-)paren
 id|ha-&gt;response_ring
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|cnt
-op_assign
+comma
 l_int|0
-suffix:semicolon
-id|cnt
-OL
+comma
 r_sizeof
 (paren
 id|nvram_t
 )paren
-op_div
-l_int|2
-suffix:semicolon
-id|cnt
-op_increment
 )paren
-op_star
-id|wptr
-op_increment
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* nv-&gt;cntr_flags_1.disable_loading_risc_code = 1; */
@@ -11321,21 +10760,21 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|b
+id|bus
 op_assign
 l_int|0
 suffix:semicolon
-id|b
+id|bus
 OL
 id|MAX_BUSES
 suffix:semicolon
-id|b
+id|bus
 op_increment
 )paren
 (brace
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|config_1.initiator_id
@@ -11344,7 +10783,7 @@ l_int|7
 suffix:semicolon
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|bus_reset_delay
@@ -11353,7 +10792,7 @@ l_int|5
 suffix:semicolon
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|config_2.async_data_setup_time
@@ -11362,7 +10801,7 @@ l_int|9
 suffix:semicolon
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|config_2.req_ack_active_negation
@@ -11371,7 +10810,7 @@ l_int|1
 suffix:semicolon
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|config_2.data_line_active_negation
@@ -11380,7 +10819,7 @@ l_int|1
 suffix:semicolon
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|selection_timeout
@@ -11389,7 +10828,7 @@ l_int|250
 suffix:semicolon
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|max_queue_depth
@@ -11399,77 +10838,85 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|t
+id|target
 op_assign
 l_int|0
 suffix:semicolon
-id|t
+id|target
 OL
 id|MAX_TARGETS
 suffix:semicolon
-id|t
+id|target
 op_increment
 )paren
 (brace
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|target
 (braket
-id|t
+id|target
 )braket
 dot
-id|parameter.f.auto_request_sense
+id|parameter.f
+dot
+id|auto_request_sense
 op_assign
 l_int|1
 suffix:semicolon
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|target
 (braket
-id|t
+id|target
 )braket
 dot
-id|parameter.f.disconnect_allowed
+id|parameter.f
+dot
+id|disconnect_allowed
 op_assign
 l_int|1
 suffix:semicolon
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|target
 (braket
-id|t
+id|target
 )braket
 dot
-id|parameter.f.tag_queuing
+id|parameter.f
+dot
+id|tag_queuing
 op_assign
 l_int|1
 suffix:semicolon
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|target
 (braket
-id|t
+id|target
 )braket
 dot
-id|flags.device_enable
+id|flags
+dot
+id|device_enable
 op_assign
 l_int|1
 suffix:semicolon
 )brace
 )brace
-macro_line|#if  USE_NVRAM_DEFAULTS
+macro_line|#if USE_NVRAM_DEFAULTS
 id|status
 op_assign
 l_int|0
@@ -11487,59 +10934,62 @@ multiline_comment|/* Always force AUTO sense for LINUX SCSI */
 r_for
 c_loop
 (paren
-id|b
+id|bus
 op_assign
 l_int|0
 suffix:semicolon
-id|b
+id|bus
 OL
 id|MAX_BUSES
 suffix:semicolon
-id|b
+id|bus
 op_increment
 )paren
 r_for
 c_loop
 (paren
-id|t
+id|target
 op_assign
 l_int|0
 suffix:semicolon
-id|t
+id|target
 OL
 id|MAX_TARGETS
 suffix:semicolon
-id|t
+id|target
 op_increment
 )paren
 (brace
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|target
 (braket
-id|t
+id|target
 )braket
 dot
-id|parameter.f.auto_request_sense
+id|parameter.f
+dot
+id|auto_request_sense
 op_assign
 l_int|1
 suffix:semicolon
 )brace
 )brace
-macro_line|#if  DEBUG_PRINT_NVRAM
+macro_line|#if DEBUG_PRINT_NVRAM
 id|ql_debug_print
 op_assign
 l_int|1
 suffix:semicolon
-id|sprintf
+macro_line|#endif
+id|dprintk
 c_func
 (paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 : initiator scsi id bus[0]=%d&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 : initiator scsi id bus[0]=%d&bslash;n&quot;
 comma
 id|nv-&gt;bus
 (braket
@@ -11549,18 +10999,12 @@ dot
 id|config_1.initiator_id
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 : initiator scsi id bus[1]=%d&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 : initiator scsi id bus[1]=%d&bslash;n&quot;
 comma
 id|nv-&gt;bus
 (braket
@@ -11570,18 +11014,12 @@ dot
 id|config_1.initiator_id
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 : bus reset delay[0]=%d&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 : bus reset delay[0]=%d&bslash;n&quot;
 comma
 id|nv-&gt;bus
 (braket
@@ -11591,18 +11029,12 @@ dot
 id|bus_reset_delay
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 : bus reset delay[1]=%d&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 : bus reset delay[1]=%d&bslash;n&quot;
 comma
 id|nv-&gt;bus
 (braket
@@ -11612,18 +11044,12 @@ dot
 id|bus_reset_delay
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 : retry count[0]=%d&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 : retry count[0]=%d&bslash;n&quot;
 comma
 id|nv-&gt;bus
 (braket
@@ -11633,18 +11059,12 @@ dot
 id|retry_count
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 : retry delay[0]=%d&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 : retry delay[0]=%d&bslash;n&quot;
 comma
 id|nv-&gt;bus
 (braket
@@ -11654,18 +11074,12 @@ dot
 id|retry_delay
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 : retry count[1]=%d&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 : retry count[1]=%d&bslash;n&quot;
 comma
 id|nv-&gt;bus
 (braket
@@ -11675,18 +11089,12 @@ dot
 id|retry_count
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 : retry delay[1]=%d&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 : retry delay[1]=%d&bslash;n&quot;
 comma
 id|nv-&gt;bus
 (braket
@@ -11696,18 +11104,12 @@ dot
 id|retry_delay
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 : async data setup time[0]=%d&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 : async data setup time[0]=%d&bslash;n&quot;
 comma
 id|nv-&gt;bus
 (braket
@@ -11717,18 +11119,12 @@ dot
 id|config_2.async_data_setup_time
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 : async data setup time[1]=%d&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 : async data setup time[1]=%d&bslash;n&quot;
 comma
 id|nv-&gt;bus
 (braket
@@ -11738,18 +11134,12 @@ dot
 id|config_2.async_data_setup_time
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 : req/ack active negation[0]=%d&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 : req/ack active negation[0]=%d&bslash;n&quot;
 comma
 id|nv-&gt;bus
 (braket
@@ -11759,18 +11149,12 @@ dot
 id|config_2.req_ack_active_negation
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 : req/ack active negation[1]=%d&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 : req/ack active negation[1]=%d&bslash;n&quot;
 comma
 id|nv-&gt;bus
 (braket
@@ -11780,18 +11164,12 @@ dot
 id|config_2.req_ack_active_negation
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 : data line active negation[0]=%d&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 : data line active negation[0]=%d&bslash;n&quot;
 comma
 id|nv-&gt;bus
 (braket
@@ -11801,18 +11179,12 @@ dot
 id|config_2.data_line_active_negation
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 : data line active negation[1]=%d&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 : data line active negation[1]=%d&bslash;n&quot;
 comma
 id|nv-&gt;bus
 (braket
@@ -11822,50 +11194,32 @@ dot
 id|config_2.data_line_active_negation
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 : disable loading risc code=%d&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 : disable loading risc code=%d&bslash;n&quot;
 comma
 id|nv-&gt;cntr_flags_1.disable_loading_risc_code
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 : enable 64bit addressing=%d&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 : enable 64bit addressing=%d&bslash;n&quot;
 comma
 id|nv-&gt;cntr_flags_1.enable_64bit_addressing
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 : selection timeout limit[0]=%d&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 : selection timeout limit[0]=%d&bslash;n&quot;
 comma
 id|nv-&gt;bus
 (braket
@@ -11875,18 +11229,12 @@ dot
 id|selection_timeout
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 : selection timeout limit[1]=%d&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 : selection timeout limit[1]=%d&bslash;n&quot;
 comma
 id|nv-&gt;bus
 (braket
@@ -11896,18 +11244,12 @@ dot
 id|selection_timeout
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 : max queue depth[0]=%d&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 : max queue depth[0]=%d&bslash;n&quot;
 comma
 id|nv-&gt;bus
 (braket
@@ -11917,18 +11259,12 @@ dot
 id|max_queue_depth
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;qla1280 : max queue depth[1]=%d&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280 : max queue depth[1]=%d&bslash;n&quot;
 comma
 id|nv-&gt;bus
 (braket
@@ -11938,31 +11274,56 @@ dot
 id|max_queue_depth
 )paren
 suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-id|debug_buff
-)paren
-suffix:semicolon
-macro_line|#endif
-id|DEBUG
-c_func
-(paren
-id|ql_debug_print
-op_assign
-l_int|0
-suffix:semicolon
-)paren
 multiline_comment|/* Disable RISC load of firmware. */
 id|ha-&gt;flags.disable_risc_code_load
 op_assign
 id|nv-&gt;cntr_flags_1.disable_loading_risc_code
 suffix:semicolon
-multiline_comment|/* Enable 64bit addressing. */
+macro_line|#ifdef QLA_64BIT_PTR
+multiline_comment|/* Enable 64bit addressing for OS/System combination supporting it   */
+multiline_comment|/* actual NVRAM bit is: nv-&gt;cntr_flags_1.enable_64bit_addressing     */
+multiline_comment|/* but we will ignore it and use BITS_PER_LONG macro to setup for    */
+multiline_comment|/* 64 or 32 bit access of host memory in all x86/ia-64/Alpha systems */
 id|ha-&gt;flags.enable_64bit_addressing
 op_assign
-id|nv-&gt;cntr_flags_1.enable_64bit_addressing
+l_int|1
 suffix:semicolon
+macro_line|#else
+id|ha-&gt;flags.enable_64bit_addressing
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,18)
+r_if
+c_cond
+(paren
+id|ha-&gt;flags.enable_64bit_addressing
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;scsi(%li): 64 Bit PCI Addressing Enabled&bslash;n&quot;
+comma
+id|ha-&gt;host_no
+)paren
+suffix:semicolon
+id|pci_set_dma_mask
+c_func
+(paren
+id|ha-&gt;pdev
+comma
+(paren
+id|dma_addr_t
+)paren
+op_complement
+l_int|0ULL
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* Set ISP hardware DMA burst */
 id|mb
 (braket
@@ -12399,29 +11760,29 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|b
+id|bus
 op_assign
 l_int|0
 suffix:semicolon
-id|b
+id|bus
 OL
 id|ha-&gt;ports
 suffix:semicolon
-id|b
+id|bus
 op_increment
 )paren
 (brace
 multiline_comment|/* SCSI Reset Disable. */
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|disable_scsi_reset
 op_assign
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|config_1.scsi_reset_disable
@@ -12429,14 +11790,14 @@ suffix:semicolon
 multiline_comment|/* Initiator ID. */
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|id
 op_assign
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|config_1.initiator_id
@@ -12453,12 +11814,12 @@ id|mb
 l_int|1
 )braket
 op_assign
-id|b
+id|bus
 ques
 c_cond
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|id
@@ -12467,7 +11828,7 @@ id|BIT_7
 suffix:colon
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|id
@@ -12493,14 +11854,14 @@ suffix:semicolon
 multiline_comment|/* Reset Delay. */
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|bus_reset_delay
 op_assign
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|bus_reset_delay
@@ -12508,14 +11869,14 @@ suffix:semicolon
 multiline_comment|/* Command queue depth per device. */
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|hiwat
 op_assign
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|max_queue_depth
@@ -12526,53 +11887,29 @@ multiline_comment|/* Set target parameters. */
 r_for
 c_loop
 (paren
-id|t
+id|target
 op_assign
 l_int|0
 suffix:semicolon
-id|t
+id|target
 OL
 id|MAX_TARGETS
 suffix:semicolon
-id|t
+id|target
 op_increment
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|ha-&gt;device_id
-op_eq
-id|QLA12160_DEVICE_ID
-op_logical_or
-id|ha-&gt;device_id
-op_eq
-id|QLA10160_DEVICE_ID
-)paren
-(brace
-id|status
+r_uint8
+id|mr
 op_assign
-id|qla12160_set_target_parameters
-c_func
-(paren
-id|ha
-comma
-id|b
-comma
-id|t
-comma
-l_int|0
-comma
-(paren
-id|nvram160_t
-op_star
-)paren
-id|nv
-)paren
+id|BIT_3
+op_or
+id|BIT_2
+op_or
+id|BIT_1
+op_or
+id|BIT_0
 suffix:semicolon
-)brace
-r_else
-(brace
 multiline_comment|/* Set Target Parameters. */
 id|mb
 (braket
@@ -12590,14 +11927,14 @@ op_assign
 r_uint16
 )paren
 (paren
-id|b
+id|bus
 ques
 c_cond
-id|t
+id|target
 op_or
 id|BIT_7
 suffix:colon
-id|t
+id|target
 )paren
 suffix:semicolon
 id|mb
@@ -12614,12 +11951,12 @@ l_int|2
 op_assign
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|target
 (braket
-id|t
+id|target
 )braket
 dot
 id|parameter.c
@@ -12648,12 +11985,12 @@ l_int|3
 op_assign
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|target
 (braket
-id|t
+id|target
 )braket
 dot
 id|flags.sync_offset
@@ -12667,30 +12004,112 @@ l_int|3
 op_or_assign
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|target
 (braket
-id|t
+id|target
 )braket
 dot
 id|sync_period
 suffix:semicolon
-id|status
+r_if
+c_cond
+(paren
+id|ha-&gt;device_id
+op_eq
+id|PCI_DEVICE_ID_QLOGIC_ISP12160
+op_logical_or
+id|ha-&gt;device_id
+op_eq
+id|PCI_DEVICE_ID_QLOGIC_ISP10160
+)paren
+(brace
+id|nvram160_t
+op_star
+id|nv2
+op_assign
+(paren
+id|nvram160_t
+op_star
+)paren
+id|nv
+suffix:semicolon
+id|mb
+(braket
+l_int|2
+)braket
 op_or_assign
+id|nv2-&gt;bus
+(braket
+id|bus
+)braket
+dot
+id|target
+(braket
+id|target
+)braket
+dot
+id|flags
+dot
+id|enable_ppr
+op_lshift
+l_int|5
+suffix:semicolon
+id|mb
+(braket
+l_int|6
+)braket
+op_assign
+id|nv2-&gt;bus
+(braket
+id|bus
+)braket
+dot
+id|target
+(braket
+id|target
+)braket
+dot
+id|flags
+dot
+id|ppr_options
+op_lshift
+l_int|8
+suffix:semicolon
+id|mb
+(braket
+l_int|6
+)braket
+op_or_assign
+id|nv2-&gt;bus
+(braket
+id|bus
+)braket
+dot
+id|target
+(braket
+id|target
+)braket
+dot
+id|flags
+dot
+id|ppr_bus_width
+suffix:semicolon
+id|mr
+op_or_assign
+id|BIT_6
+suffix:semicolon
+)brace
+id|status
+op_assign
 id|qla1280_mailbox_command
 c_func
 (paren
 id|ha
 comma
-id|BIT_3
-op_or
-id|BIT_2
-op_or
-id|BIT_1
-op_or
-id|BIT_0
+id|mr
 comma
 op_amp
 id|mb
@@ -12699,7 +12118,6 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Save Tag queuing enable flag. */
 id|mb
 (braket
@@ -12708,26 +12126,26 @@ l_int|0
 op_assign
 id|BIT_0
 op_lshift
-id|t
+id|target
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|target
 (braket
-id|t
+id|target
 )braket
 dot
 id|parameter.f.tag_queuing
 )paren
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|qtag_enables
@@ -12743,19 +12161,19 @@ c_cond
 (paren
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|target
 (braket
-id|t
+id|target
 )braket
 dot
 id|flags.device_enable
 )paren
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|device_enables
@@ -12771,19 +12189,19 @@ c_cond
 (paren
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|target
 (braket
-id|t
+id|target
 )braket
 dot
 id|flags.lun_disable
 )paren
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|lun_disables
@@ -12797,15 +12215,15 @@ multiline_comment|/* Set Device Queue Parameters. */
 r_for
 c_loop
 (paren
-id|l
+id|lun
 op_assign
 l_int|0
 suffix:semicolon
-id|l
+id|lun
 OL
 id|MAX_LUNS
 suffix:semicolon
-id|l
+id|lun
 op_increment
 )paren
 (brace
@@ -12825,14 +12243,14 @@ op_assign
 r_uint16
 )paren
 (paren
-id|b
+id|bus
 ques
 c_cond
-id|t
+id|target
 op_or
 id|BIT_7
 suffix:colon
-id|t
+id|target
 )paren
 suffix:semicolon
 id|mb
@@ -12847,7 +12265,7 @@ l_int|1
 op_lshift
 l_int|8
 op_or
-id|l
+id|lun
 suffix:semicolon
 id|mb
 (braket
@@ -12856,7 +12274,7 @@ l_int|2
 op_assign
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|max_queue_depth
@@ -12868,12 +12286,12 @@ l_int|3
 op_assign
 id|nv-&gt;bus
 (braket
-id|b
+id|bus
 )braket
 dot
 id|target
 (braket
-id|t
+id|target
 )braket
 dot
 id|execution_throttle
@@ -12903,40 +12321,25 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|DEBUG
-c_func
-(paren
-id|ql_debug_print
-op_assign
-l_int|0
-suffix:semicolon
-)paren
-macro_line|#if defined(QL_DEBUG_ROUTINES) &amp;&amp; !defined(QL_DEBUG_LEVEL_4)
+macro_line|#if DEBUG_PRINT_NVRAM
 id|ql_debug_print
 op_assign
 id|saved_print_status
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
-id|DEBUG
-c_func
-(paren
 r_if
+c_cond
 (paren
 id|status
 )paren
-)paren
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;qla1280_nvram_config: **** FAILED ****&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_nvram_config: **** FAILED ****&bslash;n&quot;
 )paren
 suffix:semicolon
-)paren
-macro_line|#endif
 id|LEAVE
 c_func
 (paren
@@ -12948,13 +12351,14 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Get NVRAM data word&n; *      Calculates word position in NVRAM and calls request routine to&n; *      get the word from NVRAM.&n; *&n; * Input:&n; *      ha      = adapter block pointer.&n; *      address = NVRAM word address.&n; *&n; * Returns:&n; *      data word.&n; */
-id|STATIC
+r_static
 r_uint16
 DECL|function|qla1280_get_nvram_word
 id|qla1280_get_nvram_word
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
@@ -12969,18 +12373,10 @@ r_uint16
 id|data
 suffix:semicolon
 macro_line|#ifdef QL_DEBUG_ROUTINES
-r_uint8
+r_int
 id|saved_print_status
 op_assign
 id|ql_debug_print
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_4
-id|ENTER
-c_func
-(paren
-l_string|&quot;qla1280_get_nvram_word&quot;
-)paren
 suffix:semicolon
 macro_line|#endif
 id|nv_cmd
@@ -13015,43 +12411,29 @@ op_assign
 id|saved_print_status
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_4
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_get_nvram_word: exiting normally NVRAM data = &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
-id|data
+l_int|4
 comma
-l_int|16
+l_string|&quot;qla1280_get_nvram_word: exiting normally NVRAM data = 0x%x&quot;
+comma
+id|data
 )paren
 suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|data
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * NVRAM request&n; *      Sends read command to NVRAM and gets data from NVRAM.&n; *&n; * Input:&n; *      ha     = adapter block pointer.&n; *      nv_cmd = Bit 26     = start bit&n; *               Bit 25, 24 = opcode&n; *               Bit 23-16  = address&n; *               Bit 15-0   = write data&n; *&n; * Returns:&n; *      data word.&n; */
-id|STATIC
+r_static
 r_uint16
 DECL|function|qla1280_nvram_request
 id|qla1280_nvram_request
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
@@ -13059,14 +12441,15 @@ r_uint32
 id|nv_cmd
 )paren
 (brace
-r_uint8
-id|cnt
-suffix:semicolon
-id|device_reg_t
+r_struct
+id|device_reg
 op_star
 id|reg
 op_assign
 id|ha-&gt;iobase
+suffix:semicolon
+r_int
+id|cnt
 suffix:semicolon
 r_uint16
 id|data
@@ -13147,12 +12530,13 @@ c_func
 op_amp
 id|reg-&gt;nvram
 comma
+(paren
 id|NV_SELECT
-op_plus
+op_or
 id|NV_CLOCK
 )paren
+)paren
 suffix:semicolon
-multiline_comment|/* qla1280_nv_delay(ha); */
 id|NVRAM_DELAY
 c_func
 (paren
@@ -13191,7 +12575,6 @@ comma
 id|NV_SELECT
 )paren
 suffix:semicolon
-multiline_comment|/* qla1280_nv_delay(ha); */
 id|NVRAM_DELAY
 c_func
 (paren
@@ -13208,7 +12591,6 @@ comma
 id|NV_DESELECT
 )paren
 suffix:semicolon
-multiline_comment|/* qla1280_nv_delay(ha); */
 id|NVRAM_DELAY
 c_func
 (paren
@@ -13218,13 +12600,14 @@ r_return
 id|data
 suffix:semicolon
 )brace
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_nv_write
 id|qla1280_nv_write
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
@@ -13232,7 +12615,8 @@ r_uint16
 id|data
 )paren
 (brace
-id|device_reg_t
+r_struct
+id|device_reg
 op_star
 id|reg
 op_assign
@@ -13254,7 +12638,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* qla1280_nv_delay(ha); */
 id|WRT_REG_WORD
 c_func
 (paren
@@ -13268,7 +12651,6 @@ op_or
 id|NV_CLOCK
 )paren
 suffix:semicolon
-multiline_comment|/* qla1280_nv_delay(ha); */
 id|NVRAM_DELAY
 c_func
 (paren
@@ -13285,64 +12667,21 @@ op_or
 id|NV_SELECT
 )paren
 suffix:semicolon
-multiline_comment|/* qla1280_nv_delay(ha); */
 id|NVRAM_DELAY
 c_func
 (paren
 )paren
 suffix:semicolon
 )brace
-id|STATIC
-r_void
-DECL|function|qla1280_nv_delay
-id|qla1280_nv_delay
-c_func
-(paren
-id|scsi_qla_host_t
-op_star
-id|ha
-)paren
-(brace
-id|device_reg_t
-op_star
-id|reg
-op_assign
-id|ha-&gt;iobase
-suffix:semicolon
-r_int
-id|cnt
-op_assign
-id|NV_DELAY_COUNT
-suffix:semicolon
-r_uint16
-id|data
-op_assign
-l_int|0
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|cnt
-op_decrement
-)paren
-id|data
-op_or_assign
-id|RD_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;nvram
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Mailbox Command&n; *      Issue mailbox command and waits for completion.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *      mr = mailbox registers to load.&n; *      mb = data pointer for mailbox registers.&n; *&n; * Output:&n; *      mb[MAILBOX_REGISTER_COUNT] = returned mailbox data.&n; *&n; * Returns:&n; *      0 = success&n; */
-id|STATIC
-r_uint8
+r_static
+r_int
 DECL|function|qla1280_mailbox_command
 id|qla1280_mailbox_command
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
@@ -13354,30 +12693,14 @@ op_star
 id|mb
 )paren
 (brace
-id|device_reg_t
+r_struct
+id|device_reg
 op_star
 id|reg
 op_assign
 id|ha-&gt;iobase
 suffix:semicolon
-r_uint8
-id|status
-op_assign
-l_int|0
-suffix:semicolon
-r_uint32
-id|cnt
-suffix:semicolon
-r_uint16
-op_star
-id|optr
-comma
-op_star
-id|iptr
-suffix:semicolon
-r_uint16
-id|data
-suffix:semicolon
+macro_line|#if 0
 id|srb_t
 op_star
 id|done_q_first
@@ -13390,34 +12713,50 @@ id|done_q_last
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,95)
+macro_line|#endif
 r_int
-r_int
-id|cpu_flags
+id|status
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
+r_int
+id|cnt
+suffix:semicolon
+r_uint16
+op_star
+id|optr
+comma
+op_star
+id|iptr
+suffix:semicolon
+r_uint16
+id|data
+suffix:semicolon
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_mailbox_command&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Acquire interrupt specific lock */
-id|QLA1280_INTR_LOCK
-c_func
-(paren
-id|ha
-)paren
-suffix:semicolon
-id|DRIVER_LOCK
 id|ha-&gt;flags.mbox_busy
 op_assign
 id|TRUE
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ha-&gt;flags.ints_enabled
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;Running qla1280_mailbox_command() with interrupts &quot;
+l_string|&quot;disabled!&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * We really should start out by verifying that the mailbox is available&n;&t; * before starting sending the command data&n;&t; */
 multiline_comment|/* Load mailbox registers. */
 id|optr
 op_assign
@@ -13483,6 +12822,10 @@ id|ha-&gt;flags.mbox_int
 op_assign
 id|FALSE
 suffix:semicolon
+id|ha-&gt;flags.mbox_busy
+op_assign
+id|FALSE
+suffix:semicolon
 id|WRT_REG_WORD
 c_func
 (paren
@@ -13501,6 +12844,7 @@ op_amp
 id|reg-&gt;istatus
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * This is insane - instead of looping to wait for the interrupt &n;&t; * to appear and run the handler (this is insane!!), use a waitqueue&n;&t; * and go to sleep.&n;&t; *&n;&t; * We are never called here from interrupt context anyway!    /Jes&n;&t; */
 multiline_comment|/* Wait for 30 seconds for command to finish. */
 r_for
 c_loop
@@ -13521,6 +12865,7 @@ op_decrement
 )paren
 (brace
 multiline_comment|/* Check for pending interrupts. */
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -13534,25 +12879,17 @@ c_func
 (paren
 id|ha
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|done_q_first
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|done_q_last
 )paren
 suffix:semicolon
 )brace
-id|SYS_DELAY
+r_else
+macro_line|#endif
+id|udelay
 c_func
 (paren
 l_int|1
@@ -13576,34 +12913,19 @@ op_logical_neg
 id|cnt
 )paren
 (brace
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
+id|printk
 c_func
 (paren
-l_string|&quot;qla1280_mailbox_command: **** Command Timeout, mailbox0 = &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+id|KERN_WARNING
+l_string|&quot;qla1280_mailbox_command: **** Command Timeout, &quot;
+l_string|&quot;mailbox0 = 0x%x****&bslash;n&quot;
+comma
 id|mb
 (braket
 l_int|0
 )braket
-comma
-l_int|16
 )paren
 suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; ****&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|ha-&gt;flags.isp_abort_needed
 op_assign
 id|TRUE
@@ -13649,55 +12971,36 @@ id|mr
 op_assign
 id|MAILBOX_REGISTER_COUNT
 suffix:semicolon
-r_while
-c_loop
+id|memcpy
+c_func
 (paren
-id|mr
-op_decrement
-)paren
-op_star
 id|optr
-op_increment
-op_assign
-op_star
+comma
 id|iptr
-op_increment
+comma
+id|MAILBOX_REGISTER_COUNT
+op_star
+r_sizeof
+(paren
+r_uint16
+)paren
+)paren
 suffix:semicolon
+macro_line|#if 0
 multiline_comment|/* Go check for any response interrupts pending. */
-id|ha-&gt;flags.mbox_busy
-op_assign
-id|FALSE
-suffix:semicolon
 id|qla1280_isr
 c_func
 (paren
 id|ha
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|done_q_first
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|done_q_last
 )paren
 suffix:semicolon
-multiline_comment|/* Release interrupt specific lock */
-id|QLA1280_INTR_UNLOCK
-c_func
-(paren
-id|ha
-)paren
-suffix:semicolon
-id|DRIVER_UNLOCK
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -13720,94 +13023,68 @@ c_func
 id|ha
 )paren
 suffix:semicolon
+macro_line|#if 0
 r_if
 c_cond
 (paren
 id|done_q_first
 )paren
 id|qla1280_done
-c_func
 (paren
 id|ha
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|done_q_first
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|done_q_last
 )paren
 suffix:semicolon
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
+macro_line|#endif
 r_if
 c_cond
 (paren
 id|status
 )paren
-(brace
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_mailbox_command: **** FAILED, mailbox0 = &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+l_int|2
+comma
+l_string|&quot;qla1280_mailbox_command: **** FAILED, mailbox0 = 0x%x &quot;
+l_string|&quot;****n&quot;
+comma
 id|mb
 (braket
 l_int|0
 )braket
-comma
-l_int|16
 )paren
 suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; ****&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-r_else
 id|LEAVE
 c_func
 (paren
 l_string|&quot;qla1280_mailbox_command&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * qla1280_poll&n; *      Polls ISP for interrupts.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_poll
 id|qla1280_poll
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
 (brace
-id|device_reg_t
+r_struct
+id|device_reg
 op_star
 id|reg
 op_assign
@@ -13828,16 +13105,7 @@ id|done_q_last
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 multiline_comment|/* ENTER(&quot;qla1280_poll&quot;); */
-macro_line|#endif
-multiline_comment|/* Acquire interrupt specific lock */
-id|QLA1280_INTR_LOCK
-c_func
-(paren
-id|ha
-)paren
-suffix:semicolon
 multiline_comment|/* Check for pending interrupts. */
 id|data
 op_assign
@@ -13860,28 +13128,11 @@ c_func
 (paren
 id|ha
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|done_q_first
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|done_q_last
-)paren
-suffix:semicolon
-multiline_comment|/* Release interrupt specific lock */
-id|QLA1280_INTR_UNLOCK
-c_func
-(paren
-id|ha
 )paren
 suffix:semicolon
 r_if
@@ -13924,79 +13175,64 @@ c_func
 (paren
 id|ha
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|done_q_first
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|done_q_last
 )paren
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 multiline_comment|/* LEAVE(&quot;qla1280_poll&quot;); */
-macro_line|#endif
 )brace
-multiline_comment|/*&n; * qla1280_bus_reset&n; *      Issue SCSI bus reset.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *      b  = SCSI bus number.&n; *&n; * Returns:&n; *      0 = success&n; */
-id|STATIC
-r_uint8
+multiline_comment|/*&n; * qla1280_bus_reset&n; *      Issue SCSI bus reset.&n; *&n; * Input:&n; *      ha  = adapter block pointer.&n; *      bus = SCSI bus number.&n; *&n; * Returns:&n; *      0 = success&n; */
+r_static
+r_int
 DECL|function|qla1280_bus_reset
 id|qla1280_bus_reset
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
-r_uint8
-id|b
+r_int
+id|bus
 )paren
 (brace
-r_uint8
-id|status
-suffix:semicolon
 r_uint16
 id|mb
 (braket
 id|MAILBOX_REGISTER_COUNT
 )braket
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+r_int
+id|status
+suffix:semicolon
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_bus_reset: entered&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_bus_reset: entered&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
 id|qla1280_verbose
 )paren
-(brace
 id|printk
 c_func
 (paren
-l_string|&quot;scsi(%d): Resetting SCSI BUS (%d)&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;scsi(%li): Resetting SCSI BUS (%i)&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|ha-&gt;host_no
 comma
-id|b
+id|bus
 )paren
 suffix:semicolon
-)brace
 id|mb
 (braket
 l_int|0
@@ -14011,7 +13247,7 @@ l_int|1
 op_assign
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|bus_reset_delay
@@ -14024,7 +13260,7 @@ op_assign
 (paren
 r_uint16
 )paren
-id|b
+id|bus
 suffix:semicolon
 id|status
 op_assign
@@ -14057,7 +13293,7 @@ c_cond
 (paren
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|failed_reset_count
@@ -14067,7 +13303,7 @@ l_int|2
 multiline_comment|/* dg - 03/13/99 */
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|scsi_bus_dead
@@ -14076,7 +13312,7 @@ id|TRUE
 suffix:semicolon
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|failed_reset_count
@@ -14085,15 +13321,27 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|QLA1280_DELAY
+multiline_comment|/*&n;&t;&t; * Eeeeep! This is evil! /Jes&n;&t;&t; */
+macro_line|#if 0
+id|mdelay
+c_func
+(paren
+l_int|4000
+)paren
+suffix:semicolon
+macro_line|#else
+id|schedule_timeout
 c_func
 (paren
 l_int|4
+op_star
+id|HZ
 )paren
 suffix:semicolon
+macro_line|#endif
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|scsi_bus_dead
@@ -14103,7 +13351,7 @@ suffix:semicolon
 multiline_comment|/* dg - 03/13/99 */
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|failed_reset_count
@@ -14116,7 +13364,7 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
 l_int|0
 comma
@@ -14126,67 +13374,66 @@ id|MK_SYNC_ALL
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
 r_if
 c_cond
 (paren
 id|status
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_bus_reset: **** FAILED ****&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_bus_reset: **** FAILED ****&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 r_else
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_bus_reset: exiting normally&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_bus_reset: exiting normally&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * qla1280_device_reset&n; *      Issue bus device reset message to the target.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *      b  = SCSI BUS number.&n; *      t  = SCSI ID.&n; *&n; * Returns:&n; *      0 = success&n; */
-id|STATIC
-r_uint8
+multiline_comment|/*&n; * qla1280_device_reset&n; *      Issue bus device reset message to the target.&n; *&n; * Input:&n; *      ha      = adapter block pointer.&n; *      bus     = SCSI BUS number.&n; *      target  = SCSI ID.&n; *&n; * Returns:&n; *      0 = success&n; */
+r_static
+r_int
 DECL|function|qla1280_device_reset
 id|qla1280_device_reset
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
-r_uint8
-id|b
+r_int
+id|bus
 comma
-r_uint32
-id|t
+r_int
+id|target
 )paren
 (brace
-r_uint8
-id|status
-suffix:semicolon
 r_uint16
 id|mb
 (braket
 id|MAILBOX_REGISTER_COUNT
 )braket
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
+r_int
+id|status
+suffix:semicolon
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_device_reset&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|mb
 (braket
 l_int|0
@@ -14200,16 +13447,16 @@ l_int|1
 )braket
 op_assign
 (paren
-id|b
+id|bus
 ques
 c_cond
 (paren
-id|t
+id|target
 op_or
 id|BIT_7
 )paren
 suffix:colon
-id|t
+id|target
 )paren
 op_lshift
 l_int|8
@@ -14247,79 +13494,75 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
 l_int|0
 comma
 id|MK_SYNC_ID
 )paren
 suffix:semicolon
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
 r_if
 c_cond
 (paren
 id|status
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_device_reset: **** FAILED ****&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_device_reset: **** FAILED ****&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-r_else
 id|LEAVE
 c_func
 (paren
 l_string|&quot;qla1280_device_reset&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * qla1280_abort_device&n; *      Issue an abort message to the device&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *      b  = SCSI BUS.&n; *      t  = SCSI ID.&n; *      l  = SCSI LUN.&n; *&n; * Returns:&n; *      0 = success&n; */
-id|STATIC
-r_uint8
+multiline_comment|/*&n; * qla1280_abort_device&n; *      Issue an abort message to the device&n; *&n; * Input:&n; *      ha     = adapter block pointer.&n; *      bus    = SCSI BUS.&n; *      target = SCSI ID.&n; *      lun    = SCSI LUN.&n; *&n; * Returns:&n; *      0 = success&n; */
+r_static
+r_int
 DECL|function|qla1280_abort_device
 id|qla1280_abort_device
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
-r_uint8
-id|b
+r_int
+id|bus
 comma
-r_uint32
-id|t
+r_int
+id|target
 comma
-r_uint32
-id|l
+r_int
+id|lun
 )paren
 (brace
-r_uint8
-id|status
-suffix:semicolon
 r_uint16
 id|mb
 (braket
 id|MAILBOX_REGISTER_COUNT
 )braket
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
+r_int
+id|status
+suffix:semicolon
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_abort_device&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|mb
 (braket
 l_int|0
@@ -14333,19 +13576,19 @@ l_int|1
 )braket
 op_assign
 (paren
-id|b
+id|bus
 ques
 c_cond
-id|t
+id|target
 op_or
 id|BIT_7
 suffix:colon
-id|t
+id|target
 )paren
 op_lshift
 l_int|8
 op_or
-id|l
+id|lun
 suffix:semicolon
 id|status
 op_assign
@@ -14371,49 +13614,47 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 comma
 id|MK_SYNC_ID_LUN
 )paren
 suffix:semicolon
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
 r_if
 c_cond
 (paren
 id|status
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_abort_device: **** FAILED ****&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_abort_device: **** FAILED ****&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-r_else
 id|LEAVE
 c_func
 (paren
 l_string|&quot;qla1280_abort_device&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * qla1280_abort_command&n; *      Abort command aborts a specified IOCB.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *      sp = SB structure pointer.&n; *&n; * Returns:&n; *      0 = success&n; */
-id|STATIC
-r_uint8
+r_static
+r_int
 DECL|function|qla1280_abort_command
 id|qla1280_abort_command
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
@@ -14422,33 +13663,32 @@ op_star
 id|sp
 )paren
 (brace
-r_uint8
-id|status
-suffix:semicolon
 r_uint16
 id|mb
 (braket
 id|MAILBOX_REGISTER_COUNT
 )braket
 suffix:semicolon
-r_uint32
-id|b
+r_int
+r_int
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 suffix:semicolon
 r_uint32
 id|handle
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
+r_int
+id|status
+suffix:semicolon
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_abort_command&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Locate handle number. */
 r_for
 c_loop
@@ -14476,7 +13716,7 @@ id|sp
 )paren
 r_break
 suffix:semicolon
-id|b
+id|bus
 op_assign
 id|SCSI_BUS_32
 c_func
@@ -14484,7 +13724,7 @@ c_func
 id|sp-&gt;cmd
 )paren
 suffix:semicolon
-id|t
+id|target
 op_assign
 id|SCSI_TCN_32
 c_func
@@ -14492,7 +13732,7 @@ c_func
 id|sp-&gt;cmd
 )paren
 suffix:semicolon
-id|l
+id|lun
 op_assign
 id|SCSI_LUN_32
 c_func
@@ -14513,19 +13753,19 @@ l_int|1
 )braket
 op_assign
 (paren
-id|b
+id|bus
 ques
 c_cond
-id|t
+id|target
 op_or
 id|BIT_7
 suffix:colon
-id|t
+id|target
 )paren
 op_lshift
 l_int|8
 op_or
-id|l
+id|lun
 suffix:semicolon
 id|mb
 (braket
@@ -14541,10 +13781,9 @@ id|mb
 l_int|3
 )braket
 op_assign
-(paren
-r_uint16
-)paren
 id|handle
+op_amp
+l_int|0xffff
 suffix:semicolon
 id|status
 op_assign
@@ -14568,19 +13807,19 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
 r_if
 c_cond
 (paren
 id|status
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_abort_command: **** FAILED ****&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_abort_command: **** FAILED ****&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|sp-&gt;flags
 op_or_assign
 id|SRB_ABORT_PENDING
@@ -14596,31 +13835,31 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * qla1280_reset_adapter&n; *      Reset adapter.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_reset_adapter
 id|qla1280_reset_adapter
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
 (brace
-id|device_reg_t
+r_struct
+id|device_reg
 op_star
 id|reg
 op_assign
 id|ha-&gt;iobase
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_reset_adapter&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Disable ISP chip */
 id|ha-&gt;flags.online
 op_assign
@@ -14662,36 +13901,35 @@ comma
 id|HC_DISABLE_BIOS
 )paren
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 id|LEAVE
 c_func
 (paren
 l_string|&quot;qla1280_reset_adapter&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
-multiline_comment|/*&n; *  Issue marker command.&n; *      Function issues marker IOCB.&n; *&n; * Input:&n; *      ha   = adapter block pointer.&n; *      b    = SCSI BUS number&n; *      t    = SCSI ID&n; *      l    = SCSI LUN&n; *      type = marker modifier&n; */
-id|STATIC
+multiline_comment|/*&n; *  Issue marker command.&n; *      Function issues marker IOCB.&n; *&n; * Input:&n; *      ha   = adapter block pointer.&n; *      bus  = SCSI BUS number&n; *      id   = SCSI ID&n; *      lun  = SCSI LUN&n; *      type = marker modifier&n; */
+r_static
 r_void
 DECL|function|qla1280_marker
 id|qla1280_marker
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
-r_uint8
-id|b
+r_int
+id|bus
 comma
-r_uint32
-id|t
+r_int
+id|id
 comma
-r_uint32
-id|l
+r_int
+id|lun
 comma
-r_uint8
+id|u8
 id|type
 )paren
 (brace
@@ -14699,14 +13937,12 @@ id|mrk_entry_t
 op_star
 id|pkt
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_marker&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Get request packet. */
 r_if
 c_cond
@@ -14735,7 +13971,7 @@ op_assign
 (paren
 r_uint8
 )paren
-id|l
+id|lun
 suffix:semicolon
 id|pkt-&gt;target
 op_assign
@@ -14743,16 +13979,16 @@ op_assign
 r_uint8
 )paren
 (paren
-id|b
+id|bus
 ques
 c_cond
 (paren
-id|t
+id|id
 op_or
 id|BIT_7
 )paren
 suffix:colon
-id|t
+id|id
 )paren
 suffix:semicolon
 id|pkt-&gt;modifier
@@ -14767,24 +14003,23 @@ id|ha
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 id|LEAVE
 c_func
 (paren
 l_string|&quot;qla1280_marker&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
-macro_line|#if  QLA1280_64BIT_SUPPORT
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,18)
 multiline_comment|/*&n; * qla1280_64bit_start_scsi&n; *      The start SCSI is responsible for building request packets on&n; *      request ring and modifying ISP input pointer.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *      sp = SB structure pointer.&n; *&n; * Returns:&n; *      0 = success, was able to issue command.&n; */
-id|STATIC
-r_uint8
+r_static
+r_int
 DECL|function|qla1280_64bit_start_scsi
 id|qla1280_64bit_start_scsi
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
@@ -14793,16 +14028,12 @@ op_star
 id|sp
 )paren
 (brace
-id|device_reg_t
+r_struct
+id|device_reg
 op_star
 id|reg
 op_assign
 id|ha-&gt;iobase
-suffix:semicolon
-r_uint8
-id|status
-op_assign
-l_int|0
 suffix:semicolon
 id|Scsi_Cmnd
 op_star
@@ -14810,64 +14041,62 @@ id|cmd
 op_assign
 id|sp-&gt;cmd
 suffix:semicolon
-r_uint32
-id|cnt
-suffix:semicolon
 id|cmd_a64_entry_t
 op_star
 id|pkt
-suffix:semicolon
-r_uint16
-id|req_cnt
-suffix:semicolon
-r_uint16
-id|seg_cnt
 suffix:semicolon
 r_struct
 id|scatterlist
 op_star
 id|sg
 op_assign
-(paren
-r_struct
-id|scatterlist
-op_star
-)paren
 l_int|NULL
 suffix:semicolon
-r_uint32
+id|u32
 op_star
 id|dword_ptr
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
+id|dma_addr_t
+id|dma_handle
+suffix:semicolon
+r_int
+id|status
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|cnt
+suffix:semicolon
+r_int
+id|req_cnt
+suffix:semicolon
+id|u16
+id|seg_cnt
+suffix:semicolon
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_64bit_start_scsi:&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|qla1280_check_for_dead_scsi_bus
+id|dprintk
 c_func
 (paren
-id|ha
+l_int|1
+comma
+l_string|&quot;64bit_start: cmd=%p sp=%p CDB=%x&bslash;n&quot;
+comma
+id|cmd
 comma
 id|sp
-)paren
-)paren
-(brace
-r_return
+comma
+id|cmd-&gt;cmnd
+(braket
 l_int|0
+)braket
+)paren
 suffix:semicolon
-)brace
 multiline_comment|/* Calculate number of entries and segments required. */
-id|seg_cnt
-op_assign
-l_int|0
-suffix:semicolon
 id|req_cnt
 op_assign
 l_int|1
@@ -14878,10 +14107,7 @@ c_cond
 id|cmd-&gt;use_sg
 )paren
 (brace
-id|seg_cnt
-op_assign
-id|cmd-&gt;use_sg
-suffix:semicolon
+multiline_comment|/* 3.13 64 bit */
 id|sg
 op_assign
 (paren
@@ -14890,6 +14116,23 @@ id|scatterlist
 op_star
 )paren
 id|cmd-&gt;request_buffer
+suffix:semicolon
+id|seg_cnt
+op_assign
+id|pci_map_sg
+(paren
+id|ha-&gt;pdev
+comma
+id|sg
+comma
+id|cmd-&gt;use_sg
+comma
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|cmd-&gt;sc_data_direction
+)paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -14902,9 +14145,6 @@ l_int|2
 id|req_cnt
 op_add_assign
 (paren
-r_uint16
-)paren
-(paren
 id|seg_cnt
 op_minus
 l_int|2
@@ -14915,9 +14155,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-r_uint16
-)paren
 (paren
 id|seg_cnt
 op_minus
@@ -14937,38 +14174,23 @@ c_cond
 (paren
 id|cmd-&gt;request_bufflen
 )paren
-multiline_comment|/* If data transfer. */
 (brace
-id|DEBUG
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;Single data transfer (0x%x)&bslash;n&quot;
-comma
-id|cmd-&gt;request_bufflen
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* If data transfer. */
 id|seg_cnt
 op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Acquire ring specific lock */
-id|QLA1280_RING_LOCK
-c_func
-(paren
-id|ha
-)paren
+r_else
+(brace
+id|seg_cnt
+op_assign
+l_int|0
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
-(paren
-r_uint16
-)paren
 (paren
 id|req_cnt
 op_plus
@@ -15017,9 +14239,6 @@ multiline_comment|/* If room for request in request ring. */
 r_if
 c_cond
 (paren
-(paren
-r_uint16
-)paren
 (paren
 id|req_cnt
 op_plus
@@ -15083,11 +14302,12 @@ r_char
 op_star
 )paren
 (paren
-id|u_long
+r_int
+r_int
 )paren
 id|cnt
 suffix:semicolon
-multiline_comment|/*&n;            * Build command packet.&n;            */
+multiline_comment|/*&n;&t;&t;&t; * Build command packet.&n;&t;&t;&t; */
 id|pkt
 op_assign
 (paren
@@ -15122,44 +14342,31 @@ r_uint32
 id|cnt
 suffix:semicolon
 multiline_comment|/* Zero out remaining portion of packet. */
-id|dword_ptr
-op_assign
+id|memset
+c_func
 (paren
-r_uint32
+(paren
+(paren
+r_char
 op_star
 )paren
 id|pkt
 op_plus
-l_int|2
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|cnt
-op_assign
-l_int|2
-suffix:semicolon
-id|cnt
-OL
-id|REQUEST_ENTRY_SIZE
-op_div
-l_int|4
-suffix:semicolon
-id|cnt
-op_increment
+l_int|8
 )paren
-op_star
-id|dword_ptr
-op_increment
-op_assign
+comma
 l_int|0
+comma
+(paren
+id|REQUEST_ENTRY_SIZE
+op_minus
+l_int|8
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Set ISP command timeout. */
 id|pkt-&gt;timeout
 op_assign
-(paren
-r_uint16
-)paren
 l_int|30
 suffix:semicolon
 multiline_comment|/* Set device target ID and LUN */
@@ -15218,9 +14425,11 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-id|BCOPY
+id|memcpy
 c_func
 (paren
+id|pkt-&gt;scsi_cdb
+comma
 op_amp
 (paren
 id|CMD_CDBP
@@ -15230,34 +14439,18 @@ id|cmd
 )paren
 )paren
 comma
-id|pkt-&gt;scsi_cdb
-comma
 id|pkt-&gt;cdb_len
 )paren
 suffix:semicolon
-id|DEBUG
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;Build packet for command[0]=0x%x&bslash;n&quot;
-comma
-id|pkt-&gt;scsi_cdb
-(braket
-l_int|0
-)braket
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;            * Load data segments.&n;            */
+multiline_comment|/* dprintk(1, &quot;Build packet for command[0]=0x%x&bslash;n&quot;,pkt-&gt;scsi_cdb[0]); */
+multiline_comment|/*&n;&t;&t;&t; * Load data segments.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
 id|seg_cnt
 )paren
-multiline_comment|/* If data transfer. */
 (brace
+multiline_comment|/* If data transfer. */
 multiline_comment|/* Set transfer direction. */
 r_if
 c_cond
@@ -15303,7 +14496,7 @@ multiline_comment|/* Setup packet address segment pointer. */
 id|dword_ptr
 op_assign
 (paren
-r_uint32
+id|u32
 op_star
 )paren
 op_amp
@@ -15314,8 +14507,8 @@ c_cond
 (paren
 id|cmd-&gt;use_sg
 )paren
-multiline_comment|/* If scatter gather */
 (brace
+multiline_comment|/* If scatter gather */
 multiline_comment|/* Load command entry data segments. */
 r_for
 c_loop
@@ -15337,42 +14530,22 @@ id|seg_cnt
 op_decrement
 )paren
 (brace
-r_int
-r_int
-r_int
-id|address
+multiline_comment|/* 3.13 64 bit */
+op_star
+id|dword_ptr
+op_increment
 op_assign
-id|page_to_phys
+id|cpu_to_le32
 c_func
 (paren
-id|sg-&gt;page
+id|pci_dma_lo32
+c_func
+(paren
+id|sg_dma_address
+c_func
+(paren
+id|sg
 )paren
-op_plus
-id|sg-&gt;offset
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-id|sprintf
-c_func
-(paren
-id|debug_buff
-comma
-l_string|&quot;SG Segment ap=0x%ull, len=0x%x&bslash;n&bslash;r&quot;
-comma
-id|address
-comma
-id|sg-&gt;length
-)paren
-)paren
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-id|debug_buff
 )paren
 )paren
 suffix:semicolon
@@ -15383,7 +14556,15 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|address
+id|pci_dma_hi32
+c_func
+(paren
+id|sg_dma_address
+c_func
+(paren
+id|sg
+)paren
+)paren
 )paren
 suffix:semicolon
 op_star
@@ -15393,110 +14574,116 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|address
-op_rshift
-l_int|32
+id|sg_dma_len
+c_func
+(paren
+id|sg
 )paren
-suffix:semicolon
-op_star
-id|dword_ptr
-op_increment
-op_assign
-id|sg-&gt;length
+)paren
 suffix:semicolon
 id|sg
 op_increment
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;S/G Segment phys_addr=%x %x, len=0x%x&bslash;n&quot;
+comma
+id|cpu_to_le32
+c_func
+(paren
+id|pci_dma_hi32
+c_func
+(paren
+id|sg_dma_address
+c_func
+(paren
+id|sg
+)paren
+)paren
+)paren
+comma
+id|cpu_to_le32
+c_func
+(paren
+id|pci_dma_lo32
+c_func
+(paren
+id|sg_dma_address
+c_func
+(paren
+id|sg
+)paren
+)paren
+)paren
+comma
+id|cpu_to_le32
+c_func
+(paren
+id|sg_dma_len
+c_func
+(paren
+id|sg
+)paren
+)paren
+)paren
+suffix:semicolon
 )brace
-macro_line|#ifdef QL_DEBUG_LEVEL_5
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_64bit_start_scsi: Scatter/gather command packet data - &quot;
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;b &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+l_int|5
+comma
+l_string|&quot;qla1280_64bit_start_scsi: Scatter/gather &quot;
+l_string|&quot;command packet data - b %i, t %i, l %i &bslash;n&quot;
+comma
 id|SCSI_BUS_32
 c_func
 (paren
 id|cmd
 )paren
 comma
-l_int|10
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; t &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|SCSI_TCN_32
 c_func
 (paren
 id|cmd
 )paren
 comma
-l_int|10
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; d &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|SCSI_LUN_32
 c_func
 (paren
 id|cmd
 )paren
-comma
-l_int|10
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
 )paren
 suffix:semicolon
 id|qla1280_dump_buffer
 c_func
 (paren
+l_int|5
+comma
 (paren
-id|caddr_t
+r_char
+op_star
 )paren
 id|pkt
 comma
 id|REQUEST_ENTRY_SIZE
 )paren
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n;                    * Build continuation packets.&n;                    */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * Build continuation packets.&n;&t;&t;&t;&t;&t; */
+id|dprintk
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;S/G Building Continuation...seg_cnt=0x%x &quot;
+l_string|&quot;remains&bslash;n&quot;
+comma
+id|seg_cnt
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -15539,35 +14726,15 @@ op_star
 id|ha-&gt;request_ring_ptr
 suffix:semicolon
 multiline_comment|/* Zero out packet. */
-id|dword_ptr
-op_assign
+id|memset
+c_func
 (paren
-r_uint32
-op_star
-)paren
 id|pkt
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|cnt
-op_assign
+comma
 l_int|0
-suffix:semicolon
-id|cnt
-OL
+comma
 id|REQUEST_ENTRY_SIZE
-op_div
-l_int|4
-suffix:semicolon
-id|cnt
-op_increment
 )paren
-op_star
-id|dword_ptr
-op_increment
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Load packet defaults. */
 (paren
@@ -15613,7 +14780,7 @@ multiline_comment|/* Setup packet address segment pointer. */
 id|dword_ptr
 op_assign
 (paren
-r_uint32
+id|u32
 op_star
 )paren
 op_amp
@@ -15648,19 +14815,7 @@ id|seg_cnt
 op_decrement
 )paren
 (brace
-r_int
-r_int
-r_int
-id|address
-op_assign
-id|page_to_phys
-c_func
-(paren
-id|sg-&gt;page
-)paren
-op_plus
-id|sg-&gt;offset
-suffix:semicolon
+multiline_comment|/* 3.13 64 bit */
 op_star
 id|dword_ptr
 op_increment
@@ -15668,7 +14823,15 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|address
+id|pci_dma_lo32
+c_func
+(paren
+id|sg_dma_address
+c_func
+(paren
+id|sg
+)paren
+)paren
 )paren
 suffix:semicolon
 op_star
@@ -15678,114 +14841,151 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|address
-op_rshift
-l_int|32
+id|pci_dma_hi32
+c_func
+(paren
+id|sg_dma_address
+c_func
+(paren
+id|sg
+)paren
+)paren
 )paren
 suffix:semicolon
 op_star
 id|dword_ptr
 op_increment
 op_assign
-id|sg-&gt;length
+id|cpu_to_le32
+c_func
+(paren
+id|sg_dma_len
+c_func
+(paren
+id|sg
+)paren
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;S/G Segment Cont. phys_addr=%x %x, len=0x%x&bslash;n&quot;
+comma
+id|cpu_to_le32
+c_func
+(paren
+id|pci_dma_hi32
+c_func
+(paren
+id|sg_dma_address
+c_func
+(paren
+id|sg
+)paren
+)paren
+)paren
+comma
+id|cpu_to_le32
+c_func
+(paren
+id|pci_dma_lo32
+c_func
+(paren
+id|sg_dma_address
+c_func
+(paren
+id|sg
+)paren
+)paren
+)paren
+comma
+id|cpu_to_le32
+c_func
+(paren
+id|sg_dma_len
+c_func
+(paren
+id|sg
+)paren
+)paren
+)paren
 suffix:semicolon
 id|sg
 op_increment
 suffix:semicolon
 )brace
-macro_line|#ifdef QL_DEBUG_LEVEL_5
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_64bit_start_scsi: continuation packet data - c&quot;
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; b &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+l_int|5
+comma
+l_string|&quot;qla1280_64bit_start_scsi: continuation &quot;
+l_string|&quot;packet data - b %i, t %i, l %i &bslash;n&quot;
+comma
 id|SCSI_BUS_32
 c_func
 (paren
 id|cmd
 )paren
 comma
-l_int|10
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; t &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|SCSI_TCN_32
 c_func
 (paren
 id|cmd
 )paren
 comma
-l_int|10
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; d &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|SCSI_LUN_32
 c_func
 (paren
 id|cmd
 )paren
-comma
-l_int|10
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
 )paren
 suffix:semicolon
 id|qla1280_dump_buffer
 c_func
 (paren
+l_int|5
+comma
 (paren
-id|caddr_t
+r_char
+op_star
 )paren
 id|pkt
 comma
 id|REQUEST_ENTRY_SIZE
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_else
-multiline_comment|/* No scatter gather data transfer */
 (brace
+multiline_comment|/* No scatter gather data transfer */
+multiline_comment|/* 3.13 64 bit */
+id|dma_handle
+op_assign
+id|pci_map_single
+c_func
+(paren
+id|ha-&gt;pdev
+comma
+id|cmd-&gt;request_buffer
+comma
+id|cmd-&gt;request_bufflen
+comma
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|cmd-&gt;sc_data_direction
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* save dma_handle for pci_unmap_single */
+id|sp-&gt;saved_dma_handle
+op_assign
+id|dma_handle
+suffix:semicolon
 op_star
 id|dword_ptr
 op_increment
@@ -15793,10 +14993,10 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS_LOW
+id|pci_dma_lo32
 c_func
 (paren
-id|cmd-&gt;request_buffer
+id|dma_handle
 )paren
 )paren
 suffix:semicolon
@@ -15807,10 +15007,10 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS_HIGH
+id|pci_dma_hi32
 c_func
 (paren
-id|cmd-&gt;request_buffer
+id|dma_handle
 )paren
 )paren
 suffix:semicolon
@@ -15822,206 +15022,117 @@ r_uint32
 )paren
 id|cmd-&gt;request_bufflen
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_5
-id|qla1280_print
+multiline_comment|/* dprintk(1,&n;&t;&t;&t;&t;&t;   &quot;No S/G map_single saved_dma_handle=%lx&bslash;n&quot;,dma_handle);&n;&t;&t;&t;&t;&t;*/
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_64bit_start_scsi: No scatter/gather command packet data - c&quot;
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; b &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+l_int|5
+comma
+l_string|&quot;qla1280_64bit_start_scsi: No scatter/gather &quot;
+l_string|&quot;command packet data - b %i, t %i, l %i &bslash;n&quot;
+comma
 id|SCSI_BUS_32
 c_func
 (paren
 id|cmd
 )paren
 comma
-l_int|10
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; t &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|SCSI_TCN_32
 c_func
 (paren
 id|cmd
 )paren
 comma
-l_int|10
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; d &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|SCSI_LUN_32
 c_func
 (paren
 id|cmd
 )paren
-comma
-l_int|10
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
 )paren
 suffix:semicolon
 id|qla1280_dump_buffer
 c_func
 (paren
+l_int|5
+comma
 (paren
-id|caddr_t
+r_char
+op_star
 )paren
 id|pkt
 comma
 id|REQUEST_ENTRY_SIZE
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
-macro_line|#ifdef QL_DEBUG_LEVEL_5
 r_else
-multiline_comment|/* No data transfer */
 (brace
+multiline_comment|/* No data transfer */
+id|dword_ptr
+op_assign
+(paren
+r_uint32
+op_star
+)paren
+(paren
+id|pkt
+op_plus
+l_int|1
+)paren
+suffix:semicolon
 op_star
 id|dword_ptr
 op_increment
 op_assign
-(paren
-r_uint32
-)paren
 l_int|0
 suffix:semicolon
 op_star
 id|dword_ptr
 op_increment
 op_assign
-(paren
-r_uint32
-)paren
 l_int|0
 suffix:semicolon
 op_star
 id|dword_ptr
 op_assign
-(paren
-r_uint32
-)paren
 l_int|0
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_64bit_start_scsi: No data, command packet data - c&quot;
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; b &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+l_int|5
+comma
+l_string|&quot;qla1280_64bit_start_scsi: No data, command &quot;
+l_string|&quot;packet data - b %i, t %i, l %i &bslash;n&quot;
+comma
 id|SCSI_BUS_32
 c_func
 (paren
 id|cmd
 )paren
 comma
-l_int|10
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; t &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|SCSI_TCN_32
 c_func
 (paren
 id|cmd
 )paren
 comma
-l_int|10
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; d &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|SCSI_LUN_32
 c_func
 (paren
 id|cmd
 )paren
-comma
-l_int|10
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
 )paren
 suffix:semicolon
 id|qla1280_dump_buffer
 c_func
 (paren
+l_int|5
+comma
 (paren
-id|caddr_t
+r_char
+op_star
 )paren
 id|pkt
 comma
@@ -16029,7 +15140,6 @@ id|REQUEST_ENTRY_SIZE
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* Adjust ring index. */
 id|ha-&gt;req_ring_index
 op_increment
@@ -16056,6 +15166,24 @@ id|ha-&gt;request_ring_ptr
 op_increment
 suffix:semicolon
 multiline_comment|/* Set chip new ring index. */
+id|dprintk
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;qla1280_64bit_start_scsi: Wakeup RISC for pending command&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ha-&gt;qthreads
+op_decrement
+suffix:semicolon
+id|sp-&gt;flags
+op_or_assign
+id|SRB_SENT
+suffix:semicolon
+id|ha-&gt;actthreads
+op_increment
+suffix:semicolon
 id|WRT_REG_WORD
 c_func
 (paren
@@ -16072,31 +15200,17 @@ id|status
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_64bit_start_scsi: NO ROOM IN OUTSTANDING ARRAY&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; req_q_cnt=&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
-id|ha-&gt;req_q_cnt
+l_int|2
 comma
-l_int|16
+l_string|&quot;qla1280_64bit_start_scsi: NO ROOM IN &quot;
+l_string|&quot;OUTSTANDING ARRAY, req_q_cnt=0x%x&quot;
+comma
+id|ha-&gt;req_q_cnt
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_else
@@ -16105,108 +15219,58 @@ id|status
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_64bit_start_scsi: in-ptr=&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+l_int|2
+comma
+l_string|&quot;qla1280_64bit_start_scsi: in-ptr=0x%x  req_q_cnt=0x%x&quot;
+l_string|&quot;req_cnt=0x%x&quot;
+comma
 id|ha-&gt;req_ring_index
 comma
-l_int|16
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; req_q_cnt=&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|ha-&gt;req_q_cnt
 comma
-l_int|16
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; req_cnt=&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|req_cnt
-comma
-l_int|16
 )paren
 suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
-multiline_comment|/* Release ring specific lock */
-id|QLA1280_RING_UNLOCK
-c_func
-(paren
-id|ha
-)paren
-suffix:semicolon
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
 r_if
 c_cond
 (paren
 id|status
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_64bit_start_scsi: **** FAILED ****&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_64bit_start_scsi: **** FAILED ****&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 r_else
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_64bit_start_scsi: exiting normally&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_64bit_start_scsi: exiting normally&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|status
 suffix:semicolon
 )brace
-macro_line|#endif  /* QLA1280_64BIT_SUPPORT */
-multiline_comment|/*&n; * qla1280_32bit_start_scsi&n; *      The start SCSI is responsible for building request packets on&n; *      request ring and modifying ISP input pointer.&n; *&n; *      The Qlogic firmware interface allows every queue slot to have a SCSI&n; *      command and up to 4 scatter/gather (SG) entries.  If we need more&n; *      than 4 SG entries, then continuation entries are used that can &n; *      hold another 7 entries each.  The start routine determines if there&n; *      is eought empty slots then build the combination of requests to &n; *      fulfill the OS request.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *      sp = SCSI Request Block structure pointer.&n; *&n; * Returns:&n; *      0 = success, was able to issue command.&n; */
-id|STATIC
-r_uint8
+macro_line|#endif
+multiline_comment|/*&n; * qla1280_32bit_start_scsi&n; *      The start SCSI is responsible for building request packets on&n; *      request ring and modifying ISP input pointer.&n; *&n; *      The Qlogic firmware interface allows every queue slot to have a SCSI&n; *      command and up to 4 scatter/gather (SG) entries.  If we need more&n; *      than 4 SG entries, then continuation entries are used that can&n; *      hold another 7 entries each.  The start routine determines if there&n; *      is eought empty slots then build the combination of requests to&n; *      fulfill the OS request.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *      sp = SCSI Request Block structure pointer.&n; *&n; * Returns:&n; *      0 = success, was able to issue command.&n; */
+r_static
+r_int
 DECL|function|qla1280_32bit_start_scsi
 id|qla1280_32bit_start_scsi
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
@@ -16215,16 +15279,12 @@ op_star
 id|sp
 )paren
 (brace
-id|device_reg_t
+r_struct
+id|device_reg
 op_star
 id|reg
 op_assign
 id|ha-&gt;iobase
-suffix:semicolon
-r_uint8
-id|status
-op_assign
-l_int|0
 suffix:semicolon
 id|Scsi_Cmnd
 op_star
@@ -16232,38 +15292,37 @@ id|cmd
 op_assign
 id|sp-&gt;cmd
 suffix:semicolon
-r_uint32
-id|cnt
-suffix:semicolon
 id|cmd_entry_t
 op_star
 id|pkt
-suffix:semicolon
-r_uint16
-id|req_cnt
-suffix:semicolon
-r_uint16
-id|seg_cnt
 suffix:semicolon
 r_struct
 id|scatterlist
 op_star
 id|sg
 op_assign
-(paren
-r_struct
-id|scatterlist
-op_star
-)paren
 l_int|NULL
-suffix:semicolon
-r_uint8
-op_star
-id|data_ptr
 suffix:semicolon
 r_uint32
 op_star
 id|dword_ptr
+suffix:semicolon
+r_int
+id|status
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|cnt
+suffix:semicolon
+r_int
+id|req_cnt
+suffix:semicolon
+r_uint16
+id|seg_cnt
+suffix:semicolon
+id|dma_addr_t
+id|dma_handle
 suffix:semicolon
 id|ENTER
 c_func
@@ -16271,22 +15330,23 @@ c_func
 l_string|&quot;qla1280_32bit_start_scsi&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|qla1280_check_for_dead_scsi_bus
+id|dprintk
 c_func
 (paren
-id|ha
+l_int|1
+comma
+l_string|&quot;32bit_start: cmd=%p sp=%p CDB=%x&bslash;n&quot;
+comma
+id|cmd
 comma
 id|sp
-)paren
-)paren
-(brace
-r_return
+comma
+id|cmd-&gt;cmnd
+(braket
 l_int|0
+)braket
+)paren
 suffix:semicolon
-)brace
 multiline_comment|/* Calculate number of entries and segments required. */
 id|req_cnt
 op_assign
@@ -16298,11 +15358,7 @@ c_cond
 id|cmd-&gt;use_sg
 )paren
 (brace
-multiline_comment|/*&n;        * We must build an SG list in adapter format, as the kernel&squot;s SG list&n;        * cannot be used directly because of data field size (__alpha__)&n;        * differences and the kernel SG list uses virtual addresses where&n;        * we need physical addresses.&n;        */
-id|seg_cnt
-op_assign
-id|cmd-&gt;use_sg
-suffix:semicolon
+multiline_comment|/*&n;&t;&t; * We must build an SG list in adapter format, as the kernel&squot;s SG list&n;&t;&t; * cannot be used directly because of data field size (__alpha__)&n;&t;&t; * differences and the kernel SG list uses virtual addresses where&n;&t;&t; * we need physical addresses.&n;&t;&t; */
 id|sg
 op_assign
 (paren
@@ -16312,7 +15368,25 @@ op_star
 )paren
 id|cmd-&gt;request_buffer
 suffix:semicolon
-multiline_comment|/* &n;        * if greater than four sg entries then we need to allocate&n;        * continuation entries&n;        */
+multiline_comment|/* 3.13 32 bit */
+id|seg_cnt
+op_assign
+id|pci_map_sg
+(paren
+id|ha-&gt;pdev
+comma
+id|sg
+comma
+id|cmd-&gt;use_sg
+comma
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|cmd-&gt;sc_data_direction
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * if greater than four sg entries then we need to allocate&n;&t;&t; * continuation entries&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -16323,9 +15397,6 @@ l_int|4
 (brace
 id|req_cnt
 op_add_assign
-(paren
-r_uint16
-)paren
 (paren
 id|seg_cnt
 op_minus
@@ -16338,9 +15409,6 @@ r_if
 c_cond
 (paren
 (paren
-r_uint16
-)paren
-(paren
 id|seg_cnt
 op_minus
 l_int|4
@@ -16352,30 +15420,18 @@ id|req_cnt
 op_increment
 suffix:semicolon
 )brace
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;S/G for data transfer -num segs(%d), req blk cnt(%d)&bslash;n&bslash;r&quot;
+l_string|&quot;S/G Transfer cmd=%p seg_cnt=0x%x, req_cnt=%x&bslash;n&quot;
+comma
+id|cmd
 comma
 id|seg_cnt
 comma
 id|req_cnt
-)paren
-)paren
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-id|debug_buff
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -16385,18 +15441,29 @@ c_cond
 (paren
 id|cmd-&gt;request_bufflen
 )paren
-multiline_comment|/* If data transfer. */
 (brace
-id|DEBUG
+multiline_comment|/* If data transfer. */
+id|dprintk
 c_func
 (paren
-id|printk
+l_int|1
+comma
+l_string|&quot;No S/G transfer t=%x cmd=%p len=%x CDB=%x&bslash;n&quot;
+comma
+id|SCSI_TCN_32
 c_func
 (paren
-l_string|&quot;Single data transfer (0x%x)&bslash;n&quot;
+id|cmd
+)paren
+comma
+id|cmd
 comma
 id|cmd-&gt;request_bufflen
-)paren
+comma
+id|cmd-&gt;cmnd
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 id|seg_cnt
@@ -16406,34 +15473,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|DEBUG
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;No data transfer &bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* dprintk(1, &quot;No data transfer &bslash;n&quot;); */
 id|seg_cnt
 op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Acquire ring specific lock */
-id|QLA1280_RING_LOCK
-c_func
-(paren
-id|ha
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-r_uint16
-)paren
 (paren
 id|req_cnt
 op_plus
@@ -16478,37 +15526,22 @@ id|cnt
 )paren
 suffix:semicolon
 )brace
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_int|1
 comma
-l_string|&quot;Number of free entries = (%d)&bslash;n&bslash;r&quot;
+l_string|&quot;Number of free entries=(%d) seg_cnt=0x%x&bslash;n&quot;
 comma
 id|ha-&gt;req_q_cnt
-)paren
-)paren
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-id|debug_buff
-)paren
+comma
+id|seg_cnt
 )paren
 suffix:semicolon
 multiline_comment|/* If room for request in request ring. */
 r_if
 c_cond
 (paren
-(paren
-r_uint16
-)paren
 (paren
 id|req_cnt
 op_plus
@@ -16579,7 +15612,7 @@ id|ha-&gt;req_q_cnt
 op_sub_assign
 id|req_cnt
 suffix:semicolon
-multiline_comment|/*&n;            * Build command packet.&n;            */
+multiline_comment|/*&n;&t;&t;&t; * Build command packet.&n;&t;&t;&t; */
 id|pkt
 op_assign
 (paren
@@ -16614,44 +15647,31 @@ r_uint32
 id|cnt
 suffix:semicolon
 multiline_comment|/* Zero out remaining portion of packet. */
-id|dword_ptr
-op_assign
+id|memset
+c_func
 (paren
-r_uint32
+(paren
+(paren
+r_char
 op_star
 )paren
 id|pkt
 op_plus
-l_int|2
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|cnt
-op_assign
-l_int|2
-suffix:semicolon
-id|cnt
-OL
-id|REQUEST_ENTRY_SIZE
-op_div
-l_int|4
-suffix:semicolon
-id|cnt
-op_increment
+l_int|8
 )paren
-op_star
-id|dword_ptr
-op_increment
-op_assign
+comma
 l_int|0
+comma
+(paren
+id|REQUEST_ENTRY_SIZE
+op_minus
+l_int|8
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Set ISP command timeout. */
 id|pkt-&gt;timeout
 op_assign
-(paren
-r_uint16
-)paren
 l_int|30
 suffix:semicolon
 multiline_comment|/* Set device target ID and LUN */
@@ -16710,12 +15730,11 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-id|data_ptr
-op_assign
+id|memcpy
+c_func
 (paren
-r_uint8
-op_star
-)paren
+id|pkt-&gt;scsi_cdb
+comma
 op_amp
 (paren
 id|CMD_CDBP
@@ -16724,65 +15743,21 @@ c_func
 id|cmd
 )paren
 )paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|cnt
-op_assign
-l_int|0
-suffix:semicolon
-id|cnt
-OL
-id|pkt-&gt;cdb_len
-suffix:semicolon
-id|cnt
-op_increment
-)paren
-id|pkt-&gt;scsi_cdb
-(braket
-id|cnt
-)braket
-op_assign
-op_star
-id|data_ptr
-op_increment
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;Build packet for command[0]=0x%x&bslash;n&quot;
 comma
-id|pkt-&gt;scsi_cdb
-(braket
-l_int|0
-)braket
-)paren
+id|pkt-&gt;cdb_len
 )paren
 suffix:semicolon
-multiline_comment|/*&n;            * Load data segments.&n;            */
+multiline_comment|/*dprintk(1, &quot;Build packet for command[0]=0x%x&bslash;n&quot;,pkt-&gt;scsi_cdb[0]); */
+multiline_comment|/*&n;&t;&t;&t; * Load data segments.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
 id|seg_cnt
 )paren
 (brace
-id|DEBUG
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;loading data segments..&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* Set transfer direction (READ and WRITE) */
 multiline_comment|/* Linux doesn&squot;t tell us                   */
-multiline_comment|/*&n;                * 3/10 dg - Normally, we should need this check with our F/W&n;                * but because of a small issue with it we do.&n;                *&n;                * For block devices, cmd-&gt;request.cmd has the operation &n;                * For character devices, this isn&squot;t always set properly, so&n;                * we need to check data_cmnd[0].  This catches the conditions&n;                * for st.c, but not sg. Generic commands are pass down to us.&n;                */
+multiline_comment|/*&n;&t;&t;&t;&t; * For block devices, cmd-&gt;request.cmd has the operation&n;&t;&t;&t;&t; * For character devices, this isn&squot;t always set properly, so&n;&t;&t;&t;&t; * we need to check data_cmnd[0].  This catches the conditions&n;&t;&t;&t;&t; * for st.c, but not sg. Generic commands are pass down to us.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -16826,10 +15801,6 @@ suffix:semicolon
 multiline_comment|/* Setup packet address segment pointer. */
 id|dword_ptr
 op_assign
-(paren
-r_uint32
-op_star
-)paren
 op_amp
 id|pkt-&gt;dseg_0_address
 suffix:semicolon
@@ -16838,33 +15809,31 @@ c_cond
 (paren
 id|cmd-&gt;use_sg
 )paren
-multiline_comment|/* If scatter gather */
 (brace
-id|DEBUG
+multiline_comment|/* If scatter gather */
+id|dprintk
 c_func
 (paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;Building S/G data segments..&bslash;n&bslash;r&quot;
-)paren
+l_int|1
+comma
+l_string|&quot;Building S/G data &quot;
+l_string|&quot;segments..&bslash;n&quot;
 )paren
 suffix:semicolon
-id|DEBUG
-c_func
-(paren
 id|qla1280_dump_buffer
 c_func
 (paren
+l_int|1
+comma
 (paren
-id|caddr_t
+r_char
+op_star
 )paren
 id|sg
 comma
 l_int|4
 op_star
 l_int|16
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Load command entry data segments. */
@@ -16888,30 +15857,20 @@ id|seg_cnt
 op_decrement
 )paren
 (brace
-r_int
-r_int
-r_int
-id|address
-op_assign
-id|page_to_phys
-c_func
-(paren
-id|sg-&gt;page
-)paren
-op_plus
-id|sg-&gt;offset
-suffix:semicolon
+multiline_comment|/* 3.13 32 bit */
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,18)
 op_star
 id|dword_ptr
 op_increment
 op_assign
-(paren
-r_uint32
-)paren
 id|cpu_to_le32
 c_func
 (paren
-id|address
+id|virt_to_bus
+c_func
+(paren
+id|sg-&gt;address
+)paren
 )paren
 suffix:semicolon
 op_star
@@ -16920,37 +15879,108 @@ op_increment
 op_assign
 id|sg-&gt;length
 suffix:semicolon
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|sprintf
+l_int|1
+comma
+l_string|&quot;S/G Segment phys_addr=0x%x, len=0x%x&bslash;n&quot;
+comma
+id|cpu_to_le32
 c_func
 (paren
-id|debug_buff
-comma
-l_string|&quot;SG Segment ap=0x%ull, len=0x%x&bslash;n&bslash;r&quot;
-comma
-id|address
+id|virt_to_bus
+c_func
+(paren
+id|sg-&gt;address
+)paren
+)paren
 comma
 id|sg-&gt;length
 )paren
-)paren
 suffix:semicolon
-id|DEBUG
+macro_line|#else
+op_star
+id|dword_ptr
+op_increment
+op_assign
+id|cpu_to_le32
 c_func
 (paren
-id|qla1280_print
+id|pci_dma_lo32
 c_func
 (paren
-id|debug_buff
+id|sg_dma_address
+c_func
+(paren
+id|sg
+)paren
 )paren
 )paren
 suffix:semicolon
+op_star
+id|dword_ptr
+op_increment
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|sg_dma_len
+c_func
+(paren
+id|sg
+)paren
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;S/G Segment phys_addr=0x%x, len=0x%x&bslash;n&quot;
+comma
+id|cpu_to_le32
+c_func
+(paren
+id|pci_dma_lo32
+c_func
+(paren
+id|sg_dma_address
+c_func
+(paren
+id|sg
+)paren
+)paren
+)paren
+comma
+id|cpu_to_le32
+c_func
+(paren
+id|sg_dma_len
+c_func
+(paren
+id|sg
+)paren
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|sg
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/*&n;                    * Build continuation packets.&n;                    */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * Build continuation packets.&n;&t;&t;&t;&t;&t; */
+id|dprintk
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;S/G Building Continuation&quot;
+l_string|&quot;...seg_cnt=0x%x remains&bslash;n&quot;
+comma
+id|seg_cnt
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -16993,35 +16023,15 @@ op_star
 id|ha-&gt;request_ring_ptr
 suffix:semicolon
 multiline_comment|/* Zero out packet. */
-id|dword_ptr
-op_assign
+id|memset
+c_func
 (paren
-r_uint32
-op_star
-)paren
 id|pkt
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|cnt
-op_assign
+comma
 l_int|0
-suffix:semicolon
-id|cnt
-OL
+comma
 id|REQUEST_ENTRY_SIZE
-op_div
-l_int|4
-suffix:semicolon
-id|cnt
-op_increment
 )paren
-op_star
-id|dword_ptr
-op_increment
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Load packet defaults. */
 (paren
@@ -17061,15 +16071,13 @@ op_assign
 (paren
 r_uint8
 )paren
-id|ha-&gt;req_ring_index
+id|ha
+op_member_access_from_pointer
+id|req_ring_index
 suffix:semicolon
 multiline_comment|/* Setup packet address segment pointer. */
 id|dword_ptr
 op_assign
-(paren
-r_uint32
-op_star
-)paren
 op_amp
 (paren
 (paren
@@ -17102,30 +16110,20 @@ id|seg_cnt
 op_decrement
 )paren
 (brace
-r_int
-r_int
-r_int
-id|address
-op_assign
-id|page_to_phys
-c_func
-(paren
-id|sg-&gt;page
-)paren
-op_plus
-id|sg-&gt;offset
-suffix:semicolon
+multiline_comment|/* 3.13 32 bit */
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,18)
 op_star
 id|dword_ptr
 op_increment
 op_assign
-(paren
-id|u_int
-)paren
 id|cpu_to_le32
 c_func
 (paren
-id|address
+id|virt_to_bus
+c_func
+(paren
+id|sg-&gt;address
+)paren
 )paren
 suffix:semicolon
 op_star
@@ -17134,114 +16132,199 @@ op_increment
 op_assign
 id|sg-&gt;length
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;S/G Segment Cont. phys_addr=0x%x, len=0x%x&bslash;n&quot;
+comma
+id|cpu_to_le32
+c_func
+(paren
+id|pci_dma_lo32
+c_func
+(paren
+id|virt_to_bus
+c_func
+(paren
+id|sg-&gt;address
+)paren
+)paren
+)paren
+comma
+id|sg-&gt;length
+)paren
+suffix:semicolon
+macro_line|#else
+op_star
+id|dword_ptr
+op_increment
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|pci_dma_lo32
+c_func
+(paren
+id|sg_dma_address
+c_func
+(paren
+id|sg
+)paren
+)paren
+)paren
+suffix:semicolon
+op_star
+id|dword_ptr
+op_increment
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|sg_dma_len
+c_func
+(paren
+id|sg
+)paren
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;S/G Segment Cont. phys_addr=0x%x, &quot;
+l_string|&quot;len=0x%x&bslash;n&quot;
+comma
+id|cpu_to_le32
+c_func
+(paren
+id|pci_dma_lo32
+c_func
+(paren
+id|sg_dma_address
+c_func
+(paren
+id|sg
+)paren
+)paren
+)paren
+comma
+id|cpu_to_le32
+c_func
+(paren
+id|sg_dma_len
+c_func
+(paren
+id|sg
+)paren
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|sg
 op_increment
 suffix:semicolon
 )brace
-macro_line|#ifdef QL_DEBUG_LEVEL_5
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_32bit_start_scsi: continuation packet data - scsi(&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+l_int|5
+comma
+l_string|&quot;qla1280_32bit_start_scsi: continuation &quot;
+l_string|&quot;packet data - scsi(%i:%i:%i)&bslash;n&quot;
+comma
 id|SCSI_BUS_32
 c_func
 (paren
 id|cmd
 )paren
 comma
-l_int|10
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;:&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|SCSI_TCN_32
 c_func
 (paren
 id|cmd
 )paren
 comma
-l_int|10
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;:&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|SCSI_LUN_32
 c_func
 (paren
 id|cmd
 )paren
-comma
-l_int|10
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;)&bslash;n&bslash;r&quot;
 )paren
 suffix:semicolon
 id|qla1280_dump_buffer
 c_func
 (paren
+l_int|5
+comma
 (paren
-id|caddr_t
+r_char
+op_star
 )paren
 id|pkt
 comma
 id|REQUEST_ENTRY_SIZE
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_else
-multiline_comment|/* No scatter gather data transfer */
 (brace
+multiline_comment|/* No S/G data transfer */
+multiline_comment|/* 3.13 32 bit */
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,18)
 op_star
 id|dword_ptr
 op_increment
 op_assign
+id|cpu_to_le32
 (paren
-r_uint32
+id|virt_to_bus
+(paren
+id|cmd-&gt;request_buffer
 )paren
+)paren
+suffix:semicolon
+macro_line|#else
+id|dma_handle
+op_assign
+id|pci_map_single
+c_func
+(paren
+id|ha-&gt;pdev
+comma
+id|cmd-&gt;request_buffer
+comma
+id|cmd-&gt;request_bufflen
+comma
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|cmd-&gt;sc_data_direction
+)paren
+)paren
+suffix:semicolon
+id|sp-&gt;saved_dma_handle
+op_assign
+id|dma_handle
+suffix:semicolon
+op_star
+id|dword_ptr
+op_increment
+op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS
+id|pci_dma_lo32
 c_func
 (paren
-id|cmd-&gt;request_buffer
+id|dma_handle
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 op_star
 id|dword_ptr
 op_assign
@@ -17249,88 +16332,81 @@ op_assign
 r_uint32
 )paren
 id|cmd-&gt;request_bufflen
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;Single Segment ap=0x%p, len=0x%x&bslash;n&quot;
-comma
-id|cmd-&gt;request_buffer
-comma
-id|cmd-&gt;request_bufflen
-)paren
-)paren
 suffix:semicolon
 )brace
 )brace
 r_else
-multiline_comment|/* No data transfer */
 (brace
+multiline_comment|/* No data transfer at all */
+id|dword_ptr
+op_assign
+(paren
+r_uint32
+op_star
+)paren
+(paren
+id|pkt
+op_plus
+l_int|1
+)paren
+suffix:semicolon
 op_star
 id|dword_ptr
 op_increment
 op_assign
-(paren
-r_uint32
-)paren
 l_int|0
 suffix:semicolon
 op_star
 id|dword_ptr
 op_assign
-(paren
-r_uint32
-)paren
 l_int|0
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_5
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_32bit_start_scsi: No data, command packet data - &quot;
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
+l_int|5
+comma
+l_string|&quot;qla1280_32bit_start_scsi: No data, command &quot;
+l_string|&quot;packet data - &bslash;n&quot;
 )paren
 suffix:semicolon
 id|qla1280_dump_buffer
 c_func
 (paren
+l_int|5
+comma
 (paren
-id|caddr_t
+r_char
+op_star
 )paren
 id|pkt
 comma
 id|REQUEST_ENTRY_SIZE
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
-macro_line|#ifdef QL_DEBUG_LEVEL_5
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_32bit_start_scsi: First IOCB block:&bslash;n&bslash;r&quot;
+l_int|5
+comma
+l_string|&quot;qla1280_32bit_start_scsi: First IOCB block:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|qla1280_dump_buffer
 c_func
 (paren
+l_int|5
+comma
 (paren
-id|caddr_t
+r_char
+op_star
 )paren
 id|ha-&gt;request_ring_ptr
 comma
 id|REQUEST_ENTRY_SIZE
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Adjust ring index. */
 id|ha-&gt;req_ring_index
 op_increment
@@ -17357,22 +16433,17 @@ id|ha-&gt;request_ring_ptr
 op_increment
 suffix:semicolon
 multiline_comment|/* Set chip new ring index. */
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;qla1280_32bit_start_scsi: Wakeup RISC for pending command&bslash;n&bslash;r&quot;
-)paren
+l_int|1
+comma
+l_string|&quot;qla1280_32bit_start_scsi: Wakeup RISC &quot;
+l_string|&quot;for pending command&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ha-&gt;qthreads
 op_decrement
-suffix:semicolon
-id|sp-&gt;u_start
-op_assign
-id|jiffies
 suffix:semicolon
 id|sp-&gt;flags
 op_or_assign
@@ -17381,7 +16452,6 @@ suffix:semicolon
 id|ha-&gt;actthreads
 op_increment
 suffix:semicolon
-multiline_comment|/* qla1280_output_number((uint32_t)ha-&gt;actthreads++, 16); */
 id|WRT_REG_WORD
 c_func
 (paren
@@ -17398,37 +16468,17 @@ id|status
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_32bit_start_scsi: NO ROOM IN OUTSTANDING ARRAY&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; req_q_cnt=&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
-id|ha-&gt;req_q_cnt
+l_int|2
 comma
-l_int|16
+l_string|&quot;qla1280_32bit_start_scsi: NO ROOM IN OUTSTANDING &quot;
+l_string|&quot;ARRAY, req_q_cnt=0x%x&bslash;n&quot;
+comma
+id|ha-&gt;req_q_cnt
 )paren
 suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_else
@@ -17437,46 +16487,61 @@ id|status
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-multiline_comment|/*  qla1280_print(&quot;qla1280_32bit_start_scsi: in-ptr=&quot;);&n;        qla1280_output_number((uint32_t)ha-&gt;req_ring_index, 16);&n;        qla1280_print(&quot; req_q_cnt=&quot;);&n;        qla1280_output_number((uint32_t)ha-&gt;req_q_cnt, 16);&n;        qla1280_print(&quot; req_cnt=&quot;);&n;        qla1280_output_number((uint32_t)req_cnt, 16);&n;        qla1280_print(&quot;&bslash;n&bslash;r&quot;); */
-macro_line|#endif
-)brace
-multiline_comment|/* Release ring specific lock */
-id|QLA1280_RING_UNLOCK
+id|dprintk
 c_func
 (paren
-id|ha
+l_int|2
+comma
+l_string|&quot;qla1280_32bit_start_scsi: in-ptr=0x%x, req_q_cnt=0x%x, &quot;
+l_string|&quot;req_cnt=0x%x&quot;
+comma
+id|ha-&gt;req_ring_index
+comma
+id|ha-&gt;req_q_cnt
+comma
+id|req_cnt
 )paren
 suffix:semicolon
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
-multiline_comment|/* if (status)&n;    qla1280_print(&quot;qla1280_32bit_start_scsi: **** FAILED ****&bslash;n&bslash;r&quot;); */
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
+)brace
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|dprintk
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;qla1280_32bit_start_scsi: **** FAILED ****&bslash;n&quot;
+)paren
+suffix:semicolon
 id|LEAVE
 c_func
 (paren
 l_string|&quot;qla1280_32bit_start_scsi&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * qla1280_req_pkt&n; *      Function is responsible for locking ring and&n; *      getting a zeroed out request packet.&n; *&n; * Input:&n; *      ha  = adapter block pointer.&n; *&n; * Returns:&n; *      0 = failed to get slot.&n; */
-id|STATIC
+r_static
 id|request_t
 op_star
 DECL|function|qla1280_req_pkt
 id|qla1280_req_pkt
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
 (brace
-id|device_reg_t
+r_struct
+id|device_reg
 op_star
 id|reg
 op_assign
@@ -17488,24 +16553,19 @@ id|pkt
 op_assign
 l_int|0
 suffix:semicolon
-r_uint16
+r_int
 id|cnt
-suffix:semicolon
-r_uint32
-op_star
-id|dword_ptr
 suffix:semicolon
 r_uint32
 id|timer
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_req_pkt&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+multiline_comment|/*&n;&t; * This can be called from interrupt context, damn it!!!&n;&t; */
 multiline_comment|/* Wait for 30 seconds for slot. */
 r_for
 c_loop
@@ -17520,13 +16580,6 @@ id|timer
 op_decrement
 )paren
 (brace
-multiline_comment|/* Acquire ring specific lock */
-id|QLA1280_RING_LOCK
-c_func
-(paren
-id|ha
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -17587,35 +16640,15 @@ op_assign
 id|ha-&gt;request_ring_ptr
 suffix:semicolon
 multiline_comment|/* Zero out packet. */
-id|dword_ptr
-op_assign
+id|memset
+c_func
 (paren
-r_uint32
-op_star
-)paren
 id|pkt
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|cnt
-op_assign
+comma
 l_int|0
-suffix:semicolon
-id|cnt
-OL
+comma
 id|REQUEST_ENTRY_SIZE
-op_div
-l_int|4
-suffix:semicolon
-id|cnt
-op_increment
 )paren
-op_star
-id|dword_ptr
-op_increment
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Set system defined field. */
 id|pkt-&gt;sys_define
@@ -17633,14 +16666,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Release ring specific lock */
-id|QLA1280_RING_UNLOCK
-c_func
-(paren
-id|ha
-)paren
-suffix:semicolon
-id|SYS_DELAY
+id|udelay
 c_func
 (paren
 l_int|2
@@ -17655,78 +16681,81 @@ id|ha
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
 r_if
 c_cond
 (paren
 op_logical_neg
 id|pkt
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_req_pkt: **** FAILED ****&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_req_pkt: **** FAILED ****&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 r_else
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_req_pkt: exiting normally&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_req_pkt: exiting normally&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|pkt
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * qla1280_isp_cmd&n; *      Function is responsible for modifying ISP input pointer.&n; *      Releases ring lock.&n; *&n; * Input:&n; *      ha  = adapter block pointer.&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_isp_cmd
 id|qla1280_isp_cmd
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
 (brace
-id|device_reg_t
+r_struct
+id|device_reg
 op_star
 id|reg
 op_assign
 id|ha-&gt;iobase
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_isp_cmd&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_5
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_isp_cmd: IOCB data:&bslash;n&bslash;r&quot;
+l_int|5
+comma
+l_string|&quot;qla1280_isp_cmd: IOCB data:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|qla1280_dump_buffer
 c_func
 (paren
+l_int|5
+comma
 (paren
-id|caddr_t
+r_char
+op_star
 )paren
 id|ha-&gt;request_ring_ptr
 comma
 id|REQUEST_ENTRY_SIZE
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Adjust ring index. */
 id|ha-&gt;req_ring_index
 op_increment
@@ -17762,54 +16791,45 @@ comma
 id|ha-&gt;req_ring_index
 )paren
 suffix:semicolon
-multiline_comment|/* Release ring specific lock */
-id|QLA1280_RING_UNLOCK
-c_func
-(paren
-id|ha
-)paren
-suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 id|LEAVE
 c_func
 (paren
 l_string|&quot;qla1280_isp_cmd&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
-multiline_comment|/*&n; * qla1280_enable_lun&n; *      Issue enable LUN entry IOCB.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *      b  = SCSI BUS number.&n; *      l  = LUN number.&n; */
-id|STATIC
+macro_line|#if QL1280_LUN_SUPPORT
+multiline_comment|/*&n; * qla1280_enable_lun&n; *      Issue enable LUN entry IOCB.&n; *&n; * Input:&n; *      ha  = adapter block pointer.&n; *      bus = SCSI BUS number.&n; *      lun  = LUN number.&n; */
+r_static
 r_void
 DECL|function|qla1280_enable_lun
 id|qla1280_enable_lun
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
-r_uint8
-id|b
+r_int
+id|bus
 comma
-r_uint32
-id|l
+r_int
+id|lun
 )paren
 (brace
 id|elun_entry_t
 op_star
 id|pkt
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|ENTER
 c_func
 (paren
-l_string|&quot;qla1280_enable_lun: entered&bslash;n&bslash;r&quot;
+l_string|&quot;qla1280_enable_lun&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Get request packet. */
-multiline_comment|/*&n;    if (pkt = (elun_entry_t *)qla1280_req_pkt(ha))&n;    {&n;    pkt-&gt;entry_type = ENABLE_LUN_TYPE;&n;    pkt-&gt;lun = (uint16_t)(b ? l | BIT_15 : l);&n;    pkt-&gt;command_count = 32;&n;    pkt-&gt;immed_notify_count = 1;&n;    pkt-&gt;group_6_length = MAX_CMDSZ;&n;    pkt-&gt;group_7_length = MAX_CMDSZ;&n;    pkt-&gt;timeout = 0x30;&n;&n;    qla1280_isp_cmd(ha);&n;    }&n;    */
+multiline_comment|/*&n;&t;  if (pkt = (elun_entry_t *)qla1280_req_pkt(ha))&n;&t;  {&n;&t;  pkt-&gt;entry_type = ENABLE_LUN_TYPE;&n;&t;  pkt-&gt;lun = (uint16_t)(bus ? lun | BIT_15 : lun);&n;&t;  pkt-&gt;command_count = 32;&n;&t;  pkt-&gt;immed_notify_count = 1;&n;&t;  pkt-&gt;group_6_length = MAX_CMDSZ;&n;&t;  pkt-&gt;group_7_length = MAX_CMDSZ;&n;&t;  pkt-&gt;timeout = 0x30;&n;&n;&t;  qla1280_isp_cmd(ha);&n;&t;  }&n;&t;*/
 id|pkt
 op_assign
 (paren
@@ -17818,42 +16838,44 @@ op_star
 )paren
 l_int|1
 suffix:semicolon
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
 r_if
 c_cond
 (paren
 op_logical_neg
 id|pkt
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_enable_lun: **** FAILED ****&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_enable_lun: **** FAILED ****&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 r_else
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_enable_lun: exiting normally&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_enable_lun: exiting normally&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
+macro_line|#endif
 macro_line|#if QL1280_TARGET_MODE_SUPPORT
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                      Target Mode Support Functions.                      */
 multiline_comment|/****************************************************************************/
 multiline_comment|/*&n; * qla1280_notify_ack&n; *      Issue notify acknowledge IOCB.&n; *      If sequence ID is zero, acknowledgement of&n; *      SCSI bus reset or bus device reset is assumed.&n; *&n; * Input:&n; *      ha      = adapter block pointer.&n; *      inotify = immediate notify entry pointer.&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_notify_ack
 id|qla1280_notify_ack
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
@@ -17866,14 +16888,14 @@ id|nack_entry_t
 op_star
 id|pkt
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_notify_ack: entered&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_notify_ack: entered&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Get request packet. */
 r_if
 c_cond
@@ -17931,38 +16953,39 @@ id|ha
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
 r_if
 c_cond
 (paren
 op_logical_neg
 id|pkt
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_notify_ack: **** FAILED ****&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_notify_ack: **** FAILED ****&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 r_else
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_notify_ack: exiting normally&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_notify_ack: exiting normally&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * qla1280_immed_notify&n; *      Issue immediate notify IOCB for LUN 0.&n; *&n; * Input:&n; *      ha      = adapter block pointer.&n; *      inotify = immediate notify entry pointer.&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_immed_notify
 id|qla1280_immed_notify
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
@@ -17975,14 +16998,14 @@ id|notify_entry_t
 op_star
 id|pkt
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_immed_notify: entered&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_immed_notify: entered&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Get request packet. */
 r_if
 c_cond
@@ -18028,38 +17051,39 @@ id|ha
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
 r_if
 c_cond
 (paren
 op_logical_neg
 id|pkt
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_immed_notify: **** FAILED ****&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_immed_notify: **** FAILED ****&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 r_else
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_immed_notify: exiting normally&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_immed_notify: exiting normally&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * qla1280_accept_io&n; *      Issue accept target I/O IOCB for LUN 0.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *      ctio = ctio returned entry pointer.&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_accept_io
 id|qla1280_accept_io
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
@@ -18072,14 +17096,14 @@ id|atio_entry_t
 op_star
 id|pkt
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_accept_io: entered&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_accept_io: entered&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Get request packet. */
 r_if
 c_cond
@@ -18129,38 +17153,39 @@ id|ha
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
 r_if
 c_cond
 (paren
 op_logical_neg
 id|pkt
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_accept_io: **** FAILED ****&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_accept_io: **** FAILED ****&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 r_else
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_accept_io: exiting normally&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_accept_io: exiting normally&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * qla1280_64bit_continue_io&n; *      Issue continue target I/O IOCB.&n; *&n; * Input:&n; *      ha   = adapter block pointer.&n; *      atio = atio pointer.&n; *      len  = total bytecount.&n; *      addr = physical address pointer.&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_64bit_continue_io
 id|qla1280_64bit_continue_io
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
@@ -18184,14 +17209,14 @@ r_uint32
 op_star
 id|dword_ptr
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_64bit_continue_io: entered&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_64bit_continue_io: entered&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Get request packet. */
 r_if
 c_cond
@@ -18289,38 +17314,39 @@ id|ha
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
 r_if
 c_cond
 (paren
 op_logical_neg
 id|pkt
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_64bit_continue_io: **** FAILED ****&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_64bit_continue_io: **** FAILED ****&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 r_else
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_64bit_continue_io: exiting normally&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_64bit_continue_io: exiting normally&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * qla1280_32bit_continue_io&n; *      Issue continue target I/O IOCB.&n; *&n; * Input:&n; *      ha   = adapter block pointer.&n; *      atio = atio pointer.&n; *      len  = total bytecount.&n; *      addr = physical address pointer.&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_32bit_continue_io
 id|qla1280_32bit_continue_io
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
@@ -18344,14 +17370,14 @@ r_uint32
 op_star
 id|dword_ptr
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_32bit_continue_io: entered&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_32bit_continue_io: entered&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Get request packet. */
 r_if
 c_cond
@@ -18437,42 +17463,43 @@ id|ha
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
 r_if
 c_cond
 (paren
 op_logical_neg
 id|pkt
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_32bit_continue_io: **** FAILED ****&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_32bit_continue_io: **** FAILED ****&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 r_else
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_32bit_continue_io: exiting normally&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_32bit_continue_io: exiting normally&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
-macro_line|#endif /* QL1280_TARGET_MODE_SUPPORT */
+macro_line|#endif&t;&t;&t;&t;/* QL1280_TARGET_MODE_SUPPORT */
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                        Interrupt Service Routine.                        */
 multiline_comment|/****************************************************************************/
-multiline_comment|/****************************************************************************&n; *  qla1280_isr&n; *      Calls I/O done on command completion.&n; *&n; * Input:&n; *      ha           = adapter block pointer.&n; *      done_q_first = done queue first pointer.&n; *      done_q_last  = done queue last pointer.&n; *      INTR_LOCK must be already obtained.&n; ****************************************************************************/
-id|STATIC
+multiline_comment|/****************************************************************************&n; *  qla1280_isr&n; *      Calls I/O done on command completion.&n; *&n; * Input:&n; *      ha           = adapter block pointer.&n; *      done_q_first = done queue first pointer.&n; *      done_q_last  = done queue last pointer.&n; ****************************************************************************/
+r_static
 r_void
 DECL|function|qla1280_isr
 id|qla1280_isr
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
@@ -18487,7 +17514,8 @@ op_star
 id|done_q_last
 )paren
 (brace
-id|device_reg_t
+r_struct
+id|device_reg
 op_star
 id|reg
 op_assign
@@ -18500,6 +17528,8 @@ suffix:semicolon
 id|srb_t
 op_star
 id|sp
+op_assign
+l_int|0
 suffix:semicolon
 r_uint16
 id|mailbox
@@ -18514,11 +17544,39 @@ suffix:semicolon
 r_uint32
 id|index
 suffix:semicolon
+id|u16
+id|istatus
+suffix:semicolon
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_isr&quot;
 )paren
+suffix:semicolon
+id|istatus
+op_assign
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;istatus
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|istatus
+op_amp
+(paren
+id|RISC_INT
+op_or
+id|PCI_INT
+)paren
+)paren
+)paren
+r_return
 suffix:semicolon
 multiline_comment|/* Save mailbox register 5 */
 id|mailbox
@@ -18558,6 +17616,7 @@ id|BIT_0
 )paren
 (brace
 multiline_comment|/* Get mailbox data. */
+multiline_comment|/* dprintk(1, &quot;qla1280_isr: In Get mailbox data &bslash;n&quot;); */
 id|wptr
 op_assign
 op_amp
@@ -18678,34 +17737,19 @@ comma
 id|HC_CLR_RISC_INT
 )paren
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_5
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_isr: mailbox interrupt mailbox[0] = &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+l_int|5
+comma
+l_string|&quot;qla1280_isr: mailbox interrupt mailbox[0] = 0x%x&quot;
+comma
 id|mailbox
 (braket
 l_int|0
 )braket
-comma
-l_int|16
 )paren
 suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Handle asynchronous event */
 r_switch
 c_cond
@@ -18720,14 +17764,14 @@ r_case
 id|MBA_SCSI_COMPLETION
 suffix:colon
 multiline_comment|/* Response completion */
-macro_line|#ifdef QL_DEBUG_LEVEL_5
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_isr: mailbox response completion&bslash;n&bslash;r&quot;
+l_int|5
+comma
+l_string|&quot;qla1280_isr: mailbox SCSI response completion&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -18737,10 +17781,6 @@ id|ha-&gt;flags.online
 multiline_comment|/* Get outstanding command index. */
 id|index
 op_assign
-(paren
-r_uint32
-)paren
-(paren
 id|mailbox
 (braket
 l_int|2
@@ -18752,7 +17792,6 @@ id|mailbox
 (braket
 l_int|1
 )braket
-)paren
 suffix:semicolon
 multiline_comment|/* Validate handle. */
 r_if
@@ -18837,14 +17876,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;qla1280_isr: ISP invalid handle&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * If we get here we have a real problem!&n;&t;&t;&t;&t;&t; */
 id|printk
 c_func
 (paren
@@ -18864,14 +17896,6 @@ r_case
 id|MBA_BUS_RESET
 suffix:colon
 multiline_comment|/* SCSI Bus Reset */
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;qla1280_isr: asynchronous BUS_RESET&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|ha-&gt;flags.reset_marker
 op_assign
 id|TRUE
@@ -18894,85 +17918,28 @@ id|reset_marker
 op_assign
 id|TRUE
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;qla1280_isr(): index %i asynchronous &quot;
+l_string|&quot;BUS_RESET&bslash;n&quot;
+comma
+id|index
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|MBA_SYSTEM_ERR
 suffix:colon
 multiline_comment|/* System Error */
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;qla1280_isr: ISP System Error - mbx1=&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
-id|mailbox
-(braket
-l_int|1
-)braket
-comma
-l_int|16
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;, mbx2=&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
-id|mailbox
-(braket
-l_int|2
-)braket
-comma
-l_int|16
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;, mbx3=&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
-id|mailbox
-(braket
-l_int|3
-)braket
-comma
-l_int|16
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;qla1280: ISP System Error - mbx1=%xh, mbx2=%xh, mbx3=%xh&bslash;n&quot;
+l_string|&quot;qla1280: ISP System Error - mbx1=%xh, mbx2=%xh, &quot;
+l_string|&quot;mbx3=%xh&bslash;n&quot;
 comma
 id|mailbox
 (braket
@@ -19000,14 +17967,6 @@ r_case
 id|MBA_REQ_TRANSFER_ERR
 suffix:colon
 multiline_comment|/* Request Transfer Error */
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;qla1280_isr: ISP Request Transfer Error&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -19025,14 +17984,6 @@ r_case
 id|MBA_RSP_TRANSFER_ERR
 suffix:colon
 multiline_comment|/* Response Transfer Error */
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;qla1280_isr: ISP Response Transfer Error&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -19050,42 +18001,50 @@ r_case
 id|MBA_WAKEUP_THRES
 suffix:colon
 multiline_comment|/* Request Queue Wake-up */
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_isr: asynchronous WAKEUP_THRES&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_isr: asynchronous WAKEUP_THRES&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 r_case
 id|MBA_TIMEOUT_RESET
 suffix:colon
 multiline_comment|/* Execution Timeout Reset */
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_isr: asynchronous TIMEOUT_RESET&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_isr: asynchronous TIMEOUT_RESET&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 r_case
 id|MBA_DEVICE_RESET
 suffix:colon
 multiline_comment|/* Bus Device Reset */
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_isr: asynchronous BUS_DEVICE_RESET&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_isr: asynchronous BUS_DEVICE_RESET&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;qla1280_isr(): asynchronous &quot;
+l_string|&quot;BUS_DEVICE_RESET&bslash;n&quot;
+)paren
+suffix:semicolon
 id|ha-&gt;flags.reset_marker
 op_assign
 id|TRUE
@@ -19113,20 +18072,21 @@ suffix:semicolon
 r_case
 id|MBA_BUS_MODE_CHANGE
 suffix:colon
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_isr: asynchronous BUS_MODE_CHANGE&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_isr: asynchronous BUS_MODE_CHANGE&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 r_default
 suffix:colon
 (brace
 )brace
+multiline_comment|/* dprintk(1, &quot;qla1280_isr: default case of switch MB &bslash;n&quot;); */
 r_if
 c_cond
 (paren
@@ -19146,76 +18106,24 @@ id|mailbox
 l_int|0
 )braket
 suffix:semicolon
-id|ha-&gt;mailbox_out
-(braket
-l_int|0
-)braket
-op_assign
+id|memcpy
+c_func
+(paren
+(paren
+r_uint16
 op_star
-id|wptr
-op_increment
-suffix:semicolon
+)paren
 id|ha-&gt;mailbox_out
-(braket
-l_int|1
-)braket
-op_assign
-op_star
+comma
 id|wptr
-op_increment
-suffix:semicolon
-id|ha-&gt;mailbox_out
-(braket
-l_int|2
-)braket
-op_assign
+comma
+id|MAILBOX_REGISTER_COUNT
 op_star
-id|wptr
-op_increment
-suffix:semicolon
-id|ha-&gt;mailbox_out
-(braket
-l_int|3
-)braket
-op_assign
-op_star
-id|wptr
-op_increment
-suffix:semicolon
-id|ha-&gt;mailbox_out
-(braket
-l_int|4
-)braket
-op_assign
-op_star
-id|wptr
-op_increment
-suffix:semicolon
-id|ha-&gt;mailbox_out
-(braket
-l_int|5
-)braket
-op_assign
-op_star
-id|wptr
-op_increment
-suffix:semicolon
-id|ha-&gt;mailbox_out
-(braket
-l_int|6
-)braket
-op_assign
-op_star
-id|wptr
-op_increment
-suffix:semicolon
-id|ha-&gt;mailbox_out
-(braket
-l_int|7
-)braket
-op_assign
-op_star
-id|wptr
+r_sizeof
+(paren
+r_uint16
+)paren
+)paren
 suffix:semicolon
 id|ha-&gt;flags.mbox_int
 op_assign
@@ -19227,6 +18135,7 @@ suffix:semicolon
 )brace
 )brace
 r_else
+(brace
 id|WRT_REG_WORD
 c_func
 (paren
@@ -19236,14 +18145,17 @@ comma
 id|HC_CLR_RISC_INT
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    * Response ring&n;    */
+)brace
+multiline_comment|/*&n;&t; * Response ring - waiting for the mbox_busy flag here seems&n;&t; * unnecessary as the mailbox data has been copied to ha-&gt;mailbox_out&n;&t; * by the time we actually get here!&n;&t; */
 r_if
 c_cond
 (paren
 id|ha-&gt;flags.online
+macro_line|#if 0
 op_logical_and
 op_logical_neg
 id|ha-&gt;flags.mbox_busy
+macro_line|#endif
 )paren
 (brace
 r_if
@@ -19272,63 +18184,44 @@ id|pkt
 op_assign
 id|ha-&gt;response_ring_ptr
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_5
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_isr: ha-&gt;rsp_ring_index = &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+l_int|5
+comma
+l_string|&quot;qla1280_isr: ha-&gt;rsp_ring_index = 0x%x, &quot;
+l_string|&quot;mailbox[5] = 0x%x&bslash;n&quot;
+comma
 id|ha-&gt;rsp_ring_index
 comma
-l_int|16
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; mailbox[5] = &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|mailbox
 (braket
 l_int|5
 )braket
-comma
-l_int|16
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;&bslash;n&bslash;rqla1280_isr: response packet data&bslash;n&bslash;r&quot;
+l_int|5
+comma
+l_string|&quot;qla1280_isr: response packet data&bslash;n&quot;
 )paren
 suffix:semicolon
 id|qla1280_dump_buffer
 c_func
 (paren
+l_int|5
+comma
 (paren
-id|caddr_t
+r_char
+op_star
 )paren
 id|pkt
 comma
 id|RESPONSE_ENTRY_SIZE
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if defined(QL_DEBUG_LEVEL_2) &amp;&amp; !defined(QL_DEBUG_LEVEL_5)
 r_if
 c_cond
 (paren
@@ -19341,10 +18234,9 @@ r_if
 c_cond
 (paren
 (paren
-r_uint8
-)paren
-(paren
 id|pkt-&gt;scsi_status
+op_amp
+l_int|0xff
 )paren
 op_logical_or
 id|pkt-&gt;comp_status
@@ -19352,182 +18244,63 @@ op_logical_or
 id|pkt-&gt;entry_status
 )paren
 (brace
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;qla1280_isr: ha-&gt;rsp_ring_index = &quot;
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+l_int|2
+comma
+l_string|&quot;qla1280_isr: ha-&gt;rsp_ring_index = 0x%x&quot;
+l_string|&quot;mailbox[5] = 0x%x, comp_status = 0x%x, &quot;
+l_string|&quot;scsi_status = 0x%x&bslash;n&quot;
+comma
 id|ha-&gt;rsp_ring_index
 comma
-l_int|16
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; mailbox[5] = &quot;
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|mailbox
 (braket
 l_int|5
 )braket
 comma
-l_int|16
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r comp_status = &quot;
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|pkt-&gt;comp_status
 comma
-l_int|16
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;, &quot;
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; scsi_status = &quot;
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|pkt-&gt;scsi_status
-comma
-l_int|16
 )paren
 suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-)paren
-multiline_comment|/* qla1280_print(&n;                        &quot;&bslash;n&bslash;rqla1280_isr: response packet data&bslash;n&bslash;r&quot;);&n;                        qla1280_dump_buffer((caddr_t)pkt,&n;                        RESPONSE_ENTRY_SIZE); */
 )brace
 )brace
 r_else
 (brace
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_isr: ha-&gt;rsp_ring_index = &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+l_int|2
+comma
+l_string|&quot;qla1280_isr: ha-&gt;rsp_ring_index = 0x%x, &quot;
+l_string|&quot;mailbox[5] = 0x%x&bslash;n&quot;
+comma
 id|ha-&gt;rsp_ring_index
 comma
-l_int|16
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; mailbox[5] = &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|mailbox
 (braket
 l_int|5
 )braket
-comma
-l_int|16
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;&bslash;n&bslash;rqla1280_isr: response packet data&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_isr: response packet data&bslash;n&quot;
 )paren
 suffix:semicolon
 id|qla1280_dump_buffer
 c_func
 (paren
+l_int|2
+comma
 (paren
-id|caddr_t
+r_char
+op_star
 )paren
 id|pkt
 comma
@@ -19535,7 +18308,6 @@ id|RESPONSE_ENTRY_SIZE
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -19700,13 +18472,6 @@ comma
 id|ha-&gt;rsp_ring_index
 )paren
 suffix:semicolon
-multiline_comment|/* Release interrupt specific lock */
-id|QLA1280_INTR_UNLOCK
-c_func
-(paren
-id|ha
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -19769,13 +18534,6 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Acquire interrupt specific lock */
-id|QLA1280_INTR_LOCK
-c_func
-(paren
-id|ha
-)paren
-suffix:semicolon
 )brace
 macro_line|#endif
 )brace
@@ -19786,14 +18544,14 @@ id|ha-&gt;flags.isp_abort_needed
 op_assign
 id|TRUE
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
+id|dprintk
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;qla1280_isr: Response pointer Error&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 id|LEAVE
@@ -19804,13 +18562,14 @@ l_string|&quot;qla1280_isr&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  qla1280_rst_aen&n; *      Processes asynchronous reset.&n; *&n; * Input:&n; *      ha  = adapter block pointer.&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_rst_aen
 id|qla1280_rst_aen
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
@@ -19821,16 +18580,14 @@ id|nentry
 suffix:semicolon
 macro_line|#endif
 r_uint8
-id|b
+id|bus
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_rst_aen&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -19861,18 +18618,18 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|b
+id|bus
 op_assign
 l_int|0
 suffix:semicolon
-id|b
+id|bus
 OL
 id|ha-&gt;ports
 op_logical_and
 op_logical_neg
 id|ha-&gt;flags.reset_marker
 suffix:semicolon
-id|b
+id|bus
 op_increment
 )paren
 (brace
@@ -19881,7 +18638,7 @@ c_cond
 (paren
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|reset_marker
@@ -19889,7 +18646,7 @@ id|reset_marker
 (brace
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|reset_marker
@@ -19901,7 +18658,7 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
 l_int|0
 comma
@@ -19919,14 +18676,13 @@ id|ha-&gt;flags.reset_marker
 (brace
 macro_line|#if QL1280_TARGET_MODE_SUPPORT
 multiline_comment|/* Issue notify acknowledgement command. */
-id|bzero
+id|memset
 c_func
 (paren
-(paren
-id|caddr_t
-)paren
 op_amp
 id|nentry
+comma
+l_int|0
 comma
 r_sizeof
 (paren
@@ -19938,12 +18694,12 @@ id|nentry.initiator_id
 op_assign
 id|nentry.target_id
 op_assign
-id|b
+id|bus
 ques
 c_cond
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|id
@@ -19952,7 +18708,7 @@ id|BIT_7
 suffix:colon
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|id
@@ -19973,24 +18729,23 @@ multiline_comment|/* Asynchronous event notification */
 )brace
 )brace
 )brace
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 id|LEAVE
 c_func
 (paren
 l_string|&quot;qla1280_rst_aen&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 macro_line|#if QL1280_TARGET_MODE_SUPPORT
 multiline_comment|/*&n; *  qla1280_atio_entry&n; *      Processes received ISP accept target I/O entry.&n; *&n; * Input:&n; *      ha  = adapter block pointer.&n; *      pkt = entry pointer.&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_atio_entry
 id|qla1280_atio_entry
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
@@ -20032,14 +18787,14 @@ r_uint8
 op_star
 id|sense_ptr
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: entered&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_atio_entry: entered&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|t
 op_assign
 id|pkt-&gt;initiator_id
@@ -20089,28 +18844,29 @@ r_case
 l_int|7
 suffix:colon
 multiline_comment|/* Path invalid */
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: Path invalid&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_atio_entry: Path invalid&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 r_case
 l_int|0x14
 suffix:colon
 multiline_comment|/* Target Bus Phase Sequence Failure */
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: Target Bus Phase Sequence Failure&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_atio_entry: Target Bus Phase &quot;
+l_string|&quot;Sequence Failure&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -20119,16 +18875,13 @@ op_amp
 id|BIT_7
 )paren
 (brace
-id|BCOPY
+id|memcpy
 c_func
 (paren
-(paren
-id|caddr_t
-)paren
+id|sense_ptr
+comma
 op_amp
 id|pkt-&gt;sense_data
-comma
-id|sense_ptr
 comma
 id|TARGET_SENSE_SIZE
 )paren
@@ -20136,10 +18889,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|bzero
+id|memset
 c_func
 (paren
 id|sense_ptr
+comma
+l_int|0
 comma
 id|TARGET_SENSE_SIZE
 )paren
@@ -20185,16 +18940,11 @@ id|S_CKCON
 suffix:semicolon
 id|pkt-&gt;option_flags
 op_or_assign
-(paren
-r_uint32
-)paren
 id|OF_SSTS
 op_or
-(paren
-r_uint32
-)paren
 id|OF_NO_DATA
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,18)
 r_if
 c_cond
 (paren
@@ -20213,6 +18963,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_else
+macro_line|#endif
 id|qla1280_32bit_continue_io
 c_func
 (paren
@@ -20231,28 +18982,30 @@ r_case
 l_int|0x16
 suffix:colon
 multiline_comment|/* Requested Capability Not Available */
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: Target Bus Phase Sequence Failure&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_atio_entry: Target Bus Phase &quot;
+l_string|&quot;Sequence Failure&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 r_case
 l_int|0x17
 suffix:colon
 multiline_comment|/* Bus Device Reset Message Received */
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: Target Bus Phase Sequence Failure&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_atio_entry: Target Bus Phase &quot;
+l_string|&quot;Sequence Failure&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -20298,18 +19051,20 @@ l_int|0
 r_case
 id|SS_TEST
 suffix:colon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: SS_TEST&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_atio_entry: SS_TEST&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-id|bzero
+id|memset
 c_func
 (paren
 id|sense_ptr
+comma
+l_int|0
 comma
 id|TARGET_SENSE_SIZE
 )paren
@@ -20373,28 +19128,24 @@ suffix:semicolon
 id|pkt-&gt;option_flags
 op_or_assign
 (paren
-r_uint32
-)paren
 id|OF_SSTS
 op_or
-(paren
-r_uint32
-)paren
 id|OF_NO_DATA
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|SS_REQSEN
 suffix:colon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: SS_REQSEN&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_atio_entry: SS_REQSEN&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|phy_addr
 (braket
 l_int|0
@@ -20445,32 +19196,30 @@ suffix:semicolon
 id|pkt-&gt;option_flags
 op_or_assign
 (paren
-r_uint32
-)paren
 id|OF_SSTS
 op_or
-(paren
-r_uint32
-)paren
 id|OF_DATA_IN
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|SS_INQUIR
 suffix:colon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: SS_INQUIR&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_atio_entry: SS_INQUIR&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-id|bzero
+id|memset
 c_func
 (paren
 id|sense_ptr
+comma
+l_int|0
 comma
 id|TARGET_SENSE_SIZE
 )paren
@@ -20559,24 +19308,22 @@ suffix:semicolon
 id|pkt-&gt;option_flags
 op_or_assign
 (paren
-r_uint32
-)paren
 id|OF_SSTS
 op_or
-(paren
-r_uint32
-)paren
 id|OF_DATA_IN
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|SM_WRDB
 suffix:colon
-id|bzero
+id|memset
 c_func
 (paren
 id|sense_ptr
+comma
+l_int|0
 comma
 id|TARGET_SENSE_SIZE
 )paren
@@ -20676,14 +19423,15 @@ l_int|7
 r_case
 id|RW_BUF_HDATA
 suffix:colon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: SM_WRDB, RW_BUF_HDATA&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_atio_entry: SM_WRDB, &quot;
+l_string|&quot;RW_BUF_HDATA&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -20694,14 +19442,15 @@ op_plus
 l_int|4
 )paren
 (brace
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: SM_WRDB, length &gt; buffer size&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_atio_entry: SM_WRDB, &quot;
+l_string|&quot;length &gt; buffer size&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 op_star
 id|sense_ptr
 op_assign
@@ -20743,14 +19492,10 @@ suffix:semicolon
 id|pkt-&gt;option_flags
 op_or_assign
 (paren
-r_uint32
-)paren
 id|OF_SSTS
 op_or
-(paren
-r_uint32
-)paren
 id|OF_NO_DATA
+)paren
 suffix:semicolon
 id|len
 op_assign
@@ -20771,23 +19516,20 @@ suffix:semicolon
 id|pkt-&gt;option_flags
 op_or_assign
 (paren
-r_uint32
-)paren
 id|OF_SSTS
 op_or
-(paren
-r_uint32
-)paren
 id|OF_DATA_OUT
+)paren
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: Issuing SDI_TARMOD_WRCOMP&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_atio_entry: Issuing &quot;
+l_string|&quot;SDI_TARMOD_WRCOMP&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|sdi_xaen
 c_func
 (paren
@@ -20807,14 +19549,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: SM_WRDB, zero length&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_atio_entry: SM_WRDB, &quot;
+l_string|&quot;zero length&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pkt-&gt;scsi_status
 op_assign
 id|S_GOOD
@@ -20822,14 +19565,10 @@ suffix:semicolon
 id|pkt-&gt;option_flags
 op_or_assign
 (paren
-r_uint32
-)paren
 id|OF_SSTS
 op_or
-(paren
-r_uint32
-)paren
 id|OF_NO_DATA
+)paren
 suffix:semicolon
 )brace
 r_break
@@ -20837,14 +19576,15 @@ suffix:semicolon
 r_case
 id|RW_BUF_DATA
 suffix:colon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: SM_WRDB, RW_BUF_DATA&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_atio_entry: SM_WRDB, &quot;
+l_string|&quot;RW_BUF_DATA&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 op_star
 id|a64
 op_add_assign
@@ -20877,74 +19617,33 @@ op_star
 id|end_a64
 )paren
 (brace
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: SM_WRDB, RW_BUF_DATA BAD&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_atio_entry: SM_WRDB, &quot;
+l_string|&quot;RW_BUF_DATA BAD&bslash;n&quot;
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;buf_id=&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+l_int|2
+comma
+l_string|&quot;buf_id=0x%x, offset=0x%x, &quot;
+l_string|&quot;length=0x%x&bslash;n&quot;
+comma
 id|pkt-&gt;cdb
 (braket
 l_int|2
 )braket
 comma
-l_int|16
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;, offset=&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|offset
 comma
-l_int|16
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;, length=&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|len
-comma
-l_int|16
 )paren
 suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 op_star
 id|sense_ptr
 op_assign
@@ -20990,14 +19689,10 @@ suffix:semicolon
 id|pkt-&gt;option_flags
 op_or_assign
 (paren
-r_uint32
-)paren
 id|OF_SSTS
 op_or
-(paren
-r_uint32
-)paren
 id|OF_NO_DATA
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -21014,23 +19709,20 @@ suffix:semicolon
 id|pkt-&gt;option_flags
 op_or_assign
 (paren
-r_uint32
-)paren
 id|OF_SSTS
 op_or
-(paren
-r_uint32
-)paren
 id|OF_DATA_OUT
+)paren
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: Issuing SDI_TARMOD_WRCOMP&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_atio_entry: Issuing &quot;
+l_string|&quot;SDI_TARMOD_WRCOMP&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|sdi_xaen
 c_func
 (paren
@@ -21050,14 +19742,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: SM_WRDB, zero length&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_atio_entry: SM_WRDB, &quot;
+l_string|&quot;zero length&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pkt-&gt;scsi_status
 op_assign
 id|S_GOOD
@@ -21065,28 +19758,25 @@ suffix:semicolon
 id|pkt-&gt;option_flags
 op_or_assign
 (paren
-r_uint32
-)paren
 id|OF_SSTS
 op_or
-(paren
-r_uint32
-)paren
 id|OF_NO_DATA
+)paren
 suffix:semicolon
 )brace
 r_break
 suffix:semicolon
 r_default
 suffix:colon
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: SM_WRDB unknown mode&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_atio_entry: SM_WRDB &quot;
+l_string|&quot;unknown mode&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 op_star
 id|sense_ptr
 op_assign
@@ -21132,14 +19822,10 @@ suffix:semicolon
 id|pkt-&gt;option_flags
 op_or_assign
 (paren
-r_uint32
-)paren
 id|OF_SSTS
 op_or
-(paren
-r_uint32
-)paren
 id|OF_NO_DATA
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -21149,10 +19835,12 @@ suffix:semicolon
 r_case
 id|SM_RDDB
 suffix:colon
-id|bzero
+id|memset
 c_func
 (paren
 id|sense_ptr
+comma
+l_int|0
 comma
 id|TARGET_SENSE_SIZE
 )paren
@@ -21252,14 +19940,15 @@ l_int|7
 r_case
 id|RW_BUF_HDATA
 suffix:colon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: SM_RDDB, RW_BUF_HDATA&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_atio_entry: SM_RDDB, &quot;
+l_string|&quot;RW_BUF_HDATA&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -21279,13 +19968,12 @@ l_int|1
 )braket
 op_assign
 (paren
-r_uint8
-)paren
-(paren
 id|TARGET_DATA_SIZE
 op_rshift
 l_int|16
 )paren
+op_amp
+l_int|0xff
 suffix:semicolon
 id|ha-&gt;tbuf-&gt;hdr
 (braket
@@ -21293,23 +19981,21 @@ l_int|2
 )braket
 op_assign
 (paren
-r_uint8
-)paren
-(paren
 id|TARGET_DATA_SIZE
 op_rshift
 l_int|8
 )paren
+op_amp
+l_int|0xff
 suffix:semicolon
 id|ha-&gt;tbuf-&gt;hdr
 (braket
 l_int|3
 )braket
 op_assign
-(paren
-r_uint8
-)paren
 id|TARGET_DATA_SIZE
+op_amp
+l_int|0xff
 suffix:semicolon
 r_if
 c_cond
@@ -21333,26 +20019,23 @@ suffix:semicolon
 id|pkt-&gt;option_flags
 op_or_assign
 (paren
-r_uint32
-)paren
 id|OF_SSTS
 op_or
-(paren
-r_uint32
-)paren
 id|OF_DATA_IN
+)paren
 suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: SM_RDDB, zero length&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_atio_entry: SM_RDDB, &quot;
+l_string|&quot;zero length&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pkt-&gt;scsi_status
 op_assign
 id|S_GOOD
@@ -21360,14 +20043,10 @@ suffix:semicolon
 id|pkt-&gt;option_flags
 op_or_assign
 (paren
-r_uint32
-)paren
 id|OF_SSTS
 op_or
-(paren
-r_uint32
-)paren
 id|OF_NO_DATA
+)paren
 suffix:semicolon
 )brace
 r_break
@@ -21375,14 +20054,15 @@ suffix:semicolon
 r_case
 id|RW_BUF_DATA
 suffix:colon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: SM_RDDB, RW_BUF_DATA&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_atio_entry: SM_RDDB, &quot;
+l_string|&quot;RW_BUF_DATA&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 op_star
 id|a64
 op_add_assign
@@ -21407,57 +20087,29 @@ op_star
 id|end_a64
 )paren
 (brace
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: SM_RDDB, RW_BUF_DATA BAD&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_atio_entry: SM_RDDB, &quot;
+l_string|&quot;RW_BUF_DATA BAD&bslash;n&quot;
 )paren
 suffix:semicolon
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;buf_id=&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+l_int|2
+comma
+l_string|&quot;buf_id=0x%x, offset=0x%x&bslash;n&quot;
 id|pkt-&gt;cdb
 (braket
 l_int|2
 )braket
 comma
-l_int|16
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;, offset=&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|offset
-comma
-l_int|16
 )paren
 suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 op_star
 id|sense_ptr
 op_assign
@@ -21503,14 +20155,10 @@ suffix:semicolon
 id|pkt-&gt;option_flags
 op_or_assign
 (paren
-r_uint32
-)paren
 id|OF_SSTS
 op_or
-(paren
-r_uint32
-)paren
 id|OF_NO_DATA
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -21547,26 +20195,23 @@ suffix:semicolon
 id|pkt-&gt;option_flags
 op_or_assign
 (paren
-r_uint32
-)paren
 id|OF_SSTS
 op_or
-(paren
-r_uint32
-)paren
 id|OF_DATA_IN
+)paren
 suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: SM_RDDB, zero length&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_atio_entry: SM_RDDB, &quot;
+l_string|&quot;zero length&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pkt-&gt;scsi_status
 op_assign
 id|S_GOOD
@@ -21574,14 +20219,10 @@ suffix:semicolon
 id|pkt-&gt;option_flags
 op_or_assign
 (paren
-r_uint32
-)paren
 id|OF_SSTS
 op_or
-(paren
-r_uint32
-)paren
 id|OF_NO_DATA
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -21590,14 +20231,15 @@ suffix:semicolon
 r_case
 id|RW_BUF_DESC
 suffix:colon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: SM_RDDB, RW_BUF_DESC&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_atio_entry: SM_RDDB, &quot;
+l_string|&quot;RW_BUF_DESC&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -21663,13 +20305,12 @@ l_int|1
 )braket
 op_assign
 (paren
-r_uint8
-)paren
-(paren
 id|TARGET_DATA_SIZE
 op_rshift
 l_int|16
 )paren
+op_amp
+l_int|0xff
 suffix:semicolon
 id|ha-&gt;tbuf-&gt;hdr
 (braket
@@ -21677,23 +20318,21 @@ l_int|2
 )braket
 op_assign
 (paren
-r_uint8
-)paren
-(paren
 id|TARGET_DATA_SIZE
 op_rshift
 l_int|8
 )paren
+op_amp
+l_int|0xff
 suffix:semicolon
 id|ha-&gt;tbuf-&gt;hdr
 (braket
 l_int|3
 )braket
 op_assign
-(paren
-r_uint8
-)paren
 id|TARGET_DATA_SIZE
+op_amp
+l_int|0xff
 suffix:semicolon
 )brace
 id|pkt-&gt;scsi_status
@@ -21703,26 +20342,23 @@ suffix:semicolon
 id|pkt-&gt;option_flags
 op_or_assign
 (paren
-r_uint32
-)paren
 id|OF_SSTS
 op_or
-(paren
-r_uint32
-)paren
 id|OF_DATA_IN
+)paren
 suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: SM_RDDB, zero length&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_atio_entry: SM_RDDB,&quot;
+l_string|&quot; zero length&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pkt-&gt;scsi_status
 op_assign
 id|S_GOOD
@@ -21730,28 +20366,25 @@ suffix:semicolon
 id|pkt-&gt;option_flags
 op_or_assign
 (paren
-r_uint32
-)paren
 id|OF_SSTS
 op_or
-(paren
-r_uint32
-)paren
 id|OF_NO_DATA
+)paren
 suffix:semicolon
 )brace
 r_break
 suffix:semicolon
 r_default
 suffix:colon
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: SM_RDDB unknown mode&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_atio_entry: SM_RDDB &quot;
+l_string|&quot;unknown mode&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 op_star
 id|sense_ptr
 op_assign
@@ -21797,14 +20430,10 @@ suffix:semicolon
 id|pkt-&gt;option_flags
 op_or_assign
 (paren
-r_uint32
-)paren
 id|OF_SSTS
 op_or
-(paren
-r_uint32
-)paren
 id|OF_NO_DATA
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -21813,19 +20442,19 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: Unknown SCSI command&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_atio_entry: Unknown SCSI command&bslash;n&quot;
 )paren
 suffix:semicolon
 id|qla1280_dump_buffer
 c_func
 (paren
-(paren
-id|caddr_t
-)paren
+l_int|2
+comma
 op_amp
 id|pkt-&gt;cdb
 (braket
@@ -21835,11 +20464,12 @@ comma
 id|pkt-&gt;cdb_len
 )paren
 suffix:semicolon
-macro_line|#endif
-id|bzero
+id|memset
 c_func
 (paren
 id|sense_ptr
+comma
+l_int|0
 comma
 id|TARGET_SENSE_SIZE
 )paren
@@ -21889,18 +20519,15 @@ suffix:semicolon
 id|pkt-&gt;option_flags
 op_or_assign
 (paren
-r_uint32
-)paren
 id|OF_SSTS
 op_or
-(paren
-r_uint32
-)paren
 id|OF_NO_DATA
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,18)
 r_if
 c_cond
 (paren
@@ -21924,6 +20551,7 @@ id|phy_addr
 )paren
 suffix:semicolon
 r_else
+macro_line|#endif
 id|qla1280_32bit_continue_io
 c_func
 (paren
@@ -21948,23 +20576,24 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_atio_entry: exiting normally&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_atio_entry: exiting normally&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; *  qla1280_notify_entry&n; *      Processes received ISP immediate notify entry.&n; *&n; * Input:&n; *      ha  = adapter block pointer.&n; *      pkt = entry pointer.&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_notify_entry
 id|qla1280_notify_entry
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
@@ -21973,14 +20602,14 @@ op_star
 id|pkt
 )paren
 (brace
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_notify_entry: entered&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_notify_entry: entered&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Acknowledge immediate notify */
 id|qla1280_notify_ack
 c_func
@@ -21999,24 +20628,25 @@ comma
 id|pkt
 )paren
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_notify_entry: exiting normally&bslash;n&bslash;r&quot;
+l_int|3
+comma
+l_string|&quot;qla1280_notify_entry: exiting normally&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
-macro_line|#endif  /* QLA1280_TARGET_MODE_SUPPORT */
+macro_line|#endif&t;&t;&t;&t;/* QLA1280_TARGET_MODE_SUPPORT */
 multiline_comment|/*&n; *  qla1280_status_entry&n; *      Processes received ISP status entry.&n; *&n; * Input:&n; *      ha           = adapter block pointer.&n; *      pkt          = entry pointer.&n; *      done_q_first = done queue first pointer.&n; *      done_q_last  = done queue last pointer.&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_status_entry
 id|qla1280_status_entry
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
@@ -22035,17 +20665,16 @@ op_star
 id|done_q_last
 )paren
 (brace
-r_uint32
-id|b
+r_int
+r_int
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 suffix:semicolon
-r_uint8
+r_int
 id|sense_sz
-op_assign
-l_int|0
 suffix:semicolon
 id|srb_t
 op_star
@@ -22057,16 +20686,14 @@ id|q
 suffix:semicolon
 id|Scsi_Cmnd
 op_star
-id|cp
+id|cmd
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_status_entry&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Validate handle. */
 r_if
 c_cond
@@ -22101,33 +20728,33 @@ id|pkt-&gt;handle
 op_assign
 l_int|0
 suffix:semicolon
-id|cp
+id|cmd
 op_assign
 id|sp-&gt;cmd
 suffix:semicolon
 multiline_comment|/* Generate LU queue on cntrl, target, LUN */
-id|b
+id|bus
 op_assign
 id|SCSI_BUS_32
 c_func
 (paren
-id|cp
+id|cmd
 )paren
 suffix:semicolon
-id|t
+id|target
 op_assign
 id|SCSI_TCN_32
 c_func
 (paren
-id|cp
+id|cmd
 )paren
 suffix:semicolon
-id|l
+id|lun
 op_assign
 id|SCSI_LUN_32
 c_func
 (paren
-id|cp
+id|cmd
 )paren
 suffix:semicolon
 id|q
@@ -22137,11 +20764,11 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 )paren
 suffix:semicolon
 r_if
@@ -22152,111 +20779,21 @@ op_logical_or
 id|pkt-&gt;scsi_status
 )paren
 (brace
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;scsi: comp_status = &quot;
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+l_int|1
+comma
+l_string|&quot;scsi: comp_status = 0x%x, scsi_status = &quot;
+l_string|&quot;0x%x, handle = 0x%x&bslash;n&quot;
+comma
 id|pkt-&gt;comp_status
 comma
-l_int|16
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;, &quot;
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; scsi_status = &quot;
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|pkt-&gt;scsi_status
 comma
-l_int|16
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;, handle = &quot;
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|pkt-&gt;handle
-comma
-l_int|16
 )paren
 suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-)paren
 )brace
 multiline_comment|/* Target busy */
 r_if
@@ -22274,17 +20811,12 @@ id|SS_RESERVE_CONFLICT
 id|CMD_RESULT
 c_func
 (paren
-id|cp
+id|cmd
 )paren
 op_assign
-(paren
-r_int
-)paren
-(paren
 id|DID_BUS_BUSY
 op_lshift
 l_int|16
-)paren
 op_or
 (paren
 id|pkt-&gt;scsi_status
@@ -22299,7 +20831,7 @@ multiline_comment|/* Save ISP completion status */
 id|CMD_RESULT
 c_func
 (paren
-id|cp
+id|cmd
 )paren
 op_assign
 id|qla1280_return_status
@@ -22307,7 +20839,7 @@ c_func
 (paren
 id|pkt
 comma
-id|cp
+id|cmd
 )paren
 suffix:semicolon
 r_if
@@ -22318,18 +20850,6 @@ op_amp
 id|SS_CHECK_CONDITION
 )paren
 (brace
-id|BZERO
-c_func
-(paren
-id|cp-&gt;sense_buffer
-comma
-id|CMD_SNSLEN
-c_func
-(paren
-id|cp
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -22346,7 +20866,7 @@ OL
 id|CMD_SNSLEN
 c_func
 (paren
-id|cp
+id|cmd
 )paren
 )paren
 id|sense_sz
@@ -22354,138 +20874,86 @@ op_assign
 id|pkt-&gt;req_sense_length
 suffix:semicolon
 r_else
+multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; * Scsi_Cmnd-&gt;sense_buffer is&n;&t;&t;&t;&t;&t;&t; * 64 bytes, why only copy 63?&n;&t;&t;&t;&t;&t;&t; * This looks wrong! /Jes&n;&t;&t;&t;&t;&t;&t; */
 id|sense_sz
 op_assign
 id|CMD_SNSLEN
 c_func
 (paren
-id|cp
+id|cmd
 )paren
 op_minus
 l_int|1
 suffix:semicolon
-id|BCOPY
+id|memcpy
 c_func
 (paren
-(paren
-id|caddr_t
-)paren
+id|cmd-&gt;sense_buffer
+comma
 op_amp
 id|pkt-&gt;req_sense_data
-comma
-id|cp-&gt;sense_buffer
 comma
 id|sense_sz
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;qla1280_status_entry: Check condition Sense data, b&quot;
-)paren
+r_else
+id|sense_sz
+op_assign
+l_int|0
 suffix:semicolon
-)paren
-id|DEBUG
+id|memset
 c_func
 (paren
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
-id|b
+id|cmd-&gt;sense_buffer
+op_plus
+id|sense_sz
 comma
-l_int|10
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;t&quot;
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
-id|t
+l_int|0
 comma
-l_int|10
+r_sizeof
+(paren
+id|cmd-&gt;sense_buffer
+)paren
+op_minus
+id|sense_sz
 )paren
 suffix:semicolon
-)paren
-id|DEBUG
+id|dprintk
 c_func
 (paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;d&quot;
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
-id|l
+l_int|2
 comma
-l_int|10
+l_string|&quot;qla1280_status_entry: Check &quot;
+l_string|&quot;condition Sense data, b %i, t %i, &quot;
+l_string|&quot;l %i&bslash;n&quot;
+comma
+id|bus
+comma
+id|target
+comma
+id|lun
 )paren
 suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-)paren
-id|DEBUG
-c_func
-(paren
 r_if
+c_cond
 (paren
 id|sense_sz
 )paren
-)paren
-id|DEBUG
-c_func
-(paren
 id|qla1280_dump_buffer
 c_func
 (paren
-id|cp-&gt;sense_buffer
+l_int|2
+comma
+(paren
+r_char
+op_star
+)paren
+id|cmd-&gt;sense_buffer
 comma
 id|sense_sz
 )paren
 suffix:semicolon
-)paren
-macro_line|#endif
 )brace
 )brace
 multiline_comment|/* Place command on done queue. */
@@ -22502,14 +20970,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;qla1280_status_entry: ISP Invalid handle&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -22522,23 +20982,22 @@ op_assign
 id|TRUE
 suffix:semicolon
 )brace
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 id|LEAVE
 c_func
 (paren
 l_string|&quot;qla1280_status_entry&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; *  qla1280_error_entry&n; *      Processes error entry.&n; *&n; * Input:&n; *      ha           = adapter block pointer.&n; *      pkt          = entry pointer.&n; *      done_q_first = done queue first pointer.&n; *      done_q_last  = done queue last pointer.&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_error_entry
 id|qla1280_error_entry
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
@@ -22561,15 +21020,12 @@ id|srb_t
 op_star
 id|sp
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_error_entry&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_2
 r_if
 c_cond
 (paren
@@ -22577,10 +21033,12 @@ id|pkt-&gt;entry_status
 op_amp
 id|BIT_3
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_error_entry: BAD PAYLOAD flag error&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_error_entry: BAD PAYLOAD flag error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
@@ -22591,10 +21049,12 @@ id|pkt-&gt;entry_status
 op_amp
 id|BIT_2
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_error_entry: BAD HEADER flag error&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_error_entry: BAD HEADER flag error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
@@ -22605,20 +21065,23 @@ id|pkt-&gt;entry_status
 op_amp
 id|BIT_1
 )paren
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_error_entry: FULL flag error&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_error_entry: FULL flag error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_error_entry: UNKNOWN flag error&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_error_entry: UNKNOWN flag error&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Validate handle. */
 r_if
 c_cond
@@ -22674,9 +21137,6 @@ c_func
 id|sp-&gt;cmd
 )paren
 op_assign
-(paren
-r_int
-)paren
 id|DID_ERROR
 op_lshift
 l_int|16
@@ -22690,17 +21150,14 @@ id|pkt-&gt;entry_status
 op_amp
 id|BIT_1
 )paren
-multiline_comment|/* FULL flag */
 (brace
+multiline_comment|/* FULL flag */
 id|CMD_RESULT
 c_func
 (paren
 id|sp-&gt;cmd
 )paren
 op_assign
-(paren
-r_int
-)paren
 id|DID_BUS_BUSY
 op_lshift
 l_int|16
@@ -22715,9 +21172,6 @@ c_func
 id|sp-&gt;cmd
 )paren
 op_assign
-(paren
-r_int
-)paren
 id|DID_ERROR
 op_lshift
 l_int|16
@@ -22735,7 +21189,7 @@ id|done_q_last
 )paren
 suffix:semicolon
 )brace
-macro_line|#if  QLA1280_64BIT_SUPPORT
+macro_line|#ifdef QLA_64BIT_PTR
 r_else
 r_if
 c_cond
@@ -22745,14 +21199,6 @@ op_eq
 id|COMMAND_A64_TYPE
 )paren
 (brace
-macro_line|#ifdef QL_DEBUG_LEVEL_2
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;qla1280_error_entry: ISP Invalid handle&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -22766,41 +21212,35 @@ id|TRUE
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 id|LEAVE
 c_func
 (paren
 l_string|&quot;qla1280_error_entry&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; *  qla1280_abort_isp&n; *      Resets ISP and aborts all outstanding commands.&n; *&n; * Input:&n; *      ha           = adapter block pointer.&n; *&n; * Returns:&n; *      0 = success&n; */
-id|STATIC
-r_uint8
+r_static
+r_int
 DECL|function|qla1280_abort_isp
 id|qla1280_abort_isp
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
 (brace
-id|device_reg_t
+macro_line|#if 0
+r_struct
+id|device_reg
 op_star
 id|reg
 op_assign
 id|ha-&gt;iobase
 suffix:semicolon
-r_uint8
-id|status
-op_assign
-l_int|0
-suffix:semicolon
-r_uint16
-id|cnt
-suffix:semicolon
+macro_line|#endif
 id|srb_t
 op_star
 id|sp
@@ -22809,30 +21249,27 @@ id|scsi_lu_t
 op_star
 id|q
 suffix:semicolon
-r_uint32
-id|b
-comma
-id|t
-comma
-id|l
-suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,95)
 r_int
-r_int
-id|cpu_flags
+id|status
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef QL_DEBUG_LEVEL_3
+r_int
+id|cnt
+suffix:semicolon
+r_int
+id|bus
+comma
+id|target
+comma
+id|lun
+suffix:semicolon
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_abort_isp&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-id|DRIVER_LOCK
 id|ha-&gt;flags.isp_abort_needed
 op_assign
 id|FALSE
@@ -22851,13 +21288,10 @@ op_assign
 id|TRUE
 suffix:semicolon
 multiline_comment|/* Disable ISP interrupts. */
-id|WRT_REG_WORD
+id|qla1280_disable_intrs
 c_func
 (paren
-op_amp
-id|reg-&gt;ictrl
-comma
-l_int|0
+id|ha
 )paren
 suffix:semicolon
 multiline_comment|/* Dequeue all commands in outstanding command list. */
@@ -22897,7 +21331,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Generate LU queue on controller, target, LUN */
-id|b
+id|bus
 op_assign
 id|SCSI_BUS_32
 c_func
@@ -22905,7 +21339,7 @@ c_func
 id|sp-&gt;cmd
 )paren
 suffix:semicolon
-id|t
+id|target
 op_assign
 id|SCSI_TCN_32
 c_func
@@ -22913,7 +21347,7 @@ c_func
 id|sp-&gt;cmd
 )paren
 suffix:semicolon
-id|l
+id|lun
 op_assign
 id|SCSI_LUN_32
 c_func
@@ -22923,20 +21357,16 @@ id|sp-&gt;cmd
 suffix:semicolon
 id|q
 op_assign
-(paren
-id|scsi_lu_t
-op_star
-)paren
 id|LU_Q
 c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 )paren
 suffix:semicolon
 multiline_comment|/* Reset outstanding command count. */
@@ -22954,9 +21384,8 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Adjust watchdog timer for command. */
-multiline_comment|/* if (sp-&gt;flags &amp; SRB_WATCHDOG)&n;                sp-&gt;timeout += 2; */
+multiline_comment|/* if (sp-&gt;flags &amp; SRB_WATCHDOG)&n;&t;&t;&t;&t;   sp-&gt;timeout += 2; */
 multiline_comment|/* Place request back on top of device queue. */
-multiline_comment|/* sp-&gt;flags &amp;= ~(SRB_SENT | SRB_TIMEOUT); */
 id|sp-&gt;flags
 op_assign
 l_int|0
@@ -22976,7 +21405,6 @@ r_if
 c_cond
 (paren
 id|qla1280_isp_firmware
-c_func
 (paren
 id|ha
 )paren
@@ -23014,7 +21442,6 @@ id|status
 (brace
 multiline_comment|/* Setup adapter based on NVRAM parameters. */
 id|qla1280_nvram_config
-c_func
 (paren
 id|ha
 )paren
@@ -23038,15 +21465,15 @@ multiline_comment|/* Issue SCSI reset. */
 r_for
 c_loop
 (paren
-id|b
+id|bus
 op_assign
 l_int|0
 suffix:semicolon
-id|b
+id|bus
 OL
 id|ha-&gt;ports
 suffix:semicolon
-id|b
+id|bus
 op_increment
 )paren
 (brace
@@ -23055,7 +21482,7 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 )paren
 suffix:semicolon
 )brace
@@ -23069,21 +21496,21 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|b
+id|bus
 op_assign
 l_int|0
 suffix:semicolon
-id|b
+id|bus
 OL
 id|ha-&gt;ports
 suffix:semicolon
-id|b
+id|bus
 op_increment
 )paren
 (brace
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|reset_marker
@@ -23095,7 +21522,7 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
 l_int|0
 comma
@@ -23116,15 +21543,15 @@ multiline_comment|/* Enable host adapter target mode. */
 r_for
 c_loop
 (paren
-id|b
+id|bus
 op_assign
 l_int|0
 suffix:semicolon
-id|b
+id|bus
 OL
 id|ha-&gt;ports
 suffix:semicolon
-id|b
+id|bus
 op_increment
 )paren
 (brace
@@ -23140,7 +21567,7 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 )paren
 )paren
 )paren
@@ -23160,7 +21587,7 @@ id|cnt
 op_increment
 )paren
 (brace
-multiline_comment|/* qla1280_enable_lun(ha, b, cnt); */
+multiline_comment|/* qla1280_enable_lun(ha, bus, cnt); */
 id|qla1280_poll
 c_func
 (paren
@@ -23181,15 +21608,10 @@ id|status
 )paren
 (brace
 multiline_comment|/* Enable ISP interrupts. */
-id|WRT_REG_WORD
+id|qla1280_enable_intrs
 c_func
 (paren
-op_amp
-id|reg-&gt;ictrl
-comma
-id|ISP_EN_INT
-op_plus
-id|ISP_EN_RISC
+id|ha
 )paren
 suffix:semicolon
 id|ha-&gt;flags.abort_isp_active
@@ -23232,37 +21654,34 @@ c_func
 id|ha
 )paren
 suffix:semicolon
-macro_line|#if defined(QL_DEBUG_LEVEL_2) || defined(QL_DEBUG_LEVEL_3)
-id|qla1280_print
+id|dprintk
 c_func
 (paren
-l_string|&quot;qla1280_abort_isp: **** FAILED ****&bslash;n&bslash;r&quot;
+l_int|2
+comma
+l_string|&quot;qla1280_abort_isp: **** FAILED ****&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-r_else
 id|LEAVE
 c_func
 (paren
 l_string|&quot;qla1280_abort_isp&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-id|DRIVER_UNLOCK
 r_return
 id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  qla1280_restart_queues&n; *      Restart all device queues.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_restart_queues
 id|qla1280_restart_queues
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
@@ -23271,80 +21690,74 @@ id|scsi_lu_t
 op_star
 id|q
 suffix:semicolon
-r_uint32
-id|b
+r_int
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 suffix:semicolon
-macro_line|#ifdef QL_DEBUG_LEVEL_3
 id|ENTER
 c_func
 (paren
 l_string|&quot;qla1280_restart_queues&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_for
 c_loop
 (paren
-id|b
+id|bus
 op_assign
 l_int|0
 suffix:semicolon
-id|b
+id|bus
 OL
 id|ha-&gt;ports
 suffix:semicolon
-id|b
+id|bus
 op_increment
 )paren
 r_for
 c_loop
 (paren
-id|t
+id|target
 op_assign
 l_int|0
 suffix:semicolon
-id|t
+id|target
 OL
 id|MAX_TARGETS
 suffix:semicolon
-id|t
+id|target
 op_increment
 )paren
 r_for
 c_loop
 (paren
-id|l
+id|lun
 op_assign
 l_int|0
 suffix:semicolon
-id|l
+id|lun
 OL
 id|MAX_LUNS
 suffix:semicolon
-id|l
+id|lun
 op_increment
 )paren
 (brace
 id|q
 op_assign
-(paren
-id|scsi_lu_t
-op_star
-)paren
 id|LU_Q
 c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 )paren
 suffix:semicolon
 r_if
@@ -23355,13 +21768,6 @@ op_ne
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* Acquire LU queue specific lock */
-id|QLA1280_SCSILU_LOCK
-c_func
-(paren
-id|q
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -23374,47 +21780,40 @@ id|ha
 comma
 id|q
 comma
-id|b
-)paren
-suffix:semicolon
-r_else
-multiline_comment|/* Release LU queue specific lock */
-id|QLA1280_SCSILU_UNLOCK
-c_func
-(paren
-id|q
+id|bus
 )paren
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef QL_DEBUG_LEVEL_3
-id|qla1280_print
+id|dprintk
 c_func
 (paren
+l_int|3
+comma
 l_string|&quot;qla1280_restart_queues: exiting normally&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; *  qla1280_abort_queue_single&n; *      Abort all commands on a device queues.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; */
-DECL|function|qla1280_abort_queue_single
-id|STATIC
+r_static
 r_void
+DECL|function|qla1280_abort_queue_single
 id|qla1280_abort_queue_single
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
-r_uint32
-id|b
+r_int
+id|bus
 comma
-r_uint32
-id|t
+r_int
+id|target
 comma
-r_uint32
-id|l
+r_int
+id|lun
 comma
 r_uint32
 id|stat
@@ -23439,20 +21838,16 @@ l_string|&quot;qla1280_abort_queue_single&quot;
 suffix:semicolon
 id|q
 op_assign
-(paren
-id|scsi_lu_t
-op_star
-)paren
 id|LU_Q
 c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 )paren
 suffix:semicolon
 r_if
@@ -23463,13 +21858,6 @@ op_ne
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* Acquire LU queue specific lock */
-id|QLA1280_SCSILU_LOCK
-c_func
-(paren
-id|q
-)paren
-suffix:semicolon
 id|sp
 op_assign
 id|q-&gt;q_first
@@ -23479,12 +21867,6 @@ op_assign
 id|q-&gt;q_last
 op_assign
 l_int|NULL
-suffix:semicolon
-id|QLA1280_SCSILU_UNLOCK
-c_func
-(paren
-id|q
-)paren
 suffix:semicolon
 r_while
 c_loop
@@ -23509,19 +21891,9 @@ c_func
 (paren
 id|sp
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|ha-&gt;done_q_first
 comma
-(paren
-id|srb_t
-op_star
-op_star
-)paren
 op_amp
 id|ha-&gt;done_q_last
 )paren
@@ -23540,23 +21912,24 @@ l_string|&quot;qla1280_abort_queue_single&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  qla1280_abort_queues&n; *      Abort all commands on device queues.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_abort_queues
 id|qla1280_abort_queues
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
 (brace
 r_uint32
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 suffix:semicolon
 id|ENTER
 c_func
@@ -23567,43 +21940,43 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|b
+id|bus
 op_assign
 l_int|0
 suffix:semicolon
-id|b
+id|bus
 OL
 id|ha-&gt;ports
 suffix:semicolon
-id|b
+id|bus
 op_increment
 )paren
 r_for
 c_loop
 (paren
-id|t
+id|target
 op_assign
 l_int|0
 suffix:semicolon
-id|t
+id|target
 OL
 id|MAX_TARGETS
 suffix:semicolon
-id|t
+id|target
 op_increment
 )paren
 r_for
 c_loop
 (paren
-id|l
+id|lun
 op_assign
 l_int|0
 suffix:semicolon
-id|l
+id|lun
 OL
 id|MAX_LUNS
 suffix:semicolon
-id|l
+id|lun
 op_increment
 )paren
 id|qla1280_abort_queue_single
@@ -23611,11 +21984,11 @@ c_func
 (paren
 id|ha
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 comma
 id|DID_RESET
 )paren
@@ -23628,28 +22001,59 @@ l_string|&quot;qla1280_abort_queues&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * qla1280_debounce_register&n; *      Debounce register.&n; *&n; * Input:&n; *      port = register address.&n; *&n; * Returns:&n; *      register value.&n; */
-id|STATIC
-r_uint16
+r_static
+id|u16
 DECL|function|qla1280_debounce_register
 id|qla1280_debounce_register
 c_func
 (paren
 r_volatile
-r_uint16
+id|u16
 op_star
 id|addr
 )paren
 (brace
 r_volatile
-r_uint16
+id|u16
 id|ret
 suffix:semicolon
 r_volatile
-r_uint16
+id|u16
 id|ret2
+suffix:semicolon
+id|ret
+op_assign
+id|RD_REG_WORD
+c_func
+(paren
+id|addr
+)paren
+suffix:semicolon
+id|ret2
+op_assign
+id|RD_REG_WORD
+c_func
+(paren
+id|addr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+id|ret2
+)paren
+r_return
+id|ret
 suffix:semicolon
 r_do
 (brace
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|RD_REG_WORD
@@ -23679,7 +22083,17 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Declarations for load module&n; */
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,0)
+macro_line|#ifdef MODULE
+DECL|variable|driver_template
+id|Scsi_Host_Template
+id|driver_template
+op_assign
+id|QLA1280_LINUX_TEMPLATE
+suffix:semicolon
+macro_line|#include &quot;scsi_module.c&quot;
+macro_line|#endif
+macro_line|#else&t;&t;&t;&t;/* new kernel scsi initialization scheme */
 DECL|variable|driver_template
 r_static
 id|Scsi_Host_Template
@@ -23688,23 +22102,26 @@ op_assign
 id|QLA1280_LINUX_TEMPLATE
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
+macro_line|#endif
 multiline_comment|/************************************************************************&n; * qla1280_check_for_dead_scsi_bus                                      *&n; *                                                                      *&n; *    This routine checks for a dead SCSI bus                           *&n; ************************************************************************/
 DECL|macro|SET_SXP_BANK
 mdefine_line|#define SET_SXP_BANK            0x0100
 DECL|macro|SCSI_PHASE_INVALID
 mdefine_line|#define SCSI_PHASE_INVALID      0x87FF
-DECL|function|qla1280_check_for_dead_scsi_bus
+r_static
 r_int
+DECL|function|qla1280_check_for_dead_scsi_bus
 id|qla1280_check_for_dead_scsi_bus
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
-id|srb_t
-op_star
-id|sp
+r_int
+r_int
+id|bus
 )paren
 (brace
 r_uint16
@@ -23712,25 +22129,28 @@ id|config_reg
 comma
 id|scsi_control
 suffix:semicolon
-id|device_reg_t
+r_struct
+id|device_reg
 op_star
 id|reg
 op_assign
 id|ha-&gt;iobase
 suffix:semicolon
-r_uint32
-id|b
+macro_line|#if 0
+r_int
+r_int
+id|bus
 suffix:semicolon
 id|Scsi_Cmnd
 op_star
 id|cp
 suffix:semicolon
-multiline_comment|/*&n;     * If SCSI Bus is Dead because of bad termination,&n;     * we will return a status of Selection timeout.&n;     */
+multiline_comment|/*&n;&t; * If SCSI Bus is Dead because of bad termination,&n;&t; * we will return a status of Selection timeout.&n;&t; */
 id|cp
 op_assign
 id|sp-&gt;cmd
 suffix:semicolon
-id|b
+id|bus
 op_assign
 id|SCSI_BUS_32
 c_func
@@ -23738,12 +22158,13 @@ c_func
 id|cp
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|scsi_bus_dead
@@ -23811,6 +22232,16 @@ op_eq
 id|SCSI_PHASE_INVALID
 )paren
 (brace
+id|ha-&gt;bus_settings
+(braket
+id|bus
+)braket
+dot
+id|scsi_bus_dead
+op_assign
+id|TRUE
+suffix:semicolon
+macro_line|#if 0
 id|CMD_RESULT
 c_func
 (paren
@@ -23827,38 +22258,9 @@ c_func
 id|cp
 )paren
 op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* ha-&gt;actthreads--; */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,95)
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
-(paren
-op_star
-(paren
-id|cp
-)paren
-op_member_access_from_pointer
-id|scsi_done
-)paren
-(paren
-id|cp
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#else
 (paren
 op_star
 (paren
@@ -23881,7 +22283,7 @@ r_else
 (brace
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|scsi_bus_dead
@@ -23890,7 +22292,7 @@ id|FALSE
 suffix:semicolon
 id|ha-&gt;bus_settings
 (braket
-id|b
+id|bus
 )braket
 dot
 id|failed_reset_count
@@ -23904,241 +22306,25 @@ id|FALSE
 suffix:semicolon
 multiline_comment|/* bus is not dead */
 )brace
-id|STATIC
-r_uint8
-DECL|function|qla12160_set_target_parameters
-id|qla12160_set_target_parameters
-c_func
-(paren
-id|scsi_qla_host_t
-op_star
-id|ha
-comma
-r_uint32
-id|b
-comma
-r_uint32
-id|t
-comma
-r_uint32
-id|l
-comma
-id|nvram160_t
-op_star
-id|nv
-)paren
-(brace
-r_uint16
-id|mb
-(braket
-id|MAILBOX_REGISTER_COUNT
-)braket
-suffix:semicolon
-multiline_comment|/* Set Target Parameters. */
-id|mb
-(braket
-l_int|0
-)braket
-op_assign
-id|MBC_SET_TARGET_PARAMETERS
-suffix:semicolon
-id|mb
-(braket
-l_int|1
-)braket
-op_assign
-(paren
-r_uint16
-)paren
-(paren
-id|b
-ques
-c_cond
-id|t
-op_or
-id|BIT_7
-suffix:colon
-id|t
-)paren
-suffix:semicolon
-id|mb
-(braket
-l_int|1
-)braket
-op_lshift_assign
-l_int|8
-suffix:semicolon
-id|mb
-(braket
-l_int|2
-)braket
-op_assign
-id|nv-&gt;bus
-(braket
-id|b
-)braket
-dot
-id|target
-(braket
-id|t
-)braket
-dot
-id|parameter.c
-op_lshift
-l_int|8
-suffix:semicolon
-id|mb
-(braket
-l_int|2
-)braket
-op_or_assign
-id|TP_AUTO_REQUEST_SENSE
-suffix:semicolon
-id|mb
-(braket
-l_int|2
-)braket
-op_and_assign
-op_complement
-id|TP_STOP_QUEUE
-suffix:semicolon
-id|mb
-(braket
-l_int|2
-)braket
-op_or_assign
-(paren
-id|nv-&gt;bus
-(braket
-id|b
-)braket
-dot
-id|target
-(braket
-id|t
-)braket
-dot
-id|flags.enable_ppr
-op_lshift
-l_int|5
-)paren
-suffix:semicolon
-id|mb
-(braket
-l_int|3
-)braket
-op_assign
-id|nv-&gt;bus
-(braket
-id|b
-)braket
-dot
-id|target
-(braket
-id|t
-)braket
-dot
-id|flags.sync_offset
-op_lshift
-l_int|8
-suffix:semicolon
-id|mb
-(braket
-l_int|3
-)braket
-op_or_assign
-id|nv-&gt;bus
-(braket
-id|b
-)braket
-dot
-id|target
-(braket
-id|t
-)braket
-dot
-id|sync_period
-suffix:semicolon
-id|mb
-(braket
-l_int|6
-)braket
-op_assign
-id|nv-&gt;bus
-(braket
-id|b
-)braket
-dot
-id|target
-(braket
-id|t
-)braket
-dot
-id|flags.ppr_options
-op_lshift
-l_int|8
-suffix:semicolon
-id|mb
-(braket
-l_int|6
-)braket
-op_or_assign
-id|nv-&gt;bus
-(braket
-id|b
-)braket
-dot
-id|target
-(braket
-id|t
-)braket
-dot
-id|flags.ppr_bus_width
-suffix:semicolon
-r_return
-(paren
-id|qla1280_mailbox_command
-c_func
-(paren
-id|ha
-comma
-id|BIT_6
-op_or
-id|BIT_3
-op_or
-id|BIT_2
-op_or
-id|BIT_1
-op_or
-id|BIT_0
-comma
-op_amp
-id|mb
-(braket
-l_int|0
-)braket
-)paren
-)paren
-suffix:semicolon
-)brace
-id|STATIC
+r_static
 r_void
 DECL|function|qla12160_get_target_parameters
 id|qla12160_get_target_parameters
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 comma
 r_uint32
-id|b
+id|bus
 comma
 r_uint32
-id|t
+id|target
 comma
 r_uint32
-id|l
+id|lun
 )paren
 (brace
 r_uint16
@@ -24163,14 +22349,14 @@ op_assign
 r_uint16
 )paren
 (paren
-id|b
+id|bus
 ques
 c_cond
-id|t
+id|target
 op_or
 id|BIT_7
 suffix:colon
-id|t
+id|target
 )paren
 suffix:semicolon
 id|mb
@@ -24217,18 +22403,16 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;scsi(%d:%d:%d:%d): Synchronous tranfer at period %d, offset %d. &bslash;n&quot;
+l_string|&quot;scsi(%ld:%d:%d:%d): Synchronous transfer at period &quot;
+l_string|&quot;%d, offset %d. &bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|ha-&gt;host_no
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 comma
 (paren
 id|mb
@@ -24277,49 +22461,54 @@ l_int|0xff
 op_ge
 l_int|2
 )paren
+(brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;scsi(%d:%d:%d:%d): Dual Transition enabled.&bslash;n&quot;
+l_string|&quot;scsi(%ld:%d:%d:%d): Dual Transition enabled.&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|ha-&gt;host_no
 comma
-id|b
+id|bus
 comma
-id|t
+id|target
 comma
-id|l
+id|lun
 )paren
 suffix:semicolon
+)brace
 )brace
 macro_line|#ifdef QL_DEBUG_ROUTINES
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                         Driver Debug Functions.                          */
 multiline_comment|/****************************************************************************/
 multiline_comment|/*&n; *  Get byte from I/O port&n; */
-id|STATIC
-r_uint8
+r_static
+id|u8
 DECL|function|qla1280_getbyte
 id|qla1280_getbyte
-c_func
 (paren
-r_uint8
+id|u8
 op_star
 id|port
 )paren
 (brace
-r_uint8
+id|u8
 id|ret
 suffix:semicolon
 macro_line|#if MEMORY_MAPPED_IO
 id|ret
 op_assign
-op_star
+id|readb
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
 id|port
+)paren
 suffix:semicolon
 macro_line|#else
 id|ret
@@ -24328,6 +22517,7 @@ id|inb
 c_func
 (paren
 (paren
+r_int
 r_int
 )paren
 id|port
@@ -24339,71 +22529,44 @@ c_cond
 (paren
 id|ql_debug_print
 )paren
-(brace
-id|qla1280_print
+id|printk
 c_func
 (paren
-l_string|&quot;qla1280_getbyte: address = &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+id|KERN_DEBUG
+l_string|&quot;qla1280_getbyte: address = 0x%p, data = 0x%x&quot;
+comma
 id|port
 comma
-l_int|16
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; data = 0x&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|ret
-comma
-l_int|16
 )paren
 suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-)brace
 r_return
 id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Get word from I/O port&n; */
-id|STATIC
-r_uint16
+r_static
+id|u16
 DECL|function|qla1280_getword
 id|qla1280_getword
-c_func
 (paren
-r_uint16
+id|u16
 op_star
 id|port
 )paren
 (brace
-r_uint16
+id|u16
 id|ret
 suffix:semicolon
 macro_line|#if MEMORY_MAPPED_IO
 id|ret
 op_assign
-op_star
+id|readw
+c_func
+(paren
+r_int
+r_int
+)paren
 id|port
 suffix:semicolon
 macro_line|#else
@@ -24414,6 +22577,7 @@ c_func
 (paren
 (paren
 r_int
+r_int
 )paren
 id|port
 )paren
@@ -24424,72 +22588,47 @@ c_cond
 (paren
 id|ql_debug_print
 )paren
-(brace
-id|qla1280_print
+id|printk
 c_func
 (paren
-l_string|&quot;qla1280_getword: address = &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+id|KERN_DEBUG
+l_string|&quot;qla1280_getbyte: address = 0x%p, data = 0x%x&quot;
+comma
 id|port
 comma
-l_int|16
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; data = 0x&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|ret
-comma
-l_int|16
 )paren
 suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-)brace
 r_return
 id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Get double word from I/O port&n; */
-id|STATIC
-r_uint32
+r_static
+id|u32
 DECL|function|qla1280_getdword
 id|qla1280_getdword
-c_func
 (paren
-r_uint32
+id|u32
 op_star
 id|port
 )paren
 (brace
-r_uint32
+id|u32
 id|ret
 suffix:semicolon
 macro_line|#if MEMORY_MAPPED_IO
 id|ret
 op_assign
-op_star
+id|readl
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
 id|port
+)paren
 suffix:semicolon
 macro_line|#else
 id|ret
@@ -24499,6 +22638,7 @@ c_func
 (paren
 (paren
 r_int
+r_int
 )paren
 id|port
 )paren
@@ -24509,72 +22649,48 @@ c_cond
 (paren
 id|ql_debug_print
 )paren
-(brace
-id|qla1280_print
+id|printk
 c_func
 (paren
-l_string|&quot;qla1280_getdword: address = &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+id|KERN_DEBUG
+l_string|&quot;qla1280_getbyte: address = 0x%p, data = 0x%x&quot;
+comma
 id|port
 comma
-l_int|16
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; data = 0x&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|ret
-comma
-l_int|16
 )paren
 suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-)brace
 r_return
 id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Send byte to I/O port&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_putbyte
 id|qla1280_putbyte
 c_func
 (paren
-r_uint8
+id|u8
 op_star
 id|port
 comma
-r_uint8
+id|u8
 id|data
 )paren
 (brace
 macro_line|#if MEMORY_MAPPED_IO
-op_star
-id|port
-op_assign
+id|writeb
+c_func
+(paren
 id|data
+comma
+(paren
+r_int
+r_int
+)paren
+id|port
+)paren
 suffix:semicolon
 macro_line|#else
 id|outb
@@ -24584,6 +22700,7 @@ id|data
 comma
 (paren
 r_int
+r_int
 )paren
 id|port
 )paren
@@ -24594,78 +22711,41 @@ c_cond
 (paren
 id|ql_debug_print
 )paren
-(brace
-id|qla1280_print
+id|printk
 c_func
 (paren
-l_string|&quot;qla1280_putbyte: address = &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+id|KERN_DEBUG
+l_string|&quot;qla1280_getbyte: address = 0x%p, data = 0x%x&quot;
+comma
 id|port
 comma
-l_int|16
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; data = 0x&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|data
-comma
-l_int|16
 )paren
 suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; *  Send word to I/O port&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_putword
 id|qla1280_putword
 c_func
 (paren
-r_uint16
+id|u16
 op_star
 id|port
 comma
-r_uint16
+id|u16
 id|data
 )paren
 (brace
 macro_line|#if MEMORY_MAPPED_IO
-op_star
-id|port
-op_assign
-id|data
-suffix:semicolon
-macro_line|#else
-macro_line|#ifdef _LINUX_IOPORTS
-id|outw
+id|writew
 c_func
 (paren
 id|data
 comma
 (paren
+r_int
 r_int
 )paren
 id|port
@@ -24675,93 +22755,56 @@ macro_line|#else
 id|outw
 c_func
 (paren
+id|data
+comma
 (paren
+r_int
 r_int
 )paren
 id|port
-comma
-id|data
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 r_if
 c_cond
 (paren
 id|ql_debug_print
 )paren
-(brace
-id|qla1280_print
+id|printk
 c_func
 (paren
-l_string|&quot;qla1280_putword: address = &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+id|KERN_DEBUG
+l_string|&quot;qla1280_getbyte: address = 0x%p, data = 0x%x&quot;
+comma
 id|port
 comma
-l_int|16
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; data = 0x&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|data
-comma
-l_int|16
 )paren
 suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; *  Send double word to I/O port&n; */
-id|STATIC
+r_static
 r_void
 DECL|function|qla1280_putdword
 id|qla1280_putdword
 c_func
 (paren
-r_uint32
+id|u32
 op_star
 id|port
 comma
-r_uint32
+id|u32
 id|data
 )paren
 (brace
 macro_line|#if MEMORY_MAPPED_IO
-op_star
-id|port
-op_assign
-id|data
-suffix:semicolon
-macro_line|#else
-macro_line|#ifdef _LINUX_IOPORTS
-id|outl
+id|writel
 c_func
 (paren
 id|data
 comma
 (paren
+r_int
 r_int
 )paren
 id|port
@@ -24771,65 +22814,35 @@ macro_line|#else
 id|outl
 c_func
 (paren
+id|data
+comma
 (paren
+r_int
 r_int
 )paren
 id|port
-comma
-id|data
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 r_if
 c_cond
 (paren
 id|ql_debug_print
 )paren
-(brace
-id|qla1280_print
+id|printk
 c_func
 (paren
-l_string|&quot;qla1280_putdword: address = &quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
+id|KERN_DEBUG
+l_string|&quot;qla1280_getbyte: address = 0x%p, data = 0x%x&quot;
+comma
 id|port
 comma
-l_int|16
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot; data = 0x&quot;
-)paren
-suffix:semicolon
-id|qla1280_output_number
-c_func
-(paren
-(paren
-r_uint32
-)paren
 id|data
-comma
-l_int|16
 )paren
 suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;r&quot;
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Dummy function to prevent warnings for&n; * declared and unused debug functions&n; */
+r_static
 r_void
 DECL|function|qla1280_debug
 id|qla1280_debug
@@ -24881,525 +22894,24 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Out character to COM2 port.&n; *      PORT must be at standard address for COM2 = 0x2F8,&n; *      or COM1 = 0x3F8&n; */
-DECL|macro|OUTB
-mdefine_line|#define OUTB(addr,data)   outb((data),(addr))
-id|STATIC
+r_static
 r_void
-DECL|function|qla1280_putc
-id|qla1280_putc
+DECL|function|__qla1280_dump_buffer
+id|__qla1280_dump_buffer
 c_func
 (paren
-r_uint8
-id|c
-)paren
-(brace
-macro_line|#ifdef QL_DEBUG_CONSOLE
-id|printk
-c_func
-(paren
-l_string|&quot;%c&quot;
-comma
-id|c
-)paren
-suffix:semicolon
-macro_line|#else
-r_int
-id|com_addr
-op_assign
-l_int|0x2f8
-suffix:semicolon
-r_int
-id|hardware_flow_control
-op_assign
-l_int|1
-suffix:semicolon
-r_int
-id|software_flow_control
-op_assign
-l_int|0
-suffix:semicolon
-r_uint8
-id|data
-suffix:semicolon
-multiline_comment|/* Wait for transmitter holding and shift registers for empty. */
-r_do
-(brace
-id|data
-op_assign
-id|inb
-c_func
-(paren
-id|com_addr
-op_plus
-l_int|5
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-op_logical_neg
-(paren
-id|data
-op_amp
-id|BIT_6
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;    * Set BAUD rate for COM2 to 19200 (0x6)&n;    */
-multiline_comment|/* Select rate divisor. */
-id|OUTB
-c_func
-(paren
-id|com_addr
-op_plus
-l_int|3
-comma
-l_int|0x83
-)paren
-suffix:semicolon
-multiline_comment|/* BAUD rate divisor LSB. */
-id|OUTB
-c_func
-(paren
-id|com_addr
-comma
-l_int|0xc
-)paren
-suffix:semicolon
-multiline_comment|/* 0xC = 9600 baud */
-multiline_comment|/* BAUD rate divisor MSB. */
-id|OUTB
-c_func
-(paren
-id|com_addr
-op_plus
-l_int|1
-comma
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* Set No parity, 8 bits, 1 stop bit and&n;    select interrupt enable register. */
-id|OUTB
-c_func
-(paren
-id|com_addr
-op_plus
-l_int|3
-comma
-l_int|3
-)paren
-suffix:semicolon
-multiline_comment|/* Disable interrupts. */
-id|OUTB
-c_func
-(paren
-id|com_addr
-op_plus
-l_int|1
-comma
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* Set data terminal ready and request to send */
-id|OUTB
-c_func
-(paren
-id|com_addr
-op_plus
-l_int|4
-comma
-l_int|3
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hardware_flow_control
-)paren
-(brace
-multiline_comment|/* Wait for clear-to-send and data-set-ready */
-r_do
-(brace
-id|data
-op_assign
-id|inb
-c_func
-(paren
-id|com_addr
-op_plus
-l_int|6
-)paren
-op_amp
-(paren
-id|BIT_5
-op_plus
-id|BIT_4
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|data
-op_ne
-(paren
-id|BIT_5
-op_plus
-id|BIT_4
-)paren
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|software_flow_control
-)paren
-(brace
-multiline_comment|/* Test for data ready. */
-id|data
-op_assign
-id|inb
-c_func
-(paren
-id|com_addr
-op_plus
-l_int|5
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|data
-op_amp
-id|BIT_0
-)paren
-(brace
-multiline_comment|/* If XOFF */
-id|data
-op_assign
-id|inb
-c_func
-(paren
-id|com_addr
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|data
-op_eq
-l_char|&squot;&bslash;023&squot;
-)paren
-(brace
-multiline_comment|/* Wait for XON */
-r_do
-(brace
-multiline_comment|/* Wait for char */
-r_do
-(brace
-id|data
-op_assign
-id|inb
-c_func
-(paren
-id|com_addr
-op_plus
-l_int|5
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-op_logical_neg
-(paren
-id|data
-op_amp
-id|BIT_0
-)paren
-)paren
-suffix:semicolon
-id|data
-op_assign
-id|inb
-c_func
-(paren
-id|com_addr
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|data
-op_ne
-l_char|&squot;&bslash;021&squot;
-)paren
-suffix:semicolon
-)brace
-)brace
-)brace
-multiline_comment|/* Output character. */
-id|OUTB
-c_func
-(paren
-id|com_addr
-comma
-id|c
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
-multiline_comment|/*&n; *  Out NULL terminated string to COM port.&n; */
-id|STATIC
-r_void
-DECL|function|qla1280_print
-id|qla1280_print
-c_func
-(paren
-id|caddr_t
-id|s
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|ql_debug_print
-)paren
-(brace
-macro_line|#ifdef QL_DEBUG_CONSOLE
-id|printk
-c_func
-(paren
-l_string|&quot;%s&quot;
-comma
-id|s
-)paren
-suffix:semicolon
-macro_line|#else
-multiline_comment|/* Output string. */
-r_while
-c_loop
-(paren
+r_char
 op_star
-id|s
-)paren
-id|qla1280_putc
-c_func
-(paren
-op_star
-id|s
-op_increment
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
-)brace
-multiline_comment|/*&n; *  Output long number to COM port.&n; */
-id|STATIC
-r_void
-DECL|function|qla1280_output_number
-id|qla1280_output_number
-c_func
-(paren
-r_uint32
-id|n
-comma
-r_uint8
-id|base
-)paren
-(brace
-r_int8
-id|str
-(braket
-l_int|12
-)braket
-suffix:semicolon
-r_int8
-op_star
-id|s
-op_assign
-op_amp
-id|str
-(braket
-l_int|11
-)braket
-suffix:semicolon
-r_int8
-id|output
-op_assign
-l_int|0
-suffix:semicolon
-r_int8
-id|hex
-op_assign
-id|FALSE
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ql_debug_print
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|base
-op_eq
-l_int|10
-op_logical_or
-id|base
-op_eq
-l_int|16
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|base
-op_eq
-l_int|16
-op_logical_and
-id|n
-OG
-l_int|9
-)paren
-id|hex
-op_assign
-id|TRUE
-suffix:semicolon
-op_star
-id|s
-op_assign
-l_int|0
-suffix:semicolon
-r_do
-(brace
-id|s
-op_decrement
-suffix:semicolon
-op_star
-id|s
-op_assign
-id|n
-op_mod
-id|base
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_star
-id|s
-OG
-l_int|9
-)paren
-op_star
-id|s
-op_add_assign
-l_int|55
-suffix:semicolon
-r_else
-op_star
-id|s
-op_add_assign
-l_char|&squot;0&squot;
-suffix:semicolon
-id|n
-op_div_assign
-id|base
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|n
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-suffix:semicolon
-op_star
-id|s
-suffix:semicolon
-id|s
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_star
-id|s
-op_ne
-l_char|&squot;0&squot;
-)paren
-id|output
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|output
-)paren
-id|qla1280_putc
-c_func
-(paren
-op_star
-id|s
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|output
-)paren
-id|qla1280_putc
-c_func
-(paren
-op_star
-op_decrement
-id|s
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hex
-)paren
-id|qla1280_putc
-c_func
-(paren
-l_char|&squot;h&squot;
-)paren
-suffix:semicolon
-)brace
-)brace
-)brace
-id|STATIC
-r_void
-DECL|function|qla1280_dump_buffer
-id|qla1280_dump_buffer
-c_func
-(paren
-id|caddr_t
 id|b
 comma
-r_uint32
+r_int
 id|size
 )paren
 (brace
-r_uint32
+r_int
 id|cnt
 suffix:semicolon
-r_uint8
+id|u8
 id|c
 suffix:semicolon
 r_if
@@ -25408,16 +22920,20 @@ c_cond
 id|ql_debug_print
 )paren
 (brace
-id|qla1280_print
+id|printk
 c_func
 (paren
-l_string|&quot; 0   1   2   3   4   5   6   7   8   9   Ah  Bh  Ch  Dh  Eh  Fh&bslash;n&bslash;r&quot;
+id|KERN_DEBUG
+l_string|&quot; 0   1   2   3   4   5   6   7   8   9   Ah  &quot;
+l_string|&quot;Bh  Ch  Dh  Eh  Fh&bslash;n&quot;
 )paren
 suffix:semicolon
-id|qla1280_print
+id|printk
 c_func
 (paren
-l_string|&quot;---------------------------------------------------------------&bslash;n&bslash;r&quot;
+id|KERN_DEBUG
+l_string|&quot;---------------------------------------------&quot;
+l_string|&quot;------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
@@ -25446,21 +22962,18 @@ id|c
 OL
 l_int|16
 )paren
-id|qla1280_putc
+id|printk
 c_func
 (paren
 l_char|&squot; &squot;
 )paren
 suffix:semicolon
-id|qla1280_output_number
+id|printk
 c_func
 (paren
-(paren
-r_uint32
-)paren
-id|c
+l_string|&quot;0x%x&quot;
 comma
-l_int|16
+id|c
 )paren
 suffix:semicolon
 id|cnt
@@ -25476,10 +22989,10 @@ op_mod
 l_int|16
 )paren
 )paren
-id|qla1280_print
+id|printk
 c_func
 (paren
-l_string|&quot;&bslash;n&bslash;r&quot;
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
@@ -25490,14 +23003,14 @@ id|c
 OL
 l_int|10
 )paren
-id|qla1280_print
+id|printk
 c_func
 (paren
 l_string|&quot;  &quot;
 )paren
 suffix:semicolon
 r_else
-id|qla1280_putc
+id|printk
 c_func
 (paren
 l_char|&squot; &squot;
@@ -25511,17 +23024,18 @@ id|cnt
 op_mod
 l_int|16
 )paren
-id|qla1280_print
+id|printk
 c_func
 (paren
-l_string|&quot;&bslash;n&bslash;r&quot;
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
 )brace
 multiline_comment|/**************************************************************************&n; *   ql1280_print_scsi_cmd&n; *&n; **************************************************************************/
-DECL|function|qla1280_print_scsi_cmd
+r_static
 r_void
+DECL|function|qla1280_print_scsi_cmd
 id|qla1280_print_scsi_cmd
 c_func
 (paren
@@ -25530,7 +23044,8 @@ op_star
 id|cmd
 )paren
 (brace
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 suffix:semicolon
@@ -25552,14 +23067,11 @@ suffix:semicolon
 id|ha
 op_assign
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 id|host-&gt;hostdata
-suffix:semicolon
-id|ql_debug_print
-op_assign
-l_int|1
 suffix:semicolon
 id|sp
 op_assign
@@ -25573,12 +23085,10 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-id|sprintf
+id|printk
 c_func
 (paren
-id|debug_buff
-comma
-l_string|&quot;SCSI Command @= 0x%p, Handle=0x%p&bslash;n&bslash;r&quot;
+l_string|&quot;SCSI Command @= 0x%p, Handle=0x%p&bslash;n&quot;
 comma
 id|cmd
 comma
@@ -25589,18 +23099,10 @@ id|cmd
 )paren
 )paren
 suffix:semicolon
-id|qla1280_print
+id|printk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
-comma
-l_string|&quot;  chan=%d, target = 0x%02x, lun = 0x%02x, cmd_len = 0x%02x&bslash;n&bslash;r&quot;
+l_string|&quot;  chan=%d, target = 0x%02x, lun = 0x%02x, cmd_len = 0x%02x&bslash;n&quot;
 comma
 id|cmd-&gt;channel
 comma
@@ -25611,13 +23113,7 @@ comma
 id|cmd-&gt;cmd_len
 )paren
 suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|qla1280_print
+id|printk
 c_func
 (paren
 l_string|&quot; CDB = &quot;
@@ -25638,11 +23134,9 @@ id|i
 op_increment
 )paren
 (brace
-id|sprintf
+id|printk
 c_func
 (paren
-id|debug_buff
-comma
 l_string|&quot;0x%02x &quot;
 comma
 id|cmd-&gt;cmnd
@@ -25651,54 +23145,30 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-id|debug_buff
-)paren
-suffix:semicolon
 )brace
-id|sprintf
+id|printk
 c_func
 (paren
-id|debug_buff
-comma
-l_string|&quot;  seg_cnt =%d&bslash;n&bslash;r&quot;
+l_string|&quot;  seg_cnt =%d&bslash;n&quot;
 comma
 id|cmd-&gt;use_sg
 )paren
 suffix:semicolon
-id|qla1280_print
+id|printk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
-comma
-l_string|&quot;  request buffer=0x%p, request buffer len=0x%x&bslash;n&bslash;r&quot;
+l_string|&quot;  request buffer=0x%p, request buffer len=0x%x&bslash;n&quot;
 comma
 id|cmd-&gt;request_buffer
 comma
 id|cmd-&gt;request_bufflen
 )paren
 suffix:semicolon
-id|qla1280_print
+multiline_comment|/* if (cmd-&gt;use_sg)&n;&t;   {&n;&t;   sg = (struct scatterlist *) cmd-&gt;request_buffer;&n;&t;   printk(&quot;  SG buffer: &bslash;n&quot;);&n;&t;   qla1280_dump_buffer(1, (char *)sg, (cmd-&gt;use_sg*sizeof(struct scatterlist)));&n;&t;   } */
+id|printk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-multiline_comment|/* if( cmd-&gt;use_sg )&n;    {&n;       sg = (struct scatterlist *) cmd-&gt;request_buffer;&n;       qla1280_print(&quot;  SG buffer: &bslash;n&bslash;r&quot;);&n;       qla1280_dump_buffer((caddr_t)sg, (cmd-&gt;use_sg*sizeof(struct scatterlist)) );&n;    } */
-id|sprintf
-c_func
-(paren
-id|debug_buff
-comma
-l_string|&quot;  tag=%d, flags=0x%x, transfersize=0x%x &bslash;n&bslash;r&quot;
+l_string|&quot;  tag=%d, flags=0x%x, transfersize=0x%x &bslash;n&quot;
 comma
 id|cmd-&gt;tag
 comma
@@ -25707,22 +23177,11 @@ comma
 id|cmd-&gt;transfersize
 )paren
 suffix:semicolon
-id|qla1280_print
+id|printk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
+l_string|&quot;  Pid=%li, SP=0x%p&bslash;n&quot;
 comma
-l_string|&quot;  Pid=%d, SP=0x%p&bslash;n&bslash;r&quot;
-comma
-(paren
-r_int
-)paren
 id|cmd-&gt;pid
 comma
 id|CMD_SP
@@ -25732,48 +23191,16 @@ id|cmd
 )paren
 )paren
 suffix:semicolon
-id|qla1280_print
+id|printk
 c_func
 (paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
-comma
-l_string|&quot;  r_start=0x%lx, u_start=0x%lx&bslash;n&bslash;r&quot;
-comma
-id|sp-&gt;r_start
-comma
-id|sp-&gt;u_start
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-id|debug_buff
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|debug_buff
-comma
-l_string|&quot; underflow size = 0x%x, direction=0x%x, req.cmd=0x%x &bslash;n&bslash;r&quot;
+l_string|&quot; underflow size = 0x%x, direction=0x%x, req.cmd=0x%x &bslash;n&quot;
 comma
 id|cmd-&gt;underflow
 comma
 id|sp-&gt;dir
 comma
 id|cmd-&gt;request.cmd
-)paren
-suffix:semicolon
-id|qla1280_print
-c_func
-(paren
-id|debug_buff
 )paren
 suffix:semicolon
 )brace
@@ -25783,7 +23210,8 @@ DECL|function|ql1280_dump_device
 id|ql1280_dump_device
 c_func
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 )paren
@@ -25799,10 +23227,17 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|qla1280_print
+r_if
+c_cond
+(paren
+id|ql_debug_print
+)paren
+(brace
+id|printk
 c_func
 (paren
-l_string|&quot;Outstanding Commands on controller:&bslash;n&bslash;r&quot;
+id|KERN_DEBUG
+l_string|&quot;Outstanding Commands on controller:&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
@@ -25834,10 +23269,8 @@ id|i
 op_eq
 l_int|NULL
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -25849,130 +23282,25 @@ id|sp-&gt;cmd
 op_eq
 l_int|NULL
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 id|qla1280_print_scsi_cmd
 c_func
 (paren
+l_int|1
+comma
 id|cp
 )paren
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
-macro_line|#ifdef  QLA1280_UNUSED 
-multiline_comment|/**************************************************************************&n; *   ql1280_dump_regs&n; *&n; **************************************************************************/
-DECL|function|qla1280_dump_regs
-r_static
-r_void
-id|qla1280_dump_regs
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-id|host
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Mailbox registers:&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;qla1280 : mbox 0 0x%04x &bslash;n&quot;
-comma
-id|inw
-c_func
-(paren
-id|host-&gt;io_port
-op_plus
-l_int|0x70
-)paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;qla1280 : mbox 1 0x%04x &bslash;n&quot;
-comma
-id|inw
-c_func
-(paren
-id|host-&gt;io_port
-op_plus
-l_int|0x72
-)paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;qla1280 : mbox 2 0x%04x &bslash;n&quot;
-comma
-id|inw
-c_func
-(paren
-id|host-&gt;io_port
-op_plus
-l_int|0x74
-)paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;qla1280 : mbox 3 0x%04x &bslash;n&quot;
-comma
-id|inw
-c_func
-(paren
-id|host-&gt;io_port
-op_plus
-l_int|0x76
-)paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;qla1280 : mbox 4 0x%04x &bslash;n&quot;
-comma
-id|inw
-c_func
-(paren
-id|host-&gt;io_port
-op_plus
-l_int|0x78
-)paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;qla1280 : mbox 5 0x%04x &bslash;n&quot;
-comma
-id|inw
-c_func
-(paren
-id|host-&gt;io_port
-op_plus
-l_int|0x7a
-)paren
-)paren
-suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if  STOP_ON_ERROR 
+macro_line|#if STOP_ON_ERROR
 multiline_comment|/**************************************************************************&n; *   ql1280_panic&n; *&n; **************************************************************************/
-DECL|function|qla1280_panic
 r_static
 r_void
+DECL|function|qla1280_panic
 id|qla1280_panic
 c_func
 (paren
@@ -25986,7 +23314,8 @@ op_star
 id|host
 )paren
 (brace
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 id|ha
 suffix:semicolon
@@ -25997,7 +23326,8 @@ suffix:semicolon
 id|ha
 op_assign
 (paren
-id|scsi_qla_host_t
+r_struct
+id|scsi_qla_host
 op_star
 )paren
 id|host-&gt;hostdata
@@ -26005,6 +23335,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;qla1280 - PANIC:  %s&bslash;n&quot;
 comma
 id|cp
@@ -26013,6 +23344,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Current time=0x%lx&bslash;n&quot;
 comma
 id|jiffies
@@ -26021,6 +23353,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Number of pending commands =0x%lx&bslash;n&quot;
 comma
 id|ha-&gt;actthreads
@@ -26029,6 +23362,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Number of SCSI queued commands =0x%lx&bslash;n&quot;
 comma
 id|ha-&gt;qthreads
@@ -26037,6 +23371,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Number of free entries = (%d)&bslash;n&quot;
 comma
 id|ha-&gt;req_q_cnt
@@ -26045,6 +23380,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Request Queue @ 0x%lx, Response Queue @ 0x%lx&bslash;n&quot;
 comma
 id|ha-&gt;request_dma
@@ -26055,6 +23391,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Request In Ptr %d&bslash;n&quot;
 comma
 id|ha-&gt;req_ring_index
@@ -26072,29 +23409,39 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;HA flags =0x%lx&bslash;n&quot;
 comma
 op_star
 id|fp
 )paren
 suffix:semicolon
-id|DEBUG2
-c_func
+r_if
+c_cond
 (paren
+id|ql_debug_level
+op_ge
+l_int|2
+)paren
+(brace
 id|ql_debug_print
 op_assign
 l_int|1
 suffix:semicolon
-)paren
-multiline_comment|/* DEBUG2(ql1280_dump_device((scsi_qla_host_t *) host-&gt;hostdata)); */
-macro_line|#ifdef  QLA1280_UNUSED 
-id|qla1280_dump_regs
+macro_line|#if 0
+id|ql1280_dump_device
 c_func
 (paren
-id|host
+(paren
+r_struct
+id|scsi_qla_host
+op_star
+)paren
+id|host-&gt;hostdata
 )paren
 suffix:semicolon
 macro_line|#endif
+)brace
 id|sti
 c_func
 (paren
@@ -26106,23 +23453,10 @@ c_func
 l_string|&quot;Ooops&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* cli(); &n;    for(;;)&n;    { &n;        barrier();&n;    sti();  &n;    }&n;    */
+multiline_comment|/* cli();&n;&t;   for(;;)&n;&t;   {&n;&t;   barrier();&n;&t;   sti();&n;&t;   }&n;&t;*/
 )brace
 macro_line|#endif
-macro_line|#ifdef  QLA1280_UNUSED 
-DECL|function|qla1280_set_flags
-r_static
-r_void
-id|qla1280_set_flags
-c_func
-(paren
-r_char
-op_star
-id|s
-)paren
-(brace
-)brace
-macro_line|#endif
+macro_line|#ifdef MODULE
 multiline_comment|/**************************************************************************&n; *   qla1280_setup&n; *&n; *   Handle Linux boot parameters. This routine allows for assigning a value&n; *   to a parameter with a &squot;:&squot; between the parameter and the value.&n; *   ie. qla1280=max_reqs:0x0A,verbose&n; **************************************************************************/
 r_void
 DECL|function|qla1280_setup
@@ -26148,72 +23482,10 @@ comma
 op_star
 id|cp
 suffix:semicolon
-macro_line|#ifdef  QLA1280_UNUSED 
-r_static
-r_struct
-(brace
-r_const
-r_char
-op_star
-id|name
-suffix:semicolon
-r_int
-id|siz
-suffix:semicolon
-r_void
-(paren
-op_star
-id|func
-)paren
-(paren
-)paren
-suffix:semicolon
-r_int
-id|arg
-suffix:semicolon
-)brace
-id|options
-(braket
-)braket
-op_assign
-(brace
-(brace
-l_string|&quot;dump_regs&quot;
-comma
-l_int|9
-comma
-op_amp
-id|qla1280_dump_regs
-comma
-l_int|0
-)brace
-comma
-(brace
-l_string|&quot;verbose&quot;
-comma
-l_int|7
-comma
-op_amp
-id|qla1280_set_flags
-comma
-l_int|0x1
-)brace
-comma
-(brace
-l_string|&quot;&quot;
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-l_int|0
-)brace
-)brace
-suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;scsi: Processing Option str = %s&bslash;n&quot;
 comma
 id|s
@@ -26222,7 +23494,6 @@ suffix:semicolon
 id|end
 op_assign
 id|strchr
-c_func
 (paren
 id|s
 comma
@@ -26265,6 +23536,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;scsi: token str = %s&bslash;n&quot;
 comma
 id|str
@@ -26273,10 +23545,10 @@ suffix:semicolon
 multiline_comment|/* if found execute routine */
 )brace
 )brace
-DECL|function|qla1280_get_token
 r_static
 r_char
 op_star
+DECL|function|qla1280_get_token
 id|qla1280_get_token
 c_func
 (paren
@@ -26301,18 +23573,15 @@ r_while
 c_loop
 (paren
 id|strchr
-c_func
 (paren
 id|cp
 comma
 l_char|&squot; &squot;
 )paren
 )paren
-(brace
 op_increment
 id|cp
 suffix:semicolon
-)brace
 multiline_comment|/* symbol starts here */
 id|str
 op_assign
@@ -26328,7 +23597,6 @@ op_logical_and
 op_logical_neg
 (paren
 id|strchr
-c_func
 (paren
 id|cp
 comma
@@ -26336,7 +23604,6 @@ l_char|&squot; &squot;
 )paren
 op_logical_or
 id|strchr
-c_func
 (paren
 id|cp
 comma
@@ -26356,11 +23623,6 @@ r_return
 id|cp
 suffix:semicolon
 )brace
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Overrides for Emacs so that we almost follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 2&n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -2&n; * c-argdecl-indent: 2&n; * c-label-offset: -2&n; * c-continued-statement-offset: 2&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: nil&n; * tab-width: 8&n; * End:&n; */
+macro_line|#endif
+multiline_comment|/*&n; * Overrides for Emacs so that we almost follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-basic-offset: 8&n; * tab-width: 8&n; * End:&n; */
 eof

@@ -426,11 +426,7 @@ suffix:semicolon
 )brace
 id|devsize
 op_assign
-id|blkdev_size_in_bytes
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_bdev-&gt;bd_inode-&gt;i_size
 op_rshift
 l_int|12
 suffix:semicolon

@@ -22,16 +22,6 @@ id|byte
 id|xfer_rate
 )paren
 suffix:semicolon
-r_extern
-r_char
-op_star
-id|ide_dmafunc_verbose
-c_func
-(paren
-id|ide_dma_action_t
-id|dmafunc
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Maximum number of interfaces per card&n; */
 DECL|macro|MAX_IFS
 mdefine_line|#define MAX_IFS&t;2
@@ -1570,13 +1560,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;icside_dmaproc: unsupported %s func: %d&bslash;n&quot;
-comma
-id|ide_dmafunc_verbose
-c_func
-(paren
-id|func
-)paren
+l_string|&quot;icside_dmaproc: unsupported function: %d&bslash;n&quot;
 comma
 id|func
 )paren

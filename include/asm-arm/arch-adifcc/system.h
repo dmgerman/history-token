@@ -10,16 +10,9 @@ r_void
 )paren
 (brace
 macro_line|#if 0
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hlt_counter
-)paren
 id|cpu_do_idle
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif

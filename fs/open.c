@@ -2284,7 +2284,7 @@ l_int|1
 )paren
 (brace
 id|newattrs.ia_valid
-op_assign
+op_or_assign
 id|ATTR_UID
 suffix:semicolon
 id|newattrs.ia_uid
@@ -2305,7 +2305,7 @@ l_int|1
 )paren
 (brace
 id|newattrs.ia_valid
-op_assign
+op_or_assign
 id|ATTR_GID
 suffix:semicolon
 id|newattrs.ia_gid
@@ -2774,10 +2774,6 @@ id|f-&gt;f_pos
 op_assign
 l_int|0
 suffix:semicolon
-id|f-&gt;f_reada
-op_assign
-l_int|0
-suffix:semicolon
 id|f-&gt;f_op
 op_assign
 id|fops_get
@@ -3000,7 +2996,7 @@ op_assign
 id|find_next_zero_bit
 c_func
 (paren
-id|files-&gt;open_fds
+id|files-&gt;open_fds-&gt;fds_bits
 comma
 id|files-&gt;max_fdset
 comma

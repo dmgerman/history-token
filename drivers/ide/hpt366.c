@@ -27,16 +27,6 @@ macro_line|#if defined(DISPLAY_HPT366_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#endif  /* defined(DISPLAY_HPT366_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS) */
-r_extern
-r_char
-op_star
-id|ide_dmafunc_verbose
-c_func
-(paren
-id|ide_dma_action_t
-id|dmafunc
-)paren
-suffix:semicolon
 DECL|variable|quirk_drives
 r_const
 r_char
@@ -3755,15 +3745,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: (%s)  reg50h=0x%02x, reg52h=0x%02x, reg5ah=0x%02x&bslash;n&quot;
+l_string|&quot;%s: (ide_dma_lostirq)  reg50h=0x%02x, reg52h=0x%02x, reg5ah=0x%02x&bslash;n&quot;
 comma
 id|drive-&gt;name
-comma
-id|ide_dmafunc_verbose
-c_func
-(paren
-id|func
-)paren
 comma
 id|reg50h
 comma

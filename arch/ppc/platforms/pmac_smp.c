@@ -13,6 +13,7 @@ mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -29,6 +30,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/open_pic.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 multiline_comment|/*&n; * Powersurge (old powermac SMP) support.&n; */
 r_extern
 r_void

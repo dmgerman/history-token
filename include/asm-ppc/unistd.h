@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.unistd.h 1.11 10/18/01 17:29:53 trini&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifndef _ASM_PPC_UNISTD_H_
 DECL|macro|_ASM_PPC_UNISTD_H_
 mdefine_line|#define _ASM_PPC_UNISTD_H_
@@ -445,6 +445,10 @@ DECL|macro|__NR_fremovexattr
 mdefine_line|#define __NR_fremovexattr&t;220
 DECL|macro|__NR_futex
 mdefine_line|#define __NR_futex&t;&t;221
+DECL|macro|__NR_sched_setaffinity
+mdefine_line|#define __NR_sched_setaffinity&t;222
+DECL|macro|__NR_sched_getaffinity
+mdefine_line|#define __NR_sched_getaffinity&t;223
 DECL|macro|__NR
 mdefine_line|#define __NR(n)&t;#n
 DECL|macro|__syscall_return

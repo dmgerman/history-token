@@ -27,6 +27,7 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/residual.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/thread_info.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|variable|smp_threads_ready
 r_int
 id|smp_threads_ready

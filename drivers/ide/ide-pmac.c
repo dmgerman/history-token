@@ -23,16 +23,6 @@ macro_line|#include &lt;linux/pmu.h&gt;
 macro_line|#endif
 macro_line|#include &quot;ata-timing.h&quot;
 r_extern
-r_char
-op_star
-id|ide_dmafunc_verbose
-c_func
-(paren
-id|ide_dma_action_t
-id|dmafunc
-)paren
-suffix:semicolon
-r_extern
 id|spinlock_t
 id|ide_lock
 suffix:semicolon
@@ -4675,8 +4665,8 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|pmac_ide_raw_build_sglist
-id|pmac_ide_raw_build_sglist
+DECL|function|pmac_raw_build_sglist
+id|pmac_raw_build_sglist
 (paren
 r_int
 id|ix
@@ -4721,7 +4711,8 @@ id|nents
 op_assign
 l_int|0
 suffix:semicolon
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|args
 op_assign
@@ -5048,7 +5039,7 @@ id|sg_nents
 op_assign
 id|i
 op_assign
-id|pmac_ide_raw_build_sglist
+id|pmac_raw_build_sglist
 c_func
 (paren
 id|ix
@@ -6506,7 +6497,8 @@ l_int|1
 )paren
 )paren
 (brace
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|args
 op_assign
@@ -6772,13 +6764,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ide_pmac_dmaproc: chipset supported %s func only: %d&bslash;n&quot;
-comma
-id|ide_dmafunc_verbose
-c_func
-(paren
-id|func
-)paren
+l_string|&quot;ide_pmac_dmaproc: chipset supported func only: %d&bslash;n&quot;
 comma
 id|func
 )paren
@@ -6792,13 +6778,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ide_pmac_dmaproc: unsupported %s func: %d&bslash;n&quot;
-comma
-id|ide_dmafunc_verbose
-c_func
-(paren
-id|func
-)paren
+l_string|&quot;ide_pmac_dmaproc: unsupported func: %d&bslash;n&quot;
 comma
 id|func
 )paren

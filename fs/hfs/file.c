@@ -509,10 +509,6 @@ id|ppos
 op_add_assign
 id|read
 suffix:semicolon
-id|filp-&gt;f_reada
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 r_return
 id|read

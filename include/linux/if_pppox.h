@@ -386,7 +386,7 @@ r_int
 id|arg
 )paren
 suffix:semicolon
-multiline_comment|/* PPPoE socket states */
+multiline_comment|/* PPPoX socket states */
 r_enum
 (brace
 DECL|enumerator|PPPOX_NONE
@@ -413,10 +413,17 @@ op_assign
 l_int|4
 comma
 multiline_comment|/* forwarding is enabled */
+DECL|enumerator|PPPOX_ZOMBIE
+id|PPPOX_ZOMBIE
+op_assign
+l_int|8
+comma
+multiline_comment|/* dead, but still bound to ppp device */
 DECL|enumerator|PPPOX_DEAD
 id|PPPOX_DEAD
 op_assign
-l_int|8
+l_int|16
+multiline_comment|/* dead, useless, please clean me up!*/
 )brace
 suffix:semicolon
 r_extern
