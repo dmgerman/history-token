@@ -691,6 +691,12 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+id|file_kill
+c_func
+(paren
+id|file
+)paren
+suffix:semicolon
 id|file-&gt;f_dentry
 op_assign
 l_int|NULL
@@ -698,12 +704,6 @@ suffix:semicolon
 id|file-&gt;f_vfsmnt
 op_assign
 l_int|NULL
-suffix:semicolon
-id|file_kill
-c_func
-(paren
-id|file
-)paren
 suffix:semicolon
 id|file_free
 c_func
