@@ -5667,4 +5667,11 @@ c_func
 id|snd_pcm_build_linear_format
 )paren
 suffix:semicolon
+DECL|variable|snd_pcm_limit_hw_rates
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_pcm_limit_hw_rates
+)paren
+suffix:semicolon
 eof
