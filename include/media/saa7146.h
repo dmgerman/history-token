@@ -418,8 +418,8 @@ id|saa
 comma
 r_const
 r_struct
-op_star
 id|i2c_msg
+op_star
 id|msgs
 comma
 r_int
