@@ -446,9 +446,14 @@ comma
 id|minfo-&gt;fbcon.node
 )paren
 suffix:semicolon
-id|b-&gt;adapter.data
-op_assign
+id|i2c_set_adapdata
+c_func
+(paren
+op_amp
+id|b-&gt;adapter
+comma
 id|b
+)paren
 suffix:semicolon
 id|b-&gt;adapter.algo_data
 op_assign
