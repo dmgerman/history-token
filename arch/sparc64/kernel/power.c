@@ -84,6 +84,27 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|machine_alt_power_off
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|variable|poweroff_method
+r_static
+r_void
+(paren
+op_star
+id|poweroff_method
+)paren
+(paren
+r_void
+)paren
+op_assign
+id|machine_alt_power_off
+suffix:semicolon
+r_extern
 r_int
 id|serial_console
 suffix:semicolon
@@ -95,6 +116,13 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|serial_console
+)paren
+(brace
 macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
@@ -102,12 +130,9 @@ c_cond
 id|power_reg
 op_ne
 l_int|0UL
-op_logical_and
-op_logical_neg
-id|serial_console
 )paren
 (brace
-multiline_comment|/* Both register bits seem to have the&n;&t;&t; * same effect, so until I figure out&n;&t;&t; * what the difference is...&n;&t;&t; */
+multiline_comment|/* Both register bits seem to have the&n;&t;&t;&t; * same effect, so until I figure out&n;&t;&t;&t; * what the difference is...&n;&t;&t;&t; */
 id|writel
 c_func
 (paren
@@ -119,7 +144,24 @@ id|power_reg
 )paren
 suffix:semicolon
 )brace
+r_else
 macro_line|#endif /* CONFIG_PCI */
+r_if
+c_cond
+(paren
+id|poweroff_method
+op_ne
+l_int|NULL
+)paren
+(brace
+id|poweroff_method
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* not reached */
+)brace
+)brace
 id|machine_halt
 c_func
 (paren
@@ -353,6 +395,11 @@ comma
 id|power_reg
 )paren
 suffix:semicolon
+id|poweroff_method
+op_assign
+id|machine_halt
+suffix:semicolon
+multiline_comment|/* able to use the standard halt */
 r_if
 c_cond
 (paren
