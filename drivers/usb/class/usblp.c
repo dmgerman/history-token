@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/lp.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#include &lt;linux/usb.h&gt;
@@ -68,13 +67,8 @@ DECL|macro|USBLP_REQ_RESET
 mdefine_line|#define USBLP_REQ_RESET&t;&t;&t;&t;0x02
 DECL|macro|USBLP_REQ_HP_CHANNEL_CHANGE_REQUEST
 mdefine_line|#define USBLP_REQ_HP_CHANNEL_CHANGE_REQUEST&t;0x00&t;/* HP Vendor-specific */
-macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
-DECL|macro|USBLP_MINORS
-mdefine_line|#define USBLP_MINORS&t;&t;256
-macro_line|#else
 DECL|macro|USBLP_MINORS
 mdefine_line|#define USBLP_MINORS&t;&t;16
-macro_line|#endif
 DECL|macro|USBLP_MINOR_BASE
 mdefine_line|#define USBLP_MINOR_BASE&t;0
 DECL|macro|USBLP_WRITE_TIMEOUT
@@ -1072,10 +1066,6 @@ c_cond
 id|minor
 OL
 l_int|0
-op_logical_or
-id|minor
-op_ge
-id|USBLP_MINORS
 )paren
 r_return
 op_minus
@@ -1276,20 +1266,6 @@ op_star
 id|usblp
 )paren
 (brace
-id|devfs_remove
-(paren
-l_string|&quot;usb/lp%d&quot;
-comma
-id|usblp-&gt;minor
-)paren
-suffix:semicolon
-id|usb_deregister_dev
-(paren
-l_int|1
-comma
-id|usblp-&gt;minor
-)paren
-suffix:semicolon
 id|info
 c_func
 (paren
@@ -3203,6 +3179,44 @@ id|usblp_release
 comma
 )brace
 suffix:semicolon
+DECL|variable|usblp_class
+r_static
+r_struct
+id|usb_class_driver
+id|usblp_class
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;usb/lp%d&quot;
+comma
+dot
+id|fops
+op_assign
+op_amp
+id|usblp_fops
+comma
+dot
+id|mode
+op_assign
+id|S_IFCHR
+op_or
+id|S_IRUSR
+op_or
+id|S_IWUSR
+op_or
+id|S_IRGRP
+op_or
+id|S_IWGRP
+comma
+dot
+id|minor_base
+op_assign
+id|USBLP_MINOR_BASE
+comma
+)brace
+suffix:semicolon
 DECL|function|usblp_probe
 r_static
 r_int
@@ -3243,12 +3257,6 @@ id|protocol
 suffix:semicolon
 r_int
 id|retval
-suffix:semicolon
-r_char
-id|name
-(braket
-l_int|10
-)braket
 suffix:semicolon
 multiline_comment|/* Malloc and start initializing usblp structure so we can use it&n;&t; * directly. */
 r_if
@@ -3322,15 +3330,10 @@ op_assign
 id|usb_register_dev
 c_func
 (paren
-op_amp
-id|usblp_fops
-comma
-id|USBLP_MINOR_BASE
-comma
-l_int|1
+id|intf
 comma
 op_amp
-id|usblp-&gt;minor
+id|usblp_class
 )paren
 suffix:semicolon
 r_if
@@ -3349,6 +3352,10 @@ r_goto
 m_abort
 suffix:semicolon
 )brace
+id|usblp-&gt;minor
+op_assign
+id|intf-&gt;minor
+suffix:semicolon
 id|usblp-&gt;writeurb
 op_assign
 id|usb_alloc_urb
@@ -3614,46 +3621,6 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* If we have devfs, create with perms=660. */
-id|sprintf
-c_func
-(paren
-id|name
-comma
-l_string|&quot;usb/lp%d&quot;
-comma
-id|usblp-&gt;minor
-)paren
-suffix:semicolon
-id|devfs_register
-c_func
-(paren
-l_int|NULL
-comma
-id|name
-comma
-l_int|0
-comma
-id|USB_MAJOR
-comma
-id|usblp-&gt;minor
-comma
-id|S_IFCHR
-op_or
-id|S_IRUSR
-op_or
-id|S_IWUSR
-op_or
-id|S_IRGRP
-op_or
-id|S_IWGRP
-comma
-op_amp
-id|usblp_fops
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 id|info
 c_func
 (paren
@@ -3694,20 +3661,18 @@ comma
 id|usblp
 )paren
 suffix:semicolon
-id|intf-&gt;minor
-op_assign
-id|usblp-&gt;minor
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 id|abort_minor
 suffix:colon
 id|usb_deregister_dev
+c_func
 (paren
-l_int|1
+id|intf
 comma
-id|usblp-&gt;minor
+op_amp
+id|usblp_class
 )paren
 suffix:semicolon
 m_abort
@@ -4498,11 +4463,14 @@ id|usb_get_intfdata
 id|intf
 )paren
 suffix:semicolon
-multiline_comment|/* remove device id to disable open() */
-id|intf-&gt;minor
-op_assign
-op_minus
-l_int|1
+id|usb_deregister_dev
+c_func
+(paren
+id|intf
+comma
+op_amp
+id|usblp_class
+)paren
 suffix:semicolon
 r_if
 c_cond
