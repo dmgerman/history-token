@@ -144,9 +144,9 @@ mdefine_line|#define XFS_BUF_UNWRITE(x)&t;((x)-&gt;pb_flags &amp;= ~PBF_WRITE)
 DECL|macro|XFS_BUF_ISWRITE
 mdefine_line|#define XFS_BUF_ISWRITE(x)&t;((x)-&gt;pb_flags &amp; PBF_WRITE)
 DECL|macro|XFS_BUF_ISUNINITIAL
-mdefine_line|#define XFS_BUF_ISUNINITIAL(x)&t; ((x)-&gt;pb_flags &amp; PBF_UNINITIAL)
+mdefine_line|#define XFS_BUF_ISUNINITIAL(x)&t; (0)
 DECL|macro|XFS_BUF_UNUNINITIAL
-mdefine_line|#define XFS_BUF_UNUNINITIAL(x)&t; ((x)-&gt;pb_flags &amp;= ~PBF_UNINITIAL)
+mdefine_line|#define XFS_BUF_UNUNINITIAL(x)&t; (0)
 DECL|macro|XFS_BUF_BP_ISMAPPED
 mdefine_line|#define XFS_BUF_BP_ISMAPPED(bp)&t; 1
 DECL|typedef|xfs_buf_t

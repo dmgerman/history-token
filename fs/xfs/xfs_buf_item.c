@@ -2708,7 +2708,20 @@ l_int|NULL
 )paren
 )paren
 (brace
-multiline_comment|/**&n;&t;&t;ASSERT((XFS_BUF_ISUNINITIAL(bp)) == 0);&n;***/
+id|ASSERT
+c_func
+(paren
+(paren
+id|XFS_BUF_ISUNINITIAL
+c_func
+(paren
+id|bp
+)paren
+)paren
+op_eq
+l_int|0
+)paren
+suffix:semicolon
 id|XFS_BUF_CLR_IODONE_FUNC
 c_func
 (paren

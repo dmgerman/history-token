@@ -2206,6 +2206,7 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/* prototypes for a few of the stack-hungry cases that have&n; * their own functions.  Functions are defined after their use&n; * so gcc doesn&squot;t get fancy and inline them with -03 */
+id|STATIC
 r_int
 id|xfs_ioc_space
 c_func
@@ -2232,6 +2233,7 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+id|STATIC
 r_int
 id|xfs_ioc_bulkstat
 c_func
@@ -2249,6 +2251,7 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+id|STATIC
 r_int
 id|xfs_ioc_fsgeometry_v1
 c_func
@@ -2262,6 +2265,7 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+id|STATIC
 r_int
 id|xfs_ioc_fsgeometry
 c_func
@@ -2275,6 +2279,7 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+id|STATIC
 r_int
 id|xfs_ioc_xattr
 c_func
@@ -2297,6 +2302,7 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+id|STATIC
 r_int
 id|xfs_ioc_getbmap
 c_func
@@ -2319,6 +2325,7 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+id|STATIC
 r_int
 id|xfs_ioc_getbmapx
 c_func
@@ -3408,8 +3415,9 @@ id|ENOTTY
 suffix:semicolon
 )brace
 )brace
-DECL|function|xfs_ioc_space
+id|STATIC
 r_int
+DECL|function|xfs_ioc_space
 id|xfs_ioc_space
 c_func
 (paren
@@ -3573,8 +3581,9 @@ op_minus
 id|error
 suffix:semicolon
 )brace
-DECL|function|xfs_ioc_bulkstat
+id|STATIC
 r_int
+DECL|function|xfs_ioc_bulkstat
 id|xfs_ioc_bulkstat
 c_func
 (paren
@@ -3928,8 +3937,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|xfs_ioc_fsgeometry_v1
+id|STATIC
 r_int
+DECL|function|xfs_ioc_fsgeometry_v1
 id|xfs_ioc_fsgeometry_v1
 c_func
 (paren
@@ -4007,8 +4017,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|xfs_ioc_fsgeometry
+id|STATIC
 r_int
+DECL|function|xfs_ioc_fsgeometry
 id|xfs_ioc_fsgeometry
 c_func
 (paren
@@ -4082,8 +4093,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|xfs_ioc_xattr
+id|STATIC
 r_int
+DECL|function|xfs_ioc_xattr
 id|xfs_ioc_xattr
 c_func
 (paren
@@ -4381,8 +4393,9 @@ id|ENOTTY
 suffix:semicolon
 )brace
 )brace
-DECL|function|xfs_ioc_getbmap
+id|STATIC
 r_int
+DECL|function|xfs_ioc_getbmap
 id|xfs_ioc_getbmap
 c_func
 (paren
@@ -4548,8 +4561,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|xfs_ioc_getbmapx
+id|STATIC
 r_int
+DECL|function|xfs_ioc_getbmapx
 id|xfs_ioc_getbmapx
 c_func
 (paren
