@@ -442,7 +442,7 @@ id|error
 suffix:semicolon
 )brace
 DECL|variable|device_init
-id|subsys_initcall
+id|core_initcall
 c_func
 (paren
 id|device_init
