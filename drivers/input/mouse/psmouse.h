@@ -36,6 +36,14 @@ DECL|macro|PSMOUSE_ACTIVATED
 mdefine_line|#define PSMOUSE_ACTIVATED&t;1
 DECL|macro|PSMOUSE_IGNORE
 mdefine_line|#define PSMOUSE_IGNORE&t;&t;2
+DECL|macro|PSMOUSE_FLAG_ACK
+mdefine_line|#define PSMOUSE_FLAG_ACK&t;0&t;/* Waiting for ACK/NAK */
+DECL|macro|PSMOUSE_FLAG_CMD
+mdefine_line|#define PSMOUSE_FLAG_CMD&t;1&t;/* Waiting for command to finish */
+DECL|macro|PSMOUSE_FLAG_CMD1
+mdefine_line|#define PSMOUSE_FLAG_CMD1&t;2&t;/* First byte of command response */
+DECL|macro|PSMOUSE_FLAG_ID
+mdefine_line|#define PSMOUSE_FLAG_ID&t;&t;3&t;/* First byte is not keyboard ID */
 multiline_comment|/* psmouse protocol handler return codes */
 r_typedef
 r_enum
@@ -179,14 +187,10 @@ r_int
 r_char
 id|state
 suffix:semicolon
-DECL|member|acking
+DECL|member|nak
+r_int
 r_char
-id|acking
-suffix:semicolon
-DECL|member|ack
-r_volatile
-r_char
-id|ack
+id|nak
 suffix:semicolon
 DECL|member|error
 r_char
@@ -205,6 +209,11 @@ id|phys
 (braket
 l_int|32
 )braket
+suffix:semicolon
+DECL|member|flags
+r_int
+r_int
+id|flags
 suffix:semicolon
 DECL|member|protocol_handler
 id|psmouse_ret_t
