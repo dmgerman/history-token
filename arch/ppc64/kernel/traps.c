@@ -171,12 +171,12 @@ id|notifier_block
 op_star
 id|ppc64_die_chain
 suffix:semicolon
-DECL|variable|die_notifier_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|die_notifier_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|register_die_notifier
 r_int
@@ -232,12 +232,12 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Trap &amp; Exception support&n; */
-DECL|variable|die_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|die_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|die
 r_int

@@ -155,12 +155,12 @@ suffix:semicolon
 multiline_comment|/* Update results token */
 )brace
 suffix:semicolon
-DECL|variable|flash_file_open_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|flash_file_open_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|firmware_flash_pde
 r_static

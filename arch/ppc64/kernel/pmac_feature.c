@@ -31,13 +31,13 @@ DECL|macro|DBG
 mdefine_line|#define DBG(fmt...)
 macro_line|#endif
 multiline_comment|/*&n; * We use a single global lock to protect accesses. Each driver has&n; * to take care of its own locking&n; */
-DECL|variable|__pmacdata
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|feature_lock
 id|__pmacdata
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|LOCK
 mdefine_line|#define LOCK(flags)&t;spin_lock_irqsave(&amp;feature_lock, flags);

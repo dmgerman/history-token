@@ -27,13 +27,13 @@ DECL|macro|cached_A1
 mdefine_line|#define cached_A1 (cached_8259[0])
 DECL|macro|cached_21
 mdefine_line|#define cached_21 (cached_8259[1])
-DECL|variable|__cacheline_aligned_in_smp
 r_static
-id|spinlock_t
-id|i8259_lock
 id|__cacheline_aligned_in_smp
-op_assign
-id|SPIN_LOCK_UNLOCKED
+id|DEFINE_SPINLOCK
+c_func
+(paren
+id|i8259_lock
+)paren
 suffix:semicolon
 DECL|variable|i8259_pic_irq_offset
 r_static

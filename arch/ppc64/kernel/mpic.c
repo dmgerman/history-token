@@ -39,12 +39,12 @@ id|mpic
 op_star
 id|mpic_primary
 suffix:semicolon
-DECL|variable|mpic_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|mpic_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Register accessor functions&n; */
 DECL|function|_mpic_read

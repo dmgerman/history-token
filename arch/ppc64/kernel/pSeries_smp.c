@@ -858,12 +858,12 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|variable|timebase_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|timebase_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|timebase
 r_static

@@ -169,12 +169,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* use when traversing tree through the allnext, child, sibling,&n; * or parent members of struct device_node.&n; */
-DECL|variable|devtree_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|devtree_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* export that to outside world */
 DECL|variable|of_chosen
