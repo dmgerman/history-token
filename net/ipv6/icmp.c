@@ -1160,7 +1160,7 @@ id|Icmp6OutDestUnreachs
 (braket
 id|type
 op_minus
-l_int|1
+id|ICMPV6_DEST_UNREACH
 )braket
 op_increment
 suffix:semicolon
@@ -2051,7 +2051,7 @@ suffix:semicolon
 r_case
 id|ICMPV6_ECHO_REPLY
 suffix:colon
-multiline_comment|/* we coulnd&squot;t care less */
+multiline_comment|/* we couldn&squot;t care less */
 r_break
 suffix:semicolon
 r_case
@@ -2237,7 +2237,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;icmpv6: msg of unkown type&bslash;n&quot;
+l_string|&quot;icmpv6: msg of unknown type&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* informational */
