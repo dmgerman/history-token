@@ -2536,6 +2536,8 @@ id|vlan_tag
 suffix:semicolon
 DECL|macro|TXD_VLAN_TAG_SHIFT
 mdefine_line|#define TXD_VLAN_TAG_SHIFT&t;&t;0
+DECL|macro|TXD_MSS_SHIFT
+mdefine_line|#define TXD_MSS_SHIFT&t;&t;&t;16
 )brace
 suffix:semicolon
 DECL|macro|TXD_ADDR
