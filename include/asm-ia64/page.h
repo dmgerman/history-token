@@ -90,7 +90,7 @@ mdefine_line|#define clear_user_page(addr, vaddr, page)&t;&bslash;&n;do {&t;&t;&
 DECL|macro|copy_user_page
 mdefine_line|#define copy_user_page(to, from, vaddr, page)&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;copy_page((to), (from));&t;&t;&bslash;&n;&t;flush_dcache_page(page);&t;&t;&bslash;&n;} while (0)
 DECL|macro|alloc_zeroed_user_highpage
-mdefine_line|#define alloc_zeroed_user_highpage(vma, vaddr) &bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct page *page = alloc_page_vma(GFP_HIGHUSER | __GFP_ZERO, vma, vaddr); &bslash;&n;&t;flush_dcache_page(page);&t;&t;&bslash;&n;&t;page;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define alloc_zeroed_user_highpage(vma, vaddr) &bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct page *page = alloc_page_vma(GFP_HIGHUSER | __GFP_ZERO, vma, vaddr); &bslash;&n;&t;if (page)&t;&t;&t;&t;&bslash;&n; &t;&t;flush_dcache_page(page);&t;&bslash;&n;&t;page;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__HAVE_ARCH_ALLOC_ZEROED_USER_HIGHPAGE
 mdefine_line|#define __HAVE_ARCH_ALLOC_ZEROED_USER_HIGHPAGE
 DECL|macro|virt_addr_valid
