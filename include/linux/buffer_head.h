@@ -112,8 +112,7 @@ id|b_blocknr
 suffix:semicolon
 multiline_comment|/* block number */
 DECL|member|b_size
-r_int
-r_int
+id|u32
 id|b_size
 suffix:semicolon
 multiline_comment|/* block size */
