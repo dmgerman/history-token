@@ -11425,6 +11425,12 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif&t;&t;&t;&t;/* CONFIG_ATARI */
+id|kfree
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
