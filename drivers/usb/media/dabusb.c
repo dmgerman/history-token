@@ -3434,16 +3434,7 @@ id|dabusb_ids
 )braket
 op_assign
 (brace
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x0547
-comma
-l_int|0x2131
-)paren
-)brace
-comma
+singleline_comment|// { USB_DEVICE(0x0547, 0x2131) },&t;/* An2131 chip, no boot ROM */
 (brace
 id|USB_DEVICE
 c_func
