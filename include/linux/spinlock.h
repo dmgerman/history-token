@@ -18,11 +18,11 @@ DECL|macro|LOCK_SECTION_START
 mdefine_line|#define LOCK_SECTION_START(extra)               &bslash;&n;        &quot;.subsection 1&bslash;n&bslash;t&quot;                     &bslash;&n;        extra                                   &bslash;&n;        &quot;.ifndef &quot; LOCK_SECTION_NAME &quot;&bslash;n&bslash;t&quot;     &bslash;&n;        LOCK_SECTION_NAME &quot;:&bslash;n&bslash;t&quot;               &bslash;&n;        &quot;.endif&bslash;n&bslash;t&quot;
 DECL|macro|LOCK_SECTION_END
 mdefine_line|#define LOCK_SECTION_END                        &bslash;&n;        &quot;.previous&bslash;n&bslash;t&quot;
+DECL|macro|__lockfunc
+mdefine_line|#define __lockfunc fastcall __attribute__((section(&quot;.spinlock.text&quot;)))
 multiline_comment|/*&n; * If CONFIG_SMP is set, pull in the _raw_* definitions&n; */
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;asm/spinlock.h&gt;
-DECL|macro|__lockfunc
-mdefine_line|#define __lockfunc fastcall __attribute__((section(&quot;.spinlock.text&quot;)))
 r_int
 id|__lockfunc
 id|_spin_trylock

@@ -14002,21 +14002,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * The &squot;big kernel lock&squot;&n; *&n; * This spinlock is taken and released recursively by lock_kernel()&n; * and unlock_kernel().  It is transparently dropped and reaquired&n; * over schedule().  It is used to protect legacy code that hasn&squot;t&n; * been migrated to a proper locking design yet.&n; *&n; * Don&squot;t use in new code.&n; *&n; * Note: spinlock debugging needs this even on !CONFIG_SMP.&n; */
-DECL|variable|__cacheline_aligned_in_smp
-id|spinlock_t
-id|kernel_flag
-id|__cacheline_aligned_in_smp
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-DECL|variable|kernel_flag
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kernel_flag
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * Attach the domain &squot;sd&squot; to &squot;cpu&squot; as its base domain.  Callers must&n; * hold the hotplug lock.&n; */
 DECL|function|cpu_attach_domain
