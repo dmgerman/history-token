@@ -4192,7 +4192,7 @@ macro_line|#ifdef CONFIG_DEVFS_FS
 dot
 id|dev_name
 op_assign
-l_string|&quot;ttyS%d&quot;
+l_string|&quot;tts/%d&quot;
 comma
 macro_line|#else
 dot
