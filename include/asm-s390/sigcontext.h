@@ -8,14 +8,25 @@ DECL|macro|__NUM_FPRS
 mdefine_line|#define __NUM_FPRS 16
 DECL|macro|__NUM_ACRS
 mdefine_line|#define __NUM_ACRS 16
-multiline_comment|/*&n;  Has to be at least _NSIG_WORDS from asm/signal.h&n; */
+macro_line|#ifndef __s390x__
+multiline_comment|/* Has to be at least _NSIG_WORDS from asm/signal.h */
 DECL|macro|_SIGCONTEXT_NSIG
-mdefine_line|#define _SIGCONTEXT_NSIG      64
+mdefine_line|#define _SIGCONTEXT_NSIG&t;64
 DECL|macro|_SIGCONTEXT_NSIG_BPW
-mdefine_line|#define _SIGCONTEXT_NSIG_BPW  32
+mdefine_line|#define _SIGCONTEXT_NSIG_BPW&t;32
 multiline_comment|/* Size of stack frame allocated when calling signal handler. */
 DECL|macro|__SIGNAL_FRAMESIZE
 mdefine_line|#define __SIGNAL_FRAMESIZE&t;96
+macro_line|#else /* __s390x__ */
+multiline_comment|/* Has to be at least _NSIG_WORDS from asm/signal.h */
+DECL|macro|_SIGCONTEXT_NSIG
+mdefine_line|#define _SIGCONTEXT_NSIG&t;64
+DECL|macro|_SIGCONTEXT_NSIG_BPW
+mdefine_line|#define _SIGCONTEXT_NSIG_BPW&t;64 
+multiline_comment|/* Size of stack frame allocated when calling signal handler. */
+DECL|macro|__SIGNAL_FRAMESIZE
+mdefine_line|#define __SIGNAL_FRAMESIZE&t;160
+macro_line|#endif /* __s390x__ */
 DECL|macro|_SIGCONTEXT_NSIG_WORDS
 mdefine_line|#define _SIGCONTEXT_NSIG_WORDS&t;(_SIGCONTEXT_NSIG / _SIGCONTEXT_NSIG_BPW)
 DECL|macro|_SIGMASK_COPY_SIZE

@@ -14,6 +14,7 @@ DECL|struct|statfs
 r_struct
 id|statfs
 (brace
+macro_line|#ifndef __s390x__
 DECL|member|f_type
 r_int
 id|f_type
@@ -57,6 +58,41 @@ id|f_spare
 l_int|6
 )braket
 suffix:semicolon
+macro_line|#else /* __s390x__ */
+r_int
+id|f_type
+suffix:semicolon
+r_int
+id|f_bsize
+suffix:semicolon
+r_int
+id|f_blocks
+suffix:semicolon
+r_int
+id|f_bfree
+suffix:semicolon
+r_int
+id|f_bavail
+suffix:semicolon
+r_int
+id|f_files
+suffix:semicolon
+r_int
+id|f_ffree
+suffix:semicolon
+id|__kernel_fsid_t
+id|f_fsid
+suffix:semicolon
+r_int
+id|f_namelen
+suffix:semicolon
+r_int
+id|f_spare
+(braket
+l_int|6
+)braket
+suffix:semicolon
+macro_line|#endif /* __s390x__ */
 )brace
 suffix:semicolon
 macro_line|#endif

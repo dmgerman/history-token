@@ -5,6 +5,7 @@ mdefine_line|#define _ASM_THREAD_INFO_H
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/lowcore.h&gt;
 multiline_comment|/*&n; * low level task data that entry.S needs immediate access to&n; * - this struct should fit entirely inside of one cache line&n; * - this struct shares the supervisor stack pages&n; * - if the contents of this structure are changed, the assembly constants must also be changed&n; */
 DECL|struct|thread_info
 r_struct
@@ -56,6 +57,22 @@ DECL|macro|init_thread_info
 mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
 DECL|macro|init_stack
 mdefine_line|#define init_stack&t;&t;(init_thread_union.stack)
+multiline_comment|/*&n; * Size of kernel stack for each process&n; */
+macro_line|#ifndef __s390x__
+DECL|macro|THREAD_ORDER
+mdefine_line|#define THREAD_ORDER 1
+DECL|macro|ASYNC_ORDER
+mdefine_line|#define ASYNC_ORDER  1
+macro_line|#else /* __s390x__ */
+DECL|macro|THREAD_ORDER
+mdefine_line|#define THREAD_ORDER 2
+DECL|macro|ASYNC_ORDER
+mdefine_line|#define ASYNC_ORDER  2
+macro_line|#endif /* __s390x__ */
+DECL|macro|THREAD_SIZE
+mdefine_line|#define THREAD_SIZE (PAGE_SIZE &lt;&lt; THREAD_ORDER)
+DECL|macro|ASYNC_SIZE
+mdefine_line|#define ASYNC_SIZE  (PAGE_SIZE &lt;&lt; ASYNC_ORDER)
 multiline_comment|/* how to get the thread information struct from C */
 DECL|function|current_thread_info
 r_static
@@ -83,26 +100,23 @@ r_int
 r_int
 op_star
 )paren
-l_int|0xc40
+id|__LC_KERNEL_STACK
 )paren
 op_minus
-l_int|8192
+id|THREAD_SIZE
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/* thread information allocation */
 DECL|macro|alloc_thread_info
-mdefine_line|#define alloc_thread_info() ((struct thread_info *) &bslash;&n;&t;__get_free_pages(GFP_KERNEL,1))
+mdefine_line|#define alloc_thread_info() ((struct thread_info *) &bslash;&n;&t;__get_free_pages(GFP_KERNEL,THREAD_ORDER))
 DECL|macro|free_thread_info
-mdefine_line|#define free_thread_info(ti) free_pages((unsigned long) (ti), 1)
+mdefine_line|#define free_thread_info(ti) free_pages((unsigned long) (ti),THREAD_ORDER)
 DECL|macro|get_thread_info
 mdefine_line|#define get_thread_info(ti) get_task_struct((ti)-&gt;task)
 DECL|macro|put_thread_info
 mdefine_line|#define put_thread_info(ti) put_task_struct((ti)-&gt;task)
 macro_line|#endif
-multiline_comment|/*&n; * Size of kernel stack for each process&n; */
-DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
 multiline_comment|/*&n; * thread information flags bit numbers&n; */
 DECL|macro|TIF_SYSCALL_TRACE
 mdefine_line|#define TIF_SYSCALL_TRACE&t;0&t;/* syscall trace active */
@@ -118,6 +132,8 @@ DECL|macro|TIF_USEDFPU
 mdefine_line|#define TIF_USEDFPU&t;&t;16&t;/* FPU was used by this task this quantum (SMP) */
 DECL|macro|TIF_POLLING_NRFLAG
 mdefine_line|#define TIF_POLLING_NRFLAG&t;17&t;/* true if poll_idle() is polling &n;&t;&t;&t;&t;&t;   TIF_NEED_RESCHED */
+DECL|macro|TIF_31BIT
+mdefine_line|#define TIF_31BIT&t;&t;18&t;/* 32bit process */ 
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1&lt;&lt;TIF_SYSCALL_TRACE)
 DECL|macro|_TIF_NOTIFY_RESUME
@@ -132,6 +148,8 @@ DECL|macro|_TIF_USEDFPU
 mdefine_line|#define _TIF_USEDFPU&t;&t;(1&lt;&lt;TIF_USEDFPU)
 DECL|macro|_TIF_POLLING_NRFLAG
 mdefine_line|#define _TIF_POLLING_NRFLAG&t;(1&lt;&lt;TIF_POLLING_NRFLAG)
+DECL|macro|_TIF_31BIT
+mdefine_line|#define _TIF_31BIT&t;&t;(1&lt;&lt;TIF_31BIT)
 macro_line|#endif /* __KERNEL__ */
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000

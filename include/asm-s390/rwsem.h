@@ -93,6 +93,7 @@ id|wait_list
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifndef __s390x__
 DECL|macro|RWSEM_UNLOCKED_VALUE
 mdefine_line|#define RWSEM_UNLOCKED_VALUE&t;0x00000000
 DECL|macro|RWSEM_ACTIVE_BIAS
@@ -101,6 +102,16 @@ DECL|macro|RWSEM_ACTIVE_MASK
 mdefine_line|#define RWSEM_ACTIVE_MASK&t;0x0000ffff
 DECL|macro|RWSEM_WAITING_BIAS
 mdefine_line|#define RWSEM_WAITING_BIAS&t;(-0x00010000)
+macro_line|#else /* __s390x__ */
+DECL|macro|RWSEM_UNLOCKED_VALUE
+mdefine_line|#define RWSEM_UNLOCKED_VALUE&t;0x0000000000000000L
+DECL|macro|RWSEM_ACTIVE_BIAS
+mdefine_line|#define RWSEM_ACTIVE_BIAS&t;0x0000000000000001L
+DECL|macro|RWSEM_ACTIVE_MASK
+mdefine_line|#define RWSEM_ACTIVE_MASK&t;0x00000000ffffffffL
+DECL|macro|RWSEM_WAITING_BIAS
+mdefine_line|#define RWSEM_WAITING_BIAS&t;(-0x0000000100000000L)
+macro_line|#endif /* __s390x__ */
 DECL|macro|RWSEM_ACTIVE_READ_BIAS
 mdefine_line|#define RWSEM_ACTIVE_READ_BIAS&t;RWSEM_ACTIVE_BIAS
 DECL|macro|RWSEM_ACTIVE_WRITE_BIAS
@@ -166,11 +177,19 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+macro_line|#ifndef __s390x__
 l_string|&quot;   l    %0,0(%2)&bslash;n&quot;
 l_string|&quot;0: lr   %1,%0&bslash;n&quot;
 l_string|&quot;   ahi  %1,%3&bslash;n&quot;
 l_string|&quot;   cs   %0,%1,0(%2)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
+macro_line|#else /* __s390x__ */
+l_string|&quot;   lg   %0,0(%2)&bslash;n&quot;
+l_string|&quot;0: lgr  %1,%0&bslash;n&quot;
+l_string|&quot;   aghi %1,%3&bslash;n&quot;
+l_string|&quot;   csg  %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   jl   0b&quot;
+macro_line|#endif /* __s390x__ */
 suffix:colon
 l_string|&quot;=&amp;d&quot;
 (paren
@@ -236,6 +255,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+macro_line|#ifndef __s390x__
 l_string|&quot;   l    %0,0(%2)&bslash;n&quot;
 l_string|&quot;0: ltr  %1,%0&bslash;n&quot;
 l_string|&quot;   jm   1f&bslash;n&quot;
@@ -243,6 +263,15 @@ l_string|&quot;   ahi  %1,%3&bslash;n&quot;
 l_string|&quot;   cs   %0,%1,0(%2)&bslash;n&quot;
 l_string|&quot;   jl   0b&bslash;n&quot;
 l_string|&quot;1:&quot;
+macro_line|#else /* __s390x__ */
+l_string|&quot;   lg   %0,0(%2)&bslash;n&quot;
+l_string|&quot;0: ltgr %1,%0&bslash;n&quot;
+l_string|&quot;   jm   1f&bslash;n&quot;
+l_string|&quot;   aghi %1,%3&bslash;n&quot;
+l_string|&quot;   csg  %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   jl   0b&bslash;n&quot;
+l_string|&quot;1:&quot;
+macro_line|#endif /* __s390x__ */
 suffix:colon
 l_string|&quot;=&amp;d&quot;
 (paren
@@ -311,11 +340,19 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+macro_line|#ifndef __s390x__
 l_string|&quot;   l    %0,0(%2)&bslash;n&quot;
 l_string|&quot;0: lr   %1,%0&bslash;n&quot;
 l_string|&quot;   a    %1,%3&bslash;n&quot;
 l_string|&quot;   cs   %0,%1,0(%2)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
+macro_line|#else /* __s390x__ */
+l_string|&quot;   lg   %0,0(%2)&bslash;n&quot;
+l_string|&quot;0: lgr  %1,%0&bslash;n&quot;
+l_string|&quot;   ag   %1,%3&bslash;n&quot;
+l_string|&quot;   csg  %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   jl   0b&quot;
+macro_line|#endif /* __s390x__ */
 suffix:colon
 l_string|&quot;=&amp;d&quot;
 (paren
@@ -379,11 +416,19 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+macro_line|#ifndef __s390x__
 l_string|&quot;   l    %0,0(%1)&bslash;n&quot;
 l_string|&quot;0: ltr  %0,%0&bslash;n&quot;
 l_string|&quot;   jnz  1f&bslash;n&quot;
 l_string|&quot;   cs   %0,%2,0(%1)&bslash;n&quot;
 l_string|&quot;   jl   0b&bslash;n&quot;
+macro_line|#else /* __s390x__ */
+l_string|&quot;   lg   %0,0(%1)&bslash;n&quot;
+l_string|&quot;0: ltgr %0,%0&bslash;n&quot;
+l_string|&quot;   jnz  1f&bslash;n&quot;
+l_string|&quot;   csg  %0,%2,0(%1)&bslash;n&quot;
+l_string|&quot;   jl   0b&bslash;n&quot;
+macro_line|#endif /* __s390x__ */
 l_string|&quot;1:&quot;
 suffix:colon
 l_string|&quot;=&amp;d&quot;
@@ -444,11 +489,19 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+macro_line|#ifndef __s390x__
 l_string|&quot;   l    %0,0(%2)&bslash;n&quot;
 l_string|&quot;0: lr   %1,%0&bslash;n&quot;
 l_string|&quot;   ahi  %1,%3&bslash;n&quot;
 l_string|&quot;   cs   %0,%1,0(%2)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
+macro_line|#else /* __s390x__ */
+l_string|&quot;   lg   %0,0(%2)&bslash;n&quot;
+l_string|&quot;0: lgr  %1,%0&bslash;n&quot;
+l_string|&quot;   aghi %1,%3&bslash;n&quot;
+l_string|&quot;   csg  %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   jl   0b&quot;
+macro_line|#endif /* __s390x__ */
 suffix:colon
 l_string|&quot;=&amp;d&quot;
 (paren
@@ -533,11 +586,19 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+macro_line|#ifndef __s390x__
 l_string|&quot;   l    %0,0(%2)&bslash;n&quot;
 l_string|&quot;0: lr   %1,%0&bslash;n&quot;
 l_string|&quot;   a    %1,%3&bslash;n&quot;
 l_string|&quot;   cs   %0,%1,0(%2)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
+macro_line|#else /* __s390x__ */
+l_string|&quot;   lg   %0,0(%2)&bslash;n&quot;
+l_string|&quot;0: lgr  %1,%0&bslash;n&quot;
+l_string|&quot;   ag   %1,%3&bslash;n&quot;
+l_string|&quot;   csg  %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   jl   0b&quot;
+macro_line|#endif /* __s390x__ */
 suffix:colon
 l_string|&quot;=&amp;d&quot;
 (paren
@@ -621,11 +682,19 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+macro_line|#ifndef __s390x__
 l_string|&quot;   l    %0,0(%2)&bslash;n&quot;
 l_string|&quot;0: lr   %1,%0&bslash;n&quot;
 l_string|&quot;   a    %1,%3&bslash;n&quot;
 l_string|&quot;   cs   %0,%1,0(%2)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
+macro_line|#else /* __s390x__ */
+l_string|&quot;   lg   %0,0(%2)&bslash;n&quot;
+l_string|&quot;0: lgr  %1,%0&bslash;n&quot;
+l_string|&quot;   ag   %1,%3&bslash;n&quot;
+l_string|&quot;   csg  %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   jl   0b&quot;
+macro_line|#endif /* __s390x__ */
 suffix:colon
 l_string|&quot;=&amp;d&quot;
 (paren
@@ -694,11 +763,19 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+macro_line|#ifndef __s390x__
 l_string|&quot;   l    %0,0(%2)&bslash;n&quot;
 l_string|&quot;0: lr   %1,%0&bslash;n&quot;
 l_string|&quot;   ar   %1,%3&bslash;n&quot;
 l_string|&quot;   cs   %0,%1,0(%2)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
+macro_line|#else /* __s390x__ */
+l_string|&quot;   lg   %0,0(%2)&bslash;n&quot;
+l_string|&quot;0: lgr  %1,%0&bslash;n&quot;
+l_string|&quot;   agr  %1,%3&bslash;n&quot;
+l_string|&quot;   csg  %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   jl   0b&quot;
+macro_line|#endif /* __s390x__ */
 suffix:colon
 l_string|&quot;=&amp;d&quot;
 (paren
@@ -754,11 +831,19 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+macro_line|#ifndef __s390x__
 l_string|&quot;   l    %0,0(%2)&bslash;n&quot;
 l_string|&quot;0: lr   %1,%0&bslash;n&quot;
 l_string|&quot;   ar   %1,%3&bslash;n&quot;
 l_string|&quot;   cs   %0,%1,0(%2)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
+macro_line|#else /* __s390x__ */
+l_string|&quot;   lg   %0,0(%2)&bslash;n&quot;
+l_string|&quot;0: lgr  %1,%0&bslash;n&quot;
+l_string|&quot;   agr  %1,%3&bslash;n&quot;
+l_string|&quot;   csg  %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   jl   0b&quot;
+macro_line|#endif /* __s390x__ */
 suffix:colon
 l_string|&quot;=&amp;d&quot;
 (paren

@@ -3,6 +3,7 @@ macro_line|#ifndef _S390_PTRACE_H
 DECL|macro|_S390_PTRACE_H
 mdefine_line|#define _S390_PTRACE_H
 multiline_comment|/*&n; * Offsets in the user_regs_struct. They are used for the ptrace&n; * system call and in entry.S&n; */
+macro_line|#ifndef __s390x__
 DECL|macro|PT_PSWMASK
 mdefine_line|#define PT_PSWMASK  0x00
 DECL|macro|PT_PSWADDR
@@ -152,6 +153,136 @@ DECL|macro|PT_LASTOFF
 mdefine_line|#define PT_LASTOFF  PT_IEEE_IP
 DECL|macro|PT_ENDREGS
 mdefine_line|#define PT_ENDREGS  0x140-1
+DECL|macro|GPR_SIZE
+mdefine_line|#define GPR_SIZE&t;4
+DECL|macro|CR_SIZE
+mdefine_line|#define CR_SIZE&t;&t;4
+DECL|macro|STACK_FRAME_OVERHEAD
+mdefine_line|#define STACK_FRAME_OVERHEAD&t;96&t;/* size of minimum stack frame */
+macro_line|#else /* __s390x__ */
+DECL|macro|PT_PSWMASK
+mdefine_line|#define PT_PSWMASK  0x00
+DECL|macro|PT_PSWADDR
+mdefine_line|#define PT_PSWADDR  0x08
+DECL|macro|PT_GPR0
+mdefine_line|#define PT_GPR0     0x10
+DECL|macro|PT_GPR1
+mdefine_line|#define PT_GPR1     0x18
+DECL|macro|PT_GPR2
+mdefine_line|#define PT_GPR2     0x20
+DECL|macro|PT_GPR3
+mdefine_line|#define PT_GPR3     0x28
+DECL|macro|PT_GPR4
+mdefine_line|#define PT_GPR4     0x30
+DECL|macro|PT_GPR5
+mdefine_line|#define PT_GPR5     0x38
+DECL|macro|PT_GPR6
+mdefine_line|#define PT_GPR6     0x40
+DECL|macro|PT_GPR7
+mdefine_line|#define PT_GPR7     0x48
+DECL|macro|PT_GPR8
+mdefine_line|#define PT_GPR8     0x50
+DECL|macro|PT_GPR9
+mdefine_line|#define PT_GPR9     0x58
+DECL|macro|PT_GPR10
+mdefine_line|#define PT_GPR10    0x60
+DECL|macro|PT_GPR11
+mdefine_line|#define PT_GPR11    0x68
+DECL|macro|PT_GPR12
+mdefine_line|#define PT_GPR12    0x70
+DECL|macro|PT_GPR13
+mdefine_line|#define PT_GPR13    0x78
+DECL|macro|PT_GPR14
+mdefine_line|#define PT_GPR14    0x80
+DECL|macro|PT_GPR15
+mdefine_line|#define PT_GPR15    0x88
+DECL|macro|PT_ACR0
+mdefine_line|#define PT_ACR0     0x90
+DECL|macro|PT_ACR1
+mdefine_line|#define PT_ACR1     0x94
+DECL|macro|PT_ACR2
+mdefine_line|#define PT_ACR2     0x98
+DECL|macro|PT_ACR3
+mdefine_line|#define PT_ACR3     0x9C
+DECL|macro|PT_ACR4
+mdefine_line|#define PT_ACR4&t;    0xA0
+DECL|macro|PT_ACR5
+mdefine_line|#define PT_ACR5&t;    0xA4
+DECL|macro|PT_ACR6
+mdefine_line|#define PT_ACR6&t;    0xA8
+DECL|macro|PT_ACR7
+mdefine_line|#define PT_ACR7&t;    0xAC
+DECL|macro|PT_ACR8
+mdefine_line|#define PT_ACR8&t;    0xB0
+DECL|macro|PT_ACR9
+mdefine_line|#define PT_ACR9&t;    0xB4
+DECL|macro|PT_ACR10
+mdefine_line|#define PT_ACR10    0xB8
+DECL|macro|PT_ACR11
+mdefine_line|#define PT_ACR11    0xBC
+DECL|macro|PT_ACR12
+mdefine_line|#define PT_ACR12    0xC0
+DECL|macro|PT_ACR13
+mdefine_line|#define PT_ACR13    0xC4
+DECL|macro|PT_ACR14
+mdefine_line|#define PT_ACR14    0xC8
+DECL|macro|PT_ACR15
+mdefine_line|#define PT_ACR15    0xCC
+DECL|macro|PT_ORIGGPR2
+mdefine_line|#define PT_ORIGGPR2 0xD0
+DECL|macro|PT_FPC
+mdefine_line|#define PT_FPC&t;    0xD8
+DECL|macro|PT_FPR0
+mdefine_line|#define PT_FPR0     0xE0
+DECL|macro|PT_FPR1
+mdefine_line|#define PT_FPR1     0xE8
+DECL|macro|PT_FPR2
+mdefine_line|#define PT_FPR2     0xF0
+DECL|macro|PT_FPR3
+mdefine_line|#define PT_FPR3     0xF8
+DECL|macro|PT_FPR4
+mdefine_line|#define PT_FPR4     0x100
+DECL|macro|PT_FPR5
+mdefine_line|#define PT_FPR5     0x108
+DECL|macro|PT_FPR6
+mdefine_line|#define PT_FPR6     0x110
+DECL|macro|PT_FPR7
+mdefine_line|#define PT_FPR7     0x118
+DECL|macro|PT_FPR8
+mdefine_line|#define PT_FPR8     0x120
+DECL|macro|PT_FPR9
+mdefine_line|#define PT_FPR9     0x128
+DECL|macro|PT_FPR10
+mdefine_line|#define PT_FPR10    0x130
+DECL|macro|PT_FPR11
+mdefine_line|#define PT_FPR11    0x138
+DECL|macro|PT_FPR12
+mdefine_line|#define PT_FPR12    0x140
+DECL|macro|PT_FPR13
+mdefine_line|#define PT_FPR13    0x148
+DECL|macro|PT_FPR14
+mdefine_line|#define PT_FPR14    0x150
+DECL|macro|PT_FPR15
+mdefine_line|#define PT_FPR15    0x158
+DECL|macro|PT_CR_9
+mdefine_line|#define PT_CR_9     0x160
+DECL|macro|PT_CR_10
+mdefine_line|#define PT_CR_10    0x168
+DECL|macro|PT_CR_11
+mdefine_line|#define PT_CR_11    0x170
+DECL|macro|PT_IEEE_IP
+mdefine_line|#define PT_IEEE_IP  0x1A8
+DECL|macro|PT_LASTOFF
+mdefine_line|#define PT_LASTOFF  PT_IEEE_IP
+DECL|macro|PT_ENDREGS
+mdefine_line|#define PT_ENDREGS  0x1B0-1
+DECL|macro|GPR_SIZE
+mdefine_line|#define GPR_SIZE&t;8
+DECL|macro|CR_SIZE
+mdefine_line|#define CR_SIZE&t;&t;8
+DECL|macro|STACK_FRAME_OVERHEAD
+mdefine_line|#define STACK_FRAME_OVERHEAD    160      /* size of minimum stack frame */
+macro_line|#endif /* __s390x__ */
 DECL|macro|NUM_GPRS
 mdefine_line|#define NUM_GPRS&t;16
 DECL|macro|NUM_FPRS
@@ -160,20 +291,14 @@ DECL|macro|NUM_CRS
 mdefine_line|#define NUM_CRS&t;&t;16
 DECL|macro|NUM_ACRS
 mdefine_line|#define NUM_ACRS&t;16
-DECL|macro|GPR_SIZE
-mdefine_line|#define GPR_SIZE&t;4
 DECL|macro|FPR_SIZE
 mdefine_line|#define FPR_SIZE&t;8
 DECL|macro|FPC_SIZE
 mdefine_line|#define FPC_SIZE&t;4
 DECL|macro|FPC_PAD_SIZE
 mdefine_line|#define FPC_PAD_SIZE&t;4 /* gcc insists on aligning the fpregs */
-DECL|macro|CR_SIZE
-mdefine_line|#define CR_SIZE&t;&t;4
 DECL|macro|ACR_SIZE
 mdefine_line|#define ACR_SIZE&t;4
-DECL|macro|STACK_FRAME_OVERHEAD
-mdefine_line|#define STACK_FRAME_OVERHEAD&t;96&t;/* size of minimum stack frame */
 DECL|macro|PTRACE_OLDSETOPTIONS
 mdefine_line|#define PTRACE_OLDSETOPTIONS         21
 macro_line|#ifndef __ASSEMBLY__
@@ -181,72 +306,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
-multiline_comment|/* this typedef defines how a Program Status Word looks like */
-r_typedef
-r_struct
-(brace
-DECL|member|mask
-id|__u32
-id|mask
-suffix:semicolon
-DECL|member|addr
-id|__u32
-id|addr
-suffix:semicolon
-DECL|typedef|psw_t
-)brace
-id|__attribute__
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|8
-)paren
-)paren
-)paren
-id|psw_t
-suffix:semicolon
-DECL|macro|PSW_MASK_PER
-mdefine_line|#define PSW_MASK_PER&t;&t;0x40000000UL
-DECL|macro|PSW_MASK_DAT
-mdefine_line|#define PSW_MASK_DAT&t;&t;0x04000000UL
-DECL|macro|PSW_MASK_IO
-mdefine_line|#define PSW_MASK_IO&t;&t;0x02000000UL
-DECL|macro|PSW_MASK_EXT
-mdefine_line|#define PSW_MASK_EXT&t;&t;0x01000000UL
-DECL|macro|PSW_MASK_KEY
-mdefine_line|#define PSW_MASK_KEY&t;&t;0x00F00000UL
-DECL|macro|PSW_MASK_MCHECK
-mdefine_line|#define PSW_MASK_MCHECK&t;&t;0x00040000UL
-DECL|macro|PSW_MASK_WAIT
-mdefine_line|#define PSW_MASK_WAIT&t;&t;0x00020000UL
-DECL|macro|PSW_MASK_PSTATE
-mdefine_line|#define PSW_MASK_PSTATE&t;&t;0x00010000UL
-DECL|macro|PSW_MASK_ASC
-mdefine_line|#define PSW_MASK_ASC&t;&t;0x0000C000UL
-DECL|macro|PSW_MASK_CC
-mdefine_line|#define PSW_MASK_CC&t;&t;0x00003000UL
-DECL|macro|PSW_MASK_PM
-mdefine_line|#define PSW_MASK_PM&t;&t;0x00000F00UL
-DECL|macro|PSW_ADDR_AMODE31
-mdefine_line|#define PSW_ADDR_AMODE31&t;0x80000000UL
-DECL|macro|PSW_ADDR_INSN
-mdefine_line|#define PSW_ADDR_INSN&t;&t;0x7FFFFFFFUL
-DECL|macro|PSW_BASE_BITS
-mdefine_line|#define PSW_BASE_BITS&t;&t;0x00080000UL
-DECL|macro|PSW_ASC_PRIMARY
-mdefine_line|#define PSW_ASC_PRIMARY&t;&t;0x00000000UL
-DECL|macro|PSW_ASC_ACCREG
-mdefine_line|#define PSW_ASC_ACCREG&t;&t;0x00004000UL
-DECL|macro|PSW_ASC_SECONDARY
-mdefine_line|#define PSW_ASC_SECONDARY&t;0x00008000UL
-DECL|macro|PSW_ASC_HOME
-mdefine_line|#define PSW_ASC_HOME&t;&t;0x0000C000UL
-DECL|macro|PSW_KERNEL_BITS
-mdefine_line|#define PSW_KERNEL_BITS&t;(PSW_BASE_BITS | PSW_MASK_DAT | PSW_ASC_PRIMARY)
-DECL|macro|PSW_USER_BITS
-mdefine_line|#define PSW_USER_BITS&t;(PSW_BASE_BITS | PSW_MASK_DAT | PSW_ASC_HOME | &bslash;&n;&t;&t;&t; PSW_MASK_IO | PSW_MASK_EXT | PSW_MASK_MCHECK | &bslash;&n;&t;&t;&t; PSW_MASK_PSTATE)
 r_typedef
 r_union
 (brace
@@ -308,6 +367,117 @@ DECL|macro|FPC_RM_MASK
 mdefine_line|#define FPC_RM_MASK             0x00000003
 DECL|macro|FPC_VALID_MASK
 mdefine_line|#define FPC_VALID_MASK          0xF8F8FF03
+multiline_comment|/* this typedef defines how a Program Status Word looks like */
+r_typedef
+r_struct
+(brace
+DECL|member|mask
+r_int
+r_int
+id|mask
+suffix:semicolon
+DECL|member|addr
+r_int
+r_int
+id|addr
+suffix:semicolon
+DECL|typedef|psw_t
+)brace
+id|__attribute__
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|8
+)paren
+)paren
+)paren
+id|psw_t
+suffix:semicolon
+macro_line|#ifndef __s390x__
+DECL|macro|PSW_MASK_PER
+mdefine_line|#define PSW_MASK_PER&t;&t;0x40000000UL
+DECL|macro|PSW_MASK_DAT
+mdefine_line|#define PSW_MASK_DAT&t;&t;0x04000000UL
+DECL|macro|PSW_MASK_IO
+mdefine_line|#define PSW_MASK_IO&t;&t;0x02000000UL
+DECL|macro|PSW_MASK_EXT
+mdefine_line|#define PSW_MASK_EXT&t;&t;0x01000000UL
+DECL|macro|PSW_MASK_KEY
+mdefine_line|#define PSW_MASK_KEY&t;&t;0x00F00000UL
+DECL|macro|PSW_MASK_MCHECK
+mdefine_line|#define PSW_MASK_MCHECK&t;&t;0x00040000UL
+DECL|macro|PSW_MASK_WAIT
+mdefine_line|#define PSW_MASK_WAIT&t;&t;0x00020000UL
+DECL|macro|PSW_MASK_PSTATE
+mdefine_line|#define PSW_MASK_PSTATE&t;&t;0x00010000UL
+DECL|macro|PSW_MASK_ASC
+mdefine_line|#define PSW_MASK_ASC&t;&t;0x0000C000UL
+DECL|macro|PSW_MASK_CC
+mdefine_line|#define PSW_MASK_CC&t;&t;0x00003000UL
+DECL|macro|PSW_MASK_PM
+mdefine_line|#define PSW_MASK_PM&t;&t;0x00000F00UL
+DECL|macro|PSW_ADDR_AMODE
+mdefine_line|#define PSW_ADDR_AMODE&t;&t;0x80000000UL
+DECL|macro|PSW_ADDR_INSN
+mdefine_line|#define PSW_ADDR_INSN&t;&t;0x7FFFFFFFUL
+DECL|macro|PSW_BASE_BITS
+mdefine_line|#define PSW_BASE_BITS&t;&t;0x00080000UL
+DECL|macro|PSW_ASC_PRIMARY
+mdefine_line|#define PSW_ASC_PRIMARY&t;&t;0x00000000UL
+DECL|macro|PSW_ASC_ACCREG
+mdefine_line|#define PSW_ASC_ACCREG&t;&t;0x00004000UL
+DECL|macro|PSW_ASC_SECONDARY
+mdefine_line|#define PSW_ASC_SECONDARY&t;0x00008000UL
+DECL|macro|PSW_ASC_HOME
+mdefine_line|#define PSW_ASC_HOME&t;&t;0x0000C000UL
+macro_line|#else /* __s390x__ */
+DECL|macro|PSW_MASK_PER
+mdefine_line|#define PSW_MASK_PER&t;&t;0x4000000000000000UL
+DECL|macro|PSW_MASK_DAT
+mdefine_line|#define PSW_MASK_DAT&t;&t;0x0400000000000000UL
+DECL|macro|PSW_MASK_IO
+mdefine_line|#define PSW_MASK_IO&t;&t;0x0200000000000000UL
+DECL|macro|PSW_MASK_EXT
+mdefine_line|#define PSW_MASK_EXT&t;&t;0x0100000000000000UL
+DECL|macro|PSW_MASK_KEY
+mdefine_line|#define PSW_MASK_KEY&t;&t;0x00F0000000000000UL
+DECL|macro|PSW_MASK_MCHECK
+mdefine_line|#define PSW_MASK_MCHECK&t;&t;0x0004000000000000UL
+DECL|macro|PSW_MASK_WAIT
+mdefine_line|#define PSW_MASK_WAIT&t;&t;0x0002000000000000UL
+DECL|macro|PSW_MASK_PSTATE
+mdefine_line|#define PSW_MASK_PSTATE&t;&t;0x0001000000000000UL
+DECL|macro|PSW_MASK_ASC
+mdefine_line|#define PSW_MASK_ASC&t;&t;0x0000C00000000000UL
+DECL|macro|PSW_MASK_CC
+mdefine_line|#define PSW_MASK_CC&t;&t;0x0000300000000000UL
+DECL|macro|PSW_MASK_PM
+mdefine_line|#define PSW_MASK_PM&t;&t;0x00000F0000000000UL
+DECL|macro|PSW_ADDR_AMODE
+mdefine_line|#define PSW_ADDR_AMODE&t;&t;0x0000000000000000UL
+DECL|macro|PSW_ADDR_INSN
+mdefine_line|#define PSW_ADDR_INSN&t;&t;0xFFFFFFFFFFFFFFFFUL
+DECL|macro|PSW_BASE_BITS
+mdefine_line|#define PSW_BASE_BITS&t;&t;0x0000000180000000UL
+DECL|macro|PSW_BASE32_BITS
+mdefine_line|#define PSW_BASE32_BITS&t;&t;0x0000000080000000UL
+DECL|macro|PSW_ASC_PRIMARY
+mdefine_line|#define PSW_ASC_PRIMARY&t;&t;0x0000000000000000UL
+DECL|macro|PSW_ASC_ACCREG
+mdefine_line|#define PSW_ASC_ACCREG&t;&t;0x0000400000000000UL
+DECL|macro|PSW_ASC_SECONDARY
+mdefine_line|#define PSW_ASC_SECONDARY&t;0x0000800000000000UL
+DECL|macro|PSW_ASC_HOME
+mdefine_line|#define PSW_ASC_HOME&t;&t;0x0000C00000000000UL
+DECL|macro|PSW_USER32_BITS
+mdefine_line|#define PSW_USER32_BITS (PSW_BASE32_BITS | PSW_MASK_DAT | PSW_ASC_HOME | &bslash;&n;&t;&t;&t; PSW_MASK_IO | PSW_MASK_EXT | PSW_MASK_MCHECK | &bslash;&n;&t;&t;&t; PSW_MASK_PSTATE)
+macro_line|#endif /* __s390x__ */
+DECL|macro|PSW_KERNEL_BITS
+mdefine_line|#define PSW_KERNEL_BITS&t;(PSW_BASE_BITS | PSW_MASK_DAT | PSW_ASC_PRIMARY)
+DECL|macro|PSW_USER_BITS
+mdefine_line|#define PSW_USER_BITS&t;(PSW_BASE_BITS | PSW_MASK_DAT | PSW_ASC_HOME | &bslash;&n;&t;&t;&t; PSW_MASK_IO | PSW_MASK_EXT | PSW_MASK_MCHECK | &bslash;&n;&t;&t;&t; PSW_MASK_PSTATE)
 multiline_comment|/*&n; * The first entries in pt_regs and user_regs_struct&n; * are common for the two structures. The s390_regs structure&n; * covers the common parts. It simplifies copying the common part&n; * between the three structures.&n; */
 r_typedef
 r_struct
@@ -317,21 +487,24 @@ id|psw_t
 id|psw
 suffix:semicolon
 DECL|member|gprs
-id|__u32
+r_int
+r_int
 id|gprs
 (braket
 id|NUM_GPRS
 )braket
 suffix:semicolon
 DECL|member|acrs
-id|__u32
+r_int
+r_int
 id|acrs
 (braket
 id|NUM_ACRS
 )braket
 suffix:semicolon
 DECL|member|orig_gpr2
-id|__u32
+r_int
+r_int
 id|orig_gpr2
 suffix:semicolon
 DECL|typedef|s390_regs
@@ -348,35 +521,46 @@ id|psw_t
 id|psw
 suffix:semicolon
 DECL|member|gprs
-id|__u32
+r_int
+r_int
 id|gprs
 (braket
 id|NUM_GPRS
 )braket
 suffix:semicolon
 DECL|member|acrs
-id|__u32
+r_int
+r_int
 id|acrs
 (braket
 id|NUM_ACRS
 )braket
 suffix:semicolon
 DECL|member|orig_gpr2
-id|__u32
+r_int
+r_int
 id|orig_gpr2
 suffix:semicolon
 DECL|member|trap
-id|__u32
+r_int
+r_int
 id|trap
 suffix:semicolon
 )brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Now for the program event recording (trace) definitions.&n; */
 r_typedef
 r_struct
 (brace
 DECL|member|cr
-id|__u32
+r_int
+r_int
 id|cr
 (braket
 l_int|3
@@ -387,10 +571,16 @@ DECL|typedef|per_cr_words
 id|per_cr_words
 suffix:semicolon
 DECL|macro|PER_EM_MASK
-mdefine_line|#define PER_EM_MASK 0xE8000000
+mdefine_line|#define PER_EM_MASK 0xE8000000UL
 r_typedef
 r_struct
 (brace
+macro_line|#ifdef __s390x__
+r_int
+suffix:colon
+l_int|32
+suffix:semicolon
+macro_line|#endif /* __s390x__ */
 DECL|member|em_branching
 r_int
 id|em_branching
@@ -447,11 +637,13 @@ suffix:colon
 l_int|21
 suffix:semicolon
 DECL|member|starting_addr
-id|addr_t
+r_int
+r_int
 id|starting_addr
 suffix:semicolon
 DECL|member|ending_addr
-id|addr_t
+r_int
+r_int
 id|ending_addr
 suffix:semicolon
 DECL|typedef|per_cr_bits
@@ -462,20 +654,20 @@ r_typedef
 r_struct
 (brace
 DECL|member|perc_atmid
-id|__u16
+r_int
+r_int
 id|perc_atmid
 suffix:semicolon
-multiline_comment|/* 0x096 */
 DECL|member|address
-id|__u32
+r_int
+r_int
 id|address
 suffix:semicolon
-multiline_comment|/* 0x098 */
 DECL|member|access_id
-id|__u8
+r_int
+r_char
 id|access_id
 suffix:semicolon
-multiline_comment|/* 0x0a1 */
 DECL|typedef|per_lowcore_words
 )brace
 id|per_lowcore_words
@@ -489,7 +681,6 @@ id|perc_branching
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 0x096 */
 DECL|member|perc_instruction_fetch
 r_int
 id|perc_instruction_fetch
@@ -516,7 +707,13 @@ l_int|1
 suffix:semicolon
 r_int
 suffix:colon
-l_int|4
+l_int|3
+suffix:semicolon
+DECL|member|atmid_psw_bit_31
+r_int
+id|atmid_psw_bit_31
+suffix:colon
+l_int|1
 suffix:semicolon
 DECL|member|atmid_validity_bit
 r_int
@@ -555,15 +752,14 @@ suffix:colon
 l_int|2
 suffix:semicolon
 DECL|member|address
-id|addr_t
+r_int
+r_int
 id|address
 suffix:semicolon
-multiline_comment|/* 0x098 */
 r_int
 suffix:colon
 l_int|4
 suffix:semicolon
-multiline_comment|/* 0x0a1 */
 DECL|member|access_id
 r_int
 id|access_id
@@ -610,11 +806,13 @@ l_int|30
 suffix:semicolon
 multiline_comment|/*&n;&t; * These addresses are copied into cr10 &amp; cr11 if single&n;&t; * stepping is switched off&n;&t; */
 DECL|member|starting_addr
-id|__u32
+r_int
+r_int
 id|starting_addr
 suffix:semicolon
 DECL|member|ending_addr
-id|__u32
+r_int
+r_int
 id|ending_addr
 suffix:semicolon
 r_union
@@ -639,15 +837,18 @@ r_typedef
 r_struct
 (brace
 DECL|member|len
-id|__u32
+r_int
+r_int
 id|len
 suffix:semicolon
 DECL|member|kernel_addr
-id|addr_t
+r_int
+r_int
 id|kernel_addr
 suffix:semicolon
 DECL|member|process_addr
-id|addr_t
+r_int
+r_int
 id|process_addr
 suffix:semicolon
 DECL|typedef|ptrace_area
@@ -689,11 +890,13 @@ r_typedef
 r_struct
 (brace
 DECL|member|lowaddr
-id|addr_t
+r_int
+r_int
 id|lowaddr
 suffix:semicolon
 DECL|member|hiaddr
-id|addr_t
+r_int
+r_int
 id|hiaddr
 suffix:semicolon
 DECL|member|prot
@@ -723,21 +926,24 @@ id|psw_t
 id|psw
 suffix:semicolon
 DECL|member|gprs
-id|__u32
+r_int
+r_int
 id|gprs
 (braket
 id|NUM_GPRS
 )braket
 suffix:semicolon
 DECL|member|acrs
-id|__u32
+r_int
+r_int
 id|acrs
 (braket
 id|NUM_ACRS
 )braket
 suffix:semicolon
 DECL|member|orig_gpr2
-id|__u32
+r_int
+r_int
 id|orig_gpr2
 suffix:semicolon
 DECL|member|fp_regs
@@ -750,7 +956,8 @@ id|per_struct
 id|per_info
 suffix:semicolon
 DECL|member|ieee_instruction_pointer
-id|addr_t
+r_int
+r_int
 id|ieee_instruction_pointer
 suffix:semicolon
 multiline_comment|/* Used to give failing instruction back to user for ieee exceptions */
@@ -760,7 +967,7 @@ macro_line|#ifdef __KERNEL__
 DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) (((regs)-&gt;psw.mask &amp; PSW_MASK_PSTATE) != 0)
 DECL|macro|instruction_pointer
-mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;psw.addr &amp; PSW_MASK_INSN)
+mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;psw.addr &amp; PSW_ADDR_INSN)
 r_extern
 r_void
 id|show_regs

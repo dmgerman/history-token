@@ -298,6 +298,7 @@ DECL|member|_u
 )brace
 id|_u
 suffix:semicolon
+macro_line|#ifndef __s390x__ /* lovely */
 DECL|member|sa_mask
 id|sigset_t
 id|sa_mask
@@ -317,6 +318,27 @@ id|sa_restorer
 r_void
 )paren
 suffix:semicolon
+macro_line|#else  /* __s390x__ */
+DECL|member|sa_flags
+r_int
+r_int
+id|sa_flags
+suffix:semicolon
+DECL|member|sa_restorer
+r_void
+(paren
+op_star
+id|sa_restorer
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|member|sa_mask
+id|sigset_t
+id|sa_mask
+suffix:semicolon
+macro_line|#endif /* __s390x__ */
 )brace
 suffix:semicolon
 DECL|macro|sa_handler

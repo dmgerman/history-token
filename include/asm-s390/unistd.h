@@ -485,23 +485,176 @@ DECL|macro|__NR_clock_nanosleep
 mdefine_line|#define __NR_clock_nanosleep&t;(__NR_timer_create+8)
 DECL|macro|NR_syscalls
 mdefine_line|#define NR_syscalls 263
+multiline_comment|/* &n; * There are some system calls that are not present on 64 bit, some&n; * have a different name although they do the same (e.g. __NR_chown32&n; * is __NR_chown on 64 bit).&n; */
+macro_line|#ifdef __s390x__
+DECL|macro|__NR_time
+macro_line|#undef  __NR_time
+DECL|macro|__NR_lchown
+macro_line|#undef  __NR_lchown
+DECL|macro|__NR_setuid
+macro_line|#undef  __NR_setuid
+DECL|macro|__NR_getuid
+macro_line|#undef  __NR_getuid
+DECL|macro|__NR_stime
+macro_line|#undef  __NR_stime
+DECL|macro|__NR_setgid
+macro_line|#undef  __NR_setgid
+DECL|macro|__NR_getgid
+macro_line|#undef  __NR_getgid
+DECL|macro|__NR_geteuid
+macro_line|#undef  __NR_geteuid
+DECL|macro|__NR_getegid
+macro_line|#undef  __NR_getegid
+DECL|macro|__NR_setreuid
+macro_line|#undef  __NR_setreuid
+DECL|macro|__NR_setregid
+macro_line|#undef  __NR_setregid
+DECL|macro|__NR_getrlimit
+macro_line|#undef  __NR_getrlimit
+DECL|macro|__NR_getgroups
+macro_line|#undef  __NR_getgroups
+DECL|macro|__NR_setgroups
+macro_line|#undef  __NR_setgroups
+DECL|macro|__NR_fchown
+macro_line|#undef  __NR_fchown
+DECL|macro|__NR_ioperm
+macro_line|#undef  __NR_ioperm
+DECL|macro|__NR_setfsuid
+macro_line|#undef  __NR_setfsuid
+DECL|macro|__NR_setfsgid
+macro_line|#undef  __NR_setfsgid
+DECL|macro|__NR__llseek
+macro_line|#undef  __NR__llseek
+DECL|macro|__NR__newselect
+macro_line|#undef  __NR__newselect
+DECL|macro|__NR_setresuid
+macro_line|#undef  __NR_setresuid
+DECL|macro|__NR_getresuid
+macro_line|#undef  __NR_getresuid
+DECL|macro|__NR_setresgid
+macro_line|#undef  __NR_setresgid
+DECL|macro|__NR_getresgid
+macro_line|#undef  __NR_getresgid
+DECL|macro|__NR_chown
+macro_line|#undef  __NR_chown
+DECL|macro|__NR_ugetrlimit
+macro_line|#undef  __NR_ugetrlimit
+DECL|macro|__NR_mmap2
+macro_line|#undef  __NR_mmap2
+DECL|macro|__NR_truncate64
+macro_line|#undef  __NR_truncate64
+DECL|macro|__NR_ftruncate64
+macro_line|#undef  __NR_ftruncate64
+DECL|macro|__NR_stat64
+macro_line|#undef  __NR_stat64
+DECL|macro|__NR_lstat64
+macro_line|#undef  __NR_lstat64
+DECL|macro|__NR_fstat64
+macro_line|#undef  __NR_fstat64
+DECL|macro|__NR_lchown32
+macro_line|#undef  __NR_lchown32
+DECL|macro|__NR_getuid32
+macro_line|#undef  __NR_getuid32
+DECL|macro|__NR_getgid32
+macro_line|#undef  __NR_getgid32
+DECL|macro|__NR_geteuid32
+macro_line|#undef  __NR_geteuid32
+DECL|macro|__NR_getegid32
+macro_line|#undef  __NR_getegid32
+DECL|macro|__NR_setreuid32
+macro_line|#undef  __NR_setreuid32
+DECL|macro|__NR_setregid32
+macro_line|#undef  __NR_setregid32
+DECL|macro|__NR_getgroups32
+macro_line|#undef  __NR_getgroups32
+DECL|macro|__NR_setgroups32
+macro_line|#undef  __NR_setgroups32
+DECL|macro|__NR_fchown32
+macro_line|#undef  __NR_fchown32
+DECL|macro|__NR_setresuid32
+macro_line|#undef  __NR_setresuid32
+DECL|macro|__NR_getresuid32
+macro_line|#undef  __NR_getresuid32
+DECL|macro|__NR_setresgid32
+macro_line|#undef  __NR_setresgid32
+DECL|macro|__NR_getresgid32
+macro_line|#undef  __NR_getresgid32
+DECL|macro|__NR_chown32
+macro_line|#undef  __NR_chown32
+DECL|macro|__NR_setuid32
+macro_line|#undef  __NR_setuid32
+DECL|macro|__NR_setgid32
+macro_line|#undef  __NR_setgid32
+DECL|macro|__NR_setfsuid32
+macro_line|#undef  __NR_setfsuid32
+DECL|macro|__NR_setfsgid32
+macro_line|#undef  __NR_setfsgid32
+DECL|macro|__NR_getdents64
+macro_line|#undef  __NR_getdents64
+DECL|macro|__NR_fcntl64
+macro_line|#undef  __NR_fcntl64
+DECL|macro|__NR_sendfile64
+macro_line|#undef  __NR_sendfile64
+DECL|macro|__NR_select
+mdefine_line|#define __NR_select&t;&t;142
+DECL|macro|__NR_getrlimit
+mdefine_line|#define __NR_getrlimit&t;&t;191&t;/* SuS compliant getrlimit */
+DECL|macro|__NR_lchown
+mdefine_line|#define __NR_lchown  &t;&t;198
+DECL|macro|__NR_getuid
+mdefine_line|#define __NR_getuid  &t;&t;199
+DECL|macro|__NR_getgid
+mdefine_line|#define __NR_getgid  &t;&t;200
+DECL|macro|__NR_geteuid
+mdefine_line|#define __NR_geteuid  &t;&t;201
+DECL|macro|__NR_getegid
+mdefine_line|#define __NR_getegid  &t;&t;202
+DECL|macro|__NR_setreuid
+mdefine_line|#define __NR_setreuid  &t;&t;203
+DECL|macro|__NR_setregid
+mdefine_line|#define __NR_setregid  &t;&t;204
+DECL|macro|__NR_getgroups
+mdefine_line|#define __NR_getgroups  &t;205
+DECL|macro|__NR_setgroups
+mdefine_line|#define __NR_setgroups  &t;206
+DECL|macro|__NR_fchown
+mdefine_line|#define __NR_fchown  &t;&t;207
+DECL|macro|__NR_setresuid
+mdefine_line|#define __NR_setresuid  &t;208
+DECL|macro|__NR_getresuid
+mdefine_line|#define __NR_getresuid  &t;209
+DECL|macro|__NR_setresgid
+mdefine_line|#define __NR_setresgid  &t;210
+DECL|macro|__NR_getresgid
+mdefine_line|#define __NR_getresgid  &t;211
+DECL|macro|__NR_chown
+mdefine_line|#define __NR_chown  &t;&t;212
+DECL|macro|__NR_setuid
+mdefine_line|#define __NR_setuid  &t;&t;213
+DECL|macro|__NR_setgid
+mdefine_line|#define __NR_setgid  &t;&t;214
+DECL|macro|__NR_setfsuid
+mdefine_line|#define __NR_setfsuid  &t;&t;215
+DECL|macro|__NR_setfsgid
+mdefine_line|#define __NR_setfsgid  &t;&t;216
+macro_line|#endif
 multiline_comment|/* user-visible error numbers are in the range -1 - -122: see &lt;asm-s390/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res)&t;&t;&t;     &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;&t;&t;errno = -(res);&t;&t;&t;&t;     &bslash;&n;&t;&t;res = -1;&t;&t;&t;&t;     &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;return (type) (res);&t;&t;&t;&t;     &bslash;&n;} while (0)
 DECL|macro|_svc_clobber
 mdefine_line|#define _svc_clobber &quot;1&quot;, &quot;cc&quot;, &quot;memory&quot;
 DECL|macro|_syscall0
-mdefine_line|#define _syscall0(type,name)&t;&t;&t;&t;     &bslash;&n;type name(void) {&t;&t;&t;&t;&t;     &bslash;&n;&t;register long __svcres asm(&quot;2&quot;);&t;&t;     &bslash;&n;&t;long __res;&t;&t;&t;&t;&t;     &bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .if %b1 &lt; 256&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc %b1&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .else&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    lhi %%r1,%b1&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc 0&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .endif&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;: &quot;=d&quot; (__svcres)&t;&t;&t;     &bslash;&n;&t;&t;: &quot;i&quot; (__NR_##name)&t;&t;&t;     &bslash;&n;&t;&t;: _svc_clobber );&t;&t;&t;     &bslash;&n;&t;__res = __svcres;&t;&t;&t;&t;     &bslash;&n;&t;__syscall_return(type,__res);&t;&t;&t;     &bslash;&n;}
+mdefine_line|#define _syscall0(type,name)&t;&t;&t;&t;     &bslash;&n;type name(void) {&t;&t;&t;&t;&t;     &bslash;&n;&t;register long __svcres asm(&quot;2&quot;);&t;&t;     &bslash;&n;&t;long __res;&t;&t;&t;&t;&t;     &bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .if %1 &lt; 256&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc %b1&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .else&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    la  %%r1,%1&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc 0&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .endif&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;: &quot;=d&quot; (__svcres)&t;&t;&t;     &bslash;&n;&t;&t;: &quot;i&quot; (__NR_##name)&t;&t;&t;     &bslash;&n;&t;&t;: _svc_clobber );&t;&t;&t;     &bslash;&n;&t;__res = __svcres;&t;&t;&t;&t;     &bslash;&n;&t;__syscall_return(type,__res);&t;&t;&t;     &bslash;&n;}
 DECL|macro|_syscall1
-mdefine_line|#define _syscall1(type,name,type1,arg1)&t;&t;&t;     &bslash;&n;type name(type1 arg1) {&t;&t;&t;&t;&t;     &bslash;&n;&t;register type1 __arg1 asm(&quot;2&quot;) = arg1;&t;&t;     &bslash;&n;&t;register long __svcres asm(&quot;2&quot;);&t;&t;     &bslash;&n;&t;long __res;&t;&t;&t;&t;&t;     &bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .if %b1 &lt; 256&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc %b1&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .else&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    lhi %%r1,%b1&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc 0&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .endif&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;: &quot;=d&quot; (__svcres)&t;&t;&t;     &bslash;&n;&t;&t;: &quot;i&quot; (__NR_##name),&t;&t;&t;     &bslash;&n;&t;&t;  &quot;0&quot; (__arg1)&t;&t;&t;&t;     &bslash;&n;&t;&t;: _svc_clobber );&t;&t;&t;     &bslash;&n;&t;__res = __svcres;&t;&t;&t;&t;     &bslash;&n;&t;__syscall_return(type,__res);&t;&t;&t;     &bslash;&n;}
+mdefine_line|#define _syscall1(type,name,type1,arg1)&t;&t;&t;     &bslash;&n;type name(type1 arg1) {&t;&t;&t;&t;&t;     &bslash;&n;&t;register type1 __arg1 asm(&quot;2&quot;) = arg1;&t;&t;     &bslash;&n;&t;register long __svcres asm(&quot;2&quot;);&t;&t;     &bslash;&n;&t;long __res;&t;&t;&t;&t;&t;     &bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .if %1 &lt; 256&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc %b1&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .else&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    la  %%r1,%1&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc 0&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .endif&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;: &quot;=d&quot; (__svcres)&t;&t;&t;     &bslash;&n;&t;&t;: &quot;i&quot; (__NR_##name),&t;&t;&t;     &bslash;&n;&t;&t;  &quot;0&quot; (__arg1)&t;&t;&t;&t;     &bslash;&n;&t;&t;: _svc_clobber );&t;&t;&t;     &bslash;&n;&t;__res = __svcres;&t;&t;&t;&t;     &bslash;&n;&t;__syscall_return(type,__res);&t;&t;&t;     &bslash;&n;}
 DECL|macro|_syscall2
-mdefine_line|#define _syscall2(type,name,type1,arg1,type2,arg2)&t;     &bslash;&n;type name(type1 arg1, type2 arg2) {&t;&t;&t;     &bslash;&n;&t;register type1 __arg1 asm(&quot;2&quot;) = arg1;&t;&t;     &bslash;&n;&t;register type2 __arg2 asm(&quot;3&quot;) = arg2;&t;&t;     &bslash;&n;&t;register long __svcres asm(&quot;2&quot;);&t;&t;     &bslash;&n;&t;long __res;&t;&t;&t;&t;&t;     &bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .if %b1 &lt; 256&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc %b1&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .else&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    lhi %%r1,%b1&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc 0&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .endif&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;: &quot;=d&quot; (__svcres)&t;&t;&t;     &bslash;&n;&t;&t;: &quot;i&quot; (__NR_##name),&t;&t;&t;     &bslash;&n;&t;&t;  &quot;0&quot; (__arg1),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg2)&t;&t;&t;&t;     &bslash;&n;&t;&t;: _svc_clobber );&t;&t;&t;     &bslash;&n;&t;__res = __svcres;&t;&t;&t;&t;     &bslash;&n;&t;__syscall_return(type,__res);&t;&t;&t;     &bslash;&n;}
+mdefine_line|#define _syscall2(type,name,type1,arg1,type2,arg2)&t;     &bslash;&n;type name(type1 arg1, type2 arg2) {&t;&t;&t;     &bslash;&n;&t;register type1 __arg1 asm(&quot;2&quot;) = arg1;&t;&t;     &bslash;&n;&t;register type2 __arg2 asm(&quot;3&quot;) = arg2;&t;&t;     &bslash;&n;&t;register long __svcres asm(&quot;2&quot;);&t;&t;     &bslash;&n;&t;long __res;&t;&t;&t;&t;&t;     &bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .if %1 &lt; 256&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc %b1&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .else&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    la %%r1,%1&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc 0&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .endif&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;: &quot;=d&quot; (__svcres)&t;&t;&t;     &bslash;&n;&t;&t;: &quot;i&quot; (__NR_##name),&t;&t;&t;     &bslash;&n;&t;&t;  &quot;0&quot; (__arg1),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg2)&t;&t;&t;&t;     &bslash;&n;&t;&t;: _svc_clobber );&t;&t;&t;     &bslash;&n;&t;__res = __svcres;&t;&t;&t;&t;     &bslash;&n;&t;__syscall_return(type,__res);&t;&t;&t;     &bslash;&n;}
 DECL|macro|_syscall3
-mdefine_line|#define _syscall3(type,name,type1,arg1,type2,arg2,type3,arg3)&bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3) {&t;&t;     &bslash;&n;&t;register type1 __arg1 asm(&quot;2&quot;) = arg1;&t;&t;     &bslash;&n;&t;register type2 __arg2 asm(&quot;3&quot;) = arg2;&t;&t;     &bslash;&n;&t;register type3 __arg3 asm(&quot;4&quot;) = arg3;&t;&t;     &bslash;&n;&t;register long __svcres asm(&quot;2&quot;);&t;&t;     &bslash;&n;&t;long __res;&t;&t;&t;&t;&t;     &bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .if %b1 &lt; 256&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc %b1&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .else&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    lhi %%r1,%b1&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc 0&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .endif&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;: &quot;=d&quot; (__svcres)&t;&t;&t;     &bslash;&n;&t;&t;: &quot;i&quot; (__NR_##name),&t;&t;&t;     &bslash;&n;&t;&t;  &quot;0&quot; (__arg1),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg2),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg3)&t;&t;&t;&t;     &bslash;&n;&t;&t;: _svc_clobber );&t;&t;&t;     &bslash;&n;&t;__res = __svcres;&t;&t;&t;&t;     &bslash;&n;&t;__syscall_return(type,__res);&t;&t;&t;     &bslash;&n;}
+mdefine_line|#define _syscall3(type,name,type1,arg1,type2,arg2,type3,arg3)&bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3) {&t;&t;     &bslash;&n;&t;register type1 __arg1 asm(&quot;2&quot;) = arg1;&t;&t;     &bslash;&n;&t;register type2 __arg2 asm(&quot;3&quot;) = arg2;&t;&t;     &bslash;&n;&t;register type3 __arg3 asm(&quot;4&quot;) = arg3;&t;&t;     &bslash;&n;&t;register long __svcres asm(&quot;2&quot;);&t;&t;     &bslash;&n;&t;long __res;&t;&t;&t;&t;&t;     &bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .if %1 &lt; 256&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc %b1&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .else&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    la  %%r1,%1&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc 0&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .endif&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;: &quot;=d&quot; (__svcres)&t;&t;&t;     &bslash;&n;&t;&t;: &quot;i&quot; (__NR_##name),&t;&t;&t;     &bslash;&n;&t;&t;  &quot;0&quot; (__arg1),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg2),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg3)&t;&t;&t;&t;     &bslash;&n;&t;&t;: _svc_clobber );&t;&t;&t;     &bslash;&n;&t;__res = __svcres;&t;&t;&t;&t;     &bslash;&n;&t;__syscall_return(type,__res);&t;&t;&t;     &bslash;&n;}
 DECL|macro|_syscall4
-mdefine_line|#define _syscall4(type,name,type1,arg1,type2,arg2,type3,arg3,&bslash;&n;&t;&t;  type4,name4)&t;&t;&t;&t;     &bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4) {  &bslash;&n;&t;register type1 __arg1 asm(&quot;2&quot;) = arg1;&t;&t;     &bslash;&n;&t;register type2 __arg2 asm(&quot;3&quot;) = arg2;&t;&t;     &bslash;&n;&t;register type3 __arg3 asm(&quot;4&quot;) = arg3;&t;&t;     &bslash;&n;&t;register type4 __arg4 asm(&quot;5&quot;) = arg4;&t;&t;     &bslash;&n;&t;register long __svcres asm(&quot;2&quot;);&t;&t;     &bslash;&n;&t;long __res;&t;&t;&t;&t;&t;     &bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .if %b1 &lt; 256&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc %b1&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .else&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    lhi %%r1,%b1&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc 0&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .endif&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;: &quot;=d&quot; (__svcres)&t;&t;&t;     &bslash;&n;&t;&t;: &quot;i&quot; (__NR_##name),&t;&t;&t;     &bslash;&n;&t;&t;  &quot;0&quot; (__arg1),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg2),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg3),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg4)&t;&t;&t;&t;     &bslash;&n;&t;&t;: _svc_clobber );&t;&t;&t;     &bslash;&n;&t;__res = __svcres;&t;&t;&t;&t;     &bslash;&n;&t;__syscall_return(type,__res);&t;&t;&t;     &bslash;&n;}
+mdefine_line|#define _syscall4(type,name,type1,arg1,type2,arg2,type3,arg3,&bslash;&n;&t;&t;  type4,name4)&t;&t;&t;&t;     &bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4) {  &bslash;&n;&t;register type1 __arg1 asm(&quot;2&quot;) = arg1;&t;&t;     &bslash;&n;&t;register type2 __arg2 asm(&quot;3&quot;) = arg2;&t;&t;     &bslash;&n;&t;register type3 __arg3 asm(&quot;4&quot;) = arg3;&t;&t;     &bslash;&n;&t;register type4 __arg4 asm(&quot;5&quot;) = arg4;&t;&t;     &bslash;&n;&t;register long __svcres asm(&quot;2&quot;);&t;&t;     &bslash;&n;&t;long __res;&t;&t;&t;&t;&t;     &bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .if %1 &lt; 256&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc %b1&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .else&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    la  %%r1,%1&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc 0&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .endif&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;: &quot;=d&quot; (__svcres)&t;&t;&t;     &bslash;&n;&t;&t;: &quot;i&quot; (__NR_##name),&t;&t;&t;     &bslash;&n;&t;&t;  &quot;0&quot; (__arg1),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg2),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg3),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg4)&t;&t;&t;&t;     &bslash;&n;&t;&t;: _svc_clobber );&t;&t;&t;     &bslash;&n;&t;__res = __svcres;&t;&t;&t;&t;     &bslash;&n;&t;__syscall_return(type,__res);&t;&t;&t;     &bslash;&n;}
 DECL|macro|_syscall5
-mdefine_line|#define _syscall5(type,name,type1,arg1,type2,arg2,type3,arg3,&bslash;&n;&t;&t;  type4,name4,type5,name5)&t;&t;     &bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4,    &bslash;&n;&t;  type5 arg5) {&t;&t;&t;&t;&t;     &bslash;&n;&t;register type1 __arg1 asm(&quot;2&quot;) = arg1;&t;&t;     &bslash;&n;&t;register type2 __arg2 asm(&quot;3&quot;) = arg2;&t;&t;     &bslash;&n;&t;register type3 __arg3 asm(&quot;4&quot;) = arg3;&t;&t;     &bslash;&n;&t;register type4 __arg4 asm(&quot;5&quot;) = arg4;&t;&t;     &bslash;&n;&t;register type5 __arg5 asm(&quot;6&quot;) = arg5;&t;&t;     &bslash;&n;&t;register long __svcres asm(&quot;2&quot;);&t;&t;     &bslash;&n;&t;long __res;&t;&t;&t;&t;&t;     &bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .if %b1 &lt; 256&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc %b1&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .else&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    lhi %%r1,%b1&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc 0&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .endif&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;: &quot;=d&quot; (__svcres)&t;&t;&t;     &bslash;&n;&t;&t;: &quot;i&quot; (__NR_##name),&t;&t;&t;     &bslash;&n;&t;&t;  &quot;0&quot; (__arg1),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg2),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg3),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg4),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg5)&t;&t;&t;&t;     &bslash;&n;&t;&t;: _svc_clobber );&t;&t;&t;     &bslash;&n;&t;__res = __svcres;&t;&t;&t;&t;     &bslash;&n;&t;__syscall_return(type,__res);&t;&t;&t;     &bslash;&n;}
+mdefine_line|#define _syscall5(type,name,type1,arg1,type2,arg2,type3,arg3,&bslash;&n;&t;&t;  type4,name4,type5,name5)&t;&t;     &bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4,    &bslash;&n;&t;  type5 arg5) {&t;&t;&t;&t;&t;     &bslash;&n;&t;register type1 __arg1 asm(&quot;2&quot;) = arg1;&t;&t;     &bslash;&n;&t;register type2 __arg2 asm(&quot;3&quot;) = arg2;&t;&t;     &bslash;&n;&t;register type3 __arg3 asm(&quot;4&quot;) = arg3;&t;&t;     &bslash;&n;&t;register type4 __arg4 asm(&quot;5&quot;) = arg4;&t;&t;     &bslash;&n;&t;register type5 __arg5 asm(&quot;6&quot;) = arg5;&t;&t;     &bslash;&n;&t;register long __svcres asm(&quot;2&quot;);&t;&t;     &bslash;&n;&t;long __res;&t;&t;&t;&t;&t;     &bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .if %1 &lt; 256&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc %b1&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .else&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    la  %%r1,%1&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc 0&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .endif&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;: &quot;=d&quot; (__svcres)&t;&t;&t;     &bslash;&n;&t;&t;: &quot;i&quot; (__NR_##name),&t;&t;&t;     &bslash;&n;&t;&t;  &quot;0&quot; (__arg1),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg2),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg3),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg4),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg5)&t;&t;&t;&t;     &bslash;&n;&t;&t;: _svc_clobber );&t;&t;&t;     &bslash;&n;&t;__res = __svcres;&t;&t;&t;&t;     &bslash;&n;&t;__syscall_return(type,__res);&t;&t;&t;     &bslash;&n;}
 macro_line|#ifdef __KERNEL_SYSCALLS__
 macro_line|#include &lt;asm/stat.h&gt;
 multiline_comment|/*&n; * we need this inline - forking from kernel space will result&n; * in NO COPY ON WRITE (!!!), until an execve is executed. This&n; * is no problem, but for the stack. This is handled by not letting&n; * main() use the stack at all after fork(). Thus, no function&n; * calls - which means inline code for fork too, as otherwise we&n; * would use the stack upon exit from &squot;fork()&squot;.&n; *&n; * Actually only pause and fork are needed inline, so that there&n; * won&squot;t be any messing with the stack from main(), but we define&n; * some others too.&n; */

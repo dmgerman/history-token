@@ -2,10 +2,26 @@ multiline_comment|/*&n; *  include/asm-s390/spinlock.h&n; *&n; *  S390 version&n
 macro_line|#ifndef __ASM_SPINLOCK_H
 DECL|macro|__ASM_SPINLOCK_H
 mdefine_line|#define __ASM_SPINLOCK_H
+macro_line|#ifdef __s390x__
+multiline_comment|/*&n; * Grmph, take care of %&amp;#! user space programs that include&n; * asm/spinlock.h. The diagnose is only available in kernel&n; * context.&n; */
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;asm/lowcore.h&gt;
+DECL|macro|__DIAG44_INSN
+mdefine_line|#define __DIAG44_INSN &quot;ex&quot;
+DECL|macro|__DIAG44_OPERAND
+mdefine_line|#define __DIAG44_OPERAND __LC_DIAG44_OPCODE
+macro_line|#else
+DECL|macro|__DIAG44_INSN
+mdefine_line|#define __DIAG44_INSN &quot;#&quot;
+DECL|macro|__DIAG44_OPERAND
+mdefine_line|#define __DIAG44_OPERAND 0
+macro_line|#endif
+macro_line|#endif /* __s390x__ */
 multiline_comment|/*&n; * Simple spin lock operations.  There are two variants, one clears IRQ&squot;s&n; * on the local processor, one does not.&n; *&n; * We make no fairness assumptions. They have a cost.&n; */
 r_typedef
 r_struct
 (brace
+macro_line|#ifndef __s390x__
 DECL|member|lock
 r_volatile
 r_int
@@ -16,6 +32,25 @@ DECL|typedef|spinlock_t
 )brace
 id|spinlock_t
 suffix:semicolon
+macro_line|#else /* __s390x__ */
+r_volatile
+r_int
+r_int
+id|lock
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|aligned
+(paren
+l_int|4
+)paren
+)paren
+)paren
+id|spinlock_t
+suffix:semicolon
+macro_line|#endif /* __s390x__ */
 DECL|macro|SPIN_LOCK_UNLOCKED
 mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) { 0 }
 DECL|macro|spin_lock_init
@@ -36,6 +71,7 @@ op_star
 id|lp
 )paren
 (brace
+macro_line|#ifndef __s390x__
 r_int
 r_int
 id|reg1
@@ -76,6 +112,55 @@ suffix:colon
 l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
+macro_line|#else /* __s390x__ */
+r_int
+r_int
+id|reg1
+comma
+id|reg2
+suffix:semicolon
+id|__asm__
+id|__volatile
+c_func
+(paren
+l_string|&quot;    bras  %1,1f&bslash;n&quot;
+l_string|&quot;0:  &quot;
+id|__DIAG44_INSN
+l_string|&quot; 0,%4&bslash;n&quot;
+l_string|&quot;1:  slr   %0,%0&bslash;n&quot;
+l_string|&quot;    cs    %0,%1,0(%3)&bslash;n&quot;
+l_string|&quot;    jl    0b&bslash;n&quot;
+suffix:colon
+l_string|&quot;=&amp;d&quot;
+(paren
+id|reg1
+)paren
+comma
+l_string|&quot;=&amp;d&quot;
+(paren
+id|reg2
+)paren
+comma
+l_string|&quot;+m&quot;
+(paren
+id|lp-&gt;lock
+)paren
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|__DIAG44_OPERAND
+)paren
+suffix:colon
+l_string|&quot;cc&quot;
+)paren
+suffix:semicolon
+macro_line|#endif /* __s390x__ */
 )brace
 DECL|function|_raw_spin_trylock
 r_extern
@@ -89,12 +174,21 @@ op_star
 id|lp
 )paren
 (brace
+macro_line|#ifndef __s390x__
 r_int
 r_int
 id|result
 comma
 id|reg
 suffix:semicolon
+macro_line|#else /* __s390x__ */
+r_int
+r_int
+id|result
+comma
+id|reg
+suffix:semicolon
+macro_line|#endif /* __s390x__ */
 id|__asm__
 id|__volatile
 c_func
@@ -209,14 +303,34 @@ DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(x)&t;do { *(x) = RW_LOCK_UNLOCKED; } while(0)
 DECL|macro|rwlock_is_locked
 mdefine_line|#define rwlock_is_locked(x) ((x)-&gt;lock != 0)
+macro_line|#ifndef __s390x__
 DECL|macro|_raw_read_lock
 mdefine_line|#define _raw_read_lock(rw)   &bslash;&n;        asm volatile(&quot;   l     2,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: la    2,0(2)&bslash;n&quot;     /* clear high (=write) bit */ &bslash;&n;                     &quot;   la    3,1(2)&bslash;n&quot;     /* one more reader */ &bslash;&n;                     &quot;   cs    2,3,0(%1)&bslash;n&quot;  /* try to write new value */ &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : &quot;a&quot; (&amp;(rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+macro_line|#else /* __s390x__ */
+DECL|macro|_raw_read_lock
+mdefine_line|#define _raw_read_lock(rw)   &bslash;&n;        asm volatile(&quot;   lg    2,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: &quot; __DIAG44_INSN &quot; 0,%2&bslash;n&quot; &bslash;&n;                     &quot;1: nihh  2,0x7fff&bslash;n&quot; /* clear high (=write) bit */ &bslash;&n;                     &quot;   la    3,1(2)&bslash;n&quot;   /* one more reader */  &bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot; /* try to write new value */ &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;a&quot; (&amp;(rw)-&gt;lock), &quot;i&quot; (__DIAG44_OPERAND) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+macro_line|#endif /* __s390x__ */
+macro_line|#ifndef __s390x__
 DECL|macro|_raw_read_unlock
 mdefine_line|#define _raw_read_unlock(rw) &bslash;&n;        asm volatile(&quot;   l     2,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: lr    3,2&bslash;n&quot;    &bslash;&n;                     &quot;   ahi   3,-1&bslash;n&quot;    /* one less reader */ &bslash;&n;                     &quot;   cs    2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : &quot;a&quot; (&amp;(rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+macro_line|#else /* __s390x__ */
+DECL|macro|_raw_read_unlock
+mdefine_line|#define _raw_read_unlock(rw) &bslash;&n;        asm volatile(&quot;   lg    2,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: &quot; __DIAG44_INSN &quot; 0,%2&bslash;n&quot; &bslash;&n;                     &quot;1: lgr   3,2&bslash;n&quot;    &bslash;&n;                     &quot;   bctgr 3,0&bslash;n&quot;    /* one less reader */ &bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;a&quot; (&amp;(rw)-&gt;lock), &quot;i&quot; (__DIAG44_OPERAND) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+macro_line|#endif /* __s390x__ */
+macro_line|#ifndef __s390x__
 DECL|macro|_raw_write_lock
 mdefine_line|#define _raw_write_lock(rw) &bslash;&n;        asm volatile(&quot;   lhi   3,1&bslash;n&quot;    &bslash;&n;                     &quot;   sll   3,31&bslash;n&quot;    /* new lock value = 0x80000000 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: slr   2,2&bslash;n&quot;     /* old lock value must be 0 */ &bslash;&n;                     &quot;   cs    2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : &quot;a&quot; (&amp;(rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+macro_line|#else /* __s390x__ */
+DECL|macro|_raw_write_lock
+mdefine_line|#define _raw_write_lock(rw) &bslash;&n;        asm volatile(&quot;   llihh 3,0x8000&bslash;n&quot; /* new lock value = 0x80...0 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;       &bslash;&n;                     &quot;0: &quot; __DIAG44_INSN &quot; 0,%2&bslash;n&quot;   &bslash;&n;                     &quot;1: slgr  2,2&bslash;n&quot;      /* old lock value must be 0 */ &bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;         &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;a&quot; (&amp;(rw)-&gt;lock), &quot;i&quot; (__DIAG44_OPERAND) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+macro_line|#endif /* __s390x__ */
+macro_line|#ifndef __s390x__
 DECL|macro|_raw_write_unlock
 mdefine_line|#define _raw_write_unlock(rw) &bslash;&n;        asm volatile(&quot;   slr   3,3&bslash;n&quot;     /* new lock value = 0 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: lhi   2,1&bslash;n&quot;    &bslash;&n;                     &quot;   sll   2,31&bslash;n&quot;    /* old lock value must be 0x80000000 */ &bslash;&n;                     &quot;   cs    2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : &quot;a&quot; (&amp;(rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+macro_line|#else /* __s390x__ */
+DECL|macro|_raw_write_unlock
+mdefine_line|#define _raw_write_unlock(rw) &bslash;&n;        asm volatile(&quot;   slgr  3,3&bslash;n&quot;      /* new lock value = 0 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;       &bslash;&n;                     &quot;0: &quot; __DIAG44_INSN &quot; 0,%2&bslash;n&quot;   &bslash;&n;                     &quot;1: llihh 2,0x8000&bslash;n&quot; /* old lock value must be 0x8..0 */&bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   jl    0b&quot;         &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;a&quot; (&amp;(rw)-&gt;lock), &quot;i&quot; (__DIAG44_OPERAND) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+macro_line|#endif /* __s390x__ */
 DECL|function|_raw_write_trylock
 r_extern
 r_inline
@@ -239,10 +353,16 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+macro_line|#ifndef __s390x__
 l_string|&quot;   lhi  %0,1&bslash;n&quot;
 l_string|&quot;   sll  %0,31&bslash;n&quot;
 l_string|&quot;   basr %1,0&bslash;n&quot;
 l_string|&quot;0: cs   %0,%1,0(%3)&bslash;n&quot;
+macro_line|#else /* __s390x__ */
+l_string|&quot;   llihh %0,0x8000&bslash;n&quot;
+l_string|&quot;   basr  %1,0&bslash;n&quot;
+l_string|&quot;0: csg %0,%1,0(%3)&bslash;n&quot;
+macro_line|#endif /* __s390x__ */
 suffix:colon
 l_string|&quot;=&amp;d&quot;
 (paren

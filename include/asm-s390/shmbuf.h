@@ -1,7 +1,7 @@
 macro_line|#ifndef _S390_SHMBUF_H
 DECL|macro|_S390_SHMBUF_H
 mdefine_line|#define _S390_SHMBUF_H
-multiline_comment|/* &n; * The shmid64_ds structure for S/390 architecture.&n; * Note extra padding because this structure is passed back and forth&n; * between kernel and user space.&n; *&n; * Pad space is left for:&n; * - 64-bit time_t to solve y2038 problem&n; * - 2 miscellaneous 32-bit values&n; */
+multiline_comment|/* &n; * The shmid64_ds structure for S/390 architecture.&n; * Note extra padding because this structure is passed back and forth&n; * between kernel and user space.&n; *&n; * Pad space is left for:&n; * - 64-bit time_t to solve y2038 problem (for !__s390x__)&n; * - 2 miscellaneous 32-bit values&n; */
 DECL|struct|shmid64_ds
 r_struct
 id|shmid64_ds
@@ -22,31 +22,37 @@ id|__kernel_time_t
 id|shm_atime
 suffix:semicolon
 multiline_comment|/* last attach time */
+macro_line|#ifndef __s390x__
 DECL|member|__unused1
 r_int
 r_int
 id|__unused1
 suffix:semicolon
+macro_line|#endif /* ! __s390x__ */
 DECL|member|shm_dtime
 id|__kernel_time_t
 id|shm_dtime
 suffix:semicolon
 multiline_comment|/* last detach time */
+macro_line|#ifndef __s390x__
 DECL|member|__unused2
 r_int
 r_int
 id|__unused2
 suffix:semicolon
+macro_line|#endif /* ! __s390x__ */
 DECL|member|shm_ctime
 id|__kernel_time_t
 id|shm_ctime
 suffix:semicolon
 multiline_comment|/* last change time */
+macro_line|#ifndef __s390x__
 DECL|member|__unused3
 r_int
 r_int
 id|__unused3
 suffix:semicolon
+macro_line|#endif /* ! __s390x__ */
 DECL|member|shm_cpid
 id|__kernel_pid_t
 id|shm_cpid

@@ -133,11 +133,23 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef __s390x__
 r_if
 c_cond
 (paren
+op_logical_neg
 id|MACHINE_HAS_CSP
 )paren
+(brace
+id|smp_ptlb_all
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+macro_line|#endif /* __s390x__ */
 (brace
 r_int
 id|dummy
@@ -169,12 +181,6 @@ l_string|&quot;4&quot;
 )paren
 suffix:semicolon
 )brace
-r_else
-id|smp_ptlb_all
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * We only have to do global flush of tlb if process run since last&n; * flush on any other pu than current. &n; * If we have threads (mm-&gt;count &gt; 1) we always do a global flush, &n; * since the process runs on more than one processor at the same time.&n; */
 DECL|function|__flush_tlb_mm

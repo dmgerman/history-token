@@ -65,6 +65,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef __s390x__
 r_return
 id|hweight32
 c_func
@@ -72,6 +73,15 @@ c_func
 id|cpu_online_map
 )paren
 suffix:semicolon
+macro_line|#else /* __s390x__ */
+r_return
+id|hweight64
+c_func
+(paren
+id|cpu_online_map
+)paren
+suffix:semicolon
+macro_line|#endif /* __s390x__ */
 )brace
 DECL|function|any_online_cpu
 r_extern

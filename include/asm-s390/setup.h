@@ -11,12 +11,21 @@ mdefine_line|#define RAMDISK_ORIGIN&t;&t;0x800000
 DECL|macro|RAMDISK_SIZE
 mdefine_line|#define RAMDISK_SIZE&t;&t;0x800000
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#ifndef __s390x__
 DECL|macro|IPL_DEVICE
 mdefine_line|#define IPL_DEVICE        (*(unsigned long *)  (0x10404))
 DECL|macro|INITRD_START
 mdefine_line|#define INITRD_START      (*(unsigned long *)  (0x1040C))
 DECL|macro|INITRD_SIZE
 mdefine_line|#define INITRD_SIZE       (*(unsigned long *)  (0x10414))
+macro_line|#else /* __s390x__ */
+DECL|macro|IPL_DEVICE
+mdefine_line|#define IPL_DEVICE        (*(unsigned long *)  (0x10400))
+DECL|macro|INITRD_START
+mdefine_line|#define INITRD_START      (*(unsigned long *)  (0x10408))
+DECL|macro|INITRD_SIZE
+mdefine_line|#define INITRD_SIZE       (*(unsigned long *)  (0x10410))
+macro_line|#endif /* __s390x__ */
 DECL|macro|COMMAND_LINE
 mdefine_line|#define COMMAND_LINE      ((char *)            (0x10480))
 multiline_comment|/*&n; * Machine features detected in head.S&n; */
@@ -27,14 +36,23 @@ id|machine_flags
 suffix:semicolon
 DECL|macro|MACHINE_IS_VM
 mdefine_line|#define MACHINE_IS_VM&t;&t;(machine_flags &amp; 1)
-DECL|macro|MACHINE_HAS_IEEE
-mdefine_line|#define MACHINE_HAS_IEEE&t;(machine_flags &amp; 2)
 DECL|macro|MACHINE_IS_P390
 mdefine_line|#define MACHINE_IS_P390&t;&t;(machine_flags &amp; 4)
-DECL|macro|MACHINE_HAS_CSP
-mdefine_line|#define MACHINE_HAS_CSP&t;&t;(machine_flags &amp; 8)
 DECL|macro|MACHINE_HAS_MVPG
 mdefine_line|#define MACHINE_HAS_MVPG&t;(machine_flags &amp; 16)
+DECL|macro|MACHINE_HAS_DIAG44
+mdefine_line|#define MACHINE_HAS_DIAG44&t;(machine_flags &amp; 32)
+macro_line|#ifndef __s390x__
+DECL|macro|MACHINE_HAS_IEEE
+mdefine_line|#define MACHINE_HAS_IEEE&t;(machine_flags &amp; 2)
+DECL|macro|MACHINE_HAS_CSP
+mdefine_line|#define MACHINE_HAS_CSP&t;&t;(machine_flags &amp; 8)
+macro_line|#else /* __s390x__ */
+DECL|macro|MACHINE_HAS_IEEE
+mdefine_line|#define MACHINE_HAS_IEEE&t;(1)
+DECL|macro|MACHINE_HAS_CSP
+mdefine_line|#define MACHINE_HAS_CSP&t;&t;(1)
+macro_line|#endif /* __s390x__ */
 DECL|macro|MACHINE_HAS_SCLP
 mdefine_line|#define MACHINE_HAS_SCLP&t;(!MACHINE_IS_P390)
 multiline_comment|/*&n; * Console mode. Override with conmode=&n; */
@@ -68,12 +86,21 @@ mdefine_line|#define SET_CONSOLE_3215&t;do { console_mode = 2; } while (0)
 DECL|macro|SET_CONSOLE_3270
 mdefine_line|#define SET_CONSOLE_3270&t;do { console_mode = 3; } while (0)
 macro_line|#else 
+macro_line|#ifndef __s390x__
 DECL|macro|IPL_DEVICE
 mdefine_line|#define IPL_DEVICE        0x10404
 DECL|macro|INITRD_START
 mdefine_line|#define INITRD_START      0x1040C
 DECL|macro|INITRD_SIZE
 mdefine_line|#define INITRD_SIZE       0x10414
+macro_line|#else /* __s390x__ */
+DECL|macro|IPL_DEVICE
+mdefine_line|#define IPL_DEVICE        0x10400
+DECL|macro|INITRD_START
+mdefine_line|#define INITRD_START      0x10408
+DECL|macro|INITRD_SIZE
+mdefine_line|#define INITRD_SIZE       0x10410
+macro_line|#endif /* __s390x__ */
 DECL|macro|COMMAND_LINE
 mdefine_line|#define COMMAND_LINE      0x10480
 macro_line|#endif

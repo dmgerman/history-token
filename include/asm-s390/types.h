@@ -46,6 +46,7 @@ r_int
 r_int
 id|__u32
 suffix:semicolon
+macro_line|#ifndef __s390x__
 macro_line|#if defined(__GNUC__) &amp;&amp; !defined(__STRICT_ANSI__)
 DECL|typedef|__s64
 r_typedef
@@ -62,22 +63,43 @@ r_int
 id|__u64
 suffix:semicolon
 macro_line|#endif
+macro_line|#else /* __s390x__ */
+DECL|typedef|__s64
+r_typedef
+id|__signed__
+r_int
+id|__s64
+suffix:semicolon
+DECL|typedef|__u64
+r_typedef
+r_int
+r_int
+id|__u64
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* A address type so that arithmetic can be done on it &amp; it can be upgraded to&n;   64 bit when necessary &n;*/
 DECL|typedef|addr_t
 r_typedef
-id|__u32
+r_int
+r_int
 id|addr_t
 suffix:semicolon
 DECL|typedef|saddr_t
 r_typedef
-id|__s32
+id|__signed__
+r_int
 id|saddr_t
 suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * These aren&squot;t exported outside the kernel to avoid name space clashes&n; */
 macro_line|#ifdef __KERNEL__
+macro_line|#ifndef __s390x__
 DECL|macro|BITS_PER_LONG
 mdefine_line|#define BITS_PER_LONG 32
+macro_line|#else
+DECL|macro|BITS_PER_LONG
+mdefine_line|#define BITS_PER_LONG 64
+macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
 DECL|typedef|s8
 r_typedef
@@ -115,6 +137,7 @@ r_int
 r_int
 id|u32
 suffix:semicolon
+macro_line|#ifndef __s390x__
 DECL|typedef|s64
 r_typedef
 r_int
@@ -129,11 +152,26 @@ r_int
 r_int
 id|u64
 suffix:semicolon
+macro_line|#else /* __s390x__ */
+DECL|typedef|s64
+r_typedef
+r_int
+r_int
+id|s64
+suffix:semicolon
+DECL|typedef|u64
+r_typedef
+r_int
+r_int
+id|u64
+suffix:semicolon
+macro_line|#endif /* __s390x__ */
 DECL|typedef|dma_addr_t
 r_typedef
 id|u32
 id|dma_addr_t
 suffix:semicolon
+macro_line|#ifndef __s390x__
 r_typedef
 r_union
 (brace
@@ -172,7 +210,8 @@ suffix:semicolon
 DECL|macro|HAVE_SECTOR_T
 mdefine_line|#define HAVE_SECTOR_T
 macro_line|#endif
-macro_line|#endif /* __ASSEMBLY__ */
-macro_line|#endif                                 /* __KERNEL__                       */
-macro_line|#endif
+macro_line|#endif /* ! __s390x__   */
+macro_line|#endif /* __ASSEMBLY__  */
+macro_line|#endif /* __KERNEL__    */
+macro_line|#endif /* _S390_TYPES_H */
 eof

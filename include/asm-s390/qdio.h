@@ -9,10 +9,10 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/cio.h&gt;
 DECL|macro|QDIO_NAME
 mdefine_line|#define QDIO_NAME &quot;qdio &quot;
-macro_line|#ifndef CONFIG_ARCH_S390X
+macro_line|#ifndef __s390x__
 DECL|macro|QDIO_32_BIT
 mdefine_line|#define QDIO_32_BIT
-macro_line|#endif /* CONFIG_ARCH_S390X */
+macro_line|#endif /* __s390x__ */
 multiline_comment|/**** CONSTANTS, that are relied on without using these symbols *****/
 DECL|macro|QDIO_MAX_QUEUES_PER_IRQ
 mdefine_line|#define QDIO_MAX_QUEUES_PER_IRQ 32 /* used in width of unsigned int */
