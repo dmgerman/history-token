@@ -806,12 +806,16 @@ macro_line|#ifdef CONFIG_GART_IOMMU
 r_if
 c_cond
 (paren
+(paren
 id|end_pfn
 op_ge
 (paren
 l_int|0xffffffff
 op_rshift
 id|PAGE_SHIFT
+)paren
+op_logical_or
+id|force_iommu
 )paren
 op_logical_and
 op_logical_neg
