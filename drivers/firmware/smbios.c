@@ -410,7 +410,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;Warning: SMBIOS table does not end with a&quot;
 l_string|&quot; structure type 127. This may indicate a&quot;
-l_string|&quot; truncated table.&quot;
+l_string|&quot; truncated table.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
