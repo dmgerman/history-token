@@ -193,4 +193,8 @@ DECL|typedef|hcdp_t
 )brace
 id|hcdp_t
 suffix:semicolon
+DECL|macro|HCDP_PCI_UART
+mdefine_line|#define HCDP_PCI_UART(x) (x-&gt;pci_func &amp; 1UL&lt;&lt;7)
+DECL|macro|HCDP_IRQ_SUPPORTED
+mdefine_line|#define HCDP_IRQ_SUPPORTED(x) (x-&gt;pci_func &amp; 1UL&lt;&lt;6)
 eof
