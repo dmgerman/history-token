@@ -1719,7 +1719,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* PROC_EXTRA */
 multiline_comment|/*****************************************************************/
-multiline_comment|/* This is a recursive function. Parameters:&n; * buffer - the user-space buffer to write data into&n; * nbytes - the maximum number of bytes to write&n; * skip_bytes - the number of bytes to skip before writing anything&n; * file_offset - the offset into the devices file on completion&n; */
+multiline_comment|/* This is a recursive function. Parameters:&n; * buffer - the user-space buffer to write data into&n; * nbytes - the maximum number of bytes to write&n; * skip_bytes - the number of bytes to skip before writing anything&n; * file_offset - the offset into the devices file on completion&n; * The caller must own the usbdev-&gt;serialize semaphore.&n; */
 DECL|function|usb_device_dump
 r_static
 id|ssize_t
@@ -2179,15 +2179,29 @@ id|chix
 op_increment
 )paren
 (brace
-r_if
-c_cond
-(paren
+r_struct
+id|usb_device
+op_star
+id|childdev
+op_assign
 id|usbdev-&gt;children
 (braket
 id|chix
 )braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|childdev
 )paren
 (brace
+id|down
+c_func
+(paren
+op_amp
+id|childdev-&gt;serialize
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|usb_device_dump
@@ -2201,10 +2215,7 @@ id|skip_bytes
 comma
 id|file_offset
 comma
-id|usbdev-&gt;children
-(braket
-id|chix
-)braket
+id|childdev
 comma
 id|bus
 comma
@@ -2216,6 +2227,13 @@ id|chix
 comma
 op_increment
 id|cnt
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|childdev-&gt;serialize
 )paren
 suffix:semicolon
 r_if
@@ -2365,6 +2383,13 @@ id|bus_list
 )paren
 suffix:semicolon
 multiline_comment|/* recurse through all children of the root hub */
+id|down
+c_func
+(paren
+op_amp
+id|bus-&gt;root_hub-&gt;serialize
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|usb_device_dump
@@ -2390,6 +2415,13 @@ comma
 l_int|0
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|bus-&gt;root_hub-&gt;serialize
 )paren
 suffix:semicolon
 r_if
