@@ -3,6 +3,7 @@ macro_line|#ifndef _LINUX_MEM_OP_H
 DECL|macro|_LINUX_MEM_OP_H
 mdefine_line|#define _LINUX_MEM_OP_H
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n;   If UNSAFE_MEMCPY is defined, we use the (optimized) system routines&n;   to copy between a card and kernel memory.  These routines do 32-bit&n;   operations which may not work with all PCMCIA controllers.  The&n;   safe versions defined here will do only 8-bit and 16-bit accesses.&n;*/
 macro_line|#ifdef UNSAFE_MEMCPY
 DECL|macro|copy_from_pc
