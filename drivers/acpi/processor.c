@@ -8981,6 +8981,7 @@ comma
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* We keep the driver loaded even when ACPI is not running. &n;   This is needed for the powernow-k8 driver, that works even without&n;   ACPI, but needs symbols from this driver */
 r_static
 r_int
 id|__init
@@ -9048,8 +9049,7 @@ id|acpi_processor_dir
 id|return_VALUE
 c_func
 (paren
-op_minus
-id|ENODEV
+l_int|0
 )paren
 suffix:semicolon
 id|acpi_processor_dir-&gt;owner
@@ -9084,8 +9084,7 @@ suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-op_minus
-id|ENODEV
+l_int|0
 )paren
 suffix:semicolon
 )brace
