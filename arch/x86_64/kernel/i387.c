@@ -8,6 +8,82 @@ macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+DECL|variable|mxcsr_feature_mask
+r_int
+r_int
+id|mxcsr_feature_mask
+op_assign
+l_int|0xffffffff
+suffix:semicolon
+DECL|function|mxcsr_feature_mask_init
+r_void
+id|mxcsr_feature_mask_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|mask
+suffix:semicolon
+id|clts
+c_func
+(paren
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|current-&gt;thread.i387.fxsave
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|i387_fxsave_struct
+)paren
+)paren
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;fxsave %0&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;m&quot;
+(paren
+id|current-&gt;thread.i387.fxsave
+)paren
+)paren
+suffix:semicolon
+id|mask
+op_assign
+id|current-&gt;thread.i387.fxsave.mxcsr_mask
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mask
+op_eq
+l_int|0
+)paren
+id|mask
+op_assign
+l_int|0x0000ffbf
+suffix:semicolon
+id|mxcsr_feature_mask
+op_and_assign
+id|mask
+suffix:semicolon
+id|stts
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Called at bootup to set up the initial FPU state that is later cloned&n; * into all processes.&n; */
 DECL|function|fpu_init
 r_void
@@ -87,12 +163,12 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* clear TS and EM */
-multiline_comment|/* clean state in init */
-id|stts
+id|mxcsr_feature_mask_init
 c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* clean state in init */
 id|current_thread_info
 c_func
 (paren

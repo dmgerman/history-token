@@ -285,6 +285,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|mxcsr_feature_mask_init
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|restore_processor_state
 r_void

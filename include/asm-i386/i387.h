@@ -3,9 +3,23 @@ macro_line|#ifndef __ASM_I386_I387_H
 DECL|macro|__ASM_I386_I387_H
 mdefine_line|#define __ASM_I386_I387_H
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
+r_extern
+r_int
+r_int
+id|mxcsr_feature_mask
+suffix:semicolon
+r_extern
+r_void
+id|mxcsr_feature_mask_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|init_fpu
@@ -229,23 +243,6 @@ r_int
 id|twd
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|set_fpu_mxcsr
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-comma
-r_int
-r_int
-id|mxcsr
-)paren
-suffix:semicolon
-DECL|macro|load_mxcsr
-mdefine_line|#define load_mxcsr( val ) do { &bslash;&n;&t;unsigned long __mxcsr = ((unsigned long)(val) &amp; 0xffbf); &bslash;&n;&t;asm volatile( &quot;ldmxcsr %0&quot; : : &quot;m&quot; (__mxcsr) ); &bslash;&n;} while (0)
 multiline_comment|/*&n; * Signal frame handlers...&n; */
 r_extern
 r_int

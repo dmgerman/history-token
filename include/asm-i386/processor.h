@@ -878,9 +878,9 @@ DECL|member|mxcsr
 r_int
 id|mxcsr
 suffix:semicolon
-DECL|member|reserved
+DECL|member|mxcsr_mask
 r_int
-id|reserved
+id|mxcsr_mask
 suffix:semicolon
 DECL|member|st_space
 r_int

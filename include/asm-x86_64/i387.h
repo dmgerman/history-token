@@ -17,6 +17,19 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_int
+r_int
+id|mxcsr_feature_mask
+suffix:semicolon
+r_extern
+r_void
+id|mxcsr_feature_mask_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|init_fpu
 c_func
@@ -85,8 +98,6 @@ DECL|macro|unlazy_fpu
 mdefine_line|#define unlazy_fpu(tsk) do { &bslash;&n;&t;if ((tsk)-&gt;thread_info-&gt;status &amp; TS_USEDFPU) &bslash;&n;&t;&t;save_init_fpu(tsk); &bslash;&n;} while (0)
 DECL|macro|clear_fpu
 mdefine_line|#define clear_fpu(tsk) do { &bslash;&n;&t;if ((tsk)-&gt;thread_info-&gt;status &amp; TS_USEDFPU) {&t;&t;&bslash;&n;&t;&t;asm volatile(&quot;fwait&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;(tsk)-&gt;thread_info-&gt;status &amp;= ~TS_USEDFPU;&t;&bslash;&n;&t;&t;stts();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-DECL|macro|load_mxcsr
-mdefine_line|#define load_mxcsr(val) do { &bslash;&n;&t;&t;unsigned long __mxcsr = ((unsigned long)(val) &amp; 0xffbf); &bslash;&n;&t;&t;asm volatile(&quot;ldmxcsr %0&quot; : : &quot;m&quot; (__mxcsr)); &bslash;&n;} while (0)
 multiline_comment|/*&n; * ptrace request handers...&n; */
 r_extern
 r_int
@@ -135,8 +146,6 @@ DECL|macro|set_fpu_swd
 mdefine_line|#define set_fpu_swd(t,val) ((t)-&gt;thread.i387.fxsave.swd = (val))
 DECL|macro|set_fpu_fxsr_twd
 mdefine_line|#define set_fpu_fxsr_twd(t,val) ((t)-&gt;thread.i387.fxsave.twd = (val))
-DECL|macro|set_fpu_mxcsr
-mdefine_line|#define set_fpu_mxcsr(t,val) ((t)-&gt;thread.i387.fxsave.mxcsr = (val)&amp;0xffbf)
 DECL|function|restore_fpu_checking
 r_static
 r_inline
