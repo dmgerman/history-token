@@ -2855,6 +2855,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NUMA
+id|build_cpu_to_node_map
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/* Make boot-up look pretty */
 id|printk

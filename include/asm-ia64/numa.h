@@ -15,6 +15,14 @@ macro_line|# define NR_NODES     (8)
 DECL|macro|NR_MEMBLKS
 macro_line|# define NR_MEMBLKS   (NR_NODES * 8)
 macro_line|#endif
+r_extern
+r_char
+id|cpu_to_node_map
+(braket
+id|NR_CPUS
+)braket
+id|__cacheline_aligned
+suffix:semicolon
 multiline_comment|/* Stuff below this line could be architecture independent */
 r_extern
 r_int
