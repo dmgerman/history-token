@@ -617,6 +617,7 @@ op_member_access_from_pointer
 id|agp_alloc_page
 c_func
 (paren
+id|bridge
 )paren
 suffix:semicolon
 r_if
@@ -4240,7 +4241,10 @@ op_star
 id|agp_generic_alloc_page
 c_func
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 (brace
 r_struct

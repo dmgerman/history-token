@@ -357,7 +357,9 @@ op_star
 id|agp_alloc_page
 )paren
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
 )paren
 suffix:semicolon
 DECL|member|agp_destroy_page
@@ -826,7 +828,10 @@ op_star
 id|agp_generic_alloc_page
 c_func
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 suffix:semicolon
 r_void

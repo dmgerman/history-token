@@ -2159,7 +2159,10 @@ r_void
 op_star
 id|i460_alloc_page
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 (brace
 r_void
@@ -2178,6 +2181,7 @@ op_assign
 id|agp_generic_alloc_page
 c_func
 (paren
+id|agp_bridge
 )paren
 suffix:semicolon
 r_else

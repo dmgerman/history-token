@@ -1210,6 +1210,7 @@ op_member_access_from_pointer
 id|agp_alloc_page
 c_func
 (paren
+id|agp_bridge
 )paren
 suffix:semicolon
 r_break
