@@ -142,13 +142,6 @@ r_int
 id|iomap_base
 suffix:semicolon
 multiline_comment|/* cookie passed into ioremap */
-DECL|member|reserved
-r_int
-id|reserved
-(braket
-l_int|1
-)braket
-suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * For the close wait times, 0 means wait forever for serial port to&n; * flush its output.  65535 means don&squot;t wait at all.&n; */
