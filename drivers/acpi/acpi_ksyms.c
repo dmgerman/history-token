@@ -576,6 +576,20 @@ c_func
 id|acpi_pci_irq_lookup
 )paren
 suffix:semicolon
+DECL|variable|acpi_pci_register_driver
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_pci_register_driver
+)paren
+suffix:semicolon
+DECL|variable|acpi_pci_unregister_driver
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_pci_unregister_driver
+)paren
+suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_PCI */
 macro_line|#ifdef CONFIG_ACPI_EC
 multiline_comment|/* ACPI EC driver (ec.c) */
