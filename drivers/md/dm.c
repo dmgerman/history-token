@@ -700,7 +700,7 @@ op_logical_neg
 id|test_bit
 c_func
 (paren
-id|DMF_SUSPENDED
+id|DMF_BLOCK_IO
 comma
 op_amp
 id|md-&gt;flags
