@@ -2018,10 +2018,6 @@ op_assign
 id|info-&gt;fbops
 suffix:semicolon
 r_struct
-id|fb_cmap
-id|cmap
-suffix:semicolon
-r_struct
 id|fb_var_screeninfo
 id|var
 suffix:semicolon
@@ -2032,6 +2028,10 @@ suffix:semicolon
 r_struct
 id|fb_con2fbmap
 id|con2fb
+suffix:semicolon
+r_struct
+id|fb_cmap
+id|cmap
 suffix:semicolon
 r_int
 id|i
@@ -2144,17 +2144,11 @@ r_else
 (brace
 id|i
 op_assign
-id|gen_set_var
+id|fb_set_var
 c_func
 (paren
 op_amp
 id|var
-comma
-id|PROC_CONSOLE
-c_func
-(paren
-id|info
-)paren
 comma
 id|info
 )paren
@@ -2166,18 +2160,6 @@ id|i
 )paren
 r_return
 id|i
-suffix:semicolon
-id|gen_set_disp
-c_func
-(paren
-id|PROC_CONSOLE
-c_func
-(paren
-id|info
-)paren
-comma
-id|info
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -2415,6 +2397,7 @@ suffix:semicolon
 r_return
 id|i
 suffix:semicolon
+macro_line|#ifdef CONFIG_VT
 r_case
 id|FBIOGET_CON2FBMAP
 suffix:colon
@@ -2616,6 +2599,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#endif
 r_case
 id|FBIOBLANK
 suffix:colon

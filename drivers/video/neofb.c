@@ -7364,17 +7364,6 @@ id|err
 r_goto
 id|failed
 suffix:semicolon
-id|gen_set_var
-c_func
-(paren
-id|neofb_var
-comma
-op_minus
-l_int|1
-comma
-id|info
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Calculate the hsync and vsync frequencies.  Note that&n;&t; * we split the 1e12 constant up so that we can preserve&n;&t; * the precision and fit the results into 32-bit registers.&n;&t; *  (1953125000 * 512 = 1e12)&n;&t; */
 id|h_sync
 op_assign
