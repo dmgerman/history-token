@@ -765,6 +765,7 @@ suffix:semicolon
 multiline_comment|/* Related XRAM cq */
 DECL|member|pool
 id|soc_req
+id|__iomem
 op_star
 id|pool
 suffix:semicolon
@@ -784,9 +785,44 @@ DECL|member|seqno
 id|u8
 id|seqno
 suffix:semicolon
-DECL|typedef|soc_cq
+DECL|typedef|soc_cq_rsp
 )brace
-id|soc_cq
+id|soc_cq_rsp
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|hw_cq
+id|soc_hw_cq
+id|__iomem
+op_star
+id|hw_cq
+suffix:semicolon
+multiline_comment|/* Related XRAM cq */
+DECL|member|pool
+id|soc_req
+op_star
+id|pool
+suffix:semicolon
+DECL|member|in
+id|u8
+id|in
+suffix:semicolon
+DECL|member|out
+id|u8
+id|out
+suffix:semicolon
+DECL|member|last
+id|u8
+id|last
+suffix:semicolon
+DECL|member|seqno
+id|u8
+id|seqno
+suffix:semicolon
+DECL|typedef|soc_cq_req
+)brace
+id|soc_cq_req
 suffix:semicolon
 DECL|struct|soc
 r_struct
@@ -805,7 +841,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* Every SOC has one or two FC ports */
 DECL|member|req
-id|soc_cq
+id|soc_cq_req
 id|req
 (braket
 l_int|2
@@ -813,7 +849,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* Request CQs */
 DECL|member|rsp
-id|soc_cq
+id|soc_cq_rsp
 id|rsp
 (braket
 l_int|2

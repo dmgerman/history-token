@@ -336,10 +336,11 @@ id|fc_hdr
 id|fchdr
 suffix:semicolon
 id|soc_rsp
+id|__iomem
 op_star
 id|hwrsp
 suffix:semicolon
-id|soc_cq
+id|soc_cq_rsp
 op_star
 id|sw_cq
 suffix:semicolon
@@ -372,6 +373,7 @@ id|sw_cq-&gt;pool
 op_assign
 (paren
 id|soc_req
+id|__iomem
 op_star
 )paren
 (paren
@@ -423,6 +425,7 @@ id|hwrsp
 op_assign
 (paren
 id|soc_rsp
+id|__iomem
 op_star
 )paren
 id|sw_cq-&gt;pool
@@ -875,13 +878,14 @@ id|s
 )paren
 (brace
 id|soc_rsp
+id|__iomem
 op_star
 id|hwrsp
 comma
 op_star
 id|hwrspc
 suffix:semicolon
-id|soc_cq
+id|soc_cq_rsp
 op_star
 id|sw_cq
 suffix:semicolon
@@ -917,6 +921,7 @@ id|sw_cq-&gt;pool
 op_assign
 (paren
 id|soc_req
+id|__iomem
 op_star
 )paren
 (paren
@@ -972,6 +977,7 @@ id|hwrsp
 op_assign
 (paren
 id|soc_rsp
+id|__iomem
 op_star
 )paren
 id|sw_cq-&gt;pool
@@ -1183,6 +1189,7 @@ id|hwrspc
 op_assign
 (paren
 id|soc_rsp
+id|__iomem
 op_star
 )paren
 id|sw_cq-&gt;pool
@@ -1795,7 +1802,7 @@ suffix:semicolon
 r_int
 id|qno
 suffix:semicolon
-id|soc_cq
+id|soc_cq_req
 op_star
 id|sw_cq
 suffix:semicolon
