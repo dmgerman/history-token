@@ -2553,14 +2553,19 @@ DECL|member|outstanding_bytes
 id|__u32
 id|outstanding_bytes
 suffix:semicolon
+multiline_comment|/* Corked? */
+DECL|member|cork
+r_char
+id|cork
+suffix:semicolon
 multiline_comment|/* Is this structure empty?  */
 DECL|member|empty
-r_int
+r_char
 id|empty
 suffix:semicolon
 multiline_comment|/* Are we kfree()able? */
 DECL|member|malloced
-r_int
+r_char
 id|malloced
 suffix:semicolon
 )brace
@@ -2717,6 +2722,34 @@ comma
 id|__u8
 )paren
 suffix:semicolon
+r_int
+id|sctp_outq_uncork
+c_func
+(paren
+r_struct
+id|sctp_outq
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* Uncork and flush an outqueue.  */
+DECL|function|sctp_outq_cork
+r_static
+r_inline
+r_void
+id|sctp_outq_cork
+c_func
+(paren
+r_struct
+id|sctp_outq
+op_star
+id|q
+)paren
+(brace
+id|q-&gt;cork
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* These bind address data fields common between endpoints and associations */
 DECL|struct|sctp_bind_addr
 r_struct
@@ -3703,11 +3736,6 @@ r_struct
 id|sctp_ulpq
 id|ulpq
 suffix:semicolon
-multiline_comment|/* Need to send an ECNE Chunk? */
-DECL|member|need_ecne
-r_int
-id|need_ecne
-suffix:semicolon
 multiline_comment|/* Last TSN that caused an ECNE Chunk to be sent.  */
 DECL|member|last_ecne_tsn
 id|__u32
@@ -3728,18 +3756,7 @@ DECL|member|autoclose
 id|__u32
 id|autoclose
 suffix:semicolon
-multiline_comment|/* Name for debugging output... */
-DECL|member|debug_name
-r_char
-op_star
-id|debug_name
-suffix:semicolon
 multiline_comment|/* These are to support&n;&t; * &quot;SCTP Extensions for Dynamic Reconfiguration of IP Addresses&n;&t; *  and Enforcement of Flow and Message Limits&quot;&n;&t; * &lt;draft-ietf-tsvwg-addip-sctp-02.txt&gt;&n;&t; * or &quot;ADDIP&quot; for short.&n;&t; */
-multiline_comment|/* Is the ADDIP extension enabled for this association? */
-DECL|member|addip_enable
-r_int
-id|addip_enable
-suffix:semicolon
 multiline_comment|/* ADDIP Section 4.1.1 Congestion Control of ASCONF Chunks&n;&t; *&n;&t; * R1) One and only one ASCONF Chunk MAY be in transit and&n;&t; * unacknowledged at any one time.  If a sender, after sending&n;&t; * an ASCONF chunk, decides it needs to transfer another&n;&t; * ASCONF Chunk, it MUST wait until the ASCONF-ACK Chunk&n;&t; * returns from the previous ASCONF Chunk before sending a&n;&t; * subsequent ASCONF. Note this restriction binds each side,&n;&t; * so at any time two ASCONF may be in-transit on any given&n;&t; * association (one sent from each endpoint).&n;&t; *&n;&t; * [This is our one-and-only-one ASCONF in flight.  If we do&n;&t; * not have an ASCONF in flight, this is NULL.]&n;&t; */
 DECL|member|addip_last_asconf
 r_struct
@@ -3765,9 +3782,19 @@ DECL|member|addip_serial
 id|__u32
 id|addip_serial
 suffix:semicolon
+multiline_comment|/* Is the ADDIP extension enabled for this association? */
+DECL|member|addip_enable
+r_char
+id|addip_enable
+suffix:semicolon
+multiline_comment|/* Need to send an ECNE Chunk? */
+DECL|member|need_ecne
+r_char
+id|need_ecne
+suffix:semicolon
 multiline_comment|/* Is it a temporary association? */
 DECL|member|temp
-id|__u8
+r_char
 id|temp
 suffix:semicolon
 )brace

@@ -2723,10 +2723,9 @@ id|asoc
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;Just looked up association: &quot;
-l_string|&quot;%s. &bslash;n&quot;
+l_string|&quot;Just looked up association: %p.&bslash;n&quot;
 comma
-id|asoc-&gt;debug_name
+id|asoc
 )paren
 suffix:semicolon
 multiline_comment|/* We cannot send a message on a TCP-style SCTP_SS_ESTABLISHED&n;&t;&t; * socket that has an association in CLOSED state. This can&n;&t;&t; * happen when an accepted socket has an association that is&n;&t;&t; * already CLOSED.&n;&t;&t; */

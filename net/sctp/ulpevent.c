@@ -615,10 +615,14 @@ id|ch-&gt;cause
 suffix:semicolon
 id|elen
 op_assign
+id|WORD_ROUND
+c_func
+(paren
 id|ntohs
 c_func
 (paren
 id|ch-&gt;length
+)paren
 )paren
 op_minus
 r_sizeof
@@ -652,10 +656,8 @@ r_struct
 id|sctp_remote_error
 )paren
 comma
-multiline_comment|/* headroom */
 l_int|0
 comma
-multiline_comment|/* tailroom */
 id|gfp
 )paren
 suffix:semicolon
