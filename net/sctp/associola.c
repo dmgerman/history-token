@@ -927,6 +927,18 @@ c_func
 id|asoc-&gt;addip_last_asconf_ack
 )paren
 suffix:semicolon
+multiline_comment|/* Free any cached ASCONF chunk. */
+r_if
+c_cond
+(paren
+id|asoc-&gt;addip_last_asconf
+)paren
+id|sctp_chunk_free
+c_func
+(paren
+id|asoc-&gt;addip_last_asconf
+)paren
+suffix:semicolon
 id|sctp_association_put
 c_func
 (paren

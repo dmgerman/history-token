@@ -3784,6 +3784,11 @@ DECL|member|asconf_capable
 id|__u8
 id|asconf_capable
 suffix:semicolon
+multiline_comment|/* This mask is used to disable sending the ASCONF chunk&n;&t;&t; * with specified parameter to peer.&n;&t;&t; */
+DECL|member|addip_disabled_mask
+id|__u16
+id|addip_disabled_mask
+suffix:semicolon
 DECL|member|i
 r_struct
 id|sctp_inithdr
