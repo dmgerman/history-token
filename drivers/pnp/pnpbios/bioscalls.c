@@ -1850,11 +1850,11 @@ id|data
 comma
 l_int|65536
 comma
+id|__va
+c_func
 (paren
-r_void
-op_star
-)paren
 id|nvram_base
+)paren
 comma
 l_int|65536
 )paren
@@ -1962,7 +1962,11 @@ id|data
 comma
 l_int|65536
 comma
+id|__va
+c_func
+(paren
 id|nvram_base
+)paren
 comma
 l_int|65536
 )paren

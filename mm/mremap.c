@@ -1498,11 +1498,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-(paren
 id|old_len
-op_or
+op_logical_or
+op_logical_neg
 id|new_len
-)paren
 )paren
 r_goto
 id|out

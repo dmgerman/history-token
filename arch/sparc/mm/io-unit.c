@@ -273,9 +273,13 @@ OL
 id|xptend
 suffix:semicolon
 )paren
+id|iopte_val
+c_func
+(paren
 op_star
 id|xpt
 op_increment
+)paren
 op_assign
 l_int|0
 suffix:semicolon
@@ -1269,9 +1273,6 @@ c_func
 (paren
 id|ptep
 comma
-id|pte_val
-c_func
-(paren
 id|mk_pte
 c_func
 (paren
@@ -1282,7 +1283,6 @@ id|page
 )paren
 comma
 id|dvma_prot
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -1331,9 +1331,6 @@ suffix:semicolon
 op_star
 id|iopte
 op_assign
-id|__iopte
-c_func
-(paren
 id|MKIOPTE
 c_func
 (paren
@@ -1341,7 +1338,6 @@ id|__pa
 c_func
 (paren
 id|page
-)paren
 )paren
 )paren
 suffix:semicolon
