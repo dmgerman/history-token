@@ -19,6 +19,10 @@ id|ia64_mv_send_ipi_t
 id|sn2_send_IPI
 suffix:semicolon
 r_extern
+id|ia64_mv_timer_interrupt_t
+id|sn_timer_interrupt
+suffix:semicolon
+r_extern
 id|ia64_mv_global_tlb_purge_t
 id|sn2_global_tlb_purge
 suffix:semicolon
@@ -121,6 +125,8 @@ DECL|macro|platform_irq_init
 mdefine_line|#define platform_irq_init&t;&t;sn_irq_init
 DECL|macro|platform_send_ipi
 mdefine_line|#define platform_send_ipi&t;&t;sn2_send_IPI
+DECL|macro|platform_timer_interrupt
+mdefine_line|#define platform_timer_interrupt&t;sn_timer_interrupt
 DECL|macro|platform_global_tlb_purge
 mdefine_line|#define platform_global_tlb_purge       sn2_global_tlb_purge
 DECL|macro|platform_pci_fixup
