@@ -2858,15 +2858,37 @@ id|cmd-&gt;sc_data_direction
 op_eq
 id|SCSI_DATA_NONE
 )paren
+(brace
 id|qc-&gt;tf.protocol
 op_assign
 id|ATA_PROT_ATAPI
 suffix:semicolon
+id|qc-&gt;flags
+op_or_assign
+id|ATA_QCFLAG_POLL
+suffix:semicolon
+id|qc-&gt;tf.ctl
+op_or_assign
+id|ATA_NIEN
+suffix:semicolon
+multiline_comment|/* disable interrupts */
+)brace
 r_else
+(brace
 id|qc-&gt;tf.protocol
 op_assign
 id|ATA_PROT_ATAPI_DMA
 suffix:semicolon
+id|qc-&gt;flags
+op_or_assign
+id|ATA_QCFLAG_SG
+suffix:semicolon
+multiline_comment|/* data is present; dma-map it */
+id|qc-&gt;tf.feature
+op_or_assign
+id|ATAPI_PKT_DMA
+suffix:semicolon
+)brace
 id|atapi_start
 c_func
 (paren
