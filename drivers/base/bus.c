@@ -7,13 +7,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;base.h&quot;
-r_static
-id|DECLARE_MUTEX
-c_func
-(paren
-id|bus_sem
-)paren
-suffix:semicolon
 DECL|macro|to_dev
 mdefine_line|#define to_dev(node) container_of(node,struct device,bus_list)
 DECL|macro|to_drv
@@ -645,7 +638,7 @@ op_amp
 id|start-&gt;bus_list
 suffix:colon
 op_amp
-id|bus-&gt;devices
+id|bus-&gt;devices.list
 suffix:semicolon
 id|down_read
 c_func
@@ -789,13 +782,13 @@ op_amp
 id|start-&gt;kobj.entry
 suffix:colon
 op_amp
-id|bus-&gt;drvsubsys.list
+id|bus-&gt;drivers.list
 suffix:semicolon
 id|down_read
 c_func
 (paren
 op_amp
-id|bus-&gt;drvsubsys.rwsem
+id|bus-&gt;subsys.rwsem
 )paren
 suffix:semicolon
 id|list_for_each
@@ -851,7 +844,7 @@ id|up_read
 c_func
 (paren
 op_amp
-id|bus-&gt;drvsubsys.rwsem
+id|bus-&gt;subsys.rwsem
 )paren
 suffix:semicolon
 r_return
@@ -1059,7 +1052,7 @@ c_func
 id|entry
 comma
 op_amp
-id|bus-&gt;drvsubsys.list
+id|bus-&gt;drivers.list
 )paren
 (brace
 r_struct
@@ -1141,7 +1134,7 @@ c_func
 id|entry
 comma
 op_amp
-id|bus-&gt;devices
+id|bus-&gt;devices.list
 )paren
 (brace
 r_struct
@@ -1391,7 +1384,7 @@ op_amp
 id|dev-&gt;bus_list
 comma
 op_amp
-id|dev-&gt;bus-&gt;devices
+id|dev-&gt;bus-&gt;devices.list
 )paren
 suffix:semicolon
 id|device_attach
@@ -1411,7 +1404,7 @@ id|sysfs_create_link
 c_func
 (paren
 op_amp
-id|bus-&gt;devsubsys.kobj
+id|bus-&gt;devices.kobj
 comma
 op_amp
 id|dev-&gt;kobj
@@ -1446,7 +1439,7 @@ id|sysfs_remove_link
 c_func
 (paren
 op_amp
-id|dev-&gt;bus-&gt;devsubsys.kobj
+id|dev-&gt;bus-&gt;devices.kobj
 comma
 id|dev-&gt;bus_id
 )paren
@@ -1560,7 +1553,7 @@ suffix:semicolon
 id|drv-&gt;kobj.subsys
 op_assign
 op_amp
-id|bus-&gt;drvsubsys
+id|bus-&gt;drivers
 suffix:semicolon
 id|kobject_register
 c_func
@@ -1717,7 +1710,7 @@ id|bus-&gt;subsys
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;bus_register - register a bus with the system.&n; *&t;@bus:&t;bus.&n; *&n; *&t;We take bus_sem here to protect against the bus being &n; *&t;unregistered during the registration process.&n; *&t;Once we have that, we registered the bus with the kobject&n; *&t;infrastructure, then register the children subsystems it has:&n; *&t;the devices and drivers that belong to the bus. &n; */
+multiline_comment|/**&n; *&t;bus_register - register a bus with the system.&n; *&t;@bus:&t;bus.&n; *&n; *&t;Once we have that, we registered the bus with the kobject&n; *&t;infrastructure, then register the children subsystems it has:&n; *&t;the devices and drivers that belong to the bus. &n; */
 DECL|function|bus_register
 r_int
 id|bus_register
@@ -1729,20 +1722,6 @@ op_star
 id|bus
 )paren
 (brace
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|bus-&gt;devices
-)paren
-suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|bus_sem
-)paren
-suffix:semicolon
 id|strncpy
 c_func
 (paren
@@ -1773,14 +1752,14 @@ suffix:semicolon
 id|snprintf
 c_func
 (paren
-id|bus-&gt;devsubsys.kobj.name
+id|bus-&gt;devices.kobj.name
 comma
 id|KOBJ_NAME_LEN
 comma
 l_string|&quot;devices&quot;
 )paren
 suffix:semicolon
-id|bus-&gt;devsubsys.parent
+id|bus-&gt;devices.parent
 op_assign
 op_amp
 id|bus-&gt;subsys
@@ -1789,20 +1768,20 @@ id|subsystem_register
 c_func
 (paren
 op_amp
-id|bus-&gt;devsubsys
+id|bus-&gt;devices
 )paren
 suffix:semicolon
 id|snprintf
 c_func
 (paren
-id|bus-&gt;drvsubsys.kobj.name
+id|bus-&gt;drivers.kobj.name
 comma
 id|KOBJ_NAME_LEN
 comma
 l_string|&quot;drivers&quot;
 )paren
 suffix:semicolon
-id|bus-&gt;drvsubsys.parent
+id|bus-&gt;drivers.parent
 op_assign
 op_amp
 id|bus-&gt;subsys
@@ -1811,7 +1790,7 @@ id|subsystem_register
 c_func
 (paren
 op_amp
-id|bus-&gt;drvsubsys
+id|bus-&gt;drivers
 )paren
 suffix:semicolon
 id|pr_debug
@@ -1822,18 +1801,11 @@ comma
 id|bus-&gt;name
 )paren
 suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|bus_sem
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;bus_unregister - remove a bus from the system &n; *&t;@bus:&t;bus.&n; *&n; *&t;Take bus_sem, in case the bus we&squot;re registering hasn&squot;t &n; *&t;finished registering. Once we have it, unregister the child&n; *&t;subsystems and the bus itself.&n; *&t;Finally, we call put_bus() to release the refcount&n; */
+multiline_comment|/**&n; *&t;bus_unregister - remove a bus from the system &n; *&t;@bus:&t;bus.&n; *&n; *&t;Unregister the child subsystems and the bus itself.&n; *&t;Finally, we call put_bus() to release the refcount&n; */
 DECL|function|bus_unregister
 r_void
 id|bus_unregister
@@ -1845,13 +1817,6 @@ op_star
 id|bus
 )paren
 (brace
-id|down
-c_func
-(paren
-op_amp
-id|bus_sem
-)paren
-suffix:semicolon
 id|pr_debug
 c_func
 (paren
@@ -1864,14 +1829,14 @@ id|subsystem_unregister
 c_func
 (paren
 op_amp
-id|bus-&gt;drvsubsys
+id|bus-&gt;drivers
 )paren
 suffix:semicolon
 id|subsystem_unregister
 c_func
 (paren
 op_amp
-id|bus-&gt;devsubsys
+id|bus-&gt;devices
 )paren
 suffix:semicolon
 id|subsystem_unregister
@@ -1879,13 +1844,6 @@ c_func
 (paren
 op_amp
 id|bus-&gt;subsys
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|bus_sem
 )paren
 suffix:semicolon
 )brace
