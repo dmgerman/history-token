@@ -1,21 +1,5 @@
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
-macro_line|#ifdef DEBUG
-DECL|macro|DBG
-macro_line|# define DBG(x...) printk(x)
-macro_line|#else
-DECL|macro|DBG
-macro_line|# define DBG(x...)
-macro_line|#endif
-r_extern
-r_struct
-id|list_head
-id|global_device_list
-suffix:semicolon
-r_extern
-id|spinlock_t
-id|device_lock
-suffix:semicolon
 r_extern
 r_struct
 id|semaphore
