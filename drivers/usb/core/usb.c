@@ -3044,7 +3044,7 @@ id|dev-&gt;devpath
 l_int|0
 )braket
 op_assign
-l_char|&squot;/&squot;
+l_char|&squot;0&squot;
 suffix:semicolon
 id|dev-&gt;bus
 op_assign
