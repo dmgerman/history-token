@@ -58,6 +58,12 @@ id|proposed_mac
 l_int|6
 )braket
 suffix:semicolon
+DECL|member|module
+r_struct
+id|module
+op_star
+id|module
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|dvb_device
@@ -150,6 +156,11 @@ r_const
 r_char
 op_star
 id|name
+comma
+r_struct
+id|module
+op_star
+id|module
 )paren
 suffix:semicolon
 r_extern

@@ -769,6 +769,10 @@ id|dvbdev-&gt;priv
 op_assign
 id|priv
 suffix:semicolon
+id|dvbdev-&gt;fops-&gt;owner
+op_assign
+id|adap-&gt;module
+suffix:semicolon
 id|list_add_tail
 (paren
 op_amp
@@ -868,9 +872,11 @@ id|dvbdev
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dvbdev
 )paren
-(brace
+r_return
+suffix:semicolon
 id|devfs_remove
 c_func
 (paren
@@ -899,7 +905,6 @@ c_func
 id|dvbdev
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|dvbdev_get_free_adapter_num
 r_static
@@ -990,6 +995,11 @@ r_const
 r_char
 op_star
 id|name
+comma
+r_struct
+id|module
+op_star
+id|module
 )paren
 (brace
 r_struct
@@ -1115,6 +1125,10 @@ suffix:semicolon
 id|adap-&gt;name
 op_assign
 id|name
+suffix:semicolon
+id|adap-&gt;module
+op_assign
+id|module
 suffix:semicolon
 id|list_add_tail
 (paren
