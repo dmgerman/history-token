@@ -1151,9 +1151,6 @@ id|pd_init
 r_void
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 id|request_queue_t
 op_star
 id|q
