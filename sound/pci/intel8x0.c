@@ -1258,6 +1258,11 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* workaround for Xbox AC&squot;97 detection */
+DECL|member|spdif_idx
+r_int
+id|spdif_idx
+suffix:semicolon
+multiline_comment|/* SPDIF BAR index; *_SPBAR or -1 if use PCMOUT */
 DECL|member|ac97_bus
 id|ac97_bus_t
 op_star
@@ -4490,7 +4495,7 @@ id|ichdev-&gt;pcm_open_flag
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* FIXME: hack to enable spdif support */
+multiline_comment|/* Force SPDIF setting */
 r_if
 c_cond
 (paren
@@ -4498,9 +4503,9 @@ id|ichdev-&gt;ichd
 op_eq
 id|ICHD_PCMOUT
 op_logical_and
-id|chip-&gt;device_type
-op_eq
-id|DEVICE_SIS
+id|chip-&gt;spdif_idx
+OL
+l_int|0
 )paren
 id|snd_ac97_set_rate
 c_func
@@ -8691,13 +8696,6 @@ id|glob_sta
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|spdif_idx
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/* disabled */
 id|ac97_bus_ops_t
 op_star
 id|ops
@@ -8736,6 +8734,12 @@ id|snd_intel8x0_ali_codec_read
 comma
 )brace
 suffix:semicolon
+id|chip-&gt;spdif_idx
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* use PCMOUT (or disabled) */
 r_switch
 c_cond
 (paren
@@ -8745,7 +8749,7 @@ id|chip-&gt;device_type
 r_case
 id|DEVICE_NFORCE
 suffix:colon
-id|spdif_idx
+id|chip-&gt;spdif_idx
 op_assign
 id|NVD_SPBAR
 suffix:semicolon
@@ -8754,24 +8758,16 @@ suffix:semicolon
 r_case
 id|DEVICE_ALI
 suffix:colon
-id|spdif_idx
+id|chip-&gt;spdif_idx
 op_assign
 id|ALID_AC97SPDIFOUT
 suffix:semicolon
 r_break
 suffix:semicolon
-r_default
-suffix:colon
-(brace
-)brace
-r_if
-c_cond
-(paren
-id|chip-&gt;device_type
-op_eq
+r_case
 id|DEVICE_INTEL_ICH4
-)paren
-id|spdif_idx
+suffix:colon
+id|chip-&gt;spdif_idx
 op_assign
 id|ICHD_SPBAR
 suffix:semicolon
@@ -9236,7 +9232,7 @@ multiline_comment|/* do not allocate PCM2IN and MIC2 */
 r_if
 c_cond
 (paren
-id|spdif_idx
+id|chip-&gt;spdif_idx
 OL
 l_int|0
 )paren
@@ -9308,13 +9304,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|spdif_idx
+id|chip-&gt;spdif_idx
 op_ge
 l_int|0
 )paren
 id|chip-&gt;ichd
 (braket
-id|spdif_idx
+id|chip-&gt;spdif_idx
 )braket
 dot
 id|pcm
@@ -9623,7 +9619,7 @@ id|DEVICE_NFORCE
 multiline_comment|/* 48kHz only */
 id|chip-&gt;ichd
 (braket
-id|spdif_idx
+id|chip-&gt;spdif_idx
 )braket
 dot
 id|pcm-&gt;rates
