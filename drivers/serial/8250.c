@@ -319,7 +319,7 @@ id|UART_CAP_FIFO
 op_or
 id|UART_CAP_SLEEP
 op_or
-id|UART_STARTECH
+id|UART_CAP_EFR
 )brace
 comma
 (brace
@@ -333,7 +333,7 @@ id|UART_CAP_FIFO
 op_or
 id|UART_CAP_SLEEP
 op_or
-id|UART_STARTECH
+id|UART_CAP_EFR
 )brace
 comma
 (brace
@@ -379,7 +379,7 @@ id|UART_CAP_FIFO
 op_or
 id|UART_CAP_SLEEP
 op_or
-id|UART_STARTECH
+id|UART_CAP_EFR
 )brace
 comma
 (brace
@@ -393,7 +393,7 @@ id|UART_CAP_FIFO
 op_or
 id|UART_CAP_SLEEP
 op_or
-id|UART_STARTECH
+id|UART_CAP_EFR
 )brace
 comma
 (brace
@@ -760,7 +760,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Sleep support.&n; */
+multiline_comment|/*&n; * IER sleep support.  UARTs which have EFRs need the &quot;extended&n; * capability&quot; bit enabled.  Note that on XR16C850s, we need to&n; * reset LCR to write to IER.&n; */
 DECL|function|serial8250_set_sleep
 r_static
 r_inline
@@ -790,7 +790,7 @@ c_cond
 (paren
 id|p-&gt;capabilities
 op_amp
-id|UART_STARTECH
+id|UART_CAP_EFR
 )paren
 (brace
 id|serial_outp
@@ -844,7 +844,7 @@ c_cond
 (paren
 id|p-&gt;capabilities
 op_amp
-id|UART_STARTECH
+id|UART_CAP_EFR
 )paren
 (brace
 id|serial_outp
@@ -6408,7 +6408,7 @@ c_cond
 (paren
 id|up-&gt;capabilities
 op_amp
-id|UART_STARTECH
+id|UART_CAP_EFR
 )paren
 (brace
 id|serial_outp
