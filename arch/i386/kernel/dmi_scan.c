@@ -1533,11 +1533,4 @@ id|field
 )braket
 suffix:semicolon
 )brace
-DECL|variable|dmi_get_system_info
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|dmi_get_system_info
-)paren
-suffix:semicolon
 eof
