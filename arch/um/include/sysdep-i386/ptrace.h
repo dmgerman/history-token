@@ -185,39 +185,39 @@ suffix:semicolon
 DECL|macro|UPT_SC
 mdefine_line|#define UPT_SC(r) ((r)-&gt;tt.sc)
 DECL|macro|UPT_IP
-mdefine_line|#define UPT_IP(r) &bslash;&n;&t;CHOOSE_MODE(SC_IP(UPT_SC(r)), REGS_IP((r)-&gt;skas.regs))
+mdefine_line|#define UPT_IP(r) &bslash;&n;&t;__CHOOSE_MODE(SC_IP(UPT_SC(r)), REGS_IP((r)-&gt;skas.regs))
 DECL|macro|UPT_SP
-mdefine_line|#define UPT_SP(r) &bslash;&n;&t;CHOOSE_MODE(SC_SP(UPT_SC(r)), REGS_SP((r)-&gt;skas.regs))
+mdefine_line|#define UPT_SP(r) &bslash;&n;&t;__CHOOSE_MODE(SC_SP(UPT_SC(r)), REGS_SP((r)-&gt;skas.regs))
 DECL|macro|UPT_EFLAGS
-mdefine_line|#define UPT_EFLAGS(r) &bslash;&n;&t;CHOOSE_MODE(SC_EFLAGS(UPT_SC(r)), REGS_EFLAGS((r)-&gt;skas.regs))
+mdefine_line|#define UPT_EFLAGS(r) &bslash;&n;&t;__CHOOSE_MODE(SC_EFLAGS(UPT_SC(r)), REGS_EFLAGS((r)-&gt;skas.regs))
 DECL|macro|UPT_EAX
-mdefine_line|#define UPT_EAX(r) &bslash;&n;&t;CHOOSE_MODE(SC_EAX(UPT_SC(r)), REGS_EAX((r)-&gt;skas.regs))
+mdefine_line|#define UPT_EAX(r) &bslash;&n;&t;__CHOOSE_MODE(SC_EAX(UPT_SC(r)), REGS_EAX((r)-&gt;skas.regs))
 DECL|macro|UPT_EBX
-mdefine_line|#define UPT_EBX(r) &bslash;&n;&t;CHOOSE_MODE(SC_EBX(UPT_SC(r)), REGS_EBX((r)-&gt;skas.regs))
+mdefine_line|#define UPT_EBX(r) &bslash;&n;&t;__CHOOSE_MODE(SC_EBX(UPT_SC(r)), REGS_EBX((r)-&gt;skas.regs))
 DECL|macro|UPT_ECX
-mdefine_line|#define UPT_ECX(r) &bslash;&n;&t;CHOOSE_MODE(SC_ECX(UPT_SC(r)), REGS_ECX((r)-&gt;skas.regs))
+mdefine_line|#define UPT_ECX(r) &bslash;&n;&t;__CHOOSE_MODE(SC_ECX(UPT_SC(r)), REGS_ECX((r)-&gt;skas.regs))
 DECL|macro|UPT_EDX
-mdefine_line|#define UPT_EDX(r) &bslash;&n;&t;CHOOSE_MODE(SC_EDX(UPT_SC(r)), REGS_EDX((r)-&gt;skas.regs))
+mdefine_line|#define UPT_EDX(r) &bslash;&n;&t;__CHOOSE_MODE(SC_EDX(UPT_SC(r)), REGS_EDX((r)-&gt;skas.regs))
 DECL|macro|UPT_ESI
-mdefine_line|#define UPT_ESI(r) &bslash;&n;&t;CHOOSE_MODE(SC_ESI(UPT_SC(r)), REGS_ESI((r)-&gt;skas.regs))
+mdefine_line|#define UPT_ESI(r) &bslash;&n;&t;__CHOOSE_MODE(SC_ESI(UPT_SC(r)), REGS_ESI((r)-&gt;skas.regs))
 DECL|macro|UPT_EDI
-mdefine_line|#define UPT_EDI(r) &bslash;&n;&t;CHOOSE_MODE(SC_EDI(UPT_SC(r)), REGS_EDI((r)-&gt;skas.regs))
+mdefine_line|#define UPT_EDI(r) &bslash;&n;&t;__CHOOSE_MODE(SC_EDI(UPT_SC(r)), REGS_EDI((r)-&gt;skas.regs))
 DECL|macro|UPT_EBP
-mdefine_line|#define UPT_EBP(r) &bslash;&n;&t;CHOOSE_MODE(SC_EBP(UPT_SC(r)), REGS_EBP((r)-&gt;skas.regs))
+mdefine_line|#define UPT_EBP(r) &bslash;&n;&t;__CHOOSE_MODE(SC_EBP(UPT_SC(r)), REGS_EBP((r)-&gt;skas.regs))
 DECL|macro|UPT_ORIG_EAX
-mdefine_line|#define UPT_ORIG_EAX(r) &bslash;&n;&t;CHOOSE_MODE((r)-&gt;tt.syscall, (r)-&gt;skas.syscall)
+mdefine_line|#define UPT_ORIG_EAX(r) &bslash;&n;&t;__CHOOSE_MODE((r)-&gt;tt.syscall, (r)-&gt;skas.syscall)
 DECL|macro|UPT_CS
-mdefine_line|#define UPT_CS(r) &bslash;&n;&t;CHOOSE_MODE(SC_CS(UPT_SC(r)), REGS_CS((r)-&gt;skas.regs))
+mdefine_line|#define UPT_CS(r) &bslash;&n;&t;__CHOOSE_MODE(SC_CS(UPT_SC(r)), REGS_CS((r)-&gt;skas.regs))
 DECL|macro|UPT_SS
-mdefine_line|#define UPT_SS(r) &bslash;&n;&t;CHOOSE_MODE(SC_SS(UPT_SC(r)), REGS_SS((r)-&gt;skas.regs))
+mdefine_line|#define UPT_SS(r) &bslash;&n;&t;__CHOOSE_MODE(SC_SS(UPT_SC(r)), REGS_SS((r)-&gt;skas.regs))
 DECL|macro|UPT_DS
-mdefine_line|#define UPT_DS(r) &bslash;&n;&t;CHOOSE_MODE(SC_DS(UPT_SC(r)), REGS_DS((r)-&gt;skas.regs))
+mdefine_line|#define UPT_DS(r) &bslash;&n;&t;__CHOOSE_MODE(SC_DS(UPT_SC(r)), REGS_DS((r)-&gt;skas.regs))
 DECL|macro|UPT_ES
-mdefine_line|#define UPT_ES(r) &bslash;&n;&t;CHOOSE_MODE(SC_ES(UPT_SC(r)), REGS_ES((r)-&gt;skas.regs))
+mdefine_line|#define UPT_ES(r) &bslash;&n;&t;__CHOOSE_MODE(SC_ES(UPT_SC(r)), REGS_ES((r)-&gt;skas.regs))
 DECL|macro|UPT_FS
-mdefine_line|#define UPT_FS(r) &bslash;&n;&t;CHOOSE_MODE(SC_FS(UPT_SC(r)), REGS_FS((r)-&gt;skas.regs))
+mdefine_line|#define UPT_FS(r) &bslash;&n;&t;__CHOOSE_MODE(SC_FS(UPT_SC(r)), REGS_FS((r)-&gt;skas.regs))
 DECL|macro|UPT_GS
-mdefine_line|#define UPT_GS(r) &bslash;&n;&t;CHOOSE_MODE(SC_GS(UPT_SC(r)), REGS_GS((r)-&gt;skas.regs))
+mdefine_line|#define UPT_GS(r) &bslash;&n;&t;__CHOOSE_MODE(SC_GS(UPT_SC(r)), REGS_GS((r)-&gt;skas.regs))
 DECL|macro|UPT_SYSCALL_ARG1
 mdefine_line|#define UPT_SYSCALL_ARG1(r) UPT_EBX(r)
 DECL|macro|UPT_SYSCALL_ARG2
@@ -275,7 +275,7 @@ mdefine_line|#define UPT_SYSCALL_RET(r) UPT_EAX(r)
 DECL|macro|UPT_SEGV_IS_FIXABLE
 mdefine_line|#define UPT_SEGV_IS_FIXABLE(r) &bslash;&n;&t;CHOOSE_MODE(SC_SEGV_IS_FIXABLE(UPT_SC(r)), &bslash;&n;                    REGS_SEGV_IS_FIXABLE(&amp;r-&gt;skas))
 DECL|macro|UPT_FAULT_ADDR
-mdefine_line|#define UPT_FAULT_ADDR(r) &bslash;&n;&t;CHOOSE_MODE(SC_FAULT_ADDR(UPT_SC(r)), REGS_FAULT_ADDR(&amp;r-&gt;skas))
+mdefine_line|#define UPT_FAULT_ADDR(r) &bslash;&n;&t;__CHOOSE_MODE(SC_FAULT_ADDR(UPT_SC(r)), REGS_FAULT_ADDR(&amp;r-&gt;skas))
 DECL|macro|UPT_FAULT_WRITE
 mdefine_line|#define UPT_FAULT_WRITE(r) &bslash;&n;&t;CHOOSE_MODE(SC_FAULT_WRITE(UPT_SC(r)), REGS_FAULT_WRITE(&amp;r-&gt;skas))
 macro_line|#endif
