@@ -101,7 +101,7 @@ id|total_len
 suffix:semicolon
 r_int
 r_int
-id|atm_poll
+id|vcc_poll
 c_func
 (paren
 r_struct

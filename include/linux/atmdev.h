@@ -341,6 +341,10 @@ DECL|enumerator|ATM_VF_CLOSE
 id|ATM_VF_CLOSE
 comma
 multiline_comment|/* asynchronous close - treat like VF_RELEASED*/
+DECL|enumerator|ATM_VF_WAITING
+id|ATM_VF_WAITING
+comma
+multiline_comment|/* waiting for reply from sigd */
 )brace
 suffix:semicolon
 DECL|macro|ATM_VF2VS
@@ -526,11 +530,6 @@ r_struct
 id|sockaddr_atmsvc
 id|remote
 suffix:semicolon
-DECL|member|reply
-r_int
-id|reply
-suffix:semicolon
-multiline_comment|/* also used by ATMTCP */
 multiline_comment|/* Multipoint part ------------------------------------------------- */
 DECL|member|session
 r_struct

@@ -416,8 +416,9 @@ id|vcc-&gt;qos
 op_assign
 id|msg-&gt;qos
 suffix:semicolon
-id|vcc-&gt;reply
+id|vcc-&gt;sk-&gt;sk_err
 op_assign
+op_minus
 id|msg-&gt;result
 suffix:semicolon
 r_switch
@@ -648,7 +649,8 @@ r_return
 id|error
 suffix:semicolon
 r_return
-id|vcc-&gt;reply
+op_minus
+id|vcc-&gt;sk-&gt;sk_err
 suffix:semicolon
 )brace
 DECL|function|atmtcp_v_close

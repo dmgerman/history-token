@@ -102,10 +102,12 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|wake_up
+id|vcc-&gt;sk
+op_member_access_from_pointer
+id|sk_write_space
 c_func
 (paren
-id|vcc-&gt;sk-&gt;sk_sleep
+id|vcc-&gt;sk
 )paren
 suffix:semicolon
 )brace
