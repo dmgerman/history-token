@@ -1024,16 +1024,10 @@ c_cond
 id|drive-&gt;waiting_for_dma
 )paren
 r_return
-id|drive-&gt;channel
-op_member_access_from_pointer
-id|udma
+id|udma_irq_status
 c_func
 (paren
-id|ide_dma_test_irq
-comma
 id|drive
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#if 0

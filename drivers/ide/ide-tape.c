@@ -5558,16 +5558,14 @@ id|KERN_ERR
 l_string|&quot;ide-tape: DMA disabled, reverting to PIO&bslash;n&quot;
 )paren
 suffix:semicolon
-id|drive-&gt;channel
-op_member_access_from_pointer
-id|udma
+id|udma_enable
 c_func
 (paren
-id|ide_dma_off
-comma
 id|drive
 comma
-l_int|NULL
+l_int|0
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -6321,19 +6319,14 @@ id|KERN_WARNING
 l_string|&quot;ide-tape: DMA disabled, reverting to PIO&bslash;n&quot;
 )paren
 suffix:semicolon
-(paren
-r_void
-)paren
-id|drive-&gt;channel
-op_member_access_from_pointer
-id|udma
+id|udma_enable
 c_func
 (paren
-id|ide_dma_off
-comma
 id|drive
 comma
-l_int|NULL
+l_int|0
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/cy82c693.c&t;&t;Version 0.34&t;Dec. 13, 1999&n; *&n; *  Copyright (C) 1998-2000 Andreas S. Krebs (akrebs@altavista.net), Maintainer&n; *  Copyright (C) 1998-2000 Andre Hedrick &lt;andre@linux-ide.org&gt;, Integrater&n; *&n; * CYPRESS CY82C693 chipset IDE controller&n; *&n; * The CY82C693 chipset is used on Digital&squot;s PC-Alpha 164SX boards.&n; * Writting the driver was quite simple, since most of the job is&n; * done by the generic pci-ide support. &n; * The hard part was finding the CY82C693&squot;s datasheet on Cypress&squot;s&n; * web page :-(. But Altavista solved this problem :-).&n; *&n; *&n; * Notes:&n; * - I recently got a 16.8G IBM DTTA, so I was able to test it with&n; *   a large and fast disk - the results look great, so I&squot;d say the&n; *   driver is working fine :-)&n; *   hdparm -t reports 8.17 MB/sec at about 6% CPU usage for the DTTA &n; * - this is my first linux driver, so there&squot;s probably a lot  of room &n; *   for optimizations and bug fixing, so feel free to do it.&n; * - use idebus=xx parameter to set PCI bus speed - needed to calc&n; *   timings for PIO modes (default will be 40)&n; * - if using PIO mode it&squot;s a good idea to set the PIO mode and &n; *   32-bit I/O support (if possible), e.g. hdparm -p2 -c1 /dev/hda&n; * - I had some problems with my IBM DHEA with PIO modes &lt; 2&n; *   (lost interrupts) ?????&n; * - first tests with DMA look okay, they seem to work, but there is a&n; *   problem with sound - the BusMaster IDE TimeOut should fixed this&n; *&n; *&n; * History:&n; * AMH@1999-08-24: v0.34 init_cy82c693_chip moved to pci_init_cy82c693&n; * ASK@1999-01-23: v0.33 made a few minor code clean ups&n; *                       removed DMA clock speed setting by default&n; *                       added boot message&n; * ASK@1998-11-01: v0.32 added support to set BusMaster IDE TimeOut&n; *                       added support to set DMA Controller Clock Speed&n; * ASK@1998-10-31: v0.31 fixed problem with setting to high DMA modes on some drive&n; * ASK@1998-10-29: v0.3 added support to set DMA modes&n; * ASK@1998-10-28: v0.2 added support to set PIO modes&n; * ASK@1998-10-27: v0.1 first version - chipset detection&n; *&n; */
+multiline_comment|/*&n; * linux/drivers/ide/cy82c693.c&t;&t;Version 0.34&t;Dec. 13, 1999&n; *&n; *  Copyright (C) 1998-2000 Andreas S. Krebs (akrebs@altavista.net), Maintainer&n; *  Copyright (C) 1998-2000 Andre Hedrick &lt;andre@linux-ide.org&gt;, Integrater&n; *&n; * CYPRESS CY82C693 chipset IDE controller&n; *&n; * The CY82C693 chipset is used on Digital&squot;s PC-Alpha 164SX boards.&n; * Writting the driver was quite simple, since most of the job is&n; * done by the generic pci-ide support.&n; * The hard part was finding the CY82C693&squot;s datasheet on Cypress&squot;s&n; * web page :-(. But Altavista solved this problem :-).&n; *&n; *&n; * Notes:&n; * - I recently got a 16.8G IBM DTTA, so I was able to test it with&n; *   a large and fast disk - the results look great, so I&squot;d say the&n; *   driver is working fine :-)&n; *   hdparm -t reports 8.17 MB/sec at about 6% CPU usage for the DTTA&n; * - this is my first linux driver, so there&squot;s probably a lot  of room&n; *   for optimizations and bug fixing, so feel free to do it.&n; * - use idebus=xx parameter to set PCI bus speed - needed to calc&n; *   timings for PIO modes (default will be 40)&n; * - if using PIO mode it&squot;s a good idea to set the PIO mode and&n; *   32-bit I/O support (if possible), e.g. hdparm -p2 -c1 /dev/hda&n; * - I had some problems with my IBM DHEA with PIO modes &lt; 2&n; *   (lost interrupts) ?????&n; * - first tests with DMA look okay, they seem to work, but there is a&n; *   problem with sound - the BusMaster IDE TimeOut should fixed this&n; *&n; *&n; * History:&n; * AMH@1999-08-24: v0.34 init_cy82c693_chip moved to pci_init_cy82c693&n; * ASK@1999-01-23: v0.33 made a few minor code clean ups&n; *                       removed DMA clock speed setting by default&n; *                       added boot message&n; * ASK@1998-11-01: v0.32 added support to set BusMaster IDE TimeOut&n; *                       added support to set DMA Controller Clock Speed&n; * ASK@1998-10-31: v0.31 fixed problem with setting to high DMA modes on some drive&n; * ASK@1998-10-29: v0.3 added support to set DMA modes&n; * ASK@1998-10-28: v0.2 added support to set PIO modes&n; * ASK@1998-10-27: v0.1 first version - chipset detection&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -18,7 +18,7 @@ mdefine_line|#define&t;CY82C693_DEBUG_INFO&t;0
 multiline_comment|/* define CY82C693_SETDMA_CLOCK to set DMA Controller Clock Speed to ATCLK */
 DECL|macro|CY82C693_SETDMA_CLOCK
 macro_line|#undef CY82C693_SETDMA_CLOCK
-multiline_comment|/*&n; * note: the value for busmaster timeout is tricky and i got it by trial and error !&n; *       using a to low value will cause DMA timeouts and drop IDE performance&n; *       using a to high value will cause audio playback to scatter&n; *       if you know a better value or how to calc it, please let me know &n; */
+multiline_comment|/*&n; * note: the value for busmaster timeout is tricky and i got it by trial and error !&n; *       using a to low value will cause DMA timeouts and drop IDE performance&n; *       using a to high value will cause audio playback to scatter&n; *       if you know a better value or how to calc it, please let me know&n; */
 DECL|macro|BUSMASTER_TIMEOUT
 mdefine_line|#define BUSMASTER_TIMEOUT&t;0x50&t;/* twice the value written in cy82c693ub datasheet */
 multiline_comment|/*&n; * the value above was tested on my machine and it seems to work okay&n; */
@@ -28,17 +28,17 @@ mdefine_line|#define CY82_IDE_CMDREG&t;&t;0x04
 DECL|macro|CY82_IDE_ADDRSETUP
 mdefine_line|#define CY82_IDE_ADDRSETUP&t;0x48
 DECL|macro|CY82_IDE_MASTER_IOR
-mdefine_line|#define CY82_IDE_MASTER_IOR&t;0x4C&t;
+mdefine_line|#define CY82_IDE_MASTER_IOR&t;0x4C
 DECL|macro|CY82_IDE_MASTER_IOW
-mdefine_line|#define CY82_IDE_MASTER_IOW&t;0x4D&t;
+mdefine_line|#define CY82_IDE_MASTER_IOW&t;0x4D
 DECL|macro|CY82_IDE_SLAVE_IOR
-mdefine_line|#define CY82_IDE_SLAVE_IOR&t;0x4E&t;
+mdefine_line|#define CY82_IDE_SLAVE_IOR&t;0x4E
 DECL|macro|CY82_IDE_SLAVE_IOW
 mdefine_line|#define CY82_IDE_SLAVE_IOW&t;0x4F
 DECL|macro|CY82_IDE_MASTER_8BIT
-mdefine_line|#define CY82_IDE_MASTER_8BIT&t;0x50&t;
+mdefine_line|#define CY82_IDE_MASTER_8BIT&t;0x50
 DECL|macro|CY82_IDE_SLAVE_8BIT
-mdefine_line|#define CY82_IDE_SLAVE_8BIT&t;0x51&t;
+mdefine_line|#define CY82_IDE_SLAVE_8BIT&t;0x51
 DECL|macro|CY82_INDEX_PORT
 mdefine_line|#define CY82_INDEX_PORT&t;&t;0x22
 DECL|macro|CY82_DATA_PORT
@@ -428,7 +428,7 @@ id|single
 )paren
 suffix:semicolon
 macro_line|#endif /* CY82C693_DEBUG_INFO */
-multiline_comment|/* &n;&t; * note: below we set the value for Bus Master IDE TimeOut Register&n;&t; * I&squot;m not absolutly sure what this does, but it solved my problem&n;&t; * with IDE DMA and sound, so I now can play sound and work with&n;&t; * my IDE driver at the same time :-)&n;&t; *&n;&t; * If you know the correct (best) value for this register please&n;&t; * let me know - ASK&n;&t; */
+multiline_comment|/*&n;&t; * note: below we set the value for Bus Master IDE TimeOut Register&n;&t; * I&squot;m not absolutly sure what this does, but it solved my problem&n;&t; * with IDE DMA and sound, so I now can play sound and work with&n;&t; * my IDE driver at the same time :-)&n;&t; *&n;&t; * If you know the correct (best) value for this register please&n;&t; * let me know - ASK&n;&t; */
 id|data
 op_assign
 id|BUSMASTER_TIMEOUT
@@ -449,7 +449,7 @@ comma
 id|CY82_DATA_PORT
 )paren
 suffix:semicolon
-macro_line|#if CY82C693_DEBUG_INFO&t;
+macro_line|#if CY82C693_DEBUG_INFO
 id|printk
 (paren
 id|KERN_INFO
@@ -462,36 +462,20 @@ id|data
 suffix:semicolon
 macro_line|#endif /* CY82C693_DEBUG_INFO */
 )brace
-multiline_comment|/* &n; * used to set DMA mode for CY82C693 (single and multi modes)&n; */
+multiline_comment|/*&n; * used to set DMA mode for CY82C693 (single and multi modes)&n; */
 DECL|function|cy82c693_dmaproc
 r_static
 r_int
 id|cy82c693_dmaproc
 c_func
 (paren
-id|ide_dma_action_t
-id|func
-comma
 r_struct
 id|ata_device
 op_star
 id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
 )paren
 (brace
-multiline_comment|/*&n;&t; * if the function is dma on, set dma mode for drive everything&n;&t; * else is done by the defaul func&n;&t; */
-r_if
-c_cond
-(paren
-id|func
-op_eq
-id|ide_dma_on
-)paren
-(brace
+multiline_comment|/*&n;&t; * Set dma mode for drive everything else is done by the defaul func.&n;&t; */
 r_struct
 id|hd_driveid
 op_star
@@ -508,7 +492,7 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif /* CY82C693_DEBUG_INFO */
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -599,20 +583,21 @@ suffix:semicolon
 multiline_comment|/* enable single */
 )brace
 )brace
-)brace
-r_return
-id|ide_dmaproc
+id|udma_enable
 c_func
 (paren
-id|func
-comma
 id|drive
 comma
-id|rq
+l_int|1
+comma
+l_int|1
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
 multiline_comment|/*&n; * tune ide drive - set PIO mode&n; */
 DECL|function|cy82c693_tune_drive
 r_static
@@ -700,7 +685,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * get master drive registers               &t;&n;&t;&t; * address setup control register&n;&t;&t; * is 32 bit !!!&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * get master drive registers&n;&t;&t; * address setup control register&n;&t;&t; * is 32 bit !!!&n;&t;&t; */
 id|pci_read_config_dword
 c_func
 (paren
@@ -1073,7 +1058,7 @@ macro_line|#ifdef CY82C693_SETDMA_CLOCK
 id|byte
 id|data
 suffix:semicolon
-macro_line|#endif /* CY82C693_SETDMA_CLOCK */ 
+macro_line|#endif /* CY82C693_SETDMA_CLOCK */
 multiline_comment|/* write info about this verion of the driver */
 id|printk
 (paren
@@ -1112,7 +1097,7 @@ id|data
 )paren
 suffix:semicolon
 macro_line|#endif /* CY82C693_DEBUG_INFO */
-multiline_comment|/*&n;&t; * for some reason sometimes the DMA controller&n;&t; * speed is set to ATCLK/2 ???? - we fix this here&n;&t; * &n;&t; * note: i don&squot;t know what causes this strange behaviour,&n;&t; *       but even changing the dma speed doesn&squot;t solve it :-(&n;&t; *       the ide performance is still only half the normal speed &n;&t; * &n;&t; *       if anybody knows what goes wrong with my machine, please&n;&t; *       let me know - ASK&n;         */
+multiline_comment|/*&n;&t; * for some reason sometimes the DMA controller&n;&t; * speed is set to ATCLK/2 ???? - we fix this here&n;&t; *&n;&t; * note: i don&squot;t know what causes this strange behaviour,&n;&t; *       but even changing the dma speed doesn&squot;t solve it :-(&n;&t; *       the ide performance is still only half the normal speed&n;&t; *&n;&t; *       if anybody knows what goes wrong with my machine, please&n;&t; *       let me know - ASK&n;         */
 id|data
 op_or_assign
 l_int|0x03
@@ -1204,7 +1189,7 @@ id|hwif-&gt;highmem
 op_assign
 l_int|1
 suffix:semicolon
-id|hwif-&gt;udma
+id|hwif-&gt;XXX_udma
 op_assign
 id|cy82c693_dmaproc
 suffix:semicolon

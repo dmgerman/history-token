@@ -1853,32 +1853,15 @@ l_int|5
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
-multiline_comment|/*&n; * amd74xx_dmaproc() is a callback from upper layers that can do&n; * a lot, but we use it for DMA/PIO tuning only, delegating everything&n; * else to the default ide_dmaproc().&n; */
 DECL|function|amd74xx_dmaproc
 r_int
 id|amd74xx_dmaproc
 c_func
 (paren
-id|ide_dma_action_t
-id|func
-comma
 r_struct
 id|ata_device
 op_star
 id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|func
-op_eq
-id|ide_dma_check
 )paren
 (brace
 r_int
@@ -1958,9 +1941,11 @@ comma
 id|speed
 )paren
 suffix:semicolon
-id|func
-op_assign
+id|udma_enable
+c_func
 (paren
+id|drive
+comma
 id|drive-&gt;channel-&gt;autodma
 op_logical_and
 (paren
@@ -1970,27 +1955,15 @@ id|XFER_MODE
 )paren
 op_ne
 id|XFER_PIO
+comma
+l_int|0
 )paren
-ques
-c_cond
-id|ide_dma_on
-suffix:colon
-id|ide_dma_off_quietly
 suffix:semicolon
-)brace
 r_return
-id|ide_dmaproc
-c_func
-(paren
-id|func
-comma
-id|drive
-comma
-id|rq
-)paren
+l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
 multiline_comment|/*&n; * The initialization callback. Here we determine the IDE chip type&n; * and initialize its drive independent registers.&n; */
 DECL|function|pci_init_amd74xx
 r_int
@@ -2594,7 +2567,7 @@ id|hwif-&gt;highmem
 op_assign
 l_int|1
 suffix:semicolon
-id|hwif-&gt;udma
+id|hwif-&gt;XXX_udma
 op_assign
 id|amd74xx_dmaproc
 suffix:semicolon

@@ -3584,7 +3584,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|drive-&gt;channel-&gt;udma
+id|drive-&gt;channel-&gt;XXX_udma
 )paren
 r_return
 op_minus
