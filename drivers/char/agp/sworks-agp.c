@@ -4,6 +4,31 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &quot;agp.h&quot;
+DECL|macro|SVWRKS_COMMAND
+mdefine_line|#define SVWRKS_COMMAND&t;&t;0x04
+DECL|macro|SVWRKS_APSIZE
+mdefine_line|#define SVWRKS_APSIZE&t;&t;0x10
+DECL|macro|SVWRKS_MMBASE
+mdefine_line|#define SVWRKS_MMBASE&t;&t;0x14
+DECL|macro|SVWRKS_CACHING
+mdefine_line|#define SVWRKS_CACHING&t;&t;0x4b
+DECL|macro|SVWRKS_AGP_ENABLE
+mdefine_line|#define SVWRKS_AGP_ENABLE&t;0x60
+DECL|macro|SVWRKS_FEATURE
+mdefine_line|#define SVWRKS_FEATURE&t;&t;0x68
+DECL|macro|SVWRKS_SIZE_MASK
+mdefine_line|#define SVWRKS_SIZE_MASK&t;0xfe000000
+multiline_comment|/* Memory mapped registers */
+DECL|macro|SVWRKS_GART_CACHE
+mdefine_line|#define SVWRKS_GART_CACHE&t;0x02
+DECL|macro|SVWRKS_GATTBASE
+mdefine_line|#define SVWRKS_GATTBASE&t;&t;0x04
+DECL|macro|SVWRKS_TLBFLUSH
+mdefine_line|#define SVWRKS_TLBFLUSH&t;&t;0x10
+DECL|macro|SVWRKS_POSTFLUSH
+mdefine_line|#define SVWRKS_POSTFLUSH&t;0x14
+DECL|macro|SVWRKS_DIRFLUSH
+mdefine_line|#define SVWRKS_DIRFLUSH&t;&t;0x0c
 DECL|struct|serverworks_page_map
 r_struct
 id|serverworks_page_map
@@ -2099,6 +2124,21 @@ c_cond
 id|pdev-&gt;device
 )paren
 (brace
+r_case
+l_int|0x0006
+suffix:colon
+multiline_comment|/* ServerWorks CNB20HE&n;&t;&t;Fail silently.*/
+id|printk
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;Detected ServerWorks CNB20HE chipset: No AGP present.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 r_case
 id|PCI_DEVICE_ID_SERVERWORKS_HE
 suffix:colon

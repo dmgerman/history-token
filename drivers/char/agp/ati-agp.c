@@ -6,6 +6,26 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &lt;asm/agp.h&gt;
 macro_line|#include &quot;agp.h&quot;
+DECL|macro|ATI_GART_MMBASE_ADDR
+mdefine_line|#define ATI_GART_MMBASE_ADDR&t;0x14
+DECL|macro|ATI_RS100_APSIZE
+mdefine_line|#define ATI_RS100_APSIZE&t;0xac
+DECL|macro|ATI_RS100_IG_AGPMODE
+mdefine_line|#define ATI_RS100_IG_AGPMODE&t;0xb0
+DECL|macro|ATI_RS300_APSIZE
+mdefine_line|#define ATI_RS300_APSIZE&t;0xf8
+DECL|macro|ATI_RS300_IG_AGPMODE
+mdefine_line|#define ATI_RS300_IG_AGPMODE&t;0xfc
+DECL|macro|ATI_GART_FEATURE_ID
+mdefine_line|#define ATI_GART_FEATURE_ID&t;&t;0x00
+DECL|macro|ATI_GART_BASE
+mdefine_line|#define ATI_GART_BASE&t;&t;&t;0x04
+DECL|macro|ATI_GART_CACHE_SZBASE
+mdefine_line|#define ATI_GART_CACHE_SZBASE&t;&t;0x08
+DECL|macro|ATI_GART_CACHE_CNTRL
+mdefine_line|#define ATI_GART_CACHE_CNTRL&t;&t;0x0c
+DECL|macro|ATI_GART_CACHE_ENTRY_CNTRL
+mdefine_line|#define ATI_GART_CACHE_ENTRY_CNTRL&t;0x10
 DECL|variable|ati_generic_sizes
 r_static
 r_struct
