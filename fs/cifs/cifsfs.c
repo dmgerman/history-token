@@ -396,14 +396,6 @@ l_string|&quot;In cifs_put_super&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_star
-l_int|4
-)paren
-suffix:semicolon
 id|cifs_sb
 op_assign
 id|CIFS_SB
@@ -564,6 +556,12 @@ id|cifs_sb-&gt;local_nls
 suffix:semicolon
 multiline_comment|/*     &n;&t;   int f_type;&n;&t;   __fsid_t f_fsid;&n;&t;   int f_namelen;  */
 multiline_comment|/* BB get from info put in tcon struct at mount time with call to QFSAttrInfo */
+id|FreeXid
+c_func
+(paren
+id|xid
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -989,6 +987,11 @@ op_assign
 id|cifs_lookup
 comma
 dot
+id|getattr
+op_assign
+id|cifs_getattr
+comma
+dot
 id|unlink
 op_assign
 id|cifs_unlink
@@ -1039,6 +1042,11 @@ op_assign
 id|cifs_setattr
 comma
 dot
+id|getattr
+op_assign
+id|cifs_getattr
+comma
+dot
 id|rename
 op_assign
 id|cifs_rename
@@ -1062,7 +1070,7 @@ op_assign
 id|cifs_follow_link
 comma
 multiline_comment|/* BB add the following two eventually */
-multiline_comment|/* revalidate:     cifs_revalidate,&n;   setattr:        cifs_notify_change, */
+multiline_comment|/* revalidate: cifs_revalidate,&n;&t;   setattr:    cifs_notify_change, */
 multiline_comment|/* BB do we need notify change */
 )brace
 suffix:semicolon
@@ -1075,12 +1083,12 @@ op_assign
 dot
 id|read
 op_assign
-id|cifs_read
+id|generic_file_read
 comma
 dot
 id|write
 op_assign
-id|cifs_write
+id|generic_file_write
 comma
 dot
 id|open
@@ -1101,6 +1109,11 @@ dot
 id|fsync
 op_assign
 id|cifs_fsync
+comma
+dot
+id|mmap
+op_assign
+id|cifs_file_mmap
 comma
 )brace
 suffix:semicolon

@@ -1,23 +1,8 @@
 multiline_comment|/* &n; *  Unix SMB/Netbios implementation.&n; *  Version 1.9.&n; *  RPC Pipe client / server routines&n; *  Copyright (C) Luke Kenneth Casson Leighton 1997-2001.&n; *  &n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *  &n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *  &n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* NT error codes - see nterr.h */
-macro_line|#include &quot;nterr.h&quot;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-DECL|struct|nt_err_code_struct
-r_struct
-id|nt_err_code_struct
-(brace
-DECL|member|nt_errstr
-r_char
-op_star
-id|nt_errstr
-suffix:semicolon
-DECL|member|nt_errcode
-id|__u32
-id|nt_errcode
-suffix:semicolon
-)brace
-suffix:semicolon
+macro_line|#include &quot;nterr.h&quot;
 DECL|variable|nt_errs
 r_const
 r_struct
@@ -3070,6 +3055,4 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/*****************************************************************************&n; Print an error message from the status code&n; *****************************************************************************/
-multiline_comment|/* void&n;cifs_print_status(__u32 status_code)&n;{&n;&t;int idx = 0;&n;&n;&t;printk(&quot;&bslash;nStatus code returned: 0x%08x&quot;, status_code);&n;&n;&t;while (nt_errs[idx].nt_errstr != NULL) {&n;&t;&t;if (((nt_errs[idx].nt_errcode) &amp; 0xFFFFFF) ==&n;&t;&t;    (status_code &amp; 0xFFFFFF)) {&n;&t;&t;&t;printk(nt_errs[idx].nt_errstr);&n;&t;&t;}&n;&t;&t;idx++;&n;&t;}&n;&t;return;&n;} */
 eof

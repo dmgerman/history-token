@@ -644,20 +644,6 @@ id|ses-&gt;server-&gt;sockAddr
 )paren
 )paren
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;&bslash;ncifs smb_send rc %d&quot;
-comma
-id|rc
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* BB remove */
-multiline_comment|/* BB add code to wait for response and copy to out_buf */
 r_if
 c_cond
 (paren
@@ -709,9 +695,7 @@ id|midState
 op_amp
 id|MID_RESPONSE_RECEIVED
 comma
-l_int|15
-op_star
-id|HZ
+id|timeout
 )paren
 suffix:semicolon
 id|cFYI
@@ -1007,7 +991,7 @@ c_func
 id|midQ
 )paren
 suffix:semicolon
-multiline_comment|/* BB what if process is killed ? - BB add background daemon to clean up Mid entries from killed processes BB test killing process with active mid */
+multiline_comment|/* BB what if process is killed?&n;&t;&t;&t; - BB add background daemon to clean up Mid entries from&n;&t;&t;&t; killed processes &amp; test killing process with active mid */
 r_return
 id|rc
 suffix:semicolon

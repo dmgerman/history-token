@@ -2415,15 +2415,21 @@ id|nbytes
 op_assign
 id|pSMBr-&gt;DataLength
 suffix:semicolon
-multiline_comment|/* BB check that DataLength would not go beyond end of SMB BB */
+multiline_comment|/*check that DataLength would not go beyond end of SMB */
 r_if
 c_cond
+(paren
 (paren
 id|pSMBr-&gt;DataLength
 OG
 id|CIFS_MAX_MSGSIZE
-op_plus
-id|MAX_CIFS_HDR_SIZE
+)paren
+op_logical_or
+(paren
+id|pSMBr-&gt;DataLength
+OG
+id|count
+)paren
 )paren
 (brace
 id|rc
@@ -2456,10 +2462,9 @@ c_func
 id|pSMBr-&gt;DataOffset
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|copy_to_user
+multiline_comment|/*&t;&t;&t;if(rc = copy_to_user(buf, pReadData, pSMBr-&gt;DataLength)) {&n;&t;&t;&t;&t;cERROR(1,(&quot;&bslash;nFaulting on read rc = %d&quot;,rc));&n;&t;&t;&t;&t;rc = -EFAULT;&n;&t;&t;&t;}*/
+multiline_comment|/* can not use copy_to_user when using page cache*/
+id|memcpy
 c_func
 (paren
 id|buf
@@ -2468,14 +2473,7 @@ id|pReadData
 comma
 id|pSMBr-&gt;DataLength
 )paren
-)paren
-(brace
-id|rc
-op_assign
-op_minus
-id|EFAULT
 suffix:semicolon
-)brace
 )brace
 )brace
 r_if
@@ -2676,10 +2674,7 @@ op_minus
 l_int|4
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|copy_from_user
+id|memcpy
 c_func
 (paren
 id|pSMB-&gt;Data
@@ -2688,19 +2683,7 @@ id|buf
 comma
 id|pSMB-&gt;DataLengthLow
 )paren
-)paren
-(brace
-id|buf_release
-c_func
-(paren
-id|pSMB
-)paren
 suffix:semicolon
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
 id|pSMB-&gt;ByteCount
 op_add_assign
 id|pSMB-&gt;DataLengthLow

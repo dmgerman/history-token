@@ -525,6 +525,13 @@ multiline_comment|/* file id from remote */
 multiline_comment|/* BB add lock scope info here if needed */
 suffix:semicolon
 multiline_comment|/* lock scope id (0 if none) */
+DECL|member|pfile
+r_struct
+id|file
+op_star
+id|pfile
+suffix:semicolon
+multiline_comment|/* needed for writepage */
 DECL|member|endOfSearch
 r_int
 id|endOfSearch
@@ -579,7 +586,7 @@ id|clientCanCache
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* oplocked.  We need to extend cases beyond this i.e. what&n;&t;&t;&t;&t;   if file read-only or if file locked? or if file on r/o vol? */
+multiline_comment|/* oplocked.  We need to extend cases beyond this i.e. what&n;&t;&t;&t;   if file read-only or if file locked? or if file on r/o vol? */
 DECL|member|vfs_inode
 r_struct
 id|inode
@@ -691,7 +698,7 @@ DECL|member|midState
 r_int
 id|midState
 suffix:semicolon
-multiline_comment|/* wish this could be an enum but can not pass that to wait_event */
+multiline_comment|/* wish this were enum but can not pass to wait_event */
 )brace
 suffix:semicolon
 DECL|macro|MID_FREE
@@ -849,7 +856,7 @@ r_int
 r_int
 id|multiuser_mount
 suffix:semicolon
-multiline_comment|/* if enabled allows new sessions&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;to be established on existing mount if we&n;&t;&t;&t;&t;&t;                have the uid/password or Kerberos credential &n;&t;&t;&t;&t;&t;&t;&t;&t;&t;or equivalent for current user */
+multiline_comment|/* if enabled allows new sessions&n;&t;&t;&t;&t;to be established on existing mount if we&n;&t;&t;&t;&t;have the uid/password or Kerberos credential &n;&t;&t;&t;&t;or equivalent for current user */
 DECL|variable|oplockEnabled
 id|GLOBAL_EXTERN
 r_int
@@ -862,7 +869,7 @@ r_int
 r_int
 id|extended_security
 suffix:semicolon
-multiline_comment|/* if on, session setup sent &n;&t;&t;&t;&t;&t;&t;&t;&t;&t;with more secure ntlmssp2 challenge/resp */
+multiline_comment|/* if on, session setup sent &n;&t;&t;&t;&t;with more secure ntlmssp2 challenge/resp */
 DECL|variable|ntlmv2_support
 id|GLOBAL_EXTERN
 r_int

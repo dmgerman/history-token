@@ -1440,7 +1440,7 @@ op_eq
 id|buf-&gt;Uid
 )paren
 (brace
-multiline_comment|/* BB Add following logic: &n;&t;&t;&t;  2) look up inode from tcon-&gt;openFileList-&gt;file-&gt;f_dentry-&gt;d_inode&n;&t;&t;&t;  3) flush dirty pages and cached byte range locks and mark inode&n;&t;&t;&t;  4) depending on break type change to r/o caching or no caching&n;&t;&t;&t;  5) send oplock break response to server */
+multiline_comment|/* BB Add following logic: &n;                         2) look up inode from tcon-&gt;openFileList-&gt;file-&gt;f_dentry-&gt;d_inode&n;                         3) flush dirty pages and cached byte range locks and mark inode&n;                         4) depending on break type change to r/o caching or no caching&n;                         5) send oplock break response to server */
 id|read_unlock
 c_func
 (paren

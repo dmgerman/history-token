@@ -3656,7 +3656,7 @@ l_string|&quot;&bslash;nAble to use the more secure NTLM version 2 password hash
 )paren
 suffix:semicolon
 multiline_comment|/* SMBNTv2encrypt( ...);  */
-multiline_comment|/* BB fix this up - &n;                        and note that Samba client equivalent looks wrong */
+multiline_comment|/* BB fix this up - &n;&t;&t;&t;&t;   and note that Samba client equivalent looks wrong */
 )brace
 r_else
 id|SMBNTencrypt
@@ -3894,6 +3894,12 @@ comma
 id|cifs_sb
 op_member_access_from_pointer
 id|local_nls
+)paren
+suffix:semicolon
+id|FreeXid
+c_func
+(paren
+id|xid
 )paren
 suffix:semicolon
 r_return
