@@ -2785,6 +2785,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* Changed in start_io_thread, which is serialized by being called only&n; * from ubd_init, which is an initcall.&n; */
 DECL|variable|kernel_fd
 r_int
 id|kernel_fd
@@ -2792,6 +2793,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+multiline_comment|/* Only changed by the io thread */
 DECL|variable|io_count
 r_int
 id|io_count

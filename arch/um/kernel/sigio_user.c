@@ -16,6 +16,7 @@ macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;sigio.h&quot;
 macro_line|#include &quot;helper.h&quot;
 macro_line|#include &quot;os.h&quot;
+multiline_comment|/* Changed during early boot */
 DECL|variable|pty_output_sigio
 r_int
 id|pty_output_sigio
@@ -28,6 +29,7 @@ id|pty_close_sigio
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Used as a flag during SIGIO testing early in boot */
 DECL|variable|got_sigio
 r_static
 r_int
@@ -779,6 +781,7 @@ id|tty_close
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Protected by sigio_lock(), also used by sigio_cleanup, which is an &n; * exitcall.&n; */
 DECL|variable|write_sigio_pid
 r_static
 r_int
@@ -787,6 +790,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+multiline_comment|/* These arrays are initialized before the sigio thread is started, and&n; * the descriptors closed after it is killed.  So, it can&squot;t see them change.&n; * On the UML side, they are changed under the sigio_lock.&n; */
 DECL|variable|write_sigio_fds
 r_static
 r_int
@@ -839,6 +843,7 @@ id|used
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Protected by sigio_lock().  Used by the sigio thread, but the UML thread&n; * synchronizes with it.&n; */
 DECL|variable|current_poll
 r_struct
 id|pollfds
@@ -1153,7 +1158,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* XXX SMP locking needed here too */
 DECL|function|need_poll
 r_static
 r_int
@@ -1369,6 +1373,11 @@ r_return
 suffix:semicolon
 id|fail
 suffix:colon
+id|sigio_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1428,6 +1437,11 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
+id|sigio_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|set_signals
 c_func
 (paren
@@ -1449,12 +1463,19 @@ id|read
 (brace
 r_int
 id|err
+op_assign
+l_int|0
 comma
 id|i
 comma
 id|n
 comma
 id|events
+suffix:semicolon
+id|sigio_lock
+c_func
+(paren
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -1470,6 +1491,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -1483,9 +1505,10 @@ op_eq
 id|fd
 )paren
 (brace
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
+)brace
 )brace
 id|n
 op_assign
@@ -1507,8 +1530,8 @@ c_cond
 id|err
 )paren
 (brace
-r_return
-id|err
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_for
@@ -1585,8 +1608,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|out
+suffix:colon
+id|sigio_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
-l_int|0
+id|err
 suffix:semicolon
 )brace
 DECL|function|ignore_sigio_fd
@@ -1605,12 +1635,19 @@ id|p
 suffix:semicolon
 r_int
 id|err
+op_assign
+l_int|0
 comma
 id|i
 comma
 id|n
 op_assign
 l_int|0
+suffix:semicolon
+id|sigio_lock
+c_func
+(paren
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -1652,8 +1689,8 @@ op_eq
 id|current_poll.used
 )paren
 (brace
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|err
@@ -1672,8 +1709,8 @@ c_cond
 id|err
 )paren
 (brace
-r_return
-id|err
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_for
@@ -1736,9 +1773,13 @@ comma
 id|fd
 )paren
 suffix:semicolon
-r_return
+id|err
+op_assign
 op_minus
 l_int|1
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|update_thread
@@ -1746,8 +1787,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|out
+suffix:colon
+id|sigio_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
-l_int|0
+id|err
 suffix:semicolon
 )brace
 DECL|function|setup_initial_poll
@@ -1860,6 +1908,11 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+id|sigio_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1869,10 +1922,10 @@ op_minus
 l_int|1
 )paren
 (brace
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
-multiline_comment|/* XXX This needs SMP locking */
 id|err
 op_assign
 id|os_pipe
@@ -1901,7 +1954,8 @@ op_minus
 id|err
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|err
@@ -1999,6 +2053,13 @@ r_goto
 id|out_kill
 suffix:semicolon
 )brace
+id|out
+suffix:colon
+id|sigio_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 id|out_kill
@@ -2054,6 +2115,11 @@ id|write_sigio_fds
 (braket
 l_int|1
 )braket
+)paren
+suffix:semicolon
+id|sigio_unlock
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

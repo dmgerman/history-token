@@ -11,7 +11,9 @@ macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;os.h&quot;
 DECL|macro|TTY_LOG_DIR
 mdefine_line|#define TTY_LOG_DIR &quot;./&quot;
+multiline_comment|/* Set early in boot and then unchanged */
 DECL|variable|tty_log_dir
+r_static
 r_char
 op_star
 id|tty_log_dir

@@ -42,6 +42,7 @@ id|fd
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Debugging aid, changed only from gdb */
 DECL|variable|helper_pause
 r_int
 id|helper_pause

@@ -146,6 +146,7 @@ l_string|&quot;tts&quot;
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* The array is initialized by line_init, which is an initcall.  The &n; * individual elements are protected by individual semaphores.&n; */
 DECL|variable|serial_lines
 r_static
 r_struct

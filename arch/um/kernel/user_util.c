@@ -27,6 +27,7 @@ macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;helper.h&quot;
 DECL|macro|COMMAND_LINE_SIZE
 mdefine_line|#define COMMAND_LINE_SIZE _POSIX_ARG_MAX
+multiline_comment|/* Changed in linux_main and setup_arch, which run before SMP is started */
 DECL|variable|saved_command_line
 r_char
 id|saved_command_line

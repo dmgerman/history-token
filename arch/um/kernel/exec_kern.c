@@ -13,6 +13,7 @@ macro_line|#include &quot;irq_user.h&quot;
 macro_line|#include &quot;tlb.h&quot;
 macro_line|#include &quot;2_5compat.h&quot;
 macro_line|#include &quot;os.h&quot;
+macro_line|#include &quot;time_user.h&quot;
 multiline_comment|/* See comment above fork_tramp for why sigstop is defined and used like&n; * this&n; */
 DECL|variable|sigstop
 r_static
@@ -36,11 +37,6 @@ r_int
 id|sig
 op_assign
 id|sigstop
-suffix:semicolon
-id|block_signals
-c_func
-(paren
-)paren
 suffix:semicolon
 id|init_new_thread
 c_func
@@ -195,6 +191,11 @@ id|os_getpid
 c_func
 (paren
 )paren
+)paren
+suffix:semicolon
+id|enable_timer
+c_func
+(paren
 )paren
 suffix:semicolon
 id|free_page
