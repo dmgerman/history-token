@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ether.c -- CDC 1.1 Ethernet gadget driver&n; *&n; * Copyright (C) 2003 David Brownell&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * ether.c -- Ethernet gadget driver, with CDC and non-CDC options&n; *&n; * Copyright (C) 2003 David Brownell&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG 1
 singleline_comment|// #define VERBOSE
@@ -32,11 +32,11 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * &quot;Communications Device Class&quot; (CDC) Ethernet class driver&n; *&n; * CDC Ethernet is the standard USB solution for sending Ethernet frames&n; * using USB.  Real hardware tends to use the same framing protocol but look&n; * different for control features.  And Microsoft pushes their own approach&n; * (RNDIS) instead of the standard.&n; */
+multiline_comment|/*&n; * Ethernet gadget driver -- with CDC and non-CDC options&n; *&n; * CDC Ethernet is the standard USB solution for sending Ethernet frames&n; * using USB.  Real hardware tends to use the same framing protocol but look&n; * different for control features.  And Microsoft pushes their own approach&n; * (RNDIS) instead of the standard.&n; *&n; * There&squot;s some hardware that can&squot;t talk CDC.  We make that hardware&n; * implement a &quot;minimalist&quot; vendor-agnostic CDC core:  same framing, but&n; * link-level setup only requires activating the configuration.&n; */
 DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC&t;&t;&quot;CDC Ethernet Gadget&quot;
+mdefine_line|#define DRIVER_DESC&t;&t;&quot;Ethernet Gadget&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&t;&quot;29 April 2003&quot;
+mdefine_line|#define DRIVER_VERSION&t;&t;&quot;Bastille Day 2003&quot;
 DECL|variable|shortname
 r_static
 r_const
@@ -56,26 +56,6 @@ id|driver_desc
 )braket
 op_assign
 id|DRIVER_DESC
-suffix:semicolon
-DECL|variable|control_name
-r_static
-r_const
-r_char
-id|control_name
-(braket
-)braket
-op_assign
-l_string|&quot;Communications Control&quot;
-suffix:semicolon
-DECL|variable|data_name
-r_static
-r_const
-r_char
-id|data_name
-(braket
-)braket
-op_assign
-l_string|&quot;CDC Ethernet Data&quot;
 suffix:semicolon
 DECL|macro|MIN_PACKET
 mdefine_line|#define MIN_PACKET&t;sizeof(struct ethhdr)
@@ -139,14 +119,10 @@ comma
 op_star
 id|status
 suffix:semicolon
-DECL|member|mutex
-r_struct
-id|semaphore
-id|mutex
-suffix:semicolon
 DECL|member|net
 r_struct
 id|net_device
+op_star
 id|net
 suffix:semicolon
 DECL|member|stats
@@ -182,7 +158,7 @@ op_assign
 l_int|4
 suffix:semicolon
 DECL|macro|HS_FACTOR
-mdefine_line|#define HS_FACTOR&t;15
+mdefine_line|#define HS_FACTOR&t;5
 DECL|macro|qlen
 mdefine_line|#define qlen(gadget) &bslash;&n;&t;(qmult*((gadget-&gt;speed == USB_SPEED_HIGH) ? HS_FACTOR : 1))
 multiline_comment|/* defer IRQs on highspeed TX */
@@ -200,13 +176,18 @@ id|S_IWUSR
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/* Thanks to NetChip Technologies for donating this product ID.&n; *&n; * DO NOT REUSE THESE IDs with any other driver!!  Ever!!&n; * Instead:  allocate your own, using normal USB-IF procedures.&n; */
+multiline_comment|/* Thanks to NetChip Technologies for donating this product ID.&n; *&n; * DO NOT REUSE THESE IDs with a protocol-incompatible driver!!  Ever!!&n; * Instead:  allocate your own, using normal USB-IF procedures.&n; */
 DECL|macro|DRIVER_VENDOR_NUM
 mdefine_line|#define DRIVER_VENDOR_NUM&t;0x0525&t;&t;/* NetChip */
 DECL|macro|DRIVER_PRODUCT_NUM
 mdefine_line|#define DRIVER_PRODUCT_NUM&t;0xa4a1&t;&t;/* Linux-USB Ethernet Gadget */
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * hardware-specific configuration, controlled by which device&n; * controller driver was configured.&n; *&n; * CHIP ... hardware identifier&n; * DRIVER_VERSION_NUM ... alerts the host side driver to differences&n; * EP0_MAXPACKET ... controls packetization of control requests&n; * EP_*_NAME ... which endpoints do we use for which purpose?&n; * EP_*_NUM ... numbers for them (often limited by hardware)&n; * HIGHSPEED ... define if ep0 and descriptors need high speed support&n; * MAX_USB_POWER ... define if we use other than 100 mA bus current&n; * SELFPOWER ... unless we can run on bus power, USB_CONFIG_ATT_SELFPOWER&n; * WAKEUP ... if hardware supports remote wakeup AND we will issue the&n; * &t;usb_gadget_wakeup() call to initiate it, USB_CONFIG_ATT_WAKEUP&n; *&n; * hw_optimize(gadget) ... for any hardware tweaks we want to kick in&n; * &t;before we enable our endpoints&n; *&n; * add other defines for other portability issues, like hardware that&n; * for some reason doesn&squot;t handle full speed bulk maxpacket of 64.&n; */
+DECL|macro|DEV_CONFIG_VALUE
+mdefine_line|#define DEV_CONFIG_VALUE&t;3&t;/* some hardware cares */
+multiline_comment|/* #undef on hardware that can&squot;t implement CDC */
+DECL|macro|DEV_CONFIG_CDC
+mdefine_line|#define&t;DEV_CONFIG_CDC
 multiline_comment|/*&n; * NetChip 2280, PCI based.&n; *&n; * use DMA with fat fifos for all data traffic, PIO for the status channel&n; * where its 64 byte maxpacket ceiling is no issue.&n; *&n; * performance note:  only PIO needs per-usb-packet IRQs (ep0, ep-e, ep-f)&n; * otherwise IRQs are per-Ethernet-packet unless TX_DELAY and chaining help.&n; */
 macro_line|#ifdef&t;CONFIG_USB_ETH_NET2280
 DECL|macro|CHIP
@@ -226,7 +207,7 @@ op_assign
 l_string|&quot;ep-a&quot;
 suffix:semicolon
 DECL|macro|EP_OUT_NUM
-mdefine_line|#define EP_OUT_NUM&t;2
+mdefine_line|#define EP_OUT_NUM&t;1
 DECL|variable|EP_IN_NAME
 r_static
 r_const
@@ -292,10 +273,12 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * PXA-250 UDC:  widely used in second gen Linux-capable PDAs.&n; *&n; * no limitations except from set_interface: docs say &quot;no&quot; to a third&n; * interface. and the interrupt-only endpoints don&squot;t toggle, so we&squot;ll&n; * just use a bulk-capable one instead.&n; */
-macro_line|#ifdef&t;CONFIG_USB_ETH_PXA250
+multiline_comment|/*&n; * PXA-2xx UDC:  widely used in second gen Linux-capable ARM PDAs&n; * and other products.&n; *&n; * multiple interfaces (or altsettings) aren&squot;t usable.  so this hardware&n; * can&squot;t implement CDC, which needs both capabilities.&n; */
+macro_line|#ifdef&t;CONFIG_USB_ETH_PXA2XX
+DECL|macro|DEV_CONFIG_CDC
+macro_line|#undef&t;DEV_CONFIG_CDC
 DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&quot;pxa250&quot;
+mdefine_line|#define CHIP&t;&t;&t;&quot;pxa2xx&quot;
 DECL|macro|DRIVER_VERSION_NUM
 mdefine_line|#define DRIVER_VERSION_NUM&t;0x0103
 DECL|macro|EP0_MAXPACKET
@@ -308,10 +291,10 @@ id|EP_OUT_NAME
 (braket
 )braket
 op_assign
-l_string|&quot;ep12out-bulk&quot;
+l_string|&quot;ep2out-bulk&quot;
 suffix:semicolon
 DECL|macro|EP_OUT_NUM
-mdefine_line|#define EP_OUT_NUM&t;12
+mdefine_line|#define EP_OUT_NUM&t;2
 DECL|variable|EP_IN_NAME
 r_static
 r_const
@@ -320,22 +303,10 @@ id|EP_IN_NAME
 (braket
 )braket
 op_assign
-l_string|&quot;ep11in-bulk&quot;
+l_string|&quot;ep1in-bulk&quot;
 suffix:semicolon
 DECL|macro|EP_IN_NUM
-mdefine_line|#define EP_IN_NUM&t;11
-DECL|variable|EP_STATUS_NAME
-r_static
-r_const
-r_char
-id|EP_STATUS_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep6in-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_STATUS_NUM
-mdefine_line|#define EP_STATUS_NUM&t;6
+mdefine_line|#define EP_IN_NUM&t;1
 multiline_comment|/* doesn&squot;t support bus-powered operation */
 DECL|macro|SELFPOWER
 mdefine_line|#define SELFPOWER USB_CONFIG_ATT_SELFPOWER
@@ -389,6 +360,24 @@ multiline_comment|/*------------------------------------------------------------
 macro_line|#ifndef EP0_MAXPACKET
 macro_line|#&t;error Configure some USB peripheral controller driver!
 macro_line|#endif
+multiline_comment|/* We normally expect hardware that can talk CDC.  That involves&n; * using multiple interfaces and altsettings, and maybe a status&n; * interrupt.  Driver binding to be done according to USB-IF class,&n; * though you can use different VENDOR and PRODUCT numbers if you&n; * want (and they&squot;re officially assigned).&n; * &n; * For hardware that can&squot;t talk CDC, we use the same vendor ID that&n; * ARM Linux has used for ethernet-over-usb, both with sa1100 and&n; * with pxa250.  We&squot;re protocol-compatible, if the host-side drivers&n; * use the endpoint descriptors.  DRIVER_VERSION_NUM is nonzero, so&n; * drivers that need to hard-wire endpoint numbers have a hook.&n; */
+macro_line|#ifdef&t;DEV_CONFIG_CDC
+DECL|macro|DEV_CONFIG_CLASS
+mdefine_line|#define&t;DEV_CONFIG_CLASS&t;USB_CLASS_COMM
+macro_line|#else&t;
+DECL|macro|DEV_CONFIG_CLASS
+mdefine_line|#define&t;DEV_CONFIG_CLASS&t;USB_CLASS_VENDOR_SPEC
+DECL|macro|EP_STATUS_NUM
+macro_line|#undef&t;EP_STATUS_NUM
+DECL|macro|DRIVER_VENDOR_NUM
+macro_line|#undef&t;DRIVER_VENDOR_NUM
+DECL|macro|DRIVER_PRODUCT_NUM
+macro_line|#undef&t;DRIVER_PRODUCT_NUM
+DECL|macro|DRIVER_VENDOR_NUM
+mdefine_line|#define&t;DRIVER_VENDOR_NUM&t;0x049f
+DECL|macro|DRIVER_PRODUCT_NUM
+mdefine_line|#define&t;DRIVER_PRODUCT_NUM&t;0x505a
+macro_line|#endif /* CONFIG_CDC_ETHER */
 multiline_comment|/* power usage is config specific.&n; * hardware that supports remote wakeup defaults to disabling it.&n; */
 macro_line|#ifndef&t;SELFPOWER
 multiline_comment|/* default: say we rely on bus power */
@@ -409,7 +398,7 @@ multiline_comment|/* else value must be USB_CONFIG_ATT_WAKEUP */
 macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|macro|xprintk
-mdefine_line|#define xprintk(d,level,fmt,args...) &bslash;&n;&t;dev_printk(level , &amp;(d)-&gt;gadget-&gt;dev , fmt , ## args)
+mdefine_line|#define xprintk(d,level,fmt,args...) &bslash;&n;&t;printk(level &quot;%s %s: &quot; fmt , shortname , (d)-&gt;gadget-&gt;dev.bus_id , &bslash;&n;&t;&t;## args)
 macro_line|#ifdef DEBUG
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -434,7 +423,7 @@ DECL|macro|INFO
 mdefine_line|#define INFO(dev,fmt,args...) &bslash;&n;&t;xprintk(dev , KERN_INFO , fmt , ## args)
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* USB DRIVER HOOKUP (to the hardware driver, below us), mostly&n; * ep0 implementation:  descriptors, config management, setup().&n; * also optional class-specific notification interrupt transfer.&n; */
-multiline_comment|/*&n; * DESCRIPTORS ... most are static, but strings and (full) configuration&n; * descriptors are built on demand.  Notice how most of the cdc descriptors&n; * add no value to simple (typical) configurations.&n; */
+multiline_comment|/*&n; * DESCRIPTORS ... most are static, but strings and (full) configuration&n; * descriptors are built on demand.  Notice how most of the cdc descriptors&n; * aren&squot;t needed in the &quot;minimalist&quot; mode.&n; */
 DECL|macro|STRING_MANUFACTURER
 mdefine_line|#define STRING_MANUFACTURER&t;&t;1
 DECL|macro|STRING_PRODUCT
@@ -448,8 +437,6 @@ mdefine_line|#define STRING_CONTROL&t;&t;&t;5
 DECL|macro|USB_BUFSIZ
 mdefine_line|#define USB_BUFSIZ&t;256&t;&t;/* holds our biggest descriptor */
 multiline_comment|/*&n; * This device advertises one configuration.&n; */
-DECL|macro|CONFIG_CDC_ETHER
-mdefine_line|#define&t;CONFIG_CDC_ETHER&t;3
 r_static
 r_const
 r_struct
@@ -480,7 +467,7 @@ comma
 dot
 id|bDeviceClass
 op_assign
-id|USB_CLASS_COMM
+id|DEV_CONFIG_CLASS
 comma
 dot
 id|bDeviceSubClass
@@ -558,15 +545,23 @@ op_assign
 id|USB_DT_CONFIG
 comma
 multiline_comment|/* compute wTotalLength on the fly */
+macro_line|#ifdef&t;DEV_CONFIG_CDC
 dot
 id|bNumInterfaces
 op_assign
 l_int|2
 comma
+macro_line|#else
+dot
+id|bNumInterfaces
+op_assign
+l_int|1
+comma
+macro_line|#endif
 dot
 id|bConfigurationValue
 op_assign
-id|CONFIG_CDC_ETHER
+id|DEV_CONFIG_VALUE
 comma
 dot
 id|iConfiguration
@@ -595,6 +590,8 @@ l_int|2
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef&t;DEV_CONFIG_CDC
+multiline_comment|/*&n; * Compared to the &quot;minimalist&quot; non-CDC model, the CDC model adds&n; * three class descriptors, two interface descrioptors, and a status&n; * endpoint.  Both have a &quot;data&quot; interface and two bulk endpoints.&n; * There are also differences in how control requests are handled.&n; */
 multiline_comment|/* master comm interface optionally has a status notification endpoint */
 r_static
 r_const
@@ -901,7 +898,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#ifdef&t;EP_STATUS_NUM
-multiline_comment|/* include the status endpoint if we can, even though it&squot;s optional.&n; *&n; * some drivers (like current Linux cdc-ether!) &quot;need&quot; it to exist even&n; * if they ignore the connect/disconnect notifications that real aether&n; * can provide.  more advanced cdc configurations might want to support&n; * encapsulated commands.&n; */
+multiline_comment|/* include the status endpoint if we can, even though it&squot;s optional.&n; *&n; * some drivers (like current Linux cdc-ether!) &quot;need&quot; it to exist even&n; * if they ignore the connect/disconnect notifications that real aether&n; * can provide.  more advanced cdc configurations might want to support&n; * encapsulated commands (vendor-specific, using control-OUT).&n; */
 DECL|macro|LOG2_STATUS_INTERVAL_MSEC
 mdefine_line|#define LOG2_STATUS_INTERVAL_MSEC&t;6
 DECL|macro|STATUS_BYTECOUNT
@@ -1068,6 +1065,65 @@ id|STRING_DATA
 comma
 )brace
 suffix:semicolon
+macro_line|#else
+multiline_comment|/*&n; * &quot;Minimalist&quot; non-CDC option is a simple vendor-neutral model that most&n; * full speed controllers can handle:  one interface, two bulk endpoints.&n; */
+r_static
+r_const
+r_struct
+id|usb_interface_descriptor
+DECL|variable|data_intf
+id|data_intf
+op_assign
+(brace
+dot
+id|bLength
+op_assign
+r_sizeof
+id|data_intf
+comma
+dot
+id|bDescriptorType
+op_assign
+id|USB_DT_INTERFACE
+comma
+dot
+id|bInterfaceNumber
+op_assign
+l_int|0
+comma
+dot
+id|bAlternateSetting
+op_assign
+l_int|0
+comma
+dot
+id|bNumEndpoints
+op_assign
+l_int|2
+comma
+dot
+id|bInterfaceClass
+op_assign
+id|USB_CLASS_VENDOR_SPEC
+comma
+dot
+id|bInterfaceSubClass
+op_assign
+l_int|0
+comma
+dot
+id|bInterfaceProtocol
+op_assign
+l_int|0
+comma
+dot
+id|iInterface
+op_assign
+id|STRING_DATA
+comma
+)brace
+suffix:semicolon
+macro_line|#endif&t;/* DEV_CONFIG_CDC */
 r_static
 r_const
 r_struct
@@ -1315,7 +1371,7 @@ comma
 dot
 id|bDeviceClass
 op_assign
-id|USB_CLASS_VENDOR_SPEC
+id|DEV_CONFIG_CLASS
 comma
 multiline_comment|/* assumes ep0 uses the same value for both speeds ... */
 dot
@@ -1326,7 +1382,7 @@ comma
 dot
 id|bNumConfigurations
 op_assign
-l_int|2
+l_int|1
 comma
 )brace
 suffix:semicolon
@@ -1338,6 +1394,9 @@ multiline_comment|/* if there&squot;s no high speed support, maxpacket doesn&squ
 DECL|macro|ep_desc
 mdefine_line|#define ep_desc(g,hs,fs) fs
 macro_line|#endif&t;/* !HIGHSPEED */
+multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/* descriptors that are built on-demand */
+macro_line|#ifdef&t;DEV_CONFIG_CDC
 multiline_comment|/* address that the host will use ... usually assigned at random */
 DECL|variable|ethaddr
 r_static
@@ -1351,6 +1410,7 @@ op_plus
 l_int|1
 )braket
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* static strings, in iso 8859/1 */
 DECL|variable|strings
 r_static
@@ -1379,6 +1439,7 @@ id|driver_desc
 comma
 )brace
 comma
+macro_line|#ifdef&t;DEV_CONFIG_CDC
 (brace
 id|STRING_ETHADDR
 comma
@@ -1389,14 +1450,15 @@ comma
 (brace
 id|STRING_CONTROL
 comma
-id|control_name
+l_string|&quot;CDC Communications Control&quot;
 comma
 )brace
 comma
+macro_line|#endif
 (brace
 id|STRING_DATA
 comma
-id|data_name
+l_string|&quot;Ethernet Data&quot;
 comma
 )brace
 comma
@@ -1451,8 +1513,9 @@ r_int
 id|config_len
 op_assign
 id|USB_DT_CONFIG_SIZE
+macro_line|#ifdef DEV_CONFIG_CDC
 op_plus
-l_int|3
+l_int|2
 op_star
 id|USB_DT_INTERFACE_SIZE
 op_plus
@@ -1468,6 +1531,9 @@ macro_line|#ifdef&t;EP_STATUS_NUM
 op_plus
 id|USB_DT_ENDPOINT_SIZE
 macro_line|#endif
+macro_line|#endif /* DEV_CONFIG_CDC */
+op_plus
+id|USB_DT_INTERFACE_SIZE
 op_plus
 l_int|2
 op_star
@@ -1561,6 +1627,7 @@ op_logical_neg
 id|hs
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef DEV_CONFIG_CDC
 multiline_comment|/* control interface, class descriptors, optional status endpoint */
 id|memcpy
 (paren
@@ -1673,6 +1740,7 @@ id|buf
 op_add_assign
 id|USB_DT_INTERFACE_SIZE
 suffix:semicolon
+macro_line|#endif /* DEV_CONFIG_CDC */
 multiline_comment|/* the &quot;real&quot; data interface has two endpoints */
 id|memcpy
 (paren
@@ -1762,6 +1830,19 @@ suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 r_static
+r_void
+id|eth_start
+(paren
+r_struct
+id|eth_dev
+op_star
+id|dev
+comma
+r_int
+id|gfp_flags
+)paren
+suffix:semicolon
+r_static
 r_int
 DECL|function|set_ether_config
 id|set_ether_config
@@ -1805,7 +1886,8 @@ id|usb_endpoint_descriptor
 op_star
 id|d
 suffix:semicolon
-multiline_comment|/* NOTE:  the host isn&squot;t allowed to use these two data&n;&t;&t; * endpoints in the default altsetting for the interface.&n;&t;&t; * so we don&squot;t activate them yet.&n;&t;&t; */
+macro_line|#ifdef&t;DEV_CONFIG_CDC
+multiline_comment|/* With CDC,  the host isn&squot;t allowed to use these two data&n;&t;&t; * endpoints in the default altsetting for the interface.&n;&t;&t; * so we don&squot;t activate them yet.&n;&t;&t; */
 multiline_comment|/* one endpoint writes data back IN to the host */
 r_if
 c_cond
@@ -1890,9 +1972,9 @@ id|d
 suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 macro_line|#ifdef&t;EP_STATUS_NUM
 multiline_comment|/* optional status/notification endpoint */
-)brace
 r_else
 r_if
 c_cond
@@ -1952,9 +2034,133 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-macro_line|#endif
-multiline_comment|/* ignore any other endpoints */
 )brace
+macro_line|#endif
+macro_line|#else&t;/* !CONFIG_CDC_ETHER */
+multiline_comment|/* non-CDC is simpler:  if the device is there,&n;&t;&t; * it&squot;s live with rx and tx endpoints.&n;&t;&t; */
+multiline_comment|/* one endpoint writes data back IN to the host */
+r_if
+c_cond
+(paren
+id|strcmp
+(paren
+id|ep-&gt;name
+comma
+id|EP_IN_NAME
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|d
+op_assign
+id|ep_desc
+(paren
+id|gadget
+comma
+op_amp
+id|hs_source_desc
+comma
+op_amp
+id|fs_source_desc
+)paren
+suffix:semicolon
+id|result
+op_assign
+id|usb_ep_enable
+(paren
+id|ep
+comma
+id|d
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+op_eq
+l_int|0
+)paren
+(brace
+id|ep-&gt;driver_data
+op_assign
+id|dev
+suffix:semicolon
+id|dev-&gt;in_ep
+op_assign
+id|ep
+suffix:semicolon
+id|dev-&gt;in
+op_assign
+id|d
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+multiline_comment|/* one endpoint just reads OUT packets */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|strcmp
+(paren
+id|ep-&gt;name
+comma
+id|EP_OUT_NAME
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|d
+op_assign
+id|ep_desc
+(paren
+id|gadget
+comma
+op_amp
+id|hs_sink_desc
+comma
+op_amp
+id|fs_sink_desc
+)paren
+suffix:semicolon
+id|result
+op_assign
+id|usb_ep_enable
+(paren
+id|ep
+comma
+id|d
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+op_eq
+l_int|0
+)paren
+(brace
+id|ep-&gt;driver_data
+op_assign
+id|dev
+suffix:semicolon
+id|dev-&gt;out_ep
+op_assign
+id|ep
+suffix:semicolon
+id|dev-&gt;out
+op_assign
+id|d
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif /* !CONFIG_CDC_ETHER */
+multiline_comment|/* ignore any other endpoints */
 r_else
 r_continue
 suffix:semicolon
@@ -1973,6 +2179,58 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|result
+op_logical_and
+(paren
+op_logical_neg
+id|dev-&gt;in_ep
+op_logical_or
+op_logical_neg
+id|dev-&gt;out_ep
+)paren
+)paren
+id|result
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+macro_line|#ifndef&t;DEV_CONFIG_CDC
+r_if
+c_cond
+(paren
+id|result
+op_eq
+l_int|0
+)paren
+(brace
+id|netif_carrier_on
+(paren
+op_amp
+id|dev-&gt;net
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_running
+(paren
+op_amp
+id|dev-&gt;net
+)paren
+)paren
+id|eth_start
+(paren
+id|dev
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* !CONFIG_CDC_ETHER */
 r_if
 c_cond
 (paren
@@ -2028,13 +2286,11 @@ id|__FUNCTION__
 suffix:semicolon
 id|netif_stop_queue
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
 id|netif_carrier_off
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
@@ -2180,7 +2436,7 @@ id|number
 )paren
 (brace
 r_case
-id|CONFIG_CDC_ETHER
+id|DEV_CONFIG_VALUE
 suffix:colon
 id|result
 op_assign
@@ -2208,25 +2464,6 @@ r_return
 id|result
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|result
-op_logical_and
-(paren
-op_logical_neg
-id|dev-&gt;in_ep
-op_logical_or
-op_logical_neg
-id|dev-&gt;out_ep
-)paren
-)paren
-id|result
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2559,7 +2796,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/* flush old status&n;&t; *&n;&t; * FIXME ugly idiom, maybe we&squot;d be better with just&n;&t; * a &quot;cancel the whole queue&quot; primitive since any&n;&t; * unlink-one primitive has way too many error modes.&n;&t; */
+multiline_comment|/* flush old status&n;&t; *&n;&t; * FIXME ugly idiom, maybe we&squot;d be better with just&n;&t; * a &quot;cancel the whole queue&quot; primitive since any&n;&t; * unlink-one primitive has way too many error modes.&n;&t; * here, we &quot;know&quot; toggle is already clear...&n;&t; */
 id|usb_ep_disable
 (paren
 id|dev-&gt;status_ep
@@ -2774,19 +3011,6 @@ suffix:semicolon
 multiline_comment|/* see section 3.8.2 table 10 of the CDC spec for more ethernet&n; * requests, mostly for filters (multicast, pm) and statistics&n; */
 DECL|macro|CDC_SET_ETHERNET_PACKET_FILTER
 mdefine_line|#define CDC_SET_ETHERNET_PACKET_FILTER&t;0x43&t;/* required */
-r_static
-r_void
-id|eth_start
-(paren
-r_struct
-id|eth_dev
-op_star
-id|dev
-comma
-r_int
-id|gfp_flags
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * The setup() callback implements all the ep0 functionality that&squot;s not&n; * handled lower down.  CDC has a number of less-common features:&n; *&n; *  - two interfaces:  control, and ethernet data&n; *  - data interface has two altsettings:  default, and active&n; *  - class-specific descriptors for the control interface&n; *  - a mandatory class-specific control request&n; */
 r_static
 r_int
@@ -3190,7 +3414,6 @@ id|dev-&gt;out
 suffix:semicolon
 id|netif_carrier_on
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
@@ -3206,7 +3429,6 @@ c_cond
 (paren
 id|netif_running
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 )paren
@@ -3222,13 +3444,11 @@ r_else
 (brace
 id|netif_stop_queue
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
 id|netif_carrier_off
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
@@ -3288,7 +3508,6 @@ l_int|1
 op_logical_and
 id|netif_carrier_ok
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 )paren
@@ -3312,6 +3531,7 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef DEV_CONFIG_CDC
 r_case
 id|CDC_SET_ETHERNET_PACKET_FILTER
 suffix:colon
@@ -3351,6 +3571,7 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif /* DEV_CONFIG_CDC */
 r_default
 suffix:colon
 id|VDEBUG
@@ -3465,13 +3686,11 @@ id|flags
 suffix:semicolon
 id|netif_stop_queue
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
 id|netif_carrier_off
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
@@ -3670,7 +3889,7 @@ id|info.cmd
 op_assign
 id|ETHTOOL_GDRVINFO
 suffix:semicolon
-id|strncpy
+id|strlcpy
 (paren
 id|info.driver
 comma
@@ -3680,7 +3899,7 @@ r_sizeof
 id|info.driver
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 (paren
 id|info.version
 comma
@@ -3690,7 +3909,7 @@ r_sizeof
 id|info.version
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 (paren
 id|info.fw_version
 comma
@@ -3700,7 +3919,7 @@ r_sizeof
 id|info.fw_version
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 (paren
 id|info.bus_info
 comma
@@ -3942,7 +4161,7 @@ r_struct
 id|ethhdr
 )paren
 op_plus
-id|dev-&gt;net.mtu
+id|dev-&gt;net-&gt;mtu
 op_plus
 id|RX_EXTRA
 )paren
@@ -4006,16 +4225,6 @@ id|req-&gt;context
 op_assign
 id|skb
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|netif_running
-(paren
-op_amp
-id|dev-&gt;net
-)paren
-)paren
-(brace
 id|retval
 op_assign
 id|usb_ep_queue
@@ -4042,40 +4251,6 @@ comma
 id|WORK_RX_MEMORY
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-)paren
-id|DEBUG
-(paren
-id|dev
-comma
-l_string|&quot;%s %d&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|retval
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|DEBUG
-(paren
-id|dev
-comma
-l_string|&quot;%s stopped&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|ENOLINK
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4196,7 +4371,6 @@ suffix:semicolon
 )brace
 id|skb-&gt;dev
 op_assign
-op_amp
 id|dev-&gt;net
 suffix:semicolon
 id|skb-&gt;protocol
@@ -4205,7 +4379,6 @@ id|eth_type_trans
 (paren
 id|skb
 comma
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
@@ -4250,18 +4423,8 @@ comma
 id|status
 )paren
 suffix:semicolon
-id|usb_ep_free_request
-(paren
-id|dev-&gt;out_ep
-comma
-id|req
-)paren
-suffix:semicolon
-id|req
-op_assign
-l_int|0
-suffix:semicolon
-r_break
+r_goto
+id|clean
 suffix:semicolon
 multiline_comment|/* data overrun */
 r_case
@@ -4299,6 +4462,31 @@ id|dev_kfree_skb_any
 id|skb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|netif_running
+(paren
+op_amp
+id|dev-&gt;net
+)paren
+)paren
+(brace
+id|clean
+suffix:colon
+id|usb_ep_free_request
+(paren
+id|dev-&gt;out_ep
+comma
+id|req
+)paren
+suffix:semicolon
+id|req
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4355,7 +4543,6 @@ c_cond
 (paren
 id|netif_running
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 )paren
@@ -4449,19 +4636,47 @@ id|dev
 op_assign
 id|ep-&gt;driver_data
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
 id|req-&gt;status
 )paren
+(brace
+r_default
+suffix:colon
 id|dev-&gt;stats.tx_errors
 op_increment
 suffix:semicolon
-r_else
+id|VDEBUG
+(paren
+id|dev
+comma
+l_string|&quot;tx err %d&bslash;n&quot;
+comma
+id|req-&gt;status
+)paren
+suffix:semicolon
+multiline_comment|/* FALLTHROUGH */
+r_case
+op_minus
+id|ECONNRESET
+suffix:colon
+singleline_comment|// unlink
+r_case
+op_minus
+id|ESHUTDOWN
+suffix:colon
+singleline_comment|// disconnect etc
+r_break
+suffix:semicolon
+r_case
+l_int|0
+suffix:colon
 id|dev-&gt;stats.tx_bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
+)brace
 id|dev-&gt;stats.tx_packets
 op_increment
 suffix:semicolon
@@ -4488,13 +4703,11 @@ c_cond
 (paren
 id|netif_carrier_ok
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 )paren
 id|netif_wake_queue
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
@@ -4848,7 +5061,6 @@ id|size
 suffix:semicolon
 id|netif_wake_queue
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
@@ -4885,18 +5097,11 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|down
-(paren
-op_amp
-id|dev-&gt;mutex
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|netif_carrier_ok
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 )paren
@@ -4905,12 +5110,6 @@ id|eth_start
 id|dev
 comma
 id|GFP_KERNEL
-)paren
-suffix:semicolon
-id|up
-(paren
-op_amp
-id|dev-&gt;mutex
 )paren
 suffix:semicolon
 r_return
@@ -4947,12 +5146,6 @@ comma
 l_string|&quot;%s&bslash;n&quot;
 comma
 id|__FUNCTION__
-)paren
-suffix:semicolon
-id|down
-(paren
-op_amp
-id|dev-&gt;mutex
 )paren
 suffix:semicolon
 id|netif_stop_queue
@@ -4999,7 +5192,6 @@ c_cond
 (paren
 id|netif_carrier_ok
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 )paren
@@ -5041,12 +5233,6 @@ id|dev-&gt;status
 suffix:semicolon
 macro_line|#endif
 )brace
-id|up
-(paren
-op_amp
-id|dev-&gt;mutex
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -5080,12 +5266,6 @@ comma
 l_string|&quot;unbind&bslash;n&quot;
 )paren
 suffix:semicolon
-id|down
-(paren
-op_amp
-id|dev-&gt;mutex
-)paren
-suffix:semicolon
 multiline_comment|/* we&squot;ve already been disconnected ... no i/o is active */
 r_if
 c_cond
@@ -5111,27 +5291,19 @@ comma
 id|dev-&gt;req
 )paren
 suffix:semicolon
+id|dev-&gt;req
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 id|unregister_netdev
 (paren
-op_amp
 id|dev-&gt;net
-)paren
-suffix:semicolon
-id|up
-(paren
-op_amp
-id|dev-&gt;mutex
 )paren
 suffix:semicolon
 multiline_comment|/* assuming we used keventd, it must quiesce too */
 id|flush_scheduled_work
 (paren
-)paren
-suffix:semicolon
-id|kfree
-(paren
-id|dev
 )paren
 suffix:semicolon
 id|set_gadget_data
@@ -5163,6 +5335,13 @@ id|net_device
 op_star
 id|net
 suffix:semicolon
+r_int
+id|status
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+macro_line|#ifdef&t;DEV_CONFIG_CDC
 id|u8
 id|node_id
 (braket
@@ -5184,48 +5363,33 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|dev
+macro_line|#endif
+id|net
 op_assign
-id|kmalloc
+id|alloc_etherdev
 (paren
 r_sizeof
 op_star
 id|dev
-comma
-id|SLAB_KERNEL
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|dev
+id|net
 )paren
 r_return
-op_minus
-id|ENOMEM
+id|status
 suffix:semicolon
-id|memset
-(paren
 id|dev
-comma
-l_int|0
-comma
-r_sizeof
-op_star
-id|dev
-)paren
+op_assign
+id|net-&gt;priv
 suffix:semicolon
 id|spin_lock_init
 (paren
 op_amp
 id|dev-&gt;lock
-)paren
-suffix:semicolon
-id|init_MUTEX_LOCKED
-(paren
-op_amp
-id|dev-&gt;mutex
 )paren
 suffix:semicolon
 id|INIT_WORK
@@ -5239,10 +5403,9 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* network device setup */
-id|net
-op_assign
-op_amp
 id|dev-&gt;net
+op_assign
+id|net
 suffix:semicolon
 id|SET_MODULE_OWNER
 (paren
@@ -5289,6 +5452,7 @@ op_or_assign
 l_int|0x02
 suffix:semicolon
 singleline_comment|// set local assignment bit (IEEE802)
+macro_line|#ifdef&t;DEV_CONFIG_CDC
 multiline_comment|/* ... another address for the host, on the other end of the&n;&t; * link, gets exported through CDC (see CDC spec table 41)&n;&t; */
 id|get_random_bytes
 (paren
@@ -5354,6 +5518,7 @@ l_int|5
 )braket
 )paren
 suffix:semicolon
+macro_line|#endif
 id|net-&gt;change_mtu
 op_assign
 id|eth_change_mtu
@@ -5397,7 +5562,7 @@ op_logical_neg
 id|dev-&gt;req
 )paren
 r_goto
-id|enomem
+id|fail
 suffix:semicolon
 id|dev-&gt;req-&gt;complete
 op_assign
@@ -5432,7 +5597,7 @@ id|dev-&gt;req
 )paren
 suffix:semicolon
 r_goto
-id|enomem
+id|fail
 suffix:semicolon
 )brace
 multiline_comment|/* finish hookup to lower layer ... */
@@ -5451,48 +5616,60 @@ id|gadget-&gt;ep0-&gt;driver_data
 op_assign
 id|dev
 suffix:semicolon
-multiline_comment|/* two kinds of host-initiated state changes:&n;&t; *  - iff DATA transfer is active, carrier is &quot;on&quot;&n;&t; *  - tx queueing enabled if open *and* carrier is &quot;on&quot;&n;&t; */
 id|INFO
 (paren
 id|dev
 comma
-l_string|&quot;%s, host enet %s, version: &quot;
+l_string|&quot;%s, &quot;
+id|CHIP
+l_string|&quot;, version: &quot;
 id|DRIVER_VERSION
 l_string|&quot;&bslash;n&quot;
 comma
 id|driver_desc
+)paren
+suffix:semicolon
+macro_line|#ifdef&t;DEV_CONFIG_CDC
+id|INFO
+(paren
+id|dev
+comma
+l_string|&quot;CDC host enet %s&bslash;n&quot;
 comma
 id|ethaddr
 )paren
 suffix:semicolon
-id|register_netdev
-(paren
-op_amp
-id|dev-&gt;net
-)paren
-suffix:semicolon
+macro_line|#endif
+multiline_comment|/* two kinds of host-initiated state changes:&n;&t; *  - iff DATA transfer is active, carrier is &quot;on&quot;&n;&t; *  - tx queueing enabled if open *and* carrier is &quot;on&quot;&n;&t; */
 id|netif_stop_queue
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
 id|netif_carrier_off
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
-id|up
+singleline_comment|// SET_NETDEV_DEV (dev-&gt;net, &amp;gadget-&gt;dev);
+id|status
+op_assign
+id|register_netdev
 (paren
-op_amp
-id|dev-&gt;mutex
+id|dev-&gt;net
 )paren
 suffix:semicolon
-r_return
+r_if
+c_cond
+(paren
+id|status
+op_eq
 l_int|0
+)paren
+r_return
+id|status
 suffix:semicolon
-id|enomem
+id|fail
 suffix:colon
 id|eth_unbind
 (paren
@@ -5500,8 +5677,7 @@ id|gadget
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENOMEM
+id|status
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
