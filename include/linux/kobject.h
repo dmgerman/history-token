@@ -1,0 +1,90 @@
+multiline_comment|/*&n; * kobject.h - generic kernel object infrastructure.&n; *&n; */
+macro_line|#ifndef _KOBJECT_H_
+DECL|macro|_KOBJECT_H_
+mdefine_line|#define _KOBJECT_H_
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/sysfs.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
+DECL|struct|kobject
+r_struct
+id|kobject
+(brace
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|16
+)braket
+suffix:semicolon
+DECL|member|refcount
+id|atomic_t
+id|refcount
+suffix:semicolon
+DECL|member|entry
+r_struct
+id|list_head
+id|entry
+suffix:semicolon
+DECL|member|parent
+r_struct
+id|kobject
+op_star
+id|parent
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_void
+id|kobject_init
+c_func
+(paren
+r_struct
+id|kobject
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|kobject_register
+c_func
+(paren
+r_struct
+id|kobject
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|kobject_unregister
+c_func
+(paren
+r_struct
+id|kobject
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|kobject
+op_star
+id|kobject_get
+c_func
+(paren
+r_struct
+id|kobject
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|kobject_put
+c_func
+(paren
+r_struct
+id|kobject
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif /* _KOBJECT_H_ */
+eof
