@@ -1653,7 +1653,7 @@ id|done_q
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_eh_get_sense - Get device sense data.&n; * @work_q:&t;Queue of commands to process.&n; * @done_q:&t;Queue of proccessed commands..&n; *&n; * Description:&n; *    See if we need to request sense information.  if so, then get it&n; *    now, so we have a better idea of what to do.  &n; *&n; * Notes:&n; *    This has the unfortunate side effect that if a shost adapter does&n; *    not automatically request sense information, that we end up shutting&n; *    it down before we request it.  All shosts should be doing this&n; *    anyways, so for now all I have to say is tough noogies if you end up&n; *    in here.  On second thought, this is probably a good idea.  We&n; *    *really* want to give authors an incentive to automatically request&n; *    this.&n; *&n; *    In 2.5 this capability will be going away.&n; *&n; *    Really?  --hch&n; **/
+multiline_comment|/**&n; * scsi_eh_get_sense - Get device sense data.&n; * @work_q:&t;Queue of commands to process.&n; * @done_q:&t;Queue of proccessed commands..&n; *&n; * Description:&n; *    See if we need to request sense information.  if so, then get it&n; *    now, so we have a better idea of what to do.  &n; *&n; * Notes:&n; *    This has the unfortunate side effect that if a shost adapter does&n; *    not automatically request sense information, that we end up shutting&n; *    it down before we request it.&n; *&n; *    All drivers should request sense information internally these days,&n; *    so for now all I have to say is tough noogies if you end up in here.&n; *&n; *    XXX: Long term this code should go away, but that needs an audit of&n; *         all LLDDs first.&n; **/
 DECL|function|scsi_eh_get_sense
 r_static
 r_int
