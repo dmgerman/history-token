@@ -25,6 +25,7 @@ macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_ATARI
 macro_line|#include &lt;asm/atarihw.h&gt;
+macro_line|#include &lt;asm/atari_stram.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_SUN3X
 macro_line|#include &lt;asm/dvma.h&gt;
@@ -1865,6 +1866,10 @@ id|MACH_IS_ATARI
 id|atari_stram_reserve_pages
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|availmem
 )paren
 suffix:semicolon
