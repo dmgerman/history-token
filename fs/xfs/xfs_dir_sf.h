@@ -278,14 +278,7 @@ macro_line|#else
 DECL|macro|XFS_DIR_SF_ALLFIT
 mdefine_line|#define XFS_DIR_SF_ALLFIT(count,totallen)&t;/* will all entries fit? */ &bslash;&n;&t;((uint)sizeof(xfs_dir_sf_hdr_t) + &bslash;&n;&t;       ((uint)sizeof(xfs_dir_sf_entry_t)-1)*(count) + (totallen))
 macro_line|#endif
-macro_line|#ifdef XFS_ALL_TRACE
-DECL|macro|XFS_DIR_TRACE
-mdefine_line|#define&t;XFS_DIR_TRACE
-macro_line|#endif
-macro_line|#if !defined(DEBUG)
-DECL|macro|XFS_DIR_TRACE
-macro_line|#undef XFS_DIR_TRACE
-macro_line|#endif
+macro_line|#if defined(XFS_DIR_TRACE)
 multiline_comment|/*&n; * Kernel tracing support for directories.&n; */
 r_struct
 id|uio
@@ -307,6 +300,11 @@ id|xfs_dir_leaf_entry
 suffix:semicolon
 DECL|macro|XFS_DIR_TRACE_SIZE
 mdefine_line|#define&t;XFS_DIR_TRACE_SIZE&t;4096&t;/* size of global trace buffer */
+r_extern
+id|ktrace_t
+op_star
+id|xfs_dir_trace_buf
+suffix:semicolon
 multiline_comment|/*&n; * Trace record types.&n; */
 DECL|macro|XFS_DIR_KTRACE_G_DU
 mdefine_line|#define&t;XFS_DIR_KTRACE_G_DU&t;1&t;/* dp, uio */
@@ -320,7 +318,6 @@ DECL|macro|XFS_DIR_KTRACE_G_DUE
 mdefine_line|#define&t;XFS_DIR_KTRACE_G_DUE&t;5&t;/* dp, uio, leaf entry */
 DECL|macro|XFS_DIR_KTRACE_G_DUC
 mdefine_line|#define&t;XFS_DIR_KTRACE_G_DUC&t;6&t;/* dp, uio, cookie */
-macro_line|#if defined(XFS_DIR_TRACE)
 r_void
 id|xfs_dir_trace_g_du
 c_func
@@ -467,40 +464,52 @@ r_char
 op_star
 id|where
 comma
-id|__psunsigned_t
+r_void
+op_star
 id|a0
 comma
-id|__psunsigned_t
+r_void
+op_star
 id|a1
 comma
-id|__psunsigned_t
+r_void
+op_star
 id|a2
 comma
-id|__psunsigned_t
+r_void
+op_star
 id|a3
 comma
-id|__psunsigned_t
+r_void
+op_star
 id|a4
 comma
-id|__psunsigned_t
+r_void
+op_star
 id|a5
 comma
-id|__psunsigned_t
+r_void
+op_star
 id|a6
 comma
-id|__psunsigned_t
+r_void
+op_star
 id|a7
 comma
-id|__psunsigned_t
+r_void
+op_star
 id|a8
 comma
-id|__psunsigned_t
+r_void
+op_star
 id|a9
 comma
-id|__psunsigned_t
+r_void
+op_star
 id|a10
 comma
-id|__psunsigned_t
+r_void
+op_star
 id|a11
 )paren
 suffix:semicolon

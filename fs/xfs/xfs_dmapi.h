@@ -187,9 +187,6 @@ DECL|macro|FILP_DELAY_FLAG
 mdefine_line|#define FILP_DELAY_FLAG(filp) ((filp-&gt;f_flags&amp;(O_NDELAY|O_NONBLOCK)) ? &bslash;&n;&t;&t;&t;DM_FLAGS_NDELAY : 0)
 DECL|macro|AT_DELAY_FLAG
 mdefine_line|#define AT_DELAY_FLAG(f) ((f&amp;ATTR_NONBLOCK) ? DM_FLAGS_NDELAY : 0)
-multiline_comment|/*&n; *&t;Macros to turn caller specified delay/block flags into&n; *&t;dm_send_xxxx_event flag DM_FLAGS_NDELAY.&n; */
-DECL|macro|FILP_DELAY_FLAG
-mdefine_line|#define FILP_DELAY_FLAG(filp) ((filp-&gt;f_flags&amp;(O_NDELAY|O_NONBLOCK)) ? &bslash;&n;&t;&t;&t;DM_FLAGS_NDELAY : 0)
 r_extern
 r_struct
 id|bhv_vfsops

@@ -24,7 +24,7 @@ mdefine_line|#define CYCLE_LSN_NOCONV(lsn,arch) (((uint *)&amp;(lsn))[LSN_FIELD_
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * By comparing each compnent, we don&squot;t have to worry about extra&n; * endian issues in treating two 32 bit numbers as one 64 bit number&n; */
 r_static
-macro_line|#if defined(__GNUC__) &amp;&amp; (__GNUC__ == 2) &amp;&amp; (__GNUC_MINOR__ == 95)
+macro_line|#if defined(__GNUC__) &amp;&amp; (__GNUC__ == 2) &amp;&amp; ( (__GNUC_MINOR__ == 95) || (__GNUC_MINOR__ == 96))
 id|__attribute__
 c_func
 (paren
@@ -32,7 +32,7 @@ c_func
 id|unused
 )paren
 )paren
-multiline_comment|/* gcc 2.95 miscompiles this when inlined */
+multiline_comment|/* gcc 2.95, 2.96 miscompile this when inlined */
 macro_line|#else
 id|__inline__
 macro_line|#endif

@@ -164,6 +164,36 @@ suffix:semicolon
 r_struct
 id|xfs_dquot
 suffix:semicolon
+macro_line|#if defined(XFS_ILOCK_TRACE)
+DECL|macro|XFS_ILOCK_KTRACE_SIZE
+mdefine_line|#define XFS_ILOCK_KTRACE_SIZE&t;32
+r_extern
+id|ktrace_t
+op_star
+id|xfs_ilock_trace_buf
+suffix:semicolon
+r_extern
+r_void
+id|xfs_ilock_trace
+c_func
+(paren
+r_struct
+id|xfs_inode
+op_star
+comma
+r_int
+comma
+r_int
+r_int
+comma
+id|inst_t
+op_star
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|xfs_ilock_trace
+mdefine_line|#define&t;xfs_ilock_trace(i,n,f,ra)
+macro_line|#endif
 multiline_comment|/*&n; * This structure is used to communicate which extents of a file&n; * were holes when a write started from xfs_write_file() to&n; * xfs_strat_read().  This is necessary so that we can know which&n; * blocks need to be zeroed when they are read in in xfs_strat_read()&n; * if they weren&bslash;&squot;t allocated when the buffer given to xfs_strat_read()&n; * was mapped.&n; *&n; * We keep a list of these attached to the inode.  The list is&n; * protected by the inode lock and the fact that the io lock is&n; * held exclusively by writers.&n; */
 DECL|struct|xfs_gap
 r_typedef
@@ -578,6 +608,23 @@ id|wait_queue_head_t
 id|i_ipin_wait
 suffix:semicolon
 multiline_comment|/* inode pinning wait queue */
+macro_line|#ifdef HAVE_REFCACHE
+DECL|member|i_refcache
+r_struct
+id|xfs_inode
+op_star
+op_star
+id|i_refcache
+suffix:semicolon
+multiline_comment|/* ptr to entry in ref cache */
+DECL|member|i_release
+r_struct
+id|xfs_inode
+op_star
+id|i_release
+suffix:semicolon
+multiline_comment|/* inode to unref */
+macro_line|#endif
 multiline_comment|/* I/O state */
 DECL|member|i_iocore
 id|xfs_iocore_t
@@ -640,8 +687,8 @@ op_star
 id|i_cprev
 suffix:semicolon
 multiline_comment|/* cluster hash link backward */
-macro_line|#ifdef DEBUG
 multiline_comment|/* Trace buffers per inode. */
+macro_line|#ifdef XFS_BMAP_TRACE
 DECL|member|i_xtrace
 r_struct
 id|ktrace
@@ -649,6 +696,8 @@ op_star
 id|i_xtrace
 suffix:semicolon
 multiline_comment|/* inode extent list trace */
+macro_line|#endif
+macro_line|#ifdef XFS_BMBT_TRACE
 DECL|member|i_btrace
 r_struct
 id|ktrace
@@ -656,6 +705,8 @@ op_star
 id|i_btrace
 suffix:semicolon
 multiline_comment|/* inode bmap btree trace */
+macro_line|#endif
+macro_line|#ifdef XFS_RW_TRACE
 DECL|member|i_rwtrace
 r_struct
 id|ktrace
@@ -663,13 +714,8 @@ op_star
 id|i_rwtrace
 suffix:semicolon
 multiline_comment|/* inode read/write trace */
-DECL|member|i_strat_trace
-r_struct
-id|ktrace
-op_star
-id|i_strat_trace
-suffix:semicolon
-multiline_comment|/* inode strat_write trace */
+macro_line|#endif
+macro_line|#ifdef XFS_ILOCK_TRACE
 DECL|member|i_lock_trace
 r_struct
 id|ktrace
@@ -677,6 +723,8 @@ op_star
 id|i_lock_trace
 suffix:semicolon
 multiline_comment|/* inode lock/unlock trace */
+macro_line|#endif
+macro_line|#ifdef XFS_DIR2_TRACE
 DECL|member|i_dir_trace
 r_struct
 id|ktrace
@@ -684,7 +732,7 @@ op_star
 id|i_dir_trace
 suffix:semicolon
 multiline_comment|/* inode directory trace */
-macro_line|#endif /* DEBUG */
+macro_line|#endif
 DECL|typedef|xfs_inode_t
 )brace
 id|xfs_inode_t
@@ -1678,30 +1726,6 @@ r_struct
 id|vnodeops
 id|xfs_vnodeops
 suffix:semicolon
-macro_line|#ifdef XFS_ILOCK_TRACE
-DECL|macro|XFS_ILOCK_KTRACE_SIZE
-mdefine_line|#define XFS_ILOCK_KTRACE_SIZE&t;32
-r_void
-id|xfs_ilock_trace
-c_func
-(paren
-id|xfs_inode_t
-op_star
-id|ip
-comma
-r_int
-id|lock
-comma
-r_int
-r_int
-id|lockflags
-comma
-id|inst_t
-op_star
-id|ra
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* __XFS_INODE_H__ */
 eof
