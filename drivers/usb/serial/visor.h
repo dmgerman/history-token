@@ -28,6 +28,8 @@ DECL|macro|SONY_CLIE_4_0_ID
 mdefine_line|#define SONY_CLIE_4_0_ID&t;&t;0x0066
 DECL|macro|SONY_CLIE_S360_ID
 mdefine_line|#define SONY_CLIE_S360_ID&t;&t;0x0095
+DECL|macro|SONY_CLIE_4_1_ID
+mdefine_line|#define SONY_CLIE_4_1_ID&t;&t;0x009A
 multiline_comment|/****************************************************************************&n; * Handspring Visor Vendor specific request codes (bRequest values)&n; * A big thank you to Handspring for providing the following information.&n; * If anyone wants the original file where these values and structures came&n; * from, send email to &lt;greg@kroah.com&gt;.&n; ****************************************************************************/
 multiline_comment|/****************************************************************************&n; * VISOR_REQUEST_BYTES_AVAILABLE asks the visor for the number of bytes that&n; * are available to be transferred to the host for the specified endpoint.&n; * Currently this is not used, and always returns 0x0001&n; ****************************************************************************/
 DECL|macro|VISOR_REQUEST_BYTES_AVAILABLE

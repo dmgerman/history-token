@@ -10,9 +10,9 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &quot;../scsi/scsi.h&quot;
-macro_line|#include &quot;../scsi/hosts.h&quot;
-macro_line|#include &quot;../scsi/sd.h&quot;
+macro_line|#include &quot;../../scsi/scsi.h&quot;
+macro_line|#include &quot;../../scsi/hosts.h&quot;
+macro_line|#include &quot;../../scsi/sd.h&quot;
 macro_line|#include &quot;hpusbscsi.h&quot;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(x...) &bslash;&n;&t;printk( KERN_DEBUG x )
