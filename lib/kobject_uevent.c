@@ -891,6 +891,10 @@ id|scratch
 comma
 l_string|&quot;SEQNUM=%lld&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|seq
 )paren
 op_plus
