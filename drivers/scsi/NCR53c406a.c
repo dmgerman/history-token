@@ -2219,7 +2219,7 @@ suffix:semicolon
 multiline_comment|/* called from init/main.c */
 DECL|function|NCR53c406a_setup
 r_static
-r_void
+r_int
 id|__init
 id|NCR53c406a_setup
 c_func
@@ -2227,10 +2227,6 @@ c_func
 r_char
 op_star
 id|str
-comma
-r_int
-op_star
-id|ints
 )paren
 (brace
 r_static
@@ -2241,6 +2237,12 @@ l_int|0
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+r_int
+id|ints
+(braket
+l_int|4
+)braket
 suffix:semicolon
 id|DEB
 c_func
@@ -2270,6 +2272,7 @@ l_string|&quot;NCR53c406a: Setup called too many times.  Bad LILO params?&bslash
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -2296,6 +2299,7 @@ l_string|&quot;NCR53c406a: Usage: ncr53c406a=&lt;PORTBASE&gt;[,&lt;IRQ&gt;[,&lt;
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 r_for
@@ -2368,6 +2372,7 @@ l_int|1
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -2514,6 +2519,9 @@ id|fast_pio
 )paren
 suffix:semicolon
 )paren
+r_return
+l_int|1
+suffix:semicolon
 )brace
 id|__setup
 c_func
