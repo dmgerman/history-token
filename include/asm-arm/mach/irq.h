@@ -152,6 +152,16 @@ r_struct
 id|list_head
 id|pend
 suffix:semicolon
+DECL|member|chipdata
+r_void
+op_star
+id|chipdata
+suffix:semicolon
+DECL|member|data
+r_void
+op_star
+id|data
+suffix:semicolon
 DECL|member|disable_depth
 r_int
 r_int
@@ -295,6 +305,12 @@ DECL|macro|set_irq_handler
 mdefine_line|#define set_irq_handler(irq,handler)&t;&t;__set_irq_handler(irq,handler,0)
 DECL|macro|set_irq_chained_handler
 mdefine_line|#define set_irq_chained_handler(irq,handler)&t;__set_irq_handler(irq,handler,1)
+DECL|macro|set_irq_data
+mdefine_line|#define set_irq_data(irq,d)&t;&t;&t;do { irq_desc[irq].data = d; } while (0)
+DECL|macro|set_irq_chipdata
+mdefine_line|#define set_irq_chipdata(irq,d)&t;&t;&t;do { irq_desc[irq].chipdata = d; } while (0)
+DECL|macro|get_irq_chipdata
+mdefine_line|#define get_irq_chipdata(irq)&t;&t;&t;(irq_desc[irq].chipdata)
 r_void
 id|set_irq_chip
 c_func
