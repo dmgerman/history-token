@@ -3,6 +3,7 @@ macro_line|#ifndef __XFS_H__
 DECL|macro|__XFS_H__
 mdefine_line|#define __XFS_H__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;xfs_types.h&gt;
 macro_line|#include &lt;xfs_arch.h&gt;
 macro_line|#include &lt;support/kmem.h&gt;

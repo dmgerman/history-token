@@ -1,14 +1,13 @@
 multiline_comment|/*&n;  File: fs/xattr.c&n;&n;  Extended attribute handling.&n;&n;  Copyright (C) 2001 by Andreas Gruenbacher &lt;a.gruenbacher@computer.org&gt;&n;  Copyright (C) 2001 SGI - Silicon Graphics, Inc &lt;linux-xfs@oss.sgi.com&gt;&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/xattr.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-multiline_comment|/*&n; * Extended attribute memory allocation wrappers, originally&n; * based on the Intermezzo PRESTO_ALLOC/PRESTO_FREE macros.&n; * The vmalloc use here is very uncommon - extended attributes&n; * are supposed to be small chunks of metadata, and it is quite&n; * unusual to have very many extended attributes, so lists tend&n; * to be quite short as well.  The 64K upper limit is derived&n; * from the extended attribute size limit used by XFS.&n; * Intentionally allow zero @size for value/list size requests.&n; */
+multiline_comment|/*&n; * Extended attribute memory allocation wrappers, originally&n; * based on the Intermezzo PRESTO_ALLOC/PRESTO_FREE macros.&n; * Values larger than a page are uncommon - extended attributes&n; * are supposed to be small chunks of metadata, and it is quite&n; * unusual to have very many extended attributes, so lists tend&n; * to be quite short as well.  The 64K upper limit is derived&n; * from the extended attribute size limit used by XFS.&n; * Intentionally allow zero @size for value/list size requests.&n; */
 r_static
 r_void
 op_star
@@ -52,14 +51,6 @@ multiline_comment|/* size request, no buffer is needed */
 r_return
 l_int|NULL
 suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|size
-op_le
-id|PAGE_SIZE
-)paren
 id|ptr
 op_assign
 id|kmalloc
@@ -72,19 +63,6 @@ r_int
 id|size
 comma
 id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_else
-id|ptr
-op_assign
-id|vmalloc
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|size
 )paren
 suffix:semicolon
 r_if
@@ -122,28 +100,10 @@ id|size
 r_if
 c_cond
 (paren
-op_logical_neg
 id|size
 )paren
-multiline_comment|/* size request, no buffer was needed */
-r_return
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|size
-op_le
-id|PAGE_SIZE
-)paren
+multiline_comment|/* for a size request, no buffer was needed */
 id|kfree
-c_func
-(paren
-id|ptr
-)paren
-suffix:semicolon
-r_else
-id|vfree
 c_func
 (paren
 id|ptr

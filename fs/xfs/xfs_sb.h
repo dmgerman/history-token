@@ -2,7 +2,7 @@ multiline_comment|/*&n; * Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Ri
 macro_line|#ifndef __XFS_SB_H__
 DECL|macro|__XFS_SB_H__
 mdefine_line|#define __XFS_SB_H__
-multiline_comment|/*&n; * Super block&n; * Fits into a 512-byte buffer at daddr_t 0 of each allocation group.&n; * Only the first of these is ever updated except during growfs.&n; */
+multiline_comment|/*&n; * Super block&n; * Fits into a sector-sized buffer at address 0 of each allocation group.&n; * Only the first of these is ever updated except during growfs.&n; */
 r_struct
 id|xfs_buf
 suffix:semicolon
@@ -271,14 +271,16 @@ id|__uint8_t
 id|sb_dirblklog
 suffix:semicolon
 multiline_comment|/* log2 of dir block size (fsbs) */
-DECL|member|sb_dummy
+DECL|member|sb_logsectlog
 id|__uint8_t
-id|sb_dummy
-(braket
-l_int|3
-)braket
+id|sb_logsectlog
 suffix:semicolon
-multiline_comment|/* padding */
+multiline_comment|/* log2 of the log sector size */
+DECL|member|sb_logsectsize
+id|__uint16_t
+id|sb_logsectsize
+suffix:semicolon
+multiline_comment|/* sector size for the log, bytes */
 DECL|member|sb_logsunit
 id|__uint32_t
 id|sb_logsunit
@@ -415,9 +417,12 @@ id|XFS_SBS_WIDTH
 comma
 id|XFS_SBS_DIRBLKLOG
 comma
-DECL|enumerator|XFS_SBS_DUMMY
+DECL|enumerator|XFS_SBS_LOGSECTLOG
+DECL|enumerator|XFS_SBS_LOGSECTSIZE
 DECL|enumerator|XFS_SBS_LOGSUNIT
-id|XFS_SBS_DUMMY
+id|XFS_SBS_LOGSECTLOG
+comma
+id|XFS_SBS_LOGSECTSIZE
 comma
 id|XFS_SBS_LOGSUNIT
 comma
@@ -830,7 +835,7 @@ mdefine_line|#define XFS_SB_VERSION_SUBEXTFLGBIT(sbp)&t;&bslash;&n;&t;((sbp)-&gt
 macro_line|#endif
 multiline_comment|/*&n; * end of superblock version macros&n; */
 DECL|macro|XFS_SB_DADDR
-mdefine_line|#define XFS_SB_DADDR&t;((xfs_daddr_t)0)&t;&t;/* daddr in filesystem/ag */
+mdefine_line|#define XFS_SB_DADDR&t;((xfs_daddr_t)0)&t;/* daddr in filesystem/ag */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_SB_BLOCK)
 id|xfs_agblock_t
 id|xfs_sb_block
@@ -908,24 +913,6 @@ macro_line|#else
 DECL|macro|XFS_FSB_TO_DADDR
 mdefine_line|#define XFS_FSB_TO_DADDR(mp,fsbno) &bslash;&n;&t;XFS_AGB_TO_DADDR(mp, XFS_FSB_TO_AGNO(mp,fsbno), &bslash;&n;&t;&t;&t; XFS_FSB_TO_AGBNO(mp,fsbno))
 macro_line|#endif
-multiline_comment|/*&n; * File system block to basic block conversions.&n; */
-DECL|macro|XFS_FSB_TO_BB
-mdefine_line|#define XFS_FSB_TO_BB(mp,fsbno) ((fsbno) &lt;&lt; (mp)-&gt;m_blkbb_log)
-DECL|macro|XFS_BB_TO_FSB
-mdefine_line|#define XFS_BB_TO_FSB(mp,bb)&t;&bslash;&n;&t;(((bb) + (XFS_FSB_TO_BB(mp,1) - 1)) &gt;&gt; (mp)-&gt;m_blkbb_log)
-DECL|macro|XFS_BB_TO_FSBT
-mdefine_line|#define XFS_BB_TO_FSBT(mp,bb)&t;((bb) &gt;&gt; (mp)-&gt;m_blkbb_log)
-DECL|macro|XFS_BB_FSB_OFFSET
-mdefine_line|#define XFS_BB_FSB_OFFSET(mp,bb) ((bb) &amp; ((mp)-&gt;m_bsize - 1))
-multiline_comment|/*&n; * File system block to byte conversions.&n; */
-DECL|macro|XFS_FSB_TO_B
-mdefine_line|#define XFS_FSB_TO_B(mp,fsbno)&t;((xfs_fsize_t)(fsbno) &lt;&lt; &bslash;&n;&t;&t;&t;&t; (mp)-&gt;m_sb.sb_blocklog)
-DECL|macro|XFS_B_TO_FSB
-mdefine_line|#define XFS_B_TO_FSB(mp,b)&t;&bslash;&n;&t;((((__uint64_t)(b)) + (mp)-&gt;m_blockmask) &gt;&gt; (mp)-&gt;m_sb.sb_blocklog)
-DECL|macro|XFS_B_TO_FSBT
-mdefine_line|#define XFS_B_TO_FSBT(mp,b)&t;(((__uint64_t)(b)) &gt;&gt; (mp)-&gt;m_sb.sb_blocklog)
-DECL|macro|XFS_B_FSB_OFFSET
-mdefine_line|#define XFS_B_FSB_OFFSET(mp,b)&t;((b) &amp; (mp)-&gt;m_blockmask)
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_BUF_TO_SBP)
 id|xfs_sb_t
 op_star
@@ -944,5 +931,37 @@ macro_line|#else
 DECL|macro|XFS_BUF_TO_SBP
 mdefine_line|#define XFS_BUF_TO_SBP(bp)&t;((xfs_sb_t *)XFS_BUF_PTR(bp))
 macro_line|#endif
+multiline_comment|/*&n; * File system sector to basic block conversions.&n; */
+DECL|macro|XFS_FSS_TO_BB
+mdefine_line|#define XFS_FSS_TO_BB(mp,sec)&t;((sec) &lt;&lt; (mp)-&gt;m_sectbb_log)
+DECL|macro|XFS_LOGS_TO_BB
+mdefine_line|#define XFS_LOGS_TO_BB(mp,sec)&t;((sec) &lt;&lt; ((mp)-&gt;m_sb.sb_logsectlog - BBSHIFT))
+DECL|macro|XFS_BB_TO_FSS
+mdefine_line|#define XFS_BB_TO_FSS(mp,bb)&t;&bslash;&n;&t;(((bb) + (XFS_FSS_TO_BB(mp,1) - 1)) &gt;&gt; (mp)-&gt;m_sectbb_log)
+DECL|macro|XFS_BB_TO_FSST
+mdefine_line|#define XFS_BB_TO_FSST(mp,bb)&t;((bb) &gt;&gt; (mp)-&gt;m_sectbb_log)
+multiline_comment|/*&n; * File system sector to byte conversions.&n; */
+DECL|macro|XFS_FSS_TO_B
+mdefine_line|#define XFS_FSS_TO_B(mp,sectno)&t;((xfs_fsize_t)(sectno) &lt;&lt; (mp)-&gt;m_sb.sb_sectlog)
+DECL|macro|XFS_B_TO_FSST
+mdefine_line|#define XFS_B_TO_FSST(mp,b)&t;(((__uint64_t)(b)) &gt;&gt; (mp)-&gt;m_sb.sb_sectlog)
+multiline_comment|/*&n; * File system block to basic block conversions.&n; */
+DECL|macro|XFS_FSB_TO_BB
+mdefine_line|#define XFS_FSB_TO_BB(mp,fsbno) ((fsbno) &lt;&lt; (mp)-&gt;m_blkbb_log)
+DECL|macro|XFS_BB_TO_FSB
+mdefine_line|#define XFS_BB_TO_FSB(mp,bb)&t;&bslash;&n;&t;(((bb) + (XFS_FSB_TO_BB(mp,1) - 1)) &gt;&gt; (mp)-&gt;m_blkbb_log)
+DECL|macro|XFS_BB_TO_FSBT
+mdefine_line|#define XFS_BB_TO_FSBT(mp,bb)&t;((bb) &gt;&gt; (mp)-&gt;m_blkbb_log)
+DECL|macro|XFS_BB_FSB_OFFSET
+mdefine_line|#define XFS_BB_FSB_OFFSET(mp,bb) ((bb) &amp; ((mp)-&gt;m_bsize - 1))
+multiline_comment|/*&n; * File system block to byte conversions.&n; */
+DECL|macro|XFS_FSB_TO_B
+mdefine_line|#define XFS_FSB_TO_B(mp,fsbno)&t;((xfs_fsize_t)(fsbno) &lt;&lt; &bslash;&n;&t;&t;&t;&t; (mp)-&gt;m_sb.sb_blocklog)
+DECL|macro|XFS_B_TO_FSB
+mdefine_line|#define XFS_B_TO_FSB(mp,b)&t;&bslash;&n;&t;((((__uint64_t)(b)) + (mp)-&gt;m_blockmask) &gt;&gt; (mp)-&gt;m_sb.sb_blocklog)
+DECL|macro|XFS_B_TO_FSBT
+mdefine_line|#define XFS_B_TO_FSBT(mp,b)&t;(((__uint64_t)(b)) &gt;&gt; (mp)-&gt;m_sb.sb_blocklog)
+DECL|macro|XFS_B_FSB_OFFSET
+mdefine_line|#define XFS_B_FSB_OFFSET(mp,b)&t;((b) &amp; (mp)-&gt;m_blockmask)
 macro_line|#endif&t;/* __XFS_SB_H__ */
 eof

@@ -4,9 +4,6 @@ DECL|macro|__XFS_DIR2_SF_H__
 mdefine_line|#define __XFS_DIR2_SF_H__
 multiline_comment|/*&n; * Directory layout when stored internal to an inode.&n; *&n; * Small directories are packed as tightly as possible so as to&n; * fit into the literal area of the inode.&n; */
 r_struct
-id|dirent
-suffix:semicolon
-r_struct
 id|uio
 suffix:semicolon
 r_struct
