@@ -10750,11 +10750,6 @@ id|dip-&gt;di_nblocks
 )paren
 )paren
 suffix:semicolon
-id|ip-&gt;i_version
-op_assign
-op_increment
-id|event
-suffix:semicolon
 id|ip-&gt;i_generation
 op_assign
 id|le32_to_cpu

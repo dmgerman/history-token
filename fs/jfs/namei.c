@@ -455,11 +455,6 @@ comma
 id|ip
 )paren
 suffix:semicolon
-id|dip-&gt;i_version
-op_assign
-op_increment
-id|event
-suffix:semicolon
 id|dip-&gt;i_ctime
 op_assign
 id|dip-&gt;i_mtime
@@ -930,11 +925,6 @@ id|dip-&gt;i_nlink
 op_increment
 suffix:semicolon
 multiline_comment|/* for &squot;..&squot; from child directory */
-id|dip-&gt;i_version
-op_assign
-op_increment
-id|event
-suffix:semicolon
 id|dip-&gt;i_ctime
 op_assign
 id|dip-&gt;i_mtime
@@ -1279,11 +1269,6 @@ op_assign
 id|dip-&gt;i_mtime
 op_assign
 id|CURRENT_TIME
-suffix:semicolon
-id|dip-&gt;i_version
-op_assign
-op_increment
-id|event
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -1727,11 +1712,6 @@ op_assign
 id|dip-&gt;i_mtime
 op_assign
 id|CURRENT_TIME
-suffix:semicolon
-id|dip-&gt;i_version
-op_assign
-op_increment
-id|event
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -2805,11 +2785,6 @@ id|btstack
 r_goto
 id|out
 suffix:semicolon
-id|dir-&gt;i_version
-op_assign
-op_increment
-id|event
-suffix:semicolon
 multiline_comment|/* update object inode */
 id|ip-&gt;i_nlink
 op_increment
@@ -3578,11 +3553,6 @@ id|out2
 suffix:semicolon
 )brace
 )brace
-id|dip-&gt;i_version
-op_assign
-op_increment
-id|event
-suffix:semicolon
 id|insert_inode_hash
 c_func
 (paren
@@ -4578,11 +4548,6 @@ c_func
 id|old_ip
 )paren
 suffix:semicolon
-id|new_dir-&gt;i_version
-op_assign
-op_increment
-id|event
-suffix:semicolon
 id|new_dir-&gt;i_ctime
 op_assign
 id|CURRENT_TIME
@@ -4642,11 +4607,6 @@ op_increment
 )braket
 op_assign
 id|new_dir
-suffix:semicolon
-id|old_dir-&gt;i_version
-op_assign
-op_increment
-id|event
 suffix:semicolon
 id|old_dir-&gt;i_ctime
 op_assign
@@ -5198,11 +5158,6 @@ id|dentry
 comma
 id|ip
 )paren
-suffix:semicolon
-id|dir-&gt;i_version
-op_assign
-op_increment
-id|event
 suffix:semicolon
 id|dir-&gt;i_ctime
 op_assign

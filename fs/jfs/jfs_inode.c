@@ -212,11 +212,6 @@ id|jfs_inode-&gt;otime
 op_assign
 id|inode-&gt;i_ctime
 suffix:semicolon
-id|inode-&gt;i_version
-op_assign
-op_increment
-id|event
-suffix:semicolon
 id|inode-&gt;i_generation
 op_assign
 id|JFS_SBI
