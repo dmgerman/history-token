@@ -901,6 +901,48 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
+multiline_comment|/* The RNDIS specification is incomplete/wrong.   Some versions&n;&t; * of MS-Windows expect OIDs that aren&squot;t specified there.  Other&n;&t; * versions emit undefined RNDIS messages. DOCUMENT ALL THESE!&n;&t; */
+r_case
+id|OID_GEN_MAC_OPTIONS
+suffix:colon
+multiline_comment|/* from WinME */
+id|DEBUG
+c_func
+(paren
+l_string|&quot;%s: OID_GEN_MAC_OPTIONS&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|length
+op_assign
+l_int|4
+suffix:semicolon
+op_star
+(paren
+(paren
+id|u32
+op_star
+)paren
+id|resp
+op_plus
+l_int|6
+)paren
+op_assign
+id|__constant_cpu_to_le32
+c_func
+(paren
+id|NDIS_MAC_OPTION_RECEIVE_SERIALIZED
+op_or
+id|NDIS_MAC_OPTION_FULL_DUPLEX
+)paren
+suffix:semicolon
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
 multiline_comment|/* statistics OIDs (table 4-2) */
 multiline_comment|/* mandatory */
 r_case
@@ -4326,6 +4368,7 @@ id|buf
 suffix:semicolon
 r_default
 suffix:colon
+multiline_comment|/* At least Windows XP emits some undefined RNDIS messages.&n;&t;&t; * In one case those messages seemed to relate to the host&n;&t;&t; * suspending itself.&n;&t;&t; */
 id|printk
 (paren
 id|KERN_WARNING
