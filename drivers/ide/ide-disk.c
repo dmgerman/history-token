@@ -311,13 +311,9 @@ suffix:semicolon
 id|ide_end_request
 c_func
 (paren
-l_int|0
-comma
-id|HWGROUP
-c_func
-(paren
 id|drive
-)paren
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -1572,10 +1568,6 @@ suffix:semicolon
 id|args.block
 op_assign
 id|block
-suffix:semicolon
-id|rq-&gt;special
-op_assign
-l_int|NULL
 suffix:semicolon
 id|rq-&gt;special
 op_assign
@@ -5920,10 +5912,6 @@ op_assign
 id|name
 suffix:colon
 l_string|&quot;ide-disk&quot;
-comma
-id|version
-suffix:colon
-id|IDEDISK_VERSION
 comma
 id|media
 suffix:colon

@@ -495,11 +495,7 @@ suffix:semicolon
 id|__ide_end_request
 c_func
 (paren
-id|HWGROUP
-c_func
-(paren
 id|drive
-)paren
 comma
 l_int|1
 comma
