@@ -2149,7 +2149,8 @@ id|kcore_vmem
 suffix:semicolon
 DECL|function|setup_kcore
 r_static
-r_void
+r_int
+id|__init
 id|setup_kcore
 c_func
 (paren
@@ -2282,7 +2283,17 @@ op_minus
 id|VMALLOC_START
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|setup_kcore
+id|module_init
+c_func
+(paren
+id|setup_kcore
+)paren
+suffix:semicolon
 r_void
 id|initialize_paca_hardware_interrupt_stack
 c_func
@@ -2682,11 +2693,6 @@ macro_line|#endif
 id|mem_init_done
 op_assign
 l_int|1
-suffix:semicolon
-id|setup_kcore
-c_func
-(paren
-)paren
 suffix:semicolon
 multiline_comment|/* set the last page of each hardware interrupt stack to be protected */
 id|initialize_paca_hardware_interrupt_stack
