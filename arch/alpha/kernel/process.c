@@ -755,6 +755,8 @@ suffix:semicolon
 r_int
 r_int
 id|stack_offset
+comma
+id|settls
 suffix:semicolon
 id|stack_offset
 op_assign
@@ -813,6 +815,10 @@ id|childregs
 op_assign
 op_star
 id|regs
+suffix:semicolon
+id|settls
+op_assign
+id|regs-&gt;r20
 suffix:semicolon
 id|childregs-&gt;r0
 op_assign
@@ -888,7 +894,7 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* set FEN, clear everything else */
-multiline_comment|/* Set a new TLS for the child thread?  Peek back into the&n;&t;   syscall arguments that we saved on syscall entry.  */
+multiline_comment|/* Set a new TLS for the child thread?  Peek back into the&n;&t;   syscall arguments that we saved on syscall entry.  Oops,&n;&t;   except we&squot;d have clobbered it with the parent/child set&n;&t;   of r20.  Read the saved copy.  */
 multiline_comment|/* Note: if CLONE_SETTLS is not set, then we must inherit the&n;&t;   value from the parent, which will have been set by the block&n;&t;   copy in dup_task_struct.  This is non-intuitive, but is&n;&t;   required for proper operation in the case of a threaded&n;&t;   application calling fork.  */
 r_if
 c_cond
@@ -899,7 +905,7 @@ id|CLONE_SETTLS
 )paren
 id|childti-&gt;pcb.unique
 op_assign
-id|regs-&gt;r20
+id|settls
 suffix:semicolon
 r_return
 l_int|0
