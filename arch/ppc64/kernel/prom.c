@@ -10799,6 +10799,26 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|np-&gt;name
+)paren
+id|np-&gt;name
+op_assign
+l_string|&quot;&lt;NULL&gt;&quot;
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|np-&gt;type
+)paren
+id|np-&gt;type
+op_assign
+l_string|&quot;&lt;NULL&gt;&quot;
+suffix:semicolon
 multiline_comment|/* get the device addresses and interrupts */
 r_if
 c_cond
