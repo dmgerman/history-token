@@ -2863,6 +2863,10 @@ id|i_size
 op_add_assign
 id|le16_to_cpu
 (paren
+(paren
+id|__force
+id|__le16
+)paren
 id|config-&gt;wTotalLength
 )paren
 suffix:semicolon
