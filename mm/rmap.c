@@ -1494,12 +1494,12 @@ id|referenced
 op_increment
 suffix:semicolon
 r_else
+(brace
 r_if
 c_cond
 (paren
 id|page-&gt;mapping
 )paren
-(brace
 id|referenced
 op_add_assign
 id|page_referenced_file
