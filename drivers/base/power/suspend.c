@@ -232,7 +232,7 @@ id|Done
 suffix:semicolon
 )brace
 DECL|variable|device_suspend
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|device_suspend
@@ -328,7 +328,7 @@ id|Done
 suffix:semicolon
 )brace
 DECL|variable|device_power_down
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|device_power_down

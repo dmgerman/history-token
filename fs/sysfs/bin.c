@@ -856,14 +856,14 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|sysfs_create_bin_file
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|sysfs_create_bin_file
 )paren
 suffix:semicolon
 DECL|variable|sysfs_remove_bin_file
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|sysfs_remove_bin_file
