@@ -14,24 +14,6 @@ macro_line|#include &quot;hid.h&quot;
 macro_line|#include &quot;pid.h&quot;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Rodrigo Damazio &lt;rdamazio@lsi.usp.br&gt;&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;USB PID(Physical Interface Device) Driver&quot;
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 DECL|macro|CHECK_OWNERSHIP
 mdefine_line|#define CHECK_OWNERSHIP(i, hid_pid)&t;&bslash;&n;&t;((i) &lt; FF_EFFECTS_MAX &amp;&amp; i &gt;= 0 &amp;&amp; &bslash;&n;&t;test_bit(FF_PID_FLAGS_USED, &amp;hid_pid-&gt;effects[(i)].flags) &amp;&amp; &bslash;&n;&t;(current-&gt;pid == 0 || &bslash;&n;&t;(hid_pid)-&gt;effects[(i)].owner == current-&gt;pid))
 multiline_comment|/* Called when a transfer is completed */
@@ -1234,43 +1216,4 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|hid_pid_modinit
-r_static
-r_int
-id|__init
-id|hid_pid_modinit
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|hid_pid_modexit
-r_static
-r_void
-id|__exit
-id|hid_pid_modexit
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
-DECL|variable|hid_pid_modinit
-id|module_init
-c_func
-(paren
-id|hid_pid_modinit
-)paren
-suffix:semicolon
-DECL|variable|hid_pid_modexit
-id|module_exit
-c_func
-(paren
-id|hid_pid_modexit
-)paren
-suffix:semicolon
 eof
