@@ -110,7 +110,8 @@ id|hpt34x_devs
 id|i
 )braket
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|bibma
 op_assign
 id|pci_resource_start
