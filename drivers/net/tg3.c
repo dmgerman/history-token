@@ -48,9 +48,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;2.1&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;2.2&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;August 23, 2003&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;August 24, 2003&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
@@ -31455,28 +31455,6 @@ op_assign
 id|value
 suffix:semicolon
 )brace
-DECL|function|tg3_get_tso
-r_static
-id|u32
-id|tg3_get_tso
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-r_return
-(paren
-id|dev-&gt;features
-op_amp
-id|NETIF_F_TSO
-)paren
-op_ne
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|tg3_set_tso
 r_static
 r_int
@@ -31523,28 +31501,15 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_else
-(brace
-r_if
-c_cond
+r_return
+id|ethtool_op_set_tso
+c_func
 (paren
-op_logical_neg
+id|dev
+comma
 id|value
 )paren
-id|dev-&gt;features
-op_and_assign
-op_complement
-id|NETIF_F_TSO
 suffix:semicolon
-r_else
-id|dev-&gt;features
-op_or_assign
-id|NETIF_F_TSO
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 )brace
 DECL|function|tg3_nway_reset
 r_static
@@ -32612,7 +32577,7 @@ comma
 dot
 id|get_tso
 op_assign
-id|tg3_get_tso
+id|ethtool_op_get_tso
 comma
 dot
 id|set_tso
@@ -37356,6 +37321,10 @@ op_or_assign
 id|DMA_RWCTRL_USE_MEM_READ_MULT
 suffix:semicolon
 )brace
+id|tp-&gt;dma_rwctrl
+op_or_assign
+id|DMA_RWCTRL_ASSERT_ALL_BE
+suffix:semicolon
 id|tw32
 c_func
 (paren
