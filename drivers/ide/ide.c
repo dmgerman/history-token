@@ -31,9 +31,6 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &quot;ata-timing.h&quot;
 macro_line|#include &quot;pcihost.h&quot;
 macro_line|#include &quot;ioctl.h&quot;
-multiline_comment|/* default maximum number of failures */
-DECL|macro|IDE_DEFAULT_MAX_FAILURES
-mdefine_line|#define IDE_DEFAULT_MAX_FAILURES&t;1
 multiline_comment|/*&n; * CompactFlash cards and their relatives pretend to be removable hard disks, except:&n; *&t;(1) they never have a slave unit, and&n; *&t;(2) they don&squot;t have a door lock mechanisms.&n; * This test catches them, and is invoked elsewhere when setting appropriate config bits.&n; *&n; * FIXME FIXME: Yes this is for certain applicable for all of them as time has shown.&n; *&n; * FIXME: This treatment is probably applicable for *all* PCMCIA (PC CARD) devices,&n; * so in linux 2.3.x we should change this to just treat all PCMCIA drives this way,&n; * and get rid of the model-name tests below (too big of an interface change for 2.2.x).&n; * At that time, we might also consider parameterizing the timeouts and retries,&n; * since these are MUCH faster than mechanical drives.&t;-M.Lord&n; */
 DECL|function|drive_is_flashcard
 r_int
@@ -2088,6 +2085,53 @@ macro_line|#else
 DECL|macro|IS_PDC4030_DRIVE
 macro_line|# define IS_PDC4030_DRIVE (0)&t;/* auto-NULLs out pdc4030 code */
 macro_line|#endif
+multiline_comment|/*&n; * This is invoked on completion of a WIN_RESTORE (recalibrate) cmd.&n; *&n; * FIXME: Why can&squot;t be just use task_no_data_intr here?&n; */
+DECL|function|recal_intr
+r_static
+id|ide_startstop_t
+id|recal_intr
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ata_status
+c_func
+(paren
+id|drive
+comma
+id|READY_STAT
+comma
+id|BAD_STAT
+)paren
+)paren
+r_return
+id|ata_error
+c_func
+(paren
+id|drive
+comma
+id|rq
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_return
+id|ide_stopped
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * We are still on the old request path here so issuing the recalibrate command&n; * directly should just work.&n; */
 DECL|function|do_recalibrate
 r_static
@@ -2156,6 +2200,10 @@ suffix:semicolon
 id|args.handler
 op_assign
 id|recal_intr
+suffix:semicolon
+id|args.command_type
+op_assign
+id|IDE_DRIVE_TASK_NO_DATA
 suffix:semicolon
 id|ata_taskfile
 c_func
