@@ -765,6 +765,7 @@ id|off
 )paren
 (brace
 r_int
+r_int
 id|n
 suffix:semicolon
 r_char
@@ -785,6 +786,7 @@ suffix:semicolon
 id|n
 op_assign
 (paren
+r_int
 r_int
 )paren
 id|filp-&gt;private_data
