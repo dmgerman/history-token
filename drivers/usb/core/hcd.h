@@ -731,21 +731,6 @@ op_star
 id|bus
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|usb_rh_status_dequeue
-(paren
-r_struct
-id|usb_hcd
-op_star
-id|hcd
-comma
-r_struct
-id|urb
-op_star
-id|urb
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 r_struct
 id|pci_dev
