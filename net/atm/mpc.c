@@ -25,7 +25,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;lec.h&quot;
 macro_line|#include &quot;mpc.h&quot;
-macro_line|#include &quot;resources.h&quot;
+macro_line|#include &quot;resources.h&quot;  /* for bind_vcc() */
 multiline_comment|/*&n; * mpc.c: Implementation of MPOA client kernel part &n; */
 macro_line|#if 0
 mdefine_line|#define dprintk printk   /* debug */
@@ -3706,15 +3706,13 @@ id|mpc-&gt;mpoad_vcc
 op_assign
 id|vcc
 suffix:semicolon
-id|vcc-&gt;dev
-op_assign
-op_amp
-id|mpc_dev
-suffix:semicolon
-id|vcc_insert_socket
+id|bind_vcc
 c_func
 (paren
-id|vcc-&gt;sk
+id|vcc
+comma
+op_amp
+id|mpc_dev
 )paren
 suffix:semicolon
 id|set_bit

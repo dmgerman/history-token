@@ -284,13 +284,6 @@ id|sock
 )paren
 (brace
 r_struct
-id|sock
-op_star
-id|sk
-op_assign
-id|sock-&gt;sk
-suffix:semicolon
-r_struct
 id|atm_vcc
 op_star
 id|vcc
@@ -298,9 +291,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk
+op_logical_neg
+id|sock-&gt;sk
 )paren
-(brace
+r_return
+l_int|0
+suffix:semicolon
 id|vcc
 op_assign
 id|ATM_SD
@@ -326,17 +322,12 @@ op_amp
 id|vcc-&gt;flags
 )paren
 suffix:semicolon
-multiline_comment|/* VCC pointer is used as a reference, so we must not free it&n;&t;&t;   (thereby subjecting it to re-use) before all pending connections&n;&t;           are closed */
-id|sock_hold
+id|atm_release_vcc_sk
 c_func
 (paren
-id|sk
-)paren
-suffix:semicolon
-id|vcc_release
-c_func
-(paren
-id|sock
+id|sock-&gt;sk
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|svc_disconnect
@@ -345,13 +336,13 @@ c_func
 id|vcc
 )paren
 suffix:semicolon
-id|sock_put
+multiline_comment|/* VCC pointer is used as a reference, so we must not free it&n;&t;       (thereby subjecting it to re-use) before all pending connections&n;&t;        are closed */
+id|free_atm_vcc_sk
 c_func
 (paren
-id|sk
+id|sock-&gt;sk
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2642,7 +2633,7 @@ id|svc_proto_ops
 suffix:semicolon
 id|error
 op_assign
-id|vcc_create
+id|atm_create
 c_func
 (paren
 id|sock

@@ -3563,15 +3563,13 @@ id|vcc-&gt;flags
 )paren
 suffix:semicolon
 multiline_comment|/* allow replies and avoid getting closed if signaling dies */
-id|vcc-&gt;dev
-op_assign
-op_amp
-id|atmarpd_dev
-suffix:semicolon
-id|vcc_insert_socket
+id|bind_vcc
 c_func
 (paren
-id|vcc-&gt;sk
+id|vcc
+comma
+op_amp
+id|atmarpd_dev
 )paren
 suffix:semicolon
 id|vcc-&gt;push
