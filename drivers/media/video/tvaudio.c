@@ -3998,8 +3998,32 @@ mdefine_line|#define TDA8425_S1         0x08  /* switch functions */
 multiline_comment|/* values for those registers: */
 DECL|macro|TDA8425_S1_OFF
 mdefine_line|#define TDA8425_S1_OFF     0xEE  /* audio off (mute on) */
-DECL|macro|TDA8425_S1_ON
-mdefine_line|#define TDA8425_S1_ON      0xCE  /* audio on (mute off) - &quot;linear stereo&quot; mode */
+DECL|macro|TDA8425_S1_CH1
+mdefine_line|#define TDA8425_S1_CH1     0xCE  /* audio channel 1 (mute off) - &quot;linear stereo&quot; mode */
+DECL|macro|TDA8425_S1_CH2
+mdefine_line|#define TDA8425_S1_CH2     0xCF  /* audio channel 2 (mute off) - &quot;linear stereo&quot; mode */
+DECL|macro|TDA8425_S1_MU
+mdefine_line|#define TDA8425_S1_MU      0x20  /* mute bit */
+DECL|macro|TDA8425_S1_STEREO
+mdefine_line|#define TDA8425_S1_STEREO  0x18  /* stereo bits */
+DECL|macro|TDA8425_S1_STEREO_SPATIAL
+mdefine_line|#define TDA8425_S1_STEREO_SPATIAL 0x18 /* spatial stereo */
+DECL|macro|TDA8425_S1_STEREO_LINEAR
+mdefine_line|#define TDA8425_S1_STEREO_LINEAR  0x08 /* linear stereo */
+DECL|macro|TDA8425_S1_STEREO_PSEUDO
+mdefine_line|#define TDA8425_S1_STEREO_PSEUDO  0x10 /* pseudo stereo */
+DECL|macro|TDA8425_S1_STEREO_MONO
+mdefine_line|#define TDA8425_S1_STEREO_MONO    0x00 /* forced mono */
+DECL|macro|TDA8425_S1_ML
+mdefine_line|#define TDA8425_S1_ML      0x06        /* language selector */
+DECL|macro|TDA8425_S1_ML_SOUND_A
+mdefine_line|#define TDA8425_S1_ML_SOUND_A 0x02     /* sound a */
+DECL|macro|TDA8425_S1_ML_SOUND_B
+mdefine_line|#define TDA8425_S1_ML_SOUND_B 0x04     /* sound b */
+DECL|macro|TDA8425_S1_ML_STEREO
+mdefine_line|#define TDA8425_S1_ML_STEREO  0x06     /* stereo */
+DECL|macro|TDA8425_S1_IS
+mdefine_line|#define TDA8425_S1_IS      0x01        /* channel selector */
 DECL|function|tda8425_shift10
 r_static
 r_int
@@ -4011,9 +4035,11 @@ id|val
 )paren
 (brace
 r_return
+(paren
 id|val
 op_rshift
 l_int|10
+)paren
 op_or
 l_int|0xc0
 suffix:semicolon
@@ -4029,11 +4055,115 @@ id|val
 )paren
 (brace
 r_return
+(paren
 id|val
 op_rshift
 l_int|12
+)paren
 op_or
 l_int|0xf0
+suffix:semicolon
+)brace
+DECL|function|tda8425_setmode
+r_static
+r_void
+id|tda8425_setmode
+c_func
+(paren
+r_struct
+id|CHIPSTATE
+op_star
+id|chip
+comma
+r_int
+id|mode
+)paren
+(brace
+r_int
+id|s1
+op_assign
+id|chip-&gt;shadow.bytes
+(braket
+id|TDA8425_S1
+op_plus
+l_int|1
+)braket
+op_amp
+l_int|0xe1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mode
+op_amp
+id|VIDEO_SOUND_LANG1
+)paren
+(brace
+id|s1
+op_or_assign
+id|TDA8425_S1_ML_SOUND_A
+suffix:semicolon
+id|s1
+op_or_assign
+id|TDA8425_S1_STEREO_PSEUDO
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|mode
+op_amp
+id|VIDEO_SOUND_LANG2
+)paren
+(brace
+id|s1
+op_or_assign
+id|TDA8425_S1_ML_SOUND_B
+suffix:semicolon
+id|s1
+op_or_assign
+id|TDA8425_S1_STEREO_PSEUDO
+suffix:semicolon
+)brace
+r_else
+(brace
+id|s1
+op_or_assign
+id|TDA8425_S1_ML_STEREO
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mode
+op_amp
+id|VIDEO_SOUND_MONO
+)paren
+id|s1
+op_or_assign
+id|TDA8425_S1_STEREO_MONO
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mode
+op_amp
+id|VIDEO_SOUND_STEREO
+)paren
+id|s1
+op_or_assign
+id|TDA8425_S1_STEREO_SPATIAL
+suffix:semicolon
+)brace
+id|chip_write
+c_func
+(paren
+id|chip
+comma
+id|TDA8425_S1
+comma
+id|s1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* ---------------------------------------------------------------------- */
@@ -4503,11 +4633,11 @@ id|CHIP_HAS_BASSTREBLE
 comma
 id|leftreg
 suffix:colon
-id|TDA9855_VR
+id|TDA9855_VL
 comma
 id|rightreg
 suffix:colon
-id|TDA9855_VL
+id|TDA9855_VR
 comma
 id|bassreg
 suffix:colon
@@ -4800,16 +4930,20 @@ comma
 id|inputmap
 suffix:colon
 (brace
-id|TDA8425_S1_ON
+id|TDA8425_S1_CH1
 comma
-id|TDA8425_S1_ON
+id|TDA8425_S1_CH1
 comma
-id|TDA8425_S1_ON
+id|TDA8425_S1_CH1
 )brace
 comma
 id|inputmute
 suffix:colon
 id|TDA8425_S1_OFF
+comma
+id|setmode
+suffix:colon
+id|tda8425_setmode
 comma
 )brace
 comma
@@ -5198,7 +5332,7 @@ ques
 c_cond
 id|desc-&gt;leftinit
 suffix:colon
-l_int|65536
+l_int|65535
 suffix:semicolon
 id|chip-&gt;right
 op_assign
@@ -5207,7 +5341,7 @@ ques
 c_cond
 id|desc-&gt;rightinit
 suffix:colon
-l_int|65536
+l_int|65535
 suffix:semicolon
 id|chip_write
 c_func
@@ -5387,17 +5521,22 @@ op_star
 id|adap
 )paren
 (brace
-r_if
+r_switch
 c_cond
 (paren
 id|adap-&gt;id
-op_eq
-(paren
+)paren
+(brace
+r_case
 id|I2C_ALGO_BIT
 op_or
 id|I2C_HW_B_BT848
-)paren
-)paren
+suffix:colon
+r_case
+id|I2C_ALGO_BIT
+op_or
+id|I2C_HW_B_RIVA
+suffix:colon
 r_return
 id|i2c_probe
 c_func
@@ -5410,9 +5549,13 @@ comma
 id|chip_attach
 )paren
 suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* ignore this i2c bus */
 r_return
 l_int|0
 suffix:semicolon
+)brace
 )brace
 DECL|function|chip_detach
 r_static
