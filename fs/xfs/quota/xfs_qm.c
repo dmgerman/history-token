@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &quot;xfs.h&quot;
 macro_line|#include &quot;xfs_fs.h&quot;
 macro_line|#include &quot;xfs_inum.h&quot;
@@ -82,15 +82,6 @@ id|xfs_qm_list_destroy
 c_func
 (paren
 id|xfs_dqlist_t
-op_star
-)paren
-suffix:semicolon
-id|STATIC
-r_int
-id|xfs_qm_quotacheck
-c_func
-(paren
-id|xfs_mount_t
 op_star
 )paren
 suffix:semicolon
@@ -918,6 +909,9 @@ c_func
 id|xfs_mount_t
 op_star
 id|mp
+comma
+r_int
+id|mfsi_flags
 )paren
 (brace
 r_int
@@ -1048,6 +1042,13 @@ c_func
 (paren
 id|mp
 )paren
+op_logical_and
+op_logical_neg
+(paren
+id|mfsi_flags
+op_amp
+id|XFS_MFSI_NO_QUOTACHECK
+)paren
 )paren
 (brace
 macro_line|#ifdef DEBUG
@@ -1074,46 +1075,13 @@ id|mp
 )paren
 )paren
 (brace
-id|cmn_err
+multiline_comment|/* Quotacheck has failed and quotas have&n;&t;&t;&t; * been disabled.&n;&t;&t;&t; */
+r_return
+id|XFS_ERROR
 c_func
 (paren
-id|CE_WARN
-comma
-l_string|&quot;Quotacheck unsuccessful (Error %d): &quot;
-l_string|&quot;Disabling quotas.&quot;
-comma
 id|error
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * We must turn off quotas.&n;&t;&t;&t; */
-id|ASSERT
-c_func
-(paren
-id|mp-&gt;m_quotainfo
-op_ne
-l_int|NULL
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|xfs_Gqm
-op_ne
-l_int|NULL
-)paren
-suffix:semicolon
-id|xfs_qm_destroy_quotainfo
-c_func
-(paren
-id|mp
-)paren
-suffix:semicolon
-id|mp-&gt;m_qflags
-op_assign
-l_int|0
-suffix:semicolon
-r_goto
-id|write_changes
 suffix:semicolon
 )brace
 macro_line|#ifdef DEBUG
@@ -6348,8 +6316,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Walk thru all the filesystem inodes and construct a consistent view&n; * of the disk quota world.&n; */
-id|STATIC
+multiline_comment|/*&n; * Walk thru all the filesystem inodes and construct a consistent view&n; * of the disk quota world. If the quotacheck fails, disable quotas.&n; */
 r_int
 DECL|function|xfs_qm_quotacheck
 id|xfs_qm_quotacheck
@@ -6646,6 +6613,57 @@ l_string|&quot;++++ Mp list +++&quot;
 suffix:semicolon
 id|error_return
 suffix:colon
+r_if
+c_cond
+(paren
+id|error
+)paren
+(brace
+id|cmn_err
+c_func
+(paren
+id|CE_WARN
+comma
+l_string|&quot;XFS quotacheck %s: Unsuccessful (Error %d): &quot;
+l_string|&quot;Disabling quotas.&quot;
+comma
+id|mp-&gt;m_fsname
+comma
+id|error
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * We must turn off quotas.&n;&t;&t; */
+id|ASSERT
+c_func
+(paren
+id|mp-&gt;m_quotainfo
+op_ne
+l_int|NULL
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|xfs_Gqm
+op_ne
+l_int|NULL
+)paren
+suffix:semicolon
+id|xfs_qm_destroy_quotainfo
+c_func
+(paren
+id|mp
+)paren
+suffix:semicolon
+id|xfs_mount_reset_sbqflags
+c_func
+(paren
+id|mp
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|cmn_err
 c_func
 (paren
@@ -6656,6 +6674,7 @@ comma
 id|mp-&gt;m_fsname
 )paren
 suffix:semicolon
+)brace
 r_return
 (paren
 id|error

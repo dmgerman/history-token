@@ -4278,6 +4278,8 @@ comma
 id|quotamount
 comma
 id|quotaflags
+comma
+id|mfsi_flags
 )paren
 )paren
 )paren

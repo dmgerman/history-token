@@ -373,6 +373,8 @@ comma
 id|uint
 comma
 id|uint
+comma
+r_int
 )paren
 suffix:semicolon
 DECL|typedef|xfs_qmunmount_t
@@ -654,7 +656,7 @@ suffix:semicolon
 DECL|macro|XFS_QM_INIT
 mdefine_line|#define XFS_QM_INIT(mp, mnt, fl) &bslash;&n;&t;(*(mp)-&gt;m_qm_ops.xfs_qminit)(mp, mnt, fl)
 DECL|macro|XFS_QM_MOUNT
-mdefine_line|#define XFS_QM_MOUNT(mp, mnt, fl) &bslash;&n;&t;(*(mp)-&gt;m_qm_ops.xfs_qmmount)(mp, mnt, fl)
+mdefine_line|#define XFS_QM_MOUNT(mp, mnt, fl, mfsi_flags) &bslash;&n;&t;(*(mp)-&gt;m_qm_ops.xfs_qmmount)(mp, mnt, fl, mfsi_flags)
 DECL|macro|XFS_QM_UNMOUNT
 mdefine_line|#define XFS_QM_UNMOUNT(mp) &bslash;&n;&t;(*(mp)-&gt;m_qm_ops.xfs_qmunmount)(mp)
 DECL|macro|XFS_QM_DONE
@@ -1660,6 +1662,8 @@ mdefine_line|#define XFS_MFSI_CLIENT&t;&t;0x02&t;/* Is a client -- skip lots of 
 DECL|macro|XFS_MFSI_NOUNLINK
 mdefine_line|#define XFS_MFSI_NOUNLINK&t;0x08&t;/* Skip unlinked inode processing in */
 multiline_comment|/* log recovery */
+DECL|macro|XFS_MFSI_NO_QUOTACHECK
+mdefine_line|#define XFS_MFSI_NO_QUOTACHECK&t;0x10&t;/* Skip quotacheck processing */
 multiline_comment|/*&n; * Macros for getting from mount to vfs and back.&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_MTOVFS)
 r_struct
