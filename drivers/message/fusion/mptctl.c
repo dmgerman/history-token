@@ -723,7 +723,7 @@ id|ioc-&gt;ioctl-&gt;ReplyFrame
 comma
 id|reply
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|ioc-&gt;reply_sz
@@ -943,9 +943,11 @@ id|fwReplyBuffer
 comma
 id|reply
 comma
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 r_sizeof
 (paren
 id|fwReplyBuffer
@@ -3511,7 +3513,7 @@ suffix:semicolon
 r_int
 id|alloc_sz
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|bytes
@@ -3675,7 +3677,7 @@ id|bytes
 (brace
 id|this_alloc
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|alloc_sz
@@ -8648,7 +8650,7 @@ id|ioc-&gt;reply_sz
 (brace
 id|sz
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|karg.maxReplyBytes
@@ -8666,7 +8668,7 @@ r_else
 (brace
 id|sz
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|ioc-&gt;reply_sz
@@ -8747,7 +8749,7 @@ id|MPT_IOCTL_STATUS_SENSE_VALID
 (brace
 id|sz
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|karg.maxSenseBytes
