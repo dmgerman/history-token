@@ -181,15 +181,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|do_magic
-c_func
-(paren
-r_int
-id|resume
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI_SLEEP
 r_extern
 r_int
