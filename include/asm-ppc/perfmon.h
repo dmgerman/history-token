@@ -1,6 +1,18 @@
 macro_line|#ifndef __PERFMON_H
 DECL|macro|__PERFMON_H
 mdefine_line|#define __PERFMON_H
+r_extern
+r_void
+(paren
+op_star
+id|perf_irq
+)paren
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
 r_int
 id|request_perfmon_irq
 c_func
@@ -104,6 +116,11 @@ c_func
 (paren
 r_void
 )paren
+suffix:semicolon
+r_extern
+r_struct
+id|op_ppc32_model
+id|op_model_fsl_booke
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif /* __PERFMON_H */

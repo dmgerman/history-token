@@ -24,6 +24,7 @@ macro_line|#include &lt;asm/xmon.h&gt;
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
 macro_line|#include &lt;asm/backlight.h&gt;
 macro_line|#endif
+macro_line|#include &lt;asm/perfmon.h&gt;
 macro_line|#ifdef CONFIG_XMON
 DECL|variable|debugger
 r_void
@@ -209,18 +210,6 @@ mdefine_line|#define debugger_fault_handler&t;&t;((void (*)(struct pt_regs *))0)
 macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Trap &amp; Exception support&n; */
-r_extern
-r_void
-(paren
-op_star
-id|perf_irq
-)paren
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
 DECL|variable|die_lock
 id|spinlock_t
 id|die_lock

@@ -9,11 +9,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/perfmon.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &quot;op_impl.h&quot;
-r_extern
-r_struct
-id|op_ppc32_model
-id|op_model_fsl_booke
-suffix:semicolon
 DECL|variable|model
 r_static
 r_struct
