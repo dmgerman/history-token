@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/mca-legacy.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;scsi.h&quot;
@@ -2828,7 +2829,7 @@ op_or
 (paren
 l_int|1
 op_lshift
-id|current_SC-&gt;target
+id|current_SC-&gt;device-&gt;id
 )paren
 comma
 id|SCSI_Data_NoACK_port
@@ -2891,7 +2892,7 @@ c_func
 (paren
 id|shpnt
 comma
-id|current_SC-&gt;target
+id|current_SC-&gt;device-&gt;id
 )paren
 )paren
 (brace
@@ -3152,7 +3153,7 @@ c_func
 (paren
 l_string|&quot;ERROR fd_mcs: target = %d, command = %x, status = %x&bslash;n&quot;
 comma
-id|current_SC-&gt;target
+id|current_SC-&gt;device-&gt;id
 comma
 id|current_SC-&gt;cmnd
 (braket
@@ -4185,7 +4186,7 @@ id|Scsi_Host
 op_star
 id|shpnt
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
 r_if
 c_cond
@@ -4561,7 +4562,7 @@ l_string|&quot;(%d), target = %d cmnd = 0x%02x pieces = %d size = %u&bslash;n&qu
 comma
 id|SCpnt-&gt;SCp.phase
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
 op_star
 (paren
@@ -4900,7 +4901,7 @@ id|Scsi_Host
 op_star
 id|shpnt
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
 r_int
 r_int
@@ -5049,7 +5050,7 @@ id|Scsi_Host
 op_star
 id|shpnt
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
 macro_line|#if DEBUG_RESET
 r_static

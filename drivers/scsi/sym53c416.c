@@ -1,4 +1,4 @@
-multiline_comment|/* &n; *  sym53c416.c&n; *  Low-level SCSI driver for sym53c416 chip.&n; *  Copyright (C) 1998 Lieven Willems (lw_linux@hotmail.com)&n; * &n; *  Changes : &n; * &n; *  Marcelo Tosatti &lt;marcelo@conectiva.com.br&gt; : Added io_request_lock locking&n; *  Alan Cox &lt;alan@redhat.com&gt; : Cleaned up code formatting&n; *&t;&t;&t;&t; Fixed an irq locking bug&n; *&t;&t;&t;&t; Added ISAPnP support&n; *  Bjoern A. Zeeb &lt;bzeeb@zabbadoz.net&gt; : Initial irq locking updates&n; *&t;&t;&t;&t;&t;  Added another card with ISAPnP support&n; * &n; *  LILO command line usage: sym53c416=&lt;PORTBASE&gt;[,&lt;IRQ&gt;]&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the&n; *  Free Software Foundation; either version 2, or (at your option) any&n; *  later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; */
+multiline_comment|/*&n; *  sym53c416.c&n; *  Low-level SCSI driver for sym53c416 chip.&n; *  Copyright (C) 1998 Lieven Willems (lw_linux@hotmail.com)&n; * &n; *  Changes : &n; * &n; *  Marcelo Tosatti &lt;marcelo@conectiva.com.br&gt; : Added io_request_lock locking&n; *  Alan Cox &lt;alan@redhat.com&gt; : Cleaned up code formatting&n; *&t;&t;&t;&t; Fixed an irq locking bug&n; *&t;&t;&t;&t; Added ISAPnP support&n; *  Bjoern A. Zeeb &lt;bzeeb@zabbadoz.net&gt; : Initial irq locking updates&n; *&t;&t;&t;&t;&t;  Added another card with ISAPnP support&n; * &n; *  LILO command line usage: sym53c416=&lt;PORTBASE&gt;[,&lt;IRQ&gt;]&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the&n; *  Free Software Foundation; either version 2, or (at your option) any&n; *  later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -3557,7 +3557,7 @@ suffix:semicolon
 multiline_comment|/* Store base register as we can have more than one controller in the system */
 id|base
 op_assign
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 suffix:semicolon
 id|current_command
 op_assign
@@ -3594,7 +3594,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
 id|base
 op_plus
@@ -3794,7 +3794,7 @@ suffix:semicolon
 multiline_comment|/* printk(&quot;sym53c416_reset&bslash;n&quot;); */
 id|base
 op_assign
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 suffix:semicolon
 multiline_comment|/* search scsi_id - fixme, we shouldnt need to iterate for this! */
 r_for

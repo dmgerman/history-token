@@ -325,7 +325,7 @@ id|efi.acpi20
 id|addr-&gt;pointer.physical
 op_assign
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 )paren
 id|virt_to_phys
 c_func
@@ -342,7 +342,7 @@ id|efi.acpi
 id|addr-&gt;pointer.physical
 op_assign
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 )paren
 id|virt_to_phys
 c_func

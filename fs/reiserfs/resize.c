@@ -537,7 +537,7 @@ dot
 id|bh-&gt;b_data
 )paren
 suffix:semicolon
-id|mark_buffer_dirty
+id|set_buffer_uptodate
 c_func
 (paren
 id|bitmap
@@ -548,7 +548,7 @@ dot
 id|bh
 )paren
 suffix:semicolon
-id|set_buffer_uptodate
+id|mark_buffer_dirty
 c_func
 (paren
 id|bitmap

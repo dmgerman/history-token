@@ -250,78 +250,10 @@ macro_line|#ifdef HAVE_NETDEV_POLL
 DECL|macro|init_poll
 mdefine_line|#define init_poll(dev) &bslash;&n;&t;dev-&gt;poll = &amp;netdev_poll; &bslash;&n;&t;dev-&gt;weight = max_interrupt_work;
 DECL|macro|netdev_rx
-mdefine_line|#define netdev_rx(dev, ioaddr) &bslash;&n;do { &bslash;&n;&t;u32 intr_enable; &bslash;&n;&t;if (netif_rx_schedule_prep(dev)) { &bslash;&n;&t;&t;__netif_rx_schedule(dev); &bslash;&n;&t;&t;intr_enable = readl(ioaddr + IntrEnable); &bslash;&n;&t;&t;intr_enable &amp;= ~(IntrRxDone | IntrRxEmpty); &bslash;&n;&t;&t;writel(intr_enable, ioaddr + IntrEnable); &bslash;&n;&t;&t;readl(ioaddr + IntrEnable); &bslash;&t;/* flush PCI posting buffers */
-)brace
-r_else
-(brace
-"&bslash;"
-multiline_comment|/* Paranoia check */
-"&bslash;"
-id|intr_enable
-op_assign
-id|readl
-c_func
-(paren
-id|ioaddr
-op_plus
-id|IntrEnable
-)paren
-suffix:semicolon
-"&bslash;"
-r_if
-c_cond
-(paren
-id|intr_enable
-op_amp
-(paren
-id|IntrRxDone
-op_or
-id|IntrRxEmpty
-)paren
-)paren
-(brace
-"&bslash;"
-id|printk
-c_func
-(paren
-l_string|&quot;%s: interrupt while in polling mode!&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-"&bslash;"
-id|intr_enable
-op_and_assign
-op_complement
-(paren
-id|IntrRxDone
-op_or
-id|IntrRxEmpty
-)paren
-suffix:semicolon
-"&bslash;"
-id|writel
-c_func
-(paren
-id|intr_enable
-comma
-id|ioaddr
-op_plus
-id|IntrEnable
-)paren
-suffix:semicolon
-"&bslash;"
-)brace
-"&bslash;"
-)brace
-"&bslash;"
-)brace
-r_while
-c_loop
-(paren
-l_int|0
-)paren
+mdefine_line|#define netdev_rx(dev, ioaddr) &bslash;&n;do { &bslash;&n;&t;u32 intr_enable; &bslash;&n;&t;if (netif_rx_schedule_prep(dev)) { &bslash;&n;&t;&t;__netif_rx_schedule(dev); &bslash;&n;&t;&t;intr_enable = readl(ioaddr + IntrEnable); &bslash;&n;&t;&t;intr_enable &amp;= ~(IntrRxDone | IntrRxEmpty); &bslash;&n;&t;&t;writel(intr_enable, ioaddr + IntrEnable); &bslash;&n;&t;&t;readl(ioaddr + IntrEnable); /* flush PCI posting buffers */ &bslash;&n;&t;} else { &bslash;&n;&t;&t;/* Paranoia check */ &bslash;&n;&t;&t;intr_enable = readl(ioaddr + IntrEnable); &bslash;&n;&t;&t;if (intr_enable &amp; (IntrRxDone | IntrRxEmpty)) { &bslash;&n;&t;&t;&t;printk(&quot;%s: interrupt while in polling mode!&bslash;n&quot;, dev-&gt;name); &bslash;&n;&t;&t;&t;intr_enable &amp;= ~(IntrRxDone | IntrRxEmpty); &bslash;&n;&t;&t;&t;writel(intr_enable, ioaddr + IntrEnable); &bslash;&n;&t;&t;} &bslash;&n;&t;} &bslash;&n;} while (0)
+DECL|macro|netdev_receive_skb
 mdefine_line|#define netdev_receive_skb(skb) netif_receive_skb(skb)
+DECL|macro|vlan_netdev_receive_skb
 mdefine_line|#define vlan_netdev_receive_skb(skb, vlgrp, vlid) vlan_hwaccel_receive_skb(skb, vlgrp, vlid)
 r_static
 r_int
@@ -339,13 +271,18 @@ id|budget
 )paren
 suffix:semicolon
 macro_line|#else  /* not HAVE_NETDEV_POLL */
+DECL|macro|init_poll
 mdefine_line|#define init_poll(dev)
+DECL|macro|netdev_receive_skb
 mdefine_line|#define netdev_receive_skb(skb) netif_rx(skb)
+DECL|macro|vlan_netdev_receive_skb
 mdefine_line|#define vlan_netdev_receive_skb(skb, vlgrp, vlid) vlan_hwaccel_rx(skb, vlgrp, vlid)
+DECL|macro|netdev_rx
 mdefine_line|#define netdev_rx(dev, ioaddr) &bslash;&n;do { &bslash;&n;&t;int quota = np-&gt;dirty_rx + RX_RING_SIZE - np-&gt;cur_rx; &bslash;&n;&t;__netdev_rx(dev, &amp;quota);&bslash;&n;} while (0)
 macro_line|#endif /* not HAVE_NETDEV_POLL */
 multiline_comment|/* end of compatibility code */
 multiline_comment|/* These identify the driver base version and may not be removed. */
+DECL|variable|__devinitdata
 r_static
 r_char
 id|version
@@ -538,6 +475,8 @@ l_string|&quot;Enable/disable hardware cksum support (0/1)&quot;
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This driver is for the Adaptec 6915 &quot;Starfire&quot; 64 bit PCI Ethernet adapter.&n;&n;II. Board-specific settings&n;&n;III. Driver operation&n;&n;IIIa. Ring buffers&n;&n;The Starfire hardware uses multiple fixed-size descriptor queues/rings.  The&n;ring sizes are set fixed by the hardware, but may optionally be wrapped&n;earlier by the END bit in the descriptor.&n;This driver uses that hardware queue size for the Rx ring, where a large&n;number of entries has no ill effect beyond increases the potential backlog.&n;The Tx ring is wrapped with the END bit, since a large hardware Tx queue&n;disables the queue layer priority ordering and we have no mechanism to&n;utilize the hardware two-level priority queue.  When modifying the&n;RX/TX_RING_SIZE pay close attention to page sizes and the ring-empty warning&n;levels.&n;&n;IIIb/c. Transmit/Receive Structure&n;&n;See the Adaptec manual for the many possible structures, and options for&n;each structure.  There are far too many to document all of them here.&n;&n;For transmit this driver uses type 0/1 transmit descriptors (depending&n;on the 32/64 bitness of the architecture), and relies on automatic&n;minimum-length padding.  It does not use the completion queue&n;consumer index, but instead checks for non-zero status entries.&n;&n;For receive this driver uses type 0/1/2/3 receive descriptors.  The driver&n;allocates full frame size skbuffs for the Rx ring buffers, so all frames&n;should fit in a single descriptor.  The driver does not use the completion&n;queue consumer index, but instead checks for non-zero status entries.&n;&n;When an incoming frame is less than RX_COPYBREAK bytes long, a fresh skbuff&n;is allocated and the frame is copied to the new skbuff.  When the incoming&n;frame is larger, the skbuff is passed directly up the protocol stack.&n;Buffers consumed this way are replaced by newly allocated skbuffs in a later&n;phase of receive.&n;&n;A notable aspect of operation is that unaligned buffers are not permitted by&n;the Starfire hardware.  Thus the IP header at offset 14 in an ethernet frame&n;isn&squot;t longword aligned, which may cause problems on some machine&n;e.g. Alphas and IA64. For these architectures, the driver is forced to copy&n;the frame into a new skbuff unconditionally. Copied frames are put into the&n;skbuff at an offset of &quot;+2&quot;, thus 16-byte aligning the IP header.&n;&n;IIId. Synchronization&n;&n;The driver runs as two independent, single-threaded flows of control.  One&n;is the send-packet routine, which enforces single-threaded use by the&n;dev-&gt;tbusy flag.  The other thread is the interrupt handler, which is single&n;threaded by the hardware and interrupt handling software.&n;&n;The send packet thread has partial control over the Tx ring and the netif_queue&n;status. If the number of free Tx slots in the ring falls below a certain number&n;(currently hardcoded to 4), it signals the upper layer to stop the queue.&n;&n;The interrupt handler has exclusive control over the Rx ring and records stats&n;from the Tx ring.  After reaping the stats, it marks the Tx queue entry as&n;empty by incrementing the dirty_tx mark. Iff the netif_queue is stopped and the&n;number of free Tx slow is above the threshold, it signals the upper layer to&n;restart the queue.&n;&n;IV. Notes&n;&n;IVb. References&n;&n;The Adaptec Starfire manuals, available only from Adaptec.&n;http://www.scyld.com/expert/100mbps.html&n;http://www.scyld.com/expert/NWay.html&n;&n;IVc. Errata&n;&n;- StopOnPerr is broken, don&squot;t enable&n;- Hardware ethernet padding exposes random data, perform software padding&n;  instead (unverified -- works correctly for all the hardware I have)&n;&n;*/
 "&f;"
+DECL|enum|chip_capability_flags
+DECL|enumerator|CanHaveMII
 r_enum
 id|chip_capability_flags
 (brace
@@ -547,15 +486,18 @@ l_int|1
 comma
 )brace
 suffix:semicolon
+DECL|enum|chipset
 r_enum
 id|chipset
 (brace
+DECL|enumerator|CH_6915
 id|CH_6915
 op_assign
 l_int|0
 comma
 )brace
 suffix:semicolon
+DECL|variable|__devinitdata
 r_static
 r_struct
 id|pci_device_id
@@ -596,18 +538,22 @@ id|starfire_pci_tbl
 )paren
 suffix:semicolon
 multiline_comment|/* A chip capabilities table, matching the CH_xxx entries in xxx_pci_tbl[] above. */
+DECL|struct|chip_info
 r_static
 r_struct
 id|chip_info
 (brace
+DECL|member|name
 r_const
 r_char
 op_star
 id|name
 suffix:semicolon
+DECL|member|drv_flags
 r_int
 id|drv_flags
 suffix:semicolon
+DECL|variable|__devinitdata
 )brace
 id|netdrv_tbl
 (braket
@@ -624,9 +570,13 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Offsets to the device registers.&n;   Unlike software-only systems, device drivers interact with complex hardware.&n;   It&squot;s not useful to define symbolic names for every register bit in the&n;   device.  The name can only partially document the semantics and make&n;   the driver longer and more difficult to read.&n;   In general, only the important configuration values or bits changed&n;   multiple times should be defined symbolically.&n;*/
+DECL|enum|register_offsets
 r_enum
 id|register_offsets
 (brace
+DECL|enumerator|PCIDeviceConfig
+DECL|enumerator|GenCtrl
+DECL|enumerator|IntrTimerCtrl
 id|PCIDeviceConfig
 op_assign
 l_int|0x50040
@@ -639,6 +589,9 @@ id|IntrTimerCtrl
 op_assign
 l_int|0x50074
 comma
+DECL|enumerator|IntrClear
+DECL|enumerator|IntrStatus
+DECL|enumerator|IntrEnable
 id|IntrClear
 op_assign
 l_int|0x50080
@@ -651,6 +604,9 @@ id|IntrEnable
 op_assign
 l_int|0x50088
 comma
+DECL|enumerator|MIICtrl
+DECL|enumerator|TxStationAddr
+DECL|enumerator|EEPROMCtrl
 id|MIICtrl
 op_assign
 l_int|0x52000
@@ -663,6 +619,8 @@ id|EEPROMCtrl
 op_assign
 l_int|0x51000
 comma
+DECL|enumerator|GPIOCtrl
+DECL|enumerator|TxDescCtrl
 id|GPIOCtrl
 op_assign
 l_int|0x5008C
@@ -671,6 +629,8 @@ id|TxDescCtrl
 op_assign
 l_int|0x50090
 comma
+DECL|enumerator|TxRingPtr
+DECL|enumerator|HiPriTxRingPtr
 id|TxRingPtr
 op_assign
 l_int|0x50098
@@ -680,11 +640,14 @@ op_assign
 l_int|0x50094
 comma
 multiline_comment|/* Low and High priority. */
+DECL|enumerator|TxRingHiAddr
 id|TxRingHiAddr
 op_assign
 l_int|0x5009C
 comma
 multiline_comment|/* 64 bit address extension. */
+DECL|enumerator|TxProducerIdx
+DECL|enumerator|TxConsumerIdx
 id|TxProducerIdx
 op_assign
 l_int|0x500A0
@@ -693,10 +656,13 @@ id|TxConsumerIdx
 op_assign
 l_int|0x500A4
 comma
+DECL|enumerator|TxThreshold
 id|TxThreshold
 op_assign
 l_int|0x500B0
 comma
+DECL|enumerator|CompletionHiAddr
+DECL|enumerator|TxCompletionAddr
 id|CompletionHiAddr
 op_assign
 l_int|0x500B4
@@ -705,6 +671,8 @@ id|TxCompletionAddr
 op_assign
 l_int|0x500B8
 comma
+DECL|enumerator|RxCompletionAddr
+DECL|enumerator|RxCompletionQ2Addr
 id|RxCompletionAddr
 op_assign
 l_int|0x500BC
@@ -713,6 +681,8 @@ id|RxCompletionQ2Addr
 op_assign
 l_int|0x500C0
 comma
+DECL|enumerator|CompletionQConsumerIdx
+DECL|enumerator|RxDMACtrl
 id|CompletionQConsumerIdx
 op_assign
 l_int|0x500C4
@@ -721,6 +691,9 @@ id|RxDMACtrl
 op_assign
 l_int|0x500D0
 comma
+DECL|enumerator|RxDescQCtrl
+DECL|enumerator|RxDescQHiAddr
+DECL|enumerator|RxDescQAddr
 id|RxDescQCtrl
 op_assign
 l_int|0x500D4
@@ -733,6 +706,9 @@ id|RxDescQAddr
 op_assign
 l_int|0x500E0
 comma
+DECL|enumerator|RxDescQIdx
+DECL|enumerator|RxDMAStatus
+DECL|enumerator|RxFilterMode
 id|RxDescQIdx
 op_assign
 l_int|0x500E8
@@ -745,6 +721,8 @@ id|RxFilterMode
 op_assign
 l_int|0x500F4
 comma
+DECL|enumerator|TxMode
+DECL|enumerator|VlanType
 id|TxMode
 op_assign
 l_int|0x55000
@@ -753,6 +731,8 @@ id|VlanType
 op_assign
 l_int|0x55064
 comma
+DECL|enumerator|PerfFilterTable
+DECL|enumerator|HashTable
 id|PerfFilterTable
 op_assign
 l_int|0x56000
@@ -761,6 +741,8 @@ id|HashTable
 op_assign
 l_int|0x56100
 comma
+DECL|enumerator|TxGfpMem
+DECL|enumerator|RxGfpMem
 id|TxGfpMem
 op_assign
 l_int|0x58000
@@ -772,9 +754,12 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Bits in the interrupt status/mask registers.&n; * Warning: setting Intr[Ab]NormalSummary in the IntrEnable register&n; * enables all the interrupt sources that are or&squot;ed into those status bits.&n; */
+DECL|enum|intr_status_bits
 r_enum
 id|intr_status_bits
 (brace
+DECL|enumerator|IntrLinkChange
+DECL|enumerator|IntrStatsMax
 id|IntrLinkChange
 op_assign
 l_int|0xf0000000
@@ -783,6 +768,8 @@ id|IntrStatsMax
 op_assign
 l_int|0x08000000
 comma
+DECL|enumerator|IntrAbnormalSummary
+DECL|enumerator|IntrGeneralTimer
 id|IntrAbnormalSummary
 op_assign
 l_int|0x02000000
@@ -791,6 +778,8 @@ id|IntrGeneralTimer
 op_assign
 l_int|0x01000000
 comma
+DECL|enumerator|IntrSoftware
+DECL|enumerator|IntrRxComplQ1Low
 id|IntrSoftware
 op_assign
 l_int|0x800000
@@ -799,6 +788,8 @@ id|IntrRxComplQ1Low
 op_assign
 l_int|0x400000
 comma
+DECL|enumerator|IntrTxComplQLow
+DECL|enumerator|IntrPCI
 id|IntrTxComplQLow
 op_assign
 l_int|0x200000
@@ -807,6 +798,8 @@ id|IntrPCI
 op_assign
 l_int|0x100000
 comma
+DECL|enumerator|IntrDMAErr
+DECL|enumerator|IntrTxDataLow
 id|IntrDMAErr
 op_assign
 l_int|0x080000
@@ -815,6 +808,8 @@ id|IntrTxDataLow
 op_assign
 l_int|0x040000
 comma
+DECL|enumerator|IntrRxComplQ2Low
+DECL|enumerator|IntrRxDescQ1Low
 id|IntrRxComplQ2Low
 op_assign
 l_int|0x020000
@@ -823,6 +818,8 @@ id|IntrRxDescQ1Low
 op_assign
 l_int|0x010000
 comma
+DECL|enumerator|IntrNormalSummary
+DECL|enumerator|IntrTxDone
 id|IntrNormalSummary
 op_assign
 l_int|0x8000
@@ -831,6 +828,8 @@ id|IntrTxDone
 op_assign
 l_int|0x4000
 comma
+DECL|enumerator|IntrTxDMADone
+DECL|enumerator|IntrTxEmpty
 id|IntrTxDMADone
 op_assign
 l_int|0x2000
@@ -839,6 +838,8 @@ id|IntrTxEmpty
 op_assign
 l_int|0x1000
 comma
+DECL|enumerator|IntrEarlyRxQ2
+DECL|enumerator|IntrEarlyRxQ1
 id|IntrEarlyRxQ2
 op_assign
 l_int|0x0800
@@ -847,6 +848,8 @@ id|IntrEarlyRxQ1
 op_assign
 l_int|0x0400
 comma
+DECL|enumerator|IntrRxQ2Done
+DECL|enumerator|IntrRxQ1Done
 id|IntrRxQ2Done
 op_assign
 l_int|0x0200
@@ -855,6 +858,8 @@ id|IntrRxQ1Done
 op_assign
 l_int|0x0100
 comma
+DECL|enumerator|IntrRxGFPDead
+DECL|enumerator|IntrRxDescQ2Low
 id|IntrRxGFPDead
 op_assign
 l_int|0x80
@@ -863,6 +868,8 @@ id|IntrRxDescQ2Low
 op_assign
 l_int|0x40
 comma
+DECL|enumerator|IntrNoTxCsum
+DECL|enumerator|IntrTxBadID
 id|IntrNoTxCsum
 op_assign
 l_int|0x20
@@ -871,6 +878,8 @@ id|IntrTxBadID
 op_assign
 l_int|0x10
 comma
+DECL|enumerator|IntrHiPriTxBadID
+DECL|enumerator|IntrRxGfp
 id|IntrHiPriTxBadID
 op_assign
 l_int|0x08
@@ -879,6 +888,8 @@ id|IntrRxGfp
 op_assign
 l_int|0x04
 comma
+DECL|enumerator|IntrTxGfp
+DECL|enumerator|IntrPCIPad
 id|IntrTxGfp
 op_assign
 l_int|0x02
@@ -888,18 +899,22 @@ op_assign
 l_int|0x01
 comma
 multiline_comment|/* not quite bits */
+DECL|enumerator|IntrRxDone
 id|IntrRxDone
 op_assign
 id|IntrRxQ2Done
 op_or
 id|IntrRxQ1Done
 comma
+DECL|enumerator|IntrRxEmpty
 id|IntrRxEmpty
 op_assign
 id|IntrRxDescQ1Low
 op_or
 id|IntrRxDescQ2Low
 comma
+DECL|enumerator|IntrNormalMask
+DECL|enumerator|IntrAbnormalMask
 id|IntrNormalMask
 op_assign
 l_int|0xff00
@@ -911,9 +926,13 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Bits in the RxFilterMode register. */
+DECL|enum|rx_mode_bits
 r_enum
 id|rx_mode_bits
 (brace
+DECL|enumerator|AcceptBroadcast
+DECL|enumerator|AcceptAllMulticast
+DECL|enumerator|AcceptAll
 id|AcceptBroadcast
 op_assign
 l_int|0x04
@@ -926,6 +945,9 @@ id|AcceptAll
 op_assign
 l_int|0x01
 comma
+DECL|enumerator|AcceptMulticast
+DECL|enumerator|PerfectFilter
+DECL|enumerator|HashFilter
 id|AcceptMulticast
 op_assign
 l_int|0x10
@@ -938,6 +960,9 @@ id|HashFilter
 op_assign
 l_int|0x30
 comma
+DECL|enumerator|PerfectFilterVlan
+DECL|enumerator|MinVLANPrio
+DECL|enumerator|VlanMode
 id|PerfectFilterVlan
 op_assign
 l_int|0x80
@@ -950,6 +975,7 @@ id|VlanMode
 op_assign
 l_int|0x0200
 comma
+DECL|enumerator|WakeupOnGFP
 id|WakeupOnGFP
 op_assign
 l_int|0x0800
@@ -957,9 +983,12 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Bits in the TxMode register */
+DECL|enum|tx_mode_bits
 r_enum
 id|tx_mode_bits
 (brace
+DECL|enumerator|MiiSoftReset
+DECL|enumerator|MIILoopback
 id|MiiSoftReset
 op_assign
 l_int|0x8000
@@ -968,6 +997,8 @@ id|MIILoopback
 op_assign
 l_int|0x4000
 comma
+DECL|enumerator|TxFlowEnable
+DECL|enumerator|RxFlowEnable
 id|TxFlowEnable
 op_assign
 l_int|0x0800
@@ -976,6 +1007,9 @@ id|RxFlowEnable
 op_assign
 l_int|0x0400
 comma
+DECL|enumerator|PadEnable
+DECL|enumerator|FullDuplex
+DECL|enumerator|HugeFrame
 id|PadEnable
 op_assign
 l_int|0x04
@@ -991,9 +1025,13 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Bits in the TxDescCtrl register. */
+DECL|enum|tx_ctrl_bits
 r_enum
 id|tx_ctrl_bits
 (brace
+DECL|enumerator|TxDescSpaceUnlim
+DECL|enumerator|TxDescSpace32
+DECL|enumerator|TxDescSpace64
 id|TxDescSpaceUnlim
 op_assign
 l_int|0x00
@@ -1006,6 +1044,8 @@ id|TxDescSpace64
 op_assign
 l_int|0x20
 comma
+DECL|enumerator|TxDescSpace128
+DECL|enumerator|TxDescSpace256
 id|TxDescSpace128
 op_assign
 l_int|0x30
@@ -1014,6 +1054,9 @@ id|TxDescSpace256
 op_assign
 l_int|0x40
 comma
+DECL|enumerator|TxDescType0
+DECL|enumerator|TxDescType1
+DECL|enumerator|TxDescType2
 id|TxDescType0
 op_assign
 l_int|0x00
@@ -1026,6 +1069,8 @@ id|TxDescType2
 op_assign
 l_int|0x02
 comma
+DECL|enumerator|TxDescType3
+DECL|enumerator|TxDescType4
 id|TxDescType3
 op_assign
 l_int|0x03
@@ -1034,10 +1079,13 @@ id|TxDescType4
 op_assign
 l_int|0x04
 comma
+DECL|enumerator|TxNoDMACompletion
 id|TxNoDMACompletion
 op_assign
 l_int|0x08
 comma
+DECL|enumerator|TxDescQAddr64bit
+DECL|enumerator|TxDescQAddr32bit
 id|TxDescQAddr64bit
 op_assign
 l_int|0x80
@@ -1046,6 +1094,8 @@ id|TxDescQAddr32bit
 op_assign
 l_int|0
 comma
+DECL|enumerator|TxHiPriFIFOThreshShift
+DECL|enumerator|TxPadLenShift
 id|TxHiPriFIFOThreshShift
 op_assign
 l_int|24
@@ -1054,6 +1104,7 @@ id|TxPadLenShift
 op_assign
 l_int|16
 comma
+DECL|enumerator|TxDMABurstSizeShift
 id|TxDMABurstSizeShift
 op_assign
 l_int|8
@@ -1061,9 +1112,12 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Bits in the RxDescQCtrl register. */
+DECL|enum|rx_ctrl_bits
 r_enum
 id|rx_ctrl_bits
 (brace
+DECL|enumerator|RxBufferLenShift
+DECL|enumerator|RxMinDescrThreshShift
 id|RxBufferLenShift
 op_assign
 l_int|16
@@ -1072,6 +1126,8 @@ id|RxMinDescrThreshShift
 op_assign
 l_int|0
 comma
+DECL|enumerator|RxPrefetchMode
+DECL|enumerator|RxVariableQ
 id|RxPrefetchMode
 op_assign
 l_int|0x8000
@@ -1080,6 +1136,8 @@ id|RxVariableQ
 op_assign
 l_int|0x2000
 comma
+DECL|enumerator|Rx2048QEntries
+DECL|enumerator|Rx256QEntries
 id|Rx2048QEntries
 op_assign
 l_int|0x4000
@@ -1088,6 +1146,8 @@ id|Rx256QEntries
 op_assign
 l_int|0
 comma
+DECL|enumerator|RxDescAddr64bit
+DECL|enumerator|RxDescAddr32bit
 id|RxDescAddr64bit
 op_assign
 l_int|0x1000
@@ -1096,6 +1156,8 @@ id|RxDescAddr32bit
 op_assign
 l_int|0
 comma
+DECL|enumerator|RxDescQAddr64bit
+DECL|enumerator|RxDescQAddr32bit
 id|RxDescQAddr64bit
 op_assign
 l_int|0x0100
@@ -1104,6 +1166,8 @@ id|RxDescQAddr32bit
 op_assign
 l_int|0
 comma
+DECL|enumerator|RxDescSpace4
+DECL|enumerator|RxDescSpace8
 id|RxDescSpace4
 op_assign
 l_int|0x000
@@ -1112,6 +1176,8 @@ id|RxDescSpace8
 op_assign
 l_int|0x100
 comma
+DECL|enumerator|RxDescSpace16
+DECL|enumerator|RxDescSpace32
 id|RxDescSpace16
 op_assign
 l_int|0x200
@@ -1120,6 +1186,8 @@ id|RxDescSpace32
 op_assign
 l_int|0x300
 comma
+DECL|enumerator|RxDescSpace64
+DECL|enumerator|RxDescSpace128
 id|RxDescSpace64
 op_assign
 l_int|0x400
@@ -1128,6 +1196,7 @@ id|RxDescSpace128
 op_assign
 l_int|0x500
 comma
+DECL|enumerator|RxConsumerWrEn
 id|RxConsumerWrEn
 op_assign
 l_int|0x80
@@ -1135,9 +1204,12 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Bits in the RxDMACtrl register. */
+DECL|enum|rx_dmactrl_bits
 r_enum
 id|rx_dmactrl_bits
 (brace
+DECL|enumerator|RxReportBadFrames
+DECL|enumerator|RxDMAShortFrames
 id|RxReportBadFrames
 op_assign
 l_int|0x80000000
@@ -1146,6 +1218,8 @@ id|RxDMAShortFrames
 op_assign
 l_int|0x40000000
 comma
+DECL|enumerator|RxDMABadFrames
+DECL|enumerator|RxDMACrcErrorFrames
 id|RxDMABadFrames
 op_assign
 l_int|0x20000000
@@ -1154,6 +1228,8 @@ id|RxDMACrcErrorFrames
 op_assign
 l_int|0x10000000
 comma
+DECL|enumerator|RxDMAControlFrame
+DECL|enumerator|RxDMAPauseFrame
 id|RxDMAControlFrame
 op_assign
 l_int|0x08000000
@@ -1162,6 +1238,8 @@ id|RxDMAPauseFrame
 op_assign
 l_int|0x04000000
 comma
+DECL|enumerator|RxChecksumIgnore
+DECL|enumerator|RxChecksumRejectTCPUDP
 id|RxChecksumIgnore
 op_assign
 l_int|0
@@ -1170,14 +1248,18 @@ id|RxChecksumRejectTCPUDP
 op_assign
 l_int|0x02000000
 comma
+DECL|enumerator|RxChecksumRejectTCPOnly
 id|RxChecksumRejectTCPOnly
 op_assign
 l_int|0x01000000
 comma
+DECL|enumerator|RxCompletionQ2Enable
 id|RxCompletionQ2Enable
 op_assign
 l_int|0x800000
 comma
+DECL|enumerator|RxDMAQ2Disable
+DECL|enumerator|RxDMAQ2FPOnly
 id|RxDMAQ2Disable
 op_assign
 l_int|0
@@ -1186,6 +1268,8 @@ id|RxDMAQ2FPOnly
 op_assign
 l_int|0x100000
 comma
+DECL|enumerator|RxDMAQ2SmallPkt
+DECL|enumerator|RxDMAQ2HighPrio
 id|RxDMAQ2SmallPkt
 op_assign
 l_int|0x200000
@@ -1194,10 +1278,13 @@ id|RxDMAQ2HighPrio
 op_assign
 l_int|0x300000
 comma
+DECL|enumerator|RxDMAQ2NonIP
 id|RxDMAQ2NonIP
 op_assign
 l_int|0x400000
 comma
+DECL|enumerator|RxUseBackupQueue
+DECL|enumerator|RxDMACRC
 id|RxUseBackupQueue
 op_assign
 l_int|0x080000
@@ -1206,6 +1293,8 @@ id|RxDMACRC
 op_assign
 l_int|0x040000
 comma
+DECL|enumerator|RxEarlyIntThreshShift
+DECL|enumerator|RxHighPrioThreshShift
 id|RxEarlyIntThreshShift
 op_assign
 l_int|12
@@ -1214,6 +1303,7 @@ id|RxHighPrioThreshShift
 op_assign
 l_int|8
 comma
+DECL|enumerator|RxBurstSizeShift
 id|RxBurstSizeShift
 op_assign
 l_int|0
@@ -1221,9 +1311,12 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Bits in the RxCompletionAddr register */
+DECL|enum|rx_compl_bits
 r_enum
 id|rx_compl_bits
 (brace
+DECL|enumerator|RxComplQAddr64bit
+DECL|enumerator|RxComplQAddr32bit
 id|RxComplQAddr64bit
 op_assign
 l_int|0x80
@@ -1232,10 +1325,13 @@ id|RxComplQAddr32bit
 op_assign
 l_int|0
 comma
+DECL|enumerator|RxComplProducerWrEn
 id|RxComplProducerWrEn
 op_assign
 l_int|0x40
 comma
+DECL|enumerator|RxComplType0
+DECL|enumerator|RxComplType1
 id|RxComplType0
 op_assign
 l_int|0x00
@@ -1244,6 +1340,8 @@ id|RxComplType1
 op_assign
 l_int|0x10
 comma
+DECL|enumerator|RxComplType2
+DECL|enumerator|RxComplType3
 id|RxComplType2
 op_assign
 l_int|0x20
@@ -1252,6 +1350,7 @@ id|RxComplType3
 op_assign
 l_int|0x30
 comma
+DECL|enumerator|RxComplThreshShift
 id|RxComplThreshShift
 op_assign
 l_int|0
@@ -1259,9 +1358,12 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Bits in the TxCompletionAddr register */
+DECL|enum|tx_compl_bits
 r_enum
 id|tx_compl_bits
 (brace
+DECL|enumerator|TxComplQAddr64bit
+DECL|enumerator|TxComplQAddr32bit
 id|TxComplQAddr64bit
 op_assign
 l_int|0x80
@@ -1270,18 +1372,22 @@ id|TxComplQAddr32bit
 op_assign
 l_int|0
 comma
+DECL|enumerator|TxComplProducerWrEn
 id|TxComplProducerWrEn
 op_assign
 l_int|0x40
 comma
+DECL|enumerator|TxComplIntrStatus
 id|TxComplIntrStatus
 op_assign
 l_int|0x20
 comma
+DECL|enumerator|CommonQueueMode
 id|CommonQueueMode
 op_assign
 l_int|0x10
 comma
+DECL|enumerator|TxComplThreshShift
 id|TxComplThreshShift
 op_assign
 l_int|0
@@ -1289,9 +1395,12 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Bits in the GenCtrl register */
+DECL|enum|gen_ctrl_bits
 r_enum
 id|gen_ctrl_bits
 (brace
+DECL|enumerator|RxEnable
+DECL|enumerator|TxEnable
 id|RxEnable
 op_assign
 l_int|0x05
@@ -1300,6 +1409,8 @@ id|TxEnable
 op_assign
 l_int|0x0a
 comma
+DECL|enumerator|RxGFPEnable
+DECL|enumerator|TxGFPEnable
 id|RxGFPEnable
 op_assign
 l_int|0x10
@@ -1311,9 +1422,13 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Bits in the IntrTimerCtrl register */
+DECL|enum|intr_ctrl_bits
 r_enum
 id|intr_ctrl_bits
 (brace
+DECL|enumerator|Timer10X
+DECL|enumerator|EnableIntrMasking
+DECL|enumerator|SmallFrameBypass
 id|Timer10X
 op_assign
 l_int|0x800
@@ -1326,6 +1441,10 @@ id|SmallFrameBypass
 op_assign
 l_int|0x100
 comma
+DECL|enumerator|SmallFrame64
+DECL|enumerator|SmallFrame128
+DECL|enumerator|SmallFrame256
+DECL|enumerator|SmallFrame512
 id|SmallFrame64
 op_assign
 l_int|0
@@ -1342,6 +1461,7 @@ id|SmallFrame512
 op_assign
 l_int|0x600
 comma
+DECL|enumerator|IntrLatencyMask
 id|IntrLatencyMask
 op_assign
 l_int|0x1f
@@ -1349,17 +1469,22 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* The Rx and Tx buffer descriptors. */
+DECL|struct|starfire_rx_desc
 r_struct
 id|starfire_rx_desc
 (brace
+DECL|member|rxaddr
 id|dma_addr_t
 id|rxaddr
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|enum|rx_desc_bits
 r_enum
 id|rx_desc_bits
 (brace
+DECL|enumerator|RxDescValid
+DECL|enumerator|RxDescEndRing
 id|RxDescValid
 op_assign
 l_int|1
@@ -1371,66 +1496,83 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Completion queue entry. */
+DECL|struct|short_rx_done_desc
 r_struct
 id|short_rx_done_desc
 (brace
+DECL|member|status
 id|u32
 id|status
 suffix:semicolon
 multiline_comment|/* Low 16 bits is length. */
 )brace
 suffix:semicolon
+DECL|struct|basic_rx_done_desc
 r_struct
 id|basic_rx_done_desc
 (brace
+DECL|member|status
 id|u32
 id|status
 suffix:semicolon
 multiline_comment|/* Low 16 bits is length. */
+DECL|member|vlanid
 id|u16
 id|vlanid
 suffix:semicolon
+DECL|member|status2
 id|u16
 id|status2
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|csum_rx_done_desc
 r_struct
 id|csum_rx_done_desc
 (brace
+DECL|member|status
 id|u32
 id|status
 suffix:semicolon
 multiline_comment|/* Low 16 bits is length. */
+DECL|member|csum
 id|u16
 id|csum
 suffix:semicolon
 multiline_comment|/* Partial checksum */
+DECL|member|status2
 id|u16
 id|status2
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|full_rx_done_desc
 r_struct
 id|full_rx_done_desc
 (brace
+DECL|member|status
 id|u32
 id|status
 suffix:semicolon
 multiline_comment|/* Low 16 bits is length. */
+DECL|member|status3
 id|u16
 id|status3
 suffix:semicolon
+DECL|member|status2
 id|u16
 id|status2
 suffix:semicolon
+DECL|member|vlanid
 id|u16
 id|vlanid
 suffix:semicolon
+DECL|member|csum
 id|u16
 id|csum
 suffix:semicolon
 multiline_comment|/* partial checksum */
+DECL|member|timestamp
 id|u32
 id|timestamp
 suffix:semicolon
@@ -1439,40 +1581,52 @@ suffix:semicolon
 multiline_comment|/* XXX: this is ugly and I&squot;m not sure it&squot;s worth the trouble -Ion */
 macro_line|#ifdef HAS_FIRMWARE
 macro_line|#ifdef VLAN_SUPPORT
+DECL|typedef|rx_done_desc
 r_typedef
 r_struct
 id|full_rx_done_desc
 id|rx_done_desc
 suffix:semicolon
+DECL|macro|RxComplType
 mdefine_line|#define RxComplType RxComplType3
 macro_line|#else  /* not VLAN_SUPPORT */
+DECL|typedef|rx_done_desc
 r_typedef
 r_struct
 id|csum_rx_done_desc
 id|rx_done_desc
 suffix:semicolon
+DECL|macro|RxComplType
 mdefine_line|#define RxComplType RxComplType2
 macro_line|#endif /* not VLAN_SUPPORT */
 macro_line|#else  /* not HAS_FIRMWARE */
 macro_line|#ifdef VLAN_SUPPORT
+DECL|typedef|rx_done_desc
 r_typedef
 r_struct
 id|basic_rx_done_desc
 id|rx_done_desc
 suffix:semicolon
+DECL|macro|RxComplType
 mdefine_line|#define RxComplType RxComplType1
 macro_line|#else  /* not VLAN_SUPPORT */
+DECL|typedef|rx_done_desc
 r_typedef
 r_struct
 id|short_rx_done_desc
 id|rx_done_desc
 suffix:semicolon
+DECL|macro|RxComplType
 mdefine_line|#define RxComplType RxComplType0
 macro_line|#endif /* not VLAN_SUPPORT */
 macro_line|#endif /* not HAS_FIRMWARE */
+DECL|enum|rx_done_bits
 r_enum
 id|rx_done_bits
 (brace
+DECL|enumerator|RxOK
+DECL|enumerator|RxFIFOErr
+DECL|enumerator|RxBufQ2
 id|RxOK
 op_assign
 l_int|0x20000000
@@ -1488,57 +1642,73 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Type 1 Tx descriptor. */
+DECL|struct|starfire_tx_desc_1
 r_struct
 id|starfire_tx_desc_1
 (brace
+DECL|member|status
 id|u32
 id|status
 suffix:semicolon
 multiline_comment|/* Upper bits are status, lower 16 length. */
+DECL|member|addr
 id|u32
 id|addr
 suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Type 2 Tx descriptor. */
+DECL|struct|starfire_tx_desc_2
 r_struct
 id|starfire_tx_desc_2
 (brace
+DECL|member|status
 id|u32
 id|status
 suffix:semicolon
 multiline_comment|/* Upper bits are status, lower 16 length. */
+DECL|member|reserved
 id|u32
 id|reserved
 suffix:semicolon
+DECL|member|addr
 id|u64
 id|addr
 suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef ADDR_64BITS
+DECL|typedef|starfire_tx_desc
 r_typedef
 r_struct
 id|starfire_tx_desc_2
 id|starfire_tx_desc
 suffix:semicolon
+DECL|macro|TX_DESC_TYPE
 mdefine_line|#define TX_DESC_TYPE TxDescType2
 macro_line|#else  /* not ADDR_64BITS */
+DECL|typedef|starfire_tx_desc
 r_typedef
 r_struct
 id|starfire_tx_desc_1
 id|starfire_tx_desc
 suffix:semicolon
+DECL|macro|TX_DESC_TYPE
 mdefine_line|#define TX_DESC_TYPE TxDescType1
 macro_line|#endif /* not ADDR_64BITS */
+DECL|macro|TX_DESC_SPACING
 mdefine_line|#define TX_DESC_SPACING TxDescSpaceUnlim
+DECL|enum|tx_desc_bits
 r_enum
 id|tx_desc_bits
 (brace
+DECL|enumerator|TxDescID
 id|TxDescID
 op_assign
 l_int|0xB0000000
 comma
+DECL|enumerator|TxCRCEn
+DECL|enumerator|TxDescIntr
 id|TxCRCEn
 op_assign
 l_int|0x01000000
@@ -1547,6 +1717,8 @@ id|TxDescIntr
 op_assign
 l_int|0x08000000
 comma
+DECL|enumerator|TxRingWrap
+DECL|enumerator|TxCalTCP
 id|TxRingWrap
 op_assign
 l_int|0x04000000
@@ -1557,9 +1729,11 @@ l_int|0x02000000
 comma
 )brace
 suffix:semicolon
+DECL|struct|tx_done_desc
 r_struct
 id|tx_done_desc
 (brace
+DECL|member|status
 id|u32
 id|status
 suffix:semicolon
@@ -1572,57 +1746,71 @@ multiline_comment|/* interrupt status */
 macro_line|#endif
 )brace
 suffix:semicolon
+DECL|struct|rx_ring_info
 r_struct
 id|rx_ring_info
 (brace
+DECL|member|skb
 r_struct
 id|sk_buff
 op_star
 id|skb
 suffix:semicolon
+DECL|member|mapping
 id|dma_addr_t
 id|mapping
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|tx_ring_info
 r_struct
 id|tx_ring_info
 (brace
+DECL|member|skb
 r_struct
 id|sk_buff
 op_star
 id|skb
 suffix:semicolon
+DECL|member|mapping
 id|dma_addr_t
 id|mapping
 suffix:semicolon
+DECL|member|used_slots
 r_int
 r_int
 id|used_slots
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|PHY_CNT
 mdefine_line|#define PHY_CNT&t;&t;2
+DECL|struct|netdev_private
 r_struct
 id|netdev_private
 (brace
 multiline_comment|/* Descriptor rings first for alignment. */
+DECL|member|rx_ring
 r_struct
 id|starfire_rx_desc
 op_star
 id|rx_ring
 suffix:semicolon
+DECL|member|tx_ring
 id|starfire_tx_desc
 op_star
 id|tx_ring
 suffix:semicolon
+DECL|member|rx_ring_dma
 id|dma_addr_t
 id|rx_ring_dma
 suffix:semicolon
+DECL|member|tx_ring_dma
 id|dma_addr_t
 id|tx_ring_dma
 suffix:semicolon
 multiline_comment|/* The addresses of rx/tx-in-place skbuffs. */
+DECL|member|rx_info
 r_struct
 id|rx_ring_info
 id|rx_info
@@ -1630,6 +1818,7 @@ id|rx_info
 id|RX_RING_SIZE
 )braket
 suffix:semicolon
+DECL|member|tx_info
 r_struct
 id|tx_ring_info
 id|tx_info
@@ -1638,59 +1827,74 @@ id|TX_RING_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* Pointers to completion queues (full pages). */
+DECL|member|rx_done_q
 id|rx_done_desc
 op_star
 id|rx_done_q
 suffix:semicolon
+DECL|member|rx_done_q_dma
 id|dma_addr_t
 id|rx_done_q_dma
 suffix:semicolon
+DECL|member|rx_done
 r_int
 r_int
 id|rx_done
 suffix:semicolon
+DECL|member|tx_done_q
 r_struct
 id|tx_done_desc
 op_star
 id|tx_done_q
 suffix:semicolon
+DECL|member|tx_done_q_dma
 id|dma_addr_t
 id|tx_done_q_dma
 suffix:semicolon
+DECL|member|tx_done
 r_int
 r_int
 id|tx_done
 suffix:semicolon
+DECL|member|stats
 r_struct
 id|net_device_stats
 id|stats
 suffix:semicolon
+DECL|member|pci_dev
 r_struct
 id|pci_dev
 op_star
 id|pci_dev
 suffix:semicolon
 macro_line|#ifdef VLAN_SUPPORT
+DECL|member|vlgrp
 r_struct
 id|vlan_group
 op_star
 id|vlgrp
 suffix:semicolon
 macro_line|#endif
+DECL|member|queue_mem
 r_void
 op_star
 id|queue_mem
 suffix:semicolon
+DECL|member|queue_mem_dma
 id|dma_addr_t
 id|queue_mem_dma
 suffix:semicolon
+DECL|member|queue_mem_size
 r_int
 id|queue_mem_size
 suffix:semicolon
 multiline_comment|/* Frequently used values: keep some adjacent for cache effect. */
+DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
+DECL|member|cur_rx
+DECL|member|dirty_rx
 r_int
 r_int
 id|cur_rx
@@ -1698,6 +1902,9 @@ comma
 id|dirty_rx
 suffix:semicolon
 multiline_comment|/* Producer/consumer ring indices */
+DECL|member|cur_tx
+DECL|member|dirty_tx
+DECL|member|reap_tx
 r_int
 r_int
 id|cur_tx
@@ -1706,35 +1913,43 @@ id|dirty_tx
 comma
 id|reap_tx
 suffix:semicolon
+DECL|member|rx_buf_sz
 r_int
 r_int
 id|rx_buf_sz
 suffix:semicolon
 multiline_comment|/* Based on MTU+slack. */
 multiline_comment|/* These values keep track of the transceiver/media in use. */
+DECL|member|speed100
 r_int
 id|speed100
 suffix:semicolon
 multiline_comment|/* Set if speed == 100MBit. */
+DECL|member|tx_mode
 id|u32
 id|tx_mode
 suffix:semicolon
+DECL|member|intr_timer_ctrl
 id|u32
 id|intr_timer_ctrl
 suffix:semicolon
+DECL|member|tx_threshold
 id|u8
 id|tx_threshold
 suffix:semicolon
 multiline_comment|/* MII transceiver section. */
+DECL|member|mii_if
 r_struct
 id|mii_if_info
 id|mii_if
 suffix:semicolon
 multiline_comment|/* MII lib hooks/info */
+DECL|member|phy_cnt
 r_int
 id|phy_cnt
 suffix:semicolon
 multiline_comment|/* MII device addresses. */
+DECL|member|phys
 r_int
 r_char
 id|phys
@@ -1980,6 +2195,7 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#ifdef VLAN_SUPPORT
+DECL|function|netdev_vlan_rx_register
 r_static
 r_void
 id|netdev_vlan_rx_register
@@ -2045,6 +2261,7 @@ id|np-&gt;lock
 )paren
 suffix:semicolon
 )brace
+DECL|function|netdev_vlan_rx_add_vid
 r_static
 r_void
 id|netdev_vlan_rx_add_vid
@@ -2105,6 +2322,7 @@ id|np-&gt;lock
 )paren
 suffix:semicolon
 )brace
+DECL|function|netdev_vlan_rx_kill_vid
 r_static
 r_void
 id|netdev_vlan_rx_kill_vid
@@ -2178,6 +2396,7 @@ id|np-&gt;lock
 suffix:semicolon
 )brace
 macro_line|#endif /* VLAN_SUPPORT */
+DECL|function|starfire_init_one
 r_static
 r_int
 id|__devinit
@@ -3291,6 +3510,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* Read the MII Management Data I/O (MDIO) interfaces. */
+DECL|function|mdio_read
 r_static
 r_int
 id|mdio_read
@@ -3391,6 +3611,7 @@ op_amp
 l_int|0xffff
 suffix:semicolon
 )brace
+DECL|function|mdio_write
 r_static
 r_void
 id|mdio_write
@@ -3440,6 +3661,7 @@ id|mdio_addr
 suffix:semicolon
 multiline_comment|/* The busy-wait will occur before a read. */
 )brace
+DECL|function|netdev_open
 r_static
 r_int
 id|netdev_open
@@ -4449,6 +4671,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|check_duplex
 r_static
 r_void
 id|check_duplex
@@ -4650,6 +4873,7 @@ id|reg0
 )paren
 suffix:semicolon
 )brace
+DECL|function|tx_timeout
 r_static
 r_void
 id|tx_timeout
@@ -4739,6 +4963,7 @@ id|dev
 suffix:semicolon
 )brace
 multiline_comment|/* Initialize the Rx and Tx rings, along with various &squot;dev&squot; bits. */
+DECL|function|init_ring
 r_static
 r_void
 id|init_ring
@@ -5037,6 +5262,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+DECL|function|start_tx
 r_static
 r_int
 id|start_tx
@@ -5583,6 +5809,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* The interrupt handler does all of the Rx thread work and cleans up&n;   after the Tx thread. */
+DECL|function|intr_handler
 r_static
 r_void
 id|intr_handler
@@ -6133,6 +6360,7 @@ id|IntrStatus
 suffix:semicolon
 )brace
 multiline_comment|/* This routine is logically part of the interrupt/poll handler, but separated&n;   for clarity, code sharing between NAPI/non-NAPI, and better register allocation. */
+DECL|function|__netdev_rx
 r_static
 r_int
 id|__netdev_rx
@@ -6778,6 +7006,7 @@ id|retcode
 suffix:semicolon
 )brace
 macro_line|#ifdef HAVE_NETDEV_POLL
+DECL|function|netdev_poll
 r_static
 r_int
 id|netdev_poll
@@ -6935,6 +7164,7 @@ id|retcode
 suffix:semicolon
 )brace
 macro_line|#endif /* HAVE_NETDEV_POLL */
+DECL|function|refill_rx_ring
 r_static
 r_void
 id|refill_rx_ring
@@ -7111,6 +7341,7 @@ id|RxDescQIdx
 )paren
 suffix:semicolon
 )brace
+DECL|function|netdev_media_change
 r_static
 r_void
 id|netdev_media_change
@@ -7513,6 +7744,7 @@ id|dev-&gt;name
 suffix:semicolon
 )brace
 )brace
+DECL|function|netdev_error
 r_static
 r_void
 id|netdev_error
@@ -7663,6 +7895,7 @@ id|intr_status
 )paren
 suffix:semicolon
 )brace
+DECL|function|get_stats
 r_static
 r_struct
 id|net_device_stats
@@ -7832,6 +8065,7 @@ id|np-&gt;stats
 suffix:semicolon
 )brace
 multiline_comment|/* Chips may use the upper or lower CRC bits, and may reverse and/or invert&n;   them.  Select the endian-ness that results in minimal calculations.&n;*/
+DECL|function|set_rx_mode
 r_static
 r_void
 id|set_rx_mode
@@ -8492,6 +8726,7 @@ id|RxFilterMode
 )paren
 suffix:semicolon
 )brace
+DECL|function|netdev_ethtool_ioctl
 r_static
 r_int
 id|netdev_ethtool_ioctl
@@ -8909,6 +9144,7 @@ id|EOPNOTSUPP
 suffix:semicolon
 )brace
 )brace
+DECL|function|netdev_ioctl
 r_static
 r_int
 id|netdev_ioctl
@@ -9046,6 +9282,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+DECL|function|netdev_close
 r_static
 r_int
 id|netdev_close
@@ -9502,6 +9739,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|starfire_remove_one
 r_static
 r_void
 id|__devexit
@@ -9615,6 +9853,7 @@ id|dev
 suffix:semicolon
 multiline_comment|/* Will also free np!! */
 )brace
+DECL|variable|starfire_driver
 r_static
 r_struct
 id|pci_driver
@@ -9647,6 +9886,7 @@ id|starfire_pci_tbl
 comma
 )brace
 suffix:semicolon
+DECL|function|starfire_init
 r_static
 r_int
 id|__init
@@ -9707,6 +9947,7 @@ id|starfire_driver
 )paren
 suffix:semicolon
 )brace
+DECL|function|starfire_cleanup
 r_static
 r_void
 id|__exit
@@ -9722,12 +9963,14 @@ id|starfire_driver
 )paren
 suffix:semicolon
 )brace
+DECL|variable|starfire_init
 id|module_init
 c_func
 (paren
 id|starfire_init
 )paren
 suffix:semicolon
+DECL|variable|starfire_cleanup
 id|module_exit
 c_func
 (paren

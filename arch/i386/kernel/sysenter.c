@@ -74,9 +74,7 @@ l_int|8192
 )paren
 suffix:semicolon
 DECL|function|enable_sep_cpu
-r_static
 r_void
-id|__init
 id|enable_sep_cpu
 c_func
 (paren

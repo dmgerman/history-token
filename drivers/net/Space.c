@@ -2084,6 +2084,26 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|sk_isa_probe
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|proteon_probe
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|smctr_probe
 c_func
 (paren
@@ -2111,6 +2131,22 @@ l_int|1
 macro_line|#ifdef CONFIG_IBMTR
 op_logical_and
 id|ibmtr_probe
+c_func
+(paren
+id|dev
+)paren
+macro_line|#endif
+macro_line|#ifdef CONFIG_SKISA
+op_logical_and
+id|sk_isa_probe
+c_func
+(paren
+id|dev
+)paren
+macro_line|#endif
+macro_line|#ifdef CONFIG_PROTEON
+op_logical_and
+id|proteon_probe
 c_func
 (paren
 id|dev

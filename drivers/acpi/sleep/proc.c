@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
+macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 macro_line|#ifdef CONFIG_X86
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#endif

@@ -2,8 +2,12 @@ multiline_comment|/*&n; *  boot.c - Architecture-Specific Low-Level ACPI Boot Su
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/apic.h&gt;
+macro_line|#include &lt;asm/mpspec.h&gt;
+macro_line|#if defined (CONFIG_X86_LOCAL_APIC)
 macro_line|#include &lt;mach_apic.h&gt;
 macro_line|#include &lt;mach_mpparse.h&gt;
+macro_line|#endif
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 r_extern
