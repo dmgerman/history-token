@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/nfs_mount.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
+macro_line|#include &quot;delegation.h&quot;
 DECL|macro|NFS_PARANOIA
 mdefine_line|#define NFS_PARANOIA 1
 multiline_comment|/* #define NFS_DEBUG_VERBOSE 1 */
@@ -3830,6 +3831,24 @@ c_func
 (paren
 id|parent
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|inode
+op_ne
+l_int|NULL
+op_logical_and
+id|nfs_have_delegation
+c_func
+(paren
+id|inode
+comma
+id|FMODE_READ
+)paren
+)paren
+r_return
+l_int|1
 suffix:semicolon
 r_return
 id|nfs_lookup_revalidate

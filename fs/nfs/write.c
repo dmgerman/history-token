@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/nfs_page.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
+macro_line|#include &quot;delegation.h&quot;
 DECL|macro|NFSDBG_FACILITY
 mdefine_line|#define NFSDBG_FACILITY&t;&t;NFSDBG_PAGECACHE
 DECL|macro|MIN_POOL_WRITE
@@ -1588,10 +1589,9 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Insert a write request into an inode&n; */
-r_static
-r_inline
-r_int
 DECL|function|nfs_inode_add_request
+r_static
+r_int
 id|nfs_inode_add_request
 c_func
 (paren
@@ -1668,6 +1668,20 @@ c_func
 (paren
 id|inode
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nfs_have_delegation
+c_func
+(paren
+id|inode
+comma
+id|FMODE_WRITE
+)paren
+)paren
+id|nfsi-&gt;change_attr
+op_increment
 suffix:semicolon
 )brace
 id|nfsi-&gt;npages

@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/nfs_idmap.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &quot;delegation.h&quot;
 DECL|macro|NFSDBG_FACILITY
 mdefine_line|#define NFSDBG_FACILITY&t;&t;NFSDBG_VFS
 DECL|macro|NFS_PARANOIA
@@ -4861,6 +4862,119 @@ r_return
 id|status
 suffix:semicolon
 )brace
+DECL|function|nfs_attribute_timeout
+r_int
+id|nfs_attribute_timeout
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_struct
+id|nfs_inode
+op_star
+id|nfsi
+op_assign
+id|NFS_I
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nfs_have_delegation
+c_func
+(paren
+id|inode
+comma
+id|FMODE_READ
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_return
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|nfsi-&gt;read_cache_jiffies
+op_plus
+id|nfsi-&gt;attrtimeo
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * nfs_revalidate_inode - Revalidate the inode attributes&n; * @server - pointer to nfs_server struct&n; * @inode - pointer to inode struct&n; *&n; * Updates inode attribute information by retrieving the data from the server.&n; */
+DECL|function|nfs_revalidate_inode
+r_int
+id|nfs_revalidate_inode
+c_func
+(paren
+r_struct
+id|nfs_server
+op_star
+id|server
+comma
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|NFS_FLAGS
+c_func
+(paren
+id|inode
+)paren
+op_amp
+(paren
+id|NFS_INO_INVALID_ATTR
+op_or
+id|NFS_INO_INVALID_DATA
+)paren
+)paren
+op_logical_and
+op_logical_neg
+id|nfs_attribute_timeout
+c_func
+(paren
+id|inode
+)paren
+)paren
+r_return
+id|NFS_STALE
+c_func
+(paren
+id|inode
+)paren
+ques
+c_cond
+op_minus
+id|ESTALE
+suffix:colon
+l_int|0
+suffix:semicolon
+r_return
+id|__nfs_revalidate_inode
+c_func
+(paren
+id|server
+comma
+id|inode
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * nfs_begin_data_update&n; * @inode - pointer to inode&n; * Declare that a set of operations will update file data on the server&n; */
 DECL|function|nfs_begin_data_update
 r_void
@@ -4910,6 +5024,19 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nfs_have_delegation
+c_func
+(paren
+id|inode
+comma
+id|FMODE_READ
+)paren
+)paren
+(brace
 multiline_comment|/* Mark the attribute cache for revalidation */
 id|nfsi-&gt;flags
 op_or_assign
@@ -4935,6 +5062,7 @@ id|nfsi-&gt;flags
 op_or_assign
 id|NFS_INO_INVALID_DATA
 suffix:semicolon
+)brace
 id|nfsi-&gt;cache_change_attribute
 op_increment
 suffix:semicolon
@@ -5045,6 +5173,21 @@ id|new_isize
 suffix:semicolon
 r_int
 id|data_unstable
+suffix:semicolon
+multiline_comment|/* Do we hold a delegation? */
+r_if
+c_cond
+(paren
+id|nfs_have_delegation
+c_func
+(paren
+id|inode
+comma
+id|FMODE_READ
+)paren
+)paren
+r_return
+l_int|0
 suffix:semicolon
 multiline_comment|/* Are we in the process of updating data on the server? */
 id|data_unstable
@@ -5930,6 +6073,18 @@ op_and_assign
 op_complement
 id|NFS_INO_INVALID_DATA
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nfs_have_delegation
+c_func
+(paren
+id|inode
+comma
+id|FMODE_READ
+)paren
+)paren
 id|nfsi-&gt;flags
 op_or_assign
 id|invalid
@@ -6663,7 +6818,6 @@ comma
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_NFS_V4
-macro_line|#include &quot;delegation.h&quot;
 r_static
 r_void
 id|nfs4_clear_inode
@@ -8317,7 +8471,7 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|nfs4_init_once
-mdefine_line|#define nfs4_init_once(nfsi) &bslash;&n;&t;do { &bslash;&n;&t;&t;INIT_LIST_HEAD(&amp;(nfsi)-&gt;open_states); &bslash;&n;&t;&t;nfsi-&gt;delegation = NULL; &bslash;&n;&t;&t;init_rwsem(&amp;nfsi-&gt;rwsem); &bslash;&n;&t;} while(0)
+mdefine_line|#define nfs4_init_once(nfsi) &bslash;&n;&t;do { &bslash;&n;&t;&t;INIT_LIST_HEAD(&amp;(nfsi)-&gt;open_states); &bslash;&n;&t;&t;nfsi-&gt;delegation = NULL; &bslash;&n;&t;&t;nfsi-&gt;delegation_state = 0; &bslash;&n;&t;&t;init_rwsem(&amp;nfsi-&gt;rwsem); &bslash;&n;&t;} while(0)
 DECL|macro|register_nfs4fs
 mdefine_line|#define register_nfs4fs() register_filesystem(&amp;nfs4_fs_type)
 DECL|macro|unregister_nfs4fs
