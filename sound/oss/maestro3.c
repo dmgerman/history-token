@@ -10410,16 +10410,9 @@ c_cond
 (paren
 id|codec
 op_assign
-id|kmalloc
+id|ac97_alloc_codec
 c_func
 (paren
-r_sizeof
-(paren
-r_struct
-id|ac97_codec
-)paren
-comma
-id|GFP_KERNEL
 )paren
 )paren
 op_eq
@@ -10428,20 +10421,6 @@ l_int|NULL
 r_return
 op_minus
 id|ENOMEM
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|codec
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|ac97_codec
-)paren
-)paren
 suffix:semicolon
 id|codec-&gt;private_data
 op_assign
@@ -10480,7 +10459,7 @@ id|PFX
 l_string|&quot;codec probe failed&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kfree
+id|ac97_release_codec
 c_func
 (paren
 id|codec
@@ -10519,7 +10498,7 @@ id|PFX
 l_string|&quot;couldn&squot;t register mixer!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kfree
+id|ac97_release_codec
 c_func
 (paren
 id|codec
