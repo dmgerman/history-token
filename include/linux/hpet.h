@@ -138,9 +138,6 @@ DECL|macro|HPET_LEG_RT_CNF_MASK
 mdefine_line|#define&t;HPET_LEG_RT_CNF_MASK&t;&t;(2UL)
 DECL|macro|HPET_ENABLE_CNF_MASK
 mdefine_line|#define&t;HPET_ENABLE_CNF_MASK&t;&t;(1UL)
-multiline_comment|/*&n; * HPET interrupt status register&n; */
-DECL|macro|HPET_ISR_CLEAR
-mdefine_line|#define&t;HPET_ISR_CLEAR(HPET, TIMER)&t;&t;&t;&t;&bslash;&n;&t;&t;(HPET)-&gt;hpet_isr |= (1UL &lt;&lt; TIMER)
 multiline_comment|/*&n; * Timer configuration register&n; */
 DECL|macro|Tn_INT_ROUTE_CAP_MASK
 mdefine_line|#define&t;Tn_INT_ROUTE_CAP_MASK&t;&t;(0xffffffff00000000ULL)
@@ -249,8 +246,6 @@ id|ht_opaque
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|HD_STATE
-mdefine_line|#define&t;HD_STATE(HD, TIMER)&t;(HD)-&gt;hd_state |= (1 &lt;&lt; TIMER)
 DECL|struct|hpet_data
 r_struct
 id|hpet_data
@@ -288,6 +283,33 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|HPET_DATA_PLATFORM
 mdefine_line|#define&t;HPET_DATA_PLATFORM&t;0x0001&t;/* platform call to hpet_alloc */
+DECL|function|hpet_reserve_timer
+r_static
+r_inline
+r_void
+id|hpet_reserve_timer
+c_func
+(paren
+r_struct
+id|hpet_data
+op_star
+id|hd
+comma
+r_int
+id|timer
+)paren
+(brace
+id|hd-&gt;hd_state
+op_or_assign
+(paren
+l_int|1
+op_lshift
+id|timer
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 r_int
 id|hpet_alloc
 c_func

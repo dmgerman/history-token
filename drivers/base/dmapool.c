@@ -320,7 +320,7 @@ op_eq
 l_int|0
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_else
 r_if
@@ -398,7 +398,7 @@ OL
 id|size
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -595,7 +595,7 @@ op_logical_neg
 id|page
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|page-&gt;vaddr
 op_assign
@@ -661,7 +661,7 @@ id|page
 suffix:semicolon
 id|page
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_return
@@ -1137,7 +1137,7 @@ suffix:semicolon
 )brace
 id|retval
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_goto
 id|done
@@ -1271,7 +1271,7 @@ suffix:semicolon
 )brace
 id|page
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|done
 suffix:colon

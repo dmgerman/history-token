@@ -209,9 +209,6 @@ r_int
 id|size
 )paren
 (brace
-r_int
-id|oldsize
-suffix:semicolon
 multiline_comment|/* Size must be a power of two, and between 512 and PAGE_SIZE */
 r_if
 c_cond
@@ -254,21 +251,15 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|oldsize
-op_assign
-id|bdev-&gt;bd_block_size
-suffix:semicolon
+multiline_comment|/* Don&squot;t change the size if it is same as current */
 r_if
 c_cond
 (paren
-id|oldsize
-op_eq
+id|bdev-&gt;bd_block_size
+op_ne
 id|size
 )paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* Ok, we&squot;re actually changing the blocksize.. */
+(brace
 id|sync_blockdev
 c_func
 (paren
@@ -293,6 +284,7 @@ c_func
 id|bdev
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -320,7 +312,10 @@ id|size
 (brace
 r_int
 id|bits
+op_assign
+l_int|9
 suffix:semicolon
+multiline_comment|/* 2^9 = 512 */
 r_if
 c_cond
 (paren
@@ -331,12 +326,11 @@ id|sb-&gt;s_bdev
 comma
 id|size
 )paren
-OL
-l_int|0
 )paren
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/* If we get here, we know size is power of two&n;&t; * and it&squot;s value is between 512 and PAGE_SIZE */
 id|sb-&gt;s_blocksize
 op_assign
 id|size
@@ -344,21 +338,18 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|bits
-op_assign
-l_int|9
-comma
 id|size
 op_rshift_assign
-l_int|9
+l_int|10
+suffix:semicolon
+id|size
 suffix:semicolon
 id|size
 op_rshift_assign
 l_int|1
-suffix:semicolon
-id|bits
-op_increment
 )paren
+op_increment
+id|bits
 suffix:semicolon
 id|sb-&gt;s_blocksize_bits
 op_assign

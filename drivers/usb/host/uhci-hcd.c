@@ -9520,6 +9520,12 @@ id|dma_handle
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Some architectures require a full mb() to enforce completion of&n;&t; * the memory writes above before the I/O transfers in start_hc().&n;&t; */
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|start_hc
 c_func
 (paren
@@ -10640,7 +10646,7 @@ l_string|&quot;driver/uhci&quot;
 comma
 id|S_IFDIR
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -10729,7 +10735,7 @@ c_func
 (paren
 l_string|&quot;driver/uhci&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|proc_failed
@@ -10790,7 +10796,7 @@ c_func
 (paren
 l_string|&quot;driver/uhci&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif

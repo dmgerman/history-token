@@ -1889,14 +1889,6 @@ id|do_settimeofday
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * In order to set the CMOS clock precisely, set_rtc_mmss has to be&n; * called 500 ms after the second nowtime has started, because when&n; * nowtime is written into the registers of the CMOS clock, it will&n; * jump to the next second precisely 500 ms later. Check the Motorola&n; * MC146818A or Dallas DS12887 data sheet for details.&n; *&n; * BUG: This routine does not handle hour overflow properly; it just&n; *      sets the minutes. Usually you won&squot;t notice until after reboot!&n; */
-r_extern
-r_int
-id|abs
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
 r_static
 r_int
 DECL|function|set_rtc_mmss

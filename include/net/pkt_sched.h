@@ -827,11 +827,7 @@ DECL|macro|PSCHED_US2JIFFIE
 mdefine_line|#define PSCHED_US2JIFFIE(usecs) (((usecs)+(1000000/HZ-1))/(1000000/HZ))
 DECL|macro|PSCHED_JIFFIE2US
 mdefine_line|#define PSCHED_JIFFIE2US(delay) ((delay)*(1000000/HZ))
-DECL|macro|PSCHED_EXPORTLIST
-mdefine_line|#define PSCHED_EXPORTLIST EXPORT_SYMBOL(psched_tod_diff);
 macro_line|#else /* PSCHED_CLOCK_SOURCE != PSCHED_GETTIMEOFDAY */
-DECL|macro|PSCHED_EXPORTLIST
-mdefine_line|#define PSCHED_EXPORTLIST PSCHED_EXPORTLIST_1 PSCHED_EXPORTLIST_2
 DECL|typedef|psched_time_t
 r_typedef
 id|u64
@@ -863,25 +859,8 @@ macro_line|#elif HZ &gt;= 768
 DECL|macro|PSCHED_JSCALE
 mdefine_line|#define PSCHED_JSCALE 10
 macro_line|#endif
-DECL|macro|PSCHED_EXPORTLIST_2
-mdefine_line|#define PSCHED_EXPORTLIST_2
-macro_line|#if BITS_PER_LONG &lt;= 32
-DECL|macro|PSCHED_WATCHER
-mdefine_line|#define PSCHED_WATCHER unsigned long
-r_extern
-id|PSCHED_WATCHER
-id|psched_time_mark
-suffix:semicolon
 DECL|macro|PSCHED_GET_TIME
-mdefine_line|#define PSCHED_GET_TIME(stamp) ((stamp) = psched_time_base + (((unsigned long)(jiffies-psched_time_mark))&lt;&lt;PSCHED_JSCALE))
-DECL|macro|PSCHED_EXPORTLIST_1
-mdefine_line|#define PSCHED_EXPORTLIST_1 EXPORT_SYMBOL(psched_time_base); &bslash;&n;                            EXPORT_SYMBOL(psched_time_mark);
-macro_line|#else
-DECL|macro|PSCHED_GET_TIME
-mdefine_line|#define PSCHED_GET_TIME(stamp) ((stamp) = (jiffies&lt;&lt;PSCHED_JSCALE))
-DECL|macro|PSCHED_EXPORTLIST_1
-mdefine_line|#define PSCHED_EXPORTLIST_1 
-macro_line|#endif
+mdefine_line|#define PSCHED_GET_TIME(stamp) ((stamp) = (get_jiffies_64()&lt;&lt;PSCHED_JSCALE))
 DECL|macro|PSCHED_US2JIFFIE
 mdefine_line|#define PSCHED_US2JIFFIE(delay) (((delay)+(1&lt;&lt;PSCHED_JSCALE)-1)&gt;&gt;PSCHED_JSCALE)
 DECL|macro|PSCHED_JIFFIE2US
@@ -895,8 +874,6 @@ r_extern
 r_int
 id|psched_clock_scale
 suffix:semicolon
-DECL|macro|PSCHED_EXPORTLIST_2
-mdefine_line|#define PSCHED_EXPORTLIST_2 EXPORT_SYMBOL(psched_clock_per_hz); &bslash;&n;                            EXPORT_SYMBOL(psched_clock_scale);
 DECL|macro|PSCHED_US2JIFFIE
 mdefine_line|#define PSCHED_US2JIFFIE(delay) (((delay)+psched_clock_per_hz-1)/psched_clock_per_hz)
 DECL|macro|PSCHED_JIFFIE2US
@@ -904,8 +881,6 @@ mdefine_line|#define PSCHED_JIFFIE2US(delay) ((delay)*psched_clock_per_hz)
 macro_line|#ifdef CONFIG_X86_TSC
 DECL|macro|PSCHED_GET_TIME
 mdefine_line|#define PSCHED_GET_TIME(stamp) &bslash;&n;({ u64 __cur; &bslash;&n;   rdtscll(__cur); &bslash;&n;   (stamp) = __cur&gt;&gt;psched_clock_scale; &bslash;&n;})
-DECL|macro|PSCHED_EXPORTLIST_1
-mdefine_line|#define PSCHED_EXPORTLIST_1
 macro_line|#elif defined (__alpha__)
 DECL|macro|PSCHED_WATCHER
 mdefine_line|#define PSCHED_WATCHER u32
@@ -915,8 +890,6 @@ id|psched_time_mark
 suffix:semicolon
 DECL|macro|PSCHED_GET_TIME
 mdefine_line|#define PSCHED_GET_TIME(stamp) &bslash;&n;({ u32 __res; &bslash;&n;   __asm__ __volatile__ (&quot;rpcc %0&quot; : &quot;r=&quot;(__res)); &bslash;&n;   if (__res &lt;= psched_time_mark) psched_time_base += 0x100000000UL; &bslash;&n;   psched_time_mark = __res; &bslash;&n;   (stamp) = (psched_time_base + __res)&gt;&gt;psched_clock_scale; &bslash;&n;})
-DECL|macro|PSCHED_EXPORTLIST_1
-mdefine_line|#define PSCHED_EXPORTLIST_1 EXPORT_SYMBOL(psched_time_base); &bslash;&n;                            EXPORT_SYMBOL(psched_time_mark);
 macro_line|#else
 macro_line|#error PSCHED_CLOCK_SOURCE=PSCHED_CPU is not supported on this arch.
 macro_line|#endif /* ARCH */
@@ -938,7 +911,7 @@ id|bound
 )paren
 suffix:semicolon
 DECL|macro|PSCHED_TDIFF_SAFE
-mdefine_line|#define PSCHED_TDIFF_SAFE(tv1, tv2, bound, guard) &bslash;&n;({ &bslash;&n;&t;   int __delta_sec = (tv1).tv_sec - (tv2).tv_sec; &bslash;&n;&t;   int __delta = (tv1).tv_usec - (tv2).tv_usec; &bslash;&n;&t;   switch (__delta_sec) { &bslash;&n;&t;   default: &bslash;&n;&t;&t;   __delta = psched_tod_diff(__delta_sec, bound); guard; break; &bslash;&n;&t;   case 2: &bslash;&n;&t;&t;   __delta += 1000000; &bslash;&n;&t;   case 1: &bslash;&n;&t;&t;   __delta += 1000000; &bslash;&n;&t;   case 0: ; &bslash;&n;&t;   } &bslash;&n;&t;   __delta; &bslash;&n;})
+mdefine_line|#define PSCHED_TDIFF_SAFE(tv1, tv2, bound) &bslash;&n;({ &bslash;&n;&t;   int __delta_sec = (tv1).tv_sec - (tv2).tv_sec; &bslash;&n;&t;   int __delta = (tv1).tv_usec - (tv2).tv_usec; &bslash;&n;&t;   switch (__delta_sec) { &bslash;&n;&t;   default: &bslash;&n;&t;&t;   __delta = psched_tod_diff(__delta_sec, bound);  break; &bslash;&n;&t;   case 2: &bslash;&n;&t;&t;   __delta += 1000000; &bslash;&n;&t;   case 1: &bslash;&n;&t;&t;   __delta += 1000000; &bslash;&n;&t;   case 0: ; &bslash;&n;&t;   } &bslash;&n;&t;   __delta; &bslash;&n;})
 DECL|macro|PSCHED_TLESS
 mdefine_line|#define PSCHED_TLESS(tv1, tv2) (((tv1).tv_usec &lt; (tv2).tv_usec &amp;&amp; &bslash;&n;&t;&t;&t;&t;(tv1).tv_sec &lt;= (tv2).tv_sec) || &bslash;&n;&t;&t;&t;&t; (tv1).tv_sec &lt; (tv2).tv_sec)
 DECL|macro|PSCHED_TADD2
@@ -956,7 +929,7 @@ macro_line|#else
 DECL|macro|PSCHED_TDIFF
 mdefine_line|#define PSCHED_TDIFF(tv1, tv2) (long)((tv1) - (tv2))
 DECL|macro|PSCHED_TDIFF_SAFE
-mdefine_line|#define PSCHED_TDIFF_SAFE(tv1, tv2, bound, guard) &bslash;&n;({ &bslash;&n;&t;   long long __delta = (tv1) - (tv2); &bslash;&n;&t;   if ( __delta &gt; (long long)(bound)) {  __delta = (bound); guard; } &bslash;&n;&t;   __delta; &bslash;&n;})
+mdefine_line|#define PSCHED_TDIFF_SAFE(tv1, tv2, bound) &bslash;&n;&t;min_t(long long, (tv1) - (tv2), bound)
 DECL|macro|PSCHED_TLESS
 mdefine_line|#define PSCHED_TLESS(tv1, tv2) ((tv1) &lt; (tv2))
 DECL|macro|PSCHED_TADD2

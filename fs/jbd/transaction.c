@@ -4168,7 +4168,7 @@ id|jh
 op_star
 id|list
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|jh-&gt;b_tprev-&gt;b_tnext
@@ -4198,7 +4198,7 @@ op_star
 op_star
 id|list
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|transaction_t
 op_star
@@ -5525,7 +5525,7 @@ op_star
 op_star
 id|list
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|was_dirty

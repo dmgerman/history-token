@@ -4533,7 +4533,7 @@ id|tty-&gt;read_buf
 suffix:semicolon
 id|tty-&gt;read_buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -4609,7 +4609,7 @@ c_func
 (paren
 id|tty
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|tty-&gt;minimum_to_wake

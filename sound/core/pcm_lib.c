@@ -7475,7 +7475,7 @@ id|params
 comma
 id|var
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -8410,7 +8410,7 @@ id|params
 comma
 id|SNDRV_PCM_HW_PARAM_ACCESS
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 m_assert
@@ -8431,7 +8431,7 @@ id|params
 comma
 id|SNDRV_PCM_HW_PARAM_FORMAT
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 m_assert
@@ -8452,7 +8452,7 @@ id|params
 comma
 id|SNDRV_PCM_HW_PARAM_SUBFORMAT
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 m_assert
@@ -8473,7 +8473,7 @@ id|params
 comma
 id|SNDRV_PCM_HW_PARAM_CHANNELS
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 m_assert
@@ -8494,7 +8494,7 @@ id|params
 comma
 id|SNDRV_PCM_HW_PARAM_RATE
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 m_assert
@@ -8515,7 +8515,7 @@ id|params
 comma
 id|SNDRV_PCM_HW_PARAM_PERIOD_TIME
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 m_assert
@@ -8536,7 +8536,7 @@ id|params
 comma
 id|SNDRV_PCM_HW_PARAM_BUFFER_SIZE
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 m_assert
@@ -8557,7 +8557,7 @@ id|params
 comma
 id|SNDRV_PCM_HW_PARAM_TICK_TIME
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 m_assert

@@ -5,13 +5,14 @@ mdefine_line|#define PWC_H
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
+macro_line|#include &quot;pwc-uncompress.h&quot;
 macro_line|#include &quot;pwc-ioctl.h&quot;
 multiline_comment|/* Defines and structures for the Philips webcam */
 multiline_comment|/* Used for checking memory corruption/pointer validation */
@@ -58,11 +59,11 @@ DECL|macro|FEATURE_MOTOR_PANTILT
 mdefine_line|#define FEATURE_MOTOR_PANTILT&t;&t;0x0001
 multiline_comment|/* Version block */
 DECL|macro|PWC_MAJOR
-mdefine_line|#define PWC_MAJOR&t;8
+mdefine_line|#define PWC_MAJOR&t;9
 DECL|macro|PWC_MINOR
-mdefine_line|#define PWC_MINOR&t;12
+mdefine_line|#define PWC_MINOR&t;0
 DECL|macro|PWC_VERSION
-mdefine_line|#define PWC_VERSION &t;&quot;8.12&quot;
+mdefine_line|#define PWC_VERSION &t;&quot;9.0.1&quot;
 DECL|macro|PWC_NAME
 mdefine_line|#define PWC_NAME &t;&quot;pwc&quot;
 multiline_comment|/* Turn certain features on/off */
@@ -89,25 +90,6 @@ mdefine_line|#define PWC_FRAME_SIZE &t;&t;(460800 + TOUCAM_HEADER_SIZE + TOUCAM_
 multiline_comment|/* Absolute maximum number of buffers available for mmap() */
 DECL|macro|MAX_IMAGES
 mdefine_line|#define MAX_IMAGES &t;&t;10
-DECL|struct|pwc_coord
-r_struct
-id|pwc_coord
-(brace
-DECL|member|x
-DECL|member|y
-r_int
-id|x
-comma
-id|y
-suffix:semicolon
-multiline_comment|/* guess what */
-DECL|member|size
-r_int
-id|size
-suffix:semicolon
-multiline_comment|/* size, or offset */
-)brace
-suffix:semicolon
 multiline_comment|/* The following structures were based on cpia.h. Why reinvent the wheel? :-) */
 DECL|struct|pwc_iso_buf
 r_struct
@@ -173,6 +155,7 @@ id|pwc_device
 DECL|member|vdev
 r_struct
 id|video_device
+op_star
 id|vdev
 suffix:semicolon
 macro_line|#ifdef PWC_MAGIC
@@ -203,6 +186,14 @@ r_int
 id|features
 suffix:semicolon
 multiline_comment|/* feature bits */
+DECL|member|serial
+r_char
+id|serial
+(braket
+l_int|30
+)braket
+suffix:semicolon
+multiline_comment|/* serial number (string) */
 DECL|member|error_status
 r_int
 id|error_status
@@ -242,6 +233,11 @@ comma
 id|vsize
 suffix:semicolon
 multiline_comment|/* frames-per-second &amp; size (see PSZ_*) */
+DECL|member|vpalette
+r_int
+id|vpalette
+suffix:semicolon
+multiline_comment|/* palette: 420P, RAW or RGBBAYER */
 DECL|member|vframe_count
 r_int
 id|vframe_count
@@ -297,6 +293,18 @@ r_char
 id|vmirror
 suffix:semicolon
 multiline_comment|/* for ToUCaM series */
+DECL|member|cmd_len
+r_int
+id|cmd_len
+suffix:semicolon
+DECL|member|cmd_buf
+r_int
+r_char
+id|cmd_buf
+(braket
+l_int|13
+)braket
+suffix:semicolon
 multiline_comment|/* The image acquisition requires 3 to 4 steps:&n;      1. data is gathered in short packets from the USB controller&n;      2. data is synchronized and packed into a frame buffer&n;      3a. in case data is compressed, decompress it directly into image buffer&n;      3b. in case data is uncompressed, copy into image buffer with viewport&n;      4. data is transferred to the user process&n;&n;      Note that MAX_ISO_BUFS != MAX_FRAMES != MAX_IMAGES....&n;      We have in effect a back-to-back-double-buffer system.&n;    */
 multiline_comment|/* 1: isoc */
 DECL|member|sbuf
@@ -355,10 +363,6 @@ op_star
 id|read_frame
 suffix:semicolon
 multiline_comment|/* frame currently read by user process */
-DECL|member|frame_size
-r_int
-id|frame_size
-suffix:semicolon
 DECL|member|frame_header_size
 DECL|member|frame_trailer_size
 r_int
@@ -366,6 +370,15 @@ id|frame_header_size
 comma
 id|frame_trailer_size
 suffix:semicolon
+DECL|member|frame_size
+r_int
+id|frame_size
+suffix:semicolon
+DECL|member|frame_total_size
+r_int
+id|frame_total_size
+suffix:semicolon
+multiline_comment|/* including header &amp; trailer */
 DECL|member|drop_frames
 r_int
 id|drop_frames
@@ -406,7 +419,13 @@ id|view_min
 comma
 id|view_max
 suffix:semicolon
-multiline_comment|/* minimum and maximum sizes */
+multiline_comment|/* minimum and maximum viewable sizes */
+DECL|member|abs_max
+r_struct
+id|pwc_coord
+id|abs_max
+suffix:semicolon
+multiline_comment|/* maximum supported size with compression */
 DECL|member|image
 DECL|member|view
 r_struct
@@ -503,21 +522,6 @@ multiline_comment|/* for the interrupt endpoint */
 macro_line|#endif
 )brace
 suffix:semicolon
-multiline_comment|/* Enumeration of image sizes */
-DECL|macro|PSZ_SQCIF
-mdefine_line|#define PSZ_SQCIF&t;0x00
-DECL|macro|PSZ_QSIF
-mdefine_line|#define PSZ_QSIF&t;0x01
-DECL|macro|PSZ_QCIF
-mdefine_line|#define PSZ_QCIF&t;0x02
-DECL|macro|PSZ_SIF
-mdefine_line|#define PSZ_SIF&t;&t;0x03
-DECL|macro|PSZ_CIF
-mdefine_line|#define PSZ_CIF&t;&t;0x04
-DECL|macro|PSZ_VGA
-mdefine_line|#define PSZ_VGA&t;&t;0x05
-DECL|macro|PSZ_MAX
-mdefine_line|#define PSZ_MAX&t;&t;6
 macro_line|#ifdef __cplusplus
 r_extern
 l_string|&quot;C&quot;
@@ -780,6 +784,10 @@ r_struct
 id|pwc_device
 op_star
 id|pdev
+comma
+r_int
+op_star
+id|sensor
 )paren
 suffix:semicolon
 multiline_comment|/* Power down or up the camera; not supported by all models */

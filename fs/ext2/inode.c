@@ -440,14 +440,15 @@ r_else
 id|result
 op_assign
 id|ext2_new_block
+c_func
 (paren
 id|inode
 comma
 id|goal
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 comma
 id|err
 )paren

@@ -1474,7 +1474,7 @@ c_func
 (paren
 l_string|&quot;scsi&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1522,7 +1522,7 @@ c_func
 (paren
 l_string|&quot;scsi&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|err1
@@ -1545,7 +1545,7 @@ c_func
 (paren
 l_string|&quot;scsi/scsi&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|remove_proc_entry
@@ -1553,7 +1553,7 @@ c_func
 (paren
 l_string|&quot;scsi&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

@@ -1,7 +1,4 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/mach/arch.h&n; *&n; *  Copyright (C) 2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
-multiline_comment|/*&n; * The size of struct machine_desc&n; *   (for assembler code)&n; */
-DECL|macro|SIZEOF_MACHINE_DESC
-mdefine_line|#define SIZEOF_MACHINE_DESC&t;52
 macro_line|#ifndef __ASSEMBLY__
 r_struct
 id|tag

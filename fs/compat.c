@@ -1382,7 +1382,7 @@ id|t-&gt;next
 suffix:semicolon
 id|trans-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|t-&gt;next
 op_assign

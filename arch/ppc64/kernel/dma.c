@@ -224,7 +224,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|variable|dma_alloc_coherent

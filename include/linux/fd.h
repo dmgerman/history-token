@@ -2,6 +2,7 @@ macro_line|#ifndef _LINUX_FD_H
 DECL|macro|_LINUX_FD_H
 mdefine_line|#define _LINUX_FD_H
 macro_line|#include &lt;linux/ioctl.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/* New file layout: Now the ioctl definitions immediately follow the&n; * definitions of the structures that they use */
 multiline_comment|/*&n; * Geometry&n; */
 DECL|struct|floppy_struct

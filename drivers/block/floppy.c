@@ -3571,7 +3571,7 @@ id|flags
 suffix:semicolon
 id|raw_cmd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -8356,7 +8356,7 @@ l_int|0
 suffix:semicolon
 id|cont
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|command_status
 op_add_assign
@@ -13559,7 +13559,7 @@ suffix:semicolon
 op_star
 id|ptr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_while
 c_loop
@@ -13642,7 +13642,7 @@ suffix:semicolon
 op_star
 id|rcmd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_while
 c_loop
@@ -13693,7 +13693,7 @@ id|ptr
 suffix:semicolon
 id|ptr-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ptr-&gt;buffer_length
 op_assign
@@ -13746,7 +13746,7 @@ l_int|0
 suffix:semicolon
 id|ptr-&gt;kernel_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -18219,7 +18219,7 @@ op_assign
 (brace
 l_string|&quot;allowed_drive_mask&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|allowed_drive_mask
@@ -18233,7 +18233,7 @@ multiline_comment|/* obsolete */
 (brace
 l_string|&quot;all_drives&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|allowed_drive_mask
@@ -18247,7 +18247,7 @@ multiline_comment|/* obsolete */
 (brace
 l_string|&quot;asus_pci&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|allowed_drive_mask
@@ -18260,7 +18260,7 @@ comma
 (brace
 l_string|&quot;irq&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|FLOPPY_IRQ
@@ -18273,7 +18273,7 @@ comma
 (brace
 l_string|&quot;dma&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|FLOPPY_DMA
@@ -18288,7 +18288,7 @@ l_string|&quot;daring&quot;
 comma
 id|daring
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|1
 comma
@@ -18299,7 +18299,7 @@ macro_line|#if N_FDC &gt; 1
 (brace
 l_string|&quot;two_fdc&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|FDC2
@@ -18312,7 +18312,7 @@ comma
 (brace
 l_string|&quot;one_fdc&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|FDC2
@@ -18328,7 +18328,7 @@ l_string|&quot;thinkpad&quot;
 comma
 id|floppy_set_flags
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|1
 comma
@@ -18340,7 +18340,7 @@ l_string|&quot;broken_dcl&quot;
 comma
 id|floppy_set_flags
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|1
 comma
@@ -18352,7 +18352,7 @@ l_string|&quot;messages&quot;
 comma
 id|floppy_set_flags
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|1
 comma
@@ -18364,7 +18364,7 @@ l_string|&quot;silent_dcl_clear&quot;
 comma
 id|floppy_set_flags
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|1
 comma
@@ -18376,7 +18376,7 @@ l_string|&quot;debug&quot;
 comma
 id|floppy_set_flags
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|1
 comma
@@ -18386,7 +18386,7 @@ comma
 (brace
 l_string|&quot;nodma&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|can_use_virtual_dma
@@ -18399,7 +18399,7 @@ comma
 (brace
 l_string|&quot;omnibook&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|can_use_virtual_dma
@@ -18412,7 +18412,7 @@ comma
 (brace
 l_string|&quot;yesdma&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|can_use_virtual_dma
@@ -18425,7 +18425,7 @@ comma
 (brace
 l_string|&quot;fifo_depth&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|fifo_depth
@@ -18438,7 +18438,7 @@ comma
 (brace
 l_string|&quot;nofifo&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|no_fifo
@@ -18451,7 +18451,7 @@ comma
 (brace
 l_string|&quot;usefifo&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|no_fifo
@@ -18466,7 +18466,7 @@ l_string|&quot;cmos&quot;
 comma
 id|set_cmos
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -18476,7 +18476,7 @@ comma
 (brace
 l_string|&quot;slow&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|slow_floppy
@@ -18489,7 +18489,7 @@ comma
 (brace
 l_string|&quot;unexpected_interrupts&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|print_unex
@@ -18502,7 +18502,7 @@ comma
 (brace
 l_string|&quot;no_unexpected_interrupts&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|print_unex
@@ -18515,7 +18515,7 @@ comma
 (brace
 l_string|&quot;L40SX&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|print_unex

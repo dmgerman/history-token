@@ -1209,7 +1209,7 @@ id|hcc_params
 suffix:semicolon
 id|ehci-&gt;reclaim
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ehci-&gt;next_uframe
 op_assign
@@ -1242,14 +1242,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-id|writel
-(paren
-id|INTR_MASK
-comma
-op_amp
-id|ehci-&gt;regs-&gt;intr_enable
-)paren
-suffix:semicolon
 id|writel
 (paren
 id|ehci-&gt;periodic_dma
@@ -1353,7 +1345,7 @@ macro_line|#endif
 multiline_comment|/*&n;&t; * dedicate a qh for the async ring head, since we couldn&squot;t unlink&n;&t; * a &squot;real&squot; qh without stopping the async schedule [4.8].  use it&n;&t; * as the &squot;reclamation list head&squot; too.&n;&t; * its dummy is used in hw_alt_next of many tds, to prevent the qh&n;&t; * from automatically advancing to the next td after short reads.&n;&t; */
 id|ehci-&gt;async-&gt;qh_next.qh
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ehci-&gt;async-&gt;hw_next
 op_assign
@@ -1620,7 +1612,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Start, enabling full USB 2.0 functionality ... usb 1.1 devices&n;&t; * are explicitly handed to companion controller(s), so no TT is&n;&t; * involved with the root hub.&n;&t; */
+multiline_comment|/*&n;&t; * Start, enabling full USB 2.0 functionality ... usb 1.1 devices&n;&t; * are explicitly handed to companion controller(s), so no TT is&n;&t; * involved with the root hub.  (Except where one is integrated,&n;&t; * and there&squot;s no companion controller unless maybe for USB OTG.)&n;&t; */
 id|ehci-&gt;reboot_notifier.notifier_call
 op_assign
 id|ehci_reboot
@@ -1744,6 +1736,15 @@ r_goto
 id|done2
 suffix:semicolon
 )brace
+id|writel
+(paren
+id|INTR_MASK
+comma
+op_amp
+id|ehci-&gt;regs-&gt;intr_enable
+)paren
+suffix:semicolon
+multiline_comment|/* Turn On Interrupts */
 id|create_debug_files
 (paren
 id|ehci
@@ -1774,6 +1775,11 @@ id|hcd_to_ehci
 (paren
 id|hcd
 )paren
+suffix:semicolon
+id|u8
+id|rh_ports
+comma
+id|port
 suffix:semicolon
 id|ehci_dbg
 (paren
@@ -1820,9 +1826,57 @@ op_amp
 id|ehci-&gt;watchdog
 )paren
 suffix:semicolon
+multiline_comment|/* Turn off port power on all root hub ports. */
+id|rh_ports
+op_assign
+id|HCS_N_PORTS
+(paren
+id|ehci-&gt;hcs_params
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|port
+op_assign
+l_int|1
+suffix:semicolon
+id|port
+op_le
+id|rh_ports
+suffix:semicolon
+id|port
+op_increment
+)paren
+(brace
+id|ehci_hub_control
+c_func
+(paren
+id|hcd
+comma
+id|ClearPortFeature
+comma
+id|USB_PORT_FEAT_POWER
+comma
+id|port
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 id|ehci_reset
 (paren
 id|ehci
+)paren
+suffix:semicolon
+id|writel
+(paren
+l_int|0
+comma
+op_amp
+id|ehci-&gt;regs-&gt;intr_enable
 )paren
 suffix:semicolon
 multiline_comment|/* let companion controllers work when we aren&squot;t */
@@ -2224,25 +2278,6 @@ op_amp
 id|ehci-&gt;regs-&gt;status
 )paren
 suffix:semicolon
-multiline_comment|/* shared irq */
-r_if
-c_cond
-(paren
-id|status
-op_eq
-l_int|0
-)paren
-(brace
-id|spin_unlock
-(paren
-op_amp
-id|ehci-&gt;lock
-)paren
-suffix:semicolon
-r_return
-id|IRQ_NONE
-suffix:semicolon
-)brace
 multiline_comment|/* e.g. cardbus physical eject */
 r_if
 c_cond
@@ -2277,10 +2312,19 @@ c_cond
 op_logical_neg
 id|status
 )paren
+(brace
 multiline_comment|/* irq sharing? */
-r_goto
-id|done
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|ehci-&gt;lock
+)paren
 suffix:semicolon
+r_return
+id|IRQ_NONE
+suffix:semicolon
+)brace
 multiline_comment|/* clear (just) interrupts */
 id|writel
 (paren
@@ -2570,8 +2614,6 @@ comma
 id|regs
 )paren
 suffix:semicolon
-id|done
-suffix:colon
 id|spin_unlock
 (paren
 op_amp
@@ -3252,7 +3294,7 @@ id|dev-&gt;ep
 id|epnum
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|done
 suffix:colon

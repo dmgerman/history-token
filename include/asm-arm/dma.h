@@ -10,7 +10,6 @@ suffix:semicolon
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;asm/arch/dma.h&gt;
 multiline_comment|/*&n; * DMA modes&n; */
@@ -249,10 +248,6 @@ suffix:semicolon
 macro_line|#else
 DECL|macro|isa_dma_bridge_buggy
 mdefine_line|#define isa_dma_bridge_buggy    (0)
-macro_line|#endif
-macro_line|#ifndef arch_adjust_zones
-DECL|macro|arch_adjust_zones
-mdefine_line|#define arch_adjust_zones(node,size,holes)
 macro_line|#endif
 macro_line|#endif /* _ARM_DMA_H */
 eof

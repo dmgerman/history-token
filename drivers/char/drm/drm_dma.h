@@ -531,7 +531,7 @@ l_int|0
 suffix:semicolon
 id|buf-&gt;filp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|buf-&gt;used
 op_assign

@@ -205,7 +205,7 @@ id|next_p
 suffix:semicolon
 id|next_p-&gt;ptr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 l_int|1
@@ -1021,7 +1021,7 @@ id|QH_STATE_UNLINK
 suffix:semicolon
 id|qh-&gt;qh_next.ptr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ehci-&gt;periodic_sched
 op_decrement
@@ -2550,7 +2550,7 @@ op_plus
 id|stream-&gt;bEndpointAddress
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -2797,7 +2797,7 @@ l_string|&quot;out&quot;
 suffix:semicolon
 id|stream
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* caller guarantees an eventual matching iso_stream_put */
@@ -3295,7 +3295,7 @@ suffix:semicolon
 r_else
 id|itd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -4092,7 +4092,7 @@ id|sched
 suffix:semicolon
 id|urb-&gt;hcpriv
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|status
@@ -4547,7 +4547,7 @@ l_int|0
 comma
 id|itd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|packet
 OL
@@ -4560,7 +4560,7 @@ c_cond
 (paren
 id|itd
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 multiline_comment|/* ASSERT:  we have all necessary itds */
@@ -4696,7 +4696,7 @@ id|itd
 suffix:semicolon
 id|itd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -4714,7 +4714,7 @@ id|iso_sched
 suffix:semicolon
 id|urb-&gt;hcpriv
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|timer_action
 (paren
@@ -4984,11 +4984,11 @@ id|urb
 suffix:semicolon
 id|itd-&gt;urb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|itd-&gt;stream
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|list_move
 (paren
@@ -5044,7 +5044,7 @@ id|regs
 suffix:semicolon
 id|urb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* defer stopping schedule; completion can submit */
 id|ehci-&gt;periodic_sched
@@ -7406,7 +7406,7 @@ suffix:semicolon
 singleline_comment|// BUG ();
 id|q.ptr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* assume completion callbacks modify the queue */

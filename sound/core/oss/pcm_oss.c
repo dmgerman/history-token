@@ -816,7 +816,7 @@ id|slave_params
 comma
 id|SNDRV_PCM_HW_PARAM_BUFFER_SIZE
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 op_star
@@ -1022,7 +1022,7 @@ id|slave_params
 comma
 id|SNDRV_PCM_HW_PARAM_PERIOD_SIZE
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 suffix:semicolon
@@ -1071,7 +1071,7 @@ id|slave_params
 comma
 id|SNDRV_PCM_HW_PARAM_PERIOD_SIZE
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 suffix:semicolon
@@ -1133,7 +1133,7 @@ id|slave_params
 comma
 id|SNDRV_PCM_HW_PARAM_PERIODS
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1169,7 +1169,7 @@ id|slave_params
 comma
 id|SNDRV_PCM_HW_PARAM_PERIODS
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1439,7 +1439,7 @@ id|SNDRV_PCM_HW_PARAM_RATE
 comma
 id|best_rate
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -1741,7 +1741,7 @@ id|SNDRV_PCM_HW_PARAM_CHANNELS
 comma
 id|runtime-&gt;oss.channels
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|format
@@ -2253,7 +2253,7 @@ id|SNDRV_PCM_HW_PARAM_PERIOD_SIZE
 comma
 id|n
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|snd_assert
@@ -2280,7 +2280,7 @@ id|SNDRV_PCM_HW_PARAM_PERIODS
 comma
 id|runtime-&gt;oss.periods
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|snd_assert
@@ -2301,7 +2301,7 @@ id|substream
 comma
 id|SNDRV_PCM_IOCTL_DROP
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -2915,7 +2915,7 @@ id|substream
 comma
 id|SNDRV_PCM_IOCTL_PREPARE
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -4928,7 +4928,7 @@ id|substream
 comma
 id|SNDRV_PCM_IOCTL_DROP
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|substream-&gt;runtime-&gt;oss.prepare
@@ -4958,7 +4958,7 @@ id|substream
 comma
 id|SNDRV_PCM_IOCTL_DROP
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|substream-&gt;runtime-&gt;oss.prepare
@@ -5028,7 +5028,7 @@ id|substream
 comma
 id|SNDRV_PCM_IOCTL_START
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -5648,7 +5648,7 @@ id|substream
 comma
 id|SNDRV_PCM_IOCTL_DRAIN
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|substream-&gt;ffile-&gt;f_flags
@@ -5716,7 +5716,7 @@ id|substream
 comma
 id|SNDRV_PCM_IOCTL_DROP
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -7227,7 +7227,7 @@ id|psubstream
 comma
 id|cmd
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -7319,7 +7319,7 @@ id|csubstream
 comma
 id|cmd
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

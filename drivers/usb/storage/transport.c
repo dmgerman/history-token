@@ -2115,6 +2115,34 @@ l_int|0x0
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Did we transfer less than the minimum amount required? */
+r_if
+c_cond
+(paren
+id|srb-&gt;result
+op_eq
+id|SAM_STAT_GOOD
+op_logical_and
+id|srb-&gt;request_bufflen
+op_minus
+id|srb-&gt;resid
+OL
+id|srb-&gt;underflow
+)paren
+id|srb-&gt;result
+op_assign
+(paren
+id|DID_ERROR
+op_lshift
+l_int|16
+)paren
+op_or
+(paren
+id|SUGGEST_RETRY
+op_lshift
+l_int|24
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 multiline_comment|/* abort processing: the bulk-only transport requires a reset&n;&t; * following an abort */

@@ -2871,7 +2871,7 @@ op_assign
 id|dx_probe
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 id|dir_file-&gt;f_dentry-&gt;d_inode
 comma
@@ -4475,10 +4475,11 @@ op_logical_neg
 id|frame
 op_assign
 id|dx_probe
+c_func
 (paren
 id|dentry
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|hinfo
@@ -4670,7 +4671,7 @@ id|frame
 comma
 id|frames
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -7128,7 +7129,7 @@ id|dentry
 comma
 id|inode
 comma
-l_int|0
+l_int|NULL
 comma
 id|bh
 )paren
@@ -7331,7 +7332,7 @@ c_func
 (paren
 id|dentry
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|hinfo
@@ -7426,7 +7427,7 @@ id|dentry
 comma
 id|inode
 comma
-l_int|0
+l_int|NULL
 comma
 id|bh
 )paren
@@ -7442,7 +7443,7 @@ id|ENOSPC
 (brace
 id|bh
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_goto
 id|cleanup
@@ -8070,7 +8071,7 @@ id|bh
 suffix:semicolon
 id|bh
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_goto
 id|cleanup

@@ -5098,7 +5098,7 @@ id|swap_header
 op_star
 id|swap_header
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|swap_header_version

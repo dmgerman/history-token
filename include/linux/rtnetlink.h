@@ -95,7 +95,7 @@ mdefine_line|#define RTA_ALIGNTO&t;4
 DECL|macro|RTA_ALIGN
 mdefine_line|#define RTA_ALIGN(len) ( ((len)+RTA_ALIGNTO-1) &amp; ~(RTA_ALIGNTO-1) )
 DECL|macro|RTA_OK
-mdefine_line|#define RTA_OK(rta,len) ((len) &gt; 0 &amp;&amp; (rta)-&gt;rta_len &gt;= sizeof(struct rtattr) &amp;&amp; &bslash;&n;&t;&t;&t; (rta)-&gt;rta_len &lt;= (len))
+mdefine_line|#define RTA_OK(rta,len) ((len) &gt;= (int)sizeof(struct rtattr) &amp;&amp; &bslash;&n;&t;&t;&t; (rta)-&gt;rta_len &gt;= sizeof(struct rtattr) &amp;&amp; &bslash;&n;&t;&t;&t; (rta)-&gt;rta_len &lt;= (len))
 DECL|macro|RTA_NEXT
 mdefine_line|#define RTA_NEXT(rta,attrlen)&t;((attrlen) -= RTA_ALIGN((rta)-&gt;rta_len), &bslash;&n;&t;&t;&t;&t; (struct rtattr*)(((char*)(rta)) + RTA_ALIGN((rta)-&gt;rta_len)))
 DECL|macro|RTA_LENGTH

@@ -3,6 +3,9 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;br_private.h&quot;
 macro_line|#include &quot;br_private_stp.h&quot;
+multiline_comment|/* since time values in bpdu are in jiffies and then scaled (1/256)&n; * before sending, make sure that is at least one.&n; */
+DECL|macro|MESSAGE_AGE_INCR
+mdefine_line|#define MESSAGE_AGE_INCR&t;((HZ &lt; 256) ? 1 : (HZ/256))
 DECL|variable|br_port_state_names
 r_static
 r_const
@@ -571,20 +574,20 @@ id|bpdu.port_id
 op_assign
 id|p-&gt;port_id
 suffix:semicolon
-id|bpdu.message_age
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|br_is_root_bridge
 c_func
 (paren
 id|br
 )paren
 )paren
+id|bpdu.message_age
+op_assign
+l_int|0
+suffix:semicolon
+r_else
 (brace
 r_struct
 id|net_bridge_port
@@ -599,22 +602,17 @@ comma
 id|br-&gt;root_port
 )paren
 suffix:semicolon
-id|bpdu.max_age
+id|bpdu.message_age
 op_assign
+id|br-&gt;max_age
+op_minus
+(paren
 id|root-&gt;message_age_timer.expires
 op_minus
 id|jiffies
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|bpdu.max_age
-op_le
-l_int|0
 )paren
-id|bpdu.max_age
-op_assign
-l_int|1
+op_plus
+id|MESSAGE_AGE_INCR
 suffix:semicolon
 )brace
 id|bpdu.max_age
@@ -629,6 +627,14 @@ id|bpdu.forward_delay
 op_assign
 id|br-&gt;forward_delay
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bpdu.message_age
+OL
+id|br-&gt;max_age
+)paren
+(brace
 id|br_send_config_bpdu
 c_func
 (paren
@@ -657,6 +663,7 @@ op_plus
 id|BR_HOLD_TIME
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* called under bridge lock */
 DECL|function|br_record_config_information

@@ -39,29 +39,6 @@ mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman, greg@kroah.com, htt
 singleline_comment|//www.kroah.com/linux/&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB Serial Driver core&quot;
-macro_line|#ifdef CONFIG_USB_SERIAL_GENERIC
-multiline_comment|/* we want to look at all devices, as the vendor/product id can change&n; * depending on the command line argument */
-DECL|variable|generic_serial_ids
-r_static
-r_struct
-id|usb_device_id
-id|generic_serial_ids
-(braket
-)braket
-op_assign
-(brace
-(brace
-dot
-id|driver_info
-op_assign
-l_int|42
-)brace
-comma
-(brace
-)brace
-)brace
-suffix:semicolon
-macro_line|#endif /* CONFIG_USB_SERIAL_GENERIC */
 multiline_comment|/* Driver structure we register with the USB core */
 DECL|variable|usb_serial_driver
 r_static
@@ -90,13 +67,6 @@ id|disconnect
 op_assign
 id|usb_serial_disconnect
 comma
-macro_line|#ifdef CONFIG_USB_SERIAL_GENERIC
-dot
-id|id_table
-op_assign
-id|generic_serial_ids
-comma
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* There is no MODULE_DEVICE_TABLE for usbserial.c.  Instead&n;   the MODULE_DEVICE_TABLE declarations in each serial driver&n;   cause the &quot;hotplug&quot; program to pull in whatever module is necessary&n;   via modprobe, and modprobe will load usbserial because the serial&n;   drivers depend on it.&n;*/
@@ -4723,14 +4693,6 @@ op_star
 id|device
 )paren
 (brace
-r_struct
-id|usb_serial
-op_star
-id|serial
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 id|info
 c_func
 (paren
@@ -4739,60 +4701,6 @@ comma
 id|device-&gt;name
 )paren
 suffix:semicolon
-multiline_comment|/* clear out the serial_table if the device is attached to a port */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|SERIAL_TTY_MINORS
-suffix:semicolon
-op_increment
-id|i
-)paren
-(brace
-id|serial
-op_assign
-id|serial_table
-(braket
-id|i
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|serial
-op_ne
-l_int|NULL
-)paren
-op_logical_and
-(paren
-id|serial-&gt;type
-op_eq
-id|device
-)paren
-)paren
-(brace
-id|usb_driver_release_interface
-(paren
-op_amp
-id|usb_serial_driver
-comma
-id|serial-&gt;interface
-)paren
-suffix:semicolon
-id|usb_serial_disconnect
-(paren
-id|serial-&gt;interface
-)paren
-suffix:semicolon
-)brace
-)brace
 id|list_del
 c_func
 (paren
@@ -4801,6 +4709,7 @@ id|device-&gt;driver_list
 )paren
 suffix:semicolon
 id|usb_serial_bus_deregister
+c_func
 (paren
 id|device
 )paren

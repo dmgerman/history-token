@@ -1140,11 +1140,6 @@ comma
 id|u32
 )paren
 id|cl-&gt;mbuffer
-comma
-(paren
-r_void
-)paren
-l_int|0
 )paren
 suffix:semicolon
 id|printk
@@ -3342,11 +3337,6 @@ comma
 id|u32
 )paren
 id|cl-&gt;mbuffer
-comma
-(paren
-r_void
-)paren
-l_int|0
 )paren
 suffix:semicolon
 macro_line|#ifdef HTB_DEBUG
@@ -3740,11 +3730,6 @@ comma
 id|u32
 )paren
 id|cl-&gt;mbuffer
-comma
-(paren
-r_void
-)paren
-l_int|0
 )paren
 suffix:semicolon
 macro_line|#ifdef HTB_DEBUG

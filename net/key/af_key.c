@@ -14881,7 +14881,7 @@ c_func
 (paren
 l_string|&quot;net/pfkey&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|sock_unregister
@@ -14916,7 +14916,7 @@ l_string|&quot;net/pfkey&quot;
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|pfkey_read_proc
 comma

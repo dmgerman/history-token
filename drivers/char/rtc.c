@@ -49,8 +49,6 @@ macro_line|#endif
 macro_line|#ifdef&t;CONFIG_HPET_RTC_IRQ
 DECL|macro|RTC_IRQ
 macro_line|#undef&t;RTC_IRQ
-DECL|macro|RTC_IRQ
-mdefine_line|#define&t;RTC_IRQ&t;0
 macro_line|#endif
 macro_line|#ifdef RTC_IRQ
 DECL|variable|rtc_has_irq

@@ -842,6 +842,8 @@ comma
 id|full_path
 comma
 id|inode-&gt;i_sb
+comma
+id|xid
 )paren
 suffix:semicolon
 r_else
@@ -858,6 +860,8 @@ comma
 id|buf
 comma
 id|inode-&gt;i_sb
+comma
+id|xid
 )paren
 suffix:semicolon
 r_if
@@ -1493,6 +1497,8 @@ comma
 id|full_path
 comma
 id|inode-&gt;i_sb
+comma
+id|xid
 )paren
 suffix:semicolon
 r_else
@@ -1509,6 +1515,8 @@ comma
 l_int|NULL
 comma
 id|inode-&gt;i_sb
+comma
+id|xid
 )paren
 suffix:semicolon
 )brace
@@ -2755,15 +2763,6 @@ r_return
 id|total_written
 suffix:semicolon
 )brace
-id|open_file
-op_assign
-(paren
-r_struct
-id|cifsFileInfo
-op_star
-)paren
-id|file-&gt;private_data
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6811,6 +6810,13 @@ op_star
 id|ptmp_inode
 )paren
 suffix:semicolon
+id|insert_inode_hash
+c_func
+(paren
+op_star
+id|ptmp_inode
+)paren
+suffix:semicolon
 )brace
 )brace
 r_else
@@ -6865,21 +6871,6 @@ op_assign
 op_amp
 id|cifs_dentry_ops
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot; instantiate dentry 0x%p with inode 0x%p &quot;
-comma
-id|tmp_dentry
-comma
-op_star
-id|ptmp_inode
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6905,6 +6896,13 @@ id|d_rehash
 c_func
 (paren
 id|tmp_dentry
+)paren
+suffix:semicolon
+id|insert_inode_hash
+c_func
+(paren
+op_star
+id|ptmp_inode
 )paren
 suffix:semicolon
 )brace
@@ -9531,6 +9529,11 @@ dot
 id|commit_write
 op_assign
 id|cifs_commit_write
+comma
+dot
+id|set_page_dirty
+op_assign
+id|__set_page_dirty_nobuffers
 comma
 multiline_comment|/* .sync_page = cifs_sync_page, */
 multiline_comment|/*.direct_IO = */

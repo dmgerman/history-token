@@ -3440,7 +3440,7 @@ id|usblp
 op_star
 id|usblp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|protocol
@@ -4067,7 +4067,7 @@ id|epwrite
 op_assign
 id|epread
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop

@@ -704,14 +704,14 @@ c_func
 r_void
 )paren
 (brace
-id|platform_add_device
+id|platform_device_register
 c_func
 (paren
 op_amp
 id|smc91x_device
 )paren
 suffix:semicolon
-multiline_comment|/* reading the BSR might be handy to select LCD type here */
+multiline_comment|/* reading Mainstone&squot;s &quot;Virtual Configuration Register&quot;&n;&t;   might be handy to select LCD type here */
 r_if
 c_cond
 (paren

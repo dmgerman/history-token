@@ -1654,6 +1654,7 @@ DECL|function|find_next_bit
 id|find_next_bit
 c_func
 (paren
+r_const
 r_void
 op_star
 id|addr
@@ -1667,6 +1668,7 @@ r_int
 id|offset
 )paren
 (brace
+r_const
 r_int
 r_int
 op_star
@@ -1674,6 +1676,7 @@ id|p
 op_assign
 (paren
 (paren
+r_const
 r_int
 r_int
 op_star

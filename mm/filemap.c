@@ -392,6 +392,8 @@ op_plus
 l_int|1
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 r_int
@@ -7729,7 +7731,7 @@ id|lru_pvec
 suffix:semicolon
 id|current-&gt;backing_dev_info
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|err

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * IBM PowerPC Virtual I/O Infrastructure Support.&n; *&n
 macro_line|#ifndef _ASM_VIO_H
 DECL|macro|_ASM_VIO_H
 mdefine_line|#define _ASM_VIO_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
@@ -53,11 +54,12 @@ op_star
 id|drv
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_PSERIES
 r_struct
 id|vio_dev
 op_star
 id|__devinit
-id|vio_register_device
+id|vio_register_device_node
 c_func
 (paren
 r_struct
@@ -66,6 +68,7 @@ op_star
 id|node_vdev
 )paren
 suffix:semicolon
+macro_line|#endif
 r_void
 id|__devinit
 id|vio_unregister_device
@@ -436,6 +439,16 @@ op_star
 id|iommu_table
 suffix:semicolon
 multiline_comment|/* vio_map_* uses this */
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|type
+r_char
+op_star
+id|type
+suffix:semicolon
 DECL|member|unit_address
 r_uint32
 id|unit_address

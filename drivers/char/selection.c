@@ -1394,7 +1394,7 @@ id|sel_buffer
 op_plus
 id|pasted
 comma
-l_int|0
+l_int|NULL
 comma
 id|count
 )paren

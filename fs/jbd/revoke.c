@@ -517,7 +517,7 @@ id|revoke_record_cache
 suffix:semicolon
 id|revoke_record_cache
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|kmem_cache_destroy
 c_func
@@ -527,7 +527,7 @@ id|revoke_table_cache
 suffix:semicolon
 id|revoke_table_cache
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Initialise the revoke table for a given journal to a given size. */

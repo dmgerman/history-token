@@ -1032,7 +1032,7 @@ l_string|&quot;V.34&quot;
 comma
 l_string|&quot;V.32&quot;
 comma
-l_int|0
+l_int|NULL
 )brace
 suffix:semicolon
 DECL|function|check_name

@@ -5187,7 +5187,7 @@ id|journal_head_cache
 suffix:semicolon
 id|journal_head_cache
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * journal_head splicing and dicing&n; */

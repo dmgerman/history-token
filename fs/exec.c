@@ -4591,6 +4591,10 @@ id|bprm.interp_flags
 op_assign
 l_int|0
 suffix:semicolon
+id|bprm.interp_data
+op_assign
+l_int|0
+suffix:semicolon
 id|bprm.sh_bang
 op_assign
 l_int|0

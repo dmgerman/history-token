@@ -13,7 +13,6 @@ mdefine_line|#define MCA_bus__is_a_macro
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/procinfo.h&gt;
-macro_line|#include &lt;asm/arch/memory.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 DECL|macro|KERNEL_STACK_SIZE
 mdefine_line|#define KERNEL_STACK_SIZE&t;PAGE_SIZE

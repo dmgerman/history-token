@@ -1169,10 +1169,12 @@ id|tt
 (brace
 r_return
 id|usb_control_msg
+c_func
 (paren
 id|hdev
 comma
 id|usb_rcvctrlpipe
+c_func
 (paren
 id|hdev
 comma
@@ -1187,7 +1189,7 @@ id|devinfo
 comma
 id|tt
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -4243,7 +4245,7 @@ id|index
 (brace
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * usb_new_device - perform initial device setup (usbcore-internal)&n; * @udev: newly addressed device (in ADDRESS state)&n; *&n; * This is called with devices which have been enumerated, but not yet&n; * configured.  The device descriptor is available, but not descriptors&n; * for any device configuration.  The caller must have locked udev and&n; * either the parent hub (if udev is a normal device) or else the&n; * usb_bus_list_lock (if udev is a root hub).  The parent&squot;s pointer to&n; * udev has already been installed, but udev is not yet visible through&n; * sysfs or other filesystem code.&n; *&n; * Returns 0 for success (device is configured and listed, with its&n; * interfaces, in sysfs); else a negative errno value.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; *&n; * Only the hub driver should ever call this; root hub registration&n; * uses it indirectly.&n; */
+multiline_comment|/**&n; * usb_new_device - perform initial device setup (usbcore-internal)&n; * @udev: newly addressed device (in ADDRESS state)&n; *&n; * This is called with devices which have been enumerated, but not yet&n; * configured.  The device descriptor is available, but not descriptors&n; * for any device configuration.  The caller must have locked udev and&n; * either the parent hub (if udev is a normal device) or else the&n; * usb_bus_list_lock (if udev is a root hub).  The parent&squot;s pointer to&n; * udev has already been installed, but udev is not yet visible through&n; * sysfs or other filesystem code.&n; *&n; * Returns 0 for success (device is configured and listed, with its&n; * interfaces, in sysfs); else a negative errno value.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; *&n; * Only the hub driver should ever call this; root hub registration&n; * uses it indirectly.&n; */
 DECL|function|usb_new_device
 r_int
 id|usb_new_device
@@ -5362,7 +5364,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* reset device, (re)assign address, get device descriptor.&n; * device connection is stable, no more debouncing needed.&n; * returns device in USB_STATE_ADDRESS, except on error.&n; * on error return, device is no longer usable (ref dropped).&n; *&n; * caller owns dev-&gt;serialize for the device, guarding against&n; * config changes and disconnect processing.&n; */
+multiline_comment|/* Reset device, (re)assign address, get device descriptor.&n; * Device connection must be stable, no more debouncing needed.&n; * Returns device in USB_STATE_ADDRESS, except on error.&n; *&n; * If this is called for an already-existing device (as part of&n; * usb_reset_device), the caller must own the device lock.  For a&n; * newly detected device that is not accessible through any global&n; * pointers, it&squot;s not necessary to lock the device.&n; */
 r_static
 r_int
 DECL|function|hub_port_init
@@ -6315,6 +6317,14 @@ id|port
 )braket
 )paren
 suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|port
+comma
+id|hub-&gt;change_bits
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7121,6 +7131,16 @@ id|i
 op_increment
 )paren
 (brace
+id|connect_change
+op_assign
+id|test_bit
+c_func
+(paren
+id|i
+comma
+id|hub-&gt;change_bits
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7134,6 +7154,9 @@ l_int|1
 comma
 id|hub-&gt;event_bits
 )paren
+op_logical_and
+op_logical_neg
+id|connect_change
 )paren
 r_continue
 suffix:semicolon
@@ -7161,10 +7184,6 @@ OL
 l_int|0
 )paren
 r_continue
-suffix:semicolon
-id|connect_change
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -7257,7 +7276,7 @@ id|hub_dev
 comma
 l_string|&quot;port %i &quot;
 l_string|&quot;disabled by hub (EMI?), &quot;
-l_string|&quot;re-enabling...&quot;
+l_string|&quot;re-enabling...&bslash;n&quot;
 comma
 id|i
 op_plus
@@ -8007,8 +8026,8 @@ comma
 id|buf-&gt;bConfigurationValue
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME enable this when we can re-enumerate after reset;&n; * until then DFU-ish drivers need this and other workarounds&n; */
-singleline_comment|//&t;&t;&t;break;
+r_break
+suffix:semicolon
 )brace
 )brace
 id|kfree
@@ -8023,7 +8042,7 @@ op_ne
 id|udev-&gt;descriptor.bNumConfigurations
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * WARNING - don&squot;t reset any device unless drivers for all of its&n; * interfaces are expecting that reset!  Maybe some driver-&gt;reset()&n; * method should eventually help ensure sufficient cooperation.&n; *&n; * This is the same as usb_reset_device() except that the caller&n; * already holds dev-&gt;serialize.  For example, it&squot;s safe to use&n; * this from a driver probe() routine after downloading new firmware.&n; */
+multiline_comment|/**&n; * usb_reset_devce - perform a USB port reset to reinitialize a device&n; * @udev: device to reset (not in SUSPENDED or NOTATTACHED state)&n; *&n; * WARNING - don&squot;t reset any device unless drivers for all of its&n; * interfaces are expecting that reset!  Maybe some driver-&gt;reset()&n; * method should eventually help ensure sufficient cooperation.&n; *&n; * Do a port reset, reassign the device&squot;s address, and establish its&n; * former operating configuration.  If the reset fails, or the device&squot;s&n; * descriptors change from their values before the reset, or the original&n; * configuration and altsettings cannot be restored, a flag will be set&n; * telling khubd to pretend the device has been disconnected and then&n; * re-connected.  All drivers will be unbound, and the device will be&n; * re-enumerated and probed all over again.&n; *&n; * Returns 0 if the reset succeeded, -ENODEV if the device has been&n; * flagged for logical disconnection, or some other negative error code&n; * if the reset wasn&squot;t even attempted.&n; *&n; * The caller must own the device lock.  For example, it&squot;s safe to use&n; * this from a driver probe() routine after downloading new firmware.&n; */
 DECL|function|__usb_reset_device
 r_int
 id|__usb_reset_device
@@ -8058,6 +8077,40 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+r_struct
+id|usb_hub
+op_star
+id|hub
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|udev-&gt;state
+op_eq
+id|USB_STATE_NOTATTACHED
+op_logical_or
+id|udev-&gt;state
+op_eq
+id|USB_STATE_SUSPENDED
+)paren
+(brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|udev-&gt;dev
+comma
+l_string|&quot;device reset not allowed in state %d&bslash;n&quot;
+comma
+id|udev-&gt;state
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+multiline_comment|/* FIXME: This should be legal for regular hubs.  Root hubs may&n;&t; * have special requirements. */
 r_if
 c_cond
 (paren
@@ -8078,7 +8131,7 @@ id|__FUNCTION__
 suffix:semicolon
 r_return
 op_minus
-id|EINVAL
+id|EISDIR
 suffix:semicolon
 )brace
 r_for
@@ -8120,10 +8173,22 @@ id|port
 OL
 l_int|0
 )paren
+(brace
+multiline_comment|/* If this ever happens, it&squot;s very bad */
+id|dev_err
+c_func
+(paren
+op_amp
+id|udev-&gt;dev
+comma
+l_string|&quot;Can&squot;t locate device&squot;s port!&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOENT
 suffix:semicolon
+)brace
 id|ret
 op_assign
 id|hub_port_init
@@ -8343,13 +8408,74 @@ l_int|0
 suffix:semicolon
 id|re_enumerate
 suffix:colon
-multiline_comment|/* FIXME make some task re-enumerate; don&squot;t just mark unusable */
 id|hub_port_disable
 c_func
 (paren
 id|parent
 comma
 id|port
+)paren
+suffix:semicolon
+id|hub
+op_assign
+id|usb_get_intfdata
+c_func
+(paren
+id|parent-&gt;actconfig-&gt;interface
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|port
+comma
+id|hub-&gt;change_bits
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|hub_event_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|list_empty
+c_func
+(paren
+op_amp
+id|hub-&gt;event_list
+)paren
+)paren
+(brace
+id|list_add_tail
+c_func
+(paren
+op_amp
+id|hub-&gt;event_list
+comma
+op_amp
+id|hub_event_list
+)paren
+suffix:semicolon
+id|wake_up
+c_func
+(paren
+op_amp
+id|khubd_wait
+)paren
+suffix:semicolon
+)brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|hub_event_lock
 )paren
 suffix:semicolon
 r_return
