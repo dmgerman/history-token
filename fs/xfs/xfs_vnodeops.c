@@ -18125,11 +18125,13 @@ id|vop_read
 op_assign
 id|xfs_read
 comma
+macro_line|#ifdef HAVE_SENDFILE
 dot
 id|vop_sendfile
 op_assign
 id|xfs_sendfile
 comma
+macro_line|#endif
 dot
 id|vop_write
 op_assign

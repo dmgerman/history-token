@@ -35,6 +35,11 @@ macro_line|#include &lt;linux/xfs_globals.h&gt;
 macro_line|#include &lt;linux/xfs_fs_subr.h&gt;
 macro_line|#include &lt;linux/xfs_lrw.h&gt;
 macro_line|#include &lt;pagebuf/page_buf.h&gt;
+multiline_comment|/*&n; * Feature macros (disable/enable)&n; */
+DECL|macro|HAVE_REFCACHE
+macro_line|#undef  HAVE_REFCACHE&t;/* reference cache not needed for NFS in 2.6 */
+DECL|macro|HAVE_SENDFILE
+mdefine_line|#define HAVE_SENDFILE&t;/* sendfile(2) exists in 2.6, but not in 2.4 */
 multiline_comment|/*&n; * State flag for unwritten extent buffers.&n; *&n; * We need to be able to distinguish between these and delayed&n; * allocate buffers within XFS.  The generic IO path code does&n; * not need to distinguish - we use the BH_Delay flag for both&n; * delalloc and these ondisk-uninitialised buffers.&n; */
 id|BUFFER_FNS
 c_func
