@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  sata_nv.c - NVIDIA nForce SATA&n; *&n; *  Copyright 2004 NVIDIA Corp.  All rights reserved.&n; *  Copyright 2004 Andrew Chew&n; *&n; *  The contents of this file are subject to the Open&n; *  Software License version 1.1 that can be found at&n; *  http://www.opensource.org/licenses/osl-1.1.txt and is included herein&n; *  by reference.&n; *&n; *  Alternatively, the contents of this file may be used under the terms&n; *  of the GNU General Public License version 2 (the &quot;GPL&quot;) as distributed&n; *  in the kernel source COPYING file, in which case the provisions of&n; *  the GPL are applicable instead of the above.  If you wish to allow&n; *  the use of your version of this file only under the terms of the&n; *  GPL and not to allow others to use your version of this file under&n; *  the OSL, indicate your decision by deleting the provisions above and&n; *  replace them with the notice and other provisions required by the GPL.&n; *  If you do not delete the provisions above, a recipient may use your&n; *  version of this file under either the OSL or the GPL.&n; *&n; *  0.02&n; *     - Added support for CK804 SATA controller.&n; *&n; *  0.01&n; *     - Initial revision.&n; */
+multiline_comment|/*&n; *  sata_nv.c - NVIDIA nForce SATA&n; *&n; *  Copyright 2004 NVIDIA Corp.  All rights reserved.&n; *  Copyright 2004 Andrew Chew&n; *&n; *  The contents of this file are subject to the Open&n; *  Software License version 1.1 that can be found at&n; *  http://www.opensource.org/licenses/osl-1.1.txt and is included herein&n; *  by reference.&n; *&n; *  Alternatively, the contents of this file may be used under the terms&n; *  of the GNU General Public License version 2 (the &quot;GPL&quot;) as distributed&n; *  in the kernel source COPYING file, in which case the provisions of&n; *  the GPL are applicable instead of the above.  If you wish to allow&n; *  the use of your version of this file only under the terms of the&n; *  GPL and not to allow others to use your version of this file under&n; *  the OSL, indicate your decision by deleting the provisions above and&n; *  replace them with the notice and other provisions required by the GPL.&n; *  If you do not delete the provisions above, a recipient may use your&n; *  version of this file under either the OSL or the GPL.&n; *&n; *  0.03&n; *     - Fixed a bug where the hotplug handlers for non-CK804/MCP04 were using&n; *       mmio_base, which is only set for the CK804/MCP04 case.&n; *&n; *  0.02&n; *     - Added support for CK804 SATA controller.&n; *&n; *  0.01&n; *     - Initial revision.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/libata.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&t;&quot;sata_nv&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&t;&quot;0.02&quot;
+mdefine_line|#define DRV_VERSION&t;&t;&t;&quot;0.03&quot;
 DECL|macro|NV_PORTS
 mdefine_line|#define NV_PORTS&t;&t;&t;2
 DECL|macro|NV_PIO_MASK
@@ -1757,11 +1757,12 @@ c_func
 (paren
 id|NV_INT_STATUS_HOTPLUG
 comma
-(paren
-r_int
-r_int
-)paren
-id|probe_ent-&gt;mmio_base
+id|probe_ent-&gt;port
+(braket
+l_int|0
+)braket
+dot
+id|scr_addr
 op_plus
 id|NV_INT_STATUS
 )paren
@@ -1771,11 +1772,12 @@ op_assign
 id|inb
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
-id|probe_ent-&gt;mmio_base
+id|probe_ent-&gt;port
+(braket
+l_int|0
+)braket
+dot
+id|scr_addr
 op_plus
 id|NV_INT_ENABLE
 )paren
@@ -1789,11 +1791,12 @@ c_func
 (paren
 id|intr_mask
 comma
-(paren
-r_int
-r_int
-)paren
-id|probe_ent-&gt;mmio_base
+id|probe_ent-&gt;port
+(braket
+l_int|0
+)braket
+dot
+id|scr_addr
 op_plus
 id|NV_INT_ENABLE
 )paren
@@ -1819,11 +1822,12 @@ op_assign
 id|inb
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
-id|host_set-&gt;mmio_base
+id|host_set-&gt;ports
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|ioaddr.scr_addr
 op_plus
 id|NV_INT_ENABLE
 )paren
@@ -1840,11 +1844,12 @@ c_func
 (paren
 id|intr_mask
 comma
-(paren
-r_int
-r_int
-)paren
-id|host_set-&gt;mmio_base
+id|host_set-&gt;ports
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|ioaddr.scr_addr
 op_plus
 id|NV_INT_ENABLE
 )paren
@@ -1870,11 +1875,12 @@ op_assign
 id|inb
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
-id|host_set-&gt;mmio_base
+id|host_set-&gt;ports
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|ioaddr.scr_addr
 op_plus
 id|NV_INT_STATUS
 )paren
@@ -1885,11 +1891,12 @@ c_func
 (paren
 l_int|0xff
 comma
-(paren
-r_int
-r_int
-)paren
-id|host_set-&gt;mmio_base
+id|host_set-&gt;ports
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|ioaddr.scr_addr
 op_plus
 id|NV_INT_STATUS
 )paren
