@@ -205,9 +205,6 @@ c_func
 id|_major
 comma
 id|_name
-comma
-op_amp
-id|dm_blk_dops
 )paren
 suffix:semicolon
 r_if
@@ -218,12 +215,6 @@ OL
 l_int|0
 )paren
 (brace
-id|DMERR
-c_func
-(paren
-l_string|&quot;register_blkdev failed&quot;
-)paren
-suffix:semicolon
 id|kmem_cache_destroy
 c_func
 (paren

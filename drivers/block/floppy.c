@@ -18526,20 +18526,9 @@ c_func
 id|FLOPPY_MAJOR
 comma
 l_string|&quot;fd&quot;
-comma
-op_amp
-id|floppy_fops
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;Unable to get major %d for floppy&bslash;n&quot;
-comma
-id|FLOPPY_MAJOR
-)paren
-suffix:semicolon
 id|err
 op_assign
 op_minus

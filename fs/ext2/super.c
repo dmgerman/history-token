@@ -4007,12 +4007,6 @@ id|j
 )braket
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|sbi-&gt;s_group_desc
-)paren
-suffix:semicolon
 id|printk
 (paren
 l_string|&quot;EXT2-fs: unable to read group descriptors&bslash;n&quot;

@@ -13803,7 +13803,6 @@ id|retv
 suffix:semicolon
 )brace
 multiline_comment|/*==========================================================&n;**&n;**&t;Linux release module stuff.&n;**&n;**&t;Called before unloading the module&n;**&t;Detach the host.&n;**&t;We have to free resources and halt the NCR chip&n;**&n;**==========================================================&n;*/
-macro_line|#ifdef MODULE
 DECL|function|ncr_detach
 r_static
 r_int
@@ -14423,7 +14422,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*==========================================================&n;**&n;**&n;**&t;Complete execution of a SCSI command.&n;**&t;Signal completion to the generic SCSI driver.&n;**&n;**&n;**==========================================================&n;*/
 DECL|function|ncr_complete
 r_void
@@ -27385,7 +27383,6 @@ r_return
 id|sts
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|function|ncr53c8xx_release
 r_int
 id|ncr53c8xx_release
@@ -27424,7 +27421,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n;**&t;Scsi command waiting list management.&n;**&n;**&t;It may happen that we cannot insert a scsi command into the start queue,&n;**&t;in the following circumstances.&n;** &t;&t;Too few preallocated ccb(s), &n;**&t;&t;maxtags &lt; cmd_per_lun of the Linux host control block,&n;**&t;&t;etc...&n;**&t;Such scsi commands are inserted into a waiting list.&n;**&t;When a scsi command complete, we try to requeue the commands of the&n;**&t;waiting list.&n;*/
 DECL|macro|next_wcmd
 mdefine_line|#define next_wcmd host_scribble

@@ -336,6 +336,8 @@ mdefine_line|#define check_valid_hugepage_range(addr, len)&t;0
 macro_line|#ifndef HPAGE_MASK
 DECL|macro|HPAGE_MASK
 mdefine_line|#define HPAGE_MASK&t;0&t;&t;/* Keep the compiler happy */
+DECL|macro|HPAGE_SIZE
+mdefine_line|#define HPAGE_SIZE&t;0
 macro_line|#endif
 macro_line|#endif /* !CONFIG_HUGETLB_PAGE */
 macro_line|#ifdef CONFIG_HUGETLBFS

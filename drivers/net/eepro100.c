@@ -1672,16 +1672,6 @@ id|ent
 )paren
 suffix:semicolon
 r_static
-r_void
-id|eepro100_remove_one
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-)paren
-suffix:semicolon
-r_static
 r_int
 id|do_eeprom_cmd
 c_func
@@ -3537,6 +3527,13 @@ id|sp-&gt;timer
 )paren
 suffix:semicolon
 multiline_comment|/* used in ioctl() */
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|sp-&gt;lock
+)paren
+suffix:semicolon
 id|sp-&gt;mii_if.full_duplex
 op_assign
 id|option
@@ -4404,13 +4401,6 @@ suffix:semicolon
 id|sp-&gt;tx_full
 op_assign
 l_int|0
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|sp-&gt;lock
-)paren
 suffix:semicolon
 id|sp-&gt;in_interrupt
 op_assign

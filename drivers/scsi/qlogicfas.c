@@ -56,10 +56,6 @@ DECL|macro|QL_INT_ACTIVE_HIGH
 mdefine_line|#define QL_INT_ACTIVE_HIGH 0
 macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#ifdef PCMCIA
-DECL|macro|MODULE
-macro_line|#undef MODULE
-macro_line|#endif
 macro_line|#include &lt;linux/blk.h&gt;&t;&t;/* to get disk capacity */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -74,7 +70,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;qlogicfas.h&quot;
 multiline_comment|/*----------------------------------------------------------------*/
 multiline_comment|/* driver state info, local to driver */
 DECL|variable|qbase
@@ -193,6 +188,25 @@ op_or
 id|FASTSCSI
 op_lshift
 l_int|4
+)paren
+suffix:semicolon
+r_int
+id|qlogicfas_queuecommand
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+comma
+r_void
+(paren
+op_star
+id|done
+)paren
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*----------------------------------------------------------------*/
@@ -2408,10 +2422,11 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n; *&t;Look for qlogic card and init if found &n; */
-DECL|function|qlogicfas_detect
-r_int
-id|__devinit
-id|qlogicfas_detect
+DECL|function|__qlogicfas_detect
+r_struct
+id|Scsi_Host
+op_star
+id|__qlogicfas_detect
 c_func
 (paren
 id|Scsi_Host_Template
@@ -2435,10 +2450,6 @@ op_star
 id|hreg
 suffix:semicolon
 multiline_comment|/* registered host structure */
-id|host-&gt;proc_name
-op_assign
-l_string|&quot;qlogicfas&quot;
-suffix:semicolon
 multiline_comment|/*&t;Qlogic Cards only exist at 0x230 or 0x330 (the chip itself&n;&t; *&t;decodes the address - I check 230 first since MIDI cards are&n;&t; *&t;typically at 0x330&n;&t; *&n;&t; *&t;Theoretically, two Qlogic cards can coexist in the same system.&n;&t; *&t;This should work by simply using this as a loadable module for&n;&t; *&t;the second card, but I haven&squot;t tested this.&n;&t; */
 r_if
 c_cond
@@ -2547,7 +2558,8 @@ op_eq
 l_int|0x430
 )paren
 r_return
-l_int|0
+l_int|NULL
+suffix:semicolon
 suffix:semicolon
 )brace
 r_else
@@ -2939,7 +2951,7 @@ op_assign
 id|qinfo
 suffix:semicolon
 r_return
-l_int|1
+id|hreg
 suffix:semicolon
 id|err_release_mem
 suffix:colon
@@ -2965,7 +2977,31 @@ id|do_ql_ihandl
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
+suffix:semicolon
+suffix:semicolon
+)brace
+DECL|function|qlogicfas_detect
+r_int
+id|__devinit
+id|qlogicfas_detect
+c_func
+(paren
+id|Scsi_Host_Template
+op_star
+id|sht
+)paren
+(brace
+r_return
+(paren
+id|__qlogicfas_detect
+c_func
+(paren
+id|sht
+)paren
+op_ne
+l_int|NULL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* &n; *&t;Return bios parameters &n; */
@@ -3130,7 +3166,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n; *&t;Reset SCSI bus&n; *&t;FIXME: This function is invoked with cmd = NULL directly by&n; *&t;the PCMCIA qlogic_stub code. This wants fixing&n; */
 DECL|function|qlogicfas_bus_reset
-r_static
 r_int
 id|qlogicfas_bus_reset
 c_func
@@ -3227,9 +3262,98 @@ DECL|variable|qlogicfas_driver_template
 id|Scsi_Host_Template
 id|qlogicfas_driver_template
 op_assign
-id|QLOGICFAS
+(brace
+dot
+id|module
+op_assign
+id|THIS_MODULE
+comma
+dot
+id|name
+op_assign
+l_string|&quot;qlogicfas&quot;
+comma
+dot
+id|proc_name
+op_assign
+l_string|&quot;qlogicfas&quot;
+comma
+dot
+id|detect
+op_assign
+id|qlogicfas_detect
+comma
+dot
+id|info
+op_assign
+id|qlogicfas_info
+comma
+dot
+id|command
+op_assign
+id|qlogicfas_command
+comma
+dot
+id|queuecommand
+op_assign
+id|qlogicfas_queuecommand
+comma
+dot
+id|eh_abort_handler
+op_assign
+id|qlogicfas_abort
+comma
+dot
+id|eh_bus_reset_handler
+op_assign
+id|qlogicfas_bus_reset
+comma
+dot
+id|eh_device_reset_handler
+op_assign
+id|qlogicfas_device_reset
+comma
+dot
+id|eh_host_reset_handler
+op_assign
+id|qlogicfas_host_reset
+comma
+dot
+id|bios_param
+op_assign
+id|qlogicfas_biosparam
+comma
+dot
+id|can_queue
+op_assign
+l_int|0
+comma
+dot
+id|this_id
+op_assign
+op_minus
+l_int|1
+comma
+dot
+id|sg_tablesize
+op_assign
+id|SG_ALL
+comma
+dot
+id|cmd_per_lun
+op_assign
+l_int|1
+comma
+dot
+id|use_clustering
+op_assign
+id|DISABLE_CLUSTERING
+comma
+)brace
 suffix:semicolon
+macro_line|#ifndef PCMCIA
 DECL|macro|driver_template
 mdefine_line|#define driver_template qlogicfas_driver_template
 macro_line|#include &quot;scsi_module.c&quot;
+macro_line|#endif
 eof

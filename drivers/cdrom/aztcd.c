@@ -7614,24 +7614,9 @@ c_func
 id|MAJOR_NR
 comma
 l_string|&quot;aztcd&quot;
-comma
-op_amp
-id|azt_fops
 )paren
-op_ne
-l_int|0
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;aztcd: Unable to get major %d for Aztech&quot;
-l_string|&quot; CD-ROM&bslash;n&quot;
-comma
-id|MAJOR_NR
-)paren
-suffix:semicolon
 id|ret
 op_assign
 op_minus
@@ -7733,9 +7718,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 id|err_out2
 suffix:colon

@@ -1546,9 +1546,6 @@ suffix:semicolon
 id|loff_t
 id|offset
 suffix:semicolon
-r_int
-id|retval
-suffix:semicolon
 id|current-&gt;mm-&gt;end_code
 op_assign
 id|interp_ex-&gt;a_text
@@ -1641,11 +1638,6 @@ comma
 id|text_data
 )paren
 suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|ENOEXEC
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1658,8 +1650,9 @@ id|interpreter-&gt;f_op-&gt;read
 r_goto
 id|out
 suffix:semicolon
-id|retval
-op_assign
+r_if
+c_cond
+(paren
 id|interpreter-&gt;f_op
 op_member_access_from_pointer
 id|read
@@ -1674,11 +1667,6 @@ comma
 op_amp
 id|offset
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
 OL
 l_int|0
 )paren
@@ -2571,8 +2559,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_return
-id|retval
+r_goto
+id|out_free_dentry
 suffix:semicolon
 )brace
 id|current-&gt;mm-&gt;start_stack
@@ -3064,8 +3052,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_return
-l_int|0
+id|retval
+op_assign
+op_minus
+id|ENOEXEC
+suffix:semicolon
+multiline_comment|/* Nobody gets to see this, but.. */
+r_goto
+id|out
 suffix:semicolon
 )brace
 )brace

@@ -481,13 +481,11 @@ comma
 id|i
 )paren
 suffix:semicolon
+)brace
+)brace
+multiline_comment|/* See op_model_ppro.c */
 r_return
 l_int|1
-suffix:semicolon
-)brace
-)brace
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|athlon_start

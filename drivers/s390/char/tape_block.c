@@ -1349,9 +1349,6 @@ c_func
 id|tapeblock_major
 comma
 l_string|&quot;tBLK&quot;
-comma
-op_amp
-id|tapeblock_fops
 )paren
 suffix:semicolon
 r_if
@@ -1361,19 +1358,9 @@ id|rc
 OL
 l_int|0
 )paren
-(brace
-id|PRINT_ERR
-c_func
-(paren
-l_string|&quot;can&squot;t get major %d for block device&bslash;n&quot;
-comma
-id|tapeblock_major
-)paren
-suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

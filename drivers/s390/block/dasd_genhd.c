@@ -112,9 +112,6 @@ c_func
 id|major
 comma
 l_string|&quot;dasd&quot;
-comma
-op_amp
-id|dasd_device_operations
 )paren
 suffix:semicolon
 r_if
@@ -125,18 +122,6 @@ OL
 l_int|0
 )paren
 (brace
-id|MESSAGE
-c_func
-(paren
-id|KERN_WARNING
-comma
-l_string|&quot;Cannot register to major no %d, rc = %d&quot;
-comma
-id|major
-comma
-id|new_major
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren

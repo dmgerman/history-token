@@ -5914,22 +5914,9 @@ c_func
 id|MAJOR_NR
 comma
 id|CDU535_HANDLE
-comma
-op_amp
-id|cdu_fops
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;Unable to get major %d for %s&bslash;n&quot;
-comma
-id|MAJOR_NR
-comma
-id|CDU535_MESSAGE_NAME
-)paren
-suffix:semicolon
 id|err
 op_assign
 op_minus

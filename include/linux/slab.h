@@ -45,6 +45,8 @@ DECL|macro|SLAB_CACHE_DMA
 mdefine_line|#define SLAB_CACHE_DMA&t;&t;0x00004000UL&t;/* use GFP_DMA memory */
 DECL|macro|SLAB_MUST_HWCACHE_ALIGN
 mdefine_line|#define SLAB_MUST_HWCACHE_ALIGN&t;0x00008000UL&t;/* force alignment */
+DECL|macro|SLAB_STORE_USER
+mdefine_line|#define SLAB_STORE_USER&t;&t;0x00010000UL&t;/* store the last owner for bug hunting */
 multiline_comment|/* flags passed to a constructor func */
 DECL|macro|SLAB_CTOR_CONSTRUCTOR
 mdefine_line|#define&t;SLAB_CTOR_CONSTRUCTOR&t;0x001UL&t;&t;/* if not set, then deconstructor */

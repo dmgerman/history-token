@@ -392,14 +392,13 @@ id|task
 r_if
 c_cond
 (paren
-id|timer_pending
+id|del_timer_sync
 c_func
 (paren
 op_amp
 id|task-&gt;tk_timer
 )paren
 )paren
-(brace
 id|dprintk
 c_func
 (paren
@@ -408,14 +407,6 @@ comma
 id|task-&gt;tk_pid
 )paren
 suffix:semicolon
-id|del_timer_sync
-c_func
-(paren
-op_amp
-id|task-&gt;tk_timer
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Add new request to wait queue.&n; *&n; * Swapper tasks always get inserted at the head of the queue.&n; * This should avoid many nasty memory deadlocks and hopefully&n; * improve overall performance.&n; * Everyone else gets appended to the queue to ensure proper FIFO behavior.&n; */
 r_static

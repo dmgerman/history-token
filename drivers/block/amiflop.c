@@ -9348,25 +9348,12 @@ c_func
 id|FLOPPY_MAJOR
 comma
 l_string|&quot;fd&quot;
-comma
-op_amp
-id|floppy_fops
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;fd: Unable to get major %d for floppy&bslash;n&quot;
-comma
-id|FLOPPY_MAJOR
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; *  We request DSKPTR, DSKLEN and DSKDATA only, because the other&n;&t; *  floppy registers are too spreaded over the custom register space&n;&t; */
 r_if
 c_cond

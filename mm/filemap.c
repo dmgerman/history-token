@@ -1834,6 +1834,8 @@ c_func
 id|mapping
 comma
 id|ra
+comma
+id|index
 )paren
 suffix:semicolon
 r_goto
@@ -3614,6 +3616,8 @@ c_func
 id|mapping
 comma
 id|ra
+comma
+id|pgoff
 )paren
 suffix:semicolon
 id|did_readahead

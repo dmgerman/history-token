@@ -980,6 +980,10 @@ id|irqaction
 op_star
 id|action
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -998,6 +1002,12 @@ id|num
 op_increment
 )paren
 (brace
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 id|action
 op_assign
 id|irq_action
@@ -1011,7 +1021,8 @@ c_cond
 op_logical_neg
 id|action
 )paren
-r_continue
+r_goto
+id|skip_1
 suffix:semicolon
 id|seq_printf
 c_func
@@ -1091,6 +1102,14 @@ comma
 l_string|&quot; [on-chip]&bslash;n&quot;
 )paren
 suffix:semicolon
+id|skip_1
+suffix:colon
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 )brace
 r_for
 c_loop
@@ -1110,6 +1129,12 @@ id|num
 op_increment
 )paren
 (brace
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 id|action
 op_assign
 id|local_irq_action
@@ -1123,7 +1148,8 @@ c_cond
 op_logical_neg
 id|action
 )paren
-r_continue
+r_goto
+id|skip_2
 suffix:semicolon
 id|seq_printf
 c_func
@@ -1201,6 +1227,14 @@ c_func
 id|p
 comma
 l_string|&quot; [local]&bslash;n&quot;
+)paren
+suffix:semicolon
+id|skip_2
+suffix:colon
+id|local_irq_restore
+c_func
+(paren
+id|flags
 )paren
 suffix:semicolon
 )brace

@@ -8,6 +8,8 @@ macro_line|#include &lt;linux/raw.h&gt;
 macro_line|#include &lt;linux/capability.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+DECL|macro|MAX_RAW_MINORS
+mdefine_line|#define MAX_RAW_MINORS&t;256
 DECL|struct|raw_device_data
 r_struct
 id|raw_device_data
@@ -30,7 +32,7 @@ r_struct
 id|raw_device_data
 id|raw_devices
 (braket
-l_int|256
+id|MAX_RAW_MINORS
 )braket
 suffix:semicolon
 r_static
@@ -46,6 +48,7 @@ r_struct
 id|file_operations
 id|raw_ctl_fops
 suffix:semicolon
+multiline_comment|/* forward declaration */
 multiline_comment|/*&n; * Open/close code for raw IO.&n; *&n; * We just rewrite the i_mapping for the /dev/raw/rawN file descriptor to&n; * point at the blockdev&squot;s address_space and set the file handle to use&n; * O_DIRECT.&n; *&n; * Set the device&squot;s soft blocksize to the minimum possible.  This gives the&n; * finest possible alignment and has no adverse impact on performance.&n; */
 DECL|function|raw_open
 r_static
@@ -306,6 +309,17 @@ op_amp
 id|raw_mutex
 )paren
 suffix:semicolon
+multiline_comment|/* Here  inode-&gt;i_mapping == bdev-&gt;bd_inode-&gt;i_mapping  */
+id|inode-&gt;i_mapping
+op_assign
+op_amp
+id|inode-&gt;i_data
+suffix:semicolon
+id|inode-&gt;i_mapping-&gt;backing_dev_info
+op_assign
+op_amp
+id|default_backing_dev_info
+suffix:semicolon
 id|bd_release
 c_func
 (paren
@@ -458,8 +472,12 @@ r_if
 c_cond
 (paren
 id|rq.raw_minor
-template_param
-id|MINORMASK
+OL
+l_int|0
+op_logical_or
+id|rq.raw_minor
+op_ge
+id|MAX_RAW_MINORS
 )paren
 r_goto
 id|out
@@ -480,6 +498,9 @@ op_eq
 id|RAW_SETBIND
 )paren
 (brace
+id|dev_t
+id|dev
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * This is like making block devices, so demand the&n;&t;&t;&t; * same capability&n;&t;&t;&t; */
 id|err
 op_assign
@@ -505,6 +526,16 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+id|dev
+op_assign
+id|MKDEV
+c_func
+(paren
+id|rq.block_major
+comma
+id|rq.block_minor
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -518,13 +549,21 @@ op_ne
 l_int|0
 )paren
 op_logical_or
+id|MAJOR
+c_func
+(paren
+id|dev
+)paren
+op_ne
 id|rq.block_major
-OG
-id|MAX_BLKDEV
 op_logical_or
+id|MINOR
+c_func
+(paren
+id|dev
+)paren
+op_ne
 id|rq.block_minor
-OG
-id|MINORMASK
 )paren
 r_goto
 id|out
@@ -593,29 +632,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|kdev_t
-id|kdev
-suffix:semicolon
-id|kdev
-op_assign
-id|mk_kdev
-c_func
-(paren
-id|rq.block_major
-comma
-id|rq.block_minor
-)paren
-suffix:semicolon
 id|rawdev-&gt;binding
 op_assign
 id|bdget
 c_func
 (paren
-id|kdev_t_to_nr
-c_func
-(paren
-id|kdev
-)paren
+id|dev
 )paren
 suffix:semicolon
 id|MOD_INC_USE_COUNT

@@ -6327,27 +6327,11 @@ c_func
 id|MAJOR_NR
 comma
 l_string|&quot;cm206&quot;
-comma
-op_amp
-id|cm206_bdops
 )paren
-op_ne
-l_int|0
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Cannot register for major %d!&bslash;n&quot;
-comma
-id|MAJOR_NR
-)paren
-suffix:semicolon
 r_goto
 id|out_blkdev
 suffix:semicolon
-)brace
 id|disk
 op_assign
 id|alloc_disk

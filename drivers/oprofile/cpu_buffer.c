@@ -246,16 +246,6 @@ r_if
 c_cond
 (paren
 id|tail
-op_eq
-id|head
-)paren
-r_return
-id|b-&gt;buffer_size
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tail
 OG
 id|head
 )paren

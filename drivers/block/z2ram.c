@@ -1152,27 +1152,12 @@ c_func
 id|Z2RAM_MAJOR
 comma
 id|DEVICE_NAME
-comma
-op_amp
-id|z2_fops
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|DEVICE_NAME
-l_string|&quot;: Unable to get major %d&bslash;n&quot;
-comma
-id|Z2RAM_MAJOR
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-)brace
 id|z2ram_gendisk
 op_assign
 id|alloc_disk

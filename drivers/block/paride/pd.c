@@ -4216,27 +4216,12 @@ c_func
 id|major
 comma
 id|name
-comma
-op_amp
-id|pd_fops
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: unable to get major number %d&bslash;n&quot;
-comma
-id|name
-comma
-id|major
-)paren
-suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 id|blk_init_queue
 c_func
 (paren
