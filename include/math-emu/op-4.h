@@ -116,7 +116,7 @@ mdefine_line|#define _FP_FRAC_ASSEMBLE_4(r, X, rsize)&t;&t;&t;&t;&bslash;&n;  do
 multiline_comment|/* &quot;No disassemble Number Five!&quot; */
 multiline_comment|/* move an integer of size rsize into X&squot;s fractional part. We rely on&n; * the _f[] array consisting of words of size _FP_W_TYPE_SIZE to avoid&n; * having to mask the values we store into it.&n; */
 DECL|macro|_FP_FRAC_DISASSEMBLE_4
-mdefine_line|#define _FP_FRAC_DISASSEMBLE_4(X, r, rsize)&t;&t;&t;&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    X##_f[0] = r;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    X##_f[1] = (rsize &lt;= _FP_W_TYPE_SIZE ? 0 : r &gt;&gt; _FP_W_TYPE_SIZE);&t;&bslash;&n;    X##_f[2] = (rsize &lt;= 2*_FP_W_TYPE_SIZE ? 0 : r &gt;&gt; 2*_FP_W_TYPE_SIZE); &bslash;&n;    X##_f[3] = (rsize &lt;= 3*_FP_W_TYPE_SIZE ? 0 : r &gt;&gt; 3*_FP_W_TYPE_SIZE); &bslash;&n;  } while (0);
+mdefine_line|#define _FP_FRAC_DISASSEMBLE_4(X, r, rsize)&t;&t;&t;&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    X##_f[0] = r;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    X##_f[1] = (rsize &lt;= _FP_W_TYPE_SIZE ? 0 : r &gt;&gt; _FP_W_TYPE_SIZE);&t;&bslash;&n;    X##_f[2] = (rsize &lt;= 2*_FP_W_TYPE_SIZE ? 0 : r &gt;&gt; 2*_FP_W_TYPE_SIZE); &bslash;&n;    X##_f[3] = (rsize &lt;= 3*_FP_W_TYPE_SIZE ? 0 : r &gt;&gt; 3*_FP_W_TYPE_SIZE); &bslash;&n;  } while (0)
 DECL|macro|_FP_FRAC_CONV_4_1
 mdefine_line|#define _FP_FRAC_CONV_4_1(dfs, sfs, D, S)&t;&t;&t;&t;&bslash;&n;   do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;     D##_f[0] = S##_f;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;     D##_f[1] = D##_f[2] = D##_f[3] = 0;&t;&t;&t;&t;&bslash;&n;     _FP_FRAC_SLL_4(D, (_FP_WFRACBITS_##dfs - _FP_WFRACBITS_##sfs));&t;&bslash;&n;   } while (0)
 DECL|macro|_FP_FRAC_CONV_4_2

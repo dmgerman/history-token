@@ -8406,7 +8406,11 @@ id|xircom_init_one
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|xircom_remove_one
+)paren
 comma
 macro_line|#ifdef CONFIG_PM
 id|suspend
