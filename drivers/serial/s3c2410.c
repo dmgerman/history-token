@@ -2963,12 +2963,9 @@ id|PARENB
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
 id|termios-&gt;c_cflag
 op_amp
 id|PARODD
-)paren
 )paren
 id|ulcon
 op_or_assign
