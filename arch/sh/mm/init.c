@@ -415,6 +415,8 @@ comma
 id|zones_size
 comma
 id|__MEMORY_START
+op_rshift
+id|PAGE_SHIFT
 comma
 l_int|0
 )paren
@@ -452,6 +454,8 @@ comma
 id|zones_size
 comma
 id|__MEMORY_START_2ND
+op_rshift
+id|PAGE_SHIFT
 comma
 l_int|0
 )paren

@@ -92,7 +92,7 @@ mdefine_line|#define virt_addr_valid(kaddr)&t;((kaddr) &gt;= PAGE_OFFSET &amp;&a
 macro_line|#else
 multiline_comment|/*&n; * This is more complex.  We have a set of mem_map arrays spread&n; * around in memory.&n; */
 DECL|macro|page_to_pfn
-mdefine_line|#define page_to_pfn(page)&t;&t;&t;&t;&t;&bslash;&n;&t;(((page) - page_zone(page)-&gt;zone_mem_map)&t;&t;&bslash;&n;&t;  + (page_zone(page)-&gt;zone_start_paddr &gt;&gt; PAGE_SHIFT))
+mdefine_line|#define page_to_pfn(page)&t;&t;&t;&t;&t;&bslash;&n;&t;(( (page) - page_zone(page)-&gt;zone_mem_map)&t;&t;&bslash;&n;&t;  + page_zone(page)-&gt;zone_start_pfn)
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;&t;&t;&t;&t;&bslash;&n;&t;(PFN_TO_MAPBASE(pfn) + LOCAL_MAP_NR((pfn) &lt;&lt; PAGE_SHIFT))
 DECL|macro|pfn_valid

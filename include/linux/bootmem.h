@@ -87,20 +87,6 @@ suffix:semicolon
 r_extern
 r_void
 id|__init
-id|reserve_bootmem
-(paren
-r_int
-r_int
-id|addr
-comma
-r_int
-r_int
-id|size
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__init
 id|free_bootmem
 (paren
 r_int
@@ -131,6 +117,21 @@ r_int
 id|goal
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_HAVE_ARCH_BOOTMEM_NODE
+r_extern
+r_void
+id|__init
+id|reserve_bootmem
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+id|size
+)paren
+suffix:semicolon
 DECL|macro|alloc_bootmem
 mdefine_line|#define alloc_bootmem(x) &bslash;&n;&t;__alloc_bootmem((x), SMP_CACHE_BYTES, __pa(MAX_DMA_ADDRESS))
 DECL|macro|alloc_bootmem_low
@@ -139,6 +140,7 @@ DECL|macro|alloc_bootmem_pages
 mdefine_line|#define alloc_bootmem_pages(x) &bslash;&n;&t;__alloc_bootmem((x), PAGE_SIZE, __pa(MAX_DMA_ADDRESS))
 DECL|macro|alloc_bootmem_low_pages
 mdefine_line|#define alloc_bootmem_low_pages(x) &bslash;&n;&t;__alloc_bootmem((x), PAGE_SIZE, 0)
+macro_line|#endif /* !CONFIG_HAVE_ARCH_BOOTMEM_NODE */
 r_extern
 r_int
 r_int
@@ -241,11 +243,13 @@ r_int
 id|goal
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_HAVE_ARCH_BOOTMEM_NODE
 DECL|macro|alloc_bootmem_node
 mdefine_line|#define alloc_bootmem_node(pgdat, x) &bslash;&n;&t;__alloc_bootmem_node((pgdat), (x), SMP_CACHE_BYTES, __pa(MAX_DMA_ADDRESS))
 DECL|macro|alloc_bootmem_pages_node
 mdefine_line|#define alloc_bootmem_pages_node(pgdat, x) &bslash;&n;&t;__alloc_bootmem_node((pgdat), (x), PAGE_SIZE, __pa(MAX_DMA_ADDRESS))
 DECL|macro|alloc_bootmem_low_pages_node
 mdefine_line|#define alloc_bootmem_low_pages_node(pgdat, x) &bslash;&n;&t;__alloc_bootmem_node((pgdat), (x), PAGE_SIZE, 0)
+macro_line|#endif /* !CONFIG_HAVE_ARCH_BOOTMEM_NODE */
 macro_line|#endif /* _LINUX_BOOTMEM_H */
 eof

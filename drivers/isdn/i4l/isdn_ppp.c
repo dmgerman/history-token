@@ -586,8 +586,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: ppp_slot(%d) out of range&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: ppp_slot(%d) out of range&bslash;n&quot;
 comma
 id|lp-&gt;ppp_slot
 )paren
@@ -660,8 +661,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: ppp_slot(%d) now invalid&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: ppp_slot(%d) now invalid&bslash;n&quot;
 comma
 id|lp-&gt;ppp_slot
 )paren
@@ -1125,8 +1127,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: ppp_slot(%d) out of range&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: ppp_slot(%d) out of range&bslash;n&quot;
 comma
 id|lp-&gt;ppp_slot
 )paren
@@ -1192,8 +1195,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: slot(%d) out of range&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: slot(%d) out of range&bslash;n&quot;
 comma
 id|slot
 )paren
@@ -1580,8 +1584,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: no lp-&gt;netdev&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: no lp-&gt;netdev&bslash;n&quot;
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -3393,7 +3398,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * read() .. non-blocking: ipppd calls it only after select()&n; *           reports, that there is data&n; */
 r_static
-r_int
+id|ssize_t
 DECL|function|isdn_ppp_read
 id|isdn_ppp_read
 c_func
@@ -3619,7 +3624,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * ipppd wanna write a packet to the card .. non-blocking&n; */
 r_static
-r_int
+id|ssize_t
 DECL|function|isdn_ppp_write
 id|isdn_ppp_write
 c_func
@@ -5098,8 +5103,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: net_dev-&gt;local-&gt;ppp_slot(%d) out of range&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: net_dev-&gt;local-&gt;ppp_slot(%d) out of range&bslash;n&quot;
 comma
 id|net_dev-&gt;local.ppp_slot
 )paren
@@ -5244,8 +5250,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: net_dev-&gt;local-&gt;ppp_slot(%d) out of range&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: net_dev-&gt;local-&gt;ppp_slot(%d) out of range&bslash;n&quot;
 comma
 id|net_dev-&gt;local.ppp_slot
 )paren
@@ -6747,8 +6754,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: lp-&gt;ppp_slot(%d) out of range&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: lp-&gt;ppp_slot(%d) out of range&bslash;n&quot;
 comma
 id|lp-&gt;ppp_slot
 )paren
@@ -7033,8 +7041,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: lp-&gt;ppp_slot(%d)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: lp-&gt;ppp_slot(%d)&bslash;n&quot;
 comma
 id|lp-&gt;ppp_slot
 )paren
@@ -7200,8 +7209,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: lpq-&gt;ppp_slot(%d)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: lpq-&gt;ppp_slot(%d)&bslash;n&quot;
 comma
 id|lpq-&gt;ppp_slot
 )paren
@@ -8134,8 +8144,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: lp-&gt;ppp_slot(%d) out of range&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: lp-&gt;ppp_slot(%d) out of range&bslash;n&quot;
 comma
 id|lp-&gt;ppp_slot
 )paren
@@ -11452,8 +11463,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: lp-&gt;ppp_slot(%d) out of range&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: lp-&gt;ppp_slot(%d) out of range&bslash;n&quot;
 comma
 id|lp-&gt;ppp_slot
 )paren
@@ -11517,8 +11529,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: slot(%d) out of range&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: slot(%d) out of range&bslash;n&quot;
 comma
 id|slot
 )paren
@@ -12182,8 +12195,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: lp-&gt;ppp_slot(%d) out of range&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: lp-&gt;ppp_slot(%d) out of range&bslash;n&quot;
 comma
 id|slot
 )paren
@@ -12333,8 +12347,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: slot(%d) out of range&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: slot(%d) out of range&bslash;n&quot;
 comma
 id|slot
 )paren

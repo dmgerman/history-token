@@ -163,10 +163,11 @@ id|page
 op_star
 id|zone_mem_map
 suffix:semicolon
-DECL|member|zone_start_paddr
+multiline_comment|/* zone_start_pfn == zone_start_paddr &gt;&gt; PAGE_SHIFT */
+DECL|member|zone_start_pfn
 r_int
 r_int
-id|zone_start_paddr
+id|zone_start_pfn
 suffix:semicolon
 DECL|member|zone_start_mapnr
 r_int
@@ -266,10 +267,10 @@ id|bootmem_data
 op_star
 id|bdata
 suffix:semicolon
-DECL|member|node_start_paddr
+DECL|member|node_start_pfn
 r_int
 r_int
-id|node_start_paddr
+id|node_start_pfn
 suffix:semicolon
 DECL|member|node_start_mapnr
 r_int

@@ -1,8 +1,6 @@
 multiline_comment|/* $Id: gazel.c,v 2.11.6.7 2001/09/23 22:24:47 kai Exp $&n; *&n; * low level stuff for Gazel isdn cards&n; *&n; * Author       BeWan Systems&n; *              based on source code from Karsten Keil&n; * Copyright    by BeWan Systems&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;isac.h&quot;
 macro_line|#include &quot;hscx.h&quot;

@@ -1,6 +1,4 @@
 multiline_comment|/* $Id: capi.c,v 1.9.6.2 2001/09/23 22:24:32 kai Exp $&n; *&n; * ISDN lowlevel-module for the IBM ISDN-S0 Active 2000.&n; * CAPI encoder/decoder&n; *&n; * Author       Fritz Elfert&n; * Copyright    by Fritz Elfert      &lt;fritz@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Thanks to Friedemann Baitinger and IBM Germany&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;act2000.h&quot;
 macro_line|#include &quot;capi.h&quot;
 DECL|variable|valid_msg

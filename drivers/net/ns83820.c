@@ -3919,10 +3919,10 @@ comma
 (paren
 r_int
 )paren
+id|page_to_pfn
+c_func
 (paren
 id|frag-&gt;page
-op_minus
-id|mem_map
 )paren
 comma
 id|frag-&gt;page_offset

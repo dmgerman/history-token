@@ -501,7 +501,7 @@ DECL|macro|page_address
 mdefine_line|#define page_address(page) ((page)-&gt;virtual)
 macro_line|#else /* CONFIG_HIGHMEM || WANT_PAGE_VIRTUAL */
 DECL|macro|page_address
-mdefine_line|#define page_address(page)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__va( (((page) - page_zone(page)-&gt;zone_mem_map) &lt;&lt; PAGE_SHIFT)&t;&bslash;&n;&t;&t;&t;+ page_zone(page)-&gt;zone_start_paddr)
+mdefine_line|#define page_address(page)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__va( ( ((page) - page_zone(page)-&gt;zone_mem_map)&t;&t;&bslash;&n;&t;&t;&t;+ page_zone(page)-&gt;zone_start_pfn) &lt;&lt; PAGE_SHIFT)
 macro_line|#endif /* CONFIG_HIGHMEM || WANT_PAGE_VIRTUAL */
 multiline_comment|/*&n; * Error return values for the *_nopage functions&n; */
 DECL|macro|NOPAGE_SIGBUS
@@ -1046,7 +1046,7 @@ id|zones_size
 comma
 r_int
 r_int
-id|zone_start_paddr
+id|zone_start_pfn
 comma
 r_int
 r_int

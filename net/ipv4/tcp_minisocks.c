@@ -2583,10 +2583,6 @@ op_amp
 op_complement
 id|SOCK_BINDPORT_LOCK
 suffix:semicolon
-id|newsk-&gt;proc
-op_assign
-l_int|0
-suffix:semicolon
 id|newsk-&gt;backlog.head
 op_assign
 id|newsk-&gt;backlog.tail

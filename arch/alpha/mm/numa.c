@@ -1321,8 +1321,6 @@ comma
 id|zones_size
 comma
 id|start_pfn
-op_lshift
-id|PAGE_SHIFT
 comma
 l_int|NULL
 )paren
@@ -1739,9 +1737,7 @@ c_func
 id|nid
 )paren
 op_member_access_from_pointer
-id|node_start_paddr
-op_rshift
-id|PAGE_SHIFT
+id|node_start_pfn
 suffix:semicolon
 r_for
 c_loop

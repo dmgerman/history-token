@@ -1,8 +1,6 @@
 multiline_comment|/* $Id: hfc_pci.c,v 1.34.6.8 2001/09/23 22:24:47 kai Exp $&n; *&n; * low level driver for CCD&#xfffd;s hfc-pci based cards&n; *&n; * Author       Werner Cornelius&n; *              based on existing driver for CCD hfc ISA cards&n; * Copyright    by Werner Cornelius  &lt;werner@isdn4linux.de&gt;&n; *              by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;hfc_pci.h&quot;
 macro_line|#include &quot;isdnl1.h&quot;

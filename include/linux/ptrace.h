@@ -32,6 +32,7 @@ mdefine_line|#define PTRACE_DETACH&t;&t;0x11
 DECL|macro|PTRACE_SYSCALL
 mdefine_line|#define PTRACE_SYSCALL&t;&t;  24
 macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 r_extern
 r_int
 id|ptrace_readdata

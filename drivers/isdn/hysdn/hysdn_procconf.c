@@ -1,6 +1,4 @@
 multiline_comment|/* $Id: hysdn_procconf.c,v 1.8.6.4 2001/09/23 22:24:54 kai Exp $&n; *&n; * Linux driver for HYSDN cards, /proc/net filesystem dir and conf functions.&n; *&n; * written by Werner Cornelius (werner@titro.de) for Hypercope GmbH&n; *&n; * Copyright 1999  by Werner Cornelius (werner@titro.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;

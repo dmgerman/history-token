@@ -1,6 +1,4 @@
 multiline_comment|/* $Id: avm_a1.c,v 2.13.6.2 2001/09/23 22:24:46 kai Exp $&n; *&n; * low level stuff for AVM A1 (Fritz) isdn cards&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;isac.h&quot;

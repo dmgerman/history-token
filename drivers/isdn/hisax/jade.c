@@ -1,6 +1,4 @@
 multiline_comment|/* $Id: jade.c,v 1.6.6.3 2001/09/23 22:24:49 kai Exp $&n; *&n; * JADE stuff (derived from original hscx.c)&n; *&n; * Author       Roland Klabunde&n; * Copyright    by Roland Klabunde   &lt;R.Klabunde@Berkom.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;hscx.h&quot;

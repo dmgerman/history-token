@@ -1,6 +1,4 @@
 multiline_comment|/* $Id: netjet.c,v 1.24.6.6 2001/09/23 22:24:50 kai Exp $&n; *&n; * low level stuff for Traverse Technologie NETJet ISDN cards&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Thanks to Traverse Technologies Australia for documents and information&n; *&n; * 16-Apr-2002 - led code added - Guy Ellis (guy@traverse.com.au)&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;isac.h&quot;

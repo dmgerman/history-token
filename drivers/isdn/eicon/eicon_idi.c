@@ -1,7 +1,5 @@
 multiline_comment|/* $Id: eicon_idi.c,v 1.41.6.4 2001/11/06 20:58:29 kai Exp $&n; *&n; * ISDN lowlevel-module for Eicon active cards.&n; * IDI interface &n; *&n; * Copyright 1998-2000  by Armin Schindler (mac@melware.de)&n; * Copyright 1999,2000  Cytronics &amp; Melware (info@melware.de)&n; *&n; * Thanks to&t;Deutsche Mailbox Saar-Lor-Lux GmbH&n; *&t;&t;for sponsoring and testing fax&n; *&t;&t;capabilities with Diva Server cards.&n; *&t;&t;(dor@deutschemailbox.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;eicon.h&quot;
 macro_line|#include &quot;eicon_idi.h&quot;
 macro_line|#include &quot;eicon_dsp.h&quot;

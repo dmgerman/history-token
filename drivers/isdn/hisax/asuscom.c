@@ -1,6 +1,4 @@
 multiline_comment|/* $Id: asuscom.c,v 1.11.6.3 2001/09/23 22:24:46 kai Exp $&n; *&n; * low level stuff for ASUSCOM NETWORK INC. ISDNLink cards&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Thanks to  ASUSCOM NETWORK INC. Taiwan and  Dynalink NL for information&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#include &quot;hisax.h&quot;

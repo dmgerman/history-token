@@ -1214,7 +1214,7 @@ DECL|macro|PAGE_TO_PA
 mdefine_line|#define PAGE_TO_PA(page)&t;((page - mem_map) &lt;&lt; PAGE_SHIFT)
 macro_line|#else
 DECL|macro|PAGE_TO_PA
-mdefine_line|#define PAGE_TO_PA(page) &bslash;&n;&t;&t;((((page)-(page)-&gt;zone-&gt;zone_mem_map) &lt;&lt; PAGE_SHIFT) &bslash;&n;&t;&t;+ ((page)-&gt;zone-&gt;zone_start_paddr))
+mdefine_line|#define PAGE_TO_PA(page) &bslash;&n;&t;&t;(( ((page)-(page)-&gt;zone-&gt;zone_mem_map) + &bslash;&n;&t;&t;   (page)-&gt;zone-&gt;zone_start_pfn) &lt;&lt; PAGE_SHIFT)
 macro_line|#endif
 DECL|macro|mk_pte
 mdefine_line|#define mk_pte(page, pgprot)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t&t;__pte;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_val(__pte) = ((unsigned long)(PAGE_TO_PA(page))) |&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;pgprot_val(pgprot);&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})

@@ -57,7 +57,7 @@ id|zones_size
 comma
 r_int
 r_int
-id|zone_start_paddr
+id|zone_start_pfn
 comma
 r_int
 r_int
@@ -78,7 +78,7 @@ id|mem_map
 comma
 id|zones_size
 comma
-id|zone_start_paddr
+id|zone_start_pfn
 comma
 id|zholes_size
 comma
@@ -171,7 +171,7 @@ id|zones_size
 comma
 r_int
 r_int
-id|zone_start_paddr
+id|zone_start_pfn
 comma
 r_int
 r_int
@@ -219,7 +219,7 @@ id|discard
 comma
 id|zones_size
 comma
-id|zone_start_paddr
+id|zone_start_pfn
 comma
 id|zholes_size
 comma

@@ -1,6 +1,4 @@
 multiline_comment|/* $Id: l3ni1.c,v 2.5.6.3 2001/09/23 22:24:50 kai Exp $&n; *&n; * NI1 D-channel protocol&n; *&n; * Author       Matt Henderson &amp; Guy Ellis&n; * Copyright    by Traverse Technologies Pty Ltd, www.travers.com.au&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * 2000.6.6 Initial implementation of routines for US NI1 &n; * Layer 3 protocol based on the EURO/DSS1 D-channel protocol &n; * driver written by Karsten Keil et al.  &n; * NI-1 Hall of Fame - Thanks to.... &n; * Ragnar Paulson - for some handy code fragments&n; * Will Scales - beta tester extraordinaire&n; * Brett Whittacre - beta tester and remote devel system in Vegas&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;isdnl3.h&quot;
 macro_line|#include &quot;l3ni1.h&quot;

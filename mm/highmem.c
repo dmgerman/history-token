@@ -1361,9 +1361,7 @@ c_func
 id|page
 )paren
 op_member_access_from_pointer
-id|zone_start_paddr
-op_rshift
-id|PAGE_SHIFT
+id|zone_start_pfn
 )paren
 OL
 id|pfn

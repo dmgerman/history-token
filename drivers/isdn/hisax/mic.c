@@ -1,6 +1,4 @@
 multiline_comment|/* $Id: mic.c,v 1.10.6.2 2001/09/23 22:24:50 kai Exp $&n; *&n; * low level stuff for mic cards&n; *&n; * Author       Stephan von Krawczynski&n; * Copyright    by Stephan von Krawczynski &lt;skraw@ithnet.com&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;isac.h&quot;
