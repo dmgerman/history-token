@@ -465,7 +465,6 @@ id|res
 suffix:semicolon
 DECL|function|rt_hash_code
 r_static
-id|__inline__
 r_int
 id|rt_hash_code
 c_func
@@ -1742,7 +1741,6 @@ suffix:semicolon
 )brace
 DECL|function|rt_may_expire
 r_static
-id|__inline__
 r_int
 id|rt_may_expire
 c_func
