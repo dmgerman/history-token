@@ -39,6 +39,17 @@ op_star
 id|hid
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|hid_tmff_init
+c_func
+(paren
+r_struct
+id|hid_device
+op_star
+id|hid
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This table contains pointers to initializers. To add support for new&n; * devices, you need to add the USB vendor and product ids here.&n; */
 DECL|struct|hid_ff_initializer
 r_struct
@@ -100,6 +111,16 @@ comma
 l_int|0x001b
 comma
 id|hid_pid_init
+)brace
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_THRUSTMASTER_FF
+(brace
+l_int|0x44f
+comma
+l_int|0xb304
+comma
+id|hid_tmff_init
 )brace
 comma
 macro_line|#endif
