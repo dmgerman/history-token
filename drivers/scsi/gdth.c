@@ -24771,12 +24771,12 @@ id|hanum
 suffix:semicolon
 id|scp
 op_assign
-id|scsi_allocate_device
+id|scsi_getset_command
 c_func
 (paren
 id|sdev
 comma
-l_int|1
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 id|scp-&gt;cmd_len
@@ -24932,7 +24932,7 @@ macro_line|#endif
 )brace
 )brace
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x020322
-id|scsi_release_command
+id|scsi_put_command
 c_func
 (paren
 id|scp
@@ -25122,12 +25122,12 @@ id|hanum
 suffix:semicolon
 id|scp
 op_assign
-id|scsi_allocate_device
+id|scsi_getset_command
 c_func
 (paren
 id|sdev
 comma
-l_int|1
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 id|scp-&gt;cmd_len
@@ -25224,7 +25224,7 @@ comma
 l_int|10
 )paren
 suffix:semicolon
-id|scsi_release_command
+id|scsi_put_command
 c_func
 (paren
 id|scp

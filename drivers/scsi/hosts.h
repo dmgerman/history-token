@@ -406,6 +406,16 @@ r_struct
 id|list_head
 id|my_devices
 suffix:semicolon
+DECL|member|free_list_lock
+id|spinlock_t
+id|free_list_lock
+suffix:semicolon
+DECL|member|free_list
+r_struct
+id|list_head
+id|free_list
+suffix:semicolon
+multiline_comment|/* backup store of cmd structs */
 DECL|member|default_lock
 id|spinlock_t
 id|default_lock

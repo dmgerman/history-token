@@ -3683,7 +3683,7 @@ id|sreq-&gt;sr_command
 op_assign
 l_int|NULL
 suffix:semicolon
-id|scsi_release_command
+id|scsi_put_command
 c_func
 (paren
 id|scmd
