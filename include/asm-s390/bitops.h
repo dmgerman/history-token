@@ -2244,6 +2244,7 @@ c_func
 r_int
 id|nr
 comma
+r_const
 r_volatile
 r_int
 r_int
@@ -2311,6 +2312,7 @@ c_func
 r_int
 id|nr
 comma
+r_const
 r_volatile
 r_int
 r_int
