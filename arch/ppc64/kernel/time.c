@@ -296,7 +296,11 @@ op_logical_and
 id|abs
 c_func
 (paren
-id|xtime.tv_usec
+(paren
+id|xtime.tv_nsec
+op_div
+l_int|1000
+)paren
 op_minus
 (paren
 l_int|1000000
@@ -419,9 +423,11 @@ id|xtime.tv_sec
 op_assign
 id|my_tv.tv_sec
 suffix:semicolon
-id|xtime.tv_usec
+id|xtime.tv_nsec
 op_assign
 id|my_tv.tv_usec
+op_star
+l_int|1000
 suffix:semicolon
 )brace
 )brace
@@ -1076,9 +1082,11 @@ op_add_assign
 id|USEC_PER_SEC
 suffix:semicolon
 )brace
-id|xtime.tv_usec
+id|xtime.tv_nsec
 op_assign
 id|new_usec
+op_star
+l_int|1000
 suffix:semicolon
 id|xtime.tv_sec
 op_assign
@@ -1441,7 +1449,7 @@ id|time_freq
 op_assign
 l_int|0
 suffix:semicolon
-id|xtime.tv_usec
+id|xtime.tv_nsec
 op_assign
 l_int|0
 suffix:semicolon

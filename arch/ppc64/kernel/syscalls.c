@@ -1133,7 +1133,11 @@ id|xtime.tv_sec
 suffix:semicolon
 id|usecs
 op_assign
-id|xtime.tv_usec
+(paren
+id|xtime.tv_nsec
+op_div
+l_int|1000
+)paren
 op_plus
 id|tb_delta
 op_div
