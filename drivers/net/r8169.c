@@ -6783,13 +6783,18 @@ c_func
 id|IntrStatus
 )paren
 suffix:semicolon
-multiline_comment|/* h/w no longer present (hotplug?) or major error, bail */
+multiline_comment|/* hotplug/major error/no more work/shared irq */
 r_if
 c_cond
+(paren
 (paren
 id|status
 op_eq
 l_int|0xFFFF
+)paren
+op_logical_or
+op_logical_neg
+id|status
 )paren
 r_break
 suffix:semicolon
