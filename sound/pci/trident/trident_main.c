@@ -15793,7 +15793,7 @@ multiline_comment|/* check, if we can restrict PCI DMA transfers to 30 bits */
 r_if
 c_cond
 (paren
-id|pci_set_dma_massk
+id|pci_set_dma_mask
 c_func
 (paren
 id|pci
