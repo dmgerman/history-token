@@ -1193,7 +1193,7 @@ op_star
 r_sizeof
 (paren
 r_struct
-id|socket_info_t
+id|pcmcia_socket
 )paren
 comma
 id|GFP_KERNEL
@@ -1220,7 +1220,8 @@ id|cls_d-&gt;nsock
 op_star
 r_sizeof
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 )paren
 )paren
 suffix:semicolon
