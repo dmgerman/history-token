@@ -1,4 +1,4 @@
-multiline_comment|/*&n;=========================================================================&n; r8169.c: A RealTek RTL-8169 Gigabit Ethernet driver for Linux kernel 2.4.x.&n; --------------------------------------------------------------------&n;&n; History:&n; Feb  4 2002&t;- created initially by ShuChen &lt;shuchen@realtek.com.tw&gt;.&n; May 20 2002&t;- Add link status force-mode and TBI mode support.&n;=========================================================================&n;  1. [DEPRECATED: use ethtool instead] The media can be forced in 5 modes.&n;&t; Command: &squot;insmod r8169 media = SET_MEDIA&squot;&n;&t; Ex:&t;  &squot;insmod r8169 media = 0x04&squot; will force PHY to operate in 100Mpbs Half-duplex.&n;&t;&n;&t; SET_MEDIA can be:&n; &t;&t;_10_Half&t;= 0x01&n; &t;&t;_10_Full&t;= 0x02&n; &t;&t;_100_Half&t;= 0x04&n; &t;&t;_100_Full&t;= 0x08&n; &t;&t;_1000_Full&t;= 0x10&n;  &n;  2. Support TBI mode.&n;=========================================================================&n;VERSION 1.1&t;&lt;2002/10/4&gt;&n;&n;&t;The bit4:0 of MII register 4 is called &quot;selector field&quot;, and have to be&n;&t;00001b to indicate support of IEEE std 802.3 during NWay process of&n;&t;exchanging Link Code Word (FLP). &n;&n;VERSION 1.2&t;&lt;2002/11/30&gt;&n;&n;&t;- Large style cleanup&n;&t;- Use ether_crc in stock kernel (linux/crc32.h)&n;&t;- Copy mc_filter setup code from 8139cp&n;&t;  (includes an optimization, and avoids set_bit use)&n;&n;*/
+multiline_comment|/*&n;=========================================================================&n; r8169.c: A RealTek RTL-8169 Gigabit Ethernet driver for Linux kernel 2.4.x.&n; --------------------------------------------------------------------&n;&n; History:&n; Feb  4 2002&t;- created initially by ShuChen &lt;shuchen@realtek.com.tw&gt;.&n; May 20 2002&t;- Add link status force-mode and TBI mode support.&n;=========================================================================&n;  1. [DEPRECATED: use ethtool instead] The media can be forced in 5 modes.&n;&t; Command: &squot;insmod r8169 media = SET_MEDIA&squot;&n;&t; Ex:&t;  &squot;insmod r8169 media = 0x04&squot; will force PHY to operate in 100Mpbs Half-duplex.&n;&t;&n;&t; SET_MEDIA can be:&n; &t;&t;_10_Half&t;= 0x01&n; &t;&t;_10_Full&t;= 0x02&n; &t;&t;_100_Half&t;= 0x04&n; &t;&t;_100_Full&t;= 0x08&n; &t;&t;_1000_Full&t;= 0x10&n;  &n;  2. Support TBI mode.&n;=========================================================================&n;VERSION 1.1&t;&lt;2002/10/4&gt;&n;&n;&t;The bit4:0 of MII register 4 is called &quot;selector field&quot;, and have to be&n;&t;00001b to indicate support of IEEE std 802.3 during NWay process of&n;&t;exchanging Link Code Word (FLP). &n;&n;VERSION 1.2&t;&lt;2002/11/30&gt;&n;&n;&t;- Large style cleanup&n;&t;- Use ether_crc in stock kernel (linux/crc32.h)&n;&t;- Copy mc_filter setup code from 8139cp&n;&t;  (includes an optimization, and avoids set_bit use)&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -4358,6 +4358,24 @@ r_goto
 id|err_out_free_dev
 suffix:semicolon
 )brace
+id|rc
+op_assign
+id|pci_set_mwi
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+OL
+l_int|0
+)paren
+r_goto
+id|err_out_disable
+suffix:semicolon
 multiline_comment|/* save power state before pci_enable_device overwrites it */
 id|pm_cap
 op_assign
@@ -4409,7 +4427,7 @@ l_string|&quot;Cannot find PowerManagement capability, aborting.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
-id|err_out_free_res
+id|err_out_mwi
 suffix:semicolon
 )brace
 singleline_comment|// make sure PCI base addr 1 is MMIO
@@ -4444,7 +4462,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_goto
-id|err_out_disable
+id|err_out_mwi
 suffix:semicolon
 )brace
 singleline_comment|// check for weird/broken PCI region reporting
@@ -4476,7 +4494,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_goto
-id|err_out_disable
+id|err_out_mwi
 suffix:semicolon
 )brace
 id|rc
@@ -4506,7 +4524,7 @@ id|pdev-&gt;slot_name
 )paren
 suffix:semicolon
 r_goto
-id|err_out_disable
+id|err_out_mwi
 suffix:semicolon
 )brace
 id|tp-&gt;cp_cmd
@@ -4573,7 +4591,6 @@ id|err_out_free_res
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// enable PCI bus-mastering
 id|pci_set_master
 c_func
 (paren
@@ -4796,6 +4813,14 @@ suffix:semicolon
 id|err_out_free_res
 suffix:colon
 id|pci_release_regions
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+id|err_out_mwi
+suffix:colon
+id|pci_clear_mwi
 c_func
 (paren
 id|pdev
