@@ -5637,7 +5637,7 @@ id|discard_force
 suffix:semicolon
 )brace
 multiline_comment|/* This is a new TSN.  */
-multiline_comment|/* If we don&squot;t have any room in our receive window, discard.&n;&t; * Actually, allow a little bit of overflow (up to a MTU of&n;&t; * of overflow).&n;&t; */
+multiline_comment|/* Discard if there is no room in the receive window.&n;&t; * Actually, allow a little bit of overflow (up to a MTU).&n;&t; */
 id|datalen
 op_assign
 id|ntohs
@@ -5656,12 +5656,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|asoc-&gt;rwnd
+id|asoc-&gt;rwnd_over
 op_logical_or
 (paren
 id|datalen
 OG
+id|asoc-&gt;rwnd
+op_plus
 id|asoc-&gt;frag_point
 )paren
 )paren
@@ -5680,7 +5681,7 @@ id|asoc-&gt;rwnd
 )paren
 suffix:semicolon
 r_goto
-id|discard_noforce
+id|discard_force
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Section 3.3.10.9 No User Data (9)&n;&t; *&n;&t; * Cause of error&n;&t; * ---------------&n;&t; * No User Data:  This error cause is returned to the originator of a&n;&t; * DATA chunk if a received DATA chunk has no user data.&n;&t; */
