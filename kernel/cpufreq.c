@@ -1139,12 +1139,6 @@ id|policy-&gt;cpu
 op_assign
 id|cpu
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cpufreq_driver-&gt;init
-)paren
-(brace
 id|ret
 op_assign
 id|cpufreq_driver
@@ -1163,7 +1157,6 @@ id|ret
 r_goto
 id|out
 suffix:semicolon
-)brace
 multiline_comment|/* set default policy on this CPU */
 id|down
 c_func
