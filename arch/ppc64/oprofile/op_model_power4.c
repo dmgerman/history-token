@@ -848,15 +848,6 @@ id|i
 suffix:semicolon
 r_int
 r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
-r_int
-r_int
 id|mmcr0
 suffix:semicolon
 id|pc
@@ -931,7 +922,7 @@ dot
 id|enabled
 )paren
 (brace
-id|oprofile_add_sample
+id|oprofile_add_pc
 c_func
 (paren
 id|pc
@@ -939,8 +930,6 @@ comma
 id|is_kernel
 comma
 id|i
-comma
-id|cpu
 )paren
 suffix:semicolon
 id|ctr_write
