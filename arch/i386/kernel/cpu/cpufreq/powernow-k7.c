@@ -800,7 +800,7 @@ id|dprintk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;   FID: 0x%x (%d.%dx [%dMHz])&bslash;t&quot;
+l_string|&quot;   FID: 0x%x (%d.%dx [%dMHz])  &quot;
 comma
 id|fid
 comma
@@ -1615,7 +1615,7 @@ id|dprintk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;   FID: 0x%x (%d.%dx [%dMHz])&bslash;t&quot;
+l_string|&quot;   FID: 0x%x (%d.%dx [%dMHz])  &quot;
 comma
 id|fid
 comma
@@ -2084,21 +2084,21 @@ id|dprintk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot; cpuid: 0x%x&bslash;t&quot;
+l_string|&quot; cpuid: 0x%x  &quot;
 comma
 id|pst-&gt;cpuid
 )paren
 suffix:semicolon
 id|dprintk
 (paren
-l_string|&quot;fsb: %d&bslash;t&quot;
+l_string|&quot;fsb: %d  &quot;
 comma
 id|pst-&gt;fsbspeed
 )paren
 suffix:semicolon
 id|dprintk
 (paren
-l_string|&quot;maxFID: 0x%x&bslash;t&quot;
+l_string|&quot;maxFID: 0x%x  &quot;
 comma
 id|pst-&gt;maxfid
 )paren
