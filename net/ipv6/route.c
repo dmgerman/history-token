@@ -3231,15 +3231,20 @@ id|IPV6_ADDR_LOOPBACK
 )paren
 )paren
 (brace
+multiline_comment|/* hold loopback dev/idev if we haven&squot;t done so. */
 r_if
 c_cond
 (paren
 id|dev
-op_logical_and
-id|dev
 op_ne
 op_amp
 id|loopback_dev
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|dev
 )paren
 (brace
 id|dev_put
@@ -3254,6 +3259,7 @@ c_func
 id|idev
 )paren
 suffix:semicolon
+)brace
 id|dev
 op_assign
 op_amp
