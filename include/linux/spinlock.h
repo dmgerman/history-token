@@ -101,22 +101,48 @@ DECL|macro|_raw_write_unlock
 mdefine_line|#define _raw_write_unlock(lock)&t;do { (void)(lock); } while(0)
 macro_line|#endif /* !SMP */
 multiline_comment|/*&n; * Define the various spin_lock and rw_lock methods.  Note we define these&n; * regardless of whether CONFIG_SMP or CONFIG_PREEMPT are set. The various&n; * methods are defined as nops in the case they are not required.&n; */
-DECL|macro|spin_lock
-mdefine_line|#define spin_lock(lock)&t;&bslash;&n;do { &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_spin_lock(lock); &bslash;&n;} while(0)
 DECL|macro|spin_trylock
 mdefine_line|#define spin_trylock(lock)&t;({preempt_disable(); _raw_spin_trylock(lock) ? &bslash;&n;&t;&t;&t;&t;1 : ({preempt_enable(); 0;});})
-DECL|macro|spin_unlock
-mdefine_line|#define spin_unlock(lock) &bslash;&n;do { &bslash;&n;&t;_raw_spin_unlock(lock); &bslash;&n;&t;preempt_enable(); &bslash;&n;} while (0)
-DECL|macro|read_lock
-mdefine_line|#define read_lock(lock)&t;&bslash;&n;do { &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_read_lock(lock); &bslash;&n;} while(0)
-DECL|macro|read_unlock
-mdefine_line|#define read_unlock(lock) &bslash;&n;do { &bslash;&n;&t;_raw_read_unlock(lock); &bslash;&n;&t;preempt_enable(); &bslash;&n;} while(0)
-DECL|macro|write_lock
-mdefine_line|#define write_lock(lock) &bslash;&n;do { &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_write_lock(lock); &bslash;&n;} while(0)
-DECL|macro|write_unlock
-mdefine_line|#define write_unlock(lock) &bslash;&n;do { &bslash;&n;&t;_raw_write_unlock(lock); &bslash;&n;&t;preempt_enable(); &bslash;&n;} while(0)
 DECL|macro|write_trylock
 mdefine_line|#define write_trylock(lock)&t;({preempt_disable();_raw_write_trylock(lock) ? &bslash;&n;&t;&t;&t;&t;1 : ({preempt_enable(); 0;});})
+multiline_comment|/* Where&squot;s read_trylock? */
+macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PREEMPT)
+r_void
+id|__preempt_spin_lock
+c_func
+(paren
+id|spinlock_t
+op_star
+id|lock
+)paren
+suffix:semicolon
+r_void
+id|__preempt_write_lock
+c_func
+(paren
+id|rwlock_t
+op_star
+id|lock
+)paren
+suffix:semicolon
+DECL|macro|spin_lock
+mdefine_line|#define spin_lock(lock) &bslash;&n;do { &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;if (unlikely(!_raw_spin_trylock(lock))) &bslash;&n;&t;&t;__preempt_spin_lock(lock); &bslash;&n;} while (0)
+DECL|macro|write_lock
+mdefine_line|#define write_lock(lock) &bslash;&n;do { &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;if (unlikely(!_raw_write_trylock(lock))) &bslash;&n;&t;&t;__preempt_write_lock(lock); &bslash;&n;} while (0)
+macro_line|#else
+DECL|macro|spin_lock
+mdefine_line|#define spin_lock(lock)&t;&bslash;&n;do { &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_spin_lock(lock); &bslash;&n;} while(0)
+DECL|macro|write_lock
+mdefine_line|#define write_lock(lock) &bslash;&n;do { &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_write_lock(lock); &bslash;&n;} while(0)
+macro_line|#endif
+DECL|macro|read_lock
+mdefine_line|#define read_lock(lock)&t;&bslash;&n;do { &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_read_lock(lock); &bslash;&n;} while(0)
+DECL|macro|spin_unlock
+mdefine_line|#define spin_unlock(lock) &bslash;&n;do { &bslash;&n;&t;_raw_spin_unlock(lock); &bslash;&n;&t;preempt_enable(); &bslash;&n;} while (0)
+DECL|macro|write_unlock
+mdefine_line|#define write_unlock(lock) &bslash;&n;do { &bslash;&n;&t;_raw_write_unlock(lock); &bslash;&n;&t;preempt_enable(); &bslash;&n;} while(0)
+DECL|macro|read_unlock
+mdefine_line|#define read_unlock(lock) &bslash;&n;do { &bslash;&n;&t;_raw_read_unlock(lock); &bslash;&n;&t;preempt_enable(); &bslash;&n;} while(0)
 DECL|macro|spin_lock_irqsave
 mdefine_line|#define spin_lock_irqsave(lock, flags) &bslash;&n;do { &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_spin_lock(lock); &bslash;&n;} while (0)
 DECL|macro|spin_lock_irq
