@@ -1,5 +1,5 @@
 multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
-multiline_comment|/*&n; *&t;e100.c: Intel(R) PRO/100 ethernet driver &n; *&n; *&t;(Re)written 2003 by scott.feldman@intel.com.  Based loosely on&n; *&t;original e100 driver, but better described as a munging of&n; *&t;e100, e1000, eepro100, tg3, 8139cp, and other drivers.&n; *&n; *&t;References:&n; *&t;&t;Intel 8255x 10/100 Mbps Ethernet Controller Family,&n; *&t;&t;Open Source Software Developers Manual,&n; *&t;&t;http://sourceforge.net/projects/e1000&n; *&n; *&n; *&t;                      Theory of Operation&n; *&n; *&t;I.   General&n; *&n; *&t;The driver supports Intel(R) 10/100 Mbps PCI Fast Ethernet&n; *&t;controller family, which includes the 82557, 82558, 82559, 82550,&n; *&t;82551, and 82562 devices.  82558 and greater controllers&n; *&t;integrate the Intel 82555 PHY.  The controllers are used in&n; *&t;server and client network interface cards, as well as in&n; *&t;LAN-On-Motherboard (LOM), CardBus, MiniPCI, and ICHx&n; *&t;configurations.  8255x supports a 32-bit linear addressing&n; *&t;mode and operates at 33Mhz PCI clock rate.&n; *&n; *&t;II.  Driver Operation&n; *&n; *&t;Memory-mapped mode is used exclusively to access the device&squot;s&n; *&t;shared-memory structure, the Control/Status Registers (CSR). All&n; *&t;setup, configuration, and control of the device, including queuing&n; *&t;of Tx, Rx, and configuration commands is through the CSR.&n; *&t;cmd_lock serializes accesses to the CSR command register.  cb_lock&n; *&t;protects the shared Command Block List (CBL).&n; *&n; *&t;8255x is highly MII-compliant and all access to the PHY go&n; *&t;through the Management Data Interface (MDI).  Consequently, the&n; *&t;driver leverages the mii.c library shared with other MII-compliant&n; *&t;devices.&n; *&t;&n; *&t;Big- and Little-Endian byte order as well as 32- and 64-bit &n; *&t;archs are supported.  Weak-ordered memory and non-cache-coherent&n; *&t;archs are supported.&n; *&t;&n; *&t;III. Transmit&n; *&n; *&t;A Tx skb is mapped and hangs off of a TCB.  TCBs are linked&n; *&t;together in a fixed-size ring (CBL) thus forming the flexible mode&n; *&t;memory structure.  A TCB marked with the suspend-bit indicates&n; *&t;the end of the ring.  The last TCB processed suspends the&n; *&t;controller, and the controller can be restarted by issue a CU&n; *&t;resume command to continue from the suspend point, or a CU start&n; *&t;command to start at a given position in the ring.&n; *&n; *&t;Non-Tx commands (config, multicast setup, etc) are linked&n; *&t;into the CBL ring along with Tx commands.  The common structure&n; *&t;used for both Tx and non-Tx commands is the Command Block (CB).&n; *&t;&n; *&t;cb_to_use is the next CB to use for queuing a command; cb_to_clean&n; *&t;is the next CB to check for completion; cb_to_send is the first&n; *&t;CB to start on in case of a previous failure to resume.  CB clean&n; *&t;up happens in interrupt context in response to a CU interrupt, or&n; *&t;in dev-&gt;poll in the case where NAPI is enabled.  cbs_avail keeps&n; *&t;track of number of free CB resources available.&n; *&n; * &t;Hardware padding of short packets to minimum packet size is&n; * &t;enabled.  82557 pads with 7Eh, while the later controllers pad&n; * &t;with 00h.&n; *&n; *&t;IV.  Recieve&n; *&n; *&t;The Receive Frame Area (RFA) comprises a ring of Receive Frame&n; *&t;Descriptors (RFD) + data buffer, thus forming the simplified mode&n; *&t;memory structure.  Rx skbs are allocated to contain both the RFD&n; *&t;and the data buffer, but the RFD is pulled off before the skb is&n; *&t;indicated.  The data buffer is aligned such that encapsulated &n; *&t;protocol headers are u32-aligned.  Since the RFD is part of the&n; *&t;mapped shared memory, and completion status is contained within&n; *&t;the RFD, the RFD must be dma_sync&squot;ed to maintain a consistent&n; *&t;view from software and hardware.&n; *&n; *&t;Under typical operation, the  receive unit (RU) is start once,&n; *&t;and the controller happily fills RFDs as frames arrive.  If &n; *&t;replacement RFDs cannot be allocated, or the RU goes non-active,&n; *&t;the RU must be restarted.  Frame arrival generates an interrupt,&n; *&t;and Rx indication and re-allocation happen in the same context,&n; *&t;therefore no locking is required.  If NAPI is enabled, this work&n; *&t;happens in dev-&gt;poll.  A software-generated interrupt is gen-&n; *&t;erated from the watchdog to recover from a failed allocation&n; *&t;senario where all Rx resources have been indicated and none re-&n; *&t;placed.&n; *&n; *&t;V.   Miscellaneous&n; *&n; * &t;VLAN offload support of tagging, stripping and filtering is not&n; * &t;supported, but driver will accommodate the extra 4-byte VLAN tag&n; * &t;for processing by upper layers.  Tx/Rx Checksum offloading is not&n; * &t;supported.  Tx Scatter/Gather is not supported.  Jumbo Frames is&n; * &t;not supported.&n; *&n; * &t;NAPI support is enabled with CONFIG_E100_NAPI.&n; *&n; * &t;MagicPacket(tm) WoL support is enabled/disabled via ethtool.&n; *&n; * &t;Thanks to JC (jchapman@katalix.com) for helping with &n; * &t;testing/troubleshooting the development driver.&n; */
+multiline_comment|/*&n; *&t;e100.c: Intel(R) PRO/100 ethernet driver &n; *&n; *&t;(Re)written 2003 by scott.feldman@intel.com.  Based loosely on&n; *&t;original e100 driver, but better described as a munging of&n; *&t;e100, e1000, eepro100, tg3, 8139cp, and other drivers.&n; *&n; *&t;References:&n; *&t;&t;Intel 8255x 10/100 Mbps Ethernet Controller Family,&n; *&t;&t;Open Source Software Developers Manual,&n; *&t;&t;http://sourceforge.net/projects/e1000&n; *&n; *&n; *&t;                      Theory of Operation&n; *&n; *&t;I.   General&n; *&n; *&t;The driver supports Intel(R) 10/100 Mbps PCI Fast Ethernet&n; *&t;controller family, which includes the 82557, 82558, 82559, 82550,&n; *&t;82551, and 82562 devices.  82558 and greater controllers&n; *&t;integrate the Intel 82555 PHY.  The controllers are used in&n; *&t;server and client network interface cards, as well as in&n; *&t;LAN-On-Motherboard (LOM), CardBus, MiniPCI, and ICHx&n; *&t;configurations.  8255x supports a 32-bit linear addressing&n; *&t;mode and operates at 33Mhz PCI clock rate.&n; *&n; *&t;II.  Driver Operation&n; *&n; *&t;Memory-mapped mode is used exclusively to access the device&squot;s&n; *&t;shared-memory structure, the Control/Status Registers (CSR). All&n; *&t;setup, configuration, and control of the device, including queuing&n; *&t;of Tx, Rx, and configuration commands is through the CSR.&n; *&t;cmd_lock serializes accesses to the CSR command register.  cb_lock&n; *&t;protects the shared Command Block List (CBL).&n; *&n; *&t;8255x is highly MII-compliant and all access to the PHY go&n; *&t;through the Management Data Interface (MDI).  Consequently, the&n; *&t;driver leverages the mii.c library shared with other MII-compliant&n; *&t;devices.&n; *&t;&n; *&t;Big- and Little-Endian byte order as well as 32- and 64-bit &n; *&t;archs are supported.  Weak-ordered memory and non-cache-coherent&n; *&t;archs are supported.&n; *&t;&n; *&t;III. Transmit&n; *&n; *&t;A Tx skb is mapped and hangs off of a TCB.  TCBs are linked&n; *&t;together in a fixed-size ring (CBL) thus forming the flexible mode&n; *&t;memory structure.  A TCB marked with the suspend-bit indicates&n; *&t;the end of the ring.  The last TCB processed suspends the&n; *&t;controller, and the controller can be restarted by issue a CU&n; *&t;resume command to continue from the suspend point, or a CU start&n; *&t;command to start at a given position in the ring.&n; *&n; *&t;Non-Tx commands (config, multicast setup, etc) are linked&n; *&t;into the CBL ring along with Tx commands.  The common structure&n; *&t;used for both Tx and non-Tx commands is the Command Block (CB).&n; *&t;&n; *&t;cb_to_use is the next CB to use for queuing a command; cb_to_clean&n; *&t;is the next CB to check for completion; cb_to_send is the first&n; *&t;CB to start on in case of a previous failure to resume.  CB clean&n; *&t;up happens in interrupt context in response to a CU interrupt, or&n; *&t;in dev-&gt;poll in the case where NAPI is enabled.  cbs_avail keeps&n; *&t;track of number of free CB resources available.&n; *&n; * &t;Hardware padding of short packets to minimum packet size is&n; * &t;enabled.  82557 pads with 7Eh, while the later controllers pad&n; * &t;with 00h.&n; *&n; *&t;IV.  Recieve&n; *&n; *&t;The Receive Frame Area (RFA) comprises a ring of Receive Frame&n; *&t;Descriptors (RFD) + data buffer, thus forming the simplified mode&n; *&t;memory structure.  Rx skbs are allocated to contain both the RFD&n; *&t;and the data buffer, but the RFD is pulled off before the skb is&n; *&t;indicated.  The data buffer is aligned such that encapsulated &n; *&t;protocol headers are u32-aligned.  Since the RFD is part of the&n; *&t;mapped shared memory, and completion status is contained within&n; *&t;the RFD, the RFD must be dma_sync&squot;ed to maintain a consistent&n; *&t;view from software and hardware.&n; *&n; *&t;Under typical operation, the  receive unit (RU) is start once,&n; *&t;and the controller happily fills RFDs as frames arrive.  If &n; *&t;replacement RFDs cannot be allocated, or the RU goes non-active,&n; *&t;the RU must be restarted.  Frame arrival generates an interrupt,&n; *&t;and Rx indication and re-allocation happen in the same context,&n; *&t;therefore no locking is required.  If NAPI is enabled, this work&n; *&t;happens in dev-&gt;poll.  A software-generated interrupt is gen-&n; *&t;erated from the watchdog to recover from a failed allocation&n; *&t;senario where all Rx resources have been indicated and none re-&n; *&t;placed.&n; *&n; *&t;V.   Miscellaneous&n; *&n; * &t;VLAN offloading of tagging, stripping and filtering is not&n; * &t;supported, but driver will accommodate the extra 4-byte VLAN tag&n; * &t;for processing by upper layers.  Tx/Rx Checksum offloading is not&n; * &t;supported.  Tx Scatter/Gather is not supported.  Jumbo Frames is&n; * &t;not supported (hardware limitation).&n; *&n; * &t;NAPI support is enabled with CONFIG_E100_NAPI.&n; *&n; * &t;MagicPacket(tm) WoL support is enabled/disabled via ethtool.&n; *&n; * &t;Thanks to JC (jchapman@katalix.com) for helping with &n; * &t;testing/troubleshooting the development driver.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -15,11 +15,12 @@ macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&quot;e100&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&quot;3.0.9_dev&quot;
+mdefine_line|#define DRV_VERSION&t;&t;&quot;3.0.11_dev&quot;
 DECL|macro|DRV_DESCRIPTION
 mdefine_line|#define DRV_DESCRIPTION&t;&t;&quot;Intel(R) PRO/100 Network Driver&quot;
 DECL|macro|DRV_COPYRIGHT
@@ -57,12 +58,14 @@ id|debug
 op_assign
 l_int|3
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -241,6 +244,70 @@ comma
 id|INTEL_8255X_ETHERNET_DEVICE
 c_func
 (paren
+l_int|0x1064
+comma
+l_int|6
+)paren
+comma
+id|INTEL_8255X_ETHERNET_DEVICE
+c_func
+(paren
+l_int|0x1065
+comma
+l_int|6
+)paren
+comma
+id|INTEL_8255X_ETHERNET_DEVICE
+c_func
+(paren
+l_int|0x1066
+comma
+l_int|6
+)paren
+comma
+id|INTEL_8255X_ETHERNET_DEVICE
+c_func
+(paren
+l_int|0x1067
+comma
+l_int|6
+)paren
+comma
+id|INTEL_8255X_ETHERNET_DEVICE
+c_func
+(paren
+l_int|0x1068
+comma
+l_int|6
+)paren
+comma
+id|INTEL_8255X_ETHERNET_DEVICE
+c_func
+(paren
+l_int|0x1069
+comma
+l_int|6
+)paren
+comma
+id|INTEL_8255X_ETHERNET_DEVICE
+c_func
+(paren
+l_int|0x106A
+comma
+l_int|6
+)paren
+comma
+id|INTEL_8255X_ETHERNET_DEVICE
+c_func
+(paren
+l_int|0x106B
+comma
+l_int|6
+)paren
+comma
+id|INTEL_8255X_ETHERNET_DEVICE
+c_func
+(paren
 l_int|0x1059
 comma
 l_int|0
@@ -349,10 +416,20 @@ id|mac_82550_D102_C
 op_assign
 l_int|13
 comma
-DECL|enumerator|mac_82550_D102_E
-id|mac_82550_D102_E
+DECL|enumerator|mac_82551_E
+id|mac_82551_E
+op_assign
+l_int|14
+comma
+DECL|enumerator|mac_82551_F
+id|mac_82551_F
 op_assign
 l_int|15
+comma
+DECL|enumerator|mac_82551_10
+id|mac_82551_10
+op_assign
+l_int|16
 comma
 DECL|enumerator|mac_unknown
 id|mac_unknown
@@ -4406,52 +4483,6 @@ op_star
 id|skb
 )paren
 (brace
-id|u8
-op_star
-id|dev_addr
-op_assign
-id|nic-&gt;netdev-&gt;dev_addr
-suffix:semicolon
-id|DPRINTK
-c_func
-(paren
-id|HW
-comma
-id|DEBUG
-comma
-l_string|&quot;dev_addr=%02X:%02X:%02X:%02X:%02X:%02X&bslash;n&quot;
-comma
-id|dev_addr
-(braket
-l_int|0
-)braket
-comma
-id|dev_addr
-(braket
-l_int|1
-)braket
-comma
-id|dev_addr
-(braket
-l_int|2
-)braket
-comma
-id|dev_addr
-(braket
-l_int|3
-)braket
-comma
-id|dev_addr
-(braket
-l_int|4
-)braket
-comma
-id|dev_addr
-(braket
-l_int|5
-)braket
-)paren
-suffix:semicolon
 id|cb-&gt;command
 op_assign
 id|cpu_to_le16
@@ -4465,7 +4496,7 @@ c_func
 (paren
 id|cb-&gt;u.iaaddr
 comma
-id|dev_addr
+id|nic-&gt;netdev-&gt;dev_addr
 comma
 id|ETH_ALEN
 )paren
@@ -6095,7 +6126,7 @@ r_case
 op_minus
 id|ENOSPC
 suffix:colon
-multiline_comment|/* We queued the skb, but now we&squot;re out of space, so&n;&t;&t; * stop the queue before we completely run out. */
+multiline_comment|/* We queued the skb, but now we&squot;re out of space. */
 id|netif_stop_queue
 c_func
 (paren
@@ -6787,22 +6818,20 @@ op_star
 id|curr
 )paren
 (brace
-r_struct
-id|rfd
-op_star
-id|rfd
-op_assign
+id|memcpy
+c_func
+(paren
+id|curr-&gt;skb-&gt;data
+comma
+op_amp
+id|nic-&gt;blank_rfd
+comma
+r_sizeof
 (paren
 r_struct
 id|rfd
-op_star
 )paren
-id|curr-&gt;skb-&gt;data
-suffix:semicolon
-op_star
-id|rfd
-op_assign
-id|nic-&gt;blank_rfd
+)paren
 suffix:semicolon
 id|pci_dma_sync_single
 c_func
@@ -7689,7 +7718,7 @@ id|stat_ack
 op_eq
 l_int|0x00
 op_logical_or
-multiline_comment|/* Not our interurpt */
+multiline_comment|/* Not our interrupt */
 id|stat_ack
 op_eq
 l_int|0xFF
@@ -11106,7 +11135,7 @@ suffix:semicolon
 id|u16
 op_star
 )paren
-id|nic-&gt;netdev-&gt;dev_addr
+id|netdev-&gt;dev_addr
 )paren
 (braket
 l_int|0
@@ -11126,7 +11155,7 @@ suffix:semicolon
 id|u16
 op_star
 )paren
-id|nic-&gt;netdev-&gt;dev_addr
+id|netdev-&gt;dev_addr
 )paren
 (braket
 l_int|1
@@ -11146,7 +11175,7 @@ suffix:semicolon
 id|u16
 op_star
 )paren
-id|nic-&gt;netdev-&gt;dev_addr
+id|netdev-&gt;dev_addr
 )paren
 (braket
 l_int|2
@@ -11168,7 +11197,7 @@ op_logical_neg
 id|is_valid_ether_addr
 c_func
 (paren
-id|nic-&gt;netdev-&gt;dev_addr
+id|netdev-&gt;dev_addr
 )paren
 )paren
 (brace
@@ -11265,6 +11294,57 @@ r_goto
 id|err_out_free
 suffix:semicolon
 )brace
+id|DPRINTK
+c_func
+(paren
+id|PROBE
+comma
+id|INFO
+comma
+l_string|&quot;addr 0x%lx, irq %d, &quot;
+l_string|&quot;MAC addr %02X:%02X:%02X:%02X:%02X:%02X&bslash;n&quot;
+comma
+id|pci_resource_start
+c_func
+(paren
+id|pdev
+comma
+l_int|0
+)paren
+comma
+id|pdev-&gt;irq
+comma
+id|netdev-&gt;dev_addr
+(braket
+l_int|0
+)braket
+comma
+id|netdev-&gt;dev_addr
+(braket
+l_int|1
+)braket
+comma
+id|netdev-&gt;dev_addr
+(braket
+l_int|2
+)braket
+comma
+id|netdev-&gt;dev_addr
+(braket
+l_int|3
+)braket
+comma
+id|netdev-&gt;dev_addr
+(braket
+l_int|4
+)braket
+comma
+id|netdev-&gt;dev_addr
+(braket
+l_int|5
+)braket
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
