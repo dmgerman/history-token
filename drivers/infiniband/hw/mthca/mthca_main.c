@@ -6,9 +6,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#ifdef CONFIG_INFINIBAND_MTHCA_SSE_DOORBELL
-macro_line|#include &lt;asm/cpufeature.h&gt;
-macro_line|#endif
 macro_line|#include &quot;mthca_dev.h&quot;
 macro_line|#include &quot;mthca_config_reg.h&quot;
 macro_line|#include &quot;mthca_cmd.h&quot;
@@ -4693,46 +4690,6 @@ r_void
 r_int
 id|ret
 suffix:semicolon
-multiline_comment|/*&n;&t; * TODO: measure whether dynamically choosing doorbell code at&n;&t; * runtime affects our performance.  Is there a &quot;magic&quot; way to&n;&t; * choose without having to follow a function pointer every&n;&t; * time we ring a doorbell?&n;&t; */
-macro_line|#ifdef CONFIG_INFINIBAND_MTHCA_SSE_DOORBELL
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cpu_has_xmm
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|PFX
-l_string|&quot;mthca was compiled with SSE doorbell code, but&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|PFX
-l_string|&quot;the current CPU does not support SSE.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|PFX
-l_string|&quot;Turn off CONFIG_INFINIBAND_MTHCA_SSE_DOORBELL &quot;
-l_string|&quot;and recompile.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-macro_line|#endif
 id|ret
 op_assign
 id|pci_register_driver
