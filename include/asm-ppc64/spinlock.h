@@ -122,7 +122,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;eieio&t;# spin_unlock&quot;
+l_string|&quot;lwsync&t;# spin_unlock&quot;
 suffix:colon
 suffix:colon
 suffix:colon
@@ -260,7 +260,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;eieio&t;&t;&t;&t;# read_unlock&bslash;n&bslash;&n;1:&t;lwarx&t;&t;%0,0,%1&bslash;n&bslash;&n;&t;addic&t;&t;%0,%0,-1&bslash;n&bslash;&n;&t;stwcx.&t;&t;%0,0,%1&bslash;n&bslash;&n;&t;bne-&t;&t;1b&quot;
+l_string|&quot;lwsync&t;&t;&t;&t;# read_unlock&bslash;n&bslash;&n;1:&t;lwarx&t;&t;%0,0,%1&bslash;n&bslash;&n;&t;addic&t;&t;%0,%0,-1&bslash;n&bslash;&n;&t;stwcx.&t;&t;%0,0,%1&bslash;n&bslash;&n;&t;bne-&t;&t;1b&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -397,7 +397,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;eieio&t;&t;# write_unlock&quot;
+l_string|&quot;lwsync&t;&t;# write_unlock&quot;
 suffix:colon
 suffix:colon
 suffix:colon

@@ -345,12 +345,14 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Software use */
+DECL|member|l
 r_int
 r_int
+id|l
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Reserved */
+multiline_comment|/* Virtual page is large (L=1) or 4 KB (L=0) */
 DECL|member|h
 r_int
 r_int
