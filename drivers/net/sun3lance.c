@@ -2293,7 +2293,7 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;
 multiline_comment|/* We&squot;re not prepared for the int until the last flags are set/reset.&n;&t; * And the int may happen already after setting the OWN_CHIP... */
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -2456,7 +2456,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

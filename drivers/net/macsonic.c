@@ -1191,15 +1191,10 @@ suffix:semicolon
 r_int
 id|card_present
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|card_present
@@ -1214,7 +1209,7 @@ op_star
 id|ONBOARD_SONIC_REGISTERS
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -2249,15 +2249,10 @@ id|skblen
 op_assign
 id|skb-&gt;len
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -2267,7 +2262,7 @@ op_logical_neg
 id|TX_BUFFS_AVAIL
 )paren
 (brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2476,7 +2471,7 @@ id|dev_kfree_skb
 id|skb
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -715,15 +715,10 @@ id|i
 comma
 id|j
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Check up to 32K in 4K increments */
@@ -853,7 +848,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
