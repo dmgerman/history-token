@@ -6028,13 +6028,6 @@ id|kref
 )paren
 suffix:semicolon
 r_struct
-id|scsi_device
-op_star
-id|sdev
-op_assign
-id|sdkp-&gt;device
-suffix:semicolon
-r_struct
 id|gendisk
 op_star
 id|disk
