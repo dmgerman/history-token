@@ -5,6 +5,7 @@ multiline_comment|/*&n; *&t;The following information is in its entirety obtaine
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;net/datalink.h&gt;
 macro_line|#include &lt;linux/ipx.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 DECL|struct|ipx_address
 r_struct
 id|ipx_address
@@ -196,12 +197,12 @@ r_int
 r_char
 id|if_primary
 suffix:semicolon
-DECL|member|if_next
+DECL|member|node
 r_struct
-id|ipx_interface
-op_star
-id|if_next
+id|list_head
+id|node
 suffix:semicolon
+multiline_comment|/* node in ipx_interfaces list */
 )brace
 suffix:semicolon
 DECL|struct|ipx_route
@@ -231,12 +232,12 @@ id|ir_router_node
 id|IPX_NODE_LEN
 )braket
 suffix:semicolon
-DECL|member|ir_next
+DECL|member|node
 r_struct
-id|ipx_route
-op_star
-id|ir_next
+id|list_head
+id|node
 suffix:semicolon
+multiline_comment|/* node in ipx_routes list */
 DECL|member|refcnt
 id|atomic_t
 id|refcnt
@@ -311,7 +312,7 @@ r_int
 r_int
 id|type
 suffix:semicolon
-multiline_comment|/* To handle special ncp connection-handling sockets for mars_nwe,&n; &t; * the connection number must be stored in the socket. */
+multiline_comment|/*&n;&t; * To handle special ncp connection-handling sockets for mars_nwe,&n; &t; * the connection number must be stored in the socket.&n;&t; */
 DECL|member|ipx_ncp_conn
 r_int
 r_int
@@ -330,8 +331,7 @@ DECL|macro|IPX_MAX_EPHEMERAL_SOCKET
 mdefine_line|#define IPX_MAX_EPHEMERAL_SOCKET&t;0x7fff
 r_extern
 r_struct
-id|ipx_route
-op_star
+id|list_head
 id|ipx_routes
 suffix:semicolon
 r_extern
@@ -340,9 +340,18 @@ id|ipx_routes_lock
 suffix:semicolon
 r_extern
 r_struct
+id|list_head
+id|ipx_interfaces
+suffix:semicolon
+r_extern
+r_struct
 id|ipx_interface
 op_star
-id|ipx_interfaces
+id|ipx_interfaces_head
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 r_extern
 id|spinlock_t
@@ -394,5 +403,5 @@ op_star
 id|intrfc
 )paren
 suffix:semicolon
-macro_line|#endif /* def _NET_INET_IPX_H_ */
+macro_line|#endif /* _NET_INET_IPX_H_ */
 eof
