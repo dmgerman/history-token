@@ -34,8 +34,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|macro|chip_t
-mdefine_line|#define chip_t es1688_t
 DECL|function|snd_es1688_dsp_command
 r_static
 r_int

@@ -17,8 +17,6 @@ mdefine_line|#define SNDRV_LEGACY_FIND_FREE_DMA
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t es1688_t
 id|MODULE_AUTHOR
 c_func
 (paren
