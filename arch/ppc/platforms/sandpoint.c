@@ -1085,24 +1085,9 @@ r_sizeof
 id|sandpoint_openpic_initsenses
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We need to tell openpic_set_sources where things actually are.&n;&t; * mpc10x_common will setup OpenPIC_Addr at ioremap(EUMB phys base +&n;&t; * EPIC offset (0x40000));  The EPIC IRQ Register Address Map -&n;&t; * Interrupt Source Configuration Registers gives these numbers&n;&t; * as offsets starting at 0x50200, we need to adjust occordinly.&n;&t; */
-multiline_comment|/* Map serial interrupts 0-15 */
-id|openpic_set_sources
+id|mpc10x_set_openpic
 c_func
 (paren
-l_int|0
-comma
-l_int|16
-comma
-id|OpenPIC_Addr
-op_plus
-l_int|0x10200
-)paren
-suffix:semicolon
-id|openpic_init
-c_func
-(paren
-id|NUM_8259_INTERRUPTS
 )paren
 suffix:semicolon
 id|openpic_hookup_cascade
