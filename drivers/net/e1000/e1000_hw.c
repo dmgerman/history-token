@@ -11734,6 +11734,12 @@ id|retry_count
 op_add_assign
 l_int|5
 suffix:semicolon
+id|e1000_standby_eeprom
+c_func
+(paren
+id|hw
+)paren
+suffix:semicolon
 )brace
 r_while
 c_loop
