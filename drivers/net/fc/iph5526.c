@@ -16945,7 +16945,7 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|fi-&gt;fc_stats.rx_dropped
+id|fi-&gt;fc_stats.tx_dropped
 op_increment
 suffix:semicolon
 id|dev-&gt;trans_start
@@ -17134,7 +17134,7 @@ op_increment
 suffix:semicolon
 )brace
 r_else
-id|fi-&gt;fc_stats.rx_dropped
+id|fi-&gt;fc_stats.tx_dropped
 op_increment
 suffix:semicolon
 id|dev-&gt;trans_start

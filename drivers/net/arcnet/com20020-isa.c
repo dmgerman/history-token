@@ -697,16 +697,6 @@ op_star
 id|s
 )paren
 (brace
-r_struct
-id|net_device
-op_star
-id|dev
-suffix:semicolon
-r_struct
-id|arcnet_local
-op_star
-id|lp
-suffix:semicolon
 r_int
 id|ints
 (braket
