@@ -2839,6 +2839,14 @@ c_func
 id|hub
 )paren
 suffix:semicolon
+id|hub-&gt;change_bits
+(braket
+l_int|0
+)braket
+op_assign
+op_complement
+l_int|0
+suffix:semicolon
 id|hub_activate
 c_func
 (paren
