@@ -15,7 +15,9 @@ macro_line|#include &lt;net/arp.h&gt;
 macro_line|#ifndef _SNMP_H
 macro_line|#include &lt;net/snmp.h&gt;
 macro_line|#endif
-macro_line|#include &lt;net/sock.h&gt;&t;/* struct sock */
+r_struct
+id|sock
+suffix:semicolon
 DECL|struct|inet_skb_parm
 r_struct
 id|inet_skb_parm
