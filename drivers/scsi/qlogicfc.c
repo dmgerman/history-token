@@ -16,7 +16,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 DECL|macro|pci64_dma_hi32
 mdefine_line|#define pci64_dma_hi32(a) ((u32) (0xffffffff &amp; (((u64)(a))&gt;&gt;32)))
 DECL|macro|pci64_dma_lo32
@@ -48,6 +48,8 @@ DECL|macro|TRACE_ISP
 mdefine_line|#define TRACE_ISP &t;&t;0 
 DECL|macro|DEFAULT_LOOP_COUNT
 mdefine_line|#define DEFAULT_LOOP_COUNT&t;1000000000
+DECL|macro|ISP_TIMEOUT
+mdefine_line|#define ISP_TIMEOUT (2*HZ)
 multiline_comment|/* End Configuration section ************************************************ */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#if TRACE_ISP
@@ -5663,7 +5665,7 @@ OG
 (paren
 l_int|2
 op_star
-id|SCSI_TIMEOUT
+id|ISP_TIMEOUT
 )paren
 )paren
 (brace

@@ -1,6 +1,15 @@
 macro_line|#ifndef _SCSI_SCSI_EH_H
 DECL|macro|_SCSI_SCSI_EH_H
 mdefine_line|#define _SCSI_SCSI_EH_H
+r_struct
+id|scsi_cmnd
+suffix:semicolon
+r_struct
+id|scsi_device
+suffix:semicolon
+r_struct
+id|Scsi_Host
+suffix:semicolon
 r_extern
 r_void
 id|scsi_add_timer

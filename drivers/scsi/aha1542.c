@@ -19,7 +19,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;aha1542.h&quot;
 DECL|macro|SCSI_BUF_PA
 mdefine_line|#define SCSI_BUF_PA(address)&t;isa_virt_to_bus(address)

@@ -17,7 +17,7 @@ macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;../parisc/gsc.h&quot;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;ncr53c8xx.h&quot;
 id|MODULE_AUTHOR
 c_func

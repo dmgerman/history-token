@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;dc395x.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;&t;/* needed for scsicam_bios_param */
 macro_line|#include &lt;linux/interrupt.h&gt;

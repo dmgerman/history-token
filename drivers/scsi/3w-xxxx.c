@@ -46,7 +46,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|__3W_C
 mdefine_line|#define __3W_C&t;&t;&t;/* let 3w-xxxx.h know it is use */
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;3w-xxxx.h&quot;
 r_static
 r_int

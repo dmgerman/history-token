@@ -11,7 +11,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/bvme6000hw.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;53c7xx.h&quot;
 macro_line|#include &quot;bvme6000.h&quot;
 macro_line|#include&lt;linux/stat.h&gt;

@@ -475,6 +475,7 @@ l_int|NULL
 comma
 id|store_spi_revalidate
 )paren
+suffix:semicolon
 multiline_comment|/* Translate the period into ns according to the current spec&n; * for SDTR/PPR messages */
 DECL|function|show_spi_transport_period
 r_static
@@ -1557,6 +1558,8 @@ id|sreq-&gt;sr_device
 suffix:semicolon
 r_int
 id|period
+op_assign
+l_int|0
 comma
 id|prevperiod
 op_assign
@@ -1569,6 +1572,9 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
+r_int
+id|newperiod
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1601,13 +1607,24 @@ c_func
 id|sdev
 )paren
 suffix:semicolon
-id|period
+id|newperiod
 op_assign
 id|spi_period
 c_func
 (paren
 id|sdev
 )paren
+suffix:semicolon
+id|period
+op_assign
+id|newperiod
+OG
+id|period
+ques
+c_cond
+id|newperiod
+suffix:colon
+id|period
 suffix:semicolon
 r_if
 c_cond

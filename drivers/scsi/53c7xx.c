@@ -56,7 +56,7 @@ DECL|macro|VALID_IDS
 mdefine_line|#define VALID_IDS
 macro_line|#endif
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;53c7xx.h&quot;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;

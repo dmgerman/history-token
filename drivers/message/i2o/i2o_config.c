@@ -314,7 +314,7 @@ id|u32
 op_star
 )paren
 (paren
-id|c-&gt;mem_offset
+id|c-&gt;msg_virt
 op_plus
 id|msg
 (braket

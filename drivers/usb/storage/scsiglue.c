@@ -1256,6 +1256,12 @@ id|emulated
 op_assign
 id|TRUE
 comma
+multiline_comment|/* we do our own delay after a device or bus reset */
+dot
+id|skip_settle_delay
+op_assign
+l_int|1
+comma
 multiline_comment|/* sysfs device attributes */
 dot
 id|sdev_attrs

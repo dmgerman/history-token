@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/sgi/ip22.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;wd33c93.h&quot;
 macro_line|#include &quot;sgiwd93.h&quot;
 macro_line|#include &lt;linux/stat.h&gt;

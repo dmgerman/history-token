@@ -209,6 +209,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Don&squot;t quiesce                */
+DECL|member|raptor
+r_int
+id|raptor
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* split bar                    */
 DECL|member|promise
 r_int
 id|promise
@@ -252,20 +259,20 @@ id|next
 suffix:semicolon
 multiline_comment|/* Controller chain */
 DECL|member|post_port
-r_int
-r_int
+r_void
+op_star
 id|post_port
 suffix:semicolon
 multiline_comment|/* Inbout port address */
 DECL|member|reply_port
-r_int
-r_int
+r_void
+op_star
 id|reply_port
 suffix:semicolon
 multiline_comment|/* Outbound port address */
 DECL|member|irq_mask
-r_int
-r_int
+r_void
+op_star
 id|irq_mask
 suffix:semicolon
 multiline_comment|/* Interrupt register address */
@@ -327,18 +334,30 @@ DECL|member|hrt_len
 id|u32
 id|hrt_len
 suffix:semicolon
-DECL|member|mem_offset
-r_int
-r_int
-id|mem_offset
+DECL|member|base_virt
+r_void
+op_star
+id|base_virt
 suffix:semicolon
-multiline_comment|/* MFA offset */
-DECL|member|mem_phys
+multiline_comment|/* base virtual address */
+DECL|member|base_phys
 r_int
 r_int
-id|mem_phys
+id|base_phys
 suffix:semicolon
-multiline_comment|/* MFA physical */
+multiline_comment|/* base physical address */
+DECL|member|msg_virt
+r_void
+op_star
+id|msg_virt
+suffix:semicolon
+multiline_comment|/* messages virtual address */
+DECL|member|msg_phys
+r_int
+r_int
+id|msg_phys
+suffix:semicolon
+multiline_comment|/* messages physical address */
 DECL|member|battery
 r_int
 id|battery

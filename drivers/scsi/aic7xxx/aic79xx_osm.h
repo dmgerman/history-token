@@ -27,7 +27,7 @@ multiline_comment|/* Core SCSI definitions */
 DECL|macro|AIC_LIB_PREFIX
 mdefine_line|#define AIC_LIB_PREFIX ahd
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 multiline_comment|/* Name space conflict with BSD queue macros */
 macro_line|#ifdef LIST_HEAD
 DECL|macro|LIST_HEAD

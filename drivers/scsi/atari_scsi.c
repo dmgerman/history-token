@@ -85,7 +85,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;atari_scsi.h&quot;
 macro_line|#include &quot;NCR5380.h&quot;
 macro_line|#include &lt;asm/atari_stdma.h&gt;
