@@ -4480,7 +4480,6 @@ suffix:semicolon
 id|blk_attempt_remerge
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 id|rq
@@ -6752,7 +6751,6 @@ multiline_comment|/*&n;&t; * for dvd-ram and such media, it&squot;s a really big
 id|blk_attempt_remerge
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 id|rq
@@ -12232,7 +12230,6 @@ suffix:semicolon
 id|blk_queue_hardsect_size
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 id|CD_FRAMESIZE
@@ -12241,7 +12238,6 @@ suffix:semicolon
 id|blk_queue_prep_rq
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 id|ide_cdrom_prep_fn
@@ -12250,7 +12246,6 @@ suffix:semicolon
 id|blk_queue_dma_alignment
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 l_int|3
@@ -13158,7 +13153,6 @@ suffix:semicolon
 id|blk_queue_prep_rq
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 l_int|NULL

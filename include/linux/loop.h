@@ -208,6 +208,7 @@ id|lo_pending
 suffix:semicolon
 DECL|member|lo_queue
 id|request_queue_t
+op_star
 id|lo_queue
 suffix:semicolon
 )brace

@@ -31,14 +31,15 @@ DECL|variable|sjcd_queue
 r_static
 r_struct
 id|request_queue
+op_star
 id|sjcd_queue
 suffix:semicolon
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR SANYO_CDROM_MAJOR
 DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;sjcd_queue)
+mdefine_line|#define QUEUE (sjcd_queue)
 DECL|macro|CURRENT
-mdefine_line|#define CURRENT elv_next_request(&amp;sjcd_queue)
+mdefine_line|#define CURRENT elv_next_request(sjcd_queue)
 DECL|macro|SJCD_BUF_SIZ
 mdefine_line|#define SJCD_BUF_SIZ 32&t;&t;/* cdr-h94a has internal 64K buffer */
 multiline_comment|/*&n; * buffer for block size conversion&n; */
@@ -5773,22 +5774,29 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
+id|sjcd_queue
+op_assign
 id|blk_init_queue
 c_func
 (paren
-op_amp
-id|sjcd_queue
-comma
 id|do_sjcd_request
 comma
 op_amp
 id|sjcd_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sjcd_queue
+)paren
+r_goto
+id|out0
+suffix:semicolon
 id|blk_queue_hardsect_size
 c_func
 (paren
-op_amp
 id|sjcd_queue
 comma
 l_int|2048
@@ -6252,7 +6260,6 @@ id|sjcd_base
 suffix:semicolon
 id|sjcd_disk-&gt;queue
 op_assign
-op_amp
 id|sjcd_queue
 suffix:semicolon
 id|add_disk
@@ -6279,13 +6286,6 @@ comma
 l_int|4
 )paren
 suffix:semicolon
-id|blk_cleanup_queue
-c_func
-(paren
-op_amp
-id|sjcd_queue
-)paren
-suffix:semicolon
 id|out2
 suffix:colon
 id|put_disk
@@ -6295,6 +6295,14 @@ id|sjcd_disk
 )paren
 suffix:semicolon
 id|out1
+suffix:colon
+id|blk_cleanup_queue
+c_func
+(paren
+id|sjcd_queue
+)paren
+suffix:semicolon
+id|out0
 suffix:colon
 r_if
 c_cond
@@ -6358,7 +6366,6 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-op_amp
 id|sjcd_queue
 )paren
 suffix:semicolon

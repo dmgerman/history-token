@@ -46,6 +46,7 @@ DECL|variable|floppy_queue
 r_static
 r_struct
 id|request_queue
+op_star
 id|floppy_queue
 suffix:semicolon
 DECL|macro|MAJOR_NR
@@ -55,9 +56,9 @@ mdefine_line|#define FLOPPY_DMA 0
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
 DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;floppy_queue)
+mdefine_line|#define QUEUE (floppy_queue)
 DECL|macro|CURRENT
-mdefine_line|#define CURRENT elv_next_request(&amp;floppy_queue)
+mdefine_line|#define CURRENT elv_next_request(floppy_queue)
 multiline_comment|/* Disk types: DD */
 DECL|struct|archy_disk_type
 r_static
@@ -5450,17 +5451,25 @@ id|FIQ_FD1772
 )paren
 suffix:semicolon
 multiline_comment|/* This inserts a call to our command end routine */
+id|floppy_queue
+op_assign
 id|blk_init_queue
 c_func
 (paren
-op_amp
-id|floppy_queue
-comma
 id|do_fd_request
 comma
 op_amp
 id|lock
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|floppy_queue
+)paren
+r_goto
+id|err_queue
 suffix:semicolon
 r_for
 c_loop
@@ -5550,7 +5559,6 @@ id|i
 op_member_access_from_pointer
 id|queue
 op_assign
-op_amp
 id|floppy_queue
 suffix:semicolon
 id|set_capacity
@@ -5619,6 +5627,14 @@ c_func
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|err_queue
+suffix:colon
+id|kfree
+c_func
+(paren
+id|DMAbuffer
+)paren
 suffix:semicolon
 id|err_dma2
 suffix:colon

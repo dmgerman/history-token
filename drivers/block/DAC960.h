@@ -8858,6 +8858,7 @@ suffix:semicolon
 DECL|member|RequestQueue
 r_struct
 id|request_queue
+op_star
 id|RequestQueue
 suffix:semicolon
 DECL|member|queue_lock

@@ -604,7 +604,6 @@ suffix:semicolon
 id|blk_queue_merge_bvec
 c_func
 (paren
-op_amp
 id|mddev-&gt;queue
 comma
 id|linear_mergeable_bvec

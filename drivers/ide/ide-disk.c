@@ -263,7 +263,6 @@ op_assign
 id|blk_queue_start_tag
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 id|rq
@@ -8885,7 +8884,6 @@ suffix:semicolon
 id|blk_queue_max_sectors
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 id|max_s
@@ -8899,7 +8897,7 @@ l_string|&quot;%s: max request size: %dKiB&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
-id|drive-&gt;queue.max_sectors
+id|drive-&gt;queue-&gt;max_sectors
 op_div
 l_int|2
 )paren

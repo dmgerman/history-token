@@ -7384,7 +7384,6 @@ suffix:semicolon
 id|blk_queue_max_sectors
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 l_int|64
@@ -7411,7 +7410,6 @@ l_int|0
 id|blk_queue_max_sectors
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 l_int|64

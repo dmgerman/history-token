@@ -52,12 +52,13 @@ DECL|variable|acsi_queue
 r_static
 r_struct
 id|request_queue
+op_star
 id|acsi_queue
 suffix:semicolon
 DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;acsi_queue)
+mdefine_line|#define QUEUE (acsi_queue)
 DECL|macro|CURRENT
-mdefine_line|#define CURRENT elv_next_request(&amp;acsi_queue)
+mdefine_line|#define CURRENT elv_next_request(acsi_queue)
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
 DECL|macro|DEBUG_DETECT
@@ -6358,18 +6359,33 @@ l_int|0x00000000
 suffix:colon
 l_int|0xff000000
 suffix:semicolon
+id|acsi_queue
+op_assign
 id|blk_init_queue
 c_func
 (paren
-op_amp
-id|acsi_queue
-comma
 id|do_acsi_request
 comma
 op_amp
 id|acsi_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acsi_queue
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|out2a
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_ATARI_SLM
 id|err
 op_assign
@@ -6852,7 +6868,6 @@ id|size
 suffix:semicolon
 id|disk-&gt;queue
 op_assign
-op_amp
 id|acsi_queue
 suffix:semicolon
 id|add_disk
@@ -6887,10 +6902,11 @@ suffix:colon
 id|blk_cleanup_queue
 c_func
 (paren
-op_amp
 id|acsi_queue
 )paren
 suffix:semicolon
+id|out2a
+suffix:colon
 id|atari_stram_free
 c_func
 (paren
@@ -6978,7 +6994,6 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-op_amp
 id|acsi_queue
 )paren
 suffix:semicolon

@@ -751,6 +751,7 @@ id|writes_pending
 suffix:semicolon
 DECL|member|queue
 id|request_queue_t
+op_star
 id|queue
 suffix:semicolon
 multiline_comment|/* for plugging ... */

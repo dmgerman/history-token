@@ -2665,9 +2665,12 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 )paren
+suffix:semicolon
+id|drive-&gt;queue
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
