@@ -959,12 +959,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|minor
-op_assign
-id|devmap-&gt;devindex
-op_mod
-id|DASD_PER_MAJOR
-suffix:semicolon
 multiline_comment|/* Set kdev and the device name. */
 id|device-&gt;kdev
 op_assign
@@ -973,21 +967,15 @@ c_func
 (paren
 id|gdp-&gt;major
 comma
-id|minor
-op_lshift
-id|DASD_PARTN_BITS
+id|gdp-&gt;first_minor
 )paren
 suffix:semicolon
-id|dasd_device_name
+id|strcpy
 c_func
 (paren
 id|device-&gt;name
 comma
-id|minor
-comma
-l_int|0
-comma
-id|gdp
+id|gdp-&gt;major_name
 )paren
 suffix:semicolon
 multiline_comment|/* Find a discipline for the device. */
@@ -1032,13 +1020,7 @@ id|device
 suffix:semicolon
 id|gdp-&gt;de_arr
 (braket
-id|minor
-c_func
-(paren
-id|device-&gt;kdev
-)paren
-op_rshift
-id|DASD_PARTN_BITS
+l_int|0
 )braket
 op_assign
 id|dir
@@ -1117,18 +1099,8 @@ op_star
 id|device
 )paren
 (brace
-r_struct
-id|gendisk
-op_star
-id|gdp
-suffix:semicolon
 id|dasd_devmap_t
 op_star
-id|devmap
-suffix:semicolon
-r_int
-id|minor
-suffix:semicolon
 id|devmap
 op_assign
 id|dasd_devmap_from_devno
@@ -1137,6 +1109,9 @@ c_func
 id|device-&gt;devinfo.devno
 )paren
 suffix:semicolon
+r_struct
+id|gendisk
+op_star
 id|gdp
 op_assign
 id|dasd_gendisk_from_devindex
@@ -1154,12 +1129,6 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-id|minor
-op_assign
-id|devmap-&gt;devindex
-op_mod
-id|DASD_PER_MAJOR
-suffix:semicolon
 multiline_comment|/* Remove device entry and devfs directory. */
 id|devfs_unregister
 c_func
@@ -1172,7 +1141,7 @@ c_func
 (paren
 id|gdp-&gt;de_arr
 (braket
-id|minor
+l_int|0
 )braket
 )paren
 suffix:semicolon
