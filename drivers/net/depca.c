@@ -4353,11 +4353,7 @@ id|dev-&gt;name
 comma
 id|i
 comma
-id|virt_to_phys
-c_func
-(paren
-id|lp-&gt;sh_mem
-)paren
+id|lp-&gt;mem_start
 comma
 id|inw
 c_func
@@ -4379,11 +4375,7 @@ id|dev-&gt;name
 comma
 id|i
 comma
-id|virt_to_phys
-c_func
-(paren
-id|lp-&gt;sh_mem
-)paren
+id|lp-&gt;mem_start
 comma
 id|inw
 c_func
@@ -7498,11 +7490,7 @@ c_func
 (paren
 l_string|&quot;Initialisation block at 0x%8.8lx(Phys)&bslash;n&quot;
 comma
-id|virt_to_phys
-c_func
-(paren
-id|lp-&gt;sh_mem
-)paren
+id|lp-&gt;mem_start
 )paren
 suffix:semicolon
 id|printk
@@ -7630,11 +7618,7 @@ c_func
 (paren
 l_string|&quot;buffers (Phys): 0x%8.8lx&bslash;n&quot;
 comma
-id|virt_to_phys
-c_func
-(paren
-id|lp-&gt;sh_mem
-)paren
+id|lp-&gt;mem_start
 op_plus
 id|lp-&gt;buffs_offset
 )paren
