@@ -2068,6 +2068,11 @@ id|i
 )braket
 )paren
 suffix:semicolon
+id|ia64_dv_serialize_instruction
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 id|ia64_srlz_i
 c_func
@@ -2119,6 +2124,11 @@ id|dbrs
 (braket
 id|i
 )braket
+)paren
+suffix:semicolon
+id|ia64_dv_serialize_data
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -13185,7 +13195,7 @@ comma
 l_int|0UL
 )paren
 suffix:semicolon
-id|ia64_srlz_i
+id|ia64_dv_serialize_instruction
 c_func
 (paren
 )paren
@@ -13219,7 +13229,7 @@ comma
 l_int|0UL
 )paren
 suffix:semicolon
-id|ia64_srlz_d
+id|ia64_dv_serialize_data
 c_func
 (paren
 )paren
@@ -13369,6 +13379,7 @@ c_cond
 (paren
 id|can_access_pmu
 )paren
+(brace
 id|ia64_set_ibr
 c_func
 (paren
@@ -13377,6 +13388,12 @@ comma
 id|dbreg.val
 )paren
 suffix:semicolon
+id|ia64_dv_serialize_instruction
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 id|ctx-&gt;ctx_ibrs
 (braket
 id|rnum
