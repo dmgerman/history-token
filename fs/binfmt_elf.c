@@ -2878,6 +2878,12 @@ id|current-&gt;personality
 op_or_assign
 id|READ_IMPLIES_EXEC
 suffix:semicolon
+id|arch_pick_mmap_layout
+c_func
+(paren
+id|current-&gt;mm
+)paren
+suffix:semicolon
 multiline_comment|/* Do this so that we can load the interpreter, if need be.  We will&n;&t;   change some of these later */
 id|current-&gt;mm-&gt;rss
 op_assign
