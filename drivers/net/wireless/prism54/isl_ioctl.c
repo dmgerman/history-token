@@ -4622,7 +4622,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* now read the flags     */
+multiline_comment|/* now read the flags */
 r_if
 c_cond
 (paren
@@ -9629,7 +9629,7 @@ mdefine_line|#define PRISM54_DBG_GET_OID&t;SIOCIWFIRSTPRIV+15
 DECL|macro|PRISM54_DBG_SET_OID
 mdefine_line|#define PRISM54_DBG_SET_OID&t;SIOCIWFIRSTPRIV+16
 DECL|macro|PRISM54_GET_OID
-mdefine_line|#define PRISM54_GET_OID&t;   SIOCIWFIRSTPRIV+17
+mdefine_line|#define PRISM54_GET_OID&t;&t;SIOCIWFIRSTPRIV+17
 DECL|macro|PRISM54_SET_OID_U32
 mdefine_line|#define PRISM54_SET_OID_U32&t;SIOCIWFIRSTPRIV+18
 DECL|macro|PRISM54_SET_OID_STR

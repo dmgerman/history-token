@@ -439,7 +439,7 @@ suffix:semicolon
 id|curr
 op_increment
 suffix:semicolon
-multiline_comment|/* The fragment address in the control block must have&n;                 * been written before announcing the frame buffer to&n;                 * device */
+multiline_comment|/* The fragment address in the control block must have&n;&t;&t; * been written before announcing the frame buffer to&n;&t;&t; * device */
 id|wmb
 c_func
 (paren
@@ -950,7 +950,7 @@ l_string|&quot;islpci_mgt_receive &bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Only once per interrupt, determine fragment range to&n;         * process.  This avoids an endless loop (i.e. lockup) if&n;         * frames come in faster than we can process them. */
+multiline_comment|/* Only once per interrupt, determine fragment range to&n;&t; * process.  This avoids an endless loop (i.e. lockup) if&n;&t; * frames come in faster than we can process them. */
 id|curr_frag
 op_assign
 id|le32_to_cpu
@@ -1012,7 +1012,7 @@ id|islpci_mgmtframe
 op_star
 id|frame
 suffix:semicolon
-multiline_comment|/* I have no idea (and no documentation) if flags != 0&n;                 * is possible.  Drop the frame, reuse the buffer. */
+multiline_comment|/* I have no idea (and no documentation) if flags != 0&n;&t;&t; * is possible.  Drop the frame, reuse the buffer. */
 r_if
 c_cond
 (paren
@@ -1067,7 +1067,7 @@ dot
 id|size
 )paren
 suffix:semicolon
-multiline_comment|/*&n;                 * We appear to have no way to tell the device the&n;                 * size of a receive buffer.  Thus, if this check&n;                 * triggers, we likely have kernel heap corruption. */
+multiline_comment|/*&n;&t;&t; * We appear to have no way to tell the device the&n;&t;&t; * size of a receive buffer.  Thus, if this check&n;&t;&t; * triggers, we likely have kernel heap corruption. */
 r_if
 c_cond
 (paren
