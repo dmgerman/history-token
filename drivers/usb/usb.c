@@ -2324,6 +2324,8 @@ suffix:semicolon
 )brace
 singleline_comment|// usbcore-internal ...
 singleline_comment|// but usb_dec_dev_use() is #defined to this, and that&squot;s public!!
+singleline_comment|// FIXME the public call should BUG() whenever count goes to zero,
+singleline_comment|// the usbcore-internal one should do so _unless_ it does so...
 DECL|function|usb_free_dev
 r_void
 id|usb_free_dev
@@ -2346,6 +2348,18 @@ id|dev-&gt;refcnt
 )paren
 )paren
 (brace
+multiline_comment|/* Normally only goes to zero in usb_disconnect(), from&n;&t;&t; * khubd or from roothub shutdown (rmmod/apmd/... thread).&n;&t;&t; * Abnormally, roothub init errors can happen, so HCDs&n;&t;&t; * call this directly.&n;&t;&t; *&n;&t;&t; * Otherwise this is a nasty device driver bug, often in&n;&t;&t; * disconnect processing.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|in_interrupt
+(paren
+)paren
+)paren
+id|BUG
+(paren
+)paren
+suffix:semicolon
 id|dev-&gt;bus-&gt;op
 op_member_access_from_pointer
 id|deallocate
