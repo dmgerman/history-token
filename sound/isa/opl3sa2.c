@@ -3674,7 +3674,6 @@ id|snd_printdd
 c_func
 (paren
 l_string|&quot;isapnp OPL3-SA: a card was found but it did not contain the needed devices&bslash;n&quot;
-comma
 )paren
 suffix:semicolon
 r_return
