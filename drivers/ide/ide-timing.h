@@ -1463,6 +1463,18 @@ id|IDE_TIMING_CYC8B
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * If the drive is an ATAPI device it may need slower address setup timing,&n; * so we stay on the safe side.&n; */
+r_if
+c_cond
+(paren
+id|drive-&gt;media
+op_ne
+id|ide_disk
+)paren
+id|p.setup
+op_assign
+l_int|120
+suffix:semicolon
 multiline_comment|/*&n; * Convert the timing to bus clock counts.&n; */
 id|ide_timing_quantize
 c_func
