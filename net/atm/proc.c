@@ -193,10 +193,10 @@ id|stats-&gt;rx_drop
 )paren
 suffix:semicolon
 )brace
-DECL|function|dev_info
+DECL|function|atm_dev_info
 r_static
 r_void
-id|dev_info
+id|atm_dev_info
 c_func
 (paren
 r_const
@@ -1753,7 +1753,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|dev_info
+id|atm_dev_info
 c_func
 (paren
 id|dev
