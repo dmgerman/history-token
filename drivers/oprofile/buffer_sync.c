@@ -697,15 +697,6 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|vma
-)paren
-r_goto
-id|out
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
 id|vma-&gt;vm_file
 )paren
 r_continue
@@ -749,8 +740,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|out
-suffix:colon
 r_return
 id|cookie
 suffix:semicolon
