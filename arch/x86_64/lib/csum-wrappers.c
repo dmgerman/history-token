@@ -30,6 +30,11 @@ op_star
 id|errp
 )paren
 (brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 op_star
 id|errp
 op_assign
@@ -244,6 +249,11 @@ op_star
 id|errp
 )paren
 (brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
