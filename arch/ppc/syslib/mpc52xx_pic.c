@@ -780,6 +780,9 @@ r_void
 r_int
 id|i
 suffix:semicolon
+id|u32
+id|intr_ctrl
+suffix:semicolon
 multiline_comment|/* Remap the necessary zones */
 id|intr
 op_assign
@@ -881,18 +884,25 @@ l_int|0x00010fff
 )paren
 suffix:semicolon
 multiline_comment|/* 1 means disabled */
-id|out_be32
+id|intr_ctrl
+op_assign
+id|in_be32
 c_func
 (paren
 op_amp
 id|intr-&gt;ctrl
-comma
+)paren
+suffix:semicolon
+id|intr_ctrl
+op_and_assign
+l_int|0x00ff0000
+suffix:semicolon
+multiline_comment|/* Keeps IRQ[0-3] config */
+id|intr_ctrl
+op_or_assign
 l_int|0x0f000000
 op_or
 multiline_comment|/* clear IRQ 0-3 */
-l_int|0x00c00000
-op_or
-multiline_comment|/* IRQ0: level-sensitive, active low */
 l_int|0x00001000
 op_or
 multiline_comment|/* MEE master external enable */
@@ -900,9 +910,17 @@ l_int|0x00000000
 op_or
 multiline_comment|/* 0 means disable IRQ 0-3 */
 l_int|0x00000001
-)paren
 suffix:semicolon
 multiline_comment|/* CEb route critical normally */
+id|out_be32
+c_func
+(paren
+op_amp
+id|intr-&gt;ctrl
+comma
+id|intr_ctrl
+)paren
+suffix:semicolon
 multiline_comment|/* Zero a bunch of the priority settings.  */
 id|out_be32
 c_func
@@ -983,6 +1001,70 @@ dot
 id|status
 op_assign
 id|IRQ_LEVEL
+suffix:semicolon
+)brace
+DECL|macro|IRQn_MODE
+mdefine_line|#define IRQn_MODE(intr_ctrl,irq) (((intr_ctrl) &gt;&gt; (22-(i&lt;&lt;1))) &amp; 0x03)
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|4
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_int
+id|mode
+suffix:semicolon
+id|mode
+op_assign
+id|IRQn_MODE
+c_func
+(paren
+id|intr_ctrl
+comma
+id|i
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|mode
+op_eq
+l_int|0x1
+)paren
+op_logical_or
+(paren
+id|mode
+op_eq
+l_int|0x2
+)paren
+)paren
+id|irq_desc
+(braket
+id|i
+ques
+c_cond
+id|MPC52xx_IRQ1
+op_plus
+id|i
+op_minus
+l_int|1
+suffix:colon
+id|MPC52xx_IRQ0
+)braket
+dot
+id|status
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 )brace
