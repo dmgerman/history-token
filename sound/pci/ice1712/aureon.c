@@ -1013,6 +1013,12 @@ id|change
 suffix:semicolon
 )brace
 multiline_comment|/* digital master volume */
+DECL|macro|MASTER_0dB
+mdefine_line|#define MASTER_0dB 0xff
+DECL|macro|MASTER_RES
+mdefine_line|#define MASTER_RES 128&t;/* -64dB */
+DECL|macro|MASTER_MIN
+mdefine_line|#define MASTER_MIN (MASTER_0dB - MASTER_RES)
 DECL|function|wm_master_vol_info
 r_static
 r_int
@@ -1040,10 +1046,10 @@ id|uinfo-&gt;value.integer.min
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* mute (-127.5dB) */
+multiline_comment|/* mute (-64dB) */
 id|uinfo-&gt;value.integer.max
 op_assign
-l_int|0xff
+id|MASTER_RES
 suffix:semicolon
 multiline_comment|/* 0dB */
 r_return
@@ -1077,7 +1083,7 @@ id|kcontrol
 suffix:semicolon
 r_int
 r_int
-id|vol
+id|val
 suffix:semicolon
 id|down
 c_func
@@ -1086,7 +1092,7 @@ op_amp
 id|ice-&gt;gpio_mutex
 )paren
 suffix:semicolon
-id|vol
+id|val
 op_assign
 id|wm_get
 c_func
@@ -1098,14 +1104,27 @@ id|WM_DAC_DIG_MASTER_ATTEN
 op_amp
 l_int|0xff
 suffix:semicolon
+id|val
+op_assign
+id|val
+OG
+id|MASTER_MIN
+ques
+c_cond
+(paren
+id|val
+op_minus
+id|MASTER_MIN
+)paren
+suffix:colon
+l_int|0
+suffix:semicolon
 id|ucontrol-&gt;value.integer.value
 (braket
 l_int|0
 )braket
 op_assign
-l_int|0xff
-op_minus
-id|vol
+id|val
 suffix:semicolon
 id|up
 c_func
@@ -1162,12 +1181,27 @@ id|ice
 suffix:semicolon
 id|nvol
 op_assign
-l_int|0xff
-op_minus
 id|ucontrol-&gt;value.integer.value
 (braket
 l_int|0
 )braket
+suffix:semicolon
+id|nvol
+op_assign
+(paren
+id|nvol
+ques
+c_cond
+(paren
+id|nvol
+op_plus
+id|MASTER_MIN
+)paren
+suffix:colon
+l_int|0
+)paren
+op_amp
+l_int|0xff
 suffix:semicolon
 id|ovol
 op_assign
