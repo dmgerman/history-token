@@ -693,8 +693,9 @@ r_int
 id|addr
 suffix:semicolon
 DECL|member|remap_addr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|remap_addr
 suffix:semicolon
 DECL|member|irq
@@ -870,8 +871,9 @@ r_int
 id|value
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|addr
 op_assign
 id|chip-&gt;remap_addr
@@ -6112,10 +6114,6 @@ id|chip-&gt;remap_addr
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|chip-&gt;remap_addr
 )paren
 suffix:semicolon
@@ -6321,10 +6319,6 @@ l_int|0
 suffix:semicolon
 id|chip-&gt;remap_addr
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
