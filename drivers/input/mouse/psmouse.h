@@ -398,7 +398,7 @@ comma
 r_int
 id|count
 comma
-r_int
+id|ssize_t
 (paren
 op_star
 id|handler
