@@ -1984,6 +1984,16 @@ comma
 id|quirk_via_irqpic
 )paren
 suffix:semicolon
+id|DECLARE_PCI_FIXUP_ENABLE
+c_func
+(paren
+id|PCI_VENDOR_ID_VIA
+comma
+id|PCI_DEVICE_ID_VIA_8233_7
+comma
+id|quirk_via_irqpic
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * PIIX3 USB: We have to disable USB interrupts that are&n; * hardwired to PIRQD# and may be shared with an&n; * external device.&n; *&n; * Legacy Support Register (LEGSUP):&n; *     bit13:  USB PIRQ Enable (USBPIRQDEN),&n; *     bit4:   Trap/SMI On IRQ Enable (USBSMIEN).&n; *&n; * We mask out all r/wc bits, too.&n; */
 DECL|function|quirk_piix3_usb
 r_static
