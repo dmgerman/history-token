@@ -1027,17 +1027,17 @@ mdefine_line|#define CMDDATA(a)      (&amp;((gdth_ext_str *)((a)-&gt;hostdata))-
 DECL|macro|BUS_L2P
 mdefine_line|#define BUS_L2P(a,b)    ((b)&gt;(a)-&gt;virt_bus ? (b-1):(b))
 DECL|macro|gdth_readb
-mdefine_line|#define gdth_readb(addr)        readb((ulong)(addr))
+mdefine_line|#define gdth_readb(addr)        readb(addr)
 DECL|macro|gdth_readw
-mdefine_line|#define gdth_readw(addr)        readw((ulong)(addr))
+mdefine_line|#define gdth_readw(addr)        readw(addr)
 DECL|macro|gdth_readl
-mdefine_line|#define gdth_readl(addr)        (ulong32)readl((ulong)(addr))
+mdefine_line|#define gdth_readl(addr)        readl(addr)
 DECL|macro|gdth_writeb
-mdefine_line|#define gdth_writeb(b,addr)     writeb((b),(ulong)(addr))
+mdefine_line|#define gdth_writeb(b,addr)     writeb((b),(addr))
 DECL|macro|gdth_writew
-mdefine_line|#define gdth_writew(b,addr)     writew((b),(ulong)(addr))
+mdefine_line|#define gdth_writew(b,addr)     writew((b),(addr))
 DECL|macro|gdth_writel
-mdefine_line|#define gdth_writel(b,addr)     writel((ulong32)(b),(ulong)(addr))
+mdefine_line|#define gdth_writel(b,addr)     writel((b),(addr))
 DECL|variable|gdth_drq_tab
 r_static
 id|unchar
@@ -2415,6 +2415,7 @@ id|bios_adr
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|addr
 suffix:semicolon
@@ -4235,6 +4236,7 @@ id|ha
 (brace
 r_register
 id|gdt2_dpram_str
+id|__iomem
 op_star
 id|dp2_ptr
 suffix:semicolon
@@ -4292,10 +4294,6 @@ suffix:semicolon
 )brace
 id|dp2_ptr
 op_assign
-(paren
-id|gdt2_dpram_str
-op_star
-)paren
 id|ha-&gt;brd
 suffix:semicolon
 id|gdth_writeb
@@ -4312,10 +4310,6 @@ multiline_comment|/* reset interface area */
 id|memset_io
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 op_amp
 id|dp2_ptr-&gt;u
 comma
@@ -4831,16 +4825,19 @@ id|ha
 (brace
 r_register
 id|gdt6_dpram_str
+id|__iomem
 op_star
 id|dp6_ptr
 suffix:semicolon
 r_register
 id|gdt6c_dpram_str
+id|__iomem
 op_star
 id|dp6c_ptr
 suffix:semicolon
 r_register
 id|gdt6m_dpram_str
+id|__iomem
 op_star
 id|dp6m_ptr
 suffix:semicolon
@@ -4974,10 +4971,6 @@ suffix:semicolon
 multiline_comment|/* check and reset interface area */
 id|dp6_ptr
 op_assign
-(paren
-id|gdt6_dpram_str
-op_star
-)paren
 id|ha-&gt;brd
 suffix:semicolon
 id|gdth_writel
@@ -5141,10 +5134,6 @@ suffix:semicolon
 )brace
 id|dp6_ptr
 op_assign
-(paren
-id|gdt6_dpram_str
-op_star
-)paren
 id|ha-&gt;brd
 suffix:semicolon
 id|gdth_writel
@@ -5212,10 +5201,6 @@ suffix:semicolon
 id|memset_io
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 op_amp
 id|dp6_ptr-&gt;u
 comma
@@ -5661,10 +5646,6 @@ suffix:semicolon
 multiline_comment|/* check and reset interface area */
 id|dp6c_ptr
 op_assign
-(paren
-id|gdt6c_dpram_str
-op_star
-)paren
 id|ha-&gt;brd
 suffix:semicolon
 id|gdth_writel
@@ -5828,10 +5809,6 @@ suffix:semicolon
 )brace
 id|dp6c_ptr
 op_assign
-(paren
-id|gdt6c_dpram_str
-op_star
-)paren
 id|ha-&gt;brd
 suffix:semicolon
 id|gdth_writel
@@ -5899,10 +5876,6 @@ suffix:semicolon
 id|memset_io
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 op_amp
 id|dp6c_ptr-&gt;u
 comma
@@ -6476,6 +6449,10 @@ id|pcistr-&gt;pdev-&gt;rom_address
 )paren
 suffix:semicolon
 macro_line|#endif
+id|dp6m_ptr
+op_assign
+id|ha-&gt;brd
+suffix:semicolon
 multiline_comment|/* Ensure that it is safe to access the non HW portions of DPMEM.&n;         * Aditional check needed for Xscale based RAID controllers */
 r_while
 c_loop
@@ -6488,15 +6465,7 @@ id|gdth_readb
 c_func
 (paren
 op_amp
-(paren
-(paren
-id|gdt6m_dpram_str
-op_star
-)paren
-id|ha-&gt;brd
-)paren
-op_member_access_from_pointer
-id|i960r.sema0_reg
+id|dp6m_ptr-&gt;i960r.sema0_reg
 )paren
 )paren
 op_amp
@@ -6511,14 +6480,6 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* check and reset interface area */
-id|dp6m_ptr
-op_assign
-(paren
-id|gdt6m_dpram_str
-op_star
-)paren
-id|ha-&gt;brd
-suffix:semicolon
 id|gdth_writel
 c_func
 (paren
@@ -6680,10 +6641,6 @@ suffix:semicolon
 )brace
 id|dp6m_ptr
 op_assign
-(paren
-id|gdt6m_dpram_str
-op_star
-)paren
 id|ha-&gt;brd
 suffix:semicolon
 id|gdth_writel
@@ -6751,10 +6708,6 @@ suffix:semicolon
 id|memset_io
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 op_amp
 id|dp6m_ptr-&gt;u
 comma
@@ -7233,14 +7186,17 @@ id|ulong
 id|flags
 suffix:semicolon
 id|gdt2_dpram_str
+id|__iomem
 op_star
 id|dp2_ptr
 suffix:semicolon
 id|gdt6_dpram_str
+id|__iomem
 op_star
 id|dp6_ptr
 suffix:semicolon
 id|gdt6m_dpram_str
+id|__iomem
 op_star
 id|dp6m_ptr
 suffix:semicolon
@@ -7323,10 +7279,6 @@ id|GDT_ISA
 (brace
 id|dp2_ptr
 op_assign
-(paren
-id|gdt2_dpram_str
-op_star
-)paren
 id|ha-&gt;brd
 suffix:semicolon
 id|gdth_writeb
@@ -7368,10 +7320,6 @@ id|GDT_PCI
 (brace
 id|dp6_ptr
 op_assign
-(paren
-id|gdt6_dpram_str
-op_star
-)paren
 id|ha-&gt;brd
 suffix:semicolon
 id|gdth_writeb
@@ -7449,10 +7397,6 @@ id|GDT_PCIMPR
 (brace
 id|dp6m_ptr
 op_assign
-(paren
-id|gdt6m_dpram_str
-op_star
-)paren
 id|ha-&gt;brd
 suffix:semicolon
 id|gdth_writeb
@@ -7608,6 +7552,7 @@ op_amp
 (paren
 (paren
 id|gdt2_dpram_str
+id|__iomem
 op_star
 )paren
 id|ha-&gt;brd
@@ -7634,6 +7579,7 @@ op_amp
 (paren
 (paren
 id|gdt6_dpram_str
+id|__iomem
 op_star
 )paren
 id|ha-&gt;brd
@@ -7682,6 +7628,7 @@ op_amp
 (paren
 (paren
 id|gdt6m_dpram_str
+id|__iomem
 op_star
 )paren
 id|ha-&gt;brd
@@ -7788,6 +7735,7 @@ op_amp
 (paren
 (paren
 id|gdt2_dpram_str
+id|__iomem
 op_star
 )paren
 id|ha-&gt;brd
@@ -7816,6 +7764,7 @@ op_amp
 (paren
 (paren
 id|gdt6_dpram_str
+id|__iomem
 op_star
 )paren
 id|ha-&gt;brd
@@ -7868,6 +7817,7 @@ op_amp
 (paren
 (paren
 id|gdt6m_dpram_str
+id|__iomem
 op_star
 )paren
 id|ha-&gt;brd
@@ -8064,6 +8014,7 @@ op_amp
 (paren
 (paren
 id|gdt2_dpram_str
+id|__iomem
 op_star
 )paren
 id|ha-&gt;brd
@@ -8091,6 +8042,7 @@ op_amp
 (paren
 (paren
 id|gdt6_dpram_str
+id|__iomem
 op_star
 )paren
 id|ha-&gt;brd
@@ -8141,6 +8093,7 @@ op_amp
 (paren
 (paren
 id|gdt6m_dpram_str
+id|__iomem
 op_star
 )paren
 id|ha-&gt;brd
@@ -8173,19 +8126,23 @@ id|cmd_ptr
 suffix:semicolon
 r_register
 id|gdt6m_dpram_str
+id|__iomem
 op_star
 id|dp6m_ptr
 suffix:semicolon
 r_register
 id|gdt6c_dpram_str
+id|__iomem
 op_star
 id|dp6c_ptr
 suffix:semicolon
 id|gdt6_dpram_str
+id|__iomem
 op_star
 id|dp6_ptr
 suffix:semicolon
 id|gdt2_dpram_str
+id|__iomem
 op_star
 id|dp2_ptr
 suffix:semicolon
@@ -8281,10 +8238,6 @@ id|GDT_ISA
 (brace
 id|dp2_ptr
 op_assign
-(paren
-id|gdt2_dpram_str
-op_star
-)paren
 id|ha-&gt;brd
 suffix:semicolon
 id|gdth_writew
@@ -8346,10 +8299,6 @@ id|GDT_PCI
 (brace
 id|dp6_ptr
 op_assign
-(paren
-id|gdt6_dpram_str
-op_star
-)paren
 id|ha-&gt;brd
 suffix:semicolon
 id|gdth_writew
@@ -8411,10 +8360,6 @@ id|GDT_PCINEW
 (brace
 id|dp6c_ptr
 op_assign
-(paren
-id|gdt6c_dpram_str
-op_star
-)paren
 id|ha-&gt;brd
 suffix:semicolon
 id|gdth_writew
@@ -8476,10 +8421,6 @@ id|GDT_PCIMPR
 (brace
 id|dp6m_ptr
 op_assign
-(paren
-id|gdt6m_dpram_str
-op_star
-)paren
 id|ha-&gt;brd
 suffix:semicolon
 id|gdth_writew
@@ -8703,6 +8644,7 @@ op_amp
 (paren
 (paren
 id|gdt2_dpram_str
+id|__iomem
 op_star
 )paren
 id|ha-&gt;brd
@@ -8730,6 +8672,7 @@ op_amp
 (paren
 (paren
 id|gdt6_dpram_str
+id|__iomem
 op_star
 )paren
 id|ha-&gt;brd
@@ -8780,6 +8723,7 @@ op_amp
 (paren
 (paren
 id|gdt6m_dpram_str
+id|__iomem
 op_star
 )paren
 id|ha-&gt;brd
@@ -18568,7 +18512,7 @@ l_int|0
 )paren
 multiline_comment|/* no source -&gt; no event */
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -19192,16 +19136,19 @@ op_star
 id|ha
 suffix:semicolon
 id|gdt6m_dpram_str
+id|__iomem
 op_star
 id|dp6m_ptr
 op_assign
 l_int|NULL
 suffix:semicolon
 id|gdt6_dpram_str
+id|__iomem
 op_star
 id|dp6_ptr
 suffix:semicolon
 id|gdt2_dpram_str
+id|__iomem
 op_star
 id|dp2_ptr
 suffix:semicolon
@@ -19540,10 +19487,6 @@ id|GDT_ISA
 (brace
 id|dp2_ptr
 op_assign
-(paren
-id|gdt2_dpram_str
-op_star
-)paren
 id|ha-&gt;brd
 suffix:semicolon
 r_if
@@ -19663,10 +19606,6 @@ id|GDT_PCI
 (brace
 id|dp6_ptr
 op_assign
-(paren
-id|gdt6_dpram_str
-op_star
-)paren
 id|ha-&gt;brd
 suffix:semicolon
 r_if
@@ -19912,10 +19851,6 @@ id|GDT_PCIMPR
 (brace
 id|dp6m_ptr
 op_assign
-(paren
-id|gdt6m_dpram_str
-op_star
-)paren
 id|ha-&gt;brd
 suffix:semicolon
 r_if
@@ -20071,6 +20006,7 @@ op_amp
 (paren
 (paren
 id|gdt6m_dpram_str
+id|__iomem
 op_star
 )paren
 id|ha-&gt;brd
@@ -20105,6 +20041,7 @@ op_amp
 (paren
 (paren
 id|gdt6m_dpram_str
+id|__iomem
 op_star
 )paren
 id|ha-&gt;brd
