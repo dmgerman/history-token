@@ -141,10 +141,6 @@ op_logical_neg
 id|__access_ok
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|ucp
 comma
 r_sizeof

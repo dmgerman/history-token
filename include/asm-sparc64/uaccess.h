@@ -31,14 +31,53 @@ DECL|macro|segment_eq
 mdefine_line|#define segment_eq(a,b)  ((a).seg == (b).seg)
 DECL|macro|set_fs
 mdefine_line|#define set_fs(val)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_thread_current_ds((val).seg);&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&quot;wr %%g0, %0, %%asi&quot; : : &quot;r&quot; ((val).seg));&t;&bslash;&n;} while(0)
-DECL|macro|__user_ok
-mdefine_line|#define __user_ok(addr,size) ((void)(addr), (void)(size), 1)
-DECL|macro|__kernel_ok
-mdefine_line|#define __kernel_ok (segment_eq(get_fs(), KERNEL_DS))
-DECL|macro|__access_ok
-mdefine_line|#define __access_ok(addr,size) ((void)(addr), (void)(size), 1)
-DECL|macro|access_ok
-mdefine_line|#define access_ok(type,addr,size) ((void)(type), (void)(addr), (void)(size), 1)
+DECL|function|__access_ok
+r_static
+r_inline
+r_int
+id|__access_ok
+c_func
+(paren
+r_const
+r_void
+id|__user
+op_star
+id|addr
+comma
+r_int
+r_int
+id|size
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+DECL|function|access_ok
+r_static
+r_inline
+r_int
+id|access_ok
+c_func
+(paren
+r_int
+id|type
+comma
+r_const
+r_void
+id|__user
+op_star
+id|addr
+comma
+r_int
+r_int
+id|size
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
 DECL|function|verify_area
 r_static
 r_inline
