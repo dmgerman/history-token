@@ -944,8 +944,10 @@ DECL|macro|SPBYPASS_FORMAT
 mdefine_line|#define SPBYPASS_FORMAT&t;&t;0x00000f00      /* If 1, SPDIF XX uses 24 bit, if 0 - 20 bit&t;*/
 DECL|macro|AC97SLOT
 mdefine_line|#define AC97SLOT&t;&t;0x5f            /* additional AC97 slots enable bits&t;&t;*/
-DECL|macro|AC97SLOT_10K2
-mdefine_line|#define AC97SLOT_10K2&t;&t;0x03
+DECL|macro|AC97SLOT_REAR_RIGHT
+mdefine_line|#define AC97SLOT_REAR_RIGHT&t;0x01&t;&t;/* Rear left */
+DECL|macro|AC97SLOT_REAR_LEFT
+mdefine_line|#define AC97SLOT_REAR_LEFT&t;0x02&t;&t;/* Rear right */
 DECL|macro|AC97SLOT_CNTR
 mdefine_line|#define AC97SLOT_CNTR&t;&t;0x10            /* Center enable */
 DECL|macro|AC97SLOT_LFE
@@ -1877,8 +1879,14 @@ DECL|member|tos_link
 id|tos_link
 suffix:colon
 l_int|1
-suffix:semicolon
+comma
 multiline_comment|/* tos link detected */
+DECL|member|rear_ac97
+id|rear_ac97
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* rear channels are on AC&squot;97 */
 DECL|member|audigy
 r_int
 r_int
@@ -3060,10 +3068,10 @@ DECL|macro|EXTOUT_TOSLINK_L
 mdefine_line|#define EXTOUT_TOSLINK_L   0x02&t;/* LiveDrive - TOSLink Optical - left */
 DECL|macro|EXTOUT_TOSLINK_R
 mdefine_line|#define EXTOUT_TOSLINK_R   0x03&t;/* LiveDrive - TOSLink Optical - right */
-DECL|macro|EXTOUT_CENTER
-mdefine_line|#define EXTOUT_CENTER      0x04&t;/* SB Live 5.1 - center */
-DECL|macro|EXTOUT_LFE
-mdefine_line|#define EXTOUT_LFE         0x05 /* SB Live 5.1 - LFE */
+DECL|macro|EXTOUT_AC97_CENTER
+mdefine_line|#define EXTOUT_AC97_CENTER 0x04&t;/* SB Live 5.1 - center */
+DECL|macro|EXTOUT_AC97_LFE
+mdefine_line|#define EXTOUT_AC97_LFE&t;   0x05 /* SB Live 5.1 - LFE */
 DECL|macro|EXTOUT_HEADPHONE_L
 mdefine_line|#define EXTOUT_HEADPHONE_L 0x06&t;/* LiveDrive - Headphone - left */
 DECL|macro|EXTOUT_HEADPHONE_R
@@ -3078,6 +3086,10 @@ DECL|macro|EXTOUT_ADC_CAP_R
 mdefine_line|#define EXTOUT_ADC_CAP_R   0x0b&t;/* ADC Capture buffer - right */
 DECL|macro|EXTOUT_MIC_CAP
 mdefine_line|#define EXTOUT_MIC_CAP&t;   0x0c&t;/* MIC Capture buffer */
+DECL|macro|EXTOUT_AC97_REAR_L
+mdefine_line|#define EXTOUT_AC97_REAR_L 0x0d&t;/* SB Live 5.1 (c) 2003 - Rear Left */
+DECL|macro|EXTOUT_AC97_REAR_R
+mdefine_line|#define EXTOUT_AC97_REAR_R 0x0e&t;/* SB Live 5.1 (c) 2003 - Rear Right */
 DECL|macro|EXTOUT_ACENTER
 mdefine_line|#define EXTOUT_ACENTER&t;   0x11 /* Analog Center */
 DECL|macro|EXTOUT_ALFE

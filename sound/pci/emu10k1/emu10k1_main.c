@@ -3267,7 +3267,7 @@ l_int|0
 )paren
 id|extout_mask
 op_assign
-l_int|0x1fff
+l_int|0x7fff
 suffix:semicolon
 id|emu-&gt;fx8010.extin_mask
 op_assign

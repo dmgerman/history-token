@@ -245,10 +245,10 @@ multiline_comment|/* 0x0c */
 l_string|&quot;MIC Capture&quot;
 comma
 multiline_comment|/* 0x0d */
-l_int|NULL
+l_string|&quot;AC97 Surround Left&quot;
 comma
 multiline_comment|/* 0x0e */
-l_int|NULL
+l_string|&quot;AC97 Surround Right&quot;
 comma
 multiline_comment|/* 0x0f */
 l_int|NULL
@@ -16758,9 +16758,77 @@ c_cond
 id|emu-&gt;fx8010.extout_mask
 op_amp
 (paren
+(paren
 l_int|1
 op_lshift
-id|EXTOUT_CENTER
+id|EXTOUT_AC97_REAR_L
+)paren
+op_or
+(paren
+l_int|1
+op_lshift
+id|EXTOUT_AC97_REAR_R
+)paren
+)paren
+)paren
+r_for
+c_loop
+(paren
+id|z
+op_assign
+l_int|0
+suffix:semicolon
+id|z
+OL
+l_int|2
+suffix:semicolon
+id|z
+op_increment
+)paren
+id|OP
+c_func
+(paren
+id|icode
+comma
+op_amp
+id|ptr
+comma
+id|iACC3
+comma
+id|EXTOUT
+c_func
+(paren
+id|EXTOUT_AC97_REAR_L
+op_plus
+id|z
+)paren
+comma
+id|GPR
+c_func
+(paren
+id|playback
+op_plus
+id|SND_EMU10K1_PLAYBACK_CHANNELS
+op_plus
+l_int|2
+op_plus
+id|z
+)paren
+comma
+id|C_00000000
+comma
+id|C_00000000
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|emu-&gt;fx8010.extout_mask
+op_amp
+(paren
+l_int|1
+op_lshift
+id|EXTOUT_AC97_CENTER
 )paren
 )paren
 (brace
@@ -16778,7 +16846,7 @@ comma
 id|EXTOUT
 c_func
 (paren
-id|EXTOUT_CENTER
+id|EXTOUT_AC97_CENTER
 )paren
 comma
 id|GPR
@@ -16841,7 +16909,7 @@ comma
 id|EXTOUT
 c_func
 (paren
-id|EXTOUT_CENTER
+id|EXTOUT_AC97_CENTER
 )paren
 comma
 id|GPR
@@ -16900,7 +16968,7 @@ op_amp
 (paren
 l_int|1
 op_lshift
-id|EXTOUT_LFE
+id|EXTOUT_AC97_LFE
 )paren
 )paren
 (brace
@@ -16918,7 +16986,7 @@ comma
 id|EXTOUT
 c_func
 (paren
-id|EXTOUT_LFE
+id|EXTOUT_AC97_LFE
 )paren
 comma
 id|GPR
@@ -16981,7 +17049,7 @@ comma
 id|EXTOUT
 c_func
 (paren
-id|EXTOUT_LFE
+id|EXTOUT_AC97_LFE
 )paren
 comma
 id|GPR

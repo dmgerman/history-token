@@ -6,6 +6,8 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/emu10k1.h&gt;
 DECL|macro|chip_t
 mdefine_line|#define chip_t emu10k1_t
+DECL|macro|AC97_ID_STAC9758
+mdefine_line|#define AC97_ID_STAC9758&t;0x83847658
 DECL|function|snd_emu10k1_spdif_info
 r_static
 r_int
@@ -2915,6 +2917,37 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|emu-&gt;ac97-&gt;id
+op_eq
+id|AC97_ID_STAC9758
+)paren
+(brace
+id|emu-&gt;rear_ac97
+op_assign
+l_int|1
+suffix:semicolon
+id|snd_emu10k1_ptr_write
+c_func
+(paren
+id|emu
+comma
+id|AC97SLOT
+comma
+l_int|0
+comma
+id|AC97SLOT_CNTR
+op_or
+id|AC97SLOT_LFE
+op_or
+id|AC97SLOT_REAR_LEFT
+op_or
+id|AC97SLOT_REAR_RIGHT
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* remove unused AC97 controls */
 id|snd_ac97_write
 c_func
