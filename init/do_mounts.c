@@ -3491,7 +3491,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-r_else
 r_if
 c_cond
 (paren
