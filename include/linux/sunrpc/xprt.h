@@ -133,6 +133,11 @@ r_int
 id|rq_received
 suffix:semicolon
 multiline_comment|/* receive completed */
+DECL|member|rq_seqno
+id|u32
+id|rq_seqno
+suffix:semicolon
+multiline_comment|/* gss seq no. used on req. */
 DECL|member|rq_list
 r_struct
 id|list_head
@@ -344,6 +349,22 @@ comma
 multiline_comment|/* copied to request */
 DECL|member|tcp_flags
 id|tcp_flags
+suffix:semicolon
+multiline_comment|/*&n;&t; * Disconnection of idle sockets&n;&t; */
+DECL|member|task_cleanup
+r_struct
+id|work_struct
+id|task_cleanup
+suffix:semicolon
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
+suffix:semicolon
+DECL|member|last_used
+r_int
+r_int
+id|last_used
 suffix:semicolon
 multiline_comment|/*&n;&t; * Send stuff&n;&t; */
 DECL|member|sock_lock
@@ -560,6 +581,8 @@ op_star
 suffix:semicolon
 DECL|macro|XPRT_CONNECT
 mdefine_line|#define XPRT_CONNECT&t;0
+DECL|macro|XPRT_LOCKED
+mdefine_line|#define XPRT_LOCKED&t;1
 DECL|macro|xprt_connected
 mdefine_line|#define xprt_connected(xp)&t;&t;(test_bit(XPRT_CONNECT, &amp;(xp)-&gt;sockstate))
 DECL|macro|xprt_set_connected

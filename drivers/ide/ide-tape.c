@@ -5586,13 +5586,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ide_dma_off
+id|__ide_dma_off
 c_func
 (paren
 id|drive
@@ -6462,13 +6456,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ide_dma_off
+id|__ide_dma_off
 c_func
 (paren
 id|drive
@@ -10635,7 +10623,7 @@ op_assign
 op_amp
 id|wait
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -27213,6 +27201,18 @@ c_cond
 id|drive-&gt;scsi
 )paren
 (brace
+id|printk
+c_func
+(paren
+l_string|&quot;ide-tape: passing drive %s to ide-scsi emulation.&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
+r_goto
+id|failed
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -27228,26 +27228,19 @@ l_string|&quot;OnStream DI-&quot;
 id|printk
 c_func
 (paren
-l_string|&quot;ide-tape: ide-scsi emulation is not supported for %s.&bslash;n&quot;
-comma
-id|drive-&gt;id-&gt;model
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;ide-tape: passing drive %s to ide-scsi emulation.&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;ide-tape: Use drive %s with ide-scsi emulation and osst.&bslash;n&quot;
 comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-r_goto
-id|failed
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ide-tape: OnStream support will be removed soon from ide-tape!&bslash;n&quot;
+)paren
 suffix:semicolon
-)brace
 )brace
 id|tape
 op_assign

@@ -1026,12 +1026,6 @@ id|pin
 op_assign
 l_int|0
 suffix:semicolon
-r_static
-id|u16
-id|irq_mask
-op_assign
-l_int|0
-suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
 (paren
@@ -1248,6 +1242,11 @@ id|dev-&gt;irq
 suffix:semicolon
 multiline_comment|/* &n;&t; * Make sure all (legacy) PCI IRQs are set as level-triggered.&n;&t; */
 macro_line|#ifdef CONFIG_X86
+(brace
+r_static
+id|u16
+id|irq_mask
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1295,6 +1294,7 @@ c_func
 id|dev-&gt;irq
 )paren
 suffix:semicolon
+)brace
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_IOSAPIC

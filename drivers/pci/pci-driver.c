@@ -1040,7 +1040,8 @@ id|pci_dev-&gt;driver
 op_assign
 id|drv
 suffix:semicolon
-r_return
+id|error
+op_assign
 l_int|0
 suffix:semicolon
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-v850/delay.h -- Delay routines, using a pre-computed&n; * &t;&quot;loops_per_second&quot; value&n; *&n; *  Copyright (C) 2001  NEC Corporation&n; *  Copyright (C) 2001  Miles Bader &lt;miles@gnu.org&gt;&n; *  Copyright (C) 1994 Hamish Macdonald&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; */
+multiline_comment|/*&n; * include/asm-v850/delay.h -- Delay routines, using a pre-computed&n; * &t;&quot;loops_per_second&quot; value&n; *&n; *  Copyright (C) 2001,03  NEC Corporation&n; *  Copyright (C) 2001,03  Miles Bader &lt;miles@gnu.org&gt;&n; *  Copyright (C) 1994 Hamish Macdonald&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; */
 macro_line|#ifndef __V850_DELAY_H__
 DECL|macro|__V850_DELAY_H__
 mdefine_line|#define __V850_DELAY_H__
@@ -15,6 +15,11 @@ r_int
 id|loops
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|loops
+)paren
 id|__asm__
 id|__volatile__
 (paren

@@ -760,13 +760,12 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|pdcnew_procs
 r_static
 id|ide_pci_host_proc_t
 id|pdcnew_procs
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

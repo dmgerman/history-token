@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/sunrpc/svcsock.h&gt;
 macro_line|#include &lt;linux/sunrpc/auth.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/sunrpc/rpc_pipe_fs.h&gt;
 multiline_comment|/* RPC scheduler */
 DECL|variable|rpc_execute
@@ -104,6 +105,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|rpc_create_client
+)paren
+suffix:semicolon
+DECL|variable|rpc_clone_client
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rpc_clone_client
 )paren
 suffix:semicolon
 DECL|variable|rpc_destroy_client
@@ -253,6 +261,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|rpcauth_unregister
+)paren
+suffix:semicolon
+DECL|variable|rpcauth_create
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rpcauth_create
 )paren
 suffix:semicolon
 DECL|variable|rpcauth_lookupcred
@@ -609,6 +624,27 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|xdr_read_pages
+)paren
+suffix:semicolon
+DECL|variable|xdr_buf_from_iov
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xdr_buf_from_iov
+)paren
+suffix:semicolon
+DECL|variable|xdr_buf_subsegment
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xdr_buf_subsegment
+)paren
+suffix:semicolon
+DECL|variable|xdr_buf_read_netobj
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xdr_buf_read_netobj
 )paren
 suffix:semicolon
 multiline_comment|/* Debugging symbols */

@@ -896,5 +896,24 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/* Clear a pending IrLAP disconnect. - Jean II */
+DECL|function|irlap_clear_disconnect
+r_static
+r_inline
+r_void
+id|irlap_clear_disconnect
+c_func
+(paren
+r_struct
+id|irlap_cb
+op_star
+id|self
+)paren
+(brace
+id|self-&gt;disconnect_pending
+op_assign
+id|FALSE
+suffix:semicolon
+)brace
 macro_line|#endif
 eof

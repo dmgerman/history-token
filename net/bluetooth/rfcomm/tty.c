@@ -231,13 +231,26 @@ c_func
 id|dlc
 )paren
 suffix:semicolon
+multiline_comment|/* Refcount should only hit zero when called from rfcomm_dev_del()&n;&t;   which will have taken us off the list. Everything else are&n;&t;   refcounting bugs. */
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|dev-&gt;list
+)paren
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* It&squot;s safe to call module_put() here because socket still &n;&t; holds refference to this module. */
+multiline_comment|/* It&squot;s safe to call module_put() here because socket still &n;&t;   holds reference to this module. */
 id|module_put
 c_func
 (paren
@@ -279,6 +292,7 @@ op_star
 id|dev
 )paren
 (brace
+multiline_comment|/* The reason this isn&squot;t actually a race, as you no&n;&t;   doubt have a little voice screaming at you in your&n;&t;   head, is that the refcount should never actually&n;&t;   reach zero unless the device has already been taken&n;&t;   off the list, in rfcomm_dev_del(). And if that&squot;s not&n;&t;   true, we&squot;ll hit the BUG() in rfcomm_dev_destruct()&n;&t;   anyway. */
 r_if
 c_cond
 (paren
@@ -388,13 +402,6 @@ c_func
 id|id
 )paren
 suffix:semicolon
-id|read_unlock
-c_func
-(paren
-op_amp
-id|rfcomm_dev_lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -404,6 +411,13 @@ id|rfcomm_dev_hold
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|rfcomm_dev_lock
 )paren
 suffix:semicolon
 r_return
@@ -769,7 +783,7 @@ c_func
 id|dlc
 )paren
 suffix:semicolon
-multiline_comment|/* It&squot;s safe to call __module_get() here because socket already &n;&t; holds refference to this module. */
+multiline_comment|/* It&squot;s safe to call __module_get() here because socket already &n;&t;   holds reference to this module. */
 id|__module_get
 c_func
 (paren
@@ -1413,6 +1427,8 @@ op_assign
 l_int|0
 comma
 id|size
+comma
+id|err
 suffix:semicolon
 id|u16
 id|dev_num
@@ -1447,6 +1463,20 @@ c_cond
 (paren
 op_logical_neg
 id|dev_num
+op_logical_or
+id|dev_num
+OG
+(paren
+id|PAGE_SIZE
+op_star
+l_int|4
+)paren
+op_div
+r_sizeof
+(paren
+op_star
+id|di
+)paren
 )paren
 r_return
 op_minus
@@ -1467,27 +1497,6 @@ r_sizeof
 op_star
 id|di
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-id|size
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -1655,6 +1664,8 @@ op_star
 id|di
 )paren
 suffix:semicolon
+id|err
+op_assign
 id|copy_to_user
 c_func
 (paren
@@ -1676,6 +1687,12 @@ id|dl
 )paren
 suffix:semicolon
 r_return
+id|err
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
 l_int|0
 suffix:semicolon
 )brace
@@ -2150,7 +2167,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* We have to drop DLC lock here, otherwise&n;&t;&t;&t;&t; * rfcomm_dev_put() will dead lock if it&squot;s the last refference */
+multiline_comment|/* We have to drop DLC lock here, otherwise&n;&t;&t;&t;&t;   rfcomm_dev_put() will dead lock if it&squot;s&n;&t;&t;&t;&t;   the last reference. */
 id|rfcomm_dlc_unlock
 c_func
 (paren
@@ -2425,6 +2442,7 @@ comma
 id|id
 )paren
 suffix:semicolon
+multiline_comment|/* We don&squot;t leak this refcount. For reasons which are not entirely&n;&t;   clear, the TTY layer will call our -&gt;close() method even if the&n;&t;   open fails. We decrease the refcount there, and decreasing it&n;&t;   here too would cause breakage. */
 id|dev
 op_assign
 id|rfcomm_dev_get

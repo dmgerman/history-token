@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/nfs.h&gt;
 macro_line|#include &lt;linux/nfs3.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_page.h&gt;
+macro_line|#include &lt;linux/lockd/bind.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|macro|NFSDBG_FACILITY
 mdefine_line|#define NFSDBG_FACILITY&t;&t;NFSDBG_PROC
@@ -4481,6 +4482,38 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+r_static
+r_int
+DECL|function|nfs3_proc_lock
+id|nfs3_proc_lock
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+id|cmd
+comma
+r_struct
+id|file_lock
+op_star
+id|fl
+)paren
+(brace
+r_return
+id|nlmclnt_proc
+c_func
+(paren
+id|filp-&gt;f_dentry-&gt;d_inode
+comma
+id|cmd
+comma
+id|fl
+)paren
+suffix:semicolon
+)brace
 DECL|variable|nfs_v3_clientops
 r_struct
 id|nfs_rpc_ops
@@ -4493,6 +4526,18 @@ op_assign
 l_int|3
 comma
 multiline_comment|/* protocol version */
+dot
+id|dentry_ops
+op_assign
+op_amp
+id|nfs_dentry_operations
+comma
+dot
+id|dir_inode_ops
+op_assign
+op_amp
+id|nfs_dir_inode_operations
+comma
 dot
 id|getroot
 op_assign
@@ -4647,6 +4692,11 @@ dot
 id|request_compatible
 op_assign
 id|nfs3_request_compatible
+comma
+dot
+id|lock
+op_assign
+id|nfs3_proc_lock
 comma
 )brace
 suffix:semicolon

@@ -392,6 +392,10 @@ c_cond
 id|systemcfg-&gt;platform
 op_eq
 id|PLATFORM_PSERIES
+op_logical_or
+id|systemcfg-&gt;platform
+op_eq
+id|PLATFORM_POWERMAC
 )paren
 (brace
 multiline_comment|/* Find storage for the HPT.  Must be contiguous in&n;&t;&t; * the absolute address space.&n;&t;&t; */

@@ -1013,7 +1013,7 @@ r_int
 r_int
 id|dpy
 suffix:semicolon
-macro_line|#ifdef CONFIG_BOOTX_TEXT
+macro_line|#if defined(CONFIG_BOOTX_TEXT) &amp;&amp; defined(CONFIG_PPC32)
 r_struct
 id|device_node
 op_star
@@ -1349,7 +1349,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* defined(CONFIG_BOOTX_TEXT) &amp;&amp; defined(CONFIG_PPC32) */
 r_for
 c_loop
 (paren

@@ -2588,6 +2588,9 @@ c_func
 (paren
 id|bdev-&gt;bd_inode
 comma
+(paren
+id|loff_t
+)paren
 id|size
 op_lshift
 id|SECTOR_SHIFT

@@ -155,12 +155,6 @@ DECL|macro|ppcdebugset
 mdefine_line|#define ppcdebugset(FLAGS) (udbg_ifdebug(FLAGS))
 DECL|macro|PPCDBG_BINFMT
 mdefine_line|#define PPCDBG_BINFMT (test_thread_flag(TIF_32BIT) ? PPCDBG_BINFMT32 : PPCDBG_BINFMT64)
-macro_line|#ifdef CONFIG_XMON
-DECL|macro|PPCDBG_ENTER_DEBUGGER
-mdefine_line|#define PPCDBG_ENTER_DEBUGGER() xmon(0)
-DECL|macro|PPCDBG_ENTER_DEBUGGER_REGS
-mdefine_line|#define PPCDBG_ENTER_DEBUGGER_REGS(X) xmon(X)
-macro_line|#endif
 macro_line|#else
 DECL|macro|PPCDBG
 mdefine_line|#define PPCDBG(...) do {;} while (0)
@@ -171,13 +165,5 @@ mdefine_line|#define ifppcdebug(...) if (0)
 DECL|macro|ppcdebugset
 mdefine_line|#define ppcdebugset(FLAGS) (0)
 macro_line|#endif /* CONFIG_PPCDBG */
-macro_line|#ifndef PPCDBG_ENTER_DEBUGGER
-DECL|macro|PPCDBG_ENTER_DEBUGGER
-mdefine_line|#define PPCDBG_ENTER_DEBUGGER() do {;} while(0)
-macro_line|#endif
-macro_line|#ifndef PPCDBG_ENTER_DEBUGGER_REGS
-DECL|macro|PPCDBG_ENTER_DEBUGGER_REGS
-mdefine_line|#define PPCDBG_ENTER_DEBUGGER_REGS(A) do {;} while(0)
-macro_line|#endif
 macro_line|#endif /*__PPCDEBUG_H */
 eof

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * arch/v850/kernel/bug.c -- Bug reporting functions&n; *
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;

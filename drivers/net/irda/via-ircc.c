@@ -6212,7 +6212,11 @@ id|self-&gt;lock
 )paren
 suffix:semicolon
 r_return
-id|IRQ_HANDLED
+id|IRQ_RETVAL
+c_func
+(paren
+id|iHostIntType
+)paren
 suffix:semicolon
 )brace
 DECL|function|hwreset

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File:&t;mca.h&n; * Purpose:&t;Machine check handling specific defines&n; *&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) Vijay Chander (vijay@engr.sgi.com)&n; * Copyright (C) Srinivasa Thirumalachar (sprasad@engr.sgi.com)&n; */
+multiline_comment|/*&n; * File:&t;mca.h&n; * Purpose:&t;Machine check handling specific defines&n; *&n; * Copyright (C) 1999, 2004 Silicon Graphics, Inc.&n; * Copyright (C) Vijay Chander (vijay@engr.sgi.com)&n; * Copyright (C) Srinivasa Thirumalachar (sprasad@engr.sgi.com)&n; */
 macro_line|#ifndef _ASM_IA64_MCA_H
 DECL|macro|_ASM_IA64_MCA_H
 mdefine_line|#define _ASM_IA64_MCA_H
@@ -9,41 +9,8 @@ macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mca_asm.h&gt;
-multiline_comment|/* These are the return codes from all the IA64_MCA specific interfaces */
-DECL|typedef|ia64_mca_return_code_t
-r_typedef
-r_int
-id|ia64_mca_return_code_t
-suffix:semicolon
-r_enum
-(brace
-DECL|enumerator|IA64_MCA_SUCCESS
-id|IA64_MCA_SUCCESS
-op_assign
-l_int|0
-comma
-DECL|enumerator|IA64_MCA_FAILURE
-id|IA64_MCA_FAILURE
-op_assign
-l_int|1
-)brace
-suffix:semicolon
 DECL|macro|IA64_MCA_RENDEZ_TIMEOUT
 mdefine_line|#define IA64_MCA_RENDEZ_TIMEOUT&t;&t;(20 * 1000)&t;/* value in milliseconds - 20 seconds */
-DECL|macro|IA64_CMC_INT_DISABLE
-mdefine_line|#define IA64_CMC_INT_DISABLE&t;&t;0
-DECL|macro|IA64_CMC_INT_ENABLE
-mdefine_line|#define IA64_CMC_INT_ENABLE&t;&t;1
-DECL|typedef|int_vector_t
-r_typedef
-id|u32
-id|int_vector_t
-suffix:semicolon
-DECL|typedef|millisec_t
-r_typedef
-id|u64
-id|millisec_t
-suffix:semicolon
 DECL|union|cmcv_reg_u
 r_typedef
 r_union
@@ -103,10 +70,6 @@ DECL|macro|cmcv_mask
 mdefine_line|#define cmcv_mask&t;&t;cmcv_reg_s.cmcr_mask
 DECL|macro|cmcv_vector
 mdefine_line|#define cmcv_vector&t;&t;cmcv_reg_s.cmcr_vector
-DECL|macro|IA64_MCA_UCMC_HANDLER_SIZE
-mdefine_line|#define IA64_MCA_UCMC_HANDLER_SIZE&t;0x10
-DECL|macro|IA64_INIT_HANDLER_SIZE
-mdefine_line|#define IA64_INIT_HANDLER_SIZE&t;&t;0x10
 r_enum
 (brace
 DECL|enumerator|IA64_MCA_RENDEZ_CHECKIN_NOTDONE
@@ -206,31 +169,6 @@ suffix:semicolon
 DECL|typedef|ia64_mc_info_t
 )brace
 id|ia64_mc_info_t
-suffix:semicolon
-multiline_comment|/* Possible rendez states passed from SAL to OS during MCA&n; * handoff&n; */
-r_enum
-(brace
-DECL|enumerator|IA64_MCA_RENDEZ_NOT_RQD
-id|IA64_MCA_RENDEZ_NOT_RQD
-op_assign
-l_int|0x0
-comma
-DECL|enumerator|IA64_MCA_RENDEZ_DONE_WITHOUT_INIT
-id|IA64_MCA_RENDEZ_DONE_WITHOUT_INIT
-op_assign
-l_int|0x1
-comma
-DECL|enumerator|IA64_MCA_RENDEZ_DONE_WITH_INIT
-id|IA64_MCA_RENDEZ_DONE_WITH_INIT
-op_assign
-l_int|0x2
-comma
-DECL|enumerator|IA64_MCA_RENDEZ_FAILURE
-id|IA64_MCA_RENDEZ_FAILURE
-op_assign
-op_minus
-l_int|1
-)brace
 suffix:semicolon
 DECL|struct|ia64_mca_sal_to_os_state_s
 r_typedef
@@ -362,24 +300,6 @@ DECL|typedef|ia64_mca_os_to_sal_state_t
 )brace
 id|ia64_mca_os_to_sal_state_t
 suffix:semicolon
-DECL|typedef|prfunc_t
-r_typedef
-r_int
-(paren
-op_star
-id|prfunc_t
-)paren
-(paren
-r_const
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|ia64_mca_init
@@ -429,106 +349,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-id|irqreturn_t
-id|ia64_mca_rendez_int_handler
-c_func
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|irqreturn_t
-id|ia64_mca_wakeup_int_handler
-c_func
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|irqreturn_t
-id|ia64_mca_cmc_int_handler
-c_func
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|irqreturn_t
-id|ia64_mca_cmc_int_caller
-c_func
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|irqreturn_t
-id|ia64_mca_cpe_int_handler
-c_func
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|irqreturn_t
-id|ia64_mca_cpe_int_caller
-c_func
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ia64_log_print
-c_func
-(paren
-r_int
-comma
-id|prfunc_t
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|ia64_mca_cmc_vector_setup
 c_func
@@ -536,39 +356,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|ia64_mca_check_errors
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|macro|PLATFORM_CALL
-mdefine_line|#define PLATFORM_CALL(fn, args)&t;printk(&quot;Platform call TBD&bslash;n&quot;)
-DECL|macro|platform_mem_dev_err_print
-mdefine_line|#define platform_mem_dev_err_print ia64_log_prt_oem_data
-DECL|macro|platform_pci_bus_err_print
-mdefine_line|#define platform_pci_bus_err_print ia64_log_prt_oem_data
-DECL|macro|platform_pci_comp_err_print
-mdefine_line|#define platform_pci_comp_err_print ia64_log_prt_oem_data
-DECL|macro|platform_plat_specific_err_print
-mdefine_line|#define platform_plat_specific_err_print ia64_log_prt_oem_data
-DECL|macro|platform_host_ctlr_err_print
-mdefine_line|#define platform_host_ctlr_err_print ia64_log_prt_oem_data
-DECL|macro|platform_plat_bus_err_print
-mdefine_line|#define platform_plat_bus_err_print ia64_log_prt_oem_data
-DECL|macro|MCA_TEST
-macro_line|#undef&t;MCA_TEST
-DECL|macro|IA64_MCA_DEBUG_INFO
-macro_line|#undef IA64_MCA_DEBUG_INFO
-macro_line|#if defined(IA64_MCA_DEBUG_INFO)
-DECL|macro|IA64_MCA_DEBUG
-macro_line|# define IA64_MCA_DEBUG(fmt...)&t;printk(fmt)
-macro_line|#else
-DECL|macro|IA64_MCA_DEBUG
-macro_line|# define IA64_MCA_DEBUG(fmt...)
-macro_line|#endif
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_MCA_H */
 eof

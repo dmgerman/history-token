@@ -567,14 +567,6 @@ id|EINVAL
 suffix:semicolon
 id|oldkey
 op_assign
-id|INPUT_KEYCODE
-c_func
-(paren
-id|dev
-comma
-id|scancode
-)paren
-suffix:semicolon
 id|SET_INPUT_KEYCODE
 c_func
 (paren
@@ -582,7 +574,7 @@ id|dev
 comma
 id|scancode
 comma
-id|oldkey
+id|keycode
 )paren
 suffix:semicolon
 id|clear_bit

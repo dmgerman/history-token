@@ -754,11 +754,11 @@ l_string|&quot;iSeries_pcibios_init Exit.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * pcibios_final_fixup(void)  &n; */
-DECL|function|pcibios_final_fixup
+multiline_comment|/*&n; * iSeries_pci_final_fixup(void)  &n; */
+DECL|function|iSeries_pci_final_fixup
 r_void
 id|__init
-id|pcibios_final_fixup
+id|iSeries_pci_final_fixup
 c_func
 (paren
 r_void

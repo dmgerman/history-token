@@ -384,6 +384,7 @@ id|prom_palette
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/* XXX cli/sti -&gt; local_irq_xxx here, check this works once SMP is fixed. */
 DECL|function|machine_halt
 r_void
 id|machine_halt
@@ -392,7 +393,7 @@ c_func
 r_void
 )paren
 (brace
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -403,7 +404,7 @@ c_func
 l_int|8
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -454,7 +455,7 @@ r_char
 op_star
 id|p
 suffix:semicolon
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -465,7 +466,7 @@ c_func
 l_int|8
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren

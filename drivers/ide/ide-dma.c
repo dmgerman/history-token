@@ -19,11 +19,13 @@ r_struct
 id|drive_list_entry
 (brace
 DECL|member|id_model
+r_const
 r_char
 op_star
 id|id_model
 suffix:semicolon
 DECL|member|id_firmware
+r_const
 r_char
 op_star
 id|id_firmware
@@ -31,6 +33,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|drive_whitelist
+r_static
+r_const
 r_struct
 id|drive_list_entry
 id|drive_whitelist
@@ -70,6 +74,8 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|variable|drive_blacklist
+r_static
+r_const
 r_struct
 id|drive_list_entry
 id|drive_blacklist
@@ -294,6 +300,7 @@ id|hd_driveid
 op_star
 id|id
 comma
+r_const
 r_struct
 id|drive_list_entry
 op_star
@@ -353,6 +360,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PCI
 multiline_comment|/**&n; *&t;ide_dma_intr&t;-&t;IDE DMA interrupt handler&n; *&t;@drive: the drive the interrupt is for&n; *&n; *&t;Handle an interrupt completing a read/write DMA transfer on an &n; *&t;IDE device&n; */
 DECL|function|ide_dma_intr
 id|ide_startstop_t
@@ -1354,18 +1362,14 @@ multiline_comment|/* Consult the list of known &quot;bad&quot; drives */
 r_if
 c_cond
 (paren
-id|hwif
-op_member_access_from_pointer
-id|ide_dma_bad_drive
+id|__ide_dma_bad_drive
 c_func
 (paren
 id|drive
 )paren
 )paren
 r_return
-id|hwif
-op_member_access_from_pointer
-id|ide_dma_off
+id|__ide_dma_off
 c_func
 (paren
 id|drive
@@ -1441,9 +1445,7 @@ multiline_comment|/* Consult the list of known &quot;good&quot; drives */
 r_if
 c_cond
 (paren
-id|hwif
-op_member_access_from_pointer
-id|ide_dma_good_drive
+id|__ide_dma_good_drive
 c_func
 (paren
 id|drive
@@ -1712,7 +1714,8 @@ c_func
 id|__ide_dma_off_quietly
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;__ide_dma_host_off&t;-&t;Generic DMA kill&n; *&t;@drive: drive to control&n; *&n; *&t;Turn off the current DMA on this IDE controller. Inform the&n; *&t;user that DMA has been disabled. &n; */
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PCI */
+multiline_comment|/**&n; *&t;__ide_dma_off&t;-&t;disable DMA on a device&n; *&t;@drive: drive to disable DMA on&n; *&n; *&t;Disable IDE DMA for a device on this IDE controller.&n; *&t;Inform the user that DMA has been disabled.&n; */
 DECL|function|__ide_dma_off
 r_int
 id|__ide_dma_off
@@ -1752,6 +1755,7 @@ c_func
 id|__ide_dma_off
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PCI
 multiline_comment|/**&n; *&t;__ide_dma_host_on&t;-&t;Enable DMA on a host&n; *&t;@drive: drive to enable for DMA&n; *&n; *&t;Enable DMA on an IDE controller following generic bus mastering&n; *&t;IDE controller behaviour&n; */
 DECL|function|__ide_dma_host_on
 r_int
@@ -2177,13 +2181,9 @@ id|dma_timer_expiry
 )paren
 suffix:semicolon
 r_return
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|hwif
 op_member_access_from_pointer
-id|ide_dma_count
+id|ide_dma_begin
 c_func
 (paren
 id|drive
@@ -2350,13 +2350,9 @@ id|dma_timer_expiry
 )paren
 suffix:semicolon
 r_return
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|hwif
 op_member_access_from_pointer
-id|ide_dma_count
+id|ide_dma_begin
 c_func
 (paren
 id|drive
@@ -2667,6 +2663,7 @@ c_func
 id|__ide_dma_test_irq
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PCI */
 DECL|function|__ide_dma_bad_drive
 r_int
 id|__ide_dma_bad_drive
@@ -2704,7 +2701,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Disabling (U)DMA for %s&bslash;n&quot;
+l_string|&quot;%s: Disabling (U)DMA for %s (blacklisted)&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
@@ -2759,37 +2756,7 @@ c_func
 id|__ide_dma_good_drive
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Used for HOST FIFO counters for VDMA&n; * PIO over DMA, effective ATA-Bridge operator.&n; */
-DECL|function|__ide_dma_count
-r_int
-id|__ide_dma_count
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-r_return
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ide_dma_begin
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-)brace
-DECL|variable|__ide_dma_count
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__ide_dma_count
-)paren
-suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PCI
 DECL|function|__ide_dma_verbose
 r_int
 id|__ide_dma_verbose
@@ -4165,17 +4132,6 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|hwif-&gt;ide_dma_off
-)paren
-id|hwif-&gt;ide_dma_off
-op_assign
-op_amp
-id|__ide_dma_off
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
 id|hwif-&gt;ide_dma_off_quietly
 )paren
 id|hwif-&gt;ide_dma_off_quietly
@@ -4253,17 +4209,6 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|hwif-&gt;ide_dma_count
-)paren
-id|hwif-&gt;ide_dma_count
-op_assign
-op_amp
-id|__ide_dma_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
 id|hwif-&gt;ide_dma_begin
 )paren
 id|hwif-&gt;ide_dma_begin
@@ -4292,28 +4237,6 @@ id|hwif-&gt;ide_dma_test_irq
 op_assign
 op_amp
 id|__ide_dma_test_irq
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hwif-&gt;ide_dma_bad_drive
-)paren
-id|hwif-&gt;ide_dma_bad_drive
-op_assign
-op_amp
-id|__ide_dma_bad_drive
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hwif-&gt;ide_dma_good_drive
-)paren
-id|hwif-&gt;ide_dma_good_drive
-op_assign
-op_amp
-id|__ide_dma_good_drive
 suffix:semicolon
 r_if
 c_cond
@@ -4437,4 +4360,5 @@ c_func
 id|ide_setup_dma
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PCI */
 eof

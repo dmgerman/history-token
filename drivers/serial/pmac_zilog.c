@@ -23,12 +23,19 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
-macro_line|#include &lt;asm/kgdb.h&gt;
 macro_line|#include &lt;asm/dbdma.h&gt;
 macro_line|#include &lt;asm/macio.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &quot;pmac_zilog.h&quot;
+macro_line|#if defined(CONFIG_SERIAL_PMACZILOG_CONSOLE) &amp;&amp; defined(CONFIG_PPC64)
+DECL|macro|HAS_SCCDBG
+mdefine_line|#define HAS_SCCDBG
+r_extern
+r_int
+id|sccdbg
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Not yet implemented */
 DECL|macro|HAS_DBDMA
 macro_line|#undef HAS_DBDMA
@@ -458,7 +465,6 @@ op_star
 id|up
 )paren
 (brace
-macro_line|#if 1
 r_if
 c_cond
 (paren
@@ -503,22 +509,6 @@ id|up-&gt;curregs
 suffix:semicolon
 )brace
 )brace
-macro_line|#else
-id|pr_debug
-c_func
-(paren
-l_string|&quot;pmz: maybe_update_regs: updating&bslash;n&quot;
-)paren
-suffix:semicolon
-id|pmz_load_zsregs
-c_func
-(paren
-id|up
-comma
-id|up-&gt;curregs
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|pmz_receive_chars
 r_static
@@ -635,28 +625,6 @@ suffix:semicolon
 )brace
 id|ch
 op_assign
-id|read_zsreg
-c_func
-(paren
-id|up
-comma
-id|R0
-)paren
-suffix:semicolon
-multiline_comment|/* This funny hack depends upon BRK_ABRT not interfering&n;&t;&t; * with the other bits we care about in R1.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|ch
-op_amp
-id|BRK_ABRT
-)paren
-id|r1
-op_or_assign
-id|BRK_ABRT
-suffix:semicolon
-id|ch
-op_assign
 id|read_zsdata
 c_func
 (paren
@@ -667,6 +635,29 @@ id|ch
 op_and_assign
 id|up-&gt;parity_mask
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ch
+op_eq
+l_int|0
+op_logical_and
+id|up-&gt;prev_status
+op_amp
+id|BRK_ABRT
+)paren
+(brace
+id|r1
+op_or_assign
+id|BRK_ABRT
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;rx break&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* A real serial line, record the character and status.  */
 op_star
 id|tty-&gt;flip.char_buf_ptr
@@ -687,13 +678,13 @@ c_cond
 id|r1
 op_amp
 (paren
-id|BRK_ABRT
-op_or
 id|PAR_ERR
 op_or
 id|Rx_OVR
 op_or
 id|CRC_ERR
+op_or
+id|BRK_ABRT
 )paren
 )paren
 (brace
@@ -957,6 +948,46 @@ c_func
 id|up
 )paren
 suffix:semicolon
+macro_line|#ifdef HAS_SCCDBG
+r_if
+c_cond
+(paren
+id|sccdbg
+op_logical_and
+(paren
+id|status
+op_amp
+id|BRK_ABRT
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|up-&gt;prev_status
+op_amp
+id|BRK_ABRT
+)paren
+)paren
+(brace
+macro_line|#ifdef CONFIG_XMON
+r_extern
+r_void
+id|xmon
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+id|xmon
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+macro_line|#endif /* HAS_SCCDBG */
 r_if
 c_cond
 (paren
@@ -1431,9 +1462,9 @@ c_cond
 (paren
 id|r3
 op_amp
-id|CHARxIP
+id|CHAEXT
 )paren
-id|pmz_receive_chars
+id|pmz_status_handle
 c_func
 (paren
 id|up_a
@@ -1446,9 +1477,9 @@ c_cond
 (paren
 id|r3
 op_amp
-id|CHAEXT
+id|CHARxIP
 )paren
-id|pmz_status_handle
+id|pmz_receive_chars
 c_func
 (paren
 id|up_a
@@ -1531,9 +1562,9 @@ c_cond
 (paren
 id|r3
 op_amp
-id|CHBRxIP
+id|CHBEXT
 )paren
-id|pmz_receive_chars
+id|pmz_status_handle
 c_func
 (paren
 id|up_b
@@ -1546,9 +1577,9 @@ c_cond
 (paren
 id|r3
 op_amp
-id|CHBEXT
+id|CHBRxIP
 )paren
-id|pmz_status_handle
+id|pmz_receive_chars
 c_func
 (paren
 id|up_b
@@ -2148,7 +2179,7 @@ l_string|&quot;pmz: stop_rx() done.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Enable modem status change interrupts&n; * The port lock is not held.&n; */
+multiline_comment|/* &n; * Enable modem status change interrupts&n; * The port lock is held.&n; */
 DECL|function|pmz_enable_ms
 r_static
 r_void
@@ -2175,19 +2206,6 @@ suffix:semicolon
 r_int
 r_char
 id|new_reg
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|port-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 id|new_reg
 op_assign
@@ -2237,15 +2255,6 @@ id|R15
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|port-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* &n; * Control break state emission&n; * The port lock is not held.&n; */
 DECL|function|pmz_break_ctl
@@ -3011,7 +3020,12 @@ id|INT_ALL_Rx
 op_or
 id|TxINT_ENAB
 suffix:semicolon
-singleline_comment|//&t;pmz_maybe_update_regs(up);
+id|pmz_maybe_update_regs
+c_func
+(paren
+id|up
+)paren
+suffix:semicolon
 r_return
 id|pwr_delay
 suffix:semicolon
@@ -4495,16 +4509,45 @@ comma
 id|termios-&gt;c_cflag
 )paren
 )paren
+(brace
+id|up-&gt;curregs
+(braket
+id|R15
+)braket
+op_or_assign
+id|DCDIE
+op_or
+id|SYNCIE
+op_or
+id|CTSIE
+suffix:semicolon
 id|up-&gt;flags
 op_or_assign
 id|PMACZILOG_FLAG_MODEM_STATUS
 suffix:semicolon
+)brace
 r_else
+(brace
+id|up-&gt;curregs
+(braket
+id|R15
+)braket
+op_and_assign
+op_complement
+(paren
+id|DCDIE
+op_or
+id|SYNCIE
+op_or
+id|CTSIE
+)paren
+suffix:semicolon
 id|up-&gt;flags
 op_and_assign
 op_complement
 id|PMACZILOG_FLAG_MODEM_STATUS
 suffix:semicolon
+)brace
 multiline_comment|/* set the irda codec to the right rate */
 r_if
 c_cond
@@ -4724,11 +4767,11 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Setup one port structure after probing, HW is down at this point,&n; * Unlike sunzilog, we don&squot;t need to pre-init the spinlock as we don&squot;t&n; * register our console before uart_add_one_port() is called&n; */
-DECL|function|pmz_setup_port
+DECL|function|pmz_init_port
 r_static
 r_int
 id|__init
-id|pmz_setup_port
+id|pmz_init_port
 c_func
 (paren
 r_struct
@@ -5235,54 +5278,6 @@ id|device_node
 op_star
 id|np
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|up-&gt;flags
-op_amp
-id|PMACZILOG_FLAG_RSRC_REQUESTED
-)paren
-(brace
-id|release_OF_resource
-c_func
-(paren
-id|up-&gt;node
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ZS_HAS_DMA
-c_func
-(paren
-id|up
-)paren
-)paren
-(brace
-id|release_OF_resource
-c_func
-(paren
-id|up-&gt;node
-comma
-id|up-&gt;node-&gt;n_addrs
-op_minus
-l_int|2
-)paren
-suffix:semicolon
-id|release_OF_resource
-c_func
-(paren
-id|up-&gt;node
-comma
-id|up-&gt;node-&gt;n_addrs
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-)brace
-)brace
 id|iounmap
 c_func
 (paren
@@ -5746,7 +5741,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Setup the ports for real&n;&t;&t; */
 id|rc
 op_assign
-id|pmz_setup_port
+id|pmz_init_port
 c_func
 (paren
 op_amp
@@ -5765,7 +5760,7 @@ l_int|0
 )paren
 id|rc
 op_assign
-id|pmz_setup_port
+id|pmz_init_port
 c_func
 (paren
 op_amp
@@ -6693,6 +6688,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SERIAL_PMACZILOG_CONSOLE
+macro_line|#endif
 multiline_comment|/* TODO: Autoprobe console based on OF */
 multiline_comment|/* pmz_console.index = i; */
 id|register_console

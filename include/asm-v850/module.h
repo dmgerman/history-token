@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-v850/module.h -- Architecture-specific module hooks&n; *&n; *  Copyright (C) 2001,02,03  NEC Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *  Copyright (C) 2001,03  Rusty Russell&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * Derived in part from include/asm-ppc/module.h&n; */
+multiline_comment|/*&n; * include/asm-v850/module.h -- Architecture-specific module hooks&n; *&n; *  Copyright (C) 2001,02,03,04  NEC Corporation&n; *  Copyright (C) 2001,02,03,04  Miles Bader &lt;miles@gnu.org&gt;&n; *  Copyright (C) 2001,03  Rusty Russell&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * Derived in part from include/asm-ppc/module.h&n; */
 macro_line|#ifndef __V850_MODULE_H__
 DECL|macro|__V850_MODULE_H__
 mdefine_line|#define __V850_MODULE_H__
@@ -90,5 +90,29 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|ARCH_HAS_SEARCH_EXTABLE
+mdefine_line|#define ARCH_HAS_SEARCH_EXTABLE
+r_static
+r_inline
+r_void
+DECL|function|sort_extable
+id|sort_extable
+c_func
+(paren
+r_struct
+id|exception_table_entry
+op_star
+id|start
+comma
+r_struct
+id|exception_table_entry
+op_star
+id|finish
+)paren
+(brace
+multiline_comment|/* nada */
+)brace
+DECL|macro|ARCH_HAS_SORT_EXTABLE
+mdefine_line|#define ARCH_HAS_SORT_EXTABLE
 macro_line|#endif /* __V850_MODULE_H__ */
 eof

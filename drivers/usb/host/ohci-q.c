@@ -80,7 +80,7 @@ id|urb_priv
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * URB goes back to driver, and isn&squot;t reissued.&n; * It&squot;s completely gone from HC data structures.&n; * PRECONDITION:  no locks held, irqs blocked  (Giveback can call into HCD.)&n; */
+multiline_comment|/*&n; * URB goes back to driver, and isn&squot;t reissued.&n; * It&squot;s completely gone from HC data structures.&n; * PRECONDITION:  ohci lock held, irqs blocked.&n; */
 r_static
 r_void
 DECL|function|finish_urb
@@ -180,7 +180,6 @@ op_amp
 id|urb-&gt;lock
 )paren
 suffix:semicolon
-singleline_comment|// what lock protects these?
 r_switch
 c_cond
 (paren
@@ -233,6 +232,13 @@ id|urb-&gt;pipe
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* urb-&gt;complete() can reenter this HCD */
+id|spin_unlock
+(paren
+op_amp
+id|ohci-&gt;lock
+)paren
+suffix:semicolon
 id|usb_hcd_giveback_urb
 (paren
 op_amp
@@ -243,6 +249,55 @@ comma
 id|regs
 )paren
 suffix:semicolon
+id|spin_lock
+(paren
+op_amp
+id|ohci-&gt;lock
+)paren
+suffix:semicolon
+multiline_comment|/* stop periodic dma if it&squot;s not needed */
+r_if
+c_cond
+(paren
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_isoc_reqs
+op_eq
+l_int|0
+op_logical_and
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_int_reqs
+op_eq
+l_int|0
+)paren
+(brace
+id|ohci-&gt;hc_control
+op_and_assign
+op_complement
+(paren
+id|OHCI_CTRL_PLE
+op_or
+id|OHCI_CTRL_IE
+)paren
+suffix:semicolon
+id|writel
+(paren
+id|ohci-&gt;hc_control
+comma
+op_amp
+id|ohci-&gt;regs-&gt;control
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*&n; * ED handling functions&n; *-------------------------------------------------------------------------*/
 multiline_comment|/* search for the right schedule branch to use for a periodic ed.&n; * does some load balancing; returns the branch, or negative errno.&n; */
@@ -2032,6 +2087,11 @@ id|usb_pipeout
 id|urb-&gt;pipe
 )paren
 suffix:semicolon
+r_int
+id|periodic
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* OHCI handles the bulk/interrupt data toggles itself.  We just&n;&t; * use the device toggle bits for resetting, and rely on the fact&n;&t; * that resetting toggle is meaningless if the endpoint is active.&n;&t; */
 r_if
 c_cond
@@ -2100,6 +2160,8 @@ r_case
 id|PIPE_INTERRUPT
 suffix:colon
 multiline_comment|/* ... and periodic urbs have extra accounting */
+id|periodic
+op_assign
 id|hcd_to_bus
 (paren
 op_amp
@@ -2108,6 +2170,18 @@ id|ohci-&gt;hcd
 op_member_access_from_pointer
 id|bandwidth_int_reqs
 op_increment
+op_eq
+l_int|0
+op_logical_and
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_isoc_reqs
+op_eq
+l_int|0
 suffix:semicolon
 multiline_comment|/* FALLTHROUGH */
 r_case
@@ -2444,6 +2518,8 @@ id|cnt
 )paren
 suffix:semicolon
 )brace
+id|periodic
+op_assign
 id|hcd_to_bus
 (paren
 op_amp
@@ -2452,8 +2528,42 @@ id|ohci-&gt;hcd
 op_member_access_from_pointer
 id|bandwidth_isoc_reqs
 op_increment
+op_eq
+l_int|0
+op_logical_and
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_int_reqs
+op_eq
+l_int|0
 suffix:semicolon
 r_break
+suffix:semicolon
+)brace
+multiline_comment|/* start periodic dma if needed */
+r_if
+c_cond
+(paren
+id|periodic
+)paren
+(brace
+id|ohci-&gt;hc_control
+op_or_assign
+id|OHCI_CTRL_PLE
+op_or
+id|OHCI_CTRL_IE
+suffix:semicolon
+id|writel
+(paren
+id|ohci-&gt;hc_control
+comma
+op_amp
+id|ohci-&gt;regs-&gt;control
+)paren
 suffix:semicolon
 )brace
 singleline_comment|// ASSERT (urb_priv-&gt;length == cnt);
@@ -3560,12 +3670,6 @@ id|completed
 op_assign
 l_int|1
 suffix:semicolon
-id|spin_unlock
-(paren
-op_amp
-id|ohci-&gt;lock
-)paren
-suffix:semicolon
 id|finish_urb
 (paren
 id|ohci
@@ -3573,12 +3677,6 @@ comma
 id|urb
 comma
 id|regs
-)paren
-suffix:semicolon
-id|spin_lock
-(paren
-op_amp
-id|ohci-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -3876,13 +3974,6 @@ id|urb_priv-&gt;td_cnt
 op_eq
 id|urb_priv-&gt;length
 )paren
-(brace
-id|spin_unlock
-(paren
-op_amp
-id|ohci-&gt;lock
-)paren
-suffix:semicolon
 id|finish_urb
 (paren
 id|ohci
@@ -3892,13 +3983,6 @@ comma
 id|regs
 )paren
 suffix:semicolon
-id|spin_lock
-(paren
-op_amp
-id|ohci-&gt;lock
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* clean schedule:  unlink EDs that are no longer busy */
 r_if
 c_cond

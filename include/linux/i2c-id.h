@@ -220,6 +220,8 @@ DECL|macro|I2C_DRIVERID_LM90
 mdefine_line|#define I2C_DRIVERID_LM90 1042
 DECL|macro|I2C_DRIVERID_ASB100
 mdefine_line|#define I2C_DRIVERID_ASB100 1043
+DECL|macro|I2C_DRIVERID_FSCHER
+mdefine_line|#define I2C_DRIVERID_FSCHER 1046
 DECL|macro|I2C_DRIVERID_W83L785TS
 mdefine_line|#define I2C_DRIVERID_W83L785TS 1047
 multiline_comment|/*&n; * ---- Adapter types ----------------------------------------------------&n; *&n; * First, we distinguish between several algorithms to access the hardware&n; * interface types, as a PCF 8584 needs other care than a bit adapter.&n; */
