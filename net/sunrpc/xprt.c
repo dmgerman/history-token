@@ -3561,7 +3561,11 @@ c_func
 (paren
 l_string|&quot;RPC:      reading reply for XID %08x&bslash;n&quot;
 comma
+id|ntohl
+c_func
+(paren
 id|xprt-&gt;tcp_xid
+)paren
 )paren
 suffix:semicolon
 id|tcp_check_recm
@@ -3637,7 +3641,11 @@ c_func
 (paren
 l_string|&quot;RPC:      XID %08x request not found!&bslash;n&quot;
 comma
+id|ntohl
+c_func
+(paren
 id|xprt-&gt;tcp_xid
+)paren
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -5529,7 +5537,11 @@ id|task-&gt;tk_pid
 comma
 id|req
 comma
+id|ntohl
+c_func
+(paren
 id|req-&gt;rq_xid
+)paren
 )paren
 suffix:semicolon
 )brace
