@@ -2119,6 +2119,10 @@ op_amp
 id|packet-&gt;refcnt
 )paren
 suffix:semicolon
+id|packet-&gt;sendtime
+op_assign
+id|jiffies
+suffix:semicolon
 id|skb_queue_tail
 c_func
 (paren
