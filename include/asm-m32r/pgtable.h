@@ -85,6 +85,8 @@ DECL|macro|_PAGE_BIT_USER
 mdefine_line|#define _PAGE_BIT_USER&t;&t;8&t;/* software: user space access&n;&t;&t;&t;&t;&t;   allowed */
 DECL|macro|_PAGE_BIT_ACCESSED
 mdefine_line|#define _PAGE_BIT_ACCESSED&t;9&t;/* software: page referenced */
+DECL|macro|_PAGE_BIT_PROTNONE
+mdefine_line|#define _PAGE_BIT_PROTNONE&t;10&t;/* software: if not present */
 DECL|macro|_PAGE_DIRTY
 mdefine_line|#define _PAGE_DIRTY&t;&t;(1UL &lt;&lt; _PAGE_BIT_DIRTY)
 DECL|macro|_PAGE_FILE
@@ -107,6 +109,8 @@ DECL|macro|_PAGE_USER
 mdefine_line|#define _PAGE_USER&t;&t;(1UL &lt;&lt; _PAGE_BIT_USER)
 DECL|macro|_PAGE_ACCESSED
 mdefine_line|#define _PAGE_ACCESSED&t;&t;(1UL &lt;&lt; _PAGE_BIT_ACCESSED)
+DECL|macro|_PAGE_PROTNONE
+mdefine_line|#define _PAGE_PROTNONE&t;&t;(1UL &lt;&lt; _PAGE_BIT_PROTNONE)
 DECL|macro|_PAGE_TABLE
 mdefine_line|#define _PAGE_TABLE&t;&bslash;&n;&t;( _PAGE_PRESENT | _PAGE_WRITE | _PAGE_READ | _PAGE_USER &bslash;&n;&t;| _PAGE_ACCESSED | _PAGE_DIRTY )
 DECL|macro|_KERNPG_TABLE
@@ -115,7 +119,7 @@ DECL|macro|_PAGE_CHG_MASK
 mdefine_line|#define _PAGE_CHG_MASK&t;&bslash;&n;&t;( PTE_MASK | _PAGE_ACCESSED | _PAGE_DIRTY )
 macro_line|#ifdef CONFIG_MMU
 DECL|macro|PAGE_NONE
-mdefine_line|#define PAGE_NONE&t;&bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_ACCESSED)
+mdefine_line|#define PAGE_NONE&t;&bslash;&n;&t;__pgprot(_PAGE_PROTNONE | _PAGE_ACCESSED)
 DECL|macro|PAGE_SHARED
 mdefine_line|#define PAGE_SHARED&t;&bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_WRITE | _PAGE_READ | _PAGE_USER &bslash;&n;&t;&t;| _PAGE_ACCESSED)
 DECL|macro|PAGE_SHARED_EXEC
@@ -199,7 +203,7 @@ DECL|macro|__S111
 mdefine_line|#define __S111&t;PAGE_SHARED_EXEC
 multiline_comment|/* page table for 0-4MB for everybody */
 DECL|macro|pte_present
-mdefine_line|#define pte_present(x)&t;(pte_val(x) &amp; _PAGE_PRESENT)
+mdefine_line|#define pte_present(x)&t;(pte_val(x) &amp; (_PAGE_PRESENT | _PAGE_PROTNONE))
 DECL|macro|pte_clear
 mdefine_line|#define pte_clear(xp)&t;do { set_pte(xp, __pte(0)); } while (0)
 DECL|macro|pmd_none
@@ -836,11 +840,11 @@ DECL|macro|pte_unmap_nested
 mdefine_line|#define pte_unmap_nested(pte)&t;do { } while (0)
 multiline_comment|/* Encode and de-code a swap entry */
 DECL|macro|__swp_type
-mdefine_line|#define __swp_type(x)&t;&t;&t;(((x).val &gt;&gt; 1) &amp; 0x3f)
+mdefine_line|#define __swp_type(x)&t;&t;&t;(((x).val &gt;&gt; 2) &amp; 0x3f)
 DECL|macro|__swp_offset
-mdefine_line|#define __swp_offset(x)&t;&t;&t;((x).val &gt;&gt; 8)
+mdefine_line|#define __swp_offset(x)&t;&t;&t;((x).val &gt;&gt; 11)
 DECL|macro|__swp_entry
-mdefine_line|#define __swp_entry(type, offset)&t;&bslash;&n;&t;((swp_entry_t) { ((type) &lt;&lt; 1) | ((offset) &lt;&lt; 8) })
+mdefine_line|#define __swp_entry(type, offset)&t;&bslash;&n;&t;((swp_entry_t) { ((type) &lt;&lt; 2) | ((offset) &lt;&lt; 11) })
 DECL|macro|__pte_to_swp_entry
 mdefine_line|#define __pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) })
 DECL|macro|__swp_entry_to_pte
