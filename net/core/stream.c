@@ -806,7 +806,6 @@ id|sk-&gt;sk_forward_alloc
 op_div
 id|SK_STREAM_MEM_QUANTUM
 comma
-op_amp
 id|sk-&gt;sk_prot-&gt;memory_allocated
 )paren
 suffix:semicolon
@@ -819,13 +818,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_star
 id|sk-&gt;sk_prot-&gt;memory_pressure
 op_logical_and
 (paren
 id|atomic_read
 c_func
 (paren
-op_amp
 id|sk-&gt;sk_prot-&gt;memory_allocated
 )paren
 OL
@@ -835,6 +834,7 @@ l_int|0
 )braket
 )paren
 )paren
+op_star
 id|sk-&gt;sk_prot-&gt;memory_pressure
 op_assign
 l_int|0
@@ -885,7 +885,6 @@ c_func
 (paren
 id|amt
 comma
-op_amp
 id|sk-&gt;sk_prot-&gt;memory_allocated
 )paren
 suffix:semicolon
@@ -896,7 +895,6 @@ c_cond
 id|atomic_read
 c_func
 (paren
-op_amp
 id|sk-&gt;sk_prot-&gt;memory_allocated
 )paren
 OL
@@ -909,8 +907,10 @@ l_int|0
 r_if
 c_cond
 (paren
+op_star
 id|sk-&gt;sk_prot-&gt;memory_pressure
 )paren
+op_star
 id|sk-&gt;sk_prot-&gt;memory_pressure
 op_assign
 l_int|0
@@ -926,7 +926,6 @@ c_cond
 id|atomic_read
 c_func
 (paren
-op_amp
 id|sk-&gt;sk_prot-&gt;memory_allocated
 )paren
 OG
@@ -954,7 +953,6 @@ c_cond
 id|atomic_read
 c_func
 (paren
-op_amp
 id|sk-&gt;sk_prot-&gt;memory_allocated
 )paren
 OG
@@ -1013,6 +1011,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
+op_star
 id|sk-&gt;sk_prot-&gt;memory_pressure
 op_logical_or
 id|sk-&gt;sk_prot-&gt;sysctl_mem
@@ -1023,7 +1022,6 @@ OG
 id|atomic_read
 c_func
 (paren
-op_amp
 id|sk-&gt;sk_prot-&gt;sockets_allocated
 )paren
 op_star
@@ -1086,7 +1084,6 @@ c_func
 (paren
 id|amt
 comma
-op_amp
 id|sk-&gt;sk_prot-&gt;memory_allocated
 )paren
 suffix:semicolon

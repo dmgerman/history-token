@@ -1737,39 +1737,36 @@ r_void
 suffix:semicolon
 DECL|member|memory_allocated
 id|atomic_t
+op_star
 id|memory_allocated
 suffix:semicolon
 multiline_comment|/* Current allocated memory. */
 DECL|member|sockets_allocated
 id|atomic_t
+op_star
 id|sockets_allocated
 suffix:semicolon
 multiline_comment|/* Current number of sockets. */
 multiline_comment|/*&n;&t; * Pressure flag: try to collapse.&n;&t; * Technical note: it is used by multiple contexts non atomically.&n;&t; * All the sk_stream_mem_schedule() is of this nature: accounting&n;&t; * is strict, actions are advisory and have some latency.&n;&t; */
 DECL|member|memory_pressure
 r_int
+op_star
 id|memory_pressure
 suffix:semicolon
 DECL|member|sysctl_mem
 r_int
+op_star
 id|sysctl_mem
-(braket
-l_int|3
-)braket
 suffix:semicolon
 DECL|member|sysctl_wmem
 r_int
+op_star
 id|sysctl_wmem
-(braket
-l_int|3
-)braket
 suffix:semicolon
 DECL|member|sysctl_rmem
 r_int
+op_star
 id|sysctl_rmem
-(braket
-l_int|3
-)braket
 suffix:semicolon
 DECL|member|max_header
 r_int

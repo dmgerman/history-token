@@ -452,7 +452,7 @@ l_int|3
 op_star
 id|sndmem
 comma
-id|tcp_prot.sysctl_wmem
+id|sysctl_tcp_wmem
 (braket
 l_int|2
 )braket
@@ -717,7 +717,7 @@ l_int|4
 op_star
 id|rcvmem
 comma
-id|tcp_prot.sysctl_rmem
+id|sysctl_tcp_rmem
 (braket
 l_int|2
 )braket
@@ -950,7 +950,7 @@ c_cond
 (paren
 id|sk-&gt;sk_rcvbuf
 OL
-id|tcp_prot.sysctl_rmem
+id|sysctl_tcp_rmem
 (braket
 l_int|2
 )braket
@@ -969,10 +969,10 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|tcp_prot.memory_allocated
+id|tcp_memory_allocated
 )paren
 OL
-id|tcp_prot.sysctl_mem
+id|sysctl_tcp_mem
 (braket
 l_int|0
 )braket
@@ -989,7 +989,7 @@ op_amp
 id|sk-&gt;sk_rmem_alloc
 )paren
 comma
-id|tcp_prot.sysctl_rmem
+id|sysctl_tcp_rmem
 (braket
 l_int|2
 )braket
@@ -1452,7 +1452,7 @@ c_func
 (paren
 id|space
 comma
-id|tcp_prot.sysctl_rmem
+id|sysctl_tcp_rmem
 (braket
 l_int|2
 )braket
@@ -14655,10 +14655,10 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|tcp_prot.memory_allocated
+id|tcp_memory_allocated
 )paren
 OL
-id|tcp_prot.sysctl_mem
+id|sysctl_tcp_mem
 (braket
 l_int|0
 )braket
@@ -14722,7 +14722,7 @@ c_func
 (paren
 id|sndmem
 comma
-id|tcp_prot.sysctl_wmem
+id|sysctl_tcp_wmem
 (braket
 l_int|2
 )braket

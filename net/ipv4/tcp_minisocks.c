@@ -3021,7 +3021,7 @@ id|atomic_inc
 c_func
 (paren
 op_amp
-id|tcp_prot.sockets_allocated
+id|tcp_sockets_allocated
 )paren
 suffix:semicolon
 r_if
