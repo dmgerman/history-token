@@ -1825,6 +1825,23 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|skb_reserve
+c_func
+(paren
+id|skb
+comma
+(paren
+l_int|4
+op_minus
+(paren
+r_int
+)paren
+id|skb-&gt;data
+)paren
+op_amp
+l_int|0x03
+)paren
+suffix:semicolon
 multiline_comment|/* store the new skb structure pointer */
 id|index
 op_assign
