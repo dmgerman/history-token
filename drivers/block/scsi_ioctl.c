@@ -808,6 +808,10 @@ id|__GFP_WAIT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * fill in request structure&n;&t; */
+id|rq-&gt;cmd_len
+op_assign
+id|hdr.cmd_len
+suffix:semicolon
 id|copy_from_user
 c_func
 (paren
@@ -1331,6 +1335,10 @@ id|err
 op_assign
 op_minus
 id|EFAULT
+suffix:semicolon
+id|rq-&gt;cmd_len
+op_assign
+id|cmdlen
 suffix:semicolon
 r_if
 c_cond

@@ -532,6 +532,8 @@ id|flags
 suffix:semicolon
 DECL|macro|UPF_HUP_NOTIFY
 mdefine_line|#define UPF_HUP_NOTIFY&t;&t;(1 &lt;&lt; 0)
+DECL|macro|UPF_FOURPORT
+mdefine_line|#define UPF_FOURPORT&t;&t;(1 &lt;&lt; 1)
 DECL|macro|UPF_SAK
 mdefine_line|#define UPF_SAK&t;&t;&t;(1 &lt;&lt; 2)
 DECL|macro|UPF_SPD_MASK
@@ -558,6 +560,12 @@ DECL|macro|UPF_BUGGY_UART
 mdefine_line|#define UPF_BUGGY_UART&t;&t;(1 &lt;&lt; 14)
 DECL|macro|UPF_AUTOPROBE
 mdefine_line|#define UPF_AUTOPROBE&t;&t;(1 &lt;&lt; 15)
+DECL|macro|UPF_BOOT_ONLYMCA
+mdefine_line|#define UPF_BOOT_ONLYMCA&t;(1 &lt;&lt; 22)
+DECL|macro|UPF_CONS_FLOW
+mdefine_line|#define UPF_CONS_FLOW&t;&t;(1 &lt;&lt; 23)
+DECL|macro|UPF_SHARE_IRQ
+mdefine_line|#define UPF_SHARE_IRQ&t;&t;(1 &lt;&lt; 24)
 DECL|macro|UPF_BOOT_AUTOCONF
 mdefine_line|#define UPF_BOOT_AUTOCONF&t;(1 &lt;&lt; 28)
 DECL|macro|UPF_RESOURCES
@@ -754,8 +762,6 @@ suffix:semicolon
 multiline_comment|/* number of characters left in xmit buffer before we ask for more */
 DECL|macro|WAKEUP_CHARS
 mdefine_line|#define WAKEUP_CHARS&t;&t;256
-DECL|macro|EVT_WRITE_WAKEUP
-mdefine_line|#define EVT_WRITE_WAKEUP&t;0
 r_struct
 id|module
 suffix:semicolon
@@ -818,16 +824,13 @@ suffix:semicolon
 )brace
 suffix:semicolon
 r_void
-id|uart_event
+id|uart_write_wakeup
 c_func
 (paren
 r_struct
 id|uart_port
 op_star
 id|port
-comma
-r_int
-id|event
 )paren
 suffix:semicolon
 r_struct
@@ -1288,12 +1291,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|uart_event
+id|uart_write_wakeup
 c_func
 (paren
 id|port
-comma
-id|EVT_WRITE_WAKEUP
 )paren
 suffix:semicolon
 )brace

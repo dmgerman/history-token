@@ -136,10 +136,10 @@ r_int
 r_int
 id|s_dir_count
 suffix:semicolon
-DECL|member|debts
+DECL|member|s_debts
 id|u8
 op_star
-id|debts
+id|s_debts
 suffix:semicolon
 )brace
 suffix:semicolon

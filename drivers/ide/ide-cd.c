@@ -2557,6 +2557,14 @@ op_star
 id|handler
 )paren
 (brace
+multiline_comment|/*&n;&t; * FIXME! This should be &squot;rq-&gt;cmd_len&squot; when that is reliable.&n;&t; *&n;&t; * This breaks for real 16-byte commands. however, lots of drives&n;&t; * currently break if we just send 16-bytes for 10/12 byte commands.&n;&t; */
+DECL|macro|MAX_CDB_BYTES
+mdefine_line|#define MAX_CDB_BYTES  12
+r_int
+id|cmd_len
+op_assign
+id|MAX_CDB_BYTES
+suffix:semicolon
 r_struct
 id|cdrom_info
 op_star
@@ -2669,10 +2677,7 @@ id|drive
 comma
 id|rq-&gt;cmd
 comma
-r_sizeof
-(paren
-id|rq-&gt;cmd
-)paren
+id|cmd_len
 )paren
 suffix:semicolon
 multiline_comment|/* Start the DMA if need be */
@@ -11864,6 +11869,10 @@ id|blocks
 op_amp
 l_int|0xff
 suffix:semicolon
+id|rq-&gt;cmd_len
+op_assign
+l_int|10
+suffix:semicolon
 r_return
 id|BLKPREP_OK
 suffix:semicolon
@@ -11972,6 +11981,10 @@ id|READ_10
 op_minus
 id|READ_6
 )paren
+suffix:semicolon
+id|rq-&gt;cmd_len
+op_assign
+l_int|10
 suffix:semicolon
 r_return
 id|BLKPREP_OK

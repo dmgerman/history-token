@@ -146,6 +146,16 @@ DECL|member|s_def_hash_version
 r_int
 id|s_def_hash_version
 suffix:semicolon
+DECL|member|s_dir_count
+r_int
+r_int
+id|s_dir_count
+suffix:semicolon
+DECL|member|s_debts
+id|u8
+op_star
+id|s_debts
+suffix:semicolon
 multiline_comment|/* Journaling */
 DECL|member|s_journal_inode
 r_struct

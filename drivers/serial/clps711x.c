@@ -20,8 +20,6 @@ macro_line|#include &lt;asm/hardware/clps7111.h&gt;
 DECL|macro|UART_NR
 mdefine_line|#define UART_NR&t;&t;2
 macro_line|#ifndef CONFIG_SERIAL_CLPS711X_OLD_NAME
-DECL|macro|SERIAL_CLPS711X_NAME
-mdefine_line|#define SERIAL_CLPS711X_NAME&t;&quot;ttyCL&quot;
 DECL|macro|SERIAL_CLPS711X_MAJOR
 mdefine_line|#define SERIAL_CLPS711X_MAJOR&t;204
 DECL|macro|SERIAL_CLPS711X_MINOR
@@ -30,8 +28,6 @@ DECL|macro|SERIAL_CLPS711X_NR
 mdefine_line|#define SERIAL_CLPS711X_NR&t;UART_NR
 macro_line|#else
 macro_line|#warning The old names/device number for this driver if compatabity is needed
-DECL|macro|SERIAL_CLPS711X_NAME
-mdefine_line|#define SERIAL_CLPS711X_NAME    &quot;ttyAM&quot;
 DECL|macro|SERIAL_CLPS711X_MAJOR
 mdefine_line|#define SERIAL_CLPS711X_MAJOR   204
 DECL|macro|SERIAL_CLPS711X_MINOR
@@ -649,12 +645,10 @@ id|xmit
 OL
 id|WAKEUP_CHARS
 )paren
-id|uart_event
+id|uart_write_wakeup
 c_func
 (paren
 id|port
-comma
-id|EVT_WRITE_WAKEUP
 )paren
 suffix:semicolon
 r_if
@@ -2099,7 +2093,7 @@ op_assign
 dot
 id|name
 op_assign
-id|SERIAL_CLPS711X_NAME
+l_string|&quot;ttyCL&quot;
 comma
 dot
 id|write
@@ -2164,19 +2158,11 @@ id|driver_name
 op_assign
 l_string|&quot;ttyCL&quot;
 comma
-macro_line|#ifdef CONFIG_DEVFS_FS
 dot
 id|dev_name
 op_assign
-id|SERIAL_CLPS711X_NAME
+l_string|&quot;ttyCL%d&quot;
 comma
-macro_line|#else
-dot
-id|dev_name
-op_assign
-id|SERIAL_CLPS711X_NAME
-comma
-macro_line|#endif
 dot
 id|major
 op_assign

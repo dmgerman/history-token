@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/char/8250_pci.c&n; *&n; *  Probe module for 8250/16550-type PCI serial ports.&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright (C) 2001 Russell King, All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License.&n; *&n; *  $Id: 8250_pci.c,v 1.24 2002/07/29 14:39:56 rmk Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/char/8250_pci.c&n; *&n; *  Probe module for 8250/16550-type PCI serial ports.&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright (C) 2001 Russell King, All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License.&n; *&n; *  $Id: 8250_pci.c,v 1.28 2002/11/02 11:14:18 rmk Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -55,6 +55,7 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * init_fn returns:&n; *  &gt; 0 - number of ports&n; *  = 0 - use board-&gt;num_ports&n; *  &lt; 0 - error&n; */
 DECL|struct|pci_board
 r_struct
 id|pci_board
@@ -90,11 +91,6 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_struct
-id|pci_board
-op_star
-id|board
 comma
 r_int
 id|enable
@@ -620,10 +616,10 @@ id|base_idx
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Some PCI serial cards using the PLX 9050 PCI interface chip require&n; * that the card interrupt be explicitly enabled or disabled.  This&n; * seems to be mainly needed on card using the PLX which also use I/O&n; * mapped memory.&n; */
+DECL|function|pci_plx9050_fn
 r_static
 r_int
 id|__devinit
-DECL|function|pci_plx9050_fn
 id|pci_plx9050_fn
 c_func
 (paren
@@ -631,11 +627,6 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_struct
-id|pci_board
-op_star
-id|board
 comma
 r_int
 id|enable
@@ -763,10 +754,10 @@ DECL|macro|PCI_DEVICE_ID_SIIG_1S_10x
 mdefine_line|#define PCI_DEVICE_ID_SIIG_1S_10x (PCI_DEVICE_ID_SIIG_1S_10x_550 &amp; 0xfffc)
 DECL|macro|PCI_DEVICE_ID_SIIG_2S_10x
 mdefine_line|#define PCI_DEVICE_ID_SIIG_2S_10x (PCI_DEVICE_ID_SIIG_2S_10x_550 &amp; 0xfff8)
+DECL|function|pci_siig10x_fn
 r_static
 r_int
 id|__devinit
-DECL|function|pci_siig10x_fn
 id|pci_siig10x_fn
 c_func
 (paren
@@ -774,11 +765,6 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_struct
-id|pci_board
-op_star
-id|board
 comma
 r_int
 id|enable
@@ -904,10 +890,10 @@ DECL|macro|PCI_DEVICE_ID_SIIG_2S_20x
 mdefine_line|#define PCI_DEVICE_ID_SIIG_2S_20x (PCI_DEVICE_ID_SIIG_2S_20x_550 &amp; 0xfffc)
 DECL|macro|PCI_DEVICE_ID_SIIG_2S1P_20x
 mdefine_line|#define PCI_DEVICE_ID_SIIG_2S1P_20x (PCI_DEVICE_ID_SIIG_2S1P_20x_550 &amp; 0xfffc)
+DECL|function|pci_siig20x_fn
 r_static
 r_int
 id|__devinit
-DECL|function|pci_siig20x_fn
 id|pci_siig20x_fn
 c_func
 (paren
@@ -915,11 +901,6 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_struct
-id|pci_board
-op_star
-id|board
 comma
 r_int
 id|enable
@@ -1015,10 +996,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Added for EKF Intel i960 serial boards */
+DECL|function|pci_inteli960ni_fn
 r_static
 r_int
 id|__devinit
-DECL|function|pci_inteli960ni_fn
 id|pci_inteli960ni_fn
 c_func
 (paren
@@ -1026,11 +1007,6 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_struct
-id|pci_board
-op_star
-id|board
 comma
 r_int
 id|enable
@@ -1347,10 +1323,10 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
+DECL|function|pci_timedia_fn
 r_static
 r_int
 id|__devinit
-DECL|function|pci_timedia_fn
 id|pci_timedia_fn
 c_func
 (paren
@@ -1358,11 +1334,6 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_struct
-id|pci_board
-op_star
-id|board
 comma
 r_int
 id|enable
@@ -1429,7 +1400,6 @@ suffix:semicolon
 id|j
 op_increment
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -1444,9 +1414,7 @@ id|ids
 id|j
 )braket
 )paren
-(brace
-id|board-&gt;num_ports
-op_assign
+r_return
 id|timedia_data
 (braket
 id|i
@@ -1454,21 +1422,16 @@ id|i
 dot
 id|num
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-)brace
 )brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * HP&squot;s Remote Management Console.  The Diva chip came in several&n; * different versions.  N-class, L2000 and A500 have two Diva chips, each&n; * with 3 UARTs (the third UART on the second chip is unused).  Superdome&n; * and Keystone have one Diva chip with 3 UARTs.  Some later machines have&n; * one Diva chip, but it has been expanded to 5 UARTs.&n; */
+DECL|function|pci_hp_diva
 r_static
 r_int
 id|__devinit
-DECL|function|pci_hp_diva
 id|pci_hp_diva
 c_func
 (paren
@@ -1477,15 +1440,15 @@ id|pci_dev
 op_star
 id|dev
 comma
-r_struct
-id|pci_board
-op_star
-id|board
-comma
 r_int
 id|enable
 )paren
 (brace
+r_int
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1513,7 +1476,7 @@ suffix:colon
 r_case
 id|PCI_DEVICE_ID_HP_DIVA_EVEREST
 suffix:colon
-id|board-&gt;num_ports
+id|rc
 op_assign
 l_int|3
 suffix:semicolon
@@ -1522,7 +1485,7 @@ suffix:semicolon
 r_case
 id|PCI_DEVICE_ID_HP_DIVA_TOSCA2
 suffix:colon
-id|board-&gt;num_ports
+id|rc
 op_assign
 l_int|2
 suffix:semicolon
@@ -1531,7 +1494,7 @@ suffix:semicolon
 r_case
 id|PCI_DEVICE_ID_HP_DIVA_MAESTRO
 suffix:colon
-id|board-&gt;num_ports
+id|rc
 op_assign
 l_int|4
 suffix:semicolon
@@ -1540,7 +1503,7 @@ suffix:semicolon
 r_case
 id|PCI_DEVICE_ID_HP_DIVA_POWERBAR
 suffix:colon
-id|board-&gt;num_ports
+id|rc
 op_assign
 l_int|1
 suffix:semicolon
@@ -1548,13 +1511,13 @@ r_break
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|rc
 suffix:semicolon
 )brace
+DECL|function|pci_xircom_fn
 r_static
 r_int
 id|__devinit
-DECL|function|pci_xircom_fn
 id|pci_xircom_fn
 c_func
 (paren
@@ -1562,11 +1525,6 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_struct
-id|pci_board
-op_star
-id|board
 comma
 r_int
 id|enable
@@ -2152,7 +2110,7 @@ comma
 l_int|0x03
 )brace
 comma
-multiline_comment|/* This board uses the size of PCI Base region 0 to&n;&t;&t; * signal now many ports are available */
+multiline_comment|/*&n;&t; * This board uses the size of PCI Base region 0 to&n;&t; * signal now many ports are available&n;&t; */
 (brace
 id|SPCI_FL_BASE0
 op_or
@@ -2537,7 +2495,8 @@ OG
 l_int|6
 )paren
 r_return
-l_int|1
+op_minus
+id|ENODEV
 suffix:semicolon
 r_for
 c_loop
@@ -2619,14 +2578,78 @@ l_int|0
 suffix:semicolon
 )brace
 r_return
-l_int|1
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * return an error code to refuse.&n; *&n; * serial_struct is 60 bytes.&n; */
-DECL|function|pci_init_one
+r_static
+r_inline
+r_int
+DECL|function|serial_pci_matches
+id|serial_pci_matches
+c_func
+(paren
+r_struct
+id|pci_board
+op_star
+id|board
+comma
+r_int
+id|index
+)paren
+(brace
+r_return
+id|board-&gt;base_baud
+op_eq
+id|pci_boards
+(braket
+id|index
+)braket
+dot
+id|base_baud
+op_logical_and
+id|board-&gt;num_ports
+op_eq
+id|pci_boards
+(braket
+id|index
+)braket
+dot
+id|num_ports
+op_logical_and
+id|board-&gt;uart_offset
+op_eq
+id|pci_boards
+(braket
+id|index
+)braket
+dot
+id|uart_offset
+op_logical_and
+id|board-&gt;reg_shift
+op_eq
+id|pci_boards
+(braket
+id|index
+)braket
+dot
+id|reg_shift
+op_logical_and
+id|board-&gt;first_uart_offset
+op_eq
+id|pci_boards
+(braket
+id|index
+)braket
+dot
+id|first_uart_offset
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Probe one serial board.  Unfortunately, there is no rhyme nor reason&n; * to the arrangement of serial ports on a PCI card.&n; */
 r_static
 r_int
 id|__devinit
+DECL|function|pci_init_one
 id|pci_init_one
 c_func
 (paren
@@ -2663,7 +2686,9 @@ id|base_baud
 comma
 id|rc
 comma
-id|k
+id|nr_ports
+comma
+id|i
 suffix:semicolon
 r_if
 c_cond
@@ -2721,7 +2746,32 @@ c_cond
 id|ent-&gt;driver_data
 op_eq
 id|pbn_default
-op_logical_and
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Use a copy of the pci_board entry for this;&n;&t;&t; * avoid changing entries in the table.&n;&t;&t; */
+id|memcpy
+c_func
+(paren
+op_amp
+id|tmp
+comma
+id|board
+comma
+r_sizeof
+(paren
+r_struct
+id|pci_board
+)paren
+)paren
+suffix:semicolon
+id|board
+op_assign
+op_amp
+id|tmp
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * We matched one of our class entries.  Try to&n;&t;&t; * determine the parameters of this board.&n;&t;&t; */
+id|rc
+op_assign
 id|serial_pci_guess_board
 c_func
 (paren
@@ -2729,23 +2779,21 @@ id|dev
 comma
 id|board
 )paren
-)paren
-(brace
-id|pci_disable_device
-c_func
-(paren
-id|dev
-)paren
 suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-r_else
 r_if
 c_cond
 (paren
+id|rc
+)paren
+r_goto
+id|disable
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t; * We matched an explicit entry.  If we are able to&n;&t;&t; * detect this boards settings with our heuristic,&n;&t;&t; * then we no longer need this entry.&n;&t;&t; */
+id|rc
+op_assign
 id|serial_pci_guess_board
 c_func
 (paren
@@ -2754,20 +2802,31 @@ comma
 op_amp
 id|tmp
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
 op_eq
 l_int|0
+op_logical_and
+id|serial_pci_matches
+c_func
+(paren
+id|board
+comma
+id|pbn_default
+)paren
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Redundant entry in serial pci_table.  &quot;
-l_string|&quot;Please send the output of&bslash;n&quot;
-l_string|&quot;lspci -vv, this message (%d,%d,%d,%d)&bslash;n&quot;
-l_string|&quot;and the manufacturer and name of &quot;
-l_string|&quot;serial board or modem board&bslash;n&quot;
-l_string|&quot;to serial-pci-info@lists.sourceforge.net.&bslash;n&quot;
+l_string|&quot;Redundant entry in serial pci_table.  Please send the output&bslash;n&quot;
+l_string|&quot;of lspci -vv, this message (0x%04x,0x%04x,0x%04x,0x%04x),&bslash;n&quot;
+l_string|&quot;the manufacturer and name of serial board or modem board to&bslash;n&quot;
+l_string|&quot;rmk@arm.linux.org.uk.&bslash;n&quot;
 comma
 id|dev-&gt;vendor
 comma
@@ -2787,6 +2846,50 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+)brace
+id|nr_ports
+op_assign
+id|board-&gt;num_ports
+suffix:semicolon
+multiline_comment|/*&n;&t; * Run the initialization function, if any.  The initialization&n;&t; * function returns:&n;&t; *  &lt;0  - error&n;&t; *   0  - use board-&gt;num_ports&n;&t; *  &gt;0  - number of ports&n;&t; */
+r_if
+c_cond
+(paren
+id|board-&gt;init_fn
+)paren
+(brace
+id|rc
+op_assign
+id|board
+op_member_access_from_pointer
+id|init_fn
+c_func
+(paren
+id|dev
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+OL
+l_int|0
+)paren
+r_goto
+id|disable
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+id|nr_ports
+op_assign
+id|rc
+suffix:semicolon
+)brace
 id|priv
 op_assign
 id|kmalloc
@@ -2804,7 +2907,7 @@ r_int
 r_int
 )paren
 op_star
-id|board-&gt;num_ports
+id|nr_ports
 comma
 id|GFP_KERNEL
 )paren
@@ -2816,62 +2919,14 @@ op_logical_neg
 id|priv
 )paren
 (brace
-id|pci_disable_device
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_return
+id|rc
+op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Run the initialization function, if any&n;&t; */
-r_if
-c_cond
-(paren
-id|board-&gt;init_fn
-)paren
-(brace
-id|rc
-op_assign
-id|board
-op_member_access_from_pointer
-id|init_fn
-c_func
-(paren
-id|dev
-comma
-id|board
-comma
-l_int|1
-)paren
+r_goto
+id|deinit
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-op_ne
-l_int|0
-)paren
-(brace
-id|pci_disable_device
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|priv
-)paren
-suffix:semicolon
-r_return
-id|rc
-suffix:semicolon
-)brace
 )brace
 id|base_baud
 op_assign
@@ -2904,15 +2959,15 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|k
+id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|k
+id|i
 OL
-id|board-&gt;num_ports
+id|nr_ports
 suffix:semicolon
-id|k
+id|i
 op_increment
 )paren
 (brace
@@ -2925,7 +2980,7 @@ id|dev
 comma
 id|board
 comma
-id|k
+id|i
 )paren
 suffix:semicolon
 r_if
@@ -2941,7 +2996,7 @@ comma
 op_amp
 id|serial_req
 comma
-id|k
+id|i
 )paren
 )paren
 r_break
@@ -2950,7 +3005,7 @@ macro_line|#ifdef SERIAL_DEBUG_PCI
 id|printk
 c_func
 (paren
-l_string|&quot;Setup PCI/PNP port: port %x, irq %d, type %d&bslash;n&quot;
+l_string|&quot;Setup PCI port: port %x, irq %d, type %d&bslash;n&quot;
 comma
 id|serial_req.port
 comma
@@ -2972,7 +3027,7 @@ id|base_baud
 suffix:semicolon
 id|priv-&gt;line
 (braket
-id|k
+id|i
 )braket
 op_assign
 id|register_serial
@@ -2987,7 +3042,7 @@ c_cond
 (paren
 id|priv-&gt;line
 (braket
-id|k
+id|i
 )braket
 OL
 l_int|0
@@ -3001,7 +3056,7 @@ id|board
 suffix:semicolon
 id|priv-&gt;nr
 op_assign
-id|k
+id|i
 suffix:semicolon
 id|pci_set_drvdata
 c_func
@@ -3013,6 +3068,34 @@ id|priv
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|deinit
+suffix:colon
+r_if
+c_cond
+(paren
+id|board-&gt;init_fn
+)paren
+id|board
+op_member_access_from_pointer
+id|init_fn
+c_func
+(paren
+id|dev
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|disable
+suffix:colon
+id|pci_disable_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_return
+id|rc
 suffix:semicolon
 )brace
 DECL|function|pci_remove_one
@@ -3090,8 +3173,6 @@ id|init_fn
 c_func
 (paren
 id|dev
-comma
-id|priv-&gt;board
 comma
 l_int|0
 )paren
@@ -4861,6 +4942,7 @@ comma
 id|pbn_dci_pccom8
 )brace
 comma
+multiline_comment|/*&n;&t; * These entries match devices with class&n;&t; * COMMUNICATION_SERIAL, COMMUNICATION_MODEM&n;&t; * or COMMUNICATION_MULTISERIAL&n;&t; */
 (brace
 id|PCI_ANY_ID
 comma
@@ -4876,6 +4958,7 @@ l_int|8
 comma
 l_int|0xffff00
 comma
+id|pbn_default
 )brace
 comma
 (brace
@@ -4893,6 +4976,7 @@ l_int|8
 comma
 l_int|0xffff00
 comma
+id|pbn_default
 )brace
 comma
 (brace
@@ -4910,6 +4994,7 @@ l_int|8
 comma
 l_int|0xffff00
 comma
+id|pbn_default
 )brace
 comma
 (brace

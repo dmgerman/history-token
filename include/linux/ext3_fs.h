@@ -219,12 +219,14 @@ DECL|macro|EXT3_NOTAIL_FL
 mdefine_line|#define EXT3_NOTAIL_FL&t;&t;&t;0x00008000 /* file tail should not be merged */
 DECL|macro|EXT3_DIRSYNC_FL
 mdefine_line|#define EXT3_DIRSYNC_FL&t;&t;&t;0x00010000 /* dirsync behaviour (directories only) */
+DECL|macro|EXT3_TOPDIR_FL
+mdefine_line|#define EXT3_TOPDIR_FL&t;&t;&t;0x00020000 /* Top of directory hierarchies*/
 DECL|macro|EXT3_RESERVED_FL
 mdefine_line|#define EXT3_RESERVED_FL&t;&t;0x80000000 /* reserved for ext3 lib */
 DECL|macro|EXT3_FL_USER_VISIBLE
-mdefine_line|#define EXT3_FL_USER_VISIBLE&t;&t;0x00015FFF /* User visible flags */
+mdefine_line|#define EXT3_FL_USER_VISIBLE&t;&t;0x0003DFFF /* User visible flags */
 DECL|macro|EXT3_FL_USER_MODIFIABLE
-mdefine_line|#define EXT3_FL_USER_MODIFIABLE&t;&t;0x000100FF /* User modifiable flags */
+mdefine_line|#define EXT3_FL_USER_MODIFIABLE&t;&t;0x000380FF /* User modifiable flags */
 multiline_comment|/*&n; * Inode dynamic state flags&n; */
 DECL|macro|EXT3_STATE_JDATA
 mdefine_line|#define EXT3_STATE_JDATA&t;&t;0x00000001 /* journaled data exists */
@@ -526,6 +528,8 @@ mdefine_line|#define&t;EXT3_ORPHAN_FS&t;&t;&t;0x0004&t;/* Orphans being recovere
 multiline_comment|/*&n; * Mount flags&n; */
 DECL|macro|EXT3_MOUNT_CHECK
 mdefine_line|#define EXT3_MOUNT_CHECK&t;&t;0x0001&t;/* Do mount-time checks */
+DECL|macro|EXT3_MOUNT_OLDALLOC
+mdefine_line|#define EXT3_MOUNT_OLDALLOC&t;&t;0x0002  /* Don&squot;t use the new Orlov allocator */
 DECL|macro|EXT3_MOUNT_GRPID
 mdefine_line|#define EXT3_MOUNT_GRPID&t;&t;0x0004&t;/* Create files with directory&squot;s group */
 DECL|macro|EXT3_MOUNT_DEBUG
@@ -1509,6 +1513,16 @@ r_extern
 r_int
 r_int
 id|ext3_count_free_inodes
+(paren
+r_struct
+id|super_block
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|ext3_count_dirs
 (paren
 r_struct
 id|super_block

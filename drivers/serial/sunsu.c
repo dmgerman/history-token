@@ -1711,13 +1711,11 @@ id|xmit
 OL
 id|WAKEUP_CHARS
 )paren
-id|uart_event
+id|uart_write_wakeup
 c_func
 (paren
 op_amp
 id|up-&gt;port
-comma
-id|EVT_WRITE_WAKEUP
 )paren
 suffix:semicolon
 r_if
@@ -5411,7 +5409,7 @@ macro_line|#else
 dot
 id|dev_name
 op_assign
-l_string|&quot;ttyS&quot;
+l_string|&quot;ttyS%d&quot;
 comma
 macro_line|#endif
 dot
