@@ -81,6 +81,12 @@ r_struct
 id|cdrom_device_info
 id|cdi
 suffix:semicolon
+multiline_comment|/* We hold gendisk and scsi_device references on probe and use&n;&t; * the refs on this kobj to decide when to release them */
+DECL|member|kobj
+r_struct
+id|kobject
+id|kobj
+suffix:semicolon
 DECL|member|disk
 r_struct
 id|gendisk
