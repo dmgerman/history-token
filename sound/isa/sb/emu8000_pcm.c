@@ -2149,6 +2149,7 @@ id|snd_pcm_uframes_t
 id|pos
 comma
 r_void
+id|__user
 op_star
 id|src
 comma
@@ -2170,6 +2171,7 @@ id|rec-&gt;emu
 suffix:semicolon
 r_int
 r_int
+id|__user
 op_star
 id|buf
 op_assign

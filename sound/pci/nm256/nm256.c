@@ -2725,6 +2725,7 @@ id|snd_pcm_uframes_t
 id|pos
 comma
 r_void
+id|__user
 op_star
 id|src
 comma

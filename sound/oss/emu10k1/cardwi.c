@@ -1097,6 +1097,7 @@ id|copy_block
 c_func
 (paren
 id|u8
+id|__user
 op_star
 id|dst
 comma
@@ -1202,6 +1203,7 @@ op_star
 id|wiinst
 comma
 id|u8
+id|__user
 op_star
 id|data
 comma

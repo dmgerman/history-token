@@ -4671,7 +4671,6 @@ c_cond
 id|id
 )paren
 (brace
-r_return
 id|hdsp_write
 c_func
 (paren
@@ -4685,7 +4684,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_return
 id|hdsp_write
 c_func
 (paren
@@ -16100,6 +16098,7 @@ id|snd_pcm_uframes_t
 id|pos
 comma
 r_void
+id|__user
 op_star
 id|src
 comma
@@ -16204,6 +16203,7 @@ id|snd_pcm_uframes_t
 id|pos
 comma
 r_void
+id|__user
 op_star
 id|dst
 comma
@@ -19567,6 +19567,18 @@ op_star
 )paren
 id|hw-&gt;private_data
 suffix:semicolon
+r_void
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -19578,6 +19590,7 @@ id|SNDRV_HDSP_IOCTL_GET_PEAK_RMS
 suffix:colon
 (brace
 id|hdsp_peak_rms_t
+id|__user
 op_star
 id|peak_rms
 suffix:semicolon
@@ -19623,6 +19636,7 @@ id|peak_rms
 op_assign
 (paren
 id|hdsp_peak_rms_t
+id|__user
 op_star
 )paren
 id|arg
@@ -19665,6 +19679,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;input_peaks
@@ -19698,6 +19713,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;playback_peaks
@@ -19742,6 +19758,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;output_peaks
@@ -19840,6 +19857,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;input_rms
@@ -19868,6 +19886,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;input_rms
@@ -19972,6 +19991,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;playback_rms
@@ -20000,6 +20020,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;playback_rms
@@ -20108,6 +20129,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;output_rms
@@ -20136,6 +20158,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;output_rms
@@ -20216,6 +20239,7 @@ id|peak_rms
 op_assign
 (paren
 id|hdsp_peak_rms_t
+id|__user
 op_star
 )paren
 id|arg
@@ -20250,6 +20274,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;input_peaks
@@ -20283,6 +20308,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;playback_peaks
@@ -20316,6 +20342,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;output_peaks
@@ -20349,6 +20376,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;input_rms
@@ -20382,6 +20410,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;playback_rms
@@ -20415,6 +20444,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;output_rms
@@ -20448,6 +20478,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;input_rms
@@ -20483,6 +20514,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;playback_rms
@@ -20518,6 +20550,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;output_rms
@@ -20589,6 +20622,7 @@ id|peak_rms
 op_assign
 (paren
 id|hdsp_peak_rms_t
+id|__user
 op_star
 )paren
 id|arg
@@ -20616,6 +20650,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;playback_peaks
@@ -20653,6 +20688,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;input_peaks
@@ -20706,6 +20742,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;playback_rms
@@ -20745,6 +20782,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;playback_rms
@@ -20784,6 +20822,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;input_rms
@@ -20823,6 +20862,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;input_rms
@@ -20878,6 +20918,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|peak_rms-&gt;output_peaks
@@ -21294,11 +21335,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|argp
 comma
 op_amp
 id|info
@@ -21352,11 +21389,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|argp
 comma
 op_amp
 id|h9632_aeb
@@ -21445,11 +21478,7 @@ op_assign
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|argp
 comma
 op_amp
 id|hdsp_version
@@ -21475,11 +21504,13 @@ id|SNDRV_HDSP_IOCTL_UPLOAD_FIRMWARE
 suffix:colon
 (brace
 id|hdsp_firmware_t
+id|__user
 op_star
 id|firmware
 suffix:semicolon
 r_int
 r_int
+id|__user
 op_star
 id|firmware_data
 suffix:semicolon
@@ -21523,9 +21554,10 @@ id|firmware
 op_assign
 (paren
 id|hdsp_firmware_t
+id|__user
 op_star
 )paren
-id|arg
+id|argp
 suffix:semicolon
 r_if
 c_cond
@@ -21670,16 +21702,16 @@ id|SNDRV_HDSP_IOCTL_GET_MIXER
 suffix:colon
 (brace
 id|hdsp_mixer_t
+id|__user
 op_star
-id|mixer
-suffix:semicolon
 id|mixer
 op_assign
 (paren
 id|hdsp_mixer_t
+id|__user
 op_star
 )paren
-id|arg
+id|argp
 suffix:semicolon
 r_if
 c_cond

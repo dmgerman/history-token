@@ -180,6 +180,7 @@ id|hdr
 comma
 r_const
 r_void
+id|__user
 op_star
 id|data
 comma

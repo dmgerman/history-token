@@ -4824,6 +4824,7 @@ op_star
 id|korg1212
 comma
 r_void
+id|__user
 op_star
 id|dst
 comma
@@ -4946,10 +4947,6 @@ op_assign
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|dst
 op_plus
 id|offset
@@ -5007,6 +5004,7 @@ op_star
 id|korg1212
 comma
 r_void
+id|__user
 op_star
 id|src
 comma
@@ -6165,6 +6163,7 @@ id|snd_pcm_uframes_t
 id|pos
 comma
 r_void
+id|__user
 op_star
 id|src
 comma
@@ -6299,6 +6298,7 @@ id|snd_pcm_uframes_t
 id|pos
 comma
 r_void
+id|__user
 op_star
 id|dst
 comma

@@ -640,6 +640,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|oldval
@@ -700,6 +701,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|newval
