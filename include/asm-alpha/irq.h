@@ -14,7 +14,7 @@ macro_line|# define NR_IRQS&t;35
 macro_line|#elif defined(CONFIG_ALPHA_EB66)      || &bslash;&n;      defined(CONFIG_ALPHA_EB64P)     || &bslash;&n;      defined(CONFIG_ALPHA_MIKASA)
 DECL|macro|NR_IRQS
 macro_line|# define NR_IRQS&t;32
-macro_line|#elif defined(CONFIG_ALPHA_ALCOR)     || &bslash;&n;      defined(CONFIG_ALPHA_XLT)       || &bslash;&n;      defined(CONFIG_ALPHA_MIATA)     || &bslash;&n;      defined(CONFIG_ALPHA_RUFFIAN)   || &bslash;&n;      defined(CONFIG_ALPHA_RX164)     || &bslash;&n;      defined(CONFIG_ALPHA_NORITAKE)
+macro_line|#elif defined(CONFIG_ALPHA_ALCOR)     || &bslash;&n;      defined(CONFIG_ALPHA_MIATA)     || &bslash;&n;      defined(CONFIG_ALPHA_RUFFIAN)   || &bslash;&n;      defined(CONFIG_ALPHA_RX164)     || &bslash;&n;      defined(CONFIG_ALPHA_NORITAKE)
 DECL|macro|NR_IRQS
 macro_line|# define NR_IRQS&t;48
 macro_line|#elif defined(CONFIG_ALPHA_SABLE)     || &bslash;&n;      defined(CONFIG_ALPHA_SX164)

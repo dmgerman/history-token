@@ -5,9 +5,10 @@ multiline_comment|/*&n; * These are the type definitions for the architecture sp
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_COMPAT
 macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/param.h&gt;&t;/* for HZ */
 macro_line|#include &lt;asm/compat.h&gt;
 DECL|macro|compat_jiffies_to_clock_t
-mdefine_line|#define compat_jiffies_to_clock_t(x)&t;((x) / (HZ / COMPAT_USER_HZ))
+mdefine_line|#define compat_jiffies_to_clock_t(x)&t;&bslash;&n;&t;&t;(((unsigned long)(x) * COMPAT_USER_HZ) / HZ)
 DECL|struct|compat_utimbuf
 r_struct
 id|compat_utimbuf
