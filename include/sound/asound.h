@@ -145,11 +145,15 @@ DECL|enumerator|SNDRV_HWDEP_IFACE_BLUETOOTH
 id|SNDRV_HWDEP_IFACE_BLUETOOTH
 comma
 multiline_comment|/* Bluetooth audio */
+DECL|enumerator|SNDRV_HWDEP_IFACE_USX2Y_PCM
+id|SNDRV_HWDEP_IFACE_USX2Y_PCM
+comma
+multiline_comment|/* Tascam US122, US224 &amp; US428 rawusb pcm */
 multiline_comment|/* Don&squot;t forget to change the following: */
 DECL|enumerator|SNDRV_HWDEP_IFACE_LAST
 id|SNDRV_HWDEP_IFACE_LAST
 op_assign
-id|SNDRV_HWDEP_IFACE_BLUETOOTH
+id|SNDRV_HWDEP_IFACE_USX2Y_PCM
 comma
 )brace
 suffix:semicolon
