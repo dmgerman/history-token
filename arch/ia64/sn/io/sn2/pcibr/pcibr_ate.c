@@ -66,6 +66,11 @@ comma
 id|bridge_ate_t
 )paren
 suffix:semicolon
+DECL|variable|pcibr_invalidate_ate
+r_int
+id|pcibr_invalidate_ate
+suffix:semicolon
+multiline_comment|/* by default don&squot;t invalidate ATE on free */
 multiline_comment|/*&n; * Allocate &quot;count&quot; contiguous Bridge Address Translation Entries&n; * on the specified bridge to be used for PCI to XTALK mappings.&n; * Indices in rm map range from 1..num_entries.  Indicies returned&n; * to caller range from 0..num_entries-1.&n; *&n; * Return the start index on success, -1 on failure.&n; */
 r_int
 DECL|function|pcibr_ate_alloc
@@ -203,6 +208,12 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pcibr_invalidate_ate
+)paren
+(brace
 multiline_comment|/* For debugging purposes, clear the valid bit in the ATE */
 id|ate
 op_assign
@@ -224,12 +235,15 @@ id|index
 comma
 id|count
 comma
+(paren
 id|ate
 op_amp
 op_complement
 id|ATE_V
 )paren
+)paren
 suffix:semicolon
+)brace
 id|flags
 op_assign
 id|pcibr_lock
