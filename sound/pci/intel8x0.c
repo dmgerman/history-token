@@ -1506,6 +1506,23 @@ multiline_comment|/* NFORCE */
 (brace
 l_int|0x10de
 comma
+l_int|0x003a
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|DEVICE_NFORCE
+)brace
+comma
+multiline_comment|/* MCP04 */
+(brace
+l_int|0x10de
+comma
 l_int|0x006a
 comma
 id|PCI_ANY_ID
@@ -12896,6 +12913,12 @@ comma
 id|PCI_DEVICE_ID_NVIDIA_CK8_AUDIO
 comma
 l_string|&quot;NVidia CK8&quot;
+)brace
+comma
+(brace
+l_int|0x003a
+comma
+l_string|&quot;NVidia MCP04&quot;
 )brace
 comma
 (brace
