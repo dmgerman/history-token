@@ -6203,6 +6203,10 @@ comma
 (paren
 id|u32
 )paren
+(paren
+r_int
+r_int
+)paren
 id|arg
 comma
 id|state-&gt;tuner_type
