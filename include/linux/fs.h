@@ -4801,6 +4801,8 @@ op_star
 comma
 r_int
 comma
+r_int
+comma
 r_char
 op_star
 )paren

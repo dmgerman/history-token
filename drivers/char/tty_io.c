@@ -9483,6 +9483,8 @@ c_func
 op_amp
 id|dev
 comma
+id|driver-&gt;minor_start
+comma
 id|driver-&gt;num
 comma
 (paren
