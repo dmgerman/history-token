@@ -917,7 +917,6 @@ id|ACPI_DB_NAMES
 comma
 l_string|&quot;Returning object %p [%s]&bslash;n&quot;
 comma
-op_star
 id|info-&gt;return_object
 comma
 id|acpi_ut_get_object_type_name

@@ -23,6 +23,9 @@ id|u8
 id|type
 )paren
 (brace
+id|acpi_status
+id|status
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;ev_set_gpe_type&quot;
@@ -55,6 +58,8 @@ id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
 multiline_comment|/* Disable the GPE if currently enabled */
+id|status
+op_assign
 id|acpi_ev_disable_gpe
 (paren
 id|gpe_event_info
@@ -74,7 +79,7 @@ suffix:semicolon
 multiline_comment|/* Insert type */
 id|return_ACPI_STATUS
 (paren
-id|AE_OK
+id|status
 )paren
 suffix:semicolon
 )brace
@@ -287,7 +292,7 @@ id|gpe_event_info-&gt;flags
 op_or_assign
 id|ACPI_GPE_WAKE_ENABLED
 suffix:semicolon
-multiline_comment|/* Fallthrough */
+multiline_comment|/*lint -fallthrough */
 r_case
 id|ACPI_GPE_TYPE_RUNTIME
 suffix:colon
@@ -327,7 +332,7 @@ suffix:semicolon
 multiline_comment|/* Enable the requested runtime GPE */
 id|status
 op_assign
-id|acpi_hw_enable_gpe
+id|acpi_hw_write_gpe_enable_reg
 (paren
 id|gpe_event_info
 )paren
@@ -437,7 +442,7 @@ op_and_assign
 op_complement
 id|ACPI_GPE_WAKE_ENABLED
 suffix:semicolon
-multiline_comment|/* Fallthrough */
+multiline_comment|/*lint -fallthrough */
 r_case
 id|ACPI_GPE_TYPE_RUNTIME
 suffix:colon
@@ -449,7 +454,7 @@ id|ACPI_GPE_RUN_ENABLED
 suffix:semicolon
 id|status
 op_assign
-id|acpi_hw_disable_gpe
+id|acpi_hw_write_gpe_enable_reg
 (paren
 id|gpe_event_info
 )paren
@@ -692,10 +697,10 @@ id|acpi_gpe_block_info
 op_star
 id|gpe_block
 suffix:semicolon
-id|u32
+id|acpi_native_uint
 id|i
 suffix:semicolon
-id|u32
+id|acpi_native_uint
 id|j
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
@@ -905,6 +910,9 @@ op_plus
 id|j
 )braket
 comma
+(paren
+id|u32
+)paren
 id|j
 op_plus
 id|gpe_register_info-&gt;base_gpe_number
@@ -1017,6 +1025,17 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
+multiline_comment|/* Set the GPE flags for return to enabled state */
+(paren
+r_void
+)paren
+id|acpi_ev_enable_gpe
+(paren
+id|gpe_event_info
+comma
+id|FALSE
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Take a snapshot of the GPE info for this level - we copy the&n;&t; * info to prevent a race condition with remove_handler/remove_block.&n;&t; */
 id|ACPI_MEMCPY
 (paren
@@ -1160,7 +1179,7 @@ multiline_comment|/* Enable this GPE */
 (paren
 r_void
 )paren
-id|acpi_hw_enable_gpe
+id|acpi_hw_write_gpe_enable_reg
 (paren
 op_amp
 id|local_gpe_event_info
@@ -1271,6 +1290,10 @@ suffix:colon
 multiline_comment|/* Invoke the installed handler (at interrupt level) */
 id|gpe_event_info-&gt;dispatch.handler-&gt;address
 (paren
+(paren
+r_void
+op_star
+)paren
 id|gpe_event_info-&gt;dispatch.handler-&gt;context
 )paren
 suffix:semicolon
@@ -1327,7 +1350,7 @@ suffix:colon
 multiline_comment|/*&n;&t;&t; * Disable GPE, so it doesn&squot;t keep firing before the method has a&n;&t;&t; * chance to run.&n;&t;&t; */
 id|status
 op_assign
-id|acpi_hw_disable_gpe
+id|acpi_ev_disable_gpe
 (paren
 id|gpe_event_info
 )paren
@@ -1400,7 +1423,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Disable the GPE.  The GPE will remain disabled until the ACPI&n;&t;&t; * Core Subsystem is restarted, or a handler is installed.&n;&t;&t; */
 id|status
 op_assign
-id|acpi_hw_disable_gpe
+id|acpi_ev_disable_gpe
 (paren
 id|gpe_event_info
 )paren
@@ -1481,7 +1504,7 @@ multiline_comment|/* System state at GPE time */
 multiline_comment|/* This must be a wake-only GPE, disable it */
 id|status
 op_assign
-id|acpi_hw_disable_gpe
+id|acpi_ev_disable_gpe
 (paren
 id|gpe_event_info
 )paren

@@ -1415,6 +1415,9 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* Enable power button */
+(paren
+r_void
+)paren
 id|acpi_set_register
 c_func
 (paren
@@ -1430,6 +1433,9 @@ comma
 id|ACPI_MTX_DO_NOT_LOCK
 )paren
 suffix:semicolon
+(paren
+r_void
+)paren
 id|acpi_set_register
 c_func
 (paren

@@ -442,30 +442,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Disable the GPE if enabled */
-id|status
-op_assign
-id|acpi_ev_disable_gpe
-(paren
-id|gpe_event_info
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Set the new type */
+multiline_comment|/* Set the new type (will disable GPE if currently enabled) */
 id|status
 op_assign
 id|acpi_ev_set_gpe_type

@@ -238,6 +238,14 @@ op_star
 id|name
 )paren
 suffix:semicolon
+id|acpi_status
+id|acpi_db_sleep
+(paren
+r_char
+op_star
+id|object_arg
+)paren
+suffix:semicolon
 r_void
 id|acpi_db_find_references
 (paren

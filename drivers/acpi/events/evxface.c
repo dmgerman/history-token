@@ -326,7 +326,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_install_notify_handler&n; *&n; * PARAMETERS:  Device          - The device for which notifies will be handled&n; *              handler_type    - The type of handler:&n; *                                  ACPI_SYSTEM_NOTIFY: system_handler (00-7f)&n; *                                  ACPI_DEVICE_NOTIFY: driver_handler (80-ff)&n; *              Handler         - Address of the handler&n; *              Context         - Value passed to the handler on each GPE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for notifies on an ACPI device&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_install_notify_handler&n; *&n; * PARAMETERS:  Device          - The device for which notifies will be handled&n; *              handler_type    - The type of handler:&n; *                                  ACPI_SYSTEM_NOTIFY: system_handler (00-7f)&n; *                                  ACPI_DEVICE_NOTIFY: driver_handler (80-ff)&n; *                                  ACPI_ALL_NOTIFY:  both system and device&n; *              Handler         - Address of the handler&n; *              Context         - Value passed to the handler on each GPE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for notifies on an ACPI device&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_install_notify_handler
 id|acpi_install_notify_handler
@@ -456,7 +456,7 @@ c_cond
 (paren
 (paren
 id|handler_type
-op_eq
+op_amp
 id|ACPI_SYSTEM_NOTIFY
 )paren
 op_logical_and
@@ -466,7 +466,7 @@ op_logical_or
 (paren
 (paren
 id|handler_type
-op_eq
+op_amp
 id|ACPI_DEVICE_NOTIFY
 )paren
 op_logical_and
@@ -486,7 +486,7 @@ r_if
 c_cond
 (paren
 id|handler_type
-op_eq
+op_amp
 id|ACPI_SYSTEM_NOTIFY
 )paren
 (brace
@@ -503,8 +503,13 @@ op_assign
 id|context
 suffix:semicolon
 )brace
-r_else
-multiline_comment|/* ACPI_DEVICE_NOTIFY */
+r_if
+c_cond
+(paren
+id|handler_type
+op_amp
+id|ACPI_DEVICE_NOTIFY
+)paren
 (brace
 id|acpi_gbl_device_notify.node
 op_assign
@@ -564,7 +569,7 @@ c_cond
 (paren
 (paren
 id|handler_type
-op_eq
+op_amp
 id|ACPI_SYSTEM_NOTIFY
 )paren
 op_logical_and
@@ -574,7 +579,7 @@ op_logical_or
 (paren
 (paren
 id|handler_type
-op_eq
+op_amp
 id|ACPI_DEVICE_NOTIFY
 )paren
 op_logical_and
@@ -687,7 +692,7 @@ r_if
 c_cond
 (paren
 id|handler_type
-op_eq
+op_amp
 id|ACPI_SYSTEM_NOTIFY
 )paren
 (brace
@@ -696,12 +701,32 @@ op_assign
 id|notify_obj
 suffix:semicolon
 )brace
-r_else
-multiline_comment|/* ACPI_DEVICE_NOTIFY */
+r_if
+c_cond
+(paren
+id|handler_type
+op_amp
+id|ACPI_DEVICE_NOTIFY
+)paren
 (brace
 id|obj_desc-&gt;common_notify.device_notify
 op_assign
 id|notify_obj
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|handler_type
+op_eq
+id|ACPI_ALL_NOTIFY
+)paren
+(brace
+multiline_comment|/* Extra ref if installed in both */
+id|acpi_ut_add_reference
+(paren
+id|notify_obj
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -721,7 +746,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_remove_notify_handler&n; *&n; * PARAMETERS:  Device          - The device for which notifies will be handled&n; *              handler_type    - The type of handler:&n; *                                  ACPI_SYSTEM_NOTIFY: system_handler (00-7f)&n; *                                  ACPI_DEVICE_NOTIFY: driver_handler (80-ff)&n; *              Handler         - Address of the handler&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a handler for notifies on an ACPI device&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_remove_notify_handler&n; *&n; * PARAMETERS:  Device          - The device for which notifies will be handled&n; *              handler_type    - The type of handler:&n; *                                  ACPI_SYSTEM_NOTIFY: system_handler (00-7f)&n; *                                  ACPI_DEVICE_NOTIFY: driver_handler (80-ff)&n; *                                  ACPI_ALL_NOTIFY:  both system and device&n; *              Handler         - Address of the handler&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a handler for notifies on an ACPI device&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_remove_notify_handler
 id|acpi_remove_notify_handler
@@ -855,7 +880,7 @@ c_cond
 (paren
 (paren
 id|handler_type
-op_eq
+op_amp
 id|ACPI_SYSTEM_NOTIFY
 )paren
 op_logical_and
@@ -866,7 +891,7 @@ op_logical_or
 (paren
 (paren
 id|handler_type
-op_eq
+op_amp
 id|ACPI_DEVICE_NOTIFY
 )paren
 op_logical_and
@@ -887,7 +912,7 @@ r_if
 c_cond
 (paren
 id|handler_type
-op_eq
+op_amp
 id|ACPI_SYSTEM_NOTIFY
 )paren
 (brace
@@ -904,7 +929,13 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-r_else
+r_if
+c_cond
+(paren
+id|handler_type
+op_amp
+id|ACPI_DEVICE_NOTIFY
+)paren
 (brace
 id|acpi_gbl_device_notify.node
 op_assign
@@ -970,7 +1001,7 @@ r_if
 c_cond
 (paren
 id|handler_type
-op_eq
+op_amp
 id|ACPI_SYSTEM_NOTIFY
 )paren
 (brace
@@ -978,14 +1009,6 @@ id|notify_obj
 op_assign
 id|obj_desc-&gt;common_notify.system_notify
 suffix:semicolon
-)brace
-r_else
-(brace
-id|notify_obj
-op_assign
-id|obj_desc-&gt;common_notify.device_notify
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1010,31 +1033,62 @@ id|unlock_and_exit
 suffix:semicolon
 )brace
 multiline_comment|/* Remove the handler */
-r_if
-c_cond
-(paren
-id|handler_type
-op_eq
-id|ACPI_SYSTEM_NOTIFY
-)paren
-(brace
 id|obj_desc-&gt;common_notify.system_notify
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
-r_else
-(brace
-id|obj_desc-&gt;common_notify.device_notify
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 id|acpi_ut_remove_reference
 (paren
 id|notify_obj
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|handler_type
+op_amp
+id|ACPI_DEVICE_NOTIFY
+)paren
+(brace
+id|notify_obj
+op_assign
+id|obj_desc-&gt;common_notify.device_notify
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+op_logical_neg
+id|notify_obj
+)paren
+op_logical_or
+(paren
+id|notify_obj-&gt;notify.handler
+op_ne
+id|handler
+)paren
+)paren
+(brace
+id|status
+op_assign
+id|AE_BAD_PARAMETER
+suffix:semicolon
+r_goto
+id|unlock_and_exit
+suffix:semicolon
+)brace
+multiline_comment|/* Remove the handler */
+id|obj_desc-&gt;common_notify.device_notify
+op_assign
+l_int|NULL
+suffix:semicolon
+id|acpi_ut_remove_reference
+(paren
+id|notify_obj
+)paren
+suffix:semicolon
+)brace
 )brace
 id|unlock_and_exit
 suffix:colon

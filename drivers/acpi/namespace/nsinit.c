@@ -225,7 +225,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Walk namespace for all objects of type Device or Processor */
+multiline_comment|/* Walk namespace for all objects */
 id|status
 op_assign
 id|acpi_ns_walk_namespace
@@ -701,7 +701,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * We will run _STA/_INI on Devices and Processors only&n;&t; */
+multiline_comment|/*&n;&t; * We will run _STA/_INI on Devices, Processors and thermal_zones only&n;&t; */
 r_if
 c_cond
 (paren
@@ -715,6 +715,12 @@ op_logical_and
 id|pinfo.node-&gt;type
 op_ne
 id|ACPI_TYPE_PROCESSOR
+)paren
+op_logical_and
+(paren
+id|pinfo.node-&gt;type
+op_ne
+id|ACPI_TYPE_THERMAL
 )paren
 )paren
 (brace
@@ -803,7 +809,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* _STA is not required for Processor objects */
+multiline_comment|/* _STA is not required for Processor or thermal_zone objects */
 )brace
 r_else
 (brace

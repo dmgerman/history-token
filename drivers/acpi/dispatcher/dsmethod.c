@@ -830,7 +830,11 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|next_walk_state
+op_logical_and
+(paren
 id|next_walk_state-&gt;method_desc
+)paren
 )paren
 (brace
 multiline_comment|/* Decrement the thread count on the method parse tree */

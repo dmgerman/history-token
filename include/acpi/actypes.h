@@ -848,11 +848,13 @@ DECL|macro|ACPI_ISR
 mdefine_line|#define ACPI_ISR                        0x0
 multiline_comment|/* Notify types */
 DECL|macro|ACPI_SYSTEM_NOTIFY
-mdefine_line|#define ACPI_SYSTEM_NOTIFY              0
+mdefine_line|#define ACPI_SYSTEM_NOTIFY              0x1
 DECL|macro|ACPI_DEVICE_NOTIFY
-mdefine_line|#define ACPI_DEVICE_NOTIFY              1
+mdefine_line|#define ACPI_DEVICE_NOTIFY              0x2
+DECL|macro|ACPI_ALL_NOTIFY
+mdefine_line|#define ACPI_ALL_NOTIFY                 0x3
 DECL|macro|ACPI_MAX_NOTIFY_HANDLER_TYPE
-mdefine_line|#define ACPI_MAX_NOTIFY_HANDLER_TYPE    1
+mdefine_line|#define ACPI_MAX_NOTIFY_HANDLER_TYPE    0x3
 DECL|macro|ACPI_MAX_SYS_NOTIFY
 mdefine_line|#define ACPI_MAX_SYS_NOTIFY             0x7f
 multiline_comment|/* Address Space (Operation Region) Types */

@@ -3,7 +3,6 @@ multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rig
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
 macro_line|#include &lt;acpi/acevents.h&gt;
-macro_line|#include &lt;acpi/acinterp.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EVENTS
 id|ACPI_MODULE_NAME

@@ -429,7 +429,7 @@ comma
 (brace
 l_string|&quot;_TZ_&quot;
 comma
-id|ACPI_TYPE_LOCAL_SCOPE
+id|ACPI_TYPE_THERMAL
 comma
 l_int|NULL
 )brace

@@ -237,11 +237,16 @@ id|acpi_gpe_event_info
 op_star
 id|gpe_event_info
 suffix:semicolon
-id|u32
+id|acpi_native_uint
 id|i
 suffix:semicolon
-id|u32
+id|acpi_native_uint
 id|j
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE
+(paren
+l_string|&quot;ev_delete_gpe_handlers&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Examine each GPE Register within the block */
 r_for
@@ -318,7 +323,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -375,6 +380,9 @@ l_int|1
 suffix:semicolon
 id|u8
 id|type
+suffix:semicolon
+id|acpi_status
+id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
@@ -562,6 +570,8 @@ op_star
 id|obj_handle
 suffix:semicolon
 multiline_comment|/* Update enable mask, but don&squot;t enable the HW GPE as of yet */
+id|status
+op_assign
 id|acpi_ev_enable_gpe
 (paren
 id|gpe_event_info
@@ -584,7 +594,7 @@ id|gpe_number
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
-id|AE_OK
+id|status
 )paren
 suffix:semicolon
 )brace
@@ -878,6 +888,8 @@ op_or
 id|ACPI_GPE_RUN_ENABLED
 )paren
 suffix:semicolon
+id|status
+op_assign
 id|acpi_ev_set_gpe_type
 (paren
 id|gpe_event_info
@@ -885,6 +897,21 @@ comma
 id|ACPI_GPE_TYPE_WAKE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_goto
+id|cleanup
+suffix:semicolon
+)brace
+id|status
+op_assign
 id|acpi_ev_update_gpe_enable_masks
 (paren
 id|gpe_event_info

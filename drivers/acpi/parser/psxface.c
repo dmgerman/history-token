@@ -115,8 +115,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|info
-op_logical_and
 (paren
 id|info-&gt;parameter_type
 op_eq
