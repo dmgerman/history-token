@@ -2023,9 +2023,6 @@ id|name
 comma
 r_int
 id|name_len
-comma
-r_int
-id|flags
 )paren
 (brace
 r_const
@@ -2093,9 +2090,6 @@ id|name
 comma
 r_int
 id|name_len
-comma
-r_int
-id|flags
 )paren
 (brace
 r_const
@@ -2268,9 +2262,6 @@ id|buffer
 comma
 r_int
 id|size
-comma
-r_int
-id|flags
 )paren
 (brace
 r_if
@@ -2326,9 +2317,6 @@ id|buffer
 comma
 r_int
 id|size
-comma
-r_int
-id|flags
 )paren
 (brace
 r_if

@@ -3178,7 +3178,7 @@ mdefine_line|#define SH_NI0_LLP_ERR_RETRY_COUNT_SHFT          16
 DECL|macro|SH_NI0_LLP_ERR_RETRY_COUNT_MASK
 mdefine_line|#define SH_NI0_LLP_ERR_RETRY_COUNT_MASK          0x0000000000ff0000
 multiline_comment|/*   SH_NI0_LLP_ERR_RETRY_TIMEOUT                                       */
-multiline_comment|/*   Description:  Indicates a retry timeout has occured                */
+multiline_comment|/*   Description:  Indicates a retry timeout has occurred               */
 DECL|macro|SH_NI0_LLP_ERR_RETRY_TIMEOUT_SHFT
 mdefine_line|#define SH_NI0_LLP_ERR_RETRY_TIMEOUT_SHFT        24
 DECL|macro|SH_NI0_LLP_ERR_RETRY_TIMEOUT_MASK
@@ -3528,7 +3528,7 @@ mdefine_line|#define SH_NI1_LLP_ERR_RETRY_COUNT_SHFT          16
 DECL|macro|SH_NI1_LLP_ERR_RETRY_COUNT_MASK
 mdefine_line|#define SH_NI1_LLP_ERR_RETRY_COUNT_MASK          0x0000000000ff0000
 multiline_comment|/*   SH_NI1_LLP_ERR_RETRY_TIMEOUT                                       */
-multiline_comment|/*   Description:  Indicates a retry timeout has occured                */
+multiline_comment|/*   Description:  Indicates a retry timeout has occurred               */
 DECL|macro|SH_NI1_LLP_ERR_RETRY_TIMEOUT_SHFT
 mdefine_line|#define SH_NI1_LLP_ERR_RETRY_TIMEOUT_SHFT        24
 DECL|macro|SH_NI1_LLP_ERR_RETRY_TIMEOUT_MASK
@@ -30710,7 +30710,7 @@ mdefine_line|#define SH_PIO_WRITE_STATUS_0_MASK               0xbf03ffffffffffff
 DECL|macro|SH_PIO_WRITE_STATUS_0_INIT
 mdefine_line|#define SH_PIO_WRITE_STATUS_0_INIT               0x8000000000000000
 multiline_comment|/*   SH_PIO_WRITE_STATUS_0_MULTI_WRITE_ERROR                            */
-multiline_comment|/*   Description:  More than one PIO write error occured                */
+multiline_comment|/*   Description:  More than one PIO write error occurred               */
 DECL|macro|SH_PIO_WRITE_STATUS_0_MULTI_WRITE_ERROR_SHFT
 mdefine_line|#define SH_PIO_WRITE_STATUS_0_MULTI_WRITE_ERROR_SHFT 0
 DECL|macro|SH_PIO_WRITE_STATUS_0_MULTI_WRITE_ERROR_MASK
@@ -30756,7 +30756,7 @@ mdefine_line|#define SH_PIO_WRITE_STATUS_1_MASK               0xbf03ffffffffffff
 DECL|macro|SH_PIO_WRITE_STATUS_1_INIT
 mdefine_line|#define SH_PIO_WRITE_STATUS_1_INIT               0x8000000000000000
 multiline_comment|/*   SH_PIO_WRITE_STATUS_1_MULTI_WRITE_ERROR                            */
-multiline_comment|/*   Description:  More than one PIO write error occured                */
+multiline_comment|/*   Description:  More than one PIO write error occurred               */
 DECL|macro|SH_PIO_WRITE_STATUS_1_MULTI_WRITE_ERROR_SHFT
 mdefine_line|#define SH_PIO_WRITE_STATUS_1_MULTI_WRITE_ERROR_SHFT 0
 DECL|macro|SH_PIO_WRITE_STATUS_1_MULTI_WRITE_ERROR_MASK

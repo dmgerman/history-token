@@ -641,18 +641,18 @@ r_int
 id|pb_offset
 suffix:semicolon
 multiline_comment|/* page offset in first page */
-DECL|member|pb_hash_index
-r_int
-r_int
-id|pb_hash_index
-suffix:semicolon
-multiline_comment|/* hash table index&t;*/
 DECL|member|pb_locked
 r_int
 r_char
 id|pb_locked
 suffix:semicolon
 multiline_comment|/* page array is locked */
+DECL|member|pb_hash_index
+r_int
+r_char
+id|pb_hash_index
+suffix:semicolon
+multiline_comment|/* hash table index&t;*/
 DECL|member|pb_pages
 r_struct
 id|page
@@ -975,7 +975,7 @@ c_func
 id|page_buf_t
 op_star
 comma
-id|off_t
+r_int
 )paren
 suffix:semicolon
 r_extern

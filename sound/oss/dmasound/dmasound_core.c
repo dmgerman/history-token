@@ -3501,7 +3501,7 @@ suffix:semicolon
 r_case
 id|SNDCTL_DSP_SPEED
 suffix:colon
-multiline_comment|/* changing this on the fly will have wierd effects on the sound.&n;&t;&t;   Where there are rate conversions implemented in soft form - it&n;&t;&t;   will cause the _ctx_xxx() functions to be substituted.&n;&t;&t;   However, there doesn&squot;t appear to be any reason to dis-allow it from&n;&t;&t;   a driver pov.&n;&t;&t;*/
+multiline_comment|/* changing this on the fly will have weird effects on the sound.&n;&t;&t;   Where there are rate conversions implemented in soft form - it&n;&t;&t;   will cause the _ctx_xxx() functions to be substituted.&n;&t;&t;   However, there doesn&squot;t appear to be any reason to dis-allow it from&n;&t;&t;   a driver pov.&n;&t;&t;*/
 r_if
 c_cond
 (paren

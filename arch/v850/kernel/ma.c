@@ -228,7 +228,7 @@ op_star
 l_int|3
 )paren
 suffix:semicolon
-multiline_comment|/* Specify that the relevent pins on the chip should do&n;&t;&t;   serial I/O, not direct I/O.  */
+multiline_comment|/* Specify that the relevant pins on the chip should do&n;&t;&t;   serial I/O, not direct I/O.  */
 id|MA_PORT4_PMC
 op_or_assign
 id|bits

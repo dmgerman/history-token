@@ -230,12 +230,14 @@ id|mtd_notifier
 id|ftl_notifier
 op_assign
 (brace
+dot
 id|add
-suffix:colon
+op_assign
 id|ftl_notify_add
 comma
+dot
 id|remove
-suffix:colon
+op_assign
 id|ftl_notify_remove
 comma
 )brace

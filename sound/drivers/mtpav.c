@@ -212,7 +212,7 @@ l_string|&quot;,allows:{{1,8}},dialog:list&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *      defines&n; */
-singleline_comment|//#define USE_FAKE_MTP //       dont actually read/write to MTP device (for debugging without an actual unit) (does not work yet)
+singleline_comment|//#define USE_FAKE_MTP //       don&squot;t actually read/write to MTP device (for debugging without an actual unit) (does not work yet)
 singleline_comment|// parallel port usage masks
 DECL|macro|SIGS_BYTE
 mdefine_line|#define SIGS_BYTE 0x08
@@ -2967,7 +2967,7 @@ c_func
 id|mtp_card-&gt;card
 )paren
 suffix:semicolon
-singleline_comment|// dont snd_card_register until AFTER all cards reources done!
+singleline_comment|// don&squot;t snd_card_register until AFTER all cards reources done!
 singleline_comment|//printk(&quot;snd_card_register returned %d&bslash;n&quot;, err);
 r_if
 c_cond

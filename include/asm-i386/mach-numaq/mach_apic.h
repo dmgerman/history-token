@@ -5,8 +5,8 @@ DECL|macro|APIC_DFR_VALUE
 mdefine_line|#define APIC_DFR_VALUE&t;(APIC_DFR_CLUSTER)
 DECL|macro|TARGET_CPUS
 mdefine_line|#define TARGET_CPUS (0xf)
-DECL|macro|no_balance_irq
-mdefine_line|#define no_balance_irq (1)
+DECL|macro|NO_BALANCE_IRQ
+mdefine_line|#define NO_BALANCE_IRQ (1)
 DECL|macro|esr_disable
 mdefine_line|#define esr_disable (1)
 DECL|macro|INT_DELIVERY_MODE
@@ -273,10 +273,17 @@ id|mpc_config_processor
 op_star
 id|m
 comma
-r_int
-id|quad
+r_struct
+id|mpc_config_translation
+op_star
+id|translation_record
 )paren
 (brace
+r_int
+id|quad
+op_assign
+id|translation_record-&gt;trans_quad
+suffix:semicolon
 r_int
 id|logical_apicid
 op_assign

@@ -7069,7 +7069,7 @@ id|PADDR
 id|ungetjob
 )paren
 comma
-multiline_comment|/*&n;&t;**&t;Now there are 4 possibilities:&n;&t;**&n;&t;**&t;(1) The ncr looses arbitration.&n;&t;**&t;This is ok, because it will try again,&n;&t;**&t;when the bus becomes idle.&n;&t;**&t;(But beware of the timeout function!)&n;&t;**&n;&t;**&t;(2) The ncr is reselected.&n;&t;**&t;Then the script processor takes the jump&n;&t;**&t;to the RESELECT label.&n;&t;**&n;&t;**&t;(3) The ncr wins arbitration.&n;&t;**&t;Then it will execute SCRIPTS instruction until &n;&t;**&t;the next instruction that checks SCSI phase.&n;&t;**&t;Then will stop and wait for selection to be &n;&t;**&t;complete or selection time-out to occur.&n;&t;**&n;&t;**&t;After having won arbitration, the ncr SCRIPTS  &n;&t;**&t;processor is able to execute instructions while &n;&t;**&t;the SCSI core is performing SCSI selection. But &n;&t;**&t;some script instruction that is not waiting for &n;&t;**&t;a valid phase (or selection timeout) to occur &n;&t;**&t;breaks the selection procedure, by probably &n;&t;**&t;affecting timing requirements.&n;&t;**&t;So we have to wait immediately for the next phase &n;&t;**&t;or the selection to complete or time-out.&n;&t;*/
+multiline_comment|/*&n;&t;**&t;Now there are 4 possibilities:&n;&t;**&n;&t;**&t;(1) The ncr loses arbitration.&n;&t;**&t;This is ok, because it will try again,&n;&t;**&t;when the bus becomes idle.&n;&t;**&t;(But beware of the timeout function!)&n;&t;**&n;&t;**&t;(2) The ncr is reselected.&n;&t;**&t;Then the script processor takes the jump&n;&t;**&t;to the RESELECT label.&n;&t;**&n;&t;**&t;(3) The ncr wins arbitration.&n;&t;**&t;Then it will execute SCRIPTS instruction until &n;&t;**&t;the next instruction that checks SCSI phase.&n;&t;**&t;Then will stop and wait for selection to be &n;&t;**&t;complete or selection time-out to occur.&n;&t;**&n;&t;**&t;After having won arbitration, the ncr SCRIPTS  &n;&t;**&t;processor is able to execute instructions while &n;&t;**&t;the SCSI core is performing SCSI selection. But &n;&t;**&t;some script instruction that is not waiting for &n;&t;**&t;a valid phase (or selection timeout) to occur &n;&t;**&t;breaks the selection procedure, by probably &n;&t;**&t;affecting timing requirements.&n;&t;**&t;So we have to wait immediately for the next phase &n;&t;**&t;or the selection to complete or time-out.&n;&t;*/
 multiline_comment|/*&n;&t;**      load the savep (saved pointer) into&n;&t;**      the actual data pointer.&n;&t;*/
 id|SCR_LOAD_REL
 (paren
@@ -9419,7 +9419,7 @@ comma
 multiline_comment|/*-----------------------&lt; SEL_FOR_ABORT &gt;------------------*/
 comma
 (brace
-multiline_comment|/*&n;&t;**&t;We are jumped here by the C code, if we have &n;&t;**&t;some target to reset or some disconnected &n;&t;**&t;job to abort. Since error recovery is a serious &n;&t;**&t;busyness, we will really reset the SCSI BUS, if &n;&t;**&t;case of a SCSI interrupt occuring in this path.&n;&t;*/
+multiline_comment|/*&n;&t;**&t;We are jumped here by the C code, if we have &n;&t;**&t;some target to reset or some disconnected &n;&t;**&t;job to abort. Since error recovery is a serious &n;&t;**&t;busyness, we will really reset the SCSI BUS, if &n;&t;**&t;case of a SCSI interrupt occurring in this path.&n;&t;*/
 multiline_comment|/*&n;&t;**&t;Set initiator mode.&n;&t;*/
 id|SCR_CLR
 (paren
@@ -12282,7 +12282,7 @@ suffix:semicolon
 r_case
 l_int|0x8
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;**&t;JUMP / CALL&n;&t;&t;&t;**&t;dont&squot;t relocate if relative :-)&n;&t;&t;&t;*/
+multiline_comment|/*&n;&t;&t;&t;**&t;JUMP / CALL&n;&t;&t;&t;**&t;don&squot;t relocate if relative :-)&n;&t;&t;&t;*/
 r_if
 c_cond
 (paren
@@ -20674,7 +20674,6 @@ id|nc_dstat
 op_amp
 id|ABRT
 )paren
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -23751,7 +23750,7 @@ id|div
 op_div
 id|clk
 suffix:semicolon
-multiline_comment|/*&n;&t;**&t;Why not to try the immediate lower divisor and to choose &n;&t;**&t;the one that allows the fastest output speed ?&n;&t;**&t;We dont want input speed too much greater than output speed.&n;&t;*/
+multiline_comment|/*&n;&t;**&t;Why not to try the immediate lower divisor and to choose &n;&t;**&t;the one that allows the fastest output speed ?&n;&t;**&t;We don&squot;t want input speed too much greater than output speed.&n;&t;*/
 r_if
 c_cond
 (paren
@@ -27637,7 +27636,7 @@ comma
 id|dsa
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Fix Up. Some disks respond to a PPR negotation with&n;&t; * a bus free instead of a message reject. &n;&t; * Disable ppr negotiation if this is first time&n;&t; * tried ppr negotiation.&n;&t; */
+multiline_comment|/*&n;&t; * Fix Up. Some disks respond to a PPR negotiation with&n;&t; * a bus free instead of a message reject. &n;&t; * Disable ppr negotiation if this is first time&n;&t; * tried ppr negotiation.&n;&t; */
 r_if
 c_cond
 (paren

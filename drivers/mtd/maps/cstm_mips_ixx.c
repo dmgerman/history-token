@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: cstm_mips_ixx.c,v 1.5 2001/10/02 15:05:14 dwmw2 Exp $&n; *&n; * Mapping of a custom board with both AMD CFI and JEDEC flash in partitions.&n; * Config with both CFI and JEDEC device support.&n; *&n; * Basically physmap.c with the addition of partitions and &n; * an array of mapping info to accomodate more than one flash type per board.&n; *&n; * Copyright 2000 MontaVista Software Inc.&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: cstm_mips_ixx.c,v 1.5 2001/10/02 15:05:14 dwmw2 Exp $&n; *&n; * Mapping of a custom board with both AMD CFI and JEDEC flash in partitions.&n; * Config with both CFI and JEDEC device support.&n; *&n; * Basically physmap.c with the addition of partitions and &n; * an array of mapping info to accommodate more than one flash type per board.&n; *&n; * Copyright 2000 MontaVista Software Inc.&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -452,33 +452,51 @@ id|map_info
 id|basic_cstm_mips_ixx_map
 op_assign
 (brace
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0
-comma
+dot
+id|read8
+op_assign
 id|cstm_mips_ixx_read8
 comma
+dot
+id|read16
+op_assign
 id|cstm_mips_ixx_read16
 comma
+dot
+id|read32
+op_assign
 id|cstm_mips_ixx_read32
 comma
+dot
+id|copy_from
+op_assign
 id|cstm_mips_ixx_copy_from
 comma
+dot
+id|write8
+op_assign
 id|cstm_mips_ixx_write8
 comma
+dot
+id|write16
+op_assign
 id|cstm_mips_ixx_write16
 comma
+dot
+id|write32
+op_assign
 id|cstm_mips_ixx_write32
 comma
+dot
+id|copy_to
+op_assign
 id|cstm_mips_ixx_copy_to
 comma
+dot
+id|set_vpp
+op_assign
 id|cstm_mips_ixx_set_vpp
 comma
-l_int|0
-comma
-l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/* board and partition description */
@@ -563,19 +581,17 @@ op_assign
 (brace
 singleline_comment|// 28F128J3A in 2x16 configuration
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;main partition &quot;
 comma
+dot
 id|size
-suffix:colon
+op_assign
 l_int|0x02000000
 comma
 singleline_comment|// 128 x 2 x 128k byte sectors
-id|offset
-suffix:colon
-l_int|0
-comma
 )brace
 comma
 )brace
@@ -631,17 +647,15 @@ op_assign
 (brace
 (brace
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;main partition&quot;
 comma
+dot
 id|size
-suffix:colon
+op_assign
 id|CONFIG_MTD_CSTM_MIPS_IXX_LEN
-comma
-id|offset
-suffix:colon
-l_int|0
 comma
 )brace
 comma

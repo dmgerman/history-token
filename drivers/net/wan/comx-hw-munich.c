@@ -5112,7 +5112,7 @@ op_star
 )paren
 id|ch-&gt;HW_privdata
 suffix:semicolon
-multiline_comment|/* We dont trust the &quot;Tx available&quot; info from the TIQ, but check        */
+multiline_comment|/* We don&squot;t trust the &quot;Tx available&quot; info from the TIQ, but check        */
 multiline_comment|/* every ring if there is some free room                                        */
 r_if
 c_cond

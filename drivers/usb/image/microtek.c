@@ -1818,7 +1818,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* A genuine error has occured */
+multiline_comment|/* A genuine error has occurred */
 id|MTS_DEBUG_GOT_HERE
 c_func
 (paren

@@ -25,6 +25,8 @@ multiline_comment|/* XXX false sharing with below? */
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
+op_assign
+id|INITIAL_JIFFIES
 suffix:semicolon
 DECL|variable|disarm_decr
 r_int

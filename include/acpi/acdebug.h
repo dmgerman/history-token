@@ -261,6 +261,12 @@ id|object_arg
 )paren
 suffix:semicolon
 r_void
+id|acpi_db_display_gpes
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
 id|acpi_db_check_integrity
 (paren
 r_void
@@ -340,6 +346,18 @@ r_void
 op_star
 op_star
 id|return_value
+)paren
+suffix:semicolon
+r_void
+id|acpi_db_generate_gpe
+(paren
+r_char
+op_star
+id|gpe_arg
+comma
+r_char
+op_star
+id|block_arg
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * dbdisply - debug display commands&n; */

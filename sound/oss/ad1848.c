@@ -14324,8 +14324,6 @@ id|pnp_activate_dev
 c_func
 (paren
 id|dev
-comma
-l_int|NULL
 )paren
 )paren
 OL
@@ -14568,13 +14566,13 @@ r_char
 op_star
 id|busname
 op_assign
-id|bus-&gt;name
+id|bus-&gt;dev.name
 (braket
 l_int|0
 )braket
 ques
 c_cond
-id|bus-&gt;name
+id|bus-&gt;dev.name
 suffix:colon
 id|ad1848_isapnp_list
 (braket

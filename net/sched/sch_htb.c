@@ -2498,7 +2498,7 @@ c_cond
 id|cl-&gt;prio_activity
 )paren
 (brace
-multiline_comment|/* not neccessary: speed optimization */
+multiline_comment|/* not necessary: speed optimization */
 r_if
 c_cond
 (paren

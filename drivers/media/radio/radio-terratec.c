@@ -320,7 +320,7 @@ id|freq1
 op_div
 l_int|160
 suffix:semicolon
-multiline_comment|/* convert the freq. to a nice to handel value */
+multiline_comment|/* convert the freq. to a nice to handle value */
 r_for
 c_loop
 (paren

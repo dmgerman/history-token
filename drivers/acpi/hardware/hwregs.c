@@ -19,11 +19,13 @@ r_void
 id|acpi_native_uint
 id|i
 suffix:semicolon
-id|acpi_native_uint
-id|gpe_block
-suffix:semicolon
 id|acpi_status
 id|status
+suffix:semicolon
+r_struct
+id|acpi_gpe_block_info
+op_star
+id|gpe_block
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
@@ -127,20 +129,15 @@ id|unlock_and_exit
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Clear the GPE Bits */
-r_for
+multiline_comment|/* Clear the GPE Bits in all GPE registers in all GPE blocks */
+id|gpe_block
+op_assign
+id|acpi_gbl_gpe_block_list_head
+suffix:semicolon
+r_while
 c_loop
 (paren
 id|gpe_block
-op_assign
-l_int|0
-suffix:semicolon
-id|gpe_block
-OL
-id|ACPI_MAX_GPE_BLOCKS
-suffix:semicolon
-id|gpe_block
-op_increment
 )paren
 (brace
 r_for
@@ -152,12 +149,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|acpi_gbl_gpe_block_info
-(braket
-id|gpe_block
-)braket
-dot
-id|register_count
+id|gpe_block-&gt;register_count
 suffix:semicolon
 id|i
 op_increment
@@ -171,12 +163,13 @@ l_int|8
 comma
 l_int|0xFF
 comma
-id|acpi_gbl_gpe_block_info
+op_amp
+id|gpe_block-&gt;register_info
 (braket
-id|gpe_block
+id|i
 )braket
 dot
-id|block_address
+id|status_address
 comma
 (paren
 id|u32
@@ -198,6 +191,10 @@ id|unlock_and_exit
 suffix:semicolon
 )brace
 )brace
+id|gpe_block
+op_assign
+id|gpe_block-&gt;next
+suffix:semicolon
 )brace
 id|unlock_and_exit
 suffix:colon
@@ -868,7 +865,7 @@ id|bit_reg_info-&gt;parent_register
 r_case
 id|ACPI_REGISTER_PM1_STATUS
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Status Registers are different from the rest.  Clear by&n;&t;&t; * writing 1, writing 0 has no effect.  So, the only relevent&n;&t;&t; * information is the single bit we&squot;re interested in, all others should&n;&t;&t; * be written as 0 so they will be left unchanged&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Status Registers are different from the rest.  Clear by&n;&t;&t; * writing 1, writing 0 has no effect.  So, the only relevant&n;&t;&t; * information is the single bit we&squot;re interested in, all others should&n;&t;&t; * be written as 0 so they will be left unchanged&n;&t;&t; */
 id|value
 op_assign
 id|ACPI_REGISTER_PREPARE_BITS

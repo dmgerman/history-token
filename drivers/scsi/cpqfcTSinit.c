@@ -4892,7 +4892,7 @@ l_int|10
 suffix:semicolon
 singleline_comment|// seconds default (changed later)
 singleline_comment|// Since we need to immediately return the aborted Cmnd to Scsi 
-singleline_comment|// upper layers, we can&squot;t make future reference to any of it&squot;s 
+singleline_comment|// upper layers, we can&squot;t make future reference to any of its 
 singleline_comment|// fields (e.g the Nexus).
 id|cpqfcTSPutLinkQue
 c_func

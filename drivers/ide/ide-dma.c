@@ -496,7 +496,7 @@ c_func
 id|ide_dma_intr
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;ide_build_sglist&t;-&t;map IDE scatter gather for DMA I/O&n; *&t;@drive: the drive to build the DMA table for&n; *&t;@rq: the request holding the sg list&n; *&n; *&t;Perform the PCI mapping magic neccessary to access the source or&n; *&t;target buffers of a request via PCI DMA. The lower layers of the&n; *&t;kernel provide the neccessary cache management so that we can&n; *&t;operate in a portable fashion&n; */
+multiline_comment|/**&n; *&t;ide_build_sglist&t;-&t;map IDE scatter gather for DMA I/O&n; *&t;@drive: the drive to build the DMA table for&n; *&t;@rq: the request holding the sg list&n; *&n; *&t;Perform the PCI mapping magic necessary to access the source or&n; *&t;target buffers of a request via PCI DMA. The lower layers of the&n; *&t;kernel provide the necessary cache management so that we can&n; *&t;operate in a portable fashion&n; */
 DECL|function|ide_build_sglist
 r_static
 r_int
@@ -589,7 +589,7 @@ id|hwif-&gt;sg_dma_direction
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ide_raw_build_sglist&t;-&t;map IDE scatter gather for DMA&n; *&t;@drive: the drive to build the DMA table for&n; *&t;@rq: the request holding the sg list&n; *&n; *&t;Perform the PCI mapping magic neccessary to access the source or&n; *&t;target buffers of a taskfile request via PCI DMA. The lower layers &n; *&t;of the  kernel provide the neccessary cache management so that we can&n; *&t;operate in a portable fashion&n; */
+multiline_comment|/**&n; *&t;ide_raw_build_sglist&t;-&t;map IDE scatter gather for DMA&n; *&t;@drive: the drive to build the DMA table for&n; *&t;@rq: the request holding the sg list&n; *&n; *&t;Perform the PCI mapping magic necessary to access the source or&n; *&t;target buffers of a taskfile request via PCI DMA. The lower layers &n; *&t;of the  kernel provide the necessary cache management so that we can&n; *&t;operate in a portable fashion&n; */
 DECL|function|ide_raw_build_sglist
 r_static
 r_int
@@ -1605,7 +1605,7 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;dma_timer_expiry&t;-&t;handle a DMA timeout&n; *&t;@drive: Drive that timed out&n; *&n; *&t;An IDE DMA transfer timed out. In the event of an error we ask&n; *&t;the driver to resolve the problem, if a DMA transfer is still&n; *&t;in progress we continue to wait (arguably we need to add a &n; *&t;secondary &squot;I dont care what the drive thinks&squot; timeout here)&n; *&t;Finally if we have an interrupt but for some reason got the&n; *&t;timeout first we complete the I/O. This can occur if an &n; *&t;interrupt is lost or due to bugs.&n; */
+multiline_comment|/**&n; *&t;dma_timer_expiry&t;-&t;handle a DMA timeout&n; *&t;@drive: Drive that timed out&n; *&n; *&t;An IDE DMA transfer timed out. In the event of an error we ask&n; *&t;the driver to resolve the problem, if a DMA transfer is still&n; *&t;in progress we continue to wait (arguably we need to add a &n; *&t;secondary &squot;I don&squot;t care what the drive thinks&squot; timeout here)&n; *&t;Finally if we have an interrupt but for some reason got the&n; *&t;timeout first we complete the I/O. This can occur if an &n; *&t;interrupt is lost or due to bugs.&n; */
 DECL|function|dma_timer_expiry
 r_static
 r_int

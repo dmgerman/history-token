@@ -54,7 +54,7 @@ mdefine_line|#define MADV_SEQUENTIAL 2               /* expect sequential page r
 DECL|macro|MADV_WILLNEED
 mdefine_line|#define MADV_WILLNEED   3               /* will need these pages */
 DECL|macro|MADV_DONTNEED
-mdefine_line|#define MADV_DONTNEED   4               /* dont need these pages */
+mdefine_line|#define MADV_DONTNEED   4               /* don&squot;t need these pages */
 DECL|macro|MADV_SPACEAVAIL
 mdefine_line|#define MADV_SPACEAVAIL 5               /* insure that resources are reserved */
 DECL|macro|MADV_VPS_PURGE

@@ -959,7 +959,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end afs_vnode_fetch_data() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * break any outstanding callback on a vnode&n; * - only relevent to server that issued it&n; */
+multiline_comment|/*&n; * break any outstanding callback on a vnode&n; * - only relevant to server that issued it&n; */
 DECL|function|afs_vnode_give_up_callback
 r_int
 id|afs_vnode_give_up_callback

@@ -8,36 +8,15 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;hwgpe&quot;
 )paren
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_get_gpe_bit_mask&n; *&n; * PARAMETERS:  gpe_number      - The GPE&n; *&n; * RETURN:      Gpe register bitmask for this gpe level&n; *&n; * DESCRIPTION: Get the bitmask for this GPE&n; *&n; ******************************************************************************/
-id|u8
-DECL|function|acpi_hw_get_gpe_bit_mask
-id|acpi_hw_get_gpe_bit_mask
-(paren
-id|u32
-id|gpe_number
-)paren
-(brace
-r_return
-(paren
-id|acpi_gbl_gpe_number_info
-(braket
-id|acpi_ev_get_gpe_number_index
-(paren
-id|gpe_number
-)paren
-)braket
-dot
-id|bit_mask
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_enable_gpe&n; *&n; * PARAMETERS:  gpe_number      - The GPE&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Enable a single GPE.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_enable_gpe
 id|acpi_hw_enable_gpe
 (paren
-id|u32
-id|gpe_number
+r_struct
+id|acpi_gpe_event_info
+op_star
+id|gpe_event_info
 )paren
 (brace
 id|u32
@@ -46,36 +25,10 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-r_struct
-id|acpi_gpe_register_info
-op_star
-id|gpe_register_info
-suffix:semicolon
 id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Get the info block for the entire GPE register */
-id|gpe_register_info
-op_assign
-id|acpi_ev_get_gpe_register_info
-(paren
-id|gpe_number
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|gpe_register_info
-)paren
-(brace
-r_return
-(paren
-id|AE_BAD_PARAMETER
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Read the current value of the register, set the appropriate bit&n;&t; * to enable the GPE, and write out the new register.&n;&t; */
 id|status
 op_assign
@@ -87,7 +40,7 @@ op_amp
 id|in_byte
 comma
 op_amp
-id|gpe_register_info-&gt;enable_address
+id|gpe_event_info-&gt;register_info-&gt;enable_address
 comma
 l_int|0
 )paren
@@ -117,14 +70,11 @@ comma
 (paren
 id|in_byte
 op_or
-id|acpi_hw_get_gpe_bit_mask
-(paren
-id|gpe_number
-)paren
+id|gpe_event_info-&gt;bit_mask
 )paren
 comma
 op_amp
-id|gpe_register_info-&gt;enable_address
+id|gpe_event_info-&gt;register_info-&gt;enable_address
 comma
 l_int|0
 )paren
@@ -140,8 +90,10 @@ r_void
 DECL|function|acpi_hw_enable_gpe_for_wakeup
 id|acpi_hw_enable_gpe_for_wakeup
 (paren
-id|u32
-id|gpe_number
+r_struct
+id|acpi_gpe_event_info
+op_star
+id|gpe_event_info
 )paren
 (brace
 r_struct
@@ -156,10 +108,7 @@ suffix:semicolon
 multiline_comment|/* Get the info block for the entire GPE register */
 id|gpe_register_info
 op_assign
-id|acpi_ev_get_gpe_register_info
-(paren
-id|gpe_number
-)paren
+id|gpe_event_info-&gt;register_info
 suffix:semicolon
 r_if
 c_cond
@@ -174,10 +123,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Set the bit so we will not disable this when sleeping&n;&t; */
 id|gpe_register_info-&gt;wake_enable
 op_or_assign
-id|acpi_hw_get_gpe_bit_mask
-(paren
-id|gpe_number
-)paren
+id|gpe_event_info-&gt;bit_mask
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_disable_gpe&n; *&n; * PARAMETERS:  gpe_number      - The GPE&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Disable a single GPE.&n; *&n; ******************************************************************************/
@@ -185,8 +131,10 @@ id|acpi_status
 DECL|function|acpi_hw_disable_gpe
 id|acpi_hw_disable_gpe
 (paren
-id|u32
-id|gpe_number
+r_struct
+id|acpi_gpe_event_info
+op_star
+id|gpe_event_info
 )paren
 (brace
 id|u32
@@ -207,10 +155,7 @@ suffix:semicolon
 multiline_comment|/* Get the info block for the entire GPE register */
 id|gpe_register_info
 op_assign
-id|acpi_ev_get_gpe_register_info
-(paren
-id|gpe_number
-)paren
+id|gpe_event_info-&gt;register_info
 suffix:semicolon
 r_if
 c_cond
@@ -268,10 +213,7 @@ id|in_byte
 op_amp
 op_complement
 (paren
-id|acpi_hw_get_gpe_bit_mask
-(paren
-id|gpe_number
-)paren
+id|gpe_event_info-&gt;bit_mask
 )paren
 )paren
 comma
@@ -297,9 +239,8 @@ id|status
 suffix:semicolon
 )brace
 id|acpi_hw_disable_gpe_for_wakeup
-c_func
 (paren
-id|gpe_number
+id|gpe_event_info
 )paren
 suffix:semicolon
 r_return
@@ -313,8 +254,10 @@ r_void
 DECL|function|acpi_hw_disable_gpe_for_wakeup
 id|acpi_hw_disable_gpe_for_wakeup
 (paren
-id|u32
-id|gpe_number
+r_struct
+id|acpi_gpe_event_info
+op_star
+id|gpe_event_info
 )paren
 (brace
 r_struct
@@ -329,10 +272,7 @@ suffix:semicolon
 multiline_comment|/* Get the info block for the entire GPE register */
 id|gpe_register_info
 op_assign
-id|acpi_ev_get_gpe_register_info
-(paren
-id|gpe_number
-)paren
+id|gpe_event_info-&gt;register_info
 suffix:semicolon
 r_if
 c_cond
@@ -349,10 +289,7 @@ id|gpe_register_info-&gt;wake_enable
 op_and_assign
 op_complement
 (paren
-id|acpi_hw_get_gpe_bit_mask
-(paren
-id|gpe_number
-)paren
+id|gpe_event_info-&gt;bit_mask
 )paren
 suffix:semicolon
 )brace
@@ -361,43 +298,19 @@ id|acpi_status
 DECL|function|acpi_hw_clear_gpe
 id|acpi_hw_clear_gpe
 (paren
-id|u32
-id|gpe_number
+r_struct
+id|acpi_gpe_event_info
+op_star
+id|gpe_event_info
 )paren
 (brace
 id|acpi_status
 id|status
 suffix:semicolon
-r_struct
-id|acpi_gpe_register_info
-op_star
-id|gpe_register_info
-suffix:semicolon
 id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Get the info block for the entire GPE register */
-id|gpe_register_info
-op_assign
-id|acpi_ev_get_gpe_register_info
-(paren
-id|gpe_number
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|gpe_register_info
-)paren
-(brace
-r_return
-(paren
-id|AE_BAD_PARAMETER
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Write a one to the appropriate bit in the status register to&n;&t; * clear this GPE.&n;&t; */
 id|status
 op_assign
@@ -405,13 +318,10 @@ id|acpi_hw_low_level_write
 (paren
 l_int|8
 comma
-id|acpi_hw_get_gpe_bit_mask
-(paren
-id|gpe_number
-)paren
+id|gpe_event_info-&gt;bit_mask
 comma
 op_amp
-id|gpe_register_info-&gt;status_address
+id|gpe_event_info-&gt;register_info-&gt;status_address
 comma
 l_int|0
 )paren
@@ -446,6 +356,11 @@ id|acpi_gpe_register_info
 op_star
 id|gpe_register_info
 suffix:semicolon
+r_struct
+id|acpi_gpe_event_info
+op_star
+id|gpe_event_info
+suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
@@ -471,10 +386,9 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Get the info block for the entire GPE register */
-id|gpe_register_info
+id|gpe_event_info
 op_assign
-id|acpi_ev_get_gpe_register_info
+id|acpi_ev_get_gpe_event_info
 (paren
 id|gpe_number
 )paren
@@ -483,7 +397,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|gpe_register_info
+id|gpe_event_info
 )paren
 (brace
 r_return
@@ -492,13 +406,15 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Get the info block for the entire GPE register */
+id|gpe_register_info
+op_assign
+id|gpe_event_info-&gt;register_info
+suffix:semicolon
 multiline_comment|/* Get the register bitmask for this GPE */
 id|bit_mask
 op_assign
-id|acpi_hw_get_gpe_bit_mask
-(paren
-id|gpe_number
-)paren
+id|gpe_event_info-&gt;bit_mask
 suffix:semicolon
 multiline_comment|/* GPE Enabled? */
 id|status
@@ -616,7 +532,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_disable_non_wakeup_gpes&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Disable all non-wakeup GPEs&n; *              Call with interrupts disabled. The interrupt handler also&n; *              modifies acpi_gbl_gpe_register_info[i].Enable, so it should not be&n; *              given the chance to run until after non-wake GPEs are&n; *              re-enabled.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_disable_non_wakeup_gpes&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Disable all non-wakeup GPEs&n; *              Call with interrupts disabled. The interrupt handler also&n; *              modifies gpe_register_info-&gt;Enable, so it should not be&n; *              given the chance to run until after non-wake GPEs are&n; *              re-enabled.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_disable_non_wakeup_gpes
 id|acpi_hw_disable_non_wakeup_gpes
@@ -638,33 +554,29 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
+id|acpi_gpe_block_info
+op_star
+id|gpe_block
+suffix:semicolon
 id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
-r_for
+id|gpe_block
+op_assign
+id|acpi_gbl_gpe_block_list_head
+suffix:semicolon
+r_while
 c_loop
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|acpi_gbl_gpe_register_count
-suffix:semicolon
-id|i
-op_increment
+id|gpe_block
 )paren
 (brace
-multiline_comment|/* Get the info block for the entire GPE register */
+multiline_comment|/* Get the register info for the entire GPE block */
 id|gpe_register_info
 op_assign
-op_amp
-id|acpi_gbl_gpe_register_info
-(braket
-id|i
-)braket
+id|gpe_block-&gt;register_info
 suffix:semicolon
 r_if
 c_cond
@@ -679,7 +591,22 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Read the enabled status of all GPEs. We&n;&t;&t; * will be using it to restore all the GPEs later.&n;&t;&t; */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|gpe_block-&gt;register_count
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * Read the enabled status of all GPEs. We&n;&t;&t;&t; * will be using it to restore all the GPEs later.&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_hw_low_level_read
@@ -717,7 +644,7 @@ id|u8
 )paren
 id|in_value
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Disable all GPEs except wakeup GPEs.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Disable all GPEs except wakeup GPEs.&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_hw_low_level_write
@@ -747,6 +674,14 @@ id|status
 )paren
 suffix:semicolon
 )brace
+id|gpe_register_info
+op_increment
+suffix:semicolon
+)brace
+id|gpe_block
+op_assign
+id|gpe_block-&gt;next
+suffix:semicolon
 )brace
 r_return
 (paren
@@ -773,33 +708,29 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
+id|acpi_gpe_block_info
+op_star
+id|gpe_block
+suffix:semicolon
 id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
-r_for
+id|gpe_block
+op_assign
+id|acpi_gbl_gpe_block_list_head
+suffix:semicolon
+r_while
 c_loop
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|acpi_gbl_gpe_register_count
-suffix:semicolon
-id|i
-op_increment
+id|gpe_block
 )paren
 (brace
-multiline_comment|/* Get the info block for the entire GPE register */
+multiline_comment|/* Get the register info for the entire GPE block */
 id|gpe_register_info
 op_assign
-op_amp
-id|acpi_gbl_gpe_register_info
-(braket
-id|i
-)braket
+id|gpe_block-&gt;register_info
 suffix:semicolon
 r_if
 c_cond
@@ -814,7 +745,22 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * We previously stored the enabled status of all GPEs.&n;&t;&t; * Blast them back in.&n;&t;&t; */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|gpe_block-&gt;register_count
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * We previously stored the enabled status of all GPEs.&n;&t;&t;&t; * Blast them back in.&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_hw_low_level_write
@@ -844,6 +790,14 @@ id|status
 )paren
 suffix:semicolon
 )brace
+id|gpe_register_info
+op_increment
+suffix:semicolon
+)brace
+id|gpe_block
+op_assign
+id|gpe_block-&gt;next
+suffix:semicolon
 )brace
 r_return
 (paren

@@ -72,7 +72,7 @@ macro_line|#endif
 multiline_comment|/*&n; * Given a kaddr, find the index into the clump_mem_map_base array of the page struct entry&n; * for the first page of the clump.&n; */
 DECL|macro|PLAT_CLUMP_MEM_MAP_INDEX
 mdefine_line|#define PLAT_CLUMP_MEM_MAP_INDEX(kaddr)&t;&t;({long _kmmi=(long)(kaddr);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;KVADDR_TO_NID(_kmmi) * PLAT_CLUMPS_PER_NODE +&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;SN1_NODE_CLUMP_NUMBER(_kmmi);})
-multiline_comment|/*&n; * Calculate a &quot;goal&quot; value to be passed to __alloc_bootmem_node for allocating structures on&n; * nodes so that they dont alias to the same line in the cache as the previous allocated structure.&n; * This macro takes an address of the end of previous allocation, rounds it to a page boundary &amp; &n; * changes the node number.&n; */
+multiline_comment|/*&n; * Calculate a &quot;goal&quot; value to be passed to __alloc_bootmem_node for allocating structures on&n; * nodes so that they don&squot;t alias to the same line in the cache as the previous allocated structure.&n; * This macro takes an address of the end of previous allocation, rounds it to a page boundary &amp; &n; * changes the node number.&n; */
 DECL|macro|PLAT_BOOTMEM_ALLOC_GOAL
 mdefine_line|#define PLAT_BOOTMEM_ALLOC_GOAL(cnode,kaddr)&t;__pa(SN1_KADDR(PLAT_PXM_TO_PHYS_NODE_NUMBER(nid_to_pxm_map[cnode]),&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;  (SN1_NODE_OFFSET(kaddr) + PAGE_SIZE - 1) &gt;&gt; PAGE_SHIFT &lt;&lt; PAGE_SHIFT))
 multiline_comment|/*&n; * Convert a proximity domain number (from the ACPI tables) into a physical node number.&n; */

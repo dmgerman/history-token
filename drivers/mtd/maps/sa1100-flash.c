@@ -328,7 +328,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_MTD_SA1100_STATICMAP
-multiline_comment|/*&n; * Here are partition information for all known SA1100-based devices.&n; * See include/linux/mtd/partitions.h for definition of the mtd_partition&n; * structure.&n; *&n; * Please note:&n; *  1. We no longer support static flash mappings via the machine io_desc&n; *     structure.&n; *  2. The flash size given should be the largest flash size that can&n; *     be accomodated.&n; *&n; * The MTD layer will detect flash chip aliasing and reduce the size of&n; * the map accordingly.&n; *&n; * Please keep these in alphabetical order, and formatted as per existing&n; * entries.  Thanks.&n; */
+multiline_comment|/*&n; * Here are partition information for all known SA1100-based devices.&n; * See include/linux/mtd/partitions.h for definition of the mtd_partition&n; * structure.&n; *&n; * Please note:&n; *  1. We no longer support static flash mappings via the machine io_desc&n; *     structure.&n; *  2. The flash size given should be the largest flash size that can&n; *     be accommodated.&n; *&n; * The MTD layer will detect flash chip aliasing and reduce the size of&n; * the map accordingly.&n; *&n; * Please keep these in alphabetical order, and formatted as per existing&n; * entries.  Thanks.&n; */
 macro_line|#ifdef CONFIG_SA1100_ADSBITSY
 DECL|variable|adsbitsy_partitions
 r_static

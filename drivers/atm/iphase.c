@@ -2122,7 +2122,7 @@ id|srv_p-&gt;pcr
 suffix:semicolon
 id|icr
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|srv_p-&gt;icr
@@ -10805,7 +10805,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* UBR scheduling Table and wait queue */
-multiline_comment|/* initialize all bytes of UBR scheduler table and wait queue to 0   &n;&t;&t;- SCHEDSZ is 1K (# of entries).  &n;&t;&t;- UBR Table size is 4K  &n;&t;&t;- UBR wait queue is 4K  &n;&t;   since the table and wait queues are contiguous, all the bytes   &n;&t;   can be intialized by one memeset.  &n;&t;*/
+multiline_comment|/* initialize all bytes of UBR scheduler table and wait queue to 0   &n;&t;&t;- SCHEDSZ is 1K (# of entries).  &n;&t;&t;- UBR Table size is 4K  &n;&t;&t;- UBR wait queue is 4K  &n;&t;   since the table and wait queues are contiguous, all the bytes   &n;&t;   can be initialized by one memeset.  &n;&t;*/
 id|vcsize_sel
 op_assign
 l_int|0

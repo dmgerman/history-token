@@ -6097,7 +6097,7 @@ suffix:semicolon
 macro_line|#if !DEBUG || defined(FORCE_ERRORS)
 )brace
 macro_line|#endif
-multiline_comment|/*&n;&t; * Since error could not be handled at lower level,&n;&t; * error data logged has not  been cleared.&n;&t; * Clean up errors, and&n;&t; * re-enable bridge to interrupt on error conditions.&n;&t; * NOTE: Wheather we get the interrupt on PCI_ABORT or not is&n;&t; * dependent on INT_ENABLE register. This write just makes sure&n;&t; * that if the interrupt was enabled, we do get the interrupt.&n;&t; *&n;&t; * CAUTION: Resetting bit BRIDGE_IRR_PCI_GRP_CLR, acknowledges&n;&t; *      a group of interrupts. If while handling this error,&n;&t; *      some other error has occured, that would be&n;&t; *      implicitly cleared by this write.&n;&t; *      Need a way to ensure we don&squot;t inadvertently clear some&n;&t; *      other errors.&n;&t; */
+multiline_comment|/*&n;&t; * Since error could not be handled at lower level,&n;&t; * error data logged has not  been cleared.&n;&t; * Clean up errors, and&n;&t; * re-enable bridge to interrupt on error conditions.&n;&t; * NOTE: Wheather we get the interrupt on PCI_ABORT or not is&n;&t; * dependent on INT_ENABLE register. This write just makes sure&n;&t; * that if the interrupt was enabled, we do get the interrupt.&n;&t; *&n;&t; * CAUTION: Resetting bit BRIDGE_IRR_PCI_GRP_CLR, acknowledges&n;&t; *      a group of interrupts. If while handling this error,&n;&t; *      some other error has occurred, that would be&n;&t; *      implicitly cleared by this write.&n;&t; *      Need a way to ensure we don&squot;t inadvertently clear some&n;&t; *      other errors.&n;&t; */
 r_if
 c_cond
 (paren

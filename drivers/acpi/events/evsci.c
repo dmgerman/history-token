@@ -25,68 +25,21 @@ id|interrupt_handled
 op_assign
 id|ACPI_INTERRUPT_NOT_HANDLED
 suffix:semicolon
-id|u32
-id|value
-suffix:semicolon
-id|acpi_status
-id|status
-suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
 (paren
 l_string|&quot;ev_sci_handler&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Make sure that ACPI is enabled by checking SCI_EN.  Note that we are&n;&t; * required to treat the SCI interrupt as sharable, level, active low.&n;&t; */
-id|status
-op_assign
-id|acpi_get_register
-(paren
-id|ACPI_BITREG_SCI_ENABLE
-comma
-op_amp
-id|value
-comma
-id|ACPI_MTX_DO_NOT_LOCK
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-r_return
-(paren
-id|ACPI_INTERRUPT_NOT_HANDLED
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|value
-)paren
-(brace
-multiline_comment|/* ACPI is not enabled;  this interrupt cannot be for us */
-id|return_VALUE
-(paren
-id|ACPI_INTERRUPT_NOT_HANDLED
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Fixed acpi_events:&n;&t; * -------------&n;&t; * Check for and dispatch any Fixed acpi_events that have occurred&n;&t; */
+multiline_comment|/*&n;&t; * We are guaranteed by the ACPI CA initialization/shutdown code that&n;&t; * if this interrupt handler is installed, ACPI is enabled.&n;&t; */
+multiline_comment|/*&n;&t; * Fixed acpi_events:&n;&t; * Check for and dispatch any Fixed acpi_events that have occurred&n;&t; */
 id|interrupt_handled
 op_or_assign
 id|acpi_ev_fixed_event_detect
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * GPEs:&n;&t; * -----&n;&t; * Check for and dispatch any GPEs that have occurred&n;&t; */
+multiline_comment|/*&n;&t; * GPEs:&n;&t; * Check for and dispatch any GPEs that have occurred&n;&t; */
 id|interrupt_handled
 op_or_assign
 id|acpi_ev_gpe_detect

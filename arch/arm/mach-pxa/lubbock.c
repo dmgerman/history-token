@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-pxa/lubbock.c&n; *&n; *  Support for the Intel DBPXA250 Development Platform.&n; *&n; *  Author:&t;Nicolas Pitre&n; *  Created:&t;Jun 15, 2001&n; *  Copyright:&t;MontaVista Software Inc.&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License version 2 as&n; *  published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -15,7 +16,6 @@ macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/arch/irq.h&gt;
 macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 macro_line|#include &quot;generic.h&quot;
-macro_line|#include &quot;sa1111.h&quot;
 DECL|function|lubbock_ack_irq
 r_static
 r_void
@@ -375,42 +375,18 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|ret
-suffix:semicolon
-id|ret
-op_assign
-id|sa1111_probe
-c_func
-(paren
-id|LUBBOCK_SA1111_BASE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
 r_return
-id|ret
-suffix:semicolon
-id|sa1111_wake
+id|sa1111_init
 c_func
 (paren
-)paren
-suffix:semicolon
-id|sa1111_init_irq
-c_func
-(paren
+l_int|0x10000000
+comma
 id|LUBBOCK_SA1111_IRQ
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|variable|lubbock_init
-id|__initcall
+id|subsys_initcall
 c_func
 (paren
 id|lubbock_init
@@ -460,16 +436,6 @@ id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* LAN91C96 Attr */
-(brace
-l_int|0xf4000000
-comma
-l_int|0x10000000
-comma
-l_int|0x00400000
-comma
-id|MT_DEVICE
-)brace
-multiline_comment|/* SA1111 */
 )brace
 suffix:semicolon
 DECL|function|lubbock_map_io

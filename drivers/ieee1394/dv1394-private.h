@@ -1213,7 +1213,7 @@ id|frames
 id|DV1394_MAX_FRAMES
 )braket
 suffix:semicolon
-multiline_comment|/* n_frames also serves as an indicator that this struct video_card is&n;&t;   intialized and ready to run DMA buffers */
+multiline_comment|/* n_frames also serves as an indicator that this struct video_card is&n;&t;   initialized and ready to run DMA buffers */
 DECL|member|n_frames
 r_int
 id|n_frames

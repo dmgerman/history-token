@@ -1503,7 +1503,7 @@ id|asoc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Charge receive window for bytes recieved.  */
+multiline_comment|/* Charge receive window for bytes received.  */
 DECL|function|sctp_ulpevent_set_owner_r
 r_static
 r_void

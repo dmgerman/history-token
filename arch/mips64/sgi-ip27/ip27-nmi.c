@@ -370,7 +370,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef REAL_NMI_SIGNAL
-multiline_comment|/*&n;&t; * Wait up to 15 seconds for the other cpus to respond to the NMI.&n;&t; * If a cpu has not responded after 10 sec, send it 1 additional NMI.&n;&t; * This is for 2 reasons:&n;&t; *&t;- sometimes a MMSC fail to NMI all cpus.&n;&t; *&t;- on 512p SN0 system, the MMSC will only send NMIs to&n;&t; *&t;  half the cpus. Unfortunately, we dont know which cpus may be&n;&t; *&t;  NMIed - it depends on how the site chooses to configure.&n;&t; * &n;&t; * Note: it has been measure that it takes the MMSC up to 2.3 secs to&n;&t; * send NMIs to all cpus on a 256p system.&n;&t; */
+multiline_comment|/*&n;&t; * Wait up to 15 seconds for the other cpus to respond to the NMI.&n;&t; * If a cpu has not responded after 10 sec, send it 1 additional NMI.&n;&t; * This is for 2 reasons:&n;&t; *&t;- sometimes a MMSC fail to NMI all cpus.&n;&t; *&t;- on 512p SN0 system, the MMSC will only send NMIs to&n;&t; *&t;  half the cpus. Unfortunately, we don&squot;t know which cpus may be&n;&t; *&t;  NMIed - it depends on how the site chooses to configure.&n;&t; * &n;&t; * Note: it has been measure that it takes the MMSC up to 2.3 secs to&n;&t; * send NMIs to all cpus on a 256p system.&n;&t; */
 r_for
 c_loop
 (paren

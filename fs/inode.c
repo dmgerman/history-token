@@ -73,6 +73,14 @@ id|inode_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+multiline_comment|/*&n; * iprune_sem provides exclusion between the kswapd or try_to_free_pages&n; * icache shrinking path, and the umount path.  Without this exclusion,&n; * by the time prune_icache calls iput for the inode whose pages it has&n; * been invalidating, or by the time it calls clear_inode &amp; destroy_inode&n; * from its final dispose_list, the struct super_block they refer to&n; * (for inode-&gt;i_sb-&gt;s_op) may already have been freed and reused.&n; */
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|iprune_sem
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Statistics gathering..&n; */
 DECL|variable|inodes_stat
 r_struct
@@ -1085,6 +1093,13 @@ c_func
 id|throw_away
 )paren
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|iprune_sem
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1160,6 +1175,13 @@ c_func
 (paren
 op_amp
 id|throw_away
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|iprune_sem
 )paren
 suffix:semicolon
 r_return
@@ -1366,6 +1388,13 @@ r_int
 id|reap
 op_assign
 l_int|0
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|iprune_sem
+)paren
 suffix:semicolon
 id|spin_lock
 c_func
@@ -1574,6 +1603,13 @@ c_func
 (paren
 op_amp
 id|freeable
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|iprune_sem
 )paren
 suffix:semicolon
 r_if

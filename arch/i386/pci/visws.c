@@ -189,7 +189,7 @@ suffix:semicolon
 id|pin
 op_decrement
 suffix:semicolon
-multiline_comment|/* Nothing usefull at PIIX4 pin 1 */
+multiline_comment|/* Nothing useful at PIIX4 pin 1 */
 r_if
 c_cond
 (paren

@@ -3491,7 +3491,7 @@ id|skblen
 )paren
 suffix:semicolon
 multiline_comment|/* Clear the slack of the packet, do I need this? */
-multiline_comment|/* For a firewall its a good idea - AC */
+multiline_comment|/* For a firewall it&squot;s a good idea - AC */
 multiline_comment|/*&n;   if (len != skblen)&n;   memset ((char *) &amp;ib-&gt;tx_buf [entry][skblen], 0, (len - skblen) &lt;&lt; 1);&n; */
 multiline_comment|/* Now, give the packet to the lance */
 id|ib-&gt;btx_ring

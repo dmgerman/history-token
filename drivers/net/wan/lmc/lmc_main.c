@@ -3452,7 +3452,7 @@ r_return
 id|dev
 suffix:semicolon
 )brace
-multiline_comment|/* This is the entry point.  This is what is called immediatly. */
+multiline_comment|/* This is the entry point.  This is what is called immediately. */
 multiline_comment|/* This goes out and finds the card */
 DECL|function|lmc_probe_fake
 r_int
@@ -7281,7 +7281,7 @@ id|status
 op_assign
 l_int|0x80000000
 suffix:semicolon
-multiline_comment|/* used to be PKT_BUF_SZ now uses skb since we loose some to head room */
+multiline_comment|/* used to be PKT_BUF_SZ now uses skb since we lose some to head room */
 id|sc-&gt;lmc_rxring
 (braket
 id|i

@@ -50,7 +50,7 @@ DECL|macro|IRQ_GPIO_CF_IRQ
 mdefine_line|#define IRQ_GPIO_CF_IRQ         IRQ_GPIO1
 DECL|macro|IRQ_GPIO_CF_CD
 mdefine_line|#define IRQ_GPIO_CF_CD          IRQ_GPIO24      
-singleline_comment|// CS3 Latch is write only, a shadow is neccessary 
+singleline_comment|// CS3 Latch is write only, a shadow is necessary 
 DECL|macro|CS3BUSTYPE
 mdefine_line|#define CS3BUSTYPE unsigned volatile long           
 DECL|macro|CS3_BASE

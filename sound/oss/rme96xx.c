@@ -5326,7 +5326,7 @@ suffix:semicolon
 r_case
 id|SNDCTL_DSP_GETODELAY
 suffix:colon
-multiline_comment|/* What shold this exactly do ? , &n;&t;&t;&t;&t;      ATM it is just abinfo.bytes */
+multiline_comment|/* What should this exactly do ? ,&n;&t;&t;&t;&t;      ATM it is just abinfo.bytes */
 r_if
 c_cond
 (paren

@@ -3863,7 +3863,7 @@ id|pagedir_order
 id|printk
 c_func
 (paren
-l_string|&quot;not neccessary&bslash;n&quot;
+l_string|&quot;not necessary&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

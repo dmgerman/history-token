@@ -361,7 +361,7 @@ op_star
 suffix:semicolon
 r_static
 r_void
-id|e100_reset_tranceiver
+id|e100_reset_transceiver
 c_func
 (paren
 r_void
@@ -1813,8 +1813,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|e100_reset_tranceiver
-id|e100_reset_tranceiver
+DECL|function|e100_reset_transceiver
+id|e100_reset_transceiver
 c_func
 (paren
 r_void
@@ -1884,8 +1884,8 @@ c_func
 l_int|4
 )paren
 suffix:semicolon
-multiline_comment|/* Reset the tranceiver. */
-id|e100_reset_tranceiver
+multiline_comment|/* Reset the transceiver. */
+id|e100_reset_transceiver
 c_func
 (paren
 )paren

@@ -14,7 +14,7 @@ DECL|variable|page_cluster
 r_int
 id|page_cluster
 suffix:semicolon
-multiline_comment|/*&n; * Writeback is about to end against a page whic has been marked for immediate&n; * reclaim.  If it still appears to be reclaimable, move it to the tail of the&n; * inactive list.  The page still has PageWriteback set, which will pin it.&n; *&n; * We don&squot;t expect many pages to come through here, so don&squot;t bother batching&n; * things up.&n; *&n; * To avoid placing the page at the tail of the LRU while PG_writeback is still&n; * set, this function will clear PG_writeback before performing the page&n; * motion.  Do that inside the lru lock because once PG_writeback is cleared&n; * we may not touch the page.&n; *&n; * Returns zero if it cleared PG_writeback.&n; */
+multiline_comment|/*&n; * Writeback is about to end against a page which has been marked for immediate&n; * reclaim.  If it still appears to be reclaimable, move it to the tail of the&n; * inactive list.  The page still has PageWriteback set, which will pin it.&n; *&n; * We don&squot;t expect many pages to come through here, so don&squot;t bother batching&n; * things up.&n; *&n; * To avoid placing the page at the tail of the LRU while PG_writeback is still&n; * set, this function will clear PG_writeback before performing the page&n; * motion.  Do that inside the lru lock because once PG_writeback is cleared&n; * we may not touch the page.&n; *&n; * Returns zero if it cleared PG_writeback.&n; */
 DECL|function|rotate_reclaimable_page
 r_int
 id|rotate_reclaimable_page

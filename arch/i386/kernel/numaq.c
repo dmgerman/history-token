@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/numaq.h&gt;
 multiline_comment|/* These are needed before the pgdat&squot;s are created */
 DECL|variable|node_start_pfn
@@ -162,50 +163,13 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-DECL|macro|PFN_TO_ELEMENT
-mdefine_line|#define PFN_TO_ELEMENT(pfn) (pfn / PAGES_PER_ELEMENT)
-DECL|macro|PA_TO_ELEMENT
-mdefine_line|#define PA_TO_ELEMENT(pa) (PFN_TO_ELEMENT(pa &gt;&gt; PAGE_SHIFT))
-DECL|function|pfn_to_nid
-r_int
-id|pfn_to_nid
+DECL|variable|physnode_map
+id|EXPORT_SYMBOL
 c_func
 (paren
-r_int
-r_int
-id|pfn
-)paren
-(brace
-r_int
-id|nid
-op_assign
 id|physnode_map
-(braket
-id|PFN_TO_ELEMENT
-c_func
-(paren
-id|pfn
-)paren
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|nid
-op_eq
-op_minus
-l_int|1
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
-multiline_comment|/* address is not present */
-r_return
-id|nid
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * for each node mark the regions&n; *        TOPOFMEM = hi_shrd_mem_start + hi_shrd_mem_size&n; *&n; * need to be very careful to not mark 1024+ as belonging&n; * to node 0. will want 1027 to show as belonging to node 1&n; * example:&n; *  TOPOFMEM = 1024&n; * 1024 &gt;&gt; 8 = 4 (subtract 1 for starting at 0]&n; * tmpvar = TOPOFMEM - 256 = 768&n; * 1024 &gt;&gt; 8 = 4 (subtract 1 for starting at 0]&n; * &n; */
 DECL|function|initialize_physnode_map
 r_static

@@ -1148,7 +1148,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;PCI: Starting intialization.&bslash;n&quot;
+l_string|&quot;PCI: Starting initialization.&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI_BIOS

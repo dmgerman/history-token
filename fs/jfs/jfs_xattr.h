@@ -149,8 +149,6 @@ r_void
 op_star
 comma
 r_int
-comma
-r_int
 )paren
 suffix:semicolon
 r_extern
@@ -164,8 +162,6 @@ op_star
 comma
 r_char
 op_star
-comma
-r_int
 comma
 r_int
 )paren
@@ -182,8 +178,6 @@ comma
 r_const
 r_char
 op_star
-comma
-r_int
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* H_JFS_XATTR */

@@ -2977,7 +2977,7 @@ r_else
 multiline_comment|/* Evidently it can, began transmission */
 (brace
 multiline_comment|/* Begin if area verified */
-multiline_comment|/* ---------------------------------------------------------------&n;&t;&t;&t;&t;&t;The below function reads data from user memory.  This routine&n;&t;&t;&t;&t;&t;can not be used in an interrupt routine. (Because it may &n;&t;&t;&t;&t;&t;generate a page fault)  It can only be called while we can the&n;&t;&t;&t;&t;&t;user context is accessible. &n;&n;&t;&t;&t;&t;&t;The prototype is :&n;&t;&t;&t;&t;&t;inline void copy_from_user(void * to, const void * from,&n;&t;&t;&t;&t;&t;                          unsigned long count);&n;&n;&t;&t;&t;&t;&t;I also think (Check hackers guide) that optimization must&n;&t;&t;&t;&t;&t;be turned ON.  (Which sounds strange to me...)&n;&t;&n;&t;&t;&t;&t;&t;Remember copy_from_user WILL generate a page fault if the&n;&t;&t;&t;&t;&t;user memory being accessed has been swapped out.  This can&n;&t;&t;&t;&t;&t;cause this routine to temporarily sleep while this page&n;&t;&t;&t;&t;&t;fault is occuring.&n;&t;&t;&t;&t;&n;&t;&t;&t;&t;----------------------------------------------------------------- */
+multiline_comment|/* ---------------------------------------------------------------&n;&t;&t;&t;&t;&t;The below function reads data from user memory.  This routine&n;&t;&t;&t;&t;&t;can not be used in an interrupt routine. (Because it may &n;&t;&t;&t;&t;&t;generate a page fault)  It can only be called while we can the&n;&t;&t;&t;&t;&t;user context is accessible. &n;&n;&t;&t;&t;&t;&t;The prototype is :&n;&t;&t;&t;&t;&t;inline void copy_from_user(void * to, const void * from,&n;&t;&t;&t;&t;&t;                          unsigned long count);&n;&n;&t;&t;&t;&t;&t;I also think (Check hackers guide) that optimization must&n;&t;&t;&t;&t;&t;be turned ON.  (Which sounds strange to me...)&n;&t;&n;&t;&t;&t;&t;&t;Remember copy_from_user WILL generate a page fault if the&n;&t;&t;&t;&t;&t;user memory being accessed has been swapped out.  This can&n;&t;&t;&t;&t;&t;cause this routine to temporarily sleep while this page&n;&t;&t;&t;&t;&t;fault is occurring.&n;&t;&t;&t;&t;&n;&t;&t;&t;&t;----------------------------------------------------------------- */
 r_if
 c_cond
 (paren
@@ -5723,7 +5723,7 @@ op_eq
 l_int|0x1
 )paren
 (brace
-multiline_comment|/* Begin its an XI card */
+multiline_comment|/* Begin it&squot;s an XI card */
 multiline_comment|/* Is it a 64K board */
 r_if
 c_cond
@@ -8719,8 +8719,8 @@ id|ch-&gt;fepiflag
 op_assign
 id|iflag
 suffix:semicolon
-multiline_comment|/* ---------------------------------------------------------------&n;&t;&t;&t;Command sets channels iflag structure on the board. Such things &n;&t;&t;&t;as input soft flow control, handeling of parity errors, and&n;&t;&t;&t;break handeling are all set here.&n;&t;&t;------------------------------------------------------------------- */
-multiline_comment|/* break handeling, parity handeling, input stripping, flow control chars */
+multiline_comment|/* ---------------------------------------------------------------&n;&t;&t;&t;Command sets channels iflag structure on the board. Such things &n;&t;&t;&t;as input soft flow control, handling of parity errors, and&n;&t;&t;&t;break handling are all set here.&n;&t;&t;------------------------------------------------------------------- */
+multiline_comment|/* break handling, parity handling, input stripping, flow control chars */
 id|fepcmd
 c_func
 (paren
@@ -11324,7 +11324,7 @@ suffix:semicolon
 multiline_comment|/* End if channel valid */
 )brace
 multiline_comment|/* End pc_start */
-multiline_comment|/* ------------------------------------------------------------------&n;&t;The below routines pc_throttle and pc_unthrottle are used &n;&t;to slow (And resume) the receipt of data into the kernels&n;&t;receive buffers.  The exact occurence of this depends on the&n;&t;size of the kernels receive buffer and what the &squot;watermarks&squot;&n;&t;are set to for that buffer.  See the n_ttys.c file for more&n;&t;details. &n;______________________________________________________________________ */
+multiline_comment|/* ------------------------------------------------------------------&n;&t;The below routines pc_throttle and pc_unthrottle are used &n;&t;to slow (And resume) the receipt of data into the kernels&n;&t;receive buffers.  The exact occurrence of this depends on the&n;&t;size of the kernels receive buffer and what the &squot;watermarks&squot;&n;&t;are set to for that buffer.  See the n_ttys.c file for more&n;&t;details. &n;______________________________________________________________________ */
 multiline_comment|/* --------------------- Begin throttle  ----------------------- */
 DECL|function|pc_throttle
 r_static

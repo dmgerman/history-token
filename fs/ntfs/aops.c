@@ -3460,7 +3460,7 @@ id|bytes
 op_assign
 id|PAGE_CACHE_SIZE
 suffix:semicolon
-multiline_comment|/*&n;&t; * Here, we don&squot;t need to zero the out of bounds area everytime because&n;&t; * the below memcpy() already takes care of the mmap-at-end-of-file&n;&t; * requirements. If the file is converted to a non-resident one, then&n;&t; * the code path use is switched to the non-resident one where the&n;&t; * zeroing happens on each ntfs_writepage() invokation.&n;&t; *&n;&t; * The above also applies nicely when i_size is decreased.&n;&t; *&n;&t; * When i_size is increased, the memory between the old and new i_size&n;&t; * _must_ be zeroed (or overwritten with new data). Otherwise we will&n;&t; * expose data to userspace/disk which should never have been exposed.&n;&t; *&n;&t; * FIXME: Ensure that i_size increases do the zeroing/overwriting and&n;&t; * if we cannot guarantee that, then enable the zeroing below.&n;&t; */
+multiline_comment|/*&n;&t; * Here, we don&squot;t need to zero the out of bounds area everytime because&n;&t; * the below memcpy() already takes care of the mmap-at-end-of-file&n;&t; * requirements. If the file is converted to a non-resident one, then&n;&t; * the code path use is switched to the non-resident one where the&n;&t; * zeroing happens on each ntfs_writepage() invocation.&n;&t; *&n;&t; * The above also applies nicely when i_size is decreased.&n;&t; *&n;&t; * When i_size is increased, the memory between the old and new i_size&n;&t; * _must_ be zeroed (or overwritten with new data). Otherwise we will&n;&t; * expose data to userspace/disk which should never have been exposed.&n;&t; *&n;&t; * FIXME: Ensure that i_size increases do the zeroing/overwriting and&n;&t; * if we cannot guarantee that, then enable the zeroing below.&n;&t; */
 id|kaddr
 op_assign
 id|kmap_atomic
@@ -3968,7 +3968,7 @@ id|ablock
 )paren
 (brace
 singleline_comment|// TODO: block is above allocated_size, need to
-singleline_comment|// allocate it. Best done in one go to accomodate not
+singleline_comment|// allocate it. Best done in one go to accommodate not
 singleline_comment|// only block but all above blocks up to and including:
 singleline_comment|// ((page-&gt;index &lt;&lt; PAGE_CACHE_SHIFT) + to + blocksize
 singleline_comment|// - 1) &gt;&gt; blobksize_bits. Obviously will need to round

@@ -4170,7 +4170,7 @@ OL
 id|bmp-&gt;db_mapsize
 )paren
 suffix:semicolon
-multiline_comment|/* we&squot;ll attempt to extend the current allocation in place by&n;&t; * allocating the additional blocks as the blocks immediately&n;&t; * following the current allocation.  we only try to extend the&n;&t; * current allocation in place if the number of additional blocks&n;&t; * can fit into a dmap, the last block of the current allocation&n;&t; * is not the last block of the file system, and the start of the&n;&t; * inplace extension is not on an allocation group boundry.&n;&t; */
+multiline_comment|/* we&squot;ll attempt to extend the current allocation in place by&n;&t; * allocating the additional blocks as the blocks immediately&n;&t; * following the current allocation.  we only try to extend the&n;&t; * current allocation in place if the number of additional blocks&n;&t; * can fit into a dmap, the last block of the current allocation&n;&t; * is not the last block of the file system, and the start of the&n;&t; * inplace extension is not on an allocation group boundary.&n;&t; */
 r_if
 c_cond
 (paren

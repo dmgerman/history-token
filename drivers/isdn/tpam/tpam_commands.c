@@ -3196,7 +3196,7 @@ id|len
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* In loop mode, resend the data immediatly */
+multiline_comment|/* In loop mode, resend the data immediately */
 r_if
 c_cond
 (paren

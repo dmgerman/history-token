@@ -12472,7 +12472,7 @@ op_and_assign
 op_complement
 l_int|0x00000fff
 suffix:semicolon
-multiline_comment|/* Enable common receive/transmit clock pins, use IDL format.&n;&t; * Sync on falling edge, transmit rising clock, recieve falling&n;&t; * clock, delay 1 bit on both Tx and Rx.  Common Tx/Rx clocks and&n;&t; * sync.&n;&t; * Connect SMC2 to TSA.&n;&t; */
+multiline_comment|/* Enable common receive/transmit clock pins, use IDL format.&n;&t; * Sync on falling edge, transmit rising clock, receive falling&n;&t; * clock, delay 1 bit on both Tx and Rx.  Common Tx/Rx clocks and&n;&t; * sync.&n;&t; * Connect SMC2 to TSA.&n;&t; */
 id|cp-&gt;cp_simode
 op_or_assign
 l_int|0x80000141

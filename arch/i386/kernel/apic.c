@@ -2435,10 +2435,6 @@ id|mp_lapic_addr
 op_assign
 id|APIC_DEFAULT_PHYS_BASE
 suffix:semicolon
-id|boot_cpu_physical_apicid
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3785,14 +3781,8 @@ suffix:semicolon
 id|phys_cpu_present_map
 op_assign
 l_int|1
-suffix:semicolon
-id|apic_write_around
-c_func
-(paren
-id|APIC_ID
-comma
+op_lshift
 id|boot_cpu_physical_apicid
-)paren
 suffix:semicolon
 id|apic_pm_init2
 c_func

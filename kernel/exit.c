@@ -1890,7 +1890,7 @@ r_int
 id|traced
 )paren
 (brace
-multiline_comment|/* We dont want people slaying init.  */
+multiline_comment|/* We don&squot;t want people slaying init.  */
 r_if
 c_cond
 (paren

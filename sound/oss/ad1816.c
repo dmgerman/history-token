@@ -5536,7 +5536,7 @@ id|devc-&gt;dma_capture
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* card wont get added if resources could not be allocated&n;&t;&t;   thus we need not ckeck if allocation was successful */
+multiline_comment|/* card won&squot;t get added if resources could not be allocated&n;&t;&t;   thus we need not ckeck if allocation was successful */
 id|sound_free_dma
 (paren
 id|devc-&gt;dma_playback

@@ -569,17 +569,17 @@ r_case
 l_int|6
 suffix:colon
 multiline_comment|/* An Athlon/Duron */
-multiline_comment|/* Bit 15 of Athlon specific MSR 15, needs to be 0&n; &t;&t;&t; * to enable SSE on Palomino/Morgan CPU&squot;s.&n;&t;&t;&t; * If the BIOS didn&squot;t enable it already, enable it&n;&t;&t;&t; * here.&n;&t;&t;&t; */
+multiline_comment|/* Bit 15 of Athlon specific MSR 15, needs to be 0&n; &t;&t;&t; * to enable SSE on Palomino/Morgan/Barton CPU&squot;s.&n;&t;&t;&t; * If the BIOS didn&squot;t enable it already, enable it here.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
 id|c-&gt;x86_model
-op_eq
+op_ge
 l_int|6
-op_logical_or
+op_logical_and
 id|c-&gt;x86_model
-op_eq
-l_int|7
+op_le
+l_int|10
 )paren
 (brace
 r_if

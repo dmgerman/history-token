@@ -58,9 +58,9 @@ id|OSMR3
 op_assign
 id|OSCR
 op_plus
-l_int|36864
+l_int|368640
 suffix:semicolon
-multiline_comment|/* ... in 10 ms */
+multiline_comment|/* ... in 100 ms */
 )brace
 )brace
 eof

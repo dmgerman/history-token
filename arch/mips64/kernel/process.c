@@ -383,7 +383,7 @@ r_int
 )paren
 id|ret_from_fork
 suffix:semicolon
-multiline_comment|/*&n;&t; * New tasks loose permission to use the fpu. This accelerates context&n;&t; * switching for most programs since they don&squot;t use the fpu.&n;&t; */
+multiline_comment|/*&n;&t; * New tasks lose permission to use the fpu. This accelerates context&n;&t; * switching for most programs since they don&squot;t use the fpu.&n;&t; */
 id|p-&gt;thread.cp0_status
 op_assign
 id|read_32bit_cp0_register

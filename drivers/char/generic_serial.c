@@ -316,6 +316,7 @@ c_cond
 (paren
 id|from_user
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -341,6 +342,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+)brace
 )brace
 r_else
 id|memcpy

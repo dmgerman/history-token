@@ -1148,7 +1148,7 @@ DECL|member|bserr_addr
 id|iopaddr_t
 id|bserr_addr
 suffix:semicolon
-multiline_comment|/* Address where error occured */
+multiline_comment|/* Address where error occurred */
 DECL|member|bserr_intstat
 r_uint64
 id|bserr_intstat

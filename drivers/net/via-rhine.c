@@ -1,11 +1,11 @@
 multiline_comment|/* via-rhine.c: A Linux Ethernet device driver for VIA Rhine family chips. */
-multiline_comment|/*&n;&t;Written 1998-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is designed for the VIA VT86C100A Rhine-I. &n;&t;It also works with the 6102 Rhine-II, and 6105/6105M Rhine-III.   &n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&n;&t;This driver contains some changes from the original Donald Becker&n;&t;version. He may or may not be interested in bug reports on this&n;&t;code. You can find his versions at:&n;&t;http://www.scyld.com/network/via-rhine.html&n;&n;&n;&t;Linux kernel version history:&n;&t;&n;&t;LK1.1.0:&n;&t;- Jeff Garzik: softnet &squot;n stuff&n;&t;&n;&t;LK1.1.1:&n;&t;- Justin Guyett: softnet and locking fixes&n;&t;- Jeff Garzik: use PCI interface&n;&n;&t;LK1.1.2:&n;&t;- Urban Widmark: minor cleanups, merges from Becker 1.03a/1.04 versions&n;&n;&t;LK1.1.3:&n;&t;- Urban Widmark: use PCI DMA interface (with thanks to the eepro100.c&n;&t;&t;&t; code) update &quot;Theory of Operation&quot; with&n;&t;&t;&t; softnet/locking changes&n;&t;- Dave Miller: PCI DMA and endian fixups&n;&t;- Jeff Garzik: MOD_xxx race fixes, updated PCI resource allocation&n;&n;&t;LK1.1.4:&n;&t;- Urban Widmark: fix gcc 2.95.2 problem and&n;&t;                 remove writel&squot;s to fixed address 0x7c&n;&n;&t;LK1.1.5:&n;&t;- Urban Widmark: mdio locking, bounce buffer changes&n;&t;                 merges from Beckers 1.05 version&n;&t;                 added netif_running_on/off support&n;&n;&t;LK1.1.6:&n;&t;- Urban Widmark: merges from Beckers 1.08b version (VT6102 + mdio)&n;&t;                 set netif_running_on/off on startup, del_timer_sync&n;&t;&n;&t;LK1.1.7:&n;&t;- Manfred Spraul: added reset into tx_timeout&n;&n;&t;LK1.1.9:&n;&t;- Urban Widmark: merges from Beckers 1.10 version&n;&t;                 (media selection + eeprom reload)&n;&t;- David Vrabel:  merges from D-Link &quot;1.11&quot; version&n;&t;                 (disable WOL and PME on startup)&n;&n;&t;LK1.1.10:&n;&t;- Manfred Spraul: use &quot;singlecopy&quot; for unaligned buffers&n;&t;                  don&squot;t allocate bounce buffers for !ReqTxAlign cards&n;&n;&t;LK1.1.11:&n;&t;- David Woodhouse: Set dev-&gt;base_addr before the first time we call&n;&t;&t;&t;&t;&t;   wait_for_reset(). It&squot;s a lot happier that way.&n;&t;&t;&t;&t;&t;   Free np-&gt;tx_bufs only if we actually allocated it.&n;&n;&t;LK1.1.12:&n;&t;- Martin Eriksson: Allow Memory-Mapped IO to be enabled.&n;&n;&t;LK1.1.13 (jgarzik):&n;&t;- Add ethtool support&n;&t;- Replace some MII-related magic numbers with constants&n;&t;&n;&t;LK1.1.14 (Ivan G.):&n; &t;- fixes comments for Rhine-III&n;&t;- removes W_MAX_TIMEOUT (unused)&n;&t;- adds HasDavicomPhy for Rhine-I (basis: linuxfet driver; my card&n;&t;  is R-I and has Davicom chip, flag is referenced in kernel driver)&n;&t;- sends chip_id as a parameter to wait_for_reset since np is not&n;&t;  initialized on first call&n;&t;- changes mmio &quot;else if (chip_id==VT6102)&quot; to &quot;else&quot; so it will work&n;&t;  for Rhine-III&squot;s (documentation says same bit is correct)&t;&t;&n;&t;- transmit frame queue message is off by one - fixed&n;&t;- adds IntrNormalSummary to &quot;Something Wicked&quot; exclusion list&n;&t;  so normal interrupts will not trigger the message (src: Donald Becker)&n; &t;(Roger Luethi)&n; &t;- show confused chip where to continue after Tx error&n; &t;- location of collision counter is chip specific&n; &t;- allow selecting backoff algorithm (module parameter)&n;&n;&t;LK1.1.15 (jgarzik):&n;&t;- Use new MII lib helper generic_mii_ioctl&n;&n;&t;LK1.1.16 (Roger Luethi)&n;&t;- Etherleak fix&n;&t;- Handle Tx buffer underrun&n;&t;- Fix bugs in full duplex handling&n;&t;- New reset code uses &quot;force reset&quot; cmd on Rhine-II&n;&t;- Various clean ups&n;&n;*/
+multiline_comment|/*&n;&t;Written 1998-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is designed for the VIA VT86C100A Rhine-I. &n;&t;It also works with the 6102 Rhine-II, and 6105/6105M Rhine-III.   &n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&n;&t;This driver contains some changes from the original Donald Becker&n;&t;version. He may or may not be interested in bug reports on this&n;&t;code. You can find his versions at:&n;&t;http://www.scyld.com/network/via-rhine.html&n;&n;&n;&t;Linux kernel version history:&n;&t;&n;&t;LK1.1.0:&n;&t;- Jeff Garzik: softnet &squot;n stuff&n;&t;&n;&t;LK1.1.1:&n;&t;- Justin Guyett: softnet and locking fixes&n;&t;- Jeff Garzik: use PCI interface&n;&n;&t;LK1.1.2:&n;&t;- Urban Widmark: minor cleanups, merges from Becker 1.03a/1.04 versions&n;&n;&t;LK1.1.3:&n;&t;- Urban Widmark: use PCI DMA interface (with thanks to the eepro100.c&n;&t;&t;&t; code) update &quot;Theory of Operation&quot; with&n;&t;&t;&t; softnet/locking changes&n;&t;- Dave Miller: PCI DMA and endian fixups&n;&t;- Jeff Garzik: MOD_xxx race fixes, updated PCI resource allocation&n;&n;&t;LK1.1.4:&n;&t;- Urban Widmark: fix gcc 2.95.2 problem and&n;&t;                 remove writel&squot;s to fixed address 0x7c&n;&n;&t;LK1.1.5:&n;&t;- Urban Widmark: mdio locking, bounce buffer changes&n;&t;                 merges from Beckers 1.05 version&n;&t;                 added netif_running_on/off support&n;&n;&t;LK1.1.6:&n;&t;- Urban Widmark: merges from Beckers 1.08b version (VT6102 + mdio)&n;&t;                 set netif_running_on/off on startup, del_timer_sync&n;&t;&n;&t;LK1.1.7:&n;&t;- Manfred Spraul: added reset into tx_timeout&n;&n;&t;LK1.1.9:&n;&t;- Urban Widmark: merges from Beckers 1.10 version&n;&t;                 (media selection + eeprom reload)&n;&t;- David Vrabel:  merges from D-Link &quot;1.11&quot; version&n;&t;                 (disable WOL and PME on startup)&n;&n;&t;LK1.1.10:&n;&t;- Manfred Spraul: use &quot;singlecopy&quot; for unaligned buffers&n;&t;                  don&squot;t allocate bounce buffers for !ReqTxAlign cards&n;&n;&t;LK1.1.11:&n;&t;- David Woodhouse: Set dev-&gt;base_addr before the first time we call&n;&t;&t;&t;&t;&t;   wait_for_reset(). It&squot;s a lot happier that way.&n;&t;&t;&t;&t;&t;   Free np-&gt;tx_bufs only if we actually allocated it.&n;&n;&t;LK1.1.12:&n;&t;- Martin Eriksson: Allow Memory-Mapped IO to be enabled.&n;&n;&t;LK1.1.13 (jgarzik):&n;&t;- Add ethtool support&n;&t;- Replace some MII-related magic numbers with constants&n;&t;&n;&t;LK1.1.14 (Ivan G.):&n; &t;- fixes comments for Rhine-III&n;&t;- removes W_MAX_TIMEOUT (unused)&n;&t;- adds HasDavicomPhy for Rhine-I (basis: linuxfet driver; my card&n;&t;  is R-I and has Davicom chip, flag is referenced in kernel driver)&n;&t;- sends chip_id as a parameter to wait_for_reset since np is not&n;&t;  initialized on first call&n;&t;- changes mmio &quot;else if (chip_id==VT6102)&quot; to &quot;else&quot; so it will work&n;&t;  for Rhine-III&squot;s (documentation says same bit is correct)&t;&t;&n;&t;- transmit frame queue message is off by one - fixed&n;&t;- adds IntrNormalSummary to &quot;Something Wicked&quot; exclusion list&n;&t;  so normal interrupts will not trigger the message (src: Donald Becker)&n; &t;(Roger Luethi)&n; &t;- show confused chip where to continue after Tx error&n; &t;- location of collision counter is chip specific&n; &t;- allow selecting backoff algorithm (module parameter)&n;&n;&t;LK1.1.15 (jgarzik):&n;&t;- Use new MII lib helper generic_mii_ioctl&n;&n;&t;LK1.1.16 (Roger Luethi)&n;&t;- Etherleak fix&n;&t;- Handle Tx buffer underrun&n;&t;- Fix bugs in full duplex handling&n;&t;- New reset code uses &quot;force reset&quot; cmd on Rhine-II&n;&t;- Various clean ups&n;&n;&t;LK1.1.17 (Roger Luethi)&n;&t;- Fix race in via_rhine_start_tx()&n;&t;- On errors, wait for Tx engine to turn off before scavenging&n;&t;- Handle Tx descriptor write-back race on Rhine-II&n;&t;- Force flushing for PCI posted writes&n;&t;- More reset code changes&n;&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;via-rhine&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.1.16&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.1.17&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;February-15-2003&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;March-1-2003&quot;
 multiline_comment|/* A few user-configurable values.&n;   These may be modified when a driver module is loaded. */
 DECL|variable|debug
 r_static
@@ -34,7 +34,7 @@ r_static
 r_int
 id|backoff
 suffix:semicolon
-multiline_comment|/* Used to pass the media type, etc.&n;   Both &squot;options[]&squot; and &squot;full_duplex[]&squot; should exist for driver&n;   interoperability.&n;   The media type is usually passed in &squot;options[]&squot;.&n;   The default is autonegotation for speed and duplex.&n;     This should rarely be overridden.&n;   Use option values 0x10/0x20 for 10Mbps, 0x100,0x200 for 100Mbps.&n;   Use option values 0x10 and 0x100 for forcing half duplex fixed speed.&n;   Use option values 0x20 and 0x200 for forcing full duplex operation.&n;*/
+multiline_comment|/* Used to pass the media type, etc.&n;   Both &squot;options[]&squot; and &squot;full_duplex[]&squot; should exist for driver&n;   interoperability.&n;   The media type is usually passed in &squot;options[]&squot;.&n;   The default is autonegotiation for speed and duplex.&n;     This should rarely be overridden.&n;   Use option values 0x10/0x20 for 10Mbps, 0x100,0x200 for 100Mbps.&n;   Use option values 0x10 and 0x100 for forcing half duplex fixed speed.&n;   Use option values 0x20 and 0x200 for forcing full duplex operation.&n;*/
 DECL|macro|MAX_UNITS
 mdefine_line|#define MAX_UNITS 8&t;&t;/* More are supported, limit only on options */
 DECL|variable|options
@@ -473,6 +473,9 @@ macro_line|#else
 DECL|macro|RHINE_IOTYPE
 mdefine_line|#define RHINE_IOTYPE (PCI_USES_IO  | PCI_USES_MASTER | PCI_ADDR0)
 macro_line|#endif
+multiline_comment|/* Beware of PCI posted writes */
+DECL|macro|IOSYNC
+mdefine_line|#define IOSYNC&t;do { readb(dev-&gt;base_addr + StationAddr); } while (0)
 multiline_comment|/* directly indexed by enum via_rhine_chips, above */
 DECL|variable|__devinitdata
 r_static
@@ -756,12 +759,16 @@ op_assign
 l_int|0x81
 comma
 DECL|enumerator|StickyHW
+DECL|enumerator|IntrStatus2
 DECL|enumerator|WOLcrClr
 DECL|enumerator|WOLcgClr
-DECL|enumerator|PwrcsrClr
 id|StickyHW
 op_assign
 l_int|0x83
+comma
+id|IntrStatus2
+op_assign
+l_int|0x84
 comma
 id|WOLcrClr
 op_assign
@@ -771,6 +778,7 @@ id|WOLcgClr
 op_assign
 l_int|0xA7
 comma
+DECL|enumerator|PwrcsrClr
 id|PwrcsrClr
 op_assign
 l_int|0xAC
@@ -919,6 +927,17 @@ comma
 id|IntrAbnormalSummary
 op_assign
 l_int|0xC260
+comma
+DECL|enumerator|IntrTxDescRace
+id|IntrTxDescRace
+op_assign
+l_int|0x080000
+comma
+multiline_comment|/* mapped from IntrStatus2 */
+DECL|enumerator|IntrTxErrSummary
+id|IntrTxErrSummary
+op_assign
+l_int|0x082210
 comma
 )brace
 suffix:semicolon
@@ -1462,6 +1481,68 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+DECL|function|get_intr_status
+r_static
+r_inline
+id|u32
+id|get_intr_status
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_int
+id|ioaddr
+op_assign
+id|dev-&gt;base_addr
+suffix:semicolon
+r_struct
+id|netdev_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|u32
+id|intr_status
+suffix:semicolon
+id|intr_status
+op_assign
+id|readw
+c_func
+(paren
+id|ioaddr
+op_plus
+id|IntrStatus
+)paren
+suffix:semicolon
+multiline_comment|/* On Rhine-II, Bit 3 indicates Tx descriptor write-back race. */
+r_if
+c_cond
+(paren
+id|np-&gt;chip_id
+op_eq
+id|VT6102
+)paren
+id|intr_status
+op_or_assign
+id|readb
+c_func
+(paren
+id|ioaddr
+op_plus
+id|IntrStatus2
+)paren
+op_lshift
+l_int|16
+suffix:semicolon
+r_return
+id|intr_status
+suffix:semicolon
+)brace
 DECL|function|wait_for_reset
 r_static
 r_void
@@ -1486,11 +1567,12 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|5
-)paren
+r_int
+id|boguscnt
+op_assign
+l_int|20
+suffix:semicolon
+id|IOSYNC
 suffix:semicolon
 r_if
 c_cond
@@ -1510,7 +1592,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Reset did not complete in 5 us. &quot;
+l_string|&quot;%s: Reset not complete yet. &quot;
 l_string|&quot;Trying harder.&bslash;n&quot;
 comma
 id|name
@@ -1536,10 +1618,28 @@ id|MiscCmd
 suffix:semicolon
 multiline_comment|/* VT86C100A may need long delay after reset (dlink) */
 multiline_comment|/* Seen on Rhine-II as well (rl) */
+r_while
+c_loop
+(paren
+(paren
+id|readw
+c_func
+(paren
+id|ioaddr
+op_plus
+id|ChipCmd
+)paren
+op_amp
+id|CmdReset
+)paren
+op_logical_and
+op_decrement
+id|boguscnt
+)paren
 id|udelay
 c_func
 (paren
-l_int|100
+l_int|5
 )paren
 suffix:semicolon
 )brace
@@ -1558,22 +1658,12 @@ l_string|&quot;%s: Reset %s.&bslash;n&quot;
 comma
 id|name
 comma
-(paren
-id|readw
-c_func
-(paren
-id|ioaddr
-op_plus
-id|ChipCmd
-)paren
-op_amp
-id|CmdReset
-)paren
+id|boguscnt
 ques
 c_cond
-l_string|&quot;failed&quot;
-suffix:colon
 l_string|&quot;succeeded&quot;
+suffix:colon
+l_string|&quot;failed&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4993,6 +5083,9 @@ suffix:semicolon
 r_int
 id|entry
 suffix:semicolon
+id|u32
+id|intr_status
+suffix:semicolon
 multiline_comment|/* Caution: the write order is important here, set the field&n;&t;   with the &quot;ownership&quot; bits last. */
 multiline_comment|/* Calculate the next Tx descriptor entry. */
 id|entry
@@ -5237,7 +5330,27 @@ id|np-&gt;cur_tx
 op_increment
 suffix:semicolon
 multiline_comment|/* Non-x86 Todo: explicitly flush cache lines here. */
-multiline_comment|/* Wake the potentially-idle transmit channel. */
+multiline_comment|/*&n;&t; * Wake the potentially-idle transmit channel unless errors are&n;&t; * pending (the ISR must sort them out first).&n;&t; */
+id|intr_status
+op_assign
+id|get_intr_status
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|intr_status
+op_amp
+id|IntrTxErrSummary
+)paren
+op_eq
+l_int|0
+)paren
+(brace
 id|writew
 c_func
 (paren
@@ -5249,6 +5362,9 @@ id|dev-&gt;base_addr
 op_plus
 id|ChipCmd
 )paren
+suffix:semicolon
+)brace
+id|IOSYNC
 suffix:semicolon
 r_if
 c_cond
@@ -5351,17 +5467,32 @@ c_loop
 (paren
 id|intr_status
 op_assign
-id|readw
+id|get_intr_status
 c_func
 (paren
-id|ioaddr
-op_plus
-id|IntrStatus
+id|dev
 )paren
 )paren
 )paren
 (brace
 multiline_comment|/* Acknowledge all of the current interrupt sources ASAP. */
+r_if
+c_cond
+(paren
+id|intr_status
+op_amp
+id|IntrTxDescRace
+)paren
+id|writeb
+c_func
+(paren
+l_int|0x08
+comma
+id|ioaddr
+op_plus
+id|IntrStatus2
+)paren
+suffix:semicolon
 id|writew
 c_func
 (paren
@@ -5374,6 +5505,8 @@ op_plus
 id|IntrStatus
 )paren
 suffix:semicolon
+id|IOSYNC
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5385,7 +5518,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: Interrupt, status %4.4x.&bslash;n&quot;
+l_string|&quot;%s: Interrupt, status %8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -5423,21 +5556,78 @@ c_cond
 id|intr_status
 op_amp
 (paren
+id|IntrTxErrSummary
+op_or
 id|IntrTxDone
-op_or
-id|IntrTxError
-op_or
-id|IntrTxUnderrun
-op_or
-id|IntrTxAborted
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|intr_status
+op_amp
+id|IntrTxErrSummary
+)paren
+(brace
+r_int
+id|cnt
+op_assign
+l_int|20
+suffix:semicolon
+multiline_comment|/* Avoid scavenging before Tx engine turned off */
+r_while
+c_loop
+(paren
+(paren
+id|readw
+c_func
+(paren
+id|ioaddr
+op_plus
+id|ChipCmd
+)paren
+op_amp
+id|CmdTxOn
+)paren
+op_logical_and
+op_decrement
+id|cnt
+)paren
+id|udelay
+c_func
+(paren
+l_int|5
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|2
+op_logical_and
+op_logical_neg
+id|cnt
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: via_rhine_interrupt() &quot;
+l_string|&quot;Tx engine still on.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+)brace
 id|via_rhine_tx
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Abnormal error summary/uncommon events handlers. */
 r_if
 c_cond
@@ -5456,6 +5646,8 @@ op_or
 id|IntrTxAborted
 op_or
 id|IntrTxUnderrun
+op_or
+id|IntrTxDescRace
 )paren
 )paren
 id|via_rhine_error
@@ -5480,7 +5672,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;%s: Too much work at interrupt, &quot;
-l_string|&quot;status=0x%4.4x.&bslash;n&quot;
+l_string|&quot;status=%#8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -5502,7 +5694,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: exiting interrupt, status=%4.4x.&bslash;n&quot;
+l_string|&quot;%s: exiting interrupt, status=%8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -6488,9 +6680,17 @@ multiline_comment|/* Pre-emptively restart Rx engine. */
 id|writew
 c_func
 (paren
-id|CmdRxDemand
+id|readw
+c_func
+(paren
+id|dev-&gt;base_addr
+op_plus
+id|ChipCmd
+)paren
 op_or
-id|np-&gt;chip_cmd
+id|CmdRxOn
+op_or
+id|CmdRxDemand
 comma
 id|dev-&gt;base_addr
 op_plus
@@ -6540,7 +6740,6 @@ suffix:semicolon
 )brace
 DECL|function|via_rhine_restart_tx
 r_static
-r_inline
 r_void
 id|via_rhine_restart_tx
 c_func
@@ -6559,13 +6758,42 @@ op_assign
 id|dev-&gt;priv
 suffix:semicolon
 r_int
+id|ioaddr
+op_assign
+id|dev-&gt;base_addr
+suffix:semicolon
+r_int
 id|entry
 op_assign
 id|np-&gt;dirty_tx
 op_mod
 id|TX_RING_SIZE
 suffix:semicolon
-multiline_comment|/* We know better than the chip where it should continue */
+id|u32
+id|intr_status
+suffix:semicolon
+multiline_comment|/*&n;&t; * If new errors occured, we need to sort them out before doing Tx.&n;&t; * In that case the ISR will be back here RSN anyway.&n;&t; */
+id|intr_status
+op_assign
+id|get_intr_status
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|intr_status
+op_amp
+id|IntrTxErrSummary
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* We know better than the chip where it should continue. */
 id|writel
 c_func
 (paren
@@ -6579,7 +6807,7 @@ r_struct
 id|tx_desc
 )paren
 comma
-id|dev-&gt;base_addr
+id|ioaddr
 op_plus
 id|TxRingPtr
 )paren
@@ -6591,11 +6819,37 @@ id|CmdTxDemand
 op_or
 id|np-&gt;chip_cmd
 comma
-id|dev-&gt;base_addr
+id|ioaddr
 op_plus
 id|ChipCmd
 )paren
 suffix:semicolon
+id|IOSYNC
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* This should never happen */
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|1
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: via_rhine_restart_tx() &quot;
+l_string|&quot;Another error occured %8.8x.&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|intr_status
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|function|via_rhine_error
 r_static
@@ -6781,17 +7035,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Abort %4.4x, frame dropped.&bslash;n&quot;
+l_string|&quot;%s: Abort %8.8x, frame dropped.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|intr_status
-)paren
-suffix:semicolon
-id|via_rhine_restart_tx
-c_func
-(paren
-id|dev
 )paren
 suffix:semicolon
 )brace
@@ -6841,13 +7089,51 @@ comma
 id|np-&gt;tx_thresh
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|intr_status
+op_amp
+id|IntrTxDescRace
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|2
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: Tx descriptor write-back race.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|intr_status
+op_amp
+(paren
+id|IntrTxAborted
+op_or
+id|IntrTxUnderrun
+op_or
+id|IntrTxDescRace
+)paren
+)paren
 id|via_rhine_restart_tx
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6866,6 +7152,8 @@ op_or
 id|IntrTxAborted
 op_or
 id|IntrNormalSummary
+op_or
+id|IntrTxDescRace
 )paren
 )paren
 (brace
@@ -6880,24 +7168,11 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Something Wicked happened! %4.4x.&bslash;n&quot;
+l_string|&quot;%s: Something Wicked happened! %8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|intr_status
-)paren
-suffix:semicolon
-multiline_comment|/* Recovery for other fault sources not known. */
-id|writew
-c_func
-(paren
-id|CmdTxDemand
-op_or
-id|np-&gt;chip_cmd
-comma
-id|dev-&gt;base_addr
-op_plus
-id|ChipCmd
 )paren
 suffix:semicolon
 )brace

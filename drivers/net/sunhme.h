@@ -476,7 +476,7 @@ DECL|macro|CSCONFIG_RESV4
 mdefine_line|#define CSCONFIG_RESV4          0x4000  /* Unused...                   */
 DECL|macro|CSCONFIG_NDISABLE
 mdefine_line|#define CSCONFIG_NDISABLE       0x8000  /* Disable NRZI                */
-multiline_comment|/* Happy Meal descriptor rings and such.&n; * All descriptor rings must be aligned on a 2K boundry.&n; * All receive buffers must be 64 byte aligned.&n; * Always write the address first before setting the ownership&n; * bits to avoid races with the hardware scanning the ring.&n; */
+multiline_comment|/* Happy Meal descriptor rings and such.&n; * All descriptor rings must be aligned on a 2K boundary.&n; * All receive buffers must be 64 byte aligned.&n; * Always write the address first before setting the ownership&n; * bits to avoid races with the hardware scanning the ring.&n; */
 DECL|struct|happy_meal_rxd
 r_struct
 id|happy_meal_rxd

@@ -34,7 +34,7 @@ mdefine_line|#define QDIO_BUSY_BIT_PATIENCE 2000 /* in microsecs */
 DECL|macro|IQDIO_GLOBAL_LAPS
 mdefine_line|#define IQDIO_GLOBAL_LAPS 2 /* GLOBAL_LAPS are not used as we */
 DECL|macro|IQDIO_GLOBAL_LAPS_INT
-mdefine_line|#define IQDIO_GLOBAL_LAPS_INT 1 /* dont global summary */
+mdefine_line|#define IQDIO_GLOBAL_LAPS_INT 1 /* don&squot;t global summary */
 DECL|macro|IQDIO_LOCAL_LAPS
 mdefine_line|#define IQDIO_LOCAL_LAPS 4
 DECL|macro|IQDIO_LOCAL_LAPS_INT

@@ -2733,7 +2733,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif&t;/* PIC_LATER */
-multiline_comment|/* &n;&t; * If the latency timer has already been set, by prom or by the&n;&t; * card itself, use that value.  Otherwise look at the device&squot;s&n;&t; * &squot;min_gnt&squot; and attempt to calculate a latency time. &n;&t; *&n;&t; * NOTE: For now if the device is on the &squot;real time&squot; arbitration&n;&t; * ring we dont set the latency timer.  &n;&t; *&n;&t; * WAR: SGI&squot;s IOC3 and RAD devices target abort if you write a &n;&t; * single byte into their config space.  So don&squot;t set the Latency&n;&t; * Timer for these devices&n;&t; */
+multiline_comment|/* &n;&t; * If the latency timer has already been set, by prom or by the&n;&t; * card itself, use that value.  Otherwise look at the device&squot;s&n;&t; * &squot;min_gnt&squot; and attempt to calculate a latency time. &n;&t; *&n;&t; * NOTE: For now if the device is on the &squot;real time&squot; arbitration&n;&t; * ring we don&squot;t set the latency timer.  &n;&t; *&n;&t; * WAR: SGI&squot;s IOC3 and RAD devices target abort if you write a &n;&t; * single byte into their config space.  So don&squot;t set the Latency&n;&t; * Timer for these devices&n;&t; */
 id|lt_time
 op_assign
 id|do_pcibr_config_get
@@ -2960,7 +2960,7 @@ id|lt_time
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Get the PCI-X capability if running in PCI-X mode.  If the func&n;&t; * doesnt have a pcix capability, allocate a PCIIO_VENDOR_ID_NONE&n;&t; * pcibr_info struct so the device driver for that function is not&n;&t; * called.&n;&t; */
+multiline_comment|/* Get the PCI-X capability if running in PCI-X mode.  If the func&n;&t; * doesn&squot;t have a pcix capability, allocate a PCIIO_VENDOR_ID_NONE&n;&t; * pcibr_info struct so the device driver for that function is not&n;&t; * called.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5129,7 +5129,7 @@ id|pci_cfg_cmd_reg_add
 op_or_assign
 id|PCI_CMD_IO_SPACE
 suffix:semicolon
-multiline_comment|/*&n;&t; * The Adaptec 1160 FC Controller WAR #767995:&n;&t; * The part incorrectly ignores the upper 32 bits of a 64 bit&n;&t; * address when decoding references to it&squot;s registers so to&n;&t; * keep it from responding to a bus cycle that it shouldn&squot;t&n;&t; * we only use I/O space to get at it&squot;s registers.  Don&squot;t&n;&t; * enable memory space accesses on that PCI device.&n;&t; */
+multiline_comment|/*&n;&t; * The Adaptec 1160 FC Controller WAR #767995:&n;&t; * The part incorrectly ignores the upper 32 bits of a 64 bit&n;&t; * address when decoding references to its registers so to&n;&t; * keep it from responding to a bus cycle that it shouldn&squot;t&n;&t; * we only use I/O space to get at it&squot;s registers.  Don&squot;t&n;&t; * enable memory space accesses on that PCI device.&n;&t; */
 DECL|macro|FCADP_VENDID
 mdefine_line|#define FCADP_VENDID 0x9004 /* Adaptec Vendor ID from fcadp.h */
 DECL|macro|FCADP_DEVID

@@ -185,7 +185,7 @@ mdefine_line|#define pci_unmap_len(PTR, LEN_NAME)&t;&t;(0)
 DECL|macro|pci_unmap_len_set
 mdefine_line|#define pci_unmap_len_set(PTR, LEN_NAME, VAL)&t;do { } while (0)
 macro_line|#endif
-multiline_comment|/* Unmap a single streaming mode DMA translation.  The dma_addr and size&n; * must match what was provided for in a previous pci_map_single call.  All&n; * other usages are undefined.&n; *&n; * After this call, reads by the cpu to the buffer are guarenteed to see&n; * whatever the device wrote there.&n; */
+multiline_comment|/* Unmap a single streaming mode DMA translation.  The dma_addr and size&n; * must match what was provided for in a previous pci_map_single call.  All&n; * other usages are undefined.&n; *&n; * After this call, reads by the cpu to the buffer are guaranteed to see&n; * whatever the device wrote there.&n; */
 DECL|function|pci_unmap_single
 r_static
 r_inline

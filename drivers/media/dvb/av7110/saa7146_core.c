@@ -765,7 +765,7 @@ op_increment
 )paren
 (brace
 multiline_comment|/* see how many u32 have to be transferred;&n;&t;&t; * if there is only 1,&n;&t;&t; * we do not start the whole rps1-engine...&n;&t;&t; */
-multiline_comment|/* if address-error occured, don&squot;t retry */
+multiline_comment|/* if address-error occurred, don&squot;t retry */
 r_if
 c_cond
 (paren

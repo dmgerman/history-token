@@ -510,7 +510,7 @@ suffix:colon
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* This is the &quot;slow&quot; path for looking up a device_node from a&n; * pci_dev.  It will hunt for the device under it&squot;s parent&squot;s&n; * phb and then update sysdata for a future fastpath.&n; *&n; * It may also do fixups on the actual device since this happens&n; * on the first read/write.&n; *&n; * Note that it also must deal with devices that don&squot;t exist.&n; * In this case it may probe for real hardware (&quot;just in case&quot;)&n; * and add a device_node to the device tree if necessary.&n; *&n; */
+multiline_comment|/* This is the &quot;slow&quot; path for looking up a device_node from a&n; * pci_dev.  It will hunt for the device under its parent&squot;s&n; * phb and then update sysdata for a future fastpath.&n; *&n; * It may also do fixups on the actual device since this happens&n; * on the first read/write.&n; *&n; * Note that it also must deal with devices that don&squot;t exist.&n; * In this case it may probe for real hardware (&quot;just in case&quot;)&n; * and add a device_node to the device tree if necessary.&n; *&n; */
 DECL|function|fetch_dev_dn
 r_struct
 id|device_node

@@ -55,129 +55,127 @@ DECL|macro|IRQ_TO_GPIO_2_80
 mdefine_line|#define IRQ_TO_GPIO_2_80(i)&t;&bslash;&n;&t;&t;&t;((i) - PXA_IRQ(32) + 2)
 DECL|macro|IRQ_TO_GPIO
 mdefine_line|#define IRQ_TO_GPIO(i)&t;((i) - (((i) &gt; IRQ_GPIO1) ? IRQ_GPIO(2) : IRQ_GPIO(0)))
-DECL|macro|NR_IRQS
-mdefine_line|#define&t;NR_IRQS&t;&t;(IRQ_GPIO(80) + 1)
-macro_line|#if defined(CONFIG_SA1111)
+multiline_comment|/*&n; * The next 16 interrupts are for board specific purposes.  Since&n; * the kernel can only run on one machine at a time, we can re-use&n; * these.  If you need more, increase IRQ_BOARD_END, but keep it&n; * within sensible limits.&n; */
+DECL|macro|IRQ_BOARD_START
+mdefine_line|#define IRQ_BOARD_START&t;&t;(IRQ_GPIO(80) + 1)
+DECL|macro|IRQ_BOARD_END
+mdefine_line|#define IRQ_BOARD_END&t;&t;(IRQ_BOARD_START + 16)
 DECL|macro|IRQ_SA1111_START
-mdefine_line|#define IRQ_SA1111_START&t;(IRQ_GPIO(80) + 1)
-DECL|macro|SA1111_IRQ
-mdefine_line|#define SA1111_IRQ(x)&t;&t;(IRQ_SA1111_START + (x))
+mdefine_line|#define IRQ_SA1111_START&t;(IRQ_BOARD_END)
 DECL|macro|IRQ_GPAIN0
-mdefine_line|#define IRQ_GPAIN0&t;&t;SA1111_IRQ(0)
+mdefine_line|#define IRQ_GPAIN0&t;&t;(IRQ_BOARD_END + 0)
 DECL|macro|IRQ_GPAIN1
-mdefine_line|#define IRQ_GPAIN1&t;&t;SA1111_IRQ(1)
+mdefine_line|#define IRQ_GPAIN1&t;&t;(IRQ_BOARD_END + 1)
 DECL|macro|IRQ_GPAIN2
-mdefine_line|#define IRQ_GPAIN2&t;&t;SA1111_IRQ(2)
+mdefine_line|#define IRQ_GPAIN2&t;&t;(IRQ_BOARD_END + 2)
 DECL|macro|IRQ_GPAIN3
-mdefine_line|#define IRQ_GPAIN3&t;&t;SA1111_IRQ(3)
+mdefine_line|#define IRQ_GPAIN3&t;&t;(IRQ_BOARD_END + 3)
 DECL|macro|IRQ_GPBIN0
-mdefine_line|#define IRQ_GPBIN0&t;&t;SA1111_IRQ(4)
+mdefine_line|#define IRQ_GPBIN0&t;&t;(IRQ_BOARD_END + 4)
 DECL|macro|IRQ_GPBIN1
-mdefine_line|#define IRQ_GPBIN1&t;&t;SA1111_IRQ(5)
+mdefine_line|#define IRQ_GPBIN1&t;&t;(IRQ_BOARD_END + 5)
 DECL|macro|IRQ_GPBIN2
-mdefine_line|#define IRQ_GPBIN2&t;&t;SA1111_IRQ(6)
+mdefine_line|#define IRQ_GPBIN2&t;&t;(IRQ_BOARD_END + 6)
 DECL|macro|IRQ_GPBIN3
-mdefine_line|#define IRQ_GPBIN3&t;&t;SA1111_IRQ(7)
+mdefine_line|#define IRQ_GPBIN3&t;&t;(IRQ_BOARD_END + 7)
 DECL|macro|IRQ_GPBIN4
-mdefine_line|#define IRQ_GPBIN4&t;&t;SA1111_IRQ(8)
+mdefine_line|#define IRQ_GPBIN4&t;&t;(IRQ_BOARD_END + 8)
 DECL|macro|IRQ_GPBIN5
-mdefine_line|#define IRQ_GPBIN5&t;&t;SA1111_IRQ(9)
+mdefine_line|#define IRQ_GPBIN5&t;&t;(IRQ_BOARD_END + 9)
 DECL|macro|IRQ_GPCIN0
-mdefine_line|#define IRQ_GPCIN0&t;&t;SA1111_IRQ(10)
+mdefine_line|#define IRQ_GPCIN0&t;&t;(IRQ_BOARD_END + 10)
 DECL|macro|IRQ_GPCIN1
-mdefine_line|#define IRQ_GPCIN1&t;&t;SA1111_IRQ(11)
+mdefine_line|#define IRQ_GPCIN1&t;&t;(IRQ_BOARD_END + 11)
 DECL|macro|IRQ_GPCIN2
-mdefine_line|#define IRQ_GPCIN2&t;&t;SA1111_IRQ(12)
+mdefine_line|#define IRQ_GPCIN2&t;&t;(IRQ_BOARD_END + 12)
 DECL|macro|IRQ_GPCIN3
-mdefine_line|#define IRQ_GPCIN3&t;&t;SA1111_IRQ(13)
+mdefine_line|#define IRQ_GPCIN3&t;&t;(IRQ_BOARD_END + 13)
 DECL|macro|IRQ_GPCIN4
-mdefine_line|#define IRQ_GPCIN4&t;&t;SA1111_IRQ(14)
+mdefine_line|#define IRQ_GPCIN4&t;&t;(IRQ_BOARD_END + 14)
 DECL|macro|IRQ_GPCIN5
-mdefine_line|#define IRQ_GPCIN5&t;&t;SA1111_IRQ(15)
+mdefine_line|#define IRQ_GPCIN5&t;&t;(IRQ_BOARD_END + 15)
 DECL|macro|IRQ_GPCIN6
-mdefine_line|#define IRQ_GPCIN6&t;&t;SA1111_IRQ(16)
+mdefine_line|#define IRQ_GPCIN6&t;&t;(IRQ_BOARD_END + 16)
 DECL|macro|IRQ_GPCIN7
-mdefine_line|#define IRQ_GPCIN7&t;&t;SA1111_IRQ(17)
+mdefine_line|#define IRQ_GPCIN7&t;&t;(IRQ_BOARD_END + 17)
 DECL|macro|IRQ_MSTXINT
-mdefine_line|#define IRQ_MSTXINT&t;&t;SA1111_IRQ(18)
+mdefine_line|#define IRQ_MSTXINT&t;&t;(IRQ_BOARD_END + 18)
 DECL|macro|IRQ_MSRXINT
-mdefine_line|#define IRQ_MSRXINT&t;&t;SA1111_IRQ(19)
+mdefine_line|#define IRQ_MSRXINT&t;&t;(IRQ_BOARD_END + 19)
 DECL|macro|IRQ_MSSTOPERRINT
-mdefine_line|#define IRQ_MSSTOPERRINT&t;SA1111_IRQ(20)
+mdefine_line|#define IRQ_MSSTOPERRINT&t;(IRQ_BOARD_END + 20)
 DECL|macro|IRQ_TPTXINT
-mdefine_line|#define IRQ_TPTXINT&t;&t;SA1111_IRQ(21)
+mdefine_line|#define IRQ_TPTXINT&t;&t;(IRQ_BOARD_END + 21)
 DECL|macro|IRQ_TPRXINT
-mdefine_line|#define IRQ_TPRXINT&t;&t;SA1111_IRQ(22)
+mdefine_line|#define IRQ_TPRXINT&t;&t;(IRQ_BOARD_END + 22)
 DECL|macro|IRQ_TPSTOPERRINT
-mdefine_line|#define IRQ_TPSTOPERRINT&t;SA1111_IRQ(23)
+mdefine_line|#define IRQ_TPSTOPERRINT&t;(IRQ_BOARD_END + 23)
 DECL|macro|SSPXMTINT
-mdefine_line|#define SSPXMTINT&t;SA1111_IRQ(24)
+mdefine_line|#define SSPXMTINT&t;&t;(IRQ_BOARD_END + 24)
 DECL|macro|SSPRCVINT
-mdefine_line|#define SSPRCVINT&t;SA1111_IRQ(25)
+mdefine_line|#define SSPRCVINT&t;&t;(IRQ_BOARD_END + 25)
 DECL|macro|SSPROR
-mdefine_line|#define SSPROR&t;&t;SA1111_IRQ(26)
+mdefine_line|#define SSPROR&t;&t;&t;(IRQ_BOARD_END + 26)
 DECL|macro|AUDXMTDMADONEA
-mdefine_line|#define AUDXMTDMADONEA&t;SA1111_IRQ(32)
+mdefine_line|#define AUDXMTDMADONEA&t;&t;(IRQ_BOARD_END + 32)
 DECL|macro|AUDRCVDMADONEA
-mdefine_line|#define AUDRCVDMADONEA&t;SA1111_IRQ(33)
+mdefine_line|#define AUDRCVDMADONEA&t;&t;(IRQ_BOARD_END + 33)
 DECL|macro|AUDXMTDMADONEB
-mdefine_line|#define AUDXMTDMADONEB&t;SA1111_IRQ(34)
+mdefine_line|#define AUDXMTDMADONEB&t;&t;(IRQ_BOARD_END + 34)
 DECL|macro|AUDRCVDMADONEB
-mdefine_line|#define AUDRCVDMADONEB&t;SA1111_IRQ(35)
+mdefine_line|#define AUDRCVDMADONEB&t;&t;(IRQ_BOARD_END + 35)
 DECL|macro|AUDTFSR
-mdefine_line|#define AUDTFSR&t;&t;SA1111_IRQ(36)
+mdefine_line|#define AUDTFSR&t;&t;&t;(IRQ_BOARD_END + 36)
 DECL|macro|AUDRFSR
-mdefine_line|#define AUDRFSR&t;&t;SA1111_IRQ(37)
+mdefine_line|#define AUDRFSR&t;&t;&t;(IRQ_BOARD_END + 37)
 DECL|macro|AUDTUR
-mdefine_line|#define AUDTUR&t;&t;SA1111_IRQ(38)
+mdefine_line|#define AUDTUR&t;&t;&t;(IRQ_BOARD_END + 38)
 DECL|macro|AUDROR
-mdefine_line|#define AUDROR&t;&t;SA1111_IRQ(39)
+mdefine_line|#define AUDROR&t;&t;&t;(IRQ_BOARD_END + 39)
 DECL|macro|AUDDTS
-mdefine_line|#define AUDDTS&t;&t;SA1111_IRQ(40)
+mdefine_line|#define AUDDTS&t;&t;&t;(IRQ_BOARD_END + 40)
 DECL|macro|AUDRDD
-mdefine_line|#define AUDRDD&t;&t;SA1111_IRQ(41)
+mdefine_line|#define AUDRDD&t;&t;&t;(IRQ_BOARD_END + 41)
 DECL|macro|AUDSTO
-mdefine_line|#define AUDSTO&t;&t;SA1111_IRQ(42)
-DECL|macro|USBPWR
-mdefine_line|#define USBPWR&t;&t;SA1111_IRQ(43)
-DECL|macro|NIRQHCIM
-mdefine_line|#define NIRQHCIM&t;SA1111_IRQ(44)
-DECL|macro|HCIBUFFACC
-mdefine_line|#define HCIBUFFACC&t;SA1111_IRQ(45)
-DECL|macro|HCIRMTWKP
-mdefine_line|#define HCIRMTWKP&t;SA1111_IRQ(46)
-DECL|macro|NHCIMFCIR
-mdefine_line|#define NHCIMFCIR&t;SA1111_IRQ(47)
-DECL|macro|PORT_RESUME
-mdefine_line|#define PORT_RESUME&t;SA1111_IRQ(48)
-DECL|macro|S0_READY_NINT
-mdefine_line|#define S0_READY_NINT&t;SA1111_IRQ(49)
-DECL|macro|S1_READY_NINT
-mdefine_line|#define S1_READY_NINT&t;SA1111_IRQ(50)
-DECL|macro|S0_CD_VALID
-mdefine_line|#define S0_CD_VALID&t;SA1111_IRQ(51)
-DECL|macro|S1_CD_VALID
-mdefine_line|#define S1_CD_VALID&t;SA1111_IRQ(52)
-DECL|macro|S0_BVD1_STSCHG
-mdefine_line|#define S0_BVD1_STSCHG&t;SA1111_IRQ(53)
-DECL|macro|S1_BVD1_STSCHG
-mdefine_line|#define S1_BVD1_STSCHG&t;SA1111_IRQ(54)
-DECL|macro|SA1111_IRQ_MAX
-mdefine_line|#define SA1111_IRQ_MAX&t;SA1111_IRQ(54)
+mdefine_line|#define AUDSTO&t;&t;&t;(IRQ_BOARD_END + 42)
+DECL|macro|IRQ_USBPWR
+mdefine_line|#define IRQ_USBPWR&t;&t;(IRQ_BOARD_END + 43)
+DECL|macro|IRQ_HCIM
+mdefine_line|#define IRQ_HCIM&t;&t;(IRQ_BOARD_END + 44)
+DECL|macro|IRQ_HCIBUFFACC
+mdefine_line|#define IRQ_HCIBUFFACC&t;&t;(IRQ_BOARD_END + 45)
+DECL|macro|IRQ_HCIRMTWKP
+mdefine_line|#define IRQ_HCIRMTWKP&t;&t;(IRQ_BOARD_END + 46)
+DECL|macro|IRQ_NHCIMFCIR
+mdefine_line|#define IRQ_NHCIMFCIR&t;&t;(IRQ_BOARD_END + 47)
+DECL|macro|IRQ_USB_PORT_RESUME
+mdefine_line|#define IRQ_USB_PORT_RESUME&t;(IRQ_BOARD_END + 48)
+DECL|macro|IRQ_S0_READY_NINT
+mdefine_line|#define IRQ_S0_READY_NINT&t;(IRQ_BOARD_END + 49)
+DECL|macro|IRQ_S1_READY_NINT
+mdefine_line|#define IRQ_S1_READY_NINT&t;(IRQ_BOARD_END + 50)
+DECL|macro|IRQ_S0_CD_VALID
+mdefine_line|#define IRQ_S0_CD_VALID&t;&t;(IRQ_BOARD_END + 51)
+DECL|macro|IRQ_S1_CD_VALID
+mdefine_line|#define IRQ_S1_CD_VALID&t;&t;(IRQ_BOARD_END + 52)
+DECL|macro|IRQ_S0_BVD1_STSCHG
+mdefine_line|#define IRQ_S0_BVD1_STSCHG&t;(IRQ_BOARD_END + 53)
+DECL|macro|IRQ_S1_BVD1_STSCHG
+mdefine_line|#define IRQ_S1_BVD1_STSCHG&t;(IRQ_BOARD_END + 54)
+multiline_comment|/*&n; * Figure out the MAX IRQ number.&n; *&n; * If we have an SA1111, the max IRQ is S1_BVD1_STSCHG+1.&n; * Otherwise, we have the standard IRQs only.&n; */
+macro_line|#ifdef CONFIG_SA1111
 DECL|macro|NR_IRQS
-macro_line|#undef NR_IRQS
+mdefine_line|#define NR_IRQS&t;&t;&t;(IRQ_S1_BVD1_STSCHG + 1)
+macro_line|#elif defined(CONFIG_ARCH_LUBBOCK)
 DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS&t;&t;(SA1111_IRQ_MAX + 1)
-macro_line|#endif&t;
-singleline_comment|// defined(CONFIG_SA1111)
-macro_line|#if defined(CONFIG_ARCH_LUBBOCK) || defined(CONFIG_ARCH_PXA_IDP)
-macro_line|#if CONFIG_SA1111
-DECL|macro|LUBBOCK_IRQ
-mdefine_line|#define LUBBOCK_IRQ(x)&t;(SA1111_IRQ_MAX + 1 + (x))
+mdefine_line|#define NR_IRQS&t;&t;&t;(IRQ_BOARD_END)
 macro_line|#else
-DECL|macro|LUBBOCK_IRQ
-mdefine_line|#define LUBBOCK_IRQ(x)&t;(IRQ_GPIO(80) + 1 + (x))
+DECL|macro|NR_IRQS
+mdefine_line|#define NR_IRQS&t;&t;&t;(IRQ_BOARD_START)
 macro_line|#endif
+multiline_comment|/*&n; * Board specific IRQs.  Define them here.&n; * Do not surround them with ifdefs.&n; */
+DECL|macro|LUBBOCK_IRQ
+mdefine_line|#define LUBBOCK_IRQ(x)&t;&t;(IRQ_BOARD_START + (x))
 DECL|macro|LUBBOCK_SD_IRQ
 mdefine_line|#define LUBBOCK_SD_IRQ&t;&t;LUBBOCK_IRQ(0)
 DECL|macro|LUBBOCK_SA1111_IRQ
@@ -190,10 +188,4 @@ DECL|macro|LUBBOCK_UCB1400_IRQ
 mdefine_line|#define LUBBOCK_UCB1400_IRQ&t;LUBBOCK_IRQ(4)
 DECL|macro|LUBBOCK_BB_IRQ
 mdefine_line|#define LUBBOCK_BB_IRQ&t;&t;LUBBOCK_IRQ(5)
-DECL|macro|NR_IRQS
-macro_line|#undef NR_IRQS
-DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS&t;&t;(LUBBOCK_IRQ(5) + 1)
-macro_line|#endif&t;
-singleline_comment|// CONFIG_ARCH_LUBBOCK
 eof

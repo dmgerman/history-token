@@ -1053,16 +1053,5 @@ comma
 id|pxa_gpio_demux_handler
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We generally don&squot;t want the LCD IRQ being&n;&t; * enabled as soon as we request it.&n;&t; */
-id|set_irq_flags
-c_func
-(paren
-id|IRQ_LCD
-comma
-id|IRQF_VALID
-op_or
-id|IRQF_NOAUTOEN
-)paren
-suffix:semicolon
 )brace
 eof

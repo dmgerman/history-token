@@ -481,7 +481,7 @@ id|written
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* -------------------------------------------------------------------&n;  In case of SYNCRONOUS service:&n;  Does write data from stream in caller&squot;s buffer.&n;  Does return amount of data written to buffer&n;  Final flag is set on return if last part of structured frame&n;  was received&n;  return 0  if zero packet was received&n;  return -1 if stream is empty&n;    return -2 if read buffer does not profide sufficient space&n;              to accomodate entire segment&n;  max_length should be at least 68 bytes&n;  ------------------------------------------------------------------- */
+multiline_comment|/* -------------------------------------------------------------------&n;  In case of SYNCRONOUS service:&n;  Does write data from stream in caller&squot;s buffer.&n;  Does return amount of data written to buffer&n;  Final flag is set on return if last part of structured frame&n;  was received&n;  return 0  if zero packet was received&n;  return -1 if stream is empty&n;    return -2 if read buffer does not profide sufficient space&n;              to accommodate entire segment&n;  max_length should be at least 68 bytes&n;  ------------------------------------------------------------------- */
 DECL|function|diva_istream_read
 r_int
 id|diva_istream_read

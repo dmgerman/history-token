@@ -2066,6 +2066,11 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* GPE support */
+id|acpi_gbl_gpe_block_list_head
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/* Global notify handlers */
 id|acpi_gbl_sys_notify.handler
 op_assign
@@ -2163,14 +2168,6 @@ op_assign
 id|ACPI_DB_CONSOLE_OUTPUT
 suffix:semicolon
 multiline_comment|/* Hardware oriented */
-id|acpi_gbl_gpe_register_info
-op_assign
-l_int|NULL
-suffix:semicolon
-id|acpi_gbl_gpe_number_info
-op_assign
-l_int|NULL
-suffix:semicolon
 id|acpi_gbl_events_initialized
 op_assign
 id|FALSE

@@ -2639,7 +2639,7 @@ id|result
 op_ne
 l_int|0
 op_logical_and
-multiline_comment|/* An error occured */
+multiline_comment|/* An error occurred */
 id|SCpnt-&gt;sense_buffer
 (braket
 l_int|0
@@ -2825,7 +2825,7 @@ suffix:semicolon
 r_case
 id|RECOVERED_ERROR
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * An error occured, but it recovered.  Inform the&n;&t;&t;&t; * user, but make sure that it&squot;s not treated as a&n;&t;&t;&t; * hard error.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * An error occurred, but it recovered.  Inform the&n;&t;&t;&t; * user, but make sure that it&squot;s not treated as a&n;&t;&t;&t; * hard error.&n;&t;&t;&t; */
 id|print_sense
 c_func
 (paren

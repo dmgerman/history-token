@@ -86,7 +86,7 @@ suffix:semicolon
 r_case
 id|IEEE754_CLASS_DNORM
 suffix:colon
-multiline_comment|/* cant possibly be sp representable */
+multiline_comment|/* can&squot;t possibly be sp representable */
 id|SETCX
 c_func
 (paren

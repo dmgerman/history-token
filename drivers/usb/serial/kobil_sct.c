@@ -507,7 +507,7 @@ comma
 id|priv
 )paren
 suffix:semicolon
-singleline_comment|// search for the neccessary endpoints
+singleline_comment|// search for the necessary endpoints
 id|pdev
 op_assign
 id|serial-&gt;dev

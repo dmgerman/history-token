@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * (C) Hewlett-Packard Company&n; * &n; * SA1111 Bus Glue&n; *&n; * Written by Christopher Hoover &lt;ch@hpl.hp.com&gt;&n; * Based on fragments of previous driver by Rusell King et al.&n; *&n; * This file is licenced under the GPL.&n; */
+multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * (C) Copyright 2002 Hewlett-Packard Company&n; * &n; * SA1111 Bus Glue&n; *&n; * Written by Christopher Hoover &lt;ch@hpl.hp.com&gt;&n; * Based on fragments of previous driver by Rusell King et al.&n; *&n; * This file is licenced under the GPL.&n; */
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/arch/assabet.h&gt;
@@ -15,35 +15,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*-------------------------------------------------------------------------*/
-DECL|function|dev_to_ohci
-r_struct
-id|ohci_hcd
-op_star
-id|dev_to_ohci
-c_func
-(paren
-r_struct
-id|device
-op_star
-id|dev
-)paren
-(brace
-r_struct
-id|usb_hcd
-op_star
-id|hcd
-op_assign
-id|dev-&gt;driver_data
-suffix:semicolon
-r_return
-id|hcd_to_ohci
-c_func
-(paren
-id|hcd
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|function|sa1111_start_hc
 r_static

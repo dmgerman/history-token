@@ -385,7 +385,7 @@ suffix:semicolon
 multiline_comment|/* END dasd_3990_erp_examine */
 multiline_comment|/*&n; ***************************************************************************** &n; * SECTION ERP HANDLING&n; ***************************************************************************** &n; */
 multiline_comment|/*&n; ***************************************************************************** &n; * 24 and 32 byte sense ERP functions&n; ***************************************************************************** &n; */
-multiline_comment|/*&n; * DASD_3990_ERP_CLEANUP &n; *&n; * DESCRIPTION&n; *   Removes the already build but not neccessary ERP request and sets&n; *   the status of the original cqr / erp to the given (final) status&n; *&n; *  PARAMETER&n; *   erp&t;&t;request to be blocked&n; *   final_status&t;either DASD_CQR_DONE or DASD_CQR_FAILED &n; *&n; * RETURN VALUES&n; *   cqr&t;&t;original cqr&t;&t;   &n; */
+multiline_comment|/*&n; * DASD_3990_ERP_CLEANUP &n; *&n; * DESCRIPTION&n; *   Removes the already build but not necessary ERP request and sets&n; *   the status of the original cqr / erp to the given (final) status&n; *&n; *  PARAMETER&n; *   erp&t;&t;request to be blocked&n; *   final_status&t;either DASD_CQR_DONE or DASD_CQR_FAILED &n; *&n; * RETURN VALUES&n; *   cqr&t;&t;original cqr&t;&t;   &n; */
 r_static
 id|dasd_ccw_req_t
 op_star

@@ -266,7 +266,7 @@ op_amp
 l_int|0xffff0000
 suffix:semicolon
 macro_line|#ifdef RELOC
-multiline_comment|/*&n;&t; * Now copy kernel image to it&squot;s destination.&n;&t; */
+multiline_comment|/*&n;&t; * Now copy kernel image to its destination.&n;&t; */
 id|len
 op_assign
 (paren

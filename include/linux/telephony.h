@@ -27,7 +27,7 @@ DECL|macro|QTI_PHONEJACK_PCI
 mdefine_line|#define QTI_PHONEJACK_PCI&t;500
 DECL|macro|QTI_PHONECARD
 mdefine_line|#define QTI_PHONECARD&t;&t;600
-multiline_comment|/******************************************************************************&n;*&n;* The capabilities ioctls can inform you of the capabilities of each phone&n;* device installed in your system.  The PHONECTL_CAPABILITIES ioctl&n;* returns an integer value indicating the number of capabilities the   &n;* device has.  The PHONECTL_CAPABILITIES_LIST will fill an array of &n;* capability structs with all of it&squot;s capabilities.  The&n;* PHONECTL_CAPABILITIES_CHECK takes a single capability struct and returns&n;* a TRUE if the device has that capability, otherwise it returns false.&n;* &n;******************************************************************************/
+multiline_comment|/******************************************************************************&n;*&n;* The capabilities ioctls can inform you of the capabilities of each phone&n;* device installed in your system.  The PHONECTL_CAPABILITIES ioctl&n;* returns an integer value indicating the number of capabilities the   &n;* device has.  The PHONECTL_CAPABILITIES_LIST will fill an array of &n;* capability structs with all of its capabilities.  The&n;* PHONECTL_CAPABILITIES_CHECK takes a single capability struct and returns&n;* a TRUE if the device has that capability, otherwise it returns false.&n;* &n;******************************************************************************/
 r_typedef
 r_enum
 (brace

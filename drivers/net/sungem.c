@@ -13710,7 +13710,7 @@ op_amp
 id|gp-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/* It is guarenteed that the returned buffer will be at least&n;&t; * PAGE_SIZE aligned.&n;&t; */
+multiline_comment|/* It is guaranteed that the returned buffer will be at least&n;&t; * PAGE_SIZE aligned.&n;&t; */
 id|gp-&gt;init_block
 op_assign
 (paren

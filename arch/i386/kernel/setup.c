@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/i386/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *&n; *  Support of BIGMEM added by Gerhard Wichert, Siemens AG, July 1999&n; *&n; *  Memory region support&n; *&t;David Parsons &lt;orc@pell.chi.il.us&gt;, July-August 1999&n; *&n; *  Added E820 sanitization routine (removes overlapping memory regions);&n; *  Brian Moyle &lt;bmoyle@mvista.com&gt;, February 2001&n; *&n; * Moved CPU detection code to cpu/${cpu}.c&n; *    Patrick Mochel &lt;mochel@osdl.org&gt;, March 2002&n; *&n; */
+multiline_comment|/*&n; *  linux/arch/i386/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *&n; *  Support of BIGMEM added by Gerhard Wichert, Siemens AG, July 1999&n; *&n; *  Memory region support&n; *&t;David Parsons &lt;orc@pell.chi.il.us&gt;, July-August 1999&n; *&n; *  Added E820 sanitization routine (removes overlapping memory regions);&n; *  Brian Moyle &lt;bmoyle@mvista.com&gt;, February 2001&n; *&n; * Moved CPU detection code to cpu/${cpu}.c&n; *    Patrick Mochel &lt;mochel@osdl.org&gt;, March 2002&n; *&n; *  Provisions for empty E820 memory regions (reported by certain BIOSes).&n; *  Alex Achenbach &lt;xela@slit.de&gt;, December 2002.&n; *&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of initialization&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -1213,6 +1213,8 @@ r_int
 id|old_nr
 comma
 id|new_nr
+comma
+id|chg_nr
 suffix:semicolon
 r_int
 id|i
@@ -1307,7 +1309,7 @@ id|change_point_list
 id|i
 )braket
 suffix:semicolon
-multiline_comment|/* record all known change-points (starting and ending addresses) */
+multiline_comment|/* record all known change-points (starting and ending addresses),&n;&t;   omitting those that are for empty memory regions */
 id|chgidx
 op_assign
 l_int|0
@@ -1325,6 +1327,19 @@ id|old_nr
 suffix:semicolon
 id|i
 op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|biosmap
+(braket
+id|i
+)braket
+dot
+id|size
+op_ne
+l_int|0
 )paren
 (brace
 id|change_point
@@ -1391,6 +1406,12 @@ id|i
 )braket
 suffix:semicolon
 )brace
+)brace
+id|chg_nr
+op_assign
+id|chgidx
+suffix:semicolon
+multiline_comment|/* true number of change-points */
 multiline_comment|/* sort change-point list by memory addresses (low -&gt; high) */
 id|still_changing
 op_assign
@@ -1415,9 +1436,7 @@ l_int|1
 suffix:semicolon
 id|i
 OL
-l_int|2
-op_star
-id|old_nr
+id|chg_nr
 suffix:semicolon
 id|i
 op_increment
@@ -1569,9 +1588,7 @@ l_int|0
 suffix:semicolon
 id|chgidx
 OL
-l_int|2
-op_star
-id|old_nr
+id|chg_nr
 suffix:semicolon
 id|chgidx
 op_increment
@@ -2292,6 +2309,74 @@ comma
 id|mem_size
 comma
 id|E820_RAM
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_star
+id|from
+op_eq
+l_char|&squot;#&squot;
+)paren
+(brace
+id|start_at
+op_assign
+id|memparse
+c_func
+(paren
+id|from
+op_plus
+l_int|1
+comma
+op_amp
+id|from
+)paren
+suffix:semicolon
+id|add_memory_region
+c_func
+(paren
+id|start_at
+comma
+id|mem_size
+comma
+id|E820_ACPI
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_star
+id|from
+op_eq
+l_char|&squot;$&squot;
+)paren
+(brace
+id|start_at
+op_assign
+id|memparse
+c_func
+(paren
+id|from
+op_plus
+l_int|1
+comma
+op_amp
+id|from
+)paren
+suffix:semicolon
+id|add_memory_region
+c_func
+(paren
+id|start_at
+comma
+id|mem_size
+comma
+id|E820_RESERVED
 )paren
 suffix:semicolon
 )brace
@@ -3396,7 +3481,7 @@ op_eq
 id|E820_RAM
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; *  We dont&squot;t know which RAM region contains kernel data,&n;&t;&t;&t; *  so we try it repeatedly and let the resource manager&n;&t;&t;&t; *  test it.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *  We don&squot;t know which RAM region contains kernel data,&n;&t;&t;&t; *  so we try it repeatedly and let the resource manager&n;&t;&t;&t; *  test it.&n;&t;&t;&t; */
 id|request_resource
 c_func
 (paren

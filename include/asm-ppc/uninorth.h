@@ -61,7 +61,7 @@ DECL|macro|UNI_N_ARB_CTRL_QACK_DELAY
 mdefine_line|#define UNI_N_ARB_CTRL_QACK_DELAY&t;0x30
 DECL|macro|UNI_N_ARB_CTRL_QACK_DELAY105
 mdefine_line|#define UNI_N_ARB_CTRL_QACK_DELAY105&t;0x00
-multiline_comment|/* This one _might_ return the CPU number of the CPU reading it;&n; * the bootROM decides wether to boot or to sleep/spinloop depending&n; * on this register beeing 0 or not&n; */
+multiline_comment|/* This one _might_ return the CPU number of the CPU reading it;&n; * the bootROM decides whether to boot or to sleep/spinloop depending&n; * on this register beeing 0 or not&n; */
 DECL|macro|UNI_N_CPU_NUMBER
 mdefine_line|#define UNI_N_CPU_NUMBER&t;&t;0x0050
 multiline_comment|/* This register appear to be read by the bootROM to decide what&n; *  to do on a non-recoverable reset (powerup or wakeup)&n; */

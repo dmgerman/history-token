@@ -2877,7 +2877,7 @@ id|bridge-&gt;b_wid_tflush
 suffix:semicolon
 multiline_comment|/* wait until Bridge PIO complete */
 )brace
-multiline_comment|/*&n; * pcibr_intr_func()&n; *&n; * This is the pcibr interrupt &quot;wrapper&quot; function that is called,&n; * in interrupt context, to initiate the interrupt handler(s) registered&n; * (via pcibr_intr_alloc/connect) for the occuring interrupt. Non-threaded &n; * handlers will be called directly, and threaded handlers will have their &n; * thread woken up.&n; */
+multiline_comment|/*&n; * pcibr_intr_func()&n; *&n; * This is the pcibr interrupt &quot;wrapper&quot; function that is called,&n; * in interrupt context, to initiate the interrupt handler(s) registered&n; * (via pcibr_intr_alloc/connect) for the occurring interrupt. Non-threaded &n; * handlers will be called directly, and threaded handlers will have their &n; * thread woken up.&n; */
 r_void
 DECL|function|pcibr_intr_func
 id|pcibr_intr_func

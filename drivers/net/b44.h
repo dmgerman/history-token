@@ -820,7 +820,7 @@ id|addr
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* There are only 12 bits in the DMA engine for descriptor offsetting&n; * so the table must be aligned on a boundry of this.&n; */
+multiline_comment|/* There are only 12 bits in the DMA engine for descriptor offsetting&n; * so the table must be aligned on a boundary of this.&n; */
 DECL|macro|DMA_TABLE_BYTES
 mdefine_line|#define DMA_TABLE_BYTES&t;&t;4096
 DECL|macro|DESC_CTRL_LEN

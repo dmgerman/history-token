@@ -1546,7 +1546,7 @@ dot
 id|PState
 )paren
 (brace
-multiline_comment|/* XMAC was not initialized but Packet timeout occured */
+multiline_comment|/* XMAC was not initialized but Packet timeout occurred */
 id|SK_ERR_LOG
 c_func
 (paren
@@ -1584,7 +1584,7 @@ dot
 id|PState
 )paren
 (brace
-multiline_comment|/* XMAC was not initialized but Packet timeout occured */
+multiline_comment|/* XMAC was not initialized but Packet timeout occurred */
 id|SK_ERR_LOG
 c_func
 (paren
@@ -3120,7 +3120,7 @@ id|pPrt-&gt;PPrevFcs
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Note: The compare with zero above has to be done the way shown,&n;&t;&t;&t; * otherwise the Linux driver will have a problem.&n;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t; * We received a bunch of frames or no CRC error occured on the&n;&t;&t;&t; * network -&gt; ok.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * We received a bunch of frames or no CRC error occurred on the&n;&t;&t;&t; * network -&gt; ok.&n;&t;&t;&t; */
 id|pPrt-&gt;PPrevRx
 op_assign
 id|RxCts
@@ -4208,7 +4208,7 @@ multiline_comment|/*&n;&t;&t;&t; * Increase the Timeout counter.&n;&t;&t;&t; */
 id|pPrt-&gt;PAutoNegTOCt
 op_increment
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Timeout occured.&n;&t;&t;&t; * What do we need now?&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Timeout occurred.&n;&t;&t;&t; * What do we need now?&n;&t;&t;&t; */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -4237,7 +4237,7 @@ op_ne
 id|SK_LIPA_AUTO
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Timeout occured&n;&t;&t;&t;&t; * Set Link manually up.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Timeout occurred&n;&t;&t;&t;&t; * Set Link manually up.&n;&t;&t;&t;&t; */
 id|SkHWSenseSetNext
 c_func
 (paren
@@ -6354,7 +6354,7 @@ op_ge
 id|SK_AND_MAX_TO
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Timeout occured.&n;&t;&t;&t; * What do we need now?&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Timeout occurred.&n;&t;&t;&t; * What do we need now?&n;&t;&t;&t; */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -6383,7 +6383,7 @@ op_ne
 id|SK_LIPA_AUTO
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Timeout occured&n;&t;&t;&t;&t; * Set Link manually up.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Timeout occurred&n;&t;&t;&t;&t; * Set Link manually up.&n;&t;&t;&t;&t; */
 id|SkHWSenseSetNext
 c_func
 (paren

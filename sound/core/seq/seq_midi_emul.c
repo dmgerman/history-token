@@ -1541,7 +1541,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * intialize the MIDI status&n; */
+multiline_comment|/*&n; * initialize the MIDI status&n; */
 r_void
 DECL|function|snd_midi_channel_set_clear
 id|snd_midi_channel_set_clear

@@ -2913,7 +2913,7 @@ comma
 id|where
 )paren
 suffix:semicolon
-singleline_comment|// this register we dont handle this way
+singleline_comment|// this register we don&squot;t handle this way
 r_if
 c_cond
 (paren

@@ -273,7 +273,7 @@ mdefine_line|#define X25RES_INVAL_CALL_DATA&t;0x3B&t;/* errorneous call user dat
 DECL|macro|X25RES_ASYNC_PACKET
 mdefine_line|#define X25RES_ASYNC_PACKET&t;0x40&t;/* asynchronous packet received */
 DECL|macro|X25RES_PROTO_VIOLATION
-mdefine_line|#define X25RES_PROTO_VIOLATION&t;0x41&t;/* protocol violation occured */
+mdefine_line|#define X25RES_PROTO_VIOLATION&t;0x41&t;/* protocol violation occurred */
 DECL|macro|X25RES_PKT_TIMEOUT
 mdefine_line|#define X25RES_PKT_TIMEOUT&t;0x42&t;/* X.25 packet time out */
 DECL|macro|X25RES_PKT_RETRY_LIMIT

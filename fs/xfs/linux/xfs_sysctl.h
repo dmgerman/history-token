@@ -92,30 +92,10 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#else
-DECL|function|xfs_sysctl_register
-r_static
-id|__inline
-r_void
-id|xfs_sysctl_register
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
-suffix:semicolon
-DECL|function|xfs_sysctl_unregister
-r_static
-id|__inline
-r_void
-id|xfs_sysctl_unregister
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
-suffix:semicolon
-macro_line|#endif
+DECL|macro|xfs_sysctl_register
+macro_line|# define xfs_sysctl_register()&t;&t;do { } while (0)
+DECL|macro|xfs_sysctl_unregister
+macro_line|# define xfs_sysctl_unregister()&t;do { } while (0)
+macro_line|#endif /* CONFIG_SYSCTL */
 macro_line|#endif /* __XFS_SYSCTL_H__ */
 eof

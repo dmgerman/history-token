@@ -1761,7 +1761,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|// This &quot;look ahead&quot; function examines the IMQ for occurence of
+singleline_comment|// This &quot;look ahead&quot; function examines the IMQ for occurrence of
 singleline_comment|// &quot;type&quot;.  Returns 1 if found, 0 if not.
 DECL|function|PeekIMQEntry
 r_static

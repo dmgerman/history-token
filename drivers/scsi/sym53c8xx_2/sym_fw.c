@@ -1664,7 +1664,7 @@ macro_line|#endif
 r_case
 l_int|0x8
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; *  JUMP / CALL&n;&t;&t;&t; *  dont&squot;t relocate if relative :-)&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *  JUMP / CALL&n;&t;&t;&t; *  don&squot;t relocate if relative :-)&n;&t;&t;&t; */
 r_if
 c_cond
 (paren

@@ -1321,7 +1321,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* No more connections, so close IrLAP */
-multiline_comment|/* We don&squot;t want to change state just yet, because&n;&t;&t;&t; * we want to reflect accurately the real state of&n;&t;&t;&t; * the LAP, not the state we wish it was in,&n;&t;&t;&t; * so that we don&squot;t loose LM_LAP_CONNECT_REQUEST.&n;&t;&t;&t; * In some cases, IrLAP won&squot;t close the LAP&n;&t;&t;&t; * immediately. For example, it might still be&n;&t;&t;&t; * retrying packets or waiting for the pf bit.&n;&t;&t;&t; * As the LAP always send a DISCONNECT_INDICATION&n;&t;&t;&t; * in PCLOSE or SCLOSE, just change state on that.&n;&t;&t;&t; * Jean II */
+multiline_comment|/* We don&squot;t want to change state just yet, because&n;&t;&t;&t; * we want to reflect accurately the real state of&n;&t;&t;&t; * the LAP, not the state we wish it was in,&n;&t;&t;&t; * so that we don&squot;t lose LM_LAP_CONNECT_REQUEST.&n;&t;&t;&t; * In some cases, IrLAP won&squot;t close the LAP&n;&t;&t;&t; * immediately. For example, it might still be&n;&t;&t;&t; * retrying packets or waiting for the pf bit.&n;&t;&t;&t; * As the LAP always send a DISCONNECT_INDICATION&n;&t;&t;&t; * in PCLOSE or SCLOSE, just change state on that.&n;&t;&t;&t; * Jean II */
 id|irlap_disconnect_request
 c_func
 (paren

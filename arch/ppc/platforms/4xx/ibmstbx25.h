@@ -199,7 +199,7 @@ mdefine_line|#define IBM_CPM_AUD&t;0x08000000&t;/* Audio Decoder */
 DECL|macro|IBM_CPM_EBIU
 mdefine_line|#define IBM_CPM_EBIU&t;0x04000000&t;/* External Bus Interface Unit */
 DECL|macro|IBM_CPM_IRR
-mdefine_line|#define IBM_CPM_IRR&t;0x02000000&t;/* Infrared reciever */
+mdefine_line|#define IBM_CPM_IRR&t;0x02000000&t;/* Infrared receiver */
 DECL|macro|IBM_CPM_DMA
 mdefine_line|#define IBM_CPM_DMA&t;0x01000000&t;/* DMA controller */
 DECL|macro|IBM_CPM_UART2

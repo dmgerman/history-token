@@ -76,7 +76,7 @@ id|dsps_order
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* wether or not we mess around with power management */
+multiline_comment|/* whether or not we mess around with power management */
 DECL|variable|use_pm
 r_static
 r_int
@@ -167,7 +167,7 @@ DECL|macro|NEC_VERSA_SUBID1
 mdefine_line|#define NEC_VERSA_SUBID1&t;0x80581033
 DECL|macro|NEC_VERSA_SUBID2
 mdefine_line|#define NEC_VERSA_SUBID2&t;0x803c1033
-multiline_comment|/* changed so that I could actually find all the&n;&t;references and fix them up.  its a little more readable now. */
+multiline_comment|/* changed so that I could actually find all the&n;&t;references and fix them up.  it&squot;s a little more readable now. */
 DECL|macro|ESS_FMT_STEREO
 mdefine_line|#define ESS_FMT_STEREO&t;0x01
 DECL|macro|ESS_FMT_16BIT
@@ -2438,7 +2438,7 @@ id|read
 r_return
 id|val
 suffix:semicolon
-multiline_comment|/* oss can have many inputs, maestro cant.  try&n;&t;&t;to pick the &squot;new&squot; one */
+multiline_comment|/* oss can have many inputs, maestro can&squot;t.  try&n;&t;&t;to pick the &squot;new&squot; one */
 r_if
 c_cond
 (paren
@@ -6401,7 +6401,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* right channel records its split half.&n;&t;&t;&t;&t;*2 accomodates for rampant shifting earlier */
+multiline_comment|/* right channel records its split half.&n;&t;&t;&t;&t;*2 accommodates for rampant shifting earlier */
 id|pa
 op_assign
 id|virt_to_bus
@@ -15561,7 +15561,7 @@ op_plus
 l_int|0x1f
 )paren
 suffix:semicolon
-multiline_comment|/* it appears some maestros (dell 7500) only work if these are set,&n;&t;&t;regardless of wether we use the assp or not. */
+multiline_comment|/* it appears some maestros (dell 7500) only work if these are set,&n;&t;&t;regardless of whether we use the assp or not. */
 id|outb
 c_func
 (paren
@@ -16797,7 +16797,7 @@ comma
 id|n
 )paren
 suffix:semicolon
-multiline_comment|/* turn off power management unless:&n;&t; *&t;- the user explicitly asks for it&n;&t; * &t;&t;or&n;&t; *&t;&t;- we&squot;re not a 2e, lesser chipps seem to have problems.&n;&t; *&t;&t;- we&squot;re not on our _very_ small whitelist.  some implemenetations&n;&t; *&t;&t;&t;really dont&squot; like the pm code, others require it.&n;&t; *&t;&t;&t;feel free to expand this as required.&n;&t; */
+multiline_comment|/* turn off power management unless:&n;&t; *&t;- the user explicitly asks for it&n;&t; * &t;&t;or&n;&t; *&t;&t;- we&squot;re not a 2e, lesser chipps seem to have problems.&n;&t; *&t;&t;- we&squot;re not on our _very_ small whitelist.  some implemenetations&n;&t; *&t;&t;&t;really don&squot;t like the pm code, others require it.&n;&t; *&t;&t;&t;feel free to expand this as required.&n;&t; */
 DECL|macro|SUBSYSTEM_VENDOR
 mdefine_line|#define SUBSYSTEM_VENDOR(x) (x&amp;0xffff)
 r_if

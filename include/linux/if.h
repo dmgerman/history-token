@@ -59,7 +59,7 @@ mdefine_line|#define IF_IFACE_T1&t;0x1003&t;&t;/* T1 telco serial interface&t;*/
 DECL|macro|IF_IFACE_E1
 mdefine_line|#define IF_IFACE_E1&t;0x1004&t;&t;/* E1 telco serial interface&t;*/
 DECL|macro|IF_IFACE_SYNC_SERIAL
-mdefine_line|#define IF_IFACE_SYNC_SERIAL 0x1005&t;/* cant&squot;b be set by software&t;*/
+mdefine_line|#define IF_IFACE_SYNC_SERIAL 0x1005&t;/* can&squot;t be set by software&t;*/
 multiline_comment|/* For definitions see hdlc.h */
 DECL|macro|IF_PROTO_HDLC
 mdefine_line|#define IF_PROTO_HDLC&t;0x2000&t;&t;/* raw HDLC protocol&t;&t;*/

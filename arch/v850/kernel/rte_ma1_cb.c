@@ -210,7 +210,7 @@ id|tc
 op_or_assign
 id|NB85E_TIMER_C_TMCC0_CAE
 suffix:semicolon
-multiline_comment|/* Make sure the relevent port0/port1 pins are assigned&n;&t;   interrupt duty.  We used INTP001-INTP011 (don&squot;t screw with&n;&t;   INTP000 because the monitor uses it).  */
+multiline_comment|/* Make sure the relevant port0/port1 pins are assigned&n;&t;   interrupt duty.  We used INTP001-INTP011 (don&squot;t screw with&n;&t;   INTP000 because the monitor uses it).  */
 id|MA_PORT0_PMC
 op_or_assign
 l_int|0x4

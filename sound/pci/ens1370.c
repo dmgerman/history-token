@@ -342,7 +342,7 @@ mdefine_line|#define   ES_1370_CBUSY         (1&lt;&lt;9)&t;&t;/* CODEC is busy 
 DECL|macro|ES_1370_CWRIP
 mdefine_line|#define   ES_1370_CWRIP&t;&t;(1&lt;&lt;8)&t;&t;/* CODEC register write in progress */
 DECL|macro|ES_1371_SYNC_ERR
-mdefine_line|#define   ES_1371_SYNC_ERR&t;(1&lt;&lt;8)&t;&t;/* CODEC synchronization error occured */
+mdefine_line|#define   ES_1371_SYNC_ERR&t;(1&lt;&lt;8)&t;&t;/* CODEC synchronization error occurred */
 DECL|macro|ES_1371_VC
 mdefine_line|#define   ES_1371_VC(i)         (((i)&gt;&gt;6)&amp;0x03)&t;/* voice code from CCB module */
 DECL|macro|ES_1370_VC
@@ -364,9 +364,9 @@ mdefine_line|#define ES_REG_UART_DATA 0x08&t;/* R/W: UART data register */
 DECL|macro|ES_REG_UART_STATUS
 mdefine_line|#define ES_REG_UART_STATUS 0x09&t;/* R/O: UART status register */
 DECL|macro|ES_RXINT
-mdefine_line|#define   ES_RXINT&t;&t;(1&lt;&lt;7)&t;&t;/* RX interrupt occured */
+mdefine_line|#define   ES_RXINT&t;&t;(1&lt;&lt;7)&t;&t;/* RX interrupt occurred */
 DECL|macro|ES_TXINT
-mdefine_line|#define   ES_TXINT&t;&t;(1&lt;&lt;2)&t;&t;/* TX interrupt occured */
+mdefine_line|#define   ES_TXINT&t;&t;(1&lt;&lt;2)&t;&t;/* TX interrupt occurred */
 DECL|macro|ES_TXRDY
 mdefine_line|#define   ES_TXRDY&t;&t;(1&lt;&lt;1)&t;&t;/* transmitter ready */
 DECL|macro|ES_RXRDY
