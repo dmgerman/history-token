@@ -56,7 +56,10 @@ id|flags
 (brace
 r_int
 id|lflags
+op_assign
+id|__GFP_NOWARN
 suffix:semicolon
+multiline_comment|/* we&squot;ll report problems, if need be */
 macro_line|#ifdef DEBUG
 r_if
 c_cond

@@ -3279,29 +3279,31 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * The reservation head is behind the tail.&n;&t;&t; * This can only happen when the AIL is empty so the tail&n;&t;&t; * is equal to the head and the l_roundoff value in the&n;&t;&t; * log structure is taking up the difference between the&n;&t;&t; * reservation head and the tail.  The bytes accounted for&n;&t;&t; * by the l_roundoff field are temporarily &squot;lost&squot; to the&n;&t;&t; * reservation mechanism, but they are cleaned up when the&n;&t;&t; * log buffers that created them are reused.  These lost&n;&t;&t; * bytes are what allow the reservation head to fall behind&n;&t;&t; * the tail in the case that the log is &squot;empty&squot;.&n;&t;&t; * In this case we just want to return the size of the&n;&t;&t; * log as the amount of space left.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The reservation head is behind the tail.&n;&t;&t; * In this case we just want to return the size of the&n;&t;&t; * log as the amount of space left.&n;&t;&t; */
+id|xfs_fs_cmn_err
+c_func
+(paren
+id|CE_ALERT
+comma
+id|log-&gt;l_mp
+comma
+l_string|&quot;xlog_space_left: head behind tail&bslash;n&quot;
+l_string|&quot;  tail_cycle = %d, tail_bytes = %d&bslash;n&quot;
+l_string|&quot;  GH   cycle = %d, GH   bytes = %d&quot;
+comma
+id|tail_cycle
+comma
+id|tail_bytes
+comma
+id|cycle
+comma
+id|bytes
+)paren
+suffix:semicolon
 id|ASSERT
 c_func
 (paren
-(paren
-id|tail_cycle
-op_eq
-(paren
-id|cycle
-op_plus
-l_int|1
-)paren
-)paren
-op_logical_or
-(paren
-(paren
-id|bytes
-op_plus
-id|log-&gt;l_roundoff
-)paren
-op_ge
-id|tail_bytes
-)paren
+l_int|0
 )paren
 suffix:semicolon
 id|free_bytes
@@ -4937,7 +4939,7 @@ id|threshold_lsn
 suffix:semicolon
 )brace
 multiline_comment|/* xlog_grant_push_ail */
-multiline_comment|/*&n; * Flush out the in-core log (iclog) to the on-disk log in a synchronous or&n; * asynchronous fashion.  Previously, we should have moved the current iclog&n; * ptr in the log to point to the next available iclog.  This allows further&n; * write to continue while this code syncs out an iclog ready to go.&n; * Before an in-core log can be written out, the data section must be scanned&n; * to save away the 1st word of each BBSIZE block into the header.  We replace&n; * it with the current cycle count.  Each BBSIZE block is tagged with the&n; * cycle count because there in an implicit assumption that drives will&n; * guarantee that entire 512 byte blocks get written at once.  In other words,&n; * we can&squot;t have part of a 512 byte block written and part not written.  By&n; * tagging each block, we will know which blocks are valid when recovering&n; * after an unclean shutdown.&n; *&n; * This routine is single threaded on the iclog.  No other thread can be in&n; * this routine with the same iclog.  Changing contents of iclog can there-&n; * fore be done without grabbing the state machine lock.  Updating the global&n; * log will require grabbing the lock though.&n; *&n; * The entire log manager uses a logical block numbering scheme.  Only&n; * log_sync (and then only bwrite()) know about the fact that the log may&n; * not start with block zero on a given device.  The log block start offset&n; * is added immediately before calling bwrite().&n; */
+multiline_comment|/*&n; * Flush out the in-core log (iclog) to the on-disk log in an asynchronous &n; * fashion.  Previously, we should have moved the current iclog&n; * ptr in the log to point to the next available iclog.  This allows further&n; * write to continue while this code syncs out an iclog ready to go.&n; * Before an in-core log can be written out, the data section must be scanned&n; * to save away the 1st word of each BBSIZE block into the header.  We replace&n; * it with the current cycle count.  Each BBSIZE block is tagged with the&n; * cycle count because there in an implicit assumption that drives will&n; * guarantee that entire 512 byte blocks get written at once.  In other words,&n; * we can&squot;t have part of a 512 byte block written and part not written.  By&n; * tagging each block, we will know which blocks are valid when recovering&n; * after an unclean shutdown.&n; *&n; * This routine is single threaded on the iclog.  No other thread can be in&n; * this routine with the same iclog.  Changing contents of iclog can there-&n; * fore be done without grabbing the state machine lock.  Updating the global&n; * log will require grabbing the lock though.&n; *&n; * The entire log manager uses a logical block numbering scheme.  Only&n; * log_sync (and then only bwrite()) know about the fact that the log may&n; * not start with block zero on a given device.  The log block start offset&n; * is added immediately before calling bwrite().&n; */
 r_int
 DECL|function|xlog_sync
 id|xlog_sync
@@ -4974,6 +4976,10 @@ id|count_init
 suffix:semicolon
 multiline_comment|/* initial count before roundup */
 r_int
+id|roundoff
+suffix:semicolon
+multiline_comment|/* roundoff to BB or stripe */
+r_int
 id|split
 op_assign
 l_int|0
@@ -4981,6 +4987,22 @@ suffix:semicolon
 multiline_comment|/* split write into two regions */
 r_int
 id|error
+suffix:semicolon
+id|SPLDECL
+c_func
+(paren
+id|s
+)paren
+suffix:semicolon
+r_int
+id|v2
+op_assign
+id|XFS_SB_VERSION_HASLOGV2
+c_func
+(paren
+op_amp
+id|log-&gt;l_mp-&gt;m_sb
+)paren
 suffix:semicolon
 id|XFS_STATS_INC
 c_func
@@ -5007,12 +5029,7 @@ multiline_comment|/* Round out the log write size */
 r_if
 c_cond
 (paren
-id|XFS_SB_VERSION_HASLOGV2
-c_func
-(paren
-op_amp
-id|log-&gt;l_mp-&gt;m_sb
-)paren
+id|v2
 op_logical_and
 id|log-&gt;l_mp-&gt;m_sb.sb_logsunit
 OG
@@ -5052,35 +5069,103 @@ id|count_init
 )paren
 suffix:semicolon
 )brace
-id|iclog-&gt;ic_roundoff
+id|roundoff
 op_assign
 id|count
 op_minus
 id|count_init
 suffix:semicolon
-id|log-&gt;l_roundoff
-op_add_assign
-id|iclog-&gt;ic_roundoff
+id|ASSERT
+c_func
+(paren
+id|roundoff
+op_ge
+l_int|0
+)paren
 suffix:semicolon
+id|ASSERT
+c_func
+(paren
+(paren
+id|v2
+op_logical_and
+id|log-&gt;l_mp-&gt;m_sb.sb_logsunit
+OG
+l_int|1
+op_logical_and
+id|roundoff
+OL
+id|log-&gt;l_mp-&gt;m_sb.sb_logsunit
+)paren
+op_logical_or
+(paren
+id|log-&gt;l_mp-&gt;m_sb.sb_logsunit
+op_le
+l_int|1
+op_logical_and
+id|roundoff
+OL
+id|BBTOB
+c_func
+(paren
+l_int|1
+)paren
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* move grant heads by roundoff in sync */
+id|s
+op_assign
+id|GRANT_LOCK
+c_func
+(paren
+id|log
+)paren
+suffix:semicolon
+id|XLOG_GRANT_ADD_SPACE
+c_func
+(paren
+id|log
+comma
+id|roundoff
+comma
+l_char|&squot;w&squot;
+)paren
+suffix:semicolon
+id|XLOG_GRANT_ADD_SPACE
+c_func
+(paren
+id|log
+comma
+id|roundoff
+comma
+l_char|&squot;r&squot;
+)paren
+suffix:semicolon
+id|GRANT_UNLOCK
+c_func
+(paren
+id|log
+comma
+id|s
+)paren
+suffix:semicolon
+multiline_comment|/* put cycle number in every block */
 id|xlog_pack_data
 c_func
 (paren
 id|log
 comma
 id|iclog
+comma
+id|roundoff
 )paren
 suffix:semicolon
-multiline_comment|/* put cycle number in every block */
 multiline_comment|/* real byte length */
 r_if
 c_cond
 (paren
-id|XFS_SB_VERSION_HASLOGV2
-c_func
-(paren
-op_amp
-id|log-&gt;l_mp-&gt;m_sb
-)paren
+id|v2
 )paren
 (brace
 id|INT_SET
@@ -5092,7 +5177,7 @@ id|ARCH_CONVERT
 comma
 id|iclog-&gt;ic_offset
 op_plus
-id|iclog-&gt;ic_roundoff
+id|roundoff
 )paren
 suffix:semicolon
 )brace
@@ -8169,19 +8254,6 @@ op_ge
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* round off error from last write with this iclog */
-id|ticket-&gt;t_curr_res
-op_sub_assign
-id|iclog-&gt;ic_roundoff
-suffix:semicolon
-id|log-&gt;l_roundoff
-op_sub_assign
-id|iclog-&gt;ic_roundoff
-suffix:semicolon
-id|iclog-&gt;ic_roundoff
-op_assign
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/* If there is enough room to write everything, then do it.  Otherwise,&n;&t; * claim the rest of the region and make sure the XLOG_STATE_WANT_SYNC&n;&t; * bit is on, so this will get flushed out.  Don&squot;t update ic_offset&n;&t; * until you know exactly how many bytes get copied.  Therefore, wait&n;&t; * until later to update ic_offset.&n;&t; *&n;&t; * xlog_write() algorithm assumes that at least 2 xlog_op_header_t&squot;s&n;&t; * can fit into remaining data section.&n;&t; */
 r_if
@@ -10189,14 +10261,6 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* We are the only one with access to this&n;&t;&t;&t;&t; * iclog.  Flush it out now.  There should&n;&t;&t;&t;&t; * be a roundoff of zero to show that someone&n;&t;&t;&t;&t; * has already taken care of the roundoff from&n;&t;&t;&t;&t; * the previous sync.&n;&t;&t;&t;&t; */
-id|ASSERT
-c_func
-(paren
-id|iclog-&gt;ic_roundoff
-op_eq
-l_int|0
-)paren
-suffix:semicolon
 id|iclog-&gt;ic_refcnt
 op_increment
 suffix:semicolon

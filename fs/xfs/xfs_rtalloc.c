@@ -416,6 +416,8 @@ id|tp
 comma
 id|ino
 comma
+l_int|0
+comma
 id|XFS_ILOCK_EXCL
 comma
 op_amp
@@ -626,6 +628,8 @@ comma
 id|tp
 comma
 id|ino
+comma
+l_int|0
 comma
 id|XFS_ILOCK_EXCL
 comma
@@ -7471,6 +7475,8 @@ id|mp
 comma
 id|tp
 comma
+l_int|0
+comma
 id|mp-&gt;m_sb.sb_rbmino
 comma
 id|XFS_ILOCK_EXCL
@@ -7527,6 +7533,8 @@ comma
 id|tp
 comma
 id|mp-&gt;m_sb.sb_rsumino
+comma
+l_int|0
 comma
 id|XFS_ILOCK_EXCL
 comma
@@ -7976,6 +7984,8 @@ id|tp
 comma
 id|mp-&gt;m_sb.sb_rbmino
 comma
+l_int|0
+comma
 id|XFS_ILOCK_EXCL
 comma
 op_amp
@@ -8251,6 +8261,8 @@ comma
 id|tp
 comma
 id|mp-&gt;m_sb.sb_rbmino
+comma
+l_int|0
 comma
 id|XFS_ILOCK_EXCL
 comma
@@ -8705,6 +8717,8 @@ id|sbp-&gt;sb_rbmino
 comma
 l_int|0
 comma
+l_int|0
+comma
 op_amp
 id|mp-&gt;m_rbmip
 comma
@@ -8745,6 +8759,8 @@ comma
 l_int|NULL
 comma
 id|sbp-&gt;sb_rsumino
+comma
+l_int|0
 comma
 l_int|0
 comma
@@ -8853,6 +8869,8 @@ comma
 id|tp
 comma
 id|mp-&gt;m_sb.sb_rbmino
+comma
+l_int|0
 comma
 id|XFS_ILOCK_EXCL
 comma

@@ -1635,6 +1635,8 @@ id|xfs_ino_t
 comma
 id|uint
 comma
+id|uint
+comma
 r_struct
 id|xfs_inode
 op_star

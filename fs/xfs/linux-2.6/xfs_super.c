@@ -719,6 +719,16 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+id|ip-&gt;i_flags
+op_and_assign
+op_complement
+id|XFS_INEW
+suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
 id|unlock_new_inode
 c_func
 (paren
@@ -903,6 +913,7 @@ id|inode
 )paren
 suffix:semicolon
 )brace
+id|STATIC
 r_int
 DECL|function|xfs_inode_shake
 id|xfs_inode_shake

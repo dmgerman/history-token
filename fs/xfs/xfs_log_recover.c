@@ -12339,6 +12339,8 @@ id|ino
 comma
 l_int|0
 comma
+l_int|0
+comma
 op_amp
 id|ip
 comma
@@ -12688,6 +12690,9 @@ comma
 id|xlog_in_core_t
 op_star
 id|iclog
+comma
+r_int
+id|roundoff
 )paren
 (brace
 r_int
@@ -12702,7 +12707,7 @@ id|size
 op_assign
 id|iclog-&gt;ic_offset
 op_plus
-id|iclog-&gt;ic_roundoff
+id|roundoff
 suffix:semicolon
 id|uint
 id|cycle_lsn

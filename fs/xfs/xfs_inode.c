@@ -4310,6 +4310,8 @@ id|tp
 comma
 id|ino
 comma
+id|IGET_CREATE
+comma
 id|XFS_ILOCK_EXCL
 comma
 op_amp
