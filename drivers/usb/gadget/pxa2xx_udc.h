@@ -22,6 +22,9 @@ DECL|macro|UDCCFR_AREN
 mdefine_line|#define UDCCFR_AREN&t;(1 &lt;&lt; 7)&t;/* ACK response enable (now) */
 DECL|macro|UDCCFR_ACM
 mdefine_line|#define UDCCFR_ACM&t;(1 &lt;&lt; 2)&t;/* ACK control mode (wait for AREN) */
+multiline_comment|/* latest pxa255 errata define new &quot;must be one&quot; bits in UDCCFR */
+DECL|macro|UDCCFR_MB1
+mdefine_line|#define&t;UDCCFR_MB1&t;(0xff &amp; ~(UDCCFR_AREN|UDCCFR_ACM))
 multiline_comment|/*-------------------------------------------------------------------------*/
 r_struct
 id|pxa2xx_udc
@@ -245,8 +248,13 @@ id|got_irq
 suffix:colon
 l_int|1
 comma
-DECL|member|got_disc
-id|got_disc
+DECL|member|vbus
+id|vbus
+suffix:colon
+l_int|1
+comma
+DECL|member|pullup
+id|pullup
 suffix:colon
 l_int|1
 comma
@@ -310,15 +318,7 @@ multiline_comment|/* lubbock can also report usb connect/disconnect irqs */
 macro_line|#ifdef DEBUG
 DECL|macro|HEX_DISPLAY
 mdefine_line|#define HEX_DISPLAY(n)&t;if (machine_is_lubbock()) { LUB_HEXLED = (n); }
-DECL|macro|LED_CONNECTED_ON
-mdefine_line|#define LED_CONNECTED_ON&t;if (machine_is_lubbock()) { &bslash;&n;&t;DISCRETE_LED_ON(D26); }
-DECL|macro|LED_CONNECTED_OFF
-mdefine_line|#define LED_CONNECTED_OFF&t;if(machine_is_lubbock()) { &bslash;&n;&t;DISCRETE_LED_OFF(D26); LUB_HEXLED = 0; }
-DECL|macro|LED_EP0_ON
-mdefine_line|#define LED_EP0_ON&t;if (machine_is_lubbock()) { DISCRETE_LED_ON(D25); }
-DECL|macro|LED_EP0_OFF
-mdefine_line|#define LED_EP0_OFF&t;if (machine_is_lubbock()) { DISCRETE_LED_OFF(D25); }
-macro_line|#endif /* DEBUG */
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* LEDs are only for debug */
@@ -326,17 +326,18 @@ macro_line|#ifndef HEX_DISPLAY
 DECL|macro|HEX_DISPLAY
 mdefine_line|#define HEX_DISPLAY(n)&t;&t;do {} while(0)
 macro_line|#endif
+macro_line|#ifdef DEBUG
+macro_line|#include &lt;asm/leds.h&gt;
+DECL|macro|LED_CONNECTED_ON
+mdefine_line|#define LED_CONNECTED_ON&t;leds_event(led_green_on)
+DECL|macro|LED_CONNECTED_OFF
+mdefine_line|#define LED_CONNECTED_OFF&t;do { &bslash;&n;&t;&t;&t;&t;&t;leds_event(led_green_off); &bslash;&n;&t;&t;&t;&t;&t;HEX_DISPLAY(0); &bslash;&n;&t;&t;&t;&t;} while(0)
+macro_line|#endif
 macro_line|#ifndef LED_CONNECTED_ON
 DECL|macro|LED_CONNECTED_ON
 mdefine_line|#define LED_CONNECTED_ON&t;do {} while(0)
 DECL|macro|LED_CONNECTED_OFF
 mdefine_line|#define LED_CONNECTED_OFF&t;do {} while(0)
-macro_line|#endif
-macro_line|#ifndef LED_EP0_ON
-DECL|macro|LED_EP0_ON
-mdefine_line|#define LED_EP0_ON&t;&t;do {} while (0)
-DECL|macro|LED_EP0_OFF
-mdefine_line|#define LED_EP0_OFF&t;&t;do {} while (0)
 macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|variable|the_controller
