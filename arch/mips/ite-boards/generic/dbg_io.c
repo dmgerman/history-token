@@ -1,5 +1,5 @@
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_REMOTE_DEBUG
+macro_line|#ifdef CONFIG_KGDB
 multiline_comment|/* --- CONFIG --- */
 multiline_comment|/* we need uint32 uint8 */
 multiline_comment|/* #include &quot;types.h&quot; */

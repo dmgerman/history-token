@@ -385,10 +385,9 @@ id|SMP_RESCHEDULE_YOURSELF
 )paren
 suffix:semicolon
 )brace
-DECL|variable|call_lock
-r_static
+DECL|variable|smp_call_lock
 id|spinlock_t
-id|call_lock
+id|smp_call_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
@@ -497,7 +496,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|call_lock
+id|smp_call_lock
 )paren
 suffix:semicolon
 id|call_data
@@ -529,12 +528,9 @@ c_func
 id|cpu
 )paren
 op_logical_and
-id|cpu
+id|i
 op_ne
-id|smp_processor_id
-c_func
-(paren
-)paren
+id|cpu
 )paren
 id|core_send_ipi
 c_func
@@ -589,7 +585,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|call_lock
+id|smp_call_lock
 )paren
 suffix:semicolon
 r_return
@@ -627,11 +623,6 @@ r_int
 id|wait
 op_assign
 id|call_data-&gt;wait
-suffix:semicolon
-id|irq_enter
-c_func
-(paren
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Notify initiating CPU that I&squot;ve grabbed the data and am&n;&t; * about to execute the function.&n;&t; */
 id|mb

@@ -1,4 +1,4 @@
-multiline_comment|/*  *********************************************************************&n;    *  SB1250 Board Support Package&n;    *  &n;    *  DMA definitions&t;&t;&t;&t;File: sb1250_dma.h&n;    *  &n;    *  This module contains constants and macros useful for&n;    *  programming the SB1250&squot;s DMA controllers, both the data mover&n;    *  and the Ethernet DMA.&n;    *  &n;    *  SB1250 specification level:  User&squot;s manual 1/02/02&n;    *  &n;    *  Author:  Mitch Lichtenberg (mpl@broadcom.com)&n;    *  &n;    *********************************************************************  &n;    *&n;    *  Copyright 2000,2001,2002,2003&n;    *  Broadcom Corporation. All rights reserved.&n;    *  &n;    *  This program is free software; you can redistribute it and/or &n;    *  modify it under the terms of the GNU General Public License as &n;    *  published by the Free Software Foundation; either version 2 of &n;    *  the License, or (at your option) any later version.&n;    *&n;    *  This program is distributed in the hope that it will be useful,&n;    *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    *  GNU General Public License for more details.&n;    *&n;    *  You should have received a copy of the GNU General Public License&n;    *  along with this program; if not, write to the Free Software&n;    *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n;    *  MA 02111-1307 USA&n;    ********************************************************************* */
+multiline_comment|/*  *********************************************************************&n;    *  SB1250 Board Support Package&n;    *  &n;    *  DMA definitions&t;&t;&t;&t;File: sb1250_dma.h&n;    *  &n;    *  This module contains constants and macros useful for&n;    *  programming the SB1250&squot;s DMA controllers, both the data mover&n;    *  and the Ethernet DMA.&n;    *  &n;    *  SB1250 specification level:  User&squot;s manual 1/02/02&n;    *  &n;    *  Author:  Mitch Lichtenberg&n;    *  &n;    *********************************************************************  &n;    *&n;    *  Copyright 2000,2001,2002,2003&n;    *  Broadcom Corporation. All rights reserved.&n;    *  &n;    *  This program is free software; you can redistribute it and/or &n;    *  modify it under the terms of the GNU General Public License as &n;    *  published by the Free Software Foundation; either version 2 of &n;    *  the License, or (at your option) any later version.&n;    *&n;    *  This program is distributed in the hope that it will be useful,&n;    *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    *  GNU General Public License for more details.&n;    *&n;    *  You should have received a copy of the GNU General Public License&n;    *  along with this program; if not, write to the Free Software&n;    *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n;    *  MA 02111-1307 USA&n;    ********************************************************************* */
 macro_line|#ifndef _SB1250_DMA_H
 DECL|macro|_SB1250_DMA_H
 mdefine_line|#define _SB1250_DMA_H
@@ -23,12 +23,12 @@ DECL|macro|K_DMA_DESC_TYPE_RING_AL
 mdefine_line|#define K_DMA_DESC_TYPE_RING_AL&t;&t;0
 DECL|macro|K_DMA_DESC_TYPE_CHAIN_AL
 mdefine_line|#define K_DMA_DESC_TYPE_CHAIN_AL&t;1
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS3)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|K_DMA_DESC_TYPE_RING_UAL_WI
 mdefine_line|#define K_DMA_DESC_TYPE_RING_UAL_WI&t;2
 DECL|macro|K_DMA_DESC_TYPE_RING_UAL_RMW
 mdefine_line|#define K_DMA_DESC_TYPE_RING_UAL_RMW&t;3
-macro_line|#endif
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 DECL|macro|M_DMA_EOP_INT_EN
 mdefine_line|#define M_DMA_EOP_INT_EN            _SB_MAKEMASK1(3)
 DECL|macro|M_DMA_HWM_INT_EN
@@ -84,14 +84,14 @@ DECL|macro|M_DMA_NO_DSCR_UPDT
 mdefine_line|#define M_DMA_NO_DSCR_UPDT          _SB_MAKEMASK1(4)
 DECL|macro|M_DMA_L2CA
 mdefine_line|#define M_DMA_L2CA&t;&t;    _SB_MAKEMASK1(5)
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS3)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|M_DMA_RX_XTRA_STATUS
 mdefine_line|#define M_DMA_RX_XTRA_STATUS&t;    _SB_MAKEMASK1(6)
 DECL|macro|M_DMA_TX_CPU_PAUSE
 mdefine_line|#define M_DMA_TX_CPU_PAUSE&t;    _SB_MAKEMASK1(6)
 DECL|macro|M_DMA_TX_FC_PAUSE_EN
 mdefine_line|#define M_DMA_TX_FC_PAUSE_EN&t;    _SB_MAKEMASK1(7)
-macro_line|#endif
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 DECL|macro|M_DMA_MBZ1
 mdefine_line|#define M_DMA_MBZ1                  _SB_MAKEMASK(6,15)
 DECL|macro|S_DMA_HDR_SIZE
@@ -137,12 +137,12 @@ DECL|macro|S_DMA_CURDSCR_COUNT
 mdefine_line|#define S_DMA_CURDSCR_COUNT         _SB_MAKE64(40)
 DECL|macro|M_DMA_CURDSCR_COUNT
 mdefine_line|#define M_DMA_CURDSCR_COUNT         _SB_MAKEMASK(16,S_DMA_CURDSCR_COUNT)
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS3)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|M_DMA_TX_CH_PAUSE_ON
 mdefine_line|#define M_DMA_TX_CH_PAUSE_ON&t;    _SB_MAKEMASK1(56)
-macro_line|#endif
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 multiline_comment|/*&n; * Receive Packet Drop Registers&n; */
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS3)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|S_DMA_OODLOST_RX
 mdefine_line|#define S_DMA_OODLOST_RX           _SB_MAKE64(0)
 DECL|macro|M_DMA_OODLOST_RX
@@ -155,7 +155,7 @@ DECL|macro|M_DMA_EOP_COUNT_RX
 mdefine_line|#define M_DMA_EOP_COUNT_RX         _SB_MAKEMASK(8,S_DMA_EOP_COUNT_RX)
 DECL|macro|G_DMA_EOP_COUNT_RX
 mdefine_line|#define G_DMA_EOP_COUNT_RX(x)      _SB_GETVALUE(x,S_DMA_EOP_COUNT_RX,M_DMA_EOP_COUNT_RX)
-macro_line|#endif
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 multiline_comment|/*  *********************************************************************&n;    *  DMA Descriptors&n;    ********************************************************************* */
 multiline_comment|/*&n; * Descriptor doubleword &quot;A&quot;  (Table 7-12)&n; */
 DECL|macro|S_DMA_DSCRA_OFFSET
@@ -173,12 +173,12 @@ DECL|macro|M_DMA_DSCRA_A_ADDR
 mdefine_line|#define M_DMA_DSCRA_A_ADDR          _SB_MAKEMASK(35,S_DMA_DSCRA_A_ADDR)
 DECL|macro|M_DMA_DSCRA_A_ADDR_OFFSET
 mdefine_line|#define M_DMA_DSCRA_A_ADDR_OFFSET   (M_DMA_DSCRA_OFFSET | M_DMA_DSCRA_A_ADDR)
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS3)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|S_DMA_DSCRA_A_ADDR_UA
 mdefine_line|#define S_DMA_DSCRA_A_ADDR_UA        _SB_MAKE64(0)
 DECL|macro|M_DMA_DSCRA_A_ADDR_UA
 mdefine_line|#define M_DMA_DSCRA_A_ADDR_UA        _SB_MAKEMASK(40,S_DMA_DSCRA_A_ADDR_UA)
-macro_line|#endif
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 DECL|macro|S_DMA_DSCRA_A_SIZE
 mdefine_line|#define S_DMA_DSCRA_A_SIZE          _SB_MAKE64(40)
 DECL|macro|M_DMA_DSCRA_A_SIZE
@@ -187,14 +187,14 @@ DECL|macro|V_DMA_DSCRA_A_SIZE
 mdefine_line|#define V_DMA_DSCRA_A_SIZE(x)       _SB_MAKEVALUE(x,S_DMA_DSCRA_A_SIZE)
 DECL|macro|G_DMA_DSCRA_A_SIZE
 mdefine_line|#define G_DMA_DSCRA_A_SIZE(x)       _SB_GETVALUE(x,S_DMA_DSCRA_A_SIZE,M_DMA_DSCRA_A_SIZE)
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS3)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|S_DMA_DSCRA_DSCR_CNT
 mdefine_line|#define S_DMA_DSCRA_DSCR_CNT&t;    _SB_MAKE64(40)
 DECL|macro|M_DMA_DSCRA_DSCR_CNT
 mdefine_line|#define M_DMA_DSCRA_DSCR_CNT&t;    _SB_MAKEMASK(8,S_DMA_DSCRA_DSCR_CNT)
 DECL|macro|G_DMA_DSCRA_DSCR_CNT
 mdefine_line|#define G_DMA_DSCRA_DSCR_CNT(x)&t;    _SB_GETVALUE(x,S_DMA_DSCRA_DSCR_CNT,M_DMA_DSCRA_DSCR_CNT)
-macro_line|#endif
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 DECL|macro|M_DMA_DSCRA_INTERRUPT
 mdefine_line|#define M_DMA_DSCRA_INTERRUPT       _SB_MAKEMASK1(49)
 DECL|macro|M_DMA_DSCRA_OFFSETB
@@ -216,7 +216,7 @@ DECL|macro|V_DMA_DSCRB_OPTIONS
 mdefine_line|#define V_DMA_DSCRB_OPTIONS(x)      _SB_MAKEVALUE(x,S_DMA_DSCRB_OPTIONS)
 DECL|macro|G_DMA_DSCRB_OPTIONS
 mdefine_line|#define G_DMA_DSCRB_OPTIONS(x)      _SB_GETVALUE(x,S_DMA_DSCRB_OPTIONS,M_DMA_DSCRB_OPTIONS)
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS3)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|S_DMA_DSCRB_A_SIZE
 mdefine_line|#define S_DMA_DSCRB_A_SIZE        _SB_MAKE64(8)
 DECL|macro|M_DMA_DSCRB_A_SIZE
@@ -225,7 +225,7 @@ DECL|macro|V_DMA_DSCRB_A_SIZE
 mdefine_line|#define V_DMA_DSCRB_A_SIZE(x)     _SB_MAKEVALUE(x,S_DMA_DSCRB_A_SIZE)
 DECL|macro|G_DMA_DSCRB_A_SIZE
 mdefine_line|#define G_DMA_DSCRB_A_SIZE(x)     _SB_GETVALUE(x,S_DMA_DSCRB_A_SIZE,M_DMA_DSCRB_A_SIZE)
-macro_line|#endif
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 DECL|macro|R_DMA_DSCRB_ADDR
 mdefine_line|#define R_DMA_DSCRB_ADDR            _SB_MAKE64(0x10)
 multiline_comment|/* Note: Don&squot;t shift the address over, just mask it with the mask below */
@@ -243,7 +243,7 @@ DECL|macro|G_DMA_DSCRB_B_SIZE
 mdefine_line|#define G_DMA_DSCRB_B_SIZE(x)       _SB_GETVALUE(x,S_DMA_DSCRB_B_SIZE,M_DMA_DSCRB_B_SIZE)
 DECL|macro|M_DMA_DSCRB_B_VALID
 mdefine_line|#define M_DMA_DSCRB_B_VALID         _SB_MAKEMASK1(49)
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS3)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|S_DMA_DSCRB_PKT_SIZE_MSB
 mdefine_line|#define S_DMA_DSCRB_PKT_SIZE_MSB    _SB_MAKE64(48)
 DECL|macro|M_DMA_DSCRB_PKT_SIZE_MSB
@@ -252,7 +252,7 @@ DECL|macro|V_DMA_DSCRB_PKT_SIZE_MSB
 mdefine_line|#define V_DMA_DSCRB_PKT_SIZE_MSB(x) _SB_MAKEVALUE(x,S_DMA_DSCRB_PKT_SIZE_MSB)
 DECL|macro|G_DMA_DSCRB_PKT_SIZE_MSB
 mdefine_line|#define G_DMA_DSCRB_PKT_SIZE_MSB(x) _SB_GETVALUE(x,S_DMA_DSCRB_PKT_SIZE_MSB,M_DMA_DSCRB_PKT_SIZE_MSB)
-macro_line|#endif
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 DECL|macro|S_DMA_DSCRB_PKT_SIZE
 mdefine_line|#define S_DMA_DSCRB_PKT_SIZE        _SB_MAKE64(50)
 DECL|macro|M_DMA_DSCRB_PKT_SIZE
@@ -280,12 +280,12 @@ multiline_comment|/* Note: BADTCPCS is actually in DSCR_B options field */
 DECL|macro|M_DMA_ETHRX_BADTCPCS
 mdefine_line|#define M_DMA_ETHRX_BADTCPCS&t;_SB_MAKEMASK1(0)
 macro_line|#endif /* 1250 PASS2 || 112x PASS1 */
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS3)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|M_DMA_ETH_VLAN_FLAG
 mdefine_line|#define M_DMA_ETH_VLAN_FLAG&t;_SB_MAKEMASK1(1)
 DECL|macro|M_DMA_ETH_CRC_FLAG
 mdefine_line|#define M_DMA_ETH_CRC_FLAG&t;_SB_MAKEMASK1(2)
-macro_line|#endif
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 DECL|macro|S_DMA_ETHRX_RXCH
 mdefine_line|#define S_DMA_ETHRX_RXCH            53
 DECL|macro|M_DMA_ETHRX_RXCH
@@ -457,7 +457,7 @@ DECL|macro|V_DM_CUR_DSCR_DSCR_COUNT
 mdefine_line|#define V_DM_CUR_DSCR_DSCR_COUNT(r) _SB_MAKEVALUE(r,S_DM_CUR_DSCR_DSCR_COUNT)
 DECL|macro|G_DM_CUR_DSCR_DSCR_COUNT
 mdefine_line|#define G_DM_CUR_DSCR_DSCR_COUNT(r) _SB_GETVALUE(r,S_DM_CUR_DSCR_DSCR_COUNT,&bslash;&n;                                     M_DM_CUR_DSCR_DSCR_COUNT)
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS1)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 multiline_comment|/*&n; * Data Mover Channel Partial Result Registers&n; * Register: DM_PARTIAL_0&n; * Register: DM_PARTIAL_1&n; * Register: DM_PARTIAL_2&n; * Register: DM_PARTIAL_3&n; */
 DECL|macro|S_DM_PARTIAL_CRC_PARTIAL
 mdefine_line|#define S_DM_PARTIAL_CRC_PARTIAL      _SB_MAKE64(0)
@@ -477,8 +477,8 @@ DECL|macro|G_DM_PARTIAL_TCPCS_PARTIAL
 mdefine_line|#define G_DM_PARTIAL_TCPCS_PARTIAL(r) _SB_GETVALUE(r,S_DM_PARTIAL_TCPCS_PARTIAL,&bslash;&n;                                       M_DM_PARTIAL_TCPCS_PARTIAL)
 DECL|macro|M_DM_PARTIAL_ODD_BYTE
 mdefine_line|#define M_DM_PARTIAL_ODD_BYTE         _SB_MAKEMASK1(48)
-macro_line|#endif /* 112x PASS1 */
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS1)
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 multiline_comment|/*&n; * Data Mover CRC Definition Registers&n; * Register: CRC_DEF_0&n; * Register: CRC_DEF_1&n; */
 DECL|macro|S_CRC_DEF_CRC_INIT
 mdefine_line|#define S_CRC_DEF_CRC_INIT            _SB_MAKE64(0)
@@ -496,8 +496,8 @@ DECL|macro|V_CRC_DEF_CRC_POLY
 mdefine_line|#define V_CRC_DEF_CRC_POLY(r)         _SB_MAKEVALUE(r,S_CRC_DEF_CRC_POLY)
 DECL|macro|G_CRC_DEF_CRC_POLY
 mdefine_line|#define G_CRC_DEF_CRC_POLY(r)         _SB_GETVALUE(r,S_CRC_DEF_CRC_POLY,&bslash;&n;                                       M_CRC_DEF_CRC_POLY)
-macro_line|#endif /* 112x PASS1 */
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS1)
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 multiline_comment|/*&n; * Data Mover CRC/Checksum Definition Registers&n; * Register: CTCP_DEF_0&n; * Register: CTCP_DEF_1&n; */
 DECL|macro|S_CTCP_DEF_CRC_TXOR
 mdefine_line|#define S_CTCP_DEF_CRC_TXOR           _SB_MAKE64(0)
@@ -531,7 +531,7 @@ DECL|macro|K_CTCP_DEF_CRC_WIDTH_1
 mdefine_line|#define K_CTCP_DEF_CRC_WIDTH_1        2
 DECL|macro|M_CTCP_DEF_CRC_BIT_ORDER
 mdefine_line|#define M_CTCP_DEF_CRC_BIT_ORDER      _SB_MAKEMASK1(50)
-macro_line|#endif /* 112x PASS1 */
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 multiline_comment|/*&n; * Data Mover Descriptor Doubleword &quot;A&quot;  (Table 7-26)&n; */
 DECL|macro|S_DM_DSCRA_DST_ADDR
 mdefine_line|#define S_DM_DSCRA_DST_ADDR         _SB_MAKE64(0)
@@ -601,7 +601,7 @@ mdefine_line|#define M_DM_DSCRA_RD_BKOFF&t;    _SB_MAKEMASK1(52)
 DECL|macro|M_DM_DSCRA_WR_BKOFF
 mdefine_line|#define M_DM_DSCRA_WR_BKOFF&t;    _SB_MAKEMASK1(53)
 macro_line|#endif /* 1250 PASS2 || 112x PASS1 */
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS1)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|M_DM_DSCRA_TCPCS_EN
 mdefine_line|#define M_DM_DSCRA_TCPCS_EN         _SB_MAKEMASK1(54)
 DECL|macro|M_DM_DSCRA_TCPCS_RES
@@ -618,7 +618,7 @@ DECL|macro|M_DM_DSCRA_CRC_DFN
 mdefine_line|#define M_DM_DSCRA_CRC_DFN          _SB_MAKEMASK1(60)
 DECL|macro|M_DM_DSCRA_CRC_XBIT
 mdefine_line|#define M_DM_DSCRA_CRC_XBIT         _SB_MAKEMASK1(61)
-macro_line|#endif /* 112x PASS1 */
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 DECL|macro|M_DM_DSCRA_RESERVED2
 mdefine_line|#define M_DM_DSCRA_RESERVED2        _SB_MAKEMASK(3,61)
 multiline_comment|/*&n; * Data Mover Descriptor Doubleword &quot;B&quot;  (Table 7-25)&n; */

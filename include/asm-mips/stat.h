@@ -1,7 +1,10 @@
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1999, 2000 Ralf Baechle&n; * Copyright (C) 2000 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_STAT_H
 DECL|macro|_ASM_STAT_H
 mdefine_line|#define _ASM_STAT_H
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/sgidefs.h&gt;
+macro_line|#if (_MIPS_SIM == _MIPS_SIM_ABI32) || (_MIPS_SIM == _MIPS_SIM_NABI32)
 DECL|struct|stat
 r_struct
 id|stat
@@ -207,5 +210,114 @@ id|st_blocks
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
+macro_line|#if _MIPS_SIM == _MIPS_SIM_ABI64
+multiline_comment|/* The memory layout is the same as of struct stat64 of the 32-bit kernel.  */
+DECL|struct|stat
+r_struct
+id|stat
+(brace
+DECL|member|st_dev
+id|dev_t
+id|st_dev
+suffix:semicolon
+DECL|member|st_pad0
+r_int
+r_int
+id|st_pad0
+(braket
+l_int|3
+)braket
+suffix:semicolon
+multiline_comment|/* Reserved for st_dev expansion */
+DECL|member|st_ino
+r_int
+r_int
+id|st_ino
+suffix:semicolon
+DECL|member|st_mode
+id|mode_t
+id|st_mode
+suffix:semicolon
+DECL|member|st_nlink
+id|nlink_t
+id|st_nlink
+suffix:semicolon
+DECL|member|st_uid
+id|uid_t
+id|st_uid
+suffix:semicolon
+DECL|member|st_gid
+id|gid_t
+id|st_gid
+suffix:semicolon
+DECL|member|st_rdev
+id|dev_t
+id|st_rdev
+suffix:semicolon
+DECL|member|st_pad1
+r_int
+r_int
+id|st_pad1
+(braket
+l_int|3
+)braket
+suffix:semicolon
+multiline_comment|/* Reserved for st_rdev expansion */
+DECL|member|st_size
+id|off_t
+id|st_size
+suffix:semicolon
+multiline_comment|/*&n;&t; * Actually this should be timestruc_t st_atime, st_mtime and st_ctime&n;&t; * but we don&squot;t have it under Linux.&n;&t; */
+DECL|member|st_atime
+r_int
+r_int
+id|st_atime
+suffix:semicolon
+DECL|member|st_atime_nsec
+r_int
+r_int
+id|st_atime_nsec
+suffix:semicolon
+DECL|member|st_mtime
+r_int
+r_int
+id|st_mtime
+suffix:semicolon
+DECL|member|st_mtime_nsec
+r_int
+r_int
+id|st_mtime_nsec
+suffix:semicolon
+DECL|member|st_ctime
+r_int
+r_int
+id|st_ctime
+suffix:semicolon
+DECL|member|st_ctime_nsec
+r_int
+r_int
+id|st_ctime_nsec
+suffix:semicolon
+DECL|member|st_blksize
+r_int
+r_int
+id|st_blksize
+suffix:semicolon
+DECL|member|st_pad2
+r_int
+r_int
+id|st_pad2
+suffix:semicolon
+DECL|member|st_blocks
+r_int
+r_int
+id|st_blocks
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif /* _MIPS_SIM == _MIPS_SIM_ABI64 */
+DECL|macro|STAT_HAVE_NSEC
+mdefine_line|#define STAT_HAVE_NSEC 1
 macro_line|#endif /* _ASM_STAT_H */
 eof

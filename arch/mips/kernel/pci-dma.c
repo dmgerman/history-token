@@ -6,16 +6,20 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-DECL|function|pci_alloc_consistent
+macro_line|#ifndef UNCAC_BASE&t;/* Hack ... */
+DECL|macro|UNCAC_BASE
+mdefine_line|#define UNCAC_BASE&t;0x9000000000000000UL
+macro_line|#endif
+DECL|function|dma_alloc_coherent
 r_void
 op_star
-id|pci_alloc_consistent
+id|dma_alloc_coherent
 c_func
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
-id|hwdev
+id|dev
 comma
 r_int
 id|size
@@ -23,41 +27,43 @@ comma
 id|dma_addr_t
 op_star
 id|dma_handle
+comma
+r_int
+id|gfp
 )paren
 (brace
 r_void
 op_star
 id|ret
 suffix:semicolon
-r_int
+multiline_comment|/* ignore region specifiers */
 id|gfp
-op_assign
-id|GFP_ATOMIC
+op_and_assign
+op_complement
+(paren
+id|__GFP_DMA
+op_or
+id|__GFP_HIGHMEM
+)paren
 suffix:semicolon
-r_struct
-id|pci_bus
-op_star
-id|bus
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#ifdef CONFIG_ISA
 r_if
 c_cond
 (paren
-id|hwdev
+id|dev
 op_eq
 l_int|NULL
 op_logical_or
-id|hwdev-&gt;dma_mask
-op_ne
+(paren
+op_star
+id|dev-&gt;dma_mask
+OL
 l_int|0xffffffff
+)paren
 )paren
 id|gfp
 op_or_assign
 id|GFP_DMA
 suffix:semicolon
-macro_line|#endif
 id|ret
 op_assign
 (paren
@@ -94,6 +100,7 @@ comma
 id|size
 )paren
 suffix:semicolon
+macro_line|#if 0&t;/* Broken support for some platforms ...  */
 r_if
 c_cond
 (paren
@@ -118,6 +125,17 @@ id|ret
 )paren
 )paren
 suffix:semicolon
+macro_line|#else
+op_star
+id|dma_handle
+op_assign
+id|virt_to_phys
+c_func
+(paren
+id|ret
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_NONCOHERENT_IO
 id|dma_cache_wback_inv
 c_func
@@ -145,15 +163,15 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|pci_free_consistent
+DECL|function|dma_free_coherent
 r_void
-id|pci_free_consistent
+id|dma_free_coherent
 c_func
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
-id|hwdev
+id|dev
 comma
 r_int
 id|size

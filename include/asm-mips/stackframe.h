@@ -1,12 +1,11 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; *  Copyright (C) 1994, 1995, 1996, 2001 Ralf Baechle&n; *  Copyright (C) 1994, 1995, 1996 Paul M. Antoine.&n; */
-macro_line|#ifndef __ASM_STACKFRAME_H
-DECL|macro|__ASM_STACKFRAME_H
-mdefine_line|#define __ASM_STACKFRAME_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 95, 96, 99, 2001 Ralf Baechle&n; * Copyright (C) 1994, 1995, 1996 Paul M. Antoine.&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
+macro_line|#ifndef _ASM_STACKFRAME_H
+DECL|macro|_ASM_STACKFRAME_H
+mdefine_line|#define _ASM_STACKFRAME_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/addrspace.h&gt;
-macro_line|#include &lt;asm/mipsregs.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/asm.h&gt;
+macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/offset.h&gt;
 dot
 id|macro
@@ -17,7 +16,7 @@ id|push
 dot
 id|set
 id|noat
-id|sw
+id|LONG_S
 "$"
 l_int|1
 comma
@@ -36,7 +35,7 @@ id|macro
 id|SAVE_TEMP
 id|mfhi
 id|v1
-id|sw
+id|LONG_S
 "$"
 l_int|8
 comma
@@ -45,7 +44,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|9
 comma
@@ -54,7 +53,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 id|v1
 comma
 id|PT_HI
@@ -64,15 +63,16 @@ id|sp
 )paren
 id|mflo
 id|v1
-id|sw
+id|LONG_S
 "$"
 l_int|10
 comma
 id|PT_R10
+c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|11
 comma
@@ -81,7 +81,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 id|v1
 comma
 id|PT_LO
@@ -89,7 +89,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|12
 comma
@@ -98,7 +98,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|13
 comma
@@ -107,7 +107,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|14
 comma
@@ -116,7 +116,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|15
 comma
@@ -125,7 +125,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|24
 comma
@@ -139,7 +139,7 @@ id|endm
 dot
 id|macro
 id|SAVE_STATIC
-id|sw
+id|LONG_S
 "$"
 l_int|16
 comma
@@ -148,7 +148,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|17
 comma
@@ -157,7 +157,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|18
 comma
@@ -166,7 +166,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|19
 comma
@@ -175,7 +175,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|20
 comma
@@ -184,7 +184,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|21
 comma
@@ -193,7 +193,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|22
 comma
@@ -202,7 +202,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|23
 comma
@@ -211,7 +211,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|30
 comma
@@ -225,7 +225,9 @@ id|endm
 macro_line|#ifdef CONFIG_SMP
 dot
 id|macro
-id|GET_SAVED_SP
+id|get_saved_sp
+multiline_comment|/* SMP variation */
+macro_line|#ifdef CONFIG_MIPS32
 id|mfc0
 id|k0
 comma
@@ -255,7 +257,7 @@ id|addu
 id|k1
 comma
 id|k0
-id|lw
+id|LONG_L
 id|k1
 comma
 op_mod
@@ -267,12 +269,151 @@ id|kernelsp
 (paren
 id|k1
 )paren
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+id|MFC0
+id|k1
+comma
+id|CP0_CONTEXT
+id|dsra
+id|k1
+comma
+l_int|23
+id|lui
+id|k0
+comma
+op_mod
+id|hi
+c_func
+(paren
+id|pgd_current
+)paren
+id|daddiu
+id|k0
+comma
+op_mod
+id|lo
+c_func
+(paren
+id|pgd_current
+)paren
+id|dsubu
+id|k1
+comma
+id|k0
+id|lui
+id|k0
+comma
+op_mod
+id|hi
+c_func
+(paren
+id|kernelsp
+)paren
+id|daddu
+id|k1
+comma
+id|k0
+id|LONG_L
+id|k1
+comma
+op_mod
+id|lo
+c_func
+(paren
+id|kernelsp
+)paren
+(paren
+id|k1
+)paren
+macro_line|#endif
+dot
+id|endm
+dot
+id|macro
+id|set_saved_sp
+id|stackp
+id|temp
+id|temp2
+macro_line|#ifdef CONFIG_MIPS32
+id|mfc0
+"&bslash;"
+id|temp
+comma
+id|CP0_CONTEXT
+id|srl
+"&bslash;"
+id|temp
+comma
+l_int|23
+id|sll
+"&bslash;"
+id|temp
+comma
+l_int|2
+id|LONG_S
+"&bslash;"
+id|stackp
+comma
+id|kernelsp
+c_func
+(paren
+id|temp
+)paren
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+id|lw
+"&bslash;"
+id|temp
+comma
+id|TI_CPU
+c_func
+(paren
+id|gp
+)paren
+id|dsll
+"&bslash;"
+id|temp
+comma
+l_int|3
+id|lui
+"&bslash;"
+id|temp2
+comma
+op_mod
+id|hi
+c_func
+(paren
+id|kernelsp
+)paren
+id|daddu
+"&bslash;"
+id|temp
+comma
+"&bslash;"
+id|temp2
+id|LONG_S
+"&bslash;"
+id|stackp
+comma
+op_mod
+id|lo
+c_func
+(paren
+id|kernelsp
+)paren
+(paren
+"&bslash;"
+id|temp
+)paren
+macro_line|#endif
 dot
 id|endm
 macro_line|#else
 dot
 id|macro
-id|GET_SAVED_SP
+id|get_saved_sp
+multiline_comment|/* Uniprocessor variation */
 id|lui
 id|k1
 comma
@@ -282,7 +423,7 @@ c_func
 (paren
 id|kernelsp
 )paren
-id|lw
+id|LONG_L
 id|k1
 comma
 op_mod
@@ -296,11 +437,24 @@ id|k1
 )paren
 dot
 id|endm
+dot
+id|macro
+id|set_saved_sp
+id|stackp
+id|temp
+id|temp2
+id|LONG_S
+"&bslash;"
+id|stackp
+comma
+id|kernelsp
+dot
+id|endm
 macro_line|#endif
 macro_line|#ifdef CONFIG_PREEMPT
 dot
 id|macro
-id|BUMP_LOCK_COUNT
+id|bump_lock_count
 id|lw
 id|t0
 comma
@@ -330,7 +484,7 @@ id|endm
 macro_line|#else
 dot
 id|macro
-id|BUMP_LOCK_COUNT
+id|bump_lock_count
 dot
 id|endm
 macro_line|#endif
@@ -367,20 +521,20 @@ dot
 id|set
 id|reorder
 multiline_comment|/* Called from user mode, new stack. */
-id|GET_SAVED_SP
+id|get_saved_sp
 l_int|8
 suffix:colon
 id|move
 id|k0
 comma
 id|sp
-id|subu
+id|PTR_SUBU
 id|sp
 comma
 id|k1
 comma
 id|PT_SIZE
-id|sw
+id|LONG_S
 id|k0
 comma
 id|PT_R29
@@ -388,7 +542,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|3
 comma
@@ -397,7 +551,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|0
 comma
@@ -410,7 +564,7 @@ id|mfc0
 id|v1
 comma
 id|CP0_STATUS
-id|sw
+id|LONG_S
 "$"
 l_int|2
 comma
@@ -419,7 +573,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 id|v1
 comma
 id|PT_STATUS
@@ -427,7 +581,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|4
 comma
@@ -440,7 +594,7 @@ id|mfc0
 id|v1
 comma
 id|CP0_CAUSE
-id|sw
+id|LONG_S
 "$"
 l_int|5
 comma
@@ -449,7 +603,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 id|v1
 comma
 id|PT_CAUSE
@@ -457,7 +611,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|6
 comma
@@ -466,11 +620,11 @@ c_func
 (paren
 id|sp
 )paren
-id|mfc0
+id|MFC0
 id|v1
 comma
 id|CP0_EPC
-id|sw
+id|LONG_S
 "$"
 l_int|7
 comma
@@ -479,7 +633,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 id|v1
 comma
 id|PT_EPC
@@ -487,7 +641,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|25
 comma
@@ -496,7 +650,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|28
 comma
@@ -505,7 +659,7 @@ c_func
 (paren
 id|sp
 )paren
-id|sw
+id|LONG_S
 "$"
 l_int|31
 comma
@@ -520,13 +674,13 @@ l_int|28
 comma
 id|sp
 comma
-l_int|0x1fff
+id|_THREAD_MASK
 id|xori
 "$"
 l_int|28
 comma
-l_int|0x1fff
-id|BUMP_LOCK_COUNT
+id|_THREAD_MASK
+id|bump_lock_count
 dot
 id|set
 id|pop
@@ -550,7 +704,7 @@ id|push
 dot
 id|set
 id|noat
-id|lw
+id|LONG_L
 "$"
 l_int|1
 comma
@@ -567,7 +721,7 @@ id|endm
 dot
 id|macro
 id|RESTORE_TEMP
-id|lw
+id|LONG_L
 "$"
 l_int|24
 comma
@@ -576,7 +730,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|8
 comma
@@ -585,7 +739,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|9
 comma
@@ -597,7 +751,7 @@ id|sp
 id|mtlo
 "$"
 l_int|24
-id|lw
+id|LONG_L
 "$"
 l_int|24
 comma
@@ -606,15 +760,16 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|10
 comma
 id|PT_R10
+c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|11
 comma
@@ -626,7 +781,7 @@ id|sp
 id|mthi
 "$"
 l_int|24
-id|lw
+id|LONG_L
 "$"
 l_int|12
 comma
@@ -635,7 +790,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|13
 comma
@@ -644,7 +799,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|14
 comma
@@ -653,7 +808,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|15
 comma
@@ -662,7 +817,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|24
 comma
@@ -676,7 +831,7 @@ id|endm
 dot
 id|macro
 id|RESTORE_STATIC
-id|lw
+id|LONG_L
 "$"
 l_int|16
 comma
@@ -685,7 +840,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|17
 comma
@@ -694,7 +849,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|18
 comma
@@ -703,7 +858,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|19
 comma
@@ -712,7 +867,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|20
 comma
@@ -721,7 +876,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|21
 comma
@@ -730,7 +885,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|22
 comma
@@ -739,7 +894,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|23
 comma
@@ -748,7 +903,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|30
 comma
@@ -796,7 +951,7 @@ op_logical_and
 id|t0
 comma
 id|v1
-id|lw
+id|LONG_L
 id|v0
 comma
 id|PT_STATUS
@@ -823,7 +978,7 @@ id|mtc0
 id|v0
 comma
 id|CP0_STATUS
-id|lw
+id|LONG_L
 "$"
 l_int|31
 comma
@@ -832,7 +987,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|28
 comma
@@ -841,7 +996,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|25
 comma
@@ -850,7 +1005,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|7
 comma
@@ -859,7 +1014,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|6
 comma
@@ -868,7 +1023,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|5
 comma
@@ -877,7 +1032,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|4
 comma
@@ -886,7 +1041,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|3
 comma
@@ -895,7 +1050,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|2
 comma
@@ -915,7 +1070,7 @@ id|push
 dot
 id|set
 id|noreorder
-id|lw
+id|LONG_L
 id|k0
 comma
 id|PT_EPC
@@ -923,7 +1078,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 id|sp
 comma
 id|PT_R29
@@ -976,7 +1131,7 @@ op_logical_and
 id|t0
 comma
 id|v1
-id|lw
+id|LONG_L
 id|v0
 comma
 id|PT_STATUS
@@ -1003,7 +1158,7 @@ id|mtc0
 id|v0
 comma
 id|CP0_STATUS
-id|lw
+id|LONG_L
 id|v1
 comma
 id|PT_EPC
@@ -1011,11 +1166,11 @@ c_func
 (paren
 id|sp
 )paren
-id|mtc0
+id|MTC0
 id|v1
 comma
 id|CP0_EPC
-id|lw
+id|LONG_L
 "$"
 l_int|31
 comma
@@ -1024,7 +1179,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|28
 comma
@@ -1033,7 +1188,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|25
 comma
@@ -1042,7 +1197,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|7
 comma
@@ -1051,7 +1206,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|6
 comma
@@ -1060,7 +1215,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|5
 comma
@@ -1069,7 +1224,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|4
 comma
@@ -1078,7 +1233,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|3
 comma
@@ -1087,7 +1242,7 @@ c_func
 (paren
 id|sp
 )paren
-id|lw
+id|LONG_L
 "$"
 l_int|2
 comma
@@ -1101,7 +1256,7 @@ id|endm
 dot
 id|macro
 id|RESTORE_SP_AND_RET
-id|lw
+id|LONG_L
 id|sp
 comma
 id|PT_R29
@@ -1122,7 +1277,7 @@ macro_line|#endif
 dot
 id|macro
 id|RESTORE_SP
-id|lw
+id|LONG_L
 id|sp
 comma
 id|PT_R29
@@ -1236,5 +1391,5 @@ comma
 id|CP0_STATUS
 dot
 id|endm
-macro_line|#endif /* __ASM_STACKFRAME_H */
+macro_line|#endif /* _ASM_STACKFRAME_H */
 eof

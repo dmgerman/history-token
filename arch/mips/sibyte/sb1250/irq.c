@@ -1,22 +1,24 @@
-multiline_comment|/*&n; * Copyright (C) 2000, 2001 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
+multiline_comment|/*&n; * Copyright (C) 2000, 2001, 2002, 2003 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_regs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_int.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_uart.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_scd.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250.h&gt;
-macro_line|#include &lt;asm/sibyte/64bit.h&gt;
 multiline_comment|/*&n; * These are the routines that handle all the low level interrupt stuff.&n; * Actions handled here are: initialization of the interrupt map, requesting of&n; * interrupt lines by handlers, dispatching if interrupts to handlers, probing&n; * for interrupt lines&n; */
 DECL|macro|shutdown_sb1250_irq
 mdefine_line|#define shutdown_sb1250_irq&t;disable_sb1250_irq
@@ -95,6 +97,7 @@ id|ldt_eoi_space
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_KGDB
+macro_line|#include &lt;asm/gdb-stub.h&gt;
 r_extern
 r_void
 id|breakpoint
@@ -103,14 +106,21 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|variable|kgdb_irq
+r_static
+r_int
+id|kgdb_irq
+suffix:semicolon
+macro_line|#ifdef CONFIG_GDB_CONSOLE
 r_extern
 r_void
-id|set_debug_traps
+id|register_gdb_console
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* kgdb is on when configured.  Pass &quot;nokgdb&quot; kernel arg to turn it off */
 DECL|variable|kgdb_flag
 r_static
@@ -135,6 +145,9 @@ id|kgdb_flag
 op_assign
 l_int|0
 suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
 )brace
 id|__setup
 c_func
@@ -144,6 +157,21 @@ comma
 id|nokgdb
 )paren
 suffix:semicolon
+multiline_comment|/* Default to UART1 */
+DECL|variable|kgdb_port
+r_int
+id|kgdb_port
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#ifdef CONFIG_SIBYTE_SB1250_DUART
+r_extern
+r_char
+id|sb1250_duart_present
+(braket
+)braket
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 DECL|variable|sb1250_irq_type
 r_static
@@ -217,7 +245,7 @@ id|flags
 suffix:semicolon
 id|cur_ints
 op_assign
-id|__in64
+id|____raw_readq
 c_func
 (paren
 id|KSEG1
@@ -244,7 +272,7 @@ op_lshift
 id|irq
 )paren
 suffix:semicolon
-id|__out64
+id|____raw_writeq
 c_func
 (paren
 id|cur_ints
@@ -300,7 +328,7 @@ id|flags
 suffix:semicolon
 id|cur_ints
 op_assign
-id|__in64
+id|____raw_readq
 c_func
 (paren
 id|KSEG1
@@ -328,7 +356,7 @@ op_lshift
 id|irq
 )paren
 suffix:semicolon
-id|__out64
+id|____raw_writeq
 c_func
 (paren
 id|cur_ints
@@ -478,7 +506,7 @@ id|irq
 suffix:semicolon
 id|cur_ints
 op_assign
-id|__in64
+id|____raw_readq
 c_func
 (paren
 id|KSEG1
@@ -530,7 +558,7 @@ op_lshift
 id|irq
 )paren
 suffix:semicolon
-id|__out64
+id|____raw_writeq
 c_func
 (paren
 id|cur_ints
@@ -563,7 +591,7 @@ id|int_on
 multiline_comment|/* unmask for the new CPU */
 id|cur_ints
 op_assign
-id|__in64
+id|____raw_readq
 c_func
 (paren
 id|KSEG1
@@ -591,7 +619,7 @@ op_lshift
 id|irq
 )paren
 suffix:semicolon
-id|__out64
+id|____raw_writeq
 c_func
 (paren
 id|cur_ints
@@ -728,7 +756,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * If the interrupt was an HT interrupt, now is the time to&n;&t; * clear it.  NOTE: we assume the HT bridge was set up to&n;&t; * deliver the interrupts to all CPUs (which makes affinity&n;&t; * changing easier for us)&n;&t; */
 id|pending
 op_assign
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|KSEG1
@@ -776,14 +804,14 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Clear for all CPUs so an affinity switch&n;&t;&t;&t; * doesn&squot;t find an old status&n;&t;&t;&t; */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|pending
@@ -1185,7 +1213,7 @@ op_increment
 )paren
 (brace
 multiline_comment|/* was I0 */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|IMR_IP2_VAL
@@ -1207,7 +1235,7 @@ l_int|3
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|IMR_IP2_VAL
@@ -1237,7 +1265,7 @@ c_func
 suffix:semicolon
 multiline_comment|/*&n;&t; * Map the high 16 bits of the mailbox registers to IP[3], for&n;&t; * inter-cpu messages&n;&t; */
 multiline_comment|/* Was I1 */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|IMR_IP3_VAL
@@ -1259,7 +1287,7 @@ l_int|3
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|IMR_IP3_VAL
@@ -1282,7 +1310,7 @@ l_int|3
 )paren
 suffix:semicolon
 multiline_comment|/* Clear the mailboxes.  The firmware may leave them dirty */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0xffffffffffffffff
@@ -1298,7 +1326,7 @@ id|R_IMR_MAILBOX_CLR_CPU
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0xffffffffffffffff
@@ -1336,7 +1364,7 @@ op_lshift
 id|K_INT_MBOX_0
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|tmp
@@ -1352,7 +1380,7 @@ id|R_IMR_INTERRUPT_MASK
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|tmp
@@ -1411,25 +1439,48 @@ c_cond
 id|kgdb_flag
 )paren
 (brace
+id|kgdb_irq
+op_assign
+id|K_INT_UART_0
+op_plus
+id|kgdb_port
+suffix:semicolon
+macro_line|#ifdef CONFIG_SIBYTE_SB1250_DUART&t;
+id|sb1250_duart_present
+(braket
+id|kgdb_port
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Setup uart 1 settings, mapper */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|M_DUART_IMR_BRK
 comma
-id|KSEG1
+id|IO_SPACE_BASE
 op_plus
-id|A_DUART
-op_plus
-id|R_DUART_IMR_B
+id|A_DUART_IMRREG
+c_func
+(paren
+id|kgdb_port
+)paren
 )paren
 suffix:semicolon
-id|out64
+id|sb1250_steal_irq
+c_func
+(paren
+id|kgdb_irq
+)paren
+suffix:semicolon
+id|__raw_writeq
 c_func
 (paren
 id|IMR_IP6_VAL
 comma
-id|KSEG1
+id|IO_SPACE_BASE
 op_plus
 id|A_IMR_REGISTER
 c_func
@@ -1440,51 +1491,33 @@ id|R_IMR_INTERRUPT_MAP_BASE
 )paren
 op_plus
 (paren
-id|K_INT_UART_1
+id|kgdb_irq
 op_lshift
 l_int|3
 )paren
 )paren
 suffix:semicolon
-id|tmp
-op_assign
-id|in64
-c_func
-(paren
-id|KSEG1
-op_plus
-id|A_IMR_REGISTER
+id|sb1250_unmask_irq
 c_func
 (paren
 l_int|0
 comma
-id|R_IMR_INTERRUPT_MASK
-)paren
-)paren
-suffix:semicolon
-id|tmp
-op_and_assign
-op_complement
-(paren
-l_int|1
-op_lshift
-id|K_INT_UART_1
+id|kgdb_irq
 )paren
 suffix:semicolon
-id|out64
+macro_line|#ifdef CONFIG_GDB_CONSOLE
+id|register_gdb_console
 c_func
 (paren
-id|tmp
-comma
-id|KSEG1
-op_plus
-id|A_IMR_REGISTER
-c_func
-(paren
-l_int|0
-comma
-id|R_IMR_INTERRUPT_MASK
 )paren
+suffix:semicolon
+macro_line|#endif
+id|prom_printf
+c_func
+(paren
+l_string|&quot;Waiting for GDB on UART port %d&bslash;n&quot;
+comma
+id|kgdb_port
 )paren
 suffix:semicolon
 id|set_debug_traps
@@ -1502,20 +1535,10 @@ macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_KGDB
 macro_line|#include &lt;linux/delay.h&gt;
-r_extern
-r_void
-id|set_async_breakpoint
-c_func
-(paren
-r_int
-r_int
-id|epc
-)paren
-suffix:semicolon
 DECL|macro|duart_out
-mdefine_line|#define duart_out(reg, val)     out64(val, KSEG1 + A_DUART_CHANREG(1,reg))
+mdefine_line|#define duart_out(reg, val)     csr_out32(val, KSEG1 + A_DUART_CHANREG(kgdb_port,reg))
 DECL|macro|duart_in
-mdefine_line|#define duart_in(reg)           in64(KSEG1 + A_DUART_CHANREG(1,reg))
+mdefine_line|#define duart_in(reg)           csr_in32(KSEG1 + A_DUART_CHANREG(kgdb_port,reg))
 DECL|function|sb1250_kgdb_interrupt
 r_void
 id|sb1250_kgdb_interrupt
@@ -1528,6 +1551,12 @@ id|regs
 )paren
 (brace
 multiline_comment|/*&n;&t; * Clear break-change status (allow some time for the remote&n;&t; * host to stop the break, since we would see another&n;&t; * interrupt on the end-of-break too)&n;&t; */
+id|kstat_this_cpu.irqs
+(braket
+id|K_INT_UART_1
+)braket
+op_increment
+suffix:semicolon
 id|mdelay
 c_func
 (paren
@@ -1546,19 +1575,10 @@ op_or
 id|M_DUART_TX_EN
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|user_mode
-c_func
-(paren
-id|regs
-)paren
-)paren
 id|set_async_breakpoint
 c_func
 (paren
+op_amp
 id|regs-&gt;cp0_epc
 )paren
 suffix:semicolon

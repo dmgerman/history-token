@@ -4,7 +4,7 @@ DECL|macro|_ASM_GT64120_MOMENCO_OCELOT_GT64120_DEP_H
 mdefine_line|#define _ASM_GT64120_MOMENCO_OCELOT_GT64120_DEP_H
 macro_line|#include &lt;asm/addrspace.h&gt;&t;&t;/* for KSEG1ADDR() */
 macro_line|#include &lt;asm/byteorder.h&gt;&t;&t;/* for cpu_to_le32() */
-multiline_comment|/*&n; * PCI address allocation &n; */
+multiline_comment|/*&n; * PCI address allocation&n; */
 DECL|macro|GT_PCI_MEM_BASE
 mdefine_line|#define GT_PCI_MEM_BASE    (0x22000000)
 DECL|macro|GT_PCI_MEM_SIZE

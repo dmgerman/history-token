@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2000, 2001 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
+multiline_comment|/*&n; * Copyright (C) 2000, 2001, 2002, 2003 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
@@ -88,30 +88,47 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* Set up kseg0 to be cachable coherent */
-id|clear_c0_config
+r_extern
+r_void
+id|load_mmu
 c_func
 (paren
-id|CONF_CM_CMASK
+r_void
 )paren
 suffix:semicolon
-id|set_c0_config
-c_func
-(paren
-l_int|0x5
-)paren
+r_int
+r_int
+id|imask
+op_assign
+id|STATUSF_IP4
+op_or
+id|STATUSF_IP3
+op_or
+id|STATUSF_IP2
+op_or
+id|STATUSF_IP1
+op_or
+id|STATUSF_IP0
 suffix:semicolon
-multiline_comment|/* Enable interrupts for lines 0-4 */
-id|clear_c0_status
+multiline_comment|/* Enable basic interrupts */
+id|change_c0_status
 c_func
 (paren
-l_int|0xe000
+id|ST0_IM
+comma
+id|imask
 )paren
 suffix:semicolon
 id|set_c0_status
 c_func
 (paren
-l_int|0x1f01
+id|ST0_IE
+)paren
+suffix:semicolon
+multiline_comment|/* cache and TLB setup */
+id|load_mmu
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

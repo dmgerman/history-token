@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1997, 1998, 1999 by Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 96, 97, 98, 99, 2003 by Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_SIGNAL_H
 DECL|macro|_ASM_SIGNAL_H
 mdefine_line|#define _ASM_SIGNAL_H
@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/types.h&gt;
 DECL|macro|_NSIG
 mdefine_line|#define _NSIG&t;&t;128
 DECL|macro|_NSIG_BPW
-mdefine_line|#define _NSIG_BPW&t;32
+mdefine_line|#define _NSIG_BPW&t;(sizeof(unsigned long) * 8)
 DECL|macro|_NSIG_WORDS
 mdefine_line|#define _NSIG_WORDS&t;(_NSIG / _NSIG_BPW)
 r_typedef
@@ -127,7 +127,7 @@ mdefine_line|#define SA_ONESHOT&t;SA_RESETHAND
 DECL|macro|SA_INTERRUPT
 mdefine_line|#define SA_INTERRUPT&t;0x20000000&t;/* dummy -- ignored */
 DECL|macro|SA_RESTORER
-mdefine_line|#define SA_RESTORER&t;0x04000000
+mdefine_line|#define SA_RESTORER&t;0x04000000&t;/* Only for o32 */
 multiline_comment|/*&n; * sigaltstack controls&n; */
 DECL|macro|SS_ONSTACK
 mdefine_line|#define SS_ONSTACK     1

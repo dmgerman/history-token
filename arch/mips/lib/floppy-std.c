@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Access the floppy hardware on PC style hardware&n; *&n; * Copyright (C) 1996, 1997, 1998 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Access the floppy hardware on PC style hardware&n; *&n; * Copyright (C) 1996, 1997, 1998, 2003 by Ralf Baechle&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -13,7 +13,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/floppy.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 multiline_comment|/*&n; * How to access the FDC&squot;s registers.&n; */
 DECL|function|std_fd_inb

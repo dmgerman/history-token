@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * cachectl.h -- defines for MIPS cache control system calls&n; *&n; * Copyright (C) 1994, 1995, 1996 by Ralf Baechle&n; */
-macro_line|#ifndef&t;__ASM_MIPS_CACHECTL
-DECL|macro|__ASM_MIPS_CACHECTL
-mdefine_line|#define&t;__ASM_MIPS_CACHECTL
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 1995, 1996 by Ralf Baechle&n; */
+macro_line|#ifndef&t;_ASM_CACHECTL
+DECL|macro|_ASM_CACHECTL
+mdefine_line|#define&t;_ASM_CACHECTL
 multiline_comment|/*&n; * Options for cacheflush system call&n; */
 DECL|macro|ICACHE
 mdefine_line|#define&t;ICACHE&t;(1&lt;&lt;0)&t;&t;/* flush instruction cache        */
@@ -14,5 +14,5 @@ DECL|macro|CACHEABLE
 mdefine_line|#define CACHEABLE&t;0&t;/* make pages cacheable */
 DECL|macro|UNCACHEABLE
 mdefine_line|#define UNCACHEABLE&t;1&t;/* make pages uncacheable */
-macro_line|#endif&t;/* __ASM_MIPS_CACHECTL */
+macro_line|#endif&t;/* _ASM_CACHECTL */
 eof

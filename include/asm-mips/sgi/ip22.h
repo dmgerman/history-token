@@ -5,17 +5,17 @@ mdefine_line|#define _SGI_IP22_H
 multiline_comment|/* &n; * These are the virtual IRQ numbers, we divide all IRQ&squot;s into&n; * &squot;spaces&squot;, the &squot;space&squot; determines where and how to enable/disable&n; * that particular IRQ on an SGI machine. HPC DMA and MC DMA interrups&n; * are not supported this way. Driver is supposed to allocate HPC/MC&n; * interrupt as shareable and then look to proper status bit (see&n; * HAL2 driver). This will prevent many complications, trust me ;-)&n; */
 macro_line|#include &lt;asm/sgi/ioc.h&gt;
 DECL|macro|SGINT_EISA
-mdefine_line|#define SGINT_EISA&t;0&t;/* INDIGO 2 has 16 EISA irq levels */
+mdefine_line|#define SGINT_EISA&t;0&t;/* 16 EISA irq levels (Indigo2) */
 DECL|macro|SGINT_CPU
 mdefine_line|#define SGINT_CPU&t;16&t;/* MIPS CPU define 8 interrupt sources */
 DECL|macro|SGINT_LOCAL0
-mdefine_line|#define SGINT_LOCAL0&t;24&t;/* INDY has 8 local0 irq levels */
+mdefine_line|#define SGINT_LOCAL0&t;24&t;/* 8 local0 irq levels */
 DECL|macro|SGINT_LOCAL1
-mdefine_line|#define SGINT_LOCAL1&t;32&t;/* INDY has 8 local1 irq levels */
+mdefine_line|#define SGINT_LOCAL1&t;32&t;/* 8 local1 irq levels */
 DECL|macro|SGINT_LOCAL2
-mdefine_line|#define SGINT_LOCAL2&t;40&t;/* INDY has 8 local2 vectored irq levels */
+mdefine_line|#define SGINT_LOCAL2&t;40&t;/* 8 local2 vectored irq levels */
 DECL|macro|SGINT_LOCAL3
-mdefine_line|#define SGINT_LOCAL3&t;48&t;/* INDY has 8 local3 vectored irq levels */
+mdefine_line|#define SGINT_LOCAL3&t;48&t;/* 8 local3 vectored irq levels */
 DECL|macro|SGINT_END
 mdefine_line|#define SGINT_END&t;56&t;/* End of &squot;spaces&squot; */
 multiline_comment|/*&n; * Individual interrupt definitions for the Indy and Indigo2&n; */

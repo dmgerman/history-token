@@ -6,6 +6,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 DECL|function|momenco_ocelot_restart
 r_void
 id|momenco_ocelot_restart
@@ -16,56 +17,69 @@ op_star
 id|command
 )paren
 (brace
+r_void
 op_star
-(paren
-r_volatile
-r_char
-op_star
-)paren
-l_int|0xbc000000
+id|nvram
 op_assign
-l_int|0x0f
-suffix:semicolon
-multiline_comment|/*&n;&t; * Ouch, we&squot;re still alive ... This time we take the silver bullet ...&n;&t; * ... and find that we leave the hardware in a state in which the&n;&t; * kernel in the flush locks up somewhen during of after the PCI&n;&t; * detection stuff.&n;&t; */
-id|clear_cp0_status
+id|ioremap_nocache
 c_func
 (paren
-id|ST0_BEV
-op_or
-id|ST0_ERL
-)paren
-suffix:semicolon
-id|change_cp0_config
-c_func
-(paren
-id|CONF_CM_CMASK
+l_int|0x2c807000
 comma
-id|CONF_CM_UNCACHED
+l_int|0x1000
 )paren
 suffix:semicolon
-id|flush_cache_all
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nvram
+)paren
+(brace
+id|printk
 c_func
 (paren
+id|KERN_NOTICE
+l_string|&quot;ioremap of reset register failed&bslash;n&quot;
 )paren
 suffix:semicolon
-id|write_32bit_cp0_register
+r_return
+suffix:semicolon
+)brace
+id|writeb
 c_func
 (paren
-id|CP0_WIRED
+l_int|0x84
 comma
-l_int|0
+id|nvram
+op_plus
+l_int|0xff7
 )paren
 suffix:semicolon
-id|__asm__
-id|__volatile__
+multiline_comment|/* Ask the NVRAM/RTC/watchdog chip to&n;&t;&t;&t;&t;&t;assert reset in 1/16 second */
+id|mdelay
 c_func
 (paren
-l_string|&quot;jr&bslash;t%0&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
+l_int|10
+op_plus
 (paren
-l_int|0xbfc00000
+l_int|1000
+op_div
+l_int|16
 )paren
+)paren
+suffix:semicolon
+id|iounmap
+c_func
+(paren
+id|nvram
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;Watchdog reset failed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

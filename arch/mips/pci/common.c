@@ -1,3 +1,6 @@
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 DECL|function|pcibios_fixup_bus
 r_void
 id|__init
@@ -10,12 +13,6 @@ op_star
 id|b
 )paren
 (brace
-id|Dprintk
-c_func
-(paren
-l_string|&quot;pcibios_fixup_bus()&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 DECL|function|pcibios_enable_resources
 r_static

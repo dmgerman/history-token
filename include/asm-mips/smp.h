@@ -137,7 +137,7 @@ mdefine_line|#define cpu_possible(cpu) (phys_cpu_present_map &amp; (1&lt;&lt;(cp
 DECL|macro|cpu_online
 mdefine_line|#define cpu_online(cpu) (cpu_online_map &amp; (1&lt;&lt;(cpu)))
 DECL|function|num_online_cpus
-r_extern
+r_static
 r_inline
 r_int
 r_int

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
@@ -222,12 +223,6 @@ id|nasid_t
 id|dest_nasid
 )paren
 (brace
-r_extern
-r_char
-id|_stext
-comma
-id|_etext
-suffix:semicolon
 r_int
 r_int
 id|dest_kern_start
@@ -244,7 +239,6 @@ op_assign
 r_int
 r_int
 )paren
-op_amp
 id|_stext
 suffix:semicolon
 id|source_end
@@ -253,7 +247,6 @@ op_assign
 r_int
 r_int
 )paren
-op_amp
 id|_etext
 suffix:semicolon
 id|kern_size

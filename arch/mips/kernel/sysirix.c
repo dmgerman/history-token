@@ -2955,7 +2955,7 @@ id|nameidata
 id|nd
 suffix:semicolon
 r_struct
-id|statfs
+id|kstatfs
 id|kbuf
 suffix:semicolon
 r_int
@@ -3180,7 +3180,7 @@ id|buf
 )paren
 (brace
 r_struct
-id|statfs
+id|kstatfs
 id|kbuf
 suffix:semicolon
 r_struct
@@ -6536,7 +6536,7 @@ id|nameidata
 id|nd
 suffix:semicolon
 r_struct
-id|statfs
+id|kstatfs
 id|kbuf
 suffix:semicolon
 r_int
@@ -6826,7 +6826,7 @@ id|buf
 )paren
 (brace
 r_struct
-id|statfs
+id|kstatfs
 id|kbuf
 suffix:semicolon
 r_struct
@@ -8069,7 +8069,7 @@ id|nameidata
 id|nd
 suffix:semicolon
 r_struct
-id|statfs
+id|kstatfs
 id|kbuf
 suffix:semicolon
 r_int
@@ -8365,7 +8365,7 @@ id|buf
 )paren
 (brace
 r_struct
-id|statfs
+id|kstatfs
 id|kbuf
 suffix:semicolon
 r_struct

@@ -66,7 +66,7 @@ comma
 id|j
 suffix:semicolon
 multiline_comment|/* This does a normal via the keyboard controller like a PC.&n;&t;   We can do that easier ...  */
-id|sti
+id|local_irq_disable
 c_func
 (paren
 )paren

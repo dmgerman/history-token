@@ -1,6 +1,6 @@
-macro_line|#ifndef __ASM_MIPS_IPC_H
-DECL|macro|__ASM_MIPS_IPC_H
-mdefine_line|#define __ASM_MIPS_IPC_H
+macro_line|#ifndef _ASM_IPC_H
+DECL|macro|_ASM_IPC_H
+mdefine_line|#define _ASM_IPC_H
 multiline_comment|/*&n; * These are used to wrap system calls on MIPS.&n; *&n; * See arch/mips/kernel/sysmips.c for ugly details..&n; * FIXME: split up into ordinary syscalls ...&n; */
 DECL|struct|ipc_kludge
 r_struct
@@ -47,5 +47,5 @@ DECL|macro|DIPC
 mdefine_line|#define DIPC&t;&t;25
 DECL|macro|IPCCALL
 mdefine_line|#define IPCCALL(version,op)&t;((version)&lt;&lt;16 | (op))
-macro_line|#endif /* __ASM_MIPS_IPC_H */
+macro_line|#endif /* _ASM_IPC_H */
 eof

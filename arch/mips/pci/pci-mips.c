@@ -997,6 +997,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|size
+op_eq
+l_int|4
+)paren
+id|data
+op_assign
+id|val
+suffix:semicolon
+r_else
+(brace
+r_if
+c_cond
+(paren
 id|mips_pcibios_config_access
 c_func
 (paren
@@ -1101,6 +1114,7 @@ l_int|3
 )paren
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

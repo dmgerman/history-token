@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 2000 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 97, 98, 99, 2000 by Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_POSIX_TYPES_H
 DECL|macro|_ASM_POSIX_TYPES_H
 mdefine_line|#define _ASM_POSIX_TYPES_H
+macro_line|#include &lt;asm/sgidefs.h&gt;
 multiline_comment|/*&n; * This file is generally used by user-level software, so you need to&n; * be a little careful about namespace pollution etc.  Also, we cannot&n; * assume GCC is being used.&n; */
 DECL|typedef|__kernel_dev_t
 r_typedef
@@ -21,12 +22,22 @@ r_int
 r_int
 id|__kernel_mode_t
 suffix:semicolon
+macro_line|#if (_MIPS_SZLONG == 32)
 DECL|typedef|__kernel_nlink_t
 r_typedef
 r_int
 r_int
 id|__kernel_nlink_t
 suffix:semicolon
+macro_line|#endif
+macro_line|#if (_MIPS_SZLONG == 64)
+DECL|typedef|__kernel_nlink_t
+r_typedef
+r_int
+r_int
+id|__kernel_nlink_t
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|__kernel_off_t
 r_typedef
 r_int
@@ -52,6 +63,7 @@ r_typedef
 r_int
 id|__kernel_gid_t
 suffix:semicolon
+macro_line|#if (_MIPS_SZLONG == 32)
 DECL|typedef|__kernel_size_t
 r_typedef
 r_int
@@ -68,6 +80,25 @@ r_typedef
 r_int
 id|__kernel_ptrdiff_t
 suffix:semicolon
+macro_line|#endif
+macro_line|#if (_MIPS_SZLONG == 64)
+DECL|typedef|__kernel_size_t
+r_typedef
+r_int
+r_int
+id|__kernel_size_t
+suffix:semicolon
+DECL|typedef|__kernel_ssize_t
+r_typedef
+r_int
+id|__kernel_ssize_t
+suffix:semicolon
+DECL|typedef|__kernel_ptrdiff_t
+r_typedef
+r_int
+id|__kernel_ptrdiff_t
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|__kernel_time_t
 r_typedef
 r_int
@@ -153,6 +184,7 @@ macro_line|#endif
 r_typedef
 r_struct
 (brace
+macro_line|#if (_MIPS_SZLONG == 32)
 DECL|member|val
 r_int
 id|val
@@ -160,6 +192,16 @@ id|val
 l_int|2
 )braket
 suffix:semicolon
+macro_line|#endif
+macro_line|#if (_MIPS_SZLONG == 64)
+DECL|member|val
+r_int
+id|val
+(braket
+l_int|2
+)braket
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|__kernel_fsid_t
 )brace
 id|__kernel_fsid_t

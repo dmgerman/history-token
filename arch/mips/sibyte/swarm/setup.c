@@ -17,7 +17,6 @@ macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_regs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_genbus.h&gt;
-macro_line|#include &lt;asm/sibyte/64bit.h&gt;
 macro_line|#include &lt;asm/sibyte/board.h&gt;
 r_extern
 r_struct

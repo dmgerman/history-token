@@ -1,4 +1,4 @@
-multiline_comment|/*  *********************************************************************&n;    *  SB1250 Board Support Package&n;    *  &n;    *  Register Definitions                     File: sb1250_regs.h&n;    *  &n;    *  This module contains the addresses of the on-chip peripherals&n;    *  on the SB1250.&n;    *  &n;    *  SB1250 specification level:  01/02/2002&n;    *  &n;    *  Author:  Mitch Lichtenberg (mpl@broadcom.com)&n;    *  &n;    *********************************************************************  &n;    *&n;    *  Copyright 2000,2001,2002,2003&n;    *  Broadcom Corporation. All rights reserved.&n;    *  &n;    *  This program is free software; you can redistribute it and/or &n;    *  modify it under the terms of the GNU General Public License as &n;    *  published by the Free Software Foundation; either version 2 of &n;    *  the License, or (at your option) any later version.&n;    *&n;    *  This program is distributed in the hope that it will be useful,&n;    *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    *  GNU General Public License for more details.&n;    *&n;    *  You should have received a copy of the GNU General Public License&n;    *  along with this program; if not, write to the Free Software&n;    *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n;    *  MA 02111-1307 USA&n;    ********************************************************************* */
+multiline_comment|/*  *********************************************************************&n;    *  SB1250 Board Support Package&n;    *  &n;    *  Register Definitions                     File: sb1250_regs.h&n;    *  &n;    *  This module contains the addresses of the on-chip peripherals&n;    *  on the SB1250.&n;    *  &n;    *  SB1250 specification level:  01/02/2002&n;    *  &n;    *  Author:  Mitch Lichtenberg&n;    *  &n;    *********************************************************************  &n;    *&n;    *  Copyright 2000,2001,2002,2003&n;    *  Broadcom Corporation. All rights reserved.&n;    *  &n;    *  This program is free software; you can redistribute it and/or &n;    *  modify it under the terms of the GNU General Public License as &n;    *  published by the Free Software Foundation; either version 2 of &n;    *  the License, or (at your option) any later version.&n;    *&n;    *  This program is distributed in the hope that it will be useful,&n;    *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    *  GNU General Public License for more details.&n;    *&n;    *  You should have received a copy of the GNU General Public License&n;    *  along with this program; if not, write to the Free Software&n;    *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n;    *  MA 02111-1307 USA&n;    ********************************************************************* */
 macro_line|#ifndef _SB1250_REGS_H
 DECL|macro|_SB1250_REGS_H
 mdefine_line|#define _SB1250_REGS_H
@@ -81,10 +81,10 @@ DECL|macro|A_L2_READ_TAG
 mdefine_line|#define A_L2_READ_TAG               0x0010040018
 DECL|macro|A_L2_ECC_TAG
 mdefine_line|#define A_L2_ECC_TAG                0x0010040038
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS1)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|A_L2_READ_MISC
 mdefine_line|#define A_L2_READ_MISC              0x0010040058
-macro_line|#endif /* 112x PASS1 */
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 DECL|macro|A_L2_WAY_DISABLE
 mdefine_line|#define A_L2_WAY_DISABLE            0x0010041000
 DECL|macro|A_L2_MAKEDISABLE
@@ -163,10 +163,10 @@ DECL|macro|R_MAC_DMA_CUR_DSCRB
 mdefine_line|#define R_MAC_DMA_CUR_DSCRB             0x00000028
 DECL|macro|R_MAC_DMA_CUR_DSCRADDR
 mdefine_line|#define R_MAC_DMA_CUR_DSCRADDR          0x00000030
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS1)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|R_MAC_DMA_OODPKTLOST_RX
 mdefine_line|#define R_MAC_DMA_OODPKTLOST_RX         0x00000038&t;/* rx only */
-macro_line|#endif /* 112x PASS1 */
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 multiline_comment|/*&n; * RMON Counters&n; */
 DECL|macro|R_MAC_RMON_TX_BYTES
 mdefine_line|#define R_MAC_RMON_TX_BYTES             0x00000000
@@ -230,12 +230,12 @@ DECL|macro|R_MAC_ETHERNET_ADDR
 mdefine_line|#define R_MAC_ETHERNET_ADDR             0x00000208
 DECL|macro|R_MAC_PKT_TYPE
 mdefine_line|#define R_MAC_PKT_TYPE                  0x00000210
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS1)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|R_MAC_ADMASK0
 mdefine_line|#define R_MAC_ADMASK0&t;&t;&t;0x00000218
 DECL|macro|R_MAC_ADMASK1
 mdefine_line|#define R_MAC_ADMASK1&t;&t;&t;0x00000220
-macro_line|#endif /* 112x PASS1 */
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 DECL|macro|R_MAC_HASH_BASE
 mdefine_line|#define R_MAC_HASH_BASE                 0x00000240
 DECL|macro|R_MAC_ADDR_BASE
@@ -799,6 +799,8 @@ DECL|macro|A_SCD_SYSTEM_REVISION
 mdefine_line|#define A_SCD_SYSTEM_REVISION       0x0010020000
 DECL|macro|A_SCD_SYSTEM_CFG
 mdefine_line|#define A_SCD_SYSTEM_CFG            0x0010020008
+DECL|macro|A_SCD_SYSTEM_MANUF
+mdefine_line|#define A_SCD_SYSTEM_MANUF          0x0010038000
 multiline_comment|/*  ********************************************************************* &n;    * System Address Trap Registers&n;    ********************************************************************* */
 DECL|macro|A_ADDR_TRAP_INDEX
 mdefine_line|#define A_ADDR_TRAP_INDEX           0x00100200B0
@@ -972,7 +974,7 @@ DECL|macro|R_DM_CUR_DSCR_ADDR
 mdefine_line|#define R_DM_CUR_DSCR_ADDR&t;    0x0000000010
 DECL|macro|R_DM_DSCR_BASE_DEBUG
 mdefine_line|#define R_DM_DSCR_BASE_DEBUG&t;    0x0000000018
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS1)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|A_DM_PARTIAL_0
 mdefine_line|#define A_DM_PARTIAL_0&t;&t;    0x0010020ba0
 DECL|macro|A_DM_PARTIAL_1
@@ -985,8 +987,8 @@ DECL|macro|DM_PARTIAL_REGISTER_SPACING
 mdefine_line|#define DM_PARTIAL_REGISTER_SPACING 0x8
 DECL|macro|A_DM_PARTIAL
 mdefine_line|#define A_DM_PARTIAL(idx)&t;    (A_DM_PARTIAL_0 + ((idx) * DM_PARTIAL_REGISTER_SPACING))
-macro_line|#endif /* 112x PASS1 */
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS1)
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|A_DM_CRC_0
 mdefine_line|#define A_DM_CRC_0&t;&t;    0x0010020b80
 DECL|macro|A_DM_CRC_1
@@ -1003,7 +1005,7 @@ DECL|macro|R_CRC_DEF_0
 mdefine_line|#define R_CRC_DEF_0&t;&t;    0x00
 DECL|macro|R_CTCP_DEF_0
 mdefine_line|#define R_CTCP_DEF_0&t;&t;    0x08
-macro_line|#endif /* 112x PASS1 */
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 multiline_comment|/*  *********************************************************************&n;    *  Physical Address Map&n;    ********************************************************************* */
 DECL|macro|A_PHYS_MEMORY_0
 mdefine_line|#define A_PHYS_MEMORY_0                 _SB_MAKE64(0x0000000000)

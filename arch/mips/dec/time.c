@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/dec/machtype.h&gt;
 macro_line|#include &lt;asm/dec/ioasic.h&gt;
 macro_line|#include &lt;asm/dec/ioasic_addrs.h&gt;
@@ -942,10 +943,6 @@ op_logical_and
 id|current-&gt;pid
 )paren
 (brace
-r_extern
-r_int
-id|_stext
-suffix:semicolon
 r_int
 r_int
 id|pc
@@ -958,7 +955,6 @@ op_sub_assign
 r_int
 r_int
 )paren
-op_amp
 id|_stext
 suffix:semicolon
 id|pc

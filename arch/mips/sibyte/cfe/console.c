@@ -14,8 +14,6 @@ r_static
 id|kdev_t
 id|cfe_consdev
 suffix:semicolon
-DECL|macro|SB1250_DUART_MINOR_BASE
-mdefine_line|#define SB1250_DUART_MINOR_BASE&t;&t;192
 DECL|function|cfe_console_write
 r_static
 r_void
@@ -198,7 +196,9 @@ suffix:semicolon
 )brace
 DECL|function|cfe_console_device
 r_static
-id|kdev_t
+r_struct
+id|tty_driver
+op_star
 id|cfe_console_device
 c_func
 (paren
@@ -206,10 +206,20 @@ r_struct
 id|console
 op_star
 id|c
+comma
+r_int
+op_star
+id|index
 )paren
 (brace
+op_star
+id|index
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 r_return
-id|cfe_consdev
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|cfe_console_setup
@@ -272,19 +282,7 @@ c_func
 l_string|&quot;u0cn&quot;
 )paren
 suffix:semicolon
-id|cfe_consdev
-op_assign
-id|MKDEV
-c_func
-(paren
-id|TTY_MAJOR
-comma
-id|SB1250_DUART_MINOR_BASE
-op_plus
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#ifndef CONFIG_SIBYTE_SB1250_DUART_NO_PORT_1
+singleline_comment|//&t;&t;&t;cfe_consdev = MKDEV(TTY_MAJOR, SB1250_DUART_MINOR_BASE + 0);
 )brace
 r_else
 r_if
@@ -306,19 +304,7 @@ c_func
 l_string|&quot;u1cn&quot;
 )paren
 suffix:semicolon
-id|cfe_consdev
-op_assign
-id|MKDEV
-c_func
-(paren
-id|TTY_MAJOR
-comma
-id|SB1250_DUART_MINOR_BASE
-op_plus
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif
+singleline_comment|//&t;&t;&t;cfe_consdev = MKDEV(TTY_MAJOR, SB1250_DUART_MINOR_BASE + 1);
 macro_line|#endif
 macro_line|#ifdef CONFIG_VGA_CONSOLE
 )brace
@@ -342,16 +328,7 @@ c_func
 l_string|&quot;pccn&quot;
 )paren
 suffix:semicolon
-id|cfe_consdev
-op_assign
-id|MKDEV
-c_func
-(paren
-id|TTY_MAJOR
-comma
-l_int|0
-)paren
-suffix:semicolon
+singleline_comment|//&t;&t;&t;cfe_consdev = MKDEV(TTY_MAJOR, 0);
 macro_line|#endif
 )brace
 r_else
@@ -399,7 +376,8 @@ comma
 )brace
 suffix:semicolon
 DECL|function|sb1250_cfe_console_init
-r_void
+r_static
+r_int
 id|__init
 id|sb1250_cfe_console_init
 c_func
@@ -414,5 +392,15 @@ op_amp
 id|sb1250_cfe_cons
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|sb1250_cfe_console_init
+id|console_initcall
+c_func
+(paren
+id|sb1250_cfe_console_init
+)paren
+suffix:semicolon
 eof

@@ -500,8 +500,12 @@ DECL|macro|SGINT_TCWORD_CRBCK
 mdefine_line|#define SGINT_TCWORD_CRBCK&t;0xc0&t;/* Readback command */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * The timer is the good old 8254.  Unlike in PCs it&squot;s clocked at exactly 1MHz&n; */
+DECL|macro|SGINT_TIMER_CLOCK
+mdefine_line|#define SGINT_TIMER_CLOCK&t;1000000
+multiline_comment|/*&n; * This is the constant we&squot;re using for calibrating the counter.&n; */
 DECL|macro|SGINT_TCSAMP_COUNTER
-mdefine_line|#define SGINT_TCSAMP_COUNTER&t;10255
+mdefine_line|#define SGINT_TCSAMP_COUNTER&t;((SGINT_TIMER_CLOCK / HZ) + 255)
 multiline_comment|/* We need software copies of these because they are write only. */
 r_extern
 id|u8
@@ -718,6 +722,51 @@ r_struct
 id|sgint_regs
 id|int3
 suffix:semicolon
+DECL|member|_unused7
+id|u32
+id|_unused7
+(braket
+l_int|16
+)braket
+suffix:semicolon
+DECL|member|extio
+r_volatile
+id|u32
+id|extio
+suffix:semicolon
+multiline_comment|/* FullHouse only */
+DECL|macro|EXTIO_S0_IRQ_3
+mdefine_line|#define EXTIO_S0_IRQ_3&t;&t;0x8000&t;/* S0: vid.vsync */
+DECL|macro|EXTIO_S0_IRQ_2
+mdefine_line|#define EXTIO_S0_IRQ_2&t;&t;0x4000&t;/* S0: gfx.fifofull */
+DECL|macro|EXTIO_S0_IRQ_1
+mdefine_line|#define EXTIO_S0_IRQ_1&t;&t;0x2000&t;/* S0: gfx.int */
+DECL|macro|EXTIO_S0_RETRACE
+mdefine_line|#define EXTIO_S0_RETRACE&t;0x1000
+DECL|macro|EXTIO_SG_IRQ_3
+mdefine_line|#define EXTIO_SG_IRQ_3&t;&t;0x0800&t;/* SG: vid.vsync */
+DECL|macro|EXTIO_SG_IRQ_2
+mdefine_line|#define EXTIO_SG_IRQ_2&t;&t;0x0400&t;/* SG: gfx.fifofull */
+DECL|macro|EXTIO_SG_IRQ_1
+mdefine_line|#define EXTIO_SG_IRQ_1&t;&t;0x0200&t;/* SG: gfx.int */
+DECL|macro|EXTIO_SG_RETRACE
+mdefine_line|#define EXTIO_SG_RETRACE&t;0x0100
+DECL|macro|EXTIO_GIO_33MHZ
+mdefine_line|#define EXTIO_GIO_33MHZ&t;&t;0x0080
+DECL|macro|EXTIO_EISA_BUSERR
+mdefine_line|#define EXTIO_EISA_BUSERR&t;0x0040
+DECL|macro|EXTIO_MC_BUSERR
+mdefine_line|#define EXTIO_MC_BUSERR&t;&t;0x0020
+DECL|macro|EXTIO_HPC3_BUSERR
+mdefine_line|#define EXTIO_HPC3_BUSERR&t;0x0010
+DECL|macro|EXTIO_S0_STAT_1
+mdefine_line|#define EXTIO_S0_STAT_1&t;&t;0x0008
+DECL|macro|EXTIO_S0_STAT_0
+mdefine_line|#define EXTIO_S0_STAT_0&t;&t;0x0004
+DECL|macro|EXTIO_SG_STAT_1
+mdefine_line|#define EXTIO_SG_STAT_1&t;&t;0x0002
+DECL|macro|EXTIO_SG_STAT_0
+mdefine_line|#define EXTIO_SG_STAT_0&t;&t;0x0001
 )brace
 suffix:semicolon
 r_extern
