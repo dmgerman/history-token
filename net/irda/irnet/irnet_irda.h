@@ -56,7 +56,8 @@ multiline_comment|/* Serialize access to the list */
 multiline_comment|/* Note : the way hashbin has been designed is absolutely not&n;   * reentrant, beware... So, we blindly protect all with spinlock */
 multiline_comment|/* Handle for the hint bit advertised in IrLMP */
 DECL|member|skey
-id|__u32
+r_void
+op_star
 id|skey
 suffix:semicolon
 multiline_comment|/* Server socket part */

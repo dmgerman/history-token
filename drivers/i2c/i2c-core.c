@@ -3,7 +3,7 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/*   Copyright (C) 1995-99 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt;.&n;   All SMBus-related things are written by Frodo Looijaard &lt;frodol@dds.nl&gt;&n;   SMBus 2.0 support by Mark Studebaker &lt;mdsxyz123@yahoo.com&gt;                */
-multiline_comment|/* $Id: i2c-core.c,v 1.83 2002/07/08 01:37:15 mds Exp $ */
+multiline_comment|/* $Id: i2c-core.c,v 1.86 2002/09/12 06:47:26 ac9410 Exp $ */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -14,10 +14,6 @@ macro_line|#include &lt;linux/i2c.h&gt;
 multiline_comment|/* ----- compatibility stuff ----------------------------------------------- */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,1)
-DECL|macro|init_MUTEX
-mdefine_line|#define init_MUTEX(s) do { *(s) = MUTEX; } while(0)
-macro_line|#endif
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* ----- global defines ---------------------------------------------------- */
 multiline_comment|/* exclusive access to the bus */
@@ -86,8 +82,6 @@ DECL|variable|i2c_debug
 r_static
 r_int
 id|i2c_debug
-op_assign
-l_int|1
 suffix:semicolon
 multiline_comment|/* ---------------------------------------------------&n; * /proc entry declarations&n; *----------------------------------------------------&n; */
 macro_line|#ifdef CONFIG_PROC_FS
@@ -107,22 +101,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,3,27))
-r_static
-r_void
-id|monitor_bus_i2c
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_int
-id|fill
-)paren
-suffix:semicolon
-macro_line|#endif /* (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,58)) */
 r_static
 id|ssize_t
 id|i2cproc_bus_read
@@ -188,19 +166,6 @@ id|i2cproc_bus_read
 comma
 )brace
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,48))
-DECL|variable|i2cproc_inode_operations
-r_static
-r_struct
-id|inode_operations
-id|i2cproc_inode_operations
-op_assign
-(brace
-op_amp
-id|i2cproc_operations
-)brace
-suffix:semicolon
-macro_line|#endif
 DECL|variable|i2cproc_initialized
 r_static
 r_int
@@ -379,31 +344,15 @@ r_goto
 id|ERROR1
 suffix:semicolon
 )brace
-macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,48))
 id|proc_entry-&gt;proc_fops
 op_assign
 op_amp
 id|i2cproc_operations
 suffix:semicolon
-macro_line|#else
-id|proc_entry-&gt;ops
-op_assign
-op_amp
-id|i2cproc_inode_operations
-suffix:semicolon
-macro_line|#endif
-macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,27))
 id|proc_entry-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-macro_line|#else
-id|proc_entry-&gt;fill_inode
-op_assign
-op_amp
-id|monitor_bus_i2c
-suffix:semicolon
-macro_line|#endif /* (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,58)) */
 id|adap-&gt;inode
 op_assign
 id|proc_entry-&gt;low_ino
@@ -2222,34 +2171,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* ----------------------------------------------------&n; * The /proc functions&n; * ----------------------------------------------------&n; */
 macro_line|#ifdef CONFIG_PROC_FS
-macro_line|#if (LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,3,27))
-multiline_comment|/* Monitor access to /proc/bus/i2c*; make unloading i2c-proc impossible&n;   if some process still uses it or some file in it */
-DECL|function|monitor_bus_i2c
-r_void
-id|monitor_bus_i2c
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_int
-id|fill
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|fill
-)paren
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_else
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
-macro_line|#endif /* (LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,3,37)) */
 multiline_comment|/* This function generates the output for /proc/bus/i2c */
 DECL|function|read_bus_i2c
 r_int
@@ -2508,34 +2429,33 @@ id|order
 id|I2C_CLIENT_MAX
 )braket
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|count
-OG
-l_int|4096
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
+DECL|macro|OUTPUT_LENGTH_PER_LINE
+mdefine_line|#define OUTPUT_LENGTH_PER_LINE 70
 id|len_total
 op_assign
 id|file-&gt;f_pos
 op_plus
 id|count
 suffix:semicolon
-multiline_comment|/* Too bad if this gets longer (unlikely) */
 r_if
 c_cond
 (paren
 id|len_total
 OG
-l_int|4096
+(paren
+id|I2C_CLIENT_MAX
+op_star
+id|OUTPUT_LENGTH_PER_LINE
 )paren
+)paren
+multiline_comment|/* adjust to maximum file size */
 id|len_total
 op_assign
-l_int|4096
+(paren
+id|I2C_CLIENT_MAX
+op_star
+id|OUTPUT_LENGTH_PER_LINE
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -2575,9 +2495,9 @@ op_assign
 id|kmalloc
 c_func
 (paren
-id|count
+id|len_total
 op_plus
-l_int|80
+id|OUTPUT_LENGTH_PER_LINE
 comma
 id|GFP_KERNEL
 )paren
@@ -2904,18 +2824,10 @@ op_assign
 op_amp
 id|read_bus_i2c
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,27))
 id|proc_bus_i2c-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-macro_line|#else
-id|proc_bus_i2c-&gt;fill_inode
-op_assign
-op_amp
-id|monitor_bus_i2c
-suffix:semicolon
-macro_line|#endif /* (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,27)) */
 id|i2cproc_initialized
 op_add_assign
 l_int|2
@@ -6909,6 +6821,22 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|i2c_exit
+r_static
+r_void
+id|__exit
+id|i2c_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|i2cproc_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifndef MODULE
 macro_line|#ifdef CONFIG_I2C_CHARDEV
 r_extern
@@ -7349,7 +7277,6 @@ c_func
 id|i2c_check_functionality
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -7384,34 +7311,18 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|function|init_module
-r_int
-id|init_module
+DECL|variable|i2c_init
+id|module_init
 c_func
 (paren
-r_void
-)paren
-(brace
-r_return
 id|i2c_init
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+DECL|variable|i2c_exit
+id|module_exit
 c_func
 (paren
-r_void
-)paren
-(brace
-id|i2cproc_cleanup
-c_func
-(paren
+id|i2c_exit
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 eof

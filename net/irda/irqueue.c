@@ -97,8 +97,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check if queue is empty.&n;&t; */
@@ -191,8 +192,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check if queue is empty.&n;&t; */
@@ -1133,8 +1135,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1465,8 +1468,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1727,8 +1731,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT

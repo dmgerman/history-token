@@ -1240,9 +1240,14 @@ op_star
 id|p
 )paren
 (brace
-id|local_irq_disable
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|local_irq_save
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -1271,9 +1276,10 @@ op_assign
 id|MAX_TIMESLICE
 suffix:semicolon
 )brace
-id|local_irq_enable
+id|local_irq_restore
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If the child was a (relative-) CPU hog then decrease&n;&t; * the sleep_avg of the parent as well.&n;&t; */

@@ -523,8 +523,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(instance=%p)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(instance=%p)&bslash;n&quot;
 comma
 id|self
 )paren
@@ -649,8 +650,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -803,8 +805,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), self-&gt;rx_sdu_size=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), self-&gt;rx_sdu_size=%d&bslash;n&quot;
 comma
 id|self-&gt;rx_sdu_size
 )paren
@@ -891,8 +894,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), frame len=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), frame len=%d&bslash;n&quot;
 comma
 id|n
 )paren
@@ -902,8 +906,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), rx_sdu_size=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), rx_sdu_size=%d&bslash;n&quot;
 comma
 id|self-&gt;rx_sdu_size
 )paren
@@ -970,8 +975,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1021,8 +1027,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), fragmenting ...&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), fragmenting ...&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Make new segment */
@@ -1113,8 +1120,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), queuing last segment&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), queuing last segment&bslash;n&quot;
 )paren
 suffix:semicolon
 id|frame
@@ -1224,8 +1232,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), MaxSduSize=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), MaxSduSize=%d&bslash;n&quot;
 comma
 id|param-&gt;pv.i
 )paren
@@ -1323,8 +1332,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), invalid tsap!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), invalid tsap!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1358,8 +1368,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unable to kmalloc!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unable to kmalloc!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1540,8 +1551,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), stsap_sel=%02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), stsap_sel=%02x&bslash;n&quot;
 comma
 id|self-&gt;stsap_sel
 )paren
@@ -1693,8 +1705,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1900,8 +1913,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Check that nothing bad happens */
@@ -1925,8 +1939,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), No data, or not connected&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), No data, or not connected&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1947,8 +1962,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), UData is to large for IrLAP!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), UData is to large for IrLAP!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2036,8 +2052,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s() : queue len = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; : queue len = %d&bslash;n&quot;
 comma
 id|skb_queue_len
 c_func
@@ -2332,8 +2349,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s() : send_credit = %d, queue_len = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() : send_credit = %d, queue_len = %d&bslash;n&quot;
 comma
 id|self-&gt;send_credit
 comma
@@ -2597,8 +2615,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s() send=%d,avail=%d,remote=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() send=%d,avail=%d,remote=%d&bslash;n&quot;
 comma
 id|self-&gt;send_credit
 comma
@@ -2749,8 +2768,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self
@@ -3008,8 +3028,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self
@@ -3069,8 +3090,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), no handler&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), no handler&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3133,8 +3155,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(instance=%p)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(instance=%p)&bslash;n&quot;
 comma
 id|self
 )paren
@@ -3185,8 +3208,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3225,8 +3249,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), flow stop&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), flow stop&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self-&gt;rx_sdu_busy
@@ -3243,8 +3268,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), flow start&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), flow start&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self-&gt;rx_sdu_busy
@@ -3267,8 +3293,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Unknown flow command!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown flow command!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3324,8 +3351,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), max_sdu_size=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), max_sdu_size=%d&bslash;n&quot;
 comma
 id|max_sdu_size
 )paren
@@ -3685,8 +3713,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self
@@ -3785,8 +3814,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), Initial send_credit=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Initial send_credit=%d&bslash;n&quot;
 comma
 id|n
 )paren
@@ -3919,8 +3949,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s() send=%d,avail=%d,remote=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() send=%d,avail=%d,remote=%d&bslash;n&quot;
 comma
 id|self-&gt;send_credit
 comma
@@ -3934,8 +3965,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), MaxSduSize=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), MaxSduSize=%d&bslash;n&quot;
 comma
 id|self-&gt;tx_max_sdu_size
 )paren
@@ -4088,8 +4120,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), TSAP sel=%02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), TSAP sel=%02x&bslash;n&quot;
 comma
 id|self-&gt;stsap_sel
 )paren
@@ -4326,8 +4359,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), Source TSAP selector=%02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Source TSAP selector=%02x&bslash;n&quot;
 comma
 id|self-&gt;stsap_sel
 )paren
@@ -4617,8 +4651,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Protect our access to the old tsap instance */
@@ -4655,8 +4690,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unable to find TSAP&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unable to find TSAP&bslash;n&quot;
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -4699,8 +4735,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unable to kmalloc&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unable to kmalloc&bslash;n&quot;
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -4887,8 +4924,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), already disconnected!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), already disconnected!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -4926,8 +4964,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), disconnect already pending&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), disconnect already pending&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -4981,8 +5020,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(): High priority!!()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;High priority!!()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irttp_flush_queues
@@ -5036,8 +5076,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Disconnecting ...&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Disconnecting ...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self-&gt;connected
@@ -5141,8 +5182,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self
@@ -5310,8 +5352,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s() requeueing skb!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() requeueing skb!&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Make sure we take a break */
@@ -5375,8 +5418,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s() send=%d,avail=%d,remote=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() send=%d,avail=%d,remote=%d&bslash;n&quot;
 comma
 id|self-&gt;send_credit
 comma
@@ -5488,8 +5532,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), queueing frag&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), queueing frag&bslash;n&quot;
 )paren
 suffix:semicolon
 id|skb_queue_tail
@@ -5580,8 +5625,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Truncated frame&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Truncated frame&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Free the part of the SDU that is too big */

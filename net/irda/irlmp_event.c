@@ -321,7 +321,7 @@ id|IRLMP_STATE
 id|state
 )paren
 (brace
-multiline_comment|/*&n;&t;IRDA_DEBUG(4, __FUNCTION__ &quot;(), LMP LAP = %s&bslash;n&quot;, irlmp_state[state]);&n;&t;*/
+multiline_comment|/*&n;&t;IRDA_DEBUG(4, &quot;%s(), LMP LAP = %s&bslash;n&quot;, __FUNCTION__, irlmp_state[state]);&n;&t;*/
 id|self-&gt;lap_state
 op_assign
 id|state
@@ -343,7 +343,7 @@ id|LSAP_STATE
 id|state
 )paren
 (brace
-multiline_comment|/*&n;&t;ASSERT(self != NULL, return;);&n;&t;IRDA_DEBUG(4, __FUNCTION__ &quot;(), LMP LSAP = %s&bslash;n&quot;, irlsap_state[state]);&n;&t;*/
+multiline_comment|/*&n;&t;ASSERT(self != NULL, return;);&n;&t;IRDA_DEBUG(4, &quot;%s(), LMP LSAP = %s&bslash;n&quot;, __FUNCTION__, irlsap_state[state]);&n;&t;*/
 id|self-&gt;lsap_state
 op_assign
 id|state
@@ -400,8 +400,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), EVENT = %s, STATE = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), EVENT = %s, STATE = %s&bslash;n&quot;
 comma
 id|irlmp_event
 (braket
@@ -478,8 +479,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), EVENT = %s, STATE = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), EVENT = %s, STATE = %s&bslash;n&quot;
 comma
 id|irlmp_event
 (braket
@@ -523,8 +525,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* We always cleanup the log (active &amp; passive discovery) */
@@ -584,8 +587,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -648,8 +652,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -795,8 +800,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -862,8 +868,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s() LS_CONNECT_REQUEST&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() LS_CONNECT_REQUEST&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlmp_next_lap_state
@@ -897,8 +904,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), Error LM_LAP_DISCONNECT_INDICATION&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Error LM_LAP_DISCONNECT_INDICATION&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlmp_next_lap_state
@@ -918,8 +926,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %s&bslash;n&quot;
 comma
 id|irlmp_event
 (braket
@@ -968,8 +977,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), event=%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), event=%s&bslash;n&quot;
 comma
 id|irlmp_event
 (braket
@@ -1031,8 +1041,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s() NO LSAPs !&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() NO LSAPs !&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlmp_start_idle_timer
@@ -1091,8 +1102,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s() NO LSAPs !&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() NO LSAPs !&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlmp_start_idle_timer
@@ -1114,8 +1126,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), LM_LAP_DISCONNECT_INDICATION&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), LM_LAP_DISCONNECT_INDICATION&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlmp_next_lap_state
@@ -1145,8 +1158,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), LM_LAP_DISCONNECT_REQUEST&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), LM_LAP_DISCONNECT_REQUEST&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* One of the LSAP did timeout or was closed, if it was&n;&t;&t; * the last one, try to get out of here - Jean II */
@@ -1178,8 +1192,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %s&bslash;n&quot;
 comma
 id|irlmp_event
 (braket
@@ -1228,8 +1243,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_switch
@@ -1246,8 +1262,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), LS_CONNECT_REQUEST&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), LS_CONNECT_REQUEST&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *  LAP connection allready active, just bounce back! Since we&n;&t;&t; *  don&squot;t know which LSAP that tried to do this, we have to&n;&t;&t; *  notify all LSAPs using this LAP, but that should be safe to&n;&t;&t; *  do anyway.&n;&t;&t; */
@@ -1381,8 +1398,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %s&bslash;n&quot;
 comma
 id|irlmp_event
 (braket
@@ -1437,8 +1455,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1496,8 +1515,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), LM_CONNECT_REQUEST&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), LM_CONNECT_REQUEST&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1618,8 +1638,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %s&bslash;n&quot;
 comma
 id|irlmp_event
 (braket
@@ -1681,8 +1702,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1834,8 +1856,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s() WATCHDOG_TIMEOUT!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() WATCHDOG_TIMEOUT!&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Disconnect, get out... - Jean II */
@@ -1860,8 +1883,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %s&bslash;n&quot;
 comma
 id|irlmp_event
 (braket
@@ -1918,8 +1942,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1968,9 +1993,10 @@ c_func
 (paren
 l_int|0
 comma
-id|__FUNCTION__
-l_string|&quot;(), LM_CONNECT_RESPONSE, &quot;
+l_string|&quot;%s(), LM_CONNECT_RESPONSE, &quot;
 l_string|&quot;no indication issued yet&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/* Keep state */
@@ -1984,9 +2010,10 @@ c_func
 (paren
 l_int|0
 comma
-id|__FUNCTION__
-l_string|&quot;(), LM_DISCONNECT_REQUEST, &quot;
+l_string|&quot;%s(), LM_DISCONNECT_REQUEST, &quot;
 l_string|&quot;not yet bound to IrLAP connection&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/* Keep state */
@@ -2000,8 +2027,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), LS_CONNECT_CONFIRM&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), LS_CONNECT_CONFIRM&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlmp_next_lsap_state
@@ -2039,8 +2067,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s() WATCHDOG_TIMEOUT!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() WATCHDOG_TIMEOUT!&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Go back to disconnected mode, keep the socket waiting */
@@ -2082,8 +2111,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;Unknown event %s&bslash;n&quot;
 comma
 id|irlmp_event
 (braket
@@ -2143,8 +2173,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2279,9 +2310,10 @@ c_func
 (paren
 l_int|0
 comma
-id|__FUNCTION__
-l_string|&quot;(), LM_CONNECT_REQUEST, &quot;
+l_string|&quot;%s(), LM_CONNECT_REQUEST, &quot;
 l_string|&quot;error, LSAP already connected&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/* Keep state */
@@ -2295,9 +2327,10 @@ c_func
 (paren
 l_int|0
 comma
-id|__FUNCTION__
-l_string|&quot;(), LM_CONNECT_RESPONSE, &quot;
+l_string|&quot;%s(), LM_CONNECT_RESPONSE, &quot;
 l_string|&quot;error, LSAP allready connected&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/* Keep state */
@@ -2340,8 +2373,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), trying to close IrLAP&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), trying to close IrLAP&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlmp_do_lap_event
@@ -2464,8 +2498,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), trying to close IrLAP&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), trying to close IrLAP&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlmp_do_lap_event
@@ -2497,8 +2532,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %s&bslash;n&quot;
 comma
 id|irlmp_event
 (braket
@@ -2584,8 +2620,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_switch
@@ -2698,8 +2735,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), trying to close IrLAP&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), trying to close IrLAP&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlmp_do_lap_event
@@ -2796,8 +2834,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s() WATCHDOG_TIMEOUT!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() WATCHDOG_TIMEOUT!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2850,8 +2889,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %s&bslash;n&quot;
 comma
 id|irlmp_event
 (braket
@@ -2911,8 +2951,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3003,8 +3044,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s() : WATCHDOG_TIMEOUT !&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() : WATCHDOG_TIMEOUT !&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3096,8 +3138,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %s&bslash;n&quot;
 comma
 id|irlmp_event
 (braket

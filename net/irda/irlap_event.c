@@ -738,8 +738,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s(), timeout=%d (%ld)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), timeout=%d (%ld)&bslash;n&quot;
 comma
 id|timeout
 comma
@@ -826,8 +827,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s(), event = %s, state = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), event = %s, state = %s&bslash;n&quot;
 comma
 id|irlap_event
 (braket
@@ -879,8 +881,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s() : queue len = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() : queue len = %d&bslash;n&quot;
 comma
 id|skb_queue_len
 c_func
@@ -1139,8 +1142,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), CONNECT_REQUEST: media busy!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), CONNECT_REQUEST: media busy!&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Always switch state before calling upper layers */
@@ -1238,9 +1242,10 @@ c_func
 (paren
 l_int|0
 comma
-id|__FUNCTION__
-l_string|&quot;(), SNRM frame does not &quot;
+l_string|&quot;%s(), SNRM frame does not &quot;
 l_string|&quot;contain an I field!&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
@@ -1273,8 +1278,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), media busy!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), media busy!&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* irlap-&gt;log.condition = MEDIA_BUSY; */
@@ -1445,8 +1451,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Receiving final discovery request, missed the discovery slots :-(&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Receiving final discovery request, missed the discovery slots :-(&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Last discovery request -&gt; in the log */
@@ -1656,8 +1663,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), not a broadcast frame!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), not a broadcast frame!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1712,8 +1720,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s() not implemented!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() not implemented!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1725,8 +1734,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %s&bslash;n&quot;
 comma
 id|irlap_event
 (braket
@@ -1843,8 +1853,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), daddr=%08x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), daddr=%08x&bslash;n&quot;
 comma
 id|info-&gt;discovery-&gt;daddr
 )paren
@@ -1911,8 +1922,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Receiving discovery request (s = %d) while performing discovery :-(&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Receiving discovery request (s = %d) while performing discovery :-(&bslash;n&quot;
 comma
 id|info-&gt;s
 )paren
@@ -1957,9 +1969,10 @@ c_func
 (paren
 l_int|2
 comma
-id|__FUNCTION__
-l_string|&quot;(), device is slow to answer, &quot;
+l_string|&quot;%s(), device is slow to answer, &quot;
 l_string|&quot;waiting some more!&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|irlap_start_slot_timer
@@ -2079,8 +2092,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %s&bslash;n&quot;
 comma
 id|irlap_event
 (braket
@@ -2140,8 +2154,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2184,8 +2199,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), QUERY_TIMER_EXPIRED &lt;%ld&gt;&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), QUERY_TIMER_EXPIRED &lt;%ld&gt;&bslash;n&quot;
 comma
 id|jiffies
 )paren
@@ -2314,8 +2330,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Unknown event %d, %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d, %s&bslash;n&quot;
 comma
 id|event
 comma
@@ -2373,8 +2390,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), event=%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), event=%s&bslash;n&quot;
 comma
 id|irlap_event
 (braket
@@ -2515,8 +2533,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s(), event RECV_DISCOVER_XID_CMD!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), event RECV_DISCOVER_XID_CMD!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlap_next_state
@@ -2537,8 +2556,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Disconnect request!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Disconnect request!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlap_send_dm_frame
@@ -2572,8 +2592,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Unknown event %d, %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d, %s&bslash;n&quot;
 comma
 id|event
 comma
@@ -2631,8 +2652,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2753,8 +2775,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), SNRM battle!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), SNRM battle!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3062,8 +3085,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Unknown event %d, %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d, %s&bslash;n&quot;
 comma
 id|event
 comma
@@ -3116,8 +3140,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unknown event&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3196,9 +3221,10 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), Not allowed to transmit&quot;
+l_string|&quot; more bytes!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Not allowed to transmit more &quot;
-l_string|&quot;bytes!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|skb_queue_head
@@ -3302,8 +3328,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), Unable to send! remote busy?&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unable to send! remote busy?&bslash;n&quot;
 )paren
 suffix:semicolon
 id|skb_queue_head
@@ -3336,8 +3363,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s(), POLL_TIMER_EXPIRED &lt;%ld&gt;&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), POLL_TIMER_EXPIRED (%ld)&bslash;n&quot;
 comma
 id|jiffies
 )paren
@@ -3446,8 +3474,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %s&bslash;n&quot;
 comma
 id|irlap_event
 (braket
@@ -3503,8 +3532,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3653,8 +3683,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Unknown event %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d&bslash;n&quot;
 comma
 id|event
 )paren
@@ -3956,8 +3987,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), missing or duplicate frame!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), missing or duplicate frame!&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Update Nr received */
@@ -4164,8 +4196,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), unexpected nr and ns!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unexpected nr and ns!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -4295,8 +4328,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Not implemented!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Not implemented!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|IRDA_DEBUG
@@ -4304,8 +4338,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), event=%s, ns_status=%d, nr_status=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), event=%s, ns_status=%d, nr_status=%d&bslash;n&quot;
 comma
 id|irlap_event
 (braket
@@ -4376,9 +4411,11 @@ comma
 id|LAP_XMIT_P
 )paren
 suffix:semicolon
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;%s: RECV_UI_FRAME: next state %s&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -4559,9 +4596,10 @@ c_func
 (paren
 l_int|1
 comma
-id|__FUNCTION__
-l_string|&quot;(), Received RR with &quot;
+l_string|&quot;%s(), Received RR with &quot;
 l_string|&quot;invalid nr !&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|del_timer
@@ -4947,8 +4985,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), RECV_RD_RSP&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), RECV_RD_RSP&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlap_flush_all_queues
@@ -4981,8 +5020,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %s&bslash;n&quot;
 comma
 id|irlap_event
 (braket
@@ -5038,8 +5078,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s(), event = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), event = %s&bslash;n&quot;
 comma
 id|irlap_event
 (braket
@@ -5196,8 +5237,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %s&bslash;n&quot;
 comma
 id|irlap_event
 (braket
@@ -5253,8 +5295,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s(), event = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), event = %s&bslash;n&quot;
 comma
 id|irlap_event
 (braket
@@ -5486,8 +5529,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s(), RECV_SNRM_CMD&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), RECV_SNRM_CMD&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlap_initiate_connection_state
@@ -5543,8 +5587,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), SNRM frame contained an I field!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), SNRM frame contained an I field!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -5557,8 +5602,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %s&bslash;n&quot;
 comma
 id|irlap_event
 (braket
@@ -5614,8 +5660,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), event=%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), event=%s&bslash;n&quot;
 comma
 id|irlap_event
 (braket
@@ -5803,8 +5850,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Unable to send!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unable to send!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|skb_queue_head
@@ -5874,8 +5922,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %s&bslash;n&quot;
 comma
 id|irlap_event
 (braket
@@ -5937,8 +5986,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), event=%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), event=%s&bslash;n&quot;
 comma
 id|irlap_event
 (braket
@@ -5988,9 +6038,10 @@ c_func
 (paren
 l_int|4
 comma
-id|__FUNCTION__
-l_string|&quot;(), event=%s nr=%d, vs=%d, ns=%d, &quot;
+l_string|&quot;%s(), event=%s nr=%d, vs=%d, ns=%d, &quot;
 l_string|&quot;vr=%d, pf=%d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|irlap_event
 (braket
@@ -6854,8 +6905,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), invalid nr not implemented!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), invalid nr not implemented!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -6884,8 +6936,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), received SNRM cmd&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), received SNRM cmd&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlap_next_state
@@ -6910,8 +6963,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), SNRM frame contained an I-field!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), SNRM frame contained an I-field!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7034,8 +7088,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), retry_count = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), retry_count = %d&bslash;n&quot;
 comma
 id|self-&gt;retry_count
 )paren
@@ -7273,8 +7328,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Unknown event %d, (%s)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d, (%s)&bslash;n&quot;
 comma
 id|event
 comma
@@ -7332,8 +7388,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -7492,8 +7549,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Unknown event %d, (%s)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d, (%s)&bslash;n&quot;
 comma
 id|event
 comma
@@ -7551,8 +7609,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), event=%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), event=%s&bslash;n&quot;
 comma
 id|irlap_event
 (braket
@@ -7677,8 +7736,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Unknown event %d, (%s)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown event %d, (%s)&bslash;n&quot;
 comma
 id|event
 comma

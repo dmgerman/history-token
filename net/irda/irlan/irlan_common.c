@@ -34,11 +34,15 @@ op_assign
 l_int|NULL
 suffix:semicolon
 DECL|variable|ckey
+r_static
+r_void
+op_star
+id|ckey
+suffix:semicolon
 DECL|variable|skey
 r_static
-id|__u32
-id|ckey
-comma
+r_void
+op_star
 id|skey
 suffix:semicolon
 multiline_comment|/* Module parameters */
@@ -230,8 +234,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Allocate master structure */
@@ -283,8 +288,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|hints
@@ -363,8 +369,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlmp_unregister_client
@@ -424,8 +431,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Check if we should call the device eth&lt;x&gt; or irlan&lt;x&gt; */
@@ -482,8 +490,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), register_netdev() failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), register_netdev() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -520,8 +529,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -720,8 +730,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -863,8 +874,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self
@@ -1193,8 +1205,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), reason=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), reason=%d&bslash;n&quot;
 comma
 id|reason
 )paren
@@ -1300,8 +1313,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), User requested&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), User requested&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1315,8 +1329,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Unexpected IrLAP disconnect&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unexpected IrLAP disconnect&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1330,8 +1345,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), IrLAP connect failed&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), IrLAP connect failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1345,8 +1361,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), IrLAP reset&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), IrLAP reset&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1359,8 +1376,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), IrLMP connect failed&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), IrLMP connect failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1442,8 +1460,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1543,8 +1562,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Got no tsap!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Got no tsap!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1576,8 +1596,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1945,8 +1966,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2026,8 +2048,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), sending ...&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), sending ...&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2062,8 +2085,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Queue command */
@@ -2110,8 +2134,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2223,8 +2248,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2357,8 +2383,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2490,8 +2517,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2636,8 +2664,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2798,8 +2827,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2957,8 +2987,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3100,8 +3131,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3429,8 +3461,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Got NULL skb&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Got NULL skb&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3505,8 +3538,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Unknown parameter type!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown parameter type!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3544,8 +3578,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), No more space at end of skb&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), No more space at end of skb&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3758,8 +3793,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* get length of parameter name (1 byte) */
@@ -3784,8 +3820,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), name_len &gt; 254&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), name_len &gt; 254&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3856,8 +3893,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), parameter length to long&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), parameter length to long&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
