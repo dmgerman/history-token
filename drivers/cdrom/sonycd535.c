@@ -21,7 +21,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR CDU535_CDROM_MAJOR
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 DECL|macro|sony535_cd_base_io
 mdefine_line|#define sony535_cd_base_io sonycd535 /* for compatible parameter passing with &quot;insmod&quot; */
 macro_line|#include &quot;sonycd535.h&quot;

@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/loop.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 id|MODULE_LICENSE

@@ -25,7 +25,7 @@ macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/mv64340.h&gt;
 macro_line|#include &quot;ocelot_c_fpga.h&quot;
 DECL|variable|mv64340_base

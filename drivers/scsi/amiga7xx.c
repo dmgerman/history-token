@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * Detection routine for the NCR53c710 based Amiga SCSI Controllers for Linux.&n; *  &t;&t;Amiga MacroSystemUS WarpEngine SCSI controller.&n; *&t;&t;Amiga Technologies A4000T SCSI controller.&n; *&t;&t;Amiga Technologies/DKB A4091 SCSI controller.&n; *&n; * Written 1997 by Alan Hourihane &lt;alanh@fairlite.demon.co.uk&gt;&n; * plus modifications of the 53c7xx.c driver to support the Amiga.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;

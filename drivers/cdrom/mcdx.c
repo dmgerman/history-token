@@ -27,7 +27,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR MITSUMI_X_CDROM_MAJOR
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 multiline_comment|/* for compatible parameter passing with &quot;insmod&quot; */
 DECL|macro|mcdx_drive_map

@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *  linux/drivers/acorn/scsi/queue.c: queue handling primitives&n; *&n; *  Copyright (C) 1997-2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Changelog:&n; *   15-Sep-1997 RMK&t;Created.&n; *   11-Oct-1997 RMK&t;Corrected problem with queue_remove_exclude&n; *&t;&t;&t;not updating internal linked list properly&n; *&t;&t;&t;(was causing commands to go missing).&n; *   30-Aug-2000 RMK&t;Use Linux list handling and spinlocks&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;

@@ -1,7 +1,7 @@
 multiline_comment|/* &n; * ASCII values for a number of symbolic constants, printing functions,&n; * etc.&n; * Additions for SCSI 2 and Linux 2.2.x by D. Gilbert (990422)&n; * Additions for SCSI 3+ (SPC-3 T10/1416-D Rev 07 3 May 2002)&n; *   by D. Gilbert and aeb (20020609)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;

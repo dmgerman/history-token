@@ -1,5 +1,5 @@
 macro_line|#include &lt;linux/sched.h&gt;&t;&t;/* for capable() */
-macro_line|#include &lt;linux/blk.h&gt;&t;&t;&t;/* for set_device_ro() */
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;

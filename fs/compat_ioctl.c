@@ -41,7 +41,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/raw.h&gt;
 macro_line|#include &lt;linux/smb_fs.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/elevator.h&gt;
 macro_line|#include &lt;linux/rtc.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;

@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* This is ugly... */
 DECL|macro|PRINTK_HEADER

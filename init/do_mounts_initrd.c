@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/minix_fs.h&gt;
 macro_line|#include &lt;linux/ext2_fs.h&gt;
 macro_line|#include &lt;linux/romfs_fs.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &quot;do_mounts.h&quot;
 DECL|variable|real_root_dev
 r_int

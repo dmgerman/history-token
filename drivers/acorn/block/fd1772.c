@@ -24,7 +24,6 @@ macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 multiline_comment|/* Note: FD_MAX_UNITS could be redefined to 2 for the Atari (with&n; * little additional rework in this file). But I&squot;m not yet sure if&n; * some other code depends on the number of floppies... (It is defined&n; * in a public header!)&n; */
 macro_line|#if 0
 macro_line|#undef FD_MAX_UNITS

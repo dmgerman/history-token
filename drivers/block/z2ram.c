@@ -4,7 +4,6 @@ mdefine_line|#define DEVICE_NAME &quot;Z2RAM&quot;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;

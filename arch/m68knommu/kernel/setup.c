@@ -19,7 +19,6 @@ macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_CONSOLE

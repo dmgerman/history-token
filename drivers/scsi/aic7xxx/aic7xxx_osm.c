@@ -12,7 +12,7 @@ macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 macro_line|#include &quot;sd.h&quot;&t;&t;&t;/* For geometry detection */
 macro_line|#endif
 macro_line|#include &lt;linux/mm.h&gt;&t;&t;/* For fetching system memory size */
-macro_line|#include &lt;linux/blk.h&gt;&t;&t;/* For block_size() */
+macro_line|#include &lt;linux/blkdev.h&gt;&t;&t;/* For block_size() */
 multiline_comment|/*&n; * Lock protecting manipulation of the ahc softc list.&n; */
 DECL|variable|ahc_list_spinlock
 id|spinlock_t

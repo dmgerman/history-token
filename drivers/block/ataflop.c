@@ -26,7 +26,6 @@ macro_line|#include &lt;asm/atarihw.h&gt;
 macro_line|#include &lt;asm/atariints.h&gt;
 macro_line|#include &lt;asm/atari_stdma.h&gt;
 macro_line|#include &lt;asm/atari_stram.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 DECL|macro|FD_MAX_UNITS
 mdefine_line|#define&t;FD_MAX_UNITS 2

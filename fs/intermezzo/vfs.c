@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &quot;intermezzo_fs.h&quot;
 macro_line|#include &quot;intermezzo_psdev.h&quot;
 macro_line|#ifdef CONFIG_FS_EXT_ATTR

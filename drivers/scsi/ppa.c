@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* The following #define is to avoid a clash with hosts.c */
 DECL|macro|PPA_CODE
 mdefine_line|#define PPA_CODE 1
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/minix_fs.h&gt;
 macro_line|#include &lt;linux/ext2_fs.h&gt;
 macro_line|#include &lt;linux/romfs_fs.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;do_mounts.h&quot;
 DECL|macro|BUILD_CRAMDISK
 mdefine_line|#define BUILD_CRAMDISK

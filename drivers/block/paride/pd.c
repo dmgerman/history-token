@@ -235,7 +235,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;&t;/* for the eject ioctl */
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|pd_lock

@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/arch/arm/drivers/scsi/arxescsi.c&n; *&n; * Copyright (C) 1997-2000 Russell King, Stefan Hanske&n; *&n; * This driver is based on experimentation.  Hence, it may have made&n; * assumptions about the particular card that I have available, and&n; * may not be reliable!&n; *&n; * Changelog:&n; *  30-08-1997&t;RMK&t;0.0.0&t;Created, READONLY version as cumana_2.c&n; *  22-01-1998&t;RMK&t;0.0.1&t;Updated to 2.1.80&n; *  15-04-1998&t;RMK&t;0.0.1&t;Only do PIO if FAS216 will allow it.&n; *  11-06-1998 &t;SH&t;0.0.2   Changed to support ARXE 16-bit SCSI card&n; *&t;&t;&t;&t;enabled writing&n; *  01-01-2000&t;SH&t;0.1.0   Added *real* pseudo dma writing&n; *&t;&t;&t;&t;(arxescsi_pseudo_dma_write)&n; *  02-04-2000&t;RMK&t;0.1.1&t;Updated for new error handling code.&n; *  22-10-2000  SH&t;&t;Updated for new registering scheme.&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;

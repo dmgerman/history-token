@@ -39,11 +39,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#elif LINUX_VERSION_CODE &gt;= 0x02015F
 macro_line|#include &lt;asm/spinlock.h&gt;
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x010300
-macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#else
-macro_line|#include &quot;../block/blk.h&quot;
-macro_line|#endif
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#if LINUX_VERSION_CODE &lt; 0x020503

@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;&t;&t;/* for io_request_lock (spinlock) decl */
 macro_line|#include &lt;linux/delay.h&gt;&t;/* for mdelay */
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* needed for in_interrupt() proto */
 macro_line|#include &lt;linux/reboot.h&gt;&t;/* notifier code */

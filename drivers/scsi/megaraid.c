@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *&n; *&t;&t;&t;Linux MegaRAID device driver&n; *&n; * Copyright &#xfffd; 2002  LSI Logic Corporation.&n; *&n; *&t;   This program is free software; you can redistribute it and/or&n; *&t;   modify it under the terms of the GNU General Public License&n; *&t;   as published by the Free Software Foundation; either version&n; *&t;   2 of the License, or (at your option) any later version.&n; *&n; * Copyright (c) 2002  Red Hat, Inc. All rights reserved.&n; *&t;  - fixes&n; *&t;  - speed-ups (list handling fixes, issued_list, optimizations.)&n; *&t;  - lots of cleanups.&n; *&n; * Version : v2.00.3 (Feb 19, 2003) - Atul Mukker &lt;Atul.Mukker@lsil.com&gt;&n; *&n; * Description: Linux device driver for LSI Logic MegaRAID controller&n; *&n; * Supported controllers: MegaRAID 418, 428, 438, 466, 762, 467, 471, 490, 493&n; *&t;&t;&t;&t;&t;518, 520, 531, 532&n; *&n; * This driver is supported by LSI Logic, with assistance from Red Hat, Dell,&n; * and others. Please send updates to the public mailing list&n; * linux-megaraid-devel@dell.com, and subscribe to and read archives of this&n; * list at http://lists.us.dell.com/.&n; *&n; * For history of changes, see ChangeLog.megaraid.&n; *&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;

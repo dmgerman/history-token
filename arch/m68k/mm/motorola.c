@@ -9,9 +9,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-macro_line|#ifdef CONFIG_BLK_DEV_RAM
-macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
