@@ -212,6 +212,11 @@ r_int
 id|status
 suffix:semicolon
 multiline_comment|/* current error code for unit */
+DECL|member|disk
+r_struct
+id|gendisk
+id|disk
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif
