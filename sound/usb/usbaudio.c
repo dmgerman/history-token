@@ -5049,13 +5049,6 @@ op_assign
 id|subs-&gt;dev
 suffix:semicolon
 r_struct
-id|usb_host_config
-op_star
-id|config
-op_assign
-id|dev-&gt;actconfig
-suffix:semicolon
-r_struct
 id|usb_host_interface
 op_star
 id|alts
