@@ -3593,6 +3593,13 @@ r_return
 id|r
 suffix:semicolon
 )brace
+id|dm_table_put
+c_func
+(paren
+id|t
+)paren
+suffix:semicolon
+multiline_comment|/* md will have taken its own reference */
 id|set_disk_ro
 c_func
 (paren
