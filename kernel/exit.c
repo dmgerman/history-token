@@ -2038,11 +2038,16 @@ c_cond
 (paren
 id|p-&gt;pdeath_signal
 )paren
-id|send_group_sig_info
+multiline_comment|/* We already hold the tasklist_lock here.  */
+id|group_send_sig_info
 c_func
 (paren
 id|p-&gt;pdeath_signal
 comma
+(paren
+r_void
+op_star
+)paren
 l_int|0
 comma
 id|p
