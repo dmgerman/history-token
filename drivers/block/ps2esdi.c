@@ -27,7 +27,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/ps2esdi.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/mca.h&gt;
@@ -622,7 +621,7 @@ multiline_comment|/* register the device - pass the name, major number and opera
 r_if
 c_cond
 (paren
-id|devfs_register_blkdev
+id|register_blkdev
 c_func
 (paren
 id|MAJOR_NR
@@ -694,7 +693,7 @@ l_string|&quot;PS2ESDI: error initialising&quot;
 l_string|&quot; device, releasing resources&bslash;n&quot;
 )paren
 suffix:semicolon
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MAJOR_NR
@@ -1007,7 +1006,7 @@ op_amp
 id|ps2esdi_gendisk
 )paren
 suffix:semicolon
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MAJOR_NR

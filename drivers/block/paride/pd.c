@@ -4511,7 +4511,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_register_blkdev
+id|register_blkdev
 c_func
 (paren
 id|MAJOR_NR
@@ -4617,7 +4617,7 @@ op_logical_neg
 id|pd_gendisk.nr_real
 )paren
 (brace
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MAJOR_NR
@@ -4679,7 +4679,7 @@ r_void
 r_int
 id|unit
 suffix:semicolon
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MAJOR_NR

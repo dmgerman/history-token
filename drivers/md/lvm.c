@@ -22,7 +22,6 @@ macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/ioctl.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -875,7 +874,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_register_blkdev
+id|register_blkdev
 c_func
 (paren
 id|MAJOR_NR
@@ -892,7 +891,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;%s -- devfs_register_blkdev failed&bslash;n&quot;
+l_string|&quot;%s -- register_blkdev failed&bslash;n&quot;
 comma
 id|lvm_name
 )paren
@@ -1035,7 +1034,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MAJOR_NR
@@ -1049,7 +1048,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s -- devfs_unregister_blkdev failed&bslash;n&quot;
+l_string|&quot;%s -- unregister_blkdev failed&bslash;n&quot;
 comma
 id|lvm_name
 )paren

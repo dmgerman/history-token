@@ -4884,7 +4884,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|devfs_register_blkdev
+id|register_blkdev
 c_func
 (paren
 id|ch-&gt;major
