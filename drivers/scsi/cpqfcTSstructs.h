@@ -95,12 +95,9 @@ mdefine_line|#define DECLARE_MUTEX_LOCKED(sem) struct semaphore sem = MUTEX_LOCK
 macro_line|#endif
 DECL|macro|DEV_NAME
 mdefine_line|#define DEV_NAME &quot;cpqfcTS&quot;
-DECL|macro|CPQ_DEVICE_ID
-mdefine_line|#define CPQ_DEVICE_ID     0xA0FC
-DECL|macro|AGILENT_XL2_ID
-mdefine_line|#define AGILENT_XL2_ID    0x1029
-r_typedef
+DECL|struct|SupportedPCIcards
 r_struct
+id|SupportedPCIcards
 (brace
 DECL|member|vendor_id
 id|__u16
@@ -110,9 +107,7 @@ DECL|member|device_id
 id|__u16
 id|device_id
 suffix:semicolon
-DECL|typedef|SupportedPCIcards
 )brace
-id|SupportedPCIcards
 suffix:semicolon
 singleline_comment|// nn:nn denotes bit field
 singleline_comment|// TachyonHeader struct def.

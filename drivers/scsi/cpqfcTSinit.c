@@ -585,11 +585,43 @@ l_string|&quot;launch_FC_worker_thread&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* &quot;Entry&quot; point to discover if any supported PCI &n;   bus adapter can be found&n;*/
-singleline_comment|// We&squot;re supporting:
-singleline_comment|// Compaq 64-bit, 66MHz HBA with Tachyon TS
-singleline_comment|// Agilent XL2 
+multiline_comment|/* We&squot;re supporting:&n; * Compaq 64-bit, 66MHz HBA with Tachyon TS&n; * Agilent XL2 &n; * HP Tachyon&n; */
 DECL|macro|HBA_TYPES
-mdefine_line|#define HBA_TYPES 2
+mdefine_line|#define HBA_TYPES 3
+macro_line|#ifndef PCI_DEVICE_ID_COMPAQ_
+DECL|macro|PCI_DEVICE_ID_COMPAQ_TACHYON
+mdefine_line|#define PCI_DEVICE_ID_COMPAQ_TACHYON&t;0xa0fc
+macro_line|#endif
+DECL|variable|__initdata
+r_static
+r_struct
+id|SupportedPCIcards
+id|cpqfc_boards
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+(brace
+id|PCI_VENDOR_ID_COMPAQ
+comma
+id|PCI_DEVICE_ID_COMPAQ_TACHYON
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_HP
+comma
+id|PCI_DEVICE_ID_HP_TACHLITE
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_HP
+comma
+id|PCI_DEVICE_ID_HP_TACHYON
+)brace
+comma
+)brace
+suffix:semicolon
 DECL|function|cpqfcTS_detect
 r_int
 id|cpqfcTS_detect
@@ -632,12 +664,6 @@ op_star
 id|cpqfcTStimer
 op_assign
 l_int|NULL
-suffix:semicolon
-id|SupportedPCIcards
-id|PCIids
-(braket
-id|HBA_TYPES
-)braket
 suffix:semicolon
 r_int
 id|i
@@ -682,45 +708,6 @@ r_return
 id|NumberOfAdapters
 suffix:semicolon
 )brace
-singleline_comment|// what HBA adapters are we supporting?
-id|PCIids
-(braket
-l_int|0
-)braket
-dot
-id|vendor_id
-op_assign
-id|PCI_VENDOR_ID_COMPAQ
-suffix:semicolon
-id|PCIids
-(braket
-l_int|0
-)braket
-dot
-id|device_id
-op_assign
-id|CPQ_DEVICE_ID
-suffix:semicolon
-id|PCIids
-(braket
-l_int|1
-)braket
-dot
-id|vendor_id
-op_assign
-id|PCI_VENDOR_ID_HP
-suffix:semicolon
-singleline_comment|// i.e. 103Ch (Agilent == HP for now)
-id|PCIids
-(braket
-l_int|1
-)braket
-dot
-id|device_id
-op_assign
-id|AGILENT_XL2_ID
-suffix:semicolon
-singleline_comment|// i.e. 1029h
 r_for
 c_loop
 (paren
@@ -746,14 +733,14 @@ op_assign
 id|pci_find_device
 c_func
 (paren
-id|PCIids
+id|cpqfc_boards
 (braket
 id|i
 )braket
 dot
 id|vendor_id
 comma
-id|PCIids
+id|cpqfc_boards
 (braket
 id|i
 )braket
