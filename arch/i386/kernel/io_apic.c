@@ -9821,7 +9821,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;IOAPIC[%d]: Invalid reference to IRQ 0/n&quot;
+l_string|&quot;IOAPIC[%d]: Invalid reference to IRQ 0&bslash;n&quot;
 comma
 id|ioapic
 )paren
