@@ -459,12 +459,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_struct
-id|proc_dir_entry
-op_star
-id|rtas_proc_dir
-suffix:semicolon
 multiline_comment|/* Some RTAS ops require a data buffer and that buffer must be &lt; 4G.&n; * Rather than having a memory allocator, just use this buffer&n; * (get the lock first), make the RTAS call.  Copy the data instead&n; * of holding the buffer for long.&n; */
 DECL|macro|RTAS_DATA_BUF_SIZE
 mdefine_line|#define RTAS_DATA_BUF_SIZE 1024

@@ -846,6 +846,13 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 )brace
 macro_line|#endif /* __ASSEMBLY__ */
+multiline_comment|/*&n; * Location of cpu0&squot;s segment table&n; */
+DECL|macro|STAB0_PAGE
+mdefine_line|#define STAB0_PAGE&t;0x9
+DECL|macro|STAB0_PHYS_ADDR
+mdefine_line|#define STAB0_PHYS_ADDR&t;(STAB0_PAGE&lt;&lt;PAGE_SHIFT)
+DECL|macro|STAB0_VIRT_ADDR
+mdefine_line|#define STAB0_VIRT_ADDR&t;(KERNELBASE+STAB0_PHYS_ADDR)
 multiline_comment|/* Block size masks */
 DECL|macro|BL_128K
 mdefine_line|#define BL_128K&t;0x000

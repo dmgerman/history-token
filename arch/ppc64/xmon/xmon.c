@@ -1716,7 +1716,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|naca-&gt;platform
+id|systemcfg-&gt;platform
 op_ne
 id|PLATFORM_PSERIES
 )paren
@@ -1873,7 +1873,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|naca-&gt;platform
+id|systemcfg-&gt;platform
 op_ne
 id|PLATFORM_PSERIES
 )paren

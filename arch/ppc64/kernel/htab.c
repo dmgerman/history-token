@@ -228,7 +228,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|naca-&gt;platform
+id|systemcfg-&gt;platform
 op_eq
 id|PLATFORM_PSERIES_LPAR
 )paren
@@ -384,7 +384,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|naca-&gt;platform
+id|systemcfg-&gt;platform
 op_eq
 id|PLATFORM_PSERIES
 )paren
@@ -491,7 +491,7 @@ c_func
 (paren
 )paren
 op_logical_and
-id|naca-&gt;physicalMemorySize
+id|systemcfg-&gt;physicalMemorySize
 OG
 l_int|256
 op_star
@@ -534,7 +534,7 @@ comma
 id|KERNELBASE
 op_plus
 (paren
-id|naca-&gt;physicalMemorySize
+id|systemcfg-&gt;physicalMemorySize
 )paren
 comma
 id|mode_rw
@@ -557,7 +557,7 @@ comma
 id|KERNELBASE
 op_plus
 (paren
-id|naca-&gt;physicalMemorySize
+id|systemcfg-&gt;physicalMemorySize
 )paren
 comma
 id|mode_rw
