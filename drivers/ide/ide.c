@@ -15128,7 +15128,7 @@ id|arg
 (brace
 r_return
 op_minus
-id|EIO
+id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|default_open
