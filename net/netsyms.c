@@ -84,21 +84,6 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_ATALK_MODULE
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#endif
-multiline_comment|/* Socket layer support routines */
-DECL|variable|sk_run_filter
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sk_run_filter
-)paren
-suffix:semicolon
-DECL|variable|sk_chk_filter
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sk_chk_filter
-)paren
-suffix:semicolon
 multiline_comment|/* Needed by unix.o */
 DECL|variable|files_stat
 id|EXPORT_SYMBOL
