@@ -439,6 +439,9 @@ id|task_struct
 op_star
 id|p
 suffix:semicolon
+r_int
+id|pid
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -616,6 +619,10 @@ id|tasklist_lock
 )paren
 suffix:semicolon
 )brace
+id|pid
+op_assign
+id|last_pid
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -624,7 +631,7 @@ id|lastpid_lock
 )paren
 suffix:semicolon
 r_return
-id|last_pid
+id|pid
 suffix:semicolon
 )brace
 DECL|function|dup_mmap
