@@ -93,6 +93,8 @@ comma
 id|fsize
 comma
 id|l
+comma
+id|post
 suffix:semicolon
 id|snd_pcm_runtime_t
 op_star
@@ -168,6 +170,10 @@ id|fsize
 op_div_assign
 id|l
 suffix:semicolon
+id|post
+op_assign
+l_int|1
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -186,8 +192,8 @@ id|mult
 op_div_assign
 l_int|2
 suffix:semicolon
-id|rate
-op_div_assign
+id|post
+op_mul_assign
 l_int|2
 suffix:semicolon
 )brace
@@ -220,11 +226,15 @@ suffix:semicolon
 )brace
 id|runtime-&gt;timer_resolution
 op_assign
+(paren
 id|mult
 op_star
 id|fsize
 op_div
 id|rate
+)paren
+op_star
+id|post
 suffix:semicolon
 )brace
 DECL|function|snd_pcm_timer_resolution
