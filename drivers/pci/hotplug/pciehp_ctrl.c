@@ -671,6 +671,16 @@ id|func-&gt;presence_save
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Card Present&n;&t;&t; */
+id|info
+c_func
+(paren
+l_string|&quot;Card present on Slot(%d)&bslash;n&quot;
+comma
+id|ctrl-&gt;first_slot
+op_plus
+id|hp_slot
+)paren
+suffix:semicolon
 id|taskInfo-&gt;event_type
 op_assign
 id|INT_PRESENCE_ON
@@ -679,6 +689,16 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/*&n;&t;&t; * Not Present&n;&t;&t; */
+id|info
+c_func
+(paren
+l_string|&quot;Card not present on Slot(%d)&bslash;n&quot;
+comma
+id|ctrl-&gt;first_slot
+op_plus
+id|hp_slot
+)paren
+suffix:semicolon
 id|taskInfo-&gt;event_type
 op_assign
 id|INT_PRESENCE_OFF
