@@ -32,6 +32,7 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/nmi.h&gt;
 macro_line|#include &lt;asm/edd.h&gt;
+macro_line|#include &lt;asm/ist.h&gt;
 r_extern
 r_void
 id|dump_thread
@@ -810,6 +811,15 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|eddnr
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_X86_SPEEDSTEP_SMI) || defined(CONFIG_X86_SPEEDSTEP_SMI_MODULE)
+DECL|variable|ist_info
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ist_info
 )paren
 suffix:semicolon
 macro_line|#endif
