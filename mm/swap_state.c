@@ -53,15 +53,6 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 comma
 dot
-id|clean_pages
-op_assign
-id|LIST_HEAD_INIT
-c_func
-(paren
-id|swapper_space.clean_pages
-)paren
-comma
-dot
 id|a_ops
 op_assign
 op_amp

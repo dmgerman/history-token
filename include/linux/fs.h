@@ -760,12 +760,6 @@ id|spinlock_t
 id|tree_lock
 suffix:semicolon
 multiline_comment|/* and spinlock protecting it */
-DECL|member|clean_pages
-r_struct
-id|list_head
-id|clean_pages
-suffix:semicolon
-multiline_comment|/* list of clean pages */
 DECL|member|nrpages
 r_int
 r_int

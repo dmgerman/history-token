@@ -597,16 +597,6 @@ r_int
 id|index
 )paren
 (brace
-id|list_add
-c_func
-(paren
-op_amp
-id|page-&gt;list
-comma
-op_amp
-id|mapping-&gt;clean_pages
-)paren
-suffix:semicolon
 id|page-&gt;mapping
 op_assign
 id|mapping
