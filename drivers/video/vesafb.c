@@ -1034,6 +1034,18 @@ id|i
 comma
 id|err
 suffix:semicolon
+r_int
+r_int
+id|size_vmode
+suffix:semicolon
+r_int
+r_int
+id|size_remap
+suffix:semicolon
+r_int
+r_int
+id|size_total
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1076,49 +1088,6 @@ id|vesafb_fix.line_length
 op_assign
 id|screen_info.lfb_linelength
 suffix:semicolon
-multiline_comment|/* Allocate enough memory for double buffering */
-id|vesafb_fix.smem_len
-op_assign
-id|screen_info.lfb_width
-op_star
-id|screen_info.lfb_height
-op_star
-id|vesafb_defined.bits_per_pixel
-op_rshift
-l_int|2
-suffix:semicolon
-multiline_comment|/* check that we don&squot;t remap more memory than old cards have */
-r_if
-c_cond
-(paren
-id|vesafb_fix.smem_len
-OG
-(paren
-id|screen_info.lfb_size
-op_star
-l_int|65536
-)paren
-)paren
-id|vesafb_fix.smem_len
-op_assign
-id|screen_info.lfb_size
-op_star
-l_int|65536
-suffix:semicolon
-multiline_comment|/* Set video size according to vram boot option */
-r_if
-c_cond
-(paren
-id|vram
-)paren
-id|vesafb_fix.smem_len
-op_assign
-id|vram
-op_star
-l_int|1024
-op_star
-l_int|1024
-suffix:semicolon
 id|vesafb_fix.visual
 op_assign
 (paren
@@ -1132,25 +1101,65 @@ id|FB_VISUAL_PSEUDOCOLOR
 suffix:colon
 id|FB_VISUAL_TRUECOLOR
 suffix:semicolon
-multiline_comment|/* limit framebuffer size to 16 MB.  Otherwise we&squot;ll eat tons of&n;&t; * kernel address space for nothing if the gfx card has alot of&n;&t; * memory (&gt;= 128 MB isn&squot;t uncommon these days ...) */
+multiline_comment|/*   size_vmode -- that is the amount of memory needed for the&n;&t; *                 used video mode, i.e. the minimum amount of&n;&t; *                 memory we need. */
+id|size_vmode
+op_assign
+id|vesafb_fix.line_length
+op_star
+id|vesafb_defined.yres
+suffix:semicolon
+multiline_comment|/*   size_total -- all video memory we have. Used for mtrr&n;&t; *                 entries and bounds checking. */
+id|size_total
+op_assign
+id|screen_info.lfb_size
+op_star
+l_int|65536
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|vesafb_fix.smem_len
-OG
-l_int|16
-op_star
-l_int|1024
-op_star
-l_int|1024
+id|size_total
+OL
+id|size_vmode
 )paren
+id|size_total
+op_assign
+id|size_vmode
+suffix:semicolon
+multiline_comment|/*   size_remap -- the amount of video memory we are going to&n;&t; *                 use for vesafb.  With modern cards it is no&n;&t; *                 option to simply use size_total as that&n;&t; *                 wastes plenty of kernel address space. */
+id|size_remap
+op_assign
+id|size_vmode
+op_star
+l_int|2
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|vram
+)paren
+id|size_remap
+op_assign
+id|vram
+op_star
+l_int|1024
+op_star
+l_int|1024
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|size_remap
+OG
+id|size_total
+)paren
+id|size_remap
+op_assign
+id|size_total
+suffix:semicolon
 id|vesafb_fix.smem_len
 op_assign
-l_int|16
-op_star
-l_int|1024
-op_star
-l_int|1024
+id|size_remap
 suffix:semicolon
 macro_line|#ifndef __i386__
 id|screen_info.vesapm_seg
@@ -1167,7 +1176,7 @@ c_func
 (paren
 id|vesafb_fix.smem_start
 comma
-id|vesafb_fix.smem_len
+id|size_total
 comma
 l_string|&quot;vesafb&quot;
 )paren
@@ -1269,13 +1278,18 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;vesafb: framebuffer at 0x%lx, mapped to 0x%p, size %dk&bslash;n&quot;
+l_string|&quot;vesafb: framebuffer at 0x%lx, mapped to 0x%p, &quot;
+l_string|&quot;using %dk, total %dk&bslash;n&quot;
 comma
 id|vesafb_fix.smem_start
 comma
 id|info-&gt;screen_base
 comma
-id|vesafb_fix.smem_len
+id|size_remap
+op_div
+l_int|1024
+comma
+id|size_total
 op_div
 l_int|1024
 )paren
@@ -1691,7 +1705,7 @@ id|mtrr
 r_int
 id|temp_size
 op_assign
-id|vesafb_fix.smem_len
+id|size_total
 suffix:semicolon
 multiline_comment|/* Find the largest power-of-two */
 r_while
@@ -1848,7 +1862,7 @@ c_func
 (paren
 id|vesafb_fix.smem_start
 comma
-id|vesafb_fix.smem_len
+id|size_total
 )paren
 suffix:semicolon
 r_return
