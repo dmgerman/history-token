@@ -5924,6 +5924,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|rq
 op_assign
 id|task_rq_lock
@@ -5961,7 +5966,8 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|init_MUTEX_LOCKED
@@ -6005,6 +6011,13 @@ c_func
 (paren
 op_amp
 id|req.sem
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
