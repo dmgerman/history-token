@@ -331,6 +331,23 @@ comma
 id|u32
 )paren
 suffix:semicolon
+r_void
+id|prom_adjust_ranges
+c_func
+(paren
+r_struct
+id|linux_prom_ranges
+op_star
+comma
+r_int
+comma
+r_struct
+id|linux_prom_ranges
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 DECL|macro|SBUS_DMA_BIDIRECTIONAL
 mdefine_line|#define SBUS_DMA_BIDIRECTIONAL&t;DMA_BIDIRECTIONAL
 DECL|macro|SBUS_DMA_TODEVICE

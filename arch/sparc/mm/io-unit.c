@@ -1244,7 +1244,8 @@ op_assign
 id|pgd_offset
 c_func
 (paren
-id|init_task.mm
+op_amp
+id|init_mm
 comma
 id|addr
 )paren

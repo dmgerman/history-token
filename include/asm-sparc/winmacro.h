@@ -36,9 +36,8 @@ mdefine_line|#define SAVE_BOLIXED_USER_STACK(cur_reg, scratch) &bslash;&n;      
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|LOAD_CURRENT4M
 mdefine_line|#define LOAD_CURRENT4M(dest_reg, idreg) &bslash;&n;        rd       %tbr, %idreg; &bslash;&n;&t;sethi    %hi(current_set), %dest_reg; &bslash;&n;        srl      %idreg, 10, %idreg; &bslash;&n;&t;or       %dest_reg, %lo(current_set), %dest_reg; &bslash;&n;&t;and      %idreg, 0xc, %idreg; &bslash;&n;&t;ld       [%idreg + %dest_reg], %dest_reg;
-multiline_comment|/* Sliiick. We have a Linux current register :) -jj */
 DECL|macro|LOAD_CURRENT4D
-mdefine_line|#define LOAD_CURRENT4D(dest_reg) &bslash;&n;&t;lda&t; [%g0] ASI_M_VIKING_TMP2, %dest_reg;
+mdefine_line|#define LOAD_CURRENT4D(dest_reg, idreg) &bslash;&n;&t;lda&t; [%g0] ASI_M_VIKING_TMP1, %idreg; &bslash;&n;&t;sethi&t;%hi(C_LABEL(current_set)), %dest_reg; &bslash;&n;&t;sll&t;%idreg, 2, %idreg; &bslash;&n;&t;or&t;%dest_reg, %lo(C_LABEL(current_set)), %dest_reg; &bslash;&n;&t;ld&t;[%idreg + %dest_reg], %dest_reg;
 multiline_comment|/* Blackbox - take care with this... - check smp4m and smp4d before changing this. */
 DECL|macro|LOAD_CURRENT
 mdefine_line|#define LOAD_CURRENT(dest_reg, idreg) &t;&t;&t;&t;&t;&bslash;&n;&t;sethi&t; %hi(___b_load_current), %idreg;&t;&t;&t;&bslash;&n;&t;sethi    %hi(current_set), %dest_reg; &t;&t;&t;&bslash;&n;&t;sethi    %hi(boot_cpu_id4), %idreg; &t;&t;&t;&bslash;&n;&t;or       %dest_reg, %lo(current_set), %dest_reg; &t;&bslash;&n;&t;ldub&t; [%idreg + %lo(boot_cpu_id4)], %idreg;&t;&t;&bslash;&n;&t;ld       [%idreg + %dest_reg], %dest_reg;
