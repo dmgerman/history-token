@@ -92,7 +92,7 @@ id|vmpoff_cmd
 suffix:semicolon
 r_extern
 r_void
-id|do_reipl
+id|reipl
 c_func
 (paren
 r_int
@@ -883,7 +883,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_else
-id|do_reipl
+id|reipl
 (paren
 l_int|0x10000
 op_or

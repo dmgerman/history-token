@@ -906,7 +906,7 @@ macro_line|#else
 multiline_comment|/*&n; * Reboot, halt and power_off routines for non SMP.&n; */
 r_extern
 r_void
-id|do_reipl
+id|reipl
 c_func
 (paren
 r_int
@@ -940,7 +940,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_else
-id|do_reipl
+id|reipl
 (paren
 l_int|0x10000
 op_or

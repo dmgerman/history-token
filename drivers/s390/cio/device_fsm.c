@@ -1802,6 +1802,12 @@ id|sch-&gt;dev
 )paren
 (brace
 multiline_comment|/* Driver doesn&squot;t want to keep device. */
+id|cio_disable_subchannel
+c_func
+(paren
+id|sch
+)paren
+suffix:semicolon
 id|device_unregister
 c_func
 (paren
@@ -1830,6 +1836,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|cio_disable_subchannel
+c_func
+(paren
+id|sch
+)paren
+suffix:semicolon
 id|ccw_device_set_timeout
 c_func
 (paren
@@ -3311,6 +3323,14 @@ id|to_subchannel
 c_func
 (paren
 id|cdev-&gt;dev.parent
+)paren
+suffix:semicolon
+id|ccw_device_set_timeout
+c_func
+(paren
+id|cdev
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* OK, i/o is dead now. Call interrupt handler. */
