@@ -475,7 +475,7 @@ id|CPUFREQ_POSTCHANGE
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; *&t;elanfreq_validatespeed: test if frequency range is valid &n; *&n; *&t;This function checks if a given frequency range in kHz is valid &n; *      for the hardware supported by the driver. &n; */
+multiline_comment|/**&n; *&t;elanfreq_validatespeed: test if frequency range is valid&n; *      @policy: the policy to validate&n; *&n; *&t;This function checks if a given frequency range in kHz is valid &n; *      for the hardware supported by the driver. &n; */
 DECL|function|elanfreq_verify
 r_static
 r_int

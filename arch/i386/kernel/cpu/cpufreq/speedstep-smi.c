@@ -182,7 +182,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * speedstep_smi_get_freqs - get SpeedStep preferred &amp; current freq.&n; * Only available on later SpeedStep-enabled systems, returns false results or&n; * even hangs [cf. bugme.osdl.org # 1422] on earlier systems. Empirical testing&n; * shows that the latter occurs if !(ist_info.event &amp; 0xFFFF).&n; *&n; */
+multiline_comment|/**&n; * speedstep_smi_get_freqs - get SpeedStep preferred &amp; current freq.&n; * @low: the low frequency value is placed here&n; * @high: the high frequency value is placed here&n; *&n; * Only available on later SpeedStep-enabled systems, returns false results or&n; * even hangs [cf. bugme.osdl.org # 1422] on earlier systems. Empirical testing&n; * shows that the latter occurs if !(ist_info.event &amp; 0xFFFF).&n; */
 DECL|function|speedstep_smi_get_freqs
 r_static
 r_int
@@ -413,7 +413,7 @@ r_return
 id|state
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * speedstep_set_state - set the SpeedStep state&n; * @state: new processor frequency state (SPEEDSTEP_LOW or SPEEDSTEP_HIGH)&n; *&n; */
+multiline_comment|/**&n; * speedstep_set_state - set the SpeedStep state&n; * @state: new processor frequency state (SPEEDSTEP_LOW or SPEEDSTEP_HIGH)&n; * @notify: whether to call cpufreq_notify_transition&n; *&n; */
 DECL|function|speedstep_set_state
 r_static
 r_void
@@ -766,7 +766,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * speedstep_verify - verifies a new CPUFreq policy&n; * @freq: new policy&n; *&n; * Limit must be within speedstep_low_freq and speedstep_high_freq, with&n; * at least one border included.&n; */
+multiline_comment|/**&n; * speedstep_verify - verifies a new CPUFreq policy&n; * @policy: new policy&n; *&n; * Limit must be within speedstep_low_freq and speedstep_high_freq, with&n; * at least one border included.&n; */
 DECL|function|speedstep_verify
 r_static
 r_int

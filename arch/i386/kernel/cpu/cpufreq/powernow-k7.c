@@ -349,6 +349,36 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Get maximum capabilities */
+id|maxei
+op_assign
+id|cpuid_eax
+(paren
+l_int|0x80000000
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|maxei
+OL
+l_int|0x80000007
+)paren
+(brace
+multiline_comment|/* Any powernow info ? */
+macro_line|#ifdef MODULE
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;No powernow capabilities detected&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -375,34 +405,6 @@ suffix:semicolon
 id|have_a0
 op_assign
 l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/* Get maximum capabilities */
-id|maxei
-op_assign
-id|cpuid_eax
-(paren
-l_int|0x80000000
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|maxei
-OL
-l_int|0x80000007
-)paren
-(brace
-multiline_comment|/* Any powernow info ? */
-id|printk
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;No powernow capabilities detected&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 id|cpuid
