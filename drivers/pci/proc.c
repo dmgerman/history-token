@@ -1697,8 +1697,6 @@ c_func
 (paren
 id|irq
 comma
-l_string|&quot;irq&quot;
-comma
 id|S_IRUGO
 comma
 id|pci_show_irq
@@ -1879,8 +1877,6 @@ id|DEVICE_ATTR
 c_func
 (paren
 id|resource
-comma
-l_string|&quot;resource&quot;
 comma
 id|S_IRUGO
 comma

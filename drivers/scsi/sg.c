@@ -7807,8 +7807,6 @@ c_func
 (paren
 id|kdev
 comma
-l_string|&quot;kdev&quot;
-comma
 id|S_IRUGO
 comma
 id|sg_device_kdev_read
@@ -7857,8 +7855,6 @@ id|DEVICE_ATTR
 c_func
 (paren
 id|type
-comma
-l_string|&quot;type&quot;
 comma
 id|S_IRUGO
 comma
