@@ -121,6 +121,7 @@ r_static
 id|acpi_status
 DECL|function|is_ejectable_slot
 id|is_ejectable_slot
+c_func
 (paren
 id|acpi_handle
 id|handle
@@ -181,6 +182,7 @@ r_static
 id|acpi_status
 DECL|function|register_slot
 id|register_slot
+c_func
 (paren
 id|acpi_handle
 id|handle
@@ -722,6 +724,7 @@ DECL|function|detect_ejectable_slots
 r_static
 r_int
 id|detect_ejectable_slots
+c_func
 (paren
 id|acpi_handle
 op_star
@@ -774,6 +777,7 @@ r_static
 id|acpi_status
 DECL|function|decode_acpi_resource
 id|decode_acpi_resource
+c_func
 (paren
 r_struct
 id|acpi_resource
@@ -1211,6 +1215,7 @@ DECL|function|init_bridge_misc
 r_static
 r_void
 id|init_bridge_misc
+c_func
 (paren
 r_struct
 id|acpiphp_bridge
@@ -1317,6 +1322,7 @@ DECL|function|add_host_bridge
 r_static
 r_void
 id|add_host_bridge
+c_func
 (paren
 id|acpi_handle
 op_star
@@ -1520,6 +1526,7 @@ DECL|function|add_p2p_bridge
 r_static
 r_void
 id|add_p2p_bridge
+c_func
 (paren
 id|acpi_handle
 op_star
@@ -2406,6 +2413,7 @@ r_static
 id|acpi_status
 DECL|function|find_p2p_bridge
 id|find_p2p_bridge
+c_func
 (paren
 id|acpi_handle
 id|handle
@@ -2895,6 +2903,7 @@ DECL|function|remove_bridge
 r_static
 r_void
 id|remove_bridge
+c_func
 (paren
 id|acpi_handle
 id|handle
@@ -2906,6 +2915,7 @@ DECL|function|power_on_slot
 r_static
 r_int
 id|power_on_slot
+c_func
 (paren
 r_struct
 id|acpiphp_slot
@@ -3043,6 +3053,7 @@ DECL|function|power_off_slot
 r_static
 r_int
 id|power_off_slot
+c_func
 (paren
 r_struct
 id|acpiphp_slot
@@ -3282,6 +3293,7 @@ DECL|function|enable_device
 r_static
 r_int
 id|enable_device
+c_func
 (paren
 r_struct
 id|acpiphp_slot
@@ -3586,6 +3598,7 @@ DECL|function|disable_device
 r_static
 r_int
 id|disable_device
+c_func
 (paren
 r_struct
 id|acpiphp_slot
@@ -3704,6 +3717,7 @@ r_static
 r_int
 r_int
 id|get_slot_status
+c_func
 (paren
 r_struct
 id|acpiphp_slot
@@ -3843,6 +3857,7 @@ DECL|function|handle_hotplug_event_bridge
 r_static
 r_void
 id|handle_hotplug_event_bridge
+c_func
 (paren
 id|acpi_handle
 id|handle
@@ -4052,6 +4067,7 @@ DECL|function|handle_hotplug_event_func
 r_static
 r_void
 id|handle_hotplug_event_func
+c_func
 (paren
 id|acpi_handle
 id|handle
@@ -4688,6 +4704,7 @@ r_struct
 id|acpiphp_slot
 op_star
 id|get_slot_from_id
+c_func
 (paren
 r_int
 id|id
@@ -4768,6 +4785,7 @@ multiline_comment|/**&n; * acpiphp_enable_slot - power on slot&n; */
 DECL|function|acpiphp_enable_slot
 r_int
 id|acpiphp_enable_slot
+c_func
 (paren
 r_struct
 id|acpiphp_slot
@@ -4839,6 +4857,7 @@ multiline_comment|/**&n; * acpiphp_disable_slot - power off slot&n; */
 DECL|function|acpiphp_disable_slot
 r_int
 id|acpiphp_disable_slot
+c_func
 (paren
 r_struct
 id|acpiphp_slot
@@ -4949,6 +4968,7 @@ multiline_comment|/**&n; * acpiphp_check_bridge - re-enumerate devices&n; */
 DECL|function|acpiphp_check_bridge
 r_int
 id|acpiphp_check_bridge
+c_func
 (paren
 r_struct
 id|acpiphp_bridge
@@ -5126,6 +5146,7 @@ multiline_comment|/*&n; * slot enabled:  1&n; * slot disabled: 0&n; */
 DECL|function|acpiphp_get_power_status
 id|u8
 id|acpiphp_get_power_status
+c_func
 (paren
 r_struct
 id|acpiphp_slot
@@ -5162,6 +5183,7 @@ multiline_comment|/*&n; * attention LED ON: 1&n; *&t;&t;OFF: 0&n; *&n; * TBD&n; 
 DECL|function|acpiphp_get_attention_status
 id|u8
 id|acpiphp_get_attention_status
+c_func
 (paren
 r_struct
 id|acpiphp_slot
@@ -5177,6 +5199,7 @@ multiline_comment|/*&n; * latch closed:  1&n; * latch   open:  0&n; */
 DECL|function|acpiphp_get_latch_status
 id|u8
 id|acpiphp_get_latch_status
+c_func
 (paren
 r_struct
 id|acpiphp_slot
@@ -5213,6 +5236,7 @@ multiline_comment|/*&n; * adapter presence : 1&n; *          absence : 0&n; */
 DECL|function|acpiphp_get_adapter_status
 id|u8
 id|acpiphp_get_adapter_status
+c_func
 (paren
 r_struct
 id|acpiphp_slot
@@ -5249,6 +5273,7 @@ multiline_comment|/*&n; * pci address (seg/bus/dev)&n; */
 DECL|function|acpiphp_get_address
 id|u32
 id|acpiphp_get_address
+c_func
 (paren
 r_struct
 id|acpiphp_slot
