@@ -348,11 +348,6 @@ op_assign
 l_int|32
 comma
 dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
 id|cpu_setup
 op_assign
 id|__setup_cpu_601
@@ -402,11 +397,6 @@ dot
 id|dcache_bsize
 op_assign
 l_int|32
-comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
 comma
 dot
 id|cpu_setup
@@ -460,11 +450,6 @@ op_assign
 l_int|32
 comma
 dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
 id|cpu_setup
 op_assign
 id|__setup_cpu_603
@@ -514,11 +499,6 @@ dot
 id|dcache_bsize
 op_assign
 l_int|32
-comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
 comma
 dot
 id|cpu_setup
@@ -2332,11 +2312,6 @@ op_assign
 l_int|32
 comma
 dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
 id|cpu_setup
 op_assign
 id|__setup_cpu_603
@@ -2388,11 +2363,6 @@ op_assign
 l_int|32
 comma
 dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
 id|cpu_setup
 op_assign
 id|__setup_cpu_603
@@ -2440,11 +2410,6 @@ dot
 id|dcache_bsize
 op_assign
 l_int|32
-comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
 comma
 dot
 id|cpu_setup
@@ -2904,11 +2869,6 @@ id|dcache_bsize
 op_assign
 l_int|16
 comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
 )brace
 comma
 macro_line|#endif /* CONFIG_8xx */
@@ -2954,17 +2914,6 @@ id|dcache_bsize
 op_assign
 l_int|16
 comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
-id|cpu_setup
-op_assign
-l_int|0
-comma
-multiline_comment|/*__setup_cpu_403 */
 )brace
 comma
 (brace
@@ -3008,17 +2957,6 @@ id|dcache_bsize
 op_assign
 l_int|16
 comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
-id|cpu_setup
-op_assign
-l_int|0
-comma
-multiline_comment|/*__setup_cpu_403 */
 )brace
 comma
 (brace
@@ -3062,17 +3000,6 @@ id|dcache_bsize
 op_assign
 l_int|16
 comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
-id|cpu_setup
-op_assign
-l_int|0
-comma
-multiline_comment|/*__setup_cpu_403 */
 )brace
 comma
 (brace
@@ -3118,17 +3045,6 @@ id|dcache_bsize
 op_assign
 l_int|32
 comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
-id|cpu_setup
-op_assign
-l_int|0
-comma
-multiline_comment|/*__setup_cpu_405 */
 )brace
 comma
 (brace
@@ -3174,17 +3090,6 @@ id|dcache_bsize
 op_assign
 l_int|32
 comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
-id|cpu_setup
-op_assign
-l_int|0
-comma
-multiline_comment|/*__setup_cpu_405 */
 )brace
 comma
 (brace
@@ -3230,17 +3135,6 @@ id|dcache_bsize
 op_assign
 l_int|32
 comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
-id|cpu_setup
-op_assign
-l_int|0
-comma
-multiline_comment|/*__setup_cpu_405 */
 )brace
 comma
 (brace
@@ -3286,17 +3180,6 @@ id|dcache_bsize
 op_assign
 l_int|32
 comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
-id|cpu_setup
-op_assign
-l_int|0
-comma
-multiline_comment|/*__setup_cpu_405 */
 )brace
 comma
 (brace
@@ -3342,17 +3225,6 @@ id|dcache_bsize
 op_assign
 l_int|32
 comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
-id|cpu_setup
-op_assign
-l_int|0
-comma
-multiline_comment|/*__setup_cpu_405 */
 )brace
 comma
 (brace
@@ -3398,17 +3270,6 @@ id|dcache_bsize
 op_assign
 l_int|32
 comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
-id|cpu_setup
-op_assign
-l_int|0
-comma
-multiline_comment|/*__setup_cpu_405 */
 )brace
 comma
 (brace
@@ -3454,17 +3315,6 @@ id|dcache_bsize
 op_assign
 l_int|32
 comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
-id|cpu_setup
-op_assign
-l_int|0
-comma
-multiline_comment|/*__setup_cpu_405 */
 )brace
 comma
 (brace
@@ -3510,17 +3360,6 @@ id|dcache_bsize
 op_assign
 l_int|32
 comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
-id|cpu_setup
-op_assign
-l_int|0
-comma
-multiline_comment|/*__setup_cpu_405 */
 )brace
 comma
 (brace
@@ -3564,17 +3403,6 @@ id|dcache_bsize
 op_assign
 l_int|32
 comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
-id|cpu_setup
-op_assign
-l_int|0
-comma
-multiline_comment|/*__setup_cpu_405 */
 )brace
 comma
 (brace
@@ -3620,17 +3448,6 @@ id|dcache_bsize
 op_assign
 l_int|32
 comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
-id|cpu_setup
-op_assign
-l_int|0
-comma
-multiline_comment|/*__setup_cpu_405 */
 )brace
 comma
 macro_line|#endif /* CONFIG_40x */
@@ -3676,17 +3493,6 @@ id|dcache_bsize
 op_assign
 l_int|32
 comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
-id|cpu_setup
-op_assign
-l_int|0
-comma
-multiline_comment|/*__setup_cpu_440 */
 )brace
 comma
 (brace
@@ -3730,17 +3536,6 @@ id|dcache_bsize
 op_assign
 l_int|32
 comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
-id|cpu_setup
-op_assign
-l_int|0
-comma
-multiline_comment|/*__setup_cpu_440 */
 )brace
 comma
 (brace
@@ -3784,17 +3579,6 @@ id|dcache_bsize
 op_assign
 l_int|32
 comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
-id|cpu_setup
-op_assign
-l_int|0
-comma
-multiline_comment|/*__setup_cpu_440 */
 )brace
 comma
 (brace
@@ -3838,17 +3622,6 @@ id|dcache_bsize
 op_assign
 l_int|32
 comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
-id|cpu_setup
-op_assign
-l_int|0
-comma
-multiline_comment|/*__setup_cpu_440 */
 )brace
 comma
 (brace
@@ -3892,17 +3665,6 @@ id|dcache_bsize
 op_assign
 l_int|32
 comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
-id|cpu_setup
-op_assign
-l_int|0
-comma
-multiline_comment|/*__setup_cpu_440 */
 )brace
 comma
 macro_line|#endif /* CONFIG_44x */
@@ -3958,12 +3720,6 @@ id|num_pmcs
 op_assign
 l_int|4
 comma
-dot
-id|cpu_setup
-op_assign
-l_int|0
-comma
-multiline_comment|/*__setup_cpu_e500 */
 )brace
 comma
 macro_line|#endif
@@ -4004,16 +3760,6 @@ dot
 id|dcache_bsize
 op_assign
 l_int|32
-comma
-dot
-id|num_pmcs
-op_assign
-l_int|0
-comma
-dot
-id|cpu_setup
-op_assign
-l_int|0
 comma
 )brace
 macro_line|#endif /* !CLASSIC_PPC */
