@@ -95,19 +95,24 @@ DECL|macro|PHYS_TO_NID
 mdefine_line|#define PHYS_TO_NID(addr)&t;(0)
 macro_line|#else
 multiline_comment|/*&n; * This is more complex.  We have a set of mem_map arrays spread&n; * around in memory.&n; */
+macro_line|#include &lt;asm/numnodes.h&gt;
+DECL|macro|NUM_NODES
+mdefine_line|#define NUM_NODES&t;(1 &lt;&lt; NODES_SHIFT)
 DECL|macro|page_to_pfn
 mdefine_line|#define page_to_pfn(page)&t;&t;&t;&t;&t;&bslash;&n;&t;(( (page) - page_zone(page)-&gt;zone_mem_map)&t;&t;&bslash;&n;&t;  + page_zone(page)-&gt;zone_start_pfn)
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;&t;&t;&t;&t;&bslash;&n;&t;(PFN_TO_MAPBASE(pfn) + LOCAL_MAP_NR((pfn) &lt;&lt; PAGE_SHIFT))
 DECL|macro|pfn_valid
-mdefine_line|#define pfn_valid(pfn)&t;&t;(PFN_TO_NID(pfn) &lt; NR_NODES)
+mdefine_line|#define pfn_valid(pfn)&t;&t;(PFN_TO_NID(pfn) &lt; NUM_NODES)
 DECL|macro|virt_to_page
 mdefine_line|#define virt_to_page(kaddr)&t;&t;&t;&t;&t;&bslash;&n;&t;(ADDR_TO_MAPBASE(kaddr) + LOCAL_MAP_NR(kaddr))
 DECL|macro|virt_addr_valid
-mdefine_line|#define virt_addr_valid(kaddr)&t;(KVADDR_TO_NID(kaddr) &lt; NR_NODES)
+mdefine_line|#define virt_addr_valid(kaddr)&t;(KVADDR_TO_NID(kaddr) &lt; NUM_NODES)
 multiline_comment|/*&n; * Common discontigmem stuff.&n; *  PHYS_TO_NID is used by the ARM kernel/setup.c&n; */
 DECL|macro|PHYS_TO_NID
 mdefine_line|#define PHYS_TO_NID(addr)&t;PFN_TO_NID((addr) &gt;&gt; PAGE_SHIFT)
+DECL|macro|NUM_NODES
+macro_line|#undef NUM_NODES
 macro_line|#endif
 multiline_comment|/*&n; * For BIO.  &quot;will die&quot;.  Kill me when bio_to_phys() and bvec_to_phys() die.&n; */
 DECL|macro|page_to_phys
