@@ -2012,6 +2012,17 @@ id|skb
 suffix:semicolon
 r_extern
 r_void
+id|tcp_enter_frto
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|tcp_enter_loss
 c_func
 (paren
