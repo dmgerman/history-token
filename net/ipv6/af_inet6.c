@@ -3190,23 +3190,6 @@ id|err
 r_goto
 id|ndisc_fail
 suffix:semicolon
-macro_line|#ifdef CONFIG_IPV6_TUNNEL
-id|err
-op_assign
-id|ip6_tunnel_init
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-r_goto
-id|ip6_tunnel_fail
-suffix:semicolon
-macro_line|#endif
 id|err
 op_assign
 id|igmp6_init
@@ -3404,14 +3387,6 @@ suffix:semicolon
 macro_line|#endif
 id|igmp_fail
 suffix:colon
-macro_line|#ifdef CONFIG_IPV6_TUNNEL
-id|ip6_tunnel_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ip6_tunnel_fail
-suffix:colon
 macro_line|#endif
 id|ndisc_cleanup
 c_func
@@ -3532,13 +3507,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IPV6_TUNNEL
-id|ip6_tunnel_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|ndisc_cleanup
 c_func
 (paren
