@@ -48,6 +48,7 @@ macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
+macro_line|#include &lt;linux/audit.h&gt;
 macro_line|#include &quot;avc.h&quot;
 macro_line|#include &quot;objsec.h&quot;
 macro_line|#include &quot;netif.h&quot;
@@ -14112,6 +14113,39 @@ c_cond
 id|err
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|EINVAL
+)paren
+(brace
+id|audit_log
+c_func
+(paren
+id|current-&gt;audit_context
+comma
+l_string|&quot;SELinux:  unrecognized netlink message&quot;
+l_string|&quot; type=%hu for sclass=%hu&bslash;n&quot;
+comma
+id|nlh-&gt;nlmsg_type
+comma
+id|isec-&gt;sclass
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|selinux_enforcing
+)paren
+id|err
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Ignore */
 r_if
 c_cond
