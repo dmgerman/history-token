@@ -1641,6 +1641,8 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
+DECL|function|agp_hp_probe
 r_static
 r_int
 id|__init
@@ -1685,6 +1687,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|variable|__initdata
 r_static
 r_struct
 id|pci_device_id
@@ -1711,7 +1714,7 @@ op_complement
 l_int|0
 comma
 dot
-id|vendor_id
+id|vendor
 op_assign
 id|PCI_VENDOR_ID_HP
 comma
@@ -1744,6 +1747,7 @@ comma
 id|agp_pci_table
 )paren
 suffix:semicolon
+DECL|variable|agp_hp_pci_driver
 r_static
 r_struct
 id|__initdata
@@ -1768,6 +1772,7 @@ id|agp_hp_probe
 comma
 )brace
 suffix:semicolon
+DECL|function|agp_hp_init
 r_static
 r_int
 id|__init
@@ -1802,6 +1807,7 @@ r_return
 id|ret_val
 suffix:semicolon
 )brace
+DECL|function|agp_hp_cleanup
 r_static
 r_void
 id|__exit
@@ -1820,16 +1826,18 @@ id|pci_unregister_driver
 c_func
 (paren
 op_amp
-id|agp_pci_driver
+id|agp_hp_pci_driver
 )paren
 suffix:semicolon
 )brace
+DECL|variable|agp_hp_init
 id|module_init
 c_func
 (paren
 id|agp_hp_init
 )paren
 suffix:semicolon
+DECL|variable|agp_hp_cleanup
 id|module_exit
 c_func
 (paren
