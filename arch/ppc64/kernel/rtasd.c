@@ -1054,7 +1054,7 @@ suffix:semicolon
 )brace
 DECL|function|rtas_init
 r_static
-r_void
+r_int
 id|__init
 id|rtas_init
 c_func
@@ -1156,6 +1156,9 @@ c_func
 id|KERN_ERR
 l_string|&quot;RTAS daemon started&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|surveillance_setup
