@@ -1707,6 +1707,16 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_READAHEAD
+)paren
+)paren
 id|buffer_io_error
 c_func
 (paren
