@@ -174,31 +174,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|refrigerator
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|freeze_processes
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|thaw_processes
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 r_int
 id|nr_copy_pages
@@ -262,7 +237,7 @@ r_int
 id|resume
 )paren
 suffix:semicolon
-macro_line|#else
+macro_line|#else&t;/* CONFIG_SOFTWARE_SUSPEND */
 DECL|function|software_suspend
 r_static
 r_inline
@@ -280,12 +255,71 @@ DECL|macro|register_suspend_notifier
 mdefine_line|#define register_suspend_notifier(a)&t;do { } while(0)
 DECL|macro|unregister_suspend_notifier
 mdefine_line|#define unregister_suspend_notifier(a)&t;do { } while(0)
-DECL|macro|refrigerator
-mdefine_line|#define refrigerator(a)&t;&t;&t;do { BUG(); } while(0)
-DECL|macro|freeze_processes
-mdefine_line|#define freeze_processes()&t;&t;do { panic(&quot;You need CONFIG_SOFTWARE_SUSPEND to do sleeps.&quot;); } while(0)
-DECL|macro|thaw_processes
-mdefine_line|#define thaw_processes()&t;&t;do { } while(0)
-macro_line|#endif
+macro_line|#endif&t;/* CONFIG_SOFTWARE_SUSPEND */
+macro_line|#ifdef CONFIG_PM
+r_extern
+r_void
+id|refrigerator
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|freeze_processes
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|thaw_processes
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|refrigerator
+r_static
+r_inline
+r_void
+id|refrigerator
+c_func
+(paren
+r_int
+r_int
+)paren
+(brace
+)brace
+DECL|function|freeze_processes
+r_static
+r_inline
+r_int
+id|freeze_processes
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|thaw_processes
+r_static
+r_inline
+r_void
+id|thaw_processes
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+macro_line|#endif&t;/* CONFIG_PM */
 macro_line|#endif /* _LINUX_SWSUSP_H */
 eof
