@@ -2,6 +2,7 @@ multiline_comment|/*&n; * usbmidi.c - ALSA USB MIDI driver&n; *&n; * Copyright (
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -271,6 +272,11 @@ id|endpoints
 id|MIDI_MAX_ENDPOINTS
 )braket
 suffix:semicolon
+DECL|member|input_triggered
+r_int
+r_int
+id|input_triggered
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|snd_usb_midi_out_endpoint
@@ -287,6 +293,10 @@ r_struct
 id|urb
 op_star
 id|urb
+suffix:semicolon
+DECL|member|urb_active
+r_int
+id|urb_active
 suffix:semicolon
 DECL|member|max_transfer
 r_int
@@ -622,10 +632,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|port-&gt;substream-&gt;runtime
-op_logical_or
-op_logical_neg
-id|port-&gt;substream-&gt;runtime-&gt;trigger
+id|test_bit
+c_func
+(paren
+id|port-&gt;substream-&gt;number
+comma
+op_amp
+id|ep-&gt;umidi-&gt;input_triggered
+)paren
 )paren
 r_return
 suffix:semicolon
@@ -822,6 +836,24 @@ id|ep
 op_assign
 id|urb-&gt;context
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|ep-&gt;buffer_lock
+)paren
+suffix:semicolon
+id|ep-&gt;urb_active
+op_assign
+l_int|0
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|ep-&gt;buffer_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -886,10 +918,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|urb-&gt;status
-op_eq
-op_minus
-id|EINPROGRESS
+id|ep-&gt;urb_active
 op_logical_or
 id|ep-&gt;umidi-&gt;chip-&gt;shutdown
 )paren
@@ -940,6 +969,8 @@ id|urb-&gt;dev
 op_assign
 id|ep-&gt;umidi-&gt;chip-&gt;dev
 suffix:semicolon
+id|ep-&gt;urb_active
+op_assign
 id|snd_usbmidi_submit_urb
 c_func
 (paren
@@ -947,6 +978,8 @@ id|urb
 comma
 id|GFP_ATOMIC
 )paren
+op_ge
+l_int|0
 suffix:semicolon
 )brace
 id|spin_unlock_irqrestore
@@ -3182,6 +3215,36 @@ r_int
 id|up
 )paren
 (brace
+id|snd_usb_midi_t
+op_star
+id|umidi
+op_assign
+id|substream-&gt;rmidi-&gt;private_data
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|up
+)paren
+id|set_bit
+c_func
+(paren
+id|substream-&gt;number
+comma
+op_amp
+id|umidi-&gt;input_triggered
+)paren
+suffix:semicolon
+r_else
+id|clear_bit
+c_func
+(paren
+id|substream-&gt;number
+comma
+op_amp
+id|umidi-&gt;input_triggered
+)paren
+suffix:semicolon
 )brace
 DECL|variable|snd_usbmidi_output_ops
 r_static
