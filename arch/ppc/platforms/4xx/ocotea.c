@@ -117,6 +117,12 @@ comma
 l_string|&quot;machine&bslash;t&bslash;t: PPC440GX EVB (Ocotea)&bslash;n&quot;
 )paren
 suffix:semicolon
+id|ibm440gx_show_cpuinfo
+c_func
+(paren
+id|m
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -907,24 +913,6 @@ id|DBCR0_IDM
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * Determine various clocks.&n;&t; * To be completely correct we should get SysClk&n;&t; * from FPGA, because it can be changed by on-board switches&n;&t; * --ebs&n;&t; */
-id|ibm440gx_get_clocks
-c_func
-(paren
-op_amp
-id|clocks
-comma
-l_int|33333333
-comma
-l_int|6
-op_star
-l_int|1843200
-)paren
-suffix:semicolon
-id|ocp_sys_info.opb_bus_freq
-op_assign
-id|clocks.opb
-suffix:semicolon
 multiline_comment|/* Setup TODC access */
 id|TODC_INIT
 c_func
@@ -1050,10 +1038,30 @@ op_plus
 id|KERNELBASE
 )paren
 suffix:semicolon
-multiline_comment|/* Disable L2-Cache due to hardware issues */
-id|ibm440gx_l2c_disable
+multiline_comment|/*&n;&t; * Determine various clocks.&n;&t; * To be completely correct we should get SysClk&n;&t; * from FPGA, because it can be changed by on-board switches&n;&t; * --ebs&n;&t; */
+id|ibm440gx_get_clocks
 c_func
 (paren
+op_amp
+id|clocks
+comma
+l_int|33333333
+comma
+l_int|6
+op_star
+l_int|1843200
+)paren
+suffix:semicolon
+id|ocp_sys_info.opb_bus_freq
+op_assign
+id|clocks.opb
+suffix:semicolon
+multiline_comment|/* Disable L2-Cache on broken hardware, enable it otherwise */
+id|ibm440gx_l2c_setup
+c_func
+(paren
+op_amp
+id|clocks
 )paren
 suffix:semicolon
 id|ibm44x_platform_init
