@@ -1390,6 +1390,7 @@ id|media
 comma
 r_int
 comma
+op_amp
 id|num_media
 comma
 l_int|0
