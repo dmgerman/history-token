@@ -6,6 +6,7 @@ multiline_comment|/*&n; * SGI&squot;s XFS filesystem&squot;s major stuff (consta
 DECL|macro|XFS_NAME
 mdefine_line|#define XFS_NAME&t;&quot;xfs&quot;
 multiline_comment|/*&n; * Direct I/O attribute record used with XFS_IOC_DIOINFO&n; * d_miniosz is the min xfer size, xfer size multiple and file seek offset&n; * alignment.&n; */
+macro_line|#ifndef HAVE_DIOATTR
 DECL|struct|dioattr
 r_struct
 id|dioattr
@@ -27,7 +28,9 @@ suffix:semicolon
 multiline_comment|/* max xfer size&t;&t;*/
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Structure for XFS_IOC_FSGETXATTR[A] and XFS_IOC_FSSETXATTR.&n; */
+macro_line|#ifndef HAVE_FSXATTR
 DECL|struct|fsxattr
 r_struct
 id|fsxattr
@@ -57,6 +60,7 @@ l_int|16
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Flags for the bs_xflags/fsx_xflags field&n; * There should be a one-to-one correspondence between these flags and the&n; * XFS_DIFLAG_s.&n; */
 DECL|macro|XFS_XFLAG_REALTIME
 mdefine_line|#define XFS_XFLAG_REALTIME&t;0x00000001
@@ -67,6 +71,7 @@ mdefine_line|#define XFS_XFLAG_HASATTR&t;0x80000000&t;/* no DIFLAG for this&t;*/
 DECL|macro|XFS_XFLAG_ALL
 mdefine_line|#define XFS_XFLAG_ALL&t;&t;&bslash;&n;&t;( XFS_XFLAG_REALTIME|XFS_XFLAG_PREALLOC|XFS_XFLAG_HASATTR )
 multiline_comment|/*&n; * Structure for XFS_IOC_GETBMAP.&n; * On input, fill in bmv_offset and bmv_length of the first structure&n; * to indicate the area of interest in the file, and bmv_entry with the&n; * number of array elements given.  The first structure is updated on&n; * return to give the offset and length for the next call.&n; */
+macro_line|#ifndef HAVE_GETBMAP
 DECL|struct|getbmap
 r_struct
 id|getbmap
@@ -98,7 +103,9 @@ suffix:semicolon
 multiline_comment|/* # of entries filled in (output)  */
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; *&t;Structure for XFS_IOC_GETBMAPX.&t; Fields bmv_offset through bmv_entries&n; *&t;are used exactly as in the getbmap structure.  The getbmapx structure&n; *&t;has additional bmv_iflags and bmv_oflags fields. The bmv_iflags field&n; *&t;is only used for the first structure.  It contains input flags&n; *&t;specifying XFS_IOC_GETBMAPX actions.  The bmv_oflags field is filled&n; *&t;in by the XFS_IOC_GETBMAPX command for each returned structure after&n; *&t;the first.&n; */
+macro_line|#ifndef HAVE_GETBMAPX
 DECL|struct|getbmapx
 r_struct
 id|getbmapx
@@ -150,6 +157,7 @@ suffix:semicolon
 multiline_comment|/* future use&t;&t;&t;    */
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&t;bmv_iflags values - set by XFS_IOC_GETBMAPX caller.&t;*/
 DECL|macro|BMV_IF_ATTRFORK
 mdefine_line|#define BMV_IF_ATTRFORK&t;&t;0x1&t;/* return attr fork rather than data */
@@ -170,6 +178,7 @@ multiline_comment|/*&t;Convert getbmap &lt;-&gt; getbmapx - move fields from p1 
 DECL|macro|GETBMAP_CONVERT
 mdefine_line|#define GETBMAP_CONVERT(p1,p2) {&t;&bslash;&n;&t;p2.bmv_offset = p1.bmv_offset;&t;&bslash;&n;&t;p2.bmv_block = p1.bmv_block;&t;&bslash;&n;&t;p2.bmv_length = p1.bmv_length;&t;&bslash;&n;&t;p2.bmv_count = p1.bmv_count;&t;&bslash;&n;&t;p2.bmv_entries = p1.bmv_entries;  }
 multiline_comment|/*&n; * Structure for XFS_IOC_FSSETDM.&n; * For use by backup and restore programs to set the XFS on-disk inode&n; * fields di_dmevmask and di_dmstate.  These must be set to exactly and&n; * only values previously obtained via xfs_bulkstat!  (Specifically the&n; * xfs_bstat_t fields bs_dmevmask and bs_dmstate.)&n; */
+macro_line|#ifndef HAVE_FSDMIDATA
 DECL|struct|fsdmidata
 r_struct
 id|fsdmidata
@@ -190,6 +199,7 @@ suffix:semicolon
 multiline_comment|/* corresponds to di_dmstate  */
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * File segment locking set data type for 64 bit access.&n; * Also used for all the RESV/FREE interfaces.&n; */
 DECL|struct|xfs_flock64
 r_typedef
@@ -1023,7 +1033,7 @@ DECL|typedef|xfs_fsid_t
 id|xfs_fsid_t
 suffix:semicolon
 multiline_comment|/*&n; * File identifier.  Should be unique per filesystem on a single machine.&n; * This is typically called by a stateless file server in order to generate&n; * &quot;file handles&quot;.&n; */
-macro_line|#ifndef MAXFIDSZ
+macro_line|#ifndef HAVE_FID
 DECL|macro|MAXFIDSZ
 mdefine_line|#define MAXFIDSZ&t;46
 DECL|struct|fid
@@ -1231,6 +1241,7 @@ mdefine_line|#define XFS_IOC_ATTRMULTI_BY_HANDLE  _IOW (&squot;X&squot;, 123, st
 DECL|macro|XFS_IOC_FSGEOMETRY
 mdefine_line|#define XFS_IOC_FSGEOMETRY&t;     _IOR (&squot;X&squot;, 124, struct xfs_fsop_geom)
 multiline_comment|/*&t;XFS_IOC_GETFSUUID ---------- deprecated 140&t; */
+macro_line|#ifndef HAVE_BBMACROS
 multiline_comment|/*&n; * Block I/O parameterization.&t;A basic block (BB) is the lowest size of&n; * filesystem allocation, and must equal 512.  Length units given to bio&n; * routines are in BB&squot;s.&n; */
 DECL|macro|BBSHIFT
 mdefine_line|#define BBSHIFT&t;&t;9
@@ -1244,5 +1255,6 @@ DECL|macro|BTOBBT
 mdefine_line|#define BTOBBT(bytes)&t;((__u64)(bytes) &gt;&gt; BBSHIFT)
 DECL|macro|BBTOB
 mdefine_line|#define BBTOB(bbs)&t;((bbs) &lt;&lt; BBSHIFT)
+macro_line|#endif
 macro_line|#endif&t;/* __XFS_FS_H__ */
 eof
