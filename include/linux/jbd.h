@@ -1377,10 +1377,6 @@ comma
 r_struct
 id|buffer_head
 op_star
-comma
-r_int
-op_star
-id|credits
 )paren
 suffix:semicolon
 r_extern
@@ -1406,10 +1402,6 @@ comma
 r_struct
 id|buffer_head
 op_star
-comma
-r_int
-op_star
-id|credits
 )paren
 suffix:semicolon
 r_extern
@@ -1446,9 +1438,6 @@ comma
 r_struct
 id|buffer_head
 op_star
-comma
-r_int
-id|credits
 )paren
 suffix:semicolon
 r_extern
