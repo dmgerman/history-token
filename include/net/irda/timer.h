@@ -70,7 +70,6 @@ id|TIMER_CALLBACK
 id|callback
 )paren
 suffix:semicolon
-r_inline
 r_void
 id|irlap_start_slot_timer
 c_func
@@ -84,7 +83,6 @@ r_int
 id|timeout
 )paren
 suffix:semicolon
-r_inline
 r_void
 id|irlap_start_query_timer
 c_func
@@ -98,7 +96,6 @@ r_int
 id|timeout
 )paren
 suffix:semicolon
-r_inline
 r_void
 id|irlap_start_final_timer
 c_func
@@ -112,7 +109,6 @@ r_int
 id|timeout
 )paren
 suffix:semicolon
-r_inline
 r_void
 id|irlap_start_wd_timer
 c_func
@@ -126,7 +122,6 @@ r_int
 id|timeout
 )paren
 suffix:semicolon
-r_inline
 r_void
 id|irlap_start_backoff_timer
 c_func
@@ -162,7 +157,6 @@ id|irlap_cb
 op_star
 )paren
 suffix:semicolon
-r_inline
 r_void
 id|irlmp_start_watchdog_timer
 c_func
@@ -175,7 +169,6 @@ r_int
 id|timeout
 )paren
 suffix:semicolon
-r_inline
 r_void
 id|irlmp_start_discovery_timer
 c_func
@@ -188,7 +181,6 @@ r_int
 id|timeout
 )paren
 suffix:semicolon
-r_inline
 r_void
 id|irlmp_start_idle_timer
 c_func
@@ -201,7 +193,6 @@ r_int
 id|timeout
 )paren
 suffix:semicolon
-r_inline
 r_void
 id|irlmp_stop_idle_timer
 c_func

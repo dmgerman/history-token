@@ -1519,11 +1519,7 @@ id|sk
 r_goto
 id|out
 suffix:semicolon
-id|DN_SK
-c_func
-(paren
-id|sk
-)paren
+id|sk-&gt;sk_protinfo
 op_assign
 id|scp
 op_assign
