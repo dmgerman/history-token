@@ -28,7 +28,7 @@ macro_line|#ifdef CONFIG_NET_RADIO
 macro_line|#include &lt;linux/wireless.h&gt;&t;&t;/* Note : will define WIRELESS_EXT */
 macro_line|#endif&t;/* CONFIG_NET_RADIO */
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;net/compat_socket.h&gt;
+macro_line|#include &lt;net/compat.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
 r_static
@@ -6006,7 +6006,7 @@ id|flags
 r_if
 c_cond
 (paren
-id|msghdr_from_user_compat_to_kern
+id|get_compat_msghdr
 c_func
 (paren
 op_amp
@@ -6483,7 +6483,7 @@ id|flags
 r_if
 c_cond
 (paren
-id|msghdr_from_user_compat_to_kern
+id|get_compat_msghdr
 c_func
 (paren
 op_amp
@@ -6782,69 +6782,19 @@ id|MSG_CMSG_COMPAT
 op_amp
 id|flags
 )paren
-(brace
-r_int
-r_int
-id|ucmsg_ptr
-suffix:semicolon
-id|compat_size_t
-id|uclen
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-r_int
-r_int
-)paren
-id|msg_sys.msg_control
-op_ne
-id|cmsg_ptr
-)paren
-(brace
-id|cmsg_compat_recvmsg_fixup
+id|err
+op_assign
+id|put_compat_msg_controllen
 c_func
 (paren
 op_amp
 id|msg_sys
 comma
-id|cmsg_ptr
-)paren
-suffix:semicolon
-)brace
-id|ucmsg_ptr
-op_assign
-(paren
-(paren
-r_int
-r_int
-)paren
-id|msg_sys.msg_control
-)paren
-suffix:semicolon
-id|uclen
-op_assign
-(paren
-id|compat_size_t
-)paren
-(paren
-id|ucmsg_ptr
-op_minus
-id|cmsg_ptr
-)paren
-suffix:semicolon
-id|err
-op_assign
-id|__put_user
-c_func
-(paren
-id|uclen
+id|msg_compat
 comma
-op_amp
-id|msg_compat-&gt;msg_controllen
+id|cmsg_ptr
 )paren
 suffix:semicolon
-)brace
 r_else
 id|err
 op_assign

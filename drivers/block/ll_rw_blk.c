@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;&t;/* for max_pfn/max_low_pfn */
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/swap.h&gt;
 r_static
 r_void
 id|blk_unplug_work
@@ -398,6 +399,10 @@ op_div
 id|PAGE_CACHE_SIZE
 suffix:semicolon
 id|q-&gt;backing_dev_info.state
+op_assign
+l_int|0
+suffix:semicolon
+id|q-&gt;backing_dev_info.memory_backed
 op_assign
 l_int|0
 suffix:semicolon
@@ -6349,6 +6354,12 @@ OL
 id|sector
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 multiline_comment|/* This may well happen - the kernel calls&n;&t;&t;&t; * bread() without checking the size of the&n;&t;&t;&t; * device, e.g., when mounting a device. */
 id|printk
 c_func
@@ -6367,6 +6378,8 @@ id|bdevname
 c_func
 (paren
 id|bio-&gt;bi_bdev
+comma
+id|b
 )paren
 comma
 id|bio-&gt;bi_rw
@@ -6404,6 +6417,12 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Resolve the mapping until finished. (drivers are&n;&t; * still free to implement/resolve their own stacking&n;&t; * by explicitly returning 0)&n;&t; *&n;&t; * NOTE: we don&squot;t repeat the blk_size check for each new device.&n;&t; * Stacking drivers are expected to know what they are doing.&n;&t; */
 r_do
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|q
 op_assign
 id|bdev_get_queue
@@ -6423,12 +6442,15 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;generic_make_request: Trying to access nonexistent block-device %s (%Lu)&bslash;n&quot;
+l_string|&quot;generic_make_request: Trying to access &quot;
+l_string|&quot;nonexistent block-device %s (%Lu)&bslash;n&quot;
 comma
 id|bdevname
 c_func
 (paren
 id|bio-&gt;bi_bdev
+comma
+id|b
 )paren
 comma
 (paren
@@ -6479,6 +6501,8 @@ id|bdevname
 c_func
 (paren
 id|bio-&gt;bi_bdev
+comma
+id|b
 )paren
 comma
 id|bio_sectors

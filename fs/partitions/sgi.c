@@ -155,6 +155,12 @@ id|sgi_partition
 op_star
 id|p
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|label
 op_assign
 (paren
@@ -207,7 +213,7 @@ op_ne
 id|SGI_LABEL_MAGIC
 )paren
 (brace
-multiline_comment|/*printk(&quot;Dev %s SGI disklabel: bad magic %08x&bslash;n&quot;,&n;&t;&t;       bdevname(bdev), magic);*/
+multiline_comment|/*printk(&quot;Dev %s SGI disklabel: bad magic %08x&bslash;n&quot;,&n;&t;&t;       bdevname(bdev, b), magic);*/
 id|put_dev_sector
 c_func
 (paren
@@ -286,6 +292,8 @@ id|bdevname
 c_func
 (paren
 id|bdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon

@@ -1674,7 +1674,15 @@ suffix:semicolon
 id|PUT
 c_func
 (paren
-l_int|0
+(paren
+id|GET
+c_func
+(paren
+id|MT
+)paren
+op_amp
+id|SUNI_MT_DS27_53
+)paren
 comma
 id|MT
 )paren
@@ -1736,28 +1744,4 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/* Nay */
-)brace
-macro_line|#endif
 eof

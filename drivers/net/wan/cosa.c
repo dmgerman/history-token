@@ -1592,12 +1592,9 @@ id|ENODEV
 suffix:semicolon
 )brace
 id|devfs_mk_dir
+c_func
 (paren
-l_int|NULL
-comma
 l_string|&quot;cosa&quot;
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_for

@@ -3,6 +3,7 @@ multiline_comment|/*&n; * This file contains the default values for the opereati
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
+macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1429,6 +1430,91 @@ id|pvec
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/*&n; * We tolerate a little inaccuracy to avoid ping-ponging the counter between&n; * CPUs&n; */
+DECL|macro|ACCT_THRESHOLD
+mdefine_line|#define ACCT_THRESHOLD&t;max(16, NR_CPUS * 2)
+r_static
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_int
+comma
+id|committed_space
+)paren
+op_assign
+l_int|0
+suffix:semicolon
+DECL|function|vm_acct_memory
+r_void
+id|vm_acct_memory
+c_func
+(paren
+r_int
+id|pages
+)paren
+(brace
+r_int
+op_star
+id|local
+suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|local
+op_assign
+op_amp
+id|__get_cpu_var
+c_func
+(paren
+id|committed_space
+)paren
+suffix:semicolon
+op_star
+id|local
+op_add_assign
+id|pages
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|local
+OG
+id|ACCT_THRESHOLD
+op_logical_or
+op_star
+id|local
+OL
+op_minus
+id|ACCT_THRESHOLD
+)paren
+(brace
+id|atomic_add
+c_func
+(paren
+op_star
+id|local
+comma
+op_amp
+id|vm_committed_space
+)paren
+suffix:semicolon
+op_star
+id|local
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n; * Perform any setup for the swap system&n; */
 DECL|function|swap_setup
 r_void

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * mm/rmap.c - physical to virtual reverse mappings&n; *&
 multiline_comment|/*&n; * Locking:&n; * - the page-&gt;pte.chain is protected by the PG_chainlock bit,&n; *   which nests within the zone-&gt;lru_lock, then the&n; *   mm-&gt;page_table_lock, and then the page lock.&n; * - because swapout locking is opposite to the locking order&n; *   in the page fault path, the swapout path uses trylocks&n; *   on the mm-&gt;page_table_lock&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1239,7 +1240,6 @@ comma
 id|address
 )paren
 suffix:semicolon
-multiline_comment|/* Store the swap location in the pte. See handle_pte_fault() ... */
 r_if
 c_cond
 (paren
@@ -1250,6 +1250,7 @@ id|page
 )paren
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * Store the swap location in the pte.&n;&t;&t; * See handle_pte_fault() ...&n;&t;&t; */
 id|swp_entry_t
 id|entry
 op_assign
@@ -1278,6 +1279,78 @@ id|entry
 )paren
 )paren
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|pte_file
+c_func
+(paren
+op_star
+id|ptep
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+r_int
+r_int
+id|pgidx
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * If a nonlinear mapping then store the file page offset&n;&t;&t; * in the pte.&n;&t;&t; */
+id|pgidx
+op_assign
+(paren
+id|address
+op_minus
+id|vma-&gt;vm_start
+)paren
+op_rshift
+id|PAGE_SHIFT
+suffix:semicolon
+id|pgidx
+op_add_assign
+id|vma-&gt;vm_pgoff
+suffix:semicolon
+id|pgidx
+op_rshift_assign
+id|PAGE_CACHE_SHIFT
+op_minus
+id|PAGE_SHIFT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|page-&gt;index
+op_ne
+id|pgidx
+)paren
+(brace
+id|set_pte
+c_func
+(paren
+id|ptep
+comma
+id|pgoff_to_pte
+c_func
+(paren
+id|page-&gt;index
+)paren
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|pte_file
+c_func
+(paren
+op_star
+id|ptep
+)paren
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Move the dirty bit to the physical page now the pte is gone. */
 r_if

@@ -349,10 +349,6 @@ op_star
 id|dev_info
 )paren
 suffix:semicolon
-DECL|macro|register_pcmcia_driver
-mdefine_line|#define register_pcmcia_driver register_pccard_driver
-DECL|macro|unregister_pcmcia_driver
-mdefine_line|#define unregister_pcmcia_driver unregister_pccard_driver
 r_extern
 r_struct
 id|bus_type

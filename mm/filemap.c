@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/aio.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
@@ -82,10 +83,11 @@ suffix:semicolon
 id|mapping-&gt;nrpages
 op_decrement
 suffix:semicolon
-id|dec_page_state
+id|pagecache_acct
 c_func
 (paren
-id|nr_pagecache
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -4222,8 +4224,7 @@ r_int
 r_int
 id|len
 comma
-r_int
-r_int
+id|pgprot_t
 id|prot
 comma
 r_int
@@ -4273,6 +4274,26 @@ id|page
 suffix:semicolon
 r_int
 id|err
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nonblock
+)paren
+id|do_page_cache_readahead
+c_func
+(paren
+id|mapping
+comma
+id|vma-&gt;vm_file
+comma
+id|pgoff
+comma
+id|len
+op_rshift
+id|PAGE_CACHE_SHIFT
+)paren
 suffix:semicolon
 id|repeat
 suffix:colon

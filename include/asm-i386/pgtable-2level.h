@@ -118,5 +118,12 @@ DECL|macro|pfn_pte
 mdefine_line|#define pfn_pte(pfn, prot)&t;__pte(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot))
 DECL|macro|pfn_pmd
 mdefine_line|#define pfn_pmd(pfn, prot)&t;__pmd(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot))
+multiline_comment|/*&n; * Bits 0, 6 and 7 are taken, split up the 29 bits of offset&n; * into this range:&n; */
+DECL|macro|PTE_FILE_MAX_BITS
+mdefine_line|#define PTE_FILE_MAX_BITS&t;29
+DECL|macro|pte_to_pgoff
+mdefine_line|#define pte_to_pgoff(pte) &bslash;&n;&t;((((pte).pte_low &gt;&gt; 1) &amp; 0x1f ) + (((pte).pte_low &gt;&gt; 8) &lt;&lt; 5 ))
+DECL|macro|pgoff_to_pte
+mdefine_line|#define pgoff_to_pte(off) &bslash;&n;&t;((pte_t) { (((off) &amp; 0x1f) &lt;&lt; 1) + (((off) &gt;&gt; 5) &lt;&lt; 8) + _PAGE_FILE })
 macro_line|#endif /* _I386_PGTABLE_2LEVEL_H */
 eof

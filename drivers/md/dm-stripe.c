@@ -871,6 +871,12 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -951,6 +957,8 @@ id|i
 )braket
 dot
 id|dev-&gt;bdev
+comma
+id|b
 )paren
 comma
 id|sc-&gt;stripe

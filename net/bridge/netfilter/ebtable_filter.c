@@ -194,6 +194,11 @@ id|check
 op_assign
 id|check
 comma
+dot
+id|me
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 r_static

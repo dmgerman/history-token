@@ -1340,6 +1340,7 @@ id|fbc
 op_assign
 id|par-&gt;fbc
 suffix:semicolon
+r_const
 id|u8
 op_star
 id|data

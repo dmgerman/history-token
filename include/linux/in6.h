@@ -294,5 +294,9 @@ DECL|macro|IPV6_FLOWLABEL_MGR
 mdefine_line|#define IPV6_FLOWLABEL_MGR&t;32
 DECL|macro|IPV6_FLOWINFO_SEND
 mdefine_line|#define IPV6_FLOWINFO_SEND&t;33
+DECL|macro|IPV6_IPSEC_POLICY
+mdefine_line|#define IPV6_IPSEC_POLICY&t;34
+DECL|macro|IPV6_XFRM_POLICY
+mdefine_line|#define IPV6_XFRM_POLICY&t;35
 macro_line|#endif
 eof

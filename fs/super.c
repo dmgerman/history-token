@@ -1113,7 +1113,7 @@ id|sb_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Call the -&gt;sync_fs super_op against all filesytems which are r/w and&n; * which implement it.&n; */
+multiline_comment|/*&n; * Call the -&gt;sync_fs super_op against all filesytems which are r/w and&n; * which implement it.&n; *&n; * This operation is careful to avoid the livelock which could easily happen&n; * if two or more filesystems are being continuously dirtied.  s_need_sync_fs&n; * is used only here.  We set it against all filesystems and then clear it as&n; * we sync them.  So redirtied filesystems are skipped.&n; *&n; * But if process A is currently running sync_filesytems and then process B&n; * calls sync_filesystems as well, process B will set all the s_need_sync_fs&n; * flags again, which will cause process A to resync everything.  Fix that with&n; * a local mutex.&n; *&n; * FIXME: If wait==0, we only really need to call -&gt;sync_fs if s_dirt is true.&n; */
 DECL|function|sync_filesystems
 r_void
 id|sync_filesystems
@@ -1128,6 +1128,21 @@ id|super_block
 op_star
 id|sb
 suffix:semicolon
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|mutex
+)paren
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|mutex
+)paren
+suffix:semicolon
+multiline_comment|/* Could be down_interruptible */
 id|spin_lock
 c_func
 (paren
@@ -1300,6 +1315,13 @@ c_func
 (paren
 op_amp
 id|sb_lock
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|mutex
 )paren
 suffix:semicolon
 )brace
@@ -2215,6 +2237,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|s-&gt;s_flags
 op_assign
 id|flags
@@ -2228,6 +2256,8 @@ id|bdevname
 c_func
 (paren
 id|bdev
+comma
+id|b
 )paren
 comma
 r_sizeof

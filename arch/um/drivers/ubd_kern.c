@@ -2012,7 +2012,7 @@ id|devfs_name
 (braket
 r_sizeof
 (paren
-l_string|&quot;nnnnnn&bslash;0&quot;
+l_string|&quot;ubd/nnnnnn&bslash;0&quot;
 )paren
 )braket
 suffix:semicolon
@@ -2094,7 +2094,7 @@ c_func
 (paren
 id|devfs_name
 comma
-l_string|&quot;%d&quot;
+l_string|&quot;ubd/%d&quot;
 comma
 id|unit
 )paren
@@ -2105,7 +2105,7 @@ op_assign
 id|devfs_register
 c_func
 (paren
-id|dir_handle
+l_int|NULL
 comma
 id|devfs_name
 comma
@@ -2986,11 +2986,7 @@ op_assign
 id|devfs_mk_dir
 c_func
 (paren
-l_int|NULL
-comma
 l_string|&quot;ubd&quot;
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -3067,11 +3063,7 @@ op_assign
 id|devfs_mk_dir
 c_func
 (paren
-l_int|NULL
-comma
 id|name
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if

@@ -4185,8 +4185,7 @@ r_int
 r_int
 id|len
 comma
-r_int
-r_int
+id|pgprot_t
 id|prot
 comma
 r_int
@@ -8674,11 +8673,7 @@ macro_line|#ifdef CONFIG_TMPFS
 id|devfs_mk_dir
 c_func
 (paren
-l_int|NULL
-comma
 l_string|&quot;shm&quot;
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif

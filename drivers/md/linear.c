@@ -700,9 +700,16 @@ id|tmp_dev-&gt;offset
 )paren
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|printk
 (paren
-l_string|&quot;linear_make_request: Block %llu out of bounds on dev %s size %ld offset %ld&bslash;n&quot;
+l_string|&quot;linear_make_request: Block %llu out of bounds on &quot;
+l_string|&quot;dev %s size %ld offset %ld&bslash;n&quot;
 comma
 (paren
 r_int
@@ -715,6 +722,8 @@ id|bdevname
 c_func
 (paren
 id|tmp_dev-&gt;rdev-&gt;bdev
+comma
+id|b
 )paren
 comma
 id|tmp_dev-&gt;size

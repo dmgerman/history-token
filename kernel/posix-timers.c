@@ -1,5 +1,5 @@
-multiline_comment|/*&n; * linux/kernel/posix_timers.c&n; *&n; * &n; * 2002-10-15  Posix Clocks &amp; timers by George Anzinger&n; *&t;&t;&t;     Copyright (C) 2002 by MontaVista Software.&n; */
-multiline_comment|/* These are all the functions necessary to implement &n; * POSIX clocks &amp; timers&n; */
+multiline_comment|/*&n; * linux/kernel/posix_timers.c&n; *&n; *&n; * 2002-10-15  Posix Clocks &amp; timers by George Anzinger&n; *&t;&t;&t;     Copyright (C) 2002 by MontaVista Software.&n; */
+multiline_comment|/* These are all the functions necessary to implement&n; * POSIX clocks &amp; timers&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -17,9 +17,9 @@ macro_line|#ifndef div_long_long_rem
 macro_line|#include &lt;asm/div64.h&gt;
 DECL|macro|div_long_long_rem
 mdefine_line|#define div_long_long_rem(dividend,divisor,remainder) ({ &bslash;&n;&t;&t;       u64 result = dividend;&t;&t;&bslash;&n;&t;&t;       *remainder = do_div(result,divisor); &bslash;&n;&t;&t;       result; })
-macro_line|#endif&t;&t;&t;&t;/* ifndef div_long_long_rem */
-multiline_comment|/*&n; * Management arrays for POSIX timers.&t; Timers are kept in slab memory&n; * Timer ids are allocated by an external routine that keeps track of the&n; * id and the timer.  The external interface is:&n; *&n; *void *idr_find(struct idr *idp, int id);           to find timer_id &lt;id&gt;&n; *int idr_get_new(struct idr *idp, void *ptr);       to get a new id and &n; *                                                  related it to &lt;ptr&gt;&n; *void idr_remove(struct idr *idp, int id);          to release &lt;id&gt;&n; *void idr_init(struct idr *idp);                    to initialize &lt;idp&gt;&n; *                                                  which we supply.&n; * The idr_get_new *may* call slab for more memory so it must not be&n; * called under a spin lock.  Likewise idr_remore may release memory&n; * (but it may be ok to do this under a lock...).&n; * idr_find is just a memory look up and is quite fast.  A zero return&n; * indicates that the requested id does not exist.&n;&n; */
-multiline_comment|/*&n;   * Lets keep our timers in a slab cache :-)&n; */
+macro_line|#endif
+multiline_comment|/*&n; * Management arrays for POSIX timers.&t; Timers are kept in slab memory&n; * Timer ids are allocated by an external routine that keeps track of the&n; * id and the timer.  The external interface is:&n; *&n; * void *idr_find(struct idr *idp, int id);           to find timer_id &lt;id&gt;&n; * int idr_get_new(struct idr *idp, void *ptr);       to get a new id and&n; *                                                    related it to &lt;ptr&gt;&n; * void idr_remove(struct idr *idp, int id);          to release &lt;id&gt;&n; * void idr_init(struct idr *idp);                    to initialize &lt;idp&gt;&n; *                                                    which we supply.&n; * The idr_get_new *may* call slab for more memory so it must not be&n; * called under a spin lock.  Likewise idr_remore may release memory&n; * (but it may be ok to do this under a lock...).&n; * idr_find is just a memory look up and is quite fast.  A zero return&n; * indicates that the requested id does not exist.&n; */
+multiline_comment|/*&n; * Lets keep our timers in a slab cache :-)&n; */
 DECL|variable|posix_timers_cache
 r_static
 id|kmem_cache_t
@@ -46,18 +46,18 @@ DECL|macro|TIMER_RETRY
 mdefine_line|#define TIMER_RETRY 1
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|timer_active
-mdefine_line|#define timer_active(tmr) (tmr-&gt;it_timer.entry.prev != (void *)TIMER_INACTIVE)
+macro_line|# define timer_active(tmr) &bslash;&n;&t;&t;((tmr)-&gt;it_timer.entry.prev != (void *)TIMER_INACTIVE)
 DECL|macro|set_timer_inactive
-mdefine_line|#define set_timer_inactive(tmr) tmr-&gt;it_timer.entry.prev = (void *)TIMER_INACTIVE
+macro_line|# define set_timer_inactive(tmr) &bslash;&n;&t;&t;do { &bslash;&n;&t;&t;&t;(tmr)-&gt;it_timer.entry.prev = (void *)TIMER_INACTIVE; &bslash;&n;&t;&t;} while (0)
 macro_line|#else
 DECL|macro|timer_active
-mdefine_line|#define timer_active(tmr) BARFY&t;
+macro_line|# define timer_active(tmr) BARFY&t;
 singleline_comment|// error to use outside of SMP
 DECL|macro|set_timer_inactive
-mdefine_line|#define set_timer_inactive(tmr)
+macro_line|# define set_timer_inactive(tmr) do { } while (0)
 macro_line|#endif
-multiline_comment|/*&n; * The timer ID is turned into a timer address by idr_find().&n; * Verifying a valid ID consists of:&n; * &n; * a) checking that idr_find() returns other than zero.&n; * b) checking that the timer id matches the one in the timer itself.&n; * c) that the timer owner is in the callers thread group.&n; */
-multiline_comment|/* &n; * CLOCKs: The POSIX standard calls for a couple of clocks and allows us&n; *&t;    to implement others.  This structure defines the various&n; *&t;    clocks and allows the possibility of adding others.&t; We&n; *&t;    provide an interface to add clocks to the table and expect&n; *&t;    the &quot;arch&quot; code to add at least one clock that is high&n; *&t;    resolution.&t; Here we define the standard CLOCK_REALTIME as a&n; *&t;    1/HZ resolution clock.&n;&n; * CPUTIME &amp; THREAD_CPUTIME: We are not, at this time, definding these&n; *&t;    two clocks (and the other process related clocks (Std&n; *&t;    1003.1d-1999).  The way these should be supported, we think,&n; *&t;    is to use large negative numbers for the two clocks that are&n; *&t;    pinned to the executing process and to use -pid for clocks&n; *&t;    pinned to particular pids.&t;Calls which supported these clock&n; *&t;    ids would split early in the function.&n; &n; * RESOLUTION: Clock resolution is used to round up timer and interval&n; *&t;    times, NOT to report clock times, which are reported with as&n; *&t;    much resolution as the system can muster.  In some cases this&n; *&t;    resolution may depend on the underlaying clock hardware and&n; *&t;    may not be quantifiable until run time, and only then is the&n; *&t;    necessary code is written.&t;The standard says we should say&n; *&t;    something about this issue in the documentation...&n;&n; * FUNCTIONS: The CLOCKs structure defines possible functions to handle&n; *&t;    various clock functions.  For clocks that use the standard&n; *&t;    system timer code these entries should be NULL.  This will&n; *&t;    allow dispatch without the overhead of indirect function&n; *&t;    calls.  CLOCKS that depend on other sources (e.g. WWV or GPS)&n; *&t;    must supply functions here, even if the function just returns&n; *&t;    ENOSYS.  The standard POSIX timer management code assumes the&n; *&t;    following: 1.) The k_itimer struct (sched.h) is used for the&n; *&t;    timer.  2.) The list, it_lock, it_clock, it_id and it_process&n; *&t;    fields are not modified by timer code. &n; *&n; *          At this time all functions EXCEPT clock_nanosleep can be&n; *          redirected by the CLOCKS structure.  Clock_nanosleep is in&n; *          there, but the code ignors it.&n; *&n; * Permissions: It is assumed that the clock_settime() function defined&n; *&t;    for each clock will take care of permission checks.&t; Some&n; *&t;    clocks may be set able by any user (i.e. local process&n; *&t;    clocks) others not.&t; Currently the only set able clock we&n; *&t;    have is CLOCK_REALTIME and its high res counter part, both of&n; *&t;    which we beg off on and pass to do_sys_settimeofday().&n; */
+multiline_comment|/*&n; * The timer ID is turned into a timer address by idr_find().&n; * Verifying a valid ID consists of:&n; *&n; * a) checking that idr_find() returns other than zero.&n; * b) checking that the timer id matches the one in the timer itself.&n; * c) that the timer owner is in the callers thread group.&n; */
+multiline_comment|/*&n; * CLOCKs: The POSIX standard calls for a couple of clocks and allows us&n; *&t;    to implement others.  This structure defines the various&n; *&t;    clocks and allows the possibility of adding others.&t; We&n; *&t;    provide an interface to add clocks to the table and expect&n; *&t;    the &quot;arch&quot; code to add at least one clock that is high&n; *&t;    resolution.&t; Here we define the standard CLOCK_REALTIME as a&n; *&t;    1/HZ resolution clock.&n; *&n; * CPUTIME &amp; THREAD_CPUTIME: We are not, at this time, definding these&n; *&t;    two clocks (and the other process related clocks (Std&n; *&t;    1003.1d-1999).  The way these should be supported, we think,&n; *&t;    is to use large negative numbers for the two clocks that are&n; *&t;    pinned to the executing process and to use -pid for clocks&n; *&t;    pinned to particular pids.&t;Calls which supported these clock&n; *&t;    ids would split early in the function.&n; *&n; * RESOLUTION: Clock resolution is used to round up timer and interval&n; *&t;    times, NOT to report clock times, which are reported with as&n; *&t;    much resolution as the system can muster.  In some cases this&n; *&t;    resolution may depend on the underlaying clock hardware and&n; *&t;    may not be quantifiable until run time, and only then is the&n; *&t;    necessary code is written.&t;The standard says we should say&n; *&t;    something about this issue in the documentation...&n; *&n; * FUNCTIONS: The CLOCKs structure defines possible functions to handle&n; *&t;    various clock functions.  For clocks that use the standard&n; *&t;    system timer code these entries should be NULL.  This will&n; *&t;    allow dispatch without the overhead of indirect function&n; *&t;    calls.  CLOCKS that depend on other sources (e.g. WWV or GPS)&n; *&t;    must supply functions here, even if the function just returns&n; *&t;    ENOSYS.  The standard POSIX timer management code assumes the&n; *&t;    following: 1.) The k_itimer struct (sched.h) is used for the&n; *&t;    timer.  2.) The list, it_lock, it_clock, it_id and it_process&n; *&t;    fields are not modified by timer code.&n; *&n; *          At this time all functions EXCEPT clock_nanosleep can be&n; *          redirected by the CLOCKS structure.  Clock_nanosleep is in&n; *          there, but the code ignors it.&n; *&n; * Permissions: It is assumed that the clock_settime() function defined&n; *&t;    for each clock will take care of permission checks.&t; Some&n; *&t;    clocks may be set able by any user (i.e. local process&n; *&t;    clocks) others not.&t; Currently the only set able clock we&n; *&t;    have is CLOCK_REALTIME and its high res counter part, both of&n; *&t;    which we beg off on and pass to do_sys_settimeofday().&n; */
 DECL|variable|posix_clocks
 r_static
 r_struct
@@ -68,13 +68,13 @@ id|MAX_CLOCKS
 )braket
 suffix:semicolon
 DECL|macro|if_clock_do
-mdefine_line|#define if_clock_do(clock_fun, alt_fun,parms)&t;(! clock_fun)? alt_fun parms :&bslash;&n;&t;&t;&t;&t;&t;&t;&t;      clock_fun parms
+mdefine_line|#define if_clock_do(clock_fun,alt_fun,parms) &bslash;&n;&t;&t;(!clock_fun) ? alt_fun parms : clock_fun parms
 DECL|macro|p_timer_get
-mdefine_line|#define p_timer_get( clock,a,b) if_clock_do((clock)-&gt;timer_get, &bslash;&n;&t;&t;&t;&t;&t;     do_timer_gettime,&t; &bslash;&n;&t;&t;&t;&t;&t;     (a,b))
+mdefine_line|#define p_timer_get(clock,a,b) &bslash;&n;&t;       &t;if_clock_do((clock)-&gt;timer_get,do_timer_gettime, (a,b))
 DECL|macro|p_nsleep
-mdefine_line|#define p_nsleep( clock,a,b,c) if_clock_do((clock)-&gt;nsleep,   &bslash;&n;&t;&t;&t;&t;&t;    do_nsleep,&t;       &bslash;&n;&t;&t;&t;&t;&t;    (a,b,c))
+mdefine_line|#define p_nsleep(clock,a,b,c) &bslash;&n;&t;&t;if_clock_do((clock)-&gt;nsleep, do_nsleep, (a,b,c))
 DECL|macro|p_timer_del
-mdefine_line|#define p_timer_del( clock,a) if_clock_do((clock)-&gt;timer_del, &bslash;&n;&t;&t;&t;&t;&t;   do_timer_delete,    &bslash;&n;&t;&t;&t;&t;&t;   (a))
+mdefine_line|#define p_timer_del(clock,a) &bslash;&n;&t;&t;if_clock_do((clock)-&gt;timer_del, do_timer_delete, (a))
 r_void
 id|register_posix_clock
 c_func
@@ -156,11 +156,11 @@ r_int
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* &n; * Initialize everything, well, just everything in Posix clocks/timers ;)&n; */
+multiline_comment|/*&n; * Initialize everything, well, just everything in Posix clocks/timers ;)&n; */
+DECL|function|init_posix_timers
 r_static
 id|__init
 r_int
-DECL|function|init_posix_timers
 id|init_posix_timers
 c_func
 (paren
@@ -311,7 +311,7 @@ op_sub_assign
 id|NSEC_PER_SEC
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * A note on jiffy overflow: It is possible for the system to&n;&t; * have been up long enough for the jiffies quanity to overflow.&n;&t; * In order for correct timer evaluations we require that the&n;&t; * specified time be somewhere between now and now + (max&n;&t; * unsigned int/2).  Times beyond this will be truncated back to&n;&t; * this value.   This is done in the absolute adjustment code,&n;&t; * below.  Here it is enough to just discard the high order&n;&t; * bits.  &n;&t; */
+multiline_comment|/*&n;&t; * A note on jiffy overflow: It is possible for the system to&n;&t; * have been up long enough for the jiffies quanity to overflow.&n;&t; * In order for correct timer evaluations we require that the&n;&t; * specified time be somewhere between now and now + (max&n;&t; * unsigned int/2).  Times beyond this will be truncated back to&n;&t; * this value.   This is done in the absolute adjustment code,&n;&t; * below.  Here it is enough to just discard the high order&n;&t; * bits.&n;&t; */
 op_star
 id|jiff
 op_assign
@@ -322,7 +322,7 @@ id|sec
 op_star
 id|HZ
 suffix:semicolon
-multiline_comment|/*&n;&t; * Do the res thing. (Don&squot;t forget the add in the declaration of nsec) &n;&t; */
+multiline_comment|/*&n;&t; * Do the res thing. (Don&squot;t forget the add in the declaration of nsec)&n;&t; */
 id|nsec
 op_sub_assign
 id|nsec
@@ -342,9 +342,9 @@ id|HZ
 )paren
 suffix:semicolon
 )brace
+DECL|function|tstotimer
 r_static
 r_void
-DECL|function|tstotimer
 id|tstotimer
 c_func
 (paren
@@ -413,9 +413,9 @@ r_int
 id|result
 suffix:semicolon
 )brace
+DECL|function|schedule_next_timer
 r_static
 r_void
-DECL|function|schedule_next_timer
 id|schedule_next_timer
 c_func
 (paren
@@ -433,11 +433,9 @@ multiline_comment|/* Set up the timer for the next interval (if there is one) */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|timr-&gt;it_incr
-op_eq
-l_int|0
 )paren
-(brace
 (brace
 id|set_timer_inactive
 c_func
@@ -447,7 +445,6 @@ id|timr
 suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 )brace
 id|posix_get_now
 c_func
@@ -469,14 +466,11 @@ op_amp
 id|now
 )paren
 )paren
-(brace
 id|posix_bump_timer
 c_func
 (paren
 id|timr
 )paren
-suffix:semicolon
-)brace
 suffix:semicolon
 id|timr-&gt;it_overrun_last
 op_assign
@@ -499,9 +493,9 @@ id|timr-&gt;it_timer
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&n; * This function is exported for use by the signal deliver code.  It is&n; * called just prior to the info block being released and passes that&n; * block to us.  It&squot;s function is to update the overrun entry AND to&n; * restart the timer.  It should only be called if the timer is to be&n; * restarted (i.e. we have flagged this in the sys_private entry of the&n; * info block).&n; *&n; * To protect aginst the timer going away while the interrupt is queued,&n; * we require that the it_requeue_pending flag be set.&n;&n; */
-r_void
+multiline_comment|/*&n; * This function is exported for use by the signal deliver code.  It is&n; * called just prior to the info block being released and passes that&n; * block to us.  It&squot;s function is to update the overrun entry AND to&n; * restart the timer.  It should only be called if the timer is to be&n; * restarted (i.e. we have flagged this in the sys_private entry of the&n; * info block).&n; *&n; * To protect aginst the timer going away while the interrupt is queued,&n; * we require that the it_requeue_pending flag be set.&n; */
 DECL|function|do_schedule_next_timer
+r_void
 id|do_schedule_next_timer
 c_func
 (paren
@@ -569,10 +563,10 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&n; * Notify the task and set up the timer for the next expiration (if&n; * applicable).  This function requires that the k_itimer structure&n; * it_lock is taken.  This code will requeue the timer only if we get&n; * either an error return or a flag (ret &gt; 0) from send_seg_info&n; * indicating that the signal was either not queued or was queued&n; * without an info block.  In this case, we will not get a call back to&n; * do_schedule_next_timer() so we do it here.  This should be rare...&n;&n; */
+multiline_comment|/*&n; * Notify the task and set up the timer for the next expiration (if&n; * applicable).  This function requires that the k_itimer structure&n; * it_lock is taken.  This code will requeue the timer only if we get&n; * either an error return or a flag (ret &gt; 0) from send_seg_info&n; * indicating that the signal was either not queued or was queued&n; * without an info block.  In this case, we will not get a call back to&n; * do_schedule_next_timer() so we do it here.  This should be rare...&n; */
+DECL|function|timer_notify_task
 r_static
 r_void
-DECL|function|timer_notify_task
 id|timer_notify_task
 c_func
 (paren
@@ -627,27 +621,22 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|timr-&gt;it_incr
-op_eq
-l_int|0
 )paren
-(brace
 id|set_timer_inactive
 c_func
 (paren
 id|timr
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|timr-&gt;it_requeue_pending
 op_assign
 id|info.si_sys_private
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 id|ret
 op_assign
 id|send_sig_info
@@ -682,7 +671,7 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-multiline_comment|/*&n;&t;&t; * signal was not sent because of sig_ignor or,&n;&t;&t; * possibly no queue memory OR will be sent but,&n;&t;&t; * we will not get a call back to restart it AND&n;&t;&t; * it should be restarted. &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * signal was not sent because of sig_ignor or,&n;&t;&t; * possibly no queue memory OR will be sent but,&n;&t;&t; * we will not get a call back to restart it AND&n;&t;&t; * it should be restarted.&n;&t;&t; */
 id|schedule_next_timer
 c_func
 (paren
@@ -692,15 +681,15 @@ suffix:semicolon
 r_case
 l_int|0
 suffix:colon
-multiline_comment|/* &n;&t;&t; * all&squot;s well new signal queued&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * all&squot;s well new signal queued&n;&t;&t; */
 r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&n; * This function gets called when a POSIX.1b interval timer expires.  It&n; * is used as a callback from the kernel internal timer.  The&n; * run_timer_list code ALWAYS calls with interrutps on.&n;&n; */
+multiline_comment|/*&n; * This function gets called when a POSIX.1b interval timer expires.  It&n; * is used as a callback from the kernel internal timer.  The&n; * run_timer_list code ALWAYS calls with interrutps on.&n; */
+DECL|function|posix_timer_fn
 r_static
 r_void
-DECL|function|posix_timer_fn
 id|posix_timer_fn
 c_func
 (paren
@@ -749,7 +738,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * For some reason mips/mips64 define the SIGEV constants plus 128.  &n; * Here we define a mask to get rid of the common bits.&t; The &n; * optimizer should make this costless to all but mips.&n; */
+multiline_comment|/*&n; * For some reason mips/mips64 define the SIGEV constants plus 128.&n; * Here we define a mask to get rid of the common bits.&t; The&n; * optimizer should make this costless to all but mips.&n; */
 macro_line|#if (ARCH == mips) || (ARCH == mips64)
 DECL|macro|MIPS_SIGEV
 mdefine_line|#define MIPS_SIGEV ~(SIGEV_NONE &amp; &bslash;&n;&t;&t;      SIGEV_SIGNAL &amp; &bslash;&n;&t;&t;      SIGEV_THREAD &amp;  &bslash;&n;&t;&t;      SIGEV_THREAD_ID)
@@ -757,12 +746,12 @@ macro_line|#else
 DECL|macro|MIPS_SIGEV
 mdefine_line|#define MIPS_SIGEV (int)-1
 macro_line|#endif
+DECL|function|good_sigevent
 r_static
 r_inline
 r_struct
 id|task_struct
 op_star
-DECL|function|good_sigevent
 id|good_sigevent
 c_func
 (paren
@@ -781,15 +770,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|event-&gt;sigev_notify
 op_amp
 id|SIGEV_THREAD_ID
 op_amp
 id|MIPS_SIGEV
 )paren
-(brace
-r_if
-c_cond
+op_logical_and
 (paren
 op_logical_neg
 (paren
@@ -806,14 +794,13 @@ id|rtn-&gt;tgid
 op_ne
 id|current-&gt;tgid
 )paren
-(brace
+)paren
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
-)brace
 r_if
 c_cond
+(paren
 (paren
 id|event-&gt;sigev_notify
 op_amp
@@ -821,9 +808,7 @@ id|SIGEV_SIGNAL
 op_amp
 id|MIPS_SIGEV
 )paren
-(brace
-r_if
-c_cond
+op_logical_and
 (paren
 (paren
 r_int
@@ -834,10 +819,10 @@ OG
 id|SIGRTMAX
 )paren
 )paren
+)paren
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -850,17 +835,15 @@ op_or
 id|SIGEV_THREAD_ID
 )paren
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 r_return
 id|rtn
 suffix:semicolon
 )brace
-r_void
 DECL|function|register_posix_clock
+r_void
 id|register_posix_clock
 c_func
 (paren
@@ -904,11 +887,11 @@ op_star
 id|new_clock
 suffix:semicolon
 )brace
+DECL|function|alloc_posix_timer
 r_static
 r_struct
 id|k_itimer
 op_star
-DECL|function|alloc_posix_timer
 id|alloc_posix_timer
 c_func
 (paren
@@ -945,14 +928,12 @@ id|k_itimer
 )paren
 suffix:semicolon
 r_return
-(paren
 id|tmr
-)paren
 suffix:semicolon
 )brace
+DECL|function|release_posix_timer
 r_static
 r_void
-DECL|function|release_posix_timer
 id|release_posix_timer
 c_func
 (paren
@@ -1082,10 +1063,10 @@ r_if
 c_cond
 (paren
 id|unlikely
+c_func
 (paren
+op_logical_neg
 id|new_timer
-op_eq
-l_int|NULL
 )paren
 )paren
 r_return
@@ -1105,6 +1086,7 @@ r_if
 c_cond
 (paren
 id|unlikely
+c_func
 (paren
 op_logical_neg
 id|idr_pre_get
@@ -1170,6 +1152,7 @@ r_while
 c_loop
 (paren
 id|unlikely
+c_func
 (paren
 id|new_timer_id
 op_eq
@@ -1177,14 +1160,12 @@ op_minus
 l_int|1
 )paren
 )paren
-(brace
 suffix:semicolon
-)brace
 id|new_timer-&gt;it_id
 op_assign
 id|new_timer_id
 suffix:semicolon
-multiline_comment|/*&n;&t; * return the timer_id now.  The next step is hard to &n;&t; * back out if there is an error.&n;&t; */
+multiline_comment|/*&n;&t; * return the timer_id now.  The next step is hard to&n;&t; * back out if there is an error.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1267,7 +1248,7 @@ id|event
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&n;&t;&t;&t; * We may be setting up this process for another&n;&t;&t;&t; * thread.  It may be exitiing.  To catch this&n;&t;&t;&t; * case the we check the PF_EXITING flag.  If&n;&t;&t;&t; * the flag is not set, the task_lock will catch&n;&t;&t;&t; * him before it is too late (in exit_itimers).&n;&n;&t;&t;&t; * The exec case is a bit more invloved but easy&n;&t;&t;&t; * to code.  If the process is in our thread&n;&t;&t;&t; * group (and it must be or we would not allow&n;&t;&t;&t; * it here) and is doing an exec, it will cause&n;&t;&t;&t; * us to be killed.  In this case it will wait&n;&t;&t;&t; * for us to die which means we can finish this&n;&t;&t;&t; * linkage with our last gasp. I.e. no code :)&n;&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * We may be setting up this process for another&n;&t;&t;&t; * thread.  It may be exiting.  To catch this&n;&t;&t;&t; * case the we check the PF_EXITING flag.  If&n;&t;&t;&t; * the flag is not set, the task_lock will catch&n;&t;&t;&t; * him before it is too late (in exit_itimers).&n;&t;&t;&t; *&n;&t;&t;&t; * The exec case is a bit more invloved but easy&n;&t;&t;&t; * to code.  If the process is in our thread&n;&t;&t;&t; * group (and it must be or we would not allow&n;&t;&t;&t; * it here) and is doing an exec, it will cause&n;&t;&t;&t; * us to be killed.  In this case it will wait&n;&t;&t;&t; * for us to die which means we can finish this&n;&t;&t;&t; * linkage with our last gasp. I.e. no code :)&n;&t;&t;&t; */
 id|task_lock
 c_func
 (paren
@@ -1447,22 +1428,20 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 id|release_posix_timer
 c_func
 (paren
 id|new_timer
 )paren
 suffix:semicolon
-)brace
 r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * good_timespec&n; *&n; * This function checks the elements of a timespec structure.&n; *&n; * Arguments:&n; * ts&t;     : Pointer to the timespec structure to check&n; *&n; * Return value: &n; * If a NULL pointer was passed in, or the tv_nsec field was less than 0&n; * or greater than NSEC_PER_SEC, or the tv_sec field was less than 0,&n; * this function returns 0. Otherwise it returns 1.&n;&n; */
+multiline_comment|/*&n; * good_timespec&n; *&n; * This function checks the elements of a timespec structure.&n; *&n; * Arguments:&n; * ts&t;     : Pointer to the timespec structure to check&n; *&n; * Return value:&n; * If a NULL pointer was passed in, or the tv_nsec field was less than 0&n; * or greater than NSEC_PER_SEC, or the tv_sec field was less than 0,&n; * this function returns 0. Otherwise it returns 1.&n; */
+DECL|function|good_timespec
 r_static
 r_int
-DECL|function|good_timespec
 id|good_timespec
 c_func
 (paren
@@ -1477,9 +1456,8 @@ r_if
 c_cond
 (paren
 (paren
+op_logical_neg
 id|ts
-op_eq
-l_int|NULL
 )paren
 op_logical_or
 (paren
@@ -1504,10 +1482,10 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|function|unlock_timer
 r_static
 r_inline
 r_void
-DECL|function|unlock_timer
 id|unlock_timer
 c_func
 (paren
@@ -1531,12 +1509,12 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&n; * Locking issues: We need to protect the result of the id look up until&n; * we get the timer locked down so it is not deleted under us.  The&n; * removal is done under the idr spinlock so we use that here to bridge&n; * the find to the timer lock.  To avoid a dead lock, the timer id MUST&n; * be release with out holding the timer lock.&n;&n; */
+multiline_comment|/*&n; * Locking issues: We need to protect the result of the id look up until&n; * we get the timer locked down so it is not deleted under us.  The&n; * removal is done under the idr spinlock so we use that here to bridge&n; * the find to the timer lock.  To avoid a dead lock, the timer id MUST&n; * be release with out holding the timer lock.&n; */
+DECL|function|lock_timer
 r_static
 r_struct
 id|k_itimer
 op_star
-DECL|function|lock_timer
 id|lock_timer
 c_func
 (paren
@@ -1554,7 +1532,7 @@ id|k_itimer
 op_star
 id|timr
 suffix:semicolon
-multiline_comment|/*&n;&t; * Watch out here.  We do a irqsave on the idr_lock and pass the &n;&t; * flags part over to the timer lock.  Must not let interrupts in&n;&t; * while we are moving the lock.&n;&t; */
+multiline_comment|/*&n;&t; * Watch out here.  We do a irqsave on the idr_lock and pass the&n;&t; * flags part over to the timer lock.  Must not let interrupts in&n;&t; * while we are moving the lock.&n;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -1639,7 +1617,6 @@ suffix:semicolon
 )brace
 )brace
 r_else
-(brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -1650,12 +1627,11 @@ op_star
 id|flags
 )paren
 suffix:semicolon
-)brace
 r_return
 id|timr
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&n; * Get the time remaining on a POSIX.1b interval timer.  This function&n; * is ALWAYS called with spin_lock_irq on the timer, thus it must not&n; * mess with irq.&n;&n; * We have a couple of messes to clean up here.  First there is the case&n; * of a timer that has a requeue pending.  These timers should appear to&n; * be in the timer list with an expiry as if we were to requeue them&n; * now.&n;&n; * The second issue is the SIGEV_NONE timer which may be active but is&n; * not really ever put in the timer list (to save system resources).&n; * This timer may be expired, and if so, we will do it here.  Otherwise&n; * it is the same as a requeue pending timer WRT to what we should&n; * report.&n;&n; */
+multiline_comment|/*&n; * Get the time remaining on a POSIX.1b interval timer.  This function&n; * is ALWAYS called with spin_lock_irq on the timer, thus it must not&n; * mess with irq.&n; *&n; * We have a couple of messes to clean up here.  First there is the case&n; * of a timer that has a requeue pending.  These timers should appear to&n; * be in the timer list with an expiry as if we were to requeue them&n; * now.&n; *&n; * The second issue is the SIGEV_NONE timer which may be active but is&n; * not really ever put in the timer list (to save system resources).&n; * This timer may be expired, and if so, we will do it here.  Otherwise&n; * it is the same as a requeue pending timer WRT to what we should&n; * report.&n; */
 r_void
 r_inline
 DECL|function|do_timer_gettime
@@ -1685,12 +1661,10 @@ id|now_struct
 id|now
 suffix:semicolon
 r_do
-(brace
 id|expires
 op_assign
 id|timr-&gt;it_timer.expires
 suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -1725,11 +1699,7 @@ id|SIGEV_NONE
 op_logical_and
 op_logical_neg
 id|timr-&gt;it_incr
-)paren
-(brace
-r_if
-c_cond
-(paren
+op_logical_and
 id|posix_time_before
 c_func
 (paren
@@ -1740,15 +1710,12 @@ op_amp
 id|now
 )paren
 )paren
-(brace
 id|timr-&gt;it_timer.expires
 op_assign
 id|expires
 op_assign
 l_int|0
 suffix:semicolon
-)brace
-)brace
 r_if
 c_cond
 (paren
@@ -1766,7 +1733,6 @@ op_amp
 id|SIGEV_NONE
 )paren
 )paren
-(brace
 r_while
 c_loop
 (paren
@@ -1780,18 +1746,13 @@ op_amp
 id|now
 )paren
 )paren
-(brace
 id|posix_bump_timer
 c_func
 (paren
 id|timr
 )paren
 suffix:semicolon
-)brace
-suffix:semicolon
-)brace
 r_else
-(brace
 r_if
 c_cond
 (paren
@@ -1803,26 +1764,21 @@ op_amp
 id|timr-&gt;it_timer
 )paren
 )paren
-(brace
 id|sub_expires
 op_assign
 id|expires
 op_assign
 l_int|0
 suffix:semicolon
-)brace
-)brace
 r_if
 c_cond
 (paren
 id|expires
 )paren
-(brace
 id|expires
 op_sub_assign
 id|now.jiffies
 suffix:semicolon
-)brace
 )brace
 id|jiffies_to_timespec
 c_func
@@ -1958,7 +1914,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&n; * Get the number of overruns of a POSIX.1b interval timer.  This is to&n; * be the overrun of the timer last delivered.  At the same time we are&n; * accumulating overruns on the next timer.  The overrun is frozen when&n; * the signal is delivered, either at the notify time (if the info block&n; * is not queued) or at the actual delivery time (as we are informed by&n; * the call back to do_schedule_next_timer().  So all we need to do is&n; * to pick up the frozen overrun.&n;&n; */
+multiline_comment|/*&n; * Get the number of overruns of a POSIX.1b interval timer.  This is to&n; * be the overrun of the timer last delivered.  At the same time we are&n; * accumulating overruns on the next timer.  The overrun is frozen when&n; * the signal is delivered, either at the notify time (if the info block&n; * is not queued) or at the actual delivery time (as we are informed by&n; * the call back to do_schedule_next_timer().  So all we need to do is&n; * to pick up the frozen overrun.&n; */
 id|asmlinkage
 r_int
 DECL|function|sys_timer_getoverrun
@@ -2017,11 +1973,10 @@ r_return
 id|overrun
 suffix:semicolon
 )brace
-multiline_comment|/* Adjust for absolute time */
-multiline_comment|/*&n; * If absolute time is given and it is not CLOCK_MONOTONIC, we need to&n; * adjust for the offset between the timer clock (CLOCK_MONOTONIC) and&n; * what ever clock he is using.&n; *&n; * If it is relative time, we need to add the current (CLOCK_MONOTONIC)&n; * time to it to get the proper time for the timer.&n; */
+multiline_comment|/*&n; * Adjust for absolute time&n; *&n; * If absolute time is given and it is not CLOCK_MONOTONIC, we need to&n; * adjust for the offset between the timer clock (CLOCK_MONOTONIC) and&n; * what ever clock he is using.&n; *&n; * If it is relative time, we need to add the current (CLOCK_MONOTONIC)&n; * time to it to get the proper time for the timer.&n; */
+DECL|function|adjust_abs_time
 r_static
 r_int
-DECL|function|adjust_abs_time
 id|adjust_abs_time
 c_func
 (paren
@@ -2057,8 +2012,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|abs
-op_logical_and
+op_logical_or
 (paren
 id|posix_clocks
 (braket
@@ -2066,20 +2022,16 @@ id|CLOCK_MONOTONIC
 )braket
 dot
 id|clock_get
-op_eq
+op_ne
 id|clock-&gt;clock_get
 )paren
 )paren
-(brace
-)brace
-r_else
 (brace
 r_if
 c_cond
 (paren
 id|abs
 )paren
-(brace
 id|do_posix_gettime
 c_func
 (paren
@@ -2089,16 +2041,13 @@ op_amp
 id|oc
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|oc.tv_nsec
 op_assign
 id|oc.tv_sec
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 id|tp-&gt;tv_sec
 op_add_assign
 id|now.tv_sec
@@ -2111,7 +2060,7 @@ id|now.tv_nsec
 op_minus
 id|oc.tv_nsec
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * Normalize...&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Normalize...&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2192,14 +2141,11 @@ id|now.tv_nsec
 suffix:semicolon
 )brace
 r_else
-(brace
-singleline_comment|// tp-&gt;tv_sec = now.tv_sec + (MAX_JIFFY_OFFSET / HZ);
-multiline_comment|/*&n;&t;&t;&t; * This is a considered response, not exactly in&n;&t;&t;&t; * line with the standard (in fact it is silent on&n;&t;&t;&t; * possible overflows).  We assume such a large &n;&t;&t;&t; * value is ALMOST always a programming error and&n;&t;&t;&t; * try not to compound it by setting a really dumb&n;&t;&t;&t; * value.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * This is a considered response, not exactly in&n;&t;&t;&t; * line with the standard (in fact it is silent on&n;&t;&t;&t; * possible overflows).  We assume such a large&n;&t;&t;&t; * value is ALMOST always a programming error and&n;&t;&t;&t; * try not to compound it by setting a really dumb&n;&t;&t;&t; * value.&n;&t;&t;&t; */
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 )brace
 r_return
 l_int|0
@@ -2249,7 +2195,6 @@ c_cond
 (paren
 id|old_setting
 )paren
-(brace
 id|do_timer_gettime
 c_func
 (paren
@@ -2258,13 +2203,12 @@ comma
 id|old_setting
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* disable the timer */
 id|timr-&gt;it_incr
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* &n;&t; * careful here.  If smp we could be in the &quot;fire&quot; routine which will&n;&t; * be spinning as we hold the lock.  But this is ONLY an SMP issue.&n;&t; */
+multiline_comment|/*&n;&t; * careful here.  If smp we could be in the &quot;fire&quot; routine which will&n;&t; * be spinning as we hold the lock.  But this is ONLY an SMP issue.&n;&t; */
 macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
@@ -2283,12 +2227,10 @@ op_amp
 id|timr-&gt;it_timer
 )paren
 )paren
-(brace
-multiline_comment|/*&n;&t;&t; * It can only be active if on an other cpu.  Since&n;&t;&t; * we have cleared the interval stuff above, it should&n;&t;&t; * clear once we release the spin lock.  Of course once&n;&t;&t; * we do that anything could happen, including the &n;&t;&t; * complete melt down of the timer.  So return with &n;&t;&t; * a &quot;retry&quot; exit status.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * It can only be active if on an other cpu.  Since&n;&t;&t; * we have cleared the interval stuff above, it should&n;&t;&t; * clear once we release the spin lock.  Of course once&n;&t;&t; * we do that anything could happen, including the&n;&t;&t; * complete melt down of the timer.  So return with&n;&t;&t; * a &quot;retry&quot; exit status.&n;&t;&t; */
 r_return
 id|TIMER_RETRY
 suffix:semicolon
-)brace
 id|set_timer_inactive
 c_func
 (paren
@@ -2317,21 +2259,15 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* &n;&t; *switch off the timer when it_value is zero &n;&t; */
+multiline_comment|/*&n;&t; *switch off the timer when it_value is zero&n;&t; */
 r_if
 c_cond
 (paren
-(paren
+op_logical_neg
 id|new_setting-&gt;it_value.tv_sec
-op_eq
-l_int|0
-)paren
 op_logical_and
-(paren
+op_logical_neg
 id|new_setting-&gt;it_value.tv_nsec
-op_eq
-l_int|0
-)paren
 )paren
 (brace
 id|timr-&gt;it_timer.expires
@@ -2357,8 +2293,8 @@ op_ne
 id|do_posix_clock_monotonic_gettime
 )paren
 )paren
-(brace
-)brace
+singleline_comment|// FIXME: what is this?
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2375,12 +2311,10 @@ op_amp
 id|TIMER_ABSTIME
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|tstotimer
 c_func
 (paren
@@ -2408,14 +2342,12 @@ id|timr-&gt;it_timer.expires
 op_eq
 id|jiffies
 )paren
-(brace
 id|timer_notify_task
 c_func
 (paren
 id|timr
 )paren
 suffix:semicolon
-)brace
 r_else
 id|add_timer
 c_func
@@ -2489,16 +2421,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|new_setting
-op_eq
-l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2516,12 +2445,10 @@ id|new_spec
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2545,12 +2472,10 @@ id|new_spec.it_value
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|retry
 suffix:colon
 id|timr
@@ -2585,7 +2510,6 @@ id|timr-&gt;it_clock
 dot
 id|timer_set
 )paren
-(brace
 id|error
 op_assign
 id|do_timer_settime
@@ -2601,9 +2525,7 @@ comma
 id|rtn
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|error
 op_assign
 id|posix_clocks
@@ -2624,7 +2546,6 @@ comma
 id|rtn
 )paren
 suffix:semicolon
-)brace
 id|unlock_timer
 c_func
 (paren
@@ -2657,11 +2578,7 @@ id|old_setting
 op_logical_and
 op_logical_neg
 id|error
-)paren
-(brace
-r_if
-c_cond
-(paren
+op_logical_and
 id|copy_to_user
 c_func
 (paren
@@ -2676,22 +2593,19 @@ id|old_spec
 )paren
 )paren
 )paren
-(brace
 id|error
 op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
-)brace
 r_return
 id|error
 suffix:semicolon
 )brace
+DECL|function|do_timer_delete
 r_static
 r_inline
 r_int
-DECL|function|do_timer_delete
 id|do_timer_delete
 c_func
 (paren
@@ -2726,12 +2640,10 @@ op_logical_and
 op_logical_neg
 id|timer-&gt;it_requeue_pending
 )paren
-(brace
-multiline_comment|/*&n;&t;&t; * It can only be active if on an other cpu.  Since&n;&t;&t; * we have cleared the interval stuff above, it should&n;&t;&t; * clear once we release the spin lock.  Of course once&n;&t;&t; * we do that anything could happen, including the &n;&t;&t; * complete melt down of the timer.  So return with &n;&t;&t; * a &quot;retry&quot; exit status.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * It can only be active if on an other cpu.  Since&n;&t;&t; * we have cleared the interval stuff above, it should&n;&t;&t; * clear once we release the spin lock.  Of course once&n;&t;&t; * we do that anything could happen, including the&n;&t;&t; * complete melt down of the timer.  So return with&n;&t;&t; * a &quot;retry&quot; exit status.&n;&t;&t; */
 r_return
 id|TIMER_RETRY
 suffix:semicolon
-)brace
 macro_line|#else
 id|del_timer
 c_func
@@ -2883,11 +2795,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * return  timer owned by the process, used by exit_itimers&n; */
+multiline_comment|/*&n; * return timer owned by the process, used by exit_itimers&n; */
+DECL|function|itimer_delete
 r_static
 r_inline
 r_void
-DECL|function|itimer_delete
 id|itimer_delete
 c_func
 (paren
@@ -2906,17 +2818,15 @@ c_func
 id|timer-&gt;it_id
 )paren
 )paren
-(brace
 id|BUG
 c_func
 (paren
 )paren
 suffix:semicolon
 )brace
-)brace
 multiline_comment|/*&n; * This is exported to exit and exec&n; */
-r_void
 DECL|function|exit_itimers
+r_void
 id|exit_itimers
 c_func
 (paren
@@ -2988,10 +2898,10 @@ id|tsk
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * And now for the &quot;clock&quot; calls&n;&n; * These functions are called both from timer functions (with the timer&n; * spin_lock_irq() held and from clock calls with no locking.&t;They must&n; * use the save flags versions of locks.&n; */
+multiline_comment|/*&n; * And now for the &quot;clock&quot; calls&n; *&n; * These functions are called both from timer functions (with the timer&n; * spin_lock_irq() held and from clock calls with no locking.&t;They must&n; * use the save flags versions of locks.&n; */
+DECL|function|do_posix_gettime
 r_static
 r_int
-DECL|function|do_posix_gettime
 id|do_posix_gettime
 c_func
 (paren
@@ -3011,7 +2921,6 @@ c_cond
 (paren
 id|clock-&gt;clock_get
 )paren
-(brace
 r_return
 id|clock
 op_member_access_from_pointer
@@ -3021,7 +2930,6 @@ c_func
 id|tp
 )paren
 suffix:semicolon
-)brace
 id|do_gettimeofday
 c_func
 (paren
@@ -3041,9 +2949,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * We do ticks here to avoid the irq lock ( they take sooo long).&n; * The seqlock is great here.  Since we a reader, we don&squot;t really care&n; * if we are interrupted since we don&squot;t take lock that will stall us or &n; * any other cpu. Voila, no irq lock is needed.&n;&n; * Note also that the while loop assures that the sub_jiff_offset&n; * will be less than a jiffie, thus no need to normalize the result.&n; * Well, not really, if called with ints off :(&n;&n; * HELP, this code should make an attempt at resolution beyond the &n; * jiffie.  Trouble is this is &quot;arch&quot; dependent...&n; */
-r_int
+multiline_comment|/*&n; * We do ticks here to avoid the irq lock ( they take sooo long).&n; * The seqlock is great here.  Since we a reader, we don&squot;t really care&n; * if we are interrupted since we don&squot;t take lock that will stall us or&n; * any other cpu. Voila, no irq lock is needed.&n; *&n; * Note also that the while loop assures that the sub_jiff_offset&n; * will be less than a jiffie, thus no need to normalize the result.&n; * Well, not really, if called with ints off :(&n; *&n; * HELP, this code should make an attempt at resolution beyond the&n; * jiffie.  Trouble is this is &quot;arch&quot; dependent...&n; */
 DECL|function|do_posix_clock_monotonic_gettime
+r_int
 id|do_posix_clock_monotonic_gettime
 c_func
 (paren
@@ -3097,9 +3005,7 @@ comma
 id|seq
 )paren
 )paren
-(brace
 suffix:semicolon
-)brace
 macro_line|#endif
 id|tp-&gt;tv_sec
 op_assign
@@ -3128,8 +3034,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_int
 DECL|function|do_posix_clock_monotonic_settime
+r_int
 id|do_posix_clock_monotonic_settime
 c_func
 (paren
@@ -3218,7 +3124,6 @@ id|which_clock
 dot
 id|clock_set
 )paren
-(brace
 r_return
 id|posix_clocks
 (braket
@@ -3232,7 +3137,6 @@ op_amp
 id|new_tp
 )paren
 suffix:semicolon
-)brace
 id|new_tp.tv_nsec
 op_div_assign
 id|NSEC_PER_USEC
@@ -3319,11 +3223,7 @@ c_cond
 (paren
 op_logical_neg
 id|error
-)paren
-(brace
-r_if
-c_cond
-(paren
+op_logical_and
 id|copy_to_user
 c_func
 (paren
@@ -3338,14 +3238,11 @@ id|rtn_tp
 )paren
 )paren
 )paren
-(brace
 id|error
 op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
-)brace
 r_return
 id|error
 suffix:semicolon
@@ -3408,11 +3305,7 @@ r_if
 c_cond
 (paren
 id|tp
-)paren
-(brace
-r_if
-c_cond
-(paren
+op_logical_and
 id|copy_to_user
 c_func
 (paren
@@ -3427,20 +3320,17 @@ id|rtn_tp
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
-)brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|nanosleep_wake_up
 r_static
 r_void
-DECL|function|nanosleep_wake_up
 id|nanosleep_wake_up
 c_func
 (paren
@@ -3468,7 +3358,7 @@ id|p
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The standard says that an absolute nanosleep call MUST wake up at&n; * the requested time in spite of clock settings.  Here is what we do:&n; * For each nanosleep call that needs it (only absolute and not on &n; * CLOCK_MONOTONIC* (as it can not be set)) we thread a little structure&n; * into the &quot;nanosleep_abs_list&quot;.  All we need is the task_struct pointer.&n; * When ever the clock is set we just wake up all those tasks.&t; The rest&n; * is done by the while loop in clock_nanosleep().&n;&n; * On locking, clock_was_set() is called from update_wall_clock which &n; * holds (or has held for it) a write_lock_irq( xtime_lock) and is &n; * called from the timer bh code.  Thus we need the irq save locks.&n; */
+multiline_comment|/*&n; * The standard says that an absolute nanosleep call MUST wake up at&n; * the requested time in spite of clock settings.  Here is what we do:&n; * For each nanosleep call that needs it (only absolute and not on&n; * CLOCK_MONOTONIC* (as it can not be set)) we thread a little structure&n; * into the &quot;nanosleep_abs_list&quot;.  All we need is the task_struct pointer.&n; * When ever the clock is set we just wake up all those tasks.&t; The rest&n; * is done by the while loop in clock_nanosleep().&n; *&n; * On locking, clock_was_set() is called from update_wall_clock which&n; * holds (or has held for it) a write_lock_irq( xtime_lock) and is&n; * called from the timer bh code.  Thus we need the irq save locks.&n; */
 r_static
 id|DECLARE_WAIT_QUEUE_HEAD
 c_func
@@ -3476,8 +3366,8 @@ c_func
 id|nanosleep_abs_wqueue
 )paren
 suffix:semicolon
-r_void
 DECL|function|clock_was_set
+r_void
 id|clock_was_set
 c_func
 (paren
@@ -3939,7 +3829,6 @@ dot
 id|clock_get
 )paren
 )paren
-(brace
 id|add_wait_queue
 c_func
 (paren
@@ -3950,7 +3839,6 @@ op_amp
 id|abs_wqueue
 )paren
 suffix:semicolon
-)brace
 r_do
 (brace
 id|t

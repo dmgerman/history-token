@@ -1752,11 +1752,7 @@ multiline_comment|/* Use devfs with tree: /dev/ticables/par/[0..2] */
 id|devfs_mk_dir
 c_func
 (paren
-l_int|NULL
-comma
 l_string|&quot;ticables/par&quot;
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if

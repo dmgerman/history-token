@@ -2234,8 +2234,6 @@ suffix:semicolon
 r_int
 r_int
 id|before
-comma
-id|timeout
 suffix:semicolon
 r_int
 r_int
@@ -2293,12 +2291,19 @@ l_string|&quot;3w-xxxx: tw_chrdev_ioctl()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Only let one of these through at a time */
-id|down
+r_if
+c_cond
+(paren
+id|down_interruptible
 c_func
 (paren
 op_amp
 id|tw_dev-&gt;ioctl_sem
 )paren
+)paren
+r_return
+op_minus
+id|EINTR
 suffix:semicolon
 multiline_comment|/* First copy down the buffer length */
 id|error
@@ -2392,6 +2397,7 @@ l_int|NULL
 )paren
 (brace
 id|retval
+op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon

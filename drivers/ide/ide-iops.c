@@ -4163,13 +4163,12 @@ suffix:semicolon
 macro_line|#endif /* (CONFIG_BLK_DEV_IDEDMA) &amp;&amp; !(CONFIG_DMA_NONPCI) */
 multiline_comment|/*&n;&t; * Don&squot;t use ide_wait_cmd here - it will&n;&t; * attempt to set_geometry and recalibrate,&n;&t; * but for some reason these don&squot;t work at&n;&t; * this point (lost interrupt).&n;&t; */
 multiline_comment|/*&n;         * Select the drive, and issue the SETFEATURES command&n;         */
-id|disable_irq
+id|disable_irq_nosync
 c_func
 (paren
 id|hwif-&gt;irq
 )paren
 suffix:semicolon
-multiline_comment|/* disable_irq_nosync ?? */
 id|udelay
 c_func
 (paren

@@ -419,17 +419,9 @@ op_assign
 id|devfs_mk_symlink
 c_func
 (paren
-l_int|NULL
-comma
 l_string|&quot;v4l/rds/radiotext&quot;
 comma
-l_int|0
-comma
 l_string|&quot;../misc/radiotext&quot;
-comma
-l_int|NULL
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if

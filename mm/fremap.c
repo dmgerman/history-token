@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *   linux/mm/fremap.c&n; * &n; * Explicit pagetable population and nonlinear (random) mappings support.&n; *&n; * started by Ingo Molnar, Copyright (C) 2002&n; */
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
@@ -11,7 +12,7 @@ macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|function|zap_pte
 r_static
 r_inline
-r_void
+r_int
 id|zap_pte
 c_func
 (paren
@@ -41,6 +42,7 @@ id|pte
 )paren
 )paren
 r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -136,9 +138,22 @@ op_decrement
 suffix:semicolon
 )brace
 )brace
+r_return
+l_int|1
+suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pte_file
+c_func
+(paren
+id|pte
+)paren
+)paren
 id|free_swap_and_cache
 c_func
 (paren
@@ -154,6 +169,9 @@ c_func
 (paren
 id|ptep
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -182,8 +200,7 @@ id|page
 op_star
 id|page
 comma
-r_int
-r_int
+id|pgprot_t
 id|prot
 )paren
 (brace
@@ -192,6 +209,8 @@ id|err
 op_assign
 op_minus
 id|ENOMEM
+comma
+id|flush
 suffix:semicolon
 id|pte_t
 op_star
@@ -288,6 +307,8 @@ id|pte
 r_goto
 id|err_unlock
 suffix:semicolon
+id|flush
+op_assign
 id|zap_pte
 c_func
 (paren
@@ -320,29 +341,7 @@ c_func
 (paren
 id|page
 comma
-id|protection_map
-(braket
 id|prot
-)braket
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|prot
-op_amp
-id|PROT_WRITE
-)paren
-id|entry
-op_assign
-id|pte_mkwrite
-c_func
-(paren
-id|pte_mkdirty
-c_func
-(paren
-id|entry
-)paren
 )paren
 suffix:semicolon
 id|set_pte
@@ -371,6 +370,11 @@ c_func
 id|pte
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|flush
+)paren
 id|flush_tlb_page
 c_func
 (paren
@@ -416,7 +420,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/***&n; * sys_remap_file_pages - remap arbitrary pages of a shared backing store&n; *                        file within an existing vma.&n; * @start: start of the remapped virtual memory range&n; * @size: size of the remapped virtual memory range&n; * @prot: new protection bits of the range&n; * @pgoff: to be mapped page of the backing store file&n; * @flags: 0 or MAP_NONBLOCKED - the later will cause no IO.&n; *&n; * this syscall works purely via pagetables, so it&squot;s the most efficient&n; * way to map the same (large) file into a given virtual window. Unlike&n; * mremap()/mmap() it does not create any new vmas.&n; *&n; * The new mappings do not live across swapout, so either use MAP_LOCKED&n; * or use PROT_NONE in the original linear mapping and add a special&n; * SIGBUS pagefault handler to reinstall zapped mappings.&n; */
+multiline_comment|/***&n; * sys_remap_file_pages - remap arbitrary pages of a shared backing store&n; *                        file within an existing vma.&n; * @start: start of the remapped virtual memory range&n; * @size: size of the remapped virtual memory range&n; * @prot: new protection bits of the range&n; * @pgoff: to be mapped page of the backing store file&n; * @flags: 0 or MAP_NONBLOCKED - the later will cause no IO.&n; *&n; * this syscall works purely via pagetables, so it&squot;s the most efficient&n; * way to map the same (large) file into a given virtual window. Unlike&n; * mmap()/mremap() it does not create any new vmas. The new mappings are&n; * also safe across swapout.&n; *&n; * NOTE: the &squot;prot&squot; parameter right now is ignored, and the vma&squot;s default&n; * protection is used. Arbitrary protections might be implemented in the&n; * future.&n; */
 DECL|function|sys_remap_file_pages
 r_int
 id|sys_remap_file_pages
@@ -432,7 +436,7 @@ id|size
 comma
 r_int
 r_int
-id|prot
+id|__prot
 comma
 r_int
 r_int
@@ -469,27 +473,63 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|__prot
+)paren
+r_return
+id|err
+suffix:semicolon
 multiline_comment|/*&n;&t; * Sanitize the syscall parameters:&n;&t; */
 id|start
 op_assign
-id|PAGE_ALIGN
-c_func
-(paren
 id|start
-)paren
+op_amp
+id|PAGE_MASK
 suffix:semicolon
 id|size
 op_assign
-id|PAGE_ALIGN
-c_func
+id|size
+op_amp
+id|PAGE_MASK
+suffix:semicolon
+multiline_comment|/* Does the address range wrap, or is the span zero-sized? */
+r_if
+c_cond
+(paren
+id|start
+op_plus
+id|size
+op_le
+id|start
+)paren
+r_return
+id|err
+suffix:semicolon
+multiline_comment|/* Can we represent this offset inside this architecture&squot;s pte&squot;s? */
+macro_line|#if PTE_FILE_MAX_BITS &lt; BITS_PER_LONG
+r_if
+c_cond
+(paren
+id|pgoff
+op_plus
 (paren
 id|size
+op_rshift
+id|PAGE_SHIFT
 )paren
+op_ge
+(paren
+l_int|1UL
+op_lshift
+id|PTE_FILE_MAX_BITS
+)paren
+)paren
+r_return
+id|err
 suffix:semicolon
-id|prot
-op_and_assign
-l_int|0xf
-suffix:semicolon
+macro_line|#endif
 id|down_read
 c_func
 (paren
@@ -535,27 +575,6 @@ id|end
 op_le
 id|vma-&gt;vm_end
 )paren
-(brace
-multiline_comment|/*&n;&t;&t; * Change the default protection to PROT_NONE:&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|pgprot_val
-c_func
-(paren
-id|vma-&gt;vm_page_prot
-)paren
-op_ne
-id|pgprot_val
-c_func
-(paren
-id|__S000
-)paren
-)paren
-id|vma-&gt;vm_page_prot
-op_assign
-id|__S000
-suffix:semicolon
 id|err
 op_assign
 id|vma-&gt;vm_ops
@@ -569,7 +588,7 @@ id|start
 comma
 id|size
 comma
-id|prot
+id|vma-&gt;vm_page_prot
 comma
 id|pgoff
 comma
@@ -578,7 +597,6 @@ op_amp
 id|MAP_NONBLOCK
 )paren
 suffix:semicolon
-)brace
 id|up_read
 c_func
 (paren

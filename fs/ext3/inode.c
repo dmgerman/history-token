@@ -619,8 +619,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|inode
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -3999,8 +3997,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|inode
 )paren
 suffix:semicolon
 id|out
@@ -4345,8 +4341,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|inode
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -4836,8 +4830,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|inode
 )paren
 suffix:semicolon
 r_if
@@ -5317,8 +5309,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|inode
 )paren
 suffix:semicolon
 r_if
@@ -7625,8 +7615,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|inode
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -9467,8 +9455,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|inode
 )paren
 suffix:semicolon
 )brace
@@ -9959,8 +9945,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|inode
 )paren
 suffix:semicolon
 id|out
@@ -10222,8 +10206,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|inode
 )paren
 suffix:semicolon
 id|ext3_std_error

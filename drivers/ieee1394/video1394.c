@@ -6355,7 +6355,7 @@ suffix:semicolon
 r_char
 id|name
 (braket
-l_int|16
+l_int|24
 )braket
 suffix:semicolon
 r_int
@@ -6460,7 +6460,9 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;%d&quot;
+l_string|&quot;%s/%d&quot;
+comma
+id|VIDEO1394_DRIVER_NAME
 comma
 id|video-&gt;id
 )paren
@@ -6478,7 +6480,7 @@ op_assign
 id|devfs_register
 c_func
 (paren
-id|devfs_handle
+l_int|NULL
 comma
 id|name
 comma
@@ -7393,11 +7395,7 @@ op_assign
 id|devfs_mk_dir
 c_func
 (paren
-l_int|NULL
-comma
 id|VIDEO1394_DRIVER_NAME
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|hl_handle

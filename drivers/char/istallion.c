@@ -23147,12 +23147,9 @@ l_string|&quot;device&bslash;n&quot;
 )paren
 suffix:semicolon
 id|devfs_mk_dir
+c_func
 (paren
-l_int|NULL
-comma
 l_string|&quot;staliomem&quot;
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_for

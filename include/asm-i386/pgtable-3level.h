@@ -318,5 +318,12 @@ id|pgprot
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Bits 0, 6 and 7 are taken in the low part of the pte,&n; * put the 32 bits of offset into the high part.&n; */
+DECL|macro|pte_to_pgoff
+mdefine_line|#define pte_to_pgoff(pte) ((pte).pte_high)
+DECL|macro|pgoff_to_pte
+mdefine_line|#define pgoff_to_pte(off) ((pte_t) { _PAGE_FILE, (off) })
+DECL|macro|PTE_FILE_MAX_BITS
+mdefine_line|#define PTE_FILE_MAX_BITS       32
 macro_line|#endif /* _I386_PGTABLE_3LEVEL_H */
 eof

@@ -1214,11 +1214,6 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1530,11 +1525,6 @@ id|UPDATE_ATIME
 c_func
 (paren
 id|inode
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
@@ -3461,6 +3451,11 @@ id|file_operations
 id|ext2_dir_operations
 op_assign
 (brace
+dot
+id|llseek
+op_assign
+id|generic_file_llseek
+comma
 dot
 id|read
 op_assign

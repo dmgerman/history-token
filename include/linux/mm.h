@@ -6,10 +6,8 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/gfp.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
-macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/rbtree.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#ifndef CONFIG_DISCONTIGMEM          /* Don&squot;t use mapnrs, do it properly */
@@ -263,8 +261,7 @@ r_int
 r_int
 id|len
 comma
-r_int
-r_int
+id|pgprot_t
 id|prot
 comma
 r_int
@@ -283,6 +280,9 @@ id|pte_chain
 suffix:semicolon
 r_struct
 id|mmu_gather
+suffix:semicolon
+r_struct
+id|inode
 suffix:semicolon
 multiline_comment|/*&n; * Each physical page in the system has a struct page associated with&n; * it to keep track of whatever it is we are using the page for at the&n; * moment. Note that we have no way to track which tasks are using&n; * a page.&n; *&n; * Try to keep the most commonly accessed fields in single cache lines&n; * here (16 bytes or greater).  This ordering should be particularly&n; * beneficial on 32-bit processors.&n; *&n; * The first line is data used in page cache lookup, the second line&n; * is used for linear searches (eg. clock algorithm scans). &n; *&n; * TODO: make this structure smaller, it could be as small as 32 bytes.&n; */
 DECL|struct|page
@@ -1114,8 +1114,7 @@ id|page
 op_star
 id|page
 comma
-r_int
-r_int
+id|pgprot_t
 id|prot
 )paren
 suffix:semicolon
@@ -1505,7 +1504,6 @@ op_star
 id|val
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NUMA
 r_extern
 r_void
 id|si_meminfo_node
@@ -1518,15 +1516,6 @@ id|val
 comma
 r_int
 id|nid
-)paren
-suffix:semicolon
-macro_line|#endif
-r_extern
-r_void
-id|swapin_readahead
-c_func
-(paren
-id|swp_entry_t
 )paren
 suffix:semicolon
 multiline_comment|/* mmap.c */
@@ -2137,15 +2126,6 @@ comma
 r_int
 r_int
 id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|get_page_cache_size
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 r_extern

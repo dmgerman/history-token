@@ -4,6 +4,7 @@ macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;net/ip6_route.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 DECL|variable|ipv6_addr_type
 id|EXPORT_SYMBOL
 c_func
@@ -165,6 +166,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|in6addr_loopback
+)paren
+suffix:semicolon
+DECL|variable|xfrm6_rcv
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm6_rcv
+)paren
+suffix:semicolon
+DECL|variable|xfrm6_clear_mutable_options
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm6_clear_mutable_options
 )paren
 suffix:semicolon
 eof
