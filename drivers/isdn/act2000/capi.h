@@ -460,9 +460,7 @@ DECL|member|hdr
 id|actcapi_msghdr
 id|hdr
 suffix:semicolon
-DECL|union|msg
 r_union
-id|msg
 (brace
 DECL|member|manuf_msg
 id|__u16
