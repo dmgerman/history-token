@@ -28,6 +28,7 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ioctl32.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
+macro_line|#include &lt;linux/cdev.h&gt;
 macro_line|#include &quot;ieee1394.h&quot;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;nodemgr.h&quot;
@@ -8143,6 +8144,12 @@ id|video-&gt;spinlock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|dv1394_cdev
+r_static
+r_struct
+id|cdev
+id|dv1394_cdev
+suffix:semicolon
 DECL|variable|dv1394_fops
 r_static
 r_struct
@@ -10038,10 +10045,19 @@ op_amp
 id|dv1394_highlevel
 )paren
 suffix:semicolon
-id|ieee1394_unregister_chardev
+id|cdev_unmap
 c_func
 (paren
-id|IEEE1394_MINOR_BLOCK_DV1394
+id|IEEE1394_DV1394_DEV
+comma
+l_int|16
+)paren
+suffix:semicolon
+id|cdev_del
+c_func
+(paren
+op_amp
+id|dv1394_cdev
 )paren
 suffix:semicolon
 id|devfs_remove
@@ -10061,26 +10077,42 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|ret
-suffix:semicolon
-id|ret
-op_assign
-id|ieee1394_register_chardev
+id|cdev_init
 c_func
 (paren
-id|IEEE1394_MINOR_BLOCK_DV1394
-comma
-id|THIS_MODULE
+op_amp
+id|dv1394_cdev
 comma
 op_amp
 id|dv1394_fops
 )paren
 suffix:semicolon
+id|dv1394_cdev.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
+id|kobject_set_name
+c_func
+(paren
+op_amp
+id|dv1394_cdev.kobj
+comma
+l_string|&quot;dv1394&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|ret
+id|cdev_add
+c_func
+(paren
+op_amp
+id|dv1394_cdev
+comma
+id|IEEE1394_DV1394_DEV
+comma
+l_int|16
+)paren
 )paren
 (brace
 id|printk
@@ -10217,6 +10249,16 @@ id|module_exit
 c_func
 (paren
 id|dv1394_exit_module
+)paren
+suffix:semicolon
+id|MODULE_ALIAS_CHARDEV
+c_func
+(paren
+id|IEEE1394_MAJOR
+comma
+id|IEEE1394_MINOR_BLOCK_DV1394
+op_star
+l_int|16
 )paren
 suffix:semicolon
 eof
