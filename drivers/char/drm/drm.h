@@ -1293,6 +1293,32 @@ DECL|typedef|drm_scatter_gather_t
 )brace
 id|drm_scatter_gather_t
 suffix:semicolon
+multiline_comment|/**&n; * DRM_IOCTL_SET_VERSION ioctl argument type.&n; */
+DECL|struct|drm_set_version
+r_typedef
+r_struct
+id|drm_set_version
+(brace
+DECL|member|drm_di_major
+r_int
+id|drm_di_major
+suffix:semicolon
+DECL|member|drm_di_minor
+r_int
+id|drm_di_minor
+suffix:semicolon
+DECL|member|drm_dd_major
+r_int
+id|drm_dd_major
+suffix:semicolon
+DECL|member|drm_dd_minor
+r_int
+id|drm_dd_minor
+suffix:semicolon
+DECL|typedef|drm_set_version_t
+)brace
+id|drm_set_version_t
+suffix:semicolon
 DECL|macro|DRM_IOCTL_BASE
 mdefine_line|#define DRM_IOCTL_BASE&t;&t;&t;&squot;d&squot;
 DECL|macro|DRM_IO
@@ -1317,6 +1343,8 @@ DECL|macro|DRM_IOCTL_GET_CLIENT
 mdefine_line|#define DRM_IOCTL_GET_CLIENT            DRM_IOWR(0x05, drm_client_t)
 DECL|macro|DRM_IOCTL_GET_STATS
 mdefine_line|#define DRM_IOCTL_GET_STATS             DRM_IOR( 0x06, drm_stats_t)
+DECL|macro|DRM_IOCTL_SET_VERSION
+mdefine_line|#define DRM_IOCTL_SET_VERSION&t;&t;DRM_IOWR(0x07, drm_set_version_t)
 DECL|macro|DRM_IOCTL_SET_UNIQUE
 mdefine_line|#define DRM_IOCTL_SET_UNIQUE&t;&t;DRM_IOW( 0x10, drm_unique_t)
 DECL|macro|DRM_IOCTL_AUTH_MAGIC
