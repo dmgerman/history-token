@@ -622,6 +622,7 @@ c_func
 l_int|0x1b000008
 )paren
 comma
+multiline_comment|/* in microseconds */
 (braket
 id|DOT11_OID_PSM
 )braket

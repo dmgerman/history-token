@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
@@ -18,12 +19,14 @@ id|pc_debug
 op_assign
 id|VERBOSE
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|pc_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/******************************************************************************&n;    Driver general functions&n;******************************************************************************/
