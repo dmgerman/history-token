@@ -8036,7 +8036,6 @@ op_logical_and
 op_logical_neg
 id|SCp-&gt;device-&gt;simple_tags
 op_logical_and
-op_logical_and
 (paren
 id|hostdata-&gt;tag_negotiated
 op_amp
