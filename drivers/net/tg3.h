@@ -247,6 +247,10 @@ DECL|macro|CHIPREV_5704_AX
 mdefine_line|#define   CHIPREV_5704_AX&t;&t; 0x20
 DECL|macro|CHIPREV_5704_BX
 mdefine_line|#define   CHIPREV_5704_BX&t;&t; 0x21
+DECL|macro|CHIPREV_5750_AX
+mdefine_line|#define   CHIPREV_5750_AX&t;&t; 0x40
+DECL|macro|CHIPREV_5750_BX
+mdefine_line|#define   CHIPREV_5750_BX&t;&t; 0x41
 DECL|macro|GET_METAL_REV
 mdefine_line|#define  GET_METAL_REV(CHIP_REV_ID)&t;((CHIP_REV_ID) &amp; 0xff)
 DECL|macro|METAL_REV_A0
