@@ -4,6 +4,7 @@ DECL|macro|_VIO_H
 mdefine_line|#define _VIO_H
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
@@ -41,7 +42,7 @@ op_star
 id|drv
 )paren
 suffix:semicolon
-r_int
+r_void
 id|vio_unregister_driver
 c_func
 (paren
@@ -84,7 +85,7 @@ op_star
 id|node_vdev
 )paren
 suffix:semicolon
-r_int
+r_void
 id|__devinit
 id|vio_unregister_device
 c_func
@@ -276,6 +277,11 @@ id|dma_addr_t
 id|dma_handle
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|bus_type
+id|vio_bus_type
+suffix:semicolon
 DECL|struct|vio_device_id
 r_struct
 id|vio_device_id
@@ -290,8 +296,6 @@ r_char
 op_star
 id|compat
 suffix:semicolon
-multiline_comment|/* I don&squot;t think we need this&n;&t;unsigned long driver_data;&t;*/
-multiline_comment|/* Data private to the driver */
 )brace
 suffix:semicolon
 DECL|struct|vio_driver
@@ -337,7 +341,7 @@ id|id
 suffix:semicolon
 multiline_comment|/* New device inserted */
 DECL|member|remove
-r_void
+r_int
 (paren
 op_star
 id|remove
@@ -355,22 +359,46 @@ r_int
 r_int
 id|driver_data
 suffix:semicolon
+DECL|member|driver
+r_struct
+id|device_driver
+id|driver
+suffix:semicolon
 )brace
 suffix:semicolon
+DECL|function|to_vio_driver
+r_static
+r_inline
 r_struct
-id|vio_bus
+id|vio_driver
+op_star
+id|to_vio_driver
+c_func
+(paren
+r_struct
+id|device_driver
+op_star
+id|drv
+)paren
+(brace
+r_return
+id|container_of
+c_func
+(paren
+id|drv
+comma
+r_struct
+id|vio_driver
+comma
+id|driver
+)paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n; * The vio_dev structure is used to describe virtual I/O devices.&n; */
 DECL|struct|vio_dev
 r_struct
 id|vio_dev
 (brace
-DECL|member|devices_list
-r_struct
-id|list_head
-id|devices_list
-suffix:semicolon
-multiline_comment|/* node in list of all vio devices */
 DECL|member|archdata
 r_struct
 id|device_node
@@ -378,20 +406,6 @@ op_star
 id|archdata
 suffix:semicolon
 multiline_comment|/* Open Firmware node */
-DECL|member|bus
-r_struct
-id|vio_bus
-op_star
-id|bus
-suffix:semicolon
-multiline_comment|/* bus this device is on */
-DECL|member|driver
-r_struct
-id|vio_driver
-op_star
-id|driver
-suffix:semicolon
-multiline_comment|/* owning driver */
 DECL|member|driver_data
 r_void
 op_star
@@ -415,87 +429,39 @@ r_int
 r_int
 id|irq
 suffix:semicolon
-DECL|member|procent
+DECL|member|dev
 r_struct
-id|proc_dir_entry
-op_star
-id|procent
+id|device
+id|dev
 suffix:semicolon
-multiline_comment|/* device entry in /proc/bus/vio */
 )brace
 suffix:semicolon
-DECL|struct|vio_bus
-r_struct
-id|vio_bus
-(brace
-DECL|member|devices
-r_struct
-id|list_head
-id|devices
-suffix:semicolon
-multiline_comment|/* list of virtual devices */
-)brace
-suffix:semicolon
-DECL|function|vio_module_init
+DECL|function|to_vio_dev
 r_static
 r_inline
-r_int
-id|vio_module_init
+r_struct
+id|vio_dev
+op_star
+id|to_vio_dev
 c_func
 (paren
 r_struct
-id|vio_driver
+id|device
 op_star
-id|drv
+id|dev
 )paren
 (brace
-r_int
-id|rc
-op_assign
-id|vio_register_driver
-(paren
-id|drv
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-OG
-l_int|0
-)paren
 r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* iff CONFIG_HOTPLUG and built into kernel, we should&n;         * leave the driver around for future hotplug events.&n;         * For the module case, a hotplug daemon of some sort&n;         * should load a module in response to an insert event. */
-macro_line|#if defined(CONFIG_HOTPLUG) &amp;&amp; !defined(MODULE)
-r_if
-c_cond
+id|container_of
+c_func
 (paren
-id|rc
-op_eq
-l_int|0
+id|dev
+comma
+r_struct
+id|vio_dev
+comma
+id|dev
 )paren
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#else
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-l_int|0
-)paren
-id|rc
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* if we get here, we need to clean up vio driver instance&n;         * and return some sort of error */
-r_return
-id|rc
 suffix:semicolon
 )brace
 macro_line|#endif /* _PHYP_H */
