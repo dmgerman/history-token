@@ -31,13 +31,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Sound Core,&quot;
@@ -127,14 +121,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -157,14 +143,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -185,14 +163,6 @@ comma
 l_string|&quot;Enable &quot;
 id|CARD_NAME
 l_string|&quot; soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
 id|module_param
@@ -396,7 +366,7 @@ id|pdacf-&gt;card
 op_assign
 l_int|NULL
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|pdacf
@@ -421,17 +391,7 @@ id|pdacf_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|pdacf_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 id|snd_pdacf_free
@@ -629,7 +589,7 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|pdacf
@@ -1012,15 +972,7 @@ id|pdacf_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|pdacf_t
-comma
 id|link-&gt;priv
-comma
-r_return
-)paren
 suffix:semicolon
 id|snd_printdd
 c_func
@@ -1158,15 +1110,7 @@ id|pdacf_t
 op_star
 id|pdacf
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|pdacf_t
-comma
 id|link-&gt;priv
-comma
-r_return
-)paren
 suffix:semicolon
 id|tuple_t
 id|tuple

@@ -25,13 +25,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Creative Labs,SB Live!/PCI512/E-mu APS},&quot;
@@ -246,14 +240,6 @@ comma
 l_string|&quot;Index value for the EMU10K1 soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -272,14 +258,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for the EMU10K1 soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -302,14 +280,6 @@ comma
 l_string|&quot;Enable the EMU10K1 soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -328,15 +298,6 @@ c_func
 id|extin
 comma
 l_string|&quot;Available external inputs for FX8010. Zero=default.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|extin
-comma
-id|SNDRV_ENABLED
-l_string|&quot;allows:{{0,0x0ffff}},base:16&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -359,15 +320,6 @@ comma
 l_string|&quot;Available external outputs for FX8010. Zero=default.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|extout
-comma
-id|SNDRV_ENABLED
-l_string|&quot;allows:{{0,0x0ffff}},base:16&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -386,15 +338,6 @@ c_func
 id|seq_ports
 comma
 l_string|&quot;Allocated sequencer ports for internal synthesizer.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|seq_ports
-comma
-id|SNDRV_ENABLED
-l_string|&quot;allows:{{0,32}}&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -417,14 +360,6 @@ comma
 l_string|&quot;Maximum number of voices for WaveTable.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|max_synth_voices
-comma
-id|SNDRV_ENABLED
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -445,14 +380,6 @@ comma
 l_string|&quot;Maximum sample buffer size in MB.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|max_buffer_size
-comma
-id|SNDRV_ENABLED
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -471,14 +398,6 @@ c_func
 id|enable_ir
 comma
 l_string|&quot;Enable IR.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable_ir
-comma
-id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
 DECL|variable|snd_emu10k1_ids
@@ -507,25 +426,6 @@ l_int|0
 )brace
 comma
 multiline_comment|/* EMU10K1 */
-macro_line|#if 0 /* FIXME: not working! */
-(brace
-l_int|0x1102
-comma
-l_int|0x0006
-comma
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Dell OEM version (EMU10K1) */
-macro_line|#endif
 (brace
 l_int|0x1102
 comma
@@ -824,36 +724,6 @@ c_func
 id|emu
 comma
 l_int|2
-comma
-l_int|NULL
-)paren
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|snd_card_free
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|err
-op_assign
-id|snd_emu10k1_fx8010_pcm
-c_func
-(paren
-id|emu
-comma
-l_int|3
 comma
 l_int|NULL
 )paren

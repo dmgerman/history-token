@@ -24,8 +24,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|macro|chip_t
-mdefine_line|#define chip_t sb_t
 DECL|macro|SB8_CLOCK
 mdefine_line|#define SB8_CLOCK&t;1000000
 DECL|macro|SB8_DEN

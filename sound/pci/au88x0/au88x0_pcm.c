@@ -6,8 +6,6 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/pcm_params.h&gt;
 macro_line|#include &quot;au88x0.h&quot;
-DECL|macro|chip_t
-mdefine_line|#define chip_t vortex_t
 DECL|macro|VORTEX_PCM_TYPE
 mdefine_line|#define VORTEX_PCM_TYPE(x) (x-&gt;name[40])
 multiline_comment|/* hardware definition */
@@ -627,7 +625,7 @@ op_star
 id|hw_params
 )paren
 (brace
-id|chip_t
+id|vortex_t
 op_star
 id|chip
 op_assign
@@ -892,7 +890,7 @@ op_star
 id|substream
 )paren
 (brace
-id|chip_t
+id|vortex_t
 op_star
 id|chip
 op_assign
@@ -1171,7 +1169,7 @@ r_int
 id|cmd
 )paren
 (brace
-id|chip_t
+id|vortex_t
 op_star
 id|chip
 op_assign

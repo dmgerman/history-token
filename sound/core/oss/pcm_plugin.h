@@ -60,7 +60,7 @@ id|nbits
 )paren
 (brace
 r_return
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
 id|bitset_size
@@ -68,7 +68,7 @@ c_func
 (paren
 id|nbits
 )paren
-op_star
+comma
 r_sizeof
 (paren
 id|bitset_t

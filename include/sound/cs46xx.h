@@ -3,6 +3,7 @@ DECL|macro|__SOUND_CS46XX_H
 mdefine_line|#define __SOUND_CS46XX_H
 multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;,&n; *&t;&t;     Cirrus Logic, Inc.&n; *  Definitions for Cirrus Logic CS46xx chips&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &quot;pcm.h&quot;
+macro_line|#include &quot;pcm-indirect.h&quot;
 macro_line|#include &quot;rawmidi.h&quot;
 macro_line|#include &quot;ac97_codec.h&quot;
 macro_line|#include &quot;cs46xx_dsp_spos.h&quot;
@@ -2253,49 +2254,10 @@ r_int
 id|shift
 suffix:semicolon
 multiline_comment|/* Shift count to trasform frames in bytes */
-DECL|member|sw_bufsize
-r_int
-r_int
-id|sw_bufsize
+DECL|member|pcm_rec
+id|snd_pcm_indirect_t
+id|pcm_rec
 suffix:semicolon
-DECL|member|sw_data
-r_int
-r_int
-id|sw_data
-suffix:semicolon
-multiline_comment|/* Offset to next dst (or src) in sw ring buffer */
-DECL|member|sw_io
-r_int
-r_int
-id|sw_io
-suffix:semicolon
-DECL|member|sw_ready
-r_int
-id|sw_ready
-suffix:semicolon
-multiline_comment|/* Bytes ready to be transferred to/from hw */
-DECL|member|hw_data
-r_int
-r_int
-id|hw_data
-suffix:semicolon
-multiline_comment|/* Offset to next dst (or src) in hw ring buffer */
-DECL|member|hw_io
-r_int
-r_int
-id|hw_io
-suffix:semicolon
-multiline_comment|/* Ring buffer hw pointer */
-DECL|member|hw_ready
-r_int
-id|hw_ready
-suffix:semicolon
-multiline_comment|/* Bytes ready for play (or captured) in hw ring buffer */
-DECL|member|appl_ptr
-r_int
-id|appl_ptr
-suffix:semicolon
-multiline_comment|/* Last seen appl_ptr */
 DECL|member|substream
 id|snd_pcm_substream_t
 op_star
@@ -2430,49 +2392,10 @@ r_int
 id|shift
 suffix:semicolon
 multiline_comment|/* Shift count to trasform frames in bytes */
-DECL|member|sw_bufsize
-r_int
-r_int
-id|sw_bufsize
+DECL|member|pcm_rec
+id|snd_pcm_indirect_t
+id|pcm_rec
 suffix:semicolon
-DECL|member|sw_data
-r_int
-r_int
-id|sw_data
-suffix:semicolon
-multiline_comment|/* Offset to next dst (or src) in sw ring buffer */
-DECL|member|sw_io
-r_int
-r_int
-id|sw_io
-suffix:semicolon
-DECL|member|sw_ready
-r_int
-id|sw_ready
-suffix:semicolon
-multiline_comment|/* Bytes ready to be transferred to/from hw */
-DECL|member|hw_data
-r_int
-r_int
-id|hw_data
-suffix:semicolon
-multiline_comment|/* Offset to next dst (or src) in hw ring buffer */
-DECL|member|hw_io
-r_int
-r_int
-id|hw_io
-suffix:semicolon
-multiline_comment|/* Ring buffer hw pointer */
-DECL|member|hw_ready
-r_int
-id|hw_ready
-suffix:semicolon
-multiline_comment|/* Bytes ready for play (or captured) in hw ring buffer */
-DECL|member|appl_ptr
-r_int
-id|appl_ptr
-suffix:semicolon
-multiline_comment|/* Last seen appl_ptr */
 DECL|member|substream
 id|snd_pcm_substream_t
 op_star
@@ -2543,11 +2466,6 @@ DECL|member|uartm
 r_int
 r_int
 id|uartm
-suffix:semicolon
-DECL|member|dma_dev
-r_struct
-id|snd_dma_device
-id|dma_dev
 suffix:semicolon
 DECL|member|amplifier
 r_int

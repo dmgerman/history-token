@@ -424,7 +424,7 @@ l_int|8
 suffix:semicolon
 id|ice-&gt;num_total_adcs
 op_assign
-l_int|4
+l_int|2
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -445,15 +445,15 @@ id|ak
 op_assign
 id|ice-&gt;akm
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|2
+comma
 r_sizeof
 (paren
 id|akm4xxx_t
 )paren
-op_star
-l_int|2
 comma
 id|GFP_KERNEL
 )paren

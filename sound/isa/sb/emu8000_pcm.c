@@ -3,8 +3,6 @@ macro_line|#include &quot;emu8000_local.h&quot;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t emu8000_t
 multiline_comment|/*&n; * define the following if you want to use this pcm with non-interleaved mode&n; */
 multiline_comment|/* #define USE_NONINTERLEAVE */
 multiline_comment|/* NOTE: for using the non-interleaved mode with alsa-lib, you have to set&n; * mmap_emulation flag to 1 in your .asoundrc, such like&n; *&n; *&t;pcm.emu8k {&n; *&t;&t;type plug&n; *&t;&t;slave.pcm {&n; *&t;&t;&t;type hw&n; *&t;&t;&t;card 0&n; *&t;&t;&t;device 1&n; *&t;&t;&t;mmap_emulation 1&n; *&t;&t;}&n; *&t;}&n; *&n; * besides, for the time being, the non-interleaved mode doesn&squot;t work well on&n; * alsa-lib...&n; */
@@ -766,9 +764,11 @@ id|subs-&gt;runtime
 suffix:semicolon
 id|rec
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
 op_star

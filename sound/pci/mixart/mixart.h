@@ -253,11 +253,6 @@ r_int
 id|board_type
 suffix:semicolon
 multiline_comment|/* read from embedded once elf file is loaded, 250 = miXart8, 251 = with AES, 252 = with Cobranet */
-DECL|member|dma_dev
-r_struct
-id|snd_dma_device
-id|dma_dev
-suffix:semicolon
 DECL|member|flowinfo
 r_struct
 id|snd_dma_buffer

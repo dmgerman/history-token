@@ -1379,15 +1379,7 @@ id|i
 suffix:semicolon
 id|gus
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_gus_card_t
-comma
 id|entry-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|alloc
 op_assign

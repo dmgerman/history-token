@@ -311,6 +311,10 @@ id|snd_sf_callback_t
 id|callback
 suffix:semicolon
 multiline_comment|/* callback functions */
+DECL|member|presets_locked
+r_int
+id|presets_locked
+suffix:semicolon
 DECL|member|presets_mutex
 r_struct
 id|semaphore

@@ -1523,15 +1523,7 @@ id|flags
 suffix:semicolon
 id|opl3
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|opl3_t
-comma
 id|p
-comma
-r_return
-)paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_MIDI
 id|snd_printk
@@ -3115,15 +3107,7 @@ id|flags
 suffix:semicolon
 id|opl3
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|opl3_t
-comma
 id|p
-comma
-r_return
-)paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_MIDI
 id|snd_printk
@@ -3306,15 +3290,7 @@ id|opl3
 suffix:semicolon
 id|opl3
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|opl3_t
-comma
 id|p
-comma
-r_return
-)paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_MIDI
 id|snd_printk
@@ -3353,15 +3329,7 @@ id|opl3
 suffix:semicolon
 id|opl3
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|opl3_t
-comma
 id|p
-comma
-r_return
-)paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_MIDI
 id|snd_printk
@@ -3699,15 +3667,7 @@ id|opl3
 suffix:semicolon
 id|opl3
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|opl3_t
-comma
 id|p
-comma
-r_return
-)paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_MIDI
 id|snd_printk
@@ -3847,15 +3807,7 @@ id|opl3
 suffix:semicolon
 id|opl3
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|opl3_t
-comma
 id|p
-comma
-r_return
-)paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_MIDI
 id|snd_printk
@@ -3902,15 +3854,7 @@ id|opl3
 suffix:semicolon
 id|opl3
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|opl3_t
-comma
 id|p
-comma
-r_return
-)paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_MIDI
 id|snd_printk
