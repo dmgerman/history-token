@@ -1314,6 +1314,19 @@ comma
 l_int|0x0
 )brace
 suffix:semicolon
+r_static
+r_int
+id|size_table
+(braket
+l_int|2
+)braket
+op_assign
+(brace
+l_int|8
+comma
+l_int|16
+)brace
+suffix:semicolon
 id|client_handle_t
 id|handle
 op_assign
@@ -1354,6 +1367,9 @@ comma
 id|j
 comma
 r_try
+suffix:semicolon
+r_int
+id|s
 suffix:semicolon
 multiline_comment|/* If the card is already configured, look up the port and irq */
 id|i
@@ -1491,6 +1507,21 @@ multiline_comment|/* Two tries: without IO aliases, then with aliases */
 r_for
 c_loop
 (paren
+id|s
+op_assign
+l_int|0
+suffix:semicolon
+id|s
+OL
+l_int|2
+suffix:semicolon
+id|s
+op_increment
+)paren
+(brace
+r_for
+c_loop
+(paren
 r_try
 op_assign
 l_int|0
@@ -1574,7 +1605,10 @@ l_int|0
 dot
 id|len
 op_eq
-l_int|8
+id|size_table
+(braket
+id|s
+)braket
 )paren
 op_logical_and
 (paren
@@ -1655,6 +1689,7 @@ op_amp
 id|parse
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/* Second pass: try to find an entry that isn&squot;t picky about&n;&t;   its base address, then try to grab any standard serial port&n;&t;   address, and finally try to get any free port. */

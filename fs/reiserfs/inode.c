@@ -6531,7 +6531,7 @@ suffix:semicolon
 multiline_comment|/* looks for stat data, then copies fields to it, marks the buffer&n;   containing stat data as dirty */
 multiline_comment|/* reiserfs inodes are never really dirty, since the dirty inode call&n;** always logs them.  This call allows the VFS inode marking routines&n;** to properly mark inodes for datasync and such, but only actually&n;** does something when called for a synchronous update.&n;*/
 DECL|function|reiserfs_write_inode
-r_void
+r_int
 id|reiserfs_write_inode
 (paren
 r_struct
@@ -6570,6 +6570,8 @@ id|inode-&gt;i_ino
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|EROFS
 suffix:semicolon
 )brace
 multiline_comment|/* memory pressure can sometimes initiate write_inode calls with sync == 1,&n;    ** these cases are just when the system needs ram, not when the &n;    ** inode needs to reach disk for safety, and they can safely be&n;    ** ignored because the altered inode has already been logged.&n;    */
@@ -6629,6 +6631,9 @@ id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* FIXME: no need any more. right? */
 DECL|function|reiserfs_sync_inode

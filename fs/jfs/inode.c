@@ -372,7 +372,7 @@ id|rc
 suffix:semicolon
 )brace
 DECL|function|jfs_write_inode
-r_void
+r_int
 id|jfs_write_inode
 c_func
 (paren
@@ -397,6 +397,7 @@ id|inode
 )paren
 )paren
 r_return
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * If COMMIT_DIRTY is not set, the inode isn&squot;t really dirty.&n;&t; * It has been committed since the last change, but was still&n;&t; * on the dirty inode list.&n;&t; */
 r_if
@@ -428,6 +429,7 @@ id|wait
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -448,7 +450,15 @@ c_func
 l_string|&quot;jfs_write_inode: jfs_commit_inode failed!&quot;
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
 )brace
+r_else
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|jfs_delete_inode
 r_void

@@ -3,6 +3,7 @@ macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;termios.h&gt;
+macro_line|#include &lt;errno.h&gt;
 macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;chan_user.h&quot;
@@ -211,6 +212,9 @@ id|data
 op_assign
 id|d
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -223,6 +227,11 @@ id|data-&gt;fd
 )paren
 )paren
 (brace
+id|CATCH_EINTR
+c_func
+(paren
+id|err
+op_assign
 id|tcgetattr
 c_func
 (paren
@@ -231,15 +240,36 @@ comma
 op_amp
 id|data-&gt;tt
 )paren
+)paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+(brace
+r_return
+id|err
+suffix:semicolon
+)brace
+id|err
+op_assign
 id|raw
 c_func
 (paren
 id|data-&gt;fd
-comma
-l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+(brace
+r_return
+id|err
+suffix:semicolon
+)brace
 )brace
 id|sprintf
 c_func
@@ -280,6 +310,9 @@ id|data
 op_assign
 id|d
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -292,6 +325,11 @@ id|fd
 )paren
 )paren
 (brace
+id|CATCH_EINTR
+c_func
+(paren
+id|err
+op_assign
 id|tcsetattr
 c_func
 (paren
@@ -302,7 +340,25 @@ comma
 op_amp
 id|data-&gt;tt
 )paren
+)paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Failed to restore terminal state - &quot;
+l_string|&quot;errno = %d&bslash;n&quot;
+comma
+op_minus
+id|err
+)paren
+suffix:semicolon
+)brace
 id|data-&gt;raw
 op_assign
 l_int|0

@@ -16,6 +16,7 @@ macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;time_user.h&quot;
 macro_line|#include &quot;mode.h&quot;
+macro_line|#include &quot;os.h&quot;
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
@@ -77,14 +78,13 @@ r_static
 r_int
 id|first_tick
 suffix:semicolon
-DECL|variable|prev_tsc
+DECL|variable|prev_usecs
 r_static
 r_int
 r_int
 r_int
-id|prev_tsc
+id|prev_usecs
 suffix:semicolon
-macro_line|#ifdef CONFIG_UML_REAL_TIME_CLOCK
 DECL|variable|delta
 r_static
 r_int
@@ -92,13 +92,8 @@ r_int
 id|delta
 suffix:semicolon
 multiline_comment|/* Deviation per interval */
-macro_line|#endif
-r_extern
-r_int
-r_int
-r_int
-id|host_hz
-suffix:semicolon
+DECL|macro|MILLION
+mdefine_line|#define MILLION 1000000
 DECL|function|timer_irq
 r_void
 id|timer_irq
@@ -138,30 +133,42 @@ c_cond
 id|first_tick
 )paren
 (brace
-macro_line|#ifdef CONFIG_UML_REAL_TIME_CLOCK
-r_int
-r_int
-r_int
-id|tsc
-suffix:semicolon
+macro_line|#if defined(CONFIG_UML_REAL_TIME_CLOCK)
 multiline_comment|/* We&squot;ve had 1 tick */
-id|tsc
+r_int
+r_int
+r_int
+id|usecs
 op_assign
-id|time_stamp
+id|os_usecs
 c_func
 (paren
 )paren
 suffix:semicolon
 id|delta
 op_add_assign
-id|tsc
+id|usecs
 op_minus
-id|prev_tsc
+id|prev_usecs
 suffix:semicolon
-id|prev_tsc
+id|prev_usecs
 op_assign
-id|tsc
+id|usecs
 suffix:semicolon
+multiline_comment|/* Protect against the host clock being set backwards */
+r_if
+c_cond
+(paren
+id|delta
+OL
+l_int|0
+)paren
+(brace
+id|delta
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|ticks
 op_add_assign
 (paren
@@ -170,14 +177,14 @@ op_star
 id|HZ
 )paren
 op_div
-id|host_hz
+id|MILLION
 suffix:semicolon
 id|delta
 op_sub_assign
 (paren
 id|ticks
 op_star
-id|host_hz
+id|MILLION
 )paren
 op_div
 id|HZ
@@ -191,9 +198,9 @@ macro_line|#endif
 )brace
 r_else
 (brace
-id|prev_tsc
+id|prev_usecs
 op_assign
-id|time_stamp
+id|os_usecs
 c_func
 (paren
 )paren
@@ -500,7 +507,7 @@ op_star
 id|usecs
 )paren
 op_div
-l_int|1000000
+id|MILLION
 suffix:semicolon
 r_for
 c_loop
@@ -544,7 +551,7 @@ op_star
 id|usecs
 )paren
 op_div
-l_int|1000000
+id|MILLION
 suffix:semicolon
 r_for
 c_loop

@@ -10389,7 +10389,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * ext3_write_inode()&n; *&n; * We are called from a few places:&n; *&n; * - Within generic_file_write() for O_SYNC files.&n; *   Here, there will be no transaction running. We wait for any running&n; *   trasnaction to commit.&n; *&n; * - Within sys_sync(), kupdate and such.&n; *   We wait on commit, if tol to.&n; *&n; * - Within prune_icache() (PF_MEMALLOC == true)&n; *   Here we simply return.  We can&squot;t afford to block kswapd on the&n; *   journal commit.&n; *&n; * In all cases it is actually safe for us to return without doing anything,&n; * because the inode has been copied into a raw inode buffer in&n; * ext3_mark_inode_dirty().  This is a correctness thing for O_SYNC and for&n; * knfsd.&n; *&n; * Note that we are absolutely dependent upon all inode dirtiers doing the&n; * right thing: they *must* call mark_inode_dirty() after dirtying info in&n; * which we are interested.&n; *&n; * It would be a bug for them to not do this.  The code:&n; *&n; *&t;mark_inode_dirty(inode)&n; *&t;stuff();&n; *&t;inode-&gt;i_size = expr;&n; *&n; * is in error because a kswapd-driven write_inode() could occur while&n; * `stuff()&squot; is running, and the new i_size will be lost.  Plus the inode&n; * will no longer be on the superblock&squot;s dirty inode list.&n; */
 DECL|function|ext3_write_inode
-r_void
+r_int
 id|ext3_write_inode
 c_func
 (paren
@@ -10410,6 +10410,7 @@ op_amp
 id|PF_MEMALLOC
 )paren
 r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -10434,6 +10435,8 @@ c_func
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 r_if
@@ -10443,7 +10446,9 @@ op_logical_neg
 id|wait
 )paren
 r_return
+l_int|0
 suffix:semicolon
+r_return
 id|ext3_force_commit
 c_func
 (paren

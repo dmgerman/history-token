@@ -1438,9 +1438,16 @@ op_assign
 id|sysrq_serial_str
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t;&t; * ignore the whole sysrq string except for the&n;&t;&t;&t; * leading escape&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|ch
+op_ne
+l_char|&squot;&bslash;e&squot;
+)paren
 r_continue
 suffix:semicolon
-multiline_comment|/* ignore the whole sysrq string */
 )brace
 r_else
 id|sysrq_serial_ptr
@@ -1480,9 +1487,6 @@ id|TTY_FLIPBUF_SIZE
 )paren
 r_break
 suffix:semicolon
-)brace
-r_else
-(brace
 )brace
 id|port-&gt;sc_port.icount.rx
 op_increment

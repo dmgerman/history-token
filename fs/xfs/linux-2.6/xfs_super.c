@@ -1145,7 +1145,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Attempt to flush the inode, this will actually fail&n; * if the inode is pinned, but we dirty the inode again&n; * at the point when it is unpinned after a log write,&n; * since this is when the inode itself becomes flushable. &n; */
 id|STATIC
-r_void
+r_int
 DECL|function|linvfs_write_inode
 id|linvfs_write_inode
 c_func
@@ -1175,6 +1175,10 @@ comma
 id|flags
 op_assign
 id|FLUSH_INODE
+suffix:semicolon
+id|error
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1216,6 +1220,9 @@ id|error
 )paren
 suffix:semicolon
 )brace
+r_return
+id|error
+suffix:semicolon
 )brace
 id|STATIC
 r_void

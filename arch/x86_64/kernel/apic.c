@@ -15,6 +15,10 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+DECL|variable|apic_verbosity
+r_int
+id|apic_verbosity
+suffix:semicolon
 DECL|variable|__initdata
 r_int
 id|disable_apic_timer
@@ -410,10 +414,11 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * PIC mode, enable APIC mode in the IMCR, i.e.&n;&t;&t; * connect BSP&squot;s local APIC to INT and NMI lines.&n;&t;&t; */
-id|printk
+id|apic_printk
 c_func
 (paren
-id|KERN_INFO
+id|APIC_VERBOSE
+comma
 l_string|&quot;leaving PIC mode, enabling APIC mode.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -450,10 +455,11 @@ id|pic_mode
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Put the board back into PIC mode (has an effect&n;&t;&t; * only on certain older boards).  Note that APIC&n;&t;&t; * interrupts, including IPIs, won&squot;t work beyond&n;&t;&t; * this point!  The only exception are INIT IPIs.&n;&t;&t; */
-id|printk
+id|apic_printk
 c_func
 (paren
-id|KERN_INFO
+id|APIC_QUIET
+comma
 l_string|&quot;disabling APIC mode, entering PIC mode.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -540,9 +546,11 @@ c_func
 id|APIC_LVR
 )paren
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
+id|APIC_DEBUG
+comma
 l_string|&quot;Getting VERSION: %x&bslash;n&quot;
 comma
 id|reg0
@@ -566,9 +574,11 @@ c_func
 id|APIC_LVR
 )paren
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
+id|APIC_DEBUG
+comma
 l_string|&quot;Getting VERSION: %x&bslash;n&quot;
 comma
 id|reg1
@@ -638,9 +648,11 @@ c_func
 id|APIC_ID
 )paren
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
+id|APIC_DEBUG
+comma
 l_string|&quot;Getting ID: %x&bslash;n&quot;
 comma
 id|reg0
@@ -664,9 +676,11 @@ c_func
 id|APIC_ID
 )paren
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
+id|APIC_DEBUG
+comma
 l_string|&quot;Getting ID: %x&bslash;n&quot;
 comma
 id|reg1
@@ -703,9 +717,11 @@ c_func
 id|APIC_LVT0
 )paren
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
+id|APIC_DEBUG
+comma
 l_string|&quot;Getting LVT0: %x&bslash;n&quot;
 comma
 id|reg0
@@ -719,9 +735,11 @@ c_func
 id|APIC_LVT1
 )paren
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
+id|APIC_DEBUG
+comma
 l_string|&quot;Getting LVT1: %x&bslash;n&quot;
 comma
 id|reg1
@@ -746,9 +764,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
+id|APIC_DEBUG
+comma
 l_string|&quot;Synchronizing Arb IDs.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1167,10 +1187,11 @@ id|value
 op_assign
 id|APIC_DM_EXTINT
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
-id|KERN_INFO
+id|APIC_VERBOSE
+comma
 l_string|&quot;enabled ExtINT on CPU#%d&bslash;n&quot;
 comma
 id|smp_processor_id
@@ -1188,10 +1209,11 @@ id|APIC_DM_EXTINT
 op_or
 id|APIC_LVT_MASKED
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
-id|KERN_INFO
+id|APIC_VERBOSE
+comma
 l_string|&quot;masked ExtINT on CPU#%d&bslash;n&quot;
 comma
 id|smp_processor_id
@@ -1267,6 +1289,9 @@ id|esr_disable
 )paren
 (brace
 multiline_comment|/* !82489DX */
+r_int
+id|oldvalue
+suffix:semicolon
 id|maxlvt
 op_assign
 id|get_maxlvt
@@ -1290,20 +1315,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|value
+id|oldvalue
 op_assign
 id|apic_read
 c_func
 (paren
 id|APIC_ESR
-)paren
-suffix:semicolon
-id|Dprintk
-c_func
-(paren
-l_string|&quot;ESR value before enabling vector: %08x&bslash;n&quot;
-comma
-id|value
 )paren
 suffix:semicolon
 id|value
@@ -1343,10 +1360,21 @@ c_func
 id|APIC_ESR
 )paren
 suffix:semicolon
-id|Dprintk
+r_if
+c_cond
+(paren
+id|value
+op_ne
+id|oldvalue
+)paren
+id|apic_printk
 c_func
 (paren
-l_string|&quot;ESR value after enabling vector: %08x&bslash;n&quot;
+id|APIC_VERBOSE
+comma
+l_string|&quot;ESR value after enabling vector: %08x, after %08x&bslash;n&quot;
+comma
+id|oldvalue
 comma
 id|value
 )paren
@@ -1360,16 +1388,20 @@ c_cond
 id|esr_disable
 )paren
 multiline_comment|/* &n;&t;&t;&t; * Something untraceble is creating bad interrupts on &n;&t;&t;&t; * secondary quads ... for the moment, just leave the&n;&t;&t;&t; * ESR disabled - we can&squot;t do anything useful with the&n;&t;&t;&t; * errors anyway - mbligh&n;&t;&t;&t; */
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_DEBUG
+comma
 l_string|&quot;Leaving ESR disabled.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_DEBUG
+comma
 l_string|&quot;No ESR for 82489DX.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1993,6 +2025,76 @@ r_void
 (brace
 )brace
 macro_line|#endif&t;/* CONFIG_PM */
+DECL|function|apic_set_verbosity
+r_static
+r_int
+id|__init
+id|apic_set_verbosity
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|strcmp
+c_func
+(paren
+l_string|&quot;debug&quot;
+comma
+id|str
+)paren
+op_eq
+l_int|0
+)paren
+id|apic_verbosity
+op_assign
+id|APIC_DEBUG
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|strcmp
+c_func
+(paren
+l_string|&quot;verbose&quot;
+comma
+id|str
+)paren
+op_eq
+l_int|0
+)paren
+id|apic_verbosity
+op_assign
+id|APIC_VERBOSE
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;APIC Verbosity level %s not recognised&quot;
+l_string|&quot; use apic=verbose or apic=debug&quot;
+comma
+id|str
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;apic=&quot;
+comma
+id|apic_set_verbosity
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Detect and enable local APICs on non-SMP boards.&n; * Original code written by Keir Fraser.&n; * On AMD64 we trust the BIOS - if it says no APIC it is likely&n; * not correctly set up (usually the APIC timer won&squot;t work etc.) &n; */
 DECL|function|detect_init_APIC
 r_static
@@ -2094,9 +2196,11 @@ comma
 id|apic_phys
 )paren
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 l_string|&quot;mapped APIC to %16lx (%16lx)&bslash;n&quot;
 comma
 id|APIC_BASE
@@ -2200,9 +2304,11 @@ comma
 id|ioapic_phys
 )paren
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 l_string|&quot;mapped IOAPIC to %016lx (%016lx)&bslash;n&quot;
 comma
 id|__fix_to_virt
@@ -3221,7 +3327,7 @@ suffix:semicolon
 multiline_comment|/* Here is what the APIC error bits mean:&n;&t;   0: Send CS error&n;&t;   1: Receive CS error&n;&t;   2: Send accept error&n;&t;   3: Receive accept error&n;&t;   4: Reserved&n;&t;   5: Send illegal vector&n;&t;   6: Received illegal vector&n;&t;   7: Illegal register address&n;&t;*/
 id|printk
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;APIC error on CPU%d: %02x(%02x)&bslash;n&quot;
 comma
 id|smp_processor_id

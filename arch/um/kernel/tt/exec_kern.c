@@ -10,6 +10,7 @@ macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;irq_user.h&quot;
 macro_line|#include &quot;time_user.h&quot;
+macro_line|#include &quot;signal_user.h&quot;
 macro_line|#include &quot;mem_user.h&quot;
 macro_line|#include &quot;os.h&quot;
 macro_line|#include &quot;tlb.h&quot;
@@ -178,6 +179,22 @@ id|os_getpid
 c_func
 (paren
 )paren
+)paren
+suffix:semicolon
+id|change_sig
+c_func
+(paren
+id|SIGUSR1
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|change_sig
+c_func
+(paren
+id|SIGUSR1
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|enable_timer

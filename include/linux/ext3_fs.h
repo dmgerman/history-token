@@ -1672,7 +1672,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|ext3_write_inode
 (paren
 r_struct

@@ -3,6 +3,8 @@ macro_line|#ifndef __USER_UTIL_H__
 DECL|macro|__USER_UTIL_H__
 mdefine_line|#define __USER_UTIL_H__
 macro_line|#include &quot;sysdep/ptrace.h&quot;
+DECL|macro|CATCH_EINTR
+mdefine_line|#define CATCH_EINTR(expr) while (((expr) &lt; 0) &amp;&amp; (errno == EINTR))
 r_extern
 r_int
 id|mode_tt
@@ -470,15 +472,6 @@ id|val
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|suspend_new_thread
-c_func
-(paren
-r_int
-id|fd
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|detach
 c_func
@@ -646,23 +639,36 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|__raw
+id|setjmp_wrapper
+c_func
+(paren
+r_void
+(paren
+op_star
+id|proc
+)paren
+(paren
+r_void
+op_star
+comma
+r_void
+op_star
+)paren
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|raw
 c_func
 (paren
 r_int
 id|fd
-comma
-r_int
-id|complain
-comma
-r_int
-id|now
 )paren
 suffix:semicolon
-DECL|macro|raw
-mdefine_line|#define raw(fd, complain) __raw((fd), (complain), 1)
-DECL|macro|CATCH_EINTR
-mdefine_line|#define CATCH_EINTR(expr) while ( ((expr) &lt; 0) &amp;&amp; errno == EINTR)
 macro_line|#endif
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

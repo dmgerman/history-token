@@ -4,6 +4,8 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
@@ -929,6 +931,81 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|powersave_nap
+r_int
+id|powersave_nap
+suffix:semicolon
+macro_line|#ifdef CONFIG_SYSCTL
+multiline_comment|/*&n; * Register the sysctl to set/clear powersave_nap.&n; */
+DECL|variable|powersave_nap_ctl_table
+r_static
+id|ctl_table
+id|powersave_nap_ctl_table
+(braket
+)braket
+op_assign
+initialization_block
+suffix:semicolon
+DECL|variable|powersave_nap_sysctl_root
+r_static
+id|ctl_table
+id|powersave_nap_sysctl_root
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_int|1
+comma
+l_string|&quot;kernel&quot;
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+l_int|0755
+comma
+id|powersave_nap_ctl_table
+comma
+)brace
+comma
+(brace
+l_int|0
+comma
+)brace
+comma
+)brace
+suffix:semicolon
+r_static
+r_int
+id|__init
+DECL|function|register_powersave_nap_sysctl
+id|register_powersave_nap_sysctl
+c_func
+(paren
+r_void
+)paren
+(brace
+id|register_sysctl_table
+c_func
+(paren
+id|powersave_nap_sysctl_root
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|register_powersave_nap_sysctl
+id|__initcall
+c_func
+(paren
+id|register_powersave_nap_sysctl
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|function|idle_setup
 r_int
 id|idle_setup

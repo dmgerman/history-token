@@ -2862,7 +2862,7 @@ id|res
 suffix:semicolon
 )brace
 DECL|function|hfsplus_cat_write_inode
-r_void
+r_int
 id|hfsplus_cat_write_inode
 c_func
 (paren
@@ -2902,6 +2902,7 @@ id|rsrc_inode
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -2911,6 +2912,7 @@ op_logical_neg
 id|inode-&gt;i_nlink
 )paren
 r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2932,6 +2934,8 @@ id|fd
 )paren
 multiline_comment|/* panic? */
 r_return
+op_minus
+id|EIO
 suffix:semicolon
 r_if
 c_cond
@@ -3272,6 +3276,9 @@ c_func
 op_amp
 id|fd
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 eof

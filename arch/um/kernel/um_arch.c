@@ -23,7 +23,6 @@ macro_line|#include &quot;asm/current.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;kern.h&quot;
-macro_line|#include &quot;mprot.h&quot;
 macro_line|#include &quot;mem_user.h&quot;
 macro_line|#include &quot;mem.h&quot;
 macro_line|#include &quot;umid.h&quot;

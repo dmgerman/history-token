@@ -852,7 +852,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-r_void
+r_int
 DECL|function|affs_write_inode
 id|affs_write_inode
 c_func
@@ -905,6 +905,7 @@ id|inode-&gt;i_nlink
 )paren
 singleline_comment|// possibly free block
 r_return
+l_int|0
 suffix:semicolon
 id|bh
 op_assign
@@ -936,6 +937,8 @@ id|inode-&gt;i_ino
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|tail
@@ -1164,6 +1167,9 @@ c_func
 (paren
 id|inode
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_int

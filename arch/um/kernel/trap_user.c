@@ -620,7 +620,7 @@ r_int
 id|val
 )paren
 (brace
-id|jmp_buf
+id|sigjmp_buf
 op_star
 id|buf
 op_assign

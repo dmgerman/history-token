@@ -340,7 +340,7 @@ suffix:semicolon
 )brace
 DECL|function|bfs_write_inode
 r_static
-r_void
+r_int
 id|bfs_write_inode
 c_func
 (paren
@@ -399,6 +399,8 @@ id|ino
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|lock_kernel
@@ -451,6 +453,8 @@ c_func
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|off
@@ -568,6 +572,9 @@ id|unlock_kernel
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|bfs_delete_inode

@@ -5433,7 +5433,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|ext2_write_inode
-r_void
+r_int
 id|ext2_write_inode
 c_func
 (paren
@@ -5446,6 +5446,7 @@ r_int
 id|wait
 )paren
 (brace
+r_return
 id|ext2_update_inode
 c_func
 (paren

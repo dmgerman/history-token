@@ -541,6 +541,10 @@ suffix:semicolon
 multiline_comment|/* Force the &quot;do bottom halves&quot; bit */
 r_int
 id|ret
+comma
+id|retval
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -584,6 +588,10 @@ id|status
 op_or_assign
 id|action-&gt;flags
 suffix:semicolon
+id|retval
+op_or_assign
+id|ret
+suffix:semicolon
 id|action
 op_assign
 id|action-&gt;next
@@ -614,7 +622,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
-id|status
+id|retval
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Generic enable/disable code: this just calls&n; * down into the PIC-specific version for the actual&n; * hardware disable after having gotten the irq&n; * controller lock. &n; */

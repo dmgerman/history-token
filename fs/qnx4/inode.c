@@ -220,7 +220,7 @@ suffix:semicolon
 )brace
 DECL|function|qnx4_write_inode
 r_static
-r_void
+r_int
 id|qnx4_write_inode
 c_func
 (paren
@@ -269,6 +269,7 @@ l_int|0
 )paren
 (brace
 r_return
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -289,6 +290,8 @@ id|ino
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|QNX4DEBUG
@@ -342,6 +345,8 @@ c_func
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|raw_inode
@@ -457,6 +462,9 @@ id|unlock_kernel
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
