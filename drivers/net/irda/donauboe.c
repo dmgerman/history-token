@@ -6302,6 +6302,15 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|pci_dev-&gt;dev
+)paren
+suffix:semicolon
 id|dev-&gt;hard_start_xmit
 op_assign
 id|toshoboe_hard_xmit

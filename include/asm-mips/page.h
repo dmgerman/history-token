@@ -3,12 +3,7 @@ macro_line|#ifndef _ASM_PAGE_H
 DECL|macro|_ASM_PAGE_H
 mdefine_line|#define _ASM_PAGE_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_MIPS32
-macro_line|#include &lt;asm/page-32.h&gt;
-macro_line|#endif
-macro_line|#ifdef CONFIG_MIPS64
-macro_line|#include &lt;asm/page-64.h&gt;
-macro_line|#endif
+macro_line|#include &lt;spaces.h&gt;
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * PAGE_SHIFT determines the page size&n; */
 macro_line|#ifdef CONFIG_PAGE_SIZE_4KB
@@ -390,5 +385,9 @@ mdefine_line|#define UNCAC_ADDR(addr)&t;((addr) - PAGE_OFFSET + UNCAC_BASE)
 DECL|macro|CAC_ADDR
 mdefine_line|#define CAC_ADDR(addr)&t;&t;((addr) - UNCAC_BASE + PAGE_OFFSET)
 macro_line|#endif /* defined (__KERNEL__) */
+macro_line|#ifdef CONFIG_LIMITED_DMA
+DECL|macro|WANT_PAGE_VIRTUAL
+mdefine_line|#define WANT_PAGE_VIRTUAL
+macro_line|#endif
 macro_line|#endif /* _ASM_PAGE_H */
 eof

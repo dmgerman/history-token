@@ -479,7 +479,7 @@ op_assign
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren
@@ -497,7 +497,7 @@ l_int|0
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren
@@ -511,7 +511,7 @@ op_assign
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren
@@ -528,7 +528,7 @@ l_int|0
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren
@@ -572,7 +572,7 @@ suffix:colon
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren
@@ -589,7 +589,7 @@ suffix:colon
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren
@@ -606,7 +606,7 @@ suffix:colon
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren
@@ -623,7 +623,7 @@ suffix:colon
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren
@@ -641,7 +641,7 @@ multiline_comment|/* PLX */
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren
@@ -653,7 +653,7 @@ suffix:semicolon
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren
@@ -670,7 +670,7 @@ suffix:colon
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren
@@ -682,7 +682,7 @@ suffix:semicolon
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren
@@ -694,7 +694,7 @@ suffix:semicolon
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren
@@ -706,7 +706,7 @@ suffix:semicolon
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren

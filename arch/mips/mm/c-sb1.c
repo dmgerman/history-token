@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1997, 2001 Ralf Baechle (ralf@gnu.org)&n; * Copyright (C) 2000, 2001, 2002, 2003 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
+multiline_comment|/*&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1997, 2001 Ralf Baechle (ralf@gnu.org)&n; * Copyright (C) 2000, 2001, 2002, 2003 Broadcom Corporation&n; * Copyright (C) 2004  Maciej W. Rozycki&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
@@ -536,11 +536,16 @@ r_int
 r_int
 id|addr
 )paren
-suffix:semicolon
-id|asm
+id|__attribute__
 c_func
 (paren
-l_string|&quot;sb1_flush_cache_page = local_sb1_flush_cache_page&quot;
+(paren
+id|alias
+c_func
+(paren
+l_string|&quot;local_sb1_flush_cache_page&quot;
+)paren
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -643,7 +648,6 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
-r_extern
 r_void
 id|sb1___flush_cache_all_ipi
 c_func
@@ -652,11 +656,16 @@ r_void
 op_star
 id|ignored
 )paren
-suffix:semicolon
-id|asm
+id|__attribute__
 c_func
 (paren
-l_string|&quot;sb1___flush_cache_all_ipi = local_sb1___flush_cache_all&quot;
+(paren
+id|alias
+c_func
+(paren
+l_string|&quot;local_sb1___flush_cache_all&quot;
+)paren
+)paren
 )paren
 suffix:semicolon
 DECL|function|sb1___flush_cache_all
@@ -682,18 +691,22 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#else
-r_extern
 r_void
 id|sb1___flush_cache_all
 c_func
 (paren
 r_void
 )paren
-suffix:semicolon
-id|asm
+id|__attribute__
 c_func
 (paren
-l_string|&quot;sb1___flush_cache_all = local_sb1___flush_cache_all&quot;
+(paren
+id|alias
+c_func
+(paren
+l_string|&quot;local_sb1___flush_cache_all&quot;
+)paren
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -863,11 +876,16 @@ r_int
 r_int
 id|end
 )paren
-suffix:semicolon
-id|asm
+id|__attribute__
 c_func
 (paren
-l_string|&quot;sb1_flush_icache_range = local_sb1_flush_icache_range&quot;
+(paren
+id|alias
+c_func
+(paren
+l_string|&quot;local_sb1_flush_icache_range&quot;
+)paren
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1086,11 +1104,16 @@ id|page
 op_star
 id|page
 )paren
-suffix:semicolon
-id|asm
+id|__attribute__
 c_func
 (paren
-l_string|&quot;sb1_flush_icache_page = local_sb1_flush_icache_page&quot;
+(paren
+id|alias
+c_func
+(paren
+l_string|&quot;local_sb1_flush_icache_page&quot;
+)paren
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1216,11 +1239,16 @@ r_int
 r_int
 id|addr
 )paren
-suffix:semicolon
-id|asm
+id|__attribute__
 c_func
 (paren
-l_string|&quot;sb1_flush_cache_sigtramp = local_sb1_flush_cache_sigtramp&quot;
+(paren
+id|alias
+c_func
+(paren
+l_string|&quot;local_sb1_flush_cache_sigtramp&quot;
+)paren
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -40,7 +40,7 @@ op_logical_or
 (paren
 id|p-&gt;flags
 op_amp
-id|PF_IOTHREAD
+id|PF_NOFREEZE
 )paren
 op_logical_or
 (paren

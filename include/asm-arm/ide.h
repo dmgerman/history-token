@@ -14,6 +14,8 @@ DECL|macro|ide_default_io_base
 mdefine_line|#define ide_default_io_base(i)&t;&t;(0)
 DECL|macro|ide_default_irq
 mdefine_line|#define ide_default_irq(b)&t;&t;(0)
+DECL|macro|ide_init_default_irq
+mdefine_line|#define ide_init_default_irq(base)&t;(0)
 DECL|macro|__ide_mm_insw
 mdefine_line|#define __ide_mm_insw(port,addr,len)&t;readsw(port,addr,len)
 DECL|macro|__ide_mm_insl

@@ -1,8 +1,10 @@
-multiline_comment|/*&n; * FILE NAME&n; *&t;arch/mips/vr41xx/common/serial.c&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;Serial Interface Unit routines for NEC VR4100 series.&n; *&n; * Author: Yoichi Yuasa&n; *         yyuasa@mvista.com or source@mvista.com&n; *&n; * Copyright 2002 MontaVista Software Inc.&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the&n; *  Free Software Foundation; either version 2 of the License, or (at your&n; *  option) any later version.&n; *&n; *  THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&n; *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,&n; *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS&n; *  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND&n; *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n; *  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n; *  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *  serial.c, Serial Interface Unit routines for NEC VR4100 series.&n; *&n; *  Copyright (C) 2002  MontaVista Software Inc.&n; *    Author: Yoichi Yuasa &lt;yyuasa@mvista.com or source@mvista.com&gt;&n; *  Copyright (C) 2003-2004  Yoichi Yuasa &lt;yuasa@hh.iij4u.or.jp&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n; * Changes:&n; *  MontaVista Software Inc. &lt;yyuasa@mvista.com&gt; or &lt;source@mvista.com&gt;&n; *  - New creation, NEC VR4122 and VR4131 are supported.&n; *  - Added support for NEC VR4111 and VR4121.&n; *&n; *  Yoichi Yuasa &lt;yuasa@hh.iij4u.or.jp&gt;&n; *  - Added support for NEC VR4133.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
@@ -189,8 +191,8 @@ id|module
 )paren
 (brace
 r_struct
-id|serial_struct
-id|s
+id|uart_port
+id|port
 suffix:semicolon
 id|vr41xx_siu_ifselect
 c_func
@@ -204,33 +206,33 @@ id|memset
 c_func
 (paren
 op_amp
-id|s
+id|port
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-id|s
+id|port
 )paren
 )paren
 suffix:semicolon
-id|s.line
+id|port.line
 op_assign
 id|vr41xx_serial_ports
 suffix:semicolon
-id|s.baud_base
+id|port.uartclk
 op_assign
 id|SIU_BASE_BAUD
 suffix:semicolon
-id|s.irq
+id|port.irq
 op_assign
 id|SIU_IRQ
 suffix:semicolon
-id|s.flags
+id|port.flags
 op_assign
-id|ASYNC_BOOT_AUTOCONF
+id|UPF_BOOT_AUTOCONF
 op_or
-id|ASYNC_SKIP_TEST
+id|UPF_SKIP_TEST
 suffix:semicolon
 r_switch
 c_cond
@@ -244,10 +246,9 @@ suffix:colon
 r_case
 id|CPU_VR4121
 suffix:colon
-id|s.iomem_base
+id|port.membase
 op_assign
 (paren
-r_int
 r_char
 op_star
 )paren
@@ -264,10 +265,9 @@ suffix:colon
 r_case
 id|CPU_VR4133
 suffix:colon
-id|s.iomem_base
+id|port.membase
 op_assign
 (paren
-r_int
 r_char
 op_star
 )paren
@@ -286,13 +286,13 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|s.iomem_reg_shift
+id|port.regshift
 op_assign
 l_int|0
 suffix:semicolon
-id|s.io_type
+id|port.iotype
 op_assign
-id|SERIAL_IO_MEM
+id|UPIO_MEM
 suffix:semicolon
 r_if
 c_cond
@@ -301,7 +301,7 @@ id|early_serial_setup
 c_func
 (paren
 op_amp
-id|s
+id|port
 )paren
 op_ne
 l_int|0
@@ -313,7 +313,7 @@ id|KERN_ERR
 l_string|&quot;SIU setup failed!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|vr41xx_clock_supply
+id|vr41xx_supply_clock
 c_func
 (paren
 id|SIU_CLOCK
@@ -333,8 +333,8 @@ r_void
 )paren
 (brace
 r_struct
-id|serial_struct
-id|s
+id|uart_port
+id|port
 suffix:semicolon
 r_if
 c_cond
@@ -357,50 +357,49 @@ id|memset
 c_func
 (paren
 op_amp
-id|s
+id|port
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-id|s
+id|port
 )paren
 )paren
 suffix:semicolon
-id|s.line
+id|port.line
 op_assign
 id|vr41xx_serial_ports
 suffix:semicolon
-id|s.baud_base
+id|port.uartclk
 op_assign
 id|DSIU_BASE_BAUD
 suffix:semicolon
-id|s.irq
+id|port.irq
 op_assign
 id|DSIU_IRQ
 suffix:semicolon
-id|s.flags
+id|port.flags
 op_assign
-id|ASYNC_BOOT_AUTOCONF
+id|UPF_BOOT_AUTOCONF
 op_or
-id|ASYNC_SKIP_TEST
+id|UPF_SKIP_TEST
 suffix:semicolon
-id|s.iomem_base
+id|port.membase
 op_assign
 (paren
-r_int
 r_char
 op_star
 )paren
 id|DSIURB
 suffix:semicolon
-id|s.iomem_reg_shift
+id|port.regshift
 op_assign
 l_int|0
 suffix:semicolon
-id|s.io_type
+id|port.iotype
 op_assign
-id|SERIAL_IO_MEM
+id|UPIO_MEM
 suffix:semicolon
 r_if
 c_cond
@@ -409,7 +408,7 @@ id|early_serial_setup
 c_func
 (paren
 op_amp
-id|s
+id|port
 )paren
 op_ne
 l_int|0
@@ -421,7 +420,7 @@ id|KERN_ERR
 l_string|&quot;DSIU setup failed!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|vr41xx_clock_supply
+id|vr41xx_supply_clock
 c_func
 (paren
 id|DSIU_CLOCK

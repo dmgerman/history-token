@@ -5,10 +5,8 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 DECL|variable|prom_argc
 r_int
 id|prom_argc
@@ -55,31 +53,16 @@ r_void
 )paren
 (brace
 r_return
-l_string|&quot;AMD Alchemy PbAu1550&quot;
+l_string|&quot;Alchemy Pb1550&quot;
 suffix:semicolon
 )brace
 DECL|function|prom_init
-r_int
+r_void
 id|__init
 id|prom_init
 c_func
 (paren
-r_int
-id|argc
-comma
-r_char
-op_star
-op_star
-id|argv
-comma
-r_char
-op_star
-op_star
-id|envp
-comma
-r_int
-op_star
-id|prom_vec
+r_void
 )paren
 (brace
 r_int
@@ -93,15 +76,28 @@ id|memsize
 suffix:semicolon
 id|prom_argc
 op_assign
-id|argc
+(paren
+r_int
+)paren
+id|fw_arg0
 suffix:semicolon
 id|prom_argv
 op_assign
-id|argv
+(paren
+r_char
+op_star
+op_star
+)paren
+id|fw_arg1
 suffix:semicolon
 id|prom_envp
 op_assign
-id|envp
+(paren
+r_char
+op_star
+op_star
+)paren
+id|fw_arg2
 suffix:semicolon
 id|mips_machgroup
 op_assign
@@ -109,9 +105,8 @@ id|MACH_GROUP_ALCHEMY
 suffix:semicolon
 id|mips_machtype
 op_assign
-id|MACH_PB1000
+id|MACH_PB1550
 suffix:semicolon
-multiline_comment|/* set the platform # */
 id|prom_init_cmdline
 c_func
 (paren
@@ -134,7 +129,7 @@ id|memsize_str
 (brace
 id|memsize
 op_assign
-l_int|0x04000000
+l_int|0x08000000
 suffix:semicolon
 )brace
 r_else
@@ -161,9 +156,6 @@ id|memsize
 comma
 id|BOOT_MEM_RAM
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 eof

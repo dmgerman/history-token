@@ -177,6 +177,8 @@ DECL|macro|MACH_XXS1500
 mdefine_line|#define  MACH_XXS1500&t;&t;6       /* Au1500-based eval board */
 DECL|macro|MACH_MTX1
 mdefine_line|#define  MACH_MTX1&t;&t;7       /* 4G MTX-1 Au1500-based board */
+DECL|macro|MACH_PB1550
+mdefine_line|#define  MACH_PB1550&t;&t;8       /* Au1550-based eval board */
 multiline_comment|/*&n; * Valid machtype for group NEC_VR41XX&n; *&n; * Various NEC-based devices.&n; *&n; * FIXME: MACH_GROUPs should be by _MANUFACTURER_ of * the device, not by&n; *        technical properties, so no new additions to this group.&n; */
 DECL|macro|MACH_GROUP_NEC_VR41XX
 mdefine_line|#define MACH_GROUP_NEC_VR41XX  19
@@ -204,9 +206,9 @@ multiline_comment|/*&n; * Valid machtype for group LASAT&n; */
 DECL|macro|MACH_GROUP_LASAT
 mdefine_line|#define MACH_GROUP_LASAT       21
 DECL|macro|MACH_LASAT_100
-mdefine_line|#define  MACH_LASAT_100&t;&t;1&t;/* Masquerade II/SP100/SP50/SP25 */
+mdefine_line|#define  MACH_LASAT_100&t;&t;0&t;/* Masquerade II/SP100/SP50/SP25 */
 DECL|macro|MACH_LASAT_200
-mdefine_line|#define  MACH_LASAT_200&t;&t;2&t;/* Masquerade PRO/SP200 */
+mdefine_line|#define  MACH_LASAT_200&t;&t;1&t;/* Masquerade PRO/SP200 */
 multiline_comment|/*&n; * Valid machtype for group TITAN&n; */
 DECL|macro|MACH_GROUP_TITAN
 mdefine_line|#define MACH_GROUP_TITAN       22&t;/* PMC-Sierra Titan&t;&t;*/

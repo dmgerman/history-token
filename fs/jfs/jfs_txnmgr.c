@@ -8967,7 +8967,7 @@ suffix:semicolon
 id|refrigerator
 c_func
 (paren
-id|PF_IOTHREAD
+id|PF_FREEZE
 )paren
 suffix:semicolon
 )brace
@@ -9698,7 +9698,7 @@ suffix:semicolon
 id|refrigerator
 c_func
 (paren
-id|PF_IOTHREAD
+id|PF_FREEZE
 )paren
 suffix:semicolon
 )brace

@@ -1772,6 +1772,15 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|idev-&gt;dev
+)paren
+suffix:semicolon
 id|pnp_cards
 op_increment
 suffix:semicolon
@@ -2547,7 +2556,6 @@ macro_line|#endif
 id|el3_cards
 op_increment
 suffix:semicolon
-macro_line|#if !defined(__ISAPNP__) || defined(CONFIG_X86_PC9800)
 id|lp-&gt;next_dev
 op_assign
 id|el3_root_dev
@@ -2556,7 +2564,6 @@ id|el3_root_dev
 op_assign
 id|dev
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

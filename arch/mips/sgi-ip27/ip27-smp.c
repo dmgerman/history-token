@@ -54,11 +54,12 @@ id|cpunum
 op_assign
 id|nasid
 suffix:semicolon
-id|cputocnode
-c_func
-(paren
+id|cpu_data
+(braket
 id|cpunum
-)paren
+)braket
+dot
+id|p_nodeid
 op_assign
 id|node
 suffix:semicolon
@@ -922,7 +923,7 @@ c_func
 id|COMPACT_TO_NASID_NODEID
 c_func
 (paren
-id|cputocnode
+id|cpu_to_node
 c_func
 (paren
 id|destid

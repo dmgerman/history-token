@@ -1887,6 +1887,15 @@ id|end
 comma
 id|a
 suffix:semicolon
+multiline_comment|/* Catch bad driver code */
+id|BUG_ON
+c_func
+(paren
+id|size
+op_eq
+l_int|0
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2083,6 +2092,15 @@ r_int
 id|end
 comma
 id|a
+suffix:semicolon
+multiline_comment|/* Catch bad driver code */
+id|BUG_ON
+c_func
+(paren
+id|size
+op_eq
+l_int|0
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3384,10 +3402,14 @@ id|c-&gt;dcache.ways
 op_minus
 l_int|1
 suffix:semicolon
+macro_line|#if !defined(CONFIG_SMP) || !defined(RM9000_CDEX_SMP_WAR)
 id|c-&gt;options
 op_or_assign
 id|MIPS_CPU_CACHE_CDEX_P
-op_or
+suffix:semicolon
+macro_line|#endif
+id|c-&gt;options
+op_or_assign
 id|MIPS_CPU_PREFETCH
 suffix:semicolon
 r_break

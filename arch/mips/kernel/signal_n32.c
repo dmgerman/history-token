@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;asm/asm.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/sim.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
@@ -417,11 +416,13 @@ op_amp
 id|SA_ONSTACK
 )paren
 op_logical_and
-op_logical_neg
-id|on_sig_stack
-c_func
+(paren
+id|sas_ss_flags
 (paren
 id|sp
+)paren
+op_eq
+l_int|0
 )paren
 )paren
 id|sp

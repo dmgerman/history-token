@@ -14,6 +14,7 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/ip32/crime.h&gt;
 macro_line|#include &lt;asm/ip32/mace.h&gt;
 macro_line|#include &lt;asm/ip32/ip32_ints.h&gt;
@@ -1790,10 +1791,10 @@ op_star
 id|regs
 )paren
 (brace
-id|do_IRQ
+id|ll_timer_interrupt
 c_func
 (paren
-id|CLOCK_IRQ
+id|IP32_R4K_TIMER_IRQ
 comma
 id|regs
 )paren
@@ -1890,7 +1891,7 @@ c_cond
 (paren
 id|irq
 op_eq
-id|CLOCK_IRQ
+id|IP32_R4K_TIMER_IRQ
 )paren
 id|controller
 op_assign
@@ -2007,6 +2008,16 @@ id|CRIME_CPUERR_IRQ
 comma
 op_amp
 id|cpuerr_irq
+)paren
+suffix:semicolon
+DECL|macro|ALLINTS
+mdefine_line|#define ALLINTS (IE_IRQ0 | IE_IRQ1 | IE_IRQ2 | IE_IRQ3 | IE_IRQ4 | IE_IRQ5)
+id|change_c0_status
+c_func
+(paren
+id|ST0_IM
+comma
+id|ALLINTS
 )paren
 suffix:semicolon
 )brace

@@ -18,7 +18,6 @@ macro_line|#ifdef CONFIG_PICVUE
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#endif
 macro_line|#include &quot;ds1603.h&quot;
-macro_line|#include &quot;at93c.h&quot;
 macro_line|#include &lt;asm/lasat/ds1603.h&gt;
 macro_line|#include &lt;asm/lasat/picvue.h&gt;
 macro_line|#include &lt;asm/lasat/eeprom.h&gt;
@@ -413,29 +412,6 @@ id|IE_IRQ5
 )paren
 suffix:semicolon
 )brace
-DECL|macro|MIPS_CPU_TIMER_IRQ
-mdefine_line|#define MIPS_CPU_TIMER_IRQ 7
-DECL|function|lasat_timer_interrupt
-id|asmlinkage
-r_void
-id|lasat_timer_interrupt
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-id|ll_timer_interrupt
-c_func
-(paren
-id|MIPS_CPU_TIMER_IRQ
-comma
-id|regs
-)paren
-suffix:semicolon
-)brace
 DECL|macro|DYNAMIC_SERIAL_INIT
 mdefine_line|#define DYNAMIC_SERIAL_INIT
 macro_line|#ifdef DYNAMIC_SERIAL_INIT
@@ -565,7 +541,7 @@ macro_line|#endif
 macro_line|#endif
 DECL|function|lasat_setup
 r_static
-r_void
+r_int
 id|__init
 id|lasat_setup
 c_func
@@ -683,6 +659,9 @@ c_func
 (paren
 l_string|&quot;Lasat specific initialization complete&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|lasat_setup

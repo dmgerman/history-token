@@ -2714,7 +2714,7 @@ id|PF_FREEZE
 id|refrigerator
 c_func
 (paren
-id|PF_IOTHREAD
+id|PF_FREEZE
 )paren
 suffix:semicolon
 r_if

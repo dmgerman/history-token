@@ -5,10 +5,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/mach-au1x00/au1000.h&gt;
-singleline_comment|//#include &lt;asm/pb1500.h&gt;
-macro_line|#ifdef CONFIG_MIPS_PB1000
-macro_line|#include &lt;asm/mach-pb1x00/pb1000.h&gt;
-macro_line|#endif
 multiline_comment|/*&n; * Shortcut&n; */
 DECL|macro|INTA
 mdefine_line|#define INTA&t;AU1000_PCI_INTA
@@ -59,6 +55,7 @@ id|INTA
 comma
 id|INTA
 )brace
+comma
 macro_line|#if defined( CONFIG_SOC_AU1550 )
 (braket
 l_int|13

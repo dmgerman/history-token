@@ -97,7 +97,7 @@ mdefine_line|#define ALSZ&t;7
 DECL|macro|ALMASK
 mdefine_line|#define ALMASK&t;~7
 macro_line|#endif
-macro_line|#if (_MIPS_SIM == _MIPS_SIM_ABIN32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
+macro_line|#if (_MIPS_SIM == _MIPS_SIM_NABI32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
 DECL|macro|ALSZ
 mdefine_line|#define ALSZ&t;15
 DECL|macro|ALMASK
@@ -123,7 +123,7 @@ mdefine_line|#define REG_SUBU&t;subu
 DECL|macro|REG_ADDU
 mdefine_line|#define REG_ADDU&t;addu
 macro_line|#endif
-macro_line|#if (_MIPS_SIM == _MIPS_SIM_ABIN32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
+macro_line|#if (_MIPS_SIM == _MIPS_SIM_NABI32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
 DECL|macro|REG_S
 mdefine_line|#define REG_S&t;&t;sd
 DECL|macro|REG_L
@@ -359,7 +359,7 @@ mdefine_line|#define MFC0&t;&t;mfc0
 DECL|macro|MTC0
 mdefine_line|#define MTC0&t;&t;mtc0
 macro_line|#endif
-macro_line|#if (_MIPS_SIM == _MIPS_SIM_ABIN32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
+macro_line|#if (_MIPS_SIM == _MIPS_SIM_NABI32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
 DECL|macro|MFC0
 mdefine_line|#define MFC0&t;&t;dmfc0
 DECL|macro|MTC0

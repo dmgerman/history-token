@@ -156,6 +156,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_X86_PC9800
 DECL|function|ide_init_hwif_ports
 r_static
 id|__inline__
@@ -189,7 +190,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_PC9800
 r_int
 r_int
 id|increment
@@ -203,7 +203,6 @@ l_int|2
 suffix:colon
 l_int|1
 suffix:semicolon
-macro_line|#endif
 r_for
 c_loop
 (paren
@@ -226,17 +225,10 @@ id|i
 op_assign
 id|reg
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_PC9800
 id|reg
 op_add_assign
 id|increment
 suffix:semicolon
-macro_line|#else
-id|reg
-op_add_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 )brace
 r_if
 c_cond
@@ -251,7 +243,6 @@ id|IDE_CONTROL_OFFSET
 op_assign
 id|ctrl_port
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_PC9800
 )brace
 r_else
 r_if
@@ -269,7 +260,6 @@ id|IDE_CONTROL_OFFSET
 op_assign
 l_int|0x74c
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
@@ -306,91 +296,14 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|ide_init_default_hwifs
-r_static
-id|__inline__
-r_void
-id|ide_init_default_hwifs
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifndef CONFIG_BLK_DEV_IDEPCI
-id|hw_regs_t
-id|hw
-suffix:semicolon
-r_int
-id|index
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|index
-op_assign
-l_int|0
-suffix:semicolon
-id|index
-OL
-id|MAX_HWIFS
-suffix:semicolon
-id|index
-op_increment
-)paren
-(brace
-id|memset
-c_func
-(paren
-op_amp
-id|hw
-comma
-l_int|0
-comma
-r_sizeof
-id|hw
-)paren
-suffix:semicolon
-id|ide_init_hwif_ports
-c_func
-(paren
-op_amp
-id|hw
-comma
-id|ide_default_io_base
-c_func
-(paren
-id|index
-)paren
-comma
-l_int|0
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|hw.irq
-op_assign
-id|ide_default_irq
-c_func
-(paren
-id|ide_default_io_base
-c_func
-(paren
-id|index
-)paren
-)paren
-suffix:semicolon
-id|ide_register_hw
-c_func
-(paren
-op_amp
-id|hw
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
-)brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+DECL|macro|ide_init_default_irq
+mdefine_line|#define ide_init_default_irq(base)&t;(0)
+macro_line|#else
+DECL|macro|ide_init_default_irq
+mdefine_line|#define ide_init_default_irq(base)&t;ide_default_irq(base)
+macro_line|#endif
 macro_line|#include &lt;asm-generic/ide_iops.h&gt;
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASMi386_IDE_H */

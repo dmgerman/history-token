@@ -1179,6 +1179,10 @@ id|current_cpu_data.cputype
 )paren
 (brace
 r_case
+id|CPU_RM9000
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * As a workaround for erratum G105 which make the&n;&t;&t;&t; * PrepareForStore hint unusable we fall back to&n;&t;&t;&t; * StoreRetained on the RM9000.  Once it is known which&n;&t;&t;&t; * versions of the RM9000 we&squot;ll be able to condition-&n;&t;&t;&t; * alize this.&n;&t;&t;&t; */
+r_case
 id|CPU_R10000
 suffix:colon
 r_case

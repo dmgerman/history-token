@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * FILE NAME&n; *&t;include/asm-mips/vr41xx/workpad.h&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;Include file for IBM WorkPad z50.&n; *&n; * Copyright 2002 Yoichi Yuasa&n; *                yuasa@hh.iij4u.or.jp&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the&n; *  Free Software Foundation; either version 2 of the License, or (at your&n; *  option) any later version.&n; */
+multiline_comment|/*&n; *  workpad.h, Include file for IBM WorkPad z50.&n; *&n; *  Copyright (C) 2002-2004  Yoichi Yuasa &lt;yuasa@hh.iij4u.or.jp&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __IBM_WORKPAD_H
 DECL|macro|__IBM_WORKPAD_H
 mdefine_line|#define __IBM_WORKPAD_H
@@ -14,15 +14,15 @@ DECL|macro|VR41XX_ISA_IO_BASE
 mdefine_line|#define VR41XX_ISA_IO_BASE&t;&t;0x15000000
 DECL|macro|VR41XX_ISA_IO_SIZE
 mdefine_line|#define VR41XX_ISA_IO_SIZE&t;&t;0x03000000
+DECL|macro|ISA_BUS_IO_BASE
+mdefine_line|#define ISA_BUS_IO_BASE&t;&t;&t;0
+DECL|macro|ISA_BUS_IO_SIZE
+mdefine_line|#define ISA_BUS_IO_SIZE&t;&t;&t;VR41XX_ISA_IO_SIZE
 DECL|macro|IO_PORT_BASE
 mdefine_line|#define IO_PORT_BASE&t;&t;&t;KSEG1ADDR(VR41XX_ISA_IO_BASE)
 DECL|macro|IO_PORT_RESOURCE_START
-mdefine_line|#define IO_PORT_RESOURCE_START&t;&t;0
+mdefine_line|#define IO_PORT_RESOURCE_START&t;&t;ISA_BUS_IO_BASE
 DECL|macro|IO_PORT_RESOURCE_END
-mdefine_line|#define IO_PORT_RESOURCE_END&t;&t;VR41XX_ISA_IO_SIZE
-DECL|macro|IO_MEM_RESOURCE_START
-mdefine_line|#define IO_MEM_RESOURCE_START&t;&t;VR41XX_ISA_MEM_BASE
-DECL|macro|IO_MEM_RESOURCE_END
-mdefine_line|#define IO_MEM_RESOURCE_END&t;&t;(VR41XX_ISA_MEM_BASE + VR41XX_ISA_MEM_SIZE)
+mdefine_line|#define IO_PORT_RESOURCE_END&t;&t;(ISA_BUS_IO_BASE + ISA_BUS_IO_SIZE - 1)
 macro_line|#endif /* __IBM_WORKPAD_H */
 eof

@@ -29,14 +29,6 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|mv64340_irq_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|uart_irq_init
 c_func
 (paren
@@ -158,6 +150,7 @@ suffix:semicolon
 id|mv64340_irq_init
 c_func
 (paren
+l_int|16
 )paren
 suffix:semicolon
 id|uart_irq_init

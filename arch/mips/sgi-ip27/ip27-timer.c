@@ -52,7 +52,7 @@ r_int
 r_int
 id|wall_jiffies
 suffix:semicolon
-DECL|function|set_rtc_mmss
+macro_line|#if 0
 r_static
 r_int
 id|set_rtc_mmss
@@ -240,6 +240,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|ip27_rt_timer_interrupt
 r_void
 id|ip27_rt_timer_interrupt

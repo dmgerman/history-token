@@ -1,8 +1,9 @@
-multiline_comment|/*&n; * mv64340.h - MV-64340 Internal registers definition file.&n; *&n; * Copyright 2002 Momentum Computer, Inc.&n; * Copyright 2002 GALILEO TECHNOLOGY, LTD. &n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
+multiline_comment|/*&n; * mv64340.h - MV-64340 Internal registers definition file.&n; *&n; * Copyright 2002 Momentum Computer, Inc.&n; * &t;Author: Matthew Dharm &lt;mdharm@momenco.com&gt;&n; * Copyright 2002 GALILEO TECHNOLOGY, LTD. &n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#ifndef __ASM_MV64340_H
 DECL|macro|__ASM_MV64340_H
 mdefine_line|#define __ASM_MV64340_H
-macro_line|#include &lt;asm/mv64340_dep.h&gt;
+macro_line|#include &lt;asm/addrspace.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/****************************************/
 multiline_comment|/* Processor Address Space              */
 multiline_comment|/****************************************/
@@ -1643,13 +1644,48 @@ DECL|macro|MV64340_SERIAL_INIT_CONTROL
 mdefine_line|#define MV64340_SERIAL_INIT_CONTROL                                 0xf328
 DECL|macro|MV64340_SERIAL_INIT_STATUS
 mdefine_line|#define MV64340_SERIAL_INIT_STATUS                                  0xf32c
-r_struct
-id|pci
+r_extern
+r_int
+r_int
+id|mv64340_base
+suffix:semicolon
+DECL|macro|MV64340_BASE
+mdefine_line|#define MV64340_BASE       (mv64340_base)
+multiline_comment|/*&n; * Because of an error/peculiarity in the Galileo chip, we need to swap the&n; * bytes when running bigendian.&n; */
+DECL|macro|MV_WRITE
+mdefine_line|#define MV_WRITE(ofs, data)&t;&t;&bslash;&n;        *(volatile u32 *)(MV64340_BASE + (ofs)) = cpu_to_le32((u32)data)
+DECL|macro|MV_READ
+mdefine_line|#define MV_READ(ofs)&t;&t;&t;&bslash;&n;        (le32_to_cpu(*(volatile u32 *)(MV64340_BASE + (ofs))))
+DECL|macro|MV_WRITE_16
+mdefine_line|#define MV_WRITE_16(ofs, data)&t;&t;&bslash;&n;        *(volatile u16 *)(MV64340_BASE + (ofs)) = cpu_to_le16((u16)data)
+DECL|macro|MV_READ_16
+mdefine_line|#define MV_READ_16(ofs)&t;&t;&t;&bslash;&n;        le16_to_cpu(*(volatile u16 *)(MV64340_BASE + (ofs)))
+DECL|macro|MV_WRITE_8
+mdefine_line|#define MV_WRITE_8(ofs, data)&t;&t;&bslash;&n;        *(volatile u8 *)(MV64340_BASE + (ofs)) = ((u16)data)
+DECL|macro|MV_READ_8
+mdefine_line|#define MV_READ_8(ofs)&t;&t;&t;&bslash;&n;        (*(volatile u8 *)(MV64340_BASE + (ofs)))
+DECL|macro|MV_SET_REG_BITS
+mdefine_line|#define MV_SET_REG_BITS(ofs, bits)&t;&bslash;&n;&t;(*((volatile u32 *)(MV64340_BASE + (ofs)))) |= ((u32)cpu_to_le32(bits))
+DECL|macro|MV_RESET_REG_BITS
+mdefine_line|#define MV_RESET_REG_BITS(ofs, bits)&t;&bslash;&n;&t;(*((volatile u32 *)(MV64340_BASE + (ofs)))) &amp;= ~((u32)cpu_to_le32(bits))
+r_extern
+r_void
+id|mv64340_irq_init
+c_func
+(paren
+r_int
+r_int
+id|base
+)paren
 suffix:semicolon
 r_extern
+r_struct
+id|pci_ops
 id|mv64340_bus0_pci_ops
 suffix:semicolon
 r_extern
+r_struct
+id|pci_ops
 id|mv64340_bus1_pci_ops
 suffix:semicolon
 macro_line|#endif /* __ASM_MV64340_H */

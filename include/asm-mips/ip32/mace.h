@@ -931,12 +931,12 @@ id|mace_serial
 )braket
 suffix:semicolon
 DECL|member|rtc
-id|mace32_t
+r_volatile
+r_int
+r_char
 id|rtc
 (braket
 l_int|0x10000
-op_div
-l_int|8
 )braket
 suffix:semicolon
 )brace

@@ -144,9 +144,11 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* Ring size is now a config option */
+multiline_comment|/*&n; * Receive ring size &n; * Warning: 64K ring has hardware issues and may lock up.&n; */
+DECL|macro|RX_BUF_IDX
+mdefine_line|#define RX_BUF_IDX&t;2&t;/* 32K ring */
 DECL|macro|RX_BUF_LEN
-mdefine_line|#define RX_BUF_LEN&t;(8192 &lt;&lt; CONFIG_8139_RXBUF_IDX)
+mdefine_line|#define RX_BUF_LEN&t;(8192 &lt;&lt; RX_BUF_IDX)
 DECL|macro|RX_BUF_PAD
 mdefine_line|#define RX_BUF_PAD&t;16
 DECL|macro|RX_BUF_WRAP_PAD
@@ -2600,7 +2602,7 @@ id|TxOK
 op_or
 id|RxErr
 suffix:semicolon
-macro_line|#if CONFIG_8139_RXBUF_IDX == 0
+macro_line|#if RX_BUF_IDX == 0
 DECL|variable|rtl8139_rx_config
 r_static
 r_const
@@ -2624,7 +2626,7 @@ op_lshift
 id|RxCfgDMAShift
 )paren
 suffix:semicolon
-macro_line|#elif CONFIG_8139_RXBUF_IDX == 1
+macro_line|#elif RX_BUF_IDX == 1
 DECL|variable|rtl8139_rx_config
 r_static
 r_const
@@ -2648,7 +2650,7 @@ op_lshift
 id|RxCfgDMAShift
 )paren
 suffix:semicolon
-macro_line|#elif CONFIG_8139_RXBUF_IDX == 2
+macro_line|#elif RX_BUF_IDX == 2
 DECL|variable|rtl8139_rx_config
 r_static
 r_const
@@ -2672,7 +2674,7 @@ op_lshift
 id|RxCfgDMAShift
 )paren
 suffix:semicolon
-macro_line|#elif CONFIG_8139_RXBUF_IDX == 3
+macro_line|#elif RX_BUF_IDX == 3
 DECL|variable|rtl8139_rx_config
 r_static
 r_const
@@ -6790,7 +6792,7 @@ id|PF_FREEZE
 id|refrigerator
 c_func
 (paren
-id|PF_IOTHREAD
+id|PF_FREEZE
 )paren
 suffix:semicolon
 )brace
@@ -8052,7 +8054,7 @@ id|dev
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#if CONFIG_8139_RXBUF_IDX == 3
+macro_line|#if RX_BUF_IDX == 3
 DECL|function|wrap_copy
 r_static
 id|__inline__
@@ -8463,7 +8465,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* 16 byte align the IP fields. */
-macro_line|#if CONFIG_8139_RXBUF_IDX == 3
+macro_line|#if RX_BUF_IDX == 3
 id|wrap_copy
 c_func
 (paren

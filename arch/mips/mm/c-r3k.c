@@ -1183,6 +1183,15 @@ r_int
 id|size
 )paren
 (brace
+multiline_comment|/* Catch bad driver code */
+id|BUG_ON
+c_func
+(paren
+id|size
+op_eq
+l_int|0
+)paren
+suffix:semicolon
 id|iob
 c_func
 (paren

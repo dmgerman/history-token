@@ -363,6 +363,15 @@ id|direction
 suffix:semicolon
 r_extern
 r_int
+id|dma_mapping_error
+c_func
+(paren
+id|dma_addr_t
+id|dma_addr
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|dma_supported
 c_func
 (paren

@@ -474,5 +474,29 @@ id|pte_t
 op_star
 id|pte_addr_t
 suffix:semicolon
+multiline_comment|/*&n; * Used for the b0rked handling of kernel pagetables on the 64-bit kernel.&n; */
+r_extern
+id|pte_t
+id|kptbl
+(braket
+(paren
+id|PAGE_SIZE
+op_lshift
+id|PGD_ORDER
+)paren
+op_div
+r_sizeof
+(paren
+id|pte_t
+)paren
+)braket
+suffix:semicolon
+r_extern
+id|pmd_t
+id|kpmdtbl
+(braket
+id|PTRS_PER_PMD
+)braket
+suffix:semicolon
 macro_line|#endif /* _ASM_PGTABLE_64_H */
 eof

@@ -884,7 +884,7 @@ l_int|0
 (brace
 id|cpu
 op_assign
-id|CNODE_TO_CPU_BASE
+id|node_to_first_cpu
 c_func
 (paren
 id|node

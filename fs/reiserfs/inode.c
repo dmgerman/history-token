@@ -10870,7 +10870,7 @@ suffix:semicolon
 multiline_comment|/* We thank Mingming Cao for helping us understand in great detail what&n;   to do in this section of the code. */
 DECL|function|reiserfs_direct_IO
 r_static
-r_int
+id|ssize_t
 id|reiserfs_direct_IO
 c_func
 (paren

@@ -764,7 +764,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * linux/fs/nfs/direct.c&n; */
 r_extern
-r_int
+id|ssize_t
 id|nfs_direct_IO
 c_func
 (paren

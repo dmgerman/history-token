@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
+macro_line|#include &lt;asm/pci_channel.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_regs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_genbus.h&gt;
@@ -187,7 +188,7 @@ suffix:semicolon
 )brace
 DECL|function|swarm_setup
 r_static
-r_void
+r_int
 id|__init
 id|swarm_setup
 c_func
@@ -327,6 +328,9 @@ multiline_comment|/* orig_video_points */
 suffix:semicolon
 multiline_comment|/* XXXKW for CFE, get lines/cols from environment */
 macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|swarm_setup
 id|early_initcall

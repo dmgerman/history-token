@@ -1156,6 +1156,15 @@ op_and_assign
 op_complement
 id|IFF_RUNNING
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|pdev-&gt;dev
+)paren
+suffix:semicolon
 macro_line|#ifdef SK_ZEROCOPY
 macro_line|#ifdef USE_SK_TX_CHECKSUM
 r_if

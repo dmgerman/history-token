@@ -1,4 +1,6 @@
-multiline_comment|/*&n; * sc-rm7k.c: RM7000 cache management functions.&n; *&n; * Copyright (C) 1997, 2001, 2003 Ralf Baechle (ralf@gnu.org),&n; */
+multiline_comment|/*&n; * sc-rm7k.c: RM7000 cache management functions.&n; *&n; * Copyright (C) 1997, 2001, 2003, 2004 Ralf Baechle (ralf@linux-mips.org)&n; */
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -49,8 +51,7 @@ id|end
 comma
 id|a
 suffix:semicolon
-macro_line|#ifdef DEBUG_CACHE
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;rm7k_sc_wback_inv[%08lx,%08lx]&quot;
@@ -60,7 +61,15 @@ comma
 id|size
 )paren
 suffix:semicolon
-macro_line|#endif
+multiline_comment|/* Catch bad driver code */
+id|BUG_ON
+c_func
+(paren
+id|size
+op_eq
+l_int|0
+)paren
+suffix:semicolon
 id|a
 op_assign
 id|addr
@@ -201,8 +210,7 @@ id|end
 comma
 id|a
 suffix:semicolon
-macro_line|#ifdef DEBUG_CACHE
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;rm7k_sc_inv[%08lx,%08lx]&quot;
@@ -212,7 +220,15 @@ comma
 id|size
 )paren
 suffix:semicolon
-macro_line|#endif
+multiline_comment|/* Catch bad driver code */
+id|BUG_ON
+c_func
+(paren
+id|size
+op_eq
+l_int|0
+)paren
+suffix:semicolon
 id|a
 op_assign
 id|addr
@@ -333,11 +349,11 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * This function is executed in the uncached segment KSEG1.&n; * It must not touch the stack, because the stack pointer still points&n; * into KSEG0.&n; *&n; * Three options:&n; *&t;- Write it in assembly and guarantee that we don&squot;t use the stack.&n; *&t;- Disable caching for KSEG0 before calling it.&n; *&t;- Pray that GCC doesn&squot;t randomly start using the stack.&n; *&n; * This being Linux, we obviously take the least sane of those options -&n; * following DaveM&squot;s lead in c-r4k.c&n; *&n; * It seems we get our kicks from relying on unguaranteed behaviour in GCC&n; */
-DECL|function|rm7k_sc_enable
+DECL|function|__rm7k_sc_enable
 r_static
 id|__init
 r_void
-id|rm7k_sc_enable
+id|__rm7k_sc_enable
 c_func
 (paren
 r_void
@@ -410,6 +426,62 @@ id|Index_Store_Tag_SD
 suffix:semicolon
 )brace
 )brace
+DECL|function|rm7k_sc_enable
+r_static
+id|__init
+r_void
+id|rm7k_sc_enable
+c_func
+(paren
+r_void
+)paren
+(brace
+r_void
+(paren
+op_star
+id|func
+)paren
+(paren
+r_void
+)paren
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|KSEG1ADDR
+c_func
+(paren
+op_amp
+id|__rm7k_sc_enable
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|read_c0_config
+c_func
+(paren
+)paren
+op_amp
+l_int|0x08
+)paren
+multiline_comment|/* CONF_SE */
+r_return
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Enabling secondary cache...&quot;
+)paren
+suffix:semicolon
+id|func
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 DECL|function|rm7k_sc_disable
 r_static
 r_void
@@ -440,22 +512,6 @@ c_func
 r_void
 )paren
 (brace
-r_void
-(paren
-op_star
-id|func
-)paren
-(paren
-r_void
-)paren
-op_assign
-id|KSEG1ADDR
-c_func
-(paren
-op_amp
-id|rm7k_sc_enable
-)paren
-suffix:semicolon
 r_int
 r_int
 id|config
@@ -483,7 +539,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Secondary cache size %ldK, linesize %ld bytes.&bslash;n&quot;
+l_string|&quot;Secondary cache size %dK, linesize %d bytes.&bslash;n&quot;
 comma
 (paren
 id|scache_size
@@ -508,24 +564,6 @@ l_int|1
 multiline_comment|/* CONF_SE */
 r_return
 l_int|1
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Enabling secondary cache...&quot;
-)paren
-suffix:semicolon
-id|func
-c_func
-(paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;  done&bslash;n&quot;
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * While we&squot;re at it let&squot;s deal with the tertiary cache.&n;&t; */
 r_if

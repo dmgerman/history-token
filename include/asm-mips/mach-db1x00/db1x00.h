@@ -138,12 +138,20 @@ DECL|macro|BCSR_PCMCIA_PC1RST
 mdefine_line|#define BCSR_PCMCIA_PC1RST&t;&t;0x8000
 DECL|macro|BCSR_BOARD_PCIM66EN
 mdefine_line|#define BCSR_BOARD_PCIM66EN&t;&t;0x0001
+DECL|macro|BCSR_BOARD_SD0_PWR
+mdefine_line|#define BCSR_BOARD_SD0_PWR&t;&t;0x0040
+DECL|macro|BCSR_BOARD_SD1_PWR
+mdefine_line|#define BCSR_BOARD_SD1_PWR&t;&t;0x0080
 DECL|macro|BCSR_BOARD_PCIM33
 mdefine_line|#define BCSR_BOARD_PCIM33&t;&t;0x0100
 DECL|macro|BCSR_BOARD_GPIO200RST
 mdefine_line|#define BCSR_BOARD_GPIO200RST&t;&t;0x0400
 DECL|macro|BCSR_BOARD_PCICFG
 mdefine_line|#define BCSR_BOARD_PCICFG&t;&t;0x1000
+DECL|macro|BCSR_BOARD_SD0_WP
+mdefine_line|#define BCSR_BOARD_SD0_WP&t;&t;0x4000
+DECL|macro|BCSR_BOARD_SD1_WP
+mdefine_line|#define BCSR_BOARD_SD1_WP&t;&t;0x8000
 DECL|macro|BCSR_LEDS_DECIMALS
 mdefine_line|#define BCSR_LEDS_DECIMALS&t;&t;0x0003
 DECL|macro|BCSR_LEDS_LED0
@@ -175,5 +183,12 @@ macro_line|#elif !defined(CONFIG_MTD_DB1X00_BOOT) &amp;&amp; defined(CONFIG_MTD_
 DECL|macro|DB1X00_USER_ONLY
 mdefine_line|#define DB1X00_USER_ONLY
 macro_line|#endif
+multiline_comment|/* SD controller macros */
+multiline_comment|/*&n; * Detect card.&n; */
+DECL|macro|mmc_card_inserted
+mdefine_line|#define mmc_card_inserted(_n_, _res_) &bslash;&n;&t;do { &bslash;&n;&t;&t;BCSR * const bcsr = (BCSR *)0xAE000000; &bslash;&n;&t;&t;unsigned long mmc_wp, board_specific; &bslash;&n;&t;&t;if ((_n_)) { &bslash;&n;&t;&t;&t;mmc_wp = BCSR_BOARD_SD1_WP; &bslash;&n;&t;&t;} else { &bslash;&n;&t;&t;&t;mmc_wp = BCSR_BOARD_SD0_WP; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;board_specific = au_readl((unsigned long)(&amp;bcsr-&gt;specific)); &bslash;&n;&t;&t;if (!(board_specific &amp; mmc_wp)) {/* low means card present */ &bslash;&n;&t;&t;&t;*(int *)(_res_) = 1; &bslash;&n;&t;&t;} else { &bslash;&n;&t;&t;&t;*(int *)(_res_) = 0; &bslash;&n;&t;&t;} &bslash;&n;&t;} while (0)
+multiline_comment|/*&n; * Apply power to card slot(s).&n; */
+DECL|macro|mmc_power_on
+mdefine_line|#define mmc_power_on(_n_) &bslash;&n;&t;do { &bslash;&n;&t;&t;BCSR * const bcsr = (BCSR *)0xAE000000; &bslash;&n;&t;&t;unsigned long mmc_pwr, mmc_wp, board_specific; &bslash;&n;&t;&t;if ((_n_)) { &bslash;&n;&t;&t;&t;mmc_pwr = BCSR_BOARD_SD1_PWR; &bslash;&n;&t;&t;&t;mmc_wp = BCSR_BOARD_SD1_WP; &bslash;&n;&t;&t;} else { &bslash;&n;&t;&t;&t;mmc_pwr = BCSR_BOARD_SD0_PWR; &bslash;&n;&t;&t;&t;mmc_wp = BCSR_BOARD_SD0_WP; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;board_specific = au_readl((unsigned long)(&amp;bcsr-&gt;specific)); &bslash;&n;&t;&t;if (!(board_specific &amp; mmc_wp)) {/* low means card present */ &bslash;&n;&t;&t;&t;board_specific |= mmc_pwr; &bslash;&n;&t;&t;&t;au_writel(board_specific, (int)(&amp;bcsr-&gt;specific)); &bslash;&n;&t;&t;&t;au_sync(); &bslash;&n;&t;&t;} &bslash;&n;&t;} while (0)
 macro_line|#endif /* __ASM_DB1X00_H */
 eof

@@ -1,19 +1,38 @@
 multiline_comment|/*&n; * IP32 basic setup&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000 Harald Koerfgen&n; * Copyright (C) 2002, 03 Ilya A. Volynets&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/param.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;asm/time.h&gt;
-macro_line|#include &lt;asm/mipsregs.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/mc146818rtc.h&gt;
+macro_line|#include &lt;linux/param.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/mc146818-time.h&gt;
+macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/sgialib.h&gt;
+macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/ip32/crime.h&gt;
 macro_line|#include &lt;asm/ip32/mace.h&gt;
 macro_line|#include &lt;asm/ip32/ip32_ints.h&gt;
+r_extern
+r_void
+id|ip32_be_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|crime_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SGI_O2MACE_ETH
 multiline_comment|/*&n; * This is taken care of in here &squot;cause they say using Arc later on is&n; * problematic&n; */
 r_extern
@@ -162,48 +181,12 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-r_extern
-r_void
-id|ip32_time_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ip32_be_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__init
-id|ip32_timer_setup
-(paren
-r_struct
-id|irqaction
-op_star
-id|irq
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__init
-id|crime_init
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SERIAL_8250
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 r_extern
 r_int
-id|__init
 id|early_serial_setup
 c_func
 (paren
@@ -218,6 +201,104 @@ mdefine_line|#define STD_COM_FLAGS (ASYNC_SKIP_TEST)
 DECL|macro|BASE_BAUD
 mdefine_line|#define BASE_BAUD (1843200 / 16)
 macro_line|#endif /* CONFIG_SERIAL_8250 */
+multiline_comment|/* An arbitrary time; this can be decreased if reliability looks good */
+DECL|macro|WAIT_MS
+mdefine_line|#define WAIT_MS 10
+DECL|function|ip32_time_init
+r_void
+id|__init
+id|ip32_time_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Calibrating system timer... &quot;
+)paren
+suffix:semicolon
+id|write_c0_count
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|crime_write
+c_func
+(paren
+l_int|0
+comma
+id|CRIME_TIMER
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|crime_read
+c_func
+(paren
+id|CRIME_TIMER
+)paren
+OL
+id|CRIME_MASTER_FREQ
+op_star
+id|WAIT_MS
+op_div
+l_int|1000
+)paren
+suffix:semicolon
+id|mips_hpt_frequency
+op_assign
+id|read_c0_count
+c_func
+(paren
+)paren
+op_star
+l_int|1000
+op_div
+id|WAIT_MS
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%d MHz CPU detected&bslash;n&quot;
+comma
+id|mips_hpt_frequency
+op_star
+l_int|2
+op_div
+l_int|1000000
+)paren
+suffix:semicolon
+)brace
+DECL|function|ip32_timer_setup
+r_void
+id|__init
+id|ip32_timer_setup
+c_func
+(paren
+r_struct
+id|irqaction
+op_star
+id|irq
+)paren
+(brace
+id|irq-&gt;handler
+op_assign
+id|no_action
+suffix:semicolon
+id|setup_irq
+c_func
+(paren
+id|IP32_R4K_TIMER_IRQ
+comma
+id|irq
+)paren
+suffix:semicolon
+)brace
 DECL|function|ip32_setup
 r_static
 r_int
@@ -248,6 +329,26 @@ id|crime_init
 c_func
 (paren
 )paren
+suffix:semicolon
+id|board_be_init
+op_assign
+id|ip32_be_init
+suffix:semicolon
+id|rtc_get_time
+op_assign
+id|mc146818_get_cmos_time
+suffix:semicolon
+id|rtc_set_mmss
+op_assign
+id|mc146818_set_rtc_mmss
+suffix:semicolon
+id|board_time_init
+op_assign
+id|ip32_time_init
+suffix:semicolon
+id|board_timer_setup
+op_assign
+id|ip32_timer_setup
 suffix:semicolon
 macro_line|#ifdef CONFIG_SERIAL_8250
 (brace
@@ -580,18 +681,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-id|board_be_init
-op_assign
-id|ip32_be_init
-suffix:semicolon
-id|board_time_init
-op_assign
-id|ip32_time_init
-suffix:semicolon
-id|board_timer_setup
-op_assign
-id|ip32_timer_setup
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

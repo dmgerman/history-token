@@ -154,6 +154,15 @@ id|dc_lsize
 op_assign
 id|current_cpu_data.dcache.linesz
 suffix:semicolon
+multiline_comment|/* Catch bad driver code */
+id|BUG_ON
+c_func
+(paren
+id|size
+op_eq
+l_int|0
+)paren
+suffix:semicolon
 id|iob
 c_func
 (paren

@@ -575,7 +575,7 @@ comma
 id|cpu_has_vce
 ques
 c_cond
-l_string|&quot;%d&quot;
+l_string|&quot;%u&quot;
 suffix:colon
 l_string|&quot;not available&quot;
 )paren

@@ -95,7 +95,7 @@ op_or
 id|at93c-&gt;clk
 )paren
 suffix:semicolon
-id|ndelay
+id|lasat_ndelay
 c_func
 (paren
 l_int|250
@@ -110,7 +110,7 @@ op_complement
 id|at93c-&gt;clk
 )paren
 suffix:semicolon
-id|ndelay
+id|lasat_ndelay
 c_func
 (paren
 l_int|250
@@ -162,7 +162,7 @@ c_func
 id|data
 )paren
 suffix:semicolon
-id|ndelay
+id|lasat_ndelay
 c_func
 (paren
 l_int|100
@@ -359,7 +359,7 @@ id|at93c-&gt;rdata_shift
 )paren
 )paren
 suffix:semicolon
-id|ndelay
+id|lasat_ndelay
 c_func
 (paren
 l_int|50
@@ -387,7 +387,7 @@ op_complement
 id|at93c-&gt;cs
 )paren
 suffix:semicolon
-id|ndelay
+id|lasat_ndelay
 c_func
 (paren
 l_int|250

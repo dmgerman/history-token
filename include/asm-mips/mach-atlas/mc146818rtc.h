@@ -100,5 +100,7 @@ suffix:semicolon
 )brace
 DECL|macro|RTC_ALWAYS_BCD
 mdefine_line|#define RTC_ALWAYS_BCD&t;0
+DECL|macro|mc146818_decode_year
+mdefine_line|#define mc146818_decode_year(year) ((year) &lt; 70 ? (year) + 2000 : (year) + 1970)
 macro_line|#endif /* __ASM_MACH_ATLAS_MC146818RTC_H */
 eof

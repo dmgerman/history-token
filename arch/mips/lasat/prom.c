@@ -147,6 +147,11 @@ r_void
 op_assign
 id|null_prom_monitor
 suffix:semicolon
+DECL|variable|lasat_ndelay_divider
+r_int
+r_int
+id|lasat_ndelay_divider
+suffix:semicolon
 DECL|macro|PROM_PRINTFBUF_SIZE
 mdefine_line|#define PROM_PRINTFBUF_SIZE 256
 DECL|variable|prom_printfbuf
@@ -428,15 +433,39 @@ id|current_cpu_data.cputype
 op_eq
 id|CPU_R5000
 )paren
+(brace
+id|prom_printf
+c_func
+(paren
+l_string|&quot;LASAT 200 board&bslash;n&quot;
+)paren
+suffix:semicolon
 id|mips_machtype
 op_assign
 id|MACH_LASAT_200
 suffix:semicolon
+id|lasat_ndelay_divider
+op_assign
+id|LASAT_200_DIVIDER
+suffix:semicolon
+)brace
 r_else
+(brace
+id|prom_printf
+c_func
+(paren
+l_string|&quot;LASAT 100 board&bslash;n&quot;
+)paren
+suffix:semicolon
 id|mips_machtype
 op_assign
 id|MACH_LASAT_100
 suffix:semicolon
+id|lasat_ndelay_divider
+op_assign
+id|LASAT_100_DIVIDER
+suffix:semicolon
+)brace
 id|at93c
 op_assign
 op_amp

@@ -607,9 +607,9 @@ DECL|member|sadb_x_policy_id
 r_uint32
 id|sadb_x_policy_id
 suffix:semicolon
-DECL|member|sadb_x_policy_reserved2
+DECL|member|sadb_x_policy_priority
 r_uint32
-id|sadb_x_policy_reserved2
+id|sadb_x_policy_priority
 suffix:semicolon
 )brace
 id|__attribute__

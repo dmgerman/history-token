@@ -5,10 +5,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/mach-au1x00/au1000.h&gt;
-singleline_comment|//#include &lt;asm/pb1500.h&gt;
-macro_line|#ifdef CONFIG_MIPS_PB1000
-macro_line|#include &lt;asm/mach-pb1x00/pb1000.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/pci_channel.h&gt;
 multiline_comment|/* TBD */
 DECL|variable|pci_io_resource
@@ -87,7 +83,7 @@ id|pci_mem_resource
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_SOC_AU1500
+macro_line|#if defined(CONFIG_SOC_AU1500) || defined(CONFIG_SOC_AU1550)
 DECL|variable|virt_io_addr
 r_static
 r_int
@@ -105,7 +101,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SOC_AU1500
+macro_line|#if defined(CONFIG_SOC_AU1500) || defined(CONFIG_SOC_AU1550)
 r_int
 id|i
 suffix:semicolon
@@ -181,92 +177,15 @@ id|virt_io_addr
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_MIPS_PB1000 /* This is truly board specific */
-r_int
-r_int
-id|pci_mem_start
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|PCI_MEM_START
-suffix:semicolon
-id|au_writel
-c_func
-(paren
-l_int|0
-comma
-id|PCI_BRIDGE_CONFIG
-)paren
-suffix:semicolon
-singleline_comment|// set extend byte to 0
-id|au_writel
-c_func
-(paren
-l_int|0
-comma
-id|SDRAM_MBAR
-)paren
-suffix:semicolon
-singleline_comment|// set mbar to 0
-id|au_writel
-c_func
-(paren
-l_int|0x2
-comma
-id|SDRAM_CMD
-)paren
-suffix:semicolon
-singleline_comment|// enable memory accesses
-id|au_sync_delay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-singleline_comment|// set extend byte to mbar of ext slot
-id|au_writel
-c_func
-(paren
-(paren
-(paren
-id|pci_mem_start
-op_rshift
-l_int|24
-)paren
-op_amp
-l_int|0xff
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-l_int|8
-op_or
-l_int|1
-op_lshift
-l_int|9
-op_or
-l_int|1
-op_lshift
-l_int|10
-op_or
-l_int|1
-op_lshift
-l_int|27
-)paren
-comma
-id|PCI_BRIDGE_CONFIG
-)paren
-suffix:semicolon
-macro_line|#endif
 id|register_pci_controller
 c_func
 (paren
 op_amp
 id|au1x_controller
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|au1x_pci_setup

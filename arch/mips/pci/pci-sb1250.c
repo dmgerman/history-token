@@ -112,6 +112,27 @@ op_assign
 id|data
 suffix:semicolon
 )brace
+DECL|function|pcibios_map_irq
+r_int
+id|pcibios_map_irq
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+id|u8
+id|slot
+comma
+id|u8
+id|pin
+)paren
+(brace
+r_return
+id|dev-&gt;irq
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Some checks before doing config cycles:&n; * In PCI Device Mode, hide everything on bus 0 except the LDT host&n; * bridge.  Otherwise, access is controlled by bridge MasterEn bits.&n; */
 DECL|function|sb1250_pci_can_access
 r_static
@@ -670,23 +691,15 @@ op_amp
 id|sb1250_io_resource
 )brace
 suffix:semicolon
+DECL|function|sb1250_pcibios_init
+r_static
 r_int
 id|__init
-id|pcibios_init
+id|sb1250_pcibios_init
 c_func
 (paren
 r_void
 )paren
-id|xxx
-id|This
-id|needs
-id|to
-id|be
-id|called
-id|somehow
-dot
-dot
-dot
 (brace
 r_uint32
 id|cmdreg
@@ -694,6 +707,26 @@ suffix:semicolon
 r_uint64
 id|reg
 suffix:semicolon
+r_extern
+r_int
+id|pci_probe_only
+suffix:semicolon
+multiline_comment|/* CFE will assign PCI resources */
+id|pci_probe_only
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* set resource limit to avoid errors */
+id|ioport_resource.end
+op_assign
+l_int|0x0000ffff
+suffix:semicolon
+multiline_comment|/* 32MB reserved by sb1250 */
+id|iomem_resource.end
+op_assign
+l_int|0xffffffff
+suffix:semicolon
+multiline_comment|/* no HT support yet */
 id|cfg_space
 op_assign
 id|ioremap
@@ -913,6 +946,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|sb1250_pcibios_init
+id|arch_initcall
+c_func
+(paren
+id|sb1250_pcibios_init
+)paren
+suffix:semicolon
 DECL|variable|pcibios_fixups
 r_struct
 id|pci_fixup

@@ -48,6 +48,11 @@ macro_line|#ifdef CONFIG_CPU_TX49XX
 DECL|macro|TX49XX_ICACHE_INDEX_INV_WAR
 mdefine_line|#define TX49XX_ICACHE_INDEX_INV_WAR 1
 macro_line|#endif
+multiline_comment|/*&n; * On the RM9000 there is a problem which makes the CreateDirtyExclusive&n; * cache operation unusable on SMP systems.&n; */
+macro_line|#if defined(CONFIG_MOMENCO_JAGUAR_ATX) || defined(CONFIG_PMC_YOSEMITE)
+DECL|macro|RM9000_CDEX_SMP_WAR
+mdefine_line|#define  RM9000_CDEX_SMP_WAR&t;&t;1
+macro_line|#endif
 multiline_comment|/*&n; * Workarounds default to off&n; */
 macro_line|#ifndef R4600_V1_INDEX_ICACHEOP_WAR
 DECL|macro|R4600_V1_INDEX_ICACHEOP_WAR
@@ -84,6 +89,10 @@ macro_line|#endif
 macro_line|#ifndef TX49XX_ICACHE_INDEX_INV_WAR
 DECL|macro|TX49XX_ICACHE_INDEX_INV_WAR
 mdefine_line|#define TX49XX_ICACHE_INDEX_INV_WAR&t;0
+macro_line|#endif
+macro_line|#ifndef RM9000_CDEX_SMP_WAR
+DECL|macro|RM9000_CDEX_SMP_WAR
+mdefine_line|#define RM9000_CDEX_SMP_WAR&t;&t;0
 macro_line|#endif
 macro_line|#endif /* _ASM_WAR_H */
 eof

@@ -133,13 +133,14 @@ id|size
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
+multiline_comment|/* Catch bad driver code */
+id|BUG_ON
+c_func
 (paren
-op_logical_neg
 id|size
+op_eq
+l_int|0
 )paren
-r_return
 suffix:semicolon
 multiline_comment|/* Which lines to flush?  */
 id|first_line

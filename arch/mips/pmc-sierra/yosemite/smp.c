@@ -7,14 +7,6 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/trace.h&gt;
 r_extern
 r_void
-id|smp_call_function_interrupt
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|asmlinkage
 id|smp_bootstrap
 c_func
@@ -62,7 +54,7 @@ l_int|1
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren
@@ -75,7 +67,7 @@ r_else
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren
@@ -250,7 +242,7 @@ suffix:semicolon
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren
@@ -262,7 +254,7 @@ suffix:semicolon
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren
@@ -277,7 +269,7 @@ c_loop
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren
@@ -594,7 +586,7 @@ multiline_comment|/* Local semaphore to both the CPUs */
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren
@@ -609,7 +601,7 @@ c_loop
 op_star
 (paren
 r_volatile
-id|u_int32_t
+r_uint32
 op_star
 )paren
 (paren

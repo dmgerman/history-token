@@ -146,7 +146,7 @@ c_func
 id|data
 )paren
 suffix:semicolon
-id|ndelay
+id|lasat_ndelay
 c_func
 (paren
 l_int|250
@@ -178,7 +178,7 @@ c_func
 id|data
 )paren
 suffix:semicolon
-id|ndelay
+id|lasat_ndelay
 c_func
 (paren
 l_int|250
@@ -238,7 +238,7 @@ c_func
 id|data
 )paren
 suffix:semicolon
-id|ndelay
+id|lasat_ndelay
 c_func
 (paren
 l_int|50
@@ -466,7 +466,7 @@ op_complement
 id|ds1603-&gt;clk
 )paren
 suffix:semicolon
-id|ndelay
+id|lasat_ndelay
 c_func
 (paren
 l_int|50
@@ -487,7 +487,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|ndelay
+id|lasat_ndelay
 c_func
 (paren
 l_int|1000

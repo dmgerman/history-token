@@ -1133,9 +1133,7 @@ c_func
 (paren
 id|address
 op_or
-(paren
 id|pid
-)paren
 )paren
 suffix:semicolon
 r_if
