@@ -138,9 +138,11 @@ mdefine_line|#define global_to_pnp_card(n) list_entry(n, struct pnp_card, global
 DECL|macro|protocol_to_pnp_card
 mdefine_line|#define protocol_to_pnp_card(n) list_entry(n, struct pnp_card, protocol_list)
 DECL|macro|to_pnp_card
-mdefine_line|#define to_pnp_card(n) list_entry(n, struct pnp_card, dev)
+mdefine_line|#define to_pnp_card(n) container_of(n, struct pnp_card, dev)
 DECL|macro|pnp_for_each_card
-mdefine_line|#define pnp_for_each_card(card) &bslash;&n;&t;for(dev = global_to_pnp_card(pnp_cards.next); &bslash;&n;&t;dev != global_to_pnp_card(&amp;cards); &bslash;&n;&t;dev = global_to_pnp_card(card&gt;global_list.next))
+mdefine_line|#define pnp_for_each_card(card) &bslash;&n;&t;for((card) = global_to_pnp_card(pnp_cards.next); &bslash;&n;&t;(card) != global_to_pnp_card(&amp;pnp_cards); &bslash;&n;&t;(card) = global_to_pnp_card((card)-&gt;global_list.next))
+DECL|macro|pnp_card_for_each_dev
+mdefine_line|#define pnp_card_for_each_dev(card,dev) &bslash;&n;&t;for((dev) = card_to_pnp_dev((card)-&gt;devices.next); &bslash;&n;&t;(dev) != card_to_pnp_dev(&amp;(card)-&gt;devices); &bslash;&n;&t;(dev) = card_to_pnp_dev((dev)-&gt;card_list.next))
 DECL|function|pnpc_get_drvdata
 r_static
 r_inline
