@@ -740,7 +740,7 @@ suffix:semicolon
 multiline_comment|/* br_ioctl.c */
 r_extern
 r_int
-id|br_ioctl
+id|br_ioctl_device
 c_func
 (paren
 r_struct
