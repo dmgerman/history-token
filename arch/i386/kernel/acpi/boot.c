@@ -2519,12 +2519,33 @@ c_cond
 id|error
 )paren
 (brace
+r_extern
+r_int
+id|acpi_force
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_force
+)paren
+(brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
 id|PREFIX
-l_string|&quot;BIOS listed in blacklist, disabling ACPI support&bslash;n&quot;
+l_string|&quot;acpi=force override&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|PREFIX
+l_string|&quot;Disabling ACPI support&bslash;n&quot;
 )paren
 suffix:semicolon
 id|disable_acpi
@@ -2535,6 +2556,7 @@ suffix:semicolon
 r_return
 id|error
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * set sci_int and PM timer address&n;&t; */
 id|acpi_table_parse

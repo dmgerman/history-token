@@ -2064,8 +2064,15 @@ suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
 (paren
-l_string|&quot;acpi_bus_init&quot;
+l_string|&quot;acpi_early_init&quot;
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_disabled
+)paren
+r_return
 suffix:semicolon
 multiline_comment|/* enable workarounds, unless strict ACPI spec. compliance */
 r_if
