@@ -5855,16 +5855,18 @@ r_int
 id|n
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|x
 op_assign
 (paren
-id|u32
+r_int
+r_int
 )paren
 id|skb-&gt;data
 suffix:semicolon
-multiline_comment|/* We only want the low bits .. */
-id|u32
+r_int
+r_int
 id|v
 suffix:semicolon
 id|v

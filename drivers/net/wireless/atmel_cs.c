@@ -88,7 +88,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Support for Atmel at76c50x 802.11 wireless ethnet cards.&quot;
+l_string|&quot;Support for Atmel at76c50x 802.11 wireless ethernet cards.&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -1350,12 +1350,25 @@ id|p
 op_eq
 l_char|&squot;&bslash;0&squot;
 )paren
+(brace
+r_if
+c_cond
+(paren
+op_star
+id|q
+op_ne
+l_char|&squot;&bslash;0&squot;
+)paren
 r_goto
 id|mismatch
 suffix:semicolon
+)brace
+r_else
+(brace
 id|p
 op_increment
 suffix:semicolon
+)brace
 )brace
 r_while
 c_loop

@@ -5059,6 +5059,7 @@ op_ne
 (paren
 (paren
 r_int
+r_int
 )paren
 id|pdlptr
 )paren
@@ -5069,11 +5070,12 @@ l_int|0xf
 id|printk
 c_func
 (paren
-l_string|&quot;hp100: %s: Init rxpdl: Unaligned pdlptr 0x%x.&bslash;n&quot;
+l_string|&quot;hp100: %s: Init rxpdl: Unaligned pdlptr 0x%lx.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 (paren
+r_int
 r_int
 )paren
 id|pdlptr
@@ -5189,6 +5191,7 @@ op_ne
 (paren
 (paren
 r_int
+r_int
 )paren
 id|pdlptr
 )paren
@@ -5199,11 +5202,12 @@ l_int|0xf
 id|printk
 c_func
 (paren
-l_string|&quot;hp100: %s: Init txpdl: Unaligned pdlptr 0x%x.&bslash;n&quot;
+l_string|&quot;hp100: %s: Init txpdl: Unaligned pdlptr 0x%lx.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 (paren
+r_int
 r_int
 )paren
 id|pdlptr

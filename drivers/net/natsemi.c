@@ -6197,12 +6197,12 @@ c_func
 (paren
 id|np-&gt;pci_dev
 comma
-id|np-&gt;rx_dma
+id|np-&gt;tx_dma
 (braket
 id|i
 )braket
 comma
-id|np-&gt;rx_skbuff
+id|np-&gt;tx_skbuff
 (braket
 id|i
 )braket

@@ -4212,6 +4212,19 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+multiline_comment|/* Make sure embedding is safe for sppp_of */
+id|BUG_ON
+c_func
+(paren
+id|sppp_of
+c_func
+(paren
+id|dev
+)paren
+op_ne
+id|sp
+)paren
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
