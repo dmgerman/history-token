@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * linux/kernel/capability.c&n; *&n; * Copyright (C) 1997  Andrew Main &lt;zefram@fysh.org&gt;&n; *&n; * Integrated into 2.1.97+,  Andrew G. Morgan &lt;morgan@transmeta.com&gt;&n; * 30 May 2002:&t;Cleanup, Robert M. Love &lt;rml@tech9.net&gt;&n; */
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|securebits
 r_int
@@ -183,9 +184,7 @@ id|current
 suffix:semicolon
 id|ret
 op_assign
-id|security_ops
-op_member_access_from_pointer
-id|capget
+id|security_capget
 c_func
 (paren
 id|target
@@ -290,9 +289,7 @@ id|pgrp
 )paren
 r_continue
 suffix:semicolon
-id|security_ops
-op_member_access_from_pointer
-id|capset_set
+id|security_capset_set
 c_func
 (paren
 id|target
@@ -363,9 +360,7 @@ l_int|1
 )paren
 r_continue
 suffix:semicolon
-id|security_ops
-op_member_access_from_pointer
-id|capset_set
+id|security_capset_set
 c_func
 (paren
 id|target
@@ -615,9 +610,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|security_ops
-op_member_access_from_pointer
-id|capset_check
+id|security_capset_check
 c_func
 (paren
 id|target
@@ -750,9 +743,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|security_ops
-op_member_access_from_pointer
-id|capset_set
+id|security_capset_set
 c_func
 (paren
 id|target

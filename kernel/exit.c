@@ -230,9 +230,7 @@ op_amp
 id|p-&gt;user-&gt;processes
 )paren
 suffix:semicolon
-id|security_ops
-op_member_access_from_pointer
-id|task_free_security
+id|security_task_free
 c_func
 (paren
 id|p
@@ -917,9 +915,7 @@ suffix:semicolon
 multiline_comment|/* cpus_allowed? */
 multiline_comment|/* rt_priority? */
 multiline_comment|/* signals? */
-id|security_ops
-op_member_access_from_pointer
-id|task_reparent_to_init
+id|security_task_reparent_to_init
 c_func
 (paren
 id|current
@@ -2947,9 +2943,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|security_ops
-op_member_access_from_pointer
-id|task_wait
+id|security_task_wait
 c_func
 (paren
 id|p

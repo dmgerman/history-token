@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -2445,22 +2446,20 @@ id|PT_PTRACED
 r_goto
 id|out
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
 id|ret
 op_assign
-id|security_ops
-op_member_access_from_pointer
-id|ptrace
+id|security_ptrace
 c_func
 (paren
 id|current-&gt;parent
 comma
 id|current
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
+)paren
 )paren
 r_goto
 id|out

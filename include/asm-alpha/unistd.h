@@ -597,8 +597,7 @@ DECL|macro|__NR_gettid
 mdefine_line|#define __NR_gettid&t;&t;&t;378
 DECL|macro|__NR_readahead
 mdefine_line|#define __NR_readahead&t;&t;&t;379
-DECL|macro|__NR_security
-mdefine_line|#define __NR_security&t;&t;&t;380 /* syscall for security modules */
+multiline_comment|/* 380 is unused */
 DECL|macro|__NR_tkill
 mdefine_line|#define __NR_tkill&t;&t;&t;381
 DECL|macro|__NR_setxattr
