@@ -35,7 +35,6 @@ macro_line|#include &lt;linux/fs_struct.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
-macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
@@ -1434,76 +1433,6 @@ id|csum_partial
 )paren
 suffix:semicolon
 multiline_comment|/* for networking and md */
-DECL|variable|seq_escape
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|seq_escape
-)paren
-suffix:semicolon
-DECL|variable|seq_printf
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|seq_printf
-)paren
-suffix:semicolon
-DECL|variable|seq_path
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|seq_path
-)paren
-suffix:semicolon
-DECL|variable|seq_open
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|seq_open
-)paren
-suffix:semicolon
-DECL|variable|seq_release
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|seq_release
-)paren
-suffix:semicolon
-DECL|variable|seq_read
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|seq_read
-)paren
-suffix:semicolon
-DECL|variable|seq_lseek
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|seq_lseek
-)paren
-suffix:semicolon
-DECL|variable|single_open
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|single_open
-)paren
-suffix:semicolon
-DECL|variable|single_release
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|single_release
-)paren
-suffix:semicolon
-DECL|variable|seq_release_private
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|seq_release_private
-)paren
-suffix:semicolon
 multiline_comment|/* Miscellaneous access points */
 DECL|variable|si_meminfo
 id|EXPORT_SYMBOL
