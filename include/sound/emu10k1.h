@@ -9,6 +9,7 @@ macro_line|#include &lt;sound/hwdep.h&gt;
 macro_line|#include &lt;sound/ac97_codec.h&gt;
 macro_line|#include &lt;sound/util_mem.h&gt;
 macro_line|#include &lt;sound/pcm-indirect.h&gt;
+macro_line|#include &lt;sound/timer.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifndef PCI_VENDOR_ID_CREATIVE
@@ -2199,6 +2200,11 @@ id|snd_pcm_substream_t
 op_star
 id|pcm_capture_efx_substream
 suffix:semicolon
+DECL|member|timer
+id|snd_timer_t
+op_star
+id|timer
+suffix:semicolon
 DECL|member|midi
 id|emu10k1_midi_t
 id|midi
@@ -2326,6 +2332,18 @@ c_func
 id|emu10k1_t
 op_star
 id|emu
+)paren
+suffix:semicolon
+r_int
+id|snd_emu10k1_timer
+c_func
+(paren
+id|emu10k1_t
+op_star
+id|emu
+comma
+r_int
+id|device
 )paren
 suffix:semicolon
 r_int
