@@ -95,6 +95,13 @@ l_string|&quot;    File system has been set read-only&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
+DECL|variable|fat_fs_panic
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fat_fs_panic
+)paren
+suffix:semicolon
 multiline_comment|/* Flushes the number of free clusters on FAT32 */
 multiline_comment|/* XXX: Need to write one per FSINFO block.  Currently only writes 1 */
 DECL|function|fat_clusters_flush
