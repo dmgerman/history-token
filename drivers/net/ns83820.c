@@ -7323,9 +7323,11 @@ op_assign
 op_amp
 id|dev-&gt;misc_lock
 suffix:semicolon
-id|dev-&gt;net_dev.owner
-op_assign
-id|THIS_MODULE
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev-&gt;net_dev
+)paren
 suffix:semicolon
 id|dev-&gt;net_dev.priv
 op_assign
