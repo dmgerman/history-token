@@ -581,6 +581,17 @@ c_func
 (paren
 l_int|0x04b8
 comma
+l_int|0x010a
+)paren
+)brace
+comma
+multiline_comment|/* Perfection 1640SU and 1640SU Photo */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04b8
+comma
 l_int|0x010b
 )paren
 )brace
@@ -592,11 +603,11 @@ c_func
 (paren
 l_int|0x04b8
 comma
-l_int|0x010a
+l_int|0x010c
 )paren
 )brace
 comma
-multiline_comment|/* Perfection 1640SU and 1640SU Photo */
+multiline_comment|/* Perfection 640U */
 multiline_comment|/* Umax */
 (brace
 id|USB_DEVICE

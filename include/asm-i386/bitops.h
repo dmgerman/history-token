@@ -123,6 +123,41 @@ DECL|macro|smp_mb__before_clear_bit
 mdefine_line|#define smp_mb__before_clear_bit()&t;barrier()
 DECL|macro|smp_mb__after_clear_bit
 mdefine_line|#define smp_mb__after_clear_bit()&t;barrier()
+multiline_comment|/**&n; * __change_bit - Toggle a bit in memory&n; * @nr: the bit to set&n; * @addr: the address to start counting from&n; *&n; * Unlike change_bit(), this function is non-atomic and may be reordered.&n; * If it&squot;s called on the same region of memory simultaneously, the effect&n; * may be that only one operation succeeds.&n; */
+DECL|function|__change_bit
+r_static
+id|__inline__
+r_void
+id|__change_bit
+c_func
+(paren
+r_int
+id|nr
+comma
+r_volatile
+r_void
+op_star
+id|addr
+)paren
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;btcl %1,%0&quot;
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+id|ADDR
+)paren
+suffix:colon
+l_string|&quot;Ir&quot;
+(paren
+id|nr
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * change_bit - Toggle a bit in memory&n; * @nr: Bit to clear&n; * @addr: Address to start counting from&n; *&n; * change_bit() is atomic and may not be reordered.&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; */
 DECL|function|change_bit
 r_static
@@ -341,6 +376,54 @@ l_string|&quot;Ir&quot;
 (paren
 id|nr
 )paren
+)paren
+suffix:semicolon
+r_return
+id|oldbit
+suffix:semicolon
+)brace
+multiline_comment|/* WARNING: non atomic and it can be reordered! */
+DECL|function|__test_and_change_bit
+r_static
+id|__inline__
+r_int
+id|__test_and_change_bit
+c_func
+(paren
+r_int
+id|nr
+comma
+r_volatile
+r_void
+op_star
+id|addr
+)paren
+(brace
+r_int
+id|oldbit
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;btcl %2,%1&bslash;n&bslash;tsbbl %0,%0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|oldbit
+)paren
+comma
+l_string|&quot;=m&quot;
+(paren
+id|ADDR
+)paren
+suffix:colon
+l_string|&quot;Ir&quot;
+(paren
+id|nr
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return

@@ -87,6 +87,12 @@ r_int
 op_star
 id|pgd_cache
 suffix:semicolon
+DECL|member|pmd_cache
+r_int
+r_int
+op_star
+id|pmd_cache
+suffix:semicolon
 DECL|member|pte_cache
 r_int
 r_int

@@ -2534,7 +2534,15 @@ id|urb_priv-&gt;ed
 op_assign
 id|ed
 suffix:semicolon
-multiline_comment|/* allocate the TDs */
+multiline_comment|/* allocate the TDs (updating hash chains) */
+id|spin_lock_irqsave
+(paren
+op_amp
+id|usb_ed_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2559,7 +2567,7 @@ id|td_alloc
 (paren
 id|ohci
 comma
-id|mem_flags
+id|SLAB_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -2581,6 +2589,14 @@ id|urb_free_priv
 id|ohci
 comma
 id|urb_priv
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|usb_ed_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|usb_dec_dev_use
@@ -2613,6 +2629,14 @@ id|urb_free_priv
 id|ohci
 comma
 id|urb_priv
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|usb_ed_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|usb_dec_dev_use
@@ -2712,6 +2736,14 @@ comma
 id|urb_priv
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|usb_ed_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|usb_dec_dev_use
 (paren
 id|urb-&gt;dev
@@ -2742,14 +2774,6 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
-id|spin_lock_irqsave
-(paren
-op_amp
-id|usb_ed_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|urb-&gt;actual_length
 op_assign
 l_int|0
@@ -5048,7 +5072,7 @@ id|td_alloc
 (paren
 id|ohci
 comma
-id|mem_flags
+id|SLAB_ATOMIC
 )paren
 suffix:semicolon
 multiline_comment|/* hash the ed for later reverse mapping */
@@ -9942,6 +9966,11 @@ singleline_comment|// Make some non-interrupt context restart the controller.
 singleline_comment|// Count and limit the retries though; either hardware or
 singleline_comment|// software errors can go forever...
 macro_line|#endif
+id|hc_reset
+(paren
+id|ohci
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -10001,6 +10030,7 @@ id|regs-&gt;intrenable
 )paren
 suffix:semicolon
 )brace
+singleline_comment|// FIXME:  this assumes SOF (1/ms) interrupts don&squot;t get lost...
 r_if
 c_cond
 (paren
@@ -11001,6 +11031,24 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;irq
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;found OHCI device with no IRQ assigned. check BIOS settings!&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 multiline_comment|/* we read its hardware registers as memory */
 id|mem_resource
 op_assign

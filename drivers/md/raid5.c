@@ -5494,7 +5494,7 @@ c_cond
 (paren
 id|conf-&gt;disks
 (braket
-id|i
+id|failed_num
 )braket
 dot
 id|operational
@@ -5504,7 +5504,7 @@ c_func
 (paren
 id|conf-&gt;disks
 (braket
-id|i
+id|failed_num
 )braket
 dot
 id|dev

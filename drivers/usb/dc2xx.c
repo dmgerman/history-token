@@ -1026,6 +1026,7 @@ id|camera
 )paren
 suffix:semicolon
 )brace
+r_else
 id|up
 (paren
 op_amp
@@ -1251,12 +1252,6 @@ id|info
 l_string|&quot;Ignoring additional USB Camera&quot;
 )paren
 suffix:semicolon
-id|up
-(paren
-op_amp
-id|state_table_mutex
-)paren
-suffix:semicolon
 r_goto
 id|bye
 suffix:semicolon
@@ -1288,12 +1283,6 @@ id|camera
 id|err
 (paren
 l_string|&quot;no memory!&quot;
-)paren
-suffix:semicolon
-id|up
-(paren
-op_amp
-id|state_table_mutex
 )paren
 suffix:semicolon
 r_goto
@@ -1573,6 +1562,10 @@ id|kfree
 id|camera
 )paren
 suffix:semicolon
+id|camera
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 r_else
 id|camera-&gt;dev
@@ -1591,6 +1584,13 @@ id|usb_dec_dev_use
 id|dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|camera
+op_ne
+l_int|NULL
+)paren
 id|up
 (paren
 op_amp

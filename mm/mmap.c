@@ -70,6 +70,7 @@ id|pages
 multiline_comment|/* Stupid algorithm to decide if we have enough memory: while&n;&t; * simple, it hopefully works in most obvious cases.. Easy to&n;&t; * fool it, but this should catch most mistakes.&n;&t; */
 multiline_comment|/* 23/11/98 NJC: Somewhat less stupid version of algorithm,&n;&t; * which tries to do &quot;TheRightThing&quot;.  Instead of using half of&n;&t; * (buffers+cache), use the minimum values.  Allow an extra 2%&n;&t; * of num_physpages for safety margin.&n;&t; */
 r_int
+r_int
 id|free
 suffix:semicolon
 multiline_comment|/* Sometimes we want to use more memory than we have. */

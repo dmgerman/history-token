@@ -603,10 +603,6 @@ comma
 op_star
 id|new_page
 suffix:semicolon
-r_int
-r_int
-id|new_page_addr
-suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure the swap entry is still in use.&n;&t; */
 r_if
 c_cond
@@ -639,9 +635,9 @@ id|found_page
 r_goto
 id|out_free_swap
 suffix:semicolon
-id|new_page_addr
+id|new_page
 op_assign
-id|__get_free_page
+id|alloc_page
 c_func
 (paren
 id|GFP_USER
@@ -651,20 +647,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|new_page_addr
+id|new_page
 )paren
 r_goto
 id|out_free_swap
 suffix:semicolon
 multiline_comment|/* Out of memory */
-id|new_page
-op_assign
-id|virt_to_page
-c_func
-(paren
-id|new_page_addr
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Check the swap cache again, in case we stalled above.&n;&t; */
 id|found_page
 op_assign
@@ -683,10 +671,18 @@ r_goto
 id|out_free_page
 suffix:semicolon
 multiline_comment|/* &n;&t; * Add it to the swap cache and read its contents.&n;&t; */
-id|lock_page
+r_if
+c_cond
+(paren
+id|TryLockPage
 c_func
 (paren
 id|new_page
+)paren
+)paren
+id|BUG
+c_func
+(paren
 )paren
 suffix:semicolon
 id|add_to_swap_cache

@@ -119,7 +119,7 @@ DECL|macro|memlist_prev
 mdefine_line|#define memlist_prev(x) ((x)-&gt;prev)
 multiline_comment|/*&n; * Temporary debugging check.&n; */
 DECL|macro|BAD_RANGE
-mdefine_line|#define BAD_RANGE(zone,x) (((zone) != (x)-&gt;zone) || (((x)-mem_map) &lt; (zone)-&gt;offset) || (((x)-mem_map) &gt;= (zone)-&gt;offset+(zone)-&gt;size))
+mdefine_line|#define BAD_RANGE(zone,x) (((zone) != (x)-&gt;zone) || (((x)-mem_map) &lt; (zone)-&gt;zone_start_mapnr) || (((x)-mem_map) &gt;= (zone)-&gt;zone_start_mapnr+(zone)-&gt;size))
 multiline_comment|/*&n; * Buddy system. Hairy. You really aren&squot;t expected to understand this&n; *&n; * Hint: -mask = 1+~mask&n; */
 r_static
 r_void
@@ -332,9 +332,7 @@ id|order
 suffix:semicolon
 id|base
 op_assign
-id|mem_map
-op_plus
-id|zone-&gt;offset
+id|zone-&gt;zone_mem_map
 suffix:semicolon
 id|page_idx
 op_assign
@@ -426,7 +424,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_and_change_bit
+id|__test_and_change_bit
 c_func
 (paren
 id|index
@@ -548,7 +546,7 @@ op_decrement
 suffix:semicolon
 )brace
 DECL|macro|MARK_USED
-mdefine_line|#define MARK_USED(index, order, area) &bslash;&n;&t;change_bit((index) &gt;&gt; (1+(order)), (area)-&gt;map)
+mdefine_line|#define MARK_USED(index, order, area) &bslash;&n;&t;__change_bit((index) &gt;&gt; (1+(order)), (area)-&gt;map)
 DECL|function|expand
 r_static
 r_inline
@@ -821,14 +819,19 @@ id|curr
 suffix:semicolon
 id|index
 op_assign
-(paren
 id|page
 op_minus
-id|mem_map
-)paren
-op_minus
-id|zone-&gt;offset
+id|zone-&gt;zone_mem_map
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|curr_order
+op_ne
+id|MAX_ORDER
+op_minus
+l_int|1
+)paren
 id|MARK_USED
 c_func
 (paren
@@ -2641,11 +2644,31 @@ id|offset
 comma
 id|realtotalpages
 suffix:semicolon
+r_const
 r_int
 r_int
-id|cumulative
+id|zone_required_alignment
 op_assign
-l_int|0
+l_int|1UL
+op_lshift
+(paren
+id|MAX_ORDER
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|zone_start_paddr
+op_amp
+op_complement
+id|PAGE_MASK
+)paren
+id|BUG
+c_func
+(paren
+)paren
 suffix:semicolon
 id|totalpages
 op_assign
@@ -2987,14 +3010,6 @@ id|size
 )paren
 r_continue
 suffix:semicolon
-id|zone-&gt;offset
-op_assign
-id|offset
-suffix:semicolon
-id|cumulative
-op_add_assign
-id|size
-suffix:semicolon
 id|mask
 op_assign
 (paren
@@ -3088,6 +3103,27 @@ id|zone-&gt;zone_start_paddr
 op_assign
 id|zone_start_paddr
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|zone_start_paddr
+op_rshift
+id|PAGE_SHIFT
+)paren
+op_amp
+(paren
+id|zone_required_alignment
+op_minus
+l_int|1
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;BUG: wrong zone alignment, it will crash&bslash;n&quot;
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3125,7 +3161,6 @@ id|j
 op_ne
 id|ZONE_HIGHMEM
 )paren
-(brace
 id|page
 op_member_access_from_pointer
 r_virtual
@@ -3140,7 +3175,6 @@ id|zone_start_paddr
 op_add_assign
 id|PAGE_SIZE
 suffix:semicolon
-)brace
 )brace
 id|offset
 op_add_assign
@@ -3158,9 +3192,6 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|i
-OL
-id|MAX_ORDER
 suffix:semicolon
 id|i
 op_increment
@@ -3182,6 +3213,28 @@ dot
 id|free_list
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+op_eq
+id|MAX_ORDER
+op_minus
+l_int|1
+)paren
+(brace
+id|zone-&gt;free_area
+(braket
+id|i
+)braket
+dot
+id|map
+op_assign
+l_int|NULL
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|mask
 op_add_assign
 id|mask
@@ -3201,7 +3254,11 @@ id|bitmap_size
 op_assign
 id|size
 op_rshift
+(paren
 id|i
+op_plus
+l_int|1
+)paren
 suffix:semicolon
 id|bitmap_size
 op_assign

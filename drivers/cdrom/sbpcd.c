@@ -3082,7 +3082,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*==========================================================================*/
-macro_line|#endif 00000
+macro_line|#endif
 multiline_comment|/*==========================================================================*/
 DECL|function|ResponseInfo
 r_static

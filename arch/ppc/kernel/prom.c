@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.prom.c 1.17 05/17/01 18:14:22 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.prom.c 1.20 05/23/01 00:38:42 cort&n; */
 multiline_comment|/*&n; * Procedures for interfacing to the Open Firmware PROM on&n; * Power Macintosh computers.&n; *&n; * In particular, we are interested in the device tree&n; * and in using some of its services (exit, write to stdout).&n; *&n; * Paul Mackerras&t;August 1996.&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -20,7 +20,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-multiline_comment|/* for openpic_to_irq */
+macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#ifdef CONFIG_FB
 macro_line|#include &lt;asm/linux_logo.h&gt;
@@ -704,13 +704,6 @@ r_int
 r_int
 id|dev_tree_size
 suffix:semicolon
-multiline_comment|/*&n; * prom_init() is called very early on, before the kernel text&n; * and data have been mapped to KERNELBASE.  At this point the code&n; * is running at whatever address it has been loaded at, so&n; * references to extern and static variables must be relocated&n; * explicitly.  The procedure reloc_offset() returns the address&n; * we&squot;re currently running at minus the address we were linked at.&n; * (Note that strings count as static variables.)&n; *&n; * Because OF may have mapped I/O devices into the area starting at&n; * KERNELBASE, particularly on CHRP machines, we can&squot;t safely call&n; * OF once the kernel has been mapped to KERNELBASE.  Therefore all&n; * OF calls should be done within prom_init(), and prom_init()&n; * and all routines called within it must be careful to relocate&n; * references as necessary.&n; */
-DECL|macro|PTRRELOC
-mdefine_line|#define PTRRELOC(x)&t;((typeof(x))((unsigned long)(x) + offset))
-DECL|macro|PTRUNRELOC
-mdefine_line|#define PTRUNRELOC(x)&t;((typeof(x))((unsigned long)(x) - offset))
-DECL|macro|RELOC
-mdefine_line|#define RELOC(x)&t;(*PTRRELOC(&amp;(x)))
 DECL|macro|ALIGN
 mdefine_line|#define ALIGN(x) (((x) + sizeof(unsigned long)-1) &amp; -sizeof(unsigned long))
 multiline_comment|/* Is boot-info compatible ? */
@@ -2879,93 +2872,12 @@ r_int
 r_int
 id|phys
 suffix:semicolon
-r_extern
-r_char
-id|__bss_start
-comma
-id|_end
-suffix:semicolon
-multiline_comment|/* First zero the BSS -- use memset, some arches don&squot;t have&n;&t; * caches on yet */
-id|memset_io
-c_func
-(paren
-id|PTRRELOC
-c_func
-(paren
-op_amp
-id|__bss_start
-)paren
-comma
-l_int|0
-comma
-op_amp
-id|_end
-op_minus
-op_amp
-id|__bss_start
-)paren
-suffix:semicolon
 multiline_comment|/* Default */
 id|phys
 op_assign
 id|offset
 op_plus
 id|KERNELBASE
-suffix:semicolon
-multiline_comment|/* check if we&squot;re apus, return if we are */
-r_if
-c_cond
-(paren
-id|r3
-op_eq
-l_int|0x61707573
-)paren
-r_return
-id|phys
-suffix:semicolon
-multiline_comment|/* If we came here from BootX, clear the screen,&n;&t; * set up some pointers and return. */
-r_if
-c_cond
-(paren
-id|r3
-op_eq
-l_int|0x426f6f58
-op_logical_and
-id|pp
-op_eq
-l_int|NULL
-)paren
-(brace
-id|bootx_init
-c_func
-(paren
-id|r4
-comma
-id|phys
-)paren
-suffix:semicolon
-r_return
-id|phys
-suffix:semicolon
-)brace
-multiline_comment|/* check if we&squot;re prep, return if we are */
-r_if
-c_cond
-(paren
-op_star
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-l_int|0
-)paren
-op_eq
-l_int|0xdeadc0de
-)paren
-r_return
-id|phys
 suffix:semicolon
 multiline_comment|/* First get a handle for the stdout device */
 id|RELOC

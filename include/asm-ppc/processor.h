@@ -963,7 +963,7 @@ mdefine_line|#define SR14&t;14
 DECL|macro|SR15
 mdefine_line|#define SR15&t;15
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#ifndef CONFIG_MACH_SPECIFIC
+macro_line|#if defined(CONFIG_ALL_PPC)
 r_extern
 r_int
 id|_machine
@@ -972,7 +972,7 @@ r_extern
 r_int
 id|have_of
 suffix:semicolon
-macro_line|#endif /* CONFIG_MACH_SPECIFIC */
+macro_line|#endif /* CONFIG_ALL_PPC */
 multiline_comment|/* what kind of prep workstation we are */
 r_extern
 r_int
@@ -1275,41 +1275,31 @@ id|or_val
 )paren
 suffix:semicolon
 macro_line|#endif /* ndef ASSEMBLY*/
-macro_line|#ifdef CONFIG_MACH_SPECIFIC
-macro_line|#if defined(CONFIG_8xx)
-DECL|macro|_machine
-mdefine_line|#define _machine _MACH_8xx
-DECL|macro|have_of
-mdefine_line|#define have_of 0
-macro_line|#elif defined(CONFIG_OAK)
-DECL|macro|_machine
-mdefine_line|#define _machine _MACH_oak
-DECL|macro|have_of
-mdefine_line|#define have_of&t;0
-macro_line|#elif defined(CONFIG_WALNUT)
-DECL|macro|_machine
-mdefine_line|#define _machine _MACH_walnut
-DECL|macro|have_of
-mdefine_line|#define have_of 0
-macro_line|#elif defined(CONFIG_APUS)
+macro_line|#ifndef CONFIG_ALL_PPC
+macro_line|#if defined(CONFIG_APUS)
 DECL|macro|_machine
 mdefine_line|#define _machine _MACH_apus
-DECL|macro|have_of
-mdefine_line|#define have_of 0
 macro_line|#elif defined(CONFIG_GEMINI)
 DECL|macro|_machine
 mdefine_line|#define _machine _MACH_gemini
-DECL|macro|have_of
-mdefine_line|#define have_of 0
+macro_line|#elif defined(CONFIG_OAK)
+DECL|macro|_machine
+mdefine_line|#define _machine _MACH_oak
+macro_line|#elif defined(CONFIG_WALNUT)
+DECL|macro|_machine
+mdefine_line|#define _machine _MACH_walnut
+macro_line|#elif defined(CONFIG_8xx)
+DECL|macro|_machine
+mdefine_line|#define _machine _MACH_8xx
 macro_line|#elif defined(CONFIG_8260)
 DECL|macro|_machine
 mdefine_line|#define _machine _MACH_8260
-DECL|macro|have_of
-mdefine_line|#define have_of 0
 macro_line|#else
 macro_line|#error &quot;Machine not defined correctly&quot;
 macro_line|#endif
-macro_line|#endif /* CONFIG_MACH_SPECIFIC */
+DECL|macro|have_of
+mdefine_line|#define have_of 0
+macro_line|#endif /* !CONFIG_ALL_PPC */
 macro_line|#endif /* __ASM_PPC_PROCESSOR_H */
 macro_line|#endif /* __KERNEL__ */
 eof

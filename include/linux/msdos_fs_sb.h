@@ -200,10 +200,10 @@ r_int
 id|root_cluster
 suffix:semicolon
 multiline_comment|/* first cluster of the root directory */
-DECL|member|fsinfo_offset
+DECL|member|fsinfo_sector
 r_int
 r_int
-id|fsinfo_offset
+id|fsinfo_sector
 suffix:semicolon
 multiline_comment|/* FAT32 fsinfo offset from start of disk */
 DECL|member|fat_wait
@@ -261,6 +261,16 @@ r_void
 op_star
 id|private_data
 suffix:semicolon
+DECL|member|dir_per_block
+r_int
+id|dir_per_block
+suffix:semicolon
+multiline_comment|/* dir entries per block */
+DECL|member|dir_per_block_bits
+r_int
+id|dir_per_block_bits
+suffix:semicolon
+multiline_comment|/* log2(dir_per_block) */
 )brace
 suffix:semicolon
 macro_line|#endif

@@ -1731,6 +1731,18 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+l_int|NULL
+)paren
+(brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
@@ -1845,12 +1857,6 @@ c_func
 l_int|0x84
 )paren
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|found
-)paren
 id|sprintf
 c_func
 (paren
@@ -1867,6 +1873,7 @@ comma
 id|minor
 )paren
 suffix:semicolon
+)brace
 r_else
 id|sprintf
 c_func
@@ -2266,6 +2273,13 @@ c_func
 r_void
 )paren
 (brace
+id|misc_deregister
+c_func
+(paren
+op_amp
+id|pcwd_miscdev
+)paren
+suffix:semicolon
 multiline_comment|/*  Disable the board  */
 r_if
 c_cond
@@ -2296,13 +2310,6 @@ l_int|3
 )paren
 suffix:semicolon
 )brace
-id|misc_deregister
-c_func
-(paren
-op_amp
-id|pcwd_miscdev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

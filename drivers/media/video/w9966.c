@@ -3582,7 +3582,7 @@ c_func
 (paren
 id|vtune.name
 comma
-l_string|&quot;Foo-tuner&quot;
+l_string|&quot;no tuner&quot;
 )paren
 suffix:semicolon
 id|vtune.rangelow

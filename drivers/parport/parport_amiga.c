@@ -45,6 +45,7 @@ id|data
 id|DPRINTK
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;write_data %c&bslash;n&quot;
 comma
 id|data
@@ -181,6 +182,7 @@ id|control
 id|DPRINTK
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;write_control %02x&bslash;n&quot;
 comma
 id|control
@@ -204,6 +206,7 @@ id|p
 id|DPRINTK
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;read_control &bslash;n&quot;
 )paren
 suffix:semicolon
@@ -243,6 +246,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;frob_control mask %02x, value %02x&bslash;n&quot;
 comma
 id|mask
@@ -451,6 +455,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;read_status %02x&bslash;n&quot;
 comma
 id|status
@@ -549,6 +554,7 @@ id|p
 id|DPRINTK
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;forward&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -578,6 +584,7 @@ id|p
 id|DPRINTK
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;reverse&bslash;n&quot;
 )paren
 suffix:semicolon

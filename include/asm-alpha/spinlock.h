@@ -216,6 +216,8 @@ id|rwlock_t
 suffix:semicolon
 DECL|macro|RW_LOCK_UNLOCKED
 mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0, 0 }
+DECL|macro|rwlock_init
+mdefine_line|#define rwlock_init(x)&t;do { *(x) = RW_LOCK_UNLOCKED; } while(0)
 macro_line|#if DEBUG_RWLOCK
 r_extern
 r_void

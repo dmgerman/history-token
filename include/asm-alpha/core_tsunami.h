@@ -858,6 +858,9 @@ mdefine_line|#define TSUNAMI_MEM_BIAS         TSUNAMI_MEM(0)
 multiline_comment|/* The IO address space is larger than 0xffff */
 DECL|macro|TSUNAMI_IO_SPACE
 mdefine_line|#define TSUNAMI_IO_SPACE&t;(TSUNAMI_CONF(0) - TSUNAMI_IO(0))
+multiline_comment|/* Offset between ram physical addresses and pci64 DAC bus addresses */
+DECL|macro|TSUNAMI_DAC_OFFSET
+mdefine_line|#define TSUNAMI_DAC_OFFSET&t;(1UL &lt;&lt; 40)
 multiline_comment|/*&n; * Data structure for handling TSUNAMI machine checks:&n; */
 DECL|struct|el_TSUNAMI_sysdata_mcheck
 r_struct

@@ -330,6 +330,72 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+r_static
+r_void
+id|__init
+DECL|function|wait_boot_cpu_to_stop
+id|wait_boot_cpu_to_stop
+c_func
+(paren
+r_int
+id|cpuid
+)paren
+(brace
+r_int
+id|stop
+op_assign
+id|jiffies
+op_plus
+l_int|10
+op_star
+id|HZ
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|time_before
+c_func
+(paren
+id|jiffies
+comma
+id|stop
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|smp_secondary_alive
+)paren
+r_return
+suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;wait_boot_cpu_to_stop: FAILED on CPU %d, hanging now&bslash;n&quot;
+comma
+id|cpuid
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+suffix:semicolon
+suffix:semicolon
+)paren
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Where secondaries begin a life of C.&n; */
 r_void
 id|__init
@@ -348,6 +414,41 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|current
+op_ne
+id|init_tasks
+(braket
+id|cpu_number_map
+c_func
+(paren
+id|cpuid
+)paren
+)braket
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;BUG: smp_calling: cpu %d current %p init_tasks[cpu_number_map(cpuid)] %p&bslash;n&quot;
+comma
+id|cpuid
+comma
+id|current
+comma
+id|init_tasks
+(braket
+id|cpu_number_map
+c_func
+(paren
+id|cpuid
+)paren
+)braket
+)paren
+suffix:semicolon
+)brace
 id|DBGS
 c_func
 (paren
@@ -414,6 +515,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Wait boot CPU to stop with irq enabled before&n;&t; * running calibrate_delay().&n;&t; */
+id|wait_boot_cpu_to_stop
+c_func
+(paren
+id|cpuid
+)paren
+suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|calibrate_delay
 c_func
 (paren
@@ -425,7 +538,7 @@ c_func
 id|cpuid
 )paren
 suffix:semicolon
-multiline_comment|/* Allow master to continue. */
+multiline_comment|/*&n;&t; * Allow master to continue only after we written&n;&t; * the loops_per_jiffy.&n;&t; */
 id|wmb
 c_func
 (paren
@@ -433,7 +546,7 @@ c_func
 suffix:semicolon
 id|smp_secondary_alive
 op_assign
-id|cpuid
+l_int|1
 suffix:semicolon
 multiline_comment|/* Wait for the go code.  */
 r_while
@@ -552,6 +665,9 @@ r_break
 suffix:semicolon
 r_case
 id|EV6_CPU
+suffix:colon
+r_case
+id|EV67_CPU
 suffix:colon
 id|on_chip_cache
 op_assign
@@ -678,7 +794,7 @@ suffix:semicolon
 id|cpumask
 op_assign
 (paren
-l_int|1L
+l_int|1UL
 op_lshift
 id|cpuid
 )paren
@@ -774,13 +890,13 @@ r_return
 suffix:semicolon
 id|delay1
 suffix:colon
-multiline_comment|/* Wait one second.  Note that jiffies aren&squot;t ticking yet.  */
+multiline_comment|/* Wait 10 seconds.  Note that jiffies aren&squot;t ticking yet.  */
 r_for
 c_loop
 (paren
 id|timeout
 op_assign
-l_int|100000
+l_int|1000000
 suffix:semicolon
 id|timeout
 OG
@@ -820,13 +936,13 @@ id|timeout
 suffix:semicolon
 id|delay2
 suffix:colon
-multiline_comment|/* Wait one second.  */
+multiline_comment|/* Wait 10 seconds.  */
 r_for
 c_loop
 (paren
 id|timeout
 op_assign
-l_int|100000
+l_int|1000000
 suffix:semicolon
 id|timeout
 OG
@@ -957,7 +1073,7 @@ op_logical_neg
 id|txrdy
 op_amp
 (paren
-l_int|1L
+l_int|1UL
 op_lshift
 id|i
 )paren
@@ -1255,7 +1371,7 @@ id|hwpcb-&gt;ptbr
 comma
 id|hwrpb-&gt;vptb
 comma
-id|hwcpb-&gt;unique
+id|hwpcb-&gt;unique
 )paren
 )paren
 suffix:semicolon
@@ -1320,13 +1436,13 @@ comma
 id|cpuid
 )paren
 suffix:semicolon
-multiline_comment|/* Wait 1 second for an ACK from the console.  Note that jiffies &n;&t;   aren&squot;t ticking yet.  */
+multiline_comment|/* Wait 10 seconds for an ACK from the console.  Note that jiffies &n;&t;   aren&squot;t ticking yet.  */
 r_for
 c_loop
 (paren
 id|timeout
 op_assign
-l_int|100000
+l_int|1000000
 suffix:semicolon
 id|timeout
 OG
@@ -1480,6 +1596,22 @@ comma
 id|cpuid
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|idle
+op_eq
+op_amp
+id|init_task
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;idle process is init_task for CPU %d&quot;
+comma
+id|cpuid
+)paren
+suffix:semicolon
 id|idle-&gt;processor
 op_assign
 id|cpuid
@@ -1558,6 +1690,16 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Notify the secondary CPU it can run calibrate_delay() */
+id|smp_secondary_alive
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* We&squot;ve been acked by the console; wait one second for the task&n;&t;   to start up for real.  Note that jiffies aren&squot;t ticking yet.  */
 r_for
 c_loop
@@ -1568,7 +1710,7 @@ l_int|0
 suffix:semicolon
 id|timeout
 OL
-l_int|100000
+l_int|1000000
 suffix:semicolon
 id|timeout
 op_increment
@@ -1578,8 +1720,7 @@ r_if
 c_cond
 (paren
 id|smp_secondary_alive
-op_ne
-op_minus
+op_eq
 l_int|1
 )paren
 r_goto
@@ -1775,7 +1916,7 @@ multiline_comment|/* Assume here that &quot;whami&quot; == index */
 id|hwrpb_cpu_present_mask
 op_or_assign
 (paren
-l_int|1L
+l_int|1UL
 op_lshift
 id|i
 )paren
@@ -1822,7 +1963,7 @@ suffix:semicolon
 id|hwrpb_cpu_present_mask
 op_assign
 (paren
-l_int|1L
+l_int|1UL
 op_lshift
 id|boot_cpuid
 )paren
@@ -1830,7 +1971,7 @@ suffix:semicolon
 )brace
 id|cpu_present_mask
 op_assign
-l_int|1L
+l_int|1UL
 op_lshift
 id|boot_cpuid
 suffix:semicolon
@@ -2050,7 +2191,7 @@ r_continue
 suffix:semicolon
 id|cpu_present_mask
 op_or_assign
-l_int|1L
+l_int|1UL
 op_lshift
 id|i
 suffix:semicolon
@@ -2101,7 +2242,7 @@ c_cond
 id|cpu_present_mask
 op_amp
 (paren
-l_int|1L
+l_int|1UL
 op_lshift
 id|i
 )paren
@@ -2856,7 +2997,7 @@ macro_line|#endif
 id|send_ipi_message
 c_func
 (paren
-l_int|1L
+l_int|1UL
 op_lshift
 id|cpu
 comma
@@ -2879,7 +3020,7 @@ op_assign
 id|cpu_present_mask
 op_xor
 (paren
-l_int|1L
+l_int|1UL
 op_lshift
 id|smp_processor_id
 c_func
@@ -2949,7 +3090,7 @@ op_assign
 id|cpu_present_mask
 op_xor
 (paren
-l_int|1L
+l_int|1UL
 op_lshift
 id|smp_processor_id
 c_func
@@ -3997,7 +4138,7 @@ id|stuck
 op_assign
 l_int|1L
 op_lshift
-l_int|28
+l_int|30
 suffix:semicolon
 id|try_again
 suffix:colon
@@ -4261,13 +4402,13 @@ id|stuck_lock
 op_assign
 l_int|1
 op_lshift
-l_int|26
+l_int|30
 suffix:semicolon
 id|stuck_reader
 op_assign
 l_int|1
 op_lshift
-l_int|26
+l_int|30
 suffix:semicolon
 id|__asm__
 id|__volatile__
@@ -4422,7 +4563,7 @@ id|stuck_lock
 op_assign
 l_int|1
 op_lshift
-l_int|26
+l_int|30
 suffix:semicolon
 id|__asm__
 id|__volatile__

@@ -72,7 +72,7 @@ id|pmgr_flag
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif OSS_SUPPORT_SEQ
+macro_line|#endif /* OSS_SUPPORT_SEQ */
 multiline_comment|/* if WF_DEBUG not defined, no run-time debugging messages will&n;   be available via the debug flag setting. Given the current&n;   beta state of the driver, this will remain set until a future &n;   version.&n;*/
 DECL|macro|WF_DEBUG
 mdefine_line|#define WF_DEBUG 1
@@ -361,7 +361,7 @@ r_int
 id|oss_dev
 suffix:semicolon
 multiline_comment|/* devno for OSS sequencer synth */
-macro_line|#endif OSS_SUPPORT_SEQ
+macro_line|#endif /* OSS_SUPPORT_SEQ */
 DECL|member|fw_version
 r_char
 id|fw_version
@@ -7722,7 +7722,7 @@ suffix:colon
 id|midi_synth_setup_voice
 )brace
 suffix:semicolon
-macro_line|#endif OSS_SUPPORT_SEQ
+macro_line|#endif /* OSS_SUPPORT_SEQ */
 macro_line|#if OSS_SUPPORT_LEVEL &amp; OSS_SUPPORT_STATIC_INSTALL
 DECL|function|attach_wavefront
 r_static
@@ -7786,7 +7786,7 @@ id|uninstall_wavefront
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif OSS_SUPPORT_STATIC_INSTALL
+macro_line|#endif /* OSS_SUPPORT_STATIC_INSTALL */
 multiline_comment|/***********************************************************************/
 multiline_comment|/* WaveFront: Linux modular sound kernel installation interface        */
 multiline_comment|/***********************************************************************/
@@ -9199,7 +9199,7 @@ op_amp
 id|wavefront_oss_load_patch
 suffix:semicolon
 )brace
-macro_line|#endif OSS_SUPPORT_SEQ
+macro_line|#endif /* OSS_SUPPORT_SEQ */
 multiline_comment|/* Turn on Virtual MIDI, but first *always* turn it off,&n;&t;   since otherwise consectutive reloads of the driver will&n;&t;   never cause the hardware to generate the initial &quot;internal&quot; or &n;&t;   &quot;external&quot; source bytes in the MIDI data stream. This&n;&t;   is pretty important, since the internal hardware generally will&n;&t;   be used to generate none or very little MIDI output, and&n;&t;   thus the only source of MIDI data is actually external. Without&n;&t;   the switch bytes, the driver will think it all comes from&n;&t;   the internal interface. Duh.&n;&t;*/
 r_if
 c_cond
@@ -9740,7 +9740,7 @@ op_amp
 id|wavefront_operations
 suffix:semicolon
 )brace
-macro_line|#endif OSS_SUPPORT_SEQ
+macro_line|#endif /* OSS_SUPPORT_SEQ */
 r_if
 c_cond
 (paren
@@ -9765,7 +9765,7 @@ id|sound_unload_synthdev
 id|dev.oss_dev
 )paren
 suffix:semicolon
-macro_line|#endif OSS_SUPPORT_SEQ
+macro_line|#endif /* OSS_SUPPORT_SEQ */ 
 r_return
 op_minus
 l_int|1
@@ -9866,7 +9866,7 @@ id|sound_unload_synthdev
 id|dev.oss_dev
 )paren
 suffix:semicolon
-macro_line|#endif OSS_SUPPORT_SEQ
+macro_line|#endif /* OSS_SUPPORT_SEQ */ 
 id|uninstall_wf_mpu
 (paren
 )paren

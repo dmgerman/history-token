@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_iommu.c,v 1.13 2001/03/14 08:42:38 davem Exp $&n; * pci_iommu.c: UltraSparc PCI controller IOM/STC support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1999, 2000 Jakub Jelinek (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: pci_iommu.c,v 1.14 2001/05/23 03:06:51 davem Exp $&n; * pci_iommu.c: UltraSparc PCI controller IOM/STC support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1999, 2000 Jakub Jelinek (jakub@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -134,6 +134,9 @@ id|iopte
 comma
 op_star
 id|limit
+comma
+op_star
+id|first
 suffix:semicolon
 r_int
 r_int
@@ -234,6 +237,10 @@ id|cnum
 )braket
 dot
 id|flush
+suffix:semicolon
+id|first
+op_assign
+id|iopte
 suffix:semicolon
 r_for
 c_loop
@@ -359,10 +366,34 @@ c_func
 id|iommu
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|iopte
+op_eq
+id|first
+)paren
+r_goto
+id|bad
+suffix:semicolon
 )brace
 multiline_comment|/* I&squot;ve got your streaming cluster right here buddy boy... */
 r_return
 id|iopte
+suffix:semicolon
+id|bad
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_EMERG
+l_string|&quot;pci_iommu: alloc_streaming_cluster of npages(%ld) failed!&bslash;n&quot;
+comma
+id|npages
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|free_streaming_cluster
@@ -1377,6 +1408,16 @@ comma
 id|npages
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|base
+op_eq
+l_int|NULL
+)paren
+r_goto
+id|bad
+suffix:semicolon
 id|bus_addr
 op_assign
 (paren
@@ -1504,6 +1545,25 @@ id|flags
 suffix:semicolon
 r_return
 id|ret
+suffix:semicolon
+id|bad
+suffix:colon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|iommu-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Unmap a single streaming mode DMA translation. */
@@ -2377,6 +2437,16 @@ comma
 id|npages
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|base
+op_eq
+l_int|NULL
+)paren
+r_goto
+id|bad
+suffix:semicolon
 id|dma_base
 op_assign
 id|iommu-&gt;page_table_map_base
@@ -2510,6 +2580,25 @@ id|flags
 suffix:semicolon
 r_return
 id|used
+suffix:semicolon
+id|bad
+suffix:colon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|iommu-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Unmap a set of streaming mode DMA translations. */

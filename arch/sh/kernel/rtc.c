@@ -506,13 +506,6 @@ r_int
 id|nowtime
 )paren
 (brace
-r_extern
-r_int
-id|abs
-(paren
-r_int
-)paren
-suffix:semicolon
 r_int
 id|retval
 op_assign

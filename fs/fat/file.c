@@ -136,6 +136,13 @@ r_int
 id|create
 )paren
 (brace
+r_struct
+id|super_block
+op_star
+id|sb
+op_assign
+id|inode-&gt;i_sb
+suffix:semicolon
 r_int
 r_int
 id|phys
@@ -190,7 +197,7 @@ c_cond
 (paren
 id|iblock
 op_lshift
-l_int|9
+id|sb-&gt;s_blocksize_bits
 op_ne
 id|MSDOS_I
 c_func
@@ -250,7 +257,7 @@ id|inode
 op_member_access_from_pointer
 id|mmu_private
 op_add_assign
-l_int|512
+id|sb-&gt;s_blocksize
 suffix:semicolon
 id|phys
 op_assign
@@ -493,9 +500,9 @@ multiline_comment|/* -EPERM */
 suffix:semicolon
 id|cluster
 op_assign
-id|SECTOR_SIZE
-op_star
-id|sbi-&gt;cluster_size
+l_int|1
+op_lshift
+id|sbi-&gt;cluster_bits
 suffix:semicolon
 multiline_comment|/* &n;&t; * This protects against truncating a file bigger than it was then&n;&t; * trying to write into the hole.&n;&t; */
 r_if

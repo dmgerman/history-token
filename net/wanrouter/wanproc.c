@@ -688,6 +688,12 @@ id|len
 )paren
 )paren
 (brace
+id|kfree
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EFAULT

@@ -7268,13 +7268,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|partition
-comma
-id|dev
-comma
-id|start
-suffix:semicolon
 id|devfs_unregister_blkdev
 c_func
 (paren

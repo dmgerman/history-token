@@ -664,7 +664,7 @@ id|alpha_mv.mv_pci_tbi
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_WARNING
 l_string|&quot;pci_map_single failed: no hw sg&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -728,7 +728,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_WARNING
 l_string|&quot;pci_map_single failed: &quot;
 l_string|&quot;could not allocate dma page tables&bslash;n&quot;
 )paren
@@ -836,6 +836,10 @@ r_int
 id|direction
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_struct
 id|pci_controller
 op_star
@@ -981,6 +985,15 @@ op_plus
 id|size
 )paren
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|arena-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|iommu_arena_free
 c_func
 (paren
@@ -1013,6 +1026,15 @@ op_plus
 id|size
 op_minus
 l_int|1
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|arena-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|DBGA
@@ -1611,7 +1633,7 @@ c_cond
 (paren
 id|sg-&gt;dma_address
 op_eq
-l_int|2
+l_int|1
 op_logical_or
 id|sg-&gt;dma_address
 op_eq
@@ -2103,7 +2125,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_WARNING
 l_string|&quot;pci_map_sg failed: no entries?&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2127,7 +2149,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_WARNING
 l_string|&quot;pci_map_sg failed: &quot;
 l_string|&quot;could not allocate dma page tables&bslash;n&quot;
 )paren
@@ -2181,6 +2203,10 @@ r_int
 id|direction
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_struct
 id|pci_controller
 op_star
@@ -2270,6 +2296,15 @@ comma
 id|fend
 op_assign
 l_int|0
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|arena-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -2460,6 +2495,15 @@ comma
 id|fbeg
 comma
 id|fend
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|arena-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|DBGA

@@ -210,6 +210,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;parport change_mode ECP-ISA to mode 0x%02x&bslash;n&quot;
 comma
 id|m
@@ -5110,6 +5111,7 @@ id|io
 suffix:semicolon
 id|printk
 (paren
+id|KERN_INFO
 l_string|&quot;SMSC 37c669 LPT Config: cr_1=0x%02x, 4=0x%02x, &quot;
 l_string|&quot;A=0x%2x, 23=0x%02x, 26=0x%02x, 27=0x%02x&bslash;n&quot;
 comma
@@ -5129,6 +5131,7 @@ suffix:semicolon
 multiline_comment|/* The documentation calls DMA and IRQ-Lines by letters, so&n;&t;   the board maker can/will wire them&n;&t;   appropriately/randomly...  G=reserved H=IDE-irq, */
 id|printk
 (paren
+id|KERN_INFO
 l_string|&quot;SMSC LPT Config: io=0x%04x, irq=%c, dma=%c, &quot;
 l_string|&quot;fifo threshold=%d&bslash;n&quot;
 comma
@@ -5182,6 +5185,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;SMSC LPT Config: enabled=%s power=%s&bslash;n&quot;
 comma
 (paren
@@ -5212,6 +5216,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;SMSC LPT Config: Port mode=%s, EPP version =%s&bslash;n&quot;
 comma
 (paren
@@ -5290,6 +5295,7 @@ id|NR_SUPERIOS
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Super-IO: too many chips!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5625,6 +5631,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Winbond LPT Config: cr_30=%02x 60,61=%02x%02x &quot;
 l_string|&quot;70=%02x 74=%02x, f0=%02x&bslash;n&quot;
 comma
@@ -5644,6 +5651,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Winbond LPT Config: active=%s, io=0x%02x%02x irq=%d, &quot;
 comma
 (paren
@@ -5697,6 +5705,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Winbond LPT Config: irqtype=%s, ECP fifo threshold=%d&bslash;n&quot;
 comma
 id|irqtypes
@@ -5718,6 +5727,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Winbond LPT Config: Port mode=%s&bslash;n&quot;
 comma
 id|modes
@@ -5773,6 +5783,7 @@ id|NR_SUPERIOS
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Super-IO: too many chips!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5885,6 +5896,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Winbond chip at EFER=0x%x key=0x%02x devid=%02x devrev=%02x &quot;
 l_string|&quot;oldid=%02x&bslash;n&quot;
 comma
@@ -6117,6 +6129,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Winbond unknown chip type&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6125,6 +6138,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Winbond chip type %s&bslash;n&quot;
 comma
 id|type
@@ -6209,6 +6223,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;SMSC chip at EFER=0x%x key=0x%02x devid=%02x devrev=%02x&bslash;n&quot;
 comma
 id|efer
@@ -6294,6 +6309,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;SMSC unknown chip type&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6302,6 +6318,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;SMSC chip type %s&bslash;n&quot;
 comma
 id|type
@@ -6995,6 +7012,7 @@ r_void
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Winbond Super-IO detection, now testing ports 3F0,370,250,4E,2E ...&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7067,6 +7085,7 @@ r_void
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;SMSC Super-IO detection, now testing Ports 2F0, 370 ...&bslash;n&quot;
 )paren
 suffix:semicolon

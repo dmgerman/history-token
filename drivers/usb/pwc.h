@@ -3,10 +3,12 @@ macro_line|#ifndef PWC_H
 DECL|macro|PWC_H
 mdefine_line|#define PWC_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#else
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;sys/types.h&gt;

@@ -569,6 +569,12 @@ r_int
 op_star
 id|pgd_cache
 suffix:semicolon
+DECL|member|pmd_cache
+r_int
+r_int
+op_star
+id|pmd_cache
+suffix:semicolon
 DECL|member|pte_cache
 r_int
 r_int
@@ -591,7 +597,7 @@ macro_line|#endif
 DECL|macro|pgd_quicklist
 mdefine_line|#define pgd_quicklist (quicklists.pgd_cache)
 DECL|macro|pmd_quicklist
-mdefine_line|#define pmd_quicklist ((unsigned long *)0)
+mdefine_line|#define pmd_quicklist (quicklists.pmd_cache)
 DECL|macro|pte_quicklist
 mdefine_line|#define pte_quicklist (quicklists.pte_cache)
 DECL|macro|pgtable_cache_size
@@ -654,10 +660,7 @@ id|ret
 l_int|0
 )braket
 op_assign
-id|ret
-(braket
-l_int|1
-)braket
+l_int|0
 suffix:semicolon
 id|pgtable_cache_size
 op_decrement
@@ -850,10 +853,7 @@ id|ret
 l_int|0
 )braket
 op_assign
-id|ret
-(braket
-l_int|1
-)braket
+l_int|0
 suffix:semicolon
 id|pgtable_cache_size
 op_decrement
@@ -1033,10 +1033,7 @@ id|ret
 l_int|0
 )braket
 op_assign
-id|ret
-(braket
-l_int|1
-)braket
+l_int|0
 suffix:semicolon
 id|pgtable_cache_size
 op_decrement

@@ -1226,10 +1226,6 @@ comma
 id|kdev_t
 op_star
 id|rdev
-comma
-r_int
-r_int
-id|size
 )paren
 (brace
 id|raid1_conf_t
@@ -2283,8 +2279,6 @@ suffix:semicolon
 id|bh_req-&gt;b_blocknr
 op_assign
 id|bh-&gt;b_rsector
-op_div
-id|sectors
 suffix:semicolon
 id|bh_req-&gt;b_dev
 op_assign
@@ -2400,8 +2394,6 @@ multiline_comment|/*&n; &t; * prepare mirrored mbh (fields ordered for max mem t
 id|mbh-&gt;b_blocknr
 op_assign
 id|bh-&gt;b_rsector
-op_div
-id|sectors
 suffix:semicolon
 id|mbh-&gt;b_dev
 op_assign
@@ -4251,13 +4243,6 @@ id|raid1_conf_t
 op_star
 id|conf
 suffix:semicolon
-r_int
-id|sectors
-op_assign
-id|bh-&gt;b_size
-op_rshift
-l_int|9
-suffix:semicolon
 id|conf
 op_assign
 id|mddev_to_conf
@@ -4386,8 +4371,6 @@ suffix:semicolon
 id|mbh-&gt;b_rsector
 op_assign
 id|bh-&gt;b_blocknr
-op_star
-id|sectors
 suffix:semicolon
 id|mbh-&gt;b_state
 op_assign
@@ -4535,10 +4518,6 @@ id|mddev
 comma
 op_amp
 id|bh-&gt;b_dev
-comma
-id|bh-&gt;b_size
-op_rshift
-l_int|9
 )paren
 suffix:semicolon
 r_if
@@ -4594,6 +4573,10 @@ id|bh-&gt;b_rdev
 op_assign
 id|bh-&gt;b_dev
 suffix:semicolon
+id|bh-&gt;b_rsector
+op_assign
+id|bh-&gt;b_blocknr
+suffix:semicolon
 id|generic_make_request
 c_func
 (paren
@@ -4622,10 +4605,6 @@ id|mddev
 comma
 op_amp
 id|bh-&gt;b_dev
-comma
-id|bh-&gt;b_size
-op_rshift
-l_int|9
 )paren
 suffix:semicolon
 r_if
@@ -4676,6 +4655,10 @@ suffix:semicolon
 id|bh-&gt;b_rdev
 op_assign
 id|bh-&gt;b_dev
+suffix:semicolon
+id|bh-&gt;b_rsector
+op_assign
+id|bh-&gt;b_blocknr
 suffix:semicolon
 id|generic_make_request
 (paren
@@ -4834,6 +4817,9 @@ id|bsize
 suffix:semicolon
 r_int
 id|disk
+suffix:semicolon
+r_int
+id|block_nr
 suffix:semicolon
 id|spin_lock_irq
 c_func
@@ -5134,7 +5120,7 @@ op_assign
 op_amp
 id|r1_bh-&gt;bh_req
 suffix:semicolon
-id|bh-&gt;b_blocknr
+id|block_nr
 op_assign
 id|sector_nr
 suffix:semicolon
@@ -5147,7 +5133,7 @@ c_loop
 (paren
 op_logical_neg
 (paren
-id|bh-&gt;b_blocknr
+id|block_nr
 op_amp
 l_int|1
 )paren
@@ -5157,7 +5143,7 @@ OL
 id|PAGE_SIZE
 op_logical_and
 (paren
-id|bh-&gt;b_blocknr
+id|block_nr
 op_plus
 l_int|2
 )paren
@@ -5175,7 +5161,7 @@ l_int|2
 )paren
 )paren
 (brace
-id|bh-&gt;b_blocknr
+id|block_nr
 op_rshift_assign
 l_int|1
 suffix:semicolon
@@ -5265,6 +5251,10 @@ suffix:semicolon
 id|bh-&gt;b_private
 op_assign
 id|r1_bh
+suffix:semicolon
+id|bh-&gt;b_blocknr
+op_assign
+id|sector_nr
 suffix:semicolon
 id|bh-&gt;b_rsector
 op_assign
@@ -5446,12 +5436,6 @@ r_int
 id|sect
 op_assign
 id|bh-&gt;b_blocknr
-op_star
-(paren
-id|bh-&gt;b_size
-op_rshift
-l_int|9
-)paren
 suffix:semicolon
 r_int
 id|size

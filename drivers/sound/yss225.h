@@ -137,5 +137,5 @@ id|coefficients3
 l_int|404
 )braket
 suffix:semicolon
-macro_line|#endif __ys225_h__
+macro_line|#endif /* __ys225_h__ */
 eof

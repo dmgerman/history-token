@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Crystal SoundFusion CS46xx driver&n; *&n; *&t;Copyright 1998-2001 Cirrus Logic Corporation &lt;pcaudio@crystal.cirrus.com&gt;&n; *&t;&t;&t;&t;&t;&t;&lt;twoller@crystal.cirrus.com&gt;&n; *&t;Copyright 1999-2000 Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&t;Copyright 2000 Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *&t;The core of this code is taken from the ALSA project driver by &n; *&t;Jaroslav. Please send Jaroslav the credit for the driver and &n; *&t;report bugs in this port to &lt;alan@redhat.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&t;Current maintainers:&n; *&t;&t;Cirrus Logic Corporation, Thomas Woller (tw)&n; *&t;&t;&t;&lt;twoller@crystal.cirrus.com&gt;&n; *&t;&t;Nils Faerber (nf)&n; *&t;&t;&t;&lt;nils@kernelconcepts.de&gt;&n; *&t;&t;Thanks to David Pollard for testing.&n; *&n; *&t;Changes:&n; *&t;20000909-nf&t;Changed cs_read, cs_write and drain_dac&n; *&t;20001025-tw&t;Separate Playback/Capture structs and buffers.&n; *&t;&t;&t;Added Scatter/Gather support for Playback.&n; *&t;&t;&t;Added Capture.&n; *&t;20001027-nf&t;Port to kernel 2.4.0-test9, some clean-ups&n; *&t;&t;&t;Start of powermanagement support (CS46XX_PM).&n; *&t;20001128-tw&t;Add module parm for default buffer order.&n; *&t;&t;&t;added DMA_GFP flag to kmalloc dma buffer allocs.&n; *&t;&t;&t;backfill silence to eliminate stuttering on&n; *&t;&t;&t;underruns.&n; *&t;20001201-tw&t;add resyncing of swptr on underruns.&n; *&t;20001205-tw-nf&t;fixed GETOSPACE ioctl() after open()&n; *&t;20010113-tw&t;patch from Hans Grobler general cleanup.&n; *&t;20010117-tw&t;2.4.0 pci cleanup, wrapper code for 2.2.16-2.4.0&n; *&t;20010118-tw&t;basic PM support for 2.2.16+ and 2.4.0/2.4.2.&n; *&t;20010228-dh&t;patch from David Huggins - cs_update_ptr recursion.&n; *&t;20010409-tw&t;add hercules game theatre XP amp code.&n; *&t;20010420-tw&t;cleanup powerdown/up code.&n; *&n; *&t;Status:&n; *&t;Playback/Capture supported from 8k-48k.&n; *&t;16Bit Signed LE &amp; 8Bit Unsigned, with Mono or Stereo supported.&n; *&n; *&t;APM/PM - 2.2.x APM is enabled and functioning fine. APM can also&n; *&t;be enabled for 2.4.x by modifying the CS46XX_ACPI_SUPPORT macro&n; *&t;definition.&n; *&n; *      Hercules Game Theatre XP - the EGPIO2 pin controls the external Amp,&n; *&t;so, use the drain/polarity to enable.  &n; *&t;hercules_egpio_disable set to 1, will force a 0 to EGPIODR.&n; *&n; *&t;VTB Santa Cruz - the GPIO7/GPIO8 on the Secondary Codec control&n; *&t;the external amplifier for the &quot;back&quot; speakers, since we do not&n; *&t;support the secondary codec then this external amp is also not&n; *&t;turned on.&n; */
+multiline_comment|/*&n; *&t;Crystal SoundFusion CS46xx driver&n; *&n; *&t;Copyright 1998-2001 Cirrus Logic Corporation &lt;pcaudio@crystal.cirrus.com&gt;&n; *&t;&t;&t;&t;&t;&t;&lt;twoller@crystal.cirrus.com&gt;&n; *&t;Copyright 1999-2000 Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&t;Copyright 2000 Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *&t;The core of this code is taken from the ALSA project driver by &n; *&t;Jaroslav. Please send Jaroslav the credit for the driver and &n; *&t;report bugs in this port to &lt;alan@redhat.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&t;Current maintainers:&n; *&t;&t;Cirrus Logic Corporation, Thomas Woller (tw)&n; *&t;&t;&t;&lt;twoller@crystal.cirrus.com&gt;&n; *&t;&t;Nils Faerber (nf)&n; *&t;&t;&t;&lt;nils@kernelconcepts.de&gt;&n; *&t;&t;Thanks to David Pollard for testing.&n; *&n; *&t;Changes:&n; *&t;20000909-nf&t;Changed cs_read, cs_write and drain_dac&n; *&t;20001025-tw&t;Separate Playback/Capture structs and buffers.&n; *&t;&t;&t;Added Scatter/Gather support for Playback.&n; *&t;&t;&t;Added Capture.&n; *&t;20001027-nf&t;Port to kernel 2.4.0-test9, some clean-ups&n; *&t;&t;&t;Start of powermanagement support (CS46XX_PM).&n; *&t;20001128-tw&t;Add module parm for default buffer order.&n; *&t;&t;&t;added DMA_GFP flag to kmalloc dma buffer allocs.&n; *&t;&t;&t;backfill silence to eliminate stuttering on&n; *&t;&t;&t;underruns.&n; *&t;20001201-tw&t;add resyncing of swptr on underruns.&n; *&t;20001205-tw-nf&t;fixed GETOSPACE ioctl() after open()&n; *&t;20010113-tw&t;patch from Hans Grobler general cleanup.&n; *&t;20010117-tw&t;2.4.0 pci cleanup, wrapper code for 2.2.16-2.4.0&n; *&t;20010118-tw&t;basic PM support for 2.2.16+ and 2.4.0/2.4.2.&n; *&t;20010228-dh&t;patch from David Huggins - cs_update_ptr recursion.&n; *&t;20010409-tw&t;add hercules game theatre XP amp code.&n; *&t;20010420-tw&t;cleanup powerdown/up code.&n; *&t;20010521-tw&t;eliminate pops, and fixes for powerdown.&n; *&n; *&t;Status:&n; *&t;Playback/Capture supported from 8k-48k.&n; *&t;16Bit Signed LE &amp; 8Bit Unsigned, with Mono or Stereo supported.&n; *&n; *&t;APM/PM - 2.2.x APM is enabled and functioning fine. APM can also&n; *&t;be enabled for 2.4.x by modifying the CS46XX_ACPI_SUPPORT macro&n; *&t;definition.&n; *&n; *      Hercules Game Theatre XP - the EGPIO2 pin controls the external Amp,&n; *&t;so, use the drain/polarity to enable.  &n; *&t;hercules_egpio_disable set to 1, will force a 0 to EGPIODR.&n; *&n; *&t;VTB Santa Cruz - the GPIO7/GPIO8 on the Secondary Codec control&n; *&t;the external amplifier for the &quot;back&quot; speakers, since we do not&n; *&t;support the secondary codec then this external amp is also not&n; *&t;turned on.&n; */
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -276,7 +276,7 @@ suffix:semicolon
 DECL|macro|CS46XX_MAJOR_VERSION
 mdefine_line|#define CS46XX_MAJOR_VERSION &quot;1&quot;
 DECL|macro|CS46XX_MINOR_VERSION
-mdefine_line|#define CS46XX_MINOR_VERSION &quot;26&quot;
+mdefine_line|#define CS46XX_MINOR_VERSION &quot;27&quot;
 macro_line|#ifdef __ia64__
 DECL|macro|CS46XX_ARCH
 mdefine_line|#define CS46XX_ARCH&t;     &t;&quot;64&quot;&t;
@@ -2743,6 +2743,31 @@ id|card-&gt;ac97_codec
 l_int|0
 )braket
 suffix:semicolon
+id|CS_DBGOUT
+c_func
+(paren
+id|CS_FUNCTION
+comma
+l_int|2
+comma
+id|printk
+c_func
+(paren
+l_string|&quot;cs46xx: cs_mute()+ %s&bslash;n&quot;
+comma
+(paren
+id|state
+op_eq
+id|CS_TRUE
+)paren
+ques
+c_cond
+l_string|&quot;Muting&quot;
+suffix:colon
+l_string|&quot;UnMuting&quot;
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2924,6 +2949,20 @@ id|card-&gt;pm.u32AC97_pcm_out_volume
 )paren
 suffix:semicolon
 )brace
+id|CS_DBGOUT
+c_func
+(paren
+id|CS_FUNCTION
+comma
+l_int|2
+comma
+id|printk
+c_func
+(paren
+l_string|&quot;cs46xx: cs_mute()-&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* set playback sample rate */
 DECL|function|cs_set_dac_rate
@@ -6659,25 +6698,6 @@ l_string|&quot;cs46xx: drain_dac()- -ERESTARTSYS&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;* set to silence and let that clear the fifos.&n;&t;&t;*/
-id|memset
-c_func
-(paren
-id|dmabuf-&gt;rawbuf
-comma
-(paren
-id|dmabuf-&gt;fmt
-op_amp
-id|CS_FMT_16BIT
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-l_int|0x80
-comma
-id|dmabuf-&gt;dmasize
-)paren
-suffix:semicolon
 id|cs461x_clear_serial_FIFOs
 c_func
 (paren
@@ -20692,6 +20712,17 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n;* for now, always keep power to the mixer block.&n;* not sure why it&squot;s a problem but it seems to be if we power off.&n;*/
+id|type
+op_and_assign
+op_complement
+id|CS_POWER_MIXVON
+suffix:semicolon
+id|type
+op_and_assign
+op_complement
+id|CS_POWER_MIXVOFF
+suffix:semicolon
 id|cs_mute
 c_func
 (paren

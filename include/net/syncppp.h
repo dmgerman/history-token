@@ -290,5 +290,9 @@ DECL|macro|SPPPIOCPPP
 mdefine_line|#define SPPPIOCPPP&t;(SIOCDEVPRIVATE+1)
 DECL|macro|SPPPIOCDEBUG
 mdefine_line|#define SPPPIOCDEBUG&t;(SIOCDEVPRIVATE+2)
+DECL|macro|SPPPIOCSFLAGS
+mdefine_line|#define SPPPIOCSFLAGS&t;(SIOCDEVPRIVATE+3)
+DECL|macro|SPPPIOCGFLAGS
+mdefine_line|#define SPPPIOCGFLAGS&t;(SIOCDEVPRIVATE+4)
 macro_line|#endif /* _SYNCPPP_H_ */
 eof

@@ -2047,7 +2047,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;Leaving scsi_do_cmd()&bslash;n&quot;
+l_string|&quot;Leaving scsi_do_req()&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -2316,7 +2316,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;Leaving scsi_do_cmd()&bslash;n&quot;
+l_string|&quot;Leaving scsi_init_cmd_from_req()&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon

@@ -1885,6 +1885,10 @@ c_func
 id|ent
 )paren
 suffix:semicolon
+id|ent
+op_assign
+l_int|NULL
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon

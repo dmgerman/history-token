@@ -551,8 +551,16 @@ c_func
 id|KERN_INFO
 l_string|&quot;block: %Ld&bslash;tsize: %Ld&bslash;tdev: %d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|typ4-&gt;vd4_block
 comma
+(paren
+r_int
+r_int
+)paren
 id|typ4-&gt;vd4_size
 comma
 id|typ4-&gt;vd4_dev
@@ -786,8 +794,16 @@ c_func
 id|KERN_INFO
 l_string|&quot;block: %Ld&bslash;tsize: %Ld&bslash;tdev: %d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|typ4-&gt;vd4_block
 comma
+(paren
+r_int
+r_int
+)paren
 id|typ4-&gt;vd4_size
 comma
 id|typ4-&gt;vd4_dev

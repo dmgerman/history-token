@@ -1527,8 +1527,6 @@ macro_line|#else
 DECL|macro|__GFP_HIGHMEM
 mdefine_line|#define __GFP_HIGHMEM&t;0x0 /* noop */
 macro_line|#endif
-DECL|macro|__GFP_VM
-mdefine_line|#define __GFP_VM&t;0x20
 DECL|macro|GFP_BUFFER
 mdefine_line|#define GFP_BUFFER&t;(__GFP_HIGH | __GFP_WAIT)
 DECL|macro|GFP_ATOMIC

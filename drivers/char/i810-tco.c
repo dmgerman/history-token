@@ -414,6 +414,7 @@ id|file
 )paren
 (brace
 multiline_comment|/*&n;&t; *      Shut off the timer.&n;&t; */
+macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
 id|tco_timer_stop
 (paren
 )paren
@@ -422,6 +423,7 @@ id|timer_alive
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif&t;
 r_return
 l_int|0
 suffix:semicolon

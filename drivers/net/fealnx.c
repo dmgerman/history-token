@@ -3392,12 +3392,10 @@ id|np-&gt;bcrvalue
 op_assign
 l_int|0x04
 op_or
-l_int|0x0
-id|x10
+l_int|0x10
 suffix:semicolon
 multiline_comment|/* big-endian, tx 8 burst length */
-id|a
-id|np-&gt;cralue
+id|np-&gt;crvalue
 op_assign
 l_int|0xe00
 suffix:semicolon
@@ -3410,7 +3408,7 @@ op_assign
 l_int|0x10
 suffix:semicolon
 multiline_comment|/* little-endian, 8 burst length */
-id|np-&gt;cralue
+id|np-&gt;crvalue
 op_assign
 l_int|0xe00
 suffix:semicolon

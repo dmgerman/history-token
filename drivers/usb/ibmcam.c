@@ -18,7 +18,8 @@ multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;v1.0.0&quot;
 DECL|macro|DRIVER_AUTHOR
-mdefine_line|#define DRIVER_AUTHOR &quot;Johannes Erdfelt, Randy Dunlap&quot;
+mdefine_line|#define DRIVER_AUTHOR &quot;http:
+singleline_comment|//www.linux-usb.org/ibmcam/&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;IBM/Xirlink C-it USB Camera Driver for Linux (c) 2000&quot;
 DECL|macro|ENABLE_HEXDUMP

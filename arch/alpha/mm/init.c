@@ -26,7 +26,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/console.h&gt;
 DECL|variable|totalram_pages
-r_static
 r_int
 r_int
 id|totalram_pages
@@ -369,6 +368,7 @@ id|PAGE_SHARED
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 r_void
 DECL|function|show_mem
 id|show_mem
@@ -559,6 +559,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 r_static
 r_inline
 r_int
@@ -1106,6 +1107,7 @@ r_return
 id|kernel_end
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 multiline_comment|/*&n; * paging_init() sets up the memory map.&n; */
 r_void
 DECL|function|paging_init
@@ -1154,35 +1156,11 @@ id|high_pfn
 op_assign
 id|max_low_pfn
 suffix:semicolon
-DECL|macro|ORDER_MASK
-mdefine_line|#define ORDER_MASK (~((1L &lt;&lt; (MAX_ORDER-1))-1))
-DECL|macro|ORDER_ALIGN
-mdefine_line|#define ORDER_ALIGN(n)&t;(((n) +  ~ORDER_MASK) &amp; ORDER_MASK)
-id|dma_pfn
-op_assign
-id|ORDER_ALIGN
-c_func
-(paren
-id|dma_pfn
-)paren
-suffix:semicolon
-id|high_pfn
-op_assign
-id|ORDER_ALIGN
-c_func
-(paren
-id|high_pfn
-)paren
-suffix:semicolon
-DECL|macro|ORDER_MASK
-macro_line|#undef ORDER_MASK
-DECL|macro|ORDER_ALIGN
-macro_line|#undef ORDER_ALIGN
 r_if
 c_cond
 (paren
 id|dma_pfn
-OG
+op_ge
 id|high_pfn
 )paren
 id|zones_size
@@ -1234,6 +1212,7 @@ id|PAGE_SIZE
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_DISCONTIGMEM */
 macro_line|#if defined(CONFIG_ALPHA_GENERIC) || defined(CONFIG_ALPHA_SRM)
 r_void
 DECL|function|srm_paging_stop
@@ -1289,6 +1268,7 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 r_static
 r_void
 id|__init
@@ -1517,6 +1497,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_DISCONTIGMEM */
 r_void
 DECL|function|free_initmem
 id|free_initmem
@@ -1628,6 +1609,12 @@ r_int
 id|end
 )paren
 (brace
+r_int
+r_int
+id|__start
+op_assign
+id|start
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1680,7 +1667,7 @@ comma
 (paren
 id|end
 op_minus
-id|start
+id|__start
 )paren
 op_rshift
 l_int|10

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sbus.c,v 1.13 2001/02/13 01:16:44 davem Exp $&n; * sbus.c: UltraSparc SBUS controller support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sbus.c,v 1.14 2001/05/23 03:06:51 davem Exp $&n; * sbus.c: UltraSparc SBUS controller support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -374,6 +374,9 @@ id|iopte
 comma
 op_star
 id|limit
+comma
+op_star
+id|first
 suffix:semicolon
 r_int
 r_int
@@ -460,6 +463,10 @@ id|cnum
 )braket
 dot
 id|flush
+suffix:semicolon
+id|first
+op_assign
+id|iopte
 suffix:semicolon
 r_for
 c_loop
@@ -581,10 +588,34 @@ c_func
 id|iommu
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|iopte
+op_eq
+id|first
+)paren
+r_goto
+id|bad
+suffix:semicolon
 )brace
 multiline_comment|/* I&squot;ve got your streaming cluster right here buddy boy... */
 r_return
 id|iopte
+suffix:semicolon
+id|bad
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_EMERG
+l_string|&quot;sbus: alloc_streaming_cluster of npages(%ld) failed!&bslash;n&quot;
+comma
+id|npages
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|free_streaming_cluster
@@ -1486,6 +1517,16 @@ comma
 id|npages
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|iopte
+op_eq
+l_int|NULL
+)paren
+r_goto
+id|bad
+suffix:semicolon
 id|dma_base
 op_assign
 id|MAP_BASE
@@ -1574,6 +1615,25 @@ id|dma_base
 op_or
 id|offset
 )paren
+suffix:semicolon
+id|bad
+suffix:colon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|iommu-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|sbus_unmap_single
@@ -2169,6 +2229,16 @@ comma
 id|npages
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|iopte
+op_eq
+l_int|NULL
+)paren
+r_goto
+id|bad
+suffix:semicolon
 id|dma_base
 op_assign
 id|MAP_BASE
@@ -2273,6 +2343,25 @@ id|flags
 suffix:semicolon
 r_return
 id|used
+suffix:semicolon
+id|bad
+suffix:colon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|iommu-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|sbus_unmap_sg

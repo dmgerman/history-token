@@ -43,11 +43,6 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
-DECL|member|offset
-r_int
-r_int
-id|offset
-suffix:semicolon
 DECL|member|free_pages
 r_int
 r_int
@@ -87,23 +82,18 @@ id|free_area
 id|MAX_ORDER
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t; * rarely used fields:&n;&t; */
-DECL|member|name
-r_char
-op_star
-id|name
-suffix:semicolon
-DECL|member|size
-r_int
-r_int
-id|size
-suffix:semicolon
 multiline_comment|/*&n;&t; * Discontig memory support fields.&n;&t; */
 DECL|member|zone_pgdat
 r_struct
 id|pglist_data
 op_star
 id|zone_pgdat
+suffix:semicolon
+DECL|member|zone_mem_map
+r_struct
+id|page
+op_star
+id|zone_mem_map
 suffix:semicolon
 DECL|member|zone_start_paddr
 r_int
@@ -115,11 +105,16 @@ r_int
 r_int
 id|zone_start_mapnr
 suffix:semicolon
-DECL|member|zone_mem_map
-r_struct
-id|page
+multiline_comment|/*&n;&t; * rarely used fields:&n;&t; */
+DECL|member|name
+r_char
 op_star
-id|zone_mem_map
+id|name
+suffix:semicolon
+DECL|member|size
+r_int
+r_int
+id|size
 suffix:semicolon
 DECL|typedef|zone_t
 )brace
@@ -159,7 +154,7 @@ DECL|typedef|zonelist_t
 id|zonelist_t
 suffix:semicolon
 DECL|macro|NR_GFPINDEX
-mdefine_line|#define NR_GFPINDEX&t;&t;0x100
+mdefine_line|#define NR_GFPINDEX&t;&t;0x20
 multiline_comment|/*&n; * The pg_data_t structure is used in machines with CONFIG_DISCONTIGMEM&n; * (mostly NUMA machines?) to denote a higher-level memory zone than the&n; * zone_struct denotes.&n; *&n; * On NUMA machines, each NUMA node would have a pg_data_t to describe&n; * it&squot;s memory layout.&n; *&n; * XXX: we need to move the global memory statistics (active_list, ...)&n; *      into the pg_data_t to properly support NUMA.&n; */
 r_struct
 id|bootmem_data
@@ -240,7 +235,7 @@ op_star
 id|pgdat_list
 suffix:semicolon
 DECL|macro|memclass
-mdefine_line|#define memclass(pgzone, tzone)&t;(((pgzone)-&gt;zone_pgdat == (tzone)-&gt;zone_pgdat) &bslash;&n;&t;&t;&t;&amp;&amp; (((pgzone) - (pgzone)-&gt;zone_pgdat-&gt;node_zones) &lt;= &bslash;&n;&t;&t;&t;((tzone) - (pgzone)-&gt;zone_pgdat-&gt;node_zones)))
+mdefine_line|#define memclass(pgzone, tzone)&t;(((pgzone)-&gt;zone_pgdat == (tzone)-&gt;zone_pgdat) &bslash;&n;&t;&t;&t;&amp;&amp; ((pgzone) &lt;= (tzone)))
 multiline_comment|/*&n; * The following two are not meant for general usage. They are here as&n; * prototypes for the discontig memory code.&n; */
 r_struct
 id|page

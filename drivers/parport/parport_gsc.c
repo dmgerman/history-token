@@ -1616,6 +1616,7 @@ id|irq
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;IRQ not found for parallel device at 0x%p&bslash;n&quot;
 comma
 id|d-&gt;hpa
@@ -1662,6 +1663,7 @@ multiline_comment|/* Initialize bidirectional-mode (0x10) &amp; data-tranfer-mod
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: initialize bidirectional-mode.&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -1686,6 +1688,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: enhanced parport-modes not supported.&bslash;n&quot;
 comma
 id|__FUNCTION__

@@ -167,17 +167,6 @@ op_star
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This is setup by the secondary bootstrap loader.  Because&n; * the zero page is zeroed out as soon as the vm system is&n; * initialized, we need to copy things out into a more permanent&n; * place.&n; */
-DECL|macro|PARAM
-mdefine_line|#define PARAM&t;&t;&t;ZERO_PGE
-DECL|macro|COMMAND_LINE
-mdefine_line|#define COMMAND_LINE&t;&t;((char*)(PARAM + 0x0000))
-DECL|macro|COMMAND_LINE_SIZE
-mdefine_line|#define COMMAND_LINE_SIZE&t;256
-DECL|macro|INITRD_START
-mdefine_line|#define INITRD_START&t;&t;(*(unsigned long *) (PARAM+0x100))
-DECL|macro|INITRD_SIZE
-mdefine_line|#define INITRD_SIZE&t;&t;(*(unsigned long *) (PARAM+0x108))
 DECL|variable|command_line
 r_static
 r_char
@@ -812,6 +801,7 @@ id|PAGE_SHIFT
 suffix:semicolon
 multiline_comment|/* Return the PFN of the limit. */
 )brace
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 r_static
 r_void
 id|__init
@@ -1351,6 +1341,22 @@ comma
 id|bootmap_size
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;reserving pages %ld:%ld&bslash;n&quot;
+comma
+id|bootmap_start
+comma
+id|bootmap_start
+op_plus
+id|PFN_UP
+c_func
+(paren
+id|bootmap_size
+)paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 id|initrd_start
 op_assign
@@ -1450,6 +1456,17 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
 )brace
+macro_line|#else
+r_extern
+r_void
+id|setup_memory
+c_func
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 r_int
 id|__init
 DECL|function|page_is_ram

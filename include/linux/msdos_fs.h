@@ -95,6 +95,12 @@ DECL|macro|EOF_FAT32
 mdefine_line|#define EOF_FAT32 0xFFFFFF8
 DECL|macro|EOF_FAT
 mdefine_line|#define EOF_FAT(s) (MSDOS_SB(s)-&gt;fat_bits == 32 ? EOF_FAT32 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? EOF_FAT16 : EOF_FAT12)
+DECL|macro|FAT_FSINFO_SIG1
+mdefine_line|#define FAT_FSINFO_SIG1&t;&t;0x41615252
+DECL|macro|FAT_FSINFO_SIG2
+mdefine_line|#define FAT_FSINFO_SIG2&t;&t;0x61417272
+DECL|macro|IS_FSINFO
+mdefine_line|#define IS_FSINFO(x)&t;&t;(CF_LE_L((x)-&gt;signature1) == FAT_FSINFO_SIG1&t; &bslash;&n;&t;&t;&t;&t; &amp;&amp; CF_LE_L((x)-&gt;signature2) == FAT_FSINFO_SIG2)
 multiline_comment|/*&n; * Inode flags&n; */
 DECL|macro|FAT_BINARY_FL
 mdefine_line|#define FAT_BINARY_FL&t;&t;0x00000001 /* File contains binary data */
@@ -249,14 +255,22 @@ DECL|struct|fat_boot_fsinfo
 r_struct
 id|fat_boot_fsinfo
 (brace
+DECL|member|signature1
+id|__u32
+id|signature1
+suffix:semicolon
+multiline_comment|/* 0x61417272L */
 DECL|member|reserved1
 id|__u32
 id|reserved1
+(braket
+l_int|120
+)braket
 suffix:semicolon
 multiline_comment|/* Nothing as far as I can tell */
-DECL|member|signature
+DECL|member|signature2
 id|__u32
-id|signature
+id|signature2
 suffix:semicolon
 multiline_comment|/* 0x61417272L */
 DECL|member|free_clusters
@@ -696,7 +710,13 @@ op_member_access_from_pointer
 id|b_data
 )paren
 OL
-id|MSDOS_DPB
+id|MSDOS_SB
+c_func
+(paren
+id|dir-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|dir_per_block
 op_minus
 l_int|1
 )paren

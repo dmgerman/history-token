@@ -109,14 +109,6 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|radio_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|pmu_device_init
 c_func
 (paren
@@ -953,13 +945,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SGI_DS1286
 id|ds1286_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_MISC_RADIO
-id|radio_init
 c_func
 (paren
 )paren

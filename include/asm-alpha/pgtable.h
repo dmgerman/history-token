@@ -3,6 +3,7 @@ DECL|macro|_ALPHA_PGTABLE_H
 mdefine_line|#define _ALPHA_PGTABLE_H
 multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the Alpha page table tree.&n; *&n; * This hopefully works with any standard Alpha page-size, as defined&n; * in &lt;asm/page.h&gt; (currently 8192).&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;/* For TASK_SIZE */
 macro_line|#include &lt;asm/machvec.h&gt;
@@ -191,8 +192,20 @@ DECL|macro|PHYS_TWIDDLE
 mdefine_line|#define PHYS_TWIDDLE(phys) (phys)
 macro_line|#endif
 multiline_comment|/*&n; * Conversion functions:  convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
+macro_line|#ifndef CONFIG_DISCONTIGMEM
+DECL|macro|PAGE_TO_PA
+mdefine_line|#define PAGE_TO_PA(page)&t;((page - mem_map) &lt;&lt; PAGE_SHIFT)
+macro_line|#else
+DECL|macro|PAGE_TO_PA
+mdefine_line|#define PAGE_TO_PA(page) &bslash;&n;&t;&t;((((page)-(page)-&gt;zone-&gt;zone_mem_map) &lt;&lt; PAGE_SHIFT) &bslash;&n;&t;&t;+ (page)-&gt;zone-&gt;zone_start_paddr)
+macro_line|#endif
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|mk_pte
 mdefine_line|#define mk_pte(page, pgprot)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t pte;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_val(pte) = ((unsigned long)(page - mem_map) &lt;&lt; 32) |&t;&bslash;&n;&t;&t;       pgprot_val(pgprot);&t;&t;&t;&t;&bslash;&n;&t;pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#else
+DECL|macro|mk_pte
+mdefine_line|#define mk_pte(page, pgprot)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long pfn;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pfn = ((unsigned long)((page)-(page)-&gt;zone-&gt;zone_mem_map)) &lt;&lt; 32;&t;&bslash;&n;&t;pfn += (page)-&gt;zone-&gt;zone_start_paddr &lt;&lt; (32-PAGE_SHIFT);&t;&t;&bslash;&n;&t;pte_val(pte) = pfn | pgprot_val(pgprot);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#endif
 DECL|function|mk_pte_phys
 r_extern
 r_inline
@@ -373,8 +386,13 @@ id|PAGE_SHIFT
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|pte_page
 mdefine_line|#define pte_page(x)&t;(mem_map+(unsigned long)((pte_val(x) &gt;&gt; 32)))
+macro_line|#else
+DECL|macro|pte_page
+mdefine_line|#define pte_page(x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long kvirt;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct page * __xx;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;kvirt = (unsigned long)__va(pte_val(x) &gt;&gt; (32-PAGE_SHIFT));&t;&bslash;&n;&t;__xx = virt_to_page(kvirt);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__xx;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#endif
 DECL|function|pmd_page
 r_extern
 r_inline
@@ -1226,8 +1244,10 @@ mdefine_line|#define swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val })
 multiline_comment|/* Needs to be defined here and not in linux/mm.h, as it is arch dependent */
 DECL|macro|PageSkip
 mdefine_line|#define PageSkip(page)&t;&t;(0)
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
+macro_line|#endif
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range(start, busaddr, size, prot) &bslash;&n;&t;remap_page_range(start, virt_to_phys(__ioremap(busaddr)), size, prot)
 DECL|macro|pte_ERROR

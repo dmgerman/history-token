@@ -330,6 +330,7 @@ id|txt
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s probe: memory squeeze&bslash;n&quot;
 comma
 id|port-&gt;name

@@ -202,6 +202,7 @@ id|dprintk
 c_func
 (paren
 (paren
+id|KERN_DEBUG
 l_string|&quot;wrote 0x%x&bslash;n&quot;
 comma
 id|d
@@ -481,6 +482,7 @@ id|dprintk
 c_func
 (paren
 (paren
+id|KERN_DEBUG
 l_string|&quot;tcr 0x%x ir 0x%x&bslash;n&quot;
 comma
 id|regs-&gt;p_tcr
@@ -493,6 +495,7 @@ id|dprintk
 c_func
 (paren
 (paren
+id|KERN_DEBUG
 l_string|&quot;read status 0x%x&bslash;n&quot;
 comma
 id|bits
@@ -613,6 +616,7 @@ id|dprintk
 c_func
 (paren
 (paren
+id|KERN_DEBUG
 l_string|&quot;tcr 0x%x or 0x%x&bslash;n&quot;
 comma
 id|regs-&gt;p_tcr
@@ -625,6 +629,7 @@ id|dprintk
 c_func
 (paren
 (paren
+id|KERN_DEBUG
 l_string|&quot;read control 0x%x&bslash;n&quot;
 comma
 id|bits
@@ -715,6 +720,7 @@ id|dprintk
 c_func
 (paren
 (paren
+id|KERN_DEBUG
 l_string|&quot;frob1: tcr 0x%x or 0x%x&bslash;n&quot;
 comma
 id|regs-&gt;p_tcr
@@ -865,6 +871,7 @@ id|dprintk
 c_func
 (paren
 (paren
+id|KERN_DEBUG
 l_string|&quot;frob2: tcr 0x%x or 0x%x&bslash;n&quot;
 comma
 id|regs-&gt;p_tcr
@@ -983,6 +990,7 @@ id|dprintk
 c_func
 (paren
 (paren
+id|KERN_DEBUG
 l_string|&quot;forward&bslash;n&quot;
 )paren
 )paren
@@ -1039,6 +1047,7 @@ id|dprintk
 c_func
 (paren
 (paren
+id|KERN_DEBUG
 l_string|&quot;reverse&bslash;n&quot;
 )paren
 )paren
@@ -1272,6 +1281,7 @@ id|dprintk
 c_func
 (paren
 (paren
+id|KERN_DEBUG
 l_string|&quot;init_one_port(%p): ranges, alloc_io, &quot;
 comma
 id|sdev
@@ -1379,7 +1389,7 @@ id|dprintk
 c_func
 (paren
 (paren
-l_string|&quot;register_port, &quot;
+l_string|&quot;register_port&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1430,6 +1440,7 @@ id|dprintk
 c_func
 (paren
 (paren
+id|KERN_DEBUG
 l_string|&quot;init_one_port: request_irq(%08x:%p:%x:%s:%p) &quot;
 comma
 id|p-&gt;irq
@@ -1532,6 +1543,7 @@ id|dprintk
 c_func
 (paren
 (paren
+id|KERN_DEBUG
 l_string|&quot;forward&bslash;n&quot;
 )paren
 )paren

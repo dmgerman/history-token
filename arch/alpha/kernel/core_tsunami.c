@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
@@ -705,11 +706,6 @@ l_int|0xffff0000
 op_rshift
 l_int|12
 suffix:semicolon
-id|wmb
-c_func
-(paren
-)paren
-suffix:semicolon
 op_star
 id|csr
 op_assign
@@ -954,6 +950,41 @@ mdefine_line|#define tsunami_probe_read(ADDR) 1
 macro_line|#endif /* NXM_MACHINE_CHECKS_ON_TSUNAMI */
 DECL|macro|FN
 mdefine_line|#define FN __FUNCTION__
+r_static
+r_void
+id|__init
+DECL|function|tsunami_monster_window_enable
+id|tsunami_monster_window_enable
+c_func
+(paren
+id|tsunami_pchip
+op_star
+id|pchip
+)paren
+(brace
+r_volatile
+r_int
+r_int
+op_star
+id|csr
+op_assign
+op_amp
+id|pchip-&gt;pctl.csr
+suffix:semicolon
+op_star
+id|csr
+op_or_assign
+id|pctl_m_mwin
+suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+op_star
+id|csr
+suffix:semicolon
+)brace
 r_static
 r_void
 id|__init
@@ -1391,6 +1422,28 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+(brace
+r_int
+r_int
+id|size
+op_assign
+l_int|0x08000000
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|max_low_pfn
+OG
+(paren
+l_int|0x80000000
+op_rshift
+id|PAGE_SHIFT
+)paren
+)paren
+id|size
+op_assign
+l_int|0x40000000
+suffix:semicolon
 id|hose-&gt;sg_pci
 op_assign
 id|iommu_arena_new
@@ -1400,11 +1453,12 @@ id|hose
 comma
 l_int|0xc0000000
 comma
-l_int|0x08000000
+id|size
 comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 id|__direct_map_base
 op_assign
 l_int|0x40000000
@@ -1570,6 +1624,13 @@ l_int|0
 comma
 op_minus
 l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* Enable the Monster Window to make DAC pci64 possible. */
+id|tsunami_monster_window_enable
+c_func
+(paren
+id|pchip
 )paren
 suffix:semicolon
 )brace

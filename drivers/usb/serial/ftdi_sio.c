@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB FTDI SIO driver&n; *&n; * &t;Copyright (C) 1999, 2000&n; * &t;    Greg Kroah-Hartman (greg@kroah.com)&n; *          Bill Ryder (bryder@sgi.com)&n; *&n; * &t;This program is free software; you can redistribute it and/or modify&n; * &t;it under the terms of the GNU General Public License as published by&n; * &t;the Free Software Foundation; either version 2 of the License, or&n; * &t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * See http://reality.sgi.com/bryder_wellington/ftdi_sio for upto date testing info&n; *     and extra documentation&n; * &n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; *       &n; * (12/3/2000) Bill Ryder&n; *     Added support for 8U232AM device.&n; *     Moved PID and VIDs into header file only.&n; *     Turned on low-latency for the tty (device will do high baudrates)&n; *     Added shutdown routine to close files when device removed.&n; *     More debug and error message cleanups.&n; *     &n; *&n; * (11/13/2000) Bill Ryder&n; *     Added spinlock protected open code and close code.&n; *     Multiple opens work (sort of - see webpage mentioned above).&n; *     Cleaned up comments. Removed multiple PID/VID definitions.&n; *     Factorised cts/dtr code&n; *     Made use of __FUNCTION__ in dbg&squot;s&n; *      &n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (09/11/2000) gkh&n; *&t;Removed DEBUG #ifdefs with call to usb_serial_debug_data&n; *&n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; * (04/04/2000) Bill Ryder &n; *      Fixed bugs in TCGET/TCSET ioctls (by removing them - they are &n; *        handled elsewhere in the tty io driver chain).&n; *&n; * (03/30/2000) Bill Ryder &n; *      Implemented lots of ioctls&n; * &t;Fixed a race condition in write&n; * &t;Changed some dbg&squot;s to errs&n; *&n; * (03/26/2000) gkh&n; * &t;Split driver up into device specific pieces.&n; *&n; */
+multiline_comment|/*&n; * USB FTDI SIO driver&n; *&n; * &t;Copyright (C) 1999, 2000&n; * &t;    Greg Kroah-Hartman (greg@kroah.com)&n; *          Bill Ryder (bryder@sgi.com)&n; *&n; * &t;This program is free software; you can redistribute it and/or modify&n; * &t;it under the terms of the GNU General Public License as published by&n; * &t;the Free Software Foundation; either version 2 of the License, or&n; * &t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * See http://reality.sgi.com/bryder_wellington/ftdi_sio for upto date testing info&n; *     and extra documentation&n; * &n; * (23/May/2001)   Bill Ryder&n; *     Added runtime debug patch (thanx Tyson D Sawyer).&n; *     Cleaned up comments for 8U232&n; *     Added parity, framing and overrun error handling&n; *     Added receive break handling.&n; * &n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; *       &n; * (18/March/2001) Bill Ryder&n; *     (Not released)&n; *     Added send break handling. (requires kernel patch too)&n; *     Fixed 8U232AM hardware RTS/CTS etc status reporting.&n; *     Added flipbuf fix copied from generic device&n; * &n; * (12/3/2000) Bill Ryder&n; *     Added support for 8U232AM device.&n; *     Moved PID and VIDs into header file only.&n; *     Turned on low-latency for the tty (device will do high baudrates)&n; *     Added shutdown routine to close files when device removed.&n; *     More debug and error message cleanups.&n; *     &n; *&n; * (11/13/2000) Bill Ryder&n; *     Added spinlock protected open code and close code.&n; *     Multiple opens work (sort of - see webpage mentioned above).&n; *     Cleaned up comments. Removed multiple PID/VID definitions.&n; *     Factorised cts/dtr code&n; *     Made use of __FUNCTION__ in dbg&squot;s&n; *      &n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (09/11/2000) gkh&n; *&t;Removed DEBUG #ifdefs with call to usb_serial_debug_data&n; *&n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; * (04/04/2000) Bill Ryder &n; *      Fixed bugs in TCGET/TCSET ioctls (by removing them - they are &n; *        handled elsewhere in the tty io driver chain).&n; *&n; * (03/30/2000) Bill Ryder &n; *      Implemented lots of ioctls&n; * &t;Fixed a race condition in write&n; * &t;Changed some dbg&squot;s to errs&n; *&n; * (03/26/2000) gkh&n; * &t;Split driver up into device specific pieces.&n; *&n; */
 multiline_comment|/* Bill Ryder - bryder@sgi.com - wrote the FTDI_SIO implementation */
 multiline_comment|/* Thanx to FTDI for so kindly providing details of the protocol required */
 multiline_comment|/*   to talk to the device */
@@ -37,7 +37,7 @@ macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;ftdi_sio.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.0.0&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.1.0&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman &lt;greg@kroah.com&gt;, Bill Ryder &lt;bryder@sgi.com&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -67,7 +67,7 @@ comma
 multiline_comment|/* Terminating entry */
 )brace
 suffix:semicolon
-multiline_comment|/* THe 8U232AM has the same API as the sio - but it can support MUCH &n;   higher baudrates (921600 at 48MHz/230400 at 12MHz &n;   so .. it&squot;s baudrate setting codes are different */
+multiline_comment|/* THe 8U232AM has the same API as the sio except for:&n;   - it can support MUCH higher baudrates (921600 at 48MHz/230400 &n;     at 12MHz so .. it&squot;s baudrate setting codes are different &n;   - it has a two byte status code.&n;   - it returns characters very 16ms (the FTDI does it every 40ms)&n;  */
 DECL|variable|id_table_8U232AM
 r_static
 id|__devinitdata
@@ -143,11 +143,11 @@ DECL|member|ftdi_type
 id|ftdi_type_t
 id|ftdi_type
 suffix:semicolon
-DECL|member|last_status_byte
-r_char
-id|last_status_byte
+DECL|member|last_set_data_urb_value
+id|__u16
+id|last_set_data_urb_value
 suffix:semicolon
-multiline_comment|/* device sends this every 40ms when open */
+multiline_comment|/* the last data state set - needed for doing a break */
 )brace
 suffix:semicolon
 multiline_comment|/* function prototypes for a FTDI serial converter */
@@ -291,6 +291,19 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+r_static
+r_void
+id|ftdi_sio_break_ctl
+(paren
+r_struct
+id|usb_serial_port
+op_star
+id|port
+comma
+r_int
+id|break_state
+)paren
+suffix:semicolon
 multiline_comment|/* Should rename most ftdi_sio&squot;s to ftdi_ now since there are two devices &n;   which share common code */
 DECL|variable|ftdi_sio_device
 r_struct
@@ -361,6 +374,10 @@ comma
 id|set_termios
 suffix:colon
 id|ftdi_sio_set_termios
+comma
+id|break_ctl
+suffix:colon
+id|ftdi_sio_break_ctl
 comma
 id|startup
 suffix:colon
@@ -441,6 +458,10 @@ comma
 id|set_termios
 suffix:colon
 id|ftdi_sio_set_termios
+comma
+id|break_ctl
+suffix:colon
+id|ftdi_sio_break_ctl
 comma
 id|startup
 suffix:colon
@@ -641,7 +662,7 @@ id|err
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot;- kmalloc(%Zd) failed.&quot;
+l_string|&quot;- kmalloc(%d) failed.&quot;
 comma
 r_sizeof
 (paren
@@ -722,7 +743,7 @@ id|err
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot;- kmalloc(%Zd) failed.&quot;
+l_string|&quot;- kmalloc(%d) failed.&quot;
 comma
 r_sizeof
 (paren
@@ -893,7 +914,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* do not allow a task to be queued to deliver received data */
+multiline_comment|/* This will push the characters through immediately rather &n;&t;&t;   than queue a task to deliver them */
 id|port-&gt;tty-&gt;low_latency
 op_assign
 l_int|1
@@ -1452,7 +1473,7 @@ id|first_byte
 op_assign
 id|port-&gt;write_urb-&gt;transfer_buffer
 suffix:semicolon
-multiline_comment|/* Was seeing a race here, got a read callback, then write callback before&n;&t;&t;   hitting interruptible_sleep_on  - so wrapping in a wait_queue */
+multiline_comment|/* Was seeing a race here, got a read callback, then write callback before&n;&t;&t;   hitting interuptible_sleep_on  - so wrapping in a wait_queue */
 id|add_wait_queue
 c_func
 (paren
@@ -1899,20 +1920,6 @@ op_star
 id|urb-&gt;context
 suffix:semicolon
 r_struct
-id|ftdi_private
-op_star
-id|priv
-op_assign
-(paren
-r_struct
-id|ftdi_private
-op_star
-)paren
-id|port
-op_member_access_from_pointer
-r_private
-suffix:semicolon
-r_struct
 id|usb_serial
 op_star
 id|serial
@@ -1923,6 +1930,9 @@ op_star
 id|tty
 op_assign
 id|port-&gt;tty
+suffix:semicolon
+r_char
+id|error_flag
 suffix:semicolon
 r_int
 r_char
@@ -2024,22 +2034,120 @@ r_else
 id|dbg
 c_func
 (paren
-l_string|&quot;Just status&quot;
-)paren
-suffix:semicolon
-)brace
-id|priv-&gt;last_status_byte
-op_assign
+l_string|&quot;Just status 0o%03o0o%03o&quot;
+comma
 id|data
 (braket
 l_int|0
 )braket
+comma
+id|data
+(braket
+l_int|1
+)braket
+)paren
 suffix:semicolon
-multiline_comment|/* this has modem control lines */
+)brace
 multiline_comment|/* TO DO -- check for hung up line and handle appropriately: */
 multiline_comment|/*   send hangup  */
 multiline_comment|/* See acm.c - you do a tty_hangup  - eg tty_hangup(tty) */
 multiline_comment|/* if CD is dropped and the line is not CLOCAL then we should hangup */
+multiline_comment|/* Handle errors and break */
+id|error_flag
+op_assign
+id|TTY_NORMAL
+suffix:semicolon
+multiline_comment|/* Although the device uses a bitmask and hence can have multiple */
+multiline_comment|/* errors on a packet - the order here sets the priority the */
+multiline_comment|/* error is returned to the tty layer  */
+r_if
+c_cond
+(paren
+id|data
+(braket
+l_int|1
+)braket
+op_amp
+id|FTDI_RS_OE
+)paren
+(brace
+id|error_flag
+op_assign
+id|TTY_OVERRUN
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;OVERRRUN error&quot;
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|data
+(braket
+l_int|1
+)braket
+op_amp
+id|FTDI_RS_BI
+)paren
+(brace
+id|error_flag
+op_assign
+id|TTY_BREAK
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;BREAK received&quot;
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|data
+(braket
+l_int|1
+)braket
+op_amp
+id|FTDI_RS_PE
+)paren
+(brace
+id|error_flag
+op_assign
+id|TTY_PARITY
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;PARITY error&quot;
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|data
+(braket
+l_int|1
+)braket
+op_amp
+id|FTDI_RS_FE
+)paren
+(brace
+id|error_flag
+op_assign
+id|TTY_FRAME
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;FRAMING error&quot;
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2063,6 +2171,23 @@ op_increment
 id|i
 )paren
 (brace
+multiline_comment|/* have to make sure we don&squot;t overflow the buffer&n;&t;&t;&t;  with tty_insert_flip_char&squot;s */
+r_if
+c_cond
+(paren
+id|tty-&gt;flip.count
+op_ge
+id|TTY_FLIPBUF_SIZE
+)paren
+(brace
+id|tty_flip_buffer_push
+c_func
+(paren
+id|tty
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Note that the error flag is duplicated for &n;&t;&t;&t;   every character received since we don&squot;t know&n;&t;&t;&t;   which character it applied to */
 id|tty_insert_flip_char
 c_func
 (paren
@@ -2073,7 +2198,7 @@ id|data
 id|i
 )braket
 comma
-l_int|0
+id|error_flag
 )paren
 suffix:semicolon
 )brace
@@ -2084,6 +2209,59 @@ id|tty
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef NOT_CORRECT_BUT_KEEPING_IT_FOR_NOW
+multiline_comment|/* if a parity error is detected you get status packets forever&n;&t;   until a character is sent without a parity error.&n;&t;   This doesn&squot;t work well since the application receives a never&n;&t;   ending stream of bad data - even though new data hasn&squot;t been sent.&n;&t;   Therefore I (bill) have taken this out.&n;&t;   However - this might make sense for framing errors and so on &n;&t;   so I am leaving the code in for now.&n;&t;*/
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|error_flag
+op_ne
+id|TTY_NORMAL
+)paren
+(brace
+id|dbg
+c_func
+(paren
+l_string|&quot;error_flag is not normal&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* In this case it is just status - if that is an error send a bad character */
+r_if
+c_cond
+(paren
+id|tty-&gt;flip.count
+op_ge
+id|TTY_FLIPBUF_SIZE
+)paren
+(brace
+id|tty_flip_buffer_push
+c_func
+(paren
+id|tty
+)paren
+suffix:semicolon
+)brace
+id|tty_insert_flip_char
+c_func
+(paren
+id|tty
+comma
+l_int|0xff
+comma
+id|error_flag
+)paren
+suffix:semicolon
+id|tty_flip_buffer_push
+c_func
+(paren
+id|tty
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 multiline_comment|/* Continue trying to always read  */
 id|FILL_BULK_URB
 c_func
@@ -2580,6 +2758,132 @@ r_return
 id|urb_value
 suffix:semicolon
 )brace
+DECL|function|ftdi_sio_break_ctl
+r_static
+r_void
+id|ftdi_sio_break_ctl
+c_func
+(paren
+r_struct
+id|usb_serial_port
+op_star
+id|port
+comma
+r_int
+id|break_state
+)paren
+(brace
+r_struct
+id|usb_serial
+op_star
+id|serial
+op_assign
+id|port-&gt;serial
+suffix:semicolon
+r_struct
+id|ftdi_private
+op_star
+id|priv
+op_assign
+(paren
+r_struct
+id|ftdi_private
+op_star
+)paren
+id|port
+op_member_access_from_pointer
+r_private
+suffix:semicolon
+id|__u16
+id|urb_value
+op_assign
+l_int|0
+suffix:semicolon
+r_char
+id|buf
+(braket
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* break_state = -1 to turn on break, and 0 to turn off break */
+multiline_comment|/* see drivers/char/tty_io.c to see it used */
+multiline_comment|/* last_set_data_urb_value NEVER has the break bit set in it */
+r_if
+c_cond
+(paren
+id|break_state
+)paren
+(brace
+id|urb_value
+op_assign
+id|priv-&gt;last_set_data_urb_value
+op_or
+id|FTDI_SIO_SET_BREAK
+suffix:semicolon
+)brace
+r_else
+(brace
+id|urb_value
+op_assign
+id|priv-&gt;last_set_data_urb_value
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|usb_control_msg
+c_func
+(paren
+id|serial-&gt;dev
+comma
+id|usb_sndctrlpipe
+c_func
+(paren
+id|serial-&gt;dev
+comma
+l_int|0
+)paren
+comma
+id|FTDI_SIO_SET_DATA_REQUEST
+comma
+id|FTDI_SIO_SET_DATA_REQUEST_TYPE
+comma
+id|urb_value
+comma
+l_int|0
+comma
+id|buf
+comma
+l_int|0
+comma
+id|WDR_TIMEOUT
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|err
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; FAILED to enable/disable break state (state was %d)&quot;
+comma
+id|break_state
+)paren
+suffix:semicolon
+)brace
+id|dbg
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; break state is %d - urb is %d&quot;
+comma
+id|break_state
+comma
+id|urb_value
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* As I understand this - old_termios contains the original termios settings */
 multiline_comment|/*  and tty-&gt;termios contains the new setting to be used */
 multiline_comment|/* */
@@ -2773,6 +3077,11 @@ l_string|&quot;CSIZE was set but not CS5-CS8&quot;
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* This is needed by the break command since it uses the same command - but is&n;&t; *  or&squot;ed with this value  */
+id|priv-&gt;last_set_data_urb_value
+op_assign
+id|urb_value
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3162,7 +3471,7 @@ multiline_comment|/* Will hold the new flags */
 r_char
 id|buf
 (braket
-l_int|1
+l_int|2
 )braket
 suffix:semicolon
 r_int
@@ -3196,7 +3505,6 @@ id|__FUNCTION__
 l_string|&quot; TIOCMGET&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* The MODEM_STATUS_REQUEST works for the sio but not the 232 */
 r_if
 c_cond
 (paren
@@ -3205,9 +3513,6 @@ op_eq
 id|sio
 )paren
 (brace
-multiline_comment|/* TO DECIDE - use the 40ms status packets or not? */
-multiline_comment|/*   PRO: No need to send urb */
-multiline_comment|/*   CON: Could be 40ms out of date */
 multiline_comment|/* Request the status from the device */
 r_if
 c_cond
@@ -3263,14 +3568,58 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* This gets updated every 40ms - so just copy it in */
-id|buf
-(braket
-l_int|0
-)braket
+multiline_comment|/* the 8U232AM returns a two byte value (the sio is a 1 byte value) - in the same &n;&t;&t;&t;   format as the data returned from the in point */
+r_if
+c_cond
+(paren
+(paren
+id|ret
 op_assign
-id|priv-&gt;last_status_byte
+id|usb_control_msg
+c_func
+(paren
+id|serial-&gt;dev
+comma
+id|usb_rcvctrlpipe
+c_func
+(paren
+id|serial-&gt;dev
+comma
+l_int|0
+)paren
+comma
+id|FTDI_SIO_GET_MODEM_STATUS_REQUEST
+comma
+id|FTDI_SIO_GET_MODEM_STATUS_REQUEST_TYPE
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|buf
+comma
+l_int|2
+comma
+id|WDR_TIMEOUT
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|err
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; Could not get modem status of device - err: %d&quot;
+comma
+id|ret
+)paren
 suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 )brace
 r_return
 id|put_user

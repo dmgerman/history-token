@@ -34,6 +34,17 @@ DECL|macro|ZERO_PGE
 mdefine_line|#define ZERO_PGE&t;(PAGE_OFFSET+KERNEL_START_PHYS+0x0A000)
 DECL|macro|START_ADDR
 mdefine_line|#define START_ADDR&t;(PAGE_OFFSET+KERNEL_START_PHYS+0x10000)
+multiline_comment|/*&n; * This is setup by the secondary bootstrap loader.  Because&n; * the zero page is zeroed out as soon as the vm system is&n; * initialized, we need to copy things out into a more permanent&n; * place.&n; */
+DECL|macro|PARAM
+mdefine_line|#define PARAM&t;&t;&t;ZERO_PGE
+DECL|macro|COMMAND_LINE
+mdefine_line|#define COMMAND_LINE&t;&t;((char*)(PARAM + 0x0000))
+DECL|macro|COMMAND_LINE_SIZE
+mdefine_line|#define COMMAND_LINE_SIZE&t;256
+DECL|macro|INITRD_START
+mdefine_line|#define INITRD_START&t;&t;(*(unsigned long *) (PARAM+0x100))
+DECL|macro|INITRD_SIZE
+mdefine_line|#define INITRD_SIZE&t;&t;(*(unsigned long *) (PARAM+0x108))
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/kernel.h&gt;
 multiline_comment|/*&n; * This is the logout header that should be common to all platforms&n; * (assuming they are running OSF/1 PALcode, I guess).&n; */

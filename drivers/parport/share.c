@@ -3336,6 +3336,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;parport: bad specifier `%s&squot;&bslash;n&quot;
 comma
 id|str
