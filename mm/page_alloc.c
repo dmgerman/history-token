@@ -1585,7 +1585,7 @@ r_return
 id|allocated
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
+macro_line|#ifdef CONFIG_PM
 DECL|function|is_head_of_free_region
 r_int
 id|is_head_of_free_region
@@ -1809,7 +1809,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_SOFTWARE_SUSPEND */
+macro_line|#endif /* CONFIG_PM */
 multiline_comment|/*&n; * Free a 0-order page&n; */
 r_static
 r_void

@@ -132,9 +132,19 @@ id|init_task_mem.s.task
 )brace
 )brace
 suffix:semicolon
-id|asm
+r_extern
+r_struct
+id|task_struct
+id|init_task
+id|__attribute__
 (paren
-l_string|&quot;.global init_task; init_task = init_task_mem&quot;
+(paren
+id|alias
+c_func
+(paren
+l_string|&quot;init_task_mem&quot;
+)paren
+)paren
 )paren
 suffix:semicolon
 eof

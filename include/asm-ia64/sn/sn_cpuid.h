@@ -16,7 +16,7 @@ macro_line|#ifndef CONFIG_SMP
 DECL|macro|cpu_logical_id
 mdefine_line|#define cpu_logical_id(cpu)&t;&t;&t;&t;0
 DECL|macro|cpu_physical_id
-mdefine_line|#define cpu_physical_id(cpuid)&t;&t;&t;((ia64_get_lid() &gt;&gt; 16) &amp; 0xffff)
+mdefine_line|#define cpu_physical_id(cpuid)&t;&t;&t;((ia64_getreg(_IA64_REG_CR_LID) &gt;&gt; 16) &amp; 0xffff)
 macro_line|#endif
 multiline_comment|/*&n; * macros for some of these exist in sn/addrs.h &amp; sn/arch.h, etc. However, &n; * trying #include these files here causes circular dependencies.&n; */
 DECL|macro|cpu_physical_id_to_nasid
@@ -24,9 +24,9 @@ mdefine_line|#define cpu_physical_id_to_nasid(cpi)&t;&t;((cpi) &amp;0xfff)
 DECL|macro|cpu_physical_id_to_slice
 mdefine_line|#define cpu_physical_id_to_slice(cpi)&t;&t;((cpi&gt;&gt;12) &amp; 3)
 DECL|macro|get_nasid
-mdefine_line|#define get_nasid()&t;&t;&t;&t;((ia64_get_lid() &gt;&gt; 16) &amp; 0xfff)
+mdefine_line|#define get_nasid()&t;&t;&t;&t;((ia64_getreg(_IA64_REG_CR_LID) &gt;&gt; 16) &amp; 0xfff)
 DECL|macro|get_slice
-mdefine_line|#define get_slice()&t;&t;&t;&t;((ia64_get_lid() &gt;&gt; 28) &amp; 0xf)
+mdefine_line|#define get_slice()&t;&t;&t;&t;((ia64_getreg(_IA64_REG_CR_LID) &gt;&gt; 28) &amp; 0xf)
 DECL|macro|get_node_number
 mdefine_line|#define get_node_number(addr)&t;&t;&t;(((unsigned long)(addr)&gt;&gt;38) &amp; 0x7ff)
 multiline_comment|/*&n; * NOTE: id &amp; eid refer to Intel&squot;s definitions of the LID register&n; * &n; * NOTE: on non-MP systems, only cpuid 0 exists&n; */

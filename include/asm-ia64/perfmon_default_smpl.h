@@ -14,12 +14,24 @@ r_int
 id|buf_size
 suffix:semicolon
 multiline_comment|/* size of the buffer in bytes */
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* buffer specific flags */
+DECL|member|res1
+r_int
+r_int
+id|res1
+suffix:semicolon
+multiline_comment|/* for future use */
 DECL|member|reserved
 r_int
 r_int
 id|reserved
 (braket
-l_int|3
+l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* for future use */
@@ -102,7 +114,7 @@ DECL|typedef|pfm_default_smpl_hdr_t
 )brace
 id|pfm_default_smpl_hdr_t
 suffix:semicolon
-multiline_comment|/*&n; * Entry header in the sampling buffer.  The header is directly followed&n; * with the PMDs saved in increasing index order: PMD4, PMD5, .... How&n; * many PMDs are present depends on how the session was programmed.&n; *&n; * XXX: in this version of the entry, only up to 64 registers can be&n; * recorded. This should be enough for quite some time. Always check&n; * sampling format before parsing entries!&n; *&n; * In the case where multiple counters overflow at the same time, the&n; * last_reset_value member indicates the initial value of the&n; * overflowed PMD with the smallest index.  For instance, if PMD2 and&n; * PMD5 have overflowed, the last_reset_value member contains the&n; * initial value of PMD2.&n; */
+multiline_comment|/*&n; * Entry header in the sampling buffer.  The header is directly followed&n; * with the values of the PMD registers of interest saved in increasing &n; * index order: PMD4, PMD5, and so on. How many PMDs are present depends &n; * on how the session was programmed.&n; *&n; * In the case where multiple counters overflow at the same time, multiple&n; * entries are written consecutively.&n; *&n; * last_reset_value member indicates the initial value of the overflowed PMD. &n; */
 r_typedef
 r_struct
 (brace
@@ -110,46 +122,56 @@ DECL|member|pid
 r_int
 id|pid
 suffix:semicolon
-multiline_comment|/* current process at PMU interrupt point */
-DECL|member|cpu
+multiline_comment|/* active process at PMU interrupt point */
+DECL|member|reserved1
 r_int
-id|cpu
+r_char
+id|reserved1
+(braket
+l_int|3
+)braket
 suffix:semicolon
-multiline_comment|/* cpu on which the overfow occured */
+multiline_comment|/* reserved for future use */
+DECL|member|ovfl_pmd
+r_int
+r_char
+id|ovfl_pmd
+suffix:semicolon
+multiline_comment|/* index of overflowed PMD */
 DECL|member|last_reset_val
 r_int
 r_int
 id|last_reset_val
 suffix:semicolon
-multiline_comment|/* initial value of 1st overflowed PMD */
+multiline_comment|/* initial value of overflowed PMD */
 DECL|member|ip
 r_int
 r_int
 id|ip
 suffix:semicolon
-multiline_comment|/* where did the overflow interrupt happened */
-DECL|member|ovfl_pmds
-r_int
-r_int
-id|ovfl_pmds
-suffix:semicolon
-multiline_comment|/* which PMDS registers overflowed (64 max) */
+multiline_comment|/* where did the overflow interrupt happened  */
 DECL|member|tstamp
 r_int
 r_int
 id|tstamp
 suffix:semicolon
-multiline_comment|/* ar.itc on the CPU that took the overflow */
+multiline_comment|/* ar.itc when entering perfmon intr. handler */
+DECL|member|cpu
+r_int
+r_int
+id|cpu
+suffix:semicolon
+multiline_comment|/* cpu on which the overfow occured */
 DECL|member|set
 r_int
 r_int
 id|set
 suffix:semicolon
 multiline_comment|/* event set active when overflow ocurred   */
-DECL|member|reserved1
+DECL|member|reserved2
 r_int
 r_int
-id|reserved1
+id|reserved2
 suffix:semicolon
 multiline_comment|/* for future use */
 DECL|typedef|pfm_default_smpl_entry_t

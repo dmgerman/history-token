@@ -1,11 +1,12 @@
 macro_line|#ifndef _ASM_IA64_DELAY_H
 DECL|macro|_ASM_IA64_DELAY_H
 mdefine_line|#define _ASM_IA64_DELAY_H
-multiline_comment|/*&n; * Delay routines using a pre-computed &quot;cycles/usec&quot; value.&n; *&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; */
+multiline_comment|/*&n; * Delay routines using a pre-computed &quot;cycles/usec&quot; value.&n; *&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 r_static
 id|__inline__
@@ -18,18 +19,17 @@ r_int
 id|val
 )paren
 (brace
-id|__asm__
-id|__volatile__
+id|ia64_setreg
 c_func
 (paren
-l_string|&quot;mov cr.itm=%0;; srlz.d;;&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+id|_IA64_REG_CR_ITM
+comma
 id|val
 )paren
-suffix:colon
-l_string|&quot;memory&quot;
+suffix:semicolon
+id|ia64_srlz_d
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -47,18 +47,17 @@ r_int
 r_int
 id|result
 suffix:semicolon
-id|__asm__
-id|__volatile__
+id|result
+op_assign
+id|ia64_getreg
 c_func
 (paren
-l_string|&quot;mov %0=cr.itm;; srlz.d;;&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|result
+id|_IA64_REG_CR_ITM
 )paren
-op_scope_resolution
-l_string|&quot;memory&quot;
+suffix:semicolon
+id|ia64_srlz_d
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -76,18 +75,17 @@ r_int
 id|val
 )paren
 (brace
-id|__asm__
-id|__volatile__
+id|ia64_setreg
 c_func
 (paren
-l_string|&quot;mov cr.itv=%0;; srlz.d;;&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+id|_IA64_REG_CR_ITV
+comma
 id|val
 )paren
-suffix:colon
-l_string|&quot;memory&quot;
+suffix:semicolon
+id|ia64_srlz_d
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -102,18 +100,17 @@ r_int
 id|val
 )paren
 (brace
-id|__asm__
-id|__volatile__
+id|ia64_setreg
 c_func
 (paren
-l_string|&quot;mov ar.itc=%0;; srlz.d;;&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+id|_IA64_REG_AR_ITC
+comma
 id|val
 )paren
-suffix:colon
-l_string|&quot;memory&quot;
+suffix:semicolon
+id|ia64_srlz_d
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -131,18 +128,17 @@ r_int
 r_int
 id|result
 suffix:semicolon
-id|__asm__
-id|__volatile__
+id|result
+op_assign
+id|ia64_getreg
 c_func
 (paren
-l_string|&quot;mov %0=ar.itc&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|result
+id|_IA64_REG_AR_ITC
 )paren
-op_scope_resolution
-l_string|&quot;memory&quot;
+suffix:semicolon
+id|ia64_barrier
+c_func
+(paren
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ITANIUM
@@ -161,20 +157,21 @@ op_minus
 l_int|1
 )paren
 )paren
-id|__asm__
-id|__volatile__
+(brace
+id|result
+op_assign
+id|ia64_getreg
 c_func
 (paren
-l_string|&quot;mov %0=ar.itc&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|result
-)paren
-op_scope_resolution
-l_string|&quot;memory&quot;
+id|_IA64_REG_AR_ITC
 )paren
 suffix:semicolon
+id|ia64_barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 r_return
 id|result
@@ -191,10 +188,6 @@ r_int
 id|loops
 )paren
 (brace
-r_int
-r_int
-id|saved_ar_lc
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -204,49 +197,16 @@ l_int|1
 )paren
 r_return
 suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;mov %0=ar.lc;;&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|saved_ar_lc
-)paren
-)paren
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;mov ar.lc=%0;;&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
+r_while
+c_loop
 (paren
 id|loops
-op_minus
-l_int|1
+op_decrement
 )paren
-)paren
-suffix:semicolon
-id|__asm__
-id|__volatile__
+id|ia64_nop
 c_func
 (paren
-l_string|&quot;1:&bslash;tbr.cloop.sptk.few 1b;;&quot;
-)paren
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;mov ar.lc=%0&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
-id|saved_ar_lc
-)paren
+l_int|0
 )paren
 suffix:semicolon
 )brace
