@@ -8970,7 +8970,7 @@ comma
 multiline_comment|/* packet may be split into two different       */
 id|after_wrap
 suffix:semicolon
-multiline_comment|/*   pieces to acommodate queue wraparound      */
+multiline_comment|/*   pieces to accommodate queue wraparound      */
 multiline_comment|/* pull message off the receive queue */
 id|q
 op_assign

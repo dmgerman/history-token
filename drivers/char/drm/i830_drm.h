@@ -89,7 +89,7 @@ mdefine_line|#define I830_UPLOAD_TEX_PALETTE_N(n)    (0x1000000 &lt;&lt; (n))
 DECL|macro|I830_UPLOAD_TEX_PALETTE_SHARED
 mdefine_line|#define I830_UPLOAD_TEX_PALETTE_SHARED&t;0x4000000
 multiline_comment|/* Indices into buf.Setup where various bits of state are mirrored per&n; * context and per buffer.  These can be fired at the card as a unit,&n; * or in a piecewise fashion as required.&n; */
-multiline_comment|/* Destbuffer state &n; *    - backbuffer linear offset and pitch -- invarient in the current dri&n; *    - zbuffer linear offset and pitch -- also invarient&n; *    - drawing origin in back and depth buffers.&n; *&n; * Keep the depth/back buffer state here to acommodate private buffers&n; * in the future.&n; */
+multiline_comment|/* Destbuffer state &n; *    - backbuffer linear offset and pitch -- invarient in the current dri&n; *    - zbuffer linear offset and pitch -- also invarient&n; *    - drawing origin in back and depth buffers.&n; *&n; * Keep the depth/back buffer state here to accommodate private buffers&n; * in the future.&n; */
 DECL|macro|I830_DESTREG_CBUFADDR
 mdefine_line|#define I830_DESTREG_CBUFADDR 0
 multiline_comment|/* Invarient */

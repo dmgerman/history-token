@@ -161,7 +161,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * GPIO IRQs must be acknoledged.  This is for IRQs from 0 to 10.&n; */
+multiline_comment|/*&n; * GPIO IRQs must be acknowledged.  This is for IRQs from 0 to 10.&n; */
 DECL|function|sa1100_low_gpio_ack
 r_static
 r_void

@@ -5314,7 +5314,7 @@ id|VIC_CPI_LEVEL0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Acknowlege receipt of CPI in the QIC, clear in QIC hardware and&n; * set the cache line to shared by reading it.&n; *&n; * DON&squot;T make this inline otherwise the cache line read will be&n; * optimised away&n; * */
+multiline_comment|/* Acknowledge receipt of CPI in the QIC, clear in QIC hardware and&n; * set the cache line to shared by reading it.&n; *&n; * DON&squot;T make this inline otherwise the cache line read will be&n; * optimised away&n; * */
 r_static
 r_int
 DECL|function|ack_QIC_CPI
