@@ -143,10 +143,9 @@ DECL|typedef|user_info_t
 id|user_info_t
 suffix:semicolon
 multiline_comment|/* Socket state information */
-DECL|struct|socket_info_t
-r_typedef
+DECL|struct|pcmcia_bus_socket
 r_struct
-id|socket_info_t
+id|pcmcia_bus_socket
 (brace
 DECL|member|handle
 id|client_handle_t
@@ -202,9 +201,7 @@ r_int
 id|socket_no
 suffix:semicolon
 multiline_comment|/* deprecated */
-DECL|typedef|socket_info_t
 )brace
-id|socket_info_t
 suffix:semicolon
 DECL|macro|SOCKET_PRESENT
 mdefine_line|#define SOCKET_PRESENT&t;&t;0x01
@@ -299,7 +296,8 @@ id|dev_info
 )paren
 suffix:semicolon
 r_static
-id|socket_info_t
+r_struct
+id|pcmcia_bus_socket
 op_star
 id|get_socket_info_by_nr
 c_func
@@ -372,7 +370,8 @@ id|socket_bind_t
 op_star
 id|b
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|pcmcia_bus_socket
 op_star
 id|bus_sock
 suffix:semicolon
@@ -498,7 +497,8 @@ id|socket_bind_t
 op_star
 id|b
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|pcmcia_bus_socket
 op_star
 id|bus_sock
 suffix:semicolon
@@ -984,7 +984,8 @@ r_void
 id|handle_event
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_bus_socket
 op_star
 id|s
 comma
@@ -1031,7 +1032,8 @@ r_int
 id|handle_request
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_bus_socket
 op_star
 id|s
 comma
@@ -1114,7 +1116,8 @@ id|u_long
 id|sn
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_bus_socket
 op_star
 id|s
 op_assign
@@ -1156,12 +1159,10 @@ op_star
 id|args
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_bus_socket
 op_star
 id|s
-suffix:semicolon
-r_int
-id|i
 suffix:semicolon
 id|DEBUG
 c_func
@@ -1180,10 +1181,6 @@ suffix:semicolon
 id|s
 op_assign
 id|args-&gt;client_data
-suffix:semicolon
-id|i
-op_assign
-id|s-&gt;socket_no
 suffix:semicolon
 r_switch
 c_cond
@@ -1295,8 +1292,10 @@ r_int
 id|bind_mtd
 c_func
 (paren
-r_int
-id|i
+r_struct
+id|pcmcia_bus_socket
+op_star
+id|bus_sock
 comma
 id|mtd_info_t
 op_star
@@ -1320,7 +1319,7 @@ id|mtd_info-&gt;Attributes
 suffix:semicolon
 id|bind_req.Socket
 op_assign
-id|i
+id|bus_sock-&gt;socket_no
 suffix:semicolon
 id|bind_req.CardOffset
 op_assign
@@ -1366,7 +1365,7 @@ op_star
 )paren
 id|bind_req.dev_info
 comma
-id|i
+id|bus_sock-&gt;socket_no
 comma
 id|bind_req.CardOffset
 )paren
@@ -1388,8 +1387,10 @@ r_int
 id|bind_request
 c_func
 (paren
-r_int
-id|i
+r_struct
+id|pcmcia_bus_socket
+op_star
+id|s
 comma
 id|bind_info_t
 op_star
@@ -1407,16 +1408,6 @@ id|b
 suffix:semicolon
 id|bind_req_t
 id|bind_req
-suffix:semicolon
-id|socket_info_t
-op_star
-id|s
-op_assign
-id|get_socket_info_by_nr
-c_func
-(paren
-id|i
-)paren
 suffix:semicolon
 r_int
 id|ret
@@ -1562,7 +1553,7 @@ suffix:semicolon
 )brace
 id|bind_req.Socket
 op_assign
-id|i
+id|s-&gt;socket_no
 suffix:semicolon
 id|bind_req.Function
 op_assign
@@ -1615,7 +1606,7 @@ op_star
 )paren
 id|dev_info
 comma
-id|i
+id|s-&gt;socket_no
 )paren
 suffix:semicolon
 r_return
@@ -1730,8 +1721,10 @@ r_int
 id|get_device_info
 c_func
 (paren
-r_int
-id|i
+r_struct
+id|pcmcia_bus_socket
+op_star
+id|s
 comma
 id|bind_info_t
 op_star
@@ -1741,16 +1734,6 @@ r_int
 id|first
 )paren
 (brace
-id|socket_info_t
-op_star
-id|s
-op_assign
-id|get_socket_info_by_nr
-c_func
-(paren
-id|i
-)paren
-suffix:semicolon
 id|socket_bind_t
 op_star
 id|b
@@ -2042,24 +2025,16 @@ r_int
 id|unbind_request
 c_func
 (paren
-r_int
-id|i
+r_struct
+id|pcmcia_bus_socket
+op_star
+id|s
 comma
 id|bind_info_t
 op_star
 id|bind_info
 )paren
 (brace
-id|socket_info_t
-op_star
-id|s
-op_assign
-id|get_socket_info_by_nr
-c_func
-(paren
-id|i
-)paren
-suffix:semicolon
 id|socket_bind_t
 op_star
 op_star
@@ -2229,7 +2204,8 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|pcmcia_bus_socket
 op_star
 id|s
 suffix:semicolon
@@ -2386,7 +2362,8 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|pcmcia_bus_socket
 op_star
 id|s
 suffix:semicolon
@@ -2558,7 +2535,8 @@ c_func
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
 )paren
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|pcmcia_bus_socket
 op_star
 id|s
 suffix:semicolon
@@ -2712,7 +2690,8 @@ c_func
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
 )paren
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|pcmcia_bus_socket
 op_star
 id|s
 suffix:semicolon
@@ -2872,7 +2851,8 @@ c_func
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
 )paren
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|pcmcia_bus_socket
 op_star
 id|s
 suffix:semicolon
@@ -2987,7 +2967,8 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|pcmcia_bus_socket
 op_star
 id|s
 suffix:semicolon
@@ -3606,7 +3587,7 @@ op_assign
 id|bind_request
 c_func
 (paren
-id|i
+id|s
 comma
 op_amp
 id|buf.bind_info
@@ -3622,7 +3603,7 @@ op_assign
 id|get_device_info
 c_func
 (paren
-id|i
+id|s
 comma
 op_amp
 id|buf.bind_info
@@ -3640,7 +3621,7 @@ op_assign
 id|get_device_info
 c_func
 (paren
-id|i
+id|s
 comma
 op_amp
 id|buf.bind_info
@@ -3658,7 +3639,7 @@ op_assign
 id|unbind_request
 c_func
 (paren
-id|i
+id|s
 comma
 op_amp
 id|buf.bind_info
@@ -3688,7 +3669,7 @@ op_assign
 id|bind_mtd
 c_func
 (paren
-id|i
+id|s
 comma
 op_amp
 id|buf.mtd_info
@@ -3933,7 +3914,8 @@ suffix:semicolon
 id|bind_req_t
 id|bind
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|pcmcia_bus_socket
 op_star
 id|s
 comma
@@ -3953,7 +3935,8 @@ c_func
 (paren
 r_sizeof
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_bus_socket
 )paren
 comma
 id|GFP_KERNEL
@@ -3980,7 +3963,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_bus_socket
 )paren
 )paren
 suffix:semicolon
@@ -4354,7 +4338,8 @@ op_amp
 id|bus_socket_list
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_bus_socket
 op_star
 id|bus_sock
 op_assign
@@ -4363,7 +4348,8 @@ c_func
 (paren
 id|list_loop
 comma
-id|socket_info_t
+r_struct
+id|pcmcia_bus_socket
 comma
 id|socket_list
 )paren
@@ -4643,7 +4629,8 @@ suffix:semicolon
 multiline_comment|/* helpers for backwards-compatible functions */
 DECL|function|get_socket_info_by_nr
 r_static
-id|socket_info_t
+r_struct
+id|pcmcia_bus_socket
 op_star
 id|get_socket_info_by_nr
 c_func
@@ -4653,7 +4640,8 @@ r_int
 id|nr
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_bus_socket
 op_star
 id|s
 suffix:semicolon
