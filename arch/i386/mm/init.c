@@ -934,14 +934,9 @@ op_increment
 id|one_highpage_init
 c_func
 (paren
+id|pfn_to_page
+c_func
 (paren
-r_struct
-id|page
-op_star
-)paren
-(paren
-id|mem_map
-op_plus
 id|pfn
 )paren
 comma
@@ -1533,9 +1528,11 @@ r_void
 macro_line|#ifdef CONFIG_HIGHMEM
 id|highmem_start_page
 op_assign
-id|mem_map
-op_plus
+id|pfn_to_page
+c_func
+(paren
 id|highstart_pfn
+)paren
 suffix:semicolon
 id|max_mapnr
 op_assign
@@ -1685,9 +1682,11 @@ op_logical_and
 id|PageReserved
 c_func
 (paren
-id|mem_map
-op_plus
+id|pfn_to_page
+c_func
+(paren
 id|tmp
+)paren
 )paren
 )paren
 id|reservedpages

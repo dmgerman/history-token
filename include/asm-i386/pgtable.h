@@ -699,7 +699,7 @@ DECL|macro|pmd_page_kernel
 mdefine_line|#define pmd_page_kernel(pmd) &bslash;&n;((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
 macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|pmd_page
-mdefine_line|#define pmd_page(pmd) &bslash;&n;&t;(mem_map + (pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
+mdefine_line|#define pmd_page(pmd) (pfn_to_page(pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
 macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 DECL|macro|pmd_large
 mdefine_line|#define pmd_large(pmd) &bslash;&n;&t;((pmd_val(pmd) &amp; (_PAGE_PSE|_PAGE_PRESENT)) == (_PAGE_PSE|_PAGE_PRESENT))

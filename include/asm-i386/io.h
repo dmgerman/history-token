@@ -88,23 +88,8 @@ id|address
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Change &quot;struct page&quot; to physical address.&n; */
-macro_line|#ifdef CONFIG_HIGHMEM64G
-macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|page_to_phys
-mdefine_line|#define page_to_phys(page)&t;((u64)(page - mem_map) &lt;&lt; PAGE_SHIFT)
-macro_line|#else
-DECL|macro|page_to_phys
-mdefine_line|#define page_to_phys(page)&t;((u64)(page - page_zone(page)-&gt;zone_mem_map + page_zone(page)-&gt;zone_start_pfn) &lt;&lt; PAGE_SHIFT)
-macro_line|#endif /* !CONFIG_DISCONTIGMEM */
-macro_line|#else
-macro_line|#ifndef CONFIG_DISCONTIGMEM
-DECL|macro|page_to_phys
-mdefine_line|#define page_to_phys(page)&t;((page - mem_map) &lt;&lt; PAGE_SHIFT)
-macro_line|#else
-DECL|macro|page_to_phys
-mdefine_line|#define page_to_phys(page)&t;((page - page_zone(page)-&gt;zone_mem_map + page_zone(page)-&gt;zone_start_pfn) &lt;&lt; PAGE_SHIFT)
-macro_line|#endif /* !CONFIG_DISCONTIGMEM */
-macro_line|#endif /* CONFIG_HIGHMEM64G */
+mdefine_line|#define page_to_phys(page)    ((dma_addr_t)page_to_pfn(page) &lt;&lt; PAGE_SHIFT)
 r_extern
 r_void
 op_star
