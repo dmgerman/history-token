@@ -2571,6 +2571,10 @@ op_minus
 id|ENODEV
 suffix:semicolon
 multiline_comment|/*&n;&t; * initialise some variables&n;&t; */
+id|s-&gt;opened
+op_assign
+l_int|1
+suffix:semicolon
 id|s-&gt;hdlcrx.hbuf.rd
 op_assign
 id|s-&gt;hdlcrx.hbuf.wr
@@ -2730,6 +2734,10 @@ suffix:semicolon
 id|s-&gt;skb
 op_assign
 l_int|NULL
+suffix:semicolon
+id|s-&gt;opened
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 id|i
@@ -3711,6 +3719,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|s-&gt;opened
+op_logical_and
 id|s-&gt;ops-&gt;close
 )paren
 id|s-&gt;ops
