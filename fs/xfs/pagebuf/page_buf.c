@@ -2813,6 +2813,9 @@ DECL|function|pagebuf_get_empty
 id|pagebuf_get_empty
 c_func
 (paren
+r_int
+id|len
+comma
 id|pb_target_t
 op_star
 id|target
@@ -2844,7 +2847,7 @@ id|target
 comma
 l_int|0
 comma
-l_int|0
+id|len
 comma
 id|_PBF_LOCKABLE
 )paren
