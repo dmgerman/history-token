@@ -3,9 +3,78 @@ macro_line|#ifndef __ASM_ARCH_MEMORY_H
 DECL|macro|__ASM_ARCH_MEMORY_H
 mdefine_line|#define __ASM_ARCH_MEMORY_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/sizes.h&gt;
 multiline_comment|/*&n; * Physical DRAM offset is 0xc0000000 on the SA1100&n; */
 DECL|macro|PHYS_OFFSET
 mdefine_line|#define PHYS_OFFSET&t;(0xc0000000UL)
+macro_line|#ifndef __ASSEMBLY__
+macro_line|#ifdef CONFIG_SA1111
+r_static
+r_inline
+r_void
+DECL|function|__arch_adjust_zones
+id|__arch_adjust_zones
+c_func
+(paren
+r_int
+id|node
+comma
+r_int
+r_int
+op_star
+id|size
+comma
+r_int
+r_int
+op_star
+id|holes
+)paren
+(brace
+r_int
+r_int
+id|sz
+op_assign
+id|SZ_1M
+op_rshift
+id|PAGE_SHIFT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|node
+op_ne
+l_int|0
+)paren
+id|sz
+op_assign
+l_int|0
+suffix:semicolon
+id|size
+(braket
+l_int|1
+)braket
+op_assign
+id|size
+(braket
+l_int|0
+)braket
+op_minus
+id|sz
+suffix:semicolon
+id|size
+(braket
+l_int|0
+)braket
+op_assign
+id|sz
+suffix:semicolon
+)brace
+DECL|macro|arch_adjust_zones
+mdefine_line|#define arch_adjust_zones(node, size, holes) &bslash;&n;&t;__arch_adjust_zones(node, size, holes)
+DECL|macro|ISA_DMA_THRESHOLD
+mdefine_line|#define ISA_DMA_THRESHOLD&t;(PHYS_OFFSET + SZ_1M - 1)
+macro_line|#endif
+macro_line|#endif
 multiline_comment|/*&n; * Virtual view &lt;-&gt; DMA view memory address translations&n; * virt_to_bus: Used to translate the virtual address to an&n; *&t;&t;address suitable to be passed to set_dma_addr&n; * bus_to_virt: Used to convert an address for DMA operations&n; *&t;&t;to an address that the kernel can use.&n; *&n; * On the SA1100, bus addresses are equivalent to physical addresses.&n; */
 DECL|macro|__virt_to_bus
 mdefine_line|#define __virt_to_bus(x)&t; __virt_to_phys(x)

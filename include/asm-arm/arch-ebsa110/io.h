@@ -5,9 +5,43 @@ mdefine_line|#define __ASM_ARM_ARCH_IO_H
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT 0xffff
 id|u8
-id|__inb
+id|__inb8
 c_func
 (paren
+r_int
+r_int
+id|port
+)paren
+suffix:semicolon
+r_void
+id|__outb8
+c_func
+(paren
+id|u8
+id|val
+comma
+r_int
+r_int
+id|port
+)paren
+suffix:semicolon
+id|u8
+id|__inb16
+c_func
+(paren
+r_int
+r_int
+id|port
+)paren
+suffix:semicolon
+r_void
+id|__outb16
+c_func
+(paren
+id|u8
+id|val
+comma
+r_int
 r_int
 id|port
 )paren
@@ -17,30 +51,6 @@ id|__inw
 c_func
 (paren
 r_int
-id|port
-)paren
-suffix:semicolon
-id|u32
-id|__inl
-c_func
-(paren
-r_int
-id|port
-)paren
-suffix:semicolon
-DECL|macro|inb
-mdefine_line|#define inb(p)&t;&t;&t;__inb(p)
-DECL|macro|inw
-mdefine_line|#define inw(p)&t;&t;&t;__inw(p)
-DECL|macro|inl
-mdefine_line|#define inl(p)&t;&t;&t;__inl(p)
-r_void
-id|__outb
-c_func
-(paren
-id|u8
-id|val
-comma
 r_int
 id|port
 )paren
@@ -53,6 +63,16 @@ id|u16
 id|val
 comma
 r_int
+r_int
+id|port
+)paren
+suffix:semicolon
+id|u32
+id|__inl
+c_func
+(paren
+r_int
+r_int
 id|port
 )paren
 suffix:semicolon
@@ -64,15 +84,10 @@ id|u32
 id|val
 comma
 r_int
+r_int
 id|port
 )paren
 suffix:semicolon
-DECL|macro|outb
-mdefine_line|#define outb(v,p)&t;&t;__outb(v,p)
-DECL|macro|outw
-mdefine_line|#define outw(v,p)&t;&t;__outw(v,p)
-DECL|macro|outl
-mdefine_line|#define outl(v,p)&t;&t;__outl(v,p)
 id|u8
 id|__readb
 c_func
@@ -100,18 +115,6 @@ op_star
 id|addr
 )paren
 suffix:semicolon
-DECL|macro|readb
-mdefine_line|#define readb(b)&t;&t;__readb(b)
-DECL|macro|readw
-mdefine_line|#define readw(b)&t;&t;__readw(b)
-DECL|macro|readl
-mdefine_line|#define readl(b)&t;&t;__readl(b)
-DECL|macro|readb_relaxed
-mdefine_line|#define readb_relaxed(addr)&t;readb(addr)
-DECL|macro|readw_relaxed
-mdefine_line|#define readw_relaxed(addr)&t;readw(addr)
-DECL|macro|readl_relaxed
-mdefine_line|#define readl_relaxed(addr)&t;readl(addr)
 r_void
 id|__writeb
 c_func
@@ -148,6 +151,38 @@ op_star
 id|addr
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Argh, someone forgot the IOCS16 line.  We therefore have to handle&n; * the byte stearing by selecting the correct byte IO functions here.&n; */
+macro_line|#ifdef ISA_SIXTEEN_BIT_PERIPHERAL
+DECL|macro|inb
+mdefine_line|#define inb(p) &t;&t;&t;__inb16(p)
+DECL|macro|outb
+mdefine_line|#define outb(v,p)&t;&t;__outb16(v,p)
+macro_line|#else
+DECL|macro|inb
+mdefine_line|#define inb(p)&t;&t;&t;__inb8(p)
+DECL|macro|outb
+mdefine_line|#define outb(v,p)&t;&t;__outb8(v,p)
+macro_line|#endif
+DECL|macro|inw
+mdefine_line|#define inw(p)&t;&t;&t;__inw(p)
+DECL|macro|outw
+mdefine_line|#define outw(v,p)&t;&t;__outw(v,p)
+DECL|macro|inl
+mdefine_line|#define inl(p)&t;&t;&t;__inl(p)
+DECL|macro|outl
+mdefine_line|#define outl(v,p)&t;&t;__outl(v,p)
+DECL|macro|readb
+mdefine_line|#define readb(b)&t;&t;__readb(b)
+DECL|macro|readw
+mdefine_line|#define readw(b)&t;&t;__readw(b)
+DECL|macro|readl
+mdefine_line|#define readl(b)&t;&t;__readl(b)
+DECL|macro|readb_relaxed
+mdefine_line|#define readb_relaxed(addr)&t;readb(addr)
+DECL|macro|readw_relaxed
+mdefine_line|#define readw_relaxed(addr)&t;readw(addr)
+DECL|macro|readl_relaxed
+mdefine_line|#define readl_relaxed(addr)&t;readl(addr)
 DECL|macro|writeb
 mdefine_line|#define writeb(v,b)&t;&t;__writeb(v,b)
 DECL|macro|writew
@@ -158,5 +193,110 @@ DECL|macro|__arch_ioremap
 mdefine_line|#define __arch_ioremap(cookie,sz,c,a)&t;((void *)(cookie))
 DECL|macro|__arch_iounmap
 mdefine_line|#define __arch_iounmap(cookie)&t;&t;do { } while (0)
+r_extern
+r_void
+id|insb
+c_func
+(paren
+r_int
+r_int
+id|port
+comma
+r_void
+op_star
+id|buf
+comma
+r_int
+id|sz
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|insw
+c_func
+(paren
+r_int
+r_int
+id|port
+comma
+r_void
+op_star
+id|buf
+comma
+r_int
+id|sz
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|insl
+c_func
+(paren
+r_int
+r_int
+id|port
+comma
+r_void
+op_star
+id|buf
+comma
+r_int
+id|sz
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|outsb
+c_func
+(paren
+r_int
+r_int
+id|port
+comma
+r_const
+r_void
+op_star
+id|buf
+comma
+r_int
+id|sz
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|outsw
+c_func
+(paren
+r_int
+r_int
+id|port
+comma
+r_const
+r_void
+op_star
+id|buf
+comma
+r_int
+id|sz
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|outsl
+c_func
+(paren
+r_int
+r_int
+id|port
+comma
+r_const
+r_void
+op_star
+id|buf
+comma
+r_int
+id|sz
+)paren
+suffix:semicolon
 macro_line|#endif
 eof
