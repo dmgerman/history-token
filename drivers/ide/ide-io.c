@@ -6113,6 +6113,10 @@ op_assign
 op_amp
 id|wait
 suffix:semicolon
+id|rq-&gt;end_io
+op_assign
+id|blk_end_sync_rq
+suffix:semicolon
 )brace
 id|spin_lock_irqsave
 c_func
