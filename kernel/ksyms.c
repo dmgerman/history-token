@@ -1470,6 +1470,13 @@ c_func
 id|find_lock_page
 )paren
 suffix:semicolon
+DECL|variable|find_trylock_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|find_trylock_page
+)paren
+suffix:semicolon
 DECL|variable|find_or_create_page
 id|EXPORT_SYMBOL
 c_func
