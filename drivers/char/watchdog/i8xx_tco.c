@@ -1362,6 +1362,37 @@ multiline_comment|/* Cannot reset NO_REBOOT bit */
 )brace
 )brace
 multiline_comment|/* Set the TCO_EN bit in SMI_EN register */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_region
+(paren
+id|SMI_EN
+op_plus
+l_int|1
+comma
+l_int|1
+comma
+l_string|&quot;i8xx TCO&quot;
+)paren
+)paren
+(brace
+id|printk
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;I/O address 0x%04x already in use&bslash;n&quot;
+comma
+id|SMI_EN
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|val1
 op_assign
 id|inb
@@ -1384,19 +1415,13 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* Clear out the (probably old) status */
-id|outb
+id|release_region
 (paren
-l_int|0
+id|SMI_EN
+op_plus
+l_int|1
 comma
-id|TCO1_STS
-)paren
-suffix:semicolon
-id|outb
-(paren
-l_int|3
-comma
-id|TCO2_STS
+l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -1475,6 +1500,21 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+multiline_comment|/* Clear out the (probably old) status */
+id|outb
+(paren
+l_int|0
+comma
+id|TCO1_STS
+)paren
+suffix:semicolon
+id|outb
+(paren
+l_int|3
+comma
+id|TCO2_STS
+)paren
+suffix:semicolon
 multiline_comment|/* Check that the heartbeat value is within it&squot;s range ; if not reset to the default */
 r_if
 c_cond
