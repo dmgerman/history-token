@@ -307,6 +307,7 @@ c_func
 id|u32
 id|flags
 comma
+r_struct
 id|acpi_pointer
 op_star
 id|addr
@@ -569,10 +570,12 @@ id|acpi_status
 DECL|function|acpi_os_table_override
 id|acpi_os_table_override
 (paren
+r_struct
 id|acpi_table_header
 op_star
 id|existing_table
 comma
+r_struct
 id|acpi_table_header
 op_star
 op_star
@@ -1318,6 +1321,7 @@ id|acpi_status
 DECL|function|acpi_os_read_pci_configuration
 id|acpi_os_read_pci_configuration
 (paren
+r_struct
 id|acpi_pci_id
 op_star
 id|pci_id
@@ -1441,6 +1445,7 @@ id|acpi_status
 DECL|function|acpi_os_write_pci_configuration
 id|acpi_os_write_pci_configuration
 (paren
+r_struct
 id|acpi_pci_id
 op_star
 id|pci_id
@@ -1563,6 +1568,7 @@ id|acpi_handle
 id|chandle
 comma
 multiline_comment|/* current node */
+r_struct
 id|acpi_pci_id
 op_star
 op_star
@@ -1572,6 +1578,7 @@ id|id
 id|acpi_handle
 id|handle
 suffix:semicolon
+r_struct
 id|acpi_pci_id
 op_star
 id|pci_id

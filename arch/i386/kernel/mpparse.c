@@ -4124,6 +4124,7 @@ comma
 id|ACPI_LOGICAL_ADDRESSING
 comma
 (paren
+r_struct
 id|acpi_table_header
 op_star
 op_star

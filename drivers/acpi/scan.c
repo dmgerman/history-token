@@ -640,6 +640,7 @@ id|error
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign
@@ -679,6 +680,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_union
 id|acpi_object
 op_star
 id|object
@@ -728,6 +730,7 @@ suffix:semicolon
 id|object
 op_assign
 (paren
+r_union
 id|acpi_object
 op_star
 )paren
@@ -1844,6 +1847,7 @@ comma
 l_int|0
 )brace
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign
@@ -2000,6 +2004,7 @@ r_int
 id|type
 )paren
 (brace
+r_struct
 id|acpi_device_info
 id|info
 suffix:semicolon

@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstore - AML Interpreter object store support&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -11,19 +11,22 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exstore&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_store&n; *&n; * PARAMETERS:  *source_desc        - Value to be stored&n; *              *dest_desc          - Where to store it.  Must be an NS node&n; *                                    or an acpi_operand_object of type&n; *                                    Reference;&n; *              walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Store the value described by source_desc into the location&n; *              described by dest_desc. Called by various interpreter&n; *              functions to store the result of an operation into&n; *              the destination operand -- not just simply the actual &quot;Store&quot;&n; *              ASL operator.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_store&n; *&n; * PARAMETERS:  *source_desc        - Value to be stored&n; *              *dest_desc          - Where to store it.  Must be an NS node&n; *                                    or an union acpi_operand_object of type&n; *                                    Reference;&n; *              walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Store the value described by source_desc into the location&n; *              described by dest_desc. Called by various interpreter&n; *              functions to store the result of an operation into&n; *              the destination operand -- not just simply the actual &quot;Store&quot;&n; *              ASL operator.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_store
 id|acpi_ex_store
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|source_desc
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|dest_desc
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -34,6 +37,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|ref_desc
@@ -93,6 +97,7 @@ id|acpi_ex_store_object_to_node
 id|source_desc
 comma
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 )paren
@@ -432,14 +437,17 @@ id|acpi_status
 DECL|function|acpi_ex_store_object_to_index
 id|acpi_ex_store_object_to_index
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|source_desc
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|index_desc
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -450,10 +458,12 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|new_desc
@@ -705,14 +715,17 @@ id|acpi_status
 DECL|function|acpi_ex_store_object_to_node
 id|acpi_ex_store_object_to_node
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|source_desc
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -723,10 +736,12 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|target_desc
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|new_desc

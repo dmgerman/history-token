@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: actbl71.h - IA-64 Extensions to the ACPI Spec Rev. 0.71&n; *                   This file includes tables specific to this&n; *                   specification revision.&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTBL71_H__
 DECL|macro|__ACTBL71_H__
 mdefine_line|#define __ACTBL71_H__
@@ -24,7 +24,6 @@ id|u64
 id|IO_ADDRESS
 suffix:semicolon
 macro_line|#pragma pack(1)
-r_typedef
 r_struct
 multiline_comment|/* Root System Descriptor Pointer */
 (brace
@@ -59,18 +58,16 @@ id|u64
 id|rsdt_physical_address
 suffix:semicolon
 multiline_comment|/* 64-bit physical address of RSDT */
-DECL|typedef|RSDP_DESCRIPTOR_REV071
 )brace
-id|RSDP_DESCRIPTOR_REV071
 suffix:semicolon
 multiline_comment|/*****************************************/
 multiline_comment|/* IA64 Extensions to ACPI Spec Rev 0.71 */
 multiline_comment|/* for the Root System Description Table */
 multiline_comment|/*****************************************/
-r_typedef
 r_struct
 (brace
 DECL|member|header
+r_struct
 id|acpi_table_header
 id|header
 suffix:semicolon
@@ -89,15 +86,12 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Array of pointers to other */
 multiline_comment|/* tables&squot; headers */
-DECL|typedef|RSDT_DESCRIPTOR_REV071
 )brace
-id|RSDT_DESCRIPTOR_REV071
 suffix:semicolon
 multiline_comment|/*******************************************/
 multiline_comment|/* IA64 Extensions to ACPI Spec Rev 0.71   */
 multiline_comment|/* for the Firmware ACPI Control Structure */
 multiline_comment|/*******************************************/
-r_typedef
 r_struct
 (brace
 DECL|member|signature
@@ -155,18 +149,16 @@ l_int|28
 )braket
 suffix:semicolon
 multiline_comment|/* reserved - must be zero */
-DECL|typedef|facs_descriptor_rev071
 )brace
-id|facs_descriptor_rev071
 suffix:semicolon
 multiline_comment|/******************************************/
 multiline_comment|/* IA64 Extensions to ACPI Spec Rev 0.71  */
 multiline_comment|/* for the Fixed ACPI Description Table   */
 multiline_comment|/******************************************/
-r_typedef
 r_struct
 (brace
 DECL|member|header
+r_struct
 id|acpi_table_header
 id|header
 suffix:semicolon
@@ -413,9 +405,7 @@ suffix:colon
 l_int|22
 suffix:semicolon
 multiline_comment|/* reserved - must be zero */
-DECL|typedef|fadt_descriptor_rev071
 )brace
-id|fadt_descriptor_rev071
 suffix:semicolon
 macro_line|#pragma pack()
 macro_line|#endif /* __ACTBL71_H__ */

@@ -1,5 +1,5 @@
 multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nssearch - Namespace search&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
@@ -16,6 +16,7 @@ id|acpi_ns_search_node
 id|u32
 id|target_name
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -23,12 +24,14 @@ comma
 id|acpi_object_type
 id|type
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 op_star
 id|return_node
 )paren
 (brace
+r_struct
 id|acpi_namespace_node
 op_star
 id|next_node
@@ -210,6 +213,7 @@ id|acpi_ns_search_parent_tree
 id|u32
 id|target_name
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -217,6 +221,7 @@ comma
 id|acpi_object_type
 id|type
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 op_star
@@ -226,6 +231,7 @@ id|return_node
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|parent_node
@@ -385,10 +391,12 @@ id|acpi_ns_search_and_enter
 id|u32
 id|target_name
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -402,6 +410,7 @@ comma
 id|u32
 id|flags
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 op_star
@@ -411,6 +420,7 @@ id|return_node
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|new_node

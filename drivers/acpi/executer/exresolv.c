@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresolv - AML Interpreter object resolution&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -11,16 +11,18 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exresolv&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_resolve_to_value&n; *&n; * PARAMETERS:  **stack_ptr         - Points to entry on obj_stack, which can&n; *                                    be either an (acpi_operand_object *)&n; *                                    or an acpi_handle.&n; *              walk_state          - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert Reference objects to values&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_resolve_to_value&n; *&n; * PARAMETERS:  **stack_ptr         - Points to entry on obj_stack, which can&n; *                                    be either an (union acpi_operand_object *)&n; *                                    or an acpi_handle.&n; *              walk_state          - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert Reference objects to values&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_resolve_to_value
 id|acpi_ex_resolve_to_value
 (paren
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|stack_ptr
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -62,7 +64,7 @@ id|AE_AML_NO_OPERAND
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The entity pointed to by the stack_ptr can be either&n;&t; * 1) A valid acpi_operand_object, or&n;&t; * 2) A acpi_namespace_node (named_obj)&n;&t; */
+multiline_comment|/*&n;&t; * The entity pointed to by the stack_ptr can be either&n;&t; * 1) A valid union acpi_operand_object, or&n;&t; * 2) A struct acpi_namespace_node (named_obj)&n;&t; */
 r_if
 c_cond
 (paren
@@ -119,6 +121,7 @@ id|acpi_ex_resolve_node_to_value
 (paren
 id|ACPI_CAST_INDIRECT_PTR
 (paren
+r_struct
 id|acpi_namespace_node
 comma
 id|stack_ptr
@@ -166,11 +169,13 @@ id|acpi_status
 DECL|function|acpi_ex_resolve_object_to_value
 id|acpi_ex_resolve_object_to_value
 (paren
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|stack_ptr
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -181,6 +186,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|stack_desc
@@ -189,6 +195,7 @@ r_void
 op_star
 id|temp_node
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -206,7 +213,7 @@ op_assign
 op_star
 id|stack_ptr
 suffix:semicolon
-multiline_comment|/* This is an acpi_operand_object  */
+multiline_comment|/* This is an union acpi_operand_object    */
 r_switch
 c_cond
 (paren
@@ -532,10 +539,12 @@ id|acpi_status
 DECL|function|acpi_ex_resolve_multiple
 id|acpi_ex_resolve_multiple
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|operand
@@ -544,12 +553,14 @@ id|acpi_object_type
 op_star
 id|return_type
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|return_desc
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -560,6 +571,7 @@ op_star
 )paren
 id|operand
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|node

@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: utobject - ACPI object create/delete/size/cache routines&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -10,6 +10,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;utobject&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_create_internal_object_dbg&n; *&n; * PARAMETERS:  module_name         - Source file name of caller&n; *              line_number         - Line number of caller&n; *              component_id        - Component type of caller&n; *              Type                - ACPI Type of the new object&n; *&n; * RETURN:      Object              - The new object.  Null on failure&n; *&n; * DESCRIPTION: Create and initialize a new internal object.&n; *&n; * NOTE:        We always allocate the worst-case object descriptor because&n; *              these objects are cached, and we want them to be&n; *              one-size-satisifies-any-request.  This in itself may not be&n; *              the most memory efficient, but the efficiency of the object&n; *              cache should more than make up for this!&n; *&n; ******************************************************************************/
+r_union
 id|acpi_operand_object
 op_star
 DECL|function|acpi_ut_create_internal_object_dbg
@@ -29,10 +30,12 @@ id|acpi_object_type
 id|type
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|object
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|second_object
@@ -156,6 +159,7 @@ id|object
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_create_buffer_object&n; *&n; * PARAMETERS:  buffer_size            - Size of buffer to be created&n; *&n; * RETURN:      Pointer to a new Buffer object&n; *&n; * DESCRIPTION: Create a fully initialized buffer object&n; *&n; ******************************************************************************/
+r_union
 id|acpi_operand_object
 op_star
 DECL|function|acpi_ut_create_buffer_object
@@ -165,6 +169,7 @@ id|acpi_size
 id|buffer_size
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|buffer_desc
@@ -262,7 +267,7 @@ id|buffer_desc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_valid_internal_object&n; *&n; * PARAMETERS:  Object              - Object to be validated&n; *&n; * RETURN:      Validate a pointer to be an acpi_operand_object&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_valid_internal_object&n; *&n; * PARAMETERS:  Object              - Object to be validated&n; *&n; * RETURN:      Validate a pointer to be an union acpi_operand_object&n; *&n; ******************************************************************************/
 id|u8
 DECL|function|acpi_ut_valid_internal_object
 id|acpi_ut_valid_internal_object
@@ -313,7 +318,7 @@ id|object
 r_case
 id|ACPI_DESC_TYPE_OPERAND
 suffix:colon
-multiline_comment|/* The object appears to be a valid acpi_operand_object  */
+multiline_comment|/* The object appears to be a valid union acpi_operand_object    */
 r_return
 (paren
 id|TRUE
@@ -411,6 +416,7 @@ id|u32
 id|component_id
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -475,6 +481,7 @@ id|u32
 )paren
 r_sizeof
 (paren
+r_union
 id|acpi_operand_object
 )paren
 )paren
@@ -491,6 +498,7 @@ r_void
 DECL|function|acpi_ut_delete_object_desc
 id|acpi_ut_delete_object_desc
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -503,7 +511,7 @@ comma
 id|object
 )paren
 suffix:semicolon
-multiline_comment|/* Object must be an acpi_operand_object  */
+multiline_comment|/* Object must be an union acpi_operand_object    */
 r_if
 c_cond
 (paren
@@ -565,6 +573,7 @@ id|acpi_status
 DECL|function|acpi_ut_get_simple_object_size
 id|acpi_ut_get_simple_object_size
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|internal_object
@@ -613,6 +622,7 @@ id|length
 op_assign
 r_sizeof
 (paren
+r_union
 id|acpi_object
 )paren
 suffix:semicolon
@@ -788,10 +798,12 @@ id|acpi_ut_get_element_length
 id|u8
 id|object_type
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|source_object
 comma
+r_union
 id|acpi_generic_state
 op_star
 id|state
@@ -806,11 +818,13 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_struct
 id|acpi_pkg_info
 op_star
 id|info
 op_assign
 (paren
+r_struct
 id|acpi_pkg_info
 op_star
 )paren
@@ -893,6 +907,7 @@ id|acpi_status
 DECL|function|acpi_ut_get_package_object_size
 id|acpi_ut_get_package_object_size
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|internal_object
@@ -905,6 +920,7 @@ id|obj_length
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_pkg_info
 id|info
 suffix:semicolon
@@ -963,6 +979,7 @@ id|ACPI_ROUND_UP_TO_NATIVE_WORD
 (paren
 r_sizeof
 (paren
+r_union
 id|acpi_object
 )paren
 )paren
@@ -990,6 +1007,7 @@ DECL|function|acpi_ut_get_object_size
 id|acpi_ut_get_object_size
 c_func
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|internal_object

@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: evrgnini- ACPI address_space (op_region) init&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -30,16 +30,19 @@ op_star
 id|region_context
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|region_desc
 op_assign
 (paren
+r_union
 id|acpi_operand_object
 op_star
 )paren
 id|handle
 suffix:semicolon
+r_struct
 id|acpi_mem_space_context
 op_star
 id|local_region_context
@@ -89,6 +92,7 @@ id|ACPI_MEM_CALLOCATE
 (paren
 r_sizeof
 (paren
+r_struct
 id|acpi_mem_space_context
 )paren
 )paren
@@ -211,6 +215,7 @@ suffix:semicolon
 id|acpi_integer
 id|temp
 suffix:semicolon
+r_struct
 id|acpi_pci_id
 op_star
 id|pci_id
@@ -218,24 +223,29 @@ op_assign
 op_star
 id|region_context
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|handler_obj
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|region_obj
 op_assign
 (paren
+r_union
 id|acpi_operand_object
 op_star
 )paren
 id|handle
 suffix:semicolon
+r_struct
 id|acpi_device_id
 id|object_hID
 suffix:semicolon
@@ -311,6 +321,7 @@ id|ACPI_MEM_CALLOCATE
 (paren
 r_sizeof
 (paren
+r_struct
 id|acpi_pci_id
 )paren
 )paren
@@ -707,6 +718,7 @@ id|acpi_status
 DECL|function|acpi_ev_initialize_region
 id|acpi_ev_initialize_region
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|region_obj
@@ -715,10 +727,12 @@ id|u8
 id|acpi_ns_locked
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|handler_obj
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -726,6 +740,7 @@ suffix:semicolon
 id|acpi_adr_space_type
 id|space_id
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -733,6 +748,7 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|method_node
@@ -747,6 +763,7 @@ op_star
 )paren
 id|METHOD_NAME__REG
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|region_obj2

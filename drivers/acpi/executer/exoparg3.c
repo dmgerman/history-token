@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg3 - AML execution - opcodes with 3 arguments&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -16,11 +16,13 @@ id|acpi_status
 DECL|function|acpi_ex_opcode_3A_0T_0R
 id|acpi_ex_opcode_3A_0T_0R
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -32,6 +34,7 @@ id|walk_state-&gt;operands
 l_int|0
 )braket
 suffix:semicolon
+r_struct
 id|acpi_signal_fatal_info
 op_star
 id|fatal
@@ -106,6 +109,7 @@ id|ACPI_MEM_ALLOCATE
 (paren
 r_sizeof
 (paren
+r_struct
 id|acpi_signal_fatal_info
 )paren
 )paren
@@ -203,11 +207,13 @@ id|acpi_status
 DECL|function|acpi_ex_opcode_3A_1T_1R
 id|acpi_ex_opcode_3A_1T_1R
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -219,6 +225,7 @@ id|walk_state-&gt;operands
 l_int|0
 )braket
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|return_desc

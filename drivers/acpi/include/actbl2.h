@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: actbl2.h - ACPI Specification Revision 2.0 Tables&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTBL2_H__
 DECL|macro|__ACTBL2_H__
 mdefine_line|#define __ACTBL2_H__
@@ -27,10 +27,12 @@ DECL|macro|FADT2_REVISION_ID
 mdefine_line|#define FADT2_REVISION_ID               3
 macro_line|#pragma pack(1)
 multiline_comment|/*&n; * ACPI 2.0 Root System Description Table (RSDT)&n; */
-r_typedef
+DECL|struct|rsdt_descriptor_rev2
 r_struct
+id|rsdt_descriptor_rev2
 (brace
 DECL|member|header
+r_struct
 id|acpi_table_header
 id|header
 suffix:semicolon
@@ -44,15 +46,15 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Array of pointers to  */
 multiline_comment|/* ACPI table headers */
-DECL|typedef|RSDT_DESCRIPTOR_REV2
 )brace
-id|RSDT_DESCRIPTOR_REV2
 suffix:semicolon
 multiline_comment|/*&n; * ACPI 2.0 Extended System Description Table (XSDT)&n; */
-r_typedef
+DECL|struct|xsdt_descriptor_rev2
 r_struct
+id|xsdt_descriptor_rev2
 (brace
 DECL|member|header
+r_struct
 id|acpi_table_header
 id|header
 suffix:semicolon
@@ -66,13 +68,12 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Array of pointers to  */
 multiline_comment|/* ACPI table headers */
-DECL|typedef|XSDT_DESCRIPTOR_REV2
 )brace
-id|XSDT_DESCRIPTOR_REV2
 suffix:semicolon
 multiline_comment|/*&n; * ACPI 2.0 Firmware ACPI Control Structure (FACS)&n; */
-r_typedef
+DECL|struct|facs_descriptor_rev2
 r_struct
+id|facs_descriptor_rev2
 (brace
 DECL|member|signature
 r_char
@@ -134,13 +135,12 @@ l_int|31
 )braket
 suffix:semicolon
 multiline_comment|/* Reserved - must be zero */
-DECL|typedef|facs_descriptor_rev2
 )brace
-id|facs_descriptor_rev2
 suffix:semicolon
 multiline_comment|/*&n; * ACPI 2.0 Generic Address Structure (GAS)&n; */
-r_typedef
+DECL|struct|acpi_generic_address
 r_struct
+id|acpi_generic_address
 (brace
 DECL|member|address_space_id
 id|u8
@@ -167,15 +167,15 @@ id|u64
 id|address
 suffix:semicolon
 multiline_comment|/* 64-bit address of struct or register */
-DECL|typedef|acpi_generic_address
 )brace
-id|acpi_generic_address
 suffix:semicolon
 multiline_comment|/*&n; * ACPI 2.0 Fixed ACPI Description Table (FADT)&n; */
-r_typedef
+DECL|struct|fadt_descriptor_rev2
 r_struct
+id|fadt_descriptor_rev2
 (brace
 DECL|member|header
+r_struct
 id|acpi_table_header
 id|header
 suffix:semicolon
@@ -472,6 +472,7 @@ l_int|18
 suffix:semicolon
 multiline_comment|/* Reserved - must be zero */
 DECL|member|reset_register
+r_struct
 id|acpi_generic_address
 id|reset_register
 suffix:semicolon
@@ -500,48 +501,54 @@ id|Xdsdt
 suffix:semicolon
 multiline_comment|/* 64-bit physical address of DSDT */
 DECL|member|xpm1a_evt_blk
+r_struct
 id|acpi_generic_address
 id|xpm1a_evt_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt 1a acpi_event Reg Blk address */
 DECL|member|xpm1b_evt_blk
+r_struct
 id|acpi_generic_address
 id|xpm1b_evt_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt 1b acpi_event Reg Blk address */
 DECL|member|xpm1a_cnt_blk
+r_struct
 id|acpi_generic_address
 id|xpm1a_cnt_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt 1a Control Reg Blk address */
 DECL|member|xpm1b_cnt_blk
+r_struct
 id|acpi_generic_address
 id|xpm1b_cnt_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt 1b Control Reg Blk address */
 DECL|member|xpm2_cnt_blk
+r_struct
 id|acpi_generic_address
 id|xpm2_cnt_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt 2 Control Reg Blk address */
 DECL|member|xpm_tmr_blk
+r_struct
 id|acpi_generic_address
 id|xpm_tmr_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt Timer Ctrl Reg Blk address */
 DECL|member|xgpe0_blk
+r_struct
 id|acpi_generic_address
 id|xgpe0_blk
 suffix:semicolon
 multiline_comment|/* Extended General Purpose acpi_event 0 Reg Blk address */
 DECL|member|xgpe1_blk
+r_struct
 id|acpi_generic_address
 id|xgpe1_blk
 suffix:semicolon
 multiline_comment|/* Extended General Purpose acpi_event 1 Reg Blk address */
-DECL|typedef|fadt_descriptor_rev2
 )brace
-id|fadt_descriptor_rev2
 suffix:semicolon
 macro_line|#pragma pack()
 macro_line|#endif /* __ACTBL2_H__ */

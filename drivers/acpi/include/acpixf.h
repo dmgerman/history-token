@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: acpixf.h - External interfaces to the ACPI subsystem&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACXFACE_H__
 DECL|macro|__ACXFACE_H__
 mdefine_line|#define __ACXFACE_H__
@@ -53,6 +53,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_get_system_info
 (paren
+r_struct
 id|acpi_buffer
 op_star
 id|ret_buffer
@@ -115,6 +116,7 @@ id|acpi_find_root_pointer
 id|u32
 id|flags
 comma
+r_struct
 id|acpi_pointer
 op_star
 id|rsdp_address
@@ -129,6 +131,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_load_table
 (paren
+r_struct
 id|acpi_table_header
 op_star
 id|table_ptr
@@ -150,6 +153,7 @@ comma
 id|u32
 id|instance
 comma
+r_struct
 id|acpi_table_header
 op_star
 id|out_table_header
@@ -164,6 +168,7 @@ comma
 id|u32
 id|instance
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|ret_buffer
@@ -181,6 +186,7 @@ comma
 id|u32
 id|flags
 comma
+r_struct
 id|acpi_table_header
 op_star
 op_star
@@ -242,6 +248,7 @@ comma
 id|u32
 id|name_type
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|ret_path_ptr
@@ -310,10 +317,12 @@ comma
 id|acpi_string
 id|pathname
 comma
+r_struct
 id|acpi_object_list
 op_star
 id|parameter_objects
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|return_object_buffer
@@ -328,10 +337,12 @@ comma
 id|acpi_string
 id|pathname
 comma
+r_struct
 id|acpi_object_list
 op_star
 id|external_params
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|return_buffer
@@ -346,6 +357,7 @@ id|acpi_get_object_info
 id|acpi_handle
 id|device
 comma
+r_struct
 id|acpi_device_info
 op_star
 id|info
@@ -581,6 +593,7 @@ c_func
 id|acpi_handle
 id|device_handle
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|ret_buffer
@@ -593,6 +606,7 @@ c_func
 id|acpi_handle
 id|device_handle
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|ret_buffer
@@ -604,6 +618,7 @@ id|acpi_set_current_resources
 id|acpi_handle
 id|device_handle
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|in_buffer
@@ -615,6 +630,7 @@ id|acpi_get_irq_routing_table
 id|acpi_handle
 id|bus_device_handle
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|ret_buffer

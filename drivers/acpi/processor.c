@@ -2613,6 +2613,7 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign
@@ -2622,12 +2623,14 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+r_union
 id|acpi_object
 op_star
 id|pct
 op_assign
 l_int|NULL
 suffix:semicolon
+r_union
 id|acpi_object
 id|obj
 op_assign
@@ -2694,6 +2697,7 @@ suffix:semicolon
 id|pct
 op_assign
 (paren
+r_union
 id|acpi_object
 op_star
 )paren
@@ -2993,6 +2997,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign
@@ -3002,6 +3007,7 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|format
 op_assign
@@ -3014,6 +3020,7 @@ comma
 l_string|&quot;NNNNNN&quot;
 )brace
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|state
 op_assign
@@ -3023,6 +3030,7 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+r_union
 id|acpi_object
 op_star
 id|pss
@@ -3086,6 +3094,7 @@ suffix:semicolon
 id|pss
 op_assign
 (paren
+r_union
 id|acpi_object
 op_star
 )paren
@@ -8582,6 +8591,7 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
+r_union
 id|acpi_object
 id|object
 op_assign
@@ -8589,12 +8599,14 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign
 (brace
 r_sizeof
 (paren
+r_union
 id|acpi_object
 )paren
 comma
