@@ -2052,6 +2052,10 @@ r_int
 id|result
 suffix:semicolon
 multiline_comment|/* send the command to the transport layer */
+id|srb-&gt;resid
+op_assign
+l_int|0
+suffix:semicolon
 id|result
 op_assign
 id|us

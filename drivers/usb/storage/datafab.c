@@ -2298,10 +2298,6 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
-id|srb-&gt;resid
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren

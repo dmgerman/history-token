@@ -2418,6 +2418,10 @@ r_int
 id|transferStatus
 suffix:semicolon
 multiline_comment|/* send the command to the transport layer */
+id|srb-&gt;resid
+op_assign
+l_int|0
+suffix:semicolon
 id|transferStatus
 op_assign
 id|isd200_Bulk_transport
