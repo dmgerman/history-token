@@ -2660,7 +2660,7 @@ id|proc_dentry2
 suffix:semicolon
 r_int
 r_int
-id|state
+id|exit_state
 comma
 id|ptrace
 suffix:semicolon
@@ -2668,9 +2668,9 @@ multiline_comment|/*&n;&t;&t; * Wait for the thread group leader to be a zombie.
 r_while
 c_loop
 (paren
-id|leader-&gt;state
+id|leader-&gt;exit_state
 op_ne
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 )paren
 id|yield
 c_func
@@ -2855,9 +2855,9 @@ id|current-&gt;exit_signal
 op_assign
 id|SIGCHLD
 suffix:semicolon
-id|state
+id|exit_state
 op_assign
-id|leader-&gt;state
+id|leader-&gt;exit_state
 suffix:semicolon
 id|write_unlock_irq
 c_func
@@ -2895,9 +2895,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|state
+id|exit_state
 op_ne
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 )paren
 id|BUG
 c_func

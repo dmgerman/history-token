@@ -579,9 +579,9 @@ multiline_comment|/* .. and wake it up. */
 r_if
 c_cond
 (paren
-id|child-&gt;state
+id|child-&gt;exit_state
 op_ne
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 )paren
 id|wake_up_process
 c_func

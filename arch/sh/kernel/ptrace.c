@@ -885,9 +885,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|child-&gt;state
+id|child-&gt;exit_state
 op_eq
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 )paren
 multiline_comment|/* already dead */
 r_break

@@ -8767,9 +8767,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|task-&gt;state
+id|task-&gt;exit_state
 op_eq
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 )paren
 (brace
 id|DPRINT

@@ -164,10 +164,10 @@ DECL|macro|TASK_STOPPED
 mdefine_line|#define TASK_STOPPED&t;&t;4
 DECL|macro|TASK_TRACED
 mdefine_line|#define TASK_TRACED&t;&t;8
-DECL|macro|TASK_ZOMBIE
-mdefine_line|#define TASK_ZOMBIE&t;&t;16
-DECL|macro|TASK_DEAD
-mdefine_line|#define TASK_DEAD&t;&t;32
+DECL|macro|EXIT_ZOMBIE
+mdefine_line|#define EXIT_ZOMBIE&t;&t;16
+DECL|macro|EXIT_DEAD
+mdefine_line|#define EXIT_DEAD&t;&t;32
 DECL|macro|__set_task_state
 mdefine_line|#define __set_task_state(tsk, state_value)&t;&t;&bslash;&n;&t;do { (tsk)-&gt;state = (state_value); } while (0)
 DECL|macro|set_task_state
@@ -1574,6 +1574,10 @@ r_struct
 id|linux_binfmt
 op_star
 id|binfmt
+suffix:semicolon
+DECL|member|exit_state
+r_int
+id|exit_state
 suffix:semicolon
 DECL|member|exit_code
 DECL|member|exit_signal

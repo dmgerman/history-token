@@ -259,9 +259,9 @@ c_func
 id|leader
 )paren
 op_logical_and
-id|leader-&gt;state
+id|leader-&gt;exit_state
 op_eq
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 )paren
 (brace
 id|BUG_ON
@@ -550,9 +550,9 @@ id|p
 op_eq
 id|ignored_task
 op_logical_or
-id|p-&gt;state
+id|p-&gt;exit_state
 op_ge
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 op_logical_or
 id|p-&gt;real_parent-&gt;pid
 op_eq
@@ -1975,7 +1975,11 @@ id|reaper
 op_logical_or
 id|reaper-&gt;state
 op_ge
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
+op_logical_or
+id|reaper-&gt;exit_state
+op_ge
+id|EXIT_ZOMBIE
 )paren
 suffix:semicolon
 id|p-&gt;real_parent
@@ -2119,9 +2123,9 @@ multiline_comment|/* If we&squot;d notified the old parent about this child&squo
 r_if
 c_cond
 (paren
-id|p-&gt;state
+id|p-&gt;exit_state
 op_eq
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 op_logical_and
 id|p-&gt;exit_signal
 op_ne
@@ -2307,9 +2311,9 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|reaper-&gt;state
+id|reaper-&gt;exit_state
 op_ge
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * There are only two places where our children can be:&n;&t; *&n;&t; * - in our child list&n;&t; * - in our ptraced child list&n;&t; *&n;&t; * Search them and reparent children.&n;&t; */
@@ -2397,9 +2401,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;state
+id|p-&gt;exit_state
 op_eq
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 op_logical_and
 id|p-&gt;exit_signal
 op_ne
@@ -2430,9 +2434,9 @@ c_func
 (paren
 id|ptrace
 op_logical_and
-id|p-&gt;state
+id|p-&gt;exit_state
 op_eq
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 op_logical_and
 id|p-&gt;exit_signal
 op_eq
@@ -2867,7 +2871,7 @@ suffix:semicolon
 )brace
 id|state
 op_assign
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 suffix:semicolon
 r_if
 c_cond
@@ -2883,9 +2887,9 @@ l_int|0
 )paren
 id|state
 op_assign
-id|TASK_DEAD
+id|EXIT_DEAD
 suffix:semicolon
-id|tsk-&gt;state
+id|tsk-&gt;exit_state
 op_assign
 id|state
 suffix:semicolon
@@ -2948,7 +2952,7 @@ c_cond
 (paren
 id|state
 op_eq
-id|TASK_DEAD
+id|EXIT_DEAD
 )paren
 id|release_task
 c_func
@@ -3211,6 +3215,17 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_DEAD
+)paren
+)paren
+suffix:semicolon
 id|schedule
 c_func
 (paren
@@ -3857,7 +3872,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Handle sys_wait4 work for one task in state TASK_ZOMBIE.  We hold&n; * read_lock(&amp;tasklist_lock) on entry.  If we return zero, we still hold&n; * the lock and this task is uninteresting.  If we return nonzero, we have&n; * released the lock and the system call should return.&n; */
+multiline_comment|/*&n; * Handle sys_wait4 work for one task in state EXIT_ZOMBIE.  We hold&n; * read_lock(&amp;tasklist_lock) on entry.  If we return zero, we still hold&n; * the lock and this task is uninteresting.  If we return nonzero, we have&n; * released the lock and the system call should return.&n; */
 DECL|function|wait_task_zombie
 r_static
 r_int
@@ -3935,9 +3950,9 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|p-&gt;state
+id|p-&gt;exit_state
 op_ne
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 )paren
 )paren
 r_return
@@ -4047,9 +4062,9 @@ id|xchg
 c_func
 (paren
 op_amp
-id|p-&gt;state
+id|p-&gt;exit_state
 comma
-id|TASK_DEAD
+id|EXIT_DEAD
 )paren
 suffix:semicolon
 r_if
@@ -4057,7 +4072,7 @@ c_cond
 (paren
 id|state
 op_ne
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 )paren
 (brace
 id|BUG_ON
@@ -4065,7 +4080,7 @@ c_func
 (paren
 id|state
 op_ne
-id|TASK_DEAD
+id|EXIT_DEAD
 )paren
 suffix:semicolon
 r_return
@@ -4176,7 +4191,7 @@ id|p-&gt;parent-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Now we are sure this task is interesting, and no other&n;&t; * thread can reap it because we set its state to TASK_DEAD.&n;&t; */
+multiline_comment|/*&n;&t; * Now we are sure this task is interesting, and no other&n;&t; * thread can reap it because we set its state to EXIT_DEAD.&n;&t; */
 id|read_unlock
 c_func
 (paren
@@ -4395,9 +4410,10 @@ c_cond
 id|retval
 )paren
 (brace
-id|p-&gt;state
+singleline_comment|// TODO: is this safe?
+id|p-&gt;exit_state
 op_assign
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 suffix:semicolon
 r_return
 id|retval
@@ -4437,9 +4453,10 @@ c_func
 id|p
 )paren
 suffix:semicolon
-id|p-&gt;state
+singleline_comment|// TODO: is this safe?
+id|p-&gt;exit_state
 op_assign
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * If this is not a detached task, notify the parent.&n;&t;&t;&t; * If it&squot;s still not detached after that, don&squot;t release&n;&t;&t;&t; * it now.&n;&t;&t;&t; */
 r_if
@@ -4682,7 +4699,7 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * This uses xchg to be atomic with the thread resuming and setting&n;&t; * it.  It must also be done with the write lock held to prevent a&n;&t; * race with the TASK_ZOMBIE case.&n;&t; */
+multiline_comment|/*&n;&t; * This uses xchg to be atomic with the thread resuming and setting&n;&t; * it.  It must also be done with the write lock held to prevent a&n;&t; * race with the EXIT_ZOMBIE case.&n;&t; */
 id|exit_code
 op_assign
 id|xchg
@@ -4700,13 +4717,13 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|p-&gt;state
+id|p-&gt;exit_state
 op_ge
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * The task resumed and then died.  Let the next iteration&n;&t;&t; * catch it in TASK_ZOMBIE.  Note that exit_code might&n;&t;&t; * already be zero here if it resumed and did _exit(0).&n;&t;&t; * The task itself is dead and won&squot;t touch exit_code again;&n;&t;&t; * other processors in this function are locked out.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The task resumed and then died.  Let the next iteration&n;&t;&t; * catch it in EXIT_ZOMBIE.  Note that exit_code might&n;&t;&t; * already be zero here if it resumed and did _exit(0).&n;&t;&t; * The task itself is dead and won&squot;t touch exit_code again;&n;&t;&t; * other processors in this function are locked out.&n;&t;&t; */
 id|p-&gt;exit_code
 op_assign
 id|exit_code
@@ -5465,10 +5482,30 @@ id|end
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|TASK_ZOMBIE
+r_default
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * Eligible but we cannot release it yet:&n;&t;&t;&t;&t; */
+(brace
+)brace
+singleline_comment|// case EXIT_DEAD:
+r_if
+c_cond
+(paren
+id|p-&gt;exit_state
+op_eq
+id|EXIT_DEAD
+)paren
+r_continue
+suffix:semicolon
+singleline_comment|// case EXIT_ZOMBIE:
+r_if
+c_cond
+(paren
+id|p-&gt;exit_state
+op_eq
+id|EXIT_ZOMBIE
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * Eligible but we cannot release&n;&t;&t;&t;&t;&t; * it yet:&n;&t;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5513,6 +5550,7 @@ comma
 id|ru
 )paren
 suffix:semicolon
+multiline_comment|/* He released the lock.  */
 r_if
 c_cond
 (paren
@@ -5520,20 +5558,11 @@ id|retval
 op_ne
 l_int|0
 )paren
-multiline_comment|/* He released the lock.  */
 r_goto
 id|end
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|TASK_DEAD
-suffix:colon
-r_continue
-suffix:semicolon
-r_default
-suffix:colon
-(brace
 )brace
 id|check_continued
 suffix:colon

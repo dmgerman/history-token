@@ -168,12 +168,12 @@ c_func
 (paren
 op_logical_neg
 (paren
-id|tsk-&gt;state
+id|tsk-&gt;exit_state
 op_amp
 (paren
-id|TASK_DEAD
+id|EXIT_DEAD
 op_or
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 )paren
 )paren
 )paren
@@ -4196,6 +4196,10 @@ id|CSIGNAL
 )paren
 suffix:semicolon
 id|p-&gt;pdeath_signal
+op_assign
+l_int|0
+suffix:semicolon
+id|p-&gt;exit_state
 op_assign
 l_int|0
 suffix:semicolon

@@ -3827,7 +3827,7 @@ id|rq-&gt;prev_mm
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t; * A task struct has one reference for the use as &quot;current&quot;.&n;&t; * If a task dies, then it sets TASK_ZOMBIE in tsk-&gt;state and calls&n;&t; * schedule one last time. The schedule call will never return,&n;&t; * and the scheduled task must drop that reference.&n;&t; * The test for TASK_ZOMBIE must occur while the runqueue locks are&n;&t; * still held, otherwise prev could be scheduled on another cpu, die&n;&t; * there before we look at prev-&gt;state, and then the reference would&n;&t; * be dropped twice.&n;&t; *&t;&t;Manfred Spraul &lt;manfred@colorfullife.com&gt;&n;&t; */
+multiline_comment|/*&n;&t; * A task struct has one reference for the use as &quot;current&quot;.&n;&t; * If a task dies, then it sets EXIT_ZOMBIE in tsk-&gt;exit_state and&n;&t; * calls schedule one last time. The schedule call will never return,&n;&t; * and the scheduled task must drop that reference.&n;&t; * The test for EXIT_ZOMBIE must occur while the runqueue locks are&n;&t; * still held, otherwise prev could be scheduled on another cpu, die&n;&t; * there before we look at prev-&gt;state, and then the reference would&n;&t; * be dropped twice.&n;&t; *&t;&t;Manfred Spraul &lt;manfred@colorfullife.com&gt;&n;&t; */
 id|prev_task_flags
 op_assign
 id|prev-&gt;flags
@@ -8009,12 +8009,12 @@ c_func
 (paren
 op_logical_neg
 (paren
-id|current-&gt;state
+id|current-&gt;exit_state
 op_amp
 (paren
-id|TASK_DEAD
+id|EXIT_DEAD
 op_or
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 )paren
 )paren
 )paren
@@ -8192,6 +8192,21 @@ c_func
 op_amp
 id|rq-&gt;lock
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_DEAD
+)paren
+)paren
+id|current-&gt;state
+op_assign
+id|EXIT_DEAD
 suffix:semicolon
 multiline_comment|/*&n;&t; * if entering off of a kernel preemption go straight&n;&t; * to picking the next task.&n;&t; */
 id|switch_count
@@ -13346,13 +13361,13 @@ multiline_comment|/* Must be exiting, otherwise would be on tasklist. */
 id|BUG_ON
 c_func
 (paren
-id|tsk-&gt;state
+id|tsk-&gt;exit_state
 op_ne
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 op_logical_and
-id|tsk-&gt;state
+id|tsk-&gt;exit_state
 op_ne
-id|TASK_DEAD
+id|EXIT_DEAD
 )paren
 suffix:semicolon
 multiline_comment|/* Cannot have done final schedule yet: would have vanished. */

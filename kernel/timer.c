@@ -2856,6 +2856,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|p-&gt;signal
+op_logical_and
 op_logical_neg
 id|unlikely
 c_func
@@ -2863,9 +2865,9 @@ c_func
 id|p-&gt;state
 op_amp
 (paren
-id|TASK_DEAD
+id|EXIT_DEAD
 op_or
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 )paren
 )paren
 op_logical_and
