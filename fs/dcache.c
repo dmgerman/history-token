@@ -3164,16 +3164,15 @@ multiline_comment|/*&n;&t;&t; * If dentry is moved, fail the lookup&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|unlikely
+id|likely
 c_func
 (paren
 id|move_count
-op_ne
+op_eq
 id|dentry-&gt;d_move_count
 )paren
 )paren
-r_break
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -3200,6 +3199,7 @@ id|found
 op_assign
 id|dentry
 suffix:semicolon
+)brace
 )brace
 id|spin_unlock
 c_func
