@@ -259,12 +259,6 @@ l_string|&quot;ALL&quot;
 )brace
 comma
 (brace
-l_string|&quot;PLEXTOR CD-R PX-W8432T&quot;
-comma
-l_string|&quot;ALL&quot;
-)brace
-comma
-(brace
 l_string|&quot;ATAPI CD-ROM DRIVE 40X MAXIMUM&quot;
 comma
 l_string|&quot;ALL&quot;
