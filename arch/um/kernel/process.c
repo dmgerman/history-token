@@ -1173,7 +1173,7 @@ l_string|&quot;    Turns off syscall emulation patch for ptrace (SYSEMU) on.&bsl
 l_string|&quot;    SYSEMU is a performance-patch introduced by Laurent Vivier. It changes&bslash;n&quot;
 l_string|&quot;    behaviour of ptrace() and helps reducing host context switch rate.&bslash;n&quot;
 l_string|&quot;    To make it working, you need a kernel patch for your host, too.&bslash;n&quot;
-l_string|&quot;    See http://perso.wanadoo.fr/laurent.vivier/UML/ for further information.&bslash;n&quot;
+l_string|&quot;    See http://perso.wanadoo.fr/laurent.vivier/UML/ for further information.&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
 DECL|function|check_sysemu
