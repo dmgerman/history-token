@@ -94,7 +94,47 @@ DECL|macro|EISA_bus
 mdefine_line|#define EISA_bus 0
 DECL|macro|MCA_bus
 mdefine_line|#define MCA_bus 0
-multiline_comment|/* &n; * if you change this structure, you must change the code and offsets&n; * in m68k/machasm.S&n; */
+DECL|struct|task_work
+r_struct
+id|task_work
+(brace
+DECL|member|sigpending
+r_int
+r_char
+id|sigpending
+suffix:semicolon
+DECL|member|notify_resume
+r_int
+r_char
+id|notify_resume
+suffix:semicolon
+multiline_comment|/* request for notification on&n;&t;&t;&t;&t;&t;   userspace execution resumption */
+DECL|member|need_resched
+r_char
+id|need_resched
+suffix:semicolon
+DECL|member|delayed_trace
+r_int
+r_char
+id|delayed_trace
+suffix:semicolon
+multiline_comment|/* single step a syscall */
+DECL|member|syscall_trace
+r_int
+r_char
+id|syscall_trace
+suffix:semicolon
+multiline_comment|/* count of syscall interceptors */
+DECL|member|pad
+r_int
+r_char
+id|pad
+(braket
+l_int|3
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|thread_struct
 r_struct
 id|thread_struct
@@ -179,10 +219,15 @@ id|FPSTATESIZE
 )braket
 suffix:semicolon
 multiline_comment|/* floating point state */
+DECL|member|work
+r_struct
+id|task_work
+id|work
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD  { &bslash;&n;&t;sizeof(init_stack) + (unsigned long) init_stack, 0, &bslash;&n;&t;PS_S, __KERNEL_DS, &bslash;&n;}
+mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ksp: sizeof(init_stack) + (unsigned long) init_stack,&t;&bslash;&n;&t;sr: PS_S, &t;&t;&t;&t;&t;&t;&bslash;&n;&t;fs: __KERNEL_DS,&t;&t;&t;&t;&t;&bslash;&n;}
 multiline_comment|/*&n; * Do necessary setup to start up a newly executed thread.&n; */
 DECL|function|start_thread
 r_static
@@ -287,87 +332,18 @@ r_void
 )paren
 (brace
 )brace
-multiline_comment|/*&n; * Return saved PC of a blocked thread.&n; */
-DECL|function|thread_saved_pc
 r_extern
-r_inline
 r_int
 r_int
 id|thread_saved_pc
 c_func
 (paren
 r_struct
-id|thread_struct
+id|task_struct
 op_star
-id|t
-)paren
-(brace
-r_extern
-r_void
-id|scheduling_functions_start_here
-c_func
-(paren
-r_void
+id|tsk
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|scheduling_functions_end_here
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_struct
-id|switch_stack
-op_star
-id|sw
-op_assign
-(paren
-r_struct
-id|switch_stack
-op_star
-)paren
-id|t-&gt;ksp
-suffix:semicolon
-multiline_comment|/* Check whether the thread is blocked in resume() */
-r_if
-c_cond
-(paren
-id|sw-&gt;retpc
-OG
-(paren
-r_int
-r_int
-)paren
-id|scheduling_functions_start_here
-op_logical_and
-id|sw-&gt;retpc
-OL
-(paren
-r_int
-r_int
-)paren
-id|scheduling_functions_end_here
-)paren
-r_return
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
-id|sw-&gt;a6
-)paren
-(braket
-l_int|1
-)braket
-suffix:semicolon
-r_else
-r_return
-id|sw-&gt;retpc
-suffix:semicolon
-)brace
 r_int
 r_int
 id|get_wchan
@@ -383,19 +359,6 @@ DECL|macro|KSTK_EIP
 mdefine_line|#define&t;KSTK_EIP(tsk)&t;&bslash;&n;    ({&t;&t;&t;&bslash;&n;&t;unsigned long eip = 0;&t; &bslash;&n;&t;if ((tsk)-&gt;thread.esp0 &gt; PAGE_SIZE &amp;&amp; &bslash;&n;&t;    (virt_addr_valid((tsk)-&gt;thread.esp0))) &bslash;&n;&t;      eip = ((struct pt_regs *) (tsk)-&gt;thread.esp0)-&gt;pc; &bslash;&n;&t;eip; })
 DECL|macro|KSTK_ESP
 mdefine_line|#define&t;KSTK_ESP(tsk)&t;((tsk) == current ? rdusp() : (tsk)-&gt;thread.usp)
-DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
-multiline_comment|/* Allocation and freeing of basic task resources. */
-DECL|macro|alloc_task_struct
-mdefine_line|#define alloc_task_struct() &bslash;&n;&t;((struct task_struct *) __get_free_pages(GFP_KERNEL,1))
-DECL|macro|free_task_struct
-mdefine_line|#define free_task_struct(p)&t;free_pages((unsigned long)(p),1)
-DECL|macro|get_task_struct
-mdefine_line|#define get_task_struct(tsk)      atomic_inc(&amp;virt_to_page(tsk)-&gt;count)
-DECL|macro|init_task
-mdefine_line|#define init_task&t;(init_task_union.task)
-DECL|macro|init_stack
-mdefine_line|#define init_stack&t;(init_task_union.stack)
 DECL|macro|cpu_relax
 mdefine_line|#define cpu_relax()&t;do { } while (0)
 macro_line|#endif

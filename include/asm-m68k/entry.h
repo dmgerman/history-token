@@ -282,6 +282,14 @@ id|reg
 comma
 op_mod
 id|curptr
+DECL|variable|curptr
+id|movel
+op_mod
+id|curptr
+"@"
+comma
+op_mod
+id|curptr
 dot
 id|endm
 macro_line|#else /* C source */
