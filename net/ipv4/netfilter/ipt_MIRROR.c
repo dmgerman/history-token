@@ -582,8 +582,7 @@ multiline_comment|/* Don&squot;t let conntrack code see this packet:&n;&t; * it 
 id|ip_direct_send
 c_func
 (paren
-op_star
-id|pskb
+id|nskb
 )paren
 suffix:semicolon
 r_return
