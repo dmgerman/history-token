@@ -5917,6 +5917,9 @@ id|err
 suffix:semicolon
 )brace
 r_case
+id|VIDIOC_S_CTRL_OLD
+suffix:colon
+r_case
 id|VIDIOC_S_CTRL
 suffix:colon
 (brace
