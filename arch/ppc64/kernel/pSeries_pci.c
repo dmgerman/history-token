@@ -2104,11 +2104,12 @@ id|i
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/***************************************************************&n;&t;* Speedwagon&n;&t;***************************************************************/
+multiline_comment|/***************************************************************&n;&t;* Speedwagon&n;&t;*   include Winnipeg as well for the time being.&n;&t;***************************************************************/
 )brace
 r_else
 r_if
 c_cond
+(paren
 (paren
 id|strstr
 c_func
@@ -2116,6 +2117,17 @@ c_func
 id|model
 comma
 l_string|&quot;Speedwagon&quot;
+)paren
+)paren
+op_logical_or
+(paren
+id|strstr
+c_func
+(paren
+id|model
+comma
+l_string|&quot;Winnipeg&quot;
+)paren
 )paren
 )paren
 (brace
