@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *                   Creative Labs, Inc.&n; *  Routines for control of EMU10K1 chips&n; *&n; *  BUGS:&n; *    --&n; *&n; *  TODO:&n; *    --&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
+multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *                   Creative Labs, Inc.&n; *  Routines for control of EMU10K1 chips&n; *&n; *  Copyright (c) by James Courtier-Dutton &lt;James@superbug.demon.co.uk&gt;&n; *      Added support for Audigy 2 Value.&n; *&n; *&n; *  BUGS:&n; *    --&n; *&n; *  TODO:&n; *    --&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -918,6 +918,110 @@ l_int|0x24
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|emu-&gt;audigy
+op_logical_and
+(paren
+id|emu-&gt;serial
+op_eq
+l_int|0x10011102
+)paren
+)paren
+(brace
+multiline_comment|/* audigy2 Value */
+multiline_comment|/* Hacks for Alice3 to work independent of haP16V driver */
+id|u32
+id|tmp
+suffix:semicolon
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Audigy2 value:Special config.&bslash;n&quot;
+)paren
+suffix:semicolon
+singleline_comment|//Setup SRCMulti_I2S SamplingRate
+id|tmp
+op_assign
+id|snd_emu10k1_ptr_read
+c_func
+(paren
+id|emu
+comma
+id|A_SPDIF_SAMPLERATE
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|tmp
+op_and_assign
+l_int|0xfffff1ff
+suffix:semicolon
+id|tmp
+op_or_assign
+(paren
+l_int|0x2
+op_lshift
+l_int|9
+)paren
+suffix:semicolon
+id|snd_emu10k1_ptr_write
+c_func
+(paren
+id|emu
+comma
+id|A_SPDIF_SAMPLERATE
+comma
+l_int|0
+comma
+id|tmp
+)paren
+suffix:semicolon
+multiline_comment|/* Setup SRCSel (Enable Spdif,I2S SRCMulti) */
+id|outl
+c_func
+(paren
+l_int|0x600000
+comma
+id|emu-&gt;port
+op_plus
+l_int|0x20
+)paren
+suffix:semicolon
+id|outl
+c_func
+(paren
+l_int|0x14
+comma
+id|emu-&gt;port
+op_plus
+l_int|0x24
+)paren
+suffix:semicolon
+multiline_comment|/* Setup SRCMulti Input Audio Enable */
+id|outl
+c_func
+(paren
+l_int|0x7b0000
+comma
+id|emu-&gt;port
+op_plus
+l_int|0x20
+)paren
+suffix:semicolon
+id|outl
+c_func
+(paren
+l_int|0xFF000000
+comma
+id|emu-&gt;port
+op_plus
+l_int|0x24
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; *  Clear page with silence &amp; setup all pointers to this page&n;&t; */
 id|memset
 c_func
@@ -1409,6 +1513,36 @@ id|A_IOCFG
 )paren
 op_or
 l_int|0x0040
+comma
+id|emu-&gt;port
+op_plus
+id|A_IOCFG
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|emu-&gt;serial
+op_eq
+l_int|0x10011102
+)paren
+(brace
+multiline_comment|/* audigy2 value */
+multiline_comment|/* Unmute Analog now. */
+id|outl
+c_func
+(paren
+id|inl
+c_func
+(paren
+id|emu-&gt;port
+op_plus
+id|A_IOCFG
+)paren
+op_or
+l_int|0x0060
 comma
 id|emu-&gt;port
 op_plus
@@ -2655,6 +2789,14 @@ op_assign
 id|pci-&gt;device
 op_eq
 l_int|0x0004
+)paren
+op_logical_or
+(paren
+(paren
+id|pci-&gt;device
+op_eq
+l_int|0x0008
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* enable PCI device */

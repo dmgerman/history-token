@@ -10003,6 +10003,20 @@ id|SND_EMU10K1_PLAYBACK_CHANNELS
 )paren
 suffix:semicolon
 multiline_comment|/* ADC buffer */
+macro_line|#ifdef EMU10K1_CAPTURE_DIGITAL_OUT
+id|A_PUT_STEREO_OUTPUT
+c_func
+(paren
+id|A_EXTOUT_ADC_CAP_L
+comma
+id|A_EXTOUT_ADC_CAP_R
+comma
+id|playback
+op_plus
+id|SND_EMU10K1_PLAYBACK_CHANNELS
+)paren
+suffix:semicolon
+macro_line|#else
 id|A_PUT_OUTPUT
 c_func
 (paren
@@ -10021,6 +10035,7 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * ok, set up done..&n;&t; */
 r_if
 c_cond
