@@ -173,74 +173,6 @@ DECL|macro|LLC_CONN_EV_QFY_S_FLAG_EQ_0
 mdefine_line|#define LLC_CONN_EV_QFY_S_FLAG_EQ_0&t;&t;11
 DECL|macro|LLC_CONN_EV_QFY_INIT_P_F_CYCLE
 mdefine_line|#define LLC_CONN_EV_QFY_INIT_P_F_CYCLE&t;&t;12
-multiline_comment|/* Event data interface; what is sent in an event package */
-multiline_comment|/* Event LLC_CONN_EV_TYPE_SIMPLE interface */
-DECL|struct|llc_conn_ev_simple_if
-r_struct
-id|llc_conn_ev_simple_if
-(brace
-DECL|member|ev
-id|u8
-id|ev
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/* Event LLC_CONN_EV_TYPE_PRIM interface */
-DECL|struct|llc_conn_ev_prim_if
-r_struct
-id|llc_conn_ev_prim_if
-(brace
-DECL|member|prim
-id|u8
-id|prim
-suffix:semicolon
-multiline_comment|/* connect, disconnect, reset, ... */
-DECL|member|type
-id|u8
-id|type
-suffix:semicolon
-multiline_comment|/* request, indicate, response, conf */
-DECL|member|data
-r_struct
-id|llc_prim_if_block
-op_star
-id|data
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/* Event LLC_CONN_EV_TYPE_PDU interface */
-DECL|struct|llc_conn_ev_pdu_if
-r_struct
-id|llc_conn_ev_pdu_if
-(brace
-DECL|member|ev
-id|u8
-id|ev
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|union|llc_conn_ev_if
-r_union
-id|llc_conn_ev_if
-(brace
-DECL|member|a
-r_struct
-id|llc_conn_ev_simple_if
-id|a
-suffix:semicolon
-multiline_comment|/* &squot;a&squot; for simple, easy ... */
-DECL|member|prim
-r_struct
-id|llc_conn_ev_prim_if
-id|prim
-suffix:semicolon
-DECL|member|pdu
-r_struct
-id|llc_conn_ev_pdu_if
-id|pdu
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|llc_conn_state_ev
 r_struct
 id|llc_conn_state_ev
@@ -248,6 +180,14 @@ id|llc_conn_state_ev
 DECL|member|type
 id|u8
 id|type
+suffix:semicolon
+DECL|member|prim
+id|u8
+id|prim
+suffix:semicolon
+DECL|member|prim_type
+id|u8
+id|prim_type
 suffix:semicolon
 DECL|member|reason
 id|u8
@@ -257,26 +197,13 @@ DECL|member|status
 id|u8
 id|status
 suffix:semicolon
-DECL|member|flag
-id|u8
-id|flag
-suffix:semicolon
 DECL|member|ind_prim
-r_struct
-id|llc_prim_if_block
-op_star
+id|u8
 id|ind_prim
 suffix:semicolon
 DECL|member|cfm_prim
-r_struct
-id|llc_prim_if_block
-op_star
+id|u8
 id|cfm_prim
-suffix:semicolon
-DECL|member|data
-r_union
-id|llc_conn_ev_if
-id|data
 suffix:semicolon
 )brace
 suffix:semicolon
