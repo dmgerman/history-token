@@ -1001,36 +1001,6 @@ id|qdisc_kill_estimator
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_NET_CLS_POLICE
-DECL|variable|tcf_police
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcf_police
-)paren
-suffix:semicolon
-DECL|variable|tcf_police_locate
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcf_police_locate
-)paren
-suffix:semicolon
-DECL|variable|tcf_police_destroy
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcf_police_destroy
-)paren
-suffix:semicolon
-DECL|variable|tcf_police_dump
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcf_police_dump
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_NET_CLS
 DECL|variable|register_tcf_proto_ops
