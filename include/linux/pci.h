@@ -1166,8 +1166,6 @@ id|pci_devices
 )paren
 suffix:semicolon
 )brace
-DECL|macro|pci_for_each_dev_reverse
-mdefine_line|#define pci_for_each_dev_reverse(dev) &bslash;&n;&t;for(dev = pci_dev_g(pci_devices.prev); dev != pci_dev_g(&amp;pci_devices); dev = pci_dev_g(dev-&gt;global_list.prev))
 DECL|macro|pci_for_each_bus
 mdefine_line|#define pci_for_each_bus(bus) &bslash;&n;&t;for(bus = pci_bus_b(pci_root_buses.next); bus != pci_bus_b(&amp;pci_root_buses); bus = pci_bus_b(bus-&gt;node.next))
 r_void
