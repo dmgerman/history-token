@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: symlink.c,v 1.10 2002/05/20 14:56:39 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: symlink.c,v 1.11 2002/07/23 17:00:45 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -41,16 +41,19 @@ id|inode_operations
 id|jffs2_symlink_inode_operations
 op_assign
 (brace
+dot
 id|readlink
-suffix:colon
+op_assign
 id|jffs2_readlink
 comma
+dot
 id|follow_link
-suffix:colon
+op_assign
 id|jffs2_follow_link
 comma
+dot
 id|setattr
-suffix:colon
+op_assign
 id|jffs2_setattr
 )brace
 suffix:semicolon

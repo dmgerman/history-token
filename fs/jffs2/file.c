@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: file.c,v 1.74 2002/07/23 12:58:53 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: file.c,v 1.75 2002/07/23 17:00:45 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mtd/compatmac.h&gt; /* for min() */
 macro_line|#include &lt;linux/slab.h&gt;
@@ -162,32 +162,39 @@ id|file_operations
 id|jffs2_file_operations
 op_assign
 (brace
+dot
 id|llseek
-suffix:colon
+op_assign
 id|generic_file_llseek
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|generic_file_open
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|generic_file_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|generic_file_write
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|jffs2_ioctl
 comma
+dot
 id|mmap
-suffix:colon
+op_assign
 id|generic_file_mmap
 comma
+dot
 id|fsync
-suffix:colon
+op_assign
 id|jffs2_fsync
 )brace
 suffix:semicolon
@@ -198,8 +205,9 @@ id|inode_operations
 id|jffs2_file_inode_operations
 op_assign
 (brace
+dot
 id|setattr
-suffix:colon
+op_assign
 id|jffs2_setattr
 )brace
 suffix:semicolon
@@ -209,16 +217,19 @@ id|address_space_operations
 id|jffs2_file_address_operations
 op_assign
 (brace
+dot
 id|readpage
-suffix:colon
+op_assign
 id|jffs2_readpage
 comma
+dot
 id|prepare_write
-suffix:colon
+op_assign
 id|jffs2_prepare_write
 comma
+dot
 id|commit_write
-suffix:colon
+op_assign
 id|jffs2_commit_write
 )brace
 suffix:semicolon

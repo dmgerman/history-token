@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: erase.c,v 1.38 2002/07/02 22:48:24 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: erase.c,v 1.39 2002/07/23 17:00:45 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -1700,16 +1700,19 @@ id|jffs2_unknown_node
 id|marker
 op_assign
 (brace
+dot
 id|magic
-suffix:colon
+op_assign
 id|JFFS2_MAGIC_BITMASK
 comma
+dot
 id|nodetype
-suffix:colon
+op_assign
 id|JFFS2_NODETYPE_CLEANMARKER
 comma
+dot
 id|totlen
-suffix:colon
+op_assign
 id|c-&gt;cleanmarker_size
 )brace
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: super.c,v 1.72 2002/07/23 14:39:54 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: super.c,v 1.73 2002/07/23 17:00:45 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -171,36 +171,44 @@ id|super_operations
 id|jffs2_super_operations
 op_assign
 (brace
+dot
 id|alloc_inode
-suffix:colon
+op_assign
 id|jffs2_alloc_inode
 comma
+dot
 id|destroy_inode
-suffix:colon
+op_assign
 id|jffs2_destroy_inode
 comma
+dot
 id|read_inode
-suffix:colon
+op_assign
 id|jffs2_read_inode
 comma
+dot
 id|put_super
-suffix:colon
+op_assign
 id|jffs2_put_super
 comma
+dot
 id|write_super
-suffix:colon
+op_assign
 id|jffs2_write_super
 comma
+dot
 id|statfs
-suffix:colon
+op_assign
 id|jffs2_statfs
 comma
+dot
 id|remount_fs
-suffix:colon
+op_assign
 id|jffs2_remount_fs
 comma
+dot
 id|clear_inode
-suffix:colon
+op_assign
 id|jffs2_clear_inode
 )brace
 suffix:semicolon
@@ -1289,20 +1297,24 @@ id|file_system_type
 id|jffs2_fs_type
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;jffs2&quot;
 comma
+dot
 id|get_sb
-suffix:colon
+op_assign
 id|jffs2_get_sb
 comma
+dot
 id|kill_sb
-suffix:colon
+op_assign
 id|jffs2_kill_sb
 comma
 )brace
