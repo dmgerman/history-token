@@ -1373,11 +1373,14 @@ id|ps
 r_return
 suffix:semicolon
 multiline_comment|/* NOTE:  this relies on usbcore having canceled and completed&n;&t; * all pending I/O requests; 2.6 does that.&n;&t; */
-id|WARN_ON
+r_if
+c_cond
+(paren
+id|likely
 c_func
 (paren
 id|ifnum
-op_ge
+OL
 l_int|8
 op_star
 r_sizeof
@@ -1385,7 +1388,7 @@ r_sizeof
 id|ps-&gt;ifclaimed
 )paren
 )paren
-suffix:semicolon
+)paren
 id|clear_bit
 c_func
 (paren
@@ -1393,6 +1396,15 @@ id|ifnum
 comma
 op_amp
 id|ps-&gt;ifclaimed
+)paren
+suffix:semicolon
+r_else
+id|warn
+c_func
+(paren
+l_string|&quot;interface number %u out of range&quot;
+comma
+id|ifnum
 )paren
 suffix:semicolon
 id|usb_set_intfdata
