@@ -5424,9 +5424,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: chipset revision %d&bslash;n&quot;
-comma
-id|dev-&gt;name
+id|KERN_INFO
+l_string|&quot;ATA: chipset rev.: %d&bslash;n&quot;
 comma
 id|class_rev
 )paren
@@ -5465,7 +5464,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide: Found promise 20265 in RAID mode.&bslash;n&quot;
+l_string|&quot;ATA: Found promise 20265 in RAID mode.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -5486,7 +5485,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide: Skipping Promise PDC20265 attached to I2O RAID controller.&bslash;n&quot;
+l_string|&quot;ATA: Skipping Promise PDC20265 attached to I2O RAID controller.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5523,12 +5522,11 @@ l_int|5
 id|printk
 c_func
 (paren
-l_string|&quot;%s: not 100%% native mode: will probe irqs later&bslash;n&quot;
-comma
-id|dev-&gt;name
+id|KERN_INFO
+l_string|&quot;ATA: non-legacy mode: IRQ probe delayed&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * This allows off board ide-pci cards the enable a BIOS,&n;&t;&t; * verify interrupt settings of split-mirror pci-config&n;&t;&t; * space, place chipset into init-mode, and/or preserve&n;&t;&t; * an interrupt if the card is not native ide support.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This allows off board ide-pci cards to enable a BIOS,&n;&t;&t; * verify interrupt settings of split-mirror pci-config&n;&t;&t; * space, place chipset into init-mode, and/or preserve&n;&t;&t; * an interrupt if the card is not native ide support.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5566,9 +5564,8 @@ id|tried_config
 id|printk
 c_func
 (paren
-l_string|&quot;%s: will probe IRQs later&bslash;n&quot;
-comma
-id|dev-&gt;name
+id|KERN_INFO
+l_string|&quot;ATA: will probe IRQs later&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pciirq
@@ -5587,9 +5584,8 @@ id|pciirq
 id|printk
 c_func
 (paren
-l_string|&quot;%s: bad IRQ (%d): will probe later&bslash;n&quot;
-comma
-id|dev-&gt;name
+id|KERN_INFO
+l_string|&quot;ATA: invalid IRQ (%d): will probe later&bslash;n&quot;
 comma
 id|pciirq
 )paren
@@ -5618,9 +5614,8 @@ macro_line|#ifdef __sparc__
 id|printk
 c_func
 (paren
-l_string|&quot;%s: 100%% native mode on irq %s&bslash;n&quot;
-comma
-id|dev-&gt;name
+id|KERN_INFO
+l_string|&quot;ATA: 100%% native mode on irq&bslash;n&quot;
 comma
 id|__irq_itoa
 c_func
@@ -5633,9 +5628,8 @@ macro_line|#else
 id|printk
 c_func
 (paren
-l_string|&quot;%s: 100%% native mode on irq %d&bslash;n&quot;
-comma
-id|dev-&gt;name
+id|KERN_INFO
+l_string|&quot;ATA: 100%% native mode on irq %d&bslash;n&quot;
 comma
 id|pciirq
 )paren
@@ -6450,7 +6444,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ATA: unknown ATA interface %s (%04x:%04x) on PCI slot %s&bslash;n&quot;
+l_string|&quot;ATA: unknown interface: %s (%04x:%04x) on PCI slot %s&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -6466,7 +6460,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ATA: interface %s on PCI slot %s&bslash;n&quot;
+l_string|&quot;ATA: interface: %s, on PCI slot %s&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma

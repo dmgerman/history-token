@@ -238,16 +238,10 @@ op_amp
 id|hwgroup-&gt;flags
 )paren
 )paren
-id|drive-&gt;channel
-op_member_access_from_pointer
-id|udma
+id|udma_stop
 c_func
 (paren
-id|ide_dma_end
-comma
 id|drive
-comma
-id|hwgroup-&gt;rq
 )paren
 suffix:semicolon
 id|blk_queue_invalidate_tags
@@ -1157,16 +1151,10 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * transfer was in progress, stop DMA engine&n;&t; */
 id|dma_stat
 op_assign
-id|drive-&gt;channel
-op_member_access_from_pointer
-id|udma
+id|udma_stop
 c_func
 (paren
-id|ide_dma_end
-comma
 id|drive
-comma
-id|rq
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * must be end of I/O, check status and complete as necessary&n;&t; */
@@ -1945,13 +1933,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ch
-op_member_access_from_pointer
-id|udma
+id|udma_start
 c_func
 (paren
-id|ide_dma_begin
-comma
 id|drive
 comma
 id|rq

@@ -6682,9 +6682,6 @@ id|ide_dma_good_drive
 )paren
 suffix:semicolon
 r_case
-id|ide_dma_retune
-suffix:colon
-r_case
 id|ide_dma_lostirq
 suffix:colon
 r_case
