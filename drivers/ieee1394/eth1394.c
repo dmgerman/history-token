@@ -446,7 +446,6 @@ id|p
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|purge_partial_datagram
 c_func
@@ -946,7 +945,6 @@ suffix:semicolon
 )brace
 DECL|function|purge_partial_datagram
 r_static
-r_inline
 r_void
 id|purge_partial_datagram
 c_func
