@@ -175,8 +175,14 @@ id|pgd
 )paren
 (brace
 )brace
+DECL|macro|pmd_page
+mdefine_line|#define pmd_page(pmd) (pfn_to_page(pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
+DECL|macro|pmd_page_kernel
+mdefine_line|#define pmd_page_kernel(pmd) &bslash;&n;((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
 DECL|macro|pgd_page
-mdefine_line|#define pgd_page(pgd) &bslash;&n;((unsigned long) __va(pgd_val(pgd) &amp; PAGE_MASK))
+mdefine_line|#define pgd_page(pgd) &bslash;&n;((struct page *) __va(pgd_val(pgd) &amp; PAGE_MASK))
+DECL|macro|pgd_page_kernel
+mdefine_line|#define pgd_page_kernel(pgd) &bslash;&n;((unsigned long) __va(pgd_val(pgd) &amp; PAGE_MASK))
 multiline_comment|/* Find an entry in the second-level page table.. */
 DECL|macro|pmd_offset
 mdefine_line|#define pmd_offset(dir, address) ((pmd_t *) pgd_page(*(dir)) + &bslash;&n;&t;&t;&t;pmd_index(address))
@@ -433,5 +439,7 @@ DECL|macro|__pte_to_swp_entry
 mdefine_line|#define __pte_to_swp_entry(pte)&t;&t;((swp_entry_t){ (pte).pte_high })
 DECL|macro|__swp_entry_to_pte
 mdefine_line|#define __swp_entry_to_pte(x)&t;&t;((pte_t){ 0, (x).val })
+DECL|macro|__pmd_free_tlb
+mdefine_line|#define __pmd_free_tlb(tlb, x)&t;&t;do { } while (0)
 macro_line|#endif /* _I386_PGTABLE_3LEVEL_H */
 eof

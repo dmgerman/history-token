@@ -110,13 +110,13 @@ suffix:semicolon
 multiline_comment|/*&n; * The Linux x86 paging architecture is &squot;compile-time dual-mode&squot;, it&n; * implements both the traditional 2-level x86 page tables and the&n; * newer 3-level PAE-mode page tables.&n; */
 macro_line|#ifdef CONFIG_X86_PAE
 macro_line|# include &lt;asm/pgtable-3level-defs.h&gt;
+DECL|macro|PMD_SIZE
+macro_line|# define PMD_SIZE&t;(1UL &lt;&lt; PMD_SHIFT)
+DECL|macro|PMD_MASK
+macro_line|# define PMD_MASK&t;(~(PMD_SIZE-1))
 macro_line|#else
 macro_line|# include &lt;asm/pgtable-2level-defs.h&gt;
 macro_line|#endif
-DECL|macro|PMD_SIZE
-mdefine_line|#define PMD_SIZE&t;(1UL &lt;&lt; PMD_SHIFT)
-DECL|macro|PMD_MASK
-mdefine_line|#define PMD_MASK&t;(~(PMD_SIZE-1))
 DECL|macro|PGDIR_SIZE
 mdefine_line|#define PGDIR_SIZE&t;(1UL &lt;&lt; PGDIR_SHIFT)
 DECL|macro|PGDIR_MASK
@@ -882,14 +882,8 @@ suffix:semicolon
 )brace
 DECL|macro|page_pte
 mdefine_line|#define page_pte(page) page_pte_prot(page, __pgprot(0))
-DECL|macro|pmd_page_kernel
-mdefine_line|#define pmd_page_kernel(pmd) &bslash;&n;((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
-macro_line|#ifndef CONFIG_DISCONTIGMEM
-DECL|macro|pmd_page
-mdefine_line|#define pmd_page(pmd) (pfn_to_page(pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
-macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 DECL|macro|pmd_large
-mdefine_line|#define pmd_large(pmd) &bslash;&n;&t;((pmd_val(pmd) &amp; (_PAGE_PSE|_PAGE_PRESENT)) == (_PAGE_PSE|_PAGE_PRESENT))
+mdefine_line|#define pmd_large(pmd) &bslash;&n;((pmd_val(pmd) &amp; (_PAGE_PSE|_PAGE_PRESENT)) == (_PAGE_PSE|_PAGE_PRESENT))
 multiline_comment|/*&n; * the pgd page can be thought of an array like this: pgd_t[PTRS_PER_PGD]&n; *&n; * this macro returns the index of the entry in the pgd page which would&n; * control the given virtual address&n; */
 DECL|macro|pgd_index
 mdefine_line|#define pgd_index(address) (((address) &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))

@@ -8,61 +8,8 @@ macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;&t;&t;/* for struct page */
 DECL|macro|pmd_populate_kernel
 mdefine_line|#define pmd_populate_kernel(mm, pmd, pte) &bslash;&n;&t;&t;set_pmd(pmd, __pmd(_PAGE_TABLE + __pa(pte)))
-DECL|function|pmd_populate
-r_static
-r_inline
-r_void
-id|pmd_populate
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-comma
-id|pmd_t
-op_star
-id|pmd
-comma
-r_struct
-id|page
-op_star
-id|pte
-)paren
-(brace
-id|set_pmd
-c_func
-(paren
-id|pmd
-comma
-id|__pmd
-c_func
-(paren
-id|_PAGE_TABLE
-op_plus
-(paren
-(paren
-r_int
-r_int
-r_int
-)paren
-id|page_to_pfn
-c_func
-(paren
-id|pte
-)paren
-op_lshift
-(paren
-r_int
-r_int
-r_int
-)paren
-id|PAGE_SHIFT
-)paren
-)paren
-)paren
-suffix:semicolon
-)brace
+DECL|macro|pmd_populate
+mdefine_line|#define pmd_populate(mm, pmd, pte) &t;&t;&t;&t;&bslash;&n;&t;set_pmd(pmd, __pmd(_PAGE_TABLE +&t;&t;&t;&bslash;&n;&t;&t;((unsigned long long)page_to_pfn(pte) &lt;&lt;&t;&bslash;&n;&t;&t;&t;(unsigned long long) PAGE_SHIFT)))
 multiline_comment|/*&n; * Allocate and free page tables.&n; */
 r_extern
 id|pgd_t
@@ -159,7 +106,8 @@ suffix:semicolon
 )brace
 DECL|macro|__pte_free_tlb
 mdefine_line|#define __pte_free_tlb(tlb,pte) tlb_remove_page((tlb),(pte))
-multiline_comment|/*&n; * allocating and freeing a pmd is trivial: the 1-entry pmd is&n; * inside the pgd, so has no extra memory associated with it.&n; * (In the PAE case we free the pmds as part of the pgd.)&n; */
+macro_line|#ifdef CONFIG_X86_PAE
+multiline_comment|/*&n; * In the PAE case we free the pmds as part of the pgd.&n; */
 DECL|macro|pmd_alloc_one
 mdefine_line|#define pmd_alloc_one(mm, addr)&t;&t;({ BUG(); ((pmd_t *)2); })
 DECL|macro|pmd_free
@@ -168,6 +116,7 @@ DECL|macro|__pmd_free_tlb
 mdefine_line|#define __pmd_free_tlb(tlb,x)&t;&t;do { } while (0)
 DECL|macro|pgd_populate
 mdefine_line|#define pgd_populate(mm, pmd, pte)&t;BUG()
+macro_line|#endif
 DECL|macro|check_pgt_cache
 mdefine_line|#define check_pgt_cache()&t;do { } while (0)
 macro_line|#endif /* _I386_PGALLOC_H */
