@@ -164,13 +164,7 @@ id|hi-&gt;host
 op_eq
 id|host
 )paren
-r_break
-suffix:semicolon
-id|hi
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
+(brace
 id|read_unlock
 c_func
 (paren
@@ -180,6 +174,18 @@ id|hl-&gt;host_info_lock
 suffix:semicolon
 r_return
 id|hi
+suffix:semicolon
+)brace
+)brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|hl-&gt;host_info_lock
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Returns a per host/driver data structure that was previously stored by&n; * hpsb_create_hostinfo. */

@@ -5112,6 +5112,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ne
+op_logical_and
 id|ne-&gt;host
 op_ne
 id|host
