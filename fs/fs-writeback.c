@@ -1119,6 +1119,8 @@ op_amp
 id|sb_lock
 )paren
 suffix:semicolon
+id|restart
+suffix:colon
 id|sb
 op_assign
 id|sb_entry
@@ -1169,6 +1171,9 @@ id|sb-&gt;s_io
 )paren
 )paren
 (brace
+id|sb-&gt;s_count
+op_increment
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -1190,6 +1195,18 @@ c_func
 op_amp
 id|sb_lock
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|__put_super
+c_func
+(paren
+id|sb
+)paren
+)paren
+r_goto
+id|restart
 suffix:semicolon
 )brace
 r_if
