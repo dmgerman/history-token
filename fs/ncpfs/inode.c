@@ -2523,13 +2523,6 @@ comma
 id|server
 )paren
 suffix:semicolon
-id|init_timer
-c_func
-(paren
-op_amp
-id|server-&gt;timeout_tm
-)paren
-suffix:semicolon
 id|server-&gt;timeout_tm.data
 op_assign
 (paren

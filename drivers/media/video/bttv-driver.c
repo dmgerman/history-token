@@ -15203,6 +15203,13 @@ op_amp
 id|btv-&gt;vcapture
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|btv-&gt;timeout
+)paren
+suffix:semicolon
 id|btv-&gt;timeout.function
 op_assign
 id|bttv_irq_timeout
