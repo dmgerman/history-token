@@ -1976,10 +1976,6 @@ op_assign
 l_int|2048
 suffix:semicolon
 multiline_comment|/* A guess, just in case */
-id|sdev-&gt;remap
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/* FIXME: need to handle a get_capabilities failure properly ?? */
 id|get_capabilities
 c_func

@@ -17,15 +17,6 @@ op_star
 suffix:semicolon
 r_static
 r_int
-id|atp870u_command
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
 id|atp870u_queuecommand
 c_func
 (paren

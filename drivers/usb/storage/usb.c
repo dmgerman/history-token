@@ -2552,7 +2552,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Since this is a new device, we need to register a SCSI&n;&t; * host definition with the higher SCSI layers.&n;&t; */
 id|us-&gt;host
 op_assign
-id|scsi_register
+id|scsi_host_alloc
 c_func
 (paren
 op_amp
@@ -2690,7 +2690,7 @@ l_int|0
 op_assign
 l_int|NULL
 suffix:semicolon
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|us-&gt;host

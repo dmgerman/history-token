@@ -2864,32 +2864,6 @@ id|info
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/************************************************************************** &n;* Function : int AM53C974_command (Scsi_Cmnd *SCpnt)                      *&n;*                                                                         *&n;* Purpose : the unqueued SCSI command function, replaced by the           *&n;*           AM53C974_queue_command function                               *&n;*                                                                         *&n;* Inputs : SCpnt - pointer to command structure                           *&n;*                                                                         *&n;* Returns :status, see hosts.h for details                                *&n;***************************************************************************/
-DECL|function|AM53C974_command
-r_static
-r_int
-id|AM53C974_command
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-(brace
-id|DEB
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;AM53C974_command called&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/**************************************************************************&n;* Function : void initialize_SCp(Scsi_Cmnd *cmd)                          *&n;*                                                                         *&n;* Purpose : initialize the saved data pointers for cmd to point to the    *&n;*&t;    start of the buffer.                                          *                              &n;*                                                                         *&n;* Inputs : cmd - Scsi_Cmnd structure to have pointers reset.              *&n;*                                                                         *&n;* Returns : nothing                                                       *&n;**************************************************************************/
 DECL|function|initialize_SCp
 r_static
@@ -10577,11 +10551,6 @@ dot
 id|info
 op_assign
 id|AM53C974_info
-comma
-dot
-id|command
-op_assign
-id|AM53C974_command
 comma
 dot
 id|queuecommand
