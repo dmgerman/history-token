@@ -2700,6 +2700,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|ext2_group_sparse
+r_static
 r_int
 id|ext2_group_sparse
 c_func
