@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright 1995, Russell King.&n; * Various bits and pieces copyrights include:&n; *  Linus Torvalds (test_bit).&n; * Big endian support: Copyright 2001, Nicolas Pitre&n; *  reworked by rmk.&n; *&n; * bit 0 is the LSB of addr; bit 32 is the LSB of (addr+1).&n; *&n; * Please note that the code in this file should never be included&n; * from user space.  Many of these are not implemented in assembler&n; * since they would be too costly.  Also, they require priviledged&n; * instructions (which are not available from user mode) to ensure&n; * that they are atomic.&n; */
+multiline_comment|/*&n; * Copyright 1995, Russell King.&n; * Various bits and pieces copyrights include:&n; *  Linus Torvalds (test_bit).&n; * Big endian support: Copyright 2001, Nicolas Pitre&n; *  reworked by rmk.&n; *&n; * bit 0 is the LSB of an &quot;unsigned long&quot; quantity.&n; *&n; * Please note that the code in this file should never be included&n; * from user space.  Many of these are not implemented in assembler&n; * since they would be too costly.  Also, they require priviledged&n; * instructions (which are not available from user mode) to ensure&n; * that they are atomic.&n; */
 macro_line|#ifndef __ASM_ARM_BITOPS_H
 DECL|macro|__ASM_ARM_BITOPS_H
 mdefine_line|#define __ASM_ARM_BITOPS_H
@@ -8,21 +8,20 @@ DECL|macro|smp_mb__before_clear_bit
 mdefine_line|#define smp_mb__before_clear_bit()&t;do { } while (0)
 DECL|macro|smp_mb__after_clear_bit
 mdefine_line|#define smp_mb__after_clear_bit()&t;do { } while (0)
-multiline_comment|/*&n; * These functions are the basis of our bit ops.&n; * First, the atomic bitops.&n; *&n; * The endian issue for these functions is handled by the macros below.&n; */
+multiline_comment|/*&n; * These functions are the basis of our bit ops.&n; *&n; * First, the atomic bitops. These use native endian.&n; */
+DECL|function|____atomic_set_bit
 r_static
 r_inline
 r_void
-DECL|function|____atomic_set_bit_mask
-id|____atomic_set_bit_mask
+id|____atomic_set_bit
 c_func
 (paren
 r_int
 r_int
-id|mask
+id|bit
 comma
-r_volatile
 r_int
-r_char
+r_int
 op_star
 id|p
 )paren
@@ -30,6 +29,24 @@ id|p
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_int
+r_int
+id|mask
+op_assign
+l_int|1UL
+op_lshift
+(paren
+id|bit
+op_amp
+l_int|31
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+id|bit
+op_rshift
+l_int|5
 suffix:semicolon
 id|local_irq_save
 c_func
@@ -49,20 +66,19 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|function|____atomic_clear_bit
 r_static
 r_inline
 r_void
-DECL|function|____atomic_clear_bit_mask
-id|____atomic_clear_bit_mask
+id|____atomic_clear_bit
 c_func
 (paren
 r_int
 r_int
-id|mask
+id|bit
 comma
-r_volatile
 r_int
-r_char
+r_int
 op_star
 id|p
 )paren
@@ -70,6 +86,24 @@ id|p
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_int
+r_int
+id|mask
+op_assign
+l_int|1UL
+op_lshift
+(paren
+id|bit
+op_amp
+l_int|31
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+id|bit
+op_rshift
+l_int|5
 suffix:semicolon
 id|local_irq_save
 c_func
@@ -90,20 +124,19 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|function|____atomic_change_bit
 r_static
 r_inline
 r_void
-DECL|function|____atomic_change_bit_mask
-id|____atomic_change_bit_mask
+id|____atomic_change_bit
 c_func
 (paren
 r_int
 r_int
-id|mask
+id|bit
 comma
-r_volatile
 r_int
-r_char
+r_int
 op_star
 id|p
 )paren
@@ -111,6 +144,24 @@ id|p
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_int
+r_int
+id|mask
+op_assign
+l_int|1UL
+op_lshift
+(paren
+id|bit
+op_amp
+l_int|31
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+id|bit
+op_rshift
+l_int|5
 suffix:semicolon
 id|local_irq_save
 c_func
@@ -133,17 +184,16 @@ suffix:semicolon
 r_static
 r_inline
 r_int
-DECL|function|____atomic_test_and_set_bit_mask
-id|____atomic_test_and_set_bit_mask
+DECL|function|____atomic_test_and_set_bit
+id|____atomic_test_and_set_bit
 c_func
 (paren
 r_int
 r_int
-id|mask
+id|bit
 comma
-r_volatile
 r_int
-r_char
+r_int
 op_star
 id|p
 )paren
@@ -155,6 +205,24 @@ suffix:semicolon
 r_int
 r_int
 id|res
+suffix:semicolon
+r_int
+r_int
+id|mask
+op_assign
+l_int|1UL
+op_lshift
+(paren
+id|bit
+op_amp
+l_int|31
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+id|bit
+op_rshift
+l_int|5
 suffix:semicolon
 id|local_irq_save
 c_func
@@ -189,17 +257,16 @@ suffix:semicolon
 r_static
 r_inline
 r_int
-DECL|function|____atomic_test_and_clear_bit_mask
-id|____atomic_test_and_clear_bit_mask
+DECL|function|____atomic_test_and_clear_bit
+id|____atomic_test_and_clear_bit
 c_func
 (paren
 r_int
 r_int
-id|mask
+id|bit
 comma
-r_volatile
 r_int
-r_char
+r_int
 op_star
 id|p
 )paren
@@ -211,6 +278,24 @@ suffix:semicolon
 r_int
 r_int
 id|res
+suffix:semicolon
+r_int
+r_int
+id|mask
+op_assign
+l_int|1UL
+op_lshift
+(paren
+id|bit
+op_amp
+l_int|31
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+id|bit
+op_rshift
+l_int|5
 suffix:semicolon
 id|local_irq_save
 c_func
@@ -246,17 +331,16 @@ suffix:semicolon
 r_static
 r_inline
 r_int
-DECL|function|____atomic_test_and_change_bit_mask
-id|____atomic_test_and_change_bit_mask
+DECL|function|____atomic_test_and_change_bit
+id|____atomic_test_and_change_bit
 c_func
 (paren
 r_int
 r_int
-id|mask
+id|bit
 comma
-r_volatile
 r_int
-r_char
+r_int
 op_star
 id|p
 )paren
@@ -268,6 +352,24 @@ suffix:semicolon
 r_int
 r_int
 id|res
+suffix:semicolon
+r_int
+r_int
+id|mask
+op_assign
+l_int|1UL
+op_lshift
+(paren
+id|bit
+op_amp
+l_int|31
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+id|bit
+op_rshift
+l_int|5
 suffix:semicolon
 id|local_irq_save
 c_func
@@ -299,192 +401,157 @@ op_amp
 id|mask
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Now the non-atomic variants.  We let the compiler handle all optimisations&n; * for these.&n; */
-DECL|function|____nonatomic_set_bit
+multiline_comment|/*&n; * Now the non-atomic variants.  We let the compiler handle all&n; * optimisations for these.  These are all _native_ endian.&n; */
+DECL|function|__set_bit
 r_static
 r_inline
 r_void
-id|____nonatomic_set_bit
+id|__set_bit
 c_func
 (paren
 r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|p
 )paren
 (brace
-(paren
-(paren
-r_int
-r_char
-op_star
-)paren
 id|p
-)paren
 (braket
 id|nr
 op_rshift
-l_int|3
+l_int|5
 )braket
 op_or_assign
 (paren
-l_int|1U
+l_int|1UL
 op_lshift
 (paren
 id|nr
 op_amp
-l_int|7
+l_int|31
 )paren
 )paren
 suffix:semicolon
 )brace
-DECL|function|____nonatomic_clear_bit
+DECL|function|__clear_bit
 r_static
 r_inline
 r_void
-id|____nonatomic_clear_bit
+id|__clear_bit
 c_func
 (paren
 r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|p
 )paren
 (brace
-(paren
-(paren
-r_int
-r_char
-op_star
-)paren
 id|p
-)paren
 (braket
 id|nr
 op_rshift
-l_int|3
+l_int|5
 )braket
 op_and_assign
 op_complement
 (paren
-l_int|1U
+l_int|1UL
 op_lshift
 (paren
 id|nr
 op_amp
-l_int|7
+l_int|31
 )paren
 )paren
 suffix:semicolon
 )brace
-DECL|function|____nonatomic_change_bit
+DECL|function|__change_bit
 r_static
 r_inline
 r_void
-id|____nonatomic_change_bit
+id|__change_bit
 c_func
 (paren
 r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|p
 )paren
 (brace
-(paren
-(paren
-r_int
-r_char
-op_star
-)paren
 id|p
-)paren
 (braket
 id|nr
 op_rshift
-l_int|3
+l_int|5
 )braket
 op_xor_assign
 (paren
-l_int|1U
+l_int|1UL
 op_lshift
 (paren
 id|nr
 op_amp
-l_int|7
+l_int|31
 )paren
 )paren
 suffix:semicolon
 )brace
-DECL|function|____nonatomic_test_and_set_bit
+DECL|function|__test_and_set_bit
 r_static
 r_inline
 r_int
-id|____nonatomic_test_and_set_bit
+id|__test_and_set_bit
 c_func
 (paren
 r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|p
 )paren
 (brace
 r_int
 r_int
+id|oldval
+comma
 id|mask
 op_assign
-l_int|1
+l_int|1UL
 op_lshift
 (paren
 id|nr
 op_amp
-l_int|7
+l_int|31
 )paren
 suffix:semicolon
-r_int
-r_int
-id|oldval
+id|p
+op_add_assign
+id|nr
+op_rshift
+l_int|5
 suffix:semicolon
 id|oldval
 op_assign
-(paren
-(paren
-r_int
-r_char
 op_star
-)paren
 id|p
-)paren
-(braket
-id|nr
-op_rshift
-l_int|3
-)braket
 suffix:semicolon
-(paren
-(paren
-r_int
-r_char
 op_star
-)paren
 id|p
-)paren
-(braket
-id|nr
-op_rshift
-l_int|3
-)braket
 op_assign
 id|oldval
 op_or
@@ -496,67 +563,50 @@ op_amp
 id|mask
 suffix:semicolon
 )brace
-DECL|function|____nonatomic_test_and_clear_bit
+DECL|function|__test_and_clear_bit
 r_static
 r_inline
 r_int
-id|____nonatomic_test_and_clear_bit
+id|__test_and_clear_bit
 c_func
 (paren
 r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|p
 )paren
 (brace
 r_int
 r_int
+id|oldval
+comma
 id|mask
 op_assign
-l_int|1
+l_int|1UL
 op_lshift
 (paren
 id|nr
 op_amp
-l_int|7
+l_int|31
 )paren
 suffix:semicolon
-r_int
-r_int
-id|oldval
+id|p
+op_add_assign
+id|nr
+op_rshift
+l_int|5
 suffix:semicolon
 id|oldval
 op_assign
-(paren
-(paren
-r_int
-r_char
 op_star
-)paren
 id|p
-)paren
-(braket
-id|nr
-op_rshift
-l_int|3
-)braket
 suffix:semicolon
-(paren
-(paren
-r_int
-r_char
 op_star
-)paren
 id|p
-)paren
-(braket
-id|nr
-op_rshift
-l_int|3
-)braket
 op_assign
 id|oldval
 op_amp
@@ -569,67 +619,50 @@ op_amp
 id|mask
 suffix:semicolon
 )brace
-DECL|function|____nonatomic_test_and_change_bit
+DECL|function|__test_and_change_bit
 r_static
 r_inline
 r_int
-id|____nonatomic_test_and_change_bit
+id|__test_and_change_bit
 c_func
 (paren
 r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|p
 )paren
 (brace
 r_int
 r_int
+id|oldval
+comma
 id|mask
 op_assign
-l_int|1
+l_int|1UL
 op_lshift
 (paren
 id|nr
 op_amp
-l_int|7
+l_int|31
 )paren
 suffix:semicolon
-r_int
-r_int
-id|oldval
+id|p
+op_add_assign
+id|nr
+op_rshift
+l_int|5
 suffix:semicolon
 id|oldval
 op_assign
-(paren
-(paren
-r_int
-r_char
 op_star
-)paren
 id|p
-)paren
-(braket
-id|nr
-op_rshift
-l_int|3
-)braket
 suffix:semicolon
-(paren
-(paren
-r_int
-r_char
 op_star
-)paren
 id|p
-)paren
-(braket
-id|nr
-op_rshift
-l_int|3
-)braket
 op_assign
 id|oldval
 op_xor
@@ -642,45 +675,38 @@ id|mask
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This routine doesn&squot;t need to be atomic.&n; */
-DECL|function|____test_bit
+DECL|function|__test_bit
 r_static
 r_inline
 r_int
-id|____test_bit
+id|__test_bit
 c_func
 (paren
 r_int
 id|nr
 comma
 r_const
-r_void
+r_int
+r_int
 op_star
 id|p
 )paren
 (brace
 r_return
-(paren
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
 id|p
-)paren
 (braket
 id|nr
 op_rshift
-l_int|3
+l_int|5
 )braket
 op_amp
 (paren
-l_int|1U
+l_int|1UL
 op_lshift
 (paren
 id|nr
 op_amp
-l_int|7
+l_int|31
 )paren
 )paren
 suffix:semicolon
@@ -695,8 +721,8 @@ c_func
 r_int
 id|nr
 comma
-r_volatile
-r_void
+r_int
+r_int
 op_star
 id|p
 )paren
@@ -709,8 +735,8 @@ c_func
 r_int
 id|nr
 comma
-r_volatile
-r_void
+r_int
+r_int
 op_star
 id|p
 )paren
@@ -723,8 +749,8 @@ c_func
 r_int
 id|nr
 comma
-r_volatile
-r_void
+r_int
+r_int
 op_star
 id|p
 )paren
@@ -737,8 +763,8 @@ c_func
 r_int
 id|nr
 comma
-r_volatile
-r_void
+r_int
+r_int
 op_star
 id|p
 )paren
@@ -751,8 +777,8 @@ c_func
 r_int
 id|nr
 comma
-r_volatile
-r_void
+r_int
+r_int
 op_star
 id|p
 )paren
@@ -765,8 +791,8 @@ c_func
 r_int
 id|nr
 comma
-r_volatile
-r_void
+r_int
+r_int
 op_star
 id|p
 )paren
@@ -809,8 +835,8 @@ c_func
 r_int
 id|nr
 comma
-r_volatile
-r_void
+r_int
+r_int
 op_star
 id|p
 )paren
@@ -823,8 +849,8 @@ c_func
 r_int
 id|nr
 comma
-r_volatile
-r_void
+r_int
+r_int
 op_star
 id|p
 )paren
@@ -837,8 +863,8 @@ c_func
 r_int
 id|nr
 comma
-r_volatile
-r_void
+r_int
+r_int
 op_star
 id|p
 )paren
@@ -851,8 +877,8 @@ c_func
 r_int
 id|nr
 comma
-r_volatile
-r_void
+r_int
+r_int
 op_star
 id|p
 )paren
@@ -865,8 +891,8 @@ c_func
 r_int
 id|nr
 comma
-r_volatile
-r_void
+r_int
+r_int
 op_star
 id|p
 )paren
@@ -879,8 +905,8 @@ c_func
 r_int
 id|nr
 comma
-r_volatile
-r_void
+r_int
+r_int
 op_star
 id|p
 )paren
@@ -916,13 +942,11 @@ id|offset
 suffix:semicolon
 multiline_comment|/*&n; * The __* form of bitops are non-atomic and may be reordered.&n; */
 DECL|macro|ATOMIC_BITOP_LE
-mdefine_line|#define&t;ATOMIC_BITOP_LE(name,nr,p)&t;&t;&bslash;&n;&t;(__builtin_constant_p(nr) ?&t;&t;&bslash;&n;&t; ____atomic_##name##_mask(1 &lt;&lt; ((nr) &amp; 7), &bslash;&n;&t;&t;&t;((unsigned char *)(p)) + ((nr) &gt;&gt; 3)) : &bslash;&n;&t; _##name##_le(nr,p))
+mdefine_line|#define&t;ATOMIC_BITOP_LE(name,nr,p)&t;&t;&bslash;&n;&t;(__builtin_constant_p(nr) ?&t;&t;&bslash;&n;&t; ____atomic_##name(nr, p) :&t;&t;&bslash;&n;&t; _##name##_le(nr,p))
 DECL|macro|ATOMIC_BITOP_BE
-mdefine_line|#define&t;ATOMIC_BITOP_BE(name,nr,p)&t;&t;&bslash;&n;&t;(__builtin_constant_p(nr) ?&t;&t;&bslash;&n;&t; ____atomic_##name##_mask(1 &lt;&lt; ((nr) &amp; 7), &bslash;&n;&t;&t;&t;((unsigned char *)(p)) + (((nr) &gt;&gt; 3) ^ 3)) : &bslash;&n;&t; _##name##_be(nr,p))
-DECL|macro|NONATOMIC_BITOP_LE
-mdefine_line|#define NONATOMIC_BITOP_LE(name,nr,p)&t;&bslash;&n;&t;(____nonatomic_##name(nr, p))
-DECL|macro|NONATOMIC_BITOP_BE
-mdefine_line|#define NONATOMIC_BITOP_BE(name,nr,p)&t;&bslash;&n;&t;(____nonatomic_##name(nr ^ 0x18, p))
+mdefine_line|#define&t;ATOMIC_BITOP_BE(name,nr,p)&t;&t;&bslash;&n;&t;(__builtin_constant_p(nr) ?&t;&t;&bslash;&n;&t; ____atomic_##name(nr, p) :&t;&t;&bslash;&n;&t; _##name##_be(nr,p))
+DECL|macro|NONATOMIC_BITOP
+mdefine_line|#define NONATOMIC_BITOP(name,nr,p)&t;&t;&bslash;&n;&t;(____nonatomic_##name(nr, p))
 macro_line|#ifndef __ARMEB__
 multiline_comment|/*&n; * These are the little endian, atomic definitions.&n; */
 DECL|macro|set_bit
@@ -938,26 +962,13 @@ mdefine_line|#define test_and_clear_bit(nr,p)&t;ATOMIC_BITOP_LE(test_and_clear_b
 DECL|macro|test_and_change_bit
 mdefine_line|#define test_and_change_bit(nr,p)&t;ATOMIC_BITOP_LE(test_and_change_bit,nr,p)
 DECL|macro|test_bit
-mdefine_line|#define test_bit(nr,p)&t;&t;&t;____test_bit(nr,p)
+mdefine_line|#define test_bit(nr,p)&t;&t;&t;__test_bit(nr,p)
 DECL|macro|find_first_zero_bit
 mdefine_line|#define find_first_zero_bit(p,sz)&t;_find_first_zero_bit_le(p,sz)
 DECL|macro|find_next_zero_bit
 mdefine_line|#define find_next_zero_bit(p,sz,off)&t;_find_next_zero_bit_le(p,sz,off)
-multiline_comment|/*&n; * These are the little endian, non-atomic definitions.&n; */
-DECL|macro|__set_bit
-mdefine_line|#define __set_bit(nr,p)&t;&t;&t;NONATOMIC_BITOP_LE(set_bit,nr,p)
-DECL|macro|__clear_bit
-mdefine_line|#define __clear_bit(nr,p)&t;&t;NONATOMIC_BITOP_LE(clear_bit,nr,p)
-DECL|macro|__change_bit
-mdefine_line|#define __change_bit(nr,p)&t;&t;NONATOMIC_BITOP_LE(change_bit,nr,p)
-DECL|macro|__test_and_set_bit
-mdefine_line|#define __test_and_set_bit(nr,p)&t;NONATOMIC_BITOP_LE(test_and_set_bit,nr,p)
-DECL|macro|__test_and_clear_bit
-mdefine_line|#define __test_and_clear_bit(nr,p)&t;NONATOMIC_BITOP_LE(test_and_clear_bit,nr,p)
-DECL|macro|__test_and_change_bit
-mdefine_line|#define __test_and_change_bit(nr,p)&t;NONATOMIC_BITOP_LE(test_and_change_bit,nr,p)
-DECL|macro|__test_bit
-mdefine_line|#define __test_bit(nr,p)&t;&t;____test_bit(nr,p)
+DECL|macro|WORD_BITOFF_TO_LE
+mdefine_line|#define WORD_BITOFF_TO_LE(x)&t;&t;((x))
 macro_line|#else
 multiline_comment|/*&n; * These are the big endian, atomic definitions.&n; */
 DECL|macro|set_bit
@@ -973,26 +984,13 @@ mdefine_line|#define test_and_clear_bit(nr,p)&t;ATOMIC_BITOP_BE(test_and_clear_b
 DECL|macro|test_and_change_bit
 mdefine_line|#define test_and_change_bit(nr,p)&t;ATOMIC_BITOP_BE(test_and_change_bit,nr,p)
 DECL|macro|test_bit
-mdefine_line|#define test_bit(nr,p)&t;&t;&t;____test_bit((nr) ^ 0x18, p)
+mdefine_line|#define test_bit(nr,p)&t;&t;&t;__test_bit(nr,p)
 DECL|macro|find_first_zero_bit
 mdefine_line|#define find_first_zero_bit(p,sz)&t;_find_first_zero_bit_be(p,sz)
 DECL|macro|find_next_zero_bit
 mdefine_line|#define find_next_zero_bit(p,sz,off)&t;_find_next_zero_bit_be(p,sz,off)
-multiline_comment|/*&n; * These are the big endian, non-atomic definitions.&n; */
-DECL|macro|__set_bit
-mdefine_line|#define __set_bit(nr,p)&t;&t;&t;NONATOMIC_BITOP_BE(set_bit,nr,p)
-DECL|macro|__clear_bit
-mdefine_line|#define __clear_bit(nr,p)&t;&t;NONATOMIC_BITOP_BE(clear_bit,nr,p)
-DECL|macro|__change_bit
-mdefine_line|#define __change_bit(nr,p)&t;&t;NONATOMIC_BITOP_BE(change_bit,nr,p)
-DECL|macro|__test_and_set_bit
-mdefine_line|#define __test_and_set_bit(nr,p)&t;NONATOMIC_BITOP_BE(test_and_set_bit,nr,p)
-DECL|macro|__test_and_clear_bit
-mdefine_line|#define __test_and_clear_bit(nr,p)&t;NONATOMIC_BITOP_BE(test_and_clear_bit,nr,p)
-DECL|macro|__test_and_change_bit
-mdefine_line|#define __test_and_change_bit(nr,p)&t;NONATOMIC_BITOP_BE(test_and_change_bit,nr,p)
-DECL|macro|__test_bit
-mdefine_line|#define __test_bit(nr,p)&t;&t;____test_bit((nr) ^ 0x18, p)
+DECL|macro|WORD_BITOFF_TO_LE
+mdefine_line|#define WORD_BITOFF_TO_LE(x)&t;&t;((x) ^ 0x18)
 macro_line|#endif
 multiline_comment|/*&n; * ffz = Find First Zero in word. Undefined if no zero exists,&n; * so code should check against ~0UL first..&n; */
 DECL|function|ffz
@@ -1294,26 +1292,26 @@ DECL|macro|hweight8
 mdefine_line|#define hweight8(x) generic_hweight8(x)
 multiline_comment|/*&n; * Ext2 is defined to use little-endian byte ordering.&n; * These do not need to be atomic.&n; */
 DECL|macro|ext2_set_bit
-mdefine_line|#define ext2_set_bit(nr,p)&t;&t;&t;NONATOMIC_BITOP_LE(test_and_set_bit,nr,p)
+mdefine_line|#define ext2_set_bit(nr,p)&t;&t;&t;&bslash;&n;&t;&t;__test_and_set_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
 DECL|macro|ext2_clear_bit
-mdefine_line|#define ext2_clear_bit(nr,p)&t;&t;&t;NONATOMIC_BITOP_LE(test_and_clear_bit,nr,p)
+mdefine_line|#define ext2_clear_bit(nr,p)&t;&t;&t;&bslash;&n;&t;&t;__test_and_clear_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
 DECL|macro|ext2_test_bit
-mdefine_line|#define ext2_test_bit(nr,p)&t;&t;&t;__test_bit(nr,p)
+mdefine_line|#define ext2_test_bit(nr,p)&t;&t;&t;&bslash;&n;&t;&t;__test_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
 DECL|macro|ext2_find_first_zero_bit
-mdefine_line|#define ext2_find_first_zero_bit(p,sz)&t;&t;_find_first_zero_bit_le(p,sz)
+mdefine_line|#define ext2_find_first_zero_bit(p,sz)&t;&t;&bslash;&n;&t;&t;_find_first_zero_bit_le(p,sz)
 DECL|macro|ext2_find_next_zero_bit
-mdefine_line|#define ext2_find_next_zero_bit(p,sz,off)&t;_find_next_zero_bit_le(p,sz,off)
+mdefine_line|#define ext2_find_next_zero_bit(p,sz,off)&t;&bslash;&n;&t;&t;_find_next_zero_bit_le(p,sz,off)
 multiline_comment|/*&n; * Minix is defined to use little-endian byte ordering.&n; * These do not need to be atomic.&n; */
 DECL|macro|minix_set_bit
-mdefine_line|#define minix_set_bit(nr,p)&t;&t;&t;NONATOMIC_BITOP_LE(set_bit,nr,p)
+mdefine_line|#define minix_set_bit(nr,p)&t;&t;&t;&bslash;&n;&t;&t;__set_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
 DECL|macro|minix_test_bit
-mdefine_line|#define minix_test_bit(nr,p)&t;&t;&t;__test_bit(nr,p)
+mdefine_line|#define minix_test_bit(nr,p)&t;&t;&t;&bslash;&n;&t;&t;__test_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
 DECL|macro|minix_test_and_set_bit
-mdefine_line|#define minix_test_and_set_bit(nr,p)&t;&t;NONATOMIC_BITOP_LE(test_and_set_bit,nr,p)
+mdefine_line|#define minix_test_and_set_bit(nr,p)&t;&t;&bslash;&n;&t;&t;__test_and_set_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
 DECL|macro|minix_test_and_clear_bit
-mdefine_line|#define minix_test_and_clear_bit(nr,p)&t;&t;NONATOMIC_BITOP_LE(test_and_clear_bit,nr,p)
+mdefine_line|#define minix_test_and_clear_bit(nr,p)&t;&t;&bslash;&n;&t;&t;__test_and_clear_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
 DECL|macro|minix_find_first_zero_bit
-mdefine_line|#define minix_find_first_zero_bit(p,sz)&t;&t;_find_first_zero_bit_le(p,sz)
+mdefine_line|#define minix_find_first_zero_bit(p,sz)&t;&t;&bslash;&n;&t;&t;_find_first_zero_bit_le(p,sz)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ARM_BITOPS_H */
 eof
