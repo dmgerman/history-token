@@ -965,11 +965,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|lock_cpu_hotplug
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -995,6 +990,11 @@ r_else
 r_int
 id|cpu
 suffix:semicolon
+id|lock_cpu_hotplug
+c_func
+(paren
+)paren
+suffix:semicolon
 id|for_each_online_cpu
 c_func
 (paren
@@ -1008,12 +1008,12 @@ op_plus
 id|cpu
 )paren
 suffix:semicolon
-)brace
 id|unlock_cpu_hotplug
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|create_workqueue_thread
 r_static
