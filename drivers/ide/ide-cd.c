@@ -7575,7 +7575,7 @@ suffix:semicolon
 r_char
 id|loej
 op_assign
-l_int|0
+l_int|0x02
 suffix:semicolon
 r_if
 c_cond
@@ -7625,6 +7625,7 @@ c_cond
 (paren
 id|ejectflag
 op_logical_and
+op_logical_neg
 id|CDROM_CONFIG_FLAGS
 c_func
 (paren
@@ -7635,7 +7636,7 @@ id|close_tray
 )paren
 id|loej
 op_assign
-l_int|0x02
+l_int|0
 suffix:semicolon
 id|req.sense
 op_assign
