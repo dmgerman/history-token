@@ -9286,6 +9286,15 @@ comma
 id|idev-&gt;nd_parms
 )paren
 suffix:semicolon
+id|neigh_ifdown
+c_func
+(paren
+op_amp
+id|nd_tbl
+comma
+id|dev
+)paren
+suffix:semicolon
 id|in6_dev_put
 c_func
 (paren

@@ -5939,6 +5939,15 @@ comma
 id|dn_db-&gt;neigh_parms
 )paren
 suffix:semicolon
+id|neigh_ifdown
+c_func
+(paren
+op_amp
+id|dn_neigh_table
+comma
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

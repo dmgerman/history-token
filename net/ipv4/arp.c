@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
+macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#ifdef CONFIG_SYSCTL
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#endif
@@ -638,8 +639,28 @@ r_struct
 id|in_device
 op_star
 id|in_dev
+suffix:semicolon
+r_struct
+id|neigh_parms
+op_star
+id|parms
+suffix:semicolon
+id|neigh-&gt;type
 op_assign
-id|in_dev_get
+id|inet_addr_type
+c_func
+(paren
+id|addr
+)paren
+suffix:semicolon
+id|rcu_read_lock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|in_dev
+op_assign
+id|__in_dev_get
 c_func
 (paren
 id|dev
@@ -652,31 +673,45 @@ id|in_dev
 op_eq
 l_int|NULL
 )paren
+(brace
+id|rcu_read_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|neigh-&gt;type
+)brace
+id|parms
 op_assign
-id|inet_addr_type
-c_func
-(paren
-id|addr
-)paren
+id|in_dev-&gt;arp_parms
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|in_dev-&gt;arp_parms
+id|parms
 )paren
-id|neigh-&gt;parms
-op_assign
-id|in_dev-&gt;arp_parms
-suffix:semicolon
-id|in_dev_put
+(brace
+id|__neigh_parms_put
 c_func
 (paren
-id|in_dev
+id|neigh-&gt;parms
+)paren
+suffix:semicolon
+id|neigh-&gt;parms
+op_assign
+id|neigh_parms_clone
+c_func
+(paren
+id|parms
+)paren
+suffix:semicolon
+)brace
+id|rcu_read_unlock
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if

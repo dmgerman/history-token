@@ -627,6 +627,11 @@ id|in_ifaddr
 op_star
 id|ifa
 suffix:semicolon
+r_struct
+id|net_device
+op_star
+id|dev
+suffix:semicolon
 id|ASSERT_RTNL
 c_func
 (paren
@@ -681,7 +686,11 @@ id|in_dev-&gt;cnf
 )paren
 suffix:semicolon
 macro_line|#endif
-id|in_dev-&gt;dev-&gt;ip_ptr
+id|dev
+op_assign
+id|in_dev-&gt;dev
+suffix:semicolon
+id|dev-&gt;ip_ptr
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -700,6 +709,12 @@ op_amp
 id|arp_tbl
 comma
 id|in_dev-&gt;arp_parms
+)paren
+suffix:semicolon
+id|arp_ifdown
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 id|call_rcu
