@@ -299,7 +299,7 @@ op_assign
 l_string|&quot;Copyright (c) 2002 Intel Corporation&quot;
 suffix:semicolon
 DECL|macro|E100_VERSION
-mdefine_line|#define E100_VERSION  &quot;2.0.23-pre1&quot;
+mdefine_line|#define E100_VERSION  &quot;2.0.23-pre2&quot;
 DECL|macro|E100_FULL_DRIVER_NAME
 mdefine_line|#define E100_FULL_DRIVER_NAME &t;&quot;Intel(R) PRO/100 Fast Ethernet Adapter - Loadable driver, ver &quot;
 DECL|variable|e100_version
@@ -2046,6 +2046,16 @@ op_amp
 id|bdp-&gt;scb-&gt;scb_cmd_hi
 )paren
 suffix:semicolon
+id|readw
+c_func
+(paren
+op_amp
+(paren
+id|bdp-&gt;scb-&gt;scb_status
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* flushes last write, read-safe */
 )brace
 r_static
 r_inline
@@ -7917,6 +7927,29 @@ c_func
 id|bdp-&gt;tcb_pool
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bdp-&gt;flags
+op_amp
+id|USE_IPCB
+)paren
+(brace
+id|tcb-&gt;tcbu.ipcb.ip_activation_high
+op_assign
+id|IPCB_IP_ACTIVATION_DEFAULT
+suffix:semicolon
+id|tcb-&gt;tcbu.ipcb.ip_schedule
+op_and_assign
+op_complement
+id|IPCB_TCP_PACKET
+suffix:semicolon
+id|tcb-&gt;tcbu.ipcb.ip_schedule
+op_and_assign
+op_complement
+id|IPCB_TCPUDP_CHECKSUM_ENABLE
+suffix:semicolon
+)brace
 id|tcb-&gt;tcb_hdr.cb_status
 op_assign
 l_int|0
@@ -8086,32 +8119,6 @@ c_func
 (paren
 id|ip
 )paren
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|bdp-&gt;flags
-op_amp
-id|USE_IPCB
-)paren
-(brace
-id|tcb-&gt;tcbu.ipcb.ip_activation_high
-op_assign
-id|IPCB_IP_ACTIVATION_DEFAULT
-suffix:semicolon
-id|tcb-&gt;tcbu.ipcb.ip_schedule
-op_and_assign
-op_complement
-id|IPCB_TCP_PACKET
-suffix:semicolon
-id|tcb-&gt;tcbu.ipcb.ip_schedule
-op_and_assign
-op_complement
-id|IPCB_TCPUDP_CHECKSUM_ENABLE
 suffix:semicolon
 )brace
 )brace
