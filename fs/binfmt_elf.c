@@ -1260,7 +1260,7 @@ r_if
 c_cond
 (paren
 id|interp_elf_ex-&gt;e_phnum
-OG
+template_param
 l_int|65536U
 op_div
 r_sizeof
@@ -2169,11 +2169,6 @@ r_goto
 id|out
 suffix:semicolon
 multiline_comment|/* Now read in all of the header information */
-id|retval
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2192,7 +2187,7 @@ r_if
 c_cond
 (paren
 id|loc-&gt;elf_ex.e_phnum
-OG
+template_param
 l_int|65536U
 op_div
 r_sizeof
@@ -2213,6 +2208,11 @@ r_sizeof
 r_struct
 id|elf_phdr
 )paren
+suffix:semicolon
+id|retval
+op_assign
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|elf_phdata
 op_assign
@@ -2411,7 +2411,7 @@ multiline_comment|/* This is the program interpreter used for&n;&t;&t;&t; * shar
 id|retval
 op_assign
 op_minus
-id|ENOMEM
+id|ENOEXEC
 suffix:semicolon
 r_if
 c_cond
@@ -2421,11 +2421,16 @@ OG
 id|PATH_MAX
 op_logical_or
 id|elf_ppnt-&gt;p_filesz
-op_eq
-l_int|0
+OL
+l_int|2
 )paren
 r_goto
 id|out_free_file
+suffix:semicolon
+id|retval
+op_assign
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|elf_interpreter
 op_assign
@@ -2492,7 +2497,7 @@ multiline_comment|/* make sure path is NULL terminated */
 id|retval
 op_assign
 op_minus
-id|EINVAL
+id|ENOEXEC
 suffix:semicolon
 r_if
 c_cond
@@ -3612,17 +3617,17 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Unable to load interpreter&bslash;n&quot;
+l_string|&quot;Unable to load interpreter %.128s&bslash;n&quot;
+comma
+id|elf_interpreter
 )paren
 suffix:semicolon
-id|send_sig
+id|force_sig
 c_func
 (paren
 id|SIGSEGV
 comma
 id|current
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|retval
