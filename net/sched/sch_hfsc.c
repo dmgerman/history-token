@@ -7308,11 +7308,6 @@ op_star
 )paren
 id|sch-&gt;data
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_CLS_ACT
-id|sch-&gt;stats.reqs
-op_increment
-suffix:semicolon
-macro_line|#endif
 id|__skb_queue_head
 c_func
 (paren

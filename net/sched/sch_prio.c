@@ -429,11 +429,6 @@ id|ret
 op_assign
 id|NET_XMIT_DROP
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_CLS_ACT
-id|sch-&gt;stats.reqs
-op_increment
-suffix:semicolon
-macro_line|#endif
 id|qdisc
 op_assign
 id|prio_classify

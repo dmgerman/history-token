@@ -3086,11 +3086,6 @@ id|sk_buff
 op_star
 id|tskb
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_CLS_ACT
-id|sch-&gt;stats.reqs
-op_increment
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
