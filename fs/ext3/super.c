@@ -1598,15 +1598,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|sbi-&gt;s_qf_names
-(braket
-id|i
-)braket
-)paren
 id|kfree
 c_func
 (paren
@@ -1616,7 +1607,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 multiline_comment|/* Debugging code just in case the in-memory inode orphan list&n;&t; * isn&squot;t empty.  The on-disk one can be non-empty if we&squot;ve&n;&t; * detected an error and taken the fs readonly, but the&n;&t; * in-memory list had better be clean by this point. */
 r_if
@@ -3955,15 +3945,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|sbi-&gt;s_qf_names
-(braket
-id|qtype
-)braket
-)paren
-(brace
 id|kfree
 c_func
 (paren
@@ -3980,7 +3961,6 @@ id|qtype
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
