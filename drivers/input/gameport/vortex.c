@@ -56,12 +56,14 @@ suffix:semicolon
 DECL|member|base
 r_int
 r_char
+id|__iomem
 op_star
 id|base
 suffix:semicolon
 DECL|member|io
 r_int
 r_char
+id|__iomem
 op_star
 id|io
 suffix:semicolon
