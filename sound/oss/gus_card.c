@@ -533,11 +533,6 @@ r_extern
 r_int
 id|gus_timer_enabled
 suffix:semicolon
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SOUND_GUSMAX
 r_if
 c_cond
