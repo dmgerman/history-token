@@ -1598,7 +1598,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifndef __ia64__
+macro_line|#if !defined(__ia64__) &amp;&amp; !defined(__x86_64__)
 multiline_comment|/**&n; *&t;ipc_parse_version&t;-&t;IPC call version&n; *&t;@cmd: pointer to command&n; *&n; *&t;Return IPC_64 for new style IPC and IPC_OLD for old style IPC. &n; *&t;The cmd value is turned from an encoding command and version into&n; *&t;just the command code.&n; */
 DECL|function|ipc_parse_version
 r_int

@@ -2,7 +2,7 @@ macro_line|#ifndef _CIO_QDIO_H
 DECL|macro|_CIO_QDIO_H
 mdefine_line|#define _CIO_QDIO_H
 DECL|macro|VERSION_CIO_QDIO_H
-mdefine_line|#define VERSION_CIO_QDIO_H &quot;$Revision: 1.17 $&quot;
+mdefine_line|#define VERSION_CIO_QDIO_H &quot;$Revision: 1.18 $&quot;
 singleline_comment|//#define QDIO_DBF_LIKE_HELL
 macro_line|#ifdef QDIO_DBF_LIKE_HELL
 DECL|macro|QDIO_VERBOSE_LEVEL
@@ -26,10 +26,10 @@ mdefine_line|#define IQDIO_TIMER_POLL_VALUE 1
 multiline_comment|/*&n; * unfortunately this can&squot;t be (QDIO_MAX_BUFFERS_PER_Q*4/3) or so -- as&n; * we never know, whether we&squot;ll get initiative again, e.g. to give the&n; * transmit skb&squot;s back to the stack, however the stack may be waiting for&n; * them... therefore we define 4 as threshold to start polling (which&n; * will stop as soon as the asynchronous queue catches up)&n; * btw, this only applies to the asynchronous HiperSockets queue&n; */
 DECL|macro|IQDIO_FILL_LEVEL_TO_POLL
 mdefine_line|#define IQDIO_FILL_LEVEL_TO_POLL 4
-DECL|macro|IQDIO_THININT_ISC
-mdefine_line|#define IQDIO_THININT_ISC 3
-DECL|macro|IQDIO_DELAY_TARGET
-mdefine_line|#define IQDIO_DELAY_TARGET 0
+DECL|macro|TIQDIO_THININT_ISC
+mdefine_line|#define TIQDIO_THININT_ISC 3
+DECL|macro|TIQDIO_DELAY_TARGET
+mdefine_line|#define TIQDIO_DELAY_TARGET 0
 DECL|macro|QDIO_BUSY_BIT_PATIENCE
 mdefine_line|#define QDIO_BUSY_BIT_PATIENCE 2000 /* in microsecs */
 DECL|macro|IQDIO_GLOBAL_LAPS
@@ -861,8 +861,13 @@ suffix:semicolon
 macro_line|#endif /* QDIO_PERFORMANCE_STATS */
 DECL|macro|atomic_swap
 mdefine_line|#define atomic_swap(a,b) xchg((int*)a.counter,b)
+multiline_comment|/* unlikely as the later the better */
 DECL|macro|SYNC_MEMORY
-mdefine_line|#define SYNC_MEMORY if (q-&gt;siga_sync) qdio_siga_sync(q)
+mdefine_line|#define SYNC_MEMORY if (unlikely(q-&gt;siga_sync)) qdio_siga_sync_q(q)
+DECL|macro|SYNC_MEMORY_ALL
+mdefine_line|#define SYNC_MEMORY_ALL if (unlikely(q-&gt;siga_sync)) &bslash;&n;&t;qdio_siga_sync(q,~0U,~0U)
+DECL|macro|SYNC_MEMORY_ALL_OUTB
+mdefine_line|#define SYNC_MEMORY_ALL_OUTB if (unlikely(q-&gt;siga_sync)) &bslash;&n;&t;qdio_siga_sync(q,~0U,0)
 DECL|macro|NOW
 mdefine_line|#define NOW qdio_get_micros()
 DECL|macro|SAVE_TIMESTAMP
@@ -924,6 +929,11 @@ r_int
 r_int
 id|is_iqdio_q
 suffix:semicolon
+DECL|member|is_thinint_q
+r_int
+r_int
+id|is_thinint_q
+suffix:semicolon
 multiline_comment|/* bit 0 means queue 0, bit 1 means queue 1, ... */
 DECL|member|mask
 r_int
@@ -982,6 +992,11 @@ r_int
 r_int
 id|siga_sync_done_on_thinints
 suffix:semicolon
+DECL|member|siga_sync_done_on_outb_tis
+r_int
+r_int
+id|siga_sync_done_on_outb_tis
+suffix:semicolon
 DECL|member|hydra_gives_outbound_pcis
 r_int
 r_int
@@ -999,6 +1014,11 @@ suffix:semicolon
 DECL|member|is_in_shutdown
 id|atomic_t
 id|is_in_shutdown
+suffix:semicolon
+DECL|member|irq_ptr
+r_void
+op_star
+id|irq_ptr
 suffix:semicolon
 macro_line|#ifdef QDIO_USE_TIMERS_FOR_POLLING
 DECL|member|timer
@@ -1153,6 +1173,11 @@ DECL|member|is_iqdio_irq
 r_int
 r_int
 id|is_iqdio_irq
+suffix:semicolon
+DECL|member|is_thinint_irq
+r_int
+r_int
+id|is_thinint_irq
 suffix:semicolon
 DECL|member|hydra_gives_outbound_pcis
 r_int

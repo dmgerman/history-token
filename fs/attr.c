@@ -37,11 +37,6 @@ id|ia_valid
 op_assign
 id|attr-&gt;ia_valid
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* If force is set do it anyway. */
 r_if
 c_cond
@@ -216,11 +211,6 @@ l_int|0
 suffix:semicolon
 id|error
 suffix:colon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon

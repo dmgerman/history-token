@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: gpio.c,v 1.1.2.3 2002/11/04 20:33:57 lethal Exp $&n; * by Greg Banks &lt;gbanks@pocketpenguins.com&gt;&n; * (c) 2000 PocketPenguins Inc&n; *&n; * GPIO pin support for HD64465 companion chip.&n; */
+multiline_comment|/*&n; * $Id: gpio.c,v 1.4 2003/05/19 22:24:18 lethal Exp $&n; * by Greg Banks &lt;gbanks@pocketpenguins.com&gt;&n; * (c) 2000 PocketPenguins Inc&n; *&n; * GPIO pin support for HD64465 companion chip.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -351,7 +351,7 @@ l_int|8
 suffix:semicolon
 DECL|function|hd64465_gpio_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|hd64465_gpio_interrupt
 c_func
 (paren
@@ -509,6 +509,9 @@ id|port
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|hd64465_gpio_register_irq
 r_void
@@ -766,7 +769,10 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* TODO: check return values */
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -776,7 +782,14 @@ l_int|0x1000
 comma
 id|MODNAME
 )paren
+)paren
+r_return
+op_minus
+id|EBUSY
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|request_irq
 c_func
 (paren
@@ -790,6 +803,9 @@ id|MODNAME
 comma
 l_int|0
 )paren
+)paren
+r_goto
+id|out_irqfailed
 suffix:semicolon
 id|printk
 c_func
@@ -801,6 +817,20 @@ id|HD64465_IRQ_GPIO
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|out_irqfailed
+suffix:colon
+id|release_region
+c_func
+(paren
+id|HD64465_REG_GPACR
+comma
+l_int|0x1000
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|hd64465_gpio_exit
@@ -842,6 +872,12 @@ id|module_exit
 c_func
 (paren
 id|hd64465_gpio_exit
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

@@ -4152,12 +4152,6 @@ id|filp-&gt;f_op
 op_logical_and
 id|filp-&gt;f_op-&gt;flush
 )paren
-(brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|retval
 op_assign
 id|filp-&gt;f_op
@@ -4168,12 +4162,6 @@ c_func
 id|filp
 )paren
 suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 id|dnotify_flush
 c_func
 (paren

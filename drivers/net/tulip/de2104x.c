@@ -114,7 +114,7 @@ suffix:semicolon
 DECL|macro|PFX
 mdefine_line|#define PFX&t;&t;&t;DRV_NAME &quot;: &quot;
 DECL|macro|DE_DEF_MSG_ENABLE
-mdefine_line|#define DE_DEF_MSG_ENABLE&t;(NETIF_MSG_DRV&t;&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_PROBE &t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_LINK&t;&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_TIMER&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_IFDOWN&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_IFUP&t;&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_RX_ERR&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_TX_ERR)
+mdefine_line|#define DE_DEF_MSG_ENABLE&t;(NETIF_MSG_DRV&t;&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_PROBE &t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_LINK&t;&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_IFDOWN&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_IFUP&t;&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_RX_ERR&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_TX_ERR)
 DECL|macro|DE_RX_RING_SIZE
 mdefine_line|#define DE_RX_RING_SIZE&t;&t;64
 DECL|macro|DE_TX_RING_SIZE

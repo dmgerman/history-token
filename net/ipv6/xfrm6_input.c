@@ -287,10 +287,6 @@ id|xvec
 op_assign
 id|x
 suffix:semicolon
-id|iph
-op_assign
-id|skb-&gt;nh.ipv6h
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -301,7 +297,7 @@ multiline_comment|/* XXX */
 r_if
 c_cond
 (paren
-id|iph-&gt;nexthdr
+id|nexthdr
 op_ne
 id|IPPROTO_IPV6
 )paren

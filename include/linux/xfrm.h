@@ -395,6 +395,10 @@ r_struct
 id|xfrm_id
 id|id
 suffix:semicolon
+DECL|member|saddr
+id|xfrm_address_t
+id|saddr
+suffix:semicolon
 DECL|member|lft
 r_struct
 id|xfrm_lifetime_cfg

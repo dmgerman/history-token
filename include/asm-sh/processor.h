@@ -1,18 +1,28 @@
-multiline_comment|/*&n; * include/asm-sh/processor.h&n; *&n; * Copyright (C) 1999, 2000  Niibe Yutaka&n; */
+multiline_comment|/*&n; * include/asm-sh/processor.h&n; *&n; * Copyright (C) 1999, 2000  Niibe Yutaka&n; * Copyright (C) 2002 Paul Mundt&n; */
 macro_line|#ifndef __ASM_SH_PROCESSOR_H
 DECL|macro|__ASM_SH_PROCESSOR_H
 mdefine_line|#define __ASM_SH_PROCESSOR_H
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 multiline_comment|/*&n; * Default implementation of macro that returns current&n; * instruction pointer (&quot;program counter&quot;).&n; */
 DECL|macro|current_text_addr
 mdefine_line|#define current_text_addr() ({ void *pc; __asm__(&quot;mova&t;1f, %0&bslash;n1:&quot;:&quot;=z&quot; (pc)); pc; })
+multiline_comment|/* Core Processor Version Register */
+DECL|macro|CCN_PVR
+mdefine_line|#define CCN_PVR&t;&t;0xff000030
+DECL|macro|CCN_PRR
+mdefine_line|#define CCN_PRR&t;&t;0xff000044
 multiline_comment|/*&n; *  CPU type and hardware bug flags. Kept separately for each CPU.&n; */
 DECL|enum|cpu_type
 r_enum
 id|cpu_type
 (brace
+DECL|enumerator|CPU_SH7604
+id|CPU_SH7604
+comma
+multiline_comment|/* Represents 7604 */
 DECL|enumerator|CPU_SH7708
 id|CPU_SH7708
 comma
@@ -24,10 +34,31 @@ multiline_comment|/* Represents 7709A, 7729 */
 DECL|enumerator|CPU_SH7750
 id|CPU_SH7750
 comma
-multiline_comment|/* Represents 7750, 7751 */
-DECL|enumerator|CPU_ST40STB1
-id|CPU_ST40STB1
+multiline_comment|/* Represents 7750 */
+DECL|enumerator|CPU_SH7750S
+id|CPU_SH7750S
 comma
+multiline_comment|/* Represents 7750S */
+DECL|enumerator|CPU_SH7750R
+id|CPU_SH7750R
+comma
+multiline_comment|/* Represents 7750R */
+DECL|enumerator|CPU_SH7751
+id|CPU_SH7751
+comma
+multiline_comment|/* Represents 7751 */
+DECL|enumerator|CPU_SH7751R
+id|CPU_SH7751R
+comma
+multiline_comment|/* Represents 7751R */
+DECL|enumerator|CPU_ST40RA
+id|CPU_ST40RA
+comma
+multiline_comment|/* Represents ST40RA (formerly ST40STB1) */
+DECL|enumerator|CPU_ST40GX1
+id|CPU_ST40GX1
+comma
+multiline_comment|/* Represents ST40GX1 */
 DECL|enumerator|CPU_SH_NONE
 id|CPU_SH_NONE
 )brace
@@ -71,8 +102,34 @@ r_int
 id|memory_clock
 suffix:semicolon
 macro_line|#endif
+DECL|member|icache
+r_struct
+id|cache_info
+id|icache
+suffix:semicolon
+DECL|member|dcache
+r_struct
+id|cache_info
+id|dcache
+suffix:semicolon
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+r_extern
+r_struct
+id|sh_cpuinfo
+id|cpu_data
+(braket
+)braket
+suffix:semicolon
+DECL|macro|current_cpu_data
+mdefine_line|#define current_cpu_data cpu_data[smp_processor_id()]
+macro_line|#else
 r_extern
 r_struct
 id|sh_cpuinfo
@@ -82,6 +139,7 @@ DECL|macro|cpu_data
 mdefine_line|#define cpu_data (&amp;boot_cpu_data)
 DECL|macro|current_cpu_data
 mdefine_line|#define current_cpu_data boot_cpu_data
+macro_line|#endif
 multiline_comment|/*&n; * User space process size: 2GB.&n; *&n; * Since SH7709 and SH7750 have &quot;area 7&quot;, we can&squot;t use 0x7c000000--0x7fffffff&n; */
 DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE&t;0x7c000000UL
@@ -190,6 +248,8 @@ id|soft
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|CPU_HAS_FPU
+mdefine_line|#define CPU_HAS_FPU&t;0x0001
 DECL|struct|thread_struct
 r_struct
 id|thread_struct
@@ -280,10 +340,17 @@ suffix:semicolon
 multiline_comment|/*&n; * Bus types&n; */
 DECL|macro|EISA_bus
 mdefine_line|#define EISA_bus 0
+DECL|macro|EISA_bus__is_a_macro
+mdefine_line|#define EISA_bus__is_a_macro /* for versions in ksyms.c */
 DECL|macro|MCA_bus
 mdefine_line|#define MCA_bus 0
 DECL|macro|MCA_bus__is_a_macro
 mdefine_line|#define MCA_bus__is_a_macro /* for versions in ksyms.c */
+multiline_comment|/* Copy and release all segment info associated with a VM */
+DECL|macro|copy_segments
+mdefine_line|#define copy_segments(p, mm)&t;do { } while(0)
+DECL|macro|release_segments
+mdefine_line|#define release_segments(mm)&t;do { } while(0)
 multiline_comment|/*&n; * FPU lazy state save handling.&n; */
 DECL|function|release_fpu
 r_static
@@ -356,6 +423,7 @@ id|SR_FD
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_CPU_SH4
 r_extern
 r_void
 id|save_fpu
@@ -367,10 +435,14 @@ op_star
 id|__tsk
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|save_fpu
+mdefine_line|#define save_fpu(tsk)&t;do { } while (0)
+macro_line|#endif
 DECL|macro|unlazy_fpu
-mdefine_line|#define unlazy_fpu(tsk) do { &t;&t;&t;&bslash;&n;&t;if ((tsk)-&gt;flags &amp; PF_USEDFPU) {&t;&bslash;&n;&t;&t;save_fpu(tsk); &t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define unlazy_fpu(tsk) do { &t;&t;&t;&t;&bslash;&n;&t;if (test_tsk_thread_flag(tsk, TIF_USEDFPU)) {&t;&bslash;&n;&t;&t;save_fpu(tsk); &t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|clear_fpu
-mdefine_line|#define clear_fpu(tsk) do { &t;&t;&t;&bslash;&n;&t;if ((tsk)-&gt;flags &amp; PF_USEDFPU) { &t;&bslash;&n;&t;&t;(tsk)-&gt;flags &amp;= ~PF_USEDFPU; &t;&bslash;&n;&t;&t;release_fpu();&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define clear_fpu(tsk) do { &t;&t;&t;&t;&t;&bslash;&n;&t;if (test_tsk_thread_flag(tsk, TIF_USEDFPU)) { &t;&t;&bslash;&n;&t;&t;clear_tsk_thread_flag(tsk, TIF_USEDFPU); &t;&bslash;&n;&t;&t;release_fpu();&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* Double presision, NANS as NANS, rounding to nearest, no exceptions */
 DECL|macro|FPSCR_INIT
 mdefine_line|#define FPSCR_INIT  0x00080000
@@ -379,24 +451,8 @@ mdefine_line|#define&t;FPSCR_CAUSE_MASK&t;0x0001f000&t;/* Cause bits */
 DECL|macro|FPSCR_FLAG_MASK
 mdefine_line|#define&t;FPSCR_FLAG_MASK&t;&t;0x0000007c&t;/* Flag bits */
 multiline_comment|/*&n; * Return saved PC of a blocked thread.&n; */
-DECL|function|thread_saved_pc
-r_static
-id|__inline__
-r_int
-r_int
-id|thread_saved_pc
-c_func
-(paren
-r_struct
-id|thread_struct
-op_star
-id|t
-)paren
-(brace
-r_return
-id|t-&gt;pc
-suffix:semicolon
-)brace
+DECL|macro|thread_saved_pc
+mdefine_line|#define thread_saved_pc(tsk)&t;(tsk-&gt;thread.pc)
 r_extern
 r_int
 r_int
@@ -413,34 +469,6 @@ DECL|macro|KSTK_EIP
 mdefine_line|#define KSTK_EIP(tsk)  ((tsk)-&gt;thread.pc)
 DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk)  ((tsk)-&gt;thread.sp)
-DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
-r_extern
-r_struct
-id|task_struct
-op_star
-id|alloc_task_struct
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|free_task_struct
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-)paren
-suffix:semicolon
-DECL|macro|get_task_struct
-mdefine_line|#define get_task_struct(tsk)      atomic_inc(&amp;virt_to_page(tsk)-&gt;count)
-DECL|macro|init_task
-mdefine_line|#define init_task&t;(init_task_union.task)
-DECL|macro|init_stack
-mdefine_line|#define init_stack&t;(init_task_union.stack)
 DECL|macro|cpu_relax
 mdefine_line|#define cpu_relax()&t;barrier()
 macro_line|#endif /* __ASM_SH_PROCESSOR_H */

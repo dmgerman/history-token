@@ -1,30 +1,12 @@
 macro_line|#ifndef __ASM_SH_SYSTEM_H
 DECL|macro|__ASM_SH_SYSTEM_H
 mdefine_line|#define __ASM_SH_SYSTEM_H
-multiline_comment|/*&n; * Copyright (C) 1999, 2000  Niibe Yutaka  &amp;  Kaz Kojima&n; */
+multiline_comment|/*&n; * Copyright (C) 1999, 2000  Niibe Yutaka  &amp;  Kaz Kojima&n; * Copyright (C) 2002 Paul Mundt&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 multiline_comment|/*&n; *&t;switch_to() should switch tasks to task nr n, first&n; */
-r_typedef
-r_struct
-(brace
-DECL|member|seg
-r_int
-r_int
-id|seg
-suffix:semicolon
-DECL|typedef|mm_segment_t
-)brace
-id|mm_segment_t
-suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-macro_line|#error no SMP SuperH
-macro_line|#else
-DECL|macro|prepare_to_switch
-mdefine_line|#define prepare_to_switch()&t;do { } while(0)
 DECL|macro|switch_to
-mdefine_line|#define switch_to(prev,next,last) do { &bslash;&n; register struct task_struct *__last; &bslash;&n; register unsigned long *__ts1 __asm__ (&quot;r1&quot;) = &amp;prev-&gt;thread.sp; &bslash;&n; register unsigned long *__ts2 __asm__ (&quot;r2&quot;) = &amp;prev-&gt;thread.pc; &bslash;&n; register unsigned long *__ts4 __asm__ (&quot;r4&quot;) = (unsigned long *)prev; &bslash;&n; register unsigned long *__ts5 __asm__ (&quot;r5&quot;) = (unsigned long *)next; &bslash;&n; register unsigned long *__ts6 __asm__ (&quot;r6&quot;) = &amp;next-&gt;thread.sp; &bslash;&n; register unsigned long __ts7 __asm__ (&quot;r7&quot;) = next-&gt;thread.pc; &bslash;&n; __asm__ __volatile__ (&quot;.balign 4&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;stc.l&t;gbr, @-r15&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;sts.l&t;pr, @-r15&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mov.l&t;r8, @-r15&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mov.l&t;r9, @-r15&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mov.l&t;r10, @-r15&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mov.l&t;r11, @-r15&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mov.l&t;r12, @-r15&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mov.l&t;r13, @-r15&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mov.l&t;r14, @-r15&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mov.l&t;r15, @r1&t;! save SP&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mov.l&t;@r6, r15&t;! change to new stack&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mov.l&t;%0, @-r15&t;! push R0 onto new stack&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mova&t;1f, %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mov.l&t;%0, @r2&t;! save PC&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mov.l&t;2f, %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;jmp&t;@%0&t;&t;! call __switch_to&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot; lds&t;r7, pr&t;!  with return to new PC&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;.balign&t;4&bslash;n&quot;&t;&bslash;&n;&t;&t;       &quot;2:&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;.long&t;&quot; &quot;__switch_to&bslash;n&quot; &bslash;&n;&t;&t;       &quot;1:&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mov.l&t;@r15+, %0&t;! pop R0 from new stack&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mov.l&t;@r15+, r14&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mov.l&t;@r15+, r13&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mov.l&t;@r15+, r12&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mov.l&t;@r15+, r11&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mov.l&t;@r15+, r10&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mov.l&t;@r15+, r9&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mov.l&t;@r15+, r8&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;lds.l&t;@r15+, pr&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;ldc.l&t;@r15+, gbr&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       :&quot;=&amp;z&quot; (__last) &bslash;&n;&t;&t;       :&quot;0&quot; (prev), &bslash;&n;&t;&t;&t;&quot;r&quot; (__ts1), &quot;r&quot; (__ts2), &bslash;&n;&t;&t;&t;&quot;r&quot; (__ts4), &quot;r&quot; (__ts5), &quot;r&quot; (__ts6), &quot;r&quot; (__ts7) &bslash;&n;&t;&t;       :&quot;r3&quot;, &quot;t&quot;); &bslash;&n;  last = __last; &bslash;&n;} while (0)
-macro_line|#endif
+mdefine_line|#define switch_to(prev, next, last) do {&t;&t;&t;&t;&bslash;&n; register unsigned long __dummy;&t;&t;&t;&t;&t;&bslash;&n; register unsigned long *__ts1 __asm__ (&quot;r1&quot;) = &amp;prev-&gt;thread.sp;&t;&bslash;&n; register unsigned long *__ts2 __asm__ (&quot;r2&quot;) = &amp;prev-&gt;thread.pc;&t;&bslash;&n; register unsigned long *__ts4 __asm__ (&quot;r4&quot;) = (unsigned long *)prev;&t;&bslash;&n; register unsigned long *__ts5 __asm__ (&quot;r5&quot;) = (unsigned long *)next;&t;&bslash;&n; register unsigned long *__ts6 __asm__ (&quot;r6&quot;) = &amp;next-&gt;thread.sp;&t;&bslash;&n; register unsigned long __ts7 __asm__ (&quot;r7&quot;) = next-&gt;thread.pc;&t;&t;&bslash;&n; __asm__ __volatile__ (&quot;.balign 4&bslash;n&bslash;t&quot; &t;&t;&t;&t;&t;&bslash;&n;&t;&t;       &quot;stc.l&t;gbr, @-r15&bslash;n&bslash;t&quot; &t;&t;&t;&bslash;&n;&t;&t;       &quot;sts.l&t;pr, @-r15&bslash;n&bslash;t&quot; &t;&t;&t;&t;&bslash;&n;&t;&t;       &quot;mov.l&t;r8, @-r15&bslash;n&bslash;t&quot; &t;&t;&t;&t;&bslash;&n;&t;&t;       &quot;mov.l&t;r9, @-r15&bslash;n&bslash;t&quot; &t;&t;&t;&t;&bslash;&n;&t;&t;       &quot;mov.l&t;r10, @-r15&bslash;n&bslash;t&quot; &t;&t;&t;&bslash;&n;&t;&t;       &quot;mov.l&t;r11, @-r15&bslash;n&bslash;t&quot; &t;&t;&t;&bslash;&n;&t;&t;       &quot;mov.l&t;r12, @-r15&bslash;n&bslash;t&quot; &t;&t;&t;&bslash;&n;&t;&t;       &quot;mov.l&t;r13, @-r15&bslash;n&bslash;t&quot; &t;&t;&t;&bslash;&n;&t;&t;       &quot;mov.l&t;r14, @-r15&bslash;n&bslash;t&quot; &t;&t;&t;&bslash;&n;&t;&t;       &quot;mov.l&t;r15, @r1&t;! save SP&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;       &quot;mov.l&t;@r6, r15&t;! change to new stack&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;mova&t;1f, %0&bslash;n&bslash;t&quot; &t;&t;&t;&t;&bslash;&n;&t;&t;       &quot;mov.l&t;%0, @r2&t;&t;! save PC&bslash;n&bslash;t&quot; &t;&t;&bslash;&n;&t;&t;       &quot;mov.l&t;2f, %0&bslash;n&bslash;t&quot; &t;&t;&t;&t;&bslash;&n;&t;&t;       &quot;jmp&t;@%0&t;&t;! call __switch_to&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot; lds&t;r7, pr&t;&t;!  with return to new PC&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;       &quot;.balign&t;4&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;       &quot;2:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;       &quot;.long&t;__switch_to&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;       &quot;1:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;       &quot;mov.l&t;@r15+, r14&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;       &quot;mov.l&t;@r15+, r13&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;       &quot;mov.l&t;@r15+, r12&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;       &quot;mov.l&t;@r15+, r11&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;       &quot;mov.l&t;@r15+, r10&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;       &quot;mov.l&t;@r15+, r9&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;       &quot;mov.l&t;@r15+, r8&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;       &quot;lds.l&t;@r15+, pr&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;       &quot;ldc.l&t;@r15+, gbr&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;       : &quot;=z&quot; (__dummy)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;       : &quot;r&quot; (__ts1), &quot;r&quot; (__ts2), &quot;r&quot; (__ts4), &t;&bslash;&n;&t;&t;&t; &quot;r&quot; (__ts5), &quot;r&quot; (__ts6), &quot;r&quot; (__ts7) &t;&t;&bslash;&n;&t;&t;       : &quot;r3&quot;, &quot;t&quot;);&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|nop
 mdefine_line|#define nop() __asm__ __volatile__ (&quot;nop&quot;)
 DECL|macro|xchg
@@ -194,6 +176,8 @@ suffix:semicolon
 )brace
 DECL|macro|local_save_flags
 mdefine_line|#define local_save_flags(x) &bslash;&n;&t;__asm__(&quot;stc sr, %0; and #0xf0, %0&quot; : &quot;=&amp;z&quot; (x) :/**/: &quot;memory&quot; )
+DECL|macro|irqs_disabled
+mdefine_line|#define irqs_disabled()&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&bslash;&n;&t;local_save_flags(flags);&t;&bslash;&n;&t;(flags != 0);&t;&t;&t;&bslash;&n;})
 DECL|function|local_irq_save
 r_static
 id|__inline__
@@ -333,61 +317,6 @@ mdefine_line|#define back_to_P1()&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t
 multiline_comment|/* For spinlocks etc */
 DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(x)&t;x = local_irq_save()
-macro_line|#ifdef CONFIG_SMP
-r_extern
-r_void
-id|__global_cli
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__global_sti
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|__global_save_flags
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__global_restore_flags
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-DECL|macro|cli
-mdefine_line|#define cli() __global_cli()
-DECL|macro|sti
-mdefine_line|#define sti() __global_sti()
-DECL|macro|save_flags
-mdefine_line|#define save_flags(x) ((x)=__global_save_flags())
-DECL|macro|restore_flags
-mdefine_line|#define restore_flags(x) __global_restore_flags(x)
-macro_line|#else
-DECL|macro|cli
-mdefine_line|#define cli() local_irq_disable()
-DECL|macro|sti
-mdefine_line|#define sti() local_irq_enable()
-DECL|macro|save_flags
-mdefine_line|#define save_flags(x) local_save_flags(x)
-DECL|macro|save_and_cli
-mdefine_line|#define save_and_cli(x) x = local_irq_save()
-DECL|macro|restore_flags
-mdefine_line|#define restore_flags(x) local_irq_restore(x)
-macro_line|#endif
 DECL|function|xchg_u32
 r_static
 id|__inline__
@@ -412,7 +341,7 @@ id|flags
 comma
 id|retval
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -428,7 +357,7 @@ id|m
 op_assign
 id|val
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -463,7 +392,7 @@ id|flags
 comma
 id|retval
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -481,7 +410,7 @@ id|val
 op_amp
 l_int|0xff
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

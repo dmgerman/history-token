@@ -55,11 +55,6 @@ DECL|macro|FRAME_SIZE
 mdefine_line|#define FRAME_SIZE 168
 DECL|macro|PTRACE_OLDSETOPTIONS
 mdefine_line|#define PTRACE_OLDSETOPTIONS         21
-multiline_comment|/* Dummy values for ptrace */
-DECL|macro|FS
-mdefine_line|#define FS 1000 
-DECL|macro|GS
-mdefine_line|#define GS 1008
 macro_line|#ifndef __ASSEMBLY__ 
 DECL|struct|pt_regs
 r_struct

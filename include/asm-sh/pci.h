@@ -3,6 +3,8 @@ DECL|macro|__ASM_SH_PCI_H
 mdefine_line|#define __ASM_SH_PCI_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;&t;&t;/* for struct page */
+macro_line|#include &lt;asm/cacheflush.h&gt;
 multiline_comment|/* Can be used to override the logic in pci_scan_bus for skipping&n;   already-configured bus numbers - to be used for buggy BIOSes&n;   or architectures with incomplete PCI setup by the loader */
 DECL|macro|pcibios_assign_all_busses
 mdefine_line|#define pcibios_assign_all_busses()&t;1
@@ -27,6 +29,11 @@ DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO          0x4000
 DECL|macro|PCIBIOS_MIN_MEM
 mdefine_line|#define PCIBIOS_MIN_MEM         0xFD000000
+macro_line|#elif defined(CONFIG_SH_MPC1211)
+DECL|macro|PCIBIOS_MIN_IO
+mdefine_line|#define PCIBIOS_MIN_IO          0x2000
+DECL|macro|PCIBIOS_MIN_MEM
+mdefine_line|#define PCIBIOS_MIN_MEM         0xb0000000
 macro_line|#endif
 r_struct
 id|pci_dev
@@ -56,6 +63,9 @@ id|irq
 multiline_comment|/* We don&squot;t do dynamic PCI IRQ allocation */
 )brace
 multiline_comment|/* Dynamic DMA mapping stuff.&n; * SuperH has everything mapped statically like x86.&n; */
+multiline_comment|/* The PCI address space does equal the physical memory&n; * address space.  The networking and block device layers use&n; * this boolean for bounce buffer decisions.&n; */
+DECL|macro|PCI_DMA_BUS_IS_PHYS
+mdefine_line|#define PCI_DMA_BUS_IS_PHYS&t;(1)
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
@@ -253,6 +263,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|dma_cache_wback_inv
 c_func
 (paren
@@ -282,6 +293,32 @@ dot
 id|length
 )paren
 suffix:semicolon
+id|sg
+(braket
+id|i
+)braket
+dot
+id|dma_address
+op_assign
+id|page_to_phys
+c_func
+(paren
+id|sg
+(braket
+id|i
+)braket
+dot
+id|page
+)paren
+op_plus
+id|sg
+(braket
+id|i
+)braket
+dot
+id|offset
+suffix:semicolon
+)brace
 macro_line|#endif
 r_if
 c_cond
@@ -431,6 +468,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|dma_cache_wback_inv
 c_func
 (paren
@@ -460,6 +498,32 @@ dot
 id|length
 )paren
 suffix:semicolon
+id|sg
+(braket
+id|i
+)braket
+dot
+id|dma_address
+op_assign
+id|page_to_phys
+c_func
+(paren
+id|sg
+(braket
+id|i
+)braket
+dot
+id|page
+)paren
+op_plus
+id|sg
+(braket
+id|i
+)braket
+dot
+id|offset
+suffix:semicolon
+)brace
 macro_line|#endif
 )brace
 multiline_comment|/* Return whether the given PCI device DMA address mask can&n; * be supported properly.  For example, if your device can&n; * only drive the low 24-bits during PCI bus mastering, then&n; * you would pass 0x00ffffff as the mask to this function.&n; */
@@ -488,9 +552,83 @@ DECL|macro|pci_dac_dma_supported
 mdefine_line|#define pci_dac_dma_supported(pci_dev, mask) (0)
 multiline_comment|/* These macros should be used after a pci_map_sg call has been done&n; * to get bus addresses of each of the SG entries and their lengths.&n; * You should only work with the number of sg entries pci_map_sg&n; * returns, or alternatively stop on the first sg_dma_len(sg) which&n; * is 0.&n; */
 DECL|macro|sg_dma_address
-mdefine_line|#define sg_dma_address(sg)&t;(virt_to_bus((sg)-&gt;address))
+mdefine_line|#define sg_dma_address(sg)&t;(virt_to_bus((sg)-&gt;dma_address))
 DECL|macro|sg_dma_len
 mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;length)
+multiline_comment|/*&n; * A board can define one or more PCI channels that represent built-in (or&n; * external) PCI controllers.&n; */
+DECL|struct|pci_channel
+r_struct
+id|pci_channel
+(brace
+DECL|member|pci_ops
+r_struct
+id|pci_ops
+op_star
+id|pci_ops
+suffix:semicolon
+DECL|member|io_resource
+r_struct
+id|resource
+op_star
+id|io_resource
+suffix:semicolon
+DECL|member|mem_resource
+r_struct
+id|resource
+op_star
+id|mem_resource
+suffix:semicolon
+DECL|member|first_devfn
+r_int
+id|first_devfn
+suffix:semicolon
+DECL|member|last_devfn
+r_int
+id|last_devfn
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Each board initializes this array and terminates it with a NULL entry.&n; */
+r_extern
+r_struct
+id|pci_channel
+id|board_pci_channels
+(braket
+)braket
+suffix:semicolon
+multiline_comment|/* Board-specific fixup routines. */
+r_extern
+r_void
+id|pcibios_fixup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pcibios_fixup_irqs
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PCI_AUTO
+r_extern
+r_int
+id|pciauto_assign_resources
+c_func
+(paren
+r_int
+id|busno
+comma
+r_struct
+id|pci_channel
+op_star
+id|hose
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* generic pci stuff */
 macro_line|#include &lt;asm-generic/pci.h&gt;

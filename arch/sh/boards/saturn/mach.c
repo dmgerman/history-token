@@ -130,10 +130,6 @@ id|mv_iounmap
 suffix:colon
 id|saturn_iounmap
 comma
-id|mv_hw_saturn
-suffix:colon
-l_int|1
-comma
 )brace
 suffix:semicolon
 id|ALIAS_MV

@@ -137,10 +137,6 @@ id|mv_init_irq
 suffix:colon
 id|init_adx_IRQ
 comma
-id|mv_hw_adx
-suffix:colon
-l_int|1
-comma
 )brace
 suffix:semicolon
 id|ALIAS_MV

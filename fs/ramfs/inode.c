@@ -541,6 +541,11 @@ id|sendfile
 op_assign
 id|generic_file_sendfile
 comma
+dot
+id|llseek
+op_assign
+id|generic_file_llseek
+comma
 )brace
 suffix:semicolon
 DECL|variable|ramfs_file_inode_operations

@@ -27746,10 +27746,7 @@ c_func
 (paren
 id|ha-&gt;pcidev
 comma
-(paren
-id|u64
-)paren
-l_int|0xffffffffffffffff
+l_int|0xffffffffffffffffULL
 )paren
 )paren
 (brace
@@ -27772,10 +27769,7 @@ c_func
 (paren
 id|ha-&gt;pcidev
 comma
-(paren
-id|u64
-)paren
-l_int|0xffffffff
+l_int|0xffffffffULL
 )paren
 op_ne
 l_int|0

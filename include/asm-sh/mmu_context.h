@@ -1,8 +1,13 @@
-multiline_comment|/*&n; * Copyright (C) 1999 Niibe Yutaka&n; *&n; * ASID handling idea taken from MIPS implementation.&n; */
+multiline_comment|/*&n; * Copyright (C) 1999 Niibe Yutaka&n; * Copyright (C) 2003 Paul Mundt&n; *&n; * ASID handling idea taken from MIPS implementation.&n; */
 macro_line|#ifndef __ASM_SH_MMU_CONTEXT_H
 DECL|macro|__ASM_SH_MMU_CONTEXT_H
 mdefine_line|#define __ASM_SH_MMU_CONTEXT_H
-multiline_comment|/* The MMU &quot;context&quot; consists of two things:&n;     (a) TLB cache version (or round, cycle whatever expression you like)&n;     (b) ASID (Address Space IDentifier)&n; */
+macro_line|#include &lt;asm/cpu/mmu_context.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+multiline_comment|/*&n; * The MMU &quot;context&quot; consists of two things:&n; *    (a) TLB cache version (or round, cycle whatever expression you like)&n; *    (b) ASID (Address Space IDentifier)&n; */
 multiline_comment|/*&n; * Cache of MMU context last used.&n; */
 r_extern
 r_int
@@ -23,11 +28,13 @@ mdefine_line|#define MMU_NO_ASID&t;&t;&t;0x100
 multiline_comment|/*&n; * Virtual Page Number mask&n; */
 DECL|macro|MMU_VPN_MASK
 mdefine_line|#define MMU_VPN_MASK&t;0xfffff000
+macro_line|#ifdef CONFIG_MMU
+multiline_comment|/*&n; * Get MMU context if needed.&n; */
 r_static
 id|__inline__
 r_void
-DECL|function|get_new_mmu_context
-id|get_new_mmu_context
+DECL|function|get_mmu_context
+id|get_mmu_context
 c_func
 (paren
 r_struct
@@ -48,6 +55,30 @@ r_int
 r_int
 id|mc
 op_assign
+id|mmu_context_cache
+suffix:semicolon
+multiline_comment|/* Check if we have old version of context. */
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|mm-&gt;context
+op_xor
+id|mc
+)paren
+op_amp
+id|MMU_CONTEXT_VERSION_MASK
+)paren
+op_eq
+l_int|0
+)paren
+multiline_comment|/* It&squot;s up to date, do nothing */
+r_return
+suffix:semicolon
+multiline_comment|/* It&squot;s old, we need to get new context with new version. */
+id|mc
+op_assign
 op_increment
 id|mmu_context_cache
 suffix:semicolon
@@ -62,13 +93,13 @@ id|MMU_CONTEXT_ASID_MASK
 )paren
 )paren
 (brace
-multiline_comment|/* We exhaust ASID of this version.&n;&t;&t;   Flush all TLB and start new cycle. */
+multiline_comment|/*&n;&t;&t; * We exhaust ASID of this version.&n;&t;&t; * Flush all TLB and start new cycle.&n;&t;&t; */
 id|flush_tlb_all
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Fix version if needed.&n;&t;&t;   Note that we avoid version #0 to distingush NO_CONTEXT. */
+multiline_comment|/*&n;&t;&t; * Fix version; Note that we avoid version #0&n;&t;&t; * to distingush NO_CONTEXT.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -86,52 +117,6 @@ id|mm-&gt;context
 op_assign
 id|mc
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * Get MMU context if needed.&n; */
-r_static
-id|__inline__
-r_void
-DECL|function|get_mmu_context
-id|get_mmu_context
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|mm
-)paren
-(brace
-r_int
-r_int
-id|mc
-op_assign
-id|mmu_context_cache
-suffix:semicolon
-multiline_comment|/* Check if we have old version of context.&n;&t;&t;   If it&squot;s old, we need to get new context with new version. */
-r_if
-c_cond
-(paren
-(paren
-id|mm-&gt;context
-op_xor
-id|mc
-)paren
-op_amp
-id|MMU_CONTEXT_VERSION_MASK
-)paren
-id|get_new_mmu_context
-c_func
-(paren
-id|mm
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Initialize the context related info for a new mm_struct&n; * instance.&n; */
 DECL|function|init_new_context
@@ -176,66 +161,6 @@ id|mm
 (brace
 multiline_comment|/* Do nothing */
 )brace
-multiline_comment|/* Other MMU related constants. */
-macro_line|#if defined(__sh3__)
-DECL|macro|MMU_PTEH
-mdefine_line|#define MMU_PTEH&t;0xFFFFFFF0&t;/* Page table entry register HIGH */
-DECL|macro|MMU_PTEL
-mdefine_line|#define MMU_PTEL&t;0xFFFFFFF4&t;/* Page table entry register LOW */
-DECL|macro|MMU_TTB
-mdefine_line|#define MMU_TTB&t;&t;0xFFFFFFF8&t;/* Translation table base register */
-DECL|macro|MMU_TEA
-mdefine_line|#define MMU_TEA&t;&t;0xFFFFFFFC&t;/* TLB Exception Address */
-DECL|macro|MMUCR
-mdefine_line|#define MMUCR&t;&t;0xFFFFFFE0&t;/* MMU Control Register */
-DECL|macro|MMU_TLB_ADDRESS_ARRAY
-mdefine_line|#define MMU_TLB_ADDRESS_ARRAY&t;0xF2000000
-DECL|macro|MMU_PAGE_ASSOC_BIT
-mdefine_line|#define MMU_PAGE_ASSOC_BIT&t;0x80
-DECL|macro|MMU_NTLB_ENTRIES
-mdefine_line|#define MMU_NTLB_ENTRIES&t;128&t;/* for 7708 */
-DECL|macro|MMU_CONTROL_INIT
-mdefine_line|#define MMU_CONTROL_INIT&t;0x007&t;/* SV=0, TF=1, IX=1, AT=1 */
-macro_line|#elif defined(__SH4__)
-DECL|macro|MMU_PTEH
-mdefine_line|#define MMU_PTEH&t;0xFF000000&t;/* Page table entry register HIGH */
-DECL|macro|MMU_PTEL
-mdefine_line|#define MMU_PTEL&t;0xFF000004&t;/* Page table entry register LOW */
-DECL|macro|MMU_TTB
-mdefine_line|#define MMU_TTB&t;&t;0xFF000008&t;/* Translation table base register */
-DECL|macro|MMU_TEA
-mdefine_line|#define MMU_TEA&t;&t;0xFF00000C&t;/* TLB Exception Address */
-DECL|macro|MMU_PTEA
-mdefine_line|#define MMU_PTEA&t;0xFF000034&t;/* Page table entry assistance register */
-DECL|macro|MMUCR
-mdefine_line|#define MMUCR&t;&t;0xFF000010&t;/* MMU Control Register */
-DECL|macro|MMU_ITLB_ADDRESS_ARRAY
-mdefine_line|#define MMU_ITLB_ADDRESS_ARRAY&t;0xF2000000
-DECL|macro|MMU_UTLB_ADDRESS_ARRAY
-mdefine_line|#define MMU_UTLB_ADDRESS_ARRAY&t;0xF6000000
-DECL|macro|MMU_PAGE_ASSOC_BIT
-mdefine_line|#define MMU_PAGE_ASSOC_BIT&t;0x80
-DECL|macro|MMU_NTLB_ENTRIES
-mdefine_line|#define MMU_NTLB_ENTRIES&t;64&t;/* for 7750 */
-DECL|macro|MMU_CONTROL_INIT
-mdefine_line|#define MMU_CONTROL_INIT&t;0x205&t;/* SQMD=1, SV=0, TI=1, AT=1 */
-DECL|macro|MMU_ITLB_DATA_ARRAY
-mdefine_line|#define MMU_ITLB_DATA_ARRAY&t;0xF3000000
-DECL|macro|MMU_UTLB_DATA_ARRAY
-mdefine_line|#define MMU_UTLB_DATA_ARRAY&t;0xF7000000
-DECL|macro|MMU_UTLB_ENTRIES
-mdefine_line|#define MMU_UTLB_ENTRIES&t;   64
-DECL|macro|MMU_U_ENTRY_SHIFT
-mdefine_line|#define MMU_U_ENTRY_SHIFT&t;    8
-DECL|macro|MMU_UTLB_VALID
-mdefine_line|#define MMU_UTLB_VALID&t;&t;0x100
-DECL|macro|MMU_ITLB_ENTRIES
-mdefine_line|#define MMU_ITLB_ENTRIES&t;    4
-DECL|macro|MMU_I_ENTRY_SHIFT
-mdefine_line|#define MMU_I_ENTRY_SHIFT&t;    8
-DECL|macro|MMU_ITLB_VALID
-mdefine_line|#define MMU_ITLB_VALID&t;&t;0x100
-macro_line|#endif
 DECL|function|set_asid
 r_static
 id|__inline__
@@ -389,9 +314,13 @@ id|cpu
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|prev
 op_ne
 id|next
+)paren
 )paren
 (brace
 r_int
@@ -403,24 +332,6 @@ r_int
 r_int
 )paren
 id|next-&gt;pgd
-suffix:semicolon
-id|clear_bit
-c_func
-(paren
-id|cpu
-comma
-op_amp
-id|prev-&gt;cpu_vm_mask
-)paren
-suffix:semicolon
-id|set_bit
-c_func
-(paren
-id|cpu
-comma
-op_amp
-id|next-&gt;cpu_vm_mask
-)paren
 suffix:semicolon
 id|__asm__
 id|__volatile__
@@ -479,106 +390,124 @@ id|cpu
 )paren
 (brace
 )brace
-multiline_comment|/*&n; * Every architecture must define this function. It&squot;s the fastest&n; * way of searching a 168-bit bitmap where the first 128 bits are&n; * unlikely to be set. It&squot;s guaranteed that at least one of the 168&n; * bits is cleared.&n; */
-macro_line|#if MAX_RT_PRIO != 128 || MAX_PRIO != 168
-macro_line|# error update this function.
-macro_line|#endif
-DECL|function|sched_find_first_zero_bit
+macro_line|#else /* !CONFIG_MMU */
+DECL|macro|get_mmu_context
+mdefine_line|#define get_mmu_context(mm)&t;&t;do { } while (0)
+DECL|macro|init_new_context
+mdefine_line|#define init_new_context(tsk,mm)&t;(0)
+DECL|macro|destroy_context
+mdefine_line|#define destroy_context(mm)&t;&t;do { } while (0)
+DECL|macro|set_asid
+mdefine_line|#define set_asid(asid)&t;&t;&t;do { } while (0)
+DECL|macro|get_asid
+mdefine_line|#define get_asid()&t;&t;&t;(0)
+DECL|macro|activate_context
+mdefine_line|#define activate_context(mm)&t;&t;do { } while (0)
+DECL|macro|switch_mm
+mdefine_line|#define switch_mm(prev,next,tsk,cpu)&t;do { } while (0)
+DECL|macro|deactivate_mm
+mdefine_line|#define deactivate_mm(tsk,mm)&t;&t;do { } while (0)
+DECL|macro|activate_mm
+mdefine_line|#define activate_mm(prev,next)&t;&t;do { } while (0)
+DECL|macro|enter_lazy_tlb
+mdefine_line|#define enter_lazy_tlb(mm,tsk,cpu)&t;do { } while (0)
+macro_line|#endif /* CONFIG_MMU */
+macro_line|#if defined(CONFIG_CPU_SH3) || defined(CONFIG_CPU_SH4)
+multiline_comment|/*&n; * If this processor has an MMU, we need methods to turn it off/on ..&n; * paging_init() will also have to be updated for the processor in&n; * question.&n; */
+DECL|function|enable_mmu
 r_static
 r_inline
-r_int
-id|sched_find_first_zero_bit
+r_void
+id|enable_mmu
 c_func
 (paren
-r_int
-r_int
-op_star
-id|b
+r_void
+)paren
+(brace
+multiline_comment|/* Enable MMU */
+id|ctrl_outl
+c_func
+(paren
+id|MMU_CONTROL_INIT
+comma
+id|MMUCR
+)paren
+suffix:semicolon
+multiline_comment|/* The manual suggests doing some nops after turning on the MMU */
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;nop;nop;nop;nop;nop;nop;nop;nop&bslash;n&bslash;t&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mmu_context_cache
+op_eq
+id|NO_CONTEXT
+)paren
+id|mmu_context_cache
+op_assign
+id|MMU_CONTEXT_FIRST_VERSION
+suffix:semicolon
+id|set_asid
+c_func
+(paren
+id|mmu_context_cache
+op_amp
+id|MMU_CONTEXT_ASID_MASK
+)paren
+suffix:semicolon
+)brace
+DECL|function|disable_mmu
+r_static
+r_inline
+r_void
+id|disable_mmu
+c_func
+(paren
+r_void
 )paren
 (brace
 r_int
 r_int
-id|rt
+id|cr
 suffix:semicolon
-id|rt
+id|cr
 op_assign
-id|b
-(braket
-l_int|0
-)braket
-op_amp
-id|b
-(braket
-l_int|1
-)braket
-op_amp
-id|b
-(braket
-l_int|2
-)braket
-op_amp
-id|b
-(braket
-l_int|3
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
+id|ctrl_inl
 c_func
 (paren
-id|rt
-op_ne
-l_int|0xffffffff
-)paren
-)paren
-r_return
-id|find_first_zero_bit
-c_func
-(paren
-id|b
-comma
-id|MAX_RT_PRIO
+id|MMUCR
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|b
-(braket
-l_int|4
-)braket
-op_ne
+id|cr
+op_and_assign
 op_complement
-l_int|0
-)paren
-r_return
-id|ffz
-c_func
-(paren
-id|b
-(braket
-l_int|4
-)braket
-)paren
-op_plus
-id|MAX_RT_PRIO
+id|MMU_CONTROL_INIT
 suffix:semicolon
-r_return
-id|ffz
+id|ctrl_outl
 c_func
 (paren
-id|b
-(braket
-l_int|5
-)braket
+id|cr
+comma
+id|MMUCR
 )paren
-op_plus
-l_int|32
-op_plus
-id|MAX_RT_PRIO
+suffix:semicolon
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;nop;nop;nop;nop;nop;nop;nop;nop&bslash;n&bslash;t&quot;
+)paren
 suffix:semicolon
 )brace
+macro_line|#else
+multiline_comment|/*&n; * MMU control handlers for processors lacking memory&n; * management hardware.&n; */
+DECL|macro|enable_mmu
+mdefine_line|#define enable_mmu()&t;do { BUG(); } while (0)
+DECL|macro|disable_mmu
+mdefine_line|#define disable_mmu()&t;do { BUG(); } while (0)
+macro_line|#endif
 macro_line|#endif /* __ASM_SH_MMU_CONTEXT_H */
 eof

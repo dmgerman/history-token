@@ -117,9 +117,17 @@ DECL|macro|R_390_TLS_DTPOFF
 mdefine_line|#define R_390_TLS_DTPOFF&t;55&t;/* Offset in TLS block.  */
 DECL|macro|R_390_TLS_TPOFF
 mdefine_line|#define R_390_TLS_TPOFF&t;&t;56&t;/* Negate offset in static TLS&n;                                           block.  */
+DECL|macro|R_390_20
+mdefine_line|#define R_390_20&t;&t;57&t;/* Direct 20 bit.  */
+DECL|macro|R_390_GOT20
+mdefine_line|#define R_390_GOT20&t;&t;58&t;/* 20 bit GOT offset.  */
+DECL|macro|R_390_GOTPLT20
+mdefine_line|#define R_390_GOTPLT20&t;&t;59&t;/* 20 bit offset to jump slot.  */
+DECL|macro|R_390_TLS_GOTIE20
+mdefine_line|#define R_390_TLS_GOTIE20&t;60&t;/* 20 bit GOT offset for static TLS&n;&t;&t;&t;&t;&t;   block offset.  */
 multiline_comment|/* Keep this the last entry.  */
 DECL|macro|R_390_NUM
-mdefine_line|#define R_390_NUM&t;57
+mdefine_line|#define R_390_NUM&t;61
 multiline_comment|/*&n; * ELF register definitions..&n; */
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/user.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: signal.c,v 1.21 2000/03/11 14:06:21 gniibe Exp $&n; *&n; *  linux/arch/sh/kernel/signal.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; *&n; *  SuperH version:  Copyright (C) 1999, 2000  Niibe Yutaka &amp; Kaz Kojima&n; *&n; */
+multiline_comment|/* $Id: signal.c,v 1.15 2003/05/06 23:28:47 lethal Exp $&n; *&n; *  linux/arch/sh/kernel/signal.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; *&n; *  SuperH version:  Copyright (C) 1999, 2000  Niibe Yutaka &amp; Kaz Kojima&n; *&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -10,11 +10,14 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
-macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/binfmts.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 DECL|macro|DEBUG_SIG
 mdefine_line|#define DEBUG_SIG 0
 DECL|macro|_BLOCKABLE
@@ -72,7 +75,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|saveset
@@ -97,7 +100,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|regs.regs
@@ -223,7 +226,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|saveset
@@ -243,7 +246,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|regs.regs
@@ -598,7 +601,7 @@ l_int|4
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#if defined(__SH4__)
+macro_line|#ifdef CONFIG_CPU_SH4
 DECL|function|restore_sigcontext_fpu
 r_static
 r_inline
@@ -618,6 +621,19 @@ op_star
 id|tsk
 op_assign
 id|current
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|cpu_data-&gt;flags
+op_amp
+id|CPU_HAS_FPU
+)paren
+)paren
+r_return
+l_int|0
 suffix:semicolon
 id|tsk-&gt;used_math
 op_assign
@@ -671,12 +687,18 @@ id|tsk
 op_assign
 id|current
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
-id|val
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|cpu_data-&gt;flags
+op_amp
+id|CPU_HAS_FPU
+)paren
+)paren
+r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -685,46 +707,26 @@ op_logical_neg
 id|tsk-&gt;used_math
 )paren
 (brace
-id|val
-op_assign
-l_int|0
-suffix:semicolon
-id|__copy_to_user
+id|__put_user
 c_func
 (paren
+l_int|0
+comma
 op_amp
 id|sc-&gt;sc_ownedfp
-comma
-op_amp
-id|val
-comma
-r_sizeof
-(paren
-r_int
-)paren
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-id|val
-op_assign
-l_int|1
-suffix:semicolon
-id|__copy_to_user
+id|__put_user
 c_func
 (paren
+l_int|1
+comma
 op_amp
 id|sc-&gt;sc_ownedfp
-comma
-op_amp
-id|val
-comma
-r_sizeof
-(paren
-r_int
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* This will cause a &quot;finit&quot; to be triggered by the next&n;&t;   attempted FPU operation by the &squot;current&squot; process.&n;&t;   */
@@ -732,22 +734,10 @@ id|tsk-&gt;used_math
 op_assign
 l_int|0
 suffix:semicolon
-id|save_and_cli
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|unlazy_fpu
 c_func
 (paren
 id|tsk
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -778,7 +768,7 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_CPU_SH4 */
 r_static
 r_int
 DECL|function|restore_sigcontext
@@ -981,7 +971,14 @@ id|pc
 suffix:semicolon
 DECL|macro|COPY
 macro_line|#undef COPY
-macro_line|#if defined(__SH4__)
+macro_line|#ifdef CONFIG_CPU_SH4
+r_if
+c_cond
+(paren
+id|cpu_data-&gt;flags
+op_amp
+id|CPU_HAS_FPU
+)paren
 (brace
 r_int
 id|owned_fp
@@ -1004,7 +1001,7 @@ c_func
 id|tsk
 )paren
 suffix:semicolon
-id|current-&gt;used_math
+id|tsk-&gt;used_math
 op_assign
 l_int|0
 suffix:semicolon
@@ -1031,7 +1028,7 @@ id|sc
 suffix:semicolon
 )brace
 macro_line|#endif
-id|regs-&gt;syscall_nr
+id|regs-&gt;tra
 op_assign
 op_minus
 l_int|1
@@ -1180,7 +1177,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|current-&gt;blocked
@@ -1196,7 +1193,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_if
@@ -1341,7 +1338,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|current-&gt;blocked
@@ -1357,7 +1354,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_if
@@ -1643,7 +1640,7 @@ id|pc
 suffix:semicolon
 DECL|macro|COPY
 macro_line|#undef COPY
-macro_line|#if defined(__SH4__)
+macro_line|#ifdef CONFIG_CPU_SH4
 id|err
 op_or_assign
 id|save_sigcontext_fpu
@@ -1811,16 +1808,31 @@ id|give_sigsegv
 suffix:semicolon
 id|signal
 op_assign
-id|current-&gt;exec_domain
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|exec_domain
 op_logical_and
-id|current-&gt;exec_domain-&gt;signal_invmap
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|exec_domain-&gt;signal_invmap
 op_logical_and
 id|sig
 OL
 l_int|32
 ques
 c_cond
-id|current-&gt;exec_domain-&gt;signal_invmap
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|exec_domain-&gt;signal_invmap
 (braket
 id|sig
 )braket
@@ -2117,16 +2129,31 @@ id|give_sigsegv
 suffix:semicolon
 id|signal
 op_assign
-id|current-&gt;exec_domain
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|exec_domain
 op_logical_and
-id|current-&gt;exec_domain-&gt;signal_invmap
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|exec_domain-&gt;signal_invmap
 op_logical_and
 id|sig
 OL
 l_int|32
 ques
 c_cond
-id|current-&gt;exec_domain-&gt;signal_invmap
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|exec_domain-&gt;signal_invmap
 (braket
 id|sig
 )braket
@@ -2462,7 +2489,7 @@ op_star
 id|ka
 op_assign
 op_amp
-id|current-&gt;sig-&gt;action
+id|current-&gt;sighand-&gt;action
 (braket
 id|sig
 op_minus
@@ -2473,7 +2500,7 @@ multiline_comment|/* Are we from a system call? */
 r_if
 c_cond
 (paren
-id|regs-&gt;syscall_nr
+id|regs-&gt;tra
 op_ge
 l_int|0
 )paren
@@ -2533,18 +2560,73 @@ r_case
 op_minus
 id|ERESTARTNOINTR
 suffix:colon
-id|regs-&gt;regs
-(braket
-l_int|0
-)braket
-op_assign
-id|regs-&gt;syscall_nr
-suffix:semicolon
 id|regs-&gt;pc
 op_sub_assign
 l_int|2
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_PREEMPT
+)brace
+r_else
+(brace
+multiline_comment|/* gUSA handling */
+r_if
+c_cond
+(paren
+id|regs-&gt;regs
+(braket
+l_int|15
+)braket
+op_ge
+l_int|0xc0000000
+)paren
+(brace
+r_int
+id|offset
+op_assign
+(paren
+r_int
+)paren
+id|regs-&gt;regs
+(braket
+l_int|15
+)braket
+suffix:semicolon
+multiline_comment|/* Reset stack pointer: clear critical region mark */
+id|regs-&gt;regs
+(braket
+l_int|15
+)braket
+op_assign
+id|regs-&gt;regs
+(braket
+l_int|1
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|regs-&gt;pc
+OL
+id|regs-&gt;regs
+(braket
+l_int|0
+)braket
+)paren
+multiline_comment|/* Go to rewind point #1 */
+id|regs-&gt;pc
+op_assign
+id|regs-&gt;regs
+(braket
+l_int|0
+)braket
+op_plus
+id|offset
+op_minus
+l_int|2
+suffix:semicolon
+)brace
+macro_line|#endif
 )brace
 multiline_comment|/* Set up the stack frame */
 r_if
@@ -2607,7 +2689,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|sigorsets
@@ -2641,7 +2723,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 )brace
@@ -2682,6 +2764,24 @@ id|regs
 r_return
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+(brace
+id|refrigerator
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_goto
+id|no_signal
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2732,11 +2832,13 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+id|no_signal
+suffix:colon
 multiline_comment|/* Did we come from a system call? */
 r_if
 c_cond
 (paren
-id|regs-&gt;syscall_nr
+id|regs-&gt;tra
 op_ge
 l_int|0
 )paren
@@ -2768,15 +2870,16 @@ l_int|0
 op_eq
 op_minus
 id|ERESTARTNOINTR
-)paren
-(brace
+op_logical_or
 id|regs-&gt;regs
 (braket
 l_int|0
 )braket
-op_assign
-id|regs-&gt;syscall_nr
-suffix:semicolon
+op_eq
+op_minus
+id|ERESTART_RESTARTBLOCK
+)paren
+(brace
 id|regs-&gt;pc
 op_sub_assign
 l_int|2

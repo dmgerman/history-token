@@ -14,40 +14,6 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;aacraid.h&quot;
-multiline_comment|/*&t;SCSI Commands */
-multiline_comment|/* TODO dmb - use the ones defined in include/scsi/scsi.h*/
-DECL|macro|SS_TEST
-mdefine_line|#define&t;SS_TEST&t;&t;&t;0x00&t;/* Test unit ready */
-DECL|macro|SS_REZERO
-mdefine_line|#define SS_REZERO&t;&t;0x01&t;/* Rezero unit */
-DECL|macro|SS_REQSEN
-mdefine_line|#define&t;SS_REQSEN&t;&t;0x03&t;/* Request Sense */
-DECL|macro|SS_REASGN
-mdefine_line|#define SS_REASGN&t;&t;0x07&t;/* Reassign blocks */
-DECL|macro|SS_READ
-mdefine_line|#define&t;SS_READ&t;&t;&t;0x08&t;/* Read 6   */
-DECL|macro|SS_WRITE
-mdefine_line|#define&t;SS_WRITE&t;&t;0x0A&t;/* Write 6  */
-DECL|macro|SS_INQUIR
-mdefine_line|#define&t;SS_INQUIR&t;&t;0x12&t;/* inquiry */
-DECL|macro|SS_ST_SP
-mdefine_line|#define&t;SS_ST_SP&t;&t;0x1B&t;/* Start/Stop unit */
-DECL|macro|SS_LOCK
-mdefine_line|#define&t;SS_LOCK&t;&t;&t;0x1E&t;/* prevent/allow medium removal */
-DECL|macro|SS_RESERV
-mdefine_line|#define SS_RESERV&t;&t;0x16&t;/* Reserve */
-DECL|macro|SS_RELES
-mdefine_line|#define SS_RELES&t;&t;0x17&t;/* Release */
-DECL|macro|SS_MODESEN
-mdefine_line|#define SS_MODESEN&t;&t;0x1A&t;/* Mode Sense 6 */
-DECL|macro|SS_RDCAP
-mdefine_line|#define&t;SS_RDCAP&t;&t;0x25&t;/* Read Capacity */
-DECL|macro|SM_READ
-mdefine_line|#define&t;SM_READ&t;&t;&t;0x28&t;/* Read 10  */
-DECL|macro|SM_WRITE
-mdefine_line|#define&t;SM_WRITE&t;&t;0x2A&t;/* Write 10 */
-DECL|macro|SS_SEEK
-mdefine_line|#define SS_SEEK&t;&t;&t;0x2B&t;/* Seek */
 multiline_comment|/* values for inqd_pdt: Peripheral device type in plain English */
 DECL|macro|INQD_PDT_DA
 mdefine_line|#define&t;INQD_PDT_DA&t;0x00&t;/* Direct-access (DISK) device */
@@ -2263,7 +2229,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|GOOD
+id|SAM_STAT_GOOD
 suffix:semicolon
 r_else
 (brace
@@ -2286,7 +2252,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|CHECK_CONDITION
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 id|set_sense
 c_func
@@ -2550,7 +2516,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|GOOD
+id|SAM_STAT_GOOD
 suffix:semicolon
 r_else
 (brace
@@ -2573,7 +2539,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|CHECK_CONDITION
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 id|set_sense
 c_func
@@ -2676,7 +2642,7 @@ id|scsicmd-&gt;cmnd
 l_int|0
 )braket
 op_eq
-id|SS_READ
+id|READ_6
 )paren
 multiline_comment|/* 6 byte command */
 (brace
@@ -3192,7 +3158,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|QUEUE_FULL
+id|SAM_STAT_TASK_SET_FULL
 suffix:semicolon
 id|aac_io_done
 c_func
@@ -3271,7 +3237,7 @@ id|scsicmd-&gt;cmnd
 l_int|0
 )braket
 op_eq
-id|SS_WRITE
+id|WRITE_6
 )paren
 multiline_comment|/* 6 byte command */
 (brace
@@ -3785,7 +3751,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|QUEUE_FULL
+id|SAM_STAT_TASK_SET_FULL
 suffix:semicolon
 id|aac_io_done
 c_func
@@ -3950,13 +3916,13 @@ l_int|0
 )paren
 (brace
 r_case
-id|SS_INQUIR
+id|INQUIRY
 suffix:colon
 r_case
-id|SS_RDCAP
+id|READ_CAPACITY
 suffix:colon
 r_case
-id|SS_TEST
+id|TEST_UNIT_READY
 suffix:colon
 id|spin_unlock_irq
 c_func
@@ -4091,7 +4057,7 @@ id|scsicmd-&gt;cmnd
 l_int|0
 )braket
 op_ne
-id|SS_INQUIR
+id|INQUIRY
 )paren
 op_logical_and
 multiline_comment|/* only INQUIRY &amp; TUR cmnd supported for controller */
@@ -4101,7 +4067,7 @@ id|scsicmd-&gt;cmnd
 l_int|0
 )braket
 op_ne
-id|SS_TEST
+id|TEST_UNIT_READY
 )paren
 )paren
 (brace
@@ -4129,7 +4095,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|CHECK_CONDITION
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 id|set_sense
 c_func
@@ -4181,7 +4147,7 @@ l_int|0
 )paren
 (brace
 r_case
-id|SS_INQUIR
+id|INQUIRY
 suffix:colon
 (brace
 r_struct
@@ -4296,7 +4262,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|GOOD
+id|SAM_STAT_GOOD
 suffix:semicolon
 id|__aac_io_done
 c_func
@@ -4309,7 +4275,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_case
-id|SS_RDCAP
+id|READ_CAPACITY
 suffix:colon
 (brace
 r_int
@@ -4431,7 +4397,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|GOOD
+id|SAM_STAT_GOOD
 suffix:semicolon
 id|__aac_io_done
 c_func
@@ -4444,7 +4410,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_case
-id|SS_MODESEN
+id|MODE_SENSE
 suffix:colon
 (brace
 r_char
@@ -4457,6 +4423,81 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;MODE SENSE command.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|mode_buf
+op_assign
+id|scsicmd-&gt;request_buffer
+suffix:semicolon
+id|mode_buf
+(braket
+l_int|0
+)braket
+op_assign
+l_int|3
+suffix:semicolon
+multiline_comment|/* Mode data length */
+id|mode_buf
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Medium type - default */
+id|mode_buf
+(braket
+l_int|2
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Device-specific param, bit 8: 0/1 = write enabled/protected */
+id|mode_buf
+(braket
+l_int|3
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Block descriptor length */
+id|scsicmd-&gt;result
+op_assign
+id|DID_OK
+op_lshift
+l_int|16
+op_or
+id|COMMAND_COMPLETE
+op_lshift
+l_int|8
+op_or
+id|SAM_STAT_GOOD
+suffix:semicolon
+id|__aac_io_done
+c_func
+(paren
+id|scsicmd
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_case
+id|MODE_SENSE_10
+suffix:colon
+(brace
+r_char
+op_star
+id|mode_buf
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+(paren
+id|KERN_DEBUG
+l_string|&quot;MODE SENSE 10 byte command.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -4538,7 +4579,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|GOOD
+id|SAM_STAT_GOOD
 suffix:semicolon
 id|__aac_io_done
 c_func
@@ -4551,7 +4592,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_case
-id|SS_REQSEN
+id|REQUEST_SENSE
 suffix:colon
 id|dprintk
 c_func
@@ -4608,7 +4649,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|GOOD
+id|SAM_STAT_GOOD
 suffix:semicolon
 id|__aac_io_done
 c_func
@@ -4622,7 +4663,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_case
-id|SS_LOCK
+id|ALLOW_MEDIUM_REMOVAL
 suffix:colon
 id|dprintk
 c_func
@@ -4666,7 +4707,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|GOOD
+id|SAM_STAT_GOOD
 suffix:semicolon
 id|__aac_io_done
 c_func
@@ -4679,25 +4720,25 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;These commands are all No-Ops&n;&t; */
 r_case
-id|SS_TEST
+id|TEST_UNIT_READY
 suffix:colon
 r_case
-id|SS_RESERV
+id|RESERVE
 suffix:colon
 r_case
-id|SS_RELES
+id|RELEASE
 suffix:colon
 r_case
-id|SS_REZERO
+id|REZERO_UNIT
 suffix:colon
 r_case
-id|SS_REASGN
+id|REASSIGN_BLOCKS
 suffix:colon
 r_case
-id|SS_SEEK
+id|SEEK_10
 suffix:colon
 r_case
-id|SS_ST_SP
+id|START_STOP
 suffix:colon
 id|scsicmd-&gt;result
 op_assign
@@ -4709,7 +4750,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|GOOD
+id|SAM_STAT_GOOD
 suffix:semicolon
 id|__aac_io_done
 c_func
@@ -4733,10 +4774,10 @@ l_int|0
 )paren
 (brace
 r_case
-id|SS_READ
+id|READ_6
 suffix:colon
 r_case
-id|SM_READ
+id|READ_10
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; *&t;Hack to keep track of ordinal number of the device that&n;&t;&t;&t; *&t;corresponds to a container. Needed to convert&n;&t;&t;&t; *&t;containers to /dev/sd device names&n;&t;&t;&t; */
 id|spin_unlock_irq
@@ -4783,10 +4824,10 @@ r_return
 id|ret
 suffix:semicolon
 r_case
-id|SS_WRITE
+id|WRITE_6
 suffix:colon
 r_case
-id|SM_WRITE
+id|WRITE_10
 suffix:colon
 id|spin_unlock_irq
 c_func
@@ -4838,7 +4879,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|CHECK_CONDITION
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 id|set_sense
 c_func
@@ -5575,7 +5616,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|CHECK_CONDITION
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 id|memcpy
 c_func
@@ -6169,7 +6210,7 @@ id|len
 suffix:semicolon
 id|scsicmd-&gt;result
 op_or_assign
-id|CHECK_CONDITION
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 id|len
 op_assign
@@ -6762,7 +6803,7 @@ id|COMMAND_COMPLETE
 op_lshift
 l_int|8
 op_or
-id|QUEUE_FULL
+id|SAM_STAT_TASK_SET_FULL
 suffix:semicolon
 id|__aac_io_done
 c_func

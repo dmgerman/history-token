@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;$Id: mach.c,v 1.1.2.5 2002/03/01 11:22:17 lethal Exp $&n; *&t;SEGA Dreamcast machine vector&n; */
+multiline_comment|/*&n; *&t;$Id: mach.c,v 1.4 2003/05/20 03:04:36 lethal Exp $&n; *&t;SEGA Dreamcast machine vector&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
@@ -138,10 +138,6 @@ comma
 id|mv_irq_demux
 suffix:colon
 id|systemasic_irq_demux
-comma
-id|mv_hw_dreamcast
-suffix:colon
-l_int|1
 comma
 )brace
 suffix:semicolon

@@ -5550,6 +5550,7 @@ l_int|2
 )braket
 op_assign
 (brace
+multiline_comment|/* NOTE: all executable code must be the first section&n;&t;&t; * in this array; otherwise modify the text_size&n;&t;&t; * finder in the two loops below */
 (brace
 id|SHF_EXECINSTR
 op_or
@@ -5737,6 +5738,17 @@ id|s-&gt;sh_name
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|m
+op_eq
+l_int|0
+)paren
+id|mod-&gt;core_text_size
+op_assign
+id|mod-&gt;core_size
+suffix:semicolon
 )brace
 id|DEBUGP
 c_func
@@ -5867,6 +5879,17 @@ id|s-&gt;sh_name
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|m
+op_eq
+l_int|0
+)paren
+id|mod-&gt;init_text_size
+op_assign
+id|mod-&gt;init_size
+suffix:semicolon
 )brace
 )brace
 DECL|function|license_is_gpl_compatible
@@ -8682,6 +8705,10 @@ id|mod-&gt;init_size
 op_assign
 l_int|0
 suffix:semicolon
+id|mod-&gt;init_text_size
+op_assign
+l_int|0
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -8798,7 +8825,7 @@ r_int
 )paren
 id|mod-&gt;module_init
 op_plus
-id|mod-&gt;init_size
+id|mod-&gt;init_text_size
 suffix:semicolon
 r_else
 id|nextval
@@ -8809,7 +8836,7 @@ r_int
 )paren
 id|mod-&gt;module_core
 op_plus
-id|mod-&gt;core_size
+id|mod-&gt;core_text_size
 suffix:semicolon
 multiline_comment|/* Scan for closest preceeding symbol, and next symbol. (ELF&n;           starts real symbols at 1). */
 r_for
@@ -8841,6 +8868,7 @@ id|SHN_UNDEF
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/* We ignore unnamed symbols: they&squot;re uninformative&n;&t;&t; * and inserted at a whim. */
 r_if
 c_cond
 (paren
@@ -8866,6 +8894,20 @@ id|best
 )braket
 dot
 id|st_value
+op_logical_and
+op_star
+(paren
+id|mod-&gt;strtab
+op_plus
+id|mod-&gt;symtab
+(braket
+id|i
+)braket
+dot
+id|st_name
+)paren
+op_ne
+l_char|&squot;&bslash;0&squot;
 )paren
 id|best
 op_assign
@@ -8891,6 +8933,20 @@ dot
 id|st_value
 OL
 id|nextval
+op_logical_and
+op_star
+(paren
+id|mod-&gt;strtab
+op_plus
+id|mod-&gt;symtab
+(braket
+id|i
+)braket
+dot
+id|st_name
+)paren
+op_ne
+l_char|&squot;&bslash;0&squot;
 )paren
 id|nextval
 op_assign
@@ -9571,7 +9627,7 @@ id|addr
 comma
 id|mod-&gt;module_init
 comma
-id|mod-&gt;init_size
+id|mod-&gt;init_text_size
 )paren
 op_logical_or
 id|within
@@ -9581,7 +9637,7 @@ id|addr
 comma
 id|mod-&gt;module_core
 comma
-id|mod-&gt;core_size
+id|mod-&gt;core_text_size
 )paren
 )paren
 r_return

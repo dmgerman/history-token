@@ -1837,6 +1837,21 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEBUG_PAGEALLOC
+multiline_comment|/* pse is not compatible with on-the-fly unmapping,&n;&t; * disable it even if the cpus claim to support it.&n;&t; */
+id|clear_bit
+c_func
+(paren
+id|X86_FEATURE_PSE
+comma
+id|boot_cpu_data.x86_capability
+)paren
+suffix:semicolon
+id|disable_pse
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * cpu_init() initializes state that is per-CPU. Some data is already&n; * initialized (naturally) in the bootstrap process, such as the GDT&n; * and IDT. We reload them nevertheless, this function acts as a&n; * &squot;CPU state barrier&squot;, nothing should get across.&n; */
 DECL|function|cpu_init

@@ -4,6 +4,9 @@ mdefine_line|#define __ASM_SH_SIGNAL_H
 macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/* Avoid too many header ordering problems.  */
 r_struct
+id|pt_regs
+suffix:semicolon
+r_struct
 id|siginfo
 suffix:semicolon
 DECL|macro|_NSIG

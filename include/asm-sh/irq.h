@@ -5,12 +5,12 @@ multiline_comment|/*&n; *&n; * linux/include/asm-sh/irq.h&n; *&n; * Copyright (C
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;&t;&t;/* for pt_regs */
-macro_line|#if defined(__sh3__)
+macro_line|#if defined(CONFIG_CPU_SH3)
 DECL|macro|INTC_IPRA
 mdefine_line|#define INTC_IPRA  &t;0xfffffee2UL
 DECL|macro|INTC_IPRB
 mdefine_line|#define INTC_IPRB  &t;0xfffffee4UL
-macro_line|#elif defined(__SH4__)
+macro_line|#elif defined(CONFIG_CPU_SH4)
 DECL|macro|INTC_IPRA
 mdefine_line|#define INTC_IPRA&t;0xffd00004UL
 DECL|macro|INTC_IPRB
@@ -34,7 +34,7 @@ DECL|macro|RTC_IPR_POS
 mdefine_line|#define RTC_IPR_POS&t; 0
 DECL|macro|RTC_PRIORITY
 mdefine_line|#define RTC_PRIORITY&t;TIMER_PRIORITY
-macro_line|#if defined(__sh3__)
+macro_line|#if defined(CONFIG_CPU_SH3)
 DECL|macro|DMTE0_IRQ
 mdefine_line|#define DMTE0_IRQ&t;48
 DECL|macro|DMTE1_IRQ
@@ -49,7 +49,7 @@ DECL|macro|DMA_IPR_POS
 mdefine_line|#define DMA_IPR_POS&t;3
 DECL|macro|DMA_PRIORITY
 mdefine_line|#define DMA_PRIORITY&t;7
-macro_line|#elif defined(__SH4__)
+macro_line|#elif defined(CONFIG_CPU_SH4)
 DECL|macro|DMTE0_IRQ
 mdefine_line|#define DMTE0_IRQ&t;34
 DECL|macro|DMTE1_IRQ
@@ -148,7 +148,11 @@ macro_line|#ifdef CONFIG_SH_GENERIC
 DECL|macro|ONCHIP_NR_IRQS
 macro_line|# define ONCHIP_NR_IRQS 144
 macro_line|#else
-macro_line|# if defined(CONFIG_CPU_SUBTYPE_SH7707)
+macro_line|# if defined(CONFIG_CPU_SUBTYPE_SH7604)
+DECL|macro|ONCHIP_NR_IRQS
+macro_line|#  define ONCHIP_NR_IRQS 24&t;
+singleline_comment|// Actually 21
+macro_line|# elif defined(CONFIG_CPU_SUBTYPE_SH7707)
 DECL|macro|ONCHIP_NR_IRQS
 macro_line|#  define ONCHIP_NR_IRQS 64
 DECL|macro|PINT_NR_IRQS
@@ -588,9 +592,36 @@ id|irq
 suffix:semicolon
 DECL|macro|irq_demux
 mdefine_line|#define irq_demux systemasic_irq_demux
+macro_line|#elif defined(CONFIG_SH_MPC1211)
+r_extern
+r_int
+id|mpc1211_irq_demux
+c_func
+(paren
+r_int
+id|irq
+)paren
+suffix:semicolon
+DECL|macro|irq_demux
+mdefine_line|#define irq_demux mpc1211_irq_demux
 macro_line|#else
 DECL|macro|irq_demux
 mdefine_line|#define irq_demux(irq) __irq_demux(irq)
 macro_line|#endif
+DECL|function|irq_canonicalize
+r_static
+id|__inline__
+r_int
+id|irq_canonicalize
+c_func
+(paren
+r_int
+id|irq
+)paren
+(brace
+r_return
+id|irq
+suffix:semicolon
+)brace
 macro_line|#endif /* __ASM_SH_IRQ_H */
 eof

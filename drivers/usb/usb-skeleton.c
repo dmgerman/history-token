@@ -207,6 +207,11 @@ r_int
 id|open
 suffix:semicolon
 multiline_comment|/* if the port is open or not */
+DECL|member|present
+r_int
+id|present
+suffix:semicolon
+multiline_comment|/* if the device is not disconnected */
 DECL|member|sem
 r_struct
 id|semaphore
@@ -887,9 +892,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;udev
-op_eq
-l_int|NULL
+op_logical_neg
+id|dev-&gt;present
 )paren
 (brace
 multiline_comment|/* the device was unplugged before the file was released */
@@ -985,9 +989,8 @@ multiline_comment|/* verify that the device wasn&squot;t unplugged */
 r_if
 c_cond
 (paren
-id|dev-&gt;udev
-op_eq
-l_int|NULL
+op_logical_neg
+id|dev-&gt;present
 )paren
 (brace
 id|up
@@ -1145,9 +1148,8 @@ multiline_comment|/* verify that the device wasn&squot;t unplugged */
 r_if
 c_cond
 (paren
-id|dev-&gt;udev
-op_eq
-l_int|NULL
+op_logical_neg
+id|dev-&gt;present
 )paren
 (brace
 id|retval
@@ -1365,9 +1367,8 @@ multiline_comment|/* verify that the device wasn&squot;t unplugged */
 r_if
 c_cond
 (paren
-id|dev-&gt;udev
-op_eq
-l_int|NULL
+op_logical_neg
+id|dev-&gt;present
 )paren
 (brace
 id|up
@@ -1550,12 +1551,6 @@ id|i
 suffix:semicolon
 r_int
 id|retval
-suffix:semicolon
-r_char
-id|name
-(braket
-l_int|14
-)braket
 suffix:semicolon
 multiline_comment|/* See if the device offered us matches what we can accept */
 r_if
@@ -1835,7 +1830,7 @@ suffix:semicolon
 id|dev-&gt;write_urb-&gt;transfer_flags
 op_assign
 (paren
-id|URB_NO_DMA_MAP
+id|URB_NO_TRANSFER_DMA_MAP
 op_or
 id|URB_ASYNC_UNLINK
 )paren
@@ -1918,6 +1913,11 @@ r_goto
 id|error
 suffix:semicolon
 )brace
+multiline_comment|/* allow device read, write and ioctl */
+id|dev-&gt;present
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* let the user know what node this device is now attached to */
 id|info
 (paren
@@ -2072,9 +2072,10 @@ id|dev-&gt;write_finished
 )paren
 suffix:semicolon
 )brace
-id|dev-&gt;udev
+multiline_comment|/* prevent device read, write and ioctl */
+id|dev-&gt;present
 op_assign
-l_int|NULL
+l_int|0
 suffix:semicolon
 id|up
 (paren
@@ -2082,7 +2083,7 @@ op_amp
 id|dev-&gt;sem
 )paren
 suffix:semicolon
-multiline_comment|/* if the device is not opened, then we clean up right now */
+multiline_comment|/* if the device is opened, skel_release will clean this up */
 r_if
 c_cond
 (paren

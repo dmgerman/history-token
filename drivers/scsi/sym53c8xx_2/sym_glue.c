@@ -752,19 +752,11 @@ id|u_long
 id|bus_addr_t
 suffix:semicolon
 macro_line|#else
-macro_line|#if&t;SYM_CONF_DMA_ADDRESSING_MODE &gt; 0
-DECL|typedef|bus_addr_t
-r_typedef
-id|dma64_addr_t
-id|bus_addr_t
-suffix:semicolon
-macro_line|#else
 DECL|typedef|bus_addr_t
 r_typedef
 id|dma_addr_t
 id|bus_addr_t
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; *  Used by the eh thread to wait for command completion.&n; *  It is allocated on the eh thread stack.&n; */
 DECL|struct|sym_eh_wait
@@ -6821,7 +6813,7 @@ macro_line|#else
 macro_line|#if   SYM_CONF_DMA_ADDRESSING_MODE == 1
 mdefine_line|#define&t;PciDmaMask&t;0xffffffffff
 macro_line|#elif SYM_CONF_DMA_ADDRESSING_MODE == 2
-mdefine_line|#define&t;PciDmaMask&t;0xffffffffffffffff
+mdefine_line|#define&t;PciDmaMask&t;0xffffffffffffffffULL
 macro_line|#endif
 r_if
 c_cond
@@ -9838,64 +9830,6 @@ c_func
 id|pcidev
 )paren
 )paren
-r_continue
-suffix:semicolon
-multiline_comment|/* Some HW as the HP LH4 may report twice PCI devices */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|count
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|devtbl
-(braket
-id|i
-)braket
-dot
-id|s.bus
-op_eq
-id|PciBusNumber
-c_func
-(paren
-id|pcidev
-)paren
-op_logical_and
-id|devtbl
-(braket
-id|i
-)braket
-dot
-id|s.device_fn
-op_eq
-id|PciDeviceFn
-c_func
-(paren
-id|pcidev
-)paren
-)paren
-r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|i
-op_ne
-id|count
-)paren
-multiline_comment|/* Ignore this device if we already have it */
 r_continue
 suffix:semicolon
 id|devp

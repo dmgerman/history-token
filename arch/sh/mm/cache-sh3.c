@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: cache-sh3.c,v 1.6 2001/09/10 08:59:59 dwmw2 Exp $&n; *&n; *  linux/arch/sh/mm/cache-sh3.c&n; *&n; * Copyright (C) 1999, 2000  Niibe Yutaka&n; *&n; */
+multiline_comment|/* $Id: cache-sh3.c,v 1.5 2003/05/06 23:28:48 lethal Exp $&n; *&n; *  linux/arch/sh/mm/cache-sh3.c&n; *&n; * Copyright (C) 1999, 2000  Niibe Yutaka&n; * Copyright (C) 2002 Paul Mundt&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -12,183 +12,9 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
-DECL|macro|CCR
-mdefine_line|#define CCR&t;&t;0xffffffec&t;/* Address of Cache Control Register */
-DECL|macro|CCR_CACHE_CE
-mdefine_line|#define CCR_CACHE_CE&t;0x01&t;/* Cache Enable */
-DECL|macro|CCR_CACHE_WT
-mdefine_line|#define CCR_CACHE_WT&t;0x02&t;/* Write-Through (for P0,U0,P3) (else writeback) */
-DECL|macro|CCR_CACHE_CB
-mdefine_line|#define CCR_CACHE_CB&t;0x04&t;/* Write-Back (for P1) (else writethrough) */
-DECL|macro|CCR_CACHE_CF
-mdefine_line|#define CCR_CACHE_CF&t;0x08&t;/* Cache Flush */
-DECL|macro|CCR_CACHE_RA
-mdefine_line|#define CCR_CACHE_RA&t;0x20&t;/* RAM mode */
-DECL|macro|CCR_CACHE_VAL
-mdefine_line|#define CCR_CACHE_VAL&t;(CCR_CACHE_CB|CCR_CACHE_CE)&t;/* 8k-byte cache, P1-wb, enable */
-DECL|macro|CCR_CACHE_INIT
-mdefine_line|#define CCR_CACHE_INIT&t;(CCR_CACHE_CF|CCR_CACHE_VAL)&t;/* 8k-byte cache, CF, P1-wb, enable */
-DECL|macro|CACHE_OC_ADDRESS_ARRAY
-mdefine_line|#define CACHE_OC_ADDRESS_ARRAY 0xf0000000
-DECL|macro|CACHE_VALID
-mdefine_line|#define CACHE_VALID&t;  1
-DECL|macro|CACHE_UPDATED
-mdefine_line|#define CACHE_UPDATED&t;  2
-DECL|macro|CACHE_PHYSADDR_MASK
-mdefine_line|#define CACHE_PHYSADDR_MASK 0x1ffffc00
-multiline_comment|/* 7709A/7729 has 16K cache (256-entry), while 7702 has only 2K(direct)&n;   7702 is not supported (yet) */
-DECL|struct|_cache_system_info
-r_struct
-id|_cache_system_info
-(brace
-DECL|member|way_shift
-r_int
-id|way_shift
-suffix:semicolon
-DECL|member|entry_mask
-r_int
-id|entry_mask
-suffix:semicolon
-DECL|member|num_entries
-r_int
-id|num_entries
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/* Data at BSS is cleared after setting this variable.&n;   So, we Should not placed this variable at BSS section.&n;   Initialize this, it is placed at data section. */
-DECL|variable|cache_system_info
+macro_line|#include &lt;asm/cacheflush.h&gt;
 r_static
-r_struct
-id|_cache_system_info
-id|cache_system_info
-op_assign
-(brace
-l_int|0
-comma
-)brace
-suffix:semicolon
-DECL|macro|CACHE_OC_WAY_SHIFT
-mdefine_line|#define CACHE_OC_WAY_SHIFT&t;(cache_system_info.way_shift)
-DECL|macro|CACHE_OC_ENTRY_SHIFT
-mdefine_line|#define CACHE_OC_ENTRY_SHIFT    4
-DECL|macro|CACHE_OC_ENTRY_MASK
-mdefine_line|#define CACHE_OC_ENTRY_MASK&t;(cache_system_info.entry_mask)
-DECL|macro|CACHE_OC_NUM_ENTRIES
-mdefine_line|#define CACHE_OC_NUM_ENTRIES&t;(cache_system_info.num_entries)
-DECL|macro|CACHE_OC_NUM_WAYS
-mdefine_line|#define CACHE_OC_NUM_WAYS&t;4
-DECL|macro|CACHE_OC_ASSOC_BIT
-mdefine_line|#define CACHE_OC_ASSOC_BIT    (1&lt;&lt;3)
-multiline_comment|/*&n; * Write back all the cache.&n; *&n; * For SH-4, we only need to flush (write back) Operand Cache,&n; * as Instruction Cache doesn&squot;t have &quot;updated&quot; data.&n; *&n; * Assumes that this is called in interrupt disabled context, and P2.&n; * Shuld be INLINE function.&n; */
-DECL|function|cache_wback_all
-r_static
-r_inline
-r_void
-id|cache_wback_all
-c_func
-(paren
-r_void
-)paren
-(brace
 r_int
-r_int
-id|addr
-comma
-id|data
-comma
-id|i
-comma
-id|j
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|CACHE_OC_NUM_ENTRIES
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_for
-c_loop
-(paren
-id|j
-op_assign
-l_int|0
-suffix:semicolon
-id|j
-OL
-id|CACHE_OC_NUM_WAYS
-suffix:semicolon
-id|j
-op_increment
-)paren
-(brace
-id|addr
-op_assign
-id|CACHE_OC_ADDRESS_ARRAY
-op_or
-(paren
-id|j
-op_lshift
-id|CACHE_OC_WAY_SHIFT
-)paren
-op_or
-(paren
-id|i
-op_lshift
-id|CACHE_OC_ENTRY_SHIFT
-)paren
-suffix:semicolon
-id|data
-op_assign
-id|ctrl_inl
-c_func
-(paren
-id|addr
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|data
-op_amp
-(paren
-id|CACHE_UPDATED
-op_or
-id|CACHE_VALID
-)paren
-)paren
-op_eq
-(paren
-id|CACHE_UPDATED
-op_or
-id|CACHE_VALID
-)paren
-)paren
-id|ctrl_outl
-c_func
-(paren
-id|data
-op_amp
-op_complement
-id|CACHE_UPDATED
-comma
-id|addr
-)paren
-suffix:semicolon
-)brace
-)brace
-)brace
-r_static
-r_void
 id|__init
 DECL|function|detect_cpu_and_cache_system
 id|detect_cpu_and_cache_system
@@ -253,9 +79,9 @@ id|data0
 op_amp
 op_complement
 (paren
-id|CACHE_VALID
+id|SH_CACHE_VALID
 op_or
-id|CACHE_UPDATED
+id|SH_CACHE_UPDATED
 )paren
 comma
 id|addr0
@@ -276,9 +102,9 @@ id|data1
 op_amp
 op_complement
 (paren
-id|CACHE_VALID
+id|SH_CACHE_VALID
 op_or
-id|CACHE_UPDATED
+id|SH_CACHE_UPDATED
 )paren
 comma
 id|addr1
@@ -295,7 +121,7 @@ id|addr0
 suffix:semicolon
 id|data0
 op_xor_assign
-id|CACHE_VALID
+id|SH_CACHE_VALID
 suffix:semicolon
 id|ctrl_outl
 c_func
@@ -317,7 +143,7 @@ id|data2
 op_assign
 id|data1
 op_xor
-id|CACHE_VALID
+id|SH_CACHE_VALID
 suffix:semicolon
 id|ctrl_outl
 c_func
@@ -342,7 +168,7 @@ c_func
 id|data0
 op_amp
 op_complement
-id|CACHE_VALID
+id|SH_CACHE_VALID
 comma
 id|addr0
 )paren
@@ -353,7 +179,7 @@ c_func
 id|data2
 op_amp
 op_complement
-id|CACHE_VALID
+id|SH_CACHE_VALID
 comma
 id|addr1
 )paren
@@ -363,6 +189,23 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|cpu_data-&gt;dcache.ways
+op_assign
+l_int|4
+suffix:semicolon
+id|cpu_data-&gt;dcache.entry_shift
+op_assign
+l_int|4
+suffix:semicolon
+id|cpu_data-&gt;dcache.linesz
+op_assign
+id|L1_CACHE_BYTES
+suffix:semicolon
+id|cpu_data-&gt;dcache.flags
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t; * 7709A/7729 has 16K cache (256-entry), while 7702 has only&n;&t; * 2K(direct) 7702 is not supported (yet)&n;&t; */
 r_if
 c_cond
 (paren
@@ -376,15 +219,15 @@ id|data3
 )paren
 (brace
 multiline_comment|/* Shadow */
-id|cache_system_info.way_shift
+id|cpu_data-&gt;dcache.way_shift
 op_assign
 l_int|11
 suffix:semicolon
-id|cache_system_info.entry_mask
+id|cpu_data-&gt;dcache.entry_mask
 op_assign
 l_int|0x7f0
 suffix:semicolon
-id|cache_system_info.num_entries
+id|cpu_data-&gt;dcache.sets
 op_assign
 l_int|128
 suffix:semicolon
@@ -396,15 +239,15 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* 7709A or 7729  */
-id|cache_system_info.way_shift
+id|cpu_data-&gt;dcache.way_shift
 op_assign
 l_int|12
 suffix:semicolon
-id|cache_system_info.entry_mask
+id|cpu_data-&gt;dcache.entry_mask
 op_assign
 l_int|0xff0
 suffix:semicolon
-id|cache_system_info.num_entries
+id|cpu_data-&gt;dcache.sets
 op_assign
 l_int|256
 suffix:semicolon
@@ -413,63 +256,17 @@ op_assign
 id|CPU_SH7729
 suffix:semicolon
 )brace
-)brace
-DECL|function|cache_init
-r_void
-id|__init
-id|cache_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-r_int
-id|ccr
+multiline_comment|/*&n;&t; * SH-3 doesn&squot;t have seperate caches&n;&t;&t; */
+id|cpu_data-&gt;dcache.flags
+op_or_assign
+id|SH_CACHE_COMBINED
 suffix:semicolon
-id|detect_cpu_and_cache_system
-c_func
-(paren
-)paren
-suffix:semicolon
-id|jump_to_P2
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ccr
+id|cpu_data-&gt;icache
 op_assign
-id|ctrl_inl
-c_func
-(paren
-id|CCR
-)paren
+id|cpu_data-&gt;dcache
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ccr
-op_amp
-id|CCR_CACHE_CE
-)paren
-multiline_comment|/*&n;&t;&t; * XXX: Should check RA here. &n;&t;&t; * If RA was 1, we only need to flush the half of the caches.&n;&t;&t; */
-id|cache_wback_all
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ctrl_outl
-c_func
-(paren
-id|CCR_CACHE_INIT
-comma
-id|CCR
-)paren
-suffix:semicolon
-id|back_to_P1
-c_func
-(paren
-)paren
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Write back the dirty D-caches, but not invalidate them.&n; *&n; * Is this really worth it, or should we just alias this routine&n; * to __flush_purge_region too?&n; *&n; * START: Virtual Address (U0, P1, or P3)&n; * SIZE: Size of the region.&n; */
@@ -565,7 +362,7 @@ l_int|0
 suffix:semicolon
 id|j
 OL
-id|CACHE_OC_NUM_WAYS
+id|cpu_data-&gt;dcache.ways
 suffix:semicolon
 id|j
 op_increment
@@ -594,16 +391,16 @@ op_or
 (paren
 id|j
 op_lshift
-id|CACHE_OC_WAY_SHIFT
+id|cpu_data-&gt;dcache.way_shift
 )paren
 op_or
 (paren
 id|v
 op_amp
-id|CACHE_OC_ENTRY_MASK
+id|cpu_data-&gt;dcache.entry_mask
 )paren
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -636,7 +433,7 @@ id|CACHE_PHYSADDR_MASK
 id|data
 op_and_assign
 op_complement
-id|CACHE_UPDATED
+id|SH_CACHE_UPDATED
 suffix:semicolon
 id|ctrl_outl
 c_func
@@ -646,7 +443,7 @@ comma
 id|addr
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -655,7 +452,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -764,10 +561,10 @@ op_or
 (paren
 id|v
 op_amp
-id|CACHE_OC_ENTRY_MASK
+id|cpu_data-&gt;dcache.entry_mask
 )paren
 op_or
-id|CACHE_OC_ASSOC_BIT
+id|SH_CACHE_ASSOC
 suffix:semicolon
 id|ctrl_outl
 c_func

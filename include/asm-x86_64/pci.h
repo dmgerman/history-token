@@ -828,11 +828,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* These macros should be used after a pci_map_sg call has been done&n; * to get bus addresses of each of the SG entries and their lengths.&n; * You should only work with the number of sg entries pci_map_sg&n; * returns.&n; */
-DECL|macro|sg_dma_address
-mdefine_line|#define sg_dma_address(sg)&t;((sg)-&gt;dma_address)
-DECL|macro|sg_dma_len
-mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;length)
 DECL|macro|HAVE_PCI_MMAP
 mdefine_line|#define HAVE_PCI_MMAP
 r_extern

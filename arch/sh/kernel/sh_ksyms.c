@@ -3,13 +3,13 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/elfcore.h&gt;
-macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -17,8 +17,8 @@ macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
-macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 r_extern
 r_void
 id|dump_thread
@@ -38,6 +38,10 @@ r_int
 id|dump_fpu
 c_func
 (paren
+r_struct
+id|pt_regs
+op_star
+comma
 id|elf_fpregset_t
 op_star
 )paren
@@ -241,14 +245,22 @@ c_func
 id|memcmp
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_VT
-DECL|variable|screen_info
+DECL|variable|memscan
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|screen_info
+id|memscan
 )paren
 suffix:semicolon
+DECL|variable|__copy_user
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__copy_user
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_VT
+multiline_comment|/* XXX: MRB-remove - what was screen_info changed to?&n;EXPORT_SYMBOL(screen_info);&n;*/
 macro_line|#endif
 DECL|variable|boot_cpu_data
 id|EXPORT_SYMBOL
@@ -310,6 +322,13 @@ c_func
 id|__udivsi3
 )paren
 suffix:semicolon
+DECL|variable|__udivdi3
+id|DECLARE_EXPORT
+c_func
+(paren
+id|__udivdi3
+)paren
+suffix:semicolon
 DECL|variable|__sdivsi3
 id|DECLARE_EXPORT
 c_func
@@ -345,7 +364,7 @@ c_func
 id|__movstr
 )paren
 suffix:semicolon
-macro_line|#ifdef __SH4__
+macro_line|#ifdef CONFIG_CPU_SH4
 DECL|variable|__movstr_i4_even
 id|DECLARE_EXPORT
 c_func
@@ -382,6 +401,13 @@ c_func
 id|flush_dcache_page
 )paren
 suffix:semicolon
+DECL|variable|__flush_purge_region
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__flush_purge_region
+)paren
+suffix:semicolon
 macro_line|#endif
 DECL|variable|flush_tlb_page
 id|EXPORT_SYMBOL
@@ -390,4 +416,20 @@ c_func
 id|flush_tlb_page
 )paren
 suffix:semicolon
+DECL|variable|__down_trylock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__down_trylock
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+DECL|variable|synchronize_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|synchronize_irq
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

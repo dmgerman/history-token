@@ -4,6 +4,8 @@ DECL|macro|_ASM_SH_MACHVEC_H
 mdefine_line|#define _ASM_SH_MACHVEC_H 1
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;asm/machtypes.h&gt;
 r_struct
 id|timeval
 suffix:semicolon
@@ -489,9 +491,9 @@ id|mv_rtc_gettimeofday
 )paren
 (paren
 r_struct
-id|timeval
+id|timespec
 op_star
-id|tv
+id|ts
 )paren
 suffix:semicolon
 DECL|member|mv_rtc_settimeofday
@@ -502,95 +504,9 @@ id|mv_rtc_settimeofday
 )paren
 (paren
 r_const
-r_struct
-id|timeval
-op_star
-id|tv
+id|time_t
+id|secs
 )paren
-suffix:semicolon
-DECL|member|mv_hw_se
-r_int
-r_int
-id|mv_hw_se
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|mv_hw_hp600
-r_int
-r_int
-id|mv_hw_hp600
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|mv_hw_hp620
-r_int
-r_int
-id|mv_hw_hp620
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|mv_hw_hp680
-r_int
-r_int
-id|mv_hw_hp680
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|mv_hw_hp690
-r_int
-r_int
-id|mv_hw_hp690
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|mv_hw_hd64461
-r_int
-r_int
-id|mv_hw_hd64461
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|mv_hw_sh2000
-r_int
-r_int
-id|mv_hw_sh2000
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|mv_hw_hd64465
-r_int
-r_int
-id|mv_hw_hd64465
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|mv_hw_dreamcast
-r_int
-r_int
-id|mv_hw_dreamcast
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|mv_hw_bigsur
-r_int
-r_int
-id|mv_hw_bigsur
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|mv_hw_7751se
-r_int
-r_int
-id|mv_hw_7751se
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|mv_hw_adx
-r_int
-r_int
-id|mv_hw_adx
-suffix:colon
-l_int|1
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -599,124 +515,5 @@ r_struct
 id|sh_machine_vector
 id|sh_mv
 suffix:semicolon
-multiline_comment|/* Machine check macros */
-macro_line|#ifdef CONFIG_SH_GENERIC
-DECL|macro|MACH_SE
-mdefine_line|#define MACH_SE&t;&t;(sh_mv.mv_hw_se)
-DECL|macro|MACH_HP600
-mdefine_line|#define MACH_HP600&t;(sh_mv.mv_hw_hp600)
-DECL|macro|MACH_HP620
-mdefine_line|#define MACH_HP620&t;(sh_mv.mv_hw_hp620)
-DECL|macro|MACH_HP680
-mdefine_line|#define MACH_HP680&t;(sh_mv.mv_hw_hp680)
-DECL|macro|MACH_HP690
-mdefine_line|#define MACH_HP690&t;(sh_mv.mv_hw_hp690)
-DECL|macro|MACH_HD64461
-mdefine_line|#define MACH_HD64461&t;(sh_mv.mv_hw_hd64461)
-DECL|macro|MACH_HD64465
-mdefine_line|#define MACH_HD64465&t;(sh_mv.mv_hw_hd64465)
-DECL|macro|MACH_SH2000
-mdefine_line|#define MACH_SH2000&t;(sh_mv.mv_hw_sh2000)
-DECL|macro|MACH_DREAMCAST
-mdefine_line|#define MACH_DREAMCAST&t;(sh_mv.mv_hw_dreamcast)
-DECL|macro|MACH_BIGSUR
-mdefine_line|#define MACH_BIGSUR&t;(sh_mv.mv_hw_bigsur)
-DECL|macro|MACH_7751SE
-mdefine_line|#define MACH_7751SE&t;(sh_mv.mv_hw_7751se)
-DECL|macro|MACH_ADX
-mdefine_line|#define MACH_ADX&t;(sh_mv.mv_hw_adx)
-macro_line|#else
-macro_line|# ifdef CONFIG_SH_SOLUTION_ENGINE
-DECL|macro|MACH_SE
-macro_line|#  define MACH_SE&t;&t;1
-macro_line|# else
-DECL|macro|MACH_SE
-macro_line|#  define MACH_SE&t;&t;0
-macro_line|# endif
-macro_line|# ifdef CONFIG_SH_7751_SOLUTION_ENGINE
-DECL|macro|MACH_7751SE
-macro_line|#  define MACH_7751SE&t;&t;1
-macro_line|# else
-DECL|macro|MACH_7751SE
-macro_line|#  define MACH_7751SE&t;&t;0
-macro_line|# endif
-macro_line|# ifdef CONFIG_SH_HP600
-DECL|macro|MACH_HP600
-macro_line|#  define MACH_HP600&t;&t;1
-macro_line|# else
-DECL|macro|MACH_HP600
-macro_line|#  define MACH_HP600&t;&t;0
-macro_line|# endif
-macro_line|# ifdef CONFIG_SH_HP620
-DECL|macro|MACH_HP620
-macro_line|#  define MACH_HP620&t;&t;1
-macro_line|# else
-DECL|macro|MACH_HP620
-macro_line|#  define MACH_HP620&t;&t;0
-macro_line|# endif
-macro_line|# ifdef CONFIG_SH_HP680
-DECL|macro|MACH_HP680
-macro_line|#  define MACH_HP680&t;&t;1
-macro_line|# else
-DECL|macro|MACH_HP680
-macro_line|#  define MACH_HP680&t;&t;0
-macro_line|# endif
-macro_line|# ifdef CONFIG_SH_HP690
-DECL|macro|MACH_HP690
-macro_line|#  define MACH_HP690&t;&t;1
-macro_line|# else
-DECL|macro|MACH_HP690
-macro_line|#  define MACH_HP690&t;&t;0
-macro_line|# endif
-macro_line|# ifdef CONFIG_HD64461
-DECL|macro|MACH_HD64461
-macro_line|#  define MACH_HD64461&t;&t;1
-macro_line|# else
-DECL|macro|MACH_HD64461
-macro_line|#  define MACH_HD64461&t;&t;0
-macro_line|# endif
-macro_line|# ifdef CONFIG_HD64465
-DECL|macro|MACH_HD64465
-macro_line|#  define MACH_HD64465&t;&t;1
-macro_line|# else
-DECL|macro|MACH_HD64465
-macro_line|#  define MACH_HD64465&t;&t;0
-macro_line|# endif
-macro_line|# ifdef CONFIG_SH_SH2000
-DECL|macro|MACH_SH2000
-macro_line|#  define MACH_SH2000&t;&t;1
-macro_line|# else
-DECL|macro|MACH_SH2000
-macro_line|#  define MACH_SH2000&t;&t;0
-macro_line|# endif
-macro_line|# ifdef CONFIG_SH_EC3104
-DECL|macro|MACH_EC3104
-macro_line|#  define MACH_EC3104&t;&t;1
-macro_line|# else
-DECL|macro|MACH_EC3104
-macro_line|#  define MACH_EC3104&t;&t;0
-macro_line|# endif
-macro_line|# ifdef CONFIG_SH_DREAMCAST
-DECL|macro|MACH_DREAMCAST
-macro_line|#  define MACH_DREAMCAST&t;1
-macro_line|# else
-DECL|macro|MACH_DREAMCAST
-macro_line|#  define MACH_DREAMCAST&t;0
-macro_line|# endif
-macro_line|# ifdef CONFIG_SH_BIGSUR
-DECL|macro|MACH_BIGSUR
-macro_line|#  define MACH_BIGSUR&t;&t;1
-macro_line|# else
-DECL|macro|MACH_BIGSUR
-macro_line|#  define MACH_BIGSUR&t;&t;0
-macro_line|# endif
-macro_line|# ifdef CONFIG_SH_ADX
-DECL|macro|MACH_ADX
-macro_line|#  define MACH_ADX&t;&t;1
-macro_line|# else
-DECL|macro|MACH_ADX
-macro_line|#  define MACH_ADX&t;&t;0
-macro_line|# endif
-macro_line|#endif
 macro_line|#endif /* _ASM_SH_MACHVEC_H */
 eof

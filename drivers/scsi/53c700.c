@@ -23,7 +23,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
@@ -1910,15 +1909,7 @@ r_enum
 id|dma_data_direction
 id|direction
 op_assign
-(paren
-r_enum
-id|dma_data_direction
-)paren
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|SCp-&gt;sc_data_direction
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -8357,15 +8348,7 @@ suffix:semicolon
 multiline_comment|/* now build the scatter gather list */
 id|direction
 op_assign
-(paren
-r_enum
-id|dma_data_direction
-)paren
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|SCp-&gt;sc_data_direction
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -9185,6 +9168,18 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* NULL exit routine to keep modutils happy */
+id|STATIC
+r_void
+id|__exit
+DECL|function|NCR_700_exit
+id|NCR_700_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 DECL|variable|NCR_700_detect
 id|EXPORT_SYMBOL
 c_func
@@ -9211,6 +9206,13 @@ id|module_init
 c_func
 (paren
 id|NCR_700_init
+)paren
+suffix:semicolon
+DECL|variable|NCR_700_exit
+id|module_exit
+c_func
+(paren
+id|NCR_700_exit
 )paren
 suffix:semicolon
 eof

@@ -348,11 +348,18 @@ r_int
 r_int
 id|node_start_pfn
 suffix:semicolon
-DECL|member|node_size
+DECL|member|node_present_pages
 r_int
 r_int
-id|node_size
+id|node_present_pages
 suffix:semicolon
+multiline_comment|/* total number of physical pages */
+DECL|member|node_spanned_pages
+r_int
+r_int
+id|node_spanned_pages
+suffix:semicolon
+multiline_comment|/* total size of physical page&n;&t;&t;&t;&t;&t;     range, including holes */
 DECL|member|node_id
 r_int
 id|node_id
@@ -371,6 +378,10 @@ DECL|typedef|pg_data_t
 )brace
 id|pg_data_t
 suffix:semicolon
+DECL|macro|node_present_pages
+mdefine_line|#define node_present_pages(nid)&t;(NODE_DATA(nid)-&gt;node_present_pages)
+DECL|macro|node_spanned_pages
+mdefine_line|#define node_spanned_pages(nid)&t;(NODE_DATA(nid)-&gt;node_spanned_pages)
 r_extern
 r_int
 id|numnodes

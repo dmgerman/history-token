@@ -612,6 +612,11 @@ l_int|0
 comma
 id|fcnt
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|coda_vfs_stat.flush
 op_increment
 suffix:semicolon
@@ -631,8 +636,8 @@ id|fcnt
 OG
 l_int|1
 )paren
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 multiline_comment|/* No need to make an upcall when we have not made any modifications&n;&t; * to the file */
 r_if
@@ -646,16 +651,16 @@ id|O_ACCMODE
 op_eq
 id|O_RDONLY
 )paren
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|use_coda_close
 )paren
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 id|cfi
 op_assign
@@ -717,6 +722,13 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|out
+suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon

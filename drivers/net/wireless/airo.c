@@ -13870,6 +13870,10 @@ id|apriv-&gt;proc_entry-&gt;gid
 op_assign
 id|proc_gid
 suffix:semicolon
+id|apriv-&gt;proc_entry-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 multiline_comment|/* Setup the StatsDelta */
 id|entry
 op_assign
@@ -13900,6 +13904,10 @@ suffix:semicolon
 id|entry-&gt;data
 op_assign
 id|dev
+suffix:semicolon
+id|entry-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|SETPROC_OPS
 c_func
@@ -13940,6 +13948,10 @@ id|entry-&gt;data
 op_assign
 id|dev
 suffix:semicolon
+id|entry-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|SETPROC_OPS
 c_func
 (paren
@@ -13979,6 +13991,10 @@ id|entry-&gt;data
 op_assign
 id|dev
 suffix:semicolon
+id|entry-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|SETPROC_OPS
 c_func
 (paren
@@ -14013,6 +14029,10 @@ suffix:semicolon
 id|entry-&gt;data
 op_assign
 id|dev
+suffix:semicolon
+id|entry-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|SETPROC_OPS
 c_func
@@ -14049,6 +14069,10 @@ id|entry-&gt;data
 op_assign
 id|dev
 suffix:semicolon
+id|entry-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|SETPROC_OPS
 c_func
 (paren
@@ -14083,6 +14107,10 @@ suffix:semicolon
 id|entry-&gt;data
 op_assign
 id|dev
+suffix:semicolon
+id|entry-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|SETPROC_OPS
 c_func
@@ -14119,6 +14147,10 @@ id|entry-&gt;data
 op_assign
 id|dev
 suffix:semicolon
+id|entry-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|SETPROC_OPS
 c_func
 (paren
@@ -14153,6 +14185,10 @@ suffix:semicolon
 id|entry-&gt;data
 op_assign
 id|dev
+suffix:semicolon
+id|entry-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|SETPROC_OPS
 c_func
@@ -14564,8 +14600,6 @@ id|status_rid
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_if
 c_cond
@@ -15007,8 +15041,6 @@ op_star
 id|vals
 op_assign
 id|stats.vals
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_if
 c_cond
@@ -16948,8 +16980,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -18656,8 +18686,6 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -19006,8 +19034,6 @@ suffix:semicolon
 id|SsidRid
 id|SSID_rid
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -19318,8 +19344,6 @@ id|ptr
 suffix:semicolon
 id|APListRid
 id|APList_rid
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_if
 c_cond
@@ -19690,8 +19714,6 @@ id|doLoseSync
 op_assign
 op_minus
 l_int|1
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_if
 c_cond
@@ -20101,8 +20123,6 @@ id|inode
 comma
 id|file
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_if
 c_cond

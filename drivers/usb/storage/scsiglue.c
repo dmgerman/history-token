@@ -390,6 +390,31 @@ id|us-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|test_bit
+c_func
+(paren
+id|US_FLIDX_DISCONNECTING
+comma
+op_amp
+id|us-&gt;flags
+)paren
+)paren
+(brace
+id|result
+op_assign
+id|FAILED
+suffix:semicolon
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;No reset during disconnect&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
 id|result
 op_assign
 id|us
@@ -531,7 +556,7 @@ suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;Attempt to reset during disconnect&bslash;n&quot;
+l_string|&quot;No reset during disconnect&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

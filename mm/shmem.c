@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
 multiline_comment|/* This magic number is used in glibc for posix shared memory */
@@ -1954,8 +1955,7 @@ l_int|0
 r_if
 c_cond
 (paren
-op_logical_neg
-id|vm_enough_memory
+id|security_vm_enough_memory
 c_func
 (paren
 id|change
@@ -5101,8 +5101,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|vm_enough_memory
+id|security_vm_enough_memory
 c_func
 (paren
 id|VM_ACCT
@@ -6677,8 +6676,7 @@ r_else
 r_if
 c_cond
 (paren
-op_logical_neg
-id|vm_enough_memory
+id|security_vm_enough_memory
 c_func
 (paren
 id|VM_ACCT
@@ -8685,8 +8683,7 @@ op_amp
 id|VM_ACCOUNT
 )paren
 op_logical_and
-op_logical_neg
-id|vm_enough_memory
+id|security_vm_enough_memory
 c_func
 (paren
 id|VM_ACCT

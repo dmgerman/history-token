@@ -4731,6 +4731,10 @@ r_goto
 id|exit1
 suffix:semicolon
 )brace
+id|bdp-&gt;drv_stats.net_stats.tx_bytes
+op_add_assign
+id|skb-&gt;len
+suffix:semicolon
 id|e100_prepare_xmit_buff
 c_func
 (paren
@@ -4738,10 +4742,6 @@ id|bdp
 comma
 id|skb
 )paren
-suffix:semicolon
-id|bdp-&gt;drv_stats.net_stats.tx_bytes
-op_add_assign
-id|skb-&gt;len
 suffix:semicolon
 id|dev-&gt;trans_start
 op_assign
@@ -8117,6 +8117,10 @@ op_assign
 id|CHECKSUM_NONE
 suffix:semicolon
 )brace
+id|bdp-&gt;drv_stats.net_stats.rx_bytes
+op_add_assign
+id|skb-&gt;len
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8156,10 +8160,6 @@ suffix:semicolon
 id|dev-&gt;last_rx
 op_assign
 id|jiffies
-suffix:semicolon
-id|bdp-&gt;drv_stats.net_stats.rx_bytes
-op_add_assign
-id|skb-&gt;len
 suffix:semicolon
 id|rfd_cnt
 op_increment

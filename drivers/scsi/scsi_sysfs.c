@@ -427,25 +427,6 @@ id|online
 suffix:semicolon
 r_static
 id|ssize_t
-DECL|function|show_rescan_field
-id|show_rescan_field
-(paren
-r_struct
-id|device
-op_star
-id|dev
-comma
-r_char
-op_star
-id|buf
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_static
-id|ssize_t
 DECL|function|store_rescan_field
 id|store_rescan_field
 (paren
@@ -470,7 +451,7 @@ id|dev
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|count
 suffix:semicolon
 )brace
 r_static
@@ -479,16 +460,13 @@ c_func
 (paren
 id|rescan
 comma
-id|S_IRUGO
-op_or
 id|S_IWUSR
 comma
-id|show_rescan_field
+l_int|NULL
 comma
 id|store_rescan_field
 )paren
 multiline_comment|/* Default template for device attributes.  May NOT be modified */
-DECL|variable|scsi_sysfs_sdev_attrs
 r_struct
 id|device_attribute
 op_star
@@ -1186,7 +1164,8 @@ id|attr
 r_int
 id|modify
 op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 r_int
 id|num_attrs
@@ -1261,8 +1240,9 @@ id|class_attrs
 op_eq
 id|scsi_sysfs_shost_attrs
 op_logical_or
-op_logical_neg
 id|modify
+OL
+l_int|0
 )paren
 (brace
 multiline_comment|/* note: need space for null at the end as well */
@@ -1277,8 +1257,8 @@ c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|class_device_attribute
+op_star
+id|tmp_attrs
 )paren
 op_star
 (paren
@@ -1286,6 +1266,8 @@ id|num_attrs
 op_plus
 (paren
 id|modify
+op_ge
+l_int|0
 ques
 c_cond
 l_int|1
@@ -1320,11 +1302,15 @@ id|class_attrs
 comma
 r_sizeof
 (paren
-r_struct
-id|class_device_attribute
+op_star
+id|tmp_attrs
 )paren
 op_star
+(paren
 id|num_attrs
+op_plus
+l_int|1
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1354,6 +1340,8 @@ r_if
 c_cond
 (paren
 id|modify
+op_ge
+l_int|0
 )paren
 (brace
 multiline_comment|/* spare the caller from having to copy things it&squot;s&n;&t;&t; * not interested in */
@@ -1470,7 +1458,8 @@ id|attr
 r_int
 id|modify
 op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 r_int
 id|num_attrs
@@ -1545,8 +1534,9 @@ id|dev_attrs
 op_eq
 id|scsi_sysfs_sdev_attrs
 op_logical_or
-op_logical_neg
 id|modify
+OL
+l_int|0
 )paren
 (brace
 multiline_comment|/* note: need space for null at the end as well */
@@ -1561,8 +1551,8 @@ c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|device_attribute
+op_star
+id|tmp_attrs
 )paren
 op_star
 (paren
@@ -1570,6 +1560,8 @@ id|num_attrs
 op_plus
 (paren
 id|modify
+op_ge
+l_int|0
 ques
 c_cond
 l_int|1
@@ -1604,11 +1596,15 @@ id|dev_attrs
 comma
 r_sizeof
 (paren
-r_struct
-id|device_attribute
+op_star
+id|tmp_attrs
 )paren
 op_star
+(paren
 id|num_attrs
+op_plus
+l_int|1
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1638,6 +1634,8 @@ r_if
 c_cond
 (paren
 id|modify
+op_ge
+l_int|0
 )paren
 (brace
 multiline_comment|/* spare the caller from having to copy things it&squot;s&n;&t;&t; * not interested in */

@@ -49,7 +49,7 @@ r_int
 r_int
 id|sc_macl
 suffix:semicolon
-macro_line|#if defined(__SH4__)
+macro_line|#if defined(CONFIG_CPU_SH4)
 multiline_comment|/* FPU registers */
 DECL|member|sc_fpregs
 r_int

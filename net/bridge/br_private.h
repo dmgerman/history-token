@@ -943,7 +943,7 @@ id|path_cost
 suffix:semicolon
 multiline_comment|/* br_stp_bpdu.c */
 r_extern
-r_void
+r_int
 id|br_stp_handle_bpdu
 c_func
 (paren

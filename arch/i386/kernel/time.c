@@ -73,16 +73,11 @@ c_func
 id|i8253_lock
 )paren
 suffix:semicolon
-r_extern
-r_struct
-id|timer_opts
-id|timer_none
-suffix:semicolon
-DECL|variable|timer
+DECL|variable|cur_timer
 r_struct
 id|timer_opts
 op_star
-id|timer
+id|cur_timer
 op_assign
 op_amp
 id|timer_none
@@ -111,6 +106,10 @@ id|sec
 suffix:semicolon
 r_do
 (brace
+r_int
+r_int
+id|lost
+suffix:semicolon
 id|seq
 op_assign
 id|read_seqbegin
@@ -122,16 +121,13 @@ id|xtime_lock
 suffix:semicolon
 id|usec
 op_assign
-id|timer
+id|cur_timer
 op_member_access_from_pointer
 id|get_offset
 c_func
 (paren
 )paren
 suffix:semicolon
-(brace
-r_int
-r_int
 id|lost
 op_assign
 id|jiffies
@@ -153,7 +149,6 @@ op_div
 id|HZ
 )paren
 suffix:semicolon
-)brace
 id|sec
 op_assign
 id|xtime.tv_sec
@@ -241,7 +236,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * This is revolting. We need to set &quot;xtime&quot; correctly. However, the&n;&t; * value in this location is the value at the most recent update of&n;&t; * wall time.  Discover what correction gettimeofday() would have&n;&t; * made, and then undo it!&n;&t; */
 id|tv-&gt;tv_nsec
 op_sub_assign
-id|timer
+id|cur_timer
 op_member_access_from_pointer
 id|get_offset
 c_func
@@ -424,7 +419,7 @@ r_void
 )paren
 (brace
 r_return
-id|timer
+id|cur_timer
 op_member_access_from_pointer
 id|monotonic_clock
 c_func
@@ -640,7 +635,7 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
-id|timer
+id|cur_timer
 op_member_access_from_pointer
 id|mark_offset
 c_func
@@ -828,7 +823,7 @@ op_assign
 op_minus
 id|xtime.tv_nsec
 suffix:semicolon
-id|timer
+id|cur_timer
 op_assign
 id|select_timer
 c_func

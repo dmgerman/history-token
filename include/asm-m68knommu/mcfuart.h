@@ -106,7 +106,7 @@ mdefine_line|#define&t;MCFUART_MR1_PARITYODD&t;0x04&t;&t;/* Odd parity */
 DECL|macro|MCFUART_MR1_PARITYSPACE
 mdefine_line|#define&t;MCFUART_MR1_PARITYSPACE&t;0x08&t;&t;/* Space parity */
 DECL|macro|MCFUART_MR1_PARITYMARK
-mdefine_line|#define&t;MCFUART_MR1_PARITYMARK&t;0x06&t;&t;/* Mark parity */
+mdefine_line|#define&t;MCFUART_MR1_PARITYMARK&t;0x0c&t;&t;/* Mark parity */
 DECL|macro|MCFUART_MR1_CS5
 mdefine_line|#define&t;MCFUART_MR1_CS5&t;&t;0x00&t;&t;/* 5 bits per char */
 DECL|macro|MCFUART_MR1_CS6

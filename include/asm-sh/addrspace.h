@@ -2,6 +2,7 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef __ASM_SH_ADDRSPACE_H
 DECL|macro|__ASM_SH_ADDRSPACE_H
 mdefine_line|#define __ASM_SH_ADDRSPACE_H
+macro_line|#include &lt;asm/cpu/addrspace.h&gt;
 multiline_comment|/* Memory segments (32bit Priviledged mode addresses)  */
 DECL|macro|P0SEG
 mdefine_line|#define P0SEG&t;&t;0x00000000
@@ -13,31 +14,6 @@ DECL|macro|P3SEG
 mdefine_line|#define P3SEG&t;&t;0xc0000000
 DECL|macro|P4SEG
 mdefine_line|#define P4SEG&t;&t;0xe0000000
-macro_line|#if defined(__sh3__)
-multiline_comment|/* Should fill here */
-macro_line|#elif defined(__SH4__)
-multiline_comment|/* Detailed P4SEG  */
-DECL|macro|P4SEG_STORE_QUE
-mdefine_line|#define P4SEG_STORE_QUE&t;(P4SEG)
-DECL|macro|P4SEG_IC_ADDR
-mdefine_line|#define P4SEG_IC_ADDR&t;0xf0000000
-DECL|macro|P4SEG_IC_DATA
-mdefine_line|#define P4SEG_IC_DATA&t;0xf1000000
-DECL|macro|P4SEG_ITLB_ADDR
-mdefine_line|#define P4SEG_ITLB_ADDR&t;0xf2000000
-DECL|macro|P4SEG_ITLB_DATA
-mdefine_line|#define P4SEG_ITLB_DATA&t;0xf3000000
-DECL|macro|P4SEG_OC_ADDR
-mdefine_line|#define P4SEG_OC_ADDR&t;0xf4000000
-DECL|macro|P4SEG_OC_DATA
-mdefine_line|#define P4SEG_OC_DATA&t;0xf5000000
-DECL|macro|P4SEG_TLB_ADDR
-mdefine_line|#define P4SEG_TLB_ADDR&t;0xf6000000
-DECL|macro|P4SEG_TLB_DATA
-mdefine_line|#define P4SEG_TLB_DATA&t;0xf7000000
-DECL|macro|P4SEG_REG_BASE
-mdefine_line|#define P4SEG_REG_BASE&t;0xff000000
-macro_line|#endif
 multiline_comment|/* Returns the privileged segment base of a given address  */
 DECL|macro|PXSEG
 mdefine_line|#define PXSEG(a)&t;(((unsigned long)(a)) &amp; 0xe0000000)

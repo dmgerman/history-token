@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/topology.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 id|DECLARE_BITMAP
 c_func
 (paren
@@ -63,6 +64,20 @@ r_int
 id|sysctl_lower_zone_protection
 op_assign
 l_int|0
+suffix:semicolon
+DECL|variable|totalram_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|totalram_pages
+)paren
+suffix:semicolon
+DECL|variable|nr_swap_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|nr_swap_pages
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Used by page_zone() to look up the address of the struct zone whose&n; * id is encoded in the upper bits of page-&gt;flags&n; */
 DECL|variable|zone_table
@@ -1004,6 +1019,18 @@ op_amp
 id|list
 )paren
 suffix:semicolon
+id|kernel_map_pages
+c_func
+(paren
+id|page
+comma
+l_int|1
+op_lshift
+id|order
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|free_pages_bulk
 c_func
 (paren
@@ -1831,6 +1858,16 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+id|kernel_map_pages
+c_func
+(paren
+id|page
+comma
+l_int|1
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|inc_page_state
 c_func
 (paren
@@ -2362,8 +2399,8 @@ c_cond
 (paren
 id|page
 )paren
-r_return
-id|page
+r_goto
+id|got_pg
 suffix:semicolon
 )brace
 id|min
@@ -2492,8 +2529,8 @@ c_cond
 (paren
 id|page
 )paren
-r_return
-id|page
+r_goto
+id|got_pg
 suffix:semicolon
 )brace
 id|min
@@ -2572,8 +2609,8 @@ c_cond
 (paren
 id|page
 )paren
-r_return
-id|page
+r_goto
+id|got_pg
 suffix:semicolon
 )brace
 r_goto
@@ -2695,8 +2732,8 @@ c_cond
 (paren
 id|page
 )paren
-r_return
-id|page
+r_goto
+id|got_pg
 suffix:semicolon
 )brace
 id|min
@@ -2802,6 +2839,23 @@ suffix:semicolon
 )brace
 r_return
 l_int|NULL
+suffix:semicolon
+id|got_pg
+suffix:colon
+id|kernel_map_pages
+c_func
+(paren
+id|page
+comma
+l_int|1
+op_lshift
+id|order
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_return
+id|page
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Common helper functions.&n; */
@@ -3102,6 +3156,13 @@ r_return
 id|sum
 suffix:semicolon
 )brace
+DECL|variable|nr_free_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|nr_free_pages
+)paren
+suffix:semicolon
 DECL|function|nr_used_zone_pages
 r_int
 r_int
@@ -3416,6 +3477,13 @@ id|ATOMIC_INIT
 c_func
 (paren
 l_int|0
+)paren
+suffix:semicolon
+DECL|variable|nr_pagecache
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|nr_pagecache
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
@@ -3800,7 +3868,7 @@ id|nid
 suffix:semicolon
 id|val-&gt;totalram
 op_assign
-id|pgdat-&gt;node_size
+id|pgdat-&gt;node_present_pages
 suffix:semicolon
 id|val-&gt;freeram
 op_assign
@@ -4763,7 +4831,7 @@ id|zones_size
 id|i
 )braket
 suffix:semicolon
-id|pgdat-&gt;node_size
+id|pgdat-&gt;node_spanned_pages
 op_assign
 id|totalpages
 suffix:semicolon
@@ -4796,6 +4864,10 @@ id|zholes_size
 (braket
 id|i
 )braket
+suffix:semicolon
+id|pgdat-&gt;node_present_pages
+op_assign
+id|realtotalpages
 suffix:semicolon
 id|printk
 c_func
@@ -5681,7 +5753,7 @@ id|node_mem_map
 id|size
 op_assign
 (paren
-id|pgdat-&gt;node_size
+id|pgdat-&gt;node_spanned_pages
 op_plus
 l_int|1
 )paren
