@@ -1015,7 +1015,7 @@ id|dma
 op_assign
 (paren
 id|dev-&gt;dev.dma_mask
-op_eq
+op_ne
 l_int|0
 )paren
 suffix:semicolon
