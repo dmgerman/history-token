@@ -1430,25 +1430,6 @@ id|macepci_map_irq
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* XXX anybody know what this is supposed to do? */
-DECL|function|pcibios_fixup_pbus_ranges
-r_void
-id|__devinit
-id|pcibios_fixup_pbus_ranges
-c_func
-(paren
-r_struct
-id|pci_bus
-op_star
-id|bus
-comma
-r_struct
-id|pbus_set_ranges_data
-op_star
-id|ranges
-)paren
-(brace
-)brace
 multiline_comment|/*&n; * Handle errors from the bridge.  This includes master and target aborts,&n; * various command and address errors, and the interrupt test.  This gets&n; * registered on the bridge error irq.  It&squot;s conceivable that some of these&n; * conditions warrant a panic.  Anybody care to say which ones?&n; */
 DECL|function|macepci_error
 r_void

@@ -617,23 +617,6 @@ id|irq
 suffix:semicolon
 multiline_comment|/* ??? FIXME -- record old value for shutdown.  */
 )brace
-r_void
-id|__devinit
-DECL|function|pcibios_fixup_pbus_ranges
-id|pcibios_fixup_pbus_ranges
-(paren
-r_struct
-id|pci_bus
-op_star
-id|bus
-comma
-r_struct
-id|pbus_set_ranges_data
-op_star
-id|ranges
-)paren
-(brace
-)brace
 r_static
 r_inline
 r_int

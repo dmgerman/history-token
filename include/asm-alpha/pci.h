@@ -470,6 +470,27 @@ op_star
 id|pdev
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|pcibios_resource_to_bus
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_struct
+id|pci_bus_region
+op_star
+id|region
+comma
+r_struct
+id|resource
+op_star
+id|res
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* Values for the `which&squot; argument to sys_pciconfig_iobase.  */
 DECL|macro|IOBASE_HOSE

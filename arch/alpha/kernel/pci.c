@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *&t;linux/arch/alpha/kernel/pci.c&n; *&n; * Extruded from code written by&n; *&t;Dave Rusling (david.rusling@reo.mts.dec.com)&n; *&t;David Mosberger (davidm@cs.arizona.edu)&n; */
 multiline_comment|/* 2.3.x PCI/resources, 1999 Andrea Arcangeli &lt;andrea@suse.de&gt; */
 multiline_comment|/*&n; * Nov 2000, Ivan Kokshaysky &lt;ink@jurassic.park.msu.ru&gt;&n; *&t;     PCI-PCI bridges cleanup&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1261,19 +1262,24 @@ suffix:semicolon
 )brace
 r_void
 id|__devinit
-DECL|function|pcibios_fixup_pbus_ranges
-id|pcibios_fixup_pbus_ranges
+DECL|function|pcibios_resource_to_bus
+id|pcibios_resource_to_bus
 c_func
 (paren
 r_struct
-id|pci_bus
+id|pci_dev
 op_star
-id|bus
+id|dev
 comma
 r_struct
-id|pbus_set_ranges_data
+id|pci_bus_region
 op_star
-id|ranges
+id|region
+comma
+r_struct
+id|resource
+op_star
+id|res
 )paren
 (brace
 r_struct
@@ -1286,34 +1292,59 @@ r_struct
 id|pci_controller
 op_star
 )paren
-id|bus-&gt;sysdata
+id|dev-&gt;sysdata
 suffix:semicolon
-id|ranges-&gt;io_start
-op_sub_assign
+r_int
+r_int
+id|offset
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|res-&gt;flags
+op_amp
+id|IORESOURCE_IO
+)paren
+id|offset
+op_assign
 id|hose-&gt;io_space-&gt;start
 suffix:semicolon
-id|ranges-&gt;io_end
-op_sub_assign
-id|hose-&gt;io_space-&gt;start
-suffix:semicolon
-id|ranges-&gt;mem_start
-op_sub_assign
+r_else
+r_if
+c_cond
+(paren
+id|res-&gt;flags
+op_amp
+id|IORESOURCE_MEM
+)paren
+id|offset
+op_assign
 id|hose-&gt;mem_space-&gt;start
 suffix:semicolon
-id|ranges-&gt;mem_end
-op_sub_assign
-id|hose-&gt;mem_space-&gt;start
+id|region-&gt;start
+op_assign
+id|res-&gt;start
+op_minus
+id|offset
 suffix:semicolon
-multiline_comment|/* FIXME: On older alphas we could use dense memory space&n;&t;  to access prefetchable resources. */
-id|ranges-&gt;prefetch_start
-op_sub_assign
-id|hose-&gt;mem_space-&gt;start
-suffix:semicolon
-id|ranges-&gt;prefetch_end
-op_sub_assign
-id|hose-&gt;mem_space-&gt;start
+id|region-&gt;end
+op_assign
+id|res-&gt;end
+op_minus
+id|offset
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_HOTPLUG
+DECL|variable|pcibios_resource_to_bus
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcibios_resource_to_bus
+)paren
+suffix:semicolon
+macro_line|#endif
 r_int
 DECL|function|pcibios_enable_device
 id|pcibios_enable_device

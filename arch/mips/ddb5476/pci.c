@@ -1478,25 +1478,29 @@ id|irq
 )paren
 suffix:semicolon
 )brace
-DECL|function|pcibios_fixup_pbus_ranges
+macro_line|#if 0&t;/*  original DDB5074 code */
 r_void
 id|__devinit
-id|pcibios_fixup_pbus_ranges
+id|pcibios_resource_to_bus
 c_func
 (paren
 r_struct
-id|pci_bus
+id|pci_dev
 op_star
-id|bus
+id|dev
 comma
 r_struct
-id|pbus_set_ranges_data
+id|pci_bus_region
 op_star
-id|ranges
+id|region
+comma
+r_struct
+id|resource
+op_star
+id|res
 )paren
 (brace
 multiline_comment|/*&n;&t; * our caller figure out range by going through the dev structures.  &n;&t; * I guess this is the place to fix things up if the bus is using a &n;&t; * different view of the addressing space.&n;&t; */
-macro_line|#if 0&t;/*  original DDB5074 code */
 r_if
 c_cond
 (paren
@@ -1542,8 +1546,8 @@ op_member_access_from_pointer
 id|start
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
+macro_line|#endif
 DECL|function|pcibios_enable_resources
 r_int
 id|pcibios_enable_resources
