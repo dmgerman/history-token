@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: gc.c,v 1.136 2004/05/27 19:06:09 gleixner Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: gc.c,v 1.137 2004/07/20 13:44:55 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -1533,22 +1533,34 @@ c_func
 id|f
 )paren
 )paren
-r_return
+(brace
+id|ret
+op_assign
 id|PTR_ERR
 c_func
 (paren
 id|f
 )paren
 suffix:semicolon
+r_goto
+id|release_sem
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 op_logical_neg
 id|f
 )paren
-r_return
+(brace
+id|ret
+op_assign
 l_int|0
 suffix:semicolon
+r_goto
+id|release_sem
+suffix:semicolon
+)brace
 id|ret
 op_assign
 id|jffs2_garbage_collect_live
@@ -4261,7 +4273,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;jffs2_g_c_deletion_dirent(): Short read (%zd not %u) reading header from obsolete node at %08x&bslash;n&quot;
+l_string|&quot;jffs2_g_c_deletion_dirent(): Short read (%zd not %zd) reading header from obsolete node at %08x&bslash;n&quot;
 comma
 id|retlen
 comma

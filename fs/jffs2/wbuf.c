@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; * Copyright (C) 2004 Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; * Modified debugged and enhanced by Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: wbuf.c,v 1.70 2004/07/13 08:58:25 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; * Copyright (C) 2004 Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; * Modified debugged and enhanced by Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: wbuf.c,v 1.72 2004/09/11 19:22:43 gleixner Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -984,7 +984,7 @@ c_cond
 id|ret
 op_eq
 op_minus
-id|EIO
+id|EBADMSG
 op_logical_and
 id|retlen
 op_eq
@@ -3637,7 +3637,7 @@ c_cond
 id|ret
 op_eq
 op_minus
-id|EIO
+id|EBADMSG
 )paren
 op_logical_and
 (paren
@@ -4815,7 +4815,7 @@ id|oinfo-&gt;oobfree
 l_int|0
 )braket
 (braket
-l_int|0
+l_int|1
 )braket
 )paren
 (brace
