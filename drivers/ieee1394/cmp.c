@@ -732,6 +732,9 @@ comma
 r_int
 r_int
 id|length
+comma
+id|u16
+id|flags
 )paren
 (brace
 r_int
@@ -939,6 +942,9 @@ id|arg
 comma
 r_int
 id|extcode
+comma
+id|u16
+id|flags
 )paren
 (brace
 r_int

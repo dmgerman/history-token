@@ -7959,7 +7959,6 @@ id|hpsb_host
 op_star
 id|host
 comma
-r_const
 id|quadlet_t
 op_star
 op_star

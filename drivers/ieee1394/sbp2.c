@@ -51,7 +51,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 584 $ James Goodwin &lt;jamesg@filanet.com&gt;&quot;
+l_string|&quot;$Rev: 601 $ James Goodwin &lt;jamesg@filanet.com&gt;&quot;
 suffix:semicolon
 multiline_comment|/*&n; * Module load parameter definitions&n; */
 multiline_comment|/*&n; * Change sbp2_max_speed on module load if you have a bad IEEE-1394&n; * controller that has trouble running 2KB packets at 400mb.&n; *&n; * NOTE: On certain OHCI parts I have seen short packets on async transmit&n; * (probably due to PCI latency/throughput issues with the part). You can&n; * bump down the speed if you are running into problems.&n; *&n; * Valid values:&n; * sbp2_max_speed = 2 (default: max speed 400mb)&n; * sbp2_max_speed = 1 (max speed 200mb)&n; * sbp2_max_speed = 0 (max speed 100mb)&n; */
@@ -175,7 +175,7 @@ id|sbp2_max_cmds_per_lun
 op_assign
 id|SBP2SCSI_MAX_CMDS_PER_LUN
 suffix:semicolon
-multiline_comment|/*&n; * Exclusive login to sbp2 device? In most cases, the sbp2 driver should&n; * do an exclusive login, as it&squot;s generally unsafe to have two hosts&n; * talking to a single sbp2 device at the same time (filesystem coherency,&n; * etc.). If you&squot;re running an sbp2 device that supports multiple logins,&n; * and you&squot;re either running read-only filesystems or some sort of special&n; * filesystem supporting multiple hosts, then set sbp2_exclusive_login to&n; * zero. Note: The Oxsemi OXFW911 sbp2 chipset supports up to four&n; * concurrent logins.&n; */
+multiline_comment|/*&n; * Exclusive login to sbp2 device? In most cases, the sbp2 driver should&n; * do an exclusive login, as it&squot;s generally unsafe to have two hosts&n; * talking to a single sbp2 device at the same time (filesystem coherency,&n; * etc.). If you&squot;re running an sbp2 device that supports multiple logins,&n; * and you&squot;re either running read-only filesystems or some sort of special&n; * filesystem supporting multiple hosts (one such filesystem is OpenGFS,&n; * see opengfs.sourceforge.net for more info), then set sbp2_exclusive_login&n; * to zero. Note: The Oxsemi OXFW911 sbp2 chipset supports up to four&n; * concurrent logins.&n; */
 id|MODULE_PARM
 c_func
 (paren
@@ -1314,8 +1314,12 @@ id|data_size
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Set up a task queue completion routine, which returns&n;&t;&t; * the packet to the free list and releases the tlabel.&n;&t;&t; */
-id|request_packet-&gt;tq.routine
-op_assign
+id|HPSB_PREPARE_WORK
+c_func
+(paren
+op_amp
+id|request_packet-&gt;tq
+comma
 (paren
 r_void
 (paren
@@ -1327,10 +1331,9 @@ op_star
 )paren
 )paren
 id|sbp2util_free_request_packet
-suffix:semicolon
-id|request_packet-&gt;tq.data
-op_assign
+comma
 id|request_packet
+)paren
 suffix:semicolon
 id|request_packet-&gt;hi_context
 op_assign
@@ -2252,20 +2255,6 @@ op_eq
 id|CMD_DMA_PAGE
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,13)
-id|pci_unmap_single
-c_func
-(paren
-id|hi-&gt;host-&gt;pdev
-comma
-id|command-&gt;cmd_dma
-comma
-id|command-&gt;dma_size
-comma
-id|command-&gt;dma_dir
-)paren
-suffix:semicolon
-macro_line|#else
 id|pci_unmap_page
 c_func
 (paren
@@ -2278,7 +2267,6 @@ comma
 id|command-&gt;dma_dir
 )paren
 suffix:semicolon
-macro_line|#endif /* Linux version &lt; 2.4.13 */
 id|SBP2_DMA_FREE
 c_func
 (paren
@@ -6120,26 +6108,6 @@ id|command-&gt;dma_type
 op_assign
 id|CMD_DMA_PAGE
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,13)
-id|command-&gt;cmd_dma
-op_assign
-id|pci_map_single
-(paren
-id|hi-&gt;host-&gt;pdev
-comma
-id|sgpnt
-(braket
-l_int|0
-)braket
-dot
-id|address
-comma
-id|command-&gt;dma_size
-comma
-id|command-&gt;dma_dir
-)paren
-suffix:semicolon
-macro_line|#else
 id|command-&gt;cmd_dma
 op_assign
 id|pci_map_page
@@ -6166,7 +6134,6 @@ comma
 id|command-&gt;dma_dir
 )paren
 suffix:semicolon
-macro_line|#endif /* Linux version &lt; 2.4.13 */
 id|SBP2_DMA_ALLOC
 c_func
 (paren
@@ -8203,6 +8170,9 @@ comma
 r_int
 r_int
 id|length
+comma
+id|u16
+id|fl
 )paren
 (brace
 r_struct
