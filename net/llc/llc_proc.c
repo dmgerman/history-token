@@ -865,6 +865,8 @@ op_logical_neg
 op_logical_neg
 id|sk-&gt;sk_backlog.tail
 comma
+op_logical_neg
+op_logical_neg
 id|sock_owned_by_user
 c_func
 (paren
