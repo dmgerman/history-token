@@ -7542,10 +7542,8 @@ id|volume_info.rsize
 op_logical_and
 (paren
 id|volume_info.rsize
-op_plus
-id|MAX_CIFS_HDR_SIZE
-OL
-id|srvTcp-&gt;maxBuf
+op_le
+id|CIFSMaxBufSize
 )paren
 )paren
 (brace
@@ -7571,10 +7569,8 @@ id|volume_info.wsize
 op_logical_and
 (paren
 id|volume_info.wsize
-op_plus
-id|MAX_CIFS_HDR_SIZE
-OL
-id|srvTcp-&gt;maxBuf
+op_le
+id|CIFSMaxBufSize
 )paren
 )paren
 (brace
@@ -7586,9 +7582,7 @@ suffix:semicolon
 r_else
 id|cifs_sb-&gt;wsize
 op_assign
-id|srvTcp-&gt;maxBuf
-op_minus
-id|MAX_CIFS_HDR_SIZE
+id|CIFSMaxBufSize
 suffix:semicolon
 multiline_comment|/* default */
 r_if
@@ -8407,6 +8401,10 @@ op_or
 id|CAP_NT_SMBS
 op_or
 id|CAP_LEVEL_II_OPLOCKS
+op_or
+id|CAP_LARGE_WRITE_X
+op_or
+id|CAP_LARGE_READ_X
 suffix:semicolon
 r_if
 c_cond
