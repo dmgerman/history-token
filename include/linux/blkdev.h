@@ -144,6 +144,26 @@ r_char
 op_star
 id|buffer
 suffix:semicolon
+multiline_comment|/* For packet commands */
+DECL|member|data_len
+r_int
+r_int
+id|data_len
+suffix:semicolon
+DECL|member|data
+DECL|member|sense
+r_void
+op_star
+id|data
+comma
+op_star
+id|sense
+suffix:semicolon
+DECL|member|timeout
+r_int
+r_int
+id|timeout
+suffix:semicolon
 DECL|member|waiting
 r_struct
 id|completion
@@ -223,6 +243,14 @@ DECL|enumerator|__REQ_SENSE
 id|__REQ_SENSE
 comma
 multiline_comment|/* sense retrival */
+DECL|enumerator|__REQ_FAILED
+id|__REQ_FAILED
+comma
+multiline_comment|/* set if the request failed */
+DECL|enumerator|__REQ_QUIET
+id|__REQ_QUIET
+comma
+multiline_comment|/* don&squot;t worry about errors */
 DECL|enumerator|__REQ_SPECIAL
 id|__REQ_SPECIAL
 comma
@@ -264,6 +292,10 @@ DECL|macro|REQ_BLOCK_PC
 mdefine_line|#define REQ_BLOCK_PC&t;(1 &lt;&lt; __REQ_BLOCK_PC)
 DECL|macro|REQ_SENSE
 mdefine_line|#define REQ_SENSE&t;(1 &lt;&lt; __REQ_SENSE)
+DECL|macro|REQ_FAILED
+mdefine_line|#define REQ_FAILED&t;(1 &lt;&lt; __REQ_FAILED)
+DECL|macro|REQ_QUIET
+mdefine_line|#define REQ_QUIET&t;(1 &lt;&lt; __REQ_QUIET)
 DECL|macro|REQ_SPECIAL
 mdefine_line|#define REQ_SPECIAL&t;(1 &lt;&lt; __REQ_SPECIAL)
 DECL|macro|REQ_DRIVE_CMD
@@ -932,7 +964,7 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|block_ioctl
+id|scsi_cmd_ioctl
 c_func
 (paren
 r_struct
