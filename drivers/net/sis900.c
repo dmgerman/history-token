@@ -222,6 +222,16 @@ id|LAN
 )brace
 comma
 (brace
+l_string|&quot;Altimata AC101LF PHY&quot;
+comma
+l_int|0x0022
+comma
+l_int|0x5520
+comma
+id|LAN
+)brace
+comma
+(brace
 l_string|&quot;AMD 79C901 10BASE-T PHY&quot;
 comma
 l_int|0x0000
