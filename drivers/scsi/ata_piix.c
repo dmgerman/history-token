@@ -1,4 +1,4 @@
-multiline_comment|/*&n;&n;    ata_piix.c - Intel PATA/SATA controllers&n;&n;&n;&t;Copyright 2003 Red Hat Inc&n;&t;Copyright 2003 Jeff Garzik&n;&n;&n;&t;Copyright header from piix.c:&n;&n;    Copyright (C) 1998-1999 Andrzej Krzysztofowicz, Author and Maintainer&n;    Copyright (C) 1998-2000 Andre Hedrick &lt;andre@linux-ide.org&gt;&n;    Copyright (C) 2003 Red Hat Inc &lt;alan@redhat.com&gt;&n;&n;    May be copied or modified under the terms of the GNU General Public License&n;&n; */
+multiline_comment|/*&n;&n;    ata_piix.c - Intel PATA/SATA controllers&n;&n;&n;&t;Copyright 2003-2004 Red Hat Inc&n;&t;Copyright 2003-2004 Jeff Garzik&n;&n;&n;&t;Copyright header from piix.c:&n;&n;    Copyright (C) 1998-1999 Andrzej Krzysztofowicz, Author and Maintainer&n;    Copyright (C) 1998-2000 Andre Hedrick &lt;andre@linux-ide.org&gt;&n;    Copyright (C) 2003 Red Hat Inc &lt;alan@redhat.com&gt;&n;&n;    May be copied or modified under the terms of the GNU General Public License&n;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/libata.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;ata_piix&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.95&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.00&quot;
 r_enum
 (brace
 DECL|enumerator|PIIX_IOCFG
