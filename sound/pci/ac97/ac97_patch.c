@@ -9260,6 +9260,8 @@ id|ucontrol-&gt;value.enumerated.item
 (braket
 l_int|0
 )braket
+op_lshift
+l_int|12
 comma
 l_int|0
 )paren

@@ -1191,6 +1191,7 @@ id|buffer
 )paren
 (brace
 id|snd_pcm_info_t
+op_star
 id|info
 suffix:semicolon
 r_int
@@ -1204,6 +1205,37 @@ comma
 r_return
 )paren
 suffix:semicolon
+id|info
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+id|info
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|info
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;snd_pcm_proc_info_read: cannot malloc&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|err
 op_assign
 id|snd_pcm_info
@@ -1211,7 +1243,6 @@ c_func
 (paren
 id|substream
 comma
-op_amp
 id|info
 )paren
 suffix:semicolon
@@ -1233,6 +1264,12 @@ comma
 id|err
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -1243,7 +1280,7 @@ id|buffer
 comma
 l_string|&quot;card: %d&bslash;n&quot;
 comma
-id|info.card
+id|info-&gt;card
 )paren
 suffix:semicolon
 id|snd_iprintf
@@ -1253,7 +1290,7 @@ id|buffer
 comma
 l_string|&quot;device: %d&bslash;n&quot;
 comma
-id|info.device
+id|info-&gt;device
 )paren
 suffix:semicolon
 id|snd_iprintf
@@ -1263,7 +1300,7 @@ id|buffer
 comma
 l_string|&quot;subdevice: %d&bslash;n&quot;
 comma
-id|info.subdevice
+id|info-&gt;subdevice
 )paren
 suffix:semicolon
 id|snd_iprintf
@@ -1276,7 +1313,7 @@ comma
 id|snd_pcm_stream_name
 c_func
 (paren
-id|info.stream
+id|info-&gt;stream
 )paren
 )paren
 suffix:semicolon
@@ -1287,7 +1324,7 @@ id|buffer
 comma
 l_string|&quot;id: %s&bslash;n&quot;
 comma
-id|info.id
+id|info-&gt;id
 )paren
 suffix:semicolon
 id|snd_iprintf
@@ -1297,7 +1334,7 @@ id|buffer
 comma
 l_string|&quot;name: %s&bslash;n&quot;
 comma
-id|info.name
+id|info-&gt;name
 )paren
 suffix:semicolon
 id|snd_iprintf
@@ -1307,7 +1344,7 @@ id|buffer
 comma
 l_string|&quot;subname: %s&bslash;n&quot;
 comma
-id|info.subname
+id|info-&gt;subname
 )paren
 suffix:semicolon
 id|snd_iprintf
@@ -1317,7 +1354,7 @@ id|buffer
 comma
 l_string|&quot;class: %d&bslash;n&quot;
 comma
-id|info.dev_class
+id|info-&gt;dev_class
 )paren
 suffix:semicolon
 id|snd_iprintf
@@ -1327,7 +1364,7 @@ id|buffer
 comma
 l_string|&quot;subclass: %d&bslash;n&quot;
 comma
-id|info.dev_subclass
+id|info-&gt;dev_subclass
 )paren
 suffix:semicolon
 id|snd_iprintf
@@ -1337,7 +1374,7 @@ id|buffer
 comma
 l_string|&quot;subdevices_count: %d&bslash;n&quot;
 comma
-id|info.subdevices_count
+id|info-&gt;subdevices_count
 )paren
 suffix:semicolon
 id|snd_iprintf
@@ -1347,7 +1384,13 @@ id|buffer
 comma
 l_string|&quot;subdevices_avail: %d&bslash;n&quot;
 comma
-id|info.subdevices_avail
+id|info-&gt;subdevices_avail
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|info
 )paren
 suffix:semicolon
 )brace

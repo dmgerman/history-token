@@ -223,12 +223,7 @@ DECL|member|sleep
 id|wait_queue_head_t
 id|sleep
 suffix:semicolon
-multiline_comment|/* event handler (room [output] or new bytes [input]) */
-DECL|member|event_tasklet
-r_struct
-id|tasklet_struct
-id|event_tasklet
-suffix:semicolon
+multiline_comment|/* event handler (new bytes, input only) */
 DECL|member|event
 r_void
 (paren
@@ -240,6 +235,12 @@ id|snd_rawmidi_substream_t
 op_star
 id|substream
 )paren
+suffix:semicolon
+multiline_comment|/* defers calls to event [input] or ops-&gt;trigger [output] */
+DECL|member|tasklet
+r_struct
+id|tasklet_struct
+id|tasklet
 suffix:semicolon
 multiline_comment|/* private data */
 DECL|member|private_data

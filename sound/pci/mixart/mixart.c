@@ -4491,7 +4491,7 @@ multiline_comment|/* reset board if some firmware was loaded */
 r_if
 c_cond
 (paren
-id|mgr-&gt;hwdep-&gt;dsp_loaded
+id|mgr-&gt;dsp_loaded
 )paren
 (brace
 id|snd_mixart_reset_board
@@ -5098,7 +5098,7 @@ multiline_comment|/* stats available when embedded OS is running */
 r_if
 c_cond
 (paren
-id|chip-&gt;mgr-&gt;hwdep-&gt;dsp_loaded
+id|chip-&gt;mgr-&gt;dsp_loaded
 op_amp
 (paren
 l_int|1
@@ -6062,7 +6062,7 @@ id|err
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* init firmware status (mgr-&gt;hwdep-&gt;dsp_loaded reset in hwdep_new) */
+multiline_comment|/* init firmware status (mgr-&gt;dsp_loaded reset in hwdep_new) */
 id|mgr-&gt;board_type
 op_assign
 id|MIXART_DAUGHTER_TYPE_NONE

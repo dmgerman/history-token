@@ -1781,5 +1781,16 @@ suffix:semicolon
 )brace
 DECL|macro|SNDRV_OSS_VERSION
 mdefine_line|#define SNDRV_OSS_VERSION         ((3&lt;&lt;16)|(8&lt;&lt;8)|(1&lt;&lt;4)|(0))&t;/* 3.8.1a */
+multiline_comment|/* for easier backward-porting */
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
+macro_line|#ifndef gameport_set_dev_parent
+DECL|macro|gameport_set_dev_parent
+mdefine_line|#define gameport_set_dev_parent(gp,xdev) ((gp)-&gt;dev.parent = (xdev))
+DECL|macro|gameport_set_port_data
+mdefine_line|#define gameport_set_port_data(gp,r) ((gp)-&gt;port_data = (r))
+DECL|macro|gameport_get_port_data
+mdefine_line|#define gameport_get_port_data(gp) (gp)-&gt;port_data
+macro_line|#endif
+macro_line|#endif
 macro_line|#endif /* __SOUND_CORE_H */
 eof

@@ -871,6 +871,8 @@ comma
 r_int
 )paren
 id|emu-&gt;fx8010.etram_pages.bytes
+op_div
+l_int|2
 )paren
 suffix:semicolon
 id|snd_iprintf
@@ -2391,6 +2393,9 @@ id|offset
 comma
 r_int
 id|length
+comma
+r_int
+id|voices
 )paren
 (brace
 id|emu10k1_t
@@ -2475,7 +2480,7 @@ l_int|0
 suffix:semicolon
 id|j
 OL
-l_int|64
+id|voices
 suffix:semicolon
 id|j
 op_increment
@@ -2748,6 +2753,8 @@ comma
 l_int|0
 comma
 l_int|0x40
+comma
+l_int|64
 )paren
 suffix:semicolon
 )brace
@@ -2778,6 +2785,8 @@ comma
 l_int|0x40
 comma
 l_int|0x40
+comma
+l_int|64
 )paren
 suffix:semicolon
 )brace
@@ -2808,6 +2817,8 @@ comma
 l_int|0
 comma
 l_int|0x40
+comma
+l_int|4
 )paren
 suffix:semicolon
 )brace
@@ -2838,6 +2849,8 @@ comma
 l_int|0x40
 comma
 l_int|0x40
+comma
+l_int|4
 )paren
 suffix:semicolon
 )brace

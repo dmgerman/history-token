@@ -106,9 +106,6 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/* make sure the block of voices does not cross the 32 voice boundary */
-singleline_comment|//if (((i % 32) + number) &gt; 32)
-singleline_comment|//&t;continue;
 id|skip
 op_assign
 l_int|0
@@ -147,10 +144,14 @@ c_cond
 (paren
 id|voice-&gt;use
 )paren
+(brace
 id|skip
 op_assign
 l_int|1
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -189,22 +190,10 @@ id|first_voice
 op_eq
 id|last_voice
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;BUG (or not enough voices), number %d, next free %d!&bslash;n&quot;
-comma
-id|number
-comma
-id|emu-&gt;next_free_voice
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren

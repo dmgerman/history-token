@@ -255,9 +255,13 @@ dot
 id|buffer_bytes_max
 op_assign
 (paren
-l_int|32
+(paren
+l_int|65536
+op_minus
+l_int|64
+)paren
 op_star
-l_int|1024
+l_int|8
 )paren
 comma
 dot
@@ -269,9 +273,9 @@ dot
 id|period_bytes_max
 op_assign
 (paren
-l_int|16
-op_star
-l_int|1024
+l_int|65536
+op_minus
+l_int|64
 )paren
 comma
 dot
@@ -344,9 +348,13 @@ dot
 id|buffer_bytes_max
 op_assign
 (paren
-l_int|32
+(paren
+l_int|65536
+op_minus
+l_int|64
+)paren
 op_star
-l_int|1024
+l_int|8
 )paren
 comma
 dot
@@ -358,9 +366,9 @@ dot
 id|period_bytes_max
 op_assign
 (paren
-l_int|16
-op_star
-l_int|1024
+l_int|65536
+op_minus
+l_int|64
 )paren
 comma
 dot
@@ -1820,6 +1828,20 @@ id|runtime-&gt;period_size
 )paren
 op_lshift
 l_int|16
+)paren
+suffix:semicolon
+singleline_comment|// buffer size in bytes
+multiline_comment|/* FIXME  test what 0 bytes does. */
+id|snd_ca0106_ptr_write
+c_func
+(paren
+id|emu
+comma
+id|PLAYBACK_PERIOD_SIZE
+comma
+id|channel
+comma
+l_int|0
 )paren
 suffix:semicolon
 singleline_comment|// buffer size in bytes

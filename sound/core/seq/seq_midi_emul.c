@@ -987,10 +987,10 @@ id|chan-&gt;note
 id|note
 )braket
 op_amp
-id|SNDRV_MIDI_NOTE_SUSTENUTO
+id|SNDRV_MIDI_NOTE_SOSTENUTO
 )paren
 (brace
-multiline_comment|/* Mark this note as release; it will be turned off when sustenuto&n;&t;&t; * is turned off */
+multiline_comment|/* Mark this note as release; it will be turned off when sostenuto&n;&t;&t; * is turned off */
 id|chan-&gt;note
 (braket
 id|note
@@ -1190,7 +1190,7 @@ suffix:colon
 r_break
 suffix:semicolon
 r_case
-id|MIDI_CTL_SUSTENUTO
+id|MIDI_CTL_SOSTENUTO
 suffix:colon
 r_if
 c_cond
@@ -1229,7 +1229,7 @@ id|chan-&gt;note
 id|i
 )braket
 op_or_assign
-id|SNDRV_MIDI_NOTE_SUSTENUTO
+id|SNDRV_MIDI_NOTE_SOSTENUTO
 suffix:semicolon
 )brace
 )brace
@@ -1259,7 +1259,7 @@ id|chan-&gt;note
 id|i
 )braket
 op_amp
-id|SNDRV_MIDI_NOTE_SUSTENUTO
+id|SNDRV_MIDI_NOTE_SOSTENUTO
 )paren
 (brace
 id|chan-&gt;note
@@ -1268,7 +1268,7 @@ id|i
 )braket
 op_and_assign
 op_complement
-id|SNDRV_MIDI_NOTE_SUSTENUTO
+id|SNDRV_MIDI_NOTE_SOSTENUTO
 suffix:semicolon
 r_if
 c_cond

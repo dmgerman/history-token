@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;,&n; *                   Takashi Iwai &lt;tiwai@suse.de&gt;&n; *                   Creative Labs, Inc.&n; *  Routines for control of EMU10K1 chips / mixer routines&n; *&n; *  BUGS:&n; *    --&n; *&n; *  TODO:&n; *    --&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
+multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;,&n; *                   Takashi Iwai &lt;tiwai@suse.de&gt;&n; *                   Creative Labs, Inc.&n; *  Routines for control of EMU10K1 chips / mixer routines&n; *  Multichannel PCM support Copyright (c) Lee Revell &lt;rlrevell@joe-job.com&gt;&n; *&n; *  BUGS:&n; *    --&n; *&n; *  TODO:&n; *    --&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -2763,11 +2763,18 @@ c_cond
 (paren
 id|change
 op_logical_and
+id|mix-&gt;epcm
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|mix-&gt;epcm-&gt;voices
 (braket
 id|ch
 )braket
 )paren
+(brace
 id|update_emu10k1_fxrt
 c_func
 (paren
@@ -2790,6 +2797,8 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
+)brace
+)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3143,11 +3152,18 @@ c_cond
 (paren
 id|change
 op_logical_and
+id|mix-&gt;epcm
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|mix-&gt;epcm-&gt;voices
 (braket
 id|ch
 )braket
 )paren
+(brace
 id|update_emu10k1_send_volume
 c_func
 (paren
@@ -3170,6 +3186,8 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
+)brace
+)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3444,11 +3462,18 @@ c_cond
 (paren
 id|change
 op_logical_and
+id|mix-&gt;epcm
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|mix-&gt;epcm-&gt;voices
 (braket
 id|ch
 )braket
 )paren
+(brace
 id|snd_emu10k1_ptr_write
 c_func
 (paren
@@ -3469,6 +3494,8 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
+)brace
+)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4326,6 +4353,10 @@ id|ac97.private_free
 op_assign
 id|snd_emu10k1_mixer_free_ac97
 suffix:semicolon
+id|ac97.scaps
+op_assign
+id|AC97_SCAP_NO_SPDIF
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5148,51 +5179,6 @@ c_cond
 (paren
 id|kctl
 op_assign
-id|ctl_find
-c_func
-(paren
-id|card
-comma
-id|SNDRV_CTL_NAME_IEC958
-c_func
-(paren
-l_string|&quot;&quot;
-comma
-id|PLAYBACK
-comma
-id|DEFAULT
-)paren
-)paren
-)paren
-op_ne
-l_int|NULL
-)paren
-(brace
-multiline_comment|/* already defined by ac97, remove it */
-multiline_comment|/* FIXME: or do we need both controls? */
-id|remove_ctl
-c_func
-(paren
-id|card
-comma
-id|SNDRV_CTL_NAME_IEC958
-c_func
-(paren
-l_string|&quot;&quot;
-comma
-id|PLAYBACK
-comma
-id|DEFAULT
-)paren
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|kctl
-op_assign
 id|snd_ctl_new1
 c_func
 (paren
@@ -5358,6 +5344,34 @@ c_func
 id|card
 comma
 id|kctl
+)paren
+)paren
+)paren
+r_return
+id|err
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|emu-&gt;audigy
+op_logical_and
+id|emu-&gt;revision
+op_eq
+l_int|4
+)paren
+(brace
+multiline_comment|/* P16V */
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|snd_p16v_mixer
+c_func
+(paren
+id|emu
 )paren
 )paren
 )paren

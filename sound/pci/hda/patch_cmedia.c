@@ -350,7 +350,7 @@ id|cmi9880_ch6_init
 )braket
 op_assign
 (brace
-multiline_comment|/* set line-in PIN for input */
+multiline_comment|/* set line-in PIN for output */
 (brace
 l_int|0x0c
 comma
@@ -359,7 +359,7 @@ comma
 l_int|0x40
 )brace
 comma
-multiline_comment|/* set mic PIN for input, also enable vref */
+multiline_comment|/* set mic PIN for output */
 (brace
 l_int|0x0d
 comma
@@ -391,7 +391,7 @@ id|cmi9880_ch8_init
 )braket
 op_assign
 (brace
-multiline_comment|/* set line-in PIN for input */
+multiline_comment|/* set line-in PIN for output */
 (brace
 l_int|0x0c
 comma
@@ -400,7 +400,7 @@ comma
 l_int|0x40
 )brace
 comma
-multiline_comment|/* set mic PIN for input, also enable vref */
+multiline_comment|/* set mic PIN for output */
 (brace
 l_int|0x0d
 comma
@@ -2353,8 +2353,9 @@ l_string|&quot;hda_codec: Unknown model for CMI9880&bslash;n&quot;
 suffix:semicolon
 id|spec-&gt;board_config
 op_assign
-id|CMI_MINIMAL
+id|CMI_FULL_DIG
 suffix:semicolon
+multiline_comment|/* try everything */
 )brace
 r_switch
 c_cond
@@ -2508,6 +2509,23 @@ id|snd_hda_preset_cmedia
 )braket
 op_assign
 (brace
+(brace
+dot
+id|id
+op_assign
+l_int|0x13f69880
+comma
+dot
+id|name
+op_assign
+l_string|&quot;CMI9880&quot;
+comma
+dot
+id|patch
+op_assign
+id|patch_cmi9880
+)brace
+comma
 (brace
 dot
 id|id

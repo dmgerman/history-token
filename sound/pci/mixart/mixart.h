@@ -243,11 +243,12 @@ id|setup_mutex
 suffix:semicolon
 multiline_comment|/* mutex used in hw_params, open and close */
 multiline_comment|/* hardware interface */
-DECL|member|hwdep
-id|snd_hwdep_t
-op_star
-id|hwdep
+DECL|member|dsp_loaded
+r_int
+r_int
+id|dsp_loaded
 suffix:semicolon
+multiline_comment|/* bit flags of loaded dsp indices */
 DECL|member|board_type
 r_int
 r_int
