@@ -4518,9 +4518,15 @@ c_func
 l_string|&quot;o2&quot;
 )paren
 suffix:semicolon
+r_register
 r_int
 r_int
 id|tmp
+id|asm
+c_func
+(paren
+l_string|&quot;o3&quot;
+)paren
 suffix:semicolon
 r_int
 id|cpu
