@@ -4228,7 +4228,7 @@ suffix:semicolon
 id|invalidate_pxd_metapages
 c_func
 (paren
-id|ip-&gt;i_sb-&gt;s_bdev-&gt;bd_inode
+id|ip
 comma
 id|freepxd
 )paren
