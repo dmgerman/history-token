@@ -4504,11 +4504,7 @@ id|CAP_SYS_TTY_CONFIG
 id|tty_vhangup
 c_func
 (paren
-id|process_tty
-c_func
-(paren
-id|current
-)paren
+id|current-&gt;tty
 )paren
 suffix:semicolon
 r_return

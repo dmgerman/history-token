@@ -4789,11 +4789,7 @@ id|file-&gt;f_op-&gt;write
 op_ne
 id|redirected_tty_write
 op_logical_and
-id|process_tty
-c_func
-(paren
-id|current
-)paren
+id|current-&gt;tty
 op_eq
 id|tty
 )paren
