@@ -80,6 +80,15 @@ r_struct
 id|block_device
 suffix:semicolon
 r_extern
+id|__uint64_t
+id|xfs_max_file_offset
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|xfs_initialize_vnode
 c_func
