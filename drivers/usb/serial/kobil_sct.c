@@ -636,7 +636,7 @@ l_int|0
 suffix:semicolon
 id|altsetting
 op_assign
-id|interface-&gt;altsetting
+id|interface-&gt;cur_altsetting
 suffix:semicolon
 id|endpoint
 op_assign

@@ -3208,10 +3208,7 @@ id|dev-&gt;actconfig-&gt;interface
 l_int|0
 )braket
 op_member_access_from_pointer
-id|altsetting
-(braket
-l_int|0
-)braket
+id|cur_altsetting
 suffix:semicolon
 r_for
 c_loop
