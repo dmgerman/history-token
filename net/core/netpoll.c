@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
+macro_line|#include &lt;asm/unaligned.h&gt;
 multiline_comment|/*&n; * We maintain a small pool of fully-sized skbs, to make sure the&n; * message gets out even in extreme OOM situations.&n; */
 DECL|macro|MAX_SKBS
 mdefine_line|#define MAX_SKBS 32
@@ -863,24 +864,37 @@ id|iph
 )paren
 )paren
 suffix:semicolon
-id|iph-&gt;version
-op_assign
-l_int|4
-suffix:semicolon
-id|iph-&gt;ihl
-op_assign
-l_int|5
+multiline_comment|/* iph-&gt;version = 4; iph-&gt;ihl = 5; */
+id|put_unaligned
+c_func
+(paren
+l_int|0x54
+comma
+(paren
+r_int
+r_char
+op_star
+)paren
+id|iph
+)paren
 suffix:semicolon
 id|iph-&gt;tos
 op_assign
 l_int|0
 suffix:semicolon
-id|iph-&gt;tot_len
-op_assign
-id|htons
+id|put_unaligned
+c_func
+(paren
+id|htonl
 c_func
 (paren
 id|ip_len
+)paren
+comma
+op_amp
+(paren
+id|iph-&gt;tot_len
+)paren
 )paren
 suffix:semicolon
 id|iph-&gt;id
@@ -903,20 +917,34 @@ id|iph-&gt;check
 op_assign
 l_int|0
 suffix:semicolon
-id|iph-&gt;saddr
-op_assign
+id|put_unaligned
+c_func
+(paren
 id|htonl
 c_func
 (paren
 id|np-&gt;local_ip
 )paren
+comma
+op_amp
+(paren
+id|iph-&gt;saddr
+)paren
+)paren
 suffix:semicolon
-id|iph-&gt;daddr
-op_assign
+id|put_unaligned
+c_func
+(paren
 id|htonl
 c_func
 (paren
 id|np-&gt;remote_ip
+)paren
+comma
+op_amp
+(paren
+id|iph-&gt;daddr
+)paren
 )paren
 suffix:semicolon
 id|iph-&gt;check
