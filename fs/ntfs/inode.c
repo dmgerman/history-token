@@ -7891,9 +7891,9 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef NTFS_RW
-multiline_comment|/**&n; * ntfs_truncate - called when the i_size of an ntfs inode is changed&n; * @vi:&t;&t;inode for which the i_size was changed&n; *&n; * We do not support i_size changes yet.&n; *&n; * The kernel guarantees that @vi is a regular file (S_ISREG() is true) and&n; * that the change is allowed.&n; *&n; * This implies for us that @vi is a file inode rather than a directory, index,&n; * or attribute inode as well as that @vi is a base inode.&n; *&n; * Called with -&gt;i_sem held.  In all but one case -&gt;i_alloc_sem is held for&n; * writing.  The only case where -&gt;i_alloc_sem is not held is&n; * mm/filemap.c::generic_file_buffered_write() where vmtruncate() is called&n; * with the current i_size as the offset which means that it is a noop as far&n; * as ntfs_truncate() is concerned.&n; */
+multiline_comment|/**&n; * ntfs_truncate - called when the i_size of an ntfs inode is changed&n; * @vi:&t;&t;inode for which the i_size was changed&n; *&n; * We do not support i_size changes yet.&n; *&n; * The kernel guarantees that @vi is a regular file (S_ISREG() is true) and&n; * that the change is allowed.&n; *&n; * This implies for us that @vi is a file inode rather than a directory, index,&n; * or attribute inode as well as that @vi is a base inode.&n; *&n; * Returns 0 on success or -errno on error.&n; *&n; * Called with -&gt;i_sem held.  In all but one case -&gt;i_alloc_sem is held for&n; * writing.  The only case where -&gt;i_alloc_sem is not held is&n; * mm/filemap.c::generic_file_buffered_write() where vmtruncate() is called&n; * with the current i_size as the offset which means that it is a noop as far&n; * as ntfs_truncate() is concerned.&n; */
 DECL|function|ntfs_truncate
-r_void
+r_int
 id|ntfs_truncate
 c_func
 (paren
@@ -8191,7 +8191,14 @@ c_func
 l_string|&quot;Done.&quot;
 )paren
 suffix:semicolon
+id|NInoClearTruncateFailed
+c_func
+(paren
+id|ni
+)paren
+suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 id|err_out
 suffix:colon
@@ -8239,7 +8246,33 @@ c_func
 id|ni
 )paren
 suffix:semicolon
+id|NInoSetTruncateFailed
+c_func
+(paren
+id|ni
+)paren
+suffix:semicolon
 r_return
+id|err
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * ntfs_truncate_vfs - wrapper for ntfs_truncate() that has no return value&n; * @vi:&t;&t;inode for which the i_size was changed&n; *&n; * Wrapper for ntfs_truncate() that has no return value.&n; *&n; * See ntfs_truncate() description above for details.&n; */
+DECL|function|ntfs_truncate_vfs
+r_void
+id|ntfs_truncate_vfs
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|vi
+)paren
+(brace
+id|ntfs_truncate
+c_func
+(paren
+id|vi
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ntfs_setattr - called from notify_change() when an attribute is being changed&n; * @dentry:&t;dentry whose attributes to change&n; * @attr:&t;structure describing the attributes and the changes&n; *&n; * We have to trap VFS attempts to truncate the file described by @dentry as&n; * soon as possible, because we do not implement changes in i_size yet.  So we&n; * abort all i_size changes here.&n; *&n; * We also abort all changes of user, group, and mode as we do not implement&n; * the NTFS ACLs yet.&n; *&n; * Called with -&gt;i_sem held.  For the ATTR_SIZE (i.e. -&gt;truncate) case, also&n; * called with -&gt;i_alloc_sem held for writing.&n; *&n; * Basically this is a copy of generic notify_change() and inode_setattr()&n; * functionality, except we intercept and abort changes in i_size.&n; */
