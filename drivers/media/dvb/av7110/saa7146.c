@@ -8295,7 +8295,7 @@ id|status
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EIO
 suffix:semicolon
 )brace
 r_return

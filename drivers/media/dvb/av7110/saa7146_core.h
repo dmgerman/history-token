@@ -1,21 +1,9 @@
 macro_line|#ifndef __SAA7146_CORE__
 DECL|macro|__SAA7146_CORE__
 mdefine_line|#define __SAA7146_CORE__
-macro_line|#include &lt;asm/io.h&gt;&t;&t;/* definitions of u32 etc. */
-macro_line|#include &quot;../dvb-core/dvbdev.h&quot;
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020300
-DECL|macro|DECLARE_MUTEX
-mdefine_line|#define DECLARE_MUTEX(foo)         struct semaphore foo = MUTEX
-DECL|macro|DECLARE_MUTEX_LOCKED
-mdefine_line|#define DECLARE_MUTEX_LOCKED(foo)  struct semaphore foo = MUTEX_LOCKED
-DECL|macro|WAIT_QUEUE
-mdefine_line|#define WAIT_QUEUE                 struct wait_queue*
-DECL|macro|init_waitqueue_head
-mdefine_line|#define init_waitqueue_head(wq)    *(wq) = NULL;
-macro_line|#else
-DECL|macro|WAIT_QUEUE
-mdefine_line|#define WAIT_QUEUE                 wait_queue_head_t
-macro_line|#endif
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &quot;dvbdev.h&quot;
 multiline_comment|/* maximum number of capture frames we support */
 DECL|macro|SAA7146_MAX_BUF
 mdefine_line|#define SAA7146_MAX_BUF&t;&t;5
@@ -53,17 +41,6 @@ r_struct
 id|list_head
 id|list_head
 suffix:semicolon
-DECL|member|dvb_adapter
-id|dvb_adapter_t
-op_star
-id|dvb_adapter
-suffix:semicolon
-DECL|member|i2c_bus
-r_struct
-id|dvb_i2c_bus
-op_star
-id|i2c_bus
-suffix:semicolon
 DECL|member|device
 r_struct
 id|pci_dev
@@ -73,6 +50,23 @@ suffix:semicolon
 DECL|member|card_type
 r_int
 id|card_type
+suffix:semicolon
+DECL|member|dvb_adapter
+r_struct
+id|dvb_adapter
+op_star
+id|dvb_adapter
+suffix:semicolon
+DECL|member|i2c_bus
+r_struct
+id|dvb_i2c_bus
+op_star
+id|i2c_bus
+suffix:semicolon
+DECL|member|i2c_sem
+r_struct
+id|semaphore
+id|i2c_sem
 suffix:semicolon
 DECL|member|data
 r_void
@@ -215,12 +209,12 @@ id|SAA7146_MAX_BUF
 suffix:semicolon
 multiline_comment|/* video port for grab */
 DECL|member|rps0_wq
-id|WAIT_QUEUE
+id|wait_queue_head_t
 id|rps0_wq
 suffix:semicolon
 multiline_comment|/* rps0 interrupt queue (=&gt; capture) */
 DECL|member|rps1_wq
-id|WAIT_QUEUE
+id|wait_queue_head_t
 id|rps1_wq
 suffix:semicolon
 multiline_comment|/* rps1 interrupt queue (=&gt; i2c, ...) */

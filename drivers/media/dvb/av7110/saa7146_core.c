@@ -11,8 +11,8 @@ macro_line|#include &quot;saa7146_defs.h&quot;
 macro_line|#include &quot;saa7146_core.h&quot;
 macro_line|#include &quot;saa7146_v4l.h&quot;
 macro_line|#include &quot;av7110.h&quot;
-macro_line|#include &quot;../dvb-core/compat.h&quot;
-macro_line|#include &quot;../dvb-core/dvb_i2c.h&quot;
+macro_line|#include &quot;compat.h&quot;
+macro_line|#include &quot;dvb_i2c.h&quot;
 multiline_comment|/* insmod parameter: here you can specify the number of video-buffers&n;   to be allocated. for simple capturing 2 buffers (double-buffering)&n;   should suffice. but if you plan to do 25fps grabbing, you should&n;   set this to 4(=maximum), in order to be able to catch up from&n;   temporarily delays */
 DECL|variable|buffers
 r_static
@@ -679,8 +679,6 @@ op_assign
 id|i2c-&gt;data
 suffix:semicolon
 r_int
-id|result
-comma
 id|count
 suffix:semicolon
 r_int
@@ -713,16 +711,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-OG
 id|count
+OL
+l_int|0
 )paren
 (brace
 id|hprintk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;saa7146_core.o: master_xfer: could not prepare i2c-message&bslash;n&quot;
+l_string|&quot;saa7146_core.o: could not prepare i2c-message&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -731,31 +729,28 @@ id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* reset the i2c-device if necessary */
-id|result
-op_assign
+r_if
+c_cond
+(paren
 id|i2c_reset
 c_func
 (paren
 id|a
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
+OL
 l_int|0
-OG
-id|result
 )paren
 (brace
 id|hprintk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;saa7146_core.o: master_xfer: could not reset i2c-bus&bslash;n&quot;
+l_string|&quot;saa7146_core.o: could not reset i2c-bus&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|result
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 r_for
@@ -774,8 +769,10 @@ op_increment
 )paren
 (brace
 multiline_comment|/* see how many u32 have to be transferred;&n;&t;&t; * if there is only 1,&n;&t;&t; * we do not start the whole rps1-engine...&n;&t;&t; */
-id|result
-op_assign
+multiline_comment|/* if address-error occured, don&squot;t retry */
+r_if
+c_cond
+(paren
 id|i2c_write_out
 c_func
 (paren
@@ -789,71 +786,27 @@ id|i
 comma
 id|SAA7146_I2C_TIMEOUT
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
+OL
 l_int|0
-op_ne
-id|result
 )paren
 (brace
-multiline_comment|/* if address-error occured, don&squot;t retry */
-r_if
-c_cond
+id|hprintk
 (paren
-id|result
-op_eq
+id|KERN_ERR
+l_string|&quot;saa7146_core.o: &quot;
+l_string|&quot;i2c error in address phase&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
 op_minus
 id|EREMOTEIO
-)paren
-(brace
-id|hprintk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;saa7146_core.o: master_xfer: error in address phase&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|result
-suffix:semicolon
-)brace
-id|hprintk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;saa7146_core.o: master_xfer: error transferring, trying again&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* see if an error occured &amp; the last retry failed */
+multiline_comment|/* if any things had to be read, get the results */
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
-id|result
-)paren
-(brace
-id|hprintk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;saa7146_core.o: master_xfer: could not transfer i2c-message&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
-multiline_comment|/* if any things had to be read, get the results */
-id|result
-op_assign
 id|clean_up
 c_func
 (paren
@@ -863,20 +816,15 @@ id|num
 comma
 id|a-&gt;i2c
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
+OL
 l_int|0
-OG
-id|result
 )paren
 (brace
 id|hprintk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;saa7146_core.o: master_xfer: could not cleanup&bslash;n&quot;
+l_string|&quot;saa7146_core.o: i2c cleanup failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -909,6 +857,13 @@ r_int
 id|num
 )paren
 (brace
+r_struct
+id|saa7146
+op_star
+id|saa
+op_assign
+id|i2c-&gt;data
+suffix:semicolon
 r_int
 id|retries
 op_assign
@@ -916,6 +871,19 @@ id|SAA7146_I2C_RETRIES
 suffix:semicolon
 r_int
 id|ret
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|down_interruptible
+(paren
+op_amp
+id|saa-&gt;i2c_sem
+)paren
+)paren
+r_return
+op_minus
+id|ERESTARTSYS
 suffix:semicolon
 r_do
 (brace
@@ -942,6 +910,12 @@ id|retries
 op_decrement
 )paren
 suffix:semicolon
+id|up
+(paren
+op_amp
+id|saa-&gt;i2c_sem
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -957,6 +931,13 @@ op_star
 id|saa
 )paren
 (brace
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|saa-&gt;i2c_sem
+)paren
+suffix:semicolon
 multiline_comment|/* enable i2c-port pins */
 id|saa7146_write
 (paren
@@ -1424,13 +1405,13 @@ id|dt
 op_assign
 id|arg
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
 l_string|&quot;saa7146_core.o: SAA7146_DEBI_TRANSFER&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
 l_string|&quot;saa7146_core.o: timeout:%d, swap:%d, slave16:%d, increment:%d, intel:%d, tien:%d&bslash;n&quot;
@@ -1448,7 +1429,7 @@ comma
 id|dt-&gt;tien
 )paren
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
 l_string|&quot;saa7146_core.o: address:0x%04x, num_bytes:%d, direction:%d, mem:0x%08x&bslash;n&quot;
@@ -2455,10 +2436,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* print status message */
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;saa7146_core.o: %s: bus:%d, rev:%d, mem:0x%08x.&bslash;n&quot;
 comma
 id|saa-&gt;name
@@ -3345,7 +3325,7 @@ id|ent
 )paren
 (brace
 r_struct
-id|dvb_adapter_s
+id|dvb_adapter
 op_star
 id|adap
 suffix:semicolon
