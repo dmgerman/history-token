@@ -217,6 +217,28 @@ id|data
 )paren
 suffix:semicolon
 )brace
+r_struct
+id|usb_interface
+op_star
+id|usb_get_intf
+c_func
+(paren
+r_struct
+id|usb_interface
+op_star
+id|intf
+)paren
+suffix:semicolon
+r_void
+id|usb_put_intf
+c_func
+(paren
+r_struct
+id|usb_interface
+op_star
+id|intf
+)paren
+suffix:semicolon
 multiline_comment|/* this maximum is arbitrary */
 DECL|macro|USB_MAXINTERFACES
 mdefine_line|#define USB_MAXINTERFACES&t;32
