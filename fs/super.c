@@ -342,6 +342,57 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Drop a superblock&squot;s refcount.&n; * Returns non-zero if the superblock is about to be destroyed and&n; * at least is already removed from super_blocks list, so if we are&n; * making a loop through super blocks then we need to restart.&n; * The caller must hold sb_lock.&n; */
+DECL|function|__put_super_and_need_restart
+r_int
+id|__put_super_and_need_restart
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+multiline_comment|/* check for race with generic_shutdown_super() */
+r_if
+c_cond
+(paren
+id|list_empty
+c_func
+(paren
+op_amp
+id|sb-&gt;s_list
+)paren
+)paren
+(brace
+multiline_comment|/* super block is removed, need to restart... */
+id|__put_super
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* can&squot;t be the last, since s_list is still in use */
+id|sb-&gt;s_count
+op_decrement
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|sb-&gt;s_count
+op_eq
+l_int|0
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;put_super&t;-&t;drop a temporary reference to superblock&n; *&t;@s: superblock in question&n; *&n; *&t;Drops a temporary reference, frees superblock if there&squot;s no&n; *&t;references left.&n; */
 DECL|function|put_super
 r_static
@@ -710,7 +761,8 @@ op_amp
 id|sb_lock
 )paren
 suffix:semicolon
-id|list_del
+multiline_comment|/* should be initialized for __put_super_and_need_restart() */
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -983,13 +1035,14 @@ id|s-&gt;s_id
 )paren
 )paren
 suffix:semicolon
-id|list_add
+id|list_add_tail
 c_func
 (paren
 op_amp
 id|s-&gt;s_list
 comma
-id|super_blocks.prev
+op_amp
+id|super_blocks
 )paren
 suffix:semicolon
 id|list_add

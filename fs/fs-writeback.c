@@ -1263,7 +1263,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__put_super
+id|__put_super_and_need_restart
 c_func
 (paren
 id|sb
