@@ -476,7 +476,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_initialize_buffer&n; *&n; * PARAMETERS:  required_length     - Length needed&n; *              Buffer              - Buffer to be validated&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Validate that the buffer is of the required length or&n; *              allocate a new buffer.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_initialize_buffer&n; *&n; * PARAMETERS:  Buffer              - Buffer to be validated&n; *              required_length     - Length needed&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Validate that the buffer is of the required length or&n; *              allocate a new buffer.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_initialize_buffer
 id|acpi_ut_initialize_buffer
@@ -1268,7 +1268,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_find_allocation&n; *&n; * PARAMETERS:  Allocation             - Address of allocated memory&n; *&n; * RETURN:      A list element if found; NULL otherwise.&n; *&n; * DESCRIPTION: Searches for an element in the global allocation tracking list.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_find_allocation&n; *&n; * PARAMETERS:  list_id                 - Memory list to search&n; *              Allocation              - Address of allocated memory&n; *&n; * RETURN:      A list element if found; NULL otherwise.&n; *&n; * DESCRIPTION: Searches for an element in the global allocation tracking list.&n; *&n; ******************************************************************************/
 r_struct
 id|acpi_debug_mem_block
 op_star
@@ -1347,7 +1347,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_track_allocation&n; *&n; * PARAMETERS:  Allocation          - Address of allocated memory&n; *              Size                - Size of the allocation&n; *              alloc_type          - MEM_MALLOC or MEM_CALLOC&n; *              Component           - Component type of caller&n; *              Module              - Source file name of caller&n; *              Line                - Line number of caller&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Inserts an element into the global allocation tracking list.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_track_allocation&n; *&n; * PARAMETERS:  list_id             - Memory list to search&n; *              Allocation          - Address of allocated memory&n; *              Size                - Size of the allocation&n; *              alloc_type          - MEM_MALLOC or MEM_CALLOC&n; *              Component           - Component type of caller&n; *              Module              - Source file name of caller&n; *              Line                - Line number of caller&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Inserts an element into the global allocation tracking list.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_track_allocation
 id|acpi_ut_track_allocation
@@ -1564,7 +1564,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_remove_allocation&n; *&n; * PARAMETERS:  Allocation          - Address of allocated memory&n; *              Component           - Component type of caller&n; *              Module              - Source file name of caller&n; *              Line                - Line number of caller&n; *&n; * RETURN:&n; *&n; * DESCRIPTION: Deletes an element from the global allocation tracking list.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_remove_allocation&n; *&n; * PARAMETERS:  list_id             - Memory list to search&n; *              Allocation          - Address of allocated memory&n; *              Component           - Component type of caller&n; *              Module              - Source file name of caller&n; *              Line                - Line number of caller&n; *&n; * RETURN:&n; *&n; * DESCRIPTION: Deletes an element from the global allocation tracking list.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_remove_allocation
 id|acpi_ut_remove_allocation

@@ -99,6 +99,14 @@ id|walk_state
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * dbcmds - debug commands and output routines&n; */
+id|acpi_status
+id|acpi_db_disassemble_method
+(paren
+r_char
+op_star
+id|name
+)paren
+suffix:semicolon
 r_void
 id|acpi_db_display_table_info
 (paren
@@ -236,6 +244,14 @@ id|acpi_db_set_scope
 r_char
 op_star
 id|name
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_db_sleep
+(paren
+r_char
+op_star
+id|object_arg
 )paren
 suffix:semicolon
 r_void

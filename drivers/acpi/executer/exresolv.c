@@ -297,7 +297,20 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Now we can delete the original Reference Object and&n;&t;&t;&t; * replace it with the resolve value&n;&t;&t;&t; */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;[Arg/Local %X] value_obj is %p&bslash;n&quot;
+comma
+id|stack_desc-&gt;reference.offset
+comma
+id|obj_desc
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Now we can delete the original Reference Object and&n;&t;&t;&t; * replace it with the resolved value&n;&t;&t;&t; */
 id|acpi_ut_remove_reference
 (paren
 id|stack_desc
@@ -307,19 +320,6 @@ op_star
 id|stack_ptr
 op_assign
 id|obj_desc
-suffix:semicolon
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_EXEC
-comma
-l_string|&quot;[Arg/Local %d] value_obj is %p&bslash;n&quot;
-comma
-id|stack_desc-&gt;reference.offset
-comma
-id|obj_desc
-)paren
-)paren
 suffix:semicolon
 r_break
 suffix:semicolon

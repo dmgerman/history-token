@@ -110,8 +110,6 @@ id|table_desc-&gt;aml_length
 comma
 l_int|NULL
 comma
-l_int|NULL
-comma
 id|pass_number
 )paren
 suffix:semicolon
