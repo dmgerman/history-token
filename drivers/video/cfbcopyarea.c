@@ -40,8 +40,6 @@ comma
 id|old_dy
 suffix:semicolon
 r_int
-id|n
-comma
 id|j
 comma
 id|linesize
@@ -487,9 +485,7 @@ id|end_index
 suffix:semicolon
 )brace
 id|n
-op_assign
-id|n
-op_div
+op_div_assign
 id|bpl
 suffix:semicolon
 r_if

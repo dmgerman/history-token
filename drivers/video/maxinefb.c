@@ -16,29 +16,17 @@ macro_line|#include &quot;maxinefb.h&quot;
 multiline_comment|/* bootinfo.h defines the machine type values, needed when checking */
 multiline_comment|/* whether are really running on a maxine, KM                       */
 macro_line|#include &lt;asm/bootinfo.h&gt;
-DECL|macro|arraysize
-mdefine_line|#define arraysize(x)    (sizeof(x)/sizeof(*(x)))
-DECL|variable|disp
-r_static
-r_struct
-id|display
-id|disp
-suffix:semicolon
 DECL|variable|fb_info
 r_static
 r_struct
 id|fb_info
 id|fb_info
 suffix:semicolon
-DECL|variable|fb_regs
-r_int
-r_int
-id|fb_regs
-suffix:semicolon
-DECL|variable|fb_bitmask
-r_int
-r_char
-id|fb_bitmask
+DECL|variable|disp
+r_static
+r_struct
+id|display
+id|disp
 suffix:semicolon
 DECL|variable|maxinefb_defined
 r_static
@@ -595,6 +583,17 @@ suffix:semicolon
 id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
+suffix:semicolon
+id|fb_alloc_cmap
+c_func
+(paren
+op_amp
+id|fb_info.cmap
+comma
+l_int|256
+comma
+l_int|0
+)paren
 suffix:semicolon
 id|gen_set_disp
 c_func
