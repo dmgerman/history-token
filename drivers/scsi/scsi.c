@@ -4289,8 +4289,6 @@ comma
 id|SDpnt-&gt;id
 comma
 id|SDpnt-&gt;lun
-comma
-id|tagged
 )paren
 suffix:semicolon
 r_case
