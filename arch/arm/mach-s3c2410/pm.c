@@ -1250,7 +1250,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;saved %08lx value %08lx&bslash;n&quot;
+l_string|&quot;saved %p value %08lx&bslash;n&quot;
 comma
 id|ptr-&gt;reg
 comma
@@ -1293,7 +1293,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;restore %08lx (restore %08lx, was %08x)&bslash;n&quot;
+l_string|&quot;restore %p (restore %08lx, was %08x)&bslash;n&quot;
 comma
 id|ptr-&gt;reg
 comma
