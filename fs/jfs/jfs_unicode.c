@@ -16,11 +16,10 @@ op_star
 id|to
 comma
 r_const
-m_wchar_t
+id|__le16
 op_star
 id|from
 comma
-multiline_comment|/* LITTLE ENDIAN */
 r_int
 id|len
 comma
