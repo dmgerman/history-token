@@ -2,7 +2,6 @@ multiline_comment|/*&n; * Synchronous PPP / Cisco-HDLC driver for the COMX board
 DECL|macro|VERSION
 mdefine_line|#define VERSION &quot;0.23&quot;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;

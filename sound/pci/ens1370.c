@@ -28,6 +28,13 @@ macro_line|#undef CHIP1370
 DECL|macro|CHIP1370
 mdefine_line|#define CHIP1370
 macro_line|#endif
+macro_line|#ifdef CHIP1370
+DECL|macro|DRIVER_NAME
+mdefine_line|#define DRIVER_NAME &quot;ENS1370&quot;
+macro_line|#else
+DECL|macro|DRIVER_NAME
+mdefine_line|#define DRIVER_NAME &quot;ENS1371&quot;
+macro_line|#endif
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -12336,26 +12343,14 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#ifdef CHIP1370
 id|strcpy
 c_func
 (paren
 id|card-&gt;driver
 comma
-l_string|&quot;ENS1370&quot;
+id|DRIVER_NAME
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CHIP1371
-id|strcpy
-c_func
-(paren
-id|card-&gt;driver
-comma
-l_string|&quot;ENS1371&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|strcpy
 c_func
 (paren
@@ -12463,7 +12458,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;Ensoniq AudioPCI&quot;
+id|DRIVER_NAME
 comma
 dot
 id|id_table

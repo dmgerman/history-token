@@ -312,6 +312,65 @@ id|last_offset
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Scheduler clock - returns current time in nanosec units.&n; */
+DECL|function|sched_clock
+r_int
+r_int
+r_int
+id|sched_clock
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+r_int
+id|this_offset
+suffix:semicolon
+multiline_comment|/*&n;&t; * In the NUMA case we dont use the TSC as they are not&n;&t; * synchronized across all CPUs.&n;&t; */
+macro_line|#ifndef CONFIG_NUMA
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+op_logical_neg
+id|cpu_has_tsc
+)paren
+)paren
+macro_line|#endif
+r_return
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies
+op_star
+(paren
+l_int|1000000000
+op_div
+id|HZ
+)paren
+suffix:semicolon
+multiline_comment|/* Read the Time Stamp Counter */
+id|rdtscll
+c_func
+(paren
+id|this_offset
+)paren
+suffix:semicolon
+multiline_comment|/* return the value in ns */
+r_return
+id|cycles_2_ns
+c_func
+(paren
+id|this_offset
+)paren
+suffix:semicolon
+)brace
 DECL|function|mark_offset_tsc
 r_static
 r_void

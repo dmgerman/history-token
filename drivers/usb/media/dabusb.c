@@ -160,14 +160,6 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;next                  :%p&quot;
-comma
-id|urb-&gt;next
-)paren
-suffix:semicolon
-id|dbg
-c_func
-(paren
 l_string|&quot;dev                   :%p&quot;
 comma
 id|urb-&gt;dev
@@ -3138,7 +3130,7 @@ id|usbdev-&gt;descriptor.idVendor
 comma
 id|usbdev-&gt;descriptor.idProduct
 comma
-id|ifnum
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 )paren
 suffix:semicolon
 multiline_comment|/* We don&squot;t handle multiple configurations */
@@ -3274,7 +3266,7 @@ c_func
 (paren
 l_string|&quot;bound to interface: %d&quot;
 comma
-id|ifnum
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 )paren
 suffix:semicolon
 id|usb_set_intfdata

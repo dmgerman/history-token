@@ -178,7 +178,7 @@ op_assign
 id|kmem_cache_create
 c_func
 (paren
-l_string|&quot;dm io&quot;
+l_string|&quot;dm_io&quot;
 comma
 r_sizeof
 (paren

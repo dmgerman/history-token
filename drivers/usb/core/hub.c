@@ -3597,8 +3597,7 @@ id|USB_PORT_FEAT_C_CONNECTION
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* XXX Replace this with dbg() when 2.6 is about to ship. */
-id|dev_info
+id|dev_dbg
 (paren
 id|hubdev
 (paren
@@ -4893,11 +4892,7 @@ id|hub_thread
 comma
 l_int|NULL
 comma
-id|CLONE_FS
-op_or
-id|CLONE_FILES
-op_or
-id|CLONE_SIGHAND
+id|CLONE_KERNEL
 )paren
 suffix:semicolon
 r_if

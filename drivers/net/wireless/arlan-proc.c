@@ -2,7 +2,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;arlan.h&quot;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#ifdef CONFIG_PROC_FS
-macro_line|#include &lt;linux/version.h&gt;
 multiline_comment|/* void enableReceive(struct net_device* dev);&n;*/
 DECL|macro|ARLAN_STR_SIZE
 mdefine_line|#define ARLAN_STR_SIZE &t;0x2ff0

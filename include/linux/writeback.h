@@ -250,16 +250,6 @@ r_void
 )paren
 suffix:semicolon
 r_void
-id|balance_dirty_pages
-c_func
-(paren
-r_struct
-id|address_space
-op_star
-id|mapping
-)paren
-suffix:semicolon
-r_void
 id|balance_dirty_pages_ratelimited
 c_func
 (paren

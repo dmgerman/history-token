@@ -276,17 +276,6 @@ id|regs
 suffix:semicolon
 r_static
 r_int
-id|irda_usb_net_init
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_static
-r_int
 id|irda_usb_net_open
 c_func
 (paren
@@ -2641,49 +2630,6 @@ multiline_comment|/* For now */
 multiline_comment|/********************** IRDA DEVICE CALLBACKS **********************/
 multiline_comment|/*&n; * Main calls from the IrDA/Network subsystem.&n; * Mostly registering a new irda-usb device and removing it....&n; * We only deal with the IrDA side of the business, the USB side will&n; * be dealt with below...&n; */
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Callback when a new IrDA device is created.&n; */
-DECL|function|irda_usb_net_init
-r_static
-r_int
-id|irda_usb_net_init
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;%s()&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-multiline_comment|/* Keep track of module usage */
-id|SET_MODULE_OWNER
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* Set up to be a normal IrDA network device driver */
-id|irda_device_setup
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* Insert overrides below this line! */
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Function irda_usb_net_open (dev)&n; *&n; *    Network device is taken up. Usually this is done by &quot;ifconfig irda0 up&quot; &n; *   &n; * Note : don&squot;t mess with self-&gt;netopen - Jean II&n; */
 DECL|function|irda_usb_net_open
 r_static
@@ -3656,37 +3602,44 @@ id|IRDA_USB_SPEED_MTU
 )paren
 suffix:semicolon
 multiline_comment|/* Create a network device for us */
+id|netdev
+op_assign
+id|alloc_netdev
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;irda%d&quot;
+comma
+id|irda_device_setup
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-(paren
 id|netdev
-op_assign
-id|dev_alloc
-c_func
-(paren
-l_string|&quot;irda%d&quot;
-comma
-op_amp
-id|err
-)paren
-)paren
 )paren
 (brace
 id|ERROR
 c_func
 (paren
-l_string|&quot;%s(), dev_alloc() failed!&bslash;n&quot;
+l_string|&quot;%s(), alloc_net_dev() failed!&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|ENOMEM
 suffix:semicolon
 )brace
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|self-&gt;netdev
 op_assign
 id|netdev
@@ -3700,10 +3653,6 @@ op_star
 id|self
 suffix:semicolon
 multiline_comment|/* Override the network functions we need to use */
-id|netdev-&gt;init
-op_assign
-id|irda_usb_net_init
-suffix:semicolon
 id|netdev-&gt;hard_start_xmit
 op_assign
 id|irda_usb_hard_xmit
@@ -3737,22 +3686,12 @@ id|netdev-&gt;do_ioctl
 op_assign
 id|irda_usb_net_ioctl
 suffix:semicolon
-id|rtnl_lock
-c_func
-(paren
-)paren
-suffix:semicolon
 id|err
 op_assign
-id|register_netdevice
+id|register_netdev
 c_func
 (paren
 id|netdev
-)paren
-suffix:semicolon
-id|rtnl_unlock
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -3769,9 +3708,18 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+id|self-&gt;netdev
+op_assign
+l_int|NULL
+suffix:semicolon
+id|free_netdev
+c_func
+(paren
+id|netdev
+)paren
+suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|err
 suffix:semicolon
 )brace
 id|MESSAGE
@@ -3830,7 +3778,14 @@ c_cond
 (paren
 id|self-&gt;netdev
 )paren
+(brace
 id|unregister_netdev
+c_func
+(paren
+id|self-&gt;netdev
+)paren
+suffix:semicolon
+id|free_netdev
 c_func
 (paren
 id|self-&gt;netdev
@@ -3840,6 +3795,7 @@ id|self-&gt;netdev
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
 multiline_comment|/* Remove the speed buffer */
 r_if
 c_cond

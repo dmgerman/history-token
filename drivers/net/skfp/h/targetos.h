@@ -29,7 +29,6 @@ mdefine_line|#define FDDI_RCF_FRAME4K 0x30
 singleline_comment|//--------
 DECL|macro|ADDR
 macro_line|#undef ADDR
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/fddidevice.h&gt;

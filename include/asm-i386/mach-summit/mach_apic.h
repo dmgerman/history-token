@@ -7,46 +7,15 @@ DECL|macro|esr_disable
 mdefine_line|#define esr_disable (1)
 DECL|macro|NO_BALANCE_IRQ
 mdefine_line|#define NO_BALANCE_IRQ (0)
+DECL|macro|NO_IOAPIC_CHECK
+mdefine_line|#define NO_IOAPIC_CHECK (1)&t;/* Don&squot;t check I/O APIC ID for xAPIC */
+multiline_comment|/* In clustered mode, the high nibble of APIC ID is a cluster number.&n; * The low nibble is a 4-bit bitmap. */
+DECL|macro|XAPIC_DEST_CPUS_SHIFT
+mdefine_line|#define XAPIC_DEST_CPUS_SHIFT&t;4
 DECL|macro|XAPIC_DEST_CPUS_MASK
-mdefine_line|#define XAPIC_DEST_CPUS_MASK    0x0Fu
+mdefine_line|#define XAPIC_DEST_CPUS_MASK&t;((1u &lt;&lt; XAPIC_DEST_CPUS_SHIFT) - 1)
 DECL|macro|XAPIC_DEST_CLUSTER_MASK
-mdefine_line|#define XAPIC_DEST_CLUSTER_MASK 0xF0u
-DECL|function|xapic_phys_to_log_apicid
-r_static
-r_inline
-r_int
-r_int
-id|xapic_phys_to_log_apicid
-c_func
-(paren
-r_int
-id|phys_apic
-)paren
-(brace
-r_return
-(paren
-(paren
-l_int|1ul
-op_lshift
-(paren
-(paren
-id|phys_apic
-)paren
-op_amp
-l_int|0x3
-)paren
-)paren
-op_or
-(paren
-(paren
-id|phys_apic
-)paren
-op_amp
-id|XAPIC_DEST_CLUSTER_MASK
-)paren
-)paren
-suffix:semicolon
-)brace
+mdefine_line|#define XAPIC_DEST_CLUSTER_MASK&t;(XAPIC_DEST_CPUS_MASK &lt;&lt; XAPIC_DEST_CPUS_SHIFT)
 DECL|macro|APIC_DFR_VALUE
 mdefine_line|#define APIC_DFR_VALUE&t;(APIC_DFR_CLUSTER)
 DECL|function|target_cpus
@@ -113,10 +82,16 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|macro|apicid_cluster
-mdefine_line|#define apicid_cluster(apicid) (apicid &amp; 0xF0)
+mdefine_line|#define apicid_cluster(apicid) ((apicid) &amp; XAPIC_DEST_CLUSTER_MASK)
 r_extern
 id|u8
 id|bios_cpu_apicid
+(braket
+)braket
+suffix:semicolon
+r_extern
+id|u8
+id|cpu_2_logical_apicid
 (braket
 )braket
 suffix:semicolon
@@ -136,15 +111,99 @@ id|val
 comma
 id|id
 suffix:semicolon
-id|id
+r_int
+id|i
+comma
+id|count
+suffix:semicolon
+id|u8
+id|lid
+suffix:semicolon
+id|u8
+id|my_id
 op_assign
-id|xapic_phys_to_log_apicid
-c_func
 (paren
+id|u8
+)paren
 id|hard_smp_processor_id
 c_func
 (paren
 )paren
+suffix:semicolon
+id|u8
+id|my_cluster
+op_assign
+(paren
+id|u8
+)paren
+id|apicid_cluster
+c_func
+(paren
+id|my_id
+)paren
+suffix:semicolon
+multiline_comment|/* Create logical APIC IDs by counting CPUs already in cluster. */
+r_for
+c_loop
+(paren
+id|count
+op_assign
+l_int|0
+comma
+id|i
+op_assign
+id|NR_CPUS
+suffix:semicolon
+op_decrement
+id|i
+op_ge
+l_int|0
+suffix:semicolon
+)paren
+(brace
+id|lid
+op_assign
+id|cpu_2_logical_apicid
+(braket
+id|i
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|lid
+op_ne
+id|BAD_APICID
+op_logical_and
+id|apicid_cluster
+c_func
+(paren
+id|lid
+)paren
+op_eq
+id|my_cluster
+)paren
+op_increment
+id|count
+suffix:semicolon
+)brace
+multiline_comment|/* We only have a 4 wide bitmap in cluster mode.  If a deranged&n;&t; * BIOS puts 5 CPUs in one APIC cluster, we&squot;re hosed. */
+id|BUG_ON
+c_func
+(paren
+id|count
+op_ge
+id|XAPIC_DEST_CPUS_SHIFT
+)paren
+suffix:semicolon
+id|id
+op_assign
+id|my_cluster
+op_or
+(paren
+l_int|1UL
+op_lshift
+id|count
 )paren
 suffix:semicolon
 id|apic_write_around
@@ -253,12 +312,6 @@ suffix:semicolon
 multiline_comment|/* 2 clusterids per CEC */
 )brace
 multiline_comment|/* Mapping from cpu number to logical apicid */
-r_extern
-id|u8
-id|cpu_2_logical_apicid
-(braket
-)braket
-suffix:semicolon
 DECL|function|cpu_to_logical_apicid
 r_static
 r_inline

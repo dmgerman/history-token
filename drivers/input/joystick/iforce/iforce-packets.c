@@ -737,16 +737,6 @@ comma
 id|IFORCE_MAX_LENGTH
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|waitqueue_active
-c_func
-(paren
-op_amp
-id|iforce-&gt;wait
-)paren
-)paren
 id|wake_up
 c_func
 (paren
@@ -1471,7 +1461,7 @@ c_func
 (paren
 id|iforce-&gt;ctrl
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 (brace

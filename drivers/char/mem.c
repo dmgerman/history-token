@@ -3016,37 +3016,8 @@ id|name
 )paren
 suffix:semicolon
 )brace
-id|rand_initialize
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#if defined (CONFIG_FB)
 id|fbmem_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-id|tty_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_M68K_PRINTER
-id|lp_m68k_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-id|misc_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_FTAPE
-id|ftape_init
 c_func
 (paren
 )paren

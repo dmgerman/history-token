@@ -47,14 +47,6 @@ multiline_comment|/* Exported functions */
 macro_line|#ifdef __KERNEL__
 r_extern
 r_void
-id|rand_initialize
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|rand_initialize_irq
 c_func
 (paren

@@ -1,7 +1,6 @@
 multiline_comment|/* cpwatchdog.c - driver implementation for hardware watchdog&n; * timers found on Sun Microsystems CP1400 and CP1500 boards.&n; *&n; * This device supports both the generic Linux watchdog &n; * interface and Solaris-compatible ioctls as best it is&n; * able.&n; *&n; * NOTE: &t;CP1400 systems appear to have a defective intr_mask&n; * &t;&t;&t;register on the PLD, preventing the disabling of&n; * &t;&t;&t;timer interrupts.  We use a timer to periodically &n; * &t;&t;&t;reset &squot;stopped&squot; watchdogs on affected platforms.&n; *&n; * TODO:&t;DevFS support (/dev/watchdogs/0 ... /dev/watchdogs/2)&n; *&n; * Copyright (c) 2000 Eric Brower (ebrower@usa.net)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/major.h&gt;

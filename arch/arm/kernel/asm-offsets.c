@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * Copyright (C) 1995-2003 Russell King&n; *               2001-2002 Keith Owens&n; *     &n; * Generate definitions needed by assembly language modules.&n; * This code generates raw asm output which is post-processed to extract&n; * and format the required data.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 multiline_comment|/*&n; * Make sure that the compiler and target are compatible.&n; */

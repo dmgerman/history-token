@@ -5547,15 +5547,6 @@ op_amp
 id|transaction-&gt;t_journal-&gt;j_list_lock
 )paren
 suffix:semicolon
-macro_line|#ifdef __SMP__
-id|J_ASSERT
-(paren
-id|current-&gt;lock_depth
-op_ge
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
 id|J_ASSERT_JH
 c_func
 (paren

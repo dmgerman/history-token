@@ -1028,7 +1028,7 @@ id|thread
 comma
 id|PIDTYPE_PGID
 comma
-id|thread-&gt;pgrp
+id|leader-&gt;__pgrp
 )paren
 suffix:semicolon
 id|attach_pid
@@ -1078,7 +1078,7 @@ id|leader
 comma
 id|PIDTYPE_PGID
 comma
-id|leader-&gt;pgrp
+id|leader-&gt;__pgrp
 )paren
 suffix:semicolon
 id|attach_pid

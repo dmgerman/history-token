@@ -4541,13 +4541,11 @@ id|send
 op_assign
 id|fs_send
 comma
-macro_line|#if 0
 dot
 id|owner
 op_assign
 id|THIS_MODULE
 comma
-macro_line|#endif
 multiline_comment|/* ioctl:          fs_ioctl, */
 multiline_comment|/* getsockopt:     fs_getsockopt, */
 multiline_comment|/* setsockopt:     fs_setsockopt, */

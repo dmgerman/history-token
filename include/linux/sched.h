@@ -634,6 +634,8 @@ DECL|macro|MAX_RT_PRIO
 mdefine_line|#define MAX_RT_PRIO&t;&t;MAX_USER_RT_PRIO
 DECL|macro|MAX_PRIO
 mdefine_line|#define MAX_PRIO&t;&t;(MAX_RT_PRIO + 40)
+DECL|macro|rt_task
+mdefine_line|#define rt_task(p)&t;&t;((p)-&gt;prio &lt; MAX_RT_PRIO)
 multiline_comment|/*&n; * Some day this will be a full-fledged user tracking system..&n; */
 DECL|struct|user_struct
 r_struct
@@ -846,10 +848,19 @@ r_int
 r_int
 id|sleep_avg
 suffix:semicolon
-DECL|member|last_run
+DECL|member|interactive_credit
+r_int
+id|interactive_credit
+suffix:semicolon
+DECL|member|timestamp
 r_int
 r_int
-id|last_run
+r_int
+id|timestamp
+suffix:semicolon
+DECL|member|activated
+r_int
+id|activated
 suffix:semicolon
 DECL|member|policy
 r_int
@@ -928,10 +939,11 @@ DECL|member|pid
 id|pid_t
 id|pid
 suffix:semicolon
-DECL|member|pgrp
+DECL|member|__pgrp
 id|pid_t
-id|pgrp
+id|__pgrp
 suffix:semicolon
+multiline_comment|/* Accessed via process_group() */
 DECL|member|tty_old_pgrp
 id|pid_t
 id|tty_old_pgrp
@@ -982,6 +994,7 @@ id|task_struct
 op_star
 id|group_leader
 suffix:semicolon
+multiline_comment|/* threadgroup leader */
 multiline_comment|/* PID/PID hash table linkage. */
 DECL|member|pids
 r_struct
@@ -1373,6 +1386,23 @@ suffix:semicolon
 multiline_comment|/* For ptrace use.  */
 )brace
 suffix:semicolon
+DECL|function|process_group
+r_static
+r_inline
+id|pid_t
+id|process_group
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+(brace
+r_return
+id|tsk-&gt;group_leader-&gt;__pgrp
+suffix:semicolon
+)brace
 r_extern
 r_void
 id|__put_task_struct
@@ -1461,6 +1491,16 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+r_extern
+r_int
+r_int
+r_int
+id|sched_clock
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_NUMA
 r_extern
 r_void

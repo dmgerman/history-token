@@ -12,14 +12,6 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &quot;base.h&quot;
-DECL|variable|pnp_allow_dma0
-r_int
-id|pnp_allow_dma0
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/* allow dma 0 during auto activation:&n;&t;&t;&t;&t;&t;&t; * -1=off (:default), 0=off (set by user), 1=on */
 DECL|variable|pnp_skip_pci_scan
 r_int
 id|pnp_skip_pci_scan
@@ -1904,10 +1896,6 @@ id|idx
 (brace
 r_int
 id|tmp
-comma
-id|mindma
-op_assign
-l_int|1
 suffix:semicolon
 r_struct
 id|pnp_dev
@@ -1944,17 +1932,6 @@ r_return
 l_int|1
 suffix:semicolon
 multiline_comment|/* check if the resource is valid */
-r_if
-c_cond
-(paren
-id|pnp_allow_dma0
-op_eq
-l_int|1
-)paren
-id|mindma
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2203,35 +2180,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pnp_register_mem_resource
-)paren
-suffix:semicolon
-multiline_comment|/* format is: allowdma0 */
-DECL|function|pnp_allowdma0
-r_static
-r_int
-id|__init
-id|pnp_allowdma0
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-id|pnp_allow_dma0
-op_assign
-l_int|1
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;allowdma0&quot;
-comma
-id|pnp_allowdma0
 )paren
 suffix:semicolon
 multiline_comment|/* format is: pnp_reserve_irq=irq1[,irq2] .... */

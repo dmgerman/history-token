@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * drivers/sbus/char/bpp.c&n; *&n; * Copyright (c) 1995 Picture Elements&n; *      Stephen Williams (steve@icarus.com)&n; *      Gus Baldauf (gbaldauf@ix.netcom.com)&n; *&n; * Linux/SPARC port by Peter Zaitcev.&n; * Integration into SPARC tree by Tom Dyas.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Basic EISA bus support for the SGI Indigo-2.&n; *&n; * (C) 2002 Pascal Dameme &lt;netinet@freesurf.fr&gt;&n; *      and Marc Zyngier &lt;mzyngier@freesurf.fr&gt;&n; *&n; * This code is released under both the GPL version 2 and BSD&n; * licenses.  Either license may be used.&n; *&n; * This code offers a very basic support for this EISA bus present in&n; * the SGI Indigo-2. It currently only supports PIO (forget about DMA&n; * for the time being). This is enough for a low-end ethernet card,&n; * but forget about your favorite SCSI card...&n; *&n; * TODO :&n; * - Fix bugs...&n; * - Add ISA support&n; * - Add DMA (yeah, right...).&n; * - Fix more bugs.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/eisa.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;

@@ -2,7 +2,6 @@ multiline_comment|/*&n; * Platform dependent support for SGI SN&n; *&n; * Copyri
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -11,7 +10,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/invent.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
@@ -29,6 +27,7 @@ macro_line|#include &lt;asm/sn/pda.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;asm/sn/sn2/shub_mmr.h&gt;
 r_int
 id|irq_to_bit_pos
 c_func

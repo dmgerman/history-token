@@ -1600,8 +1600,6 @@ op_rshift
 id|SRMMU_NOCACHE_BITMAP_SHIFT
 )paren
 suffix:semicolon
-multiline_comment|/* P3 */
-multiline_comment|/* printk(&quot;srmmu: get size %d align %d, got %d (0x%x)&bslash;n&quot;,&n;   size &gt;&gt; SRMMU_NOCACHE_BITMAP_SHIFT, align &gt;&gt; SRMMU_NOCACHE_BITMAP_SHIFT,&n;   offset, offset); */
 r_if
 c_cond
 (paren
@@ -1855,8 +1853,6 @@ id|size
 op_rshift
 id|SRMMU_NOCACHE_BITMAP_SHIFT
 suffix:semicolon
-multiline_comment|/* P3 */
-multiline_comment|/* printk(&quot;srmmu: free off %d (0x%x) size %d&bslash;n&quot;, offset, offset, size); */
 id|bit_map_clear
 c_func
 (paren
@@ -2139,26 +2135,6 @@ suffix:semicolon
 id|vaddr
 op_assign
 id|SRMMU_NOCACHE_VADDR
-suffix:semicolon
-multiline_comment|/* P3 */
-id|printk
-c_func
-(paren
-l_string|&quot;srmmu: pool 0x%x vaddr 0x%x bitmap 0x%x bits %d (0x%x)&bslash;n&quot;
-comma
-(paren
-r_int
-)paren
-id|srmmu_nocache_pool
-comma
-id|vaddr
-comma
-id|srmmu_nocache_bitmap
-comma
-id|bitmap_bits
-comma
-id|bitmap_bits
-)paren
 suffix:semicolon
 r_while
 c_loop

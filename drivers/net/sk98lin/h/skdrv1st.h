@@ -5,8 +5,6 @@ multiline_comment|/*************************************************************
 macro_line|#ifndef __INC_SKDRV1ST_H
 DECL|macro|__INC_SKDRV1ST_H
 mdefine_line|#define __INC_SKDRV1ST_H
-multiline_comment|/* Check kernel version */
-macro_line|#include &lt;linux/version.h&gt;
 DECL|typedef|SK_AC
 r_typedef
 r_struct
@@ -38,7 +36,6 @@ macro_line|#warning  You must compile this file with the correct options!
 macro_line|#warning  See the last lines of the source file.
 macro_line|#error You must compile this driver with &quot;-O&quot;.
 macro_line|#endif
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
