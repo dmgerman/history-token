@@ -2202,6 +2202,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_ACPI
 r_if
 c_cond
 (paren
@@ -2225,6 +2226,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_ACPI */
 multiline_comment|/* scan the system for pnpbios support */
 r_if
 c_cond
