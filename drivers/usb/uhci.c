@@ -6896,6 +6896,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* Only call completion if it was successful */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ret
+)paren
 id|uhci_call_completion
 c_func
 (paren
