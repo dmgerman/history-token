@@ -8188,6 +8188,10 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * By the time we get here, the device has gotten a new device ID&n; * and is in the default state. We need to identify the thing and&n; * get the ball rolling..&n; *&n; * Returns 0 for success, != 0 for error.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; *&n; * Only hub drivers (including virtual root hub drivers for host&n; * controllers) should ever call this.&n; */
+DECL|macro|NEW_DEVICE_RETRYS
+mdefine_line|#define NEW_DEVICE_RETRYS&t;2
+DECL|macro|SET_ADDRESS_RETRYS
+mdefine_line|#define SET_ADDRESS_RETRYS&t;2
 DECL|function|usb_new_device
 r_int
 id|usb_new_device
@@ -8201,6 +8205,12 @@ id|dev
 (brace
 r_int
 id|err
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_int
+id|j
 suffix:semicolon
 multiline_comment|/* USB v1.1 5.5.3 */
 multiline_comment|/* We read the first 8 bytes from the device descriptor to get to */
@@ -8220,6 +8230,36 @@ l_int|0
 op_assign
 l_int|8
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NEW_DEVICE_RETRYS
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
+r_for
+c_loop
+(paren
+id|j
+op_assign
+l_int|0
+suffix:semicolon
+id|j
+OL
+id|SET_ADDRESS_RETRYS
+suffix:semicolon
+op_increment
+id|j
+)paren
+(brace
 id|err
 op_assign
 id|usb_set_address
@@ -8228,6 +8268,22 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_ge
+l_int|0
+)paren
+r_break
+suffix:semicolon
+id|wait_ms
+c_func
+(paren
+l_int|200
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -8287,6 +8343,22 @@ comma
 l_int|8
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_ge
+l_int|8
+)paren
+r_break
+suffix:semicolon
+id|wait_ms
+c_func
+(paren
+l_int|100
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
