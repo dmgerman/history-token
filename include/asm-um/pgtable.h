@@ -3,6 +3,7 @@ macro_line|#ifndef __UM_PGTABLE_H
 DECL|macro|__UM_PGTABLE_H
 mdefine_line|#define __UM_PGTABLE_H
 macro_line|#include &quot;linux/sched.h&quot;
+macro_line|#include &quot;linux/linkage.h&quot;
 macro_line|#include &quot;asm/processor.h&quot;
 macro_line|#include &quot;asm/page.h&quot;
 macro_line|#include &quot;asm/fixmap.h&quot;
@@ -214,6 +215,7 @@ DECL|function|__pud_alloc
 r_static
 r_inline
 id|pud_t
+id|fastcall
 op_star
 id|__pud_alloc
 c_func
