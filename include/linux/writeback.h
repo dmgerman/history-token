@@ -137,9 +137,6 @@ id|inode
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * mm/page-writeback.c&n; */
-multiline_comment|/*&n; * How much data to write out at a time in various places.  This isn&squot;t&n; * really very important - it&squot;s just here to prevent any thread from&n; * locking an inode for too long and blocking other threads which wish&n; * to write the same file for allocation throttling purposes.&n; */
-DECL|macro|WRITEOUT_PAGES
-mdefine_line|#define WRITEOUT_PAGES&t;((4096 * 1024) / PAGE_CACHE_SIZE)
 r_void
 id|balance_dirty_pages
 c_func
@@ -161,15 +158,6 @@ id|mapping
 )paren
 suffix:semicolon
 r_int
-id|pdflush_flush
-c_func
-(paren
-r_int
-r_int
-id|nr_pages
-)paren
-suffix:semicolon
-r_int
 id|pdflush_operation
 c_func
 (paren
@@ -186,6 +174,20 @@ comma
 r_int
 r_int
 id|arg0
+)paren
+suffix:semicolon
+r_int
+id|writeback_mapping
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_int
+op_star
+id|nr_to_write
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;/* WRITEBACK_H */

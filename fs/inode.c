@@ -1461,20 +1461,6 @@ c_func
 id|freeable
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * If we didn&squot;t free enough clean inodes then schedule writeback of&n;&t; * the dirty inodes.  We cannot do it from here or we&squot;re either&n;&t; * synchronously dogslow or we deadlock with oom.&n;&t; */
-r_if
-c_cond
-(paren
-id|goal
-)paren
-id|pdflush_operation
-c_func
-(paren
-id|try_to_writeback_unused_inodes
-comma
-l_int|0
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is called from kswapd when we think we need some&n; * more memory, but aren&squot;t really sure how much. So we&n; * carefully try to free a _bit_ of our icache, but not&n; * too much.&n; *&n; * Priority:&n; *   1 - very urgent: shrink everything&n; *  ...&n; *   6 - base-level: try to shrink a bit.&n; */
 DECL|function|shrink_icache_memory

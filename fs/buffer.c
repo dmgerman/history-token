@@ -9090,21 +9090,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|wakeup_bdflush
-r_void
-id|wakeup_bdflush
-c_func
-(paren
-r_void
-)paren
-(brace
-id|pdflush_flush
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Buffer-head allocation&n; */
 DECL|variable|bh_cachep
 r_static
