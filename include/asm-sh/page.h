@@ -13,6 +13,21 @@ DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
 DECL|macro|PTE_MASK
 mdefine_line|#define PTE_MASK&t;PAGE_MASK
+macro_line|#if defined(CONFIG_HUGETLB_PAGE_SIZE_64K)
+DECL|macro|HPAGE_SHIFT
+mdefine_line|#define HPAGE_SHIFT&t;16
+macro_line|#elif defined(CONFIG_HUGETLB_PAGE_SIZE_1MB)
+DECL|macro|HPAGE_SHIFT
+mdefine_line|#define HPAGE_SHIFT&t;20
+macro_line|#endif
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
+DECL|macro|HPAGE_SIZE
+mdefine_line|#define HPAGE_SIZE&t;&t;(1UL &lt;&lt; HPAGE_SHIFT)
+DECL|macro|HPAGE_MASK
+mdefine_line|#define HPAGE_MASK&t;&t;(~(HPAGE_SIZE-1))
+DECL|macro|HUGETLB_PAGE_ORDER
+mdefine_line|#define HUGETLB_PAGE_ORDER&t;(HPAGE_SHIFT-PAGE_SHIFT)
+macro_line|#endif
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 r_extern

@@ -57,19 +57,22 @@ DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START&t;(P3SEG+0x00100000)
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END&t;P4SEG
-multiline_comment|/*&t;&t;&t;0x001     WT-bit on SH-4, 0 on SH-3 */
+DECL|macro|_PAGE_WT
+mdefine_line|#define&t;_PAGE_WT&t;0x001  /* WT-bit on SH-4, 0 on SH-3 */
 DECL|macro|_PAGE_HW_SHARED
 mdefine_line|#define _PAGE_HW_SHARED&t;0x002  /* SH-bit  : page is shared among processes */
 DECL|macro|_PAGE_DIRTY
 mdefine_line|#define _PAGE_DIRTY&t;0x004  /* D-bit   : page changed */
 DECL|macro|_PAGE_CACHABLE
 mdefine_line|#define _PAGE_CACHABLE&t;0x008  /* C-bit   : cachable */
-multiline_comment|/*&t;&t;&t;0x010     SZ0-bit : Size of page */
+DECL|macro|_PAGE_SZ0
+mdefine_line|#define _PAGE_SZ0&t;0x010  /* SZ0-bit : Size of page */
 DECL|macro|_PAGE_RW
 mdefine_line|#define _PAGE_RW&t;0x020  /* PR0-bit : write access allowed */
 DECL|macro|_PAGE_USER
 mdefine_line|#define _PAGE_USER&t;0x040  /* PR1-bit : user space access allowed */
-multiline_comment|/*&t;&t;&t;0x080     SZ1-bit : Size of page (on SH-4) */
+DECL|macro|_PAGE_SZ1
+mdefine_line|#define _PAGE_SZ1&t;0x080  /* SZ1-bit : Size of page (on SH-4) */
 DECL|macro|_PAGE_PRESENT
 mdefine_line|#define _PAGE_PRESENT&t;0x100  /* V-bit   : page is valid */
 DECL|macro|_PAGE_PROTNONE
@@ -79,7 +82,7 @@ mdefine_line|#define _PAGE_ACCESSED &t;0x400  /* software: page referenced */
 DECL|macro|_PAGE_U0_SHARED
 mdefine_line|#define _PAGE_U0_SHARED 0x800  /* software: page is shared in user space */
 DECL|macro|_PAGE_FILE
-mdefine_line|#define&t;_PAGE_FILE&t;0x080  /* software: pagecache or swap? */
+mdefine_line|#define&t;_PAGE_FILE&t;_PAGE_WT  /* software: pagecache or swap? */
 multiline_comment|/* software: moves to PTEA.TC (Timing Control) */
 DECL|macro|_PAGE_PCC_AREA5
 mdefine_line|#define _PAGE_PCC_AREA5&t;0x00000000&t;/* use BSC registers for area5 */
@@ -100,18 +103,27 @@ DECL|macro|_PAGE_PCC_ATR8
 mdefine_line|#define _PAGE_PCC_ATR8&t;0x60000000&t;/* Attribute Memory space, 8 bit bus */
 DECL|macro|_PAGE_PCC_ATR16
 mdefine_line|#define _PAGE_PCC_ATR16&t;0x60000001&t;/* Attribute Memory space, 6 bit bus */
-multiline_comment|/* Mask which drop software flags&n; * We also drop SZ1 bit since it is always 0 and used for _PAGE_FILE&n; * bit in this implementation.&n; */
+multiline_comment|/* Mask which drop software flags&n; * We also drop WT bit since it is used for _PAGE_FILE&n; * bit in this implementation.&n; */
+DECL|macro|_PAGE_CLEAR_FLAGS
+mdefine_line|#define _PAGE_CLEAR_FLAGS&t;(_PAGE_WT | _PAGE_PROTNONE | _PAGE_ACCESSED | _PAGE_U0_SHARED)
 macro_line|#if defined(CONFIG_CPU_SH3)
 multiline_comment|/*&n; * MMU on SH-3 has bug on SH-bit: We can&squot;t use it if MMUCR.IX=1.&n; * Work around: Just drop SH-bit.&n; */
 DECL|macro|_PAGE_FLAGS_HARDWARE_MASK
-mdefine_line|#define _PAGE_FLAGS_HARDWARE_MASK&t;0x1ffff17c
+mdefine_line|#define _PAGE_FLAGS_HARDWARE_MASK&t;(0x1fffffff &amp; ~(_PAGE_CLEAR_FLAGS | _PAGE_HW_SHARED))
 macro_line|#else
 DECL|macro|_PAGE_FLAGS_HARDWARE_MASK
-mdefine_line|#define _PAGE_FLAGS_HARDWARE_MASK&t;0x1ffff17e
+mdefine_line|#define _PAGE_FLAGS_HARDWARE_MASK&t;(0x1fffffff &amp; ~(_PAGE_CLEAR_FLAGS))
 macro_line|#endif
-multiline_comment|/* Hardware flags: SZ=1 (4k-byte) */
+multiline_comment|/* Hardware flags: SZ0=1 (4k-byte) */
 DECL|macro|_PAGE_FLAGS_HARD
-mdefine_line|#define _PAGE_FLAGS_HARD&t;&t;0x00000010
+mdefine_line|#define _PAGE_FLAGS_HARD&t;_PAGE_SZ0
+macro_line|#if defined(CONFIG_HUGETLB_PAGE_SIZE_64K)
+DECL|macro|_PAGE_SZHUGE
+mdefine_line|#define _PAGE_SZHUGE&t;(_PAGE_SZ1)
+macro_line|#elif defined(CONFIG_HUGETLB_PAGE_SIZE_1MB)
+DECL|macro|_PAGE_SZHUGE
+mdefine_line|#define _PAGE_SZHUGE&t;(_PAGE_SZ0 | _PAGE_SZ1)
+macro_line|#endif
 DECL|macro|_PAGE_SHARED
 mdefine_line|#define _PAGE_SHARED&t;_PAGE_U0_SHARED
 DECL|macro|_PAGE_TABLE

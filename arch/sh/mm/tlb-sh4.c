@@ -225,7 +225,7 @@ multiline_comment|/* drop software flags */
 macro_line|#ifdef CONFIG_SH_WRITETHROUGH
 id|pteval
 op_or_assign
-l_int|1
+id|_PAGE_WT
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* conveniently, we want all the software flags to be 0 anyway */
