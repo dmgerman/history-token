@@ -1,6 +1,7 @@
 multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;linux/slab.h&quot;
+macro_line|#include &quot;linux/ptrace.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;time_user.h&quot;
 macro_line|#include &quot;signal_user.h&quot;

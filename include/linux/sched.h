@@ -1284,27 +1284,6 @@ DECL|macro|PF_FSTRANS
 mdefine_line|#define PF_FSTRANS&t;0x00020000&t;/* inside a filesystem transaction */
 DECL|macro|PF_KSWAPD
 mdefine_line|#define PF_KSWAPD&t;0x00040000&t;/* I am kswapd */
-multiline_comment|/*&n; * Ptrace flags&n; */
-DECL|macro|PT_PTRACED
-mdefine_line|#define PT_PTRACED&t;0x00000001
-DECL|macro|PT_DTRACE
-mdefine_line|#define PT_DTRACE&t;0x00000002&t;/* delayed trace (used on m68k, i386) */
-DECL|macro|PT_TRACESYSGOOD
-mdefine_line|#define PT_TRACESYSGOOD&t;0x00000004
-DECL|macro|PT_PTRACE_CAP
-mdefine_line|#define PT_PTRACE_CAP&t;0x00000008&t;/* ptracer can follow suid-exec */
-DECL|macro|PT_TRACE_FORK
-mdefine_line|#define PT_TRACE_FORK&t;0x00000010
-DECL|macro|PT_TRACE_VFORK
-mdefine_line|#define PT_TRACE_VFORK&t;0x00000020
-DECL|macro|PT_TRACE_CLONE
-mdefine_line|#define PT_TRACE_CLONE&t;0x00000040
-DECL|macro|PT_TRACE_EXEC
-mdefine_line|#define PT_TRACE_EXEC&t;0x00000080
-DECL|macro|PT_TRACE_VFORK_DONE
-mdefine_line|#define PT_TRACE_VFORK_DONE&t;0x00000100
-DECL|macro|PT_TRACE_EXIT
-mdefine_line|#define PT_TRACE_EXIT&t;0x00000200
 macro_line|#if CONFIG_SMP
 r_extern
 r_void
