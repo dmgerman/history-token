@@ -202,6 +202,56 @@ comma
 id|US_FL_START_STOP
 )paren
 comma
+multiline_comment|/* Patch submitted by Philipp Friedrich &lt;philipp@void.at&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0482
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Kyocera&quot;
+comma
+l_string|&quot;Finecam S3x&quot;
+comma
+id|US_SC_8070
+comma
+id|US_PR_CB
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
+multiline_comment|/* Patch submitted by Philipp Friedrich &lt;philipp@void.at&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0482
+comma
+l_int|0x0101
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Kyocera&quot;
+comma
+l_string|&quot;Finecam S4&quot;
+comma
+id|US_SC_8070
+comma
+id|US_PR_CB
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
 multiline_comment|/* Reported by Paul Stewart &lt;stewart@wetlogic.net&gt;&n; * This entry is needed because the device reports Sub=ff */
 id|UNUSUAL_DEV
 c_func
