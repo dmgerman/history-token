@@ -3192,6 +3192,13 @@ c_func
 id|ptrace_notify
 )paren
 suffix:semicolon
+DECL|variable|console_printk
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|console_printk
+)paren
+suffix:semicolon
 DECL|variable|current_kernel_time
 id|EXPORT_SYMBOL
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Derived from IRIX &lt;sys/SN/klconfig.h&gt;.&n; *&n; * Copyright (C) 1992-1997,1999,2001-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; * Copyright (C) 1999 by Ralf Baechle&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Derived from IRIX &lt;sys/SN/klconfig.h&gt;.&n; *&n; * Copyright (C) 1992-1997,1999,2001-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; * Copyright (C) 1999 by Ralf Baechle&n; */
 macro_line|#ifndef _ASM_IA64_SN_KLCONFIG_H
 DECL|macro|_ASM_IA64_SN_KLCONFIG_H
 mdefine_line|#define _ASM_IA64_SN_KLCONFIG_H
@@ -18,15 +18,8 @@ macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
 macro_line|#include &lt;asm/sn/kldir.h&gt;
 macro_line|#include &lt;asm/sn/sn_fru.h&gt;
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-macro_line|#include &lt;asm/sn/sn1/hubmd_next.h&gt;
-macro_line|#endif
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 macro_line|#include &lt;asm/sn/sn2/shub_md.h&gt;
-macro_line|#endif
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 macro_line|#include &lt;asm/sn/geo.h&gt;
-macro_line|#endif
 DECL|macro|KLCFGINFO_MAGIC
 mdefine_line|#define KLCFGINFO_MAGIC&t;0xbeedbabe
 DECL|typedef|klconf_off_t
@@ -403,6 +396,16 @@ DECL|macro|KLTYPE_PBRICK
 mdefine_line|#define KLTYPE_PBRICK&t;&t;(KLCLASS_IOBRICK | 0x2)
 DECL|macro|KLTYPE_XBRICK
 mdefine_line|#define KLTYPE_XBRICK&t;&t;(KLCLASS_IOBRICK | 0x3)
+DECL|macro|KLTYPE_NBRICK
+mdefine_line|#define KLTYPE_NBRICK&t;&t;(KLCLASS_IOBRICK | 0x4)
+DECL|macro|KLTYPE_PEBRICK
+mdefine_line|#define KLTYPE_PEBRICK&t;&t;(KLCLASS_IOBRICK | 0x5)
+DECL|macro|KLTYPE_PXBRICK
+mdefine_line|#define KLTYPE_PXBRICK&t;&t;(KLCLASS_IOBRICK | 0x6)
+DECL|macro|KLTYPE_IXBRICK
+mdefine_line|#define KLTYPE_IXBRICK&t;&t;(KLCLASS_IOBRICK | 0x7)
+DECL|macro|KLTYPE_CGBRICK
+mdefine_line|#define KLTYPE_CGBRICK&t;&t;(KLCLASS_IOBRICK | 0x8)
 DECL|macro|KLTYPE_PBRICK_BRIDGE
 mdefine_line|#define KLTYPE_PBRICK_BRIDGE&t;KLTYPE_PBRICK
 multiline_comment|/* The value of type should be more than 8 so that hinv prints&n; * out the board name from the NIC string. For values less than&n; * 8 the name of the board needs to be hard coded in a few places.&n; * When bringup started nic names had not standardized and so we&n; * had to hard code. (For people interested in history.) &n; */
@@ -483,19 +486,11 @@ r_int
 id|brd_debugsw
 suffix:semicolon
 multiline_comment|/* Debug switches */
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|brd_geoid
 id|geoid_t
 id|brd_geoid
 suffix:semicolon
 multiline_comment|/* geo id */
-macro_line|#else
-DECL|member|brd_module
-id|moduleid_t
-id|brd_module
-suffix:semicolon
-multiline_comment|/* module to which it belongs */
-macro_line|#endif
 DECL|member|brd_partition
 id|partid_t
 id|brd_partition
@@ -556,7 +551,7 @@ id|brd_parent
 suffix:semicolon
 multiline_comment|/* Logical parent for this brd */
 DECL|member|brd_graph_link
-id|devfs_handle_t
+id|vertex_hdl_t
 id|brd_graph_link
 suffix:semicolon
 multiline_comment|/* vertex hdl to connect extern compts */
@@ -576,7 +571,6 @@ r_char
 id|brd_nic_flags
 suffix:semicolon
 multiline_comment|/* To handle 8 more NICs */
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_char
 id|pad
@@ -585,7 +579,6 @@ l_int|32
 )braket
 suffix:semicolon
 multiline_comment|/* future expansion */
-macro_line|#endif
 DECL|member|brd_name
 r_char
 id|brd_name
@@ -623,7 +616,7 @@ mdefine_line|#define NODE_OFFSET_TO_KLINFO(n,off)    ((klinfo_t*) TO_NODE_CAC(n,
 DECL|macro|KLCF_NEXT
 mdefine_line|#define KLCF_NEXT(_brd)         &bslash;&n;        ((_brd)-&gt;brd_next ?     &bslash;&n;         (NODE_OFFSET_TO_LBOARD(NASID_GET(_brd), (_brd)-&gt;brd_next)): NULL)
 DECL|macro|KLCF_COMP
-mdefine_line|#define KLCF_COMP(_brd, _ndx)   &bslash;&n;                (NODE_OFFSET_TO_KLINFO(NASID_GET(_brd), (_brd)-&gt;brd_compts[(_ndx)]))
+mdefine_line|#define KLCF_COMP(_brd, _ndx)   &bslash;&n;                ((((_brd)-&gt;brd_compts[(_ndx)]) == 0) ? 0 : &bslash;&n;&t;&t;&t;(NODE_OFFSET_TO_KLINFO(NASID_GET(_brd), (_brd)-&gt;brd_compts[(_ndx)])))
 DECL|macro|KLCF_COMP_ERROR
 mdefine_line|#define KLCF_COMP_ERROR(_brd, _comp)    &bslash;&n;                (NODE_OFFSET_TO_K0(NASID_GET(_brd), (_comp)-&gt;errinfo))
 macro_line|#endif /* __ia64 */
@@ -928,12 +921,10 @@ DECL|member|port_offset
 id|klconf_off_t
 id|port_offset
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|port_num
 r_int
 id|port_num
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klport_t
 )brace
 id|klport_t
@@ -978,13 +969,11 @@ r_int
 id|cpu_scachespeed
 suffix:semicolon
 multiline_comment|/* secondary cache speed in MHz */
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klcpu_t
 )brace
 id|klcpu_t
@@ -1006,7 +995,6 @@ id|uint
 id|hub_flags
 suffix:semicolon
 multiline_comment|/* PCFG_HUB_xxx flags */
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|macro|MAX_NI_PORTS
 mdefine_line|#define MAX_NI_PORTS                    2
 DECL|member|hub_port
@@ -1019,13 +1007,6 @@ l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* hub is connected to this */
-macro_line|#else
-DECL|member|hub_port
-id|klport_t
-id|hub_port
-suffix:semicolon
-multiline_comment|/* hub is connected to this */
-macro_line|#endif
 DECL|member|hub_box_nic
 id|nic_t
 id|hub_box_nic
@@ -1041,7 +1022,6 @@ id|u64
 id|hub_speed
 suffix:semicolon
 multiline_comment|/* Speed of hub in HZ */
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|hub_io_module
 id|moduleid_t
 id|hub_io_module
@@ -1052,7 +1032,6 @@ r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klhub_t
 )brace
 id|klhub_t
@@ -1077,13 +1056,11 @@ id|nic_t
 id|hubuart_box_nic
 suffix:semicolon
 multiline_comment|/* nic of containing box */
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klhub_uart_t
 )brace
 id|klhub_uart_t
@@ -1122,13 +1099,11 @@ DECL|member|membnk_attr
 r_int
 id|membnk_attr
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klmembnk_t
 )brace
 id|klmembnk_t
@@ -1169,13 +1144,11 @@ DECL|member|snum
 )brace
 id|snum
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klmod_serial_num_t
 )brace
 id|klmod_serial_num_t
@@ -1208,13 +1181,11 @@ r_int
 id|xbow_master_hub_link
 suffix:semicolon
 multiline_comment|/* type of brd connected+component struct ptr+flags */
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klxbow_t
 )brace
 id|klxbow_t
@@ -1281,13 +1252,11 @@ DECL|member|bri_mfg_nic
 id|klconf_off_t
 id|bri_mfg_nic
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klbri_t
 )brace
 id|klbri_t
@@ -1337,13 +1306,11 @@ DECL|member|ioc3_kbd_off
 id|klconf_off_t
 id|ioc3_kbd_off
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klioc3_t
 )brace
 id|klioc3_t
@@ -1372,13 +1339,11 @@ id|MAX_VME_SLOTS
 )braket
 suffix:semicolon
 multiline_comment|/* VME Board config info */
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klvmeb_t
 )brace
 id|klvmeb_t
@@ -1405,13 +1370,11 @@ id|MAX_VME_SLOTS
 )braket
 suffix:semicolon
 multiline_comment|/* VME Board config info */
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klvmed_t
 )brace
 id|klvmed_t
@@ -1459,13 +1422,11 @@ id|u64
 id|rou_vector
 suffix:semicolon
 multiline_comment|/* vector from master node */
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klrou_t
 )brace
 id|klrou_t
@@ -1521,13 +1482,11 @@ DECL|member|gfx_mfg_nic
 id|klconf_off_t
 id|gfx_mfg_nic
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klgfx_t
 )brace
 id|klgfx_t
@@ -1546,13 +1505,11 @@ id|klconf_off_t
 id|xthd_mfg_nic
 suffix:semicolon
 multiline_comment|/* MFG NIC string */
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klxthd_t
 )brace
 id|klxthd_t
@@ -1572,13 +1529,11 @@ id|klconf_off_t
 id|tpu_mfg_nic
 suffix:semicolon
 multiline_comment|/* MFG NIC string */
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|kltpu_t
 )brace
 id|kltpu_t
@@ -1631,13 +1586,11 @@ id|scsi_devinfo
 id|MAX_SCSI_DEVS
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klscsi_t
 )brace
 id|klscsi_t
@@ -1670,13 +1623,11 @@ l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* Pointer to 2 klscsi_t&squot;s */
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klscctl_t
 )brace
 id|klscctl_t
@@ -1698,13 +1649,11 @@ op_star
 id|scdev_cfg
 suffix:semicolon
 multiline_comment|/* driver fills up this */
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klscdev_t
 )brace
 id|klscdev_t
@@ -1726,13 +1675,11 @@ op_star
 id|ttydev_cfg
 suffix:semicolon
 multiline_comment|/* driver fills up this */
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klttydev_t
 )brace
 id|klttydev_t
@@ -1754,13 +1701,11 @@ op_star
 id|enetdev_cfg
 suffix:semicolon
 multiline_comment|/* driver fills up this */
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klenetdev_t
 )brace
 id|klenetdev_t
@@ -1782,13 +1727,11 @@ op_star
 id|kbddev_cfg
 suffix:semicolon
 multiline_comment|/* driver fills up this */
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klkbddev_t
 )brace
 id|klkbddev_t
@@ -1808,13 +1751,11 @@ r_void
 op_star
 id|msdev_cfg
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klmsdev_t
 )brace
 id|klmsdev_t
@@ -1842,13 +1783,11 @@ id|fddi_devinfo
 id|MAX_FDDI_DEVS
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klfddi_t
 )brace
 id|klfddi_t
@@ -1867,13 +1806,11 @@ DECL|member|mio_specific
 id|mio_t
 id|mio_specific
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klmio_t
 )brace
 id|klmio_t
@@ -1900,13 +1837,11 @@ r_uint64
 id|usb_controller
 suffix:semicolon
 multiline_comment|/* ptr to controller info */
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|member|pad
 r_int
 r_int
 id|pad
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|klusb_t
 )brace
 id|klusb_t
@@ -2119,41 +2054,11 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-id|xwidgetnum_t
-id|nodevertex_widgetnum_get
-c_func
-(paren
-id|devfs_handle_t
-id|node_vtx
-)paren
-suffix:semicolon
-r_extern
-id|devfs_handle_t
-id|nodevertex_xbow_peer_get
-c_func
-(paren
-id|devfs_handle_t
-id|node_vtx
-)paren
-suffix:semicolon
-r_extern
 id|lboard_t
 op_star
 id|find_gfxpipe
 c_func
 (paren
-r_int
-id|pipenum
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|setup_gfxpipe_link
-c_func
-(paren
-id|devfs_handle_t
-id|vhdl
-comma
 r_int
 id|pipenum
 )paren
@@ -2173,45 +2078,6 @@ r_char
 id|brd_class
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
-r_extern
-id|lboard_t
-op_star
-id|find_lboard_module_class
-c_func
-(paren
-id|lboard_t
-op_star
-id|start
-comma
-id|geoid_t
-id|geoid
-comma
-r_int
-r_char
-id|brd_class
-)paren
-suffix:semicolon
-macro_line|#else
-r_extern
-id|lboard_t
-op_star
-id|find_lboard_module_class
-c_func
-(paren
-id|lboard_t
-op_star
-id|start
-comma
-id|moduleid_t
-id|mod
-comma
-r_int
-r_char
-id|brd_class
-)paren
-suffix:semicolon
-macro_line|#endif
 r_extern
 id|lboard_t
 op_star
@@ -2238,7 +2104,6 @@ comma
 id|nic_t
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 r_extern
 id|lboard_t
 op_star
@@ -2267,79 +2132,6 @@ id|geoid_t
 id|geoid
 )paren
 suffix:semicolon
-r_extern
-id|lboard_t
-op_star
-id|get_board_name
-c_func
-(paren
-id|nasid_t
-id|nasid
-comma
-id|geoid_t
-id|geoid
-comma
-id|slotid_t
-id|slot
-comma
-r_char
-op_star
-id|name
-)paren
-suffix:semicolon
-macro_line|#else
-r_extern
-id|lboard_t
-op_star
-id|find_lboard_modslot
-c_func
-(paren
-id|lboard_t
-op_star
-id|start
-comma
-id|moduleid_t
-id|mod
-comma
-id|slotid_t
-id|slot
-)paren
-suffix:semicolon
-r_extern
-id|lboard_t
-op_star
-id|find_lboard_module
-c_func
-(paren
-id|lboard_t
-op_star
-id|start
-comma
-id|moduleid_t
-id|mod
-)paren
-suffix:semicolon
-r_extern
-id|lboard_t
-op_star
-id|get_board_name
-c_func
-(paren
-id|nasid_t
-id|nasid
-comma
-id|moduleid_t
-id|mod
-comma
-id|slotid_t
-id|slot
-comma
-r_char
-op_star
-id|name
-)paren
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_int
 id|config_find_nic_router
@@ -2416,7 +2208,6 @@ op_star
 id|path
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 r_extern
 id|moduleid_t
 id|get_module_id
@@ -2426,7 +2217,6 @@ id|nasid_t
 id|nasid
 )paren
 suffix:semicolon
-macro_line|#endif
 r_extern
 r_void
 id|nic_name_convert

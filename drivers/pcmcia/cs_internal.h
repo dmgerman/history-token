@@ -730,7 +730,7 @@ id|u_long
 id|align
 comma
 r_int
-id|force_low
+id|low
 comma
 r_char
 op_star

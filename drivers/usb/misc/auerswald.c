@@ -154,6 +154,7 @@ r_struct
 (brace
 DECL|member|buf
 r_char
+id|__user
 op_star
 id|buf
 suffix:semicolon
@@ -5520,6 +5521,7 @@ id|devinfo
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -5657,6 +5659,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -6188,6 +6191,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma

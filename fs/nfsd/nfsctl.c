@@ -2324,12 +2324,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* lockd-&gt;nfsd callbacks */
-id|nfs4_state_init
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* NFSv4 State */
 r_if
 c_cond
 (paren

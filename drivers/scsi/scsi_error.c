@@ -25,6 +25,46 @@ DECL|macro|BUS_RESET_SETTLE_TIME
 mdefine_line|#define BUS_RESET_SETTLE_TIME   10*HZ
 DECL|macro|HOST_RESET_SETTLE_TIME
 mdefine_line|#define HOST_RESET_SETTLE_TIME  10*HZ
+multiline_comment|/* called with shost-&gt;host_lock held */
+DECL|function|scsi_eh_wakeup
+r_void
+id|scsi_eh_wakeup
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|shost
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|shost-&gt;host_busy
+op_eq
+id|shost-&gt;host_failed
+)paren
+(brace
+id|up
+c_func
+(paren
+id|shost-&gt;eh_wait
+)paren
+suffix:semicolon
+id|SCSI_LOG_ERROR_RECOVERY
+c_func
+(paren
+l_int|5
+comma
+id|printk
+c_func
+(paren
+l_string|&quot;Waking error handler thread&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/**&n; * scsi_eh_scmd_add - add scsi cmd to error handling.&n; * @scmd:&t;scmd to run eh on.&n; * @eh_flag:&t;optional SCSI_EH flag.&n; *&n; * Return value:&n; *&t;0 on failure.&n; **/
 DECL|function|scsi_eh_scmd_add
 r_int
@@ -108,34 +148,12 @@ suffix:semicolon
 id|shost-&gt;host_failed
 op_increment
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|shost-&gt;host_busy
-op_eq
-id|shost-&gt;host_failed
-)paren
-(brace
-id|up
+id|scsi_eh_wakeup
 c_func
 (paren
-id|shost-&gt;eh_wait
+id|shost
 )paren
 suffix:semicolon
-id|SCSI_LOG_ERROR_RECOVERY
-c_func
-(paren
-l_int|5
-comma
-id|printk
-c_func
-(paren
-l_string|&quot;Waking error handler&quot;
-l_string|&quot; thread&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -1015,6 +1033,12 @@ id|host
 op_assign
 id|scmd-&gt;device-&gt;host
 suffix:semicolon
+id|DECLARE_MUTEX_LOCKED
+c_func
+(paren
+id|sem
+)paren
+suffix:semicolon
 r_int
 r_int
 id|flags
@@ -1058,18 +1082,6 @@ op_amp
 l_int|0xe0
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|host-&gt;can_queue
-)paren
-(brace
-id|DECLARE_MUTEX_LOCKED
-c_func
-(paren
-id|sem
-)paren
-suffix:semicolon
 id|scsi_add_timer
 c_func
 (paren
@@ -1080,7 +1092,7 @@ comma
 id|scsi_eh_times_out
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * set up the semaphore so we wait for the command to complete.&n;&t;&t; */
+multiline_comment|/*&n;&t; * set up the semaphore so we wait for the command to complete.&n;&t; */
 id|scmd-&gt;device-&gt;host-&gt;eh_action
 op_assign
 op_amp
@@ -1127,7 +1139,7 @@ id|scmd-&gt;device-&gt;host-&gt;eh_action
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * see if timeout.  if so, tell the host to forget about it.&n;&t;&t; * in other words, we don&squot;t want a callback any more.&n;&t;&t; */
+multiline_comment|/*&n;&t; * see if timeout.  if so, tell the host to forget about it.&n;&t; * in other words, we don&squot;t want a callback any more.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1152,7 +1164,7 @@ id|scmd-&gt;owner
 op_assign
 id|SCSI_OWNER_LOWLEVEL
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * as far as the low level driver is&n;&t;&t;&t; * concerned, this command is still active, so&n;&t;&t;&t; * we must give the low level driver a chance&n;&t;&t;&t; * to abort it. (db) &n;&t;&t;&t; *&n;&t;&t;&t; * FIXME(eric) - we are not tracking whether we could&n;&t;&t;&t; * abort a timed out command or not.  not sure how&n;&t;&t;&t; * we should treat them differently anyways.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * as far as the low level driver is&n;&t;&t; * concerned, this command is still active, so&n;&t;&t; * we must give the low level driver a chance&n;&t;&t; * to abort it. (db) &n;&t;&t; *&n;&t;&t; * FIXME(eric) - we are not tracking whether we could&n;&t;&t; * abort a timed out command or not.  not sure how&n;&t;&t; * we should treat them differently anyways.&n;&t;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -1213,45 +1225,6 @@ id|rtn
 )paren
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-r_int
-id|temp
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * we damn well had better never use this code.  there is no&n;&t;&t; * timeout protection here, since we would end up waiting in&n;&t;&t; * the actual low level driver, we don&squot;t know how to wake it up.&n;&t;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|host-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|temp
-op_assign
-id|host-&gt;hostt
-op_member_access_from_pointer
-id|command
-c_func
-(paren
-id|scmd
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|host-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|scmd-&gt;result
-op_assign
-id|temp
-suffix:semicolon
-multiline_comment|/* fall through to code below to examine status. */
-)brace
 multiline_comment|/*&n;&t; * now examine the actual status codes to see whether the command&n;&t; * actually did complete normally.&n;&t; */
 r_if
 c_cond

@@ -246,10 +246,6 @@ op_star
 id|qtd
 )paren
 (brace
-id|qh-&gt;hw_current
-op_assign
-l_int|0
-suffix:semicolon
 id|qh-&gt;hw_qtd_next
 op_assign
 id|QTD_NEXT
@@ -277,8 +273,6 @@ id|QTD_STS_PING
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-DECL|macro|IS_SHORT_READ
-mdefine_line|#define IS_SHORT_READ(token) (QTD_LENGTH (token) != 0 &amp;&amp; QTD_PID (token) == 1)
 DECL|function|qtd_copy_status
 r_static
 r_void
@@ -1010,24 +1004,6 @@ id|le32_to_cpu
 id|qtd-&gt;hw_token
 )paren
 suffix:semicolon
-id|stopped
-op_assign
-id|stopped
-op_logical_or
-(paren
-id|HALT_BIT
-op_amp
-id|qh-&gt;hw_token
-)paren
-op_ne
-l_int|0
-op_logical_or
-(paren
-id|ehci-&gt;hcd.state
-op_eq
-id|USB_STATE_HALT
-)paren
-suffix:semicolon
 multiline_comment|/* always clean up qtds the hc de-activated */
 r_if
 c_cond
@@ -1041,20 +1017,31 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* magic dummy for short reads; won&squot;t advance */
+r_if
+c_cond
+(paren
+(paren
+id|token
+op_amp
+id|QTD_STS_HALT
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|stopped
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* magic dummy for some short reads; qh won&squot;t advance */
+)brace
+r_else
 r_if
 c_cond
 (paren
 id|IS_SHORT_READ
 (paren
 id|token
-)paren
-op_logical_and
-op_logical_neg
-(paren
-id|token
-op_amp
-id|QTD_STS_HALT
 )paren
 op_logical_and
 (paren
@@ -1084,6 +1071,11 @@ id|likely
 (paren
 op_logical_neg
 id|stopped
+op_logical_and
+id|HCD_IS_RUNNING
+(paren
+id|ehci-&gt;hcd.state
+)paren
 )paren
 )paren
 (brace
@@ -1092,6 +1084,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|stopped
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* ignore active urbs unless some previous qtd&n;&t;&t;&t; * for the urb faulted (including short read) or&n;&t;&t;&t; * its urb was canceled.  we may patch qh or qtds.&n;&t;&t;&t; */
 r_if
 c_cond
@@ -1300,31 +1296,34 @@ c_cond
 (paren
 id|unlikely
 (paren
-(paren
-id|HALT_BIT
-op_amp
-id|qh-&gt;hw_token
-)paren
+id|stopped
 op_ne
 l_int|0
 )paren
+multiline_comment|/* some EHCI 0.95 impls will overlay dummy qtds */
+op_logical_or
+id|qh-&gt;hw_qtd_next
+op_eq
+id|EHCI_LIST_END
 )paren
 (brace
-id|qh_update
+r_if
+c_cond
 (paren
-id|ehci
-comma
-id|qh
-comma
 id|list_empty
 (paren
 op_amp
 id|qh-&gt;qtd_list
 )paren
-ques
-c_cond
+)paren
+id|end
+op_assign
 id|qh-&gt;dummy
-suffix:colon
+suffix:semicolon
+r_else
+(brace
+id|end
+op_assign
 id|list_entry
 (paren
 id|qh-&gt;qtd_list.next
@@ -1334,6 +1333,35 @@ id|ehci_qtd
 comma
 id|qtd_list
 )paren
+suffix:semicolon
+multiline_comment|/* first qtd may already be partially processed */
+r_if
+c_cond
+(paren
+id|cpu_to_le32
+(paren
+id|end-&gt;qtd_dma
+)paren
+op_eq
+id|qh-&gt;hw_current
+)paren
+id|end
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|end
+)paren
+id|qh_update
+(paren
+id|ehci
+comma
+id|qh
+comma
+id|end
 )paren
 suffix:semicolon
 )brace
@@ -2537,7 +2565,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* NOTE:  if (PIPE_INTERRUPT) { scheduler sets s-mask } */
-multiline_comment|/* init as halted, toggle clear, advance to dummy */
+multiline_comment|/* init as live, toggle clear, advance to dummy */
 id|qh-&gt;qh_state
 op_assign
 id|QH_STATE_IDLE
@@ -2563,13 +2591,6 @@ comma
 id|qh
 comma
 id|qh-&gt;dummy
-)paren
-suffix:semicolon
-id|qh-&gt;hw_token
-op_assign
-id|cpu_to_le32
-(paren
-id|QTD_STS_HALT
 )paren
 suffix:semicolon
 id|usb_settoggle
@@ -2970,7 +2991,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* FIXME:  changing config or interface setting is not&n;&t;&t; * supported yet.  preferred fix is for usbcore to tell&n;&t;&t; * us to clear out each endpoint&squot;s state, but...&n;&t;&t; */
 multiline_comment|/* usb_clear_halt() means qh data toggle gets reset */
 r_if
 c_cond

@@ -3875,11 +3875,6 @@ id|error
 comma
 id|error2
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|handle
 op_assign
 id|ext3_journal_start
@@ -3934,11 +3929,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return

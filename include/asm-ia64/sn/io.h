@@ -42,27 +42,8 @@ mdefine_line|#define IIO_ITTE_GET(nasid, bigwin) REMOTE_HUB_ADDR((nasid), IIO_IT
 multiline_comment|/*&n; * Macro which takes the widget number, and returns the&n; * IO PRB address of that widget.&n; * value _x is expected to be a widget number in the range&n; * 0, 8 - 0xF&n; */
 DECL|macro|IIO_IOPRB
 mdefine_line|#define&t;IIO_IOPRB(_x)&t;(IIO_IOPRB_0 + ( ( (_x) &lt; HUB_WIDGET_ID_MIN ? &bslash;&n;&t;&t;&t;(_x) : &bslash;&n;&t;&t;&t;(_x) - (HUB_WIDGET_ID_MIN-1)) &lt;&lt; 3) )
-macro_line|#if defined(CONFIG_IA64_SGI_SN1)
-macro_line|#include &lt;asm/sn/sn1/bedrock.h&gt;
-macro_line|#include &lt;asm/sn/sn1/hubio.h&gt;
-macro_line|#include &lt;asm/sn/sn1/hubio_next.h&gt;
-macro_line|#include &lt;asm/sn/sn1/hubmd.h&gt;
-macro_line|#include &lt;asm/sn/sn1/hubmd_next.h&gt;
-macro_line|#include &lt;asm/sn/sn1/hubpi.h&gt;
-macro_line|#include &lt;asm/sn/sn1/hubpi_next.h&gt;
-macro_line|#include &lt;asm/sn/sn1/hublb.h&gt;
-macro_line|#include &lt;asm/sn/sn1/hublb_next.h&gt;
-macro_line|#include &lt;asm/sn/sn1/hubni.h&gt;
-macro_line|#include &lt;asm/sn/sn1/hubni_next.h&gt;
-macro_line|#include &lt;asm/sn/sn1/hubxb.h&gt;
-macro_line|#include &lt;asm/sn/sn1/hubxb_next.h&gt;
-macro_line|#include &lt;asm/sn/sn1/hubstat.h&gt;
-macro_line|#include &lt;asm/sn/sn1/hubdev.h&gt;
-macro_line|#include &lt;asm/sn/sn1/synergy.h&gt;
-macro_line|#elif defined(CONFIG_IA64_SGI_SN2)
 macro_line|#include &lt;asm/sn/sn2/shub.h&gt;
 macro_line|#include &lt;asm/sn/sn2/shubio.h&gt;
-macro_line|#endif
 multiline_comment|/*&n; * Used to ensure write ordering (like mb(), but for I/O space)&n; */
 r_extern
 r_void

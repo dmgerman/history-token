@@ -5833,7 +5833,7 @@ id|ahc-&gt;description
 suffix:semicolon
 id|host
 op_assign
-id|scsi_register
+id|scsi_host_alloc
 c_func
 (paren
 r_template
@@ -6926,7 +6926,7 @@ id|ahc-&gt;platform_data-&gt;host
 )paren
 suffix:semicolon
 macro_line|#endif
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|ahc-&gt;platform_data-&gt;host

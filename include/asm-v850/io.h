@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-v850/io.h -- Misc I/O operations&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/io.h -- Misc I/O operations&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#ifndef __V850_IO_H__
 DECL|macro|__V850_IO_H__
 mdefine_line|#define __V850_IO_H__
@@ -16,6 +16,18 @@ DECL|macro|writew
 mdefine_line|#define writew(b, addr) &bslash;&n;  (void)((*(volatile unsigned short *) (addr)) = (b))
 DECL|macro|writel
 mdefine_line|#define writel(b, addr) &bslash;&n;  (void)((*(volatile unsigned int *) (addr)) = (b))
+DECL|macro|__raw_readb
+mdefine_line|#define __raw_readb readb
+DECL|macro|__raw_readw
+mdefine_line|#define __raw_readw readw
+DECL|macro|__raw_readl
+mdefine_line|#define __raw_readl readl
+DECL|macro|__raw_writeb
+mdefine_line|#define __raw_writeb writeb
+DECL|macro|__raw_writew
+mdefine_line|#define __raw_writew writew
+DECL|macro|__raw_writel
+mdefine_line|#define __raw_writel writel
 DECL|macro|inb
 mdefine_line|#define inb(addr)&t;readb (addr)
 DECL|macro|inw

@@ -2514,6 +2514,13 @@ comma
 id|nfserr_dropit
 comma
 op_minus
+id|EAGAIN
+)brace
+comma
+(brace
+id|nfserr_dropit
+comma
+op_minus
 id|ENOMEM
 )brace
 comma

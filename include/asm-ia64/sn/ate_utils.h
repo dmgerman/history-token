@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_SN_ATE_UTILS_H
 DECL|macro|_ASM_IA64_SN_ATE_UTILS_H
 mdefine_line|#define _ASM_IA64_SN_ATE_UTILS_H
-multiline_comment|/* $Id: ate_utils.h,v 1.1 2002/02/28 17:31:25 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id: ate_utils.h,v 1.1 2002/02/28 17:31:25 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 multiline_comment|/*&n; *&t;struct map&t;X[]&t;.m_size&t;&t;.m_addr&n; *&t;&t;&t;---&t;------------&t;-----------&n; *&t;&t;&t;[0]&t;mapsize(X)&t;unused&n; *&t;&t;&t;&t;# X[] unused&n; *&t;&t;&t;[1]&t;map lock *&t;mapwant sv_t *&n; *&t;&t;&t;&t;map access&t;wait for free map space&n; *&n; *&t;  mapstart(X)-&gt; [2]&t;# units&t;&t;unit number&n; *&t;&t;&t; :&t;    :&t;&t;  :&n; *&t;&t;&t;[ ]&t;    0&n; */
 macro_line|#include &lt;linux/types.h&gt;
 DECL|macro|ulong_t

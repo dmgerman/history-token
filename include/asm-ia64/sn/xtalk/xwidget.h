@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2003 Silicon Graphics, Inc. All Rights Reserved.&n; */
 macro_line|#ifndef __ASM_SN_XTALK_XWIDGET_H__
 DECL|macro|__ASM_SN_XTALK_XWIDGET_H__
 mdefine_line|#define __ASM_SN_XTALK_XWIDGET_H__
@@ -659,20 +659,17 @@ id|xwidget_hwid_s
 op_star
 id|hwid
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 id|xwidgetnum_t
 id|id
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 id|master
 comma
 id|xwidgetnum_t
 id|targetid
-comma
-id|async_attach_t
-id|aa
 )paren
 suffix:semicolon
 r_extern
@@ -680,7 +677,7 @@ r_int
 id|xwidget_unregister
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern
@@ -688,7 +685,7 @@ r_void
 id|xwidget_reset
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xwidget
 )paren
 suffix:semicolon
@@ -697,7 +694,7 @@ r_void
 id|xwidget_gfx_reset
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xwidget
 )paren
 suffix:semicolon
@@ -707,7 +704,7 @@ op_star
 id|xwidget_name_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xwidget
 )paren
 suffix:semicolon
@@ -717,7 +714,7 @@ id|xwidget_info_t
 id|xwidget_info_chk
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|widget
 )paren
 suffix:semicolon
@@ -726,7 +723,7 @@ id|xwidget_info_t
 id|xwidget_info_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|widget
 )paren
 suffix:semicolon
@@ -735,7 +732,7 @@ r_void
 id|xwidget_info_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|widget
 comma
 id|xwidget_info_t
@@ -743,7 +740,7 @@ id|widget_info
 )paren
 suffix:semicolon
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xwidget_info_dev_get
 c_func
 (paren
@@ -779,7 +776,7 @@ id|xwidget_info
 )paren
 suffix:semicolon
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xwidget_info_master_get
 c_func
 (paren

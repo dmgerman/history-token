@@ -3,12 +3,7 @@ macro_line|#ifndef __SYS_GEO_H__
 DECL|macro|__SYS_GEO_H__
 mdefine_line|#define __SYS_GEO_H__
 multiline_comment|/* Include a platform-specific geo.h.  It must define at least:&n; *   geoid_t:&t;&t;Geographic identifier data type&n; *   geo_type_t:&t;Data type for the kind of geoid this is&n; *   GEO_TYPE_xxx:&t;Values for geo_type_t vars, eg. GEO_TYPE_NODE&n; *   GEO_MAX_LEN:&t;The maximum length of a geoid, formatted for printing&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 macro_line|#include &lt;asm/sn/sn2/geo.h&gt;
-macro_line|#else
-macro_line|#error &lt;&lt;BOMB! need geo.h for this platform &gt;&gt;
-macro_line|#endif /* !SN2 &amp;&amp; ... */
 multiline_comment|/* Declarations applicable to all platforms */
 multiline_comment|/* parameter for hwcfg_format_geoid() */
 DECL|macro|GEO_FORMAT_HWGRAPH

@@ -9,10 +9,12 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/nmi.h&gt;
 macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
+macro_line|#include &lt;asm/nmi.h&gt;
 DECL|variable|nmi_watchdog
 r_int
 r_int
@@ -44,6 +46,12 @@ id|pt_regs
 op_star
 id|regs
 )paren
+suffix:semicolon
+multiline_comment|/* nmi_active:&n; * +1: the lapic NMI watchdog is active, but can be disabled&n; *  0: the lapic NMI watchdog has not been set up, and cannot&n; *     be enabled&n; * -1: the lapic NMI watchdog is disabled, but can be enabled&n; */
+DECL|variable|nmi_active
+r_static
+r_int
+id|nmi_active
 suffix:semicolon
 DECL|macro|K7_EVNTSEL_ENABLE
 mdefine_line|#define K7_EVNTSEL_ENABLE&t;(1 &lt;&lt; 22)
@@ -228,6 +236,10 @@ comma
 id|cpu
 )paren
 suffix:semicolon
+id|nmi_active
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 op_minus
 l_int|1
@@ -369,10 +381,16 @@ id|nmi
 op_eq
 id|NMI_IO_APIC
 )paren
+(brace
+id|nmi_active
+op_assign
+l_int|1
+suffix:semicolon
 id|nmi_watchdog
 op_assign
 id|nmi
 suffix:semicolon
+)brace
 r_return
 l_int|1
 suffix:semicolon
@@ -384,12 +402,6 @@ l_string|&quot;nmi_watchdog=&quot;
 comma
 id|setup_nmi_watchdog
 )paren
-suffix:semicolon
-multiline_comment|/* nmi_active:&n; * +1: the lapic NMI watchdog is active, but can be disabled&n; *  0: the lapic NMI watchdog has not been set up, and cannot&n; *     be enabled&n; * -1: the lapic NMI watchdog is disabled, but can be enabled&n; */
-DECL|variable|nmi_active
-r_static
-r_int
-id|nmi_active
 suffix:semicolon
 DECL|function|disable_lapic_nmi_watchdog
 r_void
@@ -516,6 +528,89 @@ suffix:semicolon
 id|setup_apic_nmi_watchdog
 c_func
 (paren
+)paren
+suffix:semicolon
+)brace
+)brace
+DECL|function|disable_timer_nmi_watchdog
+r_void
+id|disable_timer_nmi_watchdog
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|nmi_watchdog
+op_ne
+id|NMI_IO_APIC
+)paren
+op_logical_or
+(paren
+id|nmi_active
+op_le
+l_int|0
+)paren
+)paren
+r_return
+suffix:semicolon
+id|disable_irq
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|unset_nmi_callback
+c_func
+(paren
+)paren
+suffix:semicolon
+id|nmi_active
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|nmi_watchdog
+op_assign
+id|NMI_NONE
+suffix:semicolon
+)brace
+DECL|function|enable_timer_nmi_watchdog
+r_void
+id|enable_timer_nmi_watchdog
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|nmi_active
+OL
+l_int|0
+)paren
+(brace
+id|nmi_watchdog
+op_assign
+id|NMI_IO_APIC
+suffix:semicolon
+id|touch_nmi_watchdog
+c_func
+(paren
+)paren
+suffix:semicolon
+id|nmi_active
+op_assign
+l_int|1
+suffix:semicolon
+id|enable_irq
+c_func
+(paren
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1498,6 +1593,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|enable_lapic_nmi_watchdog
+)paren
+suffix:semicolon
+DECL|variable|disable_timer_nmi_watchdog
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|disable_timer_nmi_watchdog
+)paren
+suffix:semicolon
+DECL|variable|enable_timer_nmi_watchdog
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|enable_timer_nmi_watchdog
 )paren
 suffix:semicolon
 eof

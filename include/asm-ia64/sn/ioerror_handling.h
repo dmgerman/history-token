@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_IOERROR_HANDLING_H
 DECL|macro|_ASM_IA64_SN_IOERROR_HANDLING_H
 mdefine_line|#define _ASM_IA64_SN_IOERROR_HANDLING_H
@@ -286,7 +286,7 @@ id|error_return_code_t
 id|error_state_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|error_state_t
 )paren
@@ -296,61 +296,17 @@ id|error_state_t
 id|error_state_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* System critical graph interfaces */
-r_extern
-id|boolean_t
-id|is_sys_critical_vertex
-c_func
-(paren
-id|devfs_handle_t
-)paren
-suffix:semicolon
-r_extern
-id|devfs_handle_t
-id|sys_critical_first_child_get
-c_func
-(paren
-id|devfs_handle_t
-)paren
-suffix:semicolon
-r_extern
-id|devfs_handle_t
-id|sys_critical_next_child_get
-c_func
-(paren
-id|devfs_handle_t
-)paren
-suffix:semicolon
-r_extern
-id|devfs_handle_t
-id|sys_critical_parent_get
-c_func
-(paren
-id|devfs_handle_t
-)paren
-suffix:semicolon
-r_extern
-id|error_return_code_t
-id|sys_critical_graph_vertex_add
-c_func
-(paren
-id|devfs_handle_t
-comma
-id|devfs_handle_t
-r_new
-)paren
-suffix:semicolon
 multiline_comment|/* Error action interfaces */
 r_extern
 id|error_return_code_t
 id|error_action_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|error_action_f
 comma
@@ -364,7 +320,7 @@ id|error_return_code_t
 id|error_action_perform
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 DECL|macro|INFO_LBL_ERROR_SKIP_ENV
@@ -381,7 +337,7 @@ id|error_return_code_t
 id|error_skip_point_jump
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|boolean_t
 )paren
@@ -391,7 +347,7 @@ id|error_return_code_t
 id|error_skip_point_clear
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 multiline_comment|/* REFERENCED */
@@ -403,7 +359,7 @@ DECL|function|error_skip_point_mark
 id|error_skip_point_mark
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|v
 )paren
 (brace
@@ -531,7 +487,7 @@ id|counter_t
 id|error_retry_count_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern
@@ -539,7 +495,7 @@ id|error_return_code_t
 id|error_retry_count_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|counter_t
 )paren
@@ -549,7 +505,7 @@ id|counter_t
 id|error_retry_count_increment
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern
@@ -557,7 +513,7 @@ id|counter_t
 id|error_retry_count_decrement
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 multiline_comment|/* Except for the PIO Read error typically the other errors are handled in&n; * the context of an asynchronous error interrupt.&n; */
@@ -570,7 +526,7 @@ id|boolean_t
 id|is_device_shutdown
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 DECL|macro|IS_DEVICE_SHUTDOWN

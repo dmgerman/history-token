@@ -21,7 +21,7 @@ DECL|macro|INST_VA_TO_PA
 mdefine_line|#define INST_VA_TO_PA(addr)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;dep&t;addr&t;= 0, addr, 61, 3
 multiline_comment|/*&n; * This macro converts a data virtual address to a physical address&n; * Right now for simulation purposes the virtual addresses are&n; * direct mapped to physical addresses.&n; *&t;1. Lop off bits 61 thru 63 in the virtual address&n; */
 DECL|macro|DATA_VA_TO_PA
-mdefine_line|#define DATA_VA_TO_PA(addr)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;dep&t;addr&t;= 0, addr, 61, 3
+mdefine_line|#define DATA_VA_TO_PA(addr)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;tpa&t;addr&t;= addr
 multiline_comment|/*&n; * This macro converts a data physical address to a virtual address&n; * Right now for simulation purposes the virtual addresses are&n; * direct mapped to physical addresses.&n; *&t;1. Put 0x7 in bits 61 thru 63.&n; */
 DECL|macro|DATA_PA_TO_VA
 mdefine_line|#define DATA_PA_TO_VA(addr,temp)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;mov&t;temp&t;= 0x7&t;;;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;dep&t;addr&t;= temp, addr, 61, 3

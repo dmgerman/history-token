@@ -574,7 +574,11 @@ suffix:semicolon
 singleline_comment|// affects later unlinks
 id|allowed
 op_or_assign
-id|URB_NO_DMA_MAP
+(paren
+id|URB_NO_TRANSFER_DMA_MAP
+op_or
+id|URB_NO_SETUP_DMA_MAP
+)paren
 suffix:semicolon
 id|allowed
 op_or_assign

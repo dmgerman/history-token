@@ -2683,10 +2683,6 @@ id|wall_to_monotonic.tv_sec
 op_assign
 op_minus
 id|xtime.tv_sec
-op_plus
-id|INITIAL_JIFFIES
-op_div
-id|HZ
 suffix:semicolon
 id|xtime.tv_nsec
 op_assign
@@ -2704,7 +2700,8 @@ id|HZ
 suffix:semicolon
 id|wall_to_monotonic.tv_nsec
 op_assign
-l_int|0
+op_minus
+id|xtime.tv_nsec
 suffix:semicolon
 r_if
 c_cond
@@ -2868,10 +2865,6 @@ id|wall_to_monotonic.tv_sec
 op_assign
 op_minus
 id|xtime.tv_sec
-op_plus
-id|INITIAL_JIFFIES
-op_div
-id|HZ
 suffix:semicolon
 id|xtime.tv_nsec
 op_assign
@@ -2889,7 +2882,8 @@ id|HZ
 suffix:semicolon
 id|wall_to_monotonic.tv_nsec
 op_assign
-l_int|0
+op_minus
+id|xtime.tv_nsec
 suffix:semicolon
 r_return
 suffix:semicolon

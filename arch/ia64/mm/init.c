@@ -1,33 +1,37 @@
-multiline_comment|/*&n; * Initialize MMU support.&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Initialize MMU support.&n; *&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
+macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
-macro_line|#include &lt;linux/efi.h&gt;
-macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;asm/a.out.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
+macro_line|#include &lt;asm/patch.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
-DECL|variable|mmu_gathers
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
+id|DEFINE_PER_CPU
+c_func
+(paren
 r_struct
 id|mmu_gather
+comma
 id|mmu_gathers
-(braket
-id|NR_CPUS
-)braket
+)paren
 suffix:semicolon
 multiline_comment|/* References to section boundaries: */
 r_extern
@@ -98,6 +102,13 @@ comma
 l_int|50
 )brace
 suffix:semicolon
+DECL|variable|zero_page_memmap_ptr
+r_struct
+id|page
+op_star
+id|zero_page_memmap_ptr
+suffix:semicolon
+multiline_comment|/* map entry for zero page */
 r_void
 DECL|function|check_pgt_cache
 id|check_pgt_cache
@@ -191,6 +202,142 @@ id|low
 suffix:semicolon
 )brace
 )brace
+r_void
+DECL|function|update_mmu_cache
+id|update_mmu_cache
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|vaddr
+comma
+id|pte_t
+id|pte
+)paren
+(brace
+r_int
+r_int
+id|addr
+suffix:semicolon
+r_struct
+id|page
+op_star
+id|page
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pte_exec
+c_func
+(paren
+id|pte
+)paren
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* not an executable page... */
+id|page
+op_assign
+id|pte_page
+c_func
+(paren
+id|pte
+)paren
+suffix:semicolon
+multiline_comment|/* don&squot;t use VADDR: it may not be mapped on this CPU (or may have just been flushed): */
+id|addr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|page_address
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|test_bit
+c_func
+(paren
+id|PG_arch_1
+comma
+op_amp
+id|page-&gt;flags
+)paren
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* i-cache is already coherent with d-cache */
+id|flush_icache_range
+c_func
+(paren
+id|addr
+comma
+id|addr
+op_plus
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|PG_arch_1
+comma
+op_amp
+id|page-&gt;flags
+)paren
+suffix:semicolon
+multiline_comment|/* mark page as clean */
+)brace
+r_inline
+r_void
+DECL|function|ia64_set_rbs_bot
+id|ia64_set_rbs_bot
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|stack_size
+op_assign
+id|current-&gt;rlim
+(braket
+id|RLIMIT_STACK
+)braket
+dot
+id|rlim_max
+op_amp
+op_minus
+l_int|16
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stack_size
+OG
+id|MAX_USER_STACK_SIZE
+)paren
+id|stack_size
+op_assign
+id|MAX_USER_STACK_SIZE
+suffix:semicolon
+id|current-&gt;thread.rbs_bot
+op_assign
+id|STACK_TOP
+op_minus
+id|stack_size
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * This performs some platform-dependent address space initialization.&n; * On IA-64, we want to setup the VM area for the register backing&n; * store (which grows upwards) and install the gateway page which is&n; * used for signal trampolines, etc.&n; */
 r_void
 DECL|function|ia64_init_addr_space
@@ -203,6 +350,11 @@ r_struct
 id|vm_area_struct
 op_star
 id|vma
+suffix:semicolon
+id|ia64_set_rbs_bot
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we&squot;re out of memory and kmem_cache_alloc() returns NULL, we simply ignore&n;&t; * the problem.  When the process attempts to write to the register backing store&n;&t; * for the first time, it will get a SEGFAULT in this case.&n;&t; */
 id|vma
@@ -227,7 +379,7 @@ id|current-&gt;mm
 suffix:semicolon
 id|vma-&gt;vm_start
 op_assign
-id|IA64_RBS_BOT
+id|current-&gt;thread.rbs_bot
 suffix:semicolon
 id|vma-&gt;vm_end
 op_assign
@@ -376,6 +528,8 @@ r_void
 r_int
 r_int
 id|addr
+comma
+id|eaddr
 suffix:semicolon
 id|addr
 op_assign
@@ -383,25 +537,32 @@ op_assign
 r_int
 r_int
 )paren
+id|ia64_imva
+c_func
+(paren
 op_amp
 id|__init_begin
+)paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-suffix:semicolon
-id|addr
-OL
+id|eaddr
+op_assign
 (paren
 r_int
 r_int
 )paren
+id|ia64_imva
+c_func
+(paren
 op_amp
 id|__init_end
+)paren
 suffix:semicolon
+r_while
+c_loop
+(paren
 id|addr
-op_add_assign
-id|PAGE_SIZE
+OL
+id|eaddr
 )paren
 (brace
 id|ClearPageReserved
@@ -434,6 +595,10 @@ id|addr
 suffix:semicolon
 op_increment
 id|totalram_pages
+suffix:semicolon
+id|addr
+op_add_assign
+id|PAGE_SIZE
 suffix:semicolon
 )brace
 id|printk
@@ -889,12 +1054,12 @@ id|pgtable_cache_size
 suffix:semicolon
 macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 )brace
-multiline_comment|/*&n; * This is like put_dirty_page() but installs a clean page with PAGE_GATE protection&n; * (execute-only, typically).&n; */
+multiline_comment|/*&n; * This is like put_dirty_page() but installs a clean page in the kernel&squot;s page table.&n; */
 r_struct
 id|page
 op_star
-DECL|function|put_gate_page
-id|put_gate_page
+DECL|function|put_kernel_page
+id|put_kernel_page
 (paren
 r_struct
 id|page
@@ -904,6 +1069,9 @@ comma
 r_int
 r_int
 id|address
+comma
+id|pgprot_t
+id|pgprot
 )paren
 (brace
 id|pgd_t
@@ -932,7 +1100,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;put_gate_page: gate page at 0x%p not in reserved memory&bslash;n&quot;
+l_string|&quot;put_kernel_page: page at 0x%p not in reserved memory&bslash;n&quot;
 comma
 id|page_address
 c_func
@@ -1034,7 +1202,7 @@ c_func
 (paren
 id|page
 comma
-id|PAGE_GATE
+id|pgprot
 )paren
 )paren
 suffix:semicolon
@@ -1059,6 +1227,95 @@ r_return
 id|page
 suffix:semicolon
 )brace
+r_static
+r_void
+DECL|function|setup_gate
+id|setup_gate
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|page
+op_star
+id|page
+suffix:semicolon
+r_extern
+r_char
+id|__start_gate_section
+(braket
+)braket
+suffix:semicolon
+multiline_comment|/*&n;&t; * Map the gate page twice: once read-only to export the ELF headers etc. and once&n;&t; * execute-only page to enable privilege-promotion via &quot;epc&quot;:&n;&t; */
+id|page
+op_assign
+id|virt_to_page
+c_func
+(paren
+id|ia64_imva
+c_func
+(paren
+id|__start_gate_section
+)paren
+)paren
+suffix:semicolon
+id|put_kernel_page
+c_func
+(paren
+id|page
+comma
+id|GATE_ADDR
+comma
+id|PAGE_READONLY
+)paren
+suffix:semicolon
+macro_line|#ifdef HAVE_BUGGY_SEGREL
+id|page
+op_assign
+id|virt_to_page
+c_func
+(paren
+id|ia64_imva
+c_func
+(paren
+id|__start_gate_section
+op_plus
+id|PAGE_SIZE
+)paren
+)paren
+suffix:semicolon
+id|put_kernel_page
+c_func
+(paren
+id|page
+comma
+id|GATE_ADDR
+op_plus
+id|PAGE_SIZE
+comma
+id|PAGE_GATE
+)paren
+suffix:semicolon
+macro_line|#else
+id|put_kernel_page
+c_func
+(paren
+id|page
+comma
+id|GATE_ADDR
+op_plus
+id|PERCPU_PAGE_SIZE
+comma
+id|PAGE_GATE
+)paren
+suffix:semicolon
+macro_line|#endif
+id|ia64_patch_gate
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 r_void
 id|__init
 DECL|function|ia64_mmu_init
@@ -1072,8 +1329,6 @@ id|my_cpu_data
 r_int
 r_int
 id|psr
-comma
-id|rid
 comma
 id|pta
 comma
@@ -1093,74 +1348,10 @@ macro_line|#&t;define VHPT_ENABLE_BIT&t;0
 macro_line|#else
 macro_line|#&t;define VHPT_ENABLE_BIT&t;1
 macro_line|#endif
-multiline_comment|/*&n;&t; * Set up the kernel identity mapping for regions 6 and 5.  The mapping for region&n;&t; * 7 is setup up in _start().&n;&t; */
+multiline_comment|/* Pin mapping for percpu area into TLB */
 id|psr
 op_assign
 id|ia64_clear_ic
-c_func
-(paren
-)paren
-suffix:semicolon
-id|rid
-op_assign
-id|ia64_rid
-c_func
-(paren
-id|IA64_REGION_ID_KERNEL
-comma
-id|__IA64_UNCACHED_OFFSET
-)paren
-suffix:semicolon
-id|ia64_set_rr
-c_func
-(paren
-id|__IA64_UNCACHED_OFFSET
-comma
-(paren
-id|rid
-op_lshift
-l_int|8
-)paren
-op_or
-(paren
-id|IA64_GRANULE_SHIFT
-op_lshift
-l_int|2
-)paren
-)paren
-suffix:semicolon
-id|rid
-op_assign
-id|ia64_rid
-c_func
-(paren
-id|IA64_REGION_ID_KERNEL
-comma
-id|VMALLOC_START
-)paren
-suffix:semicolon
-id|ia64_set_rr
-c_func
-(paren
-id|VMALLOC_START
-comma
-(paren
-id|rid
-op_lshift
-l_int|8
-)paren
-op_or
-(paren
-id|PAGE_SHIFT
-op_lshift
-l_int|2
-)paren
-op_or
-l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* ensure rr6 is up-to-date before inserting the PERCPU_ADDR translation: */
-id|ia64_srlz_d
 c_func
 (paren
 )paren
@@ -2024,6 +2215,18 @@ op_amp
 id|num_physpages
 )paren
 suffix:semicolon
+id|zero_page_memmap_ptr
+op_assign
+id|virt_to_page
+c_func
+(paren
+id|ia64_imva
+c_func
+(paren
+id|empty_zero_page
+)paren
+)paren
+suffix:semicolon
 )brace
 macro_line|#else /* !CONFIG_DISCONTIGMEM */
 r_void
@@ -2375,6 +2578,18 @@ id|zones_size
 )paren
 suffix:semicolon
 macro_line|#  endif /* !CONFIG_VIRTUAL_MEM_MAP */
+id|zero_page_memmap_ptr
+op_assign
+id|virt_to_page
+c_func
+(paren
+id|ia64_imva
+c_func
+(paren
+id|empty_zero_page
+)paren
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 r_static
@@ -2443,6 +2658,39 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Boot command-line option &quot;nolwsys&quot; can be used to disable the use of any light-weight&n; * system call handler.  When this option is in effect, all fsyscalls will end up bubbling&n; * down into the kernel and calling the normal (heavy-weight) syscall handler.  This is&n; * useful for performance testing, but conceivably could also come in handy for debugging&n; * purposes.&n; */
+DECL|variable|nolwsys
+r_static
+r_int
+id|nolwsys
+suffix:semicolon
+r_static
+r_int
+id|__init
+DECL|function|nolwsys_setup
+id|nolwsys_setup
+(paren
+r_char
+op_star
+id|s
+)paren
+(brace
+id|nolwsys
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;nolwsys&quot;
+comma
+id|nolwsys_setup
+)paren
+suffix:semicolon
 r_void
 DECL|function|mem_init
 id|mem_init
@@ -2450,12 +2698,6 @@ id|mem_init
 r_void
 )paren
 (brace
-r_extern
-r_char
-id|__start_gate_section
-(braket
-)braket
-suffix:semicolon
 r_int
 id|reserved_pages
 comma
@@ -2472,6 +2714,9 @@ suffix:semicolon
 id|pg_data_t
 op_star
 id|pgdat
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 r_static
 r_struct
@@ -2747,19 +2992,68 @@ l_int|1
 op_assign
 id|num_pgt_pages
 suffix:semicolon
-multiline_comment|/* install the gate page in the global page table: */
-id|put_gate_page
-c_func
+multiline_comment|/*&n;&t; * For fsyscall entrpoints with no light-weight handler, use the ordinary&n;&t; * (heavy-weight) handler, but mark it by setting bit 0, so the fsyscall entry&n;&t; * code can tell them apart.&n;&t; */
+r_for
+c_loop
 (paren
-id|virt_to_page
-c_func
-(paren
-id|__start_gate_section
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NR_syscalls
+suffix:semicolon
+op_increment
+id|i
 )paren
-comma
-id|GATE_ADDR
+(brace
+r_extern
+r_int
+r_int
+id|fsyscall_table
+(braket
+id|NR_syscalls
+)braket
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|sys_call_table
+(braket
+id|NR_syscalls
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|fsyscall_table
+(braket
+id|i
+)braket
+op_logical_or
+id|nolwsys
+)paren
+id|fsyscall_table
+(braket
+id|i
+)braket
+op_assign
+id|sys_call_table
+(braket
+id|i
+)braket
+op_or
+l_int|1
+suffix:semicolon
+)brace
+id|setup_gate
+c_func
+(paren
 )paren
 suffix:semicolon
+multiline_comment|/* setup gate pages before we free up boot memory... */
 macro_line|#ifdef CONFIG_IA32_SUPPORT
 id|ia32_gdt_init
 c_func

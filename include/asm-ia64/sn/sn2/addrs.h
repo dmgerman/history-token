@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2001-2002 Silicon Graphics, Inc.  All rights reserved.&n; */
+multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2001-2003 Silicon Graphics, Inc.  All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_SN2_ADDRS_H
 DECL|macro|_ASM_IA64_SN_SN2_ADDRS_H
 mdefine_line|#define _ASM_IA64_SN_SN2_ADDRS_H
@@ -72,7 +72,7 @@ mdefine_line|#define GLOBAL_MMR_SPACE&t;0xc000000800000000&t;/* Global MMR space
 DECL|macro|GLOBAL_PHYS_MMR_SPACE
 mdefine_line|#define GLOBAL_PHYS_MMR_SPACE&t;0x0000000800000000&t;/* Global Physical MMR space */
 DECL|macro|GET_SPACE
-mdefine_line|#define GET_SPACE&t;&t;0xc000001000000000&t;/* GET space */
+mdefine_line|#define GET_SPACE&t;&t;0xe000001000000000&t;/* GET space */
 DECL|macro|AMO_SPACE
 mdefine_line|#define AMO_SPACE&t;&t;0xc000002000000000&t;/* AMO space */
 DECL|macro|CACHEABLE_MEM_SPACE

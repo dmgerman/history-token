@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2002 Silicon Graphics, Inc.  All rights reserved&n; *&n; * This implemenation of synchronization variables is heavily based on&n; * one done by Steve Lord &lt;lord@sgi.com&gt;&n; *&n; * Paul Cassella &lt;pwc@sgi.com&gt;&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This implemenation of synchronization variables is heavily based on&n; * one done by Steve Lord &lt;lord@sgi.com&gt;&n; *&n; * Paul Cassella &lt;pwc@sgi.com&gt;&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

@@ -124,7 +124,7 @@ l_int|0
 )paren
 comma
 macro_line|#endif
-multiline_comment|/* Deduced by Jonathan Woithe &lt;jwoithe@physics.adelaide.edu.au&gt;&n; * Entry needed for flags: US_FL_FIX_INQUIRY because initial inquiry message&n; * always fails and confuses drive; without US_FL_START_STOP, drive accesses&n; * (read or write) all fail.&n; */
+multiline_comment|/* Deduced by Jonathan Woithe &lt;jwoithe@physics.adelaide.edu.au&gt;&n; * Entry needed for flags: US_FL_FIX_INQUIRY because initial inquiry message&n; * always fails and confuses drive.&n; */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -140,15 +140,13 @@ l_string|&quot;Buffalo&quot;
 comma
 l_string|&quot;DUB-P40G HDD&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_DEVICE
 comma
-id|US_PR_BULK
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
 id|US_FL_FIX_INQUIRY
-op_or
-id|US_FL_START_STOP
 )paren
 comma
 macro_line|#ifdef CONFIG_USB_STORAGE_DPCM
@@ -173,7 +171,7 @@ id|US_PR_DPCM_USB
 comma
 l_int|NULL
 comma
-id|US_FL_START_STOP
+l_int|0
 )paren
 comma
 macro_line|#endif
@@ -199,7 +197,7 @@ id|US_PR_BULK
 comma
 l_int|NULL
 comma
-id|US_FL_START_STOP
+l_int|0
 )paren
 comma
 multiline_comment|/* Patch submitted by Philipp Friedrich &lt;philipp@void.at&gt; */
@@ -302,31 +300,6 @@ comma
 id|US_FL_SINGLE_LUN
 )paren
 comma
-multiline_comment|/* Reported by Jan Willamowius &lt;jan@willamowius.de&gt;&n; * The device needs the flags only.&n; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x04c8
-comma
-l_int|0x0723
-comma
-l_int|0x0000
-comma
-l_int|0x9999
-comma
-l_string|&quot;Konica&quot;
-comma
-l_string|&quot;KD-200Z&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_BULK
-comma
-l_int|NULL
-comma
-id|US_FL_START_STOP
-)paren
-comma
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -367,9 +340,9 @@ l_string|&quot;ScanLogic&quot;
 comma
 l_string|&quot;SL11R-IDE&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_DEVICE
 comma
-id|US_PR_BULK
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
@@ -498,8 +471,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_SINGLE_LUN
-op_or
-id|US_FL_START_STOP
 )paren
 comma
 multiline_comment|/* This entry is from Andries.Brouwer@cwi.nl */
@@ -524,7 +495,7 @@ id|US_PR_DPCM_USB
 comma
 id|sddr09_init
 comma
-id|US_FL_START_STOP
+l_int|0
 )paren
 comma
 macro_line|#endif
@@ -744,8 +715,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_INQUIRY
-op_or
-id|US_FL_START_STOP
 )paren
 comma
 multiline_comment|/* This entry is needed because the device reports Sub=ff */
@@ -771,8 +740,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_SINGLE_LUN
-op_or
-id|US_FL_START_STOP
 op_or
 id|US_FL_MODE_XLATE
 )paren
@@ -800,8 +767,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_SINGLE_LUN
-op_or
-id|US_FL_START_STOP
 )paren
 comma
 id|UNUSUAL_DEV
@@ -826,8 +791,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_SINGLE_LUN
-op_or
-id|US_FL_START_STOP
 )paren
 comma
 multiline_comment|/* Submitted by Klaus Mueller &lt;k.mueller@intershop.de&gt; */
@@ -854,8 +817,6 @@ l_int|NULL
 comma
 id|US_FL_SINGLE_LUN
 op_or
-id|US_FL_START_STOP
-op_or
 id|US_FL_MODE_XLATE
 )paren
 comma
@@ -881,8 +842,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_SINGLE_LUN
-op_or
-id|US_FL_START_STOP
 )paren
 comma
 multiline_comment|/* Submitted by Nathan Babb &lt;nathan@lexi.com&gt; */
@@ -998,9 +957,9 @@ l_string|&quot;Pentax&quot;
 comma
 l_string|&quot;Optio 2/3/400&quot;
 comma
-id|US_SC_8070
+id|US_SC_DEVICE
 comma
-id|US_PR_CBI
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
@@ -1221,9 +1180,9 @@ l_string|&quot;SIIG&quot;
 comma
 l_string|&quot;CompactFlash Card Reader&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_DEVICE
 comma
-id|US_PR_BULK
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
@@ -1246,9 +1205,9 @@ l_string|&quot;EagleTec&quot;
 comma
 l_string|&quot;External Hard Disk&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_DEVICE
 comma
-id|US_PR_BULK
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
@@ -1269,6 +1228,33 @@ comma
 l_string|&quot;Unknown&quot;
 comma
 l_string|&quot;GL641USB based CF Card reader&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+op_or
+id|US_FL_MODE_XLATE
+)paren
+comma
+multiline_comment|/* Reported by Hanno Boeck &lt;hanno@gmx.de&gt;&n; * Taken from the Lycoris Kernel */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0636
+comma
+l_int|0x0003
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;Vivitar&quot;
+comma
+l_string|&quot;Vivicam 35Xx&quot;
 comma
 id|US_SC_SCSI
 comma
@@ -1328,61 +1314,9 @@ comma
 l_int|NULL
 comma
 id|US_FL_SINGLE_LUN
-op_or
-id|US_FL_START_STOP
 )paren
 comma
 macro_line|#endif
-multiline_comment|/* Submitted by kedar@centillium&n; * Needed for START_STOP flag, but that is unconfirmed */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0686
-comma
-l_int|0x4006
-comma
-l_int|0x0001
-comma
-l_int|0x0001
-comma
-l_string|&quot;Minolta&quot;
-comma
-l_string|&quot;Dimage S304&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_BULK
-comma
-l_int|NULL
-comma
-id|US_FL_START_STOP
-)paren
-comma
-multiline_comment|/* Submitted by f.brugmans@hccnet.nl&n; * Needed for START_STOP flag */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0686
-comma
-l_int|0x4007
-comma
-l_int|0x0001
-comma
-l_int|0x0001
-comma
-l_string|&quot;Minolta&quot;
-comma
-l_string|&quot;Dimage S304&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_BULK
-comma
-l_int|NULL
-comma
-id|US_FL_START_STOP
-)paren
-comma
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -1453,8 +1387,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_SINGLE_LUN
-op_or
-id|US_FL_START_STOP
 )paren
 comma
 id|UNUSUAL_DEV
@@ -1478,7 +1410,7 @@ id|US_PR_BULK
 comma
 l_int|NULL
 comma
-id|US_FL_IGNORE_SER
+l_int|0
 )paren
 comma
 id|UNUSUAL_DEV
@@ -1528,8 +1460,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_SINGLE_LUN
-op_or
-id|US_FL_START_STOP
 )paren
 comma
 macro_line|#endif
@@ -1629,7 +1559,7 @@ id|US_PR_DPCM_USB
 comma
 l_int|NULL
 comma
-id|US_FL_START_STOP
+l_int|0
 )paren
 comma
 macro_line|#endif
@@ -1848,9 +1778,9 @@ l_string|&quot;Datafab&quot;
 comma
 l_string|&quot;KECF-USB&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_DEVICE
 comma
-id|US_PR_BULK
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
@@ -2054,58 +1984,7 @@ l_int|NULL
 comma
 id|US_FL_MODE_XLATE
 op_or
-id|US_FL_START_STOP
-op_or
 id|US_FL_FIX_INQUIRY
-)paren
-comma
-multiline_comment|/* Submitted by Brian Hall &lt;brihall@pcisys.net&gt;&n; * Needed for START_STOP flag */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0c76
-comma
-l_int|0x0003
-comma
-l_int|0x0100
-comma
-l_int|0x0100
-comma
-l_string|&quot;JMTek&quot;
-comma
-l_string|&quot;USBDrive&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_BULK
-comma
-l_int|NULL
-comma
-id|US_FL_START_STOP
-)paren
-comma
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0c76
-comma
-l_int|0x0005
-comma
-l_int|0x0100
-comma
-l_int|0x0100
-comma
-l_string|&quot;JMTek&quot;
-comma
-l_string|&quot;USBDrive&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_BULK
-comma
-l_int|NULL
-comma
-id|US_FL_START_STOP
 )paren
 comma
 multiline_comment|/* Reported by Dan Pilone &lt;pilone@slac.com&gt;&n; * The device needs the flags only.&n; * Also reported by Brian Hall &lt;brihall@pcisys.net&gt;, again for flags.&n; * I also suspect this device may have a broken serial number.&n; */
@@ -2124,15 +2003,13 @@ l_string|&quot;CCYU TECHNOLOGY&quot;
 comma
 l_string|&quot;EasyDisk Portable Device&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_DEVICE
 comma
-id|US_PR_BULK
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
 id|US_FL_MODE_XLATE
-op_or
-id|US_FL_START_STOP
 )paren
 comma
 macro_line|#ifdef CONFIG_USB_STORAGE_SDDR55
@@ -2184,8 +2061,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_MODE_XLATE
-op_or
-id|US_FL_START_STOP
 )paren
 comma
 eof
