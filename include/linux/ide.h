@@ -1461,11 +1461,19 @@ op_star
 id|settings
 suffix:semicolon
 multiline_comment|/* /proc/ide/ drive settings */
+DECL|member|devfs_name
+r_char
+id|devfs_name
+(braket
+l_int|64
+)braket
+suffix:semicolon
+multiline_comment|/* devfs crap */
 DECL|member|de
 id|devfs_handle_t
 id|de
 suffix:semicolon
-multiline_comment|/* directory for device */
+multiline_comment|/* will go away soon */
 DECL|member|hwif
 r_struct
 id|hwif_s
