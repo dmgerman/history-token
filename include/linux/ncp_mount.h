@@ -5,7 +5,7 @@ mdefine_line|#define _LINUX_NCP_MOUNT_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ncp.h&gt;
 DECL|macro|NCP_MOUNT_VERSION
-mdefine_line|#define NCP_MOUNT_VERSION 3
+mdefine_line|#define NCP_MOUNT_VERSION 3&t;/* Binary */
 multiline_comment|/* Values for flags */
 DECL|macro|NCP_MOUNT_SOFT
 mdefine_line|#define NCP_MOUNT_SOFT&t;&t;0x0001
@@ -93,7 +93,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|NCP_MOUNT_VERSION_V4
-mdefine_line|#define NCP_MOUNT_VERSION_V4&t;(4)
+mdefine_line|#define NCP_MOUNT_VERSION_V4&t;(4)&t;/* Binary or text */
 DECL|struct|ncp_mount_data_v4
 r_struct
 id|ncp_mount_data_v4
@@ -165,6 +165,8 @@ id|dir_mode
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|NCP_MOUNT_VERSION_V5
+mdefine_line|#define NCP_MOUNT_VERSION_V5&t;(5)&t;/* Text only */
 macro_line|#ifdef __KERNEL__
 DECL|struct|ncp_mount_data_kernel
 r_struct
@@ -237,6 +239,10 @@ suffix:semicolon
 DECL|member|dir_mode
 id|__kernel_mode_t
 id|dir_mode
+suffix:semicolon
+DECL|member|info_fd
+r_int
+id|info_fd
 suffix:semicolon
 )brace
 suffix:semicolon
