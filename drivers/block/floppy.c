@@ -18423,17 +18423,6 @@ id|id
 op_assign
 l_int|0
 comma
-dot
-id|dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Floppy Drive&quot;
-comma
-)brace
-comma
 )brace
 suffix:semicolon
 DECL|function|floppy_find

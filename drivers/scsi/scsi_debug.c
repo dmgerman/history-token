@@ -9034,11 +9034,6 @@ id|pseudo_primary
 op_assign
 (brace
 dot
-id|name
-op_assign
-l_string|&quot;Host/Pseudo Bridge&quot;
-comma
-dot
 id|bus_id
 op_assign
 l_string|&quot;pseudo_0&quot;
@@ -9342,14 +9337,6 @@ id|sdbg_host-&gt;dev.release
 op_assign
 op_amp
 id|sdebug_release_adapter
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|sdbg_host-&gt;dev.name
-comma
-l_string|&quot;scsi debug adapter&quot;
-)paren
 suffix:semicolon
 id|sprintf
 c_func

@@ -9,11 +9,6 @@ id|legacy_bus
 op_assign
 (brace
 dot
-id|name
-op_assign
-l_string|&quot;legacy bus&quot;
-comma
-dot
 id|bus_id
 op_assign
 l_string|&quot;legacy&quot;
