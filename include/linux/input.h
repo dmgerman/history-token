@@ -1327,8 +1327,9 @@ DECL|macro|FF_MAX
 mdefine_line|#define FF_MAX&t;&t;0x7f
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * In-kernel definitions.&n; */
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
 DECL|macro|NBITS
 mdefine_line|#define NBITS(x) ((((x)-1)/BITS_PER_LONG)+1)
 DECL|macro|BIT
