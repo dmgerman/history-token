@@ -9603,6 +9603,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|unregister_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|pci_free_consistent
 (paren
 id|pdev
@@ -9626,11 +9632,6 @@ comma
 id|tp-&gt;rx_ring
 comma
 id|tp-&gt;rx_ring_dma
-)paren
-suffix:semicolon
-id|unregister_netdev
-(paren
-id|dev
 )paren
 suffix:semicolon
 r_if

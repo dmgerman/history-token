@@ -4454,6 +4454,30 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|local-&gt;dingo
+)paren
+id|do_reset
+c_func
+(paren
+id|dev
+comma
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* a kludge to make the cem56 work */
+id|link-&gt;dev
+op_assign
+op_amp
+id|local-&gt;node
+suffix:semicolon
+id|link-&gt;state
+op_and_assign
+op_complement
+id|DEV_CONFIG_PENDING
+suffix:semicolon
+r_if
+c_cond
+(paren
 (paren
 id|err
 op_assign
@@ -4472,6 +4496,10 @@ id|KNOT_XIRC
 l_string|&quot;register_netdev() failed&bslash;n&quot;
 )paren
 suffix:semicolon
+id|link-&gt;dev
+op_assign
+l_int|NULL
+suffix:semicolon
 r_goto
 id|config_error
 suffix:semicolon
@@ -4484,30 +4512,6 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|link-&gt;dev
-op_assign
-op_amp
-id|local-&gt;node
-suffix:semicolon
-id|link-&gt;state
-op_and_assign
-op_complement
-id|DEV_CONFIG_PENDING
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|local-&gt;dingo
-)paren
-id|do_reset
-c_func
-(paren
-id|dev
-comma
-l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* a kludge to make the cem56 work */
 multiline_comment|/* give some infos about the hardware */
 id|printk
 c_func
