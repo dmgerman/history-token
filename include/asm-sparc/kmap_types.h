@@ -26,6 +26,12 @@ comma
 DECL|enumerator|KM_BIO_DST_IRQ
 id|KM_BIO_DST_IRQ
 comma
+DECL|enumerator|KM_PTE0
+id|KM_PTE0
+comma
+DECL|enumerator|KM_PTE1
+id|KM_PTE1
+comma
 DECL|enumerator|KM_TYPE_NR
 id|KM_TYPE_NR
 )brace

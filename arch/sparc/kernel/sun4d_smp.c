@@ -45,15 +45,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|task_struct
-op_star
-id|current_set
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-r_extern
 r_volatile
 r_int
 id|smp_processors_ready

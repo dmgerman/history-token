@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: irq.c,v 1.114 2001/12/11 04:55:51 davem Exp $&n; *  arch/sparc/kernel/irq.c:  Interrupt request handling routines. On the&n; *                            Sparc the IRQ&squot;s are basically &squot;cast in stone&squot;&n; *                            and you are supposed to probe the prom&squot;s device&n; *                            node trees to find out who&squot;s got which IRQ.&n; *&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1995 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *  Copyright (C) 1995 Pete A. Zaitcev (zaitcev@yahoo.com)&n; *  Copyright (C) 1996 Dave Redman (djhr@tadpole.co.uk)&n; *  Copyright (C) 1998-2000 Anton Blanchard (anton@samba.org)&n; */
+multiline_comment|/*  $Id: irq.c,v 1.114 2001/12/11 04:55:51 davem Exp $&n; *  arch/sparc/kernel/irq.c:  Interrupt request handling routines. On the&n; *                            Sparc the IRQ&squot;s are basically &squot;cast in stone&squot;&n; *                            and you are supposed to probe the prom&squot;s device&n; *                            node trees to find out who&squot;s got which IRQ.&n; *&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1995 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *  Copyright (C) 1995,2002 Pete A. Zaitcev (zaitcev@yahoo.com)&n; *  Copyright (C) 1996 Dave Redman (djhr@tadpole.co.uk)&n; *  Copyright (C) 1998-2000 Anton Blanchard (anton@samba.org)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -33,6 +33,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#include &lt;asm/pcic.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 multiline_comment|/*&n; * Dave Redman (djhr@tadpole.co.uk)&n; *&n; * IRQ numbers.. These are no longer restricted to 15..&n; *&n; * this is done to enable SBUS cards and onboard IO to be masked&n; * correctly. using the interrupt level isn&squot;t good enough.&n; *&n; * For example:&n; *   A device interrupting at sbus level6 and the Floppy both come in&n; *   at IRQ11, but enabling and disabling them requires writing to&n; *   different bits in the SLAVIO/SEC.&n; *&n; * As a result of these changes sun4m machines could now support&n; * directed CPU interrupts using the existing enable/disable irq code&n; * with tweaks.&n; *&n; */
 DECL|function|irq_panic
 r_static
@@ -299,10 +300,20 @@ l_int|0
 suffix:semicolon
 id|j
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 id|j
 op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cpu_online
+c_func
+(paren
+id|j
+)paren
 )paren
 id|seq_printf
 c_func
@@ -324,6 +335,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|seq_printf
 c_func
@@ -742,10 +754,20 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cpu_online
+c_func
+(paren
+id|i
+)paren
 )paren
 id|printk
 c_func
@@ -761,6 +783,7 @@ id|BR_GLOBALIRQ_LOCK
 )braket
 )paren
 suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -790,10 +813,20 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cpu_online
+c_func
+(paren
+id|i
+)paren
 )paren
 id|printk
 c_func
@@ -807,6 +840,7 @@ id|i
 )paren
 )paren
 suffix:semicolon
+)brace
 id|printk
 c_func
 (paren

@@ -363,10 +363,16 @@ l_int|0
 suffix:semicolon
 id|x
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 id|x
 op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cpu_online
 )paren
 id|seq_printf
 c_func
@@ -388,6 +394,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|seq_printf
 c_func

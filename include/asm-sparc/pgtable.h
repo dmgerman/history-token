@@ -5,6 +5,9 @@ mdefine_line|#define _SPARC_PGTABLE_H
 multiline_comment|/*  asm-sparc/pgtable.h:  Defines and functions used to work&n; *                        with Sparc page tables.&n; *&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+multiline_comment|/* XXX This creates many nasty warnings. */
+multiline_comment|/* #include &lt;linux/highmem.h&gt; */
+multiline_comment|/* kmap_atomic in pte_offset_map */
 macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#ifdef CONFIG_SUN4
 macro_line|#include &lt;asm/pgtsun4.h&gt;
@@ -18,6 +21,9 @@ macro_line|#include &lt;asm/sbus.h&gt;
 macro_line|#include &lt;asm/btfixup.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#ifndef __ASSEMBLY__
+r_struct
+id|vm_area_struct
+suffix:semicolon
 r_extern
 r_void
 id|load_mmu
@@ -556,7 +562,7 @@ mdefine_line|#define BAD_PAGETABLE __bad_pagetable()
 DECL|macro|BAD_PAGE
 mdefine_line|#define BAD_PAGE __bad_page()
 DECL|macro|ZERO_PAGE
-mdefine_line|#define ZERO_PAGE(vaddr) (mem_map + (((unsigned long)&amp;empty_zero_page - PAGE_OFFSET + phys_base) &gt;&gt; PAGE_SHIFT))
+mdefine_line|#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
 multiline_comment|/* number of bits that fit into a memory pointer */
 DECL|macro|BITS_PER_PTR
 mdefine_line|#define BITS_PER_PTR      (8*sizeof(unsigned long))
@@ -568,8 +574,9 @@ mdefine_line|#define SIZEOF_PTR_LOG2   2
 id|BTFIXUPDEF_CALL_CONST
 c_func
 (paren
-r_int
-r_int
+r_struct
+id|page
+op_star
 comma
 id|pmd_page
 comma
@@ -1082,23 +1089,23 @@ mdefine_line|#define pte_mkyoung(pte) BTFIXUP_CALL(pte_mkyoung)(pte)
 DECL|macro|page_pte_prot
 mdefine_line|#define page_pte_prot(page, prot)&t;mk_pte(page, prot)
 DECL|macro|page_pte
-mdefine_line|#define page_pte(page)&t;&t;&t;page_pte_prot(page, __pgprot(0))
-multiline_comment|/* Permanent address of a page. */
-DECL|macro|page_address
-mdefine_line|#define page_address(page)  ((page)-&gt;virtual)
+mdefine_line|#define page_pte(page)&t;&t;&t;mk_pte(page, __pgprot(0))
+DECL|macro|pfn_pte
+mdefine_line|#define pfn_pte(pfn, prot)&t;&t;mk_pte(pfn_to_page(pfn), prot)
 id|BTFIXUPDEF_CALL
 c_func
 (paren
-r_struct
-id|page
-op_star
+r_int
+r_int
 comma
-id|pte_page
+id|pte_pfn
 comma
 id|pte_t
 )paren
+DECL|macro|pte_pfn
+mdefine_line|#define pte_pfn(pte) BTFIXUP_CALL(pte_pfn)(pte)
 DECL|macro|pte_page
-mdefine_line|#define pte_page(pte) BTFIXUP_CALL(pte_page)(pte)
+mdefine_line|#define pte_page(pte)&t;pfn_to_page(pte_pfn(pte))
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
 id|BTFIXUPDEF_CALL_CONST
 c_func
@@ -1145,36 +1152,6 @@ DECL|macro|mk_pte_phys
 mdefine_line|#define mk_pte_phys(page,pgprot) BTFIXUP_CALL(mk_pte_phys)(page,pgprot)
 DECL|macro|mk_pte_io
 mdefine_line|#define mk_pte_io(page,pgprot,space) BTFIXUP_CALL(mk_pte_io)(page,pgprot,space)
-id|BTFIXUPDEF_CALL
-c_func
-(paren
-r_void
-comma
-id|pgd_set
-comma
-id|pgd_t
-op_star
-comma
-id|pmd_t
-op_star
-)paren
-id|BTFIXUPDEF_CALL
-c_func
-(paren
-r_void
-comma
-id|pmd_set
-comma
-id|pmd_t
-op_star
-comma
-id|pte_t
-op_star
-)paren
-DECL|macro|pgd_set
-mdefine_line|#define pgd_set(pgdp,pmdp) BTFIXUP_CALL(pgd_set)(pgdp,pmdp)
-DECL|macro|pmd_set
-mdefine_line|#define pmd_set(pmdp,ptep) BTFIXUP_CALL(pmd_set)(pmdp,ptep)
 id|BTFIXUPDEF_INT
 c_func
 (paren
@@ -1247,6 +1224,7 @@ mdefine_line|#define pgd_offset(mm, address) ((mm)-&gt;pgd + pgd_index(address))
 multiline_comment|/* to find an entry in a kernel page-table-directory */
 DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
+multiline_comment|/* Find an entry in the second-level page table.. */
 id|BTFIXUPDEF_CALL
 c_func
 (paren
@@ -1261,13 +1239,16 @@ comma
 r_int
 r_int
 )paren
+DECL|macro|pmd_offset
+mdefine_line|#define pmd_offset(dir,addr) BTFIXUP_CALL(pmd_offset)(dir,addr)
+multiline_comment|/* Find an entry in the third-level page table.. */
 id|BTFIXUPDEF_CALL
 c_func
 (paren
 id|pte_t
 op_star
 comma
-id|pte_offset
+id|pte_offset_kernel
 comma
 id|pmd_t
 op_star
@@ -1275,22 +1256,28 @@ comma
 r_int
 r_int
 )paren
-multiline_comment|/* Find an entry in the second-level page table.. */
-DECL|macro|pmd_offset
-mdefine_line|#define pmd_offset(dir,addr) BTFIXUP_CALL(pmd_offset)(dir,addr)
-multiline_comment|/* Find an entry in the third-level page table.. */
-DECL|macro|pte_offset
-mdefine_line|#define pte_offset(dir,addr) BTFIXUP_CALL(pte_offset)(dir,addr)
+DECL|macro|pte_offset_kernel
+mdefine_line|#define pte_offset_kernel(dir,addr) BTFIXUP_CALL(pte_offset_kernel)(dir,addr)
+multiline_comment|/* __pte_offset is not BTFIXUP-ed, but PTRS_PER_PTE is, so it&squot;s ok. */
+DECL|macro|__pte_offset
+mdefine_line|#define __pte_offset(address) &bslash;&n;&t;(((address) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
+macro_line|#if 0 /* XXX Should we expose pmd_page_kernel? */
+mdefine_line|#define pte_offset_kernel(dir, addr) &bslash;&n;&t;((pte_t *) pmd_page_kernel(*(dir)) + __pte_offset(addr))
+macro_line|#endif
+DECL|macro|pte_offset_map
+mdefine_line|#define pte_offset_map(dir, addr) &bslash;&n;&t;((pte_t *) kmap_atomic(pmd_page(*(dir)), KM_PTE0) + __pte_offset(addr))
+DECL|macro|pte_offset_map_nested
+mdefine_line|#define pte_offset_map_nested(dir, addr) &bslash;&n;&t;((pte_t *) kmap_atomic(pmd_page(*(dir)), KM_PTE1) + __pte_offset(addr))
+DECL|macro|pte_unmap
+mdefine_line|#define pte_unmap(pte)&t;&t;kunmap_atomic(pte, KM_PTE0)
+DECL|macro|pte_unmap_nested
+mdefine_line|#define pte_unmap_nested(pte)&t;kunmap_atomic(pte, KM_PTE1)
 multiline_comment|/* The permissions for pgprot_val to make a page mapped on the obio space */
 r_extern
 r_int
 r_int
 id|pg_iobits
 suffix:semicolon
-DECL|macro|flush_icache_page
-mdefine_line|#define flush_icache_page(vma, pg)      do { } while(0)
-DECL|macro|flush_icache_user_range
-mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)&t;do { } while (0)
 multiline_comment|/* Certain architectures need to do special things when pte&squot;s&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
 id|BTFIXUPDEF_CALL
 c_func
