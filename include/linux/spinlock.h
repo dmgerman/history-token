@@ -28,6 +28,8 @@ DECL|macro|write_lock_bh
 mdefine_line|#define write_lock_bh(lock)&t;&t;&t;do { local_bh_disable();         write_lock(lock); } while (0)
 DECL|macro|spin_unlock_irqrestore
 mdefine_line|#define spin_unlock_irqrestore(lock, flags)&t;do { spin_unlock(lock);  local_irq_restore(flags); } while (0)
+DECL|macro|_raw_spin_unlock_irqrestore
+mdefine_line|#define _raw_spin_unlock_irqrestore(lock, flags) do { _raw_spin_unlock(lock);  local_irq_restore(flags); } while (0)
 DECL|macro|spin_unlock_irq
 mdefine_line|#define spin_unlock_irq(lock)&t;&t;&t;do { spin_unlock(lock);  local_irq_enable();       } while (0)
 DECL|macro|spin_unlock_bh
@@ -155,6 +157,8 @@ DECL|macro|preempt_enable_no_resched
 mdefine_line|#define preempt_enable_no_resched() &bslash;&n;do { &bslash;&n;&t;--current_thread_info()-&gt;preempt_count; &bslash;&n;&t;barrier(); &bslash;&n;} while (0)
 DECL|macro|preempt_enable
 mdefine_line|#define preempt_enable() &bslash;&n;do { &bslash;&n;&t;--current_thread_info()-&gt;preempt_count; &bslash;&n;&t;barrier(); &bslash;&n;&t;if (unlikely(test_thread_flag(TIF_NEED_RESCHED))) &bslash;&n;&t;&t;preempt_schedule(); &bslash;&n;} while (0)
+DECL|macro|preempt_check_resched
+mdefine_line|#define preempt_check_resched() &bslash;&n;do { &bslash;&n;&t;if (unlikely(test_thread_flag(TIF_NEED_RESCHED))) &bslash;&n;&t;&t;preempt_schedule(); &bslash;&n;} while (0)
 DECL|macro|spin_lock
 mdefine_line|#define spin_lock(lock)&t;&bslash;&n;do { &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_spin_lock(lock); &bslash;&n;} while(0)
 DECL|macro|spin_trylock
@@ -182,6 +186,8 @@ DECL|macro|preempt_enable_no_resched
 mdefine_line|#define preempt_enable_no_resched()&t;do {} while(0)
 DECL|macro|preempt_enable
 mdefine_line|#define preempt_enable()&t;&t;do { } while (0)
+DECL|macro|preempt_check_resched
+mdefine_line|#define preempt_check_resched()&t;&t;do { } while (0)
 DECL|macro|spin_lock
 mdefine_line|#define spin_lock(lock)&t;&t;&t;_raw_spin_lock(lock)
 DECL|macro|spin_trylock
