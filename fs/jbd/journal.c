@@ -2926,6 +2926,38 @@ id|bh
 op_assign
 id|journal-&gt;j_sb_buffer
 suffix:semicolon
+multiline_comment|/*&n;&t; * As a special case, if the on-disk copy is already marked as needing&n;&t; * no recovery (s_start == 0) and there are no outstanding transactions&n;&t; * in the filesystem, then we can safely defer the superblock update&n;&t; * until the next commit by setting JFS_FLUSHED.  This avoids&n;&t; * attempting a write to a potential-readonly device.&n;&t; */
+r_if
+c_cond
+(paren
+id|sb-&gt;s_start
+op_eq
+l_int|0
+op_logical_and
+id|journal-&gt;j_tail_sequence
+op_eq
+id|journal-&gt;j_transaction_sequence
+)paren
+(brace
+id|jbd_debug
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;JBD: Skipping superblock update on recovered sb &quot;
+l_string|&quot;(start %ld, seq %d, errno %d)&bslash;n&quot;
+comma
+id|journal-&gt;j_tail
+comma
+id|journal-&gt;j_tail_sequence
+comma
+id|journal-&gt;j_errno
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|spin_lock
 c_func
 (paren
@@ -3015,6 +3047,8 @@ op_amp
 id|bh
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 multiline_comment|/* If we have just flushed the log (by marking s_start==0), then&n;&t; * any future commit will have to be careful to update the&n;&t; * superblock again to re-record the true start of the log. */
 id|spin_lock
 c_func
