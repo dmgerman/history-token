@@ -26,9 +26,6 @@ r_struct
 id|reiserfs_transaction_handle
 id|th
 suffix:semicolon
-r_int
-id|windex
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -177,26 +174,12 @@ id|inode
 )paren
 (brace
 multiline_comment|/* if regular file is released by last holder and it has been&n;&t;   appended (we append by unformatted node only) or its direct&n;&t;   item(s) had to be converted, then it may have to be&n;&t;   indirect2direct converted */
-id|windex
-op_assign
-id|push_journal_writer
-c_func
-(paren
-l_string|&quot;file_release&quot;
-)paren
-suffix:semicolon
 id|reiserfs_truncate_file
 c_func
 (paren
 id|inode
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|pop_journal_writer
-c_func
-(paren
-id|windex
 )paren
 suffix:semicolon
 )brace

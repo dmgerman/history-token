@@ -1313,13 +1313,6 @@ r_int
 )paren
 suffix:semicolon
 r_int
-id|show_reiserfs_locks
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
 id|reiserfs_resize
 c_func
 (paren
