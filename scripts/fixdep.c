@@ -471,6 +471,10 @@ op_assign
 id|tolower
 c_func
 (paren
+(paren
+r_int
+r_char
+)paren
 op_star
 id|p
 )paren
