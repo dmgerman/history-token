@@ -3038,6 +3038,17 @@ c_func
 id|dir
 )paren
 suffix:semicolon
+id|WARN_ON
+c_func
+(paren
+op_logical_neg
+id|S_ISCHR
+c_func
+(paren
+id|mode
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
