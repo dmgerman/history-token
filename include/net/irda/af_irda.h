@@ -85,12 +85,14 @@ id|hints
 suffix:semicolon
 multiline_comment|/* Hint bits */
 DECL|member|ckey
-id|__u32
+r_void
+op_star
 id|ckey
 suffix:semicolon
 multiline_comment|/* IrLMP client handle */
 DECL|member|skey
-id|__u32
+r_void
+op_star
 id|skey
 suffix:semicolon
 multiline_comment|/* IrLMP service handle */

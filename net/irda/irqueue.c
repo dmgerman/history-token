@@ -1,4 +1,5 @@
 multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irqueue.c&n; * Version:       0.3&n; * Description:   General queue implementation&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Tue Jun  9 13:29:31 1998&n; * Modified at:   Sun Dec 12 13:48:22 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Modified at:   Thu Jan  4 14:29:10 CET 2001&n; * Modified by:   Marc Zyngier &lt;mzyngier@freesurf.fr&gt;&n; * &n; *     Copyright (C) 1998-1999, Aage Kvalnes &lt;aage@cs.uit.no&gt;&n; *     Copyright (C) 1998, Dag Brattli, &n; *     All Rights Reserved.&n; *&n; *     This code is taken from the Vortex Operating System written by Aage&n; *     Kvalnes. Aage has agreed that this code can use the GPL licence,&n; *     although he does not use that licence in his own code.&n; *     &n; *     This copyright does however _not_ include the ELF hash() function&n; *     which I currently don&squot;t know which licence or copyright it&n; *     has. Please inform me if you know.&n; *      &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *  &n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *     &n; ********************************************************************/
+multiline_comment|/*&n; * NOTE :&n; * There are various problems with this package :&n; *&t;o the hash function for ints is pathetic (but could be changed)&n; *&t;o locking is sometime suspicious (especially during enumeration)&n; *&t;o most users have only a few elements (== overhead)&n; *&t;o most users never use seach, so don&squot;t benefit from hashing&n; * Problem already fixed :&n; *&t;o not 64 bit compliant (most users do hashv = (int) self)&n; *&t;o hashbin_remove() is broken =&gt; use hashbin_remove_this()&n; * I think most users would be better served by a simple linked list&n; * (like include/linux/list.h) with a global spinlock per list.&n; * Jean II&n; */
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irqueue.h&gt;
 r_static
@@ -390,7 +391,7 @@ id|irda_queue_t
 op_star
 id|entry
 comma
-id|__u32
+r_int
 id|hashv
 comma
 r_char
@@ -607,7 +608,7 @@ id|hashbin_t
 op_star
 id|hashbin
 comma
-id|__u32
+r_int
 id|hashv
 comma
 r_char
@@ -929,7 +930,7 @@ r_return
 id|entry
 suffix:semicolon
 )brace
-multiline_comment|/* &n; *  Function hashbin_remove (hashbin, hashv, name)&n; *&n; *    Remove entry with the given name&n; *&n; */
+multiline_comment|/* &n; *  Function hashbin_remove (hashbin, hashv, name)&n; *&n; *    Remove entry with the given name&n; *&n; *  The use of this function is highly discouraged, because the whole&n; *  concept behind hashbin_remove() is broken. In many cases, it&squot;s not&n; *  possible to guarantee the unicity of the index (either hashv or name),&n; *  leading to removing the WRONG entry.&n; *  The only simple safe use is :&n; *&t;&t;hashbin_remove(hasbin, (int) self, NULL);&n; *  In other case, you must think hard to guarantee unicity of the index.&n; *  Jean II&n; */
 DECL|function|hashbin_remove
 r_void
 op_star
@@ -940,7 +941,7 @@ id|hashbin_t
 op_star
 id|hashbin
 comma
-id|__u32
+r_int
 id|hashv
 comma
 r_char
@@ -1266,7 +1267,7 @@ suffix:semicolon
 r_int
 id|bin
 suffix:semicolon
-id|__u32
+r_int
 id|hashv
 suffix:semicolon
 id|IRDA_DEBUG

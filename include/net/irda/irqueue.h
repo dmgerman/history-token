@@ -66,9 +66,10 @@ id|NAME_SIZE
 )braket
 suffix:semicolon
 DECL|member|q_hash
-id|__u32
+r_int
 id|q_hash
 suffix:semicolon
+multiline_comment|/* Must be able to cast a (void *) */
 )brace
 suffix:semicolon
 DECL|typedef|irda_queue_t
@@ -165,7 +166,7 @@ id|irda_queue_t
 op_star
 id|entry
 comma
-id|__u32
+r_int
 id|hashv
 comma
 r_char
@@ -182,7 +183,7 @@ id|hashbin_t
 op_star
 id|hashbin
 comma
-id|__u32
+r_int
 id|hashv
 comma
 r_char
@@ -199,7 +200,7 @@ id|hashbin_t
 op_star
 id|hashbin
 comma
-id|__u32
+r_int
 id|hashv
 comma
 r_char

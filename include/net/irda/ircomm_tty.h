@@ -135,11 +135,13 @@ op_star
 id|obj
 suffix:semicolon
 DECL|member|skey
-r_int
+r_void
+op_star
 id|skey
 suffix:semicolon
 DECL|member|ckey
-r_int
+r_void
+op_star
 id|ckey
 suffix:semicolon
 DECL|member|normal_termios

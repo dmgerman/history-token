@@ -469,7 +469,8 @@ r_int
 id|service
 )paren
 suffix:semicolon
-id|__u32
+r_void
+op_star
 id|irlmp_register_service
 c_func
 (paren
@@ -481,11 +482,13 @@ r_int
 id|irlmp_unregister_service
 c_func
 (paren
-id|__u32
+r_void
+op_star
 id|handle
 )paren
 suffix:semicolon
-id|__u32
+r_void
+op_star
 id|irlmp_register_client
 c_func
 (paren
@@ -507,7 +510,8 @@ r_int
 id|irlmp_unregister_client
 c_func
 (paren
-id|__u32
+r_void
+op_star
 id|handle
 )paren
 suffix:semicolon
@@ -515,7 +519,8 @@ r_int
 id|irlmp_update_client
 c_func
 (paren
-id|__u32
+r_void
+op_star
 id|handle
 comma
 id|__u16

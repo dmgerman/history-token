@@ -1134,7 +1134,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The IrDA stack must be initialised *before* drivers get initialised,&n; * and *before* higher protocols (IrLAN/IrCOMM/IrNET) get initialised,&n; * otherwise bad things will happen (hashbins will be NULL for example).&n; * Those modules are at module_init()/device_initcall() level.&n; *&n; * On the other hand, it needs to be initialised *after* the basic&n; * networking, the /proc/net filesystem and sysctl module. Those are&n; * currently initialised in .../init/main.c (before initcalls).&n; * Also, it needs to be initialised *after* the random number generator.&n; *&n; * Jean II&n; */
+multiline_comment|/*&n; * The IrDA stack must be initialised *before* drivers get initialised,&n; * and *before* higher protocols (IrLAN/IrCOMM/IrNET) get initialised,&n; * otherwise bad things will happen (hashbins will be NULL for example).&n; * Those modules are at module_init()/device_initcall() level.&n; *&n; * On the other hand, it needs to be initialised *after* the basic&n; * networking, the /proc/net filesystem and sysctl module. Those are&n; * currently initialised in .../init/main.c (before initcalls).&n; * Also, IrDA drivers needs to be initialised *after* the random number&n; * generator (main stack and higher layer init don&squot;t need it anymore).&n; *&n; * Jean II&n; */
 DECL|variable|irda_init
 id|subsys_initcall
 c_func

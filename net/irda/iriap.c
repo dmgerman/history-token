@@ -58,7 +58,8 @@ l_int|NULL
 suffix:semicolon
 DECL|variable|service_handle
 r_static
-id|__u32
+r_void
+op_star
 id|service_handle
 suffix:semicolon
 r_extern
