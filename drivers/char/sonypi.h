@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Sony Programmable I/O Control Device driver for VAIO&n; *&n; * Copyright (C) 2001-2002 Stelian Pop &lt;stelian@popies.net&gt;&n; *&n; * Copyright (C) 2001-2002 Alc&#xfffd;ve &lt;www.alcove.com&gt;&n; *&n; * Copyright (C) 2001 Michael Ashley &lt;m.ashley@unsw.edu.au&gt;&n; *&n; * Copyright (C) 2001 Junichi Morita &lt;jun1m@mars.dti.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Takaya Kinjo &lt;t-kinjo@tc4.so-net.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Andrew Tridgell &lt;tridge@valinux.com&gt;&n; *&n; * Earlier work by Werner Almesberger, Paul `Rusty&squot; Russell and Paul Mackerras.&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* &n; * Sony Programmable I/O Control Device driver for VAIO&n; *&n; * Copyright (C) 2001-2003 Stelian Pop &lt;stelian@popies.net&gt;&n; *&n; * Copyright (C) 2001-2002 Alc&#xfffd;ve &lt;www.alcove.com&gt;&n; *&n; * Copyright (C) 2001 Michael Ashley &lt;m.ashley@unsw.edu.au&gt;&n; *&n; * Copyright (C) 2001 Junichi Morita &lt;jun1m@mars.dti.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Takaya Kinjo &lt;t-kinjo@tc4.so-net.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Andrew Tridgell &lt;tridge@valinux.com&gt;&n; *&n; * Earlier work by Werner Almesberger, Paul `Rusty&squot; Russell and Paul Mackerras.&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#ifndef _SONYPI_PRIV_H_ 
 DECL|macro|_SONYPI_PRIV_H_
 mdefine_line|#define _SONYPI_PRIV_H_
@@ -6,7 +6,7 @@ macro_line|#ifdef __KERNEL__
 DECL|macro|SONYPI_DRIVER_MAJORVERSION
 mdefine_line|#define SONYPI_DRIVER_MAJORVERSION&t; 1
 DECL|macro|SONYPI_DRIVER_MINORVERSION
-mdefine_line|#define SONYPI_DRIVER_MINORVERSION&t;17
+mdefine_line|#define SONYPI_DRIVER_MINORVERSION&t;18
 DECL|macro|SONYPI_DEVICE_MODEL_TYPE1
 mdefine_line|#define SONYPI_DEVICE_MODEL_TYPE1&t;1
 DECL|macro|SONYPI_DEVICE_MODEL_TYPE2
@@ -14,6 +14,7 @@ mdefine_line|#define SONYPI_DEVICE_MODEL_TYPE2&t;2
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &quot;linux/sonypi.h&quot;
@@ -1180,6 +1181,9 @@ id|SONYPI_BUF_SIZE
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* The name of the Jog Dial for the input device drivers */
+DECL|macro|SONYPI_INPUTNAME
+mdefine_line|#define SONYPI_INPUTNAME&t;&quot;Sony VAIO Jog Dial&quot;
 DECL|struct|sonypi_device
 r_struct
 id|sonypi_device
@@ -1236,7 +1240,14 @@ DECL|member|model
 r_int
 id|model
 suffix:semicolon
-macro_line|#if CONFIG_PM
+macro_line|#if defined(CONFIG_INPUT) || defined(CONFIG_INPUT_MODULE)
+DECL|member|jog_dev
+r_struct
+id|input_dev
+id|jog_dev
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_PM
 DECL|member|pm
 r_struct
 id|pm_dev
@@ -1252,7 +1263,7 @@ DECL|macro|ITERATIONS_SHORT
 mdefine_line|#define ITERATIONS_SHORT&t;10
 DECL|macro|wait_on_command
 mdefine_line|#define wait_on_command(quiet, command, iterations) { &bslash;&n;&t;unsigned int n = iterations; &bslash;&n;&t;while (--n &amp;&amp; (command)) &bslash;&n;&t;&t;udelay(1); &bslash;&n;&t;if (!n &amp;&amp; (verbose || !quiet)) &bslash;&n;&t;&t;printk(KERN_WARNING &quot;sonypi command failed at %s : %s (line %d)&bslash;n&quot;, __FILE__, __FUNCTION__, __LINE__); &bslash;&n;}
-macro_line|#if !defined(CONFIG_ACPI)
+macro_line|#ifndef CONFIG_ACPI
 r_extern
 r_int
 id|verbose
