@@ -1299,7 +1299,7 @@ suffix:semicolon
 id|unchar
 id|target
 op_assign
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 suffix:semicolon
 r_struct
 id|aha1740_hostdata
@@ -1309,7 +1309,7 @@ op_assign
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 suffix:semicolon
 r_int
@@ -1908,7 +1908,7 @@ id|ecbno
 dot
 id|lun
 op_assign
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 suffix:semicolon
 id|host-&gt;ecb
 (braket
@@ -2082,7 +2082,7 @@ r_int
 r_int
 id|base
 op_assign
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 suffix:semicolon
 id|DEB
 c_func
