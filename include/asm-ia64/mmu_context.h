@@ -13,49 +13,6 @@ macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-DECL|macro|MMU_CONTEXT_DEBUG
-mdefine_line|#define MMU_CONTEXT_DEBUG&t;0
-macro_line|#if MMU_CONTEXT_DEBUG
-macro_line|#include &lt;ia64intrin.h&gt;
-DECL|struct|mmu_trace_entry
-r_extern
-r_struct
-id|mmu_trace_entry
-(brace
-DECL|member|op
-r_char
-id|op
-suffix:semicolon
-DECL|member|cpu
-id|u8
-id|cpu
-suffix:semicolon
-DECL|member|context
-id|u32
-id|context
-suffix:semicolon
-DECL|member|mm
-r_void
-op_star
-id|mm
-suffix:semicolon
-)brace
-id|mmu_tbuf
-(braket
-l_int|1024
-)braket
-suffix:semicolon
-r_extern
-r_volatile
-r_int
-id|mmu_tbuf_index
-suffix:semicolon
-DECL|macro|MMU_TRACE
-macro_line|# define MMU_TRACE(_op,_cpu,_mm,_ctx)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int i = __sync_fetch_and_add(&amp;mmu_tbuf_index, 1) % ARRAY_SIZE(mmu_tbuf);&t;&bslash;&n;&t;struct mmu_trace_entry e;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;e.op = (_op);&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;e.cpu = (_cpu);&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;e.mm = (_mm);&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;e.context = (_ctx);&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;mmu_tbuf[i] = e;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-macro_line|#else
-DECL|macro|MMU_TRACE
-macro_line|# define MMU_TRACE(op,cpu,mm,ctx)&t;do { ; } while (0)
-macro_line|#endif
 DECL|struct|ia64_ctx
 r_struct
 id|ia64_ctx
@@ -282,21 +239,6 @@ op_star
 id|mm
 )paren
 (brace
-id|MMU_TRACE
-c_func
-(paren
-l_char|&squot;N&squot;
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|mm
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|mm-&gt;context
 op_assign
 l_int|0
@@ -318,21 +260,6 @@ id|mm
 )paren
 (brace
 multiline_comment|/* Nothing to do.  */
-id|MMU_TRACE
-c_func
-(paren
-l_char|&squot;D&squot;
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|mm
-comma
-id|mm-&gt;context
-)paren
-suffix:semicolon
 )brace
 r_static
 r_inline
@@ -531,21 +458,6 @@ c_func
 id|mm
 )paren
 suffix:semicolon
-id|MMU_TRACE
-c_func
-(paren
-l_char|&squot;A&squot;
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|mm
-comma
-id|context
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -578,21 +490,6 @@ c_func
 id|context
 )paren
 suffix:semicolon
-id|MMU_TRACE
-c_func
-(paren
-l_char|&squot;a&squot;
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|mm
-comma
-id|context
-)paren
-suffix:semicolon
 multiline_comment|/* in the unlikely event of a TLB-flush by another thread, redo the load: */
 )brace
 r_while
@@ -609,7 +506,7 @@ id|mm-&gt;context
 suffix:semicolon
 )brace
 DECL|macro|deactivate_mm
-mdefine_line|#define deactivate_mm(tsk,mm)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;MMU_TRACE(&squot;d&squot;, smp_processor_id(), mm, mm-&gt;context);&t;&bslash;&n;} while (0)
+mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 multiline_comment|/*&n; * Switch from address space PREV to address space NEXT.&n; */
 r_static
 r_inline
