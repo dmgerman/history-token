@@ -1,10 +1,11 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 International Business Machines Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This module provides the abstraction for an SCTP tranport representing&n; * a remote transport address.  For local transport addresses, we just use&n; * union sctp_addr.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Hui Huang             &lt;hui.huang@nokia.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2003 International Business Machines Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This module provides the abstraction for an SCTP tranport representing&n; * a remote transport address.  For local transport addresses, we just use&n; * union sctp_addr.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Hui Huang             &lt;hui.huang@nokia.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 multiline_comment|/* 1st Level Abstractions.  */
 multiline_comment|/* Allocate and initialize a new transport.  */
 DECL|function|sctp_transport_new
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|sctp_transport_new
 c_func
@@ -19,7 +20,8 @@ r_int
 id|priority
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
@@ -28,7 +30,8 @@ op_assign
 id|t_new
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|priority
 )paren
@@ -88,12 +91,14 @@ suffix:semicolon
 )brace
 multiline_comment|/* Intialize a new transport from provided memory.  */
 DECL|function|sctp_transport_init
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|sctp_transport_init
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|peer
 comma
@@ -284,7 +289,8 @@ r_void
 id|sctp_transport_free
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 )paren
@@ -323,7 +329,8 @@ r_void
 id|sctp_transport_destroy
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 )paren
@@ -374,7 +381,8 @@ r_void
 id|sctp_transport_reset_timers
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 )paren
@@ -391,7 +399,6 @@ op_amp
 id|transport-&gt;T3_rtx_timer
 )paren
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -413,7 +420,6 @@ c_func
 id|transport
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* When a data chunk is sent, reset the heartbeat interval.  */
 r_if
 c_cond
@@ -425,17 +431,11 @@ c_func
 op_amp
 id|transport-&gt;hb_timer
 comma
-id|transport-&gt;hb_interval
-op_plus
-id|transport-&gt;rto
-op_plus
-id|sctp_jitter
+id|sctp_transport_timeout
 c_func
 (paren
-id|transport-&gt;rto
+id|transport
 )paren
-op_plus
-id|jiffies
 )paren
 )paren
 id|sctp_transport_hold
@@ -451,7 +451,8 @@ r_void
 id|sctp_transport_set_owner
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 comma
@@ -477,7 +478,8 @@ r_void
 id|sctp_transport_route
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 comma
@@ -767,7 +769,8 @@ r_void
 id|sctp_transport_hold
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 )paren
@@ -786,7 +789,8 @@ r_void
 id|sctp_transport_put
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 )paren
@@ -814,7 +818,8 @@ r_void
 id|sctp_transport_update_rto
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|tp
 comma
@@ -930,7 +935,7 @@ id|tp-&gt;rttvar
 op_assign
 id|SCTP_CLOCK_GRANULARITY
 suffix:semicolon
-multiline_comment|/* 6.3.1 C3) After the computation, update RTO &lt;- SRTT + 4 * RTTVAR.  */
+multiline_comment|/* 6.3.1 C3) After the computation, update RTO &lt;- SRTT + 4 * RTTVAR. */
 id|tp-&gt;rto
 op_assign
 id|tp-&gt;srtt
@@ -1000,7 +1005,8 @@ r_void
 id|sctp_transport_raise_cwnd
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 comma
@@ -1068,7 +1074,7 @@ op_le
 id|ssthresh
 )paren
 (brace
-multiline_comment|/* RFC 2960 7.2.1, sctpimpguide-05 2.14.2 When cwnd is less&n;&t;&t; * than or equal to ssthresh an SCTP endpoint MUST use the&n;&t;&t; * slow start algorithm to increase cwnd only if the current&n;&t;&t; * congestion window is being fully utilized and an incoming&n;&t;&t; * SACK advances the Cumulative TSN Ack Point. Only when these&n;&t;&t; * two conditions are met can the cwnd be increased otherwise&n;&t;&t; * the cwnd MUST not be increased. If these conditions are met&n;&t;&t; * then cwnd MUST be increased by at most the lesser of&n;&t;&t; * 1) the total size of the previously outstanding DATA chunk(s)&n;&t;&t; * acknowledged, and 2) the destination&squot;s path MTU.&n;&t;&t; */
+multiline_comment|/* RFC 2960 7.2.1, sctpimpguide-05 2.14.2 When cwnd is less&n;&t;&t; * than or equal to ssthresh an SCTP endpoint MUST use the&n;&t;&t; * slow start algorithm to increase cwnd only if the current&n;&t;&t; * congestion window is being fully utilized and an incoming&n;&t;&t; * SACK advances the Cumulative TSN Ack Point. Only when these&n;&t;&t; * two conditions are met can the cwnd be increased otherwise&n;&t;&t; * the cwnd MUST not be increased. If these conditions are met&n;&t;&t; * then cwnd MUST be increased by at most the lesser of&n;&t;&t; * 1) the total size of the previously outstanding DATA &n;&t;&t; * chunk(s) acknowledged, and 2) the destination&squot;s path MTU.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1110,7 +1116,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* RFC 2960 7.2.2 Whenever cwnd is greater than ssthresh, upon&n;&t;&t; * each SACK arrival that advances the Cumulative TSN Ack Point,&n;&t;&t; * increase partial_bytes_acked by the total number of bytes of&n;&t;&t; * all new chunks acknowledged in that SACK including chunks&n;&t;&t; * acknowledged by the new Cumulative TSN Ack and by Gap Ack&n;&t;&t; * Blocks.&n;&t;&t; *&n;&t;&t; * When partial_bytes_acked is equal to or greater than cwnd and&n;&t;&t; * before the arrival of the SACK the sender had cwnd or more&n;&t;&t; * bytes of data outstanding (i.e., before arrival of the SACK,&n;&t;&t; * flightsize was greater than or equal to cwnd), increase cwnd&n;&t;&t; * by MTU, and reset partial_bytes_acked to&n;&t;&t; * (partial_bytes_acked - cwnd).&n;&t;&t; */
+multiline_comment|/* RFC 2960 7.2.2 Whenever cwnd is greater than ssthresh, &n;&t;&t; * upon each SACK arrival that advances the Cumulative TSN Ack &n;&t;&t; * Point, increase partial_bytes_acked by the total number of &n;&t;&t; * bytes of all new chunks acknowledged in that SACK including &n;&t;&t; * chunks acknowledged by the new Cumulative TSN Ack and by &n;&t;&t; * Gap Ack Blocks.&n;&t;&t; *&n;&t;&t; * When partial_bytes_acked is equal to or greater than cwnd &n;&t;&t; * and before the arrival of the SACK the sender had cwnd or &n;&t;&t; * more bytes of data outstanding (i.e., before arrival of the &n;&t;&t; * SACK, flightsize was greater than or equal to cwnd), &n;&t;&t; * increase cwnd by MTU, and reset partial_bytes_acked to&n;&t;&t; * (partial_bytes_acked - cwnd).&n;&t;&t; */
 id|pba
 op_add_assign
 id|bytes_acked
@@ -1185,7 +1191,8 @@ r_void
 id|sctp_transport_lower_cwnd
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 comma
@@ -1333,6 +1340,43 @@ id|transport-&gt;cwnd
 comma
 id|transport-&gt;ssthresh
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/* What is the next timeout value for this transport? */
+DECL|function|sctp_transport_timeout
+r_int
+r_int
+id|sctp_transport_timeout
+c_func
+(paren
+r_struct
+id|sctp_transport
+op_star
+id|t
+)paren
+(brace
+r_int
+r_int
+id|timeout
+suffix:semicolon
+id|timeout
+op_assign
+id|t-&gt;hb_interval
+op_plus
+id|t-&gt;rto
+op_plus
+id|sctp_jitter
+c_func
+(paren
+id|t-&gt;rto
+)paren
+suffix:semicolon
+id|timeout
+op_add_assign
+id|jiffies
+suffix:semicolon
+r_return
+id|timeout
 suffix:semicolon
 )brace
 eof

@@ -94,7 +94,7 @@ r_struct
 id|SCTP_association
 suffix:semicolon
 r_struct
-id|SCTP_transport
+id|sctp_transport
 suffix:semicolon
 r_struct
 id|SCTP_packet
@@ -140,12 +140,6 @@ r_typedef
 r_struct
 id|SCTP_association
 id|sctp_association_t
-suffix:semicolon
-DECL|typedef|sctp_transport_t
-r_typedef
-r_struct
-id|SCTP_transport
-id|sctp_transport_t
 suffix:semicolon
 DECL|typedef|sctp_packet_t
 r_typedef
@@ -933,7 +927,7 @@ r_struct
 id|timeval
 id|expiration
 suffix:semicolon
-multiline_comment|/* Number of inbound/outbound streams which are set&n;&t; * and negotiated during the INIT process. &n;&t; */
+multiline_comment|/* Number of inbound/outbound streams which are set&n;&t; * and negotiated during the INIT process.&n;&t; */
 DECL|member|sinit_num_ostreams
 id|__u16
 id|sinit_num_ostreams
@@ -1443,7 +1437,8 @@ id|dest
 suffix:semicolon
 multiline_comment|/* For an inbound chunk, this tells us where it came from.&n;&t; * For an outbound chunk, it tells us where we&squot;d like it to&n;&t; * go.  It is NULL if we have no preference.&n;&t; */
 DECL|member|transport
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
@@ -1631,7 +1626,8 @@ id|size
 suffix:semicolon
 multiline_comment|/* The packet is destined for this transport address.&n;&t; * The function we finally use to pass down to the next lower&n;&t; * layer lives in the transport structure.&n;&t; */
 DECL|member|transport
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
@@ -1695,7 +1691,8 @@ id|sctp_outq_ohandler_init_t
 id|sctp_packet_t
 op_star
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 comma
 id|__u16
@@ -1781,9 +1778,9 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* This represents a remote transport address.&n; * For local transport addresses, we just use union sctp_addr.&n; *&n; * RFC2960 Section 1.4 Key Terms&n; *&n; *   o  Transport address:  A Transport Address is traditionally defined&n; *      by Network Layer address, Transport Layer protocol and Transport&n; *      Layer port number.  In the case of SCTP running over IP, a&n; *      transport address is defined by the combination of an IP address&n; *      and an SCTP port number (where SCTP is the Transport protocol).&n; *&n; * RFC2960 Section 7.1 SCTP Differences from TCP Congestion control&n; *&n; *   o  The sender keeps a separate congestion control parameter set for&n; *      each of the destination addresses it can send to (not each&n; *      source-destination pair but for each destination).  The parameters&n; *      should decay if the address is not used for a long enough time&n; *      period.&n; *&n; */
-DECL|struct|SCTP_transport
+DECL|struct|sctp_transport
 r_struct
-id|SCTP_transport
+id|sctp_transport
 (brace
 multiline_comment|/* A list of transports. */
 DECL|member|transports
@@ -1972,8 +1969,8 @@ suffix:semicolon
 multiline_comment|/* Is this structure kfree()able? */
 )brace
 suffix:semicolon
-r_extern
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|sctp_transport_new
 c_func
@@ -1986,13 +1983,14 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_extern
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|sctp_transport_init
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 comma
 r_const
@@ -2003,24 +2001,24 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_transport_set_owner
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 comma
 id|sctp_association_t
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_transport_route
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 comma
 r_union
@@ -2032,68 +2030,68 @@ id|sctp_opt
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_transport_free
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_transport_destroy
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_transport_reset_timers
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_transport_hold
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_transport_put
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_transport_update_rto
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 comma
 id|__u32
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_transport_raise_cwnd
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 comma
 id|__u32
@@ -2101,18 +2099,28 @@ comma
 id|__u32
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_transport_lower_cwnd
 c_func
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 comma
 id|sctp_lower_cwnd_t
 )paren
 suffix:semicolon
-multiline_comment|/* This is the structure we use to queue packets as they come into&n; * SCTP.  We write packets to it and read chunks from it.  It handles&n; * fragment reassembly and chunk unbundling.&n; */
+r_int
+r_int
+id|sctp_transport_timeout
+c_func
+(paren
+r_struct
+id|sctp_transport
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* This is the structure we use to queue packets as they come into&n; * SCTP.  We write packets to it and read chunks from it.&n; */
 DECL|struct|SCTP_inqueue
 r_struct
 id|SCTP_inqueue
@@ -2411,7 +2419,8 @@ r_struct
 id|sctp_outq
 op_star
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 comma
 id|__u8
@@ -2425,7 +2434,8 @@ r_struct
 id|sctp_outq
 op_star
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 comma
 id|__u8
@@ -2900,7 +2910,8 @@ id|sctp_addr
 op_star
 id|paddr
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 op_star
 )paren
@@ -3096,7 +3107,8 @@ id|port
 suffix:semicolon
 multiline_comment|/* primary_path&n;&t;&t; *&n;&t;&t; * Primary     : This is the current primary destination&n;&t;&t; * Path        : transport address of the peer endpoint.  It&n;&t;&t; *             : may also specify a source transport address&n;&t;&t; *&t;       : on this endpoint.&n;&t;&t; *&n;&t;&t; * All of these paths live on transport_addr_list.&n;&t;&t; *&n;&t;&t; * At the bakeoffs, we discovered that the intent of&n;&t;&t; * primaryPath is that it only changes when the ULP&n;&t;&t; * asks to have it changed.  We add the activePath to&n;&t;&t; * designate the connection we are currently using to&n;&t;&t; * transmit new data and most control chunks.&n;&t;&t; */
 DECL|member|primary_path
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|primary_path
 suffix:semicolon
@@ -3108,25 +3120,29 @@ id|primary_addr
 suffix:semicolon
 multiline_comment|/* active_path&n;&t;&t; *   The path that we are currently using to&n;&t;&t; *   transmit new data and most control chunks.&n;&t;&t; */
 DECL|member|active_path
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|active_path
 suffix:semicolon
 multiline_comment|/* retran_path&n;&t;&t; *&n;&t;&t; * RFC2960 6.4 Multi-homed SCTP Endpoints&n;&t;&t; * ...&n;&t;&t; * Furthermore, when its peer is multi-homed, an&n;&t;&t; * endpoint SHOULD try to retransmit a chunk to an&n;&t;&t; * active destination transport address that is&n;&t;&t; * different from the last destination address to&n;&t;&t; * which the DATA chunk was sent.&n;&t;&t; */
 DECL|member|retran_path
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|retran_path
 suffix:semicolon
 multiline_comment|/* Pointer to last transport I have sent on.  */
 DECL|member|last_sent_to
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|last_sent_to
 suffix:semicolon
 multiline_comment|/* This is the last transport I have recieved DATA on.  */
 DECL|member|last_data_from
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|last_data_from
 suffix:semicolon
@@ -3288,7 +3304,8 @@ id|SCTP_NUM_TIMEOUT_TYPES
 suffix:semicolon
 multiline_comment|/* Transport to which SHUTDOWN chunk was last sent.  */
 DECL|member|shutdown_last_sent_to
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|shutdown_last_sent_to
 suffix:semicolon
@@ -3566,7 +3583,8 @@ id|sctp_association_t
 op_star
 )paren
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|sctp_assoc_choose_shutdown_transport
 c_func
@@ -3575,7 +3593,8 @@ id|sctp_association_t
 op_star
 )paren
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|sctp_assoc_lookup_paddr
 c_func
@@ -3590,7 +3609,8 @@ id|sctp_addr
 op_star
 )paren
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|sctp_assoc_add_peer
 c_func
@@ -3616,7 +3636,8 @@ c_func
 id|sctp_association_t
 op_star
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 comma
 id|sctp_transport_cmd_t
@@ -3624,7 +3645,8 @@ comma
 id|sctp_sn_error_t
 )paren
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|sctp_assoc_lookup_tsn
 c_func
@@ -3635,7 +3657,8 @@ comma
 id|__u32
 )paren
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|sctp_assoc_is_match
 c_func

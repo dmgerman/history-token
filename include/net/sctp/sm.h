@@ -837,7 +837,8 @@ id|sctp_association_t
 op_star
 comma
 r_const
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 comma
 r_const

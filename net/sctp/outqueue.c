@@ -34,7 +34,8 @@ id|list_head
 op_star
 id|transmitted_queue
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 comma
@@ -191,7 +192,8 @@ op_star
 id|q
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
@@ -227,7 +229,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|transports
 )paren
@@ -689,7 +692,8 @@ id|sctp_outq
 op_star
 id|q
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 comma
@@ -849,7 +853,8 @@ id|sctp_outq
 op_star
 id|q
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 comma
@@ -954,7 +959,8 @@ id|list_head
 op_star
 id|lchunk
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 op_assign
@@ -1235,7 +1241,8 @@ id|__u32
 id|tsn
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 op_assign
@@ -2058,13 +2065,15 @@ id|sk_buff_head
 op_star
 id|queue
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|new_transport
 suffix:semicolon
@@ -2974,7 +2983,8 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|t
 op_assign
@@ -2983,7 +2993,8 @@ c_func
 (paren
 id|ltransport
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|send_ready
 )paren
@@ -3194,7 +3205,8 @@ comma
 op_star
 id|lchunk
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
@@ -3238,7 +3250,8 @@ c_func
 (paren
 id|ltransport
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|transports
 )paren
@@ -3326,7 +3339,8 @@ id|asoc
 op_assign
 id|q-&gt;asoc
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
@@ -3471,7 +3485,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|transports
 )paren
@@ -3676,7 +3691,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|transports
 )paren
@@ -3749,7 +3765,8 @@ id|list_head
 op_star
 id|transmitted_queue
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 comma
