@@ -2565,7 +2565,6 @@ c_func
 (paren
 id|ufp
 comma
-op_amp
 id|ptr
 comma
 l_int|0x98
