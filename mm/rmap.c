@@ -557,13 +557,12 @@ id|anonmm
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; ** VM stuff below this comment&n; **/
 multiline_comment|/*&n; * At what user virtual address is pgoff expected in file-backed vma?&n; */
 r_static
 r_inline
+r_int
+r_int
 DECL|function|vma_address
-r_int
-r_int
 id|vma_address
 c_func
 (paren
@@ -610,7 +609,7 @@ r_return
 id|address
 suffix:semicolon
 )brace
-multiline_comment|/**&n; ** Subfunctions of page_referenced: page_referenced_one called&n; ** repeatedly from either page_referenced_anon or page_referenced_file.&n; **/
+multiline_comment|/*&n; * Subfunctions of page_referenced: page_referenced_one called&n; * repeatedly from either page_referenced_anon or page_referenced_file.&n; */
 DECL|function|page_referenced_one
 r_static
 r_int
@@ -1014,7 +1013,7 @@ id|migrate
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * The warning below may appear if page_referenced catches the&n;&t; * page in between page_add_rmap and its replacement demanded&n;&t; * by mremap_moved_anon_page: so remove the warning once we&squot;re&n;&t; * convinced that anonmm rmap really is finding its pages.&n;&t; */
+multiline_comment|/*&n;&t; * The warning below may appear if page_referenced catches the&n;&t; * page in between page_add_{anon,file}_rmap and its replacement&n;&t; * demanded by mremap_moved_anon_page: so remove the warning once&n;&t; * we&squot;re convinced that anonmm rmap really is finding its pages.&n;&t; */
 id|WARN_ON
 c_func
 (paren
@@ -1079,7 +1078,7 @@ r_return
 id|referenced
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * page_referenced_file - referenced check for object-based rmap&n; * @page: the page we&squot;re checking references on.&n; *&n; * For an object-based mapped page, find all the places it is mapped and&n; * check/clear the referenced flag.  This is done by following the page-&gt;mapping&n; * pointer, then walking the chain of vmas it holds.  It returns the number&n; * of references it found.&n; *&n; * This function is only called from page_referenced for object-based pages.&n; *&n; * The semaphore address_space-&gt;i_mmap_lock is tried.  If it can&squot;t be gotten,&n; * assume a reference count of 0, so try_to_unmap will then have a go.&n; */
+multiline_comment|/**&n; * page_referenced_file - referenced check for object-based rmap&n; * @page: the page we&squot;re checking references on.&n; *&n; * For an object-based mapped page, find all the places it is mapped and&n; * check/clear the referenced flag.  This is done by following the page-&gt;mapping&n; * pointer, then walking the chain of vmas it holds.  It returns the number&n; * of references it found.&n; *&n; * This function is only called from page_referenced for object-based pages.&n; *&n; * The spinlock address_space-&gt;i_mmap_lock is tried.  If it can&squot;t be gotten,&n; * assume a reference count of 0, so try_to_unmap will then have a go.&n; */
 DECL|function|page_referenced_file
 r_static
 r_inline
@@ -1786,7 +1785,7 @@ r_return
 id|move
 suffix:semicolon
 )brace
-multiline_comment|/**&n; ** Subfunctions of try_to_unmap: try_to_unmap_one called&n; ** repeatedly from either try_to_unmap_anon or try_to_unmap_file.&n; **/
+multiline_comment|/*&n; * Subfunctions of try_to_unmap: try_to_unmap_one called&n; * repeatedly from either try_to_unmap_anon or try_to_unmap_file.&n; */
 DECL|function|try_to_unmap_one
 r_static
 r_int
@@ -2689,7 +2688,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * try_to_unmap_file - unmap file page using the object-based rmap method&n; * @page: the page to unmap&n; *&n; * Find all the mappings of a page using the mapping pointer and the vma chains&n; * contained in the address_space struct it points to.&n; *&n; * This function is only called from try_to_unmap for object-based pages.&n; *&n; * The semaphore address_space-&gt;i_mmap_lock is tried.  If it can&squot;t be gotten,&n; * return a temporary error.&n; */
+multiline_comment|/**&n; * try_to_unmap_file - unmap file page using the object-based rmap method&n; * @page: the page to unmap&n; *&n; * Find all the mappings of a page using the mapping pointer and the vma chains&n; * contained in the address_space struct it points to.&n; *&n; * This function is only called from try_to_unmap for object-based pages.&n; *&n; * The spinlock address_space-&gt;i_mmap_lock is tried.  If it can&squot;t be gotten,&n; * return a temporary error.&n; */
 DECL|function|try_to_unmap_file
 r_static
 r_inline
