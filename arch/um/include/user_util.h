@@ -472,15 +472,6 @@ id|val
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|suspend_new_thread
-c_func
-(paren
-r_int
-id|fd
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|detach
 c_func

@@ -52,13 +52,11 @@ r_struct
 id|cow_header_v2
 (brace
 DECL|member|magic
-r_int
-r_int
+id|__u32
 id|magic
 suffix:semicolon
 DECL|member|version
-r_int
-r_int
+id|__u32
 id|version
 suffix:semicolon
 DECL|member|backing_file
