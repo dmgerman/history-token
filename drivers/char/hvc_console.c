@@ -949,6 +949,11 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_int
+r_int
+id|cpus_in_xmon
+suffix:semicolon
 DECL|function|khvcd
 r_int
 id|khvcd
@@ -989,6 +994,13 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpus_in_xmon
+)paren
+(brace
 r_for
 c_loop
 (paren
@@ -1009,6 +1021,7 @@ c_func
 id|i
 )paren
 suffix:semicolon
+)brace
 id|set_current_state
 c_func
 (paren
