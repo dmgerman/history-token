@@ -3892,6 +3892,11 @@ id|bh_result
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* If this is a realtime file, data might be on a new device */
+id|bh_result-&gt;b_bdev
+op_assign
+id|iomap.iomap_target-&gt;pbr_bdev
+suffix:semicolon
 multiline_comment|/* If we previously allocated a block out beyond eof and&n;&t; * we are now coming back to use it then we will need to&n;&t; * flag it as new even if it has a disk address.&n;&t; */
 r_if
 c_cond
