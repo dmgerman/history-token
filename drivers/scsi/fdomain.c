@@ -457,17 +457,6 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-r_static
-r_int
-id|fdomain_16x0_bus_reset
-c_func
-(paren
-r_struct
-id|scsi_cmnd
-op_star
-id|SCpnt
-)paren
-suffix:semicolon
 multiline_comment|/* Allow insmod parameters to be like LILO parameters.  For example:&n;   insmod fdomain fdomain=0x140,11 */
 DECL|variable|fdomain
 r_static
@@ -5384,7 +5373,6 @@ id|SUCCESS
 suffix:semicolon
 )brace
 DECL|function|fdomain_16x0_bus_reset
-r_static
 r_int
 id|fdomain_16x0_bus_reset
 c_func
