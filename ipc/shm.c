@@ -2930,6 +2930,8 @@ comma
 id|shmd-&gt;vm_end
 op_minus
 id|shmd-&gt;vm_start
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|retval

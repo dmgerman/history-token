@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;linux/mm/remap.c&n; *&n; *&t;(C) Copyright 1996 Linus Torvalds&n; */
+multiline_comment|/*&n; *&t;mm/remap.c&n; *&n; *&t;(C) Copyright 1996 Linus Torvalds&n; *&n; *&t;Address space accounting code&t;&lt;alan@redhat.com&gt;&n; *&t;(C) Copyright 2002 Red Hat Inc, All Rights Reserved&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -11,15 +11,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-r_extern
-r_int
-id|vm_enough_memory
-c_func
-(paren
-r_int
-id|pages
-)paren
-suffix:semicolon
 DECL|function|get_one_pte_map_nested
 r_static
 r_inline
@@ -1076,6 +1067,7 @@ id|new_vma
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; * The old VMA has been accounted for,&n;&t;&t; * don&squot;t double account&n;&t;&t; */
 id|do_munmap
 c_func
 (paren
@@ -1084,6 +1076,8 @@ comma
 id|addr
 comma
 id|old_len
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|current-&gt;mm-&gt;total_vm
@@ -1139,6 +1133,11 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+r_extern
+r_int
+id|sysctl_overcommit_memory
+suffix:semicolon
+multiline_comment|/* FIXME!! */
 multiline_comment|/*&n; * Expand (or shrink) an existing mapping, potentially moving it at the&n; * same time (controlled by the MREMAP_MAYMOVE flag and available VM space)&n; *&n; * MREMAP_FIXED option added 5-Dec-1999 by Benjamin LaHaise&n; * This option implies MREMAP_MAYMOVE.&n; */
 DECL|function|do_mremap
 r_int
@@ -1178,6 +1177,12 @@ id|ret
 op_assign
 op_minus
 id|EINVAL
+suffix:semicolon
+r_int
+r_int
+id|charged
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1319,10 +1324,12 @@ comma
 id|new_addr
 comma
 id|new_len
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Always allow a shrinking remap: that just unmaps&n;&t; * the unnecessary pages..&n;&t; */
+multiline_comment|/*&n;&t; * Always allow a shrinking remap: that just unmaps&n;&t; * the unnecessary pages..&n;&t; * do_munmap does all the needed commit accounting&n;&t; */
 id|ret
 op_assign
 id|addr
@@ -1347,6 +1354,8 @@ comma
 id|old_len
 op_minus
 id|new_len
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -1503,33 +1512,28 @@ id|rlim_cur
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/* Private writable mapping? Check memory availability.. */
 r_if
 c_cond
 (paren
+id|sysctl_overcommit_memory
+OG
+l_int|1
+)paren
+id|flags
+op_and_assign
+op_complement
+id|MAP_NORESERVE
+suffix:semicolon
+r_if
+c_cond
 (paren
 id|vma-&gt;vm_flags
 op_amp
-(paren
-id|VM_SHARED
-op_or
-id|VM_WRITE
+id|VM_ACCOUNT
 )paren
-)paren
-op_eq
-id|VM_WRITE
-op_logical_and
-op_logical_neg
-(paren
-id|flags
-op_amp
-id|MAP_NORESERVE
-)paren
-op_logical_and
-op_logical_neg
-id|vm_enough_memory
-c_func
-(paren
+(brace
+id|charged
+op_assign
 (paren
 id|new_len
 op_minus
@@ -1537,11 +1541,21 @@ id|old_len
 )paren
 op_rshift
 id|PAGE_SHIFT
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|vm_enough_memory
+c_func
+(paren
+id|charged
 )paren
 )paren
 r_goto
-id|out
+id|out_nc
 suffix:semicolon
+)brace
 multiline_comment|/* old_len exactly to the end of the area..&n;&t; * And we&squot;re not relocating the area.&n;&t; */
 r_if
 c_cond
@@ -1768,6 +1782,22 @@ id|new_addr
 suffix:semicolon
 )brace
 id|out
+suffix:colon
+r_if
+c_cond
+(paren
+id|ret
+op_amp
+op_complement
+id|PAGE_MASK
+)paren
+id|vm_unacct_memory
+c_func
+(paren
+id|charged
+)paren
+suffix:semicolon
+id|out_nc
 suffix:colon
 r_return
 id|ret

@@ -504,6 +504,12 @@ op_assign
 l_int|16
 comma
 multiline_comment|/* nr_pdflush_threads */
+DECL|enumerator|VM_OVERCOMMIT_RATIO
+id|VM_OVERCOMMIT_RATIO
+op_assign
+l_int|17
+comma
+multiline_comment|/* percent of RAM to allow overcommit in */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_NET names: */

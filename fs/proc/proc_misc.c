@@ -499,6 +499,10 @@ id|len
 )paren
 suffix:semicolon
 )brace
+r_extern
+id|atomic_t
+id|vm_committed_space
+suffix:semicolon
 DECL|function|meminfo_read_proc
 r_static
 r_int
@@ -535,6 +539,8 @@ id|i
 suffix:semicolon
 r_int
 id|len
+comma
+id|committed
 suffix:semicolon
 r_struct
 id|page_state
@@ -564,6 +570,15 @@ op_amp
 id|i
 )paren
 suffix:semicolon
+id|committed
+op_assign
+id|atomic_read
+c_func
+(paren
+op_amp
+id|vm_committed_space
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Tagged format, for easy grepping and expansion.&n;&t; */
 id|len
 op_assign
@@ -587,6 +602,7 @@ l_string|&quot;SwapTotal:    %8lu kB&bslash;n&quot;
 l_string|&quot;SwapFree:     %8lu kB&bslash;n&quot;
 l_string|&quot;Dirty:        %8lu kB&bslash;n&quot;
 l_string|&quot;Writeback:    %8lu kB&bslash;n&quot;
+l_string|&quot;Committed_AS: %8u kB&bslash;n&quot;
 l_string|&quot;PageTables:   %8lu kB&bslash;n&quot;
 l_string|&quot;ReverseMaps:  %8lu&bslash;n&quot;
 comma
@@ -684,6 +700,12 @@ id|K
 c_func
 (paren
 id|ps.nr_writeback
+)paren
+comma
+id|K
+c_func
+(paren
+id|committed
 )paren
 comma
 id|K

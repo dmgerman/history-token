@@ -174,8 +174,10 @@ DECL|macro|VM_DONTEXPAND
 mdefine_line|#define VM_DONTEXPAND&t;0x00040000&t;/* Cannot expand with mremap() */
 DECL|macro|VM_RESERVED
 mdefine_line|#define VM_RESERVED&t;0x00080000&t;/* Don&squot;t unmap it from swap_out */
+DECL|macro|VM_ACCOUNT
+mdefine_line|#define VM_ACCOUNT&t;0x00100000&t;/* Is a VM accounted object */
 DECL|macro|VM_STACK_FLAGS
-mdefine_line|#define VM_STACK_FLAGS&t;(0x00000100 | VM_DATA_DEFAULT_FLAGS)
+mdefine_line|#define VM_STACK_FLAGS&t;(0x00000100 | VM_DATA_DEFAULT_FLAGS | VM_ACCOUNT)
 DECL|macro|VM_READHINTMASK
 mdefine_line|#define VM_READHINTMASK&t;&t;&t;(VM_SEQ_READ | VM_RAND_READ)
 DECL|macro|VM_ClearReadHint
@@ -1367,6 +1369,8 @@ r_int
 r_int
 comma
 r_int
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern
@@ -1614,10 +1618,8 @@ op_star
 id|file
 )paren
 suffix:semicolon
-multiline_comment|/* vma is the first one with  address &lt; vma-&gt;vm_end,&n; * and even  address &lt; vma-&gt;vm_start. Have to extend vma. */
-DECL|function|expand_stack
-r_static
-r_inline
+multiline_comment|/* Do stack extension */
+r_extern
 r_int
 id|expand_stack
 c_func
@@ -1631,102 +1633,7 @@ r_int
 r_int
 id|address
 )paren
-(brace
-r_int
-r_int
-id|grow
 suffix:semicolon
-multiline_comment|/*&n;&t; * vma-&gt;vm_start/vm_end cannot change under us because the caller is required&n;&t; * to hold the mmap_sem in write mode. We need to get the spinlock only&n;&t; * before relocating the vma range ourself.&n;&t; */
-id|address
-op_and_assign
-id|PAGE_MASK
-suffix:semicolon
-id|grow
-op_assign
-(paren
-id|vma-&gt;vm_start
-op_minus
-id|address
-)paren
-op_rshift
-id|PAGE_SHIFT
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|vma-&gt;vm_end
-op_minus
-id|address
-OG
-id|current-&gt;rlim
-(braket
-id|RLIMIT_STACK
-)braket
-dot
-id|rlim_cur
-op_logical_or
-(paren
-(paren
-id|vma-&gt;vm_mm-&gt;total_vm
-op_plus
-id|grow
-)paren
-op_lshift
-id|PAGE_SHIFT
-)paren
-OG
-id|current-&gt;rlim
-(braket
-id|RLIMIT_AS
-)braket
-dot
-id|rlim_cur
-)paren
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|vma-&gt;vm_mm-&gt;page_table_lock
-)paren
-suffix:semicolon
-id|vma-&gt;vm_start
-op_assign
-id|address
-suffix:semicolon
-id|vma-&gt;vm_pgoff
-op_sub_assign
-id|grow
-suffix:semicolon
-id|vma-&gt;vm_mm-&gt;total_vm
-op_add_assign
-id|grow
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|vma-&gt;vm_flags
-op_amp
-id|VM_LOCKED
-)paren
-id|vma-&gt;vm_mm-&gt;locked_vm
-op_add_assign
-id|grow
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|vma-&gt;vm_mm-&gt;page_table_lock
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* Look up the first VMA which satisfies  addr &lt; vm_end,  NULL if none. */
 r_extern
 r_struct
