@@ -653,6 +653,8 @@ op_assign
 id|WDIOF_SETTIMEOUT
 op_or
 id|WDIOF_KEEPALIVEPING
+op_or
+id|WDIOF_MAGICCLOSE
 comma
 dot
 id|firmware_version

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;SoftDog&t;0.06:&t;A Software Watchdog Device&n; *&n; *&t;(c) Copyright 1996 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide &n; *&t;warranty for any of this software. This material is provided &n; *&t;&quot;AS-IS&quot; and at no charge.&t;&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;&n; *&n; *&t;Software only watchdog driver. Unlike its big brother the WDT501P&n; *&t;driver this won&squot;t always recover a failed machine.&n; *&n; *  03/96: Angelo Haritsis &lt;ah@doc.ic.ac.uk&gt; :&n; *&t;Modularised.&n; *&t;Added soft_margin; use upon insmod to change the timer delay.&n; *&t;NB: uses same minor as wdt (WATCHDOG_MINOR); we could use separate&n; *&t;    minors.&n; *&n; *  19980911 Alan Cox&n; *&t;Made SMP safe for 2.3.x&n; *&n; *  20011214 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *      Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *      Didn&squot;t add timeout option, as soft_margin option already exists.&n; */
+multiline_comment|/*&n; *&t;IndyDog&t;0.2&t;A Hardware Watchdog Device for SGI IP22&n; *&n; *&t;(c) Copyright 2002 Guido Guenther &lt;agx@sigxcpu.org&gt;, All Rights Reserved.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;based on softdog.c by Alan Cox &lt;alan@redhat.com&gt;&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -7,34 +7,29 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/watchdog.h&gt;
-macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|TIMER_MARGIN
-mdefine_line|#define TIMER_MARGIN&t;60&t;&t;/* (secs) Default is 1 minute */
+macro_line|#include &lt;asm/sgi/sgimc.h&gt;
+DECL|variable|indydog_alive
+r_static
+r_int
+r_int
+id|indydog_alive
+suffix:semicolon
+DECL|variable|mcmisc_regs
+r_static
+r_struct
+id|sgimc_misc_ctrl
+op_star
+id|mcmisc_regs
+suffix:semicolon
 DECL|variable|expect_close
 r_static
 r_int
 id|expect_close
 op_assign
 l_int|0
-suffix:semicolon
-DECL|variable|soft_margin
-r_static
-r_int
-id|soft_margin
-op_assign
-id|TIMER_MARGIN
-suffix:semicolon
-multiline_comment|/* in seconds */
-id|MODULE_PARM
-c_func
-(paren
-id|soft_margin
-comma
-l_string|&quot;i&quot;
-)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
 DECL|variable|nowayout
@@ -69,90 +64,24 @@ comma
 l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_NOWAYOUT)&quot;
 )paren
 suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
-multiline_comment|/*&n; *&t;Our timer&n; */
+DECL|function|indydog_ping
 r_static
 r_void
-id|watchdog_fire
+id|indydog_ping
 c_func
 (paren
-r_int
-r_int
-)paren
-suffix:semicolon
-DECL|variable|watchdog_ticktock
-r_static
-r_struct
-id|timer_list
-id|watchdog_ticktock
-op_assign
-id|TIMER_INITIALIZER
-c_func
-(paren
-id|watchdog_fire
-comma
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
-DECL|variable|timer_alive
-r_static
-r_int
-id|timer_alive
-suffix:semicolon
-multiline_comment|/*&n; *&t;If the timer expires..&n; */
-DECL|function|watchdog_fire
-r_static
-r_void
-id|watchdog_fire
-c_func
-(paren
-r_int
-r_int
-id|data
 )paren
 (brace
-macro_line|#ifdef ONLY_TESTING
-id|printk
-c_func
-(paren
-id|KERN_CRIT
-l_string|&quot;SOFTDOG: Would Reboot.&bslash;n&quot;
-)paren
+id|mcmisc_regs-&gt;watchdogt
+op_assign
+l_int|0
 suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-id|KERN_CRIT
-l_string|&quot;SOFTDOG: Initiating system reboot.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|machine_restart
-c_func
-(paren
-l_int|NULL
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;WATCHDOG: Reboot didn&squot;t ?????&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; *&t;Allow only one person to hold it open&n; */
-DECL|function|softdog_open
+DECL|function|indydog_open
 r_static
 r_int
-id|softdog_open
+id|indydog_open
 c_func
 (paren
 r_struct
@@ -166,10 +95,20 @@ op_star
 id|file
 )paren
 (brace
+id|u32
+id|mc_ctrl0
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|timer_alive
+id|test_and_set_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|indydog_alive
+)paren
 )paren
 (brace
 r_return
@@ -182,38 +121,51 @@ c_cond
 (paren
 id|nowayout
 )paren
-(brace
 id|MOD_INC_USE_COUNT
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; *&t;Activate timer&n;&t; */
-id|mod_timer
-c_func
+id|mcmisc_regs
+op_assign
 (paren
-op_amp
-id|watchdog_ticktock
-comma
-id|jiffies
-op_plus
-(paren
-id|soft_margin
+r_struct
+id|sgimc_misc_ctrl
 op_star
-id|HZ
 )paren
+(paren
+id|KSEG1
+op_plus
+l_int|0x1fa00000
 )paren
 suffix:semicolon
-id|timer_alive
+id|mc_ctrl0
 op_assign
-l_int|1
+id|mcmisc_regs-&gt;cpuctrl0
+op_or
+id|SGIMC_CCTRL0_WDOG
+suffix:semicolon
+id|mcmisc_regs-&gt;cpuctrl0
+op_assign
+id|mc_ctrl0
+suffix:semicolon
+id|indydog_ping
+c_func
+(paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Started watchdog timer.&bslash;n&quot;
+)paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|softdog_release
+DECL|function|indydog_release
 r_static
 r_int
-id|softdog_release
+id|indydog_release
 c_func
 (paren
 r_struct
@@ -231,15 +183,27 @@ multiline_comment|/*&n;&t; *&t;Shut off the timer.&n;&t; * &t;Lock it in if it&s
 r_if
 c_cond
 (paren
-op_logical_neg
-id|nowayout
+id|expect_close
 )paren
 (brace
-id|del_timer
+id|u32
+id|mc_ctrl0
+op_assign
+id|mcmisc_regs-&gt;cpuctrl0
+suffix:semicolon
+id|mc_ctrl0
+op_and_assign
+op_complement
+id|SGIMC_CCTRL0_WDOG
+suffix:semicolon
+id|mcmisc_regs-&gt;cpuctrl0
+op_assign
+id|mc_ctrl0
+suffix:semicolon
+id|printk
 c_func
 (paren
-op_amp
-id|watchdog_ticktock
+l_string|&quot;Stopped watchdog timer.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -249,22 +213,27 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;SOFTDOG: WDT device closed unexpectedly.  WDT will not stop!&bslash;n&quot;
+l_string|&quot;WDT device closed unexpectedly.  WDT will not stop!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|timer_alive
-op_assign
+id|clear_bit
+c_func
+(paren
 l_int|0
+comma
+op_amp
+id|indydog_alive
+)paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|softdog_write
+DECL|function|indydog_write
 r_static
 id|ssize_t
-id|softdog_write
+id|indydog_write
 c_func
 (paren
 r_struct
@@ -298,7 +267,7 @@ r_return
 op_minus
 id|ESPIPE
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Refresh the timer.&n;&t; */
+multiline_comment|/* Refresh the timer. */
 r_if
 c_cond
 (paren
@@ -368,19 +337,9 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-id|mod_timer
+id|indydog_ping
 c_func
 (paren
-op_amp
-id|watchdog_ticktock
-comma
-id|jiffies
-op_plus
-(paren
-id|soft_margin
-op_star
-id|HZ
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -391,10 +350,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|softdog_ioctl
+DECL|function|indydog_ioctl
 r_static
 r_int
-id|softdog_ioctl
+id|indydog_ioctl
 c_func
 (paren
 r_struct
@@ -425,14 +384,12 @@ op_assign
 dot
 id|options
 op_assign
-id|WDIOF_SETTIMEOUT
-op_or
 id|WDIOF_MAGICCLOSE
 comma
 dot
 id|identity
 op_assign
-l_string|&quot;Software Watchdog&quot;
+l_string|&quot;Hardware Watchdog for SGI IP22&quot;
 comma
 )brace
 suffix:semicolon
@@ -446,7 +403,7 @@ r_default
 suffix:colon
 r_return
 op_minus
-id|ENOTTY
+id|ENOIOCTLCMD
 suffix:semicolon
 r_case
 id|WDIOC_GETSUPPORT
@@ -504,19 +461,9 @@ suffix:semicolon
 r_case
 id|WDIOC_KEEPALIVE
 suffix:colon
-id|mod_timer
+id|indydog_ping
 c_func
 (paren
-op_amp
-id|watchdog_ticktock
-comma
-id|jiffies
-op_plus
-(paren
-id|soft_margin
-op_star
-id|HZ
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -524,11 +471,11 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-DECL|variable|softdog_fops
+DECL|variable|indydog_fops
 r_static
 r_struct
 id|file_operations
-id|softdog_fops
+id|indydog_fops
 op_assign
 (brace
 dot
@@ -539,30 +486,30 @@ comma
 dot
 id|write
 op_assign
-id|softdog_write
+id|indydog_write
 comma
 dot
 id|ioctl
 op_assign
-id|softdog_ioctl
+id|indydog_ioctl
 comma
 dot
 id|open
 op_assign
-id|softdog_open
+id|indydog_open
 comma
 dot
 id|release
 op_assign
-id|softdog_release
+id|indydog_release
 comma
 )brace
 suffix:semicolon
-DECL|variable|softdog_miscdev
+DECL|variable|indydog_miscdev
 r_static
 r_struct
 id|miscdevice
-id|softdog_miscdev
+id|indydog_miscdev
 op_assign
 (brace
 dot
@@ -579,12 +526,13 @@ dot
 id|fops
 op_assign
 op_amp
-id|softdog_fops
+id|indydog_fops
 comma
 )brace
 suffix:semicolon
 DECL|variable|__initdata
 r_static
+r_const
 r_char
 id|banner
 (braket
@@ -592,7 +540,7 @@ id|banner
 id|__initdata
 op_assign
 id|KERN_INFO
-l_string|&quot;Software Watchdog Timer: 0.06, soft_margin: %d sec, nowayout: %d&bslash;n&quot;
+l_string|&quot;Hardware Watchdog Timer for SGI IP22: 0.2&bslash;n&quot;
 suffix:semicolon
 DECL|function|watchdog_init
 r_static
@@ -613,7 +561,7 @@ id|misc_register
 c_func
 (paren
 op_amp
-id|softdog_miscdev
+id|indydog_miscdev
 )paren
 suffix:semicolon
 r_if
@@ -628,10 +576,6 @@ id|printk
 c_func
 (paren
 id|banner
-comma
-id|soft_margin
-comma
-id|nowayout
 )paren
 suffix:semicolon
 r_return
@@ -652,7 +596,7 @@ id|misc_deregister
 c_func
 (paren
 op_amp
-id|softdog_miscdev
+id|indydog_miscdev
 )paren
 suffix:semicolon
 )brace
@@ -668,6 +612,12 @@ id|module_exit
 c_func
 (paren
 id|watchdog_exit
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof
