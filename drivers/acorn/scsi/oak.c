@@ -489,8 +489,10 @@ suffix:semicolon
 id|host
 op_assign
 id|scsi_register
+c_func
 (paren
-id|tpnt
+op_amp
+id|oakscsi_template
 comma
 r_sizeof
 (paren
@@ -519,6 +521,7 @@ id|ECARD_MEMC
 comma
 l_int|0
 )paren
+suffix:semicolon
 id|host-&gt;irq
 op_assign
 id|IRQ_NONE
@@ -571,9 +574,9 @@ c_func
 (paren
 l_string|&quot; options CAN_QUEUE=%d  CMD_PER_LUN=%d release=%d&quot;
 comma
-id|tpnt-&gt;can_queue
+id|host-&gt;can_queue
 comma
-id|tpnt-&gt;cmd_per_lun
+id|host-&gt;cmd_per_lun
 comma
 id|OAKSCSI_PUBLIC_RELEASE
 )paren
