@@ -49,7 +49,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * macros/functions for gaining access to the thread information structure&n; */
 DECL|macro|INIT_THREAD_INFO
-mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;task:&t;&t;&amp;tsk,&t;&t;&t;&bslash;&n;&t;exec_domain:&t;&amp;default_exec_domain,&t;&bslash;&n;&t;flags:&t;&t;0,&t;&t;&t;&bslash;&n;&t;cpu:&t;&t;0,&t;&t;&t;&bslash;&n;&t;.restart_block&t;= {&t;&t;&t;&bslash;&n;&t;&t;.fn = do_no_restart_syscall,&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.task =&t;&t;&amp;tsk,&t;&t;&t;&bslash;&n;&t;.exec_domain =&t;&amp;default_exec_domain,&t;&bslash;&n;&t;.flags =&t;0,&t;&t;&t;&bslash;&n;&t;.cpu =&t;&t;0,&t;&t;&t;&bslash;&n;&t;.preempt_count = 1,&t;&t;&t;&bslash;&n;&t;.restart_block&t;= {&t;&t;&t;&bslash;&n;&t;&t;.fn = do_no_restart_syscall,&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|init_thread_info
 mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
 DECL|macro|init_stack
@@ -86,7 +86,7 @@ l_string|&quot;=&amp;r&quot;
 id|ti
 )paren
 suffix:colon
-l_string|&quot;g&quot;
+l_string|&quot;i&quot;
 (paren
 op_complement
 (paren
@@ -120,6 +120,8 @@ DECL|macro|TI_FLAGS
 mdefine_line|#define TI_FLAGS&t;8
 DECL|macro|TI_CPU
 mdefine_line|#define TI_CPU&t;&t;12
+DECL|macro|TI_PRE_COUNT
+mdefine_line|#define TI_PRE_COUNT&t;16
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define&t;PREEMPT_ACTIVE&t;0x4000000
 multiline_comment|/*&n; * thread information flag bit numbers&n; */
