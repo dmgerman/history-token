@@ -743,6 +743,15 @@ op_star
 id|arg
 )paren
 (brace
+r_int
+id|save_kmalloc_ok
+op_assign
+id|kmalloc_ok
+suffix:semicolon
+id|kmalloc_ok
+op_assign
+l_int|0
+suffix:semicolon
 id|CHOOSE_MODE_PROC
 c_func
 (paren
@@ -754,6 +763,10 @@ id|proc
 comma
 id|arg
 )paren
+suffix:semicolon
+id|kmalloc_ok
+op_assign
+id|save_kmalloc_ok
 suffix:semicolon
 )brace
 DECL|function|stack_sp

@@ -64,6 +64,10 @@ id|to_ptr
 comma
 r_void
 op_star
+id|fp
+comma
+r_void
+op_star
 id|from_ptr
 comma
 r_void
@@ -79,8 +83,7 @@ c_func
 r_int
 id|sig
 comma
-r_struct
-id|sigcontext
+r_void
 op_star
 id|sc
 )paren
@@ -93,7 +96,7 @@ c_func
 r_int
 id|sig
 comma
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs
