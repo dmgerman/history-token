@@ -22,6 +22,7 @@ l_int|14318
 suffix:semicolon
 DECL|variable|pSTGReg
 id|STG4000REG
+id|__iomem
 op_star
 id|pSTGReg
 suffix:semicolon
@@ -32,6 +33,7 @@ c_func
 (paren
 r_volatile
 id|STG4000REG
+id|__iomem
 op_star
 id|pSTGReg
 comma
@@ -619,6 +621,7 @@ c_func
 (paren
 r_volatile
 id|STG4000REG
+id|__iomem
 op_star
 id|pSTGReg
 )paren
@@ -660,6 +663,7 @@ c_func
 (paren
 r_volatile
 id|STG4000REG
+id|__iomem
 op_star
 id|pSTGReg
 )paren
