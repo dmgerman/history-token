@@ -256,7 +256,7 @@ macro_line|#ifdef CONFIG_SMP
 id|printk
 c_func
 (paren
-l_string|&quot;SMP NR_CPUS=%d&quot;
+l_string|&quot;SMP NR_CPUS=%d &quot;
 comma
 id|NR_CPUS
 )paren
@@ -270,7 +270,7 @@ macro_line|#ifdef CONFIG_DEBUG_PAGEALLOC
 id|printk
 c_func
 (paren
-l_string|&quot;DEBUG_PAGEALLOC&quot;
+l_string|&quot;DEBUG_PAGEALLOC &quot;
 )paren
 suffix:semicolon
 id|nl
@@ -282,7 +282,7 @@ macro_line|#ifdef CONFIG_NUMA
 id|printk
 c_func
 (paren
-l_string|&quot;NUMA&quot;
+l_string|&quot;NUMA &quot;
 )paren
 suffix:semicolon
 id|nl
@@ -419,7 +419,7 @@ suffix:semicolon
 id|die
 c_func
 (paren
-l_string|&quot;Exception in kernel mode&bslash;n&quot;
+l_string|&quot;Exception in kernel mode&quot;
 comma
 id|regs
 comma
