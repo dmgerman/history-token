@@ -227,18 +227,27 @@ multiline_comment|/*&n;&t; * Support for multiple acquires by the owning thread&
 r_if
 c_cond
 (paren
-(paren
 id|obj_desc-&gt;mutex.owner_thread
 )paren
-op_logical_and
+(brace
+multiline_comment|/* Special case for Global Lock, allow all threads */
+r_if
+c_cond
+(paren
 (paren
 id|obj_desc-&gt;mutex.owner_thread-&gt;thread_id
 op_eq
 id|walk_state-&gt;thread-&gt;thread_id
 )paren
+op_logical_or
+(paren
+id|obj_desc-&gt;mutex.semaphore
+op_eq
+id|acpi_gbl_global_lock_semaphore
+)paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * The mutex is already owned by this thread,&n;&t;&t; * just increment the acquisition depth&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * The mutex is already owned by this thread,&n;&t;&t;&t; * just increment the acquisition depth&n;&t;&t;&t; */
 id|obj_desc-&gt;mutex.acquisition_depth
 op_increment
 suffix:semicolon
@@ -247,6 +256,7 @@ id|return_ACPI_STATUS
 id|AE_OK
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Acquire the mutex, wait if necessary */
 id|status
@@ -390,13 +400,21 @@ id|AE_AML_INTERNAL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* The Mutex is owned, but this thread must be the owner */
+multiline_comment|/*&n;&t; * The Mutex is owned, but this thread must be the owner.&n;&t; * Special case for Global Lock, any thread can release&n;&t; */
 r_if
 c_cond
+(paren
 (paren
 id|obj_desc-&gt;mutex.owner_thread-&gt;thread_id
 op_ne
 id|walk_state-&gt;thread-&gt;thread_id
+)paren
+op_logical_and
+(paren
+id|obj_desc-&gt;mutex.semaphore
+op_ne
+id|acpi_gbl_global_lock_semaphore
+)paren
 )paren
 (brace
 id|ACPI_REPORT_ERROR

@@ -239,6 +239,20 @@ id|ACPI_FUNCTION_NAME
 l_string|&quot;ev_gpe_detect&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Check for the case where there are no GPEs */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|gpe_xrupt_list
+)paren
+(brace
+r_return
+(paren
+id|int_status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Examine all GPE blocks attached to this interrupt level */
 id|acpi_os_acquire_lock
 (paren

@@ -121,7 +121,7 @@ c_cond
 (paren
 id|obj_desc-&gt;method.concurrency
 op_ne
-id|INFINITE_CONCURRENCY
+id|ACPI_INFINITE_CONCURRENCY
 )paren
 op_logical_and
 (paren
@@ -555,6 +555,17 @@ id|status
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|obj_desc-&gt;method.method_flags
+op_amp
+id|AML_METHOD_INTERNAL_ONLY
+)paren
+)paren
+(brace
 multiline_comment|/* 1) Parse: Create a new walk state for the preempting walk */
 id|next_walk_state
 op_assign
@@ -656,6 +667,7 @@ id|acpi_ps_delete_parse_tree
 id|op
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* 2) Execute: Create a new state for the preempting walk */
 id|next_walk_state
 op_assign
@@ -779,6 +791,27 @@ id|next_walk_state
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|obj_desc-&gt;method.method_flags
+op_amp
+id|AML_METHOD_INTERNAL_ONLY
+)paren
+(brace
+id|status
+op_assign
+id|obj_desc-&gt;method.implementation
+(paren
+id|next_walk_state
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 id|return_ACPI_STATUS
 (paren
 id|AE_OK
@@ -787,6 +820,17 @@ suffix:semicolon
 multiline_comment|/* On error, we must delete the new walk state */
 id|cleanup
 suffix:colon
+r_if
+c_cond
+(paren
+id|next_walk_state-&gt;method_desc
+)paren
+(brace
+multiline_comment|/* Decrement the thread count on the method parse tree */
+id|next_walk_state-&gt;method_desc-&gt;method.thread_count
+op_decrement
+suffix:semicolon
+)brace
 (paren
 r_void
 )paren
@@ -1040,10 +1084,24 @@ suffix:semicolon
 multiline_comment|/* Ignore error and continue cleanup */
 )brace
 )brace
-multiline_comment|/* Decrement the thread count on the method parse tree */
+r_if
+c_cond
+(paren
 id|walk_state-&gt;method_desc-&gt;method.thread_count
-op_decrement
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_DISPATCH
+comma
+l_string|&quot;*** Not deleting method namespace, there are still %d threads&bslash;n&quot;
+comma
+id|walk_state-&gt;method_desc-&gt;method.thread_count
+)paren
+)paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1051,6 +1109,35 @@ op_logical_neg
 id|walk_state-&gt;method_desc-&gt;method.thread_count
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * Support to dynamically change a method from not_serialized to&n;&t;&t; * Serialized if it appears that the method is written foolishly and&n;&t;&t; * does not support multiple thread execution.  The best example of this&n;&t;&t; * is if such a method creates namespace objects and blocks.  A second&n;&t;&t; * thread will fail with an AE_ALREADY_EXISTS exception&n;&t;&t; *&n;&t;&t; * This code is here because we must wait until the last thread exits&n;&t;&t; * before creating the synchronization semaphore.&n;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|walk_state-&gt;method_desc-&gt;method.concurrency
+op_eq
+l_int|1
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|walk_state-&gt;method_desc-&gt;method.semaphore
+)paren
+)paren
+(brace
+id|status
+op_assign
+id|acpi_os_create_semaphore
+(paren
+l_int|1
+comma
+l_int|1
+comma
+op_amp
+id|walk_state-&gt;method_desc-&gt;method.semaphore
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * There are no more threads executing this method.  Perform&n;&t;&t; * additional cleanup.&n;&t;&t; *&n;&t;&t; * The method Node is stored in the walk state&n;&t;&t; */
 id|method_node
 op_assign
