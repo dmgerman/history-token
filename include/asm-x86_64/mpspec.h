@@ -572,7 +572,7 @@ id|u32
 id|address
 comma
 id|u32
-id|irq_base
+id|gsi_base
 )paren
 suffix:semicolon
 r_extern
@@ -589,7 +589,7 @@ id|u8
 id|trigger
 comma
 id|u32
-id|global_irq
+id|gsi
 )paren
 suffix:semicolon
 r_extern
@@ -613,8 +613,8 @@ r_void
 id|mp_config_ioapic_for_sci
 c_func
 (paren
-r_int
-id|irq
+id|u32
+id|gsi
 )paren
 suffix:semicolon
 r_extern

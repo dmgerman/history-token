@@ -94,6 +94,25 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#else
+r_extern
+id|irqreturn_t
+id|hpet_rtc_interrupt
+c_func
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|dev_id
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; *&t;We sponge a minor off of the misc major. No need slurping&n; *&t;up another valuable major dev number for this. If you add&n; *&t;an ioctl, make sure you don&squot;t conflict with SPARC&squot;s RTC&n; *&t;ioctls.&n; */
 DECL|variable|rtc_async_queue
