@@ -20,9 +20,9 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt; /* grr */
-multiline_comment|/*&n; * We must always allow SHUTDOWN_SIGS.  Even if we are not a module,&n; * the host drivers that we are using may be loaded as modules, and&n; * when we unload these,  we need to ensure that the error handler thread&n; * can be shut down.&n; *&n; * Note - when we unload a module, we send a SIGHUP.  We mustn&squot;t&n; * enable SIGTERM, as this is how the init shuts things down when you&n; * go to single-user mode.  For that matter, init also sends SIGKILL,&n; * so we mustn&squot;t enable that one either.  We use SIGHUP instead.  Other&n; * options would be SIGPWR, I suppose.&n; */
+multiline_comment|/*&n; * We must always allow SHUTDOWN_SIGS.  Even if we are not a module,&n; * the host drivers that we are using may be loaded as modules, and&n; * when we unload these,  we need to ensure that the error handler thread&n; * can be shut down.&n; *&n; * Note - when we unload a module, we send a SIGHUP.  We mustn&squot;t&n; * enable SIGTERM, as this is how the init shuts things down when you&n; * go to single-user mode.  For that matter, init also sends SIGKILL,&n; * so we mustn&squot;t enable that one either.  We use SIGHUP instead.  Other&n; * options would be SIGPWR, I suppose.&n; *&n; * Changed behavior 1/1/2003 - it turns out, that SIGHUP can get sent&n; * to error handlers from a process responsible for their creation.&n; * To sidestep that issue, we now use SIGPWR as suggested above.&n; */
 DECL|macro|SHUTDOWN_SIGS
-mdefine_line|#define SHUTDOWN_SIGS&t;(sigmask(SIGHUP))
+mdefine_line|#define SHUTDOWN_SIGS&t;(sigmask(SIGPWR))
 macro_line|#ifdef DEBUG
 DECL|macro|SENSE_TIMEOUT
 mdefine_line|#define SENSE_TIMEOUT SCSI_TIMEOUT
@@ -4202,7 +4202,9 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;Wake up parent &bslash;n&quot;
+l_string|&quot;Wake up parent of scsi_eh_%d&bslash;n&quot;
+comma
+id|shost-&gt;host_no
 )paren
 )paren
 suffix:semicolon
@@ -4227,7 +4229,9 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;Error handler sleeping&bslash;n&quot;
+l_string|&quot;Error handler scsi_eh_%d sleeping&bslash;n&quot;
+comma
+id|shost-&gt;host_no
 )paren
 )paren
 suffix:semicolon
@@ -4258,7 +4262,9 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;Error handler waking up&bslash;n&quot;
+l_string|&quot;Error handler scsi_eh_%d waking up&bslash;n&quot;
+comma
+id|shost-&gt;host_no
 )paren
 )paren
 suffix:semicolon
@@ -4315,7 +4321,9 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;Error handler exiting&bslash;n&quot;
+l_string|&quot;Error handler scsi_eh_%d exiting&bslash;n&quot;
+comma
+id|shost-&gt;host_no
 )paren
 )paren
 suffix:semicolon

@@ -972,7 +972,7 @@ suffix:semicolon
 id|send_sig
 c_func
 (paren
-id|SIGHUP
+id|SIGPWR
 comma
 id|shost-&gt;ehandler
 comma
