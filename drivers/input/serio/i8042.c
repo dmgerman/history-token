@@ -206,7 +206,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|dumbkbd
+id|noloop
 comma
 l_string|&quot;Disable the AUX Loopback command while probing for the AUX port&quot;
 )paren
