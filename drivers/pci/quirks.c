@@ -4117,7 +4117,6 @@ id|PCI_ANY_ID
 id|pr_debug
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;PCI: Calling quirk %p for %s&bslash;n&quot;
 comma
 id|f-&gt;hook
