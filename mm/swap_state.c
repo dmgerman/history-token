@@ -112,6 +112,10 @@ id|sync_page
 suffix:colon
 id|block_sync_page
 comma
+id|set_page_dirty
+suffix:colon
+id|__set_page_dirty_nobuffers
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * swapper_inode doesn&squot;t do anything much.  It is really only here to&n; * avoid some special-casing in other parts of the kernel.&n; */
