@@ -559,6 +559,9 @@ r_case
 id|TODC_TYPE_DS1557
 suffix:colon
 r_case
+id|TODC_TYPE_DS1743
+suffix:colon
+r_case
 id|TODC_TYPE_DS1746
 suffix:colon
 multiline_comment|/* XXXX BAD HACK -&gt; FIX */
@@ -747,6 +750,9 @@ id|todc_info-&gt;rtc_type
 (brace
 r_case
 id|TODC_TYPE_DS1557
+suffix:colon
+r_case
+id|TODC_TYPE_DS1743
 suffix:colon
 r_case
 id|TODC_TYPE_DS1746
@@ -1157,6 +1163,9 @@ r_case
 id|TODC_TYPE_DS1557
 suffix:colon
 r_case
+id|TODC_TYPE_DS1743
+suffix:colon
+r_case
 id|TODC_TYPE_DS1746
 suffix:colon
 multiline_comment|/* XXXX BAD HACK -&gt; FIX */
@@ -1213,6 +1222,9 @@ id|todc_info-&gt;rtc_type
 (brace
 r_case
 id|TODC_TYPE_DS1557
+suffix:colon
+r_case
+id|TODC_TYPE_DS1743
 suffix:colon
 r_case
 id|TODC_TYPE_DS1746
