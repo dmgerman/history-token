@@ -2,6 +2,7 @@ macro_line|#ifndef __LINUX_USB_H
 DECL|macro|__LINUX_USB_H
 mdefine_line|#define __LINUX_USB_H
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 multiline_comment|/* USB constants */
 multiline_comment|/*&n; * Device and/or Interface Class codes&n; */
 DECL|macro|USB_CLASS_PER_INTERFACE
@@ -1695,6 +1696,89 @@ id|usb_driver
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_USB_DYNAMIC_MINORS
+DECL|function|usb_register_dev
+r_static
+r_inline
+r_int
+id|usb_register_dev
+c_func
+(paren
+r_struct
+id|usb_driver
+op_star
+id|new_driver
+comma
+r_int
+id|num_minors
+comma
+r_int
+op_star
+id|start_minor
+)paren
+(brace
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+DECL|function|usb_deregister_dev
+r_static
+r_inline
+r_void
+id|usb_deregister_dev
+c_func
+(paren
+r_struct
+id|usb_driver
+op_star
+id|driver
+comma
+r_int
+id|num_minors
+comma
+r_int
+id|start_minor
+)paren
+(brace
+)brace
+macro_line|#else
+r_extern
+r_int
+id|usb_register_dev
+c_func
+(paren
+r_struct
+id|usb_driver
+op_star
+id|new_driver
+comma
+r_int
+id|num_minors
+comma
+r_int
+op_star
+id|start_minor
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_deregister_dev
+c_func
+(paren
+r_struct
+id|usb_driver
+op_star
+id|driver
+comma
+r_int
+id|num_minors
+comma
+r_int
+id|start_minor
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* -------------------------------------------------------------------------- */
 multiline_comment|/*&n; * URB support, for asynchronous request completions&n; */
 multiline_comment|/*&n; * urb-&gt;transfer_flags:&n; *&n; * FIXME should be URB_* flags&n; */
