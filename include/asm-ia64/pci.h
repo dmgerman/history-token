@@ -169,6 +169,11 @@ id|pci_window
 op_star
 id|window
 suffix:semicolon
+DECL|member|platform_data
+r_void
+op_star
+id|platform_data
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|PCI_CONTROLLER

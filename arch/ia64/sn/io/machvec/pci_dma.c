@@ -297,12 +297,11 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Get hwgraph vertex for the device&n;&t; */
 id|device_sysdata
 op_assign
+id|SN_DEVICE_SYSDATA
+c_func
 (paren
-r_struct
-id|sn_device_sysdata
-op_star
+id|hwdev
 )paren
-id|hwdev-&gt;sysdata
 suffix:semicolon
 id|vhdl
 op_assign
@@ -662,12 +661,11 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Get the hwgraph vertex for the device&n;&t; */
 id|device_sysdata
 op_assign
+id|SN_DEVICE_SYSDATA
+c_func
 (paren
-r_struct
-id|sn_device_sysdata
-op_star
+id|hwdev
 )paren
-id|hwdev-&gt;sysdata
 suffix:semicolon
 id|vhdl
 op_assign
@@ -1020,12 +1018,11 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * find vertex for the device&n;&t; */
 id|device_sysdata
 op_assign
+id|SN_DEVICE_SYSDATA
+c_func
 (paren
-r_struct
-id|sn_device_sysdata
-op_star
+id|hwdev
 )paren
-id|hwdev-&gt;sysdata
 suffix:semicolon
 id|vhdl
 op_assign
