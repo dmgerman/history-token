@@ -1820,6 +1820,14 @@ id|irq_desc
 op_plus
 id|irq
 suffix:semicolon
+multiline_comment|/* XXX This causes bad performance and lockups on XICS - Anton */
+r_if
+c_cond
+(paren
+id|naca-&gt;interrupt_controller
+op_eq
+id|IC_OPEN_PIC
+)paren
 id|balance_irq
 c_func
 (paren
