@@ -765,11 +765,11 @@ id|file
 )paren
 (brace
 r_struct
-id|inode
+id|address_space
 op_star
-id|inode
+id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
 suffix:semicolon
 r_const
 r_int
@@ -779,7 +779,7 @@ op_assign
 id|get_min_readahead
 c_func
 (paren
-id|inode
+id|mapping-&gt;host
 )paren
 suffix:semicolon
 id|file-&gt;f_ra.next_size
