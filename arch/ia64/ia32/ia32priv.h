@@ -1508,12 +1508,11 @@ id|save_ia32_fpstate
 r_struct
 id|task_struct
 op_star
-id|tsk
 comma
 r_struct
 id|ia32_user_i387_struct
+id|__user
 op_star
-id|save
 )paren
 suffix:semicolon
 r_extern
@@ -1523,12 +1522,11 @@ id|save_ia32_fpxstate
 r_struct
 id|task_struct
 op_star
-id|tsk
 comma
 r_struct
 id|ia32_user_fxsr_struct
+id|__user
 op_star
-id|save
 )paren
 suffix:semicolon
 macro_line|#endif /* !CONFIG_IA32_SUPPORT */

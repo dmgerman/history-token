@@ -52,14 +52,8 @@ macro_line|#else
 DECL|macro|DBG
 macro_line|# define DBG(fmt...)
 macro_line|#endif
-DECL|macro|A
-mdefine_line|#define A(__x)&t;&t;((unsigned long)(__x))
-DECL|macro|AA
-mdefine_line|#define AA(__x)&t;&t;((unsigned long)(__x))
 DECL|macro|ROUND_UP
 mdefine_line|#define ROUND_UP(x,a)&t;((__typeof__(x))(((unsigned long)(x) + ((a) - 1)) &amp; ~((a) - 1)))
-DECL|macro|NAME_OFFSET
-mdefine_line|#define NAME_OFFSET(de) ((int) ((de)-&gt;d_name - (char *) (de)))
 DECL|macro|OFFSET4K
 mdefine_line|#define OFFSET4K(a)&t;&t;((a) &amp; 0xfff)
 DECL|macro|PAGE_START
@@ -70,28 +64,6 @@ DECL|macro|high2lowuid
 mdefine_line|#define high2lowuid(uid) ((uid) &gt; 65535 ? 65534 : (uid))
 DECL|macro|high2lowgid
 mdefine_line|#define high2lowgid(gid) ((gid) &gt; 65535 ? 65534 : (gid))
-r_extern
-r_int
-r_int
-id|arch_get_unmapped_area
-(paren
-r_struct
-id|file
-op_star
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Anything that modifies or inspects ia32 user virtual memory must hold this semaphore&n; * while doing so.&n; */
 multiline_comment|/* XXX make per-mm: */
 r_static
@@ -107,6 +79,7 @@ DECL|function|sys32_execve
 id|sys32_execve
 (paren
 r_char
+id|__user
 op_star
 id|name
 comma
@@ -280,6 +253,7 @@ id|stat
 comma
 r_struct
 id|compat_stat
+id|__user
 op_star
 id|ubuf
 )paren
@@ -718,6 +692,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|start
@@ -775,6 +750,7 @@ id|page
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|PAGE_START
@@ -867,6 +843,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|PAGE_START
@@ -898,6 +875,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|end
@@ -955,6 +933,7 @@ id|file
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|start
@@ -3950,6 +3929,7 @@ id|file
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|pstart
@@ -4358,6 +4338,7 @@ id|sys32_mmap
 (paren
 r_struct
 id|mmap_arg_struct
+id|__user
 op_star
 id|arg
 )paren
@@ -5345,6 +5326,7 @@ DECL|function|sys32_pipe
 id|sys32_pipe
 (paren
 r_int
+id|__user
 op_star
 id|fd
 )paren
@@ -5414,6 +5396,7 @@ id|o
 comma
 r_struct
 id|compat_timeval
+id|__user
 op_star
 id|i
 )paren
@@ -5465,6 +5448,7 @@ id|put_tv32
 (paren
 r_struct
 id|compat_timeval
+id|__user
 op_star
 id|o
 comma
@@ -5591,11 +5575,13 @@ id|sys32_gettimeofday
 (paren
 r_struct
 id|compat_timeval
+id|__user
 op_star
 id|tv
 comma
 r_struct
 id|timezone
+id|__user
 op_star
 id|tz
 )paren
@@ -5673,11 +5659,13 @@ id|sys32_settimeofday
 (paren
 r_struct
 id|compat_timeval
+id|__user
 op_star
 id|tv
 comma
 r_struct
 id|timezone
+id|__user
 op_star
 id|tz
 )paren
@@ -5784,12 +5772,14 @@ id|getdents32_callback
 DECL|member|current_dir
 r_struct
 id|compat_dirent
+id|__user
 op_star
 id|current_dir
 suffix:semicolon
 DECL|member|previous
 r_struct
 id|compat_dirent
+id|__user
 op_star
 id|previous
 suffix:semicolon
@@ -5810,6 +5800,7 @@ id|readdir32_callback
 DECL|member|dirent
 r_struct
 id|old_linux32_dirent
+id|__user
 op_star
 id|dirent
 suffix:semicolon
@@ -5849,6 +5840,7 @@ id|d_type
 (brace
 r_struct
 id|compat_dirent
+id|__user
 op_star
 id|dirent
 suffix:semicolon
@@ -5870,10 +5862,12 @@ op_assign
 id|ROUND_UP
 c_func
 (paren
-id|NAME_OFFSET
-c_func
+m_offsetof
 (paren
-id|dirent
+r_struct
+id|compat_dirent
+comma
+id|d_name
 )paren
 op_plus
 id|namlen
@@ -5989,11 +5983,13 @@ op_assign
 (paren
 r_struct
 id|compat_dirent
+id|__user
 op_star
 )paren
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|dirent
@@ -6024,6 +6020,7 @@ id|fd
 comma
 r_struct
 id|compat_dirent
+id|__user
 op_star
 id|dirent
 comma
@@ -6039,6 +6036,7 @@ id|file
 suffix:semicolon
 r_struct
 id|compat_dirent
+id|__user
 op_star
 id|lastdirent
 suffix:semicolon
@@ -6207,6 +6205,7 @@ id|__buf
 suffix:semicolon
 r_struct
 id|old_linux32_dirent
+id|__user
 op_star
 id|dirent
 suffix:semicolon
@@ -6294,6 +6293,7 @@ r_int
 id|fd
 comma
 r_void
+id|__user
 op_star
 id|dirent
 comma
@@ -6418,6 +6418,7 @@ id|sys32_old_select
 (paren
 r_struct
 id|sel_arg_struct
+id|__user
 op_star
 id|arg
 )paren
@@ -6799,6 +6800,7 @@ DECL|function|sys32_time
 id|sys32_time
 (paren
 r_int
+id|__user
 op_star
 id|tloc
 )paren
@@ -7435,6 +7437,7 @@ id|regno
 comma
 r_struct
 id|_fpreg_ia32
+id|__user
 op_star
 id|reg
 comma
@@ -7617,6 +7620,7 @@ id|regno
 comma
 r_struct
 id|_fpreg_ia32
+id|__user
 op_star
 id|reg
 comma
@@ -7785,6 +7789,7 @@ id|tsk
 comma
 r_struct
 id|ia32_user_i387_struct
+id|__user
 op_star
 id|save
 )paren
@@ -7991,6 +7996,7 @@ id|tsk
 comma
 r_struct
 id|ia32_user_i387_struct
+id|__user
 op_star
 id|save
 )paren
@@ -8048,6 +8054,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -8079,6 +8086,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -8093,6 +8101,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -8130,6 +8139,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -8157,6 +8167,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -8255,6 +8266,7 @@ id|tsk
 comma
 r_struct
 id|ia32_user_fxsr_struct
+id|__user
 op_star
 id|save
 )paren
@@ -8448,6 +8460,7 @@ comma
 (paren
 r_struct
 id|_fpreg_ia32
+id|__user
 op_star
 )paren
 op_amp
@@ -8606,6 +8619,7 @@ id|tsk
 comma
 r_struct
 id|ia32_user_fxsr_struct
+id|__user
 op_star
 id|save
 )paren
@@ -8677,6 +8691,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -8708,6 +8723,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -8722,6 +8738,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -8759,6 +8776,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -8786,6 +8804,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -8859,6 +8878,7 @@ comma
 (paren
 r_struct
 id|_fpreg_ia32
+id|__user
 op_star
 )paren
 op_amp
@@ -8884,6 +8904,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -9304,9 +9325,10 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|data
@@ -9397,9 +9419,10 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|data
@@ -9469,11 +9492,7 @@ c_func
 (paren
 id|VERIFY_WRITE
 comma
-(paren
-r_int
-op_star
-)paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|data
@@ -9539,9 +9558,10 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|data
@@ -9574,11 +9594,7 @@ c_func
 (paren
 id|VERIFY_READ
 comma
-(paren
-r_int
-op_star
-)paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|data
@@ -9638,9 +9654,10 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|data
@@ -9684,9 +9701,10 @@ comma
 (paren
 r_struct
 id|ia32_user_i387_struct
+id|__user
 op_star
 )paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|data
@@ -9708,9 +9726,10 @@ comma
 (paren
 r_struct
 id|ia32_user_fxsr_struct
+id|__user
 op_star
 )paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|data
@@ -9732,9 +9751,10 @@ comma
 (paren
 r_struct
 id|ia32_user_i387_struct
+id|__user
 op_star
 )paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|data
@@ -9756,9 +9776,10 @@ comma
 (paren
 r_struct
 id|ia32_user_fxsr_struct
+id|__user
 op_star
 )paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|data
@@ -9878,10 +9899,12 @@ DECL|function|sys32_sigaltstack
 id|sys32_sigaltstack
 (paren
 id|ia32_stack_t
+id|__user
 op_star
 id|uss32
 comma
 id|ia32_stack_t
+id|__user
 op_star
 id|uoss32
 comma
@@ -9970,6 +9993,7 @@ id|uss.ss_sp
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -9981,7 +10005,7 @@ id|uss.ss_flags
 op_assign
 id|buf32.ss_flags
 suffix:semicolon
-multiline_comment|/* MINSIGSTKSZ is different for ia32 vs ia64. We lie here to pass the &n;&t;           check and set it to the user requested value later */
+multiline_comment|/* MINSIGSTKSZ is different for ia32 vs ia64. We lie here to pass the&n;&t;           check and set it to the user requested value later */
 r_if
 c_cond
 (paren
@@ -10026,11 +10050,21 @@ c_func
 id|uss32
 ques
 c_cond
+(paren
+id|stack_t
+id|__user
+op_star
+)paren
 op_amp
 id|uss
 suffix:colon
 l_int|NULL
 comma
+(paren
+id|stack_t
+id|__user
+op_star
+)paren
 op_amp
 id|uoss
 comma
@@ -10069,6 +10103,7 @@ id|buf32.ss_sp
 op_assign
 (paren
 r_int
+id|__user
 )paren
 id|uoss.ss_sp
 suffix:semicolon
@@ -10238,6 +10273,7 @@ id|sys32_sysctl
 (paren
 r_struct
 id|sysctl32
+id|__user
 op_star
 id|args
 )paren
@@ -10255,6 +10291,7 @@ id|get_fs
 )paren
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|oldvalp
 comma
@@ -10265,6 +10302,7 @@ r_int
 id|oldlen
 suffix:semicolon
 r_int
+id|__user
 op_star
 id|namep
 suffix:semicolon
@@ -10297,9 +10335,10 @@ id|namep
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|a32.name
@@ -10307,11 +10346,7 @@ id|a32.name
 suffix:semicolon
 id|oldvalp
 op_assign
-(paren
-r_void
-op_star
-)paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|a32.oldval
@@ -10319,11 +10354,7 @@ id|a32.oldval
 suffix:semicolon
 id|newvalp
 op_assign
-(paren
-r_void
-op_star
-)paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|a32.newval
@@ -10342,9 +10373,10 @@ id|oldlen
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|a32.oldlenp
@@ -10411,6 +10443,11 @@ id|a32.nlen
 comma
 id|oldvalp
 comma
+(paren
+r_int
+id|__user
+op_star
+)paren
 op_amp
 id|oldlen
 comma
@@ -10444,9 +10481,10 @@ id|oldlen
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|a32.oldlenp
@@ -10474,6 +10512,7 @@ id|sys32_newuname
 (paren
 r_struct
 id|new_utsname
+id|__user
 op_star
 id|name
 )paren
@@ -10521,14 +10560,17 @@ DECL|function|sys32_getresuid16
 id|sys32_getresuid16
 (paren
 id|u16
+id|__user
 op_star
 id|ruid
 comma
 id|u16
+id|__user
 op_star
 id|euid
 comma
 id|u16
+id|__user
 op_star
 id|suid
 )paren
@@ -10562,12 +10604,27 @@ op_assign
 id|sys_getresuid
 c_func
 (paren
+(paren
+id|uid_t
+id|__user
+op_star
+)paren
 op_amp
 id|a
 comma
+(paren
+id|uid_t
+id|__user
+op_star
+)paren
 op_amp
 id|b
 comma
+(paren
+id|uid_t
+id|__user
+op_star
+)paren
 op_amp
 id|c
 )paren
@@ -10619,14 +10676,17 @@ DECL|function|sys32_getresgid16
 id|sys32_getresgid16
 (paren
 id|u16
+id|__user
 op_star
 id|rgid
 comma
 id|u16
+id|__user
 op_star
 id|egid
 comma
 id|u16
+id|__user
 op_star
 id|sgid
 )paren
@@ -10660,12 +10720,27 @@ op_assign
 id|sys_getresgid
 c_func
 (paren
+(paren
+id|gid_t
+id|__user
+op_star
+)paren
 op_amp
 id|a
 comma
+(paren
+id|gid_t
+id|__user
+op_star
+)paren
 op_amp
 id|b
 comma
+(paren
+id|gid_t
+id|__user
+op_star
+)paren
 op_amp
 id|c
 )paren
@@ -10747,6 +10822,7 @@ id|groups16_to_user
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|grouplist
 comma
@@ -10824,6 +10900,7 @@ op_star
 id|group_info
 comma
 r_int
+id|__user
 op_star
 id|grouplist
 )paren
@@ -10893,6 +10970,7 @@ r_int
 id|gidsetsize
 comma
 r_int
+id|__user
 op_star
 id|grouplist
 )paren
@@ -10987,6 +11065,7 @@ r_int
 id|gidsetsize
 comma
 r_int
+id|__user
 op_star
 id|grouplist
 )paren
@@ -11111,12 +11190,7 @@ r_return
 id|sys_truncate
 c_func
 (paren
-(paren
-r_const
-r_char
-op_star
-)paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|path
@@ -11180,6 +11254,7 @@ id|putstat64
 (paren
 r_struct
 id|stat64
+id|__user
 op_star
 id|ubuf
 comma
@@ -11231,6 +11306,7 @@ id|hdev
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 op_amp
@@ -11249,6 +11325,7 @@ comma
 (paren
 (paren
 id|u32
+id|__user
 op_star
 )paren
 op_amp
@@ -11354,6 +11431,7 @@ id|hdev
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 op_amp
@@ -11372,6 +11450,7 @@ comma
 (paren
 (paren
 id|u32
+id|__user
 op_star
 )paren
 op_amp
@@ -11505,11 +11584,13 @@ DECL|function|sys32_stat64
 id|sys32_stat64
 (paren
 r_char
+id|__user
 op_star
 id|filename
 comma
 r_struct
 id|stat64
+id|__user
 op_star
 id|statbuf
 )paren
@@ -11557,11 +11638,13 @@ DECL|function|sys32_lstat64
 id|sys32_lstat64
 (paren
 r_char
+id|__user
 op_star
 id|filename
 comma
 r_struct
 id|stat64
+id|__user
 op_star
 id|statbuf
 )paren
@@ -11614,6 +11697,7 @@ id|fd
 comma
 r_struct
 id|stat64
+id|__user
 op_star
 id|statbuf
 )paren
@@ -11730,6 +11814,7 @@ id|sys32_sysinfo
 (paren
 r_struct
 id|sysinfo32
+id|__user
 op_star
 id|info
 )paren
@@ -11767,6 +11852,12 @@ op_assign
 id|sys_sysinfo
 c_func
 (paren
+(paren
+r_struct
+id|sysinfo
+id|__user
+op_star
+)paren
 op_amp
 id|s
 )paren
@@ -12057,6 +12148,7 @@ id|pid
 comma
 r_struct
 id|compat_timespec
+id|__user
 op_star
 id|interval
 )paren
@@ -12089,6 +12181,12 @@ c_func
 (paren
 id|pid
 comma
+(paren
+r_struct
+id|timespec
+id|__user
+op_star
+)paren
 op_amp
 id|t
 )paren
@@ -12129,6 +12227,7 @@ r_int
 id|fd
 comma
 r_void
+id|__user
 op_star
 id|buf
 comma
@@ -12177,6 +12276,7 @@ r_int
 id|fd
 comma
 r_void
+id|__user
 op_star
 id|buf
 comma
@@ -12227,6 +12327,7 @@ r_int
 id|in_fd
 comma
 r_int
+id|__user
 op_star
 id|offset
 comma
@@ -12284,6 +12385,11 @@ comma
 id|offset
 ques
 c_cond
+(paren
+id|off_t
+id|__user
+op_star
+)paren
 op_amp
 id|of
 suffix:colon
@@ -12419,11 +12525,11 @@ id|obrk
 id|clear_user
 c_func
 (paren
+id|compat_ptr
+c_func
 (paren
-r_void
-op_star
-)paren
 id|ret
+)paren
 comma
 id|PAGE_ALIGN
 c_func
@@ -12446,6 +12552,7 @@ id|sys32_open
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|filename
 comma
@@ -12614,6 +12721,7 @@ id|fd
 comma
 r_struct
 id|epoll_event32
+id|__user
 op_star
 id|event
 )paren
@@ -12726,6 +12834,12 @@ id|op
 comma
 id|fd
 comma
+(paren
+r_struct
+id|epoll_event
+id|__user
+op_star
+)paren
 op_amp
 id|event64
 )paren
@@ -12751,6 +12865,7 @@ id|epfd
 comma
 r_struct
 id|epoll_event32
+id|__user
 op_star
 id|events
 comma
@@ -12831,7 +12946,7 @@ id|epoll_event32
 r_return
 id|error
 suffix:semicolon
-multiline_comment|/* &n; &t; * Allocate space for the intermediate copy.  If the space needed &n;&t; * is large enough to cause kmalloc to fail, then try again with&n;&t; * __get_free_pages.&n;&t; */
+multiline_comment|/*&n; &t; * Allocate space for the intermediate copy.  If the space needed&n;&t; * is large enough to cause kmalloc to fail, then try again with&n;&t; * __get_free_pages.&n;&t; */
 id|size
 op_assign
 id|maxevents
@@ -12910,6 +13025,12 @@ c_func
 (paren
 id|epfd
 comma
+(paren
+r_struct
+id|epoll_event
+id|__user
+op_star
+)paren
 id|events64
 comma
 id|maxevents
@@ -13118,6 +13239,7 @@ id|sys32_set_thread_area
 (paren
 r_struct
 id|ia32_user_desc
+id|__user
 op_star
 id|u_info
 )paren
@@ -13316,6 +13438,7 @@ id|sys32_get_thread_area
 (paren
 r_struct
 id|ia32_user_desc
+id|__user
 op_star
 id|u_info
 )paren
@@ -13462,25 +13585,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_extern
-id|asmlinkage
-r_int
-id|sys_timer_create
-c_func
-(paren
-id|clockid_t
-id|which_clock
-comma
-r_struct
-id|sigevent
-op_star
-id|timer_event_spec
-comma
-id|timer_t
-op_star
-id|created_timer_id
-)paren
-suffix:semicolon
 id|asmlinkage
 r_int
 DECL|function|sys32_timer_create
@@ -13492,10 +13596,12 @@ id|clock
 comma
 r_struct
 id|sigevent32
+id|__user
 op_star
 id|se32
 comma
 id|timer_t
+id|__user
 op_star
 id|timer_id
 )paren
@@ -13636,9 +13742,20 @@ c_func
 (paren
 id|clock
 comma
+(paren
+r_struct
+id|sigevent
+id|__user
+op_star
+)paren
 op_amp
 id|se
 comma
+(paren
+id|timer_t
+id|__user
+op_star
+)paren
 op_amp
 id|t
 )paren
