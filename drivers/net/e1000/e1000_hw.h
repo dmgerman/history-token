@@ -2356,6 +2356,10 @@ DECL|member|phy_id
 r_uint32
 id|phy_id
 suffix:semicolon
+DECL|member|phy_revision
+r_uint32
+id|phy_revision
+suffix:semicolon
 DECL|member|phy_addr
 r_uint32
 id|phy_addr
@@ -3833,6 +3837,8 @@ DECL|macro|M88E1000_12_PHY_ID
 mdefine_line|#define M88E1000_12_PHY_ID M88E1000_E_PHY_ID
 DECL|macro|M88E1000_14_PHY_ID
 mdefine_line|#define M88E1000_14_PHY_ID M88E1000_E_PHY_ID
+DECL|macro|M88E1011_I_REV_4
+mdefine_line|#define M88E1011_I_REV_4   0x04
 multiline_comment|/* Miscellaneous PHY bit definitions. */
 DECL|macro|PHY_PREAMBLE
 mdefine_line|#define PHY_PREAMBLE        0xFFFFFFFF

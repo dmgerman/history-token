@@ -2190,6 +2190,14 @@ id|phy_data
 op_or_assign
 id|M88E1000_EPSCR_TX_CLK_25
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|hw-&gt;phy_revision
+OL
+id|M88E1011_I_REV_4
+)paren
+(brace
 multiline_comment|/* Configure Master and Slave downshift values */
 id|phy_data
 op_and_assign
@@ -2234,6 +2242,7 @@ r_return
 op_minus
 id|E1000_ERR_PHY
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* SW Reset the PHY so all changes take effect */
 id|ret_val
@@ -6695,6 +6704,16 @@ id|phy_id_low
 op_amp
 id|PHY_REVISION_MASK
 )paren
+suffix:semicolon
+id|hw-&gt;phy_revision
+op_assign
+(paren
+r_uint32
+)paren
+id|phy_id_low
+op_amp
+op_complement
+id|PHY_REVISION_MASK
 suffix:semicolon
 r_switch
 c_cond
