@@ -100,9 +100,9 @@ DECL|macro|NODEID_TO_NODE
 mdefine_line|#define NODEID_TO_NODE(nodeid)&t;(nodeid &amp; NODE_MASK)
 multiline_comment|/* Can be used to consistently print a node/bus ID. */
 DECL|macro|NODE_BUS_FMT
-mdefine_line|#define NODE_BUS_FMT&t;&t;&quot;%02d:%04d&quot;
+mdefine_line|#define NODE_BUS_FMT&t;&t;&quot;%d-%02d:%04d&quot;
 DECL|macro|NODE_BUS_ARGS
-mdefine_line|#define NODE_BUS_ARGS(nodeid)&t;NODEID_TO_NODE(nodeid), NODEID_TO_BUS(nodeid)
+mdefine_line|#define NODE_BUS_ARGS(__host, __nodeid)&t;&bslash;&n;&t;__host-&gt;id, NODEID_TO_NODE(__nodeid), NODEID_TO_BUS(__nodeid)
 DECL|macro|HPSB_PRINT
 mdefine_line|#define HPSB_PRINT(level, fmt, args...) printk(level &quot;ieee1394: &quot; fmt &quot;&bslash;n&quot; , ## args)
 DECL|macro|HPSB_DEBUG
@@ -115,6 +115,13 @@ DECL|macro|HPSB_WARN
 mdefine_line|#define HPSB_WARN(fmt, args...) HPSB_PRINT(KERN_WARNING, fmt , ## args)
 DECL|macro|HPSB_ERR
 mdefine_line|#define HPSB_ERR(fmt, args...) HPSB_PRINT(KERN_ERR, fmt , ## args)
+macro_line|#ifdef CONFIG_IEEE1394_VERBOSEDEBUG
+DECL|macro|HPSB_VERBOSE
+mdefine_line|#define HPSB_VERBOSE(fmt, args...) HPSB_PRINT(KERN_DEBUG, fmt , ## args)
+macro_line|#else
+DECL|macro|HPSB_VERBOSE
+mdefine_line|#define HPSB_VERBOSE(fmt, args...)
+macro_line|#endif
 DECL|macro|HPSB_PANIC
 mdefine_line|#define HPSB_PANIC(fmt, args...) panic(&quot;ieee1394: &quot; fmt &quot;&bslash;n&quot; , ## args)
 DECL|macro|HPSB_TRACE

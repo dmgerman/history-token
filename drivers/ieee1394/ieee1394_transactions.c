@@ -2481,8 +2481,7 @@ id|specifier_id
 op_amp
 l_int|0xff
 suffix:semicolon
-macro_line|#ifdef CONFIG_IEEE1394_VERBOSEDEBUG
-id|HPSB_DEBUG
+id|HPSB_VERBOSE
 c_func
 (paren
 l_string|&quot;Send GASP: channel = %d, length = %d&quot;
@@ -2492,7 +2491,6 @@ comma
 id|length
 )paren
 suffix:semicolon
-macro_line|#endif
 id|length
 op_add_assign
 l_int|8
