@@ -41,10 +41,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;device_pm_resume - Restore state of each device in system.&n; *&n; *&t;Restore normal device state and release the dpm_sem.&n; */
-DECL|function|device_pm_resume
+multiline_comment|/**&n; *&t;device_resume - Restore state of each device in system.&n; *&n; *&t;Restore normal device state and release the dpm_sem.&n; */
+DECL|function|device_resume
 r_void
-id|device_pm_resume
+id|device_resume
 c_func
 (paren
 r_void
@@ -110,6 +110,13 @@ id|dpm_sem
 )paren
 suffix:semicolon
 )brace
+DECL|variable|device_resume
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|device_resume
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;device_power_up_irq - Power on some devices. &n; *&n; *&t;Walk the dpm_off_irq list and power each device up. This &n; *&t;is used for devices that required they be powered down with&n; *&t;interrupts disabled. As devices are powered on, they are moved to&n; *&t;the dpm_suspended list.&n; *&n; *&t;Interrupts must be disabled when calling this. &n; */
 DECL|function|dpm_power_up
 r_void
@@ -166,9 +173,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; *&t;device_pm_power_up - Turn on all devices that need special attention.&n; *&n; *&t;Power on system devices then devices that required we shut them down&n; *&t;with interrupts disabled.&n; *&t;Called with interrupts disabled.&n; */
-DECL|function|device_pm_power_up
+DECL|function|device_power_up
 r_void
-id|device_pm_power_up
+id|device_power_up
 c_func
 (paren
 r_void
@@ -185,35 +192,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * device_resume - resume all the devices in the system&n; * @level:&t;stage of resume process we&squot;re at &n; * &n; *&t;This function is deprecated, and should be replaced with appropriate&n; *&t;calls to device_pm_power_up() and device_pm_resume() above.&n; */
-DECL|function|device_resume
-r_void
-id|device_resume
-c_func
-(paren
-id|u32
-id|level
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s is deprecated. Called from:&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-id|dump_stack
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|variable|device_resume
+DECL|variable|device_power_up
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|device_resume
+id|device_power_up
 )paren
 suffix:semicolon
 eof

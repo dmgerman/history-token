@@ -650,7 +650,7 @@ id|parent
 suffix:semicolon
 r_extern
 r_int
-id|device_pm_suspend
+id|device_suspend
 c_func
 (paren
 id|u32
@@ -659,7 +659,7 @@ id|state
 suffix:semicolon
 r_extern
 r_int
-id|device_pm_power_down
+id|device_power_down
 c_func
 (paren
 id|u32
@@ -668,7 +668,7 @@ id|state
 suffix:semicolon
 r_extern
 r_void
-id|device_pm_power_up
+id|device_power_up
 c_func
 (paren
 r_void
@@ -676,7 +676,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|device_pm_resume
+id|device_resume
 c_func
 (paren
 r_void

@@ -144,7 +144,7 @@ c_cond
 (paren
 id|error
 op_assign
-id|device_pm_power_down
+id|device_power_down
 c_func
 (paren
 id|PM_SUSPEND_STANDBY
@@ -170,7 +170,7 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|device_pm_power_up
+id|device_power_up
 c_func
 (paren
 )paren
@@ -225,7 +225,7 @@ c_cond
 (paren
 id|error
 op_assign
-id|device_pm_power_down
+id|device_power_down
 c_func
 (paren
 id|PM_SUSPEND_STANDBY
@@ -251,7 +251,7 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|device_pm_power_up
+id|device_power_up
 c_func
 (paren
 )paren
@@ -288,7 +288,7 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|device_pm_power_down
+id|device_power_down
 c_func
 (paren
 id|PM_SUSPEND_DISK
@@ -319,7 +319,7 @@ c_cond
 id|error
 )paren
 (brace
-id|device_pm_power_up
+id|device_power_up
 c_func
 (paren
 )paren
@@ -698,7 +698,7 @@ c_cond
 (paren
 id|error
 op_assign
-id|device_pm_suspend
+id|device_suspend
 c_func
 (paren
 id|state
@@ -760,7 +760,7 @@ id|u32
 id|state
 )paren
 (brace
-id|device_pm_resume
+id|device_resume
 c_func
 (paren
 )paren

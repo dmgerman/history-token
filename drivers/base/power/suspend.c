@@ -107,10 +107,10 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;device_pm_suspend - Save state and stop all devices in system.&n; *&t;@state:&t;&t;Power state to put each device in. &n; *&n; *&t;Walk the dpm_active list, call -&gt;suspend() for each device, and move&n; *&t;it to dpm_off. &n; *&t;Check the return value for each. If it returns 0, then we move the&n; *&t;the device to the dpm_off list. If it returns -EAGAIN, we move it to &n; *&t;the dpm_off_irq list. If we get a different error, try and back out. &n; *&n; *&t;If we hit a failure with any of the devices, call device_pm_resume()&n; *&t;above to bring the suspended devices back to life. &n; *&n; *&t;Note this function leaves dpm_sem held to&n; *&t;a) block other devices from registering.&n; *&t;b) prevent other PM operations from happening after we&squot;ve begun.&n; *&t;c) make sure we&squot;re exclusive when we disable interrupts.&n; *&n; *&t;device_pm_resume() will release dpm_sem after restoring state to &n; *&t;all devices (as will this on error). You must call it once you&squot;ve &n; *&t;called device_pm_suspend().&n; */
-DECL|function|device_pm_suspend
+multiline_comment|/**&n; *&t;device_suspend - Save state and stop all devices in system.&n; *&t;@state:&t;&t;Power state to put each device in. &n; *&n; *&t;Walk the dpm_active list, call -&gt;suspend() for each device, and move&n; *&t;it to dpm_off. &n; *&t;Check the return value for each. If it returns 0, then we move the&n; *&t;the device to the dpm_off list. If it returns -EAGAIN, we move it to &n; *&t;the dpm_off_irq list. If we get a different error, try and back out. &n; *&n; *&t;If we hit a failure with any of the devices, call device_resume()&n; *&t;above to bring the suspended devices back to life. &n; *&n; *&t;Note this function leaves dpm_sem held to&n; *&t;a) block other devices from registering.&n; *&t;b) prevent other PM operations from happening after we&squot;ve begun.&n; *&t;c) make sure we&squot;re exclusive when we disable interrupts.&n; *&n; *&t;device_resume() will release dpm_sem after restoring state to &n; *&t;all devices (as will this on error). You must call it once you&squot;ve &n; *&t;called device_suspend().&n; */
+DECL|function|device_suspend
 r_int
-id|device_pm_suspend
+id|device_suspend
 c_func
 (paren
 id|u32
@@ -185,7 +185,7 @@ id|error
 suffix:semicolon
 id|Error
 suffix:colon
-id|device_pm_resume
+id|device_resume
 c_func
 (paren
 )paren
@@ -194,10 +194,17 @@ r_goto
 id|Done
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;device_pm_power_down - Shut down special devices.&n; *&t;@state:&t;&t;Power state to enter.&n; *&n; *&t;Walk the dpm_off_irq list, calling -&gt;power_down() for each device that&n; *&t;couldn&squot;t power down the device with interrupts enabled. When we&squot;re &n; *&t;done, power down system devices. &n; */
-DECL|function|device_pm_power_down
+DECL|variable|device_suspend
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|device_suspend
+)paren
+suffix:semicolon
+multiline_comment|/**&n; *&t;device_power_down - Shut down special devices.&n; *&t;@state:&t;&t;Power state to enter.&n; *&n; *&t;Walk the dpm_off_irq list, calling -&gt;power_down() for each device that&n; *&t;couldn&squot;t power down the device with interrupts enabled. When we&squot;re &n; *&t;done, power down system devices. &n; */
+DECL|function|device_power_down
 r_int
-id|device_pm_power_down
+id|device_power_down
 c_func
 (paren
 id|u32
@@ -283,42 +290,11 @@ r_goto
 id|Done
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * device_suspend - suspend all devices on the device ree&n; * @state:&t;state we&squot;re entering&n; * @level:&t;Stage of suspend sequence we&squot;re in.&n; *&n; *&n; *&t;This function is deprecated. Calls should be replaced with&n; *&t;appropriate calls to device_pm_suspend() and device_pm_power_down().&n; */
-DECL|function|device_suspend
-r_int
-id|device_suspend
-c_func
-(paren
-id|u32
-id|state
-comma
-id|u32
-id|level
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s Called from:&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-id|dump_stack
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
-DECL|variable|device_suspend
+DECL|variable|device_power_down
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|device_suspend
+id|device_power_down
 )paren
 suffix:semicolon
 eof
