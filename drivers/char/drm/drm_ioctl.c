@@ -293,7 +293,7 @@ c_func
 id|strlen
 c_func
 (paren
-id|dev-&gt;fn_tbl-&gt;pci_driver.name
+id|dev-&gt;driver-&gt;pci_driver.name
 )paren
 op_plus
 id|strlen
@@ -324,7 +324,7 @@ id|dev-&gt;devname
 comma
 l_string|&quot;%s@%s&quot;
 comma
-id|dev-&gt;fn_tbl-&gt;pci_driver.name
+id|dev-&gt;driver-&gt;pci_driver.name
 comma
 id|dev-&gt;unique
 )paren
@@ -481,7 +481,7 @@ c_func
 id|strlen
 c_func
 (paren
-id|dev-&gt;fn_tbl-&gt;pci_driver.name
+id|dev-&gt;driver-&gt;pci_driver.name
 )paren
 op_plus
 id|dev-&gt;unique_len
@@ -508,7 +508,7 @@ id|dev-&gt;devname
 comma
 l_string|&quot;%s@%s&quot;
 comma
-id|dev-&gt;fn_tbl-&gt;pci_driver.name
+id|dev-&gt;driver-&gt;pci_driver.name
 comma
 id|dev-&gt;unique
 )paren
@@ -1287,9 +1287,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;fn_tbl-&gt;set_version
+id|dev-&gt;driver-&gt;set_version
 )paren
-id|dev-&gt;fn_tbl
+id|dev-&gt;driver
 op_member_access_from_pointer
 id|set_version
 c_func

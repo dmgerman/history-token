@@ -153,12 +153,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;fn_tbl-&gt;open_helper
+id|dev-&gt;driver-&gt;open_helper
 )paren
 (brace
 id|ret
 op_assign
-id|dev-&gt;fn_tbl
+id|dev-&gt;driver
 op_member_access_from_pointer
 id|open_helper
 c_func

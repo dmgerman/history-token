@@ -1801,7 +1801,7 @@ l_int|NULL
 suffix:semicolon
 id|buf-&gt;dev_priv_size
 op_assign
-id|dev-&gt;fn_tbl-&gt;dev_priv_size
+id|dev-&gt;driver-&gt;dev_priv_size
 suffix:semicolon
 id|buf-&gt;dev_private
 op_assign
@@ -2927,7 +2927,7 @@ l_int|NULL
 suffix:semicolon
 id|buf-&gt;dev_priv_size
 op_assign
-id|dev-&gt;fn_tbl-&gt;dev_priv_size
+id|dev-&gt;driver-&gt;dev_priv_size
 suffix:semicolon
 id|buf-&gt;dev_private
 op_assign
@@ -3809,7 +3809,7 @@ l_int|NULL
 suffix:semicolon
 id|buf-&gt;dev_priv_size
 op_assign
-id|dev-&gt;fn_tbl-&gt;dev_priv_size
+id|dev-&gt;driver-&gt;dev_priv_size
 suffix:semicolon
 id|buf-&gt;dev_private
 op_assign

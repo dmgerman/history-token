@@ -399,11 +399,11 @@ l_int|0
 comma
 )brace
 suffix:semicolon
-DECL|variable|driver_fn
+DECL|variable|driver
 r_static
 r_struct
-id|drm_driver_fn
-id|driver_fn
+id|drm_driver
+id|driver
 op_assign
 (brace
 dot
@@ -544,7 +544,7 @@ id|drm_init
 c_func
 (paren
 op_amp
-id|driver_fn
+id|driver
 )paren
 suffix:semicolon
 )brace
@@ -562,7 +562,7 @@ id|drm_exit
 c_func
 (paren
 op_amp
-id|driver_fn
+id|driver
 )paren
 suffix:semicolon
 )brace

@@ -1326,9 +1326,9 @@ id|DRM_KERNEL_CONTEXT
 r_if
 c_cond
 (paren
-id|dev-&gt;fn_tbl-&gt;context_ctor
+id|dev-&gt;driver-&gt;context_ctor
 )paren
-id|dev-&gt;fn_tbl
+id|dev-&gt;driver
 op_member_access_from_pointer
 id|context_ctor
 c_func
@@ -1830,9 +1830,9 @@ id|DRM_KERNEL_CONTEXT
 r_if
 c_cond
 (paren
-id|dev-&gt;fn_tbl-&gt;context_dtor
+id|dev-&gt;driver-&gt;context_dtor
 )paren
-id|dev-&gt;fn_tbl
+id|dev-&gt;driver
 op_member_access_from_pointer
 id|context_dtor
 c_func

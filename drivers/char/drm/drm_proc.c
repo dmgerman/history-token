@@ -649,7 +649,7 @@ c_func
 (paren
 l_string|&quot;%s 0x%lx %s&bslash;n&quot;
 comma
-id|dev-&gt;fn_tbl-&gt;pci_driver.name
+id|dev-&gt;driver-&gt;pci_driver.name
 comma
 (paren
 r_int
@@ -671,7 +671,7 @@ c_func
 (paren
 l_string|&quot;%s 0x%lx&bslash;n&quot;
 comma
-id|dev-&gt;fn_tbl-&gt;pci_driver.name
+id|dev-&gt;driver-&gt;pci_driver.name
 comma
 (paren
 r_int

@@ -1991,7 +1991,7 @@ r_continue
 suffix:semicolon
 id|off
 op_assign
-id|dev-&gt;fn_tbl
+id|dev-&gt;driver
 op_member_access_from_pointer
 id|get_map_ofs
 c_func
@@ -2247,7 +2247,7 @@ suffix:semicolon
 macro_line|#endif
 id|offset
 op_assign
-id|dev-&gt;fn_tbl
+id|dev-&gt;driver
 op_member_access_from_pointer
 id|get_reg_ofs
 c_func

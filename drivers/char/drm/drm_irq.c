@@ -317,7 +317,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Before installing handler */
-id|dev-&gt;fn_tbl
+id|dev-&gt;driver
 op_member_access_from_pointer
 id|irq_preinstall
 c_func
@@ -348,7 +348,7 @@ c_func
 (paren
 id|dev-&gt;irq
 comma
-id|dev-&gt;fn_tbl-&gt;irq_handler
+id|dev-&gt;driver-&gt;irq_handler
 comma
 id|sh_flags
 comma
@@ -388,7 +388,7 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* After installing handler */
-id|dev-&gt;fn_tbl
+id|dev-&gt;driver
 op_member_access_from_pointer
 id|irq_postinstall
 c_func
@@ -472,7 +472,7 @@ comma
 id|dev-&gt;irq
 )paren
 suffix:semicolon
-id|dev-&gt;fn_tbl
+id|dev-&gt;driver
 op_member_access_from_pointer
 id|irq_uninstall
 c_func
@@ -986,11 +986,11 @@ r_else
 r_if
 c_cond
 (paren
-id|dev-&gt;fn_tbl-&gt;vblank_wait
+id|dev-&gt;driver-&gt;vblank_wait
 )paren
 id|ret
 op_assign
-id|dev-&gt;fn_tbl
+id|dev-&gt;driver
 op_member_access_from_pointer
 id|vblank_wait
 c_func

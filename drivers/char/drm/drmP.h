@@ -1261,9 +1261,9 @@ multiline_comment|/** &n; * DRM device functions structure&n; */
 r_struct
 id|drm_device
 suffix:semicolon
-DECL|struct|drm_driver_fn
+DECL|struct|drm_driver
 r_struct
-id|drm_driver_fn
+id|drm_driver
 (brace
 DECL|member|preinit
 r_int
@@ -2123,11 +2123,11 @@ op_star
 id|dev_root
 suffix:semicolon
 multiline_comment|/**&lt; proc directory entry */
-DECL|member|fn_tbl
+DECL|member|driver
 r_struct
-id|drm_driver_fn
+id|drm_driver
 op_star
-id|fn_tbl
+id|driver
 suffix:semicolon
 DECL|member|agp_buffer_map
 id|drm_local_map_t
@@ -2192,7 +2192,7 @@ id|feature
 r_return
 (paren
 (paren
-id|dev-&gt;fn_tbl-&gt;driver_features
+id|dev-&gt;driver-&gt;driver_features
 op_amp
 id|feature
 )paren
@@ -2293,9 +2293,9 @@ id|drm_init
 c_func
 (paren
 r_struct
-id|drm_driver_fn
+id|drm_driver
 op_star
-id|driver_fn
+id|driver
 )paren
 suffix:semicolon
 r_extern
@@ -2304,9 +2304,9 @@ id|drm_exit
 c_func
 (paren
 r_struct
-id|drm_driver_fn
+id|drm_driver
 op_star
-id|driver_fn
+id|driver
 )paren
 suffix:semicolon
 r_extern
@@ -2458,9 +2458,9 @@ op_star
 id|ent
 comma
 r_struct
-id|drm_driver_fn
+id|drm_driver
 op_star
-id|driver_fn
+id|driver
 )paren
 suffix:semicolon
 multiline_comment|/* Device support (drm_fops.h) */
@@ -4135,9 +4135,9 @@ op_star
 id|ent
 comma
 r_struct
-id|drm_driver_fn
+id|drm_driver
 op_star
-id|driver_fn
+id|driver
 )paren
 suffix:semicolon
 r_extern

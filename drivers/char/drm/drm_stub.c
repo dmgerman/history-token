@@ -288,9 +288,9 @@ op_star
 id|ent
 comma
 r_struct
-id|drm_driver_fn
+id|drm_driver
 op_star
-id|driver_fn
+id|driver
 )paren
 (brace
 r_struct
@@ -421,7 +421,7 @@ id|pdev
 comma
 id|ent
 comma
-id|driver_fn
+id|driver
 )paren
 )paren
 )paren
