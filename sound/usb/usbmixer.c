@@ -7481,10 +7481,10 @@ op_star
 id|hostif
 op_assign
 op_amp
-id|get_iface
+id|usb_ifnum_to_if
 c_func
 (paren
-id|chip-&gt;dev-&gt;actconfig
+id|chip-&gt;dev
 comma
 id|ctrlif
 )paren
