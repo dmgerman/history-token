@@ -1096,6 +1096,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+id|PFX
 l_string|&quot;No aperture&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1119,6 +1120,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+id|PFX
 l_string|&quot;Aperture too small (%d MB)&bslash;n&quot;
 comma
 id|size
@@ -1144,6 +1146,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+id|PFX
 l_string|&quot;Aperture out of bounds&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1209,6 +1212,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+id|PFX
 l_string|&quot;Aperture pointing to RAM&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1241,6 +1245,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+id|PFX
 l_string|&quot;Aperture conflicts with PCI mapping.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1466,6 +1471,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
+id|PFX
 l_string|&quot;Aperture from AGP @ %Lx size %u MB&bslash;n&quot;
 comma
 id|aper
@@ -1598,6 +1604,8 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_INFO
+id|PFX
 l_string|&quot;No usable aperture found.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1606,6 +1614,8 @@ multiline_comment|/* should port this to i386 */
 id|printk
 c_func
 (paren
+id|KERN_INFO
+id|PFX
 l_string|&quot;Consider rebooting with iommu=memaper=2 to get a good aperture.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1639,6 +1649,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
+id|PFX
 l_string|&quot;Too many northbridges for AGP&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2248,6 +2259,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
+id|PFX
 l_string|&quot;No supported AGP bridge found.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2256,6 +2268,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
+id|PFX
 l_string|&quot;You can try agp_try_unsupported=1&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2264,6 +2277,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
+id|PFX
 l_string|&quot;You can boot with agp=try_unsupported&bslash;n&quot;
 )paren
 suffix:semicolon
