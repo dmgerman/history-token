@@ -1291,6 +1291,8 @@ r_int
 id|__user
 op_star
 id|p
+op_assign
+id|arg
 suffix:semicolon
 r_switch
 c_cond

@@ -22,7 +22,7 @@ mdefine_line|#define RTC_IO_EXTENT&t;dec_kn_slot_size
 DECL|macro|RTC_IOMAPPED
 mdefine_line|#define RTC_IOMAPPED&t;0
 DECL|macro|RTC_IRQ
-mdefine_line|#define RTC_IRQ&t;&t;0
+macro_line|#undef RTC_IRQ
 DECL|macro|RTC_DEC_YEAR
 mdefine_line|#define RTC_DEC_YEAR&t;0x3f&t;/* Where we store the real year on DECs.  */
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
