@@ -701,6 +701,9 @@ comma
 DECL|enumerator|TCF_EM_CMP
 id|TCF_EM_CMP
 comma
+DECL|enumerator|TCF_EM_NBYTE
+id|TCF_EM_NBYTE
+comma
 DECL|enumerator|__TCF_EM_MAX
 id|__TCF_EM_MAX
 )brace
