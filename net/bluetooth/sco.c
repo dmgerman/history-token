@@ -4036,6 +4036,10 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|p-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|p-&gt;proc_fops
 op_assign
 op_amp
@@ -4048,7 +4052,7 @@ suffix:semicolon
 DECL|function|sco_proc_cleanup
 r_static
 r_void
-id|__init
+id|__exit
 id|sco_proc_cleanup
 c_func
 (paren
@@ -4082,7 +4086,7 @@ suffix:semicolon
 DECL|function|sco_proc_cleanup
 r_static
 r_void
-id|__init
+id|__exit
 id|sco_proc_cleanup
 c_func
 (paren
@@ -4326,6 +4330,7 @@ suffix:semicolon
 )brace
 DECL|function|sco_cleanup
 r_void
+id|__exit
 id|sco_cleanup
 c_func
 (paren

@@ -8840,6 +8840,16 @@ comma
 id|proc_bt
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|proc_bt_rfcomm
+)paren
+(brace
+id|proc_bt_rfcomm-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|p
 op_assign
 id|create_proc_entry
@@ -8862,6 +8872,7 @@ op_assign
 op_amp
 id|rfcomm_seq_fops
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -8869,7 +8880,7 @@ suffix:semicolon
 DECL|function|rfcomm_proc_cleanup
 r_static
 r_void
-id|__init
+id|__exit
 id|rfcomm_proc_cleanup
 c_func
 (paren
@@ -8911,7 +8922,7 @@ suffix:semicolon
 DECL|function|rfcomm_proc_cleanup
 r_static
 r_void
-id|__init
+id|__exit
 id|rfcomm_proc_cleanup
 c_func
 (paren
@@ -8977,6 +8988,7 @@ suffix:semicolon
 )brace
 DECL|function|rfcomm_cleanup
 r_void
+id|__exit
 id|rfcomm_cleanup
 c_func
 (paren

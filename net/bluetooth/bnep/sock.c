@@ -670,6 +670,7 @@ id|bnep_sock_create
 suffix:semicolon
 DECL|function|bnep_sock_init
 r_int
+id|__init
 id|bnep_sock_init
 c_func
 (paren
@@ -691,6 +692,7 @@ suffix:semicolon
 )brace
 DECL|function|bnep_sock_cleanup
 r_int
+id|__exit
 id|bnep_sock_cleanup
 c_func
 (paren

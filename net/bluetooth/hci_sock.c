@@ -2753,6 +2753,7 @@ id|hci_sock_dev_event
 suffix:semicolon
 DECL|function|hci_sock_init
 r_int
+id|__init
 id|hci_sock_init
 c_func
 (paren
@@ -2802,6 +2803,7 @@ suffix:semicolon
 )brace
 DECL|function|hci_sock_cleanup
 r_int
+id|__exit
 id|hci_sock_cleanup
 c_func
 (paren

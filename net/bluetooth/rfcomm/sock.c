@@ -3673,7 +3673,7 @@ suffix:semicolon
 DECL|function|rfcomm_sock_proc_cleanup
 r_static
 r_void
-id|__init
+id|__exit
 id|rfcomm_sock_proc_cleanup
 c_func
 (paren
@@ -3707,7 +3707,7 @@ suffix:semicolon
 DECL|function|rfcomm_sock_proc_cleanup
 r_static
 r_void
-id|__init
+id|__exit
 id|rfcomm_sock_proc_cleanup
 c_func
 (paren
@@ -3826,6 +3826,7 @@ id|rfcomm_sock_create
 suffix:semicolon
 DECL|function|rfcomm_init_sockets
 r_int
+id|__init
 id|rfcomm_init_sockets
 c_func
 (paren
@@ -3881,6 +3882,7 @@ suffix:semicolon
 )brace
 DECL|function|rfcomm_cleanup_sockets
 r_void
+id|__exit
 id|rfcomm_cleanup_sockets
 c_func
 (paren
