@@ -414,28 +414,6 @@ suffix:colon
 l_int|NULL
 comma
 multiline_comment|/* . */
-id|bmap
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* Needed for FIBMAP.&n;&t;&t;&t;&t;&t;&t;   Don&squot;t use it. */
-id|flushpage
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* . */
-id|releasepage
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* . */
-macro_line|#ifdef KERNEL_HAS_O_DIRECT
-id|direct_IO
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* . */
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * map_mft_record_page - map the page in which a specific mft record resides&n; * @ni:&t;&t;ntfs inode whose mft record page to map&n; *&n; * This maps the page in which the mft record of the ntfs inode @ni is situated&n; * and returns a pointer to the mft record within the mapped page.&n; *&n; * Return value needs to be checked with IS_ERR() and if that is true PTR_ERR()&n; * contains the negative error code returned.&n; */
