@@ -967,6 +967,11 @@ id|deh
 )paren
 )paren
 comma
+(paren
+r_int
+r_int
+op_star
+)paren
 id|de-&gt;de_gen_number_bit_string
 )paren
 suffix:semicolon
@@ -2046,6 +2051,11 @@ id|gen_number
 op_assign
 id|find_first_zero_bit
 (paren
+(paren
+r_int
+r_int
+op_star
+)paren
 id|bit_string
 comma
 id|MAX_GENERATION_NUMBER

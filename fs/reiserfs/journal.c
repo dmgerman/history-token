@@ -837,6 +837,11 @@ c_func
 (paren
 id|bit_nr
 comma
+(paren
+r_int
+r_int
+op_star
+)paren
 id|jb-&gt;bitmaps
 (braket
 id|bmap_nr
@@ -2425,6 +2430,11 @@ c_func
 (paren
 id|bit_nr
 comma
+(paren
+r_int
+r_int
+op_star
+)paren
 id|jb-&gt;bitmaps
 (braket
 id|bmap_nr
