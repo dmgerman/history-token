@@ -1460,6 +1460,36 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;EEH: MMIO failure (%d) on device:%s %s&bslash;n&quot;
+comma
+id|rets
+(braket
+l_int|0
+)braket
+comma
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
+comma
+id|pci_pretty_name
+c_func
+(paren
+id|dev
+)paren
+)paren
+suffix:semicolon
+id|WARN_ON
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * XXX We should create a separate sysctl for this.&n;&t;&t; *&n;&t;&t; * Since the panic_on_oops sysctl is used to halt&n;&t;&t; * the system in light of potential corruption, we&n;&t;&t; * can use it here.&n;&t;&t; */
 r_if
 c_cond
