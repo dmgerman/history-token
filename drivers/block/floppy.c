@@ -18627,8 +18627,15 @@ id|FDCS-&gt;dor
 op_assign
 l_int|0x4
 suffix:semicolon
-macro_line|#ifdef __sparc__
-multiline_comment|/*sparcs don&squot;t have a DOR reset which we can fall back on to*/
+macro_line|#if defined(__sparc__) || defined(__mc68000__)
+multiline_comment|/*sparcs/sun3x don&squot;t have a DOR reset which we can fall back on to*/
+macro_line|#ifdef __mc68000__
+r_if
+c_cond
+(paren
+id|MACH_IS_SUN3X
+)paren
+macro_line|#endif
 id|FDCS-&gt;version
 op_assign
 id|FDC_82072A
