@@ -1511,44 +1511,6 @@ DECL|macro|PARPORT_DEV_EXCL
 mdefine_line|#define PARPORT_DEV_EXCL&t;&t;(1&lt;&lt;1)&t;/* Need exclusive access. */
 DECL|macro|PARPORT_FLAG_EXCL
 mdefine_line|#define PARPORT_FLAG_EXCL&t;&t;(1&lt;&lt;1)&t;/* EXCL driver registered. */
-r_extern
-r_int
-id|parport_parse_irqs
-c_func
-(paren
-r_int
-comma
-r_const
-r_char
-op_star
-(braket
-)braket
-comma
-r_int
-id|irqval
-(braket
-)braket
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|parport_parse_dmas
-c_func
-(paren
-r_int
-comma
-r_const
-r_char
-op_star
-(braket
-)braket
-comma
-r_int
-id|dmaval
-(braket
-)braket
-)paren
-suffix:semicolon
 multiline_comment|/* IEEE1284 functions */
 r_extern
 r_void
