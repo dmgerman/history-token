@@ -2285,7 +2285,8 @@ op_star
 id|mh
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -2313,16 +2314,12 @@ id|CS_BAD_HANDLE
 suffix:semicolon
 id|s
 op_assign
-id|pcmcia_get_socket_by_nr
-c_func
-(paren
 (paren
 op_star
 id|handle
 )paren
 op_member_access_from_pointer
 id|Socket
-)paren
 suffix:semicolon
 r_if
 c_cond

@@ -43,7 +43,9 @@ id|u_short
 id|client_magic
 suffix:semicolon
 DECL|member|Socket
-id|socket_t
+r_struct
+id|pcmcia_socket
+op_star
 id|Socket
 suffix:semicolon
 DECL|member|Function
@@ -312,7 +314,7 @@ mdefine_line|#define CHECK_HANDLE(h) &bslash;&n;    (((h) == NULL) || ((h)-&gt;c
 DECL|macro|CHECK_SOCKET
 mdefine_line|#define CHECK_SOCKET(s) &bslash;&n;    (((s) &gt;= sockets) || (socket_table[s]-&gt;ss_entry == NULL))
 DECL|macro|SOCKET
-mdefine_line|#define SOCKET(h) (pcmcia_get_socket_by_nr(h-&gt;Socket))
+mdefine_line|#define SOCKET(h) (h-&gt;Socket)
 DECL|macro|CONFIG
 mdefine_line|#define CONFIG(h) (&amp;SOCKET(h)-&gt;config[(h)-&gt;Function])
 DECL|macro|CHECK_REGION
