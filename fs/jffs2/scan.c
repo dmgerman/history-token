@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: scan.c,v 1.78 2002/07/02 22:48:24 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: scan.c,v 1.79 2002/07/25 20:48:51 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -1419,6 +1419,50 @@ comma
 id|node.hdr_crc
 comma
 id|hdr_crc
+)paren
+suffix:semicolon
+id|DIRTY_SPACE
+c_func
+(paren
+l_int|4
+)paren
+suffix:semicolon
+id|ofs
+op_add_assign
+l_int|4
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ofs
+op_plus
+id|node.totlen
+OG
+id|jeb-&gt;offset
+op_plus
+id|c-&gt;sector_size
+)paren
+(brace
+multiline_comment|/* Eep. Node goes over the end of the erase block. */
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Node at 0x%08x with length 0x%08x would run over the end of the erase block&bslash;n&quot;
+comma
+id|ofs
+comma
+id|node.totlen
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Perhaps the file system was created with the wrong erase size?&bslash;n&quot;
 )paren
 suffix:semicolon
 id|DIRTY_SPACE
