@@ -838,11 +838,60 @@ DECL|member|s_padding1
 id|__u16
 id|s_padding1
 suffix:semicolon
+multiline_comment|/*&n;&t; * Journaling support valid if EXT3_FEATURE_COMPAT_HAS_JOURNAL set.&n;&t; */
+DECL|member|s_journal_uuid
+id|__u8
+id|s_journal_uuid
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* uuid of journal superblock */
+DECL|member|s_journal_inum
+id|__u32
+id|s_journal_inum
+suffix:semicolon
+multiline_comment|/* inode number of journal file */
+DECL|member|s_journal_dev
+id|__u32
+id|s_journal_dev
+suffix:semicolon
+multiline_comment|/* device number of journal file */
+DECL|member|s_last_orphan
+id|__u32
+id|s_last_orphan
+suffix:semicolon
+multiline_comment|/* start of list of inodes to delete */
+DECL|member|s_hash_seed
+id|__u32
+id|s_hash_seed
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* HTREE hash seed */
+DECL|member|s_def_hash_version
+id|__u8
+id|s_def_hash_version
+suffix:semicolon
+multiline_comment|/* Default hash version to use */
+DECL|member|s_reserved_char_pad
+id|__u8
+id|s_reserved_char_pad
+suffix:semicolon
+DECL|member|s_reserved_word_pad
+id|__u16
+id|s_reserved_word_pad
+suffix:semicolon
+DECL|member|s_default_mount_opts
+id|__u32
+id|s_default_mount_opts
+suffix:semicolon
 DECL|member|s_reserved
 id|__u32
 id|s_reserved
 (braket
-l_int|204
+l_int|191
 )braket
 suffix:semicolon
 multiline_comment|/* Padding to the end of the block */
@@ -936,6 +985,26 @@ DECL|macro|EXT2_DEF_RESUID
 mdefine_line|#define&t;EXT2_DEF_RESUID&t;&t;0
 DECL|macro|EXT2_DEF_RESGID
 mdefine_line|#define&t;EXT2_DEF_RESGID&t;&t;0
+multiline_comment|/*&n; * Default mount options&n; */
+DECL|macro|EXT2_DEFM_DEBUG
+mdefine_line|#define EXT2_DEFM_DEBUG&t;&t;0x0001
+DECL|macro|EXT2_DEFM_BSDGROUPS
+mdefine_line|#define EXT2_DEFM_BSDGROUPS&t;0x0002
+DECL|macro|EXT2_DEFM_XATTR_USER
+mdefine_line|#define EXT2_DEFM_XATTR_USER&t;0x0004
+DECL|macro|EXT2_DEFM_ACL
+mdefine_line|#define EXT2_DEFM_ACL&t;&t;0x0008
+DECL|macro|EXT2_DEFM_UID16
+mdefine_line|#define EXT2_DEFM_UID16&t;&t;0x0010
+multiline_comment|/* Not used by ext2, but reserved for use by ext3 */
+DECL|macro|EXT3_DEFM_JMODE
+mdefine_line|#define EXT3_DEFM_JMODE&t;&t;0x0060 
+DECL|macro|EXT3_DEFM_JMODE_DATA
+mdefine_line|#define EXT3_DEFM_JMODE_DATA&t;0x0020
+DECL|macro|EXT3_DEFM_JMODE_ORDERED
+mdefine_line|#define EXT3_DEFM_JMODE_ORDERED&t;0x0040
+DECL|macro|EXT3_DEFM_JMODE_WBACK
+mdefine_line|#define EXT3_DEFM_JMODE_WBACK&t;0x0060
 multiline_comment|/*&n; * Structure of a directory entry&n; */
 DECL|macro|EXT2_NAME_LEN
 mdefine_line|#define EXT2_NAME_LEN 255

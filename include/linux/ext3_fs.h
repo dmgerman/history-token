@@ -921,11 +921,15 @@ DECL|member|s_reserved_word_pad
 id|__u16
 id|s_reserved_word_pad
 suffix:semicolon
+DECL|member|s_default_mount_opts
+id|__u32
+id|s_default_mount_opts
+suffix:semicolon
 DECL|member|s_reserved
 id|__u32
 id|s_reserved
 (braket
-l_int|192
+l_int|191
 )braket
 suffix:semicolon
 multiline_comment|/* Padding to the end of the block */
@@ -1064,6 +1068,25 @@ DECL|macro|EXT3_DEF_RESUID
 mdefine_line|#define&t;EXT3_DEF_RESUID&t;&t;0
 DECL|macro|EXT3_DEF_RESGID
 mdefine_line|#define&t;EXT3_DEF_RESGID&t;&t;0
+multiline_comment|/*&n; * Default mount options&n; */
+DECL|macro|EXT3_DEFM_DEBUG
+mdefine_line|#define EXT3_DEFM_DEBUG&t;&t;0x0001
+DECL|macro|EXT3_DEFM_BSDGROUPS
+mdefine_line|#define EXT3_DEFM_BSDGROUPS&t;0x0002
+DECL|macro|EXT3_DEFM_XATTR_USER
+mdefine_line|#define EXT3_DEFM_XATTR_USER&t;0x0004
+DECL|macro|EXT3_DEFM_ACL
+mdefine_line|#define EXT3_DEFM_ACL&t;&t;0x0008
+DECL|macro|EXT3_DEFM_UID16
+mdefine_line|#define EXT3_DEFM_UID16&t;&t;0x0010
+DECL|macro|EXT3_DEFM_JMODE
+mdefine_line|#define EXT3_DEFM_JMODE&t;&t;0x0060
+DECL|macro|EXT3_DEFM_JMODE_DATA
+mdefine_line|#define EXT3_DEFM_JMODE_DATA&t;0x0020
+DECL|macro|EXT3_DEFM_JMODE_ORDERED
+mdefine_line|#define EXT3_DEFM_JMODE_ORDERED&t;0x0040
+DECL|macro|EXT3_DEFM_JMODE_WBACK
+mdefine_line|#define EXT3_DEFM_JMODE_WBACK&t;0x0060
 multiline_comment|/*&n; * Structure of a directory entry&n; */
 DECL|macro|EXT3_NAME_LEN
 mdefine_line|#define EXT3_NAME_LEN 255
