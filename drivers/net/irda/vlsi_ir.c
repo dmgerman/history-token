@@ -50,8 +50,6 @@ id|drivername
 op_assign
 id|DRIVER_NAME
 suffix:semicolon
-DECL|macro|PCI_CLASS_WIRELESS_IRDA
-mdefine_line|#define PCI_CLASS_WIRELESS_IRDA 0x0d00
 DECL|variable|vlsi_irda_table
 r_static
 r_struct
@@ -70,6 +68,13 @@ op_lshift
 l_int|8
 comma
 dot
+id|class_mask
+op_assign
+id|PCI_CLASS_SUBCLASS_MASK
+op_lshift
+l_int|8
+comma
+dot
 id|vendor
 op_assign
 id|PCI_VENDOR_ID_VLSI
@@ -78,6 +83,16 @@ dot
 id|device
 op_assign
 id|PCI_DEVICE_ID_VLSI_82C147
+comma
+dot
+id|subvendor
+op_assign
+id|PCI_ANY_ID
+comma
+dot
+id|subdevice
+op_assign
+id|PCI_ANY_ID
 comma
 )brace
 comma
@@ -496,7 +511,7 @@ id|out
 comma
 l_string|&quot;&bslash;n%s (vid/did: %04x/%04x)&bslash;n&quot;
 comma
-id|pci_name
+id|PCIDEV_NAME
 c_func
 (paren
 id|pdev
@@ -6922,19 +6937,12 @@ id|pdev
 )paren
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: no valid clock source&bslash;n&quot;
 comma
 id|__FUNCTION__
-)paren
-suffix:semicolon
-id|pci_disable_device
-c_func
-(paren
-id|pdev
 )paren
 suffix:semicolon
 r_return
@@ -7218,12 +7226,29 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|vlsi_init_chip
 c_func
 (paren
 id|pdev
 )paren
+OL
+l_int|0
+)paren
+(brace
+id|pci_disable_device
+c_func
+(paren
+id|pdev
+)paren
 suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 id|vlsi_fill_rx
 c_func
 (paren
@@ -7485,15 +7510,14 @@ c_func
 id|idev
 )paren
 )paren
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_CRIT
 l_string|&quot;%s: failed to restart hw - %s(%s) unusable!&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pci_name
+id|PCIDEV_NAME
 c_func
 (paren
 id|idev-&gt;pdev
@@ -8507,15 +8531,14 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* hw must be running now */
-id|printk
+id|MESSAGE
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s: IrDA PCI controller %s detected&bslash;n&quot;
 comma
 id|drivername
 comma
-id|pci_name
+id|PCIDEV_NAME
 c_func
 (paren
 id|pdev
@@ -8912,20 +8935,6 @@ op_amp
 id|idev-&gt;sem
 )paren
 suffix:semicolon
-id|pci_set_drvdata
-c_func
-(paren
-id|pdev
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|pci_disable_device
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8959,15 +8968,22 @@ id|ndev
 )paren
 suffix:semicolon
 multiline_comment|/* do not free - async completed by unregister_netdev()&n;&t; * ndev-&gt;destructor called (if present) when going to free&n;&t; */
-id|printk
+id|pci_set_drvdata
 c_func
 (paren
-id|KERN_INFO
+id|pdev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|MESSAGE
+c_func
+(paren
 l_string|&quot;%s: %s removed&bslash;n&quot;
 comma
 id|drivername
 comma
-id|pci_name
+id|PCIDEV_NAME
 c_func
 (paren
 id|pdev
@@ -9000,15 +9016,14 @@ template_param
 l_int|3
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - %s: invalid pm state request: %u&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pci_name
+id|PCIDEV_NAME
 c_func
 (paren
 id|pdev
@@ -9064,15 +9079,14 @@ template_param
 l_int|3
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - %s: invalid pm state request: %u&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pci_name
+id|PCIDEV_NAME
 c_func
 (paren
 id|pdev
@@ -9092,15 +9106,14 @@ op_logical_neg
 id|ndev
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - %s: no netdevice &bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pci_name
+id|PCIDEV_NAME
 c_func
 (paren
 id|pdev
@@ -9154,15 +9167,14 @@ id|state
 suffix:semicolon
 )brace
 r_else
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - %s: invalid suspend request %u -&gt; %u&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pci_name
+id|PCIDEV_NAME
 c_func
 (paren
 id|pdev
@@ -9287,15 +9299,14 @@ op_logical_neg
 id|ndev
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - %s: no netdevice &bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pci_name
+id|PCIDEV_NAME
 c_func
 (paren
 id|pdev
@@ -9332,15 +9343,14 @@ op_amp
 id|idev-&gt;sem
 )paren
 suffix:semicolon
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - %s: already resumed&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pci_name
+id|PCIDEV_NAME
 c_func
 (paren
 id|pdev

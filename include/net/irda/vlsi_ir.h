@@ -2,10 +2,64 @@ multiline_comment|/*************************************************************
 macro_line|#ifndef IRDA_VLSI_FIR_H
 DECL|macro|IRDA_VLSI_FIR_H
 mdefine_line|#define IRDA_VLSI_FIR_H
-multiline_comment|/*&n; * #if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,xx)&n; *&n; * missing pci-dma api call to give streaming dma buffer back to hw&n; * patch floating on lkml - probably present in 2.5.26 or later&n; * otherwise defining it as noop is ok, since the vlsi-ir is only&n; * used on two oldish x86-based notebooks which are cache-coherent&n; */
+multiline_comment|/* ================================================================&n; * compatibility stuff&n; */
+multiline_comment|/* definitions not present in pci_ids.h */
+macro_line|#ifndef PCI_CLASS_WIRELESS_IRDA
+DECL|macro|PCI_CLASS_WIRELESS_IRDA
+mdefine_line|#define PCI_CLASS_WIRELESS_IRDA&t;&t;0x0d00
+macro_line|#endif
+macro_line|#ifndef PCI_CLASS_SUBCLASS_MASK
+DECL|macro|PCI_CLASS_SUBCLASS_MASK
+mdefine_line|#define PCI_CLASS_SUBCLASS_MASK&t;&t;0xffff
+macro_line|#endif
+multiline_comment|/* missing pci-dma api call to give streaming dma buffer back to hw&n; * patch was floating on lkml around 2.5.2x and might be present later.&n; * Defining it this way is ok, since the vlsi-ir is only&n; * used on two oldish x86-based notebooks which are cache-coherent&n; * (and flush_write_buffers also handles PPro errata and C3 OOstore)&n; */
+macro_line|#ifdef CONFIG_X86
+macro_line|#include &lt;asm-i386/io.h&gt;
 DECL|macro|pci_dma_prep_single
-mdefine_line|#define pci_dma_prep_single(dev, addr, size, direction)&t;/* nothing */
-multiline_comment|/*&n; * #endif&n; */
+mdefine_line|#define pci_dma_prep_single(dev, addr, size, direction)&t;flush_write_buffers()
+macro_line|#else
+macro_line|#error missing pci dma api call
+macro_line|#endif
+multiline_comment|/* in recent 2.5 interrupt handlers have non-void return value */
+macro_line|#ifndef IRQ_RETVAL
+DECL|typedef|irqreturn_t
+r_typedef
+r_void
+id|irqreturn_t
+suffix:semicolon
+DECL|macro|IRQ_NONE
+mdefine_line|#define IRQ_NONE
+DECL|macro|IRQ_HANDLED
+mdefine_line|#define IRQ_HANDLED
+DECL|macro|IRQ_RETVAL
+mdefine_line|#define IRQ_RETVAL(x)
+macro_line|#endif
+multiline_comment|/* some stuff need to check kernelversion. Not all 2.5 stuff was present&n; * in early 2.5.x - the test is merely to separate 2.4 from 2.5&n; */
+macro_line|#include &lt;linux/version.h&gt;
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+multiline_comment|/* PDE() introduced in 2.5.4 */
+macro_line|#ifdef CONFIG_PROC_FS
+DECL|macro|PDE
+mdefine_line|#define PDE(inode) ((inode)-&gt;u.generic_ip)
+macro_line|#endif
+multiline_comment|/* irda crc16 calculation exported in 2.5.42 */
+DECL|macro|irda_calc_crc16
+mdefine_line|#define irda_calc_crc16(fcs,buf,len)&t;(GOOD_FCS)
+multiline_comment|/* we use this for unified pci device name access */
+DECL|macro|PCIDEV_NAME
+mdefine_line|#define PCIDEV_NAME(pdev)&t;((pdev)-&gt;name)
+macro_line|#else /* 2.5 or later */
+multiline_comment|/* recent 2.5/2.6 stores pci device names at varying places ;-) */
+macro_line|#ifdef CONFIG_PCI_NAMES
+multiline_comment|/* human readable name */
+DECL|macro|PCIDEV_NAME
+mdefine_line|#define PCIDEV_NAME(pdev)&t;((pdev)-&gt;pretty_name)
+macro_line|#else
+multiline_comment|/* whatever we get from the associated struct device - bus:slot:dev.fn id */
+DECL|macro|PCIDEV_NAME
+mdefine_line|#define PCIDEV_NAME(pdev)&t;(pci_name(pdev))
+macro_line|#endif
+macro_line|#endif
 multiline_comment|/* ================================================================ */
 multiline_comment|/* non-standard PCI registers */
 DECL|enum|vlsi_pci_regs
