@@ -201,6 +201,10 @@ r_struct
 id|semaphore
 id|sem
 suffix:semicolon
+DECL|member|needs_read_fill
+r_int
+id|needs_read_fill
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/**&n; *&t;fill_read_buffer - allocate and fill buffer from object.&n; *&t;@dentry:&t;dentry pointer.&n; *&t;@buffer:&t;data buffer for file.&n; *&n; *&t;Allocate @buffer-&gt;page, if it hasn&squot;t been already, then call the&n; *&t;kobject&squot;s show() method to fill the buffer with this attribute&squot;s &n; *&t;data. &n; *&t;This is called only once, on the file&squot;s first read. &n; */
@@ -299,6 +303,10 @@ id|attr
 comma
 id|buffer-&gt;page
 )paren
+suffix:semicolon
+id|buffer-&gt;needs_read_fill
+op_assign
+l_int|0
 suffix:semicolon
 id|BUG_ON
 c_func
@@ -472,16 +480,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-op_logical_neg
-op_star
-id|ppos
-)paren
-op_logical_or
-(paren
-op_logical_neg
-id|buffer-&gt;page
-)paren
+id|buffer-&gt;needs_read_fill
 )paren
 (brace
 r_if
@@ -622,6 +621,10 @@ id|buf
 comma
 id|count
 )paren
+suffix:semicolon
+id|buffer-&gt;needs_read_fill
+op_assign
+l_int|1
 suffix:semicolon
 r_return
 id|error
@@ -1013,6 +1016,10 @@ c_func
 op_amp
 id|buffer-&gt;sem
 )paren
+suffix:semicolon
+id|buffer-&gt;needs_read_fill
+op_assign
+l_int|1
 suffix:semicolon
 id|buffer-&gt;ops
 op_assign
