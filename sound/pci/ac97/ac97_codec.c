@@ -9786,6 +9786,9 @@ r_int
 id|reg
 comma
 r_int
+id|shadow_reg
+comma
+r_int
 id|rate
 )paren
 (brace
@@ -9817,6 +9820,23 @@ c_func
 id|ac97
 comma
 id|reg
+comma
+id|tmp
+op_amp
+l_int|0xffff
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|shadow_reg
+)paren
+id|snd_ac97_write_cache
+c_func
+(paren
+id|ac97
+comma
+id|shadow_reg
 comma
 id|tmp
 op_amp
@@ -9857,6 +9877,9 @@ r_int
 id|reg
 comma
 r_int
+id|shadow_reg
+comma
+r_int
 r_int
 op_star
 id|r_result
@@ -9879,6 +9902,8 @@ id|ac97
 comma
 id|reg
 comma
+id|shadow_reg
+comma
 l_int|11000
 )paren
 )paren
@@ -9897,6 +9922,8 @@ id|ac97
 comma
 id|reg
 comma
+id|shadow_reg
+comma
 l_int|8000
 )paren
 )paren
@@ -9913,6 +9940,8 @@ c_func
 id|ac97
 comma
 id|reg
+comma
+id|shadow_reg
 comma
 l_int|11025
 )paren
@@ -9931,6 +9960,8 @@ id|ac97
 comma
 id|reg
 comma
+id|shadow_reg
+comma
 l_int|16000
 )paren
 )paren
@@ -9947,6 +9978,8 @@ c_func
 id|ac97
 comma
 id|reg
+comma
+id|shadow_reg
 comma
 l_int|22050
 )paren
@@ -9965,6 +9998,8 @@ id|ac97
 comma
 id|reg
 comma
+id|shadow_reg
+comma
 l_int|32000
 )paren
 )paren
@@ -9982,6 +10017,8 @@ id|ac97
 comma
 id|reg
 comma
+id|shadow_reg
+comma
 l_int|44100
 )paren
 )paren
@@ -9998,6 +10035,8 @@ c_func
 id|ac97
 comma
 id|reg
+comma
+id|shadow_reg
 comma
 l_int|48000
 )paren
@@ -11674,6 +11713,8 @@ id|ac97
 comma
 id|AC97_PCM_FRONT_DAC_RATE
 comma
+l_int|0
+comma
 op_amp
 id|ac97-&gt;rates
 (braket
@@ -11687,6 +11728,8 @@ c_func
 id|ac97
 comma
 id|AC97_PCM_LR_ADC_RATE
+comma
+l_int|0
 comma
 op_amp
 id|ac97-&gt;rates
@@ -11782,6 +11825,8 @@ id|ac97
 comma
 id|AC97_PCM_MIC_ADC_RATE
 comma
+l_int|0
+comma
 op_amp
 id|ac97-&gt;rates
 (braket
@@ -11816,6 +11861,8 @@ id|ac97
 comma
 id|AC97_PCM_SURR_DAC_RATE
 comma
+id|AC97_PCM_FRONT_DAC_RATE
+comma
 op_amp
 id|ac97-&gt;rates
 (braket
@@ -11843,6 +11890,8 @@ c_func
 id|ac97
 comma
 id|AC97_PCM_LFE_DAC_RATE
+comma
+id|AC97_PCM_FRONT_DAC_RATE
 comma
 op_amp
 id|ac97-&gt;rates
