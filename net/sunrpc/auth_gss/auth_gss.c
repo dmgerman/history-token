@@ -364,6 +364,13 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
+DECL|variable|print_hexl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|print_hexl
+)paren
+suffix:semicolon
 r_static
 r_inline
 r_struct

@@ -3143,6 +3143,13 @@ r_return
 id|stat
 suffix:semicolon
 )brace
+DECL|variable|svcauth_gss_register_pseudoflavor
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|svcauth_gss_register_pseudoflavor
+)paren
+suffix:semicolon
 r_static
 r_inline
 r_int

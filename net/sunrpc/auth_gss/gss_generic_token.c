@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/net/sunrpc/gss_generic_token.c&n; *&n; *  Adapted from MIT Kerberos 5-1.2.1 lib/gssapi/generic/util_token.c&n; *&n; *  Copyright (c) 2000 The Regents of the University of Michigan.&n; *  All rights reserved.&n; *&n; *  Andy Adamson   &lt;andros@umich.edu&gt;&n; */
 multiline_comment|/*&n; * Copyright 1993 by OpenVision Technologies, Inc.&n; * &n; * Permission to use, copy, modify, distribute, and sell this software&n; * and its documentation for any purpose is hereby granted without fee,&n; * provided that the above copyright notice appears in all copies and&n; * that both that copyright notice and this permission notice appear in&n; * supporting documentation, and that the name of OpenVision not be used&n; * in advertising or publicity pertaining to distribution of the software&n; * without specific, written prior permission. OpenVision makes no&n; * representations about the suitability of this software for any&n; * purpose.  It is provided &quot;as is&quot; without express or implied warranty.&n; * &n; * OPENVISION DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,&n; * INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO&n; * EVENT SHALL OPENVISION BE LIABLE FOR ANY SPECIAL, INDIRECT OR&n; * CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF&n; * USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR&n; * OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR&n; * PERFORMANCE OF THIS SOFTWARE.&n; */
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sunrpc/sched.h&gt;
@@ -457,6 +458,13 @@ op_plus
 id|body_size
 suffix:semicolon
 )brace
+DECL|variable|g_token_size
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|g_token_size
+)paren
+suffix:semicolon
 multiline_comment|/* fills in a buffer with the token header.  The buffer is assumed to&n;   be the right size.  buf is advanced past the token header */
 r_void
 DECL|function|g_make_token_header
@@ -538,6 +546,13 @@ id|mech-&gt;len
 )paren
 suffix:semicolon
 )brace
+DECL|variable|g_make_token_header
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|g_make_token_header
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Given a buffer containing a token, reads and verifies the token,&n; * leaving buf advanced past the token header, and setting body_size&n; * to the number of remaining bytes.  Returns 0 on success,&n; * G_BAD_TOK_HEADER for a variety of errors, and G_WRONG_MECH if the&n; * mechanism in the token does not match the mech argument.  buf and&n; * *body_size are left unmodified on error.&n; */
 id|u32
 DECL|function|g_verify_token_header
@@ -774,6 +789,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|g_verify_token_header
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|g_verify_token_header
+)paren
+suffix:semicolon
 multiline_comment|/* Given a buffer containing a token, returns a copy of the mech oid in&n; * the parameter mech. */
 id|u32
 DECL|function|g_get_mech_oid
