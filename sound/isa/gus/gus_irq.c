@@ -11,7 +11,7 @@ DECL|macro|STAT_ADD
 mdefine_line|#define STAT_ADD(x)&t;while (0) { ; }
 macro_line|#endif
 DECL|function|snd_gus_interrupt
-r_void
+id|irqreturn_t
 id|snd_gus_interrupt
 c_func
 (paren
@@ -51,6 +51,11 @@ id|loop
 op_assign
 l_int|100
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|__again
 suffix:colon
 id|status
@@ -69,6 +74,15 @@ op_eq
 l_int|0
 )paren
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 singleline_comment|// snd_printk(&quot;IRQ: status = 0x%x&bslash;n&quot;, status);
 r_if
@@ -445,6 +459,9 @@ l_int|0
 )paren
 r_goto
 id|__again
+suffix:semicolon
+r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SND_DEBUG

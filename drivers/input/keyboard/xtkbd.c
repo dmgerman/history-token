@@ -310,7 +310,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|xtkbd_interrupt
-r_void
+id|irqreturn_t
 id|xtkbd_interrupt
 c_func
 (paren
@@ -354,7 +354,7 @@ suffix:colon
 r_case
 id|XTKBD_EMUL1
 suffix:colon
-r_return
+r_break
 suffix:semicolon
 r_default
 suffix:colon
@@ -433,6 +433,9 @@ l_string|&quot;pressed&quot;
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|xtkbd_connect
 r_void

@@ -1913,6 +1913,11 @@ r_int
 r_char
 id|status
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -1941,6 +1946,10 @@ op_eq
 l_int|0
 )paren
 r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -2374,7 +2383,11 @@ suffix:semicolon
 )brace
 )brace
 r_return
-id|IRQ_HANDLED
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  PCM part - misc&n; */

@@ -7453,7 +7453,7 @@ suffix:semicolon
 )brace
 DECL|function|cs_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|cs_interrupt
 c_func
 (paren
@@ -7573,7 +7573,9 @@ id|card-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
+multiline_comment|/* Might be IRQ_NONE.. */
 )brace
 multiline_comment|/*&n;&t; * check for playback or capture interrupt only&n;&t; */
 r_if
@@ -7679,6 +7681,9 @@ c_func
 l_string|&quot;cs46xx: cs_interrupt()- &bslash;n&quot;
 )paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/**********************************************************************/

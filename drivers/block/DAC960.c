@@ -9845,7 +9845,7 @@ op_star
 )paren
 id|entry-&gt;driver_data
 suffix:semicolon
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|InterruptHandler
@@ -18985,7 +18985,7 @@ suffix:semicolon
 multiline_comment|/*&n;  DAC960_BA_InterruptHandler handles hardware interrupts from DAC960 BA Series&n;  Controllers.&n;*/
 DECL|function|DAC960_BA_InterruptHandler
 r_static
-r_void
+id|irqreturn_t
 id|DAC960_BA_InterruptHandler
 c_func
 (paren
@@ -19134,11 +19134,14 @@ op_amp
 id|ProcessorFlags
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_LP_InterruptHandler handles hardware interrupts from DAC960 LP Series&n;  Controllers.&n;*/
 DECL|function|DAC960_LP_InterruptHandler
 r_static
-r_void
+id|irqreturn_t
 id|DAC960_LP_InterruptHandler
 c_func
 (paren
@@ -19287,11 +19290,14 @@ op_amp
 id|ProcessorFlags
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_LA_InterruptHandler handles hardware interrupts from DAC960 LA Series&n;  Controllers.&n;*/
 DECL|function|DAC960_LA_InterruptHandler
 r_static
-r_void
+id|irqreturn_t
 id|DAC960_LA_InterruptHandler
 c_func
 (paren
@@ -19427,11 +19433,14 @@ op_amp
 id|ProcessorFlags
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_PG_InterruptHandler handles hardware interrupts from DAC960 PG Series&n;  Controllers.&n;*/
 DECL|function|DAC960_PG_InterruptHandler
 r_static
-r_void
+id|irqreturn_t
 id|DAC960_PG_InterruptHandler
 c_func
 (paren
@@ -19567,11 +19576,14 @@ op_amp
 id|ProcessorFlags
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_PD_InterruptHandler handles hardware interrupts from DAC960 PD Series&n;  Controllers.&n;*/
 DECL|function|DAC960_PD_InterruptHandler
 r_static
-r_void
+id|irqreturn_t
 id|DAC960_PD_InterruptHandler
 c_func
 (paren
@@ -19697,11 +19709,14 @@ op_amp
 id|ProcessorFlags
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_P_InterruptHandler handles hardware interrupts from DAC960 P Series&n;  Controllers.&n;&n;  Translations of DAC960_V1_Enquiry and DAC960_V1_GetDeviceState rely&n;  on the data having been placed into DAC960_Controller_T, rather than&n;  an arbitrary buffer.&n;*/
 DECL|function|DAC960_P_InterruptHandler
 r_static
-r_void
+id|irqreturn_t
 id|DAC960_P_InterruptHandler
 c_func
 (paren
@@ -19939,6 +19954,9 @@ comma
 op_amp
 id|ProcessorFlags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_V1_QueueMonitoringCommand queues a Monitoring Command to DAC960 V1&n;  Firmware Controllers.&n;*/

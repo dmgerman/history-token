@@ -1363,7 +1363,7 @@ comma
 )brace
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 DECL|function|diva_interrupt
 id|diva_interrupt
 c_func
@@ -1440,9 +1440,12 @@ id|KERN_WARNING
 l_string|&quot;Diva: IRQ LOOP&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|diva_ipac_pci_irq
 id|diva_ipac_pci_irq
 c_func
@@ -1489,6 +1492,7 @@ id|PITA_INT0_STATUS
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* other shared IRQ */
 id|writeb
@@ -1500,6 +1504,7 @@ id|cs-&gt;hw.diva.pci_cfg
 )paren
 suffix:semicolon
 multiline_comment|/* Reset pending INT0 */
+r_return
 id|ipac_irq
 c_func
 (paren
@@ -1512,7 +1517,7 @@ id|regs
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|diva_ipacx_pci_irq
 id|diva_ipacx_pci_irq
 c_func
@@ -1559,6 +1564,7 @@ id|PITA_INT0_STATUS
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 singleline_comment|// other shared IRQ
 id|interrupt_ipacx
@@ -1577,6 +1583,9 @@ id|cs-&gt;hw.diva.pci_cfg
 )paren
 suffix:semicolon
 singleline_comment|// Reset PLX interrupt
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_static
 r_void

@@ -1576,7 +1576,7 @@ suffix:semicolon
 )brace
 DECL|function|snd_opl3sa2_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_opl3sa2_interrupt
 c_func
 (paren
@@ -1611,6 +1611,11 @@ comma
 r_return
 )paren
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1623,6 +1628,7 @@ op_eq
 l_int|NULL
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|status
 op_assign
@@ -1641,12 +1647,18 @@ id|status
 op_amp
 l_int|0x20
 )paren
+(brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|snd_opl3_interrupt
 c_func
 (paren
 id|chip-&gt;synth
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1660,6 +1672,11 @@ id|chip-&gt;rmidi
 op_ne
 l_int|NULL
 )paren
+(brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|snd_mpu401_uart_interrupt
 c_func
 (paren
@@ -1670,6 +1687,7 @@ comma
 id|regs
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1677,7 +1695,12 @@ id|status
 op_amp
 l_int|0x07
 )paren
+(brace
 multiline_comment|/* TI,CI,PI */
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|snd_cs4231_interrupt
 c_func
 (paren
@@ -1688,6 +1711,7 @@ comma
 id|regs
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1697,6 +1721,10 @@ l_int|0x40
 )paren
 (brace
 multiline_comment|/* hardware volume change */
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* reading from Master Lch register at 0x07 clears this bit */
 id|snd_opl3sa2_read
 c_func
@@ -1746,6 +1774,13 @@ id|chip-&gt;master_volume-&gt;id
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 DECL|macro|OPL3SA2_SINGLE
 mdefine_line|#define OPL3SA2_SINGLE(xname, xindex, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_opl3sa2_info_single, &bslash;&n;  .get = snd_opl3sa2_get_single, .put = snd_opl3sa2_put_single, &bslash;&n;  .private_value = reg | (shift &lt;&lt; 8) | (mask &lt;&lt; 16) | (invert &lt;&lt; 24) }

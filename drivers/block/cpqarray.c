@@ -554,7 +554,7 @@ id|timeout
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|do_ida_intr
 c_func
 (paren
@@ -4846,7 +4846,7 @@ suffix:semicolon
 multiline_comment|/*&n; *  The controller will interrupt us upon completion of commands.&n; *  Find the command on the completion queue, remove it, tell the OS and&n; *  try to queue up more IO&n; */
 DECL|function|do_ida_intr
 r_static
-r_void
+id|irqreturn_t
 id|do_ida_intr
 c_func
 (paren
@@ -4905,6 +4905,7 @@ op_eq
 l_int|0
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/*&n;&t; * If there are completed commands in the completion queue,&n;&t; * we had better do something about it.&n;&t; */
 id|spin_lock_irqsave
@@ -5107,6 +5108,9 @@ id|h-&gt;ctlr
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This timer was for timing out requests that haven&squot;t happened after&n; * IDA_TIMEOUT.  That wasn&squot;t such a good idea.  This timer is used to&n; * reset a flags structure so we don&squot;t flood the user with&n; * &quot;Non-Fatal error&quot; messages.&n; */

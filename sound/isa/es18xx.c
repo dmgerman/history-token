@@ -3159,7 +3159,7 @@ suffix:semicolon
 )brace
 DECL|function|snd_es18xx_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_es18xx_interrupt
 c_func
 (paren
@@ -3487,6 +3487,9 @@ l_int|0x00
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|snd_es18xx_playback_pointer
 r_static

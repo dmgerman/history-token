@@ -606,9 +606,11 @@ id|signature
 op_assign
 l_int|0
 comma
-id|timeout
-comma
 id|i
+suffix:semicolon
+r_int
+r_int
+id|timeout
 suffix:semicolon
 id|isdn_ctrl
 id|ctrl

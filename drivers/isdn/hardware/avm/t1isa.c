@@ -718,7 +718,7 @@ suffix:semicolon
 )brace
 DECL|function|t1isa_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|t1isa_interrupt
 c_func
 (paren
@@ -1398,6 +1398,7 @@ id|card-&gt;name
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 r_default
 suffix:colon
@@ -1413,9 +1414,13 @@ id|b1cmd
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------- */
 DECL|function|t1isa_load_firmware

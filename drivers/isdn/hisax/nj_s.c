@@ -17,7 +17,7 @@ op_assign
 l_string|&quot;$Revision: 2.7.6.6 $&quot;
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 DECL|function|nj_s_interrupt
 id|nj_s_interrupt
 c_func
@@ -272,6 +272,9 @@ c_func
 op_amp
 id|cs-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static

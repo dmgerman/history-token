@@ -182,11 +182,6 @@ r_static
 r_int
 id|vbl_cursor_cnt
 suffix:semicolon
-DECL|variable|cursor_blink_rate
-r_static
-r_int
-id|cursor_blink_rate
-suffix:semicolon
 DECL|macro|divides
 mdefine_line|#define divides(a, b)&t;((!(a) || (b)%(a)) ? 0 : 1)
 multiline_comment|/*&n; *  Interface used by the world&n; */
@@ -587,7 +582,7 @@ id|vbl_detected
 suffix:semicolon
 DECL|function|fb_vbl_detect
 r_static
-r_void
+id|irqreturn_t
 id|fb_vbl_detect
 c_func
 (paren
@@ -663,9 +658,15 @@ id|info-&gt;cursor
 )paren
 suffix:semicolon
 )brace
+macro_line|#if (defined(__arm__) &amp;&amp; defined(IRQ_VSYNCPULSE)) || defined(CONFIG_ATARI) || defined(CONFIG_MAC)
+DECL|variable|cursor_blink_rate
+r_static
+r_int
+id|cursor_blink_rate
+suffix:semicolon
 DECL|function|fb_vbl_handler
 r_static
-r_void
+id|irqreturn_t
 id|fb_vbl_handler
 c_func
 (paren
@@ -712,7 +713,11 @@ op_assign
 id|cursor_blink_rate
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
+macro_line|#endif
 r_static
 r_void
 id|cursor_timer_handler
@@ -2599,6 +2604,8 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
+id|irqres
+suffix:semicolon
 id|irqres
 op_assign
 l_int|1

@@ -345,7 +345,7 @@ r_int
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|ac_interrupt
 c_func
 (paren
@@ -3348,7 +3348,7 @@ macro_line|#endif
 )brace
 DECL|function|ac_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|ac_interrupt
 c_func
 (paren
@@ -3376,6 +3376,11 @@ suffix:semicolon
 r_int
 r_int
 id|LoopCount
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 singleline_comment|//    printk(&quot;Applicom interrupt on IRQ %d occurred&bslash;n&quot;, vec);
 id|LoopCount
@@ -3464,6 +3469,10 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|FlagInt
 op_assign
 l_int|1
@@ -3782,6 +3791,13 @@ l_int|2
 (brace
 suffix:semicolon
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 DECL|function|ac_ioctl
 r_static

@@ -82,7 +82,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|logibm_interrupt
 c_func
 (paren
@@ -326,7 +326,7 @@ comma
 suffix:semicolon
 DECL|function|logibm_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|logibm_interrupt
 c_func
 (paren
@@ -531,6 +531,9 @@ id|LOGIBM_ENABLE_IRQ
 comma
 id|LOGIBM_CONTROL_PORT
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifndef MODULE

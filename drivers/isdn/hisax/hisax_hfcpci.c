@@ -5236,7 +5236,7 @@ suffix:semicolon
 singleline_comment|// ----------------------------------------------------------------------
 singleline_comment|// IRQ handler
 r_static
-r_void
+id|irqreturn_t
 DECL|function|hfcpci_irq
 id|hfcpci_irq
 c_func
@@ -5282,6 +5282,7 @@ l_int|0x08
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* not initialised */
 singleline_comment|// XX
@@ -5306,6 +5307,7 @@ id|HFCPCI_ANYINT
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock
 c_func
@@ -5476,6 +5478,9 @@ c_func
 op_amp
 id|adapter-&gt;hw_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 singleline_comment|// ----------------------------------------------------------------------

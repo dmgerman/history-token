@@ -2412,7 +2412,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_ISDN_DRV_EICON_ISA
 multiline_comment|/*&n; * IRQ handler &n; */
-r_void
+id|irqreturn_t
 DECL|function|eicon_irq
 id|eicon_irq
 c_func
@@ -2526,6 +2526,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -2656,6 +2657,7 @@ l_string|&quot;eicon_irq: unsupported card-type!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -2760,6 +2762,7 @@ r_break
 suffix:semicolon
 )brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_switch
@@ -2808,6 +2811,7 @@ l_string|&quot;eicon: IRQ: card reports no interrupt!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_break
@@ -3875,6 +3879,7 @@ r_break
 suffix:semicolon
 )brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#endif

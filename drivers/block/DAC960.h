@@ -8339,7 +8339,7 @@ id|DAC960_FirmwareType_T
 id|FirmwareType
 suffix:semicolon
 DECL|member|InterruptHandler
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|InterruptHandler
@@ -15196,7 +15196,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|DAC960_BA_InterruptHandler
 c_func
 (paren
@@ -15210,7 +15210,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|DAC960_LP_InterruptHandler
 c_func
 (paren
@@ -15224,7 +15224,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|DAC960_LA_InterruptHandler
 c_func
 (paren
@@ -15238,7 +15238,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|DAC960_PG_InterruptHandler
 c_func
 (paren
@@ -15252,7 +15252,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|DAC960_PD_InterruptHandler
 c_func
 (paren
@@ -15266,7 +15266,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|DAC960_P_InterruptHandler
 c_func
 (paren

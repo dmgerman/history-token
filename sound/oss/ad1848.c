@@ -10549,7 +10549,7 @@ id|io_base
 suffix:semicolon
 )brace
 DECL|function|adintr
-r_void
+id|irqreturn_t
 id|adintr
 c_func
 (paren
@@ -10910,6 +10910,9 @@ r_goto
 id|interrupt_again
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Experimental initialization sequence for the integrated sound system&n; *&t;of the Compaq Deskpro M.&n; */
 DECL|function|init_deskpro_m

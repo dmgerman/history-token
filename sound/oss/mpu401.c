@@ -1380,7 +1380,7 @@ id|devc
 suffix:semicolon
 )brace
 DECL|function|mpuintr
-r_void
+id|irqreturn_t
 id|mpuintr
 c_func
 (paren
@@ -1410,6 +1410,11 @@ r_int
 )paren
 id|dev_id
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|devc
 op_assign
 op_amp
@@ -1428,6 +1433,10 @@ id|devc
 )paren
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1462,6 +1471,13 @@ id|devc
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 DECL|function|mpu401_open
 r_static
@@ -1627,7 +1643,8 @@ id|dev
 )paren
 suffix:semicolon
 r_return
-id|err
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 r_if
@@ -3065,7 +3082,8 @@ id|coprocessor-&gt;owner
 )paren
 )paren
 r_return
-id|err
+op_minus
+id|ENODEV
 suffix:semicolon
 r_if
 c_cond

@@ -841,7 +841,7 @@ suffix:semicolon
 multiline_comment|/*&n; *  Interrupt handler&n; */
 DECL|function|snd_vt1724_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_vt1724_interrupt
 c_func
 (paren
@@ -876,6 +876,11 @@ r_int
 r_char
 id|status
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -904,6 +909,10 @@ op_eq
 l_int|0
 )paren
 r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/*  these should probably be separated at some point, &n;&t;&t;&t;but as we don&squot;t currently have MPU support on the board I will leave it */
 r_if
@@ -1159,6 +1168,13 @@ multiline_comment|/* If I don&squot;t do this, I get machine lockup due to conti
 )brace
 )brace
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; *  PCM code - professional part (multitrack)&n; */
 DECL|variable|rates

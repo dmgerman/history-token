@@ -7423,6 +7423,11 @@ id|status
 comma
 id|audiostatus
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|status
 op_assign
 id|inb
@@ -7519,6 +7524,10 @@ id|DMASTATUS
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* clear irq */
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|audiostatus
 op_assign
 id|inb
@@ -7615,6 +7624,10 @@ id|AUDIO2DMAADDR
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* clear irq */
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|snd_es1938_mixer_bits
 c_func
 (paren
@@ -7662,6 +7675,10 @@ l_int|0x64
 )paren
 op_amp
 l_int|0x80
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 id|snd_ctl_notify
 c_func
@@ -7742,6 +7759,11 @@ c_cond
 (paren
 id|chip-&gt;rmidi
 )paren
+(brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|snd_mpu401_uart_interrupt
 c_func
 (paren
@@ -7753,8 +7775,13 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+)brace
 r_return
-id|IRQ_HANDLED
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 DECL|macro|ES1938_DMA_SIZE

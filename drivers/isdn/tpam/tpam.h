@@ -5,6 +5,7 @@ mdefine_line|#define _TPAM_PRIV_H_
 macro_line|#include &lt;linux/isdnif.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 multiline_comment|/* Maximum number of channels for this board */
 DECL|macro|TPAM_NBCHANNEL
 mdefine_line|#define TPAM_NBCHANNEL&t;&t;30
@@ -800,7 +801,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|tpam_irq
 c_func
 (paren

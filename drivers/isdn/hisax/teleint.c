@@ -903,7 +903,7 @@ comma
 )brace
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 DECL|function|teleint_interrupt
 id|teleint_interrupt
 c_func
@@ -1040,6 +1040,9 @@ c_func
 op_amp
 id|cs-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static

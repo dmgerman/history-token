@@ -3197,7 +3197,7 @@ id|card-&gt;lock
 suffix:semicolon
 )brace
 DECL|function|b1dma_interrupt
-r_void
+id|irqreturn_t
 id|b1dma_interrupt
 c_func
 (paren
@@ -3225,6 +3225,9 @@ c_func
 (paren
 id|card
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------- */

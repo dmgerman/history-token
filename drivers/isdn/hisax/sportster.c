@@ -462,7 +462,7 @@ comma
 )brace
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 DECL|function|sportster_interrupt
 id|sportster_interrupt
 c_func
@@ -506,6 +506,9 @@ id|SPORTSTER_RES_IRQ
 op_plus
 l_int|1
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static

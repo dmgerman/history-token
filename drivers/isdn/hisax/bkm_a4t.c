@@ -741,7 +741,7 @@ comma
 )brace
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 DECL|function|bkm_interrupt
 id|bkm_interrupt
 c_func
@@ -775,6 +775,11 @@ id|I20_REGISTER_FILE
 op_star
 id|pI20_Regs
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -801,6 +806,10 @@ op_amp
 id|intISDN
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* Reset the ISDN interrupt     */
 id|pI20_Regs-&gt;i20IntStatus
 op_assign
@@ -915,6 +924,13 @@ c_func
 (paren
 op_amp
 id|cs-&gt;lock
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace

@@ -2909,7 +2909,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * interrupt handlers&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|snd_pmac_tx_intr
 id|snd_pmac_tx_intr
 c_func
@@ -2950,9 +2950,12 @@ op_amp
 id|chip-&gt;playback
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|snd_pmac_rx_intr
 id|snd_pmac_rx_intr
 c_func
@@ -2993,9 +2996,12 @@ op_amp
 id|chip-&gt;capture
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|snd_pmac_ctrl_intr
 id|snd_pmac_ctrl_intr
 c_func
@@ -3115,6 +3121,9 @@ id|chip-&gt;awacs-&gt;control
 comma
 id|ctrl
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * a wrapper to feature call for compatibility&n; */

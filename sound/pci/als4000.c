@@ -1472,7 +1472,7 @@ suffix:semicolon
 )brace
 DECL|function|snd_als4000_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_als4000_interrupt
 c_func
 (paren
@@ -1684,6 +1684,9 @@ comma
 id|RESET
 )paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************/

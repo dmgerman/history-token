@@ -52,6 +52,7 @@ id|ms
 )paren
 (brace
 r_int
+r_int
 id|timeout
 op_assign
 id|jiffies
@@ -2492,7 +2493,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|Divasintr
-r_void
+id|irqreturn_t
 id|Divasintr
 c_func
 (paren
@@ -2599,6 +2600,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|UxIsrInstall
@@ -2971,6 +2973,7 @@ id|ux_diva_card_t
 op_star
 id|card
 comma
+r_int
 r_int
 id|ipl
 )paren

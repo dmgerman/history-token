@@ -136,7 +136,7 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|Q40StereoInterrupt
 c_func
 (paren
@@ -154,7 +154,7 @@ id|fp
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|Q40MonoInterrupt
 c_func
 (paren
@@ -2099,7 +2099,7 @@ suffix:semicolon
 )brace
 DECL|function|Q40StereoInterrupt
 r_static
-r_void
+id|irqreturn_t
 id|Q40StereoInterrupt
 c_func
 (paren
@@ -2173,10 +2173,13 @@ op_amp
 id|dmasound.lock
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|Q40MonoInterrupt
 r_static
-r_void
+id|irqreturn_t
 id|Q40MonoInterrupt
 c_func
 (paren
@@ -2247,6 +2250,9 @@ c_func
 op_amp
 id|dmasound.lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|Q40Interrupt

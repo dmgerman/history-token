@@ -3370,7 +3370,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|snd_ad1848_interrupt
-r_void
+id|irqreturn_t
 id|snd_ad1848_interrupt
 c_func
 (paren
@@ -3462,6 +3462,9 @@ id|STATUS
 )paren
 suffix:semicolon
 multiline_comment|/* clear global interrupt bit */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|snd_ad1848_playback_pointer
 r_static

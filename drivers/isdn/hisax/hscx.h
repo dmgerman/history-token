@@ -1,4 +1,5 @@
 multiline_comment|/* $Id: hscx.h,v 1.6.6.2 2001/09/23 22:24:48 kai Exp $&n; *&n; * HSCX specific defines&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+macro_line|#include &lt;linux/interrupt.h&gt;
 multiline_comment|/* All Registers original Siemens Spec  */
 DECL|macro|HSCX_ISTA
 mdefine_line|#define HSCX_ISTA 0x20
@@ -85,7 +86,7 @@ id|val
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|hscxisac_irq
 c_func
 (paren

@@ -841,7 +841,7 @@ suffix:semicolon
 multiline_comment|/*&n; * psmouse_interrupt() handles incoming characters, either gathering them into&n; * packets or passing them to the command routine as command output.&n; */
 DECL|function|psmouse_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|psmouse_interrupt
 c_func
 (paren
@@ -931,7 +931,8 @@ id|psmouse-&gt;acking
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -948,7 +949,8 @@ id|psmouse-&gt;cmdcnt
 op_assign
 id|data
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -1021,7 +1023,8 @@ id|psmouse-&gt;pktcnt
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -1045,9 +1048,15 @@ c_func
 id|serio
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
+id|out
+suffix:colon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * psmouse_sendbyte() sends a byte to the mouse, and waits for acknowledge.&n; * It doesn&squot;t handle retransmission, though it could - because when there would&n; * be need for retransmissions, the mouse has to be replaced anyway.&n; */
 DECL|function|psmouse_sendbyte

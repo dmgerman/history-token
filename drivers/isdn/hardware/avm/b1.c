@@ -2658,7 +2658,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------- */
 DECL|function|b1_interrupt
-r_void
+id|irqreturn_t
 id|b1_interrupt
 c_func
 (paren
@@ -2734,6 +2734,7 @@ id|card-&gt;port
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|b1cmd
 op_assign
@@ -3333,6 +3334,7 @@ id|card-&gt;name
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 r_default
 suffix:colon
@@ -3348,8 +3350,12 @@ id|b1cmd
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------- */
 DECL|function|b1ctl_read_proc

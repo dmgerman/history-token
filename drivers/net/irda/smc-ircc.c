@@ -166,7 +166,7 @@ id|speed
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|ircc_interrupt
 c_func
 (paren
@@ -4252,7 +4252,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Function ircc_interrupt (irq, dev_id, regs)&n; *&n; *    An interrupt from the chip has arrived. Time to do some work&n; *&n; */
 DECL|function|ircc_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|ircc_interrupt
 c_func
 (paren
@@ -4316,6 +4316,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|irport
@@ -4379,6 +4380,7 @@ id|regs
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|iobase
@@ -4501,6 +4503,9 @@ c_func
 op_amp
 id|self-&gt;irport-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#if 0 /* unused */
