@@ -1729,7 +1729,6 @@ op_star
 id|pdev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PM
 r_static
 r_int
 id|eepro100_suspend
@@ -1753,7 +1752,6 @@ op_star
 id|pdev
 )paren
 suffix:semicolon
-macro_line|#endif
 r_static
 r_int
 id|do_eeprom_cmd
