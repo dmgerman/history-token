@@ -32,7 +32,6 @@ id|table_size
 suffix:semicolon
 multiline_comment|/* memory needed */
 DECL|member|init
-id|asmlinkage
 r_void
 (paren
 op_star
@@ -56,7 +55,6 @@ id|table
 suffix:semicolon
 multiline_comment|/* Initialization routine; should be called after each set_video_mode */
 DECL|member|exit
-id|asmlinkage
 r_void
 (paren
 op_star
@@ -68,7 +66,6 @@ r_void
 suffix:semicolon
 multiline_comment|/* Cleanup routine */
 DECL|member|decompress
-id|asmlinkage
 r_void
 (paren
 op_star
