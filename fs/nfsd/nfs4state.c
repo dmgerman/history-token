@@ -38,6 +38,13 @@ id|current_fileid
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|nfs4_init
+r_static
+id|u32
+id|nfs4_init
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* debug counters */
 DECL|variable|list_add_perfile
 id|u32
@@ -4726,6 +4733,13 @@ r_void
 r_int
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|nfs4_init
+)paren
+r_return
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4877,6 +4891,10 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
+id|nfs4_init
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 r_static
 r_void
@@ -5009,6 +5027,10 @@ id|flush_scheduled_work
 c_func
 (paren
 )paren
+suffix:semicolon
+id|nfs4_init
+op_assign
+l_int|0
 suffix:semicolon
 id|dprintk
 c_func

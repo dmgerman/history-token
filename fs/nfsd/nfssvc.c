@@ -203,6 +203,11 @@ op_star
 id|nrservs
 )paren
 suffix:semicolon
+id|nfs4_state_init
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
