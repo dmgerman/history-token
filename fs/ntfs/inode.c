@@ -2080,7 +2080,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|attribute_value_length
+id|ntfs_attr_size
 c_func
 (paren
 id|ctx-&gt;attr
@@ -6230,7 +6230,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|attribute_value_length
+id|ntfs_attr_size
 c_func
 (paren
 id|ctx-&gt;attr
@@ -7950,19 +7950,177 @@ op_star
 id|vi
 )paren
 (brace
-singleline_comment|// TODO: Implement...
-id|ntfs_warning
+id|ntfs_inode
+op_star
+id|ni
+op_assign
+id|NTFS_I
+c_func
+(paren
+id|vi
+)paren
+suffix:semicolon
+id|ntfs_attr_search_ctx
+op_star
+id|ctx
+suffix:semicolon
+id|MFT_RECORD
+op_star
+id|m
+suffix:semicolon
+id|m
+op_assign
+id|map_mft_record
+c_func
+(paren
+id|ni
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|m
+)paren
+)paren
+(brace
+id|ntfs_error
 c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;Eeek: i_size may have changed!  If you see &quot;
-l_string|&quot;this right after a message from &quot;
-l_string|&quot;ntfs_prepare_{,nonresident_}write() then just ignore &quot;
-l_string|&quot;it.  Otherwise it is bad news.&quot;
+l_string|&quot;Failed to map mft record for inode 0x%lx &quot;
+l_string|&quot;(error code %ld).&quot;
+comma
+id|vi-&gt;i_ino
+comma
+id|PTR_ERR
+c_func
+(paren
+id|m
+)paren
 )paren
 suffix:semicolon
-singleline_comment|// TODO: reset i_size now!
+r_if
+c_cond
+(paren
+id|PTR_ERR
+c_func
+(paren
+id|m
+)paren
+op_ne
+id|ENOMEM
+)paren
+id|make_bad_inode
+c_func
+(paren
+id|vi
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|ctx
+op_assign
+id|ntfs_attr_get_search_ctx
+c_func
+(paren
+id|ni
+comma
+id|m
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+op_logical_neg
+id|ctx
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+l_string|&quot;Failed to allocate a search context: &quot;
+l_string|&quot;Not enough memory&quot;
+)paren
+suffix:semicolon
+singleline_comment|// FIXME: We can&squot;t report an error code upstream.  So what do
+singleline_comment|// we do?!?  make_bad_inode() seems a bit harsh...
+id|unmap_mft_record
+c_func
+(paren
+id|ni
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+multiline_comment|/* If the size has not changed there is nothing to do. */
+r_if
+c_cond
+(paren
+id|ntfs_attr_size
+c_func
+(paren
+id|ctx-&gt;attr
+)paren
+op_eq
+id|i_size_read
+c_func
+(paren
+id|vi
+)paren
+)paren
+r_goto
+id|out
+suffix:semicolon
+singleline_comment|// TODO: Implement the truncate...
+id|ntfs_error
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+l_string|&quot;Inode size has changed but this is not &quot;
+l_string|&quot;implemented yet.  Resetting inode size to old value. &quot;
+l_string|&quot; This is most likely a bug in the ntfs driver!&quot;
+)paren
+suffix:semicolon
+id|i_size_write
+c_func
+(paren
+id|vi
+comma
+id|ntfs_attr_size
+c_func
+(paren
+id|ctx-&gt;attr
+)paren
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|ntfs_attr_put_search_ctx
+c_func
+(paren
+id|ctx
+)paren
+suffix:semicolon
+id|unmap_mft_record
+c_func
+(paren
+id|ni
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
