@@ -24,12 +24,13 @@ macro_line|#endif
 multiline_comment|/**&n; * initialization string for output&n; */
 DECL|macro|VERSION_LCS_C
 mdefine_line|#define VERSION_LCS_C  &quot;$Revision: 1.42 $&quot;
-DECL|variable|version
+DECL|variable|__initdata
 r_static
-r_const
 r_char
-op_star
 id|version
+(braket
+)braket
+id|__initdata
 op_assign
 l_string|&quot;LCS driver (&quot;
 id|VERSION_LCS_C

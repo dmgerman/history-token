@@ -3416,7 +3416,7 @@ l_int|0
 comma
 l_string|&quot;ftl_cs: ftl_open(%s)&bslash;n&quot;
 comma
-id|inode-&gt;i_bdev-&gt;b_disk-&gt;disk_name
+id|inode-&gt;i_bdev-&gt;bd_disk-&gt;disk_name
 )paren
 suffix:semicolon
 id|atomic_inc
@@ -3464,7 +3464,7 @@ l_int|0
 comma
 l_string|&quot;ftl_cs: ftl_close(%s)&bslash;n&quot;
 comma
-id|inode-&gt;i_bdev-&gt;b_disk-&gt;disk_name
+id|inode-&gt;i_bdev-&gt;bd_disk-&gt;disk_name
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for any pending erase operations to complete */

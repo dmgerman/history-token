@@ -221,13 +221,13 @@ comma
 multiline_comment|/* dayna-lc */
 )brace
 suffix:semicolon
-DECL|variable|version
+DECL|variable|__initdata
 r_static
-r_const
 r_char
-id|__initdata
-op_star
 id|version
+(braket
+)braket
+id|__initdata
 op_assign
 l_string|&quot;mac8390.c: v0.4 2001-05-15 David Huggins-Daines &lt;dhd@debian.org&gt; and others&bslash;n&quot;
 suffix:semicolon

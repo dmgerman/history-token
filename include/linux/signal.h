@@ -709,6 +709,20 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|sigprocmask
+c_func
+(paren
+r_int
+comma
+id|sigset_t
+op_star
+comma
+id|sigset_t
+op_star
+)paren
+suffix:semicolon
 macro_line|#ifndef HAVE_ARCH_GET_SIGNAL_TO_DELIVER
 r_struct
 id|pt_regs

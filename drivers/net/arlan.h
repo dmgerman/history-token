@@ -1746,6 +1746,10 @@ DECL|member|out_bytes10
 r_int
 id|out_bytes10
 suffix:semicolon
+DECL|member|init_etherdev_alloc
+r_int
+id|init_etherdev_alloc
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|ARLAN_CLEAR
