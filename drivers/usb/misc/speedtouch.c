@@ -1080,12 +1080,6 @@ comma
 id|urb-&gt;status
 )paren
 suffix:semicolon
-id|tasklet_schedule
-(paren
-op_amp
-id|instance-&gt;receive_tasklet
-)paren
-suffix:semicolon
 multiline_comment|/* may not be in_interrupt() */
 id|spin_lock_irqsave
 (paren
@@ -1102,6 +1096,12 @@ id|rcv-&gt;list
 comma
 op_amp
 id|instance-&gt;completed_receivers
+)paren
+suffix:semicolon
+id|tasklet_schedule
+(paren
+op_amp
+id|instance-&gt;receive_tasklet
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -1833,12 +1833,6 @@ comma
 id|urb-&gt;status
 )paren
 suffix:semicolon
-id|tasklet_schedule
-(paren
-op_amp
-id|instance-&gt;send_tasklet
-)paren
-suffix:semicolon
 multiline_comment|/* may not be in_interrupt() */
 id|spin_lock_irqsave
 (paren
@@ -1864,6 +1858,12 @@ id|snd-&gt;buffer-&gt;list
 comma
 op_amp
 id|instance-&gt;spare_buffers
+)paren
+suffix:semicolon
+id|tasklet_schedule
+(paren
+op_amp
+id|instance-&gt;send_tasklet
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
