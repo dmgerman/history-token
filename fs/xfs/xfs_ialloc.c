@@ -1,5 +1,30 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#include &lt;xfs.h&gt;
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+macro_line|#include &quot;xfs.h&quot;
+macro_line|#include &quot;xfs_macros.h&quot;
+macro_line|#include &quot;xfs_types.h&quot;
+macro_line|#include &quot;xfs_inum.h&quot;
+macro_line|#include &quot;xfs_log.h&quot;
+macro_line|#include &quot;xfs_trans.h&quot;
+macro_line|#include &quot;xfs_sb.h&quot;
+macro_line|#include &quot;xfs_ag.h&quot;
+macro_line|#include &quot;xfs_dir.h&quot;
+macro_line|#include &quot;xfs_dir2.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
+macro_line|#include &quot;xfs_mount.h&quot;
+macro_line|#include &quot;xfs_alloc_btree.h&quot;
+macro_line|#include &quot;xfs_bmap_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc_btree.h&quot;
+macro_line|#include &quot;xfs_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc.h&quot;
+macro_line|#include &quot;xfs_attr_sf.h&quot;
+macro_line|#include &quot;xfs_dir_sf.h&quot;
+macro_line|#include &quot;xfs_dir2_sf.h&quot;
+macro_line|#include &quot;xfs_dinode.h&quot;
+macro_line|#include &quot;xfs_inode.h&quot;
+macro_line|#include &quot;xfs_alloc.h&quot;
+macro_line|#include &quot;xfs_bit.h&quot;
+macro_line|#include &quot;xfs_rtalloc.h&quot;
+macro_line|#include &quot;xfs_error.h&quot;
 multiline_comment|/*&n; * Log specified fields for the inode given by bp and off.&n; */
 id|STATIC
 r_void
@@ -1533,7 +1558,7 @@ r_return
 id|agno
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Select an allocation group to look for a free inode in, based on the parent&n; * inode and then mode.&t; Return the allocation group buffer.&n; */
+multiline_comment|/*&n; * Select an allocation group to look for a free inode in, based on the parent&n; * inode and then mode.  Return the allocation group buffer.&n; */
 id|STATIC
 id|xfs_buf_t
 op_star
@@ -2022,7 +2047,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Visible inode allocation functions.&n; */
-multiline_comment|/*&n; * Allocate an inode on disk.&n; * Mode is used to tell whether the new inode will need space, and whether&n; * it is a directory.&n; *&n; * The arguments IO_agbp and alloc_done are defined to work within&n; * the constraint of one allocation per transaction.&n; * xfs_dialloc() is designed to be called twice if it has to do an&n; * allocation to make more free inodes.&t; On the first call,&n; * IO_agbp should be set to NULL. If an inode is available,&n; * i.e., xfs_dialloc() did not need to do an allocation, an inode&n; * number is returned.&t;In this case, IO_agbp would be set to the&n; * current ag_buf and alloc_done set to false.&n; * If an allocation needed to be done, xfs_dialloc would return&n; * the current ag_buf in IO_agbp and set alloc_done to true.&n; * The caller should then commit the current transaction, allocate a new&n; * transaction, and call xfs_dialloc() again, passing in the previous&n; * value of IO_agbp.  IO_agbp should be held across the transactions.&n; * Since the agbp is locked across the two calls, the second call is&n; * guaranteed to have a free inode available.&n; *&n; * Once we successfully pick an inode its number is returned and the&n; * on-disk data structures are updated.&t; The inode itself is not read&n; * in, since doing so would break ordering constraints with xfs_reclaim.&n; */
+multiline_comment|/*&n; * Allocate an inode on disk.&n; * Mode is used to tell whether the new inode will need space, and whether&n; * it is a directory.&n; *&n; * The arguments IO_agbp and alloc_done are defined to work within&n; * the constraint of one allocation per transaction.&n; * xfs_dialloc() is designed to be called twice if it has to do an&n; * allocation to make more free inodes.  On the first call,&n; * IO_agbp should be set to NULL. If an inode is available,&n; * i.e., xfs_dialloc() did not need to do an allocation, an inode&n; * number is returned.  In this case, IO_agbp would be set to the&n; * current ag_buf and alloc_done set to false.&n; * If an allocation needed to be done, xfs_dialloc would return&n; * the current ag_buf in IO_agbp and set alloc_done to true.&n; * The caller should then commit the current transaction, allocate a new&n; * transaction, and call xfs_dialloc() again, passing in the previous&n; * value of IO_agbp.  IO_agbp should be held across the transactions.&n; * Since the agbp is locked across the two calls, the second call is&n; * guaranteed to have a free inode available.&n; *&n; * Once we successfully pick an inode its number is returned and the&n; * on-disk data structures are updated.  The inode itself is not read&n; * in, since doing so would break ordering constraints with xfs_reclaim.&n; */
 r_int
 DECL|function|xfs_dialloc
 id|xfs_dialloc
@@ -4141,7 +4166,7 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;xfs_difree: xfs_ialloc_read_agi() returned an error %d on %s.&t;Returning error.&quot;
+l_string|&quot;xfs_difree: xfs_ialloc_read_agi() returned an error %d on %s.  Returning error.&quot;
 comma
 id|error
 comma
@@ -4379,7 +4404,7 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;xfs_difree: xfs_inobt_lookup_le returned()  an error %d on %s.&t; Returning error.&quot;
+l_string|&quot;xfs_difree: xfs_inobt_lookup_le returned()  an error %d on %s.  Returning error.&quot;
 comma
 id|error
 comma
@@ -4529,7 +4554,7 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;xfs_difree: xfs_inobt_update()&t; returned an error %d on %s.  Returning error.&quot;
+l_string|&quot;xfs_difree: xfs_inobt_update()  returned an error %d on %s.  Returning error.&quot;
 comma
 id|error
 comma

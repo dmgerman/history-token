@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_BTREE_H__
 DECL|macro|__XFS_BTREE_H__
-mdefine_line|#define __XFS_BTREE_H__
+mdefine_line|#define&t;__XFS_BTREE_H__
 r_struct
 id|xfs_buf
 suffix:semicolon
@@ -19,19 +19,19 @@ id|xfs_trans
 suffix:semicolon
 multiline_comment|/*&n; * This nonsense is to make -wlint happy.&n; */
 DECL|macro|XFS_LOOKUP_EQ
-mdefine_line|#define XFS_LOOKUP_EQ&t;((xfs_lookup_t)XFS_LOOKUP_EQi)
+mdefine_line|#define&t;XFS_LOOKUP_EQ&t;((xfs_lookup_t)XFS_LOOKUP_EQi)
 DECL|macro|XFS_LOOKUP_LE
-mdefine_line|#define XFS_LOOKUP_LE&t;((xfs_lookup_t)XFS_LOOKUP_LEi)
+mdefine_line|#define&t;XFS_LOOKUP_LE&t;((xfs_lookup_t)XFS_LOOKUP_LEi)
 DECL|macro|XFS_LOOKUP_GE
-mdefine_line|#define XFS_LOOKUP_GE&t;((xfs_lookup_t)XFS_LOOKUP_GEi)
+mdefine_line|#define&t;XFS_LOOKUP_GE&t;((xfs_lookup_t)XFS_LOOKUP_GEi)
 DECL|macro|XFS_BTNUM_BNO
-mdefine_line|#define XFS_BTNUM_BNO&t;((xfs_btnum_t)XFS_BTNUM_BNOi)
+mdefine_line|#define&t;XFS_BTNUM_BNO&t;((xfs_btnum_t)XFS_BTNUM_BNOi)
 DECL|macro|XFS_BTNUM_CNT
-mdefine_line|#define XFS_BTNUM_CNT&t;((xfs_btnum_t)XFS_BTNUM_CNTi)
+mdefine_line|#define&t;XFS_BTNUM_CNT&t;((xfs_btnum_t)XFS_BTNUM_CNTi)
 DECL|macro|XFS_BTNUM_BMAP
-mdefine_line|#define XFS_BTNUM_BMAP&t;((xfs_btnum_t)XFS_BTNUM_BMAPi)
+mdefine_line|#define&t;XFS_BTNUM_BMAP&t;((xfs_btnum_t)XFS_BTNUM_BMAPi)
 DECL|macro|XFS_BTNUM_INO
-mdefine_line|#define XFS_BTNUM_INO&t;((xfs_btnum_t)XFS_BTNUM_INOi)
+mdefine_line|#define&t;XFS_BTNUM_INO&t;((xfs_btnum_t)XFS_BTNUM_INOi)
 multiline_comment|/*&n; * Short form header: space allocation btrees.&n; */
 DECL|struct|xfs_btree_sblock
 r_typedef
@@ -180,19 +180,19 @@ id|xfs_btree_block_t
 suffix:semicolon
 multiline_comment|/*&n; * For logging record fields.&n; */
 DECL|macro|XFS_BB_MAGIC
-mdefine_line|#define XFS_BB_MAGIC&t;&t;0x01
+mdefine_line|#define&t;XFS_BB_MAGIC&t;&t;0x01
 DECL|macro|XFS_BB_LEVEL
-mdefine_line|#define XFS_BB_LEVEL&t;&t;0x02
+mdefine_line|#define&t;XFS_BB_LEVEL&t;&t;0x02
 DECL|macro|XFS_BB_NUMRECS
-mdefine_line|#define XFS_BB_NUMRECS&t;&t;0x04
+mdefine_line|#define&t;XFS_BB_NUMRECS&t;&t;0x04
 DECL|macro|XFS_BB_LEFTSIB
-mdefine_line|#define XFS_BB_LEFTSIB&t;&t;0x08
+mdefine_line|#define&t;XFS_BB_LEFTSIB&t;&t;0x08
 DECL|macro|XFS_BB_RIGHTSIB
-mdefine_line|#define XFS_BB_RIGHTSIB&t;&t;0x10
+mdefine_line|#define&t;XFS_BB_RIGHTSIB&t;&t;0x10
 DECL|macro|XFS_BB_NUM_BITS
-mdefine_line|#define XFS_BB_NUM_BITS&t;&t;5
+mdefine_line|#define&t;XFS_BB_NUM_BITS&t;&t;5
 DECL|macro|XFS_BB_ALL_BITS
-mdefine_line|#define XFS_BB_ALL_BITS&t;&t;((1 &lt;&lt; XFS_BB_NUM_BITS) - 1)
+mdefine_line|#define&t;XFS_BB_ALL_BITS&t;&t;((1 &lt;&lt; XFS_BB_NUM_BITS) - 1)
 multiline_comment|/*&n; * Boolean to select which form of xfs_btree_block_t.bb_u to use.&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_BTREE_LONG_PTRS)
 r_int
@@ -204,10 +204,10 @@ id|btnum
 )paren
 suffix:semicolon
 DECL|macro|XFS_BTREE_LONG_PTRS
-mdefine_line|#define XFS_BTREE_LONG_PTRS(btnum)&t;((btnum) == XFS_BTNUM_BMAP)
+mdefine_line|#define&t;XFS_BTREE_LONG_PTRS(btnum)&t;((btnum) == XFS_BTNUM_BMAP)
 macro_line|#else
 DECL|macro|XFS_BTREE_LONG_PTRS
-mdefine_line|#define XFS_BTREE_LONG_PTRS(btnum)&t;((btnum) == XFS_BTNUM_BMAP)
+mdefine_line|#define&t;XFS_BTREE_LONG_PTRS(btnum)&t;((btnum) == XFS_BTNUM_BMAP)
 macro_line|#endif
 multiline_comment|/*&n; * Magic numbers for btree blocks.&n; */
 r_extern
@@ -219,18 +219,18 @@ id|xfs_magics
 suffix:semicolon
 multiline_comment|/*&n; * Maximum and minimum records in a btree block.&n; * Given block size, type prefix, and leaf flag (0 or 1).&n; * The divisor below is equivalent to lf ? (e1) : (e2) but that produces&n; * compiler warnings.&n; */
 DECL|macro|XFS_BTREE_BLOCK_MAXRECS
-mdefine_line|#define XFS_BTREE_BLOCK_MAXRECS(bsz,t,lf)&t;&bslash;&n;&t;((int)(((bsz) - (uint)sizeof(t ## _block_t)) / &bslash;&n;&t; (((lf) * (uint)sizeof(t ## _rec_t)) + &bslash;&n;&t;  ((1 - (lf)) * &bslash;&n;&t;   ((uint)sizeof(t ## _key_t) + (uint)sizeof(t ## _ptr_t))))))
+mdefine_line|#define&t;XFS_BTREE_BLOCK_MAXRECS(bsz,t,lf)&t;&bslash;&n;&t;((int)(((bsz) - (uint)sizeof(t ## _block_t)) / &bslash;&n;&t; (((lf) * (uint)sizeof(t ## _rec_t)) + &bslash;&n;&t;  ((1 - (lf)) * &bslash;&n;&t;   ((uint)sizeof(t ## _key_t) + (uint)sizeof(t ## _ptr_t))))))
 DECL|macro|XFS_BTREE_BLOCK_MINRECS
-mdefine_line|#define XFS_BTREE_BLOCK_MINRECS(bsz,t,lf)&t;&bslash;&n;&t;(XFS_BTREE_BLOCK_MAXRECS(bsz,t,lf) / 2)
+mdefine_line|#define&t;XFS_BTREE_BLOCK_MINRECS(bsz,t,lf)&t;&bslash;&n;&t;(XFS_BTREE_BLOCK_MAXRECS(bsz,t,lf) / 2)
 multiline_comment|/*&n; * Record, key, and pointer address calculation macros.&n; * Given block size, type prefix, block pointer, and index of requested entry&n; * (first entry numbered 1).&n; */
 DECL|macro|XFS_BTREE_REC_ADDR
-mdefine_line|#define XFS_BTREE_REC_ADDR(bsz,t,bb,i,mxr)&t;&bslash;&n;&t;((t ## _rec_t *)((char *)(bb) + sizeof(t ## _block_t) + &bslash;&n;&t; ((i) - 1) * sizeof(t ## _rec_t)))
+mdefine_line|#define&t;XFS_BTREE_REC_ADDR(bsz,t,bb,i,mxr)&t;&bslash;&n;&t;((t ## _rec_t *)((char *)(bb) + sizeof(t ## _block_t) + &bslash;&n;&t; ((i) - 1) * sizeof(t ## _rec_t)))
 DECL|macro|XFS_BTREE_KEY_ADDR
-mdefine_line|#define XFS_BTREE_KEY_ADDR(bsz,t,bb,i,mxr)&t;&bslash;&n;&t;((t ## _key_t *)((char *)(bb) + sizeof(t ## _block_t) + &bslash;&n;&t; ((i) - 1) * sizeof(t ## _key_t)))
+mdefine_line|#define&t;XFS_BTREE_KEY_ADDR(bsz,t,bb,i,mxr)&t;&bslash;&n;&t;((t ## _key_t *)((char *)(bb) + sizeof(t ## _block_t) + &bslash;&n;&t; ((i) - 1) * sizeof(t ## _key_t)))
 DECL|macro|XFS_BTREE_PTR_ADDR
-mdefine_line|#define XFS_BTREE_PTR_ADDR(bsz,t,bb,i,mxr)&t;&bslash;&n;&t;((t ## _ptr_t *)((char *)(bb) + sizeof(t ## _block_t) + &bslash;&n;&t; (mxr) * sizeof(t ## _key_t) + ((i) - 1) * sizeof(t ## _ptr_t)))
+mdefine_line|#define&t;XFS_BTREE_PTR_ADDR(bsz,t,bb,i,mxr)&t;&bslash;&n;&t;((t ## _ptr_t *)((char *)(bb) + sizeof(t ## _block_t) + &bslash;&n;&t; (mxr) * sizeof(t ## _key_t) + ((i) - 1) * sizeof(t ## _ptr_t)))
 DECL|macro|XFS_BTREE_MAXLEVELS
-mdefine_line|#define XFS_BTREE_MAXLEVELS&t;8&t;/* max of all btrees */
+mdefine_line|#define&t;XFS_BTREE_MAXLEVELS&t;8&t;/* max of all btrees */
 multiline_comment|/*&n; * Btree cursor structure.&n; * This collects all information needed by the btree code in one place.&n; */
 DECL|struct|xfs_btree_cur
 r_typedef
@@ -297,9 +297,9 @@ id|XFS_BTREE_MAXLEVELS
 suffix:semicolon
 multiline_comment|/* readahead bits */
 DECL|macro|XFS_BTCUR_LEFTRA
-mdefine_line|#define XFS_BTCUR_LEFTRA&t;1&t;/* left sibling has been read-ahead */
+mdefine_line|#define&t;XFS_BTCUR_LEFTRA&t;1&t;/* left sibling has been read-ahead */
 DECL|macro|XFS_BTCUR_RIGHTRA
-mdefine_line|#define XFS_BTCUR_RIGHTRA&t;2&t;/* right sibling has been read-ahead */
+mdefine_line|#define&t;XFS_BTCUR_RIGHTRA&t;2&t;/* right sibling has been read-ahead */
 DECL|member|bc_nlevels
 id|__uint8_t
 id|bc_nlevels
@@ -379,7 +379,7 @@ id|flags
 suffix:semicolon
 multiline_comment|/* flags */
 DECL|macro|XFS_BTCUR_BPRV_WASDEL
-mdefine_line|#define XFS_BTCUR_BPRV_WASDEL&t;1&t;&t;&t;/* was delayed */
+mdefine_line|#define&t;XFS_BTCUR_BPRV_WASDEL&t;1&t;&t;&t;/* was delayed */
 DECL|member|b
 )brace
 id|b
@@ -413,9 +413,9 @@ DECL|typedef|xfs_btree_cur_t
 id|xfs_btree_cur_t
 suffix:semicolon
 DECL|macro|XFS_BTREE_NOERROR
-mdefine_line|#define XFS_BTREE_NOERROR&t;0
+mdefine_line|#define&t;XFS_BTREE_NOERROR&t;0
 DECL|macro|XFS_BTREE_ERROR
-mdefine_line|#define XFS_BTREE_ERROR&t;&t;1
+mdefine_line|#define&t;XFS_BTREE_ERROR&t;&t;1
 multiline_comment|/*&n; * Convert from buffer to btree block header.&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_BUF_TO_BLOCK)
 id|xfs_btree_block_t
@@ -430,10 +430,10 @@ id|bp
 )paren
 suffix:semicolon
 DECL|macro|XFS_BUF_TO_BLOCK
-mdefine_line|#define XFS_BUF_TO_BLOCK(bp)&t;xfs_buf_to_block(bp)
+mdefine_line|#define&t;XFS_BUF_TO_BLOCK(bp)&t;xfs_buf_to_block(bp)
 macro_line|#else
 DECL|macro|XFS_BUF_TO_BLOCK
-mdefine_line|#define XFS_BUF_TO_BLOCK(bp)&t;((xfs_btree_block_t *)(XFS_BUF_PTR(bp)))
+mdefine_line|#define&t;XFS_BUF_TO_BLOCK(bp)&t;((xfs_btree_block_t *)(XFS_BUF_PTR(bp)))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_BUF_TO_LBLOCK)
 id|xfs_btree_lblock_t
@@ -448,10 +448,10 @@ id|bp
 )paren
 suffix:semicolon
 DECL|macro|XFS_BUF_TO_LBLOCK
-mdefine_line|#define XFS_BUF_TO_LBLOCK(bp)&t;xfs_buf_to_lblock(bp)
+mdefine_line|#define&t;XFS_BUF_TO_LBLOCK(bp)&t;xfs_buf_to_lblock(bp)
 macro_line|#else
 DECL|macro|XFS_BUF_TO_LBLOCK
-mdefine_line|#define XFS_BUF_TO_LBLOCK(bp)&t;((xfs_btree_lblock_t *)(XFS_BUF_PTR(bp)))
+mdefine_line|#define&t;XFS_BUF_TO_LBLOCK(bp)&t;((xfs_btree_lblock_t *)(XFS_BUF_PTR(bp)))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_BUF_TO_SBLOCK)
 id|xfs_btree_sblock_t
@@ -466,10 +466,10 @@ id|bp
 )paren
 suffix:semicolon
 DECL|macro|XFS_BUF_TO_SBLOCK
-mdefine_line|#define XFS_BUF_TO_SBLOCK(bp)&t;xfs_buf_to_sblock(bp)
+mdefine_line|#define&t;XFS_BUF_TO_SBLOCK(bp)&t;xfs_buf_to_sblock(bp)
 macro_line|#else
 DECL|macro|XFS_BUF_TO_SBLOCK
-mdefine_line|#define XFS_BUF_TO_SBLOCK(bp)&t;((xfs_btree_sblock_t *)(XFS_BUF_PTR(bp)))
+mdefine_line|#define&t;XFS_BUF_TO_SBLOCK(bp)&t;((xfs_btree_sblock_t *)(XFS_BUF_PTR(bp)))
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 macro_line|#ifdef DEBUG
@@ -541,11 +541,11 @@ suffix:semicolon
 multiline_comment|/* pointer to right (higher) record */
 macro_line|#else
 DECL|macro|xfs_btree_check_block
-mdefine_line|#define xfs_btree_check_block(a,b,c,d)
+mdefine_line|#define&t;xfs_btree_check_block(a,b,c,d)
 DECL|macro|xfs_btree_check_key
-mdefine_line|#define xfs_btree_check_key(a,b,c)
+mdefine_line|#define&t;xfs_btree_check_key(a,b,c)
 DECL|macro|xfs_btree_check_rec
-mdefine_line|#define xfs_btree_check_rec(a,b,c)
+mdefine_line|#define&t;xfs_btree_check_rec(a,b,c)
 macro_line|#endif&t;/* DEBUG */
 multiline_comment|/*&n; * Checking routine: check that long form block header is ok.&n; */
 r_int
@@ -674,7 +674,7 @@ id|ncur
 )paren
 suffix:semicolon
 multiline_comment|/* output cursor */
-multiline_comment|/*&n; * Change the cursor to point to the first record in the current block&n; * at the given level.&t;Other levels are unaffected.&n; */
+multiline_comment|/*&n; * Change the cursor to point to the first record in the current block&n; * at the given level.  Other levels are unaffected.&n; */
 r_int
 multiline_comment|/* success=1, failure=0 */
 id|xfs_btree_firstrec
@@ -836,7 +836,7 @@ id|level
 )paren
 suffix:semicolon
 multiline_comment|/* level to check */
-multiline_comment|/*&n; * Change the cursor to point to the last record in the current block&n; * at the given level.&t;Other levels are unaffected.&n; */
+multiline_comment|/*&n; * Change the cursor to point to the last record in the current block&n; * at the given level.  Other levels are unaffected.&n; */
 r_int
 multiline_comment|/* success=1, failure=0 */
 id|xfs_btree_lastrec
@@ -1118,10 +1118,10 @@ id|b
 )paren
 suffix:semicolon
 DECL|macro|XFS_EXTLEN_MIN
-mdefine_line|#define XFS_EXTLEN_MIN(a,b)&t;xfs_extlen_min(a,b)
+mdefine_line|#define&t;XFS_EXTLEN_MIN(a,b)&t;xfs_extlen_min(a,b)
 macro_line|#else
 DECL|macro|XFS_EXTLEN_MIN
-mdefine_line|#define XFS_EXTLEN_MIN(a,b)&t;&bslash;&n;&t;((xfs_extlen_t)(a) &lt; (xfs_extlen_t)(b) ? &bslash;&n;&t; (xfs_extlen_t)(a) : (xfs_extlen_t)(b))
+mdefine_line|#define&t;XFS_EXTLEN_MIN(a,b)&t;&bslash;&n;&t;((xfs_extlen_t)(a) &lt; (xfs_extlen_t)(b) ? &bslash;&n;&t; (xfs_extlen_t)(a) : (xfs_extlen_t)(b))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_EXTLEN_MAX)
 id|xfs_extlen_t
@@ -1136,10 +1136,10 @@ id|b
 )paren
 suffix:semicolon
 DECL|macro|XFS_EXTLEN_MAX
-mdefine_line|#define XFS_EXTLEN_MAX(a,b)&t;xfs_extlen_max(a,b)
+mdefine_line|#define&t;XFS_EXTLEN_MAX(a,b)&t;xfs_extlen_max(a,b)
 macro_line|#else
 DECL|macro|XFS_EXTLEN_MAX
-mdefine_line|#define XFS_EXTLEN_MAX(a,b)&t;&bslash;&n;&t;((xfs_extlen_t)(a) &gt; (xfs_extlen_t)(b) ? &bslash;&n;&t; (xfs_extlen_t)(a) : (xfs_extlen_t)(b))
+mdefine_line|#define&t;XFS_EXTLEN_MAX(a,b)&t;&bslash;&n;&t;((xfs_extlen_t)(a) &gt; (xfs_extlen_t)(b) ? &bslash;&n;&t; (xfs_extlen_t)(a) : (xfs_extlen_t)(b))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_AGBLOCK_MIN)
 id|xfs_agblock_t
@@ -1154,10 +1154,10 @@ id|b
 )paren
 suffix:semicolon
 DECL|macro|XFS_AGBLOCK_MIN
-mdefine_line|#define XFS_AGBLOCK_MIN(a,b)&t;xfs_agblock_min(a,b)
+mdefine_line|#define&t;XFS_AGBLOCK_MIN(a,b)&t;xfs_agblock_min(a,b)
 macro_line|#else
 DECL|macro|XFS_AGBLOCK_MIN
-mdefine_line|#define XFS_AGBLOCK_MIN(a,b)&t;&bslash;&n;&t;((xfs_agblock_t)(a) &lt; (xfs_agblock_t)(b) ? &bslash;&n;&t; (xfs_agblock_t)(a) : (xfs_agblock_t)(b))
+mdefine_line|#define&t;XFS_AGBLOCK_MIN(a,b)&t;&bslash;&n;&t;((xfs_agblock_t)(a) &lt; (xfs_agblock_t)(b) ? &bslash;&n;&t; (xfs_agblock_t)(a) : (xfs_agblock_t)(b))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_AGBLOCK_MAX)
 id|xfs_agblock_t
@@ -1172,10 +1172,10 @@ id|b
 )paren
 suffix:semicolon
 DECL|macro|XFS_AGBLOCK_MAX
-mdefine_line|#define XFS_AGBLOCK_MAX(a,b)&t;xfs_agblock_max(a,b)
+mdefine_line|#define&t;XFS_AGBLOCK_MAX(a,b)&t;xfs_agblock_max(a,b)
 macro_line|#else
 DECL|macro|XFS_AGBLOCK_MAX
-mdefine_line|#define XFS_AGBLOCK_MAX(a,b)&t;&bslash;&n;&t;((xfs_agblock_t)(a) &gt; (xfs_agblock_t)(b) ? &bslash;&n;&t; (xfs_agblock_t)(a) : (xfs_agblock_t)(b))
+mdefine_line|#define&t;XFS_AGBLOCK_MAX(a,b)&t;&bslash;&n;&t;((xfs_agblock_t)(a) &gt; (xfs_agblock_t)(b) ? &bslash;&n;&t; (xfs_agblock_t)(a) : (xfs_agblock_t)(b))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_FILEOFF_MIN)
 id|xfs_fileoff_t
@@ -1190,10 +1190,10 @@ id|b
 )paren
 suffix:semicolon
 DECL|macro|XFS_FILEOFF_MIN
-mdefine_line|#define XFS_FILEOFF_MIN(a,b)&t;xfs_fileoff_min(a,b)
+mdefine_line|#define&t;XFS_FILEOFF_MIN(a,b)&t;xfs_fileoff_min(a,b)
 macro_line|#else
 DECL|macro|XFS_FILEOFF_MIN
-mdefine_line|#define XFS_FILEOFF_MIN(a,b)&t;&bslash;&n;&t;((xfs_fileoff_t)(a) &lt; (xfs_fileoff_t)(b) ? &bslash;&n;&t; (xfs_fileoff_t)(a) : (xfs_fileoff_t)(b))
+mdefine_line|#define&t;XFS_FILEOFF_MIN(a,b)&t;&bslash;&n;&t;((xfs_fileoff_t)(a) &lt; (xfs_fileoff_t)(b) ? &bslash;&n;&t; (xfs_fileoff_t)(a) : (xfs_fileoff_t)(b))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_FILEOFF_MAX)
 id|xfs_fileoff_t
@@ -1208,10 +1208,10 @@ id|b
 )paren
 suffix:semicolon
 DECL|macro|XFS_FILEOFF_MAX
-mdefine_line|#define XFS_FILEOFF_MAX(a,b)&t;xfs_fileoff_max(a,b)
+mdefine_line|#define&t;XFS_FILEOFF_MAX(a,b)&t;xfs_fileoff_max(a,b)
 macro_line|#else
 DECL|macro|XFS_FILEOFF_MAX
-mdefine_line|#define XFS_FILEOFF_MAX(a,b)&t;&bslash;&n;&t;((xfs_fileoff_t)(a) &gt; (xfs_fileoff_t)(b) ? &bslash;&n;&t; (xfs_fileoff_t)(a) : (xfs_fileoff_t)(b))
+mdefine_line|#define&t;XFS_FILEOFF_MAX(a,b)&t;&bslash;&n;&t;((xfs_fileoff_t)(a) &gt; (xfs_fileoff_t)(b) ? &bslash;&n;&t; (xfs_fileoff_t)(a) : (xfs_fileoff_t)(b))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_FILBLKS_MIN)
 id|xfs_filblks_t
@@ -1226,10 +1226,10 @@ id|b
 )paren
 suffix:semicolon
 DECL|macro|XFS_FILBLKS_MIN
-mdefine_line|#define XFS_FILBLKS_MIN(a,b)&t;xfs_filblks_min(a,b)
+mdefine_line|#define&t;XFS_FILBLKS_MIN(a,b)&t;xfs_filblks_min(a,b)
 macro_line|#else
 DECL|macro|XFS_FILBLKS_MIN
-mdefine_line|#define XFS_FILBLKS_MIN(a,b)&t;&bslash;&n;&t;((xfs_filblks_t)(a) &lt; (xfs_filblks_t)(b) ? &bslash;&n;&t; (xfs_filblks_t)(a) : (xfs_filblks_t)(b))
+mdefine_line|#define&t;XFS_FILBLKS_MIN(a,b)&t;&bslash;&n;&t;((xfs_filblks_t)(a) &lt; (xfs_filblks_t)(b) ? &bslash;&n;&t; (xfs_filblks_t)(a) : (xfs_filblks_t)(b))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_FILBLKS_MAX)
 id|xfs_filblks_t
@@ -1244,10 +1244,10 @@ id|b
 )paren
 suffix:semicolon
 DECL|macro|XFS_FILBLKS_MAX
-mdefine_line|#define XFS_FILBLKS_MAX(a,b)&t;xfs_filblks_max(a,b)
+mdefine_line|#define&t;XFS_FILBLKS_MAX(a,b)&t;xfs_filblks_max(a,b)
 macro_line|#else
 DECL|macro|XFS_FILBLKS_MAX
-mdefine_line|#define XFS_FILBLKS_MAX(a,b)&t;&bslash;&n;&t;((xfs_filblks_t)(a) &gt; (xfs_filblks_t)(b) ? &bslash;&n;&t; (xfs_filblks_t)(a) : (xfs_filblks_t)(b))
+mdefine_line|#define&t;XFS_FILBLKS_MAX(a,b)&t;&bslash;&n;&t;((xfs_filblks_t)(a) &gt; (xfs_filblks_t)(b) ? &bslash;&n;&t; (xfs_filblks_t)(a) : (xfs_filblks_t)(b))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_FSB_SANITY_CHECK)
 r_int
@@ -1264,15 +1264,15 @@ id|fsb
 )paren
 suffix:semicolon
 DECL|macro|XFS_FSB_SANITY_CHECK
-mdefine_line|#define XFS_FSB_SANITY_CHECK(mp,fsb)&t;xfs_fsb_sanity_check(mp,fsb)
+mdefine_line|#define&t;XFS_FSB_SANITY_CHECK(mp,fsb)&t;xfs_fsb_sanity_check(mp,fsb)
 macro_line|#else
 DECL|macro|XFS_FSB_SANITY_CHECK
-mdefine_line|#define XFS_FSB_SANITY_CHECK(mp,fsb)&t;&bslash;&n;&t;(XFS_FSB_TO_AGNO(mp, fsb) &lt; mp-&gt;m_sb.sb_agcount &amp;&amp; &bslash;&n;&t; XFS_FSB_TO_AGBNO(mp, fsb) &lt; mp-&gt;m_sb.sb_agblocks)
+mdefine_line|#define&t;XFS_FSB_SANITY_CHECK(mp,fsb)&t;&bslash;&n;&t;(XFS_FSB_TO_AGNO(mp, fsb) &lt; mp-&gt;m_sb.sb_agcount &amp;&amp; &bslash;&n;&t; XFS_FSB_TO_AGBNO(mp, fsb) &lt; mp-&gt;m_sb.sb_agblocks)
 macro_line|#endif
 multiline_comment|/*&n; * Macros to set EFSCORRUPTED &amp; return/branch.&n; */
 DECL|macro|XFS_WANT_CORRUPTED_GOTO
-mdefine_line|#define XFS_WANT_CORRUPTED_GOTO(x,l)&t;&bslash;&n;&t;{ &bslash;&n;&t;&t;int fs_is_ok = (x); &bslash;&n;&t;&t;ASSERT(fs_is_ok); &bslash;&n;&t;&t;if (unlikely(!fs_is_ok)) { &bslash;&n;&t;&t;&t;XFS_ERROR_REPORT(&quot;XFS_WANT_CORRUPTED_GOTO&quot;, &bslash;&n;&t;&t;&t;&t;&t; XFS_ERRLEVEL_LOW, NULL); &bslash;&n;&t;&t;&t;error = XFS_ERROR(EFSCORRUPTED); &bslash;&n;&t;&t;&t;goto l; &bslash;&n;&t;&t;} &bslash;&n;&t;}
+mdefine_line|#define&t;XFS_WANT_CORRUPTED_GOTO(x,l)&t;&bslash;&n;&t;{ &bslash;&n;&t;&t;int fs_is_ok = (x); &bslash;&n;&t;&t;ASSERT(fs_is_ok); &bslash;&n;&t;&t;if (unlikely(!fs_is_ok)) { &bslash;&n;&t;&t;&t;XFS_ERROR_REPORT(&quot;XFS_WANT_CORRUPTED_GOTO&quot;, &bslash;&n;&t;&t;&t;&t;&t; XFS_ERRLEVEL_LOW, NULL); &bslash;&n;&t;&t;&t;error = XFS_ERROR(EFSCORRUPTED); &bslash;&n;&t;&t;&t;goto l; &bslash;&n;&t;&t;} &bslash;&n;&t;}
 DECL|macro|XFS_WANT_CORRUPTED_RETURN
-mdefine_line|#define XFS_WANT_CORRUPTED_RETURN(x)&t;&bslash;&n;&t;{ &bslash;&n;&t;&t;int fs_is_ok = (x); &bslash;&n;&t;&t;ASSERT(fs_is_ok); &bslash;&n;&t;&t;if (unlikely(!fs_is_ok)) { &bslash;&n;&t;&t;&t;XFS_ERROR_REPORT(&quot;XFS_WANT_CORRUPTED_RETURN&quot;, &bslash;&n;&t;&t;&t;&t;&t; XFS_ERRLEVEL_LOW, NULL); &bslash;&n;&t;&t;&t;return XFS_ERROR(EFSCORRUPTED); &bslash;&n;&t;&t;} &bslash;&n;&t;}
+mdefine_line|#define&t;XFS_WANT_CORRUPTED_RETURN(x)&t;&bslash;&n;&t;{ &bslash;&n;&t;&t;int fs_is_ok = (x); &bslash;&n;&t;&t;ASSERT(fs_is_ok); &bslash;&n;&t;&t;if (unlikely(!fs_is_ok)) { &bslash;&n;&t;&t;&t;XFS_ERROR_REPORT(&quot;XFS_WANT_CORRUPTED_RETURN&quot;, &bslash;&n;&t;&t;&t;&t;&t; XFS_ERRLEVEL_LOW, NULL); &bslash;&n;&t;&t;&t;return XFS_ERROR(EFSCORRUPTED); &bslash;&n;&t;&t;} &bslash;&n;&t;}
 macro_line|#endif&t;/* __XFS_BTREE_H__ */
 eof

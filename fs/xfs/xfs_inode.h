@@ -1,12 +1,12 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#ifndef __XFS_INODE_H__
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+macro_line|#ifndef&t;__XFS_INODE_H__
 DECL|macro|__XFS_INODE_H__
-mdefine_line|#define __XFS_INODE_H__
+mdefine_line|#define&t;__XFS_INODE_H__
 multiline_comment|/*&n; * File incore extent information, present for each of data &amp; attr forks.&n; */
 DECL|macro|XFS_INLINE_EXTS
-mdefine_line|#define XFS_INLINE_EXTS 2
+mdefine_line|#define&t;XFS_INLINE_EXTS&t;2
 DECL|macro|XFS_INLINE_DATA
-mdefine_line|#define XFS_INLINE_DATA 32
+mdefine_line|#define&t;XFS_INLINE_DATA&t;32
 DECL|struct|xfs_ifork
 r_typedef
 r_struct
@@ -106,24 +106,24 @@ id|xfs_ifork_t
 suffix:semicolon
 multiline_comment|/*&n; * Flags for xfs_ichgtime().&n; */
 DECL|macro|XFS_ICHGTIME_MOD
-mdefine_line|#define XFS_ICHGTIME_MOD&t;0x1&t;/* data fork modification timestamp */
+mdefine_line|#define&t;XFS_ICHGTIME_MOD&t;0x1&t;/* data fork modification timestamp */
 DECL|macro|XFS_ICHGTIME_ACC
-mdefine_line|#define XFS_ICHGTIME_ACC&t;0x2&t;/* data fork access timestamp */
+mdefine_line|#define&t;XFS_ICHGTIME_ACC&t;0x2&t;/* data fork access timestamp */
 DECL|macro|XFS_ICHGTIME_CHG
-mdefine_line|#define XFS_ICHGTIME_CHG&t;0x4&t;/* inode field change timestamp */
+mdefine_line|#define&t;XFS_ICHGTIME_CHG&t;0x4&t;/* inode field change timestamp */
 multiline_comment|/*&n; * Per-fork incore inode flags.&n; */
 DECL|macro|XFS_IFINLINE
-mdefine_line|#define XFS_IFINLINE&t;0x0001&t;/* Inline data is read in */
+mdefine_line|#define&t;XFS_IFINLINE&t;0x0001&t;/* Inline data is read in */
 DECL|macro|XFS_IFEXTENTS
-mdefine_line|#define XFS_IFEXTENTS&t;0x0002&t;/* All extent pointers are read in */
+mdefine_line|#define&t;XFS_IFEXTENTS&t;0x0002&t;/* All extent pointers are read in */
 DECL|macro|XFS_IFBROOT
-mdefine_line|#define XFS_IFBROOT&t;0x0004&t;/* i_broot points to the bmap b-tree root */
+mdefine_line|#define&t;XFS_IFBROOT&t;0x0004&t;/* i_broot points to the bmap b-tree root */
 multiline_comment|/*&n; * Flags for xfs_imap() and xfs_dilocate().&n; */
 DECL|macro|XFS_IMAP_LOOKUP
-mdefine_line|#define XFS_IMAP_LOOKUP&t;&t;0x1
+mdefine_line|#define&t;XFS_IMAP_LOOKUP&t;&t;0x1
 multiline_comment|/*&n; * Maximum number of extent pointers in if_u1.if_extents.&n; */
 DECL|macro|XFS_MAX_INCORE_EXTENTS
-mdefine_line|#define XFS_MAX_INCORE_EXTENTS&t;32768
+mdefine_line|#define&t;XFS_MAX_INCORE_EXTENTS&t;32768
 macro_line|#ifdef __KERNEL__
 r_struct
 id|bhv_desc
@@ -267,9 +267,9 @@ DECL|typedef|xfs_iocore_t
 id|xfs_iocore_t
 suffix:semicolon
 DECL|macro|io_dmevmask
-mdefine_line|#define&t;       io_dmevmask     io_dmattrs.da_dmevmask
+mdefine_line|#define        io_dmevmask     io_dmattrs.da_dmevmask
 DECL|macro|io_dmstate
-mdefine_line|#define&t;       io_dmstate      io_dmattrs.da_dmstate
+mdefine_line|#define        io_dmstate      io_dmattrs.da_dmstate
 DECL|macro|XFS_IO_INODE
 mdefine_line|#define XFS_IO_INODE(io)&t;((xfs_inode_t *) ((io)-&gt;io_obj))
 DECL|macro|XFS_IO_DCXVN
@@ -327,7 +327,7 @@ DECL|macro|XFS_BUCKETS
 mdefine_line|#define XFS_BUCKETS(mp) (37*(mp)-&gt;m_sb.sb_agcount-1)
 DECL|macro|XFS_IHASH
 mdefine_line|#define XFS_IHASH(mp,ino) ((mp)-&gt;m_ihash + (((uint)ino) % (mp)-&gt;m_ihsize))
-multiline_comment|/*&n; * This is the xfs inode cluster hash.&t;This hash is used by xfs_iflush to&n; * find inodes that share a cluster and can be flushed to disk at the same&n; * time.&n; */
+multiline_comment|/*&n; * This is the xfs inode cluster hash.  This hash is used by xfs_iflush to&n; * find inodes that share a cluster and can be flushed to disk at the same&n; * time.&n; */
 DECL|struct|xfs_chashlist
 r_typedef
 r_struct
@@ -381,7 +381,7 @@ DECL|typedef|xfs_chash_t
 )brace
 id|xfs_chash_t
 suffix:semicolon
-multiline_comment|/*&n; * This is the xfs in-core inode structure.&n; * Most of the on-disk inode is embedded in the i_d field.&n; *&n; * The extent pointers/inline file space, however, are managed&n; * separately.&t;The memory for this information is pointed to by&n; * the if_u1 unions depending on the type of the data.&n; * This is used to linearize the array of extents for fast in-core&n; * access.  This is used until the file&squot;s number of extents&n; * surpasses XFS_MAX_INCORE_EXTENTS, at which point all extent pointers&n; * are accessed through the buffer cache.&n; *&n; * Other state kept in the in-core inode is used for identification,&n; * locking, transactional updating, etc of the inode.&n; *&n; * Generally, we do not want to hold the i_rlock while holding the&n; * i_ilock. Hierarchy is i_iolock followed by i_rlock.&n; *&n; * xfs_iptr_t contains all the inode fields upto and including the&n; * i_mnext and i_mprev fields, it is used as a marker in the inode&n; * chain off the mount structure by xfs_sync calls.&n; */
+multiline_comment|/*&n; * This is the xfs in-core inode structure.&n; * Most of the on-disk inode is embedded in the i_d field.&n; *&n; * The extent pointers/inline file space, however, are managed&n; * separately.  The memory for this information is pointed to by&n; * the if_u1 unions depending on the type of the data.&n; * This is used to linearize the array of extents for fast in-core&n; * access.  This is used until the file&squot;s number of extents&n; * surpasses XFS_MAX_INCORE_EXTENTS, at which point all extent pointers&n; * are accessed through the buffer cache.&n; *&n; * Other state kept in the in-core inode is used for identification,&n; * locking, transactional updating, etc of the inode.&n; *&n; * Generally, we do not want to hold the i_rlock while holding the&n; * i_ilock. Hierarchy is i_iolock followed by i_rlock.&n; *&n; * xfs_iptr_t contains all the inode fields upto and including the&n; * i_mnext and i_mprev fields, it is used as a marker in the inode&n; * chain off the mount structure by xfs_sync calls.&n; */
 r_typedef
 r_struct
 (brace
@@ -702,10 +702,10 @@ id|w
 )paren
 suffix:semicolon
 DECL|macro|XFS_IFORK_PTR
-mdefine_line|#define XFS_IFORK_PTR(ip,w)&t;&t;xfs_ifork_ptr(ip,w)
+mdefine_line|#define&t;XFS_IFORK_PTR(ip,w)&t;&t;xfs_ifork_ptr(ip,w)
 macro_line|#else
 DECL|macro|XFS_IFORK_PTR
-mdefine_line|#define XFS_IFORK_PTR(ip,w)   ((w) == XFS_DATA_FORK ? &amp;(ip)-&gt;i_df : (ip)-&gt;i_afp)
+mdefine_line|#define&t;XFS_IFORK_PTR(ip,w)   ((w) == XFS_DATA_FORK ? &amp;(ip)-&gt;i_df : (ip)-&gt;i_afp)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_IFORK_Q)
 r_int
@@ -718,10 +718,10 @@ id|ip
 )paren
 suffix:semicolon
 DECL|macro|XFS_IFORK_Q
-mdefine_line|#define XFS_IFORK_Q(ip)&t;&t;&t;xfs_ifork_q(ip)
+mdefine_line|#define&t;XFS_IFORK_Q(ip)&t;&t;&t;xfs_ifork_q(ip)
 macro_line|#else
 DECL|macro|XFS_IFORK_Q
-mdefine_line|#define XFS_IFORK_Q(ip)&t;&t;&t;XFS_CFORK_Q(&amp;(ip)-&gt;i_d)
+mdefine_line|#define&t;XFS_IFORK_Q(ip)&t;&t;&t;XFS_CFORK_Q(&amp;(ip)-&gt;i_d)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_IFORK_DSIZE)
 r_int
@@ -734,10 +734,10 @@ id|ip
 )paren
 suffix:semicolon
 DECL|macro|XFS_IFORK_DSIZE
-mdefine_line|#define XFS_IFORK_DSIZE(ip)&t;&t;xfs_ifork_dsize(ip)
+mdefine_line|#define&t;XFS_IFORK_DSIZE(ip)&t;&t;xfs_ifork_dsize(ip)
 macro_line|#else
 DECL|macro|XFS_IFORK_DSIZE
-mdefine_line|#define XFS_IFORK_DSIZE(ip)&t;&t;XFS_CFORK_DSIZE(&amp;ip-&gt;i_d, ip-&gt;i_mount)
+mdefine_line|#define&t;XFS_IFORK_DSIZE(ip)&t;&t;XFS_CFORK_DSIZE(&amp;ip-&gt;i_d, ip-&gt;i_mount)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_IFORK_ASIZE)
 r_int
@@ -750,10 +750,10 @@ id|ip
 )paren
 suffix:semicolon
 DECL|macro|XFS_IFORK_ASIZE
-mdefine_line|#define XFS_IFORK_ASIZE(ip)&t;&t;xfs_ifork_asize(ip)
+mdefine_line|#define&t;XFS_IFORK_ASIZE(ip)&t;&t;xfs_ifork_asize(ip)
 macro_line|#else
 DECL|macro|XFS_IFORK_ASIZE
-mdefine_line|#define XFS_IFORK_ASIZE(ip)&t;&t;XFS_CFORK_ASIZE(&amp;ip-&gt;i_d, ip-&gt;i_mount)
+mdefine_line|#define&t;XFS_IFORK_ASIZE(ip)&t;&t;XFS_CFORK_ASIZE(&amp;ip-&gt;i_d, ip-&gt;i_mount)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_IFORK_SIZE)
 r_int
@@ -769,10 +769,10 @@ id|w
 )paren
 suffix:semicolon
 DECL|macro|XFS_IFORK_SIZE
-mdefine_line|#define XFS_IFORK_SIZE(ip,w)&t;&t;xfs_ifork_size(ip,w)
+mdefine_line|#define&t;XFS_IFORK_SIZE(ip,w)&t;&t;xfs_ifork_size(ip,w)
 macro_line|#else
 DECL|macro|XFS_IFORK_SIZE
-mdefine_line|#define XFS_IFORK_SIZE(ip,w)&t;&t;XFS_CFORK_SIZE(&amp;ip-&gt;i_d, ip-&gt;i_mount, w)
+mdefine_line|#define&t;XFS_IFORK_SIZE(ip,w)&t;&t;XFS_CFORK_SIZE(&amp;ip-&gt;i_d, ip-&gt;i_mount, w)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_IFORK_FORMAT)
 r_int
@@ -788,10 +788,10 @@ id|w
 )paren
 suffix:semicolon
 DECL|macro|XFS_IFORK_FORMAT
-mdefine_line|#define XFS_IFORK_FORMAT(ip,w)&t;&t;xfs_ifork_format(ip,w)
+mdefine_line|#define&t;XFS_IFORK_FORMAT(ip,w)&t;&t;xfs_ifork_format(ip,w)
 macro_line|#else
 DECL|macro|XFS_IFORK_FORMAT
-mdefine_line|#define XFS_IFORK_FORMAT(ip,w)&t;&t;XFS_CFORK_FORMAT(&amp;ip-&gt;i_d, w)
+mdefine_line|#define&t;XFS_IFORK_FORMAT(ip,w)&t;&t;XFS_CFORK_FORMAT(&amp;ip-&gt;i_d, w)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_IFORK_FMT_SET)
 r_void
@@ -810,10 +810,10 @@ id|n
 )paren
 suffix:semicolon
 DECL|macro|XFS_IFORK_FMT_SET
-mdefine_line|#define XFS_IFORK_FMT_SET(ip,w,n)&t;xfs_ifork_fmt_set(ip,w,n)
+mdefine_line|#define&t;XFS_IFORK_FMT_SET(ip,w,n)&t;xfs_ifork_fmt_set(ip,w,n)
 macro_line|#else
 DECL|macro|XFS_IFORK_FMT_SET
-mdefine_line|#define XFS_IFORK_FMT_SET(ip,w,n)&t;XFS_CFORK_FMT_SET(&amp;ip-&gt;i_d, w, n)
+mdefine_line|#define&t;XFS_IFORK_FMT_SET(ip,w,n)&t;XFS_CFORK_FMT_SET(&amp;ip-&gt;i_d, w, n)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_IFORK_NEXTENTS)
 r_int
@@ -829,10 +829,10 @@ id|w
 )paren
 suffix:semicolon
 DECL|macro|XFS_IFORK_NEXTENTS
-mdefine_line|#define XFS_IFORK_NEXTENTS(ip,w)&t;xfs_ifork_nextents(ip,w)
+mdefine_line|#define&t;XFS_IFORK_NEXTENTS(ip,w)&t;xfs_ifork_nextents(ip,w)
 macro_line|#else
 DECL|macro|XFS_IFORK_NEXTENTS
-mdefine_line|#define XFS_IFORK_NEXTENTS(ip,w)&t;XFS_CFORK_NEXTENTS(&amp;ip-&gt;i_d, w)
+mdefine_line|#define&t;XFS_IFORK_NEXTENTS(ip,w)&t;XFS_CFORK_NEXTENTS(&amp;ip-&gt;i_d, w)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_IFORK_NEXT_SET)
 r_void
@@ -851,32 +851,32 @@ id|n
 )paren
 suffix:semicolon
 DECL|macro|XFS_IFORK_NEXT_SET
-mdefine_line|#define XFS_IFORK_NEXT_SET(ip,w,n)&t;xfs_ifork_next_set(ip,w,n)
+mdefine_line|#define&t;XFS_IFORK_NEXT_SET(ip,w,n)&t;xfs_ifork_next_set(ip,w,n)
 macro_line|#else
 DECL|macro|XFS_IFORK_NEXT_SET
-mdefine_line|#define XFS_IFORK_NEXT_SET(ip,w,n)&t;XFS_CFORK_NEXT_SET(&amp;ip-&gt;i_d, w, n)
+mdefine_line|#define&t;XFS_IFORK_NEXT_SET(ip,w,n)&t;XFS_CFORK_NEXT_SET(&amp;ip-&gt;i_d, w, n)
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * In-core inode flags.&n; */
 DECL|macro|XFS_IGRIO
-mdefine_line|#define XFS_IGRIO&t;0x0001&t;/* inode used for guaranteed rate i/o */
+mdefine_line|#define XFS_IGRIO&t;0x0001  /* inode used for guaranteed rate i/o */
 DECL|macro|XFS_IUIOSZ
-mdefine_line|#define XFS_IUIOSZ&t;0x0002&t;/* inode i/o sizes have been explicitly set */
+mdefine_line|#define XFS_IUIOSZ&t;0x0002  /* inode i/o sizes have been explicitly set */
 DECL|macro|XFS_IQUIESCE
-mdefine_line|#define XFS_IQUIESCE&t;0x0004&t;/* we have started quiescing for this inode */
+mdefine_line|#define XFS_IQUIESCE    0x0004  /* we have started quiescing for this inode */
 DECL|macro|XFS_IRECLAIM
-mdefine_line|#define XFS_IRECLAIM&t;0x0008&t;/* we have started reclaiming this inode    */
+mdefine_line|#define XFS_IRECLAIM    0x0008  /* we have started reclaiming this inode    */
 multiline_comment|/*&n; * Flags for inode locking.&n; */
 DECL|macro|XFS_IOLOCK_EXCL
-mdefine_line|#define XFS_IOLOCK_EXCL&t;&t;0x001
+mdefine_line|#define&t;XFS_IOLOCK_EXCL&t;&t;0x001
 DECL|macro|XFS_IOLOCK_SHARED
-mdefine_line|#define XFS_IOLOCK_SHARED&t;0x002
+mdefine_line|#define&t;XFS_IOLOCK_SHARED&t;0x002
 DECL|macro|XFS_ILOCK_EXCL
-mdefine_line|#define XFS_ILOCK_EXCL&t;&t;0x004
+mdefine_line|#define&t;XFS_ILOCK_EXCL&t;&t;0x004
 DECL|macro|XFS_ILOCK_SHARED
-mdefine_line|#define XFS_ILOCK_SHARED&t;0x008
+mdefine_line|#define&t;XFS_ILOCK_SHARED&t;0x008
 DECL|macro|XFS_IUNLOCK_NONOTIFY
-mdefine_line|#define XFS_IUNLOCK_NONOTIFY&t;0x010
+mdefine_line|#define&t;XFS_IUNLOCK_NONOTIFY&t;0x010
 DECL|macro|XFS_EXTENT_TOKEN_RD
 mdefine_line|#define XFS_EXTENT_TOKEN_RD&t;0x040
 DECL|macro|XFS_SIZE_TOKEN_RD
@@ -888,30 +888,30 @@ mdefine_line|#define XFS_WILLLEND&t;&t;0x100&t;/* Always acquire tokens for lend
 DECL|macro|XFS_EXTENT_TOKEN_WR
 mdefine_line|#define XFS_EXTENT_TOKEN_WR&t;(XFS_EXTENT_TOKEN_RD | XFS_WILLLEND)
 DECL|macro|XFS_SIZE_TOKEN_WR
-mdefine_line|#define XFS_SIZE_TOKEN_WR&t;(XFS_SIZE_TOKEN_RD | XFS_WILLLEND)
+mdefine_line|#define XFS_SIZE_TOKEN_WR       (XFS_SIZE_TOKEN_RD | XFS_WILLLEND)
 DECL|macro|XFS_EXTSIZE_WR
 mdefine_line|#define XFS_EXTSIZE_WR&t;&t;(XFS_EXTSIZE_RD | XFS_WILLLEND)
 DECL|macro|XFS_LOCK_MASK
 mdefine_line|#define XFS_LOCK_MASK&t;&bslash;&n;&t;(XFS_IOLOCK_EXCL | XFS_IOLOCK_SHARED | XFS_ILOCK_EXCL | &bslash;&n;&t; XFS_ILOCK_SHARED | XFS_EXTENT_TOKEN_RD | XFS_SIZE_TOKEN_RD | &bslash;&n;&t; XFS_WILLLEND)
 multiline_comment|/*&n; * Flags for xfs_iflush()&n; */
 DECL|macro|XFS_IFLUSH_DELWRI_ELSE_SYNC
-mdefine_line|#define XFS_IFLUSH_DELWRI_ELSE_SYNC&t;1
+mdefine_line|#define&t;XFS_IFLUSH_DELWRI_ELSE_SYNC&t;1
 DECL|macro|XFS_IFLUSH_DELWRI_ELSE_ASYNC
-mdefine_line|#define XFS_IFLUSH_DELWRI_ELSE_ASYNC&t;2
+mdefine_line|#define&t;XFS_IFLUSH_DELWRI_ELSE_ASYNC&t;2
 DECL|macro|XFS_IFLUSH_SYNC
-mdefine_line|#define XFS_IFLUSH_SYNC&t;&t;&t;3
+mdefine_line|#define&t;XFS_IFLUSH_SYNC&t;&t;&t;3
 DECL|macro|XFS_IFLUSH_ASYNC
-mdefine_line|#define XFS_IFLUSH_ASYNC&t;&t;4
+mdefine_line|#define&t;XFS_IFLUSH_ASYNC&t;&t;4
 DECL|macro|XFS_IFLUSH_DELWRI
-mdefine_line|#define XFS_IFLUSH_DELWRI&t;&t;5
+mdefine_line|#define&t;XFS_IFLUSH_DELWRI&t;&t;5
 multiline_comment|/*&n; * Flags for xfs_iflush_all.&n; */
 DECL|macro|XFS_FLUSH_ALL
-mdefine_line|#define XFS_FLUSH_ALL&t;&t;0x1
+mdefine_line|#define&t;XFS_FLUSH_ALL&t;&t;0x1
 multiline_comment|/*&n; * Flags for xfs_itruncate_start().&n; */
 DECL|macro|XFS_ITRUNC_DEFINITE
-mdefine_line|#define XFS_ITRUNC_DEFINITE&t;0x1
+mdefine_line|#define&t;XFS_ITRUNC_DEFINITE&t;0x1
 DECL|macro|XFS_ITRUNC_MAYBE
-mdefine_line|#define XFS_ITRUNC_MAYBE&t;0x2
+mdefine_line|#define&t;XFS_ITRUNC_MAYBE&t;0x2
 multiline_comment|/*&n; * max file offset is 2^(31+PAGE_SHIFT) - 1 (due to linux page cache)&n; *&n; * NOTE: XFS itself can handle 2^63 - 1 (largest positive value of xfs_fsize_t)&n; * but this is the Linux limit.&n; */
 DECL|macro|XFS_MAX_FILE_OFFSET
 mdefine_line|#define XFS_MAX_FILE_OFFSET&t;MAX_LFS_FILESIZE
@@ -928,13 +928,13 @@ id|ip
 )paren
 suffix:semicolon
 DECL|macro|XFS_ITOV
-mdefine_line|#define XFS_ITOV(ip)&t;&t;xfs_itov(ip)
+mdefine_line|#define&t;XFS_ITOV(ip)&t;&t;xfs_itov(ip)
 macro_line|#else
 DECL|macro|XFS_ITOV
-mdefine_line|#define XFS_ITOV(ip)&t;&t;BHV_TO_VNODE(XFS_ITOBHV(ip))
+mdefine_line|#define&t;XFS_ITOV(ip)&t;&t;BHV_TO_VNODE(XFS_ITOBHV(ip))
 macro_line|#endif
 DECL|macro|XFS_ITOV_NULL
-mdefine_line|#define XFS_ITOV_NULL(ip)&t;BHV_TO_VNODE_NULL(XFS_ITOBHV(ip))
+mdefine_line|#define&t;XFS_ITOV_NULL(ip)&t;BHV_TO_VNODE_NULL(XFS_ITOBHV(ip))
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_ITOBHV)
 r_struct
 id|bhv_desc
@@ -948,10 +948,10 @@ id|ip
 )paren
 suffix:semicolon
 DECL|macro|XFS_ITOBHV
-mdefine_line|#define XFS_ITOBHV(ip)&t;&t;xfs_itobhv(ip)
+mdefine_line|#define&t;XFS_ITOBHV(ip)&t;&t;xfs_itobhv(ip)
 macro_line|#else
 DECL|macro|XFS_ITOBHV
-mdefine_line|#define XFS_ITOBHV(ip)&t;&t;((struct bhv_desc *)(&amp;((ip)-&gt;i_bhv_desc)))
+mdefine_line|#define&t;XFS_ITOBHV(ip)&t;&t;((struct bhv_desc *)(&amp;((ip)-&gt;i_bhv_desc)))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_BHVTOI)
 id|xfs_inode_t
@@ -966,10 +966,10 @@ id|bhvp
 )paren
 suffix:semicolon
 DECL|macro|XFS_BHVTOI
-mdefine_line|#define XFS_BHVTOI(bhvp)&t;xfs_bhvtoi(bhvp)
+mdefine_line|#define&t;XFS_BHVTOI(bhvp)&t;xfs_bhvtoi(bhvp)
 macro_line|#else
 DECL|macro|XFS_BHVTOI
-mdefine_line|#define XFS_BHVTOI(bhvp)&t;&bslash;&n;&t;((xfs_inode_t *)((char *)(bhvp) - &bslash;&n;&t;&t;&t; (char *)&amp;(((xfs_inode_t *)0)-&gt;i_bhv_desc)))
+mdefine_line|#define&t;XFS_BHVTOI(bhvp)&t;&bslash;&n;&t;((xfs_inode_t *)((char *)(bhvp) - &bslash;&n;&t;&t;&t; (char *)&amp;(((xfs_inode_t *)0)-&gt;i_bhv_desc)))
 macro_line|#endif
 DECL|macro|BHV_IS_XFS
 mdefine_line|#define BHV_IS_XFS(bdp)&t;&t;(BHV_OPS(bdp) == &amp;xfs_vnodeops)
@@ -1636,7 +1636,7 @@ op_star
 suffix:semicolon
 macro_line|#else
 DECL|macro|xfs_inobp_check
-mdefine_line|#define xfs_inobp_check(mp, bp)
+mdefine_line|#define&t;xfs_inobp_check(mp, bp)
 macro_line|#endif /* DEBUG */
 r_extern
 r_struct

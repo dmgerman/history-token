@@ -1,5 +1,19 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#include &lt;xfs.h&gt;
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+macro_line|#include &quot;xfs.h&quot;
+macro_line|#include &quot;xfs_macros.h&quot;
+macro_line|#include &quot;xfs_types.h&quot;
+macro_line|#include &quot;xfs_inum.h&quot;
+macro_line|#include &quot;xfs_log.h&quot;
+macro_line|#include &quot;xfs_trans.h&quot;
+macro_line|#include &quot;xfs_buf_item.h&quot;
+macro_line|#include &quot;xfs_sb.h&quot;
+macro_line|#include &quot;xfs_ag.h&quot;
+macro_line|#include &quot;xfs_dir.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
+macro_line|#include &quot;xfs_mount.h&quot;
+macro_line|#include &quot;xfs_trans_priv.h&quot;
+macro_line|#include &quot;xfs_error.h&quot;
+macro_line|#include &quot;xfs_rw.h&quot;
 id|STATIC
 id|xfs_buf_t
 op_star
@@ -34,7 +48,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Get and lock the buffer for the caller if it is not already&n; * locked within the given transaction.&t; If it is already locked&n; * within the transaction, just increment its lock recursion count&n; * and return a pointer to it.&n; *&n; * Use the fast path function xfs_trans_buf_item_match() or the buffer&n; * cache routine incore_match() to find the buffer&n; * if it is already owned by this transaction.&n; *&n; * If we don&squot;t already own the buffer, use get_buf() to get it.&n; * If it doesn&squot;t yet have an associated xfs_buf_log_item structure,&n; * then allocate one and add the item to this transaction.&n; *&n; * If the transaction pointer is NULL, make this just a normal&n; * get_buf() call.&n; */
+multiline_comment|/*&n; * Get and lock the buffer for the caller if it is not already&n; * locked within the given transaction.  If it is already locked&n; * within the transaction, just increment its lock recursion count&n; * and return a pointer to it.&n; *&n; * Use the fast path function xfs_trans_buf_item_match() or the buffer&n; * cache routine incore_match() to find the buffer&n; * if it is already owned by this transaction.&n; *&n; * If we don&squot;t already own the buffer, use get_buf() to get it.&n; * If it doesn&squot;t yet have an associated xfs_buf_log_item structure,&n; * then allocate one and add the item to this transaction.&n; *&n; * If the transaction pointer is NULL, make this just a normal&n; * get_buf() call.&n; */
 id|xfs_buf_t
 op_star
 DECL|function|xfs_trans_get_buf
@@ -719,7 +733,7 @@ op_assign
 l_int|33
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * Get and lock the buffer for the caller if it is not already&n; * locked within the given transaction.&t; If it has not yet been&n; * read in, read it from disk. If it is already locked&n; * within the transaction and already read in, just increment its&n; * lock recursion count and return a pointer to it.&n; *&n; * Use the fast path function xfs_trans_buf_item_match() or the buffer&n; * cache routine incore_match() to find the buffer&n; * if it is already owned by this transaction.&n; *&n; * If we don&squot;t already own the buffer, use read_buf() to get it.&n; * If it doesn&squot;t yet have an associated xfs_buf_log_item structure,&n; * then allocate one and add the item to this transaction.&n; *&n; * If the transaction pointer is NULL, make this just a normal&n; * read_buf() call.&n; */
+multiline_comment|/*&n; * Get and lock the buffer for the caller if it is not already&n; * locked within the given transaction.  If it has not yet been&n; * read in, read it from disk. If it is already locked&n; * within the transaction and already read in, just increment its&n; * lock recursion count and return a pointer to it.&n; *&n; * Use the fast path function xfs_trans_buf_item_match() or the buffer&n; * cache routine incore_match() to find the buffer&n; * if it is already owned by this transaction.&n; *&n; * If we don&squot;t already own the buffer, use read_buf() to get it.&n; * If it doesn&squot;t yet have an associated xfs_buf_log_item structure,&n; * then allocate one and add the item to this transaction.&n; *&n; * If the transaction pointer is NULL, make this just a normal&n; * read_buf() call.&n; */
 r_int
 DECL|function|xfs_trans_read_buf
 id|xfs_trans_read_buf
@@ -1617,7 +1631,7 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Release the buffer bp which was previously acquired with one of the&n; * xfs_trans_... buffer allocation routines if the buffer has not&n; * been modified within this transaction.  If the buffer is modified&n; * within this transaction, do decrement the recursion count but do&n; * not release the buffer even if the count goes to 0.&t;If the buffer is not&n; * modified within the transaction, decrement the recursion count and&n; * release the buffer if the recursion count goes to 0.&n; *&n; * If the buffer is to be released and it was not modified before&n; * this transaction began, then free the buf_log_item associated with it.&n; *&n; * If the transaction pointer is NULL, make this just a normal&n; * brelse() call.&n; */
+multiline_comment|/*&n; * Release the buffer bp which was previously acquired with one of the&n; * xfs_trans_... buffer allocation routines if the buffer has not&n; * been modified within this transaction.  If the buffer is modified&n; * within this transaction, do decrement the recursion count but do&n; * not release the buffer even if the count goes to 0.  If the buffer is not&n; * modified within the transaction, decrement the recursion count and&n; * release the buffer if the recursion count goes to 0.&n; *&n; * If the buffer is to be released and it was not modified before&n; * this transaction began, then free the buf_log_item associated with it.&n; *&n; * If the transaction pointer is NULL, make this just a normal&n; * brelse() call.&n; */
 r_void
 DECL|function|xfs_trans_brelse
 id|xfs_trans_brelse
@@ -1868,7 +1882,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If the buffer has been invalidated, then we can&squot;t release&n;&t; * it until the transaction commits to disk unless it is re-dirtied&n;&t; * as part of this transaction.&t; This prevents us from pulling&n;&t; * the item from the AIL before we should.&n;&t; */
+multiline_comment|/*&n;&t; * If the buffer has been invalidated, then we can&squot;t release&n;&t; * it until the transaction commits to disk unless it is re-dirtied&n;&t; * as part of this transaction.  This prevents us from pulling&n;&t; * the item from the AIL before we should.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2295,7 +2309,7 @@ id|bip
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This function is used to indicate that the buffer should not be&n; * unlocked until the transaction is committed to disk.&t; Since we&n; * are going to keep the lock held, make the transaction synchronous&n; * so that the lock is not held too long.&n; *&n; * It uses the log item descriptor flag XFS_LID_SYNC_UNLOCK to&n; * delay the buf items&squot;s unlock call until the transaction is&n; * committed to disk or aborted.&n; */
+multiline_comment|/*&n; * This function is used to indicate that the buffer should not be&n; * unlocked until the transaction is committed to disk.  Since we&n; * are going to keep the lock held, make the transaction synchronous&n; * so that the lock is not held too long.&n; *&n; * It uses the log item descriptor flag XFS_LID_SYNC_UNLOCK to&n; * delay the buf items&squot;s unlock call until the transaction is&n; * committed to disk or aborted.&n; */
 r_void
 DECL|function|xfs_trans_bhold_until_committed
 id|xfs_trans_bhold_until_committed
@@ -2723,7 +2737,7 @@ id|bip
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This called to invalidate a buffer that is being used within&n; * a transaction.  Typically this is because the blocks in the&n; * buffer are being freed, so we need to prevent it from being&n; * written out when we&squot;re done.&t; Allowing it to be written again&n; * might overwrite data in the free blocks if they are reallocated&n; * to a file.&n; *&n; * We prevent the buffer from being written out by clearing the&n; * B_DELWRI flag.  We can&squot;t always&n; * get rid of the buf log item at this point, though, because&n; * the buffer may still be pinned by another transaction.  If that&n; * is the case, then we&squot;ll wait until the buffer is committed to&n; * disk for the last time (we can tell by the ref count) and&n; * free it in xfs_buf_item_unpin().  Until it is cleaned up we&n; * will keep the buffer locked so that the buffer and buf log item&n; * are not reused.&n; */
+multiline_comment|/*&n; * This called to invalidate a buffer that is being used within&n; * a transaction.  Typically this is because the blocks in the&n; * buffer are being freed, so we need to prevent it from being&n; * written out when we&squot;re done.  Allowing it to be written again&n; * might overwrite data in the free blocks if they are reallocated&n; * to a file.&n; *&n; * We prevent the buffer from being written out by clearing the&n; * B_DELWRI flag.  We can&squot;t always&n; * get rid of the buf log item at this point, though, because&n; * the buffer may still be pinned by another transaction.  If that&n; * is the case, then we&squot;ll wait until the buffer is committed to&n; * disk for the last time (we can tell by the ref count) and&n; * free it in xfs_buf_item_unpin().  Until it is cleaned up we&n; * will keep the buffer locked so that the buffer and buf log item&n; * are not reused.&n; */
 r_void
 DECL|function|xfs_trans_binval
 id|xfs_trans_binval
@@ -2933,7 +2947,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Clear the dirty bit in the buffer and set the STALE flag&n;&t; * in the buf log item.&t; The STALE flag will be used in&n;&t; * xfs_buf_item_unpin() to determine if it should clean up&n;&t; * when the last reference to the buf item is given up.&n;&t; * We set the XFS_BLI_CANCEL flag in the buf log format structure&n;&t; * and log the buf item.  This will be used at recovery time&n;&t; * to determine that copies of the buffer in the log before&n;&t; * this should not be replayed.&n;&t; * We mark the item descriptor and the transaction dirty so&n;&t; * that we&squot;ll hold the buffer until after the commit.&n;&t; *&n;&t; * Since we&squot;re invalidating the buffer, we also clear the state&n;&t; * about which parts of the buffer have been logged.  We also&n;&t; * clear the flag indicating that this is an inode buffer since&n;&t; * the data in the buffer will no longer be valid.&n;&t; *&n;&t; * We set the stale bit in the buffer as well since we&squot;re getting&n;&t; * rid of it.&n;&t; */
+multiline_comment|/*&n;&t; * Clear the dirty bit in the buffer and set the STALE flag&n;&t; * in the buf log item.  The STALE flag will be used in&n;&t; * xfs_buf_item_unpin() to determine if it should clean up&n;&t; * when the last reference to the buf item is given up.&n;&t; * We set the XFS_BLI_CANCEL flag in the buf log format structure&n;&t; * and log the buf item.  This will be used at recovery time&n;&t; * to determine that copies of the buffer in the log before&n;&t; * this should not be replayed.&n;&t; * We mark the item descriptor and the transaction dirty so&n;&t; * that we&squot;ll hold the buffer until after the commit.&n;&t; *&n;&t; * Since we&squot;re invalidating the buffer, we also clear the state&n;&t; * about which parts of the buffer have been logged.  We also&n;&t; * clear the flag indicating that this is an inode buffer since&n;&t; * the data in the buffer will no longer be valid.&n;&t; *&n;&t; * We set the stale bit in the buffer as well since we&squot;re getting&n;&t; * rid of it.&n;&t; */
 id|XFS_BUF_UNDELAYWRITE
 c_func
 (paren
@@ -3479,7 +3493,7 @@ id|len
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * We found it.&t; Break out and&n;&t;&t;&t;&t; * return the pointer to the buffer.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * We found it.  Break out and&n;&t;&t;&t;&t; * return the pointer to the buffer.&n;&t;&t;&t;&t; */
 r_break
 suffix:semicolon
 )brace
@@ -3696,7 +3710,7 @@ id|len
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * We found it.&t; Break out and&n;&t;&t;&t;&t; * return the pointer to the buffer.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * We found it.  Break out and&n;&t;&t;&t;&t; * return the pointer to the buffer.&n;&t;&t;&t;&t; */
 r_return
 id|bp
 suffix:semicolon

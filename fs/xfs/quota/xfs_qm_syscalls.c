@@ -1,5 +1,38 @@
 multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#include &lt;xfs.h&gt;
+macro_line|#include &quot;xfs.h&quot;
+macro_line|#include &quot;xfs_fs.h&quot;
+macro_line|#include &quot;xfs_inum.h&quot;
+macro_line|#include &quot;xfs_log.h&quot;
+macro_line|#include &quot;xfs_trans.h&quot;
+macro_line|#include &quot;xfs_sb.h&quot;
+macro_line|#include &quot;xfs_dir.h&quot;
+macro_line|#include &quot;xfs_dir2.h&quot;
+macro_line|#include &quot;xfs_alloc.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
+macro_line|#include &quot;xfs_quota.h&quot;
+macro_line|#include &quot;xfs_mount.h&quot;
+macro_line|#include &quot;xfs_alloc_btree.h&quot;
+macro_line|#include &quot;xfs_bmap_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc_btree.h&quot;
+macro_line|#include &quot;xfs_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc.h&quot;
+macro_line|#include &quot;xfs_attr_sf.h&quot;
+macro_line|#include &quot;xfs_dir_sf.h&quot;
+macro_line|#include &quot;xfs_dir2_sf.h&quot;
+macro_line|#include &quot;xfs_dinode.h&quot;
+macro_line|#include &quot;xfs_inode.h&quot;
+macro_line|#include &quot;xfs_bmap.h&quot;
+macro_line|#include &quot;xfs_bit.h&quot;
+macro_line|#include &quot;xfs_rtalloc.h&quot;
+macro_line|#include &quot;xfs_error.h&quot;
+macro_line|#include &quot;xfs_itable.h&quot;
+macro_line|#include &quot;xfs_rw.h&quot;
+macro_line|#include &quot;xfs_acl.h&quot;
+macro_line|#include &quot;xfs_cap.h&quot;
+macro_line|#include &quot;xfs_mac.h&quot;
+macro_line|#include &quot;xfs_attr.h&quot;
+macro_line|#include &quot;xfs_buf_item.h&quot;
+macro_line|#include &quot;xfs_utils.h&quot;
 macro_line|#include &quot;xfs_qm.h&quot;
 macro_line|#ifdef DEBUG
 DECL|macro|qdprintk
@@ -255,7 +288,7 @@ c_cond
 id|cmd
 )paren
 (brace
-multiline_comment|/* &n;&t;&t; * truncate quota files. quota must be off.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * truncate quota files. quota must be off.&n;&t;&t; */
 r_case
 id|Q_XQUOTARM
 suffix:colon
@@ -471,7 +504,7 @@ id|B_FALSE
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * Defaults to XFS_GETUQUOTA. &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Defaults to XFS_GETUQUOTA.&n;&t;&t; */
 r_case
 id|Q_XGETQUOTA
 suffix:colon

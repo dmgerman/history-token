@@ -1,5 +1,25 @@
 multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#include &lt;xfs.h&gt;
+macro_line|#include &quot;xfs.h&quot;
+macro_line|#include &quot;xfs_inum.h&quot;
+macro_line|#include &quot;xfs_log.h&quot;
+macro_line|#include &quot;xfs_sb.h&quot;
+macro_line|#include &quot;xfs_dir.h&quot;
+macro_line|#include &quot;xfs_dir2.h&quot;
+macro_line|#include &quot;xfs_trans.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
+macro_line|#include &quot;xfs_mount.h&quot;
+macro_line|#include &quot;xfs_bmap_btree.h&quot;
+macro_line|#include &quot;xfs_alloc_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc_btree.h&quot;
+macro_line|#include &quot;xfs_alloc.h&quot;
+macro_line|#include &quot;xfs_btree.h&quot;
+macro_line|#include &quot;xfs_attr_sf.h&quot;
+macro_line|#include &quot;xfs_dir_sf.h&quot;
+macro_line|#include &quot;xfs_dir2_sf.h&quot;
+macro_line|#include &quot;xfs_dinode.h&quot;
+macro_line|#include &quot;xfs_inode.h&quot;
+macro_line|#include &quot;xfs_error.h&quot;
+macro_line|#include &quot;xfs_rw.h&quot;
 macro_line|#include &lt;linux/mpage.h&gt;
 id|STATIC
 r_void
@@ -107,17 +127,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|pb-&gt;pb_flags
-op_and_assign
-op_complement
-id|_PBF_LOCKABLE
-suffix:semicolon
-id|pagebuf_rele
-c_func
-(paren
-id|pb
-)paren
-suffix:semicolon
 )brace
 id|end_buffer_async_write
 c_func
@@ -131,8 +140,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Issue transactions to convert a buffer range from unwritten&n; * to written extents.&n; */
 id|STATIC
 r_void
-DECL|function|xfs_unwritten_conv
-id|xfs_unwritten_conv
+DECL|function|linvfs_unwritten_conv
+id|linvfs_unwritten_conv
 c_func
 (paren
 id|xfs_buf_t
@@ -140,83 +149,43 @@ op_star
 id|bp
 )paren
 (brace
-id|bhv_desc_t
+id|vnode_t
 op_star
-id|bdp
+id|vp
 op_assign
 id|XFS_BUF_FSPRIVATE
 c_func
 (paren
 id|bp
 comma
-id|bhv_desc_t
+id|vnode_t
 op_star
 )paren
 suffix:semicolon
-id|xfs_mount_t
-op_star
-id|mp
-suffix:semicolon
-id|xfs_inode_t
-op_star
-id|ip
-suffix:semicolon
-id|ip
-op_assign
-id|XFS_BHVTOI
-c_func
-(paren
-id|bdp
-)paren
-suffix:semicolon
-id|mp
-op_assign
-id|ip-&gt;i_mount
+r_int
+id|error
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|XFS_TEST_ERROR
+id|atomic_read
 c_func
 (paren
-id|XFS_BUF_GETERROR
+op_amp
+id|bp-&gt;pb_hold
+)paren
+OL
+l_int|1
+)paren
+id|BUG
 c_func
 (paren
-id|bp
-)paren
-comma
-id|mp
-comma
-id|XFS_ERRTAG_STRATCMPL_IOERR
-comma
-id|XFS_RANDOM_STRATCMPL_IOERR
-)paren
-)paren
-(brace
-id|xfs_ioerror_alert
-c_func
-(paren
-id|__FUNCTION__
-comma
-id|mp
-comma
-id|bp
-comma
-id|XFS_BUF_ADDR
-c_func
-(paren
-id|bp
-)paren
 )paren
 suffix:semicolon
-)brace
-id|XFS_IOMAP_WRITE_UNWRITTEN
+id|VOP_BMAP
 c_func
 (paren
-id|mp
-comma
-op_amp
-id|ip-&gt;i_iocore
+id|vp
 comma
 id|XFS_BUF_OFFSET
 c_func
@@ -229,6 +198,14 @@ c_func
 (paren
 id|bp
 )paren
+comma
+id|BMAP_UNWRITTEN
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+id|error
 )paren
 suffix:semicolon
 id|XFS_BUF_SET_FSPRIVATE
@@ -251,10 +228,14 @@ c_func
 id|bp
 )paren
 suffix:semicolon
-id|xfs_biodone
+id|pagebuf_iodone
 c_func
 (paren
 id|bp
+comma
+l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -308,13 +289,13 @@ c_cond
 id|flags
 op_amp
 (paren
-id|PBF_DIRECT
+id|BMAP_DIRECT
 op_or
-id|PBF_SYNC
+id|BMAP_SYNC
 )paren
 )paren
 op_eq
-id|PBF_DIRECT
+id|BMAP_DIRECT
 )paren
 op_logical_and
 (paren
@@ -359,9 +340,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|error
 op_eq
 id|EAGAIN
+)paren
+op_logical_or
+(paren
+id|error
+op_eq
+id|EIO
+)paren
 )paren
 r_return
 op_minus
@@ -377,16 +366,16 @@ c_func
 id|flags
 op_amp
 (paren
-id|PBF_WRITE
+id|BMAP_WRITE
 op_or
-id|PBF_DIRECT
+id|BMAP_DIRECT
 )paren
 )paren
 op_eq
 (paren
-id|PBF_WRITE
+id|BMAP_WRITE
 op_or
-id|PBF_DIRECT
+id|BMAP_DIRECT
 )paren
 op_logical_and
 id|nmaps
@@ -401,7 +390,7 @@ id|PBMF_DELAY
 (brace
 id|flags
 op_assign
-id|PBF_FILE_ALLOCATE
+id|BMAP_ALLOCATE
 suffix:semicolon
 r_goto
 id|retry
@@ -413,9 +402,9 @@ c_cond
 id|flags
 op_amp
 (paren
-id|PBF_WRITE
+id|BMAP_WRITE
 op_or
-id|PBF_FILE_ALLOCATE
+id|BMAP_ALLOCATE
 )paren
 )paren
 (brace
@@ -1463,7 +1452,7 @@ id|mp-&gt;pbm_offset
 comma
 id|mp-&gt;pbm_bsize
 comma
-id|_PBF_LOCKABLE
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1521,17 +1510,6 @@ id|tmp
 )paren
 r_break
 suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-(paren
-id|tmp-&gt;pbm_flags
-op_amp
-id|PBMF_UNWRITTEN
-)paren
-)paren
-suffix:semicolon
 id|map_buffer_at_offset
 c_func
 (paren
@@ -1576,6 +1554,34 @@ op_ne
 id|head
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|nblocks
+op_eq
+l_int|0
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;XFS: bad unwritten extent map: bh=0x%p, mp=0x%p&bslash;n&quot;
+comma
+id|curr
+comma
+id|mp
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 id|atomic_add
 c_func
 (paren
@@ -1801,6 +1807,12 @@ c_func
 id|pb
 )paren
 suffix:semicolon
+id|XFS_BUF_ASYNC
+c_func
+(paren
+id|pb
+)paren
+suffix:semicolon
 id|XFS_BUF_SET_SIZE
 c_func
 (paren
@@ -1827,8 +1839,6 @@ c_func
 (paren
 id|inode
 )paren
-op_member_access_from_pointer
-id|v_fbhv
 )paren
 suffix:semicolon
 id|XFS_BUF_SET_IODONE_FUNC
@@ -1836,7 +1846,7 @@ c_func
 (paren
 id|pb
 comma
-id|xfs_unwritten_conv
+id|linvfs_unwritten_conv
 )paren
 suffix:semicolon
 r_if
@@ -1860,17 +1870,6 @@ comma
 l_int|1
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|pb-&gt;pb_flags
-op_and_assign
-op_complement
-id|_PBF_LOCKABLE
-suffix:semicolon
-id|pagebuf_rele
-c_func
-(paren
-id|pb
 )paren
 suffix:semicolon
 )brace
@@ -2392,6 +2391,12 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+id|mark_buffer_dirty
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
 )brace
 )brace
 r_while
@@ -2530,7 +2535,7 @@ id|all_bh
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Calling this without startio set means we are being asked to make a dirty&n; * page ready for freeing it&squot;s buffers.  When called with startio set then&n; * we are coming from writepage. &n; *&n; * When called with startio set it is important that we write the WHOLE&n; * page if possible.&n; * The bh-&gt;b_state&squot;s cannot know if any of the blocks or which block for&n; * that matter are dirty due to mmap writes, and therefore bh uptodate is&n; * only vaild if the page itself isn&squot;t completely uptodate.  Some layers&n; * may clear the page dirty flag prior to calling write page, under the&n; * assumption the entire page will be written out; by not writing out the&n; * whole page the page can be reused before all valid dirty data is&n; * written out.  Note: in the case of a page that has been dirty&squot;d by&n; * mapwrite and but partially setup by block_prepare_write the&n; * bh-&gt;b_states&squot;s will not agree and only ones setup by BPW/BCW will have&n; * valid state, thus the whole page must be written out thing.&n; */
+multiline_comment|/*&n; * Calling this without startio set means we are being asked to make a dirty&n; * page ready for freeing it&squot;s buffers.  When called with startio set then&n; * we are coming from writepage.&n; *&n; * When called with startio set it is important that we write the WHOLE&n; * page if possible.&n; * The bh-&gt;b_state&squot;s cannot know if any of the blocks or which block for&n; * that matter are dirty due to mmap writes, and therefore bh uptodate is&n; * only vaild if the page itself isn&squot;t completely uptodate.  Some layers&n; * may clear the page dirty flag prior to calling write page, under the&n; * assumption the entire page will be written out; by not writing out the&n; * whole page the page can be reused before all valid dirty data is&n; * written out.  Note: in the case of a page that has been dirty&squot;d by&n; * mapwrite and but partially setup by block_prepare_write the&n; * bh-&gt;b_states&squot;s will not agree and only ones setup by BPW/BCW will have&n; * valid state, thus the whole page must be written out thing.&n; */
 id|STATIC
 r_int
 DECL|function|page_state_convert
@@ -2613,7 +2618,7 @@ ques
 c_cond
 l_int|0
 suffix:colon
-id|PBF_TRYLOCK
+id|BMAP_TRYLOCK
 suffix:semicolon
 r_int
 id|page_dirty
@@ -2791,7 +2796,9 @@ comma
 op_amp
 id|map
 comma
-id|PBF_FILE_UNWRITTEN
+id|BMAP_READ
+op_or
+id|BMAP_IGNSTATE
 )paren
 suffix:semicolon
 r_if
@@ -2893,6 +2900,12 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+id|mark_buffer_dirty
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
 )brace
 id|page_dirty
 op_assign
@@ -2933,7 +2946,7 @@ comma
 op_amp
 id|map
 comma
-id|PBF_FILE_ALLOCATE
+id|BMAP_ALLOCATE
 op_or
 id|flags
 )paren
@@ -3006,6 +3019,12 @@ id|bh
 )paren
 suffix:semicolon
 id|unlock_buffer
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+id|mark_buffer_dirty
 c_func
 (paren
 id|bh
@@ -3093,9 +3112,9 @@ comma
 op_amp
 id|map
 comma
-id|PBF_WRITE
+id|BMAP_WRITE
 op_or
-id|PBF_DIRECT
+id|BMAP_MMAP
 )paren
 suffix:semicolon
 r_if
@@ -3166,6 +3185,12 @@ id|bh
 )paren
 suffix:semicolon
 id|unlock_buffer
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+id|mark_buffer_dirty
 c_func
 (paren
 id|bh
@@ -3273,7 +3298,6 @@ c_cond
 (paren
 id|startio
 )paren
-(brace
 id|submit_page
 c_func
 (paren
@@ -3284,13 +3308,11 @@ comma
 id|cnt
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|mp
 )paren
-(brace
 id|cluster_write
 c_func
 (paren
@@ -3307,7 +3329,6 @@ comma
 id|unmapped
 )paren
 suffix:semicolon
-)brace
 r_return
 id|page_dirty
 suffix:semicolon
@@ -3403,7 +3424,7 @@ comma
 r_int
 id|direct
 comma
-id|page_buf_flags_t
+id|bmapi_flags_t
 id|flags
 )paren
 (brace
@@ -3492,7 +3513,7 @@ ques
 c_cond
 id|flags
 suffix:colon
-id|PBF_READ
+id|BMAP_READ
 comma
 op_amp
 id|pbmap
@@ -3786,7 +3807,7 @@ id|create
 comma
 l_int|0
 comma
-id|PBF_WRITE
+id|BMAP_WRITE
 )paren
 suffix:semicolon
 )brace
@@ -3829,9 +3850,9 @@ id|create
 comma
 l_int|0
 comma
-id|PBF_SYNC
+id|BMAP_SYNC
 op_or
-id|PBF_WRITE
+id|BMAP_WRITE
 )paren
 suffix:semicolon
 )brace
@@ -3878,9 +3899,9 @@ id|create
 comma
 l_int|1
 comma
-id|PBF_WRITE
+id|BMAP_WRITE
 op_or
-id|PBF_DIRECT
+id|BMAP_DIRECT
 )paren
 suffix:semicolon
 )brace
