@@ -35,10 +35,6 @@ macro_line|#ifndef SUPPORT_VLB_SYNC&t;&t;/* 1 to support weird 32-bit chips */
 DECL|macro|SUPPORT_VLB_SYNC
 mdefine_line|#define SUPPORT_VLB_SYNC&t;1&t;/* 0 to reduce kernel size */
 macro_line|#endif
-macro_line|#ifndef DISK_RECOVERY_TIME&t;&t;/* off=0; on=access_delay_time */
-DECL|macro|DISK_RECOVERY_TIME
-mdefine_line|#define DISK_RECOVERY_TIME&t;0&t;/*  for hardware that needs it */
-macro_line|#endif
 macro_line|#ifndef OK_TO_RESET_CONTROLLER&t;&t;/* 1 needed for good error recovery */
 DECL|macro|OK_TO_RESET_CONTROLLER
 mdefine_line|#define OK_TO_RESET_CONTROLLER&t;1&t;/* 0 for use with AH2372A/B interface */
@@ -3338,14 +3334,6 @@ r_int
 id|select_data
 suffix:semicolon
 multiline_comment|/* for use by chipset-specific code */
-macro_line|#if (DISK_RECOVERY_TIME &gt; 0)
-DECL|member|last_time
-r_int
-r_int
-id|last_time
-suffix:semicolon
-multiline_comment|/* time when previous rq was done */
-macro_line|#endif
 DECL|member|noprobe
 r_int
 id|noprobe
