@@ -1027,16 +1027,6 @@ id|__u16
 id|rop
 suffix:semicolon
 multiline_comment|/* bitop operation */
-DECL|member|ul
-id|__u16
-id|ul
-suffix:semicolon
-multiline_comment|/* underlined? */
-DECL|member|rev
-id|__u16
-id|rev
-suffix:semicolon
-multiline_comment|/* reversed? */
 DECL|member|mask
 r_const
 r_char
@@ -1056,6 +1046,13 @@ id|fb_image
 id|image
 suffix:semicolon
 multiline_comment|/* Cursor image */
+multiline_comment|/* all fields below are for fbcon use only */
+DECL|member|data
+r_char
+op_star
+id|data
+suffix:semicolon
+multiline_comment|/* copy of bitmap */
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__

@@ -4663,7 +4663,7 @@ id|cursor_user
 comma
 r_sizeof
 (paren
-id|cursor
+id|cursor_user
 )paren
 )paren
 suffix:semicolon
@@ -4688,6 +4688,10 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|cursor.image.cmap.transp
+op_assign
+l_int|NULL
+suffix:semicolon
+id|cursor.data
 op_assign
 l_int|NULL
 suffix:semicolon

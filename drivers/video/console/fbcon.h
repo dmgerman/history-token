@@ -143,7 +143,7 @@ multiline_comment|/* Monochrome */
 DECL|macro|attr_bold
 mdefine_line|#define attr_bold(s) &bslash;&n;&t;((s) &amp; 0x200)
 DECL|macro|attr_reverse
-mdefine_line|#define attr_reverse(s, inverse) &bslash;&n;&t;(((s) &amp; 0x800) ^ (inverse ? 0x800 : 0))
+mdefine_line|#define attr_reverse(s) &bslash;&n;&t;((s) &amp; 0x800)
 DECL|macro|attr_underline
 mdefine_line|#define attr_underline(s) &bslash;&n;&t;((s) &amp; 0x400)
 DECL|macro|attr_blink
