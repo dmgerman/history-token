@@ -97,10 +97,10 @@ id|p
 (brace
 id|p-&gt;next_line
 op_assign
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 ques
 c_cond
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 suffix:colon
 id|p-&gt;var.xres_virtual
 suffix:semicolon

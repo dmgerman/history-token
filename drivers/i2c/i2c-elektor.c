@@ -74,12 +74,6 @@ r_static
 r_int
 id|pcf_pending
 suffix:semicolon
-DECL|variable|irq_driver_lock
-id|spinlock_t
-id|irq_driver_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 multiline_comment|/* ----- global defines -----------------------------------------------&t;*/
 DECL|macro|DEB
 mdefine_line|#define DEB(x)&t;if (i2c_debug&gt;=1) x
@@ -330,11 +324,9 @@ OG
 l_int|0
 )paren
 (brace
-id|spin_lock_irq
+id|cli
 c_func
 (paren
-op_amp
-id|irq_driver_lock
 )paren
 suffix:semicolon
 r_if
@@ -362,11 +354,9 @@ id|pcf_pending
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_unlock_irq
+id|sti
 c_func
 (paren
-op_amp
-id|irq_driver_lock
 )paren
 suffix:semicolon
 )brace

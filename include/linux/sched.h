@@ -1271,15 +1271,6 @@ r_struct
 id|mm_struct
 id|init_mm
 suffix:semicolon
-r_extern
-r_struct
-id|task_struct
-op_star
-id|init_tasks
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 multiline_comment|/* PID hashing. (shouldnt this be dynamic?) */
 DECL|macro|PIDHASH_SZ
 mdefine_line|#define PIDHASH_SZ (4096 &gt;&gt; 2)

@@ -268,11 +268,6 @@ DECL|macro|USB_DT_OTHER_SPEED_CONFIG
 mdefine_line|#define USB_DT_OTHER_SPEED_CONFIG&t;0x07
 DECL|macro|USB_DT_INTERFACE_POWER
 mdefine_line|#define USB_DT_INTERFACE_POWER&t;&t;0x08
-singleline_comment|// FIXME should be internal to hub driver
-DECL|macro|USB_DT_HUB
-mdefine_line|#define USB_DT_HUB&t;&t;&t;(USB_TYPE_CLASS | 0x09)
-DECL|macro|USB_DT_HUB_NONVAR_SIZE
-mdefine_line|#define USB_DT_HUB_NONVAR_SIZE&t;&t;7
 multiline_comment|/*&n; * Descriptor sizes per descriptor type&n; */
 DECL|macro|USB_DT_DEVICE_SIZE
 mdefine_line|#define USB_DT_DEVICE_SIZE&t;&t;18
@@ -646,6 +641,8 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|to_usb_interface
 mdefine_line|#define&t;to_usb_interface(d) container_of(d, struct usb_interface, dev)
+DECL|macro|interface_to_usbdev
+mdefine_line|#define&t;interface_to_usbdev(intf) &bslash;&n;&t;container_of(intf-&gt;dev.parent, struct usb_device, dev)
 multiline_comment|/* USB_DT_CONFIG: Configuration descriptor information.&n; *&n; * USB_DT_OTHER_SPEED_CONFIG is the same descriptor, except that the&n; * descriptor type is different.  Highspeed-capable devices can look&n; * different depending on what speed they&squot;re currently running.  Only&n; * devices with a USB_DT_DEVICE_QUALIFIER have an OTHER_SPEED_CONFIG.&n; */
 DECL|struct|usb_config_descriptor
 r_struct
@@ -829,37 +826,8 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* helpers for driver access to descriptors */
-r_extern
-r_int
-id|usb_ifnum_to_ifpos
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_int
-id|ifnum
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|usb_interface
-op_star
-id|usb_ifnum_to_if
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_int
-id|ifnum
-)paren
-suffix:semicolon
+singleline_comment|// FIXME remove; exported only for drivers/usb/misc/auserwald.c
+singleline_comment|// prefer usb_device-&gt;epnum[0..31]
 r_extern
 r_struct
 id|usb_endpoint_descriptor
@@ -1276,42 +1244,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* for probe/disconnect with correct module usage counting */
-r_void
-op_star
-id|usb_bind_driver
-c_func
-(paren
-r_struct
-id|usb_driver
-op_star
-id|driver
-comma
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_int
-r_int
-id|ifnum
-)paren
-suffix:semicolon
-r_void
-id|usb_unbind_driver
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|device
-comma
-r_struct
-id|usb_interface
-op_star
-id|intf
-)paren
-suffix:semicolon
 multiline_comment|/* mostly for devices emulating SCSI over USB */
 r_extern
 r_int
@@ -1336,21 +1268,6 @@ id|usb_dev
 )paren
 suffix:semicolon
 multiline_comment|/* used these for multi-interface device registration */
-r_extern
-r_int
-id|usb_find_interface_driver_for_ifnum
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_int
-r_int
-id|ifnum
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|usb_driver_claim_interface
@@ -1405,11 +1322,6 @@ op_star
 id|usb_match_id
 c_func
 (paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
 r_struct
 id|usb_interface
 op_star

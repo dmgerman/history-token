@@ -245,6 +245,7 @@ comma
 id|entry.val
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Anon pages are already on the LRU, we don&squot;t run lru_cache_add here.&n;&t; */
 r_if
 c_cond
 (paren
@@ -964,14 +965,7 @@ id|index
 )paren
 suffix:semicolon
 multiline_comment|/* fix that up */
-id|list_del
-c_func
-(paren
-op_amp
-id|page-&gt;list
-)paren
-suffix:semicolon
-id|list_add
+id|list_move
 c_func
 (paren
 op_amp
@@ -1215,6 +1209,12 @@ id|err
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Initiate read into locked page and return.&n;&t;&t;&t; */
+id|lru_cache_add
+c_func
+(paren
+id|new_page
+)paren
+suffix:semicolon
 id|swap_readpage
 c_func
 (paren
