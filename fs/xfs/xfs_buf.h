@@ -318,9 +318,6 @@ op_star
 id|bp
 )paren
 (brace
-r_int
-id|ret
-suffix:semicolon
 id|bp-&gt;pb_fspriv3
 op_assign
 id|mp
@@ -335,12 +332,7 @@ c_func
 id|bp
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|ret
-op_assign
+r_return
 id|pagebuf_iostart
 c_func
 (paren
@@ -349,19 +341,9 @@ comma
 id|PBF_WRITE
 op_or
 id|PBF_ASYNC
+op_or
+id|PBF_RUN_QUEUES
 )paren
-)paren
-op_eq
-l_int|0
-)paren
-id|pagebuf_run_queues
-c_func
-(paren
-id|bp
-)paren
-suffix:semicolon
-r_return
-id|ret
 suffix:semicolon
 )brace
 DECL|function|xfs_buf_relse
@@ -436,7 +418,7 @@ id|pb
 )paren
 (brace
 r_int
-id|sync
+id|iowait
 op_assign
 (paren
 id|pb-&gt;pb_flags
@@ -448,10 +430,22 @@ l_int|0
 suffix:semicolon
 r_int
 id|error
+op_assign
+l_int|0
 suffix:semicolon
 id|pb-&gt;pb_flags
 op_or_assign
 id|PBF_SYNC
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|iowait
+)paren
+id|pb-&gt;pb_flags
+op_or_assign
+id|PBF_RUN_QUEUES
 suffix:semicolon
 id|xfs_buf_undelay
 c_func
@@ -459,7 +453,7 @@ c_func
 id|pb
 )paren
 suffix:semicolon
-id|__pagebuf_iorequest
+id|pagebuf_iostrategy
 c_func
 (paren
 id|pb
@@ -468,7 +462,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sync
+id|iowait
 )paren
 (brace
 id|error
@@ -484,19 +478,6 @@ c_func
 (paren
 id|pb
 )paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|pagebuf_run_queues
-c_func
-(paren
-id|pb
-)paren
-suffix:semicolon
-id|error
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 r_return
@@ -560,5 +541,5 @@ DECL|macro|xfs_buf_get_noaddr
 mdefine_line|#define xfs_buf_get_noaddr(len, target)&t;pagebuf_get_no_daddr((len), (target))
 DECL|macro|xfs_buf_free
 mdefine_line|#define xfs_buf_free(bp)&t;&t;pagebuf_free(bp)
-macro_line|#endif
+macro_line|#endif&t;/* __XFS_BUF_H__ */
 eof
