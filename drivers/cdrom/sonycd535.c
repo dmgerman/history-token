@@ -3014,9 +3014,6 @@ r_struct
 id|cdrom_subchnl
 id|schi
 suffix:semicolon
-r_int
-id|err
-suffix:semicolon
 multiline_comment|/* Get attention stuff */
 r_if
 c_cond
