@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_PNP_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 multiline_comment|/*&n; * Device Managemnt&n; */
 DECL|macro|DEVICE_COUNT_IRQ
 mdefine_line|#define DEVICE_COUNT_IRQ&t;2
