@@ -416,10 +416,6 @@ DECL|member|hop
 id|__u16
 id|hop
 suffix:semicolon
-DECL|member|auth
-id|__u16
-id|auth
-suffix:semicolon
 DECL|member|dst0
 id|__u16
 id|dst0
@@ -507,11 +503,6 @@ l_int|1
 comma
 DECL|member|dstopts
 id|dstopts
-suffix:colon
-l_int|1
-comma
-DECL|member|authhdr
-id|authhdr
 suffix:colon
 l_int|1
 comma

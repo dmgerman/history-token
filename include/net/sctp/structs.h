@@ -289,6 +289,15 @@ DECL|member|addip_enable
 r_int
 id|addip_enable
 suffix:semicolon
+multiline_comment|/* socket receive and send buffer sizes. */
+DECL|member|rmem
+r_int
+id|rmem
+suffix:semicolon
+DECL|member|wmem
+r_int
+id|wmem
+suffix:semicolon
 )brace
 id|sctp_globals
 suffix:semicolon
@@ -344,6 +353,10 @@ DECL|macro|sctp_local_addr_lock
 mdefine_line|#define sctp_local_addr_lock&t;&t;(sctp_globals.local_addr_lock)
 DECL|macro|sctp_addip_enable
 mdefine_line|#define sctp_addip_enable&t;&t;(sctp_globals.addip_enable)
+DECL|macro|sctp_rmem
+mdefine_line|#define sctp_rmem&t;&t;&t;(sctp_globals.rmem)
+DECL|macro|sctp_wmem
+mdefine_line|#define sctp_wmem&t;&t;&t;(sctp_globals.wmem)
 multiline_comment|/* SCTP Socket type: UDP or TCP style. */
 r_typedef
 r_enum
