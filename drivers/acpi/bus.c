@@ -2335,6 +2335,8 @@ c_func
 id|acpi
 comma
 l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 DECL|function|acpi_init

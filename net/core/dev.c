@@ -9232,6 +9232,8 @@ c_func
 id|net
 comma
 l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *       This is called single threaded during boot, so no need&n; *       to take the rtnl semaphore.&n; */

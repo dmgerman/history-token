@@ -244,6 +244,8 @@ id|hotplug_slots
 comma
 op_amp
 id|hotplug_slot_ktype
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* these strings match up with the values in pci_bus_speed */

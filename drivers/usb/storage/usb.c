@@ -1470,7 +1470,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Set up the URB and the usb_ctrlrequest.&n; * ss-&gt;dev_semaphore must already be locked.&n; * Note that this function assumes that all the data in the us_data&n; * structure is current.&n; * Returns non-zero on failure, zero on success&n; */
+multiline_comment|/* Set up the URB and the usb_ctrlrequest.&n; * us-&gt;dev_semaphore must already be locked.&n; * Note that this function assumes that all the data in the us_data&n; * structure is current.&n; * Returns non-zero on failure, zero on success&n; */
 DECL|function|usb_stor_allocate_urbs
 r_static
 r_int
@@ -1480,58 +1480,58 @@ c_func
 r_struct
 id|us_data
 op_star
-id|ss
+id|us
 )paren
 (brace
 multiline_comment|/* calculate and store the pipe values */
-id|ss-&gt;send_ctrl_pipe
+id|us-&gt;send_ctrl_pipe
 op_assign
 id|usb_sndctrlpipe
 c_func
 (paren
-id|ss-&gt;pusb_dev
+id|us-&gt;pusb_dev
 comma
 l_int|0
 )paren
 suffix:semicolon
-id|ss-&gt;recv_ctrl_pipe
+id|us-&gt;recv_ctrl_pipe
 op_assign
 id|usb_rcvctrlpipe
 c_func
 (paren
-id|ss-&gt;pusb_dev
+id|us-&gt;pusb_dev
 comma
 l_int|0
 )paren
 suffix:semicolon
-id|ss-&gt;send_bulk_pipe
+id|us-&gt;send_bulk_pipe
 op_assign
 id|usb_sndbulkpipe
 c_func
 (paren
-id|ss-&gt;pusb_dev
+id|us-&gt;pusb_dev
 comma
-id|ss-&gt;ep_out
+id|us-&gt;ep_out
 )paren
 suffix:semicolon
-id|ss-&gt;recv_bulk_pipe
+id|us-&gt;recv_bulk_pipe
 op_assign
 id|usb_rcvbulkpipe
 c_func
 (paren
-id|ss-&gt;pusb_dev
+id|us-&gt;pusb_dev
 comma
-id|ss-&gt;ep_in
+id|us-&gt;ep_in
 )paren
 suffix:semicolon
-id|ss-&gt;recv_intr_pipe
+id|us-&gt;recv_intr_pipe
 op_assign
 id|usb_rcvintpipe
 c_func
 (paren
-id|ss-&gt;pusb_dev
+id|us-&gt;pusb_dev
 comma
-id|ss-&gt;ep_int
+id|us-&gt;ep_int
 )paren
 suffix:semicolon
 multiline_comment|/* allocate the usb_ctrlrequest for control packets */
@@ -1541,7 +1541,7 @@ c_func
 l_string|&quot;Allocating usb_ctrlrequest&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ss-&gt;dr
+id|us-&gt;dr
 op_assign
 id|kmalloc
 c_func
@@ -1559,7 +1559,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ss-&gt;dr
+id|us-&gt;dr
 )paren
 (brace
 id|US_DEBUGP
@@ -1579,7 +1579,7 @@ c_func
 l_string|&quot;Allocating URB&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ss-&gt;current_urb
+id|us-&gt;current_urb
 op_assign
 id|usb_alloc_urb
 c_func
@@ -1593,7 +1593,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ss-&gt;current_urb
+id|us-&gt;current_urb
 )paren
 (brace
 id|US_DEBUGP
@@ -1612,7 +1612,7 @@ c_func
 l_string|&quot;Allocating scatter-gather request block&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ss-&gt;current_sg
+id|us-&gt;current_sg
 op_assign
 id|kmalloc
 c_func
@@ -1620,7 +1620,7 @@ c_func
 r_sizeof
 (paren
 op_star
-id|ss-&gt;current_sg
+id|us-&gt;current_sg
 )paren
 comma
 id|GFP_KERNEL
@@ -1630,7 +1630,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ss-&gt;current_sg
+id|us-&gt;current_sg
 )paren
 (brace
 id|US_DEBUGP
@@ -1648,7 +1648,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* success */
 )brace
-multiline_comment|/* Deallocate the URB, the usb_ctrlrequest, and the IRQ pipe.&n; * ss-&gt;dev_semaphore must already be locked.&n; */
+multiline_comment|/* Deallocate the URB, the usb_ctrlrequest, and the IRQ pipe.&n; * us-&gt;dev_semaphore must already be locked.&n; */
 DECL|function|usb_stor_deallocate_urbs
 r_static
 r_void
@@ -1658,23 +1658,23 @@ c_func
 r_struct
 id|us_data
 op_star
-id|ss
+id|us
 )paren
 (brace
 multiline_comment|/* free the scatter-gather request block */
 r_if
 c_cond
 (paren
-id|ss-&gt;current_sg
+id|us-&gt;current_sg
 )paren
 (brace
 id|kfree
 c_func
 (paren
-id|ss-&gt;current_sg
+id|us-&gt;current_sg
 )paren
 suffix:semicolon
-id|ss-&gt;current_sg
+id|us-&gt;current_sg
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1683,7 +1683,7 @@ multiline_comment|/* free up the main URB for this device */
 r_if
 c_cond
 (paren
-id|ss-&gt;current_urb
+id|us-&gt;current_urb
 )paren
 (brace
 id|US_DEBUGP
@@ -1695,10 +1695,10 @@ suffix:semicolon
 id|usb_free_urb
 c_func
 (paren
-id|ss-&gt;current_urb
+id|us-&gt;current_urb
 )paren
 suffix:semicolon
-id|ss-&gt;current_urb
+id|us-&gt;current_urb
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1707,16 +1707,16 @@ multiline_comment|/* free the usb_ctrlrequest buffer */
 r_if
 c_cond
 (paren
-id|ss-&gt;dr
+id|us-&gt;dr
 )paren
 (brace
 id|kfree
 c_func
 (paren
-id|ss-&gt;dr
+id|us-&gt;dr
 )paren
 suffix:semicolon
-id|ss-&gt;dr
+id|us-&gt;dr
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1725,10 +1725,10 @@ multiline_comment|/* mark the device as gone */
 id|usb_put_dev
 c_func
 (paren
-id|ss-&gt;pusb_dev
+id|us-&gt;pusb_dev
 )paren
 suffix:semicolon
-id|ss-&gt;pusb_dev
+id|us-&gt;pusb_dev
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1812,7 +1812,7 @@ suffix:semicolon
 r_struct
 id|us_data
 op_star
-id|ss
+id|us
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2315,7 +2315,7 @@ r_if
 c_cond
 (paren
 (paren
-id|ss
+id|us
 op_assign
 (paren
 r_struct
@@ -2360,7 +2360,7 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|ss
+id|us
 comma
 l_int|0
 comma
@@ -2377,7 +2377,7 @@ c_func
 (paren
 op_amp
 (paren
-id|ss-&gt;notify
+id|us-&gt;notify
 )paren
 )paren
 suffix:semicolon
@@ -2386,35 +2386,35 @@ c_func
 (paren
 op_amp
 (paren
-id|ss-&gt;dev_semaphore
+id|us-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
 multiline_comment|/* copy over the subclass and protocol data */
-id|ss-&gt;subclass
+id|us-&gt;subclass
 op_assign
 id|subclass
 suffix:semicolon
-id|ss-&gt;protocol
+id|us-&gt;protocol
 op_assign
 id|protocol
 suffix:semicolon
-id|ss-&gt;flags
+id|us-&gt;flags
 op_assign
 id|flags
 suffix:semicolon
-id|ss-&gt;unusual_dev
+id|us-&gt;unusual_dev
 op_assign
 id|unusual_dev
 suffix:semicolon
 multiline_comment|/* copy over the endpoint data */
-id|ss-&gt;ep_in
+id|us-&gt;ep_in
 op_assign
 id|ep_in-&gt;bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
-id|ss-&gt;ep_out
+id|us-&gt;ep_out
 op_assign
 id|ep_out-&gt;bEndpointAddress
 op_amp
@@ -2426,30 +2426,30 @@ c_cond
 id|ep_int
 )paren
 (brace
-id|ss-&gt;ep_int
+id|us-&gt;ep_int
 op_assign
 id|ep_int-&gt;bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
-id|ss-&gt;ep_bInterval
+id|us-&gt;ep_bInterval
 op_assign
 id|ep_int-&gt;bInterval
 suffix:semicolon
 )brace
 r_else
-id|ss-&gt;ep_int
+id|us-&gt;ep_int
 op_assign
-id|ss-&gt;ep_bInterval
+id|us-&gt;ep_bInterval
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* establish the connection to the new device */
-id|ss-&gt;ifnum
+id|us-&gt;ifnum
 op_assign
 id|ifnum
 suffix:semicolon
-id|ss-&gt;pusb_dev
+id|us-&gt;pusb_dev
 op_assign
 id|dev
 suffix:semicolon
@@ -2457,7 +2457,7 @@ multiline_comment|/* copy over the identifiying strings */
 id|strncpy
 c_func
 (paren
-id|ss-&gt;vendor
+id|us-&gt;vendor
 comma
 id|mf
 comma
@@ -2467,7 +2467,7 @@ suffix:semicolon
 id|strncpy
 c_func
 (paren
-id|ss-&gt;product
+id|us-&gt;product
 comma
 id|prod
 comma
@@ -2477,7 +2477,7 @@ suffix:semicolon
 id|strncpy
 c_func
 (paren
-id|ss-&gt;serial
+id|us-&gt;serial
 comma
 id|serial
 comma
@@ -2490,7 +2490,7 @@ c_cond
 id|strlen
 c_func
 (paren
-id|ss-&gt;vendor
+id|us-&gt;vendor
 )paren
 op_eq
 l_int|0
@@ -2504,7 +2504,7 @@ id|unusual_dev-&gt;vendorName
 id|strncpy
 c_func
 (paren
-id|ss-&gt;vendor
+id|us-&gt;vendor
 comma
 id|unusual_dev-&gt;vendorName
 comma
@@ -2515,7 +2515,7 @@ r_else
 id|strncpy
 c_func
 (paren
-id|ss-&gt;vendor
+id|us-&gt;vendor
 comma
 l_string|&quot;Unknown&quot;
 comma
@@ -2529,7 +2529,7 @@ c_cond
 id|strlen
 c_func
 (paren
-id|ss-&gt;product
+id|us-&gt;product
 )paren
 op_eq
 l_int|0
@@ -2543,7 +2543,7 @@ id|unusual_dev-&gt;productName
 id|strncpy
 c_func
 (paren
-id|ss-&gt;product
+id|us-&gt;product
 comma
 id|unusual_dev-&gt;productName
 comma
@@ -2554,7 +2554,7 @@ r_else
 id|strncpy
 c_func
 (paren
-id|ss-&gt;product
+id|us-&gt;product
 comma
 l_string|&quot;Unknown&quot;
 comma
@@ -2568,7 +2568,7 @@ c_cond
 id|strlen
 c_func
 (paren
-id|ss-&gt;serial
+id|us-&gt;serial
 )paren
 op_eq
 l_int|0
@@ -2576,7 +2576,7 @@ l_int|0
 id|strncpy
 c_func
 (paren
-id|ss-&gt;serial
+id|us-&gt;serial
 comma
 l_string|&quot;None&quot;
 comma
@@ -2587,25 +2587,25 @@ multiline_comment|/* &n;&t; * Set the handler pointers based on the protocol&n;&
 r_switch
 c_cond
 (paren
-id|ss-&gt;protocol
+id|us-&gt;protocol
 )paren
 (brace
 r_case
 id|US_PR_CB
 suffix:colon
-id|ss-&gt;transport_name
+id|us-&gt;transport_name
 op_assign
 l_string|&quot;Control/Bulk&quot;
 suffix:semicolon
-id|ss-&gt;transport
+id|us-&gt;transport
 op_assign
 id|usb_stor_CB_transport
 suffix:semicolon
-id|ss-&gt;transport_reset
+id|us-&gt;transport_reset
 op_assign
 id|usb_stor_CB_reset
 suffix:semicolon
-id|ss-&gt;max_lun
+id|us-&gt;max_lun
 op_assign
 l_int|7
 suffix:semicolon
@@ -2614,19 +2614,19 @@ suffix:semicolon
 r_case
 id|US_PR_CBI
 suffix:colon
-id|ss-&gt;transport_name
+id|us-&gt;transport_name
 op_assign
 l_string|&quot;Control/Bulk/Interrupt&quot;
 suffix:semicolon
-id|ss-&gt;transport
+id|us-&gt;transport
 op_assign
 id|usb_stor_CBI_transport
 suffix:semicolon
-id|ss-&gt;transport_reset
+id|us-&gt;transport_reset
 op_assign
 id|usb_stor_CB_reset
 suffix:semicolon
-id|ss-&gt;max_lun
+id|us-&gt;max_lun
 op_assign
 l_int|7
 suffix:semicolon
@@ -2635,24 +2635,24 @@ suffix:semicolon
 r_case
 id|US_PR_BULK
 suffix:colon
-id|ss-&gt;transport_name
+id|us-&gt;transport_name
 op_assign
 l_string|&quot;Bulk&quot;
 suffix:semicolon
-id|ss-&gt;transport
+id|us-&gt;transport
 op_assign
 id|usb_stor_Bulk_transport
 suffix:semicolon
-id|ss-&gt;transport_reset
+id|us-&gt;transport_reset
 op_assign
 id|usb_stor_Bulk_reset
 suffix:semicolon
-id|ss-&gt;max_lun
+id|us-&gt;max_lun
 op_assign
 id|usb_stor_Bulk_max_lun
 c_func
 (paren
-id|ss
+id|us
 )paren
 suffix:semicolon
 r_break
@@ -2661,19 +2661,19 @@ macro_line|#ifdef CONFIG_USB_STORAGE_HP8200e
 r_case
 id|US_PR_SCM_ATAPI
 suffix:colon
-id|ss-&gt;transport_name
+id|us-&gt;transport_name
 op_assign
 l_string|&quot;SCM/ATAPI&quot;
 suffix:semicolon
-id|ss-&gt;transport
+id|us-&gt;transport
 op_assign
 id|hp8200e_transport
 suffix:semicolon
-id|ss-&gt;transport_reset
+id|us-&gt;transport_reset
 op_assign
 id|usb_stor_CB_reset
 suffix:semicolon
-id|ss-&gt;max_lun
+id|us-&gt;max_lun
 op_assign
 l_int|1
 suffix:semicolon
@@ -2684,19 +2684,19 @@ macro_line|#ifdef CONFIG_USB_STORAGE_SDDR09
 r_case
 id|US_PR_EUSB_SDDR09
 suffix:colon
-id|ss-&gt;transport_name
+id|us-&gt;transport_name
 op_assign
 l_string|&quot;EUSB/SDDR09&quot;
 suffix:semicolon
-id|ss-&gt;transport
+id|us-&gt;transport
 op_assign
 id|sddr09_transport
 suffix:semicolon
-id|ss-&gt;transport_reset
+id|us-&gt;transport_reset
 op_assign
 id|usb_stor_CB_reset
 suffix:semicolon
-id|ss-&gt;max_lun
+id|us-&gt;max_lun
 op_assign
 l_int|0
 suffix:semicolon
@@ -2707,19 +2707,19 @@ macro_line|#ifdef CONFIG_USB_STORAGE_SDDR55
 r_case
 id|US_PR_SDDR55
 suffix:colon
-id|ss-&gt;transport_name
+id|us-&gt;transport_name
 op_assign
 l_string|&quot;SDDR55&quot;
 suffix:semicolon
-id|ss-&gt;transport
+id|us-&gt;transport
 op_assign
 id|sddr55_transport
 suffix:semicolon
-id|ss-&gt;transport_reset
+id|us-&gt;transport_reset
 op_assign
 id|sddr55_reset
 suffix:semicolon
-id|ss-&gt;max_lun
+id|us-&gt;max_lun
 op_assign
 l_int|0
 suffix:semicolon
@@ -2730,19 +2730,19 @@ macro_line|#ifdef CONFIG_USB_STORAGE_DPCM
 r_case
 id|US_PR_DPCM_USB
 suffix:colon
-id|ss-&gt;transport_name
+id|us-&gt;transport_name
 op_assign
 l_string|&quot;Control/Bulk-EUSB/SDDR09&quot;
 suffix:semicolon
-id|ss-&gt;transport
+id|us-&gt;transport
 op_assign
 id|dpcm_transport
 suffix:semicolon
-id|ss-&gt;transport_reset
+id|us-&gt;transport_reset
 op_assign
 id|usb_stor_CB_reset
 suffix:semicolon
-id|ss-&gt;max_lun
+id|us-&gt;max_lun
 op_assign
 l_int|1
 suffix:semicolon
@@ -2753,19 +2753,19 @@ macro_line|#ifdef CONFIG_USB_STORAGE_FREECOM
 r_case
 id|US_PR_FREECOM
 suffix:colon
-id|ss-&gt;transport_name
+id|us-&gt;transport_name
 op_assign
 l_string|&quot;Freecom&quot;
 suffix:semicolon
-id|ss-&gt;transport
+id|us-&gt;transport
 op_assign
 id|freecom_transport
 suffix:semicolon
-id|ss-&gt;transport_reset
+id|us-&gt;transport_reset
 op_assign
 id|usb_stor_freecom_reset
 suffix:semicolon
-id|ss-&gt;max_lun
+id|us-&gt;max_lun
 op_assign
 l_int|0
 suffix:semicolon
@@ -2776,19 +2776,19 @@ macro_line|#ifdef CONFIG_USB_STORAGE_DATAFAB
 r_case
 id|US_PR_DATAFAB
 suffix:colon
-id|ss-&gt;transport_name
+id|us-&gt;transport_name
 op_assign
 l_string|&quot;Datafab Bulk-Only&quot;
 suffix:semicolon
-id|ss-&gt;transport
+id|us-&gt;transport
 op_assign
 id|datafab_transport
 suffix:semicolon
-id|ss-&gt;transport_reset
+id|us-&gt;transport_reset
 op_assign
 id|usb_stor_Bulk_reset
 suffix:semicolon
-id|ss-&gt;max_lun
+id|us-&gt;max_lun
 op_assign
 l_int|1
 suffix:semicolon
@@ -2799,19 +2799,19 @@ macro_line|#ifdef CONFIG_USB_STORAGE_JUMPSHOT
 r_case
 id|US_PR_JUMPSHOT
 suffix:colon
-id|ss-&gt;transport_name
+id|us-&gt;transport_name
 op_assign
 l_string|&quot;Lexar Jumpshot Control/Bulk&quot;
 suffix:semicolon
-id|ss-&gt;transport
+id|us-&gt;transport
 op_assign
 id|jumpshot_transport
 suffix:semicolon
-id|ss-&gt;transport_reset
+id|us-&gt;transport_reset
 op_assign
 id|usb_stor_Bulk_reset
 suffix:semicolon
-id|ss-&gt;max_lun
+id|us-&gt;max_lun
 op_assign
 l_int|1
 suffix:semicolon
@@ -2820,7 +2820,7 @@ suffix:semicolon
 macro_line|#endif
 r_default
 suffix:colon
-multiline_comment|/* ss-&gt;transport_name = &quot;Unknown&quot;; */
+multiline_comment|/* us-&gt;transport_name = &quot;Unknown&quot;; */
 r_goto
 id|BadDevice
 suffix:semicolon
@@ -2830,35 +2830,35 @@ c_func
 (paren
 l_string|&quot;Transport: %s&bslash;n&quot;
 comma
-id|ss-&gt;transport_name
+id|us-&gt;transport_name
 )paren
 suffix:semicolon
 multiline_comment|/* fix for single-lun devices */
 r_if
 c_cond
 (paren
-id|ss-&gt;flags
+id|us-&gt;flags
 op_amp
 id|US_FL_SINGLE_LUN
 )paren
-id|ss-&gt;max_lun
+id|us-&gt;max_lun
 op_assign
 l_int|0
 suffix:semicolon
 r_switch
 c_cond
 (paren
-id|ss-&gt;subclass
+id|us-&gt;subclass
 )paren
 (brace
 r_case
 id|US_SC_RBC
 suffix:colon
-id|ss-&gt;protocol_name
+id|us-&gt;protocol_name
 op_assign
 l_string|&quot;Reduced Block Commands (RBC)&quot;
 suffix:semicolon
-id|ss-&gt;proto_handler
+id|us-&gt;proto_handler
 op_assign
 id|usb_stor_transparent_scsi_command
 suffix:semicolon
@@ -2867,15 +2867,15 @@ suffix:semicolon
 r_case
 id|US_SC_8020
 suffix:colon
-id|ss-&gt;protocol_name
+id|us-&gt;protocol_name
 op_assign
 l_string|&quot;8020i&quot;
 suffix:semicolon
-id|ss-&gt;proto_handler
+id|us-&gt;proto_handler
 op_assign
 id|usb_stor_ATAPI_command
 suffix:semicolon
-id|ss-&gt;max_lun
+id|us-&gt;max_lun
 op_assign
 l_int|0
 suffix:semicolon
@@ -2884,15 +2884,15 @@ suffix:semicolon
 r_case
 id|US_SC_QIC
 suffix:colon
-id|ss-&gt;protocol_name
+id|us-&gt;protocol_name
 op_assign
 l_string|&quot;QIC-157&quot;
 suffix:semicolon
-id|ss-&gt;proto_handler
+id|us-&gt;proto_handler
 op_assign
 id|usb_stor_qic157_command
 suffix:semicolon
-id|ss-&gt;max_lun
+id|us-&gt;max_lun
 op_assign
 l_int|0
 suffix:semicolon
@@ -2901,15 +2901,15 @@ suffix:semicolon
 r_case
 id|US_SC_8070
 suffix:colon
-id|ss-&gt;protocol_name
+id|us-&gt;protocol_name
 op_assign
 l_string|&quot;8070i&quot;
 suffix:semicolon
-id|ss-&gt;proto_handler
+id|us-&gt;proto_handler
 op_assign
 id|usb_stor_ATAPI_command
 suffix:semicolon
-id|ss-&gt;max_lun
+id|us-&gt;max_lun
 op_assign
 l_int|0
 suffix:semicolon
@@ -2918,11 +2918,11 @@ suffix:semicolon
 r_case
 id|US_SC_SCSI
 suffix:colon
-id|ss-&gt;protocol_name
+id|us-&gt;protocol_name
 op_assign
 l_string|&quot;Transparent SCSI&quot;
 suffix:semicolon
-id|ss-&gt;proto_handler
+id|us-&gt;proto_handler
 op_assign
 id|usb_stor_transparent_scsi_command
 suffix:semicolon
@@ -2931,11 +2931,11 @@ suffix:semicolon
 r_case
 id|US_SC_UFI
 suffix:colon
-id|ss-&gt;protocol_name
+id|us-&gt;protocol_name
 op_assign
 l_string|&quot;Uniform Floppy Interface (UFI)&quot;
 suffix:semicolon
-id|ss-&gt;proto_handler
+id|us-&gt;proto_handler
 op_assign
 id|usb_stor_ufi_command
 suffix:semicolon
@@ -2945,11 +2945,11 @@ macro_line|#ifdef CONFIG_USB_STORAGE_ISD200
 r_case
 id|US_SC_ISD200
 suffix:colon
-id|ss-&gt;protocol_name
+id|us-&gt;protocol_name
 op_assign
 l_string|&quot;ISD200 ATA/ATAPI&quot;
 suffix:semicolon
-id|ss-&gt;proto_handler
+id|us-&gt;proto_handler
 op_assign
 id|isd200_ata_command
 suffix:semicolon
@@ -2958,7 +2958,7 @@ suffix:semicolon
 macro_line|#endif
 r_default
 suffix:colon
-multiline_comment|/* ss-&gt;protocol_name = &quot;Unknown&quot;; */
+multiline_comment|/* us-&gt;protocol_name = &quot;Unknown&quot;; */
 r_goto
 id|BadDevice
 suffix:semicolon
@@ -2968,7 +2968,7 @@ c_func
 (paren
 l_string|&quot;Protocol: %s&bslash;n&quot;
 comma
-id|ss-&gt;protocol_name
+id|us-&gt;protocol_name
 )paren
 suffix:semicolon
 multiline_comment|/* allocate the URB, the usb_ctrlrequest, and the IRQ URB */
@@ -2978,7 +2978,7 @@ c_cond
 id|usb_stor_allocate_urbs
 c_func
 (paren
-id|ss
+id|us
 )paren
 )paren
 r_goto
@@ -2998,7 +2998,7 @@ op_member_access_from_pointer
 id|initFunction
 c_func
 (paren
-id|ss
+id|us
 )paren
 suffix:semicolon
 multiline_comment|/* start up our control thread */
@@ -3006,19 +3006,19 @@ id|atomic_set
 c_func
 (paren
 op_amp
-id|ss-&gt;sm_state
+id|us-&gt;sm_state
 comma
 id|US_STATE_IDLE
 )paren
 suffix:semicolon
-id|ss-&gt;pid
+id|us-&gt;pid
 op_assign
 id|kernel_thread
 c_func
 (paren
 id|usb_stor_control_thread
 comma
-id|ss
+id|us
 comma
 id|CLONE_VM
 )paren
@@ -3026,7 +3026,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ss-&gt;pid
+id|us-&gt;pid
 OL
 l_int|0
 )paren
@@ -3049,7 +3049,7 @@ c_func
 (paren
 op_amp
 (paren
-id|ss-&gt;notify
+id|us-&gt;notify
 )paren
 )paren
 suffix:semicolon
@@ -3059,12 +3059,12 @@ c_func
 (paren
 op_amp
 (paren
-id|ss-&gt;dev_semaphore
+id|us-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
 multiline_comment|/* now register&t;*/
-id|ss-&gt;host
+id|us-&gt;host
 op_assign
 id|scsi_register
 c_func
@@ -3074,7 +3074,7 @@ id|usb_stor_host_template
 comma
 r_sizeof
 (paren
-id|ss
+id|us
 )paren
 )paren
 suffix:semicolon
@@ -3082,7 +3082,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ss-&gt;host
+id|us-&gt;host
 )paren
 (brace
 id|printk
@@ -3094,7 +3094,7 @@ l_string|&quot;Unable to register the scsi host&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* tell the control thread to exit */
-id|ss-&gt;srb
+id|us-&gt;srb
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3102,14 +3102,14 @@ id|up
 c_func
 (paren
 op_amp
-id|ss-&gt;sema
+id|us-&gt;sema
 )paren
 suffix:semicolon
 id|wait_for_completion
 c_func
 (paren
 op_amp
-id|ss-&gt;notify
+id|us-&gt;notify
 )paren
 suffix:semicolon
 multiline_comment|/* re-lock the device pointers */
@@ -3117,7 +3117,7 @@ id|down
 c_func
 (paren
 op_amp
-id|ss-&gt;dev_semaphore
+id|us-&gt;dev_semaphore
 )paren
 suffix:semicolon
 r_goto
@@ -3125,7 +3125,7 @@ id|BadDevice
 suffix:semicolon
 )brace
 multiline_comment|/* set the hostdata to prepare for scanning */
-id|ss-&gt;host-&gt;hostdata
+id|us-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket
@@ -3134,13 +3134,13 @@ op_assign
 r_int
 r_int
 )paren
-id|ss
+id|us
 suffix:semicolon
 multiline_comment|/* associate this host with our interface */
 id|scsi_set_device
 c_func
 (paren
-id|ss-&gt;host
+id|us-&gt;host
 comma
 op_amp
 id|intf-&gt;dev
@@ -3152,7 +3152,7 @@ op_assign
 id|scsi_add_host
 c_func
 (paren
-id|ss-&gt;host
+id|us-&gt;host
 comma
 l_int|NULL
 )paren
@@ -3172,7 +3172,7 @@ l_string|&quot;Unable to add the scsi host&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* tell the control thread to exit */
-id|ss-&gt;srb
+id|us-&gt;srb
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3180,14 +3180,14 @@ id|up
 c_func
 (paren
 op_amp
-id|ss-&gt;sema
+id|us-&gt;sema
 )paren
 suffix:semicolon
 id|wait_for_completion
 c_func
 (paren
 op_amp
-id|ss-&gt;notify
+id|us-&gt;notify
 )paren
 suffix:semicolon
 multiline_comment|/* re-lock the device pointers */
@@ -3195,7 +3195,7 @@ id|down
 c_func
 (paren
 op_amp
-id|ss-&gt;dev_semaphore
+id|us-&gt;dev_semaphore
 )paren
 suffix:semicolon
 r_goto
@@ -3224,14 +3224,14 @@ c_func
 (paren
 id|intf
 comma
-id|ss
+id|us
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* we come here if there are any problems */
-multiline_comment|/* ss-&gt;dev_semaphore must be locked */
+multiline_comment|/* us-&gt;dev_semaphore must be locked */
 id|BadDevice
 suffix:colon
 id|US_DEBUGP
@@ -3243,20 +3243,20 @@ suffix:semicolon
 id|usb_stor_deallocate_urbs
 c_func
 (paren
-id|ss
+id|us
 )paren
 suffix:semicolon
 id|up
 c_func
 (paren
 op_amp
-id|ss-&gt;dev_semaphore
+id|us-&gt;dev_semaphore
 )paren
 suffix:semicolon
 id|kfree
 c_func
 (paren
-id|ss
+id|us
 )paren
 suffix:semicolon
 r_return
@@ -3280,7 +3280,7 @@ id|intf
 r_struct
 id|us_data
 op_star
-id|ss
+id|us
 suffix:semicolon
 r_struct
 id|scsi_device
@@ -3293,7 +3293,7 @@ c_func
 l_string|&quot;storage_disconnect() called&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ss
+id|us
 op_assign
 id|usb_get_intfdata
 c_func
@@ -3309,20 +3309,11 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* serious error -- we&squot;re attempting to disconnect an interface but&n;&t; * cannot locate the local data structure&n;&t; */
-id|BUG_ON
-c_func
-(paren
-id|ss
-op_eq
-l_int|NULL
-)paren
-suffix:semicolon
 multiline_comment|/* set devices offline -- need host lock for this */
 id|scsi_lock
 c_func
 (paren
-id|ss-&gt;host
+id|us-&gt;host
 )paren
 suffix:semicolon
 id|list_for_each_entry
@@ -3331,7 +3322,7 @@ c_func
 id|sdev
 comma
 op_amp
-id|ss-&gt;host-&gt;my_devices
+id|us-&gt;host-&gt;my_devices
 comma
 id|siblings
 )paren
@@ -3342,7 +3333,7 @@ suffix:semicolon
 id|scsi_unlock
 c_func
 (paren
-id|ss-&gt;host
+id|us-&gt;host
 )paren
 suffix:semicolon
 multiline_comment|/* lock device access -- no need to unlock, as we&squot;re going away */
@@ -3351,7 +3342,7 @@ c_func
 (paren
 op_amp
 (paren
-id|ss-&gt;dev_semaphore
+id|us-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
@@ -3359,21 +3350,21 @@ multiline_comment|/* Complete all pending commands with * cmd-&gt;result = DID_E
 r_if
 c_cond
 (paren
-id|ss-&gt;srb
+id|us-&gt;srb
 )paren
 (brace
-id|ss-&gt;srb-&gt;result
+id|us-&gt;srb-&gt;result
 op_assign
 id|DID_ERROR
 op_lshift
 l_int|16
 suffix:semicolon
-id|ss-&gt;srb
+id|us-&gt;srb
 op_member_access_from_pointer
 id|scsi_done
 c_func
 (paren
-id|ss-&gt;srb
+id|us-&gt;srb
 )paren
 suffix:semicolon
 )brace
@@ -3384,7 +3375,7 @@ r_struct
 id|us_data
 op_star
 )paren
-id|ss-&gt;host-&gt;hostdata
+id|us-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket
@@ -3398,7 +3389,7 @@ c_cond
 id|scsi_remove_host
 c_func
 (paren
-id|ss-&gt;host
+id|us-&gt;host
 )paren
 )paren
 (brace
@@ -3421,7 +3412,7 @@ multiline_comment|/* finish SCSI host removal sequence */
 id|scsi_unregister
 c_func
 (paren
-id|ss-&gt;host
+id|us-&gt;host
 )paren
 suffix:semicolon
 multiline_comment|/* Kill the control threads&n;&t; *&n;&t; * Enqueue the command, wake up the thread, and wait for &n;&t; * notification that it has exited.&n;&t; */
@@ -3438,13 +3429,13 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|ss-&gt;sm_state
+id|us-&gt;sm_state
 )paren
 op_ne
 id|US_STATE_IDLE
 )paren
 suffix:semicolon
-id|ss-&gt;srb
+id|us-&gt;srb
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3453,7 +3444,7 @@ c_func
 (paren
 op_amp
 (paren
-id|ss-&gt;sema
+id|us-&gt;sema
 )paren
 )paren
 suffix:semicolon
@@ -3462,7 +3453,7 @@ c_func
 (paren
 op_amp
 (paren
-id|ss-&gt;notify
+id|us-&gt;notify
 )paren
 )paren
 suffix:semicolon
@@ -3470,21 +3461,21 @@ multiline_comment|/* free allocated urbs */
 id|usb_stor_deallocate_urbs
 c_func
 (paren
-id|ss
+id|us
 )paren
 suffix:semicolon
 multiline_comment|/* If there&squot;s extra data in the us_data structure then&n;&t; * free that first */
 r_if
 c_cond
 (paren
-id|ss-&gt;extra
+id|us-&gt;extra
 )paren
 (brace
 multiline_comment|/* call the destructor routine, if it exists */
 r_if
 c_cond
 (paren
-id|ss-&gt;extra_destructor
+id|us-&gt;extra_destructor
 )paren
 (brace
 id|US_DEBUGP
@@ -3493,12 +3484,12 @@ c_func
 l_string|&quot;-- calling extra_destructor()&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ss
+id|us
 op_member_access_from_pointer
 id|extra_destructor
 c_func
 (paren
-id|ss-&gt;extra
+id|us-&gt;extra
 )paren
 suffix:semicolon
 )brace
@@ -3512,7 +3503,7 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|ss-&gt;extra
+id|us-&gt;extra
 )paren
 suffix:semicolon
 )brace
@@ -3522,14 +3513,14 @@ c_func
 (paren
 op_amp
 (paren
-id|ss-&gt;dev_semaphore
+id|us-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
 multiline_comment|/* free the structure itself */
 id|kfree
 (paren
-id|ss
+id|us
 )paren
 suffix:semicolon
 )brace
