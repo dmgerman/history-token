@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * dvb-dibusb-usb.c is part of the driver for mobile USB Budget DVB-T devices &n; * based on reference design made by DiBcom (http://www.dibcom.fr/)&n; *&n; * Copyright (C) 2004-5 Patrick Boettcher (patrick.boettcher@desy.de)&n; *&n; * see dvb-dibusb-core.c for more copyright details.&n; *&n; * This file contains functions for initializing and handling the &n; * usb specific stuff.&n; */
+multiline_comment|/*&n; * dvb-dibusb-usb.c is part of the driver for mobile USB Budget DVB-T devices&n; * based on reference design made by DiBcom (http://www.dibcom.fr/)&n; *&n; * Copyright (C) 2004-5 Patrick Boettcher (patrick.boettcher@desy.de)&n; *&n; * see dvb-dibusb-core.c for more copyright details.&n; *&n; * This file contains functions for initializing and handling the&n; * usb specific stuff.&n; */
 macro_line|#include &quot;dvb-dibusb.h&quot;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -250,42 +250,6 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Cypress controls&n; */
-macro_line|#if 0
-multiline_comment|/* &n; * #if 0&squot;ing the following functions as they are not in use _now_, &n; * but probably will be sometime.&n; */
-multiline_comment|/*&n; * do not use this, just a workaround for a bug, &n; * which will hopefully never occur :).&n; */
-r_int
-id|dibusb_interrupt_read_loop
-c_func
-(paren
-r_struct
-id|usb_dibusb
-op_star
-id|dib
-)paren
-(brace
-id|u8
-id|b
-(braket
-l_int|1
-)braket
-op_assign
-(brace
-id|DIBUSB_REQ_INTR_READ
-)brace
-suffix:semicolon
-r_return
-id|dibusb_write_usb
-c_func
-(paren
-id|dib
-comma
-id|b
-comma
-l_int|1
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif 
 DECL|function|dibusb_write_usb
 r_static
 r_int
@@ -321,7 +285,43 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ioctl for the firmware &n; */
+macro_line|#if 0
+multiline_comment|/*&n; * #if 0&squot;ing the following functions as they are not in use _now_,&n; * but probably will be sometime.&n; */
+multiline_comment|/*&n; * do not use this, just a workaround for a bug,&n; * which will hopefully never occur :).&n; */
+r_int
+id|dibusb_interrupt_read_loop
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+id|dib
+)paren
+(brace
+id|u8
+id|b
+(braket
+l_int|1
+)braket
+op_assign
+(brace
+id|DIBUSB_REQ_INTR_READ
+)brace
+suffix:semicolon
+r_return
+id|dibusb_write_usb
+c_func
+(paren
+id|dib
+comma
+id|b
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+multiline_comment|/*&n; * ioctl for the firmware&n; */
 DECL|function|dibusb_ioctl_cmd
 r_static
 r_int
@@ -529,6 +529,14 @@ c_func
 l_string|&quot;dibusb-device is going to bed.&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* workaround, something is wrong, when dibusb 1.1 device are going to bed too late */
+r_if
+c_cond
+(paren
+id|dib-&gt;dibdev-&gt;dev_cl-&gt;id
+op_ne
+id|DIBUSB1_1
+)paren
 id|dibusb_ioctl_cmd
 c_func
 (paren
@@ -703,7 +711,7 @@ id|def_pid_parse
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * when reloading the driver w/o replugging the device &n;&t; * a timeout occures, this helps&n;&t; */
+multiline_comment|/*&n;&t; * when reloading the driver w/o replugging the device&n;&t; * a timeout occures, this helps&n;&t; */
 id|usb_clear_halt
 c_func
 (paren

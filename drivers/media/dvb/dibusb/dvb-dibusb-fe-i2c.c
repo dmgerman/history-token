@@ -1008,6 +1008,15 @@ r_break
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* if a frontend was found */
+r_if
+c_cond
+(paren
+id|dib-&gt;fe
+op_ne
+l_int|NULL
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -1050,6 +1059,7 @@ c_func
 id|dib
 )paren
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
