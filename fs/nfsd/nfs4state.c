@@ -3313,6 +3313,11 @@ r_struct
 id|nfs4_stateid
 op_star
 id|stp
+comma
+r_struct
+id|nfsd4_close
+op_star
+id|cl
 )paren
 (brace
 r_struct
@@ -3360,6 +3365,10 @@ c_func
 (paren
 id|sop
 )paren
+suffix:semicolon
+id|cl-&gt;cl_stateowner
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* unused nfs4_file&squot;s are releseed. XXX slab cache? */
@@ -6416,6 +6425,8 @@ id|release_open_state
 c_func
 (paren
 id|stp
+comma
+id|close
 )paren
 suffix:semicolon
 id|out
