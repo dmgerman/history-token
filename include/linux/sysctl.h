@@ -2368,6 +2368,18 @@ op_assign
 l_int|17
 comma
 multiline_comment|/* struct: control xfs parameters */
+DECL|enumerator|FS_AIO_NR
+id|FS_AIO_NR
+op_assign
+l_int|18
+comma
+multiline_comment|/* current system-wide number of aio requests */
+DECL|enumerator|FS_AIO_MAX_NR
+id|FS_AIO_MAX_NR
+op_assign
+l_int|19
+comma
+multiline_comment|/* system-wide maximum number of aio requests */
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/fs/quota/ */
