@@ -388,12 +388,6 @@ id|dev
 r_int
 id|ret
 suffix:semicolon
-id|pnp_name_device
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|pnp_fixup_device
 c_func
 (paren

@@ -27,16 +27,6 @@ id|dev
 )paren
 suffix:semicolon
 r_void
-id|pnp_name_device
-c_func
-(paren
-r_struct
-id|pnp_dev
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_void
 id|pnp_fixup_device
 c_func
 (paren
