@@ -19,6 +19,13 @@ macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/*&n;#define DEBUG&n;#define VERBOSE_DEBUG&n;*/
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#ifdef DEBUG
+DECL|macro|DEBUG_ON
+mdefine_line|#define DEBUG_ON(x)&t;BUG_ON(x)
+macro_line|#else
+DECL|macro|DEBUG_ON
+mdefine_line|#define DEBUG_ON(x)&t;do { if (x); } while (0)
+macro_line|#endif
 macro_line|#ifdef VERBOSE_DEBUG
 r_static
 r_int
@@ -1257,7 +1264,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|BUG_ON
+id|DEBUG_ON
 (paren
 id|vcc_data-&gt;max_pdu
 OL
@@ -2001,7 +2008,7 @@ id|ATM_CELL_PAYLOAD
 op_minus
 id|ATM_AAL5_TRAILER
 suffix:semicolon
-id|BUG_ON
+id|DEBUG_ON
 (paren
 op_decrement
 id|ctrl-&gt;num_cells
@@ -2135,7 +2142,7 @@ comma
 id|buf
 )paren
 suffix:semicolon
-id|BUG_ON
+id|DEBUG_ON
 (paren
 id|buf-&gt;filled_cells
 OG
@@ -5417,20 +5424,12 @@ comma
 op_amp
 id|instance-&gt;spare_receivers
 )paren
-r_if
-c_cond
+id|DEBUG_ON
 (paren
 op_increment
 id|count
 OG
 id|num_rcv_urbs
-)paren
-id|panic
-(paren
-id|__FILE__
-l_string|&quot;: memory corruption detected at line %d!&bslash;n&quot;
-comma
-id|__LINE__
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -5607,20 +5606,12 @@ comma
 op_amp
 id|instance-&gt;spare_senders
 )paren
-r_if
-c_cond
+id|DEBUG_ON
 (paren
 op_increment
 id|count
 OG
 id|num_snd_urbs
-)paren
-id|panic
-(paren
-id|__FILE__
-l_string|&quot;: memory corruption detected at line %d!&bslash;n&quot;
-comma
-id|__LINE__
 )paren
 suffix:semicolon
 id|spin_unlock_irq
