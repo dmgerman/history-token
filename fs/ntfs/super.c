@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * super.c - NTFS kernel super block handling. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001,2002 Anton Altaparmakov.&n; * Copyright (c) 2001,2002 Richard Russon.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * super.c - NTFS kernel super block handling. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2003 Anton Altaparmakov&n; * Copyright (c) 2001,2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -2468,14 +2468,7 @@ id|ll
 op_ge
 l_int|1ULL
 op_lshift
-(paren
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-op_star
-l_int|8
+l_int|32
 )paren
 )paren
 (brace
@@ -2484,15 +2477,7 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;Cannot handle %i-bit clusters. Sorry.&quot;
-comma
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-op_star
-l_int|4
+l_string|&quot;Cannot handle 64-bit clusters. Sorry.&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4446,7 +4431,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * get_nr_free_clusters - return the number of free clusters on a volume&n; * @vol:&t;ntfs volume for which to obtain free cluster count&n; *&n; * Calculate the number of free clusters on the mounted NTFS volume @vol.&n; *&n; * Errors are ignored and we just return the number of free clusters we have&n; * found. This means we return an underestimate on error.&n; */
+multiline_comment|/**&n; * get_nr_free_clusters - return the number of free clusters on a volume&n; * @vol:&t;ntfs volume for which to obtain free cluster count&n; *&n; * Calculate the number of free clusters on the mounted NTFS volume @vol. We&n; * actually calculate the number of clusters in use instead because this&n; * allows us to not care about partial pages as these will be just zero filled&n; * and hence not be counted as allocated clusters.&n; *&n; * The only particularity is that clusters beyond the end of the logical ntfs&n; * volume will be marked as allocated to prevent errors which means we have to&n; * discount those at the end. This is important as the cluster bitmap always&n; * has a size in multiples of 8 bytes, i.e. up to 63 clusters could be outside&n; * the logical volume and marked in use when they are not as they do not exist.&n; *&n; * If any pages cannot be read we assume all clusters in the erroring pages are&n; * in use. This means we return an underestimate on errors which is better than&n; * an overestimate.&n; */
 DECL|function|get_nr_free_clusters
 r_static
 id|s64
@@ -4458,6 +4443,15 @@ op_star
 id|vol
 )paren
 (brace
+id|s64
+id|nr_free
+op_assign
+id|vol-&gt;nr_clusters
+suffix:semicolon
+id|u32
+op_star
+id|kaddr
+suffix:semicolon
 r_struct
 id|address_space
 op_star
@@ -4489,17 +4483,6 @@ suffix:semicolon
 r_int
 r_int
 id|max_size
-comma
-id|i
-suffix:semicolon
-id|s64
-id|nr_free
-op_assign
-l_int|0LL
-suffix:semicolon
-id|u32
-op_star
-id|b
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -4515,20 +4498,26 @@ op_amp
 id|vol-&gt;lcnbmp_lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Convert the number of bits into bytes rounded up, then convert into&n;&t; * multiples of PAGE_CACHE_SIZE.&n;&t; */
+multiline_comment|/*&n;&t; * Convert the number of bits into bytes rounded up, then convert into&n;&t; * multiples of PAGE_CACHE_SIZE, rounding up so that if we have one&n;&t; * full and one partial page max_index = 2.&n;&t; */
 id|max_index
 op_assign
+(paren
+(paren
 (paren
 id|vol-&gt;nr_clusters
 op_plus
 l_int|7
 )paren
 op_rshift
-(paren
 l_int|3
-op_plus
-id|PAGE_CACHE_SHIFT
 )paren
+op_plus
+id|PAGE_CACHE_SIZE
+op_minus
+l_int|1
+)paren
+op_rshift
+id|PAGE_CACHE_SHIFT
 suffix:semicolon
 multiline_comment|/* Use multiples of 4 bytes. */
 id|max_size
@@ -4540,7 +4529,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Reading $BITMAP, max_index = 0x%lx, max_size = 0x%x.&quot;
+l_string|&quot;Reading $Bitmap, max_index = 0x%lx, max_size = 0x%x.&quot;
 comma
 id|max_index
 comma
@@ -4558,10 +4547,14 @@ id|index
 OL
 id|max_index
 suffix:semicolon
+id|index
+op_increment
 )paren
 (brace
-id|handle_partial_page
-suffix:colon
+r_int
+r_int
+id|i
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Read the page from page cache, getting it from backing store&n;&t;&t; * if necessary, and increment the use count.&n;&t;&t; */
 id|page
 op_assign
@@ -4571,7 +4564,6 @@ c_func
 id|mapping
 comma
 id|index
-op_increment
 comma
 (paren
 id|filler_t
@@ -4600,9 +4592,13 @@ l_string|&quot;Sync read_cache_page() error. Skipping &quot;
 l_string|&quot;page (index 0x%lx).&quot;
 comma
 id|index
-op_minus
-l_int|1
 )paren
+suffix:semicolon
+id|nr_free
+op_sub_assign
+id|PAGE_CACHE_SIZE
+op_star
+l_int|8
 suffix:semicolon
 r_continue
 suffix:semicolon
@@ -4613,6 +4609,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
+multiline_comment|/* Ignore pages which errored asynchronously. */
 r_if
 c_cond
 (paren
@@ -4631,33 +4628,38 @@ l_string|&quot;Async read_cache_page() error. Skipping &quot;
 l_string|&quot;page (index 0x%lx).&quot;
 comma
 id|index
-op_minus
-l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* Ignore pages which errored asynchronously. */
 id|page_cache_release
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
+id|nr_free
+op_sub_assign
+id|PAGE_CACHE_SIZE
+op_star
+l_int|8
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|b
+id|kaddr
 op_assign
 (paren
 id|u32
 op_star
 )paren
-id|kmap
+id|kmap_atomic
 c_func
 (paren
 id|page
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
-multiline_comment|/* For each 4 bytes, add up the number zero bits. */
+multiline_comment|/*&n;&t;&t; * For each 4 bytes, subtract the number of set bits. If this&n;&t;&t; * is the last page and it is partial we don&squot;t really care as&n;&t;&t; * it just means we do a little extra work but it won&squot;t affect&n;&t;&t; * the result as all out of range bytes are set to zero by&n;&t;&t; * ntfs_readpage().&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -4673,27 +4675,25 @@ id|i
 op_increment
 )paren
 id|nr_free
-op_add_assign
+op_sub_assign
 (paren
 id|s64
 )paren
-(paren
-l_int|32
-op_minus
 id|hweight32
 c_func
 (paren
-id|b
+id|kaddr
 (braket
 id|i
 )braket
 )paren
-)paren
 suffix:semicolon
-id|kunmap
+id|kunmap_atomic
 c_func
 (paren
-id|page
+id|kaddr
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 id|page_cache_release
@@ -4703,68 +4703,32 @@ id|page
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|max_size
-op_eq
-id|PAGE_CACHE_SIZE
-op_rshift
-l_int|2
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Get the multiples of 4 bytes in use in the final partial&n;&t;&t; * page.&n;&t;&t; */
-id|max_size
-op_assign
-(paren
-(paren
-(paren
-(paren
-id|vol-&gt;nr_clusters
-op_plus
-l_int|7
-)paren
-op_rshift
-l_int|3
-)paren
-op_amp
-op_complement
-id|PAGE_CACHE_MASK
-)paren
-op_plus
-l_int|3
-)paren
-op_rshift
-l_int|2
-suffix:semicolon
-multiline_comment|/* If there is a partial page go back and do it. */
-r_if
-c_cond
-(paren
-id|max_size
-)paren
-(brace
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Handling partial page, max_size = 0x%x.&quot;
-comma
-id|max_size
-)paren
-suffix:semicolon
-r_goto
-id|handle_partial_page
-suffix:semicolon
-)brace
-)brace
-id|ntfs_debug
-c_func
-(paren
-l_string|&quot;Finished reading $BITMAP, last index = 0x%lx&quot;
+l_string|&quot;Finished reading $Bitmap, last index = 0x%lx.&quot;
 comma
 id|index
 op_minus
 l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Fixup for eventual bits outside logical ntfs volume (see function&n;&t; * description above).&n;&t; */
+r_if
+c_cond
+(paren
+id|vol-&gt;nr_clusters
+op_amp
+l_int|63
+)paren
+id|nr_free
+op_add_assign
+l_int|64
+op_minus
+(paren
+id|vol-&gt;nr_clusters
+op_amp
+l_int|63
 )paren
 suffix:semicolon
 id|up_read
@@ -4773,6 +4737,18 @@ c_func
 op_amp
 id|vol-&gt;lcnbmp_lock
 )paren
+suffix:semicolon
+multiline_comment|/* If errors occured we may well have gone below zero, fix this. */
+r_if
+c_cond
+(paren
+id|nr_free
+OL
+l_int|0
+)paren
+id|nr_free
+op_assign
+l_int|0
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -4784,7 +4760,7 @@ r_return
 id|nr_free
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * __get_nr_free_mft_records - return the number of free inodes on a volume&n; * @vol:&t;ntfs volume for which to obtain free inode count&n; *&n; * Calculate the number of free mft records (inodes) on the mounted NTFS&n; * volume @vol.&n; *&n; * Errors are ignored and we just return the number of free inodes we have&n; * found. This means we return an underestimate on error.&n; *&n; * NOTE: Caller must hold mftbmp_lock rw_semaphore for reading or writing.&n; */
+multiline_comment|/**&n; * __get_nr_free_mft_records - return the number of free inodes on a volume&n; * @vol:&t;ntfs volume for which to obtain free inode count&n; *&n; * Calculate the number of free mft records (inodes) on the mounted NTFS&n; * volume @vol. We actually calculate the number of mft records in use instead&n; * because this allows us to not care about partial pages as these will be just&n; * zero filled and hence not be counted as allocated mft record.&n; *&n; * If any pages cannot be read we assume all mft records in the erroring pages&n; * are in use. This means we return an underestimate on errors which is better&n; * than an overestimate.&n; *&n; * NOTE: Caller must hold mftbmp_lock rw_semaphore for reading or writing.&n; */
 DECL|function|__get_nr_free_mft_records
 r_static
 r_int
@@ -4797,10 +4773,31 @@ op_star
 id|vol
 )paren
 (brace
+id|s64
+id|nr_free
+op_assign
+id|vol-&gt;nr_mft_records
+suffix:semicolon
+id|u32
+op_star
+id|kaddr
+suffix:semicolon
 r_struct
 id|address_space
 op_star
 id|mapping
+op_assign
+id|vol-&gt;mftbmp_ino-&gt;i_mapping
+suffix:semicolon
+id|filler_t
+op_star
+id|readpage
+op_assign
+(paren
+id|filler_t
+op_star
+)paren
+id|mapping-&gt;a_ops-&gt;readpage
 suffix:semicolon
 r_struct
 id|page
@@ -4812,26 +4809,18 @@ r_int
 id|index
 comma
 id|max_index
-comma
-id|nr_free
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 r_int
 id|max_size
-comma
-id|i
 suffix:semicolon
-id|u32
-op_star
-id|b
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Entering.&quot;
+)paren
 suffix:semicolon
-id|mapping
-op_assign
-id|vol-&gt;mftbmp_ino-&gt;i_mapping
-suffix:semicolon
-multiline_comment|/*&n;&t; * Convert the number of bits into bytes rounded up to a multiple of 8&n;&t; * bytes, then convert into multiples of PAGE_CACHE_SIZE.&n;&t; */
+multiline_comment|/*&n;&t; * Convert the number of bits into bytes rounded up, then convert into&n;&t; * multiples of PAGE_CACHE_SIZE, rounding up so that if we have one&n;&t; * full and one partial page max_index = 2.&n;&t; */
 id|max_index
 op_assign
 (paren
@@ -4845,7 +4834,9 @@ op_rshift
 l_int|3
 )paren
 op_plus
-l_int|7
+id|PAGE_CACHE_SIZE
+op_minus
+l_int|1
 )paren
 op_rshift
 id|PAGE_CACHE_SHIFT
@@ -4879,21 +4870,34 @@ id|index
 OL
 id|max_index
 suffix:semicolon
+id|index
+op_increment
 )paren
 (brace
-id|handle_partial_page
-suffix:colon
+r_int
+r_int
+id|i
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Read the page from page cache, getting it from backing store&n;&t;&t; * if necessary, and increment the use count.&n;&t;&t; */
 id|page
 op_assign
-id|ntfs_map_page
+id|read_cache_page
 c_func
 (paren
 id|mapping
 comma
 id|index
-op_increment
+comma
+(paren
+id|filler_t
+op_star
+)paren
+id|readpage
+comma
+l_int|NULL
 )paren
 suffix:semicolon
+multiline_comment|/* Ignore pages which errored synchronously. */
 r_if
 c_cond
 (paren
@@ -4907,30 +4911,78 @@ id|page
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;ntfs_map_page() error. Skipping page &quot;
-l_string|&quot;(index 0x%lx).&quot;
+l_string|&quot;Sync read_cache_page() error. Skipping &quot;
+l_string|&quot;page (index 0x%lx).&quot;
 comma
 id|index
-op_minus
-l_int|1
 )paren
+suffix:semicolon
+id|nr_free
+op_sub_assign
+id|PAGE_CACHE_SIZE
+op_star
+l_int|8
 suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|b
-op_assign
-(paren
-id|u32
-op_star
-)paren
-id|page_address
+id|wait_on_page_locked
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
-multiline_comment|/* For each 4 bytes, add up the number of zero bits. */
+multiline_comment|/* Ignore pages which errored asynchronously. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|PageUptodate
+c_func
+(paren
+id|page
+)paren
+)paren
+(brace
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Async read_cache_page() error. Skipping &quot;
+l_string|&quot;page (index 0x%lx).&quot;
+comma
+id|index
+)paren
+suffix:semicolon
+id|page_cache_release
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|nr_free
+op_sub_assign
+id|PAGE_CACHE_SIZE
+op_star
+l_int|8
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+id|kaddr
+op_assign
+(paren
+id|u32
+op_star
+)paren
+id|kmap_atomic
+c_func
+(paren
+id|page
+comma
+id|KM_USER0
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * For each 4 bytes, subtract the number of set bits. If this&n;&t;&t; * is the last page and it is partial we don&squot;t really care as&n;&t;&t; * it just means we do a little extra work but it won&squot;t affect&n;&t;&t; * the result as all out of range bytes are set to zero by&n;&t;&t; * ntfs_readpage().&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -4946,112 +4998,60 @@ id|i
 op_increment
 )paren
 id|nr_free
-op_add_assign
-l_int|32
-op_minus
+op_sub_assign
+(paren
+id|s64
+)paren
 id|hweight32
 c_func
 (paren
-id|b
+id|kaddr
 (braket
 id|i
 )braket
 )paren
 suffix:semicolon
-id|ntfs_unmap_page
+id|kunmap_atomic
+c_func
+(paren
+id|kaddr
+comma
+id|KM_USER0
+)paren
+suffix:semicolon
+id|page_cache_release
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|index
-op_eq
-id|max_index
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Get the multiples of 4 bytes in use in the final partial&n;&t;&t; * page.&n;&t;&t; */
-id|max_size
-op_assign
-(paren
-(paren
-(paren
-(paren
-(paren
-(paren
-id|vol-&gt;nr_mft_records
-op_plus
-l_int|7
-)paren
-op_rshift
-l_int|3
-)paren
-op_plus
-l_int|7
-)paren
-op_amp
-op_complement
-l_int|7
-)paren
-op_amp
-op_complement
-id|PAGE_CACHE_MASK
-)paren
-op_plus
-l_int|3
-)paren
-op_rshift
-l_int|2
-suffix:semicolon
-multiline_comment|/* If there is a partial page go back and do it. */
-r_if
-c_cond
-(paren
-id|max_size
-)paren
-(brace
-multiline_comment|/* Compensate for out of bounds zero bits. */
-r_if
-c_cond
-(paren
-(paren
-id|i
-op_assign
-id|vol-&gt;nr_mft_records
-op_amp
-l_int|31
-)paren
-)paren
-id|nr_free
-op_sub_assign
-l_int|32
-op_minus
-id|i
-suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Handling partial page, max_size = 0x%x&quot;
-comma
-id|max_size
-)paren
-suffix:semicolon
-r_goto
-id|handle_partial_page
-suffix:semicolon
-)brace
-)brace
-id|ntfs_debug
-c_func
-(paren
-l_string|&quot;Finished reading $MFT/$BITMAP, last index = 0x%lx&quot;
+l_string|&quot;Finished reading $MFT/$BITMAP, last index = 0x%lx.&quot;
 comma
 id|index
 op_minus
 l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* If errors occured we may well have gone below zero, fix this. */
+r_if
+c_cond
+(paren
+id|nr_free
+OL
+l_int|0
+)paren
+id|nr_free
+op_assign
+l_int|0
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Exiting.&quot;
 )paren
 suffix:semicolon
 r_return
@@ -6929,7 +6929,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;NTFS 1.2/3.x driver - Copyright (c) 2001-2002 Anton Altaparmakov&quot;
+l_string|&quot;NTFS 1.2/3.x driver - Copyright (c) 2001-2003 Anton Altaparmakov&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
