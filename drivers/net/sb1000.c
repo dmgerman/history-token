@@ -1341,14 +1341,9 @@ l_int|0x40
 )paren
 (brace
 multiline_comment|/* a little sleep */
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|yield
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 id|a
@@ -1460,14 +1455,9 @@ l_int|0x40
 )paren
 (brace
 multiline_comment|/* a little sleep */
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|yield
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 id|a

@@ -670,14 +670,9 @@ op_le
 l_int|0
 )paren
 (brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|yield
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 )brace
