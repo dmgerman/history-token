@@ -225,11 +225,6 @@ id|vlan_group
 op_star
 id|vlgrp
 suffix:semicolon
-DECL|member|id_string
-r_char
-op_star
-id|id_string
-suffix:semicolon
 DECL|member|bd_number
 r_uint32
 id|bd_number
