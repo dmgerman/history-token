@@ -305,7 +305,7 @@ id|len
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 id|tp
 suffix:semicolon
 r_int
@@ -1017,7 +1017,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -2565,7 +2565,7 @@ l_int|NULL
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|newtp
 suffix:semicolon
@@ -2780,7 +2780,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* Now setup tcp_opt */
+multiline_comment|/* Now setup tcp_sock */
 id|newtp
 op_assign
 id|tcp_sk
@@ -3303,7 +3303,7 @@ op_assign
 id|skb-&gt;h.th
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -3336,7 +3336,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 id|ttp
 suffix:semicolon
 r_struct

@@ -686,14 +686,9 @@ DECL|struct|tcp6_sock
 r_struct
 id|tcp6_sock
 (brace
-DECL|member|inet
-r_struct
-id|inet_sock
-id|inet
-suffix:semicolon
 DECL|member|tcp
 r_struct
-id|tcp_opt
+id|tcp_sock
 id|tcp
 suffix:semicolon
 DECL|member|inet6
