@@ -1,6 +1,6 @@
 multiline_comment|/* Linux ISDN subsystem, CISCO HDLC network interfaces&n; *&n; * Copyright 1994-1998  by Fritz Elfert (fritz@isdn4linux.de)&n; *           1995,96    by Thinking Objects Software GmbH Wuerzburg&n; *           1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *           1999-2002  by Kai Germaschewski &lt;kai@germaschewski.name&gt;&n; *           2001       by Bjoern A. Zeeb &lt;i4l@zabbadoz.net&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For info on the protocol, see http://i4l.zabbadoz.net/i4l/cisco-hdlc.txt&n; */
 macro_line|#include &quot;isdn_common.h&quot;
-macro_line|#include &quot;isdn_net.h&quot;
+macro_line|#include &quot;isdn_net_lib.h&quot;
 macro_line|#include &quot;isdn_ciscohdlck.h&quot;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
@@ -1833,10 +1833,10 @@ r_return
 l_int|4
 suffix:semicolon
 )brace
-DECL|variable|ciscohdlck_ops
+DECL|variable|isdn_ciscohdlck_ops
 r_struct
 id|isdn_netif_ops
-id|ciscohdlck_ops
+id|isdn_ciscohdlck_ops
 op_assign
 (brace
 dot

@@ -2,7 +2,7 @@ multiline_comment|/* Linux ISDN subsystem, PPP CCP support&n; *&n; * Copyright 1
 macro_line|#include &quot;isdn_ppp_mp.h&quot;
 macro_line|#include &quot;isdn_ppp_ccp.h&quot;
 macro_line|#include &quot;isdn_common.h&quot;
-macro_line|#include &quot;isdn_net.h&quot;
+macro_line|#include &quot;isdn_net_lib.h&quot;
 macro_line|#include &quot;isdn_ppp.h&quot;
 multiline_comment|/* ====================================================================== */
 DECL|macro|MP_END_FRAG

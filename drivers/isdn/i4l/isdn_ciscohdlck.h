@@ -5,7 +5,7 @@ mdefine_line|#define ISDN_CISCOHDLCK_H
 r_extern
 r_struct
 id|isdn_netif_ops
-id|ciscohdlck_ops
+id|isdn_ciscohdlck_ops
 suffix:semicolon
 macro_line|#endif
 eof

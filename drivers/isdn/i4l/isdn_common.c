@@ -9,8 +9,9 @@ macro_line|#include &lt;linux/isdn.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &quot;isdn_common.h&quot;
-macro_line|#include &quot;isdn_tty.h&quot;
+macro_line|#include &quot;isdn_net_lib.h&quot;
 macro_line|#include &quot;isdn_net.h&quot;
+macro_line|#include &quot;isdn_tty.h&quot;
 macro_line|#include &quot;isdn_ppp.h&quot;
 macro_line|#ifdef CONFIG_ISDN_AUDIO
 macro_line|#include &quot;isdn_audio.h&quot;
@@ -10870,7 +10871,7 @@ id|err_tty_modem
 suffix:semicolon
 )brace
 macro_line|#endif                          /* CONFIG_ISDN_PPP */
-id|isdn_net_init
+id|isdn_net_lib_init
 c_func
 (paren
 )paren
@@ -10959,7 +10960,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|isdn_net_exit
+id|isdn_net_lib_exit
 c_func
 (paren
 )paren

@@ -6,11 +6,11 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/ppp-comp.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &quot;isdn_common.h&quot;
+macro_line|#include &quot;isdn_net_lib.h&quot;
 macro_line|#include &quot;isdn_ppp.h&quot;
 macro_line|#include &quot;isdn_ppp_ccp.h&quot;
 macro_line|#include &quot;isdn_ppp_vj.h&quot;
 macro_line|#include &quot;isdn_ppp_mp.h&quot;
-macro_line|#include &quot;isdn_net.h&quot;
 multiline_comment|/* ====================================================================== */
 DECL|macro|IPPP_MAX_RQ_LEN
 mdefine_line|#define IPPP_MAX_RQ_LEN 8 /* max #frames queued for ipppd to read */

@@ -1,4 +1,4 @@
-multiline_comment|/* Linux ISDN subsystem, Network interface configuration&n; *&n; * Copyright 1994-1998  by Fritz Elfert (fritz@isdn4linux.de)&n; *           1995,96    by Thinking Objects Software GmbH Wuerzburg&n; *           1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *           1999-2002  by Kai Germaschewski &lt;kai@germaschewski.name&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* Linux ISDN subsystem, network interface support code&n; *&n; * Copyright 1994-1998  by Fritz Elfert (fritz@isdn4linux.de)&n; *           1995,96    by Thinking Objects Software GmbH Wuerzburg&n; *           1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *           1999-2002  by Kai Germaschewski &lt;kai@germaschewski.name&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 multiline_comment|/*&n; * Data Over Voice (DOV) support added - Guy Ellis 23-Mar-02 &n; *                                       guy@traverse.com.au&n; * Outgoing calls - looks for a &squot;V&squot; in first char of dialed number&n; * Incoming calls - checks first character of eaz as follows:&n; *   Numeric - accept DATA only - original functionality&n; *   &squot;V&squot;     - accept VOICE (DOV) only&n; *   &squot;B&squot;     - accept BOTH DATA and DOV types&n; *&n; */
 multiline_comment|/* Locking works as follows: &n; *&n; * The configuration of isdn_net_devs works via ioctl on&n; * /dev/isdnctrl (for legacy reasons).&n; * All configuration accesses are globally serialized by means of&n; * the global semaphore &amp;sem.&n; * &n; * All other uses of isdn_net_dev will only happen when the corresponding&n; * struct net_device has been opened. So in the non-config code we can&n; * rely on the config data not changing under us.&n; *&n; * To achieve this, in the &quot;writing&quot; ioctls, that is those which may change&n; * data, additionally grep the rtnl semaphore and check to make sure&n; * that the net_device has not been openend (&quot;netif_running()&quot;)&n; *&n; * isdn_net_dev&squot;s are added to the global list &quot;isdn_net_devs&quot; in the&n; * configuration ioctls, so accesses to that list are protected by&n; * &amp;sem as well.&n; *&n; * Incoming calls are signalled in IRQ context, so we cannot take &amp;sem&n; * while walking the list of devices. To handle this, we put devices&n; * onto a &quot;running&quot; list, which is protected by a spin lock and can thus&n; * be traversed in IRQ context. If a matching isdn_net_dev is found,&n; * it&squot;s ref count shall be incremented, to make sure no racing&n; * net_device::close() can take it away under us. &n; */
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -8,8 +8,10 @@ macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/capability.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &quot;isdn_common.h&quot;
+macro_line|#include &quot;isdn_net_lib.h&quot;
 macro_line|#include &quot;isdn_net.h&quot;
 macro_line|#include &quot;isdn_ppp.h&quot;
+macro_line|#include &quot;isdn_ciscohdlck.h&quot;
 DECL|macro|ISDN_NET_TX_TIMEOUT
 mdefine_line|#define ISDN_NET_TX_TIMEOUT (20*HZ) 
 multiline_comment|/* All of this configuration code is globally serialized */
@@ -9360,6 +9362,82 @@ op_amp
 id|isdn_net_fsm
 )paren
 suffix:semicolon
+id|register_isdn_netif
+c_func
+(paren
+id|ISDN_NET_ENCAP_ETHER
+comma
+op_amp
+id|isdn_ether_ops
+)paren
+suffix:semicolon
+id|register_isdn_netif
+c_func
+(paren
+id|ISDN_NET_ENCAP_RAWIP
+comma
+op_amp
+id|isdn_rawip_ops
+)paren
+suffix:semicolon
+id|register_isdn_netif
+c_func
+(paren
+id|ISDN_NET_ENCAP_IPTYP
+comma
+op_amp
+id|isdn_iptyp_ops
+)paren
+suffix:semicolon
+id|register_isdn_netif
+c_func
+(paren
+id|ISDN_NET_ENCAP_UIHDLC
+comma
+op_amp
+id|isdn_uihdlc_ops
+)paren
+suffix:semicolon
+id|register_isdn_netif
+c_func
+(paren
+id|ISDN_NET_ENCAP_CISCOHDLC
+comma
+op_amp
+id|isdn_ciscohdlck_ops
+)paren
+suffix:semicolon
+id|register_isdn_netif
+c_func
+(paren
+id|ISDN_NET_ENCAP_CISCOHDLCK
+comma
+op_amp
+id|isdn_ciscohdlck_ops
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_ISDN_X25
+id|register_isdn_netif
+c_func
+(paren
+id|ISDN_NET_ENCAP_X25IFACE
+comma
+op_amp
+id|isdn_x25_ops
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_ISDN_PPP
+id|register_isdn_netif
+c_func
+(paren
+id|ISDN_NET_ENCAP_SYNCPPP
+comma
+op_amp
+id|isdn_ppp_ops
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_void
 DECL|function|isdn_net_lib_exit
@@ -9369,11 +9447,6 @@ c_func
 r_void
 )paren
 (brace
-id|isdn_net_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
 id|fsm_free
 c_func
 (paren
