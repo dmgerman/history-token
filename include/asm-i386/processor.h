@@ -136,6 +136,11 @@ r_int
 r_int
 id|loops_per_jiffy
 suffix:semicolon
+DECL|member|x86_num_cores
+r_int
+r_char
+id|x86_num_cores
+suffix:semicolon
 )brace
 id|__attribute__
 c_func
@@ -213,6 +218,13 @@ DECL|macro|current_cpu_data
 mdefine_line|#define current_cpu_data boot_cpu_data
 macro_line|#endif
 r_extern
+r_int
+id|phys_proc_id
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+r_extern
 r_char
 id|ignore_fpu_irq
 suffix:semicolon
@@ -254,6 +266,17 @@ id|dodgy_tsc
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|detect_ht
+c_func
+(paren
+r_struct
+id|cpuinfo_x86
+op_star
+id|c
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * EFLAGS bits&n; */
