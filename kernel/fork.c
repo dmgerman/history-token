@@ -453,6 +453,16 @@ comma
 id|wait
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * don&squot;t alter the task state if this is just going to&n;&t; * queue an async wait queue callback&n;&t; */
+r_if
+c_cond
+(paren
+id|is_sync_wait
+c_func
+(paren
+id|wait
+)paren
+)paren
 id|set_current_state
 c_func
 (paren
@@ -529,6 +539,16 @@ comma
 id|wait
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * don&squot;t alter the task state if this is just going to&n; &t; * queue an async wait queue callback&n;&t; */
+r_if
+c_cond
+(paren
+id|is_sync_wait
+c_func
+(paren
+id|wait
+)paren
+)paren
 id|set_current_state
 c_func
 (paren
@@ -3779,6 +3799,10 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|p-&gt;io_context
+op_assign
+l_int|NULL
+suffix:semicolon
+id|p-&gt;io_wait
 op_assign
 l_int|NULL
 suffix:semicolon

@@ -1671,6 +1671,12 @@ op_star
 id|last_siginfo
 suffix:semicolon
 multiline_comment|/* For ptrace use.  */
+multiline_comment|/*&n; * current io wait handle: wait queue entry to use for io waits&n; * If this thread is processing aio, this points at the waitqueue&n; * inside the currently handled kiocb. It may be NULL (i.e. default&n; * to a stack based synchronous wait) if its doing sync IO.&n; */
+DECL|member|io_wait
+id|wait_queue_t
+op_star
+id|io_wait
+suffix:semicolon
 macro_line|#ifdef CONFIG_NUMA
 DECL|member|mempolicy
 r_struct
