@@ -166,10 +166,9 @@ op_star
 id|return_desc
 )paren
 (brace
-r_union
-id|acpi_operand_object
-op_star
-id|obj_desc
+r_struct
+id|acpi_parameter_info
+id|info
 suffix:semicolon
 id|acpi_status
 id|status
@@ -182,19 +181,27 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;ut_evaluate_object&quot;
 )paren
 suffix:semicolon
+id|info.node
+op_assign
+id|prefix_node
+suffix:semicolon
+id|info.parameters
+op_assign
+l_int|NULL
+suffix:semicolon
+id|info.parameter_type
+op_assign
+id|ACPI_PARAM_ARGS
+suffix:semicolon
 multiline_comment|/* Evaluate the object/method */
 id|status
 op_assign
 id|acpi_ns_evaluate_relative
 (paren
-id|prefix_node
-comma
 id|path
 comma
-l_int|NULL
-comma
 op_amp
-id|obj_desc
+id|info
 )paren
 suffix:semicolon
 r_if
@@ -256,7 +263,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|obj_desc
+id|info.return_object
 )paren
 (brace
 r_if
@@ -294,7 +301,7 @@ c_cond
 (paren
 id|ACPI_GET_OBJECT_TYPE
 (paren
-id|obj_desc
+id|info.return_object
 )paren
 )paren
 (brace
@@ -377,7 +384,7 @@ id|path
 comma
 id|ACPI_GET_OBJECT_TYPE
 (paren
-id|obj_desc
+id|info.return_object
 )paren
 )paren
 )paren
@@ -385,7 +392,7 @@ suffix:semicolon
 multiline_comment|/* On error exit, we must delete the return object */
 id|acpi_ut_remove_reference
 (paren
-id|obj_desc
+id|info.return_object
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
@@ -398,7 +405,7 @@ multiline_comment|/* Object type is OK, return it */
 op_star
 id|return_desc
 op_assign
-id|obj_desc
+id|info.return_object
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren

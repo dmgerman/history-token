@@ -29,6 +29,10 @@ id|data_type
 suffix:semicolon
 multiline_comment|/* To differentiate various internal objs MUST BE FIRST!*/
 "&bslash;"
+DECL|member|walk_type
+id|u8
+id|walk_type
+suffix:semicolon
 DECL|member|owner_id
 id|acpi_owner_id
 id|owner_id
@@ -39,6 +43,11 @@ id|u8
 id|last_predicate
 suffix:semicolon
 multiline_comment|/* Result of last predicate */
+DECL|member|reserved
+id|u8
+id|reserved
+suffix:semicolon
+multiline_comment|/* For alignment */
 DECL|member|current_result
 id|u8
 id|current_result
@@ -57,10 +66,6 @@ multiline_comment|/* Stack pointer for Operands[] array */
 DECL|member|return_used
 id|u8
 id|return_used
-suffix:semicolon
-DECL|member|walk_type
-id|u8
-id|walk_type
 suffix:semicolon
 DECL|member|opcode
 id|u16
@@ -141,6 +146,13 @@ op_star
 id|deferred_node
 suffix:semicolon
 multiline_comment|/* Used when executing deferred opcodes */
+DECL|member|gpe_event_info
+r_struct
+id|acpi_gpe_event_info
+op_star
+id|gpe_event_info
+suffix:semicolon
+multiline_comment|/* Info for GPE (_Lxx/_Exx methods only */
 DECL|member|local_variables
 r_struct
 id|acpi_namespace_node
@@ -508,5 +520,44 @@ id|mid
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Internal method parameter list */
+DECL|struct|acpi_parameter_info
+r_struct
+id|acpi_parameter_info
+(brace
+DECL|member|node
+r_struct
+id|acpi_namespace_node
+op_star
+id|node
+suffix:semicolon
+DECL|member|parameters
+r_union
+id|acpi_operand_object
+op_star
+op_star
+id|parameters
+suffix:semicolon
+DECL|member|return_object
+r_union
+id|acpi_operand_object
+op_star
+id|return_object
+suffix:semicolon
+DECL|member|parameter_type
+id|u8
+id|parameter_type
+suffix:semicolon
+DECL|member|return_object_type
+id|u8
+id|return_object_type
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* Types for parameter_type above */
+DECL|macro|ACPI_PARAM_ARGS
+mdefine_line|#define ACPI_PARAM_ARGS                 0
+DECL|macro|ACPI_PARAM_GPE
+mdefine_line|#define ACPI_PARAM_GPE                  1
 macro_line|#endif
 eof

@@ -347,6 +347,10 @@ op_star
 id|in_buffer
 )paren
 (brace
+r_struct
+id|acpi_parameter_info
+id|info
+suffix:semicolon
 r_union
 id|acpi_operand_object
 op_star
@@ -468,18 +472,27 @@ l_int|1
 op_assign
 l_int|NULL
 suffix:semicolon
+id|info.node
+op_assign
+id|handle
+suffix:semicolon
+id|info.parameters
+op_assign
+id|params
+suffix:semicolon
+id|info.parameter_type
+op_assign
+id|ACPI_PARAM_ARGS
+suffix:semicolon
 multiline_comment|/*&n;&t; * Execute the method, no return value&n;&t; */
 id|status
 op_assign
 id|acpi_ns_evaluate_relative
 (paren
-id|handle
-comma
 l_string|&quot;_SRS&quot;
 comma
-id|params
-comma
-l_int|NULL
+op_amp
+id|info
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Clean up and return the status from acpi_ns_evaluate_relative&n;&t; */

@@ -12,6 +12,10 @@ DECL|macro|ACPI_LOBYTE
 mdefine_line|#define ACPI_LOBYTE(l)                  ((u8)(u16)(l))
 DECL|macro|ACPI_HIBYTE
 mdefine_line|#define ACPI_HIBYTE(l)                  ((u8)((((u16)(l)) &gt;&gt; 8) &amp; 0xFF))
+DECL|macro|ACPI_SET_BIT
+mdefine_line|#define ACPI_SET_BIT(target,bit)        ((target) |= (bit))
+DECL|macro|ACPI_CLEAR_BIT
+mdefine_line|#define ACPI_CLEAR_BIT(target,bit)      ((target) &amp;= ~(bit))
 macro_line|#if ACPI_MACHINE_WIDTH == 16
 multiline_comment|/*&n; * For 16-bit addresses, we have to assume that the upper 32 bits&n; * are zero.&n; */
 DECL|macro|ACPI_LODWORD
@@ -52,7 +56,7 @@ mdefine_line|#define ACPI_VALID_ADDRESS(a)           (a)
 macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * printf() format helpers&n; */
-multiline_comment|/* Split 64-bit integer into two 32-bit values. use with %8,8_x%8.8X */
+multiline_comment|/* Split 64-bit integer into two 32-bit values. Use with %8.8X%8.8X */
 DECL|macro|ACPI_FORMAT_UINT64
 mdefine_line|#define ACPI_FORMAT_UINT64(i)           ACPI_HIDWORD(i),ACPI_LODWORD(i)
 multiline_comment|/*&n; * Extract a byte of data using a pointer.  Any more than a byte and we&n; * get into potential aligment issues -- see the STORE macros below&n; */
