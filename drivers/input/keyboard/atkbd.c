@@ -59,7 +59,7 @@ id|atkbd_set
 op_assign
 l_int|2
 suffix:semicolon
-macro_line|#if defined(__i386__) || defined (__x86_64__)
+macro_line|#if defined(__i386__) || defined(__x86_64__) || defined(__hppa__)
 DECL|variable|atkbd_reset
 r_static
 r_int
@@ -80,6 +80,9 @@ r_int
 id|atkbd_softrepeat
 suffix:semicolon
 multiline_comment|/*&n; * Scancode to keycode tables. These are just the default setting, and&n; * are loadable via an userland utility.&n; */
+macro_line|#if defined(__hppa__)
+macro_line|#include &quot;hpps2atkbd.h&quot;
+macro_line|#else
 DECL|variable|atkbd_set2_keycode
 r_static
 r_int
@@ -614,6 +617,7 @@ l_int|99
 comma
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|variable|atkbd_set3_keycode
 r_static
 r_int
