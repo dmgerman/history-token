@@ -28,6 +28,7 @@ id|sys_time
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|tloc
 )paren
@@ -85,6 +86,7 @@ id|sys_stime
 c_func
 (paren
 id|time_t
+id|__user
 op_star
 id|tptr
 )paren

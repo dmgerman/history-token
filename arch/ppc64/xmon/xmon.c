@@ -897,6 +897,15 @@ c_func
 l_string|&quot;set-indicator&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|args.token
+op_eq
+id|RTAS_UNKNOWN_SERVICE
+)paren
+r_return
+suffix:semicolon
 id|args.nargs
 op_assign
 l_int|3
@@ -1234,7 +1243,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;cpu 0x%s: Exception %lx %s in xmon, &quot;
+l_string|&quot;cpu 0x%x: Exception %lx %s in xmon, &quot;
 l_string|&quot;returning to main loop&bslash;n&quot;
 comma
 id|cpu

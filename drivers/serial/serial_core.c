@@ -1379,6 +1379,7 @@ comma
 r_const
 r_int
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2241,6 +2242,7 @@ id|state
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|retinfo
 )paren
@@ -2385,6 +2387,7 @@ id|state
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|newinfo
 )paren
@@ -3075,6 +3078,7 @@ id|state
 comma
 r_int
 r_int
+id|__user
 op_star
 id|value
 )paren
@@ -3815,6 +3819,7 @@ id|state
 comma
 r_struct
 id|serial_icounter_struct
+id|__user
 op_star
 id|icnt
 )paren
@@ -3999,6 +4004,7 @@ comma
 (paren
 r_struct
 id|serial_struct
+id|__user
 op_star
 )paren
 id|arg
@@ -4019,6 +4025,7 @@ comma
 (paren
 r_struct
 id|serial_struct
+id|__user
 op_star
 )paren
 id|arg
@@ -4121,6 +4128,7 @@ comma
 (paren
 r_struct
 id|serial_icounter_struct
+id|__user
 op_star
 )paren
 id|arg
@@ -4187,6 +4195,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg

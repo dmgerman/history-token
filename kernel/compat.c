@@ -22,6 +22,7 @@ comma
 r_const
 r_struct
 id|compat_timespec
+id|__user
 op_star
 id|cts
 )paren
@@ -81,6 +82,7 @@ id|ts
 comma
 r_struct
 id|compat_timespec
+id|__user
 op_star
 id|cts
 )paren
@@ -151,6 +153,7 @@ id|jiffies
 suffix:semicolon
 r_struct
 id|compat_timespec
+id|__user
 op_star
 id|rmtp
 suffix:semicolon
@@ -199,6 +202,7 @@ op_assign
 (paren
 r_struct
 id|compat_timespec
+id|__user
 op_star
 )paren
 id|restart-&gt;arg1
@@ -270,11 +274,13 @@ c_func
 (paren
 r_struct
 id|compat_timespec
+id|__user
 op_star
 id|rqtp
 comma
 r_struct
 id|compat_timespec
+id|__user
 op_star
 id|rmtp
 )paren
@@ -449,6 +455,7 @@ id|o
 comma
 r_struct
 id|compat_itimerval
+id|__user
 op_star
 id|i
 )paren
@@ -519,6 +526,7 @@ c_func
 (paren
 r_struct
 id|compat_itimerval
+id|__user
 op_star
 id|o
 comma
@@ -596,6 +604,7 @@ id|which
 comma
 r_struct
 id|compat_itimerval
+id|__user
 op_star
 id|it
 )paren
@@ -653,11 +662,13 @@ id|which
 comma
 r_struct
 id|compat_itimerval
+id|__user
 op_star
 id|in
 comma
 r_struct
 id|compat_itimerval
+id|__user
 op_star
 id|out
 )paren
@@ -767,6 +778,7 @@ c_func
 (paren
 r_struct
 id|compat_tms
+id|__user
 op_star
 id|tbuf
 )paren
@@ -852,6 +864,7 @@ id|compat_sys_sigpending
 c_func
 (paren
 id|compat_old_sigset_t
+id|__user
 op_star
 id|set
 )paren
@@ -922,10 +935,12 @@ r_int
 id|how
 comma
 id|compat_old_sigset_t
+id|__user
 op_star
 id|set
 comma
 id|compat_old_sigset_t
+id|__user
 op_star
 id|oset
 )paren
@@ -1033,6 +1048,7 @@ id|compat_sys_futex
 c_func
 (paren
 id|u32
+id|__user
 op_star
 id|uaddr
 comma
@@ -1044,10 +1060,12 @@ id|val
 comma
 r_struct
 id|compat_timespec
+id|__user
 op_star
 id|utime
 comma
 id|u32
+id|__user
 op_star
 id|uaddr2
 )paren
@@ -1163,6 +1181,7 @@ id|resource
 comma
 r_struct
 id|compat_rlimit
+id|__user
 op_star
 id|rlim
 )paren
@@ -1294,6 +1313,7 @@ id|resource
 comma
 r_struct
 id|compat_rlimit
+id|__user
 op_star
 id|rlim
 )paren
@@ -1422,6 +1442,7 @@ id|resource
 comma
 r_struct
 id|compat_rlimit
+id|__user
 op_star
 id|rlim
 )paren
@@ -1542,9 +1563,11 @@ DECL|function|put_compat_rusage
 r_static
 r_int
 id|put_compat_rusage
+c_func
 (paren
 r_struct
 id|compat_rusage
+id|__user
 op_star
 id|ru
 comma
@@ -1753,6 +1776,7 @@ id|who
 comma
 r_struct
 id|compat_rusage
+id|__user
 op_star
 id|ru
 )paren
@@ -1833,6 +1857,7 @@ id|compat_pid_t
 id|pid
 comma
 id|compat_uint_t
+id|__user
 op_star
 id|stat_addr
 comma
@@ -1841,6 +1866,7 @@ id|options
 comma
 r_struct
 id|compat_rusage
+id|__user
 op_star
 id|ru
 )paren
@@ -1979,6 +2005,7 @@ r_int
 id|len
 comma
 id|compat_ulong_t
+id|__user
 op_star
 id|user_mask_ptr
 )paren
@@ -2061,6 +2088,7 @@ r_int
 id|len
 comma
 id|compat_ulong_t
+id|__user
 op_star
 id|user_mask_ptr
 )paren
@@ -2158,6 +2186,7 @@ id|dst
 comma
 r_struct
 id|compat_itimerspec
+id|__user
 op_star
 id|src
 )paren
@@ -2201,6 +2230,7 @@ c_func
 (paren
 r_struct
 id|compat_itimerspec
+id|__user
 op_star
 id|dst
 comma
@@ -2254,11 +2284,13 @@ id|flags
 comma
 r_struct
 id|compat_itimerspec
+id|__user
 op_star
 r_new
 comma
 r_struct
 id|compat_itimerspec
+id|__user
 op_star
 id|old
 )paren
@@ -2371,6 +2403,7 @@ id|timer_id
 comma
 r_struct
 id|compat_itimerspec
+id|__user
 op_star
 id|setting
 )paren
@@ -2448,6 +2481,7 @@ id|which_clock
 comma
 r_struct
 id|compat_timespec
+id|__user
 op_star
 id|tp
 )paren
@@ -2522,6 +2556,7 @@ id|which_clock
 comma
 r_struct
 id|compat_timespec
+id|__user
 op_star
 id|tp
 )paren
@@ -2599,6 +2634,7 @@ id|which_clock
 comma
 r_struct
 id|compat_timespec
+id|__user
 op_star
 id|tp
 )paren

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/idr.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_static
@@ -31,6 +32,13 @@ id|DECLARE_MUTEX
 c_func
 (paren
 id|core_lists
+)paren
+suffix:semicolon
+r_static
+id|DEFINE_IDR
+c_func
+(paren
+id|i2c_adapter_idr
 )paren
 suffix:semicolon
 DECL|function|i2c_device_probe
@@ -347,9 +355,10 @@ op_star
 id|adap
 )paren
 (brace
-r_static
 r_int
-id|nr
+id|id
+comma
+id|res
 op_assign
 l_int|0
 suffix:semicolon
@@ -370,10 +379,46 @@ op_amp
 id|core_lists
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|idr_pre_get
+c_func
+(paren
+op_amp
+id|i2c_adapter_idr
+comma
+id|GFP_KERNEL
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|res
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|out_unlock
+suffix:semicolon
+)brace
+id|id
+op_assign
+id|idr_get_new
+c_func
+(paren
+op_amp
+id|i2c_adapter_idr
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 id|adap-&gt;nr
 op_assign
-id|nr
-op_increment
+id|id
+op_amp
+id|MAX_ID_MASK
 suffix:semicolon
 id|init_MUTEX
 c_func
@@ -541,13 +586,6 @@ id|adap
 )paren
 suffix:semicolon
 )brace
-id|up
-c_func
-(paren
-op_amp
-id|core_lists
-)paren
-suffix:semicolon
 id|dev_dbg
 c_func
 (paren
@@ -559,8 +597,17 @@ comma
 id|adap-&gt;nr
 )paren
 suffix:semicolon
+id|out_unlock
+suffix:colon
+id|up
+c_func
+(paren
+op_amp
+id|core_lists
+)paren
+suffix:semicolon
 r_return
-l_int|0
+id|res
 suffix:semicolon
 )brace
 DECL|function|i2c_del_adapter
@@ -784,6 +831,16 @@ c_func
 (paren
 op_amp
 id|adap-&gt;class_dev_released
+)paren
+suffix:semicolon
+multiline_comment|/* free dynamically allocated bus id */
+id|idr_remove
+c_func
+(paren
+op_amp
+id|i2c_adapter_idr
+comma
+id|adap-&gt;nr
 )paren
 suffix:semicolon
 id|dev_dbg

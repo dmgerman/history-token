@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASMi386_TIMER_H
 DECL|macro|_ASMi386_TIMER_H
 mdefine_line|#define _ASMi386_TIMER_H
-multiline_comment|/**&n; * struct timer_ops - used to define a timer source&n; *&n; * @init: Probes and initializes the timer. Takes clock= override &n; *  string as an argument. Returns 0 on success, anything else on failure.&n; * @mark_offset: called by the timer interrupt&n; * @get_offset: called by gettimeofday().  Returns the number of ms since the&n; *&t;last timer intruupt.&n; */
+multiline_comment|/**&n; * struct timer_ops - used to define a timer source&n; *&n; * @name: name of the timer.&n; * @init: Probes and initializes the timer. Takes clock= override &n; *        string as an argument. Returns 0 on success, anything else&n; *        on failure.&n; * @mark_offset: called by the timer interrupt.&n; * @get_offset:  called by gettimeofday(). Returns the number of microseconds&n; *               since the last timer interupt.&n; * @monotonic_clock: returns the number of nanoseconds since the init of the&n; *                   timer.&n; * @delay: delays this many clock cycles.&n; */
 DECL|struct|timer_opts
 r_struct
 id|timer_opts

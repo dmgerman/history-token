@@ -46,7 +46,7 @@ op_assign
 id|PCI_IRQ_NONE
 suffix:semicolon
 macro_line|#endif
-macro_line|#if RTC_IRQ
+macro_line|#ifdef RTC_IRQ
 DECL|variable|rtc_has_irq
 r_static
 r_int
@@ -129,7 +129,7 @@ c_func
 id|rtc_wait
 )paren
 suffix:semicolon
-macro_line|#if RTC_IRQ
+macro_line|#ifdef RTC_IRQ
 DECL|variable|rtc_irq_timer
 r_static
 r_struct
@@ -148,6 +148,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -183,7 +184,7 @@ r_int
 id|arg
 )paren
 suffix:semicolon
-macro_line|#if RTC_IRQ
+macro_line|#ifdef RTC_IRQ
 r_static
 r_int
 r_int
@@ -211,7 +212,7 @@ op_star
 id|alm_tm
 )paren
 suffix:semicolon
-macro_line|#if RTC_IRQ
+macro_line|#ifdef RTC_IRQ
 r_static
 r_void
 id|rtc_dropped_irq
@@ -243,16 +244,6 @@ id|bit
 )paren
 suffix:semicolon
 macro_line|#endif
-r_static
-r_inline
-r_int
-r_char
-id|rtc_is_updating
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_static
 r_int
 id|rtc_read_proc
@@ -324,7 +315,7 @@ op_assign
 l_int|64
 suffix:semicolon
 multiline_comment|/* &gt; this, need CAP_SYS_RESOURCE */
-macro_line|#if RTC_IRQ
+macro_line|#ifdef RTC_IRQ
 multiline_comment|/*&n; * rtc_task_lock nests inside rtc_lock.&n; */
 DECL|variable|rtc_task_lock
 r_static
@@ -389,7 +380,53 @@ comma
 l_int|31
 )brace
 suffix:semicolon
-macro_line|#if RTC_IRQ
+multiline_comment|/*&n; * Returns true if a clock update is in progress&n; */
+DECL|function|rtc_is_updating
+r_static
+r_inline
+r_int
+r_char
+id|rtc_is_updating
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_char
+id|uip
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|rtc_lock
+)paren
+suffix:semicolon
+id|uip
+op_assign
+(paren
+id|CMOS_READ
+c_func
+(paren
+id|RTC_FREQ_SELECT
+)paren
+op_amp
+id|RTC_UIP
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|rtc_lock
+)paren
+suffix:semicolon
+r_return
+id|uip
+suffix:semicolon
+)brace
+macro_line|#ifdef RTC_IRQ
 multiline_comment|/*&n; *&t;A very tiny interrupt handler. It runs with SA_INTERRUPT set,&n; *&t;but there is possibility of conflicting with the set_rtc_mmss()&n; *&t;call (the rtc irq and the timer irq can easily run at the same&n; *&t;time in two different CPUs). So we need to serialize&n; *&t;accesses to the chip with the rtc_lock spinlock that each&n; *&t;architecture should implement in the timer code.&n; *&t;(See ./arch/XXXX/kernel/time.c for the set_rtc_mmss() function.)&n; */
 DECL|function|rtc_interrupt
 id|irqreturn_t
@@ -747,6 +784,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -758,7 +796,7 @@ op_star
 id|ppos
 )paren
 (brace
-macro_line|#if !RTC_IRQ
+macro_line|#ifndef RTC_IRQ
 r_return
 op_minus
 id|EIO
@@ -921,6 +959,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|buf
@@ -944,6 +983,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|buf
@@ -999,7 +1039,7 @@ r_struct
 id|rtc_time
 id|wtime
 suffix:semicolon
-macro_line|#if RTC_IRQ
+macro_line|#ifdef RTC_IRQ
 r_if
 c_cond
 (paren
@@ -1052,7 +1092,7 @@ c_cond
 id|cmd
 )paren
 (brace
-macro_line|#if RTC_IRQ
+macro_line|#ifdef RTC_IRQ
 r_case
 id|RTC_AIE_OFF
 suffix:colon
@@ -1313,6 +1353,7 @@ comma
 (paren
 r_struct
 id|rtc_time
+id|__user
 op_star
 )paren
 id|arg
@@ -1565,6 +1606,7 @@ comma
 (paren
 r_struct
 id|rtc_time
+id|__user
 op_star
 )paren
 id|arg
@@ -1980,7 +2022,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if RTC_IRQ
+macro_line|#ifdef RTC_IRQ
 r_case
 id|RTC_IRQP_READ
 suffix:colon
@@ -1995,6 +2037,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -2174,6 +2217,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -2232,6 +2276,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2402,7 +2447,7 @@ op_star
 id|file
 )paren
 (brace
-macro_line|#if RTC_IRQ
+macro_line|#ifdef RTC_IRQ
 r_int
 r_char
 id|tmp
@@ -2553,7 +2598,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if RTC_IRQ
+macro_line|#ifdef RTC_IRQ
 multiline_comment|/* Called without the kernel lock - fine */
 DECL|function|rtc_poll
 r_static
@@ -2662,7 +2707,7 @@ op_star
 id|task
 )paren
 (brace
-macro_line|#if !RTC_IRQ
+macro_line|#ifndef RTC_IRQ
 r_return
 op_minus
 id|EIO
@@ -2779,7 +2824,7 @@ op_star
 id|task
 )paren
 (brace
-macro_line|#if !RTC_IRQ
+macro_line|#ifndef RTC_IRQ
 r_return
 op_minus
 id|EIO
@@ -2951,7 +2996,7 @@ r_int
 id|arg
 )paren
 (brace
-macro_line|#if !RTC_IRQ
+macro_line|#ifndef RTC_IRQ
 r_return
 op_minus
 id|EIO
@@ -3027,7 +3072,7 @@ id|read
 op_assign
 id|rtc_read
 comma
-macro_line|#if RTC_IRQ
+macro_line|#ifdef RTC_IRQ
 dot
 id|poll
 op_assign
@@ -3071,7 +3116,7 @@ op_amp
 id|rtc_fops
 )brace
 suffix:semicolon
-macro_line|#if RTC_IRQ
+macro_line|#ifdef RTC_IRQ
 DECL|variable|rtc_int_handler_ptr
 r_static
 id|irqreturn_t
@@ -3348,7 +3393,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-macro_line|#if RTC_IRQ
+macro_line|#ifdef RTC_IRQ
 r_if
 c_cond
 (paren
@@ -3433,7 +3478,7 @@ id|rtc_dev
 )paren
 )paren
 (brace
-macro_line|#if RTC_IRQ
+macro_line|#ifdef RTC_IRQ
 id|free_irq
 c_func
 (paren
@@ -3479,7 +3524,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-macro_line|#if RTC_IRQ
+macro_line|#ifdef RTC_IRQ
 id|free_irq
 c_func
 (paren
@@ -3728,7 +3773,7 @@ id|epoch
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if RTC_IRQ
+macro_line|#ifdef RTC_IRQ
 r_if
 c_cond
 (paren
@@ -3878,7 +3923,7 @@ comma
 id|RTC_IO_EXTENT
 )paren
 suffix:semicolon
-macro_line|#if RTC_IRQ
+macro_line|#ifdef RTC_IRQ
 r_if
 c_cond
 (paren
@@ -3908,7 +3953,7 @@ c_func
 id|rtc_exit
 )paren
 suffix:semicolon
-macro_line|#if RTC_IRQ
+macro_line|#ifdef RTC_IRQ
 multiline_comment|/*&n; * &t;At IRQ rates &gt;= 4096Hz, an interrupt may get lost altogether.&n; *&t;(usually during an IDE disk interrupt, with IRQ unmasking off)&n; *&t;Since the interrupt handler doesn&squot;t get called, the IRQ status&n; *&t;byte doesn&squot;t get read, and the RTC stops generating interrupts.&n; *&t;A timer is set, and will call this function if/when that happens.&n; *&t;To get it out of this stalled state, we just read the status.&n; *&t;At least a jiffy of interrupts (rtc_freq/HZ) will have been lost.&n; *&t;(You *really* shouldn&squot;t be trying to use a non-realtime system &n; *&t;for something that requires a steady &gt; 1KHz signal anyways.)&n; */
 DECL|function|rtc_dropped_irq
 r_static
@@ -4434,53 +4479,6 @@ r_return
 id|len
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Returns true if a clock update is in progress&n; */
-multiline_comment|/* FIXME shouldn&squot;t this be above rtc_init to make it fully inlined? */
-DECL|function|rtc_is_updating
-r_static
-r_inline
-r_int
-r_char
-id|rtc_is_updating
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-r_char
-id|uip
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|rtc_lock
-)paren
-suffix:semicolon
-id|uip
-op_assign
-(paren
-id|CMOS_READ
-c_func
-(paren
-id|RTC_FREQ_SELECT
-)paren
-op_amp
-id|RTC_UIP
-)paren
-suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|rtc_lock
-)paren
-suffix:semicolon
-r_return
-id|uip
-suffix:semicolon
-)brace
 DECL|function|rtc_get_rtc_time
 r_void
 id|rtc_get_rtc_time
@@ -4803,7 +4801,7 @@ id|alm_tm-&gt;tm_hour
 suffix:semicolon
 )brace
 )brace
-macro_line|#if RTC_IRQ
+macro_line|#ifdef RTC_IRQ
 multiline_comment|/*&n; * Used to disable/enable interrupts for any one of UIE, AIE, PIE.&n; * Rumour has it that if you frob the interrupt enable/disable&n; * bits in RTC_CONTROL, you should read RTC_INTR_FLAGS, to&n; * ensure you actually start getting interrupts. Probably for&n; * compatibility with older/broken chipset RTC implementations.&n; * We also clear out any old irq data after an ioctl() that&n; * meddles with the interrupt enable/disable bits.&n; */
 DECL|function|mask_rtc_irq_bit
 r_static
