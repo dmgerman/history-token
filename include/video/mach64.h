@@ -1344,8 +1344,21 @@ DECL|macro|LP_CHIP_ID
 mdefine_line|#define LP_CHIP_ID&t;0x4c50&t;/* RAGE LT PRO */
 DECL|macro|LT_CHIP_ID
 mdefine_line|#define LT_CHIP_ID&t;0x4c54&t;/* RAGE LT */
-DECL|macro|XL_CHIP_ID
-mdefine_line|#define XL_CHIP_ID&t;0x4752&t;/* RAGE (XL) */
+multiline_comment|/* mach64CT family / (Rage XL) class */
+DECL|macro|GR_CHIP_ID
+mdefine_line|#define GR_CHIP_ID&t;0x4752&t;/* RAGE XL, BGA, PCI33 */
+DECL|macro|GS_CHIP_ID
+mdefine_line|#define GS_CHIP_ID&t;0x4753&t;/* RAGE XL, PQFP, PCI33 */
+DECL|macro|GM_CHIP_ID
+mdefine_line|#define GM_CHIP_ID&t;0x474d&t;/* RAGE XL, BGA, AGP 1x,2x */
+DECL|macro|GN_CHIP_ID
+mdefine_line|#define GN_CHIP_ID&t;0x474e&t;/* RAGE XL, PQFP,AGP 1x,2x */
+DECL|macro|GO_CHIP_ID
+mdefine_line|#define GO_CHIP_ID&t;0x474f&t;/* RAGE XL, BGA, PCI66 */
+DECL|macro|GL_CHIP_ID
+mdefine_line|#define GL_CHIP_ID&t;0x474c&t;/* RAGE XL, PQFP, PCI66 */
+DECL|macro|IS_XL
+mdefine_line|#define IS_XL(id) ((id)==GR_CHIP_ID || (id)==GS_CHIP_ID || &bslash;&n;&t;&t;   (id)==GM_CHIP_ID || (id)==GN_CHIP_ID || &bslash;&n;&t;&t;   (id)==GO_CHIP_ID || (id)==GL_CHIP_ID)&t;
 DECL|macro|GT_CHIP_ID
 mdefine_line|#define GT_CHIP_ID&t;0x4754&t;/* RAGE (GT) */
 DECL|macro|GU_CHIP_ID

@@ -849,6 +849,90 @@ suffix:semicolon
 multiline_comment|/* Cursor image */
 )brace
 suffix:semicolon
+DECL|macro|FB_PIXMAP_DEFAULT
+mdefine_line|#define FB_PIXMAP_DEFAULT 1     /* used internally by fbcon */
+DECL|macro|FB_PIXMAP_SYSTEM
+mdefine_line|#define FB_PIXMAP_SYSTEM  2     /* memory is in system RAM  */
+DECL|macro|FB_PIXMAP_IO
+mdefine_line|#define FB_PIXMAP_IO      4     /* memory is iomapped       */
+DECL|macro|FB_PIXMAP_SYNC
+mdefine_line|#define FB_PIXMAP_SYNC    256   /* set if GPU can DMA       */
+DECL|struct|fb_pixmap
+r_struct
+id|fb_pixmap
+(brace
+DECL|member|addr
+id|__u8
+op_star
+id|addr
+suffix:semicolon
+multiline_comment|/* pointer to memory             */
+DECL|member|size
+id|__u32
+id|size
+suffix:semicolon
+multiline_comment|/* size of buffer in bytes       */
+DECL|member|offset
+id|__u32
+id|offset
+suffix:semicolon
+multiline_comment|/* current offset to buffer      */
+DECL|member|buf_align
+id|__u32
+id|buf_align
+suffix:semicolon
+multiline_comment|/* byte alignment of each bitmap */
+DECL|member|scan_align
+id|__u32
+id|scan_align
+suffix:semicolon
+multiline_comment|/* alignment per scanline        */
+DECL|member|flags
+id|__u32
+id|flags
+suffix:semicolon
+multiline_comment|/* see FB_PIXMAP_*               */
+DECL|member|outbuf
+r_void
+(paren
+op_star
+id|outbuf
+)paren
+(paren
+id|u8
+id|dst
+comma
+id|u8
+op_star
+id|addr
+)paren
+suffix:semicolon
+multiline_comment|/* access methods                */
+DECL|member|inbuf
+id|u8
+(paren
+op_star
+id|inbuf
+)paren
+(paren
+id|u8
+op_star
+id|addr
+)paren
+suffix:semicolon
+DECL|member|lock_flags
+r_int
+r_int
+id|lock_flags
+suffix:semicolon
+multiline_comment|/* flags for locking             */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+multiline_comment|/* spinlock                      */
+)brace
+suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
@@ -1290,6 +1374,12 @@ id|fb_cmap
 id|cmap
 suffix:semicolon
 multiline_comment|/* Current cmap */
+DECL|member|pixmap
+r_struct
+id|fb_pixmap
+id|pixmap
+suffix:semicolon
+multiline_comment|/* Current pixmap */
 DECL|member|fbops
 r_struct
 id|fb_ops
@@ -1551,6 +1641,20 @@ r_struct
 id|fb_info
 op_star
 id|fb_info
+)paren
+suffix:semicolon
+r_extern
+id|u32
+id|fb_get_buffer_offset
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+comma
+id|u32
+id|size
 )paren
 suffix:semicolon
 r_extern
