@@ -26,8 +26,8 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* Translate from CE_FOO to KERN_FOO, err_level(CE_FOO) == KERN_FOO */
-DECL|macro|MAX_XFS_ERR_LEVEL
-mdefine_line|#define MAX_XFS_ERR_LEVEL&t;7
+DECL|macro|XFS_MAX_ERR_LEVEL
+mdefine_line|#define XFS_MAX_ERR_LEVEL&t;7
 DECL|variable|err_level
 r_static
 r_char
