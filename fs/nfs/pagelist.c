@@ -218,6 +218,15 @@ id|req-&gt;wb_page
 op_assign
 id|page
 suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|req-&gt;wb_complete
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|req-&gt;wb_index
 op_assign
 id|page-&gt;index

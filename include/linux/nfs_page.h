@@ -8,9 +8,14 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/nfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/sunrpc/auth.h&gt;
 macro_line|#include &lt;linux/nfs_xdr.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * Valid flags for a dirty buffer&n; */
 DECL|macro|PG_BUSY
 mdefine_line|#define PG_BUSY&t;&t;&t;0
+DECL|macro|PG_NEED_COMMIT
+mdefine_line|#define PG_NEED_COMMIT&t;&t;1
+DECL|macro|PG_NEED_RESCHED
+mdefine_line|#define PG_NEED_RESCHED&t;&t;2
 DECL|struct|nfs_page
 r_struct
 id|nfs_page
@@ -61,6 +66,11 @@ op_star
 id|wb_page
 suffix:semicolon
 multiline_comment|/* page to read in/write out */
+DECL|member|wb_complete
+id|atomic_t
+id|wb_complete
+suffix:semicolon
+multiline_comment|/* i/os we&squot;re waiting for */
 DECL|member|wb_wait
 id|wait_queue_head_t
 id|wb_wait
@@ -105,6 +115,10 @@ multiline_comment|/* Commit cookie */
 suffix:semicolon
 DECL|macro|NFS_WBACK_BUSY
 mdefine_line|#define NFS_WBACK_BUSY(req)&t;(test_bit(PG_BUSY,&amp;(req)-&gt;wb_flags))
+DECL|macro|NFS_NEED_COMMIT
+mdefine_line|#define NFS_NEED_COMMIT(req)&t;(test_bit(PG_NEED_COMMIT,&amp;(req)-&gt;wb_flags))
+DECL|macro|NFS_NEED_RESCHED
+mdefine_line|#define NFS_NEED_RESCHED(req)&t;(test_bit(PG_NEED_RESCHED,&amp;(req)-&gt;wb_flags))
 r_extern
 r_struct
 id|nfs_page
@@ -427,6 +441,136 @@ suffix:semicolon
 id|req-&gt;wb_list_head
 op_assign
 l_int|NULL
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_int
+DECL|function|nfs_defer_commit
+id|nfs_defer_commit
+c_func
+(paren
+r_struct
+id|nfs_page
+op_star
+id|req
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|test_and_set_bit
+c_func
+(paren
+id|PG_NEED_COMMIT
+comma
+op_amp
+id|req-&gt;wb_flags
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|nfs_clear_commit
+id|nfs_clear_commit
+c_func
+(paren
+r_struct
+id|nfs_page
+op_star
+id|req
+)paren
+(brace
+id|smp_mb__before_clear_bit
+c_func
+(paren
+)paren
+suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|PG_NEED_COMMIT
+comma
+op_amp
+id|req-&gt;wb_flags
+)paren
+suffix:semicolon
+id|smp_mb__after_clear_bit
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_int
+DECL|function|nfs_defer_reschedule
+id|nfs_defer_reschedule
+c_func
+(paren
+r_struct
+id|nfs_page
+op_star
+id|req
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|test_and_set_bit
+c_func
+(paren
+id|PG_NEED_RESCHED
+comma
+op_amp
+id|req-&gt;wb_flags
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|nfs_clear_reschedule
+id|nfs_clear_reschedule
+c_func
+(paren
+r_struct
+id|nfs_page
+op_star
+id|req
+)paren
+(brace
+id|smp_mb__before_clear_bit
+c_func
+(paren
+)paren
+suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|PG_NEED_RESCHED
+comma
+op_amp
+id|req-&gt;wb_flags
+)paren
+suffix:semicolon
+id|smp_mb__after_clear_bit
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 r_static

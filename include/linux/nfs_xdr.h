@@ -2403,6 +2403,9 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_NFS_V4 */
+r_struct
+id|nfs_page
+suffix:semicolon
 DECL|struct|nfs_read_data
 r_struct
 id|nfs_read_data
@@ -2444,6 +2447,13 @@ id|list_head
 id|pages
 suffix:semicolon
 multiline_comment|/* Coalesced read requests */
+DECL|member|req
+r_struct
+id|nfs_page
+op_star
+id|req
+suffix:semicolon
+multiline_comment|/* multi ops per nfs_page */
 DECL|member|pagevec
 r_struct
 id|page
@@ -2471,6 +2481,20 @@ id|timestamp
 suffix:semicolon
 multiline_comment|/* For lease renewal */
 macro_line|#endif
+DECL|member|complete
+r_void
+(paren
+op_star
+id|complete
+)paren
+(paren
+r_struct
+id|nfs_read_data
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|nfs_write_data
@@ -2518,6 +2542,13 @@ id|list_head
 id|pages
 suffix:semicolon
 multiline_comment|/* Coalesced requests we wish to flush */
+DECL|member|req
+r_struct
+id|nfs_page
+op_star
+id|req
+suffix:semicolon
+multiline_comment|/* multi ops per nfs_page */
 DECL|member|pagevec
 r_struct
 id|page
@@ -2547,10 +2578,21 @@ id|timestamp
 suffix:semicolon
 multiline_comment|/* For lease renewal */
 macro_line|#endif
-)brace
-suffix:semicolon
+DECL|member|complete
+r_void
+(paren
+op_star
+id|complete
+)paren
+(paren
 r_struct
-id|nfs_page
+id|nfs_write_data
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+)brace
 suffix:semicolon
 multiline_comment|/*&n; * RPC procedure vector for NFSv2/NFSv3 demuxing&n; */
 DECL|struct|nfs_rpc_ops
