@@ -1279,6 +1279,10 @@ op_logical_and
 id|magic2
 op_ne
 id|LINUX_REBOOT_MAGIC2B
+op_logical_and
+id|magic2
+op_ne
+id|LINUX_REBOOT_MAGIC2C
 )paren
 )paren
 r_return

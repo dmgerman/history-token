@@ -821,7 +821,9 @@ r_struct
 id|bind_req_t
 (brace
 DECL|member|Socket
-id|socket_t
+r_struct
+id|pcmcia_socket
+op_star
 id|Socket
 suffix:semicolon
 DECL|member|Function
@@ -846,7 +848,9 @@ r_struct
 id|mtd_bind_t
 (brace
 DECL|member|Socket
-id|socket_t
+r_struct
+id|pcmcia_socket
+op_star
 id|Socket
 suffix:semicolon
 DECL|member|Attributes

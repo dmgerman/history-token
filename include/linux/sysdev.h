@@ -259,6 +259,11 @@ r_struct
 id|kobject
 id|kobj
 suffix:semicolon
+DECL|member|entry
+r_struct
+id|list_head
+id|entry
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern

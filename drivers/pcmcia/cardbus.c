@@ -224,14 +224,15 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*=====================================================================&n;&n;    These are similar to setup_cis_mem and release_cis_mem for 16-bit&n;    cards.  The &quot;result&quot; that is used externally is the cb_cis_virt&n;    pointer in the socket_info_t structure.&n;    &n;=====================================================================*/
+multiline_comment|/*=====================================================================&n;&n;    These are similar to setup_cis_mem and release_cis_mem for 16-bit&n;    cards.  The &quot;result&quot; that is used externally is the cb_cis_virt&n;    pointer in the struct pcmcia_socket structure.&n;    &n;=====================================================================*/
 DECL|function|cb_release_cis_mem
 r_static
 r_void
 id|cb_release_cis_mem
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -272,7 +273,8 @@ r_int
 id|cb_setup_cis_mem
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -355,7 +357,8 @@ r_int
 id|read_cb_mem
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -662,7 +665,8 @@ r_int
 id|cb_alloc
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -801,7 +805,8 @@ r_void
 id|cb_free
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren

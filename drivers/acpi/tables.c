@@ -130,6 +130,7 @@ id|ACPI_HPET
 )braket
 op_assign
 l_string|&quot;HPET&quot;
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* System Description Table (RSDT/XSDT) */
