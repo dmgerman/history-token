@@ -63,6 +63,7 @@ id|alloc_context
 c_func
 (paren
 r_int
+r_int
 id|stripes
 )paren
 (brace
@@ -138,6 +139,7 @@ id|stripe_c
 op_star
 id|sc
 comma
+r_int
 r_int
 id|stripe
 comma
@@ -323,6 +325,7 @@ op_star
 id|ti
 comma
 r_int
+r_int
 id|argc
 comma
 r_char
@@ -351,7 +354,9 @@ id|end
 suffix:semicolon
 r_int
 id|r
-comma
+suffix:semicolon
+r_int
+r_int
 id|i
 suffix:semicolon
 r_if
@@ -848,6 +853,7 @@ op_star
 id|result
 comma
 r_int
+r_int
 id|maxlen
 )paren
 (brace
@@ -868,6 +874,7 @@ suffix:semicolon
 r_int
 id|offset
 suffix:semicolon
+r_int
 r_int
 id|i
 suffix:semicolon
