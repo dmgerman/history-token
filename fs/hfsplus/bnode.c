@@ -223,11 +223,7 @@ l_int|1
 )paren
 suffix:semicolon
 r_return
-id|be16_to_cpu
-c_func
-(paren
 id|data
-)paren
 suffix:semicolon
 )brace
 DECL|function|hfs_bnode_read_key
