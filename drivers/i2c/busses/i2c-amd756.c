@@ -1,6 +1,7 @@
 multiline_comment|/*&n;    amd756.c - Part of lm_sensors, Linux kernel modules for hardware&n;              monitoring&n;&n;    Copyright (c) 1999-2002 Merlin Hughes &lt;merlin@merlin.org&gt;&n;&n;    Shamelessly ripped from i2c-piix4.c:&n;&n;    Copyright (c) 1998, 1999  Frodo Looijaard &lt;frodol@dds.nl&gt; and&n;    Philip Edelbrock &lt;phil@netroedge.com&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/*&n;    2002-04-08: Added nForce support. (Csaba Halasz)&n;    2002-10-03: Fixed nForce PnP I/O port. (Michael Steil)&n;    2002-12-28: Rewritten into something that resembles a Linux driver (hch)&n;*/
 multiline_comment|/*&n;   Supports AMD756, AMD766, AMD768 and nVidia nForce&n;   Note: we assume there can only be one device, with one SMBus interface.&n;*/
+multiline_comment|/* #define DEBUG 1 */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -11,61 +12,59 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-DECL|macro|DRV_NAME
-mdefine_line|#define DRV_NAME&t;&quot;i2c-amd756&quot;
 multiline_comment|/* AMD756 SMBus address offsets */
 DECL|macro|SMB_ADDR_OFFSET
-mdefine_line|#define SMB_ADDR_OFFSET        0xE0
+mdefine_line|#define SMB_ADDR_OFFSET&t;&t;0xE0
 DECL|macro|SMB_IOSIZE
-mdefine_line|#define SMB_IOSIZE             16
+mdefine_line|#define SMB_IOSIZE&t;&t;16
 DECL|macro|SMB_GLOBAL_STATUS
-mdefine_line|#define SMB_GLOBAL_STATUS      (0x0 + amd756_ioport)
+mdefine_line|#define SMB_GLOBAL_STATUS&t;(0x0 + amd756_ioport)
 DECL|macro|SMB_GLOBAL_ENABLE
-mdefine_line|#define SMB_GLOBAL_ENABLE      (0x2 + amd756_ioport)
+mdefine_line|#define SMB_GLOBAL_ENABLE&t;(0x2 + amd756_ioport)
 DECL|macro|SMB_HOST_ADDRESS
-mdefine_line|#define SMB_HOST_ADDRESS       (0x4 + amd756_ioport)
+mdefine_line|#define SMB_HOST_ADDRESS&t;(0x4 + amd756_ioport)
 DECL|macro|SMB_HOST_DATA
-mdefine_line|#define SMB_HOST_DATA          (0x6 + amd756_ioport)
+mdefine_line|#define SMB_HOST_DATA&t;&t;(0x6 + amd756_ioport)
 DECL|macro|SMB_HOST_COMMAND
-mdefine_line|#define SMB_HOST_COMMAND       (0x8 + amd756_ioport)
+mdefine_line|#define SMB_HOST_COMMAND&t;(0x8 + amd756_ioport)
 DECL|macro|SMB_HOST_BLOCK_DATA
-mdefine_line|#define SMB_HOST_BLOCK_DATA    (0x9 + amd756_ioport)
+mdefine_line|#define SMB_HOST_BLOCK_DATA&t;(0x9 + amd756_ioport)
 DECL|macro|SMB_HAS_DATA
-mdefine_line|#define SMB_HAS_DATA           (0xA + amd756_ioport)
+mdefine_line|#define SMB_HAS_DATA&t;&t;(0xA + amd756_ioport)
 DECL|macro|SMB_HAS_DEVICE_ADDRESS
-mdefine_line|#define SMB_HAS_DEVICE_ADDRESS (0xC + amd756_ioport)
+mdefine_line|#define SMB_HAS_DEVICE_ADDRESS&t;(0xC + amd756_ioport)
 DECL|macro|SMB_HAS_HOST_ADDRESS
-mdefine_line|#define SMB_HAS_HOST_ADDRESS   (0xE + amd756_ioport)
+mdefine_line|#define SMB_HAS_HOST_ADDRESS&t;(0xE + amd756_ioport)
 DECL|macro|SMB_SNOOP_ADDRESS
-mdefine_line|#define SMB_SNOOP_ADDRESS      (0xF + amd756_ioport)
+mdefine_line|#define SMB_SNOOP_ADDRESS&t;(0xF + amd756_ioport)
 multiline_comment|/* PCI Address Constants */
 multiline_comment|/* address of I/O space */
 DECL|macro|SMBBA
-mdefine_line|#define SMBBA     0x058&t;&t;/* mh */
+mdefine_line|#define SMBBA&t;&t;0x058&t;&t;/* mh */
 DECL|macro|SMBBANFORCE
-mdefine_line|#define SMBBANFORCE     0x014
+mdefine_line|#define SMBBANFORCE&t;0x014
 multiline_comment|/* general configuration */
 DECL|macro|SMBGCFG
-mdefine_line|#define SMBGCFG   0x041&t;&t;/* mh */
+mdefine_line|#define SMBGCFG&t;&t;0x041&t;&t;/* mh */
 multiline_comment|/* silicon revision code */
 DECL|macro|SMBREV
-mdefine_line|#define SMBREV    0x008
+mdefine_line|#define SMBREV&t;&t;0x008
 multiline_comment|/* Other settings */
 DECL|macro|MAX_TIMEOUT
-mdefine_line|#define MAX_TIMEOUT 500
+mdefine_line|#define MAX_TIMEOUT&t;500
 multiline_comment|/* AMD756 constants */
 DECL|macro|AMD756_QUICK
-mdefine_line|#define AMD756_QUICK        0x00
+mdefine_line|#define AMD756_QUICK&t;&t;0x00
 DECL|macro|AMD756_BYTE
-mdefine_line|#define AMD756_BYTE         0x01
+mdefine_line|#define AMD756_BYTE&t;&t;0x01
 DECL|macro|AMD756_BYTE_DATA
-mdefine_line|#define AMD756_BYTE_DATA    0x02
+mdefine_line|#define AMD756_BYTE_DATA&t;0x02
 DECL|macro|AMD756_WORD_DATA
-mdefine_line|#define AMD756_WORD_DATA    0x03
+mdefine_line|#define AMD756_WORD_DATA&t;0x03
 DECL|macro|AMD756_PROCESS_CALL
-mdefine_line|#define AMD756_PROCESS_CALL 0x04
+mdefine_line|#define AMD756_PROCESS_CALL&t;0x04
 DECL|macro|AMD756_BLOCK_DATA
-mdefine_line|#define AMD756_BLOCK_DATA   0x05
+mdefine_line|#define AMD756_BLOCK_DATA&t;0x05
 DECL|variable|amd756_ioport
 r_static
 r_int
@@ -99,34 +98,37 @@ id|amount
 suffix:semicolon
 )brace
 DECL|macro|GS_ABRT_STS
-mdefine_line|#define GS_ABRT_STS (1 &lt;&lt; 0)
+mdefine_line|#define GS_ABRT_STS&t;(1 &lt;&lt; 0)
 DECL|macro|GS_COL_STS
-mdefine_line|#define GS_COL_STS (1 &lt;&lt; 1)
+mdefine_line|#define GS_COL_STS&t;(1 &lt;&lt; 1)
 DECL|macro|GS_PRERR_STS
-mdefine_line|#define GS_PRERR_STS (1 &lt;&lt; 2)
+mdefine_line|#define GS_PRERR_STS&t;(1 &lt;&lt; 2)
 DECL|macro|GS_HST_STS
-mdefine_line|#define GS_HST_STS (1 &lt;&lt; 3)
+mdefine_line|#define GS_HST_STS&t;(1 &lt;&lt; 3)
 DECL|macro|GS_HCYC_STS
-mdefine_line|#define GS_HCYC_STS (1 &lt;&lt; 4)
+mdefine_line|#define GS_HCYC_STS&t;(1 &lt;&lt; 4)
 DECL|macro|GS_TO_STS
-mdefine_line|#define GS_TO_STS (1 &lt;&lt; 5)
+mdefine_line|#define GS_TO_STS&t;(1 &lt;&lt; 5)
 DECL|macro|GS_SMB_STS
-mdefine_line|#define GS_SMB_STS (1 &lt;&lt; 11)
+mdefine_line|#define GS_SMB_STS&t;(1 &lt;&lt; 11)
 DECL|macro|GS_CLEAR_STS
-mdefine_line|#define GS_CLEAR_STS (GS_ABRT_STS | GS_COL_STS | GS_PRERR_STS | &bslash;&n;  GS_HCYC_STS | GS_TO_STS )
+mdefine_line|#define GS_CLEAR_STS&t;(GS_ABRT_STS | GS_COL_STS | GS_PRERR_STS | &bslash;&n;&t;&t;&t; GS_HCYC_STS | GS_TO_STS )
 DECL|macro|GE_CYC_TYPE_MASK
-mdefine_line|#define GE_CYC_TYPE_MASK (7)
+mdefine_line|#define GE_CYC_TYPE_MASK&t;(7)
 DECL|macro|GE_HOST_STC
-mdefine_line|#define GE_HOST_STC (1 &lt;&lt; 3)
+mdefine_line|#define GE_HOST_STC&t;&t;(1 &lt;&lt; 3)
 DECL|macro|GE_ABORT
-mdefine_line|#define GE_ABORT (1 &lt;&lt; 5)
+mdefine_line|#define GE_ABORT&t;&t;(1 &lt;&lt; 5)
 DECL|function|amd756_transaction
 r_static
 r_int
 id|amd756_transaction
 c_func
 (paren
-r_void
+r_struct
+id|i2c_adapter
+op_star
+id|adap
 )paren
 (brace
 r_int
@@ -142,11 +144,14 @@ id|timeout
 op_assign
 l_int|0
 suffix:semicolon
-id|pr_debug
+id|dev_dbg
 c_func
 (paren
-id|DRV_NAME
-l_string|&quot;: Transaction (pre): GS=%04x, GE=%04x, ADD=%04x, DAT=%04x&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;: Transaction (pre): GS=%04x, GE=%04x, ADD=%04x, &quot;
+l_string|&quot;DAT=%04x&bslash;n&quot;
 comma
 id|inw_p
 c_func
@@ -194,10 +199,12 @@ id|GS_SMB_STS
 )paren
 )paren
 (brace
-id|pr_debug
+id|dev_dbg
 c_func
 (paren
-id|DRV_NAME
+op_amp
+id|adap-&gt;dev
+comma
 l_string|&quot;: SMBus busy (%04x). Waiting... &bslash;n&quot;
 comma
 id|temp
@@ -250,10 +257,12 @@ op_ge
 id|MAX_TIMEOUT
 )paren
 (brace
-id|pr_debug
+id|dev_dbg
 c_func
 (paren
-id|DRV_NAME
+op_amp
+id|adap-&gt;dev
+comma
 l_string|&quot;: Busy wait timeout (%04x)&bslash;n&quot;
 comma
 id|temp
@@ -327,10 +336,12 @@ op_ge
 id|MAX_TIMEOUT
 )paren
 (brace
-id|pr_debug
+id|dev_dbg
 c_func
 (paren
-id|DRV_NAME
+op_amp
+id|adap-&gt;dev
+comma
 l_string|&quot;: Completion timeout!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -351,10 +362,12 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|pr_debug
+id|dev_dbg
 c_func
 (paren
-id|DRV_NAME
+op_amp
+id|adap-&gt;dev
+comma
 l_string|&quot;: SMBus Protocol error (no response)!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -372,11 +385,12 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|printk
+id|dev_warn
 c_func
 (paren
-id|KERN_WARNING
-id|DRV_NAME
+op_amp
+id|adap-&gt;dev
+comma
 l_string|&quot; SMBus collision!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -394,10 +408,12 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|pr_debug
+id|dev_dbg
 c_func
 (paren
-id|DRV_NAME
+op_amp
+id|adap-&gt;dev
+comma
 l_string|&quot;: SMBus protocol timeout!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -409,10 +425,12 @@ id|temp
 op_amp
 id|GS_HCYC_STS
 )paren
-id|pr_debug
+id|dev_dbg
 c_func
 (paren
-id|DRV_NAME
+op_amp
+id|adap-&gt;dev
+comma
 l_string|&quot; SMBus protocol success!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -445,20 +463,25 @@ op_ne
 l_int|0x00
 )paren
 (brace
-id|pr_debug
+id|dev_dbg
 c_func
 (paren
-id|DRV_NAME
+op_amp
+id|adap-&gt;dev
+comma
 l_string|&quot;: Failed reset at end of transaction (%04x)&bslash;n&quot;
 comma
 id|temp
 )paren
 suffix:semicolon
 )brace
-id|pr_debug
+macro_line|#endif
+id|dev_dbg
 c_func
 (paren
-id|DRV_NAME
+op_amp
+id|adap-&gt;dev
+comma
 l_string|&quot;: Transaction (post): GS=%04x, GE=%04x, ADD=%04x, DAT=%04x&bslash;n&quot;
 comma
 id|inw_p
@@ -486,17 +509,17 @@ id|SMB_HOST_DATA
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|result
 suffix:semicolon
 m_abort
 suffix:colon
-id|printk
+id|dev_warn
 c_func
 (paren
-id|KERN_WARNING
-id|DRV_NAME
+op_amp
+id|adap-&gt;dev
+comma
 l_string|&quot;: Sending abort.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -582,10 +605,12 @@ id|size
 r_case
 id|I2C_SMBUS_PROC_CALL
 suffix:colon
-id|pr_debug
+id|dev_dbg
 c_func
 (paren
-id|DRV_NAME
+op_amp
+id|adap-&gt;dev
+comma
 l_string|&quot;: I2C_SMBUS_PROC_CALL not supported!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -910,6 +935,7 @@ c_cond
 id|amd756_transaction
 c_func
 (paren
+id|adap
 )paren
 )paren
 multiline_comment|/* Error in transaction */
@@ -1275,11 +1301,12 @@ c_cond
 id|amd756_ioport
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-id|DRV_NAME
+op_amp
+id|pdev-&gt;dev
+comma
 l_string|&quot;: Only one device supported. &quot;
 l_string|&quot;(you have a strange motherboard, btw..)&bslash;n&quot;
 )paren
@@ -1367,11 +1394,12 @@ op_eq
 l_int|0
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-id|DRV_NAME
+op_amp
+id|pdev-&gt;dev
+comma
 l_string|&quot;: Error: SMBus controller I/O not enabled!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1417,11 +1445,12 @@ l_string|&quot;amd756-smbus&quot;
 )paren
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-id|DRV_NAME
+op_amp
+id|pdev-&gt;dev
+comma
 l_string|&quot;: SMB region 0x%x already in use!&bslash;n&quot;
 comma
 id|amd756_ioport
@@ -1432,7 +1461,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG
 id|pci_read_config_byte
 c_func
 (paren
@@ -1444,27 +1472,28 @@ op_amp
 id|temp
 )paren
 suffix:semicolon
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-id|DRV_NAME
+op_amp
+id|pdev-&gt;dev
+comma
 l_string|&quot;: SMBREV = 0x%X&bslash;n&quot;
 comma
 id|temp
 )paren
 suffix:semicolon
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-id|DRV_NAME
+op_amp
+id|pdev-&gt;dev
+comma
 l_string|&quot;: AMD756_smba = 0x%X&bslash;n&quot;
 comma
 id|amd756_ioport
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* set up the driverfs linkage to our parent device */
 id|amd756_adapter.dev.parent
 op_assign
@@ -1496,11 +1525,12 @@ c_cond
 id|error
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-id|DRV_NAME
+op_amp
+id|pdev-&gt;dev
+comma
 l_string|&quot;: Adapter registration failed, module not inserted.&bslash;n&quot;
 )paren
 suffix:semicolon
