@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * xfrm4_input.c&n; *&n; * Changes:&n; *&t;YOSHIFUJI Hideaki @USAGI&n; *&t;&t;Split up af-specific portion&n; *&t;Derek Atkins &lt;derek@ihtfp.com&gt;&n; *&t;&t;Add Encapsulation support&n; * &t;&n; */
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;net/inet_ecn.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 DECL|variable|secpath_cachep
@@ -26,6 +27,53 @@ c_func
 id|skb
 comma
 l_int|0
+)paren
+suffix:semicolon
+)brace
+DECL|function|ipip_ecn_decapsulate
+r_static
+r_inline
+r_void
+id|ipip_ecn_decapsulate
+c_func
+(paren
+r_struct
+id|iphdr
+op_star
+id|outer_iph
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_struct
+id|iphdr
+op_star
+id|inner_iph
+op_assign
+id|skb-&gt;nh.iph
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|INET_ECN_is_ce
+c_func
+(paren
+id|outer_iph-&gt;tos
+)paren
+op_logical_and
+id|INET_ECN_is_not_ce
+c_func
+(paren
+id|inner_iph-&gt;tos
+)paren
+)paren
+id|IP_ECN_set_ce
+c_func
+(paren
+id|inner_iph
 )paren
 suffix:semicolon
 )brace
@@ -296,6 +344,24 @@ suffix:semicolon
 id|skb-&gt;nh.raw
 op_assign
 id|skb-&gt;data
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|x-&gt;props.flags
+op_amp
+id|XFRM_STATE_NOECN
+)paren
+)paren
+id|ipip_ecn_decapsulate
+c_func
+(paren
+id|iph
+comma
+id|skb
+)paren
 suffix:semicolon
 id|iph
 op_assign

@@ -101,6 +101,10 @@ id|ealgo
 comma
 id|calgo
 suffix:semicolon
+DECL|member|flags
+id|u8
+id|flags
+suffix:semicolon
 DECL|member|family
 id|u16
 id|family

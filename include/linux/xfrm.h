@@ -437,6 +437,12 @@ DECL|member|replay_window
 id|__u8
 id|replay_window
 suffix:semicolon
+DECL|member|flags
+id|__u8
+id|flags
+suffix:semicolon
+DECL|macro|XFRM_STATE_NOECN
+mdefine_line|#define XFRM_STATE_NOECN&t;1
 )brace
 suffix:semicolon
 DECL|struct|xfrm_usersa_id

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * xfrm6_input.c: based on net/ipv4/xfrm4_input.c&n; *&n; * Authors:&n; *&t;Mitsuru KANDA @USAGI&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;Kunihiro Ishiguro &lt;kunihiro@ipinfusion.com&gt;&n; *&t;YOSHIFUJI Hideaki @USAGI&n; *&t;&t;IPv6 support&n; */
+macro_line|#include &lt;net/inet_ecn.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
@@ -8,6 +9,54 @@ id|kmem_cache_t
 op_star
 id|secpath_cachep
 suffix:semicolon
+DECL|function|ipip6_ecn_decapsulate
+r_static
+r_inline
+r_void
+id|ipip6_ecn_decapsulate
+c_func
+(paren
+r_struct
+id|ipv6hdr
+op_star
+id|iph
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|INET_ECN_is_ce
+c_func
+(paren
+id|ip6_get_dsfield
+c_func
+(paren
+id|iph
+)paren
+)paren
+op_logical_and
+id|INET_ECN_is_not_ce
+c_func
+(paren
+id|ip6_get_dsfield
+c_func
+(paren
+id|skb-&gt;nh.ipv6h
+)paren
+)paren
+)paren
+id|IP6_ECN_set_ce
+c_func
+(paren
+id|skb-&gt;nh.ipv6h
+)paren
+suffix:semicolon
+)brace
 DECL|function|xfrm6_rcv
 r_int
 id|xfrm6_rcv
@@ -307,6 +356,24 @@ suffix:semicolon
 id|skb-&gt;nh.raw
 op_assign
 id|skb-&gt;data
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|x-&gt;props.flags
+op_amp
+id|XFRM_STATE_NOECN
+)paren
+)paren
+id|ipip6_ecn_decapsulate
+c_func
+(paren
+id|iph
+comma
+id|skb
+)paren
 suffix:semicolon
 id|iph
 op_assign
