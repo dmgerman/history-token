@@ -3779,7 +3779,7 @@ suffix:semicolon
 )brace
 id|pSMB-&gt;NumberOfLocks
 op_assign
-id|cpu_to_le32
+id|cpu_to_le16
 c_func
 (paren
 id|numLock
@@ -3787,7 +3787,7 @@ id|numLock
 suffix:semicolon
 id|pSMB-&gt;NumberOfUnlocks
 op_assign
-id|cpu_to_le32
+id|cpu_to_le16
 c_func
 (paren
 id|numUnlock
