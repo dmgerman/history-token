@@ -513,6 +513,25 @@ r_void
 op_star
 )paren
 suffix:semicolon
+DECL|variable|irongate_mem
+r_static
+r_struct
+id|resource
+id|irongate_mem
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;Irongate PCI MEM&quot;
+comma
+dot
+id|flags
+op_assign
+id|IORESOURCE_MEM
+comma
+)brace
+suffix:semicolon
 r_void
 id|__init
 DECL|function|nautilus_init_pci
@@ -538,18 +557,6 @@ r_struct
 id|pci_dev
 op_star
 id|irongate
-suffix:semicolon
-r_int
-r_int
-id|saved_io_start
-comma
-id|saved_io_end
-suffix:semicolon
-r_int
-r_int
-id|saved_mem_start
-comma
-id|saved_mem_end
 suffix:semicolon
 r_int
 r_int
@@ -588,7 +595,6 @@ id|hose-&gt;last_busno
 op_assign
 id|bus-&gt;subordinate
 suffix:semicolon
-multiline_comment|/* We&squot;re going to size the root bus, so we must&n;&t;   - have a non-NULL PCI device associated with the bus&n;&t;   - preserve hose resources. */
 id|irongate
 op_assign
 id|pci_find_slot
@@ -603,41 +609,13 @@ id|bus-&gt;self
 op_assign
 id|irongate
 suffix:semicolon
-id|saved_io_start
-op_assign
-id|bus-&gt;resource
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|start
-suffix:semicolon
-id|saved_io_end
-op_assign
-id|bus-&gt;resource
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|end
-suffix:semicolon
-id|saved_mem_start
-op_assign
 id|bus-&gt;resource
 (braket
 l_int|1
 )braket
-op_member_access_from_pointer
-id|start
-suffix:semicolon
-id|saved_mem_end
 op_assign
-id|bus-&gt;resource
-(braket
-l_int|1
-)braket
-op_member_access_from_pointer
-id|end
+op_amp
+id|irongate_mem
 suffix:semicolon
 id|pci_bus_size_bridges
 c_func
@@ -645,7 +623,7 @@ c_func
 id|bus
 )paren
 suffix:semicolon
-multiline_comment|/* Don&squot;t care about IO. */
+multiline_comment|/* IO port range. */
 id|bus-&gt;resource
 (braket
 l_int|0
@@ -653,7 +631,7 @@ l_int|0
 op_member_access_from_pointer
 id|start
 op_assign
-id|saved_io_start
+l_int|0
 suffix:semicolon
 id|bus-&gt;resource
 (braket
@@ -662,8 +640,9 @@ l_int|0
 op_member_access_from_pointer
 id|end
 op_assign
-id|saved_io_end
+l_int|0xffff
 suffix:semicolon
+multiline_comment|/* Set up PCI memory range - limit is hardwired to 0xffffffff,&n;&t;   base must be at aligned to 16Mb. */
 id|bus_align
 op_assign
 id|bus-&gt;resource
@@ -686,7 +665,6 @@ l_int|1
 op_minus
 id|bus_align
 suffix:semicolon
-multiline_comment|/* Align to 16Mb. */
 r_if
 c_cond
 (paren
@@ -698,25 +676,6 @@ id|bus_align
 op_assign
 l_int|0x1000000UL
 suffix:semicolon
-multiline_comment|/* Restore hose MEM resource. */
-id|bus-&gt;resource
-(braket
-l_int|1
-)braket
-op_member_access_from_pointer
-id|start
-op_assign
-id|saved_mem_start
-suffix:semicolon
-id|bus-&gt;resource
-(braket
-l_int|1
-)braket
-op_member_access_from_pointer
-id|end
-op_assign
-id|saved_mem_end
-suffix:semicolon
 id|pci_mem
 op_assign
 (paren
@@ -727,6 +686,48 @@ id|bus_size
 op_amp
 op_minus
 id|bus_align
+suffix:semicolon
+id|bus-&gt;resource
+(braket
+l_int|1
+)braket
+op_member_access_from_pointer
+id|start
+op_assign
+id|pci_mem
+suffix:semicolon
+id|bus-&gt;resource
+(braket
+l_int|1
+)braket
+op_member_access_from_pointer
+id|end
+op_assign
+l_int|0xffffffffUL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|request_resource
+c_func
+(paren
+op_amp
+id|iomem_resource
+comma
+id|bus-&gt;resource
+(braket
+l_int|1
+)braket
+)paren
+OL
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Failed to request MEM on hose 0&bslash;n&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -755,7 +756,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;nautilus_init_arch: %ldk freed&bslash;n&quot;
+l_string|&quot;nautilus_init_pci: %ldk freed&bslash;n&quot;
 comma
 (paren
 id|pci_mem
@@ -767,10 +768,6 @@ l_int|10
 )paren
 suffix:semicolon
 )brace
-id|alpha_mv.min_mem_address
-op_assign
-id|pci_mem
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -792,11 +789,6 @@ c_func
 (paren
 id|bus
 )paren
-suffix:semicolon
-multiline_comment|/* To break the loop in common_swizzle() */
-id|bus-&gt;self
-op_assign
-l_int|NULL
 suffix:semicolon
 id|pci_fixup_irqs
 c_func
