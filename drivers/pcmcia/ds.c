@@ -58,15 +58,6 @@ id|PCMCIA_DEBUG
 suffix:semicolon
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
-DECL|variable|version
-r_static
-r_const
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;ds.c 1.112 2001/10/13 00:08:28 (David Hinds)&quot;
-suffix:semicolon
 macro_line|#else
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(n, args...)
@@ -1334,7 +1325,7 @@ l_int|2
 comma
 l_string|&quot;bind_request(%d, &squot;%s&squot;)&bslash;n&quot;
 comma
-id|i
+id|s-&gt;socket_no
 comma
 (paren
 r_char
@@ -1908,7 +1899,7 @@ l_int|2
 comma
 l_string|&quot;unbind_request(%d, &squot;%s&squot;)&bslash;n&quot;
 comma
-id|i
+id|s-&gt;socket_no
 comma
 (paren
 r_char
