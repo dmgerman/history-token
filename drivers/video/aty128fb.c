@@ -22,10 +22,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef CONFIG_ALL_PPC
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
-macro_line|#include &lt;video/macmodes.h&gt;
-macro_line|#ifdef CONFIG_NVRAM
-macro_line|#include &lt;linux/nvram.h&gt;
-macro_line|#endif
+macro_line|#include &quot;macmodes.h&quot;
 macro_line|#endif
 macro_line|#ifdef CONFIG_ADB_PMU
 macro_line|#include &lt;linux/adb.h&gt;
@@ -1005,10 +1002,6 @@ DECL|member|gen_cntl
 id|u32
 id|gen_cntl
 suffix:semicolon
-DECL|member|ext_cntl
-id|u32
-id|ext_cntl
-suffix:semicolon
 DECL|member|h_total
 DECL|member|h_sync_strt_wid
 id|u32
@@ -1185,32 +1178,49 @@ id|crt_on
 comma
 id|lcd_on
 suffix:semicolon
+DECL|member|pdev
+r_struct
+id|pci_dev
+op_star
+id|pdev
+suffix:semicolon
+DECL|member|next
+r_struct
+id|fb_info
+op_star
+id|next
+suffix:semicolon
 macro_line|#endif
 DECL|member|red
-r_int
-r_char
+id|u8
 id|red
 (braket
-l_int|64
+l_int|32
 )braket
 suffix:semicolon
-multiline_comment|/* see comments in aty128fb_setcolreg */
+multiline_comment|/* see aty128fb_setcolreg */
 DECL|member|green
-r_int
-r_char
+id|u8
 id|green
 (braket
 l_int|64
 )braket
 suffix:semicolon
 DECL|member|blue
-r_int
-r_char
+id|u8
 id|blue
 (braket
-l_int|64
+l_int|32
 )braket
 suffix:semicolon
+DECL|member|pseudo_palette
+id|u32
+id|pseudo_palette
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* used for TRUECOLOR */
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_PMAC_PBOOK
@@ -1239,6 +1249,15 @@ comma
 id|SLEEP_LEVEL_VIDEO
 comma
 )brace
+suffix:semicolon
+DECL|variable|aty128_fb
+r_static
+r_struct
+id|fb_info
+op_star
+id|aty128_fb
+op_assign
+l_int|NULL
 suffix:semicolon
 macro_line|#endif
 DECL|macro|round_div
@@ -5158,6 +5177,30 @@ suffix:semicolon
 id|u32
 id|config
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|aty128_decode_var
+c_func
+(paren
+op_amp
+id|info-&gt;var
+comma
+id|par
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+r_return
+id|err
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5493,6 +5536,18 @@ id|par
 r_int
 id|err
 suffix:semicolon
+r_struct
+id|aty128_crtc
+id|crtc
+suffix:semicolon
+r_struct
+id|aty128_pll
+id|pll
+suffix:semicolon
+r_struct
+id|aty128_ddafifo
+id|fifo_reg
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5505,7 +5560,7 @@ c_func
 id|var
 comma
 op_amp
-id|par-&gt;crtc
+id|crtc
 comma
 id|par
 )paren
@@ -5526,7 +5581,7 @@ c_func
 id|var-&gt;pixclock
 comma
 op_amp
-id|par-&gt;pll
+id|pll
 comma
 id|par
 )paren
@@ -5545,12 +5600,12 @@ id|aty128_ddafifo
 c_func
 (paren
 op_amp
-id|par-&gt;fifo_reg
+id|fifo_reg
 comma
 op_amp
-id|par-&gt;pll
+id|pll
 comma
-id|par-&gt;crtc.depth
+id|crtc.depth
 comma
 id|par
 )paren
@@ -5558,6 +5613,18 @@ id|par
 )paren
 r_return
 id|err
+suffix:semicolon
+id|par-&gt;crtc
+op_assign
+id|crtc
+suffix:semicolon
+id|par-&gt;pll
+op_assign
+id|pll
+suffix:semicolon
+id|par-&gt;fifo_reg
+op_assign
+id|fifo_reg
 suffix:semicolon
 id|par-&gt;accel_flags
 op_assign
@@ -5671,13 +5738,20 @@ id|info
 (brace
 r_struct
 id|aty128fb_par
-op_star
 id|par
-op_assign
-id|info-&gt;par
 suffix:semicolon
 r_int
 id|err
+suffix:semicolon
+id|par
+op_assign
+op_star
+(paren
+r_struct
+id|aty128fb_par
+op_star
+)paren
+id|info-&gt;par
 suffix:semicolon
 r_if
 c_cond
@@ -5690,6 +5764,7 @@ c_func
 (paren
 id|var
 comma
+op_amp
 id|par
 )paren
 )paren
@@ -5704,6 +5779,7 @@ c_func
 (paren
 id|var
 comma
+op_amp
 id|par
 )paren
 suffix:semicolon
@@ -6164,7 +6240,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_ALL_PPC
-multiline_comment|/* vmode and cmode depreciated */
+multiline_comment|/* vmode and cmode deprecated */
 r_if
 c_cond
 (paren
@@ -6961,12 +7037,31 @@ comma
 id|PCI_CAP_ID_PM
 )paren
 suffix:semicolon
-id|pmu_register_sleep_notifier
+r_if
+c_cond
+(paren
+id|aty128_fb
+op_eq
+l_int|NULL
+)paren
+(brace
+multiline_comment|/* XXX can only put one chip to sleep */
+id|aty128_fb
+op_assign
+id|info
+suffix:semicolon
+)brace
+r_else
+id|printk
 c_func
 (paren
-op_amp
-id|aty128_sleep_notifier
+id|KERN_WARNING
+l_string|&quot;aty128fb: can only sleep one Rage 128&bslash;n&quot;
 )paren
+suffix:semicolon
+id|par-&gt;pdev
+op_assign
+id|pdev
 suffix:semicolon
 macro_line|#endif
 id|printk
@@ -7169,13 +7264,6 @@ r_sizeof
 r_struct
 id|aty128fb_par
 )paren
-op_plus
-r_sizeof
-(paren
-id|u32
-)paren
-op_star
-l_int|16
 suffix:semicolon
 r_if
 c_cond
@@ -7230,29 +7318,7 @@ l_int|1
 suffix:semicolon
 id|info-&gt;pseudo_palette
 op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
-id|par
-op_plus
-l_int|1
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|info
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|fb_info
-)paren
-)paren
+id|par-&gt;pseudo_palette
 suffix:semicolon
 id|info-&gt;par
 op_assign
@@ -7707,6 +7773,19 @@ l_int|2
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PMAC_PBOOK
+r_if
+c_cond
+(paren
+id|info
+op_eq
+id|aty128_fb
+)paren
+id|aty128_fb
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
 id|kfree
 c_func
 (paren
@@ -8847,22 +8926,34 @@ c_cond
 id|par-&gt;crtc.depth
 op_eq
 l_int|16
+op_logical_and
+id|regno
+OG
+l_int|0
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * With the 5-6-5 split of bits for RGB at 16 bits/pixel, we&n;&t;&t; * have 32 slots for R and B values but 64 slots for G values.&n;&t;&t; * Thus the R and B values go in one slot but the G value&n;&t;&t; * goes in a different slot, and we have to avoid disturbing&n;&t;&t; * the other fields in the slots we touch.&n;&t;&t; */
-id|par-&gt;red
-(braket
-id|regno
-)braket
-op_assign
-id|red
-suffix:semicolon
 id|par-&gt;green
 (braket
 id|regno
 )braket
 op_assign
 id|green
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|regno
+OL
+l_int|32
+)paren
+(brace
+id|par-&gt;red
+(braket
+id|regno
+)braket
+op_assign
+id|red
 suffix:semicolon
 id|par-&gt;blue
 (braket
@@ -8871,17 +8962,6 @@ id|regno
 op_assign
 id|blue
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|regno
-OG
-l_int|0
-op_logical_and
-id|regno
-OL
-l_int|32
-)paren
 id|aty128_st_pal
 c_func
 (paren
@@ -8903,6 +8983,7 @@ comma
 id|par
 )paren
 suffix:semicolon
+)brace
 id|red
 op_assign
 id|par-&gt;red
@@ -9839,6 +9920,13 @@ suffix:semicolon
 id|u16
 id|pwr_command
 suffix:semicolon
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+id|par-&gt;pdev
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9920,7 +10008,7 @@ suffix:semicolon
 id|pci_read_config_word
 c_func
 (paren
-id|par-&gt;pdev
+id|pdev
 comma
 id|par-&gt;pm_reg
 op_plus
@@ -9934,7 +10022,7 @@ multiline_comment|/* Switch PCI power management to D2 */
 id|pci_write_config_word
 c_func
 (paren
-id|par-&gt;pdev
+id|pdev
 comma
 id|par-&gt;pm_reg
 op_plus
@@ -9953,7 +10041,7 @@ suffix:semicolon
 id|pci_read_config_word
 c_func
 (paren
-id|par-&gt;pdev
+id|pdev
 comma
 id|par-&gt;pm_reg
 op_plus
@@ -9976,7 +10064,7 @@ suffix:semicolon
 id|pci_write_config_word
 c_func
 (paren
-id|par-&gt;pdev
+id|pdev
 comma
 id|par-&gt;pm_reg
 op_plus
@@ -9985,16 +10073,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|mdelay
-c_func
-(paren
-l_int|100
-)paren
-suffix:semicolon
 id|pci_read_config_word
 c_func
 (paren
-id|par-&gt;pdev
+id|pdev
 comma
 id|par-&gt;pm_reg
 op_plus
@@ -10028,10 +10110,6 @@ id|when
 )paren
 (brace
 r_int
-id|result
-op_assign
-id|PBOOK_SLEEP_OK
-comma
 id|nb
 suffix:semicolon
 r_struct
@@ -10039,12 +10117,23 @@ id|fb_info
 op_star
 id|info
 op_assign
-id|info
+id|aty128_fb
 suffix:semicolon
-multiline_comment|/* FIXME!!! How do find which framebuffer  */
 r_struct
 id|aty128fb_par
 op_star
+id|par
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info
+op_eq
+l_int|NULL
+)paren
+r_return
+id|PBOOK_SLEEP_OK
+suffix:semicolon
 id|par
 op_assign
 id|info-&gt;par
@@ -10227,7 +10316,7 @@ r_break
 suffix:semicolon
 )brace
 r_return
-id|result
+id|PBOOK_SLEEP_OK
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PMAC_PBOOK */
@@ -10240,6 +10329,15 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_PMAC_PBOOK
+id|pmu_register_sleep_notifier
+c_func
+(paren
+op_amp
+id|aty128_sleep_notifier
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|pci_module_init
 c_func
@@ -10259,6 +10357,15 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_PMAC_PBOOK
+id|pmu_unregister_sleep_notifier
+c_func
+(paren
+op_amp
+id|aty128_sleep_notifier
+)paren
+suffix:semicolon
+macro_line|#endif
 id|pci_unregister_driver
 c_func
 (paren
