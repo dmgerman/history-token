@@ -59,9 +59,7 @@ comma
 l_string|&quot;Base addresses for the ACCESS.bus controllers&quot;
 )paren
 suffix:semicolon
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG 0
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(x...) printk(KERN_DEBUG NAME &quot;: &quot; x)
 macro_line|#else
@@ -1326,7 +1324,7 @@ c_func
 id|cur_word
 )paren
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren

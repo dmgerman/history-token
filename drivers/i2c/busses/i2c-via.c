@@ -1,6 +1,5 @@
 multiline_comment|/*&n;    i2c-via.c - Part of lm_sensors,  Linux kernel modules&n;                for hardware monitoring&n;&n;    i2c Support for Via Technologies 82C586B South Bridge&n;&n;    Copyright (c) 1998, 1999 Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
+multiline_comment|/* #define DEBUG */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
