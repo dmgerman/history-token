@@ -173,13 +173,6 @@ c_func
 id|__alloc_pages
 )paren
 suffix:semicolon
-DECL|variable|alloc_pages_node
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|alloc_pages_node
-)paren
-suffix:semicolon
 DECL|variable|__get_free_pages
 id|EXPORT_SYMBOL
 c_func

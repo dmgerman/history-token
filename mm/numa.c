@@ -155,63 +155,7 @@ op_assign
 id|contig_page_data.node_mem_map
 suffix:semicolon
 )brace
-macro_line|#endif /* !CONFIG_DISCONTIGMEM */
-DECL|function|alloc_pages_node
-r_struct
-id|page
-op_star
-id|alloc_pages_node
-c_func
-(paren
-r_int
-id|nid
-comma
-r_int
-r_int
-id|gfp_mask
-comma
-r_int
-r_int
-id|order
-)paren
-(brace
-macro_line|#ifdef CONFIG_NUMA
-r_return
-id|__alloc_pages
-c_func
-(paren
-id|gfp_mask
-comma
-id|order
-comma
-id|NODE_DATA
-c_func
-(paren
-id|nid
-)paren
-op_member_access_from_pointer
-id|node_zonelists
-op_plus
-(paren
-id|gfp_mask
-op_amp
-id|GFP_ZONEMASK
-)paren
-)paren
-suffix:semicolon
-macro_line|#else
-r_return
-id|alloc_pages
-c_func
-(paren
-id|gfp_mask
-comma
-id|order
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
-macro_line|#ifdef CONFIG_DISCONTIGMEM
+macro_line|#else /* CONFIG_DISCONTIGMEM */
 DECL|macro|LONG_ALIGN
 mdefine_line|#define LONG_ALIGN(x) (((x)+(sizeof(long))-1)&amp;~((sizeof(long))-1))
 multiline_comment|/*&n; * Nodes can be initialized parallely, in no particular order.&n; */
