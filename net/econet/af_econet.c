@@ -28,6 +28,7 @@ macro_line|#include &lt;linux/if_ec.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -1285,12 +1286,6 @@ r_struct
 id|in_device
 op_star
 id|idev
-op_assign
-id|in_dev_get
-c_func
-(paren
-id|dev
-)paren
 suffix:semicolon
 r_int
 r_int
@@ -1298,19 +1293,25 @@ id|network
 op_assign
 l_int|0
 suffix:semicolon
+id|rcu_read_lock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|idev
+op_assign
+id|__in_dev_get
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|idev
 )paren
 (brace
-id|read_lock
-c_func
-(paren
-op_amp
-id|idev-&gt;lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1327,20 +1328,12 @@ op_amp
 l_int|0xffffff00
 suffix:semicolon
 multiline_comment|/* !!! */
-id|read_unlock
-c_func
-(paren
-op_amp
-id|idev-&gt;lock
-)paren
-suffix:semicolon
-id|in_dev_put
-c_func
-(paren
-id|idev
-)paren
-suffix:semicolon
 )brace
+id|rcu_read_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|udpdest.sin_addr.s_addr
 op_assign
 id|htonl

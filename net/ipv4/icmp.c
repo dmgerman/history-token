@@ -1375,36 +1375,6 @@ c_func
 r_return
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Construct source address and options.&n;&t; */
-macro_line|#ifdef CONFIG_IP_ROUTE_NAT
-multiline_comment|/*&n;&t; *&t;Restore original addresses if packet has been translated.&n;&t; */
-r_if
-c_cond
-(paren
-id|rt-&gt;rt_flags
-op_amp
-id|RTCF_NAT
-op_logical_and
-id|IPCB
-c_func
-(paren
-id|skb_in
-)paren
-op_member_access_from_pointer
-id|flags
-op_amp
-id|IPSKB_TRANSLATED
-)paren
-(brace
-id|iph-&gt;daddr
-op_assign
-id|rt-&gt;fl.fl4_dst
-suffix:semicolon
-id|iph-&gt;saddr
-op_assign
-id|rt-&gt;fl.fl4_src
-suffix:semicolon
-)brace
-macro_line|#endif
 id|saddr
 op_assign
 id|iph-&gt;daddr
@@ -2676,11 +2646,9 @@ id|in_dev
 r_goto
 id|out
 suffix:semicolon
-id|read_lock
+id|rcu_read_lock
 c_func
 (paren
-op_amp
-id|in_dev-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -2807,11 +2775,9 @@ id|rt-&gt;rt_src
 suffix:semicolon
 )brace
 )brace
-id|read_unlock
+id|rcu_read_unlock
 c_func
 (paren
-op_amp
-id|in_dev-&gt;lock
 )paren
 suffix:semicolon
 id|in_dev_put

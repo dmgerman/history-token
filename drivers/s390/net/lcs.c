@@ -4394,7 +4394,7 @@ id|read_lock
 c_func
 (paren
 op_amp
-id|in4_dev-&gt;lock
+id|in4_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 id|spin_lock
@@ -4670,7 +4670,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|in4_dev-&gt;lock
+id|in4_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 id|in_dev_put
