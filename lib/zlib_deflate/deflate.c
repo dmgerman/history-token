@@ -476,7 +476,7 @@ c_cond
 (paren
 id|version
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|version
 (braket
@@ -505,14 +505,14 @@ c_cond
 (paren
 id|strm
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 r_return
 id|Z_STREAM_ERROR
 suffix:semicolon
 id|strm-&gt;msg
 op_assign
-id|Z_NULL
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -812,15 +812,15 @@ c_cond
 (paren
 id|strm
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|strm-&gt;state
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|dictionary
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 r_return
 id|Z_STREAM_ERROR
@@ -1002,11 +1002,11 @@ c_cond
 (paren
 id|strm
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|strm-&gt;state
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 r_return
 id|Z_STREAM_ERROR
@@ -1019,7 +1019,7 @@ l_int|0
 suffix:semicolon
 id|strm-&gt;msg
 op_assign
-id|Z_NULL
+l_int|NULL
 suffix:semicolon
 id|strm-&gt;data_type
 op_assign
@@ -1121,11 +1121,11 @@ c_cond
 (paren
 id|strm
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|strm-&gt;state
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 r_return
 id|Z_STREAM_ERROR
@@ -1359,7 +1359,7 @@ c_cond
 (paren
 id|strm-&gt;next_out
 op_ne
-id|Z_NULL
+l_int|NULL
 )paren
 (brace
 id|memcpy
@@ -1433,11 +1433,11 @@ c_cond
 (paren
 id|strm
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|strm-&gt;state
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|flush
 OG
@@ -1466,7 +1466,7 @@ c_cond
 (paren
 id|strm-&gt;next_in
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_and
 id|strm-&gt;avail_in
 op_ne
@@ -2022,11 +2022,11 @@ c_cond
 (paren
 id|strm
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|strm-&gt;state
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 r_return
 id|Z_STREAM_ERROR
@@ -2065,7 +2065,7 @@ suffix:semicolon
 )brace
 id|strm-&gt;state
 op_assign
-id|Z_NULL
+l_int|NULL
 suffix:semicolon
 r_return
 id|status
@@ -2116,15 +2116,15 @@ c_cond
 (paren
 id|source
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|dest
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|source-&gt;state
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 (brace
 r_return
@@ -3773,7 +3773,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ===========================================================================&n; * Flush the current block, with given end-of-file flag.&n; * IN assertion: strstart is set to the end of the current match.&n; */
 DECL|macro|FLUSH_BLOCK_ONLY
-mdefine_line|#define FLUSH_BLOCK_ONLY(s, eof) { &bslash;&n;   zlib_tr_flush_block(s, (s-&gt;block_start &gt;= 0L ? &bslash;&n;                   (char *)&amp;s-&gt;window[(unsigned)s-&gt;block_start] : &bslash;&n;                   (char *)Z_NULL), &bslash;&n;&t;&t;(ulg)((long)s-&gt;strstart - s-&gt;block_start), &bslash;&n;&t;&t;(eof)); &bslash;&n;   s-&gt;block_start = s-&gt;strstart; &bslash;&n;   flush_pending(s-&gt;strm); &bslash;&n;   Tracev((stderr,&quot;[FLUSH]&quot;)); &bslash;&n;}
+mdefine_line|#define FLUSH_BLOCK_ONLY(s, eof) { &bslash;&n;   zlib_tr_flush_block(s, (s-&gt;block_start &gt;= 0L ? &bslash;&n;                   (char *)&amp;s-&gt;window[(unsigned)s-&gt;block_start] : &bslash;&n;                   (char *)NULL), &bslash;&n;&t;&t;(ulg)((long)s-&gt;strstart - s-&gt;block_start), &bslash;&n;&t;&t;(eof)); &bslash;&n;   s-&gt;block_start = s-&gt;strstart; &bslash;&n;   flush_pending(s-&gt;strm); &bslash;&n;   Tracev((stderr,&quot;[FLUSH]&quot;)); &bslash;&n;}
 multiline_comment|/* Same but force premature exit if necessary. */
 DECL|macro|FLUSH_BLOCK
 mdefine_line|#define FLUSH_BLOCK(s, eof) { &bslash;&n;   FLUSH_BLOCK_ONLY(s, eof); &bslash;&n;   if (s-&gt;strm-&gt;avail_out == 0) return (eof) ? finish_started : need_more; &bslash;&n;}

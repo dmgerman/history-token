@@ -583,7 +583,7 @@ op_assign
 id|inflate_huft
 op_star
 )paren
-id|Z_NULL
+l_int|NULL
 suffix:semicolon
 op_star
 id|m
@@ -884,7 +884,7 @@ op_assign
 id|inflate_huft
 op_star
 )paren
-id|Z_NULL
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* just to keep compilers happy */
 id|q
@@ -893,7 +893,7 @@ op_assign
 id|inflate_huft
 op_star
 )paren
-id|Z_NULL
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* ditto */
 id|z
@@ -1469,13 +1469,13 @@ comma
 id|uInt
 op_star
 )paren
-id|Z_NULL
+l_int|NULL
 comma
 (paren
 id|uInt
 op_star
 )paren
-id|Z_NULL
+l_int|NULL
 comma
 id|tb
 comma
