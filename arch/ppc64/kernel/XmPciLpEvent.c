@@ -13,16 +13,14 @@ macro_line|#include &lt;asm/iSeries/HvCallPci.h&gt;
 macro_line|#include &lt;asm/iSeries/XmPciLpEvent.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 DECL|variable|Pci_Interrupt_Count
+r_static
 r_int
 id|Pci_Interrupt_Count
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|Pci_Event_Count
+r_static
 r_int
 id|Pci_Event_Count
-op_assign
-l_int|0
 suffix:semicolon
 DECL|enum|XmPciLpEvent_Subtype
 r_enum
@@ -45,7 +43,7 @@ id|XmPciLpEvent_BusFailed
 op_assign
 l_int|2
 comma
-singleline_comment|// Msg to Seconday, Primary failed bus
+singleline_comment|// Msg to Secondary, Primary failed bus
 DECL|enumerator|XmPciLpEvent_NodeFailed
 id|XmPciLpEvent_NodeFailed
 op_assign
@@ -289,7 +287,7 @@ r_else
 r_if
 c_cond
 (paren
-id|event
+id|eventParm
 )paren
 (brace
 id|printk

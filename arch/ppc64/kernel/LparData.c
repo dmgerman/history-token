@@ -103,7 +103,7 @@ comma
 multiline_comment|/* Min supported PLIC = v5r1m0 */
 l_int|3
 comma
-multiline_comment|/* Min usuable PLIC   = v5r1m0 */
+multiline_comment|/* Min usable PLIC   = v5r1m0 */
 (brace
 l_int|0xd3
 comma
@@ -640,7 +640,7 @@ multiline_comment|/* # VPD array entries */
 l_int|10
 comma
 multiline_comment|/* # DMA array entries */
-id|MAX_PROCESSORS
+id|NR_CPUS
 op_star
 l_int|2
 comma
