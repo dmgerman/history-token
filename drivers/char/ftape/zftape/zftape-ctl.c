@@ -2,8 +2,6 @@ multiline_comment|/* &n; *      Copyright (C) 1996, 1997 Claus-Justus Heine&n;&n
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/zftape.h&gt;
