@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * For the purpose of avoiding doubt the preferred form of the work&n; * for making modifications shall be a standards compliant form such&n; * gzipped tar and not one requiring a proprietary or patent encumbered&n; * tool to unpack.&n; *&n; *  Complications for I2O scsi&n; *&n; *&t;o&t;Each (bus,lun) is a logical device in I2O. We keep a map&n; *&t;&t;table. We spoof failed selection for unmapped units&n; *&t;o&t;Request sense buffers can come back for free. &n; *&t;o&t;Scatter gather is a bit dynamic. We have to investigate at&n; *&t;&t;setup time.&n; *&t;o&t;Some of our resources are dynamically shared. The i2o core&n; *&t;&t;needs a message reservation protocol to avoid swap v net&n; *&t;&t;deadlocking. We need to back off queue requests.&n; *&t;&n; *&t;In general the firmware wants to help. Where its help isn&squot;t performance&n; *&t;useful we just ignore the aid. Its not worth the code in truth.&n; *&n; *&t;Fixes:&n; *&t;&t;Steve Ralston&t;:&t;Scatter gather now works&n; *&n; *&t;To Do&n; *&t;&t;64bit cleanups&n; *&t;&t;Fix the resource management problems.&n; */
+multiline_comment|/* &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * For the avoidance of doubt the &quot;preferred form&quot; of this code is one which&n; * is in an open non patent encumbered format. Where cryptographic key signing&n; * forms part of the process of creating an executable the information&n; * including keys needed to generate an equivalently functional executable&n; * are deemed to be part of the source code.&n; *&n; *  Complications for I2O scsi&n; *&n; *&t;o&t;Each (bus,lun) is a logical device in I2O. We keep a map&n; *&t;&t;table. We spoof failed selection for unmapped units&n; *&t;o&t;Request sense buffers can come back for free. &n; *&t;o&t;Scatter gather is a bit dynamic. We have to investigate at&n; *&t;&t;setup time.&n; *&t;o&t;Some of our resources are dynamically shared. The i2o core&n; *&t;&t;needs a message reservation protocol to avoid swap v net&n; *&t;&t;deadlocking. We need to back off queue requests.&n; *&t;&n; *&t;In general the firmware wants to help. Where its help isn&squot;t performance&n; *&t;useful we just ignore the aid. Its not worth the code in truth.&n; *&n; *&t;Fixes:&n; *&t;&t;Steve Ralston&t;:&t;Scatter gather now works&n; *&n; *&t;To Do&n; *&t;&t;64bit cleanups&n; *&t;&t;Fix the resource management problems.&n; */
 macro_line|#error Please convert me to Documentation/DMA-mapping.txt
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -23,7 +23,7 @@ macro_line|#include &quot;../../scsi/hosts.h&quot;
 macro_line|#include &quot;../../scsi/sd.h&quot;
 macro_line|#include &quot;i2o_scsi.h&quot;
 DECL|macro|VERSION_STRING
-mdefine_line|#define VERSION_STRING        &quot;Version 0.1.0&quot;
+mdefine_line|#define VERSION_STRING        &quot;Version 0.1.1&quot;
 DECL|macro|dprintk
 mdefine_line|#define dprintk(x)
 DECL|macro|MAXHOSTS
@@ -187,7 +187,7 @@ id|sg_max_frags
 op_assign
 id|SG_MAX_FRAGS
 suffix:semicolon
-multiline_comment|/*&n; *&t;Retry congested frames. This actually needs pushing down into&n; *&t;i2o core. We should only bother the OSM with this when we can&squot;t&n; *&t;queue and retry the frame. Or perhaps we should call the OSM&n; *&t;and its default handler should be this in the core, and this&n; *&t;call a 2nd &quot;I give up&quot; handler in the OSM ?&n; */
+multiline_comment|/**&n; *&t;i2o_retry_run&t;&t;-&t;retry on timeout&n; *&t;@f: unused&n; *&n; *&t;Retry congested frames. This actually needs pushing down into&n; *&t;i2o core. We should only bother the OSM with this when we can&squot;t&n; *&t;queue and retry the frame. Or perhaps we should call the OSM&n; *&t;and its default handler should be this in the core, and this&n; *&t;call a 2nd &quot;I give up&quot; handler in the OSM ?&n; */
 DECL|function|i2o_retry_run
 r_static
 r_void
@@ -263,6 +263,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;flush_pending&t;&t;-&t;empty the retry queue&n; *&n; *&t;Turn each of the pending commands into a NOP and post it back&n; *&t;to the controller to clear it.&n; */
 DECL|function|flush_pending
 r_static
 r_void
@@ -359,6 +360,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;i2o_scsi_reply&t;&t;-&t;scsi message reply processor&n; *&t;@h: our i2o handler&n; *&t;@c: controller issuing the reply&n; *&t;@msg: the message from the controller (mapped)&n; *&n; *&t;Process reply messages (interrupts in normal scsi controller think).&n; *&t;We can get a variety of messages to process. The normal path is&n; *&t;scsi command completions. We must also deal with IOP failures,&n; *&t;the reply to a bus reset and the reply to a LUN query.&n; *&n; *&t;Locks: the queue lock is taken to call the completion handler&n; */
 DECL|function|i2o_scsi_reply
 r_static
 r_void
@@ -896,8 +898,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2o_scsi: bus reset reply.&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;i2o_scsi: bus reset completed.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1181,6 +1183,7 @@ comma
 id|I2O_CLASS_SCSI_PERIPHERAL
 )brace
 suffix:semicolon
+multiline_comment|/**&n; *&t;i2o_find_lun&t;&t;-&t;report the lun of an i2o device&n; *&t;@c: i2o controller owning the device&n; *&t;@d: i2o disk device&n; *&t;@target: filled in with target id&n; *&t;@lun: filled in with target lun&n; *&n; *&t;Query an I2O device to find out its SCSI lun and target numbering. We&n; *&t;don&squot;t currently handle some of the fancy SCSI-3 stuff although our&n; *&t;querying is sufficient to do so.&n; */
 DECL|function|i2o_find_lun
 r_static
 r_int
@@ -1300,6 +1303,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;i2o_scsi_init&t;&t;-&t;initialize an i2o device for scsi&n; *&t;@c: i2o controller owning the device&n; *&t;@d: scsi controller&n; *&t;@shpnt: scsi device we wish it to become&n; *&n; *&t;Enumerate the scsi peripheral/fibre channel peripheral class&n; *&t;devices that are children of the controller. From that we build&n; *&t;a translation map for the command queue code. Since I2O works on&n; *&t;its own tid&squot;s we effectively have to think backwards to get what&n; *&t;the midlayer wants&n; */
 DECL|function|i2o_scsi_init
 r_static
 r_void
@@ -1601,6 +1605,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+multiline_comment|/**&n; *&t;i2o_scsi_detect&t;&t;-&t;probe for I2O scsi devices&n; *&t;@tpnt: scsi layer template&n; *&n; *&t;I2O is a little odd here. The I2O core already knows what the&n; *&t;devices are. It also knows them by disk and tape as well as&n; *&t;by controller. We register each I2O scsi class object as a&n; *&t;scsi controller and then let the enumeration fake up the rest&n; */
 DECL|function|i2o_scsi_detect
 r_static
 r_int
@@ -1632,6 +1637,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;i2o_scsi.c: %s&bslash;n&quot;
 comma
 id|VERSION_STRING
@@ -1686,6 +1692,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;i2o_scsi: Unable to alloc %d byte SG chain buffer pool.&bslash;n&quot;
 comma
 id|SG_CHAIN_POOL_SZ
@@ -1694,6 +1701,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;i2o_scsi: SG chaining DISABLED!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1707,6 +1715,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;  chain_pool: %d bytes @ %p&bslash;n&quot;
 comma
 id|SG_CHAIN_POOL_SZ
@@ -1717,6 +1726,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;  (%d byte buffers X %d can_queue X %d i2o controllers)&bslash;n&quot;
 comma
 id|SG_CHAIN_BUF_SZ
@@ -1853,17 +1863,6 @@ l_int|NULL
 r_continue
 suffix:semicolon
 )brace
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|shpnt-&gt;unique_id
 op_assign
 (paren
@@ -1887,12 +1886,6 @@ id|shpnt-&gt;this_id
 op_assign
 multiline_comment|/* Good question */
 l_int|15
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
 suffix:semicolon
 id|i2o_scsi_init
 c_func
@@ -2064,6 +2057,7 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;i2o_scsi_queuecommand&t;-&t;queue a SCSI command&n; *&t;@SCpnt: scsi command pointer&n; *&t;@done: callback for completion&n; *&n; *&t;Issue a scsi comamnd asynchronously. Return 0 on success or 1 if&n; *&t;we hit an error (normally message queue congestion). The only &n; *&t;minor complication here is that I2O deals with the device addressing&n; *&t;so we have to map the bus/dev/lun back to an I2O handle as well&n; *&t;as faking absent devices ourself. &n; *&n; *&t;Locks: takes the controller lock on error path only&n; */
 DECL|function|i2o_scsi_queuecommand
 r_static
 r_int
@@ -2138,6 +2132,10 @@ id|reqlen
 suffix:semicolon
 id|u32
 id|tag
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 r_static
 r_int
@@ -2248,10 +2246,26 @@ id|DID_NO_CONNECT
 op_lshift
 l_int|16
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|host-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|done
 c_func
 (paren
 id|SCpnt
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|host-&gt;host_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -2266,14 +2280,7 @@ l_string|&quot;Real scsi messages.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Obtain an I2O message. Right now we _have_ to obtain one&n;&t; *&t;until the scsi layer stuff is cleaned up.&n;&t; */
-r_do
-(brace
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; *&t;Obtain an I2O message. If there are none free then &n;&t; *&t;throw it back to the scsi layer&n;&t; */
 id|m
 op_assign
 id|le32_to_cpu
@@ -2286,15 +2293,16 @@ id|c
 )paren
 )paren
 suffix:semicolon
-)brace
-r_while
-c_loop
+r_if
+c_cond
 (paren
 id|m
 op_eq
 l_int|0xFFFFFFFF
 )paren
 (brace
+r_return
+l_int|1
 suffix:semicolon
 )brace
 id|msg
@@ -2377,10 +2385,27 @@ id|DID_NO_CONNECT
 op_lshift
 l_int|16
 suffix:semicolon
+multiline_comment|/* We must lock the request queue while completing */
+id|spin_lock_irqsave
+c_func
+(paren
+id|host-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|done
 c_func
 (paren
 id|SCpnt
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|host-&gt;host_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -3040,6 +3065,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;internal_done&t;-&t;legacy scsi glue&n; *&t;@SCPnt: command&n; *&n; *&t;Completion function for a synchronous command&n; */
 DECL|function|internal_done
 r_static
 r_void
@@ -3055,6 +3081,7 @@ id|SCpnt-&gt;SCp.Status
 op_increment
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;i2o_scsi_command&t;-&t;issue a scsi command and wait&n; *&t;@SCPnt: command&n; *&n; *&t;Issue a SCSI command and wait for it to complete.&n; */
 DECL|function|i2o_scsi_command
 r_static
 r_int
@@ -3093,6 +3120,7 @@ r_return
 id|SCpnt-&gt;result
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;i2o_scsi_abort&t;-&t;abort a running command&n; *&t;@SCpnt: command to abort&n; *&n; *&t;Ask the I2O controller to abort a command. This is an asynchrnous&n; *&t;process and oru callback handler will see the command complete&n; *&t;with an aborted message if it succeeds. &n; *&n; *&t;Locks: no locks are held or needed&n; */
 DECL|function|i2o_scsi_abort
 r_int
 id|i2o_scsi_abort
@@ -3131,6 +3159,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;i2o_scsi: Aborting command block.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3170,18 +3199,18 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;impossible command to abort.&bslash;n&quot;
+l_string|&quot;i2o_scsi: Impossible command to abort!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_NOT_RUNNING
+id|FAILED
 suffix:semicolon
 )brace
 id|c
 op_assign
 id|hostdata-&gt;controller
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Obtain an I2O message. Right now we _have_ to obtain one&n;&t; *&t;until the scsi layer stuff is cleaned up.&n;&t; */
+multiline_comment|/*&n;&t; *&t;Obtain an I2O message. Right now we _have_ to obtain one&n;&t; *&t;until the scsi layer stuff is cleaned up.&n;&t; *&n;&t; *&t;FIXME: we are in error context so we could sleep retry&n;&t; * &t;a bit and then bail in the improved scsi layer.&n;&t; */
 r_do
 (brace
 id|mb
@@ -3297,22 +3326,19 @@ c_func
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_PENDING
+id|SUCCESS
 suffix:semicolon
 )brace
-DECL|function|i2o_scsi_reset
+multiline_comment|/**&n; *&t;i2o_scsi_bus_reset&t;&t;-&t;Issue a SCSI reset&n; *&t;@SCpnt: the command that caused the reset&n; *&n; *&t;Perform a SCSI bus reset operation. In I2O this is just a message&n; *&t;we pass. I2O can do clever multi-initiator and shared reset stuff&n; *&t;but we don&squot;t support this.&n; *&n; *&t;Locks: called with no lock held, requires no locks.&n; */
+DECL|function|i2o_scsi_bus_reset
 r_static
 r_int
-id|i2o_scsi_reset
+id|i2o_scsi_bus_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
 id|SCpnt
-comma
-r_int
-r_int
-id|reset_flags
 )paren
 (brace
 r_int
@@ -3344,6 +3370,7 @@ multiline_comment|/*&n;&t; *&t;Find the TID for the bus&n;&t; */
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;i2o_scsi: Attempting to reset the bus.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3470,10 +3497,42 @@ id|m
 )paren
 suffix:semicolon
 r_return
-id|SCSI_RESET_PENDING
+id|SUCCESS
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;This is anyones guess quite frankly.&n; */
+multiline_comment|/**&n; *&t;i2o_scsi_host_reset&t;-&t;host reset callback&n; *&t;@SCpnt: command causing the reset&n; *&n; *&t;An I2O controller can be many things at once. While we can&n; *&t;reset a controller the potential mess from doing so is vast, and&n; *&t;it&squot;s better to simply hold on and pray&n; */
+DECL|function|i2o_scsi_host_reset
+r_static
+r_int
+id|i2o_scsi_host_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+)paren
+(brace
+r_return
+id|FAILED
+suffix:semicolon
+)brace
+multiline_comment|/**&n; *&t;i2o_scsi_device_reset&t;-&t;device reset callback&n; *&t;@SCpnt: command causing the reset&n; *&n; *&t;I2O does not (AFAIK) support doing a device reset&n; */
+DECL|function|i2o_scsi_device_reset
+r_static
+r_int
+id|i2o_scsi_device_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+)paren
+(brace
+r_return
+id|FAILED
+suffix:semicolon
+)brace
+multiline_comment|/**&n; *&t;i2o_scsi_bios_param&t;-&t;Invent disk geometry&n; *&t;@disk: device &n; *&t;@dev: block layer device&n; *&t;@ip: geometry array&n; *&n; *&t;This is anyones guess quite frankly. We use the same rules everyone &n; *&t;else appears to and hope. It seems to work.&n; */
 DECL|function|i2o_scsi_bios_param
 r_static
 r_int
