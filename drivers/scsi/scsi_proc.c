@@ -606,13 +606,14 @@ id|proc_scsi
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* XXX: this shouldn&squot;t really be exposed to drivers. */
 DECL|function|proc_print_scsidevice
+r_static
 r_void
 id|proc_print_scsidevice
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdev
 comma
@@ -989,13 +990,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-DECL|variable|proc_print_scsidevice
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|proc_print_scsidevice
-)paren
-suffix:semicolon
 multiline_comment|/* &n; * proc_scsi_dev_info_read: dump the scsi_dev_info_list via&n; * /proc/scsi/device_info&n; */
 DECL|function|proc_scsi_dev_info_read
 r_static
