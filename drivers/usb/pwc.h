@@ -2,28 +2,14 @@ multiline_comment|/* (C) 1999-2001 Nemosoft Unv. (webcam@smcc.demon.nl)&n;&n;   
 macro_line|#ifndef PWC_H
 DECL|macro|PWC_H
 mdefine_line|#define PWC_H
-macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#else
-macro_line|#include &lt;errno.h&gt;
-macro_line|#include &lt;sys/types.h&gt;
-DECL|macro|printk
-mdefine_line|#define printk printf
-DECL|macro|KERN_DEBUG
-mdefine_line|#define KERN_DEBUG &quot;&lt;7&gt;&quot;
-DECL|macro|KERN_INFO
-mdefine_line|#define KERN_INFO  &quot;&lt;6&gt;&quot;
-DECL|macro|KERN_ERR
-mdefine_line|#define KERN_ERR   &quot;&lt;3&gt;&quot;
-macro_line|#endif
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;asm/errno.h&gt;
 multiline_comment|/* Defines and structures for the Philips webcam */
 multiline_comment|/* Used for checking memory corruption/pointer validation */
 DECL|macro|PWC_MAGIC
@@ -50,13 +36,13 @@ mdefine_line|#define TRACE_SIZE&t;0x0040
 DECL|macro|TRACE_SEQUENCE
 mdefine_line|#define TRACE_SEQUENCE&t;0x1000
 DECL|macro|Trace
-mdefine_line|#define Trace(R, A...) if (pwc_trace &amp; R) printk(KERN_DEBUG PWC_NAME &quot; &quot; ##A)
+mdefine_line|#define Trace(R, A...) if (pwc_trace &amp; R) printk(KERN_DEBUG PWC_NAME &quot; &quot; A)
 DECL|macro|Debug
-mdefine_line|#define Debug(A...) printk(KERN_DEBUG PWC_NAME &quot; &quot; ##A)
+mdefine_line|#define Debug(A...) printk(KERN_DEBUG PWC_NAME &quot; &quot; A)
 DECL|macro|Info
-mdefine_line|#define Info(A...)  printk(KERN_INFO  PWC_NAME &quot; &quot; ##A)
+mdefine_line|#define Info(A...)  printk(KERN_INFO  PWC_NAME &quot; &quot; A)
 DECL|macro|Err
-mdefine_line|#define Err(A...)   printk(KERN_ERR   PWC_NAME &quot; &quot; ##A)
+mdefine_line|#define Err(A...)   printk(KERN_ERR   PWC_NAME &quot; &quot; A)
 multiline_comment|/* Defines for ToUCam cameras */
 DECL|macro|TOUCAM_HEADER_SIZE
 mdefine_line|#define TOUCAM_HEADER_SIZE&t;&t;8
@@ -153,12 +139,10 @@ DECL|member|read
 r_int
 id|read
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
 DECL|member|urb
 id|purb_t
 id|urb
 suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* intermediate buffers with raw data from the USB cam */
@@ -474,7 +458,6 @@ id|MAX_IMAGES
 )braket
 suffix:semicolon
 multiline_comment|/* For MCAPTURE and SYNC */
-macro_line|#ifdef __KERNEL__
 multiline_comment|/* Kernel specific structures. These were once moved to the end &n;      of the structure and padded with bytes after I found out&n;      some of these have different sizes in different kernel versions.&n;      But since this is now a source release, I don&squot;t have this problem&n;      anymore.&n;&n;      Fortunately none of these structures are needed in the pwcx module.&n;    */
 DECL|member|modlock
 r_struct
@@ -510,7 +493,6 @@ op_star
 id|usb_int_handler
 suffix:semicolon
 multiline_comment|/* for the interrupt endpoint */
-macro_line|#endif   
 macro_line|#endif   
 )brace
 suffix:semicolon

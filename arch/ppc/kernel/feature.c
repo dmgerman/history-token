@@ -1558,12 +1558,12 @@ DECL|member|features
 id|u32
 id|features
 suffix:semicolon
-DECL|variable|__init
+DECL|variable|__initdata
 )brace
 id|board_features_datas
 (braket
 )braket
-id|__init
+id|__initdata
 op_assign
 (brace
 (brace

@@ -10969,6 +10969,9 @@ id|drive-&gt;driver_data
 suffix:semicolon
 r_int
 id|rc
+op_assign
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
@@ -10996,6 +10999,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|info-&gt;buffer
+op_eq
+l_int|NULL
+)paren
+op_logical_or
 (paren
 id|rc
 op_assign

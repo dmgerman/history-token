@@ -1,3 +1,4 @@
+multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200, G400 and G450.&n; *&n; * (c) 1998-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Version: 1.52 2001/05/25&n; *&n; */
 macro_line|#include &quot;matroxfb_maven.h&quot;
 macro_line|#include &quot;matroxfb_crtc2.h&quot;
 macro_line|#include &quot;matroxfb_misc.h&quot;
@@ -3435,6 +3436,18 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|d
+)paren
+(brace
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
@@ -4268,7 +4281,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;(c) 1999,2000 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&quot;
+l_string|&quot;(c) 1999-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

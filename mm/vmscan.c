@@ -2882,6 +2882,7 @@ c_func
 (paren
 )paren
 )paren
+(brace
 id|ret
 op_add_assign
 id|page_launder
@@ -2892,6 +2893,23 @@ comma
 id|user
 )paren
 suffix:semicolon
+id|shrink_dcache_memory
+c_func
+(paren
+id|DEF_PRIORITY
+comma
+id|gfp_mask
+)paren
+suffix:semicolon
+id|shrink_icache_memory
+c_func
+(paren
+id|DEF_PRIORITY
+comma
+id|gfp_mask
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * If needed, we move pages from the active list&n;&t; * to the inactive list.&n;&t; */
 r_if
 c_cond
@@ -2911,43 +2929,13 @@ comma
 id|user
 )paren
 suffix:semicolon
-multiline_comment|/* &t;&n;&t; * Delete pages from the inode and dentry caches and &n;&t; * reclaim unused slab cache if memory is low.&n;&t; */
-r_if
-c_cond
-(paren
-id|free_shortage
-c_func
-(paren
-)paren
-)paren
-(brace
-id|shrink_dcache_memory
-c_func
-(paren
-id|DEF_PRIORITY
-comma
-id|gfp_mask
-)paren
-suffix:semicolon
-id|shrink_icache_memory
-c_func
-(paren
-id|DEF_PRIORITY
-comma
-id|gfp_mask
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t; * Illogical, but true. At least for now.&n;&t;&t; *&n;&t;&t; * If we&squot;re _not_ under shortage any more, we&n;&t;&t; * reap the caches. Why? Because a noticeable&n;&t;&t; * part of the caches are the buffer-heads, &n;&t;&t; * which we&squot;ll want to keep if under shortage.&n;&t;&t; */
+multiline_comment|/* &t;&n;&t; * Reclaim unused slab cache if memory is low.&n;&t; */
 id|kmem_cache_reap
 c_func
 (paren
 id|gfp_mask
 )paren
 suffix:semicolon
-)brace
 r_return
 id|ret
 suffix:semicolon

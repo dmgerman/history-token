@@ -469,8 +469,11 @@ DECL|macro|TX_FRAG_NUM
 mdefine_line|#define TX_FRAG_NUM&t;3&t; /* Number of fragments used in one TPL. */
 DECL|macro|TX_MORE_FRAGMENTS
 mdefine_line|#define TX_MORE_FRAGMENTS 0x8000 /* Bit set in DataCount to indicate more&n;&t;&t;&t;&t;  * fragments following.&n;&t;&t;&t;&t;  */
+multiline_comment|/* XXX is there some better way to do this? */
 DECL|macro|ISA_MAX_ADDRESS
 mdefine_line|#define ISA_MAX_ADDRESS &t;0x00ffffff
+DECL|macro|PCI_MAX_ADDRESS
+mdefine_line|#define PCI_MAX_ADDRESS&t;&t;0xffffffff
 macro_line|#pragma pack(1)
 r_typedef
 r_struct

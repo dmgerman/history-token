@@ -158,7 +158,7 @@ l_int|8
 )braket
 op_assign
 (brace
-macro_line|#include &quot;nala.inc&quot;
+macro_line|#include &quot;pwc_nala.h&quot;
 )brace
 suffix:semicolon
 multiline_comment|/* This tables contains entries for the 675/680/690 (Timon) camera, with&n;   4 different qualities (no compression, low, medium, high).&n;   It lists the bandwidth requirements for said mode by its alternate interface &n;   number. An alternate of 0 means that the mode is unavailable.&n;   &n;   There are 6 * 4 * 4 entries: &n;     6 different resolutions subqcif, qsif, qcif, sif, cif, vga&n;     6 framerates: 5, 10, 15, 20, 25, 30&n;     4 compression modi: none, low, medium, high&n;     &n;   When an uncompressed mode is not available, the next available compressed mode &n;   will be choosen (unless the decompressor is absent). Sometimes there are only&n;   1 or 2 compressed modes available; in that case entries are duplicated.&n;*/
@@ -210,7 +210,7 @@ l_int|4
 )braket
 op_assign
 (brace
-macro_line|#include &quot;timon.inc&quot;
+macro_line|#include &quot;pwc_timon.h&quot;
 )brace
 suffix:semicolon
 multiline_comment|/* Entries for the Kiara (730/740) camera */
@@ -262,7 +262,7 @@ l_int|4
 )braket
 op_assign
 (brace
-macro_line|#include &quot;kiara.inc&quot;
+macro_line|#include &quot;pwc_kiara.h&quot;
 )brace
 suffix:semicolon
 multiline_comment|/****************************************************************************/
@@ -429,7 +429,6 @@ r_int
 id|buflen
 )paren
 (brace
-macro_line|#ifdef __KERNEL__
 r_return
 id|usb_control_msg
 c_func
@@ -463,11 +462,6 @@ comma
 id|HZ
 )paren
 suffix:semicolon
-macro_line|#else
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#endif&t;
 )brace
 DECL|function|set_video_mode_Nala
 r_static

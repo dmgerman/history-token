@@ -1445,6 +1445,7 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* XXX is ISA_MAX_ADDRESS correct here? */
 r_if
 c_cond
 (paren

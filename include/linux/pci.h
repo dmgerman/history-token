@@ -309,20 +309,36 @@ mdefine_line|#define PCI_CAP_FLAGS&t;&t;2&t;/* Capability defined flags (16 bits
 DECL|macro|PCI_CAP_SIZEOF
 mdefine_line|#define PCI_CAP_SIZEOF&t;&t;4
 multiline_comment|/* Power Management Registers */
+DECL|macro|PCI_PM_PMC
+mdefine_line|#define PCI_PM_PMC              2       /* PM Capabilities Register */
 DECL|macro|PCI_PM_CAP_VER_MASK
 mdefine_line|#define  PCI_PM_CAP_VER_MASK&t;0x0007&t;/* Version */
 DECL|macro|PCI_PM_CAP_PME_CLOCK
 mdefine_line|#define  PCI_PM_CAP_PME_CLOCK&t;0x0008&t;/* PME clock required */
-DECL|macro|PCI_PM_CAP_AUX_POWER
-mdefine_line|#define  PCI_PM_CAP_AUX_POWER&t;0x0010&t;/* Auxilliary power support */
+DECL|macro|PCI_PM_CAP_RESERVED
+mdefine_line|#define  PCI_PM_CAP_RESERVED    0x0010  /* Reserved field */
 DECL|macro|PCI_PM_CAP_DSI
 mdefine_line|#define  PCI_PM_CAP_DSI&t;&t;0x0020&t;/* Device specific initialization */
+DECL|macro|PCI_PM_CAP_AUX_POWER
+mdefine_line|#define  PCI_PM_CAP_AUX_POWER&t;0x01C0&t;/* Auxilliary power support mask */
 DECL|macro|PCI_PM_CAP_D1
 mdefine_line|#define  PCI_PM_CAP_D1&t;&t;0x0200&t;/* D1 power state support */
 DECL|macro|PCI_PM_CAP_D2
 mdefine_line|#define  PCI_PM_CAP_D2&t;&t;0x0400&t;/* D2 power state support */
 DECL|macro|PCI_PM_CAP_PME
 mdefine_line|#define  PCI_PM_CAP_PME&t;&t;0x0800&t;/* PME pin supported */
+DECL|macro|PCI_PM_CAP_PME_MASK
+mdefine_line|#define  PCI_PM_CAP_PME_MASK    0xF800  /* PME Mask of all supported states */
+DECL|macro|PCI_PM_CAP_PME_D0
+mdefine_line|#define  PCI_PM_CAP_PME_D0      0x0800  /* PME# from D0 */
+DECL|macro|PCI_PM_CAP_PME_D1
+mdefine_line|#define  PCI_PM_CAP_PME_D1      0x1000  /* PME# from D1 */
+DECL|macro|PCI_PM_CAP_PME_D2
+mdefine_line|#define  PCI_PM_CAP_PME_D2      0x2000  /* PME# from D2 */
+DECL|macro|PCI_PM_CAP_PME_D3
+mdefine_line|#define  PCI_PM_CAP_PME_D3      0x4000  /* PME# from D3 (hot) */
+DECL|macro|PCI_PM_CAP_PME_D3cold
+mdefine_line|#define  PCI_PM_CAP_PME_D3cold  0x8000  /* PME# from D3 (cold) */
 DECL|macro|PCI_PM_CTRL
 mdefine_line|#define PCI_PM_CTRL&t;&t;4&t;/* PM control and status register */
 DECL|macro|PCI_PM_CTRL_STATE_MASK

@@ -15545,6 +15545,25 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|mddev
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;md: kmalloc failed - cannot start array %d&bslash;n&quot;
+comma
+id|minor
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|md_setup_args.pers
 (braket
 id|minor

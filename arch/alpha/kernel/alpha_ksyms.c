@@ -1028,6 +1028,13 @@ id|read_lock
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|cpu_present_mask
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_present_mask
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
 DECL|variable|rtc_lock
 id|EXPORT_SYMBOL
@@ -1109,6 +1116,13 @@ id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|memset
+)paren
+suffix:semicolon
+DECL|variable|memchr
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|memchr
 )paren
 suffix:semicolon
 DECL|variable|get_wchan

@@ -2674,6 +2674,8 @@ id|cmdline_p
 r_int
 r_int
 id|bootmap_size
+comma
+id|low_mem_size
 suffix:semicolon
 r_int
 r_int
@@ -3638,7 +3640,7 @@ id|i
 )paren
 suffix:semicolon
 multiline_comment|/* Tell the PCI layer not to allocate too close to the RAM area.. */
-id|pci_mem_start
+id|low_mem_size
 op_assign
 (paren
 (paren
@@ -3652,6 +3654,17 @@ l_int|0xfffff
 op_amp
 op_complement
 l_int|0xfffff
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|low_mem_size
+OG
+id|pci_mem_start
+)paren
+id|pci_mem_start
+op_assign
+id|low_mem_size
 suffix:semicolon
 macro_line|#ifdef CONFIG_VT
 macro_line|#if defined(CONFIG_VGA_CONSOLE)

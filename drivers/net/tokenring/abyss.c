@@ -580,12 +580,11 @@ c_func
 (paren
 id|dev
 comma
-l_int|0
+id|PCI_MAX_ADDRESS
 comma
 id|pdev
 )paren
 suffix:semicolon
-multiline_comment|/* XXX: should be the max PCI32 DMA max */
 r_if
 c_cond
 (paren

@@ -83,6 +83,8 @@ id|pci_controller
 op_star
 id|hose
 suffix:semicolon
+DECL|macro|IOMMU_INVALID_PTE
+mdefine_line|#define IOMMU_INVALID_PTE 0x2 /* 32:63 bits MBZ */
 DECL|member|ptes
 r_int
 r_int

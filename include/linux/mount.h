@@ -3,8 +3,6 @@ macro_line|#ifndef _LINUX_MOUNT_H
 DECL|macro|_LINUX_MOUNT_H
 mdefine_line|#define _LINUX_MOUNT_H
 macro_line|#ifdef __KERNEL__
-DECL|macro|MNT_VISIBLE
-mdefine_line|#define MNT_VISIBLE&t;1
 DECL|struct|vfsmount
 r_struct
 id|vfsmount

@@ -2456,7 +2456,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* If invalidate_buffers() will trash dirty buffers, it means some kind&n;   of fs corruption is going on. Trashing dirty data always imply losing&n;   information that was supposed to be just stored on the physical layer&n;   by the user.&n;&n;   Thus invalidate_buffers in general usage is not allwowed to trash dirty&n;   buffers. For example ioctl(FLSBLKBUF) expects dirty data to be preserved.&n;&n;   NOTE: In the case where the user removed a removable-media-disk even if&n;   there&squot;s still dirty data not synced on disk (due a bug in the device driver&n;   or due an error of the user), by not destroying the dirty buffers we could&n;   generate corruption also on the next media inserted, thus a parameter is&n;   necessary to handle this case in the most safe way possible (trying&n;   to not corrupt also the new disk inserted with the data belonging to&n;   the old now corrupted disk). Also for the ramdisk the natural thing&n;   to do in order to release the ramdisk memory is to destroy dirty buffers.&n;&n;   These are two special cases. Normal usage imply the device driver&n;   to issue a sync on the device (without waiting I/O completation) and&n;   then an invalidate_buffers call that doesn&squot;t trash dirty buffers. */
+multiline_comment|/* If invalidate_buffers() will trash dirty buffers, it means some kind&n;   of fs corruption is going on. Trashing dirty data always imply losing&n;   information that was supposed to be just stored on the physical layer&n;   by the user.&n;&n;   Thus invalidate_buffers in general usage is not allwowed to trash dirty&n;   buffers. For example ioctl(FLSBLKBUF) expects dirty data to be preserved.&n;&n;   NOTE: In the case where the user removed a removable-media-disk even if&n;   there&squot;s still dirty data not synced on disk (due a bug in the device driver&n;   or due an error of the user), by not destroying the dirty buffers we could&n;   generate corruption also on the next media inserted, thus a parameter is&n;   necessary to handle this case in the most safe way possible (trying&n;   to not corrupt also the new disk inserted with the data belonging to&n;   the old now corrupted disk). Also for the ramdisk the natural thing&n;   to do in order to release the ramdisk memory is to destroy dirty buffers.&n;&n;   These are two special cases. Normal usage imply the device driver&n;   to issue a sync on the device (without waiting I/O completion) and&n;   then an invalidate_buffers call that doesn&squot;t trash dirty buffers. */
 DECL|function|__invalidate_buffers
 r_void
 id|__invalidate_buffers
@@ -3197,12 +3197,39 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|grow_buffers
 c_func
 (paren
 id|size
 )paren
+)paren
+(brace
+id|wakeup_bdflush
+c_func
+(paren
+l_int|1
+)paren
 suffix:semicolon
+id|current-&gt;policy
+op_or_assign
+id|SCHED_YIELD
+suffix:semicolon
+id|__set_current_state
+c_func
+(paren
+id|TASK_RUNNING
+)paren
+suffix:semicolon
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|function|init_buffer
 r_void
@@ -4109,11 +4136,12 @@ c_func
 id|size
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: getblk should fail if there&squot;s no enough memory */
 r_goto
 id|repeat
 suffix:semicolon
 )brace
-multiline_comment|/* -1 -&gt; no need to flush&n;    0 -&gt; async flush&n;    1 -&gt; sync flush (wait for I/O completation) */
+multiline_comment|/* -1 -&gt; no need to flush&n;    0 -&gt; async flush&n;    1 -&gt; sync flush (wait for I/O completion) */
 DECL|function|balance_dirty_state
 r_int
 id|balance_dirty_state
@@ -5495,6 +5523,7 @@ comma
 op_star
 id|tail
 suffix:semicolon
+multiline_comment|/* FIXME: create_buffers should fail if there&squot;s no enough memory */
 id|head
 op_assign
 id|create_buffers
@@ -9531,28 +9560,21 @@ id|bh
 suffix:semicolon
 r_do
 (brace
-r_struct
-id|buffer_head
-op_star
-id|p
-op_assign
-id|tmp
-suffix:semicolon
-id|tmp
-op_assign
-id|tmp-&gt;b_this_page
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|buffer_busy
 c_func
 (paren
-id|p
+id|tmp
 )paren
 )paren
 r_goto
 id|busy_buffer_page
+suffix:semicolon
+id|tmp
+op_assign
+id|tmp-&gt;b_this_page
 suffix:semicolon
 )brace
 r_while

@@ -16,7 +16,6 @@ DECL|macro|MAP_NR
 mdefine_line|#define MAP_NR(a) virt_to_page(a)
 macro_line|#endif
 multiline_comment|/* Function prototypes and driver templates */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 multiline_comment|/* hotplug device table support */
 DECL|variable|pwc_device_table
 r_static
@@ -195,63 +194,6 @@ comma
 multiline_comment|/* disconnect() */
 )brace
 suffix:semicolon
-macro_line|#else
-r_static
-r_void
-op_star
-id|usb_pwc_probe
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|udev
-comma
-r_int
-r_int
-id|ifnum
-)paren
-suffix:semicolon
-r_static
-r_void
-id|usb_pwc_disconnect
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|udev
-comma
-r_void
-op_star
-id|ptr
-)paren
-suffix:semicolon
-DECL|variable|pwc_driver
-r_static
-r_struct
-id|usb_driver
-id|pwc_driver
-op_assign
-(brace
-id|name
-suffix:colon
-l_string|&quot;Philips webcam&quot;
-comma
-multiline_comment|/* name */
-id|probe
-suffix:colon
-id|usb_pwc_probe
-comma
-multiline_comment|/* probe() */
-id|disconnect
-suffix:colon
-id|usb_pwc_disconnect
-comma
-multiline_comment|/* disconnect() */
-)brace
-suffix:semicolon
-macro_line|#endif
 DECL|variable|default_size
 r_static
 r_int
@@ -473,12 +415,10 @@ id|video_device
 id|pwc_template
 op_assign
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,3)
 id|owner
 suffix:colon
-l_int|NULL
+id|THIS_MODULE
 comma
-macro_line|#endif
 id|name
 suffix:colon
 l_string|&quot;Philips Webcam&quot;
@@ -488,19 +428,11 @@ id|type
 suffix:colon
 id|VID_TYPE_CAPTURE
 comma
-macro_line|#ifdef VID_HARDWARE_PWC
 id|hardware
 suffix:colon
 id|VID_HARDWARE_PWC
 comma
 multiline_comment|/* Let&squot;s pretend for now */
-macro_line|#else
-id|hardware
-suffix:colon
-l_int|0
-comma
-multiline_comment|/* 2.2.14 backport (?) */
-macro_line|#endif&t;&t;
 id|open
 suffix:colon
 id|pwc_video_open
@@ -2287,43 +2219,7 @@ c_cond
 (paren
 id|pal
 op_eq
-id|VIDEO_PALETTE_RGB24
-op_logical_or
-id|pal
-op_eq
-id|VIDEO_PALETTE_RGB32
-op_logical_or
-id|pal
-op_eq
-(paren
-id|VIDEO_PALETTE_RGB24
-op_or
-l_int|0x80
-)paren
-op_logical_or
-id|pal
-op_eq
-(paren
-id|VIDEO_PALETTE_RGB32
-op_or
-l_int|0x80
-)paren
-op_logical_or
-id|pal
-op_eq
-id|VIDEO_PALETTE_YUYV
-op_logical_or
-id|pal
-op_eq
-id|VIDEO_PALETTE_YUV422
-op_logical_or
-id|pal
-op_eq
 id|VIDEO_PALETTE_YUV420
-op_logical_or
-id|pal
-op_eq
-id|VIDEO_PALETTE_YUV420P
 macro_line|#if PWC_DEBUG
 op_logical_or
 id|pal
@@ -3793,18 +3689,11 @@ id|vdev
 op_eq
 l_int|NULL
 )paren
-(brace
-id|Err
+id|BUG
 c_func
 (paren
-l_string|&quot;video_open() called with NULL structure?&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
 id|pdev
 op_assign
 (paren
@@ -3821,19 +3710,10 @@ id|pdev
 op_eq
 l_int|NULL
 )paren
-(brace
-id|Err
+id|BUG
 c_func
 (paren
-l_string|&quot;video_open() called with NULL pwc_device.&bslash;n&quot;
 )paren
-suffix:semicolon
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|down
 c_func
@@ -3942,8 +3822,6 @@ id|TRACE_OPEN
 comma
 l_string|&quot;Failed to allocate memory.&bslash;n&quot;
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|up
 c_func
@@ -4182,8 +4060,6 @@ comma
 l_string|&quot;Second attempt at set_video_mode failed.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|up
 c_func
 (paren
@@ -4222,8 +4098,6 @@ l_string|&quot;Failed to set alternate interface = %d.&bslash;n&quot;
 comma
 id|i
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|up
 c_func
@@ -4342,23 +4216,6 @@ comma
 id|vdev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|vdev
-op_eq
-l_int|NULL
-)paren
-(brace
-id|Err
-c_func
-(paren
-l_string|&quot;video_close() called with NULL structure?&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|pdev
 op_assign
 (paren
@@ -4368,23 +4225,6 @@ op_star
 )paren
 id|vdev-&gt;priv
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pdev
-op_eq
-l_int|NULL
-)paren
-(brace
-id|Err
-c_func
-(paren
-l_string|&quot;video_close() called with NULL pwc_device.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4554,9 +4394,8 @@ op_amp
 id|pdev-&gt;remove_ok
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
+multiline_comment|/*&n; *&t;FIXME: what about two parallel reads ????&n; */
 DECL|function|pwc_video_read
 r_static
 r_int
@@ -5371,6 +5210,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; *&t;FIXME:&t;Suppose we are mid read&n;&t;&t;&t; */
 id|pwc_set_brightness
 c_func
 (paren
@@ -6043,7 +5883,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/* We (re)use the frame-waitqueue here. That may&n;&t;&t;&t;   conflict with read(), but any programmer that uses&n;&t;&t;&t;   read() and mmap() simultaneously should be given &n;&t;&t;&t;   a job at Micro$oft. As janitor.&n;&t;&t;&t; */
+multiline_comment|/* We (re)use the frame-waitqueue here. That may&n;&t;&t;&t;   conflict with read(), but any programmer that uses&n;&t;&t;&t;   read() and mmap() simultaneously should be given &n;&t;&t;&t;   a job at Micro$oft. As janitor.&n;&t;&t;&t;   &n;&t;&t;&t;   FIXME: needs auditing for safety.&n;&t;&t;&t; */
 r_while
 c_loop
 (paren
@@ -6207,32 +6047,11 @@ comma
 id|size
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|vdev
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
 id|pdev
 op_assign
 id|vdev-&gt;priv
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pdev
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
+multiline_comment|/* FIXME - audit mmap during a read */
 id|pos
 op_assign
 (paren
@@ -6308,7 +6127,6 @@ suffix:semicolon
 multiline_comment|/***************************************************************************/
 multiline_comment|/* USB functions */
 multiline_comment|/* This function gets called when a new device is plugged in or the usb core&n; * is loaded.&n; */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 DECL|function|usb_pwc_probe
 r_static
 r_void
@@ -6331,23 +6149,6 @@ id|usb_device_id
 op_star
 id|id
 )paren
-macro_line|#else
-r_static
-r_void
-op_star
-id|usb_pwc_probe
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|udev
-comma
-r_int
-r_int
-id|ifnum
-)paren
-macro_line|#endif
 (brace
 r_struct
 id|pwc_device
@@ -6420,21 +6221,6 @@ id|product_id
 op_assign
 id|udev-&gt;descriptor.idProduct
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|vendor_id
-op_ne
-l_int|0x0471
-op_logical_and
-id|vendor_id
-op_ne
-l_int|0x069A
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* Not Philips or Askey, for sure. */
 r_if
 c_cond
 (paren
@@ -6578,6 +6364,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
+r_else
 r_if
 c_cond
 (paren
@@ -6616,6 +6403,11 @@ r_break
 suffix:semicolon
 )brace
 )brace
+r_else
+r_return
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* Not Philips or Askey, for sure. */
 r_if
 c_cond
 (paren
@@ -6795,14 +6587,12 @@ comma
 id|pdev-&gt;type
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,3)
 id|SET_MODULE_OWNER
 c_func
 (paren
 id|vdev
 )paren
 suffix:semicolon
-macro_line|#endif&t;
 id|pdev-&gt;vdev
 op_assign
 id|vdev
@@ -7555,95 +7345,6 @@ c_func
 (paren
 id|palette
 comma
-l_string|&quot;bgr24&quot;
-)paren
-)paren
-id|default_palette
-op_assign
-id|VIDEO_PALETTE_RGB24
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-id|palette
-comma
-l_string|&quot;rgb24&quot;
-)paren
-)paren
-id|default_palette
-op_assign
-id|VIDEO_PALETTE_RGB24
-op_or
-l_int|0x80
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-id|palette
-comma
-l_string|&quot;bgr32&quot;
-)paren
-)paren
-id|default_palette
-op_assign
-id|VIDEO_PALETTE_RGB32
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-id|palette
-comma
-l_string|&quot;rgb32&quot;
-)paren
-)paren
-id|default_palette
-op_assign
-id|VIDEO_PALETTE_RGB32
-op_or
-l_int|0x80
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-id|palette
-comma
-l_string|&quot;yuyv&quot;
-)paren
-)paren
-id|default_palette
-op_assign
-id|VIDEO_PALETTE_YUYV
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-id|palette
-comma
 l_string|&quot;yuv420&quot;
 )paren
 )paren
@@ -7652,28 +7353,11 @@ op_assign
 id|VIDEO_PALETTE_YUV420
 suffix:semicolon
 r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-id|palette
-comma
-l_string|&quot;yuv420p&quot;
-)paren
-)paren
-id|default_palette
-op_assign
-id|VIDEO_PALETTE_YUV420P
-suffix:semicolon
-r_else
 (brace
 id|Err
 c_func
 (paren
-l_string|&quot;Palette not recognized: try palette=[bgr24 | rgb24 | bgr32 | rgb32 | yuyv | yuv420 | yuv420p].&bslash;n&quot;
+l_string|&quot;Palette not recognized: try palette=yuv420.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
