@@ -886,7 +886,7 @@ suffix:semicolon
 id|ok
 suffix:colon
 r_return
-id|security_inode_permission_lite
+id|security_inode_permission
 c_func
 (paren
 id|inode

@@ -1216,7 +1216,7 @@ comma
 id|cpu
 )paren
 suffix:semicolon
-id|show_regs
+id|__show_regs
 c_func
 (paren
 id|regs

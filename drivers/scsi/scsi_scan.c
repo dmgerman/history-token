@@ -2002,12 +2002,6 @@ id|sdev-&gt;sdtr
 op_assign
 l_int|1
 suffix:semicolon
-id|scsi_device_register
-c_func
-(paren
-id|sdev
-)paren
-suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -2022,6 +2016,12 @@ comma
 id|sdev-&gt;id
 comma
 id|sdev-&gt;lun
+)paren
+suffix:semicolon
+id|scsi_device_register
+c_func
+(paren
+id|sdev
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * End driverfs/devfs code.&n;&t; */

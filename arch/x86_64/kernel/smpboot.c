@@ -60,6 +60,14 @@ DECL|variable|smp_threads_ready
 r_int
 id|smp_threads_ready
 suffix:semicolon
+r_extern
+r_void
+id|time_init_smp
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Trampoline 80x86 program as an array.&n; */
 r_extern
 r_int
@@ -2681,7 +2689,8 @@ l_string|&quot;Local APIC not detected.&quot;
 l_string|&quot; Using dummy APIC emulation.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|smp_done
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Should not be necessary because the MP table should list the boot&n;&t; * CPU too, but we do it for the sake of robustness anyway.&n;&t; */
@@ -2771,7 +2780,8 @@ id|disable_apic
 op_assign
 l_int|1
 suffix:semicolon
-r_return
+r_goto
+id|smp_done
 suffix:semicolon
 )brace
 id|verify_local_APIC
@@ -2816,7 +2826,8 @@ id|disable_apic
 op_assign
 l_int|1
 suffix:semicolon
-r_return
+r_goto
+id|smp_done
 suffix:semicolon
 )brace
 id|connect_bsp_APIC
@@ -3100,6 +3111,13 @@ op_logical_and
 id|cpucount
 )paren
 id|synchronize_tsc_bp
+c_func
+(paren
+)paren
+suffix:semicolon
+id|smp_done
+suffix:colon
+id|time_init_smp
 c_func
 (paren
 )paren

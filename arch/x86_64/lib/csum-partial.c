@@ -1,88 +1,59 @@
 multiline_comment|/*&n; * arch/x86_64/lib/csum-partial.c&n; *&n; * This file contains network checksum routines that are better done&n; * in an architecture-specific manner due to speed.&n; */
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-multiline_comment|/* Better way for this sought */
-DECL|function|from64to16
+macro_line|#include &lt;asm/checksum.h&gt;
+DECL|macro|__force_inline
+mdefine_line|#define __force_inline inline __attribute__((always_inline))
+DECL|function|from32to16
 r_static
 r_inline
 r_int
 r_int
-id|from64to16
+id|from32to16
 c_func
 (paren
 r_int
-r_int
-id|x
+id|a
 )paren
 (brace
-multiline_comment|/* add up 32-bit words for 33 bits */
-id|x
+r_int
+r_int
+id|b
 op_assign
-(paren
-id|x
-op_amp
-l_int|0xffffffff
-)paren
-op_plus
-(paren
-id|x
-op_rshift
-l_int|32
-)paren
-suffix:semicolon
-multiline_comment|/* add up 16-bit and 17-bit words for 17+c bits */
-id|x
-op_assign
-(paren
-id|x
-op_amp
-l_int|0xffff
-)paren
-op_plus
-(paren
-id|x
+id|a
 op_rshift
 l_int|16
-)paren
 suffix:semicolon
-multiline_comment|/* add up 16-bit and 2-bit for 16+c bit */
-id|x
-op_assign
+id|asm
+c_func
 (paren
-id|x
-op_amp
-l_int|0xffff
+l_string|&quot;addw %w2,%w0&bslash;n&bslash;t&quot;
+l_string|&quot;adcw $0,%w0&bslash;n&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|b
 )paren
-op_plus
+suffix:colon
+l_string|&quot;0&quot;
 (paren
-id|x
-op_rshift
-l_int|16
+id|b
 )paren
-suffix:semicolon
-multiline_comment|/* add up carry.. */
-id|x
-op_assign
+comma
+l_string|&quot;r&quot;
 (paren
-id|x
-op_amp
-l_int|0xffff
+id|a
 )paren
-op_plus
-(paren
-id|x
-op_rshift
-l_int|16
 )paren
 suffix:semicolon
 r_return
-id|x
+id|b
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Do a 64-bit checksum on an arbitrary memory area.&n; * Returns a 32bit checksum.&n; *&n; * This isn&squot;t a great routine, but it&squot;s not _horrible_ either. &n; * We rely on the compiler to unroll.&n; */
+multiline_comment|/*&n; * Do a 64-bit checksum on an arbitrary memory area.&n; * Returns a 32bit checksum.&n; *&n; * This isn&squot;t as time critical as it used to be because many NICs&n; * do hardware checksumming these days.&n; * &n; * Things tried and found to not make it faster:&n; * Manual Prefetching&n; * Unrolling to an 128 bytes inner loop.&n; * Using interleaving with more registers to break the carry chains.&n; */
 DECL|function|do_csum
 r_static
-r_inline
+id|__force_inline
 r_int
 id|do_csum
 c_func
@@ -111,12 +82,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|len
-op_le
+op_eq
 l_int|0
 )paren
-r_goto
-id|out
+)paren
+r_return
+id|result
 suffix:semicolon
 id|odd
 op_assign
@@ -249,25 +224,93 @@ op_rshift_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* nr of 64-bit words.. */
-r_if
-c_cond
-(paren
-id|count
-)paren
-(brace
+multiline_comment|/* main loop using 64byte blocks */
 r_int
 r_int
 id|zero
 op_assign
 l_int|0
 suffix:semicolon
-r_do
+r_int
+id|count64
+op_assign
+id|count
+op_rshift
+l_int|3
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|count64
+)paren
 (brace
 id|asm
 c_func
 (paren
-l_string|&quot;  addq %1,%0&bslash;n&quot;
-l_string|&quot;  adcq %2,%0&bslash;n&quot;
+l_string|&quot;addq 0*8(%[src]),%[res]&bslash;n&bslash;t&quot;
+l_string|&quot;adcq 1*8(%[src]),%[res]&bslash;n&bslash;t&quot;
+l_string|&quot;adcq 2*8(%[src]),%[res]&bslash;n&bslash;t&quot;
+l_string|&quot;adcq 3*8(%[src]),%[res]&bslash;n&bslash;t&quot;
+l_string|&quot;adcq 4*8(%[src]),%[res]&bslash;n&bslash;t&quot;
+l_string|&quot;adcq 5*8(%[src]),%[res]&bslash;n&bslash;t&quot;
+l_string|&quot;adcq 6*8(%[src]),%[res]&bslash;n&bslash;t&quot;
+l_string|&quot;adcq 7*8(%[src]),%[res]&bslash;n&bslash;t&quot;
+l_string|&quot;adcq %[zero],%[res]&quot;
+suffix:colon
+(braket
+id|res
+)braket
+l_string|&quot;=r&quot;
+(paren
+id|result
+)paren
+suffix:colon
+(braket
+id|src
+)braket
+l_string|&quot;r&quot;
+(paren
+id|buff
+)paren
+comma
+(braket
+id|zero
+)braket
+l_string|&quot;r&quot;
+(paren
+id|zero
+)paren
+comma
+l_string|&quot;[res]&quot;
+(paren
+id|result
+)paren
+)paren
+suffix:semicolon
+id|buff
+op_add_assign
+l_int|64
+suffix:semicolon
+id|count64
+op_decrement
+suffix:semicolon
+)brace
+multiline_comment|/* last upto 7 8byte blocks */
+id|count
+op_mod_assign
+l_int|8
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|count
+)paren
+(brace
+id|asm
+c_func
+(paren
+l_string|&quot;addq %1,%0&bslash;n&bslash;t&quot;
+l_string|&quot;adcq %2,%0&bslash;n&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -277,6 +320,11 @@ suffix:colon
 l_string|&quot;m&quot;
 (paren
 op_star
+(paren
+r_int
+r_int
+op_star
+)paren
 id|buff
 )paren
 comma
@@ -291,35 +339,28 @@ id|result
 )paren
 )paren
 suffix:semicolon
-id|count
 op_decrement
+id|count
 suffix:semicolon
 id|buff
 op_add_assign
 l_int|8
 suffix:semicolon
 )brace
-r_while
-c_loop
-(paren
-id|count
-)paren
-suffix:semicolon
 id|result
 op_assign
-(paren
-id|result
-op_amp
-l_int|0xffffffff
-)paren
-op_plus
+id|add32_with_carry
+c_func
 (paren
 id|result
 op_rshift
 l_int|32
+comma
+id|result
+op_amp
+l_int|0xffffffff
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -382,10 +423,16 @@ id|buff
 suffix:semicolon
 id|result
 op_assign
-id|from64to16
+id|add32_with_carry
 c_func
 (paren
 id|result
+op_rshift
+l_int|32
+comma
+id|result
+op_amp
+l_int|0xffffffff
 )paren
 suffix:semicolon
 r_if
@@ -397,7 +444,17 @@ c_func
 id|odd
 )paren
 )paren
-r_return
+(brace
+id|result
+op_assign
+id|from32to16
+c_func
+(paren
+id|result
+)paren
+suffix:semicolon
+id|result
+op_assign
 (paren
 (paren
 id|result
@@ -418,15 +475,13 @@ op_lshift
 l_int|8
 )paren
 suffix:semicolon
-id|out
-suffix:colon
+)brace
 r_return
 id|result
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * computes the checksum of a memory block at buff, length len,&n; * and adds in &quot;sum&quot; (32-bit)&n; *&n; * returns a 32-bit number suitable for feeding into itself&n; * or csum_tcpudp_magic&n; *&n; * this function must be called with even lengths, except&n; * for the last fragment, which may be odd&n; *&n; * it&squot;s best to have buff aligned on a 64-bit boundary&n; */
 DECL|function|csum_partial
-r_int
 r_int
 id|csum_partial
 c_func
@@ -441,13 +496,13 @@ r_int
 id|len
 comma
 r_int
-r_int
 id|sum
 )paren
 (brace
-r_int
-id|result
-op_assign
+r_return
+id|add32_with_carry
+c_func
+(paren
 id|do_csum
 c_func
 (paren
@@ -455,35 +510,11 @@ id|buff
 comma
 id|len
 )paren
-suffix:semicolon
-multiline_comment|/* add in old sum, and carry.. */
-id|asm
-c_func
-(paren
-l_string|&quot;addl %1,%0&bslash;n&bslash;t&quot;
-l_string|&quot;adcl $0,%0&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|result
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
+comma
 id|sum
 )paren
-comma
-l_string|&quot;0&quot;
-(paren
-id|result
-)paren
-)paren
-suffix:semicolon
-r_return
-id|result
 suffix:semicolon
 )brace
-singleline_comment|//EXPORT_SYMBOL(csum_partial);
 multiline_comment|/*&n; * this routine is used for miscellaneous IP-like checksums, mainly&n; * in icmp.c&n; */
 DECL|function|ip_compute_csum
 r_int
@@ -513,11 +544,4 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-DECL|variable|ip_compute_csum
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_compute_csum
-)paren
-suffix:semicolon
 eof
