@@ -1,8 +1,9 @@
-multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2003&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2004&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 multiline_comment|/*&n; *&t;jfs_imap.c: inode allocation map manager&n; *&n; * Serialization:&n; *   Each AG has a simple lock which is used to control the serialization of&n; *&t;the AG level lists.  This lock should be taken first whenever an AG&n; *&t;level list will be modified or accessed.&n; *&n; *   Each IAG is locked by obtaining the buffer for the IAG page.&n; *&n; *   There is also a inode lock for the inode map inode.  A read lock needs to&n; *&t;be taken whenever an IAG is read from the map or the global level&n; *&t;information is read.  A write lock needs to be taken whenever the global&n; *&t;level information is modified or an atomic operation needs to be used.&n; *&n; *&t;If more than one IAG is read at one time, the read lock may not&n; *&t;be given up until all of the IAG&squot;s are read.  Otherwise, a deadlock&n; *&t;may occur when trying to obtain the read lock while another thread&n; *&t;holding the read lock is waiting on the IAG already being held.&n; *&n; *   The control page of the inode map is read into memory by diMount().&n; *&t;Thereafter it should only be modified in memory and then it will be&n; *&t;written out when the filesystem is unmounted by diUnmount().&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
 macro_line|#include &quot;jfs_dinode.h&quot;
@@ -1693,6 +1694,11 @@ id|ip-&gt;i_mapping
 comma
 id|GFP_NOFS
 )paren
+suffix:semicolon
+multiline_comment|/* Allocations to metadata inodes should not affect quotas */
+id|ip-&gt;i_flags
+op_or_assign
+id|S_NOQUOTA
 suffix:semicolon
 r_if
 c_cond
@@ -9062,51 +9068,7 @@ c_func
 id|mp
 )paren
 suffix:semicolon
-macro_line|#ifdef _STILL_TO_PORT
-multiline_comment|/* synchronously write the iag page */
-r_if
-c_cond
-(paren
-id|bmWrite
-c_func
-(paren
-id|bp
-)paren
-)paren
-(brace
-multiline_comment|/* Free the blocks allocated for the iag since it was&n;&t;&t;&t; * not successfully added to the inode map&n;&t;&t;&t; */
-id|dbFree
-c_func
-(paren
-id|ipimap
-comma
-id|xaddr
-comma
-(paren
-id|s64
-)paren
-id|xlen
-)paren
-suffix:semicolon
-multiline_comment|/* release the inode map lock */
-id|IWRITE_UNLOCK
-c_func
-(paren
-id|ipimap
-)paren
-suffix:semicolon
-id|rc
-op_assign
-op_minus
-id|EIO
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-multiline_comment|/* Now the iag is on disk */
 multiline_comment|/*&n;&t;&t; * start tyransaction of update of the inode map&n;&t;&t; * addressing structure pointing to the new iag page;&n;&t;&t; */
-macro_line|#endif&t;&t;&t;&t;/*  _STILL_TO_PORT */
 id|tid
 op_assign
 id|txBegin
@@ -9207,14 +9169,12 @@ id|ipimap-&gt;i_size
 op_add_assign
 id|PSIZE
 suffix:semicolon
-id|ipimap-&gt;i_blocks
-op_add_assign
-id|LBLK2PBLK
+id|inode_add_bytes
 c_func
 (paren
-id|sb
+id|ipimap
 comma
-id|xlen
+id|PSIZE
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * txCommit(COMMIT_FORCE) will synchronously write address &n;&t;&t; * index pages and inode after commit in careful update order &n;&t;&t; * of address index pages (right to left, bottom up);&n;&t;&t; */
@@ -10921,14 +10881,12 @@ id|ip-&gt;i_size
 op_add_assign
 id|PSIZE
 suffix:semicolon
-id|ip-&gt;i_blocks
-op_add_assign
-id|LBLK2PBLK
+id|inode_add_bytes
 c_func
 (paren
-id|sb
+id|ip
 comma
-id|xlen
+id|PSIZE
 )paren
 suffix:semicolon
 id|txCommit
