@@ -9,6 +9,8 @@ DECL|macro|CONFIG_LDM
 mdefine_line|#define CONFIG_LDM
 macro_line|#endif
 macro_line|#include &quot;include/acpi.h&quot;
+DECL|macro|PREFIX
+mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 multiline_comment|/* TBD: Make dynamic */
 DECL|macro|ACPI_MAX_HANDLES
 mdefine_line|#define ACPI_MAX_HANDLES&t;10
@@ -364,66 +366,6 @@ DECL|member|ops
 r_struct
 id|acpi_device_ops
 id|ops
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|enum|acpi_blacklist_predicates
-r_enum
-id|acpi_blacklist_predicates
-(brace
-DECL|enumerator|all_versions
-id|all_versions
-comma
-DECL|enumerator|less_than_or_equal
-id|less_than_or_equal
-comma
-DECL|enumerator|equal
-id|equal
-comma
-DECL|enumerator|greater_than_or_equal
-id|greater_than_or_equal
-comma
-)brace
-suffix:semicolon
-DECL|struct|acpi_blacklist_item
-r_struct
-id|acpi_blacklist_item
-(brace
-DECL|member|oem_id
-r_char
-id|oem_id
-(braket
-l_int|7
-)braket
-suffix:semicolon
-DECL|member|oem_table_id
-r_char
-id|oem_table_id
-(braket
-l_int|9
-)braket
-suffix:semicolon
-DECL|member|oem_revision
-id|u32
-id|oem_revision
-suffix:semicolon
-DECL|member|table
-id|acpi_table_type
-id|table
-suffix:semicolon
-DECL|member|oem_revision_predicate
-r_enum
-id|acpi_blacklist_predicates
-id|oem_revision_predicate
-suffix:semicolon
-DECL|member|reason
-r_char
-op_star
-id|reason
-suffix:semicolon
-DECL|member|is_critical_error
-id|u32
-id|is_critical_error
 suffix:semicolon
 )brace
 suffix:semicolon

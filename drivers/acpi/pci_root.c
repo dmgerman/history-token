@@ -22,8 +22,6 @@ id|pci_ops
 op_star
 id|pci_root_ops
 suffix:semicolon
-DECL|macro|PREFIX
-mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 r_static
 r_int
 id|acpi_pci_root_add

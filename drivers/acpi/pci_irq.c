@@ -17,8 +17,6 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;pci_irq&quot;
 )paren
-DECL|macro|PREFIX
-mdefine_line|#define PREFIX&t;&t;&t;&quot;PCI: &quot;
 DECL|variable|acpi_prt
 r_struct
 id|acpi_prt_list

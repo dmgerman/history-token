@@ -413,20 +413,6 @@ DECL|macro|ACPI_SYSTEM_FILE_DEBUG_LAYER
 mdefine_line|#define ACPI_SYSTEM_FILE_DEBUG_LAYER&t;&quot;debug_layer&quot;
 DECL|macro|ACPI_SYSTEM_FILE_DEBUG_LEVEL
 mdefine_line|#define ACPI_SYSTEM_FILE_DEBUG_LEVEL&t;&quot;debug_level&quot;
-macro_line|#ifdef CONFIG_ACPI_SYSTEM
-r_int
-id|acpi_system_init
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|acpi_system_exit
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* --------------------------------------------------------------------------&n;                                 Thermal Zone&n;   -------------------------------------------------------------------------- */
 DECL|macro|ACPI_THERMAL_COMPONENT
 mdefine_line|#define ACPI_THERMAL_COMPONENT&t;&t;0x04000000
