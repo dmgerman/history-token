@@ -658,7 +658,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|kbd98_interrupt
-r_void
+id|irqreturn_t
 id|kbd98_interrupt
 c_func
 (paren
@@ -714,7 +714,8 @@ id|kbd98-&gt;ack
 op_assign
 l_int|1
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 r_case
 id|KBD98_RET_NAK
@@ -724,7 +725,8 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -741,7 +743,8 @@ id|kbd98-&gt;cmdcnt
 op_assign
 id|data
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|scancode
@@ -901,7 +904,7 @@ id|keycode
 op_eq
 id|KBD98_KEY_NULL
 )paren
-r_return
+r_break
 suffix:semicolon
 r_if
 c_cond
@@ -1007,7 +1010,7 @@ op_amp
 id|kbd98-&gt;dev
 )paren
 suffix:semicolon
-r_return
+r_break
 suffix:semicolon
 r_case
 id|KEY_CAPSLOCK
@@ -1048,12 +1051,12 @@ op_amp
 id|kbd98-&gt;dev
 )paren
 suffix:semicolon
-r_return
+r_break
 suffix:semicolon
 r_case
 id|KBD98_KEY_NULL
 suffix:colon
-r_return
+r_break
 suffix:semicolon
 r_case
 l_int|0
@@ -1078,7 +1081,7 @@ suffix:colon
 l_string|&quot;pressed&quot;
 )paren
 suffix:semicolon
-r_return
+r_break
 suffix:semicolon
 r_default
 suffix:colon
@@ -1100,7 +1103,14 @@ op_amp
 id|kbd98-&gt;dev
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
+id|out
+suffix:colon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * kbd98_sendbyte() sends a byte to the keyboard, and waits for&n; * acknowledge. It doesn&squot;t handle resends according to the keyboard&n; * protocol specs, because if these are needed, the keyboard needs&n; * replacement anyway, and they only make a mess in the protocol.&n; */
 DECL|function|kbd98_sendbyte
