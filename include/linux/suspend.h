@@ -48,7 +48,7 @@ r_struct
 id|suspend_header
 (brace
 DECL|member|version_code
-id|__u32
+id|u32
 id|version_code
 suffix:semicolon
 DECL|member|num_physpages
