@@ -2631,7 +2631,7 @@ mdefine_line|#define GET_BASE(desc) ( &bslash;&n;&t;(((desc)-&gt;a &gt;&gt; 16) 
 DECL|macro|GET_LIMIT
 mdefine_line|#define GET_LIMIT(desc) ( &bslash;&n;&t;((desc)-&gt;a &amp; 0x0ffff) | &bslash;&n;&t; ((desc)-&gt;b &amp; 0xf0000) )
 DECL|macro|GET_32BIT
-mdefine_line|#define GET_32BIT(desc)&t;&t;(((desc)-&gt;b &gt;&gt; 23) &amp; 1)
+mdefine_line|#define GET_32BIT(desc)&t;&t;(((desc)-&gt;b &gt;&gt; 22) &amp; 1)
 DECL|macro|GET_CONTENTS
 mdefine_line|#define GET_CONTENTS(desc)&t;(((desc)-&gt;b &gt;&gt; 10) &amp; 3)
 DECL|macro|GET_WRITABLE
