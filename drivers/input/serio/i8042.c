@@ -3016,7 +3016,7 @@ id|device
 op_star
 id|dev
 comma
-id|u32
+id|pm_message_t
 id|state
 comma
 id|u32
@@ -3126,7 +3126,7 @@ id|KERN_WARNING
 l_string|&quot;i8042: failed to resume active multiplexor, mouse won&squot;t work.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Reconnect anything that was connected to the ports.&n; */
+multiline_comment|/*&n; * Activate all ports.&n; */
 r_for
 c_loop
 (paren
@@ -3141,9 +3141,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-r_if
-c_cond
-(paren
 id|i8042_activate_port
 c_func
 (paren
@@ -3152,19 +3149,6 @@ id|i8042_ports
 (braket
 id|i
 )braket
-)paren
-op_eq
-l_int|0
-)paren
-id|serio_reconnect
-c_func
-(paren
-id|i8042_ports
-(braket
-id|i
-)braket
-dot
-id|serio
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Restart timer (for polling &quot;stuck&quot; data)&n; */
