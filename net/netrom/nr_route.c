@@ -35,7 +35,7 @@ id|nr_neigh_no
 op_assign
 l_int|1
 suffix:semicolon
-DECL|variable|nr_node_list
+r_static
 id|HLIST_HEAD
 c_func
 (paren
@@ -43,12 +43,13 @@ id|nr_node_list
 )paren
 suffix:semicolon
 DECL|variable|nr_node_list_lock
+r_static
 id|spinlock_t
 id|nr_node_list_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-DECL|variable|nr_neigh_list
+r_static
 id|HLIST_HEAD
 c_func
 (paren
@@ -56,6 +57,7 @@ id|nr_neigh_list
 )paren
 suffix:semicolon
 DECL|variable|nr_neigh_list_lock
+r_static
 id|spinlock_t
 id|nr_neigh_list_lock
 op_assign

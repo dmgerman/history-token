@@ -111,7 +111,7 @@ id|circuit
 op_assign
 l_int|0x101
 suffix:semicolon
-DECL|variable|nr_list
+r_static
 id|HLIST_HEAD
 c_func
 (paren
@@ -122,6 +122,8 @@ DECL|variable|nr_list_lock
 r_static
 id|spinlock_t
 id|nr_list_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|variable|nr_proto_ops
 r_static
