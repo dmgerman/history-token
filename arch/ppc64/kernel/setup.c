@@ -4841,7 +4841,7 @@ suffix:semicolon
 id|debugger
 c_func
 (paren
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
