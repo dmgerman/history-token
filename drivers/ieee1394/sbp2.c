@@ -2198,6 +2198,13 @@ comma
 id|DID_BUS_BUSY
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure we unblock requests (since this is likely after a bus&n;&t; * reset). */
+id|scsi_unblock_requests
+c_func
+(paren
+id|scsi_id-&gt;scsi_host
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -8878,12 +8885,6 @@ id|command-&gt;Current_SCpnt
 suffix:semicolon
 )brace
 )brace
-id|scsi_unblock_requests
-c_func
-(paren
-id|scsi_id-&gt;scsi_host
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
