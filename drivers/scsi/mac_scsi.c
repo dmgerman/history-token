@@ -20,7 +20,7 @@ macro_line|#include &lt;asm/macints.h&gt;
 macro_line|#include &lt;asm/machw.h&gt;
 macro_line|#include &lt;asm/mac_via.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;mac_scsi.h&quot;
 macro_line|#include &quot;NCR5380.h&quot;
 macro_line|#if 0

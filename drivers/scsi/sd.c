@@ -18,7 +18,7 @@ macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/kref.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_driver.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &lt;scsi/scsicam.h&gt;
@@ -2929,7 +2929,12 @@ suffix:semicolon
 r_case
 id|RECOVERED_ERROR
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * An error occurred, but it recovered.  Inform the&n;&t;&t;&t; * user, but make sure that it&squot;s not treated as a&n;&t;&t;&t; * hard error.&n;&t;&t;&t; */
+multiline_comment|/* an error occurred, but it recovered */
+r_case
+id|NO_SENSE
+suffix:colon
+multiline_comment|/* LLDD got sense data */
+multiline_comment|/*&n;&t;&t;&t; * Inform the user, but make sure that it&squot;s not treated&n;&t;&t;&t; * as a hard error.&n;&t;&t;&t; */
 id|print_sense
 c_func
 (paren

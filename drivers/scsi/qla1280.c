@@ -36,7 +36,7 @@ macro_line|#include &quot;scsi.h&quot;
 macro_line|#else
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;sd.h&quot;
 macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &lt; 0x020407
@@ -11473,6 +11473,7 @@ l_string|&quot;qla1280_marker&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * qla1280_64bit_start_scsi&n; *      The start SCSI is responsible for building request packets on&n; *      request ring and modifying ISP input pointer.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *      sp = SB structure pointer.&n; *&n; * Returns:&n; *      0 = success, was able to issue command.&n; */
+macro_line|#ifdef QLA_64BIT_PTR
 r_static
 r_int
 DECL|function|qla1280_64bit_start_scsi
@@ -12835,7 +12836,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-macro_line|#ifndef QLA_64BIT_PTR
+macro_line|#else /* !QLA_64BIT_PTR */
 multiline_comment|/*&n; * qla1280_32bit_start_scsi&n; *      The start SCSI is responsible for building request packets on&n; *      request ring and modifying ISP input pointer.&n; *&n; *      The Qlogic firmware interface allows every queue slot to have a SCSI&n; *      command and up to 4 scatter/gather (SG) entries.  If we need more&n; *      than 4 SG entries, then continuation entries are used that can&n; *      hold another 7 entries each.  The start routine determines if there&n; *      is eought empty slots then build the combination of requests to&n; *      fulfill the OS request.&n; *&n; * Input:&n; *      ha = adapter block pointer.&n; *      sp = SCSI Request Block structure pointer.&n; *&n; * Returns:&n; *      0 = success, was able to issue command.&n; */
 r_static
 r_int

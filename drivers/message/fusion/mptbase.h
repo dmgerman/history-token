@@ -5,7 +5,10 @@ macro_line|#ifndef MPTBASE_H_INCLUDED
 DECL|macro|MPTBASE_H_INCLUDED
 mdefine_line|#define MPTBASE_H_INCLUDED
 multiline_comment|/*{-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-macro_line|#include &quot;linux_compat.h&quot;&t;/* linux-2.2.x (vs. -2.4.x) tweaks */
+macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;scsi3.h&quot;&t;&t;/* SCSI defines */
 macro_line|#include &quot;lsi/mpi_type.h&quot;
 macro_line|#include &quot;lsi/mpi.h&quot;&t;&t;/* Fusion MPI(nterface) basic defs */
@@ -28,9 +31,9 @@ DECL|macro|COPYRIGHT
 mdefine_line|#define COPYRIGHT&t;&quot;Copyright (c) 1999-2004 &quot; MODULEAUTHOR
 macro_line|#endif
 DECL|macro|MPT_LINUX_VERSION_COMMON
-mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.01.06&quot;
+mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.01.07&quot;
 DECL|macro|MPT_LINUX_PACKAGE_NAME
-mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.01.06&quot;
+mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.01.07&quot;
 DECL|macro|WHAT_MAGIC_STRING
 mdefine_line|#define WHAT_MAGIC_STRING&t;&t;&quot;@&quot; &quot;(&quot; &quot;#&quot; &quot;)&quot;
 DECL|macro|show_mptmod_ver

@@ -16,7 +16,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 DECL|macro|ANY2SCSI_INLINE
 mdefine_line|#define ANY2SCSI_INLINE&t;&t;/* undef this to use old macros */
@@ -5940,8 +5940,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#if 0
 multiline_comment|/*&n; *  I have absolutely NO idea how to do an abort with the WD7000...&n; */
-DECL|function|wd7000_abort
 r_static
 r_int
 id|wd7000_abort
@@ -6000,6 +6000,7 @@ r_return
 id|FAILED
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; *  I also have no idea how to do a reset...&n; */
 DECL|function|wd7000_bus_reset
 r_static

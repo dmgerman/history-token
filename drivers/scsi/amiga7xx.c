@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;53c7xx.h&quot;
 macro_line|#include &quot;amiga7xx.h&quot;
 DECL|function|amiga7xx_register_one

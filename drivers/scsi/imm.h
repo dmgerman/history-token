@@ -18,7 +18,7 @@ macro_line|#include  &lt;linux/blkdev.h&gt;
 macro_line|#include  &lt;linux/sched.h&gt;
 macro_line|#include  &lt;linux/interrupt.h&gt;
 macro_line|#include  &lt;asm/io.h&gt;
-macro_line|#include  &quot;hosts.h&quot;
+macro_line|#include  &lt;scsi/scsi_host.h&gt;
 multiline_comment|/* batteries not included :-) */
 multiline_comment|/*&n; * modes in which the driver can operate &n; */
 DECL|macro|IMM_AUTODETECT

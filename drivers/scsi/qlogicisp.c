@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;qlogicisp.h&quot;
 multiline_comment|/* Configuration section *****************************************************/
 multiline_comment|/* Set the following macro to 1 to reload the ISP1020&squot;s firmware.  This is&n;   the latest firmware provided by QLogic.  This may be an earlier/later&n;   revision than supplied by your board. */

@@ -475,6 +475,7 @@ l_int|NULL
 comma
 id|store_spi_revalidate
 )paren
+suffix:semicolon
 multiline_comment|/* Translate the period into ns according to the current spec&n; * for SDTR/PPR messages */
 DECL|function|show_spi_transport_period
 r_static

@@ -5,6 +5,7 @@ DECL|macro|_53C700_H
 mdefine_line|#define _53C700_H
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#if defined(CONFIG_53C700_MEM_MAPPED) &amp;&amp; defined(CONFIG_53C700_IO_MAPPED)
 DECL|macro|CONFIG_53C700_BOTH_MAPPED
 mdefine_line|#define CONFIG_53C700_BOTH_MAPPED
@@ -59,7 +60,8 @@ op_star
 id|NCR_700_detect
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 comma
 r_struct
@@ -142,7 +144,8 @@ DECL|function|NCR_700_set_depth
 id|NCR_700_set_depth
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDp
 comma
@@ -188,7 +191,8 @@ DECL|function|NCR_700_get_depth
 id|NCR_700_get_depth
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDp
 )paren
@@ -218,7 +222,8 @@ DECL|function|NCR_700_is_flag_set
 id|NCR_700_is_flag_set
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDp
 comma
@@ -249,7 +254,8 @@ DECL|function|NCR_700_is_flag_clear
 id|NCR_700_is_flag_clear
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDp
 comma
@@ -280,7 +286,8 @@ DECL|function|NCR_700_set_flag
 id|NCR_700_set_flag
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDp
 comma
@@ -315,7 +322,8 @@ DECL|function|NCR_700_clear_flag
 id|NCR_700_clear_flag
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDp
 comma
@@ -387,7 +395,8 @@ id|__u32
 id|resume_offset
 suffix:semicolon
 DECL|member|cmnd
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmnd
 suffix:semicolon
@@ -509,7 +518,8 @@ id|state
 suffix:semicolon
 multiline_comment|/* protected by state lock */
 DECL|member|cmd
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 suffix:semicolon

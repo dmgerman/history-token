@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;dmx3191d.h&quot;
 multiline_comment|/* play with these values to tune up your system performances */
 multiline_comment|/* default setting from g_NCR5380.c */

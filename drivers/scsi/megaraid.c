@@ -14,7 +14,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;megaraid.h&quot;
 id|MODULE_AUTHOR
 (paren
@@ -12825,13 +12825,28 @@ c_func
 id|uiocp
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
 id|upthru
-op_assign
+comma
 (paren
 id|mega_passthru
 op_star
+op_star
 )paren
+op_amp
 id|umc-&gt;xferaddr
+)paren
+)paren
+r_return
+(paren
+op_minus
+id|EFAULT
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -12913,13 +12928,28 @@ op_star
 )paren
 id|uioc_mimd-&gt;mbox
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
 id|upthru
-op_assign
+comma
 (paren
 id|mega_passthru
 op_star
+op_star
 )paren
+op_amp
 id|umc-&gt;xferaddr
+)paren
+)paren
+r_return
+(paren
+op_minus
+id|EFAULT
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -13655,12 +13685,6 @@ r_int
 id|logdrv
 )paren
 (brace
-id|DECLARE_WAIT_QUEUE_HEAD
-c_func
-(paren
-id|wq
-)paren
-suffix:semicolon
 r_int
 r_int
 id|flags
@@ -13703,20 +13727,13 @@ op_amp
 id|adapter-&gt;pending_list
 )paren
 )paren
-(brace
-id|sleep_on_timeout
+id|msleep
 c_func
 (paren
-op_amp
-id|wq
-comma
-l_int|1
-op_star
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 multiline_comment|/* sleep for 1s */
-)brace
 id|rval
 op_assign
 id|mega_do_del_logdrv
@@ -15331,6 +15348,63 @@ id|pci_dev_func
 op_assign
 id|pdev-&gt;devfn
 suffix:semicolon
+multiline_comment|/*&n;&t; * The megaraid3 stuff reports the ID of the Intel part which is not&n;&t; * remotely specific to the megaraid&n;&t; */
+r_if
+c_cond
+(paren
+id|pdev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_INTEL
+)paren
+(brace
+id|u16
+id|magic
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Don&squot;t fall over the Compaq management cards using the same&n;&t;&t; * PCI identifier&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|pdev-&gt;subsystem_vendor
+op_eq
+id|PCI_VENDOR_ID_COMPAQ
+op_logical_and
+id|pdev-&gt;subsystem_device
+op_eq
+l_int|0xC000
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+multiline_comment|/* Now check the magic signature byte */
+id|pci_read_config_word
+c_func
+(paren
+id|pdev
+comma
+id|PCI_CONF_AMISIG
+comma
+op_amp
+id|magic
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|magic
+op_ne
+id|HBA_SIGNATURE_471
+op_logical_and
+id|magic
+op_ne
+id|HBA_SIGNATURE
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+multiline_comment|/* Ok it is probably a megaraid */
+)brace
 multiline_comment|/*&n;&t; * For these vendor and device ids, signature offsets are not&n;&t; * valid and 64 bit is implicit&n;&t; */
 r_if
 c_cond

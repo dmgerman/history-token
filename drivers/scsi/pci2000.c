@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;pci2000.h&quot;
 macro_line|#include &quot;psi_roy.h&quot;
 singleline_comment|//#define DEBUG 1

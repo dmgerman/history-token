@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;NCR53C9x.h&quot;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
@@ -15200,6 +15200,76 @@ id|esps_in_use
 suffix:semicolon
 )brace
 macro_line|#endif
+DECL|variable|esp_abort
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|esp_abort
+)paren
+suffix:semicolon
+DECL|variable|esp_allocate
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|esp_allocate
+)paren
+suffix:semicolon
+DECL|variable|esp_deallocate
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|esp_deallocate
+)paren
+suffix:semicolon
+DECL|variable|esp_initialize
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|esp_initialize
+)paren
+suffix:semicolon
+DECL|variable|esp_intr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|esp_intr
+)paren
+suffix:semicolon
+DECL|variable|esp_queue
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|esp_queue
+)paren
+suffix:semicolon
+DECL|variable|esp_reset
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|esp_reset
+)paren
+suffix:semicolon
+DECL|variable|esp_slave_alloc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|esp_slave_alloc
+)paren
+suffix:semicolon
+DECL|variable|esp_slave_destroy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|esp_slave_destroy
+)paren
+suffix:semicolon
+DECL|variable|esps_in_use
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|esps_in_use
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

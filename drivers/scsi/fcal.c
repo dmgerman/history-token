@@ -14,7 +14,7 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;../fc4/fcp_impl.h&quot;
 macro_line|#include &quot;fcal.h&quot;
 macro_line|#include &lt;linux/module.h&gt;

@@ -15,16 +15,20 @@ macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_dbg.h&gt;
+macro_line|#include &lt;scsi/scsi_eh.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_tcq.h&gt;
 macro_line|#include &lt;scsi/scsi_transport.h&gt;
 macro_line|#include &lt;scsi/scsi_transport_spi.h&gt;
 macro_line|#include &quot;53c700.h&quot;
@@ -63,7 +67,8 @@ r_int
 id|NCR_700_queuecommand
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_void
@@ -72,7 +77,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -82,7 +88,8 @@ r_int
 id|NCR_700_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -92,7 +99,8 @@ r_int
 id|NCR_700_bus_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -102,7 +110,8 @@ r_int
 id|NCR_700_dev_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -112,7 +121,8 @@ r_int
 id|NCR_700_host_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -144,7 +154,8 @@ r_int
 id|NCR_700_slave_configure
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDpnt
 )paren
@@ -154,7 +165,8 @@ r_void
 id|NCR_700_slave_destroy
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDpnt
 )paren
@@ -507,7 +519,8 @@ DECL|function|NCR_700_get_SXFER
 id|NCR_700_get_SXFER
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDp
 )paren
@@ -554,7 +567,8 @@ DECL|function|NCR_700_detect
 id|NCR_700_detect
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|tpnt
 comma
@@ -1893,7 +1907,8 @@ id|NCR_700_Host_Parameters
 op_star
 id|hostdata
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCp
 comma
@@ -1948,7 +1963,8 @@ id|NCR_700_Host_Parameters
 op_star
 id|hostdata
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCp
 comma
@@ -1963,19 +1979,13 @@ c_cond
 (paren
 id|SCp-&gt;sc_data_direction
 op_ne
-id|SCSI_DATA_NONE
+id|DMA_NONE
 op_logical_and
 id|SCp-&gt;sc_data_direction
 op_ne
-id|SCSI_DATA_UNKNOWN
+id|DMA_BIDIRECTIONAL
 )paren
 (brace
-r_enum
-id|dma_data_direction
-id|direction
-op_assign
-id|SCp-&gt;sc_data_direction
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1991,7 +2001,7 @@ id|SCp-&gt;buffer
 comma
 id|SCp-&gt;use_sg
 comma
-id|direction
+id|SCp-&gt;sc_data_direction
 )paren
 suffix:semicolon
 )brace
@@ -2006,7 +2016,7 @@ id|slot-&gt;dma_handle
 comma
 id|SCp-&gt;request_bufflen
 comma
-id|direction
+id|SCp-&gt;sc_data_direction
 )paren
 suffix:semicolon
 )brace
@@ -2024,7 +2034,8 @@ id|NCR_700_Host_Parameters
 op_star
 id|hostdata
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCp
 comma
@@ -2119,7 +2130,7 @@ comma
 id|result
 )paren
 suffix:semicolon
-id|print_sense
+id|scsi_print_sense
 c_func
 (paren
 l_string|&quot;53c700&quot;
@@ -3002,7 +3013,8 @@ id|NCR_700_Host_Parameters
 op_star
 id|hostdata
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCp
 comma
@@ -3355,7 +3367,7 @@ l_int|8
 )braket
 )paren
 suffix:semicolon
-id|print_msg
+id|scsi_print_msg
 c_func
 (paren
 id|hostdata-&gt;msgin
@@ -3433,7 +3445,8 @@ id|NCR_700_Host_Parameters
 op_star
 id|hostdata
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCp
 comma
@@ -3506,7 +3519,7 @@ l_int|8
 )braket
 )paren
 suffix:semicolon
-id|print_msg
+id|scsi_print_msg
 c_func
 (paren
 id|hostdata-&gt;msgin
@@ -3776,7 +3789,7 @@ l_int|8
 )braket
 )paren
 suffix:semicolon
-id|print_msg
+id|scsi_print_msg
 c_func
 (paren
 id|hostdata-&gt;msgin
@@ -3863,7 +3876,8 @@ comma
 id|__u32
 id|dsp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCp
 comma
@@ -4020,10 +4034,10 @@ suffix:semicolon
 r_else
 (brace
 macro_line|#ifdef NCR_DEBUG
-id|print_command
+id|scsi_print_command
 c_func
 (paren
-id|SCp-&gt;cmnd
+id|SCp
 )paren
 suffix:semicolon
 id|printk
@@ -4130,7 +4144,7 @@ l_int|0
 suffix:semicolon
 id|SCp-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|dma_sync_single_for_device
 c_func
@@ -4371,10 +4385,10 @@ comma
 id|SCp-&gt;cmd_len
 )paren
 suffix:semicolon
-id|print_command
+id|scsi_print_command
 c_func
 (paren
-id|SCp-&gt;cmnd
+id|SCp
 )paren
 suffix:semicolon
 id|NCR_700_internal_bus_reset
@@ -4535,7 +4549,8 @@ id|reselection_id
 op_assign
 id|hostdata-&gt;reselection_id
 suffix:semicolon
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDp
 suffix:semicolon
@@ -4623,7 +4638,8 @@ op_eq
 id|A_SIMPLE_TAG_MSG
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCp
 op_assign
@@ -4709,7 +4725,8 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCp
 op_assign
@@ -5349,10 +5366,10 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|print_command
+id|scsi_print_command
 c_func
 (paren
-id|SCp-&gt;cmnd
+id|SCp
 )paren
 suffix:semicolon
 r_if
@@ -5564,7 +5581,8 @@ id|host-&gt;hostdata
 l_int|0
 )braket
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCp
 op_assign
@@ -6085,7 +6103,8 @@ DECL|function|NCR_700_start_command
 id|NCR_700_start_command
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCp
 )paren
@@ -6608,7 +6627,8 @@ suffix:semicolon
 id|__u32
 id|dsp
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCp
 op_assign
@@ -6758,7 +6778,8 @@ op_amp
 id|SCSI_RESET_DETECTED
 )paren
 (brace
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDp
 suffix:semicolon
@@ -6831,7 +6852,8 @@ id|i
 op_increment
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCp
 suffix:semicolon
@@ -7228,10 +7250,10 @@ comma
 id|data_transfer
 )paren
 suffix:semicolon
-id|print_command
+id|scsi_print_command
 c_func
 (paren
-id|SCp-&gt;cmnd
+id|SCp
 )paren
 suffix:semicolon
 r_if
@@ -7929,7 +7951,8 @@ DECL|function|NCR_700_queuecommand
 id|NCR_700_queuecommand
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCp
 comma
@@ -7939,7 +7962,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -8146,10 +8170,10 @@ comma
 id|SCp-&gt;device-&gt;host-&gt;host_no
 )paren
 suffix:semicolon
-id|print_command
+id|scsi_print_command
 c_func
 (paren
-id|SCp-&gt;cmnd
+id|SCp
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -8350,7 +8374,7 @@ id|SCp-&gt;request_bufflen
 op_logical_and
 id|SCp-&gt;sc_data_direction
 op_ne
-id|SCSI_DATA_NONE
+id|DMA_NONE
 )paren
 (brace
 macro_line|#ifdef NCR_700_DEBUG
@@ -8360,10 +8384,10 @@ c_func
 l_string|&quot;53c700: Command&quot;
 )paren
 suffix:semicolon
-id|print_command
+id|scsi_print_command
 c_func
 (paren
-id|SCp-&gt;cmnd
+id|SCp
 )paren
 suffix:semicolon
 id|printk
@@ -8377,7 +8401,7 @@ suffix:semicolon
 macro_line|#endif
 id|SCp-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 )brace
 r_switch
@@ -8413,7 +8437,7 @@ id|SCp-&gt;sc_data_direction
 )paren
 (brace
 r_case
-id|SCSI_DATA_UNKNOWN
+id|DMA_BIDIRECTIONAL
 suffix:colon
 r_default
 suffix:colon
@@ -8424,10 +8448,10 @@ id|KERN_ERR
 l_string|&quot;53c700: Unknown command for data direction &quot;
 )paren
 suffix:semicolon
-id|print_command
+id|scsi_print_command
 c_func
 (paren
-id|SCp-&gt;cmnd
+id|SCp
 )paren
 suffix:semicolon
 id|move_ins
@@ -8437,7 +8461,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:colon
 id|move_ins
 op_assign
@@ -8446,7 +8470,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:colon
 id|move_ins
 op_assign
@@ -8455,7 +8479,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 suffix:colon
 id|move_ins
 op_assign
@@ -8749,7 +8773,8 @@ DECL|function|NCR_700_abort
 id|NCR_700_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCp
 )paren
@@ -8772,10 +8797,10 @@ comma
 id|SCp-&gt;device-&gt;lun
 )paren
 suffix:semicolon
-id|print_command
+id|scsi_print_command
 c_func
 (paren
-id|SCp-&gt;cmnd
+id|SCp
 )paren
 suffix:semicolon
 id|slot
@@ -8830,7 +8855,8 @@ DECL|function|NCR_700_bus_reset
 id|NCR_700_bus_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCp
 )paren
@@ -8871,10 +8897,10 @@ comma
 id|SCp
 )paren
 suffix:semicolon
-id|print_command
+id|scsi_print_command
 c_func
 (paren
-id|SCp-&gt;cmnd
+id|SCp
 )paren
 suffix:semicolon
 multiline_comment|/* In theory, eh_complete should always be null because the&n;&t; * eh is single threaded, but just in case we&squot;re handling a&n;&t; * reset via sg or something */
@@ -8965,7 +8991,8 @@ DECL|function|NCR_700_dev_reset
 id|NCR_700_dev_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCp
 )paren
@@ -8983,10 +9010,10 @@ comma
 id|SCp-&gt;device-&gt;lun
 )paren
 suffix:semicolon
-id|print_command
+id|scsi_print_command
 c_func
 (paren
-id|SCp-&gt;cmnd
+id|SCp
 )paren
 suffix:semicolon
 r_return
@@ -8999,7 +9026,8 @@ DECL|function|NCR_700_host_reset
 id|NCR_700_host_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCp
 )paren
@@ -9017,10 +9045,10 @@ comma
 id|SCp-&gt;device-&gt;lun
 )paren
 suffix:semicolon
-id|print_command
+id|scsi_print_command
 c_func
 (paren
-id|SCp-&gt;cmnd
+id|SCp
 )paren
 suffix:semicolon
 id|NCR_700_internal_bus_reset
@@ -9259,7 +9287,8 @@ DECL|function|NCR_700_slave_configure
 id|NCR_700_slave_configure
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDp
 )paren
@@ -9345,7 +9374,8 @@ DECL|function|NCR_700_slave_destroy
 id|NCR_700_slave_destroy
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDp
 )paren

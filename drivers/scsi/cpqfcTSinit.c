@@ -22,7 +22,7 @@ singleline_comment|// ioctl related
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &quot;cpqfcTSchip.h&quot;
 macro_line|#include &quot;cpqfcTSstructs.h&quot;
@@ -4228,7 +4228,7 @@ id|Cmnd
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// The file &quot;hosts.h&quot; says not to call scsi_done from
+singleline_comment|// The file &lt;scsi/scsi_host.h&gt; says not to call scsi_done from
 singleline_comment|// inside _queuecommand, so we&squot;ll do it from the heartbeat timer
 singleline_comment|// (clarification: Turns out it&squot;s ok to call scsi_done from queuecommand 
 singleline_comment|// for cases that don&squot;t go to the hardware like scsi cmds destined

@@ -160,7 +160,7 @@ suffix:semicolon
 multiline_comment|/* Per device statistics */
 DECL|member|post_buckets_task
 r_struct
-id|mpt_work_struct
+id|work_struct
 id|post_buckets_task
 suffix:semicolon
 DECL|member|post_buckets_active
@@ -3196,7 +3196,6 @@ c_cond
 id|priority
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,41)
 id|schedule_work
 c_func
 (paren
@@ -3204,28 +3203,9 @@ op_amp
 id|priv-&gt;post_buckets_task
 )paren
 suffix:semicolon
-macro_line|#else
-id|queue_task
-c_func
-(paren
-op_amp
-id|priv-&gt;post_buckets_task
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,41)
 id|schedule_delayed_work
 c_func
 (paren
@@ -3235,18 +3215,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#else
-id|queue_task
-c_func
-(paren
-op_amp
-id|priv-&gt;post_buckets_task
-comma
-op_amp
-id|tq_timer
-)paren
-suffix:semicolon
-macro_line|#endif
 id|dioprintk
 c_func
 (paren
@@ -5536,11 +5504,11 @@ comma
 r_sizeof
 (paren
 r_struct
-id|mpt_work_struct
+id|work_struct
 )paren
 )paren
 suffix:semicolon
-id|MPT_INIT_WORK
+id|INIT_WORK
 c_func
 (paren
 op_amp
@@ -6338,25 +6306,6 @@ suffix:semicolon
 multiline_comment|/* deregister any send/receive handler structs. I2Oism? */
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,59)
-id|MODULE_PARM
-c_func
-(paren
-id|tx_max_out_p
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|max_buckets_out
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-singleline_comment|// Debug stuff. FIXME!
-macro_line|#endif
 DECL|variable|mpt_lan_init
 id|module_init
 c_func

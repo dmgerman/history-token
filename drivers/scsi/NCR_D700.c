@@ -10,8 +10,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;53c700.h&quot;
 macro_line|#include &quot;NCR_D700.h&quot;
 DECL|variable|NCR_D700
@@ -335,7 +334,8 @@ suffix:semicolon
 multiline_comment|/* Host template.  The 53c700 routine NCR_700_detect will&n; * fill in all of the missing routines */
 DECL|variable|NCR_D700_driver_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|NCR_D700_driver_template
 op_assign
 (brace

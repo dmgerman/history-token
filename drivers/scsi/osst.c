@@ -48,7 +48,7 @@ multiline_comment|/* The message level for the debug messages is currently set t
 DECL|macro|OSST_DEB_MSG
 mdefine_line|#define OSST_DEB_MSG  KERN_NOTICE
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_driver.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 DECL|macro|ST_KILOBYTE

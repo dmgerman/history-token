@@ -8,13 +8,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#if defined (__sparc__)
-macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#endif
-multiline_comment|/* Hmmm, avoid undefined spinlock_t on lk-2.2.14-5.0 */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
-macro_line|#include &lt;asm/spinlock.h&gt;
-macro_line|#endif
 DECL|macro|MODULEAUTHOR
 mdefine_line|#define MODULEAUTHOR &quot;Steven J. Ralston&quot;
 DECL|macro|COPYRIGHT

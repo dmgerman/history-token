@@ -14,6 +14,9 @@ macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
 DECL|macro|ALLOC_FAILURE_MSG
 mdefine_line|#define ALLOC_FAILURE_MSG&t;KERN_ERR &quot;%s: Allocation failure during&quot; &bslash;&n;&t;&quot; SCSI scanning, some SCSI devices might not be configured&bslash;n&quot;
+multiline_comment|/*&n; * Default timeout&n; */
+DECL|macro|SCSI_TIMEOUT
+mdefine_line|#define SCSI_TIMEOUT (2*HZ)
 multiline_comment|/*&n; * Prefix values for the SCSI id&squot;s (stored in driverfs name field)&n; */
 DECL|macro|SCSI_UID_SER_NUM
 mdefine_line|#define SCSI_UID_SER_NUM &squot;S&squot;

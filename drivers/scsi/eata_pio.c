@@ -1,4 +1,5 @@
 multiline_comment|/************************************************************&n; *                                                          *&n; *               Linux EATA SCSI PIO driver                 *&n; *                                                          *&n; *  based on the CAM document CAM/89-004 rev. 2.0c,         *&n; *  DPT&squot;s driver kit, some internal documents and source,   *&n; *  and several other Linux scsi drivers and kernel docs.   *&n; *                                                          *&n; *  The driver currently:                                   *&n; *      -supports all EATA-PIO boards                       *&n; *      -only supports DASD devices                         *&n; *                                                          *&n; *  (c)1993-96 Michael Neuffer, Alfred Arnold               *&n; *             neuffer@goofy.zdv.uni-mainz.de               *&n; *             a.arnold@kfa-juelich.de                      * &n; *                                                          *&n; *  Updated 2002 by Alan Cox &lt;alan@redhat.com&gt; for Linux    *&n; *  2.5.x and the newer locking and error handling          *&n; *                                                          *&n; *  This program is free software; you can redistribute it  *&n; *  and/or modify it under the terms of the GNU General     *&n; *  Public License as published by the Free Software        *&n; *  Foundation; either version 2 of the License, or         *&n; *  (at your option) any later version.                     *&n; *                                                          *&n; *  This program is distributed in the hope that it will be *&n; *  useful, but WITHOUT ANY WARRANTY; without even the      *&n; *  implied warranty of MERCHANTABILITY or FITNESS FOR A    *&n; *  PARTICULAR PURPOSE.  See the GNU General Public License *&n; *  for more details.                                       *&n; *                                                          *&n; *  You should have received a copy of the GNU General      *&n; *  Public License along with this kernel; if not, write to *&n; *  the Free Software Foundation, Inc., 675 Mass Ave,       *&n; *  Cambridge, MA 02139, USA.                               *&n; *&t;&t;&t;&t;&t;&t;&t;    *&n; *  For the avoidance of doubt the &quot;preferred form&quot; of this *&n; *  code is one which is in an open non patent encumbered   *&n; *  format. Where cryptographic key signing forms part of   *&n; *  the process of creating an executable the information   *&n; *  including keys needed to generate an equivalently       *&n; *  functional executable are deemed to be part of the &t;    *&n; *  source code are deemed to be part of the source code.   *&n; *                                                          *&n; ************************************************************&n; *  last change: 2002/11/02               OS: Linux 2.5.45  *&n; ************************************************************/
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -9,14 +10,13 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &lt;scsi/scsicam.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;eata_generic.h&quot;
 macro_line|#include &quot;eata_pio.h&quot;
 DECL|variable|ISAbases
@@ -145,6 +145,12 @@ r_static
 r_int
 r_int
 id|queue_counter
+suffix:semicolon
+DECL|variable|driver_template
+r_static
+r_struct
+id|scsi_host_template
+id|driver_template
 suffix:semicolon
 multiline_comment|/*&n; * eata_proc_info&n; * inout : decides on the direction of the dataflow and the meaning of the &n; *         variables&n; * buffer: If inout==FALSE data is being written to it else read from it&n; * *start: If inout==FALSE start of the valid data in the buffer&n; * offset: If inout==FALSE offset from the beginning of the imaginary file &n; *         from which we start writing into the buffer&n; * length: If inout==FALSE max number of bytes to be written into the buffer &n; *         else number of bytes in the buffer&n; */
 DECL|function|eata_pio_proc_info
@@ -628,9 +634,7 @@ id|sh-&gt;n_io_port
 suffix:semicolon
 )brace
 r_return
-(paren
-id|TRUE
-)paren
+l_int|1
 suffix:semicolon
 )brace
 DECL|function|IncStat
@@ -639,7 +643,8 @@ r_void
 id|IncStat
 c_func
 (paren
-id|Scsi_Pointer
+r_struct
+id|scsi_pointer
 op_star
 id|SCp
 comma
@@ -675,7 +680,7 @@ l_int|0
 )paren
 id|SCp-&gt;Status
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_else
 (brace
@@ -801,7 +806,8 @@ id|eata_stat
 op_assign
 l_int|0xfffff
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 suffix:semicolon
@@ -957,7 +963,7 @@ l_int|256
 suffix:semicolon
 id|odd
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_while
 c_loop
@@ -1005,7 +1011,7 @@ l_int|1
 suffix:semicolon
 id|odd
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 id|x
@@ -1099,7 +1105,7 @@ op_decrement
 suffix:semicolon
 id|odd
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 )brace
 )brace
@@ -1131,7 +1137,7 @@ r_else
 multiline_comment|/* cp-&gt;DataOut */
 id|odd
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|z
 op_assign
@@ -1196,7 +1202,7 @@ op_decrement
 suffix:semicolon
 id|odd
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 id|x
@@ -1279,7 +1285,7 @@ l_int|1
 suffix:semicolon
 id|odd
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 )brace
 )brace
@@ -1308,7 +1314,7 @@ op_decrement
 suffix:semicolon
 id|odd
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -1522,9 +1528,7 @@ op_eq
 l_int|0
 )paren
 r_return
-(paren
-id|TRUE
-)paren
+l_int|1
 suffix:semicolon
 multiline_comment|/* Enable interrupts for HBA.  It is not the best way to do it at this&n;&t; * place, but I hope that it doesn&squot;t interfere with the IDE driver &n;&t; * initialization this way */
 id|outb
@@ -1548,9 +1552,7 @@ id|HA_WCOMMAND
 )paren
 suffix:semicolon
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|eata_pio_queue
@@ -1559,7 +1561,8 @@ r_int
 id|eata_pio_queue
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -1569,7 +1572,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -1755,19 +1759,17 @@ c_cond
 (paren
 id|cmd-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 )paren
-(brace
 id|cp-&gt;DataOut
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
-)brace
 multiline_comment|/* Output mode */
 r_else
 id|cp-&gt;DataIn
 op_assign
-id|TRUE
+l_int|0
 suffix:semicolon
 multiline_comment|/* Input mode  */
 id|cp-&gt;Interpret
@@ -1792,7 +1794,7 @@ id|cmd-&gt;request_bufflen
 suffix:semicolon
 id|cp-&gt;Auto_Req_Sen
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|cp-&gt;cp_reqDMA
 op_assign
@@ -1816,11 +1818,11 @@ id|cmd-&gt;device-&gt;lun
 suffix:semicolon
 id|cp-&gt;cp_dispri
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|cp-&gt;cp_identify
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|memcpy
 c_func
@@ -2079,7 +2081,8 @@ r_int
 id|eata_pio_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -2278,7 +2281,8 @@ r_int
 id|eata_pio_host_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -2294,9 +2298,10 @@ r_int
 r_char
 id|success
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 suffix:semicolon
@@ -2625,7 +2630,7 @@ id|cmd
 op_member_access_from_pointer
 id|state
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2741,11 +2746,11 @@ id|buff
 suffix:semicolon
 id|cp.DataIn
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|cp.Interpret
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 multiline_comment|/* Interpret command */
 id|cp.cp_datalen
@@ -3028,18 +3033,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|base
 comma
 l_int|9
+comma
+l_string|&quot;eata_pio&quot;
 )paren
 )paren
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 id|memset
 c_func
@@ -3076,10 +3082,8 @@ id|loop
 op_eq
 l_int|0
 )paren
-r_return
-(paren
-id|FALSE
-)paren
+r_goto
+id|fail
 suffix:semicolon
 id|DBG
 c_func
@@ -3174,10 +3178,8 @@ id|loop
 op_eq
 l_int|0
 )paren
-r_return
-(paren
-id|FALSE
-)paren
+r_goto
+id|fail
 suffix:semicolon
 id|loop
 op_assign
@@ -3200,8 +3202,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
 id|inb
 c_func
 (paren
@@ -3212,9 +3212,26 @@ id|HA_RSTATUS
 op_amp
 id|HA_SERROR
 )paren
-)paren
 (brace
-multiline_comment|/* Error ? */
+id|DBG
+c_func
+(paren
+id|DBG_PROBE
+comma
+id|printk
+c_func
+(paren
+l_string|&quot;eata_dma: get_conf_PIO, error during &quot;
+l_string|&quot;transfer for HBA at %x&bslash;n&quot;
+comma
+id|base
+)paren
+)paren
+suffix:semicolon
+r_goto
+id|fail
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3223,10 +3240,12 @@ c_func
 (paren
 id|EATA_SIGNATURE
 )paren
-op_eq
+op_ne
 id|buf-&gt;signature
 )paren
-(brace
+r_goto
+id|fail
+suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -3276,9 +3295,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ALLOW_DMA_BOARDS
-op_eq
-id|FALSE
 )paren
 (brace
 r_for
@@ -3318,34 +3336,20 @@ suffix:semicolon
 )brace
 )brace
 r_return
-(paren
-id|TRUE
-)paren
+l_int|1
 suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-id|DBG
+id|fail
+suffix:colon
+id|release_region
 c_func
 (paren
-id|DBG_PROBE
-comma
-id|printk
-c_func
-(paren
-l_string|&quot;eata_dma: get_conf_PIO, error during transfer &quot;
-l_string|&quot;for HBA at %x&bslash;n&quot;
-comma
 id|base
-)paren
+comma
+l_int|9
 )paren
 suffix:semicolon
-)brace
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|print_pio_config
@@ -3634,10 +3638,6 @@ r_struct
 id|get_conf
 op_star
 id|gc
-comma
-id|Scsi_Host_Template
-op_star
-id|tpnt
 )paren
 (brace
 r_int
@@ -3683,8 +3683,6 @@ r_if
 c_cond
 (paren
 id|gc-&gt;DMA_support
-op_eq
-id|TRUE
 )paren
 (brace
 id|printk
@@ -3698,14 +3696,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ALLOW_DMA_BOARDS
-op_eq
-id|FALSE
 )paren
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -3775,25 +3770,21 @@ id|base
 )paren
 suffix:semicolon
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
+op_logical_neg
 id|print_selftest
 c_func
 (paren
 id|base
 )paren
-op_eq
-id|FALSE
 op_logical_and
+op_logical_neg
 id|ALLOW_DMA_BOARDS
-op_eq
-id|FALSE
 )paren
 (brace
 id|printk
@@ -3809,21 +3800,9 @@ id|base
 )paren
 suffix:semicolon
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-id|base
-comma
-l_int|8
-comma
-l_string|&quot;eata_pio&quot;
-)paren
-suffix:semicolon
 id|size
 op_assign
 r_sizeof
@@ -3850,7 +3829,8 @@ op_assign
 id|scsi_register
 c_func
 (paren
-id|tpnt
+op_amp
+id|driver_template
 comma
 id|size
 )paren
@@ -3862,19 +3842,9 @@ id|sh
 op_eq
 l_int|NULL
 )paren
-(brace
-id|release_region
-c_func
-(paren
-id|base
-comma
-l_int|8
-)paren
-suffix:semicolon
 r_return
-id|FALSE
+l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3922,7 +3892,7 @@ id|reg_IRQL
 id|gc-&gt;IRQ
 )braket
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 multiline_comment|/* IRQ is edge triggered */
 )brace
@@ -3936,18 +3906,8 @@ comma
 id|gc-&gt;IRQ
 )paren
 suffix:semicolon
-id|release_region
-c_func
-(paren
-id|base
-comma
-l_int|8
-)paren
-suffix:semicolon
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -3961,8 +3921,6 @@ id|reg_IRQL
 (braket
 id|gc-&gt;IRQ
 )braket
-op_eq
-id|TRUE
 )paren
 (brace
 id|printk
@@ -3972,18 +3930,8 @@ l_string|&quot;Can&squot;t support more than one HBA on this IRQ,&bslash;n&quot;
 l_string|&quot;  if the IRQ is edge triggered. Sorry.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|release_region
-c_func
-(paren
-id|base
-comma
-l_int|8
-)paren
-suffix:semicolon
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 )brace
 r_else
@@ -4285,8 +4233,6 @@ r_if
 c_cond
 (paren
 id|gc-&gt;is_PCI
-op_eq
-id|TRUE
 )paren
 id|hd-&gt;bustype
 op_assign
@@ -4297,8 +4243,6 @@ r_if
 c_cond
 (paren
 id|gc-&gt;is_EISA
-op_eq
-id|TRUE
 )paren
 id|hd-&gt;bustype
 op_assign
@@ -4419,7 +4363,7 @@ id|base
 suffix:semicolon
 id|sh-&gt;n_io_port
 op_assign
-l_int|8
+l_int|9
 suffix:semicolon
 id|sh-&gt;irq
 op_assign
@@ -4467,16 +4411,16 @@ id|gc-&gt;SECOND
 )paren
 id|hd-&gt;primary
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_else
 id|hd-&gt;primary
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|sh-&gt;unchecked_isa_dma
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 multiline_comment|/* We can only do PIO */
 id|hd-&gt;next
@@ -4539,10 +4483,6 @@ r_struct
 id|get_conf
 op_star
 id|buf
-comma
-id|Scsi_Host_Template
-op_star
-id|tpnt
 )paren
 (brace
 r_int
@@ -4566,15 +4506,18 @@ op_increment
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ISAbases
 (braket
 id|i
 )braket
 )paren
-(brace
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|get_pio_conf_PIO
 c_func
 (paren
@@ -4585,10 +4528,13 @@ id|i
 comma
 id|buf
 )paren
-op_eq
-id|TRUE
 )paren
-(brace
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|register_pio_HBA
 c_func
 (paren
@@ -4598,11 +4544,20 @@ id|i
 )braket
 comma
 id|buf
+)paren
+)paren
+id|release_region
+c_func
+(paren
+id|ISAbases
+(braket
+id|i
+)braket
 comma
-id|tpnt
+l_int|9
 )paren
 suffix:semicolon
-)brace
+r_else
 id|ISAbases
 (braket
 id|i
@@ -4610,7 +4565,6 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 )brace
 r_return
 suffix:semicolon
@@ -4625,10 +4579,6 @@ r_struct
 id|get_conf
 op_star
 id|buf
-comma
-id|Scsi_Host_Template
-op_star
-id|tpnt
 )paren
 (brace
 id|u32
@@ -4668,8 +4618,6 @@ id|EISAbases
 (braket
 id|i
 )braket
-op_eq
-id|TRUE
 )paren
 (brace
 multiline_comment|/* Still a possibility ?          */
@@ -4821,8 +4769,6 @@ id|base
 comma
 id|buf
 )paren
-op_eq
-id|TRUE
 )paren
 (brace
 id|DBG
@@ -4845,18 +4791,29 @@ c_cond
 id|buf-&gt;IRQ
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
 id|register_pio_HBA
 c_func
 (paren
 id|base
 comma
 id|buf
+)paren
+)paren
+id|release_region
+c_func
+(paren
+id|base
 comma
-id|tpnt
+l_int|9
 )paren
 suffix:semicolon
 )brace
 r_else
+(brace
 id|printk
 c_func
 (paren
@@ -4865,6 +4822,15 @@ l_string|&quot;eata_dma: No valid IRQ. HBA &quot;
 l_string|&quot;removed from list&bslash;n&quot;
 )paren
 suffix:semicolon
+id|release_region
+c_func
+(paren
+id|base
+comma
+l_int|9
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Nothing found here so we take it from the list */
 id|EISAbases
@@ -4892,10 +4858,6 @@ r_struct
 id|get_conf
 op_star
 id|buf
-comma
-id|Scsi_Host_Template
-op_star
-id|tpnt
 )paren
 (brace
 macro_line|#ifndef CONFIG_PCI
@@ -5071,8 +5033,6 @@ id|base
 comma
 id|buf
 )paren
-op_eq
-id|TRUE
 )paren
 (brace
 r_if
@@ -5080,21 +5040,45 @@ c_cond
 (paren
 id|buf-&gt;FORCADR
 )paren
+(brace
 multiline_comment|/* If the address is forced */
+id|release_region
+c_func
+(paren
+id|base
+comma
+l_int|9
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
 multiline_comment|/* we&squot;ll find it later      */
+)brace
 multiline_comment|/* OK. We made it till here, so we can go now  &n;&t;&t;&t;&t; * and register it. We  only have to check and &n;&t;&t;&t;&t; * eventually remove it from the EISA and ISA list &n;&t;&t;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
 id|register_pio_HBA
 c_func
 (paren
 id|base
 comma
 id|buf
+)paren
+)paren
+(brace
+id|release_region
+c_func
+(paren
+id|base
 comma
-id|tpnt
+l_int|9
 )paren
 suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5183,8 +5167,6 @@ c_func
 (paren
 id|base
 )paren
-op_eq
-id|TRUE
 )paren
 (brace
 id|printk
@@ -5206,7 +5188,8 @@ r_int
 id|eata_pio_detect
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|tpnt
 )paren
@@ -5223,17 +5206,11 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|tpnt-&gt;proc_name
-op_assign
-l_string|&quot;eata_pio&quot;
-suffix:semicolon
 id|find_pio_PCI
 c_func
 (paren
 op_amp
 id|gc
-comma
-id|tpnt
 )paren
 suffix:semicolon
 id|find_pio_EISA
@@ -5241,8 +5218,6 @@ c_func
 (paren
 op_amp
 id|gc
-comma
-id|tpnt
 )paren
 suffix:semicolon
 id|find_pio_ISA
@@ -5250,8 +5225,6 @@ c_func
 (paren
 op_amp
 id|gc
-comma
-id|tpnt
 )paren
 suffix:semicolon
 r_for
@@ -5426,7 +5399,6 @@ id|channel
 comma
 id|HBA_ptr-&gt;this_id
 comma
-(paren
 id|SD
 c_func
 (paren
@@ -5434,9 +5406,6 @@ id|HBA_ptr
 )paren
 op_member_access_from_pointer
 id|primary
-op_eq
-id|TRUE
-)paren
 ques
 c_cond
 l_char|&squot;Y&squot;
@@ -5470,19 +5439,25 @@ suffix:semicolon
 )brace
 DECL|variable|driver_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|driver_template
 op_assign
 (brace
 dot
-id|proc_info
+id|proc_name
 op_assign
-id|eata_pio_proc_info
+l_string|&quot;eata_pio&quot;
 comma
 dot
 id|name
 op_assign
 l_string|&quot;EATA (Extended Attachment) PIO driver&quot;
+comma
+dot
+id|proc_info
+op_assign
+id|eata_pio_proc_info
 comma
 dot
 id|detect
