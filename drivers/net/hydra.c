@@ -634,8 +634,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Hydra at 0x%08lx, address %02x:%02x:%02x:%02x:%02x:%02x &quot;
-l_string|&quot;(hydra.c &quot;
+id|KERN_INFO
+l_string|&quot;%s: Hydra at 0x%08lx, address &quot;
+l_string|&quot;%02x:%02x:%02x:%02x:%02x:%02x (hydra.c &quot;
 id|HYDRA_VERSION
 l_string|&quot;)&bslash;n&quot;
 comma
@@ -722,6 +723,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: Shutting down ethercard.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -752,6 +754,7 @@ id|dev
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Hydra hw reset not there&bslash;n&quot;
 )paren
 suffix:semicolon
