@@ -491,13 +491,6 @@ op_amp
 id|lasi700_driver
 )paren
 suffix:semicolon
-id|scsi_sysfs_release_attributes
-c_func
-(paren
-op_amp
-id|lasi700_template
-)paren
-suffix:semicolon
 )brace
 DECL|variable|lasi700_init
 id|module_init

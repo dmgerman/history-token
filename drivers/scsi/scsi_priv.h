@@ -531,23 +531,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* definitions for the linker default sections covering the host&n; * class and device attributes */
-r_extern
-r_struct
-id|class_device_attribute
-op_star
-id|scsi_sysfs_shost_attrs
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_struct
-id|device_attribute
-op_star
-id|scsi_sysfs_sdev_attrs
-(braket
-)braket
-suffix:semicolon
 r_extern
 r_struct
 r_class

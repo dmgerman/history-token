@@ -1604,7 +1604,6 @@ op_amp
 id|NCR_Q720_driver
 )paren
 suffix:semicolon
-singleline_comment|//scsi_sysfs_release_attributes(&amp;NCR_Q720_driver_template);
 )brace
 DECL|variable|NCR_Q720_init
 id|module_init

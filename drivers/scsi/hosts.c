@@ -329,27 +329,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* if its not set in the template, use the default */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sht-&gt;shost_attrs
-)paren
-id|sht-&gt;shost_attrs
-op_assign
-id|scsi_sysfs_shost_attrs
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sht-&gt;sdev_attrs
-)paren
-id|sht-&gt;sdev_attrs
-op_assign
-id|scsi_sysfs_sdev_attrs
-suffix:semicolon
 id|shost
 op_assign
 id|kmalloc

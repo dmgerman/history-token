@@ -397,7 +397,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Default value for the blocking.  If the queue is empty,&n;&t; * host_blocked counts down in the request_fn until it restarts&n;&t; * host operations as zero is reached.  &n;&t; *&n;&t; * FIXME: This should probably be a value in the template&n;&t; */
 DECL|macro|SCSI_DEFAULT_HOST_BLOCKED
 mdefine_line|#define SCSI_DEFAULT_HOST_BLOCKED&t;7
-multiline_comment|/*&n;&t; * Pointer to the sysfs class properties for this host&n;&t; */
+multiline_comment|/*&n;&t; * Pointer to the sysfs class properties for this host, NULL terminated.&n;&t; */
 DECL|member|shost_attrs
 r_struct
 id|class_device_attribute
@@ -405,7 +405,7 @@ op_star
 op_star
 id|shost_attrs
 suffix:semicolon
-multiline_comment|/*&n;&t; * Pointer to the SCSI device properties for this host&n;&t; */
+multiline_comment|/*&n;&t; * Pointer to the SCSI device properties for this host, NULL terminated.&n;&t; */
 DECL|member|sdev_attrs
 r_struct
 id|device_attribute
@@ -873,16 +873,6 @@ r_return
 id|shost-&gt;shost_gendev.parent
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|scsi_sysfs_release_attributes
-c_func
-(paren
-r_struct
-id|scsi_host_template
-op_star
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|scsi_unblock_requests
