@@ -1678,6 +1678,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|info-&gt;flags
+op_amp
+id|FBINFO_MISC_TILEBLITTING
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|info-&gt;fix.visual
 op_eq
 id|FB_VISUAL_DIRECTCOLOR
@@ -3323,6 +3333,10 @@ suffix:semicolon
 id|cursor.data
 op_assign
 l_int|NULL
+suffix:semicolon
+id|cursor.flash
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond

@@ -803,6 +803,11 @@ id|image
 suffix:semicolon
 multiline_comment|/* Cursor image */
 multiline_comment|/* all fields below are for fbcon use only */
+DECL|member|flash
+r_int
+id|flash
+suffix:semicolon
+multiline_comment|/* cursor blink */
 DECL|member|data
 r_char
 op_star
@@ -1722,6 +1727,319 @@ id|vma
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_FB_TILEBLITTING
+DECL|macro|FB_TILE_CURSOR_NONE
+mdefine_line|#define FB_TILE_CURSOR_NONE        0
+DECL|macro|FB_TILE_CURSOR_UNDERLINE
+mdefine_line|#define FB_TILE_CURSOR_UNDERLINE   1
+DECL|macro|FB_TILE_CURSOR_LOWER_THIRD
+mdefine_line|#define FB_TILE_CURSOR_LOWER_THIRD 2
+DECL|macro|FB_TILE_CURSOR_LOWER_HALF
+mdefine_line|#define FB_TILE_CURSOR_LOWER_HALF  3
+DECL|macro|FB_TILE_CURSOR_TWO_THIRDS
+mdefine_line|#define FB_TILE_CURSOR_TWO_THIRDS  4
+DECL|macro|FB_TILE_CURSOR_BLOCK
+mdefine_line|#define FB_TILE_CURSOR_BLOCK       5
+DECL|struct|fb_tilemap
+r_struct
+id|fb_tilemap
+(brace
+DECL|member|width
+id|__u32
+id|width
+suffix:semicolon
+multiline_comment|/* width of each tile in pixels */
+DECL|member|height
+id|__u32
+id|height
+suffix:semicolon
+multiline_comment|/* height of each tile in scanlines */
+DECL|member|depth
+id|__u32
+id|depth
+suffix:semicolon
+multiline_comment|/* color depth of each tile */
+DECL|member|length
+id|__u32
+id|length
+suffix:semicolon
+multiline_comment|/* number of tiles in the map */
+DECL|member|data
+id|__u8
+op_star
+id|data
+suffix:semicolon
+multiline_comment|/* actual tile map: a bitmap array, packed&n;&t;&t;&t;&t;       to the nearest byte */
+)brace
+suffix:semicolon
+DECL|struct|fb_tilerect
+r_struct
+id|fb_tilerect
+(brace
+DECL|member|sx
+id|__u32
+id|sx
+suffix:semicolon
+multiline_comment|/* origin in the x-axis */
+DECL|member|sy
+id|__u32
+id|sy
+suffix:semicolon
+multiline_comment|/* origin in the y-axis */
+DECL|member|width
+id|__u32
+id|width
+suffix:semicolon
+multiline_comment|/* number of tiles in the x-axis */
+DECL|member|height
+id|__u32
+id|height
+suffix:semicolon
+multiline_comment|/* number of tiles in the y-axis */
+DECL|member|index
+id|__u32
+id|index
+suffix:semicolon
+multiline_comment|/* what tile to use: index to tile map */
+DECL|member|fg
+id|__u32
+id|fg
+suffix:semicolon
+multiline_comment|/* foreground color */
+DECL|member|bg
+id|__u32
+id|bg
+suffix:semicolon
+multiline_comment|/* background color */
+DECL|member|rop
+id|__u32
+id|rop
+suffix:semicolon
+multiline_comment|/* raster operation */
+)brace
+suffix:semicolon
+DECL|struct|fb_tilearea
+r_struct
+id|fb_tilearea
+(brace
+DECL|member|sx
+id|__u32
+id|sx
+suffix:semicolon
+multiline_comment|/* source origin in the x-axis */
+DECL|member|sy
+id|__u32
+id|sy
+suffix:semicolon
+multiline_comment|/* source origin in the y-axis */
+DECL|member|dx
+id|__u32
+id|dx
+suffix:semicolon
+multiline_comment|/* destination origin in the x-axis */
+DECL|member|dy
+id|__u32
+id|dy
+suffix:semicolon
+multiline_comment|/* destination origin in the y-axis */
+DECL|member|width
+id|__u32
+id|width
+suffix:semicolon
+multiline_comment|/* number of tiles in the x-axis */
+DECL|member|height
+id|__u32
+id|height
+suffix:semicolon
+multiline_comment|/* number of tiles in the y-axis */
+)brace
+suffix:semicolon
+DECL|struct|fb_tileblit
+r_struct
+id|fb_tileblit
+(brace
+DECL|member|sx
+id|__u32
+id|sx
+suffix:semicolon
+multiline_comment|/* origin in the x-axis */
+DECL|member|sy
+id|__u32
+id|sy
+suffix:semicolon
+multiline_comment|/* origin in the y-axis */
+DECL|member|width
+id|__u32
+id|width
+suffix:semicolon
+multiline_comment|/* number of tiles in the x-axis */
+DECL|member|height
+id|__u32
+id|height
+suffix:semicolon
+multiline_comment|/* number of tiles in the y-axis */
+DECL|member|fg
+id|__u32
+id|fg
+suffix:semicolon
+multiline_comment|/* foreground color */
+DECL|member|bg
+id|__u32
+id|bg
+suffix:semicolon
+multiline_comment|/* background color */
+DECL|member|length
+id|__u32
+id|length
+suffix:semicolon
+multiline_comment|/* number of tiles to draw */
+DECL|member|indices
+id|__u32
+op_star
+id|indices
+suffix:semicolon
+multiline_comment|/* array of indices to tile map */
+)brace
+suffix:semicolon
+DECL|struct|fb_tilecursor
+r_struct
+id|fb_tilecursor
+(brace
+DECL|member|sx
+id|__u32
+id|sx
+suffix:semicolon
+multiline_comment|/* cursor position in the x-axis */
+DECL|member|sy
+id|__u32
+id|sy
+suffix:semicolon
+multiline_comment|/* cursor position in the y-axis */
+DECL|member|mode
+id|__u32
+id|mode
+suffix:semicolon
+multiline_comment|/* 0 = erase, 1 = draw */
+DECL|member|shape
+id|__u32
+id|shape
+suffix:semicolon
+multiline_comment|/* see FB_TILE_CURSOR_* */
+DECL|member|fg
+id|__u32
+id|fg
+suffix:semicolon
+multiline_comment|/* foreground color */
+DECL|member|bg
+id|__u32
+id|bg
+suffix:semicolon
+multiline_comment|/* background color */
+)brace
+suffix:semicolon
+DECL|struct|fb_tile_ops
+r_struct
+id|fb_tile_ops
+(brace
+multiline_comment|/* set tile characteristics */
+DECL|member|fb_settile
+r_void
+(paren
+op_star
+id|fb_settile
+)paren
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+comma
+r_struct
+id|fb_tilemap
+op_star
+id|map
+)paren
+suffix:semicolon
+multiline_comment|/* all dimensions from hereon are in terms of tiles */
+multiline_comment|/* move a rectangular region of tiles from one area to another*/
+DECL|member|fb_tilecopy
+r_void
+(paren
+op_star
+id|fb_tilecopy
+)paren
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+comma
+r_struct
+id|fb_tilearea
+op_star
+id|area
+)paren
+suffix:semicolon
+multiline_comment|/* fill a rectangular region with a tile */
+DECL|member|fb_tilefill
+r_void
+(paren
+op_star
+id|fb_tilefill
+)paren
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+comma
+r_struct
+id|fb_tilerect
+op_star
+id|rect
+)paren
+suffix:semicolon
+multiline_comment|/* copy an array of tiles */
+DECL|member|fb_tileblit
+r_void
+(paren
+op_star
+id|fb_tileblit
+)paren
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+comma
+r_struct
+id|fb_tileblit
+op_star
+id|blit
+)paren
+suffix:semicolon
+multiline_comment|/* cursor */
+DECL|member|fb_tilecursor
+r_void
+(paren
+op_star
+id|fb_tilecursor
+)paren
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+comma
+r_struct
+id|fb_tilecursor
+op_star
+id|cursor
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif /* CONFIG_FB_TILEBLITTING */
 multiline_comment|/* FBINFO_* = fb_info.flags bit flags */
 DECL|macro|FBINFO_MODULE
 mdefine_line|#define FBINFO_MODULE&t;&t;0x0001&t;/* Low-level driver is a module */
@@ -1757,6 +2075,8 @@ DECL|macro|FBINFO_MISC_MODESWITCH
 mdefine_line|#define FBINFO_MISC_MODESWITCH         0x20000 /* mode switch */
 DECL|macro|FBINFO_MISC_MODESWITCHLATE
 mdefine_line|#define FBINFO_MISC_MODESWITCHLATE     0x40000 /* init hardware later */
+DECL|macro|FBINFO_MISC_TILEBLITTING
+mdefine_line|#define FBINFO_MISC_TILEBLITTING       0x80000 /* use tile blitting */
 DECL|struct|fb_info
 r_struct
 id|fb_info
@@ -1841,6 +2161,15 @@ id|device
 op_star
 id|device
 suffix:semicolon
+macro_line|#ifdef CONFIG_FB_TILEBLITTING
+DECL|member|tileops
+r_struct
+id|fb_tile_ops
+op_star
+id|tileops
+suffix:semicolon
+multiline_comment|/* Tile Blitting */
+macro_line|#endif
 DECL|member|screen_base
 r_char
 id|__iomem
@@ -1874,6 +2203,12 @@ id|u32
 id|state
 suffix:semicolon
 multiline_comment|/* Hardware state i.e suspend */
+DECL|member|fbcon_par
+r_void
+op_star
+id|fbcon_par
+suffix:semicolon
+multiline_comment|/* fbcon use-only private area */
 multiline_comment|/* From here on everything is device dependent */
 DECL|member|par
 r_void
