@@ -2099,6 +2099,22 @@ r_return
 id|error
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * For direct-IO reads into hugetlb pages&n; */
+DECL|function|hugetlbfs_set_page_dirty
+r_int
+id|hugetlbfs_set_page_dirty
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|variable|hugetlbfs_aops
 r_static
 r_struct
@@ -2120,6 +2136,12 @@ dot
 id|commit_write
 op_assign
 id|hugetlbfs_commit_write
+comma
+dot
+id|set_page_dirty
+op_assign
+id|hugetlbfs_set_page_dirty
+comma
 )brace
 suffix:semicolon
 DECL|variable|hugetlbfs_file_operations
