@@ -1179,12 +1179,12 @@ c_func
 r_void
 )paren
 (brace
-id|idle_task_exit
+id|local_irq_disable
 c_func
 (paren
 )paren
 suffix:semicolon
-id|local_irq_disable
+id|idle_task_exit
 c_func
 (paren
 )paren

@@ -1007,7 +1007,8 @@ id|my_index
 (brace
 multiline_comment|/* Node isn&squot;t DLPAR/hotplug capable */
 r_return
-l_int|1
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|rc
@@ -1039,7 +1040,8 @@ l_int|0
 )paren
 (brace
 r_return
-l_int|1
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|name_tmp
@@ -1179,7 +1181,8 @@ l_int|1
 suffix:semicolon
 )brace
 r_return
-l_int|1
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|is_php_type

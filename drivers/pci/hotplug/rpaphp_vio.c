@@ -172,7 +172,8 @@ suffix:semicolon
 r_int
 id|rc
 op_assign
-l_int|1
+op_minus
+id|EINVAL
 suffix:semicolon
 r_struct
 id|slot
@@ -202,6 +203,8 @@ r_if
 c_cond
 (paren
 id|rc
+OL
+l_int|0
 )paren
 r_goto
 id|exit_rc

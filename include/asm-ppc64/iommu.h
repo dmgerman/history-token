@@ -415,7 +415,7 @@ suffix:semicolon
 r_extern
 r_void
 op_star
-id|iommu_alloc_consistent
+id|iommu_alloc_coherent
 c_func
 (paren
 r_struct
@@ -429,11 +429,14 @@ comma
 id|dma_addr_t
 op_star
 id|dma_handle
+comma
+r_int
+id|flag
 )paren
 suffix:semicolon
 r_extern
 r_void
-id|iommu_free_consistent
+id|iommu_free_coherent
 c_func
 (paren
 r_struct

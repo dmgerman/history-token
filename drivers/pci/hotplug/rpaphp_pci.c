@@ -274,6 +274,8 @@ r_if
 c_cond
 (paren
 id|rc
+OL
+l_int|0
 )paren
 (brace
 r_if
@@ -281,11 +283,13 @@ c_cond
 (paren
 id|rc
 op_eq
-id|NEED_POWER
+op_minus
+id|EFAULT
 op_logical_or
 id|rc
 op_eq
-id|PWR_ONLY
+op_minus
+id|EEXIST
 )paren
 (brace
 id|dbg
@@ -314,6 +318,8 @@ r_if
 c_cond
 (paren
 id|rc
+OL
+l_int|0
 )paren
 (brace
 id|dbg
@@ -351,7 +357,8 @@ c_cond
 (paren
 id|rc
 op_eq
-id|ERR_SENSE_USE
+op_minus
+id|ENODEV
 )paren
 id|info
 c_func
@@ -1746,7 +1753,7 @@ id|slot-&gt;dn-&gt;full_name
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
 )brace
 r_return
@@ -1792,7 +1799,8 @@ id|dn
 )paren
 (brace
 r_return
-l_int|1
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|phb
@@ -1807,7 +1815,8 @@ id|phb
 )paren
 (brace
 r_return
-l_int|1
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|bus
@@ -1822,7 +1831,8 @@ id|bus
 )paren
 (brace
 r_return
-l_int|1
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|sprintf
@@ -1884,6 +1894,8 @@ r_if
 c_cond
 (paren
 id|rc
+OL
+l_int|0
 )paren
 (brace
 id|err
@@ -2133,7 +2145,8 @@ id|slot
 )paren
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|register_pci_slot
@@ -2150,7 +2163,8 @@ id|slot
 r_int
 id|rc
 op_assign
-l_int|1
+op_minus
+id|EINVAL
 suffix:semicolon
 id|slot-&gt;dev_type
 op_assign
