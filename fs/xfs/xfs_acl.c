@@ -889,7 +889,7 @@ id|va
 suffix:semicolon
 id|va.va_mask
 op_assign
-id|AT_MODE
+id|XFS_AT_MODE
 suffix:semicolon
 id|VOP_GETATTR
 c_func
@@ -1448,7 +1448,7 @@ id|error
 suffix:semicolon
 id|va.va_mask
 op_assign
-id|AT_UID
+id|XFS_AT_UID
 suffix:semicolon
 id|VOP_GETATTR
 c_func
@@ -2783,7 +2783,7 @@ id|error
 multiline_comment|/* Got the ACL, need the mode... */
 id|va.va_mask
 op_assign
-id|AT_MODE
+id|XFS_AT_MODE
 suffix:semicolon
 id|VOP_GETATTR
 c_func
@@ -3075,7 +3075,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Copy the u::, g::, o::, and m:: bits from the ACL into the&n;&t; * mode.  The m:: bits take precedence over the g:: bits.&n;&t; */
 id|va.va_mask
 op_assign
-id|AT_MODE
+id|XFS_AT_MODE
 suffix:semicolon
 id|VOP_GETATTR
 c_func
@@ -3102,7 +3102,7 @@ id|error
 suffix:semicolon
 id|va.va_mask
 op_assign
-id|AT_MODE
+id|XFS_AT_MODE
 suffix:semicolon
 id|va.va_mode
 op_and_assign

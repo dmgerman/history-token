@@ -657,7 +657,7 @@ id|error
 suffix:semicolon
 id|va.va_mask
 op_assign
-id|AT_UID
+id|XFS_AT_UID
 suffix:semicolon
 id|VOP_GETATTR
 c_func
