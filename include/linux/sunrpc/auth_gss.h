@@ -3,11 +3,9 @@ macro_line|#ifndef _LINUX_SUNRPC_AUTH_GSS_H
 DECL|macro|_LINUX_SUNRPC_AUTH_GSS_H
 mdefine_line|#define _LINUX_SUNRPC_AUTH_GSS_H
 macro_line|#ifdef __KERNEL__
-macro_line|#ifdef __linux__
 macro_line|#include &lt;linux/sunrpc/auth.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/sunrpc/gss_api.h&gt;
-macro_line|#endif
 DECL|macro|RPC_GSS_VERSION
 mdefine_line|#define RPC_GSS_VERSION&t;&t;1
 DECL|macro|MAXSEQ

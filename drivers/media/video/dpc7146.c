@@ -412,6 +412,13 @@ l_string|&quot;dpc_v4l2.o: dpc_attach failed for this device.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+id|i2c_del_adapter
+c_func
+(paren
+op_amp
+id|dpc-&gt;i2c_adapter
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
