@@ -54,6 +54,11 @@ id|i_has_xattr_dir
 op_assign
 l_int|0x0100
 comma
+DECL|enumerator|i_data_log
+id|i_data_log
+op_assign
+l_int|0x0200
+comma
 DECL|typedef|reiserfs_inode_flags
 )brace
 id|reiserfs_inode_flags

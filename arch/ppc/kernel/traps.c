@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/prctl.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -612,6 +613,13 @@ macro_line|#if defined(CONFIG_4xx) || defined(CONFIG_BOOKE)
 multiline_comment|/* On 4xx, the reason for the machine check or program exception&n;   is in the ESR. */
 DECL|macro|get_reason
 mdefine_line|#define get_reason(regs)&t;((regs)-&gt;dsisr)
+macro_line|#ifndef CONFIG_E500
+DECL|macro|get_mc_reason
+mdefine_line|#define get_mc_reason(regs)&t;((regs)-&gt;dsisr)
+macro_line|#else
+DECL|macro|get_mc_reason
+mdefine_line|#define get_mc_reason(regs)&t;(mfspr(SPRN_MCSR))
+macro_line|#endif
 DECL|macro|REASON_FP
 mdefine_line|#define REASON_FP&t;&t;0
 DECL|macro|REASON_ILLEGAL
@@ -629,6 +637,8 @@ macro_line|#else
 multiline_comment|/* On non-4xx, the reason for the machine check or program&n;   exception is in the MSR. */
 DECL|macro|get_reason
 mdefine_line|#define get_reason(regs)&t;((regs)-&gt;msr)
+DECL|macro|get_mc_reason
+mdefine_line|#define get_mc_reason(regs)&t;((regs)-&gt;msr)
 DECL|macro|REASON_FP
 mdefine_line|#define REASON_FP&t;&t;0x100000
 DECL|macro|REASON_ILLEGAL
@@ -657,7 +667,7 @@ r_int
 r_int
 id|reason
 op_assign
-id|get_reason
+id|get_mc_reason
 c_func
 (paren
 id|regs
@@ -942,7 +952,191 @@ id|mcsr
 )paren
 suffix:semicolon
 )brace
-macro_line|#else /* !CONFIG_4xx */
+macro_line|#elif defined (CONFIG_E500)
+id|printk
+c_func
+(paren
+l_string|&quot;Machine check in kernel mode.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Caused by (from MCSR=%lx): &quot;
+comma
+id|reason
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reason
+op_amp
+id|MCSR_MCP
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Machine Check Signal&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reason
+op_amp
+id|MCSR_ICPERR
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Instruction Cache Parity Error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reason
+op_amp
+id|MCSR_DCP_PERR
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Data Cache Push Parity Error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reason
+op_amp
+id|MCSR_DCPERR
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Data Cache Parity Error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reason
+op_amp
+id|MCSR_GL_CI
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Guarded Load or Cache-Inhibited stwcx.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reason
+op_amp
+id|MCSR_BUS_IAERR
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Bus - Instruction Address Error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reason
+op_amp
+id|MCSR_BUS_RAERR
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Bus - Read Address Error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reason
+op_amp
+id|MCSR_BUS_WAERR
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Bus - Write Address Error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reason
+op_amp
+id|MCSR_BUS_IBERR
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Bus - Instruction Data Error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reason
+op_amp
+id|MCSR_BUS_RBERR
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Bus - Read Data Bus Error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reason
+op_amp
+id|MCSR_BUS_WBERR
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Bus - Read Data Bus Error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reason
+op_amp
+id|MCSR_BUS_IPERR
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Bus - Instruction Parity Error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reason
+op_amp
+id|MCSR_BUS_RPERR
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Bus - Read Parity Error&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#else /* !CONFIG_4xx &amp;&amp; !CONFIG_E500 */
 id|printk
 c_func
 (paren
@@ -2638,6 +2832,228 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_ALTIVEC */
+macro_line|#ifdef CONFIG_FSL_BOOKE
+DECL|function|CacheLockingException
+r_void
+id|CacheLockingException
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+r_int
+r_int
+id|address
+comma
+r_int
+r_int
+id|error_code
+)paren
+(brace
+multiline_comment|/* We treat cache locking instructions from the user&n;&t; * as priv ops, in the future we could try to do&n;&t; * something smarter&n;&t; */
+r_if
+c_cond
+(paren
+id|error_code
+op_amp
+(paren
+id|ESR_DLK
+op_or
+id|ESR_ILK
+)paren
+)paren
+id|_exception
+c_func
+(paren
+id|SIGILL
+comma
+id|regs
+comma
+id|ILL_PRVOPC
+comma
+id|regs-&gt;nip
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_FSL_BOOKE */
+macro_line|#ifdef CONFIG_SPE
+r_void
+DECL|function|SPEFloatingPointException
+id|SPEFloatingPointException
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_int
+r_int
+id|spefscr
+suffix:semicolon
+r_int
+id|fpexc_mode
+suffix:semicolon
+r_int
+id|code
+op_assign
+l_int|0
+suffix:semicolon
+id|spefscr
+op_assign
+id|current-&gt;thread.spefscr
+suffix:semicolon
+id|fpexc_mode
+op_assign
+id|current-&gt;thread.fpexc_mode
+suffix:semicolon
+multiline_comment|/* Hardware does not neccessarily set sticky&n;&t; * underflow/overflow/invalid flags */
+r_if
+c_cond
+(paren
+(paren
+id|spefscr
+op_amp
+id|SPEFSCR_FOVF
+)paren
+op_logical_and
+(paren
+id|fpexc_mode
+op_amp
+id|PR_FP_EXC_OVF
+)paren
+)paren
+(brace
+id|code
+op_assign
+id|FPE_FLTOVF
+suffix:semicolon
+id|spefscr
+op_or_assign
+id|SPEFSCR_FOVFS
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|spefscr
+op_amp
+id|SPEFSCR_FUNF
+)paren
+op_logical_and
+(paren
+id|fpexc_mode
+op_amp
+id|PR_FP_EXC_UND
+)paren
+)paren
+(brace
+id|code
+op_assign
+id|FPE_FLTUND
+suffix:semicolon
+id|spefscr
+op_or_assign
+id|SPEFSCR_FUNFS
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|spefscr
+op_amp
+id|SPEFSCR_FDBZ
+)paren
+op_logical_and
+(paren
+id|fpexc_mode
+op_amp
+id|PR_FP_EXC_DIV
+)paren
+)paren
+id|code
+op_assign
+id|FPE_FLTDIV
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|spefscr
+op_amp
+id|SPEFSCR_FINV
+)paren
+op_logical_and
+(paren
+id|fpexc_mode
+op_amp
+id|PR_FP_EXC_INV
+)paren
+)paren
+(brace
+id|code
+op_assign
+id|FPE_FLTINV
+suffix:semicolon
+id|spefscr
+op_or_assign
+id|SPEFSCR_FINVS
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|spefscr
+op_amp
+(paren
+id|SPEFSCR_FG
+op_or
+id|SPEFSCR_FX
+)paren
+)paren
+op_logical_and
+(paren
+id|fpexc_mode
+op_amp
+id|PR_FP_EXC_RES
+)paren
+)paren
+id|code
+op_assign
+id|FPE_FLTRES
+suffix:semicolon
+id|current-&gt;thread.spefscr
+op_assign
+id|spefscr
+suffix:semicolon
+id|_exception
+c_func
+(paren
+id|SIGFPE
+comma
+id|regs
+comma
+id|code
+comma
+id|regs-&gt;nip
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|trap_init
 r_void
 id|__init

@@ -527,6 +527,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_ECONET_NATIVE
 multiline_comment|/*&n; *&t;Queue a transmit result for the user to be told about.&n; */
 DECL|function|tx_result
 r_static
@@ -656,7 +657,6 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ECONET_NATIVE
 multiline_comment|/*&n; *&t;Called by the Econet hardware driver when a packet transmit&n; *&t;has completed.  Tell the user.&n; */
 DECL|function|ec_tx_done
 r_static
@@ -761,24 +761,6 @@ id|port
 comma
 id|cb
 suffix:semicolon
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
-r_struct
-id|ec_cb
-op_star
-id|eb
-suffix:semicolon
-macro_line|#ifdef CONFIG_ECONET_NATIVE
-r_int
-r_int
-id|proto
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_ECONET_AUNUDP
 r_struct
 id|msghdr
@@ -959,6 +941,22 @@ id|ARPHRD_ECONET
 (brace
 multiline_comment|/* Real hardware Econet.  We&squot;re not worthy etc. */
 macro_line|#ifdef CONFIG_ECONET_NATIVE
+r_struct
+id|ec_cb
+op_star
+id|eb
+suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|skb
+suffix:semicolon
+r_int
+r_int
+id|proto
+op_assign
+l_int|0
+suffix:semicolon
 id|dev_hold
 c_func
 (paren
@@ -2673,6 +2671,7 @@ comma
 id|PF_ECONET
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ECONET_AUNUDP
 multiline_comment|/*&n; *&t;Find the listening socket, if any, for the given data.&n; */
 DECL|function|ec_listening_socket
 r_static
@@ -2882,7 +2881,6 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ECONET_AUNUDP
 multiline_comment|/*&n; *&t;Send an AUN protocol response. &n; */
 DECL|function|aun_send_response
 r_static

@@ -1314,6 +1314,18 @@ id|cpu
 )braket
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n;&t;&t; * For now, we just see if the system supports making&n;&t;&t; * the RTAS calls for CPU hotplug.  But, there may be a&n;&t;&t; * more comprehensive way to do this for an individual&n;&t;&t; * CPU.  For instance, the boot cpu might never be valid&n;&t;&t; * for hotplugging.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|systemcfg-&gt;platform
+op_ne
+id|PLATFORM_PSERIES_LPAR
+)paren
+id|c-&gt;no_control
+op_assign
+l_int|1
+suffix:semicolon
 id|register_cpu
 c_func
 (paren

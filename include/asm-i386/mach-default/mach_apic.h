@@ -2,6 +2,7 @@ macro_line|#ifndef __ASM_MACH_APIC_H
 DECL|macro|__ASM_MACH_APIC_H
 mdefine_line|#define __ASM_MACH_APIC_H
 macro_line|#include &lt;mach_apicdef.h&gt;
+macro_line|#include &lt;asm/smp.h&gt;
 DECL|macro|APIC_DFR_VALUE
 mdefine_line|#define APIC_DFR_VALUE&t;(APIC_DFR_FLAT)
 DECL|function|target_cpus
@@ -48,9 +49,6 @@ DECL|macro|INT_DELIVERY_MODE
 mdefine_line|#define INT_DELIVERY_MODE dest_LowestPrio
 DECL|macro|INT_DEST_MODE
 mdefine_line|#define INT_DEST_MODE 1     /* logical delivery broadcast to all procs */
-multiline_comment|/*&n; * this isn&squot;t really broadcast, just a (potentially inaccurate) upper&n; * bound for valid physical APIC id&squot;s&n; */
-DECL|macro|APIC_BROADCAST_ID
-mdefine_line|#define APIC_BROADCAST_ID      0x0F
 DECL|function|check_apicid_used
 r_static
 r_inline
@@ -252,8 +250,22 @@ r_int
 id|mps_cpu
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|mps_cpu
+OL
+id|get_physical_broadcast
+c_func
+(paren
+)paren
+)paren
 r_return
 id|mps_cpu
+suffix:semicolon
+r_else
+r_return
+id|BAD_APICID
 suffix:semicolon
 )brace
 DECL|function|apicid_to_cpu_present

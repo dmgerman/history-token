@@ -2435,6 +2435,11 @@ op_add_assign
 id|len
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * CPUs often take a performance hit when accessing unaligned memory&n; * locations. The actual performance hit varies, it can be small if the&n; * hardware handles it or large if we have to take an exception and fix it&n; * in software.&n; *&n; * Since an ethernet header is 14 bytes network drivers often end up with&n; * the IP header at an unaligned offset. The IP header can be aligned by&n; * shifting the start of the packet by 2 bytes. Drivers should do this&n; * with:&n; *&n; * skb_reserve(NET_IP_ALIGN);&n; *&n; * The downside to this alignment of the IP header is that the DMA is now&n; * unaligned. On some architectures the cost of an unaligned DMA is high&n; * and this cost outweighs the gains made by aligning the IP header.&n; * &n; * Since this trade off varies between architectures, we allow NET_IP_ALIGN&n; * to be overridden.&n; */
+macro_line|#ifndef NET_IP_ALIGN
+DECL|macro|NET_IP_ALIGN
+mdefine_line|#define NET_IP_ALIGN&t;2
+macro_line|#endif
 r_extern
 r_int
 id|___pskb_trim

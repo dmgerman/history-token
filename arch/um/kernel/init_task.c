@@ -5,6 +5,7 @@ macro_line|#include &quot;linux/module.h&quot;
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;linux/init_task.h&quot;
 macro_line|#include &quot;linux/version.h&quot;
+macro_line|#include &quot;linux/mqueue.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
 macro_line|#include &quot;asm/pgtable.h&quot;
 macro_line|#include &quot;user_util.h&quot;

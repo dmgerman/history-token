@@ -2148,6 +2148,16 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_inline
+r_void
+id|__generic_unplug_device
+c_func
+(paren
+id|request_queue_t
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|nr_blockdev_pages
 c_func

@@ -5711,7 +5711,7 @@ c_func
 (paren
 id|size
 op_plus
-id|HEADER_ALIGN_LAYER_3
+id|NET_IP_ALIGN
 )paren
 suffix:semicolon
 r_if
@@ -5749,7 +5749,7 @@ c_func
 (paren
 id|skb
 comma
-id|HEADER_ALIGN_LAYER_3
+id|NET_IP_ALIGN
 )paren
 suffix:semicolon
 id|memset

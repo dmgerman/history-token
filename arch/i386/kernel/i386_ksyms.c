@@ -28,7 +28,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mmx.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/nmi.h&gt;
 macro_line|#include &lt;asm/ist.h&gt;

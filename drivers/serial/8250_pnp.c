@@ -1171,14 +1171,6 @@ op_eq
 l_int|0x2e8
 )paren
 op_logical_or
-macro_line|#ifdef CONFIG_X86_PC9800
-(paren
-id|port-&gt;min
-op_eq
-l_int|0x8b0
-)paren
-op_logical_or
-macro_line|#endif
 (paren
 id|port-&gt;min
 op_eq

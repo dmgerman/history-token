@@ -68,6 +68,20 @@ c_func
 (paren
 l_int|0
 )paren
+comma
+dot
+id|sigpending
+op_assign
+id|ATOMIC_INIT
+c_func
+(paren
+l_int|0
+)paren
+comma
+dot
+id|mq_bytes
+op_assign
+l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * These routines must be called with the uidhash spinlock held!&n; */
@@ -412,6 +426,23 @@ id|files
 comma
 l_int|0
 )paren
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+r_new
+op_member_access_from_pointer
+id|sigpending
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_new
+op_member_access_from_pointer
+id|mq_bytes
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Before adding this, check whether we raced&n;&t;&t; * on adding the same user already..&n;&t;&t; */
 id|spin_lock

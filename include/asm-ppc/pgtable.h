@@ -166,6 +166,43 @@ mdefine_line|#define _PMD_BAD&t;(~PAGE_MASK)
 multiline_comment|/* ERPN in a PTE never gets cleared, ignore it */
 DECL|macro|_PTE_NONE_MASK
 mdefine_line|#define _PTE_NONE_MASK&t;0xffffffff00000000ULL
+macro_line|#elif defined(CONFIG_E500)
+multiline_comment|/*&n;   MMU Assist Register 3:&n;&n;   32 33 34 35 36  ... 50 51 52 53 54 55 56 57 58 59 60 61 62 63&n;   RPN......................  0  0 U0 U1 U2 U3 UX SX UW SW UR SR&n;&n;   - PRESENT *must* be in the bottom three bits because swap cache&n;     entries use the top 29 bits.&n;&n;   - FILE *must* be in the bottom three bits because swap cache&n;     entries use the top 29 bits.&n;*/
+multiline_comment|/* Definitions for e500 core */
+DECL|macro|_PAGE_PRESENT
+mdefine_line|#define _PAGE_PRESENT&t;0x001&t;/* S: PTE contains a translation */
+DECL|macro|_PAGE_USER
+mdefine_line|#define _PAGE_USER&t;0x002&t;/* S: User page (maps to UR) */
+DECL|macro|_PAGE_FILE
+mdefine_line|#define _PAGE_FILE&t;0x002&t;/* S: when !present: nonlinear file mapping */
+DECL|macro|_PAGE_ACCESSED
+mdefine_line|#define _PAGE_ACCESSED&t;0x004&t;/* S: Page referenced */
+DECL|macro|_PAGE_HWWRITE
+mdefine_line|#define _PAGE_HWWRITE&t;0x008&t;/* H: Dirty &amp; RW, set in exception */
+DECL|macro|_PAGE_RW
+mdefine_line|#define _PAGE_RW&t;0x010&t;/* S: Write permission */
+DECL|macro|_PAGE_HWEXEC
+mdefine_line|#define _PAGE_HWEXEC&t;0x020&t;/* H: UX permission */
+DECL|macro|_PAGE_ENDIAN
+mdefine_line|#define _PAGE_ENDIAN&t;0x040&t;/* H: E bit */
+DECL|macro|_PAGE_GUARDED
+mdefine_line|#define _PAGE_GUARDED&t;0x080&t;/* H: G bit */
+DECL|macro|_PAGE_COHERENT
+mdefine_line|#define _PAGE_COHERENT&t;0x100&t;/* H: M bit */
+DECL|macro|_PAGE_NO_CACHE
+mdefine_line|#define _PAGE_NO_CACHE&t;0x200&t;/* H: I bit */
+DECL|macro|_PAGE_WRITETHRU
+mdefine_line|#define _PAGE_WRITETHRU&t;0x400&t;/* H: W bit */
+DECL|macro|_PAGE_DIRTY
+mdefine_line|#define _PAGE_DIRTY&t;0x800&t;/* S: Page dirty */
+DECL|macro|_PMD_PRESENT
+mdefine_line|#define _PMD_PRESENT&t;0
+DECL|macro|_PMD_PRESENT_MASK
+mdefine_line|#define _PMD_PRESENT_MASK (PAGE_MASK)
+DECL|macro|_PMD_BAD
+mdefine_line|#define _PMD_BAD&t;(~PAGE_MASK)
+DECL|macro|NUM_TLBCAMS
+mdefine_line|#define NUM_TLBCAMS&t;(16)
 macro_line|#elif defined(CONFIG_8xx)
 multiline_comment|/* Definitions for 8xx embedded chips. */
 DECL|macro|_PAGE_PRESENT

@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ipmi_msgdefs.h&gt;&t;&t;/* for completion codes */
 macro_line|#include &quot;ipmi_si_sm.h&quot;
 DECL|macro|IPMI_BT_VERSION
-mdefine_line|#define IPMI_BT_VERSION &quot;v31&quot;
+mdefine_line|#define IPMI_BT_VERSION &quot;v32&quot;
 DECL|variable|bt_debug
 r_static
 r_int

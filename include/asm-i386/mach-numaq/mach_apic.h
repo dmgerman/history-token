@@ -36,8 +36,6 @@ DECL|macro|INT_DELIVERY_MODE
 mdefine_line|#define INT_DELIVERY_MODE dest_LowestPrio
 DECL|macro|INT_DEST_MODE
 mdefine_line|#define INT_DEST_MODE 0     /* physical delivery on LOCAL quad */
-DECL|macro|APIC_BROADCAST_ID
-mdefine_line|#define APIC_BROADCAST_ID      0x0F
 DECL|macro|check_apicid_used
 mdefine_line|#define check_apicid_used(bitmap, apicid) physid_isset(apicid, bitmap)
 DECL|macro|check_apicid_present

@@ -28,30 +28,24 @@ r_int
 id|v
 )paren
 (brace
+macro_line|#ifndef H8300_IO_NOSWAP
 r_int
 r_int
 id|r
-comma
-id|t
 suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;mov.b %w2,%x1&bslash;n&bslash;t&quot;
-l_string|&quot;mov.b %x2,%w1&bslash;n&bslash;t&quot;
-l_string|&quot;mov.w %1,%0&quot;
+l_string|&quot;xor.b %w0,%x0&bslash;n&bslash;t&quot;
+l_string|&quot;xor.b %x0,%w0&bslash;n&bslash;t&quot;
+l_string|&quot;xor.b %w0,%x0&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
 id|r
 )paren
-comma
-l_string|&quot;=r&quot;
-(paren
-id|t
-)paren
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;0&quot;
 (paren
 id|v
 )paren
@@ -60,6 +54,11 @@ suffix:semicolon
 r_return
 id|r
 suffix:semicolon
+macro_line|#else
+r_return
+id|v
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|_swapl
 r_static
@@ -75,33 +74,30 @@ r_int
 id|v
 )paren
 (brace
+macro_line|#ifndef H8300_IO_NOSWAP
 r_int
 r_int
 id|r
-comma
-id|t
 suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;mov.b %w2,%x1&bslash;n&bslash;t&quot;
-l_string|&quot;mov.b %x2,%w1&bslash;n&bslash;t&quot;
-l_string|&quot;mov.w %f1,%e0&bslash;n&bslash;t&quot;
-l_string|&quot;mov.w %e2,%f1&bslash;n&bslash;t&quot;
-l_string|&quot;mov.b %w1,%x0&bslash;n&bslash;t&quot;
-l_string|&quot;mov.b %x1,%w0&quot;
+l_string|&quot;xor.b %w0,%x0&bslash;n&bslash;t&quot;
+l_string|&quot;xor.b %x0,%w0&bslash;n&bslash;t&quot;
+l_string|&quot;xor.b %w0,%x0&bslash;n&bslash;t&quot;
+l_string|&quot;xor.w %e0,%f0&bslash;n&bslash;t&quot;
+l_string|&quot;xor.w %f0,%e0&bslash;n&bslash;t&quot;
+l_string|&quot;xor.w %e0,%f0&bslash;n&bslash;t&quot;
+l_string|&quot;xor.b %w0,%x0&bslash;n&bslash;t&quot;
+l_string|&quot;xor.b %x0,%w0&bslash;n&bslash;t&quot;
+l_string|&quot;xor.b %w0,%x0&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
 id|r
 )paren
-comma
-l_string|&quot;=r&quot;
-(paren
-id|t
-)paren
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;0&quot;
 (paren
 id|v
 )paren
@@ -110,6 +106,11 @@ suffix:semicolon
 r_return
 id|r
 suffix:semicolon
+macro_line|#else
+r_return
+id|v
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|macro|readb
 mdefine_line|#define readb(addr) &bslash;&n;    ({ unsigned char __v = (*(volatile unsigned char *) ((addr) &amp; 0x00ffffff)); __v; })
@@ -417,6 +418,126 @@ op_increment
 )paren
 suffix:semicolon
 )brace
+DECL|function|io_outsw_noswap
+r_static
+r_inline
+r_void
+id|io_outsw_noswap
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_const
+r_void
+op_star
+id|buf
+comma
+r_int
+id|len
+)paren
+(brace
+r_volatile
+r_int
+r_int
+op_star
+id|ap
+op_assign
+(paren
+r_volatile
+r_int
+r_int
+op_star
+)paren
+id|addr
+suffix:semicolon
+r_int
+r_int
+op_star
+id|bp
+op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
+id|buf
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|len
+op_decrement
+)paren
+op_star
+id|ap
+op_assign
+op_star
+id|bp
+op_increment
+suffix:semicolon
+)brace
+DECL|function|io_outsl_noswap
+r_static
+r_inline
+r_void
+id|io_outsl_noswap
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_const
+r_void
+op_star
+id|buf
+comma
+r_int
+id|len
+)paren
+(brace
+r_volatile
+r_int
+r_int
+op_star
+id|ap
+op_assign
+(paren
+r_volatile
+r_int
+r_int
+op_star
+)paren
+id|addr
+suffix:semicolon
+r_int
+r_int
+op_star
+id|bp
+op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
+id|buf
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|len
+op_decrement
+)paren
+op_star
+id|ap
+op_assign
+op_star
+id|bp
+op_increment
+suffix:semicolon
+)brace
 DECL|function|io_insb
 r_static
 r_inline
@@ -654,6 +775,124 @@ id|ap
 )paren
 suffix:semicolon
 )brace
+DECL|function|io_insw_noswap
+r_static
+r_inline
+r_void
+id|io_insw_noswap
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_void
+op_star
+id|buf
+comma
+r_int
+id|len
+)paren
+(brace
+r_volatile
+r_int
+r_int
+op_star
+id|ap
+op_assign
+(paren
+r_volatile
+r_int
+r_int
+op_star
+)paren
+id|addr
+suffix:semicolon
+r_int
+r_int
+op_star
+id|bp
+op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
+id|buf
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|len
+op_decrement
+)paren
+op_star
+id|bp
+op_increment
+op_assign
+op_star
+id|ap
+suffix:semicolon
+)brace
+DECL|function|io_insl_noswap
+r_static
+r_inline
+r_void
+id|io_insl_noswap
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_void
+op_star
+id|buf
+comma
+r_int
+id|len
+)paren
+(brace
+r_volatile
+r_int
+r_int
+op_star
+id|ap
+op_assign
+(paren
+r_volatile
+r_int
+r_int
+op_star
+)paren
+id|addr
+suffix:semicolon
+r_int
+r_int
+op_star
+id|bp
+op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
+id|buf
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|len
+op_decrement
+)paren
+op_star
+id|bp
+op_increment
+op_assign
+op_star
+id|ap
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *&t;make the short names macros so specific devices&n; *&t;can override them as required&n; */
 DECL|macro|memset_io
 mdefine_line|#define memset_io(a,b,c)&t;memset((void *)(a),(b),(c))
@@ -668,7 +907,7 @@ mdefine_line|#define inw(addr)    _swapw(readw(addr))
 DECL|macro|inl
 mdefine_line|#define inl(addr)    _swapl(readl(addr))
 DECL|macro|outb
-mdefine_line|#define outb(x,addr) ((void)((h8300_buswidth(addr) &amp;&amp; ((addr) &amp; 1))?writew(x,(addr) &amp; ~1):writeb(x,addr)))
+mdefine_line|#define outb(x,addr) ((void)((h8300_buswidth(addr) &amp;&amp; &bslash;&n;                      ((addr) &amp; 1))?writew(x,(addr) &amp; ~1):writeb(x,addr)))
 DECL|macro|outw
 mdefine_line|#define outw(x,addr) ((void) writew(_swapw(x),addr))
 DECL|macro|outl

@@ -92,6 +92,8 @@ suffix:semicolon
 DECL|variable|sysctl_tcp_moderate_rcvbuf
 r_int
 id|sysctl_tcp_moderate_rcvbuf
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/* Default values of the Vegas variables, in fixed-point representation&n; * with V_PARAM_SHIFT bits to the right of the binary point.&n; */
 DECL|macro|V_PARAM_SHIFT
@@ -123,6 +125,8 @@ suffix:semicolon
 DECL|variable|sysctl_tcp_bic
 r_int
 id|sysctl_tcp_bic
+op_assign
+l_int|1
 suffix:semicolon
 DECL|variable|sysctl_tcp_bic_fast_convergence
 r_int

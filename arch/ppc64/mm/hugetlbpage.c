@@ -1730,6 +1730,9 @@ op_star
 id|page
 suffix:semicolon
 r_int
+id|cpu
+suffix:semicolon
+r_int
 id|local
 op_assign
 l_int|0
@@ -1773,15 +1776,19 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* XXX are there races with checking cpu_vm_mask? - Anton */
+id|cpu
+op_assign
+id|get_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
 id|tmp
 op_assign
 id|cpumask_of_cpu
 c_func
 (paren
-id|smp_processor_id
-c_func
-(paren
-)paren
+id|cpu
 )paren
 suffix:semicolon
 r_if
@@ -1905,6 +1912,11 @@ id|page
 )paren
 suffix:semicolon
 )brace
+id|put_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
 id|mm-&gt;rss
 op_sub_assign
 (paren

@@ -77,6 +77,8 @@ c_func
 id|pc
 )paren
 comma
+l_int|0
+comma
 id|PT_REG
 c_func
 (paren

@@ -297,21 +297,8 @@ id|IORESOURCE_IO
 suffix:semicolon
 DECL|macro|STANDARD_IO_RESOURCES
 mdefine_line|#define STANDARD_IO_RESOURCES &bslash;&n;&t;(sizeof standard_io_resources / sizeof standard_io_resources[0])
-DECL|variable|code_resource
-r_struct
-id|resource
-id|code_resource
-op_assign
-(brace
-l_string|&quot;Kernel code&quot;
-comma
-l_int|0x100000
-comma
-l_int|0
-comma
-id|IORESOURCE_MEM
-)brace
-suffix:semicolon
+DECL|macro|IORESOURCE_RAM
+mdefine_line|#define IORESOURCE_RAM (IORESOURCE_BUSY | IORESOURCE_MEM)
 DECL|variable|data_resource
 r_struct
 id|resource
@@ -324,24 +311,22 @@ l_int|0
 comma
 l_int|0
 comma
-id|IORESOURCE_MEM
+id|IORESOURCE_RAM
 )brace
 suffix:semicolon
-DECL|variable|vram_resource
+DECL|variable|code_resource
 r_struct
 id|resource
-id|vram_resource
+id|code_resource
 op_assign
 (brace
-l_string|&quot;Video RAM area&quot;
+l_string|&quot;Kernel code&quot;
 comma
-l_int|0xa0000
+l_int|0
 comma
-l_int|0xbffff
+l_int|0
 comma
-id|IORESOURCE_BUSY
-op_or
-id|IORESOURCE_MEM
+id|IORESOURCE_RAM
 )brace
 suffix:semicolon
 DECL|macro|IORESOURCE_ROM
@@ -466,13 +451,29 @@ comma
 id|IORESOURCE_ROM
 )brace
 suffix:semicolon
+DECL|variable|video_ram_resource
+r_static
+r_struct
+id|resource
+id|video_ram_resource
+op_assign
+(brace
+l_string|&quot;Video RAM area&quot;
+comma
+l_int|0xa0000
+comma
+l_int|0xbffff
+comma
+id|IORESOURCE_RAM
+)brace
+suffix:semicolon
 DECL|macro|romsignature
 mdefine_line|#define romsignature(x) (*(unsigned short *)(x) == 0xaa55)
-DECL|function|checksum
+DECL|function|romchecksum
 r_static
 r_int
 id|__init
-id|checksum
+id|romchecksum
 c_func
 (paren
 r_int
@@ -613,7 +614,7 @@ c_cond
 (paren
 id|length
 op_logical_and
-id|checksum
+id|romchecksum
 c_func
 (paren
 id|rom
@@ -711,7 +712,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|checksum
+id|romchecksum
 c_func
 (paren
 id|rom
@@ -801,7 +802,7 @@ OG
 id|upper
 op_logical_or
 op_logical_neg
-id|checksum
+id|romchecksum
 c_func
 (paren
 id|rom
@@ -2325,7 +2326,7 @@ op_amp
 id|iomem_resource
 comma
 op_amp
-id|vram_resource
+id|video_ram_resource
 )paren
 suffix:semicolon
 (brace
@@ -2353,9 +2354,11 @@ c_func
 op_amp
 id|ioport_resource
 comma
+op_amp
 id|standard_io_resources
-op_plus
+(braket
 id|i
+)braket
 )paren
 suffix:semicolon
 )brace

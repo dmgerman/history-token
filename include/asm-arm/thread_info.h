@@ -3,6 +3,7 @@ macro_line|#ifndef __ASM_ARM_THREAD_INFO_H
 DECL|macro|__ASM_ARM_THREAD_INFO_H
 mdefine_line|#define __ASM_ARM_THREAD_INFO_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;asm/fpstate.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 r_struct
 id|task_struct
@@ -10,7 +11,6 @@ suffix:semicolon
 r_struct
 id|exec_domain
 suffix:semicolon
-macro_line|#include &lt;asm/fpstate.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/domain.h&gt;
@@ -138,6 +138,11 @@ r_union
 id|fp_state
 id|fpstate
 suffix:semicolon
+DECL|member|vfpstate
+r_union
+id|vfp_state
+id|vfpstate
+suffix:semicolon
 DECL|member|restart_block
 r_struct
 id|restart_block
@@ -253,6 +258,8 @@ DECL|macro|TI_USED_CP
 mdefine_line|#define TI_USED_CP&t;76
 DECL|macro|TI_FPSTATE
 mdefine_line|#define TI_FPSTATE&t;(TI_USED_CP+16)
+DECL|macro|TI_VFPSTATE
+mdefine_line|#define TI_VFPSTATE&t;(TI_FPSTATE+FP_SIZE*4)
 macro_line|#endif
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define PREEMPT_ACTIVE&t;0x04000000

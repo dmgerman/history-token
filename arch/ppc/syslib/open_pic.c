@@ -17,7 +17,7 @@ macro_line|#include &lt;asm/open_pic.h&gt;
 macro_line|#include &lt;asm/i8259.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &quot;open_pic_defs.h&quot;
-macro_line|#ifdef CONFIG_PRPMC800
+macro_line|#if defined(CONFIG_PRPMC800) || defined(CONFIG_85xx)
 DECL|macro|OPENPIC_BIG_ENDIAN
 mdefine_line|#define OPENPIC_BIG_ENDIAN
 macro_line|#endif

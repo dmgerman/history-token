@@ -31,6 +31,8 @@ mdefine_line|#define OCP_FUNC_USB&t;&t;0x0033
 multiline_comment|/* Memory devices 0x0090 - 0x009F */
 DECL|macro|OCP_FUNC_MAL
 mdefine_line|#define OCP_FUNC_MAL&t;&t;0x0090
+DECL|macro|OCP_FUNC_DMA
+mdefine_line|#define OCP_FUNC_DMA&t;&t;0x0091
 multiline_comment|/* Display 0x00A0 - 0x00AF */
 multiline_comment|/* Sound 0x00B0 - 0x00BF */
 multiline_comment|/* Mass Storage 0x00C0 - 0xxCF */
@@ -50,8 +52,8 @@ mdefine_line|#define OCP_FUNC_TAH&t;&t;0x00D4
 multiline_comment|/* Network 0x0200 - 0x02FF */
 DECL|macro|OCP_FUNC_EMAC
 mdefine_line|#define OCP_FUNC_EMAC&t;&t;0x0200
-DECL|macro|OCP_FUNC_ENET
-mdefine_line|#define OCP_FUNC_ENET&t;&t;0x0201&t;/* TSEC &amp; FEC */
+DECL|macro|OCP_FUNC_GFAR
+mdefine_line|#define OCP_FUNC_GFAR&t;&t;0x0201&t;/* TSEC &amp; FEC */
 multiline_comment|/* Bridge devices 0xE00 - 0xEFF */
 DECL|macro|OCP_FUNC_OPB
 mdefine_line|#define OCP_FUNC_OPB&t;&t;0x0E00

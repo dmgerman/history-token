@@ -19,7 +19,6 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/stop_machine.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#if 0
 mdefine_line|#define DEBUGP printk

@@ -9,6 +9,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#endif
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/atmapi.h&gt;
 macro_line|#include &lt;linux/atmsap.h&gt;
 macro_line|#include &lt;linux/atmioc.h&gt;

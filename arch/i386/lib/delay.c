@@ -47,6 +47,10 @@ id|xloops
 r_int
 id|d0
 suffix:semicolon
+id|xloops
+op_mul_assign
+l_int|4
+suffix:semicolon
 id|__asm__
 c_func
 (paren
@@ -70,15 +74,20 @@ comma
 l_string|&quot;0&quot;
 (paren
 id|current_cpu_data.loops_per_jiffy
+op_star
+(paren
+id|HZ
+op_div
+l_int|4
+)paren
 )paren
 )paren
 suffix:semicolon
 id|__delay
 c_func
 (paren
+op_increment
 id|xloops
-op_star
-id|HZ
 )paren
 suffix:semicolon
 )brace
@@ -97,10 +106,10 @@ c_func
 (paren
 id|usecs
 op_star
-l_int|0x000010c6
+l_int|0x000010c7
 )paren
 suffix:semicolon
-multiline_comment|/* 2**32 / 1000000 */
+multiline_comment|/* 2**32 / 1000000 (rounded up) */
 )brace
 DECL|function|__ndelay
 r_void

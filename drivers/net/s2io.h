@@ -1099,8 +1099,6 @@ DECL|macro|HEADER_SNAP_SIZE
 mdefine_line|#define HEADER_SNAP_SIZE               5
 DECL|macro|HEADER_VLAN_SIZE
 mdefine_line|#define HEADER_VLAN_SIZE               4
-DECL|macro|HEADER_ALIGN_LAYER_3
-mdefine_line|#define HEADER_ALIGN_LAYER_3           2
 DECL|macro|MIN_MTU
 mdefine_line|#define MIN_MTU                       46
 DECL|macro|MAX_PYLD

@@ -4,6 +4,9 @@ mdefine_line|#define __RIVAFB_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;video/vga.h&gt;
+macro_line|#include &lt;linux/i2c.h&gt;
+macro_line|#include &lt;linux/i2c-id.h&gt;
+macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
 macro_line|#include &quot;riva_hw.h&quot;
 multiline_comment|/* GGI compatibility macros */
 DECL|macro|NUM_SEQ_REGS
@@ -14,6 +17,15 @@ DECL|macro|NUM_GRC_REGS
 mdefine_line|#define NUM_GRC_REGS&t;&t;0x09
 DECL|macro|NUM_ATC_REGS
 mdefine_line|#define NUM_ATC_REGS&t;&t;0x15
+multiline_comment|/* I2C */
+DECL|macro|DDC_SCL_READ_MASK
+mdefine_line|#define DDC_SCL_READ_MASK       (1 &lt;&lt; 2)
+DECL|macro|DDC_SCL_WRITE_MASK
+mdefine_line|#define DDC_SCL_WRITE_MASK      (1 &lt;&lt; 5)
+DECL|macro|DDC_SDA_READ_MASK
+mdefine_line|#define DDC_SDA_READ_MASK       (1 &lt;&lt; 3)
+DECL|macro|DDC_SDA_WRITE_MASK
+mdefine_line|#define DDC_SDA_WRITE_MASK      (1 &lt;&lt; 4)
 multiline_comment|/* holds the state of the VGA core and extended Riva hw state from riva_hw.c.&n; * From KGI originally. */
 DECL|struct|riva_regs
 r_struct
@@ -54,6 +66,36 @@ suffix:semicolon
 DECL|member|ext
 id|RIVA_HW_STATE
 id|ext
+suffix:semicolon
+)brace
+suffix:semicolon
+r_struct
+id|riva_par
+suffix:semicolon
+DECL|struct|riva_i2c_chan
+r_struct
+id|riva_i2c_chan
+(brace
+DECL|member|par
+r_struct
+id|riva_par
+op_star
+id|par
+suffix:semicolon
+DECL|member|ddc_base
+r_int
+r_int
+id|ddc_base
+suffix:semicolon
+DECL|member|adapter
+r_struct
+id|i2c_adapter
+id|adapter
+suffix:semicolon
+DECL|member|algo
+r_struct
+id|i2c_algo_bit_data
+id|algo
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -117,61 +159,6 @@ r_char
 op_star
 id|EDID
 suffix:semicolon
-DECL|member|panel_xres
-DECL|member|panel_yres
-r_int
-id|panel_xres
-comma
-id|panel_yres
-suffix:semicolon
-DECL|member|hOver_plus
-DECL|member|hSync_width
-DECL|member|hblank
-r_int
-id|hOver_plus
-comma
-id|hSync_width
-comma
-id|hblank
-suffix:semicolon
-DECL|member|vOver_plus
-DECL|member|vSync_width
-DECL|member|vblank
-r_int
-id|vOver_plus
-comma
-id|vSync_width
-comma
-id|vblank
-suffix:semicolon
-DECL|member|hAct_high
-DECL|member|vAct_high
-DECL|member|interlaced
-r_int
-id|hAct_high
-comma
-id|vAct_high
-comma
-id|interlaced
-suffix:semicolon
-DECL|member|synct
-DECL|member|misc
-DECL|member|clock
-r_int
-id|synct
-comma
-id|misc
-comma
-id|clock
-suffix:semicolon
-DECL|member|use_default_var
-r_int
-id|use_default_var
-suffix:semicolon
-DECL|member|got_dfpinfo
-r_int
-id|got_dfpinfo
-suffix:semicolon
 DECL|member|Chipset
 r_int
 r_int
@@ -189,6 +176,12 @@ DECL|member|FlatPanel
 r_int
 id|FlatPanel
 suffix:semicolon
+DECL|member|pdev
+r_struct
+id|pci_dev
+op_star
+id|pdev
+suffix:semicolon
 macro_line|#ifdef CONFIG_MTRR
 DECL|member|vram
 DECL|member|vram_valid
@@ -205,6 +198,14 @@ suffix:semicolon
 id|mtrr
 suffix:semicolon
 macro_line|#endif
+DECL|member|chan
+r_struct
+id|riva_i2c_chan
+id|chan
+(braket
+l_int|3
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 r_void
@@ -234,6 +235,44 @@ c_func
 r_struct
 id|riva_par
 op_star
+)paren
+suffix:semicolon
+r_void
+id|riva_delete_i2c_busses
+c_func
+(paren
+r_struct
+id|riva_par
+op_star
+id|par
+)paren
+suffix:semicolon
+r_void
+id|riva_create_i2c_busses
+c_func
+(paren
+r_struct
+id|riva_par
+op_star
+id|par
+)paren
+suffix:semicolon
+r_int
+id|riva_probe_i2c_connector
+c_func
+(paren
+r_struct
+id|riva_par
+op_star
+id|par
+comma
+r_int
+id|conn
+comma
+id|u8
+op_star
+op_star
+id|out_edid
 )paren
 suffix:semicolon
 macro_line|#endif /* __RIVAFB_H */

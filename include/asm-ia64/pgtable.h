@@ -456,6 +456,20 @@ id|ptep
 )paren
 (brace
 macro_line|#ifdef CONFIG_SMP
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pte_young
+c_func
+(paren
+op_star
+id|ptep
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_return
 id|test_and_clear_bit
 c_func
@@ -514,6 +528,20 @@ id|ptep
 )paren
 (brace
 macro_line|#ifdef CONFIG_SMP
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pte_dirty
+c_func
+(paren
+op_star
+id|ptep
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_return
 id|test_and_clear_bit
 c_func

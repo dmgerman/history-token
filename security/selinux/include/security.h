@@ -13,16 +13,18 @@ DECL|macro|SELINUX_MAGIC
 mdefine_line|#define SELINUX_MAGIC 0xf97cff8c
 multiline_comment|/* Identify specific policy version changes */
 DECL|macro|POLICYDB_VERSION_BASE
-mdefine_line|#define POLICYDB_VERSION_BASE  15
+mdefine_line|#define POLICYDB_VERSION_BASE&t;&t;15
 DECL|macro|POLICYDB_VERSION_BOOL
-mdefine_line|#define POLICYDB_VERSION_BOOL  16
+mdefine_line|#define POLICYDB_VERSION_BOOL&t;&t;16
 DECL|macro|POLICYDB_VERSION_IPV6
-mdefine_line|#define POLICYDB_VERSION_IPV6  17
+mdefine_line|#define POLICYDB_VERSION_IPV6&t;&t;17
+DECL|macro|POLICYDB_VERSION_NLCLASS
+mdefine_line|#define POLICYDB_VERSION_NLCLASS&t;18
 multiline_comment|/* Range of policy versions we understand*/
 DECL|macro|POLICYDB_VERSION_MIN
 mdefine_line|#define POLICYDB_VERSION_MIN   POLICYDB_VERSION_BASE
 DECL|macro|POLICYDB_VERSION_MAX
-mdefine_line|#define POLICYDB_VERSION_MAX   POLICYDB_VERSION_IPV6
+mdefine_line|#define POLICYDB_VERSION_MAX   POLICYDB_VERSION_NLCLASS
 macro_line|#ifdef CONFIG_SECURITY_SELINUX_BOOTPARAM
 r_extern
 r_int

@@ -4,6 +4,7 @@ DECL|macro|_ASM_GENERIC__TLB_H
 mdefine_line|#define _ASM_GENERIC__TLB_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/*&n; * For UP we don&squot;t need to worry about TLB flush&n; * and page free order so much..&n; */
 macro_line|#ifdef CONFIG_SMP

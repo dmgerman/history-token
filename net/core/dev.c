@@ -10570,6 +10570,11 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|synchronize_net
+c_func
+(paren
+)paren
+suffix:semicolon
 id|dev_put
 c_func
 (paren

@@ -2126,6 +2126,15 @@ id|tid
 )paren
 suffix:semicolon
 r_int
+id|journal_force_commit_nested
+c_func
+(paren
+id|journal_t
+op_star
+id|journal
+)paren
+suffix:semicolon
+r_int
 id|log_wait_commit
 c_func
 (paren

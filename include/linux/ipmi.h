@@ -552,6 +552,15 @@ r_int
 id|priority
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Do polling on the IPMI interface the user is attached to.  This&n; * causes the IPMI code to do an immediate check for information from&n; * the driver and handle anything that is immediately pending.  This&n; * will not block in anyway.  This is useful if you need to implement&n; * polling from the user like you need to send periodic watchdog pings&n; * from a crash dump, or something like that.&n; */
+r_void
+id|ipmi_poll_interface
+c_func
+(paren
+id|ipmi_user_t
+id|user
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * When commands come in to the SMS, the user can register to receive&n; * them.  Only one user can be listening on a specific netfn/cmd pair&n; * at a time, you will get an EBUSY error if the command is already&n; * registered.  If a command is received that does not have a user&n; * registered, the driver will automatically return the proper&n; * error.&n; */
 r_int
 id|ipmi_register_for_cmd

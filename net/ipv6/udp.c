@@ -2354,8 +2354,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;sk_filter
-op_logical_and
 id|skb-&gt;ip_summed
 op_ne
 id|CHECKSUM_UNNECESSARY

@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/aio.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/kmap_types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
@@ -4363,6 +4364,23 @@ id|out_put_req
 suffix:semicolon
 id|ret
 op_assign
+id|security_file_permission
+(paren
+id|file
+comma
+id|MAY_READ
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_goto
+id|out_put_req
+suffix:semicolon
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
@@ -4436,6 +4454,23 @@ comma
 id|iocb-&gt;aio_nbytes
 )paren
 )paren
+)paren
+r_goto
+id|out_put_req
+suffix:semicolon
+id|ret
+op_assign
+id|security_file_permission
+(paren
+id|file
+comma
+id|MAY_WRITE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 )paren
 r_goto
 id|out_put_req

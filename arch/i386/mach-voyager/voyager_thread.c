@@ -15,7 +15,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/voyager.h&gt;
 macro_line|#include &lt;asm/vic.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;

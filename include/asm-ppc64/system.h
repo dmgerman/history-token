@@ -402,6 +402,26 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|flush_fp_to_thread
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|flush_altivec_to_thread
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|enable_kernel_fp
 c_func
 (paren
@@ -985,6 +1005,9 @@ suffix:semicolon
 )brace
 DECL|macro|cmpxchg
 mdefine_line|#define cmpxchg(ptr,o,n)&t;&t;&t;&t;&t;&t; &bslash;&n;  ({&t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;     __typeof__(*(ptr)) _o_ = (o);&t;&t;&t;&t;&t; &bslash;&n;     __typeof__(*(ptr)) _n_ = (n);&t;&t;&t;&t;&t; &bslash;&n;     (__typeof__(*(ptr))) __cmpxchg((ptr), (unsigned long)_o_,&t;&t; &bslash;&n;&t;&t;&t;&t;    (unsigned long)_n_, sizeof(*(ptr))); &bslash;&n;  })
+multiline_comment|/*&n; * We handle most unaligned accesses in hardware. On the other hand &n; * unaligned DMA can be very expensive on some ppc64 IO chips (it does&n; * powers of 2 writes until it reaches sufficient alignment).&n; *&n; * Based on this we disable the IP header alignment in network drivers.&n; */
+DECL|macro|NET_IP_ALIGN
+mdefine_line|#define NET_IP_ALIGN   0
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

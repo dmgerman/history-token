@@ -401,6 +401,22 @@ r_int
 id|idx
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|numa_default_policy
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|numa_policy_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#else
 DECL|struct|mempolicy
 r_struct
@@ -618,6 +634,28 @@ DECL|macro|vma_policy
 mdefine_line|#define vma_policy(vma) NULL
 DECL|macro|vma_set_policy
 mdefine_line|#define vma_set_policy(vma, pol) do {} while(0)
+DECL|function|numa_policy_init
+r_static
+r_inline
+r_void
+id|numa_policy_init
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+DECL|function|numa_default_policy
+r_static
+r_inline
+r_void
+id|numa_default_policy
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 macro_line|#endif /* CONFIG_NUMA */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif

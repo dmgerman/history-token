@@ -6,6 +6,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;linux/stringify.h&gt;
 multiline_comment|/*&n; * low level task data.&n; */
 DECL|struct|thread_info
@@ -41,11 +42,16 @@ DECL|member|preempt_count
 r_int
 id|preempt_count
 suffix:semicolon
-multiline_comment|/* not used at present */
 DECL|member|restart_block
 r_struct
 id|restart_block
 id|restart_block
+suffix:semicolon
+multiline_comment|/* set by force_successful_syscall_return */
+DECL|member|syscall_noerror
+r_int
+r_char
+id|syscall_noerror
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -97,11 +103,16 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;clrrdi %0,1,14&quot;
+l_string|&quot;clrrdi %0,1,%1&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
 id|ti
+)paren
+suffix:colon
+l_string|&quot;i&quot;
+(paren
+id|THREAD_SHIFT
 )paren
 )paren
 suffix:semicolon

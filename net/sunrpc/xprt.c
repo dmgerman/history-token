@@ -4369,17 +4369,17 @@ c_cond
 id|xprt-&gt;stream
 )paren
 (brace
-multiline_comment|/* from net/ipv4/tcp.c:tcp_write_space */
+multiline_comment|/* from net/core/stream.c:sk_stream_write_space */
 r_if
 c_cond
 (paren
-id|tcp_wspace
+id|sk_stream_wspace
 c_func
 (paren
 id|sk
 )paren
 OL
-id|tcp_min_write_space
+id|sk_stream_min_wspace
 c_func
 (paren
 id|sk

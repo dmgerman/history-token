@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Linux Socket Filter Data Structures&n; */
 macro_line|#ifndef __LINUX_FILTER_H__
 DECL|macro|__LINUX_FILTER_H__
 mdefine_line|#define __LINUX_FILTER_H__
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/*&n; * Current version of the filter code architecture.&n; */
 DECL|macro|BPF_MAJOR_VERSION
 mdefine_line|#define BPF_MAJOR_VERSION 1
@@ -49,6 +50,7 @@ multiline_comment|/* Number of filter blocks */
 DECL|member|filter
 r_struct
 id|sock_filter
+id|__user
 op_star
 id|filter
 suffix:semicolon

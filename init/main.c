@@ -33,6 +33,7 @@ macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
+macro_line|#include &lt;linux/mempolicy.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
 multiline_comment|/*&n; * This is one of the first .c files built. Error out early&n; * if we have compiler trouble..&n; */
@@ -897,6 +898,27 @@ op_assign
 id|param
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|param
+comma
+id|envp_init
+(braket
+id|i
+)braket
+comma
+id|val
+op_minus
+id|param
+)paren
+)paren
+r_break
+suffix:semicolon
 )brace
 id|envp_init
 (braket
@@ -1313,6 +1335,11 @@ op_or
 id|CLONE_SIGHAND
 )paren
 suffix:semicolon
+id|numa_default_policy
+c_func
+(paren
+)paren
+suffix:semicolon
 id|unlock_kernel
 c_func
 (paren
@@ -1543,6 +1570,11 @@ c_func
 )paren
 suffix:semicolon
 id|kmem_cache_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|numa_policy_init
 c_func
 (paren
 )paren
@@ -2134,6 +2166,11 @@ suffix:semicolon
 id|system_state
 op_assign
 id|SYSTEM_RUNNING
+suffix:semicolon
+id|numa_default_policy
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond

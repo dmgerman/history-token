@@ -21,8 +21,6 @@ macro_line|#else
 DECL|macro|TARGET_CPUS
 mdefine_line|#define TARGET_CPUS cpumask_of_cpu(0)
 macro_line|#endif
-DECL|macro|APIC_BROADCAST_ID
-mdefine_line|#define APIC_BROADCAST_ID      0x0F
 DECL|macro|check_apicid_used
 mdefine_line|#define check_apicid_used(bitmap, apicid)&t;physid_isset(apicid, bitmap)
 DECL|macro|check_apicid_present
@@ -168,8 +166,22 @@ r_int
 id|mps_cpu
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|mps_cpu
+OL
+id|get_physical_broadcast
+c_func
+(paren
+)paren
+)paren
 r_return
 id|mps_cpu
+suffix:semicolon
+r_else
+r_return
+id|BAD_APICID
 suffix:semicolon
 )brace
 DECL|function|apicid_to_cpu_present

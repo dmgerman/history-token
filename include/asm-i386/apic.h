@@ -142,6 +142,13 @@ id|APIC_ICR_BUSY
 )paren
 suffix:semicolon
 )brace
+r_int
+id|get_physical_broadcast
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_X86_GOOD_APIC
 DECL|macro|FORCE_READ_AROUND_WRITE
 macro_line|# define FORCE_READ_AROUND_WRITE 0

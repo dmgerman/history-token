@@ -1555,13 +1555,6 @@ c_func
 id|kallsyms_init
 )paren
 suffix:semicolon
-DECL|variable|kallsyms_lookup
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kallsyms_lookup
-)paren
-suffix:semicolon
 DECL|variable|__print_symbol
 id|EXPORT_SYMBOL
 c_func

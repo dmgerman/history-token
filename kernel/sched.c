@@ -1275,6 +1275,7 @@ r_int
 id|task_curr
 c_func
 (paren
+r_const
 id|task_t
 op_star
 id|p
@@ -8711,6 +8712,7 @@ r_int
 id|task_prio
 c_func
 (paren
+r_const
 id|task_t
 op_star
 id|p
@@ -8728,6 +8730,7 @@ r_int
 id|task_nice
 c_func
 (paren
+r_const
 id|task_t
 op_star
 id|p

@@ -14,7 +14,6 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &lt;asm/hpet.h&gt;
@@ -185,6 +184,51 @@ id|APIC_LVT0
 comma
 id|v
 )paren
+suffix:semicolon
+)brace
+DECL|function|get_physical_broadcast
+r_int
+id|get_physical_broadcast
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|lvr
+comma
+id|version
+suffix:semicolon
+id|lvr
+op_assign
+id|apic_read
+c_func
+(paren
+id|APIC_LVR
+)paren
+suffix:semicolon
+id|version
+op_assign
+id|GET_APIC_VERSION
+c_func
+(paren
+id|lvr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|version
+op_ge
+l_int|0x14
+)paren
+r_return
+l_int|0xff
+suffix:semicolon
+r_else
+r_return
+l_int|0xf
 suffix:semicolon
 )brace
 DECL|function|get_maxlvt

@@ -35,14 +35,27 @@ DECL|macro|mfdcri
 mdefine_line|#define mfdcri(base, reg)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;mtdcr(base ## _CFGADDR, base ## _ ## reg);&t;&bslash;&n;&t;mfdcr(base ## _CFGDATA);&t;&t;&t;&bslash;&n;})
 DECL|macro|mtdcri
 mdefine_line|#define mtdcri(base, reg, data)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;mtdcr(base ## _CFGADDR, base ## _ ## reg);&t;&bslash;&n;&t;mtdcr(base ## _CFGDATA, data);&t;&t;&bslash;&n;} while (0)
+multiline_comment|/* Performance Monitor Registers */
+DECL|macro|mfpmr
+mdefine_line|#define mfpmr(rn)&t;({unsigned int rval; &bslash;&n;&t;&t;&t;asm volatile(&quot;mfpmr %0,&quot; __stringify(rn) &bslash;&n;&t;&t;&t;&t;     : &quot;=r&quot; (rval)); rval;})
+DECL|macro|mtpmr
+mdefine_line|#define mtpmr(rn, v)&t;asm volatile(&quot;mtpmr &quot; __stringify(rn) &quot;,%0&quot; : : &quot;r&quot; (v))
 macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/* Machine State Register (MSR) Fields */
+DECL|macro|MSR_UCLE
+mdefine_line|#define MSR_UCLE&t;(1&lt;&lt;26)&t;/* User-mode cache lock enable */
+DECL|macro|MSR_SPE
+mdefine_line|#define MSR_SPE&t;&t;(1&lt;&lt;25)&t;/* Enable SPE */
 DECL|macro|MSR_DWE
 mdefine_line|#define MSR_DWE&t;&t;(1&lt;&lt;10)&t;/* Debug Wait Enable */
+DECL|macro|MSR_UBLE
+mdefine_line|#define MSR_UBLE&t;(1&lt;&lt;10)&t;/* BTB lock enable (e500) */
 DECL|macro|MSR_IS
 mdefine_line|#define MSR_IS&t;&t;MSR_IR&t;/* Instruction Space */
 DECL|macro|MSR_DS
 mdefine_line|#define MSR_DS&t;&t;MSR_DR&t;/* Data Space */
+DECL|macro|MSR_PMM
+mdefine_line|#define MSR_PMM&t;&t;(1&lt;&lt;2)&t;/* Performance monitor mark bit */
 multiline_comment|/* Default MSR for kernel mode. */
 macro_line|#if defined (CONFIG_40x)
 DECL|macro|MSR_KERNEL
@@ -116,32 +129,50 @@ DECL|macro|SPRN_IVOR14
 mdefine_line|#define SPRN_IVOR14&t;0x19E&t;/* Interrupt Vector Offset Register 14 */
 DECL|macro|SPRN_IVOR15
 mdefine_line|#define SPRN_IVOR15&t;0x19F&t;/* Interrupt Vector Offset Register 15 */
+DECL|macro|SPRN_SPEFSCR
+mdefine_line|#define SPRN_SPEFSCR&t;0x200&t;/* SPE &amp; Embedded FP Status &amp; Control */
+DECL|macro|SPRN_BBEAR
+mdefine_line|#define SPRN_BBEAR&t;0x201&t;/* Branch Buffer Entry Address Register */
+DECL|macro|SPRN_BBTAR
+mdefine_line|#define SPRN_BBTAR&t;0x202&t;/* Branch Buffer Target Address Register */
+DECL|macro|SPRN_IVOR32
+mdefine_line|#define SPRN_IVOR32&t;0x210&t;/* Interrupt Vector Offset Register 32 */
+DECL|macro|SPRN_IVOR33
+mdefine_line|#define SPRN_IVOR33&t;0x211&t;/* Interrupt Vector Offset Register 33 */
+DECL|macro|SPRN_IVOR34
+mdefine_line|#define SPRN_IVOR34&t;0x212&t;/* Interrupt Vector Offset Register 34 */
+DECL|macro|SPRN_IVOR35
+mdefine_line|#define SPRN_IVOR35&t;0x213&t;/* Interrupt Vector Offset Register 35 */
 DECL|macro|SPRN_MCSRR0
 mdefine_line|#define SPRN_MCSRR0&t;0x23A&t;/* Machine Check Save and Restore Register 0 */
 DECL|macro|SPRN_MCSRR1
 mdefine_line|#define SPRN_MCSRR1&t;0x23B&t;/* Machine Check Save and Restore Register 1 */
 DECL|macro|SPRN_MCSR
 mdefine_line|#define SPRN_MCSR&t;0x23C&t;/* Machine Check Status Register */
-macro_line|#ifdef CONFIG_440A
-DECL|macro|MCSR_MCS
-mdefine_line|#define  MCSR_MCS&t;0x80000000 /* Machine Check Summary */
-DECL|macro|MCSR_IB
-mdefine_line|#define  MCSR_IB&t;0x40000000 /* Instruction PLB Error */
-DECL|macro|MCSR_DRB
-mdefine_line|#define  MCSR_DRB&t;0x20000000 /* Data Read PLB Error */
-DECL|macro|MCSR_DWB
-mdefine_line|#define  MCSR_DWB&t;0x10000000 /* Data Write PLB Error */
-DECL|macro|MCSR_TLBP
-mdefine_line|#define  MCSR_TLBP&t;0x08000000 /* TLB Parity Error */
-DECL|macro|MCSR_ICP
-mdefine_line|#define  MCSR_ICP&t;0x04000000 /* I-Cache Parity Error */
-DECL|macro|MCSR_DCSP
-mdefine_line|#define  MCSR_DCSP&t;0x02000000 /* D-Cache Search Parity Error */
-DECL|macro|MCSR_DCFP
-mdefine_line|#define  MCSR_DCFP&t;0x01000000 /* D-Cache Flush Parity Error */
-DECL|macro|MCSR_IMPE
-mdefine_line|#define  MCSR_IMPE&t;0x00800000 /* Imprecise Machine Check Exception */
-macro_line|#endif
+DECL|macro|SPRN_MCAR
+mdefine_line|#define SPRN_MCAR&t;0x23D&t;/* Machine Check Address Register */
+DECL|macro|SPRN_MAS0
+mdefine_line|#define SPRN_MAS0&t;0x270&t;/* MMU Assist Register 0 */
+DECL|macro|SPRN_MAS1
+mdefine_line|#define SPRN_MAS1&t;0x271&t;/* MMU Assist Register 1 */
+DECL|macro|SPRN_MAS2
+mdefine_line|#define SPRN_MAS2&t;0x272&t;/* MMU Assist Register 2 */
+DECL|macro|SPRN_MAS3
+mdefine_line|#define SPRN_MAS3&t;0x273&t;/* MMU Assist Register 3 */
+DECL|macro|SPRN_MAS4
+mdefine_line|#define SPRN_MAS4&t;0x274&t;/* MMU Assist Register 4 */
+DECL|macro|SPRN_MAS5
+mdefine_line|#define SPRN_MAS5&t;0x275&t;/* MMU Assist Register 5 */
+DECL|macro|SPRN_MAS6
+mdefine_line|#define SPRN_MAS6&t;0x276&t;/* MMU Assist Register 6 */
+DECL|macro|SPRN_PID1
+mdefine_line|#define SPRN_PID1&t;0x279&t;/* Process ID Register 1 */
+DECL|macro|SPRN_PID2
+mdefine_line|#define SPRN_PID2&t;0x27A&t;/* Process ID Register 2 */
+DECL|macro|SPRN_TLB0CFG
+mdefine_line|#define SPRN_TLB0CFG&t;0x2B0&t;/* TLB 0 Config Register */
+DECL|macro|SPRN_TLB1CFG
+mdefine_line|#define SPRN_TLB1CFG&t;0x2B1&t;/* TLB 1 Config Register */
 DECL|macro|SPRN_ZPR
 mdefine_line|#define SPRN_ZPR&t;0x3B0&t;/* Zone Protection Register (40x) */
 DECL|macro|SPRN_MMUCR
@@ -162,16 +193,24 @@ DECL|macro|SPRN_ICDBDR
 mdefine_line|#define SPRN_ICDBDR&t;0x3D3&t;/* Instruction Cache Debug Data Register */
 DECL|macro|SPRN_EVPR
 mdefine_line|#define SPRN_EVPR&t;0x3D6&t;/* Exception Vector Prefix Register */
+DECL|macro|SPRN_L1CSR0
+mdefine_line|#define SPRN_L1CSR0&t;0x3F2&t;/* L1 Cache Control and Status Register 0 */
+DECL|macro|SPRN_L1CSR1
+mdefine_line|#define SPRN_L1CSR1&t;0x3F3&t;/* L1 Cache Control and Status Register 1 */
 DECL|macro|SPRN_PIT
 mdefine_line|#define SPRN_PIT&t;0x3DB&t;/* Programmable Interval Timer */
 DECL|macro|SPRN_DCCR
 mdefine_line|#define SPRN_DCCR&t;0x3FA&t;/* Data Cache Cacheability Register */
 DECL|macro|SPRN_ICCR
 mdefine_line|#define SPRN_ICCR&t;0x3FB&t;/* Instruction Cache Cacheability Register */
+DECL|macro|SPRN_SVR
+mdefine_line|#define SPRN_SVR&t;0x3FF&t;/* System Version Register */
 multiline_comment|/*&n; * SPRs which have conflicting definitions on true Book E versus classic,&n; * or IBM 40x.&n; */
 macro_line|#ifdef CONFIG_BOOKE
 DECL|macro|SPRN_PID
 mdefine_line|#define SPRN_PID&t;0x030&t;/* Process ID */
+DECL|macro|SPRN_PID0
+mdefine_line|#define SPRN_PID0&t;SPRN_PID/* Process ID Register 0 */
 DECL|macro|SPRN_CSRR0
 mdefine_line|#define SPRN_CSRR0&t;0x03A&t;/* Critical Save and Restore Register 0 */
 DECL|macro|SPRN_CSRR1
@@ -231,6 +270,55 @@ mdefine_line|#define SPRN_CSRR0&t;SPRN_SRR2 /* Critical Save and Restore Registe
 DECL|macro|SPRN_CSRR1
 mdefine_line|#define SPRN_CSRR1&t;SPRN_SRR3 /* Critical Save and Restore Register 1 */
 macro_line|#endif
+multiline_comment|/* Bit definitions for the MCSR. */
+macro_line|#ifdef CONFIG_440A
+DECL|macro|MCSR_MCS
+mdefine_line|#define MCSR_MCS&t;0x80000000 /* Machine Check Summary */
+DECL|macro|MCSR_IB
+mdefine_line|#define MCSR_IB&t;&t;0x40000000 /* Instruction PLB Error */
+DECL|macro|MCSR_DRB
+mdefine_line|#define MCSR_DRB&t;0x20000000 /* Data Read PLB Error */
+DECL|macro|MCSR_DWB
+mdefine_line|#define MCSR_DWB&t;0x10000000 /* Data Write PLB Error */
+DECL|macro|MCSR_TLBP
+mdefine_line|#define MCSR_TLBP&t;0x08000000 /* TLB Parity Error */
+DECL|macro|MCSR_ICP
+mdefine_line|#define MCSR_ICP&t;0x04000000 /* I-Cache Parity Error */
+DECL|macro|MCSR_DCSP
+mdefine_line|#define MCSR_DCSP&t;0x02000000 /* D-Cache Search Parity Error */
+DECL|macro|MCSR_DCFP
+mdefine_line|#define MCSR_DCFP&t;0x01000000 /* D-Cache Flush Parity Error */
+DECL|macro|MCSR_IMPE
+mdefine_line|#define MCSR_IMPE&t;0x00800000 /* Imprecise Machine Check Exception */
+macro_line|#endif
+macro_line|#ifdef CONFIG_E500
+DECL|macro|MCSR_MCP
+mdefine_line|#define MCSR_MCP &t;0x80000000UL /* Machine Check Input Pin */
+DECL|macro|MCSR_ICPERR
+mdefine_line|#define MCSR_ICPERR &t;0x40000000UL /* I-Cache Parity Error */
+DECL|macro|MCSR_DCP_PERR
+mdefine_line|#define MCSR_DCP_PERR &t;0x20000000UL /* D-Cache Push Parity Error */
+DECL|macro|MCSR_DCPERR
+mdefine_line|#define MCSR_DCPERR &t;0x10000000UL /* D-Cache Parity Error */
+DECL|macro|MCSR_GL_CI
+mdefine_line|#define MCSR_GL_CI &t;0x00010000UL /* Guarded Load or Cache-Inhibited stwcx. */
+DECL|macro|MCSR_BUS_IAERR
+mdefine_line|#define MCSR_BUS_IAERR &t;0x00000080UL /* Instruction Address Error */
+DECL|macro|MCSR_BUS_RAERR
+mdefine_line|#define MCSR_BUS_RAERR &t;0x00000040UL /* Read Address Error */
+DECL|macro|MCSR_BUS_WAERR
+mdefine_line|#define MCSR_BUS_WAERR &t;0x00000020UL /* Write Address Error */
+DECL|macro|MCSR_BUS_IBERR
+mdefine_line|#define MCSR_BUS_IBERR &t;0x00000010UL /* Instruction Data Error */
+DECL|macro|MCSR_BUS_RBERR
+mdefine_line|#define MCSR_BUS_RBERR &t;0x00000008UL /* Read Data Bus Error */
+DECL|macro|MCSR_BUS_WBERR
+mdefine_line|#define MCSR_BUS_WBERR &t;0x00000004UL /* Write Data Bus Error */
+DECL|macro|MCSR_BUS_IPERR
+mdefine_line|#define MCSR_BUS_IPERR &t;0x00000002UL /* Instruction parity Error */
+DECL|macro|MCSR_BUS_RPERR
+mdefine_line|#define MCSR_BUS_RPERR &t;0x00000001UL /* Read parity Error */
+macro_line|#endif
 multiline_comment|/* Bit definitions for the DBSR. */
 multiline_comment|/*&n; * DBSR bits which have conflicting definitions on true Book E versus IBM 40x.&n; */
 macro_line|#ifdef CONFIG_BOOKE
@@ -240,6 +328,22 @@ DECL|macro|DBSR_BT
 mdefine_line|#define DBSR_BT&t;&t;0x04000000&t;/* Branch Taken */
 DECL|macro|DBSR_TIE
 mdefine_line|#define DBSR_TIE&t;0x01000000&t;/* Trap Instruction Event */
+DECL|macro|DBSR_IAC1
+mdefine_line|#define DBSR_IAC1&t;0x00800000&t;/* Instr Address Compare 1 Event */
+DECL|macro|DBSR_IAC2
+mdefine_line|#define DBSR_IAC2&t;0x00400000&t;/* Instr Address Compare 2 Event */
+DECL|macro|DBSR_IAC3
+mdefine_line|#define DBSR_IAC3&t;0x00200000&t;/* Instr Address Compare 3 Event */
+DECL|macro|DBSR_IAC4
+mdefine_line|#define DBSR_IAC4&t;0x00100000&t;/* Instr Address Compare 4 Event */
+DECL|macro|DBSR_DAC1R
+mdefine_line|#define DBSR_DAC1R&t;0x00080000&t;/* Data Addr Compare 1 Read Event */
+DECL|macro|DBSR_DAC1W
+mdefine_line|#define DBSR_DAC1W&t;0x00040000&t;/* Data Addr Compare 1 Write Event */
+DECL|macro|DBSR_DAC2R
+mdefine_line|#define DBSR_DAC2R&t;0x00020000&t;/* Data Addr Compare 2 Read Event */
+DECL|macro|DBSR_DAC2W
+mdefine_line|#define DBSR_DAC2W&t;0x00010000&t;/* Data Addr Compare 2 Write Event */
 macro_line|#endif
 macro_line|#ifdef CONFIG_40x
 DECL|macro|DBSR_IC
@@ -248,6 +352,22 @@ DECL|macro|DBSR_BT
 mdefine_line|#define DBSR_BT&t;&t;0x40000000&t;/* Branch taken */
 DECL|macro|DBSR_TIE
 mdefine_line|#define DBSR_TIE&t;0x10000000&t;/* Trap Instruction debug Event */
+DECL|macro|DBSR_IAC1
+mdefine_line|#define DBSR_IAC1&t;0x00800000&t;/* Instruction Address Compare 1 Event */
+DECL|macro|DBSR_IAC2
+mdefine_line|#define DBSR_IAC2&t;0x00400000&t;/* Instruction Address Compare 2 Event */
+DECL|macro|DBSR_IAC3
+mdefine_line|#define DBSR_IAC3&t;0x00200000&t;/* Instruction Address Compare 3 Event */
+DECL|macro|DBSR_IAC4
+mdefine_line|#define DBSR_IAC4&t;0x00100000&t;/* Instruction Address Compare 4 Event */
+DECL|macro|DBSR_DAC1R
+mdefine_line|#define DBSR_DAC1R&t;0x00080000&t;/* Data Address Compare 1 Read Event */
+DECL|macro|DBSR_DAC1W
+mdefine_line|#define DBSR_DAC1W&t;0x00040000&t;/* Data Address Compare 1 Write Event */
+DECL|macro|DBSR_DAC2R
+mdefine_line|#define DBSR_DAC2R&t;0x00020000&t;/* Data Address Compare 2 Read Event */
+DECL|macro|DBSR_DAC2W
+mdefine_line|#define DBSR_DAC2W&t;0x00010000&t;/* Data Address Compare 2 Write Event */
 macro_line|#endif
 multiline_comment|/* Bit definitions related to the ESR. */
 DECL|macro|ESR_MCI
@@ -272,6 +392,12 @@ DECL|macro|ESR_DIZ
 mdefine_line|#define ESR_DIZ&t;&t;0x00400000&t;/* Storage Exception - Zone fault */
 DECL|macro|ESR_ST
 mdefine_line|#define ESR_ST&t;&t;0x00800000&t;/* Store Operation */
+DECL|macro|ESR_DLK
+mdefine_line|#define ESR_DLK&t;&t;0x00200000&t;/* Data Cache Locking */
+DECL|macro|ESR_ILK
+mdefine_line|#define ESR_ILK&t;&t;0x00100000&t;/* Instr. Cache Locking */
+DECL|macro|ESR_BO
+mdefine_line|#define ESR_BO&t;&t;0x00020000&t;/* Byte Ordering */
 multiline_comment|/* Bit definitions related to the DBCR0. */
 DECL|macro|DBCR0_EDM
 mdefine_line|#define DBCR0_EDM&t;0x80000000&t;/* External Debug Mode */
@@ -400,11 +526,80 @@ DECL|macro|ICCR_NOCACHE
 mdefine_line|#define ICCR_NOCACHE&t;0&t;&t;/* Noncacheable */
 DECL|macro|ICCR_CACHE
 mdefine_line|#define ICCR_CACHE&t;1&t;&t;/* Cacheable */
+multiline_comment|/* Bit definitions for L1CSR0. */
+DECL|macro|L1CSR0_DCFI
+mdefine_line|#define L1CSR0_DCFI&t;0x00000002&t;/* Data Cache Flash Invalidate */
+DECL|macro|L1CSR0_DCE
+mdefine_line|#define L1CSR0_DCE&t;0x00000001&t;/* Data Cache Enable */
+multiline_comment|/* Bit definitions for L1CSR0. */
+DECL|macro|L1CSR1_ICLFR
+mdefine_line|#define L1CSR1_ICLFR&t;0x00000100&t;/* Instr Cache Lock Bits Flash Reset */
+DECL|macro|L1CSR1_ICFI
+mdefine_line|#define L1CSR1_ICFI&t;0x00000002&t;/* Instr Cache Flash Invalidate */
+DECL|macro|L1CSR1_ICE
+mdefine_line|#define L1CSR1_ICE&t;0x00000001&t;/* Instr Cache Enable */
 multiline_comment|/* Bit definitions for SGR. */
 DECL|macro|SGR_NORMAL
 mdefine_line|#define SGR_NORMAL&t;0&t;&t;/* Speculative fetching allowed. */
 DECL|macro|SGR_GUARDED
 mdefine_line|#define SGR_GUARDED&t;1&t;&t;/* Speculative fetching disallowed. */
+multiline_comment|/* Bit definitions for SPEFSCR. */
+DECL|macro|SPEFSCR_SOVH
+mdefine_line|#define SPEFSCR_SOVH&t;0x80000000&t;/* Summary integer overflow high */
+DECL|macro|SPEFSCR_OVH
+mdefine_line|#define SPEFSCR_OVH&t;0x40000000&t;/* Integer overflow high */
+DECL|macro|SPEFSCR_FGH
+mdefine_line|#define SPEFSCR_FGH&t;0x20000000&t;/* Embedded FP guard bit high */
+DECL|macro|SPEFSCR_FXH
+mdefine_line|#define SPEFSCR_FXH&t;0x10000000&t;/* Embedded FP sticky bit high */
+DECL|macro|SPEFSCR_FINVH
+mdefine_line|#define SPEFSCR_FINVH&t;0x08000000&t;/* Embedded FP invalid operation high */
+DECL|macro|SPEFSCR_FDBZH
+mdefine_line|#define SPEFSCR_FDBZH&t;0x04000000&t;/* Embedded FP div by zero high */
+DECL|macro|SPEFSCR_FUNFH
+mdefine_line|#define SPEFSCR_FUNFH&t;0x02000000&t;/* Embedded FP underflow high */
+DECL|macro|SPEFSCR_FOVFH
+mdefine_line|#define SPEFSCR_FOVFH&t;0x01000000&t;/* Embedded FP overflow high */
+DECL|macro|SPEFSCR_FINXS
+mdefine_line|#define SPEFSCR_FINXS&t;0x00200000&t;/* Embedded FP inexact sticky */
+DECL|macro|SPEFSCR_FINVS
+mdefine_line|#define SPEFSCR_FINVS&t;0x00100000&t;/* Embedded FP invalid op. sticky */
+DECL|macro|SPEFSCR_FDBZS
+mdefine_line|#define SPEFSCR_FDBZS&t;0x00080000&t;/* Embedded FP div by zero sticky */
+DECL|macro|SPEFSCR_FUNFS
+mdefine_line|#define SPEFSCR_FUNFS&t;0x00040000&t;/* Embedded FP underflow sticky */
+DECL|macro|SPEFSCR_FOVFS
+mdefine_line|#define SPEFSCR_FOVFS&t;0x00020000&t;/* Embedded FP overflow sticky */
+DECL|macro|SPEFSCR_MODE
+mdefine_line|#define SPEFSCR_MODE&t;0x00010000&t;/* Embedded FP mode */
+DECL|macro|SPEFSCR_SOV
+mdefine_line|#define SPEFSCR_SOV&t;0x00008000&t;/* Integer summary overflow */
+DECL|macro|SPEFSCR_OV
+mdefine_line|#define SPEFSCR_OV&t;0x00004000&t;/* Integer overflow */
+DECL|macro|SPEFSCR_FG
+mdefine_line|#define SPEFSCR_FG&t;0x00002000&t;/* Embedded FP guard bit */
+DECL|macro|SPEFSCR_FX
+mdefine_line|#define SPEFSCR_FX&t;0x00001000&t;/* Embedded FP sticky bit */
+DECL|macro|SPEFSCR_FINV
+mdefine_line|#define SPEFSCR_FINV&t;0x00000800&t;/* Embedded FP invalid operation */
+DECL|macro|SPEFSCR_FDBZ
+mdefine_line|#define SPEFSCR_FDBZ&t;0x00000400&t;/* Embedded FP div by zero */
+DECL|macro|SPEFSCR_FUNF
+mdefine_line|#define SPEFSCR_FUNF&t;0x00000200&t;/* Embedded FP underflow */
+DECL|macro|SPEFSCR_FOVF
+mdefine_line|#define SPEFSCR_FOVF&t;0x00000100&t;/* Embedded FP overflow */
+DECL|macro|SPEFSCR_FINXE
+mdefine_line|#define SPEFSCR_FINXE&t;0x00000040&t;/* Embedded FP inexact enable */
+DECL|macro|SPEFSCR_FINVE
+mdefine_line|#define SPEFSCR_FINVE&t;0x00000020&t;/* Embedded FP invalid op. enable */
+DECL|macro|SPEFSCR_FDBZE
+mdefine_line|#define SPEFSCR_FDBZE&t;0x00000010&t;/* Embedded FP div by zero enable */
+DECL|macro|SPEFSCR_FUNFE
+mdefine_line|#define SPEFSCR_FUNFE&t;0x00000008&t;/* Embedded FP underflow enable */
+DECL|macro|SPEFSCR_FOVFE
+mdefine_line|#define SPEFSCR_FOVFE&t;0x00000004&t;/* Embedded FP overflow enable */
+DECL|macro|SPEFSCR_FRMC
+mdefine_line|#define SPEFSCR_FRMC &t;0x00000003&t;/* Embedded FP rounding mode control */
 multiline_comment|/* Short-hand for various SPRs. */
 macro_line|#ifdef CONFIG_BOOKE
 DECL|macro|CSRR0
