@@ -710,8 +710,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Probe for all the ALi chipsets we know about */
@@ -736,8 +737,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Probing for %s ...&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Probing for %s ...&bslash;n&quot;
 comma
 id|chip-&gt;name
 )paren
@@ -880,8 +882,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Chip found at 0x%03x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Chip found at 0x%03x&bslash;n&quot;
 comma
 id|cfg_base
 )paren
@@ -909,8 +912,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Found %s chip, revision=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Found %s chip, revision=%d&bslash;n&quot;
 comma
 id|chip-&gt;name
 comma
@@ -984,8 +988,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), No %s chip at 0x%03x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), No %s chip at 0x%03x&bslash;n&quot;
 comma
 id|chip-&gt;name
 comma
@@ -1009,8 +1014,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End -----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End -----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1036,8 +1042,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pm_unregister_all
@@ -1084,8 +1091,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End -----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End -----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1123,6 +1131,9 @@ r_int
 id|dongle_id
 suffix:semicolon
 r_int
+id|ret
+suffix:semicolon
+r_int
 id|err
 suffix:semicolon
 id|IRDA_DEBUG
@@ -1130,8 +1141,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Set FIR FIFO and DMA Threshold */
@@ -1179,8 +1191,9 @@ l_int|NULL
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), can&squot;t allocate memory for control block!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), can&squot;t allocate memory for control block!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1276,8 +1289,9 @@ l_int|0
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), can&squot;t get iobase of 0x%03x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), can&squot;t get iobase of 0x%03x&bslash;n&quot;
 comma
 id|self-&gt;io.fir_base
 )paren
@@ -1522,8 +1536,9 @@ id|err
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), dev_alloc() failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), dev_alloc() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1595,8 +1610,9 @@ id|err
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), register_netdev() failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), register_netdev() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1626,8 +1642,9 @@ suffix:semicolon
 id|MESSAGE
 c_func
 (paren
+l_string|&quot;%s(), %s, Found dongle: %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s, Found dongle: %s&bslash;n&quot;
 comma
 id|driver_name
 comma
@@ -1667,8 +1684,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End -----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End -----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1697,8 +1715,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1748,8 +1767,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), Releasing Region %03x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Releasing Region %03x&bslash;n&quot;
 comma
 id|self-&gt;io.fir_base
 )paren
@@ -1802,8 +1822,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End -----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End -----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1885,8 +1906,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Enter Configuration */
@@ -1981,8 +2003,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), probing fir_base=0x%03x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), probing fir_base=0x%03x&bslash;n&quot;
 comma
 id|info-&gt;fir_base
 )paren
@@ -2017,8 +2040,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), probing irq=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), probing irq=%d&bslash;n&quot;
 comma
 id|info-&gt;irq
 )paren
@@ -2059,8 +2083,9 @@ l_int|0x04
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), No DMA channel assigned !&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), No DMA channel assigned !&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2070,8 +2095,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), probing dma=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), probing dma=%d&bslash;n&quot;
 comma
 id|info-&gt;dma
 )paren
@@ -2114,8 +2140,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), probing enabled=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), probing enabled=%d&bslash;n&quot;
 comma
 id|info-&gt;enabled
 )paren
@@ -2152,8 +2179,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), probing suspended=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), probing suspended=%d&bslash;n&quot;
 comma
 id|info-&gt;suspended
 )paren
@@ -2172,8 +2200,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End -----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End -----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2209,10 +2238,12 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Locking comments :&n;&t; * Most operations here need to be protected. We are called before&n;&t; * the device instance is created in ali_ircc_open(), therefore &n;&t; * nobody can bother us - Jean II */
 multiline_comment|/* Switch to FIR space */
 id|SIR2FIR
 c_func
@@ -2412,8 +2443,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2449,8 +2481,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Enter Configuration */
@@ -2545,8 +2578,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), probing dongle_id=%d, dongle_types=%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), probing dongle_id=%d, dongle_types=%s&bslash;n&quot;
 comma
 id|dongle_id
 comma
@@ -2570,8 +2604,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2620,8 +2655,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2701,8 +2737,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2742,8 +2779,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|iobase
@@ -2811,8 +2849,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), self-&gt;InterruptID = %x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), self-&gt;InterruptID = %x&bslash;n&quot;
 comma
 id|self-&gt;InterruptID
 )paren
@@ -2822,8 +2861,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), self-&gt;LineStatus = %x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), self-&gt;LineStatus = %x&bslash;n&quot;
 comma
 id|self-&gt;LineStatus
 )paren
@@ -2833,8 +2873,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), self-&gt;ier = %x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), self-&gt;ier = %x&bslash;n&quot;
 comma
 id|self-&gt;ier
 )paren
@@ -2844,8 +2885,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), eir = %x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), eir = %x&bslash;n&quot;
 comma
 id|eir
 )paren
@@ -2882,8 +2924,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ******* IIR_EOM (Tx) *******&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ******* IIR_EOM (Tx) *******&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2935,8 +2978,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ******* IIR_EOM (Rx) *******&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ******* IIR_EOM (Rx) *******&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2964,8 +3008,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ******* self-&gt;rcvFramesOverflow = TRUE ******** &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ******* self-&gt;rcvFramesOverflow = TRUE ******** &bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2984,8 +3029,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ******* receive complete ******** &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ******* receive complete ******** &bslash;n&quot;
 )paren
 suffix:semicolon
 id|self-&gt;ier
@@ -3000,8 +3046,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ******* Not receive complete ******** &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ******* Not receive complete ******** &bslash;n&quot;
 )paren
 suffix:semicolon
 id|self-&gt;ier
@@ -3048,8 +3095,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ******* self-&gt;rcvFramesOverflow = TRUE ******* &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ******* self-&gt;rcvFramesOverflow = TRUE ******* &bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3149,8 +3197,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), ----------------- End ---------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ---------------&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3188,8 +3237,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|iobase
@@ -3230,8 +3280,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), iir=%02x, lsr=%02x, iobase=%#x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), iir=%02x, lsr=%02x, iobase=%#x&bslash;n&quot;
 comma
 id|iir
 comma
@@ -3254,8 +3305,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), RLSI&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), RLSI&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -3300,8 +3352,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unhandled IIR=%#x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unhandled IIR=%#x&bslash;n&quot;
 comma
 id|iir
 )paren
@@ -3315,8 +3368,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3346,8 +3400,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ---------------- Start ----------------&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3403,8 +3458,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), breaking!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), breaking!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -3678,6 +3734,7 @@ comma
 id|baud
 )paren
 suffix:semicolon
+multiline_comment|/* This function *must* be called with irq off and spin-lock.&n;&t; * - Jean II */
 id|iobase
 op_assign
 id|self-&gt;io.fir_base
@@ -4184,10 +4241,6 @@ comma
 id|dongle_id
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|tmp
 op_assign
 l_int|0
@@ -4210,17 +4263,7 @@ id|dongle_id
 op_assign
 id|self-&gt;io.dongle_id
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* We are already locked, no need to do it again */
 id|IRDA_DEBUG
 c_func
 (paren
@@ -4796,12 +4839,6 @@ comma
 id|BANK0
 )paren
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -5372,6 +5409,17 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure tests *&amp; speed change are atomic */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Note : you should make sure that speed changes are not going&n;&t; * to corrupt any outgoing frame. Look at nsc-ircc for the gory&n;&t; * details - Jean II */
 multiline_comment|/* Check if we need to change the speed */
 id|speed
 op_assign
@@ -5414,6 +5462,15 @@ comma
 id|speed
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|dev_kfree_skb
 c_func
 (paren
@@ -5430,15 +5487,6 @@ op_assign
 id|speed
 suffix:semicolon
 )brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|self-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Register and copy this frame to DMA memory */
 id|self-&gt;tx_fifo.queue
 (braket
@@ -6263,8 +6311,9 @@ id|LSR_FRAME_ABORT
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), ********* LSR_FRAME_ABORT *********&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ********* LSR_FRAME_ABORT *********&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self-&gt;stats.tx_errors
@@ -7216,9 +7265,10 @@ l_int|NULL
 id|WARNING
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot;(), memory squeeze, &quot;
+l_string|&quot;%s(), memory squeeze, &quot;
 l_string|&quot;dropping frame.&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|self-&gt;stats.rx_dropped
@@ -7402,6 +7452,17 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure tests *&amp; speed change are atomic */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Note : you should make sure that speed changes are not going&n;&t; * to corrupt any outgoing frame. Look at nsc-ircc for the gory&n;&t; * details - Jean II */
 multiline_comment|/* Check if we need to change the speed */
 id|speed
 op_assign
@@ -7444,6 +7505,15 @@ comma
 id|speed
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|dev_kfree_skb
 c_func
 (paren
@@ -7460,15 +7530,6 @@ op_assign
 id|speed
 suffix:semicolon
 )brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|self-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Init tx buffer */
 id|self-&gt;tx_buff.data
 op_assign
@@ -7629,18 +7690,6 @@ comma
 id|cmd
 )paren
 suffix:semicolon
-multiline_comment|/* Disable interrupts &amp; save flags */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -7681,12 +7730,30 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|ali_ircc_change_speed
 c_func
 (paren
 id|self
 comma
 id|irq-&gt;ifr_baudrate
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_break
@@ -7741,6 +7808,7 @@ id|__FUNCTION__
 l_string|&quot;(), SIOCGRECEIVING&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* This is protected */
 id|irq-&gt;ifr_receiving
 op_assign
 id|ali_ircc_is_receiving
@@ -7759,12 +7827,6 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 )brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -8351,10 +8413,6 @@ id|iobase
 )paren
 (brace
 singleline_comment|//unsigned char tmp;
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -8364,17 +8422,7 @@ id|__FUNCTION__
 l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* Already protected (change_speed() or setup()), no need to lock.&n;&t; * Jean II */
 id|outb
 c_func
 (paren
@@ -8403,12 +8451,6 @@ comma
 id|iobase
 op_plus
 id|UART_MCR
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 id|outb
@@ -8460,10 +8502,6 @@ r_int
 r_char
 id|val
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -8473,17 +8511,7 @@ id|__FUNCTION__
 l_string|&quot;(), ---------------- Start ----------------&bslash;n&quot;
 )paren
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* Already protected (change_speed() or setup()), no need to lock.&n;&t; * Jean II */
 id|outb
 c_func
 (paren
@@ -8564,12 +8592,6 @@ c_func
 id|iobase
 op_plus
 id|UART_MSR
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 id|IRDA_DEBUG

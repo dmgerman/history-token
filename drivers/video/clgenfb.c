@@ -511,6 +511,14 @@ id|PCI_DEVICE_ID_CIRRUS_7543
 )brace
 comma
 (brace
+id|BT_ALPINE
+comma
+l_int|NULL
+comma
+id|PCI_DEVICE_ID_CIRRUS_7548
+)brace
+comma
+(brace
 id|BT_GD5480
 comma
 l_int|NULL

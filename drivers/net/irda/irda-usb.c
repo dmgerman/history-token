@@ -3550,9 +3550,10 @@ op_assign
 id|hashbin_new
 c_func
 (paren
-id|HB_GLOBAL
+id|HB_NOLOCK
 )paren
 suffix:semicolon
+multiline_comment|/* unused */
 multiline_comment|/* Allocate the buffer for speed changes */
 multiline_comment|/* Don&squot;t change this buffer size and allocation without doing&n;&t; * some heavy and complete testing. Don&squot;t ask why :-(&n;&t; * Jean II */
 id|self-&gt;speed_buff
