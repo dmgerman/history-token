@@ -8671,10 +8671,10 @@ op_star
 id|extra
 )paren
 (brace
-id|u16
+id|u8
 id|retry
 suffix:semicolon
-multiline_comment|/* size checked: it is u16 */
+multiline_comment|/* size checked: it is u8 */
 r_struct
 id|wl3501_card
 op_star
