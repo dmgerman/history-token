@@ -7138,7 +7138,6 @@ suffix:semicolon
 DECL|variable|io
 r_static
 r_int
-id|__initdata
 id|io
 op_assign
 op_minus
@@ -7147,7 +7146,6 @@ suffix:semicolon
 DECL|variable|irq
 r_static
 r_int
-id|__initdata
 id|irq
 op_assign
 op_minus
@@ -7170,6 +7168,7 @@ l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 DECL|function|init_mpu401
+r_static
 r_int
 id|__init
 id|init_mpu401
@@ -7245,6 +7244,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cleanup_mpu401
+r_static
 r_void
 id|__exit
 id|cleanup_mpu401
