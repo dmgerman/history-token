@@ -249,6 +249,27 @@ op_star
 id|ac97
 )paren
 suffix:semicolon
+r_int
+id|snd_ac97_update_bits_nolock
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+comma
+r_int
+r_int
+id|reg
+comma
+r_int
+r_int
+id|mask
+comma
+r_int
+r_int
+id|value
+)paren
+suffix:semicolon
 multiline_comment|/* ac97_proc.c */
 macro_line|#ifdef CONFIG_PROC_FS
 r_void

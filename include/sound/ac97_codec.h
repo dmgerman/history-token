@@ -1175,14 +1175,15 @@ r_int
 r_int
 id|subsystem_device
 suffix:semicolon
-DECL|member|reg_lock
-id|spinlock_t
-id|reg_lock
-suffix:semicolon
-DECL|member|mutex
+DECL|member|reg_mutex
 r_struct
 id|semaphore
-id|mutex
+id|reg_mutex
+suffix:semicolon
+DECL|member|page_mutex
+r_struct
+id|semaphore
+id|page_mutex
 suffix:semicolon
 multiline_comment|/* mutex for AD18xx multi-codecs and paging (2.3) */
 DECL|member|num
