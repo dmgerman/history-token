@@ -3091,15 +3091,13 @@ id|aac-&gt;id
 OG
 id|unique_id
 )paren
-(brace
+r_break
+suffix:semicolon
 id|insert
 op_assign
 op_amp
 id|aac-&gt;entry
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|unique_id
 op_increment
 suffix:semicolon
