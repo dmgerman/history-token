@@ -1339,12 +1339,17 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_CMDLINE
-id|strcpy
+id|strlcpy
 c_func
 (paren
 id|cmd_line
 comma
 id|CONFIG_CMDLINE
+comma
+r_sizeof
+(paren
+id|cmd_line
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_CMDLINE */
@@ -1390,7 +1395,7 @@ l_int|0
 op_ne
 l_int|0
 )paren
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|cmd_line
@@ -1404,18 +1409,6 @@ id|cmd_line
 )paren
 suffix:semicolon
 )brace
-id|cmd_line
-(braket
-r_sizeof
-(paren
-id|cmd_line
-)paren
-op_minus
-l_int|1
-)braket
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* Look for mem= option on command line */
 r_if
 c_cond

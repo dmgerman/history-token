@@ -524,7 +524,7 @@ id|dev_id
 op_assign
 id|dev_id
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|irq_tab
@@ -536,7 +536,15 @@ id|devname
 comma
 id|devname
 comma
-id|DEVNAME_SIZE
+r_sizeof
+(paren
+id|irq_tab
+(braket
+id|irq
+)braket
+dot
+id|devname
+)paren
 )paren
 suffix:semicolon
 id|irq_tab
