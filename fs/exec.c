@@ -3623,6 +3623,11 @@ comma
 id|tcomm
 )paren
 suffix:semicolon
+id|current-&gt;flags
+op_and_assign
+op_complement
+id|PF_RANDOMIZE
+suffix:semicolon
 id|flush_thread
 c_func
 (paren
