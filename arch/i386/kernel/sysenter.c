@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/cpufeature.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 r_extern
 id|asmlinkage
 r_void
@@ -239,6 +240,63 @@ l_int|0xc3
 multiline_comment|/* ret */
 )brace
 suffix:semicolon
+r_static
+r_const
+r_char
+id|sigreturn
+(braket
+)braket
+op_assign
+(brace
+multiline_comment|/* 32: sigreturn point */
+l_int|0x58
+comma
+multiline_comment|/* popl %eax */
+l_int|0xb8
+comma
+id|__NR_sigreturn
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+multiline_comment|/* movl $__NR_sigreturn, %eax */
+l_int|0xcd
+comma
+l_int|0x80
+comma
+multiline_comment|/* int $0x80 */
+)brace
+suffix:semicolon
+r_static
+r_const
+r_char
+id|rt_sigreturn
+(braket
+)braket
+op_assign
+(brace
+multiline_comment|/* 64: rt_sigreturn point */
+l_int|0xb8
+comma
+id|__NR_rt_sigreturn
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+multiline_comment|/* movl $__NR_rt_sigreturn, %eax */
+l_int|0xcd
+comma
+l_int|0x80
+comma
+multiline_comment|/* int $0x80 */
+)brace
+suffix:semicolon
 r_int
 r_int
 id|page
@@ -277,6 +335,48 @@ comma
 r_sizeof
 (paren
 id|int80
+)paren
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+(paren
+id|page
+op_plus
+l_int|32
+)paren
+comma
+id|sigreturn
+comma
+r_sizeof
+(paren
+id|sigreturn
+)paren
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+(paren
+id|page
+op_plus
+l_int|64
+)paren
+comma
+id|rt_sigreturn
+comma
+r_sizeof
+(paren
+id|rt_sigreturn
 )paren
 )paren
 suffix:semicolon
