@@ -352,6 +352,28 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * This is a little speedup thing: short-circuit attempts to write back the&n; * ramdisk blockdev inode to its non-existent backing store.&n; */
+DECL|function|ramdisk_writepages
+r_static
+r_int
+id|ramdisk_writepages
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * ramdisk blockdev pages have their own -&gt;set_page_dirty() because we don&squot;t&n; * want them to contribute to dirty memory accounting.&n; */
 DECL|function|ramdisk_set_page_dirty
 r_static
@@ -406,6 +428,11 @@ dot
 id|set_page_dirty
 op_assign
 id|ramdisk_set_page_dirty
+comma
+dot
+id|writepages
+op_assign
+id|ramdisk_writepages
 comma
 )brace
 suffix:semicolon
