@@ -1539,7 +1539,7 @@ op_eq
 l_int|0
 )paren
 r_goto
-id|err_out2
+id|err_out3
 suffix:semicolon
 )brace
 r_if
@@ -1652,6 +1652,14 @@ r_return
 id|sch
 suffix:semicolon
 )brace
+id|err_out3
+suffix:colon
+id|dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|err_out2
 suffix:colon
 id|module_put

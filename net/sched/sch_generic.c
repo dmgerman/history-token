@@ -1572,6 +1572,12 @@ l_int|0
 r_return
 id|sch
 suffix:semicolon
+id|dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
