@@ -8256,15 +8256,6 @@ id|serial8250_ports
 id|i
 )braket
 suffix:semicolon
-multiline_comment|/* Don&squot;t register &quot;empty&quot; ports, setting &quot;ops&quot; on them&n;&t;&t; * makes the console driver &quot;setup&quot; routine to succeed,&n;&t;&t; * which is wrong. --BenH.&n;&t;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|up-&gt;port.iobase
-)paren
-r_continue
-suffix:semicolon
 id|up-&gt;port.line
 op_assign
 id|i
