@@ -194,6 +194,8 @@ id|p
 op_assign
 id|first_aic7xxx
 suffix:semicolon
+id|p
+op_logical_and
 id|p-&gt;host
 op_ne
 id|HBAptr
