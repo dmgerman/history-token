@@ -106,6 +106,12 @@ id|TXBUFCNT
 )braket
 suffix:semicolon
 multiline_comment|/* busy flags                       */
+DECL|member|base
+r_void
+id|__iomem
+op_star
+id|base
+suffix:semicolon
 DECL|member|lock
 id|spinlock_t
 id|lock
