@@ -2092,7 +2092,8 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-)paren
+)brace
+DECL|function|pnp_parse_current_resources
 r_static
 r_inline
 r_int
@@ -2121,6 +2122,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|function|pnp_parse_possible_resources
 r_static
 r_inline
 r_int
@@ -2149,6 +2151,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|function|pnp_write_resources
 r_static
 r_inline
 r_int
@@ -2176,7 +2179,7 @@ id|res
 r_return
 l_int|NULL
 suffix:semicolon
-)paren
+)brace
 macro_line|#endif /* CONFIG_PNP */
 macro_line|#if defined(CONFIG_PNP_CARD)
 multiline_comment|/* card */
@@ -2319,6 +2322,7 @@ id|card
 suffix:semicolon
 macro_line|#else
 multiline_comment|/* card */
+DECL|function|pnpc_add_card
 r_static
 r_inline
 r_int
@@ -2336,6 +2340,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|pnpc_remove_card
 r_static
 r_inline
 r_void
@@ -2350,6 +2355,7 @@ id|card
 (brace
 suffix:semicolon
 )brace
+DECL|function|pnpc_add_device
 r_static
 r_inline
 r_int
@@ -2372,6 +2378,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|pnpc_remove_device
 r_static
 r_inline
 r_void
@@ -2386,6 +2393,7 @@ id|dev
 (brace
 suffix:semicolon
 )brace
+DECL|function|pnp_request_card_device
 r_static
 r_inline
 r_struct
@@ -2414,6 +2422,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|function|pnp_release_card_device
 r_static
 r_inline
 r_void
@@ -2428,6 +2437,7 @@ id|dev
 (brace
 suffix:semicolon
 )brace
+DECL|function|pnpc_register_driver
 r_static
 r_inline
 r_int
@@ -2445,6 +2455,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|pnpc_unregister_driver
 r_static
 r_inline
 r_void
@@ -2459,6 +2470,7 @@ id|drv
 (brace
 suffix:semicolon
 )brace
+DECL|function|pnpc_add_id
 r_static
 r_inline
 r_int
@@ -2492,6 +2504,7 @@ macro_line|#ifdef DEBUG
 DECL|macro|pnp_dbg
 mdefine_line|#define pnp_dbg(format, arg...) printk(KERN_DEBUG &quot;pnp: &quot; format &quot;&bslash;n&quot; , ## arg)
 macro_line|#else
+DECL|macro|pnp_dbg
 mdefine_line|#define pnp_dbg(format, arg...) do {} while (0)
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */

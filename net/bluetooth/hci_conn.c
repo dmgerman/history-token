@@ -818,8 +818,6 @@ r_struct
 id|hci_dev
 op_star
 id|d
-suffix:semicolon
-id|d
 op_assign
 id|list_entry
 c_func
@@ -905,6 +903,8 @@ c_cond
 (paren
 id|hdev
 )paren
+id|hdev
+op_assign
 id|hci_dev_hold
 c_func
 (paren
