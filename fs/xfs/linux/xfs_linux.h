@@ -66,16 +66,24 @@ op_assign
 id|linvfs_unwritten_done
 suffix:semicolon
 )brace
+DECL|macro|xfs_refcache_size
+mdefine_line|#define xfs_refcache_size&t;xfs_params.refcache_size.val
+DECL|macro|xfs_refcache_purge_count
+mdefine_line|#define xfs_refcache_purge_count xfs_params.refcache_purge.val
 DECL|macro|restricted_chown
-mdefine_line|#define restricted_chown&t;xfs_params.restrict_chown
+mdefine_line|#define restricted_chown&t;xfs_params.restrict_chown.val
 DECL|macro|irix_sgid_inherit
-mdefine_line|#define irix_sgid_inherit&t;xfs_params.sgid_inherit
+mdefine_line|#define irix_sgid_inherit&t;xfs_params.sgid_inherit.val
 DECL|macro|irix_symlink_mode
-mdefine_line|#define irix_symlink_mode&t;xfs_params.symlink_mode
+mdefine_line|#define irix_symlink_mode&t;xfs_params.symlink_mode.val
 DECL|macro|xfs_panic_mask
-mdefine_line|#define xfs_panic_mask&t;&t;xfs_params.panic_mask
+mdefine_line|#define xfs_panic_mask&t;&t;xfs_params.panic_mask.val
 DECL|macro|xfs_error_level
-mdefine_line|#define xfs_error_level&t;&t;xfs_params.error_level
+mdefine_line|#define xfs_error_level&t;&t;xfs_params.error_level.val
+DECL|macro|xfs_syncd_interval
+mdefine_line|#define xfs_syncd_interval&t;xfs_params.sync_interval.val
+DECL|macro|xfs_stats_clear
+mdefine_line|#define xfs_stats_clear&t;&t;xfs_params.stats_clear.val
 DECL|macro|NBPP
 mdefine_line|#define NBPP&t;&t;PAGE_SIZE
 DECL|macro|DPPSHFT

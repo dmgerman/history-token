@@ -3851,9 +3851,17 @@ op_amp
 id|flow_cache_genid
 )paren
 )paren
+(brace
+id|xfrm_pol_put
+c_func
+(paren
+id|policy
+)paren
+suffix:semicolon
 r_goto
 id|restart
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond

@@ -46,7 +46,7 @@ DECL|macro|__attribute_used__
 mdefine_line|#define __attribute_used__&t;__attribute__((__unused__))
 macro_line|#endif
 multiline_comment|/*&n; * From the GCC manual:&n; *&n; * Many functions have no effects except the return value and their&n; * return value depends only on the parameters and/or global&n; * variables.  Such a function can be subject to common subexpression&n; * elimination and loop optimization just as an arithmetic operator&n; * would be.&n; * [...]&n; * The attribute `pure&squot; is not implemented in GCC versions earlier&n; * than 2.96.&n; */
-macro_line|#if (__GNUC__ == 2 &amp;&amp; __GNUC_MINOR &gt;= 96) || __GNUC__ &gt; 2
+macro_line|#if (__GNUC__ == 2 &amp;&amp; __GNUC_MINOR__ &gt;= 96) || __GNUC__ &gt; 2
 DECL|macro|__attribute_pure__
 mdefine_line|#define __attribute_pure__&t;__attribute__((pure))
 macro_line|#else

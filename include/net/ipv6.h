@@ -788,6 +788,7 @@ id|b
 op_ne
 l_int|0
 )paren
+(brace
 id|pfx-&gt;s6_addr
 (braket
 id|o
@@ -804,6 +805,10 @@ op_rshift
 id|b
 )paren
 suffix:semicolon
+id|o
+op_increment
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
