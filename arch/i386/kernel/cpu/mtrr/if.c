@@ -91,10 +91,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
 id|fcount
 op_assign
 id|kmalloc
@@ -108,22 +104,17 @@ id|fcount
 comma
 id|GFP_KERNEL
 )paren
-)paren
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;mtrr: could not allocate&bslash;n&quot;
-)paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|fcount
+)paren
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -177,27 +168,10 @@ l_int|1
 )paren
 )paren
 )paren
-(brace
-id|printk
-(paren
-l_string|&quot;mtrr: size and base must be multiples of 4 kiB&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;mtrr: size: 0x%lx  base: 0x%lx&bslash;n&quot;
-comma
-id|size
-comma
-id|base
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|base
 op_rshift_assign
 id|PAGE_SHIFT
@@ -301,27 +275,10 @@ l_int|1
 )paren
 )paren
 )paren
-(brace
-id|printk
-(paren
-l_string|&quot;mtrr: size and base must be multiples of 4 kiB&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;mtrr: size: 0x%lx  base: 0x%lx&bslash;n&quot;
-comma
-id|size
-comma
-id|base
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|base
 op_rshift_assign
 id|PAGE_SHIFT
@@ -911,14 +868,6 @@ suffix:semicolon
 r_struct
 id|mtrr_gentry
 id|gentry
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;mtrr_ioctl %d&bslash;n&quot;
-comma
-id|cmd
-)paren
 suffix:semicolon
 r_switch
 c_cond
