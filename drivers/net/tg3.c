@@ -28736,6 +28736,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|GET_ASIC_REV
 c_func
 (paren
@@ -28743,6 +28744,13 @@ id|tp-&gt;pci_chip_rev_id
 )paren
 op_eq
 id|ASIC_REV_5704
+)paren
+op_logical_and
+(paren
+id|tp-&gt;pci_chip_rev_id
+op_eq
+id|CHIPREV_ID_5704_A0
+)paren
 )paren
 (brace
 id|tg3_writephy
@@ -30028,6 +30036,10 @@ op_logical_and
 id|grc_misc_cfg
 op_ne
 id|GRC_MISC_CFG_BOARD_ID_5704
+op_logical_and
+id|grc_misc_cfg
+op_ne
+id|GRC_MISC_CFG_BOARD_ID_5704_A2
 op_logical_and
 id|grc_misc_cfg
 op_ne
