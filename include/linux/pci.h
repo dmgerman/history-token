@@ -1652,6 +1652,16 @@ id|bus
 )paren
 suffix:semicolon
 r_void
+id|pci_bus_add_device
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_void
 id|pci_bus_add_devices
 c_func
 (paren
