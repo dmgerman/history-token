@@ -2883,6 +2883,11 @@ id|mode
 op_or
 id|S_IFDIR
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#if 0
 multiline_comment|/*&n;&t; * Always drop the dentry, we can&squot;t always depend on&n;&t; * the fattr returned by the server (AIX seems to be&n;&t; * broken). We&squot;re better off doing another lookup than&n;&t; * depending on potentially bogus information.&n;&t; */
 id|d_drop
@@ -2961,6 +2966,11 @@ id|d_drop
 c_func
 (paren
 id|dentry
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

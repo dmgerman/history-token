@@ -3194,6 +3194,11 @@ id|ntfs_attribute
 op_star
 id|si
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ntfs_debug
 (paren
 id|DEBUG_DIR1
@@ -3420,6 +3425,11 @@ comma
 l_string|&quot;mkdir returns %d&bslash;n&quot;
 comma
 id|error
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

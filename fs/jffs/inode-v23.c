@@ -3551,6 +3551,11 @@ suffix:semicolon
 )brace
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|dir_f
 op_assign
 (paren
@@ -3575,6 +3580,11 @@ c_func
 id|KERN_ERR
 l_string|&quot;jffs_mkdir(): No reference to a &quot;
 l_string|&quot;jffs_file struct in inode.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -3916,6 +3926,11 @@ c_func
 (paren
 op_amp
 id|c-&gt;fmc-&gt;biglock
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

@@ -2733,6 +2733,11 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|journal_begin
 c_func
 (paren
@@ -2821,6 +2826,11 @@ comma
 id|dir-&gt;i_sb
 comma
 id|jbegin_count
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -2915,6 +2925,11 @@ id|iput
 id|inode
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -2951,6 +2966,11 @@ comma
 id|dir-&gt;i_sb
 comma
 id|jbegin_count
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

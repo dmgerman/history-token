@@ -3760,6 +3760,11 @@ comma
 op_star
 id|fi
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -4129,6 +4134,11 @@ l_int|0
 suffix:semicolon
 id|out
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon

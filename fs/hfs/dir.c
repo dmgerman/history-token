@@ -808,14 +808,6 @@ r_struct
 id|hfs_cat_entry
 op_star
 id|entry
-op_assign
-id|HFS_I
-c_func
-(paren
-id|parent
-)paren
-op_member_access_from_pointer
-id|entry
 suffix:semicolon
 r_struct
 id|hfs_cat_entry
@@ -834,6 +826,21 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+id|entry
+op_assign
+id|HFS_I
+c_func
+(paren
+id|parent
+)paren
+op_member_access_from_pointer
+id|entry
+suffix:semicolon
 multiline_comment|/* build the key, checking against reserved names */
 r_if
 c_cond
@@ -851,10 +858,17 @@ comma
 id|dentry-&gt;d_name.len
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EEXIST
 suffix:semicolon
+)brace
 multiline_comment|/* try to create the directory */
 r_if
 c_cond
@@ -875,9 +889,16 @@ r_new
 )paren
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
+)brace
 multiline_comment|/* back out if we run into trouble */
 r_new
 op_member_access_from_pointer
@@ -926,6 +947,11 @@ c_func
 r_new
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -957,6 +983,11 @@ c_func
 id|dentry
 comma
 id|inode
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

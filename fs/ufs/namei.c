@@ -758,6 +758,11 @@ id|UFS_LINK_MAX
 r_goto
 id|out
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ufs_inc_count
 c_func
 (paren
@@ -848,6 +853,11 @@ id|err
 r_goto
 id|out_fail
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|d_instantiate
 c_func
 (paren
@@ -886,6 +896,11 @@ id|ufs_dec_count
 c_func
 (paren
 id|dir
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_goto

@@ -1151,6 +1151,11 @@ id|mode
 r_int
 id|error
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1186,6 +1191,11 @@ id|mode
 )paren
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon

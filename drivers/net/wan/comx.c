@@ -4271,6 +4271,11 @@ id|net_device
 )paren
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4582,6 +4587,11 @@ id|DEFAULT_LINEUP_DELAY
 suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4667,6 +4677,11 @@ id|kfree
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
