@@ -135,14 +135,12 @@ suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------------- */
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|version
 (braket
 )braket
 id|__initdata
 op_assign
-id|KERN_INFO
 l_string|&quot;ether1 ethernet driver (c) 2000 Russell King v1.07&bslash;n&quot;
 suffix:semicolon
 DECL|macro|BUS_16
@@ -4744,7 +4742,11 @@ op_eq
 l_int|0
 )paren
 id|printk
+c_func
 (paren
+id|KERN_INFO
+l_string|&quot;%s&quot;
+comma
 id|version
 )paren
 suffix:semicolon
@@ -5009,8 +5011,6 @@ comma
 l_int|4096
 )paren
 suffix:semicolon
-id|free
-suffix:colon
 id|unregister_netdev
 c_func
 (paren

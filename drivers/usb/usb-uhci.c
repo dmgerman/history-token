@@ -13156,7 +13156,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PM
 id|_static
-r_void
+r_int
 DECL|function|uhci_pci_suspend
 id|uhci_pci_suspend
 (paren
@@ -13164,6 +13164,9 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+comma
+id|u32
+id|state
 )paren
 (brace
 id|reset_hc
@@ -13176,9 +13179,12 @@ op_star
 id|dev-&gt;driver_data
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 id|_static
-r_void
+r_int
 DECL|function|uhci_pci_resume
 id|uhci_pci_resume
 (paren
@@ -13197,6 +13203,9 @@ op_star
 )paren
 id|dev-&gt;driver_data
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif

@@ -4346,6 +4346,8 @@ id|u16
 id|reg14h
 comma
 id|eq_value
+op_assign
+l_int|0
 comma
 id|max_value
 op_assign

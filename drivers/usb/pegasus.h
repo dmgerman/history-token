@@ -342,32 +342,34 @@ multiline_comment|/* LSB is gpio reset value */
 suffix:semicolon
 DECL|macro|VENDOR_3COM
 mdefine_line|#define&t;VENDOR_3COM&t;&t;0x0506
+DECL|macro|VENDOR_ABOCOM
+mdefine_line|#define&t;VENDOR_ABOCOM&t;&t;0x07b8
 DECL|macro|VENDOR_ACCTON
-mdefine_line|#define VENDOR_ACCTON           0x083a
+mdefine_line|#define&t;VENDOR_ACCTON&t;&t;0x083a
 DECL|macro|VENDOR_ADMTEK
-mdefine_line|#define VENDOR_ADMTEK           0x07a6
+mdefine_line|#define&t;VENDOR_ADMTEK&t;&t;0x07a6
 DECL|macro|VENDOR_BILLIONTON
-mdefine_line|#define VENDOR_BILLIONTON       0x08dd
+mdefine_line|#define&t;VENDOR_BILLIONTON&t;0x08dd
 DECL|macro|VENDOR_COREGA
-mdefine_line|#define VENDOR_COREGA           0x07aa
-DECL|macro|VENDOR_DLINK1
-mdefine_line|#define VENDOR_DLINK1           0x2001
-DECL|macro|VENDOR_DLINK2
-mdefine_line|#define VENDOR_DLINK2           0x07b8
+mdefine_line|#define&t;VENDOR_COREGA&t;&t;0x07aa
+DECL|macro|VENDOR_DLINK
+mdefine_line|#define&t;VENDOR_DLINK&t;&t;0x2001
+DECL|macro|VENDOR_ELSA
+mdefine_line|#define&t;VENDOR_ELSA&t;&t;0x05cc
 DECL|macro|VENDOR_IODATA
-mdefine_line|#define VENDOR_IODATA           0x04bb
+mdefine_line|#define&t;VENDOR_IODATA&t;&t;0x04bb
 DECL|macro|VENDOR_LANEED
-mdefine_line|#define VENDOR_LANEED           0x056e
+mdefine_line|#define&t;VENDOR_LANEED&t;&t;0x056e
 DECL|macro|VENDOR_LINKSYS
-mdefine_line|#define VENDOR_LINKSYS          0x066b
+mdefine_line|#define&t;VENDOR_LINKSYS&t;&t;0x066b
 DECL|macro|VENDOR_MELCO
-mdefine_line|#define VENDOR_MELCO            0x0411
+mdefine_line|#define&t;VENDOR_MELCO&t;&t;0x0411
 DECL|macro|VENDOR_SMARTBRIDGES
-mdefine_line|#define VENDOR_SMARTBRIDGES&t;0x08d1
+mdefine_line|#define&t;VENDOR_SMARTBRIDGES&t;0x08d1
 DECL|macro|VENDOR_SMC
-mdefine_line|#define VENDOR_SMC              0x0707
+mdefine_line|#define&t;VENDOR_SMC&t;&t;0x0707
 DECL|macro|VENDOR_SOHOWARE
-mdefine_line|#define VENDOR_SOHOWARE         0x15e8
+mdefine_line|#define&t;VENDOR_SOHOWARE&t;&t;0x15e8
 macro_line|#else&t;/* PEGASUS_DEV */
 id|PEGASUS_DEV
 c_func
@@ -377,6 +379,134 @@ comma
 id|VENDOR_3COM
 comma
 l_int|0x4601
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;USB HPNA/Ethernet&quot;
+comma
+id|VENDOR_ABOCOM
+comma
+l_int|0x110c
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+op_or
+id|HAS_HOME_PNA
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;USB HPNA/Ethernet&quot;
+comma
+id|VENDOR_ABOCOM
+comma
+l_int|0x4104
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|HAS_HOME_PNA
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;USB HPNA/Ethernet&quot;
+comma
+id|VENDOR_ABOCOM
+comma
+l_int|0x4004
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|HAS_HOME_PNA
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;USB HPNA/Ethernet&quot;
+comma
+id|VENDOR_ABOCOM
+comma
+l_int|0x4007
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|HAS_HOME_PNA
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;USB 10/100 Fast Ethernet&quot;
+comma
+id|VENDOR_ABOCOM
+comma
+l_int|0x4102
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;USB 10/100 Fast Ethernet&quot;
+comma
+id|VENDOR_ABOCOM
+comma
+l_int|0x4002
+comma
+id|DEFAULT_GPIO_RESET
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;USB 10/100 Fast Ethernet&quot;
+comma
+id|VENDOR_ABOCOM
+comma
+l_int|0x400b
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;USB 10/100 Fast Ethernet&quot;
+comma
+id|VENDOR_ABOCOM
+comma
+l_int|0x400c
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;USB 10/100 Fast Ethernet&quot;
+comma
+id|VENDOR_ABOCOM
+comma
+l_int|0xabc1
+comma
+id|DEFAULT_GPIO_RESET
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;USB 10/100 Fast Ethernet&quot;
+comma
+id|VENDOR_ABOCOM
+comma
+l_int|0x200c
 comma
 id|DEFAULT_GPIO_RESET
 op_or
@@ -409,7 +539,7 @@ id|PEGASUS_II
 id|PEGASUS_DEV
 c_func
 (paren
-l_string|&quot;ADMtek AN986 &bslash;&quot;Pegasus&bslash;&quot; USB Ethernet (eval board)&quot;
+l_string|&quot;ADMtek AN986 &bslash;&quot;Pegasus&bslash;&quot; USB Ethernet (eval. board)&quot;
 comma
 id|VENDOR_ADMTEK
 comma
@@ -483,7 +613,7 @@ c_func
 (paren
 l_string|&quot;D-Link DSB-650TX&quot;
 comma
-id|VENDOR_DLINK1
+id|VENDOR_DLINK
 comma
 l_int|0x4001
 comma
@@ -494,7 +624,7 @@ c_func
 (paren
 l_string|&quot;D-Link DSB-650TX&quot;
 comma
-id|VENDOR_DLINK1
+id|VENDOR_DLINK
 comma
 l_int|0x4002
 comma
@@ -503,9 +633,48 @@ id|LINKSYS_GPIO_RESET
 id|PEGASUS_DEV
 c_func
 (paren
+l_string|&quot;D-Link DSB-650TX&quot;
+comma
+id|VENDOR_DLINK
+comma
+l_int|0x4102
+comma
+id|LINKSYS_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;D-Link DSB-650TX&quot;
+comma
+id|VENDOR_DLINK
+comma
+l_int|0x400b
+comma
+id|LINKSYS_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;D-Link DSB-650TX&quot;
+comma
+id|VENDOR_DLINK
+comma
+l_int|0x200c
+comma
+id|LINKSYS_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
 l_string|&quot;D-Link DSB-650TX(PNA)&quot;
 comma
-id|VENDOR_DLINK1
+id|VENDOR_DLINK
 comma
 l_int|0x4003
 comma
@@ -518,7 +687,7 @@ c_func
 (paren
 l_string|&quot;D-Link DSB-650&quot;
 comma
-id|VENDOR_DLINK1
+id|VENDOR_DLINK
 comma
 l_int|0xabc1
 comma
@@ -527,37 +696,13 @@ id|DEFAULT_GPIO_RESET
 id|PEGASUS_DEV
 c_func
 (paren
-l_string|&quot;D-Link DU-E10&quot;
+l_string|&quot;Elsa Micolink USB2Ethernet&quot;
 comma
-id|VENDOR_DLINK2
+id|VENDOR_ELSA
 comma
-l_int|0xabc1
-comma
-id|DEFAULT_GPIO_RESET
-)paren
-id|PEGASUS_DEV
-c_func
-(paren
-l_string|&quot;D-Link DU-E100&quot;
-comma
-id|VENDOR_DLINK2
-comma
-l_int|0x4002
+l_int|0x3000
 comma
 id|DEFAULT_GPIO_RESET
-)paren
-id|PEGASUS_DEV
-c_func
-(paren
-l_string|&quot;FiberLine USB&quot;
-comma
-id|VENDOR_DLINK2
-comma
-l_int|0x4102
-comma
-id|DEFAULT_GPIO_RESET
-op_or
-id|PEGASUS_II
 )paren
 id|PEGASUS_DEV
 c_func
@@ -580,6 +725,43 @@ comma
 l_int|0x4002
 comma
 id|DEFAULT_GPIO_RESET
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;LANEED USB Ethernet LD-USB/TX&quot;
+comma
+id|VENDOR_LANEED
+comma
+l_int|0x400b
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;LANEED USB Ethernet LD-USB/T&quot;
+comma
+id|VENDOR_LANEED
+comma
+l_int|0xabc1
+comma
+id|DEFAULT_GPIO_RESET
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;LANEED USB Ethernet LD-USB/TX&quot;
+comma
+id|VENDOR_LANEED
+comma
+l_int|0x200c
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
 )paren
 id|PEGASUS_DEV
 c_func
@@ -630,6 +812,32 @@ id|LINKSYS_GPIO_RESET
 id|PEGASUS_DEV
 c_func
 (paren
+l_string|&quot;Linksys USB USB10TX&quot;
+comma
+id|VENDOR_LINKSYS
+comma
+l_int|0x400b
+comma
+id|LINKSYS_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;Linksys USB10TX&quot;
+comma
+id|VENDOR_LINKSYS
+comma
+l_int|0x200c
+comma
+id|LINKSYS_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
 l_string|&quot;MELCO/BUFFALO LUA-TX&quot;
 comma
 id|VENDOR_MELCO
@@ -637,6 +845,30 @@ comma
 l_int|0x0001
 comma
 id|DEFAULT_GPIO_RESET
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;MELCO/BUFFALO LUA-TX&quot;
+comma
+id|VENDOR_MELCO
+comma
+l_int|0x0005
+comma
+id|DEFAULT_GPIO_RESET
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;MELCO/BUFFALO LUA2-TX&quot;
+comma
+id|VENDOR_MELCO
+comma
+l_int|0x0009
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
 )paren
 id|PEGASUS_DEV
 c_func

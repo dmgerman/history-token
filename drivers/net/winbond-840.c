@@ -3769,7 +3769,7 @@ id|i
 suffix:semicolon
 multiline_comment|/* Initialize other registers. */
 multiline_comment|/* Configure the PCI bus bursts and FIFO thresholds.&n;&t;   486: Set 8 longword cache alignment, 8 longword burst.&n;&t;   586: Set 16 longword cache alignment, no burst limit.&n;&t;   Cache alignment bits 15:14&t;     Burst length 13:8&n;&t;&t;0000&t;&lt;not allowed&gt; &t;&t;0000 align to cache&t;0800 8 longwords&n;&t;&t;4000&t;8  longwords&t;&t;0100 1 longword&t;&t;1000 16 longwords&n;&t;&t;8000&t;16 longwords&t;&t;0200 2 longwords&t;2000 32 longwords&n;&t;&t;C000&t;32  longwords&t;&t;0400 4 longwords&n;&t;   Wait the specified 50 PCI cycles after a reset by initializing&n;&t;   Tx and Rx queues and the address filter list. */
-macro_line|#if defined(__powerpc__)&t;&t;/* Big-endian */
+macro_line|#if defined(__powerpc__) || defined(__sparc__)&t;&t;/* Big-endian */
 id|writel
 c_func
 (paren
@@ -3974,7 +3974,6 @@ id|IntrStatus
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifndef __alpha__
 (brace
 r_int
 id|i
@@ -3983,11 +3982,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;  Rx ring %8.8x: &quot;
+l_string|&quot;  Rx ring %p: &quot;
 comma
-(paren
-r_int
-)paren
 id|np-&gt;rx_ring
 )paren
 suffix:semicolon
@@ -4027,11 +4023,8 @@ c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 id|KERN_DEBUG
-l_string|&quot;  Tx ring %8.8x: &quot;
+l_string|&quot;  Tx ring %p: &quot;
 comma
-(paren
-r_int
-)paren
 id|np-&gt;tx_ring
 )paren
 suffix:semicolon
@@ -4099,7 +4092,6 @@ l_int|0x4C
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|spin_lock_irq
 c_func
 (paren
@@ -6670,9 +6662,6 @@ id|np
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 id|netif_stop_queue
 c_func
 (paren
@@ -6796,6 +6785,9 @@ OG
 l_int|2
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 id|printk
 c_func
 (paren

@@ -60,6 +60,26 @@ id|bad_ata100_5
 )braket
 op_assign
 (brace
+l_string|&quot;IBM-DTLA-307075&quot;
+comma
+l_string|&quot;IBM-DTLA-307060&quot;
+comma
+l_string|&quot;IBM-DTLA-307045&quot;
+comma
+l_string|&quot;IBM-DTLA-307030&quot;
+comma
+l_string|&quot;IBM-DTLA-307020&quot;
+comma
+l_string|&quot;IBM-DTLA-307015&quot;
+comma
+l_string|&quot;IBM-DTLA-305040&quot;
+comma
+l_string|&quot;IBM-DTLA-305030&quot;
+comma
+l_string|&quot;IBM-DTLA-305020&quot;
+comma
+l_string|&quot;WDC AC310200R&quot;
+comma
 l_int|NULL
 )brace
 suffix:semicolon

@@ -379,8 +379,6 @@ DECL|variable|debug
 r_static
 r_int
 id|debug
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; *&t;Interface down stub&n; */
 DECL|function|if_down
@@ -1969,6 +1967,14 @@ id|sp-&gt;pp_loopcnt
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sp-&gt;lcp.state
+op_ne
+id|LCP_STATE_OPENED
+)paren
+(brace
 id|sppp_cp_send
 (paren
 id|sp
@@ -1988,6 +1994,7 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Change the state. */
 r_switch
 c_cond
@@ -2036,7 +2043,26 @@ id|sppp_lcp_open
 id|sp
 )paren
 suffix:semicolon
-multiline_comment|/* An ACK has already been sent. */
+multiline_comment|/* Send ACK after our REQ in attempt to break loop */
+id|sppp_cp_send
+(paren
+id|sp
+comma
+id|PPP_LCP
+comma
+id|LCP_CONF_ACK
+comma
+id|h-&gt;ident
+comma
+id|len
+op_minus
+l_int|4
+comma
+id|h
+op_plus
+l_int|1
+)paren
+suffix:semicolon
 id|sp-&gt;lcp.state
 op_assign
 id|LCP_STATE_ACK_SENT
@@ -5640,16 +5666,34 @@ id|packet_type
 id|sppp_packet_type
 op_assign
 (brace
-l_int|0
+id|type
+suffix:colon
+id|__constant_htons
+c_func
+(paren
+id|ETH_P_WAN_PPP
+)paren
 comma
-l_int|NULL
-comma
+id|func
+suffix:colon
 id|sppp_rcv
 comma
-l_int|NULL
-comma
-l_int|NULL
 )brace
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|banner
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;Cronyx Ltd, Synchronous PPP and CISCO HDLC (c) 1994&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;Linux port (c) 1998 Building Number Three Ltd &amp; &quot;
+l_string|&quot;Jan &bslash;&quot;Yenya&bslash;&quot; Kasprzak.&bslash;n&quot;
 suffix:semicolon
 DECL|function|sync_ppp_init
 r_static
@@ -5675,23 +5719,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;Cronyx Ltd, Synchronous PPP and CISCO HDLC (c) 1994&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Linux port (c) 1998 Building Number Three Ltd &amp; Jan &bslash;&quot;Yenya&bslash;&quot; Kasprzak.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|sppp_packet_type.type
-op_assign
-id|htons
-c_func
-(paren
-id|ETH_P_WAN_PPP
+id|banner
 )paren
 suffix:semicolon
 id|dev_add_pack

@@ -12,8 +12,6 @@ mdefine_line|#define PCI_VENDOR_ID_DOMEX&t;&t;0x134a
 DECL|macro|PCI_DEVICE_ID_DOMEX_DMX3191D
 mdefine_line|#define PCI_DEVICE_ID_DOMEX_DMX3191D&t;0x0001
 macro_line|#endif
-DECL|macro|dmx3191d_printk
-mdefine_line|#define dmx3191d_printk( args... )&t;printk(__FILE__&quot;: &quot; ##args)
 macro_line|#ifndef ASM
 r_int
 id|dmx3191d_abort

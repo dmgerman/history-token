@@ -1425,6 +1425,9 @@ id|out
 suffix:semicolon
 id|found_page
 suffix:colon
+id|memory_pressure
+op_increment
+suffix:semicolon
 id|del_page_from_inactive_clean_list
 c_func
 (paren
@@ -1479,9 +1482,6 @@ c_func
 op_amp
 id|pagecache_lock
 )paren
-suffix:semicolon
-id|memory_pressure
-op_increment
 suffix:semicolon
 r_return
 id|page

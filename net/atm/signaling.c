@@ -1064,11 +1064,6 @@ id|vcc
 )paren
 (brace
 r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
-r_struct
 id|atm_dev
 op_star
 id|dev
@@ -1100,24 +1095,11 @@ id|KERN_ERR
 l_string|&quot;sigd_close: closing with requests pending&bslash;n&quot;
 )paren
 suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|vcc-&gt;recvq
-)paren
-)paren
-)paren
-id|kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 id|purge_vccs

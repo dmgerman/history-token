@@ -84,6 +84,10 @@ id|consistent_free
 c_func
 (paren
 id|vaddr
+comma
+id|size
+comma
+id|dma_handle
 )paren
 suffix:semicolon
 )brace

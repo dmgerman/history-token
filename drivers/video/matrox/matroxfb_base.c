@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200 and G400&n; *&n; * (c) 1998-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Version: 1.52 2001/02/02&n; *&n; * MTRR stuff: 1998 Tom Rini &lt;trini@kernel.crashing.org&gt;&n; *&n; * Contributors: &quot;menion?&quot; &lt;menion@mindless.com&gt;&n; *                     Betatesting, fixes, ideas&n; *&n; *               &quot;Kurt Garloff&quot; &lt;garloff@suse.de&gt;&n; *                     Betatesting, fixes, ideas, videomodes, videomodes timmings&n; *&n; *               &quot;Tom Rini&quot; &lt;trini@kernel.crashing.org&gt;&n; *                     MTRR stuff, PPC cleanups, betatesting, fixes, ideas&n; *&n; *               &quot;Bibek Sahu&quot; &lt;scorpio@dodds.net&gt;&n; *                     Access device through readb|w|l and write b|w|l&n; *                     Extensive debugging stuff&n; *&n; *               &quot;Daniel Haun&quot; &lt;haund@usa.net&gt;&n; *                     Testing, hardware cursor fixes&n; *&n; *               &quot;Scott Wood&quot; &lt;sawst46+@pitt.edu&gt;&n; *                     Fixes&n; *&n; *               &quot;Gerd Knorr&quot; &lt;kraxel@goldbach.isdn.cs.tu-berlin.de&gt;&n; *                     Betatesting&n; *&n; *               &quot;Kelly French&quot; &lt;targon@hazmat.com&gt;&n; *               &quot;Fernando Herrera&quot; &lt;fherrera@eurielec.etsit.upm.es&gt;&n; *                     Betatesting, bug reporting&n; *&n; *               &quot;Pablo Bianucci&quot; &lt;pbian@pccp.com.ar&gt;&n; *                     Fixes, ideas, betatesting&n; *&n; *               &quot;Inaky Perez Gonzalez&quot; &lt;inaky@peloncho.fis.ucm.es&gt;&n; *                     Fixes, enhandcements, ideas, betatesting&n; *&n; *               &quot;Ryuichi Oikawa&quot; &lt;roikawa@rr.iiij4u.or.jp&gt;&n; *                     PPC betatesting, PPC support, backward compatibility&n; *&n; *               &quot;Paul Womar&quot; &lt;Paul@pwomar.demon.co.uk&gt;&n; *               &quot;Owen Waller&quot; &lt;O.Waller@ee.qub.ac.uk&gt;&n; *                     PPC betatesting&n; *&n; *               &quot;Thomas Pornin&quot; &lt;pornin@bolet.ens.fr&gt;&n; *                     Alpha betatesting&n; *&n; *               &quot;Pieter van Leuven&quot; &lt;pvl@iae.nl&gt;&n; *               &quot;Ulf Jaenicke-Roessler&quot; &lt;ujr@physik.phy.tu-dresden.de&gt;&n; *                     G100 testing&n; *&n; *               &quot;H. Peter Arvin&quot; &lt;hpa@transmeta.com&gt;&n; *                     Ideas&n; *&n; *               &quot;Cort Dougan&quot; &lt;cort@cs.nmt.edu&gt;&n; *                     CHRP fixes and PReP cleanup&n; *&n; *               &quot;Mark Vojkovich&quot; &lt;mvojkovi@ucsd.edu&gt;&n; *                     G400 support&n; *&n; *               &quot;Samuel Hocevar&quot; &lt;sam@via.ecp.fr&gt;&n; *                     Fixes&n; *&n; *               &quot;Anton Altaparmakov&quot; &lt;AntonA@bigfoot.com&gt;&n; *                     G400 MAX/non-MAX distinction&n; *&n; *               &quot;Ken Aaker&quot; &lt;kdaaker@rchland.vnet.ibm.com&gt;&n; *                     memtype extension (needed for GXT130P RS/6000 adapter)&n; *&n; * (following author is not in any relation with this code, but his code&n; *  is included in this driver)&n; *&n; * Based on framebuffer driver for VBE 2.0 compliant graphic boards&n; *     (c) 1998 Gerd Knorr &lt;kraxel@cs.tu-berlin.de&gt;&n; *&n; * (following author is not in any relation with this code, but his ideas&n; *  were used when writting this driver)&n; *&n; *&t;&t; FreeVBE/AF (Matrox), &quot;Shawn Hargreaves&quot; &lt;shawn@talula.demon.co.uk&gt;&n; *&n; */
+multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200 and G400&n; *&n; * (c) 1998-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Version: 1.53 2001/06/18&n; *&n; * MTRR stuff: 1998 Tom Rini &lt;trini@kernel.crashing.org&gt;&n; *&n; * Contributors: &quot;menion?&quot; &lt;menion@mindless.com&gt;&n; *                     Betatesting, fixes, ideas&n; *&n; *               &quot;Kurt Garloff&quot; &lt;garloff@suse.de&gt;&n; *                     Betatesting, fixes, ideas, videomodes, videomodes timmings&n; *&n; *               &quot;Tom Rini&quot; &lt;trini@kernel.crashing.org&gt;&n; *                     MTRR stuff, PPC cleanups, betatesting, fixes, ideas&n; *&n; *               &quot;Bibek Sahu&quot; &lt;scorpio@dodds.net&gt;&n; *                     Access device through readb|w|l and write b|w|l&n; *                     Extensive debugging stuff&n; *&n; *               &quot;Daniel Haun&quot; &lt;haund@usa.net&gt;&n; *                     Testing, hardware cursor fixes&n; *&n; *               &quot;Scott Wood&quot; &lt;sawst46+@pitt.edu&gt;&n; *                     Fixes&n; *&n; *               &quot;Gerd Knorr&quot; &lt;kraxel@goldbach.isdn.cs.tu-berlin.de&gt;&n; *                     Betatesting&n; *&n; *               &quot;Kelly French&quot; &lt;targon@hazmat.com&gt;&n; *               &quot;Fernando Herrera&quot; &lt;fherrera@eurielec.etsit.upm.es&gt;&n; *                     Betatesting, bug reporting&n; *&n; *               &quot;Pablo Bianucci&quot; &lt;pbian@pccp.com.ar&gt;&n; *                     Fixes, ideas, betatesting&n; *&n; *               &quot;Inaky Perez Gonzalez&quot; &lt;inaky@peloncho.fis.ucm.es&gt;&n; *                     Fixes, enhandcements, ideas, betatesting&n; *&n; *               &quot;Ryuichi Oikawa&quot; &lt;roikawa@rr.iiij4u.or.jp&gt;&n; *                     PPC betatesting, PPC support, backward compatibility&n; *&n; *               &quot;Paul Womar&quot; &lt;Paul@pwomar.demon.co.uk&gt;&n; *               &quot;Owen Waller&quot; &lt;O.Waller@ee.qub.ac.uk&gt;&n; *                     PPC betatesting&n; *&n; *               &quot;Thomas Pornin&quot; &lt;pornin@bolet.ens.fr&gt;&n; *                     Alpha betatesting&n; *&n; *               &quot;Pieter van Leuven&quot; &lt;pvl@iae.nl&gt;&n; *               &quot;Ulf Jaenicke-Roessler&quot; &lt;ujr@physik.phy.tu-dresden.de&gt;&n; *                     G100 testing&n; *&n; *               &quot;H. Peter Arvin&quot; &lt;hpa@transmeta.com&gt;&n; *                     Ideas&n; *&n; *               &quot;Cort Dougan&quot; &lt;cort@cs.nmt.edu&gt;&n; *                     CHRP fixes and PReP cleanup&n; *&n; *               &quot;Mark Vojkovich&quot; &lt;mvojkovi@ucsd.edu&gt;&n; *                     G400 support&n; *&n; *               &quot;Samuel Hocevar&quot; &lt;sam@via.ecp.fr&gt;&n; *                     Fixes&n; *&n; *               &quot;Anton Altaparmakov&quot; &lt;AntonA@bigfoot.com&gt;&n; *                     G400 MAX/non-MAX distinction&n; *&n; *               &quot;Ken Aaker&quot; &lt;kdaaker@rchland.vnet.ibm.com&gt;&n; *                     memtype extension (needed for GXT130P RS/6000 adapter)&n; *&n; *               &quot;Uns Lider&quot; &lt;unslider@miranda.org&gt;&n; *                     G100 PLNWT fixes&n; *&n; * (following author is not in any relation with this code, but his code&n; *  is included in this driver)&n; *&n; * Based on framebuffer driver for VBE 2.0 compliant graphic boards&n; *     (c) 1998 Gerd Knorr &lt;kraxel@cs.tu-berlin.de&gt;&n; *&n; * (following author is not in any relation with this code, but his ideas&n; *  were used when writting this driver)&n; *&n; *&t;&t; FreeVBE/AF (Matrox), &quot;Shawn Hargreaves&quot; &lt;shawn@talula.demon.co.uk&gt;&n; *&n; */
 multiline_comment|/* make checkconfig does not check included files... */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;matroxfb_base.h&quot;
@@ -7391,7 +7391,8 @@ DECL|macro|DEVF_VIDEO64BIT
 mdefine_line|#define DEVF_VIDEO64BIT&t;&t;0x0001
 DECL|macro|DEVF_SWAPS
 mdefine_line|#define&t;DEVF_SWAPS&t;&t;0x0002
-multiline_comment|/* #define DEVF_recycled&t;0x0004 */
+DECL|macro|DEVF_SRCORG
+mdefine_line|#define DEVF_SRCORG&t;&t;0x0004
 multiline_comment|/* #define DEVF_recycled&t;0x0008 */
 DECL|macro|DEVF_CROSS4MB
 mdefine_line|#define DEVF_CROSS4MB&t;&t;0x0010
@@ -7417,7 +7418,7 @@ mdefine_line|#define DEVF_G450DAC&t;&t;0x4000
 DECL|macro|DEVF_GCORE
 mdefine_line|#define DEVF_GCORE&t;(DEVF_VIDEO64BIT | DEVF_SWAPS | DEVF_CROSS4MB | DEVF_DDC_8_2)
 DECL|macro|DEVF_G2CORE
-mdefine_line|#define DEVF_G2CORE&t;(DEVF_GCORE | DEVF_ANY_VXRES | DEVF_MAVEN_CAPABLE | DEVF_PANELLINK_CAPABLE)
+mdefine_line|#define DEVF_G2CORE&t;(DEVF_GCORE | DEVF_ANY_VXRES | DEVF_MAVEN_CAPABLE | DEVF_PANELLINK_CAPABLE | DEVF_SRCORG)
 DECL|macro|DEVF_G100
 mdefine_line|#define DEVF_G100&t;(DEVF_GCORE) /* no doc, no vxres... */
 DECL|macro|DEVF_G200
@@ -7426,7 +7427,7 @@ DECL|macro|DEVF_G400
 mdefine_line|#define DEVF_G400&t;(DEVF_G2CORE | DEVF_SUPPORT32MB | DEVF_TEXT16B | DEVF_CRTC2)
 multiline_comment|/* if you&squot;ll find how to drive DFP... */
 DECL|macro|DEVF_G450
-mdefine_line|#define DEVF_G450&t;(DEVF_GCORE | DEVF_ANY_VXRES | DEVF_SUPPORT32MB | DEVF_TEXT16B | DEVF_CRTC2 | DEVF_G450DAC)
+mdefine_line|#define DEVF_G450&t;(DEVF_GCORE | DEVF_ANY_VXRES | DEVF_SUPPORT32MB | DEVF_TEXT16B | DEVF_CRTC2 | DEVF_G450DAC | DEVF_SRCORG)
 DECL|struct|board
 r_static
 r_struct
@@ -7885,7 +7886,7 @@ comma
 op_amp
 id|vbG200
 comma
-l_string|&quot;unknown G200 (AGP)&quot;
+l_string|&quot;G200 (AGP)&quot;
 )brace
 comma
 (brace
@@ -7927,7 +7928,7 @@ comma
 op_amp
 id|vbG400
 comma
-l_string|&quot;unknown G400 (AGP)&quot;
+l_string|&quot;G400 (AGP)&quot;
 )brace
 comma
 (brace
@@ -7949,7 +7950,7 @@ multiline_comment|/* ??? vco goes up to 900MHz... */
 op_amp
 id|vbG400
 comma
-l_string|&quot;unknown G450 (AGP)&quot;
+l_string|&quot;G450 (AGP)&quot;
 )brace
 comma
 macro_line|#endif
@@ -8117,6 +8118,16 @@ id|capable.plnwt
 )paren
 op_assign
 l_int|1
+suffix:semicolon
+id|ACCESS_FBINFO
+c_func
+(paren
+id|capable.srcorg
+)paren
+op_assign
+id|b-&gt;flags
+op_amp
+id|DEVF_SRCORG
 suffix:semicolon
 id|ACCESS_FBINFO
 c_func
@@ -14300,11 +14311,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|__initdata
+DECL|variable|initialized
 r_static
 r_int
-id|initialized
 id|__initdata
+id|initialized
 op_assign
 l_int|0
 suffix:semicolon
@@ -14348,6 +14359,10 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|hotplug
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* never return failure, user can hotplug matrox later... */
 r_return
 l_int|0
@@ -14540,7 +14555,7 @@ c_func
 (paren
 id|sgram
 comma
-l_string|&quot;Indicates that G200/G400 has SGRAM memory (0=SDRAM, 1=SGRAM) (default=0)&quot;
+l_string|&quot;Indicates that G100/G200/G400 has SGRAM memory (0=SDRAM, 1=SGRAM) (default=0)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM

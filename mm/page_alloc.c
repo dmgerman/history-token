@@ -1543,9 +1543,6 @@ op_amp
 id|__GFP_WAIT
 )paren
 (brace
-id|memory_pressure
-op_increment
-suffix:semicolon
 r_if
 c_cond
 (paren

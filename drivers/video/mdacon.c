@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/video/mdacon.c -- Low level MDA based console driver&n; *&n; *&t;(c) 1998 Andrew Apted &lt;ajapted@netspace.net.au&gt;&n; *&n; *      including portions (c) 1995-1998 Patrick Caulfield.&n; *&n; *      slight improvements (c) 2000 Edward Betts &lt;edward@debian.org&gt;&n; *&n; *  This file is based on the VGA console driver (vgacon.c):&n; *&t;&n; *&t;Created 28 Sep 1997 by Geert Uytterhoeven&n; *&n; *&t;Rewritten by Martin Mares &lt;mj@ucw.cz&gt;, July 1998&n; *&n; *  and on the old console.c, vga.c and vesa_blank.c drivers:&n; *&n; *&t;Copyright (C) 1991, 1992  Linus Torvalds&n; *&t;&t;&t;    1995  Jay Estabrook&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
+multiline_comment|/*&n; *  linux/drivers/video/mdacon.c -- Low level MDA based console driver&n; *&n; *&t;(c) 1998 Andrew Apted &lt;ajapted@netspace.net.au&gt;&n; *&n; *      including portions (c) 1995-1998 Patrick Caulfield.&n; *&n; *      slight improvements (c) 2000 Edward Betts &lt;edward@debian.org&gt;&n; *&n; *  This file is based on the VGA console driver (vgacon.c):&n; *&t;&n; *&t;Created 28 Sep 1997 by Geert Uytterhoeven&n; *&n; *&t;Rewritten by Martin Mares &lt;mj@ucw.cz&gt;, July 1998&n; *&n; *  and on the old console.c, vga.c and vesa_blank.c drivers:&n; *&n; *&t;Copyright (C) 1991, 1992  Linus Torvalds&n; *&t;&t;&t;    1995  Jay Estabrook&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; *&n; *  Changelog:&n; *  Paul G. (03/2001) Fix mdacon= boot prompt to use __setup().&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -345,6 +345,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef TEST_MDA_B
 DECL|function|test_mda_b
 r_static
 r_int
@@ -419,6 +420,7 @@ r_return
 id|val
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|mda_set_origin
 r_static
 r_inline
@@ -568,7 +570,8 @@ suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
 DECL|function|mdacon_setup
-r_void
+r_static
+r_int
 id|__init
 id|mdacon_setup
 c_func
@@ -576,13 +579,31 @@ c_func
 r_char
 op_star
 id|str
-comma
-r_int
-op_star
-id|ints
 )paren
 (brace
 multiline_comment|/* command line format: mdacon=&lt;first&gt;,&lt;last&gt; */
+r_int
+id|ints
+(braket
+l_int|3
+)braket
+suffix:semicolon
+id|str
+op_assign
+id|get_options
+c_func
+(paren
+id|str
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|ints
+)paren
+comma
+id|ints
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -594,6 +615,7 @@ OL
 l_int|2
 )paren
 r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -613,6 +635,7 @@ template_param
 id|MAX_NR_CONSOLES
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|mda_first_vc
 op_assign
@@ -620,8 +643,6 @@ id|ints
 (braket
 l_int|1
 )braket
-op_minus
-l_int|1
 suffix:semicolon
 id|mda_last_vc
 op_assign
@@ -629,10 +650,19 @@ id|ints
 (braket
 l_int|2
 )braket
-op_minus
+suffix:semicolon
+r_return
 l_int|1
 suffix:semicolon
 )brace
+id|__setup
+c_func
+(paren
+l_string|&quot;mdacon=&quot;
+comma
+id|mdacon_setup
+)paren
+suffix:semicolon
 macro_line|#endif
 DECL|function|mda_detect
 r_static
@@ -853,11 +883,45 @@ l_int|0x02000
 suffix:semicolon
 )brace
 multiline_comment|/* Ok, there is definitely a card registering at the correct&n;&t; * memory location, so now we do an I/O port test.&n;&t; */
+macro_line|#ifdef TEST_MDA_B
 multiline_comment|/* Edward: These two mess `tests&squot; mess up my cursor on bootup */
 multiline_comment|/* cursor low register */
-multiline_comment|/* if (! test_mda_b(0x66, 0x0f)) {&n;&t;&t;return 0;&n;&t;} */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_mda_b
+c_func
+(paren
+l_int|0x66
+comma
+l_int|0x0f
+)paren
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* cursor low register */
-multiline_comment|/* if (! test_mda_b(0x99, 0x0f)) {&n;&t;&t;return 0;&n;&t;} */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_mda_b
+c_func
+(paren
+l_int|0x99
+comma
+l_int|0x0f
+)paren
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* See if the card is a Hercules, by checking whether the vsync&n;&t; * bit of the status register is changing.  This test lasts for&n;&t; * approximately 1/10th of a second.&n;&t; */
 id|p_save
 op_assign

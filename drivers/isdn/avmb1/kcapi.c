@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: kcapi.c,v 1.21.6.6 2001/05/17 20:41:51 kai Exp $&n; * &n; * Kernel CAPI 2.0 Module&n; * &n; * (c) Copyright 1999 by Carsten Paeth (calle@calle.in-berlin.de)&n; * &n; */
+multiline_comment|/*&n; * $Id: kcapi.c,v 1.21.6.7 2001/06/09 15:14:15 kai Exp $&n; * &n; * Kernel CAPI 2.0 Module&n; * &n; * (c) Copyright 1999 by Carsten Paeth (calle@calle.in-berlin.de)&n; * &n; */
 DECL|macro|CONFIG_AVMB1_COMPAT
 mdefine_line|#define CONFIG_AVMB1_COMPAT
 macro_line|#include &lt;linux/config.h&gt;
@@ -28,7 +28,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.21.6.6 $&quot;
+l_string|&quot;$Revision: 1.21.6.7 $&quot;
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
 DECL|macro|CARD_FREE
@@ -5691,11 +5691,6 @@ id|__u16
 id|applid
 )paren
 (brace
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -5729,13 +5724,7 @@ op_member_access_from_pointer
 id|releasing
 op_increment
 suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -5746,15 +5735,6 @@ id|applid
 )paren
 op_member_access_from_pointer
 id|recv_queue
-)paren
-)paren
-op_ne
-l_int|0
-)paren
-id|kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 r_for

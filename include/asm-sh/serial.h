@@ -6,6 +6,8 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#ifdef CONFIG_SH_EC3104
 macro_line|#include &lt;asm/serial-ec3104.h&gt;
+macro_line|#elif defined (CONFIG_SH_BIGSUR)
+macro_line|#include &lt;asm/serial-bigsur.h&gt;
 macro_line|#else
 multiline_comment|/*&n; * This assumes you have a 1.8432 MHz clock for your UART.&n; *&n; * It&squot;d be nice if someone built a serial card with a 24.576 MHz&n; * clock, since the 16550A is capable of handling a top speed of 1.5&n; * megabits/second; but this requires the faster clock.&n; */
 DECL|macro|BASE_BAUD

@@ -290,6 +290,14 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|mac_scc_console_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|hwc_console_init
 c_func
 (paren
@@ -9189,6 +9197,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#elif defined(CONFIG_MAC_SERIAL)
+id|mac_scc_console_init
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#elif defined(CONFIG_SERIAL)
 id|serial_console_init
 c_func
@@ -9548,13 +9562,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_COMPUTONE
 id|ip2_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_MAC_SERIAL
-id|macserial_init
 c_func
 (paren
 )paren

@@ -2,7 +2,7 @@ multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All ri
 macro_line|#ifndef _VXFS_FSHEAD_H_
 DECL|macro|_VXFS_FSHEAD_H_
 mdefine_line|#define _VXFS_FSHEAD_H_
-macro_line|#ident &quot;$Id: vxfs_fshead.h,v 1.6 2001/04/25 18:11:23 hch Exp hch $&quot;
+macro_line|#ident &quot;$Id: vxfs_fshead.h,v 1.7 2001/05/23 17:27:39 hch Exp hch $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - fileset header structures.&n; *&n; * This file contains the physical structure of the VxFS&n; * fileset header.&n; */
 multiline_comment|/*&n; * Fileset header &n; */
 DECL|struct|vxfs_fsh
@@ -82,7 +82,7 @@ id|vx_ino_t
 id|fsh_lctino
 suffix:semicolon
 multiline_comment|/* link count table inode */
-multiline_comment|/*&n;&t; * Slightly more fields follow, but they&n;&t; *  a) are not of any interested for us, and&n;&t; *  b) differ much in different vxfs versions/ports&n;&t; */
+multiline_comment|/*&n;&t; * Slightly more fields follow, but they&n;&t; *  a) are not of any interest for us, and&n;&t; *  b) differ a lot in different vxfs versions/ports&n;&t; */
 )brace
 suffix:semicolon
 macro_line|#endif /* _VXFS_FSHEAD_H_ */

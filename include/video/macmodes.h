@@ -45,8 +45,12 @@ DECL|macro|VMODE_1280_960_75
 mdefine_line|#define VMODE_1280_960_75&t;19&t;/* 1280x960, 75Hz */
 DECL|macro|VMODE_1280_1024_75
 mdefine_line|#define VMODE_1280_1024_75&t;20&t;/* 1280x1024, 75Hz */
+DECL|macro|VMODE_1152_768_60
+mdefine_line|#define VMODE_1152_768_60&t;21&t;/* 1152x768, 60Hz     Titanium PowerBook */
+DECL|macro|VMODE_1600_1024_60
+mdefine_line|#define VMODE_1600_1024_60&t;22&t;/* 1600x1024, 60Hz 22&quot; Cinema Display */
 DECL|macro|VMODE_MAX
-mdefine_line|#define VMODE_MAX&t;&t;20
+mdefine_line|#define VMODE_MAX&t;&t;22
 DECL|macro|VMODE_CHOOSE
 mdefine_line|#define VMODE_CHOOSE&t;&t;99
 DECL|macro|CMODE_NVRAM

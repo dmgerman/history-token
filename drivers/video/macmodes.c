@@ -443,6 +443,67 @@ comma
 id|FB_VMODE_NONINTERLACED
 )brace
 comma
+(brace
+multiline_comment|/* 1152x768, 60 Hz, Titanium PowerBook */
+l_string|&quot;mac21&quot;
+comma
+l_int|60
+comma
+l_int|1152
+comma
+l_int|768
+comma
+l_int|15386
+comma
+l_int|158
+comma
+l_int|26
+comma
+l_int|29
+comma
+l_int|3
+comma
+l_int|136
+comma
+l_int|6
+comma
+id|FB_SYNC_HOR_HIGH_ACT
+op_or
+id|FB_SYNC_VERT_HIGH_ACT
+comma
+id|FB_VMODE_NONINTERLACED
+)brace
+comma
+(brace
+multiline_comment|/* 1600x1024, 60 Hz, Non-Interlaced (112.27 MHz dotclock) */
+l_string|&quot;mac22&quot;
+comma
+l_int|60
+comma
+l_int|1600
+comma
+l_int|1024
+comma
+l_int|8908
+comma
+l_int|88
+comma
+l_int|104
+comma
+l_int|1
+comma
+l_int|10
+comma
+l_int|16
+comma
+l_int|1
+comma
+id|FB_SYNC_HOR_HIGH_ACT
+op_or
+id|FB_SYNC_VERT_HIGH_ACT
+comma
+id|FB_VMODE_NONINTERLACED
+)brace
 macro_line|#if 0
 multiline_comment|/* Anyone who has timings for these? */
 (brace
@@ -761,6 +822,17 @@ l_int|7
 )braket
 )brace
 comma
+multiline_comment|/* 1152x768 */
+(brace
+id|VMODE_1152_768_60
+comma
+op_amp
+id|mac_modedb
+(braket
+l_int|14
+)braket
+)brace
+comma
 multiline_comment|/* 1152x870 */
 (brace
 id|VMODE_1152_870_75
@@ -791,6 +863,17 @@ op_amp
 id|mac_modedb
 (braket
 l_int|13
+)braket
+)brace
+comma
+multiline_comment|/* 1600x1024 */
+(brace
+id|VMODE_1600_1024_60
+comma
+op_amp
+id|mac_modedb
+(braket
+l_int|15
 )braket
 )brace
 comma
@@ -957,6 +1040,13 @@ id|VMODE_640_480_67
 )brace
 comma
 multiline_comment|/* no sense lines connected at all */
+(brace
+l_int|0xBEEF
+comma
+id|VMODE_1600_1024_60
+)brace
+comma
+multiline_comment|/* 22&quot; Apple Cinema Display */
 (brace
 op_minus
 l_int|1

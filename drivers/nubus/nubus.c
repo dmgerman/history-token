@@ -2198,12 +2198,12 @@ c_func
 op_amp
 id|mode
 comma
+l_int|0
+comma
 r_sizeof
 (paren
 id|mode
 )paren
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|nubus_get_rsrc_mem

@@ -16,6 +16,11 @@ id|dev
 r_int
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
 id|dev-&gt;dma
 op_assign
 id|drm_alloc
@@ -29,7 +34,19 @@ id|dev-&gt;dma
 comma
 id|DRM_MEM_DRIVER
 )paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;drm_dma_setup: can&squot;t drm_alloc dev-&gt;dma&quot;
+)paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|memset
 c_func
 (paren

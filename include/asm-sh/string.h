@@ -5,7 +5,7 @@ multiline_comment|/*&n; * Copyright (C) 1999 Niibe Yutaka&n; * But consider thes
 DECL|macro|__HAVE_ARCH_STRCPY
 mdefine_line|#define __HAVE_ARCH_STRCPY
 DECL|function|strcpy
-r_extern
+r_static
 id|__inline__
 r_char
 op_star
@@ -81,7 +81,7 @@ suffix:semicolon
 DECL|macro|__HAVE_ARCH_STRNCPY
 mdefine_line|#define __HAVE_ARCH_STRNCPY
 DECL|function|strncpy
-r_extern
+r_static
 id|__inline__
 r_char
 op_star
@@ -180,7 +180,7 @@ suffix:semicolon
 DECL|macro|__HAVE_ARCH_STRCMP
 mdefine_line|#define __HAVE_ARCH_STRCMP
 DECL|function|strcmp
-r_extern
+r_static
 id|__inline__
 r_int
 id|strcmp
@@ -262,7 +262,7 @@ suffix:semicolon
 DECL|macro|__HAVE_ARCH_STRNCMP
 mdefine_line|#define __HAVE_ARCH_STRNCMP
 DECL|function|strncmp
-r_extern
+r_static
 id|__inline__
 r_int
 id|strncmp

@@ -49,7 +49,7 @@ DECL|macro|SCSCR_INIT
 macro_line|# define SCSCR_INIT(port)          0x30 /* TIE=0,RIE=0,TE=1,RE=1 */
 DECL|macro|SCI_AND_SCIF
 macro_line|# define SCI_AND_SCIF
-macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7750)
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7750) || defined(CONFIG_CPU_SUBTYPE_SH7751)
 DECL|macro|SCI_NPORTS
 macro_line|# define SCI_NPORTS 2
 DECL|macro|SCI_INIT
@@ -611,7 +611,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7750)
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7750) || defined(CONFIG_CPU_SUBTYPE_SH7751)
 r_static
 r_inline
 r_int

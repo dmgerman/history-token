@@ -4753,10 +4753,17 @@ id|sci_driver.driver_name
 op_assign
 l_string|&quot;sci&quot;
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+id|sci_driver.name
+op_assign
+l_string|&quot;ttsc/%d&quot;
+suffix:semicolon
+macro_line|#else
 id|sci_driver.name
 op_assign
 l_string|&quot;ttySC&quot;
 suffix:semicolon
+macro_line|#endif
 id|sci_driver.major
 op_assign
 id|SCI_MAJOR
@@ -4886,10 +4893,17 @@ id|sci_callout_driver
 op_assign
 id|sci_driver
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+id|sci_callout_driver.name
+op_assign
+l_string|&quot;cusc/%d&quot;
+suffix:semicolon
+macro_line|#else
 id|sci_callout_driver.name
 op_assign
 l_string|&quot;cusc&quot;
 suffix:semicolon
+macro_line|#endif
 id|sci_callout_driver.major
 op_assign
 id|SCI_MAJOR

@@ -2275,7 +2275,7 @@ l_int|0
 suffix:semicolon
 id|count
 OL
-l_int|10
+l_int|100
 suffix:semicolon
 id|count
 op_increment
@@ -21049,12 +21049,6 @@ c_func
 id|s-&gt;pBA0
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|s
-)paren
-suffix:semicolon
 id|pci_set_drvdata
 c_func
 (paren
@@ -21068,6 +21062,12 @@ c_func
 (paren
 op_amp
 id|s-&gt;list
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|s
 )paren
 suffix:semicolon
 id|CS_DBGOUT

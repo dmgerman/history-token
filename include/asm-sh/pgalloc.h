@@ -17,7 +17,7 @@ mdefine_line|#define pmd_populate(mm, pmd, pte) &bslash;&n;&t;&t;set_pmd(pmd, __
 multiline_comment|/*&n; * Allocate and free page tables.&n; */
 DECL|function|get_pgd_slow
 r_static
-id|__inline__
+r_inline
 id|pgd_t
 op_star
 id|get_pgd_slow
@@ -76,7 +76,7 @@ suffix:semicolon
 )brace
 DECL|function|get_pgd_fast
 r_static
-id|__inline__
+r_inline
 id|pgd_t
 op_star
 id|get_pgd_fast
@@ -148,7 +148,7 @@ suffix:semicolon
 )brace
 DECL|function|free_pgd_fast
 r_static
-id|__inline__
+r_inline
 r_void
 id|free_pgd_fast
 c_func
@@ -187,7 +187,7 @@ suffix:semicolon
 )brace
 DECL|function|free_pgd_slow
 r_static
-id|__inline__
+r_inline
 r_void
 id|free_pgd_slow
 c_func
@@ -310,10 +310,7 @@ id|ret
 l_int|0
 )braket
 op_assign
-id|ret
-(braket
-l_int|1
-)braket
+l_int|0
 suffix:semicolon
 id|pgtable_cache_size
 op_decrement
@@ -329,7 +326,7 @@ suffix:semicolon
 )brace
 DECL|function|pte_free_fast
 r_static
-id|__inline__
+r_inline
 r_void
 id|pte_free_fast
 c_func
@@ -368,7 +365,7 @@ suffix:semicolon
 )brace
 DECL|function|pte_free_slow
 r_static
-id|__inline__
+r_inline
 r_void
 id|pte_free_slow
 c_func
@@ -390,15 +387,15 @@ id|pte
 suffix:semicolon
 )brace
 DECL|macro|pte_free
-mdefine_line|#define pte_free(pte)&t;&t;pte_free_slow(pte)
+mdefine_line|#define pte_free(pte)&t;&t;pte_free_fast(pte)
 DECL|macro|pgd_free
-mdefine_line|#define pgd_free(pgd)&t;&t;free_pgd_slow(pgd)
+mdefine_line|#define pgd_free(pgd)&t;&t;free_pgd_fast(pgd)
 DECL|macro|pgd_alloc
 mdefine_line|#define pgd_alloc(mm)&t;&t;get_pgd_fast()
 multiline_comment|/*&n; * allocating and freeing a pmd is trivial: the 1-entry pmd is&n; * inside the pgd, so has no extra memory associated with it.&n; */
 DECL|function|pmd_free
 r_static
-id|__inline__
+r_inline
 r_void
 id|pmd_free
 c_func
@@ -431,7 +428,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * TLB flushing:&n; *&n; *  - flush_tlb() flushes the current mm struct TLBs&n; *  - flush_tlb_all() flushes all processes TLBs&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr) flushes one page&n; *  - flush_tlb_range(mm, start, end) flushes a range of pages&n; *&n; */
+multiline_comment|/*&n; * TLB flushing:&n; *&n; *  - flush_tlb() flushes the current mm struct TLBs&n; *  - flush_tlb_all() flushes all processes TLBs&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr) flushes one page&n; *  - flush_tlb_range(mm, start, end) flushes a range of pages&n; *  - flush_tlb_pgtables(mm, start, end) flushes a range of page tables&n; */
 r_extern
 r_void
 id|flush_tlb
@@ -495,7 +492,7 @@ id|page
 suffix:semicolon
 DECL|function|flush_tlb_pgtables
 r_static
-id|__inline__
+r_inline
 r_void
 id|flush_tlb_pgtables
 c_func
@@ -514,6 +511,7 @@ r_int
 id|end
 )paren
 (brace
+multiline_comment|/* Nothing to do */
 )brace
 macro_line|#endif /* __ASM_SH_PGALLOC_H */
 eof

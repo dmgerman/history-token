@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: io_hd64465.c,v 1.6 2001/02/15 09:13:51 dave_mckay Exp $&n; * by Greg Banks &lt;gbanks@pocketpenguins.com&gt;&n; * (c) 2000 PocketPenguins Inc&n; *&n; * Derived from io_hd64461.c, which bore the message:&n; * Copyright (C) 2000 YAEGASHI Takeshi&n; *&n; * Typical I/O routines for HD64465 system.&n; */
+multiline_comment|/*&n; * $Id: io_hd64465.c,v 1.7 2001/05/09 07:39:36 gniibe Exp $&n; * by Greg Banks &lt;gbanks@pocketpenguins.com&gt;&n; * (c) 2000 PocketPenguins Inc&n; *&n; * Derived from io_hd64461.c, which bore the message:&n; * Copyright (C) 2000 YAEGASHI Takeshi&n; *&n; * Typical I/O routines for HD64465 system.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -87,6 +87,8 @@ macro_line|#ifndef MAX
 DECL|macro|MAX
 mdefine_line|#define MAX(a,b)    ((a)&gt;(b)?(a):(b))
 macro_line|#endif
+DECL|macro|PORT2ADDR
+mdefine_line|#define PORT2ADDR(x) (sh_mv.mv_isa_port2addr(x))
 DECL|function|hd64465_port_map
 r_void
 id|hd64465_port_map
@@ -389,12 +391,10 @@ c_func
 id|hd64465_port_unmap
 )paren
 suffix:semicolon
-DECL|function|PORT2ADDR
-r_static
-multiline_comment|/*__inline__*/
+DECL|function|hd64465_isa_port2addr
 r_int
 r_int
-id|PORT2ADDR
+id|hd64465_isa_port2addr
 c_func
 (paren
 r_int

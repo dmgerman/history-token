@@ -30,6 +30,9 @@ macro_line|#include &quot;digi1.h&quot;
 macro_line|#include &quot;digiFep1.h&quot;
 macro_line|#include &quot;epca.h&quot;
 macro_line|#include &quot;epcaconfig.h&quot;
+macro_line|#if BITS_PER_LONG != 32
+macro_line|#  error FIXME: this driver only works on 32-bit platforms
+macro_line|#endif
 multiline_comment|/* ---------------------- Begin defines ------------------------ */
 DECL|macro|VERSION
 mdefine_line|#define VERSION            &quot;1.3.0.1-LK&quot;

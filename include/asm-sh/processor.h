@@ -24,6 +24,7 @@ multiline_comment|/* Represents 7709A, 7729 */
 DECL|enumerator|CPU_SH7750
 id|CPU_SH7750
 comma
+multiline_comment|/* Represents 7750, 7751 */
 DECL|enumerator|CPU_ST40STB1
 id|CPU_ST40STB1
 comma
@@ -80,6 +81,13 @@ id|bus_clock
 comma
 id|module_clock
 suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_SUBTYPE_ST40STB1
+DECL|member|memory_clock
+r_int
+r_int
+id|memory_clock
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 r_extern
@@ -115,13 +123,12 @@ id|fp_regs
 l_int|16
 )braket
 suffix:semicolon
-DECL|member|xd_regs
+DECL|member|xfp_regs
 r_int
 r_int
-r_int
-id|xd_regs
+id|xfp_regs
 (braket
-l_int|8
+l_int|16
 )braket
 suffix:semicolon
 DECL|member|fpscr
@@ -154,13 +161,12 @@ id|fp_regs
 l_int|16
 )braket
 suffix:semicolon
-DECL|member|xd_regs
+DECL|member|xfp_regs
 r_int
 r_int
-r_int
-id|xd_regs
+id|xfp_regs
 (braket
-l_int|8
+l_int|16
 )braket
 suffix:semicolon
 DECL|member|fpscr
@@ -238,7 +244,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_MMAP
-mdefine_line|#define INIT_MMAP &bslash;&n;{ &amp;init_mm, 0x80000000, 0xa0000000, NULL, PAGE_SHARED, VM_READ | VM_WRITE | VM_EXEC, 1, NULL, NULL }
+mdefine_line|#define INIT_MMAP &bslash;&n;{ &amp;init_mm, 0, 0, NULL, PAGE_SHARED, VM_READ | VM_WRITE | VM_EXEC, 1, NULL, NULL }
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;sizeof(init_stack) + (long) &amp;init_stack, /* sp */&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t; /* pc */&t;&bslash;&n;&t;0, 0, &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;0, &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{{{0,}},} &t;&t;&t;&t;/* fpu state */&t;&bslash;&n;}
 multiline_comment|/*&n; * Do necessary setup to start up a newly executed thread.&n; */

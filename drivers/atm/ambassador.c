@@ -1522,6 +1522,12 @@ id|timeout
 (brace
 singleline_comment|// go to sleep
 singleline_comment|// PRINTD (DBG_CMD, &quot;wait: sleeping %lu for command&quot;, timeout);
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 id|timeout
 op_assign
 id|schedule_timeout
@@ -1529,7 +1535,6 @@ id|schedule_timeout
 id|timeout
 )paren
 suffix:semicolon
-singleline_comment|// woken up by timeout or signal
 )brace
 singleline_comment|// wait for my slot to be reached (all waiters are here or above, until...)
 r_while
@@ -1547,6 +1552,12 @@ comma
 l_string|&quot;wait: command slot (now at %p)&quot;
 comma
 id|ptrs-&gt;out
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
 id|schedule
@@ -1572,6 +1583,12 @@ id|PRINTD
 id|DBG_CMD
 comma
 l_string|&quot;wait: command slot completion&quot;
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
 id|schedule
@@ -7466,6 +7483,12 @@ c_cond
 id|timeout
 )paren
 (brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 id|timeout
 op_assign
 id|schedule_timeout
@@ -8109,6 +8132,13 @@ c_loop
 (paren
 id|timeout
 )paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 id|timeout
 op_assign
 id|schedule_timeout
@@ -8116,6 +8146,7 @@ id|schedule_timeout
 id|timeout
 )paren
 suffix:semicolon
+)brace
 singleline_comment|// half second time-out
 id|timeout
 op_assign
@@ -8145,6 +8176,12 @@ c_cond
 id|timeout
 )paren
 (brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 id|timeout
 op_assign
 id|schedule_timeout
@@ -8878,11 +8915,19 @@ op_amp
 id|cmd
 )paren
 )paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 id|schedule
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 id|major
 op_assign
 id|be32_to_cpu
@@ -9022,11 +9067,19 @@ op_amp
 id|cmd
 )paren
 )paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 id|schedule
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 id|lower4
 op_assign
 id|be32_to_cpu
@@ -9417,6 +9470,7 @@ r_int
 id|devs
 suffix:semicolon
 r_void
+id|__init
 id|do_pci_device
 (paren
 r_void

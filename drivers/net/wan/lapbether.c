@@ -195,6 +195,9 @@ id|lapbeth
 comma
 op_star
 id|lapbeth_prev
+comma
+op_star
+id|lapbeth_next
 suffix:semicolon
 r_int
 id|result
@@ -233,9 +236,13 @@ l_int|NULL
 suffix:semicolon
 id|lapbeth
 op_assign
-id|lapbeth-&gt;next
+id|lapbeth_next
 )paren
 (brace
+id|lapbeth_next
+op_assign
+id|lapbeth-&gt;next
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -293,6 +300,7 @@ id|lapbeth
 )paren
 suffix:semicolon
 )brace
+r_else
 id|lapbeth_prev
 op_assign
 id|lapbeth

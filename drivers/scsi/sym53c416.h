@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 DECL|macro|SYM53C416_SCSI_ID
 mdefine_line|#define SYM53C416_SCSI_ID 7
-r_extern
+r_static
 r_int
 id|sym53c416_detect
 c_func
@@ -22,7 +22,7 @@ id|Scsi_Host_Template
 op_star
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_const
 r_char
 op_star
@@ -34,7 +34,7 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
 id|sym53c416_command
 c_func
@@ -43,7 +43,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
 id|sym53c416_queuecommand
 c_func
@@ -62,7 +62,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
 id|sym53c416_abort
 c_func
@@ -71,7 +71,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
 id|sym53c416_reset
 c_func
@@ -83,7 +83,7 @@ r_int
 r_int
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
 id|sym53c416_bios_param
 c_func
@@ -97,7 +97,7 @@ r_int
 op_star
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_void
 id|sym53c416_setup
 c_func

@@ -3349,7 +3349,6 @@ id|TxStatus
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifndef __alpha__
 (brace
 r_int
 id|i
@@ -3358,11 +3357,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;  Rx ring %8.8x: &quot;
+l_string|&quot;  Rx ring %p: &quot;
 comma
-(paren
-r_int
-)paren
 id|np-&gt;rx_ring
 )paren
 suffix:semicolon
@@ -3402,11 +3398,8 @@ c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 id|KERN_DEBUG
-l_string|&quot;  Tx ring %8.8x: &quot;
+l_string|&quot;  Tx ring %p: &quot;
 comma
-(paren
-r_int
-)paren
 id|np-&gt;tx_ring
 )paren
 suffix:semicolon
@@ -3444,7 +3437,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* Perhaps we should reinitialize the hardware here. */
 id|dev-&gt;if_port
 op_assign

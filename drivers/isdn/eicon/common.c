@@ -3305,10 +3305,12 @@ id|card_list
 r_int
 id|i
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 id|card_list
+comma
+l_int|0
 comma
 r_sizeof
 (paren

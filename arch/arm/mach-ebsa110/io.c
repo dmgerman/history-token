@@ -610,6 +610,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|__inb
 id|EXPORT_SYMBOL

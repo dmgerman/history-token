@@ -782,7 +782,7 @@ id|newskb
 suffix:semicolon
 id|shaper-&gt;stats.tx_bytes
 op_add_assign
-id|newskb-&gt;len
+id|skb-&gt;len
 suffix:semicolon
 id|shaper-&gt;stats.tx_packets
 op_increment

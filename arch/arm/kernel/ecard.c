@@ -1,14 +1,13 @@
-multiline_comment|/*&n; *  linux/arch/arm/kernel/ecard.c&n; *&n; *  Copyright 1995-1998 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Find all installed expansion cards, and handle interrupts from them.&n; *&n; *  Created from information from Acorns RiscOS3 PRMs&n; *&n; *  08-Dec-1996&t;RMK&t;Added code for the 9&squot;th expansion card - the ether&n; *&t;&t;&t;podule slot.&n; *  06-May-1997&t;RMK&t;Added blacklist for cards whose loader doesn&squot;t work.&n; *  12-Sep-1997&t;RMK&t;Created new handling of interrupt enables/disables&n; *&t;&t;&t;- cards can now register their own routine to control&n; *&t;&t;&t;interrupts (recommended).&n; *  29-Sep-1997&t;RMK&t;Expansion card interrupt hardware not being re-enabled&n; *&t;&t;&t;on reset from Linux. (Caused cards not to respond&n; *&t;&t;&t;under RiscOS without hard reset).&n; *  15-Feb-1998&t;RMK&t;Added DMA support&n; *  12-Sep-1998&t;RMK&t;Added EASI support&n; *  10-Jan-1999&t;RMK&t;Run loaders in a simulated RISC OS environment.&n; *  17-Apr-1999&t;RMK&t;Support for EASI Type C cycles.&n; */
+multiline_comment|/*&n; *  linux/arch/arm/kernel/ecard.c&n; *&n; *  Copyright 1995-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Find all installed expansion cards, and handle interrupts from them.&n; *&n; *  Created from information from Acorns RiscOS3 PRMs&n; *&n; *  08-Dec-1996&t;RMK&t;Added code for the 9&squot;th expansion card - the ether&n; *&t;&t;&t;podule slot.&n; *  06-May-1997&t;RMK&t;Added blacklist for cards whose loader doesn&squot;t work.&n; *  12-Sep-1997&t;RMK&t;Created new handling of interrupt enables/disables&n; *&t;&t;&t;- cards can now register their own routine to control&n; *&t;&t;&t;interrupts (recommended).&n; *  29-Sep-1997&t;RMK&t;Expansion card interrupt hardware not being re-enabled&n; *&t;&t;&t;on reset from Linux. (Caused cards not to respond&n; *&t;&t;&t;under RiscOS without hard reset).&n; *  15-Feb-1998&t;RMK&t;Added DMA support&n; *  12-Sep-1998&t;RMK&t;Added EASI support&n; *  10-Jan-1999&t;RMK&t;Run loaders in a simulated RISC OS environment.&n; *  17-Apr-1999&t;RMK&t;Support for EASI Type C cycles.&n; */
 DECL|macro|ECARD_C
 mdefine_line|#define ECARD_C
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -1140,7 +1139,7 @@ multiline_comment|/* ======================= Mid-level card control ============
 multiline_comment|/*&n; * This function is responsible for resetting the expansion cards to a&n; * sensible state immediately prior to rebooting the system.  This function&n; * has process state (keventd), so we can sleep.&n; *&n; * Possible &quot;val&quot; values here:&n; *  SYS_RESTART   -  restarting system&n; *  SYS_HALT      - halting system&n; *  SYS_POWER_OFF - powering down system&n; *&n; * We ignore all calls, unless it is a SYS_RESTART call - power down/halts&n; * will be followed by a SYS_RESTART if ctrl-alt-del is pressed again.&n; */
 DECL|function|ecard_reboot
 r_static
-r_void
+r_int
 id|ecard_reboot
 c_func
 (paren
@@ -1170,6 +1169,7 @@ op_ne
 id|SYS_RESTART
 )paren
 r_return
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * Disable the expansion card interrupt&n;&t; */
 id|disable_irq
@@ -1213,6 +1213,9 @@ id|EXPMASK_ENABLE
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|ecard_reboot_notifier
 r_static

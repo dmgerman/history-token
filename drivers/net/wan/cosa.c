@@ -4746,7 +4746,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|d-&gt;addr
+id|addr
 template_param
 id|COSA_MAX_FIRMWARE_SIZE
 )paren
@@ -4757,7 +4757,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|d-&gt;len
+id|len
 template_param
 id|COSA_MAX_FIRMWARE_SIZE
 )paren
@@ -4786,7 +4786,7 @@ c_func
 (paren
 id|cosa
 comma
-id|d-&gt;code
+id|code
 comma
 id|len
 comma

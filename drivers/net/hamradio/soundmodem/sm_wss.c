@@ -620,9 +620,17 @@ op_logical_and
 op_logical_neg
 id|fullcalib
 )paren
+(brace
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * wait for ACI start&n;&t; */
 id|time
 op_assign

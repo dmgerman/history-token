@@ -388,7 +388,7 @@ suffix:semicolon
 )brace
 id|Ivec
 (braket
-l_int|16
+id|NR_IRQS
 )braket
 suffix:semicolon
 DECL|variable|SCC_Info
@@ -5364,7 +5364,7 @@ l_int|0
 suffix:semicolon
 id|k
 OL
-l_int|16
+id|NR_IRQS
 suffix:semicolon
 id|k
 op_increment
@@ -6515,6 +6515,17 @@ l_int|2
 id|hwcfg.irq
 op_assign
 l_int|9
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hwcfg.irq
+template_param
+id|NR_IRQS
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -8568,7 +8579,7 @@ l_int|0
 suffix:semicolon
 id|k
 OL
-l_int|16
+id|NR_IRQS
 suffix:semicolon
 id|k
 op_increment

@@ -362,6 +362,9 @@ suffix:semicolon
 id|stats-&gt;tx_errors
 op_increment
 suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
 )brace
 id|stats-&gt;tx_packets
 op_increment

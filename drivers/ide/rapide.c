@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/ecard.h&gt;
 DECL|variable|rapide_cids
 r_static
-r_const
 id|card_ids
 id|__init
 id|rapide_cids

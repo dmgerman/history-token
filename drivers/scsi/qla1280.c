@@ -5410,6 +5410,15 @@ c_func
 (paren
 l_char|&squot;X&squot;
 )paren
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|io_request_lock
+comma
+id|cpu_flags
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace

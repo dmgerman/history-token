@@ -3294,7 +3294,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%-8s  &quot;
+l_string|&quot;%-13.13s &quot;
 comma
 id|p-&gt;comm
 )paren
@@ -3490,25 +3490,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|p-&gt;mm
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot; (L-TLB) &quot;
-)paren
-suffix:semicolon
-r_else
-id|printk
-c_func
-(paren
-l_string|&quot; (NOTLB) &quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|p-&gt;p_ysptr
 )paren
 id|printk
@@ -3534,7 +3515,7 @@ id|p-&gt;p_osptr
 id|printk
 c_func
 (paren
-l_string|&quot; %5d&bslash;n&quot;
+l_string|&quot; %5d&quot;
 comma
 id|p-&gt;p_osptr-&gt;pid
 )paren
@@ -3543,11 +3524,30 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;      &quot;
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_X86) || defined(CONFIG_SPARC64)
-multiline_comment|/* This is very useful, but only works on x86 and sparc64 right now */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|p-&gt;mm
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; (L-TLB)&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot; (NOTLB)&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#if defined(CONFIG_X86) || defined(CONFIG_SPARC64) || defined(CONFIG_ARM)
+multiline_comment|/* This is very useful, but only works on ARM, x86 and sparc64 right now */
 (brace
 r_extern
 r_void

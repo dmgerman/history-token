@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; */
-macro_line|#ident &quot;$Id: vxfs_lookup.c,v 1.17 2001/05/21 15:23:53 hch Exp hch $&quot;
+macro_line|#ident &quot;$Id: vxfs_lookup.c,v 1.19 2001/05/30 19:50:20 hch Exp hch $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - lookup and other directory related code.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -731,15 +731,14 @@ id|npages
 comma
 id|block
 comma
+id|pblocks
+comma
 id|nblocks
 comma
 id|offset
 suffix:semicolon
 id|loff_t
 id|pos
-suffix:semicolon
-r_int
-id|pblocks
 suffix:semicolon
 r_switch
 c_cond
@@ -839,25 +838,6 @@ id|ip-&gt;i_size
 r_return
 l_int|0
 suffix:semicolon
-id|page
-op_assign
-id|pos
-op_rshift
-id|PAGE_CACHE_SHIFT
-suffix:semicolon
-id|offset
-op_assign
-id|pos
-op_amp
-op_complement
-id|PAGE_CACHE_MASK
-suffix:semicolon
-id|block
-op_assign
-id|pos
-op_rshift
-id|sbp-&gt;s_blocksize_bits
-suffix:semicolon
 id|npages
 op_assign
 id|dir_pages
@@ -881,6 +861,32 @@ c_func
 (paren
 id|sbp
 )paren
+suffix:semicolon
+id|page
+op_assign
+id|pos
+op_rshift
+id|PAGE_CACHE_SHIFT
+suffix:semicolon
+id|offset
+op_assign
+id|pos
+op_amp
+op_complement
+id|PAGE_CACHE_MASK
+suffix:semicolon
+id|block
+op_assign
+(paren
+id|u_long
+)paren
+(paren
+id|pos
+op_rshift
+id|sbp-&gt;s_blocksize_bits
+)paren
+op_mod
+id|pblocks
 suffix:semicolon
 r_for
 c_loop
@@ -1121,6 +1127,10 @@ id|done
 suffix:semicolon
 )brace
 )brace
+id|offset
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 id|vxfs_put_page
 c_func

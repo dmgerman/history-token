@@ -7303,6 +7303,7 @@ id|u_char
 id|csr
 suffix:semicolon
 r_union
+id|ewrk3_addr
 (brace
 id|u_char
 id|addr
@@ -7325,8 +7326,39 @@ l_int|1
 )braket
 suffix:semicolon
 )brace
+suffix:semicolon
+r_union
+id|ewrk3_addr
+op_star
 id|tmp
 suffix:semicolon
+id|tmp
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_union
+id|ewrk3_addr
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp
+op_eq
+l_int|NULL
+)paren
+(brace
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -7352,7 +7384,7 @@ id|i
 op_increment
 )paren
 (brace
-id|tmp.addr
+id|tmp-&gt;addr
 (braket
 id|i
 )braket
@@ -7375,12 +7407,11 @@ c_func
 (paren
 id|ioc-&gt;data
 comma
-id|tmp.addr
+id|tmp-&gt;addr
 comma
 id|ioc-&gt;len
 )paren
 )paren
-(brace
 id|status
 op_assign
 op_minus
@@ -7388,7 +7419,6 @@ id|EFAULT
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|EWRK3_SET_HWADDR
 suffix:colon
@@ -7434,7 +7464,7 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-id|tmp.addr
+id|tmp-&gt;addr
 comma
 id|ioc-&gt;data
 comma
@@ -7470,7 +7500,7 @@ id|dev-&gt;dev_addr
 id|i
 )braket
 op_assign
-id|tmp.addr
+id|tmp-&gt;addr
 (braket
 id|i
 )braket
@@ -7478,7 +7508,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|tmp.addr
+id|tmp-&gt;addr
 (braket
 id|i
 )braket
@@ -7615,20 +7645,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|EWRK3_SAY_BOO
-suffix:colon
-multiline_comment|/* Say &quot;Boo!&quot; to the kernel log file */
-id|printk
-c_func
-(paren
-l_string|&quot;%s: Boo!&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
 id|EWRK3_GET_MCA
 suffix:colon
 multiline_comment|/* Get the multicast address table */
@@ -7682,7 +7698,7 @@ id|i
 op_increment
 )paren
 (brace
-id|tmp.addr
+id|tmp-&gt;addr
 (braket
 id|i
 )braket
@@ -7708,7 +7724,7 @@ suffix:semicolon
 id|isa_memcpy_fromio
 c_func
 (paren
-id|tmp.addr
+id|tmp-&gt;addr
 comma
 id|lp-&gt;shmem_base
 op_plus
@@ -7745,7 +7761,7 @@ c_func
 (paren
 id|ioc-&gt;data
 comma
-id|tmp.addr
+id|tmp-&gt;addr
 comma
 id|ioc-&gt;len
 )paren
@@ -7777,7 +7793,7 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-id|tmp.addr
+id|tmp-&gt;addr
 comma
 id|ioc-&gt;data
 comma
@@ -7988,7 +8004,7 @@ r_case
 id|EWRK3_GET_CSR
 suffix:colon
 multiline_comment|/* Get the CSR Register contents */
-id|tmp.addr
+id|tmp-&gt;addr
 (braket
 l_int|0
 )braket
@@ -8011,7 +8027,7 @@ c_func
 (paren
 id|ioc-&gt;data
 comma
-id|tmp.addr
+id|tmp-&gt;addr
 comma
 id|ioc-&gt;len
 )paren
@@ -8043,7 +8059,7 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-id|tmp.addr
+id|tmp-&gt;addr
 comma
 id|ioc-&gt;data
 comma
@@ -8062,7 +8078,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|tmp.addr
+id|tmp-&gt;addr
 (braket
 l_int|0
 )braket
@@ -8114,7 +8130,7 @@ id|i
 op_increment
 )paren
 (brace
-id|tmp.val
+id|tmp-&gt;val
 (braket
 id|i
 )braket
@@ -8135,7 +8151,7 @@ id|i
 op_assign
 id|EEPROM_MAX
 suffix:semicolon
-id|tmp.addr
+id|tmp-&gt;addr
 (braket
 id|i
 op_increment
@@ -8163,7 +8179,7 @@ id|j
 op_increment
 )paren
 (brace
-id|tmp.addr
+id|tmp-&gt;addr
 (braket
 id|i
 op_increment
@@ -8194,7 +8210,7 @@ c_func
 (paren
 id|ioc-&gt;data
 comma
-id|tmp.addr
+id|tmp-&gt;addr
 comma
 id|ioc-&gt;len
 )paren
@@ -8235,7 +8251,7 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-id|tmp.addr
+id|tmp-&gt;addr
 comma
 id|ioc-&gt;data
 comma
@@ -8273,7 +8289,7 @@ op_increment
 id|Write_EEPROM
 c_func
 (paren
-id|tmp.val
+id|tmp-&gt;val
 (braket
 id|i
 )braket
@@ -8299,7 +8315,7 @@ r_case
 id|EWRK3_GET_CMR
 suffix:colon
 multiline_comment|/* Get the CMR Register contents */
-id|tmp.addr
+id|tmp-&gt;addr
 (braket
 l_int|0
 )braket
@@ -8322,7 +8338,7 @@ c_func
 (paren
 id|ioc-&gt;data
 comma
-id|tmp.addr
+id|tmp-&gt;addr
 comma
 id|ioc-&gt;len
 )paren
@@ -8400,6 +8416,12 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 )brace
+id|kfree
+c_func
+(paren
+id|tmp
+)paren
+suffix:semicolon
 r_return
 id|status
 suffix:semicolon

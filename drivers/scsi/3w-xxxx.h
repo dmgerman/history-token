@@ -131,11 +131,11 @@ mdefine_line|#define TW_INIT_MESSAGE_CREDITS&t;&t;      0x100
 DECL|macro|TW_INIT_COMMAND_PACKET_SIZE
 mdefine_line|#define TW_INIT_COMMAND_PACKET_SIZE&t;      0x3
 DECL|macro|TW_POLL_MAX_RETRIES
-mdefine_line|#define TW_POLL_MAX_RETRIES        &t;      10000
+mdefine_line|#define TW_POLL_MAX_RETRIES        &t;      20000
 DECL|macro|TW_MAX_SGL_LENGTH
 mdefine_line|#define TW_MAX_SGL_LENGTH&t;&t;      62
 DECL|macro|TW_Q_LENGTH
-mdefine_line|#define TW_Q_LENGTH&t;&t;&t;      256
+mdefine_line|#define TW_Q_LENGTH&t;&t;&t;      16
 DECL|macro|TW_Q_START
 mdefine_line|#define TW_Q_START&t;&t;&t;      0
 DECL|macro|TW_MAX_SLOT
@@ -599,6 +599,14 @@ id|alignment_physical_address
 id|TW_Q_LENGTH
 )braket
 suffix:semicolon
+DECL|member|bounce_buffer
+id|u32
+op_star
+id|bounce_buffer
+(braket
+id|TW_Q_LENGTH
+)braket
+suffix:semicolon
 DECL|member|is_unit_present
 r_int
 id|is_unit_present
@@ -606,9 +614,20 @@ id|is_unit_present
 id|TW_MAX_UNITS
 )braket
 suffix:semicolon
+DECL|member|is_raid_five
+r_int
+id|is_raid_five
+(braket
+id|TW_MAX_UNITS
+)braket
+suffix:semicolon
 DECL|member|num_units
 r_int
 id|num_units
+suffix:semicolon
+DECL|member|num_raid_five
+r_int
+id|num_raid_five
 suffix:semicolon
 DECL|member|command_packet_virtual_address
 id|u32
@@ -725,6 +744,10 @@ suffix:semicolon
 DECL|member|max_sector_count
 id|u32
 id|max_sector_count
+suffix:semicolon
+DECL|member|aen_count
+id|u32
+id|aen_count
 suffix:semicolon
 DECL|member|host
 r_struct

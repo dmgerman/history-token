@@ -1666,6 +1666,10 @@ DECL|member|plnwt
 r_int
 id|plnwt
 suffix:semicolon
+DECL|member|srcorg
+r_int
+id|srcorg
+suffix:semicolon
 DECL|member|capable
 )brace
 id|capable
@@ -2348,6 +2352,8 @@ mdefine_line|#define M_EXTVGA_DATA&t;0x1FDF
 multiline_comment|/* G200 only */
 DECL|macro|M_SRCORG
 mdefine_line|#define M_SRCORG&t;0x2CB4
+DECL|macro|M_DSTORG
+mdefine_line|#define M_DSTORG&t;0x2CB8
 DECL|macro|M_RAMDAC_BASE
 mdefine_line|#define M_RAMDAC_BASE&t;0x3C00
 multiline_comment|/* fortunately, same on TVP3026 and MGA1064 */

@@ -4822,6 +4822,10 @@ op_logical_neg
 id|ztv-&gt;have_decoder
 op_logical_or
 id|v.channel
+OL
+l_int|0
+op_logical_or
+id|v.channel
 op_ge
 id|ztv-&gt;card-&gt;video_inputs
 )paren

@@ -211,6 +211,9 @@ l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#if BITS_PER_LONG != 32
+macro_line|#  error FIXME: this driver only works on 32-bit platforms
+macro_line|#endif
 multiline_comment|/**************************** IA_LIB **********************************/
 DECL|function|ia_init_rtn_q
 r_static

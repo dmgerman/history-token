@@ -1007,6 +1007,8 @@ r_int
 id|ret
 comma
 id|size
+comma
+id|max_fdset
 suffix:semicolon
 id|timeout
 op_assign
@@ -1143,16 +1145,21 @@ l_int|0
 r_goto
 id|out_nofds
 suffix:semicolon
+multiline_comment|/* max_fdset can increase, so grab it once to avoid race */
+id|max_fdset
+op_assign
+id|current-&gt;files-&gt;max_fdset
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|n
 OG
-id|current-&gt;files-&gt;max_fdset
+id|max_fdset
 )paren
 id|n
 op_assign
-id|current-&gt;files-&gt;max_fdset
+id|max_fdset
 suffix:semicolon
 multiline_comment|/*&n;&t; * We need 6 bitmaps (in/out/ex for both incoming and outgoing),&n;&t; * since we used fdset we need to allocate memory in units of&n;&t; * long-words. &n;&t; */
 id|ret

@@ -319,7 +319,7 @@ id|tty
 )paren
 suffix:semicolon
 r_static
-r_int
+id|ssize_t
 id|r3964_read
 c_func
 (paren
@@ -339,12 +339,11 @@ op_star
 id|buf
 comma
 r_int
-r_int
 id|nr
 )paren
 suffix:semicolon
 r_static
-r_int
+id|ssize_t
 id|r3964_write
 c_func
 (paren
@@ -364,7 +363,6 @@ r_char
 op_star
 id|buf
 comma
-r_int
 r_int
 id|nr
 )paren
@@ -4532,7 +4530,7 @@ suffix:semicolon
 )brace
 DECL|function|r3964_read
 r_static
-r_int
+id|ssize_t
 id|r3964_read
 c_func
 (paren
@@ -4551,7 +4549,6 @@ r_char
 op_star
 id|buf
 comma
-r_int
 r_int
 id|nr
 )paren
@@ -4802,7 +4799,7 @@ suffix:semicolon
 )brace
 DECL|function|r3964_write
 r_static
-r_int
+id|ssize_t
 id|r3964_write
 c_func
 (paren
@@ -4822,7 +4819,6 @@ r_char
 op_star
 id|data
 comma
-r_int
 r_int
 id|count
 )paren

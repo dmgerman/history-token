@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#ifdef CONFIG_MAC_ADBKEYCODES
 macro_line|#include &lt;linux/keyboard.h&gt;
 macro_line|#include &lt;asm/keyboard.h&gt;
@@ -3067,6 +3068,13 @@ r_return
 id|keyboard_sends_linux_keycodes
 suffix:semicolon
 )brace
+DECL|variable|mac_hid_keyboard_sends_linux_keycodes
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mac_hid_keyboard_sends_linux_keycodes
+)paren
+suffix:semicolon
 DECL|function|mac_hid_setup
 r_static
 r_int
@@ -3272,6 +3280,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|mac_hid_mouse_emulate_buttons
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mac_hid_mouse_emulate_buttons
+)paren
+suffix:semicolon
 DECL|function|emumousebtn_input_register
 r_static
 r_void
@@ -3409,6 +3424,17 @@ c_cond
 op_logical_neg
 id|keyboard_sends_linux_keycodes
 )paren
+(brace
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+id|ppc_md.ppc_kbd_sysrq_xlate
+op_assign
+id|mac_hid_kbd_sysrq_xlate
+suffix:semicolon
+id|SYSRQ_KEY
+op_assign
+l_int|0x69
+suffix:semicolon
+macro_line|#endif
 id|memcpy
 c_func
 (paren
@@ -3422,7 +3448,21 @@ id|key_maps
 )paren
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+id|ppc_md.ppc_kbd_sysrq_xlate
+op_assign
+id|pckbd_sysrq_xlate
+suffix:semicolon
+id|SYSRQ_KEY
+op_assign
+l_int|0x54
+suffix:semicolon
 macro_line|#endif
+)brace
+macro_line|#endif /* CONFIG_MAC_ADBKEYCODES */
 macro_line|#ifdef CONFIG_MAC_EMUMOUSEBTN
 id|emumousebtn_input_register
 c_func

@@ -9,7 +9,7 @@ mdefine_line|#define CS46XX_ACPI_SUPPORT 1
 macro_line|#ifdef CS46XX_ACPI_SUPPORT
 multiline_comment|/* &n;* for now (12/22/00) only enable the pm_register PM support.&n;* allow these table entries to be null.&n;*/
 r_static
-r_void
+r_int
 id|cs46xx_suspend_tbl
 c_func
 (paren
@@ -17,10 +17,13 @@ r_struct
 id|pci_dev
 op_star
 id|pcidev
+comma
+id|u32
+id|state
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|cs46xx_resume_tbl
 c_func
 (paren

@@ -119,10 +119,10 @@ DECL|macro|__WANT_IO_DEF
 macro_line|# define __WANT_IO_DEF
 macro_line|# if defined(CONFIG_SH_HP600)
 macro_line|#  include &lt;asm/io_hd64461.h&gt;
-macro_line|# elif defined(CONFIG_SH_7750_OVERDRIVE)
-macro_line|#  include &lt;asm/io_od.h&gt;
-macro_line|# elif defined(CONFIG_SH_SOLUTION_ENGINE)
+macro_line|# elif (defined(CONFIG_SH_SOLUTION_ENGINE) || defined(CONFIG_SH_7751_SOLUTION_ENGINE))
 macro_line|#  include &lt;asm/io_se.h&gt;
+macro_line|# elif defined(CONFIG_SH_SH2000)
+macro_line|#  include &lt;asm/io_sh2000.h&gt;
 macro_line|# elif defined(CONFIG_SH_DMIDA) || &bslash;&n;       defined(CONFIG_SH_STB1_HARP) || &bslash;&n;       defined(CONFIG_SH_STB1_OVERDRIVE)
 macro_line|#  include &lt;asm/io_hd64465.h&gt;
 macro_line|# elif defined(CONFIG_SH_EC3104)
@@ -131,6 +131,8 @@ macro_line|# elif defined(CONFIG_SH_DREAMCAST)
 macro_line|#  include &lt;asm/io_dc.h&gt;
 macro_line|# elif defined(CONFIG_SH_CAT68701)
 macro_line|#  include &lt;asm/io_cat68701.h&gt;
+macro_line|# elif defined(CONFIG_SH_BIGSUR)
+macro_line|#  include &lt;asm/io_bigsur.h&gt;
 macro_line|# elif defined(CONFIG_SH_UNKNOWN)
 macro_line|#  include &lt;asm/io_unknown.h&gt;
 macro_line|# else

@@ -32,6 +32,9 @@ multiline_comment|/* for compatible parameter passing with &quot;insmod&quot; */
 DECL|macro|mcdx_drive_map
 mdefine_line|#define&t;mcdx_drive_map mcdx
 macro_line|#include &quot;mcdx.h&quot;
+macro_line|#if BITS_PER_LONG != 32
+macro_line|#  error FIXME: this driver only works on 32-bit platforms
+macro_line|#endif
 macro_line|#ifndef HZ
 macro_line|#error HZ not defined
 macro_line|#endif

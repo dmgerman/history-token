@@ -5,16 +5,32 @@ macro_line|#ifdef __KERNEL__
 multiline_comment|/* Can be used to override the logic in pci_scan_bus for skipping&n;   already-configured bus numbers - to be used for buggy BIOSes&n;   or architectures with incomplete PCI setup by the loader */
 DECL|macro|pcibios_assign_all_busses
 mdefine_line|#define pcibios_assign_all_busses()&t;1
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_ST40STB1)
 multiline_comment|/* These are currently the correct values for the STM overdrive board. &n; * We need some way of setting this on a board specific way, it will &n; * not be the same on other boards I think&n; */
-macro_line|#if 1 /* def CONFIG_SH_7750_OVERDRIVE || def CONFIG_CPU_SUBTYPE_ST40STB1 */
 DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x2000
 DECL|macro|PCIBIOS_MIN_MEM
 mdefine_line|#define PCIBIOS_MIN_MEM&t;&t;0x10000000
+macro_line|#elif defined(CONFIG_SH_DREAMCAST)
+DECL|macro|PCIBIOS_MIN_IO
+mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x2000
+DECL|macro|PCIBIOS_MIN_MEM
+mdefine_line|#define PCIBIOS_MIN_MEM&t;&t;0x10000000
+macro_line|#elif defined(CONFIG_SH_BIGSUR) &amp;&amp; defined(CONFIG_CPU_SUBTYPE_SH7751)
+DECL|macro|PCIBIOS_MIN_IO
+mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x2000
+DECL|macro|PCIBIOS_MIN_MEM
+mdefine_line|#define PCIBIOS_MIN_MEM&t;&t;0xFD000000
+macro_line|#elif defined(CONFIG_SH_7751_SOLUTION_ENGINE) &amp;&amp; defined(CONFIG_CPU_SUBTYPE_SH7751)
+DECL|macro|PCIBIOS_MIN_IO
+mdefine_line|#define PCIBIOS_MIN_IO          0x4000
+DECL|macro|PCIBIOS_MIN_MEM
+mdefine_line|#define PCIBIOS_MIN_MEM         0xFD000000
 macro_line|#endif
-DECL|function|pcibios_set_master
-r_static
-r_inline
+r_struct
+id|pci_dev
+suffix:semicolon
+r_extern
 r_void
 id|pcibios_set_master
 c_func
@@ -24,9 +40,11 @@ id|pci_dev
 op_star
 id|dev
 )paren
-(brace
+suffix:semicolon
+singleline_comment|//static inline void pcibios_set_master(struct pci_dev *dev)
+singleline_comment|//{
 multiline_comment|/* No special bus mastering setup handling */
-)brace
+singleline_comment|//}
 DECL|function|pcibios_penalize_isa_irq
 r_static
 r_inline
@@ -46,9 +64,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-r_struct
-id|pci_dev
-suffix:semicolon
 multiline_comment|/* Allocate and map kernel buffer using consistent mode DMA for a device.&n; * hwdev should be valid struct pci_dev pointer for PCI devices,&n; * NULL for PCI-like buses (ISA, EISA).&n; * Returns non-NULL cpu-view pointer to the buffer if successful and&n; * sets *dma_addrp to the pci side dma address as well, else *dma_addrp&n; * is undefined.&n; */
 r_extern
 r_void

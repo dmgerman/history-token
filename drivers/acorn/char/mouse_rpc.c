@@ -60,7 +60,7 @@ op_assign
 (paren
 r_int
 )paren
-id|inl
+id|iomd_readl
 c_func
 (paren
 id|IOMD_MOUSEX
@@ -71,7 +71,7 @@ op_assign
 (paren
 r_int
 )paren
-id|inl
+id|iomd_readl
 c_func
 (paren
 id|IOMD_MOUSEY
@@ -80,9 +80,10 @@ suffix:semicolon
 id|buttons
 op_assign
 (paren
-id|inl
+id|__raw_readl
+c_func
 (paren
-l_int|0x800C4000
+l_int|0xe0310000
 )paren
 op_rshift
 l_int|4
@@ -199,7 +200,7 @@ op_assign
 (paren
 r_int
 )paren
-id|inl
+id|iomd_readl
 c_func
 (paren
 id|IOMD_MOUSEX
@@ -210,7 +211,7 @@ op_assign
 (paren
 r_int
 )paren
-id|inl
+id|iomd_readl
 c_func
 (paren
 id|IOMD_MOUSEY
@@ -219,9 +220,10 @@ suffix:semicolon
 id|old_b
 op_assign
 (paren
-id|inl
+id|__raw_readl
+c_func
 (paren
-l_int|0x800C4000
+l_int|0xe0310000
 )paren
 op_rshift
 l_int|4

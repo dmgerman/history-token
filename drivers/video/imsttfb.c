@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/video/imsttfb.c -- frame buffer device for IMS TwinTurbo&n; *&n; *  This file is derived from the powermac console &quot;imstt&quot; driver:&n; *  Copyright (C) 1997 Sigurdur Asgeirsson&n; *  With additional hacking by Jeffrey Kuskin (jsk@mojave.stanford.edu)&n; *  Modified by Danilo Beuche 1998&n; *  Some register values added by Damien Doligez, INRIA Rocquencourt&n; *&n; *  This file was written by Ryan Nielsen (ran@krazynet.com)&n; *  Most of the frame buffer device stuff was copied from atyfb.c&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License. See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
+multiline_comment|/*&n; *  drivers/video/imsttfb.c -- frame buffer device for IMS TwinTurbo&n; *&n; *  This file is derived from the powermac console &quot;imstt&quot; driver:&n; *  Copyright (C) 1997 Sigurdur Asgeirsson&n; *  With additional hacking by Jeffrey Kuskin (jsk@mojave.stanford.edu)&n; *  Modified by Danilo Beuche 1998&n; *  Some register values added by Damien Doligez, INRIA Rocquencourt&n; *  Various cleanups by Paul Mundt (lethal@chaoticdreams.org)&n; *&n; *  This file was written by Ryan Nielsen (ran@krazynet.com)&n; *  Most of the frame buffer device stuff was copied from atyfb.c&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License. See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1594,6 +1594,13 @@ DECL|variable|currcon
 r_static
 r_int
 id|currcon
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|inverse
+r_static
+r_int
+id|inverse
 op_assign
 l_int|0
 suffix:semicolon
@@ -7022,9 +7029,6 @@ id|currcon
 dot
 id|var.bits_per_pixel
 suffix:semicolon
-id|u_int
-id|i
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7837,7 +7841,7 @@ l_int|1
 suffix:semicolon
 id|disp-&gt;inverse
 op_assign
-l_int|0
+id|inverse
 suffix:semicolon
 id|disp-&gt;ypanstep
 op_assign
@@ -10871,9 +10875,6 @@ id|addr
 comma
 id|size
 suffix:semicolon
-id|__u16
-id|cmd
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -11336,6 +11337,32 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|this_opt
+comma
+l_string|&quot;inverse&quot;
+comma
+l_int|7
+)paren
+)paren
+(brace
+id|inverse
+op_assign
+l_int|1
+suffix:semicolon
+id|fb_invert_cmaps
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 macro_line|#if defined(CONFIG_PPC)
 r_else
 r_if
@@ -11472,24 +11499,12 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#else /* MODULE */
-r_int
-id|__init
-DECL|function|init_module
-id|init_module
-(paren
+r_static
 r_void
-)paren
-(brace
-r_return
-id|imsttfb_init
+id|__exit
+DECL|function|imsttfb_exit
+id|imsttfb_exit
 c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_void
-DECL|function|cleanup_module
-id|cleanup_module
 (paren
 r_void
 )paren
@@ -11532,6 +11547,13 @@ id|p
 )paren
 r_continue
 suffix:semicolon
+id|unregister_framebuffer
+c_func
+(paren
+op_amp
+id|p-&gt;info
+)paren
+suffix:semicolon
 id|iounmap
 c_func
 (paren
@@ -11550,12 +11572,6 @@ c_func
 id|p-&gt;frame_buffer
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
 id|release_mem_region
 c_func
 (paren
@@ -11564,8 +11580,28 @@ comma
 id|p-&gt;board_size
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
 )brace
 )brace
 macro_line|#include &quot;macmodes.c&quot;
+DECL|variable|imsttfb_init
+id|module_init
+c_func
+(paren
+id|imsttfb_init
+)paren
+suffix:semicolon
+DECL|variable|imsttfb_exit
+id|module_exit
+c_func
+(paren
+id|imsttfb_exit
+)paren
+suffix:semicolon
 macro_line|#endif /* MODULE */
 eof

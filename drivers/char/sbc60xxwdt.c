@@ -259,6 +259,29 @@ suffix:semicolon
 id|ofs
 op_increment
 )paren
+(brace
+r_char
+id|c
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|c
+comma
+id|buf
+op_plus
+id|ofs
+)paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -274,6 +297,7 @@ id|wdt_expect_close
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Well, anyhow someone wrote to us, we should return that favour */
 id|next_heartbeat

@@ -11,9 +11,9 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;pegasus.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.4.18 2001/03/18 (C) 1999-2000&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.4.19 2001/06/07 (C) 1999-2001&quot;
 DECL|macro|DRIVER_AUTHOR
-mdefine_line|#define DRIVER_AUTHOR &quot;Petko Manolov &lt;petkan@dce.bg&gt;&quot;
+mdefine_line|#define DRIVER_AUTHOR &quot;Petko Manolov &lt;pmanolov@lnxw.com&gt;&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;ADMtek AN986 Pegasus USB Ethernet driver&quot;
 DECL|macro|PEGASUS_USE_INTR
@@ -239,16 +239,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pegasus-&gt;flags
+id|waitqueue_active
+c_func
+(paren
 op_amp
-id|CTRL_URB_SLEEP
+id|pegasus-&gt;ctrl_wait
+)paren
 )paren
 (brace
-id|pegasus-&gt;flags
-op_and_assign
-op_complement
-id|CTRL_URB_SLEEP
-suffix:semicolon
 id|wake_up_interruptible
 c_func
 (paren
@@ -339,11 +337,6 @@ id|pegasus-&gt;flags
 op_amp
 id|ETH_REGS_CHANGED
 )paren
-(brace
-id|pegasus-&gt;flags
-op_or_assign
-id|CTRL_URB_SLEEP
-suffix:semicolon
 id|interruptible_sleep_on
 c_func
 (paren
@@ -351,7 +344,6 @@ op_amp
 id|pegasus-&gt;ctrl_wait
 )paren
 suffix:semicolon
-)brace
 id|pegasus-&gt;dr.requesttype
 op_assign
 id|PEGASUS_REQT_READ
@@ -437,10 +429,6 @@ c_func
 id|TASK_INTERRUPTIBLE
 )paren
 suffix:semicolon
-id|pegasus-&gt;flags
-op_or_assign
-id|CTRL_URB_SLEEP
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -474,6 +462,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 id|remove_wait_queue
 c_func
 (paren
@@ -484,8 +474,6 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|out
-suffix:colon
 id|memcpy
 c_func
 (paren
@@ -587,11 +575,6 @@ id|pegasus-&gt;flags
 op_amp
 id|ETH_REGS_CHANGED
 )paren
-(brace
-id|pegasus-&gt;flags
-op_or_assign
-id|CTRL_URB_SLEEP
-suffix:semicolon
 id|interruptible_sleep_on
 c_func
 (paren
@@ -599,7 +582,6 @@ op_amp
 id|pegasus-&gt;ctrl_wait
 )paren
 suffix:semicolon
-)brace
 id|pegasus-&gt;dr.requesttype
 op_assign
 id|PEGASUS_REQT_WRITE
@@ -685,10 +667,6 @@ c_func
 id|TASK_INTERRUPTIBLE
 )paren
 suffix:semicolon
-id|pegasus-&gt;flags
-op_or_assign
-id|CTRL_URB_SLEEP
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -713,14 +691,8 @@ comma
 id|ret
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|buffer
-)paren
-suffix:semicolon
-r_return
-id|ret
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|schedule
@@ -728,6 +700,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 id|remove_wait_queue
 c_func
 (paren
@@ -831,11 +805,6 @@ id|pegasus-&gt;flags
 op_amp
 id|ETH_REGS_CHANGED
 )paren
-(brace
-id|pegasus-&gt;flags
-op_or_assign
-id|CTRL_URB_SLEEP
-suffix:semicolon
 id|interruptible_sleep_on
 c_func
 (paren
@@ -843,7 +812,6 @@ op_amp
 id|pegasus-&gt;ctrl_wait
 )paren
 suffix:semicolon
-)brace
 id|pegasus-&gt;dr.requesttype
 op_assign
 id|PEGASUS_REQT_WRITE
@@ -930,10 +898,6 @@ c_func
 id|TASK_INTERRUPTIBLE
 )paren
 suffix:semicolon
-id|pegasus-&gt;flags
-op_or_assign
-id|CTRL_URB_SLEEP
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -958,14 +922,8 @@ comma
 id|ret
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|buffer
-)paren
-suffix:semicolon
-r_return
-id|ret
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|schedule
@@ -973,6 +931,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 id|remove_wait_queue
 c_func
 (paren
@@ -2089,7 +2049,7 @@ id|pegasus-&gt;dev_index
 dot
 id|vendor
 op_eq
-id|VENDOR_DLINK1
+id|VENDOR_DLINK
 )paren
 (brace
 id|__u16
@@ -3801,14 +3761,6 @@ id|EthCtrl2
 op_and_assign
 op_complement
 id|RX_PROMISCUOUS
-suffix:semicolon
-id|info
-c_func
-(paren
-l_string|&quot;%s: set Rx mode&quot;
-comma
-id|net-&gt;name
-)paren
 suffix:semicolon
 )brace
 id|pegasus-&gt;flags

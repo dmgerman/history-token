@@ -1,5 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/net/am79c961.c&n; *&n; *  by Russell King &lt;rmk@arm.linux.org.uk&gt; 1995-2000.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Derived from various things including skeleton.c&n; *&n; * This is a special driver for the am79c961A Lance chip used in the&n; * Intel (formally Digital Equipment Corp) EBSA110 platform.&n; */
-macro_line|#include &lt;linux/module.h&gt;
+multiline_comment|/*&n; *  linux/drivers/net/am79c961.c&n; *&n; *  by Russell King &lt;rmk@arm.linux.org.uk&gt; 1995-2001.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Derived from various things including skeleton.c&n; *&n; * This is a special driver for the am79c961A Lance chip used in the&n; * Intel (formally Digital Equipment Corp) EBSA110 platform.  Please&n; * note that this can not be built as a module (it doesn&squot;t make sense).&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -21,7 +20,6 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#include &lt;asm/ecard.h&gt;
 DECL|macro|TX_BUFFERS
 mdefine_line|#define TX_BUFFERS 15
 DECL|macro|RX_BUFFERS
@@ -54,29 +52,29 @@ id|NET_DEBUG
 suffix:semicolon
 DECL|variable|version
 r_static
+r_const
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
-l_string|&quot;am79c961 ethernet driver (c) 1995 R.M.King v0.02&bslash;n&quot;
+l_string|&quot;am79c961 ethernet driver (C) 1995-2001 Russell King v0.04&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------- */
 macro_line|#ifdef __arm__
+DECL|function|write_rreg
 r_static
 r_void
-DECL|function|write_rreg
 id|write_rreg
+c_func
 (paren
-r_int
-r_int
+id|u_long
 id|base
 comma
-r_int
-r_int
+id|u_int
 id|reg
 comma
-r_int
-r_int
+id|u_int
 id|val
 )paren
 (brace
@@ -118,24 +116,25 @@ l_string|&quot; (reg), &quot;
 id|r
 "&quot;"
 (paren
-l_int|0xf0000464
+id|ISAIO_BASE
+op_plus
+l_int|0x0464
 )paren
 )paren
 suffix:semicolon
 )brace
+DECL|function|read_rreg
 r_static
 r_inline
 r_int
 r_int
-DECL|function|read_rreg
 id|read_rreg
+c_func
 (paren
-r_int
-r_int
+id|u_long
 id|base_addr
 comma
-r_int
-r_int
+id|u_int
 id|reg
 )paren
 (brace
@@ -182,7 +181,9 @@ l_string|&quot; (reg), &quot;
 id|r
 "&quot;"
 (paren
-l_int|0xf0000464
+id|ISAIO_BASE
+op_plus
+l_int|0x0464
 )paren
 )paren
 suffix:semicolon
@@ -190,22 +191,20 @@ r_return
 id|v
 suffix:semicolon
 )brace
+DECL|function|write_ireg
 r_static
 r_inline
 r_void
-DECL|function|write_ireg
 id|write_ireg
+c_func
 (paren
-r_int
-r_int
+id|u_long
 id|base
 comma
-r_int
-r_int
+id|u_int
 id|reg
 comma
-r_int
-r_int
+id|u_int
 id|val
 )paren
 (brace
@@ -247,13 +246,17 @@ l_string|&quot; (reg), &quot;
 id|r
 "&quot;"
 (paren
-l_int|0xf0000464
+id|ISAIO_BASE
+op_plus
+l_int|0x0464
 )paren
 )paren
 suffix:semicolon
 )brace
 DECL|macro|am_writeword
-mdefine_line|#define am_writeword(dev,off,val)&bslash;&n;&t;__asm__(&quot;str%?h&t;%0, [%1]&quot; : : &bslash;&n;&t;&t;&quot;r&quot; ((val) &amp; 0xffff), &quot;r&quot; (0xe0000000 + ((off) &lt;&lt; 1)));
+mdefine_line|#define am_writeword(dev,off,val) __raw_writew(val, ISAMEM_BASE + ((off) &lt;&lt; 1))
+DECL|macro|am_readword
+mdefine_line|#define am_readword(dev,off)      __raw_readw(ISAMEM_BASE + ((off) &lt;&lt; 1))
 r_static
 r_inline
 r_void
@@ -281,7 +284,7 @@ id|length
 (brace
 id|offset
 op_assign
-l_int|0xe0000000
+id|ISAMEM_BASE
 op_plus
 (paren
 id|offset
@@ -556,60 +559,6 @@ l_int|2
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This reads a 16-bit quantity in little-endian&n; * mode from the am79c961 buffer.&n; */
-DECL|function|am_readword
-r_static
-r_inline
-r_int
-r_int
-id|am_readword
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-id|u_int
-id|off
-)paren
-(brace
-r_int
-r_int
-id|address
-op_assign
-l_int|0xe0000000
-op_plus
-(paren
-id|off
-op_lshift
-l_int|1
-)paren
-suffix:semicolon
-r_int
-r_int
-id|val
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;ldr%?h&t;%0, [%1]&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|val
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|address
-)paren
-)paren
-suffix:semicolon
-r_return
-id|val
-suffix:semicolon
-)brace
 r_static
 r_inline
 r_void
@@ -637,7 +586,7 @@ id|length
 (brace
 id|offset
 op_assign
-l_int|0xe0000000
+id|ISAMEM_BASE
 op_plus
 (paren
 id|offset
@@ -1708,7 +1657,7 @@ id|CSR0_STRT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Open/initialize the board.  This is called (in the current kernel)&n; * sometime after booting when the &squot;ifconfig&squot; program is run.&n; *&n; * This routine should set everything up anew at each open, even&n; * registers that &quot;should&quot; only need to be set once at boot, so that&n; * there is non-reboot way to recover if something goes wrong.&n; */
+multiline_comment|/*&n; * Open/initialize the board.&n; */
 r_static
 r_int
 DECL|function|am79c961_open
@@ -1869,7 +1818,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Get the current statistics.&t;This may be called with the card open or&n; * closed.&n; */
+multiline_comment|/*&n; * Get the current statistics.&n; */
 DECL|function|am79c961_getstats
 r_static
 r_struct
@@ -2062,7 +2011,7 @@ id|bit
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Set or clear promiscuous/multicast mode filter for this adaptor.&n; */
+multiline_comment|/*&n; * Set or clear promiscuous/multicast mode filter for this adapter.&n; */
 DECL|function|am79c961_setmulticastlist
 r_static
 r_void
@@ -2563,21 +2512,12 @@ l_int|2
 op_amp
 id|TMD_OWN
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;tx ring full, stopping queue&bslash;n&quot;
-)paren
-suffix:semicolon
 id|netif_stop_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-)brace
 id|dev_kfree_skb
 c_func
 (paren
@@ -2914,13 +2854,6 @@ id|hdraddr
 suffix:semicolon
 id|u_int
 id|status
-suffix:semicolon
-r_int
-id|bufnum
-suffix:semicolon
-id|bufnum
-op_assign
-id|priv-&gt;txtail
 suffix:semicolon
 id|hdraddr
 op_assign
@@ -3345,12 +3278,6 @@ id|dev
 r_goto
 id|out
 suffix:semicolon
-id|SET_MODULE_OWNER
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|priv
 op_assign
 id|dev-&gt;priv
@@ -3368,13 +3295,9 @@ multiline_comment|/*&n;&t; * Reset the device.&n;&t; */
 id|inb
 c_func
 (paren
-(paren
 id|dev-&gt;base_addr
 op_plus
 id|NET_RESET
-)paren
-op_rshift
-l_int|1
 )paren
 suffix:semicolon
 id|udelay
@@ -3396,8 +3319,6 @@ id|inb
 c_func
 (paren
 id|dev-&gt;base_addr
-op_rshift
-l_int|1
 )paren
 op_ne
 l_int|0x08
@@ -3405,27 +3326,19 @@ op_logical_or
 id|inb
 c_func
 (paren
-(paren
 id|dev-&gt;base_addr
-op_rshift
-l_int|1
-)paren
 op_plus
-l_int|1
+l_int|2
 )paren
 op_ne
-l_int|00
+l_int|0x00
 op_logical_or
 id|inb
 c_func
 (paren
-(paren
 id|dev-&gt;base_addr
-op_rshift
-l_int|1
-)paren
 op_plus
-l_int|2
+l_int|4
 )paren
 op_ne
 l_int|0x2b
@@ -3459,13 +3372,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: am79c961 found at %08lx, IRQ%d, ether address &quot;
+l_string|&quot;%s: ether address &quot;
 comma
 id|dev-&gt;name
-comma
-id|dev-&gt;base_addr
-comma
-id|dev-&gt;irq
 )paren
 suffix:semicolon
 multiline_comment|/* Retrive and print the ethernet address. */
@@ -3492,13 +3401,11 @@ op_assign
 id|inb
 c_func
 (paren
-(paren
 id|dev-&gt;base_addr
-op_rshift
-l_int|1
-)paren
 op_plus
 id|i
+op_star
+l_int|2
 )paren
 op_amp
 l_int|0xff
@@ -3591,7 +3498,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|variable|am79c961_init
-id|module_init
+id|__initcall
 c_func
 (paren
 id|am79c961_init

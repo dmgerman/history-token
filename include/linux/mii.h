@@ -2,6 +2,7 @@ multiline_comment|/*&n; * linux/mii.h: definitions for MII-compatible transceive
 macro_line|#ifndef __LINUX_MII_H__
 DECL|macro|__LINUX_MII_H__
 mdefine_line|#define __LINUX_MII_H__
+macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/* Inside the Happy Meal transceiver is the physical layer, they use an&n; * implementations for National Semiconductor, part number DP83840VCE.&n; * You can retrieve the data sheets and programming docs for this beast&n; * from http://www.national.com/&n; *&n; * The DP83840 is capable of both 10 and 100Mbps ethernet, in both&n; * half and full duplex mode.  It also supports auto negotiation.&n; *&n; * But.... THIS THING IS A PAIN IN THE ASS TO PROGRAM!&n; * Debugging eeprom burnt code is more fun than programming this chip!&n; */
 multiline_comment|/* First, the MII register numbers (actually DP83840 register numbers). */
 DECL|macro|MII_BMCR
@@ -185,6 +186,29 @@ DECL|macro|CSCONFIG_RESV4
 mdefine_line|#define CSCONFIG_RESV4          0x4000  /* Unused...                   */
 DECL|macro|CSCONFIG_NDISABLE
 mdefine_line|#define CSCONFIG_NDISABLE       0x8000  /* Disable NRZI                */
+multiline_comment|/* This structure is used in all SIOCxMIIxxx ioctl calls */
+DECL|struct|mii_ioctl_data
+r_struct
+id|mii_ioctl_data
+(brace
+DECL|member|phy_id
+id|u16
+id|phy_id
+suffix:semicolon
+DECL|member|reg_num
+id|u16
+id|reg_num
+suffix:semicolon
+DECL|member|val_in
+id|u16
+id|val_in
+suffix:semicolon
+DECL|member|val_out
+id|u16
+id|val_out
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/**&n; * mii_nway_result&n; * @negotiated: value of MII ANAR and&squot;d with ANLPAR&n; *&n; * Given a set of MII abilities, check each bit and returns the&n; * currently supported media, in the priority order defined by&n; * IEEE 802.3u.  We use LPA_xxx constants but note this is not the&n; * value of LPA solely, as described above.&n; *&n; * The one exception to IEEE 802.3u is that 100baseT4 is placed&n; * between 100T-full and 100T-half.  If your phy does not support&n; * 100T4 this is fine.  If your phy places 100T4 elsewhere in the&n; * priority order, you will need to roll your own function.&n; */
 DECL|function|mii_nway_result
 r_static

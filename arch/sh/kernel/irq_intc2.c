@@ -103,7 +103,7 @@ id|hw_interrupt_type
 id|intc2_irq_type
 op_assign
 (brace
-l_string|&quot;INTC2-based-IRQ&quot;
+l_string|&quot;INTC2-IRQ&quot;
 comma
 id|startup_intc2_irq
 comma

@@ -18,13 +18,12 @@ id|fp_regs
 l_int|16
 )braket
 suffix:semicolon
-DECL|member|xd_regs
+DECL|member|xfp_regs
 r_int
 r_int
-r_int
-id|xd_regs
+id|xfp_regs
 (braket
-l_int|8
+l_int|16
 )braket
 suffix:semicolon
 DECL|member|fpscr

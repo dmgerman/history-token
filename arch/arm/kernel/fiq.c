@@ -11,7 +11,7 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|FIQ_VECTOR
-mdefine_line|#define FIQ_VECTOR 0x1c
+mdefine_line|#define FIQ_VECTOR (vectors_base() + 0x1c)
 DECL|variable|no_fiq_insn
 r_static
 r_int

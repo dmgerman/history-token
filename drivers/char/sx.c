@@ -639,11 +639,8 @@ l_int|16
 (brace
 id|printk
 (paren
-l_string|&quot;%08x &quot;
+l_string|&quot;%p &quot;
 comma
-(paren
-r_int
-)paren
 id|addr
 op_plus
 id|i
@@ -5571,7 +5568,9 @@ r_int
 id|nbytes
 comma
 id|offset
-comma
+suffix:semicolon
+r_int
+r_int
 id|data
 suffix:semicolon
 r_char
@@ -7956,7 +7955,7 @@ id|sx_dprintk
 (paren
 id|SX_DEBUG_PROBE
 comma
-l_string|&quot;Going to verify vpd prom at %x.&bslash;n&quot;
+l_string|&quot;Going to verify vpd prom at %lx.&bslash;n&quot;
 comma
 id|board-&gt;base
 op_plus
@@ -8099,7 +8098,7 @@ id|board
 id|printk
 (paren
 id|KERN_DEBUG
-l_string|&quot;sx: Found an SX board at %x&bslash;n&quot;
+l_string|&quot;sx: Found an SX board at %lx&bslash;n&quot;
 comma
 id|board-&gt;hw_base
 )paren
@@ -8199,7 +8198,7 @@ l_int|0x8000
 id|printk
 (paren
 id|KERN_WARNING
-l_string|&quot;sx: Warning: There may be hardware problems with the card at %x.&bslash;n&quot;
+l_string|&quot;sx: Warning: There may be hardware problems with the card at %lx.&bslash;n&quot;
 comma
 id|board-&gt;base
 )paren
@@ -8275,7 +8274,7 @@ id|sx_dprintk
 (paren
 id|SX_DEBUG_PROBE
 comma
-l_string|&quot;Going to verify SI signature %x.&bslash;n&quot;
+l_string|&quot;Going to verify SI signature %lx.&bslash;n&quot;
 comma
 id|board-&gt;base
 op_plus
@@ -8364,7 +8363,7 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_DEBUG
-l_string|&quot;sx: Found an SI board at %x&bslash;n&quot;
+l_string|&quot;sx: Found an SI board at %lx&bslash;n&quot;
 comma
 id|board-&gt;hw_base
 )paren
@@ -9662,7 +9661,7 @@ id|sx_dprintk
 (paren
 id|SX_DEBUG_PROBE
 comma
-l_string|&quot;Got a specialix card: %x/%x(%d) %x.&bslash;n&quot;
+l_string|&quot;Got a specialix card: %x/%lx(%d) %x.&bslash;n&quot;
 comma
 id|tint
 comma
@@ -10036,7 +10035,7 @@ c_func
 (paren
 id|SX_DEBUG_PROBE
 comma
-l_string|&quot;IO hw_base address: %x&bslash;n&quot;
+l_string|&quot;IO hw_base address: %lx&bslash;n&quot;
 comma
 id|board-&gt;hw_base
 )paren
@@ -10046,7 +10045,7 @@ c_func
 (paren
 id|SX_DEBUG_PROBE
 comma
-l_string|&quot;base: %x&bslash;n&quot;
+l_string|&quot;base: %lx&bslash;n&quot;
 comma
 id|board-&gt;base
 )paren
@@ -10196,7 +10195,7 @@ id|sx_dprintk
 (paren
 id|SX_DEBUG_CLEANUP
 comma
-l_string|&quot;Cleaning up board at %x&bslash;n&quot;
+l_string|&quot;Cleaning up board at %lx&bslash;n&quot;
 comma
 id|board-&gt;base
 )paren

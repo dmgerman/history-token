@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; */
-macro_line|#ident &quot;$Id: vxfs_super.c,v 1.24 2001/05/20 15:21:14 hch Exp hch $&quot;
+macro_line|#ident &quot;$Id: vxfs_super.c,v 1.25 2001/05/25 18:25:55 hch Exp hch $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - superblock related routines.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -369,8 +369,8 @@ id|KERN_WARNING
 l_string|&quot;vxfs: unable to read disk superblock&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|rsbp
@@ -397,8 +397,8 @@ id|KERN_NOTICE
 l_string|&quot;vxfs: WRONG superblock magic&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -418,8 +418,8 @@ comma
 id|rsbp-&gt;vs_version
 )paren
 suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|out
 suffix:semicolon
 )brace
 macro_line|#ifdef DIAGNOSTIC
@@ -521,8 +521,8 @@ comma
 id|rsbp-&gt;vs_bsize
 )paren
 suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -544,8 +544,8 @@ id|KERN_WARNING
 l_string|&quot;vxfs: unable to read olt&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -603,6 +603,14 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;vxfs: unable to get root dentry.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|kfree
+c_func
+(paren
+id|infp
 )paren
 suffix:semicolon
 r_return

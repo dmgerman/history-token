@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS -- Journalling Flash File System, Linux implementation.&n; *&n; * Copyright (C) 1999, 2000  Axis Communications AB.&n; *&n; * Created by Finn Hakansson &lt;finn@axis.com&gt;.&n; *&n; * This is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * $Id: inode-v23.c,v 1.43.2.6 2001/01/09 00:32:48 dwmw2 Exp $&n; * + sb_maxbytes / generic_file_open() fixes for 2.4.0-ac4&n; *&n; * Ported to Linux 2.3.x and MTD:&n; * Copyright (C) 2000  Alexander Larsson (alex@cendio.se), Cendio Systems AB&n; *&n; */
+multiline_comment|/*&n; * JFFS -- Journalling Flash File System, Linux implementation.&n; *&n; * Copyright (C) 1999, 2000  Axis Communications AB.&n; *&n; * Created by Finn Hakansson &lt;finn@axis.com&gt;.&n; *&n; * This is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * $Id: inode-v23.c,v 1.43.2.6 2001/01/09 00:32:48 dwmw2 Exp $&n; * + sb_maxbytes / generic_file_open() fixes for 2.4.0-ac4&n; *&n; * Ported to Linux 2.3.x and MTD:&n; * Copyright (C) 2000  Alexander Larsson (alex@cendio.se), Cendio Systems AB&n; *&n; * Copyright 2000, 2001  Red Hat, Inc.&n; */
 multiline_comment|/* inode.c -- Contains the code that is called from the VFS.  */
 multiline_comment|/* TODO-ALEX:&n; * uid and gid are just 16 bit.&n; * jffs_file_write reads from user-space pointers without xx_from_user&n; * maybe other stuff do to.&n; */
 multiline_comment|/* Argh. Some architectures have kernel_thread in asm/processor.h&n;   Some have it in unistd.h and you need to define __KERNEL_SYSCALLS__&n;   Pass me a baseball bat and the person responsible.&n;   dwmw2&n;*/
@@ -7714,14 +7714,6 @@ c_func
 r_void
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;JFFS version &quot;
-id|JFFS_VERSION_STRING
-l_string|&quot;, (C) 1999, 2000  Axis Communications AB&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 id|register_filesystem
 c_func

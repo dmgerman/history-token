@@ -62,10 +62,11 @@ c_func
 )paren
 )paren
 (brace
-id|dmx3191d_printk
+id|printk
 c_func
 (paren
-l_string|&quot;PCI support not enabled&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;dmx3191: PCI support not enabled&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -133,10 +134,11 @@ id|DMX3191D_DRIVER_NAME
 )paren
 )paren
 (brace
-id|dmx3191d_printk
+id|printk
 c_func
 (paren
-l_string|&quot;region 0x%lx-0x%lx already reserved&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;dmx3191: region 0x%lx-0x%lx already reserved&bslash;n&quot;
 comma
 id|port
 comma
@@ -225,10 +227,11 @@ id|instance
 )paren
 )paren
 (brace
-id|dmx3191d_printk
+id|printk
 c_func
 (paren
-l_string|&quot;irq %d not available&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;dmx3191: IRQ %d not available - switching to polled mode.&bslash;n&quot;
 comma
 id|pdev-&gt;irq
 )paren

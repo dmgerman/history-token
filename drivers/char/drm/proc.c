@@ -444,6 +444,8 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 r_if
 c_cond

@@ -93,7 +93,7 @@ mdefine_line|#define&t;NVRAM_EXCL&t;&t;2&t;&t;/* opened with O_EXCL */
 DECL|macro|RTC_FIRST_BYTE
 mdefine_line|#define&t;RTC_FIRST_BYTE&t;&t;14&t;/* RTC register number of first NVRAM byte */
 DECL|macro|NVRAM_BYTES
-mdefine_line|#define&t;NVRAM_BYTES&t;&t;&t;50&t;/* number of NVRAM bytes */
+mdefine_line|#define&t;NVRAM_BYTES&t;&t;&t;128&t;/* number of NVRAM bytes */
 r_static
 r_int
 id|mach_check_checksum

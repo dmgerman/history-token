@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; */
-macro_line|#ident &quot;$Id: vxfs_bmap.c,v 1.20 2001/04/25 18:11:23 hch Exp hch $&quot;
+macro_line|#ident &quot;$Id: vxfs_bmap.c,v 1.22 2001/05/26 22:41:23 hch Exp hch $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - filesystem to disk block mapping.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -101,7 +101,7 @@ id|bsize
 op_assign
 id|sbp-&gt;s_blocksize
 suffix:semicolon
-id|u_long
+r_int
 id|size
 op_assign
 l_int|0
@@ -361,7 +361,7 @@ id|vxfs_typed
 op_star
 id|typ
 suffix:semicolon
-id|u_int64_t
+r_int64
 id|off
 suffix:semicolon
 id|bp
@@ -549,18 +549,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;block: %Ld&bslash;tsize: %Ld&bslash;tdev: %d&bslash;n&quot;
+l_string|&quot;block: %Lu&bslash;tsize: %Ld&bslash;tdev: %d&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|typ4-&gt;vd4_block
 comma
-(paren
-r_int
-r_int
-)paren
 id|typ4-&gt;vd4_size
 comma
 id|typ4-&gt;vd4_dev
@@ -664,7 +656,7 @@ id|vip-&gt;vii_org.typed
 op_plus
 id|i
 suffix:semicolon
-id|u_int64_t
+r_int64
 id|off
 op_assign
 (paren
@@ -792,18 +784,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;block: %Ld&bslash;tsize: %Ld&bslash;tdev: %d&bslash;n&quot;
+l_string|&quot;block: %Lu&bslash;tsize: %Ld&bslash;tdev: %d&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|typ4-&gt;vd4_block
 comma
-(paren
-r_int
-r_int
-)paren
 id|typ4-&gt;vd4_size
 comma
 id|typ4-&gt;vd4_dev

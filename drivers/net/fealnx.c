@@ -3576,7 +3576,7 @@ id|TXLBA
 suffix:semicolon
 multiline_comment|/* Initialize other registers. */
 multiline_comment|/* Configure the PCI bus bursts and FIFO thresholds.&n;&t;   486: Set 8 longword burst.&n;&t;   586: no burst limit.&n;&t;   Burst length 5:3&n;&t;   0 0 0   1&n;&t;   0 0 1   4&n;&t;   0 1 0   8&n;&t;   0 1 1   16&n;&t;   1 0 0   32&n;&t;   1 0 1   64&n;&t;   1 1 0   128&n;&t;   1 1 1   256&n;&t;   Wait the specified 50 PCI cycles after a reset by initializing&n;&t;   Tx and Rx queues and the address filter list. */
-macro_line|#if defined(__powerpc__)
+macro_line|#if defined(__powerpc__) || defined(__sparc__)
 singleline_comment|// 89/9/1 modify, 
 singleline_comment|//   np-&gt;bcrvalue=0x04 | 0x0x38;  /* big-endian, 256 burst length */
 id|np-&gt;bcrvalue
@@ -4824,7 +4824,6 @@ id|ISR
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifndef __alpha__
 (brace
 r_int
 id|i
@@ -4833,11 +4832,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;  Rx ring %8.8x: &quot;
+l_string|&quot;  Rx ring %p: &quot;
 comma
-(paren
-r_int
-)paren
 id|np-&gt;rx_ring
 )paren
 suffix:semicolon
@@ -4877,11 +4873,8 @@ c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 id|KERN_DEBUG
-l_string|&quot;  Tx ring %8.8x: &quot;
+l_string|&quot;  Tx ring %p: &quot;
 comma
-(paren
-r_int
-)paren
 id|np-&gt;tx_ring
 )paren
 suffix:semicolon
@@ -4919,7 +4912,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* Perhaps we should reinitialize the hardware here.  Just trigger a&n;&t;   Tx demand for now. */
 id|writel
 c_func

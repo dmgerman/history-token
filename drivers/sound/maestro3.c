@@ -648,7 +648,7 @@ id|buf
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|m3_suspend
 c_func
 (paren
@@ -656,6 +656,9 @@ r_struct
 id|pci_dev
 op_star
 id|pci_dev
+comma
+id|u32
+id|state
 )paren
 suffix:semicolon
 r_static
@@ -12554,6 +12557,8 @@ id|m3_suspend
 c_func
 (paren
 id|card-&gt;pcidev
+comma
+l_int|3
 )paren
 suffix:semicolon
 )brace
@@ -12565,7 +12570,7 @@ suffix:semicolon
 )brace
 DECL|function|m3_suspend
 r_static
-r_void
+r_int
 id|m3_suspend
 c_func
 (paren
@@ -12573,6 +12578,9 @@ r_struct
 id|pci_dev
 op_star
 id|pci_dev
+comma
+id|u32
+id|state
 )paren
 (brace
 r_int
@@ -12815,10 +12823,13 @@ c_func
 id|flags
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|m3_resume
 r_static
-r_void
+r_int
 id|m3_resume
 c_func
 (paren
@@ -13190,6 +13201,9 @@ c_func
 op_amp
 id|card-&gt;suspend_queue
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 id|MODULE_AUTHOR

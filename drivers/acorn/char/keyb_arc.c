@@ -1683,7 +1683,7 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-id|inb
+id|ioc_readb
 c_func
 (paren
 id|IOC_KARTRX
@@ -1752,7 +1752,7 @@ c_cond
 id|handle_rawcode
 c_func
 (paren
-id|inb
+id|ioc_readb
 c_func
 (paren
 id|IOC_KARTRX
@@ -1786,7 +1786,7 @@ op_star
 id|regs
 )paren
 (brace
-id|outb
+id|ioc_writeb
 (paren
 id|kbd_txval
 (braket
@@ -1877,7 +1877,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|inb
+id|ioc_readb
 c_func
 (paren
 id|IOC_KARTRX

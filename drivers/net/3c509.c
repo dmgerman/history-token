@@ -754,6 +754,33 @@ comma
 id|ISAPNP_FUNCTION
 c_func
 (paren
+l_int|0x80f7
+)paren
+comma
+(paren
+r_int
+)paren
+l_string|&quot;3Com Etherlink III compatible&quot;
+)brace
+comma
+(brace
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_VENDOR
+c_func
+(paren
+l_char|&squot;P&squot;
+comma
+l_char|&squot;N&squot;
+comma
+l_char|&squot;P&squot;
+)paren
+comma
+id|ISAPNP_FUNCTION
+c_func
+(paren
 l_int|0x80f8
 )paren
 comma
@@ -5087,6 +5114,7 @@ comma
 l_string|&quot;EtherLink III maximum events handled per interrupt&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ISAPNP
 id|MODULE_PARM
 c_func
 (paren
@@ -5103,6 +5131,7 @@ comma
 l_string|&quot;EtherLink III disable ISA PnP support (0-1)&quot;
 )paren
 suffix:semicolon
+macro_line|#endif&t;/* CONFIG_ISAPNP */
 r_int
 DECL|function|init_module
 id|init_module

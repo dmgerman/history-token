@@ -459,7 +459,7 @@ id|cpu_data-&gt;type
 op_assign
 id|CPU_ST40STB1
 suffix:semicolon
-macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7750)
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7750) || &bslash;&n;      defined(CONFIG_CPU_SUBTYPE_SH7751)
 id|cpu_data-&gt;type
 op_assign
 id|CPU_SH7750

@@ -1754,6 +1754,13 @@ id|MAJOR_NR
 op_assign
 id|ps2esdi_blocksizes
 suffix:semicolon
+id|max_sectors
+(braket
+id|MAJOR_NR
+)braket
+op_assign
+id|ps2esdi_maxsect
+suffix:semicolon
 r_for
 c_loop
 (paren

@@ -863,17 +863,23 @@ mdefine_line|#define INIT_SLC90E66&t;NULL
 macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_SL82C105
 r_extern
-r_void
-id|ide_init_sl82c105
+r_int
+r_int
+id|pci_init_sl82c105
 c_func
 (paren
-id|ide_hwif_t
+r_struct
+id|pci_dev
+op_star
+comma
+r_const
+r_char
 op_star
 )paren
 suffix:semicolon
 r_extern
 r_void
-id|ide_dmacapable_sl82c105
+id|dma_init_sl82c105
 c_func
 (paren
 id|ide_hwif_t
@@ -883,15 +889,28 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|ide_init_sl82c105
+c_func
+(paren
+id|ide_hwif_t
+op_star
+)paren
+suffix:semicolon
+DECL|macro|PCI_W82C105
+mdefine_line|#define PCI_W82C105&t;&amp;pci_init_sl82c105
+DECL|macro|DMA_W82C105
+mdefine_line|#define DMA_W82C105&t;&amp;dma_init_sl82c105
 DECL|macro|INIT_W82C105
 mdefine_line|#define INIT_W82C105&t;&amp;ide_init_sl82c105
-DECL|macro|DMA_W82C105
-mdefine_line|#define DMA_W82C105&t;&amp;ide_dmacapable_sl82c105
 macro_line|#else
-DECL|macro|INIT_W82C105
-mdefine_line|#define INIT_W82C105&t;IDE_IGNORE
+DECL|macro|PCI_W82C105
+mdefine_line|#define PCI_W82C105&t;NULL
 DECL|macro|DMA_W82C105
 mdefine_line|#define DMA_W82C105&t;NULL
+DECL|macro|INIT_W82C105
+mdefine_line|#define INIT_W82C105&t;IDE_IGNORE
 macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_TRM290
 r_extern
@@ -2366,7 +2385,7 @@ id|DEVID_W82C105
 comma
 l_string|&quot;W82C105&quot;
 comma
-l_int|NULL
+id|PCI_W82C105
 comma
 l_int|NULL
 comma

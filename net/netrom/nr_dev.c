@@ -165,6 +165,9 @@ id|bp
 op_assign
 id|skb-&gt;data
 suffix:semicolon
+r_int
+id|len
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -281,6 +284,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|len
+op_assign
+id|skbn-&gt;len
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -309,7 +316,7 @@ op_increment
 suffix:semicolon
 id|stats-&gt;tx_bytes
 op_add_assign
-id|skbn-&gt;len
+id|len
 suffix:semicolon
 r_return
 l_int|1

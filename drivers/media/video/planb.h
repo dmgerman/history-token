@@ -429,12 +429,9 @@ r_int
 id|maxlines
 suffix:semicolon
 DECL|member|lock
-r_int
+r_struct
+id|semaphore
 id|lock
-suffix:semicolon
-DECL|member|lockq
-id|wait_queue_head_t
-id|lockq
 suffix:semicolon
 DECL|member|irq
 r_int

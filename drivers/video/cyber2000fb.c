@@ -6375,7 +6375,7 @@ suffix:semicolon
 )brace
 DECL|function|cyberpro_suspend
 r_static
-r_void
+r_int
 id|cyberpro_suspend
 c_func
 (paren
@@ -6383,13 +6383,19 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+comma
+id|u32
+id|state
 )paren
 (brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Re-initialise the CyberPro hardware&n; */
 DECL|function|cyberpro_resume
 r_static
-r_void
+r_int
 id|cyberpro_resume
 c_func
 (paren
@@ -6444,6 +6450,9 @@ id|cfb-&gt;fb
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|__devinitdata
 r_static

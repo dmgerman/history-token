@@ -83,6 +83,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -93,6 +94,7 @@ macro_line|#include &quot;../../scsi/hosts.h&quot;
 macro_line|#include &quot;../../scsi/constants.h&quot;
 macro_line|#include &quot;acornscsi.h&quot;
 macro_line|#include &quot;msgqueue.h&quot;
+macro_line|#include &lt;scsi/scsicam.h&gt;
 DECL|macro|VER_MAJOR
 mdefine_line|#define VER_MAJOR 2
 DECL|macro|VER_MINOR
@@ -214,7 +216,7 @@ r_int
 id|value
 )paren
 (brace
-id|outb_t
+id|__raw_writeb
 c_func
 (paren
 id|reg
@@ -222,7 +224,7 @@ comma
 id|io_port
 )paren
 suffix:semicolon
-id|outb_t
+id|__raw_writeb
 c_func
 (paren
 id|value
@@ -234,7 +236,7 @@ l_int|4
 suffix:semicolon
 )brace
 DECL|macro|sbic_arm_writenext
-mdefine_line|#define sbic_arm_writenext(io,val) &bslash;&n;&t;outb_t((val), (io) + 4)
+mdefine_line|#define sbic_arm_writenext(io,val) &bslash;&n;&t;__raw_writeb((val), (io) + 4)
 r_static
 r_inline
 DECL|function|sbic_arm_read
@@ -259,7 +261,7 @@ id|ASR
 )paren
 (brace
 r_return
-id|inl_t
+id|__raw_readl
 c_func
 (paren
 id|io_port
@@ -268,7 +270,7 @@ op_amp
 l_int|255
 suffix:semicolon
 )brace
-id|outb_t
+id|__raw_writeb
 c_func
 (paren
 id|reg
@@ -277,7 +279,7 @@ id|io_port
 )paren
 suffix:semicolon
 r_return
-id|inl_t
+id|__raw_readl
 c_func
 (paren
 id|io_port
@@ -289,7 +291,7 @@ l_int|255
 suffix:semicolon
 )brace
 DECL|macro|sbic_arm_readnext
-mdefine_line|#define sbic_arm_readnext(io) &bslash;&n;&t;inb_t((io) + 4)
+mdefine_line|#define sbic_arm_readnext(io) &bslash;&n;&t;__raw_readb((io) + 4)
 macro_line|#ifdef USE_DMAC
 DECL|macro|dmac_read
 mdefine_line|#define dmac_read(io_port,reg) &bslash;&n;&t;inb((io_port) + (reg))
@@ -10570,9 +10572,9 @@ id|MAX_ECARDS
 suffix:semicolon
 multiline_comment|/*&n; * Prototype: void acornscsi_init(AS_Host *host)&n; * Purpose  : initialise the AS_Host structure for one interface &amp; setup hardware&n; * Params   : host - host to setup&n; */
 r_static
-DECL|function|acornscsi_init
+DECL|function|acornscsi_host_init
 r_void
-id|acornscsi_init
+id|acornscsi_host_init
 c_func
 (paren
 id|AS_Host
@@ -10978,7 +10980,7 @@ op_assign
 id|NO_IRQ
 suffix:semicolon
 )brace
-id|acornscsi_init
+id|acornscsi_host_init
 c_func
 (paren
 id|host
@@ -11857,13 +11859,154 @@ r_return
 id|pos
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|variable|driver_template
+DECL|variable|acornscsi_template
+r_static
 id|Scsi_Host_Template
-id|driver_template
+id|acornscsi_template
 op_assign
-id|ACORNSCSI_3
+(brace
+id|module
+suffix:colon
+id|THIS_MODULE
+comma
+id|proc_info
+suffix:colon
+id|acornscsi_proc_info
+comma
+id|name
+suffix:colon
+l_string|&quot;AcornSCSI&quot;
+comma
+id|detect
+suffix:colon
+id|acornscsi_detect
+comma
+id|release
+suffix:colon
+id|acornscsi_release
+comma
+id|info
+suffix:colon
+id|acornscsi_info
+comma
+id|queuecommand
+suffix:colon
+id|acornscsi_queuecmd
+comma
+m_abort
+suffix:colon
+id|acornscsi_abort
+comma
+id|reset
+suffix:colon
+id|acornscsi_reset
+comma
+id|bios_param
+suffix:colon
+id|scsicam_bios_param
+comma
+id|can_queue
+suffix:colon
+l_int|16
+comma
+id|this_id
+suffix:colon
+l_int|7
+comma
+id|sg_tablesize
+suffix:colon
+id|SG_ALL
+comma
+id|cmd_per_lun
+suffix:colon
+l_int|2
+comma
+id|unchecked_isa_dma
+suffix:colon
+l_int|0
+comma
+id|use_clustering
+suffix:colon
+id|DISABLE_CLUSTERING
+)brace
 suffix:semicolon
-macro_line|#include &quot;../../scsi/scsi_module.c&quot;
-macro_line|#endif
+DECL|function|acornscsi_init
+r_static
+r_int
+id|__init
+id|acornscsi_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|acornscsi_template.module
+op_assign
+id|THIS_MODULE
+suffix:semicolon
+id|scsi_register_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|acornscsi_template
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acornscsi_template.present
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|scsi_unregister_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|acornscsi_template
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+DECL|function|acornscsi_exit
+r_static
+r_void
+id|__exit
+id|acornscsi_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|scsi_unregister_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|acornscsi_template
+)paren
+suffix:semicolon
+)brace
+DECL|variable|acornscsi_init
+id|module_init
+c_func
+(paren
+id|acornscsi_init
+)paren
+suffix:semicolon
+DECL|variable|acornscsi_exit
+id|module_exit
+c_func
+(paren
+id|acornscsi_exit
+)paren
+suffix:semicolon
 eof

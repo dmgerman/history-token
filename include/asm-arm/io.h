@@ -229,6 +229,12 @@ c_func
 r_void
 op_star
 id|vaddr
+comma
+r_int
+id|size
+comma
+id|dma_addr_t
+id|handle
 )paren
 suffix:semicolon
 r_extern

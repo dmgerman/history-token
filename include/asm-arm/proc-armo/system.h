@@ -3,6 +3,8 @@ macro_line|#ifndef __ASM_PROC_SYSTEM_H
 DECL|macro|__ASM_PROC_SYSTEM_H
 mdefine_line|#define __ASM_PROC_SYSTEM_H
 macro_line|#include &lt;asm/proc-fns.h&gt;
+DECL|macro|vectors_base
+mdefine_line|#define vectors_base()&t;(0)
 DECL|function|__xchg
 r_extern
 id|__inline__

@@ -550,6 +550,13 @@ id|mv_hw_hd64461
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|mv_hw_sh2000
+r_int
+r_int
+id|mv_hw_sh2000
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|mv_hw_hd64465
 r_int
 r_int
@@ -561,6 +568,13 @@ DECL|member|mv_hw_dreamcast
 r_int
 r_int
 id|mv_hw_dreamcast
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|mv_hw_bigsur
+r_int
+r_int
+id|mv_hw_bigsur
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -587,10 +601,14 @@ DECL|macro|MACH_HD64461
 mdefine_line|#define MACH_HD64461&t;(sh_mv.mv_hw_hd64461)
 DECL|macro|MACH_HD64465
 mdefine_line|#define MACH_HD64465&t;(sh_mv.mv_hw_hd64465)
+DECL|macro|MACH_SH2000
+mdefine_line|#define MACH_SH2000&t;(sh_mv.mv_hw_sh2000)
 DECL|macro|MACH_DREAMCAST
 mdefine_line|#define MACH_DREAMCAST&t;(sh_mv.mv_hw_dreamcast)
+DECL|macro|MACH_BIGSUR
+mdefine_line|#define MACH_BIGSUR&t;(sh_mv.mv_hw_bigsur)
 macro_line|#else
-macro_line|# ifdef CONFIG_SH_SOLUTION_ENGINE
+macro_line|# if defined(CONFIG_SH_SOLUTION_ENGINE) || &bslash;&n;     defined(CONFIG_SH_7751_SOLUTION_ENGINE)
 DECL|macro|MACH_SE
 macro_line|#  define MACH_SE&t;&t;1
 macro_line|# else
@@ -625,6 +643,7 @@ macro_line|# else
 DECL|macro|MACH_HP690
 macro_line|#  define MACH_HP690&t;&t;0
 macro_line|# endif
+macro_line|# endif
 macro_line|# ifdef CONFIG_HD64461
 DECL|macro|MACH_HD64461
 macro_line|#  define MACH_HD64461&t;&t;1
@@ -638,6 +657,13 @@ macro_line|#  define MACH_HD64465&t;&t;1
 macro_line|# else
 DECL|macro|MACH_HD64465
 macro_line|#  define MACH_HD64465&t;&t;0
+macro_line|# endif
+macro_line|# ifdef CONFIG_SH_SH2000
+DECL|macro|MACH_SH2000
+macro_line|#  define MACH_SH2000&t;&t;1
+macro_line|# else
+DECL|macro|MACH_SH2000
+macro_line|#  define MACH_SH2000&t;&t;0
 macro_line|# endif
 macro_line|# ifdef CONFIG_SH_EC3104
 DECL|macro|MACH_EC3104
@@ -653,6 +679,12 @@ macro_line|# else
 DECL|macro|MACH_DREAMCAST
 macro_line|#  define MACH_DREAMCAST&t;0
 macro_line|# endif
+macro_line|# ifdef CONFIG_SH_BIGSUR
+DECL|macro|MACH_BIGSUR
+macro_line|#  define MACH_BIGSUR&t;&t;1
+macro_line|# else
+DECL|macro|MACH_BIGSUR
+macro_line|#  define MACH_BIGSUR&t;&t;0
 macro_line|#endif
 macro_line|#endif /* _ASM_SH_MACHVEC_H */
 eof

@@ -2,6 +2,7 @@ macro_line|#ifndef __ASM_SH_PGTABLE_H
 DECL|macro|__ASM_SH_PGTABLE_H
 mdefine_line|#define __ASM_SH_PGTABLE_H
 multiline_comment|/* Copyright (C) 1999 Niibe Yutaka */
+macro_line|#include &lt;asm/pgtable-2level.h&gt;
 multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the SuperH page table tree.&n; */
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/processor.h&gt;
@@ -11,7 +12,7 @@ r_extern
 id|pgd_t
 id|swapper_pg_dir
 (braket
-l_int|1024
+id|PTRS_PER_PGD
 )braket
 suffix:semicolon
 r_extern
@@ -173,7 +174,6 @@ suffix:semicolon
 DECL|macro|ZERO_PAGE
 mdefine_line|#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
 macro_line|#endif /* !__ASSEMBLY__ */
-macro_line|#include &lt;asm/pgtable-2level.h&gt;
 DECL|macro|__beep
 mdefine_line|#define __beep() asm(&quot;&quot;)
 DECL|macro|PMD_SIZE
@@ -188,16 +188,6 @@ DECL|macro|USER_PTRS_PER_PGD
 mdefine_line|#define USER_PTRS_PER_PGD&t;(TASK_SIZE/PGDIR_SIZE)
 DECL|macro|FIRST_USER_PGD_NR
 mdefine_line|#define FIRST_USER_PGD_NR&t;0
-DECL|macro|USER_PGD_PTRS
-mdefine_line|#define USER_PGD_PTRS (PAGE_OFFSET &gt;&gt; PGDIR_SHIFT)
-DECL|macro|KERNEL_PGD_PTRS
-mdefine_line|#define KERNEL_PGD_PTRS (PTRS_PER_PGD-USER_PGD_PTRS)
-DECL|macro|TWOLEVEL_PGDIR_SHIFT
-mdefine_line|#define TWOLEVEL_PGDIR_SHIFT&t;22
-DECL|macro|BOOT_USER_PGD_PTRS
-mdefine_line|#define BOOT_USER_PGD_PTRS (PAGE_OFFSET &gt;&gt; TWOLEVEL_PGDIR_SHIFT)
-DECL|macro|BOOT_KERNEL_PGD_PTRS
-mdefine_line|#define BOOT_KERNEL_PGD_PTRS (1024-BOOT_USER_PGD_PTRS)
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START&t;P3SEG
@@ -247,8 +237,14 @@ mdefine_line|#define _PAGE_PCC_ATR8&t;0x60000000&t;/* Attribute Memory space, 8 
 DECL|macro|_PAGE_PCC_ATR16
 mdefine_line|#define _PAGE_PCC_ATR16&t;0x60000001&t;/* Attribute Memory space, 6 bit bus */
 multiline_comment|/* Mask which drop software flags */
+macro_line|#if defined(__sh3__)
+multiline_comment|/*&n; * MMU on SH-3 has bug on SH-bit: We can&squot;t use it if MMUCR.IX=1.&n; * Work around: Just drop SH-bit.&n; */
+DECL|macro|_PAGE_FLAGS_HARDWARE_MASK
+mdefine_line|#define _PAGE_FLAGS_HARDWARE_MASK&t;0x1ffff1fc
+macro_line|#else
 DECL|macro|_PAGE_FLAGS_HARDWARE_MASK
 mdefine_line|#define _PAGE_FLAGS_HARDWARE_MASK&t;0x1ffff1fe
+macro_line|#endif
 multiline_comment|/* Hardware flags: SZ=1 (4k-byte) */
 DECL|macro|_PAGE_FLAGS_HARD
 mdefine_line|#define _PAGE_FLAGS_HARD&t;&t;0x00000010
@@ -873,8 +869,6 @@ mdefine_line|#define pgd_offset(mm, address) ((mm)-&gt;pgd+pgd_index(address))
 multiline_comment|/* to find an entry in a kernel page-table-directory */
 DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
-DECL|macro|__pmd_offset
-mdefine_line|#define __pmd_offset(address) &bslash;&n;&t;&t;(((address) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD-1))
 multiline_comment|/* Find an entry in the third-level page table.. */
 DECL|macro|__pte_offset
 mdefine_line|#define __pte_offset(address) &bslash;&n;&t;&t;((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
@@ -910,6 +904,7 @@ DECL|macro|pte_to_swp_entry
 mdefine_line|#define pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
 DECL|macro|swp_entry_to_pte
 mdefine_line|#define swp_entry_to_pte(x)&t;((pte_t) { (x).val })
+multiline_comment|/*&n; * Routines for update of PTE &n; *&n; * We just can use generic implementation, as SuperH has no SMP feature.&n; * (We needed atomic implementation for SMP)&n; */
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
 macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* Needs to be defined here and not in linux/mm.h, as it is arch dependent */

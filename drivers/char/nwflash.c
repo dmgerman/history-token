@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Flash memory interface rev.5 driver for the Intel&n; * Flash chips used on the NetWinder.&n; *&n; * 20/08/2000&t;RMK&t;use __ioremap to map flash into virtual memory&n; *&t;&t;&t;make a few more places use &quot;volatile&quot;&n; */
+multiline_comment|/*&n; * Flash memory interface rev.5 driver for the Intel&n; * Flash chips used on the NetWinder.&n; *&n; * 20/08/2000&t;RMK&t;use __ioremap to map flash into virtual memory&n; *&t;&t;&t;make a few more places use &quot;volatile&quot;&n; * 22/05/2001&t;RMK&t;- Lock read against write&n; *&t;&t;&t;- merge printk level changes (with mods) from Alan Cox.&n; *&t;&t;&t;- use *ppos as the file position, not file-&gt;f_pos.&n; *&t;&t;&t;- fix check for out of range pos and r/w size&n; *&n; * Please note that we are tampering with the only flash chip in the&n; * machine, which contains the bootup code.  We therefore have the&n; * power to convert these machines into doorstops...&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware/dec21285.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -18,17 +19,9 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*****************************************************************************/
 macro_line|#include &lt;asm/nwflash.h&gt;
-singleline_comment|//#define MINIKERNEL 1          //export flash write, erase routines for MiniKernel
-macro_line|#ifndef MINIKERNEL
-DECL|macro|MSTATIC
-mdefine_line|#define MSTATIC static
-macro_line|#else
-DECL|macro|MSTATIC
-mdefine_line|#define MSTATIC
-macro_line|#endif
 DECL|macro|NWFLASH_VERSION
-mdefine_line|#define&t;NWFLASH_VERSION &quot;6.3&quot;
-id|MSTATIC
+mdefine_line|#define&t;NWFLASH_VERSION &quot;6.4&quot;
+r_static
 r_void
 id|kick_open
 c_func
@@ -36,7 +29,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-id|MSTATIC
+r_static
 r_int
 id|get_flash_id
 c_func
@@ -44,7 +37,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-id|MSTATIC
+r_static
 r_int
 id|erase_block
 c_func
@@ -53,7 +46,7 @@ r_int
 id|nBlock
 )paren
 suffix:semicolon
-id|MSTATIC
+r_static
 r_int
 id|write_block
 c_func
@@ -69,22 +62,6 @@ id|buf
 comma
 r_int
 id|count
-)paren
-suffix:semicolon
-r_static
-r_int
-id|open_flash
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inodep
-comma
-r_struct
-id|file
-op_star
-id|filep
 )paren
 suffix:semicolon
 r_static
@@ -212,7 +189,7 @@ op_star
 id|FLASH_BASE
 suffix:semicolon
 DECL|variable|gbFlashSize
-id|MSTATIC
+r_static
 r_int
 id|gbFlashSize
 op_assign
@@ -221,54 +198,6 @@ suffix:semicolon
 r_extern
 id|spinlock_t
 id|gpio_lock
-suffix:semicolon
-DECL|variable|flash_fops
-r_static
-r_struct
-id|file_operations
-id|flash_fops
-op_assign
-(brace
-id|owner
-suffix:colon
-id|THIS_MODULE
-comma
-id|llseek
-suffix:colon
-id|flash_llseek
-comma
-id|read
-suffix:colon
-id|flash_read
-comma
-id|write
-suffix:colon
-id|flash_write
-comma
-id|ioctl
-suffix:colon
-id|flash_ioctl
-comma
-id|open
-suffix:colon
-id|open_flash
-comma
-)brace
-suffix:semicolon
-DECL|variable|flash_miscdev
-r_static
-r_struct
-id|miscdevice
-id|flash_miscdev
-op_assign
-(brace
-id|FLASH_MINOR
-comma
-l_string|&quot;nwflash&quot;
-comma
-op_amp
-id|flash_fops
-)brace
 suffix:semicolon
 multiline_comment|/*&n; * the delay routine - it is often required to let the flash &quot;breeze&quot;...&n; */
 DECL|function|flash_wait
@@ -292,7 +221,7 @@ id|timeout
 suffix:semicolon
 )brace
 DECL|function|get_flash_id
-id|MSTATIC
+r_static
 r_int
 id|get_flash_id
 c_func
@@ -439,66 +368,6 @@ r_return
 id|c2
 suffix:semicolon
 )brace
-DECL|function|open_flash
-r_static
-r_int
-id|open_flash
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inodep
-comma
-r_struct
-id|file
-op_star
-id|filep
-)paren
-(brace
-r_int
-id|id
-suffix:semicolon
-id|id
-op_assign
-id|get_flash_id
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|id
-op_ne
-id|KFLASH_ID
-)paren
-op_logical_and
-(paren
-id|id
-op_ne
-id|KFLASH_ID4
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Flash: incorrect ID 0x%04X.&bslash;n&quot;
-comma
-id|id
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENXIO
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|flash_ioctl
 r_static
 r_int
@@ -524,7 +393,6 @@ r_int
 id|arg
 )paren
 (brace
-singleline_comment|//      printk(&quot;Flash_ioctl: cmd = 0x%X.&bslash;n&quot;,cmd);
 r_switch
 c_cond
 (paren
@@ -597,21 +465,37 @@ op_star
 id|buf
 comma
 r_int
-id|count
+id|size
 comma
 id|loff_t
 op_star
 id|ppos
 )paren
 (brace
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|file-&gt;f_dentry-&gt;d_inode
+suffix:semicolon
 r_int
 r_int
 id|p
 op_assign
-id|file-&gt;f_pos
+op_star
+id|ppos
 suffix:semicolon
 r_int
-id|read
+r_int
+id|count
+op_assign
+id|size
+suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -621,18 +505,11 @@ id|flashdebug
 id|printk
 c_func
 (paren
-l_string|&quot;Flash_dev: flash_read: offset=0x%X, buffer=0x%X, count=0x%X.&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;flash_read: flash_read: offset=0x%lX, buffer=%p, count=0x%X.&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|p
 comma
-(paren
-r_int
-r_int
-)paren
 id|buf
 comma
 id|count
@@ -642,13 +519,20 @@ r_if
 c_cond
 (paren
 id|count
-OL
-l_int|0
 )paren
-r_return
+id|ret
+op_assign
 op_minus
-id|EINVAL
+id|ENXIO
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|p
+OL
+id|gbFlashSize
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -664,13 +548,23 @@ id|gbFlashSize
 op_minus
 id|p
 suffix:semicolon
-id|read
-op_assign
-l_int|0
-suffix:semicolon
+multiline_comment|/*&n;&t;&t; * We now lock against reads and writes. --rmk&n;&t;&t; */
 r_if
 c_cond
 (paren
+id|down_interruptible
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sem
+)paren
+)paren
+r_return
+op_minus
+id|ERESTARTSYS
+suffix:semicolon
+id|ret
+op_assign
 id|copy_to_user
 c_func
 (paren
@@ -688,21 +582,35 @@ id|p
 comma
 id|count
 )paren
-)paren
-r_return
-op_minus
-id|EFAULT
 suffix:semicolon
-id|read
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+l_int|0
+)paren
+(brace
+id|ret
+op_assign
+id|count
+suffix:semicolon
+op_star
+id|ppos
 op_add_assign
 id|count
 suffix:semicolon
-id|file-&gt;f_pos
-op_add_assign
-id|read
+)brace
+id|up
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sem
+)paren
 suffix:semicolon
+)brace
 r_return
-id|read
+id|ret
 suffix:semicolon
 )brace
 DECL|function|flash_write
@@ -722,7 +630,7 @@ op_star
 id|buf
 comma
 r_int
-id|count
+id|size
 comma
 id|loff_t
 op_star
@@ -740,7 +648,14 @@ r_int
 r_int
 id|p
 op_assign
-id|file-&gt;f_pos
+op_star
+id|ppos
+suffix:semicolon
+r_int
+r_int
+id|count
+op_assign
+id|size
 suffix:semicolon
 r_int
 id|written
@@ -802,19 +717,37 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/*&n;&t; * if byte count is -ve or to big - error!&n;&t; */
+multiline_comment|/*&n;&t; * check for out of range pos or count&n;&t; */
+r_if
+c_cond
+(paren
+id|p
+op_ge
+id|gbFlashSize
+)paren
+r_return
+id|count
+ques
+c_cond
+op_minus
+id|ENXIO
+suffix:colon
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|count
-template_param
+OG
 id|gbFlashSize
 op_minus
 id|p
 )paren
-r_return
+id|count
+op_assign
+id|gbFlashSize
 op_minus
-id|EINVAL
+id|p
 suffix:semicolon
 r_if
 c_cond
@@ -833,7 +766,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/*&n;&t; * We now should lock around writes.  Really, we shouldn&squot;t&n;&t; * allow the flash to be opened more than once in write&n;&t; * mode though (note that you can&squot;t stop two processes having&n;&t; * it open even then). --rmk&n;&t; */
+multiline_comment|/*&n;&t; * We now lock against reads and writes. --rmk&n;&t; */
 r_if
 c_cond
 (paren
@@ -925,7 +858,9 @@ id|flashdebug
 id|printk
 c_func
 (paren
-l_string|&quot;FlashWrite: writing %d block(s) starting at %d.&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;flash_write: writing %d block(s) &quot;
+l_string|&quot;starting at %d.&bslash;n&quot;
 comma
 id|temp
 comma
@@ -953,7 +888,8 @@ id|flashdebug
 id|printk
 c_func
 (paren
-l_string|&quot;FlashWrite: erasing block %d.&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;flash_write: erasing block %d.&bslash;n&quot;
 comma
 id|nBlock
 )paren
@@ -999,15 +935,11 @@ c_cond
 id|rc
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|flashdebug
-)paren
 id|printk
 c_func
 (paren
-l_string|&quot;FlashWrite: erase error %X. Aborting...&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;flash_write: erase error %x&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -1023,18 +955,12 @@ id|flashdebug
 id|printk
 c_func
 (paren
-l_string|&quot;FlashWrite: writing offset %X, from buf %X, bytes left %X.&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;flash_write: writing offset %lX, from buf &quot;
+l_string|&quot;%p, bytes left %X.&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|p
 comma
-(paren
-r_int
-r_int
-)paren
 id|buf
 comma
 id|count
@@ -1095,15 +1021,11 @@ OL
 l_int|0
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|flashdebug
-)paren
 id|printk
 c_func
 (paren
-l_string|&quot;FlashWrite: write error %X. Aborting...&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;flash_write: write error %X&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -1123,7 +1045,8 @@ id|written
 op_add_assign
 id|rc
 suffix:semicolon
-id|file-&gt;f_pos
+op_star
+id|ppos
 op_add_assign
 id|rc
 suffix:semicolon
@@ -1135,7 +1058,8 @@ id|flashdebug
 id|printk
 c_func
 (paren
-l_string|&quot;FlashWrite: written 0x%X bytes OK.&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;flash_write: written 0x%X bytes OK.&bslash;n&quot;
 comma
 id|written
 )paren
@@ -1188,7 +1112,8 @@ id|flashdebug
 id|printk
 c_func
 (paren
-l_string|&quot;Flash_dev: flash_lseek, offset=0x%X, orig=0x%X.&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;flash_llseek: offset=0x%X, orig=0x%X.&bslash;n&quot;
 comma
 (paren
 r_int
@@ -1196,10 +1121,6 @@ r_int
 )paren
 id|offset
 comma
-(paren
-r_int
-r_int
-)paren
 id|orig
 )paren
 suffix:semicolon
@@ -1299,7 +1220,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * assume that main Write routine did the parameter checking...&n; * so just go ahead and erase, what requested!&n; */
 DECL|function|erase_block
-id|MSTATIC
+r_static
 r_int
 id|erase_block
 c_func
@@ -1528,20 +1449,12 @@ op_amp
 l_int|0x20
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|flashdebug
-)paren
 id|printk
 c_func
 (paren
-l_string|&quot;Flash_erase: err at %X.&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;flash_erase: err at %p&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|pWritePtr
 )paren
 suffix:semicolon
@@ -1638,20 +1551,12 @@ op_ne
 l_int|0xFFFFFFFF
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|flashdebug
-)paren
 id|printk
 c_func
 (paren
-l_string|&quot;Flash_erase: verify err at %X = %X.&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;flash_erase: verify err at %p = %X&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|pWritePtr
 comma
 id|temp1
@@ -1669,7 +1574,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * write_block will limit number of bytes written to the space in this block&n; */
 DECL|function|write_block
-id|MSTATIC
+r_static
 r_int
 id|write_block
 c_func
@@ -2066,7 +1971,8 @@ id|flashdebug
 id|printk
 c_func
 (paren
-l_string|&quot;FlashWrite: Retrying write (addr=0x%X)...&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;write_block: Retrying write at 0x%X)n&quot;
 comma
 id|pWritePtr
 op_minus
@@ -2105,7 +2011,8 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;Timeout in flash write! (addr=0x%X) Aborting...&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;write_block: timeout at 0x%X&bslash;n&quot;
 comma
 id|pWritePtr
 op_minus
@@ -2212,21 +2119,15 @@ op_ne
 id|c
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|flashdebug
-)paren
 id|printk
 c_func
 (paren
-l_string|&quot;flash write verify error at 0x%X! (%02X!=%02X) Retrying...&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;write_block: verify error at 0x%X (%02X!=%02X)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|pWritePtr
+op_minus
+id|FLASH_BASE
 comma
 id|c1
 comma
@@ -2243,7 +2144,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|function|kick_open
-id|MSTATIC
+r_static
 r_void
 id|kick_open
 c_func
@@ -2290,8 +2191,52 @@ l_int|25
 )paren
 suffix:semicolon
 )brace
+DECL|variable|flash_fops
+r_static
+r_struct
+id|file_operations
+id|flash_fops
+op_assign
+(brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
+id|llseek
+suffix:colon
+id|flash_llseek
+comma
+id|read
+suffix:colon
+id|flash_read
+comma
+id|write
+suffix:colon
+id|flash_write
+comma
+id|ioctl
+suffix:colon
+id|flash_ioctl
+comma
+)brace
+suffix:semicolon
+DECL|variable|flash_miscdev
+r_static
+r_struct
+id|miscdevice
+id|flash_miscdev
+op_assign
+(brace
+id|FLASH_MINOR
+comma
+l_string|&quot;nwflash&quot;
+comma
+op_amp
+id|flash_fops
+)brace
+suffix:semicolon
 DECL|function|nwflash_init
-id|MSTATIC
+r_static
 r_int
 id|__init
 id|nwflash_init
@@ -2346,6 +2291,49 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|id
+op_ne
+id|KFLASH_ID
+)paren
+op_logical_and
+(paren
+id|id
+op_ne
+id|KFLASH_ID4
+)paren
+)paren
+(brace
+id|ret
+op_assign
+op_minus
+id|ENXIO
+suffix:semicolon
+id|iounmap
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|FLASH_BASE
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Flash: incorrect ID 0x%04X.&bslash;n&quot;
+comma
+id|id
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -2383,7 +2371,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|nwflash_exit
-id|MSTATIC
+r_static
 r_void
 id|__exit
 id|nwflash_exit

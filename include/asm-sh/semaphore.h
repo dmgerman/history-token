@@ -2,6 +2,7 @@ macro_line|#ifndef __ASM_SH_SEMAPHORE_H
 DECL|macro|__ASM_SH_SEMAPHORE_H
 mdefine_line|#define __ASM_SH_SEMAPHORE_H
 macro_line|#include &lt;linux/linkage.h&gt;
+macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * SMP- and interrupt-safe semaphores.&n; *&n; * (C) Copyright 1996 Linus Torvalds&n; *&n; * SuperH verison by Niibe Yutaka&n; *  (Currently no asm implementation but generic C code...)&n; */
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
@@ -220,57 +221,12 @@ id|sem
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|rw_semaphore
-op_star
-id|__down_read
-c_func
-(paren
-r_struct
-id|rw_semaphore
-op_star
-id|sem
-comma
-r_int
-id|carry
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|rw_semaphore
-op_star
-id|__down_write
-c_func
-(paren
-r_struct
-id|rw_semaphore
-op_star
-id|sem
-comma
-r_int
-id|carry
-)paren
-suffix:semicolon
-id|asmlinkage
-r_struct
-id|rw_semaphore
-op_star
-id|__rwsem_wake
-c_func
-(paren
-r_struct
-id|rw_semaphore
-op_star
-id|sem
-)paren
-suffix:semicolon
-r_extern
 id|spinlock_t
 id|semaphore_wake_lock
 suffix:semicolon
 DECL|function|down
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|down
 c_func
@@ -309,8 +265,8 @@ id|sem
 suffix:semicolon
 )brace
 DECL|function|down_interruptible
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|down_interruptible
 c_func
@@ -359,8 +315,8 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|down_trylock
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|down_trylock
 c_func
@@ -410,8 +366,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Note! This is subtle. We jump to wake people up only if&n; * the semaphore was negative (== somebody was waiting on it).&n; */
 DECL|function|up
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|up
 c_func
@@ -449,5 +405,6 @@ id|sem
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#endif /* __ASM_SH_SEMAPHORE_H */
 eof

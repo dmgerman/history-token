@@ -1,4 +1,4 @@
-multiline_comment|/* &n; *  sym53c416.c&n; *  Low-level SCSI driver for sym53c416 chip.&n; *  Copyright (C) 1998 Lieven Willems (lw_linux@hotmail.com)&n; * &n; *  Changes : &n; * &n; *  Marcelo Tosatti &lt;marcelo@conectiva.com.br&gt; : Added io_request_lock locking&n; * &n; *  LILO command line usage: sym53c416=&lt;PORTBASE&gt;[,&lt;IRQ&gt;]&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the&n; *  Free Software Foundation; either version 2, or (at your option) any&n; *  later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; */
+multiline_comment|/* &n; *  sym53c416.c&n; *  Low-level SCSI driver for sym53c416 chip.&n; *  Copyright (C) 1998 Lieven Willems (lw_linux@hotmail.com)&n; * &n; *  Changes : &n; * &n; *  Marcelo Tosatti &lt;marcelo@conectiva.com.br&gt; : Added io_request_lock locking&n; *  Alan Cox &lt;alan@redhat.com&gt; : Cleaned up code formatting&n; *&t;&t;&t;&t; Fixed an irq locking bug&n; *&t;&t;&t;&t; Added ISAPnP support&n; * &n; *  LILO command line usage: sym53c416=&lt;PORTBASE&gt;[,&lt;IRQ&gt;]&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the&n; *  Free Software Foundation; either version 2, or (at your option) any&n; *  later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -14,12 +14,13 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;sym53c416.h&quot;
 DECL|macro|VERSION_STRING
-mdefine_line|#define VERSION_STRING        &quot;Version 1.0.0&quot;
+mdefine_line|#define VERSION_STRING        &quot;Version 1.0.0-ac&quot;
 DECL|macro|TC_LOW
 mdefine_line|#define TC_LOW       0x00     /* Transfer counter low        */
 DECL|macro|TC_MID
@@ -374,6 +375,7 @@ DECL|typedef|host
 id|host
 suffix:semicolon
 DECL|variable|hosts
+r_static
 id|host
 id|hosts
 (braket
@@ -438,12 +440,14 @@ op_assign
 l_int|NULL
 suffix:semicolon
 DECL|variable|fastpio
+r_static
 r_int
 id|fastpio
 op_assign
 l_int|1
 suffix:semicolon
 DECL|variable|probeaddrs
+r_static
 r_int
 id|probeaddrs
 (braket
@@ -1082,6 +1086,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* We search the base address of the host adapter which caused the interrupt */
+multiline_comment|/* FIXME: should pass dev_id sensibly as hosts[i] */
 r_for
 c_loop
 (paren
@@ -1134,6 +1139,7 @@ id|base
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;sym53c416: No host adapter defined for interrupt %d&bslash;n&quot;
 comma
 id|irq
@@ -1143,15 +1149,13 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Now we have the base address and we can start handling the interrupt */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|io_request_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|status_reg
@@ -1184,9 +1188,12 @@ op_plus
 id|INT_REG
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|io_request_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1203,7 +1210,8 @@ multiline_comment|/* SCSI Reset */
 id|printk
 c_func
 (paren
-l_string|&quot;sym53c416: Warning: Reset received&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;sym53c416: Reset received&bslash;n&quot;
 )paren
 suffix:semicolon
 id|current_command-&gt;SCp.phase
@@ -1257,7 +1265,8 @@ multiline_comment|/* Illegal Command */
 id|printk
 c_func
 (paren
-l_string|&quot;sym53c416: Warning: Illegal Command: 0x%02x&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;sym53c416: Illegal Command: 0x%02x.&bslash;n&quot;
 comma
 id|inb
 c_func
@@ -1319,7 +1328,8 @@ multiline_comment|/* Gross Error */
 id|printk
 c_func
 (paren
-l_string|&quot;sym53c416: Warning: Gross Error&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;sym53c416: Controller reports gross error.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|current_command-&gt;SCp.phase
@@ -1373,7 +1383,8 @@ multiline_comment|/* Parity Error */
 id|printk
 c_func
 (paren
-l_string|&quot;sym53c416: Warning: Parity Error&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;sym53c416:SCSI parity error.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|current_command-&gt;SCp.phase
@@ -1430,7 +1441,8 @@ id|OUE
 id|printk
 c_func
 (paren
-l_string|&quot;sym53c416: Warning: PIO Interrupt Error&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;sym53c416: PIO interrupt error.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|current_command-&gt;SCp.phase
@@ -1675,7 +1687,8 @@ id|current_command-&gt;underflow
 id|printk
 c_func
 (paren
-l_string|&quot;sym53c416: Warning: underflow, wrote %d bytes, request for %d bytes&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;sym53c416: Underflow, wrote %d bytes, request for %d bytes.&bslash;n&quot;
 comma
 id|tot_trans
 comma
@@ -1798,7 +1811,8 @@ id|current_command-&gt;underflow
 id|printk
 c_func
 (paren
-l_string|&quot;sym53c416: Warning: underflow, read %d bytes, request for %d bytes&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;sym53c416: Underflow, read %d bytes, request for %d bytes.&bslash;n&quot;
 comma
 id|tot_trans
 comma
@@ -1821,7 +1835,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;sym53c416: Warning: Unknown interrupt in command phase&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;sym53c416: Unknown interrupt in command phase.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1868,7 +1883,8 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;sym53c416: Warning: Reserved phase&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;sym53c416: Reserved phase occurred.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2298,12 +2314,13 @@ id|MAXHOSTS
 id|printk
 c_func
 (paren
-l_string|&quot;sym53c416.c: Too many hosts defined&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;sym53c416: Too many hosts defined&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
 )brace
-r_else
-(brace
 r_if
 c_cond
 (paren
@@ -2318,18 +2335,20 @@ l_int|2
 id|printk
 c_func
 (paren
-l_string|&quot;sym53c416.c: Wrong number of parameters:&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;sym53c416: Wrong number of parameters:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;sym53c416.c: usage: sym53c416=&lt;base&gt;[,&lt;irq&gt;]&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;sym53c416: usage: sym53c416=&lt;base&gt;[,&lt;irq&gt;]&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
 )brace
-r_else
-(brace
 r_for
 c_loop
 (paren
@@ -2417,8 +2436,6 @@ suffix:semicolon
 id|host_index
 op_increment
 suffix:semicolon
-)brace
-)brace
 )brace
 )brace
 DECL|function|sym53c416_test
@@ -2534,6 +2551,52 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|id_table
+r_static
+r_struct
+id|isapnp_device_id
+id|id_table
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_VENDOR
+c_func
+(paren
+l_char|&squot;S&squot;
+comma
+l_char|&squot;L&squot;
+comma
+l_char|&squot;I&squot;
+)paren
+comma
+id|ISAPNP_FUNCTION
+c_func
+(paren
+l_int|0x4163
+)paren
+comma
+l_int|0
+)brace
+comma
+(brace
+l_int|0
+)brace
+)brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|isapnp
+comma
+id|id_table
+)paren
+suffix:semicolon
 DECL|function|sym53c416_probe
 r_void
 id|sym53c416_probe
@@ -2571,6 +2634,7 @@ suffix:semicolon
 id|base
 op_increment
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -2610,6 +2674,7 @@ id|ints
 suffix:semicolon
 )brace
 )brace
+)brace
 DECL|function|sym53c416_detect
 r_int
 id|sym53c416_detect
@@ -2636,6 +2701,13 @@ id|i
 suffix:semicolon
 r_int
 id|count
+suffix:semicolon
+r_struct
+id|pci_dev
+op_star
+id|idev
+op_assign
+l_int|NULL
 suffix:semicolon
 macro_line|#ifdef MODULE
 r_int
@@ -2795,11 +2867,157 @@ macro_line|#endif
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;sym53c416.c: %s&bslash;n&quot;
 comma
 id|VERSION_STRING
 )paren
 suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+id|idev
+op_assign
+id|isapnp_find_dev
+c_func
+(paren
+l_int|NULL
+comma
+id|ISAPNP_VENDOR
+c_func
+(paren
+l_char|&squot;S&squot;
+comma
+l_char|&squot;L&squot;
+comma
+l_char|&squot;I&squot;
+)paren
+comma
+id|ISAPNP_FUNCTION
+c_func
+(paren
+l_int|0x4163
+)paren
+comma
+id|idev
+)paren
+)paren
+op_ne
+l_int|NULL
+)paren
+(brace
+r_int
+id|i
+(braket
+l_int|3
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|idev
+op_member_access_from_pointer
+id|prepare
+c_func
+(paren
+id|idev
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;sym53c416: unable to prepare PnP card.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|idev
+op_member_access_from_pointer
+id|activate
+c_func
+(paren
+id|idev
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;sym53c416: unable to activate PnP card.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+id|i
+(braket
+l_int|0
+)braket
+op_assign
+l_int|2
+suffix:semicolon
+id|i
+(braket
+l_int|1
+)braket
+op_assign
+id|idev-&gt;resource
+(braket
+l_int|0
+)braket
+dot
+id|start
+suffix:semicolon
+id|i
+(braket
+l_int|2
+)braket
+op_assign
+id|idev-&gt;irq_resource
+(braket
+l_int|0
+)braket
+dot
+id|start
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sym53c416: ISAPnP card found and configured at 0x%X, IRQ %d.&bslash;n&quot;
+comma
+id|i
+(braket
+l_int|1
+)braket
+comma
+id|i
+(braket
+l_int|2
+)braket
+)paren
+suffix:semicolon
+id|sym53c416_setup
+c_func
+(paren
+l_int|NULL
+comma
+id|i
+)paren
+suffix:semicolon
+)brace
 id|sym53c416_probe
 c_func
 (paren
@@ -2824,6 +3042,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -2843,6 +3062,7 @@ id|base
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;No sym53c416 found at address 0x%03x&bslash;n&quot;
 comma
 id|hosts
@@ -2905,7 +3125,8 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;irq autoprobing failed for sym53c416 at address 0x%03x&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;IRQ autoprobing failed for sym53c416 at address 0x%03x&bslash;n&quot;
 comma
 id|hosts
 (braket
@@ -2973,6 +3194,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: Request_irq with CLI is not safe */
 multiline_comment|/* Request for specified IRQ */
 r_if
 c_cond
@@ -3006,7 +3228,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Unable to assign IRQ %d&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;sym53c416: Unable to assign IRQ %d&bslash;n&quot;
 comma
 id|hosts
 (braket
@@ -3108,6 +3331,7 @@ c_func
 id|flags
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 )brace
@@ -3384,6 +3608,7 @@ op_increment
 suffix:semicolon
 )brace
 DECL|function|sym53c416_command
+r_static
 r_int
 id|sym53c416_command
 c_func
@@ -3423,6 +3648,7 @@ id|SCpnt-&gt;result
 suffix:semicolon
 )brace
 DECL|function|sym53c416_abort
+r_static
 r_int
 id|sym53c416_abort
 c_func
@@ -3432,18 +3658,14 @@ op_star
 id|SCpnt
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;sym53c416_abort&bslash;n&quot;
-)paren
-suffix:semicolon
+singleline_comment|//printk(&quot;sym53c416_abort&bslash;n&quot;);
 multiline_comment|/* We don&squot;t know how to abort for the moment */
 r_return
 id|SCSI_ABORT_SNOOZE
 suffix:semicolon
 )brace
 DECL|function|sym53c416_reset
+r_static
 r_int
 id|sym53c416_reset
 c_func
@@ -3469,12 +3691,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;sym53c416_reset&bslash;n&quot;
-)paren
-suffix:semicolon
+singleline_comment|//printk(&quot;sym53c416_reset&bslash;n&quot;);
 id|base
 op_assign
 id|SCpnt-&gt;host-&gt;io_port
@@ -3567,6 +3784,7 @@ id|SCSI_RESET_PENDING
 suffix:semicolon
 )brace
 DECL|function|sym53c416_bios_param
+r_static
 r_int
 id|sym53c416_bios_param
 c_func

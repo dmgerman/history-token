@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;$Id: mach_dc.c,v 1.1 2001/04/01 15:02:00 yaegashi Exp $&n; *&t;SEGA Dreamcast machine vector&n; */
+multiline_comment|/*&n; *&t;$Id: mach_dc.c,v 1.4 2001/05/24 05:09:16 mrbrown Exp $&n; *&t;SEGA Dreamcast machine vector&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
@@ -36,7 +36,7 @@ l_string|&quot;dreamcast&quot;
 comma
 id|mv_nr_irqs
 suffix:colon
-l_int|48
+id|NR_IRQS
 comma
 id|mv_inb
 suffix:colon
@@ -146,15 +146,13 @@ id|mv_init_arch
 suffix:colon
 id|setup_dreamcast
 comma
-macro_line|#ifdef CONFIG_PCI
-id|mv_init_pci
-suffix:colon
-id|dreamcast_pcibios_init
-comma
-macro_line|#endif
 id|mv_isa_port2addr
 suffix:colon
 id|dreamcast_isa_port2addr
+comma
+id|mv_irq_demux
+suffix:colon
+id|systemasic_irq_demux
 comma
 id|mv_hw_dreamcast
 suffix:colon

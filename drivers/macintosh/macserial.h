@@ -280,6 +280,12 @@ r_char
 id|tx_stopped
 suffix:semicolon
 multiline_comment|/* output is suspended */
+DECL|member|power_wait
+r_int
+r_char
+id|power_wait
+suffix:semicolon
+multiline_comment|/* waiting for power-up delay to expire */
 multiline_comment|/* We need to know the current clock divisor&n;&t; * to read the bps rate the chip has currently&n;&t; * loaded.&n;&t; */
 DECL|member|clk_divisor
 r_int
@@ -563,6 +569,11 @@ id|poll_dma_timer
 suffix:semicolon
 DECL|macro|RX_DMA_TIMER
 mdefine_line|#define RX_DMA_TIMER&t;(jiffies + 10*HZ/1000)
+DECL|member|powerup_timer
+r_struct
+id|timer_list
+id|powerup_timer
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|SERIAL_MAGIC

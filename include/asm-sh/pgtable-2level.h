@@ -13,6 +13,7 @@ DECL|macro|PTRS_PER_PMD
 mdefine_line|#define PTRS_PER_PMD&t;1
 DECL|macro|PTRS_PER_PTE
 mdefine_line|#define PTRS_PER_PTE&t;1024
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|pte_ERROR
 mdefine_line|#define pte_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pte %08lx.&bslash;n&quot;, __FILE__, __LINE__, pte_val(e))
 DECL|macro|pmd_ERROR
@@ -73,9 +74,20 @@ id|pgd_clear
 (paren
 id|pgd_t
 op_star
-id|pgd
+id|pgdp
 )paren
 (brace
+id|pgd_val
+c_func
+(paren
+op_star
+(paren
+id|pgdp
+)paren
+)paren
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Certain architectures need to do special things when PTEs&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
 DECL|macro|set_pte
@@ -112,5 +124,6 @@ op_star
 id|dir
 suffix:semicolon
 )brace
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __ASM_SH_PGTABLE_2LEVEL_H */
 eof

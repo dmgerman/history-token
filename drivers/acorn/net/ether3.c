@@ -23,7 +23,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|version
 (braket
@@ -3488,6 +3487,9 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_INFO
+l_string|&quot;%s&quot;
+comma
 id|version
 )paren
 suffix:semicolon

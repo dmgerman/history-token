@@ -470,11 +470,16 @@ r_int
 id|ptr
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 DECL|macro|minfo
 mdefine_line|#define minfo ((struct matrox_fb_info*)ptr)
-id|matroxfb_DAC_lock
+id|matroxfb_DAC_lock_irqsave
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|outTi3026
@@ -518,9 +523,10 @@ id|cursor.timer
 )paren
 )paren
 suffix:semicolon
-id|matroxfb_DAC_unlock
+id|matroxfb_DAC_unlock_irqrestore
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 DECL|macro|minfo

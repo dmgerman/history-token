@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: c4.c,v 1.20.6.8 2001/05/17 21:15:33 kai Exp $&n; * &n; * Module for AVM C4 &amp; C2 card.&n; * &n; * (c) Copyright 1999 by Carsten Paeth (calle@calle.in-berlin.de)&n; *&n; */
+multiline_comment|/*&n; * $Id: c4.c,v 1.20.6.10 2001/06/09 15:14:15 kai Exp $&n; * &n; * Module for AVM C4 &amp; C2 card.&n; * &n; * (c) Copyright 1999 by Carsten Paeth (calle@calle.in-berlin.de)&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -24,7 +24,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.20.6.9 $&quot;
+l_string|&quot;$Revision: 1.20.6.10 $&quot;
 suffix:semicolon
 DECL|macro|CONFIG_C4_DEBUG
 macro_line|#undef CONFIG_C4_DEBUG

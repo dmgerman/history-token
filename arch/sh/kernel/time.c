@@ -63,7 +63,13 @@ DECL|macro|CCN_PVR_CHIP_MASK
 mdefine_line|#define CCN_PVR_CHIP_MASK  0xff
 DECL|macro|CCN_PVR_CHIP_ST40STB1
 mdefine_line|#define CCN_PVR_CHIP_ST40STB1 0x4
-macro_line|#endif
+macro_line|#ifdef CONFIG_CPU_SUBTYPE_ST40STB1
+DECL|macro|CLOCKGEN_MEMCLKCR
+mdefine_line|#define CLOCKGEN_MEMCLKCR 0xbb040038
+DECL|macro|MEMCLKCR_RATIO_MASK
+mdefine_line|#define MEMCLKCR_RATIO_MASK 0x7
+macro_line|#endif /* CONFIG_CPU_SUBTYPE_ST40STB1 */
+macro_line|#endif /* __sh3__ or __SH4__ */
 r_extern
 id|rwlock_t
 id|xtime_lock
@@ -862,6 +868,12 @@ id|bus_clock
 comma
 id|module_clock
 suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_SUBTYPE_ST40STB1
+r_int
+r_int
+id|memory_clock
+suffix:semicolon
+macro_line|#endif
 r_int
 r_int
 id|timer_freq
@@ -1687,18 +1699,99 @@ l_int|8
 comma
 )brace
 suffix:semicolon
+r_struct
+id|memclk_data
+(brace
+r_int
+r_char
+id|multiplier
+suffix:semicolon
+r_int
+r_char
+id|divisor
+suffix:semicolon
+)brace
+suffix:semicolon
+r_static
+r_struct
+id|memclk_data
+id|st40_memclk_table
+(braket
+l_int|8
+)braket
+op_assign
+(brace
+(brace
+l_int|1
+comma
+l_int|1
+)brace
+comma
+singleline_comment|// 000
+(brace
+l_int|1
+comma
+l_int|2
+)brace
+comma
+singleline_comment|// 001
+(brace
+l_int|1
+comma
+l_int|3
+)brace
+comma
+singleline_comment|// 010
+(brace
+l_int|2
+comma
+l_int|3
+)brace
+comma
+singleline_comment|// 011
+(brace
+l_int|1
+comma
+l_int|4
+)brace
+comma
+singleline_comment|// 100
+(brace
+l_int|1
+comma
+l_int|6
+)brace
+comma
+singleline_comment|// 101
+(brace
+l_int|1
+comma
+l_int|8
+)brace
+comma
+singleline_comment|// 110
+(brace
+l_int|1
+comma
+l_int|8
+)brace
+singleline_comment|// 111
+)brace
+suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-macro_line|#if defined(CONFIG_SH_DREAMCAST)
+r_if
+c_cond
+(paren
+id|MACH_DREAMCAST
+)paren
 id|xtime.tv_sec
 op_assign
-l_int|0
-suffix:semicolon
 id|xtime.tv_usec
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#else
+r_else
 id|rtc_gettimeofday
 c_func
 (paren
@@ -1706,7 +1799,6 @@ op_amp
 id|xtime
 )paren
 suffix:semicolon
-macro_line|#endif
 id|setup_irq
 c_func
 (paren
@@ -1716,7 +1808,11 @@ op_amp
 id|irq0
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_SH_DREAMCAST)
+r_if
+c_cond
+(paren
+id|MACH_DREAMCAST
+)paren
 id|timer_freq
 op_assign
 l_int|50
@@ -1727,7 +1823,7 @@ l_int|1000
 op_div
 l_int|4
 suffix:semicolon
-macro_line|#else
+r_else
 id|timer_freq
 op_assign
 id|get_timer_frequency
@@ -1735,7 +1831,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|module_clock
 op_assign
 id|timer_freq
@@ -1891,6 +1986,15 @@ suffix:semicolon
 r_int
 id|a
 suffix:semicolon
+r_int
+r_int
+id|memclkcr
+suffix:semicolon
+r_struct
+id|memclk_data
+op_star
+id|e
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1955,10 +2059,28 @@ l_string|&quot;ERROR: Unrecognised FRQCR value, using default multipliers&bslash
 )paren
 suffix:semicolon
 )brace
+id|memclkcr
+op_assign
+id|ctrl_inl
+c_func
+(paren
+id|CLOCKGEN_MEMCLKCR
+)paren
+suffix:semicolon
+id|e
+op_assign
+op_amp
+id|st40_memclk_table
+(braket
+id|memclkcr
+op_amp
+id|MEMCLKCR_RATIO_MASK
+)braket
+suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Clock multipliers: CPU: %d/%d Bus: %d/%d Periph: %d/%d&bslash;n&quot;
+l_string|&quot;Clock multipliers: CPU: %d/%d Bus: %d/%d Mem: %d/%d Periph: %d/%d&bslash;n&quot;
 comma
 id|d-&gt;factor
 (braket
@@ -1987,6 +2109,10 @@ l_int|1
 )braket
 dot
 id|divisor
+comma
+id|e-&gt;multiplier
+comma
+id|e-&gt;divisor
 comma
 id|d-&gt;factor
 (braket
@@ -2038,6 +2164,14 @@ l_int|1
 )braket
 dot
 id|divisor
+suffix:semicolon
+id|memory_clock
+op_assign
+id|master_clock
+op_star
+id|e-&gt;multiplier
+op_div
+id|e-&gt;divisor
 suffix:semicolon
 id|cpu_clock
 op_assign
@@ -2120,8 +2254,10 @@ id|master_clock
 op_div
 id|ifc
 suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_SUBTYPE_ST40STB1
 id|skip_calc
 suffix:colon
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -2162,6 +2298,28 @@ op_div
 l_int|10000
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_SUBTYPE_ST40STB1
+id|printk
+c_func
+(paren
+l_string|&quot;Memory clock: %d.%02dMHz&bslash;n&quot;
+comma
+(paren
+id|memory_clock
+op_div
+l_int|1000000
+)paren
+comma
+(paren
+id|memory_clock
+op_mod
+l_int|1000000
+)paren
+op_div
+l_int|10000
+)paren
+suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -2216,6 +2374,12 @@ id|current_cpu_data.bus_clock
 op_assign
 id|bus_clock
 suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_SUBTYPE_ST40STB1
+id|current_cpu_data.memory_clock
+op_assign
+id|memory_clock
+suffix:semicolon
+macro_line|#endif
 id|current_cpu_data.module_clock
 op_assign
 id|module_clock

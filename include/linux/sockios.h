@@ -100,6 +100,12 @@ DECL|macro|SIOCSIFDIVERT
 mdefine_line|#define SIOCSIFDIVERT&t;0x8945&t;&t;/* Set frame diversion options */
 DECL|macro|SIOCETHTOOL
 mdefine_line|#define SIOCETHTOOL&t;0x8946&t;&t;/* Ethtool interface&t;&t;*/
+DECL|macro|SIOCGMIIPHY
+mdefine_line|#define SIOCGMIIPHY&t;0x8947&t;&t;/* Get address of MII PHY in use. */
+DECL|macro|SIOCGMIIREG
+mdefine_line|#define SIOCGMIIREG&t;0x8948&t;&t;/* Read MII PHY register.&t;*/
+DECL|macro|SIOCSMIIREG
+mdefine_line|#define SIOCSMIIREG&t;0x8949&t;&t;/* Write MII PHY register.&t;*/
 multiline_comment|/* ARP cache control calls. */
 multiline_comment|/*  0x8950 - 0x8952  * obsolete calls, don&squot;t re-use */
 DECL|macro|SIOCDARP

@@ -86,7 +86,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;CPU: SH7750&bslash;n&quot;
+l_string|&quot;CPU: SH7750/SH7751&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break

@@ -356,7 +356,7 @@ DECL|variable|swapper_pg_dir
 id|pgd_t
 id|swapper_pg_dir
 (braket
-l_int|1024
+id|PTRS_PER_PGD
 )braket
 suffix:semicolon
 multiline_comment|/* It&squot;d be good if these lines were in the standard header file. */
@@ -395,9 +395,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|USER_PTRS_PER_PGD
-op_star
-l_int|2
+id|PTRS_PER_PGD
 suffix:semicolon
 id|i
 op_increment

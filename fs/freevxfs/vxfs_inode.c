@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; */
-macro_line|#ident &quot;$Id: vxfs_inode.c,v 1.34 2001/05/21 15:33:08 hch Exp hch $&quot;
+macro_line|#ident &quot;$Id: vxfs_inode.c,v 1.36 2001/05/26 22:28:02 hch Exp hch $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - inode routines.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -29,6 +29,11 @@ id|file_operations
 id|vxfs_file_operations
 op_assign
 (brace
+dot
+id|llseek
+op_assign
+id|generic_file_llseek
+comma
 dot
 id|read
 op_assign
@@ -142,7 +147,7 @@ id|vip-&gt;vii_orgtype
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/**&n; * vxfs_blkiget - find inode based on extent #&n; * @sbp:&t;superblock of the filesystem we search in&n; * @extent:&t;number of the extent to search&n; * @ino:&t;inode number to search&n; *&n; * Description:&n; *  vxfs_blkiget searches inode @ino in the filesystem described by&n; *  @sbp in the extent @extent.&n; *  Returns the matching VxFS inode on success, else a NULL pointer.&n; *&n; * NOTE:&n; *  While __vxfs_iget uses that pagecache this function uses the&n; *  buffercache.  This function should not be used outside the&n; *  read_super() method, othwerwise the data may be incoherent.&n; */
+multiline_comment|/**&n; * vxfs_blkiget - find inode based on extent #&n; * @sbp:&t;superblock of the filesystem we search in&n; * @extent:&t;number of the extent to search&n; * @ino:&t;inode number to search&n; *&n; * Description:&n; *  vxfs_blkiget searches inode @ino in the filesystem described by&n; *  @sbp in the extent @extent.&n; *  Returns the matching VxFS inode on success, else a NULL pointer.&n; *&n; * NOTE:&n; *  While __vxfs_iget uses the pagecache vxfs_blkiget uses the&n; *  buffercache.  This function should not be used outside the&n; *  read_super() method, othwerwise the data may be incoherent.&n; */
 r_struct
 id|vxfs_inode_info
 op_star
@@ -332,11 +337,6 @@ DECL|function|__vxfs_iget
 id|__vxfs_iget
 c_func
 (paren
-r_struct
-id|super_block
-op_star
-id|sbp
-comma
 id|ino_t
 id|ino
 comma
@@ -538,8 +538,6 @@ r_return
 id|__vxfs_iget
 c_func
 (paren
-id|sbp
-comma
 id|ino
 comma
 id|VXFS_SBI
@@ -856,8 +854,6 @@ op_assign
 id|__vxfs_iget
 c_func
 (paren
-id|sbp
-comma
 id|ino
 comma
 id|VXFS_SBI

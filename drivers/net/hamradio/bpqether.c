@@ -417,6 +417,9 @@ id|bpq
 comma
 op_star
 id|bpq_prev
+comma
+op_star
+id|bpq_next
 suffix:semicolon
 r_int
 id|result
@@ -455,9 +458,13 @@ l_int|NULL
 suffix:semicolon
 id|bpq
 op_assign
-id|bpq-&gt;next
+id|bpq_next
 )paren
 (brace
+id|bpq_next
+op_assign
+id|bpq-&gt;next
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -510,6 +517,7 @@ id|bpq
 )paren
 suffix:semicolon
 )brace
+r_else
 id|bpq_prev
 op_assign
 id|bpq

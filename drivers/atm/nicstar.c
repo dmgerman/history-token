@@ -27,6 +27,9 @@ macro_line|#endif /* CONFIG_ATM_NICSTAR_USE_SUNI */
 macro_line|#ifdef CONFIG_ATM_NICSTAR_USE_IDT77105
 macro_line|#include &quot;idt77105.h&quot;
 macro_line|#endif /* CONFIG_ATM_NICSTAR_USE_IDT77105 */
+macro_line|#if BITS_PER_LONG != 32
+macro_line|#  error FIXME: this driver requires a 32-bit platform
+macro_line|#endif
 multiline_comment|/* Additional code ************************************************************/
 macro_line|#include &quot;nicstarmac.c&quot;
 multiline_comment|/* Configurable parameters ****************************************************/

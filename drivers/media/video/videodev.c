@@ -1384,6 +1384,14 @@ comma
 id|video_dev_proc_entry
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|p
+)paren
+r_return
+suffix:semicolon
 id|p-&gt;data
 op_assign
 id|vfd

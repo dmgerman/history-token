@@ -3329,6 +3329,17 @@ id|agp_segment
 op_star
 id|segment
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|reserve.seg_count
+op_ge
+l_int|16384
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|segment
 op_assign
 id|kmalloc

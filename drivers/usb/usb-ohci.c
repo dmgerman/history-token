@@ -11274,7 +11274,7 @@ suffix:semicolon
 macro_line|#ifdef&t;CONFIG_PM
 multiline_comment|/*-------------------------------------------------------------------------*/
 r_static
-r_void
+r_int
 DECL|function|ohci_pci_suspend
 id|ohci_pci_suspend
 (paren
@@ -11282,6 +11282,9 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+comma
+id|u32
+id|state
 )paren
 (brace
 id|ohci_t
@@ -11321,6 +11324,8 @@ id|OHCI_CTRL_HCFS
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* act as if usb suspend can always be used */
@@ -11356,10 +11361,13 @@ id|wait_ms
 l_int|10
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 r_static
-r_void
+r_int
 DECL|function|ohci_pci_resume
 id|ohci_pci_resume
 (paren
@@ -11415,6 +11423,8 @@ id|ohci-&gt;resume_count
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|EBUSY
 suffix:semicolon
 )brace
 multiline_comment|/* did we suspend, or were we powered off? */
@@ -11541,6 +11551,8 @@ op_assign
 l_int|1
 suffix:semicolon
 r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|ohci-&gt;disabled
@@ -11621,6 +11633,9 @@ id|atomic_dec
 op_amp
 id|ohci-&gt;resume_count
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif&t;/* CONFIG_PM */

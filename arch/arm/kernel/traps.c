@@ -7,12 +7,14 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &quot;ptrace.h&quot;
 r_extern
 r_void
@@ -629,6 +631,42 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * This is called from SysRq-T (show_task) to display the current&n; * call trace for each process.  Very useful.&n; */
+DECL|function|show_trace_task
+r_void
+id|show_trace_task
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|tsk
+op_ne
+id|current
+)paren
+(brace
+r_int
+r_int
+id|fp
+op_assign
+id|tsk-&gt;thread.save-&gt;fp
+suffix:semicolon
+id|c_backtrace
+c_func
+(paren
+id|fp
+comma
+l_int|0x10
+)paren
+suffix:semicolon
+)brace
+)brace
 DECL|variable|die_lock
 id|spinlock_t
 id|die_lock
@@ -637,6 +675,7 @@ id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/*&n; * This function is protected against re-entrancy.&n; */
 DECL|function|die
+id|NORET_TYPE
 r_void
 id|die
 c_func
@@ -747,12 +786,6 @@ c_func
 id|KERNEL_DS
 )paren
 suffix:semicolon
-id|dump_instr
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
 id|dump_stack
 c_func
 (paren
@@ -775,6 +808,12 @@ c_func
 id|regs
 comma
 id|tsk
+)paren
+suffix:semicolon
+id|dump_instr
+c_func
+(paren
+id|regs
 )paren
 suffix:semicolon
 id|set_fs
@@ -1884,11 +1923,41 @@ id|__trap_init
 c_func
 (paren
 r_void
+op_star
 )paren
 suffix:semicolon
 id|__trap_init
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
+id|vectors_base
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|vectors_base
+c_func
+(paren
+)paren
+op_ne
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Relocating machine vectors to 0x%08x&bslash;n&quot;
+comma
+id|vectors_base
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_32

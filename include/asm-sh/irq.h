@@ -50,7 +50,7 @@ DECL|macro|DMA_IPR_POS
 mdefine_line|#define DMA_IPR_POS&t;2
 DECL|macro|DMA_PRIORITY
 mdefine_line|#define DMA_PRIORITY&t;7
-macro_line|#if defined (CONFIG_CPU_SUBTYPE_SH7707) || defined (CONFIG_CPU_SUBTYPE_SH7708) || &bslash;&n;    defined (CONFIG_CPU_SUBTYPE_SH7709) || defined (CONFIG_CPU_SUBTYPE_SH7750)
+macro_line|#if defined (CONFIG_CPU_SUBTYPE_SH7707) || defined (CONFIG_CPU_SUBTYPE_SH7708) || &bslash;&n;    defined (CONFIG_CPU_SUBTYPE_SH7709) || defined (CONFIG_CPU_SUBTYPE_SH7750) || &bslash;&n;    defined (CONFIG_CPU_SUBTYPE_SH7751)
 DECL|macro|SCI_ERI_IRQ
 mdefine_line|#define SCI_ERI_IRQ&t;23
 DECL|macro|SCI_RXI_IRQ
@@ -93,7 +93,7 @@ DECL|macro|IRDA_IPR_POS
 mdefine_line|#define IRDA_IPR_POS&t;2
 DECL|macro|IRDA_PRIORITY
 mdefine_line|#define IRDA_PRIORITY&t;3
-macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7750) || defined(CONFIG_CPU_SUBTYPE_ST40STB1)
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7750) || defined(CONFIG_CPU_SUBTYPE_SH7751) || &bslash;&n;      defined(CONFIG_CPU_SUBTYPE_ST40STB1)
 DECL|macro|SCIF_ERI_IRQ
 mdefine_line|#define SCIF_ERI_IRQ&t;40
 DECL|macro|SCIF_RXI_IRQ
@@ -129,7 +129,7 @@ multiline_comment|/* NR_IRQS is made from three components:&n; *   1. ONCHIP_NR_
 multiline_comment|/* 1. ONCHIP_NR_IRQS */
 macro_line|#ifdef CONFIG_SH_GENERIC
 DECL|macro|ONCHIP_NR_IRQS
-macro_line|# define ONCHIP_NR_IRQS 89
+macro_line|# define ONCHIP_NR_IRQS 144
 macro_line|#else
 macro_line|# if defined(CONFIG_CPU_SUBTYPE_SH7707)
 DECL|macro|ONCHIP_NR_IRQS
@@ -149,9 +149,12 @@ macro_line|# elif defined(CONFIG_CPU_SUBTYPE_SH7750)
 DECL|macro|ONCHIP_NR_IRQS
 macro_line|#  define ONCHIP_NR_IRQS 48&t;
 singleline_comment|// Actually 44
+macro_line|# elif defined(CONFIG_CPU_SUBTYPE_SH7751)
+DECL|macro|ONCHIP_NR_IRQS
+macro_line|#  define ONCHIP_NR_IRQS 72
 macro_line|# elif defined(CONFIG_CPU_SUBTYPE_ST40STB1)
 DECL|macro|ONCHIP_NR_IRQS
-macro_line|#  define ONCHIP_NR_IRQS 89
+macro_line|#  define ONCHIP_NR_IRQS 144
 macro_line|# endif
 macro_line|#endif
 multiline_comment|/* 2. PINT_NR_IRQS */
@@ -176,12 +179,18 @@ macro_line|#else
 macro_line|# if defined(CONFIG_HD64461)
 DECL|macro|OFFCHIP_NR_IRQS
 macro_line|#  define OFFCHIP_NR_IRQS 16
+macro_line|# elif defined (CONFIG_SH_BIGSUR) /* must be before CONFIG_HD64465 */
+DECL|macro|OFFCHIP_NR_IRQS
+macro_line|#  define OFFCHIP_NR_IRQS 48
 macro_line|# elif defined(CONFIG_HD64465)
 DECL|macro|OFFCHIP_NR_IRQS
 macro_line|#  define OFFCHIP_NR_IRQS 16
 macro_line|# elif defined (CONFIG_SH_EC3104)
 DECL|macro|OFFCHIP_NR_IRQS
 macro_line|#  define OFFCHIP_NR_IRQS 16
+macro_line|# elif defined (CONFIG_SH_DREAMCAST)
+DECL|macro|OFFCHIP_NR_IRQS
+macro_line|#  define OFFCHIP_NR_IRQS 96
 macro_line|# else
 DECL|macro|OFFCHIP_NR_IRQS
 macro_line|#  define OFFCHIP_NR_IRQS 0
@@ -380,6 +389,20 @@ macro_line|#else
 DECL|macro|__irq_demux
 mdefine_line|#define __irq_demux(irq) irq
 macro_line|#endif /* CONFIG_CPU_SUBTYPE_SH7707 || CONFIG_CPU_SUBTYPE_SH7709 */
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7750) || defined(CONFIG_CPU_SUBTYPE_SH7751) || &bslash;&n;    defined(CONFIG_CPU_SUBTYPE_ST40STB1)
+DECL|macro|INTC_ICR
+mdefine_line|#define INTC_ICR        0xffd00000
+DECL|macro|INTC_ICR_NMIL
+mdefine_line|#define INTC_ICR_NMIL&t;(1&lt;&lt;15)
+DECL|macro|INTC_ICR_MAI
+mdefine_line|#define INTC_ICR_MAI&t;(1&lt;&lt;14)
+DECL|macro|INTC_ICR_NMIB
+mdefine_line|#define INTC_ICR_NMIB&t;(1&lt;&lt;9)
+DECL|macro|INTC_ICR_NMIE
+mdefine_line|#define INTC_ICR_NMIE&t;(1&lt;&lt;8)
+DECL|macro|INTC_ICR_IRLM
+mdefine_line|#define INTC_ICR_IRLM&t;(1&lt;&lt;7)
+macro_line|#endif
 macro_line|#ifdef CONFIG_CPU_SUBTYPE_ST40STB1
 DECL|macro|INTC2_FIRST_IRQ
 mdefine_line|#define INTC2_FIRST_IRQ 64
@@ -459,6 +482,18 @@ id|irq
 )paren
 suffix:semicolon
 )brace
+macro_line|#elif defined(CONFIG_SH_BIGSUR)
+r_extern
+r_int
+id|bigsur_irq_demux
+c_func
+(paren
+r_int
+id|irq
+)paren
+suffix:semicolon
+DECL|macro|irq_demux
+mdefine_line|#define irq_demux(irq) bigsur_irq_demux(irq)
 macro_line|#elif defined(CONFIG_HD64461)
 r_extern
 r_int
@@ -507,6 +542,18 @@ id|irq
 suffix:semicolon
 DECL|macro|irq_demux
 mdefine_line|#define irq_demux cat68701_irq_demux
+macro_line|#elif defined(CONFIG_SH_DREAMCAST)
+r_extern
+r_int
+id|systemasic_irq_demux
+c_func
+(paren
+r_int
+id|irq
+)paren
+suffix:semicolon
+DECL|macro|irq_demux
+mdefine_line|#define irq_demux systemasic_irq_demux
 macro_line|#else
 DECL|macro|irq_demux
 mdefine_line|#define irq_demux(irq) __irq_demux(irq)

@@ -2586,7 +2586,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|mackbd_unexpected_up
-r_int
+r_char
 id|mackbd_unexpected_up
 c_func
 (paren

@@ -2560,6 +2560,7 @@ r_void
 id|wait_intr
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -4098,6 +4099,7 @@ r_int
 id|irq_probe
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -4234,6 +4236,7 @@ r_void
 id|chip_init
 c_func
 (paren
+r_void
 )paren
 (brace
 id|REG1

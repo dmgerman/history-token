@@ -293,13 +293,6 @@ id|use_count
 suffix:semicolon
 )brace
 multiline_comment|/* Allocate a new queue */
-id|down
-c_func
-(paren
-op_amp
-id|dev-&gt;struct_sem
-)paren
-suffix:semicolon
 id|queue
 op_assign
 id|drm_alloc
@@ -314,6 +307,19 @@ comma
 id|DRM_MEM_QUEUES
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|queue
+op_eq
+l_int|NULL
+)paren
+(brace
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
@@ -326,6 +332,13 @@ r_sizeof
 op_star
 id|queue
 )paren
+)paren
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|dev-&gt;struct_sem
 )paren
 suffix:semicolon
 id|atomic_set

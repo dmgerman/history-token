@@ -7328,7 +7328,11 @@ id|cmd
 r_case
 id|SNDCTL_SYNTH_INFO
 suffix:colon
-id|memcpy
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
 (paren
 op_amp
 (paren
@@ -7350,28 +7354,24 @@ r_sizeof
 id|wavefront_info
 )paren
 )paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 r_return
 l_int|0
-suffix:semicolon
-r_break
 suffix:semicolon
 r_case
 id|SNDCTL_SEQ_RESETSAMPLES
 suffix:colon
-id|printk
-(paren
-id|KERN_WARNING
-id|LOGNAME
-l_string|&quot;driver cannot reset samples.&bslash;n&quot;
-)paren
-suffix:semicolon
+singleline_comment|//&t;&t;printk (KERN_WARNING LOGNAME &quot;driver cannot reset samples.&bslash;n&quot;);
 r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* don&squot;t force an error */
-r_break
-suffix:semicolon
 r_case
 id|SNDCTL_SEQ_PERCMODE
 suffix:colon
@@ -7379,8 +7379,6 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* don&squot;t force an error */
-r_break
-suffix:semicolon
 r_case
 id|SNDCTL_SYNTH_MEMAVL
 suffix:colon
@@ -7421,6 +7419,9 @@ suffix:semicolon
 r_case
 id|SNDCTL_SYNTH_CONTROL
 suffix:colon
+r_if
+c_cond
+(paren
 id|copy_from_user
 (paren
 op_amp
@@ -7433,7 +7434,15 @@ r_sizeof
 id|wc
 )paren
 )paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -7452,6 +7461,9 @@ op_eq
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|copy_to_user
 (paren
 id|arg
@@ -7464,7 +7476,14 @@ r_sizeof
 id|wc
 )paren
 )paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 )brace
 r_return
 id|err

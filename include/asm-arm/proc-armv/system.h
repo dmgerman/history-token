@@ -5,6 +5,36 @@ mdefine_line|#define __ASM_PROC_SYSTEM_H
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|set_cr
 mdefine_line|#define set_cr(x)&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&bslash;&n;&t;&quot;mcr&t;p15, 0, %0, c1, c0&t;@ set CR&quot;&t;&bslash;&n;&t;: : &quot;r&quot; (x))
+DECL|macro|CR_M
+mdefine_line|#define CR_M&t;(1 &lt;&lt; 0)&t;/* MMU enable&t;&t;&t;&t;*/
+DECL|macro|CR_A
+mdefine_line|#define CR_A&t;(1 &lt;&lt; 1)&t;/* Alignment abort enable&t;&t;*/
+DECL|macro|CR_C
+mdefine_line|#define CR_C&t;(1 &lt;&lt; 2)&t;/* Dcache enable&t;&t;&t;*/
+DECL|macro|CR_W
+mdefine_line|#define CR_W&t;(1 &lt;&lt; 3)&t;/* Write buffer enable&t;&t;&t;*/
+DECL|macro|CR_P
+mdefine_line|#define CR_P&t;(1 &lt;&lt; 4)&t;/* 32-bit exception handler&t;&t;*/
+DECL|macro|CR_D
+mdefine_line|#define CR_D&t;(1 &lt;&lt; 5)&t;/* 32-bit data address range&t;&t;*/
+DECL|macro|CR_L
+mdefine_line|#define CR_L&t;(1 &lt;&lt; 6)&t;/* Implementation defined&t;&t;*/
+DECL|macro|CD_B
+mdefine_line|#define CD_B&t;(1 &lt;&lt; 7)&t;/* Big endian&t;&t;&t;&t;*/
+DECL|macro|CR_S
+mdefine_line|#define CR_S&t;(1 &lt;&lt; 8)&t;/* System MMU protection&t;&t;*/
+DECL|macro|CD_R
+mdefine_line|#define CD_R&t;(1 &lt;&lt; 9)&t;/* ROM MMU protection&t;&t;&t;*/
+DECL|macro|CR_F
+mdefine_line|#define CR_F&t;(1 &lt;&lt; 10)&t;/* Implementation defined&t;&t;*/
+DECL|macro|CR_Z
+mdefine_line|#define CR_Z&t;(1 &lt;&lt; 11)&t;/* Implementation defined&t;&t;*/
+DECL|macro|CR_I
+mdefine_line|#define CR_I&t;(1 &lt;&lt; 12)&t;/* Icache enable&t;&t;&t;*/
+DECL|macro|CR_V
+mdefine_line|#define CR_V&t;(1 &lt;&lt; 13)&t;/* Vectors relocated to 0xffff0000&t;*/
+DECL|macro|CR_RR
+mdefine_line|#define CR_RR&t;(1 &lt;&lt; 14)&t;/* Round Robin cache replacement&t;*/
 r_extern
 r_int
 r_int
@@ -17,6 +47,13 @@ r_int
 id|cr_alignment
 suffix:semicolon
 multiline_comment|/* defined in entry-armv.S */
+macro_line|#ifdef __ARM_ARCH_4__
+DECL|macro|vectors_base
+mdefine_line|#define vectors_base()&t;((cr_alignment &amp; CR_V) ? 0xffff0000 : 0)
+macro_line|#else
+DECL|macro|vectors_base
+mdefine_line|#define vectors_base()&t;(0)
+macro_line|#endif
 multiline_comment|/*&n; * A couple of speedups for the ARM&n; */
 multiline_comment|/*&n; * Save the current interrupt enable state &amp; disable IRQs&n; */
 DECL|macro|__save_flags_cli

@@ -794,7 +794,7 @@ r_if
 c_cond
 (paren
 id|minor
-op_eq
+op_le
 l_int|0
 op_logical_or
 id|minor

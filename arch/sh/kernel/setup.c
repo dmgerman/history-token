@@ -1907,6 +1907,16 @@ comma
 id|boot_cpu_data.bus_clock
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_SUBTYPE_ST40STB1
+id|PRINT_CLOCK
+c_func
+(paren
+l_string|&quot;Memory&quot;
+comma
+id|boot_cpu_data.memory_clock
+)paren
+suffix:semicolon
+macro_line|#endif
 id|PRINT_CLOCK
 c_func
 (paren

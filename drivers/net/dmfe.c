@@ -23,6 +23,9 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
+macro_line|#if BITS_PER_LONG == 64
+macro_line|#error FIXME: driver does not support 64-bit platforms
+macro_line|#endif
 multiline_comment|/* Board/System/Debug information/definition ---------------- */
 DECL|macro|PCI_DM9132_ID
 mdefine_line|#define PCI_DM9132_ID   0x91321282      /* Davicom DM9132 ID */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200, G400 and G450.&n; *&n; * (c) 1998-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Version: 1.52 2001/02/02&n; *&n; * See matroxfb_base.c for contributors.&n; *&n; */
+multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200, G400 and G450.&n; *&n; * (c) 1998-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Version: 1.53 2001/06/18&n; *&n; * See matroxfb_base.c for contributors.&n; *&n; */
 multiline_comment|/* make checkconfig does not walk through include tree :-( */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;matroxfb_DAC1064.h&quot;
@@ -39,11 +39,16 @@ r_int
 id|ptr
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 DECL|macro|minfo
 mdefine_line|#define minfo ((struct matrox_fb_info*)ptr)
-id|matroxfb_DAC_lock
+id|matroxfb_DAC_lock_irqsave
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|outDAC1064
@@ -87,9 +92,10 @@ id|cursor.timer
 )paren
 )paren
 suffix:semicolon
-id|matroxfb_DAC_unlock
+id|matroxfb_DAC_unlock_irqrestore
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 DECL|macro|minfo
@@ -4240,8 +4246,17 @@ c_func
 (paren
 id|devflags.accelerator
 )paren
-op_ne
+op_eq
 id|FB_ACCEL_MATROX_MGAG100
+ques
+c_cond
+id|ACCESS_FBINFO
+c_func
+(paren
+id|devflags.sgram
+)paren
+suffix:colon
+l_int|1
 suffix:semicolon
 id|ACCESS_FBINFO
 c_func

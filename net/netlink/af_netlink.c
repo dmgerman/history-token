@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * NETLINK      Kernel-user communication protocol.&n; *&n; * &t;&t;Authors:&t;Alan Cox &lt;alan@redhat.com&gt;&n; * &t;&t;&t;&t;Alexey Kuznetsov &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; * &n; */
+multiline_comment|/*&n; * NETLINK      Kernel-user communication protocol.&n; *&n; * &t;&t;Authors:&t;Alan Cox &lt;alan@redhat.com&gt;&n; * &t;&t;&t;&t;Alexey Kuznetsov &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; * &n; * Tue Jun 26 14:36:48 MEST 2001 Herbert &quot;herp&quot; Rosmanith&n; *                               added netlink_proto_exit&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -4521,11 +4521,43 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|netlink_proto_exit
+r_static
+r_void
+id|__exit
+id|netlink_proto_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|sock_unregister
+c_func
+(paren
+id|PF_NETLINK
+)paren
+suffix:semicolon
+id|remove_proc_entry
+c_func
+(paren
+l_string|&quot;net/netlink&quot;
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
 DECL|variable|netlink_proto_init
 id|module_init
 c_func
 (paren
 id|netlink_proto_init
+)paren
+suffix:semicolon
+DECL|variable|netlink_proto_exit
+id|module_exit
+c_func
+(paren
+id|netlink_proto_exit
 )paren
 suffix:semicolon
 eof
