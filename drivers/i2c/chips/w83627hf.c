@@ -122,12 +122,20 @@ l_string|&quot;Set to zero to bypass chip initialization&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* modified from kernel/include/traps.c */
-DECL|macro|REG
-mdefine_line|#define&t;REG&t;0x2e&t;/* The register to read/write */
+DECL|variable|REG
+r_static
+r_int
+id|REG
+suffix:semicolon
+multiline_comment|/* The register to read/write */
 DECL|macro|DEV
 mdefine_line|#define&t;DEV&t;0x07&t;/* Register: Logical device select */
-DECL|macro|VAL
-mdefine_line|#define&t;VAL&t;0x2f&t;/* The value to read/write */
+DECL|variable|VAL
+r_static
+r_int
+id|VAL
+suffix:semicolon
+multiline_comment|/* The value to read/write */
 multiline_comment|/* logical device numbers for superio_select (below) */
 DECL|macro|W83627HF_LD_FDC
 mdefine_line|#define W83627HF_LD_FDC&t;&t;0x00
@@ -3243,12 +3251,25 @@ id|w83627hf_find
 c_func
 (paren
 r_int
+id|sioaddr
+comma
+r_int
 op_star
 id|address
 )paren
 (brace
 id|u16
 id|val
+suffix:semicolon
+id|REG
+op_assign
+id|sioaddr
+suffix:semicolon
+id|VAL
+op_assign
+id|sioaddr
+op_plus
+l_int|1
 suffix:semicolon
 id|superio_enter
 c_func
@@ -5945,6 +5966,17 @@ c_cond
 id|w83627hf_find
 c_func
 (paren
+l_int|0x2e
+comma
+op_amp
+id|addr
+)paren
+op_logical_and
+id|w83627hf_find
+c_func
+(paren
+l_int|0x4e
+comma
 op_amp
 id|addr
 )paren
