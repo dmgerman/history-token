@@ -3923,8 +3923,14 @@ id|epnum
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/* NOTE assumption that only ep0 is a control endpoint */
 r_if
 c_cond
+(paren
+id|epnum
+op_ne
+l_int|0
+op_logical_and
 (paren
 (paren
 id|tmp
@@ -3933,6 +3939,7 @@ id|endpoint
 )paren
 op_amp
 id|USB_DIR_IN
+)paren
 )paren
 r_continue
 suffix:semicolon

@@ -273,6 +273,11 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+id|create_debug_files
+(paren
+id|ohci
+)paren
+suffix:semicolon
 macro_line|#ifdef&t;DEBUG
 id|ohci_dump
 (paren
@@ -317,6 +322,9 @@ id|flags
 suffix:semicolon
 id|u16
 id|cmd
+suffix:semicolon
+id|u32
+id|tmp
 suffix:semicolon
 r_if
 c_cond
@@ -499,50 +507,38 @@ l_int|500
 )paren
 suffix:semicolon
 multiline_comment|/* No schedule here ! */
-r_switch
-c_cond
-(paren
+id|tmp
+op_assign
 id|readl
 (paren
 op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
-op_amp
+op_or
 id|OHCI_CTRL_HCFS
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|tmp
 )paren
 (brace
 r_case
 id|OHCI_USB_RESET
 suffix:colon
-id|ohci_dbg
-(paren
-id|ohci
-comma
-l_string|&quot;suspend-&gt;reset ?&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 id|OHCI_USB_RESUME
 suffix:colon
-id|ohci_dbg
-(paren
-id|ohci
-comma
-l_string|&quot;suspend-&gt;resume ?&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 id|OHCI_USB_OPER
 suffix:colon
-id|ohci_dbg
+id|ohci_err
 (paren
 id|ohci
 comma
-l_string|&quot;suspend-&gt;operational ?&bslash;n&quot;
+l_string|&quot;can&squot;t suspend; hcfs %d&bslash;n&quot;
+comma
+id|tmp
 )paren
 suffix:semicolon
 r_break

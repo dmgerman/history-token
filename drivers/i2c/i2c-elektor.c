@@ -572,15 +572,9 @@ op_amp
 id|pcf_isa_data
 comma
 dot
-id|dev
-op_assign
-(brace
-dot
 id|name
 op_assign
 l_string|&quot;PCF8584 ISA adapter&quot;
-comma
-)brace
 comma
 )brace
 suffix:semicolon

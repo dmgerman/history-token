@@ -2402,15 +2402,9 @@ op_amp
 id|smbus_algorithm
 comma
 dot
-id|dev
-op_assign
-(brace
-dot
 id|name
 op_assign
 l_string|&quot;unset&quot;
-comma
-)brace
 comma
 )brace
 suffix:semicolon
@@ -2619,7 +2613,7 @@ suffix:semicolon
 id|snprintf
 c_func
 (paren
-id|i801_adapter.dev.name
+id|i801_adapter.name
 comma
 id|DEVICE_NAME_SIZE
 comma

@@ -1,7 +1,7 @@
 macro_line|#ifndef __MACIO_ASIC_H__
 DECL|macro|__MACIO_ASIC_H__
 mdefine_line|#define __MACIO_ASIC_H__
-macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;asm/of_device.h&gt;
 r_extern
 r_struct
 id|bus_type
@@ -18,7 +18,7 @@ DECL|macro|MACIO_DEV_COUNT_RESOURCE
 mdefine_line|#define MACIO_DEV_COUNT_RESOURCE&t;8
 DECL|macro|MACIO_DEV_COUNT_IRQS
 mdefine_line|#define MACIO_DEV_COUNT_IRQS&t;&t;8
-multiline_comment|/*&n; * the macio_bus structure is used to describe a &quot;virtual&quot; bus&n; * within a MacIO ASIC. It&squot;s typically provided by a macio_pci_asic&n; * PCI device, but could be provided differently as well (nubus&n; * machines using a fake OF tree).&n; */
+multiline_comment|/*&n; * the macio_bus structure is used to describe a &quot;virtual&quot; bus&n; * within a MacIO ASIC. It&squot;s typically provided by a macio_pci_asic&n; * PCI device, but could be provided differently as well (nubus&n; * machines using a fake OF tree).&n; * &n; * The pdev field can be NULL on non-PCI machines&n; */
 DECL|struct|macio_bus
 r_struct
 id|macio_bus
@@ -30,6 +30,12 @@ op_star
 id|chip
 suffix:semicolon
 multiline_comment|/* macio_chip (private use) */
+DECL|member|index
+r_int
+id|index
+suffix:semicolon
+multiline_comment|/* macio chip index in system */
+macro_line|#ifdef CONFIG_PCI
 DECL|member|pdev
 r_struct
 id|pci_dev
@@ -37,12 +43,7 @@ op_star
 id|pdev
 suffix:semicolon
 multiline_comment|/* PCI device hosting this bus */
-DECL|member|devices
-r_struct
-id|list_head
-id|devices
-suffix:semicolon
-multiline_comment|/* list of devices on this bus */
+macro_line|#endif&t;
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * the macio_dev structure is used to describe a device&n; * within an Apple MacIO ASIC.&n; */
@@ -56,87 +57,30 @@ id|macio_bus
 op_star
 id|bus
 suffix:semicolon
-multiline_comment|/* virtual bus this device is on */
-DECL|member|node
+multiline_comment|/* macio bus this device is on */
+DECL|member|media_bay
 r_struct
-id|device_node
+id|macio_dev
 op_star
-id|node
+id|media_bay
 suffix:semicolon
-multiline_comment|/* OF node */
-DECL|member|driver
+multiline_comment|/* Device is part of a media bay */
+DECL|member|ofdev
 r_struct
-id|macio_driver
-op_star
-id|driver
+id|of_device
+id|ofdev
 suffix:semicolon
-multiline_comment|/* which driver allocated this device */
-DECL|member|driver_data
-r_void
-op_star
-id|driver_data
-suffix:semicolon
-multiline_comment|/* placeholder for driver specific stuffs */
-DECL|member|resources
-r_struct
-id|resource
-id|resources
-(braket
-id|MACIO_DEV_COUNT_RESOURCE
-)braket
-suffix:semicolon
-multiline_comment|/* I/O */
-DECL|member|irqs
-r_int
-id|irqs
-(braket
-id|MACIO_DEV_COUNT_IRQS
-)braket
-suffix:semicolon
-DECL|member|dev
-r_struct
-id|device
-id|dev
-suffix:semicolon
-multiline_comment|/* Generic device interface */
 )brace
 suffix:semicolon
 DECL|macro|to_macio_device
-mdefine_line|#define&t;to_macio_device(d) container_of(d, struct macio_dev, dev)
-multiline_comment|/*&n; * Struct used for matching a device&n; */
-DECL|struct|macio_match
-r_struct
-id|macio_match
-(brace
-DECL|member|name
-r_char
-op_star
-id|name
-suffix:semicolon
-DECL|member|type
-r_char
-op_star
-id|type
-suffix:semicolon
-DECL|member|compatible
-r_char
-op_star
-id|compatible
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|macro|MACIO_ANY_MATCH
-mdefine_line|#define MACIO_ANY_MATCH&t;&t;((char *)-1L)
+mdefine_line|#define&t;to_macio_device(d) container_of(d, struct macio_dev, ofdev.dev)
+DECL|macro|of_to_macio_device
+mdefine_line|#define&t;of_to_macio_device(d) container_of(d, struct macio_dev, ofdev)
 multiline_comment|/*&n; * A driver for a mac-io chip based device&n; */
 DECL|struct|macio_driver
 r_struct
 id|macio_driver
 (brace
-DECL|member|node
-r_struct
-id|list_head
-id|node
-suffix:semicolon
 DECL|member|name
 r_char
 op_star
@@ -144,9 +88,15 @@ id|name
 suffix:semicolon
 DECL|member|match_table
 r_struct
-id|macio_match
+id|of_match
 op_star
 id|match_table
+suffix:semicolon
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
 suffix:semicolon
 DECL|member|probe
 r_int
@@ -162,7 +112,7 @@ id|dev
 comma
 r_const
 r_struct
-id|macio_match
+id|of_match
 op_star
 id|match
 )paren

@@ -1125,7 +1125,6 @@ suffix:semicolon
 DECL|function|st5481_setup_b_out
 r_static
 r_int
-id|__devinit
 id|st5481_setup_b_out
 c_func
 (paren
@@ -1176,7 +1175,7 @@ id|dev-&gt;config-&gt;interface
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|altsetting
 (braket
 l_int|3
@@ -1280,7 +1279,6 @@ suffix:semicolon
 )brace
 DECL|function|st5481_setup_b
 r_int
-id|__devinit
 id|st5481_setup_b
 c_func
 (paren

@@ -995,6 +995,11 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+id|create_debug_files
+(paren
+id|ohci
+)paren
+suffix:semicolon
 macro_line|#ifdef&t;DEBUG
 id|ohci_dump
 (paren

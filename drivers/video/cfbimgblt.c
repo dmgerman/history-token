@@ -1552,7 +1552,7 @@ r_if
 c_cond
 (paren
 id|image-&gt;depth
-op_eq
+op_le
 id|bpp
 )paren
 id|color_imageblit

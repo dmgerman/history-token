@@ -120,7 +120,7 @@ r_char
 op_star
 id|name
 op_assign
-id|dev-&gt;dev.name
+id|dev-&gt;pretty_name
 suffix:semicolon
 r_do
 (brace

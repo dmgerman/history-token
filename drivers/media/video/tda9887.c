@@ -1729,15 +1729,9 @@ op_amp
 id|driver
 comma
 dot
-id|dev
-op_assign
-(brace
-dot
 id|name
 op_assign
 l_string|&quot;tda9887&quot;
-comma
-)brace
 comma
 )brace
 suffix:semicolon

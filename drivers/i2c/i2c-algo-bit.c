@@ -2433,7 +2433,7 @@ c_func
 (paren
 id|bit_adap
 comma
-id|adap-&gt;dev.name
+id|adap-&gt;name
 )paren
 suffix:semicolon
 r_if
