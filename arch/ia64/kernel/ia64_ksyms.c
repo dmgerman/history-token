@@ -263,6 +263,23 @@ c_func
 id|clear_page
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_VIRTUAL_MEM_MAP
+macro_line|#include &lt;asm/pgtable.h&gt;
+DECL|variable|vmalloc_end
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vmalloc_end
+)paren
+suffix:semicolon
+DECL|variable|ia64_pfn_valid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_pfn_valid
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#include &lt;asm/processor.h&gt;
 DECL|variable|cpu_info__per_cpu
 id|EXPORT_SYMBOL
