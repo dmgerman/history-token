@@ -2241,6 +2241,15 @@ id|tss-&gt;esp0
 op_assign
 id|next-&gt;esp0
 suffix:semicolon
+multiline_comment|/*&n;&t; * Load the per-thread Thread-Local Storage descriptor.&n;&t; *&n;&t; * NOTE: it&squot;s faster to do the two stores unconditionally&n;&t; * than to branch away.&n;&t; */
+id|load_TLS_desc
+c_func
+(paren
+id|next
+comma
+id|cpu
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Save away %fs and %gs. No need to save %es and %ds, as&n;&t; * those are always kernel segments while inside the kernel.&n;&t; */
 id|asm
 r_volatile
@@ -2310,15 +2319,6 @@ id|next-&gt;gs
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Load the per-thread Thread-Local Storage descriptor.&n;&t; *&n;&t; * NOTE: it&squot;s faster to do the two stores unconditionally&n;&t; * than to branch away.&n;&t; */
-id|load_TLS_desc
-c_func
-(paren
-id|next
-comma
-id|cpu
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Now maybe reload the debug registers&n;&t; */
 r_if
 c_cond
