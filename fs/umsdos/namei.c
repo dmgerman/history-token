@@ -762,6 +762,8 @@ comma
 id|S_IFREG
 op_or
 l_int|0777
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -908,6 +910,11 @@ id|dentry
 comma
 r_int
 id|mode
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_return

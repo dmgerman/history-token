@@ -614,6 +614,8 @@ c_func
 id|inode
 comma
 id|MAY_READ
+comma
+l_int|NULL
 )paren
 op_ne
 l_int|0

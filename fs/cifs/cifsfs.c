@@ -639,6 +639,11 @@ id|inode
 comma
 r_int
 id|mask
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 multiline_comment|/* the server does permission checks, we do not need to do it here */

@@ -9,6 +9,9 @@ macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;asm/bug.h&gt;
 r_struct
+id|nameidata
+suffix:semicolon
+r_struct
 id|vfsmount
 suffix:semicolon
 multiline_comment|/*&n; * linux/include/linux/dcache.h&n; *&n; * Dirent cache data structures&n; *&n; * (C) Copyright 1997 Thomas Schoebel-Theuer,&n; * with heavy changes by Linus Torvalds&n; */
@@ -369,7 +372,9 @@ r_struct
 id|dentry
 op_star
 comma
-r_int
+r_struct
+id|nameidata
+op_star
 )paren
 suffix:semicolon
 DECL|member|d_hash

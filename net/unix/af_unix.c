@@ -2218,6 +2218,9 @@ c_func
 id|nd.dentry-&gt;d_inode
 comma
 id|MAY_WRITE
+comma
+op_amp
+id|nd
 )paren
 suffix:semicolon
 r_if

@@ -19,6 +19,10 @@ comma
 r_struct
 id|dentry
 op_star
+comma
+r_struct
+id|nameidata
+op_star
 )paren
 suffix:semicolon
 r_static
@@ -116,6 +120,10 @@ op_star
 comma
 r_struct
 id|dentry
+op_star
+comma
+r_struct
+id|nameidata
 op_star
 )paren
 suffix:semicolon
@@ -621,8 +629,10 @@ id|dentry
 op_star
 id|dentry
 comma
-r_int
-id|flags
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_struct
@@ -814,8 +824,10 @@ id|dentry
 op_star
 id|dentry
 comma
-r_int
-id|flags
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_struct
@@ -969,6 +981,11 @@ r_struct
 id|dentry
 op_star
 id|dentry
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 macro_line|#if 0
@@ -1023,6 +1040,11 @@ r_struct
 id|dentry
 op_star
 id|dentry
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_struct
@@ -1147,7 +1169,7 @@ id|dentry-&gt;d_op-&gt;d_revalidate
 (paren
 id|dentry
 comma
-l_int|0
+id|nd
 )paren
 suffix:semicolon
 id|down

@@ -29,6 +29,10 @@ comma
 r_struct
 id|dentry
 op_star
+comma
+r_struct
+id|nameidata
+op_star
 )paren
 suffix:semicolon
 r_static
@@ -585,7 +589,7 @@ id|ino
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * vxfs_lookup - lookup pathname component&n; * @dip:&t;dir in which we lookup&n; * @dp:&t;&t;dentry we lookup&n; *&n; * Description:&n; *   vxfs_lookup tries to lookup the pathname component described&n; *   by @dp in @dip.&n; *&n; * Returns:&n; *   A NULL-pointer on success, else an negative error code encoded&n; *   in the return pointer.&n; */
+multiline_comment|/**&n; * vxfs_lookup - lookup pathname component&n; * @dip:&t;dir in which we lookup&n; * @dp:&t;&t;dentry we lookup&n; * @nd:&t;&t;lookup nameidata&n; *&n; * Description:&n; *   vxfs_lookup tries to lookup the pathname component described&n; *   by @dp in @dip.&n; *&n; * Returns:&n; *   A NULL-pointer on success, else an negative error code encoded&n; *   in the return pointer.&n; */
 r_static
 r_struct
 id|dentry
@@ -603,6 +607,11 @@ r_struct
 id|dentry
 op_star
 id|dp
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_struct

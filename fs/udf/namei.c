@@ -1400,7 +1400,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * udf_lookup&n; *&n; * PURPOSE&n; *&t;Look-up the inode for a given name.&n; *&n; * DESCRIPTION&n; *&t;Required - lookup_dentry() will return -ENOTDIR if this routine is not&n; *&t;available for a directory. The filesystem is useless if this routine is&n; *&t;not available for at least the filesystem&squot;s root directory.&n; *&n; *&t;This routine is passed an incomplete dentry - it must be completed by&n; *&t;calling d_add(dentry, inode). If the name does not exist, then the&n; *&t;specified inode must be set to null. An error should only be returned&n; *&t;when the lookup fails for a reason other than the name not existing.&n; *&t;Note that the directory inode semaphore is held during the call.&n; *&n; *&t;Refer to lookup_dentry() in fs/namei.c&n; *&t;lookup_dentry() -&gt; lookup() -&gt; real_lookup() -&gt; .&n; *&n; * PRE-CONDITIONS&n; *&t;dir&t;&t;&t;Pointer to inode of parent directory.&n; *&t;dentry&t;&t;&t;Pointer to dentry to complete.&n; *&n; * POST-CONDITIONS&n; *&t;&lt;return&gt;&t;&t;Zero on success.&n; *&n; * HISTORY&n; *&t;July 1, 1997 - Andrew E. Mileski&n; *&t;Written, tested, and released.&n; */
+multiline_comment|/*&n; * udf_lookup&n; *&n; * PURPOSE&n; *&t;Look-up the inode for a given name.&n; *&n; * DESCRIPTION&n; *&t;Required - lookup_dentry() will return -ENOTDIR if this routine is not&n; *&t;available for a directory. The filesystem is useless if this routine is&n; *&t;not available for at least the filesystem&squot;s root directory.&n; *&n; *&t;This routine is passed an incomplete dentry - it must be completed by&n; *&t;calling d_add(dentry, inode). If the name does not exist, then the&n; *&t;specified inode must be set to null. An error should only be returned&n; *&t;when the lookup fails for a reason other than the name not existing.&n; *&t;Note that the directory inode semaphore is held during the call.&n; *&n; *&t;Refer to lookup_dentry() in fs/namei.c&n; *&t;lookup_dentry() -&gt; lookup() -&gt; real_lookup() -&gt; .&n; *&n; * PRE-CONDITIONS&n; *&t;dir&t;&t;&t;Pointer to inode of parent directory.&n; *&t;dentry&t;&t;&t;Pointer to dentry to complete.&n; *&t;nd&t;&t;&t;Pointer to lookup nameidata&n; *&n; * POST-CONDITIONS&n; *&t;&lt;return&gt;&t;&t;Zero on success.&n; *&n; * HISTORY&n; *&t;July 1, 1997 - Andrew E. Mileski&n; *&t;Written, tested, and released.&n; */
 r_static
 r_struct
 id|dentry
@@ -1418,6 +1418,11 @@ r_struct
 id|dentry
 op_star
 id|dentry
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_struct
@@ -3214,6 +3219,11 @@ id|dentry
 comma
 r_int
 id|mode
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_struct

@@ -122,6 +122,8 @@ c_func
 id|parent-&gt;d_inode
 comma
 id|S_IXOTH
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

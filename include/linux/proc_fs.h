@@ -301,6 +301,10 @@ r_struct
 id|dentry
 op_star
 id|dentry
+comma
+r_struct
+id|nameidata
+op_star
 )paren
 suffix:semicolon
 r_struct
@@ -463,6 +467,10 @@ op_star
 comma
 r_struct
 id|dentry
+op_star
+comma
+r_struct
+id|nameidata
 op_star
 )paren
 suffix:semicolon

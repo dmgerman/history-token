@@ -452,6 +452,10 @@ r_struct
 id|dentry
 op_star
 id|dentry
+comma
+r_struct
+id|nameidata
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/* super.c */

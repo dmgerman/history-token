@@ -1022,6 +1022,9 @@ c_func
 id|inode
 comma
 id|MAY_WRITE
+comma
+op_amp
+id|nd
 )paren
 suffix:semicolon
 r_if
@@ -1633,6 +1636,9 @@ c_func
 id|inode
 comma
 id|MAY_WRITE
+comma
+op_amp
+id|nd
 )paren
 )paren
 op_ne
@@ -1836,6 +1842,9 @@ c_func
 id|inode
 comma
 id|MAY_WRITE
+comma
+op_amp
+id|nd
 )paren
 )paren
 op_ne
@@ -2032,10 +2041,14 @@ id|current-&gt;cap_permitted
 suffix:semicolon
 id|res
 op_assign
-id|user_path_walk
+id|__user_walk
 c_func
 (paren
 id|filename
+comma
+id|LOOKUP_FOLLOW
+op_or
+id|LOOKUP_ACCESS
 comma
 op_amp
 id|nd
@@ -2056,6 +2069,9 @@ c_func
 id|nd.dentry-&gt;d_inode
 comma
 id|mode
+comma
+op_amp
+id|nd
 )paren
 suffix:semicolon
 multiline_comment|/* SuS v2 requires we report a read only fs too */
@@ -2166,6 +2182,9 @@ c_func
 id|nd.dentry-&gt;d_inode
 comma
 id|MAY_EXEC
+comma
+op_amp
+id|nd
 )paren
 suffix:semicolon
 r_if
@@ -2295,6 +2314,8 @@ c_func
 id|inode
 comma
 id|MAY_EXEC
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -2380,6 +2401,9 @@ c_func
 id|nd.dentry-&gt;d_inode
 comma
 id|MAY_EXEC
+comma
+op_amp
+id|nd
 )paren
 suffix:semicolon
 r_if
