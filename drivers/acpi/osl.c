@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  acpi_osl.c - OS-dependent functions ($Revision: 78 $)&n; *&n; *  Copyright (C) 2000       Andrew Henroid&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; */
+multiline_comment|/*&n; *  acpi_osl.c - OS-dependent functions ($Revision: 83 $)&n; *&n; *  Copyright (C) 2000       Andrew Henroid&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -20,7 +20,7 @@ id|phys_addr
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef _IA64
+macro_line|#ifdef CONFIG_IA64
 macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#endif
@@ -457,12 +457,15 @@ macro_line|#ifdef CONFIG_ACPI_EFI
 r_if
 c_cond
 (paren
-id|EFI_MEMORY_UC
+op_logical_neg
+(paren
+id|EFI_MEMORY_WB
 op_amp
 id|efi_mem_attributes
 c_func
 (paren
 id|phys
+)paren
 )paren
 )paren
 (brace
@@ -682,16 +685,16 @@ op_star
 id|context
 )paren
 (brace
-macro_line|#ifdef _IA64
+macro_line|#ifdef CONFIG_IA64
 id|irq
 op_assign
-id|isa_irq_to_vector
+id|gsi_to_vector
 c_func
 (paren
 id|irq
 )paren
 suffix:semicolon
-macro_line|#endif /*_IA64*/
+macro_line|#endif
 id|acpi_irq_irq
 op_assign
 id|irq
@@ -758,16 +761,16 @@ c_cond
 id|acpi_irq_handler
 )paren
 (brace
-macro_line|#ifdef _IA64
+macro_line|#ifdef CONFIG_IA64
 id|irq
 op_assign
-id|isa_irq_to_vector
+id|gsi_to_vector
 c_func
 (paren
 id|irq
 )paren
 suffix:semicolon
-macro_line|#endif /*_IA64*/
+macro_line|#endif
 id|free_irq
 c_func
 (paren
@@ -1061,7 +1064,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|EFI_MEMORY_UC
+id|EFI_MEMORY_WB
 op_amp
 id|efi_mem_attributes
 c_func
@@ -1069,6 +1072,17 @@ c_func
 id|phys_addr
 )paren
 )paren
+(brace
+id|virt_addr
+op_assign
+id|phys_to_virt
+c_func
+(paren
+id|phys_addr
+)paren
+suffix:semicolon
+)brace
+r_else
 (brace
 id|iomem
 op_assign
@@ -1085,15 +1099,6 @@ id|width
 )paren
 suffix:semicolon
 )brace
-r_else
-id|virt_addr
-op_assign
-id|phys_to_virt
-c_func
-(paren
-id|phys_addr
-)paren
-suffix:semicolon
 macro_line|#else
 id|virt_addr
 op_assign
@@ -1231,7 +1236,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|EFI_MEMORY_UC
+id|EFI_MEMORY_WB
 op_amp
 id|efi_mem_attributes
 c_func
@@ -1239,6 +1244,17 @@ c_func
 id|phys_addr
 )paren
 )paren
+(brace
+id|virt_addr
+op_assign
+id|phys_to_virt
+c_func
+(paren
+id|phys_addr
+)paren
+suffix:semicolon
+)brace
+r_else
 (brace
 id|iomem
 op_assign
@@ -1255,15 +1271,6 @@ id|width
 )paren
 suffix:semicolon
 )brace
-r_else
-id|virt_addr
-op_assign
-id|phys_to_virt
-c_func
-(paren
-id|phys_addr
-)paren
-suffix:semicolon
 macro_line|#else
 id|virt_addr
 op_assign
@@ -2004,12 +2011,12 @@ r_case
 id|OSD_PRIORITY_GPE
 suffix:colon
 (brace
-r_static
+multiline_comment|/*&n;&t;&t; * Allocate/initialize DPC structure.  Note that this memory will be&n;&t;&t; * freed by the callee.  The kernel handles the tq_struct list  in a&n;&t;&t; * way that allows us to also free its memory inside the callee.&n;&t;&t; * Because we may want to schedule several tasks with different&n;&t;&t; * parameters we can&squot;t use the approach some kernel code uses of&n;&t;&t; * having a static tq_struct.&n;&t;&t; * We can save time and code by allocating the DPC and tq_structs&n;&t;&t; * from the same memory.&n;&t;&t; */
 r_struct
 id|tq_struct
+op_star
 id|task
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Allocate/initialize DPC structure.  Note that this memory will be&n;&t;&t; * freed by the callee.&n;&t;&t; */
 id|dpc
 op_assign
 id|kmalloc
@@ -2018,6 +2025,12 @@ c_func
 r_sizeof
 (paren
 id|ACPI_OS_DPC
+)paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|tq_struct
 )paren
 comma
 id|GFP_ATOMIC
@@ -2042,32 +2055,31 @@ id|dpc-&gt;context
 op_assign
 id|context
 suffix:semicolon
-id|memset
-c_func
-(paren
-op_amp
 id|task
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|tq_struct
-)paren
-)paren
-suffix:semicolon
-id|task.routine
-op_assign
-id|acpi_os_schedule_exec
-suffix:semicolon
-id|task.data
 op_assign
 (paren
 r_void
 op_star
 )paren
+(paren
 id|dpc
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+id|INIT_TQUEUE
+c_func
+(paren
+id|task
+comma
+id|acpi_os_schedule_exec
+comma
+(paren
+r_void
+op_star
+)paren
+id|dpc
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2075,7 +2087,6 @@ c_cond
 id|schedule_task
 c_func
 (paren
-op_amp
 id|task
 )paren
 OL
@@ -2089,6 +2100,12 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Call to schedule_task() failed.&bslash;n&quot;
 )paren
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|dpc
 )paren
 suffix:semicolon
 id|status
