@@ -662,6 +662,7 @@ id|enable
 suffix:semicolon
 multiline_comment|/*&n; * Function ali_ircc_init ()&n; *&n; *    Initialize chip. Find out whay kinds of chips we are dealing with&n; *    and their configuation registers address&n; */
 DECL|function|ali_ircc_init
+r_static
 r_int
 id|__init
 id|ali_ircc_init

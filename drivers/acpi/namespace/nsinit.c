@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsinit - namespace initialization&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; * Copyright (C) 2000 - 2003, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
 macro_line|#include &lt;acpi/acdispat.h&gt;
@@ -203,18 +203,40 @@ l_string|&quot;Executing all Device _STA and_INI methods:&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Walk namespace for all objects of type Device */
+id|status
+op_assign
+id|acpi_ut_acquire_mutex
+(paren
+id|ACPI_MTX_NAMESPACE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Walk namespace for all objects of type Device or Processor */
 id|status
 op_assign
 id|acpi_ns_walk_namespace
 (paren
-id|ACPI_TYPE_DEVICE
+id|ACPI_TYPE_ANY
 comma
 id|ACPI_ROOT_OBJECT
 comma
 id|ACPI_UINT32_MAX
 comma
-id|FALSE
+id|TRUE
 comma
 id|acpi_ns_init_one_device
 comma
@@ -222,6 +244,14 @@ op_amp
 id|info
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+(paren
+r_void
+)paren
+id|acpi_ut_release_mutex
+(paren
+id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
 r_if
@@ -544,7 +574,10 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Could not execute arguments for [%4.4s] (%s), %s&bslash;n&quot;
 comma
-id|node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|node
+)paren
 comma
 id|acpi_ut_get_type_name
 (paren
@@ -641,6 +674,49 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;ns_init_one_device&quot;
 )paren
 suffix:semicolon
+id|node
+op_assign
+id|acpi_ns_map_handle_to_node
+(paren
+id|obj_handle
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|node
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_BAD_PARAMETER
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * We will run _STA/_INI on Devices and Processors only&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|node-&gt;type
+op_ne
+id|ACPI_TYPE_DEVICE
+)paren
+op_logical_and
+(paren
+id|node-&gt;type
+op_ne
+id|ACPI_TYPE_PROCESSOR
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -673,78 +749,6 @@ suffix:semicolon
 id|info-&gt;device_count
 op_increment
 suffix:semicolon
-id|status
-op_assign
-id|acpi_ut_acquire_mutex
-(paren
-id|ACPI_MTX_NAMESPACE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
-id|node
-op_assign
-id|acpi_ns_map_handle_to_node
-(paren
-id|obj_handle
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|node
-)paren
-(brace
-(paren
-r_void
-)paren
-id|acpi_ut_release_mutex
-(paren
-id|ACPI_MTX_NAMESPACE
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|AE_BAD_PARAMETER
-)paren
-suffix:semicolon
-)brace
-id|status
-op_assign
-id|acpi_ut_release_mutex
-(paren
-id|ACPI_MTX_NAMESPACE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Run _STA to determine if we can run _INI on the device.&n;&t; */
 id|ACPI_DEBUG_EXEC
 (paren
@@ -777,6 +781,14 @@ id|status
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|node-&gt;type
+op_eq
+id|ACPI_TYPE_DEVICE
+)paren
+(brace
 multiline_comment|/* Ignore error and move on to next device */
 id|return_ACPI_STATUS
 (paren
@@ -784,6 +796,10 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* _STA is not required for Processor objects */
+)brace
+r_else
+(brace
 id|info-&gt;num_STA
 op_increment
 suffix:semicolon
@@ -798,13 +814,14 @@ l_int|0x01
 )paren
 )paren
 (brace
-multiline_comment|/* don&squot;t look at children of a not present device */
+multiline_comment|/* Don&squot;t look at children of a not present device */
 id|return_ACPI_STATUS
 c_func
 (paren
 id|AE_CTRL_DEPTH
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * The device is present. Run _INI.&n;&t; */
 id|ACPI_DEBUG_EXEC

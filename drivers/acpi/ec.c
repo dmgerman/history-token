@@ -1691,8 +1691,6 @@ r_struct
 id|proc_dir_entry
 op_star
 id|acpi_ec_dir
-op_assign
-l_int|NULL
 suffix:semicolon
 r_static
 r_int

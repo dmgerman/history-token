@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: exdump - Interpreter debug output routines&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; * Copyright (C) 2000 - 2003, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acinterp.h&gt;
 macro_line|#include &lt;acpi/amlcode.h&gt;
@@ -75,10 +75,10 @@ op_logical_neg
 id|obj_desc
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * This usually indicates that something serious is wrong --&n;&t;&t; * since most (if not all)&n;&t;&t; * code that dumps the stack expects something to be there!&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This usually indicates that something serious is wrong&n;&t;&t; */
 id|acpi_os_printf
 (paren
-l_string|&quot;Null stack entry ptr&bslash;n&quot;
+l_string|&quot;Null Object Descriptor&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -100,7 +100,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;%p NS Node: &quot;
+l_string|&quot;%p is a NS Node: &quot;
 comma
 id|obj_desc
 )paren
@@ -132,9 +132,14 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;%p is not a local object&bslash;n&quot;
+l_string|&quot;%p is not a node or operand object: [%s]&bslash;n&quot;
 comma
 id|obj_desc
+comma
+id|acpi_ut_get_descriptor_name
+(paren
+id|obj_desc
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -152,7 +157,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*  obj_desc is a valid object */
+multiline_comment|/* obj_desc is a valid object */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -260,19 +265,12 @@ op_eq
 id|ACPI_TYPE_INTEGER
 )paren
 (brace
-multiline_comment|/* Value is a Number */
+multiline_comment|/* Value is an Integer */
 id|acpi_os_printf
 (paren
 l_string|&quot; value is [%8.8X%8.8x]&quot;
 comma
-id|ACPI_HIDWORD
-c_func
-(paren
-id|obj_desc-&gt;integer.value
-)paren
-comma
-id|ACPI_LODWORD
-c_func
+id|ACPI_FORMAT_UINT64
 (paren
 id|obj_desc-&gt;integer.value
 )paren
@@ -307,19 +305,12 @@ op_eq
 id|ACPI_TYPE_INTEGER
 )paren
 (brace
-multiline_comment|/* Value is a Number */
+multiline_comment|/* Value is an Integer */
 id|acpi_os_printf
 (paren
 l_string|&quot; value is [%8.8X%8.8x]&quot;
 comma
-id|ACPI_HIDWORD
-c_func
-(paren
-id|obj_desc-&gt;integer.value
-)paren
-comma
-id|ACPI_LODWORD
-c_func
+id|ACPI_FORMAT_UINT64
 (paren
 id|obj_desc-&gt;integer.value
 )paren
@@ -347,7 +338,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/*  unknown opcode  */
+multiline_comment|/* Unknown opcode */
 id|acpi_os_printf
 (paren
 l_string|&quot;Unknown Reference opcode=%X&bslash;n&quot;
@@ -439,12 +430,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Integer %8.8X%8.8X&bslash;n&quot;
 comma
-id|ACPI_HIDWORD
-(paren
-id|obj_desc-&gt;integer.value
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|obj_desc-&gt;integer.value
 )paren
@@ -553,12 +539,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot; base %8.8X%8.8X Length %X&bslash;n&quot;
 comma
-id|ACPI_HIDWORD
-(paren
-id|obj_desc-&gt;region.address
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|obj_desc-&gt;region.address
 )paren
@@ -1047,12 +1028,7 @@ l_string|&quot;%20s : %8.8X%8.8X&bslash;n&quot;
 comma
 id|title
 comma
-id|ACPI_HIDWORD
-(paren
-id|value
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|value
 )paren
@@ -1114,7 +1090,10 @@ l_string|&quot;%20s : %4.4s&bslash;n&quot;
 comma
 l_string|&quot;Name&quot;
 comma
-id|node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|node
+)paren
 )paren
 suffix:semicolon
 id|acpi_ex_out_string
@@ -1306,9 +1285,14 @@ id|ACPI_DESC_TYPE_OPERAND
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot;ex_dump_object_descriptor: %p is not a valid ACPI object&bslash;n&quot;
+l_string|&quot;ex_dump_object_descriptor: %p is not an ACPI operand object: [%s]&bslash;n&quot;
 comma
 id|obj_desc
+comma
+id|acpi_ut_get_descriptor_name
+(paren
+id|obj_desc
+)paren
 )paren
 suffix:semicolon
 id|return_VOID
@@ -1358,12 +1342,7 @@ l_string|&quot;%20s : %8.8X%8.8X&bslash;n&quot;
 comma
 l_string|&quot;Value&quot;
 comma
-id|ACPI_HIDWORD
-(paren
-id|obj_desc-&gt;integer.value
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|obj_desc-&gt;integer.value
 )paren
@@ -1532,9 +1511,9 @@ id|ACPI_TYPE_DEVICE
 suffix:colon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;address_space&quot;
+l_string|&quot;Handler&quot;
 comma
-id|obj_desc-&gt;device.address_space
+id|obj_desc-&gt;device.handler
 )paren
 suffix:semicolon
 id|acpi_ex_out_pointer
@@ -1678,9 +1657,9 @@ id|obj_desc-&gt;region.length
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;address_space&quot;
+l_string|&quot;Handler&quot;
 comma
-id|obj_desc-&gt;region.address_space
+id|obj_desc-&gt;region.handler
 )paren
 suffix:semicolon
 id|acpi_ex_out_pointer
@@ -1768,9 +1747,9 @@ id|obj_desc-&gt;processor.device_notify
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;address_space&quot;
+l_string|&quot;Handler&quot;
 comma
-id|obj_desc-&gt;processor.address_space
+id|obj_desc-&gt;processor.handler
 )paren
 suffix:semicolon
 r_break
@@ -1794,9 +1773,9 @@ id|obj_desc-&gt;thermal_zone.device_notify
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;address_space&quot;
+l_string|&quot;Handler&quot;
 comma
-id|obj_desc-&gt;thermal_zone.address_space
+id|obj_desc-&gt;thermal_zone.handler
 )paren
 suffix:semicolon
 r_break

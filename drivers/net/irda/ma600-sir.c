@@ -109,6 +109,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|ma600_sir_init
+r_static
 r_int
 id|__init
 id|ma600_sir_init
@@ -137,6 +138,7 @@ id|ma600
 suffix:semicolon
 )brace
 DECL|function|ma600_sir_cleanup
+r_static
 r_void
 id|__exit
 id|ma600_sir_cleanup

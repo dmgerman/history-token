@@ -1388,8 +1388,6 @@ r_struct
 id|proc_dir_entry
 op_star
 id|acpi_power_dir
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|function|acpi_power_seq_show
 r_static

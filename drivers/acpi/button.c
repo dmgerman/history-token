@@ -264,8 +264,6 @@ r_struct
 id|proc_dir_entry
 op_star
 id|acpi_button_dir
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|function|acpi_button_info_seq_show
 r_static

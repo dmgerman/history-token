@@ -131,6 +131,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|girbil_init
+r_static
 r_int
 id|__init
 id|girbil_init
@@ -149,6 +150,7 @@ id|dongle
 suffix:semicolon
 )brace
 DECL|function|girbil_cleanup
+r_static
 r_void
 id|__exit
 id|girbil_cleanup

@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; * Copyright (C) 2000 - 2003, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 DECL|macro|DEFINE_ACPI_GLOBALS
 mdefine_line|#define DEFINE_ACPI_GLOBALS
 macro_line|#include &lt;acpi/acpi.h&gt;
@@ -1036,9 +1036,9 @@ id|ACPI_BITREG_RT_CLOCK_STATUS
 comma
 id|ACPI_BITREG_RT_CLOCK_ENABLE
 comma
-l_int|0
+id|ACPI_BITMASK_RT_CLOCK_STATUS
 comma
-l_int|0
+id|ACPI_BITMASK_RT_CLOCK_ENABLE
 )brace
 comma
 )brace
@@ -1375,6 +1375,206 @@ id|ACPI_GET_OBJECT_TYPE
 id|obj_desc
 )paren
 )paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_get_node_name&n; *&n; * PARAMETERS:  Object               - A namespace node&n; *&n; * RETURN:      Pointer to a string&n; *&n; * DESCRIPTION: Validate the node and return the node&squot;s ACPI name.&n; *&n; ****************************************************************************/
+r_char
+op_star
+DECL|function|acpi_ut_get_node_name
+id|acpi_ut_get_node_name
+(paren
+r_void
+op_star
+id|object
+)paren
+(brace
+r_struct
+id|acpi_namespace_node
+op_star
+id|node
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|object
+)paren
+(brace
+r_return
+(paren
+l_string|&quot;NULL NODE&quot;
+)paren
+suffix:semicolon
+)brace
+id|node
+op_assign
+(paren
+r_struct
+id|acpi_namespace_node
+op_star
+)paren
+id|object
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|node-&gt;descriptor
+op_ne
+id|ACPI_DESC_TYPE_NAMED
+)paren
+(brace
+r_return
+(paren
+l_string|&quot;****&quot;
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_ut_valid_acpi_name
+(paren
+op_star
+(paren
+id|u32
+op_star
+)paren
+id|node-&gt;name.ascii
+)paren
+)paren
+(brace
+r_return
+(paren
+l_string|&quot;----&quot;
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+id|node-&gt;name.ascii
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_get_descriptor_name&n; *&n; * PARAMETERS:  Object               - An ACPI object&n; *&n; * RETURN:      Pointer to a string&n; *&n; * DESCRIPTION: Validate object and return the descriptor type&n; *&n; ****************************************************************************/
+DECL|variable|acpi_gbl_desc_type_names
+r_static
+r_const
+r_char
+op_star
+id|acpi_gbl_desc_type_names
+(braket
+)braket
+op_assign
+multiline_comment|/* printable names of descriptor types */
+(brace
+multiline_comment|/* 00 */
+l_string|&quot;Invalid&quot;
+comma
+multiline_comment|/* 01 */
+l_string|&quot;Cached&quot;
+comma
+multiline_comment|/* 02 */
+l_string|&quot;State-Generic&quot;
+comma
+multiline_comment|/* 03 */
+l_string|&quot;State-Update&quot;
+comma
+multiline_comment|/* 04 */
+l_string|&quot;State-Package&quot;
+comma
+multiline_comment|/* 05 */
+l_string|&quot;State-Control&quot;
+comma
+multiline_comment|/* 06 */
+l_string|&quot;State-root_parse_scope&quot;
+comma
+multiline_comment|/* 07 */
+l_string|&quot;State-parse_scope&quot;
+comma
+multiline_comment|/* 08 */
+l_string|&quot;State-walk_scope&quot;
+comma
+multiline_comment|/* 09 */
+l_string|&quot;State-Result&quot;
+comma
+multiline_comment|/* 10 */
+l_string|&quot;State-Notify&quot;
+comma
+multiline_comment|/* 11 */
+l_string|&quot;State-Thread&quot;
+comma
+multiline_comment|/* 12 */
+l_string|&quot;Walk&quot;
+comma
+multiline_comment|/* 13 */
+l_string|&quot;Parser&quot;
+comma
+multiline_comment|/* 14 */
+l_string|&quot;Operand&quot;
+comma
+multiline_comment|/* 15 */
+l_string|&quot;Node&quot;
+)brace
+suffix:semicolon
+r_char
+op_star
+DECL|function|acpi_ut_get_descriptor_name
+id|acpi_ut_get_descriptor_name
+(paren
+r_void
+op_star
+id|object
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|object
+)paren
+(brace
+r_return
+(paren
+l_string|&quot;NULL OBJECT&quot;
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ACPI_GET_DESCRIPTOR_TYPE
+(paren
+id|object
+)paren
+OG
+id|ACPI_DESC_TYPE_MAX
+)paren
+(brace
+r_return
+(paren
+(paren
+r_char
+op_star
+)paren
+id|acpi_gbl_bad_type
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+(paren
+r_char
+op_star
+)paren
+id|acpi_gbl_desc_type_names
+(braket
+id|ACPI_GET_DESCRIPTOR_TYPE
+(paren
+id|object
+)paren
+)braket
 )paren
 suffix:semicolon
 )brace

@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: acobject.h - Definition of union acpi_operand_object    (Internal object only)&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; * Copyright (C) 2000 - 2003, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#ifndef _ACOBJECT_H
 DECL|macro|_ACOBJECT_H
 mdefine_line|#define _ACOBJECT_H
@@ -29,7 +29,7 @@ DECL|macro|ACPI_COMMON_BUFFER_INFO
 mdefine_line|#define ACPI_COMMON_BUFFER_INFO &bslash;&n;&t;u32                                     length;
 multiline_comment|/*&n; * Common fields for objects that support ASL notifications&n; */
 DECL|macro|ACPI_COMMON_NOTIFY_INFO
-mdefine_line|#define ACPI_COMMON_NOTIFY_INFO &bslash;&n;&t;union acpi_operand_object               *system_notify;     /* Handler for system notifies */&bslash;&n;&t;union acpi_operand_object               *device_notify;     /* Handler for driver notifies */&bslash;&n;&t;union acpi_operand_object               *address_space;     /* Handler for Address space */
+mdefine_line|#define ACPI_COMMON_NOTIFY_INFO &bslash;&n;&t;union acpi_operand_object               *system_notify;     /* Handler for system notifies */&bslash;&n;&t;union acpi_operand_object               *device_notify;     /* Handler for driver notifies */&bslash;&n;&t;union acpi_operand_object               *handler;           /* Handler for Address space */
 multiline_comment|/******************************************************************************&n; *&n; * Basic data types&n; *&n; *****************************************************************************/
 DECL|struct|acpi_object_common
 r_struct
@@ -242,11 +242,11 @@ DECL|member|space_id
 id|u8
 id|space_id
 suffix:semicolon
-DECL|member|address_space
+DECL|member|handler
 r_union
 id|acpi_operand_object
 op_star
-id|address_space
+id|handler
 suffix:semicolon
 multiline_comment|/* Handler for region access */
 DECL|member|node
@@ -756,35 +756,37 @@ suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * union acpi_descriptor - objects that share a common descriptor identifier&n; *&n; *****************************************************************************/
 multiline_comment|/* Object descriptor types */
 DECL|macro|ACPI_DESC_TYPE_CACHED
-mdefine_line|#define ACPI_DESC_TYPE_CACHED           0x11        /* Used only when object is cached */
+mdefine_line|#define ACPI_DESC_TYPE_CACHED           0x01        /* Used only when object is cached */
 DECL|macro|ACPI_DESC_TYPE_STATE
-mdefine_line|#define ACPI_DESC_TYPE_STATE            0x20
+mdefine_line|#define ACPI_DESC_TYPE_STATE            0x02
 DECL|macro|ACPI_DESC_TYPE_STATE_UPDATE
-mdefine_line|#define ACPI_DESC_TYPE_STATE_UPDATE     0x21
+mdefine_line|#define ACPI_DESC_TYPE_STATE_UPDATE     0x03
 DECL|macro|ACPI_DESC_TYPE_STATE_PACKAGE
-mdefine_line|#define ACPI_DESC_TYPE_STATE_PACKAGE    0x22
+mdefine_line|#define ACPI_DESC_TYPE_STATE_PACKAGE    0x04
 DECL|macro|ACPI_DESC_TYPE_STATE_CONTROL
-mdefine_line|#define ACPI_DESC_TYPE_STATE_CONTROL    0x23
+mdefine_line|#define ACPI_DESC_TYPE_STATE_CONTROL    0x05
 DECL|macro|ACPI_DESC_TYPE_STATE_RPSCOPE
-mdefine_line|#define ACPI_DESC_TYPE_STATE_RPSCOPE    0x24
+mdefine_line|#define ACPI_DESC_TYPE_STATE_RPSCOPE    0x06
 DECL|macro|ACPI_DESC_TYPE_STATE_PSCOPE
-mdefine_line|#define ACPI_DESC_TYPE_STATE_PSCOPE     0x25
+mdefine_line|#define ACPI_DESC_TYPE_STATE_PSCOPE     0x07
 DECL|macro|ACPI_DESC_TYPE_STATE_WSCOPE
-mdefine_line|#define ACPI_DESC_TYPE_STATE_WSCOPE     0x26
+mdefine_line|#define ACPI_DESC_TYPE_STATE_WSCOPE     0x08
 DECL|macro|ACPI_DESC_TYPE_STATE_RESULT
-mdefine_line|#define ACPI_DESC_TYPE_STATE_RESULT     0x27
+mdefine_line|#define ACPI_DESC_TYPE_STATE_RESULT     0x09
 DECL|macro|ACPI_DESC_TYPE_STATE_NOTIFY
-mdefine_line|#define ACPI_DESC_TYPE_STATE_NOTIFY     0x28
+mdefine_line|#define ACPI_DESC_TYPE_STATE_NOTIFY     0x0A
 DECL|macro|ACPI_DESC_TYPE_STATE_THREAD
-mdefine_line|#define ACPI_DESC_TYPE_STATE_THREAD     0x29
+mdefine_line|#define ACPI_DESC_TYPE_STATE_THREAD     0x0B
 DECL|macro|ACPI_DESC_TYPE_WALK
-mdefine_line|#define ACPI_DESC_TYPE_WALK             0x44
+mdefine_line|#define ACPI_DESC_TYPE_WALK             0x0C
 DECL|macro|ACPI_DESC_TYPE_PARSER
-mdefine_line|#define ACPI_DESC_TYPE_PARSER           0x66
+mdefine_line|#define ACPI_DESC_TYPE_PARSER           0x0D
 DECL|macro|ACPI_DESC_TYPE_OPERAND
-mdefine_line|#define ACPI_DESC_TYPE_OPERAND          0x88
+mdefine_line|#define ACPI_DESC_TYPE_OPERAND          0x0E
 DECL|macro|ACPI_DESC_TYPE_NAMED
-mdefine_line|#define ACPI_DESC_TYPE_NAMED            0xAA
+mdefine_line|#define ACPI_DESC_TYPE_NAMED            0x0F
+DECL|macro|ACPI_DESC_TYPE_MAX
+mdefine_line|#define ACPI_DESC_TYPE_MAX              0x0F
 DECL|union|acpi_descriptor
 r_union
 id|acpi_descriptor

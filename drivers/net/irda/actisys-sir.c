@@ -162,6 +162,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|actisys_sir_init
+r_static
 r_int
 id|__init
 id|actisys_sir_init
@@ -227,6 +228,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|actisys_sir_cleanup
+r_static
 r_void
 id|__exit
 id|actisys_sir_cleanup

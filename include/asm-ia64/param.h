@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_PARAM_H
 DECL|macro|_ASM_IA64_PARAM_H
 mdefine_line|#define _ASM_IA64_PARAM_H
-multiline_comment|/*&n; * Fundamental kernel parameters.&n; *&n; * Copyright (C) 1998, 1999, 2002-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Fundamental kernel parameters.&n; *&n; * Based on &lt;asm-i386/param.h&gt;.&n; *&n; * Modified 1998, 1999, 2002-2003&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;, Hewlett-Packard Co&n; */
 DECL|macro|EXEC_PAGESIZE
 mdefine_line|#define EXEC_PAGESIZE&t;65536
 macro_line|#ifndef NGROUPS

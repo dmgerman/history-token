@@ -49,11 +49,6 @@ id|mip_addr
 comma
 id|host_addr
 suffix:semicolon
-DECL|variable|es7000_plat
-r_static
-r_int
-id|es7000_plat
-suffix:semicolon
 multiline_comment|/*&n; * Parse the OEM Table&n; */
 r_void
 id|__init

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;asm/acpi.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
@@ -862,7 +863,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_ACPI_PCI
 r_else
 r_if
 c_cond
@@ -877,15 +877,15 @@ l_string|&quot;noacpi&quot;
 )paren
 )paren
 (brace
-id|pci_probe
-op_or_assign
-id|PCI_NO_ACPI_ROUTING
+id|acpi_noirq_set
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#ifndef CONFIG_X86_VISWS
 r_else
 r_if

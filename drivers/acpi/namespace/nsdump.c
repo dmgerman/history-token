@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsdump - table dumping routines for debug&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; * Copyright (C) 2000 - 2003, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
 macro_line|#include &lt;acpi/acparser.h&gt;
@@ -365,7 +365,10 @@ id|acpi_os_printf
 (paren
 l_string|&quot;%4.4s %-12s %p &quot;
 comma
-id|this_node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|this_node
+)paren
 comma
 id|acpi_ut_get_type_name
 (paren
@@ -486,12 +489,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;= %8.8X%8.8X&bslash;n&quot;
 comma
-id|ACPI_HIDWORD
-(paren
-id|obj_desc-&gt;integer.value
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|obj_desc-&gt;integer.value
 )paren
@@ -658,12 +656,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot; Addr %8.8X%8.8X Len %.4X&bslash;n&quot;
 comma
-id|ACPI_HIDWORD
-(paren
-id|obj_desc-&gt;region.address
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|obj_desc-&gt;region.address
 )paren
@@ -712,7 +705,10 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Buf [%4.4s]&quot;
 comma
-id|obj_desc-&gt;buffer_field.buffer_obj-&gt;buffer.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|obj_desc-&gt;buffer_field.buffer_obj-&gt;buffer.node
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -725,7 +721,10 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Rgn [%4.4s]&quot;
 comma
-id|obj_desc-&gt;common_field.region_obj-&gt;region.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|obj_desc-&gt;common_field.region_obj-&gt;region.node
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -737,9 +736,15 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Rgn [%4.4s] Bnk [%4.4s]&quot;
 comma
-id|obj_desc-&gt;common_field.region_obj-&gt;region.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|obj_desc-&gt;common_field.region_obj-&gt;region.node
+)paren
 comma
-id|obj_desc-&gt;bank_field.bank_obj-&gt;common_field.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|obj_desc-&gt;bank_field.bank_obj-&gt;common_field.node
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -751,9 +756,15 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Idx [%4.4s] Dat [%4.4s]&quot;
 comma
-id|obj_desc-&gt;index_field.index_obj-&gt;common_field.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|obj_desc-&gt;index_field.index_obj-&gt;common_field.node
+)paren
 comma
-id|obj_desc-&gt;index_field.data_obj-&gt;common_field.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|obj_desc-&gt;index_field.data_obj-&gt;common_field.node
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -765,16 +776,10 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Target %4.4s (%p)&bslash;n&quot;
 comma
+id|acpi_ut_get_node_name
 (paren
-(paren
-r_struct
-id|acpi_namespace_node
-op_star
-)paren
 id|obj_desc
 )paren
-op_member_access_from_pointer
-id|name.ascii
 comma
 id|obj_desc
 )paren
@@ -814,7 +819,7 @@ id|ACPI_TYPE_LOCAL_INDEX_FIELD
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;Off %.2X Len %.2X Acc %.2hd&bslash;n&quot;
+l_string|&quot; Off %.3X Len %.2X Acc %.2hd&bslash;n&quot;
 comma
 (paren
 id|obj_desc-&gt;common_field.base_byte_offset
@@ -900,16 +905,9 @@ id|ACPI_TYPE_INTEGER
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; N:%X%X&bslash;n&quot;
+l_string|&quot; I:%8.8X8.8%X&bslash;n&quot;
 comma
-id|ACPI_HIDWORD
-c_func
-(paren
-id|obj_desc-&gt;integer.value
-)paren
-comma
-id|ACPI_LODWORD
-c_func
+id|ACPI_FORMAT_UINT64
 (paren
 id|obj_desc-&gt;integer.value
 )paren
@@ -1110,7 +1108,12 @@ r_default
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;(String or Buffer ptr - not an object descriptor)&bslash;n&quot;
+l_string|&quot;(String or Buffer ptr - not an object descriptor) [%s]&bslash;n&quot;
+comma
+id|acpi_ut_get_descriptor_name
+(paren
+id|obj_desc
+)paren
 )paren
 suffix:semicolon
 id|bytes_to_dump

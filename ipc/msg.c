@@ -2465,6 +2465,11 @@ r_case
 id|IPC_SET
 suffix:colon
 (brace
+id|err
+op_assign
+op_minus
+id|EPERM
+suffix:semicolon
 r_if
 c_cond
 (paren

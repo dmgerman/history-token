@@ -190,34 +190,83 @@ DECL|macro|ACPI_DIV_64_BY_32
 mdefine_line|#define ACPI_DIV_64_BY_32(n_hi, n_lo, d32, q32, r32) &bslash;&n;        asm(&quot;divl %2;&quot;        &bslash;&n;        :&quot;=a&quot;(q32), &quot;=d&quot;(r32) &bslash;&n;        :&quot;r&quot;(d32),            &bslash;&n;        &quot;0&quot;(n_lo), &quot;1&quot;(n_hi))
 DECL|macro|ACPI_SHIFT_RIGHT_64
 mdefine_line|#define ACPI_SHIFT_RIGHT_64(n_hi, n_lo) &bslash;&n;    asm(&quot;shrl   $1,%2;&quot;             &bslash;&n;        &quot;rcrl   $1,%3;&quot;             &bslash;&n;        :&quot;=r&quot;(n_hi), &quot;=r&quot;(n_lo)     &bslash;&n;        :&quot;0&quot;(n_hi), &quot;1&quot;(n_lo))
-macro_line|#ifndef CONFIG_ACPI_BOOT
-DECL|macro|acpi_lapic
-mdefine_line|#define acpi_lapic 0
-DECL|macro|acpi_ioapic
-mdefine_line|#define acpi_ioapic 0
-macro_line|#else
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+macro_line|#ifdef CONFIG_ACPI_BOOT
 r_extern
 r_int
 id|acpi_lapic
 suffix:semicolon
-macro_line|#else
-DECL|macro|acpi_lapic
-mdefine_line|#define acpi_lapic 0
-macro_line|#endif
-macro_line|#ifdef CONFIG_X86_IO_APIC
 r_extern
 r_int
 id|acpi_ioapic
 suffix:semicolon
-macro_line|#else
-DECL|macro|acpi_ioapic
-mdefine_line|#define acpi_ioapic 0
-macro_line|#endif
+r_extern
+r_int
+id|acpi_noirq
+suffix:semicolon
 multiline_comment|/* Fixmap pages to reserve for ACPI boot-time tables (see fixmap.h) */
 DECL|macro|FIX_ACPI_PAGES
 mdefine_line|#define FIX_ACPI_PAGES 4
-macro_line|#endif /*CONFIG_ACPI_BOOT*/
+macro_line|#else&t;/* !CONFIG_ACPI_BOOT */
+DECL|macro|acpi_lapic
+mdefine_line|#define acpi_lapic 0
+DECL|macro|acpi_ioapic
+mdefine_line|#define acpi_ioapic 0
+macro_line|#endif /* !CONFIG_ACPI_BOOT */
+macro_line|#ifdef CONFIG_ACPI_PCI
+DECL|function|acpi_noirq_set
+r_static
+r_inline
+r_void
+id|acpi_noirq_set
+c_func
+(paren
+r_void
+)paren
+(brace
+id|acpi_noirq
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_extern
+r_int
+id|acpi_irq_balance_set
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|acpi_noirq_set
+r_static
+r_inline
+r_void
+id|acpi_noirq_set
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+DECL|function|acpi_irq_balance_set
+r_static
+r_inline
+r_int
+id|acpi_irq_balance_set
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_ACPI_SLEEP
 multiline_comment|/* routines for saving/restoring kernel state */
 r_extern

@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: utalloc - local cache and memory allocation routines&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; * Copyright (C) 2000 - 2003, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#include &lt;acpi/acpi.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_UTILITIES
@@ -1879,7 +1879,7 @@ id|ACPI_DESC_TYPE_CACHED
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot;%p Len %04X %9.9s-%d &quot;
+l_string|&quot;%p Len %04X %9.9s-%d [%s] &quot;
 comma
 id|descriptor
 comma
@@ -1888,9 +1888,14 @@ comma
 id|element-&gt;module
 comma
 id|element-&gt;line
+comma
+id|acpi_ut_get_descriptor_name
+(paren
+id|descriptor
+)paren
 )paren
 suffix:semicolon
-multiline_comment|/* Most of the elements will be internal objects. */
+multiline_comment|/* Most of the elements will be Operand objects. */
 r_switch
 c_cond
 (paren
@@ -1905,7 +1910,7 @@ id|ACPI_DESC_TYPE_OPERAND
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;obj_type %12.12s R%hd&quot;
+l_string|&quot;%12.12s R%hd&quot;
 comma
 id|acpi_ut_get_type_name
 (paren
@@ -1922,7 +1927,7 @@ id|ACPI_DESC_TYPE_PARSER
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;parse_obj aml_opcode %04hX&quot;
+l_string|&quot;aml_opcode %04hX&quot;
 comma
 id|descriptor-&gt;op.asl.aml_opcode
 )paren
@@ -1934,116 +1939,19 @@ id|ACPI_DESC_TYPE_NAMED
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;Node %4.4s&quot;
+l_string|&quot;%4.4s&quot;
 comma
-id|descriptor-&gt;node.name.ascii
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ACPI_DESC_TYPE_STATE
-suffix:colon
-id|acpi_os_printf
+id|acpi_ut_get_node_name
 (paren
-l_string|&quot;Untyped state_obj&quot;
+op_amp
+id|descriptor-&gt;node
 )paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ACPI_DESC_TYPE_STATE_UPDATE
-suffix:colon
-id|acpi_os_printf
-(paren
-l_string|&quot;UPDATE state_obj&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ACPI_DESC_TYPE_STATE_PACKAGE
-suffix:colon
-id|acpi_os_printf
-(paren
-l_string|&quot;PACKAGE state_obj&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ACPI_DESC_TYPE_STATE_CONTROL
-suffix:colon
-id|acpi_os_printf
-(paren
-l_string|&quot;CONTROL state_obj&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ACPI_DESC_TYPE_STATE_RPSCOPE
-suffix:colon
-id|acpi_os_printf
-(paren
-l_string|&quot;ROOT-PARSE-SCOPE state_obj&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ACPI_DESC_TYPE_STATE_PSCOPE
-suffix:colon
-id|acpi_os_printf
-(paren
-l_string|&quot;PARSE-SCOPE state_obj&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ACPI_DESC_TYPE_STATE_WSCOPE
-suffix:colon
-id|acpi_os_printf
-(paren
-l_string|&quot;WALK-SCOPE state_obj&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ACPI_DESC_TYPE_STATE_RESULT
-suffix:colon
-id|acpi_os_printf
-(paren
-l_string|&quot;RESULT state_obj&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ACPI_DESC_TYPE_STATE_NOTIFY
-suffix:colon
-id|acpi_os_printf
-(paren
-l_string|&quot;NOTIFY state_obj&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ACPI_DESC_TYPE_STATE_THREAD
-suffix:colon
-id|acpi_os_printf
-(paren
-l_string|&quot;THREAD state_obj&quot;
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/* All types should appear above */
 r_break
 suffix:semicolon
 )brace

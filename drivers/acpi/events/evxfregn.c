@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxfregn - External Interfaces, ACPI Operation Regions and&n; *                         Address Spaces.&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; * Copyright (C) 2000 - 2003, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
 macro_line|#include &lt;acpi/acevents.h&gt;
@@ -296,7 +296,7 @@ id|obj_desc
 multiline_comment|/*&n;&t;&t; * The attached device object already exists.&n;&t;&t; * Make sure the handler is not already installed.&n;&t;&t; */
 id|handler_obj
 op_assign
-id|obj_desc-&gt;device.address_space
+id|obj_desc-&gt;device.handler
 suffix:semicolon
 multiline_comment|/* Walk the handler list for this device */
 r_while
@@ -460,7 +460,10 @@ id|space_id
 comma
 id|space_id
 comma
-id|node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|node
+)paren
 comma
 id|node
 comma
@@ -526,10 +529,10 @@ suffix:semicolon
 multiline_comment|/* Install at head of Device.address_space list */
 id|handler_obj-&gt;address_space.next
 op_assign
-id|obj_desc-&gt;device.address_space
+id|obj_desc-&gt;device.handler
 suffix:semicolon
 multiline_comment|/*&n;&t; * The Device object is the first reference on the handler_obj.&n;&t; * Each region that uses the handler adds a reference.&n;&t; */
-id|obj_desc-&gt;device.address_space
+id|obj_desc-&gt;device.handler
 op_assign
 id|handler_obj
 suffix:semicolon
@@ -547,6 +550,26 @@ comma
 id|ACPI_NS_WALK_UNLOCK
 comma
 id|acpi_ev_install_handler
+comma
+id|handler_obj
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Now we can run the _REG methods for all Regions for this&n;&t; * space ID.  This is a separate walk in order to handle any&n;&t; * interdependencies between regions and _REG methods.  (i.e. handlers&n;&t; * must be installed for all regions of this Space ID before we&n;&t; * can run any _REG methods.&n;&t; */
+id|status
+op_assign
+id|acpi_ns_walk_namespace
+(paren
+id|ACPI_TYPE_ANY
+comma
+id|device
+comma
+id|ACPI_UINT32_MAX
+comma
+id|ACPI_NS_WALK_UNLOCK
+comma
+id|acpi_ev_reg_run
 comma
 id|handler_obj
 comma
@@ -703,12 +726,12 @@ suffix:semicolon
 multiline_comment|/* Find the address handler the user requested */
 id|handler_obj
 op_assign
-id|obj_desc-&gt;device.address_space
+id|obj_desc-&gt;device.handler
 suffix:semicolon
 id|last_obj_ptr
 op_assign
 op_amp
-id|obj_desc-&gt;device.address_space
+id|obj_desc-&gt;device.handler
 suffix:semicolon
 r_while
 c_loop

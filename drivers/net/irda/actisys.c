@@ -159,6 +159,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * Function actisys_change_speed (task)&n; *&n; *&t;There is two model of Actisys dongle we are dealing with,&n; * the 220L and 220L+. At this point, only irattach knows with&n; * kind the user has requested (it was an argument on irattach&n; * command line).&n; *&t;So, we register a dongle of each sort and let irattach&n; * pick the right one...&n; */
 DECL|function|actisys_init
+r_static
 r_int
 id|__init
 id|actisys_init
@@ -224,6 +225,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|actisys_cleanup
+r_static
 r_void
 id|__exit
 id|actisys_cleanup

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/apm_bios.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;asm/acpi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -29,6 +30,12 @@ suffix:semicolon
 DECL|variable|is_unsafe_smbus
 r_int
 id|is_unsafe_smbus
+suffix:semicolon
+DECL|variable|es7000_plat
+r_int
+id|es7000_plat
+op_assign
+l_int|0
 suffix:semicolon
 DECL|struct|dmi_header
 r_struct
@@ -1671,6 +1678,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef&t;CONFIG_ACPI_BOOT
 r_extern
 r_int
 id|acpi_disabled
@@ -1732,7 +1740,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef&t;CONFIG_ACPI_BOOT
 r_extern
 r_int
 id|acpi_ht
@@ -1812,15 +1819,6 @@ op_star
 id|d
 )paren
 (brace
-r_extern
-id|__init
-r_void
-id|pci_disable_acpi
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1830,7 +1828,7 @@ comma
 id|d-&gt;ident
 )paren
 suffix:semicolon
-id|pci_disable_acpi
+id|acpi_noirq_set
 c_func
 (paren
 )paren
@@ -1990,6 +1988,10 @@ suffix:semicolon
 id|acpi_disabled
 op_assign
 l_int|1
+suffix:semicolon
+id|acpi_ht
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 )brace

@@ -65,12 +65,14 @@ id|acpi_disabled
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|acpi_ht
+macro_line|#ifdef&t;CONFIG_ACPI_BOOT
+r_extern
 r_int
+id|__initdata
 id|acpi_ht
-op_assign
-l_int|0
 suffix:semicolon
+multiline_comment|/* int __initdata acpi_force = 0; */
+macro_line|#endif
 multiline_comment|/* For PCI or other memory-mapped resources */
 DECL|variable|pci_mem_start
 r_int
@@ -730,6 +732,7 @@ l_char|&squot; &squot;
 r_goto
 id|next_char
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_BOOT
 multiline_comment|/* &quot;acpi=off&quot; disables both ACPI table parsing and interpreter init */
 r_if
 c_cond
@@ -792,6 +795,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren

@@ -1381,6 +1381,11 @@ op_amp
 id|unknown_bootoption
 )paren
 suffix:semicolon
+id|sort_main_extable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|trap_init
 c_func
 (paren
@@ -1479,11 +1484,6 @@ c_func
 )paren
 suffix:semicolon
 id|kmem_cache_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|sort_main_extable
 c_func
 (paren
 )paren

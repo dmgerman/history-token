@@ -79,8 +79,6 @@ DECL|variable|tzp
 r_static
 r_int
 id|tzp
-op_assign
-l_int|0
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -1902,6 +1900,19 @@ c_func
 id|result
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_EMERG
+l_string|&quot;Critical temperature reached (%ld C), shutting down.&bslash;n&quot;
+comma
+id|KELVIN_TO_CELSIUS
+c_func
+(paren
+id|tz-&gt;temperature
+)paren
+)paren
+suffix:semicolon
 id|acpi_bus_generate_event
 c_func
 (paren
@@ -3046,8 +3057,6 @@ r_struct
 id|proc_dir_entry
 op_star
 id|acpi_thermal_dir
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|function|acpi_thermal_state_seq_show
 r_static

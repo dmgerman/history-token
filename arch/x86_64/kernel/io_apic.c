@@ -4878,14 +4878,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|acpi_ioapic
-)paren
-r_return
-suffix:semicolon
-multiline_comment|/* ACPI does that already */
 multiline_comment|/*&n;&t; * Set the IOAPIC ID to the value stored in the MPC table.&n;&t; */
 r_for
 c_loop
@@ -7190,6 +7182,12 @@ l_string|&quot;ENABLING IO-APIC IRQs&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set up the IO-APIC IRQ routing table.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_ioapic
+)paren
 id|setup_ioapic_ids_from_mpc
 c_func
 (paren
@@ -7215,6 +7213,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_ioapic
+)paren
 id|print_IO_APIC
 c_func
 (paren

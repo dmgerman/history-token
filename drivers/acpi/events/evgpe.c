@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: evgpe - General Purpose Event handling and dispatch&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; * Copyright (C) 2000 - 2003, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acevents.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
@@ -212,9 +212,6 @@ suffix:semicolon
 id|u8
 id|enabled_status_byte
 suffix:semicolon
-id|u8
-id|bit_mask
-suffix:semicolon
 r_struct
 id|acpi_gpe_register_info
 op_star
@@ -230,9 +227,6 @@ r_struct
 id|acpi_gpe_block_info
 op_star
 id|gpe_block
-suffix:semicolon
-id|u32
-id|gpe_number
 suffix:semicolon
 id|u32
 id|i
@@ -363,24 +357,14 @@ id|ACPI_DB_INTERRUPTS
 comma
 l_string|&quot;GPE pair: Status %8.8X%8.8X = %02X, Enable %8.8X%8.8X = %02X&bslash;n&quot;
 comma
-id|ACPI_HIDWORD
-(paren
-id|gpe_register_info-&gt;status_address.address
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|gpe_register_info-&gt;status_address.address
 )paren
 comma
 id|gpe_register_info-&gt;status
 comma
-id|ACPI_HIDWORD
-(paren
-id|gpe_register_info-&gt;enable_address.address
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|gpe_register_info-&gt;enable_address.address
 )paren
@@ -419,10 +403,6 @@ c_loop
 id|j
 op_assign
 l_int|0
-comma
-id|bit_mask
-op_assign
-l_int|1
 suffix:semicolon
 id|j
 OL
@@ -430,10 +410,6 @@ id|ACPI_GPE_REGISTER_WIDTH
 suffix:semicolon
 id|j
 op_increment
-comma
-id|bit_mask
-op_lshift_assign
-l_int|1
 )paren
 (brace
 multiline_comment|/* Examine one GPE bit */
@@ -442,20 +418,13 @@ c_cond
 (paren
 id|enabled_status_byte
 op_amp
-id|bit_mask
+id|acpi_gbl_decode_to8bit
+(braket
+id|j
+)braket
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t;&t;&t; * Found an active GPE. Dispatch the event to a handler&n;&t;&t;&t;&t;&t; * or method.&n;&t;&t;&t;&t;&t; */
-id|gpe_number
-op_assign
-(paren
-id|i
-op_star
-id|ACPI_GPE_REGISTER_WIDTH
-)paren
-op_plus
-id|j
-suffix:semicolon
 id|int_status
 op_or_assign
 id|acpi_ev_gpe_dispatch
@@ -463,7 +432,13 @@ id|acpi_ev_gpe_dispatch
 op_amp
 id|gpe_block-&gt;event_info
 (braket
-id|gpe_number
+(paren
+id|i
+op_star
+id|ACPI_GPE_REGISTER_WIDTH
+)paren
+op_plus
+id|j
 )braket
 comma
 id|j
@@ -645,7 +620,10 @@ id|acpi_format_exception
 id|status
 )paren
 comma
-id|local_gpe_event_info.method_node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|local_gpe_event_info.method_node
+)paren
 comma
 id|gpe_number
 )paren
@@ -772,6 +750,47 @@ id|gpe_event_info-&gt;handler
 id|gpe_event_info-&gt;context
 )paren
 suffix:semicolon
+multiline_comment|/* It is now safe to clear level-triggered events. */
+r_if
+c_cond
+(paren
+id|gpe_event_info-&gt;flags
+op_amp
+id|ACPI_EVENT_LEVEL_TRIGGERED
+)paren
+(brace
+id|status
+op_assign
+id|acpi_hw_clear_gpe
+(paren
+id|gpe_event_info
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;acpi_ev_gpe_dispatch: Unable to clear GPE[%2X]&bslash;n&quot;
+comma
+id|gpe_number
+)paren
+)paren
+suffix:semicolon
+id|return_VALUE
+(paren
+id|ACPI_INTERRUPT_NOT_HANDLED
+)paren
+suffix:semicolon
+)brace
+)brace
 )brace
 r_else
 r_if
@@ -812,7 +831,7 @@ id|ACPI_INTERRUPT_NOT_HANDLED
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Execute the method associated with the GPE. */
+multiline_comment|/*&n;&t;&t; * Execute the method associated with the GPE&n;&t;&t; * NOTE: Level-triggered GPEs are cleared after the method completes.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -852,7 +871,7 @@ id|gpe_number
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Disable the GPE.  The GPE will remain disabled until the ACPI&n;&t;&t; * Core Subsystem is restarted, or the handler is reinstalled.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Disable the GPE.  The GPE will remain disabled until the ACPI&n;&t;&t; * Core Subsystem is restarted, or a handler is installed.&n;&t;&t; */
 id|status
 op_assign
 id|acpi_hw_disable_gpe
@@ -873,47 +892,6 @@ id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;acpi_ev_gpe_dispatch: Unable to disable GPE[%2X]&bslash;n&quot;
-comma
-id|gpe_number
-)paren
-)paren
-suffix:semicolon
-id|return_VALUE
-(paren
-id|ACPI_INTERRUPT_NOT_HANDLED
-)paren
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* It is now safe to clear level-triggered events. */
-r_if
-c_cond
-(paren
-id|gpe_event_info-&gt;flags
-op_amp
-id|ACPI_EVENT_LEVEL_TRIGGERED
-)paren
-(brace
-id|status
-op_assign
-id|acpi_hw_clear_gpe
-(paren
-id|gpe_event_info
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|ACPI_REPORT_ERROR
-(paren
-(paren
-l_string|&quot;acpi_ev_gpe_dispatch: Unable to clear GPE[%2X]&bslash;n&quot;
 comma
 id|gpe_number
 )paren

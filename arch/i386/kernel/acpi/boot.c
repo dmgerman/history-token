@@ -15,18 +15,22 @@ macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#endif
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
-r_extern
+DECL|variable|__initdata
 r_int
-id|acpi_disabled
+id|acpi_noirq
+id|__initdata
+op_assign
+l_int|0
 suffix:semicolon
-r_extern
-r_int
-id|acpi_irq
-suffix:semicolon
-r_extern
+multiline_comment|/* skip ACPI IRQ initialization */
+DECL|variable|__initdata
 r_int
 id|acpi_ht
+id|__initdata
+op_assign
+l_int|1
 suffix:semicolon
+multiline_comment|/* enable HT */
 DECL|variable|acpi_lapic
 r_int
 id|acpi_lapic
@@ -621,10 +625,18 @@ suffix:semicolon
 )brace
 macro_line|#endif /*CONFIG_X86_IO_APIC*/
 macro_line|#ifdef&t;CONFIG_ACPI_BUS
-multiline_comment|/*&n; * Set specified PIC IRQ to level triggered mode.&n; *&n; * Port 0x4d0-4d1 are ECLR1 and ECLR2, the Edge/Level Control Registers&n; * for the 8259 PIC.  bit[n] = 1 means irq[n] is Level, otherwise Edge.&n; * ECLR1 is IRQ&squot;s 0-7 (IRQ 0, 1, 2 must be 0)&n; * ECLR2 is IRQ&squot;s 8-15 (IRQ 8, 13 must be 0)&n; *&n; * As the BIOS should have done this for us,&n; * print a warning if the IRQ wasn&squot;t already set to level.&n; */
-DECL|function|acpi_pic_set_level_irq
+multiline_comment|/*&n; * &quot;acpi_pic_sci=level&quot; (current default)&n; * programs the PIC-mode SCI to Level Trigger.&n; * (NO-OP if the BIOS set Level Trigger already)&n; *&n; * If a PIC-mode SCI is not recogznied or gives spurious IRQ7&squot;s&n; * it may require Edge Trigger -- use &quot;acpi_pic_sci=edge&quot;&n; * (NO-OP if the BIOS set Edge Trigger already)&n; *&n; * Port 0x4d0-4d1 are ECLR1 and ECLR2, the Edge/Level Control Registers&n; * for the 8259 PIC.  bit[n] = 1 means irq[n] is Level, otherwise Edge.&n; * ECLR1 is IRQ&squot;s 0-7 (IRQ 0, 1, 2 must be 0)&n; * ECLR2 is IRQ&squot;s 8-15 (IRQ 8, 13 must be 0)&n; */
+DECL|variable|acpi_pic_sci_trigger
+r_static
+r_int
+id|__initdata
+id|acpi_pic_sci_trigger
+suffix:semicolon
+multiline_comment|/* 0: level, 1: edge */
 r_void
-id|acpi_pic_set_level_irq
+id|__init
+DECL|function|acpi_pic_sci_set_trigger
+id|acpi_pic_sci_set_trigger
 c_func
 (paren
 r_int
@@ -666,6 +678,15 @@ c_func
 id|port
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|PREFIX
+l_string|&quot;IRQ%d SCI:&quot;
+comma
+id|irq
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -680,12 +701,20 @@ id|mask
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-id|PREFIX
-l_string|&quot;IRQ %d was Edge Triggered, &quot;
-l_string|&quot;setting to Level Triggerd&bslash;n&quot;
-comma
-id|irq
+l_string|&quot; Edge&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_pic_sci_trigger
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot; set to Level&quot;
 )paren
 suffix:semicolon
 id|outb
@@ -700,6 +729,143 @@ id|port
 suffix:semicolon
 )brace
 )brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot; Level&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_pic_sci_trigger
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot; set to Edge&quot;
+)paren
+suffix:semicolon
+id|outb
+c_func
+(paren
+id|val
+op_or
+id|mask
+comma
+id|port
+)paren
+suffix:semicolon
+)brace
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot; Trigger.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_int
+id|__init
+DECL|function|acpi_pic_sci_setup
+id|acpi_pic_sci_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|str
+op_logical_and
+op_star
+id|str
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|str
+comma
+l_string|&quot;level&quot;
+comma
+l_int|5
+)paren
+op_eq
+l_int|0
+)paren
+id|acpi_pic_sci_trigger
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* force level trigger */
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|str
+comma
+l_string|&quot;edge&quot;
+comma
+l_int|4
+)paren
+op_eq
+l_int|0
+)paren
+id|acpi_pic_sci_trigger
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* force edge trigger */
+id|str
+op_assign
+id|strchr
+c_func
+(paren
+id|str
+comma
+l_char|&squot;,&squot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|str
+)paren
+id|str
+op_add_assign
+id|strspn
+c_func
+(paren
+id|str
+comma
+l_string|&quot;, &bslash;t&quot;
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;acpi_pic_sci=&quot;
+comma
+id|acpi_pic_sci_setup
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_ACPI_BUS */
 r_static
 r_int
@@ -1023,9 +1189,15 @@ c_cond
 (paren
 id|result
 )paren
+(brace
+id|acpi_disabled
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 id|result
 suffix:semicolon
+)brace
 id|result
 op_assign
 id|acpi_blacklisted
@@ -1249,8 +1421,7 @@ c_cond
 (paren
 id|acpi_disabled
 op_logical_or
-op_logical_neg
-id|acpi_irq
+id|acpi_noirq
 )paren
 (brace
 r_return
@@ -1402,6 +1573,12 @@ suffix:semicolon
 id|acpi_irq_model
 op_assign
 id|ACPI_IRQ_MODEL_IOAPIC
+suffix:semicolon
+id|acpi_irq_balance_set
+c_func
+(paren
+l_int|NULL
+)paren
 suffix:semicolon
 id|acpi_ioapic
 op_assign

@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_SIGINFO_H
 DECL|macro|_ASM_IA64_SIGINFO_H
 mdefine_line|#define _ASM_IA64_SIGINFO_H
-multiline_comment|/*&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Based on &lt;asm-i386/siginfo.h&gt;.&n; *&n; * Modified 1998-2002&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;, Hewlett-Packard Co&n; */
 DECL|macro|SI_PAD_SIZE
 mdefine_line|#define SI_PAD_SIZE&t;((SI_MAX_SIZE/sizeof(int)) - 4)
 DECL|macro|SIGEV_PAD_SIZE

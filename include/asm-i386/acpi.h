@@ -46,6 +46,10 @@ r_extern
 r_int
 id|acpi_ioapic
 suffix:semicolon
+r_extern
+r_int
+id|acpi_noirq
+suffix:semicolon
 multiline_comment|/* Fixmap pages to reserve for ACPI boot-time tables (see fixmap.h) */
 DECL|macro|FIX_ACPI_PAGES
 mdefine_line|#define FIX_ACPI_PAGES 4
@@ -101,6 +105,61 @@ DECL|macro|acpi_lapic
 macro_line|#  define acpi_lapic 0
 DECL|macro|acpi_ioapic
 macro_line|#  define acpi_ioapic 0
+macro_line|#endif
+macro_line|#ifdef CONFIG_ACPI_PCI
+DECL|function|acpi_noirq_set
+r_static
+r_inline
+r_void
+id|acpi_noirq_set
+c_func
+(paren
+r_void
+)paren
+(brace
+id|acpi_noirq
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_extern
+r_int
+id|acpi_irq_balance_set
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|acpi_noirq_set
+r_static
+r_inline
+r_void
+id|acpi_noirq_set
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+DECL|function|acpi_irq_balance_set
+r_static
+r_inline
+r_int
+id|acpi_irq_balance_set
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_ACPI_SLEEP
 multiline_comment|/* routines for saving/restoring kernel state */

@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: evrgnini- ACPI address_space (op_region) init&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; * Copyright (C) 2000 - 2003, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acevents.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
@@ -261,7 +261,7 @@ l_string|&quot;ev_pci_config_region_setup&quot;
 suffix:semicolon
 id|handler_obj
 op_assign
-id|region_obj-&gt;region.address_space
+id|region_obj-&gt;region.handler
 suffix:semicolon
 r_if
 c_cond
@@ -437,7 +437,10 @@ id|ACPI_REPORT_ERROR
 (paren
 l_string|&quot;Could not install pci_config handler for Root Bridge %4.4s, %s&bslash;n&quot;
 comma
-id|pci_root_node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|pci_root_node
+)paren
 comma
 id|acpi_format_exception
 (paren
@@ -875,7 +878,7 @@ op_assign
 id|region_obj-&gt;region.space_id
 suffix:semicolon
 multiline_comment|/* Setup defaults */
-id|region_obj-&gt;region.address_space
+id|region_obj-&gt;region.handler
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -962,7 +965,7 @@ id|ACPI_TYPE_DEVICE
 suffix:colon
 id|handler_obj
 op_assign
-id|obj_desc-&gt;device.address_space
+id|obj_desc-&gt;device.handler
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -971,7 +974,7 @@ id|ACPI_TYPE_PROCESSOR
 suffix:colon
 id|handler_obj
 op_assign
-id|obj_desc-&gt;processor.address_space
+id|obj_desc-&gt;processor.handler
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -980,7 +983,7 @@ id|ACPI_TYPE_THERMAL
 suffix:colon
 id|handler_obj
 op_assign
-id|obj_desc-&gt;thermal_zone.address_space
+id|obj_desc-&gt;thermal_zone.handler
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1032,6 +1035,74 @@ comma
 id|acpi_ns_locked
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * Tell all users that this region is usable by running the _REG&n;&t;&t;&t;&t;&t; * method&n;&t;&t;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|acpi_ns_locked
+)paren
+(brace
+id|status
+op_assign
+id|acpi_ut_release_mutex
+(paren
+id|ACPI_MTX_NAMESPACE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+)brace
+id|status
+op_assign
+id|acpi_ev_execute_reg_method
+(paren
+id|region_obj
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_ns_locked
+)paren
+(brace
+id|status
+op_assign
+id|acpi_ut_acquire_mutex
+(paren
+id|ACPI_MTX_NAMESPACE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+)brace
 id|return_ACPI_STATUS
 (paren
 id|AE_OK

@@ -3767,6 +3767,11 @@ id|entry-&gt;irq
 )paren
 suffix:semicolon
 )brace
+id|print_IO_APIC
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace

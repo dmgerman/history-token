@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: psxface - Parser external interfaces&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; * Copyright (C) 2000 - 2003, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acparser.h&gt;
 macro_line|#include &lt;acpi/acdispat.h&gt;
@@ -182,10 +182,12 @@ op_logical_neg
 id|op
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
+id|status
+op_assign
 id|AE_NO_MEMORY
-)paren
+suffix:semicolon
+r_goto
+id|cleanup1
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Get a new owner_id for objects created by this method. Namespace&n;&t; * objects (such as Operation Regions) can be created during the&n;&t; * first pass parse.&n;&t; */
@@ -217,10 +219,12 @@ op_logical_neg
 id|walk_state
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
+id|status
+op_assign
 id|AE_NO_MEMORY
-)paren
+suffix:semicolon
+r_goto
+id|cleanup2
 suffix:semicolon
 )brace
 id|status
@@ -253,15 +257,8 @@ id|status
 )paren
 )paren
 (brace
-id|acpi_ds_delete_walk_state
-(paren
-id|walk_state
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
+r_goto
+id|cleanup3
 suffix:semicolon
 )brace
 multiline_comment|/* Parse the AML */
@@ -277,6 +274,20 @@ id|acpi_ps_delete_parse_tree
 id|op
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_goto
+id|cleanup1
+suffix:semicolon
+multiline_comment|/* Walk state is already deleted */
+)brace
 multiline_comment|/*&n;&t; * 2) Execute the method.  Performs second pass parse simultaneously&n;&t; */
 id|ACPI_DEBUG_PRINT
 (paren
@@ -305,10 +316,12 @@ op_logical_neg
 id|op
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
+id|status
+op_assign
 id|AE_NO_MEMORY
-)paren
+suffix:semicolon
+r_goto
+id|cleanup1
 suffix:semicolon
 )brace
 multiline_comment|/* Init new op with the method name and pointer back to the NS node */
@@ -344,10 +357,12 @@ op_logical_neg
 id|walk_state
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
+id|status
+op_assign
 id|AE_NO_MEMORY
-)paren
+suffix:semicolon
+r_goto
+id|cleanup2
 suffix:semicolon
 )brace
 id|status
@@ -380,15 +395,8 @@ id|status
 )paren
 )paren
 (brace
-id|acpi_ds_delete_walk_state
-(paren
-id|walk_state
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
+r_goto
+id|cleanup3
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * The walk of the parse tree is where we actually execute the method&n;&t; */
@@ -399,11 +407,26 @@ id|acpi_ps_parse_aml
 id|walk_state
 )paren
 suffix:semicolon
+r_goto
+id|cleanup2
+suffix:semicolon
+multiline_comment|/* Walk state already deleted */
+id|cleanup3
+suffix:colon
+id|acpi_ds_delete_walk_state
+(paren
+id|walk_state
+)paren
+suffix:semicolon
+id|cleanup2
+suffix:colon
 id|acpi_ps_delete_parse_tree
 (paren
 id|op
 )paren
 suffix:semicolon
+id|cleanup1
+suffix:colon
 r_if
 c_cond
 (paren
@@ -442,6 +465,21 @@ id|REF_DECREMENT
 )paren
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * If the method has returned an object, signal this to the caller with&n;&t; * a control exception code&n;&t; */
 r_if
