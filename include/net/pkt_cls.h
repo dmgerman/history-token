@@ -65,17 +65,6 @@ op_star
 id|ops
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|ing_filter
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-suffix:semicolon
 r_static
 r_inline
 r_int

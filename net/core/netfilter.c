@@ -629,6 +629,7 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 DECL|function|nf_dump_skb
+r_static
 r_void
 id|nf_dump_skb
 c_func

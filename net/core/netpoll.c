@@ -56,6 +56,7 @@ id|atomic_t
 id|trapped
 suffix:semicolon
 DECL|variable|netpoll_poll_lock
+r_static
 id|spinlock_t
 id|netpoll_poll_lock
 op_assign
@@ -638,6 +639,7 @@ id|skb
 suffix:semicolon
 )brace
 DECL|function|netpoll_send_skb
+r_static
 r_void
 id|netpoll_send_skb
 c_func
@@ -3314,13 +3316,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|netpoll_cleanup
-)paren
-suffix:semicolon
-DECL|variable|netpoll_send_skb
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|netpoll_send_skb
 )paren
 suffix:semicolon
 DECL|variable|netpoll_send_udp

@@ -1005,6 +1005,7 @@ id|NOTIFY_DONE
 suffix:semicolon
 )brace
 DECL|variable|dst_dev_notifier
+r_static
 r_struct
 id|notifier_block
 id|dst_dev_notifier

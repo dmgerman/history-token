@@ -107,6 +107,7 @@ op_star
 id|dev_base
 suffix:semicolon
 DECL|variable|dev_tail
+r_static
 r_struct
 id|net_device
 op_star
@@ -549,6 +550,7 @@ id|NETDEV_BOOT_SETUP_MAX
 suffix:semicolon
 multiline_comment|/**&n; *&t;netdev_boot_setup_add&t;- add new setup entry&n; *&t;@name: name of the device&n; *&t;@map: configured settings for the device&n; *&n; *&t;Adds new setup entry to the dev_boot_setup list.  The function&n; *&t;returns 0 on error and 1 on success.  This is a generic routine to&n; *&t;all netdevices.&n; */
 DECL|function|netdev_boot_setup_add
+r_static
 r_int
 id|netdev_boot_setup_add
 c_func
@@ -1541,6 +1543,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;dev_valid_name - check if name is okay for network device&n; *&t;@name: name string&n; *&n; *&t;Network device names need to be valid file names to&n; *&t;to allow sysfs to work&n; */
 DECL|function|dev_valid_name
+r_static
 r_int
 id|dev_valid_name
 c_func
@@ -4650,6 +4653,7 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_NET_CLS_ACT
 multiline_comment|/* TODO: Maybe we should just force sch_ingress to be compiled in&n; * when CONFIG_NET_CLS_ACT is? otherwise some useless instructions&n; * a compare and 2 stores extra right now if we dont have it on&n; * but have CONFIG_NET_CLS_ACT&n; * NOTE: This doesnt stop any functionality; if you dont have &n; * the ingress scheduler, you just cant add policies on ingress.&n; *&n; */
 DECL|function|ing_filter
+r_static
 r_int
 id|ing_filter
 c_func
@@ -11131,15 +11135,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|dev_load
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_CLS_ACT
-DECL|variable|ing_filter
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ing_filter
 )paren
 suffix:semicolon
 macro_line|#endif

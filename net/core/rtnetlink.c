@@ -1140,6 +1140,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|rtnetlink_dump_ifinfo
+r_static
 r_int
 id|rtnetlink_dump_ifinfo
 c_func
@@ -3578,13 +3579,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|rtattr_parse
-)paren
-suffix:semicolon
-DECL|variable|rtnetlink_dump_ifinfo
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|rtnetlink_dump_ifinfo
 )paren
 suffix:semicolon
 DECL|variable|rtnetlink_links
