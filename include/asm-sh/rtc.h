@@ -3,10 +3,6 @@ DECL|macro|_ASM_RTC_H
 mdefine_line|#define _ASM_RTC_H
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/cpu/rtc.h&gt;
-DECL|macro|rtc_gettimeofday
-mdefine_line|#define rtc_gettimeofday sh_mv.mv_rtc_gettimeofday
-DECL|macro|rtc_settimeofday
-mdefine_line|#define rtc_settimeofday sh_mv.mv_rtc_settimeofday
 r_extern
 r_void
 id|sh_rtc_gettimeofday
@@ -26,6 +22,39 @@ c_func
 r_const
 id|time_t
 id|secs
+)paren
+suffix:semicolon
+r_extern
+r_void
+(paren
+op_star
+id|board_time_init
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+(paren
+op_star
+id|rtc_get_time
+)paren
+(paren
+r_struct
+id|timespec
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+(paren
+op_star
+id|rtc_set_time
+)paren
+(paren
+r_const
+id|time_t
 )paren
 suffix:semicolon
 multiline_comment|/* RCR1 Bits */

@@ -2,15 +2,15 @@ macro_line|#ifndef __ASM_SH_IO_H
 DECL|macro|__ASM_SH_IO_H
 mdefine_line|#define __ASM_SH_IO_H
 multiline_comment|/*&n; * Convention:&n; *    read{b,w,l}/write{b,w,l} are for PCI,&n; *    while in{b,w,l}/out{b,w,l} are for ISA&n; * These may (will) be platform specific function.&n; * In addition we have &squot;pausing&squot; versions: in{b,w,l}_p/out{b,w,l}_p&n; * and &squot;string&squot; versions: ins{b,w,l}/outs{b,w,l}&n; * For read{b,w,l} and write{b,w,l} there are also __raw versions, which&n; * do not have a memory barrier after them.&n; *&n; * In addition, we have &n; *   ctrl_in{b,w,l}/ctrl_out{b,w,l} for SuperH specific I/O.&n; *   which are processor specific.&n; */
-multiline_comment|/*&n; * We follow the Alpha convention here:&n; *  __inb expands to an inline function call (which either calls via the&n; *        mach_vec if generic, or a machine specific implementation)&n; *  _inb  is a real function call (note ___raw fns are _ version of __raw)&n; *  inb   by default expands to _inb, but the machine specific code may&n; *        define it to __inb if it chooses.&n; */
+multiline_comment|/*&n; * We follow the Alpha convention here:&n; *  __inb expands to an inline function call (which calls via the mv)&n; *  _inb  is a real function call (note ___raw fns are _ version of __raw)&n; *  inb   by default expands to _inb, but the machine specific code may&n; *        define it to __inb if it chooses.&n; */
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/addrspace.h&gt;
+macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * Depending on which platform we are running on, we need different&n; * I/O functions.&n; */
 macro_line|#ifdef __KERNEL__
-macro_line|#if defined(CONFIG_SH_GENERIC) || defined(CONFIG_SH_CQREEK) || defined(CONFIG_SH_UNKNOWN)
-multiline_comment|/* In a generic kernel, we always go through the machine vector.  */
-macro_line|#include &lt;asm/machvec.h&gt;
+multiline_comment|/*&n; * Since boards are able to define their own set of I/O routines through&n; * their respective machine vector, we always wrap through the mv.&n; *&n; * Also, in the event that a board hasn&squot;t provided its own definition for&n; * a given routine, it will be wrapped to generic code at run-time.&n; */
 DECL|macro|__inb
 macro_line|# define __inb(p)&t;sh_mv.mv_inb((p))
 DECL|macro|__inw
@@ -36,17 +36,17 @@ macro_line|# define __outw_p(x,p)&t;sh_mv.mv_outw_p((x),(p))
 DECL|macro|__outl_p
 macro_line|# define __outl_p(x,p)&t;sh_mv.mv_outl_p((x),(p))
 DECL|macro|__insb
-mdefine_line|#define __insb(p,b,c)&t;sh_mv.mv_insb((p), (b), (c))
+macro_line|# define __insb(p,b,c)&t;sh_mv.mv_insb((p), (b), (c))
 DECL|macro|__insw
-mdefine_line|#define __insw(p,b,c)&t;sh_mv.mv_insw((p), (b), (c))
+macro_line|# define __insw(p,b,c)&t;sh_mv.mv_insw((p), (b), (c))
 DECL|macro|__insl
-mdefine_line|#define __insl(p,b,c)&t;sh_mv.mv_insl((p), (b), (c))
+macro_line|# define __insl(p,b,c)&t;sh_mv.mv_insl((p), (b), (c))
 DECL|macro|__outsb
-mdefine_line|#define __outsb(p,b,c)&t;sh_mv.mv_outsb((p), (b), (c))
+macro_line|# define __outsb(p,b,c)&t;sh_mv.mv_outsb((p), (b), (c))
 DECL|macro|__outsw
-mdefine_line|#define __outsw(p,b,c)&t;sh_mv.mv_outsw((p), (b), (c))
+macro_line|# define __outsw(p,b,c)&t;sh_mv.mv_outsw((p), (b), (c))
 DECL|macro|__outsl
-mdefine_line|#define __outsl(p,b,c)&t;sh_mv.mv_outsl((p), (b), (c))
+macro_line|# define __outsl(p,b,c)&t;sh_mv.mv_outsl((p), (b), (c))
 DECL|macro|__readb
 macro_line|# define __readb(a)&t;sh_mv.mv_readb((a))
 DECL|macro|__readw
@@ -113,822 +113,31 @@ DECL|macro|__raw_writew
 macro_line|# define __raw_writew&t;__writew
 DECL|macro|__raw_writel
 macro_line|# define __raw_writel&t;__writel
-macro_line|#else
-multiline_comment|/* Control operations through platform specific headers */
-DECL|macro|__WANT_IO_DEF
-macro_line|# define __WANT_IO_DEF
-macro_line|# include &lt;asm/mach/io.h&gt;
-DECL|macro|__WANT_IO_DEF
-macro_line|#undef __WANT_IO_DEF
-macro_line|#endif /* GENERIC */
-macro_line|#endif /* __KERNEL__ */
-multiline_comment|/* These are always function calls, in both kernel and user space */
-r_extern
-r_int
-r_char
-id|_inb
-(paren
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|_inw
-(paren
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|_inl
-(paren
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|_outb
-(paren
-r_int
-r_char
-id|b
-comma
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|_outw
-(paren
-r_int
-r_int
-id|w
-comma
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|_outl
-(paren
-r_int
-r_int
-id|l
-comma
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_char
-id|_inb_p
-(paren
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|_inw_p
-(paren
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|_inl_p
-(paren
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|_outb_p
-(paren
-r_int
-r_char
-id|b
-comma
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|_outw_p
-(paren
-r_int
-r_int
-id|w
-comma
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|_outl_p
-(paren
-r_int
-r_int
-id|l
-comma
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|_insb
-(paren
-r_int
-r_int
-id|port
-comma
-r_void
-op_star
-id|dst
-comma
-r_int
-r_int
-id|count
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|_insw
-(paren
-r_int
-r_int
-id|port
-comma
-r_void
-op_star
-id|dst
-comma
-r_int
-r_int
-id|count
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|_insl
-(paren
-r_int
-r_int
-id|port
-comma
-r_void
-op_star
-id|dst
-comma
-r_int
-r_int
-id|count
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|_outsb
-(paren
-r_int
-r_int
-id|port
-comma
-r_const
-r_void
-op_star
-id|src
-comma
-r_int
-r_int
-id|count
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|_outsw
-(paren
-r_int
-r_int
-id|port
-comma
-r_const
-r_void
-op_star
-id|src
-comma
-r_int
-r_int
-id|count
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|_outsl
-(paren
-r_int
-r_int
-id|port
-comma
-r_const
-r_void
-op_star
-id|src
-comma
-r_int
-r_int
-id|count
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_char
-id|_readb
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|_readw
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|_readl
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|_writeb
-c_func
-(paren
-r_int
-r_char
-id|b
-comma
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|_writew
-c_func
-(paren
-r_int
-r_int
-id|b
-comma
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|_writel
-c_func
-(paren
-r_int
-r_int
-id|b
-comma
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-macro_line|#ifdef __KERNEL__
-r_extern
-r_int
-r_char
-id|___raw_readb
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|___raw_readw
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|___raw_readl
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|___raw_writeb
-c_func
-(paren
-r_int
-r_char
-id|b
-comma
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|___raw_writew
-c_func
-(paren
-r_int
-r_int
-id|b
-comma
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|___raw_writel
-c_func
-(paren
-r_int
-r_int
-id|b
-comma
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * The platform header files may define some of these macros to use&n; * the inlined versions where appropriate.  These macros may also be&n; * redefined by userlevel programs.&n; */
-macro_line|#ifndef inb
-DECL|macro|inb
-macro_line|# define inb(p)&t;&t;_inb(p)
-macro_line|#endif
-macro_line|#ifndef inw
-DECL|macro|inw
-macro_line|# define inw(p)&t;&t;_inw(p)
-macro_line|#endif
-macro_line|#ifndef inl
-DECL|macro|inl
-macro_line|# define inl(p)&t;&t;_inl(p)
-macro_line|#endif
-macro_line|#ifndef outb
-DECL|macro|outb
-macro_line|# define outb(b,p)&t;_outb((b),(p))
-macro_line|#endif
-macro_line|#ifndef outw
-DECL|macro|outw
-macro_line|# define outw(w,p)&t;_outw((w),(p))
-macro_line|#endif
-macro_line|#ifndef outl
-DECL|macro|outl
-macro_line|# define outl(l,p)&t;_outl((l),(p))
-macro_line|#endif
-macro_line|#ifndef inb_p
-DECL|macro|inb_p
-macro_line|# define inb_p&t;&t;_inb_p
-macro_line|#endif
-macro_line|#ifndef inw_p
-DECL|macro|inw_p
-macro_line|# define inw_p&t;&t;_inw_p
-macro_line|#endif
-macro_line|#ifndef inl_p
-DECL|macro|inl_p
-macro_line|# define inl_p&t;&t;_inl_p
-macro_line|#endif
-macro_line|#ifndef outb_p
-DECL|macro|outb_p
-macro_line|# define outb_p&t;&t;_outb_p
-macro_line|#endif
-macro_line|#ifndef outw_p
-DECL|macro|outw_p
-macro_line|# define outw_p&t;&t;_outw_p
-macro_line|#endif
-macro_line|#ifndef outl_p
-DECL|macro|outl_p
-macro_line|# define outl_p&t;&t;_outl_p
-macro_line|#endif
-macro_line|#ifndef insb
-DECL|macro|insb
-macro_line|# define insb(p,d,c)&t;_insb((p),(d),(c))
-macro_line|#endif
-macro_line|#ifndef insw
-DECL|macro|insw
-macro_line|# define insw(p,d,c)&t;_insw((p),(d),(c))
-macro_line|#endif
-macro_line|#ifndef insl
-DECL|macro|insl
-macro_line|# define insl(p,d,c)&t;_insl((p),(d),(c))
-macro_line|#endif
-macro_line|#ifndef outsb
-DECL|macro|outsb
-macro_line|# define outsb(p,s,c)&t;_outsb((p),(s),(c))
-macro_line|#endif
-macro_line|#ifndef outsw
-DECL|macro|outsw
-macro_line|# define outsw(p,s,c)&t;_outsw((p),(s),(c))
-macro_line|#endif
-macro_line|#ifndef outsl
-DECL|macro|outsl
-macro_line|# define outsl(p,s,c)&t;_outsl((p),(s),(c))
-macro_line|#endif
 macro_line|#ifdef __raw_readb
 DECL|macro|readb
-macro_line|# define readb(a)&t;({ unsigned long r_ = __raw_readb(a); mb(); r_; })
+macro_line|# define readb(a)&t;({ unsigned long r_ = __raw_readb((unsigned long)a); mb(); r_; })
 macro_line|#endif
 macro_line|#ifdef __raw_readw
 DECL|macro|readw
-macro_line|# define readw(a)&t;({ unsigned long r_ = __raw_readw(a); mb(); r_; })
+macro_line|# define readw(a)&t;({ unsigned long r_ = __raw_readw((unsigned long)a); mb(); r_; })
 macro_line|#endif
 macro_line|#ifdef __raw_readl
 DECL|macro|readl
-macro_line|# define readl(a)&t;({ unsigned long r_ = __raw_readl(a); mb(); r_; })
+macro_line|# define readl(a)&t;({ unsigned long r_ = __raw_readl((unsigned long)a); mb(); r_; })
 macro_line|#endif
 macro_line|#ifdef __raw_writeb
 DECL|macro|writeb
-macro_line|# define writeb(v,a)&t;({ __raw_writeb((v),(a)); mb(); })
+macro_line|# define writeb(v,a)&t;({ __raw_writeb((v),(unsigned long)(a)); mb(); })
 macro_line|#endif
 macro_line|#ifdef __raw_writew
 DECL|macro|writew
-macro_line|# define writew(v,a)&t;({ __raw_writew((v),(a)); mb(); })
+macro_line|# define writew(v,a)&t;({ __raw_writew((v),(unsigned long)(a)); mb(); })
 macro_line|#endif
 macro_line|#ifdef __raw_writel
 DECL|macro|writel
-macro_line|# define writel(v,a)&t;({ __raw_writel((v),(a)); mb(); })
+macro_line|# define writel(v,a)&t;({ __raw_writel((v),(unsigned long)(a)); mb(); })
 macro_line|#endif
-macro_line|#ifndef __raw_readb
-DECL|macro|__raw_readb
-macro_line|# define __raw_readb(a)&t;___raw_readb((unsigned long)(a))
-macro_line|#endif
-macro_line|#ifndef __raw_readw
-DECL|macro|__raw_readw
-macro_line|# define __raw_readw(a)&t;___raw_readw((unsigned long)(a))
-macro_line|#endif
-macro_line|#ifndef __raw_readl
-DECL|macro|__raw_readl
-macro_line|# define __raw_readl(a)&t;___raw_readl((unsigned long)(a))
-macro_line|#endif
-macro_line|#ifndef __raw_writeb
-DECL|macro|__raw_writeb
-macro_line|# define __raw_writeb(v,a)  ___raw_writeb((v),(unsigned long)(a))
-macro_line|#endif
-macro_line|#ifndef __raw_writew
-DECL|macro|__raw_writew
-macro_line|# define __raw_writew(v,a)  ___raw_writew((v),(unsigned long)(a))
-macro_line|#endif
-macro_line|#ifndef __raw_writel
-DECL|macro|__raw_writel
-macro_line|# define __raw_writel(v,a)  ___raw_writel((v),(unsigned long)(a))
-macro_line|#endif
-macro_line|#ifndef readb
-DECL|macro|readb
-macro_line|# define readb(a)&t;_readb((unsigned long)(a))
-macro_line|#endif
-macro_line|#ifndef readw
-DECL|macro|readw
-macro_line|# define readw(a)&t;_readw((unsigned long)(a))
-macro_line|#endif
-macro_line|#ifndef readl
-DECL|macro|readl
-macro_line|# define readl(a)&t;_readl((unsigned long)(a))
-macro_line|#endif
-macro_line|#ifndef writeb
-DECL|macro|writeb
-macro_line|# define writeb(v,a)&t;_writeb((v),(unsigned long)(a))
-macro_line|#endif
-macro_line|#ifndef writew
-DECL|macro|writew
-macro_line|# define writew(v,a)&t;_writew((v),(unsigned long)(a))
-macro_line|#endif
-macro_line|#ifndef writel
-DECL|macro|writel
-macro_line|# define writel(v,a)&t;_writel((v),(unsigned long)(a))
-macro_line|#endif
-macro_line|#else 
-multiline_comment|/* Userspace declarations.  */
-r_extern
-r_int
-r_char
-id|inb
-c_func
-(paren
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|inw
-c_func
-(paren
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|inl
-c_func
-(paren
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|outb
-c_func
-(paren
-r_int
-r_char
-id|b
-comma
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|outw
-c_func
-(paren
-r_int
-r_int
-id|w
-comma
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|outl
-c_func
-(paren
-r_int
-r_int
-id|l
-comma
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|insb
-c_func
-(paren
-r_int
-r_int
-id|port
-comma
-r_void
-op_star
-id|dst
-comma
-r_int
-r_int
-id|count
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|insw
-c_func
-(paren
-r_int
-r_int
-id|port
-comma
-r_void
-op_star
-id|dst
-comma
-r_int
-r_int
-id|count
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|insl
-c_func
-(paren
-r_int
-r_int
-id|port
-comma
-r_void
-op_star
-id|dst
-comma
-r_int
-r_int
-id|count
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|outsb
-c_func
-(paren
-r_int
-r_int
-id|port
-comma
-r_const
-r_void
-op_star
-id|src
-comma
-r_int
-r_int
-id|count
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|outsw
-c_func
-(paren
-r_int
-r_int
-id|port
-comma
-r_const
-r_void
-op_star
-id|src
-comma
-r_int
-r_int
-id|count
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|outsl
-c_func
-(paren
-r_int
-r_int
-id|port
-comma
-r_const
-r_void
-op_star
-id|src
-comma
-r_int
-r_int
-id|count
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_char
-id|readb
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|readw
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|readl
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|writeb
-c_func
-(paren
-r_int
-r_char
-id|b
-comma
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|writew
-c_func
-(paren
-r_int
-r_int
-id|b
-comma
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|writel
-c_func
-(paren
-r_int
-r_int
-id|b
-comma
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-macro_line|#endif /* __KERNEL__ */
-macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * If the platform has PC-like I/O, this function converts the offset into&n; * an address.&n; */
 DECL|function|isa_port2addr
 r_static
@@ -949,6 +158,29 @@ c_func
 (paren
 id|offset
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * This function provides a method for the generic case where a board-specific&n; * isa_port2addr simply needs to return the port + some arbitrary port base.&n; *&n; * We use this at board setup time to implicitly set the port base, and&n; * as a result, we can use the generic isa_port2addr.&n; */
+DECL|function|__set_io_port_base
+r_static
+r_inline
+r_void
+id|__set_io_port_base
+c_func
+(paren
+r_int
+r_int
+id|pbase
+)paren
+(brace
+r_extern
+r_int
+r_int
+id|generic_io_base
+suffix:semicolon
+id|generic_io_base
+op_assign
+id|pbase
 suffix:semicolon
 )brace
 DECL|macro|isa_readb
@@ -1174,7 +406,6 @@ suffix:semicolon
 )brace
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT 0xffffffff
-macro_line|#include &lt;asm/addrspace.h&gt;
 multiline_comment|/*&n; * Change virtual addresses to physical addresses and vv.&n; * These are trivial on the 1:1 Linux/SuperH mapping&n; */
 DECL|function|virt_to_phys
 r_static

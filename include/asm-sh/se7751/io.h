@@ -2,7 +2,6 @@ multiline_comment|/*&n; * include/asm-sh/io_7751se.h&n; *&n; * Modified version 
 macro_line|#ifndef _ASM_SH_IO_7751SE_H
 DECL|macro|_ASM_SH_IO_7751SE_H
 mdefine_line|#define _ASM_SH_IO_7751SE_H
-macro_line|#include &lt;asm/io_generic.h&gt;
 r_extern
 r_int
 r_char
@@ -300,61 +299,5 @@ r_int
 id|offset
 )paren
 suffix:semicolon
-macro_line|#ifdef __WANT_IO_DEF
-DECL|macro|__inb
-macro_line|# define __inb&t;&t;&t;sh7751se_inb
-DECL|macro|__inw
-macro_line|# define __inw&t;&t;&t;sh7751se_inw
-DECL|macro|__inl
-macro_line|# define __inl&t;&t;&t;sh7751se_inl
-DECL|macro|__outb
-macro_line|# define __outb&t;&t;&t;sh7751se_outb
-DECL|macro|__outw
-macro_line|# define __outw&t;&t;&t;sh7751se_outw
-DECL|macro|__outl
-macro_line|# define __outl&t;&t;&t;sh7751se_outl
-DECL|macro|__inb_p
-macro_line|# define __inb_p&t;&t;sh7751se_inb_p
-DECL|macro|__inw_p
-macro_line|# define __inw_p&t;&t;sh7751se_inw
-DECL|macro|__inl_p
-macro_line|# define __inl_p&t;&t;sh7751se_inl
-DECL|macro|__outb_p
-macro_line|# define __outb_p&t;&t;sh7751se_outb_p
-DECL|macro|__outw_p
-macro_line|# define __outw_p&t;&t;sh7751se_outw
-DECL|macro|__outl_p
-macro_line|# define __outl_p&t;&t;sh7751se_outl
-DECL|macro|__insb
-macro_line|# define __insb&t;&t;&t;sh7751se_insb
-DECL|macro|__insw
-macro_line|# define __insw&t;&t;&t;sh7751se_insw
-DECL|macro|__insl
-macro_line|# define __insl&t;&t;&t;sh7751se_insl
-DECL|macro|__outsb
-macro_line|# define __outsb&t;&t;sh7751se_outsb
-DECL|macro|__outsw
-macro_line|# define __outsw&t;&t;sh7751se_outsw
-DECL|macro|__outsl
-macro_line|# define __outsl&t;&t;sh7751se_outsl
-DECL|macro|__readb
-macro_line|# define __readb&t;&t;sh7751se_readb
-DECL|macro|__readw
-macro_line|# define __readw&t;&t;sh7751se_readw
-DECL|macro|__readl
-macro_line|# define __readl&t;&t;sh7751se_readl
-DECL|macro|__writeb
-macro_line|# define __writeb&t;&t;sh7751se_writeb
-DECL|macro|__writew
-macro_line|# define __writew&t;&t;sh7751se_writew
-DECL|macro|__writel
-macro_line|# define __writel&t;&t;sh7751se_writel
-DECL|macro|__isa_port2addr
-macro_line|# define __isa_port2addr&t;sh7751se_isa_port2addr
-DECL|macro|__ioremap
-macro_line|# define __ioremap&t;&t;generic_ioremap
-DECL|macro|__iounmap
-macro_line|# define __iounmap&t;&t;generic_iounmap
-macro_line|#endif
 macro_line|#endif /* _ASM_SH_IO_7751SE_H */
 eof

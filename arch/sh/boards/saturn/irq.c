@@ -1,8 +1,7 @@
 multiline_comment|/*&n; * arch/sh/boards/saturn/irq.c&n; *&n; * Copyright (C) 2002 Paul Mundt&n; *&n; * Released under the terms of the GNU GPL v2.0.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/saturn/saturn.h&gt;
-macro_line|#include &lt;asm/saturn/irq.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; * Interrupts map out as follows:&n; *&n; *  Vector&t;Name&t;&t;Mask&n; *&n; * &t;64&t;VBLANKIN&t;0x0001&n; * &t;65&t;VBLANKOUT&t;0x0002&n; *&t;66&t;HBLANKIN&t;0x0004&n; *&t;67&t;TIMER0&t;&t;0x0008&n; *&t;68&t;TIMER1&t;&t;0x0010&n; *&t;69&t;DSPEND&t;&t;0x0020&n; *&t;70&t;SOUNDREQUEST&t;0x0040&n; *&t;71&t;SYSTEMMANAGER&t;0x0080&n; *&t;72&t;PAD&t;&t;0x0100&n; *&t;73&t;LEVEL2DMAEND&t;0x0200&n; *&t;74&t;LEVEL1DMAEND&t;0x0400&n; *&t;75&t;LEVEL0DMAEND&t;0x0800&n; *&t;76&t;DMAILLEGAL&t;0x1000&n; *&t;77&t;SRITEDRAWEND&t;0x2000&n; *&t;78&t;ABUS&t;&t;0x8000&n; *&n; */
@@ -130,6 +129,8 @@ suffix:semicolon
 id|ctrl_outl
 c_func
 (paren
+id|mask
+comma
 id|SATURN_IMR
 )paren
 suffix:semicolon
@@ -206,7 +207,7 @@ op_logical_neg
 (paren
 id|irq_desc
 (braket
-id|irq
+id|irq_nr
 )braket
 dot
 id|status

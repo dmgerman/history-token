@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/machtypes.h&gt;
+macro_line|#include &lt;asm/machvec_init.h&gt;
 r_struct
 id|timeval
 suffix:semicolon
@@ -13,12 +14,6 @@ DECL|struct|sh_machine_vector
 r_struct
 id|sh_machine_vector
 (brace
-DECL|member|mv_name
-r_const
-r_char
-op_star
-id|mv_name
-suffix:semicolon
 DECL|member|mv_nr_irqs
 r_int
 id|mv_nr_irqs
@@ -433,16 +428,6 @@ r_int
 id|irq
 )paren
 suffix:semicolon
-DECL|member|mv_init_arch
-r_void
-(paren
-op_star
-id|mv_init_arch
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|member|mv_init_irq
 r_void
 (paren
@@ -463,16 +448,6 @@ id|mv_init_pci
 r_void
 )paren
 suffix:semicolon
-DECL|member|mv_kill_arch
-r_void
-(paren
-op_star
-id|mv_kill_arch
-)paren
-(paren
-r_int
-)paren
-suffix:semicolon
 DECL|member|mv_heartbeat
 r_void
 (paren
@@ -481,31 +456,6 @@ id|mv_heartbeat
 )paren
 (paren
 r_void
-)paren
-suffix:semicolon
-DECL|member|mv_rtc_gettimeofday
-r_void
-(paren
-op_star
-id|mv_rtc_gettimeofday
-)paren
-(paren
-r_struct
-id|timespec
-op_star
-id|ts
-)paren
-suffix:semicolon
-DECL|member|mv_rtc_settimeofday
-r_int
-(paren
-op_star
-id|mv_rtc_settimeofday
-)paren
-(paren
-r_const
-id|time_t
-id|secs
 )paren
 suffix:semicolon
 )brace

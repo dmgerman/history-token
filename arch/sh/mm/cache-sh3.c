@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: cache-sh3.c,v 1.5 2003/05/06 23:28:48 lethal Exp $&n; *&n; *  linux/arch/sh/mm/cache-sh3.c&n; *&n; * Copyright (C) 1999, 2000  Niibe Yutaka&n; * Copyright (C) 2002 Paul Mundt&n; */
+multiline_comment|/* $Id: cache-sh3.c,v 1.7 2003/08/28 16:16:09 lethal Exp $&n; *&n; *  linux/arch/sh/mm/cache-sh3.c&n; *&n; * Copyright (C) 1999, 2000  Niibe Yutaka&n; * Copyright (C) 2002 Paul Mundt&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -235,6 +235,17 @@ id|cpu_data-&gt;type
 op_assign
 id|CPU_SH7708
 suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|CPU_HAS_MMU_PAGE_ASSOC
+comma
+op_amp
+(paren
+id|cpu_data-&gt;flags
+)paren
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -256,7 +267,7 @@ op_assign
 id|CPU_SH7729
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * SH-3 doesn&squot;t have separate caches&n;&t;&t; */
+multiline_comment|/*&n;&t; * SH-3 doesn&squot;t have separate caches&n;&t; */
 id|cpu_data-&gt;dcache.flags
 op_or_assign
 id|SH_CACHE_COMBINED
