@@ -1,11 +1,11 @@
 multiline_comment|/* 8139cp.c: A Linux PCI Ethernet driver for the RealTek 8139C+ chips. */
-multiline_comment|/*&n;&t;Copyright 2001,2002 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&n;&t;Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com) [tg3.c]&n;&t;Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com) [sungem.c]&n;&t;Copyright 2001 Manfred Spraul&t;&t;&t;&t;    [natsemi.c]&n;&t;Copyright 1999-2001 by Donald Becker.&t;&t;&t;    [natsemi.c]&n;       &t;Written 1997-2001 by Donald Becker.&t;&t;&t;    [8139too.c]&n;&t;Copyright 1998-2001 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;. [acenic.c]&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;See the file COPYING in this distribution for more information.&n;&n;&t;Contributors:&n;&t;&n;&t;&t;Wake-on-LAN support - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;PCI suspend/resume  - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;&t;&n;&t;TODO, in rough priority order:&n;&t;* dev-&gt;tx_timeout&n;&t;* LinkChg interrupt&n;&t;* Support forcing media type with a module parameter,&n;&t;  like dl2k.c/sundance.c&n;&t;* Constants (module parms?) for Rx work limit&n;&t;* support 64-bit PCI DMA&n;&t;* Complete reset on PciErr&n;&t;* Consider Rx interrupt mitigation using TimerIntr&n;&t;* Implement 8139C+ statistics dump; maybe not...&n;&t;  h/w stats can be reset only by software reset&n;&t;* Tx checksumming&n;&t;* Handle netif_rx return value&n;&t;* Investigate using skb-&gt;priority with h/w VLAN priority&n;&t;* Investigate using High Priority Tx Queue with skb-&gt;priority&n;&t;* Adjust Rx FIFO threshold and Max Rx DMA burst on Rx FIFO error&n;&t;* Adjust Tx FIFO threshold and Max Tx DMA burst on Tx FIFO error&n;&t;* Implement Tx software interrupt mitigation via&n;&t;  Tx descriptor bit&n;&t;* The real minimum of CP_MIN_MTU is 4 bytes.  However,&n;&t;  for this to be supported, one must(?) turn on packet padding.&n;&t;* Support 8169 GMII&n;&t;* Support external MII transceivers&n;&n; */
+multiline_comment|/*&n;&t;Copyright 2001,2002 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&n;&t;Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com) [tg3.c]&n;&t;Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com) [sungem.c]&n;&t;Copyright 2001 Manfred Spraul&t;&t;&t;&t;    [natsemi.c]&n;&t;Copyright 1999-2001 by Donald Becker.&t;&t;&t;    [natsemi.c]&n;       &t;Written 1997-2001 by Donald Becker.&t;&t;&t;    [8139too.c]&n;&t;Copyright 1998-2001 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;. [acenic.c]&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;See the file COPYING in this distribution for more information.&n;&n;&t;Contributors:&n;&t;&n;&t;&t;Wake-on-LAN support - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;PCI suspend/resume  - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;&t;&n;&t;TODO, in rough priority order:&n;&t;* Test Tx checksumming thoroughly&n;&t;* dev-&gt;tx_timeout&n;&t;* LinkChg interrupt&n;&t;* Support forcing media type with a module parameter,&n;&t;  like dl2k.c/sundance.c&n;&t;* Constants (module parms?) for Rx work limit&n;&t;* Complete reset on PciErr&n;&t;* Consider Rx interrupt mitigation using TimerIntr&n;&t;* Implement 8139C+ statistics dump; maybe not...&n;&t;  h/w stats can be reset only by software reset&n;&t;* Handle netif_rx return value&n;&t;* Investigate using skb-&gt;priority with h/w VLAN priority&n;&t;* Investigate using High Priority Tx Queue with skb-&gt;priority&n;&t;* Adjust Rx FIFO threshold and Max Rx DMA burst on Rx FIFO error&n;&t;* Adjust Tx FIFO threshold and Max Tx DMA burst on Tx FIFO error&n;&t;* Implement Tx software interrupt mitigation via&n;&t;  Tx descriptor bit&n;&t;* The real minimum of CP_MIN_MTU is 4 bytes.  However,&n;&t;  for this to be supported, one must(?) turn on packet padding.&n;&t;* Support 8169 GMII&n;&t;* Support external MII transceivers&n;&n; */
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&quot;8139cp&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&quot;0.1.0&quot;
+mdefine_line|#define DRV_VERSION&t;&t;&quot;0.2.1&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&t;&quot;Jun 14, 2002&quot;
+mdefine_line|#define DRV_RELDATE&t;&t;&quot;Aug 9, 2002&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -19,8 +19,16 @@ macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/in.h&gt;
+macro_line|#include &lt;linux/ip.h&gt;
+macro_line|#include &lt;linux/tcp.h&gt;
+macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+multiline_comment|/* experimental TX checksumming feature enable/disable */
+DECL|macro|CP_TX_CHECKSUM
+macro_line|#undef CP_TX_CHECKSUM
+multiline_comment|/* VLAN tagging feature enable/disable */
 macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
 DECL|macro|CP_VLAN_TAG_USED
 mdefine_line|#define CP_VLAN_TAG_USED 1
@@ -917,6 +925,16 @@ l_int|5
 )paren
 comma
 multiline_comment|/* Rx checksum offload enable */
+DECL|enumerator|PCIDAC
+id|PCIDAC
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|4
+)paren
+comma
+multiline_comment|/* PCI Dual Address Cycle (64-bit PCI) */
 DECL|enumerator|PCIMulRW
 id|PCIMulRW
 op_assign
@@ -1188,13 +1206,9 @@ DECL|member|opts2
 id|u32
 id|opts2
 suffix:semicolon
-DECL|member|addr_lo
-id|u32
-id|addr_lo
-suffix:semicolon
-DECL|member|addr_hi
-id|u32
-id|addr_hi
+DECL|member|addr
+id|u64
+id|addr
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1412,6 +1426,12 @@ suffix:semicolon
 DECL|member|dropping_frag
 r_int
 id|dropping_frag
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|pci_using_dac
+r_int
+id|pci_using_dac
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -2688,9 +2708,9 @@ id|cp-&gt;rx_ring
 id|rx_tail
 )braket
 dot
-id|addr_lo
+id|addr
 op_assign
-id|cpu_to_le32
+id|cpu_to_le64
 c_func
 (paren
 id|mapping
@@ -3374,9 +3394,10 @@ id|entry
 )braket
 suffix:semicolon
 id|u32
-id|mapping
-comma
 id|len
+suffix:semicolon
+id|dma_addr_t
+id|mapping
 suffix:semicolon
 id|len
 op_assign
@@ -3421,9 +3442,9 @@ comma
 id|vlan_tag
 )paren
 suffix:semicolon
-id|txd-&gt;addr_lo
+id|txd-&gt;addr
 op_assign
-id|cpu_to_le32
+id|cpu_to_le64
 c_func
 (paren
 id|mapping
@@ -3435,6 +3456,57 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CP_TX_CHECKSUM
+r_if
+c_cond
+(paren
+id|skb-&gt;ip_summed
+op_eq
+id|CHECKSUM_HW
+)paren
+(brace
+r_const
+r_struct
+id|iphdr
+op_star
+id|ip
+op_assign
+id|skb-&gt;nh.iph
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ip-&gt;protocol
+op_eq
+id|IPPROTO_TCP
+)paren
+id|txd-&gt;opts1
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|eor
+op_or
+id|len
+op_or
+id|DescOwn
+op_or
+id|FirstFrag
+op_or
+id|LastFrag
+op_or
+id|IPCS
+op_or
+id|TCPCS
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|ip-&gt;protocol
+op_eq
+id|IPPROTO_UDP
+)paren
 id|txd-&gt;opts1
 op_assign
 id|cpu_to_le32
@@ -3453,11 +3525,17 @@ op_or
 id|IPCS
 op_or
 id|UDPCS
-op_or
-id|TCPCS
 )paren
 suffix:semicolon
-macro_line|#else
+r_else
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+r_else
+macro_line|#endif
 id|txd-&gt;opts1
 op_assign
 id|cpu_to_le32
@@ -3474,7 +3552,6 @@ op_or
 id|LastFrag
 )paren
 suffix:semicolon
-macro_line|#endif
 id|wmb
 c_func
 (paren
@@ -3525,7 +3602,8 @@ id|txd
 suffix:semicolon
 id|u32
 id|first_len
-comma
+suffix:semicolon
+id|dma_addr_t
 id|first_mapping
 suffix:semicolon
 r_int
@@ -3535,6 +3613,16 @@ id|first_entry
 op_assign
 id|entry
 suffix:semicolon
+macro_line|#ifdef CP_TX_CHECKSUM
+r_const
+r_struct
+id|iphdr
+op_star
+id|ip
+op_assign
+id|skb-&gt;nh.iph
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* We must give this initial chunk to the device last.&n;&t;&t; * Otherwise we could race with the device.&n;&t;&t; */
 id|first_len
 op_assign
@@ -3630,11 +3718,12 @@ id|frag
 suffix:semicolon
 id|u32
 id|len
-comma
-id|mapping
 suffix:semicolon
 id|u32
 id|ctrl
+suffix:semicolon
+id|dma_addr_t
+id|mapping
 suffix:semicolon
 id|len
 op_assign
@@ -3684,6 +3773,14 @@ suffix:colon
 l_int|0
 suffix:semicolon
 macro_line|#ifdef CP_TX_CHECKSUM
+r_if
+c_cond
+(paren
+id|skb-&gt;ip_summed
+op_eq
+id|CHECKSUM_HW
+)paren
+(brace
 id|ctrl
 op_assign
 id|eor
@@ -3693,12 +3790,39 @@ op_or
 id|DescOwn
 op_or
 id|IPCS
-op_or
-id|UDPCS
-op_or
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ip-&gt;protocol
+op_eq
+id|IPPROTO_TCP
+)paren
+id|ctrl
+op_or_assign
 id|TCPCS
 suffix:semicolon
-macro_line|#else
+r_else
+r_if
+c_cond
+(paren
+id|ip-&gt;protocol
+op_eq
+id|IPPROTO_UDP
+)paren
+id|ctrl
+op_or_assign
+id|UDPCS
+suffix:semicolon
+r_else
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+r_else
+macro_line|#endif
 id|ctrl
 op_assign
 id|eor
@@ -3707,7 +3831,6 @@ id|len
 op_or
 id|DescOwn
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3743,9 +3866,9 @@ comma
 id|vlan_tag
 )paren
 suffix:semicolon
-id|txd-&gt;addr_lo
+id|txd-&gt;addr
 op_assign
-id|cpu_to_le32
+id|cpu_to_le64
 c_func
 (paren
 id|mapping
@@ -3823,9 +3946,9 @@ comma
 id|vlan_tag
 )paren
 suffix:semicolon
-id|txd-&gt;addr_lo
+id|txd-&gt;addr
 op_assign
-id|cpu_to_le32
+id|cpu_to_le64
 c_func
 (paren
 id|first_mapping
@@ -3837,6 +3960,45 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CP_TX_CHECKSUM
+r_if
+c_cond
+(paren
+id|skb-&gt;ip_summed
+op_eq
+id|CHECKSUM_HW
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ip-&gt;protocol
+op_eq
+id|IPPROTO_TCP
+)paren
+id|txd-&gt;opts1
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|first_len
+op_or
+id|FirstFrag
+op_or
+id|DescOwn
+op_or
+id|IPCS
+op_or
+id|TCPCS
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|ip-&gt;protocol
+op_eq
+id|IPPROTO_UDP
+)paren
 id|txd-&gt;opts1
 op_assign
 id|cpu_to_le32
@@ -3851,11 +4013,17 @@ op_or
 id|IPCS
 op_or
 id|UDPCS
-op_or
-id|TCPCS
 )paren
 suffix:semicolon
-macro_line|#else
+r_else
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+r_else
+macro_line|#endif
 id|txd-&gt;opts1
 op_assign
 id|cpu_to_le32
@@ -3868,7 +4036,6 @@ op_or
 id|DescOwn
 )paren
 suffix:semicolon
-macro_line|#endif
 id|wmb
 c_func
 (paren
@@ -4490,6 +4657,16 @@ op_star
 id|cp
 )paren
 (brace
+id|u16
+id|pci_dac
+op_assign
+id|cp-&gt;pci_using_dac
+ques
+c_cond
+id|PCIDAC
+suffix:colon
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4502,6 +4679,8 @@ c_func
 (paren
 id|CpCmd
 comma
+id|pci_dac
+op_or
 id|PCIMulRW
 op_or
 id|RxChkSum
@@ -4513,6 +4692,8 @@ c_func
 (paren
 id|CpCmd
 comma
+id|pci_dac
+op_or
 id|PCIMulRW
 op_or
 id|RxChkSum
@@ -4959,9 +5140,9 @@ id|cp-&gt;rx_ring
 id|i
 )braket
 dot
-id|addr_lo
+id|addr
 op_assign
-id|cpu_to_le32
+id|cpu_to_le64
 c_func
 (paren
 id|cp-&gt;rx_skb
@@ -4971,15 +5152,6 @@ id|i
 dot
 id|mapping
 )paren
-suffix:semicolon
-id|cp-&gt;rx_ring
-(braket
-id|i
-)braket
-dot
-id|addr_hi
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 r_return
@@ -5560,6 +5732,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef BROKEN
 DECL|function|cp_change_mtu
 r_static
 r_int
@@ -5696,6 +5869,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+macro_line|#endif /* BROKEN */
 DECL|variable|mii_2_8139_map
 r_static
 r_char
@@ -8191,6 +8365,7 @@ r_int
 id|pciaddr
 suffix:semicolon
 r_int
+r_int
 id|addr_len
 comma
 id|i
@@ -8516,6 +8691,67 @@ r_goto
 id|err_out_res
 suffix:semicolon
 )brace
+multiline_comment|/* Configure DMA attributes. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pci_set_dma_mask
+c_func
+(paren
+id|pdev
+comma
+(paren
+id|u64
+)paren
+l_int|0xffffffffffffffff
+)paren
+)paren
+(brace
+id|cp-&gt;pci_using_dac
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+(brace
+id|rc
+op_assign
+id|pci_set_dma_mask
+c_func
+(paren
+id|pdev
+comma
+(paren
+id|u64
+)paren
+l_int|0xffffffff
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;No usable DMA configuration, &quot;
+l_string|&quot;aborting.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|err_out_res
+suffix:semicolon
+)brace
+id|cp-&gt;pci_using_dac
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|regs
 op_assign
 id|ioremap_nocache
@@ -8664,10 +8900,12 @@ id|dev-&gt;do_ioctl
 op_assign
 id|cp_ioctl
 suffix:semicolon
+macro_line|#ifdef BROKEN
 id|dev-&gt;change_mtu
 op_assign
 id|cp_change_mtu
 suffix:semicolon
+macro_line|#endif
 macro_line|#if 0
 id|dev-&gt;tx_timeout
 op_assign
