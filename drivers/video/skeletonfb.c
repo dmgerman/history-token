@@ -629,10 +629,6 @@ id|info
 )paren
 (brace
 multiline_comment|/*&n;     *  Fill in a pointer with the virtual address of the mapped frame buffer.&n;     *  Fill in a pointer to appropriate low level text console operations (and&n;     *  optionally a pointer to help data) for the video mode `par&squot; of your&n;     *  video hardware. These can be generic software routines, or hardware&n;     *  accelerated routines specifically tailored for your hardware.&n;     *  If you don&squot;t have any appropriate operations, you must fill in a&n;     *  pointer to dummy operations, and there will be no text output.&n;     */
-id|disp-&gt;screen_base
-op_assign
-id|virtual_frame_buffer_address
-suffix:semicolon
 macro_line|#ifdef FBCON_HAS_CFB8
 r_if
 c_cond
@@ -790,6 +786,10 @@ id|fb_info.gen.info.fbops
 op_assign
 op_amp
 id|xxxfb_ops
+suffix:semicolon
+id|fb_info.gen.info.screen_base
+op_assign
+id|virtual_frame_buffer_address
 suffix:semicolon
 id|fb_info.gen.info.disp
 op_assign

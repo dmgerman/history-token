@@ -9091,10 +9091,6 @@ comma
 id|info
 )paren
 suffix:semicolon
-id|display-&gt;screen_base
-op_assign
-id|info-&gt;bufbase_virt
-suffix:semicolon
 id|display-&gt;visual
 op_assign
 id|fix.visual
@@ -10278,7 +10274,7 @@ id|ENXIO
 suffix:semicolon
 )brace
 )brace
-id|fb_info.disp.screen_base
+id|fb_info.fb_info.screen_base
 op_assign
 id|fb_info.bufbase_virt
 suffix:semicolon

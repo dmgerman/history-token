@@ -1336,7 +1336,7 @@ r_char
 op_star
 id|fb_base
 op_assign
-id|p-&gt;screen_base
+id|fb-&gt;info.screen_base
 comma
 op_star
 id|q
@@ -5888,7 +5888,7 @@ op_assign
 id|fbtype
 suffix:semicolon
 macro_line|#ifndef __sparc_v9__
-id|disp-&gt;screen_base
+id|fb-&gt;info.screen_base
 op_assign
 (paren
 r_int

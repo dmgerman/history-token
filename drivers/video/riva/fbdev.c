@@ -2445,10 +2445,6 @@ id|disp-&gt;dispsw_data
 op_assign
 l_int|NULL
 suffix:semicolon
-id|disp-&gt;screen_base
-op_assign
-id|rinfo-&gt;fb_base
-suffix:semicolon
 id|disp-&gt;type
 op_assign
 id|FB_TYPE_PACKED_PIXELS
@@ -7142,6 +7138,10 @@ id|info-&gt;fbops
 op_assign
 op_amp
 id|riva_fb_ops
+suffix:semicolon
+id|info-&gt;screen_base
+op_assign
+id|rinfo-&gt;fb_base
 suffix:semicolon
 multiline_comment|/* FIXME: set monspecs to what??? */
 id|info-&gt;display_fg

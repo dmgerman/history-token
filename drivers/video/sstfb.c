@@ -3332,7 +3332,7 @@ id|var-&gt;bits_per_pixel
 )paren
 (brace
 multiline_comment|/* 2-3  lignes redondantes avec get_fix */
-id|display-&gt;screen_base
+id|info-&gt;screen_base
 op_assign
 (paren
 r_char

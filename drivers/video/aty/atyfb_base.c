@@ -5930,7 +5930,7 @@ comma
 id|info
 )paren
 suffix:semicolon
-id|display-&gt;screen_base
+id|fb-&gt;screen_base
 op_assign
 (paren
 r_char

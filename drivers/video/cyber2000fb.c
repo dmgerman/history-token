@@ -4336,10 +4336,6 @@ id|cfb-&gt;fb.fix.line_length
 op_assign
 id|display-&gt;next_line
 suffix:semicolon
-id|display-&gt;screen_base
-op_assign
-id|cfb-&gt;fb.screen_base
-suffix:semicolon
 id|display-&gt;line_length
 op_assign
 id|cfb-&gt;fb.fix.line_length

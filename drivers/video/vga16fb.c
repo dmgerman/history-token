@@ -686,10 +686,6 @@ op_amp
 id|info-&gt;fb_info
 )paren
 suffix:semicolon
-id|display-&gt;screen_base
-op_assign
-id|info-&gt;video_vbase
-suffix:semicolon
 id|display-&gt;visual
 op_assign
 id|fix.visual
@@ -4698,6 +4694,10 @@ id|vga16fb.fb_info.fbops
 op_assign
 op_amp
 id|vga16fb_ops
+suffix:semicolon
+id|vga16fb.fb_info.screen_base
+op_assign
+id|vga16fb.video_vbase
 suffix:semicolon
 id|vga16fb.fb_info.disp
 op_assign

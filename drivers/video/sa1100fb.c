@@ -4077,10 +4077,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|display-&gt;screen_base
-op_assign
-id|fbi-&gt;screen_cpu
-suffix:semicolon
 id|display-&gt;next_line
 op_assign
 id|display-&gt;line_length
@@ -6969,7 +6965,7 @@ c_cond
 id|fbi-&gt;map_cpu
 )paren
 (brace
-id|fbi-&gt;screen_cpu
+id|fbi-&gt;fb.screen_base
 op_assign
 id|fbi-&gt;map_cpu
 op_plus

@@ -20,12 +20,6 @@ DECL|macro|FBIOSETSCROLLMODE
 mdefine_line|#define FBIOSETSCROLLMODE   0x4611
 DECL|macro|Q40_PHYS_SCREEN_ADDR
 mdefine_line|#define Q40_PHYS_SCREEN_ADDR 0xFE800000
-DECL|variable|q40_screen_addr
-r_static
-r_int
-r_int
-id|q40_screen_addr
-suffix:semicolon
 DECL|variable|fbcon_cmap_cfb16
 r_static
 id|u16
@@ -310,7 +304,7 @@ l_string|&quot;Q40&quot;
 suffix:semicolon
 id|fix-&gt;smem_start
 op_assign
-id|q40_screen_addr
+id|info-&gt;screen_base
 suffix:semicolon
 id|fix-&gt;smem_len
 op_assign
@@ -1258,10 +1252,6 @@ id|con
 op_assign
 l_int|0
 suffix:semicolon
-id|display-&gt;screen_base
-op_assign
-id|fix.smem_start
-suffix:semicolon
 id|display-&gt;visual
 op_assign
 id|fix.visual
@@ -1336,7 +1326,7 @@ op_minus
 id|ENXIO
 suffix:semicolon
 macro_line|#if 0
-id|q40_screen_addr
+id|fb_info.screen_base
 op_assign
 id|kernel_map
 c_func
@@ -1353,7 +1343,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#else
-id|q40_screen_addr
+id|fb_info.screen_base
 op_assign
 id|Q40_PHYS_SCREEN_ADDR
 suffix:semicolon

@@ -1107,14 +1107,6 @@ op_star
 id|info
 )paren
 suffix:semicolon
-id|display-&gt;screen_base
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|fix.smem_start
-suffix:semicolon
 id|display-&gt;visual
 op_assign
 id|fix.visual
@@ -1313,6 +1305,10 @@ id|ip-&gt;info.fbops
 op_assign
 op_amp
 id|pmagbafb_ops
+suffix:semicolon
+id|ip-&gt;info.screen_base
+op_assign
+id|ip-&gt;pmagba_fb_start
 suffix:semicolon
 id|ip-&gt;info.disp
 op_assign

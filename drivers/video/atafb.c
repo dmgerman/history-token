@@ -11116,7 +11116,7 @@ id|con
 op_assign
 l_int|0
 suffix:semicolon
-id|display-&gt;screen_base
+id|info-&gt;screen_base
 op_assign
 (paren
 r_void

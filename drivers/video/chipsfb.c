@@ -2973,10 +2973,6 @@ id|p-&gt;disp.cmap.transp
 op_assign
 l_int|NULL
 suffix:semicolon
-id|p-&gt;disp.screen_base
-op_assign
-id|p-&gt;frame_buffer
-suffix:semicolon
 id|p-&gt;disp.visual
 op_assign
 id|p-&gt;fix.visual
@@ -3022,6 +3018,10 @@ id|p-&gt;info.fbops
 op_assign
 op_amp
 id|chipsfb_ops
+suffix:semicolon
+id|p-&gt;info.screen_base
+op_assign
+id|p-&gt;frame_buffer
 suffix:semicolon
 id|p-&gt;info.disp
 op_assign

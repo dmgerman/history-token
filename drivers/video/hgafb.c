@@ -2490,14 +2490,6 @@ id|disp.var
 op_assign
 id|hga_default_var
 suffix:semicolon
-id|disp.screen_base
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|hga_fix.smem_start
-suffix:semicolon
 id|disp.visual
 op_assign
 id|hga_fix.visual

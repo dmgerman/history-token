@@ -6151,7 +6151,7 @@ op_amp
 id|disp-&gt;var
 )paren
 suffix:semicolon
-id|disp-&gt;screen_base
+id|p-&gt;info.screen_base
 op_assign
 (paren
 r_char
@@ -6212,7 +6212,7 @@ id|rows
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;info.screen_base
 op_plus
 id|yy
 op_star
@@ -6416,7 +6416,7 @@ id|rows
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;info.screen_base
 op_plus
 id|yy
 op_star

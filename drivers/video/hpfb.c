@@ -1046,10 +1046,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|display-&gt;screen_base
-op_assign
-id|fix.smem_start
-suffix:semicolon
 id|display-&gt;visual
 op_assign
 id|fix.visual
@@ -1369,6 +1365,10 @@ id|fb_info.fbops
 op_assign
 op_amp
 id|hpfb_ops
+suffix:semicolon
+id|fb_info.screen_base
+op_assign
+id|fb_start
 suffix:semicolon
 id|fb_info.disp
 op_assign

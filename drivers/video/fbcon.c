@@ -7860,12 +7860,12 @@ id|FB_VISUAL_MONO01
 r_if
 c_cond
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 )paren
 id|fb_memset255
 c_func
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 comma
 id|p-&gt;var.xres_virtual
 op_star
@@ -11340,7 +11340,7 @@ r_char
 op_star
 id|fb
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 suffix:semicolon
 r_int
 r_char

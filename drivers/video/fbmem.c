@@ -1616,7 +1616,7 @@ id|base_addr
 suffix:semicolon
 id|base_addr
 op_assign
-id|info-&gt;disp-&gt;screen_base
+id|info-&gt;screen_base
 suffix:semicolon
 id|count
 op_sub_assign
@@ -1813,7 +1813,7 @@ id|base_addr
 suffix:semicolon
 id|base_addr
 op_assign
-id|info-&gt;disp-&gt;screen_base
+id|info-&gt;screen_base
 suffix:semicolon
 id|count
 op_sub_assign

@@ -5867,10 +5867,6 @@ id|con
 op_assign
 l_int|0
 suffix:semicolon
-id|display-&gt;screen_base
-op_assign
-id|zinfo-&gt;fbmem
-suffix:semicolon
 id|display-&gt;visual
 op_assign
 id|fix.visual
@@ -7255,6 +7251,10 @@ id|fb_info-&gt;fbops
 op_assign
 op_amp
 id|retz3fb_ops
+suffix:semicolon
+id|fb_info-&gt;screen_base
+op_assign
+id|zinfo-&gt;fbmem
 suffix:semicolon
 id|fb_info-&gt;disp
 op_assign

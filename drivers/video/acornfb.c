@@ -4123,7 +4123,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|display-&gt;screen_base
+id|info-&gt;screen_base
 op_assign
 (paren
 r_char

@@ -4170,7 +4170,7 @@ c_cond
 id|cv3d_on_zorro2
 )paren
 (brace
-id|display-&gt;screen_base
+id|info-&gt;screen_base
 op_assign
 (paren
 r_char
@@ -4190,7 +4190,7 @@ id|display-&gt;var.bits_per_pixel
 r_case
 l_int|8
 suffix:colon
-id|display-&gt;screen_base
+id|info-&gt;screen_base
 op_assign
 (paren
 r_char
@@ -4207,7 +4207,7 @@ suffix:semicolon
 r_case
 l_int|16
 suffix:colon
-id|display-&gt;screen_base
+id|info-&gt;screen_base
 op_assign
 (paren
 r_char

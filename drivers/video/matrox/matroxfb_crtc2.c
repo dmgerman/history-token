@@ -1850,7 +1850,11 @@ op_star
 id|var
 suffix:semicolon
 multiline_comment|/* cmap */
-id|p-&gt;screen_base
+id|ACCESS_FBINFO
+c_func
+(paren
+id|fbcon.screen_base
+)paren
 op_assign
 id|vaddr_va
 c_func

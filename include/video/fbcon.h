@@ -260,13 +260,6 @@ id|fb_cmap
 id|cmap
 suffix:semicolon
 multiline_comment|/* colormap */
-DECL|member|screen_base
-r_char
-op_star
-id|screen_base
-suffix:semicolon
-multiline_comment|/* pointer to top of virtual screen */
-multiline_comment|/* (virtual address) */
 DECL|member|visual
 r_int
 id|visual

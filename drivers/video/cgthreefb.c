@@ -496,7 +496,7 @@ r_int
 id|y_margin
 )paren
 (brace
-id|p-&gt;screen_base
+id|fb-&gt;info.screen_base
 op_add_assign
 (paren
 id|y_margin
@@ -1029,10 +1029,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|disp-&gt;screen_base
+id|fb-&gt;info.screen_base
 )paren
 (brace
-id|disp-&gt;screen_base
+id|fb-&gt;info.screen_base
 op_assign
 (paren
 r_char
@@ -1055,7 +1055,7 @@ l_string|&quot;cg3 ram&quot;
 )paren
 suffix:semicolon
 )brace
-id|disp-&gt;screen_base
+id|fb-&gt;info.screen_base
 op_add_assign
 id|fix-&gt;line_length
 op_star

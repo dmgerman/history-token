@@ -822,7 +822,7 @@ r_int
 id|y_margin
 )paren
 (brace
-id|p-&gt;screen_base
+id|fb-&gt;info.screen_base
 op_add_assign
 (paren
 id|y_margin
@@ -1944,7 +1944,7 @@ op_plus
 id|CG14_CURSORREGS
 )paren
 suffix:semicolon
-id|disp-&gt;screen_base
+id|fb-&gt;info.screen_base
 op_assign
 (paren
 r_char
@@ -2162,7 +2162,7 @@ id|disp-&gt;scrollmode
 op_assign
 id|SCROLL_YREDRAW
 suffix:semicolon
-id|disp-&gt;screen_base
+id|fb-&gt;info.screen_base
 op_add_assign
 id|fix-&gt;line_length
 op_star

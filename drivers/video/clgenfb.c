@@ -9223,7 +9223,7 @@ id|printk
 l_string|&quot;Cirrus Logic video mode: &quot;
 )paren
 suffix:semicolon
-id|disp-&gt;screen_base
+id|info-&gt;info.screen_base
 op_assign
 (paren
 r_char
@@ -9253,7 +9253,7 @@ id|fb_info-&gt;btype
 op_eq
 id|BT_GD5480
 )paren
-id|disp-&gt;screen_base
+id|info-&gt;info.screen_base
 op_assign
 (paren
 r_char
@@ -9285,7 +9285,7 @@ id|fb_info-&gt;btype
 op_eq
 id|BT_GD5480
 )paren
-id|disp-&gt;screen_base
+id|info-&gt;info.screen_base
 op_assign
 (paren
 r_char
@@ -9344,7 +9344,7 @@ id|fb_info-&gt;btype
 op_eq
 id|BT_GD5480
 )paren
-id|disp-&gt;screen_base
+id|info-&gt;info.screen_base
 op_assign
 (paren
 r_char
@@ -9384,7 +9384,7 @@ id|fb_info-&gt;btype
 op_eq
 id|BT_GD5480
 )paren
-id|disp-&gt;screen_base
+id|info-&gt;info.screen_base
 op_assign
 (paren
 r_char
@@ -9435,7 +9435,7 @@ id|fb_info-&gt;btype
 op_eq
 id|BT_GD5480
 )paren
-id|disp-&gt;screen_base
+id|info-&gt;info.screen_base
 op_assign
 (paren
 r_char

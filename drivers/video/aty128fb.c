@@ -6186,7 +6186,7 @@ comma
 id|info
 )paren
 suffix:semicolon
-id|display-&gt;screen_base
+id|fb-&gt;screen_base
 op_assign
 id|info-&gt;frame_buffer
 suffix:semicolon

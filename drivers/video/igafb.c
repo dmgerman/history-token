@@ -2115,10 +2115,6 @@ id|display
 )paren
 )paren
 suffix:semicolon
-id|display-&gt;screen_base
-op_assign
-id|info-&gt;frame_buffer
-suffix:semicolon
 id|display-&gt;visual
 op_assign
 id|fix.visual
@@ -2533,6 +2529,10 @@ id|info-&gt;fb_info.disp
 op_assign
 op_amp
 id|info-&gt;disp
+suffix:semicolon
+id|info-&gt;fb_info.screen_base
+op_assign
+id|info-&gt;frame_buffer
 suffix:semicolon
 id|info-&gt;fb_info.currcon
 op_assign

@@ -11596,7 +11596,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|disp-&gt;screen_base
+id|i-&gt;gen.info.screen_base
 op_assign
 id|i-&gt;regions.v_fb
 suffix:semicolon

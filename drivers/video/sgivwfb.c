@@ -53,13 +53,6 @@ DECL|variable|sgivwfb_mem_size
 id|u_long
 id|sgivwfb_mem_size
 suffix:semicolon
-DECL|variable|fbmem
-r_static
-r_volatile
-r_char
-op_star
-id|fbmem
-suffix:semicolon
 DECL|variable|regs
 r_static
 id|asregs
@@ -3604,14 +3597,6 @@ comma
 id|var
 )paren
 suffix:semicolon
-id|display-&gt;screen_base
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|fbmem
-suffix:semicolon
 id|display-&gt;visual
 op_assign
 id|fix.visual
@@ -4336,7 +4321,7 @@ id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
-id|fbmem
+id|fb_info.screen_base
 op_assign
 id|ioremap_nocache
 c_func
@@ -4354,14 +4339,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|fbmem
+id|fb_info.screen_base
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;sgivwfb: couldn&squot;t ioremap fbmem&bslash;n&quot;
+l_string|&quot;sgivwfb: couldn&squot;t ioremap screen_base&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4435,7 +4420,7 @@ c_func
 r_char
 op_star
 )paren
-id|fbmem
+id|fb_info.screen_base
 )paren
 suffix:semicolon
 id|fail_ioremap_fbmem
@@ -4586,7 +4571,8 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-id|fbmem
+op_amp
+id|fb_info.screen_base
 )paren
 suffix:semicolon
 )brace

@@ -938,22 +938,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|display-&gt;screen_base
-op_assign
-(paren
-id|u_char
-op_star
-)paren
-id|fix.smem_start
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;screenbase: %lx&bslash;n&quot;
-comma
-id|fix.smem_start
-)paren
-suffix:semicolon
 id|display-&gt;visual
 op_assign
 id|fix.visual
@@ -1069,6 +1053,22 @@ id|fb_info.fbops
 op_assign
 op_amp
 id|dn_fb_ops
+suffix:semicolon
+id|fb_info.screen_base
+op_assign
+(paren
+id|u_char
+op_star
+)paren
+id|fix.smem_start
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;screenbase: %lx&bslash;n&quot;
+comma
+id|fix.smem_start
+)paren
 suffix:semicolon
 id|fb_info.currcon
 op_assign
@@ -1361,7 +1361,7 @@ id|ushort
 op_star
 )paren
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info.screen_base
 op_plus
 id|y_src
 op_star
@@ -1902,7 +1902,7 @@ id|p-&gt;next_line
 (brace
 id|src
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info.screen_base
 op_plus
 id|sy
 op_star
@@ -1912,7 +1912,7 @@ id|width
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info.screen_base
 op_plus
 id|dy
 op_star
@@ -1946,7 +1946,7 @@ id|sy
 (brace
 id|src
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info.screen_base
 op_plus
 id|sy
 op_star
@@ -1958,7 +1958,7 @@ id|sx
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info.screen_base
 op_plus
 id|dy
 op_star
@@ -2006,7 +2006,7 @@ r_else
 (brace
 id|src
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info.screen_base
 op_plus
 (paren
 (paren
@@ -2026,7 +2026,7 @@ id|sx
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info.screen_base
 op_plus
 (paren
 (paren

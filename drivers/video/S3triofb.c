@@ -2805,10 +2805,6 @@ id|disp.cmap.transp
 op_assign
 l_int|NULL
 suffix:semicolon
-id|disp.screen_base
-op_assign
-id|s3trio_base
-suffix:semicolon
 id|disp.visual
 op_assign
 id|fb_fix.visual
@@ -2912,6 +2908,10 @@ id|fb_info.fbops
 op_assign
 op_amp
 id|s3trio_ops
+suffix:semicolon
+id|fb_info.screen_base
+op_assign
+id|s3trio_base
 suffix:semicolon
 macro_line|#if 0
 id|fb_info.fbvar_num

@@ -1651,15 +1651,6 @@ id|disp.cmap.transp
 op_assign
 l_int|NULL
 suffix:semicolon
-id|disp.screen_base
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|G364_MEM_BASE
-suffix:semicolon
-multiline_comment|/* virtual kernel address */
 id|disp.visual
 op_assign
 id|fb_fix.visual
@@ -1714,6 +1705,15 @@ op_assign
 op_amp
 id|g364fb_ops
 suffix:semicolon
+id|fb_info.screen_base
+op_assign
+(paren
+r_char
+op_star
+)paren
+id|G364_MEM_BASE
+suffix:semicolon
+multiline_comment|/* virtual kernel address */
 id|fb_info.disp
 op_assign
 op_amp

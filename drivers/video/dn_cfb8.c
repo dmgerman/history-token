@@ -920,27 +920,6 @@ id|disp
 id|con
 )braket
 dot
-id|screen_base
-op_assign
-(paren
-id|u_char
-op_star
-)paren
-id|fix.smem_start
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;screenbase: %p&bslash;n&quot;
-comma
-id|fix.smem_start
-)paren
-suffix:semicolon
-id|disp
-(braket
-id|con
-)braket
-dot
 id|visual
 op_assign
 id|fix.visual
@@ -1093,6 +1072,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+l_string|&quot;screenbase: %p&bslash;n&quot;
+comma
+id|fix.smem_start
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
 l_string|&quot;dn_fb_init: register&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1227,6 +1214,14 @@ comma
 op_amp
 id|fb_info
 )paren
+suffix:semicolon
+id|fb_info.screen_base
+op_assign
+(paren
+id|u_char
+op_star
+)paren
+id|fix.smem_start
 suffix:semicolon
 r_return
 id|mem_start
@@ -1396,7 +1391,7 @@ id|ushort
 op_star
 )paren
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info.screen_base
 op_plus
 id|y_src
 op_star
@@ -1916,7 +1911,7 @@ id|p-&gt;next_line
 (brace
 id|src
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info.screen_base
 op_plus
 id|sy
 op_star
@@ -1926,7 +1921,7 @@ id|width
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info.screen_base
 op_plus
 id|dy
 op_star
@@ -1960,7 +1955,7 @@ id|sy
 (brace
 id|src
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info.screen_base
 op_plus
 id|sy
 op_star
@@ -1972,7 +1967,7 @@ id|sx
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info.screen_base
 op_plus
 id|dy
 op_star
@@ -2020,7 +2015,7 @@ r_else
 (brace
 id|src
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info.screen_base
 op_plus
 (paren
 (paren
@@ -2040,7 +2035,7 @@ id|sx
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info.screen_base
 op_plus
 (paren
 (paren
@@ -2132,7 +2127,7 @@ id|rows
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info.screen_base
 op_plus
 id|sy
 op_star
@@ -2286,7 +2281,7 @@ l_int|0xff
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info.screen_base
 op_plus
 id|yy
 op_star
@@ -2453,7 +2448,7 @@ id|d
 suffix:semicolon
 id|dest0
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info.screen_base
 op_plus
 id|yy
 op_star
@@ -2612,7 +2607,7 @@ id|rows
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;screen_base
+id|p-&gt;fb_info.screen_base
 op_plus
 id|yy
 op_star

@@ -4044,7 +4044,7 @@ l_int|32
 op_plus
 id|x_margin
 suffix:semicolon
-id|p-&gt;screen_base
+id|fb-&gt;info.screen_base
 op_add_assign
 l_int|8192
 op_star
@@ -5259,7 +5259,7 @@ id|disp-&gt;scrollmode
 op_assign
 id|SCROLL_YREDRAW
 suffix:semicolon
-id|disp-&gt;screen_base
+id|fb-&gt;info.screen_base
 op_assign
 (paren
 r_char

@@ -553,7 +553,7 @@ r_char
 op_star
 id|fb_base
 op_assign
-id|p-&gt;screen_base
+id|fb-&gt;info.screen_base
 comma
 op_star
 id|q
@@ -3238,7 +3238,7 @@ macro_line|#endif
 )brace
 id|fix-&gt;smem_start
 op_assign
-id|fb-&gt;disp.screen_base
+id|fb-&gt;info.screen_base
 suffix:semicolon
 r_if
 c_cond
