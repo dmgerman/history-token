@@ -843,7 +843,7 @@ suffix:semicolon
 multiline_comment|/* upper 8 bits */
 id|dprintk
 (paren
-l_string|&quot;VID: 0x%x (%d.%dV)&bslash;n&quot;
+l_string|&quot;VID: 0x%x (%d.%03dV)&bslash;n&quot;
 comma
 id|vid
 comma
