@@ -12,16 +12,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 multiline_comment|/*&n; * &lt;linux/blk.h&gt; is controlled from the outside with these definitions.&n; */
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR&t;JSFD_MAJOR
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST jsfd_do_request
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (MINOR(device))
-DECL|macro|DEVICE_ON
-mdefine_line|#define DEVICE_ON(device)
-DECL|macro|DEVICE_OFF
-mdefine_line|#define DEVICE_OFF(device)
-DECL|macro|DEVICE_NO_RANDOM
-mdefine_line|#define DEVICE_NO_RANDOM
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -2467,7 +2457,7 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUEST
+id|jsf_do_request
 )paren
 suffix:semicolon
 r_for

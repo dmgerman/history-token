@@ -402,8 +402,6 @@ DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR   major
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) minor(device)
-DECL|macro|DEVICE_OFF
-mdefine_line|#define DEVICE_OFF(device)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &quot;pseudo.h&quot;

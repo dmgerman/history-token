@@ -31,8 +31,6 @@ mdefine_line|#define MAX_LOOPS 10000
 multiline_comment|/* NFTL block device stuff */
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR NFTL_MAJOR
-DECL|macro|DEVICE_OFF
-mdefine_line|#define DEVICE_OFF(device)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 multiline_comment|/* Linux-specific block device functions */

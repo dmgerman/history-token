@@ -370,10 +370,6 @@ macro_line|#include &quot;paride.h&quot;
 multiline_comment|/* set up defines for blk.h,  why don&squot;t all drivers do it this way ? */
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR&t;major
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (minor(device))
-DECL|macro|DEVICE_OFF
-mdefine_line|#define DEVICE_OFF(device)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;pseudo.h&quot;
 DECL|macro|PCD_RETRIES
