@@ -102,14 +102,9 @@ comma
 id|skel_table
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
-DECL|macro|USB_SKEL_MINOR_BASE
-mdefine_line|#define USB_SKEL_MINOR_BASE&t;0
-macro_line|#else
 multiline_comment|/* Get a minor range for your devices from the usb maintainer */
 DECL|macro|USB_SKEL_MINOR_BASE
 mdefine_line|#define USB_SKEL_MINOR_BASE&t;192
-macro_line|#endif
 multiline_comment|/* Structure to hold all of our device specific stuff */
 DECL|struct|usb_skel
 r_struct
@@ -374,7 +369,7 @@ id|file_operations
 id|skel_fops
 op_assign
 (brace
-multiline_comment|/*&n;&t; * The owner field is part of the module-locking&n;&t; * mechanism. The idea is that the kernel knows&n;&t; * which module to increment the use-counter of&n;&t; * BEFORE it calls the device&squot;s open() function.&n;&t; * This also means that the kernel can decrement&n;&t; * the use-counter again before calling release()&n;&t; * or should the open() function fail.&n;&t; *&n;&t; * Not all device structures have an &quot;owner&quot; field&n;&t; * yet. &quot;struct file_operations&quot; and &quot;struct net_device&quot;&n;&t; * do, while &quot;struct tty_driver&quot; does not. If the struct&n;&t; * has an &quot;owner&quot; field, then initialize it to the value&n;&t; * THIS_MODULE and the kernel will handle all module&n;&t; * locking for you automatically. Otherwise, you must&n;&t; * increment the use-counter in the open() function&n;&t; * and decrement it again in the release() function&n;&t; * yourself.&n;&t; */
+multiline_comment|/*&n;&t; * The owner field is part of the module-locking&n;&t; * mechanism. The idea is that the kernel knows&n;&t; * which module to increment the use-counter of&n;&t; * BEFORE it calls the device&squot;s open() function.&n;&t; * This also means that the kernel can decrement&n;&t; * the use-counter again before calling release()&n;&t; * or should the open() function fail.&n;&t; */
 dot
 id|owner
 op_assign
@@ -640,13 +635,7 @@ id|usb_find_interface
 op_amp
 id|skel_driver
 comma
-id|mk_kdev
-c_func
-(paren
-id|USB_MAJOR
-comma
 id|subminor
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1944,16 +1933,10 @@ comma
 id|dev-&gt;minor
 )paren
 suffix:semicolon
-multiline_comment|/* add device id so the device works when advertised */
-id|interface-&gt;kdev
+multiline_comment|/* set the minor of the interface, so open() works */
+id|interface-&gt;minor
 op_assign
-id|mk_kdev
-c_func
-(paren
-id|USB_MAJOR
-comma
 id|dev-&gt;minor
-)paren
 suffix:semicolon
 r_goto
 m_exit
@@ -2058,10 +2041,11 @@ op_amp
 id|dev-&gt;sem
 )paren
 suffix:semicolon
-multiline_comment|/* remove device id to disable open() */
-id|interface-&gt;kdev
+multiline_comment|/* disable open() */
+id|interface-&gt;minor
 op_assign
-id|NODEV
+op_minus
+l_int|1
 suffix:semicolon
 id|minor
 op_assign
