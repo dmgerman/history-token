@@ -1728,11 +1728,14 @@ op_assign
 id|qdisc-&gt;ops
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_ESTIMATOR
-id|qdisc_kill_estimator
+id|gen_kill_estimator
 c_func
 (paren
 op_amp
-id|qdisc-&gt;stats
+id|qdisc-&gt;bstats
+comma
+op_amp
+id|qdisc-&gt;rate_est
 )paren
 suffix:semicolon
 macro_line|#endif
