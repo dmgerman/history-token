@@ -41,11 +41,6 @@ id|driver_dir_entry
 op_star
 id|parent
 suffix:semicolon
-DECL|member|node
-r_struct
-id|list_head
-id|node
-suffix:semicolon
 DECL|member|name
 r_char
 op_star
