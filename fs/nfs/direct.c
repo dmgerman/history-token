@@ -122,10 +122,17 @@ id|size
 OG
 id|MAX_DIRECTIO_SIZE
 )paren
+(brace
+op_star
+id|pages
+op_assign
+l_int|NULL
+suffix:semicolon
 r_return
 op_minus
 id|EFBIG
 suffix:semicolon
+)brace
 id|page_count
 op_assign
 (paren
