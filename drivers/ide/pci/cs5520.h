@@ -31,13 +31,12 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|cs5520_procs
 r_static
 id|ide_pci_host_proc_t
 id|cs5520_procs
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

@@ -33,13 +33,12 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|piix_procs
 r_static
 id|ide_pci_host_proc_t
 id|piix_procs
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
