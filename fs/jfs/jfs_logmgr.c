@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2002&n; *   Portions Copyright (c) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2003&n; *   Portions Copyright (c) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 multiline_comment|/*&n; *&t;jfs_logmgr.c: log manager&n; *&n; * for related information, see transaction manager (jfs_txnmgr.c), and&n; * recovery manager (jfs_logredo.c).&n; *&n; * note: for detail, RTFS.&n; *&n; *&t;log buffer manager:&n; * special purpose buffer manager supporting log i/o requirements.&n; * per log serial pageout of logpage&n; * queuing i/o requests and redrive i/o at iodone&n; * maintain current logpage buffer&n; * no caching since append only&n; * appropriate jfs buffer cache buffers as needed&n; *&n; *&t;group commit:&n; * transactions which wrote COMMIT records in the same in-memory&n; * log page during the pageout of previous/current log page(s) are&n; * committed together by the pageout of the page.&n; *&n; *&t;TBD lazy commit:&n; * transactions are committed asynchronously when the log page&n; * containing it COMMIT is paged out when it becomes full;&n; *&n; *&t;serialization:&n; * . a per log lock serialize log write.&n; * . a per log lock serialize group commit.&n; * . a per log lock serialize log open/close;&n; *&n; *&t;TBD log integrity:&n; * careful-write (ping-pong) of last logpage to recover from crash&n; * in overwrite.&n; * detection of split (out-of-order) write of physical sectors&n; * of last logpage via timestamp at end of each sector&n; * with its mirror data array at trailer).&n; *&n; *&t;alternatives:&n; * lsn - 64-bit monotonically increasing integer vs&n; * 32-bit lspn and page eor.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
@@ -3532,6 +3532,39 @@ op_star
 id|log-&gt;page
 )paren
 suffix:semicolon
+multiline_comment|/* check for disabled journaling to disk */
+r_if
+c_cond
+(paren
+id|JFS_SBI
+c_func
+(paren
+id|log-&gt;sb
+)paren
+op_member_access_from_pointer
+id|flag
+op_amp
+id|JFS_NOINTEGRITY
+)paren
+(brace
+id|log-&gt;no_integrity
+op_assign
+l_int|1
+suffix:semicolon
+id|log-&gt;ni_page
+op_assign
+id|log-&gt;page
+suffix:semicolon
+id|log-&gt;ni_eor
+op_assign
+id|log-&gt;eor
+suffix:semicolon
+)brace
+r_else
+id|log-&gt;no_integrity
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * initialize for log append write mode&n;&t; */
 multiline_comment|/* establish current/end-of-log page/buffer */
 r_if
@@ -4441,6 +4474,34 @@ id|lrd.log.syncpt.sync
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* check for disabled journaling to disk */
+r_if
+c_cond
+(paren
+id|JFS_SBI
+c_func
+(paren
+id|log-&gt;sb
+)paren
+op_member_access_from_pointer
+id|flag
+op_amp
+id|JFS_NOINTEGRITY
+)paren
+(brace
+id|log-&gt;no_integrity
+op_assign
+l_int|0
+suffix:semicolon
+id|log-&gt;page
+op_assign
+id|log-&gt;ni_page
+suffix:semicolon
+id|log-&gt;eor
+op_assign
+id|log-&gt;ni_eor
+suffix:semicolon
+)brace
 id|lsn
 op_assign
 id|lmWriteRecord
@@ -5873,6 +5934,14 @@ id|bio-&gt;bi_private
 op_assign
 id|bp
 suffix:semicolon
+multiline_comment|/* check if journaling to disk has been disabled */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|log-&gt;no_integrity
+)paren
+(brace
 id|submit_bio
 c_func
 (paren
@@ -5892,6 +5961,25 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|bio-&gt;bi_size
+op_assign
+l_int|0
+suffix:semicolon
+id|lbmIODone
+c_func
+(paren
+id|bio
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* 2nd argument appears to not be used =&gt; 0&n;&t;&t;&t;&t;       *  3rd argument appears to not be used =&gt; 0&n;&t;&t;&t;&t;       */
+)brace
 )brace
 multiline_comment|/*&n; *&t;lbmIOWait()&n; */
 DECL|function|lbmIOWait
