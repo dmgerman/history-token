@@ -2352,13 +2352,9 @@ c_func
 id|bdev
 )paren
 suffix:semicolon
-id|i_size_write
-c_func
-(paren
-id|bdev-&gt;bd_inode
-comma
+id|bdev-&gt;bd_inode-&gt;i_size
+op_assign
 id|size
-)paren
 suffix:semicolon
 r_while
 c_loop
