@@ -31,6 +31,7 @@ macro_line|#include &lt;asm/pci.h&gt;
 macro_line|#include &lt;asm/pci_dma.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#ifdef CONFIG_LOGO_LINUX_CLUT224
 macro_line|#include &lt;linux/linux_logo.h&gt;
@@ -6494,12 +6495,6 @@ r_struct
 id|systemcfg
 op_star
 id|_systemcfg
-op_assign
-id|RELOC
-c_func
-(paren
-id|systemcfg
-)paren
 suffix:semicolon
 r_struct
 id|paca_struct
@@ -6526,6 +6521,61 @@ c_func
 (paren
 op_amp
 id|prom
+)paren
+suffix:semicolon
+multiline_comment|/* First zero the BSS -- use memset, some arches don&squot;t have&n;&t; * caches on yet */
+id|memset
+c_func
+(paren
+id|PTRRELOC
+c_func
+(paren
+op_amp
+id|__bss_start
+)paren
+comma
+l_int|0
+comma
+id|__bss_stop
+op_minus
+id|__bss_start
+)paren
+suffix:semicolon
+multiline_comment|/* Setup systemcfg and NACA pointers now */
+id|RELOC
+c_func
+(paren
+id|systemcfg
+)paren
+op_assign
+id|_systemcfg
+op_assign
+(paren
+r_struct
+id|systemcfg
+op_star
+)paren
+(paren
+id|SYSTEMCFG_VIRT_ADDR
+op_minus
+id|offset
+)paren
+suffix:semicolon
+id|RELOC
+c_func
+(paren
+id|naca
+)paren
+op_assign
+(paren
+r_struct
+id|naca_struct
+op_star
+)paren
+(paren
+id|NACA_VIRT_ADDR
+op_minus
+id|offset
 )paren
 suffix:semicolon
 multiline_comment|/* Default machine type. */
