@@ -501,6 +501,8 @@ DECL|macro|__NR_io_submit
 mdefine_line|#define __NR_io_submit&t;&t;248
 DECL|macro|__NR_io_cancel
 mdefine_line|#define __NR_io_cancel&t;&t;249
+DECL|macro|__NR_fadvise64
+mdefine_line|#define __NR_fadvise64&t;&t;250
 DECL|macro|__NR_exit_group
 mdefine_line|#define __NR_exit_group&t;&t;252
 DECL|macro|__NR_lookup_dcookie

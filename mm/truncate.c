@@ -679,16 +679,22 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * invalidate_inode_pages - Invalidate all the unlocked pages of one inode&n; * @inode: the inode which pages we want to invalidate&n; *&n; * This function only removes the unlocked pages, if you want to&n; * remove all the pages of one inode, you must call truncate_inode_pages.&n; *&n; * invalidate_inode_pages() will not block on IO activity. It will not&n; * invalidate pages which are dirty, locked, under writeback or mapped into&n; * pagetables.&n; */
-DECL|function|invalidate_inode_pages
+multiline_comment|/**&n; * invalidate_mapping_pages - Invalidate all the unlocked pages of one inode&n; * @inode: the address_space which holds the pages to invalidate&n; * @end: the index of the last page to invalidate (inclusive)&n; * @nr_pages: defines the pagecache span.  Invalidate up to @start + @nr_pages&n; *&n; * This function only removes the unlocked pages, if you want to&n; * remove all the pages of one inode, you must call truncate_inode_pages.&n; *&n; * invalidate_mapping_pages() will not block on IO activity. It will not&n; * invalidate pages which are dirty, locked, under writeback or mapped into&n; * pagetables.&n; */
+DECL|function|invalidate_mapping_pages
 r_void
-id|invalidate_inode_pages
+id|invalidate_mapping_pages
 c_func
 (paren
 r_struct
 id|address_space
 op_star
 id|mapping
+comma
+id|pgoff_t
+id|start
+comma
+id|pgoff_t
+id|end
 )paren
 (brace
 r_struct
@@ -698,7 +704,7 @@ suffix:semicolon
 id|pgoff_t
 id|next
 op_assign
-l_int|0
+id|start
 suffix:semicolon
 r_int
 id|i
@@ -715,6 +721,10 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+id|next
+op_le
+id|end
+op_logical_and
 id|pagevec_lookup
 c_func
 (paren
@@ -849,6 +859,29 @@ c_func
 )paren
 suffix:semicolon
 )brace
+)brace
+DECL|function|invalidate_inode_pages
+r_void
+id|invalidate_inode_pages
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+)paren
+(brace
+id|invalidate_mapping_pages
+c_func
+(paren
+id|mapping
+comma
+l_int|0
+comma
+op_complement
+l_int|0UL
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * invalidate_inode_pages2 - remove all unmapped pages from an address_space&n; * @mapping - the address_space&n; *&n; * invalidate_inode_pages2() is like truncate_inode_pages(), except for the case&n; * where the page is seen to be mapped into process pagetables.  In that case,&n; * the page is marked clean but is left attached to its address_space.&n; *&n; * FIXME: invalidate_inode_pages2() is probably trivially livelockable.&n; */
 DECL|function|invalidate_inode_pages2
