@@ -32,6 +32,17 @@ comma
 id|sctp_statistics
 )paren
 suffix:semicolon
+DECL|variable|sctp_assocs_id
+r_struct
+id|idr
+id|sctp_assocs_id
+suffix:semicolon
+DECL|variable|sctp_assocs_id_lock
+id|spinlock_t
+id|sctp_assocs_id_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 multiline_comment|/* This is the global socket data structure used for responding to&n; * the Out-of-the-blue (OOTB) packets.  A control sock will be created&n; * for this socket at the initialization time.&n; */
 DECL|variable|sctp_ctl_socket
 r_static
@@ -3802,6 +3813,14 @@ suffix:semicolon
 id|sctp_max_outstreams
 op_assign
 id|SCTP_DEFAULT_OUTSTREAMS
+suffix:semicolon
+multiline_comment|/* Initialize handle used for association ids. */
+id|idr_init
+c_func
+(paren
+op_amp
+id|sctp_assocs_id
+)paren
 suffix:semicolon
 multiline_comment|/* Size and allocate the association hash table.&n;&t; * The methodology is similar to that of the tcp hash tables.&n;&t; */
 r_if
