@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/arch/ppc64/kernel/pmc.c&n; *&n; *  Copyright (C
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/pmc.h&gt;
 multiline_comment|/* Ensure exceptions are disabled */
@@ -140,6 +141,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|reserve_pmc_hardware
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|reserve_pmc_hardware
+)paren
+suffix:semicolon
 DECL|function|release_pmc_hardware
 r_void
 id|release_pmc_hardware
@@ -178,4 +186,11 @@ id|pmc_owner_lock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|release_pmc_hardware
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|release_pmc_hardware
+)paren
+suffix:semicolon
 eof
