@@ -1287,6 +1287,11 @@ DECL|member|alloc_lock
 id|spinlock_t
 id|alloc_lock
 suffix:semicolon
+multiline_comment|/* Protection of proc_dentry: nesting proc_lock, dcache_lock, write_lock_irq(&amp;tasklist_lock); */
+DECL|member|proc_lock
+id|spinlock_t
+id|proc_lock
+suffix:semicolon
 multiline_comment|/* context-switch lock */
 DECL|member|switch_lock
 id|spinlock_t
