@@ -13764,38 +13764,6 @@ id|EACCES
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Return whether or not it is OK to swap to the given file in the&n; * given range.  Return 0 for OK and otherwise return the error.&n; *&n; * It is only OK to swap to a file if it has no holes, and all&n; * extents have been initialized.&n; *&n; * We use the vnode behavior chain prevent and allow primitives&n; * to ensure that the vnode chain stays coherent while we do this.&n; * This allows us to walk the chain down to the bottom where XFS&n; * lives without worrying about it changing out from under us.&n; */
-r_int
-DECL|function|xfs_swappable
-id|xfs_swappable
-c_func
-(paren
-id|bhv_desc_t
-op_star
-id|bdp
-)paren
-(brace
-id|xfs_inode_t
-op_star
-id|ip
-suffix:semicolon
-id|ip
-op_assign
-id|XFS_BHVTOI
-c_func
-(paren
-id|bdp
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Verify that the file does not have any&n;&t; * holes or unwritten exents.&n;&t; */
-r_return
-id|xfs_bmap_check_swappable
-c_func
-(paren
-id|ip
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * xfs_iroundup: round up argument to next power of two&n; */
 id|uint
 DECL|function|xfs_iroundup
