@@ -4,22 +4,6 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
-r_extern
-r_int
-id|scc_enet_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|fec_enet_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; *&t;Devices in this list must do new style probing. That is they must&n; *&t;allocate their own device objects and do their own bus scans.&n; */
 DECL|struct|net_probe
 r_struct
@@ -53,22 +37,6 @@ id|__initdata
 op_assign
 (brace
 multiline_comment|/*&n;&t; *&t;Early setup devices&n;&t; */
-macro_line|#if defined(CONFIG_SCC_ENET)
-(brace
-id|scc_enet_init
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
-macro_line|#if defined(CONFIG_FEC_ENET)
-(brace
-id|fec_enet_init
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 (brace
 l_int|NULL
 comma
