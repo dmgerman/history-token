@@ -41,6 +41,8 @@ DECL|macro|KN05_MB_INT_TC
 mdefine_line|#define KN05_MB_INT_TC&t;&t;(1&lt;&lt;0)&t;&t;/* TURBOchannel? */
 DECL|macro|KN05_MB_INT_RTC
 mdefine_line|#define KN05_MB_INT_RTC&t;&t;(1&lt;&lt;1)&t;&t;/* RTC? */
+DECL|macro|KN05_MB_INT_MT
+mdefine_line|#define KN05_MB_INT_MT&t;&t;(1&lt;&lt;3)&t;&t;/* ??? */
 multiline_comment|/*&n; * Bits for the MB control &amp; status register.&n; * Set to 0x00bf8001 on my system by the ROM.&n; */
 DECL|macro|KN05_MB_CSR_PF
 mdefine_line|#define KN05_MB_CSR_PF&t;&t;(1&lt;&lt;0)&t;&t;/* PreFetching enable? */

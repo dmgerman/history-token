@@ -1,11 +1,11 @@
 multiline_comment|/*&n; * Copyright (C) 2000, 2001, 2002, 2003 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_regs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_scd.h&gt;
@@ -462,9 +462,11 @@ op_assign
 id|__raw_readq
 c_func
 (paren
-id|IO_SPACE_BASE
-op_or
+id|IOADDR
+c_func
+(paren
 id|A_SCD_SYSTEM_REVISION
+)paren
 )paren
 suffix:semicolon
 id|soc_type
@@ -513,9 +515,11 @@ c_func
 id|__raw_readq
 c_func
 (paren
-id|IO_SPACE_BASE
-op_or
+id|IOADDR
+c_func
+(paren
 id|A_SCD_SYSTEM_CFG
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -541,18 +545,6 @@ op_star
 l_int|25
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SB1_PASS_1_WORKAROUNDS
-id|__raw_writeq
-c_func
-(paren
-l_int|0
-comma
-id|KSEG1
-op_plus
-id|A_SCD_ZBBUS_CYCLE_COUNT
-)paren
-suffix:semicolon
-macro_line|#endif
 id|prom_printf
 c_func
 (paren

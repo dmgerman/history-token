@@ -4,6 +4,7 @@ DECL|macro|_ASM_MIPSREGS_H
 mdefine_line|#define _ASM_MIPSREGS_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
+macro_line|#include &lt;asm/hazards.h&gt;
 multiline_comment|/*&n; * The following macros are especially useful for __asm__&n; * inline assembler.&n; */
 macro_line|#ifndef __STR
 DECL|macro|__STR
@@ -220,6 +221,19 @@ DECL|macro|PM_64M
 mdefine_line|#define PM_64M&t;&t;0x07ffe000
 DECL|macro|PM_256M
 mdefine_line|#define PM_256M&t;&t;0x1fffe000
+macro_line|#endif
+multiline_comment|/*&n; * Default page size for a given kernel configuration&n; */
+macro_line|#ifdef CONFIG_PAGE_SIZE_4KB
+DECL|macro|PM_DEFAULT_MASK
+mdefine_line|#define PM_DEFAULT_MASK&t;PM_4K
+macro_line|#elif defined(CONFIG_PAGE_SIZE_16KB)
+DECL|macro|PM_DEFAULT_MASK
+mdefine_line|#define PM_DEFAULT_MASK&t;PM_16K
+macro_line|#elif defined(CONFIG_PAGE_SIZE_64KB)
+DECL|macro|PM_DEFAULT_MASK
+mdefine_line|#define PM_DEFAULT_MASK&t;PM_64K
+macro_line|#else
+macro_line|#error Bad page size configuration!
 macro_line|#endif
 multiline_comment|/*&n; * Values used for computation of new tlb entries&n; */
 DECL|macro|PL_4K
@@ -745,7 +759,7 @@ mdefine_line|#define __read_32bit_c0_register(source, sel)&t;&t;&t;&t;&bslash;&n
 DECL|macro|__read_64bit_c0_register
 mdefine_line|#define __read_64bit_c0_register(source, sel)&t;&t;&t;&t;&bslash;&n;({ unsigned long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sel == 0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmfc0&bslash;t%0, &quot; #source &quot;&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (__res));&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips64&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmfc0&bslash;t%0, &quot; #source &quot;, &quot; #sel &quot;&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (__res));&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__write_32bit_c0_register
-mdefine_line|#define __write_32bit_c0_register(register, sel, value)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sel == 0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mtc0&bslash;t%z0, &quot; #register &quot;&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;: : &quot;Jr&quot; (value));&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mtc0&bslash;t%z0, &quot; #register &quot;, &quot; #sel &quot;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: : &quot;Jr&quot; (value));&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define __write_32bit_c0_register(register, sel, value)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sel == 0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mtc0&bslash;t%z0, &quot; #register &quot;&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;: : &quot;Jr&quot; ((unsigned int)value));&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mtc0&bslash;t%z0, &quot; #register &quot;, &quot; #sel &quot;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: : &quot;Jr&quot; ((unsigned int)value));&t;&t;&bslash;&n;} while (0)
 DECL|macro|__write_64bit_c0_register
 mdefine_line|#define __write_64bit_c0_register(register, sel, value)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sel == 0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmtc0&bslash;t%z0, &quot; #register &quot;&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: : &quot;Jr&quot; (value));&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips64&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmtc0&bslash;t%z0, &quot; #register &quot;, &quot; #sel &quot;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: : &quot;Jr&quot; (value));&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|__read_ulong_c0_register
@@ -948,7 +962,7 @@ mdefine_line|#define write_c0_errorepc(val)&t;__write_ulong_c0_register($30, 0, 
 multiline_comment|/*&n; * Macros to access the floating point coprocessor control registers&n; */
 DECL|macro|read_32bit_cp1_register
 mdefine_line|#define read_32bit_cp1_register(source)                         &bslash;&n;({ int __res;                                                   &bslash;&n;&t;__asm__ __volatile__(                                   &bslash;&n;&t;&quot;.set&bslash;tpush&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;treorder&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;        &quot;cfc1&bslash;t%0,&quot;STR(source)&quot;&bslash;n&bslash;t&quot;                            &bslash;&n;&t;&quot;.set&bslash;tpop&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;        : &quot;=r&quot; (__res));                                        &bslash;&n;        __res;})
-multiline_comment|/* TLB operations. */
+multiline_comment|/*&n; * TLB operations.&n; */
 DECL|function|tlb_probe
 r_static
 r_inline
@@ -959,6 +973,11 @@ c_func
 r_void
 )paren
 (brace
+id|rm9000_tlb_hazard
+c_func
+(paren
+)paren
+suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
@@ -966,6 +985,11 @@ c_func
 l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
 l_string|&quot;tlbp&bslash;n&bslash;t&quot;
 l_string|&quot;.set reorder&quot;
+)paren
+suffix:semicolon
+id|rm9000_tlb_hazard
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -979,6 +1003,11 @@ c_func
 r_void
 )paren
 (brace
+id|rm9000_tlb_hazard
+c_func
+(paren
+)paren
+suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
@@ -986,6 +1015,11 @@ c_func
 l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
 l_string|&quot;tlbr&bslash;n&bslash;t&quot;
 l_string|&quot;.set reorder&quot;
+)paren
+suffix:semicolon
+id|rm9000_tlb_hazard
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -999,6 +1033,11 @@ c_func
 r_void
 )paren
 (brace
+id|rm9000_tlb_hazard
+c_func
+(paren
+)paren
+suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
@@ -1006,6 +1045,11 @@ c_func
 l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
 l_string|&quot;tlbwi&bslash;n&bslash;t&quot;
 l_string|&quot;.set reorder&quot;
+)paren
+suffix:semicolon
+id|rm9000_tlb_hazard
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -1019,6 +1063,11 @@ c_func
 r_void
 )paren
 (brace
+id|rm9000_tlb_hazard
+c_func
+(paren
+)paren
+suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
@@ -1026,6 +1075,11 @@ c_func
 l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
 l_string|&quot;tlbwr&bslash;n&bslash;t&quot;
 l_string|&quot;.set reorder&quot;
+)paren
+suffix:semicolon
+id|rm9000_tlb_hazard
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -1050,6 +1104,13 @@ id|__BUILD_SET_C0
 c_func
 (paren
 id|config
+comma
+id|CP0_CONFIG
+)paren
+id|__BUILD_SET_C0
+c_func
+(paren
+id|intcontrol
 comma
 id|CP0_CONFIG
 )paren

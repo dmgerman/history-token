@@ -86,7 +86,7 @@ mdefine_line|#define _PAGE_CHG_MASK  (PAGE_MASK | _PAGE_ACCESSED | _PAGE_MODIFIE
 macro_line|#ifdef CONFIG_MIPS_UNCACHED
 DECL|macro|PAGE_CACHABLE_DEFAULT
 mdefine_line|#define PAGE_CACHABLE_DEFAULT&t;_CACHE_UNCACHED
-macro_line|#elif defined(CONFIG_NONCOHERENT_IO)
+macro_line|#elif defined(CONFIG_DMA_NONCOHERENT)
 DECL|macro|PAGE_CACHABLE_DEFAULT
 mdefine_line|#define PAGE_CACHABLE_DEFAULT&t;_CACHE_CACHABLE_NONCOHERENT
 macro_line|#else

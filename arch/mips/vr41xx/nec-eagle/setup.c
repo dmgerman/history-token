@@ -1,15 +1,11 @@
-multiline_comment|/*&n; * FILE NAME&n; *&t;arch/mips/vr41xx/nec-eagle/setup.c&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;Setup for the NEC Eagle/Hawk board.&n; *&n; * Author: Yoichi Yuasa&n; *         yyuasa@mvista.com or source@mvista.com&n; *&n; * Copyright 2001,2002 MontaVista Software Inc.&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the&n; *  Free Software Foundation; either version 2 of the License, or (at your&n; *  option) any later version.&n; *&n; *  THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&n; *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,&n; *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS&n; *  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND&n; *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n; *  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n; *  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-multiline_comment|/*&n; * Changes:&n; *  MontaVista Software Inc. &lt;yyuasa@mvista.com&gt; or &lt;source@mvista.com&gt;&n; *  - Moved mips_pci_channels[] from arch/mips/vr41xx/vr4122/eagle/setup.c.&n; *  - Added support for NEC Hawk.&n; *&n; *  MontaVista Software Inc. &lt;yyuasa@mvista.com&gt; or &lt;source@mvista.com&gt;&n; *  - New creation, NEC Eagle is supported.&n; */
+multiline_comment|/*&n; * arch/mips/vr41xx/nec-eagle/setup.c&n; *&n; * Setup for the NEC Eagle/Hawk board.&n; *&n; * Author: Yoichi Yuasa &lt;yyuasa@mvista.com, or source@mvista.com&gt;&n; *&n; * 2001-2004 (c) MontaVista, Software, Inc. This file is licensed under&n; * the terms of the GNU General Public License version 2. This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/pci_channel.h&gt;
-macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/vr41xx/eagle.h&gt;
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
@@ -27,13 +23,6 @@ id|__rd_start
 comma
 op_star
 id|__rd_end
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
-r_extern
-r_struct
-id|ide_ops
-id|eagle_ide_ops
 suffix:semicolon
 macro_line|#endif
 r_extern
@@ -90,40 +79,30 @@ r_struct
 id|pci_ops
 id|vr41xx_pci_ops
 suffix:semicolon
-DECL|variable|mips_pci_channels
+DECL|variable|vr41xx_controller
 r_struct
-id|pci_channel
-id|mips_pci_channels
-(braket
-)braket
+id|pci_controller
+id|vr41xx_controller
 op_assign
 (brace
-(brace
+dot
+id|pci_ops
+op_assign
 op_amp
 id|vr41xx_pci_ops
 comma
+dot
+id|io_resource
+op_assign
 op_amp
 id|vr41xx_pci_io_resource
 comma
+dot
+id|mem_resource
+op_assign
 op_amp
 id|vr41xx_pci_mem_resource
 comma
-l_int|0
-comma
-l_int|256
-)brace
-comma
-(brace
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0
-)brace
 )brace
 suffix:semicolon
 DECL|variable|vr41xx_pci_mem1
@@ -184,8 +163,8 @@ id|vr41xx_pci_io
 suffix:semicolon
 macro_line|#endif
 DECL|function|nec_eagle_setup
-r_void
-id|__init
+r_static
+r_int
 id|nec_eagle_setup
 c_func
 (paren
@@ -238,18 +217,6 @@ op_amp
 id|__rd_end
 suffix:semicolon
 macro_line|#endif
-id|_machine_restart
-op_assign
-id|vr41xx_restart
-suffix:semicolon
-id|_machine_halt
-op_assign
-id|vr41xx_halt
-suffix:semicolon
-id|_machine_power_off
-op_assign
-id|vr41xx_power_off
-suffix:semicolon
 id|board_time_init
 op_assign
 id|vr41xx_time_init
@@ -262,20 +229,6 @@ id|board_irq_init
 op_assign
 id|eagle_irq_init
 suffix:semicolon
-macro_line|#ifdef CONFIG_FB
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
-id|ide_ops
-op_assign
-op_amp
-id|eagle_ide_ops
-suffix:semicolon
-macro_line|#endif
 id|vr41xx_bcu_init
 c_func
 (paren
@@ -284,7 +237,11 @@ suffix:semicolon
 id|vr41xx_cmu_init
 c_func
 (paren
-l_int|0
+)paren
+suffix:semicolon
+id|vr41xx_pmu_init
+c_func
+(paren
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SERIAL_8250
@@ -316,5 +273,15 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|nec_eagle_setup
+id|early_initcall
+c_func
+(paren
+id|nec_eagle_setup
+)paren
+suffix:semicolon
 eof

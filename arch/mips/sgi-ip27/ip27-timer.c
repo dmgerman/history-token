@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/sgialib.h&gt;
@@ -241,9 +240,9 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|function|rt_timer_interrupt
+DECL|function|ip27_rt_timer_interrupt
 r_void
-id|rt_timer_interrupt
+id|ip27_rt_timer_interrupt
 c_func
 (paren
 r_struct
@@ -263,17 +262,13 @@ suffix:semicolon
 r_int
 id|cpuA
 op_assign
-(paren
-(paren
 id|cputoslice
 c_func
 (paren
 id|cpu
 )paren
-)paren
 op_eq
 l_int|0
-)paren
 suffix:semicolon
 r_int
 id|irq
@@ -687,6 +682,26 @@ id|sec
 )paren
 suffix:semicolon
 )brace
+DECL|function|ip27_timer_setup
+r_static
+r_void
+id|ip27_timer_setup
+c_func
+(paren
+r_struct
+id|irqaction
+op_star
+id|irq
+)paren
+(brace
+multiline_comment|/* over-write the handler, we use our own way */
+id|irq-&gt;handler
+op_assign
+id|no_action
+suffix:semicolon
+multiline_comment|/* setup irqaction */
+singleline_comment|//&t;setup_irq(IP27_TIMER_IRQ, irq);&t;&t;/* XXX Can&squot;t do this yet.  */
+)brace
 DECL|function|ip27_time_init
 r_void
 id|__init
@@ -710,6 +725,10 @@ suffix:semicolon
 id|do_gettimeoffset
 op_assign
 id|ip27_do_gettimeoffset
+suffix:semicolon
+id|board_timer_setup
+op_assign
+id|ip27_timer_setup
 suffix:semicolon
 )brace
 DECL|function|cpu_time_init

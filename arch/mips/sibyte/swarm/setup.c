@@ -1,12 +1,11 @@
-multiline_comment|/*&n; * Copyright (C) 2000, 2001 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
+multiline_comment|/*&n; * Copyright (C) 2000, 2001, 2002, 2003 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
 multiline_comment|/*&n; * Setup code for the SWARM board&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
@@ -18,24 +17,6 @@ macro_line|#include &lt;asm/sibyte/sb1250.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_regs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_genbus.h&gt;
 macro_line|#include &lt;asm/sibyte/board.h&gt;
-r_extern
-r_struct
-id|rtc_ops
-op_star
-id|rtc_ops
-suffix:semicolon
-r_extern
-r_struct
-id|rtc_ops
-id|swarm_rtc_ops
-suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
-r_extern
-r_struct
-id|ide_ops
-id|sibyte_ide_ops
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_void
 id|sb1250_setup
@@ -205,6 +186,7 @@ id|MIPS_BE_FATAL
 suffix:semicolon
 )brace
 DECL|function|swarm_setup
+r_static
 r_void
 id|__init
 id|swarm_setup
@@ -301,21 +283,7 @@ macro_line|#endif
 l_string|&quot; CFE&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
-id|ide_ops
-op_assign
-op_amp
-id|sibyte_ide_ops
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_VT
-macro_line|#ifdef CONFIG_DUMMY_CONSOLE
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
-macro_line|#endif
 id|screen_info
 op_assign
 (paren
@@ -360,6 +328,13 @@ suffix:semicolon
 multiline_comment|/* XXXKW for CFE, get lines/cols from environment */
 macro_line|#endif
 )brace
+DECL|variable|swarm_setup
+id|early_initcall
+c_func
+(paren
+id|swarm_setup
+)paren
+suffix:semicolon
 macro_line|#ifdef LEDS_PHYS
 macro_line|#ifdef CONFIG_SIBYTE_CARMEL
 multiline_comment|/* XXXKW need to detect Monterey/LittleSur/etc */
@@ -369,7 +344,7 @@ DECL|macro|LEDS_PHYS
 mdefine_line|#define LEDS_PHYS MLEDS_PHYS
 macro_line|#endif
 DECL|macro|setled
-mdefine_line|#define setled(index, c) &bslash;&n;  ((unsigned char *)(LEDS_PHYS|IO_SPACE_BASE|0x20))[(3-(index))&lt;&lt;3] = (c)
+mdefine_line|#define setled(index, c) &bslash;&n;  ((unsigned char *)(IOADDR(LEDS_PHYS)+0x20))[(3-(index))&lt;&lt;3] = (c)
 DECL|function|setleds
 r_void
 id|setleds

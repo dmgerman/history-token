@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;asm/asm.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -438,8 +439,6 @@ id|getDebugChar
 c_func
 (paren
 )paren
-op_amp
-l_int|0x7f
 suffix:semicolon
 r_if
 c_cond
@@ -853,6 +852,9 @@ r_int
 id|count
 comma
 r_int
+id|binary
+comma
+r_int
 id|may_fault
 )paren
 (brace
@@ -878,6 +880,36 @@ id|i
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|binary
+)paren
+(brace
+id|ch
+op_assign
+op_star
+id|buf
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ch
+op_eq
+l_int|0x7d
+)paren
+id|ch
+op_assign
+l_int|0x20
+op_xor
+op_star
+id|buf
+op_increment
+suffix:semicolon
+)brace
+r_else
+(brace
 id|ch
 op_assign
 id|hex
@@ -900,6 +932,7 @@ id|buf
 op_increment
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1184,7 +1217,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1215,7 +1248,7 @@ id|ht-&gt;tt
 )braket
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2078,6 +2111,11 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|bflag
+op_assign
+l_int|0
+suffix:semicolon
 id|kgdb_started
 op_assign
 l_int|1
@@ -2127,14 +2165,19 @@ c_loop
 (paren
 id|i
 op_assign
+id|num_online_cpus
+c_func
+(paren
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+id|i
+op_ge
 l_int|0
 suffix:semicolon
 id|i
-OL
-id|smp_num_cpus
-suffix:semicolon
-id|i
-op_increment
+op_decrement
 )paren
 r_if
 c_cond
@@ -2804,6 +2847,8 @@ r_int
 )paren
 comma
 l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|ptr
@@ -2837,6 +2882,8 @@ r_sizeof
 (paren
 r_int
 )paren
+comma
+l_int|0
 comma
 l_int|0
 )paren
@@ -2874,6 +2921,8 @@ r_int
 )paren
 comma
 l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|ptr
@@ -2907,6 +2956,8 @@ r_sizeof
 (paren
 r_int
 )paren
+comma
+l_int|0
 comma
 l_int|0
 )paren
@@ -2944,6 +2995,8 @@ r_int
 )paren
 comma
 l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|ptr
@@ -2977,6 +3030,8 @@ r_sizeof
 (paren
 r_int
 )paren
+comma
+l_int|0
 comma
 l_int|0
 )paren
@@ -3074,6 +3129,15 @@ l_string|&quot;E01&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * XAA..AA,LLLL: Write LLLL escaped binary bytes at address AA.AA&n;&t;&t; */
+r_case
+l_char|&squot;X&squot;
+suffix:colon
+id|bflag
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* fall through */
 multiline_comment|/*&n;&t;&t; * MAA..AA,LLLL: Write LLLL bytes at address AA.AA return OK&n;&t;&t; */
 r_case
 l_char|&squot;M&squot;
@@ -3137,6 +3201,8 @@ op_star
 id|addr
 comma
 id|length
+comma
+id|bflag
 comma
 l_int|1
 )paren
@@ -3392,14 +3458,19 @@ c_loop
 (paren
 id|i
 op_assign
+id|num_online_cpus
+c_func
+(paren
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+id|i
+op_ge
 l_int|0
 suffix:semicolon
 id|i
-OL
-id|smp_num_cpus
-suffix:semicolon
-id|i
-op_increment
+op_decrement
 )paren
 id|spin_unlock
 c_func
@@ -3449,7 +3520,7 @@ c_func
 (paren
 l_string|&quot;.globl&t;breakinst&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;
-l_string|&quot;nop&bslash;n&bslash;t&quot;
+l_string|&quot;nop&bslash;n&quot;
 l_string|&quot;breakinst:&bslash;tbreak&bslash;n&bslash;t&quot;
 l_string|&quot;nop&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;treorder&quot;
@@ -3471,7 +3542,7 @@ c_func
 (paren
 l_string|&quot;.globl&t;async_breakinst&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;
-l_string|&quot;nop&bslash;n&bslash;t&quot;
+l_string|&quot;nop&bslash;n&quot;
 l_string|&quot;async_breakinst:&bslash;tbreak&bslash;n&bslash;t&quot;
 l_string|&quot;nop&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;treorder&quot;
@@ -3700,8 +3771,9 @@ l_int|1
 )brace
 suffix:semicolon
 DECL|function|register_gdb_console
+r_static
+r_int
 id|__init
-r_void
 id|register_gdb_console
 c_func
 (paren
@@ -3715,6 +3787,16 @@ op_amp
 id|gdb_console
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|register_gdb_console
+id|console_initcall
+c_func
+(paren
+id|register_gdb_console
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

@@ -8,17 +8,16 @@ macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
-macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
-macro_line|#include &lt;asm/ip32/crime.h&gt;
-macro_line|#include &lt;asm/ip32/ip32_ints.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
-macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/ip32/crime.h&gt;
+macro_line|#include &lt;asm/ip32/ip32_ints.h&gt;
+macro_line|#include &lt;linux/mc146818rtc.h&gt;
 r_extern
 r_volatile
 r_int
@@ -65,6 +64,26 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+DECL|function|crime_time
+r_static
+r_inline
+r_uint64
+id|crime_time
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|crime_read
+c_func
+(paren
+id|CRIME_TIMER
+)paren
+op_amp
+id|CRIME_TIMER_MASK
+suffix:semicolon
+)brace
 DECL|function|ip32_timer_setup
 r_void
 id|__init
@@ -76,10 +95,11 @@ op_star
 id|irq
 )paren
 (brace
-id|u64
-id|crime_time
+r_uint64
+id|time
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|cc_tick
 suffix:semicolon
 id|write_c0_count
@@ -98,15 +118,12 @@ c_func
 l_string|&quot;Calibrating system timer... &quot;
 )paren
 suffix:semicolon
-id|crime_time
+id|time
 op_assign
-id|crime_read_64
+id|crime_time
 c_func
 (paren
-id|CRIME_TIME
 )paren
-op_amp
-id|CRIME_TIME_MASK
 suffix:semicolon
 id|cc_tick
 op_assign
@@ -118,16 +135,12 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+id|crime_time
+c_func
 (paren
-id|crime_read_64
-(paren
-id|CRIME_TIME
-)paren
-op_amp
-id|CRIME_TIME_MASK
 )paren
 op_minus
-id|crime_time
+id|time
 OL
 id|WAIT_MS
 op_star
@@ -184,6 +197,7 @@ id|PER_MHZ
 )paren
 suffix:semicolon
 id|setup_irq
+c_func
 (paren
 id|CLOCK_IRQ
 comma
@@ -237,7 +251,8 @@ op_star
 id|regs
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|count
 suffix:semicolon
 multiline_comment|/*&n;&t; * The cycle counter is only 32 bit which is good for about&n;&t; * a minute at current count rates of upto 150MHz or so.&n;&t; */

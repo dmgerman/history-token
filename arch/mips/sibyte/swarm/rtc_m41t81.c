@@ -104,7 +104,7 @@ mdefine_line|#define M41T81REG_SQW&t;0x13&t;&t;/* square wave register */
 DECL|macro|M41T81_CCR_ADDRESS
 mdefine_line|#define M41T81_CCR_ADDRESS&t;0x68
 DECL|macro|SMB_CSR
-mdefine_line|#define SMB_CSR(reg) (KSEG1 | A_SMB_REGISTER(1, reg))
+mdefine_line|#define SMB_CSR(reg) (IOADDR(A_SMB_REGISTER(1, reg)))
 DECL|function|m41t81_read
 r_static
 r_int

@@ -785,6 +785,15 @@ DECL|member|cache_flush
 id|LONG
 id|cache_flush
 suffix:semicolon
+DECL|member|TestUnicodeCharacter
+id|LONG
+id|TestUnicodeCharacter
+suffix:semicolon
+multiline_comment|/* ARC; not sure if ARCS too */
+DECL|member|GetDisplayStatus
+id|LONG
+id|GetDisplayStatus
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* The SGI ARCS parameter block is in a fixed location for standalone&n; * programs to access PROM facilities easily.&n; */

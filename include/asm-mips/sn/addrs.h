@@ -7,7 +7,6 @@ macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#include &lt;asm/addrspace.h&gt;
-macro_line|#include &lt;asm/reg.h&gt;
 macro_line|#include &lt;asm/sn/kldir.h&gt;
 macro_line|#if defined(CONFIG_SGI_IP27)
 macro_line|#include &lt;asm/sn/sn0/addrs.h&gt;
@@ -348,9 +347,9 @@ mdefine_line|#define PI_ERROR_ADDR(nasid)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;TO_NODE
 DECL|macro|PI_ERROR_SIZE
 mdefine_line|#define PI_ERROR_SIZE(nasid)&t;KLD_PI_ERROR(nasid)-&gt;size
 DECL|macro|NODE_OFFSET_TO_K0
-mdefine_line|#define NODE_OFFSET_TO_K0(_nasid, _off)&t;&t;&t;&t;&t;&bslash;&n;&t;PHYS_TO_K0((NODE_OFFSET(_nasid) + (_off)) | K0BASE)
+mdefine_line|#define NODE_OFFSET_TO_K0(_nasid, _off)&t;&t;&t;&t;&t;&bslash;&n;&t;PHYS_TO_K0((NODE_OFFSET(_nasid) + (_off)) | CAC_BASE)
 DECL|macro|NODE_OFFSET_TO_K1
-mdefine_line|#define NODE_OFFSET_TO_K1(_nasid, _off)&t;&t;&t;&t;&t;&bslash;&n;&t;TO_UNCAC((NODE_OFFSET(_nasid) + (_off)) | K1BASE)
+mdefine_line|#define NODE_OFFSET_TO_K1(_nasid, _off)&t;&t;&t;&t;&t;&bslash;&n;&t;TO_UNCAC((NODE_OFFSET(_nasid) + (_off)) | UNCAC_BASE)
 DECL|macro|K0_TO_NODE_OFFSET
 mdefine_line|#define K0_TO_NODE_OFFSET(_k0addr)&t;&t;&t;&t;&t;&bslash;&n;&t;((__psunsigned_t)(_k0addr) &amp; NODE_ADDRSPACE_MASK)
 DECL|macro|KERN_VARS_ADDR

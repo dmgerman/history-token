@@ -3,16 +3,13 @@ macro_line|#ifndef _ASM_PROCESSOR_H
 DECL|macro|_ASM_PROCESSOR_H
 mdefine_line|#define _ASM_PROCESSOR_H
 macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/*&n; * Return current * instruction pointer (&quot;program counter&quot;).&n; */
-DECL|macro|current_text_addr
-mdefine_line|#define current_text_addr() ({ __label__ _l; _l: &amp;&amp;_l;})
-macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/cachectl.h&gt;
+macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#if defined(CONFIG_SGI_IP27)
+macro_line|#ifdef CONFIG_SGI_IP27
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/intr_public.h&gt;
 macro_line|#endif
@@ -83,11 +80,7 @@ r_int
 id|asid_cache
 suffix:semicolon
 macro_line|#if defined(CONFIG_SGI_IP27)
-DECL|member|p_cpuid
-id|cpuid_t
-id|p_cpuid
-suffix:semicolon
-multiline_comment|/* PROM assigned cpuid */
+singleline_comment|//&t;cpuid_t&t;&t;p_cpuid;&t;/* PROM assigned cpuid */
 DECL|member|p_nodeid
 id|cnodeid_t
 id|p_nodeid
@@ -105,7 +98,8 @@ id|p_slice
 suffix:semicolon
 multiline_comment|/* Physical position on node board */
 DECL|member|p_intmasks
-id|hub_intmasks_t
+r_struct
+id|hub_intmasks_s
 id|p_intmasks
 suffix:semicolon
 multiline_comment|/* SN0 per-CPU interrupt masks */
@@ -205,58 +199,6 @@ id|SMP_CACHE_BYTES
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Assumption: Options of CPU 0 are a superset of all processors.&n; * This is true for all known MIPS systems.&n; */
-DECL|macro|cpu_has_tlb
-mdefine_line|#define cpu_has_tlb&t;&t;(cpu_data[0].options &amp; MIPS_CPU_TLB)
-DECL|macro|cpu_has_4kex
-mdefine_line|#define cpu_has_4kex&t;&t;(cpu_data[0].options &amp; MIPS_CPU_4KEX)
-DECL|macro|cpu_has_4ktlb
-mdefine_line|#define cpu_has_4ktlb&t;&t;(cpu_data[0].options &amp; MIPS_CPU_4KTLB)
-DECL|macro|cpu_has_fpu
-mdefine_line|#define cpu_has_fpu&t;&t;(cpu_data[0].options &amp; MIPS_CPU_FPU)
-DECL|macro|cpu_has_32fpr
-mdefine_line|#define cpu_has_32fpr&t;&t;(cpu_data[0].options &amp; MIPS_CPU_32FPR)
-DECL|macro|cpu_has_counter
-mdefine_line|#define cpu_has_counter&t;&t;(cpu_data[0].options &amp; MIPS_CPU_COUNTER)
-DECL|macro|cpu_has_watch
-mdefine_line|#define cpu_has_watch&t;&t;(cpu_data[0].options &amp; MIPS_CPU_WATCH)
-DECL|macro|cpu_has_mips16
-mdefine_line|#define cpu_has_mips16&t;&t;(cpu_data[0].options &amp; MIPS_CPU_MIPS16)
-DECL|macro|cpu_has_divec
-mdefine_line|#define cpu_has_divec&t;&t;(cpu_data[0].options &amp; MIPS_CPU_DIVEC)
-DECL|macro|cpu_has_vce
-mdefine_line|#define cpu_has_vce&t;&t;(cpu_data[0].options &amp; MIPS_CPU_VCE)
-DECL|macro|cpu_has_cache_cdex
-mdefine_line|#define cpu_has_cache_cdex&t;(cpu_data[0].options &amp; MIPS_CPU_CACHE_CDEX)
-DECL|macro|cpu_has_mcheck
-mdefine_line|#define cpu_has_mcheck&t;&t;(cpu_data[0].options &amp; MIPS_CPU_MCHECK)
-DECL|macro|cpu_has_ejtag
-mdefine_line|#define cpu_has_ejtag&t;&t;(cpu_data[0].options &amp; MIPS_CPU_EJTAG)
-multiline_comment|/* no FPU exception; never set on 64-bit */
-macro_line|#ifdef CONFIG_MIPS64
-DECL|macro|cpu_has_nofpuex
-mdefine_line|#define cpu_has_nofpuex&t;&t;0
-macro_line|#else
-DECL|macro|cpu_has_nofpuex
-mdefine_line|#define cpu_has_nofpuex&t;&t;(cpu_data[0].options &amp; MIPS_CPU_NOFPUEX)
-macro_line|#endif
-DECL|macro|cpu_has_llsc
-mdefine_line|#define cpu_has_llsc&t;&t;(cpu_data[0].options &amp; MIPS_CPU_LLSC)
-DECL|macro|cpu_has_vtag_icache
-mdefine_line|#define cpu_has_vtag_icache&t;(cpu_data[0].icache.flags &amp; MIPS_CACHE_VTAG)
-DECL|macro|cpu_has_dc_aliases
-mdefine_line|#define cpu_has_dc_aliases&t;(cpu_data[0].dcache.flags &amp; MIPS_CACHE_ALIASES)
-DECL|macro|cpu_has_ic_fills_f_dc
-mdefine_line|#define cpu_has_ic_fills_f_dc&t;(cpu_data[0].dcache.flags &amp; MIPS_CACHE_IC_F_DC)
-macro_line|#ifdef CONFIG_MIPS64
-DECL|macro|cpu_has_64bits
-mdefine_line|#define cpu_has_64bits&t;&t;1
-macro_line|#else
-DECL|macro|cpu_has_64bits
-mdefine_line|#define cpu_has_64bits&t;&t;(cpu_data[0].isa_level &amp; MIPS_CPU_ISA_64BIT)
-macro_line|#endif
-DECL|macro|cpu_has_subset_pcaches
-mdefine_line|#define cpu_has_subset_pcaches&t;(cpu_data[0].options &amp; MIPS_CPU_SUBSET_CACHES)
 r_extern
 r_struct
 id|cpuinfo_mips
@@ -282,6 +224,9 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Return current * instruction pointer (&quot;program counter&quot;).&n; */
+DECL|macro|current_text_addr
+mdefine_line|#define current_text_addr() ({ __label__ _l; _l: &amp;&amp;_l;})
 multiline_comment|/*&n; * System setup and hardware flags..&n; */
 r_extern
 r_void
@@ -514,11 +459,9 @@ DECL|macro|MF_N32
 mdefine_line|#define MF_N32&t;&t;MF_32BIT_ADDR
 DECL|macro|MF_N64
 mdefine_line|#define MF_N64&t;&t;0
-macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  { &bslash;&n;        /* &bslash;&n;         * saved main processor registers &bslash;&n;         */ &bslash;&n;&t;0, 0, 0, 0, 0, 0, 0, 0, &bslash;&n;&t;               0, 0, 0, &bslash;&n;&t;/* &bslash;&n;&t; * saved cp0 stuff &bslash;&n;&t; */ &bslash;&n;&t;0, &bslash;&n;&t;/* &bslash;&n;&t; * saved fpu/fpu emulator stuff &bslash;&n;&t; */ &bslash;&n;&t;INIT_FPU, &bslash;&n;&t;/* &bslash;&n;&t; * Other stuff associated with the process &bslash;&n;&t; */ &bslash;&n;&t;0, 0, 0, 0, &bslash;&n;&t;/* &bslash;&n;&t; * For now the default is to fix address errors &bslash;&n;&t; */ &bslash;&n;&t;MF_FIXADE, 0, 0 &bslash;&n;}
 macro_line|#ifdef __KERNEL__
-macro_line|#ifndef __ASSEMBLY__
 r_struct
 id|task_struct
 suffix:semicolon
@@ -607,10 +550,26 @@ DECL|macro|KSTK_STATUS
 mdefine_line|#define KSTK_STATUS(tsk) (*(unsigned long *)(__KSTK_TOS(tsk) + __PT_REG(cp0_status)))
 DECL|macro|cpu_relax
 mdefine_line|#define cpu_relax()&t;barrier()
-macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * Return_address is a replacement for __builtin_return_address(count)&n; * which on certain architectures cannot reasonably be implemented in GCC&n; * (MIPS, Alpha) or is unuseable with -fomit-frame-pointer (i386).&n; * Note that __builtin_return_address(x&gt;=1) is forbidden because GCC&n; * aborts compilation on some CPUs.  It&squot;s simply not possible to unwind&n; * some CPU&squot;s stackframes.&n; *&n; * __builtin_return_address works only for non-leaf functions.  We avoid the&n; * overhead of a function call by forcing the compiler to save the return&n; * address register on the stack.&n; */
 DECL|macro|return_address
 mdefine_line|#define return_address() ({__asm__ __volatile__(&quot;&quot;:::&quot;$31&quot;);__builtin_return_address(0);})
+multiline_comment|/*&n; * For now.  The 32-bit cycle counter is screwed up so solving this nicely takes a little&n; * brainwork ...&n; */
+DECL|function|sched_clock
+r_static
+r_inline
+r_int
+r_int
+r_int
+id|sched_clock
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0ULL
+suffix:semicolon
+)brace
 macro_line|#endif /* _ASM_PROCESSOR_H */
 eof

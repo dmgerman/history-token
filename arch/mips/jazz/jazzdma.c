@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Mips Jazz DMA controller support&n; * Copyright (C) 1995, 1996 by Andreas Busse&n; *&n; * NOTE: Some of the argument checking could be removed when&n; * things have settled down. Also, instead of returning 0xffffffff&n; * on failure of vdma_alloc() one could leave page #0 unused&n; * and return the more usual NULL pointer as logical address.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
@@ -164,7 +165,7 @@ c_func
 (paren
 id|JAZZ_R4030_TRSTBL_BASE
 comma
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
 id|vdma_pagetable_start
@@ -626,6 +627,13 @@ r_return
 id|laddr
 suffix:semicolon
 )brace
+DECL|variable|vdma_alloc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vdma_alloc
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Free previously allocated dma translation pages&n; * Note that this does NOT change the translation table,&n; * it just marks the free&squot;d pages as unused!&n; */
 DECL|function|vdma_free
 r_int
@@ -738,6 +746,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|vdma_free
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vdma_free
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Map certain page(s) to another physical address.&n; * Caller must have allocated the page(s) before.&n; */
 DECL|function|vdma_remap
 r_int
@@ -1272,6 +1287,13 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|variable|vdma_log2phys
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vdma_log2phys
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Print DMA statistics&n; */
 DECL|function|vdma_stats
 r_void

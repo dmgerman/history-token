@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995 - 2000 by Ralf Baechle&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -12,7 +11,6 @@ macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;&t;&t;/* For unblank_screen() */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/branch.h&gt;
@@ -22,11 +20,6 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
-DECL|macro|development_version
-mdefine_line|#define development_version (LINUX_VERSION_CODE &amp; 0x100)
-multiline_comment|/*&n; * Macro for exception fixup code to access integer registers.&n; */
-DECL|macro|dpf_reg
-mdefine_line|#define dpf_reg(r) (regs-&gt;regs[r])
 multiline_comment|/*&n; * This routine handles page faults.  It determines the address,&n; * and the problem, and then passes it off to one of the appropriate&n; * routines.&n; */
 DECL|function|do_page_fault
 id|asmlinkage
@@ -52,6 +45,8 @@ r_struct
 id|vm_area_struct
 op_star
 id|vma
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|task_struct
@@ -68,20 +63,16 @@ op_assign
 id|tsk-&gt;mm
 suffix:semicolon
 r_const
-r_struct
-id|exception_table_entry
-op_star
-id|fixup
-suffix:semicolon
-r_const
 r_int
-id|szlong
+id|field
 op_assign
 r_sizeof
 (paren
 r_int
 r_int
 )paren
+op_star
+l_int|2
 suffix:semicolon
 id|siginfo_t
 id|info
@@ -101,32 +92,36 @@ id|current-&gt;comm
 comma
 id|current-&gt;pid
 comma
-id|szlong
+id|field
 comma
 id|address
 comma
 id|write
 comma
-id|szlong
+id|field
 comma
 id|regs-&gt;cp0_epc
 )paren
 suffix:semicolon
 macro_line|#endif
+id|info.si_code
+op_assign
+id|SEGV_MAPERR
+suffix:semicolon
 multiline_comment|/*&n;&t; * We fault-in kernel-space virtual memory on-demand. The&n;&t; * &squot;reference&squot; page table is init_mm.pgd.&n;&t; *&n;&t; * NOTE! We MUST NOT take any locks for this case. We may&n;&t; * be in an interrupt or a critical region, and should&n;&t; * only copy the information from the master page table,&n;&t; * nothing more.&n;&t; */
 r_if
 c_cond
+(paren
+id|unlikely
+c_func
 (paren
 id|address
 op_ge
 id|VMALLOC_START
 )paren
+)paren
 r_goto
 id|vmalloc_fault
-suffix:semicolon
-id|info.si_code
-op_assign
-id|SEGV_MAPERR
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we&squot;re in an interrupt or have no user&n;&t; * context, we must not take the fault..&n;&t; */
 r_if
@@ -141,7 +136,7 @@ op_logical_neg
 id|mm
 )paren
 r_goto
-id|no_context
+id|bad_area_nosemaphore
 suffix:semicolon
 id|down_read
 c_func
@@ -327,6 +322,8 @@ op_amp
 id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
+id|bad_area_nosemaphore
+suffix:colon
 multiline_comment|/* User mode accesses just cause a SIGSEGV */
 r_if
 c_cond
@@ -362,11 +359,11 @@ l_string|&quot;write access to&quot;
 suffix:colon
 l_string|&quot;read access from&quot;
 comma
-id|szlong
+id|field
 comma
 id|address
 comma
-id|szlong
+id|field
 comma
 (paren
 r_int
@@ -374,7 +371,7 @@ r_int
 )paren
 id|regs-&gt;cp0_epc
 comma
-id|szlong
+id|field
 comma
 (paren
 r_int
@@ -421,55 +418,19 @@ suffix:semicolon
 id|no_context
 suffix:colon
 multiline_comment|/* Are we prepared to handle this kernel fault?  */
-id|fixup
-op_assign
-id|search_exception_tables
-c_func
+r_if
+c_cond
 (paren
-id|exception_epc
+id|fixup_exception
 c_func
 (paren
 id|regs
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|fixup
-)paren
 (brace
-r_int
-r_int
-id|new_epc
-op_assign
-id|fixup-&gt;nextinsn
-suffix:semicolon
-id|tsk-&gt;thread.cp0_baduaddr
+id|current-&gt;thread.cp0_baduaddr
 op_assign
 id|address
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|development_version
-)paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: Exception at [&lt;%lx&gt;] (%lx)&bslash;n&quot;
-comma
-id|tsk-&gt;comm
-comma
-id|regs-&gt;cp0_epc
-comma
-id|new_epc
-)paren
-suffix:semicolon
-id|regs-&gt;cp0_epc
-op_assign
-id|new_epc
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -493,15 +454,15 @@ c_func
 (paren
 )paren
 comma
-id|szlong
+id|field
 comma
 id|address
 comma
-id|szlong
+id|field
 comma
 id|regs-&gt;cp0_epc
 comma
-id|szlong
+id|field
 comma
 id|regs-&gt;regs
 (braket
@@ -586,6 +547,20 @@ op_amp
 id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
+multiline_comment|/* Kernel mode? Handle exceptions or die */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+r_goto
+id|no_context
+suffix:semicolon
 multiline_comment|/*&n;&t; * Send a sigbus, regardless of whether we were in kernel&n;&t; * or user mode.&n;&t; */
 id|tsk-&gt;thread.cp0_badvaddr
 op_assign
@@ -621,20 +596,6 @@ id|info
 comma
 id|tsk
 )paren
-suffix:semicolon
-multiline_comment|/* Kernel mode? Handle exceptions or die */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|user_mode
-c_func
-(paren
-id|regs
-)paren
-)paren
-r_goto
-id|no_context
 suffix:semicolon
 r_return
 suffix:semicolon

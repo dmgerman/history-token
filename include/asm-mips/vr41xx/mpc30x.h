@@ -2,7 +2,6 @@ multiline_comment|/*&n; * FILE NAME&n; *&t;include/asm-mips/vr41xx/mpc30x.h&n; *
 macro_line|#ifndef __VICTOR_MPC30X_H
 DECL|macro|__VICTOR_MPC30X_H
 mdefine_line|#define __VICTOR_MPC30X_H
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/vr41xx/vr41xx.h&gt;
 multiline_comment|/*&n; * Board specific address mapping&n; */

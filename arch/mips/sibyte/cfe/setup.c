@@ -50,27 +50,24 @@ r_int
 r_int
 id|board_mem_region_count
 suffix:semicolon
-multiline_comment|/* This is the kernel command line.  Actually, it&squot;s&n;   copied, eventually, to command_line, and looks to be&n;   quite redundant.  But not something to fix just now */
-r_extern
-r_char
-id|arcs_cmdline
-(braket
-)braket
-suffix:semicolon
 DECL|variable|cfe_cons_handle
 r_int
 id|cfe_cons_handle
 suffix:semicolon
-macro_line|#ifdef CONFIG_EMBEDDED_RAMDISK
-multiline_comment|/* These are symbols defined by the ramdisk linker script */
+macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 r_extern
 r_int
-r_char
-id|__rd_start
+r_int
+id|initrd_start
+comma
+id|initrd_end
 suffix:semicolon
 r_extern
-r_int
-r_char
+r_void
+op_star
+id|__rd_start
+comma
+op_star
 id|__rd_end
 suffix:semicolon
 macro_line|#endif
@@ -569,6 +566,17 @@ suffix:semicolon
 r_int
 id|idx
 suffix:semicolon
+r_char
+op_star
+id|tmp
+comma
+op_star
+id|endptr
+suffix:semicolon
+r_int
+r_int
+id|initrd_size
+suffix:semicolon
 multiline_comment|/* Make a copy of the initrd argument so we can smash it up here */
 r_for
 c_loop
@@ -633,17 +641,6 @@ op_assign
 id|rdarg
 suffix:semicolon
 multiline_comment|/*&n;&t; *Initrd location comes in the form &quot;&lt;hex size of ramdisk in bytes&gt;@&lt;location in memory&gt;&quot;&n;&t; *  e.g. initrd=3abfd@80010000.  This is set up by the loader.&n;&t; */
-r_char
-op_star
-id|tmp
-comma
-op_star
-id|endptr
-suffix:semicolon
-r_int
-r_int
-id|initrd_size
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -799,29 +796,14 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * prom_init is called just after the cpu type is determined, from init_arch()&n; */
+multiline_comment|/*&n; * prom_init is called just after the cpu type is determined, from setup_arch()&n; */
 DECL|function|prom_init
+r_void
 id|__init
-r_int
 id|prom_init
 c_func
 (paren
-r_int
-id|argc
-comma
-r_char
-op_star
-op_star
-id|argv
-comma
-r_char
-op_star
-op_star
-id|envp
-comma
-r_int
-op_star
-id|prom_vec
+r_void
 )paren
 (brace
 r_uint64
@@ -832,6 +814,33 @@ suffix:semicolon
 r_int
 r_int
 id|cfe_eptseal
+suffix:semicolon
+r_int
+id|argc
+op_assign
+id|fw_arg0
+suffix:semicolon
+r_char
+op_star
+op_star
+id|envp
+op_assign
+(paren
+r_char
+op_star
+op_star
+)paren
+id|fw_arg2
+suffix:semicolon
+r_int
+op_star
+id|prom_vec
+op_assign
+(paren
+r_int
+op_star
+)paren
+id|fw_arg3
 suffix:semicolon
 macro_line|#ifdef CONFIG_KGDB
 r_char
@@ -1241,12 +1250,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|prom_free_prom_memory
-r_void
+r_int
+r_int
+id|__init
 id|prom_free_prom_memory
 c_func
 (paren
@@ -1254,6 +1262,9 @@ r_void
 )paren
 (brace
 multiline_comment|/* Not sure what I&squot;m supposed to do here.  Nothing, I think */
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|prom_putchar
 r_void

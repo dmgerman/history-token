@@ -7,21 +7,16 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mips-boards/atlas.h&gt;
 macro_line|#include &lt;asm/mips-boards/atlasint.h&gt;
 macro_line|#include &lt;asm/gdb-stub.h&gt;
 DECL|variable|atlas_hw0_icregs
+r_static
 r_struct
 id|atlas_ictrl_regs
 op_star
 id|atlas_hw0_icregs
-op_assign
-(paren
-r_struct
-id|atlas_ictrl_regs
-op_star
-)paren
-id|ATLAS_ICTRL_REGS_BASE
 suffix:semicolon
 r_extern
 id|asmlinkage
@@ -53,7 +48,16 @@ op_assign
 (paren
 l_int|1
 op_lshift
+(paren
 id|irq_nr
+op_minus
+id|ATLASINT_BASE
+)paren
+)paren
+suffix:semicolon
+id|iob
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -72,7 +76,16 @@ op_assign
 (paren
 l_int|1
 op_lshift
+(paren
 id|irq_nr
+op_minus
+id|ATLASINT_BASE
+)paren
+)paren
+suffix:semicolon
+id|iob
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -346,6 +359,8 @@ r_return
 suffix:semicolon
 id|irq
 op_assign
+id|ATLASINT_BASE
+op_plus
 id|ls1bit32
 c_func
 (paren
@@ -395,6 +410,25 @@ r_void
 r_int
 id|i
 suffix:semicolon
+id|atlas_hw0_icregs
+op_assign
+(paren
+r_struct
+id|atlas_ictrl_regs
+op_star
+)paren
+id|ioremap
+(paren
+id|ATLAS_ICTRL_REGS_BASE
+comma
+r_sizeof
+(paren
+r_struct
+id|atlas_ictrl_regs
+op_star
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Mask out all interrupt by writing &quot;1&quot; to all bit position in&n;&t; * the interrupt reset reg.&n;&t; */
 id|atlas_hw0_icregs-&gt;intrsten
 op_assign
@@ -414,7 +448,7 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|0
+id|ATLASINT_BASE
 suffix:semicolon
 id|i
 op_le

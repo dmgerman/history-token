@@ -941,8 +941,8 @@ DECL|macro|__NR_fremovexattr
 mdefine_line|#define __NR_fremovexattr&t;&t;(__NR_Linux + 191)
 DECL|macro|__NR_tkill
 mdefine_line|#define __NR_tkill&t;&t;&t;(__NR_Linux + 192)
-DECL|macro|__NR_time
-mdefine_line|#define __NR_time&t;&t;&t;(__NR_Linux + 193)
+DECL|macro|__NR_reserved193
+mdefine_line|#define __NR_reserved193&t;&t;(__NR_Linux + 193)
 DECL|macro|__NR_futex
 mdefine_line|#define __NR_futex&t;&t;&t;(__NR_Linux + 194)
 DECL|macro|__NR_sched_setaffinity
@@ -1407,8 +1407,8 @@ DECL|macro|__NR_fremovexattr
 mdefine_line|#define __NR_fremovexattr&t;&t;(__NR_Linux + 191)
 DECL|macro|__NR_tkill
 mdefine_line|#define __NR_tkill&t;&t;&t;(__NR_Linux + 192)
-DECL|macro|__NR_time
-mdefine_line|#define __NR_time&t;&t;&t;(__NR_Linux + 193)
+DECL|macro|__NR_reserved193
+mdefine_line|#define __NR_reserved193&t;&t;(__NR_Linux + 193)
 DECL|macro|__NR_futex
 mdefine_line|#define __NR_futex&t;&t;&t;(__NR_Linux + 194)
 DECL|macro|__NR_sched_setaffinity
@@ -1462,35 +1462,35 @@ mdefine_line|#define __NR_fstatfs64&t;&t;&t;(__NR_Linux + 218)
 DECL|macro|__NR_sendfile64
 mdefine_line|#define __NR_sendfile64&t;&t;&t;(__NR_Linux + 219)
 DECL|macro|__NR_timer_create
-mdefine_line|#define __NR_timer_create&t;&t;(__NR_Linux + 221)
+mdefine_line|#define __NR_timer_create&t;&t;(__NR_Linux + 220)
 DECL|macro|__NR_timer_settime
-mdefine_line|#define __NR_timer_settime&t;&t;(__NR_Linux + 222)
+mdefine_line|#define __NR_timer_settime&t;&t;(__NR_Linux + 221)
 DECL|macro|__NR_timer_gettime
-mdefine_line|#define __NR_timer_gettime&t;&t;(__NR_Linux + 223)
+mdefine_line|#define __NR_timer_gettime&t;&t;(__NR_Linux + 222)
 DECL|macro|__NR_timer_getoverrun
-mdefine_line|#define __NR_timer_getoverrun&t;&t;(__NR_Linux + 224)
+mdefine_line|#define __NR_timer_getoverrun&t;&t;(__NR_Linux + 223)
 DECL|macro|__NR_timer_delete
-mdefine_line|#define __NR_timer_delete&t;&t;(__NR_Linux + 225)
+mdefine_line|#define __NR_timer_delete&t;&t;(__NR_Linux + 224)
 DECL|macro|__NR_clock_settime
-mdefine_line|#define __NR_clock_settime&t;&t;(__NR_Linux + 226)
+mdefine_line|#define __NR_clock_settime&t;&t;(__NR_Linux + 225)
 DECL|macro|__NR_clock_gettime
-mdefine_line|#define __NR_clock_gettime&t;&t;(__NR_Linux + 227)
+mdefine_line|#define __NR_clock_gettime&t;&t;(__NR_Linux + 226)
 DECL|macro|__NR_clock_getres
-mdefine_line|#define __NR_clock_getres&t;&t;(__NR_Linux + 228)
+mdefine_line|#define __NR_clock_getres&t;&t;(__NR_Linux + 227)
 DECL|macro|__NR_clock_nanosleep
-mdefine_line|#define __NR_clock_nanosleep&t;&t;(__NR_Linux + 229)
+mdefine_line|#define __NR_clock_nanosleep&t;&t;(__NR_Linux + 228)
 DECL|macro|__NR_tgkill
-mdefine_line|#define __NR_tgkill&t;&t;&t;(__NR_Linux + 230)
+mdefine_line|#define __NR_tgkill&t;&t;&t;(__NR_Linux + 229)
 DECL|macro|__NR_utimes
-mdefine_line|#define __NR_utimes&t;&t;&t;(__NR_Linux + 231)
+mdefine_line|#define __NR_utimes&t;&t;&t;(__NR_Linux + 230)
 multiline_comment|/*&n; * Offset of the last N32 flavoured syscall&n; */
 DECL|macro|__NR_Linux_syscalls
-mdefine_line|#define __NR_Linux_syscalls&t;&t;231
+mdefine_line|#define __NR_Linux_syscalls&t;&t;230
 macro_line|#endif /* _MIPS_SIM == _MIPS_SIM_NABI32 */
 DECL|macro|__NR_N32_Linux
 mdefine_line|#define __NR_N32_Linux&t;&t;&t;6000
 DECL|macro|__NR_N32_Linux_syscalls
-mdefine_line|#define __NR_N32_Linux_syscalls&t;&t;231
+mdefine_line|#define __NR_N32_Linux_syscalls&t;&t;230
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* XXX - _foo needs to be __foo, while __NR_bar could be _NR_bar. */
 DECL|macro|_syscall0
@@ -1519,8 +1519,6 @@ mdefine_line|#define _syscall6(type,name,atype,a,btype,b,ctype,c,dtype,d,etype,e
 macro_line|#endif /* (_MIPS_SIM == _MIPS_SIM_NABIN32) || (_MIPS_SIM == _MIPS_SIM_ABI64) */
 macro_line|#ifdef __KERNEL_SYSCALLS__
 multiline_comment|/*&n; * we need this inline - forking from kernel space will result&n; * in NO COPY ON WRITE (!!!), until an execve is executed. This&n; * is no problem, but for the stack. This is handled by not letting&n; * main() use the stack at all after fork(). Thus, no function&n; * calls - which means inline code for fork too, as otherwise we&n; * would use the stack upon exit from &squot;fork()&squot;.&n; *&n; * Actually only pause and fork are needed inline, so that there&n; * won&squot;t be any messing with the stack from main(), but we define&n; * some others too.&n; */
-DECL|macro|__NR__exit
-mdefine_line|#define __NR__exit __NR_exit
 r_static
 r_inline
 id|_syscall0
@@ -1671,19 +1669,6 @@ comma
 r_int
 comma
 id|fd
-)paren
-r_static
-r_inline
-id|_syscall1
-c_func
-(paren
-r_int
-comma
-id|_exit
-comma
-r_int
-comma
-id|exitcode
 )paren
 r_struct
 id|rusage

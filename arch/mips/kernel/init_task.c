@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init_task.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;asm/thread_info.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 DECL|variable|init_fs
@@ -76,6 +77,12 @@ id|__section__
 c_func
 (paren
 l_string|&quot;.data.init_task&quot;
+)paren
+comma
+id|__aligned__
+c_func
+(paren
+id|THREAD_SIZE
 )paren
 )paren
 )paren

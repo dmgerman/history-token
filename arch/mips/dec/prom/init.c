@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * init.c: PROM library initialisation code.&n; *&n; * Copyright (C) 1998 Harald Koerfgen&n; * Copyright (C) 2002  Maciej W. Rozycki&n; */
+multiline_comment|/*&n; * init.c: PROM library initialisation code.&n; *&n; * Copyright (C) 1998 Harald Koerfgen&n; * Copyright (C) 2002, 2004  Maciej W. Rozycki&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
@@ -170,7 +171,7 @@ id|__pmax_close
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Detect which PROM&squot;s the DECSTATION has, and set the callback vectors&n; * appropriately.&n; */
+multiline_comment|/*&n; * Detect which PROM the DECSTATION has, and set the callback vectors&n; * appropriately.&n; */
 DECL|function|which_prom
 r_void
 id|__init
@@ -420,24 +421,12 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|prom_init
-r_int
+r_void
 id|__init
 id|prom_init
 c_func
 (paren
-id|s32
-id|argc
-comma
-id|s32
-op_star
-id|argv
-comma
-id|u32
-id|magic
-comma
-id|s32
-op_star
-id|prom_vec
+r_void
 )paren
 (brace
 r_extern
@@ -448,7 +437,54 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Determine which PROM&squot;s we have&n;&t; * (and therefore which machine we&squot;re on!)&n;&t; */
+r_static
+r_char
+id|cpu_msg
+(braket
+)braket
+id|__initdata
+op_assign
+l_string|&quot;Sorry, this kernel is compiled for a wrong CPU type!&bslash;n&quot;
+suffix:semicolon
+r_static
+r_char
+id|r3k_msg
+(braket
+)braket
+id|__initdata
+op_assign
+l_string|&quot;Please recompile with &bslash;&quot;CONFIG_CPU_R3000 = y&bslash;&quot;.&bslash;n&quot;
+suffix:semicolon
+r_static
+r_char
+id|r4k_msg
+(braket
+)braket
+id|__initdata
+op_assign
+l_string|&quot;Please recompile with &bslash;&quot;CONFIG_CPU_R4x00 = y&bslash;&quot;.&bslash;n&quot;
+suffix:semicolon
+id|s32
+id|argc
+op_assign
+id|fw_arg0
+suffix:semicolon
+id|s32
+id|argv
+op_assign
+id|fw_arg1
+suffix:semicolon
+id|u32
+id|magic
+op_assign
+id|fw_arg2
+suffix:semicolon
+id|s32
+id|prom_vec
+op_assign
+id|fw_arg3
+suffix:semicolon
+multiline_comment|/*&n;&t; * Determine which PROM we have&n;&t; * (and therefore which machine we&squot;re on!)&n;&t; */
 id|which_prom
 c_func
 (paren
@@ -471,6 +507,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Register the early console.  */
+id|register_prom_console
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Were we compiled with the right CPU option? */
 macro_line|#if defined(CONFIG_CPU_R3000)
 r_if
@@ -489,16 +531,16 @@ id|CPU_R4400SC
 )paren
 )paren
 (brace
-id|prom_printf
+id|printk
 c_func
 (paren
-l_string|&quot;Sorry, this kernel is compiled for the wrong CPU type!&bslash;n&quot;
+id|cpu_msg
 )paren
 suffix:semicolon
-id|prom_printf
+id|printk
 c_func
 (paren
-l_string|&quot;Please recompile with &bslash;&quot;CONFIG_CPU_R4x00 = y&bslash;&quot;&bslash;n&quot;
+id|r4k_msg
 )paren
 suffix:semicolon
 id|dec_machine_halt
@@ -525,16 +567,16 @@ id|CPU_R3000A
 )paren
 )paren
 (brace
-id|prom_printf
+id|printk
 c_func
 (paren
-l_string|&quot;Sorry, this kernel is compiled for the wrong CPU type!&bslash;n&quot;
+id|cpu_msg
 )paren
 suffix:semicolon
-id|prom_printf
+id|printk
 c_func
 (paren
-l_string|&quot;Please recompile with &bslash;&quot;CONFIG_CPU_R3000 = y&bslash;&quot;&bslash;n&quot;
+id|r3k_msg
 )paren
 suffix:semicolon
 id|dec_machine_halt
@@ -565,9 +607,6 @@ id|argv
 comma
 id|magic
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 eof

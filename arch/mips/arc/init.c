@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * PROM library initialisation code.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/sgialib.h&gt;
 DECL|macro|DEBUG_PROM_INIT
 macro_line|#undef DEBUG_PROM_INIT
@@ -30,22 +31,7 @@ id|__init
 id|prom_init
 c_func
 (paren
-r_int
-id|argc
-comma
-r_char
-op_star
-op_star
-id|argv
-comma
-r_char
-op_star
-op_star
-id|envp
-comma
-r_int
-op_star
-id|prom_vec
+r_void
 )paren
 (brace
 id|PSYSTEM_PARAMETER_BLOCK
@@ -59,7 +45,7 @@ id|ROMVECTOR
 suffix:semicolon
 id|prom_argc
 op_assign
-id|argc
+id|fw_arg0
 suffix:semicolon
 id|_prom_argv
 op_assign
@@ -67,7 +53,7 @@ op_assign
 id|LONG
 op_star
 )paren
-id|argv
+id|fw_arg1
 suffix:semicolon
 id|_prom_envp
 op_assign
@@ -75,7 +61,7 @@ op_assign
 id|LONG
 op_star
 )paren
-id|envp
+id|fw_arg2
 suffix:semicolon
 r_if
 c_cond

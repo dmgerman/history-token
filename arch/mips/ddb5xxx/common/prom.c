@@ -1,4 +1,4 @@
-multiline_comment|/***********************************************************************&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; * arch/mips/ddb5xxx/common/prom.c&n; *     prom.c file.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; ***********************************************************************&n; */
+multiline_comment|/*&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -8,13 +8,6 @@ macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/ddb5xxx/ddb5xxx.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
-DECL|variable|arcs_cmdline
-r_char
-id|arcs_cmdline
-(braket
-id|CL_SIZE
-)braket
-suffix:semicolon
 DECL|function|get_system_type
 r_const
 r_char
@@ -68,6 +61,15 @@ l_string|&quot;Unknown NEC board&quot;
 suffix:semicolon
 )brace
 )brace
+macro_line|#if defined(CONFIG_DDB5477)
+r_void
+id|ddb5477_runtime_detection
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* [jsun@junsun.net] PMON passes arguments in C main() style */
 DECL|function|prom_init
 r_void
@@ -75,20 +77,37 @@ id|__init
 id|prom_init
 c_func
 (paren
+r_void
+)paren
+(brace
 r_int
 id|argc
-comma
-r_const
+op_assign
+id|fw_arg0
+suffix:semicolon
 r_char
 op_star
 op_star
 id|arg
+op_assign
+(paren
+r_char
+op_star
+op_star
 )paren
-(brace
+id|fw_arg1
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* arg[0] is &quot;g&quot;, the rest is boot parameters */
+multiline_comment|/* if user passes kernel args, ignore the default one */
+r_if
+c_cond
+(paren
+id|argc
+OG
+l_int|1
+)paren
 id|arcs_cmdline
 (braket
 l_int|0
@@ -96,6 +115,7 @@ l_int|0
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
+multiline_comment|/* arg[0] is &quot;g&quot;, the rest is boot parameters */
 r_for
 c_loop
 (paren
@@ -158,15 +178,6 @@ l_string|&quot; &quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* by default all these boards use dhcp/nfs root fs */
-id|strcat
-c_func
-(paren
-id|arcs_cmdline
-comma
-l_string|&quot;ip=bootp&quot;
-)paren
-suffix:semicolon
 id|mips_machgroup
 op_assign
 id|MACH_GROUP_NEC_DDB
@@ -220,7 +231,8 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|prom_free_prom_memory
-r_void
+r_int
+r_int
 id|__init
 id|prom_free_prom_memory
 c_func
@@ -228,6 +240,9 @@ c_func
 r_void
 )paren
 (brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 macro_line|#if defined(CONFIG_DDB5477)
 DECL|macro|DEFAULT_LCS1_BASE

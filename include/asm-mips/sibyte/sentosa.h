@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright (C) 2000, 2001 Broadcom Corporation&n; *&n; 
 macro_line|#ifndef __ASM_SIBYTE_SENTOSA_H
 DECL|macro|__ASM_SIBYTE_SENTOSA_H
 mdefine_line|#define __ASM_SIBYTE_SENTOSA_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_int.h&gt;
 macro_line|#ifdef CONFIG_SIBYTE_SENTOSA

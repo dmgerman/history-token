@@ -33,6 +33,7 @@ mdefine_line|#define KN0X_ESR_SNGLO&t;&t;(1&lt;&lt;7)&t;&t;/* single/double bit 
 DECL|macro|KN0X_ESR_SYNLO
 mdefine_line|#define KN0X_ESR_SYNLO&t;&t;(0x7f&lt;&lt;0)&t;/* syndrome from ECC logic */
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/interrupt.h&gt;
 r_struct
 id|pt_regs
 suffix:semicolon
@@ -59,7 +60,7 @@ id|is_fixup
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|dec_ecc_be_interrupt
 c_func
 (paren

@@ -1,7 +1,7 @@
-multiline_comment|/*******************************************************************************&n;* mv64340.h - MV-64340 Internal registers definition file.&n;*&n;* Copyright 2002 Momentum Computer, Inc.&n;* Copyright 2002 GALILEO TECHNOLOGY, LTD. &n;*&n;* This program is free software; you can redistribute  it and/or modify it&n;* under  the terms of  the GNU General  Public License as published by the&n;* Free Software Foundation;  either version 2 of the  License, or (at your&n;* option) any later version.&n;*&n;*******************************************************************************/
-macro_line|#ifndef __MV64340_H__
-DECL|macro|__MV64340_H__
-mdefine_line|#define __MV64340_H__
+multiline_comment|/*&n; * mv64340.h - MV-64340 Internal registers definition file.&n; *&n; * Copyright 2002 Momentum Computer, Inc.&n; * Copyright 2002 GALILEO TECHNOLOGY, LTD. &n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
+macro_line|#ifndef __ASM_MV64340_H
+DECL|macro|__ASM_MV64340_H
+mdefine_line|#define __ASM_MV64340_H
 macro_line|#include &lt;asm/mv64340_dep.h&gt;
 multiline_comment|/****************************************/
 multiline_comment|/* Processor Address Space              */
@@ -1643,5 +1643,14 @@ DECL|macro|MV64340_SERIAL_INIT_CONTROL
 mdefine_line|#define MV64340_SERIAL_INIT_CONTROL                                 0xf328
 DECL|macro|MV64340_SERIAL_INIT_STATUS
 mdefine_line|#define MV64340_SERIAL_INIT_STATUS                                  0xf32c
-macro_line|#endif
+r_struct
+id|pci
+suffix:semicolon
+r_extern
+id|mv64340_bus0_pci_ops
+suffix:semicolon
+r_extern
+id|mv64340_bus1_pci_ops
+suffix:semicolon
+macro_line|#endif /* __ASM_MV64340_H */
 eof

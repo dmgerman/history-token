@@ -14,6 +14,17 @@ id|COMPXDP
 suffix:semicolon
 id|CLEARCX
 suffix:semicolon
+id|xc
+op_assign
+(paren
+l_int|0
+ques
+c_cond
+id|xc
+suffix:colon
+id|xc
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -1,10 +1,96 @@
-multiline_comment|/*&n; * Reset a Jazz machine.&n; */
+multiline_comment|/*&n; * Reset a Jazz machine.&n; *&n; * We don&squot;t trust the firmware so we do it the classic way by poking and&n; * stabbing at the keyboard controller ...&n; */
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;asm/jazz.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
+DECL|macro|jazz_kh
+mdefine_line|#define jazz_kh ((keyboard_hardware *) JAZZ_KEYBOARD_ADDRESS)
+DECL|macro|KBD_STAT_IBF
+mdefine_line|#define KBD_STAT_IBF&t;&t;0x02&t;/* Keyboard input buffer full */
+DECL|function|jazz_write_output
+r_static
+r_void
+id|jazz_write_output
+c_func
+(paren
+r_int
+r_char
+id|val
+)paren
+(brace
+r_int
+id|status
+suffix:semicolon
+r_do
+(brace
+id|status
+op_assign
+id|jazz_kh-&gt;command
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|status
+op_amp
+id|KBD_STAT_IBF
+)paren
+suffix:semicolon
+id|jazz_kh-&gt;data
+op_assign
+id|val
+suffix:semicolon
+)brace
+DECL|function|jazz_write_command
+r_static
+r_void
+id|jazz_write_command
+c_func
+(paren
+r_int
+r_char
+id|val
+)paren
+(brace
+r_int
+id|status
+suffix:semicolon
+r_do
+(brace
+id|status
+op_assign
+id|jazz_kh-&gt;command
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|status
+op_amp
+id|KBD_STAT_IBF
+)paren
+suffix:semicolon
+id|jazz_kh-&gt;command
+op_assign
+id|val
+suffix:semicolon
+)brace
+DECL|function|jazz_read_status
+r_static
+r_int
+r_char
+id|jazz_read_status
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|jazz_kh-&gt;command
+suffix:semicolon
+)brace
 DECL|function|kb_wait
 r_static
 r_inline
@@ -38,7 +124,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|kbd_read_status
+id|jazz_read_status
 c_func
 (paren
 )paren
@@ -49,12 +135,16 @@ l_int|0x02
 r_return
 suffix:semicolon
 )brace
+r_while
+c_loop
+(paren
 id|time_before_eq
 c_func
 (paren
 id|jiffies
 comma
 id|timeout
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -75,19 +165,21 @@ l_int|1
 )paren
 (brace
 id|kb_wait
+c_func
 (paren
 )paren
 suffix:semicolon
-id|kbd_write_command
+id|jazz_write_command
 (paren
 l_int|0xd1
 )paren
 suffix:semicolon
 id|kb_wait
+c_func
 (paren
 )paren
 suffix:semicolon
-id|kbd_write_output
+id|jazz_write_output
 (paren
 l_int|0x00
 )paren

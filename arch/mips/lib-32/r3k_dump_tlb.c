@@ -14,8 +14,8 @@ r_int
 id|r3k_have_wired_reg
 suffix:semicolon
 multiline_comment|/* defined in tlb-r3k.c */
-r_void
 DECL|function|dump_tlb
+r_void
 id|dump_tlb
 c_func
 (paren
@@ -221,8 +221,8 @@ id|asid
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|dump_tlb_all
+r_void
 id|dump_tlb_all
 c_func
 (paren
@@ -240,8 +240,8 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|dump_tlb_wired
+r_void
 id|dump_tlb_wired
 c_func
 (paren
@@ -280,8 +280,8 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|dump_tlb_addr
+r_void
 id|dump_tlb_addr
 c_func
 (paren
@@ -388,8 +388,8 @@ id|index
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|dump_tlb_nonwired
+r_void
 id|dump_tlb_nonwired
 c_func
 (paren
@@ -420,8 +420,8 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|dump_list_process
+r_void
 id|dump_list_process
 c_func
 (paren
@@ -703,8 +703,8 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|dump_list_current
+r_void
 id|dump_list_current
 c_func
 (paren
@@ -722,9 +722,9 @@ id|address
 )paren
 suffix:semicolon
 )brace
-r_int
-r_int
 DECL|function|vtop
+r_int
+r_int
 id|vtop
 c_func
 (paren
@@ -821,8 +821,8 @@ r_return
 id|paddr
 suffix:semicolon
 )brace
-r_void
 DECL|function|dump16
+r_void
 id|dump16
 c_func
 (paren
@@ -861,14 +861,12 @@ r_int
 )paren
 id|p
 comma
-(paren
-r_int
-r_int
-)paren
 op_star
 id|p
-op_increment
 )paren
+suffix:semicolon
+id|p
+op_increment
 suffix:semicolon
 id|printk
 c_func
@@ -881,14 +879,12 @@ r_int
 )paren
 id|p
 comma
-(paren
-r_int
-r_int
-)paren
 op_star
 id|p
-op_increment
 )paren
+suffix:semicolon
+id|p
+op_increment
 suffix:semicolon
 )brace
 )brace

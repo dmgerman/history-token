@@ -1,18 +1,18 @@
 multiline_comment|/*&n; * FILE NAME&n; *&t;arch/mips/vr41xx/common/giu.c&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;General-purpose I/O Unit Interrupt routines for NEC VR4100 series.&n; *&n; * Author: Yoichi Yuasa&n; *         yyuasa@mvista.com or source@mvista.com&n; *&n; * Copyright 2002 MontaVista Software Inc.&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the&n; *  Free Software Foundation; either version 2 of the License, or (at your&n; *  option) any later version.&n; *&n; *  THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&n; *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,&n; *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS&n; *  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND&n; *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n; *  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n; *  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-multiline_comment|/*&n; * Changes:&n; *  MontaVista Software Inc. &lt;yyuasa@mvista.com&gt; or &lt;source@mvista.com&gt;&n; *  - New creation, NEC VR4111, VR4121, VR4122 and VR4131 are supported.&n; */
+multiline_comment|/*&n; * Changes:&n; *  MontaVista Software Inc. &lt;yyuasa@mvista.com&gt; or &lt;source@mvista.com&gt;&n; *  - New creation, NEC VR4111, VR4121, VR4122 and VR4131 are supported.&n; *&n; *  Yoichi Yuasa &lt;yuasa@hh.iij4u.or.jp&gt;&n; *  - Added support for NEC VR4133.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/vr41xx/vr41xx.h&gt;
-DECL|macro|VR4111_GIUIOSELL
-mdefine_line|#define VR4111_GIUIOSELL&t;KSEG1ADDR(0x0b000100)
-DECL|macro|VR4122_GIUIOSELL
-mdefine_line|#define VR4122_GIUIOSELL&t;KSEG1ADDR(0x0f000140)
+DECL|macro|GIUIOSELL_TYPE1
+mdefine_line|#define GIUIOSELL_TYPE1&t;KSEG1ADDR(0x0b000100)
+DECL|macro|GIUIOSELL_TYPE2
+mdefine_line|#define GIUIOSELL_TYPE2&t;KSEG1ADDR(0x0f000140)
 DECL|macro|GIUIOSELL
 mdefine_line|#define GIUIOSELL&t;0x00
 DECL|macro|GIUIOSELH
@@ -37,31 +37,38 @@ DECL|macro|GIUINTHTSELL
 mdefine_line|#define GIUINTHTSELL&t;0x18
 DECL|macro|GIUINTHTSELH
 mdefine_line|#define GIUINTHTSELH&t;0x1a
-DECL|variable|vr41xx_giu_base
-id|u32
-id|vr41xx_giu_base
-op_assign
-l_int|0
+DECL|macro|GIUFEDGEINHL
+mdefine_line|#define GIUFEDGEINHL&t;0x20
+DECL|macro|GIUFEDGEINHH
+mdefine_line|#define GIUFEDGEINHH&t;0x22
+DECL|macro|GIUREDGEINHL
+mdefine_line|#define GIUREDGEINHL&t;0x24
+DECL|macro|GIUREDGEINHH
+mdefine_line|#define GIUREDGEINHH&t;0x26
+DECL|variable|giu_base
+r_static
+r_uint32
+id|giu_base
 suffix:semicolon
 DECL|macro|read_giuint
-mdefine_line|#define read_giuint(offset)&t;&t;readw(vr41xx_giu_base + (offset))
+mdefine_line|#define read_giuint(offset)&t;&t;readw(giu_base + (offset))
 DECL|macro|write_giuint
-mdefine_line|#define write_giuint(val, offset)&t;writew((val), vr41xx_giu_base + (offset))
+mdefine_line|#define write_giuint(val, offset)&t;writew((val), giu_base + (offset))
 DECL|function|set_giuint
 r_static
 r_inline
-id|u16
+r_uint16
 id|set_giuint
 c_func
 (paren
-id|u16
+r_uint8
 id|offset
 comma
-id|u16
+r_uint16
 id|set
 )paren
 (brace
-id|u16
+r_uint16
 id|res
 suffix:semicolon
 id|res
@@ -91,18 +98,18 @@ suffix:semicolon
 DECL|function|clear_giuint
 r_static
 r_inline
-id|u16
+r_uint16
 id|clear_giuint
 c_func
 (paren
-id|u16
+r_uint8
 id|offset
 comma
-id|u16
+r_uint16
 id|clear
 )paren
 (brace
-id|u16
+r_uint16
 id|res
 suffix:semicolon
 id|res
@@ -152,7 +159,7 @@ c_func
 id|GIUINTENL
 comma
 (paren
-id|u16
+r_uint16
 )paren
 l_int|1
 op_lshift
@@ -166,7 +173,7 @@ c_func
 id|GIUINTENH
 comma
 (paren
-id|u16
+r_uint16
 )paren
 l_int|1
 op_lshift
@@ -200,7 +207,7 @@ c_func
 id|GIUINTENL
 comma
 (paren
-id|u16
+r_uint16
 )paren
 l_int|1
 op_lshift
@@ -214,7 +221,7 @@ c_func
 id|GIUINTENH
 comma
 (paren
-id|u16
+r_uint16
 )paren
 l_int|1
 op_lshift
@@ -246,7 +253,7 @@ id|write_giuint
 c_func
 (paren
 (paren
-id|u16
+r_uint16
 )paren
 l_int|1
 op_lshift
@@ -260,7 +267,7 @@ id|write_giuint
 c_func
 (paren
 (paren
-id|u16
+r_uint16
 )paren
 l_int|1
 op_lshift
@@ -289,7 +296,7 @@ r_int
 id|hold
 )paren
 (brace
-id|u16
+r_uint16
 id|mask
 suffix:semicolon
 r_if
@@ -303,7 +310,7 @@ l_int|16
 id|mask
 op_assign
 (paren
-id|u16
+r_uint16
 )paren
 l_int|1
 op_lshift
@@ -313,8 +320,8 @@ r_if
 c_cond
 (paren
 id|trigger
-op_eq
-id|TRIGGER_EDGE
+op_ne
+id|TRIGGER_LEVEL
 )paren
 (brace
 id|set_giuint
@@ -349,6 +356,84 @@ comma
 id|mask
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|current_cpu_data.cputype
+op_eq
+id|CPU_VR4133
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|trigger
+)paren
+(brace
+r_case
+id|TRIGGER_EDGE_FALLING
+suffix:colon
+id|set_giuint
+c_func
+(paren
+id|GIUFEDGEINHL
+comma
+id|mask
+)paren
+suffix:semicolon
+id|clear_giuint
+c_func
+(paren
+id|GIUREDGEINHL
+comma
+id|mask
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|TRIGGER_EDGE_RISING
+suffix:colon
+id|clear_giuint
+c_func
+(paren
+id|GIUFEDGEINHL
+comma
+id|mask
+)paren
+suffix:semicolon
+id|set_giuint
+c_func
+(paren
+id|GIUREDGEINHL
+comma
+id|mask
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|set_giuint
+c_func
+(paren
+id|GIUFEDGEINHL
+comma
+id|mask
+)paren
+suffix:semicolon
+id|set_giuint
+c_func
+(paren
+id|GIUREDGEINHL
+comma
+id|mask
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
 )brace
 r_else
 (brace
@@ -375,7 +460,7 @@ r_else
 id|mask
 op_assign
 (paren
-id|u16
+r_uint16
 )paren
 l_int|1
 op_lshift
@@ -389,8 +474,8 @@ r_if
 c_cond
 (paren
 id|trigger
-op_eq
-id|TRIGGER_EDGE
+op_ne
+id|TRIGGER_LEVEL
 )paren
 (brace
 id|set_giuint
@@ -425,6 +510,84 @@ comma
 id|mask
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|current_cpu_data.cputype
+op_eq
+id|CPU_VR4133
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|trigger
+)paren
+(brace
+r_case
+id|TRIGGER_EDGE_FALLING
+suffix:colon
+id|set_giuint
+c_func
+(paren
+id|GIUFEDGEINHH
+comma
+id|mask
+)paren
+suffix:semicolon
+id|clear_giuint
+c_func
+(paren
+id|GIUREDGEINHH
+comma
+id|mask
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|TRIGGER_EDGE_RISING
+suffix:colon
+id|clear_giuint
+c_func
+(paren
+id|GIUFEDGEINHH
+comma
+id|mask
+)paren
+suffix:semicolon
+id|set_giuint
+c_func
+(paren
+id|GIUREDGEINHH
+comma
+id|mask
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|set_giuint
+c_func
+(paren
+id|GIUFEDGEINHH
+comma
+id|mask
+)paren
+suffix:semicolon
+id|set_giuint
+c_func
+(paren
+id|GIUREDGEINHH
+comma
+id|mask
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
 )brace
 r_else
 (brace
@@ -465,7 +628,7 @@ r_int
 id|level
 )paren
 (brace
-id|u16
+r_uint16
 id|mask
 suffix:semicolon
 r_if
@@ -479,7 +642,7 @@ l_int|16
 id|mask
 op_assign
 (paren
-id|u16
+r_uint16
 )paren
 l_int|1
 op_lshift
@@ -515,7 +678,7 @@ r_else
 id|mask
 op_assign
 (paren
-id|u16
+r_uint16
 )paren
 l_int|1
 op_lshift
@@ -690,12 +853,10 @@ suffix:semicolon
 )brace
 id|pin
 op_assign
-id|irq
-op_minus
-id|GIU_IRQ
+id|GIU_IRQ_TO_PIN
 c_func
 (paren
-l_int|0
+id|irq
 )paren
 suffix:semicolon
 id|giuint_cascade
@@ -803,12 +964,10 @@ id|pin
 suffix:semicolon
 id|giuint_irq
 op_assign
-id|pin
-op_plus
 id|GIU_IRQ
 c_func
 (paren
-l_int|0
+id|pin
 )paren
 suffix:semicolon
 r_if
@@ -916,9 +1075,9 @@ suffix:colon
 r_case
 id|CPU_VR4121
 suffix:colon
-id|vr41xx_giu_base
+id|giu_base
 op_assign
-id|VR4111_GIUIOSELL
+id|GIUIOSELL_TYPE1
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -928,9 +1087,12 @@ suffix:colon
 r_case
 id|CPU_VR4131
 suffix:colon
-id|vr41xx_giu_base
+r_case
+id|CPU_VR4133
+suffix:colon
+id|giu_base
 op_assign
-id|VR4122_GIUIOSELL
+id|GIUIOSELL_TYPE2
 suffix:semicolon
 r_break
 suffix:semicolon

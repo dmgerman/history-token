@@ -1,16 +1,16 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1998, 1999, 2001 Ralf Baechle&n; * Copyright (C) 2000, 2001 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1998, 1999, 2001, 2003 Ralf Baechle&n; * Copyright (C) 2000, 2001 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_SIGINFO_H
 DECL|macro|_ASM_SIGINFO_H
 mdefine_line|#define _ASM_SIGINFO_H
 macro_line|#include &lt;linux/config.h&gt;
+DECL|macro|SIGEV_HEAD_SIZE
+mdefine_line|#define SIGEV_HEAD_SIZE&t;(sizeof(long) + 2*sizeof(int))
 DECL|macro|SIGEV_PAD_SIZE
-mdefine_line|#define SIGEV_PAD_SIZE&t;((SIGEV_MAX_SIZE/sizeof(int)) - 4)
+mdefine_line|#define SIGEV_PAD_SIZE&t;((SIGEV_MAX_SIZE-SIGEV_HEAD_SIZE) / sizeof(int))
 DECL|macro|SI_PAD_SIZE
 mdefine_line|#define SI_PAD_SIZE&t;((SI_MAX_SIZE/sizeof(int)) - 4)
 DECL|macro|HAVE_ARCH_SIGINFO_T
 mdefine_line|#define HAVE_ARCH_SIGINFO_T
-DECL|macro|HAVE_ARCH_SIGEVENT_T
-mdefine_line|#define HAVE_ARCH_SIGEVENT_T
 multiline_comment|/*&n; * We duplicate the generic versions - &lt;asm-generic/siginfo.h&gt; is just borked&n; * by design ...&n; */
 DECL|macro|HAVE_ARCH_COPY_SIGINFO
 mdefine_line|#define HAVE_ARCH_COPY_SIGINFO
@@ -433,82 +433,6 @@ DECL|macro|SI_TIMER
 mdefine_line|#define SI_TIMER __SI_CODE(__SI_TIMER,-3) /* sent by timer expiration */
 DECL|macro|SI_MESGQ
 mdefine_line|#define SI_MESGQ&t;-4&t;/* sent by real time mesq state change */
-multiline_comment|/*&n; * sigevent definitions&n; *&n; * It seems likely that SIGEV_THREAD will have to be handled from&n; * userspace, libpthread transmuting it to SIGEV_SIGNAL, which the&n; * thread manager then catches and does the appropriate nonsense.&n; * However, everything is written out here so as to not get lost.&n; */
-DECL|macro|SIGEV_NONE
-macro_line|#undef SIGEV_NONE
-DECL|macro|SIGEV_SIGNAL
-macro_line|#undef SIGEV_SIGNAL
-DECL|macro|SIGEV_THREAD
-macro_line|#undef SIGEV_THREAD
-DECL|macro|SIGEV_NONE
-mdefine_line|#define SIGEV_NONE&t;128&t;/* other notification: meaningless */
-DECL|macro|SIGEV_SIGNAL
-mdefine_line|#define SIGEV_SIGNAL&t;129&t;/* notify via signal */
-DECL|macro|SIGEV_CALLBACK
-mdefine_line|#define SIGEV_CALLBACK&t;130&t;/* ??? */
-DECL|macro|SIGEV_THREAD
-mdefine_line|#define SIGEV_THREAD&t;131&t;/* deliver via thread creation */
-multiline_comment|/* XXX This one isn&squot;t yet IRIX / ABI compatible.  */
-DECL|struct|sigevent
-r_typedef
-r_struct
-id|sigevent
-(brace
-DECL|member|sigev_notify
-r_int
-id|sigev_notify
-suffix:semicolon
-DECL|member|sigev_value
-id|sigval_t
-id|sigev_value
-suffix:semicolon
-DECL|member|sigev_signo
-r_int
-id|sigev_signo
-suffix:semicolon
-r_union
-(brace
-DECL|member|_pad
-r_int
-id|_pad
-(braket
-id|SIGEV_PAD_SIZE
-)braket
-suffix:semicolon
-DECL|member|_tid
-r_int
-id|_tid
-suffix:semicolon
-r_struct
-(brace
-DECL|member|_function
-r_void
-(paren
-op_star
-id|_function
-)paren
-(paren
-id|sigval_t
-)paren
-suffix:semicolon
-DECL|member|_attribute
-r_void
-op_star
-id|_attribute
-suffix:semicolon
-multiline_comment|/* really pthread_attr_t */
-DECL|member|_sigev_thread
-)brace
-id|_sigev_thread
-suffix:semicolon
-DECL|member|_sigev_un
-)brace
-id|_sigev_un
-suffix:semicolon
-DECL|typedef|sigevent_t
-)brace
-id|sigevent_t
-suffix:semicolon
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Duplicated here because of &lt;asm-generic/siginfo.h&gt; braindamage ...&n; */
 macro_line|#include &lt;linux/string.h&gt;

@@ -1,4 +1,6 @@
-multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * ########################################################################&n; *&n; * Display routines for display messages in MIPS boards ascii display.&n; *&n; */
+multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Display routines for display messages in MIPS boards ascii display.&n; */
+macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mips-boards/generic.h&gt;
 DECL|function|mips_display_message
 r_void
@@ -11,20 +13,49 @@ op_star
 id|str
 )paren
 (brace
+r_static
 r_volatile
 r_int
 r_int
 op_star
 id|display
 op_assign
-(paren
-r_void
-op_star
-)paren
-id|ASCII_DISPLAY_POS_BASE
+l_int|NULL
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|display
+op_eq
+l_int|NULL
+)paren
+)paren
+id|display
+op_assign
+(paren
+r_volatile
+r_int
+r_int
+op_star
+)paren
+id|ioremap
+c_func
+(paren
+id|ASCII_DISPLAY_POS_BASE
+comma
+l_int|16
+op_star
+r_sizeof
+(paren
+r_int
+)paren
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -69,34 +100,4 @@ l_char|&squot; &squot;
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifndef CONFIG_MIPS_SEAD
-DECL|function|mips_display_word
-r_void
-id|mips_display_word
-c_func
-(paren
-r_int
-r_int
-id|num
-)paren
-(brace
-r_volatile
-r_int
-r_int
-op_star
-id|display
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|ASCII_DISPLAY_WORD_BASE
-suffix:semicolon
-op_star
-id|display
-op_assign
-id|num
-suffix:semicolon
-)brace
-macro_line|#endif
 eof

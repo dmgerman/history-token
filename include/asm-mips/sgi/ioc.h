@@ -3,159 +3,8 @@ macro_line|#ifndef _SGI_IOC_H
 DECL|macro|_SGI_IOC_H
 mdefine_line|#define _SGI_IOC_H
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/sgi/pi1.h&gt;
 multiline_comment|/* &n; * All registers are 8-bit wide alligned on 32-bit boundary. Bad things&n; * happen if you try word access them. You have been warned.&n; */
-DECL|struct|sgioc_pport_regs
-r_struct
-id|sgioc_pport_regs
-(brace
-DECL|member|_data
-id|u8
-id|_data
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|data
-r_volatile
-id|u8
-id|data
-suffix:semicolon
-DECL|member|_ctrl
-id|u8
-id|_ctrl
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|ctrl
-r_volatile
-id|u8
-id|ctrl
-suffix:semicolon
-DECL|macro|SGIOC_PCTRL_STROBE
-mdefine_line|#define SGIOC_PCTRL_STROBE&t;0x01
-DECL|macro|SGIOC_PCTRL_AFD
-mdefine_line|#define SGIOC_PCTRL_AFD&t;&t;0x02
-DECL|macro|SGIOC_PCTRL_INIT
-mdefine_line|#define SGIOC_PCTRL_INIT&t;0x04
-DECL|macro|SGIOC_PCTRL_SLIN
-mdefine_line|#define SGIOC_PCTRL_SLIN&t;0x08
-DECL|macro|SGIOC_PCTRL_DIRECTION
-mdefine_line|#define SGIOC_PCTRL_DIRECTION&t;0x20
-DECL|macro|SGIOC_PCTRL_SEL
-mdefine_line|#define SGIOC_PCTRL_SEL&t;&t;0x40
-DECL|member|_status
-id|u8
-id|_status
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|status
-r_volatile
-id|u8
-id|status
-suffix:semicolon
-DECL|macro|SGIOC_PSTAT_DEVID
-mdefine_line|#define SGIOC_PSTAT_DEVID&t;0x03
-DECL|macro|SGIOC_PSTAT_NOINK
-mdefine_line|#define SGIOC_PSTAT_NOINK&t;0x04
-DECL|macro|SGIOC_PSTAT_ERROR
-mdefine_line|#define SGIOC_PSTAT_ERROR&t;0x08
-DECL|macro|SGIOC_PSTAT_ONLINE
-mdefine_line|#define SGIOC_PSTAT_ONLINE&t;0x10
-DECL|macro|SGIOC_PSTAT_PE
-mdefine_line|#define SGIOC_PSTAT_PE&t;&t;0x20
-DECL|macro|SGIOC_PSTAT_ACK
-mdefine_line|#define SGIOC_PSTAT_ACK&t;&t;0x40
-DECL|macro|SGIOC_PSTAT_BUSY
-mdefine_line|#define SGIOC_PSTAT_BUSY&t;0x80
-DECL|member|_dmactrl
-id|u8
-id|_dmactrl
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|dmactrl
-r_volatile
-id|u8
-id|dmactrl
-suffix:semicolon
-DECL|member|_intrstat
-id|u8
-id|_intrstat
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|intrstat
-r_volatile
-id|u8
-id|intrstat
-suffix:semicolon
-DECL|member|_intrmask
-id|u8
-id|_intrmask
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|intrmask
-r_volatile
-id|u8
-id|intrmask
-suffix:semicolon
-DECL|member|_timer1
-id|u8
-id|_timer1
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|timer1
-r_volatile
-id|u8
-id|timer1
-suffix:semicolon
-DECL|member|_timer2
-id|u8
-id|_timer2
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|timer2
-r_volatile
-id|u8
-id|timer2
-suffix:semicolon
-DECL|member|_timer3
-id|u8
-id|_timer3
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|timer3
-r_volatile
-id|u8
-id|timer3
-suffix:semicolon
-DECL|member|_timer4
-id|u8
-id|_timer4
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|timer4
-r_volatile
-id|u8
-id|timer4
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|sgioc_uart_regs
 r_struct
 id|sgioc_uart_regs
@@ -519,7 +368,7 @@ id|sgioc_regs
 (brace
 DECL|member|pport
 r_struct
-id|sgioc_pport_regs
+id|pi1_regs
 id|pport
 suffix:semicolon
 DECL|member|_unused0

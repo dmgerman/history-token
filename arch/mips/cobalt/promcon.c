@@ -2,7 +2,6 @@ multiline_comment|/*&n; * PROM console for Cobalt Raq2&n; *&n; * This file is su
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
@@ -293,30 +292,6 @@ id|port
 )paren
 suffix:semicolon
 )brace
-r_static
-id|kdev_t
-DECL|function|ns16550_console_dev
-id|ns16550_console_dev
-c_func
-(paren
-r_struct
-id|console
-op_star
-id|c
-)paren
-(brace
-r_return
-id|mk_kdev
-c_func
-(paren
-id|TTY_MAJOR
-comma
-l_int|64
-op_plus
-id|c-&gt;index
-)paren
-suffix:semicolon
-)brace
 DECL|variable|ns16550_console
 r_static
 r_struct
@@ -340,11 +315,6 @@ op_assign
 id|ns16550_console_write
 comma
 dot
-id|device
-op_assign
-id|ns16550_console_dev
-comma
-dot
 id|flags
 op_assign
 id|CON_PRINTBUFFER
@@ -358,7 +328,8 @@ comma
 )brace
 suffix:semicolon
 DECL|function|ns16550_setup_console
-r_void
+r_static
+r_int
 id|__init
 id|ns16550_setup_console
 c_func
@@ -373,5 +344,15 @@ op_amp
 id|ns16550_console
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|ns16550_setup_console
+id|console_initcall
+c_func
+(paren
+id|ns16550_setup_console
+)paren
+suffix:semicolon
 eof

@@ -1,9 +1,9 @@
 multiline_comment|/*&n; * ip22-mc.c: Routines for manipulating SGI Memory Controller.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1999 Andrew R. Baker (andrewb@uab.edu) - Indigo2 changes&n; * Copyright (C) 2003 Ladislav Michl  (ladis@linux-mips.org)&n; */
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;asm/addrspace.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/sgialib.h&gt;
 macro_line|#include &lt;asm/sgi/mc.h&gt;
 macro_line|#include &lt;asm/sgi/hpc3.h&gt;
@@ -13,6 +13,13 @@ r_struct
 id|sgimc_regs
 op_star
 id|sgimc
+suffix:semicolon
+DECL|variable|sgimc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sgimc
+)paren
 suffix:semicolon
 DECL|function|get_bank_addr
 r_static
@@ -602,6 +609,7 @@ r_void
 id|u32
 id|tmp
 suffix:semicolon
+multiline_comment|/* ioremap can&squot;t fail */
 id|sgimc
 op_assign
 (paren
@@ -609,10 +617,16 @@ r_struct
 id|sgimc_regs
 op_star
 )paren
+id|ioremap
+c_func
 (paren
-id|KSEG1
-op_plus
 id|SGIMC_BASE
+comma
+r_sizeof
+(paren
+r_struct
+id|sgimc_regs
+)paren
 )paren
 suffix:semicolon
 id|printk
@@ -812,12 +826,17 @@ r_void
 (brace
 )brace
 DECL|function|prom_free_prom_memory
-r_void
+r_int
+r_int
 id|__init
 id|prom_free_prom_memory
+c_func
 (paren
 r_void
 )paren
 (brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 eof

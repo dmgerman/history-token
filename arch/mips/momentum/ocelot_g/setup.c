@@ -1,8 +1,8 @@
 multiline_comment|/*&n; * setup.c&n; *&n; * BRIEF MODULE DESCRIPTION&n; * Momentum Computer Ocelot-G (CP7000G) - board dependent boot routines&n; *&n; * Copyright (C) 1996, 1997, 2001  Ralf Baechle&n; * Copyright (C) 2000 RidgeRun, Inc.&n; * Copyright (C) 2001 Red Hat, Inc.&n; * Copyright (C) 2002 Momentum Computer&n; *&n; * Author: Matthew Dharm, Momentum Computer&n; *   mdharm@momenco.com&n; *&n; * Author: RidgeRun, Inc.&n; *   glonnon@ridgerun.com, skranz@ridgerun.com, stevej@ridgerun.com&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -14,24 +14,16 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pci.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
-macro_line|#include &lt;asm/mc146818rtc.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &quot;gt64240.h&quot;
 macro_line|#include &quot;ocelot_pld.h&quot;
-r_extern
-r_struct
-id|rtc_ops
-id|no_rtc_ops
-suffix:semicolon
 macro_line|#ifdef CONFIG_GALILLEO_GT64240_ETH
 r_extern
 r_int
@@ -205,6 +197,7 @@ l_int|0xf4000000
 suffix:semicolon
 )brace
 DECL|function|momenco_ocelot_g_setup
+r_static
 r_void
 id|__init
 id|momenco_ocelot_g_setup
@@ -251,11 +244,6 @@ op_assign
 id|momenco_ocelot_power_off
 suffix:semicolon
 multiline_comment|/*&n;&t; * initrd_start = (ulong)ocelot_initrd_start;&n;&t; * initrd_end = (ulong)ocelot_initrd_start + (ulong)ocelot_initrd_size;&n;&t; * initrd_below_start_ok = 1;&n;&t; */
-id|rtc_ops
-op_assign
-op_amp
-id|no_rtc_ops
-suffix:semicolon
 multiline_comment|/* do handoff reconfiguration */
 id|PMON_v2_setup
 c_func
@@ -659,6 +647,13 @@ l_int|0xfef73
 )paren
 suffix:semicolon
 )brace
+DECL|variable|momenco_ocelot_g_setup
+id|early_initcall
+c_func
+(paren
+id|momenco_ocelot_g_setup
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|rm7k_tcache_enabled

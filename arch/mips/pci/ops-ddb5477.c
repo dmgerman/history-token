@@ -101,8 +101,6 @@ l_int|0
 suffix:semicolon
 id|u32
 id|virt_addr
-op_assign
-id|swap-&gt;config_base
 suffix:semicolon
 id|u32
 id|option
@@ -350,6 +348,9 @@ op_star
 id|bus
 comma
 id|u32
+id|devfn
+comma
+id|u32
 id|where
 comma
 id|u32
@@ -358,7 +359,7 @@ id|val
 )paren
 (brace
 id|u32
-id|bus
+id|bus_num
 comma
 id|slot_num
 comma
@@ -395,19 +396,19 @@ multiline_comment|/* check if the bus is top-level */
 r_if
 c_cond
 (paren
-id|dev-&gt;bus-&gt;parent
+id|bus-&gt;parent
 op_ne
 l_int|NULL
 )paren
 (brace
-id|bus
+id|bus_num
 op_assign
-id|dev-&gt;bus-&gt;number
+id|bus-&gt;number
 suffix:semicolon
 id|db_assert
 c_func
 (paren
-id|bus
+id|bus_num
 op_ne
 l_int|0
 )paren
@@ -415,7 +416,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|bus
+id|bus_num
 op_assign
 l_int|0
 suffix:semicolon
@@ -425,7 +426,7 @@ op_assign
 id|PCI_SLOT
 c_func
 (paren
-id|dev-&gt;devfn
+id|devfn
 )paren
 suffix:semicolon
 id|func_num
@@ -433,7 +434,7 @@ op_assign
 id|PCI_FUNC
 c_func
 (paren
-id|dev-&gt;devfn
+id|devfn
 )paren
 suffix:semicolon
 id|base
@@ -443,7 +444,7 @@ c_func
 (paren
 id|swap
 comma
-id|bus
+id|bus_num
 comma
 id|slot_num
 )paren
@@ -496,6 +497,9 @@ op_star
 id|bus
 comma
 id|u32
+id|devfn
+comma
+id|u32
 id|where
 comma
 id|u16
@@ -529,6 +533,8 @@ c_func
 id|swap
 comma
 id|bus
+comma
+id|devfn
 comma
 id|where
 op_amp
@@ -577,9 +583,11 @@ id|pci_bus
 op_star
 id|bus
 comma
-r_int
-r_int
+id|u32
 id|devfn
+comma
+id|u32
+id|where
 comma
 id|u8
 op_star
@@ -600,6 +608,8 @@ c_func
 id|swap
 comma
 id|bus
+comma
+id|devfn
 comma
 id|where
 op_amp
@@ -659,16 +669,18 @@ id|pci_bus
 op_star
 id|bus
 comma
-r_int
-r_int
+id|u32
 id|devfn
+comma
+id|u32
+id|where
 comma
 id|u32
 id|val
 )paren
 (brace
 id|u32
-id|busno
+id|bus_num
 comma
 id|slot_num
 comma
@@ -710,14 +722,14 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|busno
+id|bus_num
 op_assign
 id|bus-&gt;number
 suffix:semicolon
 id|db_assert
 c_func
 (paren
-id|busno
+id|bus_num
 op_ne
 l_int|0
 )paren
@@ -725,7 +737,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|busno
+id|bus_num
 op_assign
 l_int|0
 suffix:semicolon
@@ -753,7 +765,7 @@ c_func
 (paren
 id|swap
 comma
-id|busno
+id|bus_num
 comma
 id|slot_num
 )paren
@@ -804,11 +816,10 @@ id|pci_bus
 op_star
 id|bus
 comma
-r_int
-r_int
+id|u32
 id|devfn
 comma
-r_int
+id|u32
 id|where
 comma
 id|u16
@@ -844,7 +855,9 @@ c_func
 (paren
 id|swap
 comma
-id|dev
+id|bus
+comma
+id|devfn
 comma
 id|where
 op_amp
@@ -897,7 +910,9 @@ c_func
 (paren
 id|swap
 comma
-id|dev
+id|bus
+comma
+id|devfn
 comma
 id|where
 op_amp
@@ -924,11 +939,10 @@ id|pci_bus
 op_star
 id|bus
 comma
-r_int
-r_int
+id|u32
 id|devfn
 comma
-r_int
+id|u32
 id|where
 comma
 id|u8
@@ -952,7 +966,9 @@ c_func
 (paren
 id|swap
 comma
-id|dev
+id|bus
+comma
+id|devfn
 comma
 id|where
 op_amp
@@ -1016,7 +1032,9 @@ c_func
 (paren
 id|swap
 comma
-id|dev
+id|bus
+comma
+id|devfn
 comma
 id|where
 op_amp
@@ -1027,9 +1045,8 @@ id|result
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Dump solution for now so I don&squot;t break hw I can&squot;t test on ...&n; */
 DECL|macro|MAKE_PCI_OPS
-mdefine_line|#define&t;MAKE_PCI_OPS(prefix, rw, unitname, unittype, pciswap) &bslash;&n;static int prefix##_##rw##_config(struct pci_bus *bus, int where, int size, unittype val) &bslash;&n;{ &bslash;&n;&t;if (size == 1) &bslash;&n;     &t;&t;return rw##_config_byte(pciswap, bus, where, val); &bslash;&n;&t;else if (size == 2) &bslash;&n;     &t;&t;return rw##_config_word(pciswap, bus, where, val); &bslash;&n;&t;/* Size must be 4 */ &bslash;&n;     &t;return rw##_config_dword(pciswap, bus, where, val); &bslash;&n;}
+mdefine_line|#define        MAKE_PCI_OPS(prefix, rw, pciswap, star) &bslash;&n;static int prefix##_##rw##_config(struct pci_bus *bus, unsigned int devfn, int where, int size, u32 star val) &bslash;&n;{ &bslash;&n;&t;if (size == 1) &bslash;&n;     &t;&t;return rw##_config_byte(pciswap, bus, devfn, where, (u8 star)val); &bslash;&n;&t;else if (size == 2) &bslash;&n;     &t;&t;return rw##_config_word(pciswap, bus, devfn, where, (u16 star)val); &bslash;&n;&t;/* Size must be 4 */ &bslash;&n;     &t;return rw##_config_dword(pciswap, bus, devfn, where, val); &bslash;&n;}
 id|MAKE_PCI_OPS
 c_func
 (paren
@@ -1039,6 +1056,8 @@ id|read
 comma
 op_amp
 id|ext_pci_swap
+comma
+op_star
 )paren
 id|MAKE_PCI_OPS
 c_func
@@ -1049,6 +1068,7 @@ id|write
 comma
 op_amp
 id|ext_pci_swap
+comma
 )paren
 id|MAKE_PCI_OPS
 c_func
@@ -1059,6 +1079,8 @@ id|read
 comma
 op_amp
 id|io_pci_swap
+comma
+op_star
 )paren
 id|MAKE_PCI_OPS
 c_func
@@ -1069,6 +1091,7 @@ id|write
 comma
 op_amp
 id|io_pci_swap
+comma
 )paren
 DECL|variable|ddb5477_ext_pci_ops
 r_struct

@@ -2,6 +2,9 @@ multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C
 macro_line|#ifndef _ASM_GT64120_H
 DECL|macro|_ASM_GT64120_H
 mdefine_line|#define _ASM_GT64120_H
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/addrspace.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|MSK
 mdefine_line|#define MSK(n)                    ((1 &lt;&lt; (n)) - 1)
 multiline_comment|/*&n; *  Register offset addresses&n; */
@@ -587,13 +590,30 @@ mdefine_line|#define GT_PCI0_CMD_SWORDSWAP_MSK       (MSK(1) &lt;&lt; GT_PCI0_CM
 DECL|macro|GT_PCI0_CMD_SWORDSWAP_BIT
 mdefine_line|#define GT_PCI0_CMD_SWORDSWAP_BIT       GT_PCI0_CMD_SWORDSWAP_MSK
 multiline_comment|/*&n; *  Misc&n; */
-DECL|macro|GT_DEF_BASE
-mdefine_line|#define GT_DEF_BASE&t;&t;0x14000000
+DECL|macro|GT_DEF_PCI0_IO_BASE
+mdefine_line|#define GT_DEF_PCI0_IO_BASE&t;0x10000000UL
+DECL|macro|GT_DEF_PCI0_IO_SIZE
+mdefine_line|#define GT_DEF_PCI0_IO_SIZE&t;0x02000000UL
 DECL|macro|GT_DEF_PCI0_MEM0_BASE
-mdefine_line|#define GT_DEF_PCI0_MEM0_BASE&t;0x12000000
+mdefine_line|#define GT_DEF_PCI0_MEM0_BASE&t;0x12000000UL
+DECL|macro|GT_DEF_PCI0_MEM0_SIZE
+mdefine_line|#define GT_DEF_PCI0_MEM0_SIZE&t;0x02000000UL
+DECL|macro|GT_DEF_BASE
+mdefine_line|#define GT_DEF_BASE&t;&t;0x14000000UL
 DECL|macro|GT_MAX_BANKSIZE
 mdefine_line|#define GT_MAX_BANKSIZE&t;&t;(256 * 1024 * 1024)   /* Max 256MB bank */
 DECL|macro|GT_LATTIM_MIN
 mdefine_line|#define GT_LATTIM_MIN    &t;6&t;&t;      /* Minimum lat&t;*/
+multiline_comment|/*&n; * The gt64120_dep.h file must define the following macros&n; *&n; *   GT_READ(ofs, data_pointer)&n; *   GT_WRITE(ofs, data)           - read/write GT64120 registers in 32bit&n; *&n; *   TIMER &t;- gt64120 timer irq, temporary solution until&n; *&t;&t;  full gt64120 cascade interrupt support is in place&n; */
+macro_line|#include &lt;mach-gt64120.h&gt;
+multiline_comment|/*&n; * Because of an error/peculiarity in the Galileo chip, we need to swap the&n; * bytes when running bigendian.  We also provide non-swapping versions.&n; */
+DECL|macro|__GT_READ
+mdefine_line|#define __GT_READ(ofs)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(*(volatile u32 *)(GT64120_BASE+(ofs)))
+DECL|macro|__GT_WRITE
+mdefine_line|#define __GT_WRITE(ofs, data)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do { *(volatile u32 *)(GT64120_BASE+(ofs)) = (data); } while (0)
+DECL|macro|GT_READ
+mdefine_line|#define GT_READ(ofs)&t;&t;le32_to_cpu(__GT_READ(ofs))
+DECL|macro|GT_WRITE
+mdefine_line|#define GT_WRITE(ofs, data)&t;__GT_WRITE(ofs, cpu_to_le32(data))
 macro_line|#endif /* _ASM_GT64120_H */
 eof

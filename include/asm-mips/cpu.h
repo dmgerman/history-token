@@ -2,7 +2,6 @@ multiline_comment|/*&n; * cpu.h: Values of the PRId register used to match up&n;
 macro_line|#ifndef _ASM_CPU_H
 DECL|macro|_ASM_CPU_H
 mdefine_line|#define _ASM_CPU_H
-macro_line|#include &lt;linux/cpu.h&gt;
 multiline_comment|/* Assigned Company values for bits 23:16 of the PRId Register&n;   (CP0 register 15, select 0).  As of the MIPS32 and MIPS64 specs from&n;   MTI, the PRId register is defined in this (backwards compatible)&n;   way:&n;&n;  +----------------+----------------+----------------+----------------+&n;  | Company Options| Company ID     | Processor ID   | Revision       |&n;  +----------------+----------------+----------------+----------------+&n;   31            24 23            16 15             8 7&n;&n;   I don&squot;t have docs for all the previous processors, but my impression is&n;   that bits 16-23 have been 0 for all MIPS processors before the MIPS32/64&n;   spec.&n;*/
 DECL|macro|PRID_COMP_LEGACY
 mdefine_line|#define PRID_COMP_LEGACY       0x000000
@@ -63,6 +62,8 @@ DECL|macro|PRID_IMP_RM7000
 mdefine_line|#define PRID_IMP_RM7000&t;&t;0x2700
 DECL|macro|PRID_IMP_NEVADA
 mdefine_line|#define PRID_IMP_NEVADA&t;&t;0x2800&t;&t;/* RM5260 ??? */
+DECL|macro|PRID_IMP_RM9000
+mdefine_line|#define PRID_IMP_RM9000&t;&t;0x3400
 DECL|macro|PRID_IMP_R5432
 mdefine_line|#define PRID_IMP_R5432&t;&t;0x5400
 DECL|macro|PRID_IMP_R5500
@@ -77,6 +78,18 @@ DECL|macro|PRID_IMP_4KEC
 mdefine_line|#define PRID_IMP_4KEC&t;&t;0x8400
 DECL|macro|PRID_IMP_4KSC
 mdefine_line|#define PRID_IMP_4KSC&t;&t;0x8600
+DECL|macro|PRID_IMP_25KF
+mdefine_line|#define PRID_IMP_25KF&t;&t;0x8800
+DECL|macro|PRID_IMP_5KE
+mdefine_line|#define PRID_IMP_5KE&t;&t;0x8900
+DECL|macro|PRID_IMP_4KECR2
+mdefine_line|#define PRID_IMP_4KECR2&t;&t;0x9000
+DECL|macro|PRID_IMP_4KEMPR2
+mdefine_line|#define PRID_IMP_4KEMPR2&t;0x9100
+DECL|macro|PRID_IMP_4KSD
+mdefine_line|#define PRID_IMP_4KSD&t;&t;0x9200
+DECL|macro|PRID_IMP_24K
+mdefine_line|#define PRID_IMP_24K&t;&t;0x9300
 DECL|macro|PRID_IMP_UNKNOWN
 mdefine_line|#define PRID_IMP_UNKNOWN&t;0xff00
 multiline_comment|/*&n; * These are the PRID&squot;s for when 23:16 == PRID_COMP_SIBYTE&n; */
@@ -114,8 +127,8 @@ DECL|macro|PRID_REV_VR4122
 mdefine_line|#define PRID_REV_VR4122&t;&t;0x0070
 DECL|macro|PRID_REV_VR4181A
 mdefine_line|#define PRID_REV_VR4181A&t;0x0070&t;/* Same as VR4122 */
-DECL|macro|PRID_REV_VR4131
-mdefine_line|#define PRID_REV_VR4131&t;&t;0x0080
+DECL|macro|PRID_REV_VR4130
+mdefine_line|#define PRID_REV_VR4130&t;&t;0x0080
 multiline_comment|/*&n; * FPU implementation/revision register (CP1 control register 0).&n; *&n; * +---------------------------------+----------------+----------------+&n; * | 0                               | Implementation | Revision       |&n; * +---------------------------------+----------------+----------------+&n; *  31                             16 15             8 7              0&n; */
 DECL|macro|FPIR_IMP_NONE
 mdefine_line|#define FPIR_IMP_NONE&t;&t;0x0000
@@ -227,8 +240,18 @@ DECL|macro|CPU_AU1100
 mdefine_line|#define CPU_AU1100&t;&t;52
 DECL|macro|CPU_SR71000
 mdefine_line|#define CPU_SR71000&t;&t;53
+DECL|macro|CPU_RM9000
+mdefine_line|#define CPU_RM9000&t;&t;54
+DECL|macro|CPU_25KF
+mdefine_line|#define CPU_25KF&t;&t;55
+DECL|macro|CPU_VR4133
+mdefine_line|#define CPU_VR4133&t;&t;56
+DECL|macro|CPU_AU1550
+mdefine_line|#define CPU_AU1550&t;&t;57
+DECL|macro|CPU_24K
+mdefine_line|#define CPU_24K&t;&t;&t;58
 DECL|macro|CPU_LAST
-mdefine_line|#define CPU_LAST&t;&t;53
+mdefine_line|#define CPU_LAST&t;&t;58
 multiline_comment|/*&n; * ISA Level encodings&n; *&n; */
 DECL|macro|MIPS_CPU_ISA_I
 mdefine_line|#define MIPS_CPU_ISA_I&t;&t;0x00000001
@@ -269,17 +292,21 @@ DECL|macro|MIPS_CPU_DIVEC
 mdefine_line|#define MIPS_CPU_DIVEC&t;&t;0x00000200 /* dedicated interrupt vector */
 DECL|macro|MIPS_CPU_VCE
 mdefine_line|#define MIPS_CPU_VCE&t;&t;0x00000400 /* virt. coherence conflict possible */
-DECL|macro|MIPS_CPU_CACHE_CDEX
-mdefine_line|#define MIPS_CPU_CACHE_CDEX&t;0x00000800 /* Create_Dirty_Exclusive CACHE op */
+DECL|macro|MIPS_CPU_CACHE_CDEX_P
+mdefine_line|#define MIPS_CPU_CACHE_CDEX_P&t;0x00000800 /* Create_Dirty_Exclusive CACHE op */
+DECL|macro|MIPS_CPU_CACHE_CDEX_S
+mdefine_line|#define MIPS_CPU_CACHE_CDEX_S&t;0x00001000 /* ... same for seconary cache ... */
 DECL|macro|MIPS_CPU_MCHECK
-mdefine_line|#define MIPS_CPU_MCHECK&t;&t;0x00001000 /* Machine check exception */
+mdefine_line|#define MIPS_CPU_MCHECK&t;&t;0x00002000 /* Machine check exception */
 DECL|macro|MIPS_CPU_EJTAG
-mdefine_line|#define MIPS_CPU_EJTAG&t;&t;0x00002000 /* EJTAG exception */
+mdefine_line|#define MIPS_CPU_EJTAG&t;&t;0x00004000 /* EJTAG exception */
 DECL|macro|MIPS_CPU_NOFPUEX
-mdefine_line|#define MIPS_CPU_NOFPUEX&t;0x00004000 /* no FPU exception */
+mdefine_line|#define MIPS_CPU_NOFPUEX&t;0x00008000 /* no FPU exception */
 DECL|macro|MIPS_CPU_LLSC
-mdefine_line|#define MIPS_CPU_LLSC&t;&t;0x00008000 /* CPU has ll/sc instructions */
+mdefine_line|#define MIPS_CPU_LLSC&t;&t;0x00010000 /* CPU has ll/sc instructions */
 DECL|macro|MIPS_CPU_SUBSET_CACHES
-mdefine_line|#define MIPS_CPU_SUBSET_CACHES&t;0x00010000 /* P-cache subset enforced */
+mdefine_line|#define MIPS_CPU_SUBSET_CACHES&t;0x00020000 /* P-cache subset enforced */
+DECL|macro|MIPS_CPU_PREFETCH
+mdefine_line|#define MIPS_CPU_PREFETCH&t;0x00040000 /* CPU has usable prefetch */
 macro_line|#endif /* _ASM_CPU_H */
 eof

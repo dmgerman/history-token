@@ -1043,10 +1043,6 @@ r_int
 )paren
 id|p
 comma
-(paren
-r_int
-r_int
-)paren
 op_star
 id|p
 )paren
@@ -1065,10 +1061,6 @@ r_int
 )paren
 id|p
 comma
-(paren
-r_int
-r_int
-)paren
 op_star
 id|p
 )paren

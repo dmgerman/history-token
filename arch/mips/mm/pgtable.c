@@ -9,6 +9,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef CONFIG_DISCONTIGMEM  /* XXX(hch): later.. */
 r_int
 id|pfn
 comma
@@ -186,5 +187,6 @@ comma
 id|cached
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 eof

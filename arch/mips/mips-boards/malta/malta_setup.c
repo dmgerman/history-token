@@ -2,12 +2,9 @@ multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
-macro_line|#include &lt;linux/ide.h&gt;
-macro_line|#endif
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -15,72 +12,12 @@ macro_line|#include &lt;asm/mips-boards/generic.h&gt;
 macro_line|#include &lt;asm/mips-boards/prom.h&gt;
 macro_line|#include &lt;asm/mips-boards/malta.h&gt;
 macro_line|#include &lt;asm/mips-boards/maltaint.h&gt;
-macro_line|#ifdef CONFIG_BLK_DEV_FD
-macro_line|#include &lt;asm/floppy.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#ifdef CONFIG_VT
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#endif
-macro_line|#if defined(CONFIG_SERIAL_CONSOLE) || defined(CONFIG_PROM_CONSOLE)
-r_extern
-r_void
-id|console_setup
-c_func
-(paren
-r_char
-op_star
-comma
-r_int
-op_star
-)paren
-suffix:semicolon
-DECL|variable|serial_console
-r_char
-id|serial_console
-(braket
-l_int|20
-)braket
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_KGDB
-r_extern
-r_void
-id|rs_kgdb_hook
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
-DECL|variable|remote_debug
-r_int
-id|remote_debug
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
-r_extern
-r_struct
-id|ide_ops
-id|std_ide_ops
-suffix:semicolon
-r_extern
-r_struct
-id|fd_ops
-id|std_fd_ops
-suffix:semicolon
-r_extern
-r_struct
-id|rtc_ops
-id|malta_rtc_ops
-suffix:semicolon
-r_extern
-r_struct
-id|kbd_ops
-id|std_kbd_ops
-suffix:semicolon
 r_extern
 r_void
 id|mips_reboot_setup
@@ -117,6 +54,16 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_KGDB
+r_extern
+r_void
+id|kgdb_config
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|standard_io_resources
 r_struct
 id|resource
@@ -146,6 +93,16 @@ id|IORESOURCE_BUSY
 )brace
 comma
 (brace
+l_string|&quot;keyboard&quot;
+comma
+l_int|0x60
+comma
+l_int|0x6f
+comma
+id|IORESOURCE_BUSY
+)brace
+comma
+(brace
 l_string|&quot;dma page reg&quot;
 comma
 l_int|0x80
@@ -167,8 +124,6 @@ id|IORESOURCE_BUSY
 comma
 )brace
 suffix:semicolon
-DECL|macro|STANDARD_IO_RESOURCES
-mdefine_line|#define STANDARD_IO_RESOURCES (sizeof(standard_io_resources)/sizeof(struct resource))
 DECL|function|get_system_type
 r_const
 r_char
@@ -183,8 +138,73 @@ r_return
 l_string|&quot;MIPS Malta&quot;
 suffix:semicolon
 )brace
-DECL|function|malta_setup
+macro_line|#ifdef CONFIG_BLK_DEV_FD
+DECL|function|fd_activate
 r_void
+id|__init
+id|fd_activate
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/*&n;&t; * Activate Floppy Controller in the SMSC FDC37M817 Super I/O&n;&t; * Controller.&n;&t; * Done by YAMON 2.00 onwards&n;&t; */
+multiline_comment|/* Entering config state. */
+id|SMSC_WRITE
+c_func
+(paren
+id|SMSC_CONFIG_ENTER
+comma
+id|SMSC_CONFIG_REG
+)paren
+suffix:semicolon
+multiline_comment|/* Activate floppy controller. */
+id|SMSC_WRITE
+c_func
+(paren
+id|SMSC_CONFIG_DEVNUM
+comma
+id|SMSC_CONFIG_REG
+)paren
+suffix:semicolon
+id|SMSC_WRITE
+c_func
+(paren
+id|SMSC_CONFIG_DEVNUM_FLOPPY
+comma
+id|SMSC_DATA_REG
+)paren
+suffix:semicolon
+id|SMSC_WRITE
+c_func
+(paren
+id|SMSC_CONFIG_ACTIVATE
+comma
+id|SMSC_CONFIG_REG
+)paren
+suffix:semicolon
+id|SMSC_WRITE
+c_func
+(paren
+id|SMSC_CONFIG_ACTIVATE_ENABLE
+comma
+id|SMSC_DATA_REG
+)paren
+suffix:semicolon
+multiline_comment|/* Exit config state. */
+id|SMSC_WRITE
+c_func
+(paren
+id|SMSC_CONFIG_EXIT
+comma
+id|SMSC_CONFIG_REG
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+DECL|function|malta_setup
+r_static
+r_int
 id|__init
 id|malta_setup
 c_func
@@ -192,46 +212,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_KGDB
 r_int
-id|rs_putDebugChar
-c_func
-(paren
-r_char
-)paren
-suffix:semicolon
-r_char
-id|rs_getDebugChar
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-(paren
-op_star
-id|generic_putDebugChar
-)paren
-(paren
-r_char
-)paren
-suffix:semicolon
-r_extern
-r_char
-(paren
-op_star
-id|generic_getDebugChar
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
-r_char
-op_star
-id|argptr
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -245,7 +226,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|STANDARD_IO_RESOURCES
+id|ARRAY_SIZE
+c_func
+(paren
+id|standard_io_resources
+)paren
 suffix:semicolon
 id|i
 op_increment
@@ -268,7 +253,38 @@ c_func
 l_int|4
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SERIAL_CONSOLE
+macro_line|#ifdef CONFIG_KGDB
+id|kgdb_config
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+(paren
+id|mips_revision_corid
+op_eq
+id|MIPS_REVISION_CORID_BONITO64
+)paren
+op_logical_or
+(paren
+id|mips_revision_corid
+op_eq
+id|MIPS_REVISION_CORID_CORE_20K
+)paren
+op_logical_or
+(paren
+id|mips_revision_corid
+op_eq
+id|MIPS_REVISION_CORID_CORE_EMUL_BON
+)paren
+)paren
+(brace
+r_char
+op_star
+id|argptr
+suffix:semicolon
 id|argptr
 op_assign
 id|prom_getcmdline
@@ -279,21 +295,50 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|argptr
-op_assign
 id|strstr
 c_func
 (paren
 id|argptr
 comma
-l_string|&quot;console=&quot;
+l_string|&quot;debug&quot;
 )paren
-)paren
-op_eq
-l_int|NULL
 )paren
 (brace
+id|BONITO_BONGENCFG
+op_or_assign
+id|BONITO_BONGENCFG_DEBUGMODE
+suffix:semicolon
+id|printk
+(paren
+l_string|&quot;Enabled Bonito debug mode&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+id|BONITO_BONGENCFG
+op_and_assign
+op_complement
+id|BONITO_BONGENCFG_DEBUGMODE
+suffix:semicolon
+macro_line|#ifdef CONFIG_DMA_COHERENT
+r_if
+c_cond
+(paren
+id|BONITO_PCICACHECTRL
+op_amp
+id|BONITO_PCICACHECTRL_CPUCOH_PRES
+)paren
+(brace
+id|BONITO_PCICACHECTRL
+op_or_assign
+id|BONITO_PCICACHECTRL_CPUCOH_EN
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Enabled Bonito CPU coherency&bslash;n&quot;
+)paren
+suffix:semicolon
 id|argptr
 op_assign
 id|prom_getcmdline
@@ -301,17 +346,150 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|strcat
+r_if
+c_cond
+(paren
+id|strstr
 c_func
 (paren
 id|argptr
 comma
-l_string|&quot; console=ttyS0,38400&quot;
+l_string|&quot;iobcuncached&quot;
+)paren
+)paren
+(brace
+id|BONITO_PCICACHECTRL
+op_and_assign
+op_complement
+id|BONITO_PCICACHECTRL_IOBCCOH_EN
+suffix:semicolon
+id|BONITO_PCIMEMBASECFG
+op_assign
+id|BONITO_PCIMEMBASECFG
+op_amp
+op_complement
+(paren
+id|BONITO_PCIMEMBASECFG_MEMBASE0_CACHED
+op_or
+id|BONITO_PCIMEMBASECFG_MEMBASE1_CACHED
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Disabled Bonito IOBC coherency&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|BONITO_PCICACHECTRL
+op_or_assign
+id|BONITO_PCICACHECTRL_IOBCCOH_EN
+suffix:semicolon
+id|BONITO_PCIMEMBASECFG
+op_or_assign
+(paren
+id|BONITO_PCIMEMBASECFG_MEMBASE0_CACHED
+op_or
+id|BONITO_PCIMEMBASECFG_MEMBASE1_CACHED
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Disabled Bonito IOBC coherency&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+id|panic
+(paren
+l_string|&quot;Hardware DMA cache coherency not supported&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+macro_line|#ifdef CONFIG_DMA_COHERENT
+r_else
+(brace
+id|panic
+(paren
+l_string|&quot;Hardware DMA cache coherency not supported&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_KGDB
+macro_line|#ifdef CONFIG_BLK_DEV_IDE
+multiline_comment|/* Check PCI clock */
+(brace
+r_int
+id|jmpr
+op_assign
+(paren
+op_star
+(paren
+(paren
+r_volatile
+r_int
+r_int
+op_star
+)paren
+id|ioremap
+c_func
+(paren
+id|MALTA_JMPRS_REG
+comma
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+)paren
+)paren
+op_rshift
+l_int|2
+)paren
+op_amp
+l_int|0x07
+suffix:semicolon
+r_static
+r_const
+r_int
+id|pciclocks
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+l_int|33
+comma
+l_int|20
+comma
+l_int|25
+comma
+l_int|30
+comma
+l_int|12
+comma
+l_int|16
+comma
+l_int|37
+comma
+l_int|10
+)brace
+suffix:semicolon
+r_int
+id|pciclock
+op_assign
+id|pciclocks
+(braket
+id|jmpr
+)braket
+suffix:semicolon
+r_char
+op_star
 id|argptr
 op_assign
 id|prom_getcmdline
@@ -322,175 +500,67 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|argptr
-op_assign
+id|pciclock
+op_ne
+l_int|33
+op_logical_and
+op_logical_neg
 id|strstr
-c_func
 (paren
 id|argptr
 comma
-l_string|&quot;kgdb=ttyS&quot;
+l_string|&quot;idebus=&quot;
 )paren
-)paren
-op_ne
-l_int|NULL
 )paren
 (brace
-r_int
-id|line
+id|printk
+c_func
+(paren
+l_string|&quot;WARNING: PCI clock is %dMHz, setting idebus&bslash;n&quot;
+comma
+id|pciclock
+)paren
 suffix:semicolon
 id|argptr
 op_add_assign
 id|strlen
 c_func
 (paren
-l_string|&quot;kgdb=ttyS&quot;
+id|argptr
+)paren
+suffix:semicolon
+id|sprintf
+(paren
+id|argptr
+comma
+l_string|&quot; idebus=%d&quot;
+comma
+id|pciclock
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_star
-id|argptr
-op_ne
-l_char|&squot;0&squot;
-op_logical_and
-op_star
-id|argptr
-op_ne
-l_char|&squot;1&squot;
+id|pciclock
+template_param
+l_int|66
 )paren
 id|printk
-c_func
 (paren
-l_string|&quot;KGDB: Uknown serial line /dev/ttyS%c, &quot;
-l_string|&quot;falling back to /dev/ttyS1&bslash;n&quot;
-comma
-op_star
-id|argptr
+l_string|&quot;WARNING: IDE timing calculations will be incorrect&bslash;n&quot;
 )paren
 suffix:semicolon
-id|line
-op_assign
-op_star
-id|argptr
-op_eq
-l_char|&squot;0&squot;
-ques
-c_cond
-l_int|0
-suffix:colon
-l_int|1
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;KGDB: Using serial line /dev/ttyS%d for session&bslash;n&quot;
-comma
-id|line
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
-)paren
-suffix:semicolon
-id|rs_kgdb_hook
-c_func
-(paren
-id|line
-)paren
-suffix:semicolon
-id|generic_putDebugChar
-op_assign
-id|rs_putDebugChar
-suffix:semicolon
-id|generic_getDebugChar
-op_assign
-id|rs_getDebugChar
-suffix:semicolon
-id|prom_printf
-c_func
-(paren
-l_string|&quot;KGDB: Using serial line /dev/ttyS%d for session, &quot;
-l_string|&quot;please connect your debugger&bslash;n&quot;
-comma
-id|line
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
-)paren
-suffix:semicolon
-id|remote_debug
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* Breakpoints are in init_IRQ() */
+)brace
 )brace
 macro_line|#endif
-id|argptr
-op_assign
-id|prom_getcmdline
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|argptr
-op_assign
-id|strstr
-c_func
-(paren
-id|argptr
-comma
-l_string|&quot;nofpu&quot;
-)paren
-)paren
-op_ne
-l_int|NULL
-)paren
-id|cpu_data
-(braket
-l_int|0
-)braket
-dot
-id|options
-op_and_assign
-op_complement
-id|MIPS_CPU_FPU
-suffix:semicolon
-id|rtc_ops
-op_assign
-op_amp
-id|malta_rtc_ops
-suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
-id|ide_ops
-op_assign
-op_amp
-id|std_ide_ops
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_FD
-id|fd_ops
-op_assign
-op_amp
-id|std_fd_ops
+id|fd_activate
+(paren
+)paren
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_VT
 macro_line|#if defined(CONFIG_VGA_CONSOLE)
-id|conswitchp
-op_assign
-op_amp
-id|vga_con
-suffix:semicolon
 id|screen_info
 op_assign
 (paren
@@ -525,18 +595,12 @@ multiline_comment|/* ega_ax, ega_bx, ega_cx */
 l_int|25
 comma
 multiline_comment|/* orig-video-lines */
-l_int|1
+id|VIDEO_TYPE_VGAC
 comma
 multiline_comment|/* orig-video-isVGA */
 l_int|16
 multiline_comment|/* orig-video-points */
 )brace
-suffix:semicolon
-macro_line|#elif defined(CONFIG_DUMMY_CONSOLE)
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
@@ -557,5 +621,15 @@ id|rtc_get_time
 op_assign
 id|mips_rtc_get_time
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|malta_setup
+id|early_initcall
+c_func
+(paren
+id|malta_setup
+)paren
+suffix:semicolon
 eof

@@ -35,11 +35,11 @@ mdefine_line|#define CNODE_NUM_CPUS(_cnode)&t;&t;(NODEPDA(_cnode)-&gt;node_num_c
 DECL|macro|CNODE_TO_CPU_BASE
 mdefine_line|#define CNODE_TO_CPU_BASE(_cnode)&t;(NODEPDA(_cnode)-&gt;node_first_cpu)
 DECL|macro|cputocnode
-mdefine_line|#define cputocnode(cpu)&t;&t;&t;&t;&bslash;&n;               (cpu_data[(cpu)].p_nodeid)
+mdefine_line|#define cputocnode(cpu)&t;&t;&t;(cpu_data[(cpu)].p_nodeid)
 DECL|macro|cputonasid
-mdefine_line|#define cputonasid(cpu)&t;&t;&t;&t;&bslash;&n;               (cpu_data[(cpu)].p_nasid)
+mdefine_line|#define cputonasid(cpu)&t;&t;&t;(cpu_data[(cpu)].p_nasid)
 DECL|macro|cputoslice
-mdefine_line|#define cputoslice(cpu)&t;&t;&t;&t;&bslash;&n;               (cpu_data[(cpu)].p_slice)
+mdefine_line|#define cputoslice(cpu)&t;&t;&t;(cpu_data[(cpu)].p_slice)
 DECL|macro|makespnum
 mdefine_line|#define makespnum(_nasid, _slice)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(((_nasid) &lt;&lt; CPUS_PER_NODE_SHFT) | (_slice))
 macro_line|#ifndef __ASSEMBLY__
@@ -150,14 +150,6 @@ mdefine_line|#define COMPACT_TO_NASID_NODEID(cnode)&t;compact_to_nasid_nodeid(cn
 DECL|macro|CPUID_TO_COMPACT_NODEID
 mdefine_line|#define CPUID_TO_COMPACT_NODEID(cpu)&t;(cpuid_to_compact_node[(cpu)])
 macro_line|#endif
-r_extern
-r_int
-id|node_getlastslot
-c_func
-(paren
-id|cnodeid_t
-)paren
-suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|SLOT_BITMASK
 mdefine_line|#define SLOT_BITMASK    &t;(MAX_MEM_SLOTS - 1)

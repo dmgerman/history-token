@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1997, 1999, 2001 by Ralf Baechle&n; * Copyright (C) 1999 by Silicon Graphics, Inc.&n; * Copyright (C) 2001 MIPS Technologies, Inc.&n; *&n; * Some useful macros for MIPS assembler code&n; *&n; * Some of the routines below contain useless nops that will be optimized&n; * away by gas in -O mode. These nops are however required to fill delay&n; * slots in noreorder mode.&n; */
-macro_line|#ifndef&t;_ASM_ASM_H
-DECL|macro|_ASM_ASM_H
-mdefine_line|#define&t;_ASM_ASM_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1997, 1999, 2001 by Ralf Baechle&n; * Copyright (C) 1999 by Silicon Graphics, Inc.&n; * Copyright (C) 2001 MIPS Technologies, Inc.&n; * Copyright (C) 2002  Maciej W. Rozycki&n; *&n; * Some useful macros for MIPS assembler code&n; *&n; * Some of the routines below contain useless nops that will be optimized&n; * away by gas in -O mode. These nops are however required to fill delay&n; * slots in noreorder mode.&n; */
+macro_line|#ifndef __ASM_ASM_H
+DECL|macro|__ASM_ASM_H
+mdefine_line|#define __ASM_ASM_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sgidefs.h&gt;
 macro_line|#ifndef CAT
@@ -91,13 +91,13 @@ DECL|macro|MOVZ
 mdefine_line|#define MOVZ(rd,rs,rt)                                  &bslash;&n;&t;&t;movz&t;rd,rs,rt
 macro_line|#endif /* MIPS IV, MIPS V, MIPS32 or MIPS64 */
 multiline_comment|/*&n; * Stack alignment&n; */
-macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS1) || (_MIPS_ISA == _MIPS_ISA_MIPS2) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS32)
+macro_line|#if (_MIPS_SIM == _MIPS_SIM_ABI32)
 DECL|macro|ALSZ
 mdefine_line|#define ALSZ&t;7
 DECL|macro|ALMASK
 mdefine_line|#define ALMASK&t;~7
 macro_line|#endif
-macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS3) || (_MIPS_ISA == _MIPS_ISA_MIPS4) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS5) || (_MIPS_ISA == _MIPS_ISA_MIPS64)
+macro_line|#if (_MIPS_SIM == _MIPS_SIM_ABIN32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
 DECL|macro|ALSZ
 mdefine_line|#define ALSZ&t;15
 DECL|macro|ALMASK
@@ -113,7 +113,7 @@ DECL|macro|SZREG
 mdefine_line|#define SZREG&t;4
 macro_line|#endif
 multiline_comment|/*&n; * Use the following macros in assemblercode to load/store registers,&n; * pointers etc.&n; */
-macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS1) || (_MIPS_ISA == _MIPS_ISA_MIPS2) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS32)
+macro_line|#if (_MIPS_SIM == _MIPS_SIM_ABI32)
 DECL|macro|REG_S
 mdefine_line|#define REG_S&t;&t;sw
 DECL|macro|REG_L
@@ -123,7 +123,7 @@ mdefine_line|#define REG_SUBU&t;subu
 DECL|macro|REG_ADDU
 mdefine_line|#define REG_ADDU&t;addu
 macro_line|#endif
-macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS3) || (_MIPS_ISA == _MIPS_ISA_MIPS4) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS5) || (_MIPS_ISA == _MIPS_ISA_MIPS64)
+macro_line|#if (_MIPS_SIM == _MIPS_SIM_ABIN32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
 DECL|macro|REG_S
 mdefine_line|#define REG_S&t;&t;sd
 DECL|macro|REG_L
@@ -353,13 +353,13 @@ DECL|macro|PTRLOG
 mdefine_line|#define PTRLOG&t;&t;3
 macro_line|#endif
 multiline_comment|/*&n; * Some cp0 registers were extended to 64bit for MIPS III.&n; */
-macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS1) || (_MIPS_ISA == _MIPS_ISA_MIPS2) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS32)
+macro_line|#if (_MIPS_SIM == _MIPS_SIM_ABI32)
 DECL|macro|MFC0
 mdefine_line|#define MFC0&t;&t;mfc0
 DECL|macro|MTC0
 mdefine_line|#define MTC0&t;&t;mtc0
 macro_line|#endif
-macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS3) || (_MIPS_ISA == _MIPS_ISA_MIPS4) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS5) || (_MIPS_ISA == _MIPS_ISA_MIPS64)
+macro_line|#if (_MIPS_SIM == _MIPS_SIM_ABIN32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
 DECL|macro|MFC0
 mdefine_line|#define MFC0&t;&t;dmfc0
 DECL|macro|MTC0
@@ -367,5 +367,5 @@ mdefine_line|#define MTC0&t;&t;dmtc0
 macro_line|#endif
 DECL|macro|SSNOP
 mdefine_line|#define SSNOP&t;&t;sll zero,zero,1
-macro_line|#endif /* _ASM_ASM_H */
+macro_line|#endif /* __ASM_ASM_H */
 eof

@@ -1,24 +1,8 @@
 multiline_comment|/*&n; * Export MIPS-specific functions needed for loadable modules.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 97, 98, 99, 2000, 01, 03 by Ralf Baechle&n; * Copyright (C) 1999, 2000, 01 Silicon Graphics, Inc.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/in6.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
-macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
-macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
-macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#ifdef CONFIG_BLK_DEV_FD
-macro_line|#include &lt;asm/floppy.h&gt;
-macro_line|#endif
 r_extern
 r_void
 op_star
@@ -113,14 +97,14 @@ op_star
 id|s
 )paren
 suffix:semicolon
-DECL|variable|mips_machtype
-id|EXPORT_SYMBOL
+multiline_comment|/*&n; * String functions&n; */
+DECL|variable|memchr
+id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
-id|mips_machtype
+id|memchr
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * String functions&n; */
 DECL|variable|memcmp
 id|EXPORT_SYMBOL_NOVERS
 c_func
@@ -205,13 +189,6 @@ c_func
 id|strstr
 )paren
 suffix:semicolon
-DECL|variable|_clear_page
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|_clear_page
-)paren
-suffix:semicolon
 DECL|variable|kernel_thread
 id|EXPORT_SYMBOL
 c_func
@@ -276,59 +253,18 @@ c_func
 id|__strnlen_user_asm
 )paren
 suffix:semicolon
+DECL|variable|csum_partial
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|csum_partial
+)paren
+suffix:semicolon
 DECL|variable|invalid_pte_table
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|invalid_pte_table
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Semaphore stuff&n; */
-DECL|variable|__down
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__down
-)paren
-suffix:semicolon
-DECL|variable|__down_interruptible
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__down_interruptible
-)paren
-suffix:semicolon
-DECL|variable|__down_trylock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__down_trylock
-)paren
-suffix:semicolon
-DECL|variable|__up
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__up
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Kernel hacking ...&n; */
-macro_line|#include &lt;asm/branch.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
-DECL|variable|ide_ops
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_ops
-)paren
-suffix:semicolon
-macro_line|#endif
-DECL|variable|get_wchan
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|get_wchan
 )paren
 suffix:semicolon
 eof

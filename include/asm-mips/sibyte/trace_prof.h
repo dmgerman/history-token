@@ -2,6 +2,8 @@ multiline_comment|/*&n; * Copyright (C) 2001 Broadcom Corporation&n; *&n; * This
 macro_line|#ifndef __ASM_SIBYTE_TRACE_PROF_H
 DECL|macro|__ASM_SIBYTE_TRACE_PROF_H
 mdefine_line|#define __ASM_SIBYTE_TRACE_PROF_H
+DECL|macro|DBG
+macro_line|#undef DBG
 macro_line|#if SBPROF_TB_DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(a) a
@@ -79,7 +81,7 @@ DECL|macro|SBPROF_ZBWAITFULL
 mdefine_line|#define SBPROF_ZBWAITFULL&t;_IOW(&squot;s&squot;, 2, int)
 multiline_comment|/***************************************************************************&n; * Routines for gathering ZBbus profiles using trace buffer&n; ***************************************************************************/
 multiline_comment|/* Requires: Already called zclk_timer_init with a value that won&squot;t&n;&t;     saturate 40 bits.  No subsequent use of SCD performance counters&n;&t;     or trace buffer.&n;   Effect:   Starts gathering random ZBbus profiles using trace buffer. */
-r_static
+r_extern
 r_int
 id|sbprof_zbprof_start
 c_func
@@ -91,7 +93,7 @@ id|filp
 )paren
 suffix:semicolon
 multiline_comment|/* Effect: Stops collection of ZBbus profiles */
-r_static
+r_extern
 r_int
 id|sbprof_zbprof_stop
 c_func

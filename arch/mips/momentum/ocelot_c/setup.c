@@ -1,9 +1,9 @@
-multiline_comment|/*&n; * BRIEF MODULE DESCRIPTION&n; * Momentum Computer Ocelot-C and -CS board dependent boot routines&n; *&n; * Copyright (C) 1996, 1997, 2001  Ralf Baechle&n; * Copyright (C) 2000 RidgeRun, Inc.&n; * Copyright (C) 2001 Red Hat, Inc.&n; * Copyright (C) 2002 Momentum Computer&n; *&n; * Author: Matthew Dharm, Momentum Computer&n; *   mdharm@momenco.com&n; *&n; * Author: RidgeRun, Inc.&n; *   glonnon@ridgerun.com, skranz@ridgerun.com, stevej@ridgerun.com&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; * BRIEF MODULE DESCRIPTION&n; * Momentum Computer Ocelot-C and -CS board dependent boot routines&n; *&n; * Copyright (C) 1996, 1997, 2001  Ralf Baechle&n; * Copyright (C) 2000 RidgeRun, Inc.&n; * Copyright (C) 2001 Red Hat, Inc.&n; * Copyright (C) 2002 Momentum Computer&n; *&n; * Author: Matthew Dharm, Momentum Computer&n; *   mdharm@momenco.com&n; *&n; * Louis Hamilton, Red Hat, Inc.&n; *   hamilton@redhat.com  [MIPS64 modifications]&n; *&n; * Author: RidgeRun, Inc.&n; *   glonnon@ridgerun.com, skranz@ridgerun.com, stevej@ridgerun.com&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -15,15 +15,12 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pci.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
-macro_line|#include &lt;asm/mc146818rtc.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/mv64340.h&gt;
@@ -32,6 +29,11 @@ DECL|variable|mv64340_base
 r_int
 r_int
 id|mv64340_base
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|mv64340_sram_base
 suffix:semicolon
 DECL|variable|cpu_clock
 r_int
@@ -77,6 +79,27 @@ r_static
 r_char
 id|reset_reason
 suffix:semicolon
+r_void
+id|add_wired_entry
+c_func
+(paren
+r_int
+r_int
+id|entrylo0
+comma
+r_int
+r_int
+id|entrylo1
+comma
+r_int
+r_int
+id|entryhi
+comma
+r_int
+r_int
+id|pagemask
+)paren
+suffix:semicolon
 DECL|macro|ENTRYLO
 mdefine_line|#define ENTRYLO(x) ((pte_val(mk_pte_phys((x), PAGE_KERNEL_UNCACHED)) &gt;&gt; 6)|1)
 multiline_comment|/* setup code for a handoff from a version 2 PMON 2000 PROM */
@@ -89,6 +112,85 @@ r_void
 )paren
 (brace
 multiline_comment|/* Some wired TLB entries for the MV64340 and perhiperals. The&n;&t;   MV64340 is going to be hit on every IRQ anyway - there&squot;s&n;&t;   absolutely no point in letting it be a random TLB entry, as&n;&t;   it&squot;ll just cause needless churning of the TLB. And we use&n;&t;   the other half for the serial port, which is just a PITA&n;&t;   otherwise :)&n;&n;&t;&t;Device&t;&t;&t;Physical&t;Virtual&n;&t;&t;MV64340 Internal Regs&t;0xf4000000&t;0xf4000000&n;&t;&t;Ocelot-C[S] PLD (CS0)&t;0xfc000000&t;0xfc000000&n;&t;&t;NVRAM (CS1)&t;&t;0xfc800000&t;0xfc800000&n;&t;&t;UARTs (CS2)&t;&t;0xfd000000&t;0xfd000000&n;&t;&t;Internal SRAM&t;&t;0xfe000000&t;0xfe000000&n;&t;&t;M-Systems DOC (CS3)&t;0xff000000&t;0xff000000&n;&t;*/
+id|printk
+c_func
+(paren
+l_string|&quot;PMON_v2_setup&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_MIPS64
+multiline_comment|/* marvell and extra space */
+id|add_wired_entry
+c_func
+(paren
+id|ENTRYLO
+c_func
+(paren
+l_int|0xf4000000
+)paren
+comma
+id|ENTRYLO
+c_func
+(paren
+l_int|0xf4010000
+)paren
+comma
+l_int|0xfffffffff4000000
+comma
+id|PM_64K
+)paren
+suffix:semicolon
+multiline_comment|/* fpga, rtc, and uart */
+id|add_wired_entry
+c_func
+(paren
+id|ENTRYLO
+c_func
+(paren
+l_int|0xfc000000
+)paren
+comma
+id|ENTRYLO
+c_func
+(paren
+l_int|0xfd000000
+)paren
+comma
+l_int|0xfffffffffc000000
+comma
+id|PM_16M
+)paren
+suffix:semicolon
+multiline_comment|/* m-sys and internal SRAM */
+id|add_wired_entry
+c_func
+(paren
+id|ENTRYLO
+c_func
+(paren
+l_int|0xfe000000
+)paren
+comma
+id|ENTRYLO
+c_func
+(paren
+l_int|0xff000000
+)paren
+comma
+l_int|0xfffffffffe000000
+comma
+id|PM_16M
+)paren
+suffix:semicolon
+id|mv64340_base
+op_assign
+l_int|0xfffffffff4000000
+suffix:semicolon
+id|mv64340_sram_base
+op_assign
+l_int|0xfffffffffe000000
+suffix:semicolon
+macro_line|#else
 multiline_comment|/* marvell and extra space */
 id|add_wired_entry
 c_func
@@ -156,6 +258,11 @@ id|mv64340_base
 op_assign
 l_int|0xf4000000
 suffix:semicolon
+id|mv64340_sram_base
+op_assign
+l_int|0xfe000000
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|m48t37y_get_time
 r_int
@@ -166,6 +273,20 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_MIPS64
+r_int
+r_char
+op_star
+id|rtc_base
+op_assign
+(paren
+r_int
+r_char
+op_star
+)paren
+l_int|0xfffffffffc800000
+suffix:semicolon
+macro_line|#else
 r_int
 r_char
 op_star
@@ -178,6 +299,7 @@ op_star
 )paren
 l_int|0xfc800000
 suffix:semicolon
+macro_line|#endif
 r_int
 r_int
 id|year
@@ -315,6 +437,20 @@ r_int
 id|sec
 )paren
 (brace
+macro_line|#ifdef CONFIG_MIPS64
+r_int
+r_char
+op_star
+id|rtc_base
+op_assign
+(paren
+r_int
+r_char
+op_star
+)paren
+l_int|0xfffffffffc800000
+suffix:semicolon
+macro_line|#else
 r_int
 r_char
 op_star
@@ -327,6 +463,7 @@ op_star
 )paren
 l_int|0xfc800000
 suffix:semicolon
+macro_line|#endif
 r_struct
 id|rtc_time
 id|tm
@@ -493,12 +630,12 @@ r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_CPU_SR71000
-id|mips_counter_frequency
+id|mips_hpt_frequency
 op_assign
 id|cpu_clock
 suffix:semicolon
 macro_line|#elif defined(CONFIG_CPU_RM7000)
-id|mips_counter_frequency
+id|mips_hpt_frequency
 op_assign
 id|cpu_clock
 op_div
@@ -507,6 +644,14 @@ suffix:semicolon
 macro_line|#else
 macro_line|#error Unknown CPU for this board
 macro_line|#endif
+id|printk
+c_func
+(paren
+l_string|&quot;momenco_time_init cpu_clock=%d&bslash;n&quot;
+comma
+id|cpu_clock
+)paren
+suffix:semicolon
 id|board_timer_setup
 op_assign
 id|momenco_timer_setup
@@ -521,6 +666,7 @@ id|m48t37y_set_time
 suffix:semicolon
 )brace
 DECL|function|momenco_ocelot_c_setup
+r_static
 r_void
 id|__init
 id|momenco_ocelot_c_setup
@@ -1156,6 +1302,14 @@ r_break
 suffix:semicolon
 )brace
 )brace
+DECL|variable|momenco_ocelot_c_setup
+id|early_initcall
+c_func
+(paren
+id|momenco_ocelot_c_setup
+)paren
+suffix:semicolon
+macro_line|#ifndef CONFIG_MIPS64
 multiline_comment|/* This needs to be one of the first initcalls, because no I/O port access&n;   can work before this */
 DECL|function|io_base_ioremap
 r_static
@@ -1223,4 +1377,5 @@ c_func
 id|io_base_ioremap
 )paren
 suffix:semicolon
+macro_line|#endif
 eof

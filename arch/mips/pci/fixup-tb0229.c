@@ -3,29 +3,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/vr41xx/tb0229.h&gt;
-DECL|function|pcibios_fixup_resources
-r_void
-id|__init
-id|pcibios_fixup_resources
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-)brace
-DECL|function|pcibios_fixup
-r_void
-id|__init
-id|pcibios_fixup
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
 DECL|function|pcibios_fixup_irqs
 r_void
 id|__init
@@ -182,18 +159,5 @@ id|dev-&gt;irq
 suffix:semicolon
 )brace
 macro_line|#endif
-)brace
-DECL|function|pcibios_assign_all_busses
-r_int
-r_int
-id|pcibios_assign_all_busses
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 eof

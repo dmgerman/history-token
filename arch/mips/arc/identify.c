@@ -124,7 +124,7 @@ id|MACH_GROUP_SNI_RM
 comma
 id|MACH_SNI_RM200_PCI
 comma
-l_int|0
+id|PROM_FLAG_DONT_FREE_TEMP
 )brace
 )brace
 suffix:semicolon

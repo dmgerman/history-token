@@ -6,13 +6,6 @@ macro_line|#include &lt;asm/sgialib.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 DECL|macro|DEBUG_CMDLINE
 macro_line|#undef DEBUG_CMDLINE
-DECL|variable|arcs_cmdline
-r_char
-id|arcs_cmdline
-(braket
-id|CL_SIZE
-)braket
-suffix:semicolon
 DECL|function|prom_getcmdline
 r_char
 op_star

@@ -5,10 +5,8 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 DECL|variable|prom_argc
 r_int
 id|prom_argc
@@ -59,27 +57,12 @@ l_string|&quot;Alchemy Pb1100&quot;
 suffix:semicolon
 )brace
 DECL|function|prom_init
-r_int
+r_void
 id|__init
 id|prom_init
 c_func
 (paren
-r_int
-id|argc
-comma
-r_char
-op_star
-op_star
-id|argv
-comma
-r_char
-op_star
-op_star
-id|envp
-comma
-r_int
-op_star
-id|prom_vec
+r_void
 )paren
 (brace
 r_int
@@ -93,15 +76,24 @@ id|memsize
 suffix:semicolon
 id|prom_argc
 op_assign
-id|argc
+id|fw_arg0
 suffix:semicolon
 id|prom_argv
 op_assign
-id|argv
+(paren
+r_char
+op_star
+op_star
+)paren
+id|fw_arg1
 suffix:semicolon
 id|prom_envp
 op_assign
-id|envp
+(paren
+r_int
+op_star
+)paren
+id|fw_arg3
 suffix:semicolon
 id|mips_machgroup
 op_assign
@@ -130,14 +122,11 @@ c_cond
 op_logical_neg
 id|memsize_str
 )paren
-(brace
 id|memsize
 op_assign
 l_int|0x04000000
 suffix:semicolon
-)brace
 r_else
-(brace
 id|memsize
 op_assign
 id|simple_strtol
@@ -150,7 +139,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
 id|add_memory_region
 c_func
 (paren
@@ -160,9 +148,6 @@ id|memsize
 comma
 id|BOOT_MEM_RAM
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 eof

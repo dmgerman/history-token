@@ -1,5 +1,7 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1997, 1998, 2001, 2003 by Ralf Baechle&n; */
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/ds1286.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -9,10 +11,10 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
-macro_line|#include &lt;asm/ds1286.h&gt;
 macro_line|#include &lt;asm/sgialib.h&gt;
 macro_line|#include &lt;asm/sgi/ioc.h&gt;
 macro_line|#include &lt;asm/sgi/hpc3.h&gt;
+macro_line|#include &lt;asm/sgi/mc.h&gt;
 macro_line|#include &lt;asm/sgi/ip22.h&gt;
 multiline_comment|/*&n; * Just powerdown if init hasn&squot;t done after POWERDOWN_TIMEOUT seconds.&n; * I&squot;m not sure if this feature is a good idea, for now it&squot;s here just to&n; * make the power button make behave just like under IRIX.&n; */
 DECL|macro|POWERDOWN_TIMEOUT
@@ -95,7 +97,6 @@ id|noreturn
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* XXX How to pass the reboot command to the firmware??? */
 DECL|function|sgi_machine_restart
 r_static
 r_void
@@ -119,9 +120,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|ArcReboot
-c_func
+id|sgimc-&gt;cpuctrl0
+op_or_assign
+id|SGIMC_CCTRL0_SYSINIT
+suffix:semicolon
+r_while
+c_loop
 (paren
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -162,8 +168,8 @@ r_void
 )paren
 (brace
 r_int
-r_char
-id|val
+r_int
+id|tmp
 suffix:semicolon
 id|local_irq_disable
 c_func
@@ -171,39 +177,37 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Disable watchdog */
-id|val
+id|tmp
 op_assign
-id|CMOS_READ
-c_func
-(paren
+id|hpc3c0-&gt;rtcregs
+(braket
 id|RTC_CMD
-)paren
+)braket
+op_amp
+l_int|0xff
 suffix:semicolon
-id|CMOS_WRITE
-c_func
-(paren
-id|val
+id|hpc3c0-&gt;rtcregs
+(braket
+id|RTC_CMD
+)braket
+op_assign
+id|tmp
 op_or
 id|RTC_WAM
-comma
-id|RTC_CMD
-)paren
 suffix:semicolon
-id|CMOS_WRITE
-c_func
-(paren
-l_int|0
-comma
+id|hpc3c0-&gt;rtcregs
+(braket
 id|RTC_WSEC
-)paren
-suffix:semicolon
-id|CMOS_WRITE
-c_func
-(paren
+)braket
+op_assign
 l_int|0
-comma
+suffix:semicolon
+id|hpc3c0-&gt;rtcregs
+(braket
 id|RTC_WHSEC
-)paren
+)braket
+op_assign
+l_int|0
 suffix:semicolon
 r_while
 c_loop
@@ -218,13 +222,12 @@ id|SGIOC_PANEL_POWERON
 suffix:semicolon
 multiline_comment|/* Good bye cruel world ...  */
 multiline_comment|/* If we&squot;re still running, we probably got sent an alarm&n;&t;&t;   interrupt.  Read the flag to clear it.  */
-id|val
+id|tmp
 op_assign
-id|CMOS_READ
-c_func
-(paren
+id|hpc3c0-&gt;rtcregs
+(braket
 id|RTC_HOURS_ALARM
-)paren
+)braket
 suffix:semicolon
 )brace
 )brace
@@ -346,10 +349,9 @@ id|machine_state
 op_amp
 id|MACHINE_PANICED
 )paren
-id|ArcReboot
-c_func
-(paren
-)paren
+id|sgimc-&gt;cpuctrl0
+op_or_assign
+id|SGIMC_CCTRL0_SYSINIT
 suffix:semicolon
 id|enable_irq
 c_func
@@ -456,6 +458,13 @@ r_int
 )paren
 op_assign
 l_int|NULL
+suffix:semicolon
+DECL|variable|indy_volume_button
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|indy_volume_button
+)paren
 suffix:semicolon
 DECL|function|volume_up_button
 r_static
@@ -637,7 +646,7 @@ id|debounce_timer
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Power button was pressed &n;&t; *&n;&t; * ioc.ps page 22: &quot;The Panel Register is called Power Control by Full&n;&t; * House. Only lowest 2 bits are used. Guiness uses upper four bits&n;&t; * for volume control&quot;. This is not true, all bits are pulled high&n;&t; * on fullhouse&n;&t; */
+multiline_comment|/* Power button was pressed &n;&t; * ioc.ps page 22: &quot;The Panel Register is called Power Control by Full&n;&t; * House. Only lowest 2 bits are used. Guiness uses upper four bits&n;&t; * for volume control&quot;. This is not true, all bits are pulled high&n;&t; * on fullhouse */
 r_if
 c_cond
 (paren
