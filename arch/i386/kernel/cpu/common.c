@@ -880,6 +880,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Probe for the CPUID instruction */
 DECL|function|have_cpuid_p
+r_static
 r_int
 id|__init
 id|have_cpuid_p
@@ -898,6 +899,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Do minimum CPU detection early.&n;   Fields really needed: vendor, cpuid_level, family, model, mask, cache alignment.&n;   The others are not touched to avoid unwanted side effects. */
 DECL|function|early_cpu_detect
+r_static
 r_void
 id|__init
 id|early_cpu_detect
@@ -1893,44 +1895,6 @@ id|c
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n; *&t;Perform early boot up checks for a valid TSC. See arch/i386/kernel/time.c&n; */
-DECL|function|dodgy_tsc
-r_void
-id|__init
-id|dodgy_tsc
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|boot_cpu_data.x86_vendor
-op_eq
-id|X86_VENDOR_CYRIX
-)paren
-op_logical_or
-(paren
-id|boot_cpu_data.x86_vendor
-op_eq
-id|X86_VENDOR_NSC
-)paren
-)paren
-id|cpu_devs
-(braket
-id|X86_VENDOR_CYRIX
-)braket
-op_member_access_from_pointer
-id|c_init
-c_func
-(paren
-op_amp
-id|boot_cpu_data
-)paren
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_X86_HT
 DECL|function|detect_ht
 r_void
@@ -2353,13 +2317,6 @@ suffix:semicolon
 r_extern
 r_int
 id|umc_init_cpu
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|early_cpu_detect
 c_func
 (paren
 r_void

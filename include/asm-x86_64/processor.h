@@ -212,14 +212,6 @@ op_star
 id|c
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|dodgy_tsc
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * EFLAGS bits&n; */
 DECL|macro|X86_EFLAGS_CF
 mdefine_line|#define X86_EFLAGS_CF&t;0x00000001 /* Carry Flag */

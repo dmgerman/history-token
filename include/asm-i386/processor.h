@@ -260,14 +260,6 @@ op_star
 id|c
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|dodgy_tsc
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_X86_HT
 r_extern
 r_void

@@ -136,14 +136,6 @@ id|c
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|have_cpuid_p
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|early_intel_workaround
 c_func
