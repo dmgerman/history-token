@@ -3795,7 +3795,7 @@ multiline_comment|/*&n;&t; *  The vfs structure needs to have a file system inde
 id|vfsp-&gt;vfs_altfsid
 op_assign
 (paren
-id|__kernel_fsid_t
+id|fsid_t
 op_star
 )paren
 id|mp-&gt;m_fixedfsid
