@@ -9926,17 +9926,12 @@ comma
 id|target
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Since we are going to call schedule() anyway, there&squot;s&n;&t; * no need to preempt:&n;&t; */
+multiline_comment|/*&n;&t; * Since we are going to call schedule() anyway, there&squot;s&n;&t; * no need to preempt or enable interrupts:&n;&t; */
 id|_raw_spin_unlock
 c_func
 (paren
 op_amp
 id|rq-&gt;lock
-)paren
-suffix:semicolon
-id|local_irq_enable
-c_func
-(paren
 )paren
 suffix:semicolon
 id|preempt_enable_no_resched
