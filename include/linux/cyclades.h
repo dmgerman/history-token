@@ -1064,13 +1064,15 @@ r_int
 id|ctl_phys
 suffix:semicolon
 DECL|member|base_addr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|base_addr
 suffix:semicolon
 DECL|member|ctl_addr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|ctl_addr
 suffix:semicolon
 DECL|member|irq
@@ -1135,11 +1137,11 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 multiline_comment|/***************************************&n; * Memory access functions/macros      *&n; * (required to support Alpha systems) *&n; ***************************************/
 DECL|macro|cy_writeb
-mdefine_line|#define cy_writeb(port,val)     {writeb((ucchar)(val),(ulong)(port)); mb();}
+mdefine_line|#define cy_writeb(port,val)     {writeb((val),(port)); mb();}
 DECL|macro|cy_writew
-mdefine_line|#define cy_writew(port,val)     {writew((ushort)(val),(ulong)(port)); mb();}
+mdefine_line|#define cy_writew(port,val)     {writew((val),(port)); mb();}
 DECL|macro|cy_writel
-mdefine_line|#define cy_writel(port,val)     {writel((uclong)(val),(ulong)(port)); mb();}
+mdefine_line|#define cy_writel(port,val)     {writel((val),(port)); mb();}
 DECL|macro|cy_readb
 mdefine_line|#define cy_readb(port)  readb(port)
 DECL|macro|cy_readw
