@@ -1182,7 +1182,7 @@ op_amp
 id|device_lock
 )paren
 suffix:semicolon
-id|BUG_ON
+id|WARN_ON
 c_func
 (paren
 id|bus-&gt;present
