@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;drivers/pci/setup-bus.c&n; *&n; * Extruded from code
 multiline_comment|/*&n; * Nov 2000, Ivan Kokshaysky &lt;ink@jurassic.park.msu.ru&gt;&n; *&t;     PCI-PCI bridges cleanup, sorted resource allocation.&n; * Feb 2002, Ivan Kokshaysky &lt;ink@jurassic.park.msu.ru&gt;&n; *&t;     Converted to allocation in 3 passes, which gives&n; *&t;     tighter packing. Prefetchable range support.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -1646,6 +1647,13 @@ id|type
 )paren
 suffix:semicolon
 )brace
+DECL|variable|pbus_size_bridges
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pbus_size_bridges
+)paren
+suffix:semicolon
 r_void
 id|__devinit
 DECL|function|pbus_assign_resources
@@ -1751,6 +1759,13 @@ id|b
 suffix:semicolon
 )brace
 )brace
+DECL|variable|pbus_assign_resources
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pbus_assign_resources
+)paren
+suffix:semicolon
 r_void
 id|__init
 DECL|function|pci_assign_unassigned_resources
