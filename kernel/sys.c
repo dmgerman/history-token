@@ -435,6 +435,16 @@ c_func
 (paren
 id|sys_swapoff
 )paren
+id|cond_syscall
+c_func
+(paren
+id|sys_init_module
+)paren
+id|cond_syscall
+c_func
+(paren
+id|sys_delete_module
+)paren
 DECL|function|set_one_prio
 r_static
 r_int

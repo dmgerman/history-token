@@ -2184,7 +2184,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE
-DECL|function|ipv6_unload
+macro_line|#if 0 /* FIXME --RR */
 r_int
 id|ipv6_unload
 c_func
@@ -2215,6 +2215,8 @@ op_minus
 l_int|3
 suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#endif
 macro_line|#endif
 macro_line|#if defined(MODULE) &amp;&amp; defined(CONFIG_SYSCTL)
 r_extern
@@ -2479,6 +2481,7 @@ r_int
 id|err
 suffix:semicolon
 macro_line|#ifdef MODULE
+macro_line|#if 0 /* FIXME --RR */
 r_if
 c_cond
 (paren
@@ -2501,6 +2504,7 @@ op_assign
 op_amp
 id|ipv6_unload
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 id|printk
 c_func

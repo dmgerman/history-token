@@ -513,10 +513,6 @@ op_assign
 (brace
 id|modprobe_path
 comma
-l_string|&quot;-s&quot;
-comma
-l_string|&quot;-k&quot;
-comma
 l_string|&quot;--&quot;
 comma
 (paren
