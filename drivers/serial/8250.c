@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/char/8250.c&n; *&n; *  Driver for 8250/16550-type serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright (C) 2001 Russell King.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; *  $Id: 8250.c,v 1.83 2002/07/21 23:08:22 rmk Exp $&n; *&n; * A note about mapbase / membase&n; *&n; *  mapbase is the physical address of the IO port.  Currently, we don&squot;t&n; *  support this very well, and it may well be dropped from this driver&n; *  in future.  As such, mapbase should be NULL.&n; *&n; *  membase is an &squot;ioremapped&squot; cookie.  This is compatible with the old&n; *  serial.c driver, and is currently the preferred form.&n; */
+multiline_comment|/*&n; *  linux/drivers/char/8250.c&n; *&n; *  Driver for 8250/16550-type serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright (C) 2001 Russell King.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; *  $Id: 8250.c,v 1.84 2002/07/22 15:27:32 rmk Exp $&n; *&n; * A note about mapbase / membase&n; *&n; *  mapbase is the physical address of the IO port.  Currently, we don&squot;t&n; *  support this very well, and it may well be dropped from this driver&n; *  in future.  As such, mapbase should be NULL.&n; *&n; *  membase is an &squot;ioremapped&squot; cookie.  This is compatible with the old&n; *  serial.c driver, and is currently the preferred form.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
@@ -2715,10 +2715,10 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|__serial8250_stop_tx
+DECL|function|serial8250_stop_tx
 r_static
 r_void
-id|__serial8250_stop_tx
+id|serial8250_stop_tx
 c_func
 (paren
 r_struct
@@ -2792,65 +2792,6 @@ id|up-&gt;acr
 )paren
 suffix:semicolon
 )brace
-)brace
-DECL|function|serial8250_stop_tx
-r_static
-r_void
-id|serial8250_stop_tx
-c_func
-(paren
-r_struct
-id|uart_port
-op_star
-id|port
-comma
-r_int
-r_int
-id|tty_stop
-)paren
-(brace
-r_struct
-id|uart_8250_port
-op_star
-id|up
-op_assign
-(paren
-r_struct
-id|uart_8250_port
-op_star
-)paren
-id|port
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|up-&gt;port.lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|__serial8250_stop_tx
-c_func
-(paren
-id|port
-comma
-id|tty_stop
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|up-&gt;port.lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 DECL|function|serial8250_start_tx
 r_static
@@ -3508,7 +3449,7 @@ id|up-&gt;port
 )paren
 )paren
 (brace
-id|__serial8250_stop_tx
+id|serial8250_stop_tx
 c_func
 (paren
 op_amp
@@ -3612,7 +3553,7 @@ c_func
 id|xmit
 )paren
 )paren
-id|__serial8250_stop_tx
+id|serial8250_stop_tx
 c_func
 (paren
 op_amp
@@ -8204,7 +8145,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Serial: 8250/16550 driver $Revision: 1.83 $ &quot;
+l_string|&quot;Serial: 8250/16550 driver $Revision: 1.84 $ &quot;
 l_string|&quot;IRQ sharing %sabled&bslash;n&quot;
 comma
 id|share_irqs
@@ -8363,7 +8304,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Generic 8250/16x50 serial driver $Revision: 1.83 $&quot;
+l_string|&quot;Generic 8250/16x50 serial driver $Revision: 1.84 $&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
