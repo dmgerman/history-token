@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2001 Sistina Software (UK) Limited.&n; *&n; * This file is released under the LGPL.&n; */
+multiline_comment|/*&n; * Copyright (C) 2001 Sistina Software (UK) Limited.&n; * Copyright (C) 2004 Red Hat, Inc. All rights reserved.&n; *&n; * This file is released under the LGPL.&n; */
 macro_line|#ifndef _LINUX_DEVICE_MAPPER_H
 DECL|macro|_LINUX_DEVICE_MAPPER_H
 mdefine_line|#define _LINUX_DEVICE_MAPPER_H
@@ -185,6 +185,28 @@ r_int
 id|maxlen
 )paren
 suffix:semicolon
+DECL|typedef|dm_message_fn
+r_typedef
+r_int
+(paren
+op_star
+id|dm_message_fn
+)paren
+(paren
+r_struct
+id|dm_target
+op_star
+id|ti
+comma
+r_int
+id|argc
+comma
+r_char
+op_star
+op_star
+id|argv
+)paren
+suffix:semicolon
 r_void
 id|dm_error
 c_func
@@ -292,6 +314,10 @@ suffix:semicolon
 DECL|member|status
 id|dm_status_fn
 id|status
+suffix:semicolon
+DECL|member|message
+id|dm_message_fn
+id|message
 suffix:semicolon
 )brace
 suffix:semicolon

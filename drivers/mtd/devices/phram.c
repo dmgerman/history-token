@@ -1,4 +1,4 @@
-multiline_comment|/**&n; *&n; * $Id: phram.c,v 1.2 2004/08/09 13:19:44 dwmw2 Exp $&n; *&n; * Copyright (c) Jochen Schaeuble &lt;psionic@psionic.de&gt;&n; * 07/2003&t;rewritten by Joern Engel &lt;joern@wh.fh-wedel.de&gt;&n; *&n; * DISCLAIMER:  This driver makes use of Rusty&squot;s excellent module code,&n; * so it will not work for 2.4 without changes and it wont work for 2.4&n; * as a module without major changes.  Oh well!&n; *&n; * Usage:&n; *&n; * one commend line parameter per device, each in the form:&n; *   phram=&lt;name&gt;,&lt;start&gt;,&lt;len&gt;&n; * &lt;name&gt; may be up to 63 characters.&n; * &lt;start&gt; and &lt;len&gt; can be octal, decimal or hexadecimal.  If followed&n; * by &quot;k&quot;, &quot;M&quot; or &quot;G&quot;, the numbers will be interpreted as kilo, mega or&n; * gigabytes.&n; *&n; */
+multiline_comment|/**&n; *&n; * $Id: phram.c,v 1.3 2004/11/16 18:29:01 dwmw2 Exp $&n; *&n; * Copyright (c) Jochen Schaeuble &lt;psionic@psionic.de&gt;&n; * 07/2003&t;rewritten by Joern Engel &lt;joern@wh.fh-wedel.de&gt;&n; *&n; * DISCLAIMER:  This driver makes use of Rusty&squot;s excellent module code,&n; * so it will not work for 2.4 without changes and it wont work for 2.4&n; * as a module without major changes.  Oh well!&n; *&n; * Usage:&n; *&n; * one commend line parameter per device, each in the form:&n; *   phram=&lt;name&gt;,&lt;start&gt;,&lt;len&gt;&n; * &lt;name&gt; may be up to 63 characters.&n; * &lt;start&gt; and &lt;len&gt; can be octal, decimal or hexadecimal.  If followed&n; * by &quot;k&quot;, &quot;M&quot; or &quot;G&quot;, the numbers will be interpreted as kilo, mega or&n; * gigabytes.&n; *&n; */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -33,6 +33,7 @@ id|phram_list
 )paren
 suffix:semicolon
 DECL|function|phram_erase
+r_static
 r_int
 id|phram_erase
 c_func
@@ -99,6 +100,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|phram_point
+r_static
 r_int
 id|phram_point
 c_func
@@ -164,6 +166,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|phram_unpoint
+r_static
 r_void
 id|phram_unpoint
 c_func
@@ -186,6 +189,7 @@ id|len
 (brace
 )brace
 DECL|function|phram_read
+r_static
 r_int
 id|phram_read
 c_func
@@ -255,6 +259,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|phram_write
+r_static
 r_int
 id|phram_write
 c_func
@@ -1500,6 +1505,7 @@ l_string|&quot;List of memory regions to map. &bslash;&quot;map=&lt;name&gt;,&lt
 )paren
 suffix:semicolon
 DECL|function|init_phram
+r_static
 r_int
 id|__init
 id|init_phram

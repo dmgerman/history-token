@@ -206,6 +206,11 @@ DECL|member|onoff
 id|atomic_t
 id|onoff
 suffix:semicolon
+DECL|member|registered
+r_int
+r_int
+id|registered
+suffix:semicolon
 DECL|member|devno
 id|__u16
 id|devno
@@ -558,6 +563,16 @@ suffix:semicolon
 multiline_comment|/* Helper functions for vary on/off. */
 r_void
 id|device_set_waiting
+c_func
+(paren
+r_struct
+id|subchannel
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* Machine check helper function. */
+r_void
+id|device_kill_pending_timer
 c_func
 (paren
 r_struct

@@ -1148,7 +1148,7 @@ suffix:semicolon
 id|offset
 op_add_assign
 id|dinfo-&gt;fb.offset
-op_rshift
+op_lshift
 l_int|12
 suffix:semicolon
 id|OUTREG

@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 multiline_comment|/*** Version/name ***/
 DECL|macro|INTELFB_VERSION
-mdefine_line|#define INTELFB_VERSION&t;&t;&t;&quot;0.9.1&quot;
+mdefine_line|#define INTELFB_VERSION&t;&t;&t;&quot;0.9.2&quot;
 DECL|macro|INTELFB_MODULE_NAME
 mdefine_line|#define INTELFB_MODULE_NAME&t;&t;&quot;intelfb&quot;
 DECL|macro|SUPPORTED_CHIPSETS
@@ -475,7 +475,7 @@ id|agp_memory
 op_star
 id|gtt_fb_mem
 suffix:semicolon
-singleline_comment|// use all stolen memory
+singleline_comment|// use all stolen memory or vram
 DECL|member|gtt_ring_mem
 r_struct
 id|agp_memory
@@ -490,6 +490,11 @@ op_star
 id|gtt_cursor_mem
 suffix:semicolon
 singleline_comment|// hw cursor
+multiline_comment|/* use a gart reserved fb mem */
+DECL|member|fbmem_gart
+id|u8
+id|fbmem_gart
+suffix:semicolon
 multiline_comment|/* mtrr support */
 DECL|member|mtrr_reg
 id|u32

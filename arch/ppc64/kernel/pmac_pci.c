@@ -23,21 +23,6 @@ macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(x...)
 macro_line|#endif
-r_extern
-r_int
-id|pci_probe_only
-suffix:semicolon
-r_extern
-r_int
-id|pci_read_irq_line
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pci_dev
-)paren
-suffix:semicolon
 multiline_comment|/* XXX Could be per-controller, but I don&squot;t think we risk anything by&n; * assuming we won&squot;t have both UniNorth and Bandit */
 DECL|variable|has_uninorth
 r_static
@@ -1988,7 +1973,7 @@ id|dt_ranges
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/*&t;lc_ranges = (unsigned int *) alloc_bootmem(rlen);*/
+multiline_comment|/*&t;lc_ranges = alloc_bootmem(rlen);*/
 id|lc_ranges
 op_assign
 id|static_lc_ranges
@@ -2554,21 +2539,32 @@ suffix:semicolon
 )brace
 id|hose
 op_assign
-id|pci_alloc_pci_controller
+id|alloc_bootmem
 c_func
 (paren
-id|phb_type_apple
+r_sizeof
+(paren
+r_struct
+id|pci_controller
+)paren
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|hose
+op_eq
+l_int|NULL
 )paren
 r_return
 op_minus
 id|ENOMEM
+suffix:semicolon
+id|pci_setup_pci_controller
+c_func
+(paren
+id|hose
+)paren
 suffix:semicolon
 id|hose-&gt;arch_data
 op_assign
@@ -2600,11 +2596,6 @@ l_int|0xff
 suffix:semicolon
 id|of_prop
 op_assign
-(paren
-r_struct
-id|property
-op_star
-)paren
 id|alloc_bootmem
 c_func
 (paren

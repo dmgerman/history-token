@@ -2464,11 +2464,9 @@ op_le
 l_int|0
 )paren
 (brace
-id|apic_printk
+id|printk
 c_func
 (paren
-id|APIC_VERBOSE
-comma
 l_string|&quot;Local APIC disabled by BIOS -- &quot;
 l_string|&quot;you can enable it with &bslash;&quot;lapic&bslash;&quot;&bslash;n&quot;
 )paren
@@ -2500,13 +2498,10 @@ id|MSR_IA32_APICBASE_ENABLE
 )paren
 )paren
 (brace
-id|apic_printk
+id|printk
 c_func
 (paren
-id|APIC_VERBOSE
-comma
-l_string|&quot;Local APIC disabled &quot;
-l_string|&quot;by BIOS -- reenabling.&bslash;n&quot;
+l_string|&quot;Local APIC disabled by BIOS -- reenabling.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|l
@@ -2618,11 +2613,9 @@ id|nmi_watchdog
 op_assign
 id|NMI_LOCAL_APIC
 suffix:semicolon
-id|apic_printk
+id|printk
 c_func
 (paren
-id|APIC_VERBOSE
-comma
 l_string|&quot;Found and enabled local APIC!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2707,11 +2700,10 @@ comma
 id|apic_phys
 )paren
 suffix:semicolon
-id|apic_printk
+id|printk
 c_func
 (paren
-id|APIC_DEBUG
-comma
+id|KERN_DEBUG
 l_string|&quot;mapped APIC to %08lx (%08lx)&bslash;n&quot;
 comma
 id|APIC_BASE
@@ -2794,7 +2786,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;WARNING: bogus zero IO-APIC address found in MPTABLE, disabling IO/APIC support!&bslash;n&quot;
+l_string|&quot;WARNING: bogus zero IO-APIC &quot;
+l_string|&quot;address found in MPTABLE, &quot;
+l_string|&quot;disabling IO/APIC support!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|smp_found_config
@@ -2843,13 +2837,11 @@ comma
 id|ioapic_phys
 )paren
 suffix:semicolon
-id|apic_printk
+id|printk
 c_func
 (paren
-id|APIC_DEBUG
-comma
-l_string|&quot;mapped IOAPIC to &quot;
-l_string|&quot;%08lx (%08lx)&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;mapped IOAPIC to %08lx (%08lx)&bslash;n&quot;
 comma
 id|__fix_to_virt
 c_func

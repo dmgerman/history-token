@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: l440gx.c,v 1.14 2004/09/16 23:27:13 gleixner Exp $&n; *&n; * BIOS Flash chip on Intel 440GX board.&n; *&n; * Bugs this currently does not work under linuxBIOS.&n; */
+multiline_comment|/*&n; * $Id: l440gx.c,v 1.16 2004/11/16 18:29:02 dwmw2 Exp $&n; *&n; * BIOS Flash chip on Intel 440GX board.&n; *&n; * Bugs this currently does not work under linuxBIOS.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -35,6 +35,7 @@ id|mymtd
 suffix:semicolon
 multiline_comment|/* Is this really the vpp port? */
 DECL|function|l440gx_set_vpp
+r_static
 r_void
 id|l440gx_set_vpp
 c_func
@@ -89,6 +90,7 @@ id|VPP_PORT
 suffix:semicolon
 )brace
 DECL|variable|l440gx_map
+r_static
 r_struct
 id|map_info
 id|l440gx_map
@@ -197,11 +199,6 @@ suffix:semicolon
 )brace
 id|l440gx_map.virt
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap_nocache
 c_func
 (paren

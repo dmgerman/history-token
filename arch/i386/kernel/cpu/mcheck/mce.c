@@ -31,7 +31,7 @@ multiline_comment|/* non-fatal.o */
 multiline_comment|/* Handle unconfigured int18 (should never happen) */
 DECL|function|unexpected_machine_check
 r_static
-id|asmlinkage
+id|fastcall
 r_void
 id|unexpected_machine_check
 c_func
@@ -61,7 +61,7 @@ suffix:semicolon
 multiline_comment|/* Call the installed machine check handler for this CPU setup. */
 DECL|variable|machine_check_vector
 r_void
-id|asmlinkage
+id|fastcall
 (paren
 op_star
 id|machine_check_vector

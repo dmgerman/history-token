@@ -94,6 +94,16 @@ id|sysrq_key_op
 op_star
 )paren
 suffix:semicolon
+r_struct
+id|sysrq_key_op
+op_star
+id|__sysrq_get_key_op
+c_func
+(paren
+r_int
+id|key
+)paren
+suffix:semicolon
 macro_line|#else
 DECL|function|__reterr
 r_static

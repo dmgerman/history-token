@@ -3521,6 +3521,23 @@ r_int
 id|inward
 )paren
 suffix:semicolon
+multiline_comment|/* rx skb timestamps */
+r_extern
+r_void
+id|net_enable_timestamp
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|net_disable_timestamp
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SYSCTL
 r_extern
 r_char

@@ -1,9 +1,9 @@
-multiline_comment|/*&n; *  linux/drivers/s390/misc/z90common.h&n; *&n; *  z90crypt 1.3.2&n; *&n; *  Copyright (C)  2001, 2004 IBM Corporation&n; *  Author(s): Robert Burroughs (burrough@us.ibm.com)&n; *             Eric Rossman (edrossma@us.ibm.com)&n; *&n; *  Hotplug &amp; misc device support: Jochen Roehrig (roehrig@de.ibm.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-macro_line|#ifndef _Z90COMMON_
-DECL|macro|_Z90COMMON_
-mdefine_line|#define _Z90COMMON_
+multiline_comment|/*&n; *  linux/drivers/s390/crypto/z90common.h&n; *&n; *  z90crypt 1.3.2&n; *&n; *  Copyright (C)  2001, 2004 IBM Corporation&n; *  Author(s): Robert Burroughs (burrough@us.ibm.com)&n; *             Eric Rossman (edrossma@us.ibm.com)&n; *&n; *  Hotplug &amp; misc device support: Jochen Roehrig (roehrig@de.ibm.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+macro_line|#ifndef _Z90COMMON_H_
+DECL|macro|_Z90COMMON_H_
+mdefine_line|#define _Z90COMMON_H_
 DECL|macro|VERSION_Z90COMMON_H
-mdefine_line|#define VERSION_Z90COMMON_H &quot;$Revision: 1.15 $&quot;
+mdefine_line|#define VERSION_Z90COMMON_H &quot;$Revision: 1.16 $&quot;
 DECL|macro|RESPBUFFSIZE
 mdefine_line|#define RESPBUFFSIZE 256
 DECL|macro|PCI_FUNC_KEY_DECRYPT

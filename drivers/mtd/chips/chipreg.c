@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: chipreg.c,v 1.16 2003/05/29 09:36:15 dwmw2 Exp $&n; *&n; * Registration for chip drivers&n; *&n; */
+multiline_comment|/*&n; * $Id: chipreg.c,v 1.17 2004/11/16 18:29:00 dwmw2 Exp $&n; *&n; * Registration for chip drivers&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 DECL|variable|chip_drvs_lock
+r_static
 id|spinlock_t
 id|chip_drvs_lock
 op_assign

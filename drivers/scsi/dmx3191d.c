@@ -433,6 +433,14 @@ comma
 )brace
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|dmx3191d_pci_tbl
+)paren
+suffix:semicolon
 DECL|variable|dmx3191d_pci_driver
 r_static
 r_struct

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: mtdblock_ro.c,v 1.18 2003/06/23 12:00:08 dwmw2 Exp $&n; *&n; * (C) 2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * Simple read-only (writable only for RAM) mtdblock driver&n; */
+multiline_comment|/*&n; * $Id: mtdblock_ro.c,v 1.19 2004/11/16 18:28:59 dwmw2 Exp $&n; *&n; * (C) 2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * Simple read-only (writable only for RAM) mtdblock driver&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -249,6 +249,7 @@ id|dev
 suffix:semicolon
 )brace
 DECL|variable|mtdblock_tr
+r_static
 r_struct
 id|mtd_blktrans_ops
 id|mtdblock_tr

@@ -378,16 +378,6 @@ r_int
 id|irq
 suffix:semicolon
 multiline_comment|/* IRQ number&t;&t;&t;*/
-DECL|member|wait_cmdq
-id|SYM_QUEHEAD
-id|wait_cmdq
-suffix:semicolon
-multiline_comment|/* Awaiting SCSI commands&t;*/
-DECL|member|busy_cmdq
-id|SYM_QUEHEAD
-id|busy_cmdq
-suffix:semicolon
-multiline_comment|/* Enqueued SCSI commands&t;*/
 DECL|member|timer
 r_struct
 id|timer_list

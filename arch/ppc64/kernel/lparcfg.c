@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|MODULE_VERS
-mdefine_line|#define MODULE_VERS &quot;1.4&quot;
+mdefine_line|#define MODULE_VERS &quot;1.5&quot;
 DECL|macro|MODULE_NAME
 mdefine_line|#define MODULE_NAME &quot;lparcfg&quot;
 multiline_comment|/* #define LPARCFG_DEBUG */
@@ -135,6 +135,65 @@ suffix:semicolon
 DECL|macro|LPARCFG_BUFF_SIZE
 mdefine_line|#define LPARCFG_BUFF_SIZE 4096
 macro_line|#ifdef CONFIG_PPC_ISERIES
+multiline_comment|/*&n; * For iSeries legacy systems, the PPA purr function is available from the&n; * xEmulatedTimeBase field in the paca.&n; */
+DECL|function|get_purr
+r_static
+r_int
+r_int
+id|get_purr
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|sum_purr
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|cpu
+suffix:semicolon
+r_struct
+id|paca_struct
+op_star
+id|lpaca
+suffix:semicolon
+id|for_each_cpu
+c_func
+(paren
+id|cpu
+)paren
+(brace
+id|lpaca
+op_assign
+id|paca
+op_plus
+id|cpu
+suffix:semicolon
+id|sum_purr
+op_add_assign
+id|lpaca-&gt;xLpPaca.xEmulatedTimeBase
+suffix:semicolon
+macro_line|#ifdef PURR_DEBUG
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;get_purr for cpu (%d) has value (%ld) &bslash;n&quot;
+comma
+id|cpu
+comma
+id|lpaca-&gt;xLpPaca.xEmulatedTimeBase
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+r_return
+id|sum_purr
+suffix:semicolon
+)brace
 DECL|macro|lparcfg_write
 mdefine_line|#define lparcfg_write NULL
 multiline_comment|/* &n; * Methods used to fetch LPAR data when running on an iSeries platform.&n; */
@@ -180,6 +239,27 @@ op_assign
 id|get_paca
 c_func
 (paren
+)paren
+suffix:semicolon
+r_int
+r_int
+id|purr
+op_assign
+id|get_purr
+c_func
+(paren
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;%s %s &bslash;n&quot;
+comma
+id|MODULE_NAME
+comma
+id|MODULE_VERS
 )paren
 suffix:semicolon
 id|shared
@@ -499,6 +579,16 @@ id|pool_id
 op_star
 l_int|100
 )paren
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;purr=%ld&bslash;n&quot;
+comma
+id|purr
 )paren
 suffix:semicolon
 )brace

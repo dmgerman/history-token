@@ -1,6 +1,7 @@
 multiline_comment|/************************************************************************&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t;*&n; * &t; --- ISP2100 Fabric Initiator/Target Firmware ---               *&n; *                   with expanded LUN addressing                       *&n; *                   and FcTape (FCP-2) support                         *&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t;*&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t;*&n; ************************************************************************&n;  Copyright (C) 2000 and 2001 Qlogic Corporation &n;  (www.qlogic.com)&n;&n;  This program is distributed in the hope that it will be useful, but&n;  WITHOUT ANY WARRANTY; without even the implied warranty of&n;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;  General Public License for more details.&n;************************************************************************/
 multiline_comment|/*&n; *&t;Firmware Version 1.19.16 (10:36 Nov 02, 2000)&n; */
 DECL|variable|risc_code_addr01
+r_static
 r_int
 r_int
 id|risc_code_addr01
@@ -8,6 +9,7 @@ op_assign
 l_int|0x1000
 suffix:semicolon
 DECL|variable|risc_code_length2100
+r_static
 r_int
 r_int
 id|risc_code_length2100
@@ -15,6 +17,7 @@ op_assign
 l_int|0x9260
 suffix:semicolon
 DECL|variable|risc_code2100
+r_static
 r_int
 r_int
 id|risc_code2100
@@ -74970,6 +74973,7 @@ suffix:semicolon
 multiline_comment|/************************************************************************&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t;*&n; *               --- ISP2200 Initiator/Target Firmware ---              *&n; *             with Fabric (Public Loop), Point-point, and              *&n; *             expanded LUN addressing for FCTAPE                       *&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t;*&n; ************************************************************************&n;  Copyright (C) 2000 and 2100 Qlogic Corporation &n;  (www.qlogic.com)&n;&n;  This program is distributed in the hope that it will be useful, but&n;  WITHOUT ANY WARRANTY; without even the implied warranty of&n;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;  General Public License for more details.&n;************************************************************************/
 multiline_comment|/*&n; *&t;Firmware Version 2.01.27 (11:07 Dec 18, 2000)&n; */
 DECL|variable|risc_code_length2200
+r_static
 r_int
 r_int
 id|risc_code_length2200
@@ -74977,6 +74981,7 @@ op_assign
 l_int|0x9cbf
 suffix:semicolon
 DECL|variable|risc_code2200
+r_static
 r_int
 r_int
 id|risc_code2200

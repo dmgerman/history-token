@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2001 Sistina Software (UK) Limited.&n; *&n; * This file is released under the GPL.&n; */
+multiline_comment|/*&n; * Copyright (C) 2001 Sistina Software (UK) Limited.&n; * Copyright (C) 2004 Red Hat, Inc. All rights reserved.&n; *&n; * This file is released under the GPL.&n; */
 macro_line|#include &quot;dm.h&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -2223,10 +2223,9 @@ id|argv
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Destructively splits up the argument list to pass to ctr.&n; */
-DECL|function|split_args
-r_static
+DECL|function|dm_split_args
 r_int
-id|split_args
+id|dm_split_args
 c_func
 (paren
 r_int
@@ -2647,7 +2646,7 @@ suffix:semicolon
 id|DMERR
 c_func
 (paren
-l_string|&quot;: %s&bslash;n&quot;
+l_string|&quot;%s&quot;
 comma
 id|tgt-&gt;error
 )paren
@@ -2679,7 +2678,7 @@ suffix:semicolon
 id|DMERR
 c_func
 (paren
-l_string|&quot;: %s&bslash;n&quot;
+l_string|&quot;%s&quot;
 comma
 id|tgt-&gt;error
 )paren
@@ -2734,7 +2733,7 @@ suffix:semicolon
 )brace
 id|r
 op_assign
-id|split_args
+id|dm_split_args
 c_func
 (paren
 op_amp
@@ -2819,7 +2818,7 @@ suffix:colon
 id|DMERR
 c_func
 (paren
-l_string|&quot;: %s&bslash;n&quot;
+l_string|&quot;%s&quot;
 comma
 id|tgt-&gt;error
 )paren

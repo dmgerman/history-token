@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: impa7.c,v 1.12 2004/09/16 23:27:13 gleixner Exp $&n; *&n; * Handle mapping of the NOR flash on implementa A7 boards&n; *&n; * Copyright 2002 SYSGO Real-Time Solutions GmbH&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; * $Id: impa7.c,v 1.13 2004/11/04 13:24:14 gleixner Exp $&n; *&n; * Handle mapping of the NOR flash on implementa A7 boards&n; *&n; * Copyright 2002 SYSGO Real-Time Solutions GmbH&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -279,11 +279,6 @@ id|i
 dot
 id|virt
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap
 c_func
 (paren

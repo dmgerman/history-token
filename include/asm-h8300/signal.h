@@ -142,6 +142,8 @@ DECL|macro|SA_ONESHOT
 mdefine_line|#define SA_ONESHOT&t;SA_RESETHAND
 DECL|macro|SA_INTERRUPT
 mdefine_line|#define SA_INTERRUPT&t;0x20000000 /* dummy -- ignored */
+DECL|macro|SA_RESTORER
+mdefine_line|#define SA_RESTORER&t;0x04000000
 multiline_comment|/* &n; * sigaltstack controls&n; */
 DECL|macro|SS_ONSTACK
 mdefine_line|#define SS_ONSTACK&t;1

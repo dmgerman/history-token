@@ -419,6 +419,15 @@ r_struct
 id|fb_tilecursor
 id|cursor
 suffix:semicolon
+r_int
+id|use_sw
+op_assign
+(paren
+id|vc-&gt;vc_cursor_type
+op_amp
+l_int|0x01
+)paren
+suffix:semicolon
 id|cursor.sx
 op_assign
 id|vc-&gt;vc_x
@@ -433,6 +442,8 @@ op_assign
 id|mode
 op_eq
 id|CM_ERASE
+op_logical_or
+id|use_sw
 )paren
 ques
 c_cond

@@ -2020,7 +2020,7 @@ op_logical_neg
 id|rt
 )paren
 r_goto
-id|out
+id|out_unlock
 suffix:semicolon
 id|memset
 c_func

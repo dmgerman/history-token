@@ -1,9 +1,10 @@
-multiline_comment|/* $Id: jffs2_fs_i.h,v 1.16 2003/01/09 14:03:21 dwmw2 Exp $ */
+multiline_comment|/* $Id: jffs2_fs_i.h,v 1.17 2004/11/11 23:51:27 dwmw2 Exp $ */
 macro_line|#ifndef _JFFS2_FS_I
 DECL|macro|_JFFS2_FS_I
 mdefine_line|#define _JFFS2_FS_I
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/rbtree.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 DECL|struct|jffs2_inode_info
 r_struct
 id|jffs2_inode_info

@@ -60,6 +60,16 @@ DECL|macro|S3C2410_LCON_STOPB
 mdefine_line|#define S3C2410_LCON_STOPB&t;  (1&lt;&lt;2)
 DECL|macro|S3C2410_LCON_IRM
 mdefine_line|#define S3C2410_LCON_IRM          (1&lt;&lt;6)
+DECL|macro|S3C2440_UCON_CLKMASK
+mdefine_line|#define S3C2440_UCON_CLKMASK&t;  (3&lt;&lt;10)
+DECL|macro|S3C2440_UCON_PCLK
+mdefine_line|#define S3C2440_UCON_PCLK&t;  (0&lt;&lt;10)
+DECL|macro|S3C2440_UCON_UCLK
+mdefine_line|#define S3C2440_UCON_UCLK&t;  (1&lt;&lt;10)
+DECL|macro|S3C2440_UCON_PCLK2
+mdefine_line|#define S3C2440_UCON_PCLK2&t;  (2&lt;&lt;10)
+DECL|macro|S3C2440_UCON_FCLK
+mdefine_line|#define S3C2440_UCON_FCLK&t;  (3&lt;&lt;10)
 DECL|macro|S3C2410_UCON_UCLK
 mdefine_line|#define S3C2410_UCON_UCLK&t;  (1&lt;&lt;10)
 DECL|macro|S3C2410_UCON_SBREAK
@@ -75,7 +85,7 @@ mdefine_line|#define S3C2410_UCON_RXIRQMODE&t;  (1&lt;&lt;0)
 DECL|macro|S3C2410_UCON_RXFIFO_TOI
 mdefine_line|#define S3C2410_UCON_RXFIFO_TOI&t;  (1&lt;&lt;7)
 DECL|macro|S3C2410_UCON_DEFAULT
-mdefine_line|#define S3C2410_UCON_DEFAULT&t;  (S3C2410_UCON_TXILEVEL | S3C2410_UCON_RXILEVEL &bslash;&n;&t;&t;&t;&t;   | S3C2410_UCON_TXIRQMODE | S3C2410_UCON_RXIRQMODE &bslash;&n;&t;&t;&t;&t;   | S3C2410_UCON_RXFIFO_TOI)
+mdefine_line|#define S3C2410_UCON_DEFAULT&t;  (S3C2410_UCON_TXILEVEL  | &bslash;&n;&t;&t;&t;&t;   S3C2410_UCON_RXILEVEL  | &bslash;&n;&t;&t;&t;&t;   S3C2410_UCON_TXIRQMODE | &bslash;&n;&t;&t;&t;&t;   S3C2410_UCON_RXIRQMODE | &bslash;&n;&t;&t;&t;&t;   S3C2410_UCON_RXFIFO_TOI)
 DECL|macro|S3C2410_UFCON_FIFOMODE
 mdefine_line|#define S3C2410_UFCON_FIFOMODE&t;  (1&lt;&lt;0)
 DECL|macro|S3C2410_UFCON_TXTRIG0
@@ -84,10 +94,31 @@ DECL|macro|S3C2410_UFCON_RXTRIG8
 mdefine_line|#define S3C2410_UFCON_RXTRIG8&t;  (1&lt;&lt;4)
 DECL|macro|S3C2410_UFCON_RXTRIG12
 mdefine_line|#define S3C2410_UFCON_RXTRIG12&t;  (2&lt;&lt;4)
+multiline_comment|/* S3C2440 FIFO trigger levels */
+DECL|macro|S3C2440_UFCON_RXTRIG1
+mdefine_line|#define S3C2440_UFCON_RXTRIG1&t;  (0&lt;&lt;4)
+DECL|macro|S3C2440_UFCON_RXTRIG8
+mdefine_line|#define S3C2440_UFCON_RXTRIG8&t;  (1&lt;&lt;4)
+DECL|macro|S3C2440_UFCON_RXTRIG16
+mdefine_line|#define S3C2440_UFCON_RXTRIG16&t;  (2&lt;&lt;4)
+DECL|macro|S3C2440_UFCON_RXTRIG32
+mdefine_line|#define S3C2440_UFCON_RXTRIG32&t;  (3&lt;&lt;4)
+DECL|macro|S3C2440_UFCON_TXTRIG0
+mdefine_line|#define S3C2440_UFCON_TXTRIG0&t;  (0&lt;&lt;6)
+DECL|macro|S3C2440_UFCON_TXTRIG16
+mdefine_line|#define S3C2440_UFCON_TXTRIG16&t;  (1&lt;&lt;6)
+DECL|macro|S3C2440_UFCON_TXTRIG32
+mdefine_line|#define S3C2440_UFCON_TXTRIG32&t;  (2&lt;&lt;6)
+DECL|macro|S3C2440_UFCON_TXTRIG48
+mdefine_line|#define S3C2440_UFCON_TXTRIG48&t;  (3&lt;&lt;6)
 DECL|macro|S3C2410_UFCON_RESETBOTH
 mdefine_line|#define S3C2410_UFCON_RESETBOTH&t;  (3&lt;&lt;1)
+DECL|macro|S3C2410_UFCON_RESETTX
+mdefine_line|#define S3C2410_UFCON_RESETTX&t;  (1&lt;&lt;2)
+DECL|macro|S3C2410_UFCON_RESETRX
+mdefine_line|#define S3C2410_UFCON_RESETRX&t;  (1&lt;&lt;1)
 DECL|macro|S3C2410_UFCON_DEFAULT
-mdefine_line|#define S3C2410_UFCON_DEFAULT&t;  (S3C2410_UFCON_FIFOMODE | S3C2410_UFCON_TXTRIG0 &bslash;&n;&t;&t;&t;&t;  | S3C2410_UFCON_RXTRIG8 )
+mdefine_line|#define S3C2410_UFCON_DEFAULT&t;  (S3C2410_UFCON_FIFOMODE | &bslash;&n;&t;&t;&t;&t;   S3C2410_UFCON_TXTRIG0  | &bslash;&n;&t;&t;&t;&t;   S3C2410_UFCON_RXTRIG8 )
 DECL|macro|S3C2410_UFSTAT_TXFULL
 mdefine_line|#define S3C2410_UFSTAT_TXFULL&t;  (1&lt;&lt;9)
 DECL|macro|S3C2410_UFSTAT_RXFULL
@@ -122,82 +153,43 @@ DECL|macro|S3C2410_UERSTAT_OVERRUN
 mdefine_line|#define S3C2410_UERSTAT_OVERRUN&t;  (1&lt;&lt;0)
 DECL|macro|S3C2410_UERSTAT_FRAME
 mdefine_line|#define S3C2410_UERSTAT_FRAME&t;  (1&lt;&lt;2)
+DECL|macro|S3C2410_UERSTAT_BREAK
+mdefine_line|#define S3C2410_UERSTAT_BREAK&t;  (1&lt;&lt;3)
 DECL|macro|S3C2410_UERSTAT_ANY
-mdefine_line|#define S3C2410_UERSTAT_ANY&t;  (S3C2410_UERSTAT_OVERRUN | S3C2410_UERSTAT_FRAME)
-multiline_comment|/* fifo size information */
-macro_line|#ifndef __ASSEMBLY__
-DECL|function|S3C2410_UFCON_RXC
-r_static
-r_inline
-r_int
-id|S3C2410_UFCON_RXC
-c_func
-(paren
-r_int
-id|fcon
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|fcon
-op_amp
-id|S3C2410_UFSTAT_RXFULL
-)paren
-r_return
-l_int|16
-suffix:semicolon
-r_return
-(paren
-(paren
-id|fcon
-)paren
-op_amp
-id|S3C2410_UFSTAT_RXMASK
-)paren
-op_rshift
-id|S3C2410_UFSTAT_RXSHIFT
-suffix:semicolon
-)brace
-DECL|function|S3C2410_UFCON_TXC
-r_static
-r_inline
-r_int
-id|S3C2410_UFCON_TXC
-c_func
-(paren
-r_int
-id|fcon
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|fcon
-op_amp
-id|S3C2410_UFSTAT_TXFULL
-)paren
-r_return
-l_int|16
-suffix:semicolon
-r_return
-(paren
-(paren
-id|fcon
-)paren
-op_amp
-id|S3C2410_UFSTAT_TXMASK
-)paren
-op_rshift
-id|S3C2410_UFSTAT_TXSHIFT
-suffix:semicolon
-)brace
-macro_line|#endif /* __ASSEMBLY__ */
+mdefine_line|#define S3C2410_UERSTAT_ANY&t;  (S3C2410_UERSTAT_OVERRUN | &bslash;&n;&t;&t;&t;&t;   S3C2410_UERSTAT_FRAME | &bslash;&n;&t;&t;&t;&t;   S3C2410_UERSTAT_BREAK)
 DECL|macro|S3C2410_UMSTAT_CTS
 mdefine_line|#define S3C2410_UMSTAT_CTS&t;  (1&lt;&lt;0)
 DECL|macro|S3C2410_UMSTAT_DeltaCTS
 mdefine_line|#define S3C2410_UMSTAT_DeltaCTS&t;  (1&lt;&lt;2)
 macro_line|#ifndef __ASSEMBLY__
+multiline_comment|/* struct s3c24xx_uart_clksrc&n; *&n; * this structure defines a named clock source that can be used for the&n; * uart, so that the best clock can be selected for the requested baud&n; * rate.&n; *&n; * min_baud and max_baud define the range of baud-rates this clock is&n; * acceptable for, if they are both zero, it is assumed any baud rate that&n; * can be generated from this clock will be used.&n; *&n; * divisor gives the divisor from the clock to the one seen by the uart&n;*/
+DECL|struct|s3c24xx_uart_clksrc
+r_struct
+id|s3c24xx_uart_clksrc
+(brace
+DECL|member|name
+r_const
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|divisor
+r_int
+r_int
+id|divisor
+suffix:semicolon
+DECL|member|min_baud
+r_int
+r_int
+id|min_baud
+suffix:semicolon
+DECL|member|max_baud
+r_int
+r_int
+id|max_baud
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* configuration structure for per-machine configurations for the&n; * serial port&n; *&n; * the pointer is setup by the machine specific initialisation from the&n; * arch/arm/mach-s3c2410/ directory.&n;*/
 DECL|struct|s3c2410_uartcfg
 r_struct
@@ -219,13 +211,12 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-DECL|member|clock
+DECL|member|uart_flags
 r_int
 r_int
-op_star
-id|clock
+id|uart_flags
 suffix:semicolon
-multiline_comment|/* pointer to clock rate */
+multiline_comment|/* default uart flags */
 DECL|member|ucon
 r_int
 r_int
@@ -244,13 +235,28 @@ r_int
 id|ufcon
 suffix:semicolon
 multiline_comment|/* value of ufcon for port */
+DECL|member|clocks
+r_struct
+id|s3c24xx_uart_clksrc
+op_star
+id|clocks
+suffix:semicolon
+DECL|member|clocks_size
+r_int
+r_int
+id|clocks_size
+suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* s3c24xx_uart_devs&n; *&n; * this is exported from the core as we cannot use driver_register(),&n; * or platform_add_device() before the console_initcall()&n;*/
 r_extern
 r_struct
-id|s3c2410_uartcfg
+id|platform_device
 op_star
-id|s3c2410_uartcfgs
+id|s3c24xx_uart_devs
+(braket
+l_int|3
+)braket
 suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __ASM_ARM_REGS_SERIAL_H */

@@ -1894,9 +1894,11 @@ id|pfn_to_page
 c_func
 (paren
 id|max_low_pfn
-op_plus
+op_minus
 l_int|1
 )paren
+op_plus
+l_int|1
 suffix:semicolon
 id|num_physpages
 op_assign

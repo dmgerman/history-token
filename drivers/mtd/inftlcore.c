@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * inftlcore.c -- Linux driver for Inverse Flash Translation Layer (INFTL)&n; *&n; * (C) Copyright 2002, Greg Ungerer (gerg@snapgear.com)&n; *&n; * Based heavily on the nftlcore.c code which is:&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * Author: David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: inftlcore.c,v 1.17 2004/08/09 13:56:48 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/* &n; * inftlcore.c -- Linux driver for Inverse Flash Translation Layer (INFTL)&n; *&n; * (C) Copyright 2002, Greg Ungerer (gerg@snapgear.com)&n; *&n; * Based heavily on the nftlcore.c code which is:&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * Author: David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: inftlcore.c,v 1.18 2004/11/16 18:28:59 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -1265,6 +1265,7 @@ id|targetEUN
 suffix:semicolon
 )brace
 DECL|function|INFTL_makefreeblock
+r_static
 id|u16
 id|INFTL_makefreeblock
 c_func
@@ -3490,6 +3491,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|inftl_tr
+r_static
 r_struct
 id|mtd_blktrans_ops
 id|inftl_tr
@@ -3549,6 +3551,7 @@ id|inftlmountrev
 )braket
 suffix:semicolon
 DECL|function|init_inftl
+r_static
 r_int
 id|__init
 id|init_inftl
@@ -3561,7 +3564,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;INFTL: inftlcore.c $Revision: 1.17 $, &quot;
+l_string|&quot;INFTL: inftlcore.c $Revision: 1.18 $, &quot;
 l_string|&quot;inftlmount.c %s&bslash;n&quot;
 comma
 id|inftlmountrev

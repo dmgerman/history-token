@@ -6226,7 +6226,9 @@ l_string|&quot;mesh: lun mismatch &quot;
 l_string|&quot;(%d != %d) on reselection from &quot;
 l_string|&quot;target %d&bslash;n&quot;
 comma
-id|i
+id|code
+op_minus
+id|IDENTIFY_BASE
 comma
 id|cmd-&gt;device-&gt;lun
 comma
@@ -8789,7 +8791,7 @@ c_cond
 (paren
 id|state
 op_eq
-id|mdev-&gt;ofdev.dev.power_state
+id|mdev-&gt;ofdev.dev.power.power_state
 op_logical_or
 id|state
 OL
@@ -8869,7 +8871,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|mdev-&gt;ofdev.dev.power_state
+id|mdev-&gt;ofdev.dev.power.power_state
 op_assign
 id|state
 suffix:semicolon
@@ -8912,7 +8914,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mdev-&gt;ofdev.dev.power_state
+id|mdev-&gt;ofdev.dev.power.power_state
 op_eq
 l_int|0
 )paren
@@ -8967,7 +8969,7 @@ c_func
 id|ms-&gt;host
 )paren
 suffix:semicolon
-id|mdev-&gt;ofdev.dev.power_state
+id|mdev-&gt;ofdev.dev.power.power_state
 op_assign
 l_int|0
 suffix:semicolon

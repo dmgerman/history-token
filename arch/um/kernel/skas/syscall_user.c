@@ -5,13 +5,6 @@ macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;syscall_user.h&quot;
 macro_line|#include &quot;sysdep/ptrace.h&quot;
 macro_line|#include &quot;sysdep/sigcontext.h&quot;
-multiline_comment|/* XXX Bogus */
-DECL|macro|ERESTARTSYS
-mdefine_line|#define ERESTARTSYS&t;512
-DECL|macro|ERESTARTNOINTR
-mdefine_line|#define ERESTARTNOINTR&t;513
-DECL|macro|ERESTARTNOHAND
-mdefine_line|#define ERESTARTNOHAND&t;514
 DECL|function|handle_syscall
 r_void
 id|handle_syscall
@@ -65,38 +58,6 @@ comma
 id|result
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|result
-op_eq
-op_minus
-id|ERESTARTNOHAND
-)paren
-op_logical_or
-(paren
-id|result
-op_eq
-op_minus
-id|ERESTARTSYS
-)paren
-op_logical_or
-(paren
-id|result
-op_eq
-op_minus
-id|ERESTARTNOINTR
-)paren
-)paren
-(brace
-id|do_signal
-c_func
-(paren
-id|result
-)paren
-suffix:semicolon
-)brace
 id|syscall_trace
 c_func
 (paren

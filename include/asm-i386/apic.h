@@ -133,9 +133,6 @@ c_func
 r_void
 )paren
 (brace
-r_do
-(brace
-)brace
 r_while
 c_loop
 (paren
@@ -146,6 +143,10 @@ id|APIC_ICR
 )paren
 op_amp
 id|APIC_ICR_BUSY
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
