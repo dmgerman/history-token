@@ -14,19 +14,24 @@ id|__kernel_uid32_t
 id|qid_t
 suffix:semicolon
 multiline_comment|/* Type in which we store ids in memory */
-multiline_comment|/*&n; * Convert diskblocks to blocks and the other way around.&n; */
-DECL|macro|dbtob
-mdefine_line|#define dbtob(num) (num &lt;&lt; BLOCK_SIZE_BITS)
-DECL|macro|btodb
-mdefine_line|#define btodb(num) (num &gt;&gt; BLOCK_SIZE_BITS)
-multiline_comment|/*&n; * Convert count of filesystem blocks to diskquota blocks, meant&n; * for filesystems where i_blksize != BLOCK_SIZE&n; */
-DECL|macro|fs_to_dq_blocks
-mdefine_line|#define fs_to_dq_blocks(num, blksize) (((num) * (blksize)) / BLOCK_SIZE)
-multiline_comment|/*&n; * Definitions for disk quotas imposed on the average user&n; * (big brother finally hits Linux).&n; *&n; * The following constants define the amount of time given a user&n; * before the soft limits are treated as hard limits (usually resulting&n; * in an allocation failure). The timer is started when the user crosses&n; * their soft limit, it is reset when they go below their soft limit.&n; */
-DECL|macro|MAX_IQ_TIME
-mdefine_line|#define MAX_IQ_TIME  604800&t;/* (7*24*60*60) 1 week */
-DECL|macro|MAX_DQ_TIME
-mdefine_line|#define MAX_DQ_TIME  604800&t;/* (7*24*60*60) 1 week */
+DECL|typedef|qsize_t
+r_typedef
+id|__u64
+id|qsize_t
+suffix:semicolon
+multiline_comment|/* Type in which we store sizes */
+multiline_comment|/* Size of blocks in which are counted size limits */
+DECL|macro|QUOTABLOCK_BITS
+mdefine_line|#define QUOTABLOCK_BITS 10
+DECL|macro|QUOTABLOCK_SIZE
+mdefine_line|#define QUOTABLOCK_SIZE (1 &lt;&lt; QUOTABLOCK_BITS)
+multiline_comment|/* Conversion routines from and to quota blocks */
+DECL|macro|qb2kb
+mdefine_line|#define qb2kb(x) ((x) &lt;&lt; (QUOTABLOCK_BITS-10))
+DECL|macro|kb2qb
+mdefine_line|#define kb2qb(x) ((x) &gt;&gt; (QUOTABLOCK_BITS-10))
+DECL|macro|toqb
+mdefine_line|#define toqb(x) (((x) + QUOTABLOCK_SIZE - 1) &gt;&gt; QUOTABLOCK_BITS)
 DECL|macro|MAXQUOTAS
 mdefine_line|#define MAXQUOTAS 2
 DECL|macro|USRQUOTA
@@ -64,11 +69,11 @@ id|__u32
 id|dqb_bsoftlimit
 suffix:semicolon
 multiline_comment|/* preferred limit on disk blks */
-DECL|member|dqb_curblocks
-id|__u32
-id|dqb_curblocks
+DECL|member|dqb_curspace
+id|qsize_t
+id|dqb_curspace
 suffix:semicolon
-multiline_comment|/* current block count */
+multiline_comment|/* current used space */
 DECL|member|dqb_ihardlimit
 id|__u32
 id|dqb_ihardlimit
@@ -165,8 +170,8 @@ DECL|macro|dq_bhardlimit
 mdefine_line|#define&t;dq_bhardlimit&t;dq_dqb.dqb_bhardlimit
 DECL|macro|dq_bsoftlimit
 mdefine_line|#define&t;dq_bsoftlimit&t;dq_dqb.dqb_bsoftlimit
-DECL|macro|dq_curblocks
-mdefine_line|#define&t;dq_curblocks&t;dq_dqb.dqb_curblocks
+DECL|macro|dq_curspace
+mdefine_line|#define&t;dq_curspace&t;dq_dqb.dqb_curspace
 DECL|macro|dq_ihardlimit
 mdefine_line|#define&t;dq_ihardlimit&t;dq_dqb.dqb_ihardlimit
 DECL|macro|dq_isoftlimit

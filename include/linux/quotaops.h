@@ -62,7 +62,7 @@ id|type
 suffix:semicolon
 r_extern
 r_int
-id|dquot_alloc_block
+id|dquot_alloc_space
 c_func
 (paren
 r_struct
@@ -70,11 +70,10 @@ id|inode
 op_star
 id|inode
 comma
-r_int
-r_int
+id|qsize_t
 id|number
 comma
-r_char
+r_int
 id|prealloc
 )paren
 suffix:semicolon
@@ -96,7 +95,7 @@ id|number
 suffix:semicolon
 r_extern
 r_void
-id|dquot_free_block
+id|dquot_free_space
 c_func
 (paren
 r_struct
@@ -104,8 +103,7 @@ id|inode
 op_star
 id|inode
 comma
-r_int
-r_int
+id|qsize_t
 id|number
 )paren
 suffix:semicolon
@@ -261,11 +259,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|DQUOT_PREALLOC_BLOCK_NODIRTY
+DECL|function|DQUOT_PREALLOC_SPACE_NODIRTY
 r_static
 id|__inline__
 r_int
-id|DQUOT_PREALLOC_BLOCK_NODIRTY
+id|DQUOT_PREALLOC_SPACE_NODIRTY
 c_func
 (paren
 r_struct
@@ -273,7 +271,7 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|qsize_t
 id|nr
 )paren
 (brace
@@ -292,24 +290,18 @@ id|inode-&gt;i_sb
 )paren
 )paren
 (brace
-multiline_comment|/* Number of used blocks is updated in alloc_block() */
+multiline_comment|/* Used space is updated in alloc_space() */
 r_if
 c_cond
 (paren
 id|inode-&gt;i_sb-&gt;dq_op
 op_member_access_from_pointer
-id|alloc_block
+id|alloc_space
 c_func
 (paren
 id|inode
 comma
-id|fs_to_dq_blocks
-c_func
-(paren
 id|nr
-comma
-id|inode-&gt;i_sb-&gt;s_blocksize
-)paren
 comma
 l_int|1
 )paren
@@ -331,12 +323,8 @@ r_else
 id|inode-&gt;i_blocks
 op_add_assign
 id|nr
-op_lshift
-(paren
-id|inode-&gt;i_sb-&gt;s_blocksize_bits
-op_minus
+op_rshift
 l_int|9
-)paren
 suffix:semicolon
 id|unlock_kernel
 c_func
@@ -347,11 +335,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|DQUOT_PREALLOC_BLOCK
+DECL|function|DQUOT_PREALLOC_SPACE
 r_static
 id|__inline__
 r_int
-id|DQUOT_PREALLOC_BLOCK
+id|DQUOT_PREALLOC_SPACE
 c_func
 (paren
 r_struct
@@ -359,7 +347,7 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|qsize_t
 id|nr
 )paren
 (brace
@@ -373,7 +361,7 @@ op_logical_neg
 (paren
 id|ret
 op_assign
-id|DQUOT_PREALLOC_BLOCK_NODIRTY
+id|DQUOT_PREALLOC_SPACE_NODIRTY
 c_func
 (paren
 id|inode
@@ -392,11 +380,11 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|DQUOT_ALLOC_BLOCK_NODIRTY
+DECL|function|DQUOT_ALLOC_SPACE_NODIRTY
 r_static
 id|__inline__
 r_int
-id|DQUOT_ALLOC_BLOCK_NODIRTY
+id|DQUOT_ALLOC_SPACE_NODIRTY
 c_func
 (paren
 r_struct
@@ -404,7 +392,7 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|qsize_t
 id|nr
 )paren
 (brace
@@ -423,24 +411,18 @@ id|inode-&gt;i_sb
 )paren
 )paren
 (brace
-multiline_comment|/* Number of used blocks is updated in alloc_block() */
+multiline_comment|/* Used space is updated in alloc_space() */
 r_if
 c_cond
 (paren
 id|inode-&gt;i_sb-&gt;dq_op
 op_member_access_from_pointer
-id|alloc_block
+id|alloc_space
 c_func
 (paren
 id|inode
 comma
-id|fs_to_dq_blocks
-c_func
-(paren
 id|nr
-comma
-id|inode-&gt;i_sb-&gt;s_blocksize
-)paren
 comma
 l_int|0
 )paren
@@ -462,12 +444,8 @@ r_else
 id|inode-&gt;i_blocks
 op_add_assign
 id|nr
-op_lshift
-(paren
-id|inode-&gt;i_sb-&gt;s_blocksize_bits
-op_minus
+op_rshift
 l_int|9
-)paren
 suffix:semicolon
 id|unlock_kernel
 c_func
@@ -478,11 +456,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|DQUOT_ALLOC_BLOCK
+DECL|function|DQUOT_ALLOC_SPACE
 r_static
 id|__inline__
 r_int
-id|DQUOT_ALLOC_BLOCK
+id|DQUOT_ALLOC_SPACE
 c_func
 (paren
 r_struct
@@ -490,7 +468,7 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|qsize_t
 id|nr
 )paren
 (brace
@@ -504,7 +482,7 @@ op_logical_neg
 (paren
 id|ret
 op_assign
-id|DQUOT_ALLOC_BLOCK_NODIRTY
+id|DQUOT_ALLOC_SPACE_NODIRTY
 c_func
 (paren
 id|inode
@@ -592,11 +570,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|DQUOT_FREE_BLOCK_NODIRTY
+DECL|function|DQUOT_FREE_SPACE_NODIRTY
 r_static
 id|__inline__
 r_void
-id|DQUOT_FREE_BLOCK_NODIRTY
+id|DQUOT_FREE_SPACE_NODIRTY
 c_func
 (paren
 r_struct
@@ -604,7 +582,7 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|qsize_t
 id|nr
 )paren
 (brace
@@ -624,30 +602,20 @@ id|inode-&gt;i_sb
 )paren
 id|inode-&gt;i_sb-&gt;dq_op
 op_member_access_from_pointer
-id|free_block
+id|free_space
 c_func
 (paren
 id|inode
 comma
-id|fs_to_dq_blocks
-c_func
-(paren
 id|nr
-comma
-id|inode-&gt;i_sb-&gt;s_blocksize
-)paren
 )paren
 suffix:semicolon
 r_else
 id|inode-&gt;i_blocks
 op_sub_assign
 id|nr
-op_lshift
-(paren
-id|inode-&gt;i_sb-&gt;s_blocksize_bits
-op_minus
+op_rshift
 l_int|9
-)paren
 suffix:semicolon
 id|unlock_kernel
 c_func
@@ -655,11 +623,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|DQUOT_FREE_BLOCK
+DECL|function|DQUOT_FREE_SPACE
 r_static
 id|__inline__
 r_void
-id|DQUOT_FREE_BLOCK
+id|DQUOT_FREE_SPACE
 c_func
 (paren
 r_struct
@@ -667,11 +635,11 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|qsize_t
 id|nr
 )paren
 (brace
-id|DQUOT_FREE_BLOCK_NODIRTY
+id|DQUOT_FREE_SPACE_NODIRTY
 c_func
 (paren
 id|inode
@@ -830,11 +798,11 @@ DECL|macro|DQUOT_OFF
 mdefine_line|#define DQUOT_OFF(sb)&t;&t;&t;&t;do { } while(0)
 DECL|macro|DQUOT_TRANSFER
 mdefine_line|#define DQUOT_TRANSFER(inode, iattr)&t;&t;(0)
-DECL|function|DQUOT_PREALLOC_BLOCK_NODIRTY
+DECL|function|DQUOT_PREALLOC_SPACE_NODIRTY
 r_extern
 id|__inline__
 r_int
-id|DQUOT_PREALLOC_BLOCK_NODIRTY
+id|DQUOT_PREALLOC_SPACE_NODIRTY
 c_func
 (paren
 r_struct
@@ -842,7 +810,7 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|qsize_t
 id|nr
 )paren
 (brace
@@ -854,12 +822,8 @@ suffix:semicolon
 id|inode-&gt;i_blocks
 op_add_assign
 id|nr
-op_lshift
-(paren
-id|inode-&gt;i_sb-&gt;s_blocksize_bits
-op_minus
+op_rshift
 l_int|9
-)paren
 suffix:semicolon
 id|unlock_kernel
 c_func
@@ -870,11 +834,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|DQUOT_PREALLOC_BLOCK
+DECL|function|DQUOT_PREALLOC_SPACE
 r_extern
 id|__inline__
 r_int
-id|DQUOT_PREALLOC_BLOCK
+id|DQUOT_PREALLOC_SPACE
 c_func
 (paren
 r_struct
@@ -882,11 +846,11 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|qsize_t
 id|nr
 )paren
 (brace
-id|DQUOT_PREALLOC_BLOCK_NODIRTY
+id|DQUOT_PREALLOC_SPACE_NODIRTY
 c_func
 (paren
 id|inode
@@ -904,11 +868,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|DQUOT_ALLOC_BLOCK_NODIRTY
+DECL|function|DQUOT_ALLOC_SPACE_NODIRTY
 r_extern
 id|__inline__
 r_int
-id|DQUOT_ALLOC_BLOCK_NODIRTY
+id|DQUOT_ALLOC_SPACE_NODIRTY
 c_func
 (paren
 r_struct
@@ -916,7 +880,7 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|qsize_t
 id|nr
 )paren
 (brace
@@ -928,12 +892,8 @@ suffix:semicolon
 id|inode-&gt;i_blocks
 op_add_assign
 id|nr
-op_lshift
-(paren
-id|inode-&gt;i_sb-&gt;s_blocksize_bits
-op_minus
+op_rshift
 l_int|9
-)paren
 suffix:semicolon
 id|unlock_kernel
 c_func
@@ -944,11 +904,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|DQUOT_ALLOC_BLOCK
+DECL|function|DQUOT_ALLOC_SPACE
 r_extern
 id|__inline__
 r_int
-id|DQUOT_ALLOC_BLOCK
+id|DQUOT_ALLOC_SPACE
 c_func
 (paren
 r_struct
@@ -956,11 +916,11 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|qsize_t
 id|nr
 )paren
 (brace
-id|DQUOT_ALLOC_BLOCK_NODIRTY
+id|DQUOT_ALLOC_SPACE_NODIRTY
 c_func
 (paren
 id|inode
@@ -978,11 +938,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|DQUOT_FREE_BLOCK_NODIRTY
+DECL|function|DQUOT_FREE_SPACE_NODIRTY
 r_extern
 id|__inline__
 r_void
-id|DQUOT_FREE_BLOCK_NODIRTY
+id|DQUOT_FREE_SPACE_NODIRTY
 c_func
 (paren
 r_struct
@@ -990,7 +950,7 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|qsize_t
 id|nr
 )paren
 (brace
@@ -1002,12 +962,8 @@ suffix:semicolon
 id|inode-&gt;i_blocks
 op_sub_assign
 id|nr
-op_lshift
-(paren
-id|inode-&gt;i_sb-&gt;s_blocksize_bits
-op_minus
+op_rshift
 l_int|9
-)paren
 suffix:semicolon
 id|unlock_kernel
 c_func
@@ -1015,11 +971,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|DQUOT_FREE_BLOCK
+DECL|function|DQUOT_FREE_SPACE
 r_extern
 id|__inline__
 r_void
-id|DQUOT_FREE_BLOCK
+id|DQUOT_FREE_SPACE
 c_func
 (paren
 r_struct
@@ -1027,11 +983,11 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|qsize_t
 id|nr
 )paren
 (brace
-id|DQUOT_FREE_BLOCK_NODIRTY
+id|DQUOT_FREE_SPACE_NODIRTY
 c_func
 (paren
 id|inode
@@ -1047,5 +1003,17 @@ id|inode
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_QUOTA */
+DECL|macro|DQUOT_PREALLOC_BLOCK_NODIRTY
+mdefine_line|#define DQUOT_PREALLOC_BLOCK_NODIRTY(inode, nr)&t;DQUOT_PREALLOC_SPACE_NODIRTY(inode, ((qsize_t)(nr)) &lt;&lt; (inode)-&gt;i_sb-&gt;s_blocksize_bits)
+DECL|macro|DQUOT_PREALLOC_BLOCK
+mdefine_line|#define DQUOT_PREALLOC_BLOCK(inode, nr)&t;DQUOT_PREALLOC_SPACE(inode, ((qsize_t)(nr)) &lt;&lt; (inode)-&gt;i_sb-&gt;s_blocksize_bits)
+DECL|macro|DQUOT_ALLOC_BLOCK_NODIRTY
+mdefine_line|#define DQUOT_ALLOC_BLOCK_NODIRTY(inode, nr) DQUOT_ALLOC_SPACE_NODIRTY(inode, ((qsize_t)(nr)) &lt;&lt; (inode)-&gt;i_sb-&gt;s_blocksize_bits)
+DECL|macro|DQUOT_ALLOC_BLOCK
+mdefine_line|#define DQUOT_ALLOC_BLOCK(inode, nr) DQUOT_ALLOC_SPACE(inode, fs_to_dq_blocks(nr, ((qsize_t)(nr)) &lt;&lt; (inode)-&gt;i_sb-&gt;s_blocksize_bits)
+DECL|macro|DQUOT_FREE_BLOCK_NODIRTY
+mdefine_line|#define DQUOT_FREE_BLOCK_NODIRTY(inode, nr) DQUOT_FREE_SPACE_NODIRTY(inode, ((qsize_t)(nr)) &lt;&lt; (inode)-&gt;i_sb-&gt;s_blocksize_bits)
+DECL|macro|DQUOT_FREE_BLOCK
+mdefine_line|#define DQUOT_FREE_BLOCK(inode, nr) DQUOT_FREE_SPACE(inode, fs_to_dq_blocks(nr, ((qsize_t)(nr)) &lt;&lt; (inode)-&gt;i_sb-&gt;s_blocksize_bits)
 macro_line|#endif /* _LINUX_QUOTAOPS_ */
 eof
