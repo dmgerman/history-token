@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ramdisk.c - Multiple RAM disk driver - gzip-loading version - v. 0.8 beta.&n; * &n; * (C) Chad Page, Theodore Ts&squot;o, et. al, 1995. &n; *&n; * This RAM disk is designed to have filesystems created on it and mounted&n; * just like a regular floppy disk.  &n; *  &n; * It also does something suggested by Linus: use the buffer cache as the&n; * RAM disk data.  This makes it possible to dynamically allocate the RAM disk&n; * buffer - with some consequences I have to deal with as I write this. &n; * &n; * This code is based on the original ramdisk.c, written mostly by&n; * Theodore Ts&squot;o (TYT) in 1991.  The code was largely rewritten by&n; * Chad Page to use the buffer cache to store the RAM disk data in&n; * 1995; Theodore then took over the driver again, and cleaned it up&n; * for inclusion in the mainline kernel.&n; *&n; * The original CRAMDISK code was written by Richard Lyons, and&n; * adapted by Chad Page to use the new RAM disk interface.  Theodore&n; * Ts&squot;o rewrote it so that both the compressed RAM disk loader and the&n; * kernel decompressor uses the same inflate.c codebase.  The RAM disk&n; * loader now also loads into a dynamic (buffer cache based) RAM disk,&n; * not the old static RAM disk.  Support for the old static RAM disk has&n; * been completely removed.&n; *&n; * Loadable module support added by Tom Dyas.&n; *&n; * Further cleanups by Chad Page (page0588@sundance.sjsu.edu):&n; *&t;Cosmetic changes in #ifdef MODULE, code movement, etc.&n; * &t;When the RAM disk module is removed, free the protected buffers&n; * &t;Default RAM disk size changed to 2.88 MB&n; *&n; *  Added initrd: Werner Almesberger &amp; Hans Lermen, Feb &squot;96&n; *&n; * 4/25/96 : Made RAM disk size a parameter (default is now 4 MB) &n; *&t;&t;- Chad Page&n; *&n; * Add support for fs images split across &gt;1 disk, Paul Gortmaker, Mar &squot;98&n; *&n; * Make block size and block size shift for RAM disks a global macro&n; * and set blk_size for -ENOSPC,     Werner Fink &lt;werner@suse.de&gt;, Apr &squot;99&n; */
+multiline_comment|/*&n; * ramdisk.c - Multiple RAM disk driver - gzip-loading version - v. 0.8 beta.&n; *&n; * (C) Chad Page, Theodore Ts&squot;o, et. al, 1995.&n; *&n; * This RAM disk is designed to have filesystems created on it and mounted&n; * just like a regular floppy disk.&n; *&n; * It also does something suggested by Linus: use the buffer cache as the&n; * RAM disk data.  This makes it possible to dynamically allocate the RAM disk&n; * buffer - with some consequences I have to deal with as I write this.&n; *&n; * This code is based on the original ramdisk.c, written mostly by&n; * Theodore Ts&squot;o (TYT) in 1991.  The code was largely rewritten by&n; * Chad Page to use the buffer cache to store the RAM disk data in&n; * 1995; Theodore then took over the driver again, and cleaned it up&n; * for inclusion in the mainline kernel.&n; *&n; * The original CRAMDISK code was written by Richard Lyons, and&n; * adapted by Chad Page to use the new RAM disk interface.  Theodore&n; * Ts&squot;o rewrote it so that both the compressed RAM disk loader and the&n; * kernel decompressor uses the same inflate.c codebase.  The RAM disk&n; * loader now also loads into a dynamic (buffer cache based) RAM disk,&n; * not the old static RAM disk.  Support for the old static RAM disk has&n; * been completely removed.&n; *&n; * Loadable module support added by Tom Dyas.&n; *&n; * Further cleanups by Chad Page (page0588@sundance.sjsu.edu):&n; *&t;Cosmetic changes in #ifdef MODULE, code movement, etc.&n; * &t;When the RAM disk module is removed, free the protected buffers&n; * &t;Default RAM disk size changed to 2.88 MB&n; *&n; *  Added initrd: Werner Almesberger &amp; Hans Lermen, Feb &squot;96&n; *&n; * 4/25/96 : Made RAM disk size a parameter (default is now 4 MB)&n; *&t;&t;- Chad Page&n; *&n; * Add support for fs images split across &gt;1 disk, Paul Gortmaker, Mar &squot;98&n; *&n; * Make block size and block size shift for RAM disks a global macro&n; * and set blk_size for -ENOSPC,     Werner Fink &lt;werner@suse.de&gt;, Apr &squot;99&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -17,7 +17,7 @@ macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* The RAM disk size is now a parameter */
 DECL|macro|NUM_RAMDISKS
-mdefine_line|#define NUM_RAMDISKS 16&t;&t;/* This cannot be overridden (yet) */ 
+mdefine_line|#define NUM_RAMDISKS 16&t;&t;/* This cannot be overridden (yet) */
 multiline_comment|/* Various static variables go here.  Most are used only in the RAM disk code.&n; */
 DECL|variable|rd_disks
 r_static
@@ -50,7 +50,7 @@ id|rd_queue
 id|NUM_RAMDISKS
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * Parameters for the boot-loading of the RAM disk.  These are set by&n; * init/main.c (from arguments to the kernel command line) or from the&n; * architecture-specific setup routine (from the stored boot sector&n; * information). &n; */
+multiline_comment|/*&n; * Parameters for the boot-loading of the RAM disk.  These are set by&n; * init/main.c (from arguments to the kernel command line) or from the&n; * architecture-specific setup routine (from the stored boot sector&n; * information).&n; */
 DECL|variable|rd_size
 r_int
 id|rd_size
@@ -839,7 +839,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/* special: we want to release the ramdisk memory,&n;&t;   it&squot;s not like with the other blockdevices where&n;&t;   this ioctl only flushes away the buffer cache. */
+multiline_comment|/*&n;&t; * special: we want to release the ramdisk memory, it&squot;s not like with&n;&t; * the other blockdevices where this ioctl only flushes away the buffer&n;&t; * cache&n;&t; */
 id|error
 op_assign
 op_minus
@@ -1024,12 +1024,13 @@ id|rd_ioctl
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Before freeing the module, invalidate all of the protected buffers! */
+multiline_comment|/*&n; * Before freeing the module, invalidate all of the protected buffers!&n; */
 DECL|function|rd_cleanup
 r_static
 r_void
 id|__exit
 id|rd_cleanup
+c_func
 (paren
 r_void
 )paren
@@ -1124,12 +1125,13 @@ l_string|&quot;ramdisk&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* This is the registration and initialization section of the RAM disk driver */
+multiline_comment|/*&n; * This is the registration and initialization section of the RAM disk driver&n; */
 DECL|function|rd_init
 r_static
 r_int
 id|__init
 id|rd_init
+c_func
 (paren
 r_void
 )paren
