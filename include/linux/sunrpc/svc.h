@@ -184,6 +184,13 @@ op_star
 id|rq_procinfo
 suffix:semicolon
 multiline_comment|/* procedure info */
+DECL|member|rq_authop
+r_struct
+id|auth_ops
+op_star
+id|rq_authop
+suffix:semicolon
+multiline_comment|/* authentication flavour */
 DECL|member|rq_cred
 r_struct
 id|svc_cred
@@ -240,14 +247,8 @@ id|u32
 id|rq_prot
 suffix:semicolon
 multiline_comment|/* IP protocol */
-DECL|member|rq_verfed
 r_int
 r_int
-id|rq_verfed
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* reply has verifier */
 DECL|member|rq_userset
 id|rq_userset
 suffix:colon
@@ -258,14 +259,8 @@ DECL|member|rq_secure
 id|rq_secure
 suffix:colon
 l_int|1
-comma
-multiline_comment|/* secure port */
-DECL|member|rq_auth
-id|rq_auth
-suffix:colon
-l_int|1
 suffix:semicolon
-multiline_comment|/* check client */
+multiline_comment|/* secure port */
 DECL|member|rq_argp
 r_void
 op_star
@@ -309,7 +304,7 @@ DECL|member|rq_wait
 id|wait_queue_head_t
 id|rq_wait
 suffix:semicolon
-multiline_comment|/* synchronozation */
+multiline_comment|/* synchronization */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * RPC program&n; */

@@ -4214,10 +4214,6 @@ id|rqstp-&gt;rq_userset
 op_assign
 l_int|0
 suffix:semicolon
-id|rqstp-&gt;rq_verfed
-op_assign
-l_int|0
-suffix:semicolon
 id|svc_getu32
 c_func
 (paren

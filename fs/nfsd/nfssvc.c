@@ -599,11 +599,6 @@ suffix:semicolon
 id|nfsdstats.th_cnt
 op_increment
 suffix:semicolon
-multiline_comment|/* Let svc_process check client&squot;s authentication. */
-id|rqstp-&gt;rq_auth
-op_assign
-l_int|1
-suffix:semicolon
 id|lockd_up
 c_func
 (paren

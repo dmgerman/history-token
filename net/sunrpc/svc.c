@@ -1048,27 +1048,10 @@ id|argp-&gt;len
 op_sub_assign
 l_int|5
 suffix:semicolon
-multiline_comment|/* Used by nfsd to only allow the NULL procedure for amd. */
+multiline_comment|/*&n;&t; * Decode auth data, and add verifier to reply buffer.&n;&t; * We do this before anything else in order to get a decent&n;&t; * auth verifier.&n;&t; */
 r_if
 c_cond
 (paren
-id|rqstp-&gt;rq_auth
-op_logical_and
-op_logical_neg
-id|rqstp-&gt;rq_client
-op_logical_and
-id|proc
-)paren
-(brace
-id|auth_stat
-op_assign
-id|rpc_autherr_badcred
-suffix:semicolon
-r_goto
-id|err_bad_auth
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Decode auth data, and add verifier to reply buffer.&n;&t; * We do this before anything else in order to get a decent&n;&t; * auth verifier.&n;&t; */
 id|svc_authenticate
 c_func
 (paren
@@ -1079,7 +1062,13 @@ id|rpc_stat
 comma
 op_amp
 id|auth_stat
+comma
+id|proc
 )paren
+)paren
+multiline_comment|/* drop the request, it has probably been deferred */
+r_goto
+id|dropit
 suffix:semicolon
 r_if
 c_cond
@@ -1382,6 +1371,18 @@ id|dropit
 suffix:semicolon
 id|sendit
 suffix:colon
+r_if
+c_cond
+(paren
+id|svc_authorise
+c_func
+(paren
+id|rqstp
+)paren
+)paren
+r_goto
+id|dropit
+suffix:semicolon
 r_return
 id|svc_send
 c_func
@@ -1391,6 +1392,13 @@ id|rqstp
 suffix:semicolon
 id|dropit
 suffix:colon
+id|svc_authorise
+c_func
+(paren
+id|rqstp
+)paren
+suffix:semicolon
+multiline_comment|/* doesn&squot;t hurt to call this twice */
 id|dprintk
 c_func
 (paren
