@@ -939,7 +939,7 @@ id|u32
 id|mode
 )paren
 suffix:semicolon
-r_int
+r_void
 id|agp_generic_agp_3_0_enable
 c_func
 (paren
