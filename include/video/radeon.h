@@ -339,6 +339,10 @@ DECL|macro|FP_HORZ_VERT_ACTIVE
 mdefine_line|#define FP_HORZ_VERT_ACTIVE                    0x0278  
 DECL|macro|CRTC_MORE_CNTL
 mdefine_line|#define CRTC_MORE_CNTL                         0x027C  
+DECL|macro|CRTC_H_CUTOFF_ACTIVE_EN
+mdefine_line|#define CRTC_H_CUTOFF_ACTIVE_EN                (1&lt;&lt;4)
+DECL|macro|CRTC_V_CUTOFF_ACTIVE_EN
+mdefine_line|#define CRTC_V_CUTOFF_ACTIVE_EN                (1&lt;&lt;5)
 DECL|macro|DAC_EXT_CNTL
 mdefine_line|#define DAC_EXT_CNTL                           0x0280  
 DECL|macro|FP_GEN_CNTL
@@ -361,6 +365,8 @@ DECL|macro|DVI_I2C_CNTL_1
 mdefine_line|#define DVI_I2C_CNTL_1&t;&t;&t;       0x02e4
 DECL|macro|GRPH_BUFFER_CNTL
 mdefine_line|#define GRPH_BUFFER_CNTL                       0x02F0
+DECL|macro|GRPH2_BUFFER_CNTL
+mdefine_line|#define GRPH2_BUFFER_CNTL                      0x03F0
 DECL|macro|VGA_BUFFER_CNTL
 mdefine_line|#define VGA_BUFFER_CNTL                        0x02F4
 DECL|macro|OV0_Y_X_START
@@ -3579,5 +3585,7 @@ DECL|macro|ixREG_COLLAR_WRITE
 mdefine_line|#define ixREG_COLLAR_WRITE                         0x0013
 DECL|macro|ixREG_COLLAR_READ
 mdefine_line|#define ixREG_COLLAR_READ                          0x0014
+DECL|macro|NB_TOM
+mdefine_line|#define NB_TOM                                     0x15C
 macro_line|#endif&t;/* _RADEON_H */
 eof
