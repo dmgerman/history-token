@@ -46,6 +46,12 @@ DECL|macro|PIIX_CHECK_REV
 mdefine_line|#define PIIX_CHECK_REV&t;&t;0x40&t;/* May be a buggy revision of PIIX */
 DECL|macro|PIIX_NODMA
 mdefine_line|#define PIIX_NODMA&t;&t;0x80&t;/* Don&squot;t do DMA with this chip */
+macro_line|#ifdef CONFIG_BLK_DEV_PIIX_TRY133&t;/* I think even the older ICHs should be able to do UDMA133 */
+DECL|macro|PIIX_UDMA_100
+macro_line|#undef PIIX_UDMA_100
+DECL|macro|PIIX_UDMA_100
+mdefine_line|#define PIIX_UDMA_100 PIIX_UDMA_133
+macro_line|#endif
 multiline_comment|/*&n; * Intel IDE chips&n; */
 DECL|struct|piix_ide_chip
 r_static
@@ -86,7 +92,7 @@ op_or
 id|PIIX_PINGPONG
 )brace
 comma
-multiline_comment|/* Intel 82801CA ICH3 */
+multiline_comment|/* Intel 82801CA ICH3/ICH3-S */
 (brace
 id|PCI_DEVICE_ID_INTEL_82801CA_10
 comma
@@ -161,7 +167,7 @@ comma
 id|PIIX_UDMA_33
 )brace
 comma
-multiline_comment|/* Intel 82371AB/EB PIIX4/4E */
+multiline_comment|/* Intel 82371AB/EB PIIX4/PIIX4E */
 (brace
 id|PCI_DEVICE_ID_INTEL_82371SB_1
 comma
