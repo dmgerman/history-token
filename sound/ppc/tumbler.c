@@ -3161,13 +3161,9 @@ id|uinfo-&gt;count
 op_assign
 l_int|1
 suffix:semicolon
-id|uinfo-&gt;value.integer.min
+id|uinfo-&gt;value.enumerated.items
 op_assign
-l_int|0
-suffix:semicolon
-id|uinfo-&gt;value.integer.max
-op_assign
-l_int|1
+l_int|2
 suffix:semicolon
 r_if
 c_cond
