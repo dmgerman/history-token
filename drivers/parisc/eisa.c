@@ -1761,6 +1761,8 @@ c_func
 id|eisa_dev.eeprom_addr
 )paren
 suffix:semicolon
+id|result
+op_assign
 id|eisa_enumerator
 c_func
 (paren
@@ -1778,7 +1780,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME : Get the number of slots from the enumerator, not a&n;&t; * hadcoded value. Also don&squot;t enumerate the bus twice. */
+r_if
+c_cond
+(paren
+id|result
+op_ge
+l_int|0
+)paren
+(brace
+multiline_comment|/* FIXME : Don&squot;t enumerate the bus twice. */
 id|eisa_dev.root.dev
 op_assign
 op_amp
@@ -1800,8 +1810,13 @@ id|eisa_dev.hba.io_space
 suffix:semicolon
 id|eisa_dev.root.slots
 op_assign
-id|EISA_MAX_SLOTS
+id|result
 suffix:semicolon
+id|eisa_dev.root.dma_mask
+op_assign
+l_int|0xffffffff
+suffix:semicolon
+multiline_comment|/* wild guess */
 r_if
 c_cond
 (paren
@@ -1823,6 +1838,7 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 )brace
 r_return
 l_int|0

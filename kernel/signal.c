@@ -2662,6 +2662,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|sigismember
+c_func
+(paren
+op_amp
+id|t-&gt;blocked
+comma
+id|sig
+)paren
+op_logical_or
 id|t-&gt;sighand-&gt;action
 (braket
 id|sig
@@ -2673,6 +2682,7 @@ id|sa.sa_handler
 op_eq
 id|SIG_IGN
 )paren
+(brace
 id|t-&gt;sighand-&gt;action
 (braket
 id|sig
@@ -2699,6 +2709,7 @@ c_func
 id|t
 )paren
 suffix:semicolon
+)brace
 id|ret
 op_assign
 id|specific_send_sig_info
