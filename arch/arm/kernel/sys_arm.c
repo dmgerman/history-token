@@ -1044,6 +1044,8 @@ comma
 l_int|0
 comma
 l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -1096,9 +1098,9 @@ c_cond
 id|clone_flags
 op_amp
 (paren
-id|CLONE_SETTID
+id|CLONE_PARENT_SETTID
 op_or
-id|CLONE_CLEARTID
+id|CLONE_CHILD_CLEARTID
 )paren
 )paren
 r_return
@@ -1130,6 +1132,8 @@ comma
 id|regs
 comma
 l_int|0
+comma
+l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -1184,6 +1188,8 @@ comma
 id|regs
 comma
 l_int|0
+comma
+l_int|NULL
 comma
 l_int|NULL
 )paren
