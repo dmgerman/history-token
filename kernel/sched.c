@@ -644,7 +644,7 @@ macro_line|#if defined(CONFIG_NUMA) &amp;&amp; !defined(SD_NODE_INIT)
 DECL|macro|SD_NODE_INIT
 mdefine_line|#define SD_NODE_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 8,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 32,&t;&t;&t;&bslash;&n;&t;.busy_factor&t;&t;= 32,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 125,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= (10*1000000),&t;&t;&bslash;&n;&t;.cache_nice_tries&t;= 1,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 100,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_BALANCE_EXEC&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_BALANCE,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 1,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
 macro_line|#endif
-macro_line|#endif /*  ARCH_HAS_SCHED_TUNE */
+macro_line|#endif /* ARCH_HAS_SCHED_TUNE */
 macro_line|#endif
 DECL|macro|for_each_domain
 mdefine_line|#define for_each_domain(cpu, domain) &bslash;&n;&t;for (domain = cpu_rq(cpu)-&gt;sd; domain; domain = domain-&gt;parent)
@@ -12970,7 +12970,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_HOTPLUG_CPU
-multiline_comment|/* migrate_all_tasks - function to migrate all tasks from the dead cpu.  */
+multiline_comment|/* migrate_all_tasks - function to migrate all tasks from the dead cpu. */
 DECL|function|migrate_all_tasks
 r_static
 r_void
@@ -13109,7 +13109,7 @@ c_func
 id|tsk-&gt;cpus_allowed
 )paren
 suffix:semicolon
-multiline_comment|/* Don&squot;t tell them about moving exiting tasks&n;&t;&t;&t;   or kernel threads (both mm NULL), since&n;&t;&t;&t;   they never leave kernel. */
+multiline_comment|/*&n;&t;&t;&t; * Don&squot;t tell them about moving exiting tasks&n;&t;&t;&t; * or kernel threads (both mm NULL), since&n;&t;&t;&t; * they never leave kernel.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -14189,6 +14189,14 @@ id|sched_group_isolated
 id|NR_CPUS
 )braket
 suffix:semicolon
+multiline_comment|/* cpus with isolated domains */
+DECL|variable|cpu_isolated_map
+id|cpumask_t
+id|__initdata
+id|cpu_isolated_map
+op_assign
+id|CPU_MASK_NONE
+suffix:semicolon
 DECL|function|cpu_to_isolated_group
 id|__init
 r_static
@@ -14204,19 +14212,11 @@ r_return
 id|cpu
 suffix:semicolon
 )brace
-DECL|variable|cpu_isolated_map
-id|cpumask_t
-id|__initdata
-id|cpu_isolated_map
-op_assign
-id|CPU_MASK_NONE
-suffix:semicolon
-multiline_comment|/* cpus with isolated domains */
 multiline_comment|/* Setup the mask of cpus configured for isolated domains */
+DECL|function|isolated_cpu_setup
 r_static
 r_int
 id|__init
-DECL|function|isolated_cpu_setup
 id|isolated_cpu_setup
 c_func
 (paren
@@ -14272,7 +14272,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|cpu_set
 c_func
 (paren
@@ -14284,7 +14283,6 @@ comma
 id|cpu_isolated_map
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|1
 suffix:semicolon
