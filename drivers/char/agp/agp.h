@@ -483,6 +483,10 @@ DECL|member|capndx
 r_int
 id|capndx
 suffix:semicolon
+DECL|member|flags
+r_int
+id|flags
+suffix:semicolon
 DECL|member|major_version
 r_char
 id|major_version
@@ -848,6 +852,11 @@ id|u32
 id|agp_collect_device_status
 c_func
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+comma
 id|u32
 id|mode
 comma
@@ -1015,5 +1024,15 @@ DECL|macro|AGPCTRL_APERENB
 mdefine_line|#define AGPCTRL_APERENB&t;&t;(1&lt;&lt;8)
 DECL|macro|AGPCTRL_GTLBEN
 mdefine_line|#define AGPCTRL_GTLBEN&t;&t;(1&lt;&lt;7)
+DECL|macro|AGP2_RESERVED_MASK
+mdefine_line|#define AGP2_RESERVED_MASK 0x00fffcc8
+DECL|macro|AGP3_RESERVED_MASK
+mdefine_line|#define AGP3_RESERVED_MASK 0x00ff00cc
+DECL|macro|AGP_ERRATA_FASTWRITES
+mdefine_line|#define AGP_ERRATA_FASTWRITES 1&lt;&lt;0
+DECL|macro|AGP_ERRATA_SBA
+mdefine_line|#define AGP_ERRATA_SBA&t; 1&lt;&lt;1
+DECL|macro|AGP_ERRATA_1X
+mdefine_line|#define AGP_ERRATA_1X 1&lt;&lt;2
 macro_line|#endif&t;/* _AGP_BACKEND_PRIV_H */
 eof
