@@ -156,8 +156,8 @@ l_int|1
 suffix:semicolon
 )brace
 r_void
-DECL|function|_switch_to
-id|_switch_to
+DECL|function|__switch_to
+id|__switch_to
 c_func
 (paren
 r_struct
