@@ -93,8 +93,7 @@ multiline_comment|/*&n; * Mark functions and data as being only used at initiali
 DECL|macro|__init
 mdefine_line|#define __init&t;&t;__attribute__ ((__section__ (&quot;.init.text&quot;)))
 DECL|macro|__exit
-mdefine_line|#define __exit&t;&t;
-singleline_comment|//__attribute__ ((unused, __section__(&quot;.exit.text&quot;)))
+mdefine_line|#define __exit&t;&t;__attribute__ ((unused, __section__(&quot;.exit.text&quot;)))
 DECL|macro|__initdata
 mdefine_line|#define __initdata&t;__attribute__ ((__section__ (&quot;.init.data&quot;)))
 DECL|macro|__exitdata
