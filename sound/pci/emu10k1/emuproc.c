@@ -890,6 +890,9 @@ id|buffer
 comma
 l_string|&quot;External TRAM (words) : 0x%x&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|emu-&gt;fx8010.etram_pages.bytes
 )paren
 suffix:semicolon

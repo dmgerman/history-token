@@ -9321,6 +9321,9 @@ l_string|&quot;VolumeTablePhy  = %08x L[%08x]&bslash;n&quot;
 l_string|&quot;RoutingTablePhy = %08x L[%08x]&bslash;n&quot;
 l_string|&quot;AdatTimeCodePhy = %08x L[%08x]&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|korg1212-&gt;dma_dsp.addr
 comma
 id|UpperWordSwap
