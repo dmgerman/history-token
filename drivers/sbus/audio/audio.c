@@ -9734,9 +9734,6 @@ r_int
 id|duplex
 )paren
 (brace
-id|devfs_handle_t
-id|de
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -9872,9 +9869,8 @@ comma
 id|drv-&gt;index
 )paren
 suffix:semicolon
-id|de
-op_assign
-id|devfs_find_handle
+id|devfs_find_and_unregister
+c_func
 (paren
 id|devfs_handle
 comma
@@ -9887,11 +9883,6 @@ comma
 id|DEVFS_SPECIAL_CHR
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|devfs_unregister
-(paren
-id|de
 )paren
 suffix:semicolon
 )brace
