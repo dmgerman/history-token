@@ -557,11 +557,9 @@ c_cond
 id|ih
 )paren
 (brace
-id|sprintf
+id|strcpy
 (paren
 id|buf
-comma
-l_string|&quot;%s&quot;
 comma
 (paren
 id|ih_version
