@@ -1029,7 +1029,7 @@ id|hash
 op_assign
 id|fl-&gt;fl4_src
 op_xor
-id|fl-&gt;uli_u.ports.sport
+id|fl-&gt;fl_ip_sport
 suffix:semicolon
 id|hash
 op_assign
@@ -1057,7 +1057,7 @@ id|hash
 op_xor_assign
 id|fl-&gt;fl4_dst
 op_xor
-id|fl-&gt;uli_u.ports.dport
+id|fl-&gt;fl_ip_dport
 suffix:semicolon
 id|hash
 op_xor_assign
@@ -1111,7 +1111,7 @@ id|fl-&gt;fl6_src-&gt;s6_addr32
 l_int|3
 )braket
 op_xor
-id|fl-&gt;uli_u.ports.sport
+id|fl-&gt;fl_ip_sport
 suffix:semicolon
 id|hash
 op_assign
@@ -1147,7 +1147,7 @@ id|fl-&gt;fl6_dst-&gt;s6_addr32
 l_int|3
 )braket
 op_xor
-id|fl-&gt;uli_u.ports.dport
+id|fl-&gt;fl_ip_dport
 suffix:semicolon
 id|hash
 op_xor_assign
@@ -1856,7 +1856,7 @@ op_logical_and
 op_logical_neg
 (paren
 (paren
-id|fl-&gt;uli_u.ports.dport
+id|fl-&gt;fl_ip_dport
 op_xor
 id|sel-&gt;dport
 )paren
@@ -1867,7 +1867,7 @@ op_logical_and
 op_logical_neg
 (paren
 (paren
-id|fl-&gt;uli_u.ports.sport
+id|fl-&gt;fl_ip_sport
 op_xor
 id|sel-&gt;sport
 )paren
@@ -1938,7 +1938,7 @@ op_logical_and
 op_logical_neg
 (paren
 (paren
-id|fl-&gt;uli_u.ports.dport
+id|fl-&gt;fl_ip_dport
 op_xor
 id|sel-&gt;dport
 )paren
@@ -1949,7 +1949,7 @@ op_logical_and
 op_logical_neg
 (paren
 (paren
-id|fl-&gt;uli_u.ports.sport
+id|fl-&gt;fl_ip_sport
 op_xor
 id|sel-&gt;sport
 )paren

@@ -469,11 +469,11 @@ id|fl.fl6_flowlabel
 op_assign
 l_int|0
 suffix:semicolon
-id|fl.uli_u.ports.dport
+id|fl.fl_ip_dport
 op_assign
 l_int|0
 suffix:semicolon
-id|fl.uli_u.ports.sport
+id|fl.fl_ip_sport
 op_assign
 l_int|0
 suffix:semicolon
@@ -639,7 +639,7 @@ id|in6_addr
 op_star
 id|first_hop
 op_assign
-id|fl-&gt;nl_u.ip6_u.daddr
+id|fl-&gt;fl6_dst
 suffix:semicolon
 r_struct
 id|dst_entry
@@ -929,7 +929,7 @@ c_func
 op_amp
 id|hdr-&gt;saddr
 comma
-id|fl-&gt;nl_u.ip6_u.saddr
+id|fl-&gt;fl6_src
 )paren
 suffix:semicolon
 id|ipv6_addr_copy
@@ -1270,7 +1270,7 @@ c_func
 op_amp
 id|hdr-&gt;saddr
 comma
-id|fl-&gt;nl_u.ip6_u.saddr
+id|fl-&gt;fl6_src
 )paren
 suffix:semicolon
 id|ipv6_addr_copy
@@ -1279,7 +1279,7 @@ c_func
 op_amp
 id|hdr-&gt;daddr
 comma
-id|fl-&gt;nl_u.ip6_u.daddr
+id|fl-&gt;fl6_dst
 )paren
 suffix:semicolon
 r_return
@@ -2181,7 +2181,7 @@ op_logical_and
 id|ipv6_addr_is_multicast
 c_func
 (paren
-id|fl-&gt;nl_u.ip6_u.daddr
+id|fl-&gt;fl6_dst
 )paren
 )paren
 id|fl-&gt;oif
@@ -2974,7 +2974,7 @@ id|sk
 comma
 id|dst
 comma
-id|fl-&gt;nl_u.ip6_u.daddr
+id|fl-&gt;fl6_dst
 op_eq
 op_amp
 id|np-&gt;daddr

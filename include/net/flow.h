@@ -130,6 +130,16 @@ DECL|member|uli_u
 )brace
 id|uli_u
 suffix:semicolon
+DECL|macro|fl_ip_sport
+mdefine_line|#define fl_ip_sport&t;uli_u.ports.sport
+DECL|macro|fl_ip_dport
+mdefine_line|#define fl_ip_dport&t;uli_u.ports.dport
+DECL|macro|fl_icmp_type
+mdefine_line|#define fl_icmp_type&t;uli_u.icmpt.type
+DECL|macro|fl_icmp_code
+mdefine_line|#define fl_icmp_code&t;uli_u.icmpt.code
+DECL|macro|fl_ipsec_spi
+mdefine_line|#define fl_ipsec_spi&t;uli_u.spi
 )brace
 suffix:semicolon
 macro_line|#endif

@@ -1594,11 +1594,11 @@ id|fl.oif
 op_assign
 id|sk-&gt;bound_dev_if
 suffix:semicolon
-id|fl.uli_u.ports.dport
+id|fl.fl_ip_dport
 op_assign
 id|inet-&gt;dport
 suffix:semicolon
-id|fl.uli_u.ports.sport
+id|fl.fl_ip_sport
 op_assign
 id|inet-&gt;sport
 suffix:semicolon
@@ -4517,11 +4517,11 @@ op_assign
 op_amp
 id|np-&gt;saddr
 suffix:semicolon
-id|fl.uli_u.ports.dport
+id|fl.fl_ip_dport
 op_assign
 id|udh.uh.dest
 suffix:semicolon
-id|fl.uli_u.ports.sport
+id|fl.fl_ip_sport
 op_assign
 id|udh.uh.source
 suffix:semicolon
