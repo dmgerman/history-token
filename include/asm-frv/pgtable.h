@@ -100,7 +100,7 @@ suffix:semicolon
 DECL|macro|ZERO_PAGE
 mdefine_line|#define ZERO_PAGE(vaddr)&t;virt_to_page(empty_zero_page)
 macro_line|#endif
-multiline_comment|/*&n; * we use 2-level page tables, folding the PMD (mid-level table) into the PGE (top-level entry)&n; * [see Documentation/fujitsu/frv/mmu-layout.txt]&n; *&n; * 4th-Level Page Directory:&n; *  - Size: 16KB&n; *  - 1 PML4Es per PML4&n; *  - Each PML4E holds 1 PGD and covers 4GB&n; *&n; * Page Directory:&n; *  - Size: 16KB&n; *  - 64 PGEs per PGD&n; *  - Each PGE holds 1 PMD and covers 64MB&n; *&n; * Page Mid-Level Directory&n; *  - 1 PME per PMD&n; *  - Each PME holds 64 STEs, all of which point to separate chunks of the same Page Table&n; *  - All STEs are instantiated at the same time&n; *  - Size: 256B&n; *&n; * Page Table&n; *  - Size: 16KB&n; *  - 4096 PTEs per PT&n; *  - Each Linux PT is subdivided into 64 FR451 PT&squot;s, each of which holds 64 entries&n; *&n; * Pages&n; *  - Size: 4KB&n; *&n; * total PTEs&n; *&t;= 1 PML4E * 64 PGEs * 1 PMEs * 4096 PTEs&n; *&t;= 1 PML4E * 64 PGEs * 64 STEs * 64 PTEs/FR451-PT&n; *&t;= 262144 (or 256 * 1024)&n; */
+multiline_comment|/*&n; * we use 2-level page tables, folding the PMD (mid-level table) into the PGE (top-level entry)&n; * [see Documentation/fujitsu/frv/mmu-layout.txt]&n; *&n; * Page Directory:&n; *  - Size: 16KB&n; *  - 64 PGEs per PGD&n; *  - Each PGE holds 1 PUD and covers 64MB&n; *&n; * Page Upper Directory:&n; *  - Size: 256B&n; *  - 1 PUE per PUD&n; *  - Each PUE holds 1 PMD and covers 64MB&n; *&n; * Page Mid-Level Directory&n; *  - Size: 256B&n; *  - 1 PME per PMD&n; *  - Each PME holds 64 STEs, all of which point to separate chunks of the same Page Table&n; *  - All STEs are instantiated at the same time&n; *&n; * Page Table&n; *  - Size: 16KB&n; *  - 4096 PTEs per PT&n; *  - Each Linux PT is subdivided into 64 FR451 PT&squot;s, each of which holds 64 entries&n; *&n; * Pages&n; *  - Size: 4KB&n; *&n; * total PTEs&n; *&t;= 1 PML4E * 64 PGEs * 1 PUEs * 1 PMEs * 4096 PTEs&n; *&t;= 1 PML4E * 64 PGEs * 64 STEs * 64 PTEs/FR451-PT&n; *&t;= 262144 (or 256 * 1024)&n; */
 DECL|macro|PGDIR_SHIFT
 mdefine_line|#define PGDIR_SHIFT&t;&t;26
 DECL|macro|PGDIR_SIZE
@@ -109,6 +109,16 @@ DECL|macro|PGDIR_MASK
 mdefine_line|#define PGDIR_MASK&t;&t;(~(PGDIR_SIZE - 1))
 DECL|macro|PTRS_PER_PGD
 mdefine_line|#define PTRS_PER_PGD&t;&t;64
+DECL|macro|PUD_SHIFT
+mdefine_line|#define PUD_SHIFT&t;&t;26
+DECL|macro|PTRS_PER_PUD
+mdefine_line|#define PTRS_PER_PUD&t;&t;1
+DECL|macro|PUD_SIZE
+mdefine_line|#define PUD_SIZE&t;&t;(1UL &lt;&lt; PUD_SHIFT)
+DECL|macro|PUD_MASK
+mdefine_line|#define PUD_MASK&t;&t;(~(PUD_SIZE - 1))
+DECL|macro|PUE_SIZE
+mdefine_line|#define PUE_SIZE&t;&t;256
 DECL|macro|PMD_SHIFT
 mdefine_line|#define PMD_SHIFT&t;&t;26
 DECL|macro|PMD_SIZE
@@ -149,9 +159,22 @@ DECL|macro|pte_ERROR
 mdefine_line|#define pte_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pte %08lx.&bslash;n&quot;, __FILE__, __LINE__, (e).pte)
 DECL|macro|pmd_ERROR
 mdefine_line|#define pmd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pmd %08lx.&bslash;n&quot;, __FILE__, __LINE__, pmd_val(e))
+DECL|macro|pud_ERROR
+mdefine_line|#define pud_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pud %08lx.&bslash;n&quot;, __FILE__, __LINE__, pmd_val(pud_val(e)))
 DECL|macro|pgd_ERROR
-mdefine_line|#define pgd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pgd %08lx.&bslash;n&quot;, __FILE__, __LINE__, pmd_val(pgd_val(e)))
-multiline_comment|/*&n; * The &quot;pgd_xxx()&quot; functions here are trivial for a folded two-level&n; * setup: the pgd is never bad, and a pmd always exists (as it&squot;s folded&n; * into the pgd entry)&n; */
+mdefine_line|#define pgd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pgd %08lx.&bslash;n&quot;, __FILE__, __LINE__, pmd_val(pud_val(pgd_val(e))))
+multiline_comment|/*&n; * Certain architectures need to do special things when PTEs&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
+DECL|macro|set_pte
+mdefine_line|#define set_pte(pteptr, pteval)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*(pteptr) = (pteval);&t;&t;&t;&t;&bslash;&n;&t;asm volatile(&quot;dcf %M0&quot; :: &quot;U&quot;(*pteptr));&t;&bslash;&n;} while(0)
+DECL|macro|set_pte_atomic
+mdefine_line|#define set_pte_atomic(pteptr, pteval)&t;&t;set_pte((pteptr), (pteval))
+multiline_comment|/*&n; * pgd_offset() returns a (pgd_t *)&n; * pgd_index() is used get the offset into the pgd page&squot;s array of pgd_t&squot;s;&n; */
+DECL|macro|pgd_offset
+mdefine_line|#define pgd_offset(mm, address) ((mm)-&gt;pgd + pgd_index(address))
+multiline_comment|/*&n; * a shortcut which implies the use of the kernel&squot;s pgd, instead&n; * of a process&squot;s&n; */
+DECL|macro|pgd_offset_k
+mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
+multiline_comment|/*&n; * The &quot;pgd_xxx()&quot; functions here are trivial for a folded two-level&n; * setup: the pud is never bad, and a pud always exists (as it&squot;s folded&n; * into the pgd entry)&n; */
 DECL|function|pgd_none
 r_static
 r_inline
@@ -197,16 +220,129 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|macro|pgd_clear
-mdefine_line|#define pgd_clear(xp)&t;&t;&t;&t;do { } while (0)
-multiline_comment|/*&n; * Certain architectures need to do special things when PTEs&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
-DECL|macro|set_pte
-mdefine_line|#define set_pte(pteptr, pteval)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*(pteptr) = (pteval);&t;&t;&t;&t;&bslash;&n;&t;asm volatile(&quot;dcf %M0&quot; :: &quot;U&quot;(*pteptr));&t;&bslash;&n;} while(0)
-DECL|macro|set_pte_atomic
-mdefine_line|#define set_pte_atomic(pteptr, pteval)&t;&t;set_pte((pteptr), (pteval))
-multiline_comment|/*&n; * (pmds are folded into pgds so this doesn&squot;t get actually called,&n; * but the define is needed for a generic inline function.)&n; */
+DECL|function|pgd_clear
+r_static
+r_inline
+r_void
+id|pgd_clear
+c_func
+(paren
+id|pgd_t
+op_star
+id|pgd
+)paren
+(brace
+)brace
+DECL|macro|pgd_populate
+mdefine_line|#define pgd_populate(mm, pgd, pud)&t;&t;do { } while (0)
+multiline_comment|/*&n; * (puds are folded into pgds so this doesn&squot;t get actually called,&n; * but the define is needed for a generic inline function.)&n; */
 DECL|macro|set_pgd
-mdefine_line|#define set_pgd(pgdptr, pgdval)&t;&t;&t;(*(pgdptr) = pgdval)
+mdefine_line|#define set_pgd(pgdptr, pgdval)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;memcpy((pgdptr), &amp;(pgdval), sizeof(pgd_t));&t;&bslash;&n;&t;asm volatile(&quot;dcf %M0&quot; :: &quot;U&quot;(*(pgdptr)));&t;&bslash;&n;} while(0)
+DECL|function|pud_offset
+r_static
+r_inline
+id|pud_t
+op_star
+id|pud_offset
+c_func
+(paren
+id|pgd_t
+op_star
+id|pgd
+comma
+r_int
+r_int
+id|address
+)paren
+(brace
+r_return
+(paren
+id|pud_t
+op_star
+)paren
+id|pgd
+suffix:semicolon
+)brace
+DECL|macro|pgd_page
+mdefine_line|#define pgd_page(pgd)&t;&t;&t;&t;(pud_page((pud_t){ pgd }))
+DECL|macro|pgd_page_kernel
+mdefine_line|#define pgd_page_kernel(pgd)&t;&t;&t;(pud_page_kernel((pud_t){ pgd }))
+multiline_comment|/*&n; * allocating and freeing a pud is trivial: the 1-entry pud is&n; * inside the pgd, so has no extra memory associated with it.&n; */
+DECL|macro|pud_alloc_one
+mdefine_line|#define pud_alloc_one(mm, address)&t;&t;NULL
+DECL|macro|pud_free
+mdefine_line|#define pud_free(x)&t;&t;&t;&t;do { } while (0)
+DECL|macro|__pud_free_tlb
+mdefine_line|#define __pud_free_tlb(tlb, x)&t;&t;&t;do { } while (0)
+multiline_comment|/*&n; * The &quot;pud_xxx()&quot; functions here are trivial for a folded two-level&n; * setup: the pmd is never bad, and a pmd always exists (as it&squot;s folded&n; * into the pud entry)&n; */
+DECL|function|pud_none
+r_static
+r_inline
+r_int
+id|pud_none
+c_func
+(paren
+id|pud_t
+id|pud
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|pud_bad
+r_static
+r_inline
+r_int
+id|pud_bad
+c_func
+(paren
+id|pud_t
+id|pud
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|pud_present
+r_static
+r_inline
+r_int
+id|pud_present
+c_func
+(paren
+id|pud_t
+id|pud
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+DECL|function|pud_clear
+r_static
+r_inline
+r_void
+id|pud_clear
+c_func
+(paren
+id|pud_t
+op_star
+id|pud
+)paren
+(brace
+)brace
+DECL|macro|pud_populate
+mdefine_line|#define pud_populate(mm, pmd, pte)&t;&t;do { } while (0)
+multiline_comment|/*&n; * (pmds are folded into puds so this doesn&squot;t get actually called,&n; * but the define is needed for a generic inline function.)&n; */
+DECL|macro|set_pud
+mdefine_line|#define set_pud(pudptr, pudval)&t;&t;&t;set_pmd((pmd_t *)(pudptr), (pmd_t) { pudval })
+DECL|macro|pud_page
+mdefine_line|#define pud_page(pud)&t;&t;&t;&t;(pmd_page((pmd_t){ pud }))
+DECL|macro|pud_page_kernel
+mdefine_line|#define pud_page_kernel(pud)&t;&t;&t;(pmd_page_kernel((pmd_t){ pud }))
+multiline_comment|/*&n; * (pmds are folded into pgds so this doesn&squot;t get actually called,&n; * but the define is needed for a generic inline function.)&n; */
 r_extern
 r_void
 id|__set_pmd
@@ -223,8 +359,6 @@ id|__pmd
 suffix:semicolon
 DECL|macro|set_pmd
 mdefine_line|#define set_pmd(pmdptr, pmdval)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__set_pmd((pmdptr), (pmdval).ste[0]);&t;&bslash;&n;} while(0)
-DECL|macro|pgd_page
-mdefine_line|#define pgd_page(pgd)&t;&t;&t;&t;((unsigned long) __va(pgd_val(pgd) &amp; PAGE_MASK))
 DECL|macro|__pmd_index
 mdefine_line|#define __pmd_index(address)&t;&t;&t;0
 DECL|function|pmd_offset
@@ -235,7 +369,7 @@ op_star
 id|pmd_offset
 c_func
 (paren
-id|pgd_t
+id|pud_t
 op_star
 id|dir
 comma
@@ -971,15 +1105,15 @@ id|pte
 suffix:semicolon
 )brace
 DECL|macro|page_pte
-mdefine_line|#define page_pte(page)&t;page_pte_prot(page, __pgprot(0))
+mdefine_line|#define page_pte(page)&t;page_pte_prot((page), __pgprot(0))
 multiline_comment|/* to find an entry in a page-table-directory. */
 DECL|macro|pgd_index
-mdefine_line|#define pgd_index(address) ((address &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD - 1))
+mdefine_line|#define pgd_index(address) (((address) &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD - 1))
 DECL|macro|pgd_index_k
 mdefine_line|#define pgd_index_k(addr) pgd_index(addr)
-multiline_comment|/* Find an entry in the third-level page table.. */
+multiline_comment|/* Find an entry in the bottom-level page table.. */
 DECL|macro|__pte_index
-mdefine_line|#define __pte_index(address) ((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
+mdefine_line|#define __pte_index(address) (((address) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
 multiline_comment|/*&n; * the pte page can be thought of an array like this: pte_t[PTRS_PER_PTE]&n; *&n; * this macro returns the index of the entry in the pte page which would&n; * control the given virtual address&n; */
 DECL|macro|pte_index
 mdefine_line|#define pte_index(address) &bslash;&n;&t;&t;(((address) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
@@ -993,12 +1127,12 @@ mdefine_line|#define pte_offset_map_nested(dir, address) &bslash;&n;&t;((pte_t *
 DECL|macro|pte_unmap
 mdefine_line|#define pte_unmap(pte) kunmap_atomic(pte, KM_PTE0)
 DECL|macro|pte_unmap_nested
-mdefine_line|#define pte_unmap_nested(pte) kunmap_atomic(pte, KM_PTE1)
+mdefine_line|#define pte_unmap_nested(pte) kunmap_atomic((pte), KM_PTE1)
 macro_line|#else
 DECL|macro|pte_offset_map
 mdefine_line|#define pte_offset_map(dir, address) &bslash;&n;&t;((pte_t *)page_address(pmd_page(*(dir))) + pte_index(address))
 DECL|macro|pte_offset_map_nested
-mdefine_line|#define pte_offset_map_nested(dir, address) pte_offset_map(dir, address)
+mdefine_line|#define pte_offset_map_nested(dir, address) pte_offset_map((dir), (address))
 DECL|macro|pte_unmap
 mdefine_line|#define pte_unmap(pte) do { } while (0)
 DECL|macro|pte_unmap_nested
@@ -1058,7 +1192,6 @@ mdefine_line|#define __HAVE_ARCH_PTEP_MKDIRTY
 DECL|macro|__HAVE_ARCH_PTE_SAME
 mdefine_line|#define __HAVE_ARCH_PTE_SAME
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
-macro_line|#include &lt;asm-generic/nopml4-pgtable.h&gt;
 multiline_comment|/*&n; * preload information about a newly instantiated PTE into the SCR0/SCR1 PGE cache&n; */
 DECL|function|update_mmu_cache
 r_static
@@ -1084,11 +1217,11 @@ r_int
 r_int
 id|ampr
 suffix:semicolon
-id|pml4_t
+id|pgd_t
 op_star
-id|pml4e
+id|pge
 op_assign
-id|pml4_offset
+id|pgd_offset
 c_func
 (paren
 id|current-&gt;mm
@@ -1096,14 +1229,14 @@ comma
 id|address
 )paren
 suffix:semicolon
-id|pgd_t
+id|pud_t
 op_star
-id|pge
+id|pue
 op_assign
-id|pml4_pgd_offset
+id|pud_offset
 c_func
 (paren
-id|pml4e
+id|pge
 comma
 id|address
 )paren
@@ -1115,7 +1248,7 @@ op_assign
 id|pmd_offset
 c_func
 (paren
-id|pge
+id|pue
 comma
 id|address
 )paren

@@ -48,12 +48,26 @@ suffix:semicolon
 )brace
 id|pmd_t
 suffix:semicolon
+DECL|member|pue
+DECL|typedef|pud_t
+r_typedef
+r_struct
+(brace
+id|pmd_t
+id|pue
+(braket
+l_int|1
+)braket
+suffix:semicolon
+)brace
+id|pud_t
+suffix:semicolon
 DECL|member|pge
 DECL|typedef|pgd_t
 r_typedef
 r_struct
 (brace
-id|pmd_t
+id|pud_t
 id|pge
 (braket
 l_int|1
@@ -78,6 +92,8 @@ DECL|macro|pte_val
 mdefine_line|#define pte_val(x)&t;((x).pte)
 DECL|macro|pmd_val
 mdefine_line|#define pmd_val(x)&t;((x).ste[0])
+DECL|macro|pud_val
+mdefine_line|#define pud_val(x)&t;((x).pue[0])
 DECL|macro|pgd_val
 mdefine_line|#define pgd_val(x)&t;((x).pge[0])
 DECL|macro|pgprot_val
@@ -86,6 +102,8 @@ DECL|macro|__pte
 mdefine_line|#define __pte(x)&t;((pte_t) { (x) } )
 DECL|macro|__pmd
 mdefine_line|#define __pmd(x)&t;((pmd_t) { (x) } )
+DECL|macro|__pud
+mdefine_line|#define __pud(x)&t;((pud_t) { (x) } )
 DECL|macro|__pgd
 mdefine_line|#define __pgd(x)&t;((pgd_t) { (x) } )
 DECL|macro|__pgprot
@@ -208,7 +226,6 @@ macro_line|#ifdef CONFIG_MMU
 DECL|macro|VM_DATA_DEFAULT_FLAGS
 mdefine_line|#define VM_DATA_DEFAULT_FLAGS &bslash;&n;&t;(VM_READ | VM_WRITE | &bslash;&n;&t;((current-&gt;personality &amp; READ_IMPLIES_EXEC) ? VM_EXEC : 0 ) | &bslash;&n;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 macro_line|#endif
-macro_line|#include &lt;asm-generic/nopml4-page.h&gt;
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#ifdef CONFIG_CONTIGUOUS_PAGE_ALLOC

@@ -12,6 +12,17 @@ DECL|macro|pmd_populate
 mdefine_line|#define pmd_populate(MM, PMD, PAGE)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__set_pmd((PMD), page_to_pfn(PAGE) &lt;&lt; PAGE_SHIFT | _PAGE_TABLE);&t;&bslash;&n;} while(0)
 multiline_comment|/*&n; * Allocate and free page tables.&n; */
 r_extern
+id|pgd_t
+op_star
+id|pgd_alloc
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|pgd_free
 c_func
@@ -101,9 +112,6 @@ DECL|macro|pmd_free
 mdefine_line|#define pmd_free(x)&t;&t;&t;do { } while (0)
 DECL|macro|__pmd_free_tlb
 mdefine_line|#define __pmd_free_tlb(tlb,x)&t;&t;do { } while (0)
-DECL|macro|pgd_populate
-mdefine_line|#define pgd_populate(mm, pmd, pte)&t;BUG()
-macro_line|#include &lt;asm-generic/nopml4-pgalloc.h&gt;
 macro_line|#endif /* CONFIG_MMU */
 macro_line|#endif /* _ASM_PGALLOC_H */
 eof

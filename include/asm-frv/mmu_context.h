@@ -55,9 +55,9 @@ id|mm_context_t
 op_star
 id|ctx
 comma
-id|pml4_t
+id|pgd_t
 op_star
-id|_pml4
+id|_pgd
 )paren
 suffix:semicolon
 r_extern
@@ -80,9 +80,9 @@ DECL|macro|destroy_context
 mdefine_line|#define destroy_context(mm)&t;&t;&t;do {} while(0)
 macro_line|#endif
 DECL|macro|switch_mm
-mdefine_line|#define switch_mm(prev, next, tsk)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (prev != next)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;change_mm_context(&amp;prev-&gt;context, &amp;next-&gt;context, next-&gt;pml4);&t;&bslash;&n;} while(0)
+mdefine_line|#define switch_mm(prev, next, tsk)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (prev != next)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;change_mm_context(&amp;prev-&gt;context, &amp;next-&gt;context, next-&gt;pgd);&t;&bslash;&n;} while(0)
 DECL|macro|activate_mm
-mdefine_line|#define activate_mm(prev, next)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;change_mm_context(&amp;prev-&gt;context, &amp;next-&gt;context, next-&gt;pml4);&t;&bslash;&n;} while(0)
+mdefine_line|#define activate_mm(prev, next)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;change_mm_context(&amp;prev-&gt;context, &amp;next-&gt;context, next-&gt;pgd);&t;&bslash;&n;} while(0)
 DECL|macro|deactivate_mm
 mdefine_line|#define deactivate_mm(tsk, mm)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
 macro_line|#endif

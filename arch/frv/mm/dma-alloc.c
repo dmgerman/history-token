@@ -45,6 +45,10 @@ id|pgd_t
 op_star
 id|pge
 suffix:semicolon
+id|pud_t
+op_star
+id|pue
+suffix:semicolon
 id|pmd_t
 op_star
 id|pme
@@ -69,14 +73,18 @@ suffix:semicolon
 multiline_comment|/* Use upper 10 bits of VA to index the first level map */
 id|pge
 op_assign
-id|pml4_pgd_offset_k
-c_func
-(paren
-id|pml4_offset_k
+id|pgd_offset_k
 c_func
 (paren
 id|va
 )paren
+suffix:semicolon
+id|pue
+op_assign
+id|pud_offset
+c_func
+(paren
+id|pge
 comma
 id|va
 )paren
@@ -86,7 +94,7 @@ op_assign
 id|pmd_offset
 c_func
 (paren
-id|pge
+id|pue
 comma
 id|va
 )paren
