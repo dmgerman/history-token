@@ -17,12 +17,15 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|sa1111_pcmcia_socket_state
 c_func
 (paren
+r_int
+id|sock
+comma
 r_struct
-id|pcmcia_state_array
+id|pcmcia_state
 op_star
 )paren
 suffix:semicolon
