@@ -54,6 +54,12 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+DECL|variable|sysctl_tcp_default_win_scale
+r_int
+id|sysctl_tcp_default_win_scale
+op_assign
+l_int|7
+suffix:semicolon
 DECL|variable|sysctl_tcp_mem
 r_int
 id|sysctl_tcp_mem

@@ -1360,6 +1360,10 @@ r_int
 id|sysctl_tcp_bic_low_window
 suffix:semicolon
 r_extern
+r_int
+id|sysctl_tcp_default_win_scale
+suffix:semicolon
+r_extern
 id|atomic_t
 id|tcp_memory_allocated
 suffix:semicolon
@@ -6212,6 +6216,21 @@ op_star
 id|rcv_wscale
 )paren
 op_decrement
+suffix:semicolon
+op_star
+id|rcv_wscale
+op_assign
+id|max
+c_func
+(paren
+(paren
+id|__u8
+)paren
+id|sysctl_tcp_default_win_scale
+comma
+op_star
+id|rcv_wscale
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Set initial window to value enough for senders,&n;&t; * following RFC1414. Senders, not following this RFC,&n;&t; * will be satisfied with 2.&n;&t; */
