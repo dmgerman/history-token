@@ -1,9 +1,10 @@
-multiline_comment|/* $Id: divasproc.c,v 1.1.2.2 2002/10/02 14:38:37 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; * /proc functions&n; *&n; * Copyright 2000,2001 by Armin Schindler (mac@melware.de)&n; * Copyright 2000,2001 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divasproc.c,v 1.1.2.4 2001/02/16 08:40:36 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; * /proc functions&n; *&n; * Copyright 2000-2002 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2002 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;debuglib.h&quot;
 macro_line|#include &quot;dlist.h&quot;
@@ -202,12 +203,10 @@ id|tmpbuf
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|len
 op_add_assign
 id|strlen
@@ -294,15 +293,12 @@ id|len
 OG
 id|count
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|copy_to_user
-c_func
 (paren
 id|buf
 op_plus
@@ -318,12 +314,10 @@ id|tmpbuf
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|len
 op_add_assign
 id|strlen
@@ -340,7 +334,9 @@ op_add_assign
 id|len
 suffix:semicolon
 r_return
+(paren
 id|len
+)paren
 suffix:semicolon
 )brace
 r_static
@@ -374,10 +370,10 @@ id|ENODEV
 )paren
 suffix:semicolon
 )brace
+DECL|function|divas_poll
 r_static
 r_int
 r_int
-DECL|function|divas_poll
 id|divas_poll
 c_func
 (paren
@@ -397,9 +393,9 @@ id|POLLERR
 )paren
 suffix:semicolon
 )brace
+DECL|function|divas_open
 r_static
 r_int
-DECL|function|divas_open
 id|divas_open
 c_func
 (paren
@@ -415,12 +411,14 @@ id|file
 )paren
 (brace
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
+DECL|function|divas_close
 r_static
 r_int
-DECL|function|divas_close
 id|divas_close
 c_func
 (paren
@@ -436,58 +434,9 @@ id|file
 )paren
 (brace
 r_return
+(paren
 l_int|0
-suffix:semicolon
-)brace
-r_static
-r_int
-DECL|function|divas_ioctl
-id|divas_ioctl
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|file
-comma
-id|uint
-id|cmd
-comma
-id|ulong
-id|arg
 )paren
-(brace
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
-r_static
-id|loff_t
-DECL|function|divas_lseek
-id|divas_lseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|orig
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
 suffix:semicolon
 )brace
 DECL|variable|divas_fops
@@ -497,42 +446,44 @@ id|file_operations
 id|divas_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|llseek
-suffix:colon
-id|divas_lseek
+op_assign
+id|no_llseek
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|divas_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|divas_write
 comma
+dot
 id|poll
-suffix:colon
+op_assign
 id|divas_poll
 comma
-id|ioctl
-suffix:colon
-id|divas_ioctl
-comma
+dot
 id|open
-suffix:colon
+op_assign
 id|divas_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|divas_close
-comma
 )brace
 suffix:semicolon
-r_int
 DECL|function|create_divas_proc
+r_int
 id|create_divas_proc
 c_func
 (paren
@@ -560,7 +511,9 @@ op_logical_neg
 id|divas_proc_entry
 )paren
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 id|divas_proc_entry-&gt;proc_fops
 op_assign
@@ -572,11 +525,13 @@ op_assign
 id|THIS_MODULE
 suffix:semicolon
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|remove_divas_proc
+r_void
 id|remove_divas_proc
 c_func
 (paren
@@ -696,17 +651,23 @@ suffix:semicolon
 r_default
 suffix:colon
 r_return
+(paren
 op_minus
 id|EINVAL
+)paren
 suffix:semicolon
 )brace
 r_return
+(paren
 id|count
+)paren
 suffix:semicolon
 )brace
 r_return
+(paren
 op_minus
 id|EINVAL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** write dynamic_l1_down&n;*/
@@ -802,17 +763,23 @@ suffix:semicolon
 r_default
 suffix:colon
 r_return
+(paren
 op_minus
 id|EINVAL
+)paren
 suffix:semicolon
 )brace
 r_return
+(paren
 id|count
+)paren
 suffix:semicolon
 )brace
 r_return
+(paren
 op_minus
 id|EINVAL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** read dynamic_l1_down &n;*/
@@ -883,7 +850,9 @@ comma
 l_string|&quot;%s&bslash;n&quot;
 comma
 (paren
-id|IoAdapter-&gt;capi_cfg.cfg_1
+id|IoAdapter-&gt;capi_cfg
+dot
+id|cfg_1
 op_amp
 id|DIVA_XDI_CAPI_CFG_1_DYNAMIC_L1_ON
 )paren
@@ -927,6 +896,7 @@ id|off
 suffix:semicolon
 r_return
 (paren
+(paren
 id|count
 OL
 id|len
@@ -940,6 +910,7 @@ suffix:colon
 id|len
 op_minus
 id|off
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** read group_optimization&n;*/
@@ -1010,7 +981,9 @@ comma
 l_string|&quot;%s&bslash;n&quot;
 comma
 (paren
-id|IoAdapter-&gt;capi_cfg.cfg_1
+id|IoAdapter-&gt;capi_cfg
+dot
+id|cfg_1
 op_amp
 id|DIVA_XDI_CAPI_CFG_1_GROUP_POPTIMIZATION_ON
 )paren
@@ -1054,6 +1027,7 @@ id|off
 suffix:semicolon
 r_return
 (paren
+(paren
 id|count
 OL
 id|len
@@ -1067,6 +1041,7 @@ suffix:colon
 id|len
 op_minus
 id|off
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** info write&n;*/
@@ -1152,12 +1127,16 @@ id|IoAdapter-&gt;ANum
 )paren
 suffix:semicolon
 r_return
+(paren
 id|count
+)paren
 suffix:semicolon
 )brace
 r_return
+(paren
 op_minus
 id|EINVAL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** info read&n;*/
@@ -1486,7 +1465,9 @@ comma
 r_int
 r_int
 )paren
-id|a-&gt;resources.pci.addr
+id|a-&gt;resources
+dot
+id|pci.addr
 (braket
 id|i
 )braket
@@ -1512,7 +1493,9 @@ id|len
 comma
 l_string|&quot; / length : %d&quot;
 comma
-id|a-&gt;resources.pci.length
+id|a-&gt;resources.pci
+dot
+id|length
 (braket
 id|i
 )braket
@@ -1658,6 +1641,7 @@ id|off
 suffix:semicolon
 r_return
 (paren
+(paren
 id|count
 OL
 id|len
@@ -1671,6 +1655,7 @@ suffix:colon
 id|len
 op_minus
 id|off
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** adapter proc init/de-init&n;*/
@@ -1678,6 +1663,7 @@ multiline_comment|/* -----------------------------------------------------------
 DECL|function|create_adapter_proc
 r_int
 id|create_adapter_proc
+c_func
 (paren
 id|diva_os_xdi_adapter_t
 op_star
@@ -1698,6 +1684,28 @@ id|tmp
 l_int|16
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;divasproc: create_proc in_interrupt, not creating&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 id|sprintf
 c_func
 (paren
@@ -1728,11 +1736,11 @@ id|proc_net_isdn_eicon
 )paren
 )paren
 )paren
-(brace
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
-)brace
 id|a-&gt;proc_adapter_dir
 op_assign
 (paren
@@ -1763,11 +1771,11 @@ id|de
 )paren
 )paren
 )paren
-(brace
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
-)brace
 id|a-&gt;proc_info
 op_assign
 (paren
@@ -1885,13 +1893,16 @@ id|tmp
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;    Remove adapter directory and files in proc file system&n;   -------------------------------------------------------------------------- */
 DECL|function|remove_adapter_proc
 r_void
 id|remove_adapter_proc
+c_func
 (paren
 id|diva_os_xdi_adapter_t
 op_star
@@ -1917,6 +1928,7 @@ id|a-&gt;proc_d_l1_down
 )paren
 (brace
 id|remove_proc_entry
+c_func
 (paren
 id|d_l1_down_proc_name
 comma
@@ -1936,6 +1948,7 @@ id|a-&gt;proc_grp_opt
 )paren
 (brace
 id|remove_proc_entry
+c_func
 (paren
 id|grp_opt_proc_name
 comma
@@ -1955,6 +1968,7 @@ id|a-&gt;proc_info
 )paren
 (brace
 id|remove_proc_entry
+c_func
 (paren
 id|info_proc_name
 comma

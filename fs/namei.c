@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/namei.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|ACC_MODE
@@ -4806,7 +4807,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Ensure there are no outstanding leases on the file.&n;&t; */
 id|error
 op_assign
-id|get_lease
+id|break_lease
 c_func
 (paren
 id|inode
@@ -6436,11 +6437,10 @@ suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-id|list_del_init
+id|__d_drop
 c_func
 (paren
-op_amp
-id|dentry-&gt;d_hash
+id|dentry
 )paren
 suffix:semicolon
 )brace

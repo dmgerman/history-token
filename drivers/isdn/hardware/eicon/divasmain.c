@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: divasmain.c,v 1.1.2.2 2002/10/02 14:38:37 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2002 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2002 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divasmain.c,v 1.1.2.8 2001/05/01 15:48:05 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2002 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2002 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/config.h&gt;
@@ -44,7 +44,7 @@ r_char
 op_star
 id|main_revision
 op_assign
-l_string|&quot;$Revision: 1.1.2.2 $&quot;
+l_string|&quot;$Revision: 1.1.2.8 $&quot;
 suffix:semicolon
 DECL|variable|errno
 r_int
@@ -119,6 +119,7 @@ suffix:semicolon
 r_extern
 r_void
 id|diva_os_irq_wrapper
+c_func
 (paren
 r_int
 id|irq
@@ -193,15 +194,15 @@ r_struct
 id|tasklet_struct
 id|divas_task
 suffix:semicolon
-DECL|member|psoft_isr
-id|diva_os_soft_isr_t
-op_star
-id|psoft_isr
-suffix:semicolon
 DECL|member|trap_script_task
 r_struct
 id|work_struct
 id|trap_script_task
+suffix:semicolon
+DECL|member|psoft_isr
+id|diva_os_soft_isr_t
+op_star
+id|psoft_isr
 suffix:semicolon
 DECL|member|card_failed
 r_int
@@ -213,15 +214,6 @@ id|diva_os_thread_dpc_t
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;    PCI driver interface section&n;   -------------------------------------------------------------------------- */
 multiline_comment|/*&n;  vendor, device&t;Vendor and device ID to match (or PCI_ANY_ID)&n;  subvendor,&t;Subsystem vendor and device ID to match (or PCI_ANY_ID)&n;  subdevice&n;  class,&t;&t;Device class to match. The class_mask tells which bits&n;  class_mask&t;of the class are honored during the comparison.&n;  driver_data&t;Data private to the driver.&n;  */
-multiline_comment|/*&n;  List should be sorted&n;  */
-macro_line|#if !defined(PCI_DEVICE_ID_EICON_4BRI)
-DECL|macro|PCI_DEVICE_ID_EICON_4BRI
-mdefine_line|#define PCI_DEVICE_ID_EICON_4BRI             0xE012
-macro_line|#endif
-macro_line|#if !defined(PCI_DEVICE_ID_EICON_4BRI_2)
-DECL|macro|PCI_DEVICE_ID_EICON_4BRI_2
-mdefine_line|#define PCI_DEVICE_ID_EICON_4BRI_2           0xE013
-macro_line|#endif
 macro_line|#if !defined(PCI_DEVICE_ID_EICON_MAESTRAP_2)
 DECL|macro|PCI_DEVICE_ID_EICON_MAESTRAP_2
 mdefine_line|#define PCI_DEVICE_ID_EICON_MAESTRAP_2       0xE015
@@ -282,7 +274,7 @@ multiline_comment|/* Diva Server 4BRI-8M PCI 0xE012 */
 (brace
 id|PCI_VENDOR_ID_EICON
 comma
-id|PCI_DEVICE_ID_EICON_4BRI
+id|PCI_DEVICE_ID_EICON_MAESTRAQ
 comma
 id|PCI_ANY_ID
 comma
@@ -299,7 +291,7 @@ multiline_comment|/* Diva Server 4BRI-8M 2.0 PCI 0xE013 */
 (brace
 id|PCI_VENDOR_ID_EICON
 comma
-id|PCI_DEVICE_ID_EICON_4BRI_2
+id|PCI_DEVICE_ID_EICON_MAESTRAQ_U
 comma
 id|PCI_ANY_ID
 comma
@@ -466,6 +458,7 @@ suffix:semicolon
 r_static
 r_int
 id|divas_init_one
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -482,6 +475,7 @@ suffix:semicolon
 r_static
 r_void
 id|divas_remove_one
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -496,29 +490,33 @@ id|pci_driver
 id|diva_pci_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;divas&quot;
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|divas_init_one
 comma
+dot
 id|remove
-suffix:colon
+op_assign
 id|divas_remove_one
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|divas_pci_tbl
 comma
 )brace
 suffix:semicolon
 multiline_comment|/*********************************************************&n; ** little helper functions&n; *********************************************************/
+DECL|function|getrev
 r_static
 r_char
 op_star
-DECL|function|getrev
 id|getrev
 c_func
 (paren
@@ -584,9 +582,10 @@ r_return
 id|rev
 suffix:semicolon
 )brace
-r_void
 DECL|function|diva_os_sleep
+r_void
 id|diva_os_sleep
+c_func
 (paren
 id|dword
 id|mSec
@@ -617,22 +616,24 @@ id|timeout
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|diva_os_wait
+r_void
 id|diva_os_wait
+c_func
 (paren
 id|dword
 id|mSec
 )paren
 (brace
 id|mdelay
+c_func
 (paren
 id|mSec
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|diva_log_info
+r_void
 id|diva_log_info
 c_func
 (paren
@@ -692,8 +693,8 @@ id|line
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|divas_get_version
+r_void
 id|divas_get_version
 c_func
 (paren
@@ -744,6 +745,7 @@ DECL|function|diva_os_malloc
 r_void
 op_star
 id|diva_os_malloc
+c_func
 (paren
 r_int
 r_int
@@ -773,6 +775,7 @@ r_void
 op_star
 )paren
 id|vmalloc
+c_func
 (paren
 (paren
 r_int
@@ -788,9 +791,10 @@ id|ret
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|diva_os_free
+r_void
 id|diva_os_free
+c_func
 (paren
 r_int
 r_int
@@ -808,6 +812,7 @@ id|ptr
 )paren
 (brace
 id|vfree
+c_func
 (paren
 id|ptr
 )paren
@@ -821,6 +826,7 @@ DECL|function|diva_adapter_trapped
 r_static
 r_void
 id|diva_adapter_trapped
+c_func
 (paren
 r_void
 op_star
@@ -887,6 +893,7 @@ r_int
 id|ret
 suffix:semicolon
 id|sprintf
+c_func
 (paren
 id|adapter
 comma
@@ -915,6 +922,7 @@ suffix:semicolon
 id|ret
 op_assign
 id|call_usermodehelper
+c_func
 (paren
 id|argv
 (braket
@@ -950,6 +958,7 @@ multiline_comment|/*&n; * run the trap script&n; */
 DECL|function|diva_run_trap_script
 r_void
 id|diva_run_trap_script
+c_func
 (paren
 id|PISDN_ADAPTER
 id|IoAdapter
@@ -1003,6 +1012,7 @@ multiline_comment|/* -----------------------------------------------------------
 DECL|function|diva_os_get_pci_bus
 id|byte
 id|diva_os_get_pci_bus
+c_func
 (paren
 r_void
 op_star
@@ -1033,6 +1043,7 @@ suffix:semicolon
 DECL|function|diva_os_get_pci_func
 id|byte
 id|diva_os_get_pci_func
+c_func
 (paren
 r_void
 op_star
@@ -1064,6 +1075,7 @@ DECL|function|divasa_get_pci_irq
 r_int
 r_int
 id|divasa_get_pci_irq
+c_func
 (paren
 r_int
 r_char
@@ -1114,6 +1126,7 @@ DECL|function|divasa_get_pci_bar
 r_int
 r_int
 id|divasa_get_pci_bar
+c_func
 (paren
 r_int
 r_char
@@ -1238,12 +1251,15 @@ id|ret
 suffix:semicolon
 )brace
 r_return
+(paren
 id|ret
+)paren
 suffix:semicolon
 )brace
 DECL|function|PCIwrite
 r_void
 id|PCIwrite
+c_func
 (paren
 id|byte
 id|bus
@@ -1289,6 +1305,7 @@ l_int|1
 suffix:colon
 multiline_comment|/* byte */
 id|pci_write_config_byte
+c_func
 (paren
 id|dev
 comma
@@ -1310,6 +1327,7 @@ l_int|2
 suffix:colon
 multiline_comment|/* word */
 id|pci_write_config_word
+c_func
 (paren
 id|dev
 comma
@@ -1331,6 +1349,7 @@ l_int|4
 suffix:colon
 multiline_comment|/* dword */
 id|pci_write_config_dword
+c_func
 (paren
 id|dev
 comma
@@ -1393,6 +1412,7 @@ op_decrement
 )paren
 (brace
 id|pci_write_config_dword
+c_func
 (paren
 id|dev
 comma
@@ -1431,6 +1451,7 @@ op_decrement
 )paren
 (brace
 id|pci_write_config_byte
+c_func
 (paren
 id|dev
 comma
@@ -1453,6 +1474,7 @@ suffix:semicolon
 DECL|function|PCIread
 r_void
 id|PCIread
+c_func
 (paren
 id|byte
 id|bus
@@ -1498,6 +1520,7 @@ l_int|1
 suffix:colon
 multiline_comment|/* byte */
 id|pci_read_config_byte
+c_func
 (paren
 id|dev
 comma
@@ -1518,6 +1541,7 @@ l_int|2
 suffix:colon
 multiline_comment|/* word */
 id|pci_read_config_word
+c_func
 (paren
 id|dev
 comma
@@ -1538,6 +1562,7 @@ l_int|4
 suffix:colon
 multiline_comment|/* dword */
 id|pci_read_config_dword
+c_func
 (paren
 id|dev
 comma
@@ -1599,6 +1624,7 @@ op_decrement
 )paren
 (brace
 id|pci_read_config_dword
+c_func
 (paren
 id|dev
 comma
@@ -1636,6 +1662,7 @@ op_decrement
 )paren
 (brace
 id|pci_read_config_byte
+c_func
 (paren
 id|dev
 comma
@@ -1660,6 +1687,7 @@ r_static
 r_void
 op_star
 id|diva_pci_alloc_consistent
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -1684,6 +1712,7 @@ op_star
 id|addr
 op_assign
 id|pci_alloc_consistent
+c_func
 (paren
 id|hwdev
 comma
@@ -1706,6 +1735,7 @@ suffix:semicolon
 DECL|function|diva_init_dma_map
 r_void
 id|diva_init_dma_map
+c_func
 (paren
 r_void
 op_star
@@ -1739,6 +1769,7 @@ op_star
 id|pmap
 op_assign
 id|diva_alloc_dma_map
+c_func
 (paren
 id|hdev
 comma
@@ -1788,6 +1819,7 @@ op_logical_neg
 id|cpu_addr
 op_assign
 id|diva_pci_alloc_consistent
+c_func
 (paren
 id|pdev
 comma
@@ -1806,6 +1838,7 @@ r_break
 suffix:semicolon
 )brace
 id|diva_init_dma_map_entry
+c_func
 (paren
 id|pmap
 comma
@@ -1859,6 +1892,7 @@ multiline_comment|/*&n;  Free all contained in the map entries and memory used b
 DECL|function|diva_free_dma_map
 r_void
 id|diva_free_dma_map
+c_func
 (paren
 r_void
 op_star
@@ -1917,6 +1951,7 @@ op_increment
 )paren
 (brace
 id|diva_get_dma_map_entry
+c_func
 (paren
 id|pmap
 comma
@@ -1942,6 +1977,7 @@ suffix:semicolon
 id|addr_handle
 op_assign
 id|diva_get_entry_handle
+c_func
 (paren
 id|pmap
 comma
@@ -1956,6 +1992,7 @@ id|dma_addr_t
 id|phys_addr
 suffix:semicolon
 id|pci_free_consistent
+c_func
 (paren
 id|pdev
 comma
@@ -1994,6 +2031,7 @@ id|addr_handle
 )paren
 )brace
 id|diva_free_dma_mapping
+c_func
 (paren
 id|pmap
 )paren
@@ -2003,6 +2041,7 @@ multiline_comment|/*********************************************************&n; 
 r_int
 DECL|function|diva_os_register_io_port
 id|diva_os_register_io_port
+c_func
 (paren
 r_int
 id|on
@@ -2037,6 +2076,7 @@ c_cond
 id|ret
 op_assign
 id|check_region
+c_func
 (paren
 id|port
 comma
@@ -2066,6 +2106,7 @@ l_int|1
 suffix:semicolon
 )brace
 id|request_region
+c_func
 (paren
 id|port
 comma
@@ -2078,6 +2119,7 @@ suffix:semicolon
 r_else
 (brace
 id|release_region
+c_func
 (paren
 id|port
 comma
@@ -2091,10 +2133,11 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|function|divasa_remap_pci_bar
 r_void
 op_star
-DECL|function|divasa_remap_pci_bar
 id|divasa_remap_pci_bar
+c_func
 (paren
 r_int
 r_int
@@ -2141,9 +2184,10 @@ id|ret
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|divasa_unmap_pci_bar
+r_void
 id|divasa_unmap_pci_bar
+c_func
 (paren
 r_void
 op_star
@@ -2157,6 +2201,7 @@ id|bar
 )paren
 (brace
 id|iounmap
+c_func
 (paren
 id|bar
 )paren
@@ -2164,10 +2209,11 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*********************************************************&n; ** I/O port access &n; *********************************************************/
+DECL|function|inpp
 id|byte
 id|__inline__
-DECL|function|inpp
 id|inpp
+c_func
 (paren
 r_void
 op_star
@@ -2188,10 +2234,11 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+DECL|function|inppw
 id|word
 id|__inline__
-DECL|function|inppw
 id|inppw
+c_func
 (paren
 r_void
 op_star
@@ -2212,10 +2259,11 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+DECL|function|inppw_buffer
 r_void
 id|__inline__
-DECL|function|inppw_buffer
 id|inppw_buffer
+c_func
 (paren
 r_void
 op_star
@@ -2230,6 +2278,7 @@ id|length
 )paren
 (brace
 id|insw
+c_func
 (paren
 (paren
 r_int
@@ -2249,10 +2298,11 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|function|outppw_buffer
 r_void
 id|__inline__
-DECL|function|outppw_buffer
 id|outppw_buffer
+c_func
 (paren
 r_void
 op_star
@@ -2267,6 +2317,7 @@ id|length
 )paren
 (brace
 id|outsw
+c_func
 (paren
 (paren
 r_int
@@ -2286,10 +2337,11 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|function|outppw
 r_void
 id|__inline__
-DECL|function|outppw
 id|outppw
+c_func
 (paren
 r_void
 op_star
@@ -2300,6 +2352,7 @@ id|w
 )paren
 (brace
 id|outw
+c_func
 (paren
 id|w
 comma
@@ -2311,10 +2364,11 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+DECL|function|outpp
 r_void
 id|__inline__
-DECL|function|outpp
 id|outpp
+c_func
 (paren
 r_void
 op_star
@@ -2325,6 +2379,7 @@ id|p
 )paren
 (brace
 id|outb
+c_func
 (paren
 id|p
 comma
@@ -2340,6 +2395,7 @@ multiline_comment|/* -----------------------------------------------------------
 DECL|function|diva_os_register_irq
 r_int
 id|diva_os_register_irq
+c_func
 (paren
 r_void
 op_star
@@ -2358,6 +2414,7 @@ r_int
 id|result
 op_assign
 id|request_irq
+c_func
 (paren
 id|irq
 comma
@@ -2381,6 +2438,7 @@ suffix:semicolon
 DECL|function|diva_os_remove_irq
 r_void
 id|diva_os_remove_irq
+c_func
 (paren
 r_void
 op_star
@@ -2391,6 +2449,7 @@ id|irq
 )paren
 (brace
 id|free_irq
+c_func
 (paren
 id|irq
 comma
@@ -2442,6 +2501,7 @@ suffix:semicolon
 DECL|function|diva_os_initialize_soft_isr
 r_int
 id|diva_os_initialize_soft_isr
+c_func
 (paren
 id|diva_os_soft_isr_t
 op_star
@@ -2466,6 +2526,7 @@ id|diva_os_thread_dpc_t
 op_star
 )paren
 id|diva_os_malloc
+c_func
 (paren
 l_int|0
 comma
@@ -2495,6 +2556,7 @@ l_int|1
 suffix:semicolon
 )brace
 id|memset
+c_func
 (paren
 id|pdpc
 comma
@@ -2554,6 +2616,7 @@ suffix:semicolon
 DECL|function|diva_os_schedule_soft_isr
 r_int
 id|diva_os_schedule_soft_isr
+c_func
 (paren
 id|diva_os_soft_isr_t
 op_star
@@ -2595,6 +2658,7 @@ suffix:semicolon
 DECL|function|diva_os_cancel_soft_isr
 r_int
 id|diva_os_cancel_soft_isr
+c_func
 (paren
 id|diva_os_soft_isr_t
 op_star
@@ -2636,6 +2700,7 @@ suffix:semicolon
 DECL|function|diva_os_remove_soft_isr
 r_void
 id|diva_os_remove_soft_isr
+c_func
 (paren
 id|diva_os_soft_isr_t
 op_star
@@ -2685,6 +2750,7 @@ c_func
 )paren
 suffix:semicolon
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -2721,6 +2787,7 @@ r_if
 c_cond
 (paren
 id|copy_to_user
+c_func
 (paren
 id|dst
 comma
@@ -2747,6 +2814,7 @@ r_static
 r_int
 DECL|function|xdi_copy_from_user
 id|xdi_copy_from_user
+c_func
 (paren
 r_void
 op_star
@@ -2811,7 +2879,9 @@ id|file
 )paren
 (brace
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|divas_release
@@ -2838,6 +2908,7 @@ id|file-&gt;private_data
 )paren
 (brace
 id|diva_xdi_close_adapter
+c_func
 (paren
 id|file-&gt;private_data
 comma
@@ -2846,37 +2917,9 @@ id|file
 suffix:semicolon
 )brace
 r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|divas_ioctl
-r_static
-r_int
-id|divas_ioctl
-c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|file
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+l_int|0
 )paren
-(brace
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|divas_write
@@ -3014,7 +3057,9 @@ id|ret
 )paren
 suffix:semicolon
 r_return
+(paren
 id|ret
+)paren
 suffix:semicolon
 )brace
 DECL|function|divas_read
@@ -3152,7 +3197,9 @@ id|ret
 )paren
 suffix:semicolon
 r_return
+(paren
 id|ret
+)paren
 suffix:semicolon
 )brace
 DECL|function|divas_poll
@@ -3193,29 +3240,6 @@ id|POLLRDNORM
 )paren
 suffix:semicolon
 )brace
-DECL|function|divas_lseek
-r_static
-id|loff_t
-id|divas_lseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|orig
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
 DECL|variable|divas_fops
 r_static
 r_struct
@@ -3223,38 +3247,40 @@ id|file_operations
 id|divas_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|llseek
-suffix:colon
-id|divas_lseek
+op_assign
+id|no_llseek
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|divas_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|divas_write
 comma
+dot
 id|poll
-suffix:colon
+op_assign
 id|divas_poll
 comma
-id|ioctl
-suffix:colon
-id|divas_ioctl
-comma
+dot
 id|open
-suffix:colon
+op_assign
 id|divas_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|divas_release
-comma
 )brace
 suffix:semicolon
 DECL|function|divas_unregister_chrdev
@@ -3272,6 +3298,7 @@ c_cond
 id|devfs_handle
 )paren
 id|devfs_unregister
+c_func
 (paren
 id|devfs_handle
 )paren
@@ -3299,6 +3326,7 @@ r_if
 c_cond
 (paren
 id|register_chrdev
+c_func
 (paren
 id|major
 comma
@@ -3319,7 +3347,9 @@ id|DRIVERLNAME
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 id|devfs_handle
@@ -3350,7 +3380,9 @@ l_int|NULL
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;    PCI driver section&n;   -------------------------------------------------------------------------- */
@@ -3359,6 +3391,7 @@ r_static
 r_int
 id|__devinit
 id|divas_init_one
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -3428,6 +3461,7 @@ r_if
 c_cond
 (paren
 id|pci_enable_device
+c_func
 (paren
 id|pdev
 )paren
@@ -3481,11 +3515,13 @@ id|EIO
 suffix:semicolon
 )brace
 id|pci_set_master
+c_func
 (paren
 id|pdev
 )paren
 suffix:semicolon
 id|pci_read_config_byte
+c_func
 (paren
 id|pdev
 comma
@@ -3529,6 +3565,7 @@ id|pdev-&gt;devfn
 )paren
 suffix:semicolon
 id|pci_write_config_byte
+c_func
 (paren
 id|pdev
 comma
@@ -3546,6 +3583,7 @@ op_logical_neg
 id|pdiva
 op_assign
 id|diva_driver_add_card
+c_func
 (paren
 id|pdev
 comma
@@ -3620,6 +3658,7 @@ r_static
 r_void
 id|__devexit
 id|divas_remove_one
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -3632,6 +3671,7 @@ op_star
 id|pdiva
 op_assign
 id|pci_get_drvdata
+c_func
 (paren
 id|pdev
 )paren
@@ -3667,6 +3707,7 @@ id|pdiva
 )paren
 (brace
 id|diva_driver_remove_card
+c_func
 (paren
 id|pdiva
 )paren
@@ -3925,7 +3966,9 @@ suffix:colon
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
+(paren
 id|ret
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;    Driver Unload&n;   -------------------------------------------------------------------------- */
@@ -3940,12 +3983,14 @@ r_void
 )paren
 (brace
 id|pci_unregister_driver
+c_func
 (paren
 op_amp
 id|diva_pci_driver
 )paren
 suffix:semicolon
 id|remove_divas_proc
+c_func
 (paren
 )paren
 suffix:semicolon

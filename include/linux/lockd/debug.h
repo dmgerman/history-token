@@ -18,16 +18,6 @@ macro_line|#else
 DECL|macro|ifdebug
 macro_line|# define ifdebug(flag)&t;&t;if (0)
 macro_line|#endif
-macro_line|#ifdef LOCKD_DEBUG
-r_char
-op_star
-id|nlm_procname
-c_func
-(paren
-id|u32
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * Debug flags&n; */
 DECL|macro|NLMDBG_SVC

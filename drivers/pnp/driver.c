@@ -725,12 +725,14 @@ id|bus_type
 id|pnp_bus_type
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;pnp&quot;
 comma
+dot
 id|match
-suffix:colon
+op_assign
 id|pnp_bus_match
 comma
 )brace

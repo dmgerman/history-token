@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|special_file
 mdefine_line|#define special_file(m) (S_ISCHR(m)||S_ISBLK(m)||S_ISFIFO(m)||S_ISSOCK(m))
@@ -536,7 +537,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure that there are no leases.&n;&t; */
 id|error
 op_assign
-id|get_lease
+id|break_lease
 c_func
 (paren
 id|inode
@@ -1026,11 +1027,15 @@ op_assign
 id|get_user
 c_func
 (paren
-id|newattrs.ia_atime
+id|newattrs.ia_atime.tv_sec
 comma
 op_amp
 id|times-&gt;actime
 )paren
+suffix:semicolon
+id|newattrs.ia_atime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1043,11 +1048,15 @@ op_assign
 id|get_user
 c_func
 (paren
-id|newattrs.ia_mtime
+id|newattrs.ia_mtime.tv_sec
 comma
 op_amp
 id|times-&gt;modtime
 )paren
+suffix:semicolon
+id|newattrs.ia_mtime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1252,7 +1261,7 @@ id|times
 r_goto
 id|dput_and_out
 suffix:semicolon
-id|newattrs.ia_atime
+id|newattrs.ia_atime.tv_sec
 op_assign
 id|times
 (braket
@@ -1261,7 +1270,18 @@ l_int|0
 dot
 id|tv_sec
 suffix:semicolon
-id|newattrs.ia_mtime
+id|newattrs.ia_atime.tv_nsec
+op_assign
+id|times
+(braket
+l_int|0
+)braket
+dot
+id|tv_usec
+op_star
+l_int|1000
+suffix:semicolon
+id|newattrs.ia_mtime.tv_sec
 op_assign
 id|times
 (braket
@@ -1269,6 +1289,17 @@ l_int|1
 )braket
 dot
 id|tv_sec
+suffix:semicolon
+id|newattrs.ia_mtime.tv_nsec
+op_assign
+id|times
+(braket
+l_int|1
+)braket
+dot
+id|tv_usec
+op_star
+l_int|1000
 suffix:semicolon
 id|newattrs.ia_valid
 op_or_assign

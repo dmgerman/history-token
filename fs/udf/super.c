@@ -599,6 +599,11 @@ op_assign
 id|udf_delete_inode
 comma
 dot
+id|clear_inode
+op_assign
+id|udf_clear_inode
+comma
+dot
 id|put_super
 op_assign
 id|udf_put_super
@@ -1678,13 +1683,6 @@ id|s_umask
 op_assign
 id|uopt.umask
 suffix:semicolon
-macro_line|#if UDFFS_RW != 1
-op_star
-id|flags
-op_or_assign
-id|MS_RDONLY
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2442,6 +2440,12 @@ id|last
 (braket
 id|i
 )braket
+op_minus
+id|UDF_SB_SESSION
+c_func
+(paren
+id|sb
+)paren
 suffix:semicolon
 id|UDF_SB_ANCHOR
 c_func
@@ -2458,6 +2462,12 @@ id|i
 )braket
 op_minus
 l_int|256
+op_minus
+id|UDF_SB_SESSION
+c_func
+(paren
+id|sb
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -2509,6 +2519,12 @@ id|last
 id|i
 )braket
 )paren
+op_minus
+id|UDF_SB_SESSION
+c_func
+(paren
+id|sb
+)paren
 suffix:semicolon
 id|UDF_SB_ANCHOR
 c_func
@@ -2522,6 +2538,12 @@ op_assign
 id|lastblock
 op_minus
 l_int|256
+op_minus
+id|UDF_SB_SESSION
+c_func
+(paren
+id|sb
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -2569,12 +2591,6 @@ l_int|3
 )braket
 op_assign
 l_int|512
-op_plus
-id|UDF_SB_SESSION
-c_func
-(paren
-id|sb
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -3535,8 +3551,22 @@ c_func
 (paren
 id|sb
 )paren
+dot
+id|tv_sec
 op_assign
 id|recording
+suffix:semicolon
+id|UDF_SB_RECORDTIME
+c_func
+(paren
+id|sb
+)paren
+dot
+id|tv_nsec
+op_assign
+id|recording_usec
+op_star
+l_int|1000
 suffix:semicolon
 )brace
 r_if
@@ -3834,12 +3864,6 @@ id|le32_to_cpu
 c_func
 (paren
 id|p-&gt;partitionStartingLocation
-)paren
-op_plus
-id|UDF_SB_SESSION
-c_func
-(paren
-id|sb
 )paren
 suffix:semicolon
 r_if
@@ -6747,8 +6771,6 @@ op_amp
 id|cpu_time
 comma
 id|CURRENT_TIME
-comma
-id|CURRENT_UTIME
 )paren
 )paren
 id|UDF_SB_LVID
@@ -6965,8 +6987,6 @@ op_amp
 id|cpu_time
 comma
 id|CURRENT_TIME
-comma
-id|CURRENT_UTIME
 )paren
 )paren
 id|UDF_SB_LVID
@@ -7336,12 +7356,6 @@ id|udf_sb_info
 )paren
 )paren
 suffix:semicolon
-macro_line|#if UDFFS_RW != 1
-id|sb-&gt;s_flags
-op_or_assign
-id|MS_RDONLY
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7629,12 +7643,6 @@ id|sb
 l_int|3
 )braket
 op_assign
-id|UDF_SB_SESSION
-c_func
-(paren
-id|sb
-)paren
-op_plus
 l_int|256
 suffix:semicolon
 r_if
@@ -7911,23 +7919,14 @@ c_func
 (paren
 id|sb
 )paren
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|udf_info
 c_func
 (paren
-l_string|&quot;UDF %s-%s (%s) Mounting volume &squot;%s&squot;, timestamp %04u/%02u/%02u %02u:%02u (%x)&bslash;n&quot;
+l_string|&quot;UDF %s (%s) Mounting volume &squot;%s&squot;, timestamp %04u/%02u/%02u %02u:%02u (%x)&bslash;n&quot;
 comma
 id|UDFFS_VERSION
-comma
-id|UDFFS_RW
-ques
-c_cond
-l_string|&quot;rw&quot;
-suffix:colon
-l_string|&quot;ro&quot;
 comma
 id|UDFFS_DATE
 comma
@@ -9095,11 +9094,6 @@ op_star
 id|buf
 )paren
 (brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|buf-&gt;f_type
 op_assign
 id|UDF_SUPER_MAGIC
@@ -9183,11 +9177,6 @@ multiline_comment|/* __kernel_fsid_t f_fsid */
 id|buf-&gt;f_namelen
 op_assign
 id|UDF_NAME_LEN
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -9298,6 +9287,11 @@ id|spaceBitmapDesc
 op_star
 id|bm
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|loc.logicalBlockNum
 op_assign
 id|bitmap-&gt;s_extPosition
@@ -9339,8 +9333,8 @@ id|KERN_ERR
 l_string|&quot;udf: udf_count_free failed&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_else
@@ -9365,8 +9359,8 @@ id|KERN_ERR
 l_string|&quot;udf: udf_count_free failed&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|bm
@@ -9503,8 +9497,8 @@ c_func
 l_string|&quot;read failed&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-id|accum
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|index
@@ -9525,6 +9519,13 @@ id|udf_release_data
 c_func
 (paren
 id|bh
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -9574,6 +9575,11 @@ op_star
 id|bh
 op_assign
 l_int|NULL
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 id|bloc
 op_assign
@@ -9638,6 +9644,11 @@ id|udf_release_data
 c_func
 (paren
 id|bh
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

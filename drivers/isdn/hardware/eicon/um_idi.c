@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: um_idi.c,v 1.1.2.2 2002/10/02 14:38:38 armin Exp $ */
+multiline_comment|/* $Id: um_idi.c,v 1.1.2.2 2001/02/11 14:40:41 armin Exp $ */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
 macro_line|#include &quot;pc.h&quot;
@@ -16,6 +16,7 @@ multiline_comment|/* -----------------------------------------------------------
 r_extern
 r_void
 id|diva_os_wakeup_read
+c_func
 (paren
 r_void
 op_star
@@ -25,6 +26,7 @@ suffix:semicolon
 r_extern
 r_void
 id|diva_os_wakeup_close
+c_func
 (paren
 r_void
 op_star
@@ -46,6 +48,7 @@ r_static
 id|diva_um_idi_adapter_t
 op_star
 id|diva_um_idi_find_adapter
+c_func
 (paren
 id|dword
 id|nr
@@ -54,6 +57,7 @@ suffix:semicolon
 r_static
 r_void
 id|cleanup_adapter
+c_func
 (paren
 id|diva_um_idi_adapter_t
 op_star
@@ -63,6 +67,7 @@ suffix:semicolon
 r_static
 r_void
 id|cleanup_entity
+c_func
 (paren
 id|divas_um_idi_entity_t
 op_star
@@ -72,6 +77,7 @@ suffix:semicolon
 r_static
 r_int
 id|diva_user_mode_idi_adapter_features
+c_func
 (paren
 id|diva_um_idi_adapter_t
 op_star
@@ -85,6 +91,7 @@ suffix:semicolon
 r_static
 r_int
 id|process_idi_request
+c_func
 (paren
 id|divas_um_idi_entity_t
 op_star
@@ -99,6 +106,7 @@ suffix:semicolon
 r_static
 r_int
 id|process_idi_rc
+c_func
 (paren
 id|divas_um_idi_entity_t
 op_star
@@ -111,6 +119,7 @@ suffix:semicolon
 r_static
 r_int
 id|process_idi_ind
+c_func
 (paren
 id|divas_um_idi_entity_t
 op_star
@@ -123,6 +132,7 @@ suffix:semicolon
 r_static
 r_int
 id|write_return_code
+c_func
 (paren
 id|divas_um_idi_entity_t
 op_star
@@ -133,9 +143,10 @@ id|rc
 )paren
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;&t;&t;MAIN&n;   -------------------------------------------------------------------------- */
-r_int
 DECL|function|diva_user_mode_idi_init
+r_int
 id|diva_user_mode_idi_init
+c_func
 (paren
 r_void
 )paren
@@ -148,6 +159,7 @@ id|adapter_q
 )paren
 suffix:semicolon
 id|diva_os_initialize_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -166,6 +178,7 @@ r_static
 r_int
 DECL|function|diva_user_mode_idi_adapter_features
 id|diva_user_mode_idi_adapter_features
+c_func
 (paren
 id|diva_um_idi_adapter_t
 op_star
@@ -319,6 +332,7 @@ id|diva_um_idi_adapter_t
 op_star
 )paren
 id|diva_q_get_head
+c_func
 (paren
 op_amp
 id|adapter_q
@@ -339,6 +353,7 @@ id|adapter_nr
 )paren
 (brace
 id|diva_q_remove
+c_func
 (paren
 op_amp
 id|adapter_q
@@ -348,11 +363,13 @@ id|a-&gt;link
 )paren
 suffix:semicolon
 id|cleanup_adapter
+c_func
 (paren
 id|a
 )paren
 suffix:semicolon
 id|DBG_LOG
+c_func
 (paren
 (paren
 l_string|&quot;DIDD: del adapter(%d)&quot;
@@ -362,6 +379,7 @@ id|a-&gt;adapter_nr
 )paren
 suffix:semicolon
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -378,6 +396,7 @@ id|diva_um_idi_adapter_t
 op_star
 )paren
 id|diva_q_get_next
+c_func
 (paren
 op_amp
 id|a-&gt;link
@@ -386,9 +405,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;&t;&t;CALLED ON DRIVER EXIT (UNLOAD)&n;   -------------------------------------------------------------------------- */
-r_void
 DECL|function|diva_user_mode_idi_finit
+r_void
 id|diva_user_mode_idi_finit
+c_func
 (paren
 r_void
 )paren
@@ -402,6 +422,7 @@ id|diva_um_idi_adapter_t
 op_star
 )paren
 id|diva_q_get_head
+c_func
 (paren
 op_amp
 id|adapter_q
@@ -414,6 +435,7 @@ id|a
 )paren
 (brace
 id|diva_q_remove
+c_func
 (paren
 op_amp
 id|adapter_q
@@ -423,11 +445,13 @@ id|a-&gt;link
 )paren
 suffix:semicolon
 id|cleanup_adapter
+c_func
 (paren
 id|a
 )paren
 suffix:semicolon
 id|DBG_LOG
+c_func
 (paren
 (paren
 l_string|&quot;DIDD: del adapter(%d)&quot;
@@ -437,6 +461,7 @@ id|a-&gt;adapter_nr
 )paren
 suffix:semicolon
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -450,6 +475,7 @@ id|diva_um_idi_adapter_t
 op_star
 )paren
 id|diva_q_get_head
+c_func
 (paren
 op_amp
 id|adapter_q
@@ -457,6 +483,7 @@ id|adapter_q
 suffix:semicolon
 )brace
 id|diva_os_destroy_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -469,6 +496,7 @@ multiline_comment|/* -----------------------------------------------------------
 DECL|function|diva_user_mode_idi_create_adapter
 r_int
 id|diva_user_mode_idi_create_adapter
+c_func
 (paren
 r_const
 id|DESCRIPTOR
@@ -491,6 +519,7 @@ id|diva_um_idi_adapter_t
 op_star
 )paren
 id|diva_os_malloc
+c_func
 (paren
 l_int|0
 comma
@@ -538,6 +567,7 @@ op_assign
 id|adapter_nr
 suffix:semicolon
 id|DBG_LOG
+c_func
 (paren
 (paren
 l_string|&quot;DIDD_ADD A(%d), type:%02x, features:%04x, channels:%d&quot;
@@ -553,6 +583,7 @@ id|a-&gt;d.channels
 )paren
 suffix:semicolon
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -564,6 +595,7 @@ l_string|&quot;create_adapter&quot;
 )paren
 suffix:semicolon
 id|diva_q_add_tail
+c_func
 (paren
 op_amp
 id|adapter_q
@@ -573,6 +605,7 @@ id|a-&gt;link
 )paren
 suffix:semicolon
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -593,6 +626,7 @@ DECL|function|cmp_adapter_nr
 r_static
 r_int
 id|cmp_adapter_nr
+c_func
 (paren
 r_const
 r_void
@@ -628,6 +662,7 @@ r_int
 id|what
 suffix:semicolon
 id|DBG_TRC
+c_func
 (paren
 (paren
 l_string|&quot;find_adapter: (%d)-(%d)&quot;
@@ -652,6 +687,7 @@ r_static
 id|diva_um_idi_adapter_t
 op_star
 id|diva_um_idi_find_adapter
+c_func
 (paren
 id|dword
 id|nr
@@ -663,6 +699,7 @@ id|diva_um_idi_adapter_t
 op_star
 )paren
 id|diva_q_find
+c_func
 (paren
 op_amp
 id|adapter_q
@@ -685,6 +722,7 @@ multiline_comment|/* -----------------------------------------------------------
 DECL|function|diva_um_idi_nr_of_adapters
 r_int
 id|diva_um_idi_nr_of_adapters
+c_func
 (paren
 r_void
 )paren
@@ -692,6 +730,7 @@ r_void
 r_return
 (paren
 id|diva_q_get_nr_of_entries
+c_func
 (paren
 op_amp
 id|adapter_q
@@ -704,6 +743,7 @@ DECL|function|cleanup_adapter
 r_static
 r_void
 id|cleanup_adapter
+c_func
 (paren
 id|diva_um_idi_adapter_t
 op_star
@@ -719,6 +759,7 @@ id|divas_um_idi_entity_t
 op_star
 )paren
 id|diva_q_get_head
+c_func
 (paren
 op_amp
 id|a-&gt;entity_q
@@ -731,6 +772,7 @@ id|e
 )paren
 (brace
 id|diva_q_remove
+c_func
 (paren
 op_amp
 id|a-&gt;entity_q
@@ -740,6 +782,7 @@ id|e-&gt;link
 )paren
 suffix:semicolon
 id|cleanup_entity
+c_func
 (paren
 id|e
 )paren
@@ -751,11 +794,13 @@ id|e-&gt;os_context
 )paren
 (brace
 id|diva_os_wakeup_read
+c_func
 (paren
 id|e-&gt;os_context
 )paren
 suffix:semicolon
 id|diva_os_wakeup_close
+c_func
 (paren
 id|e-&gt;os_context
 )paren
@@ -768,6 +813,7 @@ id|divas_um_idi_entity_t
 op_star
 )paren
 id|diva_q_get_head
+c_func
 (paren
 op_amp
 id|a-&gt;entity_q
@@ -794,6 +840,7 @@ DECL|function|cleanup_entity
 r_static
 r_void
 id|cleanup_entity
+c_func
 (paren
 id|divas_um_idi_entity_t
 op_star
@@ -829,12 +876,14 @@ op_or_assign
 id|DIVA_UM_IDI_REMOVE_PENDING
 suffix:semicolon
 id|diva_data_q_finit
+c_func
 (paren
 op_amp
 id|e-&gt;data
 )paren
 suffix:semicolon
 id|diva_data_q_finit
+c_func
 (paren
 op_amp
 id|e-&gt;rc
@@ -846,6 +895,7 @@ DECL|function|divas_um_idi_create_entity
 r_void
 op_star
 id|divas_um_idi_create_entity
+c_func
 (paren
 id|dword
 id|adapter_nr
@@ -877,6 +927,7 @@ id|divas_um_idi_entity_t
 op_star
 )paren
 id|diva_os_malloc
+c_func
 (paren
 l_int|0
 comma
@@ -911,10 +962,12 @@ op_logical_neg
 id|e-&gt;os_context
 op_assign
 id|diva_os_malloc
+c_func
 (paren
 l_int|0
 comma
 id|diva_os_get_context_size
+c_func
 (paren
 )paren
 )paren
@@ -922,6 +975,7 @@ id|diva_os_get_context_size
 )paren
 (brace
 id|DBG_LOG
+c_func
 (paren
 (paren
 l_string|&quot;E(%08x) no memory for os context&quot;
@@ -931,6 +985,7 @@ id|e
 )paren
 suffix:semicolon
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -951,6 +1006,7 @@ comma
 l_int|0x00
 comma
 id|diva_os_get_context_size
+c_func
 (paren
 )paren
 )paren
@@ -960,6 +1016,7 @@ c_cond
 (paren
 (paren
 id|diva_data_q_init
+c_func
 (paren
 op_amp
 id|e-&gt;data
@@ -974,6 +1031,7 @@ l_int|16
 )paren
 (brace
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -981,6 +1039,7 @@ id|e-&gt;os_context
 )paren
 suffix:semicolon
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -998,6 +1057,7 @@ c_cond
 (paren
 (paren
 id|diva_data_q_init
+c_func
 (paren
 op_amp
 id|e-&gt;rc
@@ -1010,12 +1070,14 @@ l_int|2
 )paren
 (brace
 id|diva_data_q_finit
+c_func
 (paren
 op_amp
 id|e-&gt;data
 )paren
 suffix:semicolon
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -1023,6 +1085,7 @@ id|e-&gt;os_context
 )paren
 suffix:semicolon
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -1036,6 +1099,7 @@ l_int|0
 suffix:semicolon
 )brace
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -1046,7 +1110,7 @@ comma
 l_string|&quot;create_entity&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;Look for Adapter requested&n;&t;&t;&t;*/
+multiline_comment|/*&n;&t;&t;   Look for Adapter requested&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1055,14 +1119,16 @@ op_logical_neg
 id|a
 op_assign
 id|diva_um_idi_find_adapter
+c_func
 (paren
 id|adapter_nr
 )paren
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;No adapter was found, or this adapter was removed&n;&t;&t;&t;&t;*/
+multiline_comment|/*&n;&t;&t;&t;   No adapter was found, or this adapter was removed&n;&t;&t;&t; */
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -1074,6 +1140,7 @@ l_string|&quot;create_entity&quot;
 )paren
 suffix:semicolon
 id|DBG_LOG
+c_func
 (paren
 (paren
 l_string|&quot;A: no adapter(%ld)&quot;
@@ -1083,11 +1150,13 @@ id|adapter_nr
 )paren
 suffix:semicolon
 id|cleanup_entity
+c_func
 (paren
 id|e
 )paren
 suffix:semicolon
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -1095,6 +1164,7 @@ id|e-&gt;os_context
 )paren
 suffix:semicolon
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -1118,6 +1188,7 @@ id|a
 suffix:semicolon
 multiline_comment|/* link to adapter   */
 id|diva_q_add_tail
+c_func
 (paren
 op_amp
 id|a-&gt;entity_q
@@ -1128,6 +1199,7 @@ id|e-&gt;link
 suffix:semicolon
 multiline_comment|/* link from adapter */
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -1139,6 +1211,7 @@ l_string|&quot;create_entity&quot;
 )paren
 suffix:semicolon
 id|DBG_LOG
+c_func
 (paren
 (paren
 l_string|&quot;A(%ld), create E(%08x)&quot;
@@ -1160,6 +1233,7 @@ multiline_comment|/* -----------------------------------------------------------
 DECL|function|divas_um_idi_delete_entity
 r_int
 id|divas_um_idi_delete_entity
+c_func
 (paren
 r_int
 id|adapter_nr
@@ -1195,10 +1269,13 @@ id|entity
 )paren
 )paren
 r_return
+(paren
 op_minus
 l_int|1
+)paren
 suffix:semicolon
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -1220,6 +1297,7 @@ id|e-&gt;adapter
 )paren
 (brace
 id|diva_q_remove
+c_func
 (paren
 op_amp
 id|a-&gt;entity_q
@@ -1230,6 +1308,7 @@ id|e-&gt;link
 suffix:semicolon
 )brace
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -1241,16 +1320,19 @@ l_string|&quot;delete_entity&quot;
 )paren
 suffix:semicolon
 id|diva_um_idi_stop_wdog
+c_func
 (paren
 id|entity
 )paren
 suffix:semicolon
 id|cleanup_entity
+c_func
 (paren
 id|e
 )paren
 suffix:semicolon
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -1272,6 +1354,7 @@ id|e
 )paren
 suffix:semicolon
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -1279,6 +1362,7 @@ id|e
 )paren
 suffix:semicolon
 id|DBG_LOG
+c_func
 (paren
 (paren
 l_string|&quot;A(%d) remove E:%08x&quot;
@@ -1299,6 +1383,7 @@ multiline_comment|/* -----------------------------------------------------------
 DECL|function|diva_um_idi_read
 r_int
 id|diva_um_idi_read
+c_func
 (paren
 r_void
 op_star
@@ -1347,6 +1432,7 @@ id|diva_os_spin_lock_magic_t
 id|old_irql
 suffix:semicolon
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -1400,6 +1486,7 @@ id|DIVA_UM_IDI_ADAPTER_REMOVED
 )paren
 (brace
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -1440,10 +1527,11 @@ id|max_length
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;Try to read return code first&n;&t;&t;*/
+multiline_comment|/*&n;&t;   Try to read return code first&n;&t; */
 id|data
 op_assign
 id|diva_data_q_get_segment4read
+c_func
 (paren
 op_amp
 id|e-&gt;rc
@@ -1454,7 +1542,7 @@ op_assign
 op_amp
 id|e-&gt;rc
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;No return codes available, read indications now&n;&t;&t;*/
+multiline_comment|/*&n;&t;   No return codes available, read indications now&n;&t; */
 r_if
 c_cond
 (paren
@@ -1474,6 +1562,7 @@ id|DIVA_UM_IDI_RC_PENDING
 )paren
 (brace
 id|DBG_TRC
+c_func
 (paren
 (paren
 l_string|&quot;A(%d) E(%08x) read data&quot;
@@ -1487,6 +1576,7 @@ suffix:semicolon
 id|data
 op_assign
 id|diva_data_q_get_segment4read
+c_func
 (paren
 op_amp
 id|e-&gt;data
@@ -1507,6 +1597,7 @@ op_complement
 id|DIVA_UM_IDI_RC_PENDING
 suffix:semicolon
 id|DBG_TRC
+c_func
 (paren
 (paren
 l_string|&quot;A(%d) E(%08x) read rc&quot;
@@ -1531,6 +1622,7 @@ c_cond
 id|length
 op_assign
 id|diva_data_q_get_segment_length
+c_func
 (paren
 id|q
 )paren
@@ -1539,8 +1631,9 @@ OG
 id|max_length
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;Not enough space to read message&n;&t;&t;&t;&t;*/
+multiline_comment|/*&n;&t;&t;&t;   Not enough space to read message&n;&t;&t;&t; */
 id|DBG_ERR
+c_func
 (paren
 (paren
 l_string|&quot;A: A(%d) E(%08x) read small buffer&quot;
@@ -1554,6 +1647,7 @@ id|ret
 )paren
 suffix:semicolon
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -1571,7 +1665,7 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t;Copy it to user, this function does access ONLY locked an verified&n;&t;&t;&t;memory, also we can access it witch spin lock held&n;&t;&t;&t;*/
+multiline_comment|/*&n;&t;&t;   Copy it to user, this function does access ONLY locked an verified&n;&t;&t;   memory, also we can access it witch spin lock held&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1596,8 +1690,9 @@ op_ge
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;Acknowledge only if read was successfull&n;&t;&t;&t;&t;*/
+multiline_comment|/*&n;&t;&t;&t;   Acknowledge only if read was successfull&n;&t;&t;&t; */
 id|diva_data_q_ack_segment4read
+c_func
 (paren
 id|q
 )paren
@@ -1605,6 +1700,7 @@ suffix:semicolon
 )brace
 )brace
 id|DBG_TRC
+c_func
 (paren
 (paren
 l_string|&quot;A(%d) E(%08x) read=%d&quot;
@@ -1618,6 +1714,7 @@ id|ret
 )paren
 suffix:semicolon
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -1637,6 +1734,7 @@ suffix:semicolon
 DECL|function|diva_um_idi_write
 r_int
 id|diva_um_idi_write
+c_func
 (paren
 r_void
 op_star
@@ -1683,6 +1781,7 @@ id|diva_os_spin_lock_magic_t
 id|old_irql
 suffix:semicolon
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -1736,6 +1835,7 @@ id|DIVA_UM_IDI_ADAPTER_REMOVED
 )paren
 (brace
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -1800,6 +1900,7 @@ id|e-&gt;buffer
 )paren
 (brace
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -1838,6 +1939,7 @@ id|e
 )paren
 suffix:semicolon
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -1856,7 +1958,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* should wait for RC code first */
 )brace
-multiline_comment|/*&n;&t;&t;&t;Copy function does access only locked verified memory,&n;&t;&t;&t;also it can be called with spin lock held&n;&t;&t;*/
+multiline_comment|/*&n;&t;   Copy function does access only locked verified memory,&n;&t;   also it can be called with spin lock held&n;&t; */
 r_if
 c_cond
 (paren
@@ -1896,6 +1998,7 @@ id|ret
 )paren
 suffix:semicolon
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -1952,6 +2055,7 @@ op_logical_neg
 id|data
 op_assign
 id|diva_data_q_get_segment4write
+c_func
 (paren
 op_amp
 id|e-&gt;data
@@ -1970,6 +2074,7 @@ id|a-&gt;adapter_nr
 )paren
 suffix:semicolon
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -1987,6 +2092,7 @@ l_int|0
 suffix:semicolon
 )brace
 id|diva_user_mode_idi_adapter_features
+c_func
 (paren
 id|a
 comma
@@ -2029,6 +2135,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|diva_data_q_ack_segment4write
+c_func
 (paren
 op_amp
 id|e-&gt;data
@@ -2040,6 +2147,7 @@ id|diva_um_idi_ind_hdr_t
 )paren
 suffix:semicolon
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -2051,6 +2159,7 @@ l_string|&quot;write&quot;
 )paren
 suffix:semicolon
 id|diva_os_wakeup_read
+c_func
 (paren
 id|e-&gt;os_context
 )paren
@@ -2076,7 +2185,6 @@ c_func
 (paren
 l_string|&quot;A(%d) REQ(%02d)-(%02d)-(%08x)&quot;
 comma
-"&bslash;"
 id|a-&gt;adapter_nr
 comma
 id|req-&gt;Req
@@ -2093,6 +2201,7 @@ r_switch
 c_cond
 (paren
 id|process_idi_request
+c_func
 (paren
 id|e
 comma
@@ -2105,6 +2214,7 @@ op_minus
 l_int|1
 suffix:colon
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -2126,6 +2236,7 @@ op_minus
 l_int|2
 suffix:colon
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -2137,6 +2248,7 @@ l_string|&quot;write&quot;
 )paren
 suffix:semicolon
 id|diva_os_wakeup_read
+c_func
 (paren
 id|e-&gt;os_context
 )paren
@@ -2146,6 +2258,7 @@ suffix:semicolon
 r_default
 suffix:colon
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -2164,6 +2277,7 @@ suffix:semicolon
 r_default
 suffix:colon
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -2206,6 +2320,7 @@ DECL|function|diva_um_idi_xdi_callback
 r_static
 r_void
 id|diva_um_idi_xdi_callback
+c_func
 (paren
 id|ENTITY
 op_star
@@ -2235,6 +2350,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -2265,6 +2381,7 @@ id|DIVA_UM_IDI_REMOVE_PENDING
 )paren
 (brace
 id|diva_um_idi_stop_wdog
+c_func
 (paren
 id|e
 )paren
@@ -2277,6 +2394,7 @@ c_cond
 id|call_wakeup
 op_assign
 id|process_idi_rc
+c_func
 (paren
 id|e
 comma
@@ -2301,6 +2419,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -2318,11 +2437,13 @@ id|call_wakeup
 )paren
 (brace
 id|diva_os_wakeup_read
+c_func
 (paren
 id|e-&gt;os_context
 )paren
 suffix:semicolon
 id|diva_os_wakeup_close
+c_func
 (paren
 id|e-&gt;os_context
 )paren
@@ -2353,6 +2474,7 @@ r_else
 id|call_wakeup
 op_assign
 id|process_idi_ind
+c_func
 (paren
 id|e
 comma
@@ -2365,6 +2487,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -2382,6 +2505,7 @@ id|call_wakeup
 )paren
 (brace
 id|diva_os_wakeup_read
+c_func
 (paren
 id|e-&gt;os_context
 )paren
@@ -2393,6 +2517,7 @@ DECL|function|process_idi_request
 r_static
 r_int
 id|process_idi_request
+c_func
 (paren
 id|divas_um_idi_entity_t
 op_star
@@ -2537,11 +2662,11 @@ suffix:semicolon
 r_default
 suffix:colon
 id|DBG_ERR
+c_func
 (paren
 (paren
 l_string|&quot;A: A(%d) E(%08x) unknown type=%08x&quot;
 comma
-"&bslash;"
 id|e-&gt;adapter-&gt;adapter_nr
 comma
 id|e
@@ -2626,12 +2751,10 @@ c_func
 (paren
 l_string|&quot;A(%d) E(%08x) request(%02x-%02x-%02x (%d))&quot;
 comma
-"&bslash;"
 id|e-&gt;adapter-&gt;adapter_nr
 comma
 id|e
 comma
-"&bslash;"
 id|e-&gt;e.Id
 comma
 id|e-&gt;e.Req
@@ -2654,6 +2777,7 @@ id|e-&gt;adapter-&gt;d.request
 )paren
 (brace
 id|diva_um_idi_start_wdog
+c_func
 (paren
 id|e
 )paren
@@ -2684,7 +2808,7 @@ op_eq
 id|OUT_OF_RESOURCES
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;XDI has no entities more, call was not forwarded to the card,&n;&t;&t;&t;&t;no callback will be scheduled&n;&t;&t;&t;&t;*/
+multiline_comment|/*&n;&t;&t;&t;   XDI has no entities more, call was not forwarded to the card,&n;&t;&t;&t;   no callback will be scheduled&n;&t;&t;&t; */
 id|DBG_ERR
 c_func
 (paren
@@ -2738,6 +2862,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|write_return_code
+c_func
 (paren
 id|e
 comma
@@ -2771,6 +2896,7 @@ DECL|function|process_idi_rc
 r_static
 r_int
 id|process_idi_rc
+c_func
 (paren
 id|divas_um_idi_entity_t
 op_star
@@ -2786,12 +2912,10 @@ c_func
 (paren
 l_string|&quot;A(%d) E(%08x) rc(%02x-%02x-%02x)&quot;
 comma
-"&bslash;"
 id|e-&gt;adapter-&gt;adapter_nr
 comma
 id|e
 comma
-"&bslash;"
 id|e-&gt;e.Id
 comma
 id|rc
@@ -2907,7 +3031,6 @@ c_func
 (paren
 l_string|&quot;A: A(%d) E(%08x)  discard OK in REMOVE&quot;
 comma
-"&bslash;"
 id|e-&gt;adapter-&gt;adapter_nr
 comma
 id|e
@@ -3013,7 +3136,6 @@ c_func
 (paren
 l_string|&quot;A: A(%d) E(%08x)  REMOVE FAILED&quot;
 comma
-"&bslash;"
 id|e-&gt;adapter-&gt;adapter_nr
 comma
 id|e
@@ -3022,6 +3144,7 @@ id|e
 suffix:semicolon
 )brace
 id|write_return_code
+c_func
 (paren
 id|e
 comma
@@ -3038,6 +3161,7 @@ DECL|function|process_idi_ind
 r_static
 r_int
 id|process_idi_ind
+c_func
 (paren
 id|divas_um_idi_entity_t
 op_star
@@ -3069,6 +3193,7 @@ id|diva_um_idi_ind_hdr_t
 op_star
 )paren
 id|diva_data_q_get_segment4write
+c_func
 (paren
 op_amp
 id|e-&gt;data
@@ -3103,12 +3228,12 @@ id|word
 )paren
 (paren
 id|diva_data_q_get_max_length
+c_func
 (paren
 op_amp
 id|e-&gt;data
 )paren
 op_minus
-"&bslash;"
 r_sizeof
 (paren
 op_star
@@ -3122,12 +3247,10 @@ c_func
 (paren
 l_string|&quot;A(%d) E(%08x) ind_1(%02x-%02x-%02x)-[%d-%d]&quot;
 comma
-"&bslash;"
 id|e-&gt;adapter-&gt;adapter_nr
 comma
 id|e
 comma
-"&bslash;"
 id|e-&gt;e.Id
 comma
 id|ind
@@ -3149,12 +3272,10 @@ c_func
 (paren
 l_string|&quot;A(%d) E(%08x) ind(%02x-%02x-%02x)-RNR&quot;
 comma
-"&bslash;"
 id|e-&gt;adapter-&gt;adapter_nr
 comma
 id|e
 comma
-"&bslash;"
 id|e-&gt;e.Id
 comma
 id|ind
@@ -3183,7 +3304,6 @@ id|diva_um_idi_ind_hdr_t
 op_star
 id|pind
 op_assign
-"&bslash;"
 (paren
 id|diva_um_idi_ind_hdr_t
 op_star
@@ -3198,12 +3318,10 @@ c_func
 (paren
 l_string|&quot;A(%d) E(%08x) ind(%02x-%02x-%02x)-[%d]&quot;
 comma
-"&bslash;"
 id|e-&gt;adapter-&gt;adapter_nr
 comma
 id|e
 comma
-"&bslash;"
 id|e-&gt;e.Id
 comma
 id|ind
@@ -3234,6 +3352,7 @@ op_assign
 id|e-&gt;e.R-&gt;PLength
 suffix:semicolon
 id|diva_data_q_ack_segment4write
+c_func
 (paren
 op_amp
 id|e-&gt;data
@@ -3286,6 +3405,7 @@ DECL|function|write_return_code
 r_static
 r_int
 id|write_return_code
+c_func
 (paren
 id|divas_um_idi_entity_t
 op_star
@@ -3311,6 +3431,7 @@ id|diva_um_idi_ind_hdr_t
 op_star
 )paren
 id|diva_data_q_get_segment4write
+c_func
 (paren
 op_amp
 id|e-&gt;rc
@@ -3319,6 +3440,7 @@ id|e-&gt;rc
 )paren
 (brace
 id|DBG_ERR
+c_func
 (paren
 (paren
 l_string|&quot;A: A(%d) E(%08x) rc(%02x) lost&quot;
@@ -3360,6 +3482,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|diva_data_q_ack_segment4write
+c_func
 (paren
 op_amp
 id|e-&gt;rc
@@ -3381,6 +3504,7 @@ multiline_comment|/* -----------------------------------------------------------
 DECL|function|diva_user_mode_idi_ind_ready
 r_int
 id|diva_user_mode_idi_ind_ready
+c_func
 (paren
 r_void
 op_star
@@ -3412,10 +3536,13 @@ op_logical_neg
 id|entity
 )paren
 r_return
+(paren
 op_minus
 l_int|1
+)paren
 suffix:semicolon
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -3453,8 +3580,9 @@ id|DIVA_UM_IDI_ADAPTER_REMOVED
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;Adapter was unloaded&n;&t;&t;&t;*/
+multiline_comment|/*&n;&t;&t;   Adapter was unloaded&n;&t;&t; */
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -3481,8 +3609,9 @@ op_amp
 id|DIVA_UM_IDI_REMOVED
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;entity was removed as result of adapter removal&n;&t;&t;&t;user should assign this entity again&n;&t;&t;&t;*/
+multiline_comment|/*&n;&t;&t;   entity was removed as result of adapter removal&n;&t;&t;   user should assign this entity again&n;&t;&t; */
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -3525,6 +3654,7 @@ l_int|0
 suffix:semicolon
 )brace
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -3545,6 +3675,7 @@ DECL|function|diva_um_id_get_os_context
 r_void
 op_star
 id|diva_um_id_get_os_context
+c_func
 (paren
 r_void
 op_star
@@ -3568,6 +3699,7 @@ suffix:semicolon
 DECL|function|divas_um_idi_entity_assigned
 r_int
 id|divas_um_idi_entity_assigned
+c_func
 (paren
 r_void
 op_star
@@ -3589,6 +3721,7 @@ id|diva_os_spin_lock_magic_t
 id|old_irql
 suffix:semicolon
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -3636,6 +3769,7 @@ id|DIVA_UM_IDI_ADAPTER_REMOVED
 )paren
 (brace
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -3684,6 +3818,7 @@ id|e-&gt;status
 )paren
 )paren
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -3703,6 +3838,7 @@ suffix:semicolon
 DECL|function|divas_um_idi_entity_start_remove
 r_int
 id|divas_um_idi_entity_start_remove
+c_func
 (paren
 r_void
 op_star
@@ -3721,6 +3857,7 @@ id|diva_os_spin_lock_magic_t
 id|old_irql
 suffix:semicolon
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -3768,6 +3905,7 @@ id|DIVA_UM_IDI_ADAPTER_REMOVED
 )paren
 (brace
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -3790,8 +3928,9 @@ c_cond
 id|e-&gt;rc_count
 )paren
 (brace
-multiline_comment|/*&n;       Entity BUSY&n;      */
+multiline_comment|/*&n;&t;&t;   Entity BUSY&n;&t;&t; */
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -3815,8 +3954,9 @@ op_logical_neg
 id|e-&gt;e.Id
 )paren
 (brace
-multiline_comment|/*&n;       Remove request was already pending, and arrived now&n;       */
+multiline_comment|/*&n;&t;&t;   Remove request was already pending, and arrived now&n;&t;&t; */
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock
@@ -3834,7 +3974,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* REMOVE was pending */
 )brace
-multiline_comment|/*&n;    Now send remove request&n;    */
+multiline_comment|/*&n;&t;   Now send remove request&n;&t; */
 id|e-&gt;e.Req
 op_assign
 id|REMOVE
@@ -3852,12 +3992,10 @@ c_func
 (paren
 l_string|&quot;A(%d) E(%08x) request(%02x-%02x-%02x (%d))&quot;
 comma
-"&bslash;"
 id|e-&gt;adapter-&gt;adapter_nr
 comma
 id|e
 comma
-"&bslash;"
 id|e-&gt;e.Id
 comma
 id|e-&gt;e.Req
@@ -3885,6 +4023,7 @@ id|e-&gt;e
 )paren
 suffix:semicolon
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|adapter_lock

@@ -942,6 +942,7 @@ r_int
 id|value
 suffix:semicolon
 r_int
+r_int
 id|i
 suffix:semicolon
 r_if

@@ -1,7 +1,6 @@
 macro_line|#ifndef _LINUX_ELF_H
 DECL|macro|_LINUX_ELF_H
 mdefine_line|#define _LINUX_ELF_H
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 multiline_comment|/* 32-bit ELF base types. */
@@ -374,6 +373,10 @@ DECL|macro|ELF32_R_SYM
 mdefine_line|#define ELF32_R_SYM(x) ((x) &gt;&gt; 8)
 DECL|macro|ELF32_R_TYPE
 mdefine_line|#define ELF32_R_TYPE(x) ((x) &amp; 0xff)
+DECL|macro|ELF64_R_SYM
+mdefine_line|#define ELF64_R_SYM(i)&t;&t;&t;((i) &gt;&gt; 32)
+DECL|macro|ELF64_R_TYPE
+mdefine_line|#define ELF64_R_TYPE(i)&t;&t;&t;((i) &amp; 0xffffffff)
 DECL|macro|R_386_NONE
 mdefine_line|#define R_386_NONE&t;0
 DECL|macro|R_386_32
@@ -535,6 +538,8 @@ DECL|macro|R_SPARC_10
 mdefine_line|#define R_SPARC_10&t;&t;30
 DECL|macro|R_SPARC_11
 mdefine_line|#define R_SPARC_11&t;&t;31
+DECL|macro|R_SPARC_64
+mdefine_line|#define R_SPARC_64&t;&t;32
 DECL|macro|R_SPARC_WDISP16
 mdefine_line|#define R_SPARC_WDISP16&t;&t;40
 DECL|macro|R_SPARC_WDISP19
@@ -662,6 +667,142 @@ DECL|macro|R_ALPHA_JMP_SLOT
 mdefine_line|#define R_ALPHA_JMP_SLOT        26      /* Create PLT entry */
 DECL|macro|R_ALPHA_RELATIVE
 mdefine_line|#define R_ALPHA_RELATIVE        27      /* Adjust by program base */
+multiline_comment|/* PowerPC relocations defined by the ABIs */
+DECL|macro|R_PPC_NONE
+mdefine_line|#define R_PPC_NONE&t;&t;0
+DECL|macro|R_PPC_ADDR32
+mdefine_line|#define R_PPC_ADDR32&t;&t;1&t;/* 32bit absolute address */
+DECL|macro|R_PPC_ADDR24
+mdefine_line|#define R_PPC_ADDR24&t;&t;2&t;/* 26bit address, 2 bits ignored.  */
+DECL|macro|R_PPC_ADDR16
+mdefine_line|#define R_PPC_ADDR16&t;&t;3&t;/* 16bit absolute address */
+DECL|macro|R_PPC_ADDR16_LO
+mdefine_line|#define R_PPC_ADDR16_LO&t;&t;4&t;/* lower 16bit of absolute address */
+DECL|macro|R_PPC_ADDR16_HI
+mdefine_line|#define R_PPC_ADDR16_HI&t;&t;5&t;/* high 16bit of absolute address */
+DECL|macro|R_PPC_ADDR16_HA
+mdefine_line|#define R_PPC_ADDR16_HA&t;&t;6&t;/* adjusted high 16bit */
+DECL|macro|R_PPC_ADDR14
+mdefine_line|#define R_PPC_ADDR14&t;&t;7&t;/* 16bit address, 2 bits ignored */
+DECL|macro|R_PPC_ADDR14_BRTAKEN
+mdefine_line|#define R_PPC_ADDR14_BRTAKEN&t;8
+DECL|macro|R_PPC_ADDR14_BRNTAKEN
+mdefine_line|#define R_PPC_ADDR14_BRNTAKEN&t;9
+DECL|macro|R_PPC_REL24
+mdefine_line|#define R_PPC_REL24&t;&t;10&t;/* PC relative 26 bit */
+DECL|macro|R_PPC_REL14
+mdefine_line|#define R_PPC_REL14&t;&t;11&t;/* PC relative 16 bit */
+DECL|macro|R_PPC_REL14_BRTAKEN
+mdefine_line|#define R_PPC_REL14_BRTAKEN&t;12
+DECL|macro|R_PPC_REL14_BRNTAKEN
+mdefine_line|#define R_PPC_REL14_BRNTAKEN&t;13
+DECL|macro|R_PPC_GOT16
+mdefine_line|#define R_PPC_GOT16&t;&t;14
+DECL|macro|R_PPC_GOT16_LO
+mdefine_line|#define R_PPC_GOT16_LO&t;&t;15
+DECL|macro|R_PPC_GOT16_HI
+mdefine_line|#define R_PPC_GOT16_HI&t;&t;16
+DECL|macro|R_PPC_GOT16_HA
+mdefine_line|#define R_PPC_GOT16_HA&t;&t;17
+DECL|macro|R_PPC_PLTREL24
+mdefine_line|#define R_PPC_PLTREL24&t;&t;18
+DECL|macro|R_PPC_COPY
+mdefine_line|#define R_PPC_COPY&t;&t;19
+DECL|macro|R_PPC_GLOB_DAT
+mdefine_line|#define R_PPC_GLOB_DAT&t;&t;20
+DECL|macro|R_PPC_JMP_SLOT
+mdefine_line|#define R_PPC_JMP_SLOT&t;&t;21
+DECL|macro|R_PPC_RELATIVE
+mdefine_line|#define R_PPC_RELATIVE&t;&t;22
+DECL|macro|R_PPC_LOCAL24PC
+mdefine_line|#define R_PPC_LOCAL24PC&t;&t;23
+DECL|macro|R_PPC_UADDR32
+mdefine_line|#define R_PPC_UADDR32&t;&t;24
+DECL|macro|R_PPC_UADDR16
+mdefine_line|#define R_PPC_UADDR16&t;&t;25
+DECL|macro|R_PPC_REL32
+mdefine_line|#define R_PPC_REL32&t;&t;26
+DECL|macro|R_PPC_PLT32
+mdefine_line|#define R_PPC_PLT32&t;&t;27
+DECL|macro|R_PPC_PLTREL32
+mdefine_line|#define R_PPC_PLTREL32&t;&t;28
+DECL|macro|R_PPC_PLT16_LO
+mdefine_line|#define R_PPC_PLT16_LO&t;&t;29
+DECL|macro|R_PPC_PLT16_HI
+mdefine_line|#define R_PPC_PLT16_HI&t;&t;30
+DECL|macro|R_PPC_PLT16_HA
+mdefine_line|#define R_PPC_PLT16_HA&t;&t;31
+DECL|macro|R_PPC_SDAREL16
+mdefine_line|#define R_PPC_SDAREL16&t;&t;32
+DECL|macro|R_PPC_SECTOFF
+mdefine_line|#define R_PPC_SECTOFF&t;&t;33
+DECL|macro|R_PPC_SECTOFF_LO
+mdefine_line|#define R_PPC_SECTOFF_LO&t;34
+DECL|macro|R_PPC_SECTOFF_HI
+mdefine_line|#define R_PPC_SECTOFF_HI&t;35
+DECL|macro|R_PPC_SECTOFF_HA
+mdefine_line|#define R_PPC_SECTOFF_HA&t;36
+multiline_comment|/* Keep this the last entry.  */
+DECL|macro|R_PPC_NUM
+mdefine_line|#define R_PPC_NUM&t;&t;37
+multiline_comment|/* s390 relocations defined by the ABIs */
+DECL|macro|R_390_NONE
+mdefine_line|#define R_390_NONE&t;0&t;       /* No reloc.  */
+DECL|macro|R_390_8
+mdefine_line|#define R_390_8&t;&t;1&t;       /* Direct 8 bit.&t; */
+DECL|macro|R_390_12
+mdefine_line|#define R_390_12&t;2&t;       /* Direct 12 bit.  */
+DECL|macro|R_390_16
+mdefine_line|#define R_390_16&t;3&t;       /* Direct 16 bit.  */
+DECL|macro|R_390_32
+mdefine_line|#define R_390_32&t;4&t;       /* Direct 32 bit.  */
+DECL|macro|R_390_PC32
+mdefine_line|#define R_390_PC32&t;5&t;       /* PC relative 32 bit.  */
+DECL|macro|R_390_GOT12
+mdefine_line|#define R_390_GOT12&t;6&t;       /* 12 bit GOT offset.  */
+DECL|macro|R_390_GOT32
+mdefine_line|#define R_390_GOT32&t;7&t;       /* 32 bit GOT offset.  */
+DECL|macro|R_390_PLT32
+mdefine_line|#define R_390_PLT32&t;8&t;       /* 32 bit PC relative PLT address.  */
+DECL|macro|R_390_COPY
+mdefine_line|#define R_390_COPY&t;9&t;       /* Copy symbol at runtime.  */
+DECL|macro|R_390_GLOB_DAT
+mdefine_line|#define R_390_GLOB_DAT&t;10&t;       /* Create GOT entry.  */
+DECL|macro|R_390_JMP_SLOT
+mdefine_line|#define R_390_JMP_SLOT&t;11&t;       /* Create PLT entry.  */
+DECL|macro|R_390_RELATIVE
+mdefine_line|#define R_390_RELATIVE&t;12&t;       /* Adjust by program base.  */
+DECL|macro|R_390_GOTOFF
+mdefine_line|#define R_390_GOTOFF&t;13&t;       /* 32 bit offset to GOT.&t; */
+DECL|macro|R_390_GOTPC
+mdefine_line|#define R_390_GOTPC&t;14&t;       /* 32 bit PC relative offset to GOT.  */
+DECL|macro|R_390_GOT16
+mdefine_line|#define R_390_GOT16&t;15&t;       /* 16 bit GOT offset.  */
+DECL|macro|R_390_PC16
+mdefine_line|#define R_390_PC16&t;16&t;       /* PC relative 16 bit.  */
+DECL|macro|R_390_PC16DBL
+mdefine_line|#define R_390_PC16DBL&t;17&t;       /* PC relative 16 bit shifted by 1.  */
+DECL|macro|R_390_PLT16DBL
+mdefine_line|#define R_390_PLT16DBL&t;18&t;       /* 16 bit PC rel. PLT shifted by 1.  */
+DECL|macro|R_390_PC32DBL
+mdefine_line|#define R_390_PC32DBL&t;19&t;       /* PC relative 32 bit shifted by 1.  */
+DECL|macro|R_390_PLT32DBL
+mdefine_line|#define R_390_PLT32DBL&t;20&t;       /* 32 bit PC rel. PLT shifted by 1.  */
+DECL|macro|R_390_GOTPCDBL
+mdefine_line|#define R_390_GOTPCDBL&t;21&t;       /* 32 bit PC rel. GOT shifted by 1.  */
+DECL|macro|R_390_64
+mdefine_line|#define R_390_64&t;22&t;       /* Direct 64 bit.  */
+DECL|macro|R_390_PC64
+mdefine_line|#define R_390_PC64&t;23&t;       /* PC relative 64 bit.  */
+DECL|macro|R_390_GOT64
+mdefine_line|#define R_390_GOT64&t;24&t;       /* 64 bit GOT offset.  */
+DECL|macro|R_390_PLT64
+mdefine_line|#define R_390_PLT64&t;25&t;       /* 64 bit PC relative PLT address.  */
+DECL|macro|R_390_GOTENT
+mdefine_line|#define R_390_GOTENT&t;26&t;       /* 32 bit PC rel. to GOT entry &gt;&gt; 1. */
+multiline_comment|/* Keep this the last entry.  */
+DECL|macro|R_390_NUM
+mdefine_line|#define R_390_NUM&t;27
 multiline_comment|/* Legal values for e_flags field of Elf64_Ehdr.  */
 DECL|macro|EF_ALPHA_32BIT
 mdefine_line|#define EF_ALPHA_32BIT&t;&t;1&t;/* All addresses are below 2GB */

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -1553,20 +1554,10 @@ id|j
 suffix:semicolon
 )brace
 )brace
-id|devfs_find_and_unregister
+id|devfs_remove
 c_func
 (paren
-l_int|NULL
-comma
 l_string|&quot;ida&quot;
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|remove_proc_entry
@@ -2437,20 +2428,10 @@ op_logical_neg
 id|num_cntlrs_reg
 )paren
 (brace
-id|devfs_find_and_unregister
+id|devfs_remove
 c_func
 (paren
-l_int|NULL
-comma
 l_string|&quot;ida&quot;
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|remove_proc_entry

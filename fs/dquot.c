@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Implementation of the diskquota system for the LINUX o
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -3720,7 +3721,10 @@ id|dquot-&gt;dq_dqb.dqb_isoftlimit
 op_logical_and
 id|dquot-&gt;dq_dqb.dqb_itime
 op_logical_and
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_ge
 id|dquot-&gt;dq_dqb.dqb_itime
 op_logical_and
@@ -3766,7 +3770,10 @@ id|ISOFTWARN
 suffix:semicolon
 id|dquot-&gt;dq_dqb.dqb_itime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_plus
 id|sb_dqopt
 c_func
@@ -3882,7 +3889,10 @@ id|dquot-&gt;dq_dqb.dqb_bsoftlimit
 op_logical_and
 id|dquot-&gt;dq_dqb.dqb_btime
 op_logical_and
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_ge
 id|dquot-&gt;dq_dqb.dqb_btime
 op_logical_and
@@ -3943,7 +3953,10 @@ id|BSOFTWARN
 suffix:semicolon
 id|dquot-&gt;dq_dqb.dqb_btime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_plus
 id|sb_dqopt
 c_func
@@ -6511,7 +6524,10 @@ id|QIF_BTIME
 multiline_comment|/* Set grace only if user hasn&squot;t provided his own... */
 id|dm-&gt;dqb_btime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_plus
 id|sb_dqopt
 c_func
@@ -6568,7 +6584,10 @@ id|QIF_ITIME
 multiline_comment|/* Set grace only if user hasn&squot;t provided his own... */
 id|dm-&gt;dqb_itime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_plus
 id|sb_dqopt
 c_func

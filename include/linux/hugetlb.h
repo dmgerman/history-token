@@ -5,6 +5,9 @@ macro_line|#ifdef CONFIG_HUGETLB_PAGE
 r_struct
 id|ctl_table
 suffix:semicolon
+r_struct
+id|hugetlb_key
+suffix:semicolon
 DECL|function|is_vm_hugetlb_page
 r_static
 r_inline
@@ -143,6 +146,15 @@ c_func
 (paren
 r_struct
 id|page
+op_star
+)paren
+suffix:semicolon
+r_void
+id|hugetlb_release_key
+c_func
+(paren
+r_struct
+id|hugetlb_key
 op_star
 )paren
 suffix:semicolon

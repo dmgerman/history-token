@@ -420,16 +420,19 @@ id|parisc_driver
 id|serial1_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Serial RS232&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|serial1_tbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|serial_init_chip
 comma
 )brace
@@ -441,16 +444,19 @@ id|parisc_driver
 id|serial_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Serial RS232&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|serial_tbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|serial_init_chip
 comma
 )brace

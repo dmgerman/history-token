@@ -3284,12 +3284,12 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_SMP
 r_int
 id|cpu
 op_assign
 id|current-&gt;thread_info-&gt;cpu
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 id|IPI_handler
 c_func
 (paren

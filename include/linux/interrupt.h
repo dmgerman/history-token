@@ -3,14 +3,11 @@ macro_line|#ifndef _LINUX_INTERRUPT_H
 DECL|macro|_LINUX_INTERRUPT_H
 mdefine_line|#define _LINUX_INTERRUPT_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#include &lt;asm/softirq.h&gt;
 DECL|struct|irqaction
 r_struct
 id|irqaction
@@ -61,8 +58,53 @@ id|next
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#include &lt;asm/hardirq.h&gt;
-macro_line|#include &lt;asm/softirq.h&gt;
+r_extern
+r_int
+id|request_irq
+c_func
+(paren
+r_int
+r_int
+comma
+r_void
+(paren
+op_star
+id|handler
+)paren
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+comma
+r_int
+r_int
+comma
+r_const
+r_char
+op_star
+comma
+r_void
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|free_irq
+c_func
+(paren
+r_int
+r_int
+comma
+r_void
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Temporary defines for UP kernels, until all code gets fixed.&n; */
 macro_line|#if !CONFIG_SMP
 DECL|macro|cli
@@ -83,6 +125,9 @@ DECL|enumerator|HI_SOFTIRQ
 id|HI_SOFTIRQ
 op_assign
 l_int|0
+comma
+DECL|enumerator|TIMER_SOFTIRQ
+id|TIMER_SOFTIRQ
 comma
 DECL|enumerator|NET_TX_SOFTIRQ
 id|NET_TX_SOFTIRQ

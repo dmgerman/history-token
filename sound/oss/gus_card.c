@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * sound/gus_card.c&n; *&n; * Detection routine for the Gravis Ultrasound.&n; *&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; *&n; * Frank van de Pol : Fixed GUS MAX interrupt handling, enabled simultanious&n; *                    usage of CS4231A codec, GUS wave and MIDI for GUS MAX.&n; * Christoph Hellwig: Adapted to module_init/module_exit, simple cleanups.&n; *&n; * Status:&n; *              Tested... &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &quot;gus.h&quot;

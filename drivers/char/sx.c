@@ -24,6 +24,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 multiline_comment|/* The 3.0.0 version of sxboards/sxwindow.h  uses BYTE and WORD.... */
 DECL|macro|BYTE
 mdefine_line|#define BYTE u8

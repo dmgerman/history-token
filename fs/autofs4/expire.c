@@ -1,5 +1,6 @@
 multiline_comment|/* -*- c -*- --------------------------------------------------------------- *&n; *&n; * linux/fs/autofs/expire.c&n; *&n; *  Copyright 1997-1998 Transmeta Corporation -- All Rights Reserved&n; *  Copyright 1999-2000 Jeremy Fitzhardinge &lt;jeremy@goop.org&gt;&n; *&n; * This file is part of the Linux kernel and is made available under&n; * the terms of the GNU General Public License, version 2, or at your&n; * option, any later version, incorporated herein by reference.&n; *&n; * ------------------------------------------------------------------------- */
 macro_line|#include &quot;autofs_i.h&quot;
+macro_line|#include &lt;linux/mount.h&gt;
 multiline_comment|/*&n; * Determine if a subtree of the namespace is busy.&n; *&n; * mnt is the mount tree under the autofs mountpoint&n; */
 DECL|function|is_vfsmnt_tree_busy
 r_static

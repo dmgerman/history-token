@@ -16,14 +16,7 @@ mdefine_line|#define PAGE_OFFSET&t;CONFIG_KERNEL_START
 DECL|macro|KERNELBASE
 mdefine_line|#define KERNELBASE&t;PAGE_OFFSET
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;asm/system.h&gt; /* for xmon definition */
-macro_line|#ifdef CONFIG_XMON
-DECL|macro|BUG
-mdefine_line|#define BUG() do { &bslash;&n;&t;printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;&t;xmon(0); &bslash;&n;} while (0)
-macro_line|#else
-DECL|macro|BUG
-mdefine_line|#define BUG() do { &bslash;&n;&t;printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;&t;__asm__ __volatile__(&quot;.long 0x0&quot;); &bslash;&n;} while (0)
-macro_line|#endif
+macro_line|#include &lt;asm/processor.h&gt;&t;/* for BUG definition */
 DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page) do { BUG(); } while (0)
 DECL|macro|STRICT_MM_TYPECHECKS

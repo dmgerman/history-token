@@ -1,15 +1,17 @@
-multiline_comment|/* $Id: diva.h,v 1.1.2.2 2002/10/02 14:38:37 armin Exp $ */
+multiline_comment|/* $Id: diva.h,v 1.1.2.2 2001/02/08 12:25:43 armin Exp $ */
 macro_line|#ifndef __DIVA_XDI_OS_PART_H__
 DECL|macro|__DIVA_XDI_OS_PART_H__
 mdefine_line|#define __DIVA_XDI_OS_PART_H__
 r_int
 id|divasa_xdi_driver_entry
+c_func
 (paren
 r_void
 )paren
 suffix:semicolon
 r_void
 id|divasa_xdi_driver_unload
+c_func
 (paren
 r_void
 )paren
@@ -17,6 +19,7 @@ suffix:semicolon
 r_void
 op_star
 id|diva_driver_add_card
+c_func
 (paren
 r_void
 op_star
@@ -29,6 +32,7 @@ id|CardOrdinal
 suffix:semicolon
 r_void
 id|diva_driver_remove_card
+c_func
 (paren
 r_void
 op_star
@@ -87,6 +91,7 @@ id|length
 suffix:semicolon
 r_int
 id|diva_xdi_read
+c_func
 (paren
 r_void
 op_star
@@ -109,6 +114,7 @@ id|cp_fn
 suffix:semicolon
 r_int
 id|diva_xdi_write
+c_func
 (paren
 r_void
 op_star
@@ -133,6 +139,7 @@ suffix:semicolon
 r_void
 op_star
 id|diva_xdi_open_adapter
+c_func
 (paren
 r_void
 op_star
@@ -152,6 +159,7 @@ id|cp_fn
 suffix:semicolon
 r_void
 id|diva_xdi_close_adapter
+c_func
 (paren
 r_void
 op_star

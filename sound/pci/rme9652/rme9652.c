@@ -1,8 +1,8 @@
 multiline_comment|/*&n; *   ALSA driver for RME Digi9652 audio interfaces &n; *&n; *&t;Copyright (c) 1999 IEM - Winfried Ritsch&n; *      Copyright (c) 1999-2001  Paul Davis&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
@@ -13,6 +13,8 @@ macro_line|#include &lt;sound/asoundef.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
+macro_line|#include &lt;asm/current.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 DECL|variable|index
 r_static
 r_int
@@ -935,19 +937,25 @@ id|__devinitdata
 op_assign
 (brace
 (brace
+dot
+id|vendor
+op_assign
 l_int|0x10ee
 comma
+dot
+id|device
+op_assign
 l_int|0x3fc4
 comma
+dot
+id|subvendor
+op_assign
 id|PCI_ANY_ID
 comma
+dot
+id|subdevice
+op_assign
 id|PCI_ANY_ID
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
 comma
 )brace
 comma
@@ -956,6 +964,7 @@ multiline_comment|/* RME Digi9652 */
 l_int|0
 comma
 )brace
+comma
 )brace
 suffix:semicolon
 id|MODULE_DEVICE_TABLE

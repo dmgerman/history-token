@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;asm/ioctls.h&gt;
 macro_line|#include &lt;linux/sunrpc/types.h&gt;
 macro_line|#include &lt;linux/sunrpc/cache.h&gt;
@@ -32,7 +33,10 @@ id|h
 id|time_t
 id|now
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|h-&gt;next
 op_assign
@@ -124,7 +128,10 @@ id|h-&gt;flags
 op_logical_or
 id|h-&gt;expiry_time
 OL
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 )paren
 id|rv
 op_assign
@@ -181,7 +188,10 @@ id|h-&gt;last_refresh
 suffix:semicolon
 id|age
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_minus
 id|h-&gt;last_refresh
 suffix:semicolon
@@ -297,7 +307,10 @@ id|detail
 comma
 id|h
 comma
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_plus
 id|CACHE_NEW_EXPIRY
 )paren
@@ -412,7 +425,10 @@ id|expiry
 suffix:semicolon
 id|head-&gt;last_refresh
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -599,7 +615,10 @@ l_int|0
 suffix:semicolon
 id|cd-&gt;last_close
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|list_add
 c_func
@@ -946,7 +965,10 @@ c_cond
 (paren
 id|current_detail-&gt;nextcheck
 OG
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 )paren
 id|current_index
 op_assign
@@ -960,7 +982,10 @@ l_int|0
 suffix:semicolon
 id|current_detail-&gt;nextcheck
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_plus
 l_int|30
 op_star
@@ -1063,7 +1088,10 @@ c_cond
 (paren
 id|ch-&gt;expiry_time
 OL
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_logical_or
 id|ch-&gt;last_refresh
 OL
@@ -1216,13 +1244,19 @@ id|detail
 (brace
 id|detail-&gt;flush_time
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_plus
 l_int|1
 suffix:semicolon
 id|detail-&gt;nextcheck
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|cache_flush
 c_func
@@ -1319,7 +1353,10 @@ id|item
 suffix:semicolon
 id|dreq-&gt;recv_time
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|spin_lock
 c_func
@@ -2950,7 +2987,10 @@ id|rp
 suffix:semicolon
 id|cd-&gt;last_close
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|atomic_dec
 c_func
@@ -3575,7 +3615,10 @@ l_int|0
 op_logical_and
 id|detail-&gt;last_close
 OL
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_minus
 l_int|60
 )paren

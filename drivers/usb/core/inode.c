@@ -4,6 +4,7 @@ multiline_comment|/*************************************************************
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -724,7 +725,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|dev
 )paren
 (brace
@@ -853,7 +854,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|dev
 )paren
 (brace
@@ -1255,11 +1256,10 @@ suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-id|list_del_init
+id|__d_drop
 c_func
 (paren
-op_amp
-id|dentry-&gt;d_hash
+id|dentry
 )paren
 suffix:semicolon
 )brace

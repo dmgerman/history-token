@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Copyright 1999 Jaroslav Kysela &lt;perex@suse.cz&gt;&
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;

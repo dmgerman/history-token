@@ -25,6 +25,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;aic7xxx_old/aic7xxx.h&quot;
@@ -34846,7 +34847,8 @@ c_cond
 (paren
 id|temp_p-&gt;base
 op_logical_and
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|temp_p-&gt;base
@@ -34854,6 +34856,8 @@ comma
 id|MAXREG
 op_minus
 id|MINREG
+comma
+l_string|&quot;aic7xxx&quot;
 )paren
 )paren
 (brace
@@ -35208,26 +35212,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-multiline_comment|/*&n;           * Lock out other contenders for our i/o space.&n;           */
-r_if
-c_cond
-(paren
-id|temp_p-&gt;base
-)paren
-(brace
-id|request_region
-c_func
-(paren
-id|temp_p-&gt;base
-comma
-id|MAXREG
-op_minus
-id|MINREG
-comma
-l_string|&quot;aic7xxx&quot;
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;           * We HAVE to make sure the first pause_sequencer() and all other&n;           * subsequent I/O that isn&squot;t PCI config space I/O takes place&n;           * after the MMAPed I/O region is configured and tested.  The&n;           * problem is the PowerPC architecture that doesn&squot;t support&n;           * programmed I/O at all, so we have to have the MMAP I/O set up&n;           * for this pause to even work on those machines.&n;           */
 id|pause_sequencer
 c_func
@@ -36419,7 +36403,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|base
@@ -36427,6 +36412,8 @@ comma
 id|MAXREG
 op_minus
 id|MINREG
+comma
+l_string|&quot;aic7xxx&quot;
 )paren
 )paren
 (brace
@@ -36466,6 +36453,16 @@ op_minus
 l_int|1
 )paren
 (brace
+id|release_region
+c_func
+(paren
+id|base
+comma
+id|MAXREG
+op_minus
+id|MINREG
+)paren
+suffix:semicolon
 id|slot
 op_increment
 suffix:semicolon
@@ -36501,15 +36498,7 @@ id|KERN_WARNING
 l_string|&quot;aic7xxx: Unable to allocate device space.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|slot
-op_increment
-suffix:semicolon
-r_continue
-suffix:semicolon
-multiline_comment|/* back to the beginning of the while loop */
-)brace
-multiline_comment|/*&n;     * Lock out other contenders for our i/o space.&n;     */
-id|request_region
+id|release_region
 c_func
 (paren
 id|base
@@ -36517,10 +36506,15 @@ comma
 id|MAXREG
 op_minus
 id|MINREG
-comma
-l_string|&quot;aic7xxx&quot;
 )paren
 suffix:semicolon
+id|slot
+op_increment
+suffix:semicolon
+r_continue
+suffix:semicolon
+multiline_comment|/* back to the beginning of the while loop */
+)brace
 multiline_comment|/*&n;     * Pause the card preserving the IRQ type.  Allow the operator&n;     * to override the IRQ trigger.&n;     */
 r_if
 c_cond
@@ -41385,7 +41379,7 @@ r_return
 id|SUCCESS
 suffix:semicolon
 )brace
-multiline_comment|/*+F*************************************************************************&n; * Function:&n; *   aic7xxx_biosparam&n; *&n; * Description:&n; *   Return the disk geometry for the given SCSI device.&n; *-F*************************************************************************/
+multiline_comment|/*+F*************************************************************************&n; * Function:&n; *   aic7xxx_biosparam&n; *&n; * Description:&n; *   Return the disk geometry for the given SCSI device.&n; *&n; * Note:&n; *   This function is broken for today&squot;s really large drives and needs&n; *   fixed.&n; *-F*************************************************************************/
 r_int
 DECL|function|aic7xxx_biosparam
 id|aic7xxx_biosparam

@@ -2880,6 +2880,9 @@ suffix:semicolon
 r_case
 id|IP_IPSEC_POLICY
 suffix:colon
+r_case
+id|IP_XFRM_POLICY
+suffix:colon
 id|err
 op_assign
 id|xfrm_user_policy

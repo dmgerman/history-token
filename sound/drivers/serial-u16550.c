@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *   serial.c&n; *   Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;,&n; *                    Isaku Yamahata &lt;yamahata@private.email.ne.jp&gt;,&n; *&t;&t;      George Hansper &lt;ghansper@apana.org.au&gt;,&n; *&t;&t;      Hannu Savolainen&n; *&n; *   This code is based on the code from ALSA 0.5.9, but heavily rewritten.&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; * Sat Mar 31 17:27:57 PST 2001 tim.mann@compaq.com &n; *      Added support for the Midiator MS-124T and for the MS-124W in&n; *      Single Addressed (S/A) or Multiple Burst (M/B) mode, with&n; *      power derived either parasitically from the serial port or&n; *      from a separate power supply.&n; *&n; *      More documentation can be found in serial-u16550.txt.&n; */
 macro_line|#include &lt;sound/driver.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
@@ -10,6 +10,7 @@ DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 id|MODULE_DESCRIPTION
 c_func
 (paren

@@ -66,9 +66,20 @@ r_int
 id|timeout
 )paren
 suffix:semicolon
+multiline_comment|/* Used to initialize the epoll bits inside the &quot;struct file&quot; */
+r_void
+id|eventpoll_init_file
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+)paren
+suffix:semicolon
 multiline_comment|/* Used in fs/file_table.c:__fput() to unlink files from the eventpoll interface */
 r_void
-id|ep_notify_file_close
+id|eventpoll_release
 c_func
 (paren
 r_struct

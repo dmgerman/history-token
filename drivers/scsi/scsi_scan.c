@@ -33,43 +33,14 @@ DECL|macro|BLIST_INQUIRY_36
 mdefine_line|#define BLIST_INQUIRY_36&t;0x400&t;/* override additional length field */
 DECL|macro|BLIST_INQUIRY_58
 mdefine_line|#define BLIST_INQUIRY_58&t;0x800&t;/* ... for broken inquiry responses */
-DECL|struct|dev_info
+multiline_comment|/*&n; * scsi_static_device_list: deprecated list of devices that require&n; * settings that differ from the default, includes black-listed (broken)&n; * devices. The entries here are added to the tail of scsi_dev_info_list&n; * via scsi_dev_info_list_init.&n; *&n; * Do not add to this list, use the command line or proc interface to add&n; * to the scsi_dev_info_list. This table will eventually go away.&n; */
+DECL|variable|__initdata
 r_struct
 id|dev_info
-(brace
-DECL|member|vendor
-r_const
-r_char
-op_star
-id|vendor
-suffix:semicolon
-DECL|member|model
-r_const
-r_char
-op_star
-id|model
-suffix:semicolon
-DECL|member|revision
-r_const
-r_char
-op_star
-id|revision
-suffix:semicolon
-multiline_comment|/* revision known to be bad, unused */
-DECL|member|flags
-r_int
-id|flags
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * device_list: devices that require settings that differ from the&n; * default, includes black-listed (broken) devices.&n; */
-DECL|variable|device_list
-r_static
-r_struct
-id|dev_info
-id|device_list
+id|scsi_static_device_list
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 multiline_comment|/*&n;&t; * The following devices are known not to tolerate a lun != 0 scan&n;&t; * for one reason or another. Some will respond to all luns,&n;&t; * others will lock up.&n;&t; */
@@ -1072,6 +1043,16 @@ comma
 id|BLIST_FORCELUN
 )brace
 comma
+(brace
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|0
+)brace
+comma
 )brace
 suffix:semicolon
 DECL|macro|ALLOC_FAILURE_MSG
@@ -1910,189 +1891,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * get_device_flags - get device specific flags from the device_list&n; * @vendor:&t;vendor name&n; * @model:&t;model name&n; *&n; * Description:&n; *     Search device_list for an entry matching @vendor and @model, if&n; *     found, return the matching flags value, else return 0.&n; *     Partial matches count as success - good for @model, but maybe not&n; *     @vendor.&n; **/
-DECL|function|get_device_flags
-r_static
-r_int
-id|get_device_flags
-c_func
-(paren
-r_int
-r_char
-op_star
-id|vendor
-comma
-r_int
-r_char
-op_star
-id|model
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_int
-id|max
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|ARRAY_SIZE
-c_func
-(paren
-id|device_list
-)paren
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * XXX why skip leading spaces? If an odd INQUIRY value,&n;&t;&t; * that should have been part of the device_list[] entry,&n;&t;&t; * such as &quot;  FOO&quot; rather than &quot;FOO&quot;. Since this code is&n;&t;&t; * already here, and we don&squot;t know what device it is&n;&t;&t; * trying to work with, leave it as-is.&n;&t;&t; */
-id|max
-op_assign
-l_int|8
-suffix:semicolon
-multiline_comment|/* max length of vendor */
-r_while
-c_loop
-(paren
-(paren
-id|max
-OG
-l_int|0
-)paren
-op_logical_and
-op_star
-id|vendor
-op_eq
-l_char|&squot; &squot;
-)paren
-(brace
-id|max
-op_decrement
-suffix:semicolon
-id|vendor
-op_increment
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t; * XXX removing the following strlen() would be good,&n;&t;&t; * using it means that for a an entry not in the list, we&n;&t;&t; * scan every byte of every vendor listed in&n;&t;&t; * device_list[], and never match a single one (and still&n;&t;&t; * have to compare at least the first byte of each&n;&t;&t; * vendor).&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|memcmp
-c_func
-(paren
-id|device_list
-(braket
-id|i
-)braket
-dot
-id|vendor
-comma
-id|vendor
-comma
-id|min
-c_func
-(paren
-id|max
-comma
-id|strlen
-c_func
-(paren
-id|device_list
-(braket
-id|i
-)braket
-dot
-id|vendor
-)paren
-)paren
-)paren
-)paren
-r_continue
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Skip spaces again.&n;&t;&t; */
-id|max
-op_assign
-l_int|16
-suffix:semicolon
-multiline_comment|/* max length of model */
-r_while
-c_loop
-(paren
-(paren
-id|max
-OG
-l_int|0
-)paren
-op_logical_and
-op_star
-id|model
-op_eq
-l_char|&squot; &squot;
-)paren
-(brace
-id|max
-op_decrement
-suffix:semicolon
-id|model
-op_increment
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|memcmp
-c_func
-(paren
-id|device_list
-(braket
-id|i
-)braket
-dot
-id|model
-comma
-id|model
-comma
-id|min
-c_func
-(paren
-id|max
-comma
-id|strlen
-c_func
-(paren
-id|device_list
-(braket
-id|i
-)braket
-dot
-id|model
-)paren
-)paren
-)paren
-)paren
-r_continue
-suffix:semicolon
-r_return
-id|device_list
-(braket
-id|i
-)braket
-dot
-id|flags
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/**&n; * scsi_initialize_merge_fn() -&#x1a3;initialize merge function for a host&n; * @sd:&t;&t;host descriptor&n; */
 DECL|function|scsi_initialize_merge_fn
 r_static
@@ -2181,8 +1979,8 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * scsi_alloc_sdev - allocate and setup a Scsi_Device&n; *&n; * Description:&n; *     Allocate, initialize for io, and return a pointer to a Scsi_Device.&n; *     Stores the @shost, @channel, @id, and @lun in the Scsi_Device, and&n; *     adds Scsi_Device to the appropriate list.&n; *&n; * Return value:&n; *     Scsi_Device pointer, or NULL on failure.&n; **/
 DECL|function|scsi_alloc_sdev
-r_static
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|scsi_alloc_sdev
 c_func
@@ -2202,22 +2000,20 @@ id|uint
 id|lun
 )paren
 (brace
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdev
 suffix:semicolon
 id|sdev
 op_assign
-(paren
-id|Scsi_Device
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
-id|Scsi_Device
+op_star
+id|sdev
 )paren
 comma
 id|GFP_ATOMIC
@@ -2368,12 +2164,12 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * scsi_free_sdev - cleanup and free a Scsi_Device&n; * @sdev:&t;cleanup and free this Scsi_Device&n; *&n; * Description:&n; *     Undo the actions in scsi_alloc_sdev, including removing @sdev from&n; *     the list, and freeing @sdev.&n; **/
 DECL|function|scsi_free_sdev
-r_static
 r_void
 id|scsi_free_sdev
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdev
 )paren
@@ -4122,7 +3918,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; * scsi_load_identifier:&n; * @sdev:&t;get an identifier (name) of this device&n; * @sreq:&t;Scsi_Requeset associated with @sdev&n; *&n; * Description:&n; *     Determine what INQUIRY pages are supported by @sdev, and try the&n; *     different pages until we get an identifier, or no other pages are&n; *     left. Start with page 0x83 (device id) and then try page 0x80&n; *     (serial number). If neither of these pages gets an id, use the&n; *     default naming convention.&n; *&n; *     The first character of sdev_driverfs_dev.name is SCSI_UID_SER_NUM&n; *     (S) if we used page 0x80, SCSI_UID_UNKNOWN (Z) if we used the&n; *     default name, otherwise it starts with the page 0x83 id type&n; *     (see the SCSI Primary Commands specification for details).&n; *&n; * Notes:&n; *     If a device returns the same serial number for different LUNs or&n; *     even for different LUNs on different devices, special handling must&n; *     be added to get an id, or a new black list flag must to added and&n; *     used in device_list[] (so we use the default name, or add a way to&n; *     prefix the id/name with SCSI_UID_UNKNOWN - and change the define to&n; *     something meaningful like SCSI_UID_NOT_UNIQUE). Complete user level&n; *     scanning would be nice for such devices, so we do not need device&n; *     specific code in the kernel.&n; **/
+multiline_comment|/**&n; * scsi_load_identifier:&n; * @sdev:&t;get an identifier (name) of this device&n; * @sreq:&t;Scsi_Requeset associated with @sdev&n; *&n; * Description:&n; *     Determine what INQUIRY pages are supported by @sdev, and try the&n; *     different pages until we get an identifier, or no other pages are&n; *     left. Start with page 0x83 (device id) and then try page 0x80&n; *     (serial number). If neither of these pages gets an id, use the&n; *     default naming convention.&n; *&n; *     The first character of sdev_driverfs_dev.name is SCSI_UID_SER_NUM&n; *     (S) if we used page 0x80, SCSI_UID_UNKNOWN (Z) if we used the&n; *     default name, otherwise it starts with the page 0x83 id type&n; *     (see the SCSI Primary Commands specification for details).&n; *&n; * Notes:&n; *     If a device returns the same serial number for different LUNs or&n; *     even for different LUNs on different devices, special handling must&n; *     be added to get an id, or a new black list flag must be added (so&n; *     we use the default name, or add a way to prefix the id/name with&n; *     SCSI_UID_UNKNOWN - and change the define to something meaningful&n; *     like SCSI_UID_NOT_UNIQUE). Complete user level scanning would be&n; *     nice for such devices, so we do not need device specific code in&n; *     the kernel.&n; **/
 DECL|function|scsi_load_identifier
 r_static
 r_void
@@ -4404,7 +4200,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_probe_lun - probe a single LUN using a SCSI INQUIRY&n; * @sreq:&t;used to send the INQUIRY&n; * @inq_result:&t;area to store the INQUIRY result&n; * @bflags:&t;store any bflags found here&n; *&n; * Description:&n; *     Probe the lun associated with @sreq using a standard SCSI INQUIRY;&n; *&n; *     If the INQUIRY is successful, sreq-&gt;sr_result is zero and: the&n; *     INQUIRY data is in @inq_result; the scsi_level and INQUIRY length&n; *     are copied to the Scsi_Device at @sreq-&gt;sr_device (sdev);&n; *     any device_list flags value is stored in *@bflags.&n; **/
+multiline_comment|/**&n; * scsi_probe_lun - probe a single LUN using a SCSI INQUIRY&n; * @sreq:&t;used to send the INQUIRY&n; * @inq_result:&t;area to store the INQUIRY result&n; * @bflags:&t;store any bflags found here&n; *&n; * Description:&n; *     Probe the lun associated with @sreq using a standard SCSI INQUIRY;&n; *&n; *     If the INQUIRY is successful, sreq-&gt;sr_result is zero and: the&n; *     INQUIRY data is in @inq_result; the scsi_level and INQUIRY length&n; *     are copied to the Scsi_Device at @sreq-&gt;sr_device (sdev);&n; *     any flags value is stored in *@bflags.&n; **/
 DECL|function|scsi_probe_lun
 r_static
 r_void
@@ -4624,7 +4420,7 @@ suffix:semicolon
 op_star
 id|bflags
 op_assign
-id|get_device_flags
+id|scsi_get_device_flags
 c_func
 (paren
 op_amp
@@ -4890,7 +4686,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_add_lun - allocate and fully initialze a Scsi_Device&n; * @sdevscan:&t;holds information to be stored in the new Scsi_Device&n; * @sdevnew:&t;store the address of the newly allocated Scsi_Device&n; * @sreq:&t;scsi request used when getting an identifier&n; * @inq_result:&t;holds the result of a previous INQUIRY to the LUN&n; * @bflags:&t;flags value from device_list&n; *&n; * Description:&n; *     Allocate and initialize a Scsi_Device matching sdevscan. Optionally&n; *     set fields based on values in *@bflags. If @sdevnew is not&n; *     NULL, store the address of the new Scsi_Device in *@sdevnew (needed&n; *     when scanning a particular LUN).&n; *&n; * Return:&n; *     SCSI_SCAN_NO_RESPONSE: could not allocate or setup a Scsi_Device&n; *     SCSI_SCAN_LUN_PRESENT: a new Scsi_Device was allocated and initialized&n; **/
+multiline_comment|/**&n; * scsi_add_lun - allocate and fully initialze a Scsi_Device&n; * @sdevscan:&t;holds information to be stored in the new Scsi_Device&n; * @sdevnew:&t;store the address of the newly allocated Scsi_Device&n; * @sreq:&t;scsi request used when getting an identifier&n; * @inq_result:&t;holds the result of a previous INQUIRY to the LUN&n; * @bflags:&t;black/white list flag&n; *&n; * Description:&n; *     Allocate and initialize a Scsi_Device matching sdevscan. Optionally&n; *     set fields based on values in *@bflags. If @sdevnew is not&n; *     NULL, store the address of the new Scsi_Device in *@sdevnew (needed&n; *     when scanning a particular LUN).&n; *&n; * Return:&n; *     SCSI_SCAN_NO_RESPONSE: could not allocate or setup a Scsi_Device&n; *     SCSI_SCAN_LUN_PRESENT: a new Scsi_Device was allocated and initialized&n; **/
 DECL|function|scsi_add_lun
 r_static
 r_int
@@ -4928,10 +4724,6 @@ id|devname
 (braket
 l_int|64
 )braket
-suffix:semicolon
-r_extern
-id|devfs_handle_t
-id|scsi_devfs_handle
 suffix:semicolon
 id|sdev
 op_assign
@@ -5348,7 +5140,7 @@ c_func
 (paren
 id|devname
 comma
-l_string|&quot;host%d/bus%d/target%d/lun%d&quot;
+l_string|&quot;scsi/host%d/bus%d/target%d/lun%d&quot;
 comma
 id|sdev-&gt;host-&gt;host_no
 comma
@@ -5379,7 +5171,7 @@ op_assign
 id|devfs_mk_dir
 c_func
 (paren
-id|scsi_devfs_handle
+l_int|NULL
 comma
 id|devname
 comma
@@ -5451,12 +5243,6 @@ multiline_comment|/* if the device needs this changing, it may do so in the dete
 id|sdev-&gt;max_device_blocked
 op_assign
 id|SCSI_DEFAULT_DEVICE_BLOCKED
-suffix:semicolon
-id|scsi_detect_device
-c_func
-(paren
-id|sdev
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5811,7 +5597,7 @@ r_return
 id|SCSI_SCAN_NO_RESPONSE
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_sequential_lun_scan - sequentially scan a SCSI target&n; * @sdevscan:&t;scan the host, channel, and id of this Scsi_Device&n; * @bflags:&t;flags from device_list for LUN 0&n; * @lun0_res:&t;result of scanning LUN 0&n; *&n; * Description:&n; *     Generally, scan from LUN 1 (LUN 0 is assumed to already have been&n; *     scanned) to some maximum lun until a LUN is found with no device&n; *     attached. Use the bflags to figure out any oddities.&n; *&n; *     Modifies sdevscan-&gt;lun.&n; **/
+multiline_comment|/**&n; * scsi_sequential_lun_scan - sequentially scan a SCSI target&n; * @sdevscan:&t;scan the host, channel, and id of this Scsi_Device&n; * @bflags:&t;black/white list flag for LUN 0&n; * @lun0_res:&t;result of scanning LUN 0&n; *&n; * Description:&n; *     Generally, scan from LUN 1 (LUN 0 is assumed to already have been&n; *     scanned) to some maximum lun until a LUN is found with no device&n; *     attached. Use the bflags to figure out any oddities.&n; *&n; *     Modifies sdevscan-&gt;lun.&n; **/
 DECL|function|scsi_sequential_lun_scan
 r_static
 r_void

@@ -1820,6 +1820,14 @@ id|page-&gt;mapping
 )paren
 (brace
 multiline_comment|/* Race with truncate? */
+id|BUG_ON
+c_func
+(paren
+id|page-&gt;mapping
+op_ne
+id|mapping
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

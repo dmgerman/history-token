@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/namespace.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
 r_int
@@ -512,10 +513,6 @@ id|argv
 op_assign
 (brace
 id|modprobe_path
-comma
-l_string|&quot;-s&quot;
-comma
-l_string|&quot;-k&quot;
 comma
 l_string|&quot;--&quot;
 comma

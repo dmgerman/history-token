@@ -2836,8 +2836,9 @@ c_cond
 (paren
 id|got_clock_diff
 )paren
+(brace
 multiline_comment|/* Must know time zone in order to set clock */
-id|CURRENT_TIME
+id|xtime.tv_sec
 op_assign
 id|get_cmos_time
 c_func
@@ -2846,6 +2847,11 @@ c_func
 op_plus
 id|clock_cmos_diff
 suffix:semicolon
+id|xtime.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 )brace
 DECL|function|get_time_diff
 r_static
@@ -2868,7 +2874,10 @@ c_func
 suffix:semicolon
 id|clock_cmos_diff
 op_add_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|got_clock_diff
 op_assign

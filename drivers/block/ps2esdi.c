@@ -21,14 +21,13 @@ mdefine_line|#define DEVICE_NAME &quot;PS/2 ESDI&quot;
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device) &gt;&gt; 6)
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/ps2esdi.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -2218,7 +2217,7 @@ id|req-&gt;rq_disk
 id|printk
 c_func
 (paren
-l_string|&quot;Grrr. error. ps2esdi_drives: %d, %lu %llu&bslash;n&quot;
+l_string|&quot;Grrr. error. ps2esdi_drives: %d, %llu %llu&bslash;n&quot;
 comma
 id|ps2esdi_drives
 comma

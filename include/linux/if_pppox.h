@@ -8,7 +8,6 @@ macro_line|#ifdef  __KERNEL__
 macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/ppp_channel.h&gt;
 macro_line|#endif /* __KERNEL__ */

@@ -977,6 +977,17 @@ id|aac_dev
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|host_ptr
+op_eq
+l_int|NULL
+)paren
+(brace
+r_continue
+suffix:semicolon
+)brace
 multiline_comment|/* &n;&t;&t;&t; * These three parameters can be used to allow for wide SCSI &n;&t;&t;&t; * and for host adapters that support multiple buses.&n;&t;&t;&t; */
 id|host_ptr-&gt;max_id
 op_assign

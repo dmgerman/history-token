@@ -1,8 +1,8 @@
 multiline_comment|/*&n; *  Driver for ESS Solo-1 (ES1938, ES1946, ES1969) soundcard&n; *  Copyright (c) by Jaromir Koutek &lt;miri@punknet.cz&gt;,&n; *                   Jaroslav Kysela &lt;perex@suse.cz&gt;,&n; *                   Thomas Sailer &lt;sailer@ife.ee.ethz.ch&gt;,&n; *                   Abramo Bagnara &lt;abramo@alsa-project.org&gt;,&n; *                   Markus Gruber &lt;gruber@eikon.tum.de&gt;&n; * &n; * Rewritten from sonicvibes.c source.&n; *&n; *  TODO:&n; *    Rewrite better spinlocks&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 multiline_comment|/*&n;  NOTES:&n;  - Capture data is written unaligned starting from dma_base + 1 so I need to&n;    disable mmap and to add a copy callback.&n;  - After several cycle of the following:&n;    while : ; do arecord -d1 -f cd -t raw | aplay -f cd ; done&n;    a &quot;playback write error (DMA or IRQ trouble?)&quot; may happen.&n;    This is due to playback interrupts not generated.&n;    I suspect a timing issue.&n;  - Sometimes the interrupt handler is invoked wrongly during playback.&n;    This generates some harmless &quot;Unexpected hw_pointer: wrong interrupt&n;    acknowledge&quot;.&n;    I&squot;ve seen that using small period sizes.&n;    Reproducible with:&n;    mpg123 test.mp3 &amp;&n;    hdparm -t -T /dev/hda&n;*/
 macro_line|#include &lt;sound/driver.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
@@ -16,6 +16,7 @@ macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#ifndef LINUX_2_2
 macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#endif
+macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|chip_t
 mdefine_line|#define chip_t es1938_t
 id|MODULE_AUTHOR

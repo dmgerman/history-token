@@ -947,10 +947,7 @@ comma
 l_string|&quot; %s &quot;
 id|SECTOR_FORMAT
 comma
-id|kdevname
-c_func
-(paren
-id|to_kdev_t
+id|bdevname
 c_func
 (paren
 id|sc-&gt;stripe
@@ -958,8 +955,7 @@ id|sc-&gt;stripe
 id|i
 )braket
 dot
-id|dev-&gt;bdev-&gt;bd_dev
-)paren
+id|dev-&gt;bdev
 )paren
 comma
 id|sc-&gt;stripe

@@ -546,7 +546,7 @@ op_star
 id|str
 )paren
 (brace
-macro_line|#if defined(CONFIG_HWC_CONSOLE)
+macro_line|#if defined(CONFIG_SCLP_CONSOLE)
 r_if
 c_cond
 (paren
@@ -561,8 +561,20 @@ l_int|4
 )paren
 op_eq
 l_int|0
+op_logical_or
+id|strncmp
+c_func
+(paren
+id|str
+comma
+l_string|&quot;sclp&quot;
+comma
+l_int|5
 )paren
-id|SET_CONSOLE_HWC
+op_eq
+l_int|0
+)paren
+id|SET_CONSOLE_SCLP
 suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(CONFIG_TN3215_CONSOLE)
@@ -680,8 +692,8 @@ op_eq
 l_int|NULL
 )paren
 (brace
-macro_line|#if defined(CONFIG_HWC_CONSOLE)
-id|SET_CONSOLE_HWC
+macro_line|#if defined(CONFIG_SCLP_CONSOLE)
+id|SET_CONSOLE_SCLP
 suffix:semicolon
 macro_line|#endif
 r_return
@@ -711,8 +723,8 @@ suffix:semicolon
 macro_line|#elif defined(CONFIG_TN3215_CONSOLE)
 id|SET_CONSOLE_3215
 suffix:semicolon
-macro_line|#elif defined(CONFIG_HWC_CONSOLE)
-id|SET_CONSOLE_HWC
+macro_line|#elif defined(CONFIG_SCLP_CONSOLE)
+id|SET_CONSOLE_SCLP
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -741,8 +753,8 @@ suffix:semicolon
 macro_line|#elif defined(CONFIG_TN3270_CONSOLE)
 id|SET_CONSOLE_3270
 suffix:semicolon
-macro_line|#elif defined(CONFIG_HWC_CONSOLE)
-id|SET_CONSOLE_HWC
+macro_line|#elif defined(CONFIG_SCLP_CONSOLE)
+id|SET_CONSOLE_SCLP
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -764,8 +776,8 @@ macro_line|#endif
 )brace
 r_else
 (brace
-macro_line|#if defined(CONFIG_HWC_CONSOLE)
-id|SET_CONSOLE_HWC
+macro_line|#if defined(CONFIG_SCLP_CONSOLE)
+id|SET_CONSOLE_SCLP
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -2291,20 +2303,24 @@ id|seq_operations
 id|cpuinfo_op
 op_assign
 (brace
+dot
 id|start
-suffix:colon
+op_assign
 id|c_start
 comma
+dot
 id|next
-suffix:colon
+op_assign
 id|c_next
 comma
+dot
 id|stop
-suffix:colon
+op_assign
 id|c_stop
 comma
+dot
 id|show
-suffix:colon
+op_assign
 id|show_cpuinfo
 comma
 )brace

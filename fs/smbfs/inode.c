@@ -14,6 +14,8 @@ macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/nls.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/smb_fs.h&gt;
 macro_line|#include &lt;linux/smbno.h&gt;
 macro_line|#include &lt;linux/smb_mount.h&gt;
@@ -702,7 +704,7 @@ multiline_comment|/*&n;&t; * A size change should have a different mtime, or sam
 id|time_t
 id|last_time
 op_assign
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 suffix:semicolon
 id|loff_t
 id|last_sz
@@ -761,7 +763,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 op_ne
 id|last_time
 op_logical_or

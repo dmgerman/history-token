@@ -5901,18 +5901,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;phy=%d, phyx=%d, mii_status=0x%04x&bslash;n&quot;
-comma
-id|phy
-comma
-id|phyx
-comma
-id|mii_status
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

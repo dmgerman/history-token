@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&n; * AD1816 lowlevel sound driver for Linux 2.2.0 and 
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;

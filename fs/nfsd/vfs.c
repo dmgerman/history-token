@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/ext2_fs.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -761,18 +762,21 @@ id|BOTH_TIME_SET
 op_eq
 id|BOTH_TIME_SET
 op_logical_and
-id|iap-&gt;ia_mtime
+id|iap-&gt;ia_mtime.tv_sec
 op_eq
-id|iap-&gt;ia_atime
+id|iap-&gt;ia_atime.tv_sec
 )paren
 (brace
 multiline_comment|/* Looks probable.  Now just make sure time is in the right ballpark.&n;&t;     * Solaris, at least, doesn&squot;t seem to care what the time request is.&n;&t;     * We require it be within 30 minutes of now.&n;&t;     */
 id|time_t
 id|delta
 op_assign
-id|iap-&gt;ia_atime
+id|iap-&gt;ia_atime.tv_sec
 op_minus
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -855,7 +859,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If we are changing the size of the file, then&n;&t;&t; * we need to break all leases.&n;&t;&t; */
 id|err
 op_assign
-id|get_lease
+id|break_lease
 c_func
 (paren
 id|inode
@@ -1006,7 +1010,7 @@ id|check_guard
 op_logical_or
 id|guardtime
 op_eq
-id|inode-&gt;i_ctime
+id|inode-&gt;i_ctime.tv_sec
 )paren
 (brace
 id|fh_lock
@@ -1584,7 +1588,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Check to see if there are any leases on this file.&n;&t; * This may block while leases are broken.&n;&t; */
 id|err
 op_assign
-id|get_lease
+id|break_lease
 c_func
 (paren
 id|inode
@@ -3989,11 +3993,11 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|dchild-&gt;d_inode-&gt;i_mtime
+id|dchild-&gt;d_inode-&gt;i_mtime.tv_sec
 op_eq
 id|v_mtime
 op_logical_and
-id|dchild-&gt;d_inode-&gt;i_atime
+id|dchild-&gt;d_inode-&gt;i_atime.tv_sec
 op_eq
 id|v_atime
 op_logical_and
@@ -4098,13 +4102,22 @@ id|ATTR_ATIME_SET
 op_or
 id|ATTR_MODE
 suffix:semicolon
-id|iap-&gt;ia_mtime
+multiline_comment|/* XXX someone who knows this better please fix it for nsec */
+id|iap-&gt;ia_mtime.tv_sec
 op_assign
 id|v_mtime
 suffix:semicolon
-id|iap-&gt;ia_atime
+id|iap-&gt;ia_atime.tv_sec
 op_assign
 id|v_atime
+suffix:semicolon
+id|iap-&gt;ia_mtime.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
+id|iap-&gt;ia_atime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 id|iap-&gt;ia_mode
 op_assign

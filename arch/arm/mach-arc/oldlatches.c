@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  linux/arch/arm/kernel/oldlatches.c&n; *&n; *  Copyrig
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;

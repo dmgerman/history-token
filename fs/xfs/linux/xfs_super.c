@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &quot;xfs_version.h&quot;
 multiline_comment|/* xfs_vfs[ops].c */
 r_extern
@@ -2019,17 +2020,29 @@ op_plus
 id|ip-&gt;i_delayed_blks
 )paren
 suffix:semicolon
-id|inode-&gt;i_atime
+id|inode-&gt;i_atime.tv_sec
 op_assign
 id|ip-&gt;i_d.di_atime.t_sec
 suffix:semicolon
-id|inode-&gt;i_mtime
+id|inode-&gt;i_atime.tv_nsec
+op_assign
+id|ip-&gt;i_d.di_atime.t_nsec
+suffix:semicolon
+id|inode-&gt;i_mtime.tv_sec
 op_assign
 id|ip-&gt;i_d.di_mtime.t_sec
 suffix:semicolon
-id|inode-&gt;i_ctime
+id|inode-&gt;i_mtime.tv_nsec
+op_assign
+id|ip-&gt;i_d.di_mtime.t_nsec
+suffix:semicolon
+id|inode-&gt;i_ctime.tv_sec
 op_assign
 id|ip-&gt;i_d.di_ctime.t_sec
+suffix:semicolon
+id|inode-&gt;i_ctime.tv_nsec
+op_assign
+id|ip-&gt;i_d.di_ctime.t_nsec
 suffix:semicolon
 id|vp-&gt;v_flag
 op_and_assign

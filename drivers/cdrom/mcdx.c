@@ -13,7 +13,7 @@ macro_line|#endif
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 DECL|macro|MAJOR_NR
@@ -1250,32 +1251,39 @@ id|cdrom_device_ops
 id|mcdx_dops
 op_assign
 (brace
+dot
 id|open
-suffix:colon
+op_assign
 id|mcdx_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|mcdx_close
 comma
+dot
 id|media_changed
-suffix:colon
+op_assign
 id|mcdx_media_changed
 comma
+dot
 id|tray_move
-suffix:colon
+op_assign
 id|mcdx_tray_move
 comma
+dot
 id|lock_door
-suffix:colon
+op_assign
 id|mcdx_lockdoor
 comma
+dot
 id|audio_ioctl
-suffix:colon
+op_assign
 id|mcdx_audio_ioctl
 comma
+dot
 id|capability
-suffix:colon
+op_assign
 id|CDC_OPEN_TRAY
 op_or
 id|CDC_LOCK

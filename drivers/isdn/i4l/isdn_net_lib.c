@@ -1676,8 +1676,6 @@ r_if
 c_cond
 (paren
 id|idev-&gt;exclusive
-op_ge
-l_int|0
 )paren
 id|isdn_slot_free
 c_func

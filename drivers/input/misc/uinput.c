@@ -349,8 +349,6 @@ id|input_dev
 op_star
 id|newinput
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|newdev
 op_assign
 id|kmalloc
@@ -446,8 +444,6 @@ id|newdev
 suffix:semicolon
 id|error
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
@@ -1301,11 +1297,7 @@ op_star
 id|file
 )paren
 (brace
-r_int
-id|retval
-suffix:semicolon
-id|retval
-op_assign
+r_return
 id|uinput_burn_device
 c_func
 (paren
@@ -1316,11 +1308,6 @@ op_star
 )paren
 id|file-&gt;private_data
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-r_return
-id|retval
 suffix:semicolon
 )brace
 DECL|function|uinput_ioctl

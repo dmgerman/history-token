@@ -2655,7 +2655,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|rdev
 )paren
 (brace
@@ -4356,9 +4356,6 @@ id|JOURNAL_PER_BALANCE_CNT
 op_star
 l_int|3
 suffix:semicolon
-id|time_t
-id|ctime
-suffix:semicolon
 id|reiserfs_write_lock
 c_func
 (paren
@@ -4472,13 +4469,9 @@ suffix:semicolon
 id|inode-&gt;i_nlink
 op_increment
 suffix:semicolon
-id|ctime
-op_assign
-id|CURRENT_TIME
-suffix:semicolon
 id|inode-&gt;i_ctime
 op_assign
-id|ctime
+id|CURRENT_TIME
 suffix:semicolon
 id|reiserfs_update_sd
 (paren
@@ -4805,9 +4798,6 @@ id|jbegin_count
 suffix:semicolon
 id|umode_t
 id|old_inode_mode
-suffix:semicolon
-id|time_t
-id|ctime
 suffix:semicolon
 multiline_comment|/* two balancings: old name removal, new name insertion or &quot;save&quot; link,&n;       stat data updates: old directory and new directory and maybe block&n;       containing &quot;..&quot; of renamed directory */
 id|jbegin_count
@@ -5541,8 +5531,6 @@ id|old_dir-&gt;i_ctime
 op_assign
 id|old_dir-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
-suffix:semicolon
 id|new_dir-&gt;i_ctime
 op_assign
 id|new_dir-&gt;i_mtime
@@ -5577,13 +5565,9 @@ id|new_dentry_inode-&gt;i_nlink
 op_decrement
 suffix:semicolon
 )brace
-id|ctime
-op_assign
-id|CURRENT_TIME
-suffix:semicolon
 id|new_dentry_inode-&gt;i_ctime
 op_assign
-id|ctime
+id|new_dir-&gt;i_ctime
 suffix:semicolon
 )brace
 r_if

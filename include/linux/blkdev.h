@@ -2,7 +2,6 @@ macro_line|#ifndef _LINUX_BLKDEV_H
 DECL|macro|_LINUX_BLKDEV_H
 mdefine_line|#define _LINUX_BLKDEV_H
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
@@ -991,6 +990,16 @@ suffix:semicolon
 r_extern
 r_void
 id|__blk_stop_queue
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__blk_run_queue
 c_func
 (paren
 id|request_queue_t

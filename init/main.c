@@ -84,6 +84,14 @@ r_int
 suffix:semicolon
 r_extern
 r_void
+id|extable_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|mca_init
 c_func
 (paren
@@ -1342,6 +1350,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|extable_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|rcu_init
 c_func
 (paren
@@ -1373,13 +1386,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MODULES
-id|init_modules
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|profile_init
 c_func
 (paren
@@ -1560,6 +1566,12 @@ id|child_reaper
 op_assign
 op_amp
 id|init_task
+suffix:semicolon
+r_extern
+id|initcall_t
+id|__initcall_start
+comma
+id|__initcall_end
 suffix:semicolon
 DECL|function|do_initcalls
 r_static

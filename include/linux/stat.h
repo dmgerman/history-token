@@ -78,6 +78,7 @@ mdefine_line|#define S_IWUGO&t;&t;(S_IWUSR|S_IWGRP|S_IWOTH)
 DECL|macro|S_IXUGO
 mdefine_line|#define S_IXUGO&t;&t;(S_IXUSR|S_IXGRP|S_IXOTH)
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 DECL|struct|kstat
 r_struct
 id|kstat
@@ -116,15 +117,18 @@ id|loff_t
 id|size
 suffix:semicolon
 DECL|member|atime
-id|time_t
+r_struct
+id|timespec
 id|atime
 suffix:semicolon
 DECL|member|mtime
-id|time_t
+r_struct
+id|timespec
 id|mtime
 suffix:semicolon
 DECL|member|ctime
-id|time_t
+r_struct
+id|timespec
 id|ctime
 suffix:semicolon
 DECL|member|blksize

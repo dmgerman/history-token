@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/mpu401.h&gt;
@@ -341,6 +341,13 @@ op_eq
 l_int|0
 )paren
 (brace
+id|init_timer
+c_func
+(paren
+op_amp
+id|mpu-&gt;timer
+)paren
+suffix:semicolon
 id|mpu-&gt;timer.data
 op_assign
 (paren

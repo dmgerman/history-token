@@ -23,6 +23,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
@@ -2257,11 +2258,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|list_empty
+id|d_unhashed
 c_func
 (paren
-op_amp
-id|proc_dentry-&gt;d_hash
+id|proc_dentry
 )paren
 )paren
 (brace
@@ -2271,11 +2271,10 @@ c_func
 id|proc_dentry
 )paren
 suffix:semicolon
-id|list_del_init
+id|__d_drop
 c_func
 (paren
-op_amp
-id|proc_dentry-&gt;d_hash
+id|proc_dentry
 )paren
 suffix:semicolon
 )brace

@@ -4,10 +4,14 @@ DECL|macro|_NCP_FS_SB
 mdefine_line|#define _NCP_FS_SB
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ncp_mount.h&gt;
+macro_line|#include &lt;linux/net.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/workqueue.h&gt;
 DECL|macro|NCP_DEFAULT_OPTIONS
 mdefine_line|#define NCP_DEFAULT_OPTIONS 0&t;&t;/* 2 for packet signatures */
+r_struct
+id|sock
+suffix:semicolon
 DECL|struct|ncp_server
 r_struct
 id|ncp_server

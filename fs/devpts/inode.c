@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 DECL|macro|DEVPTS_SUPER_MAGIC
 mdefine_line|#define DEVPTS_SUPER_MAGIC 0x1cd1
 DECL|variable|devpts_mnt

@@ -42,12 +42,20 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* ignores leap second */
 r_return
 id|utc2ntfs
 c_func
 (paren
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
 )paren
+)paren
+op_plus
+id|xtime.tv_nsec
+op_div
+l_int|1000
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ntfs2utc - convert NTFS time to Linux time&n; * @time:&t;&t;NTFS time (little endian) to convert to Linux&n; *&n; * Convert the little endian NTFS time @time to its corresponding Linux time&n; * and return that in cpu format.&n; *&n; * Linux stores time in a long at present and measures it as the number of&n; * 1-second intervals since 1st January 1970, 00:00:00 UTC.&n; *&n; * NTFS uses Microsoft&squot;s standard time format which is stored in a s64 and is&n; * measured as the number of 100 nano-second intervals since 1st January 1601,&n; * 00:00:00 UTC.&n; */

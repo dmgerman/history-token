@@ -252,7 +252,8 @@ multiline_comment|/* length of fixed section (word count) in two byte units  */
 )paren
 suffix:semicolon
 r_extern
-id|time_t
+r_struct
+id|timespec
 id|cifs_NTtimeToUnix
 c_func
 (paren
@@ -265,7 +266,8 @@ id|u64
 id|cifs_UnixTimeToNT
 c_func
 (paren
-id|time_t
+r_struct
+id|timespec
 )paren
 suffix:semicolon
 r_extern

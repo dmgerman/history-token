@@ -4,25 +4,28 @@ DECL|macro|__SPARC64_ISA_H
 mdefine_line|#define __SPARC64_ISA_H
 macro_line|#include &lt;asm/pbm.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
-DECL|struct|isa_device
 r_struct
-id|isa_device
+id|sparc_isa_bridge
+suffix:semicolon
+DECL|struct|sparc_isa_device
+r_struct
+id|sparc_isa_device
 (brace
 DECL|member|next
 r_struct
-id|isa_device
+id|sparc_isa_device
 op_star
 id|next
 suffix:semicolon
 DECL|member|child
 r_struct
-id|isa_device
+id|sparc_isa_device
 op_star
 id|child
 suffix:semicolon
 DECL|member|bus
 r_struct
-id|isa_bridge
+id|sparc_isa_bridge
 op_star
 id|bus
 suffix:semicolon
@@ -56,19 +59,19 @@ id|irq
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|isa_bridge
+DECL|struct|sparc_isa_bridge
 r_struct
-id|isa_bridge
+id|sparc_isa_bridge
 (brace
 DECL|member|next
 r_struct
-id|isa_bridge
+id|sparc_isa_bridge
 op_star
 id|next
 suffix:semicolon
 DECL|member|devices
 r_struct
-id|isa_device
+id|sparc_isa_device
 op_star
 id|devices
 suffix:semicolon
@@ -117,7 +120,7 @@ suffix:semicolon
 suffix:semicolon
 r_extern
 r_struct
-id|isa_bridge
+id|sparc_isa_bridge
 op_star
 id|isa_chain
 suffix:semicolon

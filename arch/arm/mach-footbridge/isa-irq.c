@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-footbridge/irq.c&n; *&n; *  Copyright (C) 1996-2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Changelog:&n; *   22-Aug-1998 RMK&t;Restructured IRQ routines&n; *   03-Sep-1998 PJB&t;Merged CATS support&n; *   20-Jan-1998 RMK&t;Started merge of EBSA286, CATS and NetWinder&n; *   26-Jan-1999 PJB&t;Don&squot;t use IACK on CATS&n; *   16-Mar-1999 RMK&t;Added autodetect of ISA PICs&n; */
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -423,12 +422,14 @@ id|irqaction
 id|irq_cascade
 op_assign
 (brace
+dot
 id|handler
-suffix:colon
+op_assign
 id|no_action
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;cascade&quot;
 comma
 )brace

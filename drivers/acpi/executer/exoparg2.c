@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg2 - AML execution - opcodes with 2 arguments&n; *              $Revision: 113 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg2 - AML execution - opcodes with 2 arguments&n; *              $Revision: 115 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -997,47 +997,11 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
-id|ACPI_GET_OBJECT_TYPE
-(paren
-id|operand
-(braket
-l_int|2
-)braket
-)paren
-op_eq
-id|ACPI_TYPE_INTEGER
-)paren
-op_logical_and
-(paren
-id|operand
-(braket
-l_int|2
-)braket
-op_member_access_from_pointer
-id|common.flags
-op_amp
-id|AOPOBJ_AML_CONSTANT
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t; * There is no actual result descriptor (the Zero_op/Constant Result&n;&t;&t;&t;&t; * descriptor is a placeholder), so just delete the placeholder and&n;&t;&t;&t;&t; * return a reference to the package element&n;&t;&t;&t;&t; */
-id|acpi_ut_remove_reference
-(paren
-id|operand
-(braket
-l_int|2
-)braket
-)paren
+id|return_desc-&gt;reference.target_type
+op_assign
+id|ACPI_TYPE_PACKAGE
 suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Each element of the package is an internal object.  Get the one&n;&t;&t;&t;&t; * we are after.&n;&t;&t;&t;&t; */
-id|temp_desc
+id|return_desc-&gt;reference.object
 op_assign
 id|operand
 (braket
@@ -1048,49 +1012,6 @@ id|package.elements
 (braket
 id|index
 )braket
-suffix:semicolon
-id|return_desc-&gt;reference.opcode
-op_assign
-id|AML_INDEX_OP
-suffix:semicolon
-id|return_desc-&gt;reference.target_type
-op_assign
-id|ACPI_GET_OBJECT_TYPE
-(paren
-id|temp_desc
-)paren
-suffix:semicolon
-id|return_desc-&gt;reference.object
-op_assign
-id|temp_desc
-suffix:semicolon
-id|status
-op_assign
-id|acpi_ex_store
-(paren
-id|return_desc
-comma
-id|operand
-(braket
-l_int|2
-)braket
-comma
-id|walk_state
-)paren
-suffix:semicolon
-id|return_desc-&gt;reference.object
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t;&t; * The local return object must always be a reference to the package element,&n;&t;&t;&t; * not the element itself.&n;&t;&t;&t; */
-id|return_desc-&gt;reference.opcode
-op_assign
-id|AML_INDEX_OP
-suffix:semicolon
-id|return_desc-&gt;reference.target_type
-op_assign
-id|ACPI_TYPE_PACKAGE
 suffix:semicolon
 id|return_desc-&gt;reference.where
 op_assign
@@ -1148,10 +1069,6 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-id|return_desc-&gt;reference.opcode
-op_assign
-id|AML_INDEX_OP
-suffix:semicolon
 id|return_desc-&gt;reference.target_type
 op_assign
 id|ACPI_TYPE_BUFFER_FIELD
@@ -1163,10 +1080,17 @@ id|operand
 l_int|0
 )braket
 suffix:semicolon
+)brace
+multiline_comment|/* Complete the Index reference object */
+id|return_desc-&gt;reference.opcode
+op_assign
+id|AML_INDEX_OP
+suffix:semicolon
 id|return_desc-&gt;reference.offset
 op_assign
 id|index
 suffix:semicolon
+multiline_comment|/* Store the reference to the Target */
 id|status
 op_assign
 id|acpi_ex_store
@@ -1181,7 +1105,7 @@ comma
 id|walk_state
 )paren
 suffix:semicolon
-)brace
+multiline_comment|/* Return the reference */
 id|walk_state-&gt;result_obj
 op_assign
 id|return_desc
@@ -1246,10 +1170,18 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|walk_state-&gt;result_obj
+)paren
+(brace
 id|walk_state-&gt;result_obj
 op_assign
 id|return_desc
 suffix:semicolon
+)brace
 )brace
 id|cleanup
 suffix:colon

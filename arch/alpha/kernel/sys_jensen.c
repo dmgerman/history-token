@@ -677,8 +677,9 @@ id|pci_dev
 id|fake_isa_bridge
 op_assign
 (brace
+dot
 id|dma_mask
-suffix:colon
+op_assign
 l_int|0xffffffffUL
 comma
 )brace

@@ -933,6 +933,13 @@ id|SB_OPEN_MIDI_TRIGGER
 )paren
 )paren
 (brace
+id|init_timer
+c_func
+(paren
+op_amp
+id|chip-&gt;midi_timer
+)paren
+suffix:semicolon
 id|chip-&gt;midi_timer.function
 op_assign
 id|snd_sb8dsp_midi_output_timer

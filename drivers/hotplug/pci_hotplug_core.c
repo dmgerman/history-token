@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
@@ -262,7 +263,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|dev
 )paren
 (brace
@@ -391,7 +392,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|dev
 )paren
 (brace

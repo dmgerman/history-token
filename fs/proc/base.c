@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/namespace.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 multiline_comment|/*&n; * For hysterical raisins we keep the same inumbers as in the old procfs.&n; * Feel free to change the macro below - just keep the range distinct from&n; * inumbers of the rest of procfs (currently those are in 0x0000--0xffff).&n; * As soon as we&squot;ll get a separate superblock we will be able to forget&n; * about magical ranges too.&n; */
 DECL|macro|fake_ino
 mdefine_line|#define fake_ino(pid,ino) (((pid)&lt;&lt;16)|(ino))
@@ -1276,19 +1277,22 @@ op_star
 id|buffer
 )paren
 (brace
+r_char
+op_star
+id|modname
+suffix:semicolon
 r_const
 r_char
 op_star
 id|sym_name
-comma
-op_star
-id|ignore
 suffix:semicolon
 r_int
 r_int
 id|wchan
 comma
-id|dummy
+id|size
+comma
+id|offset
 suffix:semicolon
 id|wchan
 op_assign
@@ -1298,44 +1302,39 @@ c_func
 id|task
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|kallsyms_address_to_symbol
+id|sym_name
+op_assign
+id|kallsyms_lookup
 c_func
 (paren
 id|wchan
 comma
 op_amp
-id|ignore
+id|size
 comma
 op_amp
-id|dummy
+id|offset
 comma
 op_amp
-id|dummy
-comma
-op_amp
-id|ignore
-comma
-op_amp
-id|dummy
-comma
-op_amp
-id|dummy
-comma
-op_amp
+id|modname
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|sym_name
-comma
-op_amp
-id|dummy
-comma
-op_amp
-id|dummy
 )paren
+r_return
+id|sprintf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;%s&quot;
+comma
+id|sym_name
 )paren
-(brace
+suffix:semicolon
 r_return
 id|sprintf
 c_func
@@ -1348,19 +1347,7 @@ id|wchan
 )paren
 suffix:semicolon
 )brace
-r_return
-id|sprintf
-c_func
-(paren
-id|buffer
-comma
-l_string|&quot;%s&quot;
-comma
-id|sym_name
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_KALLSYMS */
 multiline_comment|/************************************************************************/
 multiline_comment|/*                       Here the fs part begins                        */
 multiline_comment|/************************************************************************/

@@ -980,6 +980,10 @@ id|tramp_stack
 suffix:colon
 l_int|0
 comma
+id|in_kernel
+suffix:colon
+l_int|0
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* Accessed by the tracing thread, which automatically serializes access */

@@ -44,6 +44,8 @@ DECL|macro|MISC_MAJOR
 mdefine_line|#define MISC_MAJOR&t;10
 DECL|macro|SCSI_CDROM_MAJOR
 mdefine_line|#define SCSI_CDROM_MAJOR 11
+DECL|macro|MUX_MAJOR
+mdefine_line|#define MUX_MAJOR&t;11&t;/* PA-RISC only */
 DECL|macro|QIC02_TAPE_MAJOR
 mdefine_line|#define QIC02_TAPE_MAJOR 12
 DECL|macro|XT_DISK_MAJOR

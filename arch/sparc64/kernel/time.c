@@ -1748,7 +1748,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|isa_bridge
+id|sparc_isa_bridge
 op_star
 id|isa_br
 op_assign
@@ -2358,7 +2358,7 @@ l_int|NULL
 )paren
 (brace
 r_struct
-id|isa_device
+id|sparc_isa_device
 op_star
 id|isadev
 suffix:semicolon

@@ -1,4 +1,5 @@
-multiline_comment|/*&n; Low Level Linux Driver for the IBM Microchannel SCSI Subsystem for&n; Linux Kernel &gt;= 2.4.0.&n; Copyright (c) 1995 Strom Systems, Inc. under the terms of the GNU&n; General Public License. Written by Martin Kolinek, December 1995.&n; Further development by: Chris Beauregard, Klaus Kudielka, Michael Lang&n; See the file README.ibmmca for a detailed description of this driver,&n; the commandline arguments and the history of its development.&n; See the WWW-page: http://www.uni-mainz.de/~langm000/linux.html for latest&n; updates, info and ADF-files for adapters supported by this driver.&n;&n; Alan Cox &lt;alan@redhat.com&gt;&n; Updated for Linux 2.5.45 to use the new error handler, cleaned up the&n; lock macros and did a few unavoidable locking tweaks, plus one locking&n; fix in the irq and completion path.&n; &n; */
+multiline_comment|/*&n; Low Level Linux Driver for the IBM Microchannel SCSI Subsystem for&n; Linux Kernel &gt;= 2.4.0.&n; Copyright (c) 1995 Strom Systems, Inc. under the terms of the GNU&n; General Public License. Written by Martin Kolinek, December 1995.&n; Further development by: Chris Beauregard, Klaus Kudielka, Michael Lang&n; See the file Documentation/scsi/ibmmca.txt for a detailed description&n; of this driver, the commandline arguments and the history of its&n; development.&n; See the WWW-page: http://www.uni-mainz.de/~langm000/linux.html for latest&n; updates, info and ADF-files for adapters supported by this driver.&n;&n; Alan Cox &lt;alan@redhat.com&gt;&n; Updated for Linux 2.5.45 to use the new error handler, cleaned up the&n; lock macros and did a few unavoidable locking tweaks, plus one locking&n; fix in the irq and completion path.&n; &n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef LINUX_VERSION_CODE
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#endif
@@ -10,22 +11,21 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;ibmmca.h&quot;
-macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* current version of this driver-source: */
 DECL|macro|IBMMCA_SCSI_DRIVER_VERSION
 mdefine_line|#define IBMMCA_SCSI_DRIVER_VERSION &quot;4.0b-ac&quot;
@@ -7401,16 +7401,6 @@ c_cond
 id|str
 )paren
 (brace
-id|token
-op_assign
-id|strtok
-c_func
-(paren
-id|str
-comma
-l_string|&quot;,&quot;
-)paren
-suffix:semicolon
 id|j
 op_assign
 l_int|0
@@ -7418,7 +7408,20 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+(paren
 id|token
+op_assign
+id|strsep
+c_func
+(paren
+op_amp
+id|str
+comma
+l_string|&quot;,&quot;
+)paren
+)paren
+op_ne
+l_int|NULL
 )paren
 (brace
 r_if
@@ -7636,16 +7639,6 @@ id|j
 op_increment
 suffix:semicolon
 )brace
-id|token
-op_assign
-id|strtok
-c_func
-(paren
-l_int|NULL
-comma
-l_string|&quot;,&quot;
-)paren
-suffix:semicolon
 )brace
 )brace
 r_else

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  request.c&n; *&n; *  Copyright (C) 2001 by Urban Widm
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/smb_fs.h&gt;
 macro_line|#include &lt;linux/smbno.h&gt;
 macro_line|#include &lt;linux/smb_mount.h&gt;

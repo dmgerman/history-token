@@ -10,9 +10,7 @@ macro_line|#include &lt;sound/version.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
-macro_line|#ifdef CONFIG_DEVFS_FS
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#endif
 DECL|macro|SNDRV_OS_MINORS
 mdefine_line|#define SNDRV_OS_MINORS 256
 DECL|variable|major
@@ -1580,13 +1578,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_DEVFS_FS
-r_char
-id|controlname
-(braket
-l_int|24
-)braket
-suffix:semicolon
 r_int
 id|controlnum
 suffix:semicolon
@@ -1604,35 +1595,14 @@ suffix:semicolon
 id|controlnum
 op_increment
 )paren
-(brace
-id|sprintf
+id|devfs_remove
 c_func
 (paren
-id|controlname
-comma
 l_string|&quot;snd/controlC%d&quot;
 comma
 id|controlnum
 )paren
 suffix:semicolon
-id|devfs_find_and_unregister
-c_func
-(paren
-l_int|NULL
-comma
-id|controlname
-comma
-l_int|0
-comma
-l_int|0
-comma
-id|DEVFS_SPECIAL_CHR
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#ifdef CONFIG_SND_OSSEMUL
 id|snd_info_minor_unregister
 c_func

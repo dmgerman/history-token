@@ -578,7 +578,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|rdev
 comma
 r_char
@@ -677,7 +677,10 @@ id|info.entry.atime
 op_assign
 id|info.entry.mtime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|info.entry.nlink
 op_assign
@@ -2683,7 +2686,10 @@ id|info.entry.atime
 op_assign
 id|info.entry.mtime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|info.entry.flags
 op_assign
@@ -2916,7 +2922,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|rdev
 )paren
 (brace

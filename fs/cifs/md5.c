@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * This code implements the MD5 message-digest algorithm.&n; * The algorithm is due to Ron Rivest.  This code was&n; * written by Colin Plumb in 1993, no copyright is claimed.&n; * This code is in the public domain; do with it what you wish.&n; *&n; * Equivalent code is available from RSA Data Security, Inc.&n; * This code has been tested against that, and is equivalent,&n; * except that you don&squot;t need to include two pages of legalese&n; * with every copy.&n; *&n; * To compute the message digest of a chunk of bytes, declare an&n; * MD5Context structure, pass it to MD5Init, call MD5Update as&n; * needed on buffers full of bytes, and then call MD5Final, which&n; * will fill a supplied 16-byte array with the digest.&n; */
 multiline_comment|/* This code slightly modified to fit into Samba by &n;   abartlet@samba.org Jun 2001 &n;   and to fit the cifs vfs by &n;   Steve French sfrench@us.ibm.com */
-macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;md5.h&quot;
 r_static
 r_void

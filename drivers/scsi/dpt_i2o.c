@@ -1,4 +1,4 @@
-multiline_comment|/***************************************************************************&n;                          dpti.c  -  description&n;                             -------------------&n;    begin                : Thu Sep 7 2000&n;    copyright            : (C) 2000 by Adaptec&n;    email                : deanna_bonds@adaptec.com&n;&n;    &t;&t;&t;   July 30, 2001 First version being submitted&n;&t;&t;&t;   for inclusion in the kernel.  V2.4&n;&n;    See README.dpti for history, notes, license info, and credits&n; ***************************************************************************/
+multiline_comment|/***************************************************************************&n;                          dpti.c  -  description&n;                             -------------------&n;    begin                : Thu Sep 7 2000&n;    copyright            : (C) 2000 by Adaptec&n;    email                : deanna_bonds@adaptec.com&n;&n;&t;&t;&t;   July 30, 2001 First version being submitted&n;&t;&t;&t;   for inclusion in the kernel.  V2.4&n;&n;    See Documentation/scsi/dpti.txt for history, notes, license info&n;    and credits&n; ***************************************************************************/
 multiline_comment|/***************************************************************************&n; *                                                                         *&n; *   This program is free software; you can redistribute it and/or modify  *&n; *   it under the terms of the GNU General Public License as published by  *&n; *   the Free Software Foundation; either version 2 of the License, or     *&n; *   (at your option) any later version.                                   *&n; *                                                                         *&n; ***************************************************************************/
 singleline_comment|//#define DEBUG 1
 singleline_comment|//#define UARTDELAY 1
@@ -194,16 +194,19 @@ id|file_operations
 id|adpt_fops
 op_assign
 (brace
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|adpt_ioctl
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|adpt_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|adpt_close
 )brace
 suffix:semicolon

@@ -1105,6 +1105,13 @@ id|opl3-&gt;tlist
 )paren
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|opl3-&gt;tlist
+)paren
+suffix:semicolon
 id|opl3-&gt;tlist.function
 op_assign
 id|snd_opl3_timer_func

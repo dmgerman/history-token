@@ -43,6 +43,7 @@ macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#if defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -81,48 +82,6 @@ l_string|&quot;Using_Versions&quot;
 )brace
 suffix:semicolon
 macro_line|#endif
-DECL|variable|inter_module_register
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|inter_module_register
-)paren
-suffix:semicolon
-DECL|variable|inter_module_unregister
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|inter_module_unregister
-)paren
-suffix:semicolon
-DECL|variable|inter_module_get
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|inter_module_get
-)paren
-suffix:semicolon
-DECL|variable|inter_module_get_request
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|inter_module_get_request
-)paren
-suffix:semicolon
-DECL|variable|inter_module_put
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|inter_module_put
-)paren
-suffix:semicolon
-DECL|variable|try_inc_mod_count
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|try_inc_mod_count
-)paren
-suffix:semicolon
 multiline_comment|/* process memory management */
 DECL|variable|do_mmap_pgoff
 id|EXPORT_SYMBOL
@@ -721,11 +680,11 @@ c_func
 id|d_lookup
 )paren
 suffix:semicolon
-DECL|variable|__d_path
+DECL|variable|d_path
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__d_path
+id|d_path
 )paren
 suffix:semicolon
 DECL|variable|mark_buffer_dirty
@@ -1435,11 +1394,11 @@ c_func
 id|no_llseek
 )paren
 suffix:semicolon
-DECL|variable|__pollwait
+DECL|variable|poll_initwait
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__pollwait
+id|poll_initwait
 )paren
 suffix:semicolon
 DECL|variable|poll_freewait
@@ -1561,11 +1520,11 @@ c_func
 id|vfs_readdir
 )paren
 suffix:semicolon
-DECL|variable|__get_lease
+DECL|variable|__break_lease
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__get_lease
+id|__break_lease
 )paren
 suffix:semicolon
 DECL|variable|lease_get_mtime
@@ -3181,6 +3140,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|dump_stack
+)paren
+suffix:semicolon
+DECL|variable|current_kernel_time
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|current_kernel_time
 )paren
 suffix:semicolon
 eof

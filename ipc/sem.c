@@ -362,7 +362,10 @@ id|nsems
 suffix:semicolon
 id|sma-&gt;sem_ctime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|sem_unlock
 c_func
@@ -1022,7 +1025,10 @@ suffix:semicolon
 )brace
 id|sma-&gt;sem_otime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -2483,7 +2489,10 @@ l_int|0
 suffix:semicolon
 id|sma-&gt;sem_ctime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* maybe some queued-up processes were waiting for this */
 id|update_queue
@@ -2725,7 +2734,10 @@ id|current-&gt;pid
 suffix:semicolon
 id|sma-&gt;sem_ctime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* maybe some queued-up processes were waiting for this */
 id|update_queue
@@ -3118,7 +3130,10 @@ id|S_IRWXUGO
 suffix:semicolon
 id|sma-&gt;sem_ctime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|sem_unlock
 c_func
@@ -5137,7 +5152,10 @@ suffix:semicolon
 )brace
 id|sma-&gt;sem_otime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* maybe some queued-up processes were waiting for this */
 id|update_queue

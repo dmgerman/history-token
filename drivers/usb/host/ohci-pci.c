@@ -207,11 +207,6 @@ id|ohci-&gt;regs
 op_assign
 id|hcd-&gt;regs
 suffix:semicolon
-id|ohci-&gt;parent_dev
-op_assign
-op_amp
-id|ohci-&gt;hcd.pdev-&gt;dev
-suffix:semicolon
 r_if
 c_cond
 (paren

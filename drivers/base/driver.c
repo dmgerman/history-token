@@ -4,6 +4,7 @@ mdefine_line|#define DEBUG 0
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;base.h&quot;
 DECL|macro|to_dev
 mdefine_line|#define to_dev(node) container_of(node,struct device,driver_list)

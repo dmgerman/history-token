@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* Random magic number */
 DECL|macro|SYSFS_MAGIC
@@ -225,7 +226,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|dev
 )paren
 (brace
@@ -889,7 +890,8 @@ op_logical_neg
 id|ops-&gt;store
 )paren
 r_return
-l_int|0
+op_minus
+id|EINVAL
 suffix:semicolon
 id|page
 op_assign

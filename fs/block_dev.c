@@ -14,6 +14,8 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|function|max_block
 r_static
@@ -2372,6 +2374,8 @@ c_func
 (paren
 id|bdev
 )paren
+op_logical_and
+id|bdev-&gt;bd_invalidated
 )paren
 (brace
 id|rescan_partitions
@@ -3656,7 +3660,7 @@ op_star
 id|__bdevname
 c_func
 (paren
-id|kdev_t
+id|dev_t
 id|dev
 )paren
 (brace
@@ -3674,7 +3678,7 @@ id|name
 op_assign
 id|blkdevs
 (braket
-id|major
+id|MAJOR
 c_func
 (paren
 id|dev
@@ -3700,13 +3704,13 @@ l_string|&quot;%s(%d,%d)&quot;
 comma
 id|name
 comma
-id|major
+id|MAJOR
 c_func
 (paren
 id|dev
 )paren
 comma
-id|minor
+id|MINOR
 c_func
 (paren
 id|dev

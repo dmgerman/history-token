@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: dlist.h,v 1.1.2.2 2002/10/02 14:38:37 armin Exp $ */
+multiline_comment|/* $Id: dlist.h,v 1.1.2.2 2001/02/08 12:25:43 armin Exp $ */
 macro_line|#ifndef __DIVA_LINK_H__
 DECL|macro|__DIVA_LINK_H__
 mdefine_line|#define __DIVA_LINK_H__
@@ -65,6 +65,7 @@ op_star
 suffix:semicolon
 r_void
 id|diva_q_remove
+c_func
 (paren
 id|diva_entity_queue_t
 op_star
@@ -77,6 +78,7 @@ id|what
 suffix:semicolon
 r_void
 id|diva_q_add_tail
+c_func
 (paren
 id|diva_entity_queue_t
 op_star
@@ -90,6 +92,7 @@ suffix:semicolon
 id|diva_entity_link_t
 op_star
 id|diva_q_find
+c_func
 (paren
 r_const
 id|diva_entity_queue_t
@@ -108,6 +111,7 @@ suffix:semicolon
 id|diva_entity_link_t
 op_star
 id|diva_q_get_head
+c_func
 (paren
 id|diva_entity_queue_t
 op_star
@@ -117,6 +121,7 @@ suffix:semicolon
 id|diva_entity_link_t
 op_star
 id|diva_q_get_tail
+c_func
 (paren
 id|diva_entity_queue_t
 op_star
@@ -126,6 +131,7 @@ suffix:semicolon
 id|diva_entity_link_t
 op_star
 id|diva_q_get_next
+c_func
 (paren
 id|diva_entity_link_t
 op_star
@@ -135,6 +141,7 @@ suffix:semicolon
 id|diva_entity_link_t
 op_star
 id|diva_q_get_prev
+c_func
 (paren
 id|diva_entity_link_t
 op_star
@@ -143,6 +150,7 @@ id|what
 suffix:semicolon
 r_int
 id|diva_q_get_nr_of_entries
+c_func
 (paren
 r_const
 id|diva_entity_queue_t
@@ -152,6 +160,7 @@ id|q
 suffix:semicolon
 r_void
 id|diva_q_init
+c_func
 (paren
 id|diva_entity_queue_t
 op_star

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *      MOTU Midi Timepiece ALSA Main routines&n; *      Copyright by Michael T. Mayers (c) Jan 09, 2000&n; *      mail: michael@tweakoz.com&n; *      Thanks to John Galbraith&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; *&n; *      This driver is for the &squot;Mark Of The Unicorn&squot; (MOTU)&n; *      MidiTimePiece AV multiport MIDI interface &n; *&n; *      IOPORTS&n; *      -------&n; *      8 MIDI Ins and 8 MIDI outs&n; *      Video Sync In (BNC), Word Sync Out (BNC), &n; *      ADAT Sync Out (DB9)&n; *      SMPTE in/out (1/4&quot;)&n; *      2 programmable pedal/footswitch inputs and 4 programmable MIDI controller knobs.&n; *      Macintosh RS422 serial port&n; *      RS422 &quot;network&quot; port for ganging multiple MTP&squot;s&n; *      PC Parallel Port ( which this driver currently uses )&n; *&n; *      MISC FEATURES&n; *      -------------&n; *      Hardware MIDI routing, merging, and filtering   &n; *      MIDI Synchronization to Video, ADAT, SMPTE and other Clock sources&n; *      128 &squot;scene&squot; memories, recallable from MIDI program change&n; *&n; *&n; * ChangeLog&n; * Jun 11 2001&t;Takashi Iwai &lt;tiwai@suse.de&gt;&n; *      - Recoded &amp; debugged&n; *      - Added timer interrupt for midi outputs&n; *      - hwports is between 1 and 8, which specifies the number of hardware ports.&n; *        The three global ports, computer, adat and broadcast ports, are created&n; *        always after h/w and remote ports.&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
@@ -10,6 +10,7 @@ mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;sound/rawmidi.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; *      globals&n; */
 id|MODULE_AUTHOR
 c_func
@@ -1405,6 +1406,13 @@ op_star
 id|chip
 )paren
 (brace
+id|init_timer
+c_func
+(paren
+op_amp
+id|chip-&gt;timer
+)paren
+suffix:semicolon
 id|chip-&gt;timer.function
 op_assign
 id|snd_mtpav_output_timer

@@ -2782,7 +2782,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|TG3_HW_STATUS_SIZE
-mdefine_line|#define TG3_HW_STATUS_SIZE&t;&t;0x80
+mdefine_line|#define TG3_HW_STATUS_SIZE&t;&t;0x50
 DECL|struct|tg3_hw_status
 r_struct
 id|tg3_hw_status

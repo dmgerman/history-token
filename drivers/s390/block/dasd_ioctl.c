@@ -1014,8 +1014,6 @@ id|format_data_t
 id|fdata
 suffix:semicolon
 r_int
-id|partn
-comma
 id|rc
 suffix:semicolon
 r_if
@@ -1043,16 +1041,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/* fdata == NULL is no longer a valid arg to dasd_format ! */
-id|partn
-op_assign
-id|MINOR
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
-op_amp
-id|DASD_PARTN_MASK
-suffix:semicolon
 id|devmap
 op_assign
 id|dasd_devmap_from_bdev
@@ -1146,9 +1134,9 @@ r_else
 r_if
 c_cond
 (paren
-id|partn
+id|bdev
 op_ne
-l_int|0
+id|bdev-&gt;bd_contains
 )paren
 (brace
 id|DEV_MESSAGE
@@ -1937,13 +1925,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MINOR
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
-op_amp
-id|DASD_PARTN_MASK
+id|bdev
+op_ne
+id|bdev-&gt;bd_contains
 )paren
 singleline_comment|// ro setting is not allowed for partitions
 r_return

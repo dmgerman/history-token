@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 DECL|function|error
 r_static
 r_void
@@ -1691,41 +1692,49 @@ op_assign
 (braket
 id|Start
 )braket
+op_assign
 id|do_start
 comma
 (braket
 id|Collect
 )braket
+op_assign
 id|do_collect
 comma
 (braket
 id|GotHeader
 )braket
+op_assign
 id|do_header
 comma
 (braket
 id|SkipIt
 )braket
+op_assign
 id|do_skip
 comma
 (braket
 id|GotName
 )braket
+op_assign
 id|do_name
 comma
 (braket
 id|CopyFile
 )braket
+op_assign
 id|do_copy
 comma
 (braket
 id|GotSymlink
 )braket
+op_assign
 id|do_symlink
 comma
 (braket
 id|Reset
 )braket
+op_assign
 id|do_reset
 comma
 )brace

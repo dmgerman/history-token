@@ -943,6 +943,7 @@ op_assign
 (braket
 id|PCI_DMA_BIDIRECTIONAL
 )braket
+op_assign
 id|HINT_STOP_MOST
 op_or
 id|HINT_SAFE_DMA
@@ -952,6 +953,7 @@ comma
 (braket
 id|PCI_DMA_TODEVICE
 )braket
+op_assign
 id|HINT_STOP_MOST
 op_or
 id|HINT_PREFETCH
@@ -961,16 +963,11 @@ comma
 (braket
 id|PCI_DMA_FROMDEVICE
 )braket
+op_assign
 id|HINT_STOP_MOST
 op_or
 id|IOPDIR_VALID
 comma
-(braket
-id|PCI_DMA_NONE
-)braket
-l_int|0
-comma
-multiline_comment|/* not valid */
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * ccio_io_pdir_entry - Initialize an I/O Pdir.&n; * @pdir_ptr: A pointer into I/O Pdir.&n; * @sid: The Space Identifier.&n; * @vba: The virtual address.&n; * @hints: The DMA Hint.&n; *&n; * Given a virtual address (vba, arg2) and space id, (sid, arg1),&n; * load the I/O PDIR entry pointed to by pdir_ptr (arg0). Each IO Pdir&n; * entry consists of 8 bytes as shown below (MSB == bit 0):&n; *&n; *&n; * WORD 0:&n; * +------+----------------+-----------------------------------------------+&n; * | Phys | Virtual Index  |               Phys                            |&n; * | 0:3  |     0:11       |               4:19                            |&n; * |4 bits|   12 bits      |              16 bits                          |&n; * +------+----------------+-----------------------------------------------+&n; * WORD 1:&n; * +-----------------------+-----------------------------------------------+&n; * |      Phys    |  Rsvd  | Prefetch |Update |Rsvd  |Lock  |Safe  |Valid  |&n; * |     20:39    |        | Enable   |Enable |      |Enable|DMA   |       |&n; * |    20 bits   | 5 bits | 1 bit    |1 bit  |2 bits|1 bit |1 bit |1 bit  |&n; * +-----------------------+-----------------------------------------------+&n; *&n; * The virtual index field is filled with the results of the LCI&n; * (Load Coherence Index) instruction.  The 8 bits used for the virtual&n; * index are bits 12:19 of the value returned by LCI.&n; */

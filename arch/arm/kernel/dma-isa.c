@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  linux/arch/arm/kernel/dma-isa.c&n; *&n; *  Copyright (C) 1999-2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  ISA DMA primitives&n; *  Taken from various sources, including:&n; *   linux/include/asm/dma.h: Defines for using and allocating dma channels.&n; *     Written by Hennus Bergman, 1992.&n; *     High DMA channel support &amp; info by Hannu Savolainen and John Boyd,&n; *     Nov. 1992.&n; *   arch/arm/kernel/dma-ebsa285.c&n; *   Copyright (C) 1998 Phil Blundell&n; */
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;

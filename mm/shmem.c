@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/shmem_fs.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* This magic number is used in glibc for posix shared memory */
 DECL|macro|TMPFS_MAGIC
@@ -4544,10 +4545,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|shmem_get_inode
+r_static
 r_struct
 id|inode
 op_star
+DECL|function|shmem_get_inode
 id|shmem_get_inode
 c_func
 (paren
@@ -4559,7 +4561,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|dev
 )paren
 (brace
@@ -6328,9 +6330,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * File creation. Allocate an inode, and we&squot;re done..&n; */
-DECL|function|shmem_mknod
 r_static
 r_int
+DECL|function|shmem_mknod
 id|shmem_mknod
 c_func
 (paren
@@ -6347,7 +6349,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|dev
 )paren
 (brace

@@ -5,6 +5,8 @@ macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG /* undef me for production */
 macro_line|#ifdef CONFIG_LP_CONSOLE

@@ -1,5 +1,7 @@
 multiline_comment|/*&n; * linux/fs/nfsd/lockd.c&n; *&n; * This file contains all the stubs needed when communicating with lockd.&n; * This level of indirection is necessary so we can run nfsd+lockd without&n; * requiring the nfs client to be compiled in/loaded, and vice versa.&n; *&n; * Copyright (C) 1996, Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;

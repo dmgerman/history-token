@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsobject - Utilities for objects attached to namespace&n; *                         table entries&n; *              $Revision: 84 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsobject - Utilities for objects attached to namespace&n; *                         table entries&n; *              $Revision: 85 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -309,7 +309,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_detach_object&n; *&n; * PARAMETERS:  Node           - An object whose Value will be deleted&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Delete the Value associated with a namespace object.  If the&n; *              Value is an allocated object, it is freed.  Otherwise, the&n; *              field is simply cleared.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_detach_object&n; *&n; * PARAMETERS:  Node           - An node whose object will be detached&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Detach/delete an object associated with a namespace node.&n; *              if the object is an allocated object, it is freed.&n; *              Otherwise, the field is simply cleared.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ns_detach_object
 id|acpi_ns_detach_object
@@ -421,7 +421,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_attached_object&n; *&n; * PARAMETERS:  Node             - Parent Node to be examined&n; *&n; * RETURN:      Current value of the object field from the Node whose&n; *              handle is passed&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_attached_object&n; *&n; * PARAMETERS:  Node             - Parent Node to be examined&n; *&n; * RETURN:      Current value of the object field from the Node whose&n; *              handle is passed&n; *&n; * DESCRIPTION: Obtain the object attached to a namespace node.&n; *&n; ******************************************************************************/
 id|acpi_operand_object
 op_star
 DECL|function|acpi_ns_get_attached_object
@@ -509,7 +509,7 @@ id|node-&gt;object
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_secondary_object&n; *&n; * PARAMETERS:  Node             - Parent Node to be examined&n; *&n; * RETURN:      Current value of the object field from the Node whose&n; *              handle is passed&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_secondary_object&n; *&n; * PARAMETERS:  Node             - Parent Node to be examined&n; *&n; * RETURN:      Current value of the object field from the Node whose&n; *              handle is passed.&n; *&n; * DESCRIPTION: Obtain a secondary object associated with a namespace node.&n; *&n; ******************************************************************************/
 id|acpi_operand_object
 op_star
 DECL|function|acpi_ns_get_secondary_object
@@ -571,7 +571,7 @@ id|obj_desc-&gt;common.next_object
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_attach_data&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION:&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_attach_data&n; *&n; * PARAMETERS:  Node            - Namespace node&n; *              Handler         - Handler to be associated with the data&n; *              Data            - Data to be attached&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Low-level attach data.  Create and attach a Data object.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_attach_data
 id|acpi_ns_attach_data
@@ -600,7 +600,7 @@ id|acpi_operand_object
 op_star
 id|data_desc
 suffix:semicolon
-multiline_comment|/* */
+multiline_comment|/* We only allow one attachment per handler */
 id|prev_obj_desc
 op_assign
 l_int|NULL
@@ -703,7 +703,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_detach_data&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION:&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_detach_data&n; *&n; * PARAMETERS:  Node            - Namespace node&n; *              Handler         - Handler associated with the data&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Low-level detach data.  Delete the data node, but the caller&n; *              is responsible for the actual data.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_detach_data
 id|acpi_ns_detach_data
@@ -801,7 +801,7 @@ id|AE_NOT_FOUND
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_attached_data&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION:&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_attached_data&n; *&n; * PARAMETERS:  Node            - Namespace node&n; *              Handler         - Handler associated with the data&n; *              Data            - Where the data is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Low level interface to obtain data previously associated with&n; *              a namespace node.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_get_attached_data
 id|acpi_ns_get_attached_data

@@ -527,7 +527,7 @@ l_int|1
 op_rshift
 id|NCP_BLOCK_SHIFT
 suffix:semicolon
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 op_assign
 id|ncp_date_dos2unix
 c_func
@@ -545,7 +545,7 @@ id|nwi-&gt;modifyDate
 )paren
 )paren
 suffix:semicolon
-id|inode-&gt;i_ctime
+id|inode-&gt;i_ctime.tv_sec
 op_assign
 id|ncp_date_dos2unix
 c_func
@@ -563,7 +563,7 @@ id|nwi-&gt;creationDate
 )paren
 )paren
 suffix:semicolon
-id|inode-&gt;i_atime
+id|inode-&gt;i_atime.tv_sec
 op_assign
 id|ncp_date_dos2unix
 c_func
@@ -576,6 +576,18 @@ c_func
 id|nwi-&gt;lastAccessDate
 )paren
 )paren
+suffix:semicolon
+id|inode-&gt;i_atime.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
+id|inode-&gt;i_mtime.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
+id|inode-&gt;i_ctime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|ncp_update_attrs
@@ -3899,7 +3911,7 @@ suffix:semicolon
 id|ncp_date_unix2dos
 c_func
 (paren
-id|attr-&gt;ia_ctime
+id|attr-&gt;ia_ctime.tv_sec
 comma
 op_amp
 (paren
@@ -3952,7 +3964,7 @@ suffix:semicolon
 id|ncp_date_unix2dos
 c_func
 (paren
-id|attr-&gt;ia_mtime
+id|attr-&gt;ia_mtime.tv_sec
 comma
 op_amp
 (paren
@@ -4006,7 +4018,7 @@ suffix:semicolon
 id|ncp_date_unix2dos
 c_func
 (paren
-id|attr-&gt;ia_ctime
+id|attr-&gt;ia_ctime.tv_sec
 comma
 op_amp
 (paren

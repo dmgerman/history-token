@@ -5557,7 +5557,8 @@ multiline_comment|/* The following are taken from fs/ntfs/util.c */
 DECL|macro|NTFS_TIME_OFFSET
 mdefine_line|#define NTFS_TIME_OFFSET ((u64)(369*365 + 89) * 24 * 3600 * 10000000)
 multiline_comment|/*&n;     * Convert the NT UTC (based 1601-01-01, in hundred nanosecond units)&n;     * into Unix UTC (based 1970-01-01, in seconds).&n;     */
-id|time_t
+r_struct
+id|timespec
 DECL|function|cifs_NTtimeToUnix
 id|cifs_NTtimeToUnix
 c_func
@@ -5566,6 +5567,10 @@ id|u64
 id|ntutc
 )paren
 (brace
+r_struct
+id|timespec
+id|ts
+suffix:semicolon
 multiline_comment|/* BB what about the timezone? BB */
 multiline_comment|/* Subtract the NTFS time offset, then convert to 1s intervals. */
 id|u64
@@ -5577,6 +5582,8 @@ id|ntutc
 op_minus
 id|NTFS_TIME_OFFSET
 suffix:semicolon
+id|ts.tv_nsec
+op_assign
 id|do_div
 c_func
 (paren
@@ -5584,12 +5591,15 @@ id|t
 comma
 l_int|10000000
 )paren
+op_star
+l_int|100
+suffix:semicolon
+id|ts.tv_sec
+op_assign
+id|t
 suffix:semicolon
 r_return
-(paren
-id|time_t
-)paren
-id|t
+id|ts
 suffix:semicolon
 )brace
 multiline_comment|/* Convert the Unix UTC into NT UTC. */
@@ -5598,7 +5608,8 @@ DECL|function|cifs_UnixTimeToNT
 id|cifs_UnixTimeToNT
 c_func
 (paren
-id|time_t
+r_struct
+id|timespec
 id|t
 )paren
 (brace
@@ -5607,9 +5618,13 @@ r_return
 (paren
 id|u64
 )paren
-id|t
+id|t.tv_sec
 op_star
 l_int|10000000
+op_plus
+id|t.tv_nsec
+op_div
+l_int|100
 op_plus
 id|NTFS_TIME_OFFSET
 suffix:semicolon

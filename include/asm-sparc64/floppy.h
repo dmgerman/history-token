@@ -2077,12 +2077,12 @@ r_void
 )paren
 (brace
 r_struct
-id|isa_bridge
+id|sparc_isa_bridge
 op_star
 id|isa_br
 suffix:semicolon
 r_struct
-id|isa_device
+id|sparc_isa_device
 op_star
 id|isa_dev
 op_assign
@@ -2116,7 +2116,7 @@ l_string|&quot;dma&quot;
 )paren
 (brace
 r_struct
-id|isa_device
+id|sparc_isa_device
 op_star
 id|child
 op_assign

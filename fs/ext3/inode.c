@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
+macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &quot;xattr.h&quot;
 macro_line|#include &quot;acl.h&quot;
 multiline_comment|/*&n; * SEARCH_FROM_ZERO forces each block allocation to search from the start&n; * of the filesystem.  This is to force rapid reallocation of recently-freed&n; * blocks.  The file fragmentation is horrendous.&n; */
@@ -571,7 +572,10 @@ id|inode
 op_member_access_from_pointer
 id|i_dtime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* &n;&t; * One subtle ordering requirement: if anything has gone wrong&n;&t; * (transaction abort, IO errors, whatever), then we can still&n;&t; * do these next steps (the fs will already have been marked as&n;&t; * having errors), but we can&squot;t free the inode if the mark_dirty&n;&t; * fails.  &n;&t; */
 r_if
@@ -8071,7 +8075,7 @@ c_func
 id|raw_inode-&gt;i_size
 )paren
 suffix:semicolon
-id|inode-&gt;i_atime
+id|inode-&gt;i_atime.tv_sec
 op_assign
 id|le32_to_cpu
 c_func
@@ -8079,7 +8083,7 @@ c_func
 id|raw_inode-&gt;i_atime
 )paren
 suffix:semicolon
-id|inode-&gt;i_ctime
+id|inode-&gt;i_ctime.tv_sec
 op_assign
 id|le32_to_cpu
 c_func
@@ -8087,13 +8091,21 @@ c_func
 id|raw_inode-&gt;i_ctime
 )paren
 suffix:semicolon
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 op_assign
 id|le32_to_cpu
 c_func
 (paren
 id|raw_inode-&gt;i_mtime
 )paren
+suffix:semicolon
+id|inode-&gt;i_atime.tv_nsec
+op_assign
+id|inode-&gt;i_ctime.tv_nsec
+op_assign
+id|inode-&gt;i_mtime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 id|ei-&gt;i_state
 op_assign
@@ -8765,7 +8777,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|inode-&gt;i_atime
+id|inode-&gt;i_atime.tv_sec
 )paren
 suffix:semicolon
 id|raw_inode-&gt;i_ctime
@@ -8773,7 +8785,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|inode-&gt;i_ctime
+id|inode-&gt;i_ctime.tv_sec
 )paren
 suffix:semicolon
 id|raw_inode-&gt;i_mtime
@@ -8781,7 +8793,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 )paren
 suffix:semicolon
 id|raw_inode-&gt;i_blocks

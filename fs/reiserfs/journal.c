@@ -5663,7 +5663,10 @@ id|i
 suffix:semicolon
 id|age
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_minus
 id|jl-&gt;j_timestamp
 suffix:semicolon
@@ -8268,7 +8271,10 @@ id|p_s_sb
 suffix:semicolon
 id|start
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* step 1, read in the journal header block.  Check the transaction it says &n;  ** is the first unflushed, and if that transaction is not valid, &n;  ** replay is done&n;  */
 id|SB_JOURNAL
@@ -9013,7 +9019,10 @@ l_string|&quot;reiserfs: replayed %d transactions in %lu seconds&bslash;n&quot;
 comma
 id|replay_count
 comma
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_minus
 id|start
 )paren
@@ -11141,7 +11150,10 @@ id|new_alloc
 id|time_t
 id|now
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -11403,7 +11415,10 @@ id|join
 id|time_t
 id|now
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 r_int
 id|old_trans_id
@@ -13333,7 +13348,10 @@ id|p_s_sb
 suffix:semicolon
 id|now
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* safety check so we don&squot;t flush while we are replaying the log during mount */
 r_if
@@ -14069,7 +14087,10 @@ suffix:semicolon
 multiline_comment|/* deal with old transactions where we are the last writers */
 id|now
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -16911,7 +16932,10 @@ dot
 id|j_timestamp
 OL
 (paren
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_minus
 (paren
 id|SB_JOURNAL_MAX_TRANS_AGE

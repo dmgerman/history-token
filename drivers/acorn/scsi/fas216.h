@@ -381,6 +381,10 @@ r_int
 r_int
 id|magic_start
 suffix:semicolon
+DECL|member|host_lock
+id|spinlock_t
+id|host_lock
+suffix:semicolon
 DECL|member|host
 r_struct
 id|Scsi_Host
@@ -406,6 +410,46 @@ op_star
 id|reqSCpnt
 suffix:semicolon
 multiline_comment|/* request sense command&t;&t;*/
+DECL|member|rstSCpnt
+id|Scsi_Cmnd
+op_star
+id|rstSCpnt
+suffix:semicolon
+multiline_comment|/* reset command&t;&t;&t;*/
+DECL|member|pending_SCpnt
+id|Scsi_Cmnd
+op_star
+id|pending_SCpnt
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* per-device pending commands&t;&t;*/
+DECL|member|next_pending
+r_int
+id|next_pending
+suffix:semicolon
+multiline_comment|/* next pending device&t;&t;&t;*/
+multiline_comment|/*&n;&t; * Error recovery&n;&t; */
+DECL|member|eh_wait
+id|wait_queue_head_t
+id|eh_wait
+suffix:semicolon
+DECL|member|eh_timer
+r_struct
+id|timer_list
+id|eh_timer
+suffix:semicolon
+DECL|member|rst_dev_status
+r_int
+r_int
+id|rst_dev_status
+suffix:semicolon
+DECL|member|rst_bus_status
+r_int
+r_int
+id|rst_bus_status
+suffix:semicolon
 multiline_comment|/* driver information */
 r_struct
 (brace
@@ -667,6 +711,22 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* device can disconnect&t;&t;*/
+DECL|member|parity_enabled
+r_int
+r_char
+id|parity_enabled
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* parity checking enabled&t;&t;*/
+DECL|member|parity_check
+r_int
+r_char
+id|parity_check
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* need to check parity checking&t;*/
 DECL|member|period
 r_int
 r_char

@@ -5,6 +5,7 @@ mdefine_line|#define _SCSI_H
 macro_line|#include &lt;linux/config.h&gt;&t;/* for CONFIG_SCSI_LOGGING */
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/*&n; * Some of the public constants are being moved to this file.&n; * We include it here so that what came from where is transparent.&n; */
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
@@ -417,6 +418,10 @@ DECL|macro|SYNC_RESET
 mdefine_line|#define SYNC_RESET      0x40
 multiline_comment|/*&n; * This is the crap from the old error handling code.  We have it in a special&n; * place so that we can more easily delete it later on.&n; */
 macro_line|#include &quot;scsi_obsolete.h&quot;
+multiline_comment|/*&n; * Forward-declaration of structs for prototypes.&n; */
+r_struct
+id|Scsi_Host
+suffix:semicolon
 multiline_comment|/*&n; * Add some typedefs so that we can prototyope a bunch of the functions.&n; */
 DECL|typedef|Scsi_Device
 r_typedef
@@ -441,30 +446,12 @@ mdefine_line|#define SCSI_CMND_MAGIC 0xE25C23A5
 DECL|macro|SCSI_REQ_MAGIC
 mdefine_line|#define SCSI_REQ_MAGIC  0x75F6D354
 multiline_comment|/*&n; * Here is where we prototype most of the mid-layer.&n; */
-multiline_comment|/*&n; *  Initializes all SCSI devices.  This scans all scsi busses.&n; */
 r_extern
 r_int
 r_int
 id|scsi_logging_level
 suffix:semicolon
 multiline_comment|/* What do we log? */
-r_extern
-r_int
-r_int
-id|scsi_dma_free_sectors
-suffix:semicolon
-multiline_comment|/* How much room do we have left */
-r_extern
-r_int
-r_int
-id|scsi_need_isa_buffer
-suffix:semicolon
-multiline_comment|/* True if some devices need indirection&n;&t;&t;&t;&t;&t;&t;   * buffers */
-r_extern
-r_volatile
-r_int
-id|in_scan_scsis
-suffix:semicolon
 r_extern
 r_struct
 id|bus_type
@@ -713,6 +700,22 @@ id|SCpnt
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|scsi_prep_fn
+c_func
+(paren
+r_struct
+id|request_queue
+op_star
+id|q
+comma
+r_struct
+id|request
+op_star
+id|req
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|scsi_request_fn
 c_func
@@ -925,16 +928,6 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|scsi_detect_device
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|scsi_attach_device
 c_func
@@ -952,6 +945,22 @@ c_func
 r_struct
 id|scsi_device
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|scsi_get_device_flags
+c_func
+(paren
+r_int
+r_char
+op_star
+id|vendor
+comma
+r_int
+r_char
+op_star
+id|model
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Newer request-based interfaces.&n; */
@@ -1063,27 +1072,42 @@ id|Scsi_Request
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Prototypes for functions/data in hosts.c&n; */
+multiline_comment|/*&n; * Prototypes for functions in scsi_proc.c&n; */
+macro_line|#ifdef CONFIG_PROC_FS
 r_extern
 r_int
-id|max_scsi_hosts
-suffix:semicolon
-multiline_comment|/*&n; * Prototypes for functions in scsi_proc.c&n; */
-r_extern
-r_void
-id|proc_print_scsidevice
+id|scsi_init_procfs
 c_func
 (paren
-id|Scsi_Device
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_exit_procfs
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_proc_host_add
+c_func
+(paren
+r_struct
+id|Scsi_Host
 op_star
-comma
-r_char
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_proc_host_rm
+c_func
+(paren
+r_struct
+id|Scsi_Host
 op_star
-comma
-r_int
-op_star
-comma
-r_int
 )paren
 suffix:semicolon
 r_extern
@@ -1091,6 +1115,86 @@ r_struct
 id|proc_dir_entry
 op_star
 id|proc_scsi
+suffix:semicolon
+macro_line|#else
+DECL|function|scsi_init_procfs
+r_static
+r_inline
+r_int
+id|scsi_init_procfs
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|function|scsi_exit_procfs
+r_static
+r_inline
+r_void
+id|scsi_exit_procfs
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+suffix:semicolon
+r_static
+r_inline
+r_void
+id|scsi_proc_host_add
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+r_static
+r_inline
+r_void
+id|scsi_proc_host_rm
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_PROC_FS */
+multiline_comment|/*&n; * Prototypes for functions in scsi_scan.c&n; */
+r_extern
+r_struct
+id|scsi_device
+op_star
+id|scsi_alloc_sdev
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+comma
+id|uint
+comma
+id|uint
+comma
+id|uint
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_free_sdev
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Prototypes for functions in constants.c&n; * Some of these used to live in constants.h&n; */
 r_extern
@@ -1199,6 +1303,90 @@ r_char
 comma
 r_int
 r_char
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * dev_info: for the black/white list in the old scsi_static_device_list&n; */
+DECL|struct|dev_info
+r_struct
+id|dev_info
+(brace
+DECL|member|vendor
+r_char
+op_star
+id|vendor
+suffix:semicolon
+DECL|member|model
+r_char
+op_star
+id|model
+suffix:semicolon
+DECL|member|revision
+r_char
+op_star
+id|revision
+suffix:semicolon
+multiline_comment|/* revision known to be bad, unused */
+DECL|member|flags
+r_int
+id|flags
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|dev_info
+id|scsi_static_device_list
+(braket
+)braket
+id|__initdata
+suffix:semicolon
+multiline_comment|/*&n; * scsi_dev_info_list: structure to hold black/white listed devices.&n; */
+DECL|struct|scsi_dev_info_list
+r_struct
+id|scsi_dev_info_list
+(brace
+DECL|member|dev_info_list
+r_struct
+id|list_head
+id|dev_info_list
+suffix:semicolon
+DECL|member|vendor
+r_char
+id|vendor
+(braket
+l_int|8
+)braket
+suffix:semicolon
+DECL|member|model
+r_char
+id|model
+(braket
+l_int|16
+)braket
+suffix:semicolon
+DECL|member|flags
+r_int
+id|flags
+suffix:semicolon
+DECL|member|compatible
+r_int
+id|compatible
+suffix:semicolon
+multiline_comment|/* for use with scsi_static_device_list entries */
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|list_head
+id|scsi_dev_info_list
+suffix:semicolon
+r_extern
+r_int
+id|scsi_dev_info_list_add_str
+c_func
+(paren
+r_char
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  The scsi_device struct contains what we know about each given scsi&n; *  device.&n; *&n; * FIXME(eric) - One of the great regrets that I have is that I failed to&n; * define these structure elements as something like sdev_foo instead of foo.&n; * This would make it so much easier to grep through sources and so forth.&n; * I propose that all new elements that get added to these structures follow&n; * this convention.  As time goes on and as people have the stomach for it,&n; * it should be possible to go back and retrofit at least some of the elements&n; * here with with the prefix.&n; */
@@ -2090,8 +2278,6 @@ DECL|macro|SCSI_MLQUEUE_HOST_BUSY
 mdefine_line|#define SCSI_MLQUEUE_HOST_BUSY   0x1055
 DECL|macro|SCSI_MLQUEUE_DEVICE_BUSY
 mdefine_line|#define SCSI_MLQUEUE_DEVICE_BUSY 0x1056
-DECL|macro|SCSI_SLEEP
-mdefine_line|#define SCSI_SLEEP(QUEUE, CONDITION) {&t;&t;    &bslash;&n;    if (CONDITION) {&t;&t;&t;            &bslash;&n;&t;DECLARE_WAITQUEUE(wait, current);&t;    &bslash;&n;&t;add_wait_queue(QUEUE, &amp;wait);&t;&t;    &bslash;&n;&t;for(;;) {&t;&t;&t;            &bslash;&n;&t;set_current_state(TASK_UNINTERRUPTIBLE);    &bslash;&n;&t;if (CONDITION) {&t;&t;            &bslash;&n;            if (in_interrupt())&t;                    &bslash;&n;&t;        panic(&quot;scsi: trying to call schedule() in interrupt&quot; &bslash;&n;&t;&t;      &quot;, file %s, line %d.&bslash;n&quot;, __FILE__, __LINE__);  &bslash;&n;&t;    schedule();&t;&t;&t;&bslash;&n;        }&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;        &bslash;&n;&t;    break;      &t;&t;&bslash;&n;&t;}&t;&t;&t;        &bslash;&n;&t;remove_wait_queue(QUEUE, &amp;wait);&bslash;&n;&t;current-&gt;state = TASK_RUNNING;&t;&bslash;&n;    }; }
 multiline_comment|/*&n; * old style reset request from external source&n; * (private to sg.c and scsi_error.c, supplied by scsi_obsolete.c)&n; */
 DECL|macro|SCSI_TRY_RESET_DEVICE
 mdefine_line|#define SCSI_TRY_RESET_DEVICE&t;1
@@ -2145,7 +2331,11 @@ r_if
 c_cond
 (paren
 id|SDpnt-&gt;tagged_supported
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 op_logical_neg
 id|blk_queue_tagged
 c_func
@@ -2162,6 +2352,7 @@ comma
 id|depth
 )paren
 suffix:semicolon
+)brace
 id|scsi_adjust_queue_depth
 c_func
 (paren
@@ -2185,15 +2376,35 @@ c_func
 id|Scsi_Device
 op_star
 id|SDpnt
+comma
+r_int
+id|depth
+)paren
+(brace
+id|request_queue_t
+op_star
+id|q
+op_assign
+op_amp
+id|SDpnt-&gt;request_queue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|blk_queue_tagged
+c_func
+(paren
+id|q
+)paren
 )paren
 (brace
 id|blk_queue_free_tags
 c_func
 (paren
-op_amp
-id|SDpnt-&gt;request_queue
+id|q
 )paren
 suffix:semicolon
+)brace
 id|scsi_adjust_queue_depth
 c_func
 (paren
@@ -2201,7 +2412,7 @@ id|SDpnt
 comma
 l_int|0
 comma
-l_int|2
+id|depth
 )paren
 suffix:semicolon
 )brace

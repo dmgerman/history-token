@@ -1,9 +1,6 @@
-macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/i8259.h&gt;
 DECL|variable|pci_intack

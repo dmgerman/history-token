@@ -3393,7 +3393,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;aic7xxx: Please read the file /usr/src/linux/drivers/scsi/README.aic7xxx&bslash;n&quot;
+l_string|&quot;aic7xxx: Please read the file /usr/src/linux/Documentation/scsi/aic7xxx.txt&bslash;n&quot;
 l_string|&quot;aic7xxx: to see the proper way to specify options to the aic7xxx module&bslash;n&quot;
 l_string|&quot;aic7xxx: Specifically, don&squot;t use any commas when passing arguments to&bslash;n&quot;
 l_string|&quot;aic7xxx: insmod or else it might trash certain memory areas.&bslash;n&quot;

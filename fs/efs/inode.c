@@ -426,7 +426,7 @@ c_func
 id|efs_inode-&gt;di_size
 )paren
 suffix:semicolon
-id|inode-&gt;i_atime
+id|inode-&gt;i_atime.tv_sec
 op_assign
 id|be32_to_cpu
 c_func
@@ -434,7 +434,7 @@ c_func
 id|efs_inode-&gt;di_atime
 )paren
 suffix:semicolon
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 op_assign
 id|be32_to_cpu
 c_func
@@ -442,13 +442,21 @@ c_func
 id|efs_inode-&gt;di_mtime
 )paren
 suffix:semicolon
-id|inode-&gt;i_ctime
+id|inode-&gt;i_ctime.tv_sec
 op_assign
 id|be32_to_cpu
 c_func
 (paren
 id|efs_inode-&gt;di_ctime
 )paren
+suffix:semicolon
+id|inode-&gt;i_atime.tv_nsec
+op_assign
+id|inode-&gt;i_mtime.tv_nsec
+op_assign
+id|inode-&gt;i_ctime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* this is the number of blocks in the file */
 r_if

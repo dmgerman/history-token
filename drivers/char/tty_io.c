@@ -290,7 +290,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|hwc_console_init
+id|sclp_console_init
 c_func
 (paren
 r_void
@@ -298,7 +298,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|hwc_tty_init
+id|sclp_tty_init
 c_func
 (paren
 r_void
@@ -307,14 +307,6 @@ suffix:semicolon
 r_extern
 r_void
 id|con3215_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|tty3215_init
 c_func
 (paren
 r_void
@@ -8755,49 +8747,18 @@ r_int
 id|minor
 )paren
 (brace
-macro_line|#ifdef CONFIG_DEVFS_FS
-r_int
-id|idx
-op_assign
+id|devfs_remove
+c_func
+(paren
+id|driver-&gt;name
+comma
 id|minor
 op_minus
 id|driver-&gt;minor_start
-suffix:semicolon
-r_char
-id|buf
-(braket
-l_int|32
-)braket
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|buf
-comma
-id|driver-&gt;name
-comma
-id|idx
 op_plus
 id|driver-&gt;name_base
 )paren
 suffix:semicolon
-id|devfs_find_and_unregister
-c_func
-(paren
-l_int|NULL
-comma
-id|buf
-comma
-id|driver-&gt;major
-comma
-id|minor
-comma
-id|DEVFS_SPECIAL_CHR
-comma
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_DEVFS_FS */
 )brace
 DECL|variable|tty_register_devfs
 id|EXPORT_SYMBOL
@@ -9371,8 +9332,8 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_HWC
-id|hwc_console_init
+macro_line|#ifdef CONFIG_SCLP_CONSOLE
+id|sclp_console_init
 c_func
 (paren
 )paren
@@ -9787,8 +9748,8 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_HWC
-id|hwc_tty_init
+macro_line|#ifdef CONFIG_SCLP
+id|sclp_tty_init
 c_func
 (paren
 )paren

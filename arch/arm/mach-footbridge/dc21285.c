@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  linux/arch/arm/kernel/dec21285.c: PCI functions for DC21285&n; *&n; *  Copyright (C) 1998-2001 Russell King&n; *  Copyright (C) 1998-2000 Phil Blundell&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;

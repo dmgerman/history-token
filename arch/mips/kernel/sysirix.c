@@ -2123,7 +2123,10 @@ id|regs
 )paren
 (brace
 r_return
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 r_int

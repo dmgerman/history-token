@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;vxfs.h&quot;
 macro_line|#include &quot;vxfs_inode.h&quot;
 macro_line|#include &quot;vxfs_extern.h&quot;

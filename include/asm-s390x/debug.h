@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  include/asm-s390/debug.h&n; *   S/390 debug facility&
 macro_line|#ifndef DEBUG_H
 DECL|macro|DEBUG_H
 mdefine_line|#define DEBUG_H
+macro_line|#include &lt;linux/string.h&gt;
 multiline_comment|/* Note:&n; * struct __debug_entry must be defined outside of #ifdef __KERNEL__ &n; * in order to allow a user program to analyze the &squot;raw&squot;-view.&n; */
 DECL|struct|__debug_entry
 r_struct

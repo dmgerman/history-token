@@ -250,12 +250,11 @@ DECL|struct|rpc_procinfo
 r_struct
 id|rpc_procinfo
 (brace
-DECL|member|p_procname
-r_char
-op_star
-id|p_procname
+DECL|member|p_proc
+id|u32
+id|p_proc
 suffix:semicolon
-multiline_comment|/* procedure name */
+multiline_comment|/* RPC procedure number */
 DECL|member|p_encode
 id|kxdrproc_t
 id|p_encode
@@ -286,18 +285,6 @@ suffix:semicolon
 multiline_comment|/* Which RTT timer to use */
 )brace
 suffix:semicolon
-DECL|macro|rpcproc_bufsiz
-mdefine_line|#define rpcproc_bufsiz(clnt, proc)&t;((clnt)-&gt;cl_procinfo[proc].p_bufsiz)
-DECL|macro|rpcproc_encode
-mdefine_line|#define rpcproc_encode(clnt, proc)&t;((clnt)-&gt;cl_procinfo[proc].p_encode)
-DECL|macro|rpcproc_decode
-mdefine_line|#define rpcproc_decode(clnt, proc)&t;((clnt)-&gt;cl_procinfo[proc].p_decode)
-DECL|macro|rpcproc_name
-mdefine_line|#define rpcproc_name(clnt, proc)&t;((clnt)-&gt;cl_procinfo[proc].p_procname)
-DECL|macro|rpcproc_count
-mdefine_line|#define rpcproc_count(clnt, proc)&t;((clnt)-&gt;cl_procinfo[proc].p_count)
-DECL|macro|rpcproc_timer
-mdefine_line|#define rpcproc_timer(clnt, proc)&t;((clnt)-&gt;cl_procinfo[proc].p_timer)
 DECL|macro|RPC_CONGESTED
 mdefine_line|#define RPC_CONGESTED(clnt)&t;(RPCXPRT_CONGESTED((clnt)-&gt;cl_xprt))
 DECL|macro|RPC_PEERADDR
@@ -532,7 +519,11 @@ op_assign
 dot
 id|rpc_proc
 op_assign
+op_amp
+id|clnt-&gt;cl_procinfo
+(braket
 id|proc
+)braket
 comma
 dot
 id|rpc_argp

@@ -32,10 +32,6 @@ c_func
 r_int
 )paren
 suffix:semicolon
-DECL|macro|NFS4_enc_void_sz
-mdefine_line|#define NFS4_enc_void_sz&t;0
-DECL|macro|NFS4_dec_void_sz
-mdefine_line|#define NFS4_dec_void_sz&t;0
 DECL|macro|NFS4_enc_compound_sz
 mdefine_line|#define NFS4_enc_compound_sz&t;1024  /* XXX: large enough? */
 DECL|macro|NFS4_dec_compound_sz
@@ -570,13 +566,13 @@ suffix:semicolon
 id|WRITE32
 c_func
 (paren
-id|iap-&gt;ia_mtime
+id|iap-&gt;ia_mtime.tv_sec
 )paren
 suffix:semicolon
 id|WRITE32
 c_func
 (paren
-l_int|0
+id|iap-&gt;ia_mtime.tv_nsec
 )paren
 suffix:semicolon
 )brace
@@ -627,13 +623,13 @@ suffix:semicolon
 id|WRITE32
 c_func
 (paren
-id|iap-&gt;ia_mtime
+id|iap-&gt;ia_mtime.tv_sec
 )paren
 suffix:semicolon
 id|WRITE32
 c_func
 (paren
-l_int|0
+id|iap-&gt;ia_mtime.tv_nsec
 )paren
 suffix:semicolon
 )brace
@@ -2692,6 +2688,7 @@ suffix:semicolon
 id|ENCODE_TAIL
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: this sucks */
 r_static
 r_int
 DECL|function|encode_compound
@@ -3281,41 +3278,6 @@ id|ENCODE_TAIL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * END OF &quot;GENERIC&quot; ENCODE ROUTINES.&n; */
-multiline_comment|/*&n; * Encode void argument&n; */
-r_static
-r_int
-DECL|function|nfs4_xdr_enc_void
-id|nfs4_xdr_enc_void
-c_func
-(paren
-r_struct
-id|rpc_rqst
-op_star
-id|req
-comma
-id|u32
-op_star
-id|p
-comma
-r_void
-op_star
-id|dummy
-)paren
-(brace
-id|req-&gt;rq_slen
-op_assign
-id|xdr_adjust_iovec
-c_func
-(paren
-id|req-&gt;rq_svec
-comma
-id|p
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Encode COMPOUND argument&n; */
 r_static
 r_int
@@ -3426,7 +3388,7 @@ mdefine_line|#define READ32(x)         (x) = ntohl(*p++)
 DECL|macro|READ64
 mdefine_line|#define READ64(x)         do {&t;&t;&t;&bslash;&n;&t;(x) = (u64)ntohl(*p++) &lt;&lt; 32;&t;&t;&bslash;&n;&t;(x) |= ntohl(*p++);&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|READTIME
-mdefine_line|#define READTIME(x)       do {&t;&t;&t;&bslash;&n;&t;p++;&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = (u64)ntohl(*p++) &lt;&lt; 32;&t;&t;&bslash;&n;&t;(x) |= ntohl(*p++);&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define READTIME(x)       do {&t;&t;&t;&bslash;&n;&t;p++;&t;&t;&t;&t;&t;&bslash;&n;&t;(x.tv_sec) = ntohl(*p++);&t;&t;&bslash;&n;&t;(x.tv_nsec) = ntohl(*p++);&t;&t;&bslash;&n;} while (0)
 DECL|macro|COPYMEM
 mdefine_line|#define COPYMEM(x,nbytes) do {&t;&t;&t;&bslash;&n;&t;memcpy((x), p, nbytes);&t;&t;&t;&bslash;&n;&t;p += XDR_QUADLEN(nbytes);&t;&t;&bslash;&n;} while (0)
 DECL|macro|READ_BUF
@@ -5169,12 +5131,12 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;read_attrs: atime=%d&bslash;n&quot;
+l_string|&quot;read_attrs: atime=%ld&bslash;n&quot;
 comma
 (paren
 r_int
 )paren
-id|nfp-&gt;atime
+id|nfp-&gt;atime.tv_sec
 )paren
 suffix:semicolon
 )brace
@@ -5205,12 +5167,12 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;read_attrs: ctime=%d&bslash;n&quot;
+l_string|&quot;read_attrs: ctime=%ld&bslash;n&quot;
 comma
 (paren
 r_int
 )paren
-id|nfp-&gt;ctime
+id|nfp-&gt;ctime.tv_sec
 )paren
 suffix:semicolon
 )brace
@@ -5241,12 +5203,12 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;read_attrs: mtime=%d&bslash;n&quot;
+l_string|&quot;read_attrs: mtime=%ld&bslash;n&quot;
 comma
 (paren
 r_int
 )paren
-id|nfp-&gt;mtime
+id|nfp-&gt;mtime.tv_sec
 )paren
 suffix:semicolon
 )brace
@@ -6585,6 +6547,7 @@ suffix:semicolon
 id|DECODE_TAIL
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: this sucks */
 r_static
 r_int
 DECL|function|decode_compound
@@ -7266,31 +7229,6 @@ id|DECODE_TAIL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * END OF &quot;GENERIC&quot; DECODE ROUTINES.&n; */
-multiline_comment|/*&n; * Decode void reply&n; */
-r_static
-r_int
-DECL|function|nfs4_xdr_dec_void
-id|nfs4_xdr_dec_void
-c_func
-(paren
-r_struct
-id|rpc_rqst
-op_star
-id|req
-comma
-id|u32
-op_star
-id|p
-comma
-r_void
-op_star
-id|dummy
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Decode COMPOUND response&n; */
 r_static
 r_int
@@ -7559,9 +7497,8 @@ DECL|macro|MAX
 macro_line|# define MAX(a, b)&t;(((a) &gt; (b))? (a) : (b))
 macro_line|#endif
 DECL|macro|PROC
-mdefine_line|#define PROC(proc, argtype, restype)&t;&t;&t;&t;&bslash;&n;    { &quot;nfs4_&quot; #proc,&t;&t;&t;&t;&t;&t;&bslash;&n;      (kxdrproc_t) nfs4_xdr_##argtype,&t;&t;&t;&t;&bslash;&n;      (kxdrproc_t) nfs4_xdr_##restype,&t;&t;&t;&t;&bslash;&n;      MAX(NFS4_##argtype##_sz,NFS4_##restype##_sz) &lt;&lt; 2,&t;&bslash;&n;      0&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    }
+mdefine_line|#define PROC(proc, argtype, restype)&t;&t;&t;&t;&bslash;&n;[NFSPROC4_##proc] = {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.p_proc   = NFSPROC4_##proc,&t;&t;&t;&t;&bslash;&n;&t;.p_encode = (kxdrproc_t) nfs4_xdr_##argtype,&t;&t;&bslash;&n;&t;.p_decode = (kxdrproc_t) nfs4_xdr_##restype,&t;&t;&bslash;&n;&t;.p_bufsiz = MAX(NFS4_##argtype##_sz,NFS4_##restype##_sz) &lt;&lt; 2,&t;&bslash;&n;    }
 DECL|variable|nfs4_procedures
-r_static
 r_struct
 id|rpc_procinfo
 id|nfs4_procedures
@@ -7572,17 +7509,7 @@ op_assign
 id|PROC
 c_func
 (paren
-id|null
-comma
-id|enc_void
-comma
-id|dec_void
-)paren
-comma
-id|PROC
-c_func
-(paren
-id|compound
+id|COMPOUND
 comma
 id|enc_compound
 comma

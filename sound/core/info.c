@@ -9,9 +9,7 @@ macro_line|#include &lt;sound/minors.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/version.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#ifdef CONFIG_DEVFS_FS
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#endif
 macro_line|#include &lt;stdarg.h&gt;
 multiline_comment|/*&n; *&n; */
 DECL|function|dec_mod_count
@@ -4262,14 +4260,6 @@ op_star
 id|entry
 )paren
 (brace
-macro_line|#ifdef CONFIG_DEVFS_FS
-r_char
-id|dname
-(braket
-l_int|32
-)braket
-suffix:semicolon
-macro_line|#endif
 id|snd_runtime_check
 c_func
 (paren
@@ -4300,7 +4290,6 @@ op_amp
 id|info_mutex
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
 r_if
 c_cond
 (paren
@@ -4316,35 +4305,14 @@ comma
 l_int|8
 )paren
 )paren
-(brace
-id|sprintf
+id|devfs_remove
 c_func
 (paren
-id|dname
-comma
 l_string|&quot;snd/%s&quot;
 comma
 id|entry-&gt;name
 )paren
 suffix:semicolon
-id|devfs_find_and_unregister
-c_func
-(paren
-l_int|NULL
-comma
-id|dname
-comma
-l_int|0
-comma
-l_int|0
-comma
-id|DEVFS_SPECIAL_CHR
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 id|snd_info_free_entry
 c_func
 (paren

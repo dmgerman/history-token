@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsutils - Utilities for accessing ACPI namespace, accessing&n; *                        parents and siblings and Scope manipulation&n; *              $Revision: 115 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsutils - Utilities for accessing ACPI namespace, accessing&n; *                        parents and siblings and Scope manipulation&n; *              $Revision: 116 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -10,7 +10,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nsutils&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_report_error&n; *&n; * PARAMETERS:  Module_name         - Caller&squot;s module name (for error output)&n; *              Line_number         - Caller&squot;s line number (for error output)&n; *              Component_id        - Caller&squot;s component ID (for error output)&n; *              Message             - Error message to use on failure&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Print warning message&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_report_error&n; *&n; * PARAMETERS:  Module_name         - Caller&squot;s module name (for error output)&n; *              Line_number         - Caller&squot;s line number (for error output)&n; *              Component_id        - Caller&squot;s component ID (for error output)&n; *              Message             - Error message to use on failure&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Print warning message with full pathname&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ns_report_error
 id|acpi_ns_report_error
@@ -40,6 +40,7 @@ r_char
 op_star
 id|name
 suffix:semicolon
+multiline_comment|/* Convert path to external format */
 id|status
 op_assign
 id|acpi_ns_externalize_name
@@ -63,10 +64,14 @@ comma
 id|line_number
 )paren
 suffix:semicolon
+multiline_comment|/* Print target name */
 r_if
 c_cond
 (paren
-id|name
+id|ACPI_SUCCESS
+(paren
+id|status
+)paren
 )paren
 (brace
 id|acpi_os_printf

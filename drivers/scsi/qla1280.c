@@ -9,10 +9,10 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
@@ -2682,8 +2682,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;qla1280: Please read the file /usr/src/linux/drivers&quot;
-l_string|&quot;/scsi/README.qla1280&bslash;n&quot;
+l_string|&quot;qla1280: Please read the file /usr/src/linux/Documentation&quot;
+l_string|&quot;/scsi/qla1280.txt&bslash;n&quot;
 l_string|&quot;qla1280: to see the proper way to specify options to the qla1280 &quot;
 l_string|&quot;module&bslash;n&quot;
 l_string|&quot;qla1280: Specifically, don&squot;t use any commas when passing &quot;

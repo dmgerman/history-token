@@ -1,4 +1,4 @@
-multiline_comment|/* radeon_drm.h -- Public header for the radeon driver -*- linux-c -*-&n; *&n; * Copyright 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Fremont, California.&n; * Copyright 2002 Tungsten Graphics, Inc., Cedar Park, Texas.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Kevin E. Martin &lt;martin@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; *    Keith Whitwell &lt;keith_whitwell@yahoo.com&gt;&n; */
+multiline_comment|/* radeon_drm.h -- Public header for the radeon driver -*- linux-c -*-&n; *&n; * Copyright 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Fremont, California.&n; * Copyright 2002 Tungsten Graphics, Inc., Cedar Park, Texas.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Kevin E. Martin &lt;martin@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; *    Keith Whitwell &lt;keith@tungstengraphics.com&gt;&n; */
 macro_line|#ifndef __RADEON_DRM_H__
 DECL|macro|__RADEON_DRM_H__
 mdefine_line|#define __RADEON_DRM_H__
@@ -170,8 +170,32 @@ DECL|macro|R200_EMIT_RE_POINTSIZE
 mdefine_line|#define R200_EMIT_RE_POINTSIZE                      59 /* cst/1 */
 DECL|macro|R200_EMIT_TCL_INPUT_VTX_VECTOR_ADDR_0
 mdefine_line|#define R200_EMIT_TCL_INPUT_VTX_VECTOR_ADDR_0       60 /* cst/4 */
+DECL|macro|R200_EMIT_PP_CUBIC_FACES_0
+mdefine_line|#define R200_EMIT_PP_CUBIC_FACES_0                  61
+DECL|macro|R200_EMIT_PP_CUBIC_OFFSETS_0
+mdefine_line|#define R200_EMIT_PP_CUBIC_OFFSETS_0                62
+DECL|macro|R200_EMIT_PP_CUBIC_FACES_1
+mdefine_line|#define R200_EMIT_PP_CUBIC_FACES_1                  63
+DECL|macro|R200_EMIT_PP_CUBIC_OFFSETS_1
+mdefine_line|#define R200_EMIT_PP_CUBIC_OFFSETS_1                64
+DECL|macro|R200_EMIT_PP_CUBIC_FACES_2
+mdefine_line|#define R200_EMIT_PP_CUBIC_FACES_2                  65
+DECL|macro|R200_EMIT_PP_CUBIC_OFFSETS_2
+mdefine_line|#define R200_EMIT_PP_CUBIC_OFFSETS_2                66
+DECL|macro|R200_EMIT_PP_CUBIC_FACES_3
+mdefine_line|#define R200_EMIT_PP_CUBIC_FACES_3                  67
+DECL|macro|R200_EMIT_PP_CUBIC_OFFSETS_3
+mdefine_line|#define R200_EMIT_PP_CUBIC_OFFSETS_3                68
+DECL|macro|R200_EMIT_PP_CUBIC_FACES_4
+mdefine_line|#define R200_EMIT_PP_CUBIC_FACES_4                  69
+DECL|macro|R200_EMIT_PP_CUBIC_OFFSETS_4
+mdefine_line|#define R200_EMIT_PP_CUBIC_OFFSETS_4                70
+DECL|macro|R200_EMIT_PP_CUBIC_FACES_5
+mdefine_line|#define R200_EMIT_PP_CUBIC_FACES_5                  71
+DECL|macro|R200_EMIT_PP_CUBIC_OFFSETS_5
+mdefine_line|#define R200_EMIT_PP_CUBIC_OFFSETS_5                72
 DECL|macro|RADEON_MAX_STATE_PACKETS
-mdefine_line|#define RADEON_MAX_STATE_PACKETS                    61
+mdefine_line|#define RADEON_MAX_STATE_PACKETS                    73
 multiline_comment|/* Commands understood by cmd_buffer ioctl.  More can be added but&n; * obviously these can&squot;t be removed or changed:&n; */
 DECL|macro|RADEON_CMD_PACKET
 mdefine_line|#define RADEON_CMD_PACKET      1 /* emit one of the register packets above */
@@ -834,6 +858,11 @@ r_int
 id|pfCurrentPage
 suffix:semicolon
 multiline_comment|/* which buffer is being displayed? */
+DECL|member|crtc2_base
+r_int
+id|crtc2_base
+suffix:semicolon
+multiline_comment|/* CRTC2 frame offset */
 DECL|typedef|drm_radeon_sarea_t
 )brace
 id|drm_radeon_sarea_t

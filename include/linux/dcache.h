@@ -3,11 +3,13 @@ DECL|macro|__LINUX_DCACHE_H
 mdefine_line|#define __LINUX_DCACHE_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/page.h&gt;&t;&t;&t;/* for BUG() */
+r_struct
+id|vfsmount
+suffix:semicolon
 multiline_comment|/*&n; * linux/include/linux/dcache.h&n; *&n; * Dirent cache data structures&n; *&n; * (C) Copyright 1997 Thomas Schoebel-Theuer,&n; * with heavy changes by Linus Torvalds&n; */
 DECL|macro|IS_ROOT
 mdefine_line|#define IS_ROOT(x) ((x) == (x)-&gt;d_parent)
@@ -430,6 +432,27 @@ id|rwlock_t
 id|dparent_lock
 suffix:semicolon
 multiline_comment|/**&n; * d_drop - drop a dentry&n; * @dentry: dentry to drop&n; *&n; * d_drop() unhashes the entry from the parent&n; * dentry hashes, so that it won&squot;t be found through&n; * a VFS lookup any more. Note that this is different&n; * from deleting the dentry - d_delete will try to&n; * mark the dentry negative if possible, giving a&n; * successful _negative_ lookup, while d_drop will&n; * just make the cache lookup fail.&n; *&n; * d_drop() is used mainly for stuff that wants&n; * to invalidate a dentry for some reason (NFS&n; * timeouts or autofs deletes).&n; */
+DECL|function|__d_drop
+r_static
+id|__inline__
+r_void
+id|__d_drop
+c_func
+(paren
+r_struct
+id|dentry
+op_star
+id|dentry
+)paren
+(brace
+id|list_del_init
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_hash
+)paren
+suffix:semicolon
+)brace
 DECL|function|d_drop
 r_static
 id|__inline__
@@ -450,11 +473,10 @@ op_amp
 id|dcache_lock
 )paren
 suffix:semicolon
-id|list_del_init
+id|__d_drop
 c_func
 (paren
-op_amp
-id|dentry-&gt;d_hash
+id|dentry
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -763,17 +785,9 @@ suffix:semicolon
 r_extern
 r_char
 op_star
-id|__d_path
+id|d_path
 c_func
 (paren
-r_struct
-id|dentry
-op_star
-comma
-r_struct
-id|vfsmount
-op_star
-comma
 r_struct
 id|dentry
 op_star

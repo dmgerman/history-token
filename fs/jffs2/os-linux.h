@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: os-linux.h,v 1.19 2002/05/20 14:56:38 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: os-linux.h,v 1.21 2002/11/12 09:44:30 dwmw2 Exp $&n; *&n; */
 macro_line|#ifndef __JFFS2_OS_LINUX_H__
 DECL|macro|__JFFS2_OS_LINUX_H__
 mdefine_line|#define __JFFS2_OS_LINUX_H__
@@ -40,11 +40,11 @@ mdefine_line|#define JFFS2_F_I_UID(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_uid)
 DECL|macro|JFFS2_F_I_GID
 mdefine_line|#define JFFS2_F_I_GID(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_gid)
 DECL|macro|JFFS2_F_I_CTIME
-mdefine_line|#define JFFS2_F_I_CTIME(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_ctime)
+mdefine_line|#define JFFS2_F_I_CTIME(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_ctime.tv_sec)
 DECL|macro|JFFS2_F_I_MTIME
-mdefine_line|#define JFFS2_F_I_MTIME(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_mtime)
+mdefine_line|#define JFFS2_F_I_MTIME(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_mtime.tv_sec)
 DECL|macro|JFFS2_F_I_ATIME
-mdefine_line|#define JFFS2_F_I_ATIME(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_atime)
+mdefine_line|#define JFFS2_F_I_ATIME(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_atime.tv_sec)
 macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,1)
 DECL|macro|JFFS2_F_I_RDEV_MIN
 mdefine_line|#define JFFS2_F_I_RDEV_MIN(f) (minor(OFNI_EDONI_2SFFJ(f)-&gt;i_rdev))
@@ -55,6 +55,14 @@ DECL|macro|JFFS2_F_I_RDEV_MIN
 mdefine_line|#define JFFS2_F_I_RDEV_MIN(f) (MINOR(to_kdev_t(OFNI_EDONI_2SFFJ(f)-&gt;i_rdev)))
 DECL|macro|JFFS2_F_I_RDEV_MAJ
 mdefine_line|#define JFFS2_F_I_RDEV_MAJ(f) (MAJOR(to_kdev_t(OFNI_EDONI_2SFFJ(f)-&gt;i_rdev)))
+macro_line|#endif
+multiline_comment|/* Hmmm. P&squot;raps generic code should only ever see versions of signal&n;   functions which do the locking automatically? */
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,40)
+DECL|macro|current_sig_lock
+mdefine_line|#define current_sig_lock current-&gt;sigmask_lock
+macro_line|#else
+DECL|macro|current_sig_lock
+mdefine_line|#define current_sig_lock current-&gt;sig-&gt;siglock
 macro_line|#endif
 DECL|function|jffs2_init_inode_info
 r_static
@@ -74,9 +82,9 @@ id|f-&gt;highest_version
 op_assign
 l_int|0
 suffix:semicolon
-id|f-&gt;fraglist
+id|f-&gt;fragtree
 op_assign
-l_int|NULL
+id|RB_ROOT
 suffix:semicolon
 id|f-&gt;metadata
 op_assign

@@ -5,22 +5,22 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/sound.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/wrapper.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;dm.h&quot;
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|macro|OSS_DOCUMENTED_MIXER_SEMANTICS

@@ -253,8 +253,6 @@ id|extra-&gt;buffer
 suffix:semicolon
 r_int
 id|result
-comma
-id|partial
 suffix:semicolon
 id|fxfr-&gt;Type
 op_assign
@@ -297,18 +295,17 @@ suffix:semicolon
 multiline_comment|/* Issue the transfer command. */
 id|result
 op_assign
-id|usb_stor_bulk_msg
+id|usb_stor_bulk_transfer_buf
 (paren
 id|us
 comma
-id|fxfr
-comma
 id|opipe
+comma
+id|fxfr
 comma
 id|FCM_PACKET_LENGTH
 comma
-op_amp
-id|partial
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -321,51 +318,13 @@ id|USB_STOR_XFER_GOOD
 (brace
 id|US_DEBUGP
 (paren
-l_string|&quot;Freecom readdata xpot failure: r=%d, p=%d&bslash;n&quot;
-comma
-id|result
-comma
-id|partial
+l_string|&quot;Freecom readdata transport error&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* has the current command been aborted? */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;freecom_readdata(): transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;Done issuing read request: %d %d&bslash;n&quot;
-comma
-id|result
-comma
-id|partial
-)paren
-suffix:semicolon
 multiline_comment|/* Now transfer all of our blocks. */
 id|US_DEBUGP
 c_func
@@ -455,8 +414,6 @@ id|extra-&gt;buffer
 suffix:semicolon
 r_int
 id|result
-comma
-id|partial
 suffix:semicolon
 id|fxfr-&gt;Type
 op_assign
@@ -499,18 +456,17 @@ suffix:semicolon
 multiline_comment|/* Issue the transfer command. */
 id|result
 op_assign
-id|usb_stor_bulk_msg
+id|usb_stor_bulk_transfer_buf
 (paren
 id|us
 comma
-id|fxfr
-comma
 id|opipe
+comma
+id|fxfr
 comma
 id|FCM_PACKET_LENGTH
 comma
-op_amp
-id|partial
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -523,51 +479,13 @@ id|USB_STOR_XFER_GOOD
 (brace
 id|US_DEBUGP
 (paren
-l_string|&quot;Freecom writedata xpot failure: r=%d, p=%d&bslash;n&quot;
-comma
-id|result
-comma
-id|partial
+l_string|&quot;Freecom writedata transport error&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* has the current command been aborted? */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;freecom_writedata(): transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;Done issuing write request: %d %d&bslash;n&quot;
-comma
-id|result
-comma
-id|partial
-)paren
-suffix:semicolon
 multiline_comment|/* Now transfer all of our blocks. */
 id|US_DEBUGP
 c_func
@@ -645,6 +563,7 @@ multiline_comment|/* We need both pipes. */
 r_int
 id|result
 suffix:semicolon
+r_int
 r_int
 id|partial
 suffix:semicolon
@@ -740,18 +659,17 @@ suffix:semicolon
 multiline_comment|/* Send it out. */
 id|result
 op_assign
-id|usb_stor_bulk_msg
+id|usb_stor_bulk_transfer_buf
 (paren
 id|us
 comma
-id|fcb
-comma
 id|opipe
+comma
+id|fcb
 comma
 id|FCM_PACKET_LENGTH
 comma
-op_amp
-id|partial
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* The Freecom device will only fail if there is something wrong in&n;         * USB land.  It returns the status in its own registers, which&n;         * come back in the bulk pipe. */
@@ -765,37 +683,9 @@ id|USB_STOR_XFER_GOOD
 (brace
 id|US_DEBUGP
 (paren
-l_string|&quot;freecom xport failure: r=%d, p=%d&bslash;n&quot;
-comma
-id|result
-comma
-id|partial
+l_string|&quot;freecom transport error&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* we canceled this transfer */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;freecom_transport(): transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
@@ -803,13 +693,13 @@ suffix:semicolon
 multiline_comment|/* There are times we can optimize out this status read, but it&n;         * doesn&squot;t hurt us to always do it now. */
 id|result
 op_assign
-id|usb_stor_bulk_msg
+id|usb_stor_bulk_transfer_buf
 (paren
 id|us
 comma
-id|fst
-comma
 id|ipipe
+comma
+id|fst
 comma
 id|FCM_PACKET_LENGTH
 comma
@@ -820,37 +710,13 @@ suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;foo Status result %d %d&bslash;n&quot;
+l_string|&quot;foo Status result %d %u&bslash;n&quot;
 comma
 id|result
 comma
 id|partial
 )paren
 suffix:semicolon
-multiline_comment|/* we canceled this transfer */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;freecom_transport(): transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -935,18 +801,17 @@ suffix:semicolon
 multiline_comment|/* Send it out. */
 id|result
 op_assign
-id|usb_stor_bulk_msg
+id|usb_stor_bulk_transfer_buf
 (paren
 id|us
 comma
-id|fcb
-comma
 id|opipe
+comma
+id|fcb
 comma
 id|FCM_PACKET_LENGTH
 comma
-op_amp
-id|partial
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* The Freecom device will only fail if there is something&n;&t;&t; * wrong in USB land.  It returns the status in its own&n;&t;&t; * registers, which come back in the bulk pipe.&n;&t;&t; */
@@ -960,37 +825,9 @@ id|USB_STOR_XFER_GOOD
 (brace
 id|US_DEBUGP
 (paren
-l_string|&quot;freecom xport failure: r=%d, p=%d&bslash;n&quot;
-comma
-id|result
-comma
-id|partial
+l_string|&quot;freecom transport error&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* we canceled this transfer */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;freecom_transport(): transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
@@ -998,13 +835,13 @@ suffix:semicolon
 multiline_comment|/* get the data */
 id|result
 op_assign
-id|usb_stor_bulk_msg
+id|usb_stor_bulk_transfer_buf
 (paren
 id|us
 comma
-id|fst
-comma
 id|ipipe
+comma
+id|fst
 comma
 id|FCM_PACKET_LENGTH
 comma
@@ -1015,37 +852,13 @@ suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;bar Status result %d %d&bslash;n&quot;
+l_string|&quot;bar Status result %d %u&bslash;n&quot;
 comma
 id|result
 comma
 id|partial
 )paren
 suffix:semicolon
-multiline_comment|/* we canceled this transfer */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;freecom_transport(): transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1263,13 +1076,13 @@ l_string|&quot;FCM: Waiting for status&bslash;n&quot;
 suffix:semicolon
 id|result
 op_assign
-id|usb_stor_bulk_msg
+id|usb_stor_bulk_transfer_buf
 (paren
 id|us
 comma
-id|fst
-comma
 id|ipipe
+comma
+id|fst
 comma
 id|FCM_PACKET_LENGTH
 comma
@@ -1292,28 +1105,6 @@ id|partial
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-(paren
-l_string|&quot;freecom_transport: transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1418,13 +1209,13 @@ l_string|&quot;FCM: Waiting for status&bslash;n&quot;
 suffix:semicolon
 id|result
 op_assign
-id|usb_stor_bulk_msg
+id|usb_stor_bulk_transfer_buf
 (paren
 id|us
 comma
-id|fst
-comma
 id|ipipe
+comma
+id|fst
 comma
 id|FCM_PACKET_LENGTH
 comma
@@ -1432,28 +1223,6 @@ op_amp
 id|partial
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-(paren
-l_string|&quot;freecom_transport: transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1544,28 +1313,6 @@ suffix:semicolon
 )brace
 r_return
 id|USB_STOR_TRANSPORT_GOOD
-suffix:semicolon
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;Freecom: transfer_length = %d&bslash;n&quot;
-comma
-id|usb_stor_transfer_length
-(paren
-id|srb
-)paren
-)paren
-suffix:semicolon
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;Freecom: direction = %d&bslash;n&quot;
-comma
-id|srb-&gt;sc_data_direction
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
 r_int

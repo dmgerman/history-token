@@ -425,7 +425,7 @@ op_star
 id|pskb
 )paren
 op_member_access_from_pointer
-id|dst-&gt;pmtu
+id|dst
 )paren
 op_minus
 r_sizeof

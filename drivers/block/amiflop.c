@@ -8467,9 +8467,6 @@ r_int
 id|old_dev
 suffix:semicolon
 r_int
-id|system
-suffix:semicolon
-r_int
 r_int
 id|flags
 suffix:semicolon
@@ -8618,6 +8615,7 @@ op_ne
 id|system
 )paren
 id|invalidate_buffers
+c_func
 (paren
 id|mk_kdev
 c_func
@@ -8630,6 +8628,7 @@ op_plus
 id|system
 op_lshift
 l_int|2
+)paren
 )paren
 )paren
 suffix:semicolon

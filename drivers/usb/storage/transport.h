@@ -151,8 +151,6 @@ DECL|macro|USB_STOR_XFER_STALLED
 mdefine_line|#define USB_STOR_XFER_STALLED&t;&t;2  /* endpoint stalled&t;&t;    */
 DECL|macro|USB_STOR_XFER_ERROR
 mdefine_line|#define USB_STOR_XFER_ERROR&t;&t;3  /* transfer died in the middle   */
-DECL|macro|USB_STOR_XFER_ABORTED
-mdefine_line|#define USB_STOR_XFER_ABORTED&t;&t;4  /* transfer canceled             */
 multiline_comment|/*&n; * Transport return codes&n; */
 DECL|macro|USB_STOR_TRANSPORT_GOOD
 mdefine_line|#define USB_STOR_TRANSPORT_GOOD&t;   0   /* Transport good, command good&t;   */
@@ -160,8 +158,7 @@ DECL|macro|USB_STOR_TRANSPORT_FAILED
 mdefine_line|#define USB_STOR_TRANSPORT_FAILED  1   /* Transport good, command failed   */
 DECL|macro|USB_STOR_TRANSPORT_ERROR
 mdefine_line|#define USB_STOR_TRANSPORT_ERROR   2   /* Transport bad (i.e. device dead) */
-DECL|macro|USB_STOR_TRANSPORT_ABORTED
-mdefine_line|#define USB_STOR_TRANSPORT_ABORTED 3   /* Transport aborted                */
+multiline_comment|/*&n; * We used to have USB_STOR_XFER_ABORTED and USB_STOR_TRANSPORT_ABORTED&n; * return codes.  But now the transport and low-level transfer routines&n; * treat an abort as just another error (-ENOENT for a cancelled URB).&n; * It is up to the invoke_transport() function to test for aborts and&n; * distinguish them from genuine communication errors.&n; */
 multiline_comment|/*&n; * CBI accept device specific command&n; */
 DECL|macro|US_CBI_ADSC
 mdefine_line|#define US_CBI_ADSC&t;&t;0
@@ -401,7 +398,7 @@ r_int
 r_int
 id|pipe
 comma
-r_char
+r_void
 op_star
 id|buf
 comma
@@ -461,7 +458,7 @@ r_int
 r_int
 id|pipe
 comma
-r_char
+r_void
 op_star
 id|buf
 comma

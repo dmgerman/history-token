@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsfh.h&gt;
@@ -2642,7 +2643,10 @@ id|ek
 (brace
 id|ek-&gt;h.expiry_time
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_minus
 l_int|1
 suffix:semicolon
@@ -2659,7 +2663,10 @@ suffix:semicolon
 )brace
 id|svc_expkey_cache.nextcheck
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 DECL|function|exp_fsid_hash
@@ -2827,7 +2834,10 @@ id|ek
 (brace
 id|ek-&gt;h.expiry_time
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_minus
 l_int|1
 suffix:semicolon
@@ -2844,7 +2854,10 @@ suffix:semicolon
 )brace
 id|svc_expkey_cache.nextcheck
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 r_extern
@@ -3443,13 +3456,19 @@ id|unexp
 (brace
 id|unexp-&gt;h.expiry_time
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_minus
 l_int|1
 suffix:semicolon
 id|svc_export_cache.nextcheck
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|exp_unhash
 c_func
@@ -5077,7 +5096,10 @@ id|dom
 suffix:semicolon
 id|dom-&gt;h.expiry_time
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|auth_domain_put
 c_func

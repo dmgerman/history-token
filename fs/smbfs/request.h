@@ -1,6 +1,7 @@
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/uio.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 DECL|struct|smb_request
 r_struct
 id|smb_request

@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-integrator/time.c&n; *&n; *  Copyright (C) 2000-2001 Deep Blue Solutions&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

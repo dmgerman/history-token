@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 multiline_comment|/*&n; * New FAT inode stuff. We do the following:&n; *&t;a) i_ino is constant and has nothing with on-disk location.&n; *&t;b) FAT manages its own cache of directory entries.&n; *&t;c) *This* cache is indexed by on-disk location.&n; *&t;d) inode has an associated directory entry, all right, but&n; *&t;&t;it may be unhashed.&n; *&t;e) currently entries are stored within struct inode. That should&n; *&t;&t;change.&n; *&t;f) we deal with races in the following way:&n; *&t;&t;1. readdir() and lookup() do FAT-dir-cache lookup.&n; *&t;&t;2. rename() unhashes the F-d-c entry and rehashes it in&n; *&t;&t;&t;a new place.&n; *&t;&t;3. unlink() and rmdir() unhash F-d-c entry.&n; *&t;&t;4. fat_write_inode() checks whether the thing is unhashed.&n; *&t;&t;&t;If it is we silently return. If it isn&squot;t we do bread(),&n; *&t;&t;&t;check if the location is still valid and retry if it&n; *&t;&t;&t;isn&squot;t. Otherwise we do changes.&n; *&t;&t;5. Spinlock is used to protect hash/unhash/location check/lookup&n; *&t;&t;6. fat_clear_inode() unhashes the F-d-c entry.&n; *&t;&t;7. lookup() and readdir() do igrab() if they find a F-d-c entry&n; *&t;&t;&t;and consider negative result as cache miss.&n; */
 DECL|macro|FAT_HASH_BITS
@@ -2782,11 +2783,19 @@ id|i_attrs
 op_assign
 l_int|0
 suffix:semicolon
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 op_assign
-id|inode-&gt;i_atime
+id|inode-&gt;i_atime.tv_sec
 op_assign
-id|inode-&gt;i_ctime
+id|inode-&gt;i_ctime.tv_sec
+op_assign
+l_int|0
+suffix:semicolon
+id|inode-&gt;i_mtime.tv_nsec
+op_assign
+id|inode-&gt;i_atime.tv_nsec
+op_assign
+id|inode-&gt;i_ctime.tv_nsec
 op_assign
 l_int|0
 suffix:semicolon
@@ -5596,7 +5605,10 @@ op_increment
 suffix:semicolon
 id|inode-&gt;i_generation
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5928,9 +5940,9 @@ l_int|1
 op_rshift
 l_int|9
 suffix:semicolon
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 op_assign
-id|inode-&gt;i_atime
+id|inode-&gt;i_atime.tv_sec
 op_assign
 id|date_dos2unix
 c_func
@@ -5948,7 +5960,13 @@ id|de-&gt;date
 )paren
 )paren
 suffix:semicolon
-id|inode-&gt;i_ctime
+id|inode-&gt;i_mtime.tv_nsec
+op_assign
+id|inode-&gt;i_atime.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
+id|inode-&gt;i_ctime.tv_sec
 op_assign
 id|MSDOS_SB
 c_func
@@ -5975,7 +5993,13 @@ id|de-&gt;cdate
 )paren
 )paren
 suffix:colon
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
+suffix:semicolon
+id|inode-&gt;i_ctime.tv_nsec
+op_assign
+id|de-&gt;ctime_ms
+op_star
+l_int|1000000
 suffix:semicolon
 id|MSDOS_I
 c_func
@@ -6255,7 +6279,7 @@ suffix:semicolon
 id|fat_date_unix2dos
 c_func
 (paren
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 comma
 op_amp
 id|raw_entry-&gt;time
@@ -6295,7 +6319,7 @@ id|options.isvfat
 id|fat_date_unix2dos
 c_func
 (paren
-id|inode-&gt;i_ctime
+id|inode-&gt;i_ctime.tv_sec
 comma
 op_amp
 id|raw_entry-&gt;ctime
@@ -6314,6 +6338,7 @@ id|inode
 op_member_access_from_pointer
 id|i_ctime_ms
 suffix:semicolon
+multiline_comment|/* use i_ctime.tv_nsec? */
 id|raw_entry-&gt;ctime
 op_assign
 id|CT_LE_W

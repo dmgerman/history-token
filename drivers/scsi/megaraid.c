@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
@@ -499,17 +500,15 @@ id|file_operations
 id|megadev_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|megadev_ioctl_entry
-comma
-id|open
-suffix:colon
-id|megadev_open
-comma
-id|release
-suffix:colon
-id|megadev_close
 comma
 )brace
 suffix:semicolon
@@ -14026,30 +14025,6 @@ id|megacfg-&gt;lock_free
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Routines for the character/ioctl interface to the driver&n; */
-DECL|function|megadev_open
-r_static
-r_int
-id|megadev_open
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filep
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* success */
-)brace
 DECL|function|megadev_ioctl_entry
 r_static
 r_int
@@ -16001,30 +15976,6 @@ suffix:semicolon
 )brace
 r_return
 id|scb
-suffix:semicolon
-)brace
-r_static
-r_int
-DECL|function|megadev_close
-id|megadev_close
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filep
-)paren
-(brace
-macro_line|#ifdef MODULE
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
-r_return
-l_int|0
 suffix:semicolon
 )brace
 r_static

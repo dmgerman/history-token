@@ -121,7 +121,10 @@ suffix:semicolon
 id|secs_to_datestamp
 c_func
 (paren
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 comma
 op_amp
 id|AFFS_ROOT_TAIL
@@ -263,7 +266,10 @@ suffix:semicolon
 id|secs_to_datestamp
 c_func
 (paren
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 comma
 op_amp
 id|AFFS_ROOT_TAIL
@@ -302,16 +308,6 @@ r_else
 id|sb-&gt;s_dirt
 op_assign
 l_int|0
-suffix:semicolon
-id|pr_debug
-c_func
-(paren
-l_string|&quot;AFFS: write_super() at %lu, clean=%d&bslash;n&quot;
-comma
-id|CURRENT_TIME
-comma
-id|clean
-)paren
 suffix:semicolon
 id|unlock_kernel
 c_func

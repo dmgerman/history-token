@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/raw.h&gt;
 macro_line|#include &lt;linux/capability.h&gt;
+macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|struct|raw_device_data
 r_struct
@@ -637,9 +638,6 @@ id|block_device
 op_star
 id|bdev
 suffix:semicolon
-id|kdev_t
-id|dev
-suffix:semicolon
 id|down
 c_func
 (paren
@@ -657,28 +655,20 @@ c_cond
 id|bdev
 )paren
 (brace
-id|dev
+id|rq.block_major
 op_assign
-id|to_kdev_t
+id|MAJOR
 c_func
 (paren
 id|bdev-&gt;bd_dev
 )paren
 suffix:semicolon
-id|rq.block_major
-op_assign
-id|major
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|rq.block_minor
 op_assign
-id|minor
+id|MINOR
 c_func
 (paren
-id|dev
+id|bdev-&gt;bd_dev
 )paren
 suffix:semicolon
 )brace

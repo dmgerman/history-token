@@ -1468,13 +1468,11 @@ id|ehci-&gt;stats.reclaim
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;complete %ld unlink %ld qpatch %ld&quot;
+l_string|&quot;complete %ld unlink %ld&quot;
 comma
 id|ehci-&gt;stats.complete
 comma
 id|ehci-&gt;stats.unlink
-comma
-id|ehci-&gt;stats.qpatch
 )paren
 suffix:semicolon
 macro_line|#endif

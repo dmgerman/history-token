@@ -246,34 +246,31 @@ r_int
 r_int
 id|st_atime
 suffix:semicolon
-DECL|member|reserved0
+DECL|member|st_atime_nsec
 r_int
 r_int
-id|reserved0
+id|st_atime_nsec
 suffix:semicolon
-multiline_comment|/* Reserved for st_atime expansion  */
 DECL|member|st_mtime
 r_int
 r_int
 id|st_mtime
 suffix:semicolon
-DECL|member|reserved1
+DECL|member|st_mtime_nsec
 r_int
 r_int
-id|reserved1
+id|st_mtime_nsec
 suffix:semicolon
-multiline_comment|/* Reserved for st_mtime expansion  */
 DECL|member|st_ctime
 r_int
 r_int
 id|st_ctime
 suffix:semicolon
-DECL|member|reserved2
+DECL|member|st_ctime_nsec
 r_int
 r_int
-id|reserved2
+id|st_ctime_nsec
 suffix:semicolon
-multiline_comment|/* Reserved for st_ctime expansion  */
 DECL|member|st_blksize
 r_int
 r_int
@@ -291,5 +288,7 @@ id|st_blocks
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|STAT_HAVE_NSEC
+mdefine_line|#define STAT_HAVE_NSEC 1
 macro_line|#endif /* _ASM_STAT_H */
 eof

@@ -205,8 +205,6 @@ id|info
 )paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1163,8 +1161,6 @@ suffix:semicolon
 r_int
 id|devindex
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|info
 op_assign
 (paren
@@ -1199,8 +1195,6 @@ l_string|&quot;%s&quot;
 comma
 l_string|&quot;No memory available for data (tempinfo)&quot;
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -1249,8 +1243,6 @@ c_func
 (paren
 id|info
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -1389,23 +1381,32 @@ id|file_operations
 id|dasd_devices_file_ops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|read
-suffix:colon
+op_assign
 id|dasd_generic_read
 comma
 multiline_comment|/* read */
+dot
 id|write
-suffix:colon
+op_assign
 id|dasd_devices_write
 comma
 multiline_comment|/* write */
+dot
 id|open
-suffix:colon
+op_assign
 id|dasd_devices_open
 comma
 multiline_comment|/* open */
+dot
 id|release
-suffix:colon
+op_assign
 id|dasd_generic_close
 comma
 multiline_comment|/* close */
@@ -1541,8 +1542,6 @@ r_int
 id|shift
 suffix:semicolon
 macro_line|#endif
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|info
 op_assign
 (paren
@@ -1577,8 +1576,6 @@ l_string|&quot;%s&quot;
 comma
 l_string|&quot;No memory available for data (tempinfo)&quot;
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -1632,8 +1629,6 @@ suffix:semicolon
 id|file-&gt;private_data
 op_assign
 l_int|NULL
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -2242,23 +2237,32 @@ id|file_operations
 id|dasd_statistics_file_ops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|read
-suffix:colon
+op_assign
 id|dasd_generic_read
 comma
 multiline_comment|/* read */
+dot
 id|write
-suffix:colon
+op_assign
 id|dasd_statistics_write
 comma
 multiline_comment|/* write */
+dot
 id|open
-suffix:colon
+op_assign
 id|dasd_statistics_open
 comma
 multiline_comment|/* open */
+dot
 id|release
-suffix:colon
+op_assign
 id|dasd_generic_close
 comma
 multiline_comment|/* close */

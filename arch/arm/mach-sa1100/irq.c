@@ -1,8 +1,6 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/irq.c&n; *&n; * Copyright (C) 1999-2001 Nicolas Pitre&n; *&n; * Generic IRQ handling for the SA11x0, GPIO 11-27 IRQ demultiplexing.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;

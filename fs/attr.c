@@ -534,7 +534,8 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
-id|time_t
+r_struct
+id|timespec
 id|now
 op_assign
 id|CURRENT_TIME

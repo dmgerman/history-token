@@ -3410,10 +3410,10 @@ id|fl-&gt;fl_next
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;__get_lease&t;-&t;revoke all outstanding leases on file&n; *&t;@inode: the inode of the file to return&n; *&t;@mode: the open mode (read or write)&n; *&n; *&t;get_lease (inlined for speed) has checked there already&n; *&t;is a lease on this file.  Leases are broken on a call to open()&n; *&t;or truncate().  This function can sleep unless you&n; *&t;specified %O_NONBLOCK to your open().&n; */
-DECL|function|__get_lease
+multiline_comment|/**&n; *&t;__break_lease&t;-&t;revoke all outstanding leases on file&n; *&t;@inode: the inode of the file to return&n; *&t;@mode: the open mode (read or write)&n; *&n; *&t;break_lease (inlined for speed) has checked there already&n; *&t;is a lease on this file.  Leases are broken on a call to open()&n; *&t;or truncate().  This function can sleep unless you&n; *&t;specified %O_NONBLOCK to your open().&n; */
+DECL|function|__break_lease
 r_int
-id|__get_lease
+id|__break_lease
 c_func
 (paren
 r_struct
@@ -3850,7 +3850,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;lease_get_mtime&n; *&t;@inode: the inode&n; *&n; * This is to force NFS clients to flush their caches for files with&n; * exclusive leases.  The justification is that if someone has an&n; * exclusive lease, then they could be modifiying it.&n; */
 DECL|function|lease_get_mtime
-id|time_t
+r_void
 id|lease_get_mtime
 c_func
 (paren
@@ -3858,6 +3858,11 @@ r_struct
 id|inode
 op_star
 id|inode
+comma
+r_struct
+id|timespec
+op_star
+id|time
 )paren
 (brace
 r_struct
@@ -3884,10 +3889,15 @@ op_amp
 id|F_WRLCK
 )paren
 )paren
-r_return
+op_star
+id|time
+op_assign
 id|CURRENT_TIME
 suffix:semicolon
-r_return
+r_else
+op_star
+id|time
+op_assign
 id|inode-&gt;i_mtime
 suffix:semicolon
 )brace

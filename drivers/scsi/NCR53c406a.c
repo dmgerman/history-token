@@ -4509,89 +4509,106 @@ id|Scsi_Host_Template
 id|driver_template
 op_assign
 (brace
+dot
 id|proc_name
-suffix:colon
+op_assign
 l_string|&quot;NCR53c406a&quot;
 multiline_comment|/* proc_name */
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;NCR53c406a&quot;
 multiline_comment|/* name */
 comma
+dot
 id|detect
-suffix:colon
+op_assign
 id|NCR53c406a_detect
 multiline_comment|/* detect */
 comma
+dot
 id|info
-suffix:colon
+op_assign
 id|NCR53c406a_info
 multiline_comment|/* info */
 comma
+dot
 id|command
-suffix:colon
+op_assign
 id|NCR53c406a_command
 multiline_comment|/* command */
 comma
+dot
 id|queuecommand
-suffix:colon
+op_assign
 id|NCR53c406a_queue
 multiline_comment|/* queuecommand */
 comma
+dot
 id|eh_abort_handler
-suffix:colon
+op_assign
 id|NCR53c406a_abort
 multiline_comment|/* abort */
 comma
+dot
 id|eh_bus_reset_handler
-suffix:colon
+op_assign
 id|NCR53c406a_bus_reset
 multiline_comment|/* reset */
 comma
+dot
 id|eh_device_reset_handler
-suffix:colon
+op_assign
 id|NCR53c406a_device_reset
 multiline_comment|/* reset */
 comma
+dot
 id|eh_host_reset_handler
-suffix:colon
+op_assign
 id|NCR53c406a_host_reset
 multiline_comment|/* reset */
 comma
+dot
 id|bios_param
-suffix:colon
+op_assign
 id|NCR53c406a_biosparm
 multiline_comment|/* biosparm */
 comma
+dot
 id|can_queue
-suffix:colon
+op_assign
 l_int|1
 multiline_comment|/* can_queue */
 comma
+dot
 id|this_id
-suffix:colon
+op_assign
 l_int|7
 multiline_comment|/* SCSI ID of the chip */
 comma
+dot
 id|sg_tablesize
-suffix:colon
+op_assign
 l_int|32
 multiline_comment|/*SG_ALL*/
 multiline_comment|/*SG_NONE*/
 comma
+dot
 id|cmd_per_lun
-suffix:colon
+op_assign
 l_int|1
 multiline_comment|/* commands per lun */
 comma
+dot
 id|unchecked_isa_dma
-suffix:colon
+op_assign
 l_int|1
 multiline_comment|/* unchecked_isa_dma */
 comma
+dot
 id|use_clustering
-suffix:colon
+op_assign
 id|ENABLE_CLUSTERING
 )brace
 suffix:semicolon

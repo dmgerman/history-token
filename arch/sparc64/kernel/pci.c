@@ -1899,7 +1899,7 @@ l_string|&quot;PCI: Failed to allocate resource %d for %s&bslash;n&quot;
 comma
 id|resource
 comma
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 )paren
 suffix:semicolon
 )brace

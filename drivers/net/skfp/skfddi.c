@@ -916,20 +916,6 @@ r_int
 id|autoprobed
 suffix:semicolon
 macro_line|#ifdef MODULE
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_static
 r_struct
 id|net_device

@@ -313,11 +313,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|list_empty
+id|d_unhashed
 c_func
 (paren
-op_amp
-id|next-&gt;d_hash
+id|next
 )paren
 op_logical_and
 id|next-&gt;d_inode
@@ -598,11 +597,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|list_empty
+id|d_unhashed
 c_func
 (paren
-op_amp
-id|next-&gt;d_hash
+id|next
 )paren
 op_logical_or
 op_logical_neg

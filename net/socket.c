@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/wanrouter.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
@@ -18,6 +19,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/wireless.h&gt;
 macro_line|#include &lt;linux/divert.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#if defined(CONFIG_KMOD) &amp;&amp; defined(CONFIG_NET)
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif
@@ -7294,30 +7296,19 @@ c_func
 suffix:semicolon
 macro_line|#endif
 )brace
-DECL|function|socket_get_info
-r_int
-id|socket_get_info
+macro_line|#ifdef CONFIG_PROC_FS
+DECL|function|socket_seq_show
+r_void
+id|socket_seq_show
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|length
+id|seq
 )paren
 (brace
 r_int
-id|len
-comma
 id|cpu
 suffix:semicolon
 r_int
@@ -7360,70 +7351,16 @@ id|counter
 op_assign
 l_int|0
 suffix:semicolon
-id|len
-op_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
+id|seq
 comma
 l_string|&quot;sockets: used %d&bslash;n&quot;
 comma
 id|counter
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|offset
-op_ge
-id|len
-)paren
-(brace
-op_star
-id|start
-op_assign
-id|buffer
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
-op_star
-id|start
-op_assign
-id|buffer
-op_plus
-id|offset
-suffix:semicolon
-id|len
-op_sub_assign
-id|offset
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|len
-OG
-id|length
-)paren
-id|len
-op_assign
-id|length
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|len
-OL
-l_int|0
-)paren
-id|len
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-id|len
-suffix:semicolon
-)brace
+macro_line|#endif /* CONFIG_PROC_FS */
 eof

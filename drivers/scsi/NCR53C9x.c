@@ -2995,10 +2995,6 @@ comma
 id|eregs
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|esps_in_use
 op_increment
 suffix:semicolon
@@ -15192,8 +15188,6 @@ c_func
 r_void
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|esps_in_use
 op_decrement
 suffix:semicolon

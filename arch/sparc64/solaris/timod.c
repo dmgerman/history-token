@@ -3706,9 +3706,11 @@ id|O_NONBLOCK
 )paren
 )paren
 (brace
-id|poll_table
+r_struct
+id|poll_wqueues
 id|wait_table
-comma
+suffix:semicolon
+id|poll_table
 op_star
 id|wait
 suffix:semicolon
@@ -3722,7 +3724,7 @@ suffix:semicolon
 id|wait
 op_assign
 op_amp
-id|wait_table
+id|wait_table.pt
 suffix:semicolon
 r_for
 c_loop

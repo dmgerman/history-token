@@ -11496,15 +11496,10 @@ id|Command
 )paren
 (brace
 r_return
-id|DAC960_PartitionNumber
-c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|Command-&gt;BufferHeader-&gt;bi_bdev-&gt;bd_dev
+r_int
 )paren
-)paren
+id|Command-&gt;BufferHeader-&gt;bi_bdev-&gt;bd_disk-&gt;private_data
 suffix:semicolon
 )brace
 multiline_comment|/*&n;  DAC960_V1_ReadWriteError prints an appropriate error message for Command&n;  when an error occurs on a Read or Write operation.&n;*/

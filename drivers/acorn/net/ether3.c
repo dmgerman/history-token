@@ -3680,12 +3680,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|ecard_claim
-c_func
-(paren
-id|ec
-)paren
-suffix:semicolon
 id|dev
 op_assign
 id|init_etherdev
@@ -3781,6 +3775,13 @@ id|dev_priv
 op_star
 )paren
 id|dev-&gt;priv
+suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|priv-&gt;timer
+)paren
 suffix:semicolon
 multiline_comment|/* Reset card...&n;&t; */
 id|ether3_outb
@@ -4046,12 +4047,6 @@ id|dev
 suffix:semicolon
 id|out
 suffix:colon
-id|ecard_release
-c_func
-(paren
-id|ec
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -4106,12 +4101,6 @@ id|kfree
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-id|ecard_release
-c_func
-(paren
-id|ec
 )paren
 suffix:semicolon
 )brace

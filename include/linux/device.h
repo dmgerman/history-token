@@ -2,14 +2,18 @@ multiline_comment|/*&n; * device.h - generic, centralized driver model&n; *&n; *
 macro_line|#ifndef _DEVICE_H_
 DECL|macro|_DEVICE_H_
 mdefine_line|#define _DEVICE_H_
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/kobject.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|DEVICE_NAME_SIZE
-mdefine_line|#define DEVICE_NAME_SIZE&t;80
+mdefine_line|#define DEVICE_NAME_SIZE&t;50
+DECL|macro|DEVICE_NAME_HALF
+mdefine_line|#define DEVICE_NAME_HALF&t;__stringify(20)&t;/* Less than half to accommodate slop */
 DECL|macro|DEVICE_ID_SIZE
 mdefine_line|#define DEVICE_ID_SIZE&t;&t;32
 DECL|macro|BUS_ID_SIZE
@@ -1749,7 +1753,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* drivrs/base/firmware.c */
+multiline_comment|/* drivers/base/firmware.c */
 r_extern
 r_int
 id|firmware_register
@@ -1762,7 +1766,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|firmware_uregister
+id|firmware_unregister
 c_func
 (paren
 r_struct
@@ -1773,16 +1777,16 @@ suffix:semicolon
 multiline_comment|/* debugging and troubleshooting/diagnostic helpers. */
 macro_line|#ifdef DEBUG
 DECL|macro|dev_dbg
-mdefine_line|#define dev_dbg(dev, format, arg...)&t;&t;&bslash;&n;&t;printk (KERN_DEBUG &quot;%s %s: &quot; format ,&t;&bslash;&n;&t;&t;dev.driver-&gt;name , dev.bus_id , ## arg)
+mdefine_line|#define dev_dbg(dev, format, arg...)&t;&t;&bslash;&n;&t;printk (KERN_DEBUG &quot;%s %s: &quot; format ,&t;&bslash;&n;&t;&t;(dev).driver-&gt;name , (dev).bus_id , ## arg)
 macro_line|#else
 DECL|macro|dev_dbg
 mdefine_line|#define dev_dbg(dev, format, arg...) do {} while (0)
 macro_line|#endif
 DECL|macro|dev_err
-mdefine_line|#define dev_err(dev, format, arg...)&t;&t;&bslash;&n;&t;printk (KERN_ERR &quot;%s %s: &quot; format ,&t;&bslash;&n;&t;&t;dev.driver-&gt;name , dev.bus_id , ## arg)
+mdefine_line|#define dev_err(dev, format, arg...)&t;&t;&bslash;&n;&t;printk (KERN_ERR &quot;%s %s: &quot; format ,&t;&bslash;&n;&t;&t;(dev).driver-&gt;name , (dev).bus_id , ## arg)
 DECL|macro|dev_info
-mdefine_line|#define dev_info(dev, format, arg...)&t;&t;&bslash;&n;&t;printk (KERN_INFO &quot;%s %s: &quot; format ,&t;&bslash;&n;&t;&t;dev.driver-&gt;name , dev.bus_id , ## arg)
+mdefine_line|#define dev_info(dev, format, arg...)&t;&t;&bslash;&n;&t;printk (KERN_INFO &quot;%s %s: &quot; format ,&t;&bslash;&n;&t;&t;(dev).driver-&gt;name , (dev).bus_id , ## arg)
 DECL|macro|dev_warn
-mdefine_line|#define dev_warn(dev, format, arg...)&t;&t;&bslash;&n;&t;printk (KERN_WARN &quot;%s %s: &quot; format ,&t;&bslash;&n;&t;&t;dev.driver-&gt;name , dev.bus_id , ## arg)
+mdefine_line|#define dev_warn(dev, format, arg...)&t;&t;&bslash;&n;&t;printk (KERN_WARNING &quot;%s %s: &quot; format ,&t;&bslash;&n;&t;&t;(dev).driver-&gt;name , (dev).bus_id , ## arg)
 macro_line|#endif /* _DEVICE_H_ */
 eof

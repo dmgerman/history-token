@@ -102,6 +102,13 @@ id|emu-&gt;use_time
 op_assign
 l_int|0
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|emu-&gt;tlist
+)paren
+suffix:semicolon
 id|emu-&gt;tlist.function
 op_assign
 id|snd_emux_timer_callback

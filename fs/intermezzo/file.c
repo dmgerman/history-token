@@ -1981,9 +1981,12 @@ multiline_comment|/* FIXME: take a lock here */
 r_if
 c_cond
 (paren
-id|dentry-&gt;d_inode-&gt;i_atime
+id|dentry-&gt;d_inode-&gt;i_atime.tv_sec
 OG
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_minus
 l_int|5
 )paren

@@ -56,34 +56,31 @@ r_int
 r_int
 id|st_atime
 suffix:semicolon
-DECL|member|__reserved0
+DECL|member|st_atime_nsec
 r_int
 r_int
-id|__reserved0
+id|st_atime_nsec
 suffix:semicolon
-multiline_comment|/* reserved for atime.nanoseconds */
 DECL|member|st_mtime
 r_int
 r_int
 id|st_mtime
 suffix:semicolon
-DECL|member|__reserved1
+DECL|member|st_mtime_nsec
 r_int
 r_int
-id|__reserved1
+id|st_mtime_nsec
 suffix:semicolon
-multiline_comment|/* reserved for mtime.nanoseconds */
 DECL|member|st_ctime
 r_int
 r_int
 id|st_ctime
 suffix:semicolon
-DECL|member|__reserved2
+DECL|member|st_ctime_nsec
 r_int
 r_int
-id|__reserved2
+id|st_ctime_nsec
 suffix:semicolon
-multiline_comment|/* reserved for ctime.nanoseconds */
 DECL|member|st_blksize
 r_int
 r_int
@@ -103,5 +100,7 @@ l_int|3
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|STAT_HAVE_NSEC
+mdefine_line|#define STAT_HAVE_NSEC 1
 macro_line|#endif
 eof

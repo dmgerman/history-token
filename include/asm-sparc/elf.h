@@ -6,6 +6,7 @@ multiline_comment|/*&n; * ELF register definitions..&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/mbus.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* For the most part we present code dumps in the format&n; * Solaris does.&n; */
 DECL|typedef|elf_greg_t
 r_typedef

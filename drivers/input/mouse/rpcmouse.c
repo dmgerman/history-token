@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Acorn RiscPC mouse driver for Linux/ARM&n; *&n; *  Copyright (c) 2000-2002 Vojtech Pavlik&n; *  Copyright (C) 1996-1998 Russell King&n; *&n; */
+multiline_comment|/*&n; *  Acorn RiscPC mouse driver for Linux/ARM&n; *&n; *  Copyright (c) 2000-2002 Vojtech Pavlik&n; *  Copyright (C) 1996-2002 Russell King&n; *&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; *&n; * This handles the Acorn RiscPCs mouse.  We basically have a couple of&n; * hardware registers that track the sensor count for the X-Y movement and&n; * another register holding the button state.  On every VSYNC interrupt we read&n; * the complete state and then work out if something has changed.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

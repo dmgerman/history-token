@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: divasi.c,v 1.1.2.2 2002/10/02 14:38:37 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * User Mode IDI Interface &n; *&n; * Copyright 2000,2001 by Armin Schindler (mac@melware.de)&n; * Copyright 2000,2001 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divasi.c,v 1.1.2.7 2001/05/01 15:48:05 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * User Mode IDI Interface &n; *&n; * Copyright 2000-2002 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2002 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -23,7 +23,7 @@ r_char
 op_star
 id|main_revision
 op_assign
-l_string|&quot;$Revision: 1.1.2.2 $&quot;
+l_string|&quot;$Revision: 1.1.2.7 $&quot;
 suffix:semicolon
 DECL|variable|major
 r_static
@@ -143,10 +143,10 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  helper functions&n; */
+DECL|function|getrev
 r_static
 r_char
 op_star
-DECL|function|getrev
 id|getrev
 c_func
 (paren
@@ -214,24 +214,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *  LOCALS&n; */
 r_static
-id|loff_t
-id|um_idi_lseek
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|orig
-)paren
-suffix:semicolon
-r_static
 id|ssize_t
 id|um_idi_read
+c_func
 (paren
 r_struct
 id|file
@@ -253,6 +238,7 @@ suffix:semicolon
 r_static
 id|ssize_t
 id|um_idi_write
+c_func
 (paren
 r_struct
 id|file
@@ -276,6 +262,7 @@ r_static
 r_int
 r_int
 id|um_idi_poll
+c_func
 (paren
 r_struct
 id|file
@@ -289,30 +276,8 @@ id|wait
 suffix:semicolon
 r_static
 r_int
-id|um_idi_ioctl
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|file
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_static
-r_int
 id|um_idi_open
+c_func
 (paren
 r_struct
 id|inode
@@ -328,6 +293,7 @@ suffix:semicolon
 r_static
 r_int
 id|um_idi_release
+c_func
 (paren
 r_struct
 id|inode
@@ -343,6 +309,7 @@ suffix:semicolon
 r_static
 r_int
 id|remove_entity
+c_func
 (paren
 r_void
 op_star
@@ -352,6 +319,7 @@ suffix:semicolon
 r_static
 r_void
 id|diva_um_timer_function
+c_func
 (paren
 r_int
 r_int
@@ -363,6 +331,7 @@ DECL|function|diva_os_malloc
 r_void
 op_star
 id|diva_os_malloc
+c_func
 (paren
 r_int
 r_int
@@ -392,6 +361,7 @@ r_void
 op_star
 )paren
 id|vmalloc
+c_func
 (paren
 (paren
 r_int
@@ -411,6 +381,7 @@ multiline_comment|/*&n; * free&n; */
 DECL|function|diva_os_free
 r_void
 id|diva_os_free
+c_func
 (paren
 r_int
 r_int
@@ -428,6 +399,7 @@ id|ptr
 )paren
 (brace
 id|vfree
+c_func
 (paren
 id|ptr
 )paren
@@ -606,6 +578,7 @@ id|off
 suffix:semicolon
 r_return
 (paren
+(paren
 id|count
 OL
 id|len
@@ -619,12 +592,13 @@ suffix:colon
 id|len
 op_minus
 id|off
+)paren
 suffix:semicolon
 )brace
+DECL|function|create_um_idi_proc
 r_static
 r_int
 id|DIVA_INIT_FUNCTION
-DECL|function|create_um_idi_proc
 id|create_um_idi_proc
 c_func
 (paren
@@ -654,7 +628,9 @@ op_logical_neg
 id|um_idi_proc_entry
 )paren
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 id|um_idi_proc_entry-&gt;read_proc
 op_assign
@@ -665,12 +641,14 @@ op_assign
 id|THIS_MODULE
 suffix:semicolon
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
+DECL|function|remove_um_idi_proc
 r_static
 r_void
-DECL|function|remove_um_idi_proc
 id|remove_um_idi_proc
 c_func
 (paren
@@ -704,38 +682,40 @@ id|file_operations
 id|divas_idi_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|llseek
-suffix:colon
-id|um_idi_lseek
+op_assign
+id|no_llseek
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|um_idi_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|um_idi_write
 comma
+dot
 id|poll
-suffix:colon
+op_assign
 id|um_idi_poll
 comma
-id|ioctl
-suffix:colon
-id|um_idi_ioctl
-comma
+dot
 id|open
-suffix:colon
+op_assign
 id|um_idi_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|um_idi_release
-comma
 )brace
 suffix:semicolon
 DECL|function|divas_idi_unregister_chrdev
@@ -753,6 +733,7 @@ c_cond
 id|devfs_handle
 )paren
 id|devfs_unregister
+c_func
 (paren
 id|devfs_handle
 )paren
@@ -780,6 +761,7 @@ r_if
 c_cond
 (paren
 id|register_chrdev
+c_func
 (paren
 id|major
 comma
@@ -800,7 +782,9 @@ id|DRIVERLNAME
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 id|devfs_handle
@@ -831,14 +815,16 @@ l_int|NULL
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** Driver Load&n;*/
+DECL|function|divasi_init
 r_static
 r_int
 id|DIVA_INIT_FUNCTION
-DECL|function|divasi_init
 id|divasi_init
 c_func
 (paren
@@ -1005,10 +991,10 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** Driver Unload&n;*/
+DECL|function|divasi_exit
 r_static
 r_void
 id|DIVA_EXIT_FUNCTION
-DECL|function|divasi_exit
 id|divasi_exit
 c_func
 (paren
@@ -1056,34 +1042,10 @@ id|divasi_exit
 suffix:semicolon
 multiline_comment|/*&n; *  FILE OPERATIONS&n; */
 r_static
-id|loff_t
-DECL|function|um_idi_lseek
-id|um_idi_lseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|orig
-)paren
-(brace
-r_return
-(paren
-op_minus
-id|ESPIPE
-)paren
-suffix:semicolon
-)brace
-r_static
 r_int
 DECL|function|divas_um_idi_copy_to_user
 id|divas_um_idi_copy_to_user
+c_func
 (paren
 r_void
 op_star
@@ -1103,6 +1065,7 @@ id|length
 )paren
 (brace
 id|memcpy
+c_func
 (paren
 id|dst
 comma
@@ -1121,6 +1084,7 @@ r_static
 id|ssize_t
 DECL|function|um_idi_read
 id|um_idi_read
+c_func
 (paren
 r_struct
 id|file
@@ -1181,7 +1145,9 @@ op_star
 id|diva_um_id_get_os_context
 c_func
 (paren
-id|file-&gt;private_data
+id|file
+op_member_access_from_pointer
+id|private_data
 )paren
 )paren
 )paren
@@ -1233,6 +1199,7 @@ suffix:semicolon
 id|ret
 op_assign
 id|diva_um_idi_read
+c_func
 (paren
 id|file-&gt;private_data
 comma
@@ -1329,6 +1296,7 @@ suffix:semicolon
 )brace
 )brace
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -1355,6 +1323,7 @@ r_static
 r_int
 DECL|function|divas_um_idi_copy_from_user
 id|divas_um_idi_copy_from_user
+c_func
 (paren
 r_void
 op_star
@@ -1389,9 +1358,9 @@ id|length
 )paren
 suffix:semicolon
 )brace
+DECL|function|um_idi_open_adapter
 r_static
 r_int
-DECL|function|um_idi_open_adapter
 id|um_idi_open_adapter
 c_func
 (paren
@@ -1413,6 +1382,7 @@ op_star
 id|e
 op_assign
 id|divas_um_idi_create_entity
+c_func
 (paren
 (paren
 id|dword
@@ -1470,6 +1440,7 @@ id|p_os-&gt;close_wait
 )paren
 suffix:semicolon
 id|init_timer
+c_func
 (paren
 op_amp
 id|p_os-&gt;diva_timer_id
@@ -1505,6 +1476,7 @@ r_static
 id|ssize_t
 DECL|function|um_idi_write
 id|um_idi_write
+c_func
 (paren
 r_struct
 id|file
@@ -1566,7 +1538,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 (paren
 r_void
@@ -1581,8 +1552,10 @@ id|count
 )paren
 )paren
 r_return
+(paren
 op_minus
 id|EFAULT
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1599,11 +1572,15 @@ id|adapter_nr
 )paren
 )paren
 r_return
+(paren
 op_minus
 id|ENODEV
+)paren
 suffix:semicolon
 r_return
+(paren
 id|count
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -1628,7 +1605,9 @@ op_star
 id|diva_um_id_get_os_context
 c_func
 (paren
-id|file-&gt;private_data
+id|file
+op_member_access_from_pointer
+id|private_data
 )paren
 )paren
 )paren
@@ -1702,6 +1681,7 @@ r_else
 id|ret
 op_assign
 id|diva_um_idi_write
+c_func
 (paren
 id|file-&gt;private_data
 comma
@@ -1768,6 +1748,7 @@ suffix:semicolon
 )brace
 )brace
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -1790,11 +1771,12 @@ id|ret
 )paren
 suffix:semicolon
 )brace
+DECL|function|um_idi_poll
 r_static
 r_int
 r_int
-DECL|function|um_idi_poll
 id|um_idi_poll
+c_func
 (paren
 r_struct
 id|file
@@ -1836,6 +1818,7 @@ id|diva_um_idi_os_context_t
 op_star
 )paren
 id|diva_um_id_get_os_context
+c_func
 (paren
 id|file-&gt;private_data
 )paren
@@ -1852,6 +1835,7 @@ id|POLLERR
 suffix:semicolon
 )brace
 id|poll_wait
+c_func
 (paren
 id|file
 comma
@@ -1877,6 +1861,7 @@ r_switch
 c_cond
 (paren
 id|diva_user_mode_idi_ind_ready
+c_func
 (paren
 id|file-&gt;private_data
 comma
@@ -1912,41 +1897,11 @@ id|POLLRDNORM
 )paren
 suffix:semicolon
 )brace
-r_static
-r_int
-DECL|function|um_idi_ioctl
-id|um_idi_ioctl
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|file
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-(brace
-r_return
-(paren
-op_minus
-id|EINVAL
-)paren
-suffix:semicolon
-)brace
-r_static
-r_int
 DECL|function|um_idi_open
+r_static
+r_int
 id|um_idi_open
+c_func
 (paren
 r_struct
 id|inode
@@ -1965,10 +1920,11 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|function|um_idi_release
 r_static
 r_int
-DECL|function|um_idi_release
 id|um_idi_release
+c_func
 (paren
 r_struct
 id|inode
@@ -2021,6 +1977,7 @@ c_cond
 id|ret
 op_assign
 id|remove_entity
+c_func
 (paren
 id|file-&gt;private_data
 )paren
@@ -2057,12 +2014,15 @@ suffix:semicolon
 id|out
 suffix:colon
 r_return
+(paren
 id|ret
+)paren
 suffix:semicolon
 )brace
-r_int
 DECL|function|diva_os_get_context_size
+r_int
 id|diva_os_get_context_size
+c_func
 (paren
 r_void
 )paren
@@ -2076,9 +2036,10 @@ id|diva_um_idi_os_context_t
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|diva_os_wakeup_read
+r_void
 id|diva_os_wakeup_read
+c_func
 (paren
 r_void
 op_star
@@ -2096,15 +2057,17 @@ op_star
 id|os_context
 suffix:semicolon
 id|wake_up_interruptible
+c_func
 (paren
 op_amp
 id|p_os-&gt;read_wait
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|diva_os_wakeup_close
+r_void
 id|diva_os_wakeup_close
+c_func
 (paren
 r_void
 op_star
@@ -2122,6 +2085,7 @@ op_star
 id|os_context
 suffix:semicolon
 id|wake_up_interruptible
+c_func
 (paren
 op_amp
 id|p_os-&gt;close_wait
@@ -2132,6 +2096,7 @@ r_static
 DECL|function|diva_um_timer_function
 r_void
 id|diva_um_timer_function
+c_func
 (paren
 r_int
 r_int
@@ -2153,12 +2118,14 @@ op_assign
 l_int|1
 suffix:semicolon
 id|wake_up_interruptible
+c_func
 (paren
 op_amp
 id|p_os-&gt;read_wait
 )paren
 suffix:semicolon
 id|wake_up_interruptible
+c_func
 (paren
 op_amp
 id|p_os-&gt;close_wait
@@ -2173,10 +2140,11 @@ l_string|&quot;entity removal watchdog&quot;
 )paren
 )brace
 multiline_comment|/*&n;**  If application exits without entity removal this function will remove&n;**  entity and block until removal is complete&n;*/
+DECL|function|remove_entity
 r_static
 r_int
-DECL|function|remove_entity
 id|remove_entity
+c_func
 (paren
 r_void
 op_star
@@ -2195,6 +2163,7 @@ op_star
 id|p_os
 suffix:semicolon
 id|diva_um_idi_stop_wdog
+c_func
 (paren
 id|entity
 )paren
@@ -2264,7 +2233,7 @@ op_logical_or
 id|p_os-&gt;aborted
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;Entity is not assigned, also can be removed&n;&t;&t;&t;&t;*/
+multiline_comment|/*&n;&t;&t;   Entity is not assigned, also can be removed&n;&t;&t; */
 r_return
 (paren
 l_int|0
@@ -2280,8 +2249,9 @@ comma
 id|entity
 )paren
 )paren
-multiline_comment|/*&n;&t;&t;If adapter not answers on remove request inside of&n;&t;&t;10 Sec, then adapter is dead&n;&t;&t;*/
+multiline_comment|/*&n;&t;   If adapter not answers on remove request inside of&n;&t;   10 Sec, then adapter is dead&n;&t; */
 id|diva_um_idi_start_wdog
+c_func
 (paren
 id|entity
 )paren
@@ -2296,6 +2266,7 @@ id|curtask
 )paren
 suffix:semicolon
 id|add_wait_queue
+c_func
 (paren
 op_amp
 id|p_os-&gt;close_wait
@@ -2322,6 +2293,7 @@ c_cond
 (paren
 op_logical_neg
 id|divas_um_idi_entity_start_remove
+c_func
 (paren
 id|entity
 )paren
@@ -2345,6 +2317,7 @@ id|TASK_RUNNING
 )paren
 suffix:semicolon
 id|remove_wait_queue
+c_func
 (paren
 op_amp
 id|p_os-&gt;close_wait
@@ -2373,6 +2346,7 @@ id|curtask
 )paren
 suffix:semicolon
 id|add_wait_queue
+c_func
 (paren
 op_amp
 id|p_os-&gt;close_wait
@@ -2399,6 +2373,7 @@ c_cond
 (paren
 op_logical_neg
 id|divas_um_idi_entity_assigned
+c_func
 (paren
 id|entity
 )paren
@@ -2422,6 +2397,7 @@ id|TASK_RUNNING
 )paren
 suffix:semicolon
 id|remove_wait_queue
+c_func
 (paren
 op_amp
 id|p_os-&gt;close_wait
@@ -2443,6 +2419,7 @@ id|p_os-&gt;aborted
 )paren
 )paren
 id|diva_um_idi_stop_wdog
+c_func
 (paren
 id|entity
 )paren
@@ -2461,6 +2438,7 @@ multiline_comment|/*&n; * timer watchdog&n; */
 DECL|function|diva_um_idi_start_wdog
 r_void
 id|diva_um_idi_start_wdog
+c_func
 (paren
 r_void
 op_star
@@ -2494,6 +2472,7 @@ id|entity
 )paren
 (brace
 id|mod_timer
+c_func
 (paren
 op_amp
 id|p_os-&gt;diva_timer_id
@@ -2510,6 +2489,7 @@ suffix:semicolon
 DECL|function|diva_um_idi_stop_wdog
 r_void
 id|diva_um_idi_stop_wdog
+c_func
 (paren
 r_void
 op_star
@@ -2543,6 +2523,7 @@ id|entity
 )paren
 (brace
 id|del_timer
+c_func
 (paren
 op_amp
 id|p_os-&gt;diva_timer_id

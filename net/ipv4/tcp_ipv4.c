@@ -3369,6 +3369,8 @@ comma
 id|inet-&gt;sport
 comma
 id|usin-&gt;sin_port
+comma
+id|sk
 )paren
 suffix:semicolon
 r_if
@@ -3563,6 +3565,8 @@ comma
 id|inet-&gt;sport
 comma
 id|inet-&gt;dport
+comma
+id|sk
 )paren
 suffix:semicolon
 r_if
@@ -8009,6 +8013,8 @@ comma
 id|inet-&gt;sport
 comma
 id|inet-&gt;dport
+comma
+id|sk
 )paren
 suffix:semicolon
 r_if

@@ -163,8 +163,6 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|down
 c_func
 (paren
@@ -204,8 +202,6 @@ c_func
 op_amp
 id|scn_mutex
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|err
 c_func
@@ -348,13 +344,6 @@ id|scn-&gt;sem
 )paren
 suffix:semicolon
 multiline_comment|/* Wake up any possible contending processes */
-r_if
-c_cond
-(paren
-id|err
-)paren
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -468,8 +457,6 @@ op_amp
 id|scn-&gt;sem
 )paren
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -1936,6 +1923,11 @@ id|usb_scanner_fops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|read
 op_assign
 id|read_scanner
@@ -2001,7 +1993,7 @@ op_star
 id|interface
 suffix:semicolon
 r_struct
-id|usb_host_endpoint
+id|usb_endpoint_descriptor
 op_star
 id|endpoint
 suffix:semicolon
@@ -2214,14 +2206,6 @@ id|interface
 op_assign
 id|intf-&gt;altsetting
 suffix:semicolon
-id|endpoint
-op_assign
-op_amp
-id|interface-&gt;endpoint
-(braket
-l_int|0
-)braket
-suffix:semicolon
 multiline_comment|/*&n; * Start checking for two bulk endpoints OR two bulk endpoints *and* one&n; * interrupt endpoint. If we have an interrupt endpoint go ahead and&n; * setup the handler. FIXME: This is a future enhancement...&n; */
 id|dbg
 c_func
@@ -2279,6 +2263,16 @@ OL
 id|interface-&gt;desc.bNumEndpoints
 )paren
 (brace
+id|endpoint
+op_assign
+op_amp
+id|interface-&gt;endpoint
+(braket
+id|ep_cnt
+)braket
+dot
+id|desc
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2289,9 +2283,6 @@ id|IS_EP_BULK_IN
 c_func
 (paren
 id|endpoint
-(braket
-id|ep_cnt
-)braket
 )paren
 )paren
 (brace
@@ -2323,9 +2314,6 @@ id|IS_EP_BULK_OUT
 c_func
 (paren
 id|endpoint
-(braket
-id|ep_cnt
-)braket
 )paren
 )paren
 (brace
@@ -2357,9 +2345,6 @@ id|IS_EP_INTR
 c_func
 (paren
 id|endpoint
-(braket
-id|ep_cnt
-)braket
 )paren
 )paren
 (brace

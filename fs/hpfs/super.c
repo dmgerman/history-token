@@ -3316,7 +3316,7 @@ l_string|&quot;unable to find root dir&quot;
 suffix:semicolon
 r_else
 (brace
-id|s-&gt;s_root-&gt;d_inode-&gt;i_atime
+id|s-&gt;s_root-&gt;d_inode-&gt;i_atime.tv_sec
 op_assign
 id|local_to_gmt
 c_func
@@ -3326,7 +3326,11 @@ comma
 id|de-&gt;read_date
 )paren
 suffix:semicolon
-id|s-&gt;s_root-&gt;d_inode-&gt;i_mtime
+id|s-&gt;s_root-&gt;d_inode-&gt;i_atime.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
+id|s-&gt;s_root-&gt;d_inode-&gt;i_mtime.tv_sec
 op_assign
 id|local_to_gmt
 c_func
@@ -3336,7 +3340,11 @@ comma
 id|de-&gt;write_date
 )paren
 suffix:semicolon
-id|s-&gt;s_root-&gt;d_inode-&gt;i_ctime
+id|s-&gt;s_root-&gt;d_inode-&gt;i_mtime.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
+id|s-&gt;s_root-&gt;d_inode-&gt;i_ctime.tv_sec
 op_assign
 id|local_to_gmt
 c_func
@@ -3345,6 +3353,10 @@ id|s
 comma
 id|de-&gt;creation_date
 )paren
+suffix:semicolon
+id|s-&gt;s_root-&gt;d_inode-&gt;i_ctime.tv_nsec
+op_assign
+l_int|0
 suffix:semicolon
 id|hpfs_i
 c_func

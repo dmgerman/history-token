@@ -30294,7 +30294,7 @@ id|additional_ioctls
 (brace
 id|additional_ioctls
 op_assign
-id|module_map
+id|vmalloc
 c_func
 (paren
 id|PAGE_SIZE

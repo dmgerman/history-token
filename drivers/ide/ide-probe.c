@@ -4286,10 +4286,6 @@ r_int
 r_int
 id|unit
 suffix:semicolon
-r_extern
-id|devfs_handle_t
-id|ide_devfs_handle
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4367,7 +4363,7 @@ id|sprintf
 (paren
 id|name
 comma
-l_string|&quot;host%d/bus%d/target%d/lun%d&quot;
+l_string|&quot;ide/host%d/bus%d/target%d/lun%d&quot;
 comma
 (paren
 id|hwif-&gt;channel
@@ -4405,7 +4401,7 @@ op_assign
 id|devfs_mk_dir
 c_func
 (paren
-id|ide_devfs_handle
+l_int|NULL
 comma
 id|name
 comma
