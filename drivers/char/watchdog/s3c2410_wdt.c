@@ -23,12 +23,27 @@ mdefine_line|#define S3C2410_VA_WATCHDOG (0)
 macro_line|#include &lt;asm/arch/regs-watchdog.h&gt;
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;s3c2410-wdt: &quot;
-DECL|macro|CONFIG_WATCHDOG_NOWAYOUT
-mdefine_line|#define CONFIG_WATCHDOG_NOWAYOUT&t;&t;(0)
 DECL|macro|CONFIG_S3C2410_WATCHDOG_ATBOOT
 mdefine_line|#define CONFIG_S3C2410_WATCHDOG_ATBOOT&t;&t;(0)
 DECL|macro|CONFIG_S3C2410_WATCHDOG_DEFAULT_TIME
 mdefine_line|#define CONFIG_S3C2410_WATCHDOG_DEFAULT_TIME&t;(15)
+macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 DECL|variable|tmr_margin
 r_static
 r_int
@@ -42,13 +57,6 @@ r_int
 id|tmr_atboot
 op_assign
 id|CONFIG_S3C2410_WATCHDOG_ATBOOT
-suffix:semicolon
-DECL|variable|nowayout
-r_static
-r_int
-id|nowayout
-op_assign
-id|CONFIG_WATCHDOG_NOWAYOUT
 suffix:semicolon
 DECL|variable|soft_noboot
 r_static
