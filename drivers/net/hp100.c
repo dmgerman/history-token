@@ -288,6 +288,10 @@ l_string|&quot;CPX0401&quot;
 )brace
 comma
 multiline_comment|/* FreedomLine 100/VG */
+(brace
+l_string|&quot;&quot;
+)brace
+multiline_comment|/* Mandatory final entry ! */
 )brace
 suffix:semicolon
 id|MODULE_DEVICE_TABLE
