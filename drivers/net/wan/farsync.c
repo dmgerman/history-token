@@ -3920,7 +3920,7 @@ id|info
 )paren
 suffix:semicolon
 r_case
-id|SIOCDEVICE
+id|SIOCWANDEV
 suffix:colon
 r_switch
 c_cond

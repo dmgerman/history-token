@@ -6870,7 +6870,7 @@ id|SIOCSMIIREG
 op_logical_or
 id|cmd
 op_eq
-id|SIOCDEVICE
+id|SIOCWANDEV
 )paren
 (brace
 r_if
@@ -7396,7 +7396,7 @@ c_cond
 (paren
 id|cmd
 op_eq
-id|SIOCDEVICE
+id|SIOCWANDEV
 op_logical_or
 (paren
 id|cmd

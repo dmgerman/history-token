@@ -124,7 +124,7 @@ c_func
 id|ifr-&gt;ifr_settings.data
 comma
 op_amp
-id|hdlc-&gt;state.hdlc.settings
+id|hdlc-&gt;state.raw_hdlc.settings
 comma
 id|size
 )paren
@@ -191,7 +191,7 @@ id|copy_from_user
 c_func
 (paren
 op_amp
-id|hdlc-&gt;state.hdlc.settings
+id|hdlc-&gt;state.raw_hdlc.settings
 comma
 id|ifr-&gt;ifr_settings.data
 comma
@@ -218,9 +218,9 @@ c_func
 (paren
 id|hdlc
 comma
-id|hdlc-&gt;state.hdlc.settings.encoding
+id|hdlc-&gt;state.raw_hdlc.settings.encoding
 comma
-id|hdlc-&gt;state.hdlc.settings.parity
+id|hdlc-&gt;state.raw_hdlc.settings.parity
 )paren
 suffix:semicolon
 r_if

@@ -108,9 +108,9 @@ r_int
 r_int
 id|parity
 suffix:semicolon
-DECL|typedef|hdlc_proto
+DECL|typedef|raw_hdlc_proto
 )brace
-id|hdlc_proto
+id|raw_hdlc_proto
 suffix:semicolon
 DECL|macro|LMI_DEFAULT
 mdefine_line|#define LMI_DEFAULT&t;&t;0 /* Default (current) setting */
@@ -731,12 +731,12 @@ suffix:semicolon
 r_struct
 (brace
 DECL|member|settings
-id|hdlc_proto
+id|raw_hdlc_proto
 id|settings
 suffix:semicolon
-DECL|member|hdlc
+DECL|member|raw_hdlc
 )brace
-id|hdlc
+id|raw_hdlc
 suffix:semicolon
 r_struct
 (brace

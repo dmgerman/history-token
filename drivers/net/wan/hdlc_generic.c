@@ -166,7 +166,7 @@ c_cond
 (paren
 id|cmd
 op_ne
-id|SIOCDEVICE
+id|SIOCWANDEV
 )paren
 r_return
 op_minus

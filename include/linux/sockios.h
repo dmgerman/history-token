@@ -106,8 +106,8 @@ DECL|macro|SIOCGMIIREG
 mdefine_line|#define SIOCGMIIREG&t;0x8948&t;&t;/* Read MII PHY register.&t;*/
 DECL|macro|SIOCSMIIREG
 mdefine_line|#define SIOCSMIIREG&t;0x8949&t;&t;/* Write MII PHY register.&t;*/
-DECL|macro|SIOCDEVICE
-mdefine_line|#define SIOCDEVICE&t;0x894A&t;&t;/* get/set netdev parameters&t;*/
+DECL|macro|SIOCWANDEV
+mdefine_line|#define SIOCWANDEV&t;0x894A&t;&t;/* get/set netdev parameters&t;*/
 multiline_comment|/* ARP cache control calls. */
 multiline_comment|/*  0x8950 - 0x8952  * obsolete calls, don&squot;t re-use */
 DECL|macro|SIOCDARP
