@@ -558,7 +558,7 @@ c_cond
 id|error
 )paren
 (brace
-id|up
+id|down
 c_func
 (paren
 op_amp
