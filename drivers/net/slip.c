@@ -5276,6 +5276,12 @@ comma
 id|status
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|slip_devs
+)paren
+suffix:semicolon
 )brace
 r_return
 id|status
