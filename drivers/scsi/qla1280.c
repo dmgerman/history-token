@@ -2217,7 +2217,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;qla1x160: Initializing ISP12160 on PCI bus %i, dev %i&bslash;n&quot;
+l_string|&quot;qla1x160: Initializing ISP12160 on PCI bus %i, dev %i, irq %i&bslash;n&quot;
 comma
 id|pdev-&gt;bus-&gt;number
 comma
@@ -2226,6 +2226,8 @@ c_func
 (paren
 id|pdev-&gt;devfn
 )paren
+comma
+id|pdev-&gt;irq
 )paren
 suffix:semicolon
 id|host
