@@ -197,9 +197,9 @@ op_assign
 id|ct-&gt;mark
 op_xor
 id|nfmark
+)paren
 op_amp
 id|markinfo-&gt;mask
-)paren
 suffix:semicolon
 r_if
 c_cond

@@ -4267,20 +4267,6 @@ c_func
 id|net_statistics
 )paren
 suffix:semicolon
-DECL|variable|tcp_protocol
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcp_protocol
-)paren
-suffix:semicolon
-DECL|variable|udp_protocol
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|udp_protocol
-)paren
-suffix:semicolon
 macro_line|#ifdef INET_REFCNT_DEBUG
 DECL|variable|inet_sock_nr
 id|EXPORT_SYMBOL

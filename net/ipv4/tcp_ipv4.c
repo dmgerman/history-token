@@ -1795,6 +1795,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Optimize the common listener case. */
 DECL|function|tcp_v4_lookup_listener
+r_static
 r_inline
 r_struct
 id|sock
@@ -11456,13 +11457,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|tcp_v4_do_rcv
-)paren
-suffix:semicolon
-DECL|variable|tcp_v4_lookup_listener
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcp_v4_lookup_listener
 )paren
 suffix:semicolon
 DECL|variable|tcp_v4_rebuild_header

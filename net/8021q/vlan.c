@@ -14,6 +14,8 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &quot;vlan.h&quot;
 macro_line|#include &quot;vlanproc.h&quot;
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION &quot;1.8&quot;
 multiline_comment|/* Global VLAN variables */
 multiline_comment|/* Our listing of VLAN group(s) */
 DECL|variable|vlan_group_hash
@@ -37,19 +39,12 @@ l_string|&quot;802.1Q VLAN Support&quot;
 suffix:semicolon
 DECL|variable|vlan_version
 r_static
-r_int
-r_int
+r_char
 id|vlan_version
+(braket
+)braket
 op_assign
-l_int|1
-suffix:semicolon
-DECL|variable|vlan_release
-r_static
-r_int
-r_int
-id|vlan_release
-op_assign
-l_int|8
+id|DRV_VERSION
 suffix:semicolon
 DECL|variable|vlan_copyright
 r_static
@@ -184,13 +179,11 @@ id|printk
 c_func
 (paren
 id|VLAN_INF
-l_string|&quot;%s v%u.%u %s&bslash;n&quot;
+l_string|&quot;%s v%s %s&bslash;n&quot;
 comma
 id|vlan_fullname
 comma
 id|vlan_version
-comma
-id|vlan_release
 comma
 id|vlan_copyright
 )paren
@@ -2369,6 +2362,13 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|DRV_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_VERSION
 )paren
 suffix:semicolon
 eof
