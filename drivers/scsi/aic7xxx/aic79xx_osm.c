@@ -5192,6 +5192,17 @@ comma
 id|M_WAITOK
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|recovery_cmd
+)paren
+r_return
+(paren
+id|FAILED
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -5290,6 +5301,12 @@ op_amp
 id|s
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|recovery_cmd
+)paren
+suffix:semicolon
 r_return
 (paren
 id|FAILED
@@ -5321,6 +5338,12 @@ id|ahd
 comma
 op_amp
 id|s
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|recovery_cmd
 )paren
 suffix:semicolon
 r_return
@@ -6171,6 +6194,12 @@ id|KERN_WARNING
 l_string|&quot;aic79xx: No suitable DMA available.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|map
+)paren
+suffix:semicolon
 r_return
 (paren
 id|ENODEV
@@ -6215,6 +6244,12 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;aic79xx: No suitable DMA available.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|map
 )paren
 suffix:semicolon
 r_return
