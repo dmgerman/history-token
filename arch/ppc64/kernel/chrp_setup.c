@@ -15,7 +15,6 @@ macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -376,27 +375,25 @@ id|loops_per_jiffy
 op_assign
 l_int|50000000
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-multiline_comment|/* this is fine for chrp */
-id|initrd_below_start_ok
-op_assign
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|initrd_start
-)paren
 id|ROOT_DEV
-op_assign
-id|Root_RAM0
+op_eq
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;No ramdisk, default root is /dev/sda2&bslash;n&quot;
+)paren
 suffix:semicolon
-r_else
-macro_line|#endif
 id|ROOT_DEV
 op_assign
 id|Root_SDA2
 suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -766,36 +763,6 @@ r_int
 r_int
 id|len
 suffix:semicolon
-macro_line|#if 0 /* PPPBBB remove this later... -Peter */
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-multiline_comment|/* take care of initrd if we have one */
-r_if
-c_cond
-(paren
-id|r6
-)paren
-(brace
-id|initrd_start
-op_assign
-id|__va
-c_func
-(paren
-id|r6
-)paren
-suffix:semicolon
-id|initrd_end
-op_assign
-id|__va
-c_func
-(paren
-id|r6
-op_plus
-id|r7
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
-macro_line|#endif
 id|ppc_md.setup_arch
 op_assign
 id|chrp_setup_arch
@@ -877,6 +844,10 @@ op_assign
 id|chrp_progress
 suffix:semicolon
 multiline_comment|/* Build up the firmware_features bitmask field&n;         * using contents of device-tree/ibm,hypertas-functions.&n;         * Ultimately this functionality may be moved into prom.c prom_init().&n;         */
+id|cur_cpu_spec-&gt;firmware_features
+op_assign
+l_int|0
+suffix:semicolon
 id|dn
 op_assign
 id|of_find_node_by_path
@@ -885,10 +856,25 @@ c_func
 l_string|&quot;/rtas&quot;
 )paren
 suffix:semicolon
-id|cur_cpu_spec-&gt;firmware_features
-op_assign
-l_int|0
+r_if
+c_cond
+(paren
+id|dn
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;WARNING ! Cannot find RTAS in device-tree !&bslash;n&quot;
+)paren
 suffix:semicolon
+r_goto
+id|no_rtas
+suffix:semicolon
+)brace
 id|hypertas
 op_assign
 id|get_property
@@ -1011,6 +997,8 @@ c_func
 id|dn
 )paren
 suffix:semicolon
+id|no_rtas
+suffix:colon
 id|printk
 c_func
 (paren
