@@ -130,6 +130,21 @@ id|active_mm
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* offsets into the kernel_stat struct */
+id|DEFINE
+c_func
+(paren
+id|STAT_IRQ
+comma
+m_offsetof
+(paren
+r_struct
+id|kernel_stat
+comma
+id|irqs
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* offsets into the irq_cpustat_t struct */
 id|DEFINE
 c_func
