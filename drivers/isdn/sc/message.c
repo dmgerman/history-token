@@ -38,24 +38,6 @@ id|isdn_ctrl
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-op_star
-id|memcpy_fromshmem
-c_func
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_const
-r_void
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * receive a message from the board&n; */
 DECL|function|receivemessage
 r_int
