@@ -3492,16 +3492,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|instance-&gt;firmware_loaded
-)paren
-r_return
-op_minus
-id|EAGAIN
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|vcc-&gt;qos.aal
 op_ne
 id|ATM_AAL5
