@@ -95,9 +95,12 @@ l_int|31
 )paren
 (brace
 id|printk
+c_func
 (paren
-id|KERN_EMERG
-l_string|&quot;MCE: The hardware reports a non fatal, correctable incident occurred on CPU %d.&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;MCE: The hardware reports a non &quot;
+l_string|&quot;fatal, correctable incident occurred on &quot;
+l_string|&quot;CPU %d.&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
@@ -107,7 +110,7 @@ c_func
 suffix:semicolon
 id|printk
 (paren
-id|KERN_EMERG
+id|KERN_INFO
 l_string|&quot;Bank %d: %08x%08x&bslash;n&quot;
 comma
 id|i
