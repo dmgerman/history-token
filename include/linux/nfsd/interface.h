@@ -28,6 +28,12 @@ op_star
 id|resp
 )paren
 suffix:semicolon
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 )brace
 op_star
 id|nfsd_linkage

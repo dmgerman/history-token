@@ -184,11 +184,6 @@ id|svc_client
 op_star
 id|clients
 suffix:semicolon
-DECL|variable|initialized
-r_static
-r_int
-id|initialized
-suffix:semicolon
 DECL|variable|hash_lock
 r_static
 r_int
@@ -237,12 +232,6 @@ comma
 op_star
 id|p
 suffix:semicolon
-id|svc_export
-op_star
-id|exp
-op_assign
-l_int|NULL
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -272,6 +261,8 @@ comma
 id|head
 )paren
 (brace
+id|svc_export
+op_star
 id|exp
 op_assign
 id|list_entry
@@ -299,11 +290,12 @@ comma
 id|dev
 )paren
 )paren
-r_break
+r_return
+id|exp
 suffix:semicolon
 )brace
 r_return
-id|exp
+l_int|NULL
 suffix:semicolon
 )brace
 id|svc_export
@@ -344,12 +336,6 @@ c_func
 id|mnt-&gt;mnt_sb-&gt;s_dev
 )paren
 suffix:semicolon
-id|svc_export
-op_star
-id|exp
-op_assign
-l_int|NULL
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -375,6 +361,8 @@ comma
 id|head
 )paren
 (brace
+id|svc_export
+op_star
 id|exp
 op_assign
 id|list_entry
@@ -402,7 +390,7 @@ r_break
 suffix:semicolon
 )brace
 r_return
-id|exp
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Find the export entry for a given dentry.  &lt;gam3@acm.org&gt;&n; */
@@ -448,12 +436,6 @@ id|list_head
 op_star
 id|p
 suffix:semicolon
-id|svc_export
-op_star
-id|exp
-op_assign
-l_int|NULL
-suffix:semicolon
 id|list_for_each
 c_func
 (paren
@@ -462,6 +444,8 @@ comma
 id|head
 )paren
 (brace
+id|svc_export
+op_star
 id|exp
 op_assign
 id|list_entry
@@ -485,11 +469,12 @@ comma
 id|exp-&gt;ex_dentry
 )paren
 )paren
-r_break
+r_return
+id|exp
 suffix:semicolon
 )brace
 r_return
-id|exp
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Find the child export entry for a given fs. This function is used&n; * only by the export syscall to keep the export tree consistent.&n; * &lt;gam3@acm.org&gt;&n; */
@@ -535,12 +520,6 @@ id|list_head
 op_star
 id|p
 suffix:semicolon
-id|svc_export
-op_star
-id|exp
-op_assign
-l_int|NULL
-suffix:semicolon
 r_struct
 id|dentry
 op_star
@@ -554,6 +533,8 @@ comma
 id|head
 )paren
 (brace
+id|svc_export
+op_star
 id|exp
 op_assign
 id|list_entry
@@ -583,11 +564,12 @@ comma
 id|dentry
 )paren
 )paren
-r_break
+r_return
+id|exp
 suffix:semicolon
 )brace
 r_return
-id|exp
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Update parent pointers of all exports */
@@ -1952,15 +1934,6 @@ id|addr
 op_assign
 id|sin-&gt;sin_addr.s_addr
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|initialized
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
 id|head
 op_assign
 op_amp
@@ -2345,10 +2318,19 @@ op_eq
 op_amp
 id|exp-&gt;ex_client-&gt;cl_list
 )paren
+(brace
 id|clp
 op_assign
 id|exp-&gt;ex_client-&gt;cl_next
 suffix:semicolon
+op_star
+id|pos
+op_add_assign
+l_int|1LL
+op_lshift
+l_int|32
+suffix:semicolon
+)brace
 r_else
 (brace
 op_increment
@@ -3980,13 +3962,6 @@ c_func
 l_string|&quot;nfsd: initializing export module.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|initialized
-)paren
-r_return
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4012,10 +3987,6 @@ id|clients
 op_assign
 l_int|NULL
 suffix:semicolon
-id|initialized
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Shutdown the exports module.&n; */
 r_void
@@ -4034,14 +4005,6 @@ c_func
 (paren
 l_string|&quot;nfsd: shutting down export module.&bslash;n&quot;
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|initialized
-)paren
-r_return
 suffix:semicolon
 r_if
 c_cond

@@ -2300,7 +2300,12 @@ op_ne
 l_int|3
 )paren
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ESTALE
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2310,17 +2315,27 @@ OL
 l_int|5
 )paren
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ESTALE
+)paren
 suffix:semicolon
+multiline_comment|/* We cannot find the parent,&n;&t;   It better just *be* there */
 r_if
 c_cond
 (paren
 id|parent
 )paren
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ESTALE
+)paren
 suffix:semicolon
-multiline_comment|/* We cannot find the parent,&n;&t;&t;&t;&t;It better just *be* there */
 id|inode
 op_assign
 id|iget

@@ -117,11 +117,6 @@ id|data
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|initialized
-r_static
-r_int
-id|initialized
-suffix:semicolon
 r_extern
 r_struct
 id|seq_operations
@@ -228,50 +223,6 @@ id|entry-&gt;proc_fops
 op_assign
 op_amp
 id|exports_operations
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Initialize nfsd&n; */
-r_static
-r_void
-DECL|function|nfsd_init
-id|nfsd_init
-c_func
-(paren
-r_void
-)paren
-(brace
-id|nfsd_stat_init
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Statistics */
-id|nfsd_cache_init
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* RPC reply cache */
-id|nfsd_export_init
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Exports table */
-id|nfsd_lockd_init
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* lockd-&gt;nfsd callbacks */
-id|proc_export_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|initialized
-op_assign
-l_int|1
 suffix:semicolon
 )brace
 r_static
@@ -857,20 +808,7 @@ id|argsize
 comma
 id|respsize
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|lock_kernel
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|initialized
-)paren
-id|nfsd_init
-c_func
 (paren
 )paren
 suffix:semicolon
@@ -1267,14 +1205,10 @@ id|unlock_kernel
 (paren
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-multiline_comment|/* New-style module support since 2.1.18 */
 id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -1289,6 +1223,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE
 DECL|variable|nfsd_linkage_s
 r_struct
 id|nfsd_linkage
@@ -1299,12 +1234,19 @@ id|do_nfsservctl
 suffix:colon
 id|handle_sys_nfsservctl
 comma
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Initialize the module&n; */
+r_static
 r_int
-DECL|function|init_module
-id|init_module
+id|__init
+DECL|function|nfsd_init
+id|nfsd_init
 c_func
 (paren
 r_void
@@ -1317,28 +1259,63 @@ id|KERN_INFO
 l_string|&quot;Installing knfsd (copyright (C) 1996 okir@monad.swb.de).&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE
 id|nfsd_linkage
 op_assign
 op_amp
 id|nfsd_linkage_s
+suffix:semicolon
+macro_line|#endif
+id|nfsd_stat_init
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Statistics */
+id|nfsd_cache_init
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* RPC reply cache */
+id|nfsd_export_init
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Exports table */
+id|nfsd_lockd_init
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* lockd-&gt;nfsd callbacks */
+id|proc_export_init
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Clean up the mess before unloading the module&n; */
+r_static
 r_void
-DECL|function|cleanup_module
-id|cleanup_module
+id|__exit
+DECL|function|nfsd_exit
+id|nfsd_exit
 c_func
 (paren
 r_void
 )paren
 (brace
+macro_line|#ifdef MODULE
 id|nfsd_linkage
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#endif
 id|nfsd_export_shutdown
 c_func
 (paren
@@ -1376,5 +1353,18 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|variable|nfsd_init
+id|module_init
+c_func
+(paren
+id|nfsd_init
+)paren
+suffix:semicolon
+DECL|variable|nfsd_exit
+id|module_exit
+c_func
+(paren
+id|nfsd_exit
+)paren
+suffix:semicolon
 eof
