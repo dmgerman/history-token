@@ -9573,7 +9573,7 @@ id|banner
 id|__initdata
 op_assign
 id|KERN_INFO
-l_string|&quot;NET4: DECnet for Linux: V.2.4.15-pre5s (C) 1995-2001 Linux DECnet Project Team&bslash;n&quot;
+l_string|&quot;NET4: DECnet for Linux: V.2.4.20-pre1s (C) 1995-2002 Linux DECnet Project Team&bslash;n&quot;
 suffix:semicolon
 DECL|function|decnet_init
 r_static
