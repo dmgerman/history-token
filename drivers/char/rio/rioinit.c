@@ -9,8 +9,6 @@ op_assign
 l_string|&quot;@(#)rioinit.c&t;1.3&quot;
 suffix:semicolon
 macro_line|#endif
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
