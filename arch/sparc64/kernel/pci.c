@@ -2181,5 +2181,21 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|pcibios_set_mwi
+r_int
+id|pcibios_set_mwi
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+multiline_comment|/* We set correct PCI_CACHE_LINE_SIZE register values for every&n;&t; * device probed on this platform.  So there is nothing to check&n;&t; * and this always succeeds.&n;&t; */
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif /* !(CONFIG_PCI) */
 eof

@@ -1050,12 +1050,18 @@ id|i
 op_increment
 )paren
 (brace
+multiline_comment|/* XXX Learn how to interpret ebus ranges... -DaveM */
 r_if
 c_cond
 (paren
-id|dev-&gt;bus-&gt;is_rio
-op_eq
-l_int|0
+id|regs
+(braket
+id|i
+)braket
+dot
+id|which_io
+op_ge
+l_int|0x10
 )paren
 id|n
 op_assign
