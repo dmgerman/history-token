@@ -9070,7 +9070,7 @@ id|PRINTD
 id|DBG_INFO
 comma
 l_string|&quot;found Madge ATM adapter (amb) at&quot;
-l_string|&quot; IO %x, IRQ %u, MEM %p&quot;
+l_string|&quot; IO %lx, IRQ %u, MEM %p&quot;
 comma
 id|pci_resource_start
 c_func
