@@ -1087,10 +1087,11 @@ id|adfs_compare
 comma
 )brace
 suffix:semicolon
-DECL|function|adfs_lookup
+r_static
 r_struct
 id|dentry
 op_star
+DECL|function|adfs_lookup
 id|adfs_lookup
 c_func
 (paren
