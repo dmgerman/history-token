@@ -1885,6 +1885,11 @@ r_int
 id|adpt_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|host
+comma
 r_char
 op_star
 id|buffer
@@ -1899,9 +1904,6 @@ id|offset
 comma
 r_int
 id|length
-comma
-r_int
-id|hostno
 comma
 r_int
 id|inout
@@ -1936,11 +1938,6 @@ suffix:semicolon
 id|adpt_hba
 op_star
 id|pHba
-suffix:semicolon
-r_struct
-id|Scsi_Host
-op_star
-id|host
 suffix:semicolon
 r_int
 id|unit
@@ -1990,9 +1987,9 @@ id|pHba-&gt;next
 r_if
 c_cond
 (paren
-id|pHba-&gt;host-&gt;host_no
+id|pHba-&gt;host
 op_eq
-id|hostno
+id|host
 )paren
 (brace
 r_break

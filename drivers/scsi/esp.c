@@ -5558,6 +5558,11 @@ r_int
 id|esp_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|host
+comma
 r_char
 op_star
 id|buffer
@@ -5572,9 +5577,6 @@ id|offset
 comma
 r_int
 id|length
-comma
-r_int
-id|hostno
 comma
 r_int
 id|inout
@@ -5604,9 +5606,9 @@ id|esp
 r_if
 c_cond
 (paren
-id|esp-&gt;ehost-&gt;host_no
+id|esp-&gt;ehost
 op_eq
-id|hostno
+id|host
 )paren
 r_break
 suffix:semicolon

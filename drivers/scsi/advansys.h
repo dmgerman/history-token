@@ -100,38 +100,6 @@ id|Scsi_Device
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-macro_line|#if LINUX_VERSION_CODE &lt; ASC_LINUX_VERSION(2,3,28)
-r_extern
-r_struct
-id|proc_dir_entry
-id|proc_scsi_advansys
-suffix:semicolon
-macro_line|#endif /* version &lt; v2.3.28 */
-r_int
-id|advansys_proc_info
-c_func
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-comma
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
-macro_line|#else /* !defined(CONFIG_PROC_FS) */
-DECL|macro|advansys_proc_info
-mdefine_line|#define advansys_proc_info      NULL
-macro_line|#endif /* !defined(CONFIG_PROC_FS) */
 multiline_comment|/* init/main.c setup function */
 r_void
 id|advansys_setup
