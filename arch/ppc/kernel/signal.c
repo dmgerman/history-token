@@ -1514,7 +1514,7 @@ id|sc
 op_assign
 (paren
 r_struct
-id|sigcontext_struct
+id|sigcontext
 op_star
 )paren
 id|newsp
