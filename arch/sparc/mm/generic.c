@@ -17,6 +17,7 @@ id|pte_t
 id|page
 )paren
 (brace
+macro_line|#if 0 /* old 2.4 code */
 r_if
 c_cond
 (paren
@@ -103,6 +104,31 @@ id|page
 )paren
 )paren
 suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pte_none
+c_func
+(paren
+id|page
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;forget_pte: old mapping existed!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 )brace
 multiline_comment|/* Remap IO memory, the same way as remap_page_range(), but use&n; * the obio memory space.&n; *&n; * They use a pgprot that sets PAGE_IO and does not check the&n; * mem_map table as this is independent of normal memory.&n; */
 DECL|function|io_remap_pte_range
@@ -284,7 +310,7 @@ id|pte_t
 op_star
 id|pte
 op_assign
-id|pte_alloc
+id|pte_alloc_map
 c_func
 (paren
 id|current-&gt;mm

@@ -11,12 +11,14 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/binfmts.h&gt;&t;/* do_coredum */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/svr4.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;&t;/* flush_sig_insns */
 DECL|macro|_BLOCKABLE
 mdefine_line|#define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
 r_extern
@@ -79,7 +81,7 @@ r_int
 id|orig_o0
 comma
 r_int
-id|ret_from_syscall
+id|restart_syscall
 )paren
 suffix:semicolon
 multiline_comment|/* This turned off for production... */
@@ -782,9 +784,13 @@ macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
-id|current-&gt;flags
-op_amp
-id|PF_USEDFPU
+id|test_tsk_thread_flag
+c_func
+(paren
+id|current
+comma
+id|TIF_USEDFPU
+)paren
 )paren
 id|regs-&gt;psr
 op_and_assign
@@ -815,10 +821,13 @@ id|current-&gt;used_math
 op_assign
 l_int|1
 suffix:semicolon
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_USEDFPU
+id|clear_tsk_thread_flag
+c_func
+(paren
+id|current
+comma
+id|TIF_USEDFPU
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2818,9 +2827,13 @@ macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
-id|current-&gt;flags
-op_amp
-id|PF_USEDFPU
+id|test_tsk_thread_flag
+c_func
+(paren
+id|current
+comma
+id|TIF_USEDFPU
+)paren
 )paren
 (brace
 id|put_psr
@@ -2863,11 +2876,12 @@ op_complement
 id|PSR_EF
 )paren
 suffix:semicolon
-id|current-&gt;flags
-op_and_assign
-op_complement
+id|clear_tsk_thread_flag
+c_func
 (paren
-id|PF_USEDFPU
+id|current
+comma
+id|TIF_USEDFPU
 )paren
 suffix:semicolon
 )brace
@@ -6692,7 +6706,6 @@ suffix:semicolon
 id|recalc_sigpending
 c_func
 (paren
-id|current
 )paren
 suffix:semicolon
 id|current-&gt;flags

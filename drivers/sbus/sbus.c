@@ -10,6 +10,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/bpp.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/pcic.h&gt;&t;&t;/* pcic_present */
 DECL|variable|sbus_root
 r_struct
 id|sbus_bus
@@ -1547,7 +1548,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|pcibios_present
+id|pcic_present
 c_func
 (paren
 )paren

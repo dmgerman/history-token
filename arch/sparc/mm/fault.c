@@ -475,8 +475,7 @@ id|printk
 c_func
 (paren
 id|KERN_ALERT
-l_string|&quot;Unable to handle kernel NULL &quot;
-l_string|&quot;pointer dereference&quot;
+l_string|&quot;Unable to handle kernel NULL pointer dereference&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1556,7 +1555,7 @@ suffix:semicolon
 r_extern
 id|pte_t
 op_star
-id|sun4c_pte_offset
+id|sun4c_pte_offset_kernel
 c_func
 (paren
 id|pmd_t
@@ -1672,7 +1671,7 @@ id|address
 suffix:semicolon
 id|ptep
 op_assign
-id|sun4c_pte_offset
+id|sun4c_pte_offset_kernel
 c_func
 (paren
 (paren
