@@ -737,7 +737,7 @@ comma
 op_amp
 id|addr-&gt;a
 comma
-id|gfp
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
