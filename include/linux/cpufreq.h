@@ -6,6 +6,8 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/kobject.h&gt;
+macro_line|#include &lt;linux/sysfs.h&gt;
 DECL|macro|CPUFREQ_NAME_LEN
 mdefine_line|#define CPUFREQ_NAME_LEN 16
 multiline_comment|/*********************************************************************&n; *                     CPUFREQ NOTIFIER INTERFACE                    *&n; *********************************************************************/
@@ -574,6 +576,51 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+DECL|struct|freq_attr
+r_struct
+id|freq_attr
+(brace
+DECL|member|attr
+r_struct
+id|attribute
+id|attr
+suffix:semicolon
+DECL|member|show
+id|ssize_t
+(paren
+op_star
+id|show
+)paren
+(paren
+r_struct
+id|cpufreq_policy
+op_star
+comma
+r_char
+op_star
+)paren
+suffix:semicolon
+DECL|member|store
+id|ssize_t
+(paren
+op_star
+id|store
+)paren
+(paren
+r_struct
+id|cpufreq_policy
+op_star
+comma
+r_const
+r_char
+op_star
+comma
+r_int
+id|count
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*********************************************************************&n; *                        CPUFREQ 2.6. INTERFACE                     *&n; *********************************************************************/
 r_int
 id|cpufreq_set_policy
