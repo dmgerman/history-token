@@ -2640,10 +2640,10 @@ l_string|&quot;Do you have a strange power saving mode enabled?&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|do_nmi
+DECL|function|default_do_nmi
 id|asmlinkage
 r_void
-id|do_nmi
+id|default_do_nmi
 c_func
 (paren
 r_struct
@@ -2660,14 +2660,6 @@ id|inb
 c_func
 (paren
 l_int|0x61
-)paren
-suffix:semicolon
-id|add_pda
-c_func
-(paren
-id|__nmi_count
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_if

@@ -6,6 +6,11 @@ macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
+r_struct
+id|hw_interrupt_type
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * IDT vectors usable for external interrupt sources start&n; * at 0x20:&n; */
 DECL|macro|FIRST_EXTERNAL_VECTOR
@@ -223,39 +228,60 @@ mdefine_line|#define IRQ_NAME(nr) IRQ_NAME2(IRQ##nr)
 multiline_comment|/*&n; *&t;SMP has a few special interrupts for IPI messages&n; */
 DECL|macro|BUILD_IRQ
 mdefine_line|#define BUILD_IRQ(nr) &bslash;&n;asmlinkage void IRQ_NAME(nr); &bslash;&n;__asm__( &bslash;&n;&quot;&bslash;n.p2align&bslash;n&quot; &bslash;&n;&quot;IRQ&quot; #nr &quot;_interrupt:&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;push $&quot; #nr &quot;-256 ; &quot; &bslash;&n;&t;&quot;jmp common_interrupt&quot;);
-r_extern
-r_int
-r_int
-id|prof_cpu_mask
-suffix:semicolon
-r_extern
-r_int
-r_int
-op_star
-id|prof_buffer
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|prof_len
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|prof_shift
-suffix:semicolon
-multiline_comment|/*&n; * x86 profiling function, SMP safe. We might want to do this in&n; * assembly totally?&n; */
 DECL|function|x86_do_profile
 r_static
 r_inline
 r_void
 id|x86_do_profile
 (paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
 r_int
 r_int
 id|rip
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|prof_cpu_mask
+suffix:semicolon
+r_extern
+r_char
+id|_stext
+suffix:semicolon
+macro_line|#ifdef CONFIG_PROFILING
+r_extern
+r_void
+id|x86_profile_hook
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
 )paren
-(brace
+suffix:semicolon
+id|x86_profile_hook
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+r_return
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -263,6 +289,10 @@ op_logical_neg
 id|prof_buffer
 )paren
 r_return
+suffix:semicolon
+id|rip
+op_assign
+id|regs-&gt;rip
 suffix:semicolon
 multiline_comment|/*&n;&t; * Only measure the CPUs specified by /proc/irq/prof_cpu_mask.&n;&t; * (default is all CPUs.)&n;&t; */
 r_if
@@ -328,6 +358,29 @@ id|rip
 )paren
 suffix:semicolon
 )brace
+r_struct
+id|notifier_block
+suffix:semicolon
+r_int
+id|register_profile_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
+r_int
+id|unregister_profile_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP /*more of this file should probably be ifdefed SMP */
 DECL|function|hw_resend_irq
 r_static

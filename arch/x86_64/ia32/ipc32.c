@@ -1146,6 +1146,15 @@ id|EFAULT
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 r_return
 id|err
@@ -1251,6 +1260,7 @@ id|up-&gt;mtype
 suffix:semicolon
 id|err
 op_or_assign
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -1260,6 +1270,13 @@ op_amp
 id|up-&gt;mtext
 comma
 id|second
+)paren
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
+l_int|0
 )paren
 suffix:semicolon
 r_if

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/kdebug.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
+macro_line|#include &lt;asm/hw_irq.h&gt;
 multiline_comment|/*&n; * Power off function, if any&n; */
 DECL|variable|pm_power_off
 r_void

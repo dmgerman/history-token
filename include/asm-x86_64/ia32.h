@@ -816,31 +816,6 @@ id|iov_len
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
-r_struct
-id|iovec
-op_star
-id|get_iovec32
-c_func
-(paren
-r_struct
-id|iovec32
-op_star
-id|iov32
-comma
-r_struct
-id|iovec
-op_star
-id|iov_buf
-comma
-id|u32
-id|count
-comma
-r_int
-id|type
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* !CONFIG_IA32_SUPPORT */
 macro_line|#endif 
 eof

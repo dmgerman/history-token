@@ -2994,7 +2994,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;IOAPIC[%d]: apic_id %d, version %d, address 0x%lx, &quot;
+l_string|&quot;IOAPIC[%d]: apic_id %d, version %d, address 0x%x, &quot;
 l_string|&quot;IRQ %d-%d&bslash;n&quot;
 comma
 id|idx

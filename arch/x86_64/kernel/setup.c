@@ -943,12 +943,6 @@ id|cmdline_p
 )paren
 (brace
 r_int
-r_int
-id|bootmap_size
-comma
-id|low_mem_size
-suffix:semicolon
-r_int
 id|i
 suffix:semicolon
 id|ROOT_DEV
@@ -1142,29 +1136,19 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Reserve the bootmem bitmap itself as well. We do this in two&n;&t; * steps (first step was init_bootmem()) because this catches&n;&t; * the (very unlikely) case of us accidentally initializing the&n;&t; * bootmem allocator with an invalid RAM area.&n;&t; */
+multiline_comment|/* reserve kernel */
 id|reserve_bootmem
 c_func
 (paren
 id|HIGH_MEMORY
 comma
-(paren
 id|PFN_PHYS
 c_func
 (paren
 id|start_pfn
 )paren
-op_plus
-id|bootmap_size
-op_plus
-id|PAGE_SIZE
 op_minus
-l_int|1
-)paren
-op_minus
-(paren
 id|HIGH_MEMORY
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * reserve physical page 0 - it&squot;s a special BIOS page on many boxes,&n;&t; * enabling clean reboots, SMP operation, laptop functions.&n;&t; */
