@@ -151,45 +151,59 @@ id|file_operations
 id|ext3_file_operations
 op_assign
 (brace
+dot
 id|llseek
-suffix:colon
+op_assign
 id|generic_file_llseek
 comma
 multiline_comment|/* BKL held */
+dot
 id|read
-suffix:colon
+op_assign
 id|generic_file_read
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
+dot
 id|write
-suffix:colon
+op_assign
 id|ext3_file_write
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|ext3_ioctl
 comma
 multiline_comment|/* BKL held */
+dot
 id|mmap
-suffix:colon
+op_assign
 id|generic_file_mmap
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|ext3_open_file
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
+dot
 id|release
-suffix:colon
+op_assign
 id|ext3_release_file
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
+dot
 id|fsync
-suffix:colon
+op_assign
 id|ext3_sync_file
 comma
 multiline_comment|/* BKL held */
+dot
+id|sendfile
+op_assign
+id|generic_file_sendfile
+comma
+multiline_comment|/* BKL not held.  Don&squot;t need */
 )brace
 suffix:semicolon
 DECL|variable|ext3_file_inode_operations
@@ -198,13 +212,15 @@ id|inode_operations
 id|ext3_file_inode_operations
 op_assign
 (brace
+dot
 id|truncate
-suffix:colon
+op_assign
 id|ext3_truncate
 comma
 multiline_comment|/* BKL held */
+dot
 id|setattr
-suffix:colon
+op_assign
 id|ext3_setattr
 comma
 multiline_comment|/* BKL held */

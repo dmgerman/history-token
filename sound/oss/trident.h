@@ -1348,5 +1348,12 @@ r_return
 id|r
 suffix:semicolon
 )brace
+macro_line|#ifdef DEBUG
+DECL|macro|TRDBG
+mdefine_line|#define TRDBG(msg, args...) do {          &bslash;&n;        printk(KERN_DEBUG msg , ##args ); &bslash;&n;} while (0)
+macro_line|#else /* !defined(DEBUG) */ 
+DECL|macro|TRDBG
+mdefine_line|#define TRDBG(msg, args...) do { } while (0)
+macro_line|#endif /* DEBUG */ 
 macro_line|#endif /* __TRID4DWAVE_H */
 eof

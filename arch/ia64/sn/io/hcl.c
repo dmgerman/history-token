@@ -1857,7 +1857,8 @@ id|name
 suffix:semicolon
 id|target_handle
 op_assign
-id|devfs_find_handle
+id|devfs_get_handle
+c_func
 (paren
 id|from
 comma
@@ -1873,6 +1874,13 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Yes traverse symbolic links */
+id|devfs_put
+c_func
+(paren
+id|target_handle
+)paren
+suffix:semicolon
+multiline_comment|/* Assume we&squot;re the owner */
 r_if
 c_cond
 (paren
@@ -2682,7 +2690,7 @@ id|remainder
 op_star
 id|vertex_handle_ptr
 op_assign
-id|devfs_find_handle
+id|devfs_get_handle
 c_func
 (paren
 id|start_vertex_handle
@@ -2704,6 +2712,14 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* traverse symlinks */
+id|devfs_put
+c_func
+(paren
+op_star
+id|vertex_handle_ptr
+)paren
+suffix:semicolon
+multiline_comment|/* Assume we&squot;re the owner */
 r_if
 c_cond
 (paren
@@ -2721,14 +2737,14 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * hwgraph_traverse - Find and return the devfs handle starting from de.&n; *&n; */
+multiline_comment|/*&n; * hwgraph_traverse - Find and return the devfs handle starting from dir.&n; *&n; */
 id|graph_error_t
 DECL|function|hwgraph_traverse
 id|hwgraph_traverse
 c_func
 (paren
 id|devfs_handle_t
-id|de
+id|dir
 comma
 r_char
 op_star
@@ -2743,10 +2759,10 @@ multiline_comment|/* &n;&t; * get the directory entry (path should end in a dire
 op_star
 id|found
 op_assign
-id|devfs_find_handle
+id|devfs_get_handle
 c_func
 (paren
-id|de
+id|dir
 comma
 multiline_comment|/* start dir */
 id|path
@@ -2765,6 +2781,14 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* traverse symlinks */
+id|devfs_put
+c_func
+(paren
+op_star
+id|found
+)paren
+suffix:semicolon
+multiline_comment|/* Assume we&squot;re the owner */
 r_if
 c_cond
 (paren
@@ -2792,8 +2816,12 @@ op_star
 id|path
 )paren
 (brace
-r_return
-id|devfs_find_handle
+id|devfs_handle_t
+id|de
+suffix:semicolon
+id|de
+op_assign
+id|devfs_get_handle
 c_func
 (paren
 l_int|NULL
@@ -2814,7 +2842,16 @@ multiline_comment|/* char | block */
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* traverse symlinks */
+id|devfs_put
+c_func
+(paren
+id|de
+)paren
+suffix:semicolon
+multiline_comment|/* Assume we&squot;re the owner */
+r_return
+id|de
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * hwgraph_path_to_dev - Returns the devfs_handle_t of the given path ..&n; *&t;We only deal with devfs handle and not devfs_handle_t.&n;*/
 id|devfs_handle_t
@@ -2842,21 +2879,25 @@ r_return
 id|de
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * hwgraph_block_device_get - return the handle of the block device file.&n; *&t;The assumption here is that de is a directory.&n;*/
+multiline_comment|/*&n; * hwgraph_block_device_get - return the handle of the block device file.&n; *&t;The assumption here is that dir is a directory.&n;*/
 id|devfs_handle_t
 DECL|function|hwgraph_block_device_get
 id|hwgraph_block_device_get
 c_func
 (paren
 id|devfs_handle_t
-id|de
+id|dir
 )paren
 (brace
-r_return
-id|devfs_find_handle
+id|devfs_handle_t
+id|de
+suffix:semicolon
+id|de
+op_assign
+id|devfs_get_handle
 c_func
 (paren
-id|de
+id|dir
 comma
 multiline_comment|/* start dir */
 l_string|&quot;block&quot;
@@ -2875,22 +2916,36 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* traverse symlinks */
+id|devfs_put
+c_func
+(paren
+id|de
+)paren
+suffix:semicolon
+multiline_comment|/* Assume we&squot;re the owner */
+r_return
+id|de
+suffix:semicolon
 )brace
-multiline_comment|/*&n; * hwgraph_char_device_get - return the handle of the char device file.&n; *      The assumption here is that de is a directory.&n;*/
+multiline_comment|/*&n; * hwgraph_char_device_get - return the handle of the char device file.&n; *      The assumption here is that dir is a directory.&n;*/
 id|devfs_handle_t
 DECL|function|hwgraph_char_device_get
 id|hwgraph_char_device_get
 c_func
 (paren
 id|devfs_handle_t
-id|de
+id|dir
 )paren
 (brace
-r_return
-id|devfs_find_handle
+id|devfs_handle_t
+id|de
+suffix:semicolon
+id|de
+op_assign
+id|devfs_get_handle
 c_func
 (paren
-id|de
+id|dir
 comma
 multiline_comment|/* start dir */
 l_string|&quot;char&quot;
@@ -2909,6 +2964,16 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* traverse symlinks */
+id|devfs_put
+c_func
+(paren
+id|de
+)paren
+suffix:semicolon
+multiline_comment|/* Assume we&squot;re the owner */
+r_return
+id|de
+suffix:semicolon
 )brace
 multiline_comment|/*&n;** Inventory is now associated with a vertex in the graph.  For items that&n;** belong in the inventory but have no vertex &n;** (e.g. old non-graph-aware drivers), we create a bogus vertex under the &n;** INFO_LBL_INVENT name.&n;**&n;** For historical reasons, we prevent exact duplicate entries from being added&n;** to a single vertex.&n;*/
 multiline_comment|/*&n; * hwgraph_inventory_add - Adds an inventory entry into de.&n; */

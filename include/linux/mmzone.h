@@ -228,11 +228,11 @@ DECL|member|node_id
 r_int
 id|node_id
 suffix:semicolon
-DECL|member|node_next
+DECL|member|pgdat_next
 r_struct
 id|pglist_data
 op_star
-id|node_next
+id|pgdat_next
 suffix:semicolon
 DECL|typedef|pg_data_t
 )brace
@@ -343,6 +343,71 @@ r_extern
 id|pg_data_t
 id|contig_page_data
 suffix:semicolon
+multiline_comment|/**&n; * for_each_pgdat - helper macro to iterate over all nodes&n; * @pgdat - pointer to a pg_data_t variable&n; *&n; * Meant to help with common loops of the form&n; * pgdat = pgdat_list;&n; * while(pgdat) {&n; * &t;...&n; * &t;pgdat = pgdat-&gt;pgdat_next;&n; * }&n; */
+DECL|macro|for_each_pgdat
+mdefine_line|#define for_each_pgdat(pgdat) &bslash;&n;&t;for (pgdat = pgdat_list; pgdat; pgdat = pgdat-&gt;pgdat_next)
+multiline_comment|/*&n; * next_zone - helper magic for for_each_zone()&n; * Thanks to William Lee Irwin III for this piece of ingenuity.&n; */
+DECL|function|next_zone
+r_static
+r_inline
+id|zone_t
+op_star
+id|next_zone
+c_func
+(paren
+id|zone_t
+op_star
+id|zone
+)paren
+(brace
+id|pg_data_t
+op_star
+id|pgdat
+op_assign
+id|zone-&gt;zone_pgdat
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|zone
+op_minus
+id|pgdat-&gt;node_zones
+OL
+id|MAX_NR_ZONES
+op_minus
+l_int|1
+)paren
+id|zone
+op_increment
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|pgdat-&gt;pgdat_next
+)paren
+(brace
+id|pgdat
+op_assign
+id|pgdat-&gt;pgdat_next
+suffix:semicolon
+id|zone
+op_assign
+id|pgdat-&gt;node_zones
+suffix:semicolon
+)brace
+r_else
+id|zone
+op_assign
+l_int|NULL
+suffix:semicolon
+r_return
+id|zone
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * for_each_zone - helper macro to iterate over all memory zones&n; * @zone - pointer to zone_t variable&n; *&n; * The user only needs to declare the zone variable, for_each_zone&n; * fills it in. This basically means for_each_zone() is an&n; * easier to read version of this piece of code:&n; *&n; * for (pgdat = pgdat_list; pgdat; pgdat = pgdat-&gt;node_next)&n; * &t;for (i = 0; i &lt; MAX_NR_ZONES; ++i) {&n; * &t;&t;zone_t * z = pgdat-&gt;node_zones + i;&n; * &t;&t;...&n; * &t;}&n; * }&n; */
+DECL|macro|for_each_zone
+mdefine_line|#define for_each_zone(zone) &bslash;&n;&t;for (zone = pgdat_list-&gt;node_zones; zone; zone = next_zone(zone))
 macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|NODE_DATA
 mdefine_line|#define NODE_DATA(nid)&t;&t;(&amp;contig_page_data)

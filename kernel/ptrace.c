@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -643,7 +644,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|put_page
+id|page_cache_release
 c_func
 (paren
 id|page

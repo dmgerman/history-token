@@ -1132,6 +1132,10 @@ id|server-&gt;lru_busy
 suffix:semicolon
 id|nfsv3_try_again
 suffix:colon
+id|server-&gt;caps
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Check NFS protocol revision and initialize RPC op vector&n;&t; * and file handle pool. */
 r_if
 c_cond
@@ -1150,6 +1154,10 @@ suffix:semicolon
 id|version
 op_assign
 l_int|3
+suffix:semicolon
+id|server-&gt;caps
+op_or_assign
+id|NFS_CAP_READDIRPLUS
 suffix:semicolon
 r_if
 c_cond
@@ -2822,6 +2830,9 @@ id|fattr
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Don&squot;t use READDIRPLUS on directories that we believe are too large */
+DECL|macro|NFS_LIMIT_READDIRPLUS
+mdefine_line|#define NFS_LIMIT_READDIRPLUS (8*PAGE_SIZE)
 multiline_comment|/*&n; * Look up the inode by super block and fattr-&gt;fileid.&n; */
 r_static
 r_struct
@@ -3018,6 +3029,29 @@ op_assign
 op_amp
 id|nfs_dir_operations
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|nfs_server_capable
+c_func
+(paren
+id|inode
+comma
+id|NFS_CAP_READDIRPLUS
+)paren
+op_logical_and
+id|fattr-&gt;size
+op_le
+id|NFS_LIMIT_READDIRPLUS
+)paren
+id|NFS_FLAGS
+c_func
+(paren
+id|inode
+)paren
+op_or_assign
+id|NFS_INO_ADVISE_RDPLUS
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -3075,7 +3109,7 @@ c_func
 id|inode
 )paren
 op_assign
-id|jiffies
+id|fattr-&gt;timestamp
 suffix:semicolon
 id|NFS_CACHE_CTIME
 c_func
@@ -3119,7 +3153,7 @@ c_func
 id|inode
 )paren
 op_assign
-id|jiffies
+id|fattr-&gt;timestamp
 suffix:semicolon
 id|NFS_CACHE_ISIZE
 c_func
@@ -4494,6 +4528,25 @@ r_goto
 id|out_err
 suffix:semicolon
 )brace
+multiline_comment|/* Throw out obsolete READDIRPLUS attributes */
+r_if
+c_cond
+(paren
+id|time_before
+c_func
+(paren
+id|fattr-&gt;timestamp
+comma
+id|NFS_READTIME
+c_func
+(paren
+id|inode
+)paren
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure the inode&squot;s type hasn&squot;t changed.&n;&t; */
 r_if
 c_cond
@@ -4559,7 +4612,7 @@ c_func
 id|inode
 )paren
 op_assign
-id|jiffies
+id|fattr-&gt;timestamp
 suffix:semicolon
 multiline_comment|/*&n;&t; * Note: NFS_CACHE_ISIZE(inode) reflects the state of the cache.&n;&t; *       NOT inode-&gt;i_size!!!&n;&t; */
 r_if
@@ -4716,7 +4769,7 @@ c_func
 id|inode
 )paren
 op_assign
-id|jiffies
+id|fattr-&gt;timestamp
 suffix:semicolon
 id|NFS_CACHE_MTIME
 c_func

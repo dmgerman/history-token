@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;linux/mm/mprotect.c&n; *&n; *  (C) Copyright 1994 Linus Torvalds&n; */
+multiline_comment|/*&n; *  mm/mprotect.c&n; *&n; *  (C) Copyright 1994 Linus Torvalds&n; *&n; *  Address space accounting code&t;&lt;alan@redhat.com&gt;&n; *  (C) Copyright 2002 Red Hat Inc, All Rights Reserved&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -1267,6 +1267,12 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
+r_int
+r_int
+id|charged
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1388,8 +1394,42 @@ c_cond
 (paren
 id|error
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|newflags
+op_amp
+id|PROT_WRITE
+)paren
+id|vm_unacct_memory
+c_func
+(paren
+id|charged
+)paren
+suffix:semicolon
 r_return
 id|error
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Delayed accounting for reduction of memory use - done last to&n;&t; * avoid allocation races&n;&t; */
+r_if
+c_cond
+(paren
+id|charged
+op_logical_and
+op_logical_neg
+(paren
+id|newflags
+op_amp
+id|PROT_WRITE
+)paren
+)paren
+id|vm_unacct_memory
+c_func
+(paren
+id|charged
+)paren
 suffix:semicolon
 id|change_protection
 c_func

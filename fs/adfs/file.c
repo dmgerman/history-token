@@ -34,6 +34,10 @@ id|write
 suffix:colon
 id|generic_file_write
 comma
+id|sendfile
+suffix:colon
+id|generic_file_sendfile
+comma
 )brace
 suffix:semicolon
 DECL|variable|adfs_file_inode_operations

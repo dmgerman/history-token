@@ -3370,7 +3370,10 @@ op_star
 )paren
 id|scsi_result
 comma
-l_int|256
+id|scsi_cmd
+(braket
+l_int|4
+)braket
 comma
 id|SCSI_TIMEOUT
 op_plus

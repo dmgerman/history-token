@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -5613,7 +5614,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
-id|put_page
+id|page_cache_release
 c_func
 (paren
 id|page

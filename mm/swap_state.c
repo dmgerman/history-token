@@ -106,9 +106,8 @@ id|swapper_space.private_list
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef SWAP_CACHE_INFO
 DECL|macro|INC_CACHE_INFO
-mdefine_line|#define INC_CACHE_INFO(x)&t;(swap_cache_info.x++)
+mdefine_line|#define INC_CACHE_INFO(x)&t;do { swap_cache_info.x++; } while (0)
 r_static
 r_struct
 (brace
@@ -173,10 +172,6 @@ id|swap_cache_info.exist_race
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|macro|INC_CACHE_INFO
-mdefine_line|#define INC_CACHE_INFO(x)&t;do { } while (0)
-macro_line|#endif
 DECL|function|add_to_swap_cache
 r_int
 id|add_to_swap_cache

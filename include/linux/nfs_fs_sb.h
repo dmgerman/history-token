@@ -26,6 +26,12 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* various flags */
+DECL|member|caps
+r_int
+r_int
+id|caps
+suffix:semicolon
+multiline_comment|/* server capabilities */
 DECL|member|rsize
 r_int
 r_int
@@ -127,5 +133,8 @@ id|addr
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Server capabilities */
+DECL|macro|NFS_CAP_READDIRPLUS
+mdefine_line|#define NFS_CAP_READDIRPLUS&t;(1)
 macro_line|#endif
 eof

@@ -73,6 +73,11 @@ suffix:colon
 id|generic_file_mmap
 comma
 multiline_comment|/* Mmap file. */
+id|sendfile
+suffix:colon
+id|generic_file_sendfile
+comma
+multiline_comment|/* Zero-copy data send */
 id|open
 suffix:colon
 id|ntfs_file_open

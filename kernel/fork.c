@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/namespace.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
+macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -692,6 +693,12 @@ suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
+r_int
+r_int
+id|charge
+op_assign
+l_int|0
+suffix:semicolon
 id|flush_cache_mm
 c_func
 (paren
@@ -788,6 +795,45 @@ id|VM_DONTCOPY
 )paren
 (brace
 r_continue
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t; * FIXME: shared writable map accounting should be one off&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|mpnt-&gt;vm_flags
+op_amp
+id|VM_ACCOUNT
+)paren
+(brace
+r_int
+r_int
+id|len
+op_assign
+(paren
+id|mpnt-&gt;vm_end
+op_minus
+id|mpnt-&gt;vm_start
+)paren
+op_rshift
+id|PAGE_SHIFT
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|vm_enough_memory
+c_func
+(paren
+id|len
+)paren
+)paren
+r_goto
+id|fail_nomem
+suffix:semicolon
+id|charge
+op_add_assign
+id|len
 suffix:semicolon
 )brace
 id|tmp
@@ -965,7 +1011,7 @@ c_func
 id|mm
 )paren
 suffix:semicolon
-id|fail_nomem
+id|out
 suffix:colon
 id|flush_tlb_mm
 c_func
@@ -975,6 +1021,17 @@ id|current-&gt;mm
 suffix:semicolon
 r_return
 id|retval
+suffix:semicolon
+id|fail_nomem
+suffix:colon
+id|vm_unacct_memory
+c_func
+(paren
+id|charge
+)paren
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 DECL|variable|__cacheline_aligned_in_smp

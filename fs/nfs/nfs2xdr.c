@@ -433,6 +433,10 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|fattr-&gt;timestamp
+op_assign
+id|jiffies
+suffix:semicolon
 r_return
 id|p
 suffix:semicolon

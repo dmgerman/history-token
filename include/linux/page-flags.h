@@ -76,15 +76,10 @@ r_int
 r_int
 id|nr_page_table_pages
 suffix:semicolon
-DECL|member|nr_pte_chain_pages
+DECL|member|nr_reverse_maps
 r_int
 r_int
-id|nr_pte_chain_pages
-suffix:semicolon
-DECL|member|used_pte_chains_bytes
-r_int
-r_int
-id|used_pte_chains_bytes
+id|nr_reverse_maps
 suffix:semicolon
 )brace
 id|____cacheline_aligned_in_smp
@@ -242,6 +237,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 r_while
 c_loop
 (paren
@@ -273,6 +269,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 DECL|function|pte_chain_unlock
 r_static
@@ -287,6 +284,7 @@ op_star
 id|page
 )paren
 (brace
+macro_line|#ifdef CONFIG_SMP
 id|smp_mb__before_clear_bit
 c_func
 (paren
@@ -301,6 +299,7 @@ op_amp
 id|page-&gt;flags
 )paren
 suffix:semicolon
+macro_line|#endif
 id|preempt_enable
 c_func
 (paren

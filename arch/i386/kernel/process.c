@@ -2241,6 +2241,15 @@ id|tss-&gt;esp0
 op_assign
 id|next-&gt;esp0
 suffix:semicolon
+multiline_comment|/*&n;&t; * Load the per-thread Thread-Local Storage descriptor.&n;&t; *&n;&t; * NOTE: it&squot;s faster to do the two stores unconditionally&n;&t; * than to branch away.&n;&t; */
+id|load_TLS_desc
+c_func
+(paren
+id|next
+comma
+id|cpu
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Save away %fs and %gs. No need to save %es and %ds, as&n;&t; * those are always kernel segments while inside the kernel.&n;&t; */
 id|asm
 r_volatile
@@ -2310,15 +2319,6 @@ id|next-&gt;gs
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Load the per-thread Thread-Local Storage descriptor.&n;&t; *&n;&t; * NOTE: it&squot;s faster to do the two stores unconditionally&n;&t; * than to branch away.&n;&t; */
-id|load_TLS_desc
-c_func
-(paren
-id|next
-comma
-id|cpu
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Now maybe reload the debug registers&n;&t; */
 r_if
 c_cond
@@ -2891,10 +2891,6 @@ id|base
 comma
 r_int
 r_int
-id|limit
-comma
-r_int
-r_int
 id|flags
 )paren
 (brace
@@ -2907,10 +2903,6 @@ op_amp
 id|current-&gt;thread
 suffix:semicolon
 r_int
-id|limit_in_pages
-op_assign
-l_int|0
-comma
 id|writable
 op_assign
 l_int|0
@@ -2931,18 +2923,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/* check limit */
-r_if
-c_cond
-(paren
-id|limit
-op_amp
-l_int|0xfff00000
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
 multiline_comment|/*&n;&t; * Clear the TLS?&n;&t; */
 r_if
 c_cond
@@ -2958,14 +2938,6 @@ id|get_cpu
 c_func
 (paren
 )paren
-suffix:semicolon
-id|t-&gt;tls_base
-op_assign
-id|t-&gt;tls_limit
-op_assign
-id|t-&gt;tls_flags
-op_assign
-l_int|0
 suffix:semicolon
 id|t-&gt;tls_desc.a
 op_assign
@@ -2995,17 +2967,6 @@ c_cond
 (paren
 id|flags
 op_amp
-id|TLS_FLAG_LIMIT_IN_PAGES
-)paren
-id|limit_in_pages
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|flags
-op_amp
 id|TLS_FLAG_WRITABLE
 )paren
 id|writable
@@ -3020,18 +2981,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|t-&gt;tls_base
-op_assign
-id|base
-suffix:semicolon
-id|t-&gt;tls_limit
-op_assign
-id|limit
-suffix:semicolon
-id|t-&gt;tls_flags
-op_assign
-id|flags
-suffix:semicolon
 id|t-&gt;tls_desc.a
 op_assign
 (paren
@@ -3044,11 +2993,7 @@ op_lshift
 l_int|16
 )paren
 op_or
-(paren
-id|limit
-op_amp
-l_int|0x0ffff
-)paren
+l_int|0xffff
 suffix:semicolon
 id|t-&gt;tls_desc.b
 op_assign
@@ -3068,11 +3013,7 @@ op_rshift
 l_int|16
 )paren
 op_or
-(paren
-id|limit
-op_amp
 l_int|0xf0000
-)paren
 op_or
 (paren
 id|writable
@@ -3093,7 +3034,7 @@ l_int|22
 )paren
 op_or
 (paren
-id|limit_in_pages
+l_int|1
 op_lshift
 l_int|23
 )paren

@@ -3990,7 +3990,7 @@ op_star
 )paren
 id|buffer
 comma
-l_int|512
+l_int|255
 comma
 id|SD_TIMEOUT
 comma

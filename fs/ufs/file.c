@@ -37,6 +37,10 @@ id|open
 suffix:colon
 id|generic_file_open
 comma
+id|sendfile
+suffix:colon
+id|generic_file_sendfile
+comma
 )brace
 suffix:semicolon
 DECL|variable|ufs_file_inode_operations
