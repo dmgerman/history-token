@@ -8,24 +8,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/isdn/capiutil.h&gt;
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;CAPI4Linux: CAPI message conversion support&quot;
-)paren
-suffix:semicolon
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Carsten Paeth&quot;
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* from CAPI2.0 DDK AVM Berlin GmbH */
 macro_line|#ifndef CONFIG_ISDN_DRV_AVMB1_VERBOSE_REASON
 DECL|function|capi_info2str
@@ -4084,45 +4066,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|capi_info2str
-)paren
-suffix:semicolon
-DECL|function|capiutil_init
-r_static
-r_int
-id|__init
-id|capiutil_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|capiutil_exit
-r_static
-r_void
-id|__exit
-id|capiutil_exit
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
-DECL|variable|capiutil_init
-id|module_init
-c_func
-(paren
-id|capiutil_init
-)paren
-suffix:semicolon
-DECL|variable|capiutil_exit
-id|module_exit
-c_func
-(paren
-id|capiutil_exit
 )paren
 suffix:semicolon
 eof
