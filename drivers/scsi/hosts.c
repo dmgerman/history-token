@@ -5,17 +5,16 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &quot;scsi_priv.h&quot;
+macro_line|#include &quot;scsi_logging.h&quot;
 r_static
 id|LIST_HEAD
 c_func
@@ -1283,6 +1282,20 @@ id|shost-&gt;highmem_io
 op_assign
 id|shost_tp-&gt;highmem_io
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|shost_tp-&gt;max_sectors
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Driver imposes no hard sector transfer limit.&n;&t;&t; * start at machine infinity initially.&n;&t;&t; */
+id|shost-&gt;max_sectors
+op_assign
+id|SCSI_DEFAULT_MAX_SECTORS
+suffix:semicolon
+)brace
+r_else
 id|shost-&gt;max_sectors
 op_assign
 id|shost_tp-&gt;max_sectors

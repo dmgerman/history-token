@@ -2157,15 +2157,6 @@ id|ScsiPassThruReq
 op_assign
 l_int|NULL
 suffix:semicolon
-singleline_comment|// if (!SDpnt-&gt;was_reset &amp;&amp; SDpnt-&gt;scsi_request_fn)
-singleline_comment|//  (*SDpnt-&gt;scsi_request_fn)();
-id|wake_up
-c_func
-(paren
-op_amp
-id|SDpnt-&gt;scpnt_wait
-)paren
-suffix:semicolon
 singleline_comment|// need to pass data back to user (space)?
 r_if
 c_cond
@@ -5245,15 +5236,6 @@ suffix:semicolon
 id|SCpnt
 op_assign
 l_int|NULL
-suffix:semicolon
-singleline_comment|// if (!SDpnt-&gt;was_reset &amp;&amp; SDpnt-&gt;scsi_request_fn)
-singleline_comment|// &t;(*SDpnt-&gt;scsi_request_fn)();
-id|wake_up
-c_func
-(paren
-op_amp
-id|SDpnt-&gt;scpnt_wait
-)paren
 suffix:semicolon
 singleline_comment|// printk(&quot;   LEAVING cpqfcTS_TargetDeviceReset() - return SUCCESS &bslash;n&quot;);
 r_return

@@ -170,7 +170,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|do_mac53c94_interrupt
 c_func
 (paren
@@ -1427,7 +1427,7 @@ id|cmd
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|do_mac53c94_interrupt
 id|do_mac53c94_interrupt
 c_func
@@ -1490,6 +1490,9 @@ id|dev-&gt;host_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static

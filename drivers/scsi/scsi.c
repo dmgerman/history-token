@@ -17,6 +17,8 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &quot;scsi_priv.h&quot;
+macro_line|#include &quot;scsi_logging.h&quot;
 multiline_comment|/*&n; * Definitions and constants.&n; */
 DECL|macro|MIN_RESET_DELAY
 mdefine_line|#define MIN_RESET_DELAY (2*HZ)
@@ -127,18 +129,6 @@ id|LIST_HEAD
 c_func
 (paren
 id|scsi_dev_info_list
-)paren
-suffix:semicolon
-multiline_comment|/* &n; * Function prototypes.&n; */
-r_extern
-r_void
-id|scsi_times_out
-c_func
-(paren
-r_struct
-id|scsi_cmnd
-op_star
-id|cmd
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -1557,10 +1547,6 @@ r_sizeof
 id|cmd-&gt;data_cmnd
 )paren
 )paren
-suffix:semicolon
-id|cmd-&gt;reset_chain
-op_assign
-l_int|NULL
 suffix:semicolon
 id|cmd-&gt;serial_number
 op_assign

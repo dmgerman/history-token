@@ -1071,12 +1071,6 @@ id|host-&gt;irq
 op_assign
 id|fc-&gt;irq
 suffix:semicolon
-macro_line|#ifdef __sparc_v9__
-id|host-&gt;unchecked_isa_dma
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 id|fc-&gt;channels
 op_assign
 id|inq-&gt;channels

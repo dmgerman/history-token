@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
+macro_line|#include &quot;scsi_logging.h&quot;
 DECL|macro|NORMAL_RETRIES
 mdefine_line|#define NORMAL_RETRIES&t;&t;&t;5
 DECL|macro|IOCTL_NORMAL_TIMEOUT
