@@ -35,7 +35,6 @@ macro_line|#if defined(CONFIG_ATM_CLIP) || defined(CONFIG_ATM_CLIP_MODULE)
 macro_line|#include &lt;net/atmclip.h&gt;
 macro_line|#endif
 macro_line|#include &lt;net/ip.h&gt;
-macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
@@ -552,41 +551,6 @@ id|csum_partial_copy_fromiovecend
 )paren
 suffix:semicolon
 multiline_comment|/* UDP/TCP exported functions for TCPv6 */
-DECL|variable|tcp_init_xmit_timers
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcp_init_xmit_timers
-)paren
-suffix:semicolon
-DECL|variable|tcp_clear_xmit_timers
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcp_clear_xmit_timers
-)paren
-suffix:semicolon
-DECL|variable|tcp_statistics
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcp_statistics
-)paren
-suffix:semicolon
-DECL|variable|tcp_delete_keepalive_timer
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcp_delete_keepalive_timer
-)paren
-suffix:semicolon
-DECL|variable|tcp_reset_keepalive_timer
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcp_reset_keepalive_timer
-)paren
-suffix:semicolon
 DECL|variable|net_statistics
 id|EXPORT_SYMBOL
 c_func
@@ -594,12 +558,6 @@ c_func
 id|net_statistics
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SYSCTL
-r_extern
-r_int
-id|sysctl_tcp_tw_recycle
-suffix:semicolon
-macro_line|#endif
 DECL|variable|ip_generic_getfrag
 id|EXPORT_SYMBOL
 c_func

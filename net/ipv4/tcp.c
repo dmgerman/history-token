@@ -10545,6 +10545,13 @@ c_func
 id|tcp_sockets_allocated
 )paren
 suffix:semicolon
+DECL|variable|tcp_statistics
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_statistics
+)paren
+suffix:semicolon
 DECL|variable|tcp_timewait_cachep
 id|EXPORT_SYMBOL
 c_func
