@@ -1304,7 +1304,7 @@ op_star
 id|hdr
 )paren
 (brace
-multiline_comment|/* Received rthdr:&n;&n;&t;   [ H1 -&gt; H2 -&gt; ... H_prev ]  daddr=ME&n;&n;&t;   Inverted result:&n;&t;   [ H_prev -&gt; ... -&gt; H1 ] daddr =sender&n;&n;&t;   Note, that IP output engine will rewrire this rthdr&n;&t;   by rotating it left by one addr.&n;&t; */
+multiline_comment|/* Received rthdr:&n;&n;&t;   [ H1 -&gt; H2 -&gt; ... H_prev ]  daddr=ME&n;&n;&t;   Inverted result:&n;&t;   [ H_prev -&gt; ... -&gt; H1 ] daddr =sender&n;&n;&t;   Note, that IP output engine will rewrite this rthdr&n;&t;   by rotating it left by one addr.&n;&t; */
 r_int
 id|n
 comma

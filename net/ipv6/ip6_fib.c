@@ -3216,7 +3216,7 @@ op_assign
 id|fn-&gt;parent
 suffix:semicolon
 )brace
-multiline_comment|/* No more references are possiible at this point. */
+multiline_comment|/* No more references are possible at this point. */
 r_if
 c_cond
 (paren

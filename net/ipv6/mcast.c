@@ -4379,6 +4379,17 @@ c_cond
 id|mc
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ipv6_addr_any
+c_func
+(paren
+id|src_addr
+)paren
+)paren
+(brace
 r_struct
 id|ip6_sf_list
 op_star
@@ -4461,6 +4472,13 @@ op_amp
 id|mc-&gt;mca_lock
 )paren
 suffix:semicolon
+)brace
+r_else
+id|rv
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* don&squot;t filter unspecified source */
 )brace
 id|read_unlock_bh
 c_func
