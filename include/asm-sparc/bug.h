@@ -2,15 +2,28 @@ multiline_comment|/* $Id$ */
 macro_line|#ifndef _SPARC_BUG_H
 DECL|macro|_SPARC_BUG_H
 mdefine_line|#define _SPARC_BUG_H
-multiline_comment|/*&n; * XXX I am hitting compiler bugs with __builtin_trap. This has&n; * hit me before and rusty was blaming his netfilter bugs on&n; * this so lets disable it. - Anton&n; */
-macro_line|#if 0
-multiline_comment|/* We need the mb()&squot;s so we don&squot;t trigger a compiler bug - Anton */
-mdefine_line|#define BUG() do { &bslash;&n;&t;mb(); &bslash;&n;&t;__builtin_trap(); &bslash;&n;&t;mb(); &bslash;&n;} while(0)
+macro_line|#ifdef CONFIG_DEBUG_BUGVERBOSE
+r_extern
+r_void
+id|do_BUG
+c_func
+(paren
+r_const
+r_char
+op_star
+id|file
+comma
+r_int
+id|line
+)paren
+suffix:semicolon
+DECL|macro|BUG
+mdefine_line|#define BUG() do {&t;&t;&t;&t;&t;&bslash;&n;&t;do_BUG(__FILE__, __LINE__);&t;&t;&t;&bslash;&n;&t;__builtin_trap();&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#else
 DECL|macro|BUG
-mdefine_line|#define BUG() do { &bslash;&n;&t;printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); *(int *)0=0; &bslash;&n;} while (0)
+mdefine_line|#define BUG()&t;&t;__builtin_trap()
 macro_line|#endif
 DECL|macro|PAGE_BUG
-mdefine_line|#define PAGE_BUG(page)&t;BUG()
+mdefine_line|#define PAGE_BUG(page) do { &bslash;&n;&t;BUG(); &bslash;&n;} while (0)
 macro_line|#endif
 eof
