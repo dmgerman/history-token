@@ -9085,7 +9085,9 @@ id|smc-&gt;media.expires
 op_assign
 id|jiffies
 op_plus
-l_int|1
+id|HZ
+op_div
+l_int|100
 suffix:semicolon
 id|add_timer
 c_func

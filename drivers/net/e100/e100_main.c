@@ -1,6 +1,6 @@
 multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;*******************************************************************************/
 multiline_comment|/**********************************************************************&n;*                                                                     *&n;* INTEL CORPORATION                                                   *&n;*                                                                     *&n;* This software is supplied under the terms of the license included   *&n;* above.  All use of this driver must be in accordance with the terms *&n;* of that license.                                                    *&n;*                                                                     *&n;* Module Name:  e100_main.c                                           *&n;*                                                                     *&n;* Abstract:     Functions for the driver entry points like load,      *&n;*               unload, open and close. All board specific calls made *&n;*               by the network interface section of the driver.       *&n;*                                                                     *&n;* Environment:  This file is intended to be specific to the Linux     *&n;*               operating system.                                     *&n;*                                                                     *&n;**********************************************************************/
-multiline_comment|/* Change Log&n; * &n; * 2.3.13       05/08/03&n; * o Feature remove: /proc/net/PRO_LAN_Adapters support gone completely&n; * o Feature remove: IDIAG support (use ethtool -t instead)&n; * o Cleanup: fixed spelling mistakes found by community&n; * o Feature add: ethtool cable diag test&n; * o Feature add: ethtool parameter support (ring size, xsum, flow ctrl)&n; * o Cleanup: move e100_asf_enable under CONFIG_PM to avoid warning&n; *   [Stephen Rothwell (sfr@canb.auug.org.au)]&n; * o Bug fix: don&squot;t call any netif_carrier_* until netdev registered.&n; *   [Andrew Morton (akpm@digeo.com)]&n; * o Cleanup: replace (skb-&gt;len - skb-&gt;data_len) with skb_headlen(skb)&n; *   [jmorris@intercode.com.au]&n; * o Bug fix: cleanup of Tx skbs after running ethtool diags&n; * o Bug fix: incorrect reporting of ethtool diag overall results&n; * o Bug fix: must hold xmit_lock before stopping queue in ethtool&n; *   operations that require reset h/w and driver structures.&n; * o Bug fix: statistic command failure would stop statistic collection.&n; * &n; * 2.2.21&t;02/11/03&n; * o Removed marketing brand strings. Instead, Using generic string &n; *   &quot;Intel(R) PRO/100 Network Connection&quot; for all adapters.&n; * o Implemented ethtool -S option&n; * o Strip /proc/net/PRO_LAN_Adapters files for kernel driver&n; * o Bug fix: Read wrong byte in EEPROM when offset is odd number&n; * o Bug fix: PHY loopback test fails on ICH devices&n; * o Bug fix: System panic on e100_close when repeating Hot Remove and &n; *   Add in a team&n; * o Bug fix: Linux Bonding driver claims adapter&squot;s link loss because of&n; *   not updating last_rx field&n; * o Bug fix: e100 does not check validity of MAC address&n; * o New feature: added ICH5 support&n; * &n; * 2.1.27&t;11/20/02&n; */
+multiline_comment|/* Change Log&n; * &n; * 2.3.18       07/08/03&n; * o Bug fix: read skb-&gt;len after freeing skb&n; *   [Andrew Morton] akpm@zip.com.au&n; * o Bug fix: 82557 (with National PHY) timeout during init&n; *   [Adam Kropelin] akropel1@rochester.rr.com&n; * o Feature add: allow to change Wake On LAN when EEPROM disabled&n; * &n; * 2.3.13       05/08/03&n; * o Feature remove: /proc/net/PRO_LAN_Adapters support gone completely&n; * o Feature remove: IDIAG support (use ethtool -t instead)&n; * o Cleanup: fixed spelling mistakes found by community&n; * o Feature add: ethtool cable diag test&n; * o Feature add: ethtool parameter support (ring size, xsum, flow ctrl)&n; * o Cleanup: move e100_asf_enable under CONFIG_PM to avoid warning&n; *   [Stephen Rothwell (sfr@canb.auug.org.au)]&n; * o Bug fix: don&squot;t call any netif_carrier_* until netdev registered.&n; *   [Andrew Morton (akpm@digeo.com)]&n; * o Cleanup: replace (skb-&gt;len - skb-&gt;data_len) with skb_headlen(skb)&n; *   [jmorris@intercode.com.au]&n; * o Bug fix: cleanup of Tx skbs after running ethtool diags&n; * o Bug fix: incorrect reporting of ethtool diag overall results&n; * o Bug fix: must hold xmit_lock before stopping queue in ethtool&n; *   operations that require reset h/w and driver structures.&n; * o Bug fix: statistic command failure would stop statistic collection.&n; * &n; * 2.2.21&t;02/11/03&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
@@ -432,7 +432,7 @@ id|e100_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;2.3.13-k1&quot;
+l_string|&quot;2.3.18-k1&quot;
 suffix:semicolon
 DECL|variable|e100_full_driver_name
 r_const
@@ -2930,31 +2930,6 @@ id|bdp-&gt;wolopts
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Check if WoL is enabled on EEPROM */
-r_if
-c_cond
-(paren
-id|e100_eeprom_read
-c_func
-(paren
-id|bdp
-comma
-id|EEPROM_ID_WORD
-)paren
-op_amp
-id|BIT_5
-)paren
-(brace
-multiline_comment|/* Magic Packet WoL is enabled on device by default */
-multiline_comment|/* if EEPROM WoL bit is TRUE                        */
-id|bdp-&gt;wolsupported
-op_assign
-id|WAKE_MAGIC
-suffix:semicolon
-id|bdp-&gt;wolopts
-op_assign
-id|WAKE_MAGIC
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2980,6 +2955,27 @@ op_or_assign
 id|WAKE_UCAST
 op_or
 id|WAKE_ARP
+suffix:semicolon
+multiline_comment|/* Check if WoL is enabled on EEPROM */
+r_if
+c_cond
+(paren
+id|e100_eeprom_read
+c_func
+(paren
+id|bdp
+comma
+id|EEPROM_ID_WORD
+)paren
+op_amp
+id|BIT_5
+)paren
+(brace
+multiline_comment|/* Magic Packet WoL is enabled on device by default */
+multiline_comment|/* if EEPROM WoL bit is TRUE                        */
+id|bdp-&gt;wolopts
+op_assign
+id|WAKE_MAGIC
 suffix:semicolon
 )brace
 id|printk
