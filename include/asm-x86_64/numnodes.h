@@ -2,12 +2,8 @@ macro_line|#ifndef _ASM_X8664_NUMNODES_H
 DECL|macro|_ASM_X8664_NUMNODES_H
 mdefine_line|#define _ASM_X8664_NUMNODES_H 1
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_DISCONTIGMEM
-DECL|macro|MAX_NUMNODES
-mdefine_line|#define MAX_NUMNODES 8&t;/* APIC limit currently */
-macro_line|#else
-DECL|macro|MAX_NUMNODES
-mdefine_line|#define MAX_NUMNODES 1
-macro_line|#endif
+multiline_comment|/* Max 8 Nodes - APIC limit currently */
+DECL|macro|NODES_SHIFT
+mdefine_line|#define NODES_SHIFT&t;3
 macro_line|#endif
 eof

@@ -13,10 +13,12 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 macro_line|#include &lt;asm/numnodes.h&gt;
 macro_line|#endif
-macro_line|#ifndef MAX_NUMNODES
-DECL|macro|MAX_NUMNODES
-mdefine_line|#define MAX_NUMNODES 1
+macro_line|#ifndef NODES_SHIFT
+DECL|macro|NODES_SHIFT
+mdefine_line|#define NODES_SHIFT&t;0
 macro_line|#endif
+DECL|macro|MAX_NUMNODES
+mdefine_line|#define MAX_NUMNODES&t;(1 &lt;&lt; NODES_SHIFT)
 multiline_comment|/* Free memory management - zoned buddy allocator.  */
 macro_line|#ifndef CONFIG_FORCE_MAX_ZONEORDER
 DECL|macro|MAX_ORDER

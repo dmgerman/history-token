@@ -226,7 +226,7 @@ r_struct
 id|kmem_list3
 id|lists
 suffix:semicolon
-multiline_comment|/* NUMA: kmem_3list_t&t;*nodelists[NR_NODES] */
+multiline_comment|/* NUMA: kmem_3list_t&t;*nodelists[MAX_NUMNODES] */
 DECL|member|objsize
 r_int
 r_int

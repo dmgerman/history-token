@@ -3,8 +3,6 @@ macro_line|#ifndef NUMAQ_H
 DECL|macro|NUMAQ_H
 mdefine_line|#define NUMAQ_H
 macro_line|#ifdef CONFIG_X86_NUMAQ
-DECL|macro|MAX_NUMNODES
-mdefine_line|#define MAX_NUMNODES&t;&t;16
 r_extern
 r_int
 id|get_memcfg_numaq

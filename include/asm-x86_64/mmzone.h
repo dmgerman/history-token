@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 DECL|macro|VIRTUAL_BUG_ON
 mdefine_line|#define VIRTUAL_BUG_ON(x) 
-macro_line|#include &lt;asm/numnodes.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 DECL|macro|MAXNODE
 mdefine_line|#define MAXNODE 8 
