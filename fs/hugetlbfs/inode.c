@@ -897,7 +897,7 @@ c_cond
 (paren
 op_logical_neg
 id|super_block
-op_or
+op_logical_or
 (paren
 id|super_block-&gt;s_flags
 op_amp
