@@ -13,7 +13,6 @@ macro_line|#include &lt;asm/sn/router.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/vector.h&gt;
-macro_line|#include &lt;asm/sn/arc/hinv.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
 macro_line|#include &lt;asm/sn/kldir.h&gt;
@@ -717,12 +716,11 @@ r_char
 id|pad2
 suffix:semicolon
 multiline_comment|/* pad out structure. */
-DECL|member|arcs_compt
-id|COMPONENT
+DECL|member|data
+r_void
 op_star
-id|arcs_compt
+id|data
 suffix:semicolon
-multiline_comment|/* ptr to the arcs struct for ease*/
 DECL|member|errinfo
 id|klconf_off_t
 id|errinfo
@@ -991,7 +989,8 @@ id|klinfo_t
 id|hub_info
 suffix:semicolon
 DECL|member|hub_flags
-id|uint
+r_int
+r_int
 id|hub_flags
 suffix:semicolon
 multiline_comment|/* PCFG_HUB_xxx flags */
@@ -1047,7 +1046,8 @@ id|klinfo_t
 id|hubuart_info
 suffix:semicolon
 DECL|member|hubuart_flags
-id|uint
+r_int
+r_int
 id|hubuart_flags
 suffix:semicolon
 multiline_comment|/* PCFG_HUB_xxx flags */
@@ -1393,7 +1393,8 @@ id|klinfo_t
 id|rou_info
 suffix:semicolon
 DECL|member|rou_flags
-id|uint
+r_int
+r_int
 id|rou_flags
 suffix:semicolon
 multiline_comment|/* PCFG_ROUTER_xxx flags */
@@ -1455,12 +1456,14 @@ id|old_gdoff0
 suffix:semicolon
 multiline_comment|/* for compatibility with older proms */
 DECL|member|cookie
-id|uint
+r_int
+r_int
 id|cookie
 suffix:semicolon
 multiline_comment|/* for compatibility with older proms */
 DECL|member|moduleslot
-id|uint
+r_int
+r_int
 id|moduleslot
 suffix:semicolon
 DECL|member|gfx_next_pipe
@@ -1470,7 +1473,8 @@ op_star
 id|gfx_next_pipe
 suffix:semicolon
 DECL|member|gfx_specific
-id|graphics_t
+id|u64
+op_star
 id|gfx_specific
 suffix:semicolon
 DECL|member|pad0
@@ -1571,7 +1575,8 @@ id|klinfo_t
 id|scsi_info
 suffix:semicolon
 DECL|member|scsi_specific
-id|scsi_t
+id|u64
+op_star
 id|scsi_specific
 suffix:semicolon
 DECL|member|scsi_numdevs
@@ -1606,11 +1611,13 @@ id|klinfo_t
 id|scsi_info
 suffix:semicolon
 DECL|member|type
-id|uint
+r_int
+r_int
 id|type
 suffix:semicolon
 DECL|member|scsi_buscnt
-id|uint
+r_int
+r_int
 id|scsi_buscnt
 suffix:semicolon
 multiline_comment|/* # busses this cntlr */
@@ -1871,18 +1878,6 @@ DECL|member|kc_bri
 id|klbri_t
 id|kc_bri
 suffix:semicolon
-DECL|member|kc_ioc3
-id|klioc3_t
-id|kc_ioc3
-suffix:semicolon
-DECL|member|kc_vmeb
-id|klvmeb_t
-id|kc_vmeb
-suffix:semicolon
-DECL|member|kc_vmed
-id|klvmed_t
-id|kc_vmed
-suffix:semicolon
 DECL|member|kc_rou
 id|klrou_t
 id|kc_rou
@@ -1902,14 +1897,6 @@ suffix:semicolon
 DECL|member|kc_scsi_dev
 id|klscdev_t
 id|kc_scsi_dev
-suffix:semicolon
-DECL|member|kc_fddi
-id|klfddi_t
-id|kc_fddi
-suffix:semicolon
-DECL|member|kc_mio
-id|klmio_t
-id|kc_mio
 suffix:semicolon
 DECL|member|kc_snum
 id|klmod_serial_num_t
@@ -1936,10 +1923,6 @@ suffix:semicolon
 DECL|member|kc_tty_dev
 id|klttydev_t
 id|kc_tty_dev
-suffix:semicolon
-DECL|member|kc_enet_dev
-id|klenetdev_t
-id|kc_enet_dev
 suffix:semicolon
 DECL|member|kc_kbd_dev
 id|klkbddev_t
