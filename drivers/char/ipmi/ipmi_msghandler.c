@@ -13,8 +13,10 @@ macro_line|#include &lt;linux/ipmi_smi.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+DECL|macro|PFX
+mdefine_line|#define PFX &quot;IPMI message handler: &quot;
 DECL|macro|IPMI_MSGHANDLER_VERSION
-mdefine_line|#define IPMI_MSGHANDLER_VERSION &quot;v32&quot;
+mdefine_line|#define IPMI_MSGHANDLER_VERSION &quot;v33&quot;
 r_struct
 id|ipmi_recv_msg
 op_star
@@ -3131,6 +3133,29 @@ id|user-&gt;intf-&gt;users_lock
 suffix:semicolon
 r_return
 id|rv
+suffix:semicolon
+)brace
+DECL|function|ipmi_user_set_run_to_completion
+r_void
+id|ipmi_user_set_run_to_completion
+c_func
+(paren
+id|ipmi_user_t
+id|user
+comma
+r_int
+id|val
+)paren
+(brace
+id|user-&gt;intf-&gt;handlers
+op_member_access_from_pointer
+id|set_run_to_completion
+c_func
+(paren
+id|user-&gt;intf-&gt;send_info
+comma
+id|val
+)paren
 suffix:semicolon
 )brace
 r_static
@@ -6517,8 +6542,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ipmi_msghandler: Error sending&quot;
-l_string|&quot;channel information: %d&bslash;n&quot;
+id|PFX
+l_string|&quot;Error sending channel information: %d&bslash;n&quot;
 comma
 id|rv
 )paren
@@ -9519,7 +9544,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ipmi: Event queue full, discarding an&quot;
+id|PFX
+l_string|&quot;Event queue full, discarding an&quot;
 l_string|&quot; incoming event&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -9865,12 +9891,192 @@ l_int|2
 )paren
 (brace
 multiline_comment|/* Message is too small to be correct. */
-id|requeue
-op_assign
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|PFX
+l_string|&quot;BMC returned to small a message&quot;
+l_string|&quot; for netfn %x cmd %x, got %d bytes&bslash;n&quot;
+comma
+(paren
+id|msg-&gt;data
+(braket
 l_int|0
+)braket
+op_rshift
+l_int|2
+)paren
+op_or
+l_int|1
+comma
+id|msg-&gt;data
+(braket
+l_int|1
+)braket
+comma
+id|msg-&gt;rsp_size
+)paren
+suffix:semicolon
+multiline_comment|/* Generate an error response for the message. */
+id|msg-&gt;rsp
+(braket
+l_int|0
+)braket
+op_assign
+id|msg-&gt;data
+(braket
+l_int|0
+)braket
+op_or
+(paren
+l_int|1
+op_lshift
+l_int|2
+)paren
+suffix:semicolon
+id|msg-&gt;rsp
+(braket
+l_int|1
+)braket
+op_assign
+id|msg-&gt;data
+(braket
+l_int|1
+)braket
+suffix:semicolon
+id|msg-&gt;rsp
+(braket
+l_int|2
+)braket
+op_assign
+id|IPMI_ERR_UNSPECIFIED
+suffix:semicolon
+id|msg-&gt;rsp_size
+op_assign
+l_int|3
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|msg-&gt;rsp
+(braket
+l_int|0
+)braket
+op_rshift
+l_int|2
+)paren
+op_ne
+(paren
+(paren
+id|msg-&gt;data
+(braket
+l_int|0
+)braket
+op_rshift
+l_int|2
+)paren
+op_or
+l_int|1
+)paren
+)paren
+multiline_comment|/* Netfn */
+op_logical_or
+(paren
+id|msg-&gt;rsp
+(braket
+l_int|1
+)braket
+op_ne
+id|msg-&gt;data
+(braket
+l_int|1
+)braket
+)paren
+)paren
+multiline_comment|/* Command */
+(brace
+multiline_comment|/* The response is not even marginally correct. */
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|PFX
+l_string|&quot;BMC returned incorrect response,&quot;
+l_string|&quot; expected netfn %x cmd %x, got netfn %x cmd %x&bslash;n&quot;
+comma
+(paren
+id|msg-&gt;data
+(braket
+l_int|0
+)braket
+op_rshift
+l_int|2
+)paren
+op_or
+l_int|1
+comma
+id|msg-&gt;data
+(braket
+l_int|1
+)braket
+comma
+id|msg-&gt;rsp
+(braket
+l_int|0
+)braket
+op_rshift
+l_int|2
+comma
+id|msg-&gt;rsp
+(braket
+l_int|1
+)braket
+)paren
+suffix:semicolon
+multiline_comment|/* Generate an error response for the message. */
+id|msg-&gt;rsp
+(braket
+l_int|0
+)braket
+op_assign
+id|msg-&gt;data
+(braket
+l_int|0
+)braket
+op_or
+(paren
+l_int|1
+op_lshift
+l_int|2
+)paren
+suffix:semicolon
+id|msg-&gt;rsp
+(braket
+l_int|1
+)braket
+op_assign
+id|msg-&gt;data
+(braket
+l_int|1
+)braket
+suffix:semicolon
+id|msg-&gt;rsp
+(braket
+l_int|2
+)braket
+op_assign
+id|IPMI_ERR_UNSPECIFIED
+suffix:semicolon
+id|msg-&gt;rsp_size
+op_assign
+l_int|3
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -10155,12 +10361,31 @@ r_else
 r_if
 c_cond
 (paren
+(paren
+id|msg-&gt;rsp
+(braket
+l_int|0
+)braket
+op_eq
+(paren
+(paren
+id|IPMI_NETFN_APP_REQUEST
+op_or
+l_int|1
+)paren
+op_lshift
+l_int|2
+)paren
+)paren
+op_logical_and
+(paren
 id|msg-&gt;rsp
 (braket
 l_int|1
 )braket
 op_eq
 id|IPMI_READ_EVENT_MSG_BUFFER_CMD
+)paren
 )paren
 (brace
 multiline_comment|/* It&squot;s an asyncronous event. */
@@ -12584,6 +12809,8 @@ id|proc_ipmi_root
 id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;Unable to create IPMI proc dir&quot;
 )paren
 suffix:semicolon
@@ -12751,7 +12978,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;ipmi_msghandler: SMI message count %d at exit&bslash;n&quot;
+id|KERN_WARNING
+id|PFX
+l_string|&quot;SMI message count %d at exit&bslash;n&quot;
 comma
 id|count
 )paren
@@ -12775,7 +13004,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;ipmi_msghandler: recv message count %d at exit&bslash;n&quot;
+id|KERN_WARNING
+id|PFX
+l_string|&quot;recv message count %d at exit&bslash;n&quot;
 comma
 id|count
 )paren
@@ -13002,6 +13233,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ipmi_smi_add_proc_entry
+)paren
+suffix:semicolon
+DECL|variable|ipmi_user_set_run_to_completion
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ipmi_user_set_run_to_completion
 )paren
 suffix:semicolon
 eof

@@ -21,7 +21,7 @@ macro_line|#endif
 DECL|macro|PFX
 mdefine_line|#define&t;PFX &quot;IPMI Watchdog: &quot;
 DECL|macro|IPMI_WATCHDOG_VERSION
-mdefine_line|#define IPMI_WATCHDOG_VERSION &quot;v32&quot;
+mdefine_line|#define IPMI_WATCHDOG_VERSION &quot;v33&quot;
 multiline_comment|/*&n; * The IPMI command/response information for the watchdog timer.&n; */
 multiline_comment|/* values for byte 1 of the set command, byte 2 of the get response. */
 DECL|macro|WDOG_DONT_LOG

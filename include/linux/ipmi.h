@@ -622,6 +622,18 @@ r_char
 id|cmd
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Allow run-to-completion mode to be set for the interface of&n; * a specific user.&n; */
+r_void
+id|ipmi_user_set_run_to_completion
+c_func
+(paren
+id|ipmi_user_t
+id|user
+comma
+r_int
+id|val
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * When the user is created, it will not receive IPMI events by&n; * default.  The user must set this to TRUE to get incoming events.&n; * The first user that sets this to TRUE will receive all events that&n; * have been queued while no one was waiting for events.&n; */
 r_int
 id|ipmi_set_gets_events
