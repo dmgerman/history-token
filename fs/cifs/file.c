@@ -3934,6 +3934,22 @@ id|tmp_inode-&gt;i_mode
 op_or_assign
 id|S_IFREG
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pfindData-&gt;ExtFileAttributes
+op_amp
+id|ATTR_READONLY
+)paren
+(brace
+id|tmp_inode-&gt;i_mode
+op_and_assign
+op_complement
+(paren
+id|S_IWUGO
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* could add code here - to validate if device or weird share type? */
 multiline_comment|/* can not fill in nlink here as in qpathinfo version and Unx search */
@@ -5668,7 +5684,7 @@ comma
 (paren
 l_string|&quot;Last file: %s with name %d bytes long&quot;
 comma
-id|lastFindData-&gt;FileName
+id|pfindDataUnix-&gt;FileName
 comma
 id|cifsFile-&gt;resume_name_length
 )paren
@@ -5679,7 +5695,7 @@ c_func
 (paren
 id|cifsFile-&gt;search_resume_name
 comma
-id|lastFindData-&gt;FileName
+id|pfindDataUnix-&gt;FileName
 comma
 id|cifsFile-&gt;resume_name_length
 )paren
