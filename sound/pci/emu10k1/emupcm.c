@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/emu10k1.h&gt;
-macro_line|#include &lt;sound/pcm_sgbuf.h&gt;
 DECL|macro|chip_t
 mdefine_line|#define chip_t emu10k1_t
 DECL|function|snd_emu10k1_pcm_interrupt

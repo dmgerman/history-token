@@ -47,7 +47,7 @@ mdefine_line|#define&t;NEXTADDR(cmd)&t;((Scsi_Cmnd **)&amp;((cmd)-&gt;host_scrib
 DECL|macro|HOSTNO
 mdefine_line|#define&t;HOSTNO&t;&t;instance-&gt;host_no
 DECL|macro|H_NO
-mdefine_line|#define&t;H_NO(cmd)&t;(cmd)-&gt;host-&gt;host_no
+mdefine_line|#define&t;H_NO(cmd)&t;(cmd)-&gt;device-&gt;host-&gt;host_no
 macro_line|#ifdef SUPPORT_TAGS
 multiline_comment|/*&n; * Functions for handling tagged queuing&n; * =====================================&n; *&n; * ++roman (01/96): Now I&squot;ve implemented SCSI-2 tagged queuing. Some notes:&n; *&n; * Using consecutive numbers for the tags is no good idea in my eyes. There&n; * could be wrong re-usings if the counter (8 bit!) wraps and some early&n; * command has been preempted for a long time. My solution: a bitfield for&n; * remembering used tags.&n; *&n; * There&squot;s also the problem that each target has a certain queue size, but we&n; * cannot know it in advance :-( We just see a QUEUE_FULL status being&n; * returned. So, in this case, the driver internal queue size assumption is&n; * reduced to the number of active tags if QUEUE_FULL is returned by the&n; * target. The command is returned to the mid-level, but with status changed&n; * to BUSY, since --as I&squot;ve seen-- the mid-level can&squot;t handle QUEUE_FULL&n; * correctly.&n; *&n; * We&squot;re also not allowed running tagged commands as long as an untagged&n; * command is active. And REQUEST SENSE commands after a contingent allegiance&n; * condition _must_ be untagged. To keep track whether an untagged command has&n; * been issued, the host-&gt;busy array is still employed, as it is without&n; * support for tagged queuing.&n; *&n; * One could suspect that there are possible race conditions between&n; * is_lun_busy(), cmd_get_tag() and cmd_free_tag(). But I think this isn&squot;t the&n; * case: is_lun_busy() and cmd_get_tag() are both called from NCR5380_main(),&n; * which already guaranteed to be running at most once. It is also the only&n; * place where tags/LUNs are allocated. So no other allocation can slip&n; * between that pair, there could only happen a reselection, which can free a&n; * tag, but that doesn&squot;t hurt. Only the sequence in cmd_free_tag() becomes&n; * important: the tag bit must be cleared before &squot;nr_allocated&squot; is decreased.&n; */
 multiline_comment|/* -1 for TAG_NONE is not possible with unsigned char cmd-&gt;tag */
@@ -196,7 +196,7 @@ id|should_be_tagged
 id|SETUP_HOSTDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 suffix:semicolon
 r_if
@@ -204,13 +204,13 @@ c_cond
 (paren
 id|hostdata-&gt;busy
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_amp
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 )paren
 r_return
@@ -236,20 +236,20 @@ c_cond
 (paren
 id|TagAlloc
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 (braket
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )braket
 dot
 id|nr_allocated
 op_ge
 id|TagAlloc
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 (braket
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )braket
 dot
 id|queue_size
@@ -266,9 +266,9 @@ c_func
 id|cmd
 )paren
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 r_return
@@ -297,7 +297,7 @@ id|should_be_tagged
 id|SETUP_HOSTDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 suffix:semicolon
 multiline_comment|/* If we or the target don&squot;t support tagged queuing, allocate the LUN for&n;     * an untagged command.&n;     */
@@ -320,13 +320,13 @@ id|TAG_NONE
 suffix:semicolon
 id|hostdata-&gt;busy
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_or_assign
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|TAG_PRINTK
@@ -341,9 +341,9 @@ c_func
 id|cmd
 )paren
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 )brace
@@ -356,10 +356,10 @@ op_assign
 op_amp
 id|TagAlloc
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 (braket
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )braket
 suffix:semicolon
 id|cmd-&gt;tag
@@ -397,9 +397,9 @@ id|cmd
 comma
 id|cmd-&gt;tag
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 id|ta-&gt;nr_allocated
 )paren
@@ -421,7 +421,7 @@ id|cmd
 id|SETUP_HOSTDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 suffix:semicolon
 r_if
@@ -434,14 +434,14 @@ id|TAG_NONE
 (brace
 id|hostdata-&gt;busy
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_and_assign
 op_complement
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|TAG_PRINTK
@@ -455,9 +455,9 @@ c_func
 id|cmd
 )paren
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 )brace
@@ -495,10 +495,10 @@ op_assign
 op_amp
 id|TagAlloc
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 (braket
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )braket
 suffix:semicolon
 id|clear_bit
@@ -525,9 +525,9 @@ id|cmd
 comma
 id|cmd-&gt;tag
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 )brace
@@ -2185,9 +2185,9 @@ c_func
 id|cmd
 )paren
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|SPRINTF
@@ -2265,8 +2265,7 @@ suffix:semicolon
 multiline_comment|/* &n; * Function : void NCR5380_init (struct Scsi_Host *instance)&n; *&n; * Purpose : initializes *instance and corresponding 5380 chip.&n; *&n; * Inputs : instance - instantiation of the 5380 driver.  &n; *&n; * Notes : I assume that the host, hostno, and id bits have been&n; * &t;set correctly.  I don&squot;t care about the irq and other fields. &n; * &n; */
 DECL|function|NCR5380_init
 r_static
-r_void
-id|__init
+r_int
 id|NCR5380_init
 (paren
 r_struct
@@ -2461,12 +2460,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* &n; * Function : int NCR5380_queue_command (Scsi_Cmnd *cmd, &n; *&t;void (*done)(Scsi_Cmnd *)) &n; *&n; * Purpose :  enqueues a SCSI command&n; *&n; * Inputs : cmd - SCSI command, done - function called on completion, with&n; *&t;a pointer to the command descriptor.&n; * &n; * Returns : 0&n; *&n; * Side effects : &n; *      cmd is added to the per instance issue_queue, with minor &n; *&t;twiddling done to the host specific fields of cmd.  If the &n; *&t;main coroutine is not running, it is restarted.&n; *&n; */
-multiline_comment|/* Only make static if a wrapper function is used */
-macro_line|#ifndef NCR5380_queue_command
 r_static
-macro_line|#endif
 DECL|function|NCR5380_queue_command
 r_int
 id|NCR5380_queue_command
@@ -2489,7 +2488,7 @@ op_star
 id|SETUP_HOSTDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 suffix:semicolon
 id|Scsi_Cmnd
@@ -2614,7 +2613,7 @@ id|WRITE_10
 suffix:colon
 id|hostdata-&gt;time_write
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_sub_assign
 (paren
@@ -2625,7 +2624,7 @@ id|hostdata-&gt;timebase
 suffix:semicolon
 id|hostdata-&gt;bytes_write
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_add_assign
 id|cmd-&gt;request_bufflen
@@ -2646,7 +2645,7 @@ id|READ_10
 suffix:colon
 id|hostdata-&gt;time_read
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_sub_assign
 (paren
@@ -2657,7 +2656,7 @@ id|hostdata-&gt;timebase
 suffix:semicolon
 id|hostdata-&gt;bytes_read
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_add_assign
 id|cmd-&gt;request_bufflen
@@ -2874,6 +2873,7 @@ r_else
 id|NCR5380_main
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -2887,6 +2887,8 @@ r_void
 id|NCR5380_main
 (paren
 r_void
+op_star
+id|bl
 )paren
 (brace
 id|Scsi_Cmnd
@@ -3070,14 +3072,14 @@ l_string|&quot;MAIN tmp=%p   target=%d   busy=%d lun=%d&bslash;n&quot;
 comma
 id|tmp
 comma
-id|tmp-&gt;target
+id|tmp-&gt;device-&gt;id
 comma
 id|hostdata-&gt;busy
 (braket
-id|tmp-&gt;target
+id|tmp-&gt;device-&gt;id
 )braket
 comma
-id|tmp-&gt;lun
+id|tmp-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -3105,13 +3107,13 @@ op_logical_neg
 (paren
 id|hostdata-&gt;busy
 (braket
-id|tmp-&gt;target
+id|tmp-&gt;device-&gt;id
 )braket
 op_amp
 (paren
 l_int|1
 op_lshift
-id|tmp-&gt;lun
+id|tmp-&gt;device-&gt;lun
 )paren
 )paren
 macro_line|#endif
@@ -3217,9 +3219,9 @@ l_string|&quot;lun %d removed from issue_queue&bslash;n&quot;
 comma
 id|HOSTNO
 comma
-id|tmp-&gt;target
+id|tmp-&gt;device-&gt;id
 comma
-id|tmp-&gt;lun
+id|tmp-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 multiline_comment|/* &n;&t;&t;     * REQUEST SENSE commands are issued without tagged&n;&t;&t;     * queueing, even on SCSI-II devices because the &n;&t;&t;     * contingent allegiance condition exists for the &n;&t;&t;     * entire unit.&n;&t;&t;     */
@@ -4157,7 +4159,7 @@ id|WRITE_10
 suffix:colon
 id|hostdata-&gt;time_write
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_add_assign
 (paren
@@ -4166,7 +4168,7 @@ op_minus
 id|hostdata-&gt;timebase
 )paren
 suffix:semicolon
-multiline_comment|/*hostdata-&gt;bytes_write[cmd-&gt;target] += cmd-&gt;request_bufflen;*/
+multiline_comment|/*hostdata-&gt;bytes_write[cmd-&gt;device-&gt;id] += cmd-&gt;request_bufflen;*/
 id|hostdata-&gt;pendingw
 op_decrement
 suffix:semicolon
@@ -4183,7 +4185,7 @@ id|READ_10
 suffix:colon
 id|hostdata-&gt;time_read
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_add_assign
 (paren
@@ -4192,7 +4194,7 @@ op_minus
 id|hostdata-&gt;timebase
 )paren
 suffix:semicolon
-multiline_comment|/*hostdata-&gt;bytes_read[cmd-&gt;target] += cmd-&gt;request_bufflen;*/
+multiline_comment|/*hostdata-&gt;bytes_read[cmd-&gt;device-&gt;id] += cmd-&gt;request_bufflen;*/
 id|hostdata-&gt;pendingr
 op_decrement
 suffix:semicolon
@@ -4642,7 +4644,7 @@ op_or
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )paren
 )paren
 )paren
@@ -4741,7 +4743,7 @@ l_string|&quot;scsi%d: selecting target %d&bslash;n&quot;
 comma
 id|HOSTNO
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )paren
 suffix:semicolon
 multiline_comment|/* &n;     * The SCSI specification calls for a 250 ms timeout for the actual &n;     * selection.&n;     */
@@ -4913,7 +4915,7 @@ op_amp
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )paren
 )paren
 (brace
@@ -5022,7 +5024,7 @@ op_or_assign
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )paren
 suffix:semicolon
 multiline_comment|/*&n;     * Since we followed the SCSI spec, and raised ATN while SEL &n;     * was true but before BSY was false during selection, the information&n;     * transfer phase should be a MESSAGE OUT phase so that we can send the&n;     * IDENTIFY message.&n;     * &n;     * If SCSI-II tagged queuing is enabled, we also send a SIMPLE_QUEUE_TAG&n;     * message (2 bytes) with a tag ID that we increment with every command&n;     * until it wraps back to 0.&n;     *&n;     * XXX - it turns out that there are some broken SCSI-II devices,&n;     *&t;     which claim to support tagged queuing but fail when more than&n;     *&t;     some number of commands are issued at once.&n;     */
@@ -5049,7 +5051,7 @@ l_string|&quot;scsi%d: target %d selected, going into MESSAGE OUT phase.&bslash;
 comma
 id|HOSTNO
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )paren
 suffix:semicolon
 id|tmp
@@ -5062,7 +5064,7 @@ c_func
 (paren
 l_int|1
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 macro_line|#ifdef SUPPORT_TAGS
@@ -5150,13 +5152,13 @@ suffix:semicolon
 macro_line|#ifndef SUPPORT_TAGS
 id|hostdata-&gt;busy
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_or_assign
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 macro_line|#endif    
@@ -6433,9 +6435,9 @@ l_string|&quot;lun %d to slow handshake&bslash;n&quot;
 comma
 id|HOSTNO
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|cmd-&gt;device-&gt;borken
@@ -6594,9 +6596,9 @@ l_string|&quot;complete.&bslash;n&quot;
 comma
 id|HOSTNO
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 multiline_comment|/* Enable reselect interrupts */
@@ -6625,9 +6627,9 @@ l_string|&quot;linked command complete, no next_link&bslash;n&quot;
 comma
 id|HOSTNO
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|sink
@@ -6671,9 +6673,9 @@ l_string|&quot;done, calling scsi_done().&bslash;n&quot;
 comma
 id|HOSTNO
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 macro_line|#ifdef NCR5380_STATS
@@ -6732,9 +6734,9 @@ l_string|&quot;completed&bslash;n&quot;
 comma
 id|HOSTNO
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 macro_line|#ifdef SUPPORT_TAGS
@@ -6765,10 +6767,10 @@ op_assign
 op_amp
 id|TagAlloc
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 (braket
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )braket
 suffix:semicolon
 id|TAG_PRINTK
@@ -6779,9 +6781,9 @@ l_string|&quot;QUEUE_FULL after %d commands&bslash;n&quot;
 comma
 id|HOSTNO
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 id|ta-&gt;nr_allocated
 )paren
@@ -6801,14 +6803,14 @@ suffix:semicolon
 macro_line|#else
 id|hostdata-&gt;busy
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_and_assign
 op_complement
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -7141,13 +7143,13 @@ l_int|0
 suffix:semicolon
 id|hostdata-&gt;busy
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_or_assign
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|cmd-&gt;tag
@@ -7163,9 +7165,9 @@ l_string|&quot;disabled&bslash;n&quot;
 comma
 id|HOSTNO
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 r_break
@@ -7234,9 +7236,9 @@ l_string|&quot;disconnected_queue&bslash;n&quot;
 comma
 id|HOSTNO
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 multiline_comment|/* &n;&t;&t;     * Restore phase bits to 0 so an interrupted selection, &n;&t;&t;     * arbitration can resume.&n;&t;&t;     */
@@ -7592,9 +7594,9 @@ id|HOSTNO
 comma
 id|tmp
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 r_else
@@ -7618,9 +7620,9 @@ id|extended_msg
 l_int|0
 )braket
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|msgout
@@ -7692,14 +7694,14 @@ suffix:semicolon
 macro_line|#else
 id|hostdata-&gt;busy
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_and_assign
 op_complement
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -8180,14 +8182,14 @@ op_eq
 (paren
 l_int|1
 op_lshift
-id|tmp-&gt;target
+id|tmp-&gt;device-&gt;id
 )paren
 )paren
 op_logical_and
 (paren
 id|lun
 op_eq
-id|tmp-&gt;lun
+id|tmp-&gt;device-&gt;lun
 )paren
 macro_line|#ifdef SUPPORT_TAGS
 op_logical_and
@@ -8340,9 +8342,9 @@ l_string|&quot;scsi%d: nexus established, target = %d, lun = %d, tag = %d&bslash
 comma
 id|HOSTNO
 comma
-id|tmp-&gt;target
+id|tmp-&gt;device-&gt;id
 comma
-id|tmp-&gt;lun
+id|tmp-&gt;device-&gt;lun
 comma
 id|tmp-&gt;tag
 )paren
@@ -8352,9 +8354,7 @@ op_decrement
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function : int NCR5380_abort (Scsi_Cmnd *cmd)&n; *&n; * Purpose : abort a command&n; *&n; * Inputs : cmd - the Scsi_Cmnd to abort, code - code to set the &n; * &t;host byte of the result field to, if zero DID_ABORTED is &n; *&t;used.&n; *&n; * Returns : 0 - success, -1 on failure.&n; *&n; * XXX - there is no way to abort the command that is currently &n; * &t; connected, you have to wait for it to complete.  If this is &n; *&t; a problem, we could implement longjmp() / setjmp(), setjmp()&n; * &t; called where the loop started in NCR5380_main().&n; */
-macro_line|#ifndef NCR5380_abort
 r_static
-macro_line|#endif
 DECL|function|NCR5380_abort
 r_int
 id|NCR5380_abort
@@ -8369,7 +8369,7 @@ id|Scsi_Host
 op_star
 id|instance
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 id|SETUP_HOSTDATA
 c_func
@@ -8513,14 +8513,14 @@ suffix:semicolon
 macro_line|#else
 id|hostdata-&gt;busy
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_and_assign
 op_complement
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -8896,14 +8896,14 @@ suffix:semicolon
 macro_line|#else
 id|hostdata-&gt;busy
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_and_assign
 op_complement
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -8961,26 +8961,22 @@ r_return
 id|SCSI_ABORT_NOT_RUNNING
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Function : int NCR5380_reset (Scsi_Cmnd *cmd, unsigned int reset_flags)&n; * &n; * Purpose : reset the SCSI bus.&n; *&n; * Returns : SCSI_RESET_WAKEUP&n; *&n; */
-DECL|function|NCR5380_reset
+multiline_comment|/* &n; * Function : int NCR5380_reset (Scsi_Cmnd *cmd)&n; * &n; * Purpose : reset the SCSI bus.&n; *&n; * Returns : SCSI_RESET_WAKEUP&n; *&n; */
+DECL|function|NCR5380_bus_reset
 r_static
 r_int
-id|NCR5380_reset
+id|NCR5380_bus_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
 id|cmd
-comma
-r_int
-r_int
-id|reset_flags
 )paren
 (brace
 id|SETUP_HOSTDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 suffix:semicolon
 r_int
@@ -9026,7 +9022,7 @@ id|cmd
 suffix:semicolon
 id|NCR5380_print_status
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 suffix:semicolon
 multiline_comment|/* get in phase */

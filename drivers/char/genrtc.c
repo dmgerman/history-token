@@ -1,6 +1,6 @@
-multiline_comment|/*&n; *&t;Real Time Clock interface for q40 and other m68k machines&n; *      emulate some RTC irq capabilities in software&n; *&n; *      Copyright (C) 1999 Richard Zidlicky&n; *&n; *&t;based on Paul Gortmaker&squot;s rtc.c device and&n; *           Sam Creasey Generic rtc driver&n; *&n; *&t;This driver allows use of the real time clock (built into&n; *&t;nearly all computers) from user space. It exports the /dev/rtc&n; *&t;interface supporting various ioctl() and also the /proc/dev/rtc&n; *&t;pseudo-file for status information.&n; *&n; *&t;The ioctls can be used to set the interrupt behaviour where&n; *  supported.&n; *&n; *&t;The /dev/rtc interface will block on reads until an interrupt&n; *&t;has been received. If a RTC interrupt has already happened,&n; *&t;it will output an unsigned long and then block. The output value&n; *&t;contains the interrupt status in the low byte and the number of&n; *&t;interrupts since the last read in the remaining high bytes. The&n; *&t;/dev/rtc interface can also be used with the select(2) call.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n;&n; *      1.01 fix for 2.3.X                    rz@linux-m68k.org&n; *      1.02 merged with code from genrtc.c   rz@linux-m68k.org&n; *      1.03 make it more portable            zippel@linux-m68k.org&n; *      1.04 removed useless timer code       rz@linux-m68k.org&n; *      1.05 portable RTC_UIE emulation       rz@linux-m68k.org&n; *      1.06 set_rtc_time can return an error trini@kernel.crashing.org&n; */
+multiline_comment|/*&n; *&t;Real Time Clock interface for&n; *&t;&t;- q40 and other m68k machines,&n; *&t;&t;- HP PARISC machines&n; *&t;&t;- PowerPC machines&n; *      emulate some RTC irq capabilities in software&n; *&n; *      Copyright (C) 1999 Richard Zidlicky&n; *&n; *&t;based on Paul Gortmaker&squot;s rtc.c device and&n; *           Sam Creasey Generic rtc driver&n; *&n; *&t;This driver allows use of the real time clock (built into&n; *&t;nearly all computers) from user space. It exports the /dev/rtc&n; *&t;interface supporting various ioctl() and also the /proc/dev/rtc&n; *&t;pseudo-file for status information.&n; *&n; *&t;The ioctls can be used to set the interrupt behaviour where&n; *&t;supported.&n; *&n; *&t;The /dev/rtc interface will block on reads until an interrupt&n; *&t;has been received. If a RTC interrupt has already happened,&n; *&t;it will output an unsigned long and then block. The output value&n; *&t;contains the interrupt status in the low byte and the number of&n; *&t;interrupts since the last read in the remaining high bytes. The&n; *&t;/dev/rtc interface can also be used with the select(2) call.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n;&n; *      1.01 fix for 2.3.X                    rz@linux-m68k.org&n; *      1.02 merged with code from genrtc.c   rz@linux-m68k.org&n; *      1.03 make it more portable            zippel@linux-m68k.org&n; *      1.04 removed useless timer code       rz@linux-m68k.org&n; *      1.05 portable RTC_UIE emulation       rz@linux-m68k.org&n; *      1.06 set_rtc_time can return an error trini@kernel.crashing.org&n; *      1.07 ported to HP PARISC (hppa)&t;      Helge Deller &lt;deller@gmx.de&gt;&n; */
 DECL|macro|RTC_VERSION
-mdefine_line|#define RTC_VERSION&t;&quot;1.06&quot;
+mdefine_line|#define RTC_VERSION&t;&quot;1.07&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -22,40 +22,18 @@ c_func
 id|gen_rtc_wait
 )paren
 suffix:semicolon
-r_static
-r_int
-id|gen_rtc_ioctl
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|file
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
 multiline_comment|/*&n; *&t;Bits in gen_rtc_status.&n; */
 DECL|macro|RTC_IS_OPEN
 mdefine_line|#define RTC_IS_OPEN&t;&t;0x01&t;/* means /dev/rtc is in use&t;*/
 DECL|variable|gen_rtc_status
+r_static
 r_int
 r_char
 id|gen_rtc_status
 suffix:semicolon
 multiline_comment|/* bitmapped status byte.&t;*/
 DECL|variable|gen_rtc_irq_data
+r_static
 r_int
 r_int
 id|gen_rtc_irq_data
@@ -63,6 +41,7 @@ suffix:semicolon
 multiline_comment|/* our output to the world&t;*/
 multiline_comment|/* months start at 0 now */
 DECL|variable|days_in_mo
+r_static
 r_int
 r_char
 id|days_in_mo
@@ -128,6 +107,7 @@ r_static
 r_int
 id|tt_exp
 suffix:semicolon
+r_static
 r_void
 id|gen_rtc_timer
 c_func
@@ -164,8 +144,19 @@ id|gen_rtc_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+r_static
+r_void
+id|gen_rtc_interrupt
+c_func
+(paren
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Routine to poll RTC seconds field for change as often as possible,&n; * after first RTC_UIE use timer to reduce polling&n; */
 DECL|function|genrtc_troutine
+r_static
 r_void
 id|genrtc_troutine
 c_func
@@ -270,6 +261,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|gen_rtc_timer
+r_static
 r_void
 id|gen_rtc_timer
 c_func
@@ -352,6 +344,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n; * call gen_rtc_interrupt function to signal an RTC_UIE,&n; * arg is unused.&n; * Could be invoked either from a real interrupt handler or&n; * from some routine that periodically (eg 100HZ) monitors&n; * whether RTC_SECS changed&n; */
 DECL|function|gen_rtc_interrupt
+r_static
 r_void
 id|gen_rtc_interrupt
 c_func
@@ -1404,6 +1397,7 @@ dot
 id|release
 op_assign
 id|gen_rtc_release
+comma
 )brace
 suffix:semicolon
 DECL|variable|rtc_gen_dev
@@ -1413,15 +1407,26 @@ id|miscdevice
 id|rtc_gen_dev
 op_assign
 (brace
+dot
+id|minor
+op_assign
 id|RTC_MINOR
 comma
+dot
+id|name
+op_assign
 l_string|&quot;rtc&quot;
 comma
+dot
+id|fops
+op_assign
 op_amp
 id|gen_rtc_fops
+comma
 )brace
 suffix:semicolon
 DECL|function|rtc_generic_init
+r_static
 r_int
 id|__init
 id|rtc_generic_init
@@ -1542,7 +1547,9 @@ id|rtc_generic_exit
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Info exported via &quot;/proc/rtc&quot;.&n; */
+macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|gen_rtc_proc_output
+r_static
 r_int
 id|gen_rtc_proc_output
 c_func
@@ -1561,7 +1568,8 @@ id|rtc_time
 id|tm
 suffix:semicolon
 r_int
-id|tmp
+r_int
+id|flags
 suffix:semicolon
 r_struct
 id|rtc_pll_info
@@ -1571,6 +1579,8 @@ id|p
 op_assign
 id|buf
 suffix:semicolon
+id|flags
+op_assign
 id|get_rtc_time
 c_func
 (paren
@@ -1610,12 +1620,8 @@ l_int|1900
 suffix:semicolon
 id|tm.tm_hour
 op_assign
-l_int|0
-suffix:semicolon
 id|tm.tm_min
 op_assign
-l_int|0
-suffix:semicolon
 id|tm.tm_sec
 op_assign
 l_int|0
@@ -1720,10 +1726,6 @@ comma
 l_string|&quot;**&bslash;n&quot;
 )paren
 suffix:semicolon
-id|tmp
-op_assign
-id|RTC_24H
-suffix:semicolon
 id|p
 op_add_assign
 id|sprintf
@@ -1742,7 +1744,7 @@ l_string|&quot;periodic_freq&bslash;t: %ld&bslash;n&quot;
 l_string|&quot;batt_status&bslash;t: %s&bslash;n&quot;
 comma
 (paren
-id|tmp
+id|flags
 op_amp
 id|RTC_DST_EN
 )paren
@@ -1753,7 +1755,7 @@ suffix:colon
 l_string|&quot;no&quot;
 comma
 (paren
-id|tmp
+id|flags
 op_amp
 id|RTC_DM_BINARY
 )paren
@@ -1764,7 +1766,7 @@ suffix:colon
 l_string|&quot;yes&quot;
 comma
 (paren
-id|tmp
+id|flags
 op_amp
 id|RTC_24H
 )paren
@@ -1775,7 +1777,7 @@ suffix:colon
 l_string|&quot;no&quot;
 comma
 (paren
-id|tmp
+id|flags
 op_amp
 id|RTC_SQWE
 )paren
@@ -1786,7 +1788,7 @@ suffix:colon
 l_string|&quot;no&quot;
 comma
 (paren
-id|tmp
+id|flags
 op_amp
 id|RTC_AIE
 )paren
@@ -1804,7 +1806,7 @@ suffix:colon
 l_string|&quot;no&quot;
 comma
 (paren
-id|tmp
+id|flags
 op_amp
 id|RTC_PIE
 )paren
@@ -1817,6 +1819,15 @@ comma
 l_int|0L
 multiline_comment|/* freq */
 comma
+(paren
+id|flags
+op_amp
+id|RTC_BATT_BAD
+)paren
+ques
+c_cond
+l_string|&quot;bad&quot;
+suffix:colon
 l_string|&quot;okay&quot;
 )paren
 suffix:semicolon
@@ -1953,6 +1964,7 @@ r_return
 id|len
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_PROC_FS */
 id|MODULE_AUTHOR
 c_func
 (paren

@@ -1979,11 +1979,11 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;trigger_time: %ld.%06ld&bslash;n&quot;
+l_string|&quot;trigger_time: %ld.%09ld&bslash;n&quot;
 comma
 id|status.trigger_tstamp.tv_sec
 comma
-id|status.trigger_tstamp.tv_usec
+id|status.trigger_tstamp.tv_nsec
 )paren
 suffix:semicolon
 id|snd_iprintf
@@ -1991,11 +1991,11 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;tstamp      : %ld.%06ld&bslash;n&quot;
+l_string|&quot;tstamp      : %ld.%09ld&bslash;n&quot;
 comma
 id|status.tstamp.tv_sec
 comma
-id|status.tstamp.tv_usec
+id|status.tstamp.tv_nsec
 )paren
 suffix:semicolon
 id|snd_iprintf
@@ -2986,14 +2986,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-id|substream-&gt;dma_type
-op_assign
-id|SNDRV_PCM_DMA_TYPE_UNKNOWN
-suffix:semicolon
-id|substream-&gt;dma_private
-op_assign
-l_int|NULL
-suffix:semicolon
 id|spin_lock_init
 c_func
 (paren

@@ -309,13 +309,6 @@ op_star
 id|model
 )paren
 suffix:semicolon
-DECL|variable|dn_cpuctrl
-r_static
-r_int
-id|dn_cpuctrl
-op_assign
-l_int|0xff00
-suffix:semicolon
 DECL|variable|apollo_models
 r_static
 r_const
@@ -1303,6 +1296,13 @@ id|APOLLO_DN3000
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_HEARTBEAT
+DECL|variable|dn_cpuctrl
+r_static
+r_int
+id|dn_cpuctrl
+op_assign
+l_int|0xff00
+suffix:semicolon
 DECL|function|dn_heartbeat
 r_static
 r_void

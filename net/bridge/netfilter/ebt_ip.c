@@ -404,12 +404,9 @@ id|EBT_IP_SPORT
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
 id|info-&gt;bitmask
 op_amp
 id|EBT_IPROTO
-)paren
 )paren
 r_return
 op_minus

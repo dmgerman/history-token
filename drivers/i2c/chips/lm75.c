@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-proc.h&gt;
 DECL|macro|LM75_SYSCTL_TEMP
-mdefine_line|#define LM75_SYSCTL_TEMP 1200&t;/* Degrees Celcius * 10 */
+mdefine_line|#define LM75_SYSCTL_TEMP 1200&t;/* Degrees Celsius * 10 */
 multiline_comment|/* Addresses to scan */
 DECL|variable|normal_i2c
 r_static

@@ -4459,7 +4459,7 @@ l_string|&quot;lun=%d&bslash;n&quot;
 comma
 id|target
 comma
-id|SCptr-&gt;lun
+id|SCptr-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -4679,9 +4679,9 @@ l_string|&quot;lun %d&bslash;n&quot;
 comma
 id|esp-&gt;esp_id
 comma
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 comma
-id|SCptr-&gt;lun
+id|SCptr-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -5050,7 +5050,7 @@ c_func
 (paren
 l_string|&quot;esp_queue: target=%d lun=%d &quot;
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
 id|SCpnt-&gt;lun
 )paren
@@ -5062,7 +5062,7 @@ c_func
 (paren
 l_string|&quot;N&lt;%02x,%02x&gt;&quot;
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
 id|SCpnt-&gt;lun
 )paren
@@ -8969,9 +8969,9 @@ l_string|&quot;esp: Status &lt;%d&gt; for target %d lun %d&bslash;n&quot;
 comma
 id|SCptr-&gt;SCp.Status
 comma
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 comma
-id|SCptr-&gt;lun
+id|SCptr-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -9000,9 +9000,9 @@ c_func
 (paren
 l_string|&quot;F&lt;%02x,%02x&gt;&quot;
 comma
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 comma
-id|SCptr-&gt;lun
+id|SCptr-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -9063,9 +9063,9 @@ c_func
 (paren
 l_string|&quot;D&lt;%02x,%02x&gt;&quot;
 comma
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 comma
-id|SCptr-&gt;lun
+id|SCptr-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -11111,9 +11111,9 @@ c_func
 (paren
 l_string|&quot;esp: target %d lun %d&bslash;n&quot;
 comma
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 comma
-id|SCptr-&gt;lun
+id|SCptr-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -12387,7 +12387,7 @@ id|esp_dev-&gt;sync_min_period
 comma
 id|esp-&gt;config3
 (braket
-id|SCptr-&gt;target
+id|SCptr-&gt;device-&gt;id
 )braket
 )paren
 )paren

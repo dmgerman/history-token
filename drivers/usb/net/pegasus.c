@@ -316,7 +316,7 @@ c_func
 (paren
 id|size
 comma
-id|GFP_DMA
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -579,7 +579,7 @@ c_func
 (paren
 id|size
 comma
-id|GFP_DMA
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -837,7 +837,7 @@ c_func
 (paren
 l_int|1
 comma
-id|GFP_DMA
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if

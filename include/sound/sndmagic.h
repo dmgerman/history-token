@@ -137,8 +137,7 @@ DECL|macro|snd_pcm_oss_file_t_magic
 mdefine_line|#define snd_pcm_oss_file_t_magic&t;&t;0xa15a0105
 DECL|macro|snd_mixer_oss_t_magic
 mdefine_line|#define snd_mixer_oss_t_magic&t;&t;&t;0xa15a0106
-DECL|macro|snd_pcm_sgbuf_t_magic
-mdefine_line|#define snd_pcm_sgbuf_t_magic&t;&t;&t;0xa15a0107
+singleline_comment|// #define snd_pcm_sgbuf_t_magic&t;&t;&t;0xa15a0107
 DECL|macro|snd_info_private_data_t_magic
 mdefine_line|#define snd_info_private_data_t_magic&t;&t;0xa15a0201
 DECL|macro|snd_info_entry_t_magic
@@ -265,6 +264,8 @@ DECL|macro|nm256_t_magic
 mdefine_line|#define nm256_t_magic&t;&t;&t;&t;0xa15a3301
 DECL|macro|nm256_dma_t_magic
 mdefine_line|#define nm256_dma_t_magic&t;&t;&t;0xa15a3302
+DECL|macro|sam9407_t_magic
+mdefine_line|#define sam9407_t_magic&t;&t;&t;&t;0xa15a3401
 DECL|macro|pmac_t_magic
 mdefine_line|#define pmac_t_magic&t;&t;&t;&t;0xa15a3501
 DECL|macro|ali_t_magic
@@ -297,6 +298,10 @@ DECL|macro|snd_usb_midi_out_endpoint_t_magic
 mdefine_line|#define snd_usb_midi_out_endpoint_t_magic&t;0xa15a3f02
 DECL|macro|snd_usb_midi_in_endpoint_t_magic
 mdefine_line|#define snd_usb_midi_in_endpoint_t_magic&t;0xa15a3f03
+DECL|macro|ak4117_t_magic
+mdefine_line|#define ak4117_t_magic&t;&t;&t;&t;0xa15a4000
+DECL|macro|psic_t_magic
+mdefine_line|#define psic_t_magic&t;&t;&t;&t;0xa15a4100
 macro_line|#else
 DECL|macro|snd_magic_kcalloc
 mdefine_line|#define snd_magic_kcalloc(type, extra, flags) (type *) snd_kcalloc(sizeof(type) + extra, flags)

@@ -71,7 +71,7 @@ mdefine_line|#define SNDRV_BOOLEAN_TRUE_DESC&t;&quot;allows:{{0,Disabled},{1,Ena
 DECL|macro|SNDRV_BOOLEAN_FALSE_DESC
 mdefine_line|#define SNDRV_BOOLEAN_FALSE_DESC &quot;allows:{{0,Disabled},{1,Enabled}},default:0,dialog:check&quot;
 DECL|macro|SNDRV_ENABLED
-mdefine_line|#define SNDRV_ENABLED&t;&t;&quot;enable:(snd_enable)&quot;
+mdefine_line|#define SNDRV_ENABLED&t;&t;&quot;enable:(enable)&quot;
 DECL|macro|SNDRV_INDEX_DESC
 mdefine_line|#define SNDRV_INDEX_DESC&t;SNDRV_ENABLED &quot;,allows:{{0,7}},unique,skill:required,dialog:list&quot;
 DECL|macro|SNDRV_ID_DESC

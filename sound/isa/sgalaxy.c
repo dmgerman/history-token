@@ -69,10 +69,10 @@ op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
@@ -1715,7 +1715,7 @@ id|dev
 OL
 id|SNDRV_CARDS
 op_logical_and
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -1812,7 +1812,7 @@ c_func
 id|alsa_card_sgalaxy_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-sgalaxy=snd_enable,index,id,&n;&t;&t;&t;  sbport,wssport,&n;&t;&t;&t;  irq,dma1 */
+multiline_comment|/* format is: snd-sgalaxy=enable,index,id,&n;&t;&t;&t;  sbport,wssport,&n;&t;&t;&t;  irq,dma1 */
 DECL|function|alsa_card_sgalaxy_setup
 r_static
 r_int
@@ -1853,7 +1853,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket

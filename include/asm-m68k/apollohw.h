@@ -340,13 +340,5 @@ DECL|macro|addr_xlat_map
 mdefine_line|#define addr_xlat_map ((unsigned short *)(IO_BASE + 0x17000))
 DECL|macro|isaIO2mem
 mdefine_line|#define isaIO2mem(x) (((((x) &amp; 0x3f8)  &lt;&lt; 7) | (((x) &amp; 0xfc00) &gt;&gt; 6) | ((x) &amp; 0x7)) + 0x40000 + IO_BASE)
-DECL|macro|inb
-mdefine_line|#define inb(addr) (*((volatile unsigned char *)(addr)))
-DECL|macro|outb
-mdefine_line|#define outb(val,addr) (*((volatile unsigned char *)(addr)) = (val))
-DECL|macro|inw
-mdefine_line|#define inw(addr) (*((volatile unsigned short *)(addr)))
-DECL|macro|outw
-mdefine_line|#define outw(val,addr) (*((volatile unsigned short *)(addr)) = (val))
 macro_line|#endif
 eof

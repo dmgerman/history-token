@@ -404,7 +404,7 @@ r_return
 id|dest
 suffix:semicolon
 )brace
-multiline_comment|/* fp_fsub: Implementes the kernel of the FSUB, FSSUB, and FDSUB&n;   instructions.&n;&n;   Remember that the arguments are in assembler-syntax order! */
+multiline_comment|/* fp_fsub: Implements the kernel of the FSUB, FSSUB, and FDSUB&n;   instructions.&n;&n;   Remember that the arguments are in assembler-syntax order! */
 r_struct
 id|fp_ext
 op_star

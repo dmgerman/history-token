@@ -787,9 +787,9 @@ op_assign
 id|SNDRV_DEFAULT_PTR
 suffix:semicolon
 DECL|macro|ISAPNP_INTERWAVE
-mdefine_line|#define ISAPNP_INTERWAVE(_va, _vb, _vc, _device, _audio) &bslash;&n;&t;{ &bslash;&n;&t;&t;ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;&t;&t;devs : { ISAPNP_DEVICE_ID(_va, _vb, _vc, _audio), } &bslash;&n;&t;}
+mdefine_line|#define ISAPNP_INTERWAVE(_va, _vb, _vc, _device, _audio) &bslash;&n;&t;{ &bslash;&n;&t;&t;ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;&t;&t;.devs = { ISAPNP_DEVICE_ID(_va, _vb, _vc, _audio), } &bslash;&n;&t;}
 DECL|macro|ISAPNP_INTERWAVE_STB
-mdefine_line|#define ISAPNP_INTERWAVE_STB(_va, _vb, _vc, _device, _audio, _tone) &bslash;&n;&t;{ &bslash;&n;&t;&t;ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;&t;&t;devs : { ISAPNP_DEVICE_ID(_va, _vb, _vc, _audio), &bslash;&n;&t;&t;&t; ISAPNP_DEVICE_ID(_va, _vb, _vc, _tone), } &bslash;&n;&t;}
+mdefine_line|#define ISAPNP_INTERWAVE_STB(_va, _vb, _vc, _device, _audio, _tone) &bslash;&n;&t;{ &bslash;&n;&t;&t;ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;&t;&t;.devs = { ISAPNP_DEVICE_ID(_va, _vb, _vc, _audio), &bslash;&n;&t;&t;&t; ISAPNP_DEVICE_ID(_va, _vb, _vc, _tone), } &bslash;&n;&t;}
 DECL|variable|__devinitdata
 r_static
 r_struct

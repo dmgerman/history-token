@@ -12029,7 +12029,7 @@ comma
 suffix:semicolon
 DECL|function|serial167_console_init
 r_static
-r_void
+r_int
 id|__init
 id|serial167_console_init
 c_func
@@ -12067,6 +12067,9 @@ id|sercons
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|serial167_console_init
 id|console_initcall

@@ -2468,14 +2468,11 @@ suffix:semicolon
 r_int
 id|hh_len
 op_assign
+id|LL_RESERVED_SPACE
+c_func
 (paren
-id|dev-&gt;hard_header_len
-op_plus
-l_int|15
+id|dev
 )paren
-op_amp
-op_complement
-l_int|15
 suffix:semicolon
 r_struct
 id|iphdr

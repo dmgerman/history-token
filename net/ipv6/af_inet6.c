@@ -70,6 +70,23 @@ multiline_comment|/* IPv6 procfs goodies... */
 macro_line|#ifdef CONFIG_PROC_FS
 r_extern
 r_int
+id|anycast6_get_info
+c_func
+(paren
+r_char
+op_star
+comma
+r_char
+op_star
+op_star
+comma
+id|off_t
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|raw6_get_info
 c_func
 (paren
@@ -1408,6 +1425,13 @@ id|EINVAL
 suffix:semicolon
 multiline_comment|/* Free mc lists */
 id|ipv6_sock_mc_close
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+multiline_comment|/* Free ac lists */
+id|ipv6_sock_ac_close
 c_func
 (paren
 id|sk
@@ -3341,6 +3365,23 @@ id|afinet6_get_snmp
 r_goto
 id|proc_snmp6_fail
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|proc_net_create
+c_func
+(paren
+l_string|&quot;anycast6&quot;
+comma
+l_int|0
+comma
+id|anycast6_get_info
+)paren
+)paren
+r_goto
+id|proc_anycast6_fail
+suffix:semicolon
 macro_line|#endif
 id|ipv6_netdev_notif_init
 c_func
@@ -3387,6 +3428,14 @@ r_return
 l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
+id|proc_anycast6_fail
+suffix:colon
+id|proc_net_remove
+c_func
+(paren
+l_string|&quot;anycast6&quot;
+)paren
+suffix:semicolon
 id|proc_snmp6_fail
 suffix:colon
 id|proc_net_remove
@@ -3514,6 +3563,12 @@ id|proc_net_remove
 c_func
 (paren
 l_string|&quot;snmp6&quot;
+)paren
+suffix:semicolon
+id|proc_net_remove
+c_func
+(paren
+l_string|&quot;anycast6&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

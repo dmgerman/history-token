@@ -11,108 +11,73 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 macro_line|#ifdef I2C_FUNC_SMBUS_BLOCK_DATA_PEC
 DECL|macro|HAVE_PEC
 mdefine_line|#define HAVE_PEC
 macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_82801CA_SMBUS
-DECL|macro|PCI_DEVICE_ID_INTEL_82801CA_SMBUS
-mdefine_line|#define PCI_DEVICE_ID_INTEL_82801CA_SMBUS&t;0x2483
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_82801DB_SMBUS
-DECL|macro|PCI_DEVICE_ID_INTEL_82801DB_SMBUS
-mdefine_line|#define PCI_DEVICE_ID_INTEL_82801DB_SMBUS&t;0x24C3
-macro_line|#endif
-DECL|variable|supported
-r_static
-r_int
-id|supported
-(braket
-)braket
-op_assign
-(brace
-id|PCI_DEVICE_ID_INTEL_82801AA_3
-comma
-id|PCI_DEVICE_ID_INTEL_82801AB_3
-comma
-id|PCI_DEVICE_ID_INTEL_82801BA_2
-comma
-id|PCI_DEVICE_ID_INTEL_82801CA_SMBUS
-comma
-id|PCI_DEVICE_ID_INTEL_82801DB_SMBUS
-comma
-l_int|0
-)brace
-suffix:semicolon
 multiline_comment|/* I801 SMBus address offsets */
 DECL|macro|SMBHSTSTS
-mdefine_line|#define SMBHSTSTS (0 + i801_smba)
+mdefine_line|#define SMBHSTSTS&t;(0 + i801_smba)
 DECL|macro|SMBHSTCNT
-mdefine_line|#define SMBHSTCNT (2 + i801_smba)
+mdefine_line|#define SMBHSTCNT&t;(2 + i801_smba)
 DECL|macro|SMBHSTCMD
-mdefine_line|#define SMBHSTCMD (3 + i801_smba)
+mdefine_line|#define SMBHSTCMD&t;(3 + i801_smba)
 DECL|macro|SMBHSTADD
-mdefine_line|#define SMBHSTADD (4 + i801_smba)
+mdefine_line|#define SMBHSTADD&t;(4 + i801_smba)
 DECL|macro|SMBHSTDAT0
-mdefine_line|#define SMBHSTDAT0 (5 + i801_smba)
+mdefine_line|#define SMBHSTDAT0&t;(5 + i801_smba)
 DECL|macro|SMBHSTDAT1
-mdefine_line|#define SMBHSTDAT1 (6 + i801_smba)
+mdefine_line|#define SMBHSTDAT1&t;(6 + i801_smba)
 DECL|macro|SMBBLKDAT
-mdefine_line|#define SMBBLKDAT (7 + i801_smba)
+mdefine_line|#define SMBBLKDAT&t;(7 + i801_smba)
 DECL|macro|SMBPEC
-mdefine_line|#define SMBPEC    (8 + i801_smba)&t;/* ICH4 only */
+mdefine_line|#define SMBPEC&t;&t;(8 + i801_smba)&t;/* ICH4 only */
 DECL|macro|SMBAUXSTS
-mdefine_line|#define SMBAUXSTS (12 + i801_smba)&t;/* ICH4 only */
+mdefine_line|#define SMBAUXSTS&t;(12 + i801_smba)&t;/* ICH4 only */
 DECL|macro|SMBAUXCTL
-mdefine_line|#define SMBAUXCTL (13 + i801_smba)&t;/* ICH4 only */
+mdefine_line|#define SMBAUXCTL&t;(13 + i801_smba)&t;/* ICH4 only */
 multiline_comment|/* PCI Address Constants */
 DECL|macro|SMBBA
-mdefine_line|#define SMBBA     0x020
+mdefine_line|#define SMBBA&t;&t;0x020
 DECL|macro|SMBHSTCFG
-mdefine_line|#define SMBHSTCFG 0x040
+mdefine_line|#define SMBHSTCFG&t;0x040
 DECL|macro|SMBREV
-mdefine_line|#define SMBREV    0x008
+mdefine_line|#define SMBREV&t;&t;0x008
 multiline_comment|/* Host configuration bits for SMBHSTCFG */
 DECL|macro|SMBHSTCFG_HST_EN
-mdefine_line|#define SMBHSTCFG_HST_EN      1
+mdefine_line|#define SMBHSTCFG_HST_EN&t;1
 DECL|macro|SMBHSTCFG_SMB_SMI_EN
-mdefine_line|#define SMBHSTCFG_SMB_SMI_EN  2
+mdefine_line|#define SMBHSTCFG_SMB_SMI_EN&t;2
 DECL|macro|SMBHSTCFG_I2C_EN
-mdefine_line|#define SMBHSTCFG_I2C_EN      4
+mdefine_line|#define SMBHSTCFG_I2C_EN&t;4
 multiline_comment|/* Other settings */
 DECL|macro|MAX_TIMEOUT
-mdefine_line|#define MAX_TIMEOUT 100
+mdefine_line|#define MAX_TIMEOUT&t;&t;100
 DECL|macro|ENABLE_INT9
-mdefine_line|#define ENABLE_INT9 0&t;/* set to 0x01 to enable - untested */
+mdefine_line|#define ENABLE_INT9&t;&t;0&t;/* set to 0x01 to enable - untested */
 multiline_comment|/* I801 command constants */
 DECL|macro|I801_QUICK
-mdefine_line|#define I801_QUICK          0x00
+mdefine_line|#define I801_QUICK&t;&t;0x00
 DECL|macro|I801_BYTE
-mdefine_line|#define I801_BYTE           0x04
+mdefine_line|#define I801_BYTE&t;&t;0x04
 DECL|macro|I801_BYTE_DATA
-mdefine_line|#define I801_BYTE_DATA      0x08
+mdefine_line|#define I801_BYTE_DATA&t;&t;0x08
 DECL|macro|I801_WORD_DATA
-mdefine_line|#define I801_WORD_DATA      0x0C
+mdefine_line|#define I801_WORD_DATA&t;&t;0x0C
 DECL|macro|I801_PROC_CALL
-mdefine_line|#define I801_PROC_CALL      0x10&t;/* later chips only, unimplemented */
+mdefine_line|#define I801_PROC_CALL&t;&t;0x10&t;/* later chips only, unimplemented */
 DECL|macro|I801_BLOCK_DATA
-mdefine_line|#define I801_BLOCK_DATA     0x14
+mdefine_line|#define I801_BLOCK_DATA&t;&t;0x14
 DECL|macro|I801_I2C_BLOCK_DATA
-mdefine_line|#define I801_I2C_BLOCK_DATA 0x18&t;/* unimplemented */
+mdefine_line|#define I801_I2C_BLOCK_DATA&t;0x18&t;/* unimplemented */
 DECL|macro|I801_BLOCK_LAST
-mdefine_line|#define I801_BLOCK_LAST     0x34
+mdefine_line|#define I801_BLOCK_LAST&t;&t;0x34
 DECL|macro|I801_I2C_BLOCK_LAST
-mdefine_line|#define I801_I2C_BLOCK_LAST 0x38&t;/* unimplemented */
+mdefine_line|#define I801_I2C_BLOCK_LAST&t;0x38&t;/* unimplemented */
 DECL|macro|I801_START
-mdefine_line|#define I801_START          0x40
+mdefine_line|#define I801_START&t;&t;0x40
 DECL|macro|I801_PEC_EN
-mdefine_line|#define I801_PEC_EN         0x80&t;/* ICH4 only */
+mdefine_line|#define I801_PEC_EN&t;&t;0x80&t;/* ICH4 only */
 multiline_comment|/* insmod parameters */
 multiline_comment|/* If force_addr is set to anything different from 0, we forcibly enable&n;   the I801 at the given address. VERY DANGEROUS! */
 DECL|variable|force_addr
@@ -210,12 +175,6 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-op_star
-id|num
-op_assign
-id|supported
-suffix:semicolon
-r_int
 r_char
 id|temp
 suffix:semicolon
@@ -241,12 +200,21 @@ id|I801_dev
 op_assign
 id|dev
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_INTEL_82801DB_3
+)paren
 id|isich4
 op_assign
-op_star
-id|num
-op_eq
-id|PCI_DEVICE_ID_INTEL_82801DB_SMBUS
+l_int|1
+suffix:semicolon
+r_else
+id|isich4
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* Determine the address of the SMBus areas */
 r_if
@@ -287,11 +255,14 @@ op_eq
 l_int|0
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2c-i801.o: SMB base address uninitialized - upgrade BIOS or use force_addr=0xaddr&bslash;n&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;SMB base address uninitialized&quot;
+l_string|&quot;- upgrade BIOS or use force_addr=0xaddr&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -303,7 +274,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|i801_smba
@@ -316,13 +288,18 @@ l_int|16
 suffix:colon
 l_int|8
 )paren
+comma
+l_string|&quot;i801-smbus&quot;
 )paren
 )paren
 (brace
-id|printk
+id|dev_err
+c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2c-i801.o: I801_smb region 0x%x already in use!&bslash;n&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;I801_smb region 0x%x already in use!&bslash;n&quot;
 comma
 id|i801_smba
 )paren
@@ -330,7 +307,7 @@ suffix:semicolon
 id|error_return
 op_assign
 op_minus
-id|ENODEV
+id|EBUSY
 suffix:semicolon
 r_goto
 id|END
@@ -363,7 +340,7 @@ comma
 id|temp
 )paren
 suffix:semicolon
-multiline_comment|/* If force_addr is set, we program the new address here. Just to make&n;   sure, we disable the device first. */
+multiline_comment|/* If force_addr is set, we program the new address here. Just to make&n;&t;   sure, we disable the device first. */
 r_if
 c_cond
 (paren
@@ -404,11 +381,14 @@ op_or
 l_int|0x01
 )paren
 suffix:semicolon
-id|printk
+id|dev_warn
+c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;i2c-i801.o: WARNING: I801 SMBus interface set to new &quot;
-l_string|&quot;address %04x!&bslash;n&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;WARNING: I801 SMBus interface set to &quot;
+l_string|&quot;new address %04x!&bslash;n&quot;
 comma
 id|i801_smba
 )paren
@@ -439,32 +419,16 @@ op_or
 l_int|1
 )paren
 suffix:semicolon
-id|printk
+id|dev_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;i2c-i801.o: enabling SMBus device&bslash;n&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;enabling SMBus device&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-id|i801_smba
-comma
-(paren
-id|isich4
-ques
-c_cond
-l_int|16
-suffix:colon
-l_int|8
-)paren
-comma
-l_string|&quot;i801-smbus&quot;
-)paren
-suffix:semicolon
-macro_line|#ifdef DEBUG
 r_if
 c_cond
 (paren
@@ -472,17 +436,23 @@ id|temp
 op_amp
 l_int|0x02
 )paren
-id|printk
+id|dev_dbg
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: I801 using Interrupt SMI# for SMBus.&bslash;n&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;I801 using Interrupt SMI# for SMBus.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
-id|printk
+id|dev_dbg
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: I801 using PCI Interrupt for SMBus.&bslash;n&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;I801 using PCI Interrupt for SMBus.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pci_read_config_byte
@@ -496,25 +466,28 @@ op_amp
 id|temp
 )paren
 suffix:semicolon
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: SMBREV = 0x%X&bslash;n&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;SMBREV = 0x%X&bslash;n&quot;
 comma
 id|temp
 )paren
 suffix:semicolon
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: I801_smba = 0x%X&bslash;n&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;I801_smba = 0x%X&bslash;n&quot;
 comma
 id|i801_smba
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* DEBUG */
 id|END
 suffix:colon
 r_return
@@ -522,6 +495,7 @@ id|error_return
 suffix:semicolon
 )brace
 DECL|function|i801_do_pause
+r_static
 r_void
 id|i801_do_pause
 c_func
@@ -543,6 +517,7 @@ id|amount
 suffix:semicolon
 )brace
 DECL|function|i801_transaction
+r_static
 r_int
 id|i801_transaction
 c_func
@@ -563,12 +538,14 @@ id|timeout
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: Transaction (pre): CNT=%02x, CMD=%02x, ADD=%02x, DAT0=%02x, &quot;
-l_string|&quot;DAT1=%02x&bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;Transaction (pre): CNT=%02x, CMD=%02x,&quot;
+l_string|&quot;ADD=%02x, DAT0=%02x, DAT1=%02x&bslash;n&quot;
 comma
 id|inb_p
 c_func
@@ -601,7 +578,6 @@ id|SMBHSTDAT1
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Make sure the SMBus host is ready to start transmitting */
 multiline_comment|/* 0x1f = Failed, Bus_Err, Dev_Err, Intr, Host_Busy */
 r_if
@@ -624,17 +600,17 @@ op_ne
 l_int|0x00
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: SMBus busy (%02x). Resetting... &bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;SMBus busy (%02x). Resetting... &bslash;n&quot;
 comma
 id|temp
 )paren
 suffix:semicolon
-macro_line|#endif
 id|outb_p
 c_func
 (paren
@@ -663,17 +639,17 @@ op_ne
 l_int|0x00
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: Failed! (%02x)&bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;Failed! (%02x)&bslash;n&quot;
 comma
 id|temp
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 op_minus
 l_int|1
@@ -681,15 +657,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: Successfull!&bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;Successfull!&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 id|outb_p
@@ -750,12 +726,13 @@ op_ge
 id|MAX_TIMEOUT
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: SMBus Timeout!&bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;SMBus Timeout!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|result
@@ -763,7 +740,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#endif
 )brace
 r_if
 c_cond
@@ -778,15 +754,15 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: Error: Failed bus transaction&bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;Error: Failed bus transaction&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_if
 c_cond
@@ -801,11 +777,14 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|printk
+id|dev_err
+c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2c-i801.o: Bus collision! SMBus may be locked until next hard&bslash;n&quot;
-l_string|&quot;reset. (sorry!)&bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;Bus collision! SMBus may be locked &quot;
+l_string|&quot;until next hard reset. (sorry!)&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Clock stops and slave is stuck in mid-transmission */
@@ -823,15 +802,15 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: Error: no response!&bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;Error: no response!&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_if
 c_cond
@@ -880,23 +859,27 @@ op_ne
 l_int|0x00
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: Failed reset at end of transaction (%02x)&bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;Failed reset at end of transaction&quot;
+l_string|&quot;(%02x)&bslash;n&quot;
 comma
 id|temp
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: Transaction (post): CNT=%02x, CMD=%02x, ADD=%02x, &quot;
-l_string|&quot;DAT0=%02x, DAT1=%02x&bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;Transaction (post): CNT=%02x, CMD=%02x, &quot;
+l_string|&quot;ADD=%02x, DAT0=%02x, DAT1=%02x&bslash;n&quot;
 comma
 id|inb_p
 c_func
@@ -929,13 +912,13 @@ id|SMBHSTDAT1
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|result
 suffix:semicolon
 )brace
 multiline_comment|/* All-inclusive block transaction function */
 DECL|function|i801_block_transaction
+r_static
 r_int
 id|i801_block_transaction
 c_func
@@ -1020,11 +1003,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-l_string|&quot;i2c-i801.o: &quot;
-l_string|&quot;I2C_SMBUS_I2C_BLOCK_READ not supported!&bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;I2C_SMBUS_I2C_BLOCK_READ not DB!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1145,23 +1130,6 @@ id|smbcmd
 op_assign
 id|I801_BLOCK_DATA
 suffix:semicolon
-macro_line|#if 0 /* now using HW PEC */
-r_if
-c_cond
-(paren
-id|isich4
-op_logical_and
-id|command
-op_eq
-id|I2C_SMBUS_BLOCK_DATA_PEC
-)paren
-(brace
-id|smbcmd
-op_or_assign
-id|I801_PEC_EN
-suffix:semicolon
-)brace
-macro_line|#endif
 id|outb_p
 c_func
 (paren
@@ -1172,12 +1140,14 @@ comma
 id|SMBHSTCNT
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: Block (pre %d): CNT=%02x, CMD=%02x, ADD=%02x, &quot;
-l_string|&quot;DAT0=%02x, BLKDAT=%02x&bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;Block (pre %d): CNT=%02x, CMD=%02x, &quot;
+l_string|&quot;ADD=%02x, DAT0=%02x, BLKDAT=%02x&bslash;n&quot;
 comma
 id|i
 comma
@@ -1212,7 +1182,6 @@ id|SMBBLKDAT
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Make sure the SMBus host is ready to start transmitting */
 id|temp
 op_assign
@@ -1230,7 +1199,7 @@ op_eq
 l_int|1
 )paren
 (brace
-multiline_comment|/* Erronenous conditions before transaction: &n;                     * Byte_Done, Failed, Bus_Err, Dev_Err, Intr, Host_Busy */
+multiline_comment|/* Erronenous conditions before transaction: &n;&t;&t;&t; * Byte_Done, Failed, Bus_Err, Dev_Err, Intr, Host_Busy */
 id|errmask
 op_assign
 l_int|0x9f
@@ -1238,7 +1207,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Erronenous conditions during transaction: &n;                     * Failed, Bus_Err, Dev_Err, Intr */
+multiline_comment|/* Erronenous conditions during transaction: &n;&t;&t;&t; * Failed, Bus_Err, Dev_Err, Intr */
 id|errmask
 op_assign
 l_int|0x1e
@@ -1252,16 +1221,18 @@ op_amp
 id|errmask
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: SMBus busy (%02x). Resetting... &bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;SMBus busy (%02x). &quot;
+l_string|&quot;Resetting... &bslash;n&quot;
 comma
 id|temp
 )paren
 suffix:semicolon
-macro_line|#endif
 id|outb_p
 c_func
 (paren
@@ -1290,10 +1261,13 @@ op_ne
 l_int|0x00
 )paren
 (brace
-id|printk
+id|dev_err
+c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2c-i801.o: Reset failed! (%02x)&bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;Reset failed! (%02x)&bslash;n&quot;
 comma
 id|temp
 )paren
@@ -1315,12 +1289,12 @@ op_ne
 l_int|1
 )paren
 (brace
+multiline_comment|/* if die in middle of block transaction, fail */
 id|result
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* if die in middle of block transaction, fail */
 r_goto
 id|END
 suffix:semicolon
@@ -1333,42 +1307,6 @@ id|i
 op_eq
 l_int|1
 )paren
-(brace
-macro_line|#if 0 /* #ifdef HAVE_PEC (now using HW PEC) */
-r_if
-c_cond
-(paren
-id|isich4
-op_logical_and
-id|command
-op_eq
-id|I2C_SMBUS_BLOCK_DATA_PEC
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|read_write
-op_eq
-id|I2C_SMBUS_WRITE
-)paren
-(brace
-id|outb_p
-c_func
-(paren
-id|data-&gt;block
-(braket
-id|len
-op_plus
-l_int|1
-)braket
-comma
-id|SMBPEC
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 id|outb_p
 c_func
 (paren
@@ -1383,7 +1321,6 @@ comma
 id|SMBHSTCNT
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* We will always wait for a fraction of a second! */
 id|timeout
 op_assign
@@ -1440,15 +1377,15 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: SMBus Timeout!&bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;SMBus Timeout!&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_if
 c_cond
@@ -1463,14 +1400,15 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: Error: Failed bus transaction&bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;Error: Failed bus transaction&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 r_if
@@ -1486,11 +1424,13 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2c-i801.o: Bus collision!&bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;Bus collision!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1508,15 +1448,15 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: Error: no response!&bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;Error: no response!&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_if
 c_cond
@@ -1633,7 +1573,6 @@ id|SMBHSTSTS
 )paren
 suffix:semicolon
 multiline_comment|/* signals SMBBLKDAT ready */
-macro_line|#ifdef DEBUG
 r_if
 c_cond
 (paren
@@ -1654,20 +1593,26 @@ op_ne
 l_int|0x00
 )paren
 (brace
-id|printk
+id|dev_dbg
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: Bad status (%02x) at end of transaction&bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;Bad status (%02x) at end of transaction&bslash;n&quot;
 comma
 id|temp
 )paren
 suffix:semicolon
 )brace
-id|printk
+id|dev_dbg
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: Block (post %d): CNT=%02x, CMD=%02x, ADD=%02x, &quot;
-l_string|&quot;DAT0=%02x, BLKDAT=%02x&bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;Block (post %d): CNT=%02x, CMD=%02x, &quot;
+l_string|&quot;ADD=%02x, DAT0=%02x, BLKDAT=%02x&bslash;n&quot;
 comma
 id|i
 comma
@@ -1702,7 +1647,6 @@ id|SMBBLKDAT
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1775,38 +1719,16 @@ op_ge
 id|MAX_TIMEOUT
 )paren
 (brace
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-i801.o: PEC Timeout!&bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;PEC Timeout!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0 /* now using HW PEC */
-r_if
-c_cond
-(paren
-id|read_write
-op_eq
-id|I2C_SMBUS_READ
-)paren
-(brace
-id|data-&gt;block
-(braket
-id|len
-op_plus
-l_int|1
-)braket
-op_assign
-id|inb_p
-c_func
-(paren
-id|SMBPEC
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 id|outb_p
 c_func
 (paren
@@ -1849,6 +1771,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Return -1 on error. */
 DECL|function|i801_access
+r_static
 id|s32
 id|i801_access
 c_func
@@ -2192,11 +2115,13 @@ id|I2C_SMBUS_PROC_CALL
 suffix:colon
 r_default
 suffix:colon
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2c-i801.o: Unsupported transaction %d&bslash;n&quot;
+op_amp
+id|I801_dev-&gt;dev
+comma
+l_string|&quot;Unsupported transaction %d&bslash;n&quot;
 comma
 id|size
 )paren
@@ -2403,6 +2328,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|i801_func
+r_static
 id|u32
 id|i801_func
 c_func
@@ -2589,7 +2515,7 @@ comma
 dot
 id|device
 op_assign
-id|PCI_DEVICE_ID_INTEL_82801CA_SMBUS
+id|PCI_DEVICE_ID_INTEL_82801CA_3
 comma
 dot
 id|subvendor
@@ -2612,7 +2538,7 @@ comma
 dot
 id|device
 op_assign
-id|PCI_DEVICE_ID_INTEL_82801DB_SMBUS
+id|PCI_DEVICE_ID_INTEL_82801DB_3
 comma
 dot
 id|subvendor
@@ -2661,10 +2587,13 @@ id|dev
 )paren
 )paren
 (brace
-id|printk
+id|dev_warn
+c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;i2c-i801.o: I801 not detected, module not inserted.&bslash;n&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;I801 not detected, module not inserted.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2765,7 +2694,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;i2c-i801.o version %s (%s)&bslash;n&quot;
+l_string|&quot;i2c-i801 version %s (%s)&bslash;n&quot;
 comma
 id|I2C_VERSION
 comma
@@ -2816,13 +2745,21 @@ suffix:semicolon
 )brace
 id|MODULE_AUTHOR
 (paren
-l_string|&quot;Frodo Looijaard &lt;frodol@dds.nl&gt;, Philip Edelbrock &lt;phil@netroedge.com&gt;, and Mark D. Studebaker &lt;mdsxyz123@yahoo.com&gt;&quot;
+l_string|&quot;Frodo Looijaard &lt;frodol@dds.nl&gt;, &quot;
+l_string|&quot;Philip Edelbrock &lt;phil@netroedge.com&gt;, &quot;
+l_string|&quot;and Mark D. Studebaker &lt;mdsxyz123@yahoo.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;I801 SMBus driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|i2c_i801_init

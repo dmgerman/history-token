@@ -3952,7 +3952,7 @@ r_int
 r_char
 id|buf
 (braket
-l_int|20
+l_int|21
 )braket
 comma
 op_star

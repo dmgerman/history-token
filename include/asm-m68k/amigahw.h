@@ -1496,8 +1496,8 @@ DECL|macro|TOD3000_CNTRL1_HOLD
 mdefine_line|#define TOD3000_CNTRL1_HOLD&t;0
 DECL|macro|TOD3000_CNTRL1_FREE
 mdefine_line|#define TOD3000_CNTRL1_FREE&t;9
-DECL|macro|TOD_3000
-mdefine_line|#define TOD_3000 ((struct tod3000 *)(zTwoBase+0xDC0000))
+DECL|macro|tod_3000
+mdefine_line|#define tod_3000 ((*(volatile struct tod3000 *)(zTwoBase+0xDC0000)))
 DECL|struct|tod2000
 r_struct
 id|tod2000
@@ -1687,7 +1687,7 @@ DECL|macro|TOD2000_CNTRL3_24HMODE
 mdefine_line|#define TOD2000_CNTRL3_24HMODE&t;(1&lt;&lt;2)
 DECL|macro|TOD2000_HOUR1_PM
 mdefine_line|#define TOD2000_HOUR1_PM&t;(1&lt;&lt;2)
-DECL|macro|TOD_2000
-mdefine_line|#define TOD_2000 ((struct tod2000 *)(zTwoBase+0xDC0000))
+DECL|macro|tod_2000
+mdefine_line|#define tod_2000 ((*(volatile struct tod2000 *)(zTwoBase+0xDC0000)))
 macro_line|#endif /* _M68K_AMIGAHW_H */
 eof

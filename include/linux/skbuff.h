@@ -380,10 +380,10 @@ comma
 DECL|member|csum
 id|csum
 suffix:semicolon
-DECL|member|__unused
+DECL|member|local_df
 r_int
 r_char
-id|__unused
+id|local_df
 comma
 DECL|member|cloned
 id|cloned

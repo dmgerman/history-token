@@ -599,7 +599,7 @@ id|qlen
 OG
 l_int|0
 )paren
-op_or
+op_logical_or
 op_logical_neg
 (paren
 id|GUS_MIDI_STATUS

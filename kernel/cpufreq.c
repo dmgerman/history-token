@@ -44,7 +44,7 @@ id|DECLARE_RWSEM
 id|cpufreq_notifier_rwsem
 )paren
 suffix:semicolon
-DECL|variable|cpufreq_governor_list
+r_static
 id|LIST_HEAD
 c_func
 (paren

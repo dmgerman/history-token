@@ -1384,10 +1384,6 @@ id|new_dev-&gt;destructor
 op_assign
 id|vlan_dev_destruct
 suffix:semicolon
-id|new_dev-&gt;features
-op_or_assign
-id|NETIF_F_DYNALLOC
-suffix:semicolon
 multiline_comment|/* new_dev-&gt;ifindex = 0;  it will be set when added to&n;&t; * the global list.&n;&t; * iflink is set as well.&n;&t; */
 id|new_dev-&gt;get_stats
 op_assign

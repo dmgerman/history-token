@@ -411,6 +411,12 @@ id|ipv6_mc_socklist
 op_star
 id|ipv6_mc_list
 suffix:semicolon
+DECL|member|ipv6_ac_list
+r_struct
+id|ipv6_ac_socklist
+op_star
+id|ipv6_ac_list
+suffix:semicolon
 DECL|member|ipv6_fl_list
 r_struct
 id|ipv6_fl_socklist

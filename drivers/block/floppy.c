@@ -15563,6 +15563,16 @@ op_lshift
 id|drive
 suffix:semicolon
 )brace
+r_else
+id|allowed_drive_mask
+op_and_assign
+op_complement
+(paren
+l_int|1
+op_lshift
+id|drive
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace

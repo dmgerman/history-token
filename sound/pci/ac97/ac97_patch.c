@@ -1683,8 +1683,6 @@ comma
 id|AC97_ALC650_MULTICH
 comma
 id|val
-op_or
-l_int|0x03
 )paren
 suffix:semicolon
 multiline_comment|/* full DAC volume */

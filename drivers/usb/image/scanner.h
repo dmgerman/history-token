@@ -447,6 +447,17 @@ c_func
 (paren
 l_int|0x04f9
 comma
+l_int|0x010f
+)paren
+)brace
+comma
+multiline_comment|/* MFC 5100C */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04f9
+comma
 l_int|0x0111
 )paren
 )brace
@@ -580,6 +591,17 @@ c_func
 (paren
 l_int|0x04a9
 comma
+l_int|0x2213
+)paren
+)brace
+comma
+multiline_comment|/* LIDE 50 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a9
+comma
 l_int|0x3042
 )paren
 )brace
@@ -587,6 +609,17 @@ comma
 multiline_comment|/* FS4000US */
 multiline_comment|/* Colorado -- See Primax/Colorado below */
 multiline_comment|/* Compaq */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x049f
+comma
+l_int|0x001a
+)paren
+)brace
+comma
+multiline_comment|/* S4 100 */
 (brace
 id|USB_DEVICE
 c_func
@@ -872,6 +905,28 @@ multiline_comment|/* ScanJet 2300C */
 id|USB_DEVICE
 c_func
 (paren
+l_int|0x03F0
+comma
+l_int|0x1005
+)paren
+)brace
+comma
+multiline_comment|/* ScanJet 5400C */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x03F0
+comma
+l_int|0x1105
+)paren
+)brace
+comma
+multiline_comment|/* ScanJet 5470C */
+(brace
+id|USB_DEVICE
+c_func
+(paren
 l_int|0x03f0
 comma
 l_int|0x1305
@@ -925,6 +980,29 @@ l_int|0x002d
 )brace
 comma
 multiline_comment|/* X70/X73 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x043d
+comma
+l_int|0x003d
+)paren
+)brace
+comma
+multiline_comment|/* X83 */
+multiline_comment|/* LG Electronics */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0461
+comma
+l_int|0x0364
+)paren
+)brace
+comma
+multiline_comment|/* Scanworks 600U (repackaged Primax?) */
 multiline_comment|/* Medion */
 (brace
 id|USB_DEVICE
@@ -961,6 +1039,17 @@ l_int|0x30ce
 )brace
 comma
 multiline_comment|/* ScanMaker 3800 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x05da
+comma
+l_int|0x30cf
+)paren
+)brace
+comma
+multiline_comment|/* ScanMaker 4800 */
 multiline_comment|/* The following SCSI-over-USB Microtek devices are supported by the&n;&t;   microtek driver: Enable SCSI and USB Microtek in kernel config */
 singleline_comment|//&t;{ USB_DEVICE(0x05da, 0x0099) },&t;/* ScanMaker X6 - X6U */
 singleline_comment|//&t;{ USB_DEVICE(0x05da, 0x0094) },&t;/* Phantom 336CX - C3 */
@@ -1753,7 +1842,41 @@ l_int|0x4600
 )brace
 comma
 multiline_comment|/* TravelScan 460/464 */
+multiline_comment|/* Trust */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x05cb
+comma
+l_int|0x1483
+)paren
+)brace
+comma
+multiline_comment|/* CombiScan 19200 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x05d8
+comma
+l_int|0x4006
+)paren
+)brace
+comma
+multiline_comment|/* Easy Webscan 19200 (repackaged Artec?) */
 multiline_comment|/* Umax */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x05d8
+comma
+l_int|0x4009
+)paren
+)brace
+comma
+multiline_comment|/* Astraslim (actually Artec?) */
 (brace
 id|USB_DEVICE
 c_func

@@ -857,12 +857,9 @@ id|event
 op_ne
 id|NETDEV_DOWN
 op_logical_and
-op_logical_neg
-(paren
-id|dev-&gt;features
-op_amp
-id|NETIF_F_DYNALLOC
-)paren
+id|dev-&gt;destructor
+op_eq
+l_int|NULL
 op_logical_and
 id|dst-&gt;output
 op_eq

@@ -2825,6 +2825,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/** Taken from Gleb + Lennert&squot;s VLAN code, and modified... */

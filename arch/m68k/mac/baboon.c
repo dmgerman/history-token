@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Baboon Custom IC Managment&n; *&n; * The Baboon custom IC controls the IDE, PCMCIA and media bay on the&n; * PowerBook 190. It multiplexes multiple interrupt sources onto the&n; * Nubus slot $C interrupt.&n; */
+multiline_comment|/*&n; * Baboon Custom IC Management&n; *&n; * The Baboon custom IC controls the IDE, PCMCIA and media bay on the&n; * PowerBook 190. It multiplexes multiple interrupt sources onto the&n; * Nubus slot $C interrupt.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;

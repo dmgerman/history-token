@@ -756,6 +756,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|status
 op_amp
 (paren
@@ -766,6 +767,7 @@ op_or
 id|UART_MSR_TERI_MSK
 op_or
 id|UART_MSR_DDCD_MSK
+)paren
 )paren
 )paren
 r_return

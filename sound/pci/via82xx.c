@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
-macro_line|#include &lt;sound/pcm_sgbuf.h&gt;
 macro_line|#include &lt;sound/pcm_params.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/ac97_codec.h&gt;
@@ -2173,21 +2172,6 @@ id|status
 )paren
 r_continue
 suffix:semicolon
-id|outb
-c_func
-(paren
-id|status
-comma
-id|VIADEV_REG
-c_func
-(paren
-id|viadev
-comma
-id|OFFSET_STATUS
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* ack */
 r_if
 c_cond
 (paren
@@ -2217,6 +2201,21 @@ id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
 )brace
+id|outb
+c_func
+(paren
+id|status
+comma
+id|VIADEV_REG
+c_func
+(paren
+id|viadev
+comma
+id|OFFSET_STATUS
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* ack */
 )brace
 id|spin_unlock
 c_func
@@ -3257,6 +3256,16 @@ comma
 id|runtime-&gt;rate
 )paren
 suffix:semicolon
+id|snd_ac97_set_rate
+c_func
+(paren
+id|chip-&gt;ac97
+comma
+id|AC97_SPDIF
+comma
+id|runtime-&gt;rate
+)paren
+suffix:semicolon
 id|via686_setup_format
 c_func
 (paren
@@ -3812,7 +3821,7 @@ id|OFS_MULTPLAY_FORMAT
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* set sample number to slot 3, 4, 7, 8, 6, 9 */
+multiline_comment|/* set sample number to slot 3, 4, 7, 8, 6, 9 (for VIA8233/C,8235) */
 multiline_comment|/* corresponding to FL, FR, RL, RR, C, LFE ?? */
 r_switch
 c_cond
@@ -3932,19 +3941,19 @@ l_int|4
 )paren
 op_or
 (paren
-l_int|5
+l_int|3
 op_lshift
 l_int|8
 )paren
 op_or
 (paren
-l_int|3
+l_int|4
 op_lshift
 l_int|12
 )paren
 op_or
 (paren
-l_int|4
+l_int|5
 op_lshift
 l_int|16
 )paren
@@ -3969,25 +3978,25 @@ l_int|4
 )paren
 op_or
 (paren
-l_int|5
+l_int|3
 op_lshift
 l_int|8
 )paren
 op_or
 (paren
-l_int|6
+l_int|4
 op_lshift
 l_int|12
 )paren
 op_or
 (paren
-l_int|3
+l_int|5
 op_lshift
 l_int|16
 )paren
 op_or
 (paren
-l_int|4
+l_int|6
 op_lshift
 l_int|20
 )paren
@@ -6549,10 +6558,11 @@ l_int|0x1106
 comma
 l_int|0x4161
 comma
+l_string|&quot;ASRock K7VT2&quot;
+comma
 id|AC97_TUNE_HP_ONLY
 )brace
 comma
-multiline_comment|/* ASRock K7VT2 */
 (brace
 )brace
 multiline_comment|/* terminator */
@@ -6641,7 +6651,6 @@ suffix:semicolon
 id|snd_ac97_tune_hardware
 c_func
 (paren
-op_amp
 id|chip-&gt;ac97
 comma
 id|chip-&gt;pci

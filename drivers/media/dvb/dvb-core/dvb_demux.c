@@ -1203,7 +1203,7 @@ r_if
 c_cond
 (paren
 id|f-&gt;doneq
-op_amp
+op_logical_and
 op_logical_neg
 id|neq
 )paren

@@ -871,7 +871,7 @@ op_amp
 id|blocked
 )paren
 suffix:semicolon
-id|sicprocmask
+id|sigprocmask
 c_func
 (paren
 id|SIG_BLOCK

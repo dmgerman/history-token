@@ -567,8 +567,9 @@ comma
 l_int|0x0007
 )paren
 comma
+dot
 id|devs
-suffix:colon
+op_assign
 (brace
 id|ISAPNP_DEVICE_ID
 c_func
@@ -2061,7 +2062,7 @@ c_func
 id|alsa_card_dt019x_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-dt019x=enable,index,id,snd_isapnp,&n;&t;&t;&t;  port,mpu_port,fm_port,&n;&t;&t;&t;  irq,mpu_irq,dma8,dma8_size */
+multiline_comment|/* format is: snd-dt019x=enable,index,id,&n;&t;&t;&t;  port,mpu_port,fm_port,&n;&t;&t;&t;  irq,mpu_irq,dma8,dma8_size */
 DECL|function|alsa_card_dt019x_setup
 r_static
 r_int

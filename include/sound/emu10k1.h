@@ -32,6 +32,10 @@ DECL|macro|NUM_G
 mdefine_line|#define NUM_G           64              /* use all channels */
 DECL|macro|NUM_FXSENDS
 mdefine_line|#define NUM_FXSENDS     4
+DECL|macro|EMU10K1_DMA_MASK
+mdefine_line|#define EMU10K1_DMA_MASK&t;0x1fffffffUL
+DECL|macro|AUDIGY_DMA_MASK
+mdefine_line|#define AUDIGY_DMA_MASK&t;&t;0xffffffffUL
 DECL|macro|TMEMSIZE
 mdefine_line|#define TMEMSIZE        256*1024
 DECL|macro|TMEMSIZEREG
@@ -310,6 +314,10 @@ DECL|macro|A_GPOUTPUT_MASK
 mdefine_line|#define A_GPOUTPUT_MASK&t;&t;0x00ff
 DECL|macro|A_IOCFG_GPOUT0
 mdefine_line|#define A_IOCFG_GPOUT0&t;&t;0x0044&t;&t;/* analog/digital? */
+DECL|macro|A_IOCFG_GPOUT1
+mdefine_line|#define A_IOCFG_GPOUT1&t;&t;0x0002&t;&t;/* IR */
+DECL|macro|A_IOCFG_GPOUT2
+mdefine_line|#define A_IOCFG_GPOUT2&t;&t;0x0001&t;&t;/* IR */
 DECL|macro|TIMER
 mdefine_line|#define TIMER&t;&t;&t;0x1a&t;&t;/* Timer terminal count register&t;&t;*/
 multiline_comment|/* NOTE: After the rate is changed, a maximum&t;*/
@@ -1914,6 +1922,12 @@ r_int
 id|ecard_ctrl
 suffix:semicolon
 multiline_comment|/* ecard control bits */
+DECL|member|dma_mask
+r_int
+r_int
+id|dma_mask
+suffix:semicolon
+multiline_comment|/* PCI DMA mask */
 DECL|member|max_cache_pages
 r_int
 id|max_cache_pages

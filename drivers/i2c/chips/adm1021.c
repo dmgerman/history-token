@@ -167,7 +167,7 @@ mdefine_line|#define TEMP_FROM_REG(val) (val &gt; 127 ? val-256 : val)
 DECL|macro|TEMP_TO_REG
 mdefine_line|#define TEMP_TO_REG(val)   (SENSORS_LIMIT((val &lt; 0 ? val+256 : val),0,255))
 multiline_comment|/* Initial values */
-multiline_comment|/* Note: Eventhough I left the low and high limits named os and hyst, &n;they don&squot;t quite work like a thermostat the way the LM75 does.  I.e., &n;a lower temp than THYST actuall triggers an alarm instead of &n;clearing it.  Weird, ey?   --Phil  */
+multiline_comment|/* Note: Even though I left the low and high limits named os and hyst, &n;they don&squot;t quite work like a thermostat the way the LM75 does.  I.e., &n;a lower temp than THYST actually triggers an alarm instead of &n;clearing it.  Weird, ey?   --Phil  */
 DECL|macro|adm1021_INIT_TOS
 mdefine_line|#define adm1021_INIT_TOS 60
 DECL|macro|adm1021_INIT_THYST

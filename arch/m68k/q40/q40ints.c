@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/m68k/q40/q40ints.c&n; *&n; * Copyright (C) 1999,2001 Richard Zidlicky&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; *&n; * .. used to be losely based on bvme6000ints.c&n; *&n; */
+multiline_comment|/*&n; * arch/m68k/q40/q40ints.c&n; *&n; * Copyright (C) 1999,2001 Richard Zidlicky&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; *&n; * .. used to be loosely based on bvme6000ints.c&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -428,8 +428,7 @@ l_int|10
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -690,8 +689,7 @@ l_int|10
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -1156,8 +1154,7 @@ id|irq
 comma
 id|i
 suffix:semicolon
-id|repeat
-suffix:colon
+singleline_comment|//repeat:
 id|mir
 op_assign
 id|master_inb
@@ -1336,7 +1333,7 @@ op_amp
 id|IRQ_INPROGRESS
 )paren
 (brace
-multiline_comment|/* some handlers do sti() for irq latency reasons, */
+multiline_comment|/* some handlers do local_irq_enable() for irq latency reasons, */
 multiline_comment|/* however reentering an active irq handler is not permitted */
 macro_line|#ifdef IP_USE_DISABLE
 multiline_comment|/* in theory this is the better way to do it because it still */
@@ -1803,7 +1800,7 @@ r_int
 id|irq
 )paren
 (brace
-multiline_comment|/* disable ISA iqs : only do something if the driver has been&n;   * verified to be Q40 &quot;compatible&quot; - right now IDE, NE2K&n;   * Any driver should not attempt to sleep accross disable_irq !!&n;   */
+multiline_comment|/* disable ISA iqs : only do something if the driver has been&n;   * verified to be Q40 &quot;compatible&quot; - right now IDE, NE2K&n;   * Any driver should not attempt to sleep across disable_irq !!&n;   */
 r_if
 c_cond
 (paren

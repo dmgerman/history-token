@@ -9348,6 +9348,25 @@ id|vj-&gt;sls_i_compressed
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Stuff for handling the lists of ppp units and channels&n; * and for initialization.&n; */
+DECL|function|ppp_device_destructor
+r_static
+r_void
+id|ppp_device_destructor
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Create a new ppp interface unit.  Fails if it can&squot;t allocate memory&n; * or if there is already a unit with the requested number.&n; * unit == -1 means allocate a new number.&n; */
 r_static
 r_struct
@@ -9610,9 +9629,9 @@ id|dev-&gt;priv
 op_assign
 id|ppp
 suffix:semicolon
-id|dev-&gt;features
-op_or_assign
-id|NETIF_F_DYNALLOC
+id|dev-&gt;destructor
+op_assign
+id|ppp_device_destructor
 suffix:semicolon
 id|rtnl_lock
 c_func

@@ -1617,8 +1617,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-r_struct
-id|affs_sb_info
+op_star
+id|sbi
 )paren
 )paren
 suffix:semicolon

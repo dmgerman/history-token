@@ -1,5 +1,6 @@
 multiline_comment|/* 3c509.c: A 3c509 EtherLink3 ethernet driver for linux. */
 multiline_comment|/*&n;&t;Written 1993-2000 by Donald Becker.&n;&n;&t;Copyright 1994-2000 by Donald Becker.&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&t; This software may be used and&n;&t;distributed according to the terms of the GNU General Public License,&n;&t;incorporated herein by reference.&n;&n;&t;This driver is for the 3Com EtherLinkIII series.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Known limitations:&n;&t;Because of the way 3c509 ISA detection works it&squot;s difficult to predict&n;&t;a priori which of several ISA-mode cards will be detected first.&n;&n;&t;This driver does not use predictive interrupt mode, resulting in higher&n;&t;packet latency but lower overhead.  If interrupts are disabled for an&n;&t;unusually long time it could also result in missed packets, but in&n;&t;practice this rarely happens.&n;&n;&n;&t;FIXES:&n;&t;&t;Alan Cox:       Removed the &squot;Unexpected interrupt&squot; bug.&n;&t;&t;Michael Meskes:&t;Upgraded to Donald Becker&squot;s version 1.07.&n;&t;&t;Alan Cox:&t;Increased the eeprom delay. Regardless of &n;&t;&t;&t;&t;what the docs say some people definitely&n;&t;&t;&t;&t;get problems with lower (but in card spec)&n;&t;&t;&t;&t;delays&n;&t;&t;v1.10 4/21/97 Fixed module code so that multiple cards may be detected,&n;&t;&t;&t;&t;other cleanups.  -djb&n;&t;&t;Andrea Arcangeli:&t;Upgraded to Donald Becker&squot;s version 1.12.&n;&t;&t;Rick Payne:&t;Fixed SMP race condition&n;&t;&t;v1.13 9/8/97 Made &squot;max_interrupt_work&squot; an insmod-settable variable -djb&n;&t;&t;v1.14 10/15/97 Avoided waiting..discard message for fast machines -djb&n;&t;&t;v1.15 1/31/98 Faster recovery for Tx errors. -djb&n;&t;&t;v1.16 2/3/98 Different ID port handling to avoid sound cards. -djb&n;&t;&t;v1.18 12Mar2001 Andrew Morton &lt;andrewm@uow.edu.au&gt;&n;&t;&t;&t;- Avoid bogus detect of 3c590&squot;s (Andrzej Krzysztofowicz)&n;&t;&t;&t;- Reviewed against 1.18 from scyld.com&n;&t;&t;v1.18a 17Nov2001 Jeff Garzik &lt;jgarzik@pobox.com&gt;&n;&t;&t;&t;- ethtool support&n;&t;&t;v1.18b 1Mar2002 Zwane Mwaikambo &lt;zwane@commfireservices.com&gt;&n;&t;&t;&t;- Power Management support&n;&t;&t;v1.18c 1Mar2002 David Ruggiero &lt;jdr@farfalle.com&gt;&n;&t;&t;&t;- Full duplex support&n;&t;&t;v1.19  16Oct2002 Zwane Mwaikambo &lt;zwane@linuxpower.ca&gt;&n;&t;&t;&t;- Additional ethtool features&n;&t;&t;v1.19a 28Oct2002 Davud Ruggiero &lt;jdr@farfalle.com&gt;&n;&t;&t;&t;- Increase *read_eeprom udelay to workaround oops with 2 cards.&n;&t;&t;v1.19b 08Nov2002 Marc Zyngier &lt;maz@wild-wind.fr.eu.org&gt;&n;&t;&t;    - Introduce driver model for EISA cards.&n;*/
+multiline_comment|/*&n;  FIXES for PC-9800:&n;  Shu Iwanaga: 3c569B(PC-9801 C-bus) support&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;3c509&quot;
 DECL|macro|DRV_VERSION
@@ -866,7 +867,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_MCA */
-macro_line|#ifdef __ISAPNP__
+macro_line|#if defined(__ISAPNP__) &amp;&amp; !defined(CONFIG_X86_PC9800)
 DECL|variable|__initdata
 r_static
 r_struct
@@ -1340,7 +1341,7 @@ id|lp-&gt;pmdev
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef __ISAPNP__
+macro_line|#if defined(__ISAPNP__) &amp;&amp; !defined(CONFIG_X86_PC9800)
 r_if
 c_cond
 (paren
@@ -1423,7 +1424,7 @@ r_static
 r_int
 id|current_tag
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#if defined(__ISAPNP__) &amp;&amp; !defined(CONFIG_X86_PC9800)
 r_static
 r_int
 id|pnp_cards
@@ -1436,7 +1437,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif /* __ISAPNP__ */
-macro_line|#ifdef __ISAPNP__
+macro_line|#if defined(__ISAPNP__) &amp;&amp; !defined(CONFIG_X86_PC9800)
 r_if
 c_cond
 (paren
@@ -1747,6 +1748,12 @@ suffix:semicolon
 id|no_pnp
 suffix:colon
 macro_line|#endif /* __ISAPNP__ */
+macro_line|#ifdef CONFIG_X86_PC9800
+id|id_port
+op_assign
+l_int|0x71d0
+suffix:semicolon
+macro_line|#else
 multiline_comment|/* Select an open I/O location at 0x1*0 to do contention select. */
 r_for
 c_loop
@@ -1824,6 +1831,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_X86_PC9800 */
 multiline_comment|/* Next check for all ISA bus boards by sending the ID sequence to the&n;&t;   ID_PORT.  We find cards past the first by setting the &squot;current_tag&squot;&n;&t;   on cards as they are found.  Cards with their tag set will not&n;&t;   respond to subsequent ID sequences. */
 id|outb
 c_func
@@ -1957,7 +1965,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef __ISAPNP__
+macro_line|#if defined(__ISAPNP__) &amp;&amp; !defined(CONFIG_X86_PC9800)
 r_if
 c_cond
 (paren
@@ -2116,6 +2124,22 @@ id|iobase
 op_rshift
 l_int|14
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_PC9800
+id|ioaddr
+op_assign
+l_int|0x40d0
+op_plus
+(paren
+(paren
+id|iobase
+op_amp
+l_int|0x1f
+)paren
+op_lshift
+l_int|8
+)paren
+suffix:semicolon
+macro_line|#else
 id|ioaddr
 op_assign
 l_int|0x200
@@ -2130,6 +2154,7 @@ op_lshift
 l_int|4
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 id|irq
 op_assign
@@ -2141,6 +2166,31 @@ l_int|9
 op_rshift
 l_int|12
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_PC9800
+r_if
+c_cond
+(paren
+id|irq
+op_eq
+l_int|7
+)paren
+id|irq
+op_assign
+l_int|6
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|irq
+op_eq
+l_int|15
+)paren
+id|irq
+op_assign
+l_int|13
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2273,6 +2323,22 @@ id|id_port
 )paren
 suffix:semicolon
 multiline_comment|/* Activate the adaptor at the EEPROM location. */
+macro_line|#ifdef CONFIG_X86_PC9800
+id|outb
+c_func
+(paren
+(paren
+id|ioaddr
+op_rshift
+l_int|8
+)paren
+op_or
+l_int|0xe0
+comma
+id|id_port
+)paren
+suffix:semicolon
+macro_line|#else
 id|outb
 c_func
 (paren
@@ -2287,6 +2353,7 @@ comma
 id|id_port
 )paren
 suffix:semicolon
+macro_line|#endif
 id|EL3WINDOW
 c_func
 (paren
@@ -2334,7 +2401,7 @@ op_plus
 id|WN0_IRQ
 )paren
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__&t;
+macro_line|#if defined(__ISAPNP__) &amp;&amp; !defined(CONFIG_X86_PC9800)
 id|found
 suffix:colon
 multiline_comment|/* PNP jumps here... */
@@ -2368,7 +2435,7 @@ id|lp
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#if defined(__ISAPNP__) &amp;&amp; !defined(CONFIG_X86_PC9800)
 id|lp-&gt;dev
 op_assign
 op_amp
@@ -6357,6 +6424,31 @@ l_int|4
 )paren
 suffix:semicolon
 multiline_comment|/* Set the IRQ line. */
+macro_line|#ifdef CONFIG_X86_PC9800
+r_if
+c_cond
+(paren
+id|dev-&gt;irq
+op_eq
+l_int|6
+)paren
+id|dev-&gt;irq
+op_assign
+l_int|7
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|dev-&gt;irq
+op_eq
+l_int|13
+)paren
+id|dev-&gt;irq
+op_assign
+l_int|15
+suffix:semicolon
+macro_line|#endif
 id|outw
 c_func
 (paren
@@ -7252,7 +7344,7 @@ comma
 l_string|&quot;maximum events handled per interrupt&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#if defined(__ISAPNP__) &amp;&amp; !defined(CONFIG_X86_PC9800)
 id|MODULE_PARM
 c_func
 (paren

@@ -1,12 +1,12 @@
-multiline_comment|/*&n; * USB Skeleton driver - 0.9&n; *&n; * Copyright (c) 2001-2002 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; *&n; * This driver is to be used as a skeleton driver to be able to create a&n; * USB driver quickly.  The design of it is based on the usb-serial and&n; * dc2xx drivers.&n; *&n; * Thanks to Oliver Neukum and David Brownell for their help in debugging&n; * this driver.&n; *&n; * TODO:&n; *&t;- fix urb-&gt;status race condition in write sequence&n; *&n; * History:&n; *&n; * 2002_12_12 - 0.9 - compile fixes and got rid of fixed minor array.&n; * 2002_09_26 - 0.8 - changes due to USB core conversion to struct device&n; *&t;&t;&t;driver.&n; * 2002_02_12 - 0.7 - zero out dev in probe function for devices that do&n; *&t;&t;&t;not have both a bulk in and bulk out endpoint.&n; *&t;&t;&t;Thanks to Holger Waechtler for the fix.&n; * 2001_11_05 - 0.6 - fix minor locking problem in skel_disconnect.&n; *&t;&t;&t;Thanks to Pete Zaitcev for the fix.&n; * 2001_09_04 - 0.5 - fix devfs bug in skel_disconnect. Thanks to wim delvaux&n; * 2001_08_21 - 0.4 - more small bug fixes.&n; * 2001_05_29 - 0.3 - more bug fixes based on review from linux-usb-devel&n; * 2001_05_24 - 0.2 - bug fixes based on review from linux-usb-devel people&n; * 2001_05_01 - 0.1 - first version&n; * &n; */
+multiline_comment|/*&n; * USB Skeleton driver - 1.0&n; *&n; * Copyright (c) 2001-2002 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; *&n; * This driver is to be used as a skeleton driver to be able to create a&n; * USB driver quickly.  The design of it is based on the usb-serial and&n; * dc2xx drivers.&n; *&n; * Thanks to Oliver Neukum, David Brownell, and Alan Stern for their help&n; * in debugging this driver.&n; *&n; *&n; * History:&n; *&n; * 2003-02-25 - 1.0 - fix races involving urb-&gt;status, unlink_urb(), and&n; *&t;&t;&t;disconnect.  Fix transfer amount in read().  Use&n; *&t;&t;&t;macros instead of magic numbers in probe().  Change&n; *&t;&t;&t;size variables to size_t.  Show how to eliminate&n; *&t;&t;&t;DMA bounce buffer.&n; * 2002_12_12 - 0.9 - compile fixes and got rid of fixed minor array.&n; * 2002_09_26 - 0.8 - changes due to USB core conversion to struct device&n; *&t;&t;&t;driver.&n; * 2002_02_12 - 0.7 - zero out dev in probe function for devices that do&n; *&t;&t;&t;not have both a bulk in and bulk out endpoint.&n; *&t;&t;&t;Thanks to Holger Waechtler for the fix.&n; * 2001_11_05 - 0.6 - fix minor locking problem in skel_disconnect.&n; *&t;&t;&t;Thanks to Pete Zaitcev for the fix.&n; * 2001_09_04 - 0.5 - fix devfs bug in skel_disconnect. Thanks to wim delvaux&n; * 2001_08_21 - 0.4 - more small bug fixes.&n; * 2001_05_29 - 0.3 - more bug fixes based on review from linux-usb-devel&n; * 2001_05_24 - 0.2 - bug fixes based on review from linux-usb-devel people&n; * 2001_05_01 - 0.1 - first version&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
@@ -32,7 +32,7 @@ DECL|macro|dbg
 mdefine_line|#define dbg(format, arg...) do { if (debug) printk(KERN_DEBUG __FILE__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg); } while (0)
 multiline_comment|/* Version Information */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.4&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.0&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman, greg@kroah.com&quot;
 DECL|macro|DRIVER_DESC
@@ -191,12 +191,17 @@ id|__u8
 id|bulk_out_endpointAddr
 suffix:semicolon
 multiline_comment|/* the address of the bulk out endpoint */
-DECL|member|work
-r_struct
-id|work_struct
-id|work
+DECL|member|write_busy
+id|atomic_t
+id|write_busy
 suffix:semicolon
-multiline_comment|/* work queue entry for line discipline waking up */
+multiline_comment|/* true iff write urb is busy */
+DECL|member|write_finished
+r_struct
+id|completion
+id|write_finished
+suffix:semicolon
+multiline_comment|/* wait for the write to finish */
 DECL|member|open
 r_int
 id|open
@@ -214,6 +219,13 @@ multiline_comment|/* the global usb devfs handle */
 r_extern
 id|devfs_handle_t
 id|usb_devfs_handle
+suffix:semicolon
+multiline_comment|/* prevent races between open() and disconnect() */
+r_static
+id|DECLARE_MUTEX
+(paren
+id|disconnect_sem
+)paren
 suffix:semicolon
 multiline_comment|/* local function prototypes */
 r_static
@@ -353,7 +365,7 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * File operations needed when we register this driver.&n; * This assumes that this driver NEEDS file operations,&n; * of course, which means that the driver is expected&n; * to have a node in the /dev directory. If the USB&n; * device were for a network interface then the driver&n; * would use &quot;struct net_driver&quot; instead, and a serial&n; * device would use &quot;struct tty_driver&quot;. &n; */
+multiline_comment|/*&n; * File operations needed when we register this driver.&n; * This assumes that this driver NEEDS file operations,&n; * of course, which means that the driver is expected&n; * to have a node in the /dev directory. If the USB&n; * device were for a network interface then the driver&n; * would use &quot;struct net_driver&quot; instead, and a serial&n; * device would use &quot;struct tty_driver&quot;.&n; */
 DECL|variable|skel_fops
 r_static
 r_struct
@@ -532,9 +544,15 @@ id|dev-&gt;bulk_out_buffer
 op_ne
 l_int|NULL
 )paren
-id|kfree
+id|usb_buffer_free
 (paren
+id|dev-&gt;udev
+comma
+id|dev-&gt;bulk_out_size
+comma
 id|dev-&gt;bulk_out_buffer
+comma
+id|dev-&gt;write_urb-&gt;transfer_dma
 )paren
 suffix:semicolon
 r_if
@@ -607,6 +625,13 @@ id|minor
 id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
+multiline_comment|/* prevent disconnects */
+id|down
+(paren
+op_amp
+id|disconnect_sem
+)paren
+suffix:semicolon
 id|interface
 op_assign
 id|usb_find_interface
@@ -639,9 +664,13 @@ comma
 id|subminor
 )paren
 suffix:semicolon
-r_return
+id|retval
+op_assign
 op_minus
 id|ENODEV
+suffix:semicolon
+r_goto
+id|exit_no_device
 suffix:semicolon
 )brace
 id|dev
@@ -658,10 +687,16 @@ c_cond
 op_logical_neg
 id|dev
 )paren
-r_return
+(brace
+id|retval
+op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
+r_goto
+id|exit_no_device
+suffix:semicolon
+)brace
 multiline_comment|/* lock this device */
 id|down
 (paren
@@ -683,6 +718,14 @@ id|up
 (paren
 op_amp
 id|dev-&gt;sem
+)paren
+suffix:semicolon
+id|exit_no_device
+suffix:colon
+id|up
+(paren
+op_amp
+id|disconnect_sem
 )paren
 suffix:semicolon
 r_return
@@ -786,6 +829,26 @@ r_goto
 id|exit_not_opened
 suffix:semicolon
 )brace
+multiline_comment|/* wait for any bulk writes that might be going on to finish up */
+r_if
+c_cond
+(paren
+id|atomic_read
+(paren
+op_amp
+id|dev-&gt;write_busy
+)paren
+)paren
+id|wait_for_completion
+(paren
+op_amp
+id|dev-&gt;write_finished
+)paren
+suffix:semicolon
+id|dev-&gt;open
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -810,16 +873,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* shutdown any bulk writes that might be going on */
-id|usb_unlink_urb
-(paren
-id|dev-&gt;write_urb
-)paren
-suffix:semicolon
-id|dev-&gt;open
-op_assign
-l_int|0
-suffix:semicolon
 id|exit_not_opened
 suffix:colon
 id|up
@@ -913,7 +966,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/* do an immediate bulk read to get data from the device */
+multiline_comment|/* do a blocking bulk read to get data from the device */
 id|retval
 op_assign
 id|usb_bulk_msg
@@ -929,7 +982,12 @@ id|dev-&gt;bulk_in_endpointAddr
 comma
 id|dev-&gt;bulk_in_buffer
 comma
+id|min
+(paren
 id|dev-&gt;bulk_in_size
+comma
+id|count
+)paren
 comma
 op_amp
 id|count
@@ -981,7 +1039,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;skel_write&n; */
+multiline_comment|/**&n; *&t;skel_write&n; *&n; *&t;A device driver has to decide how to report I/O errors back to the&n; *&t;user.  The safest course is to wait for the transfer to finish before&n; *&t;returning so that any errors will be reported reliably.  skel_read()&n; *&t;works like this.  But waiting for I/O is slow, so many drivers only&n; *&t;check for errors during I/O initiation and do not report problems&n; *&t;that occur during the actual transfer.  That&squot;s what we will do here.&n; *&n; *&t;A driver concerned with maximum I/O throughput would use double-&n; *&t;buffering:  Two urbs would be devoted to write transfers, so that&n; *&t;one urb could always be active while the other was waiting for the&n; *&t;user to send more data.&n; */
 DECL|function|skel_write
 r_static
 id|ssize_t
@@ -1087,42 +1145,33 @@ r_goto
 m_exit
 suffix:semicolon
 )brace
-multiline_comment|/* see if we are already in the middle of a write */
+multiline_comment|/* wait for a previous write to finish up; we don&squot;t use a timeout&n;&t; * and so a nonresponsive device can delay us indefinitely.&n;&t; */
 r_if
 c_cond
 (paren
-id|dev-&gt;write_urb-&gt;status
-op_eq
-op_minus
-id|EINPROGRESS
-)paren
-(brace
-id|dbg
+id|atomic_read
 (paren
-l_string|&quot;%s - already writing&quot;
-comma
-id|__FUNCTION__
+op_amp
+id|dev-&gt;write_busy
+)paren
+)paren
+id|wait_for_completion
+(paren
+op_amp
+id|dev-&gt;write_finished
 )paren
 suffix:semicolon
-r_goto
-m_exit
-suffix:semicolon
-)brace
-multiline_comment|/* we can only write as much as 1 urb will hold */
+multiline_comment|/* we can only write as much as our buffer will hold */
 id|bytes_written
 op_assign
+id|min
 (paren
-id|count
-OG
 id|dev-&gt;bulk_out_size
+comma
+id|count
 )paren
-ques
-c_cond
-id|dev-&gt;bulk_out_size
-suffix:colon
-id|count
 suffix:semicolon
-multiline_comment|/* copy the data from userspace into our urb */
+multiline_comment|/* copy the data from userspace into our transfer buffer;&n;&t; * this is the only copy required.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1155,33 +1204,27 @@ comma
 id|dev-&gt;write_urb-&gt;transfer_buffer
 )paren
 suffix:semicolon
-multiline_comment|/* set up our urb */
-id|usb_fill_bulk_urb
-c_func
-(paren
-id|dev-&gt;write_urb
-comma
-id|dev-&gt;udev
-comma
-id|usb_sndbulkpipe
-c_func
-(paren
-id|dev-&gt;udev
-comma
-id|dev-&gt;bulk_out_endpointAddr
-)paren
-comma
-id|dev-&gt;write_urb-&gt;transfer_buffer
-comma
+multiline_comment|/* this urb was already set up, except for this write size */
+id|dev-&gt;write_urb-&gt;transfer_buffer_length
+op_assign
 id|bytes_written
-comma
-id|skel_write_bulk_callback
-comma
-id|dev
-)paren
 suffix:semicolon
 multiline_comment|/* send the data out the bulk port */
 multiline_comment|/* a character device write uses GFP_KERNEL,&n;&t; unless a spinlock is held */
+id|init_completion
+(paren
+op_amp
+id|dev-&gt;write_finished
+)paren
+suffix:semicolon
+id|atomic_set
+(paren
+op_amp
+id|dev-&gt;write_busy
+comma
+l_int|1
+)paren
+suffix:semicolon
 id|retval
 op_assign
 id|usb_submit_urb
@@ -1198,6 +1241,14 @@ c_cond
 id|retval
 )paren
 (brace
+id|atomic_set
+(paren
+op_amp
+id|dev-&gt;write_busy
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|err
 c_func
 (paren
@@ -1362,19 +1413,21 @@ comma
 id|dev-&gt;minor
 )paren
 suffix:semicolon
+multiline_comment|/* sync/async unlink faults aren&squot;t errors */
 r_if
 c_cond
 (paren
+id|urb-&gt;status
+op_logical_and
+op_logical_neg
 (paren
 id|urb-&gt;status
-op_ne
+op_eq
 op_minus
 id|ENOENT
-)paren
-op_logical_and
-(paren
+op_logical_or
 id|urb-&gt;status
-op_ne
+op_eq
 op_minus
 id|ECONNRESET
 )paren
@@ -1390,10 +1443,21 @@ comma
 id|urb-&gt;status
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
-r_return
+multiline_comment|/* notify anyone waiting that the write has finished */
+id|atomic_set
+(paren
+op_amp
+id|dev-&gt;write_busy
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|complete
+(paren
+op_amp
+id|dev-&gt;write_finished
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;skel_probe&n; *&n; *&t;Called by the usb core when a new device is connected that it thinks&n; *&t;this driver might be interested in.&n; */
@@ -1578,6 +1642,7 @@ id|minor
 suffix:semicolon
 multiline_comment|/* set up the endpoint information */
 multiline_comment|/* check out the endpoints */
+multiline_comment|/* use only the first bulk-in and bulk-out endpoints */
 id|iface_desc
 op_assign
 op_amp
@@ -1614,20 +1679,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|dev-&gt;bulk_in_endpointAddr
+op_logical_and
 (paren
 id|endpoint-&gt;bEndpointAddress
 op_amp
-l_int|0x80
+id|USB_DIR_IN
 )paren
 op_logical_and
 (paren
 (paren
 id|endpoint-&gt;bmAttributes
 op_amp
-l_int|3
+id|USB_ENDPOINT_XFERTYPE_MASK
 )paren
 op_eq
-l_int|0x02
+id|USB_ENDPOINT_XFER_BULK
 )paren
 )paren
 (brace
@@ -1674,24 +1742,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
+op_logical_neg
+id|dev-&gt;bulk_out_endpointAddr
+op_logical_and
+op_logical_neg
 (paren
 id|endpoint-&gt;bEndpointAddress
 op_amp
-l_int|0x80
-)paren
-op_eq
-l_int|0x00
+id|USB_DIR_IN
 )paren
 op_logical_and
 (paren
 (paren
 id|endpoint-&gt;bmAttributes
 op_amp
-l_int|3
+id|USB_ENDPOINT_XFERTYPE_MASK
 )paren
 op_eq
-l_int|0x02
+id|USB_ENDPOINT_XFER_BULK
 )paren
 )paren
 (brace
@@ -1724,6 +1792,11 @@ r_goto
 id|error
 suffix:semicolon
 )brace
+id|dev-&gt;bulk_out_endpointAddr
+op_assign
+id|endpoint-&gt;bEndpointAddress
+suffix:semicolon
+multiline_comment|/* on some platforms using this kind of buffer alloc&n;&t;&t;&t; * call eliminates a dma &quot;bounce buffer&quot;.&n;&t;&t;&t; *&n;&t;&t;&t; * NOTE: you&squot;d normally want i/o buffers that hold&n;&t;&t;&t; * more than one packet, so that i/o delays between&n;&t;&t;&t; * packets don&squot;t hurt throughput.&n;&t;&t;&t; */
 id|buffer_size
 op_assign
 id|endpoint-&gt;wMaxPacketSize
@@ -1732,17 +1805,26 @@ id|dev-&gt;bulk_out_size
 op_assign
 id|buffer_size
 suffix:semicolon
-id|dev-&gt;bulk_out_endpointAddr
+id|dev-&gt;write_urb-&gt;transfer_flags
 op_assign
-id|endpoint-&gt;bEndpointAddress
+(paren
+id|URB_NO_DMA_MAP
+op_or
+id|URB_ASYNC_UNLINK
+)paren
 suffix:semicolon
 id|dev-&gt;bulk_out_buffer
 op_assign
-id|kmalloc
+id|usb_buffer_alloc
 (paren
+id|udev
+comma
 id|buffer_size
 comma
 id|GFP_KERNEL
+comma
+op_amp
+id|dev-&gt;write_urb-&gt;transfer_dma
 )paren
 suffix:semicolon
 r_if
@@ -1787,6 +1869,27 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|dev-&gt;bulk_in_endpointAddr
+op_logical_and
+id|dev-&gt;bulk_out_endpointAddr
+)paren
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;Couldn&squot;t find both bulk-in and bulk-out endpoints&quot;
+)paren
+suffix:semicolon
+r_goto
+id|error
+suffix:semicolon
 )brace
 multiline_comment|/* initialize the devfs node for this device and register it */
 id|sprintf
@@ -1834,7 +1937,7 @@ suffix:semicolon
 multiline_comment|/* let the user know what node this device is now attached to */
 id|info
 (paren
-l_string|&quot;USB Skeleton device now attached to USBSkel%d&quot;
+l_string|&quot;USB Skeleton device now attached to USBSkel-%d&quot;
 comma
 id|dev-&gt;minor
 )paren
@@ -1897,7 +2000,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;skel_disconnect&n; *&n; *&t;Called by the usb core when the device is removed from the system.&n; */
+multiline_comment|/**&n; *&t;skel_disconnect&n; *&n; *&t;Called by the usb core when the device is removed from the system.&n; *&n; *&t;This routine guarantees that the driver will not submit any more urbs&n; *&t;by clearing dev-&gt;udev.  It is also supposed to terminate any currently&n; *&t;active urbs.  Unfortunately, usb_bulk_msg(), used in skel_read(), does&n; *&t;not provide any way to do this.  But at least we can cancel an active&n; *&t;write.&n; */
 DECL|function|skel_disconnect
 r_static
 r_void
@@ -1917,6 +2020,13 @@ id|dev
 suffix:semicolon
 r_int
 id|minor
+suffix:semicolon
+multiline_comment|/* prevent races with open() */
+id|down
+(paren
+op_amp
+id|disconnect_sem
+)paren
 suffix:semicolon
 id|dev
 op_assign
@@ -1969,28 +2079,29 @@ comma
 id|minor
 )paren
 suffix:semicolon
-multiline_comment|/* if the device is not opened, then we clean up right now */
+multiline_comment|/* terminate an ongoing write */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|dev-&gt;open
-)paren
-(brace
-id|up
+id|atomic_read
 (paren
 op_amp
-id|dev-&gt;sem
+id|dev-&gt;write_busy
+)paren
+)paren
+(brace
+id|usb_unlink_urb
+(paren
+id|dev-&gt;write_urb
 )paren
 suffix:semicolon
-id|skel_delete
+id|wait_for_completion
 (paren
-id|dev
+op_amp
+id|dev-&gt;write_finished
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
 id|dev-&gt;udev
 op_assign
 l_int|NULL
@@ -2001,7 +2112,24 @@ op_amp
 id|dev-&gt;sem
 )paren
 suffix:semicolon
-)brace
+multiline_comment|/* if the device is not opened, then we clean up right now */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;open
+)paren
+id|skel_delete
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|up
+(paren
+op_amp
+id|disconnect_sem
+)paren
+suffix:semicolon
 id|info
 c_func
 (paren

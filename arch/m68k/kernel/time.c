@@ -127,13 +127,6 @@ op_star
 id|regs
 )paren
 (brace
-multiline_comment|/* last time the cmos clock got updated */
-r_static
-r_int
-id|last_rtc_update
-op_assign
-l_int|0
-suffix:semicolon
 id|do_timer
 c_func
 (paren
@@ -156,86 +149,6 @@ c_func
 id|regs-&gt;pc
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we have an externally synchronized Linux clock, then update&n;&t; * CMOS clock accordingly every ~11 minutes. Set_rtc_mmss() has to be&n;&t; * called as close as possible to 500 ms before the new second starts.&n;&t; */
-multiline_comment|/*&n;&t; * This code hopefully becomes obsolete in 2.5 or earlier&n;&t; * Should it ever be reenabled it must be serialized with&n;&t; * genrtc.c operation&n;&t; */
-macro_line|#if 0
-r_if
-c_cond
-(paren
-(paren
-id|time_status
-op_amp
-id|STA_UNSYNC
-)paren
-op_eq
-l_int|0
-op_logical_and
-id|xtime.tv_sec
-OG
-id|last_rtc_update
-op_plus
-l_int|660
-op_logical_and
-(paren
-id|xtime.tv_nsec
-op_div
-l_int|1000
-)paren
-op_ge
-l_int|500000
-op_minus
-(paren
-(paren
-r_int
-)paren
-id|tick
-)paren
-op_div
-l_int|2
-op_logical_and
-(paren
-id|xtime.tv_nsec
-op_div
-l_int|1000
-)paren
-op_le
-l_int|500000
-op_plus
-(paren
-(paren
-r_int
-)paren
-id|tick
-)paren
-op_div
-l_int|2
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|set_rtc_mmss
-c_func
-(paren
-id|xtime.tv_sec
-)paren
-op_eq
-l_int|0
-)paren
-id|last_rtc_update
-op_assign
-id|xtime.tv_sec
-suffix:semicolon
-r_else
-id|last_rtc_update
-op_assign
-id|xtime.tv_sec
-op_minus
-l_int|600
-suffix:semicolon
-multiline_comment|/* do it again in 60 s */
-)brace
-macro_line|#endif
 macro_line|#ifdef CONFIG_HEARTBEAT
 multiline_comment|/* use power LED as a heartbeat instead -- much more useful&n;&t;   for debugging -- based on the version for PReP by Cort */
 multiline_comment|/* acts like an actual heart beat -- ie thump-thump-pause... */

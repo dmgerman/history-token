@@ -461,7 +461,7 @@ op_assign
 id|IOP_MSGSTATUS_UNUSED
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is called by the startup code before anything else. Its purpose&n; * is to find and initalize the IOPs early in the boot sequence, so that&n; * the serial IOP can be placed into bypass mode _before_ we try to&n; * initialize the serial console.&n; */
+multiline_comment|/*&n; * This is called by the startup code before anything else. Its purpose&n; * is to find and initialize the IOPs early in the boot sequence, so that&n; * the serial IOP can be placed into bypass mode _before_ we try to&n; * initialize the serial console.&n; */
 DECL|function|iop_preinit
 r_void
 id|__init

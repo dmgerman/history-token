@@ -522,12 +522,6 @@ suffix:semicolon
 multiline_comment|/* Set the command buffer */
 id|esp-&gt;esp_command
 op_assign
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
 id|cmd_buffer
 suffix:semicolon
 id|esp-&gt;esp_command_dvma
@@ -535,6 +529,10 @@ op_assign
 id|virt_to_bus
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|cmd_buffer
 )paren
 suffix:semicolon

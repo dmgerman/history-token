@@ -809,7 +809,7 @@ c_cond
 (paren
 op_logical_neg
 id|boot
-op_amp
+op_logical_and
 id|pnpbios_dont_use_current_config
 )paren
 r_return
@@ -946,7 +946,7 @@ c_cond
 (paren
 op_logical_neg
 id|boot
-op_amp
+op_logical_and
 id|pnpbios_dont_use_current_config
 )paren
 r_return

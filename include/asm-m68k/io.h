@@ -277,7 +277,14 @@ id|addr
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* FIXME: any ISA mem mapping for PCMCIA? */
+macro_line|#ifdef CONFIG_AMIGA_PCMCIA
+r_case
+id|AG_ISA
+suffix:colon
+r_return
+id|addr
+suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 r_return
@@ -328,6 +335,14 @@ id|addr
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_AMIGA_PCMCIA
+r_case
+id|AG_ISA
+suffix:colon
+r_return
+id|addr
+suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 r_return
@@ -347,11 +362,11 @@ mdefine_line|#define isa_outw(val,port) (ISA_SEX ? out_be16(isa_itw(port),(val))
 DECL|macro|isa_readb
 mdefine_line|#define isa_readb(p)       in_8(isa_mtb(p))
 DECL|macro|isa_readw
-mdefine_line|#define isa_readw(p)       in_le16(isa_mtw(p))
+mdefine_line|#define isa_readw(p)       (ISA_SEX ? in_be16(isa_mtw(p)) : in_le16(isa_mtw(p)))
 DECL|macro|isa_writeb
 mdefine_line|#define isa_writeb(val,p)  out_8(isa_mtb(p),(val))
 DECL|macro|isa_writew
-mdefine_line|#define isa_writew(val,p)  out_le16(isa_mtw(p),(val))
+mdefine_line|#define isa_writew(val,p)  (ISA_SEX ? out_be16(isa_mtw(p),(val)) : out_le16(isa_mtw(p),(val)))
 DECL|function|isa_delay
 r_static
 r_inline

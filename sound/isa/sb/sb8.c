@@ -591,7 +591,7 @@ id|SB_HW_ALS100
 id|snd_printdd
 c_func
 (paren
-l_string|&quot;ALS100 chip detected at 0x%lx, try snd-card-als100 module&bslash;n&quot;
+l_string|&quot;ALS100 chip detected at 0x%lx, try snd-als100 module&bslash;n&quot;
 comma
 id|port
 (braket
@@ -603,7 +603,7 @@ r_else
 id|snd_printdd
 c_func
 (paren
-l_string|&quot;SB 16 chip detected at 0x%lx, try snd-card-sb16 module&bslash;n&quot;
+l_string|&quot;SB 16 chip detected at 0x%lx, try snd-sb16 module&bslash;n&quot;
 comma
 id|port
 (braket

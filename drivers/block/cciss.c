@@ -13321,26 +13321,14 @@ id|DRIVER_NAME
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Register for out PCI devices */
-r_if
-c_cond
-(paren
+multiline_comment|/* Register for our PCI devices */
+r_return
 id|pci_register_driver
 c_func
 (paren
 op_amp
 id|cciss_pci_driver
 )paren
-OG
-l_int|0
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_else
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|init_cciss_module

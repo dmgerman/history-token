@@ -80,6 +80,37 @@ macro_line|# define i2cproc_register(adap, bus)&t;0
 DECL|macro|i2cproc_remove
 macro_line|# define i2cproc_remove(bus)&t;&t;do { } while (0)
 macro_line|#endif /* CONFIG_PROC_FS */
+DECL|function|i2c_device_probe
+r_int
+id|i2c_device_probe
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+DECL|function|i2c_device_remove
+r_int
+id|i2c_device_remove
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* ---------------------------------------------------&n; * registering functions &n; * --------------------------------------------------- &n; */
 multiline_comment|/* -----&n; * i2c_add_adapter is called from within the algorithm layer,&n; * when a new hw adapter registers. A new device is register to be&n; * available for clients.&n; */
 DECL|function|i2c_add_adapter
@@ -696,6 +727,41 @@ id|driver-&gt;name
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* add the driver to the list of i2c drivers in the driver core */
+id|driver-&gt;driver.name
+op_assign
+id|driver-&gt;name
+suffix:semicolon
+id|driver-&gt;driver.bus
+op_assign
+op_amp
+id|i2c_bus_type
+suffix:semicolon
+id|driver-&gt;driver.probe
+op_assign
+id|i2c_device_probe
+suffix:semicolon
+id|driver-&gt;driver.remove
+op_assign
+id|i2c_device_remove
+suffix:semicolon
+id|res
+op_assign
+id|driver_register
+c_func
+(paren
+op_amp
+id|driver-&gt;driver
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|res
+)paren
+r_goto
+id|out_unlock
+suffix:semicolon
 multiline_comment|/* now look for instances of driver on our adapters&n;&t; */
 r_if
 c_cond
@@ -843,6 +909,13 @@ r_goto
 id|out_unlock
 suffix:semicolon
 )brace
+id|driver_unregister
+c_func
+(paren
+op_amp
+id|driver-&gt;driver
+)paren
+suffix:semicolon
 multiline_comment|/* Have a look at each adapter, if clients of this driver are still&n;&t; * attached. If so, detach them to be able to kill the driver &n;&t; * afterwards.&n;&t; */
 id|DEB2
 c_func

@@ -1125,6 +1125,15 @@ id|__cacheline_filler
 l_int|5
 )braket
 suffix:semicolon
+multiline_comment|/*&n;&t; * .. and then another 0x100 bytes for emergency kernel stack&n;&t; */
+DECL|member|stack
+r_int
+r_int
+id|stack
+(braket
+l_int|64
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|thread_struct

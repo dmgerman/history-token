@@ -65,7 +65,7 @@ mdefine_line|#define SWAP_ADDR(nr)&t;&t;(swap_start + ((nr) &lt;&lt; PAGE_SHIFT)
 multiline_comment|/* get number of pages for &squot;n&squot; bytes (already page-aligned) */
 DECL|macro|N_PAGES
 mdefine_line|#define N_PAGES(n)&t;&t;&t;((n) &gt;&gt; PAGE_SHIFT)
-multiline_comment|/* The following two numbers define the maximum fraction of ST-RAM in total&n; * memory, below that the kernel would automatically use ST-RAM as swap&n; * space. This decision can be overriden with stram_swap= */
+multiline_comment|/* The following two numbers define the maximum fraction of ST-RAM in total&n; * memory, below that the kernel would automatically use ST-RAM as swap&n; * space. This decision can be overridden with stram_swap= */
 DECL|macro|MAX_STRAM_FRACTION_NOM
 mdefine_line|#define MAX_STRAM_FRACTION_NOM&t;&t;1
 DECL|macro|MAX_STRAM_FRACTION_DENOM
@@ -759,7 +759,7 @@ comma
 id|swap_end
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If the whole ST-RAM is used for swapping, there are no allocatable&n;&t;&t; * dma pages left. But unfortunately, some shared parts of the kernel&n;&t;&t; * (particularily the SCSI mid-level) call __get_dma_pages()&n;&t;&t; * unconditionally :-( These calls then fail, and scsi.c even doesn&squot;t&n;&t;&t; * check for NULL return values and just crashes. The quick fix for&n;&t;&t; * this (instead of doing much clean up work in the SCSI code) is to&n;&t;&t; * pretend all pages are DMA-able by setting mach_max_dma_address to&n;&t;&t; * ULONG_MAX. This doesn&squot;t change any functionality so far, since&n;&t;&t; * get_dma_pages() shouldn&squot;t be used on Atari anyway anymore (better&n;&t;&t; * use atari_stram_alloc()), and the Atari SCSI drivers don&squot;t need DMA&n;&t;&t; * memory. But unfortunately there&squot;s now no kind of warning (even not&n;&t;&t; * a NULL return value) if you use get_dma_pages() nevertheless :-(&n;&t;&t; * You just will get non-DMA-able memory...&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If the whole ST-RAM is used for swapping, there are no allocatable&n;&t;&t; * dma pages left. But unfortunately, some shared parts of the kernel&n;&t;&t; * (particularly the SCSI mid-level) call __get_dma_pages()&n;&t;&t; * unconditionally :-( These calls then fail, and scsi.c even doesn&squot;t&n;&t;&t; * check for NULL return values and just crashes. The quick fix for&n;&t;&t; * this (instead of doing much clean up work in the SCSI code) is to&n;&t;&t; * pretend all pages are DMA-able by setting mach_max_dma_address to&n;&t;&t; * ULONG_MAX. This doesn&squot;t change any functionality so far, since&n;&t;&t; * get_dma_pages() shouldn&squot;t be used on Atari anyway anymore (better&n;&t;&t; * use atari_stram_alloc()), and the Atari SCSI drivers don&squot;t need DMA&n;&t;&t; * memory. But unfortunately there&squot;s now no kind of warning (even not&n;&t;&t; * a NULL return value) if you use get_dma_pages() nevertheless :-(&n;&t;&t; * You just will get non-DMA-able memory...&n;&t;&t; */
 id|mach_max_dma_address
 op_assign
 l_int|0xffffffff

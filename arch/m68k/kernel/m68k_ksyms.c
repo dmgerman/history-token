@@ -221,6 +221,15 @@ c_func
 id|mach_set_rtc_pll
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_INPUT_M68K_BEEP_MODULE
+DECL|variable|mach_beep
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mach_beep
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|dump_fpu
 id|EXPORT_SYMBOL
 c_func
@@ -254,6 +263,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|strstr
+)paren
+suffix:semicolon
+DECL|variable|strpbrk
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strpbrk
 )paren
 suffix:semicolon
 DECL|variable|enable_irq

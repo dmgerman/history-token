@@ -2510,7 +2510,11 @@ id|nhead
 op_assign
 id|x-&gt;props.header_len
 op_plus
-id|skb-&gt;dst-&gt;dev-&gt;hard_header_len
+id|LL_RESERVED_SPACE
+c_func
+(paren
+id|skb-&gt;dst-&gt;dev
+)paren
 op_minus
 id|skb_headroom
 c_func

@@ -2456,6 +2456,8 @@ multiline_comment|/* Now subtract optional transport overhead */
 id|mss_now
 op_sub_assign
 id|tp-&gt;ext_header_len
+op_plus
+id|tp-&gt;ext2_header_len
 suffix:semicolon
 multiline_comment|/* Then reserve room for full set of TCP options and 8 bytes of data */
 r_if
@@ -2539,6 +2541,8 @@ op_minus
 id|tp-&gt;af_specific-&gt;net_header_len
 op_minus
 id|tp-&gt;ext_header_len
+op_minus
+id|tp-&gt;ext2_header_len
 op_minus
 id|tp-&gt;tcp_header_len
 suffix:semicolon

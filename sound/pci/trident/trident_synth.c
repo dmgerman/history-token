@@ -4286,7 +4286,7 @@ id|trident-&gt;synth.current_size
 OL
 l_int|0
 )paren
-multiline_comment|/* shouldnt need this check... */
+multiline_comment|/* shouldn&squot;t need this check... */
 id|trident-&gt;synth.current_size
 op_assign
 l_int|0
@@ -5878,6 +5878,8 @@ op_or
 id|SNDRV_SEQ_PORT_TYPE_SYNTH
 comma
 l_int|16
+comma
+l_int|0
 comma
 id|name
 )paren

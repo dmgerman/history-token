@@ -1,5 +1,6 @@
-multiline_comment|/*&n; *  Driver for Philips UDA1341TS on Compaq iPAQ H3600 soundcard&n; *  Copyright (C) 2002 Tomas Kasparek &lt;tomas.kasparek@seznam.cz&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License.&n; * &n; * History:&n; *&n; * 2002-03-13   Tomas Kasparek  initial release - based on h3600-uda1341.c from OSS&n; * 2002-03-20   Tomas Kasparek  playback over ALSA is working&n; * 2002-03-28   Tomas Kasparek  playback over OSS emulation is working&n; * 2002-03-29   Tomas Kasparek  basic capture is working (native ALSA)&n; * 2002-03-29   Tomas Kasparek  capture is working (OSS emulation)&n; * 2002-04-04   Tomas Kasparek  better rates handling (allow non-standard rates)&n; */
-multiline_comment|/* $Id: sa11xx-uda1341.c,v 1.7 2003/02/13 19:19:18 perex Exp $ */
+multiline_comment|/*&n; *  Driver for Philips UDA1341TS on Compaq iPAQ H3600 soundcard&n; *  Copyright (C) 2002 Tomas Kasparek &lt;tomas.kasparek@seznam.cz&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License.&n; * &n; * History:&n; *&n; * 2002-03-13   Tomas Kasparek  initial release - based on h3600-uda1341.c from OSS&n; * 2002-03-20   Tomas Kasparek  playback over ALSA is working&n; * 2002-03-28   Tomas Kasparek  playback over OSS emulation is working&n; * 2002-03-29   Tomas Kasparek  basic capture is working (native ALSA)&n; * 2002-03-29   Tomas Kasparek  capture is working (OSS emulation)&n; * 2002-04-04   Tomas Kasparek  better rates handling (allow non-standard rates)&n; * 2003-02-14   Brian Avery     fixed full duplex mode, other updates&n; * 2003-02-20   Tomas Kasparek  merged updates by Brian (except HAL)&n; */
+multiline_comment|/* $Id: sa11xx-uda1341.c,v 1.8 2003/02/25 12:48:15 perex Exp $ */
+multiline_comment|/***************************************************************************************************&n;*&n;* To understand what Alsa Drivers should be doing look at &quot;Writing an Alsa Driver&quot; by Takashi Iwai&n;* available in the Alsa doc section on the website&t;&t;&n;* &n;* A few notes to make things clearer. The UDA1341 is hooked up to Serial port 4 on the SA1100.&n;* We are using  SSP mode to talk to the UDA1341. The UDA1341 bit &amp; wordselect clocks are generated&n;* by this UART. Unfortunately, the clock only runs if the transmit buffer has something in it.&n;* So, if we are just recording, we feed the transmit DMA stream a bunch of 0x0000 so that the&n;* transmit buffer is full and the clock keeps going. The zeroes come from FLUSH_BASE_PHYS which&n;* is a mem loc that always decodes to 0&squot;s w/ no off chip access.&n;*&n;* Some alsa terminology:&n;*&t;frame =&gt; num_channels * sample_size  e.g stereo 16 bit is 2 * 16 = 32 bytes&n;*&t;period =&gt; the least number of bytes that will generate an interrupt e.g. we have a 1024 byte&n;*             buffer and 4 periods in the runtime structure this means we&squot;ll get an int every 256&n;*             bytes or 4 times per buffer.&n;*             A number of the sizes are in frames rather than bytes, use frames_to_bytes and&n;*             bytes_to_frames to convert.  The easiest way to tell the units is to look at the&n;*             type i.e. runtime-&gt; buffer_size is in frames and its type is snd_pcm_uframes_t&n;*             &n;*&t;Notes about the pointer fxn:&n;*&t;The pointer fxn needs to return the offset into the dma buffer in frames.&n;*&t;Interrupts must be blocked before calling the dma_get_pos fxn to avoid race with interrupts.&n;*&n;*&t;Notes about pause/resume&n;*&t;Implementing this would be complicated so it&squot;s skipped.  The problem case is:&n;*&t;A full duplex connection is going, then play is paused. At this point you need to start xmitting&n;*&t;0&squot;s to keep the record active which means you cant just freeze the dma and resume it later you&squot;d&n;*&t;need to&t;save off the dma info, and restore it properly on a resume.  Yeach!&n;*&n;*&t;Notes about transfer methods:&n;*&t;The async write calls fail.  I probably need to implement something else to support them?&n;* &n;***************************************************************************************************/
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -76,8 +77,6 @@ l_string|&quot;ID string for SA1100/SA1111 + UDA1341TS soundcard.&quot;
 suffix:semicolon
 DECL|macro|chip_t
 mdefine_line|#define chip_t sa11xx_uda1341_t
-DECL|macro|SHIFT_16_STEREO
-mdefine_line|#define SHIFT_16_STEREO         2
 DECL|enum|stream_id_t
 r_typedef
 r_enum
@@ -109,6 +108,11 @@ op_star
 id|id
 suffix:semicolon
 multiline_comment|/* identification string */
+DECL|member|stream_id
+r_int
+id|stream_id
+suffix:semicolon
+multiline_comment|/* numeric identification */
 DECL|member|dma_dev
 id|dma_device_t
 id|dma_dev
@@ -142,6 +146,11 @@ r_int
 id|sync
 suffix:semicolon
 multiline_comment|/* are we recoding - flag used to do DMA trans. for sync */
+DECL|member|dma_lock
+id|spinlock_t
+id|dma_lock
+suffix:semicolon
+multiline_comment|/* for locking in DMA operations (see dma-sa1100.c in the kernel) */
 DECL|member|stream
 id|snd_pcm_substream_t
 op_star
@@ -151,9 +160,6 @@ DECL|typedef|audio_stream_t
 )brace
 id|audio_stream_t
 suffix:semicolon
-multiline_comment|/* I do not want to have substream = NULL when syncing - ALSA does not like it */
-DECL|macro|SYNC_SUBSTREAM
-mdefine_line|#define SYNC_SUBSTREAM ((void *) -1)
 DECL|struct|snd_card_sa11xx_uda1341
 r_typedef
 r_struct
@@ -187,11 +193,6 @@ id|s
 (braket
 id|MAX_STREAMS
 )braket
-suffix:semicolon
-DECL|member|proc_entry
-id|snd_info_entry_t
-op_star
-id|proc_entry
 suffix:semicolon
 DECL|typedef|sa11xx_uda1341_t
 )brace
@@ -651,6 +652,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* FMT setting should be moved away when other FMTs are added (FIXME) */
 id|l3_command
 c_func
 (paren
@@ -754,6 +756,15 @@ id|sa11xx_uda1341-&gt;s
 id|PLAYBACK
 )braket
 op_member_access_from_pointer
+id|stream_id
+op_assign
+id|PLAYBACK
+suffix:semicolon
+id|sa11xx_uda1341-&gt;s
+(braket
+id|PLAYBACK
+)braket
+op_member_access_from_pointer
 id|dma_dev
 op_assign
 id|DMA_Ser4SSPWr
@@ -776,6 +787,15 @@ op_member_access_from_pointer
 id|id
 op_assign
 l_string|&quot;UDA1341 in&quot;
+suffix:semicolon
+id|sa11xx_uda1341-&gt;s
+(braket
+id|CAPTURE
+)braket
+op_member_access_from_pointer
+id|stream_id
+op_assign
+id|CAPTURE
 suffix:semicolon
 id|sa11xx_uda1341-&gt;s
 (braket
@@ -840,6 +860,12 @@ id|Ser4SSCR0
 op_or_assign
 id|SSCR0_SSE
 suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Enable the audio power */
 id|clr_sa11xx_uda1341_egpio
 c_func
@@ -859,12 +885,6 @@ c_func
 id|IPAQ_EGPIO_QMUTE
 )paren
 suffix:semicolon
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Initialize the UDA1341 internal state */
 id|l3_open
 c_func
@@ -872,16 +892,15 @@ c_func
 id|sa11xx_uda1341-&gt;uda1341
 )paren
 suffix:semicolon
-multiline_comment|/* external clock configuration */
+multiline_comment|/* external clock configuration (after l3_open - regs must be&n;&t; * initialized */
 id|sa11xx_uda1341_set_samplerate
 c_func
 (paren
 id|sa11xx_uda1341
 comma
-l_int|44100
+id|AUDIO_RATE_DEFAULT
 )paren
 suffix:semicolon
-multiline_comment|/* default sample rate */
 multiline_comment|/* Wait for the UDA1341 to wake up */
 id|set_sa11xx_uda1341_egpio
 c_func
@@ -918,6 +937,13 @@ op_star
 id|sa11xx_uda1341
 )paren
 (brace
+multiline_comment|/* mute on */
+id|set_sa11xx_uda1341_egpio
+c_func
+(paren
+id|IPAQ_EGPIO_QMUTE
+)paren
+suffix:semicolon
 multiline_comment|/* disable the audio power and all signals leading to the audio chip */
 id|l3_close
 c_func
@@ -935,12 +961,14 @@ c_func
 id|IPAQ_EGPIO_CODEC_NRESET
 )paren
 suffix:semicolon
+multiline_comment|/* power off */
 id|clr_sa11xx_uda1341_egpio
 c_func
 (paren
 id|IPAQ_EGPIO_AUDIO_ON
 )paren
 suffix:semicolon
+multiline_comment|/* mute off */
 id|clr_sa11xx_uda1341_egpio
 c_func
 (paren
@@ -950,25 +978,12 @@ suffix:semicolon
 )brace
 multiline_comment|/* }}} */
 multiline_comment|/* {{{ DMA staff */
-DECL|macro|SYNC_ADDR
-mdefine_line|#define SYNC_ADDR&t;&t;(dma_addr_t)FLUSH_BASE_PHYS
-DECL|macro|SYNC_SIZE
-mdefine_line|#define SYNC_SIZE&t;&t;4096 
+multiline_comment|/*&n; * these are the address and sizes used to fill the xmit buffer&n; * so we can get a clock in record only mode&n; */
+DECL|macro|FORCE_CLOCK_ADDR
+mdefine_line|#define FORCE_CLOCK_ADDR&t;&t;(dma_addr_t)FLUSH_BASE_PHYS
+DECL|macro|FORCE_CLOCK_SIZE
+mdefine_line|#define FORCE_CLOCK_SIZE&t;&t;4096 
 singleline_comment|// was 2048
-DECL|macro|DMA_REQUEST
-mdefine_line|#define DMA_REQUEST(s, cb)&t;sa1100_request_dma((s)-&gt;dma_dev, (s)-&gt;id, cb, s, &bslash;&n;                                                   &amp;((s)-&gt;dma_regs))
-DECL|macro|DMA_FREE
-mdefine_line|#define DMA_FREE(s)&t;&t;{sa1100_free_dma((s)-&gt;dma_regs); (s)-&gt;dma_regs = 0;}
-DECL|macro|DMA_START
-mdefine_line|#define DMA_START(s, d, l)&t;sa1100_start_dma((s)-&gt;dma_regs, d, l)
-DECL|macro|DMA_STOP
-mdefine_line|#define DMA_STOP(s)&t;&t;sa1100_stop_dma((s)-&gt;dma_regs)
-DECL|macro|DMA_CLEAR
-mdefine_line|#define DMA_CLEAR(s)&t;&t;sa1100_clear_dma((s)-&gt;dma_regs)
-DECL|macro|DMA_RESET
-mdefine_line|#define DMA_RESET(s)&t;&t;sa1100_reset_dma((s)-&gt;dma_regs)
-DECL|macro|DMA_POS
-mdefine_line|#define DMA_POS(s)              sa1100_get_dma_pos((s)-&gt;dma_regs)
 DECL|function|audio_dma_request
 r_static
 r_void
@@ -990,12 +1005,69 @@ op_star
 )paren
 )paren
 (brace
-id|DMA_REQUEST
+r_int
+id|ret
+suffix:semicolon
+id|DEBUG_NAME
 c_func
 (paren
+id|KERN_DEBUG
+l_string|&quot;audio_dma_request&quot;
+)paren
+suffix:semicolon
+id|DEBUG
+c_func
+(paren
+l_string|&quot;&bslash;t request id &lt;%s&gt;&bslash;n&quot;
+comma
+id|s-&gt;id
+)paren
+suffix:semicolon
+id|DEBUG
+c_func
+(paren
+l_string|&quot;&bslash;t  request dma_dev = 0x%x &bslash;n&quot;
+comma
+id|s-&gt;dma_dev
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|sa1100_request_dma
+c_func
+(paren
+(paren
 id|s
+)paren
+op_member_access_from_pointer
+id|dma_dev
+comma
+(paren
+id|s
+)paren
+op_member_access_from_pointer
+id|id
 comma
 id|callback
+comma
+id|s
+comma
+op_amp
+(paren
+(paren
+id|s
+)paren
+op_member_access_from_pointer
+id|dma_regs
+)paren
+)paren
+suffix:semicolon
+id|DEBUG
+c_func
+(paren
+l_string|&quot;&bslash;t  request ret = %d&bslash;n&quot;
+comma
+id|ret
 )paren
 suffix:semicolon
 )brace
@@ -1010,11 +1082,23 @@ op_star
 id|s
 )paren
 (brace
-id|DMA_FREE
+id|sa1100_free_dma
 c_func
+(paren
 (paren
 id|s
 )paren
+op_member_access_from_pointer
+id|dma_regs
+)paren
+suffix:semicolon
+(paren
+id|s
+)paren
+op_member_access_from_pointer
+id|dma_regs
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|audio_get_dma_pos
@@ -1044,6 +1128,10 @@ r_int
 r_int
 id|offset
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|DEBUG_NAME
 c_func
 (paren
@@ -1051,15 +1139,38 @@ id|KERN_DEBUG
 l_string|&quot;get_dma_pos&quot;
 )paren
 suffix:semicolon
+singleline_comment|// this must be called w/ interrupts locked out see dma-sa1100.c in the kernel
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|s-&gt;dma_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|offset
 op_assign
-id|DMA_POS
+id|sa1100_get_dma_pos
 c_func
+(paren
 (paren
 id|s
 )paren
+op_member_access_from_pointer
+id|dma_regs
+)paren
 op_minus
-id|substream-&gt;runtime-&gt;dma_addr
+id|runtime-&gt;dma_addr
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|s-&gt;dma_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|DEBUG
 c_func
@@ -1070,8 +1181,14 @@ id|offset
 )paren
 suffix:semicolon
 id|offset
-op_rshift_assign
-id|SHIFT_16_STEREO
+op_assign
+id|bytes_to_frames
+c_func
+(paren
+id|runtime
+comma
+id|offset
+)paren
 suffix:semicolon
 id|DEBUG
 c_func
@@ -1126,6 +1243,7 @@ r_return
 id|offset
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * this stops the dma and clears the dma ptrs&n; */
 DECL|function|audio_stop_dma
 r_static
 r_void
@@ -1147,17 +1265,27 @@ id|KERN_DEBUG
 l_string|&quot;stop_dma&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * zero filling streams (sync=1) don;t have alsa streams attached &n;&t; * but the 0 fill dma xfer still needs to be stopped&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|s-&gt;stream
+op_logical_or
+id|s-&gt;sync
+)paren
 )paren
 r_return
 suffix:semicolon
-id|local_irq_save
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+(paren
+id|s-&gt;dma_lock
+)paren
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1173,21 +1301,29 @@ id|s-&gt;sent_total
 op_assign
 l_int|0
 suffix:semicolon
-id|DMA_STOP
+id|s-&gt;sync
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* this stops the dma channel and clears the buffer ptrs */
+id|sa1100_clear_dma
 c_func
+(paren
 (paren
 id|s
 )paren
-suffix:semicolon
-id|DMA_CLEAR
-c_func
-(paren
-id|s
+op_member_access_from_pointer
+id|dma_regs
 )paren
 suffix:semicolon
-id|local_irq_restore
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+(paren
+id|s-&gt;dma_lock
+)paren
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1251,8 +1387,6 @@ id|runtime
 suffix:semicolon
 r_int
 id|ret
-comma
-id|i
 suffix:semicolon
 id|DEBUG_NAME
 c_func
@@ -1261,29 +1395,27 @@ id|KERN_DEBUG
 l_string|&quot;process_dma&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* we are requested to process synchronization DMA transfer */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|s-&gt;active
-)paren
-(brace
-id|DEBUG
-c_func
-(paren
-l_string|&quot;!!!want to process DMA when stopped!!!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/* we are requested to process synchronization DMA transfer */
-r_if
-c_cond
-(paren
+op_logical_and
 id|s-&gt;sync
 )paren
 (brace
+id|snd_assert
+c_func
+(paren
+id|s-&gt;stream_id
+op_eq
+id|PLAYBACK
+comma
+r_return
+)paren
+suffix:semicolon
+multiline_comment|/* fill the xmit dma buffers and return */
 r_while
 c_loop
 (paren
@@ -1294,21 +1426,25 @@ id|DEBUG
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;sent sync period (dma_size[B]: %d)&bslash;n&quot;
+l_string|&quot;sent zero dma period (dma_size[B]: %d)&bslash;n&quot;
 comma
-id|SYNC_SIZE
+id|FORCE_CLOCK_SIZE
 )paren
 suffix:semicolon
 id|ret
 op_assign
-id|DMA_START
+id|sa1100_start_dma
 c_func
 (paren
+(paren
 id|s
+)paren
+op_member_access_from_pointer
+id|dma_regs
 comma
-id|SYNC_ADDR
+id|FORCE_CLOCK_ADDR
 comma
-id|SYNC_SIZE
+id|FORCE_CLOCK_SIZE
 )paren
 suffix:semicolon
 r_if
@@ -1320,27 +1456,66 @@ r_return
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* must be set here - for sync there is no runtime struct */
+multiline_comment|/* must be set here - only valid for running streams, not for forced_clock dma fills  */
 id|runtime
 op_assign
 id|substream-&gt;runtime
 suffix:semicolon
+id|DEBUG
+c_func
+(paren
+l_string|&quot;audio_process_dma hw_ptr_base = 0x%x w_ptr_interrupt = 0x%x &quot;
+l_string|&quot;period_size = %d  periods  = %d buffer_size = %d sync=0x%x  dma_area = 0x%x&bslash;n&quot;
+comma
+id|runtime-&gt;hw_ptr_base
+comma
+id|runtime-&gt;hw_ptr_interrupt
+comma
+id|runtime-&gt;period_size
+comma
+id|runtime-&gt;periods
+comma
+id|runtime-&gt;buffer_size
+comma
+id|runtime-&gt;sync
+comma
+id|runtime-&gt;dma_area
+)paren
+suffix:semicolon
+id|DEBUG
+c_func
+(paren
+l_string|&quot;audio_process_dma sent_total = %d  sent_period = %d&bslash;n&quot;
+comma
+id|s-&gt;sent_total
+comma
+id|s-&gt;sent_periods
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
-l_int|1
+id|s-&gt;active
 )paren
 (brace
 r_int
 r_int
 id|dma_size
-op_assign
-id|runtime-&gt;period_size
-op_lshift
-id|SHIFT_16_STEREO
 suffix:semicolon
 r_int
 r_int
+id|offset
+suffix:semicolon
+id|dma_size
+op_assign
+id|frames_to_bytes
+c_func
+(paren
+id|runtime
+comma
+id|runtime-&gt;period_size
+)paren
+suffix:semicolon
 id|offset
 op_assign
 id|dma_size
@@ -1356,11 +1531,11 @@ id|MAX_DMA_SIZE
 )paren
 (brace
 multiline_comment|/* this should not happen! */
-id|DEBUG
+id|printk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;-----&gt; cut dma_size: %d -&gt; &quot;
+id|KERN_ERR
+l_string|&quot;---&gt; cut dma_size: %d -&gt; &quot;
 comma
 id|dma_size
 )paren
@@ -1369,21 +1544,26 @@ id|dma_size
 op_assign
 id|CUT_DMA_SIZE
 suffix:semicolon
-id|DEBUG
+id|printk
 c_func
 (paren
-l_string|&quot;%d &lt;-----&bslash;n&quot;
+l_string|&quot;%d &lt;---&bslash;n&quot;
 comma
 id|dma_size
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; * the first time this while loop will run 3 times, i.e. it&squot;ll fill the 2 dma&n;&t;&t; * buffers then get a -EBUSY, every other time it&squot;ll refill the completed buffer&n;&t;&t; * and then get the -EBUSY so it&squot;ll just run twice&n;&t;&t; */
 id|ret
 op_assign
-id|DMA_START
+id|sa1100_start_dma
 c_func
 (paren
+(paren
 id|s
+)paren
+op_member_access_from_pointer
+id|dma_regs
 comma
 id|runtime-&gt;dma_addr
 op_plus
@@ -1508,20 +1688,6 @@ id|KERN_DEBUG
 l_string|&quot;dma_callback&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* when syncing we do not have any real stream from ALSA! */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|s-&gt;sync
-)paren
-(brace
-id|snd_pcm_period_elapsed
-c_func
-(paren
-id|s-&gt;stream
-)paren
-suffix:semicolon
 id|DEBUG
 c_func
 (paren
@@ -1552,10 +1718,12 @@ op_minus
 l_int|1
 )paren
 op_star
+id|frames_to_bytes
+c_func
 (paren
+id|s-&gt;stream-&gt;runtime
+comma
 id|s-&gt;stream-&gt;runtime-&gt;period_size
-op_lshift
-id|SHIFT_16_STEREO
 )paren
 )paren
 suffix:semicolon
@@ -1599,12 +1767,18 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif                      
-)brace
+multiline_comment|/* &n;&t;* If we are getting a callback for an active stream then we inform&n;&t;* the PCM middle layer we&squot;ve finished a period&n;&t;*/
 r_if
 c_cond
 (paren
 id|s-&gt;active
 )paren
+id|snd_pcm_period_elapsed
+c_func
+(paren
+id|s-&gt;stream
+)paren
+suffix:semicolon
 id|audio_process_dma
 c_func
 (paren
@@ -1781,7 +1955,7 @@ suffix:colon
 r_case
 id|SNDRV_PCM_TRIGGER_PAUSE_PUSH
 suffix:colon
-multiline_comment|/* want to capture and have no playback - run DMA syncing */
+multiline_comment|/* now we need to make sure a record only stream has a clock */
 r_if
 c_cond
 (paren
@@ -1798,12 +1972,12 @@ op_member_access_from_pointer
 id|active
 )paren
 (brace
-multiline_comment|/* we need synchronization DMA transfer (zeros) */
+multiline_comment|/* we need to force fill the xmit DMA  with zeros */
 id|DEBUG
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;starting synchronization DMA transfer&bslash;n&quot;
+l_string|&quot;starting zero fill  DMA transfer&bslash;n&quot;
 )paren
 suffix:semicolon
 id|chip-&gt;s
@@ -1815,25 +1989,6 @@ id|sync
 op_assign
 l_int|1
 suffix:semicolon
-id|chip-&gt;s
-(braket
-id|PLAYBACK
-)braket
-op_member_access_from_pointer
-id|active
-op_assign
-l_int|1
-suffix:semicolon
-id|chip-&gt;s
-(braket
-id|PLAYBACK
-)braket
-op_member_access_from_pointer
-id|stream
-op_assign
-id|SYNC_SUBSTREAM
-suffix:semicolon
-multiline_comment|/* not really used! */
 id|audio_process_dma
 c_func
 (paren
@@ -1844,7 +1999,8 @@ id|PLAYBACK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* want to playback and have capture - stop syncing */
+multiline_comment|/* this case is when you were recording then you turn on a&n;&t;&t; * playback stream so we&n;&t;&t; * stop (also clears it) the dma first, clear the sync flag&n;&t;&t; * and then we let it get turned on&n;&t;&t; */
+r_else
 r_if
 c_cond
 (paren
@@ -1868,6 +2024,15 @@ op_member_access_from_pointer
 id|sync
 op_assign
 l_int|0
+suffix:semicolon
+id|audio_stop_dma
+c_func
+(paren
+id|chip-&gt;s
+(braket
+id|PLAYBACK
+)braket
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* requested stream startup */
@@ -1900,120 +2065,6 @@ suffix:colon
 r_case
 id|SNDRV_PCM_TRIGGER_PAUSE_RELEASE
 suffix:colon
-multiline_comment|/* want to stop capture and use syncing - stop DMA syncing */
-r_if
-c_cond
-(paren
-id|stream_id
-op_eq
-id|CAPTURE
-op_logical_and
-id|chip-&gt;s
-(braket
-id|PLAYBACK
-)braket
-op_member_access_from_pointer
-id|sync
-)paren
-(brace
-multiline_comment|/* we do not need synchronization DMA transfer now */
-id|DEBUG
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;stopping synchronization DMA transfer&bslash;n&quot;
-)paren
-suffix:semicolon
-id|chip-&gt;s
-(braket
-id|PLAYBACK
-)braket
-op_member_access_from_pointer
-id|sync
-op_assign
-l_int|0
-suffix:semicolon
-id|chip-&gt;s
-(braket
-id|PLAYBACK
-)braket
-op_member_access_from_pointer
-id|active
-op_assign
-l_int|0
-suffix:semicolon
-id|audio_stop_dma
-c_func
-(paren
-id|chip-&gt;s
-(braket
-id|PLAYBACK
-)braket
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* want to stop playback and have capture - run DMA syncing */
-r_if
-c_cond
-(paren
-id|stream_id
-op_eq
-id|PLAYBACK
-op_logical_and
-id|chip-&gt;s
-(braket
-id|CAPTURE
-)braket
-op_member_access_from_pointer
-id|active
-)paren
-(brace
-multiline_comment|/* we need synchronization DMA transfer (zeros) */
-id|DEBUG
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;starting synchronization DMA transfer&bslash;n&quot;
-)paren
-suffix:semicolon
-id|chip-&gt;s
-(braket
-id|PLAYBACK
-)braket
-op_member_access_from_pointer
-id|sync
-op_assign
-l_int|1
-suffix:semicolon
-id|chip-&gt;s
-(braket
-id|PLAYBACK
-)braket
-op_member_access_from_pointer
-id|active
-op_assign
-l_int|1
-suffix:semicolon
-id|chip-&gt;s
-(braket
-id|PLAYBACK
-)braket
-op_member_access_from_pointer
-id|stream
-op_assign
-id|SYNC_SUBSTREAM
-suffix:semicolon
-multiline_comment|/* not really used! */
-id|audio_process_dma
-c_func
-(paren
-id|chip-&gt;s
-(braket
-id|PLAYBACK
-)braket
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* requested stream shutdown */
 id|chip-&gt;s
 (braket
@@ -2033,6 +2084,85 @@ id|stream_id
 )braket
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * now we need to make sure a record only stream has a clock&n;&t;&t; * so if we&squot;re stopping a playback with an active capture&n;&t;&t; * we need to turn the 0 fill dma on for the xmit side&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|stream_id
+op_eq
+id|PLAYBACK
+op_logical_and
+id|chip-&gt;s
+(braket
+id|CAPTURE
+)braket
+op_member_access_from_pointer
+id|active
+)paren
+(brace
+multiline_comment|/* we need to force fill the xmit DMA  with zeros */
+id|DEBUG
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;starting zero fill  DMA transfer&bslash;n&quot;
+)paren
+suffix:semicolon
+id|chip-&gt;s
+(braket
+id|PLAYBACK
+)braket
+op_member_access_from_pointer
+id|sync
+op_assign
+l_int|1
+suffix:semicolon
+id|chip-&gt;s
+(braket
+id|PLAYBACK
+)braket
+op_member_access_from_pointer
+id|active
+op_assign
+l_int|0
+suffix:semicolon
+id|audio_process_dma
+c_func
+(paren
+id|chip-&gt;s
+(braket
+id|PLAYBACK
+)braket
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t; * we killed a capture only stream, so we should also kill&n;&t;&t; * the zero fill transmit&n;&t;&t; */
+r_else
+r_if
+c_cond
+(paren
+id|stream_id
+op_eq
+id|CAPTURE
+op_logical_and
+id|chip-&gt;s
+(braket
+id|PLAYBACK
+)braket
+op_member_access_from_pointer
+id|sync
+)paren
+(brace
+id|audio_stop_dma
+c_func
+(paren
+id|chip-&gt;s
+(braket
+id|PLAYBACK
+)braket
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_default
@@ -2312,15 +2442,8 @@ id|sent_total
 op_assign
 l_int|0
 suffix:semicolon
-id|audio_reset
-c_func
-(paren
-id|chip-&gt;s
-(braket
-id|PLAYBACK
-)braket
-)paren
-suffix:semicolon
+multiline_comment|/* no reset here since we may be zero filling the DMA&n;&t; * if we are, the dma stream will get reset in the pcm_trigger&n;&t; * i.e. when it actually starts to play&n;&t; */
+multiline_comment|/* audio_reset(chip-&gt;s[PLAYBACK]); */
 id|runtime-&gt;hw
 op_assign
 id|snd_sa11xx_uda1341_playback
@@ -2546,6 +2669,9 @@ op_star
 id|substream
 )paren
 (brace
+id|snd_pcm_uframes_t
+id|pos
+suffix:semicolon
 id|sa11xx_uda1341_t
 op_star
 id|chip
@@ -2563,7 +2689,8 @@ id|KERN_DEBUG
 l_string|&quot;playback_pointer&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|pos
+op_assign
 id|audio_get_dma_pos
 c_func
 (paren
@@ -2572,6 +2699,9 @@ id|chip-&gt;s
 id|PLAYBACK
 )braket
 )paren
+suffix:semicolon
+r_return
+id|pos
 suffix:semicolon
 )brace
 multiline_comment|/* }}} */
@@ -2645,7 +2775,7 @@ c_func
 (paren
 id|chip-&gt;s
 (braket
-id|PLAYBACK
+id|CAPTURE
 )braket
 )paren
 suffix:semicolon
@@ -2874,6 +3004,9 @@ op_star
 id|substream
 )paren
 (brace
+id|snd_pcm_uframes_t
+id|pos
+suffix:semicolon
 id|sa11xx_uda1341_t
 op_star
 id|chip
@@ -2891,7 +3024,8 @@ id|KERN_DEBUG
 l_string|&quot;record_pointer&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|pos
+op_assign
 id|audio_get_dma_pos
 c_func
 (paren
@@ -2900,6 +3034,9 @@ id|chip-&gt;s
 id|CAPTURE
 )braket
 )paren
+suffix:semicolon
+r_return
+id|pos
 suffix:semicolon
 )brace
 multiline_comment|/* }}} */
@@ -3124,6 +3261,21 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
+multiline_comment|/*&n;&t; * this sets up our initial buffers and sets the dma_type to isa.&n;&t; * isa works but I&squot;m not sure why (or if) it&squot;s the right choice&n;&t; * this may be too large, trying it for now&n;&t; */
+id|snd_pcm_lib_preallocate_isa_pages_for_all
+c_func
+(paren
+id|pcm
+comma
+l_int|64
+op_star
+l_int|1024
+comma
+l_int|64
+op_star
+l_int|1024
+)paren
+suffix:semicolon
 id|snd_pcm_set_ops
 c_func
 (paren
@@ -3271,6 +3423,17 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;pm_callback&bslash;n&quot;
 )paren
+suffix:semicolon
+multiline_comment|/* pause resume is broken  see note */
+id|printk
+c_func
+(paren
+l_string|&quot;Pause/Resume support currently broken... &bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 id|is
 op_assign

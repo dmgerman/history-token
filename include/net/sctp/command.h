@@ -243,12 +243,14 @@ op_star
 id|ptr
 suffix:semicolon
 DECL|member|chunk
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon
 DECL|member|asoc
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -259,7 +261,8 @@ op_star
 id|transport
 suffix:semicolon
 DECL|member|bp
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 suffix:semicolon
@@ -275,7 +278,8 @@ op_star
 id|ulpevent
 suffix:semicolon
 DECL|member|packet
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 id|packet
 suffix:semicolon
@@ -441,7 +445,8 @@ c_func
 (paren
 id|CHUNK
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 comma
 id|chunk
@@ -451,7 +456,8 @@ c_func
 (paren
 id|ASOC
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 id|asoc
@@ -472,7 +478,8 @@ c_func
 (paren
 id|BA
 comma
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 comma
 id|bp
@@ -503,7 +510,8 @@ c_func
 (paren
 id|PACKET
 comma
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 comma
 id|packet

@@ -3332,7 +3332,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;tx_inuse
+id|vcc-&gt;sk-&gt;wmem_alloc
 )paren
 OG
 (paren
@@ -9857,7 +9857,7 @@ op_plus
 id|ATM_PDU_OVHD
 comma
 op_amp
-id|vcc-&gt;tx_inuse
+id|vcc-&gt;sk-&gt;wmem_alloc
 )paren
 suffix:semicolon
 id|ATM_SKB

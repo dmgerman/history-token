@@ -8,6 +8,63 @@ macro_line|#include &lt;sound/rawmidi.h&gt;
 macro_line|#include &lt;sound/i2c.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &quot;ice1712.h&quot;
+r_enum
+(brace
+DECL|enumerator|ICE_EEP2_SYSCONF
+id|ICE_EEP2_SYSCONF
+op_assign
+l_int|0
+comma
+multiline_comment|/* 06 */
+DECL|enumerator|ICE_EEP2_ACLINK
+id|ICE_EEP2_ACLINK
+comma
+multiline_comment|/* 07 */
+DECL|enumerator|ICE_EEP2_I2S
+id|ICE_EEP2_I2S
+comma
+multiline_comment|/* 08 */
+DECL|enumerator|ICE_EEP2_SPDIF
+id|ICE_EEP2_SPDIF
+comma
+multiline_comment|/* 09 */
+DECL|enumerator|ICE_EEP2_GPIO_DIR
+id|ICE_EEP2_GPIO_DIR
+comma
+multiline_comment|/* 0a */
+DECL|enumerator|ICE_EEP2_GPIO_DIR1
+id|ICE_EEP2_GPIO_DIR1
+comma
+multiline_comment|/* 0b */
+DECL|enumerator|ICE_EEP2_GPIO_DIR2
+id|ICE_EEP2_GPIO_DIR2
+comma
+multiline_comment|/* 0c */
+DECL|enumerator|ICE_EEP2_GPIO_MASK
+id|ICE_EEP2_GPIO_MASK
+comma
+multiline_comment|/* 0d */
+DECL|enumerator|ICE_EEP2_GPIO_MASK1
+id|ICE_EEP2_GPIO_MASK1
+comma
+multiline_comment|/* 0e */
+DECL|enumerator|ICE_EEP2_GPIO_MASK2
+id|ICE_EEP2_GPIO_MASK2
+comma
+multiline_comment|/* 0f */
+DECL|enumerator|ICE_EEP2_GPIO_STATE
+id|ICE_EEP2_GPIO_STATE
+comma
+multiline_comment|/* 10 */
+DECL|enumerator|ICE_EEP2_GPIO_STATE1
+id|ICE_EEP2_GPIO_STATE1
+comma
+multiline_comment|/* 11 */
+DECL|enumerator|ICE_EEP2_GPIO_STATE2
+id|ICE_EEP2_GPIO_STATE2
+multiline_comment|/* 12 */
+)brace
+suffix:semicolon
 multiline_comment|/*&n; *  Direct registers&n; */
 DECL|macro|ICEREG1724
 mdefine_line|#define ICEREG1724(ice, x) ((ice)-&gt;port + VT1724_REG_##x)
@@ -73,20 +130,6 @@ mdefine_line|#define   VT1724_CFG_SPDIF_OUT&t;0x01&t;/* External S/PDIF output i
 multiline_comment|/*there is no consumer AC97 codec with the VT1724*/
 singleline_comment|//#define VT1724_REG_AC97_INDEX&t;&t;0x08&t;/* byte */
 singleline_comment|//#define VT1724_REG_AC97_CMD&t;&t;0x09&t;/* byte */
-DECL|macro|VT1724_AC97_COLD
-mdefine_line|#define   VT1724_AC97_COLD&t;&t;0x80&t;/* cold reset */
-DECL|macro|VT1724_AC97_WARM
-mdefine_line|#define   VT1724_AC97_WARM&t;&t;0x40&t;/* warm reset */
-DECL|macro|VT1724_AC97_WRITE
-mdefine_line|#define   VT1724_AC97_WRITE&t;&t;0x20&t;/* W: write, R: write in progress */
-DECL|macro|VT1724_AC97_READ
-mdefine_line|#define   VT1724_AC97_READ&t;&t;0x10&t;/* W: read, R: read in progress */
-DECL|macro|VT1724_AC97_READY
-mdefine_line|#define   VT1724_AC97_READY&t;&t;0x08&t;/* codec ready status bit */
-DECL|macro|VT1724_AC97_PBK_VSR
-mdefine_line|#define   VT1724_AC97_PBK_VSR&t;&t;0x02&t;/* playback VSR */
-DECL|macro|VT1724_AC97_CAP_VSR
-mdefine_line|#define   VT1724_AC97_CAP_VSR&t;&t;0x01&t;/* capture VSR */
 DECL|macro|VT1724_REG_MPU_TXFIFO
 mdefine_line|#define VT1724_REG_MPU_TXFIFO&t;&t;0x0a&t;/*byte ro. number of bytes in TX fifo*/
 DECL|macro|VT1724_REG_MPU_RXFIFO
@@ -120,13 +163,13 @@ mdefine_line|#define   VT1724_I2C_BUSY&t;&t;0x01&t;/* busy bit */
 DECL|macro|VT1724_REG_GPIO_DATA
 mdefine_line|#define VT1724_REG_GPIO_DATA&t;0x14&t;/* word */
 DECL|macro|VT1724_REG_GPIO_WRITE_MASK
-mdefine_line|#define VT1724_REG_GPIO_WRITE_MASK&t;0x15 /* word */
+mdefine_line|#define VT1724_REG_GPIO_WRITE_MASK&t;0x16 /* word */
 DECL|macro|VT1724_REG_GPIO_DIRECTION
-mdefine_line|#define VT1724_REG_GPIO_DIRECTION&t;0x16 /* dword? (3 bytes) 0=input 1=output. &n;&t;&t;&t;&t;&t;&t;&t;bit3 - during reset used for Eeprom power-on strapping&n;&t;&t;&t;&t;&t;&t;&t;if TESTEN# pin active, bit 2 always input*/
+mdefine_line|#define VT1724_REG_GPIO_DIRECTION&t;0x18 /* dword? (3 bytes) 0=input 1=output. &n;&t;&t;&t;&t;&t;&t;bit3 - during reset used for Eeprom power-on strapping&n;&t;&t;&t;&t;&t;&t;if TESTEN# pin active, bit 2 always input*/
 DECL|macro|VT1724_REG_POWERDOWN
 mdefine_line|#define VT1724_REG_POWERDOWN&t;0x1c
-DECL|macro|VT1724_REG_GPIO_DIRECTION_22
-mdefine_line|#define VT1724_REG_GPIO_DIRECTION_22&t;0x1e /* byte direction for GPIO 16:22 */
+DECL|macro|VT1724_REG_GPIO_DATA_22
+mdefine_line|#define VT1724_REG_GPIO_DATA_22&t;0x1e /* byte direction for GPIO 16:22 */
 DECL|macro|VT1724_REG_GPIO_WRITE_MASK_22
 mdefine_line|#define VT1724_REG_GPIO_WRITE_MASK_22&t;0x1f /* byte write mask for GPIO 16:22 */
 multiline_comment|/* &n; *  Professional multi-track direct control registers&n; */
@@ -156,6 +199,12 @@ DECL|macro|VT1724_SPDIF_MASTER
 mdefine_line|#define   VT1724_SPDIF_MASTER&t;&t;0x10&t;/* S/PDIF input is master clock */
 DECL|macro|VT1724_MT_I2S_FORMAT
 mdefine_line|#define VT1724_MT_I2S_FORMAT&t;&t;0x02&t;/* byte - I2S data format */
+DECL|macro|VT1724_MT_I2S_MCLK_128X
+mdefine_line|#define   VT1724_MT_I2S_MCLK_128X&t;0x08
+DECL|macro|VT1724_MT_I2S_FORMAT_MASK
+mdefine_line|#define   VT1724_MT_I2S_FORMAT_MASK&t;0x03
+DECL|macro|VT1724_MT_I2S_FORMAT_I2S
+mdefine_line|#define   VT1724_MT_I2S_FORMAT_I2S&t;0x00
 DECL|macro|VT1724_MT_DMA_INT_MASK
 mdefine_line|#define VT1724_MT_DMA_INT_MASK&t;&t;0x03&t;/* byte -DMA Interrupt Mask */
 multiline_comment|/* lool to VT1724_MULTI_* */
@@ -163,15 +212,28 @@ DECL|macro|VT1724_MT_AC97_INDEX
 mdefine_line|#define VT1724_MT_AC97_INDEX&t;&t;0x04&t;/* byte - AC&squot;97 index */
 DECL|macro|VT1724_MT_AC97_CMD
 mdefine_line|#define VT1724_MT_AC97_CMD&t;&t;0x05&t;/* byte - AC&squot;97 command &amp; status */
-multiline_comment|/* look to VT1724_AC97_* */
+DECL|macro|VT1724_AC97_COLD
+mdefine_line|#define   VT1724_AC97_COLD&t;0x80&t;/* cold reset */
+DECL|macro|VT1724_AC97_WARM
+mdefine_line|#define   VT1724_AC97_WARM&t;0x40&t;/* warm reset */
+DECL|macro|VT1724_AC97_WRITE
+mdefine_line|#define   VT1724_AC97_WRITE&t;0x20&t;/* W: write, R: write in progress */
+DECL|macro|VT1724_AC97_READ
+mdefine_line|#define   VT1724_AC97_READ&t;0x10&t;/* W: read, R: read in progress */
+DECL|macro|VT1724_AC97_READY
+mdefine_line|#define   VT1724_AC97_READY&t;0x08&t;/* codec ready status bit */
+DECL|macro|VT1724_AC97_PBK_VSR
+mdefine_line|#define   VT1724_AC97_PBK_VSR&t;0x02&t;/* playback VSR */
+DECL|macro|VT1724_AC97_CAP_VSR
+mdefine_line|#define   VT1724_AC97_CAP_VSR&t;0x01&t;/* capture VSR */
 DECL|macro|VT1724_MT_AC97_DATA
 mdefine_line|#define VT1724_MT_AC97_DATA&t;&t;0x06&t;/* word - AC&squot;97 data */
 DECL|macro|VT1724_MT_PLAYBACK_ADDR
-mdefine_line|#define VT1724_MT_PLAYBACK_ADDR&t;0x10&t;/* dword - playback address */
+mdefine_line|#define VT1724_MT_PLAYBACK_ADDR&t;&t;0x10&t;/* dword - playback address */
 DECL|macro|VT1724_MT_PLAYBACK_SIZE
-mdefine_line|#define VT1724_MT_PLAYBACK_SIZE&t;0x14&t;/* dword - playback size */
-DECL|macro|VT1724_MT_PLAYBACK_CONTROL
-mdefine_line|#define VT1724_MT_PLAYBACK_CONTROL&t;0x18&t;/* byte - control */
+mdefine_line|#define VT1724_MT_PLAYBACK_SIZE&t;&t;0x14&t;/* dword - playback size */
+DECL|macro|VT1724_MT_DMA_CONTROL
+mdefine_line|#define VT1724_MT_DMA_CONTROL&t;&t;0x18&t;/* byte - control */
 DECL|macro|VT1724_PDMA4_START
 mdefine_line|#define   VT1724_PDMA4_START&t;0x80&t;/* SPDIF out / PDMA4 start */
 DECL|macro|VT1724_PDMA3_START
@@ -189,21 +251,21 @@ mdefine_line|#define   VT1724_PDMA0_START&t;0x01&t;/* MC Interleave / PDMA0 star
 DECL|macro|VT1724_MT_BURST
 mdefine_line|#define VT1724_MT_BURST&t;&t;&t;0x19&t;/* Interleaved playback DMA Active streams / PCI burst size */
 DECL|macro|VT1724_MT_DMA_FIFO_ERR
-mdefine_line|#define VT1724_MT_DMA_FIFO_ERR&t;0x1a&t;/*Global playback and record DMA FIFO Underrun/Overrun */
+mdefine_line|#define VT1724_MT_DMA_FIFO_ERR&t;&t;0x1a&t;/*Global playback and record DMA FIFO Underrun/Overrun */
 DECL|macro|VT1724_PDMA4_UNDERRUN
-mdefine_line|#define   VT1724_PDMA4_UNDERRUN&t;0x80
+mdefine_line|#define   VT1724_PDMA4_UNDERRUN&t;&t;0x80
 DECL|macro|VT1724_PDMA2_UNDERRUN
-mdefine_line|#define   VT1724_PDMA2_UNDERRUN&t;0x40
+mdefine_line|#define   VT1724_PDMA2_UNDERRUN&t;&t;0x40
 DECL|macro|VT1724_PDMA3_UNDERRUN
-mdefine_line|#define   VT1724_PDMA3_UNDERRUN&t;0x20
+mdefine_line|#define   VT1724_PDMA3_UNDERRUN&t;&t;0x20
 DECL|macro|VT1724_PDMA1_UNDERRUN
-mdefine_line|#define   VT1724_PDMA1_UNDERRUN&t;0x10
+mdefine_line|#define   VT1724_PDMA1_UNDERRUN&t;&t;0x10
 DECL|macro|VT1724_RDMA1_UNDERRUN
-mdefine_line|#define   VT1724_RDMA1_UNDERRUN&t;0x04
+mdefine_line|#define   VT1724_RDMA1_UNDERRUN&t;&t;0x04
 DECL|macro|VT1724_RDMA0_UNDERRUN
-mdefine_line|#define   VT1724_RDMA0_UNDERRUN&t;0x02
+mdefine_line|#define   VT1724_RDMA0_UNDERRUN&t;&t;0x02
 DECL|macro|VT1724_PDMA0_UNDERRUN
-mdefine_line|#define   VT1724_PDMA0_UNDERRUN&t;0x01
+mdefine_line|#define   VT1724_PDMA0_UNDERRUN&t;&t;0x01
 DECL|macro|VT1724_MT_DMA_PAUSE
 mdefine_line|#define VT1724_MT_DMA_PAUSE&t;&t;0x1b&t;/*Global playback and record DMA FIFO pause/resume */
 DECL|macro|VT1724_PDMA4_PAUSE
@@ -227,48 +289,45 @@ mdefine_line|#define VT1724_MT_CAPTURE_ADDR&t;&t;0x20&t;/* dword - capture addre
 DECL|macro|VT1724_MT_CAPTURE_SIZE
 mdefine_line|#define VT1724_MT_CAPTURE_SIZE&t;&t;0x24&t;/* word - capture size */
 DECL|macro|VT1724_MT_CAPTURE_COUNT
-mdefine_line|#define VT1724_MT_CAPTURE_COUNT&t;0x26&t;/* word - capture count */
-DECL|macro|VT1724_MT_RDMA1_ADDR
-mdefine_line|#define VT1724_MT_RDMA1_ADDR&t;0x30&t;/* dword - RDMA1 capture address */
-DECL|macro|VT1724_MT_RDMA1_SIZE
-mdefine_line|#define VT1724_MT_RDMA1_SIZE&t;0x34&t;/* word - RDMA1 capture size */
-DECL|macro|VT1724_MT_RDMA1_COUNT
-mdefine_line|#define VT1724_MT_RDMA1_COUNT&t;0x36&t;/* word - RDMA1 capture count */
+mdefine_line|#define VT1724_MT_CAPTURE_COUNT&t;&t;0x26&t;/* word - capture count */
 DECL|macro|VT1724_MT_ROUTE_PLAYBACK
 mdefine_line|#define VT1724_MT_ROUTE_PLAYBACK&t;0x2c&t;/* word */
-singleline_comment|//#define VT1724_MT_MONITOR_VOLUME&t;0x3f&t;/* word */
-singleline_comment|//#define VT1724_MT_MONITOR_INDEX&t;0x3e&t;/* byte */
-DECL|macro|VT1724_MT_PDMA4_ADDR
-mdefine_line|#define VT1724_MT_PDMA4_ADDR&t;0x40&t;/* dword */
-DECL|macro|VT7124_MT_PDMA4_SIZE
-mdefine_line|#define VT7124_MT_PDMA4_SIZE&t;0x44&t;/* word */
-DECL|macro|VT1724_MT_PDMA4_COUNT
-mdefine_line|#define VT1724_MT_PDMA4_COUNT&t;0x46&t;/* word */
-DECL|macro|VT1724_MT_PDMA3_ADDR
-mdefine_line|#define VT1724_MT_PDMA3_ADDR&t;0x50&t;/* dword */
-DECL|macro|VT7124_MT_PDMA3_SIZE
-mdefine_line|#define VT7124_MT_PDMA3_SIZE&t;0x54&t;/* word */
-DECL|macro|VT1724_MT_PDMA3_COUNT
-mdefine_line|#define VT1724_MT_PDMA3_COUNT&t;0x56&t;/* word */
-DECL|macro|VT1724_MT_PDMA2_ADDR
-mdefine_line|#define VT1724_MT_PDMA2_ADDR&t;0x60&t;/* dword */
-DECL|macro|VT7124_MT_PDMA2_SIZE
-mdefine_line|#define VT7124_MT_PDMA2_SIZE&t;0x64&t;/* word */
-DECL|macro|VT1724_MT_PDMA2_COUNT
-mdefine_line|#define VT1724_MT_PDMA2_COUNT&t;0x66&t;/* word */
-DECL|macro|VT1724_MT_PDMA1_ADDR
-mdefine_line|#define VT1724_MT_PDMA1_ADDR&t;0x70&t;/* dword */
-DECL|macro|VT7124_MT_PDMA1_SIZE
-mdefine_line|#define VT7124_MT_PDMA1_SIZE&t;0x74&t;/* word */
-DECL|macro|VT1724_MT_PDMA1_COUNT
-mdefine_line|#define VT1724_MT_PDMA1_COUNT&t;0x76&t;/* word */
-singleline_comment|//does VT1724 have these? don&squot;t think so
-singleline_comment|//#define VT1724_MT_MONITOR_RATE&t;&t;0x3b&t;/* byte */
-singleline_comment|//#define VT1724_MT_MONITOR_ROUTECTRL&t;0x3c&t;/* byte */
-singleline_comment|//#define   VT1724_ROUTE_AC97&t;&t;0x01&t;/* route digital mixer output to AC&squot;97 */
+DECL|macro|VT1724_MT_RDMA1_ADDR
+mdefine_line|#define VT1724_MT_RDMA1_ADDR&t;&t;0x30&t;/* dword - RDMA1 capture address */
+DECL|macro|VT1724_MT_RDMA1_SIZE
+mdefine_line|#define VT1724_MT_RDMA1_SIZE&t;&t;0x34&t;/* word - RDMA1 capture size */
+DECL|macro|VT1724_MT_RDMA1_COUNT
+mdefine_line|#define VT1724_MT_RDMA1_COUNT&t;&t;0x36&t;/* word - RDMA1 capture count */
+DECL|macro|VT1724_MT_SPDIF_CTRL
+mdefine_line|#define VT1724_MT_SPDIF_CTRL&t;&t;0x3c&t;/* word */
 DECL|macro|VT1724_MT_MONITOR_PEAKINDEX
 mdefine_line|#define VT1724_MT_MONITOR_PEAKINDEX&t;0x3e&t;/* byte */
 DECL|macro|VT1724_MT_MONITOR_PEAKDATA
 mdefine_line|#define VT1724_MT_MONITOR_PEAKDATA&t;0x3f&t;/* byte */
+multiline_comment|/* concurrent stereo channels */
+DECL|macro|VT1724_MT_PDMA4_ADDR
+mdefine_line|#define VT1724_MT_PDMA4_ADDR&t;&t;0x40&t;/* dword */
+DECL|macro|VT1724_MT_PDMA4_SIZE
+mdefine_line|#define VT1724_MT_PDMA4_SIZE&t;&t;0x44&t;/* word */
+DECL|macro|VT1724_MT_PDMA4_COUNT
+mdefine_line|#define VT1724_MT_PDMA4_COUNT&t;&t;0x46&t;/* word */
+DECL|macro|VT1724_MT_PDMA3_ADDR
+mdefine_line|#define VT1724_MT_PDMA3_ADDR&t;&t;0x50&t;/* dword */
+DECL|macro|VT1724_MT_PDMA3_SIZE
+mdefine_line|#define VT1724_MT_PDMA3_SIZE&t;&t;0x54&t;/* word */
+DECL|macro|VT1724_MT_PDMA3_COUNT
+mdefine_line|#define VT1724_MT_PDMA3_COUNT&t;&t;0x56&t;/* word */
+DECL|macro|VT1724_MT_PDMA2_ADDR
+mdefine_line|#define VT1724_MT_PDMA2_ADDR&t;&t;0x60&t;/* dword */
+DECL|macro|VT1724_MT_PDMA2_SIZE
+mdefine_line|#define VT1724_MT_PDMA2_SIZE&t;&t;0x64&t;/* word */
+DECL|macro|VT1724_MT_PDMA2_COUNT
+mdefine_line|#define VT1724_MT_PDMA2_COUNT&t;&t;0x66&t;/* word */
+DECL|macro|VT1724_MT_PDMA1_ADDR
+mdefine_line|#define VT1724_MT_PDMA1_ADDR&t;&t;0x70&t;/* dword */
+DECL|macro|VT1724_MT_PDMA1_SIZE
+mdefine_line|#define VT1724_MT_PDMA1_SIZE&t;&t;0x74&t;/* word */
+DECL|macro|VT1724_MT_PDMA1_COUNT
+mdefine_line|#define VT1724_MT_PDMA1_COUNT&t;&t;0x76&t;/* word */
 macro_line|#endif /* __SOUND_VT1724_H */
 eof

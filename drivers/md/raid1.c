@@ -3410,7 +3410,15 @@ id|i
 dot
 id|rdev-&gt;in_sync
 op_logical_and
-id|mddev-&gt;in_sync
+id|r1_bio-&gt;sector
+op_plus
+(paren
+id|bio-&gt;bi_size
+op_rshift
+l_int|9
+)paren
+op_le
+id|mddev-&gt;recovery_cp
 )paren
 multiline_comment|/*&n;&t;&t;&t; * don&squot;t need to write this we are just rebuilding&n;&t;&t;&t; */
 r_continue

@@ -14,5 +14,5 @@ DECL|macro|FC_SUPERD
 mdefine_line|#define FC_SUPERD    5
 DECL|macro|FC_CPU
 mdefine_line|#define FC_CPU      7
-macro_line|#endif __SUN3_HEAD_H
+macro_line|#endif /* __SUN3_HEAD_H */
 eof

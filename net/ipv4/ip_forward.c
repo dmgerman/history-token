@@ -229,7 +229,11 @@ c_func
 (paren
 id|skb
 comma
-id|rt-&gt;u.dst.dev-&gt;hard_header_len
+id|LL_RESERVED_SPACE
+c_func
+(paren
+id|rt-&gt;u.dst.dev
+)paren
 op_plus
 id|rt-&gt;u.dst.header_len
 )paren

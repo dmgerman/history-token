@@ -528,7 +528,7 @@ op_assign
 id|SNDRV_DEFAULT_PTR
 suffix:semicolon
 DECL|macro|ISAPNP_AD1816A
-mdefine_line|#define ISAPNP_AD1816A(_va, _vb, _vc, _device, _fa, _fb, _fc, _audio, _mpu401) &bslash;&n;&t;{ &bslash;&n;&t;&t;ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;&t;&t;devs : { ISAPNP_DEVICE_ID(_fa, _fb, _fc, _audio), &bslash;&n;&t;&t;&t; ISAPNP_DEVICE_ID(_fa, _fb, _fc, _mpu401), } &bslash;&n;&t;}
+mdefine_line|#define ISAPNP_AD1816A(_va, _vb, _vc, _device, _fa, _fb, _fc, _audio, _mpu401) &bslash;&n;&t;{ &bslash;&n;&t;&t;ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;&t;&t;.devs = { ISAPNP_DEVICE_ID(_fa, _fb, _fc, _audio), &bslash;&n;&t;&t;&t;  ISAPNP_DEVICE_ID(_fa, _fb, _fc, _mpu401), } &bslash;&n;&t;}
 DECL|variable|__devinitdata
 r_static
 r_struct

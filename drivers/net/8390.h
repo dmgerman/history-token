@@ -409,7 +409,7 @@ DECL|macro|inb_p
 mdefine_line|#define inb_p(port)   in_8(port)
 DECL|macro|outb_p
 mdefine_line|#define outb_p(val,port)  out_8(port,val)
-macro_line|#elif defined(CONFIG_ARM_ETHERH) || defined(CONFIG_ARM_ETHERH_MODULE)
+macro_line|#elif defined(CONFIG_ARM_ETHERH) || defined(CONFIG_ARM_ETHERH_MODULE) || &bslash;&n;      defined(CONFIG_NET_CBUS)
 DECL|macro|EI_SHIFT
 mdefine_line|#define EI_SHIFT(x)&t;(ei_local-&gt;reg_offset[x])
 macro_line|#else

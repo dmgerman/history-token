@@ -8859,6 +8859,8 @@ r_if
 c_cond
 (paren
 id|nmi_watchdog
+op_eq
+id|NMI_IO_APIC
 )paren
 (brace
 id|printk

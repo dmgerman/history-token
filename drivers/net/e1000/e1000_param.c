@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2002 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
+multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 macro_line|#include &quot;e1000.h&quot;
 multiline_comment|/* This is the only thing that needs to be changed to adjust the&n; * maximum number of ports that the driver can manage.&n; */
 DECL|macro|E1000_MAX_NIC
@@ -96,7 +96,7 @@ comma
 l_string|&quot;Transmit Absolute Interrupt Delay&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Receive Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 0/128&n; */
+multiline_comment|/* Receive Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 0&n; */
 id|E1000_PARAM
 c_func
 (paren
@@ -112,6 +112,15 @@ c_func
 id|RxAbsIntDelay
 comma
 l_string|&quot;Receive Absolute Interrupt Delay&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Interrupt Throttle Rate (interrupts/sec)&n; *&n; * Valid Range: 100-100000 (0=off, 1=dynamic)&n; *&n; * Default Value: 1&n; */
+id|E1000_PARAM
+c_func
+(paren
+id|InterruptThrottleRate
+comma
+l_string|&quot;Interrupt Throttling Rate&quot;
 )paren
 suffix:semicolon
 DECL|macro|AUTONEG_ADV_DEFAULT
@@ -160,6 +169,12 @@ DECL|macro|MAX_TXABSDELAY
 mdefine_line|#define MAX_TXABSDELAY            0xFFFF
 DECL|macro|MIN_TXABSDELAY
 mdefine_line|#define MIN_TXABSDELAY                 0
+DECL|macro|DEFAULT_ITR
+mdefine_line|#define DEFAULT_ITR                    1
+DECL|macro|MAX_ITR
+mdefine_line|#define MAX_ITR                   100000
+DECL|macro|MIN_ITR
+mdefine_line|#define MIN_ITR                      100
 DECL|struct|e1000_option
 r_struct
 id|e1000_option
@@ -575,7 +590,6 @@ op_assign
 (brace
 dot
 id|r
-op_assign
 (brace
 dot
 id|min
@@ -901,17 +915,6 @@ suffix:semicolon
 )brace
 (brace
 multiline_comment|/* Transmit Interrupt Delay */
-r_char
-op_star
-id|tidv
-op_assign
-l_string|&quot;using default of &quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|DEFAULT_TIDV
-)paren
-suffix:semicolon
 r_struct
 id|e1000_option
 id|opt
@@ -926,6 +929,21 @@ dot
 id|name
 op_assign
 l_string|&quot;Transmit Interrupt Delay&quot;
+comma
+dot
+id|err
+op_assign
+l_string|&quot;using default of &quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|DEFAULT_TIDV
+)paren
+comma
+dot
+id|def
+op_assign
+id|DEFAULT_TIDV
 comma
 dot
 id|arg
@@ -948,14 +966,6 @@ id|MAX_TXDELAY
 )brace
 )brace
 suffix:semicolon
-id|opt.def
-op_assign
-id|DEFAULT_TIDV
-suffix:semicolon
-id|opt.err
-op_assign
-id|tidv
-suffix:semicolon
 id|adapter-&gt;tx_int_delay
 op_assign
 id|TxIntDelay
@@ -976,17 +986,6 @@ suffix:semicolon
 )brace
 (brace
 multiline_comment|/* Transmit Absolute Interrupt Delay */
-r_char
-op_star
-id|tadv
-op_assign
-l_string|&quot;using default of &quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|DEFAULT_TADV
-)paren
-suffix:semicolon
 r_struct
 id|e1000_option
 id|opt
@@ -1001,6 +1000,21 @@ dot
 id|name
 op_assign
 l_string|&quot;Transmit Absolute Interrupt Delay&quot;
+comma
+dot
+id|err
+op_assign
+l_string|&quot;using default of &quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|DEFAULT_TADV
+)paren
+comma
+dot
+id|def
+op_assign
+id|DEFAULT_TADV
 comma
 dot
 id|arg
@@ -1023,14 +1037,6 @@ id|MAX_TXABSDELAY
 )brace
 )brace
 suffix:semicolon
-id|opt.def
-op_assign
-id|DEFAULT_TADV
-suffix:semicolon
-id|opt.err
-op_assign
-id|tadv
-suffix:semicolon
 id|adapter-&gt;tx_abs_int_delay
 op_assign
 id|TxAbsIntDelay
@@ -1051,17 +1057,6 @@ suffix:semicolon
 )brace
 (brace
 multiline_comment|/* Receive Interrupt Delay */
-r_char
-op_star
-id|rdtr
-op_assign
-l_string|&quot;using default of &quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|DEFAULT_RDTR
-)paren
-suffix:semicolon
 r_struct
 id|e1000_option
 id|opt
@@ -1076,6 +1071,21 @@ dot
 id|name
 op_assign
 l_string|&quot;Receive Interrupt Delay&quot;
+comma
+dot
+id|err
+op_assign
+l_string|&quot;using default of &quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|DEFAULT_RDTR
+)paren
+comma
+dot
+id|def
+op_assign
+id|DEFAULT_RDTR
 comma
 dot
 id|arg
@@ -1098,14 +1108,6 @@ id|MAX_RXDELAY
 )brace
 )brace
 suffix:semicolon
-id|opt.def
-op_assign
-id|DEFAULT_RDTR
-suffix:semicolon
-id|opt.err
-op_assign
-id|rdtr
-suffix:semicolon
 id|adapter-&gt;rx_int_delay
 op_assign
 id|RxIntDelay
@@ -1126,17 +1128,6 @@ suffix:semicolon
 )brace
 (brace
 multiline_comment|/* Receive Absolute Interrupt Delay */
-r_char
-op_star
-id|radv
-op_assign
-l_string|&quot;using default of &quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|DEFAULT_RADV
-)paren
-suffix:semicolon
 r_struct
 id|e1000_option
 id|opt
@@ -1151,6 +1142,21 @@ dot
 id|name
 op_assign
 l_string|&quot;Receive Absolute Interrupt Delay&quot;
+comma
+dot
+id|err
+op_assign
+l_string|&quot;using default of &quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|DEFAULT_RADV
+)paren
+comma
+dot
+id|def
+op_assign
+id|DEFAULT_RADV
 comma
 dot
 id|arg
@@ -1173,14 +1179,6 @@ id|MAX_RXABSDELAY
 )brace
 )brace
 suffix:semicolon
-id|opt.def
-op_assign
-id|DEFAULT_RADV
-suffix:semicolon
-id|opt.err
-op_assign
-id|radv
-suffix:semicolon
 id|adapter-&gt;rx_abs_int_delay
 op_assign
 id|RxAbsIntDelay
@@ -1198,6 +1196,118 @@ op_amp
 id|opt
 )paren
 suffix:semicolon
+)brace
+(brace
+multiline_comment|/* Interrupt Throttling Rate */
+r_struct
+id|e1000_option
+id|opt
+op_assign
+(brace
+dot
+id|type
+op_assign
+id|range_option
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Interrupt Throttling Rate (ints/sec)&quot;
+comma
+dot
+id|err
+op_assign
+l_string|&quot;using default of &quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|DEFAULT_ITR
+)paren
+comma
+dot
+id|def
+op_assign
+id|DEFAULT_ITR
+comma
+dot
+id|arg
+op_assign
+(brace
+dot
+id|r
+op_assign
+(brace
+dot
+id|min
+op_assign
+id|MIN_ITR
+comma
+dot
+id|max
+op_assign
+id|MAX_ITR
+)brace
+)brace
+)brace
+suffix:semicolon
+id|adapter-&gt;itr
+op_assign
+id|InterruptThrottleRate
+(braket
+id|bd
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|adapter-&gt;itr
+op_eq
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s turned off&bslash;n&quot;
+comma
+id|opt.name
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|adapter-&gt;itr
+op_eq
+l_int|1
+op_logical_or
+id|adapter-&gt;itr
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+multiline_comment|/* Dynamic mode */
+id|adapter-&gt;itr
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+(brace
+id|e1000_validate_option
+c_func
+(paren
+op_amp
+id|adapter-&gt;itr
+comma
+op_amp
+id|opt
+)paren
+suffix:semicolon
+)brace
 )brace
 r_switch
 c_cond

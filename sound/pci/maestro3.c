@@ -1964,7 +1964,7 @@ multiline_comment|/* Dell Inspiron 8000 */
 dot
 id|name
 op_assign
-l_string|&quot;Dell Insprion 8000&quot;
+l_string|&quot;Dell Inspiron 8000&quot;
 comma
 dot
 id|vendor
@@ -1989,7 +1989,7 @@ l_int|1
 comma
 )brace
 comma
-multiline_comment|/* FIXME: Inspiron 8100 and 8200 ids should be here, too */
+multiline_comment|/* FIXME: Inspiron 8100 id should probably be here, too&n;&t; * (8200 irrelevant: has intel8x0 with CS4205) */
 multiline_comment|/* END */
 (brace
 l_int|0

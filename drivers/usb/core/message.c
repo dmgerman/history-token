@@ -357,7 +357,7 @@ c_func
 (paren
 l_int|0
 comma
-id|GFP_KERNEL
+id|GFP_NOIO
 )paren
 suffix:semicolon
 r_if
@@ -475,7 +475,7 @@ r_struct
 id|usb_ctrlrequest
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_NOIO
 )paren
 suffix:semicolon
 r_int

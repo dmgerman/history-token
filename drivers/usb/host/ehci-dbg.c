@@ -424,11 +424,13 @@ id|qh
 (brace
 id|dbg
 (paren
-l_string|&quot;%s %p info1 %x info2 %x hw_curr %x qtd_next %x&quot;
+l_string|&quot;%s %p n%08x info1 %x info2 %x hw_curr %x qtd_next %x&quot;
 comma
 id|label
 comma
 id|qh
+comma
+id|qh-&gt;hw_next
 comma
 id|qh-&gt;hw_info1
 comma
@@ -441,7 +443,7 @@ id|qh-&gt;hw_qtd_next
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;  alt+errs= %x, token= %x, page0= %x, page1= %x&quot;
+l_string|&quot;  alt+nak+t= %x, token= %x, page0= %x, page1= %x&quot;
 comma
 id|qh-&gt;hw_alt_next
 comma

@@ -216,6 +216,8 @@ DECL|macro|QUIRK_COMPOSITE
 mdefine_line|#define QUIRK_COMPOSITE&t;&t;&t;3
 DECL|macro|QUIRK_AUDIO_FIXED_ENDPOINT
 mdefine_line|#define QUIRK_AUDIO_FIXED_ENDPOINT&t;4
+DECL|macro|QUIRK_STANDARD_INTERFACE
+mdefine_line|#define QUIRK_STANDARD_INTERFACE&t;5
 DECL|macro|QUIRK_BOOT_MASK
 mdefine_line|#define QUIRK_BOOT_MASK&t;&t;&t;0x80
 DECL|macro|QUIRK_BOOT_EXTIGY
@@ -293,6 +295,7 @@ multiline_comment|/* for QUIRK_MIDI_YAMAHA, data is NULL */
 multiline_comment|/* for QUIRK_MIDI_MIDIMAN, data points to a snd_usb_midi_endpoint_info&n; * structure (out_cables and in_cables only) */
 multiline_comment|/* for QUIRK_COMPOSITE, data points to an array of snd_usb_audio_quirk&n; * structures, terminated with .ifnum = -1 */
 multiline_comment|/* for QUIRK_AUDIO_FIXED_ENDPOINT, data points to an audioformat structure */
+multiline_comment|/* for QUIRK_STANDARD_INTERFACE, data is NULL */
 multiline_comment|/*&n; */
 DECL|macro|combine_word
 mdefine_line|#define combine_word(s)    ((*s) | ((unsigned int)(s)[1] &lt;&lt; 8))
@@ -332,12 +335,6 @@ id|after
 comma
 id|u8
 id|dtype
-comma
-r_int
-id|iface
-comma
-r_int
-id|altsetting
 )paren
 suffix:semicolon
 r_void
@@ -358,12 +355,6 @@ id|after
 comma
 id|u8
 id|dsubtype
-comma
-r_int
-id|iface
-comma
-r_int
-id|altsetting
 )paren
 suffix:semicolon
 r_int
@@ -376,14 +367,6 @@ id|chip
 comma
 r_int
 id|ctrlif
-comma
-r_int
-r_char
-op_star
-id|buffer
-comma
-r_int
-id|buflen
 )paren
 suffix:semicolon
 r_int

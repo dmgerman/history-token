@@ -3708,8 +3708,9 @@ id|info
 op_assign
 id|SNDRV_PCM_INFO_NONINTERLEAVED
 comma
+dot
 id|formats
-suffix:colon
+op_assign
 (paren
 id|SNDRV_PCM_FMTBIT_S8
 op_or

@@ -237,7 +237,7 @@ mdefine_line|#define TI_CEE_STUFF&t;0x00000498
 DECL|macro|TI_RESTART_BLOCK
 mdefine_line|#define TI_RESTART_BLOCK 0x000004a0
 DECL|macro|TI_FPREGS
-mdefine_line|#define TI_FPREGS&t;0x000004c0
+mdefine_line|#define TI_FPREGS&t;0x00000500
 multiline_comment|/* We embed this in the uppermost byte of thread_info-&gt;flags */
 DECL|macro|FAULT_CODE_WRITE
 mdefine_line|#define FAULT_CODE_WRITE&t;0x01&t;/* Write access, implies D-TLB&t;&t;*/

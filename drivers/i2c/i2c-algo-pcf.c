@@ -442,7 +442,7 @@ id|adap
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* check it&squot;s realy writen */
+multiline_comment|/* check it&squot;s really written */
 r_if
 c_cond
 (paren
@@ -548,7 +548,7 @@ id|adap
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* check it&squot;s realy writen, the only 5 lowest bits does matter */
+multiline_comment|/* check it&squot;s really written, the only 5 lowest bits does matter */
 r_if
 c_cond
 (paren
@@ -602,7 +602,7 @@ comma
 id|I2C_PCF_IDLE
 )paren
 suffix:semicolon
-multiline_comment|/* check to see PCF is realy idled and we can access status register */
+multiline_comment|/* check to see PCF is really idled and we can access status register */
 r_if
 c_cond
 (paren

@@ -1318,7 +1318,7 @@ c_func
 id|alsa_card_es968_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-es968=enable,index,id,&n;&t;&t;&t;port,irq,snd_dma1 */
+multiline_comment|/* format is: snd-es968=enable,index,id,&n;&t;&t;&t;port,irq,dma1 */
 DECL|function|alsa_card_es968_setup
 r_static
 r_int

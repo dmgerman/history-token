@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2002 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;*******************************************************************************/
+multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;*******************************************************************************/
 macro_line|#ifndef _E100_INC_
 DECL|macro|_E100_INC_
 mdefine_line|#define _E100_INC_
@@ -30,6 +30,8 @@ macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
+macro_line|#include &lt;linux/if_vlan.h&gt;
+macro_line|#include &lt;linux/mii.h&gt;
 DECL|macro|E100_REGS_LEN
 mdefine_line|#define E100_REGS_LEN 1
 multiline_comment|/*&n; *  Configure parameters for buffers per controller.&n; *  If the machine this is being used on is a faster machine (i.e. &gt; 150MHz)&n; *  and running on a 10MBS network then more queueing of data occurs. This&n; *  may indicate the some of the numbers below should be adjusted.  Here are&n; *  some typical numbers:&n; *                             MAX_TCB 64&n; *                             MAX_RFD 64&n; *  The default numbers give work well on most systems tests so no real&n; *  adjustments really need to take place.  Also, if the machine is connected&n; *  to a 100MBS network the numbers described above can be lowered from the&n; *  defaults as considerably less data will be queued.&n; */
@@ -400,6 +402,10 @@ DECL|macro|SCB_GCR2_EEPROM_ACCESS_SEMAPHORE
 mdefine_line|#define SCB_GCR2_EEPROM_ACCESS_SEMAPHORE BIT_7
 multiline_comment|/* EEPROM bit definitions */
 multiline_comment|/*- EEPROM control register bits */
+DECL|macro|EEPROM_FLAG_ASF
+mdefine_line|#define EEPROM_FLAG_ASF  0x8000
+DECL|macro|EEPROM_FLAG_GCL
+mdefine_line|#define EEPROM_FLAG_GCL  0x4000
 DECL|macro|EN_TRNF
 mdefine_line|#define EN_TRNF          0x10&t;/* Enable turnoff */
 DECL|macro|EEDO
@@ -430,6 +436,10 @@ DECL|macro|EEPROM_PWA_NO
 mdefine_line|#define EEPROM_PWA_NO                   8
 DECL|macro|EEPROM_ID_WORD
 mdefine_line|#define EEPROM_ID_WORD&t;&t;&t;0x0A
+DECL|macro|EEPROM_CONFIG_ASF
+mdefine_line|#define EEPROM_CONFIG_ASF&t;&t;0x0D
+DECL|macro|EEPROM_SMBUS_ADDR
+mdefine_line|#define EEPROM_SMBUS_ADDR&t;&t;0x90
 DECL|macro|EEPROM_SUM
 mdefine_line|#define EEPROM_SUM                      0xbaba
 singleline_comment|// Zero Locking Algorithm definitions:
@@ -490,8 +500,8 @@ DECL|macro|CB_STATUS_COMPLETE
 mdefine_line|#define CB_STATUS_COMPLETE      BIT_15&t;/* CB Complete Bit */
 DECL|macro|CB_STATUS_OK
 mdefine_line|#define CB_STATUS_OK            BIT_13&t;/* CB OK Bit */
-DECL|macro|CB_STATUS_UNDERRUN
-mdefine_line|#define CB_STATUS_UNDERRUN      BIT_12&t;/* CB A Bit */
+DECL|macro|CB_STATUS_VLAN
+mdefine_line|#define CB_STATUS_VLAN          BIT_12 /* CB Valn detected Bit */
 DECL|macro|CB_STATUS_FAIL
 mdefine_line|#define CB_STATUS_FAIL          BIT_11&t;/* CB Fail (F) Bit */
 multiline_comment|/*misc command bits */
@@ -2025,6 +2035,12 @@ DECL|struct|e100_private
 r_struct
 id|e100_private
 (brace
+DECL|member|vlgrp
+r_struct
+id|vlan_group
+op_star
+id|vlgrp
+suffix:semicolon
 DECL|member|flags
 id|u32
 id|flags
@@ -2178,12 +2194,6 @@ id|u8
 id|rev_id
 suffix:semicolon
 multiline_comment|/* adapter PCI revision ID */
-DECL|member|device_type
-r_int
-r_int
-id|device_type
-suffix:semicolon
-multiline_comment|/* device type from e100_vendor.h */
 DECL|member|phy_addr
 r_int
 r_int
@@ -2312,11 +2322,6 @@ id|cfg_params
 id|params
 suffix:semicolon
 multiline_comment|/* adapter&squot;s command line parameters */
-DECL|member|id_string
-r_char
-op_star
-id|id_string
-suffix:semicolon
 DECL|member|speed_duplex_caps
 id|u32
 id|speed_duplex_caps

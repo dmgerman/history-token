@@ -441,8 +441,15 @@ op_star
 id|arg
 )paren
 suffix:semicolon
+DECL|member|driver
+r_struct
+id|device_driver
+id|driver
+suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|to_i2c_driver
+mdefine_line|#define to_i2c_driver(d) container_of(d, struct i2c_driver, driver)
 r_extern
 r_struct
 id|bus_type

@@ -2504,18 +2504,14 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-DECL|function|atari_scsi_reset
+DECL|function|atari_scsi_bus_reset
 r_int
-id|atari_scsi_reset
+id|atari_scsi_bus_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
 id|cmd
-comma
-r_int
-r_int
-id|reset_flags
 )paren
 (brace
 r_int
@@ -2531,7 +2527,7 @@ r_struct
 id|NCR5380_hostdata
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 multiline_comment|/* For doing the reset, SCSI interrupts must be disabled first,&n;&t; * since the 5380 raises its IRQ line while _RST is active and we&n;&t; * can&squot;t disable interrupts completely, since we need the timer.&n;&t; */
 multiline_comment|/* And abort a maybe active DMA transfer */
@@ -2582,12 +2578,10 @@ macro_line|#endif /* REAL_DMA */
 )brace
 id|rv
 op_assign
-id|NCR5380_reset
+id|NCR5380_bus_reset
 c_func
 (paren
 id|cmd
-comma
-id|reset_flags
 )paren
 suffix:semicolon
 multiline_comment|/* Re-enable ints */
@@ -3471,14 +3465,14 @@ op_assign
 id|atari_scsi_queue_command
 comma
 dot
-m_abort
+id|eh_abort_handler
 op_assign
 id|atari_scsi_abort
 comma
 dot
-id|reset
+id|eh_bus_reset_handler
 op_assign
-id|atari_scsi_reset
+id|atari_scsi_bus_reset
 comma
 dot
 id|can_queue

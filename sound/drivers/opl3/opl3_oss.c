@@ -400,6 +400,8 @@ id|SNDRV_SEQ_PORT_TYPE_SYNTH
 comma
 id|voices
 comma
+id|voices
+comma
 id|name
 )paren
 suffix:semicolon

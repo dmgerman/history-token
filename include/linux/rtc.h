@@ -112,7 +112,7 @@ suffix:semicolon
 multiline_comment|/* base PLL frequency */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * ioctl calls that are permitted to the /dev/rtc interface, if &n; * any of the RTC drivers are enabled.&n; */
+multiline_comment|/*&n; * ioctl calls that are permitted to the /dev/rtc interface, if&n; * any of the RTC drivers are enabled.&n; */
 DECL|macro|RTC_AIE_ON
 mdefine_line|#define RTC_AIE_ON&t;_IO(&squot;p&squot;, 0x01)&t;/* Alarm int. enable on&t;&t;*/
 DECL|macro|RTC_AIE_OFF

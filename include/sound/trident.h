@@ -1132,6 +1132,21 @@ DECL|member|foldback
 id|foldback
 suffix:colon
 l_int|1
+comma
+DECL|member|isync
+id|isync
+suffix:colon
+l_int|1
+comma
+DECL|member|isync2
+id|isync2
+suffix:colon
+l_int|1
+comma
+DECL|member|isync3
+id|isync3
+suffix:colon
+l_int|1
 suffix:semicolon
 DECL|member|foldback_chan
 r_int
@@ -1150,6 +1165,21 @@ r_int
 id|spurious_threshold
 suffix:semicolon
 multiline_comment|/* spurious threshold */
+DECL|member|isync_mark
+r_int
+r_int
+id|isync_mark
+suffix:semicolon
+DECL|member|isync_max
+r_int
+r_int
+id|isync_max
+suffix:semicolon
+DECL|member|isync_ESO
+r_int
+r_int
+id|isync_ESO
+suffix:semicolon
 multiline_comment|/* --- */
 DECL|member|private_data
 r_void
@@ -1456,6 +1486,11 @@ DECL|member|ac97
 id|ac97_t
 op_star
 id|ac97
+suffix:semicolon
+DECL|member|ac97_sec
+id|ac97_t
+op_star
+id|ac97_sec
 suffix:semicolon
 DECL|member|musicvol_wavevol
 r_int
