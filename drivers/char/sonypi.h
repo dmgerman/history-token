@@ -778,7 +778,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|wait_on_command
-mdefine_line|#define wait_on_command(quiet, command) { &bslash;&n;&t;unsigned int n = 10000; &bslash;&n;&t;while (--n &amp;&amp; (command)) &bslash;&n;&t;&t;udelay(1); &bslash;&n;&t;if (!n &amp;&amp; (verbose || !quiet)) &bslash;&n;&t;&t;printk(KERN_WARNING &quot;sonypi command failed at &quot; __FILE__ &quot; : &quot; __FUNCTION__ &quot;(line %d)&bslash;n&quot;, __LINE__); &bslash;&n;}
+mdefine_line|#define wait_on_command(quiet, command) { &bslash;&n;&t;unsigned int n = 10000; &bslash;&n;&t;while (--n &amp;&amp; (command)) &bslash;&n;&t;&t;udelay(1); &bslash;&n;&t;if (!n &amp;&amp; (verbose || !quiet)) &bslash;&n;&t;&t;printk(KERN_WARNING &quot;sonypi command failed at %s : %s(line %d)&bslash;n&quot;, __FILE__, __FUNCTION__, __LINE__); &bslash;&n;}
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _SONYPI_PRIV_H_ */
 eof

@@ -2693,12 +2693,14 @@ id|hw_interrupt_type
 id|amiga_sys_irqctrl
 op_assign
 (brace
+dot
 r_typename
-suffix:colon
+op_assign
 l_string|&quot;Amiga IPL&quot;
 comma
+dot
 id|end
-suffix:colon
+op_assign
 id|apus_end_irq
 comma
 )brace
@@ -2709,16 +2711,19 @@ id|hw_interrupt_type
 id|amiga_irqctrl
 op_assign
 (brace
+dot
 r_typename
-suffix:colon
+op_assign
 l_string|&quot;Amiga    &quot;
 comma
+dot
 id|enable
-suffix:colon
+op_assign
 id|amiga_enable_irq
 comma
+dot
 id|disable
-suffix:colon
+op_assign
 id|amiga_disable_irq
 comma
 )brace

@@ -77,12 +77,12 @@ macro_line|#else
 DECL|macro|dprint_ip
 mdefine_line|#define dprint_ip(a)
 macro_line|#endif
-DECL|variable|ip_fw_lock
 r_static
-id|rwlock_t
+id|DECLARE_RWLOCK
+c_func
+(paren
 id|ip_fw_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_IP_ACCT) || defined(CONFIG_IP_FIREWALL)
 DECL|variable|ip_fw_fwd_chain

@@ -1316,6 +1316,8 @@ comma
 id|zones_size
 comma
 id|PAGE_OFFSET
+op_rshift
+id|PAGE_SHIFT
 comma
 l_int|0
 )paren

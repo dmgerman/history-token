@@ -1814,36 +1814,16 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/* see sock_no_fcntl */
-r_if
-c_cond
-(paren
-id|current-&gt;pid
-op_ne
-id|pid
-op_logical_and
-id|current-&gt;pgrp
-op_ne
-op_minus
-id|pid
-op_logical_and
-op_logical_neg
-id|capable
+r_return
+id|f_setown
 c_func
 (paren
-id|CAP_NET_ADMIN
-)paren
-)paren
-r_return
-op_minus
-id|EPERM
-suffix:semicolon
-id|sk-&gt;proc
-op_assign
+id|sock-&gt;file
+comma
 id|pid
-suffix:semicolon
-r_return
-l_int|0
+comma
+l_int|1
+)paren
 suffix:semicolon
 r_case
 id|FIOGETOWN
@@ -1855,7 +1835,7 @@ r_return
 id|put_user
 c_func
 (paren
-id|sk-&gt;proc
+id|sock-&gt;file-&gt;f_owner.pid
 comma
 (paren
 r_int
@@ -2721,8 +2701,10 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
+l_string|&quot;%s: Can&squot;t create protocol sock SLAB &quot;
+l_string|&quot;caches!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Can&squot;t create protocol sock SLAB caches!&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Register the socket-side information for inet6_create.  */

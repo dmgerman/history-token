@@ -403,6 +403,12 @@ op_assign
 l_int|54
 comma
 multiline_comment|/* int: PID of the process to notify on CAD */
+DECL|enumerator|KERN_PIDMAX
+id|KERN_PIDMAX
+op_assign
+l_int|55
+comma
+multiline_comment|/* int: PID # limit */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */

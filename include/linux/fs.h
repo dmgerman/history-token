@@ -745,12 +745,14 @@ id|a_ops
 suffix:semicolon
 multiline_comment|/* methods */
 DECL|member|i_mmap
-id|list_t
+r_struct
+id|list_head
 id|i_mmap
 suffix:semicolon
 multiline_comment|/* list of private mappings */
 DECL|member|i_mmap_shared
-id|list_t
+r_struct
+id|list_head
 id|i_mmap_shared
 suffix:semicolon
 multiline_comment|/* list of private mappings */
@@ -947,7 +949,8 @@ id|umode_t
 id|i_mode
 suffix:semicolon
 DECL|member|i_nlink
-id|nlink_t
+r_int
+r_int
 id|i_nlink
 suffix:semicolon
 DECL|member|i_uid
@@ -1217,6 +1220,11 @@ DECL|struct|fown_struct
 r_struct
 id|fown_struct
 (brace
+DECL|member|lock
+id|rwlock_t
+id|lock
+suffix:semicolon
+multiline_comment|/* protects pid, uid, euid fields */
 DECL|member|pid
 r_int
 id|pid
@@ -2041,6 +2049,46 @@ comma
 r_int
 comma
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|f_setown
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|arg
+comma
+r_int
+id|force
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|f_delown
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|filp
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|send_sigurg
+c_func
+(paren
+r_struct
+id|fown_struct
+op_star
+id|fown
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Umount options&n; */

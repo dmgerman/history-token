@@ -1702,10 +1702,11 @@ id|MODULE_MAX_NAMELEN
 id|printk
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot;: unable to &quot;
+l_string|&quot;%s: unable to &quot;
 l_string|&quot;compute conntrack helper name &quot;
 l_string|&quot;from %s&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|tmp
 )paren
@@ -2037,9 +2038,10 @@ r_else
 id|printk
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot;: unable to decrement usage count&quot;
+l_string|&quot;%s: unable to decrement usage count&quot;
 l_string|&quot; of conntrack helper %s&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|me-&gt;me-&gt;name
 )paren

@@ -1134,13 +1134,13 @@ op_complement
 id|IRQ_PENDING
 suffix:semicolon
 )brace
-id|out
-suffix:colon
 id|desc-&gt;status
 op_and_assign
 op_complement
 id|IRQ_INPROGRESS
 suffix:semicolon
+id|out
+suffix:colon
 multiline_comment|/*&n;&t; * The -&gt;end() handler has to deal with interrupts which got&n;&t; * disabled while the handler was running.&n;&t; */
 id|desc-&gt;handler
 op_member_access_from_pointer
@@ -2294,6 +2294,8 @@ op_or
 id|IRQ_AUTODETECT
 op_or
 id|IRQ_WAITING
+op_or
+id|IRQ_INPROGRESS
 )paren
 suffix:semicolon
 id|desc-&gt;handler

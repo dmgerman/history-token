@@ -4219,7 +4219,8 @@ id|sctp_transport_t
 op_star
 id|transport
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|pos
 comma
@@ -4764,7 +4765,7 @@ c_func
 (paren
 id|param.p-&gt;length
 )paren
-op_assign
+op_minus
 r_sizeof
 (paren
 id|sctp_paramhdr_t

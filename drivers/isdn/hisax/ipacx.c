@@ -1,6 +1,4 @@
 multiline_comment|/* &n; *&n; * IPACX specific routines&n; *&n; * Author       Joerg Petersohn&n; * Derived from hisax_isac.c, isac.c, hscx.c and others&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

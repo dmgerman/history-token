@@ -2904,7 +2904,7 @@ macro_line|#ifdef CONFIG_AGP_ALI
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_AL_M1541_0
+id|PCI_DEVICE_ID_AL_M1541
 comma
 dot
 id|vendor_id
@@ -2937,7 +2937,7 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_AL_M1621_0
+id|PCI_DEVICE_ID_AL_M1621
 comma
 dot
 id|vendor_id
@@ -2970,7 +2970,7 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_AL_M1631_0
+id|PCI_DEVICE_ID_AL_M1631
 comma
 dot
 id|vendor_id
@@ -3003,7 +3003,7 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_AL_M1632_0
+id|PCI_DEVICE_ID_AL_M1632
 comma
 dot
 id|vendor_id
@@ -3036,7 +3036,7 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_AL_M1641_0
+id|PCI_DEVICE_ID_AL_M1641
 comma
 dot
 id|vendor_id
@@ -3069,7 +3069,7 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_AL_M1644_0
+id|PCI_DEVICE_ID_AL_M1644
 comma
 dot
 id|vendor_id
@@ -3102,7 +3102,7 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_AL_M1647_0
+id|PCI_DEVICE_ID_AL_M1647
 comma
 dot
 id|vendor_id
@@ -3135,7 +3135,7 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_AL_M1651_0
+id|PCI_DEVICE_ID_AL_M1651
 comma
 dot
 id|vendor_id
@@ -3203,7 +3203,7 @@ macro_line|#ifdef CONFIG_AGP_AMD
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_AMD_IRONGATE_0
+id|PCI_DEVICE_ID_AMD_FE_GATE_7006
 comma
 dot
 id|vendor_id
@@ -3236,7 +3236,7 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_AMD_761_0
+id|PCI_DEVICE_ID_AMD_FE_GATE_700E
 comma
 dot
 id|vendor_id
@@ -3269,7 +3269,7 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_AMD_762_0
+id|PCI_DEVICE_ID_AMD_FE_GATE_700C
 comma
 dot
 id|vendor_id
@@ -3433,7 +3433,7 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_INTEL_815_0
+id|PCI_DEVICE_ID_INTEL_82815_MC
 comma
 dot
 id|vendor_id
@@ -3465,7 +3465,7 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_INTEL_820_0
+id|PCI_DEVICE_ID_INTEL_82820_HB
 comma
 dot
 id|vendor_id
@@ -3497,7 +3497,7 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_INTEL_820_UP_0
+id|PCI_DEVICE_ID_INTEL_82820_UP_HB
 comma
 dot
 id|vendor_id
@@ -3529,7 +3529,7 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_INTEL_830_M_0
+id|PCI_DEVICE_ID_INTEL_82830_HB
 comma
 dot
 id|vendor_id
@@ -3561,7 +3561,7 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_INTEL_845_G_0
+id|PCI_DEVICE_ID_INTEL_82845G_HB
 comma
 dot
 id|vendor_id
@@ -3593,7 +3593,7 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_INTEL_840_0
+id|PCI_DEVICE_ID_INTEL_82840_HB
 comma
 dot
 id|vendor_id
@@ -3625,7 +3625,7 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_INTEL_845_0
+id|PCI_DEVICE_ID_INTEL_82845_HB
 comma
 dot
 id|vendor_id
@@ -3657,7 +3657,7 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_INTEL_850_0
+id|PCI_DEVICE_ID_INTEL_82850_HB
 comma
 dot
 id|vendor_id
@@ -3689,7 +3689,7 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_INTEL_860_0
+id|PCI_DEVICE_ID_INTEL_82860_HB
 comma
 dot
 id|vendor_id
@@ -4237,7 +4237,7 @@ comma
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_VIA_82C691_0
+id|PCI_DEVICE_ID_VIA_82C691
 comma
 dot
 id|vendor_id
@@ -4547,7 +4547,7 @@ c_cond
 (paren
 id|pdev-&gt;device
 op_eq
-id|PCI_DEVICE_ID_AL_M1621_0
+id|PCI_DEVICE_ID_AL_M1621
 )paren
 (brace
 id|u8
@@ -4825,7 +4825,7 @@ id|dev-&gt;device
 )paren
 (brace
 r_case
-id|PCI_DEVICE_ID_INTEL_810_0
+id|PCI_DEVICE_ID_INTEL_82810_MC1
 suffix:colon
 id|i810_dev
 op_assign
@@ -4834,7 +4834,7 @@ c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
 comma
-id|PCI_DEVICE_ID_INTEL_810_1
+id|PCI_DEVICE_ID_INTEL_82810_IG1
 comma
 l_int|NULL
 )paren
@@ -4882,7 +4882,7 @@ id|i810_dev
 )paren
 suffix:semicolon
 r_case
-id|PCI_DEVICE_ID_INTEL_810_DC100_0
+id|PCI_DEVICE_ID_INTEL_82810_MC3
 suffix:colon
 id|i810_dev
 op_assign
@@ -4891,7 +4891,7 @@ c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
 comma
-id|PCI_DEVICE_ID_INTEL_810_DC100_1
+id|PCI_DEVICE_ID_INTEL_82810_IG3
 comma
 l_int|NULL
 )paren
@@ -4940,7 +4940,7 @@ id|i810_dev
 )paren
 suffix:semicolon
 r_case
-id|PCI_DEVICE_ID_INTEL_810_E_0
+id|PCI_DEVICE_ID_INTEL_82810E_MC
 suffix:colon
 id|i810_dev
 op_assign
@@ -4949,7 +4949,7 @@ c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
 comma
-id|PCI_DEVICE_ID_INTEL_810_E_1
+id|PCI_DEVICE_ID_INTEL_82810E_IG
 comma
 l_int|NULL
 )paren
@@ -4998,7 +4998,7 @@ id|i810_dev
 )paren
 suffix:semicolon
 r_case
-id|PCI_DEVICE_ID_INTEL_815_0
+id|PCI_DEVICE_ID_INTEL_82815_MC
 suffix:colon
 multiline_comment|/* The i815 can operate either as an i810 style&n;&t;&t;    * integrated device, or as an AGP4X motherboard.&n;&t;&t;    *&n;&t;&t;    * This only addresses the first mode:&n;&t;&t;    */
 id|i810_dev
@@ -5008,7 +5008,7 @@ c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
 comma
-id|PCI_DEVICE_ID_INTEL_815_1
+id|PCI_DEVICE_ID_INTEL_82815_CGC
 comma
 l_int|NULL
 )paren
@@ -5056,7 +5056,7 @@ id|i810_dev
 )paren
 suffix:semicolon
 r_case
-id|PCI_DEVICE_ID_INTEL_845_G_0
+id|PCI_DEVICE_ID_INTEL_82845G_HB
 suffix:colon
 id|i810_dev
 op_assign
@@ -5065,7 +5065,7 @@ c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
 comma
-id|PCI_DEVICE_ID_INTEL_845_G_1
+id|PCI_DEVICE_ID_INTEL_82845G_IG
 comma
 l_int|NULL
 )paren
@@ -5091,7 +5091,7 @@ c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
 comma
-id|PCI_DEVICE_ID_INTEL_845_G_1
+id|PCI_DEVICE_ID_INTEL_82845G_IG
 comma
 id|i810_dev
 )paren
@@ -5134,7 +5134,7 @@ id|i810_dev
 )paren
 suffix:semicolon
 r_case
-id|PCI_DEVICE_ID_INTEL_830_M_0
+id|PCI_DEVICE_ID_INTEL_82830_HB
 suffix:colon
 id|i810_dev
 op_assign
@@ -5143,7 +5143,7 @@ c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
 comma
-id|PCI_DEVICE_ID_INTEL_830_M_1
+id|PCI_DEVICE_ID_INTEL_82830_CGC
 comma
 l_int|NULL
 )paren
@@ -5169,7 +5169,7 @@ c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
 comma
-id|PCI_DEVICE_ID_INTEL_830_M_1
+id|PCI_DEVICE_ID_INTEL_82830_CGC
 comma
 id|i810_dev
 )paren

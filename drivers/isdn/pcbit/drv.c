@@ -1,7 +1,5 @@
 multiline_comment|/*&n; * PCBIT-D interface with isdn4linux&n; *&n; * Copyright (C) 1996 Universidade de Lisboa&n; * &n; * Written by Pedro Roque Marques (roque@di.fc.ul.pt)&n; *&n; * This software may be used and distributed according to the terms of &n; * the GNU General Public License, incorporated herein by reference.&n; */
 multiline_comment|/*&n; *&t;Fixes:&n; *&n; *&t;Nuno Grilo&t;&lt;l38486@alfa.ist.utl.pt&gt;&n; *      fixed msn_list NULL pointer dereference.&n; *&t;&t;&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1646,10 +1644,14 @@ r_if
 c_cond
 (paren
 id|len
-OG
+template_param
 id|BANK4
 op_plus
 l_int|1
+op_logical_or
+id|len
+OG
+l_int|1024
 )paren
 (brace
 id|printk

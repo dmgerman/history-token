@@ -46,10 +46,10 @@ r_int
 r_int
 r_int
 )paren
+id|page_to_pfn
+c_func
 (paren
 id|pte
-op_minus
-id|mem_map
 )paren
 op_lshift
 (paren

@@ -811,6 +811,11 @@ op_amp
 id|current-&gt;files-&gt;count
 )paren
 suffix:semicolon
+id|reparent_to_init
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|reparent_thread
 r_static
@@ -1528,7 +1533,8 @@ comma
 op_star
 id|reaper
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|_p
 suffix:semicolon
@@ -1818,7 +1824,8 @@ id|task_struct
 op_star
 id|t
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|_p
 comma
