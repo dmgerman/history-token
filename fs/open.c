@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|special_file
 mdefine_line|#define special_file(m) (S_ISCHR(m)||S_ISBLK(m)||S_ISFIFO(m)||S_ISSOCK(m))
@@ -69,6 +70,24 @@ r_struct
 id|statfs
 )paren
 )paren
+suffix:semicolon
+id|retval
+op_assign
+id|security_ops
+op_member_access_from_pointer
+id|sb_statfs
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+r_return
+id|retval
 suffix:semicolon
 id|retval
 op_assign
