@@ -71,6 +71,7 @@ id|header-&gt;type
 r_case
 id|ACPI_SRAT_PROCESSOR_AFFINITY
 suffix:colon
+macro_line|#ifdef ACPI_DEBUG_OUTPUT
 (brace
 r_struct
 id|acpi_table_processor_affinity
@@ -108,11 +109,13 @@ l_string|&quot;disabled&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* ACPI_DEBUG_OUTPUT */
 r_break
 suffix:semicolon
 r_case
 id|ACPI_SRAT_MEMORY_AFFINITY
 suffix:colon
+macro_line|#ifdef ACPI_DEBUG_OUTPUT
 (brace
 r_struct
 id|acpi_table_memory_affinity
@@ -163,6 +166,7 @@ l_string|&quot;&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* ACPI_DEBUG_OUTPUT */
 r_break
 suffix:semicolon
 r_default
@@ -238,18 +242,6 @@ id|u32
 )paren
 id|slit-&gt;localities
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-id|PREFIX
-l_string|&quot;SLIT localities %ux%u&bslash;n&quot;
-comma
-id|localities
-comma
-id|localities
-)paren
-suffix:semicolon
 id|acpi_numa_slit_init
 c_func
 (paren
@@ -269,6 +261,11 @@ id|acpi_parse_processor_affinity
 id|acpi_table_entry_header
 op_star
 id|header
+comma
+r_const
+r_int
+r_int
+id|end
 )paren
 (brace
 r_struct
@@ -321,6 +318,11 @@ id|acpi_parse_memory_affinity
 id|acpi_table_entry_header
 op_star
 id|header
+comma
+r_const
+r_int
+r_int
+id|end
 )paren
 (brace
 r_struct
@@ -408,16 +410,6 @@ id|__va
 c_func
 (paren
 id|phys_addr
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-id|PREFIX
-l_string|&quot;SRAT revision %d&bslash;n&quot;
-comma
-id|srat-&gt;table_revision
 )paren
 suffix:semicolon
 r_return
