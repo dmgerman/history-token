@@ -32,11 +32,6 @@ id|zoran_formats
 (braket
 )braket
 suffix:semicolon
-r_extern
-r_const
-r_int
-id|zoran_num_formats
-suffix:semicolon
 DECL|variable|card
 r_static
 r_int

@@ -302,6 +302,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|zoran_num_formats
+r_static
 r_const
 r_int
 id|zoran_num_formats
