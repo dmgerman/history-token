@@ -19,7 +19,7 @@ macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/zlib_fs.h&gt;
+macro_line|#include &lt;linux/zlib.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
@@ -943,7 +943,7 @@ id|zisofs_zlib_semaphore
 suffix:semicolon
 id|zerr
 op_assign
-id|zlib_fs_inflateInit
+id|zlib_inflateInit
 c_func
 (paren
 op_amp
@@ -1153,7 +1153,7 @@ id|stream.avail_in
 suffix:semicolon
 id|zerr
 op_assign
-id|zlib_fs_inflate
+id|zlib_inflate
 c_func
 (paren
 op_amp
@@ -1331,7 +1331,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-id|zlib_fs_inflateEnd
+id|zlib_inflateEnd
 c_func
 (paren
 op_amp
@@ -1512,7 +1512,7 @@ op_assign
 id|vmalloc
 c_func
 (paren
-id|zlib_fs_inflate_workspacesize
+id|zlib_inflate_workspacesize
 c_func
 (paren
 )paren
