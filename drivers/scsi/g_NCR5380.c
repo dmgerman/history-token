@@ -624,6 +624,12 @@ r_int
 op_star
 id|ports
 suffix:semicolon
+r_int
+r_int
+id|region_size
+op_assign
+l_int|16
+suffix:semicolon
 r_static
 r_int
 r_int
@@ -1486,6 +1492,10 @@ l_string|&quot;ncr5380&quot;
 r_continue
 suffix:semicolon
 )brace
+id|region_size
+op_assign
+id|NCR5380_region_size
+suffix:semicolon
 )brace
 macro_line|#else
 r_if
@@ -1545,7 +1555,7 @@ id|current_override
 dot
 id|NCR5380_map_name
 comma
-id|NCR5380_region_size
+id|region_size
 )paren
 suffix:semicolon
 macro_line|#else
@@ -1575,6 +1585,12 @@ id|current_override
 dot
 id|NCR5380_map_name
 suffix:semicolon
+macro_line|#ifndef CONFIG_SCSI_G_NCR5380_MEM
+id|instance-&gt;n_io_port
+op_assign
+id|region_size
+suffix:semicolon
+macro_line|#endif
 id|NCR5380_init
 c_func
 (paren
@@ -1817,7 +1833,7 @@ c_func
 (paren
 id|instance-&gt;NCR5380_instance_name
 comma
-id|NCR5380_region_size
+id|instance-&gt;n_io_port
 )paren
 suffix:semicolon
 macro_line|#else
