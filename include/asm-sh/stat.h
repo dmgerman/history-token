@@ -175,35 +175,12 @@ DECL|struct|stat64
 r_struct
 id|stat64
 (brace
-macro_line|#if defined(__BIG_ENDIAN__)
-DECL|member|__pad0b
-r_int
-r_char
-id|__pad0b
-(braket
-l_int|6
-)braket
-suffix:semicolon
 DECL|member|st_dev
 r_int
 r_int
-id|st_dev
-suffix:semicolon
-macro_line|#elif defined(__LITTLE_ENDIAN__)
-r_int
 r_int
 id|st_dev
 suffix:semicolon
-r_int
-r_char
-id|__pad0b
-(braket
-l_int|6
-)braket
-suffix:semicolon
-macro_line|#else
-macro_line|#error Must know endian to build stat64 structure!
-macro_line|#endif
 DECL|member|__pad0
 r_int
 r_char
@@ -237,35 +214,12 @@ r_int
 r_int
 id|st_gid
 suffix:semicolon
-macro_line|#if defined(__BIG_ENDIAN__)
-DECL|member|__pad3b
-r_int
-r_char
-id|__pad3b
-(braket
-l_int|6
-)braket
-suffix:semicolon
 DECL|member|st_rdev
+r_int
 r_int
 r_int
 id|st_rdev
 suffix:semicolon
-macro_line|#else /* Must be little */
-DECL|member|st_rdev
-r_int
-r_int
-id|st_rdev
-suffix:semicolon
-DECL|member|__pad3b
-r_int
-r_char
-id|__pad3b
-(braket
-l_int|6
-)braket
-suffix:semicolon
-macro_line|#endif
 DECL|member|__pad3
 r_int
 r_char

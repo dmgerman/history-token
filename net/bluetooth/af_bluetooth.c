@@ -1321,9 +1321,16 @@ id|net_proto_family
 id|bt_sock_family_ops
 op_assign
 (brace
+dot
+id|family
+op_assign
 id|PF_BLUETOOTH
 comma
+dot
+id|create
+op_assign
 id|bt_sock_create
+comma
 )brace
 suffix:semicolon
 r_extern

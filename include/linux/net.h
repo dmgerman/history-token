@@ -76,7 +76,7 @@ DECL|typedef|socket_state
 id|socket_state
 suffix:semicolon
 DECL|macro|__SO_ACCEPTCON
-mdefine_line|#define __SO_ACCEPTCON&t;(1&lt;&lt;16)&t;&t;/* performed a listen&t;&t;*/
+mdefine_line|#define __SO_ACCEPTCON&t;(1 &lt;&lt; 16)&t;/* performed a listen&t;&t;*/
 macro_line|#ifdef __KERNEL__
 DECL|macro|SOCK_ASYNC_NOSPACE
 mdefine_line|#define SOCK_ASYNC_NOSPACE&t;0
@@ -84,6 +84,7 @@ DECL|macro|SOCK_ASYNC_WAITDATA
 mdefine_line|#define SOCK_ASYNC_WAITDATA&t;1
 DECL|macro|SOCK_NOSPACE
 mdefine_line|#define SOCK_NOSPACE&t;&t;2
+multiline_comment|/**&n; *  struct socket - general BSD socket&n; *  @state - socket state (%SS_CONNECTED, etc)&n; *  @flags - socket flags (%SOCK_ASYNC_NOSPACE, etc)&n; *  @ops - protocol specific socket operations&n; *  @fasync_list - Asynchronous wake up list&n; *  @file - File back pointer for gc&n; *  @sk - internal networking protocol agnostic socket representation&n; *  @wait - wait queue for several uses&n; *  @type - socket type (%SOCK_STREAM, etc)&n; *  @passcred - credentials (used only in Unix Sockets (aka PF_LOCAL))&n; */
 DECL|struct|socket
 r_struct
 id|socket
@@ -109,14 +110,12 @@ id|fasync_struct
 op_star
 id|fasync_list
 suffix:semicolon
-multiline_comment|/* Asynchronous wake up list&t;*/
 DECL|member|file
 r_struct
 id|file
 op_star
 id|file
 suffix:semicolon
-multiline_comment|/* File back pointer for gc&t;*/
 DECL|member|sk
 r_struct
 id|sock
@@ -553,32 +552,6 @@ id|encrypt_net
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|net_proto
-r_struct
-id|net_proto
-(brace
-DECL|member|name
-r_const
-r_char
-op_star
-id|name
-suffix:semicolon
-multiline_comment|/* Protocol name */
-DECL|member|init_func
-r_void
-(paren
-op_star
-id|init_func
-)paren
-(paren
-r_struct
-id|net_proto
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* Bootstrap */
-)brace
-suffix:semicolon
 r_extern
 r_int
 id|sock_wake_async
@@ -644,6 +617,7 @@ r_struct
 id|socket
 op_star
 op_star
+id|res
 )paren
 suffix:semicolon
 r_extern
@@ -654,6 +628,7 @@ c_func
 r_struct
 id|socket
 op_star
+id|sock
 )paren
 suffix:semicolon
 r_extern
@@ -664,11 +639,12 @@ c_func
 r_struct
 id|socket
 op_star
+id|sock
 comma
 r_struct
 id|msghdr
 op_star
-id|m
+id|msg
 comma
 r_int
 id|len
@@ -682,14 +658,15 @@ c_func
 r_struct
 id|socket
 op_star
+id|sock
 comma
 r_struct
 id|msghdr
 op_star
-id|m
+id|msg
 comma
 r_int
-id|len
+id|size
 comma
 r_int
 id|flags
@@ -753,7 +730,7 @@ id|err
 )paren
 suffix:semicolon
 DECL|macro|sockfd_put
-mdefine_line|#define         sockfd_put(sock) fput(sock-&gt;file)
+mdefine_line|#define&t;&t;     sockfd_put(sock) fput(sock-&gt;file)
 r_extern
 r_int
 id|net_ratelimit

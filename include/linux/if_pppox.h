@@ -430,17 +430,6 @@ r_struct
 id|ppp_channel_ops
 id|pppoe_chan_ops
 suffix:semicolon
-r_extern
-r_int
-id|pppox_proto_init
-c_func
-(paren
-r_struct
-id|net_proto
-op_star
-id|np
-)paren
-suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* !(__LINUX_IF_PPPOX_H) */
 eof
