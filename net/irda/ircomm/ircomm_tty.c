@@ -446,6 +446,10 @@ id|driver-&gt;name
 op_assign
 l_string|&quot;ircomm&quot;
 suffix:semicolon
+id|driver-&gt;devfs_name
+op_assign
+l_string|&quot;ircomm&quot;
+suffix:semicolon
 id|driver-&gt;major
 op_assign
 id|IRCOMM_TTY_MAJOR
