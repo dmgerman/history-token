@@ -1633,8 +1633,7 @@ id|bdev
 )paren
 )paren
 r_return
-op_minus
-id|EIO
+l_int|0
 suffix:semicolon
 r_for
 c_loop
