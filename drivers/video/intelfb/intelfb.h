@@ -10,7 +10,7 @@ mdefine_line|#define INTELFB_VERSION&t;&t;&t;&quot;0.9.2&quot;
 DECL|macro|INTELFB_MODULE_NAME
 mdefine_line|#define INTELFB_MODULE_NAME&t;&t;&quot;intelfb&quot;
 DECL|macro|SUPPORTED_CHIPSETS
-mdefine_line|#define SUPPORTED_CHIPSETS&t;&t;&quot;830M/845G/852GM/855GM/865G&quot;
+mdefine_line|#define SUPPORTED_CHIPSETS&t;&t;&quot;830M/845G/852GM/855GM/865G/915G&quot;
 multiline_comment|/*** Debug/feature defines ***/
 macro_line|#ifndef DEBUG
 DECL|macro|DEBUG
@@ -34,7 +34,7 @@ mdefine_line|#define ALLOCATE_FOR_PANNING&t;&t;1
 macro_line|#endif
 macro_line|#ifndef PREFERRED_MODE
 DECL|macro|PREFERRED_MODE
-mdefine_line|#define PREFERRED_MODE&t;&t;&t;&quot;1024x768-16@60&quot;
+mdefine_line|#define PREFERRED_MODE&t;&t;&t;&quot;1024x768-32@70&quot;
 macro_line|#endif
 multiline_comment|/*** hw-related values ***/
 multiline_comment|/* PCI ids for supported devices */
@@ -46,6 +46,8 @@ DECL|macro|PCI_DEVICE_ID_INTEL_85XGM
 mdefine_line|#define PCI_DEVICE_ID_INTEL_85XGM&t;0x3582
 DECL|macro|PCI_DEVICE_ID_INTEL_865G
 mdefine_line|#define PCI_DEVICE_ID_INTEL_865G&t;0x2572
+DECL|macro|PCI_DEVICE_ID_INTEL_915G
+mdefine_line|#define PCI_DEVICE_ID_INTEL_915G&t;0x2582
 multiline_comment|/* Size of MMIO region */
 DECL|macro|INTEL_REG_SIZE
 mdefine_line|#define INTEL_REG_SIZE&t;&t;&t;0x80000
@@ -139,6 +141,9 @@ id|INTEL_855GME
 comma
 DECL|enumerator|INTEL_865G
 id|INTEL_865G
+comma
+DECL|enumerator|INTEL_915G
+id|INTEL_915G
 )brace
 suffix:semicolon
 DECL|struct|intelfb_hwstate
