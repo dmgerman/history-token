@@ -2113,9 +2113,12 @@ op_assign
 op_amp
 id|hvc_kobj_type
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|hp-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|spin_lock
 c_func

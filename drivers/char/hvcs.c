@@ -1750,9 +1750,12 @@ id|hvcsd
 )paren
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|hvcsd-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Automatically incs the refcount the first time */
 id|kobject_init
