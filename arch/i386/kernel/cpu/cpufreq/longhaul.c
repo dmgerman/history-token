@@ -186,6 +186,7 @@ r_static
 r_int
 r_int
 id|calc_speed
+c_func
 (paren
 r_int
 id|mult
@@ -232,6 +233,7 @@ DECL|function|longhaul_get_cpu_mult
 r_static
 r_int
 id|longhaul_get_cpu_mult
+c_func
 (paren
 r_void
 )paren
@@ -321,6 +323,7 @@ DECL|function|longhaul_setstate
 r_static
 r_void
 id|longhaul_setstate
+c_func
 (paren
 r_int
 r_int
@@ -657,6 +660,7 @@ DECL|function|_guess
 r_static
 r_int
 id|_guess
+c_func
 (paren
 r_int
 id|guess
@@ -1654,6 +1658,7 @@ DECL|function|longhaul_target
 r_static
 r_int
 id|longhaul_target
+c_func
 (paren
 r_struct
 id|cpufreq_policy
@@ -1763,6 +1768,7 @@ r_static
 r_int
 id|__init
 id|longhaul_cpu_init
+c_func
 (paren
 r_struct
 id|cpufreq_policy
@@ -2306,6 +2312,7 @@ r_static
 r_int
 id|__init
 id|longhaul_init
+c_func
 (paren
 r_void
 )paren
@@ -2373,6 +2380,7 @@ r_static
 r_void
 id|__exit
 id|longhaul_exit
+c_func
 (paren
 r_void
 )paren
