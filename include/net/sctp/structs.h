@@ -3104,6 +3104,32 @@ op_star
 )paren
 suffix:semicolon
 r_union
+id|sctp_addr
+op_star
+id|sctp_find_unmatch_addr
+c_func
+(paren
+r_struct
+id|sctp_bind_addr
+op_star
+id|bp
+comma
+r_const
+r_union
+id|sctp_addr
+op_star
+id|addrs
+comma
+r_int
+id|addrcnt
+comma
+r_struct
+id|sctp_opt
+op_star
+id|opt
+)paren
+suffix:semicolon
+r_union
 id|sctp_params
 id|sctp_bind_addrs_to_raw
 c_func
@@ -3746,6 +3772,11 @@ id|__u8
 id|hostname_address
 suffix:semicolon
 multiline_comment|/* Peer understands DNS addresses? */
+multiline_comment|/* Does peer support ADDIP? */
+DECL|member|asconf_capable
+id|__u8
+id|asconf_capable
+suffix:semicolon
 DECL|member|i
 r_struct
 id|sctp_inithdr

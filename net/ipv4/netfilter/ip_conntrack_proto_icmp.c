@@ -5,8 +5,15 @@ macro_line|#include &lt;linux/netfilter.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/icmp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_protocol.h&gt;
-DECL|macro|ICMP_TIMEOUT
-mdefine_line|#define ICMP_TIMEOUT (30*HZ)
+DECL|variable|ip_ct_icmp_timeout
+r_int
+r_int
+id|ip_ct_icmp_timeout
+op_assign
+l_int|30
+op_star
+id|HZ
+suffix:semicolon
 macro_line|#if 0
 mdefine_line|#define DEBUGP printk
 macro_line|#else
@@ -352,7 +359,7 @@ c_func
 (paren
 id|ct
 comma
-id|ICMP_TIMEOUT
+id|ip_ct_icmp_timeout
 )paren
 suffix:semicolon
 )brace

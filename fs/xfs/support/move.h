@@ -50,21 +50,6 @@ DECL|typedef|uio_t
 )brace
 id|uio_t
 suffix:semicolon
-multiline_comment|/*&n; * I/O direction.&n; */
-DECL|enum|uio_rw
-DECL|enumerator|UIO_READ
-DECL|enumerator|UIO_WRITE
-DECL|typedef|uio_rw_t
-r_typedef
-r_enum
-id|uio_rw
-(brace
-id|UIO_READ
-comma
-id|UIO_WRITE
-)brace
-id|uio_rw_t
-suffix:semicolon
 multiline_comment|/*&n; * Segment flag values.&n; */
 DECL|enum|uio_seg
 r_typedef
@@ -85,14 +70,11 @@ id|uio_seg_t
 suffix:semicolon
 r_extern
 r_int
-id|uiomove
+id|uio_read
 (paren
-r_void
-op_star
+id|caddr_t
 comma
 r_int
-comma
-id|uio_rw_t
 comma
 id|uio_t
 op_star

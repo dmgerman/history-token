@@ -12045,9 +12045,9 @@ id|dabuf-&gt;ra
 op_assign
 id|ra
 suffix:semicolon
-id|dabuf-&gt;dev
+id|dabuf-&gt;target
 op_assign
-id|XFS_BUF_TARGET_DEV
+id|XFS_BUF_TARGET
 c_func
 (paren
 id|bps
@@ -12282,9 +12282,9 @@ id|p-&gt;blkno
 op_ne
 id|dabuf-&gt;blkno
 op_logical_or
-id|p-&gt;dev
+id|p-&gt;target
 op_ne
-id|dabuf-&gt;dev
+id|dabuf-&gt;target
 )paren
 suffix:semicolon
 )brace
