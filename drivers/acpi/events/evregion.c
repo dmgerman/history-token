@@ -235,7 +235,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_execute_reg_method&n; *&n; * PARAMETERS:  region_obj          - Object structure&n; *              Function            - On (1) or Off (0)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute _REG method for a region&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_execute_reg_method&n; *&n; * PARAMETERS:  region_obj          - Object structure&n; *              Function            - Passed to _REG:  On (1) or Off (0)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute _REG method for a region&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_execute_reg_method
 id|acpi_ev_execute_reg_method
@@ -363,7 +363,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/* Set up the parameter objects */
+multiline_comment|/* Setup the parameter objects */
 id|params
 (braket
 l_int|0
@@ -446,7 +446,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_address_space_dispatch&n; *&n; * PARAMETERS:  region_obj          - Internal region object&n; *              space_id            - ID of the address space (0-255)&n; *              Function            - Read or Write operation&n; *              Address             - Where in the space to read or write&n; *              bit_width           - Field width in bits (8, 16, 32, or 64)&n; *              Value               - Pointer to in or out value&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Dispatch an address space or operation region access to&n; *              a previously installed handler.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_address_space_dispatch&n; *&n; * PARAMETERS:  region_obj          - Internal region object&n; *              Function            - Read or Write operation&n; *              Address             - Where in the space to read or write&n; *              bit_width           - Field width in bits (8, 16, 32, or 64)&n; *              Value               - Pointer to in or out value&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Dispatch an address space or operation region access to&n; *              a previously installed handler.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_address_space_dispatch
 id|acpi_ev_address_space_dispatch
@@ -856,7 +856,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_detach_region&n; *&n; * PARAMETERS:  region_obj      - Region Object&n; *              acpi_ns_is_locked - Namespace Region Already Locked?&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Break the association between the handler and the region&n; *              this is a two way association.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_detach_region&n; *&n; * PARAMETERS:  region_obj          - Region Object&n; *              acpi_ns_is_locked   - Namespace Region Already Locked?&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Break the association between the handler and the region&n; *              this is a two way association.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ev_detach_region
 id|acpi_ev_detach_region
@@ -1182,7 +1182,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_attach_region&n; *&n; * PARAMETERS:  handler_obj     - Handler Object&n; *              region_obj      - Region Object&n; *              acpi_ns_is_locked - Namespace Region Already Locked?&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Create the association between the handler and the region&n; *              this is a two way association.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_attach_region&n; *&n; * PARAMETERS:  handler_obj         - Handler Object&n; *              region_obj          - Region Object&n; *              acpi_ns_is_locked   - Namespace Region Already Locked?&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Create the association between the handler and the region&n; *              this is a two way association.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_attach_region
 id|acpi_ev_attach_region
@@ -2016,7 +2016,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_execute_reg_methods&n; *&n; * PARAMETERS:  Node            - Namespace node for the device&n; *              space_id        - The address space ID&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Run _REG methods for the Space ID;&n; *              Note: assumes namespace is locked, or system init time.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_execute_reg_methods&n; *&n; * PARAMETERS:  Node            - Namespace node for the device&n; *              space_id        - The address space ID&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Run all _REG methods for the input Space ID;&n; *              Note: assumes namespace is locked, or system init time.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_execute_reg_methods
 id|acpi_ev_execute_reg_methods
