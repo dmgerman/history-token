@@ -44,7 +44,8 @@ r_static
 r_int
 id|debug
 op_assign
-id|NATSEMI_DEF_MSG
+op_minus
+l_int|1
 suffix:semicolon
 multiline_comment|/* Maximum events (Rx packets, etc.) to handle at each interrupt. */
 DECL|variable|max_interrupt_work
@@ -246,7 +247,7 @@ c_func
 (paren
 id|debug
 comma
-l_string|&quot;DP8381x default debug bitmask&quot;
+l_string|&quot;DP8381x default debug level&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -2492,7 +2493,22 @@ id|np-&gt;lock
 suffix:semicolon
 id|np-&gt;msg_enable
 op_assign
+(paren
 id|debug
+op_ge
+l_int|0
+)paren
+ques
+c_cond
+(paren
+l_int|1
+op_lshift
+id|debug
+)paren
+op_minus
+l_int|1
+suffix:colon
+id|NATSEMI_DEF_MSG
 suffix:semicolon
 id|np-&gt;hands_off
 op_assign
