@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -388,15 +388,6 @@ comma
 id|u64
 id|size
 )paren
-suffix:semicolon
-DECL|variable|cmc_disable_tq
-DECL|variable|cmc_enable_tq
-r_static
-r_struct
-id|tq_struct
-id|cmc_disable_tq
-comma
-id|cmc_enable_tq
 suffix:semicolon
 multiline_comment|/*&n; *  ia64_mca_log_sal_error_record&n; *&n; *  This function retrieves a specified error record type from SAL,&n; *  wakes up any processes waiting for error records, and sends it to&n; *  the system log.&n; *&n; *  Inputs  :   sal_info_type   (Type of error record MCA/CMC/CPE/INIT)&n; *  Outputs :   platform error status&n; */
 r_int
@@ -2177,7 +2168,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ia64_mca_cmc_vector_disable_keventd&n; *&n; * Called via keventd (smp_call_function() is not safe in interrupt context) to&n; * disable the cmc interrupt vector.&n; *&n; * Note: needs preempt_disable() if you apply the preempt patch to 2.4.&n; */
+multiline_comment|/*&n; * ia64_mca_cmc_vector_disable_keventd&n; *&n; * Called via keventd (smp_call_function() is not safe in interrupt context) to&n; * disable the cmc interrupt vector.&n; */
 r_static
 r_void
 DECL|function|ia64_mca_cmc_vector_disable_keventd
@@ -2189,13 +2180,7 @@ op_star
 id|unused
 )paren
 (brace
-id|ia64_mca_cmc_vector_disable
-c_func
-(paren
-l_int|NULL
-)paren
-suffix:semicolon
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|ia64_mca_cmc_vector_disable
@@ -2208,7 +2193,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ia64_mca_cmc_vector_enable_keventd&n; *&n; * Called via keventd (smp_call_function() is not safe in interrupt context) to&n; * enable the cmc interrupt vector.&n; *&n; * Note: needs preempt_disable() if you apply the preempt patch to 2.4.&n; */
+multiline_comment|/*&n; * ia64_mca_cmc_vector_enable_keventd&n; *&n; * Called via keventd (smp_call_function() is not safe in interrupt context) to&n; * enable the cmc interrupt vector.&n; */
 r_static
 r_void
 DECL|function|ia64_mca_cmc_vector_enable_keventd
@@ -2220,7 +2205,7 @@ op_star
 id|unused
 )paren
 (brace
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|ia64_mca_cmc_vector_enable
@@ -2230,12 +2215,6 @@ comma
 l_int|1
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|ia64_mca_cmc_vector_enable
-c_func
-(paren
-l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -2299,28 +2278,6 @@ id|IA64_MCA_DEBUG
 c_func
 (paren
 l_string|&quot;ia64_mca_init: begin&bslash;n&quot;
-)paren
-suffix:semicolon
-id|INIT_TQUEUE
-c_func
-(paren
-op_amp
-id|cmc_disable_tq
-comma
-id|ia64_mca_cmc_vector_disable_keventd
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|INIT_TQUEUE
-c_func
-(paren
-op_amp
-id|cmc_enable_tq
-comma
-id|ia64_mca_cmc_vector_enable_keventd
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* initialize recovery success indicator */
@@ -3236,6 +3193,28 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_static
+id|DECLARE_WORK
+c_func
+(paren
+id|cmc_disable_work
+comma
+id|ia64_mca_cmc_vector_disable_keventd
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_static
+id|DECLARE_WORK
+c_func
+(paren
+id|cmc_enable_work
+comma
+id|ia64_mca_cmc_vector_enable_keventd
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * ia64_mca_cmc_int_handler&n; *&n; *  This is corrected machine check interrupt handler.&n; *&t;Right now the logs are extracted and displayed in a well-defined&n; *&t;format.&n; *&n; * Inputs&n; *      interrupt number&n; *      client data arg ptr&n; *      saved registers ptr&n; *&n; * Outputs&n; *&t;None&n; */
 id|irqreturn_t
 DECL|function|ia64_mca_cmc_int_handler
@@ -3390,11 +3369,11 @@ op_amp
 id|cmc_history_lock
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|cmc_disable_tq
+id|cmc_disable_work
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Corrected errors will still be corrected, but&n;&t;&t;&t; * make sure there&squot;s a log somewhere that indicates&n;&t;&t;&t; * something is generating more than we can handle.&n;&t;&t;&t; */
@@ -3653,11 +3632,11 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|cmc_enable_tq
+id|cmc_enable_work
 )paren
 suffix:semicolon
 id|cmc_polling_enabled
