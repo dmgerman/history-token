@@ -756,7 +756,7 @@ suffix:semicolon
 multiline_comment|/* the transfer was cancelled, presumably by an abort */
 r_case
 op_minus
-id|ENODEV
+id|ECONNRESET
 suffix:colon
 id|US_DEBUGP
 c_func
