@@ -4,6 +4,7 @@ mdefine_line|#define _SCSI_SCSI_HOST_H
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 r_struct
 id|block_device
 suffix:semicolon
@@ -772,6 +773,20 @@ id|ordered_tag
 suffix:colon
 l_int|1
 suffix:semicolon
+multiline_comment|/*&n;&t; * Optional work queue to be utilized by the transport&n;&t; */
+DECL|member|work_q_name
+r_char
+id|work_q_name
+(braket
+id|KOBJ_NAME_LEN
+)braket
+suffix:semicolon
+DECL|member|work_q
+r_struct
+id|workqueue_struct
+op_star
+id|work_q
+suffix:semicolon
 multiline_comment|/*&n;&t; * Host has rejected a command because it was busy.&n;&t; */
 DECL|member|host_blocked
 r_int
@@ -928,6 +943,20 @@ id|shost_gendev
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_int
+id|scsi_queue_work
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+comma
+r_struct
+id|work_struct
+op_star
+)paren
+suffix:semicolon
 r_extern
 r_struct
 id|Scsi_Host

@@ -36,6 +36,14 @@ DECL|member|host_size
 r_int
 id|host_size
 suffix:semicolon
+multiline_comment|/*&n;&t; * True if the transport wants to use a host-based work-queue&n;&t; */
+DECL|member|create_work_queue
+r_int
+r_int
+id|create_work_queue
+suffix:colon
+l_int|1
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|transport_class_to_shost
