@@ -2561,7 +2561,7 @@ c_func
 id|do_settimeofday
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_KERNEL
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK_SLEEP
 DECL|variable|__might_sleep
 id|EXPORT_SYMBOL
 c_func

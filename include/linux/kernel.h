@@ -48,7 +48,7 @@ mdefine_line|#define&t;KERN_DEBUG&t;&quot;&lt;7&gt;&quot;&t;/* debug-level messa
 r_struct
 id|completion
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_KERNEL
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK_SLEEP
 r_void
 id|__might_sleep
 c_func
