@@ -265,7 +265,7 @@ c_cond
 id|ptrace
 c_func
 (paren
-id|PTRACE_SETOPTIONS
+id|PTRACE_OLDSETOPTIONS
 comma
 id|pid
 comma
@@ -983,7 +983,7 @@ c_cond
 id|ptrace
 c_func
 (paren
-id|PTRACE_SETOPTIONS
+id|PTRACE_OLDSETOPTIONS
 comma
 id|pid
 comma
