@@ -7881,7 +7881,8 @@ suffix:semicolon
 r_int
 r_int
 id|maxcount
-comma
+suffix:semicolon
+r_int
 id|len
 suffix:semicolon
 id|ENCODE_HEAD
@@ -8078,6 +8079,18 @@ id|resp-&gt;xbuf-&gt;page_len
 op_assign
 id|maxcount
 suffix:semicolon
+multiline_comment|/* read zero bytes -&gt; don&squot;t set up tail */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|maxcount
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* set up page for remaining responses */
 id|svc_take_page
 c_func
