@@ -1407,9 +1407,12 @@ comma
 id|bus
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|bridge-&gt;res_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* to be overridden when we decode _CRS&t;*/
 id|bridge-&gt;sub
@@ -1692,9 +1695,12 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|bridge-&gt;res_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|bridge-&gt;bus
 op_assign

@@ -654,24 +654,10 @@ op_star
 id|np
 suffix:semicolon
 multiline_comment|/* PCI interrupts are controlled by the OpenPIC */
-r_while
-c_loop
-(paren
-(paren
-id|dev
-op_assign
-id|pci_find_device
+id|for_each_pci_dev
 c_func
 (paren
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
 id|dev
-)paren
-)paren
-op_ne
-l_int|NULL
 )paren
 (brace
 id|np

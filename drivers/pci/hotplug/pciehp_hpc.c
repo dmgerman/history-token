@@ -393,8 +393,8 @@ DECL|macro|ATTN_LED_PRSN
 mdefine_line|#define ATTN_LED_PRSN&t;0x00000008
 DECL|macro|PWR_LED_PRSN
 mdefine_line|#define PWR_LED_PRSN&t;0x00000010
-DECL|macro|HP_SUPR_RM
-mdefine_line|#define HP_SUPR_RM&t;0x00000020
+DECL|macro|HP_SUPR_RM_SUP
+mdefine_line|#define HP_SUPR_RM_SUP&t;0x00000020
 DECL|macro|HP_CAP
 mdefine_line|#define HP_CAP&t;&t;0x00000040
 DECL|macro|SLOT_PWR_VALUE
@@ -533,12 +533,16 @@ r_struct
 id|php_ctlr_state_s
 op_star
 id|php_ctlr_list_head
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* HPC state linked list */
 DECL|variable|ctlr_seq_num
 r_static
 r_int
 id|ctlr_seq_num
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* Controller sequence # */
 DECL|variable|list_lock
@@ -2467,14 +2471,9 @@ op_star
 id|physical_slot_num
 comma
 multiline_comment|/* phy slot num of the first slot in this PCIE&t;*/
-r_int
+id|u8
 op_star
-id|updown
-comma
-multiline_comment|/* physical_slot_num increament: 1 or -1&t;*/
-r_int
-op_star
-id|flags
+id|ctrlcap
 )paren
 (brace
 r_struct
@@ -2561,11 +2560,23 @@ id|slot_cap
 op_rshift
 l_int|19
 suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: PSN %d &bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
 op_star
-id|updown
+id|physical_slot_num
+)paren
+suffix:semicolon
+op_star
+id|ctrlcap
 op_assign
-op_minus
-l_int|1
+id|slot_cap
+op_amp
+l_int|0x0000007f
 suffix:semicolon
 id|DBG_LEAVE_ROUTINE
 r_return
@@ -2651,6 +2662,18 @@ suffix:semicolon
 id|php_ctlr-&gt;irq
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pcie_mch_quirk
+)paren
+id|pci_disable_msi
+c_func
+(paren
+id|php_ctlr-&gt;pci_dev
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -4804,6 +4827,8 @@ id|cap_reg
 suffix:semicolon
 id|u16
 id|intr_enable
+op_assign
+l_int|0
 suffix:semicolon
 id|u32
 id|slot_cap
@@ -5554,18 +5579,18 @@ multiline_comment|/* Installs the interrupt handler */
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: pciehp_msi_quirk = %x&bslash;n&quot;
+l_string|&quot;%s: pcie_mch_quirk = %x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pciehp_msi_quirk
+id|pcie_mch_quirk
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|pciehp_msi_quirk
+id|pcie_mch_quirk
 )paren
 (brace
 id|rc
@@ -5706,15 +5731,66 @@ comma
 id|temp_word
 )paren
 suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: slot_cap %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|slot_cap
+)paren
+suffix:semicolon
 id|intr_enable
 op_assign
-id|ATTN_BUTTN_ENABLE
-op_or
-id|PWR_FAULT_DETECT_ENABLE
-op_or
-id|MRL_DETECT_ENABLE
+id|intr_enable
 op_or
 id|PRSN_DETECT_ENABLE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ATTN_BUTTN
+c_func
+(paren
+id|slot_cap
+)paren
+)paren
+id|intr_enable
+op_assign
+id|intr_enable
+op_or
+id|ATTN_BUTTN_ENABLE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|POWER_CTRL
+c_func
+(paren
+id|slot_cap
+)paren
+)paren
+id|intr_enable
+op_assign
+id|intr_enable
+op_or
+id|PWR_FAULT_DETECT_ENABLE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|MRL_SENS
+c_func
+(paren
+id|slot_cap
+)paren
+)paren
+id|intr_enable
+op_assign
+id|intr_enable
+op_or
+id|MRL_DETECT_ENABLE
 suffix:semicolon
 id|temp_word
 op_assign
