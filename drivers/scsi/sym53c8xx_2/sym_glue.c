@@ -7,103 +7,6 @@ DECL|macro|NAME53C
 mdefine_line|#define NAME53C&t;&t;&quot;sym53c&quot;
 DECL|macro|NAME53C8XX
 mdefine_line|#define NAME53C8XX&t;&quot;sym53c8xx&quot;
-multiline_comment|/*&n; *  Simple Wrapper to kernel PCI bus interface.&n; */
-DECL|typedef|pcidev_t
-r_typedef
-r_struct
-id|pci_dev
-op_star
-id|pcidev_t
-suffix:semicolon
-DECL|macro|PCIDEV_NULL
-mdefine_line|#define PCIDEV_NULL&t;&t;(0)
-DECL|macro|PciBusNumber
-mdefine_line|#define PciBusNumber(d)&t;&t;(d)-&gt;bus-&gt;number
-DECL|macro|PciDeviceFn
-mdefine_line|#define PciDeviceFn(d)&t;&t;(d)-&gt;devfn
-DECL|macro|PciVendorId
-mdefine_line|#define PciVendorId(d)&t;&t;(d)-&gt;vendor
-DECL|macro|PciDeviceId
-mdefine_line|#define PciDeviceId(d)&t;&t;(d)-&gt;device
-DECL|macro|PciIrqLine
-mdefine_line|#define PciIrqLine(d)&t;&t;(d)-&gt;irq
-r_static
-id|u_long
-id|__init
-DECL|function|pci_get_base_cookie
-id|pci_get_base_cookie
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-comma
-r_int
-id|index
-)paren
-(brace
-id|u_long
-id|base
-suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; LinuxVersionCode(2,3,12)
-id|base
-op_assign
-id|pdev-&gt;resource
-(braket
-id|index
-)braket
-dot
-id|start
-suffix:semicolon
-macro_line|#else
-id|base
-op_assign
-id|pdev-&gt;base_address
-(braket
-id|index
-)braket
-suffix:semicolon
-macro_line|#if BITS_PER_LONG &gt; 32
-r_if
-c_cond
-(paren
-(paren
-id|base
-op_amp
-l_int|0x7
-)paren
-op_eq
-l_int|0x4
-)paren
-id|base
-op_or_assign
-(paren
-(paren
-(paren
-id|u_long
-)paren
-id|pdev-&gt;base_address
-(braket
-op_increment
-id|index
-)braket
-)paren
-op_lshift
-l_int|32
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
-r_return
-(paren
-id|base
-op_amp
-op_complement
-l_int|0x7ul
-)paren
-suffix:semicolon
-)brace
 r_static
 r_int
 id|__init
@@ -161,7 +64,7 @@ op_amp
 l_int|0x7
 )paren
 op_eq
-l_int|0x4
+id|PCI_BASE_ADDRESS_MEM_TYPE_64
 )paren
 (brace
 macro_line|#if BITS_PER_LONG &gt; 32
@@ -205,14 +108,6 @@ suffix:semicolon
 DECL|macro|PCI_BAR_OFFSET
 macro_line|#undef PCI_BAR_OFFSET
 )brace
-macro_line|#if LINUX_VERSION_CODE  &lt; LinuxVersionCode(2,4,0)
-DECL|macro|pci_enable_device
-mdefine_line|#define pci_enable_device(pdev)&t;&t;(0)
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE  &lt; LinuxVersionCode(2,4,4)
-DECL|macro|scsi_set_pci_device
-mdefine_line|#define scsi_set_pci_device(inst, pdev)&t;do { ;} while (0)
-macro_line|#endif
 multiline_comment|/*&n; *  Insert a delay in micro-seconds and milli-seconds.&n; */
 DECL|function|sym_udelay
 r_void
@@ -626,113 +521,8 @@ id|first_host
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n; *  /proc directory entry and proc_info.&n; */
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,3,27)
-DECL|variable|proc_scsi_sym53c8xx
-r_static
-r_struct
-id|proc_dir_entry
-id|proc_scsi_sym53c8xx
-op_assign
-(brace
-id|PROC_SCSI_SYM53C8XX
-comma
-l_int|9
-comma
-id|NAME53C8XX
-comma
-id|S_IFDIR
-op_or
-id|S_IRUGO
-op_or
-id|S_IXUGO
-comma
-l_int|2
-)brace
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n; *  Transfer direction&n; *&n; *  Until some linux kernel version near 2.3.40, low-level scsi &n; *  drivers were not told about data transfer direction.&n; */
-macro_line|#if LINUX_VERSION_CODE &gt; LinuxVersionCode(2, 3, 40)
 DECL|macro|scsi_data_direction
 mdefine_line|#define scsi_data_direction(cmd)&t;(cmd-&gt;sc_data_direction)
-macro_line|#else
-DECL|function|scsi_data_direction
-r_static
-id|__inline__
-r_int
-id|scsi_data_direction
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-)paren
-(brace
-r_int
-id|direction
-suffix:semicolon
-r_switch
-c_cond
-(paren
-(paren
-r_int
-)paren
-id|cmd-&gt;cmnd
-(braket
-l_int|0
-)braket
-)paren
-(brace
-r_case
-l_int|0x08
-suffix:colon
-multiline_comment|/*&t;READ(6)&t;&t;&t;&t;08 */
-r_case
-l_int|0x28
-suffix:colon
-multiline_comment|/*&t;READ(10)&t;&t;&t;28 */
-r_case
-l_int|0xA8
-suffix:colon
-multiline_comment|/*&t;READ(12)&t;&t;&t;A8 */
-id|direction
-op_assign
-id|SCSI_DATA_READ
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|0x0A
-suffix:colon
-multiline_comment|/*&t;WRITE(6)&t;&t;&t;0A */
-r_case
-l_int|0x2A
-suffix:colon
-multiline_comment|/*&t;WRITE(10)&t;&t;&t;2A */
-r_case
-l_int|0xAA
-suffix:colon
-multiline_comment|/*&t;WRITE(12)&t;&t;&t;AA */
-id|direction
-op_assign
-id|SCSI_DATA_WRITE
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|direction
-op_assign
-id|SCSI_DATA_UNKNOWN
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_return
-id|direction
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n; *  Driver host data structure.&n; */
 DECL|struct|host_data
 r_struct
@@ -874,7 +664,9 @@ r_void
 id|__unmap_scsi_data
 c_func
 (paren
-id|pcidev_t
+r_struct
+id|pci_dev
+op_star
 id|pdev
 comma
 id|Scsi_Cmnd
@@ -961,7 +753,9 @@ id|bus_addr_t
 id|__map_scsi_single_data
 c_func
 (paren
-id|pcidev_t
+r_struct
+id|pci_dev
+op_star
 id|pdev
 comma
 id|Scsi_Cmnd
@@ -1032,7 +826,9 @@ r_int
 id|__map_scsi_sg_data
 c_func
 (paren
-id|pcidev_t
+r_struct
+id|pci_dev
+op_star
 id|pdev
 comma
 id|Scsi_Cmnd
@@ -1105,7 +901,9 @@ r_void
 id|__sync_scsi_data
 c_func
 (paren
-id|pcidev_t
+r_struct
+id|pci_dev
+op_star
 id|pdev
 comma
 id|Scsi_Cmnd
@@ -1771,12 +1569,10 @@ id|cp-&gt;xerr_status
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,99)
 id|csio-&gt;resid
 op_assign
 id|resid
 suffix:semicolon
-macro_line|#endif
 id|csio-&gt;result
 op_assign
 (paren
@@ -2716,29 +2512,6 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2, 4, 0)
-multiline_comment|/*&n;&t; *  If release process in progress, let&squot;s go&n;&t; *  Set the release stage from 1 to 2 to synchronize&n;&t; *  with the release process.&n;&t; */
-r_if
-c_cond
-(paren
-id|np-&gt;s.release_stage
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|np-&gt;s.release_stage
-op_eq
-l_int|1
-)paren
-id|np-&gt;s.release_stage
-op_assign
-l_int|2
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n;&t; *  Restart the timer.&n;&t; */
 macro_line|#ifdef SYM_CONF_PCIQ_BROKEN_INTR
 id|np-&gt;s.timer.expires
@@ -3818,7 +3591,6 @@ suffix:semicolon
 r_case
 id|SYM_EH_DO_WAIT
 suffix:colon
-macro_line|#if LINUX_VERSION_CODE &gt; LinuxVersionCode(2,3,0)
 id|init_MUTEX_LOCKED
 c_func
 (paren
@@ -3826,12 +3598,6 @@ op_amp
 id|ep-&gt;sem
 )paren
 suffix:semicolon
-macro_line|#else
-id|ep-&gt;sem
-op_assign
-id|MUTEX_LOCKED
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* fall through */
 r_case
 id|SYM_EH_DO_COMPLETE
@@ -6805,23 +6571,6 @@ id|hcb_p
 id|np
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,4,3)
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_dma_supported
-c_func
-(paren
-id|np-&gt;s.device
-comma
-l_int|0xffffffffUL
-)paren
-)paren
-r_goto
-id|out_err32
-suffix:semicolon
-macro_line|#else
 macro_line|#if   SYM_CONF_DMA_ADDRESSING_MODE == 0
 r_if
 c_cond
@@ -6900,7 +6649,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#undef&t;PciDmaMask
-macro_line|#endif
 macro_line|#endif
 r_return
 l_int|0
@@ -7615,7 +7363,6 @@ op_assign
 id|SYM_CONF_MAX_LUN
 suffix:semicolon
 macro_line|#ifndef SYM_CONF_IOMAPPED
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,29)
 id|instance-&gt;base
 op_assign
 (paren
@@ -7624,16 +7371,6 @@ r_int
 )paren
 id|np-&gt;s.mmio_va
 suffix:semicolon
-macro_line|#else
-id|instance-&gt;base
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|np-&gt;s.mmio_va
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 id|instance-&gt;irq
 op_assign
@@ -7671,12 +7408,10 @@ id|instance-&gt;sg_tablesize
 op_assign
 id|SYM_CONF_MAX_SG
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,0)
 id|instance-&gt;max_cmd_len
 op_assign
 l_int|16
 suffix:semicolon
-macro_line|#endif
 id|instance-&gt;highmem_io
 op_assign
 l_int|1
@@ -8535,7 +8270,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,13)
 macro_line|#ifndef MODULE
 id|__setup
 c_func
@@ -8545,7 +8279,6 @@ comma
 id|sym53c8xx_setup
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef&t;SYM_CONF_PQS_PDS_SUPPORT
 multiline_comment|/*&n; *  Detect all NCR PQS/PDS boards and keep track of their bus nr.&n; *&n; *  The NCR PQS or PDS card is constructed as a DEC bridge&n; *  behind which sit a proprietary NCR memory controller and&n; *  four or two 53c875s as separate devices.  In its usual mode&n; *  of operation, the 875s are slaved to the memory controller&n; *  for all transfers.  We can tell if an 875 is part of a&n; *  PQS/PDS or not since if it is, it will be on the same bus&n; *  as the memory controller.  To operate with the Linux&n; *  driver, the memory controller is disabled and the 875s&n; *  freed to function independently.  The only wrinkle is that&n; *  the preset SCSI ID (which may be zero) must be read in from&n; *  a special configuration space register of the 875&n; */
@@ -8579,10 +8312,12 @@ r_void
 r_int
 id|index
 suffix:semicolon
-id|pcidev_t
+r_struct
+id|pci_dev
+op_star
 id|dev
 op_assign
-id|PCIDEV_NULL
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -8619,7 +8354,7 @@ c_cond
 (paren
 id|dev
 op_eq
-id|PCIDEV_NULL
+l_int|NULL
 )paren
 (brace
 id|pqs_bus
@@ -8639,11 +8374,7 @@ c_func
 id|NAME53C8XX
 l_string|&quot;: NCR PQS/PDS memory controller detected on bus %d&bslash;n&quot;
 comma
-id|PciBusNumber
-c_func
-(paren
-id|dev
-)paren
+id|dev-&gt;bus-&gt;number
 )paren
 suffix:semicolon
 id|pci_read_config_byte
@@ -8703,11 +8434,7 @@ id|pqs_bus
 id|index
 )braket
 op_assign
-id|PciBusNumber
-c_func
-(paren
-id|dev
-)paren
+id|dev-&gt;bus-&gt;number
 suffix:semicolon
 )brace
 )brace
@@ -8724,7 +8451,9 @@ id|Scsi_Host_Template
 op_star
 id|tpnt
 comma
-id|pcidev_t
+r_struct
+id|pci_dev
+op_star
 id|pdev
 comma
 id|sym_device
@@ -8764,8 +8493,6 @@ id|u_long
 id|base
 comma
 id|base_2
-comma
-id|base_io
 suffix:semicolon
 id|u_long
 id|base_c
@@ -8789,98 +8516,51 @@ id|device-&gt;s.inst_name
 comma
 l_string|&quot;sym.%d.%d.%d&quot;
 comma
-id|PciBusNumber
+id|pdev-&gt;bus-&gt;number
+comma
+id|PCI_SLOT
 c_func
 (paren
-id|pdev
+id|pdev-&gt;devfn
 )paren
 comma
-(paren
-r_int
-)paren
-(paren
-id|PciDeviceFn
+id|PCI_FUNC
 c_func
 (paren
-id|pdev
-)paren
-op_amp
-l_int|0xf8
-)paren
-op_rshift
-l_int|3
-comma
-(paren
-r_int
-)paren
-(paren
-id|PciDeviceFn
-c_func
-(paren
-id|pdev
-)paren
-op_amp
-l_int|7
+id|pdev-&gt;devfn
 )paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Read needed minimal info from the PCI config space.&n;&t; */
 id|vendor_id
 op_assign
-id|PciVendorId
-c_func
-(paren
-id|pdev
-)paren
+id|pdev-&gt;vendor
 suffix:semicolon
 id|device_id
 op_assign
-id|PciDeviceId
-c_func
-(paren
-id|pdev
-)paren
+id|pdev-&gt;device
 suffix:semicolon
 id|irq
 op_assign
-id|PciIrqLine
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
-id|i
-op_assign
-id|pci_get_base_address
-c_func
-(paren
-id|pdev
-comma
-l_int|0
-comma
-op_amp
-id|base_io
-)paren
+id|pdev-&gt;irq
 suffix:semicolon
 id|io_port
 op_assign
-id|pci_get_base_cookie
-c_func
-(paren
-id|pdev
-comma
+id|pdev-&gt;resource
+(braket
 l_int|0
-)paren
+)braket
+dot
+id|start
 suffix:semicolon
 id|base_c
 op_assign
-id|pci_get_base_cookie
-c_func
-(paren
-id|pdev
-comma
-id|i
-)paren
+id|pdev-&gt;resource
+(braket
+l_int|1
+)braket
+dot
+id|start
 suffix:semicolon
 id|i
 op_assign
@@ -8889,7 +8569,7 @@ c_func
 (paren
 id|pdev
 comma
-id|i
+l_int|1
 comma
 op_amp
 id|base
@@ -8897,17 +8577,13 @@ id|base
 suffix:semicolon
 id|base_2_c
 op_assign
-id|pci_get_base_cookie
-c_func
-(paren
-id|pdev
-comma
+id|pdev-&gt;resource
+(braket
 id|i
-)paren
+)braket
+dot
+id|start
 suffix:semicolon
-(paren
-r_void
-)paren
 id|pci_get_base_address
 c_func
 (paren
@@ -8918,10 +8594,6 @@ comma
 op_amp
 id|base_2
 )paren
-suffix:semicolon
-id|io_port
-op_and_assign
-id|PCI_BASE_ADDRESS_IO_MASK
 suffix:semicolon
 id|base
 op_and_assign
@@ -8946,7 +8618,7 @@ multiline_comment|/*&n;&t; *  If user excluded this chip, donnot initialize it.&
 r_if
 c_cond
 (paren
-id|base_io
+id|io_port
 )paren
 (brace
 r_for
@@ -8972,7 +8644,7 @@ id|sym_driver_setup.excludes
 id|i
 )braket
 op_eq
-id|base_io
+id|io_port
 )paren
 r_return
 op_minus
@@ -9526,19 +9198,11 @@ id|pdev
 suffix:semicolon
 id|device-&gt;s.bus
 op_assign
-id|PciBusNumber
-c_func
-(paren
-id|pdev
-)paren
+id|pdev-&gt;bus-&gt;number
 suffix:semicolon
 id|device-&gt;s.device_fn
 op_assign
-id|PciDeviceFn
-c_func
-(paren
-id|pdev
-)paren
+id|pdev-&gt;devfn
 suffix:semicolon
 id|device-&gt;s.base
 op_assign
@@ -9623,7 +9287,9 @@ op_star
 id|tpnt
 )paren
 (brace
-id|pcidev_t
+r_struct
+id|pci_dev
+op_star
 id|pcidev
 suffix:semicolon
 r_int
@@ -9774,7 +9440,7 @@ l_int|0
 suffix:semicolon
 id|pcidev
 op_assign
-id|PCIDEV_NULL
+l_int|NULL
 suffix:semicolon
 r_while
 c_loop
@@ -9839,7 +9505,7 @@ c_cond
 (paren
 id|pcidev
 op_eq
-id|PCIDEV_NULL
+l_int|NULL
 )paren
 (brace
 op_increment
@@ -9980,11 +9646,7 @@ id|pqs_bus
 id|i
 )braket
 op_eq
-id|PciBusNumber
-c_func
-(paren
-id|pcidev
-)paren
+id|pcidev-&gt;bus-&gt;number
 )paren
 (brace
 id|pci_read_config_byte
@@ -10306,110 +9968,6 @@ id|np
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Try to delete the timer.&n;&t; *  In the unlikely situation where this failed,&n;&t; *  try to synchronize with the timer handler.&n;&t; */
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2, 4, 0)
-id|np-&gt;s.release_stage
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|del_timer
-c_func
-(paren
-op_amp
-id|np-&gt;s.timer
-)paren
-)paren
-(brace
-r_int
-id|i
-op_assign
-l_int|1000
-suffix:semicolon
-r_int
-id|k
-op_assign
-l_int|1
-suffix:semicolon
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-(brace
-id|u_long
-id|flags
-suffix:semicolon
-id|SYM_LOCK_HCB
-c_func
-(paren
-id|np
-comma
-id|flags
-)paren
-suffix:semicolon
-id|k
-op_assign
-id|np-&gt;s.release_stage
-suffix:semicolon
-id|SYM_UNLOCK_HCB
-c_func
-(paren
-id|np
-comma
-id|flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|k
-op_eq
-l_int|2
-op_logical_or
-op_logical_neg
-op_decrement
-id|i
-)paren
-r_break
-suffix:semicolon
-id|MDELAY
-c_func
-(paren
-l_int|5
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|i
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;%s: failed to kill timer!&bslash;n&quot;
-comma
-id|sym_name
-c_func
-(paren
-id|np
-)paren
-)paren
-suffix:semicolon
-)brace
-id|np-&gt;s.release_stage
-op_assign
-l_int|2
-suffix:semicolon
-macro_line|#else
-(paren
-r_void
-)paren
 id|del_timer_sync
 c_func
 (paren
@@ -10417,7 +9975,6 @@ op_amp
 id|np-&gt;s.timer
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; *  Reset NCR chip.&n;&t; *  We should use sym_soft_reset(), but we donnot want to do &n;&t; *  so, since we may not be safe if interrupts occur.&n;&t; */
 id|printk
 c_func
@@ -10578,20 +10135,11 @@ id|proc_info
 op_assign
 id|sym53c8xx_proc_info
 comma
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,3,27)
-dot
-id|proc_dir
-op_assign
-op_amp
-id|proc_scsi_sym53c8xx
-comma
-macro_line|#else
 dot
 id|proc_name
 op_assign
 id|NAME53C8XX
 comma
-macro_line|#endif
 macro_line|#endif
 )brace
 suffix:semicolon
