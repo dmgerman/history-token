@@ -6,13 +6,13 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;asm/processor.h&gt; 
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
 macro_line|#include &quot;speedstep-lib.h&quot;
 DECL|macro|PFX
-mdefine_line|#define PFX&t;&quot;cpufreq: &quot;
+mdefine_line|#define PFX&t;&quot;p4-clockmod: &quot;
 multiline_comment|/*&n; * Duty Cycle (3bits), note DC_DISABLE is not specified in&n; * intel docs i just use it to mean disable&n; */
 r_enum
 (brace
@@ -454,22 +454,12 @@ id|policy-&gt;cpu
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* notifiers */
-id|for_each_cpu
-c_func
-(paren
-id|i
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|cpu_isset
+id|for_each_cpu_mask
 c_func
 (paren
 id|i
 comma
 id|affected_cpu_map
-)paren
 )paren
 (brace
 id|freqs.cpu
@@ -486,24 +476,13 @@ id|CPUFREQ_PRECHANGE
 )paren
 suffix:semicolon
 )brace
-)brace
 multiline_comment|/* run on each logical CPU, see section 13.15.3 of IA32 Intel Architecture Software&n;&t; * Developer&squot;s Manual, Volume 3 &n;&t; */
-id|for_each_cpu
-c_func
-(paren
-id|i
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|cpu_isset
+id|for_each_cpu_mask
 c_func
 (paren
 id|i
 comma
 id|affected_cpu_map
-)paren
 )paren
 (brace
 id|cpumask_t
@@ -548,7 +527,6 @@ id|index
 )paren
 suffix:semicolon
 )brace
-)brace
 id|set_cpus_allowed
 c_func
 (paren
@@ -558,22 +536,12 @@ id|cpus_allowed
 )paren
 suffix:semicolon
 multiline_comment|/* notifiers */
-id|for_each_cpu
-c_func
-(paren
-id|i
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|cpu_isset
+id|for_each_cpu_mask
 c_func
 (paren
 id|i
 comma
 id|affected_cpu_map
-)paren
 )paren
 (brace
 id|freqs.cpu
@@ -589,7 +557,6 @@ comma
 id|CPUFREQ_POSTCHANGE
 )paren
 suffix:semicolon
-)brace
 )brace
 r_return
 l_int|0

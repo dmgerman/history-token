@@ -1723,7 +1723,7 @@ id|neigh
 comma
 id|daddr
 comma
-id|ip6_output2
+id|ip6_output
 )paren
 suffix:semicolon
 r_if
@@ -1996,7 +1996,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|Ip6OutRequests
+id|OutRequests
 )paren
 suffix:semicolon
 id|err
@@ -2186,7 +2186,7 @@ id|neigh
 comma
 id|daddr
 comma
-id|ip6_output2
+id|ip6_output
 )paren
 suffix:semicolon
 r_if
@@ -2460,7 +2460,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|Ip6OutRequests
+id|OutRequests
 )paren
 suffix:semicolon
 id|err
@@ -2609,7 +2609,7 @@ l_int|NULL
 comma
 id|daddr
 comma
-id|ip6_output2
+id|ip6_output
 )paren
 suffix:semicolon
 r_if
@@ -2868,7 +2868,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|Ip6OutRequests
+id|OutRequests
 )paren
 suffix:semicolon
 id|err
@@ -6107,7 +6107,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|Ip6OutRequests
+id|OutRequests
 )paren
 suffix:semicolon
 id|err

@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &lt;asm/ccwgroup.h&gt;
 macro_line|#include &quot;qeth_mpc.h&quot;
 DECL|macro|VERSION_QETH_H
-mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.108 $&quot;
+mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.110 $&quot;
 macro_line|#ifdef CONFIG_QETH_IPV6
 DECL|macro|QETH_VERSION_IPV6
 mdefine_line|#define QETH_VERSION_IPV6 &t;&quot;:IPv6&quot;
@@ -108,8 +108,20 @@ DECL|macro|QETH_DBF_TEXT
 mdefine_line|#define QETH_DBF_TEXT(name,level,text) &bslash;&n;&t;do { &bslash;&n;&t;&t;debug_text_event(qeth_dbf_##name,level,text); &bslash;&n;&t;} while (0)
 DECL|macro|QETH_DBF_HEX
 mdefine_line|#define QETH_DBF_HEX(name,level,addr,len) &bslash;&n;&t;do { &bslash;&n;&t;&t;debug_event(qeth_dbf_##name,level,(void*)(addr),len); &bslash;&n;&t;} while (0)
+r_extern
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_char
+(braket
+l_int|256
+)braket
+comma
+id|qeth_dbf_txt_buf
+)paren
+suffix:semicolon
 DECL|macro|QETH_DBF_TEXT_
-mdefine_line|#define QETH_DBF_TEXT_(name,level,text...)&t;&t;&t;&t;  &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;sprintf(qeth_dbf_text_buf, text);&t;&t;&t;  &bslash;&n;&t;&t;debug_text_event(qeth_dbf_##name,level,qeth_dbf_text_buf);&bslash;&n;&t;} while (0)
+mdefine_line|#define QETH_DBF_TEXT_(name,level,text...)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;char* dbf_txt_buf = get_cpu_var(qeth_dbf_txt_buf);&t;&bslash;&n;&t;&t;sprintf(dbf_txt_buf, text);&t;&t;&t;  &t;&bslash;&n;&t;&t;debug_text_event(qeth_dbf_##name,level,dbf_txt_buf);&t;&bslash;&n;&t;&t;put_cpu_var(qeth_dbf_txt_buf);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|QETH_DBF_SPRINTF
 mdefine_line|#define QETH_DBF_SPRINTF(name,level,text...) &bslash;&n;&t;do { &bslash;&n;&t;&t;debug_sprintf_event(qeth_dbf_trace, level, ##text ); &bslash;&n;&t;&t;debug_sprintf_event(qeth_dbf_trace, level, text ); &bslash;&n;&t;} while (0)
 multiline_comment|/**&n; * some more debug stuff&n; */
@@ -687,10 +699,6 @@ multiline_comment|/*&n;&t; * inbound: filled by hardware; owned by driver in ord
 DECL|enumerator|QETH_QDIO_BUF_PRIMED
 id|QETH_QDIO_BUF_PRIMED
 comma
-multiline_comment|/*&n;&t; * inbound only: an error condition has been detected for a buffer&n;&t; *     the buffer will be discarded (not read out)&n;&t; */
-DECL|enumerator|QETH_QDIO_BUF_ERROR
-id|QETH_QDIO_BUF_ERROR
-comma
 )brace
 suffix:semicolon
 DECL|enum|qeth_qdio_info_states
@@ -821,9 +829,7 @@ op_star
 id|buffer
 suffix:semicolon
 DECL|member|state
-r_volatile
-r_enum
-id|qeth_qdio_buffer_states
+id|atomic_t
 id|state
 suffix:semicolon
 DECL|member|next_element_to_fill

@@ -2535,7 +2535,7 @@ id|ntfs_debug
 c_func
 (paren
 l_string|&quot;Old marker = 0x%llx, replacing &quot;
-l_string|&quot;with LCN_ENOENT.&bslash;n&quot;
+l_string|&quot;with LCN_ENOENT.&quot;
 comma
 (paren
 r_int
@@ -6179,7 +6179,7 @@ c_func
 id|base_ni-&gt;vol-&gt;sb
 comma
 l_string|&quot;Inode contains corrupt attribute list &quot;
-l_string|&quot;attribute.&bslash;n&quot;
+l_string|&quot;attribute.&quot;
 )paren
 suffix:semicolon
 r_if

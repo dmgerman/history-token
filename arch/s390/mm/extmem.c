@@ -102,12 +102,12 @@ c_func
 id|dcss_list
 )paren
 suffix:semicolon
-DECL|member|addr
-DECL|member|size
-DECL|member|type
 r_extern
 r_struct
 (brace
+DECL|member|addr
+DECL|member|size
+DECL|member|type
 r_int
 r_int
 id|addr
@@ -119,7 +119,7 @@ suffix:semicolon
 )brace
 id|memory_chunk
 (braket
-l_int|16
+id|MEMORY_CHUNKS
 )braket
 suffix:semicolon
 multiline_comment|/*&n; * Create the 8 bytes, ebcdic VM segment name from&n; * an ascii name.&n; */
@@ -1022,7 +1022,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|16
+id|MEMORY_CHUNKS
 suffix:semicolon
 id|i
 op_increment

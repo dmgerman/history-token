@@ -721,6 +721,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -4267,6 +4268,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -4287,6 +4289,7 @@ id|ATM_LM_NONE
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg

@@ -536,8 +536,34 @@ DECL|macro|__NR_statfs64
 mdefine_line|#define __NR_statfs64&t;&t;268
 DECL|macro|__NR_fstatfs64
 mdefine_line|#define __NR_fstatfs64&t;&t;269
+DECL|macro|__NR_tgkill
+mdefine_line|#define __NR_tgkill&t;&t;270
+DECL|macro|__NR_utimes
+mdefine_line|#define __NR_utimes&t;&t;271
+DECL|macro|__NR_fadvise64_64
+mdefine_line|#define __NR_fadvise64_64&t;272
+DECL|macro|__NR_vserver
+mdefine_line|#define __NR_vserver&t;&t;273
+DECL|macro|__NR_mbind
+mdefine_line|#define __NR_mbind&t;&t;274
+DECL|macro|__NR_get_mempolicy
+mdefine_line|#define __NR_get_mempolicy&t;275
+DECL|macro|__NR_set_mempolicy
+mdefine_line|#define __NR_set_mempolicy&t;276
+DECL|macro|__NR_mq_open
+mdefine_line|#define __NR_mq_open &t;&t;277
+DECL|macro|__NR_mq_unlink
+mdefine_line|#define __NR_mq_unlink&t;&t;(__NR_mq_open+1)
+DECL|macro|__NR_mq_timedsend
+mdefine_line|#define __NR_mq_timedsend&t;(__NR_mq_open+2)
+DECL|macro|__NR_mq_timedreceive
+mdefine_line|#define __NR_mq_timedreceive&t;(__NR_mq_open+3)
+DECL|macro|__NR_mq_notify
+mdefine_line|#define __NR_mq_notify&t;&t;(__NR_mq_open+4)
+DECL|macro|__NR_mq_getsetattr
+mdefine_line|#define __NR_mq_getsetattr&t;(__NR_mq_open+5)
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls 270
+mdefine_line|#define NR_syscalls 283
 macro_line|#ifdef __KERNEL__
 DECL|macro|__ARCH_WANT_IPC_PARSE_VERSION
 mdefine_line|#define __ARCH_WANT_IPC_PARSE_VERSION
@@ -581,10 +607,13 @@ DECL|macro|__ARCH_WANT_SYS_SIGPENDING
 mdefine_line|#define __ARCH_WANT_SYS_SIGPENDING
 DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
 mdefine_line|#define __ARCH_WANT_SYS_SIGPROCMASK
+DECL|macro|__ARCH_WANT_SYS_RT_SIGACTION
+mdefine_line|#define __ARCH_WANT_SYS_RT_SIGACTION
 macro_line|#endif
 macro_line|#ifdef __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/linkage.h&gt;
 multiline_comment|/*&n; * we need this inline - forking from kernel space will result&n; * in NO COPY ON WRITE (!!!), until an execve is executed. This&n; * is no problem, but for the stack. This is handled by not letting&n; * main() use the stack at all after fork(). Thus, no function&n; * calls - which means inline code for fork too, as otherwise we&n; * would use the stack upon exit from &squot;fork()&squot;.&n; *&n; * Actually only pause and fork are needed inline, so that there&n; * won&squot;t be any messing with the stack from main(), but we define&n; * some others too.&n; */
 DECL|macro|__NR__exit
 mdefine_line|#define __NR__exit __NR_exit

@@ -10,6 +10,16 @@ macro_line|#include &quot;cifsglob.h&quot;
 macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
 macro_line|#include &quot;cifs_fs_sb.h&quot;
+r_extern
+r_int
+id|is_size_safe_to_change
+c_func
+(paren
+r_struct
+id|cifsInodeInfo
+op_star
+)paren
+suffix:semicolon
 r_int
 DECL|function|cifs_get_inode_info_unix
 id|cifs_get_inode_info_unix
@@ -69,7 +79,6 @@ r_char
 op_star
 id|tmp_path
 suffix:semicolon
-multiline_comment|/* BB add caching check so we do not go to server to overwrite inode info to cached file&n;&t;where the local file sizes are correct and the server info is stale  BB */
 id|xid
 op_assign
 id|GetXid
@@ -501,6 +510,17 @@ c_func
 id|findData.EndOfFile
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_size_safe_to_change
+c_func
+(paren
+id|cifsInfo
+)paren
+)paren
+(brace
+multiline_comment|/* can not safely change the file size here if the &n;&t;&t;   client is writing to it due to potential races */
 id|i_size_write
 c_func
 (paren
@@ -511,18 +531,23 @@ id|findData.EndOfFile
 suffix:semicolon
 multiline_comment|/* blksize needs to be multiple of two. So safer to default to blksize&n;&t;and blkbits set in superblock so 2**blkbits and blksize will match */
 multiline_comment|/*&t;&t;inode-&gt;i_blksize =&n;&t;&t;    (pTcon-&gt;ses-&gt;server-&gt;maxBuf - MAX_CIFS_HDR_SIZE) &amp; 0xFFFFFE00;*/
+multiline_comment|/* This seems incredibly stupid but it turns out that&n;&t;&t;i_blocks is not related to (i_size / i_blksize), instead a&n;&t;&t;size of 512 is required to be used for calculating num blocks */
+multiline_comment|/*&t;&t;inode-&gt;i_blocks = &n;&t;                (inode-&gt;i_blksize - 1 + findData.NumOfBytes) &gt;&gt; inode-&gt;i_blkbits;*/
+multiline_comment|/* 512 bytes (2**9) is the fake blocksize that must be used */
+multiline_comment|/* for this calculation */
 id|inode-&gt;i_blocks
 op_assign
 (paren
-id|inode-&gt;i_blksize
+l_int|512
 op_minus
 l_int|1
 op_plus
 id|findData.NumOfBytes
 )paren
 op_rshift
-id|inode-&gt;i_blkbits
+l_int|9
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1235,6 +1260,17 @@ suffix:semicolon
 )brace
 multiline_comment|/* BB add code here - validate if device or weird share or device type? */
 )brace
+r_if
+c_cond
+(paren
+id|is_size_safe_to_change
+c_func
+(paren
+id|cifsInfo
+)paren
+)paren
+(brace
+multiline_comment|/* can not safely change the file size here if the &n;&t;&t;client is writing to it due to potential races */
 id|i_size_write
 c_func
 (paren
@@ -1247,6 +1283,21 @@ id|pfindData-&gt;EndOfFile
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* 512 bytes (2**9) is the fake blocksize that must be used */
+multiline_comment|/* for this calculation */
+id|inode-&gt;i_blocks
+op_assign
+(paren
+l_int|512
+op_minus
+l_int|1
+op_plus
+id|pfindData-&gt;AllocationSize
+)paren
+op_rshift
+l_int|9
+suffix:semicolon
+)brace
 id|pfindData-&gt;AllocationSize
 op_assign
 id|le64_to_cpu
@@ -1254,18 +1305,6 @@ c_func
 (paren
 id|pfindData-&gt;AllocationSize
 )paren
-suffix:semicolon
-id|inode-&gt;i_blocks
-op_assign
-(paren
-id|inode-&gt;i_blksize
-op_minus
-l_int|1
-op_plus
-id|pfindData-&gt;AllocationSize
-)paren
-op_rshift
-id|inode-&gt;i_blkbits
 suffix:semicolon
 id|inode-&gt;i_nlink
 op_assign
@@ -2649,6 +2688,106 @@ op_minus
 id|EEXIST
 )paren
 (brace
+multiline_comment|/* check if they are the same file &n;&t;&t;because rename of hardlinked files is a noop */
+id|FILE_UNIX_BASIC_INFO
+op_star
+id|info_buf_source
+suffix:semicolon
+id|FILE_UNIX_BASIC_INFO
+op_star
+id|info_buf_target
+suffix:semicolon
+id|info_buf_source
+op_assign
+id|kmalloc
+c_func
+(paren
+l_int|2
+op_star
+r_sizeof
+(paren
+id|FILE_UNIX_BASIC_INFO
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info_buf_source
+op_ne
+l_int|NULL
+)paren
+(brace
+id|info_buf_target
+op_assign
+id|info_buf_source
+op_plus
+l_int|1
+suffix:semicolon
+id|rc
+op_assign
+id|CIFSSMBUnixQPathInfo
+c_func
+(paren
+id|xid
+comma
+id|pTcon
+comma
+id|fromName
+comma
+id|info_buf_source
+comma
+id|cifs_sb_source-&gt;local_nls
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+l_int|0
+)paren
+(brace
+id|rc
+op_assign
+id|CIFSSMBUnixQPathInfo
+c_func
+(paren
+id|xid
+comma
+id|pTcon
+comma
+id|toName
+comma
+id|info_buf_target
+comma
+id|cifs_sb_target-&gt;local_nls
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|rc
+op_eq
+l_int|0
+)paren
+op_logical_and
+(paren
+id|info_buf_source-&gt;UniqueId
+op_eq
+id|info_buf_target-&gt;UniqueId
+)paren
+)paren
+(brace
+multiline_comment|/* do not rename since the files are hardlinked &n;&t;&t;&t;   which is a noop */
+)brace
+r_else
+(brace
+multiline_comment|/* we either can not tell the files are hardlinked&n;&t;&t;&t;(as with Windows servers) or files are not hardlinked &n;&t;&t;&t;so delete the target manually before renaming to&n;&t;&t;&t;follow POSIX rather than Windows semantics */
 id|cifs_unlink
 c_func
 (paren
@@ -2673,6 +2812,15 @@ comma
 id|cifs_sb_source-&gt;local_nls
 )paren
 suffix:semicolon
+)brace
+id|kfree
+c_func
+(paren
+id|info_buf_source
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* if we can not get memory just leave rc as EEXIST */
 )brace
 r_if
 c_cond

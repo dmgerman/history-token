@@ -617,6 +617,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|args
@@ -750,6 +751,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|args
@@ -1143,6 +1145,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|args
@@ -1474,8 +1477,9 @@ r_int
 id|old_deviceless
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|uarg
 )paren
 (brace
@@ -1494,10 +1498,6 @@ c_func
 (paren
 id|args
 comma
-(paren
-r_void
-op_star
-)paren
 id|uarg
 comma
 r_sizeof
@@ -1608,6 +1608,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|args
@@ -1684,6 +1685,7 @@ id|buf
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|args
@@ -1747,8 +1749,9 @@ r_int
 r_int
 id|cmd
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|uarg
 )paren
 (brace
@@ -1806,11 +1809,6 @@ c_func
 (paren
 id|buf
 comma
-(paren
-r_void
-id|__user
-op_star
-)paren
 id|uarg
 comma
 id|IFNAMSIZ

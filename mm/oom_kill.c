@@ -676,10 +676,6 @@ op_assign
 id|now
 suffix:semicolon
 multiline_comment|/*&n;&t; * If it&squot;s been a long time since last failure,&n;&t; * we&squot;re not oom.&n;&t; */
-id|last
-op_assign
-id|now
-suffix:semicolon
 r_if
 c_cond
 (paren

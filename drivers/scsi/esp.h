@@ -2,7 +2,6 @@ multiline_comment|/* $Id: esp.h,v 1.29 2001/12/11 04:55:47 davem Exp $&n; * esp.
 macro_line|#ifndef _SPARC_ESP_H
 DECL|macro|_SPARC_ESP_H
 mdefine_line|#define _SPARC_ESP_H
-macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* For dvma controller register definitions. */
 macro_line|#include &lt;asm/dma.h&gt;
 multiline_comment|/* The ESP SCSI controllers have their register sets in three&n; * &quot;classes&quot;:&n; *&n; * 1) Registers which are both read and write.&n; * 2) Registers which are read only.&n; * 3) Registers which are write only.&n; *&n; * Yet, they all live within the same IO space.&n; */
@@ -138,6 +137,9 @@ suffix:colon
 l_int|1
 suffix:semicolon
 )brace
+suffix:semicolon
+r_struct
+id|scsi_cmnd
 suffix:semicolon
 multiline_comment|/* We get one of these for each ESP probed. */
 DECL|struct|esp
@@ -479,19 +481,22 @@ suffix:semicolon
 multiline_comment|/* Burst sizes our DVMA supports */
 multiline_comment|/* Our command queues, only one cmd lives in the current_SC queue. */
 DECL|member|issue_SC
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|issue_SC
 suffix:semicolon
 multiline_comment|/* Commands to be issued */
 DECL|member|current_SC
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|current_SC
 suffix:semicolon
 multiline_comment|/* Who is currently working the bus */
 DECL|member|disconnected_SC
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|disconnected_SC
 suffix:semicolon

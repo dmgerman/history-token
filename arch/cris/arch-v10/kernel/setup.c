@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: setup.c,v 1.1 2002/12/11 15:42:02 starvik Exp $&n; *&n; *  linux/arch/cris/arch-v10/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (c) 2001-2002  Axis Communications AB&n; */
+multiline_comment|/*&n; *&n; *  linux/arch/cris/arch-v10/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (c) 2001-2002  Axis Communications AB&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of initialization&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
@@ -385,4 +385,20 @@ l_int|100
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PROC_FS */
+r_void
+DECL|function|show_etrax_copyright
+id|show_etrax_copyright
+c_func
+(paren
+r_void
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Linux/CRIS port on ETRAX 100LX (c) 2001 Axis Communications AB&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 eof

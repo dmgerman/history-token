@@ -10,13 +10,14 @@ multiline_comment|/* Number of contexts is implementation-dependent; 64k is the 
 DECL|macro|SRMMU_MAX_CONTEXTS
 mdefine_line|#define SRMMU_MAX_CONTEXTS&t;65536
 multiline_comment|/* PMD_SHIFT determines the size of the area a second-level page table entry can map */
-DECL|macro|SRMMU_PMD_SHIFT
-mdefine_line|#define SRMMU_PMD_SHIFT         18
-DECL|macro|SRMMU_PMD_SIZE
-mdefine_line|#define SRMMU_PMD_SIZE          (1UL &lt;&lt; SRMMU_PMD_SHIFT)
-DECL|macro|SRMMU_PMD_MASK
-mdefine_line|#define SRMMU_PMD_MASK          (~(SRMMU_PMD_SIZE-1))
-multiline_comment|/* #define SRMMU_PMD_ALIGN(addr)   (((addr)+SRMMU_PMD_SIZE-1)&amp;SRMMU_PMD_MASK) */
+DECL|macro|SRMMU_REAL_PMD_SHIFT
+mdefine_line|#define SRMMU_REAL_PMD_SHIFT&t;&t;18
+DECL|macro|SRMMU_REAL_PMD_SIZE
+mdefine_line|#define SRMMU_REAL_PMD_SIZE&t;&t;(1UL &lt;&lt; SRMMU_REAL_PMD_SHIFT)
+DECL|macro|SRMMU_REAL_PMD_MASK
+mdefine_line|#define SRMMU_REAL_PMD_MASK&t;&t;(~(SRMMU_REAL_PMD_SIZE-1))
+DECL|macro|SRMMU_REAL_PMD_ALIGN
+mdefine_line|#define SRMMU_REAL_PMD_ALIGN(__addr)&t;(((__addr)+SRMMU_REAL_PMD_SIZE-1)&amp;SRMMU_REAL_PMD_MASK)
 multiline_comment|/* PGDIR_SHIFT determines what a third-level page table entry can map */
 DECL|macro|SRMMU_PGDIR_SHIFT
 mdefine_line|#define SRMMU_PGDIR_SHIFT       24
@@ -26,33 +27,21 @@ DECL|macro|SRMMU_PGDIR_MASK
 mdefine_line|#define SRMMU_PGDIR_MASK        (~(SRMMU_PGDIR_SIZE-1))
 DECL|macro|SRMMU_PGDIR_ALIGN
 mdefine_line|#define SRMMU_PGDIR_ALIGN(addr) (((addr)+SRMMU_PGDIR_SIZE-1)&amp;SRMMU_PGDIR_MASK)
-DECL|macro|SRMMU_PTRS_PER_PTE
-mdefine_line|#define SRMMU_PTRS_PER_PTE      64
-DECL|macro|SRMMU_PTRS_PER_PMD
-mdefine_line|#define SRMMU_PTRS_PER_PMD      64
+DECL|macro|SRMMU_REAL_PTRS_PER_PTE
+mdefine_line|#define SRMMU_REAL_PTRS_PER_PTE&t;64
+DECL|macro|SRMMU_REAL_PTRS_PER_PMD
+mdefine_line|#define SRMMU_REAL_PTRS_PER_PMD&t;64
 DECL|macro|SRMMU_PTRS_PER_PGD
-mdefine_line|#define SRMMU_PTRS_PER_PGD      256
-DECL|macro|SRMMU_PTE_TABLE_SIZE
-mdefine_line|#define SRMMU_PTE_TABLE_SIZE    0x100 /* 64 entries, 4 bytes a piece */
+mdefine_line|#define SRMMU_PTRS_PER_PGD&t;256
+DECL|macro|SRMMU_REAL_PTE_TABLE_SIZE
+mdefine_line|#define SRMMU_REAL_PTE_TABLE_SIZE&t;(SRMMU_REAL_PTRS_PER_PTE*4)
 DECL|macro|SRMMU_PMD_TABLE_SIZE
-mdefine_line|#define SRMMU_PMD_TABLE_SIZE    0x100 /* 64 entries, 4 bytes a piece */
+mdefine_line|#define SRMMU_PMD_TABLE_SIZE&t;&t;(SRMMU_REAL_PTRS_PER_PMD*4)
 DECL|macro|SRMMU_PGD_TABLE_SIZE
-mdefine_line|#define SRMMU_PGD_TABLE_SIZE    0x400 /* 256 entries, 4 bytes a piece */
-multiline_comment|/*&n; * To support pagetables in highmem, Linux introduces APIs which&n; * return struct page* and generally manipulate page tables when&n; * they are not mapped into kernel space. Our hardware page tables&n; * are smaller than pages. We lump hardware tabes into big, page sized&n; * software tables.&n; *&n; * PMD_SHIFT determines the size of the area a second-level page table entry&n; * can map, and our pmd_t is 16 times larger than normal.&n; */
-DECL|macro|SRMMU_PTRS_PER_PTE_SOFT
-mdefine_line|#define SRMMU_PTRS_PER_PTE_SOFT&t;(PAGE_SIZE/4)&t;/* 16 hard tables per 4K page */
-DECL|macro|SRMMU_PTRS_PER_PMD_SOFT
-mdefine_line|#define SRMMU_PTRS_PER_PMD_SOFT&t;4&t;/* Each pmd_t contains 16 hard PTPs */
-DECL|macro|SRMMU_PTE_SZ_SOFT
-mdefine_line|#define SRMMU_PTE_SZ_SOFT       PAGE_SIZE&t;/* same as above, in bytes */
-DECL|macro|SRMMU_PMD_SHIFT_SOFT
-mdefine_line|#define SRMMU_PMD_SHIFT_SOFT&t;22
-DECL|macro|SRMMU_PMD_SIZE_SOFT
-mdefine_line|#define SRMMU_PMD_SIZE_SOFT&t;(1UL &lt;&lt; SRMMU_PMD_SHIFT_SOFT)
-DECL|macro|SRMMU_PMD_MASK_SOFT
-mdefine_line|#define SRMMU_PMD_MASK_SOFT&t;(~(SRMMU_PMD_SIZE_SOFT-1))
-DECL|macro|SRMMU_PMD_ALIGN_SOFT
-mdefine_line|#define SRMMU_PMD_ALIGN_SOFT(addr)  (((addr)+SRMMU_PMD_SIZE_SOFT-1)&amp;SRMMU_PMD_MASK_SOFT)
+mdefine_line|#define SRMMU_PGD_TABLE_SIZE&t;&t;(SRMMU_PTRS_PER_PGD*4)
+multiline_comment|/*&n; * To support pagetables in highmem, Linux introduces APIs which&n; * return struct page* and generally manipulate page tables when&n; * they are not mapped into kernel space. Our hardware page tables&n; * are smaller than pages. We lump hardware tabes into big, page sized&n; * software tables.&n; *&n; * PMD_SHIFT determines the size of the area a second-level page table entry&n; * can map, and our pmd_t is 16 times larger than normal.  The values which&n; * were once defined here are now generic for 4c and srmmu, so they&squot;re&n; * found in pgtable.h.&n; */
+DECL|macro|SRMMU_PTRS_PER_PMD
+mdefine_line|#define SRMMU_PTRS_PER_PMD&t;4
 multiline_comment|/* Definition of the values in the ET field of PTD&squot;s and PTE&squot;s */
 DECL|macro|SRMMU_ET_MASK
 mdefine_line|#define SRMMU_ET_MASK         0x3
@@ -587,7 +576,7 @@ id|addr
 (brace
 id|addr
 op_and_assign
-id|SRMMU_PMD_MASK
+id|SRMMU_REAL_PMD_MASK
 suffix:semicolon
 id|__asm__
 id|__volatile__

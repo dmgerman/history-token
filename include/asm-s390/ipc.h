@@ -10,6 +10,7 @@ id|ipc_kludge
 DECL|member|msgp
 r_struct
 id|msgbuf
+id|__user
 op_star
 id|msgp
 suffix:semicolon

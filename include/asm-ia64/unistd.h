@@ -489,6 +489,8 @@ DECL|macro|__NR_mq_getsetattr
 mdefine_line|#define __NR_mq_getsetattr&t;&t;1267
 DECL|macro|__NR_kexec_load
 mdefine_line|#define __NR_kexec_load&t;&t;&t;1268
+DECL|macro|__NR_vserver
+mdefine_line|#define __NR_vserver&t;&t;&t;1269
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|NR_syscalls
@@ -510,6 +512,8 @@ DECL|macro|__ARCH_WANT_SYS_SIGPENDING
 macro_line|# define __ARCH_WANT_SYS_SIGPENDING
 DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
 macro_line|# define __ARCH_WANT_SYS_SIGPROCMASK
+DECL|macro|__ARCH_WANT_SYS_RT_SIGACTION
+macro_line|# define __ARCH_WANT_SYS_RT_SIGACTION
 macro_line|#endif
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
 macro_line|#include &lt;linux/types.h&gt;

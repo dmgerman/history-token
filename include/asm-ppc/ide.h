@@ -145,6 +145,8 @@ DECL|macro|SUPPORT_SLOW_DATA_PORTS
 macro_line|#undef&t;SUPPORT_SLOW_DATA_PORTS
 DECL|macro|SUPPORT_SLOW_DATA_PORTS
 mdefine_line|#define&t;SUPPORT_SLOW_DATA_PORTS&t;0
+DECL|macro|IDE_ARCH_OBSOLETE_DEFAULTS
+mdefine_line|#define IDE_ARCH_OBSOLETE_DEFAULTS
 DECL|function|ide_default_irq
 r_static
 id|__inline__

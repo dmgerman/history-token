@@ -1168,7 +1168,7 @@ suffix:colon
 id|IP_INC_STATS
 c_func
 (paren
-id|IpOutDiscards
+id|OutDiscards
 )paren
 suffix:semicolon
 r_return
@@ -2809,6 +2809,11 @@ id|sk
 comma
 id|cmd
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|arg
 )paren
 suffix:semicolon

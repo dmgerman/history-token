@@ -15,7 +15,8 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;cs5520.h&quot;
+DECL|macro|DISPLAY_CS5520_TIMINGS
+mdefine_line|#define DISPLAY_CS5520_TIMINGS
 macro_line|#if defined(DISPLAY_CS5520_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -928,6 +929,32 @@ op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
 )brace
+DECL|macro|DECLARE_CS_DEV
+mdefine_line|#define DECLARE_CS_DEV(name_str)&t;&t;&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.name&t;&t;= name_str,&t;&t;&t;&bslash;&n;&t;&t;.init_chipset&t;= init_chipset_cs5520,&t;&t;&bslash;&n;&t;&t;.init_setup_dma = cs5520_init_setup_dma,&t;&bslash;&n;&t;&t;.init_hwif&t;= init_hwif_cs5520,&t;&t;&bslash;&n;&t;&t;.channels&t;= 2,&t;&t;&t;&t;&bslash;&n;&t;&t;.autodma&t;= AUTODMA,&t;&t;&t;&bslash;&n;&t;&t;.bootable&t;= ON_BOARD,&t;&t;&t;&bslash;&n;&t;&t;.flags&t;&t;= IDEPCI_FLAG_ISA_PORTS,&t;&bslash;&n;&t;}
+DECL|variable|__devinitdata
+r_static
+id|ide_pci_device_t
+id|cyrix_chipsets
+(braket
+)braket
+id|__devinitdata
+op_assign
+(brace
+multiline_comment|/* 0 */
+id|DECLARE_CS_DEV
+c_func
+(paren
+l_string|&quot;Cyrix 5510&quot;
+)paren
+comma
+multiline_comment|/* 1 */
+id|DECLARE_CS_DEV
+c_func
+(paren
+l_string|&quot;Cyrix 5520&quot;
+)paren
+)brace
+suffix:semicolon
 multiline_comment|/*&n; *&t;The 5510/5520 are a bit weird. They don&squot;t quite set up the way&n; *&t;the PCI helper layer expects so we must do much of the set up &n; *&t;work longhand.&n; */
 DECL|function|cs5520_init_one
 r_static

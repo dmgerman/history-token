@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/cris/mm/fault.c&n; *&n; *  Copyright (C) 2000, 2001  Axis Communications AB&n; *&n; *  Authors:  Bjorn Wesen &n; * &n; *  $Log: fault.c,v $&n; *  Revision 1.8  2003/07/04 13:02:48  tobiasa&n; *  Moved code snippet from arch/cris/mm/fault.c that searches for fixup code&n; *  to separate function in arch-specific files.&n; *&n; *  Revision 1.7  2003/01/22 06:48:38  starvik&n; *  Fixed warnings issued by GCC 3.2.1&n; *&n; *  Revision 1.6  2003/01/09 14:42:52  starvik&n; *  Merge of Linux 2.5.55&n; *&n; *  Revision 1.5  2002/12/11 14:44:48  starvik&n; *  Extracted v10 (ETRAX 100LX) specific stuff to arch/cris/arch-v10/mm&n; *&n; *  Revision 1.4  2002/11/13 15:10:28  starvik&n; *  pte_offset has been renamed to pte_offset_kernel&n; *&n; *  Revision 1.3  2002/11/05 06:45:13  starvik&n; *  Merge of Linux 2.5.45&n; *&n; *  Revision 1.2  2001/12/18 13:35:22  bjornw&n; *  Applied the 2.4.13-&gt;2.4.16 CRIS patch to 2.5.1 (is a copy of 2.4.15).&n; *&n; *  Revision 1.20  2001/11/22 13:34:06  bjornw&n; *  * Bug workaround (LX TR89): force a rerun of the whole of an interrupted&n; *    unaligned write, because the second half of the write will be corrupted&n; *    otherwise. Affected unaligned writes spanning not-yet mapped pages.&n; *  * Optimization: use the wr_rd bit in R_MMU_CAUSE to know whether a miss&n; *    was due to a read or a write (before we didn&squot;t know this until the next&n; *    restart of the interrupted instruction, thus wasting one fault-irq)&n; *&n; *  Revision 1.19  2001/11/12 19:02:10  pkj&n; *  Fixed compiler warnings.&n; *&n; *  Revision 1.18  2001/07/18 22:14:32  bjornw&n; *  Enable interrupts in the bulk of do_page_fault&n; *&n; *  Revision 1.17  2001/07/18 13:07:23  bjornw&n; *  * Detect non-existant PTE&squot;s in vmalloc pmd synchronization&n; *  * Remove comment about fast-paths for VMALLOC_START etc, because all that&n; *    was totally bogus anyway it turned out :)&n; *  * Fix detection of vmalloc-area synchronization&n; *  * Add some comments&n; *&n; *  Revision 1.16  2001/06/13 00:06:08  bjornw&n; *  current_pgd should be volatile&n; *&n; *  Revision 1.15  2001/06/13 00:02:23  bjornw&n; *  Use a separate variable to store the current pgd to avoid races in schedule&n; *&n; *  Revision 1.14  2001/05/16 17:41:07  hp&n; *  Last comment tweak further tweaked.&n; *&n; *  Revision 1.13  2001/05/15 00:58:44  hp&n; *  Expand a bit on the comment why we compare address &gt;= TASK_SIZE rather&n; *  than &gt;= VMALLOC_START.&n; *&n; *  Revision 1.12  2001/04/04 10:51:14  bjornw&n; *  mmap_sem is grabbed for reading&n; *&n; *  Revision 1.11  2001/03/23 07:36:07  starvik&n; *  Corrected according to review remarks&n; *&n; *  Revision 1.10  2001/03/21 16:10:11  bjornw&n; *  CRIS_FRAME_FIXUP not needed anymore, use FRAME_NORMAL&n; *&n; *  Revision 1.9  2001/03/05 13:22:20  bjornw&n; *  Spell-fix and fix in vmalloc_fault handling&n; *&n; *  Revision 1.8  2000/11/22 14:45:31  bjornw&n; *  * 2.4.0-test10 removed the set_pgdir instantaneous kernel global mapping&n; *    into all processes. Instead we fill in the missing PTE entries on demand.&n; *&n; *  Revision 1.7  2000/11/21 16:39:09  bjornw&n; *  fixup switches frametype&n; *&n; *  Revision 1.6  2000/11/17 16:54:08  bjornw&n; *  More detailed siginfo reporting&n; *&n; *&n; */
+multiline_comment|/*&n; *  linux/arch/cris/mm/fault.c&n; *&n; *  Copyright (C) 2000, 2001  Axis Communications AB&n; *&n; *  Authors:  Bjorn Wesen &n; * &n; *  $Log: fault.c,v $&n; *  Revision 1.11  2004/05/14 07:58:05  starvik&n; *  Merge of changes from 2.4&n; *&n; *  Revision 1.10  2003/10/27 14:51:24  starvik&n; *  Removed debugcode&n; *&n; *  Revision 1.9  2003/10/27 14:50:42  starvik&n; *  Changed do_page_fault signature&n; *&n; *  Revision 1.8  2003/07/04 13:02:48  tobiasa&n; *  Moved code snippet from arch/cris/mm/fault.c that searches for fixup code&n; *  to seperate function in arch-specific files.&n; *&n; *  Revision 1.7  2003/01/22 06:48:38  starvik&n; *  Fixed warnings issued by GCC 3.2.1&n; *&n; *  Revision 1.6  2003/01/09 14:42:52  starvik&n; *  Merge of Linux 2.5.55&n; *&n; *  Revision 1.5  2002/12/11 14:44:48  starvik&n; *  Extracted v10 (ETRAX 100LX) specific stuff to arch/cris/arch-v10/mm&n; *&n; *  Revision 1.4  2002/11/13 15:10:28  starvik&n; *  pte_offset has been renamed to pte_offset_kernel&n; *&n; *  Revision 1.3  2002/11/05 06:45:13  starvik&n; *  Merge of Linux 2.5.45&n; *&n; *  Revision 1.2  2001/12/18 13:35:22  bjornw&n; *  Applied the 2.4.13-&gt;2.4.16 CRIS patch to 2.5.1 (is a copy of 2.4.15).&n; *&n; *  Revision 1.20  2001/11/22 13:34:06  bjornw&n; *  * Bug workaround (LX TR89): force a rerun of the whole of an interrupted&n; *    unaligned write, because the second half of the write will be corrupted&n; *    otherwise. Affected unaligned writes spanning not-yet mapped pages.&n; *  * Optimization: use the wr_rd bit in R_MMU_CAUSE to know whether a miss&n; *    was due to a read or a write (before we didn&squot;t know this until the next&n; *    restart of the interrupted instruction, thus wasting one fault-irq)&n; *&n; *  Revision 1.19  2001/11/12 19:02:10  pkj&n; *  Fixed compiler warnings.&n; *&n; *  Revision 1.18  2001/07/18 22:14:32  bjornw&n; *  Enable interrupts in the bulk of do_page_fault&n; *&n; *  Revision 1.17  2001/07/18 13:07:23  bjornw&n; *  * Detect non-existant PTE&squot;s in vmalloc pmd synchronization&n; *  * Remove comment about fast-paths for VMALLOC_START etc, because all that&n; *    was totally bogus anyway it turned out :)&n; *  * Fix detection of vmalloc-area synchronization&n; *  * Add some comments&n; *&n; *  Revision 1.16  2001/06/13 00:06:08  bjornw&n; *  current_pgd should be volatile&n; *&n; *  Revision 1.15  2001/06/13 00:02:23  bjornw&n; *  Use a separate variable to store the current pgd to avoid races in schedule&n; *&n; *  Revision 1.14  2001/05/16 17:41:07  hp&n; *  Last comment tweak further tweaked.&n; *&n; *  Revision 1.13  2001/05/15 00:58:44  hp&n; *  Expand a bit on the comment why we compare address &gt;= TASK_SIZE rather&n; *  than &gt;= VMALLOC_START.&n; *&n; *  Revision 1.12  2001/04/04 10:51:14  bjornw&n; *  mmap_sem is grabbed for reading&n; *&n; *  Revision 1.11  2001/03/23 07:36:07  starvik&n; *  Corrected according to review remarks&n; *&n; *  Revision 1.10  2001/03/21 16:10:11  bjornw&n; *  CRIS_FRAME_FIXUP not needed anymore, use FRAME_NORMAL&n; *&n; *  Revision 1.9  2001/03/05 13:22:20  bjornw&n; *  Spell-fix and fix in vmalloc_fault handling&n; *&n; *  Revision 1.8  2000/11/22 14:45:31  bjornw&n; *  * 2.4.0-test10 removed the set_pgdir instantaneous kernel global mapping&n; *    into all processes. Instead we fill in the missing PTE entries on demand.&n; *&n; *  Revision 1.7  2000/11/21 16:39:09  bjornw&n; *  fixup switches frametype&n; *&n; *  Revision 1.6  2000/11/17 16:54:08  bjornw&n; *  More detailed siginfo reporting&n; *&n; *&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -27,36 +27,6 @@ id|pt_regs
 op_star
 comma
 r_int
-)paren
-suffix:semicolon
-id|asmlinkage
-r_void
-id|do_invalid_op
-(paren
-r_struct
-id|pt_regs
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-id|asmlinkage
-r_void
-id|do_page_fault
-c_func
-(paren
-r_int
-r_int
-id|address
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-r_int
-id|error_code
 )paren
 suffix:semicolon
 multiline_comment|/* debug of low-level TLB reload */
@@ -96,7 +66,10 @@ op_star
 id|regs
 comma
 r_int
-id|error_code
+id|protection
+comma
+r_int
+id|writeaccess
 )paren
 (brace
 r_struct
@@ -114,11 +87,26 @@ id|vm_area_struct
 op_star
 id|vma
 suffix:semicolon
-r_int
-id|writeaccess
-suffix:semicolon
 id|siginfo_t
 id|info
+suffix:semicolon
+id|D
+c_func
+(paren
+id|printk
+c_func
+(paren
+l_string|&quot;Page fault for %X at %X, prot %d write %d&bslash;n&quot;
+comma
+id|address
+comma
+id|regs-&gt;erp
+comma
+id|protection
+comma
+id|writeaccess
+)paren
+)paren
 suffix:semicolon
 id|tsk
 op_assign
@@ -133,11 +121,7 @@ op_ge
 id|VMALLOC_START
 op_logical_and
 op_logical_neg
-(paren
-id|error_code
-op_amp
-l_int|1
-)paren
+id|protection
 op_logical_and
 op_logical_neg
 id|user_mode
@@ -158,12 +142,6 @@ suffix:semicolon
 id|mm
 op_assign
 id|tsk-&gt;mm
-suffix:semicolon
-id|writeaccess
-op_assign
-id|error_code
-op_amp
-l_int|2
 suffix:semicolon
 id|info.si_code
 op_assign
@@ -498,7 +476,13 @@ l_string|&quot;Oops&quot;
 comma
 id|regs
 comma
-id|error_code
+(paren
+id|writeaccess
+op_lshift
+l_int|1
+)paren
+op_or
+id|protection
 )paren
 suffix:semicolon
 id|do_exit

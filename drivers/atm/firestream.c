@@ -4305,6 +4305,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -4339,6 +4340,7 @@ r_int
 id|optname
 comma
 r_void
+id|__user
 op_star
 id|optval
 comma
@@ -4375,6 +4377,7 @@ r_int
 id|optname
 comma
 r_void
+id|__user
 op_star
 id|optval
 comma

@@ -5464,7 +5464,7 @@ l_int|0
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|IpOutNoRoutes
+id|OutNoRoutes
 )paren
 suffix:semicolon
 r_return
@@ -5492,7 +5492,7 @@ suffix:semicolon
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|IpOutNoRoutes
+id|OutNoRoutes
 )paren
 suffix:semicolon
 r_return
@@ -6003,7 +6003,7 @@ multiline_comment|/* Accept backlog is full. If we have already queued enough&n;
 r_if
 c_cond
 (paren
-id|tcp_acceptq_is_full
+id|sk_acceptq_is_full
 c_func
 (paren
 id|sk
@@ -6488,7 +6488,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tcp_acceptq_is_full
+id|sk_acceptq_is_full
 c_func
 (paren
 id|sk

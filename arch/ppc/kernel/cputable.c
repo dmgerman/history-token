@@ -1307,6 +1307,33 @@ id|__setup_cpu_603
 )brace
 comma
 (brace
+multiline_comment|/* 8280 is a G2_LE (603e core, plus some) */
+l_int|0x7fff0000
+comma
+l_int|0x00820000
+comma
+l_string|&quot;8280&quot;
+comma
+id|CPU_FTR_SPLIT_ID_CACHE
+op_or
+id|CPU_FTR_CAN_DOZE
+op_or
+id|CPU_FTR_USE_TB
+op_or
+id|CPU_FTR_CAN_NAP
+op_or
+id|CPU_FTR_HAS_HIGH_BATS
+comma
+id|COMMON_PPC
+comma
+l_int|32
+comma
+l_int|32
+comma
+id|__setup_cpu_603
+)brace
+comma
+(brace
 multiline_comment|/* default match, we assume split I/D cache &amp; TB (non-601)... */
 l_int|0x00000000
 comma

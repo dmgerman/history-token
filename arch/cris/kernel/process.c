@@ -1,8 +1,9 @@
-multiline_comment|/* $Id: process.c,v 1.14 2003/06/10 10:21:12 johana Exp $&n; * &n; *  linux/arch/cris/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (C) 2000-2002  Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen (bjornw@axis.com)&n; *&n; *  $Log: process.c,v $&n; *  Revision 1.14  2003/06/10 10:21:12  johana&n; *  Moved thread_saved_pc() from arch/cris/kernel/process.c to&n; *  subarch specific process.c. &n; *&n; *  Revision 1.13  2003/04/09 05:20:47  starvik&n; *  Merge of Linux 2.5.67&n; *&n; *  Revision 1.12  2002/12/11 15:41:11  starvik&n; *  Extracted v10 (ETRAX 100LX) specific stuff to arch/cris/arch-v10/kernel&n; *&n; *  Revision 1.11  2002/12/10 09:00:10  starvik&n; *  Merge of Linux 2.5.51&n; *&n; *  Revision 1.10  2002/11/27 08:42:34  starvik&n; *  Argument to user_regs() is thread_info*&n; *&n; *  Revision 1.9  2002/11/26 09:44:21  starvik&n; *  New threads exits through ret_from_fork (necessary for preemptive scheduling)&n; *&n; *  Revision 1.8  2002/11/19 14:35:24  starvik&n; *  Changes from linux 2.4&n; *  Changed struct initializer syntax to the currently prefered notation&n; *&n; *  Revision 1.7  2002/11/18 07:39:42  starvik&n; *  thread_saved_pc moved here from processor.h&n; *&n; *  Revision 1.6  2002/11/14 06:51:27  starvik&n; *  Made cpu_idle more similar with other archs&n; *  init_task_union -&gt; init_thread_union&n; *  Updated for new interrupt macros&n; *  sys_clone and do_fork have a new argument, user_tid&n; *&n; *  Revision 1.5  2002/11/05 06:45:11  starvik&n; *  Merge of Linux 2.5.45&n; *&n; *  Revision 1.4  2002/02/05 15:37:44  bjornw&n; *  Need init_task.h&n; *&n; *  Revision 1.3  2002/01/21 15:22:49  bjornw&n; *  current-&gt;counter is gone&n; *&n; *  Revision 1.22  2001/11/13 09:40:43  orjanf&n; *  Added dump_fpu (needed for core dumps).&n; *&n; *  Revision 1.21  2001/11/12 18:26:21  pkj&n; *  Fixed compiler warnings.&n; *&n; *  Revision 1.20  2001/10/03 08:21:39  jonashg&n; *  cause_of_death does not exist if CONFIG_SVINTO_SIM is defined.&n; *&n; *  Revision 1.19  2001/09/26 11:52:54  bjornw&n; *  INIT_MMAP is gone in 2.4.10&n; *&n; *  Revision 1.18  2001/08/21 21:43:51  hp&n; *  Move last watchdog fix inside #ifdef CONFIG_ETRAX_WATCHDOG&n; *&n; *  Revision 1.17  2001/08/21 13:48:01  jonashg&n; *  Added fix by HP to avoid oops when doing a hard_reset_now.&n; *&n; *  Revision 1.16  2001/06/21 02:00:40  hp&n; *  &t;* entry.S: Include asm/unistd.h.&n; *  &t;(_sys_call_table): Use section .rodata, not .data.&n; *  &t;(_kernel_thread): Move from...&n; *  &t;* process.c: ... here.&n; *  &t;* entryoffsets.c (VAL): Break out from...&n; *  &t;(OF): Use VAL.&n; *  &t;(LCLONE_VM): New asmified value from CLONE_VM.&n; *&n; *  Revision 1.15  2001/06/20 16:31:57  hp&n; *  Add comments to describe empty functions according to review.&n; *&n; *  Revision 1.14  2001/05/29 11:27:59  markusl&n; *  Fixed so that hard_reset_now will do reset even if watchdog wasn&squot;t enabled&n; *&n; *  Revision 1.13  2001/03/20 19:44:06  bjornw&n; *  Use the 7th syscall argument for regs instead of current_regs&n; *&n; */
+multiline_comment|/* $Id: process.c,v 1.17 2004/04/05 13:53:48 starvik Exp $&n; * &n; *  linux/arch/cris/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (C) 2000-2002  Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen (bjornw@axis.com)&n; *&n; *  $Log: process.c,v $&n; *  Revision 1.17  2004/04/05 13:53:48  starvik&n; *  Merge of Linux 2.6.5&n; *&n; *  Revision 1.16  2003/10/27 08:04:33  starvik&n; *  Merge of Linux 2.6.0-test9&n; *&n; *  Revision 1.15  2003/09/11 07:29:52  starvik&n; *  Merge of Linux 2.6.0-test5&n; *&n; *  Revision 1.14  2003/06/10 10:21:12  johana&n; *  Moved thread_saved_pc() from arch/cris/kernel/process.c to&n; *  subarch specific process.c. arch-v32 has an erp, no irp.&n; *&n; *  Revision 1.13  2003/04/09 05:20:47  starvik&n; *  Merge of Linux 2.5.67&n; *&n; *  Revision 1.12  2002/12/11 15:41:11  starvik&n; *  Extracted v10 (ETRAX 100LX) specific stuff to arch/cris/arch-v10/kernel&n; *&n; *  Revision 1.11  2002/12/10 09:00:10  starvik&n; *  Merge of Linux 2.5.51&n; *&n; *  Revision 1.10  2002/11/27 08:42:34  starvik&n; *  Argument to user_regs() is thread_info*&n; *&n; *  Revision 1.9  2002/11/26 09:44:21  starvik&n; *  New threads exits through ret_from_fork (necessary for preemptive scheduling)&n; *&n; *  Revision 1.8  2002/11/19 14:35:24  starvik&n; *  Changes from linux 2.4&n; *  Changed struct initializer syntax to the currently prefered notation&n; *&n; *  Revision 1.7  2002/11/18 07:39:42  starvik&n; *  thread_saved_pc moved here from processor.h&n; *&n; *  Revision 1.6  2002/11/14 06:51:27  starvik&n; *  Made cpu_idle more similar with other archs&n; *  init_task_union -&gt; init_thread_union&n; *  Updated for new interrupt macros&n; *  sys_clone and do_fork have a new argument, user_tid&n; *&n; *  Revision 1.5  2002/11/05 06:45:11  starvik&n; *  Merge of Linux 2.5.45&n; *&n; *  Revision 1.4  2002/02/05 15:37:44  bjornw&n; *  Need init_task.h&n; *&n; *  Revision 1.3  2002/01/21 15:22:49  bjornw&n; *  current-&gt;counter is gone&n; *&n; *  Revision 1.22  2001/11/13 09:40:43  orjanf&n; *  Added dump_fpu (needed for core dumps).&n; *&n; *  Revision 1.21  2001/11/12 18:26:21  pkj&n; *  Fixed compiler warnings.&n; *&n; *  Revision 1.20  2001/10/03 08:21:39  jonashg&n; *  cause_of_death does not exist if CONFIG_SVINTO_SIM is defined.&n; *&n; *  Revision 1.19  2001/09/26 11:52:54  bjornw&n; *  INIT_MMAP is gone in 2.4.10&n; *&n; *  Revision 1.18  2001/08/21 21:43:51  hp&n; *  Move last watchdog fix inside #ifdef CONFIG_ETRAX_WATCHDOG&n; *&n; *  Revision 1.17  2001/08/21 13:48:01  jonashg&n; *  Added fix by HP to avoid oops when doing a hard_reset_now.&n; *&n; *  Revision 1.16  2001/06/21 02:00:40  hp&n; *  &t;* entry.S: Include asm/unistd.h.&n; *  &t;(_sys_call_table): Use section .rodata, not .data.&n; *  &t;(_kernel_thread): Move from...&n; *  &t;* process.c: ... here.&n; *  &t;* entryoffsets.c (VAL): Break out from...&n; *  &t;(OF): Use VAL.&n; *  &t;(LCLONE_VM): New asmified value from CLONE_VM.&n; *&n; *  Revision 1.15  2001/06/20 16:31:57  hp&n; *  Add comments to describe empty functions according to review.&n; *&n; *  Revision 1.14  2001/05/29 11:27:59  markusl&n; *  Fixed so that hard_reset_now will do reset even if watchdog wasn&squot;t enabled&n; *&n; *  Revision 1.13  2001/03/20 19:44:06  bjornw&n; *  Use the 7th syscall argument for regs instead of current_regs&n; *&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/fs_struct.h&gt;
@@ -195,6 +196,16 @@ c_loop
 l_int|1
 )paren
 (brace
+r_while
+c_loop
+(paren
+op_logical_neg
+id|need_resched
+c_func
+(paren
+)paren
+)paren
+(brace
 r_void
 (paren
 op_star
@@ -216,20 +227,12 @@ id|idle
 op_assign
 id|default_idle
 suffix:semicolon
-r_while
-c_loop
-(paren
-op_logical_neg
-id|need_resched
-c_func
-(paren
-)paren
-)paren
 id|idle
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 id|schedule
 c_func
 (paren

@@ -1761,16 +1761,6 @@ op_assign
 (brace
 multiline_comment|/* 0 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_TTI
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_TTI_HPT366
-comma
-dot
 id|name
 op_assign
 l_string|&quot;HPT366&quot;
@@ -1819,16 +1809,6 @@ comma
 (brace
 multiline_comment|/* 1 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_TTI
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_TTI_HPT372
-comma
-dot
 id|name
 op_assign
 l_string|&quot;HPT372A&quot;
@@ -1872,16 +1852,6 @@ comma
 comma
 (brace
 multiline_comment|/* 2 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_TTI
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_TTI_HPT302
-comma
 dot
 id|name
 op_assign
@@ -1927,16 +1897,6 @@ comma
 (brace
 multiline_comment|/* 3 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_TTI
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_TTI_HPT371
-comma
-dot
 id|name
 op_assign
 l_string|&quot;HPT371&quot;
@@ -1980,16 +1940,6 @@ comma
 comma
 (brace
 multiline_comment|/* 4 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_TTI
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_TTI_HPT374
-comma
 dot
 id|name
 op_assign

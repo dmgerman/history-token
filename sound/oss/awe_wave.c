@@ -17866,8 +17866,8 @@ id|cc
 comma
 (paren
 r_int
-id|__user
 r_char
+id|__user
 op_star
 )paren
 (paren
@@ -17900,8 +17900,8 @@ id|c
 comma
 (paren
 r_int
-id|__user
 r_int
+id|__user
 op_star
 )paren
 (paren

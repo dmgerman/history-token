@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
@@ -930,7 +931,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|variable|omap_bus_init
-id|module_init
+id|postcore_initcall
 c_func
 (paren
 id|omap_bus_init

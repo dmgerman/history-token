@@ -107,16 +107,6 @@ op_assign
 (brace
 multiline_comment|/* 0 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_SERVERWORKS
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_SERVERWORKS_OSB4IDE
-comma
-dot
 id|name
 op_assign
 l_string|&quot;SvrWks OSB4&quot;
@@ -155,16 +145,6 @@ comma
 comma
 (brace
 multiline_comment|/* 1 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_SERVERWORKS
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_SERVERWORKS_CSB5IDE
-comma
 dot
 id|name
 op_assign
@@ -210,16 +190,6 @@ comma
 (brace
 multiline_comment|/* 2 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_SERVERWORKS
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_SERVERWORKS_CSB6IDE
-comma
-dot
 id|name
 op_assign
 l_string|&quot;SvrWks CSB6&quot;
@@ -263,16 +233,6 @@ comma
 comma
 (brace
 multiline_comment|/* 3 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_SERVERWORKS
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_SERVERWORKS_CSB6IDE2
-comma
 dot
 id|name
 op_assign

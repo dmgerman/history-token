@@ -456,6 +456,7 @@ id|dev
 comma
 r_struct
 id|idt77105_stats
+id|__user
 op_star
 id|arg
 comma
@@ -719,6 +720,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -767,11 +769,6 @@ c_func
 (paren
 id|dev
 comma
-(paren
-r_struct
-id|idt77105_stats
-op_star
-)paren
 id|arg
 comma
 id|cmd
@@ -814,6 +811,7 @@ id|loop_mode
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -838,6 +836,7 @@ id|ATM_LM_RMT_ATM
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg

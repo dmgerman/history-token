@@ -26,6 +26,7 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
 id|fildes
 )paren
@@ -260,6 +261,7 @@ c_func
 (paren
 r_struct
 id|mmap_arg_struct
+id|__user
 op_star
 id|arg
 )paren
@@ -326,6 +328,7 @@ c_func
 (paren
 r_struct
 id|mmap_arg_struct
+id|__user
 op_star
 id|arg
 )paren
@@ -441,6 +444,7 @@ c_func
 (paren
 r_struct
 id|sel_arg_struct
+id|__user
 op_star
 id|arg
 )paren
@@ -493,6 +497,7 @@ DECL|function|sys_ipc
 id|asmlinkage
 r_int
 id|sys_ipc
+c_func
 (paren
 id|uint
 id|call
@@ -508,6 +513,7 @@ r_int
 id|third
 comma
 r_void
+id|__user
 op_star
 id|ptr
 )paren
@@ -536,6 +542,7 @@ comma
 (paren
 r_struct
 id|sembuf
+id|__user
 op_star
 )paren
 id|ptr
@@ -556,6 +563,7 @@ comma
 (paren
 r_struct
 id|sembuf
+id|__user
 op_star
 )paren
 id|ptr
@@ -566,6 +574,7 @@ comma
 r_const
 r_struct
 id|timespec
+id|__user
 op_star
 )paren
 id|third
@@ -612,7 +621,9 @@ id|fourth.__pad
 comma
 (paren
 r_void
+id|__user
 op_star
+id|__user
 op_star
 )paren
 id|ptr
@@ -646,6 +657,7 @@ comma
 (paren
 r_struct
 id|msgbuf
+id|__user
 op_star
 )paren
 id|ptr
@@ -681,6 +693,7 @@ comma
 (paren
 r_struct
 id|ipc_kludge
+id|__user
 op_star
 )paren
 id|ptr
@@ -737,6 +750,7 @@ comma
 (paren
 r_struct
 id|msqid_ds
+id|__user
 op_star
 )paren
 id|ptr
@@ -757,6 +771,7 @@ id|first
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|ptr
@@ -782,6 +797,7 @@ id|raddr
 comma
 (paren
 id|ulong
+id|__user
 op_star
 )paren
 id|third
@@ -798,6 +814,7 @@ id|sys_shmdt
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|ptr
@@ -829,6 +846,7 @@ comma
 (paren
 r_struct
 id|shmid_ds
+id|__user
 op_star
 )paren
 id|ptr
@@ -855,6 +873,7 @@ c_func
 (paren
 r_struct
 id|new_utsname
+id|__user
 op_star
 id|name
 )paren
@@ -1037,6 +1056,7 @@ c_func
 (paren
 r_struct
 id|fadvise64_64_args
+id|__user
 op_star
 id|args
 )paren

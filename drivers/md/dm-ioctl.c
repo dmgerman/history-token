@@ -1650,14 +1650,14 @@ id|tt
 comma
 r_void
 op_star
-id|param
+id|needed_param
 )paren
 (brace
 r_int
 op_star
 id|needed
 op_assign
-id|param
+id|needed_param
 suffix:semicolon
 op_star
 id|needed
@@ -4638,6 +4638,7 @@ id|cmd
 comma
 r_struct
 id|dm_ioctl
+id|__user
 op_star
 id|user
 )paren
@@ -4804,6 +4805,7 @@ c_func
 (paren
 r_struct
 id|dm_ioctl
+id|__user
 op_star
 id|user
 comma
@@ -5060,12 +5062,14 @@ id|param
 suffix:semicolon
 r_struct
 id|dm_ioctl
+id|__user
 op_star
 id|user
 op_assign
 (paren
 r_struct
 id|dm_ioctl
+id|__user
 op_star
 )paren
 id|u

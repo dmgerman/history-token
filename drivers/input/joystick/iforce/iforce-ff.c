@@ -896,7 +896,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Analyse the changes in an effect, and tell if we need to send an condition &n; * parameter packet&n; */
+multiline_comment|/*&n; * Analyse the changes in an effect, and tell if we need to send an condition&n; * parameter packet&n; */
 DECL|function|need_condition_modifier
 r_static
 r_int

@@ -1,4 +1,4 @@
-multiline_comment|/*  $Header: /var/lib/cvs/prism54-ng/ksrc/islpci_dev.c,v 1.68 2004/02/28 03:06:07 mcgrof Exp $&n; *  &n; *  Copyright (C) 2002 Intersil Americas Inc.&n; *  Copyright (C) 2003 Herbert Valerio Riedel &lt;hvr@gnu.org&gt;&n; *  Copyright (C) 2003 Luis R. Rodriguez &lt;mcgrof@ruslug.rutgers.edu&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
+multiline_comment|/*&n; *  &n; *  Copyright (C) 2002 Intersil Americas Inc.&n; *  Copyright (C) 2003 Herbert Valerio Riedel &lt;hvr@gnu.org&gt;&n; *  Copyright (C) 2003 Luis R. Rodriguez &lt;mcgrof@ruslug.rutgers.edu&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -2359,6 +2359,10 @@ id|priv-&gt;pdev
 op_assign
 id|pdev
 suffix:semicolon
+id|priv-&gt;monitor_type
+op_assign
+id|ARPHRD_IEEE80211
+suffix:semicolon
 id|priv-&gt;ndev-&gt;type
 op_assign
 (paren
@@ -2368,7 +2372,7 @@ id|IW_MODE_MONITOR
 )paren
 ques
 c_cond
-id|ARPHRD_IEEE80211
+id|priv-&gt;monitor_type
 suffix:colon
 id|ARPHRD_ETHER
 suffix:semicolon
@@ -2475,6 +2479,21 @@ id|priv
 )paren
 suffix:semicolon
 id|priv-&gt;stats_timestamp
+op_assign
+l_int|0
+suffix:semicolon
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|priv-&gt;reset_task
+comma
+id|islpci_do_reset_and_wake
+comma
+id|priv
+)paren
+suffix:semicolon
+id|priv-&gt;reset_task_pending
 op_assign
 l_int|0
 suffix:semicolon

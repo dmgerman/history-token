@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 DECL|struct|kthread_create_info
 r_struct
@@ -98,6 +99,13 @@ id|current
 )paren
 suffix:semicolon
 )brace
+DECL|variable|kthread_should_stop
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kthread_should_stop
+)paren
+suffix:semicolon
 DECL|function|kthread_exit_files
 r_static
 r_void
@@ -551,6 +559,13 @@ r_return
 id|create.result
 suffix:semicolon
 )brace
+DECL|variable|kthread_create
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kthread_create
+)paren
+suffix:semicolon
 DECL|function|kthread_bind
 r_void
 id|kthread_bind
@@ -598,6 +613,13 @@ id|cpu
 )paren
 suffix:semicolon
 )brace
+DECL|variable|kthread_bind
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kthread_bind
+)paren
+suffix:semicolon
 DECL|function|kthread_stop
 r_int
 id|kthread_stop
@@ -683,4 +705,11 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|kthread_stop
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kthread_stop
+)paren
+suffix:semicolon
 eof

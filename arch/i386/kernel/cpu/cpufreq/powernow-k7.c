@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *  AMD K7 Powernow driver.&n; *  (C) 2003 Dave Jones &lt;davej@codemonkey.org.uk&gt; on behalf of SuSE Labs.&n; *  (C) 2003-2004 Dave Jones &lt;davej@redhat.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by AMD.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; *&n; * Errata 5: Processor may fail to execute a FID/VID change in presence of interrupt.&n; * - We cli/sti on stepping A0 CPUs around the FID/VID transition.&n; * Errata 15: Processors with half frequency multipliers may hang upon wakeup from disconnect.&n; * - We disable half multipliers if ACPI is used on A0 stepping CPUs.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/module.h&gt; 
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
@@ -11,7 +11,7 @@ macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#ifdef CONFIG_ACPI_PROCESSOR
+macro_line|#if defined(CONFIG_ACPI_PROCESSOR) || defined(CONFIG_ACPI_PROCESSOR_MODULE)
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;acpi/processor.h&gt;
 macro_line|#endif
@@ -86,7 +86,7 @@ id|numpstates
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI_PROCESSOR
+macro_line|#if defined(CONFIG_ACPI_PROCESSOR) || defined(CONFIG_ACPI_PROCESSOR_MODULE)
 DECL|union|powernow_acpi_control_t
 r_union
 id|powernow_acpi_control_t
@@ -282,10 +282,10 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* This parameter is used in order to force ACPI instead of legacy method for&n; * configuration purpose.&n; */
-DECL|variable|powernow_acpi_force
+DECL|variable|acpi_force
 r_static
 r_int
-id|powernow_acpi_force
+id|acpi_force
 suffix:semicolon
 DECL|variable|powernow_table
 r_static
@@ -524,6 +524,28 @@ op_amp
 id|edx
 )paren
 suffix:semicolon
+multiline_comment|/* Check we can actually do something before we say anything.*/
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|edx
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|1
+op_or
+l_int|1
+op_lshift
+l_int|2
+)paren
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
@@ -593,34 +615,6 @@ suffix:semicolon
 id|can_scale_vid
 op_assign
 l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|edx
-op_amp
-(paren
-l_int|1
-op_lshift
-l_int|1
-op_or
-l_int|1
-op_lshift
-l_int|2
-)paren
-)paren
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;nothing.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 id|printk
@@ -1198,7 +1192,7 @@ id|CPUFREQ_POSTCHANGE
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ACPI_PROCESSOR
+macro_line|#if defined(CONFIG_ACPI_PROCESSOR) || defined(CONFIG_ACPI_PROCESSOR_MODULE)
 DECL|variable|acpi_processor_perf
 r_struct
 id|acpi_processor_performance
@@ -2512,7 +2506,7 @@ op_amp
 id|BROKEN_CPUFREQ
 )paren
 op_logical_or
-id|powernow_acpi_force
+id|acpi_force
 )paren
 (brace
 id|printk
@@ -2808,7 +2802,7 @@ id|powernow_exit
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_ACPI_PROCESSOR
+macro_line|#if defined(CONFIG_ACPI_PROCESSOR) || defined(CONFIG_ACPI_PROCESSOR_MODULE)
 r_if
 c_cond
 (paren
@@ -2853,7 +2847,7 @@ suffix:semicolon
 id|module_param
 c_func
 (paren
-id|powernow_acpi_force
+id|acpi_force
 comma
 r_int
 comma

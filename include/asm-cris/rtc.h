@@ -219,7 +219,11 @@ DECL|macro|RTC_SET_TIME
 mdefine_line|#define RTC_SET_TIME&t;&t;_IOW(RTC_MAGIC, 0x0a, struct rtc_time)&t;/* Set RTC time. */
 DECL|macro|RTC_SET_CHARGE
 mdefine_line|#define RTC_SET_CHARGE  &t;_IOW(RTC_MAGIC, 0x0b, int) &t;&t;
+DECL|macro|RTC_VLOW_RD
+mdefine_line|#define RTC_VLOW_RD     _IOR(RTC_MAGIC, 0x11, int)  /* Voltage Low detector */
+DECL|macro|RTC_VLOW_SET
+mdefine_line|#define RTC_VLOW_SET    _IO(RTC_MAGIC, 0x12)        /* Clear voltage low information */
 DECL|macro|RTC_MAX_IOCTL
-mdefine_line|#define RTC_MAX_IOCTL 0x0b
+mdefine_line|#define RTC_MAX_IOCTL 0x12
 macro_line|#endif /* __RTC_H__ */
 eof

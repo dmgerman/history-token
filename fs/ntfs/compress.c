@@ -1267,7 +1267,7 @@ c_func
 (paren
 l_int|NULL
 comma
-l_string|&quot;Failed. Returning -EOVERFLOW.&bslash;n&quot;
+l_string|&quot;Failed. Returning -EOVERFLOW.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1459,8 +1459,6 @@ r_int
 id|xpage
 comma
 id|max_page
-comma
-id|max_ofs
 comma
 id|cur_page
 comma
@@ -1666,25 +1664,6 @@ id|PAGE_CACHE_SHIFT
 op_minus
 id|offset
 suffix:semicolon
-id|max_ofs
-op_assign
-(paren
-id|VFS_I
-c_func
-(paren
-id|ni
-)paren
-op_member_access_from_pointer
-id|i_size
-op_plus
-id|PAGE_CACHE_SIZE
-op_minus
-l_int|1
-)paren
-op_amp
-op_complement
-id|PAGE_CACHE_MASK
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1692,16 +1671,10 @@ id|nr_pages
 OL
 id|max_page
 )paren
-(brace
 id|max_page
 op_assign
 id|nr_pages
 suffix:semicolon
-id|max_ofs
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -2434,42 +2407,13 @@ r_if
 c_cond
 (paren
 id|cb_max_page
-op_ge
-id|max_page
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|cb_max_page
 OG
 id|max_page
 )paren
-(brace
 id|cb_max_page
 op_assign
 id|max_page
 suffix:semicolon
-id|cb_max_ofs
-op_assign
-id|max_ofs
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|cb_max_ofs
-OG
-id|max_ofs
-)paren
-(brace
-id|cb_max_ofs
-op_assign
-id|max_ofs
-suffix:semicolon
-)brace
-)brace
 r_if
 c_cond
 (paren
@@ -3021,7 +2965,7 @@ id|vol-&gt;sb
 comma
 l_string|&quot;ntfs_decompress() failed in inode &quot;
 l_string|&quot;0x%lx with error code %i. Skipping &quot;
-l_string|&quot;this compression block.&bslash;n&quot;
+l_string|&quot;this compression block.&quot;
 comma
 id|ni-&gt;mft_no
 comma
@@ -3189,7 +3133,12 @@ id|vol-&gt;sb
 comma
 l_string|&quot;Still have pages left! &quot;
 l_string|&quot;Terminating them with extreme &quot;
-l_string|&quot;prejudice.&quot;
+l_string|&quot;prejudice.  Inode 0x%lx, page index &quot;
+l_string|&quot;0x%lx.&quot;
+comma
+id|ni-&gt;mft_no
+comma
+id|page-&gt;index
 )paren
 suffix:semicolon
 r_if

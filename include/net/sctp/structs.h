@@ -895,6 +895,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -921,10 +922,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren

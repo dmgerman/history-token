@@ -123,6 +123,11 @@ r_typedef
 id|u32
 id|dma_addr_t
 suffix:semicolon
+DECL|typedef|dma64_addr_t
+r_typedef
+id|u32
+id|dma64_addr_t
+suffix:semicolon
 DECL|typedef|kmem_bufctl_t
 r_typedef
 r_int

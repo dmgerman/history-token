@@ -268,6 +268,7 @@ multiline_comment|/* W: ID (e.g. file name) */
 DECL|member|image
 r_int
 r_char
+id|__user
 op_star
 id|image
 suffix:semicolon
@@ -1492,6 +1493,7 @@ id|result
 suffix:semicolon
 DECL|member|buf
 r_void
+id|__user
 op_star
 id|buf
 suffix:semicolon
@@ -1511,7 +1513,9 @@ id|result
 suffix:semicolon
 DECL|member|bufs
 r_void
+id|__user
 op_star
+id|__user
 op_star
 id|bufs
 suffix:semicolon
@@ -3144,6 +3148,7 @@ multiline_comment|/* R: count of all elements */
 DECL|member|pids
 r_struct
 id|sndrv_ctl_elem_id
+id|__user
 op_star
 id|pids
 suffix:semicolon

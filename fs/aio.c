@@ -5,7 +5,8 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/aio_abi.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-singleline_comment|//#define DEBUG 1
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG 0
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
@@ -1574,7 +1575,7 @@ id|req-&gt;ki_retry
 op_assign
 l_int|NULL
 suffix:semicolon
-id|req-&gt;ki_user_obj
+id|req-&gt;ki_obj.user
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1763,7 +1764,7 @@ id|req-&gt;ki_filp
 op_assign
 l_int|NULL
 suffix:semicolon
-id|req-&gt;ki_user_obj
+id|req-&gt;ki_obj.user
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2226,8 +2227,6 @@ r_struct
 id|mm_struct
 op_star
 id|active_mm
-op_assign
-id|current-&gt;active_mm
 suffix:semicolon
 id|atomic_inc
 c_func
@@ -2235,6 +2234,16 @@ c_func
 op_amp
 id|mm-&gt;mm_count
 )paren
+suffix:semicolon
+id|task_lock
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+id|active_mm
+op_assign
+id|current-&gt;active_mm
 suffix:semicolon
 id|current-&gt;mm
 op_assign
@@ -2261,6 +2270,12 @@ id|mm
 )paren
 suffix:semicolon
 )brace
+id|task_unlock
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 id|mmdrop
 c_func
 (paren
@@ -2280,9 +2295,21 @@ op_star
 id|mm
 )paren
 (brace
+id|task_lock
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 id|current-&gt;mm
 op_assign
 l_int|NULL
+suffix:semicolon
+id|task_unlock
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 multiline_comment|/* active_mm is still &squot;mm&squot; */
 id|enter_lazy_tlb
@@ -2492,7 +2519,7 @@ suffix:semicolon
 id|wake_up_process
 c_func
 (paren
-id|iocb-&gt;ki_user_obj
+id|iocb-&gt;ki_obj.tsk
 )paren
 suffix:semicolon
 r_return
@@ -2541,9 +2568,11 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|schedule_work
+id|queue_work
 c_func
 (paren
+id|aio_wq
+comma
 op_amp
 id|ctx-&gt;wq
 )paren
@@ -2669,7 +2698,7 @@ multiline_comment|/* sync iocbs put the task here for us */
 id|wake_up_process
 c_func
 (paren
-id|iocb-&gt;ki_user_obj
+id|iocb-&gt;ki_obj.tsk
 )paren
 suffix:semicolon
 r_return
@@ -2739,7 +2768,7 @@ id|u64
 r_int
 r_int
 )paren
-id|iocb-&gt;ki_user_obj
+id|iocb-&gt;ki_obj.user
 suffix:semicolon
 id|event-&gt;data
 op_assign
@@ -2764,7 +2793,7 @@ id|tail
 comma
 id|iocb
 comma
-id|iocb-&gt;ki_user_obj
+id|iocb-&gt;ki_obj.user
 comma
 id|iocb-&gt;ki_user_data
 comma
@@ -3187,65 +3216,38 @@ op_star
 id|ts
 )paren
 (brace
-r_int
-r_int
-id|how_long
+id|to-&gt;timer.expires
+op_assign
+id|start_jiffies
+op_plus
+id|timespec_to_jiffies
+c_func
+(paren
+id|ts
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ts-&gt;tv_sec
-OL
-l_int|0
-op_logical_or
+id|time_after
+c_func
 (paren
-op_logical_neg
-id|ts-&gt;tv_sec
-op_logical_and
-op_logical_neg
-id|ts-&gt;tv_nsec
-)paren
-)paren
-(brace
-id|to-&gt;timed_out
-op_assign
-l_int|1
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|how_long
-op_assign
-id|ts-&gt;tv_sec
-op_star
-id|HZ
-suffix:semicolon
-DECL|macro|HZ_NS
-mdefine_line|#define HZ_NS (1000000000 / HZ)
-id|how_long
-op_add_assign
-(paren
-id|ts-&gt;tv_nsec
-op_plus
-id|HZ_NS
-op_minus
-l_int|1
-)paren
-op_div
-id|HZ_NS
-suffix:semicolon
 id|to-&gt;timer.expires
-op_assign
+comma
 id|jiffies
-op_plus
-id|how_long
-suffix:semicolon
+)paren
+)paren
 id|add_timer
 c_func
 (paren
 op_amp
 id|to-&gt;timer
 )paren
+suffix:semicolon
+r_else
+id|to-&gt;timed_out
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 DECL|function|clear_timeout
@@ -3996,6 +3998,12 @@ id|ret
 r_return
 l_int|0
 suffix:semicolon
+id|get_ioctx
+c_func
+(paren
+id|ioctx
+)paren
+suffix:semicolon
 id|io_destroy
 c_func
 (paren
@@ -4271,7 +4279,7 @@ r_goto
 id|out_put_req
 suffix:semicolon
 )brace
-id|req-&gt;ki_user_obj
+id|req-&gt;ki_obj.user
 op_assign
 id|user_iocb
 suffix:semicolon
@@ -4864,7 +4872,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|kiocb-&gt;ki_user_obj
+id|kiocb-&gt;ki_obj.user
 op_eq
 id|iocb
 op_logical_and
@@ -5075,7 +5083,7 @@ id|u64
 r_int
 r_int
 )paren
-id|kiocb-&gt;ki_user_obj
+id|kiocb-&gt;ki_obj.user
 suffix:semicolon
 id|tmp.data
 op_assign

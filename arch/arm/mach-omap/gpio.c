@@ -9,7 +9,6 @@ macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/arch/irqs.h&gt;
 macro_line|#include &lt;asm/arch/gpio.h&gt;
-macro_line|#include &lt;asm/arch/pm.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; * OMAP1510 GPIO registers&n; */
@@ -94,7 +93,7 @@ mdefine_line|#define OMAP730_GPIO_INT_MASK&t;&t;0x10
 DECL|macro|OMAP730_GPIO_INT_STATUS
 mdefine_line|#define OMAP730_GPIO_INT_STATUS&t;&t;0x14
 DECL|macro|OMAP_MPUIO_MASK
-mdefine_line|#define OMAP_MPUIO_MASK         (~OMAP_MAX_GPIO_LINES &amp; 0xff)
+mdefine_line|#define OMAP_MPUIO_MASK&t;&t;(~OMAP_MAX_GPIO_LINES &amp; 0xff)
 DECL|struct|gpio_bank
 r_struct
 id|gpio_bank
@@ -743,7 +742,7 @@ suffix:semicolon
 )brace
 id|l
 op_assign
-id|omap_readl
+id|__raw_readl
 c_func
 (paren
 id|reg
@@ -770,7 +769,7 @@ op_lshift
 id|gpio
 )paren
 suffix:semicolon
-id|omap_writel
+id|__raw_writel
 c_func
 (paren
 id|l
@@ -885,11 +884,11 @@ id|METHOD_MPUIO
 suffix:colon
 id|reg
 op_add_assign
-id|OMAP_MPUIO_OUTPUT_REG
+id|OMAP_MPUIO_OUTPUT
 suffix:semicolon
 id|l
 op_assign
-id|omap_readl
+id|__raw_readl
 c_func
 (paren
 id|reg
@@ -927,7 +926,7 @@ id|OMAP1510_GPIO_DATA_OUTPUT
 suffix:semicolon
 id|l
 op_assign
-id|omap_readl
+id|__raw_readl
 c_func
 (paren
 id|reg
@@ -990,7 +989,7 @@ id|OMAP730_GPIO_DATA_OUTPUT
 suffix:semicolon
 id|l
 op_assign
-id|omap_readl
+id|__raw_readl
 c_func
 (paren
 id|reg
@@ -1029,7 +1028,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|omap_writel
+id|__raw_writel
 c_func
 (paren
 id|l
@@ -1196,7 +1195,7 @@ suffix:semicolon
 )brace
 r_return
 (paren
-id|omap_readl
+id|__raw_readl
 c_func
 (paren
 id|reg
@@ -1253,11 +1252,11 @@ id|METHOD_MPUIO
 suffix:colon
 id|reg
 op_add_assign
-id|OMAP_MPUIO_GPIO_INT_EDGE_REG
+id|OMAP_MPUIO_GPIO_INT_EDGE
 suffix:semicolon
 id|l
 op_assign
-id|omap_readl
+id|__raw_readl
 c_func
 (paren
 id|reg
@@ -1286,7 +1285,7 @@ op_lshift
 id|gpio
 )paren
 suffix:semicolon
-id|omap_writel
+id|__raw_writel
 c_func
 (paren
 id|l
@@ -1305,7 +1304,7 @@ id|OMAP1510_GPIO_INT_CONTROL
 suffix:semicolon
 id|l
 op_assign
-id|omap_readl
+id|__raw_readl
 c_func
 (paren
 id|reg
@@ -1334,7 +1333,7 @@ op_lshift
 id|gpio
 )paren
 suffix:semicolon
-id|omap_writel
+id|__raw_writel
 c_func
 (paren
 id|l
@@ -1373,7 +1372,7 @@ l_int|0x07
 suffix:semicolon
 id|l
 op_assign
-id|omap_readl
+id|__raw_readl
 c_func
 (paren
 id|reg
@@ -1402,7 +1401,7 @@ op_lshift
 l_int|1
 )paren
 suffix:semicolon
-id|omap_writel
+id|__raw_writel
 c_func
 (paren
 id|l
@@ -1421,7 +1420,7 @@ id|OMAP730_GPIO_INT_CONTROL
 suffix:semicolon
 id|l
 op_assign
-id|omap_readl
+id|__raw_readl
 c_func
 (paren
 id|reg
@@ -1450,7 +1449,7 @@ op_lshift
 id|gpio
 )paren
 suffix:semicolon
-id|omap_writel
+id|__raw_writel
 c_func
 (paren
 id|l
@@ -1571,12 +1570,12 @@ id|METHOD_MPUIO
 suffix:colon
 id|l
 op_assign
-id|omap_readl
+id|__raw_readl
 c_func
 (paren
 id|reg
 op_plus
-id|OMAP_MPUIO_GPIO_INT_EDGE_REG
+id|OMAP_MPUIO_GPIO_INT_EDGE
 )paren
 suffix:semicolon
 r_return
@@ -1600,7 +1599,7 @@ id|METHOD_GPIO_1510
 suffix:colon
 id|l
 op_assign
-id|omap_readl
+id|__raw_readl
 c_func
 (paren
 id|reg
@@ -1645,7 +1644,7 @@ id|OMAP1610_GPIO_EDGE_CTRL1
 suffix:semicolon
 r_return
 (paren
-id|omap_readl
+id|__raw_readl
 c_func
 (paren
 id|reg
@@ -1669,7 +1668,7 @@ id|METHOD_GPIO_730
 suffix:colon
 id|l
 op_assign
-id|omap_readl
+id|__raw_readl
 c_func
 (paren
 id|reg
@@ -1775,7 +1774,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|omap_writel
+id|__raw_writel
 c_func
 (paren
 l_int|1
@@ -1831,7 +1830,7 @@ id|OMAP_MPUIO_GPIO_MASKIT
 suffix:semicolon
 id|l
 op_assign
-id|omap_readl
+id|__raw_readl
 c_func
 (paren
 id|reg
@@ -1869,7 +1868,7 @@ id|OMAP1510_GPIO_INT_MASK
 suffix:semicolon
 id|l
 op_assign
-id|omap_readl
+id|__raw_readl
 c_func
 (paren
 id|reg
@@ -1942,7 +1941,7 @@ id|OMAP730_GPIO_INT_MASK
 suffix:semicolon
 id|l
 op_assign
-id|omap_readl
+id|__raw_readl
 c_func
 (paren
 id|reg
@@ -1981,7 +1980,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|omap_writel
+id|__raw_writel
 c_func
 (paren
 id|l
@@ -2111,10 +2110,10 @@ id|bank-&gt;base
 op_plus
 id|OMAP1510_GPIO_PIN_CONTROL
 suffix:semicolon
-id|omap_writel
+id|__raw_writel
 c_func
 (paren
-id|omap_readl
+id|__raw_readl
 c_func
 (paren
 id|reg
@@ -2408,7 +2407,7 @@ suffix:semicolon
 id|u32
 id|isr
 op_assign
-id|omap_readl
+id|__raw_readl
 c_func
 (paren
 id|isr_reg
@@ -2517,7 +2516,7 @@ id|bank-&gt;method
 op_eq
 id|METHOD_GPIO_1510
 )paren
-id|omap_writew
+id|__raw_writew
 c_func
 (paren
 l_int|1
@@ -2542,7 +2541,7 @@ id|bank-&gt;method
 op_eq
 id|METHOD_GPIO_1610
 )paren
-id|omap_writew
+id|__raw_writew
 c_func
 (paren
 l_int|1
@@ -2567,7 +2566,7 @@ id|bank-&gt;method
 op_eq
 id|METHOD_GPIO_730
 )paren
-id|omap_writel
+id|__raw_writel
 c_func
 (paren
 l_int|1
@@ -3046,6 +3045,14 @@ id|bank-&gt;reserved_map
 op_assign
 l_int|0
 suffix:semicolon
+id|bank-&gt;base
+op_assign
+id|IO_ADDRESS
+c_func
+(paren
+id|bank-&gt;base
+)paren
+suffix:semicolon
 id|spin_lock_init
 c_func
 (paren
@@ -3081,7 +3088,7 @@ op_eq
 id|METHOD_GPIO_1510
 )paren
 (brace
-id|omap_writew
+id|__raw_writew
 c_func
 (paren
 l_int|0xffff
@@ -3091,7 +3098,7 @@ op_plus
 id|OMAP1510_GPIO_INT_MASK
 )paren
 suffix:semicolon
-id|omap_writew
+id|__raw_writew
 c_func
 (paren
 l_int|0x0000
@@ -3112,7 +3119,7 @@ op_eq
 id|METHOD_GPIO_1610
 )paren
 (brace
-id|omap_writew
+id|__raw_writew
 c_func
 (paren
 l_int|0x0000
@@ -3122,7 +3129,7 @@ op_plus
 id|OMAP1610_GPIO_IRQENABLE1
 )paren
 suffix:semicolon
-id|omap_writew
+id|__raw_writew
 c_func
 (paren
 l_int|0xffff
@@ -3143,7 +3150,7 @@ op_eq
 id|METHOD_GPIO_730
 )paren
 (brace
-id|omap_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0xffffffff
@@ -3153,7 +3160,7 @@ op_plus
 id|OMAP730_GPIO_INT_MASK
 )paren
 suffix:semicolon
-id|omap_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00000000
@@ -3247,7 +3254,7 @@ id|bank
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Enable system clock for GPIO module.&n;&t; * The CAM_CLK_CTRL_REG *is* really the right place. */
+multiline_comment|/* Enable system clock for GPIO module.&n;&t; * The CAM_CLK_CTRL *is* really the right place. */
 r_if
 c_cond
 (paren
@@ -3262,12 +3269,12 @@ c_func
 id|omap_readl
 c_func
 (paren
-id|ULPD_CAM_CLK_CTRL_REG
+id|ULPD_CAM_CLK_CTRL
 )paren
 op_or
 l_int|0x04
 comma
-id|ULPD_CAM_CLK_CTRL_REG
+id|ULPD_CAM_CLK_CTRL
 )paren
 suffix:semicolon
 r_return
@@ -3300,13 +3307,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|omap_gpio_init
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|omap_gpio_init
-)paren
-suffix:semicolon
 DECL|variable|omap_request_gpio
 id|EXPORT_SYMBOL
 c_func
@@ -3319,6 +3319,34 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|omap_free_gpio
+)paren
+suffix:semicolon
+DECL|variable|omap_set_gpio_direction
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|omap_set_gpio_direction
+)paren
+suffix:semicolon
+DECL|variable|omap_set_gpio_dataout
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|omap_set_gpio_dataout
+)paren
+suffix:semicolon
+DECL|variable|omap_get_gpio_datain
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|omap_get_gpio_datain
+)paren
+suffix:semicolon
+DECL|variable|omap_set_gpio_edge_ctrl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|omap_set_gpio_edge_ctrl
 )paren
 suffix:semicolon
 DECL|variable|omap_gpio_init

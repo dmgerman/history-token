@@ -4119,8 +4119,9 @@ comma
 r_int
 id|cmd
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -4160,10 +4161,6 @@ c_func
 op_amp
 id|vr
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -4243,10 +4240,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 op_amp
@@ -4289,10 +4282,6 @@ c_func
 op_amp
 id|sr
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -4353,10 +4342,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 op_amp
@@ -4663,7 +4648,7 @@ suffix:semicolon
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|IpForwDatagrams
+id|OutForwDatagrams
 )paren
 suffix:semicolon
 r_if
@@ -4984,7 +4969,7 @@ multiline_comment|/* Do not fragment multicasts. Alas, IPv4 does not&n;&t;&t;   
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|IpFragFails
+id|FragFails
 )paren
 suffix:semicolon
 id|ip_rt_put

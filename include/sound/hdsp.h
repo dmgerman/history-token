@@ -237,6 +237,7 @@ id|_snd_hdsp_firmware
 DECL|member|firmware_data
 r_int
 r_int
+id|__user
 op_star
 id|firmware_data
 suffix:semicolon

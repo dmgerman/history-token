@@ -460,6 +460,11 @@ l_int|0UL
 )paren
 r_return
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -656,6 +661,11 @@ op_or
 id|IMAP_VALID
 comma
 id|imap
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

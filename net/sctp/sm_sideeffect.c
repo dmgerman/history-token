@@ -1149,6 +1149,20 @@ id|event
 )paren
 )paren
 suffix:semicolon
+id|sctp_add_cmd_sf
+c_func
+(paren
+id|commands
+comma
+id|SCTP_CMD_NEW_STATE
+comma
+id|SCTP_STATE
+c_func
+(paren
+id|SCTP_STATE_CLOSED
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* SEND_FAILED sent later when cleaning up the association. */
 id|asoc-&gt;outqueue.error
 op_assign
@@ -1269,6 +1283,23 @@ c_func
 id|SCTP_STATE_CLOSED
 )paren
 )paren
+suffix:semicolon
+multiline_comment|/* Set sk_err to ECONNRESET on a 1-1 style socket. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sctp_style
+c_func
+(paren
+id|asoc-&gt;base.sk
+comma
+id|UDP
+)paren
+)paren
+id|asoc-&gt;base.sk-&gt;sk_err
+op_assign
+id|ECONNRESET
 suffix:semicolon
 multiline_comment|/* SEND_FAILED sent later when cleaning up the association. */
 id|asoc-&gt;outqueue.error
@@ -3942,6 +3973,15 @@ id|asoc
 comma
 id|chunk
 )paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SCTP_CMD_CLEAR_INIT_TAG
+suffix:colon
+id|asoc-&gt;peer.i.init_tag
+op_assign
+l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon

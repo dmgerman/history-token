@@ -1226,5 +1226,8 @@ DECL|macro|ARCH_HAS_SCHED_WAKE_IDLE
 mdefine_line|#define ARCH_HAS_SCHED_WAKE_IDLE
 macro_line|#endif
 macro_line|#endif /* ASSEMBLY */
+multiline_comment|/*&n; * Number of entries in the SLB. If this ever changes we should handle&n; * it with a use a cpu feature fixup.&n; */
+DECL|macro|SLB_NUM_ENTRIES
+mdefine_line|#define SLB_NUM_ENTRIES 64
 macro_line|#endif /* __ASM_PPC64_PROCESSOR_H */
 eof

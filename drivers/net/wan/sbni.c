@@ -5902,7 +5902,7 @@ id|sbni_flags
 op_star
 )paren
 op_amp
-id|ifr-&gt;ifr_data
+id|ifr-&gt;ifr_ifru
 suffix:semicolon
 r_if
 c_cond

@@ -1362,6 +1362,22 @@ id|size
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Sanity check on the size parameter */
+id|error
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|size
+op_le
+l_int|0
+)paren
+r_goto
+id|eexit_1
+suffix:semicolon
 multiline_comment|/* Correctly size the hash */
 id|hashbits
 op_assign

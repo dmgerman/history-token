@@ -6331,6 +6331,7 @@ c_func
 (paren
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|args
@@ -6459,6 +6460,7 @@ c_func
 (paren
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|args
@@ -6564,6 +6566,7 @@ id|attrib
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|args

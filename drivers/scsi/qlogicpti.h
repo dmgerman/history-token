@@ -2,7 +2,6 @@ multiline_comment|/* qlogicpti.h: Performance Technologies QlogicISP sbus card d
 macro_line|#ifndef _QLOGICPTI_H
 DECL|macro|_QLOGICPTI_H
 mdefine_line|#define _QLOGICPTI_H
-macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* Qlogic/SBUS controller registers. */
 DECL|macro|SBUS_CFG1
 mdefine_line|#define SBUS_CFG1&t;0x006UL
@@ -722,6 +721,9 @@ id|QUEUE_ENTRY_LEN
 suffix:semicolon
 )brace
 suffix:semicolon
+r_struct
+id|scsi_cmnd
+suffix:semicolon
 multiline_comment|/* Software state for the driver. */
 DECL|struct|qlogicpti
 r_struct
@@ -791,7 +793,8 @@ id|MAX_TARGETS
 suffix:semicolon
 multiline_comment|/* The cmd-&gt;handler is only 32-bits, so that things work even on monster&n;&t; * Ex000 sparc64 machines with &gt;4GB of ram we just keep track of the&n;&t; * scsi command pointers here.  This is essentially what Matt Jacob does. -DaveM&n;&t; */
 DECL|member|cmd_slots
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd_slots
 (braket

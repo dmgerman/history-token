@@ -713,7 +713,10 @@ comma
 dot
 id|maxlen
 op_assign
-l_int|64
+r_sizeof
+(paren
+id|system_utsname.sysname
+)paren
 comma
 dot
 id|mode
@@ -753,7 +756,10 @@ comma
 dot
 id|maxlen
 op_assign
-l_int|64
+r_sizeof
+(paren
+id|system_utsname.release
+)paren
 comma
 dot
 id|mode
@@ -793,7 +799,10 @@ comma
 dot
 id|maxlen
 op_assign
-l_int|64
+r_sizeof
+(paren
+id|system_utsname.version
+)paren
 comma
 dot
 id|mode
@@ -833,7 +842,10 @@ comma
 dot
 id|maxlen
 op_assign
-l_int|64
+r_sizeof
+(paren
+id|system_utsname.nodename
+)paren
 comma
 dot
 id|mode
@@ -873,7 +885,10 @@ comma
 dot
 id|maxlen
 op_assign
-l_int|64
+r_sizeof
+(paren
+id|system_utsname.domainname
+)paren
 comma
 dot
 id|mode
@@ -1485,7 +1500,7 @@ comma
 dot
 id|maxlen
 op_assign
-l_int|256
+id|KMOD_PATH_LEN
 comma
 dot
 id|mode
@@ -1528,7 +1543,7 @@ comma
 dot
 id|maxlen
 op_assign
-l_int|256
+id|KMOD_PATH_LEN
 comma
 dot
 id|mode
@@ -8228,6 +8243,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -8260,6 +8276,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -8291,6 +8308,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -8322,6 +8340,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -8353,6 +8372,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -8384,6 +8404,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -8415,6 +8436,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -8446,6 +8468,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -8477,6 +8500,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -9452,6 +9476,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -9483,6 +9508,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma

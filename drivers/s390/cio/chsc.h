@@ -76,13 +76,5 @@ c_func
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|is_chpid_online
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
 macro_line|#endif
 eof

@@ -12529,7 +12529,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|naca-&gt;slb_size
+id|SLB_NUM_ENTRIES
 suffix:semicolon
 id|i
 op_increment

@@ -1394,10 +1394,9 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|BUG
-c_func
-(paren
-)paren
+id|status
+op_assign
+id|nfserr_badtype
 suffix:semicolon
 )brace
 r_if

@@ -156,6 +156,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -182,6 +183,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -582,12 +584,18 @@ r_void
 id|appldata_mod_vtimer_wrap
 c_func
 (paren
+r_void
+op_star
+id|p
+)paren
+(brace
 r_struct
 id|appldata_mod_vtimer_args
 op_star
 id|args
-)paren
-(brace
+op_assign
+id|p
+suffix:semicolon
 id|mod_virt_timer
 c_func
 (paren
@@ -853,6 +861,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -1212,6 +1221,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -1446,10 +1456,6 @@ suffix:semicolon
 id|smp_call_function_on
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|appldata_mod_vtimer_wrap
 comma
 op_amp
@@ -1514,6 +1520,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma

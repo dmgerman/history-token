@@ -207,68 +207,6 @@ DECL|macro|mmu_unmap_dma_area
 mdefine_line|#define mmu_unmap_dma_area(ba,len) BTFIXUP_CALL(mmu_unmap_dma_area)(ba,len)
 DECL|macro|mmu_translate_dvma
 mdefine_line|#define mmu_translate_dvma(ba)     BTFIXUP_CALL(mmu_translate_dvma)(ba)
-multiline_comment|/*&n; */
-id|BTFIXUPDEF_SIMM13
-c_func
-(paren
-id|pmd_shift
-)paren
-id|BTFIXUPDEF_SETHI
-c_func
-(paren
-id|pmd_size
-)paren
-id|BTFIXUPDEF_SETHI
-c_func
-(paren
-id|pmd_mask
-)paren
-r_extern
-r_int
-r_int
-id|pmd_align
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-id|__attribute_const__
-suffix:semicolon
-DECL|function|pmd_align
-r_extern
-id|__inline__
-r_int
-r_int
-id|pmd_align
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-(brace
-r_return
-(paren
-(paren
-id|addr
-op_plus
-op_complement
-id|BTFIXUP_SETHI
-c_func
-(paren
-id|pmd_mask
-)paren
-)paren
-op_amp
-id|BTFIXUP_SETHI
-c_func
-(paren
-id|pmd_mask
-)paren
-)paren
-suffix:semicolon
-)brace
 id|BTFIXUPDEF_SIMM13
 c_func
 (paren
@@ -283,57 +221,6 @@ id|BTFIXUPDEF_SETHI
 c_func
 (paren
 id|pgdir_mask
-)paren
-r_extern
-r_int
-r_int
-id|pgdir_align
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-id|__attribute_const__
-suffix:semicolon
-DECL|function|pgdir_align
-r_extern
-id|__inline__
-r_int
-r_int
-id|pgdir_align
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-(brace
-r_return
-(paren
-(paren
-id|addr
-op_plus
-op_complement
-id|BTFIXUP_SETHI
-c_func
-(paren
-id|pgdir_mask
-)paren
-)paren
-op_amp
-id|BTFIXUP_SETHI
-c_func
-(paren
-id|pgdir_mask
-)paren
-)paren
-suffix:semicolon
-)brace
-id|BTFIXUPDEF_SIMM13
-c_func
-(paren
-id|ptrs_per_pte
 )paren
 id|BTFIXUPDEF_SIMM13
 c_func
@@ -382,23 +269,21 @@ c_func
 id|page_kernel
 )paren
 DECL|macro|PMD_SHIFT
-mdefine_line|#define PMD_SHIFT       &t;BTFIXUP_SIMM13(pmd_shift)
+mdefine_line|#define PMD_SHIFT&t;&t;SUN4C_PMD_SHIFT
 DECL|macro|PMD_SIZE
-mdefine_line|#define PMD_SIZE        &t;BTFIXUP_SETHI(pmd_size)
+mdefine_line|#define PMD_SIZE        &t;(1UL &lt;&lt; PMD_SHIFT)
 DECL|macro|PMD_MASK
-mdefine_line|#define PMD_MASK        &t;BTFIXUP_SETHI(pmd_mask)
+mdefine_line|#define PMD_MASK        &t;(~(PMD_SIZE-1))
 DECL|macro|PMD_ALIGN
-mdefine_line|#define PMD_ALIGN(addr) &t;pmd_align(addr)
+mdefine_line|#define PMD_ALIGN(__addr) &t;(((__addr) + ~PMD_MASK) &amp; PMD_MASK)
 DECL|macro|PGDIR_SHIFT
 mdefine_line|#define PGDIR_SHIFT     &t;BTFIXUP_SIMM13(pgdir_shift)
 DECL|macro|PGDIR_SIZE
 mdefine_line|#define PGDIR_SIZE      &t;BTFIXUP_SETHI(pgdir_size)
 DECL|macro|PGDIR_MASK
 mdefine_line|#define PGDIR_MASK      &t;BTFIXUP_SETHI(pgdir_mask)
-DECL|macro|PGDIR_ALIGN
-mdefine_line|#define PGDIR_ALIGN     &t;pgdir_align(addr)
 DECL|macro|PTRS_PER_PTE
-mdefine_line|#define PTRS_PER_PTE    &t;BTFIXUP_SIMM13(ptrs_per_pte)
+mdefine_line|#define PTRS_PER_PTE    &t;1024
 DECL|macro|PTRS_PER_PMD
 mdefine_line|#define PTRS_PER_PMD    &t;BTFIXUP_SIMM13(ptrs_per_pmd)
 DECL|macro|PTRS_PER_PGD
@@ -407,6 +292,8 @@ DECL|macro|USER_PTRS_PER_PGD
 mdefine_line|#define USER_PTRS_PER_PGD&t;BTFIXUP_SIMM13(user_ptrs_per_pgd)
 DECL|macro|FIRST_USER_PGD_NR
 mdefine_line|#define FIRST_USER_PGD_NR&t;0
+DECL|macro|PTE_SIZE
+mdefine_line|#define PTE_SIZE&t;&t;(PTRS_PER_PTE*4)
 DECL|macro|PAGE_NONE
 mdefine_line|#define PAGE_NONE      __pgprot(BTFIXUP_INT(page_none))
 DECL|macro|PAGE_SHARED

@@ -1,4 +1,11 @@
-multiline_comment|/* $Id: i2c.h,v 1.2 2002/11/18 13:16:06 starvik Exp $ */
+multiline_comment|/* $Id: i2c.h,v 1.3 2004/05/28 09:26:59 starvik Exp $ */
+r_int
+id|i2c_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* High level I2C actions */
 r_int
 id|i2c_writereg

@@ -511,6 +511,7 @@ suffix:semicolon
 multiline_comment|/* size in bytes of the buf */
 DECL|member|buf
 id|BYTE
+id|__user
 op_star
 id|buf
 suffix:semicolon
@@ -548,6 +549,7 @@ multiline_comment|/* size in bytes of the buf */
 multiline_comment|/* &lt; malloc_size * MAXSGENTRIES */
 DECL|member|buf
 id|BYTE
+id|__user
 op_star
 id|buf
 suffix:semicolon

@@ -610,6 +610,7 @@ id|file
 op_star
 comma
 r_void
+id|__user
 op_star
 comma
 r_int
@@ -626,6 +627,7 @@ op_star
 id|table
 comma
 r_int
+id|__user
 op_star
 id|name
 comma
@@ -633,14 +635,17 @@ r_int
 id|nlen
 comma
 r_void
+id|__user
 op_star
 id|oldval
 comma
 r_int
+id|__user
 op_star
 id|oldlenp
 comma
 r_void
+id|__user
 op_star
 id|newval
 comma
@@ -1666,6 +1671,7 @@ op_star
 id|filep
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -1825,6 +1831,7 @@ op_star
 id|table
 comma
 r_int
+id|__user
 op_star
 id|name
 comma
@@ -1832,14 +1839,17 @@ r_int
 id|nlen
 comma
 r_void
+id|__user
 op_star
 id|oldval
 comma
 r_int
+id|__user
 op_star
 id|oldlenp
 comma
 r_void
+id|__user
 op_star
 id|newval
 comma
@@ -1915,6 +1925,7 @@ id|value
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|newval
@@ -2501,6 +2512,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren

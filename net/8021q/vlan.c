@@ -97,8 +97,9 @@ r_int
 id|vlan_ioctl_handler
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__user
+op_star
 )paren
 suffix:semicolon
 r_static
@@ -2204,15 +2205,16 @@ r_return
 id|NOTIFY_DONE
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;VLAN IOCTL handler.&n; *&t;o execute requested action or pass command to the device driver&n; *   arg is really a void* to a vlan_ioctl_args structure.&n; */
+multiline_comment|/*&n; *&t;VLAN IOCTL handler.&n; *&t;o execute requested action or pass command to the device driver&n; *   arg is really a struct vlan_ioctl_args __user *.&n; */
 DECL|function|vlan_ioctl_handler
 r_static
 r_int
 id|vlan_ioctl_handler
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -2249,10 +2251,6 @@ c_func
 op_amp
 id|args
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 r_sizeof

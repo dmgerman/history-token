@@ -328,8 +328,9 @@ comma
 r_int
 id|cmd
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 suffix:semicolon

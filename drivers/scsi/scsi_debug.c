@@ -8502,6 +8502,7 @@ r_void
 id|do_create_driverfs_files
 c_func
 (paren
+r_void
 )paren
 (brace
 id|driver_create_file
@@ -8591,6 +8592,7 @@ r_void
 id|do_remove_driverfs_files
 c_func
 (paren
+r_void
 )paren
 (brace
 id|driver_remove_file
@@ -9141,6 +9143,7 @@ r_int
 id|sdebug_add_adapter
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -9450,6 +9453,7 @@ r_void
 id|sdebug_remove_adapter
 c_func
 (paren
+r_void
 )paren
 (brace
 r_struct

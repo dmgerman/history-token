@@ -48,9 +48,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.5&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.6&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;May 25, 2004&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;June 12, 2004&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
@@ -449,6 +449,22 @@ comma
 (brace
 id|PCI_VENDOR_ID_BROADCOM
 comma
+id|PCI_DEVICE_ID_TIGON3_5789
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0UL
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_BROADCOM
+comma
 id|PCI_DEVICE_ID_TIGON3_5901
 comma
 id|PCI_ANY_ID
@@ -578,6 +594,38 @@ comma
 id|PCI_VENDOR_ID_BROADCOM
 comma
 id|PCI_DEVICE_ID_TIGON3_5750M
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0UL
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_BROADCOM
+comma
+id|PCI_DEVICE_ID_TIGON3_5751M
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0UL
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_BROADCOM
+comma
+id|PCI_DEVICE_ID_TIGON3_5751F
 comma
 id|PCI_ANY_ID
 comma
@@ -34818,13 +34866,11 @@ id|mii_ioctl_data
 op_star
 id|data
 op_assign
+id|if_mii
+c_func
 (paren
-r_struct
-id|mii_ioctl_data
-op_star
+id|ifr
 )paren
-op_amp
-id|ifr-&gt;ifr_data
 suffix:semicolon
 r_struct
 id|tg3
@@ -38564,6 +38610,12 @@ c_func
 id|tp
 )paren
 suffix:semicolon
+multiline_comment|/* Always use host TXDs, it performs better in particular&n;&t; * with multi-frag packets.  The tests below are kept here&n;&t; * as documentation should we change this decision again&n;&t; * in the future.&n;&t; */
+id|tp-&gt;tg3_flags
+op_or_assign
+id|TG3_FLAG_HOST_TXDS
+suffix:semicolon
+macro_line|#if 0
 multiline_comment|/* Determine if TX descriptors will reside in&n;&t; * main memory or in the chip SRAM.&n;&t; */
 r_if
 c_cond
@@ -38596,6 +38648,7 @@ id|tp-&gt;tg3_flags
 op_or_assign
 id|TG3_FLAG_HOST_TXDS
 suffix:semicolon
+macro_line|#endif
 id|grc_misc_cfg
 op_assign
 id|tr32
@@ -38708,6 +38761,16 @@ id|tp-&gt;pdev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_TIGON3_5705F
 )paren
+)paren
+op_logical_or
+(paren
+id|tp-&gt;pdev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_BROADCOM
+op_logical_and
+id|tp-&gt;pdev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_TIGON3_5751F
 )paren
 )paren
 id|tp-&gt;tg3_flags
@@ -42560,6 +42623,14 @@ id|dev
 )paren
 r_return
 l_int|0
+suffix:semicolon
+id|pci_restore_state
+c_func
+(paren
+id|tp-&gt;pdev
+comma
+id|tp-&gt;pci_cfg_state
+)paren
 suffix:semicolon
 id|err
 op_assign

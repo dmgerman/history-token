@@ -3751,7 +3751,7 @@ id|alloc_percpu
 c_func
 (paren
 r_struct
-id|ip_mib
+id|ipstats_mib
 )paren
 suffix:semicolon
 id|ip_statistics
@@ -3763,7 +3763,7 @@ id|alloc_percpu
 c_func
 (paren
 r_struct
-id|ip_mib
+id|ipstats_mib
 )paren
 suffix:semicolon
 id|icmp_statistics

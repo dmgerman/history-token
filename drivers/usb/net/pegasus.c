@@ -5085,6 +5085,7 @@ id|cmd
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|uaddr
@@ -5508,7 +5509,7 @@ id|__u16
 op_star
 )paren
 op_amp
-id|rq-&gt;ifr_data
+id|rq-&gt;ifr_ifru
 suffix:semicolon
 id|pegasus_t
 op_star
@@ -5535,11 +5536,6 @@ c_func
 (paren
 id|net
 comma
-(paren
-r_void
-id|__user
-op_star
-)paren
 id|rq-&gt;ifr_data
 )paren
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: time.c,v 1.2 2003/07/04 08:27:41 starvik Exp $&n; *&n; *  linux/arch/cris/arch-v10/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *  Copyright (C) 1999-2002 Axis Communications AB&n; *&n; */
+multiline_comment|/* $Id: time.c,v 1.3 2004/06/01 05:38:42 starvik Exp $&n; *&n; *  linux/arch/cris/arch-v10/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *  Copyright (C) 1999-2002 Axis Communications AB&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
@@ -814,6 +814,20 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Initialize wall_to_monotonic such that adding it to xtime will yield zero, the&n;&t; * tv_nsec field must be normalized (i.e., 0 &lt;= nsec &lt; NSEC_PER_SEC).&n;&t; */
+id|set_normalized_timespec
+c_func
+(paren
+op_amp
+id|wall_to_monotonic
+comma
+op_minus
+id|xtime.tv_sec
+comma
+op_minus
+id|xtime.tv_nsec
+)paren
+suffix:semicolon
 multiline_comment|/* Setup the etrax timers&n;&t; * Base frequency is 25000 hz, divider 250 -&gt; 100 HZ&n;&t; * In normal mode, we use timer0, so timer1 is free. In cascade&n;&t; * mode (which we sometimes use for debugging) both timers are used.&n;&t; * Remember that linux/timex.h contains #defines that rely on the&n;&t; * timer settings below (hz and divide factor) !!!&n;&t; */
 macro_line|#ifdef USE_CASCADE_TIMERS
 op_star

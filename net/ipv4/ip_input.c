@@ -32,7 +32,7 @@ id|DEFINE_SNMP_STAT
 c_func
 (paren
 r_struct
-id|ip_mib
+id|ipstats_mib
 comma
 id|ip_statistics
 )paren
@@ -441,7 +441,7 @@ suffix:semicolon
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|IpInDelivers
+id|InDelivers
 )paren
 suffix:semicolon
 )brace
@@ -471,7 +471,7 @@ id|skb
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|IpInUnknownProtos
+id|InUnknownProtos
 )paren
 suffix:semicolon
 id|icmp_send
@@ -492,7 +492,7 @@ r_else
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|IpInDelivers
+id|InDelivers
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -745,7 +745,7 @@ id|skb
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|IpInDiscards
+id|InDiscards
 )paren
 suffix:semicolon
 r_goto
@@ -893,7 +893,7 @@ suffix:colon
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|IpInHdrErrors
+id|InHdrErrors
 )paren
 suffix:semicolon
 id|drop
@@ -949,7 +949,7 @@ suffix:semicolon
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|IpInReceives
+id|InReceives
 )paren
 suffix:semicolon
 r_if
@@ -973,7 +973,7 @@ l_int|NULL
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|IpInDiscards
+id|InDiscards
 )paren
 suffix:semicolon
 r_goto
@@ -1139,7 +1139,7 @@ suffix:colon
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|IpInHdrErrors
+id|InHdrErrors
 )paren
 suffix:semicolon
 id|drop

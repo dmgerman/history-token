@@ -2,7 +2,9 @@ multiline_comment|/*&n; * linux/arch/arm/mach-omap/board-innovator.c&n; *&n; * B
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/arch/clocks.h&gt;
@@ -30,11 +32,11 @@ id|__initdata
 op_assign
 (brace
 (brace
-id|OMAP1510P1_FPGA_BASE
+id|OMAP1510_FPGA_BASE
 comma
-id|OMAP1510P1_FPGA_START
+id|OMAP1510_FPGA_START
 comma
-id|OMAP1510P1_FPGA_SIZE
+id|OMAP1510_FPGA_SIZE
 comma
 id|MT_DEVICE
 )brace
@@ -58,13 +60,13 @@ op_assign
 dot
 id|start
 op_assign
-id|OMAP1510P1_FPGA_ETHR_START
+id|OMAP1510_FPGA_ETHR_START
 comma
 multiline_comment|/* Physical */
 dot
 id|end
 op_assign
-id|OMAP1510P1_FPGA_ETHR_START
+id|OMAP1510_FPGA_ETHR_START
 op_plus
 l_int|16
 comma
@@ -423,6 +425,13 @@ id|innovator1510_io_desc
 )paren
 )paren
 suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
+multiline_comment|/* Delay needed for FPGA */
 multiline_comment|/* Dump the Innovator FPGA rev early - useful info for support. */
 id|printk
 c_func
@@ -432,19 +441,19 @@ comma
 id|fpga_read
 c_func
 (paren
-id|OMAP1510P1_FPGA_REV_HIGH
+id|OMAP1510_FPGA_REV_HIGH
 )paren
 comma
 id|fpga_read
 c_func
 (paren
-id|OMAP1510P1_FPGA_REV_LOW
+id|OMAP1510_FPGA_REV_LOW
 )paren
 comma
 id|fpga_read
 c_func
 (paren
-id|OMAP1510P1_FPGA_BOARD_REV
+id|OMAP1510_FPGA_BOARD_REV
 )paren
 )paren
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: isl_oid.h,v 1.3 2004/03/09 09:05:27 mcgrof Exp $&n; *  &n; *  Copyright (C) 2003 Herbert Valerio Riedel &lt;hvr@gnu.org&gt;&n; *  Copyright (C) 2004 Luis R. Rodriguez &lt;mcgrof@ruslug.rutgers.edu&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
+multiline_comment|/*&n; *&n; *  &n; *  Copyright (C) 2003 Herbert Valerio Riedel &lt;hvr@gnu.org&gt;&n; *  Copyright (C) 2004 Luis R. Rodriguez &lt;mcgrof@ruslug.rutgers.edu&gt;&n; *  Copyright (C) 2004 Aurelien Alleaume &lt;slts@free.fr&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
 macro_line|#if !defined(_ISL_OID_H)
 DECL|macro|_ISL_OID_H
 mdefine_line|#define _ISL_OID_H
@@ -1229,13 +1229,33 @@ DECL|enumerator|OID_NUM_LAST
 id|OID_NUM_LAST
 )brace
 suffix:semicolon
-multiline_comment|/* We  could add more flags. eg: in which mode are they allowed, ro, rw, ...*/
 DECL|macro|OID_FLAG_CACHED
-mdefine_line|#define OID_FLAG_CACHED&t;0x01
-DECL|macro|OID_FLAG_U32
-mdefine_line|#define OID_FLAG_U32&t;0x02
-DECL|macro|OID_FLAG_MLMEEX
-mdefine_line|#define OID_FLAG_MLMEEX&t;0x04&t;/* this type is special because of a variable&n;&t;&t;&t;&t;   size field when sending. Not yet implemented (not used in driver). */
+mdefine_line|#define OID_FLAG_CACHED&t;&t;0x80
+DECL|macro|OID_FLAG_TYPE
+mdefine_line|#define OID_FLAG_TYPE&t;&t;0x7f
+DECL|macro|OID_TYPE_U32
+mdefine_line|#define OID_TYPE_U32&t;&t;0x01
+DECL|macro|OID_TYPE_SSID
+mdefine_line|#define OID_TYPE_SSID&t;&t;0x02
+DECL|macro|OID_TYPE_KEY
+mdefine_line|#define OID_TYPE_KEY&t;&t;0x03
+DECL|macro|OID_TYPE_BUFFER
+mdefine_line|#define OID_TYPE_BUFFER&t;&t;0x04
+DECL|macro|OID_TYPE_BSS
+mdefine_line|#define OID_TYPE_BSS&t;&t;0x05
+DECL|macro|OID_TYPE_BSSLIST
+mdefine_line|#define OID_TYPE_BSSLIST&t;0x06
+DECL|macro|OID_TYPE_FREQUENCIES
+mdefine_line|#define OID_TYPE_FREQUENCIES&t;0x07
+DECL|macro|OID_TYPE_MLME
+mdefine_line|#define OID_TYPE_MLME&t;&t;0x08
+DECL|macro|OID_TYPE_MLMEEX
+mdefine_line|#define OID_TYPE_MLMEEX&t;&t;0x09
+DECL|macro|OID_TYPE_ADDR
+mdefine_line|#define OID_TYPE_ADDR&t;&t;0x0A
+DECL|macro|OID_TYPE_RAW
+mdefine_line|#define OID_TYPE_RAW&t;&t;0x0B
+multiline_comment|/* OID_TYPE_MLMEEX is special because of a variable size field when sending.&n; * Not yet implemented (not used in driver anyway).&n; */
 DECL|struct|oid_t
 r_struct
 id|oid_t
@@ -1254,7 +1274,7 @@ DECL|member|size
 r_int
 id|size
 suffix:semicolon
-multiline_comment|/* size of the associated data */
+multiline_comment|/* max size of the associated data */
 DECL|member|flags
 r_char
 id|flags
@@ -1282,6 +1302,8 @@ DECL|macro|IWMAX_BSS
 mdefine_line|#define&t;IWMAX_BSS&t;24
 DECL|macro|IWMAX_FREQ
 mdefine_line|#define IWMAX_FREQ&t;30
+DECL|macro|PRIV_STR_SIZE
+mdefine_line|#define PRIV_STR_SIZE&t;1024
 macro_line|#endif&t;&t;&t;&t;/* !defined(_ISL_OID_H) */
 multiline_comment|/* EOF */
 eof

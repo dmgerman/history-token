@@ -6,8 +6,13 @@ macro_line|#include &lt;asm/arch/page.h&gt;
 multiline_comment|/* PAGE_SHIFT determines the page size */
 DECL|macro|PAGE_SHIFT
 mdefine_line|#define PAGE_SHIFT&t;13
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|PAGE_SIZE
 mdefine_line|#define PAGE_SIZE&t;(1UL &lt;&lt; PAGE_SHIFT)
+macro_line|#else
+DECL|macro|PAGE_SIZE
+mdefine_line|#define PAGE_SIZE&t;(1 &lt;&lt; PAGE_SHIFT)
+macro_line|#endif
 DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
 macro_line|#ifdef __KERNEL__
@@ -20,6 +25,7 @@ mdefine_line|#define clear_user_page(page, vaddr, pg)    clear_page(page)
 DECL|macro|copy_user_page
 mdefine_line|#define copy_user_page(to, from, vaddr, pg) copy_page(to, from)
 multiline_comment|/*&n; * These are used to make use of C type-checking..&n; */
+macro_line|#ifndef __ASSEMBLY__
 DECL|member|pte
 DECL|typedef|pte_t
 r_typedef
@@ -68,6 +74,7 @@ suffix:semicolon
 )brace
 id|pgprot_t
 suffix:semicolon
+macro_line|#endif
 DECL|macro|pte_val
 mdefine_line|#define pte_val(x)&t;((x).pte)
 DECL|macro|pmd_val
@@ -98,7 +105,7 @@ mdefine_line|#define virt_to_page(kaddr)    (mem_map + (((unsigned long)(kaddr) 
 DECL|macro|VALID_PAGE
 mdefine_line|#define VALID_PAGE(page)       (((page) - mem_map) &lt; max_mapnr)
 DECL|macro|virt_addr_valid
-mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid((kaddr) &gt;&gt; PAGE_SHIFT)
+mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid((unsigned)(kaddr) &gt;&gt; PAGE_SHIFT)
 multiline_comment|/* convert a page (based on mem_map and forward) to a physical address&n; * do this by figuring out the virtual address and then use __pa&n; */
 DECL|macro|page_to_phys
 mdefine_line|#define page_to_phys(page)     __pa((((page) - mem_map) &lt;&lt; PAGE_SHIFT) + PAGE_OFFSET)
@@ -110,7 +117,6 @@ DECL|macro|BUG
 mdefine_line|#define BUG() do { &bslash;&n;  printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;} while (0)
 DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page) do { &bslash;&n;         BUG(); &bslash;&n;} while (0)
-macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/* Pure 2^n version of get_order */
 DECL|function|get_order
 r_static
@@ -166,6 +172,7 @@ r_return
 id|order
 suffix:semicolon
 )brace
+macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|VM_DATA_DEFAULT_FLAGS
 mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 macro_line|#endif /* __KERNEL__ */

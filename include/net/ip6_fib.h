@@ -96,6 +96,12 @@ DECL|member|u
 )brace
 id|u
 suffix:semicolon
+DECL|member|rt6i_idev
+r_struct
+id|inet6_dev
+op_star
+id|rt6i_idev
+suffix:semicolon
 DECL|macro|rt6i_dev
 mdefine_line|#define rt6i_dev&t;&t;&t;u.dst.dev
 DECL|macro|rt6i_nexthop

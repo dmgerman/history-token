@@ -222,7 +222,8 @@ c_func
 r_struct
 id|sk_buff
 op_star
-id|skb
+op_star
+id|pskb
 )paren
 suffix:semicolon
 r_extern
@@ -233,7 +234,8 @@ c_func
 r_struct
 id|sk_buff
 op_star
-id|skb
+op_star
+id|pskb
 )paren
 suffix:semicolon
 r_extern
@@ -584,7 +586,7 @@ id|DECLARE_SNMP_STAT
 c_func
 (paren
 r_struct
-id|ip_mib
+id|ipstats_mib
 comma
 id|ip_statistics
 )paren

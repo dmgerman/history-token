@@ -158,6 +158,7 @@ id|output
 r_struct
 id|sk_buff
 op_star
+op_star
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_CLS_ROUTE
@@ -241,6 +242,21 @@ id|destroy
 r_struct
 id|dst_entry
 op_star
+)paren
+suffix:semicolon
+DECL|member|ifdown
+r_void
+(paren
+op_star
+id|ifdown
+)paren
+(paren
+r_struct
+id|dst_entry
+op_star
+comma
+r_int
+id|how
 )paren
 suffix:semicolon
 DECL|member|negative_advice
@@ -866,6 +882,7 @@ op_member_access_from_pointer
 id|output
 c_func
 (paren
+op_amp
 id|skb
 )paren
 suffix:semicolon

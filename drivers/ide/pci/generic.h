@@ -40,16 +40,6 @@ op_assign
 (brace
 multiline_comment|/* 0 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_NS
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_NS_87410
-comma
-dot
 id|name
 op_assign
 l_string|&quot;NS87410&quot;
@@ -105,16 +95,6 @@ comma
 (brace
 multiline_comment|/* 1 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_PCTECH
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_PCTECH_SAMURAI_IDE
-comma
-dot
 id|name
 op_assign
 l_string|&quot;SAMURAI&quot;
@@ -148,16 +128,6 @@ comma
 comma
 (brace
 multiline_comment|/* 2 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_HOLTEK
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_HOLTEK_6565
-comma
 dot
 id|name
 op_assign
@@ -193,16 +163,6 @@ comma
 (brace
 multiline_comment|/* 3 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_UMC
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_UMC_UM8673F
-comma
-dot
 id|name
 op_assign
 l_string|&quot;UM8673F&quot;
@@ -236,16 +196,6 @@ comma
 comma
 (brace
 multiline_comment|/* 4 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_UMC
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_UMC_UM8886A
-comma
 dot
 id|name
 op_assign
@@ -281,16 +231,6 @@ comma
 (brace
 multiline_comment|/* 5 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_UMC
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_UMC_UM8886BF
-comma
-dot
 id|name
 op_assign
 l_string|&quot;UM8886BF&quot;
@@ -324,16 +264,6 @@ comma
 comma
 (brace
 multiline_comment|/* 6 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_HINT
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_HINT_VXPROII_IDE
-comma
 dot
 id|name
 op_assign
@@ -369,16 +299,6 @@ comma
 (brace
 multiline_comment|/* 7 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_VIA
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_VIA_82C561
-comma
-dot
 id|name
 op_assign
 l_string|&quot;VIA_IDE&quot;
@@ -412,16 +332,6 @@ comma
 comma
 (brace
 multiline_comment|/* 8 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_OPTI
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_OPTI_82C558
-comma
 dot
 id|name
 op_assign
@@ -457,16 +367,6 @@ comma
 (brace
 multiline_comment|/* 9 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_VIA
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_VIA_8237_SATA
-comma
-dot
 id|name
 op_assign
 l_string|&quot;VIA8237SATA&quot;
@@ -500,16 +400,6 @@ comma
 comma
 (brace
 multiline_comment|/* 10 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_TOSHIBA
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_TOSHIBA_PICCOLO
-comma
 dot
 id|name
 op_assign
@@ -545,16 +435,6 @@ comma
 (brace
 multiline_comment|/* 11 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_TOSHIBA
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_TOSHIBA_PICCOLO_1
-comma
-dot
 id|name
 op_assign
 l_string|&quot;Piccolo0103&quot;
@@ -588,16 +468,6 @@ comma
 comma
 (brace
 multiline_comment|/* 12 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_TOSHIBA
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_TOSHIBA_PICCOLO_2
-comma
 dot
 id|name
 op_assign
@@ -642,16 +512,6 @@ op_assign
 (brace
 (brace
 multiline_comment|/* 0 */
-dot
-id|vendor
-op_assign
-l_int|0
-comma
-dot
-id|device
-op_assign
-l_int|0
-comma
 dot
 id|name
 op_assign
