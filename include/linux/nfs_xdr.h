@@ -2393,6 +2393,25 @@ suffix:semicolon
 multiline_comment|/* response */
 )brace
 suffix:semicolon
+DECL|struct|nfs4_statfs_arg
+r_struct
+id|nfs4_statfs_arg
+(brace
+DECL|member|fh
+r_const
+r_struct
+id|nfs_fh
+op_star
+id|fh
+suffix:semicolon
+DECL|member|bitmask
+r_const
+id|u32
+op_star
+id|bitmask
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|nfs4_op
 r_struct
 id|nfs4_op
