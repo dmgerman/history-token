@@ -1046,6 +1046,9 @@ suffix:semicolon
 multiline_comment|/****************** ****************** *******************/
 macro_line|#endif
 multiline_comment|/* Per card data structure */
+r_struct
+id|resource
+suffix:semicolon
 DECL|struct|cyclades_card
 r_struct
 id|cyclades_card
@@ -1099,6 +1102,22 @@ r_int
 id|intr_enabled
 suffix:semicolon
 multiline_comment|/* FW Interrupt flag - 0 disabled, 1 enabled */
+DECL|member|resource
+r_struct
+id|resource
+op_star
+id|resource
+suffix:semicolon
+DECL|member|res_start
+r_int
+r_int
+id|res_start
+suffix:semicolon
+DECL|member|res_len
+r_int
+r_int
+id|res_len
+suffix:semicolon
 macro_line|#ifdef __KERNEL__
 DECL|member|card_lock
 id|spinlock_t
@@ -1106,7 +1125,8 @@ id|card_lock
 suffix:semicolon
 macro_line|#else
 DECL|member|filler
-id|uclong
+r_int
+r_int
 id|filler
 suffix:semicolon
 macro_line|#endif
