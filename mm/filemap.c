@@ -281,6 +281,13 @@ id|WB_SYNC_ALL
 )paren
 suffix:semicolon
 )brace
+DECL|variable|filemap_fdatawrite
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|filemap_fdatawrite
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This is a mostly non-blocking flush.  Not suitable for data-integrity&n; * purposes.&n; */
 DECL|function|filemap_flush
 r_int
@@ -549,6 +556,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|filemap_fdatawait
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|filemap_fdatawait
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This adds a page to the page cache, starting out as locked, unreferenced,&n; * not uptodate and with no errors.&n; *&n; * This function is used for two things: adding newly allocated pagecache&n; * pages and for moving existing anon pages into swapcache.&n; *&n; * In the case of pagecache pages, the page is new, so we can just run&n; * SetPageLocked() against it.  The other page state flags were set by&n; * rmqueue()&n; *&n; * In the case of swapcache, try_to_swap_out() has already locked the page, so&n; * SetPageLocked() is ugly-but-OK there too.  The required page state has been&n; * set up by swap_out_add_to_swap_cache().&n; *&n; * This function does not add the page to the LRU.  The caller must do that.&n; */
 DECL|function|add_to_page_cache
 r_int
@@ -931,6 +945,13 @@ id|waitqueue
 )paren
 suffix:semicolon
 )brace
+DECL|variable|unlock_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unlock_page
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * End writeback against a page.&n; */
 DECL|function|end_page_writeback
 r_void
@@ -1172,6 +1193,13 @@ r_return
 id|page
 suffix:semicolon
 )brace
+DECL|variable|find_get_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|find_get_page
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Same as above, but trylock it instead of incrementing the count.&n; */
 DECL|function|find_trylock_page
 r_struct
@@ -1239,6 +1267,13 @@ r_return
 id|page
 suffix:semicolon
 )brace
+DECL|variable|find_trylock_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|find_trylock_page
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * find_lock_page - locate, pin and lock a pagecache page&n; *&n; * @mapping - the address_space to search&n; * @offset - the page index&n; *&n; * Locates the desired pagecache page, locks it, increments its reference&n; * count and returns its address.&n; *&n; * Returns zero if the page was not present. find_lock_page() may sleep.&n; */
 DECL|function|find_lock_page
 r_struct
@@ -1366,6 +1401,13 @@ r_return
 id|page
 suffix:semicolon
 )brace
+DECL|variable|find_lock_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|find_lock_page
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * find_or_create_page - locate or add a pagecache page&n; *&n; * @mapping - the page&squot;s address_space&n; * @index - the page&squot;s index into the mapping&n; * @gfp_mask - page allocation mode&n; *&n; * Locates a page in the pagecache.  If the page is not present, a new page&n; * is allocated using @gfp_mask and is added to the pagecache and to the VM&squot;s&n; * LRU list.  The returned page is locked and has its reference count&n; * incremented.&n; *&n; * find_or_create_page() may sleep, even if @gfp_flags specifies an atomic&n; * allocation!&n; *&n; * find_or_create_page() returns the desired page&squot;s address, or zero on&n; * memory exhaustion.&n; */
 DECL|function|find_or_create_page
 r_struct
@@ -1503,6 +1545,13 @@ r_return
 id|page
 suffix:semicolon
 )brace
+DECL|variable|find_or_create_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|find_or_create_page
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * find_get_pages - gang pagecache lookup&n; * @mapping:&t;The address_space to search&n; * @start:&t;The starting page index&n; * @nr_pages:&t;The maximum number of pages&n; * @pages:&t;Where the resulting pages are placed&n; *&n; * find_get_pages() will search for and return a group of up to&n; * @nr_pages pages in the mapping.  The pages are placed at @pages.&n; * find_get_pages() takes a reference against the returned pages.&n; *&n; * The search returns a group of mapping-contiguous pages with ascending&n; * indexes.  There may be holes in the indices due to not-present pages.&n; *&n; * find_get_pages() returns the number of pages which were found.&n; */
 DECL|function|find_get_pages
 r_int
@@ -1715,6 +1764,13 @@ r_return
 id|page
 suffix:semicolon
 )brace
+DECL|variable|grab_cache_page_nowait
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|grab_cache_page_nowait
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This is a generic file read routine, and uses the&n; * inode-&gt;i_op-&gt;readpage() function for the actual low-level&n; * stuff.&n; *&n; * This is really ugly. But the goto&squot;s actually try to clarify some&n; * of the logic when it comes to error handling etc.&n; * - note the struct file * is only passed for the use of readpage&n; */
 DECL|function|do_generic_mapping_read
 r_void
@@ -2269,6 +2325,13 @@ id|inode
 )paren
 suffix:semicolon
 )brace
+DECL|variable|do_generic_mapping_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_generic_mapping_read
+)paren
+suffix:semicolon
 DECL|function|file_read_actor
 r_int
 id|file_read_actor
@@ -2803,6 +2866,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|__generic_file_aio_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__generic_file_aio_read
+)paren
+suffix:semicolon
 id|ssize_t
 DECL|function|generic_file_aio_read
 id|generic_file_aio_read
@@ -2870,13 +2940,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|generic_file_aio_read
-)paren
-suffix:semicolon
-DECL|variable|__generic_file_aio_read
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__generic_file_aio_read
 )paren
 suffix:semicolon
 id|ssize_t
@@ -2971,6 +3034,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|generic_file_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_file_read
+)paren
+suffix:semicolon
 DECL|function|file_send_actor
 r_int
 id|file_send_actor
@@ -3159,6 +3229,13 @@ r_return
 id|desc.error
 suffix:semicolon
 )brace
+DECL|variable|generic_file_sendfile
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_file_sendfile
+)paren
+suffix:semicolon
 r_static
 id|ssize_t
 DECL|function|do_readahead
@@ -4017,6 +4094,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|filemap_nopage
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|filemap_nopage
+)paren
+suffix:semicolon
 DECL|function|filemap_getpage
 r_static
 r_struct
@@ -4756,6 +4840,20 @@ id|ENOSYS
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_MMU */
+DECL|variable|generic_file_mmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_file_mmap
+)paren
+suffix:semicolon
+DECL|variable|generic_file_readonly_mmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_file_readonly_mmap
+)paren
+suffix:semicolon
 DECL|function|__read_cache_page
 r_static
 r_inline
@@ -5138,6 +5236,13 @@ r_return
 id|page
 suffix:semicolon
 )brace
+DECL|variable|read_cache_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|read_cache_page
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * If the page was newly created, increment its refcount and add it to the&n; * caller&squot;s lru-buffering pagevec.  This function is specifically for&n; * generic_file_write().&n; */
 r_static
 r_inline
@@ -5381,6 +5486,13 @@ id|newattrs
 suffix:semicolon
 )brace
 )brace
+DECL|variable|remove_suid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|remove_suid
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Copy as much as we can into the page and return the number of bytes which&n; * were sucessfully copied.  If a fault is encountered then clear the page&n; * out to (offset+bytes) and return the number of bytes which were copied.&n; */
 r_static
 r_inline
@@ -7134,6 +7246,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|generic_file_aio_write_nolock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_file_aio_write_nolock
+)paren
+suffix:semicolon
 id|ssize_t
 DECL|function|generic_file_write_nolock
 id|generic_file_write_nolock
@@ -7211,6 +7330,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|generic_file_write_nolock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_file_write_nolock
+)paren
+suffix:semicolon
 DECL|function|generic_file_aio_write
 id|ssize_t
 id|generic_file_aio_write
@@ -7321,13 +7447,6 @@ c_func
 id|generic_file_aio_write
 )paren
 suffix:semicolon
-DECL|variable|generic_file_aio_write_nolock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|generic_file_aio_write_nolock
-)paren
-suffix:semicolon
 DECL|function|generic_file_write
 id|ssize_t
 id|generic_file_write
@@ -7416,6 +7535,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|generic_file_write
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_file_write
+)paren
+suffix:semicolon
 DECL|function|generic_file_readv
 id|ssize_t
 id|generic_file_readv
@@ -7493,6 +7619,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|generic_file_readv
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_file_readv
+)paren
+suffix:semicolon
 DECL|function|generic_file_writev
 id|ssize_t
 id|generic_file_writev
@@ -7560,6 +7693,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|generic_file_writev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_file_writev
+)paren
+suffix:semicolon
 id|ssize_t
 DECL|function|generic_file_direct_IO
 id|generic_file_direct_IO
@@ -7681,4 +7821,11 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|generic_file_direct_IO
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|generic_file_direct_IO
+)paren
+suffix:semicolon
 eof

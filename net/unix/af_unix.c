@@ -1517,7 +1517,7 @@ suffix:semicolon
 multiline_comment|/* set credentials so connect can copy them */
 id|sk-&gt;sk_peercred.pid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|sk-&gt;sk_peercred.uid
 op_assign
@@ -3858,7 +3858,7 @@ id|SOCK_STREAM
 suffix:semicolon
 id|newsk-&gt;sk_peercred.pid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|newsk-&gt;sk_peercred.uid
 op_assign
@@ -4137,7 +4137,7 @@ id|ska-&gt;sk_peercred.pid
 op_assign
 id|skb-&gt;sk_peercred.pid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|ska-&gt;sk_peercred.uid
 op_assign

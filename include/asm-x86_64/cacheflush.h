@@ -20,6 +20,14 @@ DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma,pg)&t;&t;do { } while (0)
 DECL|macro|flush_icache_user_range
 mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)&t;do { } while (0)
+DECL|macro|flush_cache_vmap
+mdefine_line|#define flush_cache_vmap(start, end)&t;&t;do { } while (0)
+DECL|macro|flush_cache_vunmap
+mdefine_line|#define flush_cache_vunmap(start, end)&t;&t;do { } while (0)
+DECL|macro|copy_to_user_page
+mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;memcpy(dst, src, len)
+DECL|macro|copy_from_user_page
+mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;memcpy(dst, src, len)
 r_void
 id|global_flush_tlb
 c_func

@@ -367,7 +367,7 @@ op_star
 r_virtual
 suffix:semicolon
 multiline_comment|/* Kernel virtual address (NULL if&n;&t;&t;&t;&t;&t;   not kmapped, ie. highmem) */
-macro_line|#endif /* CONFIG_HIGMEM || WANT_PAGE_VIRTUAL */
+macro_line|#endif /* WANT_PAGE_VIRTUAL */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * FIXME: take this include out, include page-flags.h in&n; * files which need it (119 of them)&n; */

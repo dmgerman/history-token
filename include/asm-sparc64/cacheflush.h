@@ -124,31 +124,14 @@ r_int
 id|end
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|__flush_cache_all
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-DECL|macro|flush_cache_all
-mdefine_line|#define flush_cache_all()&t;__flush_cache_all()
-macro_line|#else /* CONFIG_SMP */
-r_extern
-r_void
-id|smp_flush_cache_all
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif /* ! CONFIG_SMP */
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma, pg)&t;do { } while(0)
 DECL|macro|flush_icache_user_range
 mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)&t;do { } while (0)
+DECL|macro|copy_to_user_page
+mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;memcpy(dst, src, len)
+DECL|macro|copy_from_user_page
+mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;memcpy(dst, src, len)
 r_extern
 r_void
 id|flush_dcache_page
@@ -160,5 +143,9 @@ op_star
 id|page
 )paren
 suffix:semicolon
+DECL|macro|flush_cache_vmap
+mdefine_line|#define flush_cache_vmap(start, end)&t;&t;do { } while (0)
+DECL|macro|flush_cache_vunmap
+mdefine_line|#define flush_cache_vunmap(start, end)&t;&t;do { } while (0)
 macro_line|#endif /* _SPARC64_CACHEFLUSH_H */
 eof

@@ -131,6 +131,8 @@ op_star
 id|ptr
 )paren
 suffix:semicolon
+DECL|macro|flush_cache_kmaps
+mdefine_line|#define flush_cache_kmaps()&t;flush_cache_all()
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_HIGHMEM_H */
 eof

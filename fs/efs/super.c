@@ -1075,6 +1075,10 @@ id|s-&gt;s_magic
 op_assign
 id|EFS_SUPER_MAGIC
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|sb_set_blocksize
 c_func
 (paren
@@ -1082,7 +1086,21 @@ id|s
 comma
 id|EFS_BLOCKSIZE
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;EFS: device does not support %d byte blocks&bslash;n&quot;
+comma
+id|EFS_BLOCKSIZE
+)paren
 suffix:semicolon
+r_goto
+id|out_no_fs_ul
+suffix:semicolon
+)brace
 multiline_comment|/* read the vh (volume header) block */
 id|bh
 op_assign

@@ -55,8 +55,6 @@ macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * First 1MB map is used by fixed purpose.&n; * Currently only 4-enty (16kB) is used (see arch/sh/mm/cache.c)&n; */
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START&t;(P3SEG+0x00100000)
-DECL|macro|VMALLOC_VMADDR
-mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END&t;P4SEG
 multiline_comment|/*&t;&t;&t;0x001     WT-bit on SH-4, 0 on SH-3 */

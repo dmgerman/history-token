@@ -4980,7 +4980,7 @@ c_func
 (paren
 id|f
 comma
-l_string|&quot;cpus active&bslash;t&bslash;t: %d&bslash;n&quot;
+l_string|&quot;cpus active&bslash;t&bslash;t: %ld&bslash;n&quot;
 l_string|&quot;cpu active mask&bslash;t&bslash;t: %016lx&bslash;n&quot;
 comma
 id|num_online_cpus

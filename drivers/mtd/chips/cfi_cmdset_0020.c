@@ -1067,6 +1067,12 @@ c_func
 id|cfi-&gt;cmdset_priv
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|mtd
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
@@ -1242,6 +1248,12 @@ id|kfree
 c_func
 (paren
 id|cfi-&gt;cmdset_priv
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|mtd
 )paren
 suffix:semicolon
 r_return

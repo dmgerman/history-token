@@ -583,6 +583,13 @@ id|inode
 )paren
 suffix:semicolon
 )brace
+DECL|variable|inode_init_once
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inode_init_once
+)paren
+suffix:semicolon
 DECL|function|init_once
 r_static
 r_void
@@ -822,6 +829,13 @@ op_assign
 id|I_CLEAR
 suffix:semicolon
 )brace
+DECL|variable|clear_inode
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|clear_inode
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Dispose-list gets a local list with local inodes in it, so it doesn&squot;t&n; * need to worry about list corruption and SMP locks.&n; */
 DECL|function|dispose_list
 r_static
@@ -1202,6 +1216,13 @@ r_return
 id|busy
 suffix:semicolon
 )brace
+DECL|variable|invalidate_inodes
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|invalidate_inodes
+)paren
+suffix:semicolon
 DECL|function|__invalidate_device
 r_int
 id|__invalidate_device
@@ -1287,6 +1308,13 @@ r_return
 id|res
 suffix:semicolon
 )brace
+DECL|variable|__invalidate_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__invalidate_device
+)paren
+suffix:semicolon
 DECL|function|can_unuse
 r_static
 r_int
@@ -1997,6 +2025,13 @@ r_return
 id|inode
 suffix:semicolon
 )brace
+DECL|variable|new_inode
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|new_inode
+)paren
+suffix:semicolon
 DECL|function|unlock_new_inode
 r_void
 id|unlock_new_inode
@@ -2559,6 +2594,13 @@ r_goto
 id|retry
 suffix:semicolon
 )brace
+DECL|variable|iunique
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iunique
+)paren
+suffix:semicolon
 DECL|function|igrab
 r_struct
 id|inode
@@ -2612,6 +2654,13 @@ r_return
 id|inode
 suffix:semicolon
 )brace
+DECL|variable|igrab
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|igrab
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * ifind - internal function, you want ilookup5() or iget5().&n; * @sb:&t;&t;super block of file system to search&n; * @hashval:&t;hash value (usually inode number) to search for&n; * @test:&t;callback used for comparisons between inodes&n; * @data:&t;opaque data pointer to pass to @test&n; *&n; * ifind() searches for the inode specified by @hashval and @data in the inode&n; * cache. This is a generalized version of ifind_fast() for file systems where&n; * the inode number is not sufficient for unique identification of an inode.&n; *&n; * If the inode is in the cache, the inode is returned with an incremented&n; * reference count.&n; *&n; * Otherwise NULL is returned.&n; *&n; * Note, @test is called with the inode_lock held, so can&squot;t sleep.&n; */
 DECL|function|ifind
 r_static
@@ -3179,6 +3228,13 @@ id|inode_lock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__insert_inode_hash
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__insert_inode_hash
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;remove_inode_hash - remove an inode from the hash&n; *&t;@inode: inode to unhash&n; *&n; *&t;Remove an inode from the superblock.&n; */
 DECL|function|remove_inode_hash
 r_void
@@ -3213,6 +3269,13 @@ id|inode_lock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|remove_inode_hash
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|remove_inode_hash
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Tell the filesystem that this inode is no longer of any interest and should&n; * be completely destroyed.&n; *&n; * We leave the inode in the inode hash table until *after* the filesystem&squot;s&n; * -&gt;delete_inode completes.  This ensures that an iget (such as nfsd might&n; * instigate) will always find up-to-date information either in the hash or on&n; * disk.&n; *&n; * I_FREEING is set so that no-one will take a new reference to the inode while&n; * it is being deleted.&n; */
 DECL|function|generic_delete_inode
 r_void
@@ -3695,6 +3758,13 @@ id|inode
 suffix:semicolon
 )brace
 )brace
+DECL|variable|iput
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iput
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;bmap&t;- find a block number in a file&n; *&t;@inode: inode of file&n; *&t;@block: block to find&n; *&n; *&t;Returns the block number on the device holding the inode that&n; *&t;is the disk block number for the block of the file requested.&n; *&t;That is, asked for block 4 of inode 1 the function will return the&n; *&t;disk block relative to the disk start that holds that block of the &n; *&t;file.&n; */
 DECL|function|bmap
 id|sector_t
@@ -3736,6 +3806,13 @@ r_return
 id|res
 suffix:semicolon
 )brace
+DECL|variable|bmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bmap
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Return true if the filesystem which backs this inode considers the two&n; * passed timespecs to be sufficiently different to warrant flushing the&n; * altered time out to disk.&n; */
 DECL|function|inode_times_differ
 r_static
@@ -3897,6 +3974,13 @@ id|now
 suffix:semicolon
 )brace
 )brace
+DECL|variable|update_atime
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|update_atime
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;inode_update_time&t;-&t;update mtime and ctime time&n; *&t;@inode: inode accessed&n; *&t;@ctime_too: update ctime too&n; *&n; *&t;Update the mtime time on an inode and mark it for writeback.&n; *&t;When ctime_too is specified update the ctime too.&n; */
 DECL|function|inode_update_time
 r_void
@@ -4965,4 +5049,11 @@ id|mode
 )paren
 suffix:semicolon
 )brace
+DECL|variable|init_special_inode
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|init_special_inode
+)paren
+suffix:semicolon
 eof

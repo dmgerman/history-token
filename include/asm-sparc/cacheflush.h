@@ -240,6 +240,10 @@ DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma, pg)&t;&t;do { } while (0)
 DECL|macro|flush_icache_user_range
 mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)&t;do { } while (0)
+DECL|macro|copy_to_user_page
+mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;memcpy(dst, src, len)
+DECL|macro|copy_from_user_page
+mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;memcpy(dst, src, len)
 id|BTFIXUPDEF_CALL
 c_func
 (paren
@@ -281,5 +285,9 @@ id|page
 suffix:semicolon
 DECL|macro|flush_dcache_page
 mdefine_line|#define flush_dcache_page(page)&t;&t;&t;sparc_flush_page_to_ram(page)
+DECL|macro|flush_cache_vmap
+mdefine_line|#define flush_cache_vmap(start, end)&t;&t;flush_cache_all()
+DECL|macro|flush_cache_vunmap
+mdefine_line|#define flush_cache_vunmap(start, end)&t;&t;flush_cache_all()
 macro_line|#endif /* _SPARC_CACHEFLUSH_H */
 eof

@@ -606,11 +606,11 @@ l_int|NULL
 suffix:semicolon
 id|v
 op_assign
-id|VMALLOC_VMADDR
-c_func
 (paren
-id|area-&gt;addr
+r_int
+r_int
 )paren
+id|area-&gt;addr
 suffix:semicolon
 )brace
 r_else

@@ -2421,6 +2421,8 @@ id|len
 )paren
 (brace
 r_return
+id|unlikely
+c_func
 (paren
 id|len
 OG
@@ -2532,6 +2534,8 @@ id|len
 )paren
 (brace
 r_return
+id|unlikely
+c_func
 (paren
 id|len
 OG
@@ -3034,7 +3038,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|skb
+)paren
 )paren
 id|skb_reserve
 c_func

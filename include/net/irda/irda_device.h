@@ -715,6 +715,16 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_struct
+id|net_device
+op_star
+id|alloc_irdadev
+c_func
+(paren
+r_int
+id|sizeof_priv
+)paren
+suffix:semicolon
 multiline_comment|/* Dongle interface */
 r_void
 id|irda_device_unregister_dongle

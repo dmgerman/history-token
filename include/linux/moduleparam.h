@@ -4,6 +4,7 @@ mdefine_line|#define _LINUX_MODULE_PARAMS_H
 multiline_comment|/* (C) Copyright 2001, 2002 Rusty Russell IBM Corporation */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/stringify.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 multiline_comment|/* You can override this manually, but generally this should match the&n;   module name. */
 macro_line|#ifdef MODULE
 DECL|macro|MODULE_PARAM_PREFIX
@@ -98,6 +99,42 @@ DECL|member|string
 r_char
 op_star
 id|string
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* Special one for arrays */
+DECL|struct|kparam_array
+r_struct
+id|kparam_array
+(brace
+DECL|member|max
+r_int
+r_int
+id|max
+suffix:semicolon
+DECL|member|num
+r_int
+r_int
+op_star
+id|num
+suffix:semicolon
+DECL|member|set
+id|param_set_fn
+id|set
+suffix:semicolon
+DECL|member|get
+id|param_get_fn
+id|get
+suffix:semicolon
+DECL|member|elemsize
+r_int
+r_int
+id|elemsize
+suffix:semicolon
+DECL|member|elem
+r_void
+op_star
+id|elem
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -454,10 +491,12 @@ id|kp
 suffix:semicolon
 DECL|macro|param_check_invbool
 mdefine_line|#define param_check_invbool(name, p) __param_check(name, p, int)
-multiline_comment|/* First two elements are the max and min array length (which don&squot;t change) */
+multiline_comment|/* Comma-separated array: num is set to number they actually specified. */
+DECL|macro|module_param_array
+mdefine_line|#define module_param_array(name, type, num, perm)&t;&t;&t;&bslash;&n;&t;static struct kparam_array __param_arr_##name&t;&t;&t;&bslash;&n;&t;= { ARRAY_SIZE(name), &amp;num, param_set_##type, param_get_##type,&t;&bslash;&n;&t;    sizeof(name[0]), name };&t;&t;&t;&t;&t;&bslash;&n;&t;module_param_call(name, param_array_set, param_array_get, &t;&bslash;&n;&t;&t;&t;  &amp;__param_arr_##name, perm)
 r_extern
 r_int
-id|param_set_intarray
+id|param_array_set
 c_func
 (paren
 r_const
@@ -473,7 +512,7 @@ id|kp
 suffix:semicolon
 r_extern
 r_int
-id|param_get_intarray
+id|param_array_get
 c_func
 (paren
 r_char
@@ -486,8 +525,6 @@ op_star
 id|kp
 )paren
 suffix:semicolon
-DECL|macro|param_check_intarray
-mdefine_line|#define param_check_intarray(name, p) __param_check(name, p, int *)
 r_extern
 r_int
 id|param_set_copystring
@@ -548,6 +585,10 @@ id|kernel_param
 op_star
 id|kp
 )paren
+comma
+r_int
+op_star
+id|num
 )paren
 suffix:semicolon
 macro_line|#endif /* _LINUX_MODULE_PARAM_TYPES_H */

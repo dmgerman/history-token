@@ -361,8 +361,6 @@ c_func
 (paren
 id|user_ptrs_per_pgd
 )paren
-DECL|macro|VMALLOC_VMADDR
-mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
 DECL|macro|pte_ERROR
 mdefine_line|#define pte_ERROR(e)   __builtin_trap()
 DECL|macro|pmd_ERROR

@@ -5,8 +5,6 @@ DECL|macro|VMALLOC_OFFSET
 mdefine_line|#define VMALLOC_OFFSET&t;  (8*1024*1024)
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START&t;  (((unsigned long)high_memory + VMALLOC_OFFSET) &amp; ~(VMALLOC_OFFSET-1))
-DECL|macro|VMALLOC_VMADDR
-mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
 macro_line|#ifdef CONFIG_ARCH_FOOTBRIDGE
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END       (PAGE_OFFSET + 0x30000000)

@@ -72,7 +72,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_NAMES
 comma
-l_string|&quot;Searching %s [%p] For %4.4s (%s)&bslash;n&quot;
+l_string|&quot;Searching %s (%p) For [%4.4s] (%s)&bslash;n&quot;
 comma
 id|scope_name
 comma
@@ -126,7 +126,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_NAMES
 comma
-l_string|&quot;Name %4.4s Type [%s] found in scope [%4.4s] %p&bslash;n&quot;
+l_string|&quot;Name [%4.4s] (%s) %p found in scope [%4.4s] %p&bslash;n&quot;
 comma
 (paren
 r_char
@@ -140,9 +140,11 @@ id|acpi_ut_get_type_name
 id|next_node-&gt;type
 )paren
 comma
-id|next_node-&gt;name.ascii
-comma
 id|next_node
+comma
+id|node-&gt;name.ascii
+comma
+id|node
 )paren
 )paren
 suffix:semicolon
@@ -182,7 +184,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_NAMES
 comma
-l_string|&quot;Name %4.4s Type [%s] not found in search in scope [%4.4s] %p first child %p&bslash;n&quot;
+l_string|&quot;Name [%4.4s] (%s) not found in search in scope [%4.4s] %p first child %p&bslash;n&quot;
 comma
 (paren
 r_char

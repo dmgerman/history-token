@@ -43,8 +43,6 @@ mdefine_line|#define EADDR_SIZE (PTE_INDEX_SIZE + PMD_INDEX_SIZE + &bslash;&n;  
 multiline_comment|/*&n; * Define the address range of the vmalloc VM area.&n; */
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START (0xD000000000000000)
-DECL|macro|VMALLOC_VMADDR
-mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END   (VMALLOC_START + VALID_EA_BITS)
 multiline_comment|/*&n; * Define the address range of the imalloc VM area.&n; * (used for ioremap)&n; */

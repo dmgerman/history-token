@@ -2191,18 +2191,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-c_func
-(paren
-id|status
-)paren
-)paren
-r_goto
-id|error1
-suffix:semicolon
+multiline_comment|/* Ignore result. Not having an ECDT is not fatal. */
 macro_line|#endif
 id|status
 op_assign

@@ -526,6 +526,8 @@ c_func
 id|inode
 comma
 id|mask
+comma
+id|nd
 )paren
 suffix:semicolon
 )brace
@@ -798,6 +800,11 @@ r_struct
 id|inode
 op_star
 id|inode
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 id|umode_t
@@ -902,6 +909,8 @@ c_func
 id|inode
 comma
 id|MAY_EXEC
+comma
+id|nd
 )paren
 suffix:semicolon
 )brace
@@ -2003,6 +2012,8 @@ id|exec_permission_lite
 c_func
 (paren
 id|inode
+comma
+id|nd
 )paren
 suffix:semicolon
 r_if

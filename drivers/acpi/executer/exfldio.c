@@ -197,11 +197,93 @@ id|rgn_desc-&gt;region.length
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_RELAXED_AML
+(brace
+multiline_comment|/*&n;&t;&t;&t; * Allow access to the field if it is within the region size&n;&t;&t;&t; * rounded up to a multiple of the access byte width.  This&n;&t;&t;&t; * overcomes &quot;off-by-one&quot; programming errors in the AML often&n;&t;&t;&t; * found in Toshiba laptops.  These errors were allowed by&n;&t;&t;&t; * the Microsoft ASL compiler.&n;&t;&t;&t; */
+id|u32
+id|rounded_length
+op_assign
+id|ACPI_ROUND_UP
+c_func
+(paren
+id|rgn_desc-&gt;region.length
+comma
+id|obj_desc-&gt;common_field.access_byte_width
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rounded_length
+OL
+(paren
+id|obj_desc-&gt;common_field.base_byte_offset
+op_plus
+id|field_datum_byte_offset
+op_plus
+id|obj_desc-&gt;common_field.access_byte_width
+)paren
+)paren
+(brace
 id|return_ACPI_STATUS
 (paren
 id|AE_AML_REGION_LIMIT
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+r_static
+r_int
+id|warn_once
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|warn_once
+)paren
+(brace
+singleline_comment|// Could also associate a flag with each field, and
+singleline_comment|// warn once for each field.
+id|ACPI_REPORT_WARNING
+c_func
+(paren
+(paren
+l_string|&quot;The ACPI AML in your computer contains errors, &quot;
+l_string|&quot;please nag the manufacturer to correct it.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|ACPI_REPORT_WARNING
+c_func
+(paren
+(paren
+l_string|&quot;Allowing relaxed access to fields; &quot;
+l_string|&quot;turn on CONFIG_ACPI_DEBUG for details.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|warn_once
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#else
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_REGION_LIMIT
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 id|return_ACPI_STATUS
 (paren

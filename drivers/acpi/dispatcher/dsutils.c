@@ -662,7 +662,46 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * All prefixes have been handled, and the name is&n;&t;&t; * in name_string&n;&t;&t; */
-multiline_comment|/*&n;&t;&t; * Differentiate between a namespace &quot;create&quot; operation&n;&t;&t; * versus a &quot;lookup&quot; operation (IMODE_LOAD_PASS2 vs.&n;&t;&t; * IMODE_EXECUTE) in order to support the creation of&n;&t;&t; * namespace objects during the execution of control methods.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Special handling for buffer_field declarations. This is a deferred&n;&t;&t; * opcode that unfortunately defines the field name as the last&n;&t;&t; * parameter instead of the first.  We get here when we are performing&n;&t;&t; * the deferred execution, so the actual name of the field is already&n;&t;&t; * in the namespace.  We don&squot;t want to attempt to look it up again&n;&t;&t; * because we may be executing in a different scope than where the&n;&t;&t; * actual opcode exists.&n;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|walk_state-&gt;deferred_node
+)paren
+op_logical_and
+(paren
+id|walk_state-&gt;deferred_node-&gt;type
+op_eq
+id|ACPI_TYPE_BUFFER_FIELD
+)paren
+op_logical_and
+(paren
+id|arg_index
+op_ne
+l_int|0
+)paren
+)paren
+(brace
+id|obj_desc
+op_assign
+id|ACPI_CAST_PTR
+(paren
+r_union
+id|acpi_operand_object
+comma
+id|walk_state-&gt;deferred_node
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|AE_OK
+suffix:semicolon
+)brace
+r_else
+multiline_comment|/* All other opcodes */
+(brace
+multiline_comment|/*&n;&t;&t;&t; * Differentiate between a namespace &quot;create&quot; operation&n;&t;&t;&t; * versus a &quot;lookup&quot; operation (IMODE_LOAD_PASS2 vs.&n;&t;&t;&t; * IMODE_EXECUTE) in order to support the creation of&n;&t;&t;&t; * namespace objects during the execution of control methods.&n;&t;&t;&t; */
 id|parent_op
 op_assign
 id|arg-&gt;common.parent
@@ -744,7 +783,7 @@ id|obj_desc
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * The only case where we pass through (ignore) a NOT_FOUND&n;&t;&t; * error is for the cond_ref_of opcode.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * The only case where we pass through (ignore) a NOT_FOUND&n;&t;&t;&t; * error is for the cond_ref_of opcode.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -761,7 +800,7 @@ op_eq
 id|AML_COND_REF_OF_OP
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * For the Conditional Reference op, it&squot;s OK if&n;&t;&t;&t;&t; * the name is not found;  We just need a way to&n;&t;&t;&t;&t; * indicate this to the interpreter, set the&n;&t;&t;&t;&t; * object to the root&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * For the Conditional Reference op, it&squot;s OK if&n;&t;&t;&t;&t;&t; * the name is not found;  We just need a way to&n;&t;&t;&t;&t;&t; * indicate this to the interpreter, set the&n;&t;&t;&t;&t;&t; * object to the root&n;&t;&t;&t;&t;&t; */
 id|obj_desc
 op_assign
 id|ACPI_CAST_PTR
@@ -779,7 +818,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * We just plain didn&squot;t find it -- which is a&n;&t;&t;&t;&t; * very serious error at this point&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * We just plain didn&squot;t find it -- which is a&n;&t;&t;&t;&t;&t; * very serious error at this point&n;&t;&t;&t;&t;&t; */
 id|status
 op_assign
 id|AE_AML_NAME_NOT_FOUND
@@ -802,6 +841,7 @@ comma
 id|status
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Free the namestring created above */
 id|ACPI_MEM_FREE

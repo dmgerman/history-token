@@ -16,6 +16,10 @@ DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma, vmaddr)&t;&t;((void)0)
 DECL|macro|flush_dcache_page
 mdefine_line|#define flush_dcache_page(page)&t;&t;&t;((void)0)
+DECL|macro|flush_cache_vmap
+mdefine_line|#define flush_cache_vmap(start, end)&t;&t;((void)0)
+DECL|macro|flush_cache_vunmap
+mdefine_line|#define flush_cache_vunmap(start, end)&t;&t;((void)0)
 macro_line|#ifdef CONFIG_NO_CACHE
 multiline_comment|/* Some systems have no cache at all, in which case we don&squot;t need these&n;   either.  */
 DECL|macro|flush_icache
@@ -106,5 +110,9 @@ id|addr
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_NO_CACHE */
+DECL|macro|copy_to_user_page
+mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;do { memcpy(dst, src, len); &bslash;&n;     flush_icache_user_range(vma, page, vaddr, len); &bslash;&n;} while (0)
+DECL|macro|copy_from_user_page
+mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;memcpy(dst, src, len)
 macro_line|#endif /* __V850_CACHEFLUSH_H__ */
 eof

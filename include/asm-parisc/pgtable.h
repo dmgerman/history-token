@@ -88,8 +88,6 @@ DECL|macro|PCXL_DMA_MAP_SIZE
 mdefine_line|#define PCXL_DMA_MAP_SIZE   (8*1024*1024)
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START   ((unsigned long)vmalloc_start)
-DECL|macro|VMALLOC_VMADDR
-mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
 multiline_comment|/* this is a fixmap remnant, see fixmap.h */
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END&t;(TMPALIAS_MAP_START)

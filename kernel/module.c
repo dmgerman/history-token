@@ -3822,6 +3822,9 @@ id|size
 comma
 id|maxsize
 suffix:semicolon
+r_int
+id|dummy
+suffix:semicolon
 r_char
 op_star
 id|endp
@@ -3952,6 +3955,9 @@ comma
 l_int|1
 comma
 id|param_set_byte
+comma
+op_amp
+id|dummy
 )paren
 suffix:semicolon
 r_case
@@ -3977,6 +3983,9 @@ r_int
 )paren
 comma
 id|param_set_short
+comma
+op_amp
+id|dummy
 )paren
 suffix:semicolon
 r_case
@@ -4002,6 +4011,9 @@ r_int
 )paren
 comma
 id|param_set_int
+comma
+op_amp
+id|dummy
 )paren
 suffix:semicolon
 r_case
@@ -4027,6 +4039,9 @@ r_int
 )paren
 comma
 id|param_set_long
+comma
+op_amp
+id|dummy
 )paren
 suffix:semicolon
 r_case
@@ -4053,6 +4068,9 @@ op_star
 )paren
 comma
 id|param_set_charp
+comma
+op_amp
+id|dummy
 )paren
 suffix:semicolon
 r_case
@@ -4144,6 +4162,9 @@ comma
 id|maxsize
 comma
 id|obsparm_copy_string
+comma
+op_amp
+id|dummy
 )paren
 suffix:semicolon
 )brace

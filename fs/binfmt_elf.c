@@ -356,10 +356,8 @@ r_int
 id|items
 suffix:semicolon
 id|elf_addr_t
+op_star
 id|elf_info
-(braket
-l_int|40
-)braket
 suffix:semicolon
 r_int
 id|ei_index
@@ -447,6 +445,14 @@ id|len
 suffix:semicolon
 )brace
 multiline_comment|/* Create the ELF interpreter info */
+id|elf_info
+op_assign
+(paren
+id|elf_addr_t
+op_star
+)paren
+id|current-&gt;mm-&gt;saved_auxv
+suffix:semicolon
 DECL|macro|NEW_AUX_ENT
 mdefine_line|#define NEW_AUX_ENT(id, val) &bslash;&n;&t;do { elf_info[ei_index++] = id; elf_info[ei_index++] = val; } while (0)
 macro_line|#ifdef ARCH_DLINFO
@@ -612,16 +618,37 @@ id|u_platform
 )paren
 suffix:semicolon
 )brace
-id|NEW_AUX_ENT
-c_func
-(paren
-id|AT_NULL
-comma
-l_int|0
-)paren
-suffix:semicolon
 DECL|macro|NEW_AUX_ENT
 macro_line|#undef NEW_AUX_ENT
+multiline_comment|/* AT_NULL is zero; clear the rest too */
+id|memset
+c_func
+(paren
+op_amp
+id|elf_info
+(braket
+id|ei_index
+)braket
+comma
+l_int|0
+comma
+r_sizeof
+id|current-&gt;mm-&gt;saved_auxv
+op_minus
+id|ei_index
+op_star
+r_sizeof
+id|elf_info
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+multiline_comment|/* And advance past the AT_NULL entry.  */
+id|ei_index
+op_add_assign
+l_int|2
+suffix:semicolon
 id|sp
 op_assign
 id|STACK_ADD
@@ -5033,7 +5060,7 @@ id|file
 )paren
 (brace
 DECL|macro|NUM_NOTES
-mdefine_line|#define&t;NUM_NOTES&t;5
+mdefine_line|#define&t;NUM_NOTES&t;6
 r_int
 id|has_dumped
 op_assign
@@ -5085,8 +5112,6 @@ id|rlim_cur
 suffix:semicolon
 r_int
 id|numnote
-op_assign
-id|NUM_NOTES
 suffix:semicolon
 r_struct
 id|memelfnote
@@ -5148,6 +5173,10 @@ r_int
 id|thread_status_size
 op_assign
 l_int|0
+suffix:semicolon
+id|elf_addr_t
+op_star
+id|auxv
 suffix:semicolon
 multiline_comment|/*&n;&t; * We no longer stop all VM operations.&n;&t; * &n;&t; * This is because those proceses that could possibly change map_count or&n;&t; * the mmap / vma pages are now blocked in do_exit on current finishing&n;&t; * this core dump.&n;&t; *&n;&t; * Only ptrace can touch these memory addresses, but it doesn&squot;t change&n;&t; * the map_count or the pages allocated.  So no possibility of crashing&n;&t; * exists while dumping the mm-&gt;vm_next areas to the core file.&n;&t; */
 multiline_comment|/* alloc memory for large data structures: too large to be on stack */
@@ -5515,6 +5544,64 @@ comma
 id|current
 )paren
 suffix:semicolon
+id|numnote
+op_assign
+l_int|3
+suffix:semicolon
+id|auxv
+op_assign
+(paren
+id|elf_addr_t
+op_star
+)paren
+id|current-&gt;mm-&gt;saved_auxv
+suffix:semicolon
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+r_do
+id|i
+op_add_assign
+l_int|2
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|auxv
+(braket
+id|i
+op_minus
+l_int|2
+)braket
+op_ne
+id|AT_NULL
+)paren
+suffix:semicolon
+id|fill_note
+c_func
+(paren
+op_amp
+id|notes
+(braket
+id|numnote
+op_increment
+)braket
+comma
+l_string|&quot;CORE&quot;
+comma
+id|NT_AUXV
+comma
+id|i
+op_star
+r_sizeof
+(paren
+id|elf_addr_t
+)paren
+comma
+id|auxv
+)paren
+suffix:semicolon
 multiline_comment|/* Try to dump the FPU. */
 r_if
 c_cond
@@ -5538,7 +5625,8 @@ c_func
 (paren
 id|notes
 op_plus
-l_int|3
+id|numnote
+op_increment
 comma
 l_string|&quot;CORE&quot;
 comma
@@ -5552,10 +5640,6 @@ id|fpu
 comma
 id|fpu
 )paren
-suffix:semicolon
-r_else
-op_decrement
-id|numnote
 suffix:semicolon
 macro_line|#ifdef ELF_CORE_COPY_XFPREGS
 r_if
@@ -5574,7 +5658,8 @@ c_func
 (paren
 id|notes
 op_plus
-l_int|4
+id|numnote
+op_increment
 comma
 l_string|&quot;LINUX&quot;
 comma
@@ -5588,14 +5673,6 @@ id|xfpu
 comma
 id|xfpu
 )paren
-suffix:semicolon
-r_else
-op_decrement
-id|numnote
-suffix:semicolon
-macro_line|#else
-id|numnote
-op_decrement
 suffix:semicolon
 macro_line|#endif&t;
 id|fs

@@ -19,8 +19,6 @@ DECL|macro|MODULES_END
 mdefine_line|#define MODULES_END&t;&t;0x0000000080000000
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START&t;&t;0x0000000140000000
-DECL|macro|VMALLOC_VMADDR
-mdefine_line|#define VMALLOC_VMADDR(x)&t;((unsigned long)(x))
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END&t;&t;0x0000000200000000
 DECL|macro|LOW_OBP_ADDRESS

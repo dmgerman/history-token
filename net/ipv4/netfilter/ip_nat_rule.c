@@ -1180,7 +1180,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-r_static
 r_inline
 r_int
 r_int
