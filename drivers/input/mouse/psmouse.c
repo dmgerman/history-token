@@ -2855,7 +2855,7 @@ id|psmouse
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * psmouse_connect() is a callback form the serio module when&n; * an unhandled serio port is found.&n; */
+multiline_comment|/*&n; * psmouse_connect() is a callback from the serio module when&n; * an unhandled serio port is found.&n; */
 DECL|function|psmouse_connect
 r_static
 r_void
