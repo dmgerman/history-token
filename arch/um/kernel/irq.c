@@ -78,7 +78,7 @@ comma
 l_string|&quot;           &quot;
 )paren
 suffix:semicolon
-id|for_each_cpu
+id|for_each_online_cpu
 c_func
 (paren
 id|j
@@ -168,7 +168,7 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#else
-id|for_each_cpu
+id|for_each_online_cpu
 c_func
 (paren
 id|j
