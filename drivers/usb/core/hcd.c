@@ -72,12 +72,12 @@ id|usb_bus_list_lock
 suffix:semicolon
 multiline_comment|/* exported only for usbfs */
 multiline_comment|/* used when updating hcd data */
-DECL|variable|hcd_data_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|hcd_data_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* wait queue for synchronous unlinks */
 DECL|variable|usb_kill_urb_queue

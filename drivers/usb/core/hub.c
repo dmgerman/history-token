@@ -27,20 +27,20 @@ macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;hcd.h&quot;
 macro_line|#include &quot;hub.h&quot;
 multiline_comment|/* Protect struct usb_device-&gt;state and -&gt;children members&n; * Note: Both are also protected by -&gt;serialize, except that -&gt;state can&n; * change to USB_STATE_NOTATTACHED even when the semaphore isn&squot;t held. */
-DECL|variable|device_state_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|device_state_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* khubd&squot;s worklist and its lock */
-DECL|variable|hub_event_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|hub_event_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD
