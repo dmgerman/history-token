@@ -38,7 +38,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/keyboard.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &quot;local_irq.h&quot;
@@ -306,6 +305,11 @@ id|rd_image_start
 suffix:semicolon
 multiline_comment|/* starting block # of image */
 macro_line|#endif
+r_extern
+r_int
+r_int
+id|ppc_tb_freq
+suffix:semicolon
 r_void
 DECL|function|chrp_get_cpuinfo
 id|chrp_get_cpuinfo
@@ -328,6 +332,16 @@ op_star
 id|model
 op_assign
 l_string|&quot;&quot;
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;timebase&bslash;t: %lu&bslash;n&quot;
+comma
+id|ppc_tb_freq
+)paren
 suffix:semicolon
 id|root
 op_assign
@@ -1017,7 +1031,6 @@ l_int|0x0
 suffix:semicolon
 )brace
 r_void
-id|__chrp
 DECL|function|chrp_progress
 id|chrp_progress
 c_func

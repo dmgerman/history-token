@@ -7,6 +7,8 @@ DECL|macro|_HVCALLSC_H
 mdefine_line|#define _HVCALLSC_H
 DECL|macro|HvCallBase
 mdefine_line|#define HvCallBase&t;&t;0x8000000000000000
+DECL|macro|HvCallCc
+mdefine_line|#define HvCallCc&t;&t;0x8001000000000000
 DECL|macro|HvCallCfg
 mdefine_line|#define HvCallCfg&t;&t;0x8002000000000000
 DECL|macro|HvCallEvent

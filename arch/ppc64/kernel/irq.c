@@ -131,7 +131,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* nasty hack for shared irq&squot;s since we need to do kmalloc calls but&n; * can&squot;t very early in the boot when we need to do a request irq.&n; * this needs to be removed.&n; * -- Cort&n; */
 DECL|macro|IRQ_KMALLOC_ENTRIES
-mdefine_line|#define IRQ_KMALLOC_ENTRIES 8
+mdefine_line|#define IRQ_KMALLOC_ENTRIES 16
 DECL|variable|cache_bitmask
 r_static
 r_int
@@ -1820,6 +1820,14 @@ id|irq_desc
 op_plus
 id|irq
 suffix:semicolon
+multiline_comment|/* XXX This causes bad performance and lockups on XICS - Anton */
+r_if
+c_cond
+(paren
+id|naca-&gt;interrupt_controller
+op_eq
+id|IC_OPEN_PIC
+)paren
 id|balance_irq
 c_func
 (paren

@@ -22,7 +22,6 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/softirq.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
@@ -2232,23 +2231,7 @@ id|decr_overclock
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * XXX very rough. On POWER4 we optimise tlb flushes for&n;&t; * tasks that only run on one cpu so we increase decay ticks.&n;&t; */
-r_if
-c_cond
-(paren
-id|__is_processor
-c_func
-(paren
-id|PV_POWER4
-)paren
-)paren
-id|cache_decay_ticks
-op_assign
-id|HZ
-op_div
-l_int|50
-suffix:semicolon
-r_else
+multiline_comment|/*&n;&t; * XXX very rough. &n;&t; */
 id|cache_decay_ticks
 op_assign
 id|HZ

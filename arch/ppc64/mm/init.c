@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  &n; *&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)&n; *  and Cort Dougan (PReP) (cort@cs.nmt.edu)&n; *    Copyright (C) 1996 Paul Mackerras&n; *  Amiga/APUS changes by Jesper Skov (jskov@cygnus.co.uk).&n; *&n; *  Derived from &quot;arch/i386/mm/init.c&quot;&n; *    Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *&n; *  Dave Engebretsen &lt;engebret@us.ibm.com&gt;&n; *      Rework for PPC64 port.&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
+multiline_comment|/*&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)&n; *  and Cort Dougan (PReP) (cort@cs.nmt.edu)&n; *    Copyright (C) 1996 Paul Mackerras&n; *  Amiga/APUS changes by Jesper Skov (jskov@cygnus.co.uk).&n; *&n; *  Derived from &quot;arch/i386/mm/init.c&quot;&n; *    Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *&n; *  Dave Engebretsen &lt;engebret@us.ibm.com&gt;&n; *      Rework for PPC64 port.&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -36,8 +36,6 @@ macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/eeh.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
-DECL|macro|PGTOKB
-mdefine_line|#define&t;PGTOKB(pages)&t;(((pages) * PAGE_SIZE) &gt;&gt; 10)
 macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/iSeries/iSeries_dma.h&gt;
 macro_line|#endif
@@ -76,25 +74,6 @@ id|__init_end
 suffix:semicolon
 r_extern
 r_char
-id|__chrp_begin
-comma
-id|__chrp_end
-suffix:semicolon
-r_extern
-r_char
-id|__openfirmware_begin
-comma
-id|__openfirmware_end
-suffix:semicolon
-r_extern
-r_struct
-id|_of_tce_table
-id|of_tce_table
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_char
 id|_start
 (braket
 )braket
@@ -121,13 +100,6 @@ id|current_set
 (braket
 id|NR_CPUS
 )braket
-suffix:semicolon
-r_void
-id|mm_init_ppc64
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 r_extern
 id|pgd_t
@@ -323,35 +295,22 @@ r_else
 r_if
 c_cond
 (paren
-op_logical_neg
-id|atomic_read
+id|page_count
 c_func
 (paren
-op_amp
 id|mem_map
-(braket
+op_plus
 id|i
-)braket
-dot
-id|count
 )paren
 )paren
-id|free
-op_increment
-suffix:semicolon
-r_else
 id|shared
 op_add_assign
-id|atomic_read
+id|page_count
 c_func
 (paren
-op_amp
 id|mem_map
-(braket
+op_plus
 id|i
-)braket
-dot
-id|count
 )paren
 op_minus
 l_int|1
@@ -363,14 +322,6 @@ c_func
 l_string|&quot;%d pages of RAM&bslash;n&quot;
 comma
 id|total
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%d free pages&bslash;n&quot;
-comma
-id|free
 )paren
 suffix:semicolon
 id|printk
@@ -691,7 +642,7 @@ macro_line|#ifdef CONFIG_PPC_ISERIES
 multiline_comment|/* iSeries I/O Remap is a noop              */
 r_return
 suffix:semicolon
-macro_line|#else 
+macro_line|#else
 multiline_comment|/* DRENG / PPPBBB todo */
 r_return
 suffix:semicolon
@@ -817,7 +768,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* If the mm subsystem is not fully up, we cannot create a&n;&t;&t; * linux page table entry for this mapping.  Simply bolt an&n;&t;&t; * entry in the hardware page table. &n; &t;&t; */
+multiline_comment|/* If the mm subsystem is not fully up, we cannot create a&n;&t;&t; * linux page table entry for this mapping.  Simply bolt an&n;&t;&t; * entry in the hardware page table. &n;&t;&t; */
 id|vsid
 op_assign
 id|get_kernel_vsid
@@ -1138,15 +1089,12 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|variable|tlb_batch_array
+DECL|variable|ppc64_tlb_batch
 r_struct
-id|tlb_batch_data
-id|tlb_batch_array
+id|ppc64_tlb_batch
+id|ppc64_tlb_batch
 (braket
 id|NR_CPUS
-)braket
-(braket
-id|MAX_BATCH_FLUSH
 )braket
 suffix:semicolon
 r_void
@@ -1192,77 +1140,31 @@ suffix:semicolon
 r_int
 r_int
 id|context
-suffix:semicolon
-r_int
-id|i
 op_assign
 l_int|0
 suffix:semicolon
 r_struct
-id|tlb_batch_data
+id|ppc64_tlb_batch
 op_star
-id|ptes
+id|batch
 op_assign
 op_amp
-id|tlb_batch_array
+id|ppc64_tlb_batch
 (braket
 id|smp_processor_id
 c_func
 (paren
 )paren
 )braket
-(braket
-l_int|0
-)braket
 suffix:semicolon
 r_int
-id|local
+r_int
+id|i
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|start
-op_ge
-id|end
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;flush_tlb_range: start (%016lx) greater than end (%016lx)&bslash;n&quot;
-comma
-id|start
-comma
-id|end
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|REGION_ID
-c_func
-(paren
-id|start
-)paren
-op_ne
-id|REGION_ID
-c_func
-(paren
-id|end
-)paren
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;flush_tlb_range: start (%016lx) and end (%016lx) not in same region&bslash;n&quot;
-comma
-id|start
-comma
-id|end
-)paren
-suffix:semicolon
-id|context
+r_int
+id|local
 op_assign
 l_int|0
 suffix:semicolon
@@ -1334,12 +1236,10 @@ c_func
 )paren
 )paren
 )paren
-(brace
 id|local
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_default
@@ -1488,16 +1388,19 @@ op_amp
 id|_PAGE_HASHPTE
 )paren
 (brace
-id|ptes-&gt;pte
+id|batch-&gt;pte
+(braket
+id|i
+)braket
 op_assign
 id|pte
 suffix:semicolon
-id|ptes-&gt;addr
+id|batch-&gt;addr
+(braket
+id|i
+)braket
 op_assign
 id|start
-suffix:semicolon
-id|ptes
-op_increment
 suffix:semicolon
 id|i
 op_increment
@@ -1507,7 +1410,7 @@ c_cond
 (paren
 id|i
 op_eq
-id|MAX_BATCH_FLUSH
+id|PPC64_TLB_BATCH_NR
 )paren
 (brace
 id|flush_hash_range
@@ -1515,7 +1418,7 @@ c_func
 (paren
 id|context
 comma
-id|MAX_BATCH_FLUSH
+id|i
 comma
 id|local
 )paren
@@ -1523,20 +1426,6 @@ suffix:semicolon
 id|i
 op_assign
 l_int|0
-suffix:semicolon
-id|ptes
-op_assign
-op_amp
-id|tlb_batch_array
-(braket
-id|smp_processor_id
-c_func
-(paren
-)paren
-)braket
-(braket
-l_int|0
-)braket
 suffix:semicolon
 )brace
 )brace
@@ -1559,10 +1448,12 @@ id|pmd_end
 suffix:semicolon
 )brace
 r_else
+(brace
 id|start
 op_assign
 id|pmd_end
 suffix:semicolon
+)brace
 op_increment
 id|pmd
 suffix:semicolon
@@ -1577,10 +1468,12 @@ id|pgd_end
 suffix:semicolon
 )brace
 r_else
+(brace
 id|start
 op_assign
 id|pgd_end
 suffix:semicolon
+)brace
 op_increment
 id|pgd
 suffix:semicolon
@@ -1946,14 +1839,6 @@ c_func
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_MMINIT
-comma
-l_string|&quot;do_init_bootmem: start&bslash;n&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Find an area to use for the bootmem bitmap.  Calculate the size of&n;&t; * bitmap required as (Total Memory) / PAGE_SIZE / BITS_PER_BYTE.&n;&t; * Add 1 additional page in case the address isn&squot;t page-aligned.&n;&t; */
 id|bootmap_pages
 op_assign
@@ -2011,36 +1896,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_MMINIT
-comma
-l_string|&quot;&bslash;tstart               = 0x%lx&bslash;n&quot;
-comma
-id|start
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_MMINIT
-comma
-l_string|&quot;&bslash;tbootmap_pages       = 0x%lx&bslash;n&quot;
-comma
-id|bootmap_pages
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_MMINIT
-comma
-l_string|&quot;&bslash;tphysicalMemorySize  = 0x%lx&bslash;n&quot;
-comma
-id|naca-&gt;physicalMemorySize
-)paren
-suffix:semicolon
 id|boot_mapsize
 op_assign
 id|init_bootmem
@@ -2051,16 +1906,6 @@ op_rshift
 id|PAGE_SHIFT
 comma
 id|total_pages
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_MMINIT
-comma
-l_string|&quot;&bslash;tboot_mapsize        = 0x%lx&bslash;n&quot;
-comma
-id|boot_mapsize
 )paren
 suffix:semicolon
 multiline_comment|/* add all physical memory to the bootmem map */
@@ -2170,35 +2015,6 @@ id|i
 dot
 id|size
 suffix:semicolon
-macro_line|#if 0 /* PPPBBB */
-r_if
-c_cond
-(paren
-(paren
-id|physbase
-op_eq
-l_int|0
-)paren
-op_logical_and
-(paren
-id|size
-OL
-(paren
-l_int|16
-op_lshift
-l_int|20
-)paren
-)paren
-)paren
-(brace
-id|size
-op_assign
-l_int|16
-op_lshift
-l_int|20
-suffix:semicolon
-)brace
-macro_line|#endif
 id|reserve_bootmem
 c_func
 (paren
@@ -2208,14 +2024,6 @@ id|size
 )paren
 suffix:semicolon
 )brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_MMINIT
-comma
-l_string|&quot;do_init_bootmem: end&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * paging_init() sets up the page tables - in fact we&squot;ve already done this.&n; */
 DECL|function|paging_init
@@ -2239,7 +2047,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * All pages are DMA-able so we put them all in the DMA zone.&n;&t; */
 id|zones_size
 (braket
-l_int|0
+id|ZONE_DMA
 )braket
 op_assign
 id|lmb_end_of_DRAM
@@ -2402,67 +2210,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|ifppcdebug
-c_func
-(paren
-id|PPCDBG_MMINIT
-)paren
-(brace
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;mem_init: totalram_pages = 0x%lx&bslash;n&quot;
-comma
-id|totalram_pages
-)paren
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;mem_init: va_rtas_base   = 0x%lx&bslash;n&quot;
-comma
-id|va_rtas_base
-)paren
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;mem_init: va_rtas_end    = 0x%lx&bslash;n&quot;
-comma
-id|PAGE_ALIGN
-c_func
-(paren
-id|va_rtas_base
-op_plus
-id|rtas.size
-)paren
-)paren
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;mem_init: pinned start   = 0x%lx&bslash;n&quot;
-comma
-id|__va
-c_func
-(paren
-l_int|0
-)paren
-)paren
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;mem_init: pinned end     = 0x%lx&bslash;n&quot;
-comma
-id|PAGE_ALIGN
-c_func
-(paren
-id|klimit
-)paren
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2732,6 +2479,30 @@ id|page
 r_if
 c_cond
 (paren
+id|__is_processor
+c_func
+(paren
+id|PV_POWER4
+)paren
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|vma-&gt;vm_flags
+op_amp
+id|VM_EXEC
+)paren
+op_eq
+l_int|0
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|page-&gt;mapping
 op_logical_and
 op_logical_neg
@@ -2785,9 +2556,40 @@ comma
 r_int
 r_int
 id|vaddr
+comma
+r_struct
+id|page
+op_star
+id|pg
 )paren
 (brace
 id|clear_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+multiline_comment|/* XXX we shouldnt have to do this, but glibc requires it */
+r_if
+c_cond
+(paren
+id|__is_processor
+c_func
+(paren
+id|PV_POWER4
+)paren
+)paren
+id|clear_bit
+c_func
+(paren
+id|PG_arch_1
+comma
+op_amp
+id|pg-&gt;flags
+)paren
+suffix:semicolon
+r_else
+id|__flush_dcache_icache
 c_func
 (paren
 id|page
@@ -2810,6 +2612,11 @@ comma
 r_int
 r_int
 id|vaddr
+comma
+r_struct
+id|page
+op_star
+id|pg
 )paren
 (brace
 id|copy_page
@@ -2820,6 +2627,46 @@ comma
 id|vfrom
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Unfortunately we havent always marked our GOT and PLT sections&n;&t; * as executable, so we need to flush all file regions - Anton&n;&t; */
+macro_line|#if 0
+r_if
+c_cond
+(paren
+op_logical_neg
+id|vma-&gt;vm_file
+op_logical_and
+(paren
+(paren
+id|vma-&gt;vm_flags
+op_amp
+id|VM_EXEC
+)paren
+op_eq
+l_int|0
+)paren
+)paren
+r_return
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|__is_processor
+c_func
+(paren
+id|PV_POWER4
+)paren
+)paren
+id|clear_bit
+c_func
+(paren
+id|PG_arch_1
+comma
+op_amp
+id|pg-&gt;flags
+)paren
+suffix:semicolon
+r_else
 id|__flush_dcache_icache
 c_func
 (paren
@@ -2918,6 +2765,10 @@ comma
 id|pte_t
 op_star
 id|ptep
+comma
+r_int
+r_int
+id|trap
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This is called at the end of handling a user page fault, when the&n; * fault has been handled by updating a PTE in the linux page tables.&n; * We use it to preload an HPTE into the hash table corresponding to&n; * the updated linux PTE.&n; * &n; * This must always be called with the mm-&gt;page_table_lock held&n; */
@@ -3017,6 +2868,8 @@ comma
 id|vsid
 comma
 id|ptep
+comma
+l_int|0x300
 )paren
 suffix:semicolon
 )brace

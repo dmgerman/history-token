@@ -177,7 +177,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Check for an eeh failure at the given token address.&n; * The given value has been read and it should be 1&squot;s (0xff, 0xffff or 0xffffffff).&n; *&n; * Probe to determine if an error actually occurred.  If not return val.&n; * Otherwise panic.&n; */
+multiline_comment|/* Check for an eeh failure at the given token address.&n; * The given value has been read and it should be 1&squot;s (0xff, 0xffff or&n; * 0xffffffff).&n; *&n; * Probe to determine if an error actually occurred.  If not return val.&n; * Otherwise panic.&n; */
 DECL|function|eeh_check_failure
 r_int
 r_int
@@ -547,10 +547,6 @@ c_cond
 id|ibm_set_eeh_option
 op_ne
 id|RTAS_UNKNOWN_SERVICE
-op_logical_and
-id|naca-&gt;platform
-op_eq
-id|PLATFORM_PSERIES_LPAR
 )paren
 id|eeh_implemented
 op_assign
