@@ -148,6 +148,8 @@ id|t
 (brace
 r_int
 id|err
+suffix:semicolon
+id|err
 op_assign
 id|rtc_register
 c_func

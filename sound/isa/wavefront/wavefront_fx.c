@@ -10,32 +10,6 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/snd_wavefront.h&gt;
 macro_line|#include &lt;sound/yss225.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
-macro_line|#if 0
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Paul Davis &lt;pbd@op.net&gt;&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;ALSA driver for Turtle Beach Tropez+ YSS225 FX Processor&quot;
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Control bits for the Load Control Register&n; */
 DECL|macro|FX_LSB_TRANSFER
 mdefine_line|#define FX_LSB_TRANSFER 0x01    /* transfer after DSP LSB byte written */
@@ -843,6 +817,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* YSS225 initialization.&n;&n;   This code was developed using DOSEMU. The Turtle Beach SETUPSND&n;   utility was run with I/O tracing in DOSEMU enabled, and a reconstruction&n;   of the port I/O done, using the Yamaha faxback document as a guide&n;   to add more logic to the code. Its really pretty wierd.&n;&n;   There was an alternative approach of just dumping the whole I/O&n;   sequence as a series of port/value pairs and a simple loop&n;   that output it. However, I hope that eventually I&squot;ll get more&n;   control over what this code does, and so I tried to stick with&n;   a somewhat &quot;algorithmic&quot; approach.&n;*/
 r_int
+id|__init
 DECL|function|snd_wavefront_fx_start
 id|snd_wavefront_fx_start
 (paren
@@ -10110,69 +10085,4 @@ comma
 l_int|0xff
 )brace
 suffix:semicolon
-macro_line|#if 0
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_wavefront_fx_start
-)paren
-suffix:semicolon
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_wavefront_fx_detect
-)paren
-suffix:semicolon
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_wavefront_fx_ioctl
-)paren
-suffix:semicolon
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_wavefront_fx_open
-)paren
-suffix:semicolon
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_wavefront_fx_release
-)paren
-suffix:semicolon
-r_static
-r_int
-id|__init
-id|alsa_wavefront_fx_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_static
-r_void
-id|__exit
-id|alsa_wavefront_fx_exit
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
-id|module_init
-c_func
-(paren
-id|alsa_wavefront_fx_init
-)paren
-id|module_exit
-c_func
-(paren
-id|alsa_wavefront_fx_exit
-)paren
-macro_line|#endif
 eof

@@ -2,25 +2,23 @@ macro_line|#ifndef _LINUX_MSDOS_FS_H
 DECL|macro|_LINUX_MSDOS_FS_H
 mdefine_line|#define _LINUX_MSDOS_FS_H
 multiline_comment|/*&n; * The MS-DOS filesystem constants/structures&n; */
-macro_line|#include &lt;linux/msdos_fs_i.h&gt;
-macro_line|#include &lt;linux/msdos_fs_sb.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-DECL|macro|MSDOS_ROOT_INO
-mdefine_line|#define MSDOS_ROOT_INO  1 /* == MINIX_ROOT_INO */
 DECL|macro|SECTOR_SIZE
-mdefine_line|#define SECTOR_SIZE     512 /* sector size (bytes) */
+mdefine_line|#define SECTOR_SIZE&t;512&t;&t;/* sector size (bytes) */
 DECL|macro|SECTOR_BITS
-mdefine_line|#define SECTOR_BITS&t;9 /* log2(SECTOR_SIZE) */
+mdefine_line|#define SECTOR_BITS&t;9&t;&t;/* log2(SECTOR_SIZE) */
 DECL|macro|MSDOS_DPB
-mdefine_line|#define MSDOS_DPB&t;(MSDOS_DPS) /* dir entries per block */
+mdefine_line|#define MSDOS_DPB&t;(MSDOS_DPS)&t;/* dir entries per block */
 DECL|macro|MSDOS_DPB_BITS
-mdefine_line|#define MSDOS_DPB_BITS&t;4 /* log2(MSDOS_DPB) */
+mdefine_line|#define MSDOS_DPB_BITS&t;4&t;&t;/* log2(MSDOS_DPB) */
 DECL|macro|MSDOS_DPS
-mdefine_line|#define MSDOS_DPS&t;(SECTOR_SIZE/sizeof(struct msdos_dir_entry))
+mdefine_line|#define MSDOS_DPS&t;(SECTOR_SIZE / sizeof(struct msdos_dir_entry))
 DECL|macro|MSDOS_DPS_BITS
-mdefine_line|#define MSDOS_DPS_BITS&t;4 /* log2(MSDOS_DPS) */
+mdefine_line|#define MSDOS_DPS_BITS&t;4&t;&t;/* log2(MSDOS_DPS) */
+DECL|macro|MSDOS_ROOT_INO
+mdefine_line|#define MSDOS_ROOT_INO&t;1&t;/* == MINIX_ROOT_INO */
 DECL|macro|MSDOS_DIR_BITS
-mdefine_line|#define MSDOS_DIR_BITS&t;5 /* log2(sizeof(struct msdos_dir_entry)) */
+mdefine_line|#define MSDOS_DIR_BITS&t;5&t;/* log2(sizeof(struct msdos_dir_entry)) */
 multiline_comment|/* directory limit */
 DECL|macro|FAT_MAX_DIR_ENTRIES
 mdefine_line|#define FAT_MAX_DIR_ENTRIES&t;(65536)
@@ -30,6 +28,8 @@ DECL|macro|MSDOS_SUPER_MAGIC
 mdefine_line|#define MSDOS_SUPER_MAGIC 0x4d44 /* MD */
 DECL|macro|FAT_CACHE
 mdefine_line|#define FAT_CACHE    8 /* FAT cache size */
+DECL|macro|ATTR_NONE
+mdefine_line|#define ATTR_NONE    0 /* no attribute bits */
 DECL|macro|ATTR_RO
 mdefine_line|#define ATTR_RO      1  /* read-only */
 DECL|macro|ATTR_HIDDEN
@@ -42,18 +42,12 @@ DECL|macro|ATTR_DIR
 mdefine_line|#define ATTR_DIR     16 /* directory */
 DECL|macro|ATTR_ARCH
 mdefine_line|#define ATTR_ARCH    32 /* archived */
-DECL|macro|ATTR_NONE
-mdefine_line|#define ATTR_NONE    0 /* no attribute bits */
 DECL|macro|ATTR_UNUSED
 mdefine_line|#define ATTR_UNUSED  (ATTR_VOLUME | ATTR_ARCH | ATTR_SYS | ATTR_HIDDEN)
 multiline_comment|/* attribute bits that are copied &quot;as is&quot; */
 DECL|macro|ATTR_EXT
 mdefine_line|#define ATTR_EXT     (ATTR_RO | ATTR_HIDDEN | ATTR_SYS | ATTR_VOLUME)
 multiline_comment|/* bits that are used by the Windows 95/Windows NT extended FAT */
-DECL|macro|ATTR_DIR_READ_BOTH
-mdefine_line|#define ATTR_DIR_READ_BOTH 512 /* read both short and long names from the&n;&t;&t;&t;&t;* vfat filesystem.  This is used by Samba&n;&t;&t;&t;&t;* to export the vfat filesystem with correct&n;&t;&t;&t;&t;* shortnames. */
-DECL|macro|ATTR_DIR_READ_SHORT
-mdefine_line|#define ATTR_DIR_READ_SHORT 1024
 DECL|macro|CASE_LOWER_BASE
 mdefine_line|#define CASE_LOWER_BASE 8&t;/* base is lower case */
 DECL|macro|CASE_LOWER_EXT
@@ -65,53 +59,6 @@ mdefine_line|#define IS_FREE(n) (!*(n) || *(const unsigned char *) (n) == DELETE
 DECL|macro|MSDOS_VALID_MODE
 mdefine_line|#define MSDOS_VALID_MODE (S_IFREG | S_IFDIR | S_IRWXU | S_IRWXG | S_IRWXO)
 multiline_comment|/* valid file mode bits */
-DECL|function|MSDOS_SB
-r_static
-r_inline
-r_struct
-id|msdos_sb_info
-op_star
-id|MSDOS_SB
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|sb
-)paren
-(brace
-r_return
-id|sb-&gt;u.generic_sbp
-suffix:semicolon
-)brace
-DECL|function|MSDOS_I
-r_static
-r_inline
-r_struct
-id|msdos_inode_info
-op_star
-id|MSDOS_I
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-r_return
-id|list_entry
-c_func
-(paren
-id|inode
-comma
-r_struct
-id|msdos_inode_info
-comma
-id|vfs_inode
-)paren
-suffix:semicolon
-)brace
 DECL|macro|MSDOS_NAME
 mdefine_line|#define MSDOS_NAME 11 /* maximum name length */
 DECL|macro|MSDOS_LONGNAME
@@ -138,9 +85,6 @@ DECL|macro|FAT_FSINFO_SIG2
 mdefine_line|#define FAT_FSINFO_SIG2&t;&t;0x61417272
 DECL|macro|IS_FSINFO
 mdefine_line|#define IS_FSINFO(x)&t;(CF_LE_L((x)-&gt;signature1) == FAT_FSINFO_SIG1&t;&bslash;&n;&t;&t;&t; &amp;&amp; CF_LE_L((x)-&gt;signature2) == FAT_FSINFO_SIG2)
-multiline_comment|/*&n; * Inode flags&n; */
-DECL|macro|FAT_BINARY_FL
-mdefine_line|#define FAT_BINARY_FL&t;&t;0x00000001 /* File contains binary data */
 multiline_comment|/*&n; * ioctl commands&n; */
 DECL|macro|VFAT_IOCTL_READDIR_BOTH
 mdefine_line|#define&t;VFAT_IOCTL_READDIR_BOTH&t;&t;_IOR(&squot;r&squot;, 1, struct dirent [2])
@@ -471,31 +415,16 @@ DECL|struct|vfat_slot_info
 r_struct
 id|vfat_slot_info
 (brace
-DECL|member|is_long
-r_int
-id|is_long
-suffix:semicolon
-multiline_comment|/* was the found entry long */
 DECL|member|long_slots
 r_int
 id|long_slots
 suffix:semicolon
 multiline_comment|/* number of long slots in filename */
-DECL|member|total_slots
-r_int
-id|total_slots
-suffix:semicolon
-multiline_comment|/* total slots (long and short) */
 DECL|member|longname_offset
 id|loff_t
 id|longname_offset
 suffix:semicolon
 multiline_comment|/* dir offset for longname start */
-DECL|member|shortname_offset
-id|loff_t
-id|shortname_offset
-suffix:semicolon
-multiline_comment|/* dir offset for shortname start */
 DECL|member|ino
 r_int
 id|ino
@@ -511,6 +440,55 @@ DECL|macro|MSDOS_MKATTR
 mdefine_line|#define MSDOS_MKATTR(m) ((m &amp; S_IWUGO) ? ATTR_NONE : ATTR_RO)
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/nls.h&gt;
+macro_line|#include &lt;linux/msdos_fs_i.h&gt;
+macro_line|#include &lt;linux/msdos_fs_sb.h&gt;
+DECL|function|MSDOS_SB
+r_static
+r_inline
+r_struct
+id|msdos_sb_info
+op_star
+id|MSDOS_SB
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_return
+id|sb-&gt;u.generic_sbp
+suffix:semicolon
+)brace
+DECL|function|MSDOS_I
+r_static
+r_inline
+r_struct
+id|msdos_inode_info
+op_star
+id|MSDOS_I
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+id|list_entry
+c_func
+(paren
+id|inode
+comma
+r_struct
+id|msdos_inode_info
+comma
+id|vfs_inode
+)paren
+suffix:semicolon
+)brace
 DECL|struct|fat_cache
 r_struct
 id|fat_cache
@@ -1658,17 +1636,6 @@ id|ino
 )paren
 suffix:semicolon
 multiline_comment|/* msdos/namei.c  - these are for Umsdos */
-r_extern
-r_void
-id|msdos_put_super
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|sb
-)paren
-suffix:semicolon
 r_extern
 r_struct
 id|dentry

@@ -777,6 +777,10 @@ c_cond
 id|chip-&gt;dma16
 op_ge
 l_int|0
+op_logical_and
+id|chip-&gt;dma16
+op_ne
+id|chip-&gt;dma8
 )paren
 (brace
 id|disable_dma
@@ -1116,7 +1120,26 @@ c_cond
 id|dma16
 op_ge
 l_int|0
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|dma16
+template_param
+l_int|7
+)paren
+(brace
+multiline_comment|/* Vibra has no 16bit DMA - no duplex */
+id|dma16
+op_assign
+id|dma8
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
 id|request_dma
 c_func
 (paren
@@ -1136,6 +1159,7 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
+)brace
 )brace
 id|chip-&gt;dma16
 op_assign

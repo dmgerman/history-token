@@ -149,7 +149,7 @@ id|tmp
 (braket
 )braket
 op_assign
-l_string|&quot;&lt;0&gt;ALSA %s:%d: &quot;
+l_string|&quot;&lt;0&gt;&quot;
 suffix:semicolon
 id|tmp
 (braket

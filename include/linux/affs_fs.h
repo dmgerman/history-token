@@ -4,6 +4,7 @@ mdefine_line|#define _AFFS_FS_H
 multiline_comment|/*&n; * The affs filesystem constants/structures&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/affs_fs_i.h&gt;
+macro_line|#include &lt;linux/affs_fs_sb.h&gt;
 DECL|macro|AFFS_SUPER_MAGIC
 mdefine_line|#define AFFS_SUPER_MAGIC 0xadff
 r_struct

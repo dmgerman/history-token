@@ -542,9 +542,6 @@ r_int
 id|map
 suffix:semicolon
 r_int
-id|high_sierra
-suffix:semicolon
-r_int
 id|first_de
 op_assign
 l_int|1
@@ -561,6 +558,17 @@ id|iso_directory_record
 op_star
 id|de
 suffix:semicolon
+r_struct
+id|isofs_sb_info
+op_star
+id|sbi
+op_assign
+id|ISOFS_SB
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+suffix:semicolon
 id|offset
 op_assign
 id|filp-&gt;f_pos
@@ -576,10 +584,6 @@ op_assign
 id|filp-&gt;f_pos
 op_rshift
 id|bufbits
-suffix:semicolon
-id|high_sierra
-op_assign
-id|inode-&gt;i_sb-&gt;u.isofs_sb.s_high_sierra
 suffix:semicolon
 r_while
 c_loop
@@ -808,7 +812,7 @@ c_cond
 id|de-&gt;flags
 (braket
 op_minus
-id|high_sierra
+id|sbi-&gt;s_high_sierra
 )braket
 op_amp
 l_int|0x80
@@ -943,7 +947,7 @@ multiline_comment|/* Handle everything else.  Do name translation if there&n;&t;
 r_if
 c_cond
 (paren
-id|inode-&gt;i_sb-&gt;u.isofs_sb.s_unhide
+id|sbi-&gt;s_unhide
 op_eq
 l_char|&squot;n&squot;
 )paren
@@ -955,7 +959,7 @@ c_cond
 id|de-&gt;flags
 (braket
 op_minus
-id|high_sierra
+id|sbi-&gt;s_high_sierra
 )braket
 op_amp
 l_int|5
@@ -976,7 +980,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|inode-&gt;i_sb-&gt;u.isofs_sb.s_rock
+id|sbi-&gt;s_rock
 )paren
 (brace
 id|len
@@ -1020,7 +1024,7 @@ macro_line|#ifdef CONFIG_JOLIET
 r_if
 c_cond
 (paren
-id|inode-&gt;i_sb-&gt;u.isofs_sb.s_joliet_level
+id|sbi-&gt;s_joliet_level
 )paren
 (brace
 id|len
@@ -1045,7 +1049,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|inode-&gt;i_sb-&gt;u.isofs_sb.s_mapping
+id|sbi-&gt;s_mapping
 op_eq
 l_char|&squot;a&squot;
 )paren
@@ -1071,7 +1075,7 @@ r_else
 r_if
 c_cond
 (paren
-id|inode-&gt;i_sb-&gt;u.isofs_sb.s_mapping
+id|sbi-&gt;s_mapping
 op_eq
 l_char|&squot;n&squot;
 )paren

@@ -1404,7 +1404,7 @@ c_func
 (paren
 id|oob_port-&gt;write_urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 op_eq
@@ -1740,7 +1740,7 @@ c_func
 (paren
 id|port-&gt;write_urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 op_eq
@@ -2068,7 +2068,7 @@ c_func
 (paren
 id|oob_port-&gt;write_urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 op_eq
@@ -2546,7 +2546,7 @@ c_func
 (paren
 id|port-&gt;read_urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 )brace
@@ -4292,7 +4292,7 @@ c_func
 (paren
 id|port-&gt;write_urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 op_eq
@@ -4647,7 +4647,7 @@ c_func
 (paren
 id|port-&gt;write_urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 op_eq
@@ -6549,7 +6549,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 op_ne

@@ -155,7 +155,24 @@ mdefine_line|#define SF_VERBOSE&t;0x0800&t;&t;/* Talk about fs when mounting */
 DECL|macro|SF_READONLY
 mdefine_line|#define SF_READONLY&t;0x1000&t;&t;/* Don&squot;t allow to remount rw */
 multiline_comment|/* short cut to get to the affs specific sb data */
-DECL|macro|AFFS_SB
-mdefine_line|#define AFFS_SB&t;&t;(&amp;sb-&gt;u.affs_sb)
+DECL|function|AFFS_SB
+r_static
+r_inline
+r_struct
+id|affs_sb_info
+op_star
+id|AFFS_SB
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_return
+id|sb-&gt;u.generic_sbp
+suffix:semicolon
+)brace
 macro_line|#endif
 eof

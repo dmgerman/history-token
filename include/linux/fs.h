@@ -1278,7 +1278,6 @@ op_member_access_from_pointer
 id|vfs_inode
 suffix:semicolon
 )brace
-macro_line|#include &lt;linux/shmem_fs.h&gt;
 multiline_comment|/* will die */
 macro_line|#include &lt;linux/coda_fs_i.h&gt;
 macro_line|#include &lt;linux/ext3_fs_i.h&gt;
@@ -2020,17 +2019,12 @@ mdefine_line|#define MNT_DETACH&t;0x00000002&t;/* Just detach from the tree */
 macro_line|#include &lt;linux/ext3_fs_sb.h&gt;
 macro_line|#include &lt;linux/hpfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/ntfs_fs_sb.h&gt;
-macro_line|#include &lt;linux/iso_fs_sb.h&gt;
 macro_line|#include &lt;linux/sysv_fs_sb.h&gt;
-macro_line|#include &lt;linux/affs_fs_sb.h&gt;
 macro_line|#include &lt;linux/ufs_fs_sb.h&gt;
 macro_line|#include &lt;linux/romfs_fs_sb.h&gt;
-macro_line|#include &lt;linux/hfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/adfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/bfs_fs_sb.h&gt;
-macro_line|#include &lt;linux/udf_fs_sb.h&gt;
-macro_line|#include &lt;linux/jffs2_fs_sb.h&gt;
 r_extern
 r_struct
 id|list_head
@@ -2191,40 +2185,20 @@ r_struct
 id|ntfs_sb_info
 id|ntfs_sb
 suffix:semicolon
-DECL|member|isofs_sb
-r_struct
-id|isofs_sb_info
-id|isofs_sb
-suffix:semicolon
 DECL|member|sysv_sb
 r_struct
 id|sysv_sb_info
 id|sysv_sb
-suffix:semicolon
-DECL|member|affs_sb
-r_struct
-id|affs_sb_info
-id|affs_sb
 suffix:semicolon
 DECL|member|ufs_sb
 r_struct
 id|ufs_sb_info
 id|ufs_sb
 suffix:semicolon
-DECL|member|shmem_sb
-r_struct
-id|shmem_sb_info
-id|shmem_sb
-suffix:semicolon
 DECL|member|romfs_sb
 r_struct
 id|romfs_sb_info
 id|romfs_sb
-suffix:semicolon
-DECL|member|hfs_sb
-r_struct
-id|hfs_sb_info
-id|hfs_sb
 suffix:semicolon
 DECL|member|adfs_sb
 r_struct
@@ -2240,16 +2214,6 @@ DECL|member|bfs_sb
 r_struct
 id|bfs_sb_info
 id|bfs_sb
-suffix:semicolon
-DECL|member|udf_sb
-r_struct
-id|udf_sb_info
-id|udf_sb
-suffix:semicolon
-DECL|member|jffs2_sb
-r_struct
-id|jffs2_sb_info
-id|jffs2_sb
 suffix:semicolon
 DECL|member|generic_sbp
 r_void

@@ -2465,7 +2465,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pci-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|pci
+)paren
 )paren
 id|pci_set_dma_mask
 c_func

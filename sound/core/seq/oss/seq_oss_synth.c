@@ -87,8 +87,6 @@ DECL|variable|max_synth_devs
 r_static
 r_int
 id|max_synth_devs
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|synth_devs
 r_static
