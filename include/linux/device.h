@@ -215,6 +215,19 @@ op_star
 id|saved_state
 suffix:semicolon
 multiline_comment|/* saved device state */
+DECL|member|release
+r_void
+(paren
+op_star
+id|release
+)paren
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 r_static
