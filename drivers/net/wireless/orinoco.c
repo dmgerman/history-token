@@ -5415,32 +5415,23 @@ id|i
 op_increment
 )paren
 (brace
-multiline_comment|/* Paranoia: */
-r_if
-c_cond
+multiline_comment|/* paranoia: is list shorter than mc_count? */
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|p
 )paren
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
-multiline_comment|/* Multicast list shorter than mc_count */
-r_if
-c_cond
+multiline_comment|/* paranoia: bad address size in list? */
+id|BUG_ON
+c_func
 (paren
 id|p-&gt;dmi_addrlen
 op_ne
 id|ETH_ALEN
 )paren
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
-multiline_comment|/* Bad address size in multicast list */
 id|memcpy
 c_func
 (paren
@@ -11767,8 +11758,8 @@ id|ratemode
 op_assign
 id|priv-&gt;bitratemode
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 (paren
 id|ratemode
@@ -11781,10 +11772,6 @@ id|ratemode
 op_ge
 id|BITRATE_TABLE_SIZE
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|rrq-&gt;value

@@ -470,15 +470,11 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|dev
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|unregister_netdev
