@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+multiline_comment|/* &n; * Copyright (C) 2002 - 2003 Jeff Dike (jdike@addtoit.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/kernel.h&quot;
 macro_line|#include &quot;linux/list.h&quot;
 macro_line|#include &quot;linux/slab.h&quot;
