@@ -3036,6 +3036,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|device_power_down
+c_func
+(paren
+id|PM_SUSPEND_DISK
+)paren
+suffix:semicolon
 multiline_comment|/* We&squot;ll ignore saved state, but this gets preempt count (etc) right */
 id|save_processor_state
 c_func
@@ -3063,6 +3069,11 @@ c_func
 )paren
 suffix:semicolon
 id|restore_highmem
+c_func
+(paren
+)paren
+suffix:semicolon
+id|device_power_up
 c_func
 (paren
 )paren
