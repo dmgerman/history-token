@@ -90,11 +90,6 @@ DECL|member|user
 id|uid_t
 id|user
 suffix:semicolon
-DECL|member|owner
-r_void
-op_star
-id|owner
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|XFRM_INF
