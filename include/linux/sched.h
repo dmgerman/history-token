@@ -1437,6 +1437,11 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#include &lt;asm/current.h&gt;
+multiline_comment|/*&n; * The 64-bit value is not volatile - you MUST NOT read it&n; * without holding read_lock_irq(&amp;xtime_lock)&n; */
+r_extern
+id|u64
+id|jiffies_64
+suffix:semicolon
 r_extern
 r_int
 r_int

@@ -1233,7 +1233,7 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/* There are two requirements on a filesystem to be exportable.&n;&t; * 1:  We must be able to identify the filesystem from a number.&n;&t; *       either a device number (so FS_REQUIRES_DEV needed)&n;&t; *       or an FSID number (so NFSEXP_FSID needed).&n;&t; * 2:  We must be able to find an inode from a filehandle.&n;&t; *       either using fh_to_dentry (prefered)&n;&t; *       or using read_inode (the hack).&n;&t; */
+multiline_comment|/* There are two requirements on a filesystem to be exportable.&n;&t; * 1:  We must be able to identify the filesystem from a number.&n;&t; *       either a device number (so FS_REQUIRES_DEV needed)&n;&t; *       or an FSID number (so NFSEXP_FSID needed).&n;&t; * 2:  We must be able to find an inode from a filehandle.&n;&t; *       This means that s_export_op must be set.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1251,13 +1251,7 @@ id|NFSEXP_FSID
 )paren
 )paren
 op_logical_and
-(paren
-id|inode-&gt;i_sb-&gt;s_op-&gt;read_inode
-op_logical_or
 id|inode-&gt;i_sb-&gt;s_export_op
-op_logical_or
-id|inode-&gt;i_sb-&gt;s_op-&gt;fh_to_dentry
-)paren
 )paren
 multiline_comment|/* Ok, we can export it */
 suffix:semicolon

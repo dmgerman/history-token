@@ -5802,7 +5802,7 @@ suffix:semicolon
 )brace
 r_extern
 id|asmlinkage
-r_int
+id|ssize_t
 id|sys_read
 c_func
 (paren
@@ -5821,7 +5821,7 @@ id|count
 suffix:semicolon
 r_extern
 id|asmlinkage
-r_int
+id|ssize_t
 id|sys_write
 c_func
 (paren

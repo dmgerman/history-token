@@ -5986,17 +5986,6 @@ suffix:colon
 l_int|NULL
 comma
 multiline_comment|/* Forced umount. */
-multiline_comment|/*&n;&t; * These are NFSd support functions but NTFS is a standard fs so&n;&t; * shouldn&squot;t need to implement these manually. At least we can try&n;&t; * without and if it doesn&squot;t work in some way we can always implement&n;&t; * something here.&n;&t; */
-id|fh_to_dentry
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* Get dentry for given file handle. */
-id|dentry_to_fh
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* Get file handle for given dentry. */
 id|show_options
 suffix:colon
 id|ntfs_show_options

@@ -194,11 +194,10 @@ id|itimerval
 op_star
 )paren
 suffix:semicolon
-DECL|variable|jiffies
-r_int
-r_int
-r_volatile
-id|jiffies
+multiline_comment|/*&n; * The 64-bit value is not volatile - you MUST NOT read it&n; * without holding read_lock_irq(&amp;xtime_lock).&n; * jiffies is defined in the linker script...&n; */
+DECL|variable|jiffies_64
+id|u64
+id|jiffies_64
 suffix:semicolon
 DECL|variable|prof_buffer
 r_int
@@ -2565,16 +2564,7 @@ op_star
 id|regs
 )paren
 (brace
-(paren
-op_star
-(paren
-r_int
-r_int
-op_star
-)paren
-op_amp
-id|jiffies
-)paren
+id|jiffies_64
 op_increment
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP

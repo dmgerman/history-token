@@ -666,7 +666,7 @@ r_void
 suffix:semicolon
 DECL|function|pcibios_init
 r_static
-r_void
+r_int
 id|__init
 id|pcibios_init
 c_func
@@ -687,6 +687,7 @@ op_eq
 l_int|NULL
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|pci_scan_each_controller_bus
 c_func
@@ -727,6 +728,9 @@ id|power_init
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|pcibios_init
