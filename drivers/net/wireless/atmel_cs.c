@@ -1018,11 +1018,6 @@ id|atmel_device
 op_assign
 (brace
 dot
-id|name
-op_assign
-l_string|&quot;Atmel at76c50x wireless&quot;
-comma
-dot
 id|bus_id
 op_assign
 l_string|&quot;pcmcia&quot;
