@@ -377,6 +377,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* do not issue start on add */
+DECL|member|allow_restart
+r_int
+id|allow_restart
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* issue START_UNIT in error handler */
 DECL|member|device_blocked
 r_int
 r_int
