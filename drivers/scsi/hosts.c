@@ -502,7 +502,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|sht-&gt;max_host_blocked
 )paren
 id|shost-&gt;max_host_blocked
