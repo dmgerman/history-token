@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  card-als4000.c - driver for Avance Logic ALS4000 based soundcards.&n; *  Copyright (C) 2000 by Bart Hartgers &lt;bart@etpmod.phys.tue.nl&gt;,&n; *&t;&t;&t;  Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *  Framework borrowed from Massimo Piccioni&squot;s card-als100.c.&n; *&n; * NOTES&n; *&n; *  Since Avance does not provide any meaningful documentation, and I&n; *  bought an ALS4000 based soundcard, I was forced to base this driver&n; *  on reverse engineering.&n; *&n; *  The ALS4000 seems to be the PCI-cousin of the ALS100. It contains an&n; *  ALS100-like SB DSP/mixer, an OPL3 synth, a MPU401 and a gameport &n; *  interface. These subsystems can be mapped into ISA io-port space, &n; *  using the PCI-interface. In addition, the PCI-bit provides DMA and IRQ &n; *  services to the subsystems.&n; * &n; * While ALS4000 is very similar to a SoundBlaster, the differences in&n; * DMA and capturing require more changes to the SoundBlaster than&n; * desirable, so I made this separate driver.&n; * &n; * The ALS4000 can do real full duplex playback/capture.&n; *&n; * BUGS&n; *   The box suggests there is some support for 3D sound, but I did not&n; *   investigate this yet.&n; * &n; *&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n;&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
+multiline_comment|/*&n; *  card-als4000.c - driver for Avance Logic ALS4000 based soundcards.&n; *  Copyright (C) 2000 by Bart Hartgers &lt;bart@etpmod.phys.tue.nl&gt;,&n; *&t;&t;&t;  Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *  Copyright (C) 2002 by Andreas Mohr &lt;hw7oshyuv3001@sneakemail.com&gt;&n; *&n; *  Framework borrowed from Massimo Piccioni&squot;s card-als100.c.&n; *&n; * NOTES&n; *&n; *  Since Avance does not provide any meaningful documentation, and I&n; *  bought an ALS4000 based soundcard, I was forced to base this driver&n; *  on reverse engineering.&n; *&n; *  Note: this is no longer true. Pretty verbose chip docu (ALS4000a.PDF)&n; *  can be found on the ALSA web site.&n; *&n; *  The ALS4000 seems to be the PCI-cousin of the ALS100. It contains an&n; *  ALS100-like SB DSP/mixer, an OPL3 synth, a MPU401 and a gameport &n; *  interface. These subsystems can be mapped into ISA io-port space, &n; *  using the PCI-interface. In addition, the PCI-bit provides DMA and IRQ &n; *  services to the subsystems.&n; * &n; * While ALS4000 is very similar to a SoundBlaster, the differences in&n; * DMA and capturing require more changes to the SoundBlaster than&n; * desirable, so I made this separate driver.&n; * &n; * The ALS4000 can do real full duplex playback/capture.&n; *&n; * FMDAC:&n; * - 0x4f -&gt; port 0x14&n; * - port 0x15 |= 1&n; *&n; * Enable/disable 3D sound:&n; * - 0x50 -&gt; port 0x14&n; * - change bit 6 (0x40) of port 0x15&n; *&n; * Set QSound:&n; * - 0xdb -&gt; port 0x14&n; * - set port 0x15:&n; *   0x3e (mode 3), 0x3c (mode 2), 0x3a (mode 1), 0x38 (mode 0)&n; *&n; * Set KSound:&n; * - value -&gt; some port 0x0c0d&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n;&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -996,6 +996,7 @@ suffix:semicolon
 id|count
 op_decrement
 suffix:semicolon
+multiline_comment|/* FIXME: from second playback on, there&squot;s a lot more clicks and pops&n;&t; * involved here than on first playback. Fiddling with&n;&t; * tons of different settings didn&squot;t help (DMA, speaker on/off,&n;&t; * reordering, ...). Something seems to get enabled on playback&n;&t; * that I haven&squot;t found out how to disable again, which then causes&n;&t; * the switching pops to reach the speakers the next time here. */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -1023,14 +1024,8 @@ comma
 id|size
 )paren
 suffix:semicolon
-id|snd_sbdsp_command
-c_func
-(paren
-id|chip
-comma
-id|SB_DSP_SPEAKER_ON
-)paren
-suffix:semicolon
+multiline_comment|/* SPEAKER_ON not needed, since dma_on seems to also enable speaker */
+multiline_comment|/* snd_sbdsp_command(chip, SB_DSP_SPEAKER_ON); */
 id|snd_sbdsp_command
 c_func
 (paren
@@ -1639,16 +1634,10 @@ id|sb_status
 op_amp
 id|SB_IRQTYPE_8BIT
 )paren
-id|inb
-c_func
-(paren
-id|SBP
+id|snd_sb_ack_8bit
 c_func
 (paren
 id|chip
-comma
-id|DATA_AVAIL
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1658,16 +1647,10 @@ id|sb_status
 op_amp
 id|SB_IRQTYPE_16BIT
 )paren
-id|inb
-c_func
-(paren
-id|SBP
+id|snd_sb_ack_16bit
 c_func
 (paren
 id|chip
-comma
-id|DATA_AVAIL_16
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -2549,10 +2532,10 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|snd_card_als4k_free
+DECL|function|snd_card_als4000_free
 r_static
 r_void
-id|snd_card_als4k_free
+id|snd_card_als4000_free
 c_func
 (paren
 id|snd_card_t
@@ -2582,11 +2565,11 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-DECL|function|snd_card_als4k_probe
+DECL|function|snd_card_als4000_probe
 r_static
 r_int
 id|__devinit
-id|snd_card_als4k_probe
+id|snd_card_als4000_probe
 c_func
 (paren
 r_struct
@@ -2878,7 +2861,7 @@ id|gcr
 suffix:semicolon
 id|card-&gt;private_free
 op_assign
-id|snd_card_als4k_free
+id|snd_card_als4000_free
 suffix:semicolon
 r_if
 c_cond
@@ -3212,11 +3195,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|snd_card_als4k_remove
+DECL|function|snd_card_als4000_remove
 r_static
 r_void
 id|__devexit
-id|snd_card_als4k_remove
+id|snd_card_als4000_remove
 c_func
 (paren
 r_struct
@@ -3264,7 +3247,7 @@ comma
 dot
 id|probe
 op_assign
-id|snd_card_als4k_probe
+id|snd_card_als4000_probe
 comma
 dot
 id|remove
@@ -3272,16 +3255,16 @@ op_assign
 id|__devexit_p
 c_func
 (paren
-id|snd_card_als4k_remove
+id|snd_card_als4000_remove
 )paren
 comma
 )brace
 suffix:semicolon
-DECL|function|alsa_card_als4k_init
+DECL|function|alsa_card_als4000_init
 r_static
 r_int
 id|__init
-id|alsa_card_als4k_init
+id|alsa_card_als4000_init
 c_func
 (paren
 r_void
@@ -3324,11 +3307,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|alsa_card_als4k_exit
+DECL|function|alsa_card_als4000_exit
 r_static
 r_void
 id|__exit
-id|alsa_card_als4k_exit
+id|alsa_card_als4000_exit
 c_func
 (paren
 r_void
@@ -3345,12 +3328,12 @@ suffix:semicolon
 id|module_init
 c_func
 (paren
-id|alsa_card_als4k_init
+id|alsa_card_als4000_init
 )paren
 id|module_exit
 c_func
 (paren
-id|alsa_card_als4k_exit
+id|alsa_card_als4000_exit
 )paren
 macro_line|#ifndef MODULE
 multiline_comment|/* format is: snd-als4000=enable,index,id */

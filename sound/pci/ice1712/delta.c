@@ -1692,6 +1692,10 @@ id|ak-&gt;type
 op_assign
 id|SND_AK4528
 suffix:semicolon
+id|ak-&gt;caddr
+op_assign
+l_int|2
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1707,6 +1711,10 @@ suffix:semicolon
 id|ak-&gt;type
 op_assign
 id|SND_AK4529
+suffix:semicolon
+id|ak-&gt;caddr
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 id|ak-&gt;cif
@@ -1766,6 +1774,10 @@ suffix:semicolon
 id|ak-&gt;type
 op_assign
 id|SND_AK4524
+suffix:semicolon
+id|ak-&gt;caddr
+op_assign
+l_int|2
 suffix:semicolon
 id|ak-&gt;cif
 op_assign
@@ -1830,6 +1842,10 @@ suffix:semicolon
 id|ak-&gt;type
 op_assign
 id|SND_AK4524
+suffix:semicolon
+id|ak-&gt;caddr
+op_assign
+l_int|2
 suffix:semicolon
 id|ak-&gt;cif
 op_assign

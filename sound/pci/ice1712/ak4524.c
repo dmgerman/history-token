@@ -177,18 +177,23 @@ op_or_assign
 id|ak-&gt;cs_addr
 suffix:semicolon
 )brace
-id|addr
-op_and_assign
-l_int|0x07
-suffix:semicolon
 multiline_comment|/* build I2C address + data byte */
-multiline_comment|/* assume C1=1, C0=0 */
 id|addrdata
 op_assign
-l_int|0xa000
+(paren
+id|ak-&gt;caddr
+op_lshift
+l_int|14
+)paren
+op_or
+l_int|0x2000
 op_or
 (paren
+(paren
 id|addr
+op_amp
+l_int|0x0f
+)paren
 op_lshift
 l_int|8
 )paren
@@ -324,6 +329,20 @@ id|chip
 id|addr
 op_minus
 l_int|4
+)braket
+op_assign
+id|data
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* AK4529 */
+id|ak-&gt;images
+(braket
+id|chip
+)braket
+(braket
+id|addr
 )braket
 op_assign
 id|data
@@ -751,7 +770,7 @@ comma
 multiline_comment|/* A: all power up, no zero/overflow detection */
 l_int|0x00
 comma
-l_int|0x08
+l_int|0x0c
 comma
 multiline_comment|/* 0: TDM=0, 24bit I2S, SMUTE=0 */
 l_int|0x01
@@ -946,8 +965,10 @@ DECL|macro|AK_GET_ADDR
 mdefine_line|#define AK_GET_ADDR(val)&t;&t;((val) &amp; 0xff)
 DECL|macro|AK_GET_SHIFT
 mdefine_line|#define AK_GET_SHIFT(val)&t;&t;(((val) &gt;&gt; 16) &amp; 0xff)
+DECL|macro|AK_GET_MASK
+mdefine_line|#define AK_GET_MASK(val)&t;&t;(((val) &gt;&gt; 24) &amp; 0xff)
 DECL|macro|AK_COMPOSE
-mdefine_line|#define AK_COMPOSE(chip,addr,shift)&t;(((chip) &lt;&lt; 8) | (addr) | ((shift) &lt;&lt; 16))
+mdefine_line|#define AK_COMPOSE(chip,addr,shift,mask) (((chip) &lt;&lt; 8) | (addr) | ((shift) &lt;&lt; 16) | ((mask) &lt;&lt; 24))
 DECL|function|snd_ice1712_ak4524_volume_info
 r_static
 r_int
@@ -963,6 +984,16 @@ op_star
 id|uinfo
 )paren
 (brace
+r_int
+r_int
+id|mask
+op_assign
+id|AK_GET_MASK
+c_func
+(paren
+id|kcontrol-&gt;private_value
+)paren
+suffix:semicolon
 id|uinfo-&gt;type
 op_assign
 id|SNDRV_CTL_ELEM_TYPE_INTEGER
@@ -977,7 +1008,7 @@ l_int|0
 suffix:semicolon
 id|uinfo-&gt;value.integer.max
 op_assign
-l_int|127
+id|mask
 suffix:semicolon
 r_return
 l_int|0
@@ -1026,11 +1057,23 @@ c_func
 id|kcontrol-&gt;private_value
 )paren
 suffix:semicolon
+r_int
+r_int
+id|mask
+op_assign
+id|AK_GET_MASK
+c_func
+(paren
+id|kcontrol-&gt;private_value
+)paren
+suffix:semicolon
 id|ucontrol-&gt;value.integer.value
 (braket
 l_int|0
 )braket
 op_assign
+id|mask
+op_minus
 id|ice-&gt;ak4524.images
 (braket
 id|chip
@@ -1087,13 +1130,33 @@ id|kcontrol-&gt;private_value
 )paren
 suffix:semicolon
 r_int
+r_int
+id|mask
+op_assign
+id|AK_GET_MASK
+c_func
+(paren
+id|kcontrol-&gt;private_value
+)paren
+suffix:semicolon
+r_int
 r_char
 id|nval
 op_assign
+id|mask
+op_minus
+(paren
 id|ucontrol-&gt;value.integer.value
 (braket
 l_int|0
 )braket
+op_mod
+(paren
+id|mask
+op_plus
+l_int|1
+)paren
+)paren
 suffix:semicolon
 r_int
 id|change
@@ -1708,6 +1771,8 @@ op_plus
 l_int|6
 comma
 l_int|0
+comma
+l_int|127
 )paren
 suffix:semicolon
 multiline_comment|/* register 6 &amp; 7 */
@@ -1734,6 +1799,8 @@ op_plus
 l_int|4
 comma
 l_int|0
+comma
+l_int|127
 )paren
 suffix:semicolon
 multiline_comment|/* register 4 &amp; 5 */
@@ -1774,6 +1841,8 @@ comma
 id|val
 comma
 l_int|0
+comma
+l_int|255
 )paren
 suffix:semicolon
 r_break
@@ -1898,6 +1967,8 @@ op_plus
 l_int|4
 comma
 l_int|0
+comma
+l_int|127
 )paren
 suffix:semicolon
 multiline_comment|/* register 4 &amp; 5 */
@@ -1994,6 +2065,8 @@ l_int|2
 )paren
 op_plus
 l_int|4
+comma
+l_int|0
 comma
 l_int|0
 )paren
@@ -2119,6 +2192,8 @@ comma
 l_int|3
 comma
 l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* register 3 */
@@ -2156,6 +2231,8 @@ comma
 l_int|8
 comma
 id|shift
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* register 8 with shift */

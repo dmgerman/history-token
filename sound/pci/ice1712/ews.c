@@ -1903,6 +1903,10 @@ id|ak-&gt;type
 op_assign
 id|SND_AK4524
 suffix:semicolon
+id|ak-&gt;caddr
+op_assign
+l_int|2
+suffix:semicolon
 id|ak-&gt;cif
 op_assign
 l_int|1
@@ -1963,6 +1967,10 @@ id|ak-&gt;type
 op_assign
 id|SND_AK4524
 suffix:semicolon
+id|ak-&gt;caddr
+op_assign
+l_int|2
+suffix:semicolon
 id|ak-&gt;cif
 op_assign
 l_int|1
@@ -2019,6 +2027,10 @@ suffix:semicolon
 id|ak-&gt;type
 op_assign
 id|SND_AK4524
+suffix:semicolon
+id|ak-&gt;caddr
+op_assign
+l_int|2
 suffix:semicolon
 id|ak-&gt;cif
 op_assign
