@@ -8643,6 +8643,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The default put_char routine if the driver did not define one.&n; */
 DECL|function|tty_default_put_char
+r_static
 r_void
 id|tty_default_put_char
 c_func
