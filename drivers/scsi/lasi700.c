@@ -85,7 +85,7 @@ c_func
 (paren
 id|parisc
 comma
-id|lasi700_scsi_tbl
+id|lasi700_ids
 )paren
 suffix:semicolon
 r_static
