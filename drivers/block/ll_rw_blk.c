@@ -4778,6 +4778,16 @@ comma
 id|rq
 )paren
 suffix:semicolon
+id|drive_stat_acct
+c_func
+(paren
+id|rq
+comma
+id|rq-&gt;nr_sectors
+comma
+l_int|1
+)paren
+suffix:semicolon
 id|__elv_add_request
 c_func
 (paren
