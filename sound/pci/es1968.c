@@ -8484,6 +8484,17 @@ op_add_assign
 l_int|0x0100
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|val
+op_eq
+l_int|0x1f1f
+)paren
+id|val
+op_or_assign
+l_int|0x8000
+suffix:semicolon
 id|snd_ac97_write_cache
 c_func
 (paren
