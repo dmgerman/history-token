@@ -25,10 +25,6 @@ macro_line|#ifndef ZEXPORTVA
 DECL|macro|ZEXPORTVA
 macro_line|#  define ZEXPORTVA
 macro_line|#endif
-macro_line|#ifndef ZEXTERN
-DECL|macro|ZEXTERN
-macro_line|#  define ZEXTERN extern
-macro_line|#endif
 DECL|typedef|Byte
 r_typedef
 r_int

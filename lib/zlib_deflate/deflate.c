@@ -4890,7 +4890,7 @@ id|block_done
 suffix:semicolon
 )brace
 DECL|function|zlib_deflate_workspacesize
-id|ZEXTERN
+r_extern
 r_int
 id|ZEXPORT
 id|zlib_deflate_workspacesize
