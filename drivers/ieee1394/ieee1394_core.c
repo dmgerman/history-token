@@ -4707,11 +4707,9 @@ OG
 l_int|15
 )paren
 )paren
-(brace
 r_return
 id|ret
 suffix:semicolon
-)brace
 id|read_lock
 c_func
 (paren
@@ -4747,11 +4745,9 @@ id|file_ops
 op_eq
 l_int|NULL
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4763,11 +4759,9 @@ op_star
 id|module
 )paren
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 multiline_comment|/* success! */
 id|ret
 op_assign
@@ -4887,7 +4881,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* If the open() succeeded, then ieee1394 will be left&n;&t;&t;   with an extra module reference, so we discard it here.&n;&n;&t;&t;   The task-specific driver still has the extra&n;&t;&t;   reference given to it by ieee1394_get_chardev().&n;&t;&t;   This extra reference prevents the module from&n;&t;&t;   unloading while the file is open, and will be&n;&t;&t;   dropped by the VFS when the file is released.&n;&t;&t;*/
+multiline_comment|/* If the open() succeeded, then ieee1394 will be left&n;&t;&t; * with an extra module reference, so we discard it here.&n;&t;&t; *&n;&t;&t; * The task-specific driver still has the extra reference&n;&t;&t; * given to it by ieee1394_get_chardev(). This extra&n;&t;&t; * reference prevents the module from unloading while the&n;&t;&t; * file is open, and will be dropped by the VFS when the&n;&t;&t; * file is released. */
 id|module_put
 c_func
 (paren
@@ -4903,7 +4897,7 @@ op_assign
 op_amp
 id|ieee1394_chardev_ops
 suffix:semicolon
-multiline_comment|/* if the open() failed, then we need to drop the&n;&t;&t;   extra reference we gave to the task-specific&n;&t;&t;   driver */
+multiline_comment|/* If the open() failed, then we need to drop the extra&n;&t;&t; * reference we gave to the task-specific driver. */
 id|module_put
 c_func
 (paren
@@ -5665,6 +5659,27 @@ c_func
 id|hpsb_iso_recv_start
 )paren
 suffix:semicolon
+DECL|variable|hpsb_iso_recv_listen_channel
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hpsb_iso_recv_listen_channel
+)paren
+suffix:semicolon
+DECL|variable|hpsb_iso_recv_unlisten_channel
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hpsb_iso_recv_unlisten_channel
+)paren
+suffix:semicolon
+DECL|variable|hpsb_iso_recv_set_channel_mask
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hpsb_iso_recv_set_channel_mask
+)paren
+suffix:semicolon
 DECL|variable|hpsb_iso_stop
 id|EXPORT_SYMBOL
 c_func
@@ -5679,11 +5694,18 @@ c_func
 id|hpsb_iso_shutdown
 )paren
 suffix:semicolon
-DECL|variable|hpsb_iso_xmit_queue_packets
+DECL|variable|hpsb_iso_xmit_queue_packet
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|hpsb_iso_xmit_queue_packets
+id|hpsb_iso_xmit_queue_packet
+)paren
+suffix:semicolon
+DECL|variable|hpsb_iso_xmit_sync
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hpsb_iso_xmit_sync
 )paren
 suffix:semicolon
 DECL|variable|hpsb_iso_recv_release_packets
@@ -5700,18 +5722,25 @@ c_func
 id|hpsb_iso_n_ready
 )paren
 suffix:semicolon
-DECL|variable|hpsb_iso_packet_data
+DECL|variable|hpsb_iso_packet_sent
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|hpsb_iso_packet_data
+id|hpsb_iso_packet_sent
 )paren
 suffix:semicolon
-DECL|variable|hpsb_iso_packet_info
+DECL|variable|hpsb_iso_packet_received
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|hpsb_iso_packet_info
+id|hpsb_iso_packet_received
+)paren
+suffix:semicolon
+DECL|variable|hpsb_iso_wake
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hpsb_iso_wake
 )paren
 suffix:semicolon
 eof

@@ -63,7 +63,7 @@ DECL|macro|jfs_warn
 mdefine_line|#define jfs_warn(fmt, arg...) do {&t;&t;&t;&bslash;&n;&t;if (jfsloglevel &gt;= JFS_LOGLEVEL_WARN)&t;&t;&bslash;&n;&t;&t;printk(KERN_WARNING fmt &quot;&bslash;n&quot;, ## arg);&t;&bslash;&n;} while (0)
 multiline_comment|/* error event message: e.g., i/o error */
 DECL|macro|jfs_err
-mdefine_line|#define jfs_err(fmt, arg...) do {&t;&t;&t;&bslash;&n;&t;if (jfsloglevel &gt;= JFS_LOGLEVEL_ERR)&t;&t;&bslash;&n;&t;&t;printk(KERN_ERR &quot;%s:%d &quot; fmt &quot;&bslash;n&quot;,&t;&bslash;&n;&t;&t;       __FILE__, __LINE__, ## arg);&t;&bslash;&n;} while (0)
+mdefine_line|#define jfs_err(fmt, arg...) do {&t;&t;&t;&bslash;&n;&t;if (jfsloglevel &gt;= JFS_LOGLEVEL_ERR)&t;&t;&bslash;&n;&t;&t;printk(KERN_ERR fmt &quot;&bslash;n&quot;, ## arg);&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; *&t;debug OFF&n; *&t;---------&n; */
 macro_line|#else&t;&t;&t;&t;/* CONFIG_JFS_DEBUG */
 DECL|macro|dump_mem

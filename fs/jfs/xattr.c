@@ -3921,6 +3921,9 @@ id|data
 comma
 r_int
 id|buf_size
+comma
+r_int
+id|flags
 )paren
 (brace
 r_return
@@ -3953,6 +3956,9 @@ id|data
 comma
 r_int
 id|buf_size
+comma
+r_int
+id|flags
 )paren
 (brace
 r_struct
@@ -4182,6 +4188,9 @@ r_const
 r_char
 op_star
 id|name
+comma
+r_int
+id|flags
 )paren
 (brace
 r_return

@@ -2740,6 +2740,13 @@ id|lbus
 )braket
 op_eq
 id|MP_BUS_MCA
+op_logical_or
+id|mp_bus_id_to_type
+(braket
+id|lbus
+)braket
+op_eq
+id|MP_BUS_NEC98
 )paren
 op_logical_and
 (paren
@@ -3125,6 +3132,11 @@ DECL|macro|default_MCA_trigger
 mdefine_line|#define default_MCA_trigger(idx)&t;(1)
 DECL|macro|default_MCA_polarity
 mdefine_line|#define default_MCA_polarity(idx)&t;(0)
+multiline_comment|/* NEC98 interrupts are always polarity zero edge triggered,&n; * when listed as conforming in the MP table. */
+DECL|macro|default_NEC98_trigger
+mdefine_line|#define default_NEC98_trigger(idx)     (0)
+DECL|macro|default_NEC98_polarity
+mdefine_line|#define default_NEC98_polarity(idx)    (0)
 DECL|function|MPBIOS_polarity
 r_static
 r_int
@@ -3233,6 +3245,22 @@ multiline_comment|/* MCA pin */
 id|polarity
 op_assign
 id|default_MCA_polarity
+c_func
+(paren
+id|idx
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_case
+id|MP_BUS_NEC98
+suffix:colon
+multiline_comment|/* NEC 98 pin */
+(brace
+id|polarity
+op_assign
+id|default_NEC98_polarity
 c_func
 (paren
 id|idx
@@ -3452,6 +3480,22 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_case
+id|MP_BUS_NEC98
+suffix:colon
+multiline_comment|/* NEC 98 pin */
+(brace
+id|trigger
+op_assign
+id|default_NEC98_trigger
+c_func
+(paren
+id|idx
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_default
 suffix:colon
 (brace
@@ -3650,6 +3694,9 @@ id|MP_BUS_EISA
 suffix:colon
 r_case
 id|MP_BUS_MCA
+suffix:colon
+r_case
+id|MP_BUS_NEC98
 suffix:colon
 (brace
 id|irq
@@ -4641,14 +4688,21 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot; WARNING: unexpected IO-APIC, please mail&bslash;n&quot;
+l_string|&quot;INFO: unexpected IO-APIC, please file a report at&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;          to linux-smp@vger.kernel.org&bslash;n&quot;
+l_string|&quot;      http://bugzilla.kernel.org&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;      if your kernel is less than 3 months old.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

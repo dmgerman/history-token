@@ -830,6 +830,8 @@ c_func
 id|WRITE
 comma
 id|HZ
+op_div
+l_int|10
 )paren
 suffix:semicolon
 r_else

@@ -5,40 +5,43 @@ mdefine_line|#define IEEE1394_ISO_H
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;dma.h&quot;
 multiline_comment|/* high-level ISO interface */
-multiline_comment|/* per-packet data embedded in the ringbuffer */
+multiline_comment|/* This API sends and receives isochronous packets on a large,&n;   virtually-contiguous kernel memory buffer. The buffer may be mapped&n;   into a user-space process for zero-copy transmission and reception.&n;&n;   There are no explicit boundaries between packets in the buffer. A&n;   packet may be transmitted or received at any location. However,&n;   low-level drivers may impose certain restrictions on alignment or&n;   size of packets. (e.g. in OHCI no packet may cross a page boundary,&n;   and packets should be quadlet-aligned)&n;*/
+multiline_comment|/* Packet descriptor - the API maintains a ring buffer of these packet&n;   descriptors in kernel memory (hpsb_iso.infos[]).  */
 DECL|struct|hpsb_iso_packet_info
 r_struct
 id|hpsb_iso_packet_info
 (brace
+multiline_comment|/* offset of data payload relative to the first byte of the buffer */
+DECL|member|offset
+id|__u32
+id|offset
+suffix:semicolon
+multiline_comment|/* length of the data payload, in bytes (not including the isochronous header) */
 DECL|member|len
-r_int
-r_int
+id|__u16
 id|len
 suffix:semicolon
+multiline_comment|/* (recv only) the cycle number (mod 8000) on which the packet was received */
 DECL|member|cycle
-r_int
-r_int
+id|__u16
 id|cycle
 suffix:semicolon
+multiline_comment|/* (recv only) channel on which the packet was received */
 DECL|member|channel
-r_int
-r_char
+id|__u8
 id|channel
 suffix:semicolon
-multiline_comment|/* recv only */
+multiline_comment|/* 2-bit &squot;tag&squot; and 4-bit &squot;sy&squot; fields of the isochronous header */
 DECL|member|tag
-r_int
-r_char
+id|__u8
 id|tag
 suffix:semicolon
 DECL|member|sy
-r_int
-r_char
+id|__u8
 id|sy
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * each packet in the ringbuffer consists of three things:&n; * 1. the packet&squot;s data payload (no isochronous header)&n; * 2. a struct hpsb_iso_packet_info&n; * 3. some empty space before the next packet&n; *&n; * packets are separated by hpsb_iso.buf_stride bytes&n; * an even number of packets fit on one page&n; * no packet can be larger than one page&n; */
 DECL|enum|hpsb_iso_type
 DECL|enumerator|HPSB_ISO_RECV
 DECL|enumerator|HPSB_ISO_XMIT
@@ -75,7 +78,7 @@ r_void
 op_star
 id|hostdata
 suffix:semicolon
-multiline_comment|/* function to be called (from interrupt context) when the iso status changes */
+multiline_comment|/* a function to be called (from interrupt context) after&n;           outgoing packets have been sent, or incoming packets have&n;           arrived */
 DECL|member|callback
 r_void
 (paren
@@ -88,6 +91,11 @@ id|hpsb_iso
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* wait for buffer space */
+DECL|member|waitq
+id|wait_queue_head_t
+id|waitq
+suffix:semicolon
 DECL|member|speed
 r_int
 id|speed
@@ -97,16 +105,30 @@ DECL|member|channel
 r_int
 id|channel
 suffix:semicolon
+multiline_comment|/* -1 if multichannel */
 multiline_comment|/* greatest # of packets between interrupts - controls&n;&t;   the maximum latency of the buffer */
 DECL|member|irq_interval
 r_int
 id|irq_interval
 suffix:semicolon
-multiline_comment|/* the packet ringbuffer */
-DECL|member|buf
+multiline_comment|/* the buffer for packet data payloads */
+DECL|member|data_buf
 r_struct
 id|dma_region
-id|buf
+id|data_buf
+suffix:semicolon
+multiline_comment|/* size of data_buf, in bytes (always a multiple of PAGE_SIZE) */
+DECL|member|buf_size
+r_int
+r_int
+id|buf_size
+suffix:semicolon
+multiline_comment|/* ringbuffer of packet descriptors in regular kernel memory */
+DECL|member|infos
+r_struct
+id|hpsb_iso_packet_info
+op_star
+id|infos
 suffix:semicolon
 multiline_comment|/* # of packets in the ringbuffer */
 DECL|member|buf_packets
@@ -114,36 +136,25 @@ r_int
 r_int
 id|buf_packets
 suffix:semicolon
-multiline_comment|/* offset between successive packets, in bytes -&n;&t;   you can assume that this is a power of 2,&n;&t;   and less than or equal to the page size */
-DECL|member|buf_stride
-r_int
-id|buf_stride
-suffix:semicolon
-multiline_comment|/* largest possible packet size, in bytes */
-DECL|member|max_packet_size
-r_int
-r_int
-id|max_packet_size
-suffix:semicolon
-multiline_comment|/* offset relative to (buf.kvirt + N*buf_stride) at which&n;&t;   the data payload begins for packet N */
-DECL|member|packet_data_offset
-r_int
-id|packet_data_offset
-suffix:semicolon
-multiline_comment|/* offset relative to (buf.kvirt + N*buf_stride) at which the&n;&t;   struct hpsb_iso_packet_info is stored for packet N */
-DECL|member|packet_info_offset
-r_int
-id|packet_info_offset
+multiline_comment|/* protects packet cursors */
+DECL|member|lock
+id|spinlock_t
+id|lock
 suffix:semicolon
 multiline_comment|/* the index of the next packet that will be produced&n;&t;   or consumed by the user */
 DECL|member|first_packet
 r_int
 id|first_packet
 suffix:semicolon
-multiline_comment|/* number of packets owned by the low-level driver and&n;&t;   queued for transmission or reception.&n;&t;   this is related to the number of packets available&n;&t;   to the user process: n_ready = buf_packets - n_dma_packets */
-DECL|member|n_dma_packets
-id|atomic_t
-id|n_dma_packets
+multiline_comment|/* the index of the next packet that will be transmitted&n;&t;   or received by the 1394 hardware */
+DECL|member|pkt_dma
+r_int
+id|pkt_dma
+suffix:semicolon
+multiline_comment|/* how many packets, starting at first_packet:&n;&t;   (transmit) are ready to be filled with data&n;&t;   (receive)  contain received data */
+DECL|member|n_ready_packets
+r_int
+id|n_ready_packets
 suffix:semicolon
 multiline_comment|/* how many times the buffer has overflowed or underflowed */
 DECL|member|overflows
@@ -165,10 +176,15 @@ DECL|member|prebuffer
 r_int
 id|prebuffer
 suffix:semicolon
-multiline_comment|/* starting cycle (xmit only) */
+multiline_comment|/* starting cycle for DMA (xmit only) */
 DECL|member|start_cycle
 r_int
 id|start_cycle
+suffix:semicolon
+multiline_comment|/* cycle at which next packet will be transmitted,&n;&t;   -1 if not known */
+DECL|member|xmit_cycle
+r_int
+id|xmit_cycle
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -187,11 +203,11 @@ id|host
 comma
 r_int
 r_int
-id|buf_packets
+id|data_buf_size
 comma
 r_int
 r_int
-id|max_packet_size
+id|buf_packets
 comma
 r_int
 id|channel
@@ -214,6 +230,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* note: if channel = -1, multi-channel receive is enabled */
 r_struct
 id|hpsb_iso
 op_star
@@ -227,11 +244,11 @@ id|host
 comma
 r_int
 r_int
-id|buf_packets
+id|data_buf_size
 comma
 r_int
 r_int
-id|max_packet_size
+id|buf_packets
 comma
 r_int
 id|channel
@@ -249,6 +266,48 @@ r_struct
 id|hpsb_iso
 op_star
 )paren
+)paren
+suffix:semicolon
+multiline_comment|/* multi-channel only */
+r_int
+id|hpsb_iso_recv_listen_channel
+c_func
+(paren
+r_struct
+id|hpsb_iso
+op_star
+id|iso
+comma
+r_int
+r_char
+id|channel
+)paren
+suffix:semicolon
+r_int
+id|hpsb_iso_recv_unlisten_channel
+c_func
+(paren
+r_struct
+id|hpsb_iso
+op_star
+id|iso
+comma
+r_int
+r_char
+id|channel
+)paren
+suffix:semicolon
+r_int
+id|hpsb_iso_recv_set_channel_mask
+c_func
+(paren
+r_struct
+id|hpsb_iso
+op_star
+id|iso
+comma
+id|u64
+id|mask
 )paren
 suffix:semicolon
 multiline_comment|/* start/stop DMA */
@@ -279,6 +338,12 @@ id|iso
 comma
 r_int
 id|start_on_cycle
+comma
+r_int
+id|tag_mask
+comma
+r_int
+id|sync
 )paren
 suffix:semicolon
 r_void
@@ -302,19 +367,38 @@ op_star
 id|iso
 )paren
 suffix:semicolon
-multiline_comment|/* N packets have been written to the buffer; queue them for transmission */
+multiline_comment|/* queue a packet for transmission. &squot;offset&squot; is relative to the beginning of the&n;   DMA buffer, where the packet&squot;s data payload should already have been placed */
 r_int
-id|hpsb_iso_xmit_queue_packets
+id|hpsb_iso_xmit_queue_packet
 c_func
 (paren
 r_struct
 id|hpsb_iso
 op_star
-id|xmit
+id|iso
 comma
+id|u32
+id|offset
+comma
+id|u16
+id|len
+comma
+id|u8
+id|tag
+comma
+id|u8
+id|sy
+)paren
+suffix:semicolon
+multiline_comment|/* wait until all queued packets have been transmitted to the bus */
 r_int
-r_int
-id|n_packets
+id|hpsb_iso_xmit_sync
+c_func
+(paren
+r_struct
+id|hpsb_iso
+op_star
+id|iso
 )paren
 suffix:semicolon
 multiline_comment|/* N packets have been read out of the buffer, re-use the buffer space */
@@ -343,11 +427,10 @@ op_star
 id|iso
 )paren
 suffix:semicolon
-multiline_comment|/* returns a pointer to the payload of packet &squot;pkt&squot; */
-r_int
-r_char
-op_star
-id|hpsb_iso_packet_data
+multiline_comment|/* the following are callbacks available to low-level drivers */
+multiline_comment|/* call after a packet has been transmitted to the bus (interrupt context is OK)&n;   &squot;cycle&squot; is the _exact_ cycle the packet was sent on&n;   &squot;error&squot; should be non-zero if some sort of error occurred when sending the packet&n;*/
+r_void
+id|hpsb_iso_packet_sent
 c_func
 (paren
 r_struct
@@ -356,15 +439,15 @@ op_star
 id|iso
 comma
 r_int
+id|cycle
+comma
 r_int
-id|pkt
+id|error
 )paren
 suffix:semicolon
-multiline_comment|/* returns a pointer to the info struct of packet &squot;pkt&squot; */
-r_struct
-id|hpsb_iso_packet_info
-op_star
-id|hpsb_iso_packet_info
+multiline_comment|/* call after a packet has been received (interrupt context OK) */
+r_void
+id|hpsb_iso_packet_received
 c_func
 (paren
 r_struct
@@ -372,9 +455,34 @@ id|hpsb_iso
 op_star
 id|iso
 comma
-r_int
-r_int
-id|pkt
+id|u32
+id|offset
+comma
+id|u16
+id|len
+comma
+id|u16
+id|cycle
+comma
+id|u8
+id|channel
+comma
+id|u8
+id|tag
+comma
+id|u8
+id|sy
+)paren
+suffix:semicolon
+multiline_comment|/* call to wake waiting processes after buffer space has opened up. */
+r_void
+id|hpsb_iso_wake
+c_func
+(paren
+r_struct
+id|hpsb_iso
+op_star
+id|iso
 )paren
 suffix:semicolon
 macro_line|#endif /* IEEE1394_ISO_H */
