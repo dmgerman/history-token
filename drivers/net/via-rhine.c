@@ -1886,7 +1886,7 @@ op_plus
 id|ConfigA
 )paren
 op_amp
-l_int|0xFE
+l_int|0xFC
 comma
 id|ioaddr
 op_plus
@@ -8208,6 +8208,7 @@ id|rp-&gt;wolopts
 op_amp
 id|WAKE_MAGIC
 )paren
+(brace
 id|iowrite8
 c_func
 (paren
@@ -8218,6 +8219,26 @@ op_plus
 id|WOLcrSet
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Turn EEPROM-controlled wake-up back on -- some hardware may&n;&t;&t; * not cooperate otherwise.&n;&t;&t; */
+id|iowrite8
+c_func
+(paren
+id|ioread8
+c_func
+(paren
+id|ioaddr
+op_plus
+id|ConfigA
+)paren
+op_or
+l_int|0x03
+comma
+id|ioaddr
+op_plus
+id|ConfigA
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -8275,6 +8296,12 @@ op_plus
 id|WOLcrSet
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rp-&gt;wolopts
+)paren
+(brace
 multiline_comment|/* Enable legacy WOL (for old motherboards) */
 id|iowrite8
 c_func
@@ -8304,6 +8331,7 @@ op_plus
 id|StickyHW
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Hit power state D3 (sleep) */
 id|iowrite8
 c_func
