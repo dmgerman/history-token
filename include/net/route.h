@@ -714,6 +714,13 @@ id|fl.uli_u.ports.dport
 op_assign
 id|dport
 suffix:semicolon
+id|ip_rt_put
+c_func
+(paren
+op_star
+id|rp
+)paren
+suffix:semicolon
 op_star
 id|rp
 op_assign
