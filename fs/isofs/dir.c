@@ -527,6 +527,7 @@ comma
 id|offset
 suffix:semicolon
 r_int
+r_int
 id|inode_number
 op_assign
 l_int|0
@@ -647,13 +648,11 @@ id|first_de
 )paren
 id|inode_number
 op_assign
+id|isofs_get_ino
+c_func
 (paren
-id|bh-&gt;b_blocknr
-op_lshift
-id|bufbits
+id|de
 )paren
-op_plus
-id|offset
 suffix:semicolon
 id|de_len
 op_assign
