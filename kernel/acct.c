@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
+macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt; /* sector_div */
@@ -946,12 +947,16 @@ id|ac.ac_comm
 suffix:semicolon
 id|elapsed
 op_assign
+id|jiffies_64_to_clock_t
+c_func
+(paren
 id|get_jiffies_64
 c_func
 (paren
 )paren
 op_minus
 id|current-&gt;start_time
+)paren
 suffix:semicolon
 id|ac.ac_etime
 op_assign
@@ -987,7 +992,7 @@ c_func
 (paren
 id|elapsed
 comma
-id|HZ
+id|USER_HZ
 )paren
 suffix:semicolon
 id|ac.ac_btime
@@ -1001,7 +1006,11 @@ op_assign
 id|encode_comp_t
 c_func
 (paren
+id|jiffies_to_clock_t
+c_func
+(paren
 id|current-&gt;utime
+)paren
 )paren
 suffix:semicolon
 id|ac.ac_stime
@@ -1009,7 +1018,11 @@ op_assign
 id|encode_comp_t
 c_func
 (paren
+id|jiffies_to_clock_t
+c_func
+(paren
 id|current-&gt;stime
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* we really need to bite the bullet and change layout */
