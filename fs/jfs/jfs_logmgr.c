@@ -4060,7 +4060,7 @@ id|log-&gt;synclist
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We need to make sure all of the &quot;written&quot; metapages&n;&t; * actually make it to disk&n;&t; */
-id|fsync_no_super
+id|sync_blockdev
 c_func
 (paren
 id|log-&gt;sb-&gt;s_bdev

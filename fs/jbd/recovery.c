@@ -834,7 +834,7 @@ c_func
 id|journal
 )paren
 suffix:semicolon
-id|fsync_no_super
+id|sync_blockdev
 c_func
 (paren
 id|journal-&gt;j_fs_dev

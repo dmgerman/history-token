@@ -842,13 +842,6 @@ c_func
 id|fsync_bdev
 )paren
 suffix:semicolon
-DECL|variable|fsync_no_super
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|fsync_no_super
-)paren
-suffix:semicolon
 DECL|variable|permission
 id|EXPORT_SYMBOL
 c_func

@@ -436,14 +436,13 @@ r_int
 )paren
 suffix:semicolon
 r_int
-id|sync_buffers
+id|sync_blockdev
 c_func
 (paren
 r_struct
 id|block_device
 op_star
-comma
-r_int
+id|bdev
 )paren
 suffix:semicolon
 r_void
