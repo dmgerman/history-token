@@ -50,29 +50,6 @@ macro_line|#endif
 macro_line|#if defined(CONFIG_INET_ESP) || defined(CONFIG_INET_ESP_MODULE) || defined(CONFIG_INET6_ESP) || defined(CONFIG_INET6_ESP_MODULE)
 macro_line|#include &lt;net/esp.h&gt;
 macro_line|#endif
-macro_line|#if defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE) &bslash;&n;   || defined (CONFIG_IP_SCTP_MODULE)
-macro_line|#include &lt;linux/in6.h&gt;
-macro_line|#include &lt;linux/icmpv6.h&gt;
-macro_line|#include &lt;net/ipv6.h&gt;
-macro_line|#include &lt;net/ndisc.h&gt;
-macro_line|#include &lt;net/transp_v6.h&gt;
-macro_line|#include &lt;net/addrconf.h&gt;
-r_extern
-r_int
-id|sysctl_local_port_range
-(braket
-l_int|2
-)braket
-suffix:semicolon
-r_extern
-r_int
-id|tcp_port_rover
-suffix:semicolon
-r_extern
-r_int
-id|udp_port_rover
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#ifdef CONFIG_IPX_MODULE
@@ -565,23 +542,6 @@ c_func
 id|unregister_inetaddr_notifier
 )paren
 suffix:semicolon
-multiline_comment|/* proc */
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|variable|udp_proc_register
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|udp_proc_register
-)paren
-suffix:semicolon
-DECL|variable|udp_proc_unregister
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|udp_proc_unregister
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* needed for ip_gre -cw */
 DECL|variable|ip_statistics
 id|EXPORT_SYMBOL
@@ -630,20 +590,6 @@ suffix:semicolon
 macro_line|#if defined (CONFIG_IPV6_MODULE) || defined (CONFIG_IP_SCTP_MODULE)
 multiline_comment|/* inet functions common to v4 and v6 */
 multiline_comment|/* Socket demultiplexing. */
-DECL|variable|udp_hash
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|udp_hash
-)paren
-suffix:semicolon
-DECL|variable|udp_hash_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|udp_hash_lock
-)paren
-suffix:semicolon
 DECL|variable|ip_queue_xmit
 id|EXPORT_SYMBOL
 c_func
@@ -666,34 +612,6 @@ id|csum_partial_copy_fromiovecend
 )paren
 suffix:semicolon
 multiline_comment|/* UDP/TCP exported functions for TCPv6 */
-DECL|variable|udp_ioctl
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|udp_ioctl
-)paren
-suffix:semicolon
-DECL|variable|udp_connect
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|udp_connect
-)paren
-suffix:semicolon
-DECL|variable|udp_disconnect
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|udp_disconnect
-)paren
-suffix:semicolon
-DECL|variable|udp_sendmsg
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|udp_sendmsg
-)paren
-suffix:semicolon
 DECL|variable|tcp_write_wakeup
 id|EXPORT_SYMBOL
 c_func
@@ -778,13 +696,6 @@ c_func
 id|tcp_create_openreq_child
 )paren
 suffix:semicolon
-DECL|variable|udp_prot
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|udp_prot
-)paren
-suffix:semicolon
 DECL|variable|tcp_simple_retransmit
 id|EXPORT_SYMBOL
 c_func
@@ -832,13 +743,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|tcp_reset_keepalive_timer
-)paren
-suffix:semicolon
-DECL|variable|udp_port_rover
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|udp_port_rover
 )paren
 suffix:semicolon
 DECL|variable|tcp_sync_mss
