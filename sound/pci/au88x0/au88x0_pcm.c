@@ -1220,6 +1220,15 @@ id|substream-&gt;pcm
 op_ne
 id|VORTEX_PCM_WT
 )paren
+(brace
+id|vortex_adbdma_resetup
+c_func
+(paren
+id|chip
+comma
+id|dma
+)paren
+suffix:semicolon
 id|vortex_adbdma_startfifo
 c_func
 (paren
@@ -1228,6 +1237,7 @@ comma
 id|dma
 )paren
 suffix:semicolon
+)brace
 macro_line|#ifndef CHIP_AU8810
 r_else
 (brace

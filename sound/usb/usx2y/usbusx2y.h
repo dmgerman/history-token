@@ -4,9 +4,7 @@ mdefine_line|#define USBUSX2Y_H
 macro_line|#include &quot;../usbaudio.h&quot;
 macro_line|#include &quot;usbus428ctldefs.h&quot; 
 DECL|macro|NRURBS
-mdefine_line|#define NRURBS&t;        2&t;/* */
-DECL|macro|NRPACKS
-mdefine_line|#define NRPACKS&t;&t;1&t;/* FIXME: Currently only 1 works.&n;&t;&t;&t;&t;   usb-frames/ms per urb: 1 and 2 are supported.&n;&t;&t;&t;&t;   setting to 2 will PERHAPS make it easier for slow machines.&n;&t;&t;&t;&t;   Jitter will be higher though.&n;&t;&t;&t;&t;   On my PIII 500Mhz Laptop setting to 1 is the only way to go &n;&t;&t;&t;&t;   for PLAYING synths. i.e. Jack &amp; Aeolus sound quit nicely &n;&t;&t;&t;&t;   at 4 periods 64 frames. &n;&t;&t;&t;&t;*/
+mdefine_line|#define NRURBS&t;        2&t;
 DECL|macro|URBS_AsyncSeq
 mdefine_line|#define URBS_AsyncSeq 10
 DECL|macro|URB_DataLen_AsyncSeq
@@ -116,39 +114,130 @@ comma
 DECL|member|format
 id|format
 suffix:semicolon
-DECL|member|refframes
-r_int
-id|refframes
-suffix:semicolon
 DECL|member|chip_status
 r_int
 id|chip_status
 suffix:semicolon
-DECL|member|open_mutex
+DECL|member|prepare_mutex
 r_struct
 id|semaphore
-id|open_mutex
+id|prepare_mutex
 suffix:semicolon
 DECL|member|us428ctls_sharedmem
 id|us428ctls_sharedmem_t
 op_star
 id|us428ctls_sharedmem
 suffix:semicolon
+DECL|member|wait_iso_frame
+r_int
+id|wait_iso_frame
+suffix:semicolon
 DECL|member|us428ctls_wait_queue_head
 id|wait_queue_head_t
 id|us428ctls_wait_queue_head
 suffix:semicolon
-DECL|member|substream
+DECL|member|subs
 id|snd_usX2Y_substream_t
 op_star
-id|substream
+id|subs
 (braket
 l_int|4
 )braket
 suffix:semicolon
+DECL|member|prepare_subs
+id|snd_usX2Y_substream_t
+op_star
+r_volatile
+id|prepare_subs
+suffix:semicolon
+DECL|member|prepare_wait_queue
+id|wait_queue_head_t
+id|prepare_wait_queue
+suffix:semicolon
 DECL|typedef|usX2Ydev_t
 )brace
 id|usX2Ydev_t
+suffix:semicolon
+DECL|struct|snd_usX2Y_substream
+r_struct
+id|snd_usX2Y_substream
+(brace
+DECL|member|usX2Y
+id|usX2Ydev_t
+op_star
+id|usX2Y
+suffix:semicolon
+DECL|member|pcm_substream
+id|snd_pcm_substream_t
+op_star
+id|pcm_substream
+suffix:semicolon
+DECL|member|endpoint
+r_int
+id|endpoint
+suffix:semicolon
+DECL|member|maxpacksize
+r_int
+r_int
+id|maxpacksize
+suffix:semicolon
+multiline_comment|/* max packet size in bytes */
+DECL|member|state
+id|atomic_t
+id|state
+suffix:semicolon
+DECL|macro|state_STOPPED
+mdefine_line|#define state_STOPPED&t;0
+DECL|macro|state_STARTING1
+mdefine_line|#define state_STARTING1 1
+DECL|macro|state_STARTING2
+mdefine_line|#define state_STARTING2 2
+DECL|macro|state_STARTING3
+mdefine_line|#define state_STARTING3 3
+DECL|macro|state_PREPARED
+mdefine_line|#define state_PREPARED&t;4
+DECL|macro|state_PRERUNNING
+mdefine_line|#define state_PRERUNNING  6
+DECL|macro|state_RUNNING
+mdefine_line|#define state_RUNNING&t;8
+DECL|member|hwptr
+r_int
+id|hwptr
+suffix:semicolon
+multiline_comment|/* free frame position in the buffer (only for playback) */
+DECL|member|hwptr_done
+r_int
+id|hwptr_done
+suffix:semicolon
+multiline_comment|/* processed frame position in the buffer */
+DECL|member|transfer_done
+r_int
+id|transfer_done
+suffix:semicolon
+multiline_comment|/* processed frames since last period update */
+DECL|member|urb
+r_struct
+id|urb
+op_star
+id|urb
+(braket
+id|NRURBS
+)braket
+suffix:semicolon
+multiline_comment|/* data urb table */
+DECL|member|completed_urb
+r_struct
+id|urb
+op_star
+id|completed_urb
+suffix:semicolon
+DECL|member|tmpbuf
+r_char
+op_star
+id|tmpbuf
+suffix:semicolon
+multiline_comment|/* temporary buffer for playback */
+)brace
 suffix:semicolon
 DECL|macro|usX2Y
 mdefine_line|#define usX2Y(c) ((usX2Ydev_t*)(c)-&gt;private_data)

@@ -3428,12 +3428,10 @@ l_int|0x200
 suffix:semicolon
 multiline_comment|/* bitmask of valid initializers */
 DECL|member|gpr_map
-r_int
-r_int
+id|u_int32_t
+id|__user
+op_star
 id|gpr_map
-(braket
-l_int|0x200
-)braket
 suffix:semicolon
 multiline_comment|/* initializers */
 DECL|member|gpr_add_control_count
@@ -3491,21 +3489,17 @@ l_int|0x100
 suffix:semicolon
 multiline_comment|/* bitmask of valid initializers */
 DECL|member|tram_data_map
-r_int
-r_int
+id|u_int32_t
+id|__user
+op_star
 id|tram_data_map
-(braket
-l_int|0x100
-)braket
 suffix:semicolon
 multiline_comment|/* data initializers */
 DECL|member|tram_addr_map
-r_int
-r_int
+id|u_int32_t
+id|__user
+op_star
 id|tram_addr_map
-(braket
-l_int|0x100
-)braket
 suffix:semicolon
 multiline_comment|/* map initializers */
 id|DECLARE_BITMAP
@@ -3518,15 +3512,10 @@ l_int|1024
 suffix:semicolon
 multiline_comment|/* bitmask of valid instructions */
 DECL|member|code
-r_int
-r_int
+id|u_int32_t
+id|__user
+op_star
 id|code
-(braket
-l_int|1024
-)braket
-(braket
-l_int|2
-)braket
 suffix:semicolon
 multiline_comment|/* one instruction - 64 bits */
 DECL|typedef|emu10k1_fx8010_code_t
