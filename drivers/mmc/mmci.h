@@ -15,10 +15,10 @@ DECL|macro|MMCICLOCK
 mdefine_line|#define MMCICLOCK&t;&t;0x004
 DECL|macro|MCI_CLK_ENABLE
 mdefine_line|#define MCI_CLK_ENABLE&t;&t;(1 &lt;&lt; 8)
-DECL|macro|MCI_PWRSAVE
-mdefine_line|#define MCI_PWRSAVE&t;&t;(1 &lt;&lt; 9)
-DECL|macro|MCI_BYPASS
-mdefine_line|#define MCI_BYPASS&t;&t;(1 &lt;&lt; 10)
+DECL|macro|MCI_CLK_PWRSAVE
+mdefine_line|#define MCI_CLK_PWRSAVE&t;&t;(1 &lt;&lt; 9)
+DECL|macro|MCI_CLK_BYPASS
+mdefine_line|#define MCI_CLK_BYPASS&t;&t;(1 &lt;&lt; 10)
 DECL|macro|MMCIARGUMENT
 mdefine_line|#define MMCIARGUMENT&t;&t;0x008
 DECL|macro|MMCICOMMAND
@@ -183,6 +183,9 @@ DECL|macro|MCI_FIFOSIZE
 mdefine_line|#define MCI_FIFOSIZE&t;16
 DECL|macro|MCI_FIFOHALFSIZE
 mdefine_line|#define MCI_FIFOHALFSIZE (MCI_FIFOSIZE / 2)
+r_struct
+id|clk
+suffix:semicolon
 DECL|struct|mmci_host
 r_struct
 id|mmci_host
@@ -216,6 +219,12 @@ id|mmc_host
 op_star
 id|mmc
 suffix:semicolon
+DECL|member|clk
+r_struct
+id|clk
+op_star
+id|clk
+suffix:semicolon
 DECL|member|data_xfered
 r_int
 r_int
@@ -229,6 +238,11 @@ DECL|member|mclk
 r_int
 r_int
 id|mclk
+suffix:semicolon
+DECL|member|cclk
+r_int
+r_int
+id|cclk
 suffix:semicolon
 DECL|member|pwr
 id|u32
@@ -261,10 +275,6 @@ r_int
 r_int
 id|size
 suffix:semicolon
-multiline_comment|/* dma stuff */
-singleline_comment|//&t;struct scatterlist&t;*sg_list;
-singleline_comment|//&t;int&t;&t;&t;sg_len;
-singleline_comment|//&t;int&t;&t;&t;sg_dir;
 )brace
 suffix:semicolon
 DECL|macro|to_mmci_host
