@@ -1927,6 +1927,7 @@ op_star
 id|dev
 )paren
 (brace
+macro_line|#if 0
 r_struct
 id|device_node
 op_star
@@ -2040,6 +2041,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#endif
 )brace
 DECL|function|pcibios_fixup_device_resources
 r_void
