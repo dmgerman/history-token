@@ -503,8 +503,8 @@ suffix:semicolon
 multiline_comment|/* Public variables */
 r_extern
 r_struct
-id|serio_dev
-id|iforce_serio_dev
+id|serio_driver
+id|iforce_serio_drv
 suffix:semicolon
 r_extern
 r_struct

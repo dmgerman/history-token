@@ -6,16 +6,19 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&quot;Newton keyboard driver&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
 l_string|&quot;Justin Cormack &lt;j.cormack@doc.ic.ac.uk&gt;&quot;
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Newton keyboard driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -450,9 +453,9 @@ op_star
 id|serio
 comma
 r_struct
-id|serio_dev
+id|serio_driver
 op_star
-id|dev
+id|drv
 )paren
 (brace
 r_struct
@@ -580,7 +583,7 @@ c_func
 (paren
 id|serio
 comma
-id|dev
+id|drv
 )paren
 )paren
 (brace
@@ -732,12 +735,28 @@ id|nkbd
 )paren
 suffix:semicolon
 )brace
-DECL|variable|nkbd_dev
+DECL|variable|nkbd_drv
 r_struct
-id|serio_dev
-id|nkbd_dev
+id|serio_driver
+id|nkbd_drv
 op_assign
 (brace
+dot
+id|driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;newtonkbd&quot;
+comma
+)brace
+comma
+dot
+id|description
+op_assign
+id|DRIVER_DESC
+comma
 dot
 id|interrupt
 op_assign
@@ -752,6 +771,7 @@ dot
 id|disconnect
 op_assign
 id|nkbd_disconnect
+comma
 )brace
 suffix:semicolon
 DECL|function|nkbd_init
@@ -763,11 +783,11 @@ c_func
 r_void
 )paren
 (brace
-id|serio_register_device
+id|serio_register_driver
 c_func
 (paren
 op_amp
-id|nkbd_dev
+id|nkbd_drv
 )paren
 suffix:semicolon
 r_return
@@ -783,11 +803,11 @@ c_func
 r_void
 )paren
 (brace
-id|serio_unregister_device
+id|serio_unregister_driver
 c_func
 (paren
 op_amp
-id|nkbd_dev
+id|nkbd_drv
 )paren
 suffix:semicolon
 )brace
