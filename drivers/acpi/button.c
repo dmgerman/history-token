@@ -7,31 +7,6 @@ macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &quot;acpi_bus.h&quot;
 macro_line|#include &quot;acpi_drivers.h&quot;
-DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT&t;&t;ACPI_BUTTON_COMPONENT
-id|ACPI_MODULE_NAME
-(paren
-l_string|&quot;acpi_button&quot;
-)paren
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Paul Diefenbaugh&quot;
-)paren
-suffix:semicolon
-DECL|variable|ACPI_BUTTON_DRIVER_NAME
-id|MODULE_DESCRIPTION
-c_func
-(paren
-id|ACPI_BUTTON_DRIVER_NAME
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 DECL|macro|ACPI_BUTTON_COMPONENT
 mdefine_line|#define ACPI_BUTTON_COMPONENT&t;&t;0x00080000
 DECL|macro|ACPI_BUTTON_DRIVER_NAME
@@ -76,6 +51,31 @@ DECL|macro|ACPI_BUTTON_DEVICE_NAME_LID
 mdefine_line|#define ACPI_BUTTON_DEVICE_NAME_LID&t;&quot;Lid Switch&quot;
 DECL|macro|ACPI_BUTTON_TYPE_LID
 mdefine_line|#define ACPI_BUTTON_TYPE_LID&t;&t;0x05
+DECL|macro|_COMPONENT
+mdefine_line|#define _COMPONENT&t;&t;ACPI_BUTTON_COMPONENT
+id|ACPI_MODULE_NAME
+(paren
+l_string|&quot;acpi_button&quot;
+)paren
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Paul Diefenbaugh&quot;
+)paren
+suffix:semicolon
+DECL|variable|ACPI_BUTTON_DRIVER_NAME
+id|MODULE_DESCRIPTION
+c_func
+(paren
+id|ACPI_BUTTON_DRIVER_NAME
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 r_int
 id|acpi_button_add
 (paren

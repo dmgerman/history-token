@@ -2843,6 +2843,19 @@ suffix:semicolon
 r_int
 id|idx
 suffix:semicolon
+multiline_comment|/*&n;&t; * Test if we are atomic.  Since do_exit() needs to call into&n;&t; * schedule() atomically, we ignore that path for now.&n;&t; * Otherwise, whine if we are scheduling when we should not be.&n;&t; */
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+id|current-&gt;state
+op_ne
+id|TASK_ZOMBIE
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -2855,11 +2868,21 @@ c_func
 )paren
 )paren
 )paren
-id|BUG
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;bad: scheduling while atomic!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|dump_stack
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
+)brace
 macro_line|#if CONFIG_DEBUG_HIGHMEM
 id|check_highmem_ptes
 c_func

@@ -9,6 +9,44 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &quot;acpi_bus.h&quot;
 macro_line|#include &quot;acpi_drivers.h&quot;
+DECL|macro|ACPI_THERMAL_COMPONENT
+mdefine_line|#define ACPI_THERMAL_COMPONENT&t;&t;0x04000000
+DECL|macro|ACPI_THERMAL_CLASS
+mdefine_line|#define ACPI_THERMAL_CLASS&t;&t;&quot;thermal_zone&quot;
+DECL|macro|ACPI_THERMAL_DRIVER_NAME
+mdefine_line|#define ACPI_THERMAL_DRIVER_NAME&t;&quot;ACPI Thermal Zone Driver&quot;
+DECL|macro|ACPI_THERMAL_DEVICE_NAME
+mdefine_line|#define ACPI_THERMAL_DEVICE_NAME&t;&quot;Thermal Zone&quot;
+DECL|macro|ACPI_THERMAL_FILE_STATE
+mdefine_line|#define ACPI_THERMAL_FILE_STATE&t;&t;&quot;state&quot;
+DECL|macro|ACPI_THERMAL_FILE_TEMPERATURE
+mdefine_line|#define ACPI_THERMAL_FILE_TEMPERATURE&t;&quot;temperature&quot;
+DECL|macro|ACPI_THERMAL_FILE_TRIP_POINTS
+mdefine_line|#define ACPI_THERMAL_FILE_TRIP_POINTS&t;&quot;trip_points&quot;
+DECL|macro|ACPI_THERMAL_FILE_COOLING_MODE
+mdefine_line|#define ACPI_THERMAL_FILE_COOLING_MODE&t;&quot;cooling_mode&quot;
+DECL|macro|ACPI_THERMAL_FILE_POLLING_FREQ
+mdefine_line|#define ACPI_THERMAL_FILE_POLLING_FREQ&t;&quot;polling_frequency&quot;
+DECL|macro|ACPI_THERMAL_NOTIFY_TEMPERATURE
+mdefine_line|#define ACPI_THERMAL_NOTIFY_TEMPERATURE&t;0x80
+DECL|macro|ACPI_THERMAL_NOTIFY_THRESHOLDS
+mdefine_line|#define ACPI_THERMAL_NOTIFY_THRESHOLDS&t;0x81
+DECL|macro|ACPI_THERMAL_NOTIFY_DEVICES
+mdefine_line|#define ACPI_THERMAL_NOTIFY_DEVICES&t;0x82
+DECL|macro|ACPI_THERMAL_NOTIFY_CRITICAL
+mdefine_line|#define ACPI_THERMAL_NOTIFY_CRITICAL&t;0xF0
+DECL|macro|ACPI_THERMAL_NOTIFY_HOT
+mdefine_line|#define ACPI_THERMAL_NOTIFY_HOT&t;&t;0xF1
+DECL|macro|ACPI_THERMAL_MODE_ACTIVE
+mdefine_line|#define ACPI_THERMAL_MODE_ACTIVE&t;0x00
+DECL|macro|ACPI_THERMAL_MODE_PASSIVE
+mdefine_line|#define ACPI_THERMAL_MODE_PASSIVE&t;0x01
+DECL|macro|ACPI_THERMAL_PATH_POWEROFF
+mdefine_line|#define ACPI_THERMAL_PATH_POWEROFF&t;&quot;/sbin/poweroff&quot;
+DECL|macro|ACPI_THERMAL_MAX_ACTIVE
+mdefine_line|#define ACPI_THERMAL_MAX_ACTIVE&t;10
+DECL|macro|KELVIN_TO_CELSIUS
+mdefine_line|#define KELVIN_TO_CELSIUS(t)&t;((t-2732+5)/10)
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT&t;&t;ACPI_THERMAL_COMPONENT
 id|ACPI_MODULE_NAME
@@ -57,44 +95,6 @@ comma
 l_string|&quot;Thermal zone polling frequency, in 1/10 seconds.&bslash;n&quot;
 )paren
 suffix:semicolon
-DECL|macro|ACPI_THERMAL_COMPONENT
-mdefine_line|#define ACPI_THERMAL_COMPONENT&t;&t;0x04000000
-DECL|macro|ACPI_THERMAL_CLASS
-mdefine_line|#define ACPI_THERMAL_CLASS&t;&t;&quot;thermal_zone&quot;
-DECL|macro|ACPI_THERMAL_DRIVER_NAME
-mdefine_line|#define ACPI_THERMAL_DRIVER_NAME&t;&quot;ACPI Thermal Zone Driver&quot;
-DECL|macro|ACPI_THERMAL_DEVICE_NAME
-mdefine_line|#define ACPI_THERMAL_DEVICE_NAME&t;&quot;Thermal Zone&quot;
-DECL|macro|ACPI_THERMAL_FILE_STATE
-mdefine_line|#define ACPI_THERMAL_FILE_STATE&t;&t;&quot;state&quot;
-DECL|macro|ACPI_THERMAL_FILE_TEMPERATURE
-mdefine_line|#define ACPI_THERMAL_FILE_TEMPERATURE&t;&quot;temperature&quot;
-DECL|macro|ACPI_THERMAL_FILE_TRIP_POINTS
-mdefine_line|#define ACPI_THERMAL_FILE_TRIP_POINTS&t;&quot;trip_points&quot;
-DECL|macro|ACPI_THERMAL_FILE_COOLING_MODE
-mdefine_line|#define ACPI_THERMAL_FILE_COOLING_MODE&t;&quot;cooling_mode&quot;
-DECL|macro|ACPI_THERMAL_FILE_POLLING_FREQ
-mdefine_line|#define ACPI_THERMAL_FILE_POLLING_FREQ&t;&quot;polling_frequency&quot;
-DECL|macro|ACPI_THERMAL_NOTIFY_TEMPERATURE
-mdefine_line|#define ACPI_THERMAL_NOTIFY_TEMPERATURE&t;0x80
-DECL|macro|ACPI_THERMAL_NOTIFY_THRESHOLDS
-mdefine_line|#define ACPI_THERMAL_NOTIFY_THRESHOLDS&t;0x81
-DECL|macro|ACPI_THERMAL_NOTIFY_DEVICES
-mdefine_line|#define ACPI_THERMAL_NOTIFY_DEVICES&t;0x82
-DECL|macro|ACPI_THERMAL_NOTIFY_CRITICAL
-mdefine_line|#define ACPI_THERMAL_NOTIFY_CRITICAL&t;0xF0
-DECL|macro|ACPI_THERMAL_NOTIFY_HOT
-mdefine_line|#define ACPI_THERMAL_NOTIFY_HOT&t;&t;0xF1
-DECL|macro|ACPI_THERMAL_MODE_ACTIVE
-mdefine_line|#define ACPI_THERMAL_MODE_ACTIVE&t;0x00
-DECL|macro|ACPI_THERMAL_MODE_PASSIVE
-mdefine_line|#define ACPI_THERMAL_MODE_PASSIVE&t;0x01
-DECL|macro|ACPI_THERMAL_PATH_POWEROFF
-mdefine_line|#define ACPI_THERMAL_PATH_POWEROFF&t;&quot;/sbin/poweroff&quot;
-DECL|macro|ACPI_THERMAL_MAX_ACTIVE
-mdefine_line|#define ACPI_THERMAL_MAX_ACTIVE&t;10
-DECL|macro|KELVIN_TO_CELSIUS
-mdefine_line|#define KELVIN_TO_CELSIUS(t)&t;((t-2732+5)/10)
 r_static
 r_int
 id|acpi_thermal_add
