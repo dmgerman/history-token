@@ -1808,7 +1808,7 @@ r_char
 op_star
 id|source
 suffix:semicolon
-id|J_ASSERT_JH
+id|J_EXPECT_JH
 c_func
 (paren
 id|jh
@@ -1822,6 +1822,8 @@ c_func
 id|jh
 )paren
 )paren
+comma
+l_string|&quot;Possible IO failure.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|page
