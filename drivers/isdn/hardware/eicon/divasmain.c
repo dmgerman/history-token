@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: divasmain.c,v 1.39 2003/09/09 07:42:05 schindler Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divasmain.c,v 1.40 2003/09/10 08:02:33 schindler Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/config.h&gt;
@@ -40,7 +40,7 @@ r_char
 op_star
 id|main_revision
 op_assign
-l_string|&quot;$Revision: 1.39 $&quot;
+l_string|&quot;$Revision: 1.40 $&quot;
 suffix:semicolon
 DECL|variable|errno
 r_int
@@ -251,14 +251,13 @@ DECL|macro|PCI_DEVICE_ID_EICON_BRI2M_2_VOIP
 mdefine_line|#define PCI_DEVICE_ID_EICON_BRI2M_2_VOIP     0xE01B
 macro_line|#endif
 multiline_comment|/*&n;  This table should be sorted by PCI device ID&n;  */
-DECL|variable|__devinitdata
+DECL|variable|divas_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|divas_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 multiline_comment|/* Diva Server BRI-2M PCI 0xE010 */
