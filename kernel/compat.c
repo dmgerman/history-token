@@ -1094,6 +1094,10 @@ r_struct
 id|compat_timespec
 op_star
 id|utime
+comma
+id|u32
+op_star
+id|uaddr2
 )paren
 (brace
 r_struct
@@ -1163,6 +1167,9 @@ op_assign
 (paren
 r_int
 )paren
+(paren
+r_int
+)paren
 id|utime
 suffix:semicolon
 r_return
@@ -1181,6 +1188,10 @@ id|val
 comma
 id|timeout
 comma
+(paren
+r_int
+r_int
+)paren
 id|uaddr2
 comma
 id|val2

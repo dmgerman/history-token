@@ -4708,22 +4708,18 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Bind a socket to a interface name &n;                 * This is used by PVC mostly&n;                 */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|name
 comma
 id|sll-&gt;sll_device
 comma
-l_int|14
-)paren
-suffix:semicolon
+r_sizeof
+(paren
 id|name
-(braket
-l_int|14
-)braket
-op_assign
-l_int|0
+)paren
+)paren
 suffix:semicolon
 id|dev
 op_assign

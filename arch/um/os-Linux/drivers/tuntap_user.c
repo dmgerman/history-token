@@ -665,7 +665,7 @@ id|ifr.ifr_flags
 op_assign
 id|IFF_TAP
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|ifr.ifr_name
@@ -676,8 +676,6 @@ r_sizeof
 (paren
 id|ifr.ifr_name
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_if

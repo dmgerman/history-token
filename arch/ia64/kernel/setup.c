@@ -1310,7 +1310,7 @@ c_func
 id|ia64_boot_param-&gt;command_line
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|saved_command_line
@@ -1324,16 +1324,6 @@ id|saved_command_line
 )paren
 )paren
 suffix:semicolon
-id|saved_command_line
-(braket
-id|COMMAND_LINE_SIZE
-op_minus
-l_int|1
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
-suffix:semicolon
-multiline_comment|/* for safety */
 id|efi_init
 c_func
 (paren

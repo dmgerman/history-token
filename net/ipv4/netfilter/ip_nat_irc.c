@@ -1140,6 +1140,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|irc
+id|NEEDS_CONNTRACK
+c_func
+(paren
+id|irc
+)paren
+suffix:semicolon
 DECL|variable|init
 id|module_init
 c_func

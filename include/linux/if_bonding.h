@@ -1,13 +1,13 @@
-multiline_comment|/*&n; * Bond several ethernet interfaces into a Cisco, running &squot;Etherchannel&squot;.&n; *&n; * &n; * Portions are (c) Copyright 1995 Simon &quot;Guru Aleph-Null&quot; Janes&n; * NCM: Network and Communications Management, Inc.&n; *&n; * BUT, I&squot;m the one who modified it for ethernet, so:&n; * (c) Copyright 1999, Thomas Davis, tadavis@lbl.gov&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU Public License, incorporated herein by reference.&n; * &n; */
+multiline_comment|/*&n; * Bond several ethernet interfaces into a Cisco, running &squot;Etherchannel&squot;.&n; *&n; * &n; * Portions are (c) Copyright 1995 Simon &quot;Guru Aleph-Null&quot; Janes&n; * NCM: Network and Communications Management, Inc.&n; *&n; * BUT, I&squot;m the one who modified it for ethernet, so:&n; * (c) Copyright 1999, Thomas Davis, tadavis@lbl.gov&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU Public License, incorporated herein by reference.&n; * &n; * 2003/03/18 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Added support for getting slave&squot;s speed and duplex via ethtool.&n; *&t;  Needed for 802.3ad and other future modes.&n; * &n; * 2003/03/18 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Enable support of modes that need to use the unique mac address of&n; *&t;  each slave.&n; *&n; * 2003/03/18 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Moved driver&squot;s private data types to bonding.h&n; *&n; * 2003/03/18 - Amir Noam &lt;amir.noam at intel dot com&gt;,&n; *&t;&t;Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for IEEE 802.3ad Dynamic link aggregation mode.&n; *&n; * 2003/05/01 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Added ABI version control to restore compatibility between&n; *&t;  new/old ifenslave and new/old bonding.&n; */
 macro_line|#ifndef _LINUX_IF_BONDING_H
 DECL|macro|_LINUX_IF_BONDING_H
 mdefine_line|#define _LINUX_IF_BONDING_H
-macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#endif /* __KERNEL__ */
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/if_ether.h&gt;
+multiline_comment|/* userland - kernel ABI version (2003/05/08) */
+DECL|macro|BOND_ABI_VERSION
+mdefine_line|#define BOND_ABI_VERSION 1
 multiline_comment|/*&n; * We can remove these ioctl definitions in 2.5.  People should use the&n; * SIOC*** versions of them instead&n; */
 DECL|macro|BOND_ENSLAVE_OLD
 mdefine_line|#define BOND_ENSLAVE_OLD&t;&t;(SIOCDEVPRIVATE)
@@ -31,6 +31,12 @@ DECL|macro|BOND_MODE_XOR
 mdefine_line|#define BOND_MODE_XOR&t;&t;2
 DECL|macro|BOND_MODE_BROADCAST
 mdefine_line|#define BOND_MODE_BROADCAST&t;3
+DECL|macro|BOND_MODE_8023AD
+mdefine_line|#define BOND_MODE_8023AD        4
+DECL|macro|BOND_MODE_TLB
+mdefine_line|#define BOND_MODE_TLB           5
+DECL|macro|BOND_MODE_ALB
+mdefine_line|#define BOND_MODE_ALB&t;&t;6 /* TLB + RLB (receive load balancing) */
 multiline_comment|/* each slave&squot;s link has 4 states */
 DECL|macro|BOND_LINK_UP
 mdefine_line|#define BOND_LINK_UP    0           /* link is up and running */
@@ -53,21 +59,6 @@ DECL|macro|BOND_MULTICAST_ACTIVE
 mdefine_line|#define BOND_MULTICAST_ACTIVE   1
 DECL|macro|BOND_MULTICAST_ALL
 mdefine_line|#define BOND_MULTICAST_ALL      2
-DECL|struct|bond_parm_tbl
-r_struct
-id|bond_parm_tbl
-(brace
-DECL|member|modename
-r_char
-op_star
-id|modename
-suffix:semicolon
-DECL|member|mode
-r_int
-id|mode
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|ifbond
 r_typedef
 r_struct
@@ -122,163 +113,35 @@ DECL|typedef|ifslave
 )brace
 id|ifslave
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
-DECL|struct|slave
-r_typedef
+DECL|struct|ad_info
 r_struct
-id|slave
+id|ad_info
 (brace
-DECL|member|next
-r_struct
-id|slave
-op_star
-id|next
+DECL|member|aggregator_id
+id|__u16
+id|aggregator_id
 suffix:semicolon
-DECL|member|prev
-r_struct
-id|slave
-op_star
-id|prev
+DECL|member|ports
+id|__u16
+id|ports
 suffix:semicolon
-DECL|member|dev
-r_struct
-id|net_device
-op_star
-id|dev
+DECL|member|actor_key
+id|__u16
+id|actor_key
 suffix:semicolon
-DECL|member|delay
-r_int
-id|delay
+DECL|member|partner_key
+id|__u16
+id|partner_key
 suffix:semicolon
-DECL|member|jiffies
-r_int
-r_int
-id|jiffies
+DECL|member|partner_system
+id|__u8
+id|partner_system
+(braket
+id|ETH_ALEN
+)braket
 suffix:semicolon
-DECL|member|link
-r_char
-id|link
-suffix:semicolon
-multiline_comment|/* one of BOND_LINK_XXXX */
-DECL|member|state
-r_char
-id|state
-suffix:semicolon
-multiline_comment|/* one of BOND_STATE_XXXX */
-DECL|member|original_flags
-r_int
-r_int
-id|original_flags
-suffix:semicolon
-DECL|member|link_failure_count
-id|u32
-id|link_failure_count
-suffix:semicolon
-DECL|typedef|slave_t
 )brace
-id|slave_t
 suffix:semicolon
-multiline_comment|/*&n; * Here are the locking policies for the two bonding locks:&n; *&n; * 1) Get bond-&gt;lock when reading/writing slave list.&n; * 2) Get bond-&gt;ptrlock when reading/writing bond-&gt;current_slave.&n; *    (It is unnecessary when the write-lock is put with bond-&gt;lock.)&n; * 3) When we lock with bond-&gt;ptrlock, we must lock with bond-&gt;lock&n; *    beforehand.&n; */
-DECL|struct|bonding
-r_typedef
-r_struct
-id|bonding
-(brace
-DECL|member|next
-id|slave_t
-op_star
-id|next
-suffix:semicolon
-DECL|member|prev
-id|slave_t
-op_star
-id|prev
-suffix:semicolon
-DECL|member|current_slave
-id|slave_t
-op_star
-id|current_slave
-suffix:semicolon
-DECL|member|primary_slave
-id|slave_t
-op_star
-id|primary_slave
-suffix:semicolon
-DECL|member|current_arp_slave
-id|slave_t
-op_star
-id|current_arp_slave
-suffix:semicolon
-DECL|member|slave_cnt
-id|__s32
-id|slave_cnt
-suffix:semicolon
-DECL|member|lock
-id|rwlock_t
-id|lock
-suffix:semicolon
-DECL|member|ptrlock
-id|rwlock_t
-id|ptrlock
-suffix:semicolon
-DECL|member|mii_timer
-r_struct
-id|timer_list
-id|mii_timer
-suffix:semicolon
-DECL|member|arp_timer
-r_struct
-id|timer_list
-id|arp_timer
-suffix:semicolon
-DECL|member|stats
-r_struct
-id|net_device_stats
-op_star
-id|stats
-suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|member|bond_proc_dir
-r_struct
-id|proc_dir_entry
-op_star
-id|bond_proc_dir
-suffix:semicolon
-DECL|member|bond_proc_info_file
-r_struct
-id|proc_dir_entry
-op_star
-id|bond_proc_info_file
-suffix:semicolon
-macro_line|#endif /* CONFIG_PROC_FS */
-DECL|member|next_bond
-r_struct
-id|bonding
-op_star
-id|next_bond
-suffix:semicolon
-DECL|member|device
-r_struct
-id|net_device
-op_star
-id|device
-suffix:semicolon
-DECL|member|mc_list
-r_struct
-id|dev_mc_list
-op_star
-id|mc_list
-suffix:semicolon
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-DECL|typedef|bonding_t
-)brace
-id|bonding_t
-suffix:semicolon
-macro_line|#endif /* __KERNEL__ */
-macro_line|#endif /* _LINUX_BOND_H */
+macro_line|#endif /* _LINUX_IF_BONDING_H */
 multiline_comment|/*&n; * Local variables:&n; *  version-control: t&n; *  kept-new-versions: 5&n; *  c-indent-level: 8&n; *  c-basic-offset: 8&n; *  tab-width: 8&n; * End:&n; */
 eof

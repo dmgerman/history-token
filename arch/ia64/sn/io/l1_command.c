@@ -2445,22 +2445,18 @@ id|i
 op_increment
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|line
 comma
 id|chr
 comma
-id|L1_DISPLAY_LINE_LENGTH
-)paren
-suffix:semicolon
+r_sizeof
+(paren
 id|line
-(braket
-id|L1_DISPLAY_LINE_LENGTH
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* generally we want to leave the first line of the L1 display&n;&t; * alone (so the L1 can manipulate it).  If you need to be able&n;&t; * to display to both lines (for debugging purposes), define&n;&t; * L1_DISP_2LINES in irix/kern/ksys/l1.h, or add -DL1_DISP_2LINES&n;&t; * to your &squot;defs file.&n;&t; */
 macro_line|#if defined(L1_DISP_2LINES)

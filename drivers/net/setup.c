@@ -52,14 +52,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|madgemc_probe
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; *&t;Devices in this list must do new style probing. That is they must&n; *&t;allocate their own device objects and do their own bus scans.&n; */
 DECL|struct|net_probe
 r_struct
@@ -128,15 +120,6 @@ macro_line|#endif
 macro_line|#if defined(CONFIG_LANMEDIA)
 (brace
 id|lmc_setup
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
-multiline_comment|/*&n; *&t;Token Ring Drivers&n; */
-macro_line|#ifdef CONFIG_MADGEMC
-(brace
-id|madgemc_probe
 comma
 l_int|0
 )brace
