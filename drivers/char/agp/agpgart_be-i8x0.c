@@ -149,6 +149,7 @@ l_int|1
 op_lshift
 l_int|3
 )paren
+suffix:semicolon
 id|values
 op_assign
 id|A_SIZE_8
