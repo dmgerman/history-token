@@ -125,6 +125,7 @@ op_amp
 id|GlobalSMBSeslock
 )paren
 suffix:semicolon
+multiline_comment|/* BB Add call to invalidate_inodes(sb) for all superblocks mounted to this tcon */
 )brace
 r_int
 DECL|function|smb_init
@@ -3512,7 +3513,11 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;In CIFSSMBLock&quot;
+l_string|&quot;In CIFSSMBLock - timeout %d numLock %d&quot;
+comma
+id|waitFlag
+comma
+id|numLock
 )paren
 )paren
 suffix:semicolon
@@ -3582,6 +3587,23 @@ c_func
 (paren
 id|numUnlock
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|waitFlag
+)paren
+(brace
+id|pSMB-&gt;Timeout
+op_assign
+l_int|3
+suffix:semicolon
+)brace
+multiline_comment|/* blocking - do time out */
+r_else
+id|pSMB-&gt;Timeout
+op_assign
+l_int|0
 suffix:semicolon
 id|pSMB-&gt;LockType
 op_assign

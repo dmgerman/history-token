@@ -981,12 +981,13 @@ l_int|1
 r_goto
 id|cifs_no_response_exit
 suffix:semicolon
+r_else
 r_if
 c_cond
 (paren
 id|long_op
-OG
-l_int|1
+op_eq
+l_int|2
 )paren
 multiline_comment|/* writes past end of file can take looooong time */
 id|timeout
@@ -1010,6 +1011,20 @@ op_star
 id|HZ
 suffix:semicolon
 multiline_comment|/* should be greater than &n;&t;&t;&t;servers oplock break timeout (about 43 seconds) */
+r_else
+r_if
+c_cond
+(paren
+id|long_op
+OG
+l_int|2
+)paren
+(brace
+id|timeout
+op_assign
+id|MAX_SCHEDULE_TIMEOUT
+suffix:semicolon
+)brace
 r_else
 id|timeout
 op_assign

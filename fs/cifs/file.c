@@ -78,8 +78,6 @@ l_int|0x20197
 suffix:semicolon
 r_int
 id|disposition
-op_assign
-id|FILE_OPEN
 suffix:semicolon
 id|__u16
 id|netfid
@@ -310,18 +308,80 @@ id|desiredAccess
 op_assign
 id|GENERIC_ALL
 suffix:semicolon
-multiline_comment|/* BB check other flags carefully to find equivalent NTCreateX flags */
-multiline_comment|/*&n;#define O_CREAT&t;&t;   0100&t;&n;#define O_EXCL&t;&t;   0200&t;&n;#define O_NOCTTY&t;   0400&t;&n;#define O_TRUNC&t;&t;  01000&t;&n;#define O_APPEND&t;  02000&n;#define O_NONBLOCK&t;  04000&n;#define O_NDELAY&t;O_NONBLOCK&n;#define O_SYNC&t;&t; 010000&n;#define FASYNC&t;&t; 020000&t;&n;#define O_DIRECT&t; 040000&t;&n;#define O_LARGEFILE&t;0100000&n;#define O_DIRECTORY&t;0200000&t;&n;#define O_NOFOLLOW&t;0400000&n;#define O_ATOMICLOOKUP&t;01000000 */
+multiline_comment|/*********************************************************************&n; *  open flag mapping table:&n; *  &n; *&t;POSIX Flag            CIFS Disposition&n; *&t;----------            ---------------- &n; *&t;O_CREAT               FILE_OPEN_IF&n; *&t;O_CREAT | O_EXCL      FILE_CREATE&n; *&t;O_CREAT | O_TRUNC     FILE_OVERWRITE_IF&n; *&t;O_TRUNC               FILE_OVERWRITE&n; *&t;none of the above     FILE_OPEN&n; *&n; *&t;Note that there is not a direct match between disposition&n; *&t;FILE_SUPERSEDE (ie create whether or not file exists although &n; *&t;O_CREAT | O_TRUNC is similar but truncates the existing&n; *&t;file rather than creating a new file as FILE_SUPERSEDE does&n; *&t;(which uses the attributes / metadata passed in on open call)&n; *?&n; *?  O_SYNC is a reasonable match to CIFS writethrough flag  &n; *?  and the read write flags match reasonably.  O_LARGEFILE&n; *?  is irrelevant because largefile support is always used&n; *?  by this client. Flags O_APPEND, O_DIRECT, O_DIRECTORY,&n; *&t; O_FASYNC, O_NOFOLLOW, O_NONBLOCK need further investigation&n; *********************************************************************/
 r_if
 c_cond
+(paren
+(paren
+id|file-&gt;f_flags
+op_amp
+(paren
+id|O_CREAT
+op_or
+id|O_EXCL
+)paren
+)paren
+op_eq
+(paren
+id|O_CREAT
+op_or
+id|O_EXCL
+)paren
+)paren
+(brace
+id|disposition
+op_assign
+id|FILE_CREATE
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|file-&gt;f_flags
+op_amp
+(paren
+id|O_CREAT
+op_or
+id|O_TRUNC
+)paren
+)paren
+op_eq
+(paren
+id|O_CREAT
+op_or
+id|O_TRUNC
+)paren
+)paren
+(brace
+id|disposition
+op_assign
+id|FILE_OVERWRITE_IF
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
 (paren
 id|file-&gt;f_flags
 op_amp
 id|O_CREAT
 )paren
+op_eq
+id|O_CREAT
+)paren
+(brace
 id|disposition
 op_assign
-id|FILE_OVERWRITE
+id|FILE_OPEN_IF
+suffix:semicolon
+)brace
+r_else
+id|disposition
+op_assign
+id|FILE_OPEN
 suffix:semicolon
 r_if
 c_cond
@@ -1714,6 +1774,11 @@ suffix:semicolon
 id|__u64
 id|length
 suffix:semicolon
+r_int
+id|wait_flag
+op_assign
+id|FALSE
+suffix:semicolon
 r_struct
 id|cifs_sb_info
 op_star
@@ -1805,6 +1870,7 @@ id|pfLock-&gt;fl_flags
 op_amp
 id|FL_SLEEP
 )paren
+(brace
 id|cFYI
 c_func
 (paren
@@ -1815,6 +1881,11 @@ l_string|&quot;Blocking lock &quot;
 )paren
 )paren
 suffix:semicolon
+id|wait_flag
+op_assign
+id|TRUE
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1828,7 +1899,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Process suspended by mandatory locking &quot;
+l_string|&quot;Process suspended by mandatory locking - not implemented yet &quot;
 )paren
 )paren
 suffix:semicolon
@@ -1845,7 +1916,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Lease on file &quot;
+l_string|&quot;Lease on file - not implemented yet&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1854,7 +1925,20 @@ c_cond
 (paren
 id|pfLock-&gt;fl_flags
 op_amp
-l_int|0xFFD0
+(paren
+op_complement
+(paren
+id|FL_POSIX
+op_or
+id|FL_FLOCK
+op_or
+id|FL_SLEEP
+op_or
+id|FL_ACCESS
+op_or
+id|FL_LEASE
+)paren
+)paren
 )paren
 id|cFYI
 c_func
@@ -1862,7 +1946,9 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Unknown lock flags &quot;
+l_string|&quot;Unknown lock flags 0x%x&quot;
+comma
+id|pfLock-&gt;fl_flags
 )paren
 )paren
 suffix:semicolon
@@ -2204,8 +2290,7 @@ id|numLock
 comma
 id|lockType
 comma
-l_int|0
-multiline_comment|/* wait flag */
+id|wait_flag
 )paren
 suffix:semicolon
 id|FreeXid
