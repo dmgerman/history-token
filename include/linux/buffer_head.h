@@ -250,8 +250,6 @@ DECL|macro|page_has_buffers
 mdefine_line|#define page_has_buffers(page)&t;PagePrivate(page)
 DECL|macro|invalidate_buffers
 mdefine_line|#define invalidate_buffers(dev)&t;__invalidate_buffers((dev), 0)
-DECL|macro|destroy_buffers
-mdefine_line|#define destroy_buffers(dev)&t;__invalidate_buffers((dev), 1)
 multiline_comment|/*&n; * Declarations&n; */
 r_void
 id|FASTCALL
@@ -515,13 +513,6 @@ r_struct
 id|buffer_head
 op_star
 id|bh
-)paren
-suffix:semicolon
-r_int
-id|fsync_dev
-c_func
-(paren
-id|kdev_t
 )paren
 suffix:semicolon
 r_int

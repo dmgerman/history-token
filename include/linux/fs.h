@@ -5640,14 +5640,6 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|is_read_only
-c_func
-(paren
-id|kdev_t
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|bdev_read_only
 c_func
 (paren

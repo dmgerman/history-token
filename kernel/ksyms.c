@@ -837,13 +837,6 @@ c_func
 id|truncate_inode_pages
 )paren
 suffix:semicolon
-DECL|variable|fsync_dev
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|fsync_dev
-)paren
-suffix:semicolon
 DECL|variable|fsync_bdev
 id|EXPORT_SYMBOL
 c_func
@@ -1804,13 +1797,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|blk_dev
-)paren
-suffix:semicolon
-DECL|variable|is_read_only
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|is_read_only
 )paren
 suffix:semicolon
 DECL|variable|bdev_read_only
