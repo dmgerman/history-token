@@ -45,9 +45,24 @@ id|index
 id|SNDRV_CARDS
 )braket
 op_assign
-id|SNDRV_DEFAULT_IDX
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+(paren
+id|SNDRV_CARDS
+op_minus
+l_int|1
+)paren
+)braket
+op_assign
+op_minus
+l_int|2
+)brace
 suffix:semicolon
-multiline_comment|/* Index 0-MAX */
+multiline_comment|/* Exclude the first card */
 DECL|variable|id
 r_static
 r_char

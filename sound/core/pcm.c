@@ -5320,6 +5320,12 @@ c_func
 id|snd_pcm_control_ioctl
 )paren
 suffix:semicolon
+id|snd_ctl_register_ioctl_compat
+c_func
+(paren
+id|snd_pcm_control_ioctl
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5399,6 +5405,12 @@ r_void
 )paren
 (brace
 id|snd_ctl_unregister_ioctl
+c_func
+(paren
+id|snd_pcm_control_ioctl
+)paren
+suffix:semicolon
+id|snd_ctl_unregister_ioctl_compat
 c_func
 (paren
 id|snd_pcm_control_ioctl

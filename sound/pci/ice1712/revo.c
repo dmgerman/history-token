@@ -9,6 +9,79 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;ice1712.h&quot;
 macro_line|#include &quot;envy24ht.h&quot;
 macro_line|#include &quot;revo.h&quot;
+DECL|function|revo_i2s_mclk_changed
+r_static
+r_void
+id|revo_i2s_mclk_changed
+c_func
+(paren
+id|ice1712_t
+op_star
+id|ice
+)paren
+(brace
+multiline_comment|/* assert PRST# to converters; MT05 bit 7 */
+id|outb
+c_func
+(paren
+id|inb
+c_func
+(paren
+id|ICEMT1724
+c_func
+(paren
+id|ice
+comma
+id|AC97_CMD
+)paren
+)paren
+op_or
+l_int|0x80
+comma
+id|ICEMT1724
+c_func
+(paren
+id|ice
+comma
+id|AC97_CMD
+)paren
+)paren
+suffix:semicolon
+id|mdelay
+c_func
+(paren
+l_int|5
+)paren
+suffix:semicolon
+multiline_comment|/* deassert PRST# */
+id|outb
+c_func
+(paren
+id|inb
+c_func
+(paren
+id|ICEMT1724
+c_func
+(paren
+id|ice
+comma
+id|AC97_CMD
+)paren
+)paren
+op_amp
+op_complement
+l_int|0x80
+comma
+id|ICEMT1724
+c_func
+(paren
+id|ice
+comma
+id|AC97_CMD
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * change the rate of envy24HT, AK4355 and AK4381&n; */
 DECL|function|revo_set_rate_val
 r_static
@@ -440,6 +513,10 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|ice-&gt;gpio.i2s_mclk_changed
+op_assign
+id|revo_i2s_mclk_changed
+suffix:semicolon
 multiline_comment|/* second stage of initialization, analog parts and others */
 id|ak
 op_assign

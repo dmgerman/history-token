@@ -1021,6 +1021,52 @@ op_plus
 l_int|0x24
 )paren
 suffix:semicolon
+multiline_comment|/* Setup SPDIF Out Audio Enable */
+multiline_comment|/* The Audigy 2 Value has a separate SPDIF out,&n;&t;&t; * so no need for a mixer switch&n;&t;&t; */
+id|outl
+c_func
+(paren
+l_int|0x7a0000
+comma
+id|emu-&gt;port
+op_plus
+l_int|0x20
+)paren
+suffix:semicolon
+id|outl
+c_func
+(paren
+l_int|0xFF000000
+comma
+id|emu-&gt;port
+op_plus
+l_int|0x24
+)paren
+suffix:semicolon
+id|tmp
+op_assign
+id|inl
+c_func
+(paren
+id|emu-&gt;port
+op_plus
+id|A_IOCFG
+)paren
+op_amp
+op_complement
+l_int|0x8
+suffix:semicolon
+multiline_comment|/* Clear bit 3 */
+id|outl
+c_func
+(paren
+id|tmp
+comma
+id|emu-&gt;port
+op_plus
+id|A_IOCFG
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *  Clear page with silence &amp; setup all pointers to this page&n;&t; */
 id|memset

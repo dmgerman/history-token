@@ -321,9 +321,9 @@ macro_line|#ifndef PCI_DEVICE_ID_INTEL_ESB_5
 DECL|macro|PCI_DEVICE_ID_INTEL_ESB_5
 mdefine_line|#define PCI_DEVICE_ID_INTEL_ESB_5&t;0x25a6
 macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH6_3
-DECL|macro|PCI_DEVICE_ID_INTEL_ICH6_3
-mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH6_3&t;0x266e
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH6_18
+DECL|macro|PCI_DEVICE_ID_INTEL_ICH6_18
+mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH6_18&t;0x266e
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH7_20
 DECL|macro|PCI_DEVICE_ID_INTEL_ICH7_20
@@ -5022,7 +5022,7 @@ id|civ
 comma
 id|timeout
 op_assign
-l_int|10
+l_int|100
 suffix:semicolon
 r_int
 r_int
@@ -5072,12 +5072,16 @@ id|ptr1
 op_eq
 l_int|0
 )paren
+(brace
 id|udelay
 c_func
 (paren
-l_int|1
+l_int|10
 )paren
 suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -8169,6 +8173,29 @@ comma
 dot
 id|device
 op_assign
+l_int|0x012c
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Dell Precision 650&quot;
+comma
+multiline_comment|/* AD1981A */
+dot
+id|type
+op_assign
+id|AC97_TUNE_HP_ONLY
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x1028
+comma
+dot
+id|device
+op_assign
 l_int|0x012d
 comma
 dot
@@ -8200,6 +8227,29 @@ op_assign
 l_string|&quot;Dell&quot;
 comma
 multiline_comment|/* which model?  AD1981B*/
+dot
+id|type
+op_assign
+id|AC97_TUNE_HP_ONLY
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x1028
+comma
+dot
+id|device
+op_assign
+l_int|0x0163
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Dell Unknown&quot;
+comma
+multiline_comment|/* STAC9750/51 */
 dot
 id|type
 op_assign
@@ -8446,6 +8496,29 @@ id|name
 op_assign
 l_string|&quot;Fujitsu-Siemens E4010&quot;
 comma
+dot
+id|type
+op_assign
+id|AC97_TUNE_HP_ONLY
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x10cf
+comma
+dot
+id|device
+op_assign
+l_int|0x1253
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Fujitsu S6210&quot;
+comma
+multiline_comment|/* STAC9750/51 */
 dot
 id|type
 op_assign
@@ -11205,8 +11278,7 @@ id|snd_card_t
 op_star
 id|card
 comma
-r_int
-r_int
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -11356,10 +11428,6 @@ c_func
 id|snd_card_t
 op_star
 id|card
-comma
-r_int
-r_int
-id|state
 )paren
 (brace
 id|intel8x0_t
@@ -13387,7 +13455,7 @@ l_string|&quot;Intel 6300ESB&quot;
 )brace
 comma
 (brace
-id|PCI_DEVICE_ID_INTEL_ICH6_3
+id|PCI_DEVICE_ID_INTEL_ICH6_18
 comma
 l_string|&quot;Intel ICH6&quot;
 )brace

@@ -5104,8 +5104,7 @@ id|snd_card_t
 op_star
 id|card
 comma
-r_int
-r_int
+id|pm_message_t
 id|state
 )paren
 suffix:semicolon
@@ -5117,10 +5116,6 @@ c_func
 id|snd_card_t
 op_star
 id|card
-comma
-r_int
-r_int
-id|state
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -8345,8 +8340,7 @@ id|snd_card_t
 op_star
 id|card
 comma
-r_int
-r_int
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -8557,10 +8551,6 @@ c_func
 id|snd_card_t
 op_star
 id|card
-comma
-r_int
-r_int
-id|state
 )paren
 (brace
 id|cs4281_t

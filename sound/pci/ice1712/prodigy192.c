@@ -12,6 +12,7 @@ macro_line|#include &quot;prodigy192.h&quot;
 macro_line|#include &quot;stac946x.h&quot;
 DECL|function|stac9460_put
 r_static
+r_inline
 r_void
 id|stac9460_put
 c_func
@@ -43,6 +44,7 @@ suffix:semicolon
 )brace
 DECL|function|stac9460_get
 r_static
+r_inline
 r_int
 r_char
 id|stac9460_get

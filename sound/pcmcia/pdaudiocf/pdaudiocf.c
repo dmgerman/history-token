@@ -1348,7 +1348,7 @@ c_func
 (paren
 id|chip-&gt;card
 comma
-l_int|0
+id|PMSG_SUSPEND
 )paren
 suffix:semicolon
 )brace
@@ -1447,8 +1447,6 @@ id|snd_pdacf_resume
 c_func
 (paren
 id|chip-&gt;card
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/firmware.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -59,37 +60,19 @@ l_int|1000
 op_div
 id|HZ
 )paren
-(brace
-id|set_current_state
+id|msleep
 c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
 (paren
 id|xmsec
-op_star
-id|HZ
-op_plus
-l_int|999
-)paren
-op_div
-l_int|1000
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|mdelay
 c_func
 (paren
 id|xmsec
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * vx_check_reg_bit - wait for the specified bit is set/reset on a register&n; * @reg: register to check&n; * @mask: bit mask&n; * @bit: resultant bit to be checked&n; * @time: time-out of loop in msec&n; *&n; * returns zero if a bit matches, or a negative error code.&n; */
 DECL|function|snd_vx_check_reg_bit
@@ -2580,6 +2563,40 @@ c_func
 (paren
 id|buffer
 comma
+l_string|&quot;Xilinx Firmware: %s&bslash;n&quot;
+comma
+id|chip-&gt;chip_status
+op_amp
+id|VX_STAT_XILINX_LOADED
+ques
+c_cond
+l_string|&quot;Loaded&quot;
+suffix:colon
+l_string|&quot;No&quot;
+)paren
+suffix:semicolon
+id|snd_iprintf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;Device Initialized: %s&bslash;n&quot;
+comma
+id|chip-&gt;chip_status
+op_amp
+id|VX_STAT_DEVICE_INIT
+ques
+c_cond
+l_string|&quot;Yes&quot;
+suffix:colon
+l_string|&quot;No&quot;
+)paren
+suffix:semicolon
+id|snd_iprintf
+c_func
+(paren
+id|buffer
+comma
 l_string|&quot;DSP audio info:&quot;
 )paren
 suffix:semicolon
@@ -3205,8 +3222,7 @@ id|snd_card_t
 op_star
 id|card
 comma
-r_int
-r_int
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -3271,10 +3287,6 @@ c_func
 id|snd_card_t
 op_star
 id|card
-comma
-r_int
-r_int
-id|state
 )paren
 (brace
 id|vx_core_t
