@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
 macro_line|#include &quot;alim15x3.h&quot;
 multiline_comment|/*&n; *&t;ALi devices are not plug in. Otherwise these static values would&n; *&t;need to go. They ought to go away anyway&n; */
 DECL|variable|m5229_revision

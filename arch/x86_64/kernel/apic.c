@@ -987,7 +987,7 @@ op_logical_neg
 id|clustered_apic_mode
 op_logical_and
 op_logical_neg
-id|cpu_isset
+id|physid_isset
 c_func
 (paren
 id|GET_APIC_ID
@@ -3315,7 +3315,7 @@ c_func
 suffix:semicolon
 id|phys_cpu_present_map
 op_assign
-id|cpumask_of_cpu
+id|physid_mask_of_physid
 c_func
 (paren
 l_int|0

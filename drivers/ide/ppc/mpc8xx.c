@@ -28,7 +28,6 @@ macro_line|#include &lt;asm/ide.h&gt;
 macro_line|#include &lt;asm/8xx_immap.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
 r_static
 r_int
 id|identify

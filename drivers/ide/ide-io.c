@@ -27,7 +27,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
 macro_line|#if (DISK_RECOVERY_TIME &gt; 0)
 macro_line|#error So the User Has To Fix the Compilation And Stop Hacking Port 0x43. Does anyone ever use this anyway ??
 multiline_comment|/*&n; * For really screwy hardware (hey, at least it *can* be used with Linux)&n; * we can enforce a minimum delay time between successive operations.&n; */

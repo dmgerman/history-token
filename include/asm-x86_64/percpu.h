@@ -20,6 +20,14 @@ mdefine_line|#define __get_cpu_var(var) (*RELOC_HIDE(&amp;per_cpu__##var, __my_c
 multiline_comment|/* A macro to avoid #include hell... */
 DECL|macro|percpu_modcopy
 mdefine_line|#define percpu_modcopy(pcpudst, src, size)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int __i;&t;&t;&t;&t;&t;&bslash;&n;&t;for (__i = 0; __i &lt; NR_CPUS; __i++)&t;&t;&t;&bslash;&n;&t;&t;if (cpu_possible(__i))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;memcpy((pcpudst)+__per_cpu_offset(__i),&t;&bslash;&n;&t;&t;&t;       (src), (size));&t;&t;&t;&bslash;&n;} while (0)
+r_extern
+r_void
+id|setup_per_cpu_areas
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#else /* ! SMP */
 DECL|macro|DEFINE_PER_CPU
 mdefine_line|#define DEFINE_PER_CPU(type, name) &bslash;&n;    __typeof__(type) per_cpu__##name
@@ -34,13 +42,5 @@ DECL|macro|EXPORT_PER_CPU_SYMBOL
 mdefine_line|#define EXPORT_PER_CPU_SYMBOL(var) EXPORT_SYMBOL(per_cpu__##var)
 DECL|macro|EXPORT_PER_CPU_SYMBOL_GPL
 mdefine_line|#define EXPORT_PER_CPU_SYMBOL_GPL(var) EXPORT_SYMBOL_GPL(per_cpu__##var)
-r_extern
-r_void
-id|setup_per_cpu_areas
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif /* _ASM_X8664_PERCPU_H_ */
 eof
