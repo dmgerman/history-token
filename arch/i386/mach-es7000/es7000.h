@@ -304,17 +304,6 @@ DECL|macro|MIP_SW_APIC
 mdefine_line|#define&t;MIP_SW_APIC&t;&t;0x1020b
 DECL|macro|MIP_FUNC
 mdefine_line|#define&t;MIP_FUNC(VALUE) &t;(VALUE &amp; 0xff)
-macro_line|#if defined(CONFIG_X86_IO_APIC) &amp;&amp; (defined(CONFIG_ACPI_INTERPRETER) || defined(CONFIG_ACPI_BOOT))
-DECL|macro|IOAPIC_GSI_BOUND
-mdefine_line|#define IOAPIC_GSI_BOUND(ioapic) ((ioapic+1) * (nr_ioapic_registers[ioapic]-1))
-DECL|macro|MAX_GSI_MAPSIZE
-mdefine_line|#define MAX_GSI_MAPSIZE 32
-macro_line|#endif
-r_extern
-r_int
-r_int
-id|io_apic_irqs
-suffix:semicolon
 r_extern
 r_int
 id|parse_unisys_oem
