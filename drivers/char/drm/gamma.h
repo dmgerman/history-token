@@ -6,8 +6,6 @@ multiline_comment|/* This remains constant for all DRM template files.&n; */
 DECL|macro|DRM
 mdefine_line|#define DRM(x) gamma_##x
 multiline_comment|/* General customization:&n; */
-DECL|macro|__HAVE_MTRR
-mdefine_line|#define __HAVE_MTRR&t;&t;&t;1
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR&t;&t;&quot;VA Linux Systems Inc.&quot;
 DECL|macro|DRIVER_NAME
@@ -46,14 +44,8 @@ mdefine_line|#define DRIVER_PRETAKEDOWN() do {&t;&t;&t;&t;&t;&bslash;&n;&t;gamma
 multiline_comment|/* DMA customization:&n; */
 DECL|macro|__HAVE_DMA
 mdefine_line|#define __HAVE_DMA&t;&t;&t;1
-DECL|macro|__HAVE_AGP
-mdefine_line|#define __HAVE_AGP&t;&t;&t;1
-DECL|macro|__MUST_HAVE_AGP
-mdefine_line|#define __MUST_HAVE_AGP&t;&t;&t;0
 DECL|macro|__HAVE_OLD_DMA
 mdefine_line|#define __HAVE_OLD_DMA&t;&t;&t;1
-DECL|macro|__HAVE_PCI_DMA
-mdefine_line|#define __HAVE_PCI_DMA&t;&t;&t;1
 DECL|macro|__HAVE_MULTIPLE_DMA_QUEUES
 mdefine_line|#define __HAVE_MULTIPLE_DMA_QUEUES&t;1
 DECL|macro|__HAVE_DMA_WAITQUEUE

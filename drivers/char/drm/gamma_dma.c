@@ -4335,6 +4335,14 @@ op_star
 id|dev
 )paren
 (brace
+id|dev-&gt;driver_features
+op_assign
+id|DRIVER_USE_AGP
+op_or
+id|DRIVER_USE_MTRR
+op_or
+id|DRIVER_PCI_DMA
+suffix:semicolon
 id|DRM
 c_func
 (paren

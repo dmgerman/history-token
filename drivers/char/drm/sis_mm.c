@@ -1762,6 +1762,12 @@ op_star
 id|dev
 )paren
 (brace
+id|dev-&gt;driver_features
+op_assign
+id|DRIVER_USE_AGP
+op_or
+id|DRIVER_USE_MTRR
+suffix:semicolon
 id|dev-&gt;fn_tbl.context_ctor
 op_assign
 id|sis_init_context

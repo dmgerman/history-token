@@ -101,6 +101,16 @@ DECL|typedef|drm_radeon_depth_clear_t
 )brace
 id|drm_radeon_depth_clear_t
 suffix:semicolon
+DECL|struct|drm_radeon_driver_file_fields
+r_struct
+id|drm_radeon_driver_file_fields
+(brace
+DECL|member|radeon_fb_delta
+r_int64
+id|radeon_fb_delta
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|mem_block
 r_struct
 id|mem_block
