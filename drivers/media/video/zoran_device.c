@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/video_decoder.h&gt;
 macro_line|#include &lt;linux/video_encoder.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;videocodec.h&quot;
 macro_line|#include &quot;zoran.h&quot;
@@ -2753,19 +2754,16 @@ id|zr-&gt;v4l_memgrab_active
 r_return
 l_int|0
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|zr-&gt;v4l_pend_tail
-op_ne
-id|zr-&gt;v4l_pend_head
-)paren
-(brace
-id|interruptible_sleep_on
+id|wait_event_interruptible
 c_func
 (paren
-op_amp
 id|zr-&gt;v4l_capq
+comma
+(paren
+id|zr-&gt;v4l_pend_tail
+op_eq
+id|zr-&gt;v4l_pend_head
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -2781,7 +2779,6 @@ r_return
 op_minus
 id|ERESTARTSYS
 suffix:semicolon
-)brace
 id|spin_lock_irqsave
 c_func
 (paren
