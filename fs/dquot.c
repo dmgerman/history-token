@@ -1890,14 +1890,14 @@ id|free_dquots.prev
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This is called from kswapd when we think we need some&n; * more memory, but aren&squot;t really sure how much. So we&n; * carefully try to free a _bit_ of our dqcache, but not&n; * too much.&n; *&n; * Priority:&n; *   1 - very urgent: shrink everything&n; *   ...&n; *   6 - base-level: try to shrink a bit.&n; */
+multiline_comment|/*&n; * This is called from kswapd when we think we need some&n; * more memory&n; */
 DECL|function|shrink_dqcache_memory
 r_int
 id|shrink_dqcache_memory
 c_func
 (paren
 r_int
-id|priority
+id|ratio
 comma
 r_int
 r_int
@@ -1905,25 +1905,23 @@ id|gfp_mask
 )paren
 (brace
 r_int
-id|count
+id|entries
 op_assign
-l_int|0
+id|dqstats.allocated_dquots
+op_div
+id|ratio
+op_plus
+l_int|1
 suffix:semicolon
 id|lock_kernel
 c_func
 (paren
 )paren
 suffix:semicolon
-id|count
-op_assign
-id|dqstats.free_dquots
-op_div
-id|priority
-suffix:semicolon
 id|prune_dqcache
 c_func
 (paren
-id|count
+id|entries
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -1931,14 +1929,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|kmem_cache_shrink
-c_func
-(paren
-id|dquot_cachep
-)paren
-suffix:semicolon
 r_return
-l_int|0
+id|entries
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Put reference to dquot&n; * NOTE: If you change this function please check whether dqput_blocks() works right...&n; */

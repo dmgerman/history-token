@@ -356,7 +356,6 @@ DECL|variable|xquad_portio
 r_static
 r_void
 op_star
-r_const
 id|xquad_portio
 op_assign
 l_int|NULL

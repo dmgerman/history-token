@@ -2181,6 +2181,34 @@ c_func
 id|remove_wait_queue
 )paren
 suffix:semicolon
+DECL|variable|prepare_to_wait
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|prepare_to_wait
+)paren
+suffix:semicolon
+DECL|variable|prepare_to_wait_exclusive
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|prepare_to_wait_exclusive
+)paren
+suffix:semicolon
+DECL|variable|finish_wait
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|finish_wait
+)paren
+suffix:semicolon
+DECL|variable|autoremove_wake_function
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|autoremove_wake_function
+)paren
+suffix:semicolon
 multiline_comment|/* completion handling */
 DECL|variable|wait_for_completion
 id|EXPORT_SYMBOL
@@ -2606,6 +2634,15 @@ c_func
 id|do_settimeofday
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
+DECL|variable|__might_sleep
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__might_sleep
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#if !defined(__ia64__)
 DECL|variable|loops_per_jiffy
 id|EXPORT_SYMBOL
