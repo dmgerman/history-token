@@ -20,6 +20,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
+macro_line|#include &lt;asm/mach/time.h&gt;
 multiline_comment|/*************************************************************************&n; * GPIO acces functions&n; *************************************************************************/
 multiline_comment|/*&n; * Configure GPIO line for input, interrupt, or output operation&n; *&n; * TODO: Enable/disable the irq_desc based on interrupt or output mode.&n; * TODO: Should these be named ixp4xx_gpio_?&n; */
 DECL|function|gpio_line_config
@@ -696,22 +697,11 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-r_extern
-r_int
-r_int
-(paren
-op_star
-id|gettimeoffset
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|variable|timer_irq
+DECL|variable|ixp4xx_timer_irq
 r_static
 r_struct
 id|irqaction
-id|timer_irq
+id|ixp4xx_timer_irq
 op_assign
 (brace
 dot
@@ -723,12 +713,17 @@ dot
 id|flags
 op_assign
 id|SA_INTERRUPT
+comma
+dot
+id|handler
+op_assign
+id|ixp4xx_timer_interrupt
 )brace
 suffix:semicolon
-DECL|function|time_init
+DECL|function|ixp4xx_init_time
 r_void
 id|__init
-id|time_init
+id|ixp4xx_init_time
 c_func
 (paren
 r_void
@@ -737,10 +732,6 @@ r_void
 id|gettimeoffset
 op_assign
 id|ixp4xx_gettimeoffset
-suffix:semicolon
-id|timer_irq.handler
-op_assign
-id|ixp4xx_timer_interrupt
 suffix:semicolon
 multiline_comment|/* Clear Pending Interrupt by writing &squot;1&squot; to it */
 op_star
@@ -778,7 +769,7 @@ c_func
 id|IRQ_IXP4XX_TIMER1
 comma
 op_amp
-id|timer_irq
+id|ixp4xx_timer_irq
 )paren
 suffix:semicolon
 )brace

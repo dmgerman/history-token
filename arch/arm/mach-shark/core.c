@@ -1,11 +1,16 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-shark/arch.c&n; *&n; *  Architecture specific stuff.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/leds.h&gt;
+macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
+macro_line|#include &lt;asm/mach/time.h&gt;
 r_extern
 r_void
 id|shark_init_irq
@@ -58,6 +63,127 @@ id|shark_io_desc
 )paren
 suffix:semicolon
 )brace
+DECL|macro|IRQ_TIMER
+mdefine_line|#define IRQ_TIMER 0
+DECL|macro|HZ_TIME
+mdefine_line|#define HZ_TIME ((1193180 + HZ/2) / HZ)
+r_static
+id|irqreturn_t
+DECL|function|shark_timer_interrupt
+id|shark_timer_interrupt
+c_func
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|dev_id
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+id|do_leds
+c_func
+(paren
+)paren
+suffix:semicolon
+id|do_timer
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+id|do_profile
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
+)brace
+DECL|variable|shark_timer_irq
+r_static
+r_struct
+id|irqaction
+id|shark_timer_irq
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;Shark Timer Tick&quot;
+comma
+dot
+id|flags
+op_assign
+id|SA_INTERRUPT
+comma
+dot
+id|handler
+op_assign
+id|shark_timer_interrupt
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Set up timer interrupt, and return the current time in seconds.&n; */
+DECL|function|shark_init_time
+r_void
+id|__init
+id|shark_init_time
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|outb
+c_func
+(paren
+l_int|0x34
+comma
+l_int|0x43
+)paren
+suffix:semicolon
+multiline_comment|/* binary, mode 0, LSB/MSB, Ch 0 */
+id|outb
+c_func
+(paren
+id|HZ_TIME
+op_amp
+l_int|0xff
+comma
+l_int|0x40
+)paren
+suffix:semicolon
+multiline_comment|/* LSB of count */
+id|outb
+c_func
+(paren
+id|HZ_TIME
+op_rshift
+l_int|8
+comma
+l_int|0x40
+)paren
+suffix:semicolon
+id|setup_irq
+c_func
+(paren
+id|IRQ_TIMER
+comma
+op_amp
+id|shark_timer_irq
+)paren
+suffix:semicolon
+)brace
 id|MACHINE_START
 c_func
 (paren
@@ -93,6 +219,11 @@ id|INITIRQ
 c_func
 (paren
 id|shark_init_irq
+)paren
+id|INITTIME
+c_func
+(paren
+id|shark_init_time
 )paren
 id|MACHINE_END
 eof

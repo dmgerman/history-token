@@ -10,10 +10,12 @@ macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/sysdev.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
+macro_line|#include &lt;asm/mach/time.h&gt;
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
@@ -140,8 +142,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Handle kernel profile stuff...&n; */
 DECL|function|do_profile
-r_static
-r_inline
 r_void
 id|do_profile
 c_func
@@ -230,8 +230,6 @@ id|next_rtc_update
 suffix:semicolon
 multiline_comment|/*&n; * If we have an externally synchronized linux clock, then update&n; * CMOS clock accordingly every ~11 minutes.  set_rtc() has to be&n; * called as close as possible to 500 ms before the new second&n; * starts.&n; */
 DECL|function|do_set_rtc
-r_static
-r_inline
 r_void
 id|do_set_rtc
 c_func
@@ -867,9 +865,7 @@ id|leds_event
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_LEDS_TIMER
 DECL|function|do_leds
-r_static
 r_void
 id|do_leds
 c_func
@@ -905,10 +901,6 @@ id|led_timer
 suffix:semicolon
 )brace
 )brace
-macro_line|#else
-DECL|macro|do_leds
-mdefine_line|#define do_leds()
-macro_line|#endif
 DECL|function|do_gettimeofday
 r_void
 id|do_gettimeofday
@@ -1181,25 +1173,29 @@ c_func
 id|do_settimeofday
 )paren
 suffix:semicolon
-DECL|variable|timer_irq
-r_static
-r_struct
-id|irqaction
-id|timer_irq
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;timer&quot;
-comma
-dot
-id|flags
-op_assign
-id|SA_INTERRUPT
-comma
-)brace
+DECL|variable|init_arch_time
+r_void
+(paren
+op_star
+id|init_arch_time
+)paren
+(paren
+r_void
+)paren
 suffix:semicolon
-multiline_comment|/*&n; * Include architecture specific code&n; */
-macro_line|#include &lt;asm/arch/time.h&gt;
+DECL|function|time_init
+r_void
+id|__init
+id|time_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|init_arch_time
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 eof

@@ -26,6 +26,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|footbridge_init_time
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|variable|mem_fclk_21285
 r_int
 r_int
@@ -113,6 +121,11 @@ id|INITIRQ
 c_func
 (paren
 id|footbridge_init_irq
+)paren
+id|INITTIME
+c_func
+(paren
+id|footbridge_init_time
 )paren
 id|MACHINE_END
 macro_line|#endif
@@ -216,6 +229,11 @@ c_func
 (paren
 id|footbridge_init_irq
 )paren
+id|INITTIME
+c_func
+(paren
+id|footbridge_init_time
+)paren
 id|MACHINE_END
 macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_CATS
@@ -302,6 +320,11 @@ id|INITIRQ
 c_func
 (paren
 id|footbridge_init_irq
+)paren
+id|INITTIME
+c_func
+(paren
+id|footbridge_init_time
 )paren
 id|MACHINE_END
 macro_line|#endif
@@ -418,6 +441,11 @@ c_func
 (paren
 id|footbridge_init_irq
 )paren
+id|INITTIME
+c_func
+(paren
+id|footbridge_init_time
+)paren
 id|MACHINE_END
 macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_PERSONAL_SERVER
@@ -456,6 +484,11 @@ id|INITIRQ
 c_func
 (paren
 id|footbridge_init_irq
+)paren
+id|INITTIME
+c_func
+(paren
+id|footbridge_init_time
 )paren
 id|MACHINE_END
 macro_line|#endif

@@ -1,4 +1,14 @@
-multiline_comment|/* include/asm-arm/arch-lh7a40x/time.h&n; *&n; *  Copyright (C) 2004 Logic Product Development&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  version 2 as published by the Free Software Foundation.&n; *&n; */
+multiline_comment|/* &n; *  arch/arm/mach-lh7a40x/time.c&n; *&n; *  Copyright (C) 2004 Logic Product Development&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  version 2 as published by the Free Software Foundation.&n; *&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/leds.h&gt;
+macro_line|#include &lt;asm/mach/time.h&gt;
 macro_line|#if HZ &lt; 100
 DECL|macro|TIMER_CONTROL
 macro_line|# define TIMER_CONTROL&t;TIMER_CONTROL1
@@ -73,10 +83,33 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-DECL|function|time_init
+DECL|variable|lh7a40x_timer_irq
+r_static
+r_struct
+id|irqaction
+id|lh7a40x_timer_irq
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;LHA740x Timer Tick&quot;
+comma
+dot
+id|flags
+op_assign
+id|SA_INTERRUPT
+comma
+dot
+id|handler
+op_assign
+id|lh7a40x_timer_interrupt
+)brace
+suffix:semicolon
+DECL|function|lh7a40x_init_time
 r_void
 id|__init
-id|time_init
+id|lh7a40x_init_time
 c_func
 (paren
 r_void
@@ -95,20 +128,12 @@ id|TIMER_CONTROL3
 op_assign
 l_int|0
 suffix:semicolon
-id|timer_irq.handler
-op_assign
-id|lh7a40x_timer_interrupt
-suffix:semicolon
-id|timer_irq.flags
-op_or_assign
-id|SA_INTERRUPT
-suffix:semicolon
 id|setup_irq
 (paren
 id|TIMER_IRQ
 comma
 op_amp
-id|timer_irq
+id|lh7a40x_timer_irq
 )paren
 suffix:semicolon
 id|TIMER_LOAD

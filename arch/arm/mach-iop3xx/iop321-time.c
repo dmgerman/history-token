@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
+macro_line|#include &lt;asm/mach/time.h&gt;
 DECL|function|iop321_gettimeoffset
 r_static
 r_int
@@ -117,34 +118,27 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-r_extern
-r_int
-r_int
-(paren
-op_star
-id|gettimeoffset
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|variable|timer_irq
+DECL|variable|iop321_timer_irq
 r_static
 r_struct
 id|irqaction
-id|timer_irq
+id|iop321_timer_irq
 op_assign
 (brace
 dot
 id|name
 op_assign
-l_string|&quot;timer&quot;
+l_string|&quot;IOP321 Timer Tick&quot;
 comma
 dot
 id|handler
 op_assign
 id|iop321_timer_interrupt
 comma
+dot
+id|flags
+op_assign
+id|SA_INTERRUPT
 )brace
 suffix:semicolon
 r_extern
@@ -159,10 +153,10 @@ id|irqaction
 op_star
 )paren
 suffix:semicolon
-DECL|function|time_init
+DECL|function|iop321_init_time
 r_void
 id|__init
-id|time_init
+id|iop321_init_time
 c_func
 (paren
 r_void
@@ -186,7 +180,7 @@ c_func
 id|IRQ_IOP321_TIMER0
 comma
 op_amp
-id|timer_irq
+id|iop321_timer_irq
 )paren
 suffix:semicolon
 id|timer_ctl
