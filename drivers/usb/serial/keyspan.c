@@ -4600,7 +4600,7 @@ op_and_assign
 op_complement
 id|URB_ASYNC_UNLINK
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|urb
