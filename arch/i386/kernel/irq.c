@@ -3246,6 +3246,14 @@ op_amp
 id|new_value
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
+suffix:semicolon
 multiline_comment|/*&n;&t; * Do not allow disabling IRQs completely - it&squot;s a too easy&n;&t; * way to make the system unusable accidentally :-) At least&n;&t; * one online CPU still has to be targeted.&n;&t; */
 id|cpus_and
 c_func
