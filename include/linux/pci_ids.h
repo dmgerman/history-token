@@ -3225,6 +3225,16 @@ DECL|macro|PCI_DEVICE_ID_TIGON3_5901_2
 mdefine_line|#define PCI_DEVICE_ID_TIGON3_5901_2&t;0x170e
 DECL|macro|PCI_DEVICE_ID_BCM4401
 mdefine_line|#define PCI_DEVICE_ID_BCM4401&t;&t;0x4401
+DECL|macro|PCI_VENDOR_ID_ENE
+mdefine_line|#define PCI_VENDOR_ID_ENE&t;&t;0x1524
+DECL|macro|PCI_DEVICE_ID_ENE_1211
+mdefine_line|#define PCI_DEVICE_ID_ENE_1211&t;&t;0x1211
+DECL|macro|PCI_DEVICE_ID_ENE_1225
+mdefine_line|#define PCI_DEVICE_ID_ENE_1225&t;&t;0x1225
+DECL|macro|PCI_DEVICE_ID_ENE_1410
+mdefine_line|#define PCI_DEVICE_ID_ENE_1410&t;&t;0x1410
+DECL|macro|PCI_DEVICE_ID_ENE_1420
+mdefine_line|#define PCI_DEVICE_ID_ENE_1420&t;&t;0x1420
 DECL|macro|PCI_VENDOR_ID_SYBA
 mdefine_line|#define PCI_VENDOR_ID_SYBA&t;&t;0x1592
 DECL|macro|PCI_DEVICE_ID_SYBA_2P_EPP
