@@ -24,7 +24,7 @@ mdefine_line|#define&t;STATS&t;&t;0
 DECL|macro|FORCED_DEBUG
 mdefine_line|#define&t;FORCED_DEBUG&t;0
 macro_line|#endif
-multiline_comment|/*&n; * Parameters for kmem_cache_reap&n; */
+multiline_comment|/*&n; * Parameters for cache_reap&n; */
 DECL|macro|REAP_SCANLEN
 mdefine_line|#define REAP_SCANLEN&t;10
 DECL|macro|REAP_PERFECT
@@ -51,7 +51,7 @@ r_int
 r_int
 id|kmem_bufctl_t
 suffix:semicolon
-multiline_comment|/* Max number of objs-per-slab for caches which use off-slab slabs.&n; * Needed to avoid a possible looping condition in kmem_cache_grow().&n; */
+multiline_comment|/* Max number of objs-per-slab for caches which use off-slab slabs.&n; * Needed to avoid a possible looping condition in cache_grow().&n; */
 DECL|variable|offslab_limit
 r_static
 r_int
@@ -825,10 +825,10 @@ r_void
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Cal the num objs, wastage, and bytes left over for a given slab size. */
-DECL|function|kmem_cache_estimate
+DECL|function|cache_estimate
 r_static
 r_void
-id|kmem_cache_estimate
+id|cache_estimate
 (paren
 r_int
 r_int
@@ -999,7 +999,7 @@ op_amp
 id|cache_chain
 )paren
 suffix:semicolon
-id|kmem_cache_estimate
+id|cache_estimate
 c_func
 (paren
 l_int|0
@@ -1192,10 +1192,10 @@ id|sizes-&gt;cs_size
 )paren
 suffix:semicolon
 )brace
-DECL|function|kmem_cpucache_init
+DECL|function|cpucache_init
 r_int
 id|__init
-id|kmem_cpucache_init
+id|cpucache_init
 c_func
 (paren
 r_void
@@ -1216,11 +1216,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|kmem_cpucache_init
+DECL|variable|cpucache_init
 id|__initcall
 c_func
 (paren
-id|kmem_cpucache_init
+id|cpucache_init
 )paren
 suffix:semicolon
 multiline_comment|/* Interface to system&squot;s page allocator. No need to hold the cache-lock.&n; */
@@ -1343,11 +1343,11 @@ id|cachep-&gt;gfporder
 suffix:semicolon
 )brace
 macro_line|#if DEBUG
-DECL|function|kmem_poison_obj
+DECL|function|poison_obj
 r_static
 r_inline
 r_void
-id|kmem_poison_obj
+id|poison_obj
 (paren
 id|kmem_cache_t
 op_star
@@ -1409,11 +1409,11 @@ op_assign
 id|POISON_END
 suffix:semicolon
 )brace
-DECL|function|kmem_check_poison_obj
+DECL|function|check_poison_obj
 r_static
 r_inline
 r_int
-id|kmem_check_poison_obj
+id|check_poison_obj
 (paren
 id|kmem_cache_t
 op_star
@@ -1486,10 +1486,10 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* Destroy all the objs in a slab, and release the mem back to the system.&n; * Before calling the slab must have been unlinked from the cache.&n; * The cache-lock is not held/needed.&n; */
-DECL|function|kmem_slab_destroy
+DECL|function|slab_destroy
 r_static
 r_void
-id|kmem_slab_destroy
+id|slab_destroy
 (paren
 id|kmem_cache_t
 op_star
@@ -1646,7 +1646,7 @@ op_amp
 id|SLAB_POISON
 )paren
 op_logical_and
-id|kmem_check_poison_obj
+id|check_poison_obj
 c_func
 (paren
 id|cachep
@@ -2117,7 +2117,7 @@ l_int|0
 suffix:semicolon
 id|cal_wastage
 suffix:colon
-id|kmem_cache_estimate
+id|cache_estimate
 c_func
 (paren
 id|cachep-&gt;gfporder
@@ -2591,10 +2591,10 @@ suffix:semicolon
 )brace
 macro_line|#if DEBUG
 multiline_comment|/*&n; * This check if the kmem_cache_t pointer is chained in the cache_cache&n; * list. -arca&n; */
-DECL|function|is_chained_kmem_cache
+DECL|function|is_chained_cache
 r_static
 r_int
-id|is_chained_kmem_cache
+id|is_chained_cache
 c_func
 (paren
 id|kmem_cache_t
@@ -2658,8 +2658,8 @@ id|ret
 suffix:semicolon
 )brace
 macro_line|#else
-DECL|macro|is_chained_kmem_cache
-mdefine_line|#define is_chained_kmem_cache(x) 1
+DECL|macro|is_chained_cache
+mdefine_line|#define is_chained_cache(x) 1
 macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * Waits for all CPUs to execute func().&n; */
@@ -2980,10 +2980,10 @@ macro_line|#else
 DECL|macro|drain_cpu_caches
 mdefine_line|#define drain_cpu_caches(cachep)&t;do { } while (0)
 macro_line|#endif
-DECL|function|__kmem_cache_shrink
+DECL|function|__cache_shrink
 r_static
 r_int
-id|__kmem_cache_shrink
+id|__cache_shrink
 c_func
 (paren
 id|kmem_cache_t
@@ -3076,7 +3076,7 @@ op_amp
 id|cachep-&gt;spinlock
 )paren
 suffix:semicolon
-id|kmem_slab_destroy
+id|slab_destroy
 c_func
 (paren
 id|cachep
@@ -3144,7 +3144,7 @@ c_func
 )paren
 op_logical_or
 op_logical_neg
-id|is_chained_kmem_cache
+id|is_chained_cache
 c_func
 (paren
 id|cachep
@@ -3156,7 +3156,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
-id|__kmem_cache_shrink
+id|__cache_shrink
 c_func
 (paren
 id|cachep
@@ -3236,7 +3236,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__kmem_cache_shrink
+id|__cache_shrink
 c_func
 (paren
 id|cachep
@@ -3324,12 +3324,12 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Get the memory for a slab management obj. */
-DECL|function|kmem_cache_slabmgmt
+DECL|function|alloc_slabmgmt
 r_static
 r_inline
 id|slab_t
 op_star
-id|kmem_cache_slabmgmt
+id|alloc_slabmgmt
 (paren
 id|kmem_cache_t
 op_star
@@ -3427,11 +3427,11 @@ r_return
 id|slabp
 suffix:semicolon
 )brace
-DECL|function|kmem_cache_init_objs
+DECL|function|cache_init_objs
 r_static
 r_inline
 r_void
-id|kmem_cache_init_objs
+id|cache_init_objs
 (paren
 id|kmem_cache_t
 op_star
@@ -3559,7 +3559,7 @@ op_amp
 id|SLAB_POISON
 )paren
 multiline_comment|/* need to poison the objs */
-id|kmem_poison_obj
+id|poison_obj
 c_func
 (paren
 id|cachep
@@ -3658,10 +3658,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Grow (by 1) the number of slabs within a cache.  This is called by&n; * kmem_cache_alloc() when there are no active objs left in a cache.&n; */
-DECL|function|kmem_cache_grow
+DECL|function|cache_grow
 r_static
 r_int
-id|kmem_cache_grow
+id|cache_grow
 (paren
 id|kmem_cache_t
 op_star
@@ -3827,7 +3827,7 @@ comma
 id|save_flags
 )paren
 suffix:semicolon
-multiline_comment|/* A series of memory allocations for a new slab.&n;&t; * Neither the cache-chain semaphore, or cache-lock, are&n;&t; * held, but the incrementing c_growing prevents this&n;&t; * cache from being reaped or shrunk.&n;&t; * Note: The cache could be selected in for reaping in&n;&t; * kmem_cache_reap(), but when the final test is made the&n;&t; * growing value will be seen.&n;&t; */
+multiline_comment|/* A series of memory allocations for a new slab.&n;&t; * Neither the cache-chain semaphore, or cache-lock, are&n;&t; * held, but the incrementing c_growing prevents this&n;&t; * cache from being reaped or shrunk.&n;&t; * Note: The cache could be selected in for reaping in&n;&t; * cache_reap(), but when the final test is made the&n;&t; * growing value will be seen.&n;&t; */
 multiline_comment|/* Get mem for the objs. */
 r_if
 c_cond
@@ -3856,7 +3856,7 @@ op_logical_neg
 (paren
 id|slabp
 op_assign
-id|kmem_cache_slabmgmt
+id|alloc_slabmgmt
 c_func
 (paren
 id|cachep
@@ -3928,7 +3928,7 @@ op_decrement
 id|i
 )paren
 suffix:semicolon
-id|kmem_cache_init_objs
+id|cache_init_objs
 c_func
 (paren
 id|cachep
@@ -4022,10 +4022,10 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Perform extra freeing checks:&n; * - detect double free&n; * - detect bad pointers.&n; * Called with the cache-lock held.&n; */
 macro_line|#if DEBUG
-DECL|function|kmem_extra_free_checks
+DECL|function|extra_free_checks
 r_static
 r_int
-id|kmem_extra_free_checks
+id|extra_free_checks
 (paren
 id|kmem_cache_t
 op_star
@@ -4125,11 +4125,11 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|function|kmem_cache_alloc_head
+DECL|function|cache_alloc_head
 r_static
 r_inline
 r_void
-id|kmem_cache_alloc_head
+id|cache_alloc_head
 c_func
 (paren
 id|kmem_cache_t
@@ -4180,12 +4180,12 @@ c_func
 suffix:semicolon
 )brace
 )brace
-DECL|function|kmem_cache_alloc_one_tail
+DECL|function|cache_alloc_one_tail
 r_static
 r_inline
 r_void
 op_star
-id|kmem_cache_alloc_one_tail
+id|cache_alloc_one_tail
 (paren
 id|kmem_cache_t
 op_star
@@ -4282,7 +4282,7 @@ id|SLAB_POISON
 r_if
 c_cond
 (paren
-id|kmem_check_poison_obj
+id|check_poison_obj
 c_func
 (paren
 id|cachep
@@ -4367,13 +4367,13 @@ id|objp
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Returns a ptr to an obj in the given cache.&n; * caller must guarantee synchronization&n; * #define for the goto optimization 8-)&n; */
-DECL|macro|kmem_cache_alloc_one
-mdefine_line|#define kmem_cache_alloc_one(cachep)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct list_head * slabs_partial, * entry;&t;&t;&bslash;&n;&t;slab_t *slabp;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;slabs_partial = &amp;(cachep)-&gt;slabs_partial;&t;&t;&bslash;&n;&t;entry = slabs_partial-&gt;next;&t;&t;&t;&t;&bslash;&n;&t;if (unlikely(entry == slabs_partial)) {&t;&t;&t;&bslash;&n;&t;&t;struct list_head * slabs_free;&t;&t;&t;&bslash;&n;&t;&t;slabs_free = &amp;(cachep)-&gt;slabs_free;&t;&t;&bslash;&n;&t;&t;entry = slabs_free-&gt;next;&t;&t;&t;&bslash;&n;&t;&t;if (unlikely(entry == slabs_free))&t;&t;&bslash;&n;&t;&t;&t;goto alloc_new_slab;&t;&t;&t;&bslash;&n;&t;&t;list_del(entry);&t;&t;&t;&t;&bslash;&n;&t;&t;list_add(entry, slabs_partial);&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;slabp = list_entry(entry, slab_t, list);&t;&t;&bslash;&n;&t;kmem_cache_alloc_one_tail(cachep, slabp);&t;&t;&bslash;&n;})
+DECL|macro|cache_alloc_one
+mdefine_line|#define cache_alloc_one(cachep)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct list_head * slabs_partial, * entry;&t;&t;&bslash;&n;&t;slab_t *slabp;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;slabs_partial = &amp;(cachep)-&gt;slabs_partial;&t;&t;&bslash;&n;&t;entry = slabs_partial-&gt;next;&t;&t;&t;&t;&bslash;&n;&t;if (unlikely(entry == slabs_partial)) {&t;&t;&t;&bslash;&n;&t;&t;struct list_head * slabs_free;&t;&t;&t;&bslash;&n;&t;&t;slabs_free = &amp;(cachep)-&gt;slabs_free;&t;&t;&bslash;&n;&t;&t;entry = slabs_free-&gt;next;&t;&t;&t;&bslash;&n;&t;&t;if (unlikely(entry == slabs_free))&t;&t;&bslash;&n;&t;&t;&t;goto alloc_new_slab;&t;&t;&t;&bslash;&n;&t;&t;list_del(entry);&t;&t;&t;&t;&bslash;&n;&t;&t;list_add(entry, slabs_partial);&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;slabp = list_entry(entry, slab_t, list);&t;&t;&bslash;&n;&t;cache_alloc_one_tail(cachep, slabp);&t;&t;&bslash;&n;})
 macro_line|#ifdef CONFIG_SMP
-DECL|function|kmem_cache_alloc_batch
+DECL|function|cache_alloc_batch
 r_void
 op_star
-id|kmem_cache_alloc_batch
+id|cache_alloc_batch
 c_func
 (paren
 id|kmem_cache_t
@@ -4519,7 +4519,7 @@ id|cc-&gt;avail
 op_increment
 )braket
 op_assign
-id|kmem_cache_alloc_one_tail
+id|cache_alloc_one_tail
 c_func
 (paren
 id|cachep
@@ -4556,12 +4556,12 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|function|__kmem_cache_alloc
+DECL|function|__cache_alloc
 r_static
 r_inline
 r_void
 op_star
-id|__kmem_cache_alloc
+id|__cache_alloc
 (paren
 id|kmem_cache_t
 op_star
@@ -4591,7 +4591,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|kmem_cache_alloc_head
+id|cache_alloc_head
 c_func
 (paren
 id|cachep
@@ -4660,7 +4660,7 @@ id|cachep
 suffix:semicolon
 id|objp
 op_assign
-id|kmem_cache_alloc_batch
+id|cache_alloc_batch
 c_func
 (paren
 id|cachep
@@ -4699,7 +4699,7 @@ id|cachep-&gt;spinlock
 suffix:semicolon
 id|objp
 op_assign
-id|kmem_cache_alloc_one
+id|cache_alloc_one
 c_func
 (paren
 id|cachep
@@ -4717,7 +4717,7 @@ suffix:semicolon
 macro_line|#else
 id|objp
 op_assign
-id|kmem_cache_alloc_one
+id|cache_alloc_one
 c_func
 (paren
 id|cachep
@@ -4757,7 +4757,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|kmem_cache_grow
+id|cache_grow
 c_func
 (paren
 id|cachep
@@ -4783,11 +4783,11 @@ macro_line|#else
 DECL|macro|CHECK_PAGE
 macro_line|# define CHECK_PAGE(pg)&t;do { } while (0)
 macro_line|#endif
-DECL|function|kmem_cache_free_one
+DECL|function|cache_free_one
 r_static
 r_inline
 r_void
-id|kmem_cache_free_one
+id|cache_free_one
 c_func
 (paren
 id|kmem_cache_t
@@ -4919,7 +4919,7 @@ id|cachep-&gt;flags
 op_amp
 id|SLAB_POISON
 )paren
-id|kmem_poison_obj
+id|poison_obj
 c_func
 (paren
 id|cachep
@@ -4930,7 +4930,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|kmem_extra_free_checks
+id|extra_free_checks
 c_func
 (paren
 id|cachep
@@ -5027,7 +5027,7 @@ id|cachep-&gt;slabs_free
 )paren
 suffix:semicolon
 r_else
-id|kmem_slab_destroy
+id|slab_destroy
 c_func
 (paren
 id|cachep
@@ -5104,7 +5104,7 @@ comma
 id|objpp
 op_increment
 )paren
-id|kmem_cache_free_one
+id|cache_free_one
 c_func
 (paren
 id|cachep
@@ -5158,12 +5158,12 @@ id|cachep-&gt;spinlock
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * __kmem_cache_free&n; * called with disabled ints&n; */
-DECL|function|__kmem_cache_free
+multiline_comment|/*&n; * __cache_free&n; * called with disabled ints&n; */
+DECL|function|__cache_free
 r_static
 r_inline
 r_void
-id|__kmem_cache_free
+id|__cache_free
 (paren
 id|kmem_cache_t
 op_star
@@ -5291,7 +5291,7 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#else
-id|kmem_cache_free_one
+id|cache_free_one
 c_func
 (paren
 id|cachep
@@ -5316,7 +5316,7 @@ id|flags
 )paren
 (brace
 r_return
-id|__kmem_cache_alloc
+id|__cache_alloc
 c_func
 (paren
 id|cachep
@@ -5364,7 +5364,7 @@ id|csizep-&gt;cs_size
 r_continue
 suffix:semicolon
 r_return
-id|__kmem_cache_alloc
+id|__cache_alloc
 c_func
 (paren
 id|flags
@@ -5436,7 +5436,7 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|__kmem_cache_free
+id|__cache_free
 c_func
 (paren
 id|cachep
@@ -5502,7 +5502,7 @@ id|objp
 )paren
 )paren
 suffix:semicolon
-id|__kmem_cache_free
+id|__cache_free
 c_func
 (paren
 id|c
@@ -5610,10 +5610,10 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* called with cache_chain_sem acquired.  */
-DECL|function|kmem_tune_cpucache
+DECL|function|tune_cpucache
 r_static
 r_int
-id|kmem_tune_cpucache
+id|tune_cpucache
 (paren
 id|kmem_cache_t
 op_star
@@ -5963,7 +5963,7 @@ l_int|252
 suffix:semicolon
 id|err
 op_assign
-id|kmem_tune_cpucache
+id|tune_cpucache
 c_func
 (paren
 id|cachep
@@ -6064,10 +6064,10 @@ id|cache_chain_sem
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/**&n; * kmem_cache_reap - Reclaim memory from caches.&n; * @gfp_mask: the type of memory required.&n; *&n; * Called from do_try_to_free_pages() and __alloc_pages()&n; */
-DECL|function|kmem_cache_reap
+multiline_comment|/**&n; * cache_reap - Reclaim memory from caches.&n; * @gfp_mask: the type of memory required.&n; *&n; * Called from do_try_to_free_pages() and __alloc_pages()&n; */
+DECL|function|cache_reap
 r_int
-id|kmem_cache_reap
+id|cache_reap
 (paren
 r_int
 id|gfp_mask
@@ -6543,7 +6543,7 @@ op_amp
 id|best_cachep-&gt;spinlock
 )paren
 suffix:semicolon
-id|kmem_slab_destroy
+id|slab_destroy
 c_func
 (paren
 id|best_cachep
@@ -7487,7 +7487,7 @@ id|kbuf
 (brace
 id|res
 op_assign
-id|kmem_tune_cpucache
+id|tune_cpucache
 c_func
 (paren
 id|cachep
