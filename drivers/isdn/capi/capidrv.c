@@ -11288,9 +11288,6 @@ id|name
 suffix:colon
 l_string|&quot;capidrv&quot;
 comma
-id|callback
-suffix:colon
-id|lower_callback
 )brace
 suffix:semicolon
 DECL|function|capidrv_init
@@ -11473,6 +11470,14 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+id|capi20_set_callback
+c_func
+(paren
+id|global.appid
+comma
+id|lower_callback
+)paren
+suffix:semicolon
 id|errcode
 op_assign
 id|capi20_get_profile
