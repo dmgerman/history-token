@@ -468,8 +468,6 @@ DECL|macro|ISDN_GLOBAL_STOPPED
 mdefine_line|#define ISDN_GLOBAL_STOPPED 1
 multiline_comment|/*=================== Start of ip-over-ISDN stuff =========================*/
 multiline_comment|/* Feature- and status-flags for a net-interface */
-DECL|macro|ISDN_NET_CONNECTED
-mdefine_line|#define ISDN_NET_CONNECTED  0x01       /* Bound to ISDN-Channel             */
 DECL|macro|ISDN_NET_SECURE
 mdefine_line|#define ISDN_NET_SECURE     0x02       /* Accept calls from phonelist only  */
 DECL|macro|ISDN_NET_CALLBACK

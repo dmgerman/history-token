@@ -792,10 +792,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|lp-&gt;flags
-op_or_assign
-id|ISDN_NET_CONNECTED
-suffix:semicolon
 id|lp-&gt;isdn_slot
 op_assign
 id|idx
@@ -909,11 +905,6 @@ id|ISDN_USAGE_NET
 )paren
 suffix:semicolon
 )brace
-id|lp-&gt;flags
-op_and_assign
-op_complement
-id|ISDN_NET_CONNECTED
-suffix:semicolon
 id|lp-&gt;isdn_slot
 op_assign
 op_minus
@@ -6177,10 +6168,6 @@ id|lp-&gt;ppp_slot
 op_assign
 op_minus
 l_int|1
-suffix:semicolon
-id|lp-&gt;flags
-op_or_assign
-id|ISDN_NET_CONNECTED
 suffix:semicolon
 id|lp-&gt;outgoing
 op_assign

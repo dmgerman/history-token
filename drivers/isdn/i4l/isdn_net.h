@@ -631,9 +631,9 @@ id|lp
 )paren
 (brace
 r_return
-id|lp-&gt;flags
-op_amp
-id|ISDN_NET_CONNECTED
+id|lp-&gt;isdn_slot
+op_ge
+l_int|0
 suffix:semicolon
 )brace
 r_static
