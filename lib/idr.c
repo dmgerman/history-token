@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/kernel/id.c&n; *&n; * 2002-10-18  written by Jim Houston jim.houston@ccur.com&n; *&t;Copyright (C) 2002 by Concurrent Computer Corporation&n; *&t;Distributed under the GNU GPL license version 2.&n; *&n; * Small id to pointer translation service.  &n; *&n; * It uses a radix tree like structure as a sparse array indexed &n; * by the id to obtain the pointer.  The bitmap makes allocating&n; * a new id quick.  &n;&n; * Modified by George Anzinger to reuse immediately and to use&n; * find bit instructions.  Also removed _irq on spinlocks.&n;&n; * So here is what this bit of code does:&n;&n; * You call it to allocate an id (an int) an associate with that id a&n; * pointer or what ever, we treat it as a (void *).  You can pass this&n; * id to a user for him to pass back at a later time.  You then pass&n; * that id to this code and it returns your pointer.&n;&n; * You can release ids at any time. When all ids are released, most of &n; * the memory is returned (we keep IDR_FREE_MAX) in a local pool so we&n; * don&squot;t need to go to the memory &quot;store&quot; during an id allocate, just &n; * so you don&squot;t need to be too concerned about locking and conflicts&n; * with the slab allocator.&n;&n; * A word on reuse.  We reuse empty id slots as soon as we can, always&n; * using the lowest one available.  But we also merge a counter in the&n; * high bits of the id.  The counter is RESERVED_ID_BITS (8 at this time)&n; * long.  This means that if you allocate and release the same id in a &n; * loop we will reuse an id after about 256 times around the loop.  The&n; * word about is used here as we will NOT return a valid id of -1 so if&n; * you loop on the largest possible id (and that is 24 bits, wow!) we&n; * will kick the counter to avoid -1.  (Paranoid?  You bet!)&n; *&n; * What you need to do is, since we don&squot;t keep the counter as part of&n; * id / ptr pair, to keep a copy of it in the pointed to structure&n; * (or else where) so that when you ask for a ptr you can varify that&n; * the returned ptr is correct by comparing the id it contains with the one&n; * you asked for.  In other words, we only did half the reuse protection.&n; * Since the code depends on your code doing this check, we ignore high&n; * order bits in the id, not just the count, but bits that would, if used,&n; * index outside of the allocated ids.  In other words, if the largest id&n; * currently allocated is 32 a look up will only look at the low 5 bits of&n; * the id.  Since you will want to keep this id in the structure anyway&n; * (if for no other reason than to be able to eliminate the id when the&n; * structure is found in some other way) this seems reasonable.  If you&n; * really think otherwise, the code to check these bits here, it is just&n; * disabled with a #if 0.&n;&n;&n; * So here are the complete details:&n;&n; *  include &lt;linux/idr.h&gt;&n;&n; * void idr_init(struct idr *idp)&n;&n; *   This function is use to set up the handle (idp) that you will pass&n; *   to the rest of the functions.  The structure is defined in the&n; *   header.&n;&n; * int idr_pre_get(struct idr *idp, unsigned gfp_mask)&n;&n; *   This function should be called prior to locking and calling the&n; *   following function.  It pre allocates enough memory to satisfy the&n; *   worst possible allocation.  Unless gfp_mask is GFP_ATOMIC, it can&n; *   sleep, so must not be called with any spinlocks held.  If the system is&n; *   REALLY out of memory this function returns 0, other wise 1.&n;&n; * int idr_get_new(struct idr *idp, void *ptr);&n; &n; *   This is the allocate id function.  It should be called with any&n; *   required locks.  In fact, in the SMP case, you MUST lock prior to&n; *   calling this function to avoid possible out of memory problems.  If&n; *   memory is required, it will return a -1, in which case you should&n; *   unlock and go back to the idr_pre_get() call.  ptr is the pointer&n; *   you want associated with the id.  In other words:&n;&n; * void *idr_find(struct idr *idp, int id);&n; &n; *   returns the &quot;ptr&quot;, given the id.  A NULL return indicates that the&n; *   id is not valid (or you passed NULL in the idr_get_new(), shame on&n; *   you).  This function must be called with a spinlock that prevents&n; *   calling either idr_get_new() or idr_remove() or idr_find() while it&n; *   is working.&n;&n; * void idr_remove(struct idr *idp, int id);&n;&n; *   removes the given id, freeing that slot and any memory that may&n; *   now be unused.  See idr_find() for locking restrictions.&n;&n; */
+multiline_comment|/*&n; * linux/kernel/id.c&n; *&n; * 2002-10-18  written by Jim Houston jim.houston@ccur.com&n; *&t;Copyright (C) 2002 by Concurrent Computer Corporation&n; *&t;Distributed under the GNU GPL license version 2.&n; *&n; * Small id to pointer translation service.  &n; *&n; * It uses a radix tree like structure as a sparse array indexed &n; * by the id to obtain the pointer.  The bitmap makes allocating&n; * a new id quick.  &n;&n; * Modified by George Anzinger to reuse immediately and to use&n; * find bit instructions.  Also removed _irq on spinlocks.&n;&n; * So here is what this bit of code does:&n;&n; * You call it to allocate an id (an int) an associate with that id a&n; * pointer or what ever, we treat it as a (void *).  You can pass this&n; * id to a user for him to pass back at a later time.  You then pass&n; * that id to this code and it returns your pointer.&n;&n; * You can release ids at any time. When all ids are released, most of &n; * the memory is returned (we keep IDR_FREE_MAX) in a local pool so we&n; * don&squot;t need to go to the memory &quot;store&quot; during an id allocate, just &n; * so you don&squot;t need to be too concerned about locking and conflicts&n; * with the slab allocator.&n;&n; * A word on reuse.  We reuse empty id slots as soon as we can, always&n; * using the lowest one available.  But we also merge a counter in the&n; * high bits of the id.  The counter is RESERVED_ID_BITS (8 at this time)&n; * long.  This means that if you allocate and release the same id in a &n; * loop we will reuse an id after about 256 times around the loop.  The&n; * word about is used here as we will NOT return a valid id of -1 so if&n; * you loop on the largest possible id (and that is 24 bits, wow!) we&n; * will kick the counter to avoid -1.  (Paranoid?  You bet!)&n; *&n; * What you need to do is, since we don&squot;t keep the counter as part of&n; * id / ptr pair, to keep a copy of it in the pointed to structure&n; * (or else where) so that when you ask for a ptr you can varify that&n; * the returned ptr is correct by comparing the id it contains with the one&n; * you asked for.  In other words, we only did half the reuse protection.&n; * Since the code depends on your code doing this check, we ignore high&n; * order bits in the id, not just the count, but bits that would, if used,&n; * index outside of the allocated ids.  In other words, if the largest id&n; * currently allocated is 32 a look up will only look at the low 5 bits of&n; * the id.  Since you will want to keep this id in the structure anyway&n; * (if for no other reason than to be able to eliminate the id when the&n; * structure is found in some other way) this seems reasonable.  If you&n; * really think otherwise, the code to check these bits here, it is just&n; * disabled with a #if 0.&n;&n;&n; * So here are the complete details:&n;&n; *  include &lt;linux/idr.h&gt;&n;&n; * void idr_init(struct idr *idp)&n;&n; *   This function is use to set up the handle (idp) that you will pass&n; *   to the rest of the functions.  The structure is defined in the&n; *   header.&n;&n; * int idr_pre_get(struct idr *idp, unsigned gfp_mask)&n;&n; *   This function should be called prior to locking and calling the&n; *   following function.  It pre allocates enough memory to satisfy the&n; *   worst possible allocation.  Unless gfp_mask is GFP_ATOMIC, it can&n; *   sleep, so must not be called with any spinlocks held.  If the system is&n; *   REALLY out of memory this function returns 0, other wise 1.&n;&n; * int idr_get_new(struct idr *idp, void *ptr, int *id);&n; &n; *   This is the allocate id function.  It should be called with any&n; *   required locks.  In fact, in the SMP case, you MUST lock prior to&n; *   calling this function to avoid possible out of memory problems.&n; *   If memory is required, it will return -EAGAIN, you should unlock&n; *   and go back to the idr_pre_get() call.  If the idr is full, it&n; *   will return a -ENOSPC.  ptr is the pointer you want associated&n; *   with the id.  The value is returned in the &quot;id&quot; field.&n;&n; * void *idr_find(struct idr *idp, int id);&n; &n; *   returns the &quot;ptr&quot;, given the id.  A NULL return indicates that the&n; *   id is not valid (or you passed NULL in the idr_get_new(), shame on&n; *   you).  This function must be called with a spinlock that prevents&n; *   calling either idr_get_new() or idr_remove() or idr_find() while it&n; *   is working.&n;&n; * void idr_remove(struct idr *idp, int id);&n;&n; *   removes the given id, freeing that slot and any memory that may&n; *   now be unused.  See idr_find() for locking restrictions.&n;&n; * int idr_full(struct idr *idp);&n;&n; *   Returns true if the idr is full and false if not.&n;&n; */
 macro_line|#ifndef TEST                        
 singleline_comment|// to test in user space...
 macro_line|#include &lt;linux/slab.h&gt;
@@ -865,6 +865,34 @@ c_func
 id|idr_get_new_above
 )paren
 suffix:semicolon
+DECL|function|idr_full
+r_static
+r_int
+id|idr_full
+c_func
+(paren
+r_struct
+id|idr
+op_star
+id|idp
+)paren
+(brace
+r_return
+(paren
+(paren
+id|idp-&gt;layers
+op_ge
+id|MAX_LEVEL
+)paren
+op_logical_and
+(paren
+id|idp-&gt;top-&gt;bitmap
+op_eq
+id|TOP_LEVEL_FULL
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|function|idr_get_new
 r_int
 id|idr_get_new
@@ -878,9 +906,17 @@ comma
 r_void
 op_star
 id|ptr
+comma
+r_int
+op_star
+id|id
 )paren
 (brace
-r_return
+r_int
+id|rv
+suffix:semicolon
+id|rv
+op_assign
 id|idr_get_new_above
 c_func
 (paren
@@ -890,6 +926,43 @@ id|ptr
 comma
 l_int|0
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * This is a cheap hack until the IDR code can be fixed to&n;&t; * return proper error values.&n;&t; */
+r_if
+c_cond
+(paren
+id|rv
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|idr_full
+c_func
+(paren
+id|idp
+)paren
+)paren
+r_return
+op_minus
+id|ENOSPC
+suffix:semicolon
+r_else
+r_return
+op_minus
+id|EAGAIN
+suffix:semicolon
+)brace
+op_star
+id|id
+op_assign
+id|rv
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|idr_get_new
@@ -1116,6 +1189,11 @@ id|idr_layer
 op_star
 id|p
 suffix:semicolon
+multiline_comment|/* Mask off upper bits we don&squot;t use for the search. */
+id|id
+op_and_assign
+id|MAX_ID_MASK
+suffix:semicolon
 id|sub_remove
 c_func
 (paren
@@ -1282,6 +1360,11 @@ r_return
 l_int|NULL
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Mask off upper bits we don&squot;t use for the search. */
+id|id
+op_and_assign
+id|MAX_ID_MASK
+suffix:semicolon
 r_while
 c_loop
 (paren
