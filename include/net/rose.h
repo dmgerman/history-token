@@ -615,8 +615,8 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|rose_init
+r_void
+id|rose_setup
 c_func
 (paren
 r_struct
