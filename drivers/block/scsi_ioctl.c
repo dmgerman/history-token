@@ -47,6 +47,7 @@ DECL|macro|SCSI_SENSE_BUFFERSIZE
 mdefine_line|#define SCSI_SENSE_BUFFERSIZE 64
 macro_line|#endif
 DECL|function|blk_do_rq
+r_static
 r_int
 id|blk_do_rq
 c_func
@@ -1433,6 +1434,9 @@ id|opcode
 )paren
 (brace
 r_case
+id|SEND_DIAGNOSTIC
+suffix:colon
+r_case
 id|FORMAT_UNIT
 suffix:colon
 id|rq-&gt;timeout
@@ -1528,8 +1532,6 @@ id|rq-&gt;flags
 op_or_assign
 id|REQ_RW
 suffix:semicolon
-id|err
-op_assign
 id|blk_do_rq
 c_func
 (paren
@@ -1540,6 +1542,13 @@ comma
 id|rq
 )paren
 suffix:semicolon
+id|err
+op_assign
+id|rq-&gt;errors
+op_amp
+l_int|0xff
+suffix:semicolon
+multiline_comment|/* only 8 bit SCSI status */
 r_if
 c_cond
 (paren
