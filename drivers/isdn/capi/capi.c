@@ -27,6 +27,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/capi.h&gt;
 macro_line|#include &lt;linux/kernelcapi.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/isdn/capiutil.h&gt;
 macro_line|#include &lt;linux/isdn/capicmd.h&gt;
@@ -66,6 +67,13 @@ macro_line|#undef _DEBUG_TTYFUNCS&t;&t;/* call to tty_driver */
 DECL|macro|_DEBUG_DATAFLOW
 macro_line|#undef _DEBUG_DATAFLOW&t;&t;/* data flow */
 multiline_comment|/* -------- driver information -------------------------------------- */
+DECL|variable|capi_class
+r_static
+r_struct
+id|class_simple
+op_star
+id|capi_class
+suffix:semicolon
 DECL|variable|capi_major
 r_int
 id|capi_major
@@ -6924,6 +6932,60 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+id|capi_class
+op_assign
+id|class_simple_create
+c_func
+(paren
+id|THIS_MODULE
+comma
+l_string|&quot;capi&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|capi_class
+)paren
+)paren
+(brace
+id|unregister_chrdev
+c_func
+(paren
+id|capi_major
+comma
+l_string|&quot;capi20&quot;
+)paren
+suffix:semicolon
+r_return
+id|PTR_ERR
+c_func
+(paren
+id|capi_class
+)paren
+suffix:semicolon
+)brace
+id|class_simple_device_add
+c_func
+(paren
+id|capi_class
+comma
+id|MKDEV
+c_func
+(paren
+id|capi_major
+comma
+l_int|0
+)paren
+comma
+l_int|NULL
+comma
+l_string|&quot;capi20&quot;
+)paren
+suffix:semicolon
 id|devfs_mk_cdev
 c_func
 (paren
@@ -6956,6 +7018,24 @@ OL
 l_int|0
 )paren
 (brace
+id|class_simple_device_remove
+c_func
+(paren
+id|MKDEV
+c_func
+(paren
+id|capi_major
+comma
+l_int|0
+)paren
+)paren
+suffix:semicolon
+id|class_simple_destroy
+c_func
+(paren
+id|capi_class
+)paren
+suffix:semicolon
 id|unregister_chrdev
 c_func
 (paren
@@ -7023,6 +7103,24 @@ r_void
 id|proc_exit
 c_func
 (paren
+)paren
+suffix:semicolon
+id|class_simple_device_remove
+c_func
+(paren
+id|MKDEV
+c_func
+(paren
+id|capi_major
+comma
+l_int|0
+)paren
+)paren
+suffix:semicolon
+id|class_simple_destroy
+c_func
+(paren
+id|capi_class
 )paren
 suffix:semicolon
 id|unregister_chrdev
