@@ -1807,6 +1807,11 @@ DECL|enumerator|NET_IPV6_ROUTE_MIN_ADVMSS
 id|NET_IPV6_ROUTE_MIN_ADVMSS
 op_assign
 l_int|9
+comma
+DECL|enumerator|NET_IPV6_ROUTE_GC_MIN_INTERVAL_MS
+id|NET_IPV6_ROUTE_GC_MIN_INTERVAL_MS
+op_assign
+l_int|10
 )brace
 suffix:semicolon
 r_enum
