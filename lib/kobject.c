@@ -440,11 +440,10 @@ DECL|macro|BUFFER_SIZE
 mdefine_line|#define BUFFER_SIZE&t;1024&t;/* should be enough memory for the env */
 DECL|macro|NUM_ENVP
 mdefine_line|#define NUM_ENVP&t;32&t;/* number of env pointers */
-DECL|variable|sequence_num
-r_static
+DECL|variable|hotplug_seqnum
 r_int
 r_int
-id|sequence_num
+id|hotplug_seqnum
 suffix:semicolon
 DECL|variable|sequence_lock
 r_static
@@ -724,7 +723,7 @@ id|sequence_lock
 suffix:semicolon
 id|seq
 op_assign
-id|sequence_num
+id|hotplug_seqnum
 op_increment
 suffix:semicolon
 id|spin_unlock
