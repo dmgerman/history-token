@@ -4473,33 +4473,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* keep others from killing us */
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|current-&gt;sig-&gt;siglock
-)paren
-suffix:semicolon
-id|sigemptyset
-c_func
-(paren
-op_amp
-id|current-&gt;blocked
-)paren
-suffix:semicolon
-id|recalc_sigpending
-c_func
-(paren
-)paren
-suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|current-&gt;sig-&gt;siglock
-)paren
-suffix:semicolon
 multiline_comment|/* Setup a nice name */
 id|strcpy
 c_func
