@@ -6271,6 +6271,10 @@ id|bootable
 suffix:colon
 id|ON_BOARD
 comma
+id|flags
+suffix:colon
+id|ATA_F_SIMPLEX
+comma
 )brace
 comma
 (brace

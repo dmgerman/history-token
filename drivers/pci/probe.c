@@ -26,11 +26,6 @@ c_func
 id|pci_devices
 )paren
 suffix:semicolon
-r_extern
-r_struct
-id|device_driver
-id|pci_device_driver
-suffix:semicolon
 multiline_comment|/*&n; * Translate the low bits of the PCI base&n; * to the resource type&n; */
 DECL|function|pci_calc_resource_flags
 r_static
@@ -2487,11 +2482,6 @@ suffix:semicolon
 id|dev0.dev.parent
 op_assign
 id|bus-&gt;dev
-suffix:semicolon
-id|dev0.dev.driver
-op_assign
-op_amp
-id|pci_device_driver
 suffix:semicolon
 id|dev0.dev.bus
 op_assign

@@ -906,12 +906,6 @@ id|de
 op_assign
 l_int|NULL
 suffix:semicolon
-r_static
-r_int
-id|first_time
-op_assign
-l_int|1
-suffix:semicolon
 r_int
 r_int
 id|first_sector
@@ -929,22 +923,6 @@ l_int|64
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|first_time
-)paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Partition check:&bslash;n&quot;
-)paren
-suffix:semicolon
-id|first_time
-op_assign
-l_int|0
 suffix:semicolon
 id|first_sector
 op_assign

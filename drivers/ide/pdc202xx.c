@@ -21,15 +21,6 @@ DECL|macro|PDC202XX_DEBUG_DRIVE_INFO
 mdefine_line|#define PDC202XX_DEBUG_DRIVE_INFO&t;&t;0
 DECL|macro|PDC202XX_DECODE_REGISTER_INFO
 mdefine_line|#define PDC202XX_DECODE_REGISTER_INFO&t;&t;0
-r_extern
-r_char
-op_star
-id|ide_xfer_verbose
-(paren
-id|byte
-id|xfer_rate
-)paren
-suffix:semicolon
 multiline_comment|/* A Register */
 DECL|macro|SYNC_ERRDY_EN
 mdefine_line|#define&t;SYNC_ERRDY_EN&t;0xC0
@@ -1266,15 +1257,11 @@ macro_line|#if PDC202XX_DEBUG_DRIVE_INFO
 id|printk
 c_func
 (paren
-l_string|&quot;%s: %s drive%d 0x%08x &quot;
+l_string|&quot;%s: %02x drive%d 0x%08x &quot;
 comma
 id|drive-&gt;name
 comma
-id|ide_xfer_verbose
-c_func
-(paren
 id|speed
-)paren
 comma
 id|drive-&gt;dn
 comma
@@ -1300,7 +1287,7 @@ comma
 id|drive_conf
 )paren
 suffix:semicolon
-macro_line|#endif /* PDC202XX_DEBUG_DRIVE_INFO */
+macro_line|#endif
 r_return
 id|ide_config_drive_speed
 c_func

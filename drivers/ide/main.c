@@ -657,117 +657,6 @@ id|ide_fops
 (braket
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * This is called exactly *once* for each channel.&n; */
-DECL|function|ide_geninit
-r_void
-id|ide_geninit
-c_func
-(paren
-r_struct
-id|ata_channel
-op_star
-id|ch
-)paren
-(brace
-r_int
-r_int
-id|unit
-suffix:semicolon
-r_struct
-id|gendisk
-op_star
-id|gd
-op_assign
-id|ch-&gt;gd
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|unit
-op_assign
-l_int|0
-suffix:semicolon
-id|unit
-OL
-id|MAX_DRIVES
-suffix:semicolon
-op_increment
-id|unit
-)paren
-(brace
-r_struct
-id|ata_device
-op_star
-id|drive
-op_assign
-op_amp
-id|ch-&gt;drives
-(braket
-id|unit
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|drive-&gt;present
-)paren
-r_continue
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|drive-&gt;type
-op_ne
-id|ATA_DISK
-op_logical_and
-id|drive-&gt;type
-op_ne
-id|ATA_FLOPPY
-)paren
-r_continue
-suffix:semicolon
-id|register_disk
-c_func
-(paren
-id|gd
-comma
-id|mk_kdev
-c_func
-(paren
-id|ch-&gt;major
-comma
-id|unit
-op_lshift
-id|PARTN_BITS
-)paren
-comma
-macro_line|#ifdef CONFIG_BLK_DEV_ISAPNP
-(paren
-id|drive-&gt;forced_geom
-op_logical_and
-id|drive-&gt;noprobe
-)paren
-ques
-c_cond
-l_int|1
-suffix:colon
-macro_line|#endif
-l_int|1
-op_lshift
-id|PARTN_BITS
-comma
-id|ide_fops
-comma
-id|ata_capacity
-c_func
-(paren
-id|drive
-)paren
-)paren
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/*&n; * Returns the (struct ata_device *) for a given device number.  Return&n; * NULL if the given device number does not match any present drives.&n; */
 DECL|function|get_info_ptr
 r_struct
@@ -1009,7 +898,7 @@ id|drive
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* this is a no-op for tapes and SCSI based access */
+multiline_comment|/* This is expected to be a no-op for tapes and SCSI&n;&t;&t;&t; * based access.&n;&t;&t;&t; */
 id|ata_ops
 c_func
 (paren
@@ -1220,6 +1109,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Release the data associated with a channel.&n; */
 DECL|function|ide_unregister
 r_void
 id|ide_unregister
@@ -2268,7 +2158,7 @@ r_return
 id|tmp
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Register an IDE interface, specifing exactly the registers etc&n; * Set init=1 iff calling before probes have taken place.&n; */
+multiline_comment|/*&n; * Register an IDE interface, specifing exactly the registers etc&n; * Set initializing=1 iff calling before probes have taken place.&n; */
 DECL|function|ide_register_hw
 r_int
 id|ide_register_hw
@@ -2944,7 +2834,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This gets called VERY EARLY during initialization, to handle kernel &quot;command&n; * line&quot; strings beginning with &quot;hdx=&quot; or &quot;ide&quot;.It gets called even before the&n; * actual module gets initialized.&n; *&n; * Here is the complete set currently supported comand line options:&n; *&n; * &quot;hdx=&quot;  is recognized for all &quot;x&quot; from &quot;a&quot; to &quot;h&quot;, such as &quot;hdc&quot;.&n; * &quot;idex=&quot; is recognized for all &quot;x&quot; from &quot;0&quot; to &quot;3&quot;, such as &quot;ide1&quot;.&n; *&n; * &quot;hdx=noprobe&quot;&t;: drive may be present, but do not probe for it&n; * &quot;hdx=none&quot;&t;&t;: drive is NOT present, ignore cmos and do not probe&n; * &quot;hdx=nowerr&quot;&t;&t;: ignore the WRERR_STAT bit on this drive&n; * &quot;hdx=cdrom&quot;&t;&t;: drive is present, and is a cdrom drive&n; * &quot;hdx=cyl,head,sect&quot;&t;: disk drive is present, with specified geometry&n; * &quot;hdx=noremap&quot;&t;: do not remap 0-&gt;1 even though EZD was detected&n; * &quot;hdx=autotune&quot;&t;: driver will attempt to tune interface speed&n; *&t;&t;&t;&t;to the fastest PIO mode supported,&n; *&t;&t;&t;&t;if possible for this drive only.&n; *&t;&t;&t;&t;Not fully supported by all chipset types,&n; *&t;&t;&t;&t;and quite likely to cause trouble with&n; *&t;&t;&t;&t;older/odd IDE drives.&n; *&n; * &quot;hdx=slow&quot;&t;&t;: insert a huge pause after each access to the data&n; *&t;&t;&t;&t;port. Should be used only as a last resort.&n; *&n; * &quot;hdxlun=xx&quot;          : set the drive last logical unit.&n; * &quot;hdx=flash&quot;&t;&t;: allows for more than one ata_flash disk to be&n; *&t;&t;&t;&t;registered. In most cases, only one device&n; *&t;&t;&t;&t;will be present.&n; * &quot;hdx=ide-scsi&quot;&t;: the return of the ide-scsi flag, this is useful for&n; *&t;&t;&t;&t;allowwing ide-floppy, ide-tape, and ide-cdrom|writers&n; *&t;&t;&t;&t;to use ide-scsi emulation on a device specific option.&n; * &quot;idebus=xx&quot;&t;&t;: inform IDE driver of VESA/PCI bus speed in MHz,&n; *&t;&t;&t;&t;where &quot;xx&quot; is between 20 and 66 inclusive,&n; *&t;&t;&t;&t;used when tuning chipset PIO modes.&n; *&t;&t;&t;&t;For PCI bus, 25 is correct for a P75 system,&n; *&t;&t;&t;&t;30 is correct for P90,P120,P180 systems,&n; *&t;&t;&t;&t;and 33 is used for P100,P133,P166 systems.&n; *&t;&t;&t;&t;If in doubt, use idebus=33 for PCI.&n; *&t;&t;&t;&t;As for VLB, it is safest to not specify it.&n; *&n; * &quot;idex=noprobe&quot;&t;: do not attempt to access/use this interface&n; * &quot;idex=base&quot;&t;&t;: probe for an interface at the address specified,&n; *&t;&t;&t;&t;where &quot;base&quot; is usually 0x1f0 or 0x170&n; *&t;&t;&t;&t;and &quot;ctl&quot; is assumed to be &quot;base&quot;+0x206&n; * &quot;idex=base,ctl&quot;&t;: specify both base and ctl&n; * &quot;idex=base,ctl,irq&quot;&t;: specify base, ctl, and irq number&n; * &quot;idex=autotune&quot;&t;: driver will attempt to tune interface speed&n; *&t;&t;&t;&t;to the fastest PIO mode supported,&n; *&t;&t;&t;&t;for all drives on this interface.&n; *&t;&t;&t;&t;Not fully supported by all chipset types,&n; *&t;&t;&t;&t;and quite likely to cause trouble with&n; *&t;&t;&t;&t;older/odd IDE drives.&n; * &quot;idex=noautotune&quot;&t;: driver will NOT attempt to tune interface speed&n; *&t;&t;&t;&t;This is the default for most chipsets,&n; *&t;&t;&t;&t;except the cmd640.&n; * &quot;idex=serialize&quot;&t;: do not overlap operations on idex and ide(x^1)&n; * &quot;idex=four&quot;&t;&t;: four drives on idex and ide(x^1) share same ports&n; * &quot;idex=reset&quot;&t;&t;: reset interface before first use&n; * &quot;idex=dma&quot;&t;&t;: enable DMA by default on both drives if possible&n; * &quot;idex=ata66&quot;&t;&t;: informs the interface that it has an 80c cable&n; *&t;&t;&t;&t;for chipsets that are ATA-66 capable, but&n; *&t;&t;&t;&t;the ablity to bit test for detection is&n; *&t;&t;&t;&t;currently unknown.&n; * &quot;ide=reverse&quot;&t;: Formerly called to pci sub-system, but now local.&n; *&n; * The following are valid ONLY on ide0, (except dc4030)&n; * and the defaults for the base,ctl ports must not be altered.&n; *&n; * &quot;ide0=dtc2278&quot;&t;: probe/support DTC2278 interface&n; * &quot;ide0=ht6560b&quot;&t;: probe/support HT6560B interface&n; * &quot;ide0=cmd640_vlb&quot;&t;: *REQUIRED* for VLB cards with the CMD640 chip&n; *&t;&t;&t;  (not for PCI -- automatically detected)&n; * &quot;ide0=qd65xx&quot;&t;: probe/support qd65xx interface&n; * &quot;ide0=ali14xx&quot;&t;: probe/support ali14xx chipsets (ALI M1439, M1443, M1445)&n; * &quot;ide0=umc8672&quot;&t;: probe/support umc8672 chipsets&n; * &quot;idex=dc4030&quot;&t;: probe/support Promise DC4030VL interface&n; * &quot;ide=doubler&quot;&t;: probe/support IDE doublers on Amiga&n; */
+multiline_comment|/*&n; * This gets called VERY EARLY during initialization, to handle kernel &quot;command&n; * line&quot; strings beginning with &quot;hdx=&quot; or &quot;ide&quot;.It gets called even before the&n; * actual module gets initialized.&n; *&n; * Please look at Documentation/ide.txt to see the complete list of supported&n; * options.&n; */
 DECL|function|ide_setup
 r_int
 id|__init
@@ -4112,7 +4002,7 @@ r_case
 op_minus
 l_int|5
 suffix:colon
-multiline_comment|/* &quot;reset&quot; */
+multiline_comment|/* reset */
 id|ch-&gt;reset
 op_assign
 l_int|1
@@ -4124,7 +4014,7 @@ r_case
 op_minus
 l_int|4
 suffix:colon
-multiline_comment|/* &quot;noautotune&quot; */
+multiline_comment|/* noautotune */
 id|ch-&gt;drives
 (braket
 l_int|0
@@ -4150,7 +4040,7 @@ r_case
 op_minus
 l_int|3
 suffix:colon
-multiline_comment|/* &quot;autotune&quot; */
+multiline_comment|/* autotune */
 id|ch-&gt;drives
 (braket
 l_int|0
@@ -4390,19 +4280,16 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+multiline_comment|/* FIXME: The locking here doesn&squot;t make the slightest sense! */
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|ide_lock
+comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* all CPUs */
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
 r_if
 c_cond
 (paren
@@ -4418,30 +4305,34 @@ op_logical_or
 id|drive-&gt;usage
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|ide_lock
+comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* all CPUs */
 r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: This will be pushed to the drivers! Thus allowing us to&n;&t; * save one parameter here separate this out.&n;&t; */
+multiline_comment|/* FIXME: This will be pushed to the drivers! Thus allowing us to&n;&t; * save one parameter here and to separate this out.&n;&t; */
 id|drive-&gt;driver
 op_assign
 id|driver
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|ide_lock
+comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* all CPUs */
-multiline_comment|/* FIXME: Check what this magic number is supposed to be about? */
+multiline_comment|/* Default autotune or requested autotune */
 r_if
 c_cond
 (paren
@@ -5223,9 +5114,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|h
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -5238,10 +5126,11 @@ suffix:semicolon
 id|ide_devfs_handle
 op_assign
 id|devfs_mk_dir
+c_func
 (paren
 l_int|NULL
 comma
-l_string|&quot;ide&quot;
+l_string|&quot;ata&quot;
 comma
 l_int|NULL
 )paren
@@ -5747,44 +5636,6 @@ id|initializing
 op_assign
 l_int|0
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|h
-op_assign
-l_int|0
-suffix:semicolon
-id|h
-OL
-id|MAX_HWIFS
-suffix:semicolon
-op_increment
-id|h
-)paren
-(brace
-r_struct
-id|ata_channel
-op_star
-id|channel
-op_assign
-op_amp
-id|ide_hwifs
-(braket
-id|h
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|channel-&gt;present
-)paren
-id|ide_geninit
-c_func
-(paren
-id|channel
-)paren
-suffix:semicolon
-)brace
 id|register_reboot_notifier
 c_func
 (paren

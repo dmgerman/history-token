@@ -4365,13 +4365,11 @@ comma
 id|sbi-&gt;nls_disk-&gt;charset
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: utf8 is using iocharset for upper/lower conversion */
 r_if
 c_cond
 (paren
 id|sbi-&gt;options.isvfat
-op_logical_and
-op_logical_neg
-id|sbi-&gt;options.utf8
 )paren
 (brace
 r_if

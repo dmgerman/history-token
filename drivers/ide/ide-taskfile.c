@@ -3743,12 +3743,6 @@ comma
 id|pio
 )paren
 suffix:semicolon
-id|ide_driveid_update
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
 )brace
 m_abort
 suffix:colon
