@@ -5745,17 +5745,19 @@ comma
 id|pfindData-&gt;EndOfFile
 )paren
 suffix:semicolon
+multiline_comment|/* 512 bytes (2**9) is the fake blocksize that must be used */
+multiline_comment|/* for this calculation, even though the reported blocksize is larger */
 id|tmp_inode-&gt;i_blocks
 op_assign
 (paren
-id|tmp_inode-&gt;i_blksize
+l_int|512
 op_minus
 l_int|1
 op_plus
 id|pfindData-&gt;AllocationSize
 )paren
 op_rshift
-id|tmp_inode-&gt;i_blkbits
+l_int|9
 suffix:semicolon
 r_if
 c_cond
@@ -6186,17 +6188,19 @@ comma
 id|pfindData-&gt;EndOfFile
 )paren
 suffix:semicolon
+multiline_comment|/* 512 bytes (2**9) is the fake blocksize that must be used */
+multiline_comment|/* for this calculation, not the real blocksize */
 id|tmp_inode-&gt;i_blocks
 op_assign
 (paren
-id|tmp_inode-&gt;i_blksize
+l_int|512
 op_minus
 l_int|1
 op_plus
 id|pfindData-&gt;NumOfBytes
 )paren
 op_rshift
-id|tmp_inode-&gt;i_blkbits
+l_int|9
 suffix:semicolon
 r_if
 c_cond
