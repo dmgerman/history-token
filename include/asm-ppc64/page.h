@@ -458,10 +458,17 @@ DECL|macro|__a2p
 mdefine_line|#define __a2p(x) ((void *) absolute_to_phys(x))
 DECL|macro|__a2v
 mdefine_line|#define __a2v(x) ((void *) __va(absolute_to_phys(x)))
+macro_line|#ifdef CONFIG_DISCONTIGMEM
+DECL|macro|page_to_pfn
+mdefine_line|#define page_to_pfn(page) &bslash;&n;&t;&t;((page) - page_zone(page)-&gt;zone_mem_map + &bslash;&n;&t;&t;(page_zone(page)-&gt;zone_start_paddr &gt;&gt; PAGE_SHIFT))
+DECL|macro|pfn_to_page
+mdefine_line|#define pfn_to_page(pfn)&t;discontigmem_pfn_to_page(pfn)
+macro_line|#else
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + (pfn))
 DECL|macro|page_to_pfn
-mdefine_line|#define page_to_pfn(pfn)&t;((unsigned long)((pfn) - mem_map))
+mdefine_line|#define page_to_pfn(page)&t;((unsigned long)((page) - mem_map))
+macro_line|#endif
 DECL|macro|virt_to_page
 mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|pfn_valid
