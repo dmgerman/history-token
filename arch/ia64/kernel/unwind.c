@@ -29,8 +29,6 @@ DECL|macro|UNW_HASH_SIZE
 mdefine_line|#define UNW_HASH_SIZE&t;&t;(1 &lt;&lt; UNW_LOG_HASH_SIZE)
 DECL|macro|UNW_STATS
 mdefine_line|#define UNW_STATS&t;0&t;/* WARNING: this disabled interrupts for long time-spans!! */
-DECL|macro|UNW_DEBUG
-mdefine_line|#define UNW_DEBUG&t;0
 macro_line|#ifdef UNW_DEBUG
 DECL|variable|unw_debug_level
 r_static
