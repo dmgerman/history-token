@@ -1440,13 +1440,6 @@ c_func
 l_int|10
 )paren
 suffix:semicolon
-multiline_comment|/* Issue a global reset to the MAC.  This will reset the chip&squot;s&n;     * transmit, receive, DMA, and link units.  It will not effect&n;     * the current PCI configuration.  The global reset bit is self-&n;     * clearing, and should clear within a microsecond.&n;     */
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;Issuing a global reset to MAC&bslash;n&quot;
-)paren
-suffix:semicolon
 id|ctrl
 op_assign
 id|E1000_READ_REG
@@ -1495,6 +1488,13 @@ l_int|5
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Issue a global reset to the MAC.  This will reset the chip&squot;s&n;     * transmit, receive, DMA, and link units.  It will not effect&n;     * the current PCI configuration.  The global reset bit is self-&n;     * clearing, and should clear within a microsecond.&n;     */
+id|DEBUGOUT
+c_func
+(paren
+l_string|&quot;Issuing a global reset to MAC&bslash;n&quot;
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -15829,11 +15829,7 @@ r_else
 r_if
 c_cond
 (paren
-(paren
 id|hw-&gt;in_ifs_mode
-op_eq
-id|TRUE
-)paren
 op_logical_and
 (paren
 id|hw-&gt;tx_packet_delta

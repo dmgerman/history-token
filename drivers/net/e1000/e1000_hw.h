@@ -1517,7 +1517,7 @@ mdefine_line|#define POLL_IMS_ENABLE_MASK ( &bslash;&n;    E1000_IMS_RXDMT0 |   
 multiline_comment|/* This defines the bits that are set in the Interrupt Mask&n; * Set/Read Register.  Each bit is documented below:&n; *   o RXT0   = Receiver Timer Interrupt (ring 0)&n; *   o TXDW   = Transmit Descriptor Written Back&n; *   o RXDMT0 = Receive Descriptor Minimum Threshold hit (ring 0)&n; *   o RXSEQ  = Receive Sequence Error&n; *   o LSC    = Link Status Change&n; */
 DECL|macro|IMS_ENABLE_MASK
 mdefine_line|#define IMS_ENABLE_MASK ( &bslash;&n;    E1000_IMS_RXT0   |    &bslash;&n;    E1000_IMS_TXDW   |    &bslash;&n;    E1000_IMS_RXDMT0 |    &bslash;&n;    E1000_IMS_RXSEQ  |    &bslash;&n;    E1000_IMS_LSC)
-multiline_comment|/* The number of high/low register pairs in the RAR. The RAR (Receive Address&n; * Registers) holds the directed and multicast addresses that we monitor. We&n; * reserve one of these spots for our directed address, allowing us room for&n; * E1000_RAR_ENTRIES - 1 multicast addresses.&n; */
+multiline_comment|/* Number of high/low register pairs in the RAR. The RAR (Receive Address&n; * Registers) holds the directed and multicast addresses that we monitor. We&n; * reserve one of these spots for our directed address, allowing us room for&n; * E1000_RAR_ENTRIES - 1 multicast addresses.&n; */
 DECL|macro|E1000_RAR_ENTRIES
 mdefine_line|#define E1000_RAR_ENTRIES 15
 DECL|macro|MIN_NUMBER_OF_DESCRIPTORS
@@ -1921,7 +1921,7 @@ suffix:semicolon
 multiline_comment|/* receive address high */
 )brace
 suffix:semicolon
-multiline_comment|/* The number of entries in the Multicast Table Array (MTA). */
+multiline_comment|/* Number of entries in the Multicast Table Array (MTA). */
 DECL|macro|E1000_NUM_MTA_REGISTERS
 mdefine_line|#define E1000_NUM_MTA_REGISTERS 128
 multiline_comment|/* IPv4 Address Table Entry */
@@ -3197,7 +3197,7 @@ mdefine_line|#define E1000_EECD_PRES      0x00000100 /* EEPROM Present */
 DECL|macro|E1000_EECD_SIZE
 mdefine_line|#define E1000_EECD_SIZE      0x00000200 /* EEPROM Size (0=64 word 1=256 word) */
 DECL|macro|E1000_EECD_ADDR_BITS
-mdefine_line|#define E1000_EECD_ADDR_BITS 0x00000400 /* EEPROM Addressing bits based on type&n;&t;&t;&t;&t;&t; * (0-small, 1-large) */
+mdefine_line|#define E1000_EECD_ADDR_BITS 0x00000400 /* EEPROM Addressing bits based on type&n;                                         * (0-small, 1-large) */
 DECL|macro|E1000_EECD_TYPE
 mdefine_line|#define E1000_EECD_TYPE      0x00002000 /* EEPROM Type (1-SPI, 0-Microwire) */
 macro_line|#ifndef E1000_EEPROM_GRANT_ATTEMPTS
@@ -3304,37 +3304,37 @@ DECL|macro|E1000_MDIC_ERROR
 mdefine_line|#define E1000_MDIC_ERROR     0x40000000
 multiline_comment|/* LED Control */
 DECL|macro|E1000_LEDCTL_LED0_MODE_MASK
-mdefine_line|#define E1000_LEDCTL_LED0_MODE_MASK  0x0000000F
+mdefine_line|#define E1000_LEDCTL_LED0_MODE_MASK       0x0000000F
 DECL|macro|E1000_LEDCTL_LED0_MODE_SHIFT
-mdefine_line|#define E1000_LEDCTL_LED0_MODE_SHIFT 0
+mdefine_line|#define E1000_LEDCTL_LED0_MODE_SHIFT      0
 DECL|macro|E1000_LEDCTL_LED0_IVRT
-mdefine_line|#define E1000_LEDCTL_LED0_IVRT       0x00000040
+mdefine_line|#define E1000_LEDCTL_LED0_IVRT            0x00000040
 DECL|macro|E1000_LEDCTL_LED0_BLINK
-mdefine_line|#define E1000_LEDCTL_LED0_BLINK      0x00000080
+mdefine_line|#define E1000_LEDCTL_LED0_BLINK           0x00000080
 DECL|macro|E1000_LEDCTL_LED1_MODE_MASK
-mdefine_line|#define E1000_LEDCTL_LED1_MODE_MASK  0x00000F00
+mdefine_line|#define E1000_LEDCTL_LED1_MODE_MASK       0x00000F00
 DECL|macro|E1000_LEDCTL_LED1_MODE_SHIFT
-mdefine_line|#define E1000_LEDCTL_LED1_MODE_SHIFT 8
+mdefine_line|#define E1000_LEDCTL_LED1_MODE_SHIFT      8
 DECL|macro|E1000_LEDCTL_LED1_IVRT
-mdefine_line|#define E1000_LEDCTL_LED1_IVRT       0x00004000
+mdefine_line|#define E1000_LEDCTL_LED1_IVRT            0x00004000
 DECL|macro|E1000_LEDCTL_LED1_BLINK
-mdefine_line|#define E1000_LEDCTL_LED1_BLINK      0x00008000
+mdefine_line|#define E1000_LEDCTL_LED1_BLINK           0x00008000
 DECL|macro|E1000_LEDCTL_LED2_MODE_MASK
-mdefine_line|#define E1000_LEDCTL_LED2_MODE_MASK  0x000F0000
+mdefine_line|#define E1000_LEDCTL_LED2_MODE_MASK       0x000F0000
 DECL|macro|E1000_LEDCTL_LED2_MODE_SHIFT
-mdefine_line|#define E1000_LEDCTL_LED2_MODE_SHIFT 16
+mdefine_line|#define E1000_LEDCTL_LED2_MODE_SHIFT      16
 DECL|macro|E1000_LEDCTL_LED2_IVRT
-mdefine_line|#define E1000_LEDCTL_LED2_IVRT       0x00400000
+mdefine_line|#define E1000_LEDCTL_LED2_IVRT            0x00400000
 DECL|macro|E1000_LEDCTL_LED2_BLINK
-mdefine_line|#define E1000_LEDCTL_LED2_BLINK      0x00800000
+mdefine_line|#define E1000_LEDCTL_LED2_BLINK           0x00800000
 DECL|macro|E1000_LEDCTL_LED3_MODE_MASK
-mdefine_line|#define E1000_LEDCTL_LED3_MODE_MASK  0x0F000000
+mdefine_line|#define E1000_LEDCTL_LED3_MODE_MASK       0x0F000000
 DECL|macro|E1000_LEDCTL_LED3_MODE_SHIFT
-mdefine_line|#define E1000_LEDCTL_LED3_MODE_SHIFT 24
+mdefine_line|#define E1000_LEDCTL_LED3_MODE_SHIFT      24
 DECL|macro|E1000_LEDCTL_LED3_IVRT
-mdefine_line|#define E1000_LEDCTL_LED3_IVRT       0x40000000
+mdefine_line|#define E1000_LEDCTL_LED3_IVRT            0x40000000
 DECL|macro|E1000_LEDCTL_LED3_BLINK
-mdefine_line|#define E1000_LEDCTL_LED3_BLINK      0x80000000
+mdefine_line|#define E1000_LEDCTL_LED3_BLINK           0x80000000
 DECL|macro|E1000_LEDCTL_MODE_LINK_10_1000
 mdefine_line|#define E1000_LEDCTL_MODE_LINK_10_1000  0x0
 DECL|macro|E1000_LEDCTL_MODE_LINK_100_1000
@@ -3372,197 +3372,197 @@ DECL|macro|E1000_RAH_AV
 mdefine_line|#define E1000_RAH_AV  0x80000000        /* Receive descriptor valid */
 multiline_comment|/* Interrupt Cause Read */
 DECL|macro|E1000_ICR_TXDW
-mdefine_line|#define E1000_ICR_TXDW    0x00000001    /* Transmit desc written back */
+mdefine_line|#define E1000_ICR_TXDW          0x00000001 /* Transmit desc written back */
 DECL|macro|E1000_ICR_TXQE
-mdefine_line|#define E1000_ICR_TXQE    0x00000002    /* Transmit Queue empty */
+mdefine_line|#define E1000_ICR_TXQE          0x00000002 /* Transmit Queue empty */
 DECL|macro|E1000_ICR_LSC
-mdefine_line|#define E1000_ICR_LSC     0x00000004    /* Link Status Change */
+mdefine_line|#define E1000_ICR_LSC           0x00000004 /* Link Status Change */
 DECL|macro|E1000_ICR_RXSEQ
-mdefine_line|#define E1000_ICR_RXSEQ   0x00000008    /* rx sequence error */
+mdefine_line|#define E1000_ICR_RXSEQ         0x00000008 /* rx sequence error */
 DECL|macro|E1000_ICR_RXDMT0
-mdefine_line|#define E1000_ICR_RXDMT0  0x00000010    /* rx desc min. threshold (0) */
+mdefine_line|#define E1000_ICR_RXDMT0        0x00000010 /* rx desc min. threshold (0) */
 DECL|macro|E1000_ICR_RXO
-mdefine_line|#define E1000_ICR_RXO     0x00000040    /* rx overrun */
+mdefine_line|#define E1000_ICR_RXO           0x00000040 /* rx overrun */
 DECL|macro|E1000_ICR_RXT0
-mdefine_line|#define E1000_ICR_RXT0    0x00000080    /* rx timer intr (ring 0) */
+mdefine_line|#define E1000_ICR_RXT0          0x00000080 /* rx timer intr (ring 0) */
 DECL|macro|E1000_ICR_MDAC
-mdefine_line|#define E1000_ICR_MDAC    0x00000200    /* MDIO access complete */
+mdefine_line|#define E1000_ICR_MDAC          0x00000200 /* MDIO access complete */
 DECL|macro|E1000_ICR_RXCFG
-mdefine_line|#define E1000_ICR_RXCFG   0x00000400    /* RX /c/ ordered set */
+mdefine_line|#define E1000_ICR_RXCFG         0x00000400 /* RX /c/ ordered set */
 DECL|macro|E1000_ICR_GPI_EN0
-mdefine_line|#define E1000_ICR_GPI_EN0 0x00000800    /* GP Int 0 */
+mdefine_line|#define E1000_ICR_GPI_EN0       0x00000800 /* GP Int 0 */
 DECL|macro|E1000_ICR_GPI_EN1
-mdefine_line|#define E1000_ICR_GPI_EN1 0x00001000    /* GP Int 1 */
+mdefine_line|#define E1000_ICR_GPI_EN1       0x00001000 /* GP Int 1 */
 DECL|macro|E1000_ICR_GPI_EN2
-mdefine_line|#define E1000_ICR_GPI_EN2 0x00002000    /* GP Int 2 */
+mdefine_line|#define E1000_ICR_GPI_EN2       0x00002000 /* GP Int 2 */
 DECL|macro|E1000_ICR_GPI_EN3
-mdefine_line|#define E1000_ICR_GPI_EN3 0x00004000    /* GP Int 3 */
+mdefine_line|#define E1000_ICR_GPI_EN3       0x00004000 /* GP Int 3 */
 DECL|macro|E1000_ICR_TXD_LOW
-mdefine_line|#define E1000_ICR_TXD_LOW 0x00008000
+mdefine_line|#define E1000_ICR_TXD_LOW       0x00008000
 DECL|macro|E1000_ICR_SRPD
-mdefine_line|#define E1000_ICR_SRPD    0x00010000
+mdefine_line|#define E1000_ICR_SRPD          0x00010000
 multiline_comment|/* Interrupt Cause Set */
 DECL|macro|E1000_ICS_TXDW
-mdefine_line|#define E1000_ICS_TXDW    E1000_ICR_TXDW        /* Transmit desc written back */
+mdefine_line|#define E1000_ICS_TXDW      E1000_ICR_TXDW      /* Transmit desc written back */
 DECL|macro|E1000_ICS_TXQE
-mdefine_line|#define E1000_ICS_TXQE    E1000_ICR_TXQE        /* Transmit Queue empty */
+mdefine_line|#define E1000_ICS_TXQE      E1000_ICR_TXQE      /* Transmit Queue empty */
 DECL|macro|E1000_ICS_LSC
-mdefine_line|#define E1000_ICS_LSC     E1000_ICR_LSC         /* Link Status Change */
+mdefine_line|#define E1000_ICS_LSC       E1000_ICR_LSC       /* Link Status Change */
 DECL|macro|E1000_ICS_RXSEQ
-mdefine_line|#define E1000_ICS_RXSEQ   E1000_ICR_RXSEQ       /* rx sequence error */
+mdefine_line|#define E1000_ICS_RXSEQ     E1000_ICR_RXSEQ     /* rx sequence error */
 DECL|macro|E1000_ICS_RXDMT0
-mdefine_line|#define E1000_ICS_RXDMT0  E1000_ICR_RXDMT0      /* rx desc min. threshold */
+mdefine_line|#define E1000_ICS_RXDMT0    E1000_ICR_RXDMT0    /* rx desc min. threshold */
 DECL|macro|E1000_ICS_RXO
-mdefine_line|#define E1000_ICS_RXO     E1000_ICR_RXO         /* rx overrun */
+mdefine_line|#define E1000_ICS_RXO       E1000_ICR_RXO       /* rx overrun */
 DECL|macro|E1000_ICS_RXT0
-mdefine_line|#define E1000_ICS_RXT0    E1000_ICR_RXT0        /* rx timer intr */
+mdefine_line|#define E1000_ICS_RXT0      E1000_ICR_RXT0      /* rx timer intr */
 DECL|macro|E1000_ICS_MDAC
-mdefine_line|#define E1000_ICS_MDAC    E1000_ICR_MDAC        /* MDIO access complete */
+mdefine_line|#define E1000_ICS_MDAC      E1000_ICR_MDAC      /* MDIO access complete */
 DECL|macro|E1000_ICS_RXCFG
-mdefine_line|#define E1000_ICS_RXCFG   E1000_ICR_RXCFG       /* RX /c/ ordered set */
+mdefine_line|#define E1000_ICS_RXCFG     E1000_ICR_RXCFG     /* RX /c/ ordered set */
 DECL|macro|E1000_ICS_GPI_EN0
-mdefine_line|#define E1000_ICS_GPI_EN0 E1000_ICR_GPI_EN0     /* GP Int 0 */
+mdefine_line|#define E1000_ICS_GPI_EN0   E1000_ICR_GPI_EN0   /* GP Int 0 */
 DECL|macro|E1000_ICS_GPI_EN1
-mdefine_line|#define E1000_ICS_GPI_EN1 E1000_ICR_GPI_EN1     /* GP Int 1 */
+mdefine_line|#define E1000_ICS_GPI_EN1   E1000_ICR_GPI_EN1   /* GP Int 1 */
 DECL|macro|E1000_ICS_GPI_EN2
-mdefine_line|#define E1000_ICS_GPI_EN2 E1000_ICR_GPI_EN2     /* GP Int 2 */
+mdefine_line|#define E1000_ICS_GPI_EN2   E1000_ICR_GPI_EN2   /* GP Int 2 */
 DECL|macro|E1000_ICS_GPI_EN3
-mdefine_line|#define E1000_ICS_GPI_EN3 E1000_ICR_GPI_EN3     /* GP Int 3 */
+mdefine_line|#define E1000_ICS_GPI_EN3   E1000_ICR_GPI_EN3   /* GP Int 3 */
 DECL|macro|E1000_ICS_TXD_LOW
-mdefine_line|#define E1000_ICS_TXD_LOW E1000_ICR_TXD_LOW
+mdefine_line|#define E1000_ICS_TXD_LOW   E1000_ICR_TXD_LOW
 DECL|macro|E1000_ICS_SRPD
-mdefine_line|#define E1000_ICS_SRPD    E1000_ICR_SRPD
+mdefine_line|#define E1000_ICS_SRPD      E1000_ICR_SRPD
 multiline_comment|/* Interrupt Mask Set */
 DECL|macro|E1000_IMS_TXDW
-mdefine_line|#define E1000_IMS_TXDW    E1000_ICR_TXDW        /* Transmit desc written back */
+mdefine_line|#define E1000_IMS_TXDW      E1000_ICR_TXDW      /* Transmit desc written back */
 DECL|macro|E1000_IMS_TXQE
-mdefine_line|#define E1000_IMS_TXQE    E1000_ICR_TXQE        /* Transmit Queue empty */
+mdefine_line|#define E1000_IMS_TXQE      E1000_ICR_TXQE      /* Transmit Queue empty */
 DECL|macro|E1000_IMS_LSC
-mdefine_line|#define E1000_IMS_LSC     E1000_ICR_LSC         /* Link Status Change */
+mdefine_line|#define E1000_IMS_LSC       E1000_ICR_LSC       /* Link Status Change */
 DECL|macro|E1000_IMS_RXSEQ
-mdefine_line|#define E1000_IMS_RXSEQ   E1000_ICR_RXSEQ       /* rx sequence error */
+mdefine_line|#define E1000_IMS_RXSEQ     E1000_ICR_RXSEQ     /* rx sequence error */
 DECL|macro|E1000_IMS_RXDMT0
-mdefine_line|#define E1000_IMS_RXDMT0  E1000_ICR_RXDMT0      /* rx desc min. threshold */
+mdefine_line|#define E1000_IMS_RXDMT0    E1000_ICR_RXDMT0    /* rx desc min. threshold */
 DECL|macro|E1000_IMS_RXO
-mdefine_line|#define E1000_IMS_RXO     E1000_ICR_RXO         /* rx overrun */
+mdefine_line|#define E1000_IMS_RXO       E1000_ICR_RXO       /* rx overrun */
 DECL|macro|E1000_IMS_RXT0
-mdefine_line|#define E1000_IMS_RXT0    E1000_ICR_RXT0        /* rx timer intr */
+mdefine_line|#define E1000_IMS_RXT0      E1000_ICR_RXT0      /* rx timer intr */
 DECL|macro|E1000_IMS_MDAC
-mdefine_line|#define E1000_IMS_MDAC    E1000_ICR_MDAC        /* MDIO access complete */
+mdefine_line|#define E1000_IMS_MDAC      E1000_ICR_MDAC      /* MDIO access complete */
 DECL|macro|E1000_IMS_RXCFG
-mdefine_line|#define E1000_IMS_RXCFG   E1000_ICR_RXCFG       /* RX /c/ ordered set */
+mdefine_line|#define E1000_IMS_RXCFG     E1000_ICR_RXCFG     /* RX /c/ ordered set */
 DECL|macro|E1000_IMS_GPI_EN0
-mdefine_line|#define E1000_IMS_GPI_EN0 E1000_ICR_GPI_EN0     /* GP Int 0 */
+mdefine_line|#define E1000_IMS_GPI_EN0   E1000_ICR_GPI_EN0   /* GP Int 0 */
 DECL|macro|E1000_IMS_GPI_EN1
-mdefine_line|#define E1000_IMS_GPI_EN1 E1000_ICR_GPI_EN1     /* GP Int 1 */
+mdefine_line|#define E1000_IMS_GPI_EN1   E1000_ICR_GPI_EN1   /* GP Int 1 */
 DECL|macro|E1000_IMS_GPI_EN2
-mdefine_line|#define E1000_IMS_GPI_EN2 E1000_ICR_GPI_EN2     /* GP Int 2 */
+mdefine_line|#define E1000_IMS_GPI_EN2   E1000_ICR_GPI_EN2   /* GP Int 2 */
 DECL|macro|E1000_IMS_GPI_EN3
-mdefine_line|#define E1000_IMS_GPI_EN3 E1000_ICR_GPI_EN3     /* GP Int 3 */
+mdefine_line|#define E1000_IMS_GPI_EN3   E1000_ICR_GPI_EN3   /* GP Int 3 */
 DECL|macro|E1000_IMS_TXD_LOW
-mdefine_line|#define E1000_IMS_TXD_LOW E1000_ICR_TXD_LOW
+mdefine_line|#define E1000_IMS_TXD_LOW   E1000_ICR_TXD_LOW
 DECL|macro|E1000_IMS_SRPD
-mdefine_line|#define E1000_IMS_SRPD    E1000_ICR_SRPD
+mdefine_line|#define E1000_IMS_SRPD      E1000_ICR_SRPD
 multiline_comment|/* Interrupt Mask Clear */
 DECL|macro|E1000_IMC_TXDW
-mdefine_line|#define E1000_IMC_TXDW    E1000_ICR_TXDW        /* Transmit desc written back */
+mdefine_line|#define E1000_IMC_TXDW      E1000_ICR_TXDW      /* Transmit desc written back */
 DECL|macro|E1000_IMC_TXQE
-mdefine_line|#define E1000_IMC_TXQE    E1000_ICR_TXQE        /* Transmit Queue empty */
+mdefine_line|#define E1000_IMC_TXQE      E1000_ICR_TXQE      /* Transmit Queue empty */
 DECL|macro|E1000_IMC_LSC
-mdefine_line|#define E1000_IMC_LSC     E1000_ICR_LSC         /* Link Status Change */
+mdefine_line|#define E1000_IMC_LSC       E1000_ICR_LSC       /* Link Status Change */
 DECL|macro|E1000_IMC_RXSEQ
-mdefine_line|#define E1000_IMC_RXSEQ   E1000_ICR_RXSEQ       /* rx sequence error */
+mdefine_line|#define E1000_IMC_RXSEQ     E1000_ICR_RXSEQ     /* rx sequence error */
 DECL|macro|E1000_IMC_RXDMT0
-mdefine_line|#define E1000_IMC_RXDMT0  E1000_ICR_RXDMT0      /* rx desc min. threshold */
+mdefine_line|#define E1000_IMC_RXDMT0    E1000_ICR_RXDMT0    /* rx desc min. threshold */
 DECL|macro|E1000_IMC_RXO
-mdefine_line|#define E1000_IMC_RXO     E1000_ICR_RXO         /* rx overrun */
+mdefine_line|#define E1000_IMC_RXO       E1000_ICR_RXO       /* rx overrun */
 DECL|macro|E1000_IMC_RXT0
-mdefine_line|#define E1000_IMC_RXT0    E1000_ICR_RXT0        /* rx timer intr */
+mdefine_line|#define E1000_IMC_RXT0      E1000_ICR_RXT0      /* rx timer intr */
 DECL|macro|E1000_IMC_MDAC
-mdefine_line|#define E1000_IMC_MDAC    E1000_ICR_MDAC        /* MDIO access complete */
+mdefine_line|#define E1000_IMC_MDAC      E1000_ICR_MDAC      /* MDIO access complete */
 DECL|macro|E1000_IMC_RXCFG
-mdefine_line|#define E1000_IMC_RXCFG   E1000_ICR_RXCFG       /* RX /c/ ordered set */
+mdefine_line|#define E1000_IMC_RXCFG     E1000_ICR_RXCFG     /* RX /c/ ordered set */
 DECL|macro|E1000_IMC_GPI_EN0
-mdefine_line|#define E1000_IMC_GPI_EN0 E1000_ICR_GPI_EN0     /* GP Int 0 */
+mdefine_line|#define E1000_IMC_GPI_EN0   E1000_ICR_GPI_EN0   /* GP Int 0 */
 DECL|macro|E1000_IMC_GPI_EN1
-mdefine_line|#define E1000_IMC_GPI_EN1 E1000_ICR_GPI_EN1     /* GP Int 1 */
+mdefine_line|#define E1000_IMC_GPI_EN1   E1000_ICR_GPI_EN1   /* GP Int 1 */
 DECL|macro|E1000_IMC_GPI_EN2
-mdefine_line|#define E1000_IMC_GPI_EN2 E1000_ICR_GPI_EN2     /* GP Int 2 */
+mdefine_line|#define E1000_IMC_GPI_EN2   E1000_ICR_GPI_EN2   /* GP Int 2 */
 DECL|macro|E1000_IMC_GPI_EN3
-mdefine_line|#define E1000_IMC_GPI_EN3 E1000_ICR_GPI_EN3     /* GP Int 3 */
+mdefine_line|#define E1000_IMC_GPI_EN3   E1000_ICR_GPI_EN3   /* GP Int 3 */
 DECL|macro|E1000_IMC_TXD_LOW
-mdefine_line|#define E1000_IMC_TXD_LOW E1000_ICR_TXD_LOW
+mdefine_line|#define E1000_IMC_TXD_LOW   E1000_ICR_TXD_LOW
 DECL|macro|E1000_IMC_SRPD
-mdefine_line|#define E1000_IMC_SRPD    E1000_ICR_SRPD
+mdefine_line|#define E1000_IMC_SRPD      E1000_ICR_SRPD
 multiline_comment|/* Receive Control */
 DECL|macro|E1000_RCTL_RST
-mdefine_line|#define E1000_RCTL_RST          0x00000001      /* Software reset */
+mdefine_line|#define E1000_RCTL_RST            0x00000001    /* Software reset */
 DECL|macro|E1000_RCTL_EN
-mdefine_line|#define E1000_RCTL_EN           0x00000002      /* enable */
+mdefine_line|#define E1000_RCTL_EN             0x00000002    /* enable */
 DECL|macro|E1000_RCTL_SBP
-mdefine_line|#define E1000_RCTL_SBP          0x00000004      /* store bad packet */
+mdefine_line|#define E1000_RCTL_SBP            0x00000004    /* store bad packet */
 DECL|macro|E1000_RCTL_UPE
-mdefine_line|#define E1000_RCTL_UPE          0x00000008      /* unicast promiscuous enable */
+mdefine_line|#define E1000_RCTL_UPE            0x00000008    /* unicast promiscuous enable */
 DECL|macro|E1000_RCTL_MPE
-mdefine_line|#define E1000_RCTL_MPE          0x00000010      /* multicast promiscuous enab */
+mdefine_line|#define E1000_RCTL_MPE            0x00000010    /* multicast promiscuous enab */
 DECL|macro|E1000_RCTL_LPE
-mdefine_line|#define E1000_RCTL_LPE          0x00000020      /* long packet enable */
+mdefine_line|#define E1000_RCTL_LPE            0x00000020    /* long packet enable */
 DECL|macro|E1000_RCTL_LBM_NO
-mdefine_line|#define E1000_RCTL_LBM_NO       0x00000000      /* no loopback mode */
+mdefine_line|#define E1000_RCTL_LBM_NO         0x00000000    /* no loopback mode */
 DECL|macro|E1000_RCTL_LBM_MAC
-mdefine_line|#define E1000_RCTL_LBM_MAC      0x00000040      /* MAC loopback mode */
+mdefine_line|#define E1000_RCTL_LBM_MAC        0x00000040    /* MAC loopback mode */
 DECL|macro|E1000_RCTL_LBM_SLP
-mdefine_line|#define E1000_RCTL_LBM_SLP      0x00000080      /* serial link loopback mode */
+mdefine_line|#define E1000_RCTL_LBM_SLP        0x00000080    /* serial link loopback mode */
 DECL|macro|E1000_RCTL_LBM_TCVR
-mdefine_line|#define E1000_RCTL_LBM_TCVR     0x000000C0      /* tcvr loopback mode */
+mdefine_line|#define E1000_RCTL_LBM_TCVR       0x000000C0    /* tcvr loopback mode */
 DECL|macro|E1000_RCTL_RDMTS_HALF
-mdefine_line|#define E1000_RCTL_RDMTS_HALF   0x00000000      /* rx desc min threshold size */
+mdefine_line|#define E1000_RCTL_RDMTS_HALF     0x00000000    /* rx desc min threshold size */
 DECL|macro|E1000_RCTL_RDMTS_QUAT
-mdefine_line|#define E1000_RCTL_RDMTS_QUAT   0x00000100      /* rx desc min threshold size */
+mdefine_line|#define E1000_RCTL_RDMTS_QUAT     0x00000100    /* rx desc min threshold size */
 DECL|macro|E1000_RCTL_RDMTS_EIGTH
-mdefine_line|#define E1000_RCTL_RDMTS_EIGTH  0x00000200      /* rx desc min threshold size */
+mdefine_line|#define E1000_RCTL_RDMTS_EIGTH    0x00000200    /* rx desc min threshold size */
 DECL|macro|E1000_RCTL_MO_SHIFT
-mdefine_line|#define E1000_RCTL_MO_SHIFT     12              /* multicast offset shift */
+mdefine_line|#define E1000_RCTL_MO_SHIFT       12            /* multicast offset shift */
 DECL|macro|E1000_RCTL_MO_0
-mdefine_line|#define E1000_RCTL_MO_0         0x00000000      /* multicast offset 11:0 */
+mdefine_line|#define E1000_RCTL_MO_0           0x00000000    /* multicast offset 11:0 */
 DECL|macro|E1000_RCTL_MO_1
-mdefine_line|#define E1000_RCTL_MO_1         0x00001000      /* multicast offset 12:1 */
+mdefine_line|#define E1000_RCTL_MO_1           0x00001000    /* multicast offset 12:1 */
 DECL|macro|E1000_RCTL_MO_2
-mdefine_line|#define E1000_RCTL_MO_2         0x00002000      /* multicast offset 13:2 */
+mdefine_line|#define E1000_RCTL_MO_2           0x00002000    /* multicast offset 13:2 */
 DECL|macro|E1000_RCTL_MO_3
-mdefine_line|#define E1000_RCTL_MO_3         0x00003000      /* multicast offset 15:4 */
+mdefine_line|#define E1000_RCTL_MO_3           0x00003000    /* multicast offset 15:4 */
 DECL|macro|E1000_RCTL_MDR
-mdefine_line|#define E1000_RCTL_MDR          0x00004000      /* multicast desc ring 0 */
+mdefine_line|#define E1000_RCTL_MDR            0x00004000    /* multicast desc ring 0 */
 DECL|macro|E1000_RCTL_BAM
-mdefine_line|#define E1000_RCTL_BAM          0x00008000      /* broadcast enable */
+mdefine_line|#define E1000_RCTL_BAM            0x00008000    /* broadcast enable */
 multiline_comment|/* these buffer sizes are valid if E1000_RCTL_BSEX is 0 */
 DECL|macro|E1000_RCTL_SZ_2048
-mdefine_line|#define E1000_RCTL_SZ_2048      0x00000000      /* rx buffer size 2048 */
+mdefine_line|#define E1000_RCTL_SZ_2048        0x00000000    /* rx buffer size 2048 */
 DECL|macro|E1000_RCTL_SZ_1024
-mdefine_line|#define E1000_RCTL_SZ_1024      0x00010000      /* rx buffer size 1024 */
+mdefine_line|#define E1000_RCTL_SZ_1024        0x00010000    /* rx buffer size 1024 */
 DECL|macro|E1000_RCTL_SZ_512
-mdefine_line|#define E1000_RCTL_SZ_512       0x00020000      /* rx buffer size 512 */
+mdefine_line|#define E1000_RCTL_SZ_512         0x00020000    /* rx buffer size 512 */
 DECL|macro|E1000_RCTL_SZ_256
-mdefine_line|#define E1000_RCTL_SZ_256       0x00030000      /* rx buffer size 256 */
+mdefine_line|#define E1000_RCTL_SZ_256         0x00030000    /* rx buffer size 256 */
 multiline_comment|/* these buffer sizes are valid if E1000_RCTL_BSEX is 1 */
 DECL|macro|E1000_RCTL_SZ_16384
-mdefine_line|#define E1000_RCTL_SZ_16384     0x00010000      /* rx buffer size 16384 */
+mdefine_line|#define E1000_RCTL_SZ_16384       0x00010000    /* rx buffer size 16384 */
 DECL|macro|E1000_RCTL_SZ_8192
-mdefine_line|#define E1000_RCTL_SZ_8192      0x00020000      /* rx buffer size 8192 */
+mdefine_line|#define E1000_RCTL_SZ_8192        0x00020000    /* rx buffer size 8192 */
 DECL|macro|E1000_RCTL_SZ_4096
-mdefine_line|#define E1000_RCTL_SZ_4096      0x00030000      /* rx buffer size 4096 */
+mdefine_line|#define E1000_RCTL_SZ_4096        0x00030000    /* rx buffer size 4096 */
 DECL|macro|E1000_RCTL_VFE
-mdefine_line|#define E1000_RCTL_VFE          0x00040000      /* vlan filter enable */
+mdefine_line|#define E1000_RCTL_VFE            0x00040000    /* vlan filter enable */
 DECL|macro|E1000_RCTL_CFIEN
-mdefine_line|#define E1000_RCTL_CFIEN        0x00080000      /* canonical form enable */
+mdefine_line|#define E1000_RCTL_CFIEN          0x00080000    /* canonical form enable */
 DECL|macro|E1000_RCTL_CFI
-mdefine_line|#define E1000_RCTL_CFI          0x00100000      /* canonical form indicator */
+mdefine_line|#define E1000_RCTL_CFI            0x00100000    /* canonical form indicator */
 DECL|macro|E1000_RCTL_DPF
-mdefine_line|#define E1000_RCTL_DPF          0x00400000      /* discard pause frames */
+mdefine_line|#define E1000_RCTL_DPF            0x00400000    /* discard pause frames */
 DECL|macro|E1000_RCTL_PMCF
-mdefine_line|#define E1000_RCTL_PMCF         0x00800000      /* pass MAC control frames */
+mdefine_line|#define E1000_RCTL_PMCF           0x00800000    /* pass MAC control frames */
 DECL|macro|E1000_RCTL_BSEX
-mdefine_line|#define E1000_RCTL_BSEX         0x02000000      /* Buffer size extension */
+mdefine_line|#define E1000_RCTL_BSEX           0x02000000    /* Buffer size extension */
 multiline_comment|/* Receive Descriptor */
 DECL|macro|E1000_RDT_DELAY
 mdefine_line|#define E1000_RDT_DELAY 0x0000ffff      /* Delay timer (1=1024us) */
@@ -3937,7 +3937,7 @@ DECL|macro|E1000_HDX_COLLISION_DISTANCE
 mdefine_line|#define E1000_HDX_COLLISION_DISTANCE    E1000_COLLISION_DISTANCE
 DECL|macro|E1000_COLD_SHIFT
 mdefine_line|#define E1000_COLD_SHIFT                12
-multiline_comment|/* The number of Transmit and Receive Descriptors must be a multiple of 8 */
+multiline_comment|/* Number of Transmit and Receive Descriptors must be a multiple of 8 */
 DECL|macro|REQ_TX_DESCRIPTOR_MULTIPLE
 mdefine_line|#define REQ_TX_DESCRIPTOR_MULTIPLE  8
 DECL|macro|REQ_RX_DESCRIPTOR_MULTIPLE
@@ -4038,21 +4038,21 @@ DECL|macro|PCIX_STATUS_HI_MMRBC_4K
 mdefine_line|#define PCIX_STATUS_HI_MMRBC_4K      0x3
 DECL|macro|PCIX_STATUS_HI_MMRBC_2K
 mdefine_line|#define PCIX_STATUS_HI_MMRBC_2K      0x2
-multiline_comment|/* The number of bits that we need to shift right to move the &quot;pause&quot;&n; * bits from the EEPROM (bits 13:12) to the &quot;pause&quot; (bits 8:7) field&n; * in the TXCW register&n; */
+multiline_comment|/* Number of bits required to shift right the &quot;pause&quot; bits from the&n; * EEPROM (bits 13:12) to the &quot;pause&quot; (bits 8:7) field in the TXCW register.&n; */
 DECL|macro|PAUSE_SHIFT
 mdefine_line|#define PAUSE_SHIFT 5
-multiline_comment|/* The number of bits that we need to shift left to move the &quot;SWDPIO&quot;&n; * bits from the EEPROM (bits 8:5) to the &quot;SWDPIO&quot; (bits 25:22) field&n; * in the CTRL register&n; */
+multiline_comment|/* Number of bits required to shift left the &quot;SWDPIO&quot; bits from the&n; * EEPROM (bits 8:5) to the &quot;SWDPIO&quot; (bits 25:22) field in the CTRL register.&n; */
 DECL|macro|SWDPIO_SHIFT
 mdefine_line|#define SWDPIO_SHIFT 17
-multiline_comment|/* The number of bits that we need to shift left to move the &quot;SWDPIO_EXT&quot;&n; * bits from the EEPROM word F (bits 7:4) to the bits 11:8 of The&n; * Extended CTRL register.&n; * in the CTRL register&n; */
+multiline_comment|/* Number of bits required to shift left the &quot;SWDPIO_EXT&quot; bits from the&n; * EEPROM word F (bits 7:4) to the bits 11:8 of The Extended CTRL register.&n; */
 DECL|macro|SWDPIO__EXT_SHIFT
 mdefine_line|#define SWDPIO__EXT_SHIFT 4
-multiline_comment|/* The number of bits that we need to shift left to move the &quot;ILOS&quot;&n; * bit from the EEPROM (bit 4) to the &quot;ILOS&quot; (bit 7) field&n; * in the CTRL register&n; */
+multiline_comment|/* Number of bits required to shift left the &quot;ILOS&quot; bit from the EEPROM&n; * (bit 4) to the &quot;ILOS&quot; (bit 7) field in the CTRL register.&n; */
 DECL|macro|ILOS_SHIFT
 mdefine_line|#define ILOS_SHIFT  3
 DECL|macro|RECEIVE_BUFFER_ALIGN_SIZE
 mdefine_line|#define RECEIVE_BUFFER_ALIGN_SIZE  (256)
-multiline_comment|/* The number of milliseconds we wait for auto-negotiation to complete */
+multiline_comment|/* Number of milliseconds we wait for auto-negotiation to complete */
 DECL|macro|LINK_UP_TIMEOUT
 mdefine_line|#define LINK_UP_TIMEOUT             500
 DECL|macro|E1000_TX_BUFFER_SIZE

@@ -1,6 +1,6 @@
 multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 macro_line|#include &quot;e1000.h&quot;
-multiline_comment|/* Change Log&n; *&n; * 5.1.13&t;5/28/03&n; *   o Bug fix: request_irq() failure resulted in freeing resources twice!&n; *     [Don Fry (brazilnut@us.ibm.com)]&n; *   o Bug fix: fix VLAN support on ppc64 [Mark Rakes (mrakes@vivato.net)]&n; *   o Bug fix: missing Tx cleanup opportunities during interrupt handling.&n; *   o Bug fix: alloc_etherdev failure didn&squot;t cleanup regions in probe.&n; *   o Cleanup: s/int/unsigned int/ for descriptor ring indexes.&n; *   &n; * 5.1.11&t;5/6/03&n; *   o Feature: Added support for 82546EB (Quad-port) hardware.&n; *   o Feature: Added support for Diagnostics through Ethtool.&n; *   o Cleanup: Removed /proc support.&n; *   o Cleanup: Removed proprietary IDIAG interface.&n; *   o Bug fix: TSO bug fixes.&n; *&n; * 5.0.42&t;3/5/03&n; */
+multiline_comment|/* Change Log&n; *&n; * 5.2.16&t;8/8/03&n; *   o Added support for new controllers: 82545GM, 82546GB, 82541/7_B1&n; *   o Bug fix: reset h/w before first EEPROM read because we don&squot;t know&n; *     who may have been messing with the device before we got there.&n; *     [Dave Johnson (ddj -a-t- cascv.brown.edu)]&n; *   o Bug fix: read the correct work from EEPROM to detect programmed&n; *     WoL settings.&n; *   o Bug fix: TSO would hang if space left in FIFO was being miscalculated&n; *     when mss dropped without a correspoding drop in the DMA buffer size.&n; *   o ASF for Fiber nics isn&squot;t supported.&n; *   o Bug fix: Workaround added for potential hang with 82544 running in&n; *     PCI-X if send buffer terminates within an evenly-aligned dword.&n; *   o Feature: Add support for ethtool flow control setting.&n; *   o Feature: Add support for ethtool TSO setting.&n; *   o Feature: Increase default Tx Descriptor count to 1024 for &gt;= 82544.&n; *   &n; * 5.1.13&t;5/28/03&n; *   o Bug fix: request_irq() failure resulted in freeing resources twice!&n; *     [Don Fry (brazilnut@us.ibm.com)]&n; *   o Bug fix: fix VLAN support on ppc64 [Mark Rakes (mrakes@vivato.net)]&n; *   o Bug fix: missing Tx cleanup opportunities during interrupt handling.&n; *   o Bug fix: alloc_etherdev failure didn&squot;t cleanup regions in probe.&n; *   o Cleanup: s/int/unsigned int/ for descriptor ring indexes.&n; *   &n; * 5.1.11&t;5/6/03&n; */
 DECL|variable|e1000_driver_name
 r_char
 id|e1000_driver_name
@@ -23,7 +23,7 @@ id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;5.1.13-k2&quot;
+l_string|&quot;5.2.16-k1&quot;
 suffix:semicolon
 DECL|variable|e1000_copyright
 r_char
@@ -11463,8 +11463,6 @@ comma
 id|pdev
 )paren
 )paren
-op_ne
-l_int|NULL
 )paren
 (brace
 r_if
