@@ -523,6 +523,10 @@ id|nfs_fh
 op_star
 id|fh
 suffix:semicolon
+DECL|member|stateid
+id|nfs4_stateid
+id|stateid
+suffix:semicolon
 DECL|member|offset
 id|__u64
 id|offset
