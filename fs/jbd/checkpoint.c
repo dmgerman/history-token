@@ -4,11 +4,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/jbd.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-r_extern
-id|spinlock_t
-id|journal_datalist_lock
-suffix:semicolon
-multiline_comment|/*&n; * Unlink a buffer from a transaction. &n; *&n; * Called with journal_datalist_lock held.&n; */
+multiline_comment|/*&n; * Unlink a buffer from a transaction. &n; *&n; * Called with j_list_lock held.&n; */
 DECL|function|__buffer_unlink
 r_static
 r_inline
@@ -65,7 +61,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Try to release a checkpointed buffer from its transaction.&n; * Returns 1 if we released it.&n; * Requires journal_datalist_lock&n; * Called under jbd_lock_bh_state(jh2bh(jh)), and drops it&n; */
+multiline_comment|/*&n; * Try to release a checkpointed buffer from its transaction.&n; * Returns 1 if we released it.&n; * Requires j_list_lock&n; * Called under jbd_lock_bh_state(jh2bh(jh)), and drops it&n; */
 DECL|function|__try_to_free_cp_buf
 r_static
 r_int
@@ -259,7 +255,7 @@ id|journal-&gt;j_checkpoint_sem
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * We were unable to perform jbd_trylock_bh_state() inside&n; * journal_datalist_lock.  The caller must restart a list walk.  Wait for&n; * someone else to run jbd_unlock_bh_state().&n; */
+multiline_comment|/*&n; * We were unable to perform jbd_trylock_bh_state() inside j_list_lock.&n; * The caller must restart a list walk.  Wait for someone else to run&n; * jbd_unlock_bh_state().&n; */
 DECL|function|jbd_sync_bh
 r_static
 r_void
@@ -286,7 +282,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_lock_bh_state
@@ -308,7 +304,7 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Clean up a transaction&squot;s checkpoint list.  &n; *&n; * We wait for any pending IO to complete and make sure any clean&n; * buffers are removed from the transaction. &n; *&n; * Return 1 if we performed any actions which might have destroyed the&n; * checkpoint.  (journal_remove_checkpoint() deletes the transaction when&n; * the last checkpoint buffer is cleansed)&n; *&n; * Called with the journal locked.&n; * Called with journal_datalist_lock held.&n; */
+multiline_comment|/*&n; * Clean up a transaction&squot;s checkpoint list.  &n; *&n; * We wait for any pending IO to complete and make sure any clean&n; * buffers are removed from the transaction. &n; *&n; * Return 1 if we performed any actions which might have destroyed the&n; * checkpoint.  (journal_remove_checkpoint() deletes the transaction when&n; * the last checkpoint buffer is cleansed)&n; *&n; * Called with the journal locked.&n; * Called with j_list_lock held.&n; */
 DECL|function|__cleanup_transaction
 r_static
 r_int
@@ -349,7 +345,7 @@ id|assert_spin_locked
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jh
@@ -408,7 +404,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|unlock_journal
@@ -489,7 +485,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_unlock_bh_state
@@ -622,7 +618,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 r_return
@@ -631,12 +627,16 @@ suffix:semicolon
 )brace
 DECL|macro|NR_BATCH
 mdefine_line|#define NR_BATCH&t;64
-DECL|function|__flush_batch
 r_static
 r_void
+DECL|function|__flush_batch
 id|__flush_batch
 c_func
 (paren
+id|journal_t
+op_star
+id|journal
+comma
 r_struct
 id|buffer_head
 op_star
@@ -655,7 +655,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|ll_rw_block
@@ -669,16 +669,11 @@ comma
 id|bhs
 )paren
 suffix:semicolon
-id|blk_run_queues
-c_func
-(paren
-)paren
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 r_for
@@ -737,7 +732,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Try to flush one buffer from the checkpoint list to disk.&n; *&n; * Return 1 if something happened which requires us to abort the current&n; * scan of the checkpoint list.  &n; *&n; * Called with journal_datalist_lock held.&n; * Called under jbd_lock_bh_state(jh2bh(jh)), and drops it&n; */
+multiline_comment|/*&n; * Try to flush one buffer from the checkpoint list to disk.&n; *&n; * Return 1 if something happened which requires us to abort the current&n; * scan of the checkpoint list.  &n; *&n; * Called with j_list_lock held.&n; * Called under jbd_lock_bh_state(jh2bh(jh)), and drops it&n; */
 DECL|function|__flush_buffer
 r_static
 r_int
@@ -881,6 +876,8 @@ id|NR_BATCH
 id|__flush_batch
 c_func
 (paren
+id|journal
+comma
 id|bhs
 comma
 id|batch_count
@@ -944,6 +941,7 @@ multiline_comment|/* @@@ `nblocks&squot; is unused.  Should it be used? */
 DECL|function|log_do_checkpoint
 r_int
 id|log_do_checkpoint
+c_func
 (paren
 id|journal_t
 op_star
@@ -1022,7 +1020,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|repeat
@@ -1140,7 +1138,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 r_break
@@ -1185,6 +1183,8 @@ id|batch_count
 id|__flush_batch
 c_func
 (paren
+id|journal
+comma
 id|bhs
 comma
 op_amp
@@ -1245,7 +1245,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|result
@@ -1300,7 +1300,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|transaction
@@ -1381,7 +1381,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|J_ASSERT
@@ -1476,7 +1476,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Checkpoint list management */
-multiline_comment|/*&n; * journal_clean_checkpoint_list&n; *&n; * Find all the written-back checkpoint buffers in the journal and release them.&n; *&n; * Called with the journal locked.&n; * Called with journal_datalist_lock held.&n; * Returns number of bufers reaped (for debug)&n; */
+multiline_comment|/*&n; * journal_clean_checkpoint_list&n; *&n; * Find all the written-back checkpoint buffers in the journal and release them.&n; *&n; * Called with the journal locked.&n; * Called with j_list_lock held.&n; * Returns number of bufers reaped (for debug)&n; */
 DECL|function|__journal_clean_checkpoint_list
 r_int
 id|__journal_clean_checkpoint_list
@@ -1620,7 +1620,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * journal_remove_checkpoint: called after a buffer has been committed&n; * to disk (either by being write-back flushed to disk, or being&n; * committed to the log).&n; *&n; * We cannot safely clean a transaction out of the log until all of the&n; * buffer updates committed in that transaction have safely been stored&n; * elsewhere on disk.  To achieve this, all of the buffers in a&n; * transaction need to be maintained on the transaction&squot;s checkpoint&n; * list until they have been rewritten, at which point this function is&n; * called to remove the buffer from the existing transaction&squot;s&n; * checkpoint list.  &n; *&n; * This function is called with the journal locked.&n; * This function is called with journal_datalist_lock held.&n; */
+multiline_comment|/* &n; * journal_remove_checkpoint: called after a buffer has been committed&n; * to disk (either by being write-back flushed to disk, or being&n; * committed to the log).&n; *&n; * We cannot safely clean a transaction out of the log until all of the&n; * buffer updates committed in that transaction have safely been stored&n; * elsewhere on disk.  To achieve this, all of the buffers in a&n; * transaction need to be maintained on the transaction&squot;s checkpoint&n; * list until they have been rewritten, at which point this function is&n; * called to remove the buffer from the existing transaction&squot;s&n; * checkpoint list.  &n; *&n; * This function is called with the journal locked.&n; * This function is called with j_list_lock held.&n; */
 DECL|function|__journal_remove_checkpoint
 r_void
 id|__journal_remove_checkpoint
@@ -1749,39 +1749,7 @@ l_string|&quot;exit&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|journal_remove_checkpoint
-r_void
-id|journal_remove_checkpoint
-c_func
-(paren
-r_struct
-id|journal_head
-op_star
-id|jh
-)paren
-(brace
-id|spin_lock
-c_func
-(paren
-op_amp
-id|journal_datalist_lock
-)paren
-suffix:semicolon
-id|__journal_remove_checkpoint
-c_func
-(paren
-id|jh
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|journal_datalist_lock
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * journal_insert_checkpoint: put a committed buffer onto a checkpoint&n; * list so that we know when it is safe to clean the transaction out of&n; * the log.&n; *&n; * Called with the journal locked.&n; * Called with journal_datalist_lock held.&n; */
+multiline_comment|/*&n; * journal_insert_checkpoint: put a committed buffer onto a checkpoint&n; * list so that we know when it is safe to clean the transaction out of&n; * the log.&n; *&n; * Called with the journal locked.&n; * Called with j_list_lock held.&n; */
 DECL|function|__journal_insert_checkpoint
 r_void
 id|__journal_insert_checkpoint
@@ -1841,13 +1809,6 @@ op_eq
 l_int|NULL
 )paren
 suffix:semicolon
-id|assert_spin_locked
-c_func
-(paren
-op_amp
-id|journal_datalist_lock
-)paren
-suffix:semicolon
 id|jh-&gt;b_cp_transaction
 op_assign
 id|transaction
@@ -1890,45 +1851,7 @@ op_assign
 id|jh
 suffix:semicolon
 )brace
-DECL|function|journal_insert_checkpoint
-r_void
-id|journal_insert_checkpoint
-c_func
-(paren
-r_struct
-id|journal_head
-op_star
-id|jh
-comma
-id|transaction_t
-op_star
-id|transaction
-)paren
-(brace
-id|spin_lock
-c_func
-(paren
-op_amp
-id|journal_datalist_lock
-)paren
-suffix:semicolon
-id|__journal_insert_checkpoint
-c_func
-(paren
-id|jh
-comma
-id|transaction
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|journal_datalist_lock
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * We&squot;ve finished with this transaction structure: adios...&n; * &n; * The transaction must have no links except for the checkpoint by this&n; * point.&n; *&n; * Called with the journal locked.&n; * Called with journal_datalist_lock held.&n; */
+multiline_comment|/*&n; * We&squot;ve finished with this transaction structure: adios...&n; * &n; * The transaction must have no links except for the checkpoint by this&n; * point.&n; *&n; * Called with the journal locked.&n; * Called with j_list_lock held.&n; */
 DECL|function|__journal_drop_transaction
 r_void
 id|__journal_drop_transaction
@@ -1947,7 +1870,7 @@ id|assert_spin_locked
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 r_if

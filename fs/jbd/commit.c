@@ -5,10 +5,6 @@ macro_line|#include &lt;linux/jbd.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-r_extern
-id|spinlock_t
-id|journal_datalist_lock
-suffix:semicolon
 multiline_comment|/*&n; * Default IO end handler for temporary BJ_IO buffer_heads.&n; */
 DECL|function|journal_end_buffer_io_sync
 r_static
@@ -158,7 +154,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|summarise_journal_usage
@@ -171,7 +167,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -312,6 +308,8 @@ suffix:semicolon
 id|journal_refile_buffer
 c_func
 (paren
+id|journal
+comma
 id|jh
 )paren
 suffix:semicolon
@@ -321,7 +319,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|__journal_clean_checkpoint_list
@@ -334,7 +332,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 multiline_comment|/* First part of the commit: force the revoke list out to disk.&n;&t; * The revoke code generates its own metadata blocks on disk for this.&n;&t; *&n;&t; * It is important that we do this while the transaction is&n;&t; * still locked.  Generating the revoke records should not&n;&t; * generate any IO stalls, so this should be quick; and doing&n;&t; * the work while we have the transaction locked means that we&n;&t; * only ever have to maintain the revoke list for one&n;&t; * transaction at a time.&n;&t; */
@@ -397,12 +395,12 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Whenever we unlock the journal and sleep, things can get added&n;&t; * onto -&gt;t_datalist, so we have to keep looping back to write_out_data&n;&t; * until we *know* that the list is empty.&n;&t; */
 id|write_out_data
 suffix:colon
-multiline_comment|/*&n;&t; * Cleanup any flushed data buffers from the data list.  Even in&n;&t; * abort mode, we want to flush this out as soon as possible.&n;&t; *&n;&t; * We take journal_datalist_lock to protect the lists from&n;&t; * journal_try_to_free_buffers().&n;&t; */
+multiline_comment|/*&n;&t; * Cleanup any flushed data buffers from the data list.  Even in&n;&t; * abort mode, we want to flush this out as soon as possible.&n;&t; *&n;&t; * We take j_list_lock to protect the lists from&n;&t; * journal_try_to_free_buffers().&n;&t; */
 id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|write_out_data_locked
@@ -523,7 +521,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|schedule
@@ -535,7 +533,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 r_break
@@ -633,7 +631,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|unlock_journal
@@ -680,7 +678,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 r_if
@@ -747,7 +745,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|unlock_journal
@@ -831,7 +829,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we found any dirty or locked buffers, then we should have&n;&t; * looped back up to the write_out_data label.  If there weren&squot;t&n;&t; * any then journal_clean_data_list should have wiped the list&n;&t; * clean by now, so check that it is in fact empty.&n;&t; */
@@ -895,6 +893,8 @@ suffix:semicolon
 id|journal_refile_buffer
 c_func
 (paren
+id|journal
+comma
 id|jh
 )paren
 suffix:semicolon
@@ -1432,7 +1432,7 @@ comma
 l_string|&quot;JBD: commit phase 4&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * akpm: these are BJ_IO, and journal_datalist_lock is not needed.&n;&t; * See __journal_try_to_free_buffer.&n;&t; */
+multiline_comment|/*&n;&t; * akpm: these are BJ_IO, and j_list_lock is not needed.&n;&t; * See __journal_try_to_free_buffer.&n;&t; */
 id|wait_for_iobuf
 suffix:colon
 r_while
@@ -1528,6 +1528,8 @@ suffix:semicolon
 id|journal_unfile_buffer
 c_func
 (paren
+id|journal
+comma
 id|jh
 )paren
 suffix:semicolon
@@ -1765,18 +1767,17 @@ comma
 l_string|&quot;ph5: control buffer writeout done: unfile&quot;
 )paren
 suffix:semicolon
-id|clear_bit
+id|clear_buffer_jwrite
 c_func
 (paren
-id|BH_JWrite
-comma
-op_amp
-id|bh-&gt;b_state
+id|bh
 )paren
 suffix:semicolon
 id|journal_unfile_buffer
 c_func
 (paren
+id|journal
+comma
 id|jh
 )paren
 suffix:semicolon
@@ -2264,7 +2265,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|cp_transaction
@@ -2432,7 +2433,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 )brace
@@ -2475,7 +2476,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 r_if
@@ -2542,7 +2543,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_debug

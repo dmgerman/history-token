@@ -1109,9 +1109,12 @@ multiline_comment|/* &n; * Function declarations for the journaling transaction 
 multiline_comment|/* Filing buffers */
 r_extern
 r_void
-id|__journal_unfile_buffer
+id|journal_unfile_buffer
 c_func
 (paren
+id|journal_t
+op_star
+comma
 r_struct
 id|journal_head
 op_star
@@ -1119,7 +1122,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|journal_unfile_buffer
+id|__journal_unfile_buffer
 c_func
 (paren
 r_struct
@@ -1142,6 +1145,9 @@ r_void
 id|journal_refile_buffer
 c_func
 (paren
+id|journal_t
+op_star
+comma
 r_struct
 id|journal_head
 op_star
@@ -1242,17 +1248,6 @@ op_star
 id|journal
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|journal_remove_checkpoint
-c_func
-(paren
-r_struct
-id|journal_head
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|__journal_remove_checkpoint
 c_func
@@ -1262,20 +1257,6 @@ id|journal_head
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|journal_insert_checkpoint
-c_func
-(paren
-r_struct
-id|journal_head
-op_star
-comma
-id|transaction_t
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|__journal_insert_checkpoint
 c_func
@@ -2145,15 +2126,6 @@ c_func
 (paren
 id|journal_t
 op_star
-)paren
-suffix:semicolon
-multiline_comment|/* Reduce journal memory usage by flushing */
-r_extern
-r_void
-id|shrink_journal_memory
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Debugging code only: */

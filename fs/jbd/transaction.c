@@ -8,10 +8,6 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
-r_extern
-id|spinlock_t
-id|journal_datalist_lock
-suffix:semicolon
 multiline_comment|/*&n; * get_transaction: obtain a new transaction_t object.&n; *&n; * Simply allocate and initialise a new transaction.  Create it in&n; * RUNNING state and add it to the current journal (which should not&n; * have an existing running transaction: we only make a new transaction&n; * once we have started to commit the old one).&n; *&n; * Preconditions:&n; *&t;The journal MUST be locked.  We don&squot;t perform atomic mallocs on the&n; *&t;new transaction&t;and we can&squot;t block without protecting against other&n; *&t;processes trying to touch the journal while it is in transition.&n; */
 DECL|function|get_transaction
 r_static
@@ -1156,7 +1152,7 @@ id|journal
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Report any unexpected dirty buffers which turn up.  Normally those&n; * indicate an error, but they can occur if the user is running (say)&n; * tune2fs to modify the live filesystem, so we need the option of&n; * continuing as gracefully as possible.  #&n; *&n; * The caller should already hold the journal lock and&n; * journal_datalist_lock spinlock: most callers will need those anyway&n; * in order to probe the buffer&squot;s journaling state safely.&n; */
+multiline_comment|/*&n; * Report any unexpected dirty buffers which turn up.  Normally those&n; * indicate an error, but they can occur if the user is running (say)&n; * tune2fs to modify the live filesystem, so we need the option of&n; * continuing as gracefully as possible.  #&n; *&n; * The caller should already hold the journal lock and&n; * j_list_lock spinlock: most callers will need those anyway&n; * in order to probe the buffer&squot;s journaling state safely.&n; */
 DECL|function|jbd_unexpected_dirty_buffer
 r_static
 r_void
@@ -1349,7 +1345,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 multiline_comment|/* We now hold the buffer lock so it is safe to query the buffer&n;&t; * state.  Is the buffer dirty? &n;&t; * &n;&t; * If so, there are two possibilities.  The buffer may be&n;&t; * non-journaled, and undergoing a quite legitimate writeback.&n;&t; * Otherwise, it is journaled, and we don&squot;t expect dirty buffers&n;&t; * in that state (the buffers should be marked JBD_Dirty&n;&t; * instead.)  So either the IO is being done under our own&n;&t; * control and this is a bug, or it&squot;s a third party IO such as&n;&t; * dump(8) (which may leave the buffer scheduled for read ---&n;&t; * ie. locked but not dirty) or tune2fs (which may actually have&n;&t; * the buffer dirtied, ugh.)  */
@@ -1440,7 +1436,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_unlock_bh_state
@@ -1582,7 +1578,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_unlock_bh_state
@@ -1671,7 +1667,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_unlock_bh_state
@@ -1735,7 +1731,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 r_goto
@@ -1931,7 +1927,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_unlock_bh_state
@@ -2149,7 +2145,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|J_ASSERT_JH
@@ -2274,7 +2270,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_unlock_bh_state
@@ -2631,7 +2627,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 r_if
@@ -2723,7 +2719,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_unlock_bh_state
@@ -2752,7 +2748,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 multiline_comment|/* The buffer may become locked again at any&n;&t;&t;&t;&t;   time if it is redirtied */
@@ -2871,7 +2867,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_unlock_bh_state
@@ -3004,7 +3000,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|set_buffer_jbddirty
@@ -3111,7 +3107,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_unlock_bh_state
@@ -3204,7 +3200,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 r_if
@@ -3252,7 +3248,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_unlock_bh_state
@@ -3332,7 +3328,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 r_if
@@ -3460,7 +3456,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_unlock_bh_state
@@ -3541,7 +3537,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_unlock_bh_state
@@ -3982,7 +3978,7 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&n; * List management code snippets: various functions for manipulating the&n; * transaction buffer lists.&n; *&n; */
-multiline_comment|/*&n; * Append a buffer to a transaction list, given the transaction&squot;s list head&n; * pointer.&n; *&n; * journal_datalist_lock is held.&n; *&n; * jbd_lock_bh_state(jh2bh(jh)) is held.&n; */
+multiline_comment|/*&n; * Append a buffer to a transaction list, given the transaction&squot;s list head&n; * pointer.&n; *&n; * j_list_lock is held.&n; *&n; * jbd_lock_bh_state(jh2bh(jh)) is held.&n; */
 r_static
 r_inline
 r_void
@@ -4054,7 +4050,7 @@ id|jh
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* &n; * Remove a buffer from a transaction list, given the transaction&squot;s list&n; * head pointer.&n; *&n; * Called with journal_datalist_lock held, and the journal may not&n; * be locked.&n; *&n; * jbd_lock_bh_state(jh2bh(jh)) is held.&n; */
+multiline_comment|/* &n; * Remove a buffer from a transaction list, given the transaction&squot;s list&n; * head pointer.&n; *&n; * Called with j_list_lock held, and the journal may not be locked.&n; *&n; * jbd_lock_bh_state(jh2bh(jh)) is held.&n; */
 r_static
 r_inline
 r_void
@@ -4111,7 +4107,7 @@ op_assign
 id|jh-&gt;b_tprev
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Remove a buffer from the appropriate transaction list.&n; *&n; * Note that this function can *change* the value of&n; * bh-&gt;b_transaction-&gt;t_sync_datalist, t_buffers, t_forget,&n; * t_iobuf_list, t_shadow_list, t_log_list or t_reserved_list.  If the caller&n; * is holding onto a copy of one of thee pointers, it could go bad.&n; * Generally the caller needs to re-read the pointer from the transaction_t.&n; *&n; * If bh-&gt;b_jlist is BJ_SyncData then we may have been called&n; * via journal_try_to_free_buffer() or journal_clean_data_list().  In that&n; * case, journal_datalist_lock will be held, and the journal may not be locked.&n; */
+multiline_comment|/* &n; * Remove a buffer from the appropriate transaction list.&n; *&n; * Note that this function can *change* the value of&n; * bh-&gt;b_transaction-&gt;t_sync_datalist, t_buffers, t_forget,&n; * t_iobuf_list, t_shadow_list, t_log_list or t_reserved_list.  If the caller&n; * is holding onto a copy of one of thee pointers, it could go bad.&n; * Generally the caller needs to re-read the pointer from the transaction_t.&n; *&n; * If bh-&gt;b_jlist is BJ_SyncData then we may have been called&n; * via journal_try_to_free_buffer() or journal_clean_data_list().  In that&n; * case, j_list_lock will be held, and the journal may not be locked.&n; */
 DECL|function|__journal_unfile_buffer
 r_void
 id|__journal_unfile_buffer
@@ -4146,16 +4142,21 @@ c_func
 id|jh
 )paren
 suffix:semicolon
+id|transaction
+op_assign
+id|jh-&gt;b_transaction
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|transaction
+)paren
 id|assert_spin_locked
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|transaction-&gt;t_journal-&gt;j_list_lock
 )paren
-suffix:semicolon
-id|transaction
-op_assign
-id|jh-&gt;b_transaction
 suffix:semicolon
 id|J_ASSERT_JH
 c_func
@@ -4313,6 +4314,10 @@ r_void
 id|journal_unfile_buffer
 c_func
 (paren
+id|journal_t
+op_star
+id|journal
+comma
 r_struct
 id|journal_head
 op_star
@@ -4333,7 +4338,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|__journal_unfile_buffer
@@ -4346,7 +4351,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_unlock_bh_state
@@ -4360,14 +4365,18 @@ id|jh
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Called from journal_try_to_free_buffers().  The journal is not&n; * locked. lru_list_lock is not held.&n; *&n; * Here we see why journal_datalist_lock is global and not per-journal.&n; * We cannot get back to this buffer&squot;s journal pointer without locking&n; * out journal_clean_data_list() in some manner.&n; *&n; * One could use journal_datalist_lock to get unracy access to a&n; * per-journal lock.&n; *&n; * Called under jbd_lock_bh_state(bh)&n; *&n; * Returns non-zero iff we were able to free the journal_head.&n; */
-DECL|function|__journal_try_to_free_buffer
+multiline_comment|/*&n; * Called from journal_try_to_free_buffers().&n; *&n; * Called under jbd_lock_bh_state(bh)&n; *&n; * Returns non-zero iff we were able to free the journal_head.&n; */
 r_static
 r_inline
 r_int
+DECL|function|__journal_try_to_free_buffer
 id|__journal_try_to_free_buffer
 c_func
 (paren
+id|journal_t
+op_star
+id|journal
+comma
 r_struct
 id|buffer_head
 op_star
@@ -4419,7 +4428,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 r_if
@@ -4529,7 +4538,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 r_return
@@ -4623,6 +4632,8 @@ op_logical_neg
 id|__journal_try_to_free_buffer
 c_func
 (paren
+id|journal
+comma
 id|bh
 )paren
 )paren
@@ -4670,7 +4681,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This buffer is no longer needed.  If it is on an older transaction&squot;s&n; * checkpoint list we need to record it on this transaction&squot;s forget list&n; * to pin this buffer (and hence its checkpointing transaction) down until&n; * this transaction commits.  If the buffer isn&squot;t on a checkpoint list, we&n; * release it.&n; * Returns non-zero if JBD no longer has an interest in the buffer.&n; *&n; * Called under journal_datalist_lock.&n; *&n; * Called under jbd_lock_bh_state(bh).&n; */
+multiline_comment|/*&n; * This buffer is no longer needed.  If it is on an older transaction&squot;s&n; * checkpoint list we need to record it on this transaction&squot;s forget list&n; * to pin this buffer (and hence its checkpointing transaction) down until&n; * this transaction commits.  If the buffer isn&squot;t on a checkpoint list, we&n; * release it.&n; * Returns non-zero if JBD no longer has an interest in the buffer.&n; *&n; * Called under j_list_lock.&n; *&n; * Called under jbd_lock_bh_state(bh).&n; */
 DECL|function|__dispose_buffer
 r_static
 r_int
@@ -4818,7 +4829,7 @@ comma
 l_string|&quot;entry&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* It is safe to proceed here without the&n;&t; * journal_datalist_spinlock because the buffers cannot be&n;&t; * stolen by try_to_free_buffers as long as we are holding the&n;&t; * page lock. --sct */
+multiline_comment|/*&n;&t; * It is safe to proceed here without the j_list_lock because the&n;&t; * buffers cannot be stolen by try_to_free_buffers as long as we are&n;&t; * holding the page lock. --sct&n;&t; */
 r_if
 c_cond
 (paren
@@ -4842,7 +4853,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jh
@@ -4931,7 +4942,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_unlock_bh_state
@@ -4975,7 +4986,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_unlock_bh_state
@@ -5050,7 +5061,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_unlock_bh_state
@@ -5093,7 +5104,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_unlock_bh_state
@@ -5392,7 +5403,7 @@ id|assert_spin_locked
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|transaction-&gt;t_journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 macro_line|#ifdef __SMP__
@@ -5655,7 +5666,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|transaction-&gt;t_journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|__journal_file_buffer
@@ -5672,7 +5683,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|transaction-&gt;t_journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_unlock_bh_state
@@ -5686,7 +5697,7 @@ id|jh
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Remove a buffer from its current buffer list in preparation for&n; * dropping it from its current transaction entirely.  If the buffer has&n; * already started to be used by a subsequent transaction, refile the&n; * buffer on that transaction&squot;s metadata list.&n; *&n; * Called under journal_datalist_lock&n; *&n; * Called under jbd_lock_bh_state(jh2bh(jh))&n; */
+multiline_comment|/* &n; * Remove a buffer from its current buffer list in preparation for&n; * dropping it from its current transaction entirely.  If the buffer has&n; * already started to be used by a subsequent transaction, refile the&n; * buffer on that transaction&squot;s metadata list.&n; *&n; * Called under journal-&gt;j_list_lock&n; *&n; * Called under jbd_lock_bh_state(jh2bh(jh))&n; */
 DECL|function|__journal_refile_buffer
 r_void
 id|__journal_refile_buffer
@@ -5712,11 +5723,16 @@ c_func
 id|jh
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|jh-&gt;b_transaction
+)paren
 id|assert_spin_locked
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|jh-&gt;b_transaction-&gt;t_journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 multiline_comment|/* If the buffer is now unused, just drop it. */
@@ -5802,6 +5818,10 @@ r_void
 id|journal_refile_buffer
 c_func
 (paren
+id|journal_t
+op_star
+id|journal
+comma
 r_struct
 id|journal_head
 op_star
@@ -5829,7 +5849,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|__journal_refile_buffer
@@ -5854,7 +5874,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|journal_datalist_lock
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|__brelse

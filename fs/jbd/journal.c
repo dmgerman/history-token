@@ -306,13 +306,6 @@ id|journal_superblock_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * journal_datalist_lock is used to protect data buffers:&n; *&n; *&t;bh-&gt;b_transaction&n; *&t;bh-&gt;b_tprev&n; *&t;bh-&gt;b_tnext&n; *&n; * journal_free_buffer() is called from journal_try_to_free_buffer(), and is&n; * async wrt everything else.&n; *&n; * It is also used for checkpoint data, also to protect against&n; * journal_try_to_free_buffer():&n; *&n; *&t;bh-&gt;b_cp_transaction&n; *&t;bh-&gt;b_cpnext&n; *&t;bh-&gt;b_cpprev&n; *&t;transaction-&gt;t_checkpoint_list&n; *&t;transaction-&gt;t_cpnext&n; *&t;transaction-&gt;t_cpprev&n; *&t;journal-&gt;j_checkpoint_transactions&n; *&n; * It is global at this time rather than per-journal because it&squot;s&n; * impossible for __journal_free_buffer to go from a buffer_head&n; * back to a journal_t unracily (well, not true.  Fix later)&n; *&n; *&n; * The `datalist&squot; and `checkpoint list&squot; functions are quite&n; * separate and we could use two spinlocks here.&n; *&n; * lru_list_lock nests inside journal_datalist_lock.&n; */
-DECL|variable|journal_datalist_lock
-id|spinlock_t
-id|journal_datalist_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 multiline_comment|/*&n; * List of all journals in the system.  Protected by the BKL.&n; */
 r_static
 id|LIST_HEAD
@@ -4603,75 +4596,6 @@ id|inode-&gt;i_sb-&gt;s_blocksize_bits
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * shrink_journal_memory().&n; * Called when we&squot;re under memory pressure.  Free up all the written-back&n; * checkpointed metadata buffers.&n; */
-DECL|function|shrink_journal_memory
-r_void
-id|shrink_journal_memory
-c_func
-(paren
-r_void
-)paren
-(brace
-r_struct
-id|list_head
-op_star
-id|list
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|list_for_each
-c_func
-(paren
-id|list
-comma
-op_amp
-id|all_journals
-)paren
-(brace
-id|journal_t
-op_star
-id|journal
-op_assign
-id|list_entry
-c_func
-(paren
-id|list
-comma
-id|journal_t
-comma
-id|j_all_journals
-)paren
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|journal_datalist_lock
-)paren
-suffix:semicolon
-id|__journal_clean_checkpoint_list
-c_func
-(paren
-id|journal
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|journal_datalist_lock
-)paren
-suffix:semicolon
-)brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Simple support for retying memory allocations.  Introduced to help to&n; * debug different VM deadlock avoidance strategies. &n; */
 multiline_comment|/*&n; * Simple support for retying memory allocations.  Introduced to help to&n; * debug different VM deadlock avoidance strategies. &n; */
 DECL|function|__jbd_kmalloc
@@ -4997,7 +4921,7 @@ id|jh
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * A journal_head is attached to a buffer_head whenever JBD has an&n; * interest in the buffer.&n; *&n; * Whenever a buffer has an attached journal_head, its -&gt;b_state:BH_JBD bit&n; * is set.  This bit is tested in core kernel code where we need to take&n; * JBD-specific actions.  Testing the zeroness of -&gt;b_private is not reliable&n; * there.&n; *&n; * When a buffer has its BH_JBD bit set, its -&gt;b_count is elevated by one.&n; *&n; * When a buffer has its BH_JBD bit set it is immune from being released by&n; * core kernel code, mainly via -&gt;b_count.&n; *&n; * A journal_head may be detached from its buffer_head when the journal_head&squot;s&n; * b_transaction, b_cp_transaction and b_next_transaction pointers are NULL.&n; * Various places in JBD call journal_remove_journal_head() to indicate that the&n; * journal_head can be dropped if needed.&n; *&n; * Various places in the kernel want to attach a journal_head to a buffer_head&n; * _before_ attaching the journal_head to a transaction.  To protect the&n; * journal_head in this situation, journal_add_journal_head elevates the&n; * journal_head&squot;s b_jcount refcount by one.  The caller must call&n; * journal_put_journal_head() to undo this.&n; *&n; * So the typical usage would be:&n; *&n; *&t;(Attach a journal_head if needed.  Increments b_jcount)&n; *&t;struct journal_head *jh = journal_add_journal_head(bh);&n; *&t;...&n; *&t;jh-&gt;b_transaction = xxx;&n; *&t;journal_put_journal_head(jh);&n; *&n; * Now, the journal_head&squot;s b_jcount is zero, but it is safe from being released&n; * because it has a non-zero b_transaction.&n; */
-multiline_comment|/*&n; * Give a buffer_head a journal_head.&n; *&n; * Doesn&squot;t need the journal lock.&n; * May sleep.&n; * Cannot be called with journal_datalist_lock held.&n; */
+multiline_comment|/*&n; * Give a buffer_head a journal_head.&n; *&n; * Doesn&squot;t need the journal lock.&n; * May sleep.&n; */
 DECL|function|journal_add_journal_head
 r_struct
 id|journal_head
