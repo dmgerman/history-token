@@ -13,6 +13,7 @@ macro_line|#include &quot;sd.h&quot;&t;&t;&t;/* For geometry detection */
 macro_line|#endif
 macro_line|#include &lt;linux/mm.h&gt;&t;&t;/* For fetching system memory size */
 macro_line|#include &lt;linux/blkdev.h&gt;&t;&t;/* For block_size() */
+macro_line|#include &lt;linux/delay.h&gt;&t;/* For ssleep/msleep */
 multiline_comment|/*&n; * Lock protecting manipulation of the ahc softc list.&n; */
 DECL|variable|ahc_list_spinlock
 id|spinlock_t
@@ -10396,12 +10397,10 @@ id|status
 op_amp
 id|SSQ_DELAY
 )paren
-id|scsi_sleep
+id|ssleep
 c_func
 (paren
 l_int|1
-op_star
-id|HZ
 )paren
 suffix:semicolon
 r_break
@@ -11085,12 +11084,12 @@ id|SSQ_DELAY
 op_ne
 l_int|0
 )paren
-id|scsi_sleep
+id|msleep
 c_func
 (paren
 id|ahc-&gt;our_id
 op_star
-id|HZ
+l_int|1000
 op_div
 l_int|10
 )paren
@@ -11268,12 +11267,10 @@ id|SSQ_DELAY
 op_ne
 l_int|0
 )paren
-id|scsi_sleep
+id|ssleep
 c_func
 (paren
 l_int|1
-op_star
-id|HZ
 )paren
 suffix:semicolon
 )brace

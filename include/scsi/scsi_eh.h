@@ -78,14 +78,6 @@ id|scsi_device
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|scsi_sleep
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Reset request from external source&n; */
 DECL|macro|SCSI_TRY_RESET_DEVICE
 mdefine_line|#define SCSI_TRY_RESET_DEVICE&t;1

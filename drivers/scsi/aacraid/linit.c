@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/ioctl32.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
@@ -2406,10 +2407,10 @@ c_func
 id|host-&gt;host_lock
 )paren
 suffix:semicolon
-id|scsi_sleep
+id|ssleep
 c_func
 (paren
-id|HZ
+l_int|1
 )paren
 suffix:semicolon
 id|spin_lock_irq

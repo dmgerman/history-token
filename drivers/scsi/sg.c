@@ -29,6 +29,7 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/cdev.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_driver.h&gt;
@@ -8248,10 +8249,10 @@ c_cond
 (paren
 id|delay
 )paren
-id|scsi_sleep
+id|msleep
 c_func
 (paren
-l_int|2
+l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/* dirty detach so delay device destruction */
