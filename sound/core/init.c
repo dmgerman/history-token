@@ -3352,8 +3352,7 @@ id|suspend
 id|snd_card_t
 op_star
 comma
-r_int
-r_int
+id|pm_message_t
 )paren
 comma
 r_int
@@ -3364,9 +3363,6 @@ id|resume
 (paren
 id|snd_card_t
 op_star
-comma
-r_int
-r_int
 )paren
 comma
 r_void
