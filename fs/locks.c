@@ -6623,7 +6623,7 @@ c_func
 id|to_kdev_t
 c_func
 (paren
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb-&gt;s_dev
 )paren
 )paren
 suffix:colon

@@ -1408,10 +1408,6 @@ id|inode
 r_return
 l_int|NULL
 suffix:semicolon
-id|inode-&gt;i_dev
-op_assign
-l_int|0
-suffix:semicolon
 id|sock
 op_assign
 id|SOCKET_I

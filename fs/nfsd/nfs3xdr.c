@@ -1328,7 +1328,7 @@ comma
 (paren
 id|u64
 )paren
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb-&gt;s_dev
 )paren
 suffix:semicolon
 id|p

@@ -168,10 +168,6 @@ id|inode-&gt;i_sb
 op_assign
 id|sb
 suffix:semicolon
-id|inode-&gt;i_dev
-op_assign
-id|sb-&gt;s_dev
-suffix:semicolon
 id|inode-&gt;i_blkbits
 op_assign
 id|sb-&gt;s_blocksize_bits

@@ -956,10 +956,6 @@ DECL|member|i_count
 id|atomic_t
 id|i_count
 suffix:semicolon
-DECL|member|i_dev
-id|dev_t
-id|i_dev
-suffix:semicolon
 DECL|member|i_mode
 id|umode_t
 id|i_mode

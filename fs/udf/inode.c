@@ -4898,7 +4898,7 @@ suffix:semicolon
 r_uint16
 id|ident
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set defaults, but the inode is still incomplete!&n;&t; * Note: get_new_inode() sets the following on a new inode:&n;&t; *      i_sb = sb&n;&t; *      i_dev = sb-&gt;s_dev;&n;&t; *      i_no = ino&n;&t; *      i_flags = sb-&gt;s_flags&n;&t; *      i_state = 0&n;&t; * clean_inode(): zero fills and sets&n;&t; *      i_count = 1&n;&t; *      i_nlink = 1&n;&t; *      i_op = NULL;&n;&t; */
+multiline_comment|/*&n;&t; * Set defaults, but the inode is still incomplete!&n;&t; * Note: get_new_inode() sets the following on a new inode:&n;&t; *      i_sb = sb&n;&t; *      i_no = ino&n;&t; *      i_flags = sb-&gt;s_flags&n;&t; *      i_state = 0&n;&t; * clean_inode(): zero fills and sets&n;&t; *      i_count = 1&n;&t; *      i_nlink = 1&n;&t; *      i_op = NULL;&n;&t; */
 id|inode-&gt;i_blksize
 op_assign
 id|PAGE_SIZE

@@ -344,7 +344,7 @@ id|attr
 r_int
 id|inode_type
 suffix:semicolon
-multiline_comment|/* inode&squot;s i_dev, i_flags, i_ino are set by iget &n;           XXX: is this all we need ??&n;           */
+multiline_comment|/* inode&squot;s i_flags, i_ino are set by iget &n;           XXX: is this all we need ??&n;           */
 r_switch
 c_cond
 (paren

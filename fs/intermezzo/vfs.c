@@ -477,7 +477,7 @@ op_assign
 id|to_kdev_t
 c_func
 (paren
-id|fset-&gt;fset_dentry-&gt;d_inode-&gt;i_dev
+id|fset-&gt;fset_dentry-&gt;d_inode-&gt;i_sb-&gt;s_dev
 )paren
 suffix:semicolon
 r_if
@@ -3050,9 +3050,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dir-&gt;d_inode-&gt;i_dev
+id|dir-&gt;d_inode-&gt;i_sb-&gt;s_dev
 op_ne
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb-&gt;s_dev
 )paren
 r_goto
 id|exit_lock
@@ -8214,9 +8214,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|new_dir-&gt;i_dev
+id|new_dir-&gt;i_sb-&gt;s_dev
 op_ne
-id|old_dir-&gt;i_dev
+id|old_dir-&gt;i_sb-&gt;s_dev
 )paren
 r_return
 op_minus
@@ -8580,9 +8580,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|new_dir-&gt;i_dev
+id|new_dir-&gt;i_sb-&gt;s_dev
 op_ne
-id|old_dir-&gt;i_dev
+id|old_dir-&gt;i_sb-&gt;s_dev
 )paren
 r_return
 op_minus
