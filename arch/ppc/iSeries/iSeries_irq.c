@@ -34,7 +34,7 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallPci.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallXm.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_irq.h&gt;
