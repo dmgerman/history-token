@@ -295,10 +295,14 @@ id|elf_phdr
 op_plus
 l_int|3
 op_star
+(paren
 r_sizeof
 (paren
 r_struct
-id|memelfnote
+id|elf_note
+)paren
+op_plus
+l_int|4
 )paren
 op_plus
 r_sizeof
