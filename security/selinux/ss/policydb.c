@@ -3682,11 +3682,6 @@ id|lc
 op_assign
 l_int|NULL
 suffix:semicolon
-id|rc
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3959,6 +3954,11 @@ l_int|2
 )braket
 )paren
 suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -4123,6 +4123,10 @@ id|rc
 )paren
 r_goto
 id|bad
+suffix:semicolon
+id|rc
+op_assign
+l_int|0
 suffix:semicolon
 id|out
 suffix:colon
@@ -5131,11 +5135,6 @@ id|rc
 )paren
 r_goto
 id|out
-suffix:semicolon
-id|rc
-op_assign
-op_minus
-id|EINVAL
 suffix:semicolon
 multiline_comment|/* Read the magic number and string length. */
 id|rc
@@ -7641,6 +7640,10 @@ id|rc
 r_goto
 id|bad
 suffix:semicolon
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
 id|out
 suffix:colon
 id|policydb_loaded_version
@@ -7662,6 +7665,17 @@ id|OCON_FSUSE
 suffix:semicolon
 id|bad
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rc
+)paren
+id|rc
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 id|policydb_destroy
 c_func
 (paren
