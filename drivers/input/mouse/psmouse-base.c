@@ -316,20 +316,6 @@ comma
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * The PS2++ protocol is a little bit complex&n; */
-r_if
-c_cond
-(paren
-id|psmouse-&gt;type
-op_eq
-id|PSMOUSE_PS2PP
-)paren
-id|ps2pp_process_packet
-c_func
-(paren
-id|psmouse
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Scroll wheel on IntelliMice, scroll buttons on NetMice&n; */
 r_if
 c_cond
