@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: divasmain.c,v 1.51 2004/03/20 20:47:08 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divasmain.c,v 1.52 2004/03/21 17:26:01 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &quot;platform.h&quot;
@@ -20,7 +21,6 @@ macro_line|#undef ID_MASK
 DECL|macro|N_DATA
 macro_line|#undef N_DATA
 macro_line|#include &quot;pc.h&quot;
-macro_line|#include &quot;dlist.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
 macro_line|#include &quot;divasync.h&quot;
 macro_line|#include &quot;diva.h&quot;
@@ -37,7 +37,7 @@ r_char
 op_star
 id|main_revision
 op_assign
-l_string|&quot;$Revision: 1.51 $&quot;
+l_string|&quot;$Revision: 1.52 $&quot;
 suffix:semicolon
 DECL|variable|major
 r_static

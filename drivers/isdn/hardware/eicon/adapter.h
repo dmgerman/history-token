@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: adapter.h,v 1.1.2.2 2002/10/02 14:38:37 armin Exp $ */
+multiline_comment|/* $Id: adapter.h,v 1.4 2004/03/21 17:26:01 armin Exp $ */
 macro_line|#ifndef __DIVA_USER_MODE_IDI_ADAPTER_H__
 DECL|macro|__DIVA_USER_MODE_IDI_ADAPTER_H__
 mdefine_line|#define __DIVA_USER_MODE_IDI_ADAPTER_H__
@@ -10,7 +10,8 @@ r_struct
 id|_diva_um_idi_adapter
 (brace
 DECL|member|link
-id|diva_entity_link_t
+r_struct
+id|list_head
 id|link
 suffix:semicolon
 DECL|member|d
@@ -22,7 +23,8 @@ r_int
 id|adapter_nr
 suffix:semicolon
 DECL|member|entity_q
-id|diva_entity_queue_t
+r_struct
+id|list_head
 id|entity_q
 suffix:semicolon
 multiline_comment|/* entities linked to this adapter */

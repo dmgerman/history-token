@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: capifunc.c,v 1.57 2004/03/20 18:18:03 armin Exp $&n; *&n; * ISDN interface module for Eicon active cards DIVA.&n; * CAPI Interface common functions&n; * &n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de) &n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: capifunc.c,v 1.59 2004/03/21 17:27:32 armin Exp $&n; *&n; * ISDN interface module for Eicon active cards DIVA.&n; * CAPI Interface common functions&n; * &n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de) &n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;os_capi.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
@@ -6,7 +6,6 @@ macro_line|#include &quot;capi20.h&quot;
 macro_line|#include &quot;divacapi.h&quot;
 macro_line|#include &quot;divasync.h&quot;
 macro_line|#include &quot;capifunc.h&quot;
-macro_line|#include &quot;dlist.h&quot;
 DECL|macro|DBG_MINIMUM
 mdefine_line|#define DBG_MINIMUM  (DL_LOG + DL_FTL + DL_ERR)
 DECL|macro|DBG_DEFAULT
@@ -233,8 +232,6 @@ id|capi_ctr
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * include queue functions&n; */
-macro_line|#include &quot;dlist.c&quot;
 r_extern
 r_void
 id|DIVA_DIDD_Read
@@ -1594,7 +1591,8 @@ c_func
 r_int
 id|id
 comma
-id|diva_entity_queue_t
+r_struct
+id|list_head
 op_star
 id|free_mem_q
 )paren
@@ -1636,16 +1634,17 @@ c_cond
 id|li_config_table
 )paren
 (brace
-id|diva_q_add_tail
+id|list_add
 c_func
 (paren
-id|free_mem_q
-comma
 (paren
-id|diva_entity_link_t
+r_struct
+id|list_head
 op_star
 )paren
 id|li_config_table
+comma
+id|free_mem_q
 )paren
 suffix:semicolon
 id|li_config_table
@@ -1819,16 +1818,17 @@ c_cond
 (paren
 id|a-&gt;plci
 )paren
-id|diva_q_add_tail
+id|list_add
 c_func
 (paren
-id|free_mem_q
-comma
 (paren
-id|diva_entity_link_t
+r_struct
+id|list_head
 op_star
 )paren
 id|a-&gt;plci
+comma
+id|free_mem_q
 )paren
 suffix:semicolon
 id|memset
@@ -1879,32 +1879,30 @@ op_star
 id|d
 )paren
 (brace
-r_struct
-id|list_head
-op_star
-id|tmp
-suffix:semicolon
 id|diva_card
 op_star
 id|card
 op_assign
 l_int|NULL
 suffix:semicolon
-id|diva_entity_queue_t
-id|free_mem_q
-suffix:semicolon
-id|diva_entity_link_t
-op_star
-id|link
-suffix:semicolon
 id|diva_os_spin_lock_magic_t
 id|old_irql
 suffix:semicolon
-id|diva_q_init
+id|LIST_HEAD
+c_func
 (paren
-op_amp
 id|free_mem_q
 )paren
+suffix:semicolon
+r_struct
+id|list_head
+op_star
+id|link
+suffix:semicolon
+r_struct
+id|list_head
+op_star
+id|tmp
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set &quot;remove in progress flag&quot;.&n;&t; * Ensures that there is no call from sendf to CAPI in&n;&t; * the time CAPI controller is about to be removed.&n;&t; */
 id|diva_os_enter_spin_lock
@@ -2065,27 +2063,20 @@ id|card
 suffix:semicolon
 )brace
 multiline_comment|/* free queued memory areas */
-r_while
-c_loop
-(paren
+id|list_for_each_safe
+c_func
 (paren
 id|link
-op_assign
-id|diva_q_get_head
-c_func
-(paren
+comma
+id|tmp
+comma
 op_amp
 id|free_mem_q
-)paren
-)paren
 )paren
 (brace
-id|diva_q_remove
+id|list_del
 c_func
 (paren
-op_amp
-id|free_mem_q
-comma
 id|link
 )paren
 suffix:semicolon
