@@ -1926,6 +1926,16 @@ DECL|macro|TMEDRGBR
 mdefine_line|#define TMEDRGBR&t;__REG(0x44000040)  /* TMED RGB Seed Register */
 DECL|macro|TMEDCR
 mdefine_line|#define TMEDCR&t;&t;__REG(0x44000044)  /* TMED Control Register */
+DECL|macro|LCCR3_1BPP
+mdefine_line|#define LCCR3_1BPP (0 &lt;&lt; 24)
+DECL|macro|LCCR3_2BPP
+mdefine_line|#define LCCR3_2BPP (1 &lt;&lt; 24)
+DECL|macro|LCCR3_4BPP
+mdefine_line|#define LCCR3_4BPP (2 &lt;&lt; 24)
+DECL|macro|LCCR3_8BPP
+mdefine_line|#define LCCR3_8BPP (3 &lt;&lt; 24)
+DECL|macro|LCCR3_16BPP
+mdefine_line|#define LCCR3_16BPP (4 &lt;&lt; 24)
 DECL|macro|FDADR0
 mdefine_line|#define FDADR0&t;&t;__REG(0x44000200)  /* DMA Channel 0 Frame Descriptor Address Register */
 DECL|macro|FSADR0
@@ -1945,9 +1955,18 @@ mdefine_line|#define LDCMD1&t;&t;__REG(0x4400021C)  /* DMA Channel 1 Command Reg
 DECL|macro|LCCR0_ENB
 mdefine_line|#define LCCR0_ENB&t;(1 &lt;&lt; 0)&t;/* LCD Controller enable */
 DECL|macro|LCCR0_CMS
-mdefine_line|#define LCCR0_CMS&t;(1 &lt;&lt; 1)&t;/* Color = 0, Monochrome = 1 */
+mdefine_line|#define LCCR0_CMS&t;(1 &lt;&lt; 1)&t;/* Color/Monochrome Display Select */
+DECL|macro|LCCR0_Color
+mdefine_line|#define LCCR0_Color     (LCCR0_CMS*0)   /*  Color display                  */
+DECL|macro|LCCR0_Mono
+mdefine_line|#define LCCR0_Mono      (LCCR0_CMS*1)   /*  Monochrome display             */
 DECL|macro|LCCR0_SDS
-mdefine_line|#define LCCR0_SDS&t;(1 &lt;&lt; 2)&t;/* Single Panel = 0, Dual Panel = 1 */
+mdefine_line|#define LCCR0_SDS&t;(1 &lt;&lt; 2)&t;/* Single/Dual Panel Display       */
+multiline_comment|/* Select                          */
+DECL|macro|LCCR0_Sngl
+mdefine_line|#define LCCR0_Sngl      (LCCR0_SDS*0)   /*  Single panel display           */
+DECL|macro|LCCR0_Dual
+mdefine_line|#define LCCR0_Dual      (LCCR0_SDS*1)   /*  Dual panel display             */
 DECL|macro|LCCR0_LDM
 mdefine_line|#define LCCR0_LDM&t;(1 &lt;&lt; 3)&t;/* LCD Disable Done Mask */
 DECL|macro|LCCR0_SFM
@@ -1957,11 +1976,20 @@ mdefine_line|#define LCCR0_IUM&t;(1 &lt;&lt; 5)&t;/* Input FIFO underrun mask */
 DECL|macro|LCCR0_EFM
 mdefine_line|#define LCCR0_EFM&t;(1 &lt;&lt; 6)&t;/* End of Frame mask */
 DECL|macro|LCCR0_PAS
-mdefine_line|#define LCCR0_PAS&t;(1 &lt;&lt; 7)&t;/* Passive = 0, Active = 1 */
-DECL|macro|LCCR0_BLE
-mdefine_line|#define LCCR0_BLE&t;(1 &lt;&lt; 8)&t;/* Little Endian = 0, Big Endian = 1 */
+mdefine_line|#define LCCR0_PAS&t;(1 &lt;&lt; 7)&t;/* Passive/Active display Select   */
+DECL|macro|LCCR0_Pas
+mdefine_line|#define LCCR0_Pas       (LCCR0_PAS*0)   /*  Passive display (STN)          */
+DECL|macro|LCCR0_Act
+mdefine_line|#define LCCR0_Act       (LCCR0_PAS*1)   /*  Active display (TFT)           */
 DECL|macro|LCCR0_DPD
-mdefine_line|#define LCCR0_DPD&t;(1 &lt;&lt; 9)&t;/* Double Pixel mode, 4 pixel value = 0, 8 pixle values = 1 */
+mdefine_line|#define LCCR0_DPD&t;(1 &lt;&lt; 9)&t;/* Double Pixel Data (monochrome   */
+multiline_comment|/* display mode)                   */
+DECL|macro|LCCR0_4PixMono
+mdefine_line|#define LCCR0_4PixMono  (LCCR0_DPD*0)   /*  4-Pixel/clock Monochrome       */
+multiline_comment|/*  display                        */
+DECL|macro|LCCR0_8PixMono
+mdefine_line|#define LCCR0_8PixMono  (LCCR0_DPD*1)   /*  8-Pixel/clock Monochrome       */
+multiline_comment|/*  display                        */
 DECL|macro|LCCR0_DIS
 mdefine_line|#define LCCR0_DIS&t;(1 &lt;&lt; 10)&t;/* LCD Disable */
 DECL|macro|LCCR0_QDM
@@ -2025,9 +2053,18 @@ mdefine_line|#define LCCR3_VSP&t;(1 &lt;&lt; 20)&t;/* vertical sync polarity */
 DECL|macro|LCCR3_HSP
 mdefine_line|#define LCCR3_HSP&t;(1 &lt;&lt; 21)&t;/* horizontal sync polarity */
 DECL|macro|LCCR3_PCP
-mdefine_line|#define LCCR3_PCP&t;(1 &lt;&lt; 22)&t;/* pixel clock polarity */
+mdefine_line|#define LCCR3_PCP&t;(1 &lt;&lt; 22)&t;/* Pixel Clock Polarity (L_PCLK)   */
+DECL|macro|LCCR3_PixRsEdg
+mdefine_line|#define LCCR3_PixRsEdg  (LCCR3_PCP*0)   /*  Pixel clock Rising-Edge        */
+DECL|macro|LCCR3_PixFlEdg
+mdefine_line|#define LCCR3_PixFlEdg  (LCCR3_PCP*1)   /*  Pixel clock Falling-Edge       */
 DECL|macro|LCCR3_OEP
-mdefine_line|#define LCCR3_OEP&t;(1 &lt;&lt; 23)&t;/* output enable polarity */
+mdefine_line|#define LCCR3_OEP       (1 &lt;&lt; 23)       /* Output Enable Polarity (L_BIAS, */
+multiline_comment|/* active display mode)            */
+DECL|macro|LCCR3_OutEnH
+mdefine_line|#define LCCR3_OutEnH    (LCCR3_OEP*0)   /*  Output Enable active High      */
+DECL|macro|LCCR3_OutEnL
+mdefine_line|#define LCCR3_OutEnL    (LCCR3_OEP*1)   /*  Output Enable active Low       */
 macro_line|#if 0
 mdefine_line|#define LCCR3_BPP&t;(7 &lt;&lt; 24)&t;/* bits per pixel */
 mdefine_line|#define LCCR3_BPP_S&t;24
