@@ -2222,6 +2222,14 @@ op_amp
 id|slab_reclaim_pages
 )paren
 suffix:semicolon
+id|add_page_state
+c_func
+(paren
+id|nr_slab
+comma
+id|i
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -5744,12 +5752,6 @@ c_func
 id|page
 comma
 id|slabp
-)paren
-suffix:semicolon
-id|inc_page_state
-c_func
-(paren
-id|nr_slab
 )paren
 suffix:semicolon
 id|page
