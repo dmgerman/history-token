@@ -332,16 +332,20 @@ r_return
 id|c
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This allocates one page of cache-coherent memory space and returns&n; * both the virtual and a &quot;dma&quot; address to that space.&n; */
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
+macro_line|#error ARM Coherent DMA allocator does not (yet) support huge TLB
+macro_line|#endif
 r_static
-DECL|function|consistent_alloc
 r_void
 op_star
-id|consistent_alloc
+DECL|function|__dma_alloc
+id|__dma_alloc
 c_func
 (paren
-r_int
-id|gfp
+r_struct
+id|device
+op_star
+id|dev
 comma
 r_int
 id|size
@@ -351,8 +355,10 @@ op_star
 id|handle
 comma
 r_int
-r_int
-id|cache_flags
+id|gfp
+comma
+id|pgprot_t
+id|prot
 )paren
 (brace
 r_struct
@@ -368,18 +374,15 @@ suffix:semicolon
 r_int
 r_int
 id|order
-comma
-id|flags
 suffix:semicolon
-r_void
-op_star
-id|ret
+id|u64
+id|mask
 op_assign
-l_int|NULL
+l_int|0x00ffffff
+comma
+id|limit
 suffix:semicolon
-r_int
-id|res
-suffix:semicolon
+multiline_comment|/* ISA default */
 r_if
 c_cond
 (paren
@@ -391,7 +394,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;consistent_alloc: not initialised&bslash;n&quot;
+l_string|&quot;%s: not initialised&bslash;n&quot;
+comma
+id|__func__
 )paren
 suffix:semicolon
 id|dump_stack
@@ -403,6 +408,37 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|dev
+)paren
+(brace
+id|mask
+op_assign
+id|dev-&gt;coherent_dma_mask
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mask
+op_eq
+l_int|0
+)paren
+(brace
+id|dev_warn
+c_func
+(paren
+id|dev
+comma
+l_string|&quot;coherent DMA mask is unset&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+)brace
 id|size
 op_assign
 id|PAGE_ALIGN
@@ -411,6 +447,52 @@ c_func
 id|size
 )paren
 suffix:semicolon
+id|limit
+op_assign
+(paren
+id|mask
+op_plus
+l_int|1
+)paren
+op_amp
+op_complement
+id|mask
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|limit
+op_logical_and
+id|size
+op_ge
+id|limit
+)paren
+op_logical_or
+id|size
+op_ge
+(paren
+id|CONSISTENT_END
+op_minus
+id|CONSISTENT_BASE
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;coherent allocation too big (requested %#x mask %#Lx)&bslash;n&quot;
+comma
+id|size
+comma
+id|mask
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 id|order
 op_assign
 id|get_order
@@ -418,6 +500,17 @@ c_func
 (paren
 id|size
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mask
+op_ne
+l_int|0xffffffff
+)paren
+id|gfp
+op_or_assign
+id|GFP_DMA
 suffix:semicolon
 id|page
 op_assign
@@ -454,7 +547,21 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|dmac_inv_range
+id|memset
+c_func
+(paren
+id|page_address
+c_func
+(paren
+id|page
+)paren
+comma
+l_int|0
+comma
+id|size
+)paren
+suffix:semicolon
+id|dmac_flush_range
 c_func
 (paren
 id|kaddr
@@ -515,23 +622,6 @@ op_plus
 l_int|1
 op_lshift
 id|order
-)paren
-suffix:semicolon
-id|pgprot_t
-id|prot
-op_assign
-id|__pgprot
-c_func
-(paren
-id|L_PTE_PRESENT
-op_or
-id|L_PTE_YOUNG
-op_or
-id|L_PTE_DIRTY
-op_or
-id|L_PTE_WRITE
-op_or
-id|cache_flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Set the &quot;dma handle&quot;&n;&t;&t; */
@@ -655,7 +745,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Since we have the DMA mask available to us here, we could try to do&n; * a normal allocation, and only fall back to a &quot;DMA&quot; allocation if the&n; * resulting bus address does not satisfy the dma_mask requirements.&n; */
+multiline_comment|/*&n; * Allocate DMA-coherent memory space and return both the kernel remapped&n; * virtual and bus address for that space.&n; */
 r_void
 op_star
 DECL|function|dma_alloc_coherent
@@ -678,33 +768,23 @@ r_int
 id|gfp
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|dev
-op_eq
-l_int|NULL
-op_logical_or
-op_star
-id|dev-&gt;dma_mask
-op_ne
-l_int|0xffffffff
-)paren
-id|gfp
-op_or_assign
-id|GFP_DMA
-suffix:semicolon
 r_return
-id|consistent_alloc
+id|__dma_alloc
 c_func
 (paren
-id|gfp
+id|dev
 comma
 id|size
 comma
 id|handle
 comma
-l_int|0
+id|gfp
+comma
+id|pgprot_noncached
+c_func
+(paren
+id|pgprot_kernel
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -738,33 +818,23 @@ r_int
 id|gfp
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|dev
-op_eq
-l_int|NULL
-op_logical_or
-op_star
-id|dev-&gt;dma_mask
-op_ne
-l_int|0xffffffff
-)paren
-id|gfp
-op_or_assign
-id|GFP_DMA
-suffix:semicolon
 r_return
-id|consistent_alloc
+id|__dma_alloc
 c_func
 (paren
-id|gfp
+id|dev
 comma
 id|size
 comma
 id|handle
 comma
-id|PTE_BUFFERABLE
+id|gfp
+comma
+id|pgprot_writecombine
+c_func
+(paren
+id|pgprot_kernel
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -867,7 +937,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;consistent_free: wrong size (%ld != %d)&bslash;n&quot;
+l_string|&quot;%s: freeing wrong coherent size (%ld != %d)&bslash;n&quot;
+comma
+id|__func__
 comma
 id|c-&gt;vm_end
 op_minus
@@ -982,8 +1054,9 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;consistent_free: bad page in kernel page &quot;
-l_string|&quot;table&bslash;n&quot;
+l_string|&quot;%s: bad page in kernel page table&bslash;n&quot;
+comma
+id|__func__
 )paren
 suffix:semicolon
 )brace
@@ -1042,10 +1115,11 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;consistent_free: trying to free &quot;
-l_string|&quot;invalid area: %p&bslash;n&quot;
+l_string|&quot;%s: trying to free invalid coherent area: %p&bslash;n&quot;
 comma
-id|vaddr
+id|__func__
+comma
+id|cpu_addr
 )paren
 suffix:semicolon
 id|dump_stack
@@ -1133,7 +1207,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;consistent_init: no pmd tables&bslash;n&quot;
+l_string|&quot;%s: no pmd tables&bslash;n&quot;
+comma
+id|__func__
 )paren
 suffix:semicolon
 id|ret
@@ -1180,7 +1256,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;consistent_init: no pte tables&bslash;n&quot;
+l_string|&quot;%s: no pte tables&bslash;n&quot;
+comma
+id|__func__
 )paren
 suffix:semicolon
 id|ret
