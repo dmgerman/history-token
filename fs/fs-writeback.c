@@ -157,6 +157,7 @@ id|inode-&gt;i_hash
 r_goto
 id|out
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -171,7 +172,6 @@ id|I_CLEAR
 r_goto
 id|out
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t; * If the inode was already on s_dirty or s_io, don&squot;t&n;&t;&t; * reposition it (that would break s_dirty time-ordering).&n;&t;&t; */
 r_if
 c_cond
