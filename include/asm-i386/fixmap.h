@@ -105,6 +105,11 @@ op_minus
 l_int|1
 comma
 macro_line|#endif
+macro_line|#ifdef CONFIG_PCI_MMCONFIG
+DECL|enumerator|FIX_PCIE_MCFG
+id|FIX_PCIE_MCFG
+comma
+macro_line|#endif
 DECL|enumerator|__end_of_permanent_fixed_addresses
 id|__end_of_permanent_fixed_addresses
 comma

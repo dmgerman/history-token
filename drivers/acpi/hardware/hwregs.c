@@ -227,7 +227,7 @@ id|acpi_ns_evaluate_by_name
 r_char
 op_star
 )paren
-id|acpi_gbl_db_sleep_states
+id|acpi_gbl_sleep_state_names
 (braket
 id|sleep_state
 )braket
@@ -259,7 +259,7 @@ id|acpi_format_exception
 id|status
 )paren
 comma
-id|acpi_gbl_db_sleep_states
+id|acpi_gbl_sleep_state_names
 (braket
 id|sleep_state
 )braket
@@ -447,7 +447,7 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;While evaluating sleep_state [%s], bad Sleep object %p type %s&bslash;n&quot;
 comma
-id|acpi_gbl_db_sleep_states
+id|acpi_gbl_sleep_state_names
 (braket
 id|sleep_state
 )braket
