@@ -283,24 +283,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-DECL|macro|ide_request_irq
-mdefine_line|#define ide_request_irq(irq,hand,flg,dev,id)&t;request_irq((irq),(hand),(flg),(dev),(id))
-DECL|macro|ide_free_irq
-mdefine_line|#define ide_free_irq(irq,dev_id)&t;&t;free_irq((irq), (dev_id))
-DECL|macro|ide_check_region
-mdefine_line|#define ide_check_region(from,extent)&t;&t;check_region((from), (extent))
-DECL|macro|ide_request_region
-mdefine_line|#define ide_request_region(from,extent,name)&t;request_region((from), (extent), (name))
-DECL|macro|ide_release_region
-mdefine_line|#define ide_release_region(from,extent)&t;&t;release_region((from), (extent))
-DECL|macro|ide_ack_intr
-mdefine_line|#define ide_ack_intr(hwif)&t;&t;(1)
-DECL|macro|ide_fix_driveid
-mdefine_line|#define ide_fix_driveid(id)&t;&t;do {} while (0)
-DECL|macro|ide_release_lock
-mdefine_line|#define ide_release_lock(lock)&t;&t;do {} while (0)
-DECL|macro|ide_get_lock
-mdefine_line|#define ide_get_lock(lock, hdlr, data)&t;do {} while (0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASMalpha_IDE_H */
 eof

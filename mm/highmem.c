@@ -1707,6 +1707,11 @@ id|idx
 comma
 id|type
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1764,6 +1769,11 @@ c_func
 suffix:semicolon
 )brace
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif
 eof
