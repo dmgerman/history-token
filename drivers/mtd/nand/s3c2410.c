@@ -1,4 +1,4 @@
-multiline_comment|/* linux/drivers/mtd/nand/s3c2410.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Samsung S3C2410 NAND driver&n; *&n; * Changelog:&n; *&t;21-Sep-2004  BJD  Initial version&n; *&t;23-Sep-2004  BJD  Mulitple device support&n; *&t;28-Sep-2004  BJD  Fixed ECC placement for Hardware mode&n; *&t;12-Oct-2004  BJD  Fixed errors in use of platform data&n; *&n; * $Id: s3c2410.c,v 1.5 2004/10/12 10:10:15 bjd Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
+multiline_comment|/* linux/drivers/mtd/nand/s3c2410.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Samsung S3C2410 NAND driver&n; *&n; * Changelog:&n; *&t;21-Sep-2004  BJD  Initial version&n; *&t;23-Sep-2004  BJD  Mulitple device support&n; *&t;28-Sep-2004  BJD  Fixed ECC placement for Hardware mode&n; *&t;12-Oct-2004  BJD  Fixed errors in use of platform data&n; *&n; * $Id: s3c2410.c,v 1.6 2004/11/24 12:25:48 bjd Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 macro_line|#include &lt;config/mtd/nand/s3c2410/hwecc.h&gt;
 macro_line|#include &lt;config/mtd/nand/s3c2410/debug.h&gt;
 macro_line|#ifdef CONFIG_MTD_NAND_S3C2410_DEBUG
@@ -451,7 +451,7 @@ op_assign
 id|s3c2410_nand_calc_rate
 c_func
 (paren
-id|plat-&gt;twrph0
+id|plat-&gt;twrph1
 comma
 id|clkrate
 comma
