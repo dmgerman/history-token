@@ -1964,18 +1964,12 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: need to unlock BKL to allow preemption */
 DECL|function|snd_mixer_oss_ioctl
 r_static
 r_int
 id|snd_mixer_oss_ioctl
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
 r_struct
 id|file
 op_star
@@ -1990,17 +1984,7 @@ r_int
 id|arg
 )paren
 (brace
-r_int
-id|err
-suffix:semicolon
-multiline_comment|/* FIXME: need to unlock BKL to allow preemption */
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|err
-op_assign
+r_return
 id|snd_mixer_oss_ioctl1
 c_func
 (paren
@@ -2014,14 +1998,6 @@ id|cmd
 comma
 id|arg
 )paren
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|err
 suffix:semicolon
 )brace
 DECL|function|snd_mixer_oss_ioctl_card
@@ -2103,6 +2079,14 @@ id|arg
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_COMPAT
+multiline_comment|/* all compatible */
+DECL|macro|snd_mixer_oss_ioctl_compat
+mdefine_line|#define snd_mixer_oss_ioctl_compat&t;snd_mixer_oss_ioctl
+macro_line|#else
+DECL|macro|snd_mixer_oss_ioctl_compat
+mdefine_line|#define snd_mixer_oss_ioctl_compat&t;NULL
+macro_line|#endif
 multiline_comment|/*&n; *  REGISTRATION PART&n; */
 DECL|variable|snd_mixer_oss_f_ops
 r_static
@@ -2127,9 +2111,14 @@ op_assign
 id|snd_mixer_oss_release
 comma
 dot
-id|ioctl
+id|unlocked_ioctl
 op_assign
 id|snd_mixer_oss_ioctl
+comma
+dot
+id|compat_ioctl
+op_assign
+id|snd_mixer_oss_ioctl_compat
 comma
 )brace
 suffix:semicolon
