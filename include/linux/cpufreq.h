@@ -124,12 +124,17 @@ id|cpufreq_cpuinfo
 id|cpuinfo
 suffix:semicolon
 multiline_comment|/* see above */
-DECL|member|intf
+DECL|member|dev
 r_struct
-id|intf_data
-id|intf
+id|device
+op_star
+id|dev
 suffix:semicolon
-multiline_comment|/* interface data */
+DECL|member|kobj
+r_struct
+id|kobject
+id|kobj
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|CPUFREQ_ADJUST
