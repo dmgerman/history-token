@@ -455,6 +455,8 @@ suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon
+DECL|macro|tcptw_sk
+mdefine_line|#define tcptw_sk(__sk)&t;((struct tcp_tw_bucket *)(__sk))
 r_extern
 id|kmem_cache_t
 op_star
@@ -572,12 +574,16 @@ DECL|macro|TCP_V4_ADDR_COOKIE
 mdefine_line|#define TCP_V4_ADDR_COOKIE(__name, __saddr, __daddr) &bslash;&n;&t;__u64 __name = (((__u64)(__daddr))&lt;&lt;32)|((__u64)(__saddr));
 macro_line|#endif /* __BIG_ENDIAN */
 DECL|macro|TCP_IPV4_MATCH
-mdefine_line|#define TCP_IPV4_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;(((*((__u64 *)&amp;(inet_sk(__sk)-&gt;daddr)))== (__cookie))&t;&amp;&amp;&t;&bslash;&n;&t; ((*((__u32 *)&amp;(inet_sk(__sk)-&gt;dport)))== (__ports))   &amp;&amp;&t;&bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
+mdefine_line|#define TCP_IPV4_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;(((*((__u64 *)&amp;(inet_sk(__sk)-&gt;daddr)))== (__cookie))&t;&amp;&amp;&t;&bslash;&n;&t; ((*((__u32 *)&amp;(inet_sk(__sk)-&gt;dport)))== (__ports))&t;&amp;&amp;&t;&bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
+DECL|macro|TCP_IPV4_TW_MATCH
+mdefine_line|#define TCP_IPV4_TW_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;(((*((__u64 *)&amp;(tcptw_sk(__sk)-&gt;daddr)))== (__cookie))&t;&amp;&amp;&t;&bslash;&n;&t; ((*((__u32 *)&amp;(tcptw_sk(__sk)-&gt;dport)))== (__ports))&t;&amp;&amp;&t;&bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
 macro_line|#else /* 32-bit arch */
 DECL|macro|TCP_V4_ADDR_COOKIE
 mdefine_line|#define TCP_V4_ADDR_COOKIE(__name, __saddr, __daddr)
 DECL|macro|TCP_IPV4_MATCH
 mdefine_line|#define TCP_IPV4_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;((inet_sk(__sk)-&gt;daddr&t;&t;&t;== (__saddr))&t;&amp;&amp;&t;&bslash;&n;&t; (inet_sk(__sk)-&gt;rcv_saddr&t;&t;== (__daddr))&t;&amp;&amp;&t;&bslash;&n;&t; ((*((__u32 *)&amp;(inet_sk(__sk)-&gt;dport)))== (__ports))&t;&amp;&amp;&t;&bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
+DECL|macro|TCP_IPV4_TW_MATCH
+mdefine_line|#define TCP_IPV4_TW_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;((tcptw_sk(__sk)-&gt;daddr&t;&t;&t;== (__saddr))&t;&amp;&amp;&t;&bslash;&n;&t; (tcptw_sk(__sk)-&gt;rcv_saddr&t;&t;== (__daddr))&t;&amp;&amp;&t;&bslash;&n;&t; ((*((__u32 *)&amp;(tcptw_sk(__sk)-&gt;dport)))== (__ports))&t;&amp;&amp;&t;&bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
 macro_line|#endif /* 64-bit arch */
 DECL|macro|TCP_IPV6_MATCH
 mdefine_line|#define TCP_IPV6_MATCH(__sk, __saddr, __daddr, __ports, __dif)&t;   &bslash;&n;&t;(((*((__u32 *)&amp;(inet_sk(__sk)-&gt;dport)))== (__ports))   &t;&amp;&amp; &bslash;&n;&t; ((__sk)-&gt;family&t;&t;== AF_INET6)&t;&t;&amp;&amp; &bslash;&n;&t; !ipv6_addr_cmp(&amp;inet6_sk(__sk)-&gt;daddr, (__saddr))&t;&amp;&amp; &bslash;&n;&t; !ipv6_addr_cmp(&amp;inet6_sk(__sk)-&gt;rcv_saddr, (__daddr))&t;&amp;&amp; &bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
