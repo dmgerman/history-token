@@ -1,4 +1,4 @@
-multiline_comment|/*  ewrk3.c: A DIGITAL EtherWORKS 3 ethernet driver for Linux.&n;&n;   Written 1994 by David C. Davies.&n;&n;   Copyright 1994 Digital Equipment Corporation.&n;&n;   This software may be used and distributed according to the terms of&n;   the GNU General Public License, incorporated herein by reference.&n;&n;   This driver is written for the Digital Equipment Corporation series&n;   of EtherWORKS ethernet cards:&n;&n;   DE203 Turbo (BNC)&n;   DE204 Turbo (TP)&n;   DE205 Turbo (TP BNC)&n;&n;   The driver has been tested on a relatively busy  network using the DE205&n;   card and benchmarked with &squot;ttcp&squot;: it transferred 16M  of data at 975kB/s&n;   (7.8Mb/s) to a DECstation 5000/200.&n;&n;   The author may be reached at davies@maniac.ultranet.com.&n;&n;   =========================================================================&n;   This driver has been written  substantially  from scratch, although  its&n;   inheritance of style and stack interface from &squot;depca.c&squot; and in turn from&n;   Donald Becker&squot;s &squot;lance.c&squot; should be obvious.&n;&n;   The  DE203/4/5 boards  all  use a new proprietary   chip in place of the&n;   LANCE chip used in prior cards  (DEPCA, DE100, DE200/1/2, DE210, DE422).&n;   Use the depca.c driver in the standard distribution  for the LANCE based&n;   cards from DIGITAL; this driver will not work with them.&n;&n;   The DE203/4/5 cards have 2  main modes: shared memory  and I/O only. I/O&n;   only makes  all the card accesses through  I/O transactions and  no high&n;   (shared)  memory is used. This  mode provides a &gt;48% performance penalty&n;   and  is deprecated in this  driver,  although allowed to provide initial&n;   setup when hardstrapped.&n;&n;   The shared memory mode comes in 3 flavours: 2kB, 32kB and 64kB. There is&n;   no point in using any mode other than the 2kB  mode - their performances&n;   are virtually identical, although the driver has  been tested in the 2kB&n;   and 32kB modes. I would suggest you uncomment the line:&n;&n;   FORCE_2K_MODE;&n;&n;   to allow the driver to configure the card as a  2kB card at your current&n;   base  address, thus leaving more  room to clutter  your  system box with&n;   other memory hungry boards.&n;&n;   As many ISA  and EISA cards  can be supported  under this driver  as you&n;   wish, limited primarily  by the available IRQ lines,  rather than by the&n;   available I/O addresses  (24 ISA,  16 EISA).   I have  checked different&n;   configurations of  multiple  depca cards and  ewrk3 cards  and have  not&n;   found a problem yet (provided you have at least depca.c v0.38) ...&n;&n;   The board IRQ setting   must be at  an unused  IRQ which is  auto-probed&n;   using  Donald  Becker&squot;s autoprobe  routines.   All  these cards   are at&n;   {5,10,11,15}.&n;&n;   No 16MB memory  limitation should exist with this  driver as DMA is  not&n;   used and the common memory area is in low memory on the network card (my&n;   current system has 20MB and I&squot;ve not had problems yet).&n;&n;   The ability to load  this driver as a  loadable module has been included&n;   and used  extensively during the  driver development (to save those long&n;   reboot sequences). To utilise this ability, you have to do 8 things:&n;&n;   0) have a copy of the loadable modules code installed on your system.&n;   1) copy ewrk3.c from the  /linux/drivers/net directory to your favourite&n;   temporary directory.&n;   2) edit the  source code near  line 1898 to reflect  the I/O address and&n;   IRQ you&squot;re using.&n;   3) compile  ewrk3.c, but include -DMODULE in  the command line to ensure&n;   that the correct bits are compiled (see end of source code).&n;   4) if you are wanting to add a new  card, goto 5. Otherwise, recompile a&n;   kernel with the ewrk3 configuration turned off and reboot.&n;   5) insmod ewrk3.o&n;   [Alan Cox: Changed this so you can insmod ewrk3.o irq=x io=y]&n;   [Adam Kropelin: now accepts irq=x1,x2 io=y1,y2 for multiple cards]&n;   6) run the net startup bits for your new eth?? interface manually&n;   (usually /etc/rc.inet[12] at boot time).&n;   7) enjoy!&n;&n;   Note that autoprobing is not allowed in loadable modules - the system is&n;   already up and running and you&squot;re messing with interrupts.&n;&n;   To unload a module, turn off the associated interface&n;   &squot;ifconfig eth?? down&squot; then &squot;rmmod ewrk3&squot;.&n;&n;   Promiscuous   mode has been  turned  off  in this driver,   but  all the&n;   multicast  address bits  have been   turned on. This  improved the  send&n;   performance on a busy network by about 13%.&n;&n;   Ioctl&squot;s have now been provided (primarily because  I wanted to grab some&n;   packet size statistics). They  are patterned after &squot;plipconfig.c&squot; from a&n;   suggestion by Alan Cox.  Using these  ioctls, you can enable promiscuous&n;   mode, add/delete multicast  addresses, change the hardware address,  get&n;   packet size distribution statistics and muck around with the control and&n;   status register. I&squot;ll add others if and when the need arises.&n;&n;   TO DO:&n;   ------&n;&n;&n;   Revision History&n;   ----------------&n;&n;   Version   Date        Description&n;&n;   0.1     26-aug-94   Initial writing. ALPHA code release.&n;   0.11    31-aug-94   Fixed: 2k mode memory base calc.,&n;   LeMAC version calc.,&n;   IRQ vector assignments during autoprobe.&n;   0.12    31-aug-94   Tested working on LeMAC2 (DE20[345]-AC) card.&n;   Fixed up MCA hash table algorithm.&n;   0.20     4-sep-94   Added IOCTL functionality.&n;   0.21    14-sep-94   Added I/O mode.&n;   0.21axp 15-sep-94   Special version for ALPHA AXP Linux V1.0.&n;   0.22    16-sep-94   Added more IOCTLs &amp; tidied up.&n;   0.23    21-sep-94   Added transmit cut through.&n;   0.24    31-oct-94   Added uid checks in some ioctls.&n;   0.30     1-nov-94   BETA code release.&n;   0.31     5-dec-94   Added check/allocate region code.&n;   0.32    16-jan-95   Broadcast packet fix.&n;   0.33    10-Feb-95   Fix recognition bug reported by &lt;bkm@star.rl.ac.uk&gt;.&n;   0.40    27-Dec-95   Rationalise MODULE and autoprobe code.&n;   Rewrite for portability &amp; updated.&n;   ALPHA support from &lt;jestabro@amt.tay1.dec.com&gt;&n;   Added verify_area() calls in ewrk3_ioctl() from&n;   suggestion by &lt;heiko@colossus.escape.de&gt;.&n;   Add new multicasting code.&n;   0.41    20-Jan-96   Fix IRQ set up problem reported by&n;   &lt;kenneth@bbs.sas.ntu.ac.sg&gt;.&n;   0.42    22-Apr-96   Fix alloc_device() bug &lt;jari@markkus2.fimr.fi&gt;&n;   0.43    16-Aug-96   Update alloc_device() to conform to de4x5.c&n;   0.44    08-Nov-01   use library crc32 functions &lt;Matt_Domsch@dell.com&gt;&n;   0.45    19-Jul-02   fix unaligned access on alpha &lt;martin@bruli.net&gt;&n;   0.46    10-Oct-02   Multiple NIC support when module &lt;akropel1@rochester.rr.com&gt;&n;   0.47    18-Oct-02   ethtool support &lt;akropel1@rochester.rr.com&gt;&n;&n;   =========================================================================&n; */
+multiline_comment|/*  ewrk3.c: A DIGITAL EtherWORKS 3 ethernet driver for Linux.&n;&n;   Written 1994 by David C. Davies.&n;&n;   Copyright 1994 Digital Equipment Corporation.&n;&n;   This software may be used and distributed according to the terms of&n;   the GNU General Public License, incorporated herein by reference.&n;&n;   This driver is written for the Digital Equipment Corporation series&n;   of EtherWORKS ethernet cards:&n;&n;   DE203 Turbo (BNC)&n;   DE204 Turbo (TP)&n;   DE205 Turbo (TP BNC)&n;&n;   The driver has been tested on a relatively busy  network using the DE205&n;   card and benchmarked with &squot;ttcp&squot;: it transferred 16M  of data at 975kB/s&n;   (7.8Mb/s) to a DECstation 5000/200.&n;&n;   The author may be reached at davies@maniac.ultranet.com.&n;&n;   =========================================================================&n;   This driver has been written  substantially  from scratch, although  its&n;   inheritance of style and stack interface from &squot;depca.c&squot; and in turn from&n;   Donald Becker&squot;s &squot;lance.c&squot; should be obvious.&n;&n;   The  DE203/4/5 boards  all  use a new proprietary   chip in place of the&n;   LANCE chip used in prior cards  (DEPCA, DE100, DE200/1/2, DE210, DE422).&n;   Use the depca.c driver in the standard distribution  for the LANCE based&n;   cards from DIGITAL; this driver will not work with them.&n;&n;   The DE203/4/5 cards have 2  main modes: shared memory  and I/O only. I/O&n;   only makes  all the card accesses through  I/O transactions and  no high&n;   (shared)  memory is used. This  mode provides a &gt;48% performance penalty&n;   and  is deprecated in this  driver,  although allowed to provide initial&n;   setup when hardstrapped.&n;&n;   The shared memory mode comes in 3 flavours: 2kB, 32kB and 64kB. There is&n;   no point in using any mode other than the 2kB  mode - their performances&n;   are virtually identical, although the driver has  been tested in the 2kB&n;   and 32kB modes. I would suggest you uncomment the line:&n;&n;   FORCE_2K_MODE;&n;&n;   to allow the driver to configure the card as a  2kB card at your current&n;   base  address, thus leaving more  room to clutter  your  system box with&n;   other memory hungry boards.&n;&n;   As many ISA  and EISA cards  can be supported  under this driver  as you&n;   wish, limited primarily  by the available IRQ lines,  rather than by the&n;   available I/O addresses  (24 ISA,  16 EISA).   I have  checked different&n;   configurations of  multiple  depca cards and  ewrk3 cards  and have  not&n;   found a problem yet (provided you have at least depca.c v0.38) ...&n;&n;   The board IRQ setting   must be at  an unused  IRQ which is  auto-probed&n;   using  Donald  Becker&squot;s autoprobe  routines.   All  these cards   are at&n;   {5,10,11,15}.&n;&n;   No 16MB memory  limitation should exist with this  driver as DMA is  not&n;   used and the common memory area is in low memory on the network card (my&n;   current system has 20MB and I&squot;ve not had problems yet).&n;&n;   The ability to load  this driver as a  loadable module has been included&n;   and used  extensively during the  driver development (to save those long&n;   reboot sequences). To utilise this ability, you have to do 8 things:&n;&n;   0) have a copy of the loadable modules code installed on your system.&n;   1) copy ewrk3.c from the  /linux/drivers/net directory to your favourite&n;   temporary directory.&n;   2) edit the  source code near  line 1898 to reflect  the I/O address and&n;   IRQ you&squot;re using.&n;   3) compile  ewrk3.c, but include -DMODULE in  the command line to ensure&n;   that the correct bits are compiled (see end of source code).&n;   4) if you are wanting to add a new  card, goto 5. Otherwise, recompile a&n;   kernel with the ewrk3 configuration turned off and reboot.&n;   5) insmod ewrk3.o&n;   [Alan Cox: Changed this so you can insmod ewrk3.o irq=x io=y]&n;   [Adam Kropelin: now accepts irq=x1,x2 io=y1,y2 for multiple cards]&n;   6) run the net startup bits for your new eth?? interface manually&n;   (usually /etc/rc.inet[12] at boot time).&n;   7) enjoy!&n;&n;   Note that autoprobing is not allowed in loadable modules - the system is&n;   already up and running and you&squot;re messing with interrupts.&n;&n;   To unload a module, turn off the associated interface&n;   &squot;ifconfig eth?? down&squot; then &squot;rmmod ewrk3&squot;.&n;&n;   Promiscuous   mode has been  turned  off  in this driver,   but  all the&n;   multicast  address bits  have been   turned on. This  improved the  send&n;   performance on a busy network by about 13%.&n;&n;   Ioctl&squot;s have now been provided (primarily because  I wanted to grab some&n;   packet size statistics). They  are patterned after &squot;plipconfig.c&squot; from a&n;   suggestion by Alan Cox.  Using these  ioctls, you can enable promiscuous&n;   mode, add/delete multicast  addresses, change the hardware address,  get&n;   packet size distribution statistics and muck around with the control and&n;   status register. I&squot;ll add others if and when the need arises.&n;&n;   TO DO:&n;   ------&n;&n;&n;   Revision History&n;   ----------------&n;&n;   Version   Date        Description&n;&n;   0.1     26-aug-94   Initial writing. ALPHA code release.&n;   0.11    31-aug-94   Fixed: 2k mode memory base calc.,&n;   LeMAC version calc.,&n;   IRQ vector assignments during autoprobe.&n;   0.12    31-aug-94   Tested working on LeMAC2 (DE20[345]-AC) card.&n;   Fixed up MCA hash table algorithm.&n;   0.20     4-sep-94   Added IOCTL functionality.&n;   0.21    14-sep-94   Added I/O mode.&n;   0.21axp 15-sep-94   Special version for ALPHA AXP Linux V1.0.&n;   0.22    16-sep-94   Added more IOCTLs &amp; tidied up.&n;   0.23    21-sep-94   Added transmit cut through.&n;   0.24    31-oct-94   Added uid checks in some ioctls.&n;   0.30     1-nov-94   BETA code release.&n;   0.31     5-dec-94   Added check/allocate region code.&n;   0.32    16-jan-95   Broadcast packet fix.&n;   0.33    10-Feb-95   Fix recognition bug reported by &lt;bkm@star.rl.ac.uk&gt;.&n;   0.40    27-Dec-95   Rationalise MODULE and autoprobe code.&n;   Rewrite for portability &amp; updated.&n;   ALPHA support from &lt;jestabro@amt.tay1.dec.com&gt;&n;   Added verify_area() calls in ewrk3_ioctl() from&n;   suggestion by &lt;heiko@colossus.escape.de&gt;.&n;   Add new multicasting code.&n;   0.41    20-Jan-96   Fix IRQ set up problem reported by&n;   &lt;kenneth@bbs.sas.ntu.ac.sg&gt;.&n;   0.42    22-Apr-96   Fix alloc_device() bug &lt;jari@markkus2.fimr.fi&gt;&n;   0.43    16-Aug-96   Update alloc_device() to conform to de4x5.c&n;   0.44    08-Nov-01   use library crc32 functions &lt;Matt_Domsch@dell.com&gt;&n;   0.45    19-Jul-02   fix unaligned access on alpha &lt;martin@bruli.net&gt;&n;   0.46    10-Oct-02   Multiple NIC support when module &lt;akropel1@rochester.rr.com&gt;&n;   0.47    18-Oct-02   ethtool support &lt;akropel1@rochester.rr.com&gt;&n;   0.48    18-Oct-02   cli/sti removal for 2.5 &lt;vda@port.imtp.ilyichevsk.odessa.ua&gt;&n;   ioctl locking, signature search cleanup &lt;akropel1@rochester.rr.com&gt;&n;&n;   =========================================================================&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -26,7 +26,7 @@ macro_line|#include &quot;ewrk3.h&quot;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;ewrk3&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.47&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;0.48&quot;
 DECL|variable|__initdata
 r_static
 r_char
@@ -38,7 +38,7 @@ op_assign
 id|DRV_NAME
 l_string|&quot;:v&quot;
 id|DRV_VERSION
-l_string|&quot; 2002/10/17 davies@maniac.ultranet.com&bslash;n&quot;
+l_string|&quot; 2002/10/18 davies@maniac.ultranet.com&bslash;n&quot;
 suffix:semicolon
 macro_line|#ifdef EWRK3_DEBUG
 DECL|variable|ewrk3_debug
@@ -6288,12 +6288,8 @@ op_star
 id|eeprom_image
 )paren
 (brace
-id|u_long
+r_int
 id|i
-comma
-id|j
-comma
-id|k
 suffix:semicolon
 r_char
 op_star
@@ -6302,14 +6298,6 @@ id|signatures
 )braket
 op_assign
 id|EWRK3_SIGNATURE
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|name
-comma
-l_string|&quot;&quot;
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -6325,33 +6313,26 @@ id|i
 )braket
 op_ne
 l_char|&squot;&bslash;0&squot;
-op_logical_and
-op_star
-id|name
-op_eq
-l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
-r_for
-c_loop
+r_if
+c_cond
 (paren
-id|j
-op_assign
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|eeprom_image
+op_plus
 id|EEPROM_PNAME7
 comma
-id|k
-op_assign
-l_int|0
-suffix:semicolon
-id|j
-op_le
-id|EEPROM_PNAME0
-op_logical_and
-id|k
-OL
+id|signatures
+(braket
+id|i
+)braket
+comma
 id|strlen
 c_func
 (paren
@@ -6360,97 +6341,54 @@ id|signatures
 id|i
 )braket
 )paren
-suffix:semicolon
-id|j
-op_increment
+)paren
 )paren
 (brace
+r_break
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
+op_star
 id|signatures
 (braket
 id|i
 )braket
-(braket
-id|k
-)braket
-op_eq
-id|eeprom_image
-(braket
-id|j
-)braket
+op_ne
+l_char|&squot;&bslash;0&squot;
 )paren
 (brace
-multiline_comment|/* track signature */
-id|k
-op_increment
+id|memcpy
+c_func
+(paren
+id|name
+comma
+id|eeprom_image
+op_plus
+id|EEPROM_PNAME7
+comma
+id|EWRK3_STRLEN
+)paren
+suffix:semicolon
+id|name
+(braket
+id|EWRK3_STRLEN
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 )brace
 r_else
-(brace
-multiline_comment|/* lost signature; begin search again */
-id|k
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-id|k
-op_eq
-id|strlen
-c_func
-(paren
-id|signatures
-(braket
-id|i
-)braket
-)paren
-)paren
-(brace
-r_for
-c_loop
-(paren
-id|k
-op_assign
-l_int|0
-suffix:semicolon
-id|k
-OL
-id|EWRK3_STRLEN
-suffix:semicolon
-id|k
-op_increment
-)paren
-(brace
 id|name
 (braket
-id|k
-)braket
-op_assign
-id|eeprom_image
-(braket
-id|EEPROM_PNAME7
-op_plus
-id|k
-)braket
-suffix:semicolon
-id|name
-(braket
-id|EWRK3_STRLEN
+l_int|0
 )braket
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
-)brace
-)brace
-)brace
 r_return
 suffix:semicolon
-multiline_comment|/* return the device name string */
 )brace
 multiline_comment|/*&n;   ** Look for a special sequence in the Ethernet station address PROM that&n;   ** is common across all EWRK3 products.&n;   **&n;   ** Search the Ethernet address ROM for the signature. Since the ROM address&n;   ** counter can start at an arbitrary point, the search must include the entire&n;   ** probe sequence length plus the (length_of_the_signature - 1).&n;   ** Stop the search IMMEDIATELY after the signature is found so that the&n;   ** PROM address counter is correctly positioned at the start of the&n;   ** ethernet address for later read out.&n; */
 DECL|function|DevicePresent
