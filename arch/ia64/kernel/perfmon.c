@@ -7754,7 +7754,7 @@ id|rlim_cur
 )paren
 r_return
 op_minus
-id|EAGAIN
+id|ENOMEM
 suffix:semicolon
 multiline_comment|/*&n;&t; * We do the easy to undo allocations first.&n; &t; *&n;&t; * pfm_rvmalloc(), clears the buffer, so there is no leak&n;&t; */
 id|smpl_buf
