@@ -15108,9 +15108,52 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;domain %d: span %s&bslash;n&quot;
+l_string|&quot;domain %d: &quot;
 comma
 id|level
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sd-&gt;flags
+op_amp
+id|SD_LOAD_BALANCE
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;does not balance&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sd-&gt;parent
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; ERROR !SD_LOAD_BALANCE domain has parent&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;span %s&bslash;n&quot;
 comma
 id|str
 )paren
