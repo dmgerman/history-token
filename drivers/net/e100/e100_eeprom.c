@@ -657,10 +657,14 @@ op_assign
 id|size
 suffix:semicolon
 r_return
+(paren
 id|ffs
 c_func
 (paren
 id|isize
+)paren
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
