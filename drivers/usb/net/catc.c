@@ -1782,7 +1782,7 @@ id|buf
 comma
 id|len
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_return
