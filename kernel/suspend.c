@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/compile.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
