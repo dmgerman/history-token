@@ -3037,8 +3037,6 @@ r_struct
 id|arphdr
 op_star
 id|arp
-op_assign
-id|skb-&gt;nh.arph
 suffix:semicolon
 multiline_comment|/* ARP header, plus 2 device addresses, plus 2 IP addresses.  */
 r_if
@@ -3076,6 +3074,10 @@ id|u32
 )paren
 r_goto
 id|freeskb
+suffix:semicolon
+id|arp
+op_assign
+id|skb-&gt;nh.arph
 suffix:semicolon
 r_if
 c_cond
