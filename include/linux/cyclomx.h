@@ -30,7 +30,8 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* card name */
 DECL|member|hw
-id|cycxhw_t
+r_struct
+id|cycx_hw
 id|hw
 suffix:semicolon
 multiline_comment|/* hardware configuration */

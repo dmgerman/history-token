@@ -645,7 +645,7 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|cycxhw_t
+id|card-&gt;hw
 )paren
 )paren
 suffix:semicolon
