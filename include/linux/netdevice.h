@@ -3660,8 +3660,7 @@ c_func
 r_struct
 id|sk_buff
 op_star
-op_star
-id|pskb
+id|skb
 comma
 r_int
 id|inward

@@ -1171,8 +1171,6 @@ op_amp
 id|RTF_DEFAULT
 op_or
 id|RTF_ADDRCONF
-op_or
-id|RTF_ALLONLINK
 )paren
 )paren
 )paren

@@ -1786,6 +1786,7 @@ id|mutex
 suffix:semicolon
 )brace
 DECL|function|arpt_find_target_lock
+r_static
 r_struct
 id|arpt_target
 op_star
@@ -6165,13 +6166,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|arpt_do_table
-)paren
-suffix:semicolon
-DECL|variable|arpt_find_target_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|arpt_find_target_lock
 )paren
 suffix:semicolon
 DECL|variable|arpt_register_target

@@ -1374,6 +1374,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;sock_alloc&t;-&t;allocate a socket&n; *&t;&n; *&t;Allocate a new inode and socket object. The two are bound together&n; *&t;and initialised. The socket is then returned. If we are out of inodes&n; *&t;NULL is returned.&n; */
 DECL|function|sock_alloc
+r_static
 r_struct
 id|socket
 op_star
@@ -5241,7 +5242,7 @@ suffix:semicolon
 id|err
 op_assign
 op_minus
-id|EMFILE
+id|ENFILE
 suffix:semicolon
 r_if
 c_cond
@@ -8595,20 +8596,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|move_addr_to_user
-)paren
-suffix:semicolon
-DECL|variable|sock_alloc
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sock_alloc
-)paren
-suffix:semicolon
-DECL|variable|sock_alloc_inode
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sock_alloc_inode
 )paren
 suffix:semicolon
 DECL|variable|sock_create
