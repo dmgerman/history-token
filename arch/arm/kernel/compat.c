@@ -307,13 +307,6 @@ id|tag
 op_assign
 id|taglist
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;Converting old-style param struct to taglist&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -333,6 +326,13 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;Converting old-style param struct to taglist&bslash;n&quot;
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_ARCH_NETWINDER
 r_if
 c_cond
