@@ -948,6 +948,11 @@ multiline_comment|/* preserved message */
 id|u32
 id|pm
 suffix:semicolon
+r_int
+id|err
+op_assign
+id|DID_ERROR
+suffix:semicolon
 id|pm
 op_assign
 id|le32_to_cpu
@@ -1100,6 +1105,7 @@ op_lshift
 l_int|18
 )paren
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -1107,6 +1113,11 @@ id|KERN_ERR
 l_string|&quot;Congestion.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|err
+op_assign
+id|DID_BUS_BUSY
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -1142,7 +1153,7 @@ l_int|1
 suffix:semicolon
 id|cmd-&gt;result
 op_assign
-id|DID_ERROR
+id|err
 op_lshift
 l_int|16
 suffix:semicolon
