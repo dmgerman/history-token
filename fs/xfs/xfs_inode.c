@@ -4196,14 +4196,6 @@ r_int
 id|error
 suffix:semicolon
 multiline_comment|/*&n;&t; * Call the space management code to pick&n;&t; * the on-disk inode to be allocated.&n;&t; */
-id|ASSERT
-c_func
-(paren
-id|pip
-op_ne
-l_int|NULL
-)paren
-suffix:semicolon
 id|error
 op_assign
 id|xfs_dialloc
@@ -4211,12 +4203,7 @@ c_func
 (paren
 id|tp
 comma
-id|pip
-ques
-c_cond
 id|pip-&gt;i_ino
-suffix:colon
-l_int|0
 comma
 id|mode
 comma
