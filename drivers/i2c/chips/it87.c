@@ -256,6 +256,12 @@ r_static
 r_int
 id|reset
 suffix:semicolon
+multiline_comment|/* Chip Type */
+DECL|variable|chip_type
+r_static
+id|u16
+id|chip_type
+suffix:semicolon
 multiline_comment|/* Many IT87 constants specified below */
 multiline_comment|/* Length of ISA address segment */
 DECL|macro|IT87_EXTENT
@@ -2585,7 +2591,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|val
+id|chip_type
 op_assign
 (paren
 id|superio_inb
@@ -2608,7 +2614,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|val
+id|chip_type
 op_ne
 id|IT8712F_DEVID
 )paren
@@ -3083,39 +3089,22 @@ op_eq
 l_int|0x90
 )paren
 (brace
-id|u16
-id|val
-suffix:semicolon
 id|kind
 op_assign
 id|it87
 suffix:semicolon
-id|val
-op_assign
-(paren
-id|superio_inb
-c_func
-(paren
-id|DEVID
-)paren
-op_lshift
-l_int|8
-)paren
-op_or
-id|superio_inb
-c_func
-(paren
-id|DEVID
-op_plus
-l_int|1
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|val
+(paren
+id|is_isa
+)paren
+op_logical_and
+(paren
+id|chip_type
 op_eq
 id|IT8712F_DEVID
+)paren
 )paren
 id|kind
 op_assign
