@@ -3528,6 +3528,27 @@ op_minus
 id|ENOBUFS
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+id|np-&gt;cork.opt-&gt;tot_len
+OL
+id|opt-&gt;tot_len
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;ip6_append_data: invalid option length&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|memcpy
 c_func
 (paren
