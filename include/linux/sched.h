@@ -1305,6 +1305,8 @@ DECL|macro|PT_TRACE_VFORK_DONE
 mdefine_line|#define PT_TRACE_VFORK_DONE&t;0x00000100
 DECL|macro|PT_TRACE_EXIT
 mdefine_line|#define PT_TRACE_EXIT&t;0x00000200
+DECL|macro|PT_SINGLESTEP
+mdefine_line|#define PT_SINGLESTEP&t;0x80000000&t;/* single step mode */
 macro_line|#if CONFIG_SMP
 r_extern
 r_void
