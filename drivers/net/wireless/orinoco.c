@@ -4593,6 +4593,50 @@ c_cond
 id|priv-&gt;has_ibss
 )paren
 (brace
+id|u16
+id|createibss
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|strlen
+c_func
+(paren
+id|priv-&gt;desired_essid
+)paren
+op_eq
+l_int|0
+)paren
+op_logical_and
+(paren
+id|priv-&gt;createibss
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: This firmware requires an &quot;
+l_string|&quot;ESSID in IBSS-Ad-Hoc mode.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+multiline_comment|/* With wvlan_cs, in this case, we would crash.&n;&t;&t;&t; * hopefully, this driver will behave better...&n;&t;&t;&t; * Jean II */
+id|createibss
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|createibss
+op_assign
+id|priv-&gt;createibss
+suffix:semicolon
+)brace
 id|err
 op_assign
 id|hermes_write_wordrec
@@ -4604,7 +4648,7 @@ id|USER_BAP
 comma
 id|HERMES_RID_CNFCREATEIBSS
 comma
-id|priv-&gt;createibss
+id|createibss
 )paren
 suffix:semicolon
 r_if
@@ -4627,41 +4671,6 @@ suffix:semicolon
 r_return
 id|err
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|strlen
-c_func
-(paren
-id|priv-&gt;desired_essid
-)paren
-op_eq
-l_int|0
-)paren
-op_logical_and
-(paren
-id|priv-&gt;createibss
-)paren
-op_logical_and
-(paren
-op_logical_neg
-id|priv-&gt;has_ibss_any
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s: This firmware requires an &quot;
-l_string|&quot;ESSID in IBSS-Ad-Hoc mode.&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-multiline_comment|/* With wvlan_cs, in this case, we would crash.&n;&t;&t;&t; * hopefully, this driver will behave better...&n;&t;&t;&t; * Jean II */
 )brace
 )brace
 multiline_comment|/* Set the desired ESSID */
@@ -6726,10 +6735,6 @@ id|priv-&gt;has_ibss
 op_assign
 l_int|1
 suffix:semicolon
-id|priv-&gt;has_ibss_any
-op_assign
-l_int|0
-suffix:semicolon
 id|priv-&gt;has_wep
 op_assign
 l_int|0
@@ -6783,14 +6788,6 @@ op_assign
 id|firmver
 op_ge
 l_int|0x60006
-)paren
-suffix:semicolon
-id|priv-&gt;has_ibss_any
-op_assign
-(paren
-id|firmver
-op_ge
-l_int|0x60010
 )paren
 suffix:semicolon
 id|priv-&gt;has_wep

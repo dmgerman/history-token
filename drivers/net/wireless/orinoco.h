@@ -127,14 +127,11 @@ DECL|macro|FIRMWARE_TYPE_SYMBOL
 mdefine_line|#define FIRMWARE_TYPE_SYMBOL 3
 DECL|member|has_ibss
 DECL|member|has_port3
-DECL|member|has_ibss_any
 DECL|member|ibss_port
 r_int
 id|has_ibss
 comma
 id|has_port3
-comma
-id|has_ibss_any
 comma
 id|ibss_port
 suffix:semicolon
