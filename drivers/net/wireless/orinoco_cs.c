@@ -40,14 +40,12 @@ c_func
 l_string|&quot;Driver for PCMCIA Lucent Orinoco, Prism II based and similar wireless cards&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE_LICENSE
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Module parameters */
 multiline_comment|/* The old way: bit map of interrupts to choose from */
 multiline_comment|/* This means pick from 15, 14, 12, 11, 10, 9, 7, 5, 4, and 3 */
@@ -293,42 +291,6 @@ suffix:semicolon
 multiline_comment|/********************************************************************/
 multiline_comment|/* PCMCIA stuff     &t;&t;&t;&t;&t;&t;    */
 multiline_comment|/********************************************************************/
-multiline_comment|/* In 2.5 (as of 2.5.69 at least) there is a cs_error exported which&n; * does this, but it&squot;s not in 2.4 so we do our own for now. */
-r_static
-r_void
-DECL|function|orinoco_cs_error
-id|orinoco_cs_error
-c_func
-(paren
-id|client_handle_t
-id|handle
-comma
-r_int
-id|func
-comma
-r_int
-id|ret
-)paren
-(brace
-id|error_info_t
-id|err
-op_assign
-(brace
-id|func
-comma
-id|ret
-)brace
-suffix:semicolon
-id|pcmcia_report_error
-c_func
-(paren
-id|handle
-comma
-op_amp
-id|err
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * This creates an &quot;instance&quot; of the driver, allocating local data&n; * structures for one device.  The device is registered with Card&n; * Services.&n; * &n; * The dev_link structure is initialized, but we don&squot;t actually&n; * configure the card at this point -- we wait until we receive a card&n; * insertion event.  */
 r_static
 id|dev_link_t
@@ -540,7 +502,7 @@ op_ne
 id|CS_SUCCESS
 )paren
 (brace
-id|orinoco_cs_error
+id|cs_error
 c_func
 (paren
 id|link-&gt;handle
@@ -1679,7 +1641,7 @@ r_return
 suffix:semicolon
 id|cs_failed
 suffix:colon
-id|orinoco_cs_error
+id|cs_error
 c_func
 (paren
 id|link-&gt;handle

@@ -36,14 +36,12 @@ c_func
 l_string|&quot;Driver for Lucent Orinoco, Prism II based and similar wireless cards&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE_LICENSE
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Level of debugging. Used in the macros in orinoco.h */
 macro_line|#ifdef ORINOCO_DEBUG
 DECL|variable|orinoco_debug
@@ -85,11 +83,6 @@ suffix:semicolon
 multiline_comment|/********************************************************************/
 multiline_comment|/* Compile time configuration and compatibility stuff               */
 multiline_comment|/********************************************************************/
-multiline_comment|/* Wireless extensions backwards compatibility */
-macro_line|#ifndef SIOCIWFIRSTPRIV
-DECL|macro|SIOCIWFIRSTPRIV
-mdefine_line|#define SIOCIWFIRSTPRIV&t;&t;SIOCDEVPRIVATE
-macro_line|#endif /* SIOCIWFIRSTPRIV */
 multiline_comment|/* We do this this way to avoid ifdefs in the actual code */
 macro_line|#ifdef WIRELESS_SPY
 DECL|macro|SPY_NUMBER
@@ -5099,7 +5092,6 @@ c_func
 id|tallies.TxDiscardsWrongSA
 )paren
 suffix:semicolon
-macro_line|#if WIRELESS_EXT &gt; 11
 id|wstats-&gt;discard.fragment
 op_add_assign
 id|le16_to_cpu
@@ -5117,7 +5109,6 @@ id|tallies.TxRetryLimitExceeded
 )paren
 suffix:semicolon
 multiline_comment|/* wstats-&gt;miss.beacon - no match */
-macro_line|#endif /* WIRELESS_EXT &gt; 11 */
 )brace
 r_break
 suffix:semicolon
@@ -9334,7 +9325,6 @@ id|range
 )paren
 suffix:semicolon
 multiline_comment|/* Much of this shamelessly taken from wvlan_cs.c. No idea&n;&t; * what it all means -dgibson */
-macro_line|#if WIRELESS_EXT &gt; 10
 id|range.we_version_compiled
 op_assign
 id|WIRELESS_EXT
@@ -9343,7 +9333,6 @@ id|range.we_version_source
 op_assign
 l_int|11
 suffix:semicolon
-macro_line|#endif /* WIRELESS_EXT &gt; 10 */
 id|range.min_nwid
 op_assign
 id|range.max_nwid
@@ -9472,7 +9461,6 @@ id|range.max_qual.noise
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if WIRELESS_EXT &gt; 11
 id|range.avg_qual.qual
 op_assign
 l_int|0
@@ -9485,7 +9473,6 @@ id|range.avg_qual.noise
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif /* WIRELESS_EXT &gt; 11 */
 )brace
 r_else
 (brace
@@ -9511,7 +9498,6 @@ l_int|0x95
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#if WIRELESS_EXT &gt; 11
 multiline_comment|/* Need to get better values */
 id|range.avg_qual.qual
 op_assign
@@ -9525,7 +9511,6 @@ id|range.avg_qual.noise
 op_assign
 l_int|0x9E
 suffix:semicolon
-macro_line|#endif /* WIRELESS_EXT &gt; 11 */
 )brace
 id|err
 op_assign
@@ -9729,7 +9714,6 @@ id|range.txpower_capa
 op_assign
 id|IW_TXPOW_DBM
 suffix:semicolon
-macro_line|#if WIRELESS_EXT &gt; 10
 id|range.retry_capa
 op_assign
 id|IW_RETRY_LIMIT
@@ -9764,7 +9748,6 @@ op_star
 l_int|1000
 suffix:semicolon
 multiline_comment|/* ??? */
-macro_line|#endif /* WIRELESS_EXT &gt; 10 */
 r_if
 c_cond
 (paren
@@ -12837,7 +12820,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#if WIRELESS_EXT &gt; 10
 DECL|function|orinoco_ioctl_getretry
 r_static
 r_int
@@ -13071,7 +13053,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#endif /* WIRELESS_EXT &gt; 10 */
 DECL|function|orinoco_ioctl_setibssport
 r_static
 r_int
@@ -14688,7 +14669,6 @@ id|IW_TXPOW_DBM
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#if WIRELESS_EXT &gt; 10
 r_case
 id|SIOCSIWRETRY
 suffix:colon
@@ -14715,7 +14695,6 @@ id|wrq-&gt;u.retry
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif /* WIRELESS_EXT &gt; 10 */
 r_case
 id|SIOCSIWSPY
 suffix:colon

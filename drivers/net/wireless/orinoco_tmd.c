@@ -627,14 +627,12 @@ c_func
 l_string|&quot;Driver for wireless LAN cards using the TMD7160 PCI bridge&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE_LICENSE
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|orinoco_tmd_init
 r_static
 r_int
