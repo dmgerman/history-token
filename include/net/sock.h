@@ -1775,6 +1775,9 @@ DECL|macro|sock_owned_by_user
 mdefine_line|#define sock_owned_by_user(sk)&t;((sk)-&gt;sk_lock.owner)
 r_extern
 r_void
+id|FASTCALL
+c_func
+(paren
 id|lock_sock
 c_func
 (paren
@@ -1783,9 +1786,13 @@ id|sock
 op_star
 id|sk
 )paren
+)paren
 suffix:semicolon
 r_extern
 r_void
+id|FASTCALL
+c_func
+(paren
 id|release_sock
 c_func
 (paren
@@ -1793,6 +1800,7 @@ r_struct
 id|sock
 op_star
 id|sk
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* BH context may only use the following locking interface. */
