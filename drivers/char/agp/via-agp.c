@@ -1629,6 +1629,11 @@ id|bridge-&gt;capndx
 op_assign
 id|cap_ptr
 suffix:semicolon
+id|bridge-&gt;driver
+op_assign
+op_amp
+id|via_driver
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1701,11 +1706,6 @@ suffix:semicolon
 multiline_comment|/*FALLTHROUGH*/
 r_default
 suffix:colon
-id|bridge-&gt;driver
-op_assign
-op_amp
-id|via_driver
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
