@@ -2,6 +2,10 @@ multiline_comment|/*&n; *   32bit -&gt; 64bit ioctl helpers&n; *   Copyright (c)
 macro_line|#ifndef __ALSA_IOCTL32_H
 DECL|macro|__ALSA_IOCTL32_H
 mdefine_line|#define __ALSA_IOCTL32_H
+macro_line|#ifndef A
+DECL|macro|A
+mdefine_line|#define A(__x) ((unsigned long)(__x))
+macro_line|#endif
 DECL|macro|TO_PTR
 mdefine_line|#define TO_PTR(x)  A(x)
 DECL|macro|COPY

@@ -4,6 +4,7 @@ mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1674,6 +1675,9 @@ id|err
 suffix:semicolon
 )brace
 macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
 )brace
 id|module_init
 c_func
