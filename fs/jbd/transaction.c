@@ -625,6 +625,11 @@ id|current-&gt;journal_info
 op_assign
 id|handle
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|start_this_handle
@@ -633,6 +638,11 @@ c_func
 id|journal
 comma
 id|handle
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if
@@ -653,7 +663,8 @@ id|current-&gt;journal_info
 op_assign
 l_int|NULL
 suffix:semicolon
-r_return
+id|handle
+op_assign
 id|ERR_PTR
 c_func
 (paren
@@ -748,6 +759,11 @@ r_goto
 id|error_out
 suffix:semicolon
 )brace
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|wanted
 op_assign
 id|transaction-&gt;t_outstanding_credits
@@ -776,7 +792,7 @@ id|nblocks
 )paren
 suffix:semicolon
 r_goto
-id|error_out
+id|unlock
 suffix:semicolon
 )brace
 r_if
@@ -805,7 +821,7 @@ id|nblocks
 )paren
 suffix:semicolon
 r_goto
-id|error_out
+id|unlock
 suffix:semicolon
 )brace
 id|handle-&gt;h_buffer_credits
@@ -830,6 +846,13 @@ comma
 id|handle
 comma
 id|nblocks
+)paren
+suffix:semicolon
+id|unlock
+suffix:colon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|error_out
@@ -903,6 +926,11 @@ op_eq
 id|handle
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|transaction-&gt;t_outstanding_credits
 op_sub_assign
 id|handle-&gt;h_buffer_credits
@@ -955,6 +983,11 @@ comma
 id|handle
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -975,8 +1008,18 @@ c_func
 id|journal
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 op_increment
 id|journal-&gt;j_barrier_count
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* Wait until there are no running updates */
 r_while
@@ -1072,8 +1115,18 @@ op_amp
 id|journal-&gt;j_barrier
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 op_decrement
 id|journal-&gt;j_barrier_count
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 id|wake_up
 c_func
@@ -1966,6 +2019,11 @@ c_func
 id|journal
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|rc
 op_assign
 id|do_get_write_access
@@ -1976,6 +2034,11 @@ comma
 id|jh
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|journal_unlock_journal_head
@@ -2223,6 +2286,11 @@ comma
 l_string|&quot;cancelling revoke&quot;
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|journal_cancel_revoke
 c_func
 (paren
@@ -2235,6 +2303,11 @@ id|journal_unlock_journal_head
 c_func
 (paren
 id|jh
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|out
@@ -2299,6 +2372,11 @@ id|journal
 )paren
 suffix:semicolon
 multiline_comment|/* Do this first --- it can drop the journal lock, so we want to&n;&t; * make sure that obtaining the committed_data is done&n;&t; * atomically wrt. completion of any outstanding commits. */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|do_get_write_access
@@ -2399,6 +2477,11 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3625,6 +3708,11 @@ op_star
 id|jcb
 )paren
 (brace
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|list_add_tail
 c_func
 (paren
@@ -3638,6 +3726,11 @@ suffix:semicolon
 id|jcb-&gt;jcb_func
 op_assign
 id|func
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * int journal_stop() - complete a transaction&n; * @handle: tranaction to complete.&n; * &n; * All done for a particular handle.&n; *&n; * There is not much action needed here.  We just return any remaining&n; * buffer credits to the transaction and remove the handle.  The only&n; * complication is that we need to start a commit operation if the&n; * filesystem is marked for synchronous update.&n; *&n; * journal_stop itself will not usually return an error, but it may&n; * do so in unusual circumstances.  In particular, expect it to &n; * return -EIO if a journal_abort has been executed since the&n; * transaction began.&n; */
@@ -3788,6 +3881,11 @@ id|current-&gt;journal_info
 op_assign
 l_int|NULL
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|transaction-&gt;t_outstanding_credits
 op_sub_assign
 id|handle-&gt;h_buffer_credits
@@ -3902,6 +4000,11 @@ id|tid
 )paren
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|jbd_free_handle
 c_func
 (paren
@@ -5624,17 +5727,6 @@ c_func
 (paren
 op_amp
 id|journal_datalist_lock
-)paren
-suffix:semicolon
-id|J_ASSERT_JH
-c_func
-(paren
-id|jh
-comma
-id|kernel_locked
-c_func
-(paren
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* If the buffer is now unused, just drop it. */

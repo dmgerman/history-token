@@ -1494,8 +1494,6 @@ id|transaction
 (brace
 id|tid_t
 id|target
-op_assign
-id|journal-&gt;j_commit_request
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -1503,6 +1501,10 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Protect journal-&gt;j_running_transaction */
+id|target
+op_assign
+id|journal-&gt;j_commit_request
+suffix:semicolon
 multiline_comment|/*&n;&t; * A NULL transaction asks us to commit the currently running&n;&t; * transaction, if there is one.  &n;&t; */
 r_if
 c_cond
@@ -2926,6 +2928,11 @@ id|bh
 )paren
 suffix:semicolon
 multiline_comment|/* If we have just flushed the log (by marking s_start==0), then&n;&t; * any future commit will have to be careful to update the&n;&t; * superblock again to re-record the true start of the log. */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2940,6 +2947,11 @@ r_else
 id|journal-&gt;j_flags
 op_or_assign
 id|JFS_FLUSHED
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read the superblock for a given journal, performing initial&n; * validation of the format.&n; */
@@ -4402,6 +4414,11 @@ id|b
 )paren
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|journal-&gt;j_flags
 op_or_assign
 id|JFS_ABORT
@@ -4421,6 +4438,11 @@ c_func
 id|journal
 comma
 id|transaction
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -4445,6 +4467,11 @@ op_amp
 id|JFS_ABORT
 )paren
 r_return
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4473,6 +4500,11 @@ c_func
 id|journal
 comma
 l_int|1
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -4529,6 +4561,11 @@ c_func
 id|journal
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4545,6 +4582,11 @@ r_else
 id|err
 op_assign
 id|journal-&gt;j_errno
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 id|unlock_journal
 c_func
@@ -4577,6 +4619,11 @@ c_func
 id|journal
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4593,6 +4640,11 @@ r_else
 id|journal-&gt;j_errno
 op_assign
 l_int|0
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 id|unlock_journal
 c_func
@@ -4620,6 +4672,11 @@ c_func
 id|journal
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4628,6 +4685,11 @@ id|journal-&gt;j_errno
 id|journal-&gt;j_flags
 op_or_assign
 id|JFS_ACK_ERR
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 id|unlock_journal
 c_func

@@ -496,11 +496,6 @@ id|inode
 r_goto
 id|no_delete
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|handle
 op_assign
 id|start_transaction
@@ -538,11 +533,6 @@ c_func
 (paren
 id|handle
 )paren
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_goto
@@ -633,11 +623,6 @@ c_func
 id|handle
 )paren
 suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 id|no_delete
@@ -670,11 +655,6 @@ id|EXT3_I
 c_func
 (paren
 id|inode
-)paren
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Writer: -&gt;i_prealloc* */
@@ -715,11 +695,6 @@ id|total
 )paren
 suffix:semicolon
 )brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|ext3_alloc_block
@@ -2602,11 +2577,6 @@ l_int|0
 r_goto
 id|out
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|reread
 suffix:colon
 id|partial
@@ -2735,11 +2705,6 @@ c_func
 id|bh_result
 comma
 l_string|&quot;returned&quot;
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 id|out
@@ -3067,11 +3032,6 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3147,11 +3107,6 @@ op_assign
 l_int|1
 op_lshift
 id|inode-&gt;i_blkbits
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
@@ -3303,11 +3258,6 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Now that we do not always journal data, we&n;&t;&t;&t;   should keep in mind whether this should&n;&t;&t;&t;   always journal the new buffer as metadata.&n;&t;&t;&t;   For now, regular file writes use&n;&t;&t;&t;   ext3_get_block instead, so it&squot;s not a&n;&t;&t;&t;   problem. */
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|lock_buffer
 c_func
 (paren
@@ -3389,11 +3339,6 @@ id|fatal
 id|fatal
 op_assign
 id|err
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -3894,11 +3839,6 @@ id|handle_t
 op_star
 id|handle
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|handle
 op_assign
 id|ext3_journal_start
@@ -3931,11 +3871,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|block_prepare_write
@@ -3948,11 +3883,6 @@ comma
 id|to
 comma
 id|ext3_get_block
-)paren
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -4013,11 +3943,6 @@ id|handle
 suffix:semicolon
 id|out
 suffix:colon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -4151,11 +4076,6 @@ op_assign
 l_int|0
 comma
 id|ret2
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4393,11 +4313,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -4669,11 +4584,6 @@ id|page
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We give up here if we&squot;re reentered, because it might be&n;&t; * for a different filesystem.  One *could* look for a&n;&t; * nested transaction opportunity.&n;&t; */
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4737,11 +4647,6 @@ id|ext3_should_journal_data
 c_func
 (paren
 id|inode
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 id|page_bufs
@@ -4848,11 +4753,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * And attach them to the current transaction.  But only if &n;&t; * block_write_full_page() succeeded.  Otherwise they are unmapped,&n;&t; * and generally junk.&n;&t; */
 r_if
 c_cond
@@ -4932,21 +4832,11 @@ id|ret
 op_assign
 id|err
 suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
 id|out_fail
 suffix:colon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * We have to fail this writepage to avoid cross-fs transactions.&n;&t; * Put the page back on mapping-&gt;dirty_pages.  The page&squot;s buffers&squot;&n;&t; * dirty state will be left as-is.&n;&t; */
 id|__set_page_dirty_nobuffers
 c_func
@@ -5199,11 +5089,6 @@ id|offset
 op_plus
 id|count
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|handle
 op_assign
 id|ext3_journal_start
@@ -5212,11 +5097,6 @@ c_func
 id|inode
 comma
 id|DIO_CREDITS
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -5249,11 +5129,6 @@ OG
 id|inode-&gt;i_size
 )paren
 (brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|ext3_orphan_add
@@ -5262,11 +5137,6 @@ c_func
 id|handle
 comma
 id|inode
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -5319,11 +5189,6 @@ id|handle
 (brace
 r_int
 id|err
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5411,11 +5276,6 @@ l_int|0
 id|ret
 op_assign
 id|err
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 )brace
 id|out
@@ -7182,11 +7042,6 @@ id|inode
 )paren
 r_return
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ext3_discard_prealloc
 c_func
 (paren
@@ -7211,11 +7066,6 @@ id|handle
 )paren
 )paren
 (brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 multiline_comment|/* AKPM: return what? */
@@ -7705,11 +7555,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -9409,11 +9254,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9567,11 +9407,6 @@ c_func
 id|inode-&gt;i_sb
 comma
 id|error
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -9910,11 +9745,6 @@ id|handle_t
 op_star
 id|handle
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|handle
 op_assign
 id|ext3_journal_start
@@ -9987,10 +9817,7 @@ id|handle
 suffix:semicolon
 id|out
 suffix:colon
-id|unlock_kernel
-c_func
-(paren
-)paren
+r_return
 suffix:semicolon
 )brace
 macro_line|#ifdef AKPM
