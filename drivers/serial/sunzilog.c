@@ -2805,7 +2805,7 @@ id|up-&gt;port
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* The port lock is not held.  */
+multiline_comment|/* The port lock is held.  */
 DECL|function|sunzilog_stop_rx
 r_static
 r_void
@@ -2834,10 +2834,6 @@ id|zilog_channel
 op_star
 id|channel
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2848,15 +2844,6 @@ id|up
 )paren
 )paren
 r_return
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|port-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 id|channel
 op_assign
@@ -2883,17 +2870,8 @@ comma
 id|channel
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|port-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
-multiline_comment|/* The port lock is not held.  */
+multiline_comment|/* The port lock is held.  */
 DECL|function|sunzilog_enable_ms
 r_static
 r_void
@@ -2932,19 +2910,6 @@ suffix:semicolon
 r_int
 r_char
 id|new_reg
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|port-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 id|new_reg
 op_assign
@@ -2994,15 +2959,6 @@ id|R15
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|port-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* The port lock is not held.  */
 DECL|function|sunzilog_break_ctl
