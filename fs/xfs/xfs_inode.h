@@ -1195,6 +1195,15 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_int
+id|xfs_reclaim_all
+c_func
+(paren
+r_struct
+id|xfs_mount
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * xfs_inode.c prototypes.&n; */
 r_int
 id|xfs_inotobp
