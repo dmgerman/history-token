@@ -1333,6 +1333,13 @@ op_amp
 id|pm-&gt;lock
 )paren
 suffix:semicolon
+id|init_input_dev
+c_func
+(paren
+op_amp
+id|pm-&gt;input
+)paren
+suffix:semicolon
 multiline_comment|/* get a handle to the interrupt data pipe */
 id|pipe
 op_assign

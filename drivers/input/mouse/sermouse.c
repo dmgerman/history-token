@@ -1111,6 +1111,13 @@ id|sermouse
 )paren
 )paren
 suffix:semicolon
+id|init_input_dev
+c_func
+(paren
+op_amp
+id|sermouse-&gt;dev
+)paren
+suffix:semicolon
 id|sermouse-&gt;dev.evbit
 (braket
 l_int|0

@@ -1633,6 +1633,13 @@ id|gf2k_lens
 id|gf2k-&gt;id
 )braket
 suffix:semicolon
+id|init_input_dev
+c_func
+(paren
+op_amp
+id|gf2k-&gt;dev
+)paren
+suffix:semicolon
 id|gf2k-&gt;dev
 dot
 r_private

@@ -1814,6 +1814,13 @@ id|a3d-&gt;length
 op_assign
 l_int|33
 suffix:semicolon
+id|init_input_dev
+c_func
+(paren
+op_amp
+id|a3d-&gt;dev
+)paren
+suffix:semicolon
 id|a3d-&gt;dev.evbit
 (braket
 l_int|0
@@ -2100,6 +2107,13 @@ r_else
 id|a3d-&gt;length
 op_assign
 l_int|29
+suffix:semicolon
+id|init_input_dev
+c_func
+(paren
+op_amp
+id|a3d-&gt;dev
+)paren
 suffix:semicolon
 id|a3d-&gt;dev.evbit
 (braket

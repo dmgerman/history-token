@@ -1337,6 +1337,8 @@ DECL|macro|LONG
 mdefine_line|#define LONG(x) ((x)/BITS_PER_LONG)
 DECL|macro|INPUT_KEYCODE
 mdefine_line|#define INPUT_KEYCODE(dev, scancode) ((dev-&gt;keycodesize == 1) ? ((u8*)dev-&gt;keycode)[scancode] : &bslash;&n;&t;((dev-&gt;keycodesize == 1) ? ((u16*)dev-&gt;keycode)[scancode] : (((u32*)dev-&gt;keycode)[scancode])))
+DECL|macro|init_input_dev
+mdefine_line|#define init_input_dev(dev)&t;do { INIT_LIST_HEAD(&amp;((dev)-&gt;h_list)); INIT_LIST_HEAD(&amp;((dev)-&gt;node)); } while (0)
 DECL|struct|input_dev
 r_struct
 id|input_dev

@@ -2235,6 +2235,13 @@ id|adi-&gt;length
 )paren
 r_return
 suffix:semicolon
+id|init_input_dev
+c_func
+(paren
+op_amp
+id|adi-&gt;dev
+)paren
+suffix:semicolon
 id|t
 op_assign
 id|adi-&gt;id

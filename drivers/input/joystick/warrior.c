@@ -820,6 +820,13 @@ comma
 id|serio-&gt;phys
 )paren
 suffix:semicolon
+id|init_input_dev
+c_func
+(paren
+op_amp
+id|warrior-&gt;dev
+)paren
+suffix:semicolon
 id|warrior-&gt;dev.name
 op_assign
 id|warrior_name

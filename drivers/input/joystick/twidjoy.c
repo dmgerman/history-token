@@ -681,6 +681,13 @@ comma
 id|serio-&gt;phys
 )paren
 suffix:semicolon
+id|init_input_dev
+c_func
+(paren
+op_amp
+id|twidjoy-&gt;dev
+)paren
+suffix:semicolon
 id|twidjoy-&gt;dev.name
 op_assign
 id|twidjoy_name

@@ -304,6 +304,13 @@ id|emumousebtn.name
 op_assign
 l_string|&quot;Macintosh mouse button emulation&quot;
 suffix:semicolon
+id|init_input_dev
+c_func
+(paren
+op_amp
+id|emumousebtn
+)paren
+suffix:semicolon
 id|emumousebtn.evbit
 (braket
 l_int|0

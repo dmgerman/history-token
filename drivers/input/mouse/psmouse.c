@@ -2789,6 +2789,13 @@ id|psmouse
 )paren
 )paren
 suffix:semicolon
+id|init_input_dev
+c_func
+(paren
+op_amp
+id|psmouse-&gt;dev
+)paren
+suffix:semicolon
 id|psmouse-&gt;dev.evbit
 (braket
 l_int|0
