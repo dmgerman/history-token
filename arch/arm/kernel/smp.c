@@ -9,14 +9,15 @@ macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/ptrace.h&gt;
 multiline_comment|/*&n; * bitmask of present and online CPUs.&n; * The present bitmask indicates that the CPU is physically present.&n; * The online bitmask indicates that the CPU is up and running.&n; */
 DECL|variable|cpu_present_mask
 id|cpumask_t
