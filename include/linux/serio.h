@@ -240,7 +240,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|member|connect
-r_void
+r_int
 (paren
 op_star
 id|connect

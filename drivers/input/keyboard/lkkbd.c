@@ -2224,7 +2224,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * lkkbd_connect() probes for a LK keyboard and fills the necessary structures.&n; */
 r_static
-r_void
+r_int
 DECL|function|lkkbd_connect
 id|lkkbd_connect
 (paren
@@ -2247,6 +2247,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2267,6 +2270,8 @@ id|GFP_KERNEL
 )paren
 )paren
 r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|memset
 (paren
@@ -2415,15 +2420,19 @@ comma
 id|lk
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|serio_open
 (paren
 id|serio
 comma
 id|drv
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 (brace
 id|serio_set_drvdata
@@ -2439,6 +2448,7 @@ id|lk
 )paren
 suffix:semicolon
 r_return
+id|err
 suffix:semicolon
 )brace
 id|sprintf
@@ -2546,6 +2556,9 @@ id|lk-&gt;serio
 comma
 id|LK_CMD_POWERCYCLE_RESET
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * lkkbd_disconnect() unregisters and closes behind us.&n; */

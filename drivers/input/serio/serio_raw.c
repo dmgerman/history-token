@@ -1110,7 +1110,7 @@ suffix:semicolon
 )brace
 DECL|function|serio_raw_connect
 r_static
-r_void
+r_int
 id|serio_raw_connect
 c_func
 (paren
@@ -1162,6 +1162,8 @@ l_string|&quot;serio_raw.c: can&squot;t allocate memory for a device&bslash;n&qu
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|down
@@ -1231,9 +1233,8 @@ comma
 id|serio_raw
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|serio_open
 c_func
 (paren
@@ -1241,6 +1242,11 @@ id|serio
 comma
 id|drv
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 r_goto
 id|out_free
@@ -1371,6 +1377,9 @@ c_func
 op_amp
 id|serio_raw_sem
 )paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 DECL|function|serio_raw_reconnect

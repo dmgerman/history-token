@@ -439,7 +439,7 @@ suffix:semicolon
 )brace
 DECL|function|iforce_serio_connect
 r_static
-r_void
+r_int
 id|iforce_serio_connect
 c_func
 (paren
@@ -458,6 +458,9 @@ r_struct
 id|iforce
 op_star
 id|iforce
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 r_if
 c_cond
@@ -480,6 +483,8 @@ id|GFP_KERNEL
 )paren
 )paren
 r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|memset
 c_func
@@ -511,9 +516,8 @@ comma
 id|iforce
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|serio_open
 c_func
 (paren
@@ -521,6 +525,11 @@ id|serio
 comma
 id|drv
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 (brace
 id|serio_set_drvdata
@@ -538,6 +547,7 @@ id|iforce
 )paren
 suffix:semicolon
 r_return
+id|err
 suffix:semicolon
 )brace
 r_if
@@ -571,8 +581,13 @@ id|iforce
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|iforce_serio_disconnect
 r_static

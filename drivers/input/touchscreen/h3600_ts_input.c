@@ -1117,7 +1117,7 @@ suffix:semicolon
 multiline_comment|/*&n; * h3600ts_connect() is the routine that is called when someone adds a&n; * new serio device that supports H3600 protocol and registers it as&n; * an input device.&n; */
 DECL|function|h3600ts_connect
 r_static
-r_void
+r_int
 id|h3600ts_connect
 c_func
 (paren
@@ -1136,6 +1136,9 @@ r_struct
 id|h3600_dev
 op_star
 id|ts
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 r_if
 c_cond
@@ -1158,6 +1161,8 @@ id|GFP_KERNEL
 )paren
 )paren
 r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|memset
 c_func
@@ -1234,6 +1239,8 @@ id|ts
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|EBUSY
 suffix:semicolon
 )brace
 r_if
@@ -1282,6 +1289,8 @@ id|ts
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|EBUSY
 suffix:semicolon
 )brace
 multiline_comment|/* Now we have things going we setup our input device */
@@ -1526,9 +1535,8 @@ comma
 id|ts
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|serio_open
 c_func
 (paren
@@ -1536,6 +1544,11 @@ id|serio
 comma
 id|drv
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 (brace
 id|free_irq
@@ -1569,6 +1582,7 @@ id|ts
 )paren
 suffix:semicolon
 r_return
+id|err
 suffix:semicolon
 )brace
 singleline_comment|//h3600_flite_control(1, 25);     /* default brightness */
@@ -1609,6 +1623,9 @@ id|h3600_name
 comma
 id|serio-&gt;phys
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * h3600ts_disconnect() is the opposite of h3600ts_connect()&n; */

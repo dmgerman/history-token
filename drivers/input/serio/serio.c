@@ -291,6 +291,9 @@ op_assign
 op_amp
 id|drv-&gt;driver
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|drv
 op_member_access_from_pointer
 id|connect
@@ -300,12 +303,6 @@ id|serio
 comma
 id|drv
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|serio-&gt;drv
 )paren
 (brace
 id|serio-&gt;dev.driver
@@ -2554,6 +2551,7 @@ c_func
 id|dev-&gt;driver
 )paren
 suffix:semicolon
+r_return
 id|drv
 op_member_access_from_pointer
 id|connect
@@ -2563,15 +2561,6 @@ id|serio
 comma
 id|drv
 )paren
-suffix:semicolon
-r_return
-id|serio-&gt;drv
-ques
-c_cond
-l_int|0
-suffix:colon
-op_minus
-id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|serio_driver_remove

@@ -1069,7 +1069,7 @@ suffix:semicolon
 multiline_comment|/*&n; * sermouse_connect() is a callback form the serio module when&n; * an unhandled serio port is found.&n; */
 DECL|function|sermouse_connect
 r_static
-r_void
+r_int
 id|sermouse_connect
 c_func
 (paren
@@ -1093,6 +1093,9 @@ r_int
 r_char
 id|c
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1104,6 +1107,8 @@ OG
 id|SERIO_MZPP
 )paren
 r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 r_if
 c_cond
@@ -1126,6 +1131,8 @@ id|GFP_KERNEL
 )paren
 )paren
 r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|memset
 c_func
@@ -1342,6 +1349,16 @@ comma
 id|sermouse
 )paren
 suffix:semicolon
+id|err
+op_assign
+id|serio_open
+c_func
+(paren
+id|serio
+comma
+id|drv
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1369,6 +1386,7 @@ id|sermouse
 )paren
 suffix:semicolon
 r_return
+id|err
 suffix:semicolon
 )brace
 id|input_register_device
@@ -1391,6 +1409,9 @@ id|sermouse-&gt;type
 comma
 id|serio-&gt;phys
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|sermouse_serio_ids

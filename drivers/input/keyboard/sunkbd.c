@@ -1025,7 +1025,7 @@ suffix:semicolon
 multiline_comment|/*&n; * sunkbd_connect() probes for a Sun keyboard and fills the necessary structures.&n; */
 DECL|function|sunkbd_connect
 r_static
-r_void
+r_int
 id|sunkbd_connect
 c_func
 (paren
@@ -1048,6 +1048,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1069,6 +1072,8 @@ id|GFP_KERNEL
 )paren
 )paren
 r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|memset
 c_func
@@ -1226,9 +1231,8 @@ comma
 id|sunkbd
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|serio_open
 c_func
 (paren
@@ -1236,6 +1240,11 @@ id|serio
 comma
 id|drv
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 (brace
 id|serio_set_drvdata
@@ -1253,6 +1262,7 @@ id|sunkbd
 )paren
 suffix:semicolon
 r_return
+id|err
 suffix:semicolon
 )brace
 r_if
@@ -1288,6 +1298,8 @@ id|sunkbd
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|sprintf
@@ -1402,6 +1414,9 @@ id|sunkbd-&gt;name
 comma
 id|serio-&gt;phys
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * sunkbd_disconnect() unregisters and closes behind us.&n; */

@@ -676,7 +676,7 @@ suffix:semicolon
 multiline_comment|/*&n; * warrior_connect() is the routine that is called when someone adds a&n; * new serio device. It looks for the Warrior, and if found, registers&n; * it as an input device.&n; */
 DECL|function|warrior_connect
 r_static
-r_void
+r_int
 id|warrior_connect
 c_func
 (paren
@@ -699,6 +699,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -720,6 +723,8 @@ id|GFP_KERNEL
 )paren
 )paren
 r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|memset
 c_func
@@ -991,9 +996,8 @@ comma
 id|warrior
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|serio_open
 c_func
 (paren
@@ -1001,6 +1005,11 @@ id|serio
 comma
 id|drv
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 (brace
 id|serio_set_drvdata
@@ -1018,6 +1027,7 @@ id|warrior
 )paren
 suffix:semicolon
 r_return
+id|err
 suffix:semicolon
 )brace
 id|input_register_device
@@ -1035,6 +1045,9 @@ l_string|&quot;input: Logitech WingMan Warrior on %s&bslash;n&quot;
 comma
 id|serio-&gt;phys
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The serio driver structure.&n; */

@@ -527,7 +527,7 @@ suffix:semicolon
 multiline_comment|/*&n; * stinger_connect() is the routine that is called when someone adds a&n; * new serio device that supports Stinger protocol and registers it as&n; * an input device.&n; */
 DECL|function|stinger_connect
 r_static
-r_void
+r_int
 id|stinger_connect
 c_func
 (paren
@@ -550,6 +550,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -571,6 +574,8 @@ id|GFP_KERNEL
 )paren
 )paren
 r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|memset
 c_func
@@ -795,9 +800,8 @@ comma
 id|stinger
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|serio_open
 c_func
 (paren
@@ -805,6 +809,11 @@ id|serio
 comma
 id|drv
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 (brace
 id|serio_set_drvdata
@@ -822,6 +831,7 @@ id|stinger
 )paren
 suffix:semicolon
 r_return
+id|err
 suffix:semicolon
 )brace
 id|input_register_device
@@ -841,6 +851,9 @@ id|stinger_name
 comma
 id|serio-&gt;phys
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The serio driver structure.&n; */

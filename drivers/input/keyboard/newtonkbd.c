@@ -445,7 +445,7 @@ id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|nkbd_connect
-r_void
+r_int
 id|nkbd_connect
 c_func
 (paren
@@ -468,6 +468,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -489,6 +492,8 @@ id|GFP_KERNEL
 )paren
 )paren
 r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|memset
 c_func
@@ -566,9 +571,8 @@ comma
 id|nkbd
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|serio_open
 c_func
 (paren
@@ -576,6 +580,11 @@ id|serio
 comma
 id|drv
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 (brace
 id|serio_set_drvdata
@@ -593,6 +602,7 @@ id|nkbd
 )paren
 suffix:semicolon
 r_return
+id|err
 suffix:semicolon
 )brace
 id|memcpy
@@ -697,6 +707,9 @@ id|nkbd_name
 comma
 id|serio-&gt;phys
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|nkbd_disconnect

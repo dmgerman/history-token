@@ -2857,7 +2857,7 @@ suffix:semicolon
 multiline_comment|/*&n; * psmouse_connect() is a callback from the serio module when&n; * an unhandled serio port is found.&n; */
 DECL|function|psmouse_connect
 r_static
-r_void
+r_int
 id|psmouse_connect
 c_func
 (paren
@@ -2881,6 +2881,9 @@ op_star
 id|parent
 op_assign
 l_int|NULL
+suffix:semicolon
+r_int
+id|retval
 suffix:semicolon
 multiline_comment|/*&n;&t; * If this is a pass-through port deactivate parent so the device&n;&t; * connected to this port can be successfully identified&n;&t; */
 r_if
@@ -2928,9 +2931,16 @@ id|GFP_KERNEL
 )paren
 )paren
 )paren
+(brace
+id|retval
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
@@ -3052,9 +3062,8 @@ comma
 id|psmouse
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|retval
+op_assign
 id|serio_open
 c_func
 (paren
@@ -3062,6 +3071,11 @@ id|serio
 comma
 id|drv
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 )paren
 (brace
 id|serio_set_drvdata
@@ -3113,6 +3127,11 @@ c_func
 (paren
 id|psmouse
 )paren
+suffix:semicolon
+id|retval
+op_assign
+op_minus
+id|ENODEV
 suffix:semicolon
 r_goto
 id|out
@@ -3286,6 +3305,10 @@ c_func
 id|psmouse
 )paren
 suffix:semicolon
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
 id|out
 suffix:colon
 multiline_comment|/* If this is a pass-through port the parent awaits to be activated */
@@ -3299,6 +3322,9 @@ c_func
 (paren
 id|parent
 )paren
+suffix:semicolon
+r_return
+id|retval
 suffix:semicolon
 )brace
 DECL|function|psmouse_reconnect

@@ -4395,7 +4395,7 @@ suffix:semicolon
 multiline_comment|/*&n; * atkbd_connect() is called when the serio module finds and interface&n; * that isn&squot;t handled yet by an appropriate device driver. We check if&n; * there is an AT keyboard out there and if yes, we register ourselves&n; * to the input module.&n; */
 DECL|function|atkbd_connect
 r_static
-r_void
+r_int
 id|atkbd_connect
 c_func
 (paren
@@ -4414,6 +4414,9 @@ r_struct
 id|atkbd
 op_star
 id|atkbd
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 r_if
 c_cond
@@ -4436,6 +4439,8 @@ id|GFP_KERNEL
 )paren
 )paren
 r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|memset
 c_func
@@ -4527,9 +4532,8 @@ comma
 id|atkbd
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|serio_open
 c_func
 (paren
@@ -4537,6 +4541,11 @@ id|serio
 comma
 id|drv
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 (brace
 id|serio_set_drvdata
@@ -4554,6 +4563,7 @@ id|atkbd
 )paren
 suffix:semicolon
 r_return
+id|err
 suffix:semicolon
 )brace
 r_if
@@ -4593,6 +4603,8 @@ id|atkbd
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|atkbd-&gt;set
@@ -4751,6 +4763,9 @@ id|atkbd-&gt;name
 comma
 id|serio-&gt;phys
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * atkbd_reconnect() tries to restore keyboard into a sane state and is&n; * most likely called on resume.&n; */

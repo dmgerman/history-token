@@ -1623,7 +1623,7 @@ id|mouse
 suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|vsxxxaa_connect
 id|vsxxxaa_connect
 (paren
@@ -1642,6 +1642,9 @@ r_struct
 id|vsxxxaa
 op_star
 id|mouse
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 r_if
 c_cond
@@ -1663,6 +1666,8 @@ id|GFP_KERNEL
 )paren
 )paren
 r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|memset
 (paren
@@ -1841,15 +1846,19 @@ comma
 id|mouse
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|serio_open
 (paren
 id|serio
 comma
 id|drv
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 (brace
 id|serio_set_drvdata
@@ -1865,6 +1874,7 @@ id|mouse
 )paren
 suffix:semicolon
 r_return
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Request selftest. Standard packet format and differential&n;&t; * mode will be requested after the device ID&squot;ed successfully.&n;&t; */
@@ -1891,6 +1901,9 @@ id|mouse-&gt;name
 comma
 id|mouse-&gt;phys
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|vsxxaa_serio_ids
