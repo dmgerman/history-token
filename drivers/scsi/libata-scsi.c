@@ -666,6 +666,10 @@ c_func
 id|ap
 )paren
 suffix:semicolon
+multiline_comment|/* TODO: this is per-command; when queueing is supported&n;&t; * this code will either change or move to a more&n;&t; * appropriate place&n;&t; */
+id|host-&gt;host_failed
+op_decrement
+suffix:semicolon
 id|DPRINTK
 c_func
 (paren
