@@ -742,6 +742,11 @@ id|nonblocking
 op_assign
 l_int|1
 comma
+dot
+id|for_kupdate
+op_assign
+l_int|1
+comma
 )brace
 suffix:semicolon
 id|sync_supers
@@ -815,8 +820,8 @@ r_if
 c_cond
 (paren
 id|wbc.nr_to_write
-op_eq
-id|MAX_WRITEBACK_PAGES
+OG
+l_int|0
 )paren
 (brace
 r_if

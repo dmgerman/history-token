@@ -94,6 +94,11 @@ r_int
 id|encountered_congestion
 suffix:semicolon
 multiline_comment|/* An output: a queue is full */
+DECL|member|for_kupdate
+r_int
+id|for_kupdate
+suffix:semicolon
+multiline_comment|/* A kupdate writeback */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * -&gt;writepage() return values (make these much larger than a pagesize, in&n; * case some fs is returning number-of-bytes-written from writepage)&n; */
