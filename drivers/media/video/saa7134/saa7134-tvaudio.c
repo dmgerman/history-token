@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * device driver for philips saa7134 based TV cards&n; * tv audio decoder (fm stereo, nicam, ...)&n; *&n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * device driver for philips saa7134 based TV cards&n; * tv audio decoder (fm stereo, nicam, ...)&n; *&n; * (c) 2001-03 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -635,7 +635,15 @@ op_star
 id|in
 suffix:semicolon
 r_int
-id|reg
+id|ausel
+op_assign
+l_int|0
+comma
+id|ics
+op_assign
+l_int|0
+comma
+id|ocs
 op_assign
 l_int|0
 suffix:semicolon
@@ -772,7 +780,15 @@ id|in-&gt;amux
 r_case
 id|TV
 suffix:colon
-id|reg
+id|ausel
+op_assign
+l_int|0xc0
+suffix:semicolon
+id|ics
+op_assign
+l_int|0x00
+suffix:semicolon
+id|ocs
 op_assign
 l_int|0x02
 suffix:semicolon
@@ -781,7 +797,15 @@ suffix:semicolon
 r_case
 id|LINE1
 suffix:colon
-id|reg
+id|ausel
+op_assign
+l_int|0x80
+suffix:semicolon
+id|ics
+op_assign
+l_int|0x00
+suffix:semicolon
+id|ocs
 op_assign
 l_int|0x00
 suffix:semicolon
@@ -790,7 +814,15 @@ suffix:semicolon
 r_case
 id|LINE2
 suffix:colon
-id|reg
+id|ausel
+op_assign
+l_int|0x80
+suffix:semicolon
+id|ics
+op_assign
+l_int|0x08
+suffix:semicolon
+id|ocs
 op_assign
 l_int|0x01
 suffix:semicolon
@@ -800,11 +832,31 @@ suffix:semicolon
 id|saa_andorb
 c_func
 (paren
+id|SAA7134_AUDIO_FORMAT_CTRL
+comma
+l_int|0xc0
+comma
+id|ausel
+)paren
+suffix:semicolon
+id|saa_andorb
+c_func
+(paren
+id|SAA7134_ANALOG_IO_SELECT
+comma
+l_int|0x08
+comma
+id|ics
+)paren
+suffix:semicolon
+id|saa_andorb
+c_func
+(paren
 id|SAA7134_ANALOG_IO_SELECT
 comma
 l_int|0x07
 comma
-id|reg
+id|ocs
 )paren
 suffix:semicolon
 multiline_comment|/* switch gpio-connected external audio mux */
@@ -2794,6 +2846,13 @@ id|tvaudio
 id|audio
 )braket
 suffix:semicolon
+r_for
+c_loop
+(paren
+suffix:semicolon
+suffix:semicolon
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -2810,6 +2869,29 @@ id|HZ
 r_goto
 id|restart
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;thread
+dot
+m_exit
+op_logical_or
+id|signal_pending
+c_func
+(paren
+id|current
+)paren
+)paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|UNSET
+op_eq
+id|dev-&gt;thread.mode
+)paren
+(brace
 id|rx
 op_assign
 id|tvaudio_getstereo
@@ -2832,6 +2914,14 @@ c_func
 id|rx
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|mode
+op_assign
+id|dev-&gt;thread.mode
+suffix:semicolon
+)brace
 id|tvaudio_setstereo
 c_func
 (paren
@@ -2846,6 +2936,7 @@ comma
 id|mode
 )paren
 suffix:semicolon
+)brace
 )brace
 id|done
 suffix:colon
@@ -3017,9 +3108,9 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|DSP_RETRY
-mdefine_line|#define DSP_RETRY 16
+mdefine_line|#define DSP_RETRY 30
 DECL|macro|DSP_DELAY
-mdefine_line|#define DSP_DELAY 16
+mdefine_line|#define DSP_DELAY 10
 DECL|function|saa_dsp_wait_bit
 r_static
 r_inline
@@ -4263,9 +4354,9 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|function|saa7134_tvaudio_init
+DECL|function|saa7134_tvaudio_init2
 r_int
-id|saa7134_tvaudio_init
+id|saa7134_tvaudio_init2
 c_func
 (paren
 r_struct
@@ -4292,6 +4383,9 @@ id|data
 )paren
 op_assign
 l_int|NULL
+suffix:semicolon
+r_int
+id|rc
 suffix:semicolon
 multiline_comment|/* enable I2S audio output */
 r_if
@@ -4424,6 +4518,8 @@ op_assign
 op_amp
 id|sem
 suffix:semicolon
+id|rc
+op_assign
 id|kernel_thread
 c_func
 (paren
@@ -4434,6 +4530,23 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+OL
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: kernel_thread() failed&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_else
 id|down
 c_func
 (paren
@@ -4543,6 +4656,10 @@ c_cond
 id|dev-&gt;thread.task
 )paren
 (brace
+id|dev-&gt;thread.mode
+op_assign
+id|UNSET
+suffix:semicolon
 id|dev-&gt;thread.scan2
 op_increment
 suffix:semicolon
