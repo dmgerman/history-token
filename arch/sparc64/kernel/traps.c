@@ -3,6 +3,7 @@ multiline_comment|/*&n; * I like traps on v9, :))))&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;  /* for jiffies */
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -8294,12 +8295,29 @@ l_int|0x7
 id|printk
 c_func
 (paren
-l_string|&quot;Caller[%016lx]&bslash;n&quot;
+l_string|&quot;Caller[%016lx]&quot;
 comma
 id|rw-&gt;ins
 (braket
 l_int|7
 )braket
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;: %s&bslash;n&quot;
+comma
+id|rw-&gt;ins
+(braket
+l_int|7
+)braket
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|lastrw
