@@ -10,34 +10,6 @@ macro_line|#include &lt;pcmcia/ss.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;pci_socket.h&quot;
 r_extern
-r_struct
-id|socket_info_t
-op_star
-id|pcmcia_register_socket
-(paren
-r_int
-id|slot
-comma
-r_struct
-id|pccard_operations
-op_star
-id|vtable
-comma
-r_int
-id|use_bus_pm
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|pcmcia_unregister_socket
-(paren
-r_struct
-id|socket_info_t
-op_star
-id|socket
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|pcmcia_suspend_socket
 (paren

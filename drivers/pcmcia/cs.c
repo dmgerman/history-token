@@ -1385,7 +1385,7 @@ id|name
 comma
 l_string|&quot;%02d&quot;
 comma
-id|i
+id|j
 )paren
 suffix:semicolon
 id|s-&gt;proc
