@@ -2402,6 +2402,12 @@ op_assign
 op_amp
 id|proc_dointvec_jiffies
 comma
+dot
+id|strategy
+op_assign
+op_amp
+id|sysctl_jiffies
+comma
 )brace
 comma
 (brace
@@ -2439,6 +2445,12 @@ id|proc_handler
 op_assign
 op_amp
 id|proc_dointvec
+comma
+dot
+id|strategy
+op_assign
+op_amp
+id|sysctl_jiffies
 comma
 )brace
 comma
