@@ -1400,6 +1400,10 @@ DECL|member|bus
 r_int
 id|bus
 suffix:semicolon
+DECL|member|slot
+r_int
+id|slot
+suffix:semicolon
 DECL|member|pin
 r_int
 id|pin
