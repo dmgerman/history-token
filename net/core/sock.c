@@ -2609,6 +2609,16 @@ op_assign
 op_minus
 id|ENOBUFS
 suffix:semicolon
+id|skb_shinfo
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|nr_frags
+op_assign
+id|i
+suffix:semicolon
 id|kfree_skb
 c_func
 (paren
