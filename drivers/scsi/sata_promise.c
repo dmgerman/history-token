@@ -89,6 +89,11 @@ id|PDC_20621_SEQMASK
 op_assign
 l_int|0x480
 comma
+DECL|enumerator|PDC_20621_GENERAL_CTL
+id|PDC_20621_GENERAL_CTL
+op_assign
+l_int|0x484
+comma
 DECL|enumerator|PDC_20621_PAGE_SIZE
 id|PDC_20621_PAGE_SIZE
 op_assign
@@ -2891,6 +2896,12 @@ id|ap-&gt;private_data
 suffix:semicolon
 r_void
 op_star
+id|mmio
+op_assign
+id|ap-&gt;host_set-&gt;mmio_base
+suffix:semicolon
+r_void
+op_star
 id|dimm_mmio
 op_assign
 id|ap-&gt;host_set-&gt;private_data
@@ -2936,6 +2947,11 @@ l_string|&quot;ata%u: ENTER&bslash;n&quot;
 comma
 id|ap-&gt;id
 )paren
+suffix:semicolon
+multiline_comment|/* hard-code chip #0 */
+id|mmio
+op_add_assign
+id|PDC_CHIP0_OFS
 suffix:semicolon
 multiline_comment|/*&n;&t; * Build S/G table&n;&t; */
 id|last
@@ -3190,13 +3206,24 @@ comma
 id|sgt_len
 )paren
 suffix:semicolon
+multiline_comment|/* force host FIFO dump */
+id|writel
+c_func
+(paren
+l_int|0x00000001
+comma
+id|mmio
+op_plus
+id|PDC_20621_GENERAL_CTL
+)paren
+suffix:semicolon
 id|readl
 c_func
 (paren
 id|dimm_mmio
 )paren
 suffix:semicolon
-multiline_comment|/* flush */
+multiline_comment|/* MMIO PCI posting flush */
 id|VPRINTK
 c_func
 (paren
@@ -6184,17 +6211,6 @@ op_plus
 l_int|0x200
 )paren
 suffix:semicolon
-id|probe_ent-&gt;port
-(braket
-l_int|0
-)braket
-dot
-id|scr_addr
-op_assign
-id|base
-op_plus
-l_int|0x400
-suffix:semicolon
 id|pdc_sata_setup_port
 c_func
 (paren
@@ -6209,6 +6225,24 @@ op_plus
 l_int|0x280
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|have_20621
+)paren
+(brace
+id|probe_ent-&gt;port
+(braket
+l_int|0
+)braket
+dot
+id|scr_addr
+op_assign
+id|base
+op_plus
+l_int|0x400
+suffix:semicolon
 id|probe_ent-&gt;port
 (braket
 l_int|1
@@ -6220,6 +6254,7 @@ id|base
 op_plus
 l_int|0x500
 suffix:semicolon
+)brace
 multiline_comment|/* notice 4-port boards */
 r_switch
 c_cond
@@ -6251,17 +6286,6 @@ op_plus
 l_int|0x300
 )paren
 suffix:semicolon
-id|probe_ent-&gt;port
-(braket
-l_int|2
-)braket
-dot
-id|scr_addr
-op_assign
-id|base
-op_plus
-l_int|0x600
-suffix:semicolon
 id|pdc_sata_setup_port
 c_func
 (paren
@@ -6276,6 +6300,24 @@ op_plus
 l_int|0x380
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|have_20621
+)paren
+(brace
+id|probe_ent-&gt;port
+(braket
+l_int|2
+)braket
+dot
+id|scr_addr
+op_assign
+id|base
+op_plus
+l_int|0x600
+suffix:semicolon
 id|probe_ent-&gt;port
 (braket
 l_int|3
@@ -6287,6 +6329,7 @@ id|base
 op_plus
 l_int|0x700
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
