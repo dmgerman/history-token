@@ -127,17 +127,17 @@ id|longlen
 )paren
 suffix:semicolon
 DECL|macro|__raw_writeb
-mdefine_line|#define __raw_writeb(v,a)&t;(*(volatile unsigned char __force  *)(a) = (v))
+mdefine_line|#define __raw_writeb(v,a)&t;(__chk_io_ptr(a), *(volatile unsigned char __force  *)(a) = (v))
 DECL|macro|__raw_writew
-mdefine_line|#define __raw_writew(v,a)&t;(*(volatile unsigned short __force *)(a) = (v))
+mdefine_line|#define __raw_writew(v,a)&t;(__chk_io_ptr(a), *(volatile unsigned short __force *)(a) = (v))
 DECL|macro|__raw_writel
-mdefine_line|#define __raw_writel(v,a)&t;(*(volatile unsigned int __force   *)(a) = (v))
+mdefine_line|#define __raw_writel(v,a)&t;(__chk_io_ptr(a), *(volatile unsigned int __force   *)(a) = (v))
 DECL|macro|__raw_readb
-mdefine_line|#define __raw_readb(a)&t;&t;(*(volatile unsigned char __force  *)(a))
+mdefine_line|#define __raw_readb(a)&t;&t;(__chk_io_ptr(a), *(volatile unsigned char __force  *)(a))
 DECL|macro|__raw_readw
-mdefine_line|#define __raw_readw(a)&t;&t;(*(volatile unsigned short __force *)(a))
+mdefine_line|#define __raw_readw(a)&t;&t;(__chk_io_ptr(a), *(volatile unsigned short __force *)(a))
 DECL|macro|__raw_readl
-mdefine_line|#define __raw_readl(a)&t;&t;(*(volatile unsigned int __force   *)(a))
+mdefine_line|#define __raw_readl(a)&t;&t;(__chk_io_ptr(a), *(volatile unsigned int __force   *)(a))
 multiline_comment|/*&n; * Bad read/write accesses...&n; */
 r_extern
 r_void
