@@ -476,10 +476,10 @@ id|time2
 op_star
 id|system_bus_speed
 op_plus
-l_int|999
+l_int|999999
 )paren
 op_div
-l_int|1000
+l_int|1000000
 suffix:semicolon
 id|param4
 op_assign
@@ -490,10 +490,10 @@ id|time1
 op_star
 id|system_bus_speed
 op_plus
-l_int|999
+l_int|999999
 )paren
 op_div
-l_int|1000
+l_int|1000000
 op_minus
 id|param1
 suffix:semicolon

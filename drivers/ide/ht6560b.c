@@ -479,10 +479,10 @@ id|active_time
 op_star
 id|system_bus_speed
 op_plus
-l_int|999
+l_int|999999
 )paren
 op_div
-l_int|1000
+l_int|1000000
 suffix:semicolon
 id|recovery_cycles
 op_assign
@@ -491,10 +491,10 @@ id|recovery_time
 op_star
 id|system_bus_speed
 op_plus
-l_int|999
+l_int|999999
 )paren
 op_div
-l_int|1000
+l_int|1000000
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *  Upper and lower limits&n;&t;&t; */
 r_if

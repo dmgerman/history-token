@@ -2377,7 +2377,7 @@ id|byte
 (paren
 id|system_bus_speed
 op_le
-l_int|33
+l_int|33333
 )paren
 ques
 c_cond
@@ -2432,7 +2432,7 @@ id|byte
 (paren
 id|system_bus_speed
 op_le
-l_int|33
+l_int|33333
 )paren
 ques
 c_cond
