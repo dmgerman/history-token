@@ -3,7 +3,6 @@ macro_line|#ifndef _LINUX_NET_H
 DECL|macro|_LINUX_NET_H
 mdefine_line|#define _LINUX_NET_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 r_struct
 id|poll_table_struct
@@ -145,6 +144,12 @@ id|page
 suffix:semicolon
 r_struct
 id|kiocb
+suffix:semicolon
+r_struct
+id|sockaddr
+suffix:semicolon
+r_struct
+id|msghdr
 suffix:semicolon
 DECL|struct|proto_ops
 r_struct
@@ -551,6 +556,9 @@ r_int
 id|encrypt_net
 suffix:semicolon
 )brace
+suffix:semicolon
+r_struct
+id|iovec
 suffix:semicolon
 r_extern
 r_int
