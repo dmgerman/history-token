@@ -681,12 +681,6 @@ id|KERNELBASE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Call back for board-specific settings. */
-id|m82xx_board_init
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ppc_md.setup_arch
 op_assign
 id|m8260_setup_arch
@@ -734,6 +728,12 @@ suffix:semicolon
 id|ppc_md.setup_io_mappings
 op_assign
 id|m8260_map_io
+suffix:semicolon
+multiline_comment|/* Call back for board-specific settings and overrides. */
+id|m82xx_board_init
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 eof
