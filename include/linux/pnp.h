@@ -18,6 +18,8 @@ DECL|macro|PNP_MAX_DEVICES
 mdefine_line|#define PNP_MAX_DEVICES&t;&t;8
 DECL|macro|PNP_ID_LEN
 mdefine_line|#define PNP_ID_LEN&t;&t;8
+DECL|macro|PNP_NAME_LEN
+mdefine_line|#define PNP_NAME_LEN&t;&t;50
 r_struct
 id|pnp_protocol
 suffix:semicolon
@@ -357,6 +359,14 @@ op_star
 id|id
 suffix:semicolon
 multiline_comment|/* contains supported EISA IDs*/
+DECL|member|name
+r_char
+id|name
+(braket
+id|PNP_NAME_LEN
+)braket
+suffix:semicolon
+multiline_comment|/* contains a human-readable name */
 DECL|member|pnpver
 r_int
 r_char
@@ -560,6 +570,14 @@ r_struct
 id|pnp_resource_table
 id|res
 suffix:semicolon
+DECL|member|name
+r_char
+id|name
+(braket
+id|PNP_NAME_LEN
+)braket
+suffix:semicolon
+multiline_comment|/* contains a human-readable name */
 DECL|member|regs
 r_int
 r_int
@@ -593,7 +611,7 @@ mdefine_line|#define pnp_for_each_dev(dev) &bslash;&n;&t;for((dev) = global_to_p
 DECL|macro|card_for_each_dev
 mdefine_line|#define card_for_each_dev(card,dev) &bslash;&n;&t;for((dev) = card_to_pnp_dev((card)-&gt;devices.next); &bslash;&n;&t;(dev) != card_to_pnp_dev(&amp;(card)-&gt;devices); &bslash;&n;&t;(dev) = card_to_pnp_dev((dev)-&gt;card_list.next))
 DECL|macro|pnp_dev_name
-mdefine_line|#define pnp_dev_name(dev) (dev)-&gt;dev.name
+mdefine_line|#define pnp_dev_name(dev) (dev)-&gt;name
 DECL|function|pnp_get_drvdata
 r_static
 r_inline

@@ -9790,15 +9790,10 @@ c_func
 id|cmd-&gt;request_buffer
 )paren
 comma
+id|offset_in_page
+c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|cmd-&gt;request_buffer
-op_amp
-op_complement
-id|PAGE_MASK
 )paren
 comma
 id|cmd-&gt;request_bufflen

@@ -391,15 +391,9 @@ op_assign
 id|bit_unreg
 comma
 dot
-id|dev
-op_assign
-(brace
-dot
 id|name
 op_assign
 l_string|&quot;PCILynx I2C&quot;
-comma
-)brace
 comma
 )brace
 suffix:semicolon

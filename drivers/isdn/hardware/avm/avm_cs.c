@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
@@ -114,8 +113,9 @@ r_void
 id|avmcs_release
 c_func
 (paren
-id|u_long
-id|arg
+id|dev_link_t
+op_star
+id|link
 )paren
 suffix:semicolon
 r_static
@@ -248,18 +248,6 @@ r_struct
 id|dev_link_t
 )paren
 )paren
-suffix:semicolon
-id|link-&gt;release.function
-op_assign
-op_amp
-id|avmcs_release
-suffix:semicolon
-id|link-&gt;release.data
-op_assign
-(paren
-id|u_long
-)paren
-id|link
 suffix:semicolon
 multiline_comment|/* The io structure describes IO port mapping */
 id|link-&gt;io.NumPorts1
@@ -1398,9 +1386,6 @@ l_int|0
 id|avmcs_release
 c_func
 (paren
-(paren
-id|u_long
-)paren
 id|link
 )paren
 suffix:semicolon
@@ -1479,9 +1464,6 @@ suffix:semicolon
 id|avmcs_release
 c_func
 (paren
-(paren
-id|u_long
-)paren
 id|link
 )paren
 suffix:semicolon
@@ -1501,20 +1483,11 @@ r_void
 id|avmcs_release
 c_func
 (paren
-id|u_long
-id|arg
-)paren
-(brace
 id|dev_link_t
 op_star
 id|link
-op_assign
-(paren
-id|dev_link_t
-op_star
 )paren
-id|arg
-suffix:semicolon
+(brace
 multiline_comment|/*&n;       If the device is currently in use, we won&squot;t release until it&n;       is actually closed.&n;    */
 r_if
 c_cond
@@ -1638,25 +1611,12 @@ id|link-&gt;state
 op_amp
 id|DEV_CONFIG
 )paren
-(brace
-id|link-&gt;release.expires
-op_assign
-id|jiffies
-op_plus
-(paren
-id|HZ
-op_div
-l_int|20
-)paren
-suffix:semicolon
-id|add_timer
+id|avmcs_release
 c_func
 (paren
-op_amp
-id|link-&gt;release
+id|link
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -1832,9 +1792,6 @@ id|DEV_CONFIG
 id|avmcs_release
 c_func
 (paren
-(paren
-id|u_long
-)paren
 id|dev_list
 )paren
 suffix:semicolon
