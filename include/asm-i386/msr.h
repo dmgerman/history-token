@@ -44,6 +44,12 @@ DECL|macro|MSR_P6_PERFCTR1
 mdefine_line|#define MSR_P6_PERFCTR1&t;&t;0xc2
 DECL|macro|MSR_IA32_BBL_CR_CTL
 mdefine_line|#define MSR_IA32_BBL_CR_CTL&t;&t;0x119
+DECL|macro|MSR_IA32_SYSENTER_CS
+mdefine_line|#define MSR_IA32_SYSENTER_CS&t;&t;0x174
+DECL|macro|MSR_IA32_SYSENTER_ESP
+mdefine_line|#define MSR_IA32_SYSENTER_ESP&t;&t;0x175
+DECL|macro|MSR_IA32_SYSENTER_EIP
+mdefine_line|#define MSR_IA32_SYSENTER_EIP&t;&t;0x176
 DECL|macro|MSR_IA32_MCG_CAP
 mdefine_line|#define MSR_IA32_MCG_CAP&t;&t;0x179
 DECL|macro|MSR_IA32_MCG_STATUS

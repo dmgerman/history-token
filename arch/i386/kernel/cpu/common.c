@@ -2186,9 +2186,13 @@ comma
 id|cpu
 )paren
 suffix:semicolon
-id|t-&gt;esp0
-op_assign
+id|load_esp0
+c_func
+(paren
+id|t
+comma
 id|thread-&gt;esp0
+)paren
 suffix:semicolon
 id|set_tss_desc
 c_func
