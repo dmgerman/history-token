@@ -2856,6 +2856,7 @@ id|len
 r_if
 c_cond
 (paren
+op_logical_neg
 id|_IO_IS_VALID
 c_func
 (paren
