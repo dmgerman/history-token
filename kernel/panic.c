@@ -252,6 +252,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;Press L1-A to return to the boot prom&bslash;n&quot;
 )paren
 suffix:semicolon
