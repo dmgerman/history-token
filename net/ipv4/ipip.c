@@ -1972,28 +1972,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Need this wrapper because NF_HOOK takes the function address */
-DECL|function|do_ip_send
-r_static
-r_inline
-r_int
-id|do_ip_send
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-(brace
-r_return
-id|ip_send
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *&t;This function assumes it is being called from dev_queue_xmit()&n; *&t;and that skb is filled properly by that function.&n; */
 DECL|function|ipip_tunnel_xmit
 r_static
