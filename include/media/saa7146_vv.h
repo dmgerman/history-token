@@ -96,11 +96,6 @@ r_int
 id|v_field
 suffix:semicolon
 multiline_comment|/* number of lines in a field for HPS to process */
-DECL|member|v_calc
-r_int
-id|v_calc
-suffix:semicolon
-multiline_comment|/* number of vertical active lines */
 DECL|member|h_offset
 r_int
 id|h_offset
@@ -111,11 +106,6 @@ r_int
 id|h_pixels
 suffix:semicolon
 multiline_comment|/* number of horizontal pixels to process */
-DECL|member|h_calc
-r_int
-id|h_calc
-suffix:semicolon
-multiline_comment|/* number of horizontal active pixels */
 DECL|member|v_max_out
 r_int
 id|v_max_out
@@ -293,6 +283,10 @@ suffix:semicolon
 multiline_comment|/* resource management for device open */
 )brace
 suffix:semicolon
+DECL|macro|STATUS_OVERLAY
+mdefine_line|#define STATUS_OVERLAY&t;0x01
+DECL|macro|STATUS_CAPTURE
+mdefine_line|#define STATUS_CAPTURE&t;0x02
 DECL|struct|saa7146_vv
 r_struct
 id|saa7146_vv
@@ -326,6 +320,16 @@ DECL|member|video_minor
 r_int
 id|video_minor
 suffix:semicolon
+DECL|member|video_status
+r_int
+id|video_status
+suffix:semicolon
+DECL|member|video_fh
+r_struct
+id|saa7146_fh
+op_star
+id|video_fh
+suffix:semicolon
 multiline_comment|/* video overlay */
 DECL|member|ov_fb
 r_struct
@@ -344,17 +348,17 @@ id|saa7146_overlay
 op_star
 id|ov_data
 suffix:semicolon
+DECL|member|ov_suspend
+r_struct
+id|saa7146_fh
+op_star
+id|ov_suspend
+suffix:semicolon
 multiline_comment|/* video capture */
 DECL|member|video_q
 r_struct
 id|saa7146_dmaqueue
 id|video_q
-suffix:semicolon
-DECL|member|streaming
-r_struct
-id|saa7146_fh
-op_star
-id|streaming
 suffix:semicolon
 DECL|member|last_field
 r_enum
