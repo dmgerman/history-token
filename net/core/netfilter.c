@@ -456,7 +456,6 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_NETFILTER_DEBUG
 macro_line|#include &lt;net/ip.h&gt;
-macro_line|#include &lt;net/route.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
 DECL|function|debug_print_hooks_ip
