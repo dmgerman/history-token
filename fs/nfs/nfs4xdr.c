@@ -4198,7 +4198,8 @@ c_func
 l_string|&quot;read_attrs: changeid=%Ld&bslash;n&quot;
 comma
 (paren
-id|u64
+r_int
+r_int
 )paren
 id|nfp-&gt;change_attr
 )paren
@@ -4234,7 +4235,8 @@ c_func
 l_string|&quot;read_attrs: size=%Ld&bslash;n&quot;
 comma
 (paren
-id|u64
+r_int
+r_int
 )paren
 id|nfp-&gt;size
 )paren
@@ -4275,8 +4277,16 @@ c_func
 (paren
 l_string|&quot;read_attrs: fsid=0x%Lx/0x%Lx&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|nfp-&gt;fsid_u.nfs4.major
 comma
+(paren
+r_int
+r_int
+)paren
 id|nfp-&gt;fsid_u.nfs4.minor
 )paren
 suffix:semicolon
@@ -4343,6 +4353,10 @@ c_func
 (paren
 l_string|&quot;read_attrs: fileid=%Ld&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|nfp-&gt;fileid
 )paren
 suffix:semicolon
@@ -4376,6 +4390,10 @@ c_func
 (paren
 l_string|&quot;read_attrs: files_avail=0x%Lx&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|fsstat-&gt;afiles
 )paren
 suffix:semicolon
@@ -4409,6 +4427,10 @@ c_func
 (paren
 l_string|&quot;read_attrs: files_free=0x%Lx&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|fsstat-&gt;ffiles
 )paren
 suffix:semicolon
@@ -4442,6 +4464,10 @@ c_func
 (paren
 l_string|&quot;read_attrs: files_tot=0x%Lx&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|fsstat-&gt;tfiles
 )paren
 suffix:semicolon
@@ -4475,6 +4501,10 @@ c_func
 (paren
 l_string|&quot;read_attrs: maxfilesize=0x%Lx&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|fsinfo-&gt;maxfilesize
 )paren
 suffix:semicolon
@@ -4993,6 +5023,10 @@ c_func
 (paren
 l_string|&quot;read_attrs: savail=0x%Lx&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|fsstat-&gt;abytes
 )paren
 suffix:semicolon
@@ -5026,6 +5060,10 @@ c_func
 (paren
 l_string|&quot;read_attrs: sfree=0x%Lx&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|fsstat-&gt;fbytes
 )paren
 suffix:semicolon
@@ -5059,6 +5097,10 @@ c_func
 (paren
 l_string|&quot;read_attrs: stotal=0x%Lx&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|fsstat-&gt;tbytes
 )paren
 suffix:semicolon
@@ -5092,6 +5134,10 @@ c_func
 (paren
 l_string|&quot;read_attrs: sused=0x%Lx&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|nfp-&gt;du.nfs3.used
 )paren
 suffix:semicolon
