@@ -9,6 +9,17 @@ macro_line|#include &quot;inode.h&quot;
 r_extern
 id|MFT_RECORD
 op_star
+id|try_map_mft_record
+c_func
+(paren
+id|ntfs_inode
+op_star
+id|ni
+)paren
+suffix:semicolon
+r_extern
+id|MFT_RECORD
+op_star
 id|map_mft_record
 c_func
 (paren
