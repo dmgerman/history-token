@@ -4507,9 +4507,6 @@ l_int|1
 op_lshift
 id|min
 (paren
-(paren
-id|u8
-)paren
 l_int|15
 comma
 id|ep_desc-&gt;bInterval
@@ -4698,9 +4695,6 @@ l_int|1
 op_lshift
 id|min
 (paren
-(paren
-id|u8
-)paren
 l_int|15
 comma
 id|ep_desc-&gt;bInterval
