@@ -2332,9 +2332,9 @@ id|hwif-&gt;dma_exec_cmd
 op_assign
 id|tmp_hwif-&gt;dma_exec_cmd
 suffix:semicolon
-id|hwif-&gt;ide_dma_begin
+id|hwif-&gt;dma_start
 op_assign
-id|tmp_hwif-&gt;ide_dma_begin
+id|tmp_hwif-&gt;dma_start
 suffix:semicolon
 id|hwif-&gt;ide_dma_end
 op_assign

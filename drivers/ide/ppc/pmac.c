@@ -1012,15 +1012,6 @@ op_star
 id|drive
 )paren
 suffix:semicolon
-r_static
-r_int
-id|pmac_ide_dma_begin
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PMAC */
 multiline_comment|/*&n; * Below is the code for blinking the laptop LED along with hard&n; * disk activity.&n; */
 macro_line|#ifdef CONFIG_BLK_DEV_IDE_PMAC_BLINK
@@ -8179,10 +8170,11 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Kick the DMA controller into life after the DMA command has been issued&n; * to the drive.&n; */
 r_static
-r_int
+r_void
 id|__pmac
-DECL|function|pmac_ide_dma_begin
-id|pmac_ide_dma_begin
+DECL|function|pmac_ide_dma_start
+id|pmac_ide_dma_start
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -8241,9 +8233,6 @@ c_func
 op_amp
 id|dma-&gt;control
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * After a DMA transfer, make sure the controller is stopped&n; */
@@ -8798,10 +8787,10 @@ op_assign
 op_amp
 id|pmac_ide_dma_exec_cmd
 suffix:semicolon
-id|hwif-&gt;ide_dma_begin
+id|hwif-&gt;dma_start
 op_assign
 op_amp
-id|pmac_ide_dma_begin
+id|pmac_ide_dma_start
 suffix:semicolon
 id|hwif-&gt;ide_dma_end
 op_assign

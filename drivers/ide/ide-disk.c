@@ -1903,7 +1903,7 @@ id|command
 suffix:semicolon
 id|hwif
 op_member_access_from_pointer
-id|ide_dma_begin
+id|dma_start
 c_func
 (paren
 id|drive

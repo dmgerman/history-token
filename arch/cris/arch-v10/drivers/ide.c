@@ -452,8 +452,9 @@ id|drive
 )paren
 suffix:semicolon
 r_static
-r_int
-id|e100_dma_begin
+r_void
+id|e100_dma_start
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -1168,10 +1169,10 @@ op_assign
 op_amp
 id|e100_dma_exec_cmd
 suffix:semicolon
-id|hwif-&gt;ide_dma_begin
+id|hwif-&gt;dma_start
 op_assign
 op_amp
-id|e100_dma_begin
+id|e100_dma_start
 suffix:semicolon
 id|hwif-&gt;OUTB
 op_assign
@@ -3238,10 +3239,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|e100_dma_begin
+DECL|function|e100_dma_start
 r_static
-r_int
-id|e100_dma_begin
+r_void
+id|e100_dma_start
 c_func
 (paren
 id|ide_drive_t
@@ -3506,8 +3507,5 @@ id|ata_tot_size
 )paren
 suffix:semicolon
 )brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 eof

@@ -538,10 +538,10 @@ op_amp
 l_int|3
 suffix:semicolon
 )brace
+DECL|function|sgiioc4_ide_dma_start
 r_static
-r_int
-DECL|function|sgiioc4_ide_dma_begin
-id|sgiioc4_ide_dma_begin
+r_void
+id|sgiioc4_ide_dma_start
 c_func
 (paren
 id|ide_drive_t
@@ -596,9 +596,6 @@ id|IOC4_DMA_CTRL
 op_star
 l_int|4
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 r_static
@@ -2341,10 +2338,10 @@ op_assign
 op_amp
 id|sgiioc4_ide_dma_setup
 suffix:semicolon
-id|hwif-&gt;ide_dma_begin
+id|hwif-&gt;dma_start
 op_assign
 op_amp
-id|sgiioc4_ide_dma_begin
+id|sgiioc4_ide_dma_start
 suffix:semicolon
 id|hwif-&gt;ide_dma_end
 op_assign

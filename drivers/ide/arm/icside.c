@@ -1184,10 +1184,10 @@ op_ne
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|icside_dma_begin
+DECL|function|icside_dma_start
 r_static
-r_int
-id|icside_dma_begin
+r_void
+id|icside_dma_start
 c_func
 (paren
 id|ide_drive_t
@@ -1221,9 +1221,6 @@ c_func
 (paren
 id|hwif-&gt;hw.dma
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * dma_intr() is the handler for disk read/write DMA interrupts&n; */
@@ -1804,9 +1801,9 @@ id|hwif-&gt;dma_exec_cmd
 op_assign
 id|icside_dma_exec_cmd
 suffix:semicolon
-id|hwif-&gt;ide_dma_begin
+id|hwif-&gt;dma_start
 op_assign
-id|icside_dma_begin
+id|icside_dma_start
 suffix:semicolon
 id|hwif-&gt;ide_dma_end
 op_assign
