@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * MTD partitioning layer definitions&n; *&n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: partitions.h,v 1.14 2003/05/20 21:56:29 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * MTD partitioning layer definitions&n; *&n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: partitions.h,v 1.15 2003/07/09 11:15:43 dwmw2 Exp $&n; */
 macro_line|#ifndef MTD_PARTITIONS_H
 DECL|macro|MTD_PARTITIONS_H
 mdefine_line|#define MTD_PARTITIONS_H
@@ -60,6 +60,7 @@ r_struct
 id|mtd_info
 op_star
 comma
+r_const
 r_struct
 id|mtd_partition
 op_star

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: super.c,v 1.90 2003/10/11 11:47:23 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: super.c,v 1.97 2004/07/16 15:17:57 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
+macro_line|#include &quot;compr.h&quot;
 macro_line|#include &quot;nodelist.h&quot;
 r_static
 r_void
@@ -1205,7 +1206,7 @@ c_func
 id|c-&gt;blocks
 )paren
 suffix:semicolon
-id|jffs2_nand_flash_cleanup
+id|jffs2_flash_cleanup
 c_func
 (paren
 id|c
@@ -1331,7 +1332,7 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;JFFS2 version 2.2.&quot;
-macro_line|#ifdef CONFIG_FS_JFFS2_NAND
+macro_line|#ifdef CONFIG_JFFS2_FS_NAND
 l_string|&quot; (NAND)&quot;
 macro_line|#endif
 l_string|&quot; (C) 2001-2003 Red Hat, Inc.&bslash;n&quot;
@@ -1382,7 +1383,7 @@ suffix:semicolon
 )brace
 id|ret
 op_assign
-id|jffs2_zlib_init
+id|jffs2_compressors_init
 c_func
 (paren
 )paren
@@ -1397,7 +1398,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;JFFS2 error: Failed to initialise zlib workspaces&bslash;n&quot;
+l_string|&quot;JFFS2 error: Failed to initialise compressors&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1425,7 +1426,7 @@ l_string|&quot;JFFS2 error: Failed to initialise slab caches&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
-id|out_zlib
+id|out_compressors
 suffix:semicolon
 )brace
 id|ret
@@ -1464,9 +1465,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|out_zlib
+id|out_compressors
 suffix:colon
-id|jffs2_zlib_exit
+id|jffs2_compressors_exit
 c_func
 (paren
 )paren
@@ -1499,7 +1500,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|jffs2_zlib_exit
+id|jffs2_compressors_exit
 c_func
 (paren
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in the &n; * jffs2 directory.&n; *&n; * $Id: jffs2.h,v 1.31 2003/10/04 08:33:05 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in the &n; * jffs2 directory.&n; *&n; * $Id: jffs2.h,v 1.33 2004/05/25 11:31:55 havasi Exp $&n; *&n; */
 macro_line|#ifndef __LINUX_JFFS2_H__
 DECL|macro|__LINUX_JFFS2_H__
 mdefine_line|#define __LINUX_JFFS2_H__
@@ -36,6 +36,10 @@ DECL|macro|JFFS2_COMPR_DYNRUBIN
 mdefine_line|#define JFFS2_COMPR_DYNRUBIN&t;0x05
 DECL|macro|JFFS2_COMPR_ZLIB
 mdefine_line|#define JFFS2_COMPR_ZLIB&t;0x06
+DECL|macro|JFFS2_COMPR_LZO
+mdefine_line|#define JFFS2_COMPR_LZO         0x07
+DECL|macro|JFFS2_COMPR_LZARI
+mdefine_line|#define JFFS2_COMPR_LZARI       0x08
 multiline_comment|/* Compatibility flags. */
 DECL|macro|JFFS2_COMPAT_MASK
 mdefine_line|#define JFFS2_COMPAT_MASK 0xc000      /* What do to if an unknown nodetype is found */
@@ -123,51 +127,6 @@ id|packed
 )paren
 id|jint16_t
 suffix:semicolon
-DECL|macro|JFFS2_NATIVE_ENDIAN
-mdefine_line|#define JFFS2_NATIVE_ENDIAN
-multiline_comment|/* Note we handle mode bits conversion from JFFS2 (i.e. Linux) to/from&n;   whatever OS we&squot;re actually running on here too. */
-macro_line|#if defined(JFFS2_NATIVE_ENDIAN)
-DECL|macro|cpu_to_je16
-mdefine_line|#define cpu_to_je16(x) ((jint16_t){x})
-DECL|macro|cpu_to_je32
-mdefine_line|#define cpu_to_je32(x) ((jint32_t){x})
-DECL|macro|cpu_to_jemode
-mdefine_line|#define cpu_to_jemode(x) ((jmode_t){os_to_jffs2_mode(x)})
-DECL|macro|je16_to_cpu
-mdefine_line|#define je16_to_cpu(x) ((x).v16)
-DECL|macro|je32_to_cpu
-mdefine_line|#define je32_to_cpu(x) ((x).v32)
-DECL|macro|jemode_to_cpu
-mdefine_line|#define jemode_to_cpu(x) (jffs2_to_os_mode((x).m))
-macro_line|#elif defined(JFFS2_BIG_ENDIAN)
-DECL|macro|cpu_to_je16
-mdefine_line|#define cpu_to_je16(x) ((jint16_t){cpu_to_be16(x)})
-DECL|macro|cpu_to_je32
-mdefine_line|#define cpu_to_je32(x) ((jint32_t){cpu_to_be32(x)})
-DECL|macro|cpu_to_jemode
-mdefine_line|#define cpu_to_jemode(x) ((jmode_t){cpu_to_be32(os_to_jffs2_mode(x))})
-DECL|macro|je16_to_cpu
-mdefine_line|#define je16_to_cpu(x) (be16_to_cpu(x.v16))
-DECL|macro|je32_to_cpu
-mdefine_line|#define je32_to_cpu(x) (be32_to_cpu(x.v32))
-DECL|macro|jemode_to_cpu
-mdefine_line|#define jemode_to_cpu(x) (be32_to_cpu(jffs2_to_os_mode((x).m)))
-macro_line|#elif defined(JFFS2_LITTLE_ENDIAN)
-DECL|macro|cpu_to_je16
-mdefine_line|#define cpu_to_je16(x) ((jint16_t){cpu_to_le16(x)})
-DECL|macro|cpu_to_je32
-mdefine_line|#define cpu_to_je32(x) ((jint32_t){cpu_to_le32(x)})
-DECL|macro|cpu_to_jemode
-mdefine_line|#define cpu_to_jemode(x) ((jmode_t){cpu_to_le32(os_to_jffs2_mode(x))})
-DECL|macro|je16_to_cpu
-mdefine_line|#define je16_to_cpu(x) (le16_to_cpu(x.v16))
-DECL|macro|je32_to_cpu
-mdefine_line|#define je32_to_cpu(x) (le32_to_cpu(x.v32))
-DECL|macro|jemode_to_cpu
-mdefine_line|#define jemode_to_cpu(x) (le32_to_cpu(jffs2_to_os_mode((x).m)))
-macro_line|#else 
-macro_line|#error wibble
-macro_line|#endif
 DECL|struct|jffs2_unknown_node
 r_struct
 id|jffs2_unknown_node

@@ -1,4 +1,4 @@
-multiline_comment|/* fortunet.c memory map&n; *&n; * $Id: fortunet.c,v 1.6 2003/05/21 12:45:18 dwmw2 Exp $&n; */
+multiline_comment|/* fortunet.c memory map&n; *&n; * $Id: fortunet.c,v 1.7 2004/07/12 21:59:44 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -28,9 +28,9 @@ DECL|member|window_addr_physical
 r_int
 id|window_addr_physical
 suffix:semicolon
-DECL|member|altbuswidth
+DECL|member|altbankwidth
 r_int
-id|altbuswidth
+id|altbankwidth
 suffix:semicolon
 DECL|member|map_info
 r_struct
@@ -127,7 +127,7 @@ op_assign
 id|DEF_WINDOW_SIZE
 comma
 dot
-id|buswidth
+id|bankwidth
 op_assign
 l_int|4
 comma
@@ -361,7 +361,7 @@ c_func
 (paren
 id|MTD_FORTUNET_PK
 l_string|&quot;Bad parameters for MTD Region &quot;
-l_string|&quot; name,region-number[,base,size,buswidth,altbuswidth]&bslash;n&quot;
+l_string|&quot; name,region-number[,base,size,bankwidth,altbankwidth]&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -497,7 +497,7 @@ l_int|1
 )braket
 )braket
 dot
-id|altbuswidth
+id|altbankwidth
 op_assign
 l_int|2
 suffix:semicolon
@@ -622,7 +622,7 @@ l_int|1
 )braket
 )braket
 dot
-id|map_info.buswidth
+id|map_info.bankwidth
 op_assign
 id|params
 (braket
@@ -649,7 +649,7 @@ l_int|1
 )braket
 )braket
 dot
-id|altbuswidth
+id|altbankwidth
 op_assign
 id|params
 (braket
@@ -1098,7 +1098,7 @@ id|map_regions
 id|ix
 )braket
 dot
-id|altbuswidth
+id|altbankwidth
 op_assign
 l_int|2
 suffix:semicolon
@@ -1328,14 +1328,14 @@ id|map_regions
 id|ix
 )braket
 dot
-id|altbuswidth
+id|altbankwidth
 op_ne
 id|map_regions
 (braket
 id|ix
 )braket
 dot
-id|map_info.buswidth
+id|map_info.bankwidth
 )paren
 )paren
 (brace
@@ -1344,7 +1344,7 @@ c_func
 (paren
 id|KERN_NOTICE
 id|MTD_FORTUNET_PK
-l_string|&quot;Trying alternate buswidth &quot;
+l_string|&quot;Trying alternate bankwidth &quot;
 l_string|&quot;for %s flash.&bslash;n&quot;
 comma
 id|map_regions
@@ -1360,14 +1360,14 @@ id|map_regions
 id|ix
 )braket
 dot
-id|map_info.buswidth
+id|map_info.bankwidth
 op_assign
 id|map_regions
 (braket
 id|ix
 )braket
 dot
-id|altbuswidth
+id|altbankwidth
 suffix:semicolon
 id|map_regions
 (braket

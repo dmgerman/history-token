@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/autcpu12.c&n; *&n; *  Copyright (c) 2002 Thomas Gleixner &lt;tgxl@linutronix.de&gt;&n; *&n; *  Derived from drivers/mtd/spia.c&n; * &t; Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; * &n; * $Id: autcpu12.c,v 1.11 2003/06/04 17:04:09 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   autronix autcpu12 board, which is a SmartMediaCard. It supports &n; *   16MB, 32MB and 64MB cards.&n; *&n; *&n; *&t;02-12-2002 TG&t;Cleanup of module params&n; *&n; *&t;02-20-2002 TG&t;adjusted for different rd/wr adress support&n; *&t;&t;&t;added support for read device ready/busy line&n; *&t;&t;&t;added page_cache&n; *&n; *&t;10-06-2002 TG&t;128K card support added&n; */
+multiline_comment|/*&n; *  drivers/mtd/autcpu12.c&n; *&n; *  Copyright (c) 2002 Thomas Gleixner &lt;tgxl@linutronix.de&gt;&n; *&n; *  Derived from drivers/mtd/spia.c&n; * &t; Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; * &n; * $Id: autcpu12.c,v 1.19 2004/07/12 15:02:15 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   autronix autcpu12 board, which is a SmartMediaCard. It supports &n; *   16MiB, 32MiB and 64MiB cards.&n; *&n; *&n; *&t;02-12-2002 TG&t;Cleanup of module params&n; *&n; *&t;02-20-2002 TG&t;adjusted for different rd/wr adress support&n; *&t;&t;&t;added support for read device ready/busy line&n; *&t;&t;&t;added page_cache&n; *&n; *&t;10-06-2002 TG&t;128K card support added&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -111,11 +111,6 @@ id|autcpu12_pedr
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Define partitions for flash devices&n; */
-r_extern
-r_struct
-id|nand_oobinfo
-id|jffs2_oobinfo
-suffix:semicolon
 DECL|variable|partition_info16k
 r_static
 r_struct
@@ -330,10 +325,16 @@ DECL|macro|NUM_PARTITIONS128K
 mdefine_line|#define NUM_PARTITIONS128K 2
 multiline_comment|/* &n; *&t;hardware specific access to control-lines&n;*/
 DECL|function|autcpu12_hwcontrol
+r_static
 r_void
 id|autcpu12_hwcontrol
 c_func
 (paren
+r_struct
+id|mtd_info
+op_star
+id|mtd
+comma
 r_int
 id|cmd
 )paren
@@ -486,7 +487,10 @@ r_int
 id|autcpu12_device_ready
 c_func
 (paren
-r_void
+r_struct
+id|mtd_info
+op_star
+id|mtd
 )paren
 (brace
 r_return
@@ -696,6 +700,12 @@ id|this-&gt;eccmode
 op_assign
 id|NAND_ECC_SOFT
 suffix:semicolon
+multiline_comment|/* Enable the following for a flash based bad block table */
+multiline_comment|/*&n;&t;this-&gt;options = NAND_USE_FLASH_BBT;&n;&t;*/
+id|this-&gt;options
+op_assign
+id|NAND_USE_FLASH_BBT
+suffix:semicolon
 multiline_comment|/* Scan to find existance of the device */
 r_if
 c_cond
@@ -703,6 +713,8 @@ c_cond
 id|nand_scan
 (paren
 id|autcpu12_mtd
+comma
+l_int|1
 )paren
 )paren
 (brace
@@ -710,46 +722,6 @@ id|err
 op_assign
 op_minus
 id|ENXIO
-suffix:semicolon
-r_goto
-id|out_ior
-suffix:semicolon
-)brace
-multiline_comment|/* Allocate memory for internal data buffer */
-id|this-&gt;data_buf
-op_assign
-id|kmalloc
-(paren
-r_sizeof
-(paren
-id|u_char
-)paren
-op_star
-(paren
-id|autcpu12_mtd-&gt;oobblock
-op_plus
-id|autcpu12_mtd-&gt;oobsize
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|this-&gt;data_buf
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;Unable to allocate NAND data buffer for AUTCPU12.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|err
-op_assign
-op_minus
-id|ENOMEM
 suffix:semicolon
 r_goto
 id|out_ior
@@ -838,19 +810,12 @@ op_minus
 id|ENXIO
 suffix:semicolon
 r_goto
-id|out_buf
+id|out_ior
 suffix:semicolon
 )brace
 )brace
 r_goto
 id|out
-suffix:semicolon
-id|out_buf
-suffix:colon
-id|kfree
-(paren
-id|this-&gt;data_buf
-)paren
 suffix:semicolon
 id|out_ior
 suffix:colon
@@ -895,39 +860,10 @@ id|autcpu12_cleanup
 r_void
 )paren
 (brace
-r_struct
-id|nand_chip
-op_star
-id|this
-op_assign
-(paren
-r_struct
-id|nand_chip
-op_star
-)paren
-op_amp
-id|autcpu12_mtd
-(braket
-l_int|1
-)braket
-suffix:semicolon
-multiline_comment|/* Unregister partitions */
-id|del_mtd_partitions
-c_func
+multiline_comment|/* Release resources, unregister device */
+id|nand_release
 (paren
 id|autcpu12_mtd
-)paren
-suffix:semicolon
-multiline_comment|/* Unregister the device */
-id|del_mtd_device
-(paren
-id|autcpu12_mtd
-)paren
-suffix:semicolon
-multiline_comment|/* Free internal data buffers */
-id|kfree
-(paren
-id|this-&gt;data_buf
 )paren
 suffix:semicolon
 multiline_comment|/* unmap physical adress */

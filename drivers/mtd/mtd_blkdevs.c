@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: mtd_blkdevs.c,v 1.16 2003/06/23 13:34:43 dwmw2 Exp $&n; *&n; * (C) 2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * Interface to Linux 2.5 block layer for MTD &squot;translation layers&squot;.&n; *&n; */
+multiline_comment|/*&n; * $Id: mtd_blkdevs.c,v 1.22 2004/07/12 12:35:28 dwmw2 Exp $&n; *&n; * (C) 2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * Interface to Linux 2.5 block layer for MTD &squot;translation layers&squot;.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -1270,14 +1270,23 @@ op_member_access_from_pointer
 id|devnum
 )paren
 suffix:semicolon
+multiline_comment|/* 2.5 has capacity in units of 512 bytes while still&n;&t;   having BLOCK_SIZE_BITS set to 10. Just to keep us amused. */
 id|set_capacity
 c_func
 (paren
 id|gd
 comma
+(paren
 r_new
 op_member_access_from_pointer
 id|size
+op_star
+r_new
+op_member_access_from_pointer
+id|blksize
+)paren
+op_rshift
+l_int|9
 )paren
 suffix:semicolon
 id|gd-&gt;private_data

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Linux driver for Disk-On-Chip Millennium Plus&n; *&n; * (c) 2002-2003 Greg Ungerer &lt;gerg@snapgear.com&gt;&n; * (c) 2002-2003 SnapGear Inc&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2001plus.c,v 1.5 2003/06/11 09:45:19 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Linux driver for Disk-On-Chip Millennium Plus&n; *&n; * (c) 2002-2003 Greg Ungerer &lt;gerg@snapgear.com&gt;&n; * (c) 2002-2003 SnapGear Inc&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2001plus.c,v 1.8 2004/04/04 12:36:45 gleixner Exp $&n; *&n; * Released under GPL&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/nand.h&gt;
 macro_line|#include &lt;linux/mtd/doc2000.h&gt;
@@ -737,6 +738,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Translate the given offset into the appropriate command and offset.&n; * This does the mapping using the 16bit interleave layout defined by&n; * M-Systems, and looks like this for a sector pair:&n; *  +-----------+-------+-------+-------+--------------+---------+-----------+&n; *  | 0 --- 511 |512-517|518-519|520-521| 522 --- 1033 |1034-1039|1040 - 1055|&n; *  +-----------+-------+-------+-------+--------------+---------+-----------+&n; *  | Data 0    | ECC 0 |Flags0 |Flags1 | Data 1       |ECC 1    | OOB 1 + 2 |&n; *  +-----------+-------+-------+-------+--------------+---------+-----------+&n; */
+multiline_comment|/* FIXME: This lives in INFTL not here. Other users of flash devices&n;   may not want it */
 DECL|function|DoC_GetDataOffset
 r_static
 r_int
@@ -752,6 +754,24 @@ comma
 id|loff_t
 op_star
 id|from
+)paren
+(brace
+r_struct
+id|DiskOnChip
+op_star
+id|this
+op_assign
+(paren
+r_struct
+id|DiskOnChip
+op_star
+)paren
+id|mtd-&gt;priv
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|this-&gt;interleave
 )paren
 (brace
 r_int
@@ -837,6 +857,27 @@ suffix:semicolon
 r_return
 id|cmd
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* No interleave */
+r_if
+c_cond
+(paren
+(paren
+op_star
+id|from
+)paren
+op_amp
+l_int|0x100
+)paren
+r_return
+id|NAND_CMD_READ1
+suffix:semicolon
+r_return
+id|NAND_CMD_READ0
+suffix:semicolon
+)brace
 )brace
 DECL|function|DoC_GetECCOffset
 r_static
@@ -1331,6 +1372,11 @@ comma
 id|Mil_CDSN_IO
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|doc-&gt;interleave
+)paren
 id|dummy
 op_assign
 id|ReadDOC
@@ -1352,6 +1398,11 @@ comma
 id|Mil_CDSN_IO
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|doc-&gt;interleave
+)paren
 id|dummy
 op_assign
 id|ReadDOC
@@ -1512,29 +1563,24 @@ id|doc-&gt;id
 op_assign
 id|id
 suffix:semicolon
-id|doc-&gt;interleave
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|doc-&gt;ChipID
-op_eq
-id|DOC_ChipID_DocMilPlus32
-)paren
-id|doc-&gt;interleave
-op_assign
-l_int|1
-suffix:semicolon
 id|doc-&gt;chipshift
 op_assign
+id|ffs
+c_func
+(paren
+(paren
 id|nand_flash_ids
 (braket
 id|i
 )braket
 dot
-id|chipshift
+id|chipsize
+op_lshift
+l_int|20
+)paren
+)paren
+op_minus
+l_int|1
 suffix:semicolon
 id|doc-&gt;erasesize
 op_assign
@@ -1609,6 +1655,85 @@ id|this-&gt;id
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Work out the intended interleave setting */
+id|this-&gt;interleave
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|this-&gt;ChipID
+op_eq
+id|DOC_ChipID_DocMilPlus32
+)paren
+id|this-&gt;interleave
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Check the ASIC agrees */
+r_if
+c_cond
+(paren
+(paren
+id|this-&gt;interleave
+op_lshift
+l_int|2
+)paren
+op_ne
+(paren
+id|ReadDOC
+c_func
+(paren
+id|this-&gt;virtadr
+comma
+id|Mplus_Configuration
+)paren
+op_amp
+l_int|4
+)paren
+)paren
+(brace
+id|u_char
+id|conf
+op_assign
+id|ReadDOC
+c_func
+(paren
+id|this-&gt;virtadr
+comma
+id|Mplus_Configuration
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;Setting DiskOnChip Millennium Plus interleave to %s&bslash;n&quot;
+comma
+id|this-&gt;interleave
+ques
+c_cond
+l_string|&quot;on (16-bit)&quot;
+suffix:colon
+l_string|&quot;off (8-bit)&quot;
+)paren
+suffix:semicolon
+id|conf
+op_xor_assign
+l_int|4
+suffix:semicolon
+id|WriteDOC
+c_func
+(paren
+id|this-&gt;virtadr
+comma
+id|conf
+comma
+id|Mplus_Configuration
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* For each floor, find the number of valid chips it contains */
 r_for
 c_loop
@@ -3647,9 +3772,15 @@ suffix:semicolon
 multiline_comment|/* Determine position of OOB flags, before or after data */
 id|before
 op_assign
+(paren
+id|this-&gt;interleave
+op_logical_and
+(paren
 id|to
 op_amp
 l_int|0x200
+)paren
+)paren
 suffix:semicolon
 id|DoC_CheckASIC
 c_func
@@ -4384,6 +4515,31 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|this-&gt;interleave
+)paren
+(brace
+id|DoC_Command
+c_func
+(paren
+id|docptr
+comma
+id|NAND_CMD_READOOB
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|size
+op_assign
+l_int|16
+op_minus
+id|base
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
 id|base
 OL
 l_int|6
@@ -4836,6 +4992,31 @@ id|ofs
 op_amp
 l_int|0x0f
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|this-&gt;interleave
+)paren
+(brace
+id|WriteDOC
+c_func
+(paren
+id|NAND_CMD_READOOB
+comma
+id|docptr
+comma
+id|Mplus_FlashCmd
+)paren
+suffix:semicolon
+id|size
+op_assign
+l_int|16
+op_minus
+id|base
+suffix:semicolon
+)brace
+r_else
 r_if
 c_cond
 (paren

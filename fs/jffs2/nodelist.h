@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.h,v 1.104 2003/10/08 11:45:11 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.h,v 1.119 2004/05/26 12:28:12 gleixner Exp $&n; *&n; */
 macro_line|#ifndef __JFFS2_NODELIST_H__
 DECL|macro|__JFFS2_NODELIST_H__
 mdefine_line|#define __JFFS2_NODELIST_H__
@@ -32,6 +32,51 @@ macro_line|#else
 DECL|macro|D2
 mdefine_line|#define D2(x)
 macro_line|#endif
+DECL|macro|JFFS2_NATIVE_ENDIAN
+mdefine_line|#define JFFS2_NATIVE_ENDIAN
+multiline_comment|/* Note we handle mode bits conversion from JFFS2 (i.e. Linux) to/from&n;   whatever OS we&squot;re actually running on here too. */
+macro_line|#if defined(JFFS2_NATIVE_ENDIAN)
+DECL|macro|cpu_to_je16
+mdefine_line|#define cpu_to_je16(x) ((jint16_t){x})
+DECL|macro|cpu_to_je32
+mdefine_line|#define cpu_to_je32(x) ((jint32_t){x})
+DECL|macro|cpu_to_jemode
+mdefine_line|#define cpu_to_jemode(x) ((jmode_t){os_to_jffs2_mode(x)})
+DECL|macro|je16_to_cpu
+mdefine_line|#define je16_to_cpu(x) ((x).v16)
+DECL|macro|je32_to_cpu
+mdefine_line|#define je32_to_cpu(x) ((x).v32)
+DECL|macro|jemode_to_cpu
+mdefine_line|#define jemode_to_cpu(x) (jffs2_to_os_mode((x).m))
+macro_line|#elif defined(JFFS2_BIG_ENDIAN)
+DECL|macro|cpu_to_je16
+mdefine_line|#define cpu_to_je16(x) ((jint16_t){cpu_to_be16(x)})
+DECL|macro|cpu_to_je32
+mdefine_line|#define cpu_to_je32(x) ((jint32_t){cpu_to_be32(x)})
+DECL|macro|cpu_to_jemode
+mdefine_line|#define cpu_to_jemode(x) ((jmode_t){cpu_to_be32(os_to_jffs2_mode(x))})
+DECL|macro|je16_to_cpu
+mdefine_line|#define je16_to_cpu(x) (be16_to_cpu(x.v16))
+DECL|macro|je32_to_cpu
+mdefine_line|#define je32_to_cpu(x) (be32_to_cpu(x.v32))
+DECL|macro|jemode_to_cpu
+mdefine_line|#define jemode_to_cpu(x) (be32_to_cpu(jffs2_to_os_mode((x).m)))
+macro_line|#elif defined(JFFS2_LITTLE_ENDIAN)
+DECL|macro|cpu_to_je16
+mdefine_line|#define cpu_to_je16(x) ((jint16_t){cpu_to_le16(x)})
+DECL|macro|cpu_to_je32
+mdefine_line|#define cpu_to_je32(x) ((jint32_t){cpu_to_le32(x)})
+DECL|macro|cpu_to_jemode
+mdefine_line|#define cpu_to_jemode(x) ((jmode_t){cpu_to_le32(os_to_jffs2_mode(x))})
+DECL|macro|je16_to_cpu
+mdefine_line|#define je16_to_cpu(x) (le16_to_cpu(x.v16))
+DECL|macro|je32_to_cpu
+mdefine_line|#define je32_to_cpu(x) (le32_to_cpu(x.v32))
+DECL|macro|jemode_to_cpu
+mdefine_line|#define jemode_to_cpu(x) (le32_to_cpu(jffs2_to_os_mode((x).m)))
+macro_line|#else 
+macro_line|#error wibble
+macro_line|#endif
 multiline_comment|/*&n;  This is all we need to keep in-core for each raw node during normal&n;  operation. As and when we do read_inode on a particular inode, we can&n;  scan the nodes which are listed for it and build up a proper map of &n;  which nodes are currently valid. JFFSv1 always used to keep that whole&n;  map in core for each inode.&n;*/
 DECL|struct|jffs2_raw_node_ref
 r_struct
@@ -54,11 +99,14 @@ DECL|member|flash_offset
 r_uint32
 id|flash_offset
 suffix:semicolon
-DECL|member|totlen
+DECL|member|__totlen
 r_uint32
-id|totlen
+id|__totlen
 suffix:semicolon
-multiline_comment|/* flash_offset &amp; 3 always has to be zero, because nodes are&n;&t;   always aligned at 4 bytes. So we have a couple of extra bits&n;&t;   to play with. So we set the least significant bit to 1 to&n;&t;   signify that the node is obsoleted by later nodes.&n;&t;*/
+multiline_comment|/* This may die; use ref_totlen(c, jeb, ) below */
+)brace
+suffix:semicolon
+multiline_comment|/* flash_offset &amp; 3 always has to be zero, because nodes are&n;&t;   always aligned at 4 bytes. So we have a couple of extra bits&n;&t;   to play with, which indicate the node&squot;s status; see below: */
 DECL|macro|REF_UNCHECKED
 mdefine_line|#define REF_UNCHECKED&t;0&t;/* We haven&squot;t yet checked the CRC or built its inode */
 DECL|macro|REF_OBSOLETE
@@ -75,8 +123,6 @@ DECL|macro|ref_obsolete
 mdefine_line|#define ref_obsolete(ref)&t;(((ref)-&gt;flash_offset &amp; 3) == REF_OBSOLETE)
 DECL|macro|mark_ref_normal
 mdefine_line|#define mark_ref_normal(ref)    do { (ref)-&gt;flash_offset = ref_offset(ref) | REF_NORMAL; } while(0)
-)brace
-suffix:semicolon
 multiline_comment|/* &n;   Used for keeping track of deletion nodes &amp;c, which can only be marked&n;   as obsolete when the node which they mark as deleted has actually been &n;   removed from the flash.&n;*/
 DECL|struct|jffs2_raw_node_ref_list
 r_struct
@@ -448,7 +494,255 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 DECL|macro|ACCT_PARANOIA_CHECK
-mdefine_line|#define ACCT_PARANOIA_CHECK(jeb) do { &bslash;&n;&t;&t;uint32_t my_used_size = 0; &bslash;&n;&t;&t;uint32_t my_unchecked_size = 0; &bslash;&n;&t;&t;struct jffs2_raw_node_ref *ref2 = jeb-&gt;first_node; &bslash;&n;&t;&t;while (ref2) { &bslash;&n;&t;&t;&t;if (unlikely(ref2-&gt;flash_offset &lt; jeb-&gt;offset || &bslash;&n;&t;&t;&t;&t;     ref2-&gt;flash_offset &gt; jeb-&gt;offset + c-&gt;sector_size)) { &bslash;&n;&t;&t;&t;&t;printk(KERN_NOTICE &quot;Node %08x shouldn&squot;t be in block at %08x!&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;       ref_offset(ref2), jeb-&gt;offset); &bslash;&n;&t;&t;&t;&t;paranoia_failed_dump(jeb); &bslash;&n;&t;&t;&t;&t;BUG(); &bslash;&n;&t;&t;&t;} &bslash;&n;&t;&t;&t;if (ref_flags(ref2) == REF_UNCHECKED) &bslash;&n;&t;&t;&t;&t;my_unchecked_size += ref2-&gt;totlen; &bslash;&n;&t;&t;&t;else if (!ref_obsolete(ref2)) &bslash;&n;&t;&t;&t;&t;my_used_size += ref2-&gt;totlen; &bslash;&n;&t;&t;&t;if (unlikely((!ref2-&gt;next_phys) != (ref2 == jeb-&gt;last_node))) { &bslash;&n;&t;&t;&t;&t;printk(&quot;ref for node at %p (phys %08x) has next_phys-&gt;%p (%08x), last_node-&gt;%p (phys %08x)&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;       ref2, ref_offset(ref2), ref2-&gt;next_phys, ref_offset(ref2-&gt;next_phys), &bslash;&n;&t;&t;&t;&t;       jeb-&gt;last_node, ref_offset(jeb-&gt;last_node)); &bslash;&n;&t;&t;&t;&t;paranoia_failed_dump(jeb); &bslash;&n;&t;&t;&t;&t;BUG(); &bslash;&n;&t;&t;&t;} &bslash;&n;&t;&t;&t;ref2 = ref2-&gt;next_phys; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;if (my_used_size != jeb-&gt;used_size) { &bslash;&n;&t;&t;&t;printk(KERN_NOTICE &quot;Calculated used size %08x != stored used size %08x&bslash;n&quot;, my_used_size, jeb-&gt;used_size); &bslash;&n;&t;&t;&t;BUG(); &bslash;&n;&t;&t;} &bslash;&n;&t;&t;if (my_unchecked_size != jeb-&gt;unchecked_size) { &bslash;&n;&t;&t;&t;printk(KERN_NOTICE &quot;Calculated unchecked size %08x != stored unchecked size %08x&bslash;n&quot;, my_unchecked_size, jeb-&gt;unchecked_size); &bslash;&n;&t;&t;&t;BUG(); &bslash;&n;&t;&t;} &bslash;&n;&t;} while(0)
+mdefine_line|#define ACCT_PARANOIA_CHECK(jeb) do { &bslash;&n;&t;&t;uint32_t my_used_size = 0; &bslash;&n;&t;&t;uint32_t my_unchecked_size = 0; &bslash;&n;&t;&t;struct jffs2_raw_node_ref *ref2 = jeb-&gt;first_node; &bslash;&n;&t;&t;while (ref2) { &bslash;&n;&t;&t;&t;if (unlikely(ref2-&gt;flash_offset &lt; jeb-&gt;offset || &bslash;&n;&t;&t;&t;&t;     ref2-&gt;flash_offset &gt; jeb-&gt;offset + c-&gt;sector_size)) { &bslash;&n;&t;&t;&t;&t;printk(KERN_NOTICE &quot;Node %08x shouldn&squot;t be in block at %08x!&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;       ref_offset(ref2), jeb-&gt;offset); &bslash;&n;&t;&t;&t;&t;paranoia_failed_dump(jeb); &bslash;&n;&t;&t;&t;&t;BUG(); &bslash;&n;&t;&t;&t;} &bslash;&n;&t;&t;&t;if (ref_flags(ref2) == REF_UNCHECKED) &bslash;&n;&t;&t;&t;&t;my_unchecked_size += ref_totlen(c, jeb, ref2); &bslash;&n;&t;&t;&t;else if (!ref_obsolete(ref2)) &bslash;&n;&t;&t;&t;&t;my_used_size += ref_totlen(c, jeb, ref2); &bslash;&n;&t;&t;&t;if (unlikely((!ref2-&gt;next_phys) != (ref2 == jeb-&gt;last_node))) { &bslash;&n;&t;&t;&t;&t;printk(&quot;ref for node at %p (phys %08x) has next_phys-&gt;%p (%08x), last_node-&gt;%p (phys %08x)&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;       ref2, ref_offset(ref2), ref2-&gt;next_phys, ref_offset(ref2-&gt;next_phys), &bslash;&n;&t;&t;&t;&t;       jeb-&gt;last_node, ref_offset(jeb-&gt;last_node)); &bslash;&n;&t;&t;&t;&t;paranoia_failed_dump(jeb); &bslash;&n;&t;&t;&t;&t;BUG(); &bslash;&n;&t;&t;&t;} &bslash;&n;&t;&t;&t;ref2 = ref2-&gt;next_phys; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;if (my_used_size != jeb-&gt;used_size) { &bslash;&n;&t;&t;&t;printk(KERN_NOTICE &quot;Calculated used size %08x != stored used size %08x&bslash;n&quot;, my_used_size, jeb-&gt;used_size); &bslash;&n;&t;&t;&t;BUG(); &bslash;&n;&t;&t;} &bslash;&n;&t;&t;if (my_unchecked_size != jeb-&gt;unchecked_size) { &bslash;&n;&t;&t;&t;printk(KERN_NOTICE &quot;Calculated unchecked size %08x != stored unchecked size %08x&bslash;n&quot;, my_unchecked_size, jeb-&gt;unchecked_size); &bslash;&n;&t;&t;&t;BUG(); &bslash;&n;&t;&t;} &bslash;&n;&t;} while(0)
+multiline_comment|/* Calculate totlen from surrounding nodes or eraseblock */
+DECL|function|__ref_totlen
+r_static
+r_inline
+r_uint32
+id|__ref_totlen
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+comma
+r_struct
+id|jffs2_eraseblock
+op_star
+id|jeb
+comma
+r_struct
+id|jffs2_raw_node_ref
+op_star
+id|ref
+)paren
+(brace
+r_uint32
+id|ref_end
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ref-&gt;next_phys
+)paren
+id|ref_end
+op_assign
+id|ref_offset
+c_func
+(paren
+id|ref-&gt;next_phys
+)paren
+suffix:semicolon
+r_else
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|jeb
+)paren
+id|jeb
+op_assign
+op_amp
+id|c-&gt;blocks
+(braket
+id|ref-&gt;flash_offset
+op_div
+id|c-&gt;sector_size
+)braket
+suffix:semicolon
+multiline_comment|/* Last node in block. Use free_space */
+id|BUG_ON
+c_func
+(paren
+id|ref
+op_ne
+id|jeb-&gt;last_node
+)paren
+suffix:semicolon
+id|ref_end
+op_assign
+id|jeb-&gt;offset
+op_plus
+id|c-&gt;sector_size
+op_minus
+id|jeb-&gt;free_size
+suffix:semicolon
+)brace
+r_return
+id|ref_end
+op_minus
+id|ref_offset
+c_func
+(paren
+id|ref
+)paren
+suffix:semicolon
+)brace
+DECL|function|ref_totlen
+r_static
+r_inline
+r_uint32
+id|ref_totlen
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+comma
+r_struct
+id|jffs2_eraseblock
+op_star
+id|jeb
+comma
+r_struct
+id|jffs2_raw_node_ref
+op_star
+id|ref
+)paren
+(brace
+r_uint32
+id|ret
+suffix:semicolon
+id|D1
+c_func
+(paren
+r_if
+(paren
+id|jeb
+op_logical_and
+id|jeb
+op_ne
+op_amp
+id|c-&gt;blocks
+(braket
+id|ref-&gt;flash_offset
+op_div
+id|c-&gt;sector_size
+)braket
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;ref_totlen called with wrong block -- at 0x%08x instead of 0x%08x; ref 0x%08x&bslash;n&quot;
+comma
+id|jeb-&gt;offset
+comma
+id|c-&gt;blocks
+(braket
+id|ref-&gt;flash_offset
+op_div
+id|c-&gt;sector_size
+)braket
+dot
+id|offset
+comma
+id|ref_offset
+c_func
+(paren
+id|ref
+)paren
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+)paren
+macro_line|#if 1
+id|ret
+op_assign
+id|ref-&gt;__totlen
+suffix:semicolon
+macro_line|#else
+multiline_comment|/* This doesn&squot;t actually work yet */
+id|ret
+op_assign
+id|__ref_totlen
+c_func
+(paren
+id|c
+comma
+id|jeb
+comma
+id|ref
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+id|ref-&gt;__totlen
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;Totlen for ref at %p (0x%08x-0x%08x) miscalculated as 0x%x instead of %x&bslash;n&quot;
+comma
+id|ref
+comma
+id|ref_offset
+c_func
+(paren
+id|ref
+)paren
+comma
+id|ref_offset
+c_func
+(paren
+id|ref
+)paren
+op_plus
+id|ref-&gt;__totlen
+comma
+id|ret
+comma
+id|ref-&gt;__totlen
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|jeb
+)paren
+id|jeb
+op_assign
+op_amp
+id|c-&gt;blocks
+(braket
+id|ref-&gt;flash_offset
+op_div
+id|c-&gt;sector_size
+)braket
+suffix:semicolon
+id|paranoia_failed_dump
+c_func
+(paren
+id|jeb
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+r_return
+id|ret
+suffix:semicolon
+)brace
 DECL|macro|ALLOC_NORMAL
 mdefine_line|#define ALLOC_NORMAL&t;0&t;/* Normal allocation */
 DECL|macro|ALLOC_DELETION
@@ -465,11 +759,13 @@ DECL|macro|ISDIRTY
 mdefine_line|#define ISDIRTY(size) ((size) &gt;  sizeof (struct jffs2_raw_inode) + JFFS2_MIN_DATA_LEN) 
 DECL|macro|PAD
 mdefine_line|#define PAD(x) (((x)+3)&amp;~3)
-DECL|function|jffs2_raw_ref_to_inum
+DECL|function|jffs2_raw_ref_to_ic
 r_static
 r_inline
-r_int
-id|jffs2_raw_ref_to_inum
+r_struct
+id|jffs2_inode_cache
+op_star
+id|jffs2_raw_ref_to_ic
 c_func
 (paren
 r_struct
@@ -498,8 +794,6 @@ op_star
 )paren
 id|raw
 )paren
-op_member_access_from_pointer
-id|ino
 suffix:semicolon
 )brace
 DECL|function|frag_first
@@ -602,22 +896,6 @@ r_new
 comma
 r_struct
 id|jffs2_full_dirent
-op_star
-op_star
-id|list
-)paren
-suffix:semicolon
-r_void
-id|jffs2_add_tn_to_list
-c_func
-(paren
-r_struct
-id|jffs2_tmp_dnode_info
-op_star
-id|tn
-comma
-r_struct
-id|jffs2_tmp_dnode_info
 op_star
 op_star
 id|list
@@ -835,6 +1113,16 @@ id|root
 )paren
 suffix:semicolon
 multiline_comment|/* nodemgmt.c */
+r_int
+id|jffs2_thread_should_wake
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+)paren
+suffix:semicolon
 r_int
 id|jffs2_reserve_space
 c_func
@@ -1425,6 +1713,11 @@ op_star
 id|c
 comma
 r_struct
+id|jffs2_inode_info
+op_star
+id|f
+comma
+r_struct
 id|jffs2_full_dnode
 op_star
 id|fd
@@ -1483,56 +1776,6 @@ op_star
 id|f
 )paren
 suffix:semicolon
-multiline_comment|/* compr.c */
-r_int
-r_char
-id|jffs2_compress
-c_func
-(paren
-r_int
-r_char
-op_star
-id|data_in
-comma
-r_int
-r_char
-op_star
-id|cpage_out
-comma
-r_uint32
-op_star
-id|datalen
-comma
-r_uint32
-op_star
-id|cdatalen
-)paren
-suffix:semicolon
-r_int
-id|jffs2_decompress
-c_func
-(paren
-r_int
-r_char
-id|comprtype
-comma
-r_int
-r_char
-op_star
-id|cdata_in
-comma
-r_int
-r_char
-op_star
-id|data_out
-comma
-r_uint32
-id|cdatalen
-comma
-r_uint32
-id|datalen
-)paren
-suffix:semicolon
 multiline_comment|/* scan.c */
 r_int
 id|jffs2_scan_medium
@@ -1589,16 +1832,9 @@ r_struct
 id|jffs2_sb_info
 op_star
 id|c
-)paren
-suffix:semicolon
-r_void
-id|jffs2_erase_pending_trigger
-c_func
-(paren
-r_struct
-id|jffs2_sb_info
-op_star
-id|c
+comma
+r_int
+id|count
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_JFFS2_FS_NAND
@@ -1656,36 +1892,6 @@ op_star
 id|jeb
 )paren
 suffix:semicolon
-r_int
-id|jffs2_nand_read_failcnt
-c_func
-(paren
-r_struct
-id|jffs2_sb_info
-op_star
-id|c
-comma
-r_struct
-id|jffs2_eraseblock
-op_star
-id|jeb
-)paren
-suffix:semicolon
 macro_line|#endif
-multiline_comment|/* compr_zlib.c */
-r_int
-id|jffs2_zlib_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|jffs2_zlib_exit
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif /* __JFFS2_NODELIST_H__ */
 eof

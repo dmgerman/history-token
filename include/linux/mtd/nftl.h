@@ -1,215 +1,10 @@
-multiline_comment|/*&n; * $Id: nftl.h,v 1.13 2003/05/23 11:25:02 dwmw2 Exp $&n; *&n; * (C) 1999-2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; */
+multiline_comment|/*&n; * $Id: nftl.h,v 1.16 2004/06/30 14:49:00 dbrown Exp $&n; *&n; * (C) 1999-2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; */
 macro_line|#ifndef __MTD_NFTL_H__
 DECL|macro|__MTD_NFTL_H__
 mdefine_line|#define __MTD_NFTL_H__
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/blktrans.h&gt;
-multiline_comment|/* Block Control Information */
-DECL|struct|nftl_bci
-r_struct
-id|nftl_bci
-(brace
-DECL|member|ECCSig
-r_int
-r_char
-id|ECCSig
-(braket
-l_int|6
-)braket
-suffix:semicolon
-DECL|member|Status
-id|__u8
-id|Status
-suffix:semicolon
-DECL|member|Status1
-id|__u8
-id|Status1
-suffix:semicolon
-)brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Unit Control Information */
-DECL|struct|nftl_uci0
-r_struct
-id|nftl_uci0
-(brace
-DECL|member|VirtUnitNum
-id|__u16
-id|VirtUnitNum
-suffix:semicolon
-DECL|member|ReplUnitNum
-id|__u16
-id|ReplUnitNum
-suffix:semicolon
-DECL|member|SpareVirtUnitNum
-id|__u16
-id|SpareVirtUnitNum
-suffix:semicolon
-DECL|member|SpareReplUnitNum
-id|__u16
-id|SpareReplUnitNum
-suffix:semicolon
-)brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|struct|nftl_uci1
-r_struct
-id|nftl_uci1
-(brace
-DECL|member|WearInfo
-id|__u32
-id|WearInfo
-suffix:semicolon
-DECL|member|EraseMark
-id|__u16
-id|EraseMark
-suffix:semicolon
-DECL|member|EraseMark1
-id|__u16
-id|EraseMark1
-suffix:semicolon
-)brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|struct|nftl_uci2
-r_struct
-id|nftl_uci2
-(brace
-DECL|member|FoldMark
-id|__u16
-id|FoldMark
-suffix:semicolon
-DECL|member|FoldMark1
-id|__u16
-id|FoldMark1
-suffix:semicolon
-DECL|member|unused
-id|__u32
-id|unused
-suffix:semicolon
-)brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|union|nftl_uci
-r_union
-id|nftl_uci
-(brace
-DECL|member|a
-r_struct
-id|nftl_uci0
-id|a
-suffix:semicolon
-DECL|member|b
-r_struct
-id|nftl_uci1
-id|b
-suffix:semicolon
-DECL|member|c
-r_struct
-id|nftl_uci2
-id|c
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|nftl_oob
-r_struct
-id|nftl_oob
-(brace
-DECL|member|b
-r_struct
-id|nftl_bci
-id|b
-suffix:semicolon
-DECL|member|u
-r_union
-id|nftl_uci
-id|u
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/* NFTL Media Header */
-DECL|struct|NFTLMediaHeader
-r_struct
-id|NFTLMediaHeader
-(brace
-DECL|member|DataOrgID
-r_char
-id|DataOrgID
-(braket
-l_int|6
-)braket
-suffix:semicolon
-DECL|member|NumEraseUnits
-id|__u16
-id|NumEraseUnits
-suffix:semicolon
-DECL|member|FirstPhysicalEUN
-id|__u16
-id|FirstPhysicalEUN
-suffix:semicolon
-DECL|member|FormattedSize
-id|__u32
-id|FormattedSize
-suffix:semicolon
-DECL|member|UnitSizeFactor
-r_int
-r_char
-id|UnitSizeFactor
-suffix:semicolon
-)brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|macro|MAX_ERASE_ZONES
-mdefine_line|#define MAX_ERASE_ZONES (8192 - 512)
-DECL|macro|ERASE_MARK
-mdefine_line|#define ERASE_MARK 0x3c69
-DECL|macro|SECTOR_FREE
-mdefine_line|#define SECTOR_FREE 0xff
-DECL|macro|SECTOR_USED
-mdefine_line|#define SECTOR_USED 0x55
-DECL|macro|SECTOR_IGNORE
-mdefine_line|#define SECTOR_IGNORE 0x11
-DECL|macro|SECTOR_DELETED
-mdefine_line|#define SECTOR_DELETED 0x00
-DECL|macro|FOLD_MARK_IN_PROGRESS
-mdefine_line|#define FOLD_MARK_IN_PROGRESS 0x5555
-DECL|macro|ZONE_GOOD
-mdefine_line|#define ZONE_GOOD 0xff
-DECL|macro|ZONE_BAD_ORIGINAL
-mdefine_line|#define ZONE_BAD_ORIGINAL 0
-DECL|macro|ZONE_BAD_MARKED
-mdefine_line|#define ZONE_BAD_MARKED 7
-macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;mtd/nftl-user.h&gt;
 multiline_comment|/* these info are used in ReplUnitTable */
 DECL|macro|BLOCK_NIL
 mdefine_line|#define BLOCK_NIL          0xffff /* last block of a chain */
@@ -320,6 +115,11 @@ r_struct
 id|erase_info
 id|instr
 suffix:semicolon
+DECL|member|oobinfo
+r_struct
+id|nand_oobinfo
+id|oobinfo
+suffix:semicolon
 )brace
 suffix:semicolon
 r_int
@@ -355,6 +155,5 @@ DECL|macro|MAX_SECTORS_PER_UNIT
 mdefine_line|#define MAX_SECTORS_PER_UNIT 64
 DECL|macro|NFTL_PARTN_BITS
 mdefine_line|#define NFTL_PARTN_BITS 4
-macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __MTD_NFTL_H__ */
 eof

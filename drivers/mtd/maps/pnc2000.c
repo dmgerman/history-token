@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;pnc2000.c - mapper for Photron PNC-2000 board.&n; *&n; * Copyright (C) 2000 Crossnet Co. &lt;info@crossnet.co.jp&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: pnc2000.c,v 1.14 2003/05/21 12:45:19 dwmw2 Exp $&n; */
+multiline_comment|/*&n; *&t;pnc2000.c - mapper for Photron PNC-2000 board.&n; *&n; * Copyright (C) 2000 Crossnet Co. &lt;info@crossnet.co.jp&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: pnc2000.c,v 1.15 2004/07/12 21:59:44 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -28,7 +28,7 @@ op_assign
 id|WINDOW_SIZE
 comma
 dot
-id|buswidth
+id|bankwidth
 op_assign
 l_int|4
 comma

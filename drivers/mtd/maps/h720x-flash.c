@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Flash memory access on Hynix GMS30C7201/HMS30C7202 based &n; * evaluation boards&n; * &n; * (C) 2002 Jungjun Kim &lt;jungjun.kim@hynix.com&gt;&n; *     2003 Thomas Gleixner &lt;tglx@linutronix.de&gt;&t;&n;*/
+multiline_comment|/*&n; * Flash memory access on Hynix GMS30C7201/HMS30C7202 based &n; * evaluation boards&n; * &n; * $Id: h720x-flash.c,v 1.9 2004/07/14 17:45:40 dwmw2 Exp $&n; *&n; * (C) 2002 Jungjun Kim &lt;jungjun.kim@hynix.com&gt;&n; *     2003 Thomas Gleixner &lt;tglx@linutronix.de&gt;&t;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -31,7 +31,7 @@ op_assign
 l_string|&quot;H720X&quot;
 comma
 dot
-id|buswidth
+id|bankwidth
 op_assign
 l_int|4
 comma
@@ -247,7 +247,7 @@ op_amp
 id|h720x_map
 )paren
 suffix:semicolon
-singleline_comment|// Probe for flash buswidth 4
+singleline_comment|// Probe for flash bankwidth 4
 id|printk
 (paren
 id|KERN_INFO
@@ -278,8 +278,8 @@ id|KERN_INFO
 l_string|&quot;H720x-MTD probing 16bit FLASH&bslash;n&quot;
 )paren
 suffix:semicolon
-singleline_comment|// Probe for buswidth 2
-id|h720x_map.buswidth
+singleline_comment|// Probe for bankwidth 2
+id|h720x_map.bankwidth
 op_assign
 l_int|2
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/* linux/drivers/mtd/maps/scx200_docflash.c &n;&n;   Copyright (c) 2001,2002 Christer Weinigel &lt;wingel@nano-system.com&gt;&n;&n;   $Id: scx200_docflash.c,v 1.5 2003/05/21 12:45:20 dwmw2 Exp $ &n;&n;   National Semiconductor SCx200 flash mapped with DOCCS&n;*/
+multiline_comment|/* linux/drivers/mtd/maps/scx200_docflash.c &n;&n;   Copyright (c) 2001,2002 Christer Weinigel &lt;wingel@nano-system.com&gt;&n;&n;   $Id: scx200_docflash.c,v 1.6 2004/07/12 21:59:45 dwmw2 Exp $ &n;&n;   National Semiconductor SCx200 flash mapped with DOCCS&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -735,12 +735,12 @@ id|width
 op_eq
 l_int|8
 )paren
-id|scx200_docflash_map.buswidth
+id|scx200_docflash_map.bankwidth
 op_assign
 l_int|1
 suffix:semicolon
 r_else
-id|scx200_docflash_map.buswidth
+id|scx200_docflash_map.bankwidth
 op_assign
 l_int|2
 suffix:semicolon

@@ -2,7 +2,7 @@ multiline_comment|/* Linux driver for Disk-On-Chip devices&t;&t;&t;*/
 multiline_comment|/* Probe routines common to all DoC devices&t;&t;&t;*/
 multiline_comment|/* (C) 1999 Machine Vision Holdings, Inc.&t;&t;&t;*/
 multiline_comment|/* (C) 1999-2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&t;&t;*/
-multiline_comment|/* $Id: docprobe.c,v 1.36 2003/05/23 11:29:34 dwmw2 Exp $&t;*/
+multiline_comment|/* $Id: docprobe.c,v 1.41 2003/12/03 10:19:57 dwmw2 Exp $&t;*/
 multiline_comment|/* DOC_PASSIVE_PROBE:&n;   In order to ensure that the BIOS checksum is correct at boot time, and &n;   hence that the onboard BIOS extension gets executed, the DiskOnChip &n;   goes into reset mode when it is read sequentially: all registers &n;   return 0xff until the chip is woken up again by writing to the &n;   DOCControl register. &n;&n;   Unfortunately, this means that the probe for the DiskOnChip is unsafe, &n;   because one of the first things it does is write to where it thinks &n;   the DOCControl register should be - which may well be shared memory &n;   for another device. I&squot;ve had machines which lock up when this is &n;   attempted. Hence the possibility to do a passive probe, which will fail &n;   to detect a chip in reset mode, but is at least guaranteed not to lock&n;   the machine.&n;&n;   If you have this problem, uncomment the following line:&n;#define DOC_PASSIVE_PROBE&n;*/
 multiline_comment|/* DOC_SINGLE_DRIVER:&n;   Millennium driver has been merged into DOC2000 driver.&n;&n;   The old Millennium-only driver has been retained just in case there&n;   are problems with the new code. If the combined driver doesn&squot;t work&n;   for you, you can try the old one by undefining DOC_SINGLE_DRIVER &n;   below and also enabling it in your configuration. If this fixes the&n;   problems, please send a report to the MTD mailing list at &n;   &lt;linux-mtd@lists.infradead.org&gt;.&n;*/
 DECL|macro|DOC_SINGLE_DRIVER
@@ -301,6 +301,7 @@ id|DOCControl
 )paren
 suffix:semicolon
 macro_line|#endif /* !DOC_PASSIVE_PROBE */&t;
+multiline_comment|/* We need to read the ChipID register four times. For some&n;&t;   newer DiskOnChip 2000 units, the first three reads will&n;&t;   return the DiskOnChip Millennium ident. Don&squot;t ask. */
 id|ChipID
 op_assign
 id|ReadDOC
@@ -379,6 +380,40 @@ suffix:semicolon
 r_case
 id|DOC_ChipID_DocMil
 suffix:colon
+multiline_comment|/* Check for the new 2000 with Millennium ASIC */
+id|ReadDOC
+c_func
+(paren
+id|window
+comma
+id|ChipID
+)paren
+suffix:semicolon
+id|ReadDOC
+c_func
+(paren
+id|window
+comma
+id|ChipID
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ReadDOC
+c_func
+(paren
+id|window
+comma
+id|ChipID
+)paren
+op_ne
+id|DOC_ChipID_DocMil
+)paren
+id|ChipID
+op_assign
+id|DOC_ChipID_Doc2kTSOP
+suffix:semicolon
 multiline_comment|/* Check the TOGGLE bit in the ECC register */
 id|tmp
 op_assign
@@ -618,8 +653,6 @@ id|tmpc
 r_return
 id|ChipID
 suffix:semicolon
-r_break
-suffix:semicolon
 r_default
 suffix:colon
 r_break
@@ -628,11 +661,11 @@ suffix:semicolon
 multiline_comment|/* FALL TRHU */
 r_default
 suffix:colon
-macro_line|#ifndef CONFIG_MTD_DOCPROBE_55AA
+macro_line|#ifdef CONFIG_MTD_DOCPROBE_55AA
 id|printk
 c_func
 (paren
-id|KERN_WARNING
+id|KERN_DEBUG
 l_string|&quot;Possible DiskOnChip with unknown ChipID %2.2X found at 0x%lx&bslash;n&quot;
 comma
 id|ChipID
@@ -791,6 +824,35 @@ id|physadr
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ChipID
+op_eq
+id|DOC_ChipID_Doc2kTSOP
+)paren
+(brace
+multiline_comment|/* Remove this at your own peril. The hardware driver works but nothing prevents you from erasing bad blocks */
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;Refusing to drive DiskOnChip 2000 TSOP until Bad Block Table is correctly supported by INFTL&bslash;n&quot;
+)paren
+suffix:semicolon
+id|iounmap
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|docptr
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|docfound
 op_assign
 l_int|1
@@ -925,6 +987,23 @@ c_cond
 id|ChipID
 )paren
 (brace
+r_case
+id|DOC_ChipID_Doc2kTSOP
+suffix:colon
+id|name
+op_assign
+l_string|&quot;2000 TSOP&quot;
+suffix:semicolon
+id|im_funcname
+op_assign
+l_string|&quot;DoC2k_init&quot;
+suffix:semicolon
+id|im_modname
+op_assign
+l_string|&quot;doc2000&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|DOC_ChipID_Doc2k
 suffix:colon

@@ -1,5 +1,5 @@
 multiline_comment|/****************************************************************************/
-multiline_comment|/*&n; *&t;uclinux.c -- generic memory mapped MTD driver for uclinux&n; *&n; *&t;(C) Copyright 2002, Greg Ungerer (gerg@snapgear.com)&n; *&n; * &t;$Id: uclinux.c,v 1.5 2003/05/20 20:59:32 dwmw2 Exp $&n; */
+multiline_comment|/*&n; *&t;uclinux.c -- generic memory mapped MTD driver for uclinux&n; *&n; *&t;(C) Copyright 2002, Greg Ungerer (gerg@snapgear.com)&n; *&n; * &t;$Id: uclinux.c,v 1.7 2004/07/12 21:59:45 dwmw2 Exp $&n; */
 multiline_comment|/****************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -180,7 +180,7 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
-id|mapp-&gt;buswidth
+id|mapp-&gt;bankwidth
 op_assign
 l_int|4
 suffix:semicolon

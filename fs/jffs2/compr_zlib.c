@@ -1,16 +1,15 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: compr_zlib.c,v 1.24 2003/10/04 08:33:06 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: compr_zlib.c,v 1.28 2004/06/23 16:34:40 havasi Exp $&n; *&n; */
 macro_line|#if !defined(__KERNEL__) &amp;&amp; !defined(__ECOS)
 macro_line|#error &quot;The userspace support got too messy and was removed. Update your mkfs.jffs2&quot;
 macro_line|#endif
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/zlib.h&gt;
 macro_line|#include &lt;linux/zutil.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
+macro_line|#include &quot;compr.h&quot;
 multiline_comment|/* Plan: call deflate() with avail_in == *sourcelen, &n;&t;&t;avail_out = *dstlen - 12 and flush == Z_FINISH. &n;&t;&t;If it doesn&squot;t manage to finish,&t;call it again with&n;&t;&t;avail_in == 0 and avail_out set to the remaining 12&n;&t;&t;bytes for it to clean up. &n;&t;   Q: Is 12 bytes sufficient?&n;&t;*/
 DECL|macro|STREAM_END_SPACE
 mdefine_line|#define STREAM_END_SPACE 12
@@ -37,10 +36,13 @@ comma
 id|def_strm
 suffix:semicolon
 macro_line|#ifdef __KERNEL__ /* Linux-only */
-DECL|function|jffs2_zlib_init
+macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+DECL|function|alloc_workspaces
+r_static
 r_int
 id|__init
-id|jffs2_zlib_init
+id|alloc_workspaces
 c_func
 (paren
 r_void
@@ -158,9 +160,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|jffs2_zlib_exit
+DECL|function|free_workspaces
+r_static
 r_void
-id|jffs2_zlib_exit
+id|free_workspaces
 c_func
 (paren
 r_void
@@ -179,6 +182,11 @@ id|inf_strm.workspace
 )paren
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|macro|alloc_workspaces
+mdefine_line|#define alloc_workspaces() (0)
+DECL|macro|free_workspaces
+mdefine_line|#define free_workspaces() do { } while(0)
 macro_line|#endif /* __KERNEL__ */
 DECL|function|jffs2_zlib_compress
 r_int
@@ -202,6 +210,10 @@ comma
 r_uint32
 op_star
 id|dstlen
+comma
+r_void
+op_star
+id|model
 )paren
 (brace
 r_int
@@ -538,7 +550,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|jffs2_zlib_decompress
-r_void
+r_int
 id|jffs2_zlib_decompress
 c_func
 (paren
@@ -557,6 +569,10 @@ id|srclen
 comma
 r_uint32
 id|destlen
+comma
+r_void
+op_star
+id|model
 )paren
 (brace
 r_int
@@ -732,6 +748,7 @@ id|inflate_sem
 )paren
 suffix:semicolon
 r_return
+l_int|1
 suffix:semicolon
 )brace
 r_while
@@ -785,6 +802,129 @@ c_func
 (paren
 op_amp
 id|inflate_sem
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|jffs2_zlib_comp
+r_static
+r_struct
+id|jffs2_compressor
+id|jffs2_zlib_comp
+op_assign
+(brace
+dot
+id|priority
+op_assign
+id|JFFS2_ZLIB_PRIORITY
+comma
+dot
+id|name
+op_assign
+l_string|&quot;zlib&quot;
+comma
+dot
+id|compr
+op_assign
+id|JFFS2_COMPR_ZLIB
+comma
+dot
+id|compress
+op_assign
+op_amp
+id|jffs2_zlib_compress
+comma
+dot
+id|decompress
+op_assign
+op_amp
+id|jffs2_zlib_decompress
+comma
+macro_line|#ifdef JFFS2_ZLIB_DISABLED
+dot
+id|disabled
+op_assign
+l_int|1
+comma
+macro_line|#else
+dot
+id|disabled
+op_assign
+l_int|0
+comma
+macro_line|#endif
+)brace
+suffix:semicolon
+DECL|function|jffs2_zlib_init
+r_int
+id|__init
+id|jffs2_zlib_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+id|ret
+op_assign
+id|alloc_workspaces
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_return
+id|ret
+suffix:semicolon
+id|ret
+op_assign
+id|jffs2_register_compressor
+c_func
+(paren
+op_amp
+id|jffs2_zlib_comp
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+id|free_workspaces
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+DECL|function|jffs2_zlib_exit
+r_void
+id|jffs2_zlib_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|jffs2_unregister_compressor
+c_func
+(paren
+op_amp
+id|jffs2_zlib_comp
+)paren
+suffix:semicolon
+id|free_workspaces
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

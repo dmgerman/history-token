@@ -1,7 +1,7 @@
-multiline_comment|/*&n; *  drivers/mtd/nandids.c&n; *&n; *  Copyright (C) 2002 Thomas Gleixner (tglx@linutronix.de)&n; *&n; *&n; * $Id: nand_ids.c,v 1.4 2003/05/21 15:15:08 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+multiline_comment|/*&n; *  drivers/mtd/nandids.c&n; *&n; *  Copyright (C) 2002 Thomas Gleixner (tglx@linutronix.de)&n;  *&n; * $Id: nand_ids.c,v 1.10 2004/05/26 13:40:12 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mtd/nand.h&gt;
-multiline_comment|/*&n;*&t;Chip ID list&n;*/
+multiline_comment|/*&n;*&t;Chip ID list&n;*&t;&n;*&t;Name. ID code, pagesize, chipsize in MegaByte, eraseblock size,&n;*&t;options&n;* &n;* &t;Pagesize; 0, 256, 512&n;*&t;0 &t;get this information from the extended chip ID&n;+&t;256&t;256 Byte page size&n;*&t;512&t;512 Byte page size&t;&n;*/
 DECL|variable|nand_flash_ids
 r_struct
 id|nand_flash_dev
@@ -11,35 +11,41 @@ id|nand_flash_ids
 op_assign
 (brace
 (brace
-l_string|&quot;NAND 1MiB 5V&quot;
+l_string|&quot;NAND 1MiB 5V 8-bit&quot;
 comma
 l_int|0x6e
 comma
-l_int|20
+l_int|256
+comma
+l_int|1
 comma
 l_int|0x1000
 comma
-l_int|1
+l_int|0
 )brace
 comma
 (brace
-l_string|&quot;NAND 2MiB 5V&quot;
+l_string|&quot;NAND 2MiB 5V 8-bit&quot;
 comma
 l_int|0x64
 comma
-l_int|21
+l_int|256
+comma
+l_int|2
 comma
 l_int|0x1000
 comma
-l_int|1
+l_int|0
 )brace
 comma
 (brace
-l_string|&quot;NAND 4MiB 5V&quot;
+l_string|&quot;NAND 4MiB 5V 8-bit&quot;
 comma
 l_int|0x6b
 comma
-l_int|22
+l_int|512
+comma
+l_int|4
 comma
 l_int|0x2000
 comma
@@ -47,47 +53,55 @@ l_int|0
 )brace
 comma
 (brace
-l_string|&quot;NAND 1MiB 3,3V&quot;
+l_string|&quot;NAND 1MiB 3,3V 8-bit&quot;
 comma
 l_int|0xe8
 comma
-l_int|20
+l_int|256
+comma
+l_int|1
 comma
 l_int|0x1000
 comma
-l_int|1
+l_int|0
 )brace
 comma
 (brace
-l_string|&quot;NAND 1MiB 3,3V&quot;
+l_string|&quot;NAND 1MiB 3,3V 8-bit&quot;
 comma
 l_int|0xec
 comma
-l_int|20
+l_int|256
+comma
+l_int|1
 comma
 l_int|0x1000
 comma
-l_int|1
+l_int|0
 )brace
 comma
 (brace
-l_string|&quot;NAND 2MiB 3,3V&quot;
+l_string|&quot;NAND 2MiB 3,3V 8-bit&quot;
 comma
 l_int|0xea
 comma
-l_int|21
+l_int|256
+comma
+l_int|2
 comma
 l_int|0x1000
 comma
-l_int|1
+l_int|0
 )brace
 comma
 (brace
-l_string|&quot;NAND 4MiB 3,3V&quot;
+l_string|&quot;NAND 4MiB 3,3V 8-bit&quot;
 comma
 l_int|0xd5
 comma
-l_int|22
+l_int|512
+comma
+l_int|4
 comma
 l_int|0x2000
 comma
@@ -95,11 +109,13 @@ l_int|0
 )brace
 comma
 (brace
-l_string|&quot;NAND 4MiB 3,3V&quot;
+l_string|&quot;NAND 4MiB 3,3V 8-bit&quot;
 comma
 l_int|0xe3
 comma
-l_int|22
+l_int|512
+comma
+l_int|4
 comma
 l_int|0x2000
 comma
@@ -107,11 +123,13 @@ l_int|0
 )brace
 comma
 (brace
-l_string|&quot;NAND 4MiB 3,3V&quot;
+l_string|&quot;NAND 4MiB 3,3V 8-bit&quot;
 comma
 l_int|0xe5
 comma
-l_int|22
+l_int|512
+comma
+l_int|4
 comma
 l_int|0x2000
 comma
@@ -119,11 +137,13 @@ l_int|0
 )brace
 comma
 (brace
-l_string|&quot;NAND 8MiB 3,3V&quot;
+l_string|&quot;NAND 8MiB 3,3V 8-bit&quot;
 comma
 l_int|0xd6
 comma
-l_int|23
+l_int|512
+comma
+l_int|8
 comma
 l_int|0x2000
 comma
@@ -131,11 +151,27 @@ l_int|0
 )brace
 comma
 (brace
-l_string|&quot;NAND 8MiB 3,3V&quot;
+l_string|&quot;NAND 8MiB 1,8V 8-bit&quot;
+comma
+l_int|0x39
+comma
+l_int|512
+comma
+l_int|8
+comma
+l_int|0x2000
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;NAND 8MiB 3,3V 8-bit&quot;
 comma
 l_int|0xe6
 comma
-l_int|23
+l_int|512
+comma
+l_int|8
 comma
 l_int|0x2000
 comma
@@ -143,11 +179,55 @@ l_int|0
 )brace
 comma
 (brace
-l_string|&quot;NAND 16MiB 3,3V&quot;
+l_string|&quot;NAND 8MiB 1,8V 16-bit&quot;
+comma
+l_int|0x49
+comma
+l_int|512
+comma
+l_int|8
+comma
+l_int|0x2000
+comma
+id|NAND_BUSWIDTH_16
+)brace
+comma
+(brace
+l_string|&quot;NAND 8MiB 3,3V 16-bit&quot;
+comma
+l_int|0x59
+comma
+l_int|512
+comma
+l_int|8
+comma
+l_int|0x2000
+comma
+id|NAND_BUSWIDTH_16
+)brace
+comma
+(brace
+l_string|&quot;NAND 16MiB 1,8V 8-bit&quot;
+comma
+l_int|0x33
+comma
+l_int|512
+comma
+l_int|16
+comma
+l_int|0x4000
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;NAND 16MiB 3,3V 8-bit&quot;
 comma
 l_int|0x73
 comma
-l_int|24
+l_int|512
+comma
+l_int|16
 comma
 l_int|0x4000
 comma
@@ -155,11 +235,55 @@ l_int|0
 )brace
 comma
 (brace
-l_string|&quot;NAND 32MiB 3,3V&quot;
+l_string|&quot;NAND 16MiB 1,8V 16-bit&quot;
+comma
+l_int|0x43
+comma
+l_int|512
+comma
+l_int|16
+comma
+l_int|0x4000
+comma
+id|NAND_BUSWIDTH_16
+)brace
+comma
+(brace
+l_string|&quot;NAND 16MiB 3,3V 16-bit&quot;
+comma
+l_int|0x53
+comma
+l_int|512
+comma
+l_int|16
+comma
+l_int|0x4000
+comma
+id|NAND_BUSWIDTH_16
+)brace
+comma
+(brace
+l_string|&quot;NAND 32MiB 1,8V 8-bit&quot;
+comma
+l_int|0x35
+comma
+l_int|512
+comma
+l_int|32
+comma
+l_int|0x4000
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;NAND 32MiB 3,3V 8-bit&quot;
 comma
 l_int|0x75
 comma
-l_int|25
+l_int|512
+comma
+l_int|32
 comma
 l_int|0x4000
 comma
@@ -167,11 +291,55 @@ l_int|0
 )brace
 comma
 (brace
-l_string|&quot;NAND 64MiB 3,3V&quot;
+l_string|&quot;NAND 32MiB 1,8V 16-bit&quot;
+comma
+l_int|0x45
+comma
+l_int|512
+comma
+l_int|32
+comma
+l_int|0x4000
+comma
+id|NAND_BUSWIDTH_16
+)brace
+comma
+(brace
+l_string|&quot;NAND 32MiB 3,3V 16-bit&quot;
+comma
+l_int|0x55
+comma
+l_int|512
+comma
+l_int|32
+comma
+l_int|0x4000
+comma
+id|NAND_BUSWIDTH_16
+)brace
+comma
+(brace
+l_string|&quot;NAND 64MiB 1,8V 8-bit&quot;
+comma
+l_int|0x36
+comma
+l_int|512
+comma
+l_int|64
+comma
+l_int|0x4000
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;NAND 64MiB 3,3V 8-bit&quot;
 comma
 l_int|0x76
 comma
-l_int|26
+l_int|512
+comma
+l_int|64
 comma
 l_int|0x4000
 comma
@@ -179,15 +347,480 @@ l_int|0
 )brace
 comma
 (brace
-l_string|&quot;NAND 128MiB 3,3V&quot;
+l_string|&quot;NAND 64MiB 1,8V 16-bit&quot;
 comma
-l_int|0x79
+l_int|0x46
 comma
-l_int|27
+l_int|512
+comma
+l_int|64
+comma
+l_int|0x4000
+comma
+id|NAND_BUSWIDTH_16
+)brace
+comma
+(brace
+l_string|&quot;NAND 64MiB 3,3V 16-bit&quot;
+comma
+l_int|0x56
+comma
+l_int|512
+comma
+l_int|64
+comma
+l_int|0x4000
+comma
+id|NAND_BUSWIDTH_16
+)brace
+comma
+(brace
+l_string|&quot;NAND 128MiB 1,8V 8-bit&quot;
+comma
+l_int|0x78
+comma
+l_int|512
+comma
+l_int|128
 comma
 l_int|0x4000
 comma
 l_int|0
+)brace
+comma
+(brace
+l_string|&quot;NAND 128MiB 3,3V 8-bit&quot;
+comma
+l_int|0x79
+comma
+l_int|512
+comma
+l_int|128
+comma
+l_int|0x4000
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;NAND 128MiB 1,8V 16-bit&quot;
+comma
+l_int|0x72
+comma
+l_int|512
+comma
+l_int|128
+comma
+l_int|0x4000
+comma
+id|NAND_BUSWIDTH_16
+)brace
+comma
+(brace
+l_string|&quot;NAND 128MiB 3,3V 16-bit&quot;
+comma
+l_int|0x74
+comma
+l_int|512
+comma
+l_int|128
+comma
+l_int|0x4000
+comma
+id|NAND_BUSWIDTH_16
+)brace
+comma
+(brace
+l_string|&quot;NAND 256MiB 3,3V 8-bit&quot;
+comma
+l_int|0x71
+comma
+l_int|512
+comma
+l_int|256
+comma
+l_int|0x4000
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;NAND 512MiB 3,3V 8-bit&quot;
+comma
+l_int|0xDC
+comma
+l_int|512
+comma
+l_int|512
+comma
+l_int|0x4000
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* These are the new chips with large page size. The pagesize&n;&t;* and the erasesize is determined from the extended id bytes&n;&t;*/
+multiline_comment|/* 1 Gigabit */
+(brace
+l_string|&quot;NAND 128MiB 1,8V 8-bit&quot;
+comma
+l_int|0xA1
+comma
+l_int|0
+comma
+l_int|128
+comma
+l_int|0
+comma
+id|NAND_SAMSUNG_LP_OPTIONS
+op_or
+id|NAND_NO_AUTOINCR
+)brace
+comma
+(brace
+l_string|&quot;NAND 128MiB 3,3V 8-bit&quot;
+comma
+l_int|0xF1
+comma
+l_int|0
+comma
+l_int|128
+comma
+l_int|0
+comma
+id|NAND_SAMSUNG_LP_OPTIONS
+op_or
+id|NAND_NO_AUTOINCR
+)brace
+comma
+(brace
+l_string|&quot;NAND 128MiB 1,8V 16-bit&quot;
+comma
+l_int|0xB1
+comma
+l_int|0
+comma
+l_int|128
+comma
+l_int|0
+comma
+id|NAND_SAMSUNG_LP_OPTIONS
+op_or
+id|NAND_BUSWIDTH_16
+op_or
+id|NAND_NO_AUTOINCR
+)brace
+comma
+(brace
+l_string|&quot;NAND 128MiB 3,3V 16-bit&quot;
+comma
+l_int|0xC1
+comma
+l_int|0
+comma
+l_int|128
+comma
+l_int|0
+comma
+id|NAND_SAMSUNG_LP_OPTIONS
+op_or
+id|NAND_BUSWIDTH_16
+op_or
+id|NAND_NO_AUTOINCR
+)brace
+comma
+multiline_comment|/* 2 Gigabit */
+(brace
+l_string|&quot;NAND 256MiB 1,8V 8-bit&quot;
+comma
+l_int|0xAA
+comma
+l_int|0
+comma
+l_int|256
+comma
+l_int|0
+comma
+id|NAND_SAMSUNG_LP_OPTIONS
+op_or
+id|NAND_NO_AUTOINCR
+)brace
+comma
+(brace
+l_string|&quot;NAND 256MiB 3,3V 8-bit&quot;
+comma
+l_int|0xDA
+comma
+l_int|0
+comma
+l_int|256
+comma
+l_int|0
+comma
+id|NAND_SAMSUNG_LP_OPTIONS
+op_or
+id|NAND_NO_AUTOINCR
+)brace
+comma
+(brace
+l_string|&quot;NAND 256MiB 1,8V 16-bit&quot;
+comma
+l_int|0xBA
+comma
+l_int|0
+comma
+l_int|256
+comma
+l_int|0
+comma
+id|NAND_SAMSUNG_LP_OPTIONS
+op_or
+id|NAND_BUSWIDTH_16
+op_or
+id|NAND_NO_AUTOINCR
+)brace
+comma
+(brace
+l_string|&quot;NAND 256MiB 3,3V 16-bit&quot;
+comma
+l_int|0xCA
+comma
+l_int|0
+comma
+l_int|256
+comma
+l_int|0
+comma
+id|NAND_SAMSUNG_LP_OPTIONS
+op_or
+id|NAND_BUSWIDTH_16
+op_or
+id|NAND_NO_AUTOINCR
+)brace
+comma
+multiline_comment|/* 4 Gigabit */
+(brace
+l_string|&quot;NAND 512MiB 1,8V 8-bit&quot;
+comma
+l_int|0xAC
+comma
+l_int|0
+comma
+l_int|512
+comma
+l_int|0
+comma
+id|NAND_SAMSUNG_LP_OPTIONS
+op_or
+id|NAND_NO_AUTOINCR
+)brace
+comma
+(brace
+l_string|&quot;NAND 512MiB 3,3V 8-bit&quot;
+comma
+l_int|0xDC
+comma
+l_int|0
+comma
+l_int|512
+comma
+l_int|0
+comma
+id|NAND_SAMSUNG_LP_OPTIONS
+op_or
+id|NAND_NO_AUTOINCR
+)brace
+comma
+(brace
+l_string|&quot;NAND 512MiB 1,8V 16-bit&quot;
+comma
+l_int|0xBC
+comma
+l_int|0
+comma
+l_int|512
+comma
+l_int|0
+comma
+id|NAND_SAMSUNG_LP_OPTIONS
+op_or
+id|NAND_BUSWIDTH_16
+op_or
+id|NAND_NO_AUTOINCR
+)brace
+comma
+(brace
+l_string|&quot;NAND 512MiB 3,3V 16-bit&quot;
+comma
+l_int|0xCC
+comma
+l_int|0
+comma
+l_int|512
+comma
+l_int|0
+comma
+id|NAND_SAMSUNG_LP_OPTIONS
+op_or
+id|NAND_BUSWIDTH_16
+op_or
+id|NAND_NO_AUTOINCR
+)brace
+comma
+multiline_comment|/* 8 Gigabit */
+(brace
+l_string|&quot;NAND 1GiB 1,8V 8-bit&quot;
+comma
+l_int|0xA3
+comma
+l_int|0
+comma
+l_int|1024
+comma
+l_int|0
+comma
+id|NAND_SAMSUNG_LP_OPTIONS
+op_or
+id|NAND_NO_AUTOINCR
+)brace
+comma
+(brace
+l_string|&quot;NAND 1GiB 3,3V 8-bit&quot;
+comma
+l_int|0xD3
+comma
+l_int|0
+comma
+l_int|1024
+comma
+l_int|0
+comma
+id|NAND_SAMSUNG_LP_OPTIONS
+op_or
+id|NAND_NO_AUTOINCR
+)brace
+comma
+(brace
+l_string|&quot;NAND 1GiB 1,8V 16-bit&quot;
+comma
+l_int|0xB3
+comma
+l_int|0
+comma
+l_int|1024
+comma
+l_int|0
+comma
+id|NAND_SAMSUNG_LP_OPTIONS
+op_or
+id|NAND_BUSWIDTH_16
+op_or
+id|NAND_NO_AUTOINCR
+)brace
+comma
+(brace
+l_string|&quot;NAND 1GiB 3,3V 16-bit&quot;
+comma
+l_int|0xC3
+comma
+l_int|0
+comma
+l_int|1024
+comma
+l_int|0
+comma
+id|NAND_SAMSUNG_LP_OPTIONS
+op_or
+id|NAND_BUSWIDTH_16
+op_or
+id|NAND_NO_AUTOINCR
+)brace
+comma
+multiline_comment|/* 16 Gigabit */
+(brace
+l_string|&quot;NAND 2GiB 1,8V 8-bit&quot;
+comma
+l_int|0xA5
+comma
+l_int|0
+comma
+l_int|2048
+comma
+l_int|0
+comma
+id|NAND_SAMSUNG_LP_OPTIONS
+op_or
+id|NAND_NO_AUTOINCR
+)brace
+comma
+(brace
+l_string|&quot;NAND 2GiB 3,3V 8-bit&quot;
+comma
+l_int|0xD5
+comma
+l_int|0
+comma
+l_int|2048
+comma
+l_int|0
+comma
+id|NAND_SAMSUNG_LP_OPTIONS
+op_or
+id|NAND_NO_AUTOINCR
+)brace
+comma
+(brace
+l_string|&quot;NAND 2GiB 1,8V 16-bit&quot;
+comma
+l_int|0xB5
+comma
+l_int|0
+comma
+l_int|2048
+comma
+l_int|0
+comma
+id|NAND_SAMSUNG_LP_OPTIONS
+op_or
+id|NAND_BUSWIDTH_16
+op_or
+id|NAND_NO_AUTOINCR
+)brace
+comma
+(brace
+l_string|&quot;NAND 2GiB 3,3V 16-bit&quot;
+comma
+l_int|0xC5
+comma
+l_int|0
+comma
+l_int|2048
+comma
+l_int|0
+comma
+id|NAND_SAMSUNG_LP_OPTIONS
+op_or
+id|NAND_BUSWIDTH_16
+op_or
+id|NAND_NO_AUTOINCR
+)brace
+comma
+multiline_comment|/* Renesas AND 1 Gigabit. Those chips do not support extended id and have a strange page/block layout ! &n;&t; * The chosen minimum erasesize is 4 * 2 * 2048 = 16384 Byte, as those chips have an array of 4 page planes&n;&t; * 1 block = 2 pages, but due to plane arrangement the blocks 0-3 consists of page 0 + 4,1 + 5, 2 + 6, 3 + 7&n;&t; * Anyway JFFS2 would increase the eraseblock size so we chose a combined one which can be erased in one go&n;&t; * There are more speed improvements for reads and writes possible, but not implemented now &n;&t; */
+(brace
+l_string|&quot;AND 128MiB 3,3V 8-bit&quot;
+comma
+l_int|0x01
+comma
+l_int|2048
+comma
+l_int|128
+comma
+l_int|0x4000
+comma
+id|NAND_IS_AND
+op_or
+id|NAND_NO_AUTOINCR
+op_or
+id|NAND_4PAGE_ARRAY
 )brace
 comma
 (brace
@@ -227,6 +860,18 @@ comma
 id|NAND_MFR_NATIONAL
 comma
 l_string|&quot;National&quot;
+)brace
+comma
+(brace
+id|NAND_MFR_RENESAS
+comma
+l_string|&quot;Renesas&quot;
+)brace
+comma
+(brace
+id|NAND_MFR_STMICRO
+comma
+l_string|&quot;ST Micro&quot;
 )brace
 comma
 (brace

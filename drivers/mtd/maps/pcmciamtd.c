@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: pcmciamtd.c,v 1.48 2003/06/24 07:14:38 spse Exp $&n; *&n; * pcmciamtd.c - MTD driver for PCMCIA flash memory cards&n; *&n; * Author: Simon Evans &lt;spse@secret.org.uk&gt;&n; *&n; * Copyright (C) 2002 Simon Evans&n; *&n; * Licence: GPL&n; *&n; */
+multiline_comment|/*&n; * $Id: pcmciamtd.c,v 1.51 2004/07/12 22:38:29 dwmw2 Exp $&n; *&n; * pcmciamtd.c - MTD driver for PCMCIA flash memory cards&n; *&n; * Author: Simon Evans &lt;spse@secret.org.uk&gt;&n; *&n; * Copyright (C) 2002 Simon Evans&n; *&n; * Licence: GPL&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
@@ -63,7 +63,7 @@ mdefine_line|#define warn(format, arg...) printk(KERN_WARNING &quot;pcmciamtd: &
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC&t;&quot;PCMCIA Flash memory card driver&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&quot;$Revision: 1.48 $&quot;
+mdefine_line|#define DRIVER_VERSION&t;&quot;$Revision: 1.51 $&quot;
 multiline_comment|/* Size of the PCMCIA address space: 26 bits = 64 MB */
 DECL|macro|MAX_PCMCIA_ADDR
 mdefine_line|#define MAX_PCMCIA_ADDR&t;0x4000000
@@ -141,10 +141,10 @@ id|dev_list
 suffix:semicolon
 multiline_comment|/* Module parameters */
 multiline_comment|/* 2 = do 16-bit transfers, 1 = do 8-bit transfers */
-DECL|variable|buswidth
+DECL|variable|bankwidth
 r_static
 r_int
-id|buswidth
+id|bankwidth
 op_assign
 l_int|2
 suffix:semicolon
@@ -200,7 +200,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|buswidth
+id|bankwidth
 comma
 l_string|&quot;i&quot;
 )paren
@@ -208,9 +208,9 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|buswidth
+id|bankwidth
 comma
-l_string|&quot;Set buswidth (1=8 bit, 2=16 bit, default=2)&quot;
+l_string|&quot;Set bankwidth (1=8 bit, 2=16 bit, default=2)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -450,7 +450,7 @@ suffix:semicolon
 )brace
 DECL|function|pcmcia_read8_remap
 r_static
-id|u8
+id|map_word
 id|pcmcia_read8_remap
 c_func
 (paren
@@ -467,8 +467,14 @@ id|ofs
 id|caddr_t
 id|addr
 suffix:semicolon
-id|u8
+id|map_word
 id|d
+op_assign
+(brace
+(brace
+l_int|0
+)brace
+)brace
 suffix:semicolon
 id|addr
 op_assign
@@ -488,10 +494,13 @@ id|addr
 )paren
 (brace
 r_return
-l_int|0
+id|d
 suffix:semicolon
 )brace
-id|d
+id|d.x
+(braket
+l_int|0
+)braket
 op_assign
 id|readb
 c_func
@@ -510,7 +519,10 @@ id|ofs
 comma
 id|addr
 comma
-id|d
+id|d.x
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 r_return
@@ -519,7 +531,7 @@ suffix:semicolon
 )brace
 DECL|function|pcmcia_read16_remap
 r_static
-id|u16
+id|map_word
 id|pcmcia_read16_remap
 c_func
 (paren
@@ -536,8 +548,14 @@ id|ofs
 id|caddr_t
 id|addr
 suffix:semicolon
-id|u16
+id|map_word
 id|d
+op_assign
+(brace
+(brace
+l_int|0
+)brace
+)brace
 suffix:semicolon
 id|addr
 op_assign
@@ -557,10 +575,13 @@ id|addr
 )paren
 (brace
 r_return
-l_int|0
+id|d
 suffix:semicolon
 )brace
-id|d
+id|d.x
+(braket
+l_int|0
+)braket
 op_assign
 id|readw
 c_func
@@ -579,7 +600,10 @@ id|ofs
 comma
 id|addr
 comma
-id|d
+id|d.x
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 r_return
@@ -747,7 +771,7 @@ id|map_info
 op_star
 id|map
 comma
-id|u8
+id|map_word
 id|d
 comma
 r_int
@@ -787,13 +811,19 @@ id|adr
 comma
 id|addr
 comma
-id|d
+id|d.x
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 id|writeb
 c_func
 (paren
-id|d
+id|d.x
+(braket
+l_int|0
+)braket
 comma
 id|addr
 )paren
@@ -810,7 +840,7 @@ id|map_info
 op_star
 id|map
 comma
-id|u16
+id|map_word
 id|d
 comma
 r_int
@@ -850,13 +880,19 @@ id|adr
 comma
 id|addr
 comma
-id|d
+id|d.x
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 id|writew
 c_func
 (paren
-id|d
+id|d.x
+(braket
+l_int|0
+)braket
 comma
 id|addr
 )paren
@@ -1018,7 +1054,7 @@ DECL|macro|DEV_REMOVED
 mdefine_line|#define DEV_REMOVED(x)  (!(*(u_int *)x-&gt;map_priv_1 &amp; DEV_PRESENT))
 DECL|function|pcmcia_read8
 r_static
-id|u8
+id|map_word
 id|pcmcia_read8
 c_func
 (paren
@@ -1040,8 +1076,14 @@ id|caddr_t
 )paren
 id|map-&gt;map_priv_2
 suffix:semicolon
-id|u8
+id|map_word
 id|d
+op_assign
+(brace
+(brace
+l_int|0
+)brace
+)brace
 suffix:semicolon
 r_if
 c_cond
@@ -1054,10 +1096,13 @@ id|map
 )paren
 (brace
 r_return
-l_int|0
+id|d
 suffix:semicolon
 )brace
-id|d
+id|d.x
+(braket
+l_int|0
+)braket
 op_assign
 id|readb
 c_func
@@ -1080,7 +1125,10 @@ id|win_base
 op_plus
 id|ofs
 comma
-id|d
+id|d.x
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 r_return
@@ -1089,7 +1137,7 @@ suffix:semicolon
 )brace
 DECL|function|pcmcia_read16
 r_static
-id|u16
+id|map_word
 id|pcmcia_read16
 c_func
 (paren
@@ -1111,8 +1159,14 @@ id|caddr_t
 )paren
 id|map-&gt;map_priv_2
 suffix:semicolon
-id|u16
+id|map_word
 id|d
+op_assign
+(brace
+(brace
+l_int|0
+)brace
+)brace
 suffix:semicolon
 r_if
 c_cond
@@ -1125,10 +1179,13 @@ id|map
 )paren
 (brace
 r_return
-l_int|0
+id|d
 suffix:semicolon
 )brace
-id|d
+id|d.x
+(braket
+l_int|0
+)braket
 op_assign
 id|readw
 c_func
@@ -1151,7 +1208,10 @@ id|win_base
 op_plus
 id|ofs
 comma
-id|d
+id|d.x
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 r_return
@@ -2074,7 +2134,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|dev-&gt;pcmcia_map.buswidth
+id|dev-&gt;pcmcia_map.bankwidth
 op_assign
 id|t-&gt;geo
 (braket
@@ -2103,7 +2163,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;region: %d buswidth = %u&quot;
+l_string|&quot;region: %d bankwidth = %u&quot;
 comma
 id|i
 comma
@@ -2245,10 +2305,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev-&gt;pcmcia_map.buswidth
+id|dev-&gt;pcmcia_map.bankwidth
 )paren
 (brace
-id|dev-&gt;pcmcia_map.buswidth
+id|dev-&gt;pcmcia_map.bankwidth
 op_assign
 l_int|2
 suffix:semicolon
@@ -2279,21 +2339,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|buswidth
+id|bankwidth
 )paren
 (brace
-id|dev-&gt;pcmcia_map.buswidth
+id|dev-&gt;pcmcia_map.bankwidth
 op_assign
-id|buswidth
+id|bankwidth
 suffix:semicolon
 id|DEBUG
 c_func
 (paren
 l_int|2
 comma
-l_string|&quot;buswidth forced to %d&quot;
+l_string|&quot;bankwidth forced to %d&quot;
 comma
-id|buswidth
+id|bankwidth
 )paren
 suffix:semicolon
 )brace
@@ -2334,7 +2394,7 @@ l_string|&quot;Device: Size: %lu Width:%d Name: %s&quot;
 comma
 id|dev-&gt;pcmcia_map.size
 comma
-id|dev-&gt;pcmcia_map.buswidth
+id|dev-&gt;pcmcia_map.bankwidth
 op_lshift
 l_int|3
 comma
@@ -2496,30 +2556,42 @@ id|dev-&gt;pcmcia_map.phys
 op_assign
 id|NO_XIP
 suffix:semicolon
-id|dev-&gt;pcmcia_map.read8
-op_assign
-id|pcmcia_read8_remap
-suffix:semicolon
-id|dev-&gt;pcmcia_map.read16
-op_assign
-id|pcmcia_read16_remap
-suffix:semicolon
 id|dev-&gt;pcmcia_map.copy_from
 op_assign
 id|pcmcia_copy_from_remap
-suffix:semicolon
-id|dev-&gt;pcmcia_map.write8
-op_assign
-id|pcmcia_write8_remap
-suffix:semicolon
-id|dev-&gt;pcmcia_map.write16
-op_assign
-id|pcmcia_write16_remap
 suffix:semicolon
 id|dev-&gt;pcmcia_map.copy_to
 op_assign
 id|pcmcia_copy_to_remap
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;pcmcia_map.bankwidth
+op_eq
+l_int|1
+)paren
+(brace
+id|dev-&gt;pcmcia_map.read
+op_assign
+id|pcmcia_read8_remap
+suffix:semicolon
+id|dev-&gt;pcmcia_map.write
+op_assign
+id|pcmcia_write8_remap
+suffix:semicolon
+)brace
+r_else
+(brace
+id|dev-&gt;pcmcia_map.read
+op_assign
+id|pcmcia_read16_remap
+suffix:semicolon
+id|dev-&gt;pcmcia_map.write
+op_assign
+id|pcmcia_write16_remap
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2543,7 +2615,7 @@ suffix:semicolon
 id|req.Attributes
 op_or_assign
 (paren
-id|dev-&gt;pcmcia_map.buswidth
+id|dev-&gt;pcmcia_map.bankwidth
 op_eq
 l_int|1
 )paren
@@ -3232,25 +3304,37 @@ r_int
 )paren
 id|dev-&gt;win_base
 suffix:semicolon
-id|dev-&gt;pcmcia_map.read8
+r_if
+c_cond
+(paren
+id|dev-&gt;pcmcia_map.bankwidth
+op_eq
+l_int|1
+)paren
+(brace
+id|dev-&gt;pcmcia_map.read
 op_assign
 id|pcmcia_read8
 suffix:semicolon
-id|dev-&gt;pcmcia_map.read16
-op_assign
-id|pcmcia_read16
-suffix:semicolon
-id|dev-&gt;pcmcia_map.copy_from
-op_assign
-id|pcmcia_copy_from
-suffix:semicolon
-id|dev-&gt;pcmcia_map.write8
+id|dev-&gt;pcmcia_map.write
 op_assign
 id|pcmcia_write8
 suffix:semicolon
-id|dev-&gt;pcmcia_map.write16
+)brace
+r_else
+(brace
+id|dev-&gt;pcmcia_map.read
+op_assign
+id|pcmcia_read16
+suffix:semicolon
+id|dev-&gt;pcmcia_map.write
 op_assign
 id|pcmcia_write16
+suffix:semicolon
+)brace
+id|dev-&gt;pcmcia_map.copy_from
+op_assign
+id|pcmcia_copy_from
 suffix:semicolon
 id|dev-&gt;pcmcia_map.copy_to
 op_assign
@@ -3899,13 +3983,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|buswidth
+id|bankwidth
 op_logical_and
-id|buswidth
+id|bankwidth
 op_ne
 l_int|1
 op_logical_and
-id|buswidth
+id|bankwidth
 op_ne
 l_int|2
 )paren
@@ -3913,12 +3997,12 @@ l_int|2
 id|info
 c_func
 (paren
-l_string|&quot;bad buswidth (%d), using default&quot;
+l_string|&quot;bad bankwidth (%d), using default&quot;
 comma
-id|buswidth
+id|bankwidth
 )paren
 suffix:semicolon
-id|buswidth
+id|bankwidth
 op_assign
 l_int|2
 suffix:semicolon
