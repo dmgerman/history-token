@@ -3165,13 +3165,6 @@ id|p-&gt;security
 op_assign
 l_int|NULL
 suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|p-&gt;local_pages
-)paren
-suffix:semicolon
 id|retval
 op_assign
 op_minus
