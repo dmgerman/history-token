@@ -3584,7 +3584,11 @@ op_plus
 (paren
 id|ULONG
 )paren
-id|psgl-&gt;length
+id|sg_dma_len
+c_func
+(paren
+id|psgl
+)paren
 OL
 id|pSRB-&gt;Saved_Ptr
 )paren
@@ -3594,7 +3598,11 @@ op_add_assign
 (paren
 id|ULONG
 )paren
-id|psgl-&gt;length
+id|sg_dma_len
+c_func
+(paren
+id|psgl
+)paren
 suffix:semicolon
 id|pSRB-&gt;SGIndex
 op_increment
@@ -3686,7 +3694,12 @@ id|pcmd-&gt;request_buffer
 )paren
 (brace
 singleline_comment|//dc390_pci_sync(pSRB);
-id|pSRB-&gt;Segmentx.length
+id|sg_dma_len
+c_func
+(paren
+op_amp
+id|pSRB-&gt;Segmentx
+)paren
 op_assign
 id|pcmd-&gt;request_bufflen
 op_minus
@@ -4139,6 +4152,10 @@ id|printk
 id|KERN_ERR
 l_string|&quot;DC390: pSRB == pTmpSRB! (TagQ Error?) (DCB 0!)&bslash;n&quot;
 )paren
+suffix:semicolon
+id|pSRB-&gt;pSRBDCB
+op_assign
+id|pDCB
 suffix:semicolon
 id|dc390_EnableMsgOut_Abort
 (paren
@@ -6872,7 +6889,11 @@ op_increment
 (brace
 id|swlval
 op_add_assign
-id|ptr2-&gt;length
+id|sg_dma_len
+c_func
+(paren
+id|ptr2
+)paren
 suffix:semicolon
 id|ptr2
 op_increment
