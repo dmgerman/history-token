@@ -278,6 +278,8 @@ comma
 id|GFP_HIGHUSER
 op_or
 id|__GFP_COMP
+op_or
+id|__GFP_NOWARN
 comma
 id|HUGETLB_PAGE_ORDER
 )paren
