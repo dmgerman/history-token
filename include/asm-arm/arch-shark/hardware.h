@@ -27,7 +27,9 @@ DECL|macro|PCIO_BASE
 mdefine_line|#define PCIO_BASE&t;&t;0xe0000000
 multiline_comment|/* defines for the Framebuffer */
 DECL|macro|FB_START
-mdefine_line|#define FB_START                0x06000000
+mdefine_line|#define FB_START&t;&t;0x06000000
+DECL|macro|FB_SIZE
+mdefine_line|#define FB_SIZE&t;&t;&t;0x01000000
 DECL|macro|UNCACHEABLE_ADDR
 mdefine_line|#define UNCACHEABLE_ADDR        0xdf010000
 DECL|macro|SEQUOIA_LED_GREEN

@@ -100,12 +100,6 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|have_isa_bridge
-)paren
-(brace
 id|k_setkeycode
 op_assign
 id|pckbd_setkeycode
@@ -141,7 +135,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * PC Keyboard specifics&n; */
 multiline_comment|/* resource allocation */
