@@ -58,8 +58,9 @@ macro_line|#include &lt;linux/i2c-dev.h&gt;
 macro_line|#include &lt;linux/wireless.h&gt;
 macro_line|#include &lt;net/sock.h&gt;          /* siocdevprivate_ioctl */
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
-macro_line|#include &lt;net/bluetooth/rfcomm.h&gt;
 macro_line|#include &lt;net/bluetooth/hci.h&gt;
+macro_line|#include &lt;net/bluetooth/rfcomm.h&gt;
+macro_line|#include &lt;linux/capi.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 multiline_comment|/* Ugly hack. */
 DECL|macro|__KERNEL__
