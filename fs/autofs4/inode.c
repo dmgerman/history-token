@@ -1271,7 +1271,7 @@ suffix:semicolon
 id|inode-&gt;i_fop
 op_assign
 op_amp
-id|simple_dir_operations
+id|autofs4_dir_operations
 suffix:semicolon
 )brace
 r_else

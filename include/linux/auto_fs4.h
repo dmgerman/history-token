@@ -17,6 +17,8 @@ DECL|macro|AUTOFS_MIN_PROTO_VERSION
 mdefine_line|#define AUTOFS_MIN_PROTO_VERSION&t;3
 DECL|macro|AUTOFS_MAX_PROTO_VERSION
 mdefine_line|#define AUTOFS_MAX_PROTO_VERSION&t;4
+DECL|macro|AUTOFS_PROTO_SUBVERSION
+mdefine_line|#define AUTOFS_PROTO_SUBVERSION         5
 multiline_comment|/* Mask for expire behaviour */
 DECL|macro|AUTOFS_EXP_IMMEDIATE
 mdefine_line|#define AUTOFS_EXP_IMMEDIATE&t;&t;1
@@ -82,5 +84,7 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|AUTOFS_IOC_EXPIRE_MULTI
 mdefine_line|#define AUTOFS_IOC_EXPIRE_MULTI _IOW(0x93,0x66,int)
+DECL|macro|AUTOFS_IOC_PROTOSUBVER
+mdefine_line|#define AUTOFS_IOC_PROTOSUBVER  _IOR(0x93,0x67,int)
 macro_line|#endif /* _LINUX_AUTO_FS4_H */
 eof

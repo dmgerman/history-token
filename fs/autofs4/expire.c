@@ -1410,8 +1410,7 @@ c_func
 (paren
 id|sbi
 comma
-op_amp
-id|dentry-&gt;d_name
+id|dentry
 comma
 id|NFY_EXPIRE
 )paren
