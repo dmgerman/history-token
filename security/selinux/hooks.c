@@ -9977,6 +9977,7 @@ r_int
 id|shared
 )paren
 (brace
+macro_line|#ifndef CONFIG_PPC32
 r_if
 c_cond
 (paren
@@ -10026,6 +10027,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -10094,6 +10096,10 @@ id|file
 comma
 r_int
 r_int
+id|reqprot
+comma
+r_int
+r_int
 id|prot
 comma
 r_int
@@ -10113,6 +10119,8 @@ c_func
 (paren
 id|file
 comma
+id|reqprot
+comma
 id|prot
 comma
 id|flags
@@ -10125,6 +10133,15 @@ id|rc
 )paren
 r_return
 id|rc
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|selinux_checkreqprot
+)paren
+id|prot
+op_assign
+id|reqprot
 suffix:semicolon
 r_return
 id|file_map_prot_check
@@ -10157,6 +10174,10 @@ id|vma
 comma
 r_int
 r_int
+id|reqprot
+comma
+r_int
+r_int
 id|prot
 )paren
 (brace
@@ -10172,6 +10193,8 @@ c_func
 (paren
 id|vma
 comma
+id|reqprot
+comma
 id|prot
 )paren
 suffix:semicolon
@@ -10183,6 +10206,16 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|selinux_checkreqprot
+)paren
+id|prot
+op_assign
+id|reqprot
+suffix:semicolon
+macro_line|#ifndef CONFIG_PPC32
 r_if
 c_cond
 (paren
@@ -10224,6 +10257,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+macro_line|#endif
 r_return
 id|file_map_prot_check
 c_func
