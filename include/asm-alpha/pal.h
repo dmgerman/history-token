@@ -70,8 +70,8 @@ DECL|macro|PAL_rdusp
 mdefine_line|#define PAL_rdusp&t;58
 DECL|macro|PAL_whami
 mdefine_line|#define PAL_whami&t;60
-DECL|macro|PAL_rtsys
-mdefine_line|#define PAL_rtsys&t;61
+DECL|macro|PAL_retsys
+mdefine_line|#define PAL_retsys&t;61
 DECL|macro|PAL_rti
 mdefine_line|#define PAL_rti&t;&t;63
 macro_line|#endif /* __ALPHA_PAL_H */
