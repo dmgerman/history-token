@@ -314,7 +314,7 @@ id|nonblock
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|netlink_broadcast
 c_func
 (paren
