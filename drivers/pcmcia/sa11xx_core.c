@@ -4,15 +4,13 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -771,25 +769,26 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* sa1100_pcmcia_task_handler()&n; * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^&n; * Processes serviceable socket events using the &quot;eventd&quot; thread context.&n; *&n; * Event processing (specifically, the invocation of the Card Services event&n; * callback) occurs in this thread rather than in the actual interrupt&n; * handler due to the use of scheduling operations in the PCMCIA core.&n; */
-DECL|function|sa1100_pcmcia_task_handler
+DECL|variable|status_lock
+r_static
+id|spinlock_t
+id|status_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+multiline_comment|/* sa1100_check_status()&n; * ^^^^^^^^^^^^^^^^^^^^^&n; */
+DECL|function|sa1100_check_status
 r_static
 r_void
-id|sa1100_pcmcia_task_handler
+id|sa1100_check_status
 c_func
 (paren
-r_void
-op_star
-id|data
-)paren
-(brace
 r_struct
 id|sa1100_pcmcia_socket
 op_star
 id|skt
-op_assign
-id|data
-suffix:semicolon
+)paren
+(brace
 r_int
 r_int
 id|events
@@ -810,12 +809,25 @@ r_int
 r_int
 id|status
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|status
 op_assign
 id|sa1100_pcmcia_skt_state
 c_func
 (paren
 id|skt
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|status_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|events
@@ -831,6 +843,15 @@ suffix:semicolon
 id|skt-&gt;status
 op_assign
 id|status
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|status_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|DEBUG
 c_func
@@ -898,17 +919,12 @@ r_if
 c_cond
 (paren
 id|events
-op_logical_and
-id|skt-&gt;handler
-op_ne
-l_int|NULL
 )paren
-id|skt
-op_member_access_from_pointer
-id|handler
+id|pcmcia_parse_events
 c_func
 (paren
-id|skt-&gt;handler_info
+op_amp
+id|skt-&gt;socket
 comma
 id|events
 )paren
@@ -966,11 +982,10 @@ op_plus
 id|SA1100_PCMCIA_POLL_PERIOD
 )paren
 suffix:semicolon
-id|schedule_work
+id|sa1100_check_status
 c_func
 (paren
-op_amp
-id|skt-&gt;work
+id|skt
 )paren
 suffix:semicolon
 )brace
@@ -1013,102 +1028,14 @@ comma
 id|irq
 )paren
 suffix:semicolon
-id|schedule_work
+id|sa1100_check_status
 c_func
 (paren
-op_amp
-id|skt-&gt;work
+id|skt
 )paren
 suffix:semicolon
 r_return
 id|IRQ_HANDLED
-suffix:semicolon
-)brace
-multiline_comment|/* sa1100_pcmcia_register_callback()&n; * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^&n; * Implements the register_callback() operation for the in-kernel&n; * PCMCIA service (formerly SS_RegisterCallback in Card Services). If &n; * the function pointer `handler&squot; is not NULL, remember the callback &n; * location in the state for `sock&squot;, and increment the usage counter &n; * for the driver module. (The callback is invoked from the interrupt&n; * service routine, sa1100_pcmcia_interrupt(), to notify Card Services&n; * of interesting events.) Otherwise, clear the callback pointer in the&n; * socket state and decrement the module usage count.&n; *&n; * Returns: 0&n; */
-r_static
-r_int
-DECL|function|sa1100_pcmcia_register_callback
-id|sa1100_pcmcia_register_callback
-c_func
-(paren
-r_struct
-id|pcmcia_socket
-op_star
-id|sock
-comma
-r_void
-(paren
-op_star
-id|handler
-)paren
-(paren
-r_void
-op_star
-comma
-r_int
-r_int
-)paren
-comma
-r_void
-op_star
-id|info
-)paren
-(brace
-r_struct
-id|sa1100_pcmcia_socket
-op_star
-id|skt
-op_assign
-id|to_sa1100_socket
-c_func
-(paren
-id|sock
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|handler
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|try_module_get
-c_func
-(paren
-id|skt-&gt;ops-&gt;owner
-)paren
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-id|skt-&gt;handler_info
-op_assign
-id|info
-suffix:semicolon
-id|skt-&gt;handler
-op_assign
-id|handler
-suffix:semicolon
-)brace
-r_else
-(brace
-id|skt-&gt;handler
-op_assign
-l_int|NULL
-suffix:semicolon
-id|module_put
-c_func
-(paren
-id|skt-&gt;ops-&gt;owner
-)paren
-suffix:semicolon
-)brace
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* sa1100_pcmcia_get_status()&n; * ^^^^^^^^^^^^^^^^^^^^^^^^^^&n; * Implements the get_status() operation for the in-kernel PCMCIA&n; * service (formerly SS_GetStatus in Card Services). Essentially just&n; * fills in bits in `status&squot; according to internal driver state or&n; * the value of the voltage detect chipselect register.&n; *&n; * As a debugging note, during card startup, the PCMCIA core issues&n; * three set_socket() commands in a row the first with RESET deasserted,&n; * the second with RESET asserted, and the last with RESET deasserted&n; * again. Following the third set_socket(), a get_status() command will&n; * be issued. The kernel is looking for the SS_READY flag (see&n; * setup_socket(), reset_socket(), and unreset_socket() in cs.c).&n; *&n; * Returns: 0&n; */
@@ -2492,11 +2419,6 @@ id|sa11xx_pcmcia_operations
 op_assign
 (brace
 dot
-id|owner
-op_assign
-id|THIS_MODULE
-comma
-dot
 id|init
 op_assign
 id|sa1100_pcmcia_sock_init
@@ -2505,11 +2427,6 @@ dot
 id|suspend
 op_assign
 id|sa1100_pcmcia_suspend
-comma
-dot
-id|register_callback
-op_assign
-id|sa1100_pcmcia_register_callback
 comma
 dot
 id|get_status
@@ -3102,20 +3019,13 @@ op_assign
 op_amp
 id|sa11xx_pcmcia_operations
 suffix:semicolon
+id|skt-&gt;socket.owner
+op_assign
+id|ops-&gt;owner
+suffix:semicolon
 id|skt-&gt;socket.dev.dev
 op_assign
 id|dev
-suffix:semicolon
-id|INIT_WORK
-c_func
-(paren
-op_amp
-id|skt-&gt;work
-comma
-id|sa1100_pcmcia_task_handler
-comma
-id|skt
-)paren
 suffix:semicolon
 id|init_timer
 c_func

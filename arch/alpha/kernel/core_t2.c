@@ -1743,8 +1743,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Config Space HAE */
-macro_line|#if 0
-multiline_comment|/* !!! DO NOT EVER TOUCH THIS !!! */
+multiline_comment|/*&n;&t; * We also now zero out HAE_4, the dense memory HAE, so that&n;&t; * we need not account for its &quot;offset&quot; when accessing dense&n;&t; * memory resources which we allocated in our normal way. This&n;&t; * HAE would need to stay untouched were we to keep the SRM&n;&t; * resource settings.&n;&t; *&n;&t; * Thus we can now run standard X servers on SABLE/LYNX. :-)&n;&t; */
 op_star
 (paren
 id|vulp
@@ -1758,8 +1757,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Dense MEM HAE */
-macro_line|#endif
 )brace
 r_void
 DECL|function|t2_kill_arch
