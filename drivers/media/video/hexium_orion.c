@@ -1135,7 +1135,7 @@ comma
 op_amp
 id|hexium-&gt;i2c_adapter
 comma
-id|I2C_ADAP_CLASS_TV_ANALOG
+id|I2C_CLASS_TV_ANALOG
 comma
 id|SAA7146_I2C_BUS_BIT_RATE_480
 )paren

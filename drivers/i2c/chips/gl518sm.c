@@ -1690,7 +1690,7 @@ id|adapter
 op_member_access_from_pointer
 r_class
 op_amp
-id|I2C_ADAP_CLASS_SMBUS
+id|I2C_CLASS_SMBUS
 )paren
 )paren
 r_return
