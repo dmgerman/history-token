@@ -23,7 +23,6 @@ suffix:semicolon
 DECL|member|device
 r_struct
 id|net_device
-op_star
 id|device
 (braket
 id|DVB_NET_DEVICES_MAX
