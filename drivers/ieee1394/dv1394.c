@@ -143,12 +143,12 @@ c_func
 id|dv1394_cards
 )paren
 suffix:semicolon
-DECL|variable|dv1394_cards_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|dv1394_cards_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* translate from a struct file* to the corresponding struct video_card* */
 DECL|function|file_to_video_card
