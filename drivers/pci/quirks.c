@@ -2942,6 +2942,10 @@ r_case
 l_int|0x8088
 suffix:colon
 multiline_comment|/* P4B533 */
+r_case
+l_int|0x1626
+suffix:colon
+multiline_comment|/* L3C notebook */
 id|asus_hides_smbus
 op_assign
 l_int|1
@@ -3292,6 +3296,16 @@ c_func
 id|PCI_VENDOR_ID_INTEL
 comma
 id|PCI_DEVICE_ID_INTEL_82801BA_0
+comma
+id|asus_hides_smbus_lpc
+)paren
+suffix:semicolon
+id|DECLARE_PCI_FIXUP_HEADER
+c_func
+(paren
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_82801CA_12
 comma
 id|asus_hides_smbus_lpc
 )paren
