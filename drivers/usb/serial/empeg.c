@@ -691,17 +691,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|usb_serial_debug_data
-(paren
-id|__FILE__
-comma
-id|__FUNCTION__
-comma
-id|count
-comma
-id|buf
-)paren
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -881,6 +870,17 @@ id|transfer_size
 )paren
 suffix:semicolon
 )brace
+id|usb_serial_debug_data
+(paren
+id|__FILE__
+comma
+id|__FUNCTION__
+comma
+id|transfer_size
+comma
+id|urb-&gt;transfer_buffer
+)paren
+suffix:semicolon
 multiline_comment|/* build up our urb */
 id|usb_fill_bulk_urb
 (paren

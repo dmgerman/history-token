@@ -25,28 +25,8 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
-multiline_comment|/* minidrivers _could_ be individually configured */
-DECL|macro|CONFIG_USB_AN2720
-mdefine_line|#define&t;CONFIG_USB_AN2720
-DECL|macro|CONFIG_USB_BELKIN
-mdefine_line|#define&t;CONFIG_USB_BELKIN
-DECL|macro|CONFIG_USB_CDCETHER
-macro_line|#undef&t;CONFIG_USB_CDCETHER
-singleline_comment|//#define&t;CONFIG_USB_CDCETHER&t;&t;/* NYET */
-DECL|macro|CONFIG_USB_EPSON2888
-mdefine_line|#define&t;CONFIG_USB_EPSON2888
-DECL|macro|CONFIG_USB_GENESYS
-mdefine_line|#define&t;CONFIG_USB_GENESYS
-DECL|macro|CONFIG_USB_NET1080
-mdefine_line|#define&t;CONFIG_USB_NET1080
-DECL|macro|CONFIG_USB_PL2301
-mdefine_line|#define&t;CONFIG_USB_PL2301
-DECL|macro|CONFIG_USB_ARMLINUX
-mdefine_line|#define&t;CONFIG_USB_ARMLINUX
-DECL|macro|CONFIG_USB_ZAURUS
-mdefine_line|#define&t;CONFIG_USB_ZAURUS
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&t;&quot;31-Mar-2003&quot;
+mdefine_line|#define DRIVER_VERSION&t;&t;&quot;25-Apr-2003&quot;
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * Nineteen USB 1.1 max size bulk transactions per frame (ms), max.&n; * Several dozen bytes of IPv4 data can fit in two such transactions.&n; * One maximum size Ethernet packet takes twenty four of them.&n; * For high speed, each frame comfortably fits almost 36 max size&n; * Ethernet packets (so queues should be bigger).&n; */
 macro_line|#ifdef REALLY_QUEUE
@@ -221,6 +201,8 @@ DECL|macro|FLAG_FRAMING_Z
 mdefine_line|#define FLAG_FRAMING_Z&t;0x0004&t;&t;/* zaurus adds a trailer */
 DECL|macro|FLAG_NO_SETINT
 mdefine_line|#define FLAG_NO_SETINT&t;0x0010&t;&t;/* device can&squot;t set_interface() */
+DECL|macro|FLAG_ETHER
+mdefine_line|#define FLAG_ETHER&t;0x0020&t;&t;/* maybe use &quot;eth%d&quot; names */
 multiline_comment|/* init device ... can sleep, or cause probe() failure */
 DECL|member|bind
 r_int
@@ -434,17 +416,17 @@ DECL|macro|RUN_CONTEXT
 mdefine_line|#define&t;RUN_CONTEXT (in_irq () ? &quot;in_irq&quot; &bslash;&n;&t;&t;&t;: (in_interrupt () ? &quot;in_interrupt&quot; : &quot;can sleep&quot;))
 macro_line|#ifdef DEBUG
 DECL|macro|devdbg
-mdefine_line|#define devdbg(usbnet, fmt, arg...)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(KERN_DEBUG &quot;%s:&quot;, (usbnet)-&gt;net.name);&t;&bslash;&n;&t;&t;printk(fmt, ## arg);&t;&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;&bslash;n&quot;);&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define devdbg(usbnet, fmt, arg...) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net.name , ## arg)
 macro_line|#else
 DECL|macro|devdbg
 mdefine_line|#define devdbg(usbnet, fmt, arg...) do {} while(0)
 macro_line|#endif
 DECL|macro|deverr
-mdefine_line|#define deverr(usbnet, fmt, arg...) &bslash;&n;&t;printk(KERN_ERR &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net.name, ## arg)
+mdefine_line|#define deverr(usbnet, fmt, arg...) &bslash;&n;&t;printk(KERN_ERR &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net.name , ## arg)
 DECL|macro|devwarn
-mdefine_line|#define devwarn(usbnet, fmt, arg...) &bslash;&n;&t;printk(KERN_WARNING &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net.name, ## arg)
+mdefine_line|#define devwarn(usbnet, fmt, arg...) &bslash;&n;&t;printk(KERN_WARNING &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net.name , ## arg)
 DECL|macro|devinfo
-mdefine_line|#define devinfo(usbnet, fmt, arg...) &bslash;&n;&t;do { if ((usbnet)-&gt;msg_level &gt;= 1) &bslash;&n;&t;printk(KERN_INFO &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net.name, ## arg); &bslash;&n;&t;} while (0)
+mdefine_line|#define devinfo(usbnet, fmt, arg...) &bslash;&n;&t;do { if ((usbnet)-&gt;msg_level &gt;= 1) &bslash;&n;&t;printk(KERN_INFO &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net.name , ## arg); &bslash;&n;&t;} while (0)
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* mostly for PDA style devices, which are always connected if present */
 DECL|function|always_connected
@@ -676,6 +658,8 @@ suffix:semicolon
 )brace
 "&f;"
 macro_line|#ifdef&t;CONFIG_USB_AN2720
+DECL|macro|HAVE_HARDWARE
+mdefine_line|#define&t;HAVE_HARDWARE
 multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * AnchorChips 2720 driver ... http://www.cypress.com&n; *&n; * This doesn&squot;t seem to have a way to detect whether the peer is&n; * connected, or need any reset handshaking.  It&squot;s got pretty big&n; * internal buffers (handles most of a frame&squot;s worth of data).&n; * Chip data sheets don&squot;t describe any vendor control messages.&n; *&n; *-------------------------------------------------------------------------*/
 DECL|variable|an2720_info
 r_static
@@ -708,6 +692,8 @@ suffix:semicolon
 macro_line|#endif&t;/* CONFIG_USB_AN2720 */
 "&f;"
 macro_line|#ifdef&t;CONFIG_USB_BELKIN
+DECL|macro|HAVE_HARDWARE
+mdefine_line|#define&t;HAVE_HARDWARE
 multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * Belkin F5U104 ... two NetChip 2280 devices + Atmel microcontroller&n; *&n; * ... also two eTEK designs, including one sold as &quot;Advance USBNET&quot;&n; *&n; *-------------------------------------------------------------------------*/
 DECL|variable|belkin_info
 r_static
@@ -727,7 +713,7 @@ suffix:semicolon
 macro_line|#endif&t;/* CONFIG_USB_BELKIN */
 "&f;"
 macro_line|#if&t;defined (CONFIG_USB_CDCETHER) || defined (CONFIG_USB_ZAURUS)
-multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * Communications Device Class, Ethernet Control model&n; * &n; * Takes two interfaces.  The DATA interface is inactive till an altsetting&n; * is selected.  Configuration data includes class descriptors.&n; *&n; * Zaurus uses nonstandard framing, but is otherwise CDC Ether.&n; *&n; *-------------------------------------------------------------------------*/
+multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * Communications Device Class, Ethernet Control model&n; * &n; * Takes two interfaces.  The DATA interface is inactive till an altsetting&n; * is selected.  Configuration data includes class descriptors.&n; *&n; * Zaurus uses nonstandard framing, and doesn&squot;t uniquify its Ethernet&n; * addresses, but is otherwise CDC Ether.&n; *&n; * This should interop with whatever the 2.4 &quot;CDCEther.c&quot; driver&n; * (by Brad Hards) talked with.&n; *&n; *-------------------------------------------------------------------------*/
 multiline_comment|/* &quot;Header Functional Descriptor&quot; from CDC spec  5.2.3.1 */
 DECL|struct|header_desc
 r_struct
@@ -1366,6 +1352,24 @@ id|info-&gt;ether
 r_goto
 id|bad_desc
 suffix:semicolon
+macro_line|#ifdef CONFIG_USB_ZAURUS
+multiline_comment|/* Zaurus ethernet addresses aren&squot;t unique ... */
+r_if
+c_cond
+(paren
+(paren
+id|dev-&gt;driver_info-&gt;flags
+op_amp
+id|FLAG_FRAMING_Z
+)paren
+op_ne
+l_int|0
+)paren
+multiline_comment|/* ignore */
+suffix:semicolon
+r_else
+macro_line|#endif
+(brace
 id|status
 op_assign
 id|get_ethernet_addr
@@ -1385,6 +1389,7 @@ l_int|0
 r_return
 id|status
 suffix:semicolon
+)brace
 multiline_comment|/* claim data interface and set it up ... with side effects.&n;&t; * network traffic can&squot;t flow until an altsetting is enabled.&n;&t; */
 id|usb_driver_claim_interface
 (paren
@@ -1435,24 +1440,6 @@ id|info-&gt;ether-&gt;wMaxSegmentSize
 )paren
 op_minus
 id|ETH_HLEN
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|dev-&gt;driver_info-&gt;flags
-op_amp
-id|FLAG_FRAMING_Z
-)paren
-op_eq
-l_int|0
-)paren
-id|strcpy
-(paren
-id|dev-&gt;net.name
-comma
-l_string|&quot;eth%d&quot;
-)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -1545,6 +1532,8 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;/* CONFIG_USB_ZAURUS || CONFIG_USB_CDCETHER */
 macro_line|#ifdef&t;CONFIG_USB_CDCETHER
+DECL|macro|HAVE_HARDWARE
+mdefine_line|#define&t;HAVE_HARDWARE
 DECL|variable|cdc_info
 r_static
 r_const
@@ -1557,6 +1546,11 @@ dot
 id|description
 op_assign
 l_string|&quot;CDC Ethernet Device&quot;
+comma
+dot
+id|flags
+op_assign
+id|FLAG_ETHER
 comma
 singleline_comment|// .check_connect = cdc_check_connect,
 dot
@@ -1574,7 +1568,9 @@ suffix:semicolon
 macro_line|#endif&t;/* CONFIG_USB_CDCETHER */
 "&f;"
 macro_line|#ifdef&t;CONFIG_USB_EPSON2888
-multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * EPSON USB clients&n; *&n; * This is the same idea as Linux PDAs (below) except the firmware in the&n; * device might not be Tux-powered.  Epson provides reference firmware that&n; * implements this interface.  Product developers can reuse or modify that&n; * code, such as by using their own product and vendor codes.&n; *&n; *-------------------------------------------------------------------------*/
+DECL|macro|HAVE_HARDWARE
+mdefine_line|#define&t;HAVE_HARDWARE
+multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * EPSON USB clients&n; *&n; * This is the same idea as Linux PDAs (below) except the firmware in the&n; * device might not be Tux-powered.  Epson provides reference firmware that&n; * implements this interface.  Product developers can reuse or modify that&n; * code, such as by using their own product and vendor codes.&n; *&n; * Support was from Juro Bystricky &lt;bystricky.juro@erd.epson.com&gt;&n; *&n; *-------------------------------------------------------------------------*/
 DECL|variable|epson2888_info
 r_static
 r_const
@@ -1608,7 +1604,9 @@ suffix:semicolon
 macro_line|#endif&t;/* CONFIG_USB_EPSON2888 */
 "&f;"
 macro_line|#ifdef CONFIG_USB_GENESYS
-multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * GeneSys GL620USB-A (www.genesyslogic.com.tw)&n; *&n; * ... should partially interop with the Win32 driver for this hardware&n; * The GeneSys docs imply there&squot;s some NDIS issue motivating this framing.&n; *&n; * Some info from GeneSys:&n; *  - GL620USB-A is full duplex; GL620USB is only half duplex for bulk.&n; *    (Some cables, like the BAFO-100c, use the half duplex version.)&n; *  - For the full duplex model, the low bit of the version code says&n; *    which side is which (&quot;left/right&quot;).&n; *  - For the half duplex type, a control/interrupt handshake settles&n; *    the transfer direction.  (That&squot;s disabled here, partially coded.)&n; *    A control URB would block until other side writes an interrupt.&n; *&n; *-------------------------------------------------------------------------*/
+DECL|macro|HAVE_HARDWARE
+mdefine_line|#define&t;HAVE_HARDWARE
+multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * GeneSys GL620USB-A (www.genesyslogic.com.tw)&n; *&n; * ... should partially interop with the Win32 driver for this hardware&n; * The GeneSys docs imply there&squot;s some NDIS issue motivating this framing.&n; *&n; * Some info from GeneSys:&n; *  - GL620USB-A is full duplex; GL620USB is only half duplex for bulk.&n; *    (Some cables, like the BAFO-100c, use the half duplex version.)&n; *  - For the full duplex model, the low bit of the version code says&n; *    which side is which (&quot;left/right&quot;).&n; *  - For the half duplex type, a control/interrupt handshake settles&n; *    the transfer direction.  (That&squot;s disabled here, partially coded.)&n; *    A control URB would block until other side writes an interrupt.&n; *&n; * Original code from Jiun-Jie Huang &lt;huangjj@genesyslogic.com.tw&gt;&n; * and merged into &quot;usbnet&quot; by Stanislav Brabec &lt;utx@penguin.cz&gt;.&n; *&n; *-------------------------------------------------------------------------*/
 singleline_comment|// control msg write command
 DECL|macro|GENELINK_CONNECT_WRITE
 mdefine_line|#define GENELINK_CONNECT_WRITE&t;&t;&t;0xF0
@@ -2726,6 +2724,8 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_USB_GENESYS */
 "&f;"
 macro_line|#ifdef&t;CONFIG_USB_NET1080
+DECL|macro|HAVE_HARDWARE
+mdefine_line|#define&t;HAVE_HARDWARE
 multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * Netchip 1080 driver ... http://www.netchip.com&n; * Used in LapLink cables&n; *&n; *-------------------------------------------------------------------------*/
 DECL|macro|dev_packet_id
 mdefine_line|#define dev_packet_id&t;data[0]
@@ -4655,7 +4655,9 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_USB_NET1080 */
 "&f;"
 macro_line|#ifdef CONFIG_USB_PL2301
-multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * Prolific PL-2301/PL-2302 driver ... http://www.prolifictech.com&n; *&n; *-------------------------------------------------------------------------*/
+DECL|macro|HAVE_HARDWARE
+mdefine_line|#define&t;HAVE_HARDWARE
+multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * Prolific PL-2301/PL-2302 driver ... http://www.prolifictech.com&n; *&n; * The protocol and handshaking used here should be bug-compatible&n; * with the Linux 2.2 &quot;plusb&quot; driver, by Deti Fliegl.&n; *&n; *-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * Bits 0-4 can be used for software handshaking; they&squot;re set from&n; * one end, cleared from the other, &quot;read&quot; with the interrupt byte.&n; */
 DECL|macro|PL_S_EN
 mdefine_line|#define&t;PL_S_EN&t;&t;(1&lt;&lt;7)&t;&t;/* (feature only) suspend enable */
@@ -4843,6 +4845,8 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_USB_PL2301 */
 "&f;"
 macro_line|#ifdef&t;CONFIG_USB_ARMLINUX
+DECL|macro|HAVE_HARDWARE
+mdefine_line|#define&t;HAVE_HARDWARE
 multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * Intel&squot;s SA-1100 chip integrates basic USB support, and is used&n; * in PDAs like some iPaqs, the Yopy, some Zaurus models, and more.&n; * When they run Linux, arch/arm/mach-sa1100/usb-eth.c may be used to&n; * network using minimal USB framing data.&n; *&n; * This describes the driver currently in standard ARM Linux kernels.&n; * The Zaurus uses a different driver (see later).&n; *&n; * PXA25x and PXA210 use XScale cores (ARM v5TE) with better USB support&n; * and different USB endpoint numbering than the SA1100 devices.  The&n; * mach-pxa/usb-eth.c driver re-uses the device ids from mach-sa1100&n; * so we rely on the endpoint descriptors.&n; *&n; *-------------------------------------------------------------------------*/
 DECL|variable|linuxdev_info
 r_static
@@ -4887,6 +4891,8 @@ suffix:semicolon
 macro_line|#endif&t;/* CONFIG_USB_ARMLINUX */
 "&f;"
 macro_line|#ifdef CONFIG_USB_ZAURUS
+DECL|macro|HAVE_HARDWARE
+mdefine_line|#define&t;HAVE_HARDWARE
 macro_line|#include &lt;linux/crc32.h&gt;
 multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * Zaurus is also a SA-1110 based PDA, but one using a different driver&n; * (and framing) for its USB slave/gadget controller than the case above.&n; *&n; * For the current version of that driver, the main way that framing is&n; * nonstandard (also from perspective of the CDC ethernet model!) is a&n; * crc32, added to help detect when some sa1100 usb-to-memory DMA errata&n; * haven&squot;t been fully worked around.&n; *&n; *-------------------------------------------------------------------------*/
 r_static
@@ -5349,7 +5355,7 @@ id|stats
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/* urb completions may be in_irq; avoid doing real work then. */
+multiline_comment|/* some LK 2.4 HCDs oopsed if we freed or resubmitted urbs from&n; * completion callbacks.  2.5 should have fixed those bugs...&n; */
 DECL|function|defer_bh
 r_static
 r_void
@@ -8573,6 +8579,28 @@ op_star
 )paren
 id|prod-&gt;driver_info
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|info
+)paren
+(brace
+id|dev_dbg
+(paren
+op_amp
+id|udev-&gt;dev
+comma
+l_string|&quot;blacklisted by %s&bslash;n&quot;
+comma
+id|driver_name
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 id|xdev
 op_assign
 id|interface_to_usbdev
@@ -8803,6 +8831,7 @@ c_cond
 (paren
 id|info-&gt;bind
 )paren
+(brace
 id|status
 op_assign
 id|info-&gt;bind
@@ -8812,6 +8841,39 @@ comma
 id|udev
 )paren
 suffix:semicolon
+singleline_comment|// heuristic:  &quot;usb%d&quot; for links we know are two-host,
+singleline_comment|// else &quot;eth%d&quot; when there&squot;s reasonable doubt.  userspace
+singleline_comment|// can rename the link if it knows better.
+r_if
+c_cond
+(paren
+(paren
+id|dev-&gt;driver_info-&gt;flags
+op_amp
+id|FLAG_ETHER
+)paren
+op_ne
+l_int|0
+op_logical_and
+(paren
+id|net-&gt;dev_addr
+(braket
+l_int|0
+)braket
+op_amp
+l_int|0x02
+)paren
+op_eq
+l_int|0
+)paren
+id|strcpy
+(paren
+id|net-&gt;name
+comma
+l_string|&quot;eth%d&quot;
+)paren
+suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -8950,6 +9012,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
+macro_line|#ifndef&t;HAVE_HARDWARE
+macro_line|#error You need to configure some hardware for this driver
+macro_line|#endif
 multiline_comment|/*&n; * chip vendor names won&squot;t normally be on the cables, and&n; * may not be on the device.&n; */
 DECL|variable|products
 r_static
@@ -9392,13 +9457,27 @@ comma
 comma
 macro_line|#endif
 macro_line|#ifdef&t;CONFIG_USB_CDCETHER
+macro_line|#ifndef&t;CONFIG_USB_ZAURUS
+multiline_comment|/* if we couldn&squot;t whitelist Zaurus, we must blacklist it */
 (brace
-multiline_comment|/* CDC Ether uses two interfaces, not necessarily consecutive.&n;&t; * We match the main interface, ignoring the optional device&n;&t; * class so we could handle devices that aren&squot;t exclusively&n;&t; * CDC ether.&n;&t; *&n;&t; * NOTE:  this match must come AFTER entries working around&n;&t; * bugs/quirks in a given product (like Zaurus, above).&n;&t; */
 dot
 id|match_flags
 op_assign
 id|USB_DEVICE_ID_MATCH_INT_INFO
+op_or
+id|USB_DEVICE_ID_MATCH_DEVICE
 comma
+dot
+id|idVendor
+op_assign
+l_int|0x04DD
+comma
+dot
+id|idProduct
+op_assign
+l_int|0x8004
+comma
+multiline_comment|/* match the master interface */
 dot
 id|bInterfaceClass
 op_assign
@@ -9414,6 +9493,27 @@ dot
 id|bInterfaceProtocol
 op_assign
 l_int|0
+comma
+dot
+id|driver_info
+op_assign
+l_int|0
+comma
+multiline_comment|/* BLACKLIST */
+)brace
+comma
+macro_line|#endif
+(brace
+multiline_comment|/* CDC Ether uses two interfaces, not necessarily consecutive.&n;&t; * We match the main interface, ignoring the optional device&n;&t; * class so we could handle devices that aren&squot;t exclusively&n;&t; * CDC ether.&n;&t; *&n;&t; * NOTE:  this match must come AFTER entries working around&n;&t; * bugs/quirks in a given product (like Zaurus, above).&n;&t; */
+id|USB_INTERFACE_INFO
+(paren
+id|USB_CLASS_COMM
+comma
+l_int|6
+multiline_comment|/* Ethernet model */
+comma
+l_int|0
+)paren
 comma
 dot
 id|driver_info

@@ -1,7 +1,7 @@
 multiline_comment|/* Driver for USB Mass Storage compliant devices&n; * Ununsual Devices File&n; *&n; * $Id: unusual_devs.h,v 1.32 2002/02/25 02:41:24 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 2000-2002 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; *&n; * Initial work by:&n; *   (c) 2000 Adam J. Richter (adam@yggdrasil.com), Yggdrasil Computing, Inc.&n; *&n; * Please see http://www.one-eyed-alien.net/~mdharm/linux-usb for more&n; * information about this driver.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* IMPORTANT NOTE: This file must be included in another file which does&n; * the following thing for it to work:&n; * The macro UNUSUAL_DEV() must be defined before this file is included&n; */
 macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/* If you edit this file, please try to keep it sorted first by VendorID,&n; * then by ProductID.&n; */
+multiline_comment|/* If you edit this file, please try to keep it sorted first by VendorID,&n; * then by ProductID.&n; *&n; * If you want to add an entry for this file, please send the following&n; * to greg@kroah.com:&n; *&t;- patch that adds the entry for your device which includes your&n; *&t;  email address right above the entry.&n; *&t;- a copy of /proc/bus/usb/devices with your device plugged in&n; *&t;  running with this patch.&n; *&n; */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -698,6 +698,31 @@ op_or
 id|US_FL_START_STOP
 )paren
 comma
+multiline_comment|/* Submitted by Lars Gemeinhardt &lt;linux-usb@gemeinhardt.info&gt;&n; * Needed for START_STOP flag */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0547
+comma
+l_int|0x2810
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;Mello&quot;
+comma
+l_string|&quot;MP3 Player&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_START_STOP
+)paren
+comma
 multiline_comment|/* This entry is needed because the device reports Sub=ff */
 id|UNUSUAL_DEV
 c_func
@@ -708,11 +733,11 @@ l_int|0x0010
 comma
 l_int|0x0106
 comma
-l_int|0x0440
+l_int|0x0450
 comma
 l_string|&quot;Sony&quot;
 comma
-l_string|&quot;DSC-S30/S70/S75/505V/F505/F707/F717&quot;
+l_string|&quot;DSC-S30/S70/S75/505V/F505/F707/F717/P8&quot;
 comma
 id|US_SC_SCSI
 comma
@@ -930,6 +955,31 @@ comma
 l_int|NULL
 comma
 l_int|0
+)paren
+comma
+multiline_comment|/* This Pentax still camera is not conformant&n; * to the USB storage specification: -&n; * - It does not like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; * Tested on Rev. 10.00 (0x1000)&n; * Submitted by James Courtier-Dutton &lt;James@superbug.demon.co.uk&gt;&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0a17
+comma
+l_int|0x0004
+comma
+l_int|0x1000
+comma
+l_int|0x1000
+comma
+l_string|&quot;ASAHI PENTAX&quot;
+comma
+l_string|&quot;PENTAX OPTIO 430&quot;
+comma
+id|US_SC_8070
+comma
+id|US_PR_CBI
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
 )paren
 comma
 multiline_comment|/* This Pentax still camera is not conformant&n; * to the USB storage specification: -&n; * - It does not like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; * Tested on Rev. 10.00 (0x1000)&n; * Submitted by James Courtier-Dutton &lt;James@superbug.demon.co.uk&gt;&n; */

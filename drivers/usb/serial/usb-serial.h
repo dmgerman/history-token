@@ -1321,6 +1321,6 @@ multiline_comment|/* Use our own dbg macro */
 DECL|macro|dbg
 macro_line|#undef dbg
 DECL|macro|dbg
-mdefine_line|#define dbg(format, arg...) do { if (debug) printk(KERN_DEBUG __FILE__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg); } while (0)
+mdefine_line|#define dbg(format, arg...) do { if (debug) printk(KERN_DEBUG &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg); } while (0)
 macro_line|#endif&t;/* ifdef __LINUX_USB_SERIAL_H */
 eof
