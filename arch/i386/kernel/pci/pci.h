@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *&t;Low-Level PCI Access for i386 machines.&n; *&n; *&t;(c) 1999 Martin Mares &lt;mj@ucw.cz&gt;&n; */
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG
+macro_line|#undef DEBUG
 macro_line|#ifdef DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(x...) printk(x)
