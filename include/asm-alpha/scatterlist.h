@@ -1,43 +1,48 @@
 macro_line|#ifndef _ALPHA_SCATTERLIST_H
 DECL|macro|_ALPHA_SCATTERLIST_H
 mdefine_line|#define _ALPHA_SCATTERLIST_H
-macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 DECL|struct|scatterlist
 r_struct
 id|scatterlist
 (brace
+multiline_comment|/* This will disappear in 2.5.x */
 DECL|member|address
 r_char
 op_star
 id|address
 suffix:semicolon
-multiline_comment|/* Source/target vaddr.  */
-DECL|member|alt_address
-r_char
+multiline_comment|/* These two are only valid if ADDRESS member of this&n;&t;   struct is NULL.  */
+DECL|member|page
+r_struct
+id|page
 op_star
-id|alt_address
+id|page
 suffix:semicolon
-multiline_comment|/* Location of actual if address is a&n;&t;&t;&t;&t;&t;   dma indirect buffer, else NULL.  */
-DECL|member|dma_address
-id|dma_addr_t
-id|dma_address
+DECL|member|offset
+r_int
+r_int
+id|offset
 suffix:semicolon
 DECL|member|length
 r_int
 r_int
 id|length
 suffix:semicolon
+DECL|member|dma_address
+id|dma_addr_t
+id|dma_address
+suffix:semicolon
 DECL|member|dma_length
-r_int
-r_int
+id|__u32
 id|dma_length
 suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|sg_dma_address
-mdefine_line|#define sg_dma_address(sg) ((sg)-&gt;dma_address)
+mdefine_line|#define sg_dma_address(sg)&t;((sg)-&gt;dma_address)
 DECL|macro|sg_dma_len
-mdefine_line|#define sg_dma_len(sg)     ((sg)-&gt;dma_length)
+mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;dma_length)
 DECL|macro|ISA_DMA_THRESHOLD
 mdefine_line|#define ISA_DMA_THRESHOLD (~0UL)
 macro_line|#endif /* !(_ALPHA_SCATTERLIST_H) */

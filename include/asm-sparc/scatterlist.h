@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: scatterlist.h,v 1.5 2000/01/29 16:27:07 jj Exp $ */
+multiline_comment|/* $Id: scatterlist.h,v 1.6 2001/10/09 02:24:35 davem Exp $ */
 macro_line|#ifndef _SPARC_SCATTERLIST_H
 DECL|macro|_SPARC_SCATTERLIST_H
 mdefine_line|#define _SPARC_SCATTERLIST_H
@@ -13,12 +13,6 @@ op_star
 id|address
 suffix:semicolon
 multiline_comment|/* Location data is to be transferred to */
-DECL|member|alt_address
-r_char
-op_star
-id|alt_address
-suffix:semicolon
-multiline_comment|/* Location of actual if address is a &n;&t;&t;&t; * dma indirect buffer.  NULL otherwise */
 DECL|member|length
 r_int
 r_int

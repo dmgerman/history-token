@@ -436,10 +436,28 @@ id|inode
 op_assign
 id|nd.dentry-&gt;d_inode
 suffix:semicolon
+multiline_comment|/* For directories it&squot;s -EISDIR, for other non-regulars - -EINVAL */
 id|error
 op_assign
 op_minus
-id|EACCES
+id|EISDIR
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|S_ISDIR
+c_func
+(paren
+id|inode-&gt;i_mode
+)paren
+)paren
+r_goto
+id|dput_and_out
+suffix:semicolon
+id|error
+op_assign
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -620,12 +638,16 @@ r_int
 id|length
 )paren
 (brace
+multiline_comment|/* on 32-bit boxen it will cut the range 2^31--2^32-1 off */
 r_return
 id|do_sys_truncate
 c_func
 (paren
 id|path
 comma
+(paren
+r_int
+)paren
 id|length
 )paren
 suffix:semicolon
@@ -643,6 +665,9 @@ id|fd
 comma
 id|loff_t
 id|length
+comma
+r_int
+id|small
 )paren
 (brace
 r_struct
@@ -700,6 +725,18 @@ id|file
 r_goto
 id|out
 suffix:semicolon
+multiline_comment|/* explicitly opened as large or we are on 64-bit box */
+r_if
+c_cond
+(paren
+id|file-&gt;f_flags
+op_amp
+id|O_LARGEFILE
+)paren
+id|small
+op_assign
+l_int|0
+suffix:semicolon
 id|dentry
 op_assign
 id|file-&gt;f_dentry
@@ -711,7 +748,7 @@ suffix:semicolon
 id|error
 op_assign
 op_minus
-id|EACCES
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -736,17 +773,29 @@ suffix:semicolon
 id|error
 op_assign
 op_minus
+id|EINVAL
+suffix:semicolon
+multiline_comment|/* Cannot ftruncate over 2^31 bytes without large file support */
+r_if
+c_cond
+(paren
+id|small
+op_logical_and
+id|length
+OG
+id|MAX_NON_LFS
+)paren
+r_goto
+id|out_putf
+suffix:semicolon
+id|error
+op_assign
+op_minus
 id|EPERM
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_IMMUTABLE
-c_func
-(paren
-id|inode
-)paren
-op_logical_or
 id|IS_APPEND
 c_func
 (paren
@@ -820,6 +869,8 @@ c_func
 id|fd
 comma
 id|length
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -871,6 +922,8 @@ c_func
 id|fd
 comma
 id|length
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -2222,6 +2275,7 @@ id|dentry-&gt;d_inode
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;chown_common: NULL inode&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3185,6 +3239,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;get_unused_fd: slot %d not NULL!&bslash;n&quot;
 comma
 id|fd
@@ -3429,6 +3484,7 @@ id|filp
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;VFS: Close: file count is 0&bslash;n&quot;
 )paren
 suffix:semicolon

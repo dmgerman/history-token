@@ -12,20 +12,22 @@ DECL|macro|DEBUG_ALLOC
 mdefine_line|#define DEBUG_ALLOC 0
 macro_line|#if DEBUG_ALLOC &gt; 0
 DECL|macro|DBGA
-macro_line|# define DBGA(args...)&t;&t;printk(KERN_DEBUG ##args)
+macro_line|# define DBGA(args...)&t;&t;printk(KERN_DEBUG args)
 macro_line|#else
 DECL|macro|DBGA
 macro_line|# define DBGA(args...)
 macro_line|#endif
 macro_line|#if DEBUG_ALLOC &gt; 1
 DECL|macro|DBGA2
-macro_line|# define DBGA2(args...)&t;&t;printk(KERN_DEBUG ##args)
+macro_line|# define DBGA2(args...)&t;&t;printk(KERN_DEBUG args)
 macro_line|#else
 DECL|macro|DBGA2
 macro_line|# define DBGA2(args...)
 macro_line|#endif
 DECL|macro|DEBUG_NODIRECT
 mdefine_line|#define DEBUG_NODIRECT 0
+DECL|macro|DEBUG_FORCEDAC
+mdefine_line|#define DEBUG_FORCEDAC 0
 r_static
 r_inline
 r_int
@@ -74,6 +76,48 @@ l_int|1
 )paren
 op_rshift
 id|PAGE_SHIFT
+suffix:semicolon
+)brace
+"&f;"
+multiline_comment|/* Return the minimum of MAX or the first power of two larger&n;   than main memory.  */
+r_int
+r_int
+DECL|function|size_for_memory
+id|size_for_memory
+c_func
+(paren
+r_int
+r_int
+id|max
+)paren
+(brace
+r_int
+r_int
+id|mem
+op_assign
+id|max_low_pfn
+op_lshift
+id|PAGE_SHIFT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mem
+OL
+id|max
+)paren
+id|max
+op_assign
+l_int|1UL
+op_lshift
+id|ceil_log2
+c_func
+(paren
+id|mem
+)paren
+suffix:semicolon
+r_return
+id|max
 suffix:semicolon
 )brace
 "&f;"
@@ -581,9 +625,10 @@ suffix:semicolon
 )brace
 "&f;"
 multiline_comment|/* Map a single buffer of the indicated size for PCI DMA in streaming&n;   mode.  The 32-bit PCI bus mastering address to use is returned.&n;   Once the device is given the dma address, the device owns this memory&n;   until either pci_unmap_single or pci_dma_sync_single is performed.  */
+r_static
 id|dma_addr_t
-DECL|function|pci_map_single
-id|pci_map_single
+DECL|function|pci_map_single_1
+id|pci_map_single_1
 c_func
 (paren
 r_struct
@@ -599,7 +644,7 @@ r_int
 id|size
 comma
 r_int
-id|direction
+id|dac_allowed
 )paren
 (brace
 r_struct
@@ -643,21 +688,9 @@ suffix:semicolon
 id|dma_addr_t
 id|ret
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|direction
-op_eq
-id|PCI_DMA_NONE
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 id|paddr
 op_assign
-id|virt_to_phys
+id|__pa
 c_func
 (paren
 id|cpu_addr
@@ -694,7 +727,7 @@ suffix:semicolon
 id|DBGA2
 c_func
 (paren
-l_string|&quot;pci_map_single: [%p,%lx] -&gt; direct %x from %p&bslash;n&quot;
+l_string|&quot;pci_map_single: [%p,%lx] -&gt; direct %lx from %p&bslash;n&quot;
 comma
 id|cpu_addr
 comma
@@ -714,6 +747,41 @@ id|ret
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* Next, use DAC if selected earlier.  */
+r_if
+c_cond
+(paren
+id|dac_allowed
+)paren
+(brace
+id|ret
+op_assign
+id|paddr
+op_plus
+id|alpha_mv.pci_dac_offset
+suffix:semicolon
+id|DBGA2
+c_func
+(paren
+l_string|&quot;pci_map_single: [%p,%lx] -&gt; DAC %lx from %p&bslash;n&quot;
+comma
+id|cpu_addr
+comma
+id|size
+comma
+id|ret
+comma
+id|__builtin_return_address
+c_func
+(paren
+l_int|0
+)paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 multiline_comment|/* If the machine doesn&squot;t define a pci_tbi routine, we have to&n;&t;   assume it doesn&squot;t support sg mapping.  */
 r_if
 c_cond
@@ -852,10 +920,10 @@ op_amp
 op_complement
 id|PAGE_MASK
 suffix:semicolon
-id|DBGA
+id|DBGA2
 c_func
 (paren
-l_string|&quot;pci_map_single: [%p,%lx] np %ld -&gt; sg %x from %p&bslash;n&quot;
+l_string|&quot;pci_map_single: [%p,%lx] np %ld -&gt; sg %lx from %p&bslash;n&quot;
 comma
 id|cpu_addr
 comma
@@ -874,6 +942,127 @@ l_int|0
 suffix:semicolon
 r_return
 id|ret
+suffix:semicolon
+)brace
+id|dma_addr_t
+DECL|function|pci_map_single
+id|pci_map_single
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_void
+op_star
+id|cpu_addr
+comma
+r_int
+id|size
+comma
+r_int
+id|dir
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|dir
+op_eq
+id|PCI_DMA_NONE
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|pci_map_single_1
+c_func
+(paren
+id|pdev
+comma
+id|cpu_addr
+comma
+id|size
+comma
+(paren
+id|pdev-&gt;dma_mask
+op_rshift
+l_int|32
+)paren
+op_ne
+l_int|0
+)paren
+suffix:semicolon
+)brace
+id|dma_addr_t
+DECL|function|pci_map_page
+id|pci_map_page
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+r_int
+id|offset
+comma
+r_int
+id|size
+comma
+r_int
+id|dir
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|dir
+op_eq
+id|PCI_DMA_NONE
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|pci_map_single_1
+c_func
+(paren
+id|pdev
+comma
+(paren
+r_char
+op_star
+)paren
+id|page_address
+c_func
+(paren
+id|page
+)paren
+op_plus
+id|offset
+comma
+id|size
+comma
+(paren
+id|pdev-&gt;dma_mask
+op_rshift
+l_int|32
+)paren
+op_ne
+l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Unmap a single streaming mode DMA translation.  The DMA_ADDR and&n;   SIZE must match what was provided for in a previous pci_map_single&n;   call.  All other usages are undefined.  After this call, reads by&n;   the cpu to the buffer are guarenteed to see whatever the device&n;   wrote there.  */
@@ -935,7 +1124,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if !DEBUG_NODIRECT
 r_if
 c_cond
 (paren
@@ -954,7 +1142,7 @@ multiline_comment|/* Nothing to do.  */
 id|DBGA2
 c_func
 (paren
-l_string|&quot;pci_unmap_single: direct [%x,%lx] from %p&bslash;n&quot;
+l_string|&quot;pci_unmap_single: direct [%lx,%lx] from %p&bslash;n&quot;
 comma
 id|dma_addr
 comma
@@ -970,7 +1158,33 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
+r_if
+c_cond
+(paren
+id|dma_addr
+OG
+l_int|0xffffffff
+)paren
+(brace
+id|DBGA2
+c_func
+(paren
+l_string|&quot;pci64_unmap_single: DAC [%lx,%lx] from %p&bslash;n&quot;
+comma
+id|dma_addr
+comma
+id|size
+comma
+id|__builtin_return_address
+c_func
+(paren
+l_int|0
+)paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|arena
 op_assign
 id|hose-&gt;sg_pci
@@ -1013,7 +1227,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Bogus pci_unmap_single: dma_addr %x &quot;
+l_string|&quot;Bogus pci_unmap_single: dma_addr %lx &quot;
 l_string|&quot; base %x size %x&bslash;n&quot;
 comma
 id|dma_addr
@@ -1065,7 +1279,7 @@ comma
 id|npages
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;   If we&squot;re freeing ptes above the `next_entry&squot; pointer (they&n;           may have snuck back into the TLB since the last wrap flush),&n;           we need to flush the TLB before reallocating the latter.&n;&t;*/
+multiline_comment|/* If we&squot;re freeing ptes above the `next_entry&squot; pointer (they&n;           may have snuck back into the TLB since the last wrap flush),&n;           we need to flush the TLB before reallocating the latter.  */
 r_if
 c_cond
 (paren
@@ -1098,10 +1312,10 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|DBGA
+id|DBGA2
 c_func
 (paren
-l_string|&quot;pci_unmap_single: sg [%x,%lx] np %ld from %p&bslash;n&quot;
+l_string|&quot;pci_unmap_single: sg [%lx,%lx] np %ld from %p&bslash;n&quot;
 comma
 id|dma_addr
 comma
@@ -1114,6 +1328,39 @@ c_func
 (paren
 l_int|0
 )paren
+)paren
+suffix:semicolon
+)brace
+r_void
+DECL|function|pci_unmap_page
+id|pci_unmap_page
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+id|dma_addr_t
+id|dma_addr
+comma
+r_int
+id|size
+comma
+r_int
+id|direction
+)paren
+(brace
+id|pci_unmap_single
+c_func
+(paren
+id|pdev
+comma
+id|dma_addr
+comma
+id|size
+comma
+id|direction
 )paren
 suffix:semicolon
 )brace
@@ -1203,7 +1450,7 @@ suffix:semicolon
 op_star
 id|dma_addrp
 op_assign
-id|pci_map_single
+id|pci_map_single_1
 c_func
 (paren
 id|pdev
@@ -1212,7 +1459,7 @@ id|cpu_addr
 comma
 id|size
 comma
-id|PCI_DMA_BIDIRECTIONAL
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1331,6 +1578,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Classify the elements of the scatterlist.  Write dma_address&n;   of each element with:&n;&t;0   : Followers all physically adjacent.&n;&t;1   : Followers all virtually adjacent.&n;&t;-1  : Not leader, physically adjacent to previous.&n;&t;-2  : Not leader, virtually adjacent to previous.&n;   Write dma_length of each leader with the combined lengths of&n;   the mergable followers.  */
+DECL|macro|SG_ENT_VIRT_ADDRESS
+mdefine_line|#define SG_ENT_VIRT_ADDRESS(SG)&t;&t;&t;&t;&bslash;&n;&t;((SG)-&gt;address&t;&t;&t;&t;&t;&bslash;&n;&t; ? (SG)-&gt;address&t;&t;&t;&t;&bslash;&n;&t; : page_address((SG)-&gt;page) + (SG)-&gt;offset)
+DECL|macro|SG_ENT_PHYS_ADDRESS
+mdefine_line|#define SG_ENT_PHYS_ADDRESS(SG)&t;&bslash;&n;        __pa(SG_ENT_VIRT_ADDRESS(SG))
 r_static
 r_void
 DECL|function|sg_classify
@@ -1353,7 +1604,7 @@ id|virt_ok
 (brace
 r_int
 r_int
-id|next_vaddr
+id|next_paddr
 suffix:semicolon
 r_struct
 id|scatterlist
@@ -1377,13 +1628,13 @@ id|leader_length
 op_assign
 id|leader-&gt;length
 suffix:semicolon
-id|next_vaddr
+id|next_paddr
 op_assign
+id|SG_ENT_PHYS_ADDRESS
+c_func
 (paren
-r_int
-r_int
+id|leader
 )paren
-id|leader-&gt;address
 op_plus
 id|leader_length
 suffix:semicolon
@@ -1409,11 +1660,11 @@ id|len
 suffix:semicolon
 id|addr
 op_assign
+id|SG_ENT_PHYS_ADDRESS
+c_func
 (paren
-r_int
-r_int
+id|sg
 )paren
-id|sg-&gt;address
 suffix:semicolon
 id|len
 op_assign
@@ -1422,7 +1673,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|next_vaddr
+id|next_paddr
 op_eq
 id|addr
 )paren
@@ -1443,7 +1694,7 @@ c_cond
 (paren
 (paren
 (paren
-id|next_vaddr
+id|next_paddr
 op_or
 id|addr
 )paren
@@ -1494,7 +1745,7 @@ op_assign
 id|len
 suffix:semicolon
 )brace
-id|next_vaddr
+id|next_paddr
 op_assign
 id|addr
 op_plus
@@ -1540,16 +1791,19 @@ id|arena
 comma
 id|dma_addr_t
 id|max_dma
+comma
+r_int
+id|dac_allowed
 )paren
 (brace
 r_int
 r_int
 id|paddr
 op_assign
-id|virt_to_phys
+id|SG_ENT_PHYS_ADDRESS
 c_func
 (paren
-id|leader-&gt;address
+id|leader
 )paren
 suffix:semicolon
 r_int
@@ -1613,9 +1867,13 @@ suffix:semicolon
 id|DBGA
 c_func
 (paren
-l_string|&quot;    sg_fill: [%p,%lx] -&gt; direct %x&bslash;n&quot;
+l_string|&quot;    sg_fill: [%p,%lx] -&gt; direct %lx&bslash;n&quot;
 comma
-id|leader-&gt;address
+id|__va
+c_func
+(paren
+id|paddr
+)paren
 comma
 id|size
 comma
@@ -1627,6 +1885,47 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* If physically contiguous and DAC is available, use it.  */
+r_if
+c_cond
+(paren
+id|leader-&gt;dma_address
+op_eq
+l_int|0
+op_logical_and
+id|dac_allowed
+)paren
+(brace
+id|out-&gt;dma_address
+op_assign
+id|paddr
+op_plus
+id|alpha_mv.pci_dac_offset
+suffix:semicolon
+id|out-&gt;dma_length
+op_assign
+id|size
+suffix:semicolon
+id|DBGA
+c_func
+(paren
+l_string|&quot;    sg_fill: [%p,%lx] -&gt; DAC %lx&bslash;n&quot;
+comma
+id|__va
+c_func
+(paren
+id|paddr
+)paren
+comma
+id|size
+comma
+id|out-&gt;dma_address
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Otherwise, we&squot;ll use the iommu to make the pages virtually&n;&t;   contiguous.  */
 id|paddr
 op_and_assign
@@ -1673,7 +1972,7 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* Otherwise, break up the remaining virtually contiguous&n;&t;&t;   hunks into individual direct maps.  */
+multiline_comment|/* Otherwise, break up the remaining virtually contiguous&n;&t;&t;   hunks into individual direct maps and retry.  */
 id|sg_classify
 c_func
 (paren
@@ -1684,7 +1983,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Retry.  */
 r_return
 id|sg_fill
 c_func
@@ -1698,6 +1996,8 @@ comma
 id|arena
 comma
 id|max_dma
+comma
+id|dac_allowed
 )paren
 suffix:semicolon
 )brace
@@ -1718,9 +2018,13 @@ suffix:semicolon
 id|DBGA
 c_func
 (paren
-l_string|&quot;    sg_fill: [%p,%lx] -&gt; sg %x np %ld&bslash;n&quot;
+l_string|&quot;    sg_fill: [%p,%lx] -&gt; sg %lx np %ld&bslash;n&quot;
 comma
-id|leader-&gt;address
+id|__va
+c_func
+(paren
+id|paddr
+)paren
 comma
 id|size
 comma
@@ -1759,10 +2063,10 @@ id|sg-&gt;length
 suffix:semicolon
 id|paddr
 op_assign
-id|virt_to_phys
+id|SG_ENT_PHYS_ADDRESS
 c_func
 (paren
-id|sg-&gt;address
+id|sg
 )paren
 suffix:semicolon
 r_while
@@ -1858,7 +2162,11 @@ id|last_sg
 op_minus
 id|leader
 comma
-id|last_sg-&gt;address
+id|SG_ENT_VIRT_ADDRESS
+c_func
+(paren
+id|last_sg
+)paren
 comma
 id|last_sg-&gt;length
 comma
@@ -1883,7 +2191,11 @@ id|last_sg
 op_minus
 id|leader
 comma
-id|last_sg-&gt;address
+id|SG_ENT_VIRT_ADDRESS
+c_func
+(paren
+id|last_sg
+)paren
 comma
 id|last_sg-&gt;length
 )paren
@@ -1957,6 +2269,9 @@ suffix:semicolon
 id|dma_addr_t
 id|max_dma
 suffix:semicolon
+r_int
+id|dac_allowed
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1967,6 +2282,18 @@ id|PCI_DMA_NONE
 id|BUG
 c_func
 (paren
+)paren
+suffix:semicolon
+id|dac_allowed
+op_assign
+(paren
+(paren
+id|pdev-&gt;dma_mask
+op_rshift
+l_int|32
+)paren
+op_ne
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Fast path single entry scatterlists.  */
@@ -1984,16 +2311,20 @@ id|sg-&gt;length
 suffix:semicolon
 id|sg-&gt;dma_address
 op_assign
-id|pci_map_single
+id|pci_map_single_1
 c_func
 (paren
 id|pdev
 comma
-id|sg-&gt;address
+id|SG_ENT_VIRT_ADDRESS
+c_func
+(paren
+id|sg
+)paren
 comma
 id|sg-&gt;length
 comma
-id|direction
+id|dac_allowed
 )paren
 suffix:semicolon
 r_return
@@ -2130,6 +2461,8 @@ comma
 id|arena
 comma
 id|max_dma
+comma
+id|dac_allowed
 )paren
 OL
 l_int|0
@@ -2363,10 +2696,10 @@ op_increment
 id|sg
 )paren
 (brace
-r_int
-r_int
+id|dma64_addr_t
 id|addr
-comma
+suffix:semicolon
+r_int
 id|size
 suffix:semicolon
 r_int
@@ -2393,7 +2726,34 @@ id|size
 )paren
 r_break
 suffix:semicolon
-macro_line|#if !DEBUG_NODIRECT
+r_if
+c_cond
+(paren
+id|addr
+OG
+l_int|0xffffffff
+)paren
+(brace
+multiline_comment|/* It&squot;s a DAC address -- nothing to do.  */
+id|DBGA
+c_func
+(paren
+l_string|&quot;    (%ld) DAC [%lx,%lx]&bslash;n&quot;
+comma
+id|sg
+op_minus
+id|end
+op_plus
+id|nents
+comma
+id|addr
+comma
+id|size
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2428,7 +2788,6 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-macro_line|#endif
 id|DBGA
 c_func
 (paren
@@ -2511,7 +2870,7 @@ op_assign
 id|tend
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;   If we&squot;re freeing ptes above the `next_entry&squot; pointer (they&n;           may have snuck back into the TLB since the last wrap flush),&n;           we need to flush the TLB before reallocating the latter.&n;&t;*/
+multiline_comment|/* If we&squot;re freeing ptes above the `next_entry&squot; pointer (they&n;           may have snuck back into the TLB since the last wrap flush),&n;           we need to flush the TLB before reallocating the latter.  */
 r_if
 c_cond
 (paren
@@ -2549,7 +2908,7 @@ suffix:semicolon
 id|DBGA
 c_func
 (paren
-l_string|&quot;pci_unmap_sg: %d entries&bslash;n&quot;
+l_string|&quot;pci_unmap_sg: %ld entries&bslash;n&quot;
 comma
 id|nents
 op_minus
@@ -2572,7 +2931,7 @@ id|pci_dev
 op_star
 id|pdev
 comma
-id|dma_addr_t
+id|u64
 id|mask
 )paren
 (brace
@@ -2586,7 +2945,6 @@ id|pci_iommu_arena
 op_star
 id|arena
 suffix:semicolon
-macro_line|#if !DEBUG_NODIRECT
 multiline_comment|/* If there exists a direct map, and the mask fits either&n;&t;   MAX_DMA_ADDRESS defined such that GFP_DMA does something&n;&t;   useful, or the total system memory as shifted by the&n;&t;   map base.  */
 r_if
 c_cond
@@ -2622,7 +2980,6 @@ id|mask
 r_return
 l_int|1
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Check that we have a scatter-gather arena that fits.  */
 id|hose
 op_assign
@@ -3113,6 +3470,191 @@ suffix:semicolon
 )brace
 r_return
 l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* True if the machine supports DAC addressing, and DEV can&n;   make use of it given MASK.  */
+r_int
+DECL|function|pci_dac_dma_supported
+id|pci_dac_dma_supported
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+id|u64
+id|mask
+)paren
+(brace
+id|dma64_addr_t
+id|dac_offset
+op_assign
+id|alpha_mv.pci_dac_offset
+suffix:semicolon
+r_int
+id|ok
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* If this is not set, the machine doesn&squot;t support DAC at all.  */
+r_if
+c_cond
+(paren
+id|dac_offset
+op_eq
+l_int|0
+)paren
+id|ok
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* The device has to be able to address our DAC bit.  */
+r_if
+c_cond
+(paren
+(paren
+id|dac_offset
+op_amp
+id|dev-&gt;dma_mask
+)paren
+op_ne
+id|dac_offset
+)paren
+id|ok
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* If both conditions above are met, we are fine. */
+id|DBGA
+c_func
+(paren
+l_string|&quot;pci_dac_dma_supported %s from %p&bslash;n&quot;
+comma
+id|ok
+ques
+c_cond
+l_string|&quot;yes&quot;
+suffix:colon
+l_string|&quot;no&quot;
+comma
+id|__builtin_return_address
+c_func
+(paren
+l_int|0
+)paren
+)paren
+suffix:semicolon
+r_return
+id|ok
+suffix:semicolon
+)brace
+id|dma64_addr_t
+DECL|function|pci_dac_page_to_dma
+id|pci_dac_page_to_dma
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+r_int
+id|offset
+comma
+r_int
+id|direction
+)paren
+(brace
+r_return
+(paren
+id|alpha_mv.pci_dac_offset
+op_plus
+id|__pa
+c_func
+(paren
+id|page_address
+c_func
+(paren
+id|page
+)paren
+)paren
+op_plus
+(paren
+id|dma64_addr_t
+)paren
+id|offset
+)paren
+suffix:semicolon
+)brace
+r_struct
+id|page
+op_star
+DECL|function|pci_dac_dma_to_page
+id|pci_dac_dma_to_page
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+id|dma64_addr_t
+id|dma_addr
+)paren
+(brace
+r_int
+r_int
+id|paddr
+op_assign
+(paren
+id|dma_addr
+op_amp
+id|PAGE_MASK
+)paren
+op_minus
+id|alpha_mv.pci_dac_offset
+suffix:semicolon
+r_return
+id|virt_to_page
+c_func
+(paren
+id|__va
+c_func
+(paren
+id|paddr
+)paren
+)paren
+suffix:semicolon
+)brace
+r_int
+r_int
+DECL|function|pci_dac_dma_to_offset
+id|pci_dac_dma_to_offset
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+id|dma64_addr_t
+id|dma_addr
+)paren
+(brace
+r_return
+(paren
+id|dma_addr
+op_amp
+op_complement
+id|PAGE_MASK
+)paren
 suffix:semicolon
 )brace
 eof

@@ -268,9 +268,10 @@ comma
 id|de-&gt;de_ih
 )paren
 op_plus
-id|le16_to_cpu
+id|deh_location
+c_func
 (paren
-id|deh-&gt;deh_location
+id|deh
 )paren
 suffix:semicolon
 r_if
@@ -322,26 +323,30 @@ id|BUG
 suffix:semicolon
 id|de-&gt;de_dir_id
 op_assign
-id|le32_to_cpu
+id|deh_dir_id
+c_func
+(paren
+op_amp
 (paren
 id|de-&gt;de_deh
 (braket
 id|de-&gt;de_entry_num
 )braket
-dot
-id|deh_dir_id
+)paren
 )paren
 suffix:semicolon
 id|de-&gt;de_objectid
 op_assign
-id|le32_to_cpu
+id|deh_objectid
+c_func
+(paren
+op_amp
 (paren
 id|de-&gt;de_deh
 (braket
 id|de-&gt;de_entry_num
 )braket
-dot
-id|deh_objectid
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -577,7 +582,7 @@ id|reiserfs_panic
 id|sb
 comma
 l_string|&quot;vs-7005: search_by_entry_key: found item %h is not directory item or &quot;
-l_string|&quot;does not belong to the same directory as key %k&quot;
+l_string|&quot;does not belong to the same directory as key %K&quot;
 comma
 id|de-&gt;de_ih
 comma
@@ -1146,9 +1151,13 @@ op_eq
 id|IO_ERROR
 )paren
 singleline_comment|// FIXME: still has to be dealt with
-multiline_comment|/* I want you to conform to our error&n;                                   printing standard.  How many times&n;                                   do I have to ask? -Hans */
-id|BUG
+id|reiserfs_panic
 (paren
+id|dir-&gt;i_sb
+comma
+l_string|&quot;zam-7001: io error in &quot;
+id|__FUNCTION__
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* compare names for all entries having given hash value */
@@ -1586,11 +1595,14 @@ id|deh-&gt;deh_location
 op_assign
 l_int|0
 suffix:semicolon
-id|deh-&gt;deh_offset
-op_assign
-id|cpu_to_le32
+multiline_comment|/* JDM Endian safe if 0 */
+id|put_deh_offset
+c_func
 (paren
+id|deh
+comma
 id|cpu_key_k_offset
+c_func
 (paren
 op_amp
 id|entry_key
@@ -1601,6 +1613,7 @@ id|deh-&gt;deh_state
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* JDM Endian safe if 0 */
 multiline_comment|/* put key (ino analog) to de */
 id|deh-&gt;deh_dir_id
 op_assign
@@ -1611,6 +1624,7 @@ id|inode
 op_member_access_from_pointer
 id|k_dir_id
 suffix:semicolon
+multiline_comment|/* safe: k_dir_id is le */
 id|deh-&gt;deh_objectid
 op_assign
 id|INODE_PKEY
@@ -1620,6 +1634,7 @@ id|inode
 op_member_access_from_pointer
 id|k_objectid
 suffix:semicolon
+multiline_comment|/* safe: k_objectid is le */
 multiline_comment|/* copy name */
 id|memcpy
 (paren
@@ -1823,13 +1838,16 @@ id|EBUSY
 suffix:semicolon
 )brace
 multiline_comment|/* adjust offset of directory enrty */
-id|deh-&gt;deh_offset
-op_assign
-id|cpu_to_le32
+id|put_deh_offset
+c_func
 (paren
+id|deh
+comma
 id|SET_GENERATION_NUMBER
+c_func
 (paren
 id|deh_offset
+c_func
 (paren
 id|deh
 )paren
@@ -1843,9 +1861,10 @@ id|set_cpu_key_k_offset
 op_amp
 id|entry_key
 comma
-id|le32_to_cpu
+id|deh_offset
+c_func
 (paren
-id|deh-&gt;deh_offset
+id|deh
 )paren
 )paren
 suffix:semicolon
@@ -2239,6 +2258,18 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+id|reiserfs_update_inode_transaction
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+id|reiserfs_update_inode_transaction
+c_func
+(paren
+id|dir
+)paren
+suffix:semicolon
 id|d_instantiate
 c_func
 (paren
@@ -2426,6 +2457,18 @@ op_amp
 id|th
 comma
 id|inode
+)paren
+suffix:semicolon
+id|reiserfs_update_inode_transaction
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+id|reiserfs_update_inode_transaction
+c_func
+(paren
+id|dir
 )paren
 suffix:semicolon
 id|retval
@@ -2680,6 +2723,18 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+id|reiserfs_update_inode_transaction
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+id|reiserfs_update_inode_transaction
+c_func
+(paren
+id|dir
+)paren
+suffix:semicolon
 id|inode-&gt;i_op
 op_assign
 op_amp
@@ -2941,6 +2996,18 @@ suffix:semicolon
 id|inode
 op_assign
 id|dentry-&gt;d_inode
+suffix:semicolon
+id|reiserfs_update_inode_transaction
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+id|reiserfs_update_inode_transaction
+c_func
+(paren
+id|dir
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3253,6 +3320,18 @@ suffix:semicolon
 id|inode
 op_assign
 id|dentry-&gt;d_inode
+suffix:semicolon
+id|reiserfs_update_inode_transaction
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+id|reiserfs_update_inode_transaction
+c_func
+(paren
+id|dir
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3686,6 +3765,18 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+id|reiserfs_update_inode_transaction
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+id|reiserfs_update_inode_transaction
+c_func
+(paren
+id|dir
+)paren
+suffix:semicolon
 id|inode-&gt;i_op
 op_assign
 op_amp
@@ -3905,6 +3996,18 @@ id|inode
 comma
 l_int|1
 multiline_comment|/*visible*/
+)paren
+suffix:semicolon
+id|reiserfs_update_inode_transaction
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+id|reiserfs_update_inode_transaction
+c_func
+(paren
+id|dir
 )paren
 suffix:semicolon
 r_if
@@ -4159,6 +4262,7 @@ op_star
 id|key
 )paren
 (brace
+multiline_comment|/* JDM These operations are endian safe - both are le */
 id|de-&gt;de_deh
 (braket
 id|de-&gt;de_entry_num
@@ -4503,6 +4607,36 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+id|reiserfs_update_inode_transaction
+c_func
+(paren
+id|old_dir
+)paren
+suffix:semicolon
+id|reiserfs_update_inode_transaction
+c_func
+(paren
+id|new_dir
+)paren
+suffix:semicolon
+multiline_comment|/* this makes it so an fsync on an open fd for the old name will&n;    ** commit the rename operation&n;    */
+id|reiserfs_update_inode_transaction
+c_func
+(paren
+id|old_inode
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|new_inode
+)paren
+id|reiserfs_update_inode_transaction
+c_func
+(paren
+id|new_inode
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren

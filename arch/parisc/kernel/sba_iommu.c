@@ -2574,7 +2574,7 @@ id|pci_dev
 op_star
 id|dev
 comma
-id|dma_addr_t
+id|u64
 id|mask
 )paren
 (brace

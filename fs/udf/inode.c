@@ -3,8 +3,27 @@ macro_line|#include &quot;udfdecl.h&quot;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;udf_i.h&quot;
 macro_line|#include &quot;udf_sb.h&quot;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Ben Fennema&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Universal Disk Format Filesystem&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|EXTENT_MERGE_SIZE
 mdefine_line|#define EXTENT_MERGE_SIZE 5
 r_static
@@ -3149,6 +3168,76 @@ c_cond
 id|offset
 )paren
 (brace
+r_if
+c_cond
+(paren
+(paren
+id|type
+op_rshift
+l_int|30
+)paren
+op_eq
+id|EXTENT_NOT_RECORDED_ALLOCATED
+)paren
+(brace
+id|udf_free_blocks
+c_func
+(paren
+id|inode-&gt;i_sb
+comma
+id|inode
+comma
+id|laarr
+(braket
+id|curr
+)braket
+dot
+id|extLocation
+comma
+l_int|0
+comma
+id|offset
+)paren
+suffix:semicolon
+id|laarr
+(braket
+id|curr
+)braket
+dot
+id|extLength
+op_assign
+(paren
+id|EXTENT_NOT_RECORDED_NOT_ALLOCATED
+op_lshift
+l_int|30
+)paren
+op_or
+(paren
+id|offset
+op_lshift
+id|inode-&gt;i_sb-&gt;s_blocksize_bits
+)paren
+suffix:semicolon
+id|laarr
+(braket
+id|curr
+)braket
+dot
+id|extLocation.logicalBlockNum
+op_assign
+l_int|0
+suffix:semicolon
+id|laarr
+(braket
+id|curr
+)braket
+dot
+id|extLocation.partitionReferenceNum
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
 id|laarr
 (braket
 id|curr

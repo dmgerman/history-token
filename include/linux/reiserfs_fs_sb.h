@@ -158,6 +158,83 @@ id|__packed__
 suffix:semicolon
 DECL|macro|SB_SIZE
 mdefine_line|#define SB_SIZE (sizeof(struct reiserfs_super_block))
+multiline_comment|/* struct reiserfs_super_block accessors/mutators&n; * since this is a disk structure, it will always be in &n; * little endian format. */
+DECL|macro|sb_block_count
+mdefine_line|#define sb_block_count(sbp)           (le32_to_cpu((sbp)-&gt;s_block_count))
+DECL|macro|set_sb_block_count
+mdefine_line|#define set_sb_block_count(sbp,v)     ((sbp)-&gt;s_block_count = cpu_to_le32(v))
+DECL|macro|sb_free_blocks
+mdefine_line|#define sb_free_blocks(sbp)           (le32_to_cpu((sbp)-&gt;s_free_blocks))
+DECL|macro|set_sb_free_blocks
+mdefine_line|#define set_sb_free_blocks(sbp,v)     ((sbp)-&gt;s_free_blocks = cpu_to_le32(v))
+DECL|macro|sb_root_block
+mdefine_line|#define sb_root_block(sbp)            (le32_to_cpu((sbp)-&gt;s_root_block))
+DECL|macro|set_sb_root_block
+mdefine_line|#define set_sb_root_block(sbp,v)      ((sbp)-&gt;s_root_block = cpu_to_le32(v))
+DECL|macro|sb_journal_block
+mdefine_line|#define sb_journal_block(sbp)         (le32_to_cpu((sbp)-&gt;s_journal_block))
+DECL|macro|set_sb_journal_block
+mdefine_line|#define set_sb_journal_block(sbp,v)   ((sbp)-&gt;s_journal_block = cpu_to_le32(v))
+DECL|macro|sb_journal_dev
+mdefine_line|#define sb_journal_dev(sbp)           (le32_to_cpu((sbp)-&gt;s_journal_dev))
+DECL|macro|set_sb_journal_dev
+mdefine_line|#define set_sb_journal_dev(sbp,v)     ((sbp)-&gt;s_journal_dev = cpu_to_le32(v))
+DECL|macro|sb_orig_journal_size
+mdefine_line|#define sb_orig_journal_size(sbp)   (le32_to_cpu((sbp)-&gt;s_orig_journal_size))
+DECL|macro|set_sb_orig_journal_size
+mdefine_line|#define set_sb_orig_journal_size(sbp,v) &bslash;&n;                            ((sbp)-&gt;s_orig_journal_size = cpu_to_le32(v))
+DECL|macro|sb_journal_trans_max
+mdefine_line|#define sb_journal_trans_max(sbp)     (le32_to_cpu((sbp)-&gt;s_journal_trans_max))
+DECL|macro|set_journal_trans_max
+mdefine_line|#define set_journal_trans_max(sbp,v) &bslash;&n;                            ((sbp)-&gt;s_journal_trans_max = cpu_to_le32(v))
+DECL|macro|sb_journal_block_count
+mdefine_line|#define sb_journal_block_count(sbp)  (le32_to_cpu((sbp)-&gt;journal_block_count))
+DECL|macro|sb_set_journal_block_count
+mdefine_line|#define sb_set_journal_block_count(sbp,v) &bslash;&n;                            ((sbp)-&gt;s_journal_block_count = cpu_to_le32(v))
+DECL|macro|sb_journal_max_batch
+mdefine_line|#define sb_journal_max_batch(sbp)     (le32_to_cpu((sbp)-&gt;s_journal_max_batch))
+DECL|macro|set_sb_journal_max_batch
+mdefine_line|#define set_sb_journal_max_batch(sbp,v) &bslash;&n;                            ((sbp)-&gt;s_journal_max_batch = cpu_to_le32(v))
+DECL|macro|sb_jourmal_max_commit_age
+mdefine_line|#define sb_jourmal_max_commit_age(sbp) &bslash;&n;                            (le32_to_cpu((sbp)-&gt;s_journal_max_commit_age))
+DECL|macro|set_sb_journal_max_commit_age
+mdefine_line|#define set_sb_journal_max_commit_age(sbp,v) &bslash;&n;                            ((sbp)-&gt;s_journal_max_commit_age = cpu_to_le32(v))
+DECL|macro|sb_jourmal_max_trans_age
+mdefine_line|#define sb_jourmal_max_trans_age(sbp) &bslash;&n;                            (le32_to_cpu((sbp)-&gt;s_journal_max_trans_age))
+DECL|macro|set_sb_journal_max_trans_age
+mdefine_line|#define set_sb_journal_max_trans_age(sbp,v) &bslash;&n;                            ((sbp)-&gt;s_journal_max_trans_age = cpu_to_le32(v))
+DECL|macro|sb_blocksize
+mdefine_line|#define sb_blocksize(sbp)             (le16_to_cpu((sbp)-&gt;s_blocksize))
+DECL|macro|set_sb_blocksize
+mdefine_line|#define set_sb_blocksize(sbp,v)       ((sbp)-&gt;s_blocksize = cpu_to_le16(v))
+DECL|macro|sb_oid_maxsize
+mdefine_line|#define sb_oid_maxsize(sbp)           (le16_to_cpu((sbp)-&gt;s_oid_maxsize))
+DECL|macro|set_sb_oid_maxsize
+mdefine_line|#define set_sb_oid_maxsize(sbp,v)     ((sbp)-&gt;s_oid_maxsize = cpu_to_le16(v))
+DECL|macro|sb_oid_cursize
+mdefine_line|#define sb_oid_cursize(sbp)           (le16_to_cpu((sbp)-&gt;s_oid_cursize))
+DECL|macro|set_sb_oid_cursize
+mdefine_line|#define set_sb_oid_cursize(sbp,v)     ((sbp)-&gt;s_oid_cursize = cpu_to_le16(v))
+DECL|macro|sb_state
+mdefine_line|#define sb_state(sbp)                 (le16_to_cpu((sbp)-&gt;s_state))
+DECL|macro|set_sb_state
+mdefine_line|#define set_sb_state(sbp,v)           ((sbp)-&gt;s_state = cpu_to_le16(v))
+DECL|macro|sb_hash_function_code
+mdefine_line|#define sb_hash_function_code(sbp) &bslash;&n;                            (le32_to_cpu((sbp)-&gt;s_hash_function_code))
+DECL|macro|set_sb_hash_function_code
+mdefine_line|#define set_sb_hash_function_code(sbp,v) &bslash;&n;                            ((sbp)-&gt;s_hash_function_code = cpu_to_le32(v))
+DECL|macro|sb_tree_height
+mdefine_line|#define sb_tree_height(sbp)           (le16_to_cpu((sbp)-&gt;s_tree_height))
+DECL|macro|set_sb_tree_height
+mdefine_line|#define set_sb_tree_height(sbp,v)     ((sbp)-&gt;s_tree_height = cpu_to_le16(v))
+DECL|macro|sb_bmap_nr
+mdefine_line|#define sb_bmap_nr(sbp)               (le16_to_cpu((sbp)-&gt;s_bmap_nr))
+DECL|macro|set_sb_bmap_nr
+mdefine_line|#define set_sb_bmap_nr(sbp,v)         ((sbp)-&gt;s_bmap_nr = cpu_to_le16(v))
+DECL|macro|sb_version
+mdefine_line|#define sb_version(sbp)               (le16_to_cpu((sbp)-&gt;s_version))
+DECL|macro|set_sb_version
+mdefine_line|#define set_sb_version(sbp,v)         ((sbp)-&gt;s_version = cpu_to_le16(v))
 multiline_comment|/* this is the super from 3.5.X, where X &gt;= 10 */
 DECL|struct|reiserfs_super_block_v1
 r_struct
@@ -767,6 +844,7 @@ id|hashf_t
 )paren
 (paren
 r_const
+r_int
 r_char
 op_star
 comma
@@ -1046,36 +1124,36 @@ DECL|macro|SB_AP_BITMAP
 mdefine_line|#define SB_AP_BITMAP(s) ((s)-&gt;u.reiserfs_sb.s_ap_bitmap)
 singleline_comment|// on-disk super block fields converted to cpu form
 DECL|macro|SB_DISK_SUPER_BLOCK
-mdefine_line|#define SB_DISK_SUPER_BLOCK(s) ((s)-&gt;u.reiserfs_sb.s_rs)
+mdefine_line|#define SB_DISK_SUPER_BLOCK(s)        ((s)-&gt;u.reiserfs_sb.s_rs)
 DECL|macro|SB_BLOCK_COUNT
-mdefine_line|#define SB_BLOCK_COUNT(s) le32_to_cpu ((SB_DISK_SUPER_BLOCK(s)-&gt;s_block_count))
+mdefine_line|#define SB_BLOCK_COUNT(s)             sb_block_count (SB_DISK_SUPER_BLOCK(s))
 DECL|macro|SB_FREE_BLOCKS
-mdefine_line|#define SB_FREE_BLOCKS(s) le32_to_cpu ((SB_DISK_SUPER_BLOCK(s)-&gt;s_free_blocks))
+mdefine_line|#define SB_FREE_BLOCKS(s)             sb_free_blocks (SB_DISK_SUPER_BLOCK(s))
 DECL|macro|SB_REISERFS_MAGIC
-mdefine_line|#define SB_REISERFS_MAGIC(s) (SB_DISK_SUPER_BLOCK(s)-&gt;s_magic)
+mdefine_line|#define SB_REISERFS_MAGIC(s)          (SB_DISK_SUPER_BLOCK(s)-&gt;s_magic)
 DECL|macro|SB_ROOT_BLOCK
-mdefine_line|#define SB_ROOT_BLOCK(s) le32_to_cpu ((SB_DISK_SUPER_BLOCK(s)-&gt;s_root_block))
+mdefine_line|#define SB_ROOT_BLOCK(s)              sb_root_block (SB_DISK_SUPER_BLOCK(s))
 DECL|macro|SB_TREE_HEIGHT
-mdefine_line|#define SB_TREE_HEIGHT(s) le16_to_cpu ((SB_DISK_SUPER_BLOCK(s)-&gt;s_tree_height))
+mdefine_line|#define SB_TREE_HEIGHT(s)             sb_tree_height (SB_DISK_SUPER_BLOCK(s))
 DECL|macro|SB_REISERFS_STATE
-mdefine_line|#define SB_REISERFS_STATE(s) le16_to_cpu ((SB_DISK_SUPER_BLOCK(s)-&gt;s_state))
+mdefine_line|#define SB_REISERFS_STATE(s)          sb_state (SB_DISK_SUPER_BLOCK(s))
 DECL|macro|SB_VERSION
-mdefine_line|#define SB_VERSION(s) le16_to_cpu ((SB_DISK_SUPER_BLOCK(s)-&gt;s_version))
+mdefine_line|#define SB_VERSION(s)                 sb_version (SB_DISK_SUPER_BLOCK(s))
 DECL|macro|SB_BMAP_NR
-mdefine_line|#define SB_BMAP_NR(s) le16_to_cpu ((SB_DISK_SUPER_BLOCK(s)-&gt;s_bmap_nr))
+mdefine_line|#define SB_BMAP_NR(s)                 sb_bmap_nr(SB_DISK_SUPER_BLOCK(s))
 DECL|macro|PUT_SB_BLOCK_COUNT
-mdefine_line|#define PUT_SB_BLOCK_COUNT(s, val)    do { SB_DISK_SUPER_BLOCK(s)-&gt;s_block_count = cpu_to_le32(val); } while (0)
+mdefine_line|#define PUT_SB_BLOCK_COUNT(s, val)    do { set_sb_block_count( SB_DISK_SUPER_BLOCK(s), val); } while (0)
 DECL|macro|PUT_SB_FREE_BLOCKS
-mdefine_line|#define PUT_SB_FREE_BLOCKS(s, val)    do { SB_DISK_SUPER_BLOCK(s)-&gt;s_free_blocks = cpu_to_le32(val); } while (0)
+mdefine_line|#define PUT_SB_FREE_BLOCKS(s, val)    do { set_sb_free_blocks( SB_DISK_SUPER_BLOCK(s), val); } while (0)
 DECL|macro|PUT_SB_ROOT_BLOCK
-mdefine_line|#define PUT_SB_ROOT_BLOCK(s, val)     do { SB_DISK_SUPER_BLOCK(s)-&gt;s_root_block = cpu_to_le32(val); } while (0)
+mdefine_line|#define PUT_SB_ROOT_BLOCK(s, val)     do { set_sb_root_block( SB_DISK_SUPER_BLOCK(s), val); } while (0)
 DECL|macro|PUT_SB_TREE_HEIGHT
-mdefine_line|#define PUT_SB_TREE_HEIGHT(s, val)    do { SB_DISK_SUPER_BLOCK(s)-&gt;s_tree_height = cpu_to_le16(val); } while (0)
+mdefine_line|#define PUT_SB_TREE_HEIGHT(s, val)    do { set_sb_tree_height( SB_DISK_SUPER_BLOCK(s), val); } while (0)
 DECL|macro|PUT_SB_REISERFS_STATE
-mdefine_line|#define PUT_SB_REISERFS_STATE(s, val) do { SB_DISK_SUPER_BLOCK(s)-&gt;s_state = cpu_to_le16(val); } while (0) 
+mdefine_line|#define PUT_SB_REISERFS_STATE(s, val) do { set_sb_state( SB_DISK_SUPER_BLOCK(s), val); } while (0) 
 DECL|macro|PUT_SB_VERSION
-mdefine_line|#define PUT_SB_VERSION(s, val)        do { SB_DISK_SUPER_BLOCK(s)-&gt;s_version = cpu_to_le16(val); } while (0)
+mdefine_line|#define PUT_SB_VERSION(s, val)        do { set_sb_version( SB_DISK_SUPER_BLOCK(s), val); } while (0)
 DECL|macro|PUT_SB_BMAP_NR
-mdefine_line|#define PUT_SB_BMAP_NR(s, val)           do { SB_DISK_SUPER_BLOCK(s)-&gt;s_bmap_nr = cpu_to_le16 (val); } while (0)
+mdefine_line|#define PUT_SB_BMAP_NR(s, val)        do { set_sb_bmap_nr( SB_DISK_SUPER_BLOCK(s), val); } while (0)
 macro_line|#endif&t;/* _LINUX_REISER_FS_SB */
 eof

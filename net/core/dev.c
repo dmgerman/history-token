@@ -5708,7 +5708,7 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;%6s: %04x  %3d%c  %3d%c  %3d%c  %6d %6d %6d&bslash;n&quot;
+l_string|&quot;%6s: %04x  %3d%c  %3d%c  %3d%c  %6d %6d %6d %6d %6d   %6d&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -5751,7 +5751,13 @@ id|stats-&gt;discard.nwid
 comma
 id|stats-&gt;discard.code
 comma
+id|stats-&gt;discard.fragment
+comma
+id|stats-&gt;discard.retries
+comma
 id|stats-&gt;discard.misc
+comma
+id|stats-&gt;miss.beacon
 )paren
 suffix:semicolon
 id|stats-&gt;qual.updated
@@ -5821,8 +5827,8 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;Inter-| sta-|   Quality        |   Discarded packets&bslash;n&quot;
-l_string|&quot; face | tus | link level noise |  nwid  crypt   misc&bslash;n&quot;
+l_string|&quot;Inter-| sta-|   Quality        |   Discarded packets               | Missed&bslash;n&quot;
+l_string|&quot; face | tus | link level noise |  nwid  crypt   frag  retry   misc | beacon&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pos
@@ -5963,6 +5969,124 @@ id|len
 suffix:semicolon
 )brace
 macro_line|#endif&t;/* CONFIG_PROC_FS */
+multiline_comment|/*&n; *&t;Allow programatic access to /proc/net/wireless even if /proc&n; *&t;doesn&squot;t exist... Also more efficient...&n; */
+DECL|function|dev_iwstats
+r_static
+r_inline
+r_int
+id|dev_iwstats
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|ifr
+)paren
+(brace
+multiline_comment|/* Get stats from the driver */
+r_struct
+id|iw_statistics
+op_star
+id|stats
+op_assign
+(paren
+id|dev-&gt;get_wireless_stats
+ques
+c_cond
+id|dev
+op_member_access_from_pointer
+id|get_wireless_stats
+c_func
+(paren
+id|dev
+)paren
+suffix:colon
+(paren
+r_struct
+id|iw_statistics
+op_star
+)paren
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stats
+op_ne
+(paren
+r_struct
+id|iw_statistics
+op_star
+)paren
+l_int|NULL
+)paren
+(brace
+r_struct
+id|iwreq
+op_star
+id|wrq
+op_assign
+(paren
+r_struct
+id|iwreq
+op_star
+)paren
+id|ifr
+suffix:semicolon
+multiline_comment|/* Copy statistics to the user buffer */
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|wrq-&gt;u.data.pointer
+comma
+id|stats
+comma
+r_sizeof
+(paren
+r_struct
+id|iw_statistics
+)paren
+)paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
+multiline_comment|/* Check if we need to clear the update flag */
+r_if
+c_cond
+(paren
+id|wrq-&gt;u.data.flags
+op_ne
+l_int|0
+)paren
+(brace
+id|stats-&gt;qual.updated
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_else
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
 macro_line|#endif&t;/* WIRELESS_EXT */
 multiline_comment|/**&n; *&t;netdev_set_master&t;-&t;set up master/slave pair&n; *&t;@slave: slave device&n; *&t;@master: new master device&n; *&n; *&t;Changes the master device of the slave. Pass %NULL to break the&n; *&t;bonding. The caller must hold the RTNL semaphore. On a failure&n; *&t;a negative errno code is returned. On success the reference counts&n; *&t;are adjusted, %RTM_NEWLINK is sent to the routing socket and the&n; *&t;function returns zero.&n; */
 DECL|function|netdev_set_master
@@ -7117,6 +7241,20 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#ifdef WIRELESS_EXT
+r_case
+id|SIOCGIWSTATS
+suffix:colon
+r_return
+id|dev_iwstats
+c_func
+(paren
+id|dev
+comma
+id|ifr
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* WIRELESS_EXT */
 multiline_comment|/*&n;&t;&t; *&t;Unknown or private ioctl&n;&t;&t; */
 r_default
 suffix:colon

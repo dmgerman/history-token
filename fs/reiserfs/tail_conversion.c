@@ -193,10 +193,12 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* delete at nearest future */
-id|ind_ih.ih_item_len
-op_assign
-id|cpu_to_le16
+id|put_ih_item_len
+c_func
 (paren
+op_amp
+id|ind_ih
+comma
 id|UNFM_P_SIZE
 )paren
 suffix:semicolon
@@ -827,9 +829,11 @@ op_minus
 l_int|1
 op_plus
 (paren
-id|le16_to_cpu
+id|ih_item_len
+c_func
 (paren
-id|s_ih.ih_item_len
+op_amp
+id|s_ih
 )paren
 op_div
 id|UNFM_P_SIZE
@@ -922,9 +926,11 @@ op_minus
 l_int|1
 op_plus
 (paren
-id|le16_to_cpu
+id|ih_item_len
+c_func
 (paren
-id|s_ih.ih_item_len
+op_amp
+id|s_ih
 )paren
 op_div
 id|UNFM_P_SIZE

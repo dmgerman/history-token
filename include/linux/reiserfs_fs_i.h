@@ -52,6 +52,17 @@ DECL|member|nopack
 r_int
 id|nopack
 suffix:semicolon
+multiline_comment|/* we use these for fsync or O_SYNC to decide which transaction needs&n;  ** to be committed in order for this inode to be properly flushed&n;  */
+DECL|member|i_trans_id
+r_int
+r_int
+id|i_trans_id
+suffix:semicolon
+DECL|member|i_trans_index
+r_int
+r_int
+id|i_trans_index
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif

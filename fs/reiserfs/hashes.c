@@ -20,6 +20,7 @@ id|keyed_hash
 c_func
 (paren
 r_const
+r_int
 r_char
 op_star
 id|msg
@@ -774,6 +775,7 @@ id|u32
 id|yura_hash
 (paren
 r_const
+r_int
 r_char
 op_star
 id|msg
@@ -1027,6 +1029,7 @@ id|u32
 id|r5_hash
 (paren
 r_const
+r_int
 r_char
 op_star
 id|msg

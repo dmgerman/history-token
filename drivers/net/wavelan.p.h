@@ -143,17 +143,17 @@ DECL|macro|NELS
 mdefine_line|#define&t;NELS(a)&t;&t;&t;&t;(sizeof(a) / sizeof(a[0]))
 multiline_comment|/* ------------------------ PRIVATE IOCTL ------------------------ */
 DECL|macro|SIOCSIPQTHR
-mdefine_line|#define SIOCSIPQTHR&t;SIOCDEVPRIVATE&t;&t;/* Set quality threshold */
+mdefine_line|#define SIOCSIPQTHR&t;SIOCIWFIRSTPRIV&t;&t;/* Set quality threshold */
 DECL|macro|SIOCGIPQTHR
-mdefine_line|#define SIOCGIPQTHR&t;SIOCDEVPRIVATE + 1&t;/* Get quality threshold */
+mdefine_line|#define SIOCGIPQTHR&t;SIOCIWFIRSTPRIV + 1&t;/* Get quality threshold */
 DECL|macro|SIOCSIPLTHR
-mdefine_line|#define SIOCSIPLTHR&t;SIOCDEVPRIVATE + 2&t;/* Set level threshold */
+mdefine_line|#define SIOCSIPLTHR&t;SIOCIWFIRSTPRIV + 2&t;/* Set level threshold */
 DECL|macro|SIOCGIPLTHR
-mdefine_line|#define SIOCGIPLTHR&t;SIOCDEVPRIVATE + 3&t;/* Get level threshold */
+mdefine_line|#define SIOCGIPLTHR&t;SIOCIWFIRSTPRIV + 3&t;/* Get level threshold */
 DECL|macro|SIOCSIPHISTO
-mdefine_line|#define SIOCSIPHISTO&t;SIOCDEVPRIVATE + 6&t;/* Set histogram ranges */
+mdefine_line|#define SIOCSIPHISTO&t;SIOCIWFIRSTPRIV + 6&t;/* Set histogram ranges */
 DECL|macro|SIOCGIPHISTO
-mdefine_line|#define SIOCGIPHISTO&t;SIOCDEVPRIVATE + 7&t;/* Get histogram values */
+mdefine_line|#define SIOCGIPHISTO&t;SIOCIWFIRSTPRIV + 7&t;/* Get histogram values */
 multiline_comment|/****************************** TYPES ******************************/
 multiline_comment|/* Shortcuts */
 DECL|typedef|device

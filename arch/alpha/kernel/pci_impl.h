@@ -233,6 +233,17 @@ id|pci_hae0_name
 suffix:semicolon
 r_extern
 r_int
+r_int
+id|size_for_memory
+c_func
+(paren
+r_int
+r_int
+id|max
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|iommu_reserve
 c_func
 (paren

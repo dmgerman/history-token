@@ -4241,7 +4241,7 @@ l_string|&quot;VFS: brelse: Trying to free free buffer&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * bforget() is like brelse(), except it puts the buffer on the&n; * free list if it can.. We can NOT free the buffer if:&n; *  - there are other users of it&n; *  - it is locked and thus can have active IO&n; */
+multiline_comment|/*&n; * bforget() is like brelse(), except it might discard any&n; * potentially dirty data.&n; */
 DECL|function|__bforget
 r_void
 id|__bforget
@@ -4253,6 +4253,7 @@ op_star
 id|buf
 )paren
 (brace
+multiline_comment|/* mark_buffer_clean(bh); */
 id|__brelse
 c_func
 (paren

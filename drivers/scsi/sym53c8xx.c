@@ -3005,9 +3005,9 @@ macro_line|#else
 multiline_comment|/* Linux version with pci bus iommu kernel interface */
 multiline_comment|/* To keep track of the dma mapping (sg/single) that has been set */
 DECL|macro|__data_mapped
-mdefine_line|#define __data_mapped&t;SCp.phase
+mdefine_line|#define __data_mapped(cmd)&t;(cmd)-&gt;SCp.phase
 DECL|macro|__data_mapping
-mdefine_line|#define __data_mapping&t;SCp.have_data_in
+mdefine_line|#define __data_mapping(cmd)&t;(cmd)-&gt;SCp.dma_handle
 DECL|function|__unmap_scsi_data
 r_static
 r_void
@@ -3034,7 +3034,11 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|cmd-&gt;__data_mapped
+id|__data_mapped
+c_func
+(paren
+id|cmd
+)paren
 )paren
 (brace
 r_case
@@ -3057,12 +3061,16 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-id|pci_unmap_single
+id|pci_unmap_page
 c_func
 (paren
 id|pdev
 comma
-id|cmd-&gt;__data_mapping
+id|__data_mapping
+c_func
+(paren
+id|cmd
+)paren
 comma
 id|cmd-&gt;request_bufflen
 comma
@@ -3072,14 +3080,18 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|cmd-&gt;__data_mapped
+id|__data_mapped
+c_func
+(paren
+id|cmd
+)paren
 op_assign
 l_int|0
 suffix:semicolon
 )brace
 DECL|function|__map_scsi_single_data
 r_static
-id|u_long
+id|dma_addr_t
 id|__map_scsi_single_data
 c_func
 (paren
@@ -3115,23 +3127,46 @@ l_int|0
 suffix:semicolon
 id|mapping
 op_assign
-id|pci_map_single
+id|pci_map_page
 c_func
 (paren
 id|pdev
 comma
+id|virt_to_page
+c_func
+(paren
 id|cmd-&gt;request_buffer
+)paren
+comma
+(paren
+(paren
+r_int
+r_int
+)paren
+id|cmd-&gt;request_buffer
+op_amp
+op_complement
+id|PAGE_MASK
+)paren
 comma
 id|cmd-&gt;request_bufflen
 comma
 id|dma_dir
 )paren
 suffix:semicolon
-id|cmd-&gt;__data_mapped
+id|__data_mapped
+c_func
+(paren
+id|cmd
+)paren
 op_assign
 l_int|1
 suffix:semicolon
-id|cmd-&gt;__data_mapping
+id|__data_mapping
+c_func
+(paren
+id|cmd
+)paren
 op_assign
 id|mapping
 suffix:semicolon
@@ -3189,11 +3224,19 @@ comma
 id|dma_dir
 )paren
 suffix:semicolon
-id|cmd-&gt;__data_mapped
+id|__data_mapped
+c_func
+(paren
+id|cmd
+)paren
 op_assign
 l_int|2
 suffix:semicolon
-id|cmd-&gt;__data_mapping
+id|__data_mapping
+c_func
+(paren
+id|cmd
+)paren
 op_assign
 id|use_sg
 suffix:semicolon
@@ -3227,7 +3270,11 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|cmd-&gt;__data_mapped
+id|__data_mapped
+c_func
+(paren
+id|cmd
+)paren
 )paren
 (brace
 r_case
@@ -3255,7 +3302,11 @@ c_func
 (paren
 id|pdev
 comma
-id|cmd-&gt;__data_mapping
+id|__data_mapping
+c_func
+(paren
+id|cmd
+)paren
 comma
 id|cmd-&gt;request_bufflen
 comma
@@ -13569,7 +13620,14 @@ id|np-&gt;features
 op_amp
 id|FE_DAC
 )paren
-macro_line|#ifdef SCSI_NCR_USE_64BIT_DAC
+(brace
+r_if
+c_cond
+(paren
+id|np-&gt;features
+op_amp
+id|FE_DAC_IN_USE
+)paren
 id|np-&gt;rv_ccntl1
 op_or_assign
 (paren
@@ -13578,14 +13636,14 @@ op_or
 id|EXTIBMV
 )paren
 suffix:semicolon
-macro_line|#else
+r_else
 id|np-&gt;rv_ccntl1
 op_or_assign
 (paren
 id|DDAC
 )paren
 suffix:semicolon
-macro_line|#endif
+)brace
 multiline_comment|/*&n;&t;**&t;Phase mismatch handled by SCRIPTS (53C895A, 53C896 or C1010) ?&n;  &t;*/
 r_if
 c_cond
@@ -36884,13 +36942,8 @@ suffix:semicolon
 multiline_comment|/*==========================================================&n;**&n;**&n;**&t;Build Scatter Gather Block&n;**&n;**&n;**==========================================================&n;**&n;**&t;The transfer area may be scattered among&n;**&t;several non adjacent physical pages.&n;**&n;**&t;We may use MAX_SCATTER blocks.&n;**&n;**----------------------------------------------------------&n;*/
 multiline_comment|/*&n;**&t;We try to reduce the number of interrupts caused&n;**&t;by unexpected phase changes due to disconnects.&n;**&t;A typical harddisk may disconnect before ANY block.&n;**&t;If we wanted to avoid unexpected phase changes at all&n;**&t;we had to use a break point every 512 bytes.&n;**&t;Of course the number of scatter/gather blocks is&n;**&t;limited.&n;**&t;Under Linux, the scatter/gatter blocks are provided by &n;**&t;the generic driver. We just have to copy addresses and &n;**&t;sizes to the data segment array.&n;*/
 multiline_comment|/*&n;**&t;For 64 bit systems, we use the 8 upper bits of the size field &n;**&t;to provide bus address bits 32-39 to the SCRIPTS processor.&n;**&t;This allows the 895A and 896 to address up to 1 TB of memory.&n;**&t;For 32 bit chips on 64 bit systems, we must be provided with &n;**&t;memory addresses that fit into the first 32 bit bus address &n;**&t;range and so, this does not matter and we expect an error from &n;**&t;the chip if this ever happen.&n;**&n;**&t;We use a separate function for the case Linux does not provide &n;**&t;a scatter list in order to allow better code optimization &n;**&t;for the case we have a scatter list (BTW, for now this just wastes  &n;**&t;about 40 bytes of code for x86, but my guess is that the scatter &n;**&t;code will get more complex later).&n;*/
-macro_line|#ifdef SCSI_NCR_USE_64BIT_DAC
 DECL|macro|SCATTER_ONE
 mdefine_line|#define SCATTER_ONE(data, badd, len)&t;&t;&t;&t;&t;&bslash;&n;&t;(data)-&gt;addr = cpu_to_scr(badd);&t;&t;&t;&t;&bslash;&n;&t;(data)-&gt;size = cpu_to_scr((((badd) &gt;&gt; 8) &amp; 0xff000000) + len);
-macro_line|#else
-DECL|macro|SCATTER_ONE
-mdefine_line|#define SCATTER_ONE(data, badd, len)&t;&t;&bslash;&n;&t;(data)-&gt;addr = cpu_to_scr(badd);&t;&bslash;&n;&t;(data)-&gt;size = cpu_to_scr(len);
-macro_line|#endif
 DECL|macro|CROSS_16MB
 mdefine_line|#define CROSS_16MB(p, n) (((((u_long) p) + n - 1) ^ ((u_long) p)) &amp; ~0xffffff)
 DECL|function|ncr_scatter_no_sglist
@@ -36936,7 +36989,7 @@ c_cond
 id|cmd-&gt;request_bufflen
 )paren
 (brace
-id|u_long
+id|dma_addr_t
 id|baddr
 op_assign
 id|map_scsi_single_data
@@ -37118,7 +37171,7 @@ id|segn
 op_increment
 )paren
 (brace
-id|u_long
+id|dma_addr_t
 id|baddr
 op_assign
 id|scsi_sg_dma_address
@@ -37325,7 +37378,7 @@ id|segment
 op_increment
 )paren
 (brace
-id|u_long
+id|dma_addr_t
 id|baddr
 op_assign
 id|scsi_sg_dma_address
@@ -40476,38 +40529,6 @@ l_int|7
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef SCSI_NCR_DYNAMIC_DMA_MAPPING
-r_if
-c_cond
-(paren
-id|pci_set_dma_mask
-c_func
-(paren
-id|pdev
-comma
-(paren
-id|dma_addr_t
-)paren
-(paren
-l_int|0xffffffffUL
-)paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|NAME53C8XX
-l_string|&quot;32 BIT PCI BUS DMA ADDRESSING NOT SUPPORTED&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n;&t;**    Read info from the PCI config space.&n;&t;**    pci_read_config_xxx() functions are assumed to be used for &n;&t;**    successfully detected PCI devices.&n;&t;*/
 id|vendor_id
 op_assign
@@ -40866,6 +40887,82 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+macro_line|#ifdef SCSI_NCR_DYNAMIC_DMA_MAPPING
+multiline_comment|/* Configure DMA attributes.  For DAC capable boards, we can encode&n;&t;** 32+8 bits for SCSI DMA data addresses with the extra bits used&n;&t;** in the size field.  We use normal 32-bit PCI addresses for&n;&t;** descriptors.&n;&t;*/
+r_if
+c_cond
+(paren
+id|chip-&gt;features
+op_amp
+id|FE_DAC
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pci_set_dma_mask
+c_func
+(paren
+id|pdev
+comma
+(paren
+id|u64
+)paren
+l_int|0xffffffffff
+)paren
+)paren
+id|chip-&gt;features
+op_and_assign
+op_complement
+id|FE_DAC_IN_USE
+suffix:semicolon
+r_else
+id|chip-&gt;features
+op_or_assign
+id|FE_DAC_IN_USE
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|chip-&gt;features
+op_amp
+id|FE_DAC_IN_USE
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pci_set_dma_mask
+c_func
+(paren
+id|pdev
+comma
+(paren
+id|u64
+)paren
+l_int|0xffffffff
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|NAME53C8XX
+l_string|&quot;32 BIT PCI BUS DMA ADDRESSING NOT SUPPORTED&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 multiline_comment|/*&n;&t;**&t;Ignore Symbios chips controlled by SISL RAID controller.&n;&t;**&t;This controller sets value 0x52414944 at RAM end - 16.&n;&t;*/
 macro_line|#if defined(__i386__) &amp;&amp; !defined(SCSI_NCR_PCI_MEM_NOT_SUPPORTED)
 r_if
@@ -42433,11 +42530,19 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#ifdef SCSI_NCR_DYNAMIC_DMA_MAPPING
-id|cmd-&gt;__data_mapped
+id|__data_mapped
+c_func
+(paren
+id|cmd
+)paren
 op_assign
 l_int|0
 suffix:semicolon
-id|cmd-&gt;__data_mapping
+id|__data_mapping
+c_func
+(paren
+id|cmd
+)paren
 op_assign
 l_int|0
 suffix:semicolon

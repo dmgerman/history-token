@@ -326,6 +326,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|amask
+c_func
+(paren
+id|AMASK_MAX
+)paren
+op_ne
+l_int|0
+op_logical_and
 id|alpha_using_srm
 op_logical_and
 (paren
@@ -410,6 +418,10 @@ comma
 id|min_mem_address
 suffix:colon
 id|DEFAULT_MEM_BASE
+comma
+id|pci_dac_offset
+suffix:colon
+id|PYXIS_DAC_OFFSET
 comma
 id|nr_irqs
 suffix:colon

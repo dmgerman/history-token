@@ -1687,7 +1687,7 @@ c_func
 id|mid
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set up the PCI-&gt;physical memory translation windows.&n;&t; *&n;&t; * Window 0 is scatter-gather 8MB at 8MB (for isa)&n;&t; * Window 1 is scatter-gather 128MB at 1GB&n;&t; * Window 2 is direct access 2GB at 2GB&n;&t; * ??? We ought to scale window 1 with memory.&n;&t; */
+multiline_comment|/*&n;&t; * Set up the PCI-&gt;physical memory translation windows.&n;&t; *&n;&t; * Window 0 is scatter-gather 8MB at 8MB (for isa)&n;&t; * Window 1 is scatter-gather (up to) 1GB at 1GB (for pci)&n;&t; * Window 2 is direct access 2GB at 2GB&n;&t; */
 id|hose-&gt;sg_isa
 op_assign
 id|iommu_arena_new
@@ -1711,7 +1711,11 @@ id|hose
 comma
 l_int|0x40000000
 comma
-l_int|0x08000000
+id|size_for_memory
+c_func
+(paren
+l_int|0x40000000
+)paren
 comma
 l_int|0
 )paren

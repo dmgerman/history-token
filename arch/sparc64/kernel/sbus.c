@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sbus.c,v 1.16 2001/08/24 19:36:58 kanoj Exp $&n; * sbus.c: UltraSparc SBUS controller support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sbus.c,v 1.17 2001/10/09 02:24:33 davem Exp $&n; * sbus.c: UltraSparc SBUS controller support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -1731,6 +1731,8 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|macro|SG_ENT_PHYS_ADDRESS
+mdefine_line|#define SG_ENT_PHYS_ADDRESS(SG)&t;&bslash;&n;&t;((SG)-&gt;address ? &bslash;&n;&t; __pa((SG)-&gt;address) : &bslash;&n;&t; (__pa(page_address((SG)-&gt;page)) + (SG)-&gt;offset))
 DECL|function|fill_sg
 r_static
 r_inline
@@ -1751,6 +1753,9 @@ r_int
 id|nused
 comma
 r_int
+id|nelems
+comma
+r_int
 r_int
 id|iopte_bits
 )paren
@@ -1761,6 +1766,15 @@ op_star
 id|dma_sg
 op_assign
 id|sg
+suffix:semicolon
+r_struct
+id|scatterlist
+op_star
+id|sg_end
+op_assign
+id|sg
+op_plus
+id|nelems
 suffix:semicolon
 r_int
 id|i
@@ -1794,7 +1808,7 @@ id|dma_npages
 op_assign
 (paren
 (paren
-id|dma_sg-&gt;dvma_address
+id|dma_sg-&gt;dma_address
 op_amp
 (paren
 id|IO_PAGE_SIZE
@@ -1803,12 +1817,9 @@ l_int|1UL
 )paren
 )paren
 op_plus
-id|dma_sg-&gt;dvma_length
+id|dma_sg-&gt;dma_length
 op_plus
 (paren
-(paren
-id|u32
-)paren
 (paren
 id|IO_PAGE_SIZE
 op_minus
@@ -1847,10 +1858,10 @@ op_assign
 r_int
 r_int
 )paren
-id|__pa
+id|SG_ENT_PHYS_ADDRESS
 c_func
 (paren
-id|sg-&gt;address
+id|sg
 )paren
 suffix:semicolon
 id|len
@@ -2018,6 +2029,10 @@ multiline_comment|/* Skip over any tail mappings we&squot;ve fully mapped,&n;&t;
 r_while
 c_loop
 (paren
+id|sg
+OL
+id|sg_end
+op_logical_and
 (paren
 id|pteval
 op_lshift
@@ -2030,12 +2045,14 @@ id|IO_PAGE_SHIFT
 op_ne
 l_int|0UL
 op_logical_and
+(paren
 id|pteval
 op_eq
-id|__pa
+id|SG_ENT_PHYS_ADDRESS
 c_func
 (paren
-id|sg-&gt;address
+id|sg
+)paren
 )paren
 op_logical_and
 (paren
@@ -2043,10 +2060,10 @@ op_logical_and
 id|pteval
 op_xor
 (paren
-id|__pa
+id|SG_ENT_PHYS_ADDRESS
 c_func
 (paren
-id|sg-&gt;address
+id|sg
 )paren
 op_plus
 id|sg-&gt;length
@@ -2178,21 +2195,36 @@ op_eq
 l_int|1
 )paren
 (brace
-id|sg-&gt;dvma_address
+id|sg-&gt;dma_address
 op_assign
 id|sbus_map_single
 c_func
 (paren
 id|sdev
 comma
+(paren
 id|sg-&gt;address
+ques
+c_cond
+id|sg-&gt;address
+suffix:colon
+(paren
+id|page_address
+c_func
+(paren
+id|sg-&gt;page
+)paren
+op_plus
+id|sg-&gt;offset
+)paren
+)paren
 comma
 id|sg-&gt;length
 comma
 id|dir
 )paren
 suffix:semicolon
-id|sg-&gt;dvma_length
+id|sg-&gt;dma_length
 op_assign
 id|sg-&gt;length
 suffix:semicolon
@@ -2267,10 +2299,10 @@ c_loop
 (paren
 id|used
 op_logical_and
-id|sgtmp-&gt;dvma_length
+id|sgtmp-&gt;dma_length
 )paren
 (brace
-id|sgtmp-&gt;dvma_address
+id|sgtmp-&gt;dma_address
 op_add_assign
 id|dma_base
 suffix:semicolon
@@ -2314,6 +2346,8 @@ comma
 id|sg
 comma
 id|used
+comma
+id|nents
 comma
 id|iopte_bits
 )paren
@@ -2417,9 +2451,9 @@ c_func
 (paren
 id|sdev
 comma
-id|sg-&gt;dvma_address
+id|sg-&gt;dma_address
 comma
-id|sg-&gt;dvma_length
+id|sg-&gt;dma_length
 comma
 id|direction
 )paren
@@ -2434,7 +2468,7 @@ id|sg
 l_int|0
 )braket
 dot
-id|dvma_address
+id|dma_address
 op_amp
 id|IO_PAGE_MASK
 suffix:semicolon
@@ -2461,7 +2495,7 @@ id|sg
 id|i
 )braket
 dot
-id|dvma_length
+id|dma_length
 op_eq
 l_int|0
 )paren
@@ -2481,14 +2515,14 @@ id|sg
 id|i
 )braket
 dot
-id|dvma_address
+id|dma_address
 op_plus
 id|sg
 (braket
 id|i
 )braket
 dot
-id|dvma_length
+id|dma_length
 )paren
 op_minus
 id|dvma_base
@@ -2670,7 +2704,7 @@ id|sg
 l_int|0
 )braket
 dot
-id|dvma_address
+id|dma_address
 op_amp
 id|IO_PAGE_MASK
 suffix:semicolon
@@ -2697,7 +2731,7 @@ id|sg
 id|i
 )braket
 dot
-id|dvma_length
+id|dma_length
 op_eq
 l_int|0
 )paren
@@ -2717,14 +2751,14 @@ id|sg
 id|i
 )braket
 dot
-id|dvma_address
+id|dma_address
 op_plus
 id|sg
 (braket
 id|i
 )braket
 dot
-id|dvma_length
+id|dma_length
 )paren
 op_minus
 id|base

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_psycho.c,v 1.28 2001/08/24 19:36:58 kanoj Exp $&n; * pci_psycho.c: PSYCHO/U2P specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: pci_psycho.c,v 1.29 2001/10/11 00:44:38 davem Exp $&n; * pci_psycho.c: PSYCHO/U2P specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -14,7 +14,7 @@ multiline_comment|/* All PSYCHO registers are 64-bits.  The following accessor&n
 DECL|macro|psycho_read
 mdefine_line|#define psycho_read(__reg) &bslash;&n;({&t;u64 __ret; &bslash;&n;&t;__asm__ __volatile__(&quot;ldxa [%1] %2, %0&quot; &bslash;&n;&t;&t;&t;     : &quot;=r&quot; (__ret) &bslash;&n;&t;&t;&t;     : &quot;r&quot; (__reg), &quot;i&quot; (ASI_PHYS_BYPASS_EC_E) &bslash;&n;&t;&t;&t;     : &quot;memory&quot;); &bslash;&n;&t;__ret; &bslash;&n;})
 DECL|macro|psycho_write
-mdefine_line|#define psycho_write(__reg, __val) &bslash;&n;&t;__asm__ __volatile__(&quot;stxa %0, [%1] %2&quot; &bslash;&n;&t;&t;&t;     : /* no outputs */ &bslash;&n;&t;&t;&t;     : &quot;r&quot; (__val), &quot;r&quot; (__reg), &bslash;&n;&t;&t;&t;       &quot;i&quot; (ASI_PHYS_BYPASS_EC_E))
+mdefine_line|#define psycho_write(__reg, __val) &bslash;&n;&t;__asm__ __volatile__(&quot;stxa %0, [%1] %2&quot; &bslash;&n;&t;&t;&t;     : /* no outputs */ &bslash;&n;&t;&t;&t;     : &quot;r&quot; (__val), &quot;r&quot; (__reg), &bslash;&n;&t;&t;&t;       &quot;i&quot; (ASI_PHYS_BYPASS_EC_E) &bslash;&n;&t;&t;&t;     : &quot;memory&quot;)
 multiline_comment|/* Misc. PSYCHO PCI controller register offsets and definitions. */
 DECL|macro|PSYCHO_CONTROL
 mdefine_line|#define PSYCHO_CONTROL&t;&t;0x0010UL

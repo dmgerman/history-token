@@ -62,6 +62,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * These aren&squot;t exported outside the kernel to avoid name space clashes&n; */
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 DECL|typedef|s8
 r_typedef
 r_int
@@ -114,11 +115,24 @@ id|u64
 suffix:semicolon
 DECL|macro|BITS_PER_LONG
 mdefine_line|#define BITS_PER_LONG 32
-multiline_comment|/* Dma addresses are 32-bits wide.  */
+multiline_comment|/* DMA addresses come in generic and 64-bit flavours.  */
+macro_line|#ifdef CONFIG_HIGHMEM
+DECL|typedef|dma_addr_t
+r_typedef
+id|u64
+id|dma_addr_t
+suffix:semicolon
+macro_line|#else
 DECL|typedef|dma_addr_t
 r_typedef
 id|u32
 id|dma_addr_t
+suffix:semicolon
+macro_line|#endif
+DECL|typedef|dma64_addr_t
+r_typedef
+id|u64
+id|dma64_addr_t
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif

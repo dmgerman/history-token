@@ -2976,6 +2976,7 @@ id|pid
 OG
 l_int|0
 )paren
+(brace
 r_while
 c_loop
 (paren
@@ -2988,7 +2989,18 @@ op_amp
 id|i
 )paren
 )paren
+(brace
+id|current-&gt;policy
+op_or_assign
+id|SCHED_YIELD
 suffix:semicolon
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren

@@ -311,6 +311,9 @@ DECL|macro|PYXIS_IIC_CTRL
 mdefine_line|#define PYXIS_IIC_CTRL&t;&t;&t;(IDENT_ADDR + 0x87A00002C0UL)
 DECL|macro|PYXIS_RESET
 mdefine_line|#define PYXIS_RESET&t;&t;&t;(IDENT_ADDR + 0x8780000900UL)
+multiline_comment|/* Offset between ram physical addresses and pci64 DAC bus addresses.  */
+DECL|macro|PYXIS_DAC_OFFSET
+mdefine_line|#define PYXIS_DAC_OFFSET&t;&t;(1UL &lt;&lt; 40)
 multiline_comment|/*&n; * Data structure for handling CIA machine checks.&n; */
 multiline_comment|/* System-specific info.  */
 DECL|struct|el_CIA_sysdata_mcheck

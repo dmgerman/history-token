@@ -4918,6 +4918,15 @@ op_amp
 id|pc_callout
 )paren
 )paren
+op_logical_or
+(paren
+id|tty_unregister_driver
+c_func
+(paren
+op_amp
+id|pc_info
+)paren
+)paren
 )paren
 (brace
 id|printk

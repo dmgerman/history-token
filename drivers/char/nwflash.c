@@ -195,6 +195,13 @@ id|gbFlashSize
 op_assign
 id|KFLASH_SIZE
 suffix:semicolon
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|nwflash_sem
+)paren
+suffix:semicolon
 r_extern
 id|spinlock_t
 id|gpio_lock
@@ -472,13 +479,6 @@ op_star
 id|ppos
 )paren
 (brace
-r_struct
-id|inode
-op_star
-id|inode
-op_assign
-id|file-&gt;f_dentry-&gt;d_inode
-suffix:semicolon
 r_int
 r_int
 id|p
@@ -556,7 +556,7 @@ id|down_interruptible
 c_func
 (paren
 op_amp
-id|inode-&gt;i_sem
+id|nwflash_sem
 )paren
 )paren
 r_return
@@ -605,7 +605,7 @@ id|up
 c_func
 (paren
 op_amp
-id|inode-&gt;i_sem
+id|nwflash_sem
 )paren
 suffix:semicolon
 )brace
@@ -637,13 +637,6 @@ op_star
 id|ppos
 )paren
 (brace
-r_struct
-id|inode
-op_star
-id|inode
-op_assign
-id|file-&gt;f_dentry-&gt;d_inode
-suffix:semicolon
 r_int
 r_int
 id|p
@@ -774,7 +767,7 @@ id|down_interruptible
 c_func
 (paren
 op_amp
-id|inode-&gt;i_sem
+id|nwflash_sem
 )paren
 )paren
 r_return
@@ -1076,7 +1069,7 @@ id|up
 c_func
 (paren
 op_amp
-id|inode-&gt;i_sem
+id|nwflash_sem
 )paren
 suffix:semicolon
 r_return

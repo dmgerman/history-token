@@ -97,24 +97,11 @@ macro_line|#elif defined(__sparc__)
 DECL|macro|SCSI_NCR_IOMAPPED
 macro_line|#undef SCSI_NCR_IOMAPPED
 macro_line|#endif
-multiline_comment|/*&n; * Should we enable DAC cycles on Sparc64 platform?&n; * Until further investigation we do not enable it&n; * at the moment.&n; * We may want to enable it for __ia64__ (untested)&n; */
-macro_line|#if defined(__ia64__)
-macro_line|#    if !defined(SCSI_NCR_USE_64BIT_DAC)
-DECL|macro|SCSI_NCR_USE_64BIT_DAC
-macro_line|#        define SCSI_NCR_USE_64BIT_DAC
-macro_line|#    endif
-macro_line|#else
-DECL|macro|SCSI_NCR_USE_64BIT_DAC
-macro_line|#    undef SCSI_NCR_USE_64BIT_DAC
-macro_line|#endif
 multiline_comment|/*&n; * Immediate arbitration&n; */
 macro_line|#if defined(CONFIG_SCSI_NCR53C8XX_IARB)
 DECL|macro|SCSI_NCR_IARB_SUPPORT
 mdefine_line|#define SCSI_NCR_IARB_SUPPORT
 macro_line|#endif
-multiline_comment|/*&n; * Should we enable DAC cycles on sparc64 platforms?&n; * Until further investigation we do not enable it&n; * anywhere at the moment.&n; */
-DECL|macro|SCSI_NCR_USE_64BIT_DAC
-macro_line|#undef SCSI_NCR_USE_64BIT_DAC
 multiline_comment|/*&n; * Sync transfer frequency at startup.&n; * Allow from 5Mhz to 80Mhz default 20 Mhz.&n; */
 macro_line|#ifndef&t;CONFIG_SCSI_NCR53C8XX_SYNC
 DECL|macro|CONFIG_SCSI_NCR53C8XX_SYNC
@@ -631,6 +618,8 @@ DECL|macro|FE_DAC
 mdefine_line|#define FE_DAC&t; &t;(1&lt;&lt;24)   /* Support DAC cycles (64 bit addressing) */
 DECL|macro|FE_ISTAT1
 mdefine_line|#define FE_ISTAT1 &t;(1&lt;&lt;25)   /* Have ISTAT1, MBOX0, MBOX1 registers */
+DECL|macro|FE_DAC_IN_USE
+mdefine_line|#define FE_DAC_IN_USE&t;(1&lt;&lt;26)&t;  /* Platform does DAC cycles */
 DECL|macro|FE_CACHE_SET
 mdefine_line|#define FE_CACHE_SET&t;(FE_ERL|FE_CLSE|FE_WRIE|FE_ERMP)
 DECL|macro|FE_SCSI_SET

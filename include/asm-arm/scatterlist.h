@@ -12,12 +12,6 @@ op_star
 id|address
 suffix:semicolon
 multiline_comment|/* virtual address&t;&t; */
-DECL|member|alt_address
-r_char
-op_star
-id|alt_address
-suffix:semicolon
-multiline_comment|/* indirect dma address, or NULL */
 DECL|member|dma_address
 id|dma_addr_t
 id|dma_address

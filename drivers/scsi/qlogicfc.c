@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * QLogic ISP2x00 SCSI-FCP&n; * Written by Erik H. Moe, ehm@cris.com&n; * Copyright 1995, Erik H. Moe&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; */
 multiline_comment|/* Renamed and updated to 1.3.x by Michael Griffith &lt;grif@cs.ucr.edu&gt; */
-multiline_comment|/* This is a version of the isp1020 driver which was modified by&n; * Chris Loveland &lt;cwl@iol.unh.edu&gt; to support the isp2100 and isp2200&n; *&n; * Big endian support and dynamic DMA mapping added&n; * by Jakub Jelinek &lt;jakub@redhat.com&gt;.&n; */
+multiline_comment|/* This is a version of the isp1020 driver which was modified by&n; * Chris Loveland &lt;cwl@iol.unh.edu&gt; to support the isp2100 and isp2200&n; *&n; * Big endian support and dynamic DMA mapping added&n; * by Jakub Jelinek &lt;jakub@redhat.com&gt;.&n; *&n; * Conversion to final pci64 DMA interfaces&n; * by David S. Miller &lt;davem@redhat.com&gt;.&n; */
 multiline_comment|/*&n; * $Date: 1995/09/22 02:23:15 $&n; * $Revision: 0.5 $&n; *&n; * $Log: isp1020.c,v $&n; * Revision 0.5  1995/09/22  02:23:15  root&n; * do auto request sense&n; *&n; * Revision 0.4  1995/08/07  04:44:33  root&n; * supply firmware with driver.&n; * numerous bug fixes/general cleanup of code.&n; *&n; * Revision 0.3  1995/07/16  16:15:39  root&n; * added reset/abort code.&n; *&n; * Revision 0.2  1995/06/29  03:14:19  root&n; * fixed biosparam.&n; * added queue protocol.&n; *&n; * Revision 0.1  1995/06/25  01:55:45  root&n; * Initial release.&n; *&n; */
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -16,50 +16,12 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#if 1
-multiline_comment|/* Once pci64_ DMA mapping interface is in, kill this. */
-DECL|typedef|dma64_addr_t
-r_typedef
-id|dma_addr_t
-id|dma64_addr_t
-suffix:semicolon
-DECL|macro|pci64_alloc_consistent
-mdefine_line|#define pci64_alloc_consistent(d,s,p) pci_alloc_consistent((d),(s),(p))
-DECL|macro|pci64_free_consistent
-mdefine_line|#define pci64_free_consistent(d,s,c,a) pci_free_consistent((d),(s),(c),(a))
-DECL|macro|pci64_map_single
-mdefine_line|#define pci64_map_single(d,c,s,dir) pci_map_single((d),(c),(s),(dir))
-DECL|macro|pci64_map_sg
-mdefine_line|#define pci64_map_sg(d,s,n,dir) pci_map_sg((d),(s),(n),(dir))
-DECL|macro|pci64_unmap_single
-mdefine_line|#define pci64_unmap_single(d,a,s,dir) pci_unmap_single((d),(a),(s),(dir))
-DECL|macro|pci64_unmap_sg
-mdefine_line|#define pci64_unmap_sg(d,s,n,dir) pci_unmap_sg((d),(s),(n),(dir))
-macro_line|#if BITS_PER_LONG &gt; 32
 DECL|macro|pci64_dma_hi32
 mdefine_line|#define pci64_dma_hi32(a) ((u32) (0xffffffff &amp; (((u64)(a))&gt;&gt;32)))
 DECL|macro|pci64_dma_lo32
 mdefine_line|#define pci64_dma_lo32(a) ((u32) (0xffffffff &amp; (((u64)(a)))))
-macro_line|#else
-DECL|macro|pci64_dma_hi32
-mdefine_line|#define pci64_dma_hi32(a) 0
-DECL|macro|pci64_dma_lo32
-mdefine_line|#define pci64_dma_lo32(a) (a)
-macro_line|#endif&t;/* BITS_PER_LONG */
 DECL|macro|pci64_dma_build
-mdefine_line|#define pci64_dma_build(hi,lo) (lo)
-DECL|macro|sg_dma64_address
-mdefine_line|#define sg_dma64_address(s) sg_dma_address(s)
-DECL|macro|sg_dma64_len
-mdefine_line|#define sg_dma64_len(s) sg_dma_len(s)
-macro_line|#if BITS_PER_LONG &gt; 32
-DECL|macro|PCI64_DMA_BITS
-mdefine_line|#define PCI64_DMA_BITS 64
-macro_line|#else
-DECL|macro|PCI64_DMA_BITS
-mdefine_line|#define PCI64_DMA_BITS&t;32
-macro_line|#endif &t;/* BITS_PER_LONG */
-macro_line|#endif
+mdefine_line|#define pci64_dma_build(hi,lo) &bslash;&n;&t;((dma_addr_t)(((u64)(lo))|(((u64)(hi))&lt;&lt;32)))
 macro_line|#include &quot;qlogicfc.h&quot;
 multiline_comment|/* Configuration section **************************************************** */
 multiline_comment|/* Set the following macro to 1 to reload the ISP2x00&squot;s firmware.  This is&n;   version 1.17.30 of the isp2100&squot;s firmware and version 2.00.40 of the &n;   isp2200&squot;s firmware. &n;*/
@@ -281,17 +243,10 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* entry header type commands */
-macro_line|#if PCI64_DMA_BITS &gt; 32
 DECL|macro|ENTRY_COMMAND
 mdefine_line|#define ENTRY_COMMAND&t;&t;0x19
 DECL|macro|ENTRY_CONTINUATION
 mdefine_line|#define ENTRY_CONTINUATION&t;0x0a
-macro_line|#else
-DECL|macro|ENTRY_COMMAND
-mdefine_line|#define ENTRY_COMMAND&t;&t;0x11
-DECL|macro|ENTRY_CONTINUATION
-mdefine_line|#define ENTRY_CONTINUATION&t;0x02
-macro_line|#endif
 DECL|macro|ENTRY_STATUS
 mdefine_line|#define ENTRY_STATUS&t;&t;0x03
 DECL|macro|ENTRY_MARKER
@@ -303,7 +258,6 @@ DECL|macro|EFLAG_BAD_HEADER
 mdefine_line|#define EFLAG_BAD_HEADER&t;4
 DECL|macro|EFLAG_BAD_PAYLOAD
 mdefine_line|#define EFLAG_BAD_PAYLOAD&t;8
-macro_line|#if PCI64_DMA_BITS &gt; 32
 DECL|struct|dataseg
 r_struct
 id|dataseg
@@ -322,22 +276,6 @@ id|d_count
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#else
-DECL|struct|dataseg
-r_struct
-id|dataseg
-(brace
-DECL|member|d_base
-id|u_int
-id|d_base
-suffix:semicolon
-DECL|member|d_count
-id|u_int
-id|d_count
-suffix:semicolon
-)brace
-suffix:semicolon
-macro_line|#endif
 DECL|struct|Command_Entry
 r_struct
 id|Command_Entry
@@ -415,7 +353,6 @@ DECL|macro|CFLAG_READ
 mdefine_line|#define CFLAG_READ&t;&t;0x20
 DECL|macro|CFLAG_WRITE
 mdefine_line|#define CFLAG_WRITE&t;&t;0x40
-macro_line|#if PCI64_DMA_BITS &gt; 32
 DECL|struct|Continuation_Entry
 r_struct
 id|Continuation_Entry
@@ -435,31 +372,6 @@ id|DATASEGS_PER_CONT
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#else
-DECL|struct|Continuation_Entry
-r_struct
-id|Continuation_Entry
-(brace
-DECL|member|hdr
-r_struct
-id|Entry_header
-id|hdr
-suffix:semicolon
-DECL|member|rsvd
-id|u32
-id|rsvd
-suffix:semicolon
-DECL|member|dataseg
-r_struct
-id|dataseg
-id|dataseg
-(braket
-id|DATASEGS_PER_CONT
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
-macro_line|#endif
 DECL|struct|Marker_Entry
 r_struct
 id|Marker_Entry
@@ -1722,7 +1634,7 @@ id|device_ids
 l_int|2
 )braket
 suffix:semicolon
-id|dma64_addr_t
+id|dma_addr_t
 id|busaddr
 suffix:semicolon
 r_int
@@ -1766,6 +1678,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;qlogicfc : PCI not present&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1820,6 +1733,34 @@ id|pci_enable_device
 c_func
 (paren
 id|pdev
+)paren
+)paren
+r_continue
+suffix:semicolon
+multiline_comment|/* Try to configure DMA attributes. */
+r_if
+c_cond
+(paren
+id|pci_set_dma_mask
+c_func
+(paren
+id|pdev
+comma
+(paren
+id|u64
+)paren
+l_int|0xffffffffffffffff
+)paren
+op_logical_and
+id|pci_set_dma_mask
+c_func
+(paren
+id|pdev
+comma
+(paren
+id|u64
+)paren
+l_int|0xffffffff
 )paren
 )paren
 r_continue
@@ -1907,7 +1848,7 @@ id|pdev
 suffix:semicolon
 id|hostdata-&gt;res
 op_assign
-id|pci64_alloc_consistent
+id|pci_alloc_consistent
 c_func
 (paren
 id|pdev
@@ -1935,7 +1876,7 @@ comma
 id|hosts
 )paren
 suffix:semicolon
-id|pci64_free_consistent
+id|pci_free_consistent
 c_func
 (paren
 id|pdev
@@ -2181,7 +2122,7 @@ id|host
 )paren
 )paren
 (brace
-id|pci64_free_consistent
+id|pci_free_consistent
 (paren
 id|pdev
 comma
@@ -2237,7 +2178,7 @@ comma
 id|host-&gt;irq
 )paren
 suffix:semicolon
-id|pci64_free_consistent
+id|pci_free_consistent
 (paren
 id|pdev
 comma
@@ -2297,7 +2238,7 @@ comma
 id|host
 )paren
 suffix:semicolon
-id|pci64_free_consistent
+id|pci_free_consistent
 (paren
 id|pdev
 comma
@@ -3272,7 +3213,7 @@ id|u_char
 op_star
 id|sns_response
 suffix:semicolon
-id|dma64_addr_t
+id|dma_addr_t
 id|busaddr
 suffix:semicolon
 r_struct
@@ -3375,7 +3316,7 @@ r_struct
 id|sns_cb
 op_star
 )paren
-id|pci64_alloc_consistent
+id|pci_alloc_consistent
 c_func
 (paren
 id|hostdata-&gt;pci_dev
@@ -4306,7 +4247,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|pci64_free_consistent
+id|pci_free_consistent
 c_func
 (paren
 id|hostdata-&gt;pci_dev
@@ -4329,7 +4270,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-id|pci64_free_consistent
+id|pci_free_consistent
 c_func
 (paren
 id|hostdata-&gt;pci_dev
@@ -4368,7 +4309,7 @@ id|isp2x00_hostdata
 op_star
 id|hostdata
 suffix:semicolon
-id|dma64_addr_t
+id|dma_addr_t
 id|busaddr
 suffix:semicolon
 id|ENTER
@@ -4430,7 +4371,7 @@ id|hostdata-&gt;control_block.res_queue_addr_lo
 )paren
 )paren
 suffix:semicolon
-id|pci64_free_consistent
+id|pci_free_consistent
 c_func
 (paren
 id|hostdata-&gt;pci_dev
@@ -5236,7 +5177,7 @@ id|Cmnd-&gt;request_buffer
 suffix:semicolon
 id|sg_count
 op_assign
-id|pci64_map_sg
+id|pci_map_sg
 c_func
 (paren
 id|hostdata-&gt;pci_dev
@@ -5308,7 +5249,7 @@ c_func
 id|pci64_dma_lo32
 c_func
 (paren
-id|sg_dma64_address
+id|sg_dma_address
 c_func
 (paren
 id|sg
@@ -5316,7 +5257,6 @@ id|sg
 )paren
 )paren
 suffix:semicolon
-macro_line|#if PCI64_DMA_BITS &gt; 32
 id|ds
 (braket
 id|i
@@ -5330,7 +5270,7 @@ c_func
 id|pci64_dma_hi32
 c_func
 (paren
-id|sg_dma64_address
+id|sg_dma_address
 c_func
 (paren
 id|sg
@@ -5338,7 +5278,6 @@ id|sg
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ds
 (braket
 id|i
@@ -5349,7 +5288,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|sg_dma64_len
+id|sg_dma_len
 c_func
 (paren
 id|sg
@@ -5499,7 +5438,7 @@ c_func
 id|pci64_dma_lo32
 c_func
 (paren
-id|sg_dma64_address
+id|sg_dma_address
 c_func
 (paren
 id|sg
@@ -5507,7 +5446,6 @@ id|sg
 )paren
 )paren
 suffix:semicolon
-macro_line|#if PCI64_DMA_BITS &gt; 32
 id|ds
 (braket
 id|i
@@ -5521,7 +5459,7 @@ c_func
 id|pci64_dma_hi32
 c_func
 (paren
-id|sg_dma64_address
+id|sg_dma_address
 c_func
 (paren
 id|sg
@@ -5529,7 +5467,6 @@ id|sg
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ds
 (braket
 id|i
@@ -5540,7 +5477,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|sg_dma64_len
+id|sg_dma_len
 c_func
 (paren
 id|sg
@@ -5568,15 +5505,43 @@ op_ne
 id|PCI_DMA_NONE
 )paren
 (brace
-id|dma64_addr_t
+r_struct
+id|page
+op_star
+id|page
+op_assign
+id|virt_to_page
+c_func
+(paren
+id|Cmnd-&gt;request_buffer
+)paren
+suffix:semicolon
+r_int
+r_int
+id|offset
+op_assign
+(paren
+(paren
+r_int
+r_int
+)paren
+id|Cmnd-&gt;request_buffer
+op_amp
+op_complement
+id|PAGE_MASK
+)paren
+suffix:semicolon
+id|dma_addr_t
 id|busaddr
 op_assign
-id|pci64_map_single
+id|pci_map_page
 c_func
 (paren
 id|hostdata-&gt;pci_dev
 comma
-id|Cmnd-&gt;request_buffer
+id|page
+comma
+id|offset
 comma
 id|Cmnd-&gt;request_bufflen
 comma
@@ -5587,13 +5552,7 @@ id|Cmnd-&gt;sc_data_direction
 )paren
 )paren
 suffix:semicolon
-op_star
-(paren
-id|dma64_addr_t
-op_star
-)paren
-op_amp
-id|Cmnd-&gt;SCp
+id|Cmnd-&gt;SCp.dma_handle
 op_assign
 id|busaddr
 suffix:semicolon
@@ -5614,7 +5573,6 @@ id|busaddr
 )paren
 )paren
 suffix:semicolon
-macro_line|#if PCI64_DMA_BITS &gt; 32
 id|cmd-&gt;dataseg
 (braket
 l_int|0
@@ -5632,7 +5590,6 @@ id|busaddr
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|cmd-&gt;dataseg
 (braket
 l_int|0
@@ -5666,7 +5623,6 @@ id|d_base
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if PCI64_DMA_BITS &gt; 32
 id|cmd-&gt;dataseg
 (braket
 l_int|0
@@ -5676,7 +5632,6 @@ id|d_base_hi
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
 id|cmd-&gt;segment_cnt
 op_assign
 id|cpu_to_le16
@@ -6197,7 +6152,7 @@ c_cond
 (paren
 id|Cmnd-&gt;use_sg
 )paren
-id|pci64_unmap_sg
+id|pci_unmap_sg
 c_func
 (paren
 id|hostdata-&gt;pci_dev
@@ -6228,18 +6183,13 @@ id|Cmnd-&gt;sc_data_direction
 op_ne
 id|PCI_DMA_NONE
 )paren
-id|pci64_unmap_single
+(brace
+id|pci_unmap_page
 c_func
 (paren
 id|hostdata-&gt;pci_dev
 comma
-op_star
-(paren
-id|dma64_addr_t
-op_star
-)paren
-op_amp
-id|Cmnd-&gt;SCp
+id|Cmnd-&gt;SCp.dma_handle
 comma
 id|Cmnd-&gt;request_bufflen
 comma
@@ -6250,6 +6200,7 @@ id|Cmnd-&gt;sc_data_direction
 )paren
 )paren
 suffix:semicolon
+)brace
 id|hostdata-&gt;handle_ptrs
 (braket
 id|i
@@ -6744,7 +6695,7 @@ c_cond
 (paren
 id|Cmnd-&gt;use_sg
 )paren
-id|pci64_unmap_sg
+id|pci_unmap_sg
 c_func
 (paren
 id|hostdata-&gt;pci_dev
@@ -6775,18 +6726,12 @@ id|Cmnd-&gt;sc_data_direction
 op_ne
 id|PCI_DMA_NONE
 )paren
-id|pci64_unmap_single
+id|pci_unmap_page
 c_func
 (paren
 id|hostdata-&gt;pci_dev
 comma
-op_star
-(paren
-id|dma64_addr_t
-op_star
-)paren
-op_amp
-id|Cmnd-&gt;SCp
+id|Cmnd-&gt;SCp.dma_handle
 comma
 id|Cmnd-&gt;request_bufflen
 comma
@@ -7076,7 +7021,7 @@ c_cond
 (paren
 id|Cmnd-&gt;use_sg
 )paren
-id|pci64_unmap_sg
+id|pci_unmap_sg
 c_func
 (paren
 id|hostdata-&gt;pci_dev
@@ -7107,18 +7052,12 @@ id|Cmnd-&gt;sc_data_direction
 op_ne
 id|PCI_DMA_NONE
 )paren
-id|pci64_unmap_single
+id|pci_unmap_page
 c_func
 (paren
 id|hostdata-&gt;pci_dev
 comma
-op_star
-(paren
-id|dma64_addr_t
-op_star
-)paren
-op_amp
-id|Cmnd-&gt;SCp
+id|Cmnd-&gt;SCp.dma_handle
 comma
 id|Cmnd-&gt;request_bufflen
 comma
@@ -8283,7 +8222,7 @@ suffix:semicolon
 r_int
 id|loop_count
 suffix:semicolon
-id|dma64_addr_t
+id|dma_addr_t
 id|busaddr
 suffix:semicolon
 id|ENTER
@@ -8998,16 +8937,32 @@ l_int|0xff00
 op_rshift
 l_int|8
 suffix:semicolon
-multiline_comment|/* FIXME: If the DMA transfer goes one way only, this should use PCI_DMA_TODEVICE and below as well. */
+multiline_comment|/* FIXME: If the DMA transfer goes one way only, this should use&n;&t; *        PCI_DMA_TODEVICE and below as well.&n;&t; */
 id|busaddr
 op_assign
-id|pci64_map_single
+id|pci_map_page
 c_func
 (paren
 id|hostdata-&gt;pci_dev
 comma
+id|virt_to_page
+c_func
+(paren
 op_amp
 id|hostdata-&gt;control_block
+)paren
+comma
+(paren
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|hostdata-&gt;control_block
+op_amp
+op_complement
+id|PAGE_MASK
+)paren
 comma
 r_sizeof
 (paren
@@ -9142,7 +9097,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|pci64_unmap_single
+id|pci_unmap_page
 c_func
 (paren
 id|hostdata-&gt;pci_dev
@@ -9200,7 +9155,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|pci64_unmap_single
+id|pci_unmap_page
 c_func
 (paren
 id|hostdata-&gt;pci_dev
@@ -9219,7 +9174,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|pci64_unmap_single
+id|pci_unmap_page
 c_func
 (paren
 id|hostdata-&gt;pci_dev

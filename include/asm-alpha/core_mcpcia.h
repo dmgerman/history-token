@@ -142,6 +142,9 @@ DECL|macro|MCPCIA_IO_BIAS
 mdefine_line|#define MCPCIA_IO_BIAS&t;&t;MCPCIA_IO(4)
 DECL|macro|MCPCIA_MEM_BIAS
 mdefine_line|#define MCPCIA_MEM_BIAS&t;&t;MCPCIA_DENSE(4)
+multiline_comment|/* Offset between ram physical addresses and pci64 DAC bus addresses.  */
+DECL|macro|MCPCIA_DAC_OFFSET
+mdefine_line|#define MCPCIA_DAC_OFFSET&t;(1UL &lt;&lt; 40)
 multiline_comment|/*&n; * Data structure for handling MCPCIA machine checks:&n; */
 DECL|struct|el_MCPCIA_uncorrected_frame_mcheck
 r_struct

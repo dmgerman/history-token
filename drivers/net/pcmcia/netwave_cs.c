@@ -664,9 +664,14 @@ op_star
 id|dev_list
 suffix:semicolon
 multiline_comment|/*&n;   A dev_link_t structure has fields for most things that are needed&n;   to keep track of a socket, but there will usually be some device&n;   specific information that also needs to be kept track of.  The&n;   &squot;priv&squot; pointer in a dev_link_t structure can be used to point to&n;   a device-specific private data structure, like this.&n;&n;   A driver needs to provide a dev_node_t structure for each device&n;   on a card.  In some cases, there is only one device per card (for&n;   example, ethernet cards, modems).  In other cases, there may be&n;   many actual or logical devices (SCSI adapters, memory cards with&n;   multiple partitions).  The dev_node_t structures need to be kept&n;   in a linked list starting at the &squot;dev&squot; field of a dev_link_t&n;   structure.  We allocate them in the card&squot;s private data structure,&n;   because they generally can&squot;t be allocated dynamically.&n;*/
+multiline_comment|/* Wireless Extension Backward compatibility - Jean II&n; * If the new wireless device private ioctl range is not defined,&n; * default to standard device private ioctl range */
+macro_line|#ifndef SIOCIWFIRSTPRIV
+DECL|macro|SIOCIWFIRSTPRIV
+mdefine_line|#define SIOCIWFIRSTPRIV&t;SIOCDEVPRIVATE
+macro_line|#endif /* SIOCIWFIRSTPRIV */
 DECL|macro|SIOCGIPSNAP
-mdefine_line|#define SIOCGIPSNAP&t;SIOCDEVPRIVATE&t;&t;/* Site Survey Snapshot */
-multiline_comment|/*#define SIOCGIPQTHR&t;SIOCDEVPRIVATE + 1*/
+mdefine_line|#define SIOCGIPSNAP&t;SIOCIWFIRSTPRIV&t;&t;/* Site Survey Snapshot */
+multiline_comment|/*#define SIOCGIPQTHR&t;SIOCIWFIRSTPRIV + 1*/
 DECL|macro|MAX_ESA
 mdefine_line|#define MAX_ESA 10
 DECL|struct|net_addr

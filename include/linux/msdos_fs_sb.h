@@ -32,6 +32,12 @@ op_star
 id|iocharset
 suffix:semicolon
 multiline_comment|/* Charset used for filename input/display */
+DECL|member|shortname
+r_int
+r_int
+id|shortname
+suffix:semicolon
+multiline_comment|/* flags for shortname display/create rule */
 DECL|member|name_check
 r_int
 r_char
@@ -119,22 +125,6 @@ suffix:semicolon
 multiline_comment|/* Does this need case conversion? 0=need case conversion*/
 )brace
 suffix:semicolon
-DECL|struct|vfat_unicode
-r_struct
-id|vfat_unicode
-(brace
-DECL|member|uni1
-r_int
-r_char
-id|uni1
-suffix:semicolon
-DECL|member|uni2
-r_int
-r_char
-id|uni2
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|msdos_sb_info
 r_struct
 id|msdos_sb_info
@@ -206,10 +196,6 @@ r_int
 id|fsinfo_sector
 suffix:semicolon
 multiline_comment|/* FAT32 fsinfo offset from start of disk */
-DECL|member|fat_wait
-id|wait_queue_head_t
-id|fat_wait
-suffix:semicolon
 DECL|member|fat_lock
 r_struct
 id|semaphore

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_schizo.c,v 1.21 2001/08/24 19:36:58 kanoj Exp $&n; * pci_schizo.c: SCHIZO specific PCI controller support.&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pci_schizo.c,v 1.22 2001/10/11 00:44:38 davem Exp $&n; * pci_schizo.c: SCHIZO specific PCI controller support.&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -14,7 +14,7 @@ multiline_comment|/* All SCHIZO registers are 64-bits.  The following accessor&n
 DECL|macro|schizo_read
 mdefine_line|#define schizo_read(__reg) &bslash;&n;({&t;u64 __ret; &bslash;&n;&t;__asm__ __volatile__(&quot;ldxa [%1] %2, %0&quot; &bslash;&n;&t;&t;&t;     : &quot;=r&quot; (__ret) &bslash;&n;&t;&t;&t;     : &quot;r&quot; (__reg), &quot;i&quot; (ASI_PHYS_BYPASS_EC_E) &bslash;&n;&t;&t;&t;     : &quot;memory&quot;); &bslash;&n;&t;__ret; &bslash;&n;})
 DECL|macro|schizo_write
-mdefine_line|#define schizo_write(__reg, __val) &bslash;&n;&t;__asm__ __volatile__(&quot;stxa %0, [%1] %2&quot; &bslash;&n;&t;&t;&t;     : /* no outputs */ &bslash;&n;&t;&t;&t;     : &quot;r&quot; (__val), &quot;r&quot; (__reg), &bslash;&n;&t;&t;&t;       &quot;i&quot; (ASI_PHYS_BYPASS_EC_E))
+mdefine_line|#define schizo_write(__reg, __val) &bslash;&n;&t;__asm__ __volatile__(&quot;stxa %0, [%1] %2&quot; &bslash;&n;&t;&t;&t;     : /* no outputs */ &bslash;&n;&t;&t;&t;     : &quot;r&quot; (__val), &quot;r&quot; (__reg), &bslash;&n;&t;&t;&t;       &quot;i&quot; (ASI_PHYS_BYPASS_EC_E) &bslash;&n;&t;&t;&t;     : &quot;memory&quot;)
 multiline_comment|/* This is a convention that at least Excalibur and Merlin&n; * follow.  I suppose the SCHIZO used in Starcat and friends&n; * will do similar.&n; *&n; * The only way I could see this changing is if the newlink&n; * block requires more space in Schizo&squot;s address space than&n; * they predicted, thus requiring an address space reorg when&n; * the newer Schizo is taped out.&n; *&n; * These offsets look weird because I keep in p-&gt;controller_regs&n; * the second PROM register property minus 0x10000 which is the&n; * base of the Safari and UPA64S registers of SCHIZO.&n; */
 DECL|macro|SCHIZO_PBM_A_REGS_OFF
 mdefine_line|#define SCHIZO_PBM_A_REGS_OFF&t;(0x600000UL - 0x400000UL)

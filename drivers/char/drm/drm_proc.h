@@ -1004,6 +1004,13 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;maplist
+op_ne
+l_int|NULL
+)paren
 id|list_for_each
 c_func
 (paren

@@ -521,7 +521,7 @@ id|size
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * On sn1 we use the alt_address entry of the scatterlist to store&n; * the physical address corresponding to the given virtual address&n; */
+multiline_comment|/*&n; * On sn1 we use the orig_address entry of the scatterlist to store&n; * the physical address corresponding to the given virtual address&n; */
 r_int
 DECL|function|sn1_pci_map_sg
 id|sn1_pci_map_sg

@@ -155,18 +155,23 @@ DECL|macro|IW_ESSID_MAX_SIZE
 mdefine_line|#define IW_ESSID_MAX_SIZE&t;32
 macro_line|#endif
 multiline_comment|/* ------------------------ PRIVATE IOCTL ------------------------ */
+multiline_comment|/* Wireless Extension Backward compatibility - Jean II&n; * If the new wireless device private ioctl range is not defined,&n; * default to standard device private ioctl range */
+macro_line|#ifndef SIOCIWFIRSTPRIV
+DECL|macro|SIOCIWFIRSTPRIV
+mdefine_line|#define SIOCIWFIRSTPRIV&t;SIOCDEVPRIVATE
+macro_line|#endif /* SIOCIWFIRSTPRIV */
 DECL|macro|SIOCSIPQTHR
-mdefine_line|#define SIOCSIPQTHR&t;SIOCDEVPRIVATE&t;&t;/* Set quality threshold */
+mdefine_line|#define SIOCSIPQTHR&t;SIOCIWFIRSTPRIV&t;&t;/* Set quality threshold */
 DECL|macro|SIOCGIPQTHR
-mdefine_line|#define SIOCGIPQTHR&t;SIOCDEVPRIVATE + 1&t;/* Get quality threshold */
+mdefine_line|#define SIOCGIPQTHR&t;SIOCIWFIRSTPRIV + 1&t;/* Get quality threshold */
 DECL|macro|SIOCSIPROAM
-mdefine_line|#define SIOCSIPROAM     SIOCDEVPRIVATE + 2      /* Set roaming state */
+mdefine_line|#define SIOCSIPROAM     SIOCIWFIRSTPRIV + 2&t;/* Set roaming state */
 DECL|macro|SIOCGIPROAM
-mdefine_line|#define SIOCGIPROAM     SIOCDEVPRIVATE + 3      /* Get roaming state */
+mdefine_line|#define SIOCGIPROAM     SIOCIWFIRSTPRIV + 3&t;/* Get roaming state */
 DECL|macro|SIOCSIPHISTO
-mdefine_line|#define SIOCSIPHISTO&t;SIOCDEVPRIVATE + 6&t;/* Set histogram ranges */
+mdefine_line|#define SIOCSIPHISTO&t;SIOCIWFIRSTPRIV + 6&t;/* Set histogram ranges */
 DECL|macro|SIOCGIPHISTO
-mdefine_line|#define SIOCGIPHISTO&t;SIOCDEVPRIVATE + 7&t;/* Get histogram values */
+mdefine_line|#define SIOCGIPHISTO&t;SIOCIWFIRSTPRIV + 7&t;/* Get histogram values */
 multiline_comment|/*************************** WaveLAN Roaming  **************************/
 macro_line|#ifdef WAVELAN_ROAMING&t;&t;/* Conditional compile, see above in options */
 DECL|macro|WAVELAN_ROAMING_DEBUG

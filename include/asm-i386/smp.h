@@ -259,7 +259,7 @@ id|APIC_ID
 suffix:semicolon
 )brace
 DECL|function|logical_smp_processor_id
-r_extern
+r_static
 id|__inline
 r_int
 id|logical_smp_processor_id

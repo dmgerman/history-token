@@ -1155,15 +1155,19 @@ DECL|macro|TITAN_IACK_SC
 mdefine_line|#define TITAN_IACK_SC&t;     &t;_TITAN_IACK_SC(0) /* hack! */
 multiline_comment|/* &n; * The canonical non-remaped I/O and MEM addresses have these values&n; * subtracted out.  This is arranged so that folks manipulating ISA&n; * devices can use their familiar numbers and have them map to bus 0.&n; */
 DECL|macro|TITAN_IO_BIAS
-mdefine_line|#define TITAN_IO_BIAS          TITAN_IO(0)
+mdefine_line|#define TITAN_IO_BIAS&t;&t;TITAN_IO(0)
 DECL|macro|TITAN_MEM_BIAS
-mdefine_line|#define TITAN_MEM_BIAS         TITAN_MEM(0)
+mdefine_line|#define TITAN_MEM_BIAS&t;&t;TITAN_MEM(0)
 multiline_comment|/* The IO address space is larger than 0xffff */
 DECL|macro|TITAN_IO_SPACE
 mdefine_line|#define TITAN_IO_SPACE&t;&t;(TITAN_CONF(0) - TITAN_IO(0))
 multiline_comment|/* TIG Space */
 DECL|macro|TITAN_TIG_SPACE
 mdefine_line|#define TITAN_TIG_SPACE&t;&t;(TITAN_BASE + 0x100000000UL)
+multiline_comment|/* Offset between ram physical addresses and pci64 DAC bus addresses.  */
+multiline_comment|/* ??? Just a guess.  Ought to confirm it hasn&squot;t been moved.  */
+DECL|macro|TITAN_DAC_OFFSET
+mdefine_line|#define TITAN_DAC_OFFSET&t;(1UL &lt;&lt; 40)
 multiline_comment|/*&n; * Data structure for handling TITAN machine checks:&n; */
 DECL|macro|SCB_Q_SYSERR
 mdefine_line|#define SCB_Q_SYSERR&t;0x620

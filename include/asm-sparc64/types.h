@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: types.h,v 1.3 2000/01/28 13:43:15 jj Exp $ */
+multiline_comment|/* $Id: types.h,v 1.4 2001/10/09 02:24:35 davem Exp $ */
 macro_line|#ifndef _SPARC64_TYPES_H
 DECL|macro|_SPARC64_TYPES_H
 mdefine_line|#define _SPARC64_TYPES_H
@@ -109,11 +109,16 @@ id|u64
 suffix:semicolon
 DECL|macro|BITS_PER_LONG
 mdefine_line|#define BITS_PER_LONG 64
-multiline_comment|/* Dma addresses are 32-bits wide for now.  */
+multiline_comment|/* Dma addresses come in generic and 64-bit flavours.  */
 DECL|typedef|dma_addr_t
 r_typedef
 id|u32
 id|dma_addr_t
+suffix:semicolon
+DECL|typedef|dma64_addr_t
+r_typedef
+id|u64
+id|dma64_addr_t
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* defined(_SPARC64_TYPES_H) */

@@ -1,7 +1,4 @@
 multiline_comment|/*&n; * linux/fs/msdos/vfatfs_syms.c&n; *&n; * Exported kernel symbols for the VFAT filesystem.&n; * These symbols are used by dmsdos.&n; */
-DECL|macro|ASC_LINUX_VERSION
-mdefine_line|#define ASC_LINUX_VERSION(V, P, S)&t;(((V) * 65536) + ((P) * 256) + (S))
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;

@@ -109,11 +109,15 @@ id|u64
 suffix:semicolon
 DECL|macro|BITS_PER_LONG
 mdefine_line|#define BITS_PER_LONG 64
-multiline_comment|/* PCI dma addresses are 32-bits wide.  Ignore PCI64 for now, since&n;   we&squot;ll typically be sending it all through iommu tables anyway.  */
 DECL|typedef|dma_addr_t
 r_typedef
-id|u32
+id|u64
 id|dma_addr_t
+suffix:semicolon
+DECL|typedef|dma64_addr_t
+r_typedef
+id|u64
+id|dma64_addr_t
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ALPHA_TYPES_H */

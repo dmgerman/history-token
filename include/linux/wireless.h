@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file define a set of standard wireless extensions&n; *&n; * Version :&t;11&t;28.3.01&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This file define a set of standard wireless extensions&n; *&n; * Version :&t;12&t;5.10.01&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; */
 macro_line|#ifndef _LINUX_WIRELESS_H
 DECL|macro|_LINUX_WIRELESS_H
 mdefine_line|#define _LINUX_WIRELESS_H
@@ -12,8 +12,8 @@ multiline_comment|/**************************** CONSTANTS **********************
 multiline_comment|/* --------------------------- VERSION --------------------------- */
 multiline_comment|/*&n; * This constant is used to know the availability of the wireless&n; * extensions and to know which version of wireless extensions it is&n; * (there is some stuff that will be added in the future...)&n; * I just plan to increment with each new version.&n; */
 DECL|macro|WIRELESS_EXT
-mdefine_line|#define WIRELESS_EXT&t;11
-multiline_comment|/*&n; * Changes :&n; *&n; * V2 to V3&n; * --------&n; *&t;Alan Cox start some incompatibles changes. I&squot;ve integrated a bit more.&n; *&t;- Encryption renamed to Encode to avoid US regulation problems&n; *&t;- Frequency changed from float to struct to avoid problems on old 386&n; *&n; * V3 to V4&n; * --------&n; *&t;- Add sensitivity&n; *&n; * V4 to V5&n; * --------&n; *&t;- Missing encoding definitions in range&n; *&t;- Access points stuff&n; *&n; * V5 to V6&n; * --------&n; *&t;- 802.11 support (ESSID ioctls)&n; *&n; * V6 to V7&n; * --------&n; *&t;- define IW_ESSID_MAX_SIZE and IW_MAX_AP&n; *&n; * V7 to V8&n; * --------&n; *&t;- Changed my e-mail address&n; *&t;- More 802.11 support (nickname, rate, rts, frag)&n; *&t;- List index in frequencies&n; *&n; * V8 to V9&n; * --------&n; *&t;- Support for &squot;mode of operation&squot; (ad-hoc, managed...)&n; *&t;- Support for unicast and multicast power saving&n; *&t;- Change encoding to support larger tokens (&gt;64 bits)&n; *&t;- Updated iw_params (disable, flags) and use it for NWID&n; *&t;- Extracted iw_point from iwreq for clarity&n; *&n; * V9 to V10&n; * ---------&n; *&t;- Add PM capability to range structure&n; *&t;- Add PM modifier : MAX/MIN/RELATIVE&n; *&t;- Add encoding option : IW_ENCODE_NOKEY&n; *&t;- Add TxPower ioctls (work like TxRate)&n; *&n; * V10 to V11&n; * ----------&n; *&t;- Add WE version in range (help backward/forward compatibility)&n; *&t;- Add retry ioctls (work like PM)&n; */
+mdefine_line|#define WIRELESS_EXT&t;12
+multiline_comment|/*&n; * Changes :&n; *&n; * V2 to V3&n; * --------&n; *&t;Alan Cox start some incompatibles changes. I&squot;ve integrated a bit more.&n; *&t;- Encryption renamed to Encode to avoid US regulation problems&n; *&t;- Frequency changed from float to struct to avoid problems on old 386&n; *&n; * V3 to V4&n; * --------&n; *&t;- Add sensitivity&n; *&n; * V4 to V5&n; * --------&n; *&t;- Missing encoding definitions in range&n; *&t;- Access points stuff&n; *&n; * V5 to V6&n; * --------&n; *&t;- 802.11 support (ESSID ioctls)&n; *&n; * V6 to V7&n; * --------&n; *&t;- define IW_ESSID_MAX_SIZE and IW_MAX_AP&n; *&n; * V7 to V8&n; * --------&n; *&t;- Changed my e-mail address&n; *&t;- More 802.11 support (nickname, rate, rts, frag)&n; *&t;- List index in frequencies&n; *&n; * V8 to V9&n; * --------&n; *&t;- Support for &squot;mode of operation&squot; (ad-hoc, managed...)&n; *&t;- Support for unicast and multicast power saving&n; *&t;- Change encoding to support larger tokens (&gt;64 bits)&n; *&t;- Updated iw_params (disable, flags) and use it for NWID&n; *&t;- Extracted iw_point from iwreq for clarity&n; *&n; * V9 to V10&n; * ---------&n; *&t;- Add PM capability to range structure&n; *&t;- Add PM modifier : MAX/MIN/RELATIVE&n; *&t;- Add encoding option : IW_ENCODE_NOKEY&n; *&t;- Add TxPower ioctls (work like TxRate)&n; *&n; * V10 to V11&n; * ----------&n; *&t;- Add WE version in range (help backward/forward compatibility)&n; *&t;- Add retry ioctls (work like PM)&n; *&n; * V11 to V12&n; * ----------&n; *&t;- Add SIOCSIWSTATS to get /proc/net/wireless programatically&n; *&t;- Add DEV PRIVATE IOCTL to avoid collisions in SIOCDEVPRIVATE space&n; *&t;- Add new statistics (frag, retry, beacon)&n; *&t;- Add average quality (for user space calibration)&n; */
 multiline_comment|/* -------------------------- IOCTL LIST -------------------------- */
 multiline_comment|/* Basic operations */
 DECL|macro|SIOCSIWNAME
@@ -45,6 +45,10 @@ DECL|macro|SIOCSIWPRIV
 mdefine_line|#define SIOCSIWPRIV&t;0x8B0C&t;&t;/* Unused */
 DECL|macro|SIOCGIWPRIV
 mdefine_line|#define SIOCGIWPRIV&t;0x8B0D&t;&t;/* get private ioctl interface info */
+DECL|macro|SIOCSIWSTATS
+mdefine_line|#define SIOCSIWSTATS&t;0x8B0E&t;&t;/* Unused */
+DECL|macro|SIOCGIWSTATS
+mdefine_line|#define SIOCGIWSTATS&t;0x8B0F&t;&t;/* Get /proc/net/wireless stats */
 multiline_comment|/* Mobile IP support */
 DECL|macro|SIOCSIWSPY
 mdefine_line|#define SIOCSIWSPY&t;0x8B10&t;&t;/* set spy addresses */
@@ -98,19 +102,26 @@ DECL|macro|SIOCSIWPOWER
 mdefine_line|#define SIOCSIWPOWER&t;0x8B2C&t;&t;/* set Power Management settings */
 DECL|macro|SIOCGIWPOWER
 mdefine_line|#define SIOCGIWPOWER&t;0x8B2D&t;&t;/* get Power Management settings */
+multiline_comment|/* -------------------- DEV PRIVATE IOCTL LIST -------------------- */
+multiline_comment|/* These 16 ioctl are wireless device private.&n; * Each driver is free to use them for whatever purpose it chooses,&n; * however the driver *must* export the description of those ioctls&n; * with SIOCGIWPRIV and *must* use arguments as defined below.&n; * If you don&squot;t follow those rules, DaveM is going to hate you (reason :&n; * it make mixed 32/64bit operation impossible).&n; */
+DECL|macro|SIOCIWFIRSTPRIV
+mdefine_line|#define SIOCIWFIRSTPRIV&t;0x8BE0
+DECL|macro|SIOCIWLASTPRIV
+mdefine_line|#define SIOCIWLASTPRIV&t;0x8BFF
+multiline_comment|/* Previously, we were using SIOCDEVPRIVATE, but we now have our&n; * separate range because of collisions with other tools such as&n; * &squot;mii-tool&squot;.&n; * We now have 32 commands, so a bit more space ;-).&n; * Also, all &squot;odd&squot; commands are only usable by root and don&squot;t return the&n; * content of ifr/iwr to user (but you are not obliged to use the set/get&n; * convention, just use every other two command).&n; * And I repeat : you are not obliged to use them with iwspy, but you&n; * must be compliant with it.&n; */
 multiline_comment|/* ------------------------- IOCTL STUFF ------------------------- */
 multiline_comment|/* The first and the last (range) */
 DECL|macro|SIOCIWFIRST
 mdefine_line|#define SIOCIWFIRST&t;0x8B00
 DECL|macro|SIOCIWLAST
-mdefine_line|#define SIOCIWLAST&t;0x8B30
+mdefine_line|#define SIOCIWLAST&t;SIOCIWLASTPRIV&t;&t;/* 0x8BFF */
 multiline_comment|/* Even : get (world access), odd : set (root access) */
 DECL|macro|IW_IS_SET
 mdefine_line|#define IW_IS_SET(cmd)&t;(!((cmd) &amp; 0x1))
 DECL|macro|IW_IS_GET
 mdefine_line|#define IW_IS_GET(cmd)&t;((cmd) &amp; 0x1)
 multiline_comment|/* ------------------------- PRIVATE INFO ------------------------- */
-multiline_comment|/*&n; * The following is used with SIOCGIWPRIV. It allow a driver to define&n; * the interface (name, type of data) for its private ioctl.&n; * Privates ioctl are SIOCDEVPRIVATE -&gt; SIOCDEVPRIVATE + 0xF&n; */
+multiline_comment|/*&n; * The following is used with SIOCGIWPRIV. It allow a driver to define&n; * the interface (name, type of data) for its private ioctl.&n; * Privates ioctl are SIOCIWFIRSTPRIV -&gt; SIOCIWLASTPRIV&n; */
 DECL|macro|IW_PRIV_TYPE_MASK
 mdefine_line|#define IW_PRIV_TYPE_MASK&t;0x7000&t;/* Type of arguments */
 DECL|macro|IW_PRIV_TYPE_NONE
@@ -317,17 +328,17 @@ DECL|member|qual
 id|__u8
 id|qual
 suffix:semicolon
-multiline_comment|/* link quality (%retries, SNR or better...) */
+multiline_comment|/* link quality (%retries, SNR,&n;&t;&t;&t;&t;&t;   %missed beacons or better...) */
 DECL|member|level
 id|__u8
 id|level
 suffix:semicolon
-multiline_comment|/* signal level */
+multiline_comment|/* signal level (dBm) */
 DECL|member|noise
 id|__u8
 id|noise
 suffix:semicolon
-multiline_comment|/* noise level */
+multiline_comment|/* noise level (dBm) */
 DECL|member|updated
 id|__u8
 id|updated
@@ -335,7 +346,7 @@ suffix:semicolon
 multiline_comment|/* Flags to know if updated */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *&t;Packet discarded in the wireless adapter due to&n; *&t;&quot;wireless&quot; specific problems...&n; */
+multiline_comment|/*&n; *&t;Packet discarded in the wireless adapter due to&n; *&t;&quot;wireless&quot; specific problems...&n; *&t;Note : the list of counter and statistics in net_device_stats&n; *&t;is already pretty exhaustive, and you should use that first.&n; *&t;This is only additional stats...&n; */
 DECL|struct|iw_discarded
 r_struct
 id|iw_discarded
@@ -344,17 +355,39 @@ DECL|member|nwid
 id|__u32
 id|nwid
 suffix:semicolon
-multiline_comment|/* Wrong nwid */
+multiline_comment|/* Rx : Wrong nwid/essid */
 DECL|member|code
 id|__u32
 id|code
 suffix:semicolon
-multiline_comment|/* Unable to code/decode */
+multiline_comment|/* Rx : Unable to code/decode (WEP) */
+DECL|member|fragment
+id|__u32
+id|fragment
+suffix:semicolon
+multiline_comment|/* Rx : Can&squot;t perform MAC reassembly */
+DECL|member|retries
+id|__u32
+id|retries
+suffix:semicolon
+multiline_comment|/* Tx : Max MAC retries num reached */
 DECL|member|misc
 id|__u32
 id|misc
 suffix:semicolon
 multiline_comment|/* Others cases */
+)brace
+suffix:semicolon
+multiline_comment|/*&n; *&t;Packet/Time period missed in the wireless adapter due to&n; *&t;&quot;wireless&quot; specific problems...&n; */
+DECL|struct|iw_missed
+r_struct
+id|iw_missed
+(brace
+DECL|member|beacon
+id|__u32
+id|beacon
+suffix:semicolon
+multiline_comment|/* Missed beacons/superframe */
 )brace
 suffix:semicolon
 multiline_comment|/* ------------------------ WIRELESS STATS ------------------------ */
@@ -380,6 +413,12 @@ id|iw_discarded
 id|discard
 suffix:semicolon
 multiline_comment|/* Packet discarded counts */
+DECL|member|miss
+r_struct
+id|iw_missed
+id|miss
+suffix:semicolon
+multiline_comment|/* Packet missed counts */
 )brace
 suffix:semicolon
 multiline_comment|/* ------------------------ IOCTL REQUEST ------------------------ */
@@ -718,6 +757,14 @@ id|__s32
 id|max_r_time
 suffix:semicolon
 multiline_comment|/* Maximal retry lifetime */
+multiline_comment|/* Average quality of link &amp; SNR */
+DECL|member|avg_qual
+r_struct
+id|iw_quality
+id|avg_qual
+suffix:semicolon
+multiline_comment|/* Quality of the link */
+multiline_comment|/* This should contain the average/typical values of the quality&n;&t; * indicator. This should be the threshold between a &quot;good&quot; and&n;&t; * a &quot;bad&quot; link (example : monitor going from green to orange).&n;&t; * Currently, user space apps like quality monitors don&squot;t have any&n;&t; * way to calibrate the measurement. With this, they can split&n;&t; * the range between 0 and max_qual in different quality level&n;&t; * (using a geometric subdivision centered on the average).&n;&t; * I expect that people doing the user space apps will feedback&n;&t; * us on which value we need to put in each driver...&n;&t; */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Private ioctl interface information&n; */

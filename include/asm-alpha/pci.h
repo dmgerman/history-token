@@ -18,6 +18,9 @@ suffix:semicolon
 r_struct
 id|pci_iommu_arena
 suffix:semicolon
+r_struct
+id|page
+suffix:semicolon
 multiline_comment|/* A controller.  Used to manage multiple PCI busses.  */
 DECL|struct|pci_controller
 r_struct
@@ -135,6 +138,9 @@ id|irq
 multiline_comment|/* We don&squot;t do dynamic PCI IRQ allocation */
 )brace
 multiline_comment|/* IOMMU controls.  */
+multiline_comment|/* The PCI address space does not equal the physical memory address space.&n;   The networking and block device layers use this boolean for bounce buffer&n;   decisions.  */
+DECL|macro|PCI_DMA_BUS_IS_PHYS
+mdefine_line|#define PCI_DMA_BUS_IS_PHYS  0
 multiline_comment|/* Allocate and map kernel buffer using consistant mode DMA for PCI&n;   device.  Returns non-NULL cpu-view pointer to the buffer if&n;   successful and sets *DMA_ADDRP to the pci side dma address as well,&n;   else DMA_ADDRP is undefined.  */
 r_extern
 r_void
@@ -188,10 +194,48 @@ comma
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/* Likewise, but for a page instead of an address.  */
+r_extern
+id|dma_addr_t
+id|pci_map_page
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+comma
+r_struct
+id|page
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/* Unmap a single streaming mode DMA translation.  The DMA_ADDR and&n;   SIZE must match what was provided for in a previous pci_map_single&n;   call.  All other usages are undefined.  After this call, reads by&n;   the cpu to the buffer are guarenteed to see whatever the device&n;   wrote there.  */
 r_extern
 r_void
 id|pci_unmap_single
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+comma
+id|dma_addr_t
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pci_unmap_page
 c_func
 (paren
 r_struct
@@ -244,7 +288,7 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* Make physical memory consistant for a single streaming mode DMA&n;   translation after a transfer.&n;&n;   If you perform a pci_map_single() but wish to interrogate the&n;   buffer using the cpu, yet do not wish to teardown the PCI dma&n;   mapping, you must call this function before doing so.  At the next&n;   point you give the PCI dma address back to the card, the device&n;   again owns the buffer.  */
-r_extern
+r_static
 r_inline
 r_void
 DECL|function|pci_dma_sync_single
@@ -269,7 +313,7 @@ id|direction
 multiline_comment|/* Nothing to do.  */
 )brace
 multiline_comment|/* Make physical memory consistant for a set of streaming mode DMA&n;   translations after a transfer.  The same as pci_dma_sync_single but&n;   for a scatter-gather list, same rules and usage.  */
-r_extern
+r_static
 r_inline
 r_void
 DECL|function|pci_dma_sync_sg
@@ -306,10 +350,96 @@ id|pci_dev
 op_star
 id|hwdev
 comma
-id|dma_addr_t
+id|u64
 id|mask
 )paren
 suffix:semicolon
+multiline_comment|/* True if the machine supports DAC addressing, and DEV can&n;   make use of it given MASK.  */
+r_extern
+r_int
+id|pci_dac_dma_supported
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+id|u64
+id|mask
+)paren
+suffix:semicolon
+multiline_comment|/* Convert to/from DAC dma address and struct page.  */
+r_extern
+id|dma64_addr_t
+id|pci_dac_page_to_dma
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+comma
+r_struct
+id|page
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|page
+op_star
+id|pci_dac_dma_to_page
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+comma
+id|dma64_addr_t
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|pci_dac_dma_to_offset
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+comma
+id|dma64_addr_t
+)paren
+suffix:semicolon
+r_static
+id|__inline__
+r_void
+DECL|function|pci_dac_dma_sync_single
+id|pci_dac_dma_sync_single
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+id|dma64_addr_t
+id|dma_addr
+comma
+r_int
+id|len
+comma
+r_int
+id|direction
+)paren
+(brace
+multiline_comment|/* Nothing to do. */
+)brace
 multiline_comment|/* Return the index of the PCI controller for device PDEV. */
 r_extern
 r_int

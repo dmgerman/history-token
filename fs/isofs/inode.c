@@ -5145,14 +5145,14 @@ id|de-&gt;size
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* There are defective discs out there - we do this to protect&n;&t;   ourselves.  A cdrom will never contain more than 800Mb &n;&t;   .. but a DVD may be up to 1Gig (Ulrich Habel) */
+multiline_comment|/*&n;&t; * The ISO-9660 filesystem only stores 32 bits for file size.&n;&t; * mkisofs handles files up to 2GB-2 = 2147483646 = 0x7FFFFFFE bytes&n;&t; * in size. This is according to the large file summit paper from 1996.&n;&t; * WARNING: ISO-9660 filesystems &gt; 1 GB and even &gt; 2 GB are fully&n;&t; *&t;    legal. Do not prevent to use DVD&squot;s schilling@fokus.gmd.de&n;&t; */
 r_if
 c_cond
 (paren
 (paren
 id|inode-&gt;i_size
 template_param
-l_int|1073741824
+l_int|0x7FFFFFFE
 )paren
 op_logical_and
 id|inode-&gt;i_sb-&gt;u.isofs_sb.s_cruft

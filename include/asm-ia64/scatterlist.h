@@ -12,12 +12,6 @@ op_star
 id|address
 suffix:semicolon
 multiline_comment|/* location data is to be transferred to */
-multiline_comment|/*&n;&t; * Location of actual buffer if ADDRESS points to a DMA&n;&t; * indirection buffer, NULL otherwise:&n;&t; */
-DECL|member|alt_address
-r_char
-op_star
-id|alt_address
-suffix:semicolon
 DECL|member|orig_address
 r_char
 op_star

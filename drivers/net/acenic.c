@@ -235,10 +235,6 @@ macro_line|#ifndef SMP_CACHE_BYTES
 DECL|macro|SMP_CACHE_BYTES
 mdefine_line|#define SMP_CACHE_BYTES&t;L1_CACHE_BYTES
 macro_line|#endif
-macro_line|#if (BITS_PER_LONG == 64) || defined(CONFIG_HIGHMEM)
-DECL|macro|ACE_64BIT_PTR
-mdefine_line|#define ACE_64BIT_PTR&t;1
-macro_line|#endif
 macro_line|#ifndef SET_MODULE_OWNER
 DECL|macro|SET_MODULE_OWNER
 mdefine_line|#define SET_MODULE_OWNER(dev)&t;&t;{do{} while(0);}
@@ -328,10 +324,14 @@ suffix:semicolon
 )brace
 DECL|macro|pci_free_consistent
 mdefine_line|#define pci_free_consistent(cookie, size, ptr, dma_ptr)&t;kfree(ptr)
-DECL|macro|pci_map_single
-mdefine_line|#define pci_map_single(cookie, address, size, dir)&t;virt_to_bus(address)
-DECL|macro|pci_unmap_single
-mdefine_line|#define pci_unmap_single(cookie, address, size, dir)
+DECL|macro|pci_map_page
+mdefine_line|#define pci_map_page(cookie, page, off, size, dir)&t;&bslash;&n;&t;virt_to_bus(page_address(page)+(off))
+DECL|macro|pci_unmap_page
+mdefine_line|#define pci_unmap_page(cookie, address, size, dir)
+DECL|macro|pci_set_dma_mask
+mdefine_line|#define pci_set_dma_mask(dev, mask)&t;&t;&bslash;&n;&t;(((u64)(mask) &amp; 0xffffffff00000000) == 0 ? 0 : -EIO)
+DECL|macro|pci_dma_supported
+mdefine_line|#define pci_dma_supported(dev, mask)&t;&t;&bslash;&n;&t;(((u64)(mask) &amp; 0xffffffff00000000) == 0 ? 1 : 0)
 macro_line|#endif
 macro_line|#if (LINUX_VERSION_CODE &lt; 0x02032b)
 multiline_comment|/*&n; * SoftNet&n; *&n; * For pre-softnet kernels we need to tell the upper layer not to&n; * re-enter start_xmit() while we are in there. However softnet&n; * guarantees not to enter while we are in there so there is no need&n; * to do the netif_stop_queue() dance unless the transmit queue really&n; * gets stuck. This should also improve performance according to tests&n; * done by Aman Singla.&n; */
@@ -483,10 +483,6 @@ DECL|macro|ace_mark_net_bh
 mdefine_line|#define ace_mark_net_bh()&t;&t;&t;{do{} while(0);}
 DECL|macro|ace_if_down
 mdefine_line|#define ace_if_down(dev)&t;&t;&t;{do{} while(0);}
-macro_line|#endif
-macro_line|#ifndef pci_set_dma_mask
-DECL|macro|pci_set_dma_mask
-mdefine_line|#define pci_set_dma_mask(dev, mask)&t;&t;dev-&gt;dma_mask = mask;
 macro_line|#endif
 macro_line|#if (LINUX_VERSION_CODE &gt;= 0x02031b)
 DECL|macro|NEW_NETINIT
@@ -988,8 +984,6 @@ op_or_assign
 id|NETIF_F_SG
 op_or
 id|NETIF_F_IP_CSUM
-op_or
-id|NETIF_F_HIGHDMA
 suffix:semicolon
 r_if
 c_cond
@@ -1544,6 +1538,15 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ap-&gt;pci_using_dac
+)paren
+id|dev-&gt;features
+op_or_assign
+id|NETIF_F_HIGHDMA
+suffix:semicolon
 id|boards_found
 op_increment
 suffix:semicolon
@@ -1863,7 +1866,7 @@ id|i
 dot
 id|mapping
 suffix:semicolon
-id|pci_unmap_single
+id|pci_unmap_page
 c_func
 (paren
 id|ap-&gt;pdev
@@ -1960,7 +1963,7 @@ id|i
 dot
 id|mapping
 suffix:semicolon
-id|pci_unmap_single
+id|pci_unmap_page
 c_func
 (paren
 id|ap-&gt;pdev
@@ -2050,7 +2053,7 @@ id|i
 dot
 id|mapping
 suffix:semicolon
-id|pci_unmap_single
+id|pci_unmap_page
 c_func
 (paren
 id|ap-&gt;pdev
@@ -3582,29 +3585,6 @@ comma
 id|ap-&gt;pci_latency
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Make sure to enable the 64 bit DMA mask if we&squot;re in a 64bit slot&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|pci_state
-op_amp
-id|PCI_32BIT
-)paren
-)paren
-id|pci_set_dma_mask
-c_func
-(paren
-id|ap-&gt;pdev
-comma
-(paren
-id|dma_addr_t
-)paren
-op_complement
-l_int|0ULL
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Set the max DMA transfer size. Seems that for most systems&n;&t; * the performance is better when no MAX parameter is&n;&t; * set. However for systems enabling PCI write and invalidate,&n;&t; * DMA writes must be set to the L1 cache line size to get&n;&t; * optimal performance.&n;&t; *&n;&t; * The default is now to turn the PCI write and invalidate off&n;&t; * - that is what Alteon does for NT.&n;&t; */
 id|tmp
 op_assign
@@ -3846,6 +3826,61 @@ id|ap-&gt;pci_command
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/*&n;&t; * Configure DMA attributes.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pci_set_dma_mask
+c_func
+(paren
+id|ap-&gt;pdev
+comma
+(paren
+id|u64
+)paren
+l_int|0xffffffffffffffff
+)paren
+)paren
+(brace
+id|ap-&gt;pci_using_dac
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pci_set_dma_mask
+c_func
+(paren
+id|ap-&gt;pdev
+comma
+(paren
+id|u64
+)paren
+l_int|0xffffffff
+)paren
+)paren
+(brace
+id|ap-&gt;pci_using_dac
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|ecode
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_goto
+id|init_error
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Initialize the generic info block and the command+event rings&n;&t; * and the control blocks for the transmit and receive rings&n;&t; * as they need to be setup once and for all.&n;&t; */
 r_if
 c_cond
@@ -4025,12 +4060,10 @@ suffix:semicolon
 id|tmp_ptr
 op_assign
 (paren
-r_int
-r_int
+id|u64
 )paren
 id|ap-&gt;info_dma
 suffix:semicolon
-macro_line|#ifdef ACE_64BIT_PTR
 id|writel
 c_func
 (paren
@@ -4042,17 +4075,6 @@ op_amp
 id|regs-&gt;InfoPtrHi
 )paren
 suffix:semicolon
-macro_line|#else
-id|writel
-c_func
-(paren
-l_int|0
-comma
-op_amp
-id|regs-&gt;InfoPtrHi
-)paren
-suffix:semicolon
-macro_line|#endif
 id|writel
 c_func
 (paren
@@ -6119,12 +6141,27 @@ l_int|16
 suffix:semicolon
 id|mapping
 op_assign
-id|pci_map_single
+id|pci_map_page
 c_func
 (paren
 id|ap-&gt;pdev
 comma
+id|virt_to_page
+c_func
+(paren
 id|skb-&gt;data
+)paren
+comma
+(paren
+(paren
+r_int
+r_int
+)paren
+id|skb-&gt;data
+op_amp
+op_complement
+id|PAGE_MASK
+)paren
 comma
 id|ACE_STD_BUFSIZE
 op_minus
@@ -6396,12 +6433,27 @@ l_int|16
 suffix:semicolon
 id|mapping
 op_assign
-id|pci_map_single
+id|pci_map_page
 c_func
 (paren
 id|ap-&gt;pdev
 comma
+id|virt_to_page
+c_func
+(paren
 id|skb-&gt;data
+)paren
+comma
+(paren
+(paren
+r_int
+r_int
+)paren
+id|skb-&gt;data
+op_amp
+op_complement
+id|PAGE_MASK
+)paren
 comma
 id|ACE_MINI_BUFSIZE
 op_minus
@@ -6624,12 +6676,27 @@ l_int|16
 suffix:semicolon
 id|mapping
 op_assign
-id|pci_map_single
+id|pci_map_page
 c_func
 (paren
 id|ap-&gt;pdev
 comma
+id|virt_to_page
+c_func
+(paren
 id|skb-&gt;data
+)paren
+comma
+(paren
+(paren
+r_int
+r_int
+)paren
+id|skb-&gt;data
+op_amp
+op_complement
+id|PAGE_MASK
+)paren
 comma
 id|ACE_JUMBO_BUFSIZE
 op_minus
@@ -7543,7 +7610,7 @@ id|rip-&gt;skb
 op_assign
 l_int|NULL
 suffix:semicolon
-id|pci_unmap_single
+id|pci_unmap_page
 c_func
 (paren
 id|ap-&gt;pdev
@@ -7775,7 +7842,7 @@ c_cond
 id|mapping
 )paren
 (brace
-id|pci_unmap_single
+id|pci_unmap_page
 c_func
 (paren
 id|ap-&gt;pdev
@@ -8739,7 +8806,7 @@ id|tx_desc
 )paren
 )paren
 suffix:semicolon
-id|pci_unmap_single
+id|pci_unmap_page
 c_func
 (paren
 id|ap-&gt;pdev
@@ -8814,139 +8881,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Following below should be (in more clean form!) in arch/ARCH/kernel/pci_*.&n; * For now, let it stay here.&n; */
-macro_line|#if defined(CONFIG_HIGHMEM) &amp;&amp; MAX_SKB_FRAGS
-macro_line|#if defined(CONFIG_X86)
-DECL|macro|DMAADDR_OFFSET
-mdefine_line|#define DMAADDR_OFFSET&t;0
-DECL|typedef|dmaaddr_high_t
-r_typedef
-r_int
-r_int
-r_int
-id|dmaaddr_high_t
-suffix:semicolon
-macro_line|#elif defined(CONFIG_PPC)
-DECL|macro|DMAADDR_OFFSET
-mdefine_line|#define DMAADDR_OFFSET PCI_DRAM_OFFSET
-DECL|typedef|dmaaddr_high_t
-r_typedef
-r_int
-r_int
-id|dmaaddr_high_t
-suffix:semicolon
-macro_line|#endif
 r_static
 r_inline
-id|dmaaddr_high_t
-DECL|function|pci_map_single_high
-id|pci_map_single_high
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|hwdev
-comma
-r_struct
-id|page
-op_star
-id|page
-comma
-r_int
-id|offset
-comma
-r_int
-id|size
-comma
-r_int
-id|dir
-)paren
-(brace
-id|dmaaddr_high_t
-id|phys
-suffix:semicolon
-id|phys
-op_assign
-(paren
-id|page
-op_minus
-id|mem_map
-)paren
-op_star
-(paren
-id|dmaaddr_high_t
-)paren
-id|PAGE_SIZE
-op_plus
-id|offset
-suffix:semicolon
-r_return
-(paren
-id|phys
-op_plus
-id|DMAADDR_OFFSET
-)paren
-suffix:semicolon
-)brace
-macro_line|#else
-DECL|typedef|dmaaddr_high_t
-r_typedef
-r_int
-r_int
-id|dmaaddr_high_t
-suffix:semicolon
-r_static
-r_inline
-id|dmaaddr_high_t
-DECL|function|pci_map_single_high
-id|pci_map_single_high
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|hwdev
-comma
-r_struct
-id|page
-op_star
-id|page
-comma
-r_int
-id|offset
-comma
-r_int
-id|size
-comma
-r_int
-id|dir
-)paren
-(brace
-r_return
-id|pci_map_single
-c_func
-(paren
-id|hwdev
-comma
-id|page_address
-c_func
-(paren
-id|page
-)paren
-op_plus
-id|offset
-comma
-id|size
-comma
-id|dir
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-r_static
-r_inline
-id|dmaaddr_high_t
+id|dma_addr_t
 DECL|function|ace_map_tx_skb
 id|ace_map_tx_skb
 c_func
@@ -8981,12 +8918,27 @@ id|info
 suffix:semicolon
 id|addr
 op_assign
-id|pci_map_single
+id|pci_map_page
 c_func
 (paren
 id|ap-&gt;pdev
 comma
+id|virt_to_page
+c_func
+(paren
 id|skb-&gt;data
+)paren
+comma
+(paren
+(paren
+r_int
+r_int
+)paren
+id|skb-&gt;data
+op_amp
+op_complement
+id|PAGE_MASK
+)paren
 comma
 id|skb-&gt;len
 comma
@@ -9027,7 +8979,7 @@ id|tx_desc
 op_star
 id|desc
 comma
-id|dmaaddr_high_t
+id|u64
 id|addr
 comma
 id|u32
@@ -9041,14 +8993,12 @@ op_complement
 id|BD_FLG_COAL_NOW
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef ACE_64BIT_PTR
 id|desc-&gt;addr.addrhi
 op_assign
 id|addr
 op_rshift
 l_int|32
 suffix:semicolon
-macro_line|#endif
 id|desc-&gt;addr.addrlo
 op_assign
 id|addr
@@ -9346,7 +9296,7 @@ id|tx_ring_info
 op_star
 id|info
 suffix:semicolon
-id|dmaaddr_high_t
+id|dma_addr_t
 id|phys
 suffix:semicolon
 id|len
@@ -9367,7 +9317,7 @@ id|idx
 suffix:semicolon
 id|phys
 op_assign
-id|pci_map_single_high
+id|pci_map_page
 c_func
 (paren
 id|ap-&gt;pdev

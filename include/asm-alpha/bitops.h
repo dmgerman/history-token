@@ -5,8 +5,8 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 multiline_comment|/*&n; * Copyright 1994, Linus Torvalds.&n; */
 multiline_comment|/*&n; * These have to be done with inline assembly: that way the bit-setting&n; * is guaranteed to be atomic. All bit operations return 0 if the bit&n; * was cleared before the operation and != 0 if it was not.&n; *&n; * To get proper branch prediction for the main line, we must branch&n; * forward to code at the end of this object&squot;s .text section, then&n; * branch back to restart the operation.&n; *&n; * bit 0 is the LSB of addr; bit 64 is the LSB of (addr+1).&n; */
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 DECL|function|set_bit
 id|set_bit
@@ -87,8 +87,8 @@ id|m
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * WARNING: non atomic version.&n; */
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 DECL|function|__set_bit
 id|__set_bit
@@ -138,8 +138,8 @@ DECL|macro|smp_mb__before_clear_bit
 mdefine_line|#define smp_mb__before_clear_bit()&t;smp_mb()
 DECL|macro|smp_mb__after_clear_bit
 mdefine_line|#define smp_mb__after_clear_bit()&t;smp_mb()
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 DECL|function|clear_bit
 id|clear_bit
@@ -270,8 +270,8 @@ l_int|31
 )paren
 suffix:semicolon
 )brace
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 DECL|function|change_bit
 id|change_bit
@@ -351,8 +351,8 @@ id|m
 )paren
 suffix:semicolon
 )brace
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 DECL|function|test_and_set_bit
 id|test_and_set_bit
@@ -455,8 +455,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * WARNING: non atomic version.&n; */
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 DECL|function|__test_and_set_bit
 id|__test_and_set_bit
@@ -525,8 +525,8 @@ op_ne
 l_int|0
 suffix:semicolon
 )brace
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 DECL|function|test_and_clear_bit
 id|test_and_clear_bit
@@ -629,8 +629,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * WARNING: non atomic version.&n; */
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 DECL|function|__test_and_clear_bit
 id|__test_and_clear_bit
@@ -771,8 +771,8 @@ op_ne
 l_int|0
 suffix:semicolon
 )brace
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 DECL|function|test_and_change_bit
 id|test_and_change_bit
@@ -872,8 +872,8 @@ op_ne
 l_int|0
 suffix:semicolon
 )brace
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 DECL|function|test_bit
 id|test_bit
@@ -920,7 +920,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * ffz = Find First Zero in word. Undefined if no zero exists,&n; * so code should check against ~0UL first..&n; *&n; * Do a binary search on the bits.  Due to the nature of large&n; * constants on the alpha, it is worthwhile to split the search.&n; */
 DECL|function|ffz_b
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -986,7 +986,7 @@ id|sum
 suffix:semicolon
 )brace
 DECL|function|ffz
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -1104,7 +1104,7 @@ macro_line|#endif
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * ffs: find first bit set. This is defined the same way as&n; * the libc and compiler builtin ffs routines, therefore&n; * differs in spirit from the above ffz (man ffs).&n; */
 DECL|function|ffs
-r_extern
+r_static
 r_inline
 r_int
 id|ffs
@@ -1135,12 +1135,108 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Compute powers of two for the given integer.  */
+DECL|function|floor_log2
+r_static
+r_inline
+r_int
+id|floor_log2
+c_func
+(paren
+r_int
+r_int
+id|word
+)paren
+(brace
+r_int
+id|bit
+suffix:semicolon
+macro_line|#if defined(__alpha_cix__) &amp;&amp; defined(__alpha_fix__)
+id|__asm__
+c_func
+(paren
+l_string|&quot;ctlz %1,%0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|bit
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|word
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|63
+op_minus
+id|bit
+suffix:semicolon
+macro_line|#else
+r_for
+c_loop
+(paren
+id|bit
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|word
+suffix:semicolon
+id|bit
+op_increment
+)paren
+id|word
+op_rshift_assign
+l_int|1
+suffix:semicolon
+r_return
+id|bit
+suffix:semicolon
+macro_line|#endif
+)brace
+DECL|function|ceil_log2
+r_static
+r_inline
+r_int
+id|ceil_log2
+c_func
+(paren
+r_int
+r_int
+id|word
+)paren
+(brace
+r_int
+id|bit
+op_assign
+id|floor_log2
+c_func
+(paren
+id|word
+)paren
+suffix:semicolon
+r_return
+id|bit
+op_plus
+(paren
+id|word
+OG
+(paren
+l_int|1UL
+op_lshift
+id|bit
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * hweightN: returns the hamming weight (i.e. the number&n; * of bits set) of a N-bit word&n; */
 macro_line|#if defined(__alpha_cix__) &amp;&amp; defined(__alpha_fix__)
 multiline_comment|/* Whee.  EV67 can calculate it directly.  */
 DECL|function|hweight64
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|hweight64
@@ -1191,7 +1287,7 @@ mdefine_line|#define hweight8(x)  generic_hweight8(x)
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * Find next zero bit in a bitmap reasonably efficiently..&n; */
-r_extern
+r_static
 r_inline
 r_int
 r_int

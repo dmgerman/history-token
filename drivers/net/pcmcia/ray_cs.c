@@ -6924,12 +6924,16 @@ r_break
 suffix:semicolon
 macro_line|#endif&t;/* WIRELESS_SPY */
 multiline_comment|/* ------------------ PRIVATE IOCTL ------------------ */
+macro_line|#ifndef SIOCIWFIRSTPRIV
+DECL|macro|SIOCIWFIRSTPRIV
+mdefine_line|#define SIOCIWFIRSTPRIV&t;SIOCDEVPRIVATE
+macro_line|#endif /* SIOCIWFIRSTPRIV */
 DECL|macro|SIOCSIPFRAMING
-mdefine_line|#define SIOCSIPFRAMING&t;SIOCDEVPRIVATE&t;&t;/* Set framing mode */
+mdefine_line|#define SIOCSIPFRAMING&t;SIOCIWFIRSTPRIV&t;&t;/* Set framing mode */
 DECL|macro|SIOCGIPFRAMING
-mdefine_line|#define SIOCGIPFRAMING&t;SIOCDEVPRIVATE + 1&t;/* Get framing mode */
+mdefine_line|#define SIOCGIPFRAMING&t;SIOCIWFIRSTPRIV + 1&t;/* Get framing mode */
 DECL|macro|SIOCGIPCOUNTRY
-mdefine_line|#define SIOCGIPCOUNTRY&t;SIOCDEVPRIVATE + 3&t;/* Get country code */
+mdefine_line|#define SIOCGIPCOUNTRY&t;SIOCIWFIRSTPRIV + 3&t;/* Get country code */
 r_case
 id|SIOCSIPFRAMING
 suffix:colon

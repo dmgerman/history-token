@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_iommu.c,v 1.15 2001/08/24 19:36:58 kanoj Exp $&n; * pci_iommu.c: UltraSparc PCI controller IOM/STC support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1999, 2000 Jakub Jelinek (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: pci_iommu.c,v 1.16 2001/10/09 02:24:33 davem Exp $&n; * pci_iommu.c: UltraSparc PCI controller IOM/STC support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1999, 2000 Jakub Jelinek (jakub@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -1917,6 +1917,8 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|macro|SG_ENT_PHYS_ADDRESS
+mdefine_line|#define SG_ENT_PHYS_ADDRESS(SG)&t;&bslash;&n;&t;((SG)-&gt;address ? &bslash;&n;&t; __pa((SG)-&gt;address) : &bslash;&n;&t; (__pa(page_address((SG)-&gt;page)) + (SG)-&gt;offset))
 DECL|function|fill_sg
 r_static
 r_inline
@@ -1937,6 +1939,9 @@ r_int
 id|nused
 comma
 r_int
+id|nelems
+comma
+r_int
 r_int
 id|iopte_protection
 )paren
@@ -1947,6 +1952,15 @@ op_star
 id|dma_sg
 op_assign
 id|sg
+suffix:semicolon
+r_struct
+id|scatterlist
+op_star
+id|sg_end
+op_assign
+id|sg
+op_plus
+id|nelems
 suffix:semicolon
 r_int
 id|i
@@ -1980,7 +1994,7 @@ id|dma_npages
 op_assign
 (paren
 (paren
-id|dma_sg-&gt;dvma_address
+id|dma_sg-&gt;dma_address
 op_amp
 (paren
 id|IO_PAGE_SIZE
@@ -1989,12 +2003,9 @@ l_int|1UL
 )paren
 )paren
 op_plus
-id|dma_sg-&gt;dvma_length
+id|dma_sg-&gt;dma_length
 op_plus
 (paren
-(paren
-id|u32
-)paren
 (paren
 id|IO_PAGE_SIZE
 op_minus
@@ -2029,14 +2040,10 @@ id|tmp
 suffix:semicolon
 id|tmp
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|__pa
+id|SG_ENT_PHYS_ADDRESS
 c_func
 (paren
-id|sg-&gt;address
+id|sg
 )paren
 suffix:semicolon
 id|len
@@ -2202,6 +2209,10 @@ multiline_comment|/* Skip over any tail mappings we&squot;ve fully mapped,&n;&t;
 r_while
 c_loop
 (paren
+id|sg
+OL
+id|sg_end
+op_logical_and
 (paren
 id|pteval
 op_lshift
@@ -2214,12 +2225,14 @@ id|IO_PAGE_SHIFT
 op_ne
 l_int|0UL
 op_logical_and
+(paren
 id|pteval
 op_eq
-id|__pa
+id|SG_ENT_PHYS_ADDRESS
 c_func
 (paren
-id|sg-&gt;address
+id|sg
+)paren
 )paren
 op_logical_and
 (paren
@@ -2227,10 +2240,10 @@ op_logical_and
 id|pteval
 op_xor
 (paren
-id|__pa
+id|SG_ENT_PHYS_ADDRESS
 c_func
 (paren
-id|sg-&gt;address
+id|sg
 )paren
 op_plus
 id|sg-&gt;length
@@ -2359,21 +2372,36 @@ op_eq
 l_int|1
 )paren
 (brace
-id|sglist-&gt;dvma_address
+id|sglist-&gt;dma_address
 op_assign
 id|pci_map_single
 c_func
 (paren
 id|pdev
 comma
+(paren
 id|sglist-&gt;address
+ques
+c_cond
+id|sglist-&gt;address
+suffix:colon
+(paren
+id|page_address
+c_func
+(paren
+id|sglist-&gt;page
+)paren
+op_plus
+id|sglist-&gt;offset
+)paren
+)paren
 comma
 id|sglist-&gt;length
 comma
 id|direction
 )paren
 suffix:semicolon
-id|sglist-&gt;dvma_length
+id|sglist-&gt;dma_length
 op_assign
 id|sglist-&gt;length
 suffix:semicolon
@@ -2475,10 +2503,10 @@ c_loop
 (paren
 id|used
 op_logical_and
-id|sgtmp-&gt;dvma_length
+id|sgtmp-&gt;dma_length
 )paren
 (brace
-id|sgtmp-&gt;dvma_address
+id|sgtmp-&gt;dma_address
 op_add_assign
 id|dma_base
 suffix:semicolon
@@ -2551,6 +2579,8 @@ comma
 id|sglist
 comma
 id|used
+comma
+id|nelems
 comma
 id|iopte_protection
 )paren
@@ -2683,7 +2713,7 @@ id|pcp-&gt;pbm-&gt;stc
 suffix:semicolon
 id|bus_addr
 op_assign
-id|sglist-&gt;dvma_address
+id|sglist-&gt;dma_address
 op_amp
 id|IO_PAGE_MASK
 suffix:semicolon
@@ -2709,7 +2739,7 @@ id|sglist
 id|i
 )braket
 dot
-id|dvma_length
+id|dma_length
 op_eq
 l_int|0
 )paren
@@ -2729,14 +2759,14 @@ id|sglist
 id|i
 )braket
 dot
-id|dvma_address
+id|dma_address
 op_plus
 id|sglist
 (braket
 id|i
 )braket
 dot
-id|dvma_length
+id|dma_length
 )paren
 op_minus
 id|bus_addr
@@ -2774,9 +2804,9 @@ id|IOPTE_INVALID
 id|printk
 c_func
 (paren
-l_string|&quot;pci_unmap_sg called on non-mapped region %08x,%d from %016lx&bslash;n&quot;
+l_string|&quot;pci_unmap_sg called on non-mapped region %016lx,%d from %016lx&bslash;n&quot;
 comma
-id|sglist-&gt;dvma_address
+id|sglist-&gt;dma_address
 comma
 id|nelems
 comma
@@ -2832,6 +2862,9 @@ id|strbuf-&gt;strbuf_enabled
 id|u32
 id|vaddr
 op_assign
+(paren
+id|u32
+)paren
 id|bus_addr
 suffix:semicolon
 id|PCI_STC_FLUSHFLAG_INIT
@@ -3386,7 +3419,7 @@ id|sglist
 l_int|0
 )braket
 dot
-id|dvma_address
+id|dma_address
 op_minus
 id|iommu-&gt;page_table_map_base
 )paren
@@ -3492,7 +3525,7 @@ id|sglist
 l_int|0
 )braket
 dot
-id|dvma_address
+id|dma_address
 op_amp
 id|IO_PAGE_MASK
 suffix:semicolon
@@ -3519,7 +3552,7 @@ id|sglist
 id|i
 )braket
 dot
-id|dvma_length
+id|dma_length
 )paren
 r_break
 suffix:semicolon
@@ -3537,14 +3570,14 @@ id|sglist
 id|i
 )braket
 dot
-id|dvma_address
+id|dma_address
 op_plus
 id|sglist
 (braket
 id|i
 )braket
 dot
-id|dvma_length
+id|dma_length
 )paren
 op_minus
 id|bus_addr
@@ -3633,7 +3666,7 @@ id|pci_dev
 op_star
 id|pdev
 comma
-id|dma_addr_t
+id|u64
 id|device_mask
 )paren
 (brace
@@ -3644,7 +3677,7 @@ id|pcp
 op_assign
 id|pdev-&gt;sysdata
 suffix:semicolon
-id|u32
+id|u64
 id|dma_addr_mask
 suffix:semicolon
 r_if

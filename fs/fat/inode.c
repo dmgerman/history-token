@@ -1,8 +1,4 @@
 multiline_comment|/*&n; *  linux/fs/fat/inode.c&n; *&n; *  Written 1992,1993 by Werner Almesberger&n; *  VFAT extensions by Gordon Chaffee, merged with msdos fs by Henrik Storner&n; *  Rewritten for the constant inumbers support by Al Viro&n; *&n; *  Fixes:&n; *&n; *  &t;Max Cohan: Fixed invalid FSINFO offset when info_sector is 0&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/nls.h&gt;
@@ -10,6 +6,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -17,9 +14,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/fat_cvf.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &quot;msbuffer.h&quot;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 r_extern
@@ -340,20 +335,12 @@ op_amp
 id|fat_inode_lock
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|list_for_each
+c_func
 (paren
 id|walk
-op_assign
-id|p-&gt;next
-suffix:semicolon
-id|walk
-op_ne
+comma
 id|p
-suffix:semicolon
-id|walk
-op_assign
-id|walk-&gt;next
 )paren
 (brace
 id|i
@@ -949,6 +936,10 @@ op_assign
 l_int|0
 suffix:semicolon
 id|opts-&gt;nocase
+op_assign
+l_int|0
+suffix:semicolon
+id|opts-&gt;shortname
 op_assign
 l_int|0
 suffix:semicolon
@@ -1822,6 +1813,27 @@ id|len
 r_char
 op_star
 id|buffer
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|opts-&gt;iocharset
+op_ne
+l_int|NULL
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|opts-&gt;iocharset
+)paren
+suffix:semicolon
+id|opts-&gt;iocharset
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+id|buffer
 op_assign
 id|kmalloc
 c_func
@@ -1837,6 +1849,8 @@ r_if
 c_cond
 (paren
 id|buffer
+op_ne
+l_int|NULL
 )paren
 (brace
 id|opts-&gt;iocharset
@@ -3257,9 +3271,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|bh-&gt;b_blocknr
-op_ne
 id|fsinfo_block
+op_ne
+l_int|0
 )paren
 (brace
 id|fsinfo_bh
@@ -3362,9 +3376,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|bh-&gt;b_blocknr
-op_ne
 id|fsinfo_block
+op_ne
+l_int|0
 )paren
 id|brelse
 c_func
@@ -3595,6 +3609,14 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_goto
+id|out_invalid
+suffix:semicolon
 id|sb-&gt;s_blocksize
 op_assign
 id|logical_sector_size
@@ -3805,13 +3827,6 @@ op_assign
 id|MSDOS_SUPER_MAGIC
 suffix:semicolon
 multiline_comment|/* set up enough so that it can read an inode */
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|sbi-&gt;fat_wait
-)paren
-suffix:semicolon
 id|init_MUTEX
 c_func
 (paren
@@ -5107,6 +5122,7 @@ op_star
 id|raw_entry
 suffix:semicolon
 r_int
+r_int
 id|i_pos
 suffix:semicolon
 id|retry
@@ -5622,6 +5638,8 @@ l_int|0
 suffix:colon
 id|error
 suffix:semicolon
+id|error
+op_assign
 id|inode_setattr
 c_func
 (paren
@@ -5629,6 +5647,14 @@ id|inode
 comma
 id|attr
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_return
+id|error
 suffix:semicolon
 r_if
 c_cond
@@ -5693,4 +5719,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

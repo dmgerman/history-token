@@ -8815,6 +8815,22 @@ id|range.max_qual.noise
 op_assign
 id|MMR_SILENCE_LVL
 suffix:semicolon
+macro_line|#if WIRELESS_EXT &gt; 11
+id|range.avg_qual.qual
+op_assign
+id|MMR_SGNL_QUAL
+suffix:semicolon
+multiline_comment|/* Always max */
+multiline_comment|/* Need to get better values for those two */
+id|range.avg_qual.level
+op_assign
+l_int|30
+suffix:semicolon
+id|range.avg_qual.noise
+op_assign
+l_int|8
+suffix:semicolon
+macro_line|#endif /* WIRELESS_EXT &gt; 11 */
 macro_line|#if WIRELESS_EXT &gt; 7
 id|range.num_bitrates
 op_assign

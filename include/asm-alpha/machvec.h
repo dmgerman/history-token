@@ -83,6 +83,11 @@ r_int
 r_int
 id|min_mem_address
 suffix:semicolon
+DECL|member|pci_dac_offset
+r_int
+r_int
+id|pci_dac_offset
+suffix:semicolon
 DECL|member|mv_pci_tbi
 r_void
 (paren

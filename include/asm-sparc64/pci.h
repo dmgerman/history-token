@@ -40,6 +40,9 @@ id|irq
 multiline_comment|/* We don&squot;t do dynamic PCI IRQ allocation */
 )brace
 multiline_comment|/* Dynamic DMA mapping stuff.&n; */
+multiline_comment|/* The PCI address space does not equal the physical memory&n; * address space.  The networking and block device layers use&n; * this boolean for bounce buffer decisions.&n; */
+DECL|macro|PCI_DMA_BUS_IS_PHYS
+mdefine_line|#define PCI_DMA_BUS_IS_PHYS&t;(0)
 macro_line|#include &lt;asm/scatterlist.h&gt;
 r_struct
 id|pci_dev
@@ -129,6 +132,11 @@ r_int
 id|direction
 )paren
 suffix:semicolon
+multiline_comment|/* No highmem on sparc64, plus we have an IOMMU, so mapping pages is easy. */
+DECL|macro|pci_map_page
+mdefine_line|#define pci_map_page(dev, page, off, size, dir) &bslash;&n;&t;pci_map_single(dev, (page_address(page) + (off)), size, dir)
+DECL|macro|pci_unmap_page
+mdefine_line|#define pci_unmap_page(dev,addr,sz,dir) pci_unmap_single(dev,addr,sz,dir)
 multiline_comment|/* Map a set of buffers described by scatterlist in streaming&n; * mode for DMA.  This is the scather-gather version of the&n; * above pci_map_single interface.  Here the scatter gather list&n; * elements are each tagged with the appropriate dma address&n; * and length.  They are obtained via sg_dma_{address,length}(SG).&n; *&n; * NOTE: An implementation may be able to use a smaller number of&n; *       DMA address/length pairs than there are SG table elements.&n; *       (for example via virtual mapping capabilities)&n; *       The routine returns the number of addr/length pairs actually&n; *       used, at most nents.&n; *&n; * Device ownership issues as mentioned above for pci_map_single are&n; * the same here.&n; */
 r_extern
 r_int
@@ -230,10 +238,154 @@ id|pci_dev
 op_star
 id|hwdev
 comma
-id|dma_addr_t
+id|u64
 id|mask
 )paren
 suffix:semicolon
+multiline_comment|/* PCI IOMMU mapping bypass support. */
+multiline_comment|/* PCI 64-bit addressing works for all slots on all controller&n; * types on sparc64.  However, it requires that the device&n; * can drive enough of the 64 bits.&n; */
+DECL|macro|PCI64_REQUIRED_MASK
+mdefine_line|#define PCI64_REQUIRED_MASK&t;(~(dma64_addr_t)0)
+DECL|macro|PCI64_ADDR_BASE
+mdefine_line|#define PCI64_ADDR_BASE&t;&t;0xfffc000000000000
+multiline_comment|/* Usage of the pci_dac_foo interfaces is only valid if this&n; * test passes.&n; */
+DECL|macro|pci_dac_dma_supported
+mdefine_line|#define pci_dac_dma_supported(pci_dev, mask) &bslash;&n;&t;((((mask) &amp; PCI64_REQUIRED_MASK) == PCI64_REQUIRED_MASK) ? 1 : 0)
+r_static
+id|__inline__
+id|dma64_addr_t
+DECL|function|pci_dac_page_to_dma
+id|pci_dac_page_to_dma
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+r_int
+id|offset
+comma
+r_int
+id|direction
+)paren
+(brace
+r_return
+(paren
+id|PCI64_ADDR_BASE
+op_plus
+id|__pa
+c_func
+(paren
+id|page_address
+c_func
+(paren
+id|page
+)paren
+)paren
+op_plus
+id|offset
+)paren
+suffix:semicolon
+)brace
+r_static
+id|__inline__
+r_struct
+id|page
+op_star
+DECL|function|pci_dac_dma_to_page
+id|pci_dac_dma_to_page
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+id|dma64_addr_t
+id|dma_addr
+)paren
+(brace
+r_int
+r_int
+id|paddr
+op_assign
+(paren
+id|dma_addr
+op_amp
+id|PAGE_MASK
+)paren
+op_minus
+id|PCI64_ADDR_BASE
+suffix:semicolon
+r_return
+id|virt_to_page
+c_func
+(paren
+id|__va
+c_func
+(paren
+id|paddr
+)paren
+)paren
+suffix:semicolon
+)brace
+r_static
+id|__inline__
+r_int
+r_int
+DECL|function|pci_dac_dma_to_offset
+id|pci_dac_dma_to_offset
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+id|dma64_addr_t
+id|dma_addr
+)paren
+(brace
+r_return
+(paren
+id|dma_addr
+op_amp
+op_complement
+id|PAGE_MASK
+)paren
+suffix:semicolon
+)brace
+r_static
+id|__inline__
+r_void
+DECL|function|pci_dac_dma_sync_single
+id|pci_dac_dma_sync_single
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+id|dma64_addr_t
+id|dma_addr
+comma
+r_int
+id|len
+comma
+r_int
+id|direction
+)paren
+(brace
+multiline_comment|/* DAC cycle addressing does not make use of the&n;&t; * PCI controller&squot;s streaming cache, so nothing to do.&n;&t; */
+)brace
 multiline_comment|/* Return the index of the PCI controller for device PDEV. */
 r_extern
 r_int

@@ -505,13 +505,15 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* update super block */
-id|rs-&gt;s_free_blocks
-op_assign
-id|cpu_to_le32
+id|set_sb_free_blocks
+c_func
 (paren
-id|le32_to_cpu
+id|rs
+comma
+id|sb_free_blocks
+c_func
 (paren
-id|rs-&gt;s_free_blocks
+id|rs
 )paren
 op_plus
 l_int|1
@@ -1075,7 +1077,7 @@ comma
 id|amount_needed
 )paren
 suffix:semicolon
-multiline_comment|/* We continue the while loop if another process snatches our found&n;   * free block from us after we find it but before we successfully&n;   * mark it as in use, or if we need to use sync to free up some&n;   * blocks on the preserve list.  */
+multiline_comment|/* We continue the while loop if another process snatches our found&n;   * free block from us after we find it but before we successfully&n;   * mark it as in use */
 r_while
 c_loop
 (paren
@@ -1418,11 +1420,13 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* update free block count in super block */
-id|s-&gt;u.reiserfs_sb.s_rs-&gt;s_free_blocks
-op_assign
-id|cpu_to_le32
+id|PUT_SB_FREE_BLOCKS
+c_func
 (paren
+id|s
+comma
 id|SB_FREE_BLOCKS
+c_func
 (paren
 id|s
 )paren
@@ -1450,7 +1454,7 @@ r_return
 id|CARRY_ON
 suffix:semicolon
 )brace
-singleline_comment|// this is called only by get_empty_nodes with for_preserve_list==0
+singleline_comment|// this is called only by get_empty_nodes
 DECL|function|reiserfs_new_blocknrs
 r_int
 id|reiserfs_new_blocknrs
@@ -1486,7 +1490,7 @@ comma
 id|amount_needed
 comma
 l_int|0
-multiline_comment|/*for_preserve_list-priority*/
+multiline_comment|/*priority*/
 comma
 l_int|0
 multiline_comment|/*for_formatted*/
@@ -1496,7 +1500,7 @@ multiline_comment|/*for_prealloc */
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// called by get_new_buffer and by reiserfs_get_block with amount_needed == 1 and for_preserve_list == 0
+singleline_comment|// called by get_new_buffer and by reiserfs_get_block with amount_needed == 1
 DECL|function|reiserfs_new_unf_blocknrs
 r_int
 id|reiserfs_new_unf_blocknrs
@@ -1531,7 +1535,7 @@ l_int|1
 multiline_comment|/*amount_needed*/
 comma
 l_int|0
-multiline_comment|/*for_preserve_list-priority*/
+multiline_comment|/*priority*/
 comma
 l_int|1
 multiline_comment|/*for formatted*/

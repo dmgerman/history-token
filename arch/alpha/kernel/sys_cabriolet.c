@@ -1446,6 +1446,10 @@ id|min_mem_address
 suffix:colon
 id|DEFAULT_MEM_BASE
 comma
+id|pci_dac_offset
+suffix:colon
+id|PYXIS_DAC_OFFSET
+comma
 id|nr_irqs
 suffix:colon
 l_int|35

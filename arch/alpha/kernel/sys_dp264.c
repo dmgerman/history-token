@@ -2561,6 +2561,10 @@ id|min_mem_address
 suffix:colon
 id|DEFAULT_MEM_BASE
 comma
+id|pci_dac_offset
+suffix:colon
+id|TSUNAMI_DAC_OFFSET
+comma
 id|nr_irqs
 suffix:colon
 l_int|64
@@ -2638,6 +2642,10 @@ id|min_mem_address
 suffix:colon
 id|DEFAULT_MEM_BASE
 comma
+id|pci_dac_offset
+suffix:colon
+id|TSUNAMI_DAC_OFFSET
+comma
 id|nr_irqs
 suffix:colon
 l_int|64
@@ -2710,6 +2718,10 @@ comma
 id|min_mem_address
 suffix:colon
 id|DEFAULT_MEM_BASE
+comma
+id|pci_dac_offset
+suffix:colon
+id|TSUNAMI_DAC_OFFSET
 comma
 id|nr_irqs
 suffix:colon
@@ -2784,6 +2796,10 @@ id|min_mem_address
 suffix:colon
 id|DEFAULT_MEM_BASE
 comma
+id|pci_dac_offset
+suffix:colon
+id|TSUNAMI_DAC_OFFSET
+comma
 id|nr_irqs
 suffix:colon
 l_int|64
@@ -2857,6 +2873,10 @@ comma
 id|min_mem_address
 suffix:colon
 id|DEFAULT_MEM_BASE
+comma
+id|pci_dac_offset
+suffix:colon
+id|TSUNAMI_DAC_OFFSET
 comma
 id|nr_irqs
 suffix:colon

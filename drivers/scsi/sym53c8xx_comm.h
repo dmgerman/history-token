@@ -7400,12 +7400,7 @@ c_func
 (paren
 id|pdev
 comma
-(paren
-id|dma_addr_t
-)paren
-(paren
-l_int|0xffffffffUL
-)paren
+l_int|0xffffffff
 )paren
 )paren
 (brace

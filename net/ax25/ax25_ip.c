@@ -63,10 +63,23 @@ r_int
 id|len
 )paren
 (brace
-multiline_comment|/* header is an AX.25 UI frame from us to them */
 r_int
 r_char
 op_star
+id|buff
+suffix:semicolon
+multiline_comment|/* they sometimes come back to us... */
+r_if
+c_cond
+(paren
+id|type
+op_eq
+id|ETH_P_AX25
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* header is an AX.25 UI frame from us to them */
 id|buff
 op_assign
 id|skb_push
@@ -225,7 +238,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;AX.25: ax25_encapsulate - wrong protocol type 0x%x2.2&bslash;n&quot;
+l_string|&quot;AX.25: ax25_encapsulate - wrong protocol type 0x%2.2x&bslash;n&quot;
 comma
 id|type
 )paren

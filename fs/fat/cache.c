@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/fat_cvf.h&gt;
-macro_line|#include &quot;msbuffer.h&quot;
 macro_line|#if 0
 macro_line|#  define PRINTK(x) printk x
 macro_line|#else

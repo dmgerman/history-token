@@ -87,7 +87,7 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;sgpnt[%d:%d] addr %p/0x%lx alt %p/0x%lx length %d&bslash;n&quot;
+l_string|&quot;sgpnt[%d:%d] addr %p/0x%lx length %d&bslash;n&quot;
 comma
 id|badseg
 comma
@@ -110,34 +110,6 @@ id|badseg
 dot
 id|address
 )paren
-comma
-id|sgpnt
-(braket
-id|badseg
-)braket
-dot
-id|alt_address
-comma
-id|sgpnt
-(braket
-id|badseg
-)braket
-dot
-id|alt_address
-ques
-c_cond
-id|SCSI_PA
-c_func
-(paren
-id|sgpnt
-(braket
-id|badseg
-)braket
-dot
-id|alt_address
-)paren
-suffix:colon
-l_int|0
 comma
 id|sgpnt
 (braket
@@ -3055,31 +3027,16 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;%d: %x %x %d&bslash;n&quot;
+l_string|&quot;%d: %p %d&bslash;n&quot;
 comma
 id|i
 comma
-(paren
-r_int
-r_int
-)paren
 id|sgpnt
 (braket
 id|i
 )braket
 dot
 id|address
-comma
-(paren
-r_int
-r_int
-)paren
-id|sgpnt
-(braket
-id|i
-)braket
-dot
-id|alt_address
 comma
 id|sgpnt
 (braket

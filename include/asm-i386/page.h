@@ -14,7 +14,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_X86_USE_3DNOW
 macro_line|#include &lt;asm/mmx.h&gt;
 DECL|macro|clear_page
-mdefine_line|#define clear_page(page)&t;mmx_clear_page(page)
+mdefine_line|#define clear_page(page)&t;mmx_clear_page((void *)(page))
 DECL|macro|copy_page
 mdefine_line|#define copy_page(to,from)&t;mmx_copy_page(to,from)
 macro_line|#else

@@ -1,13 +1,9 @@
 multiline_comment|/*&n; * linux/fs/fat/fatfs_syms.c&n; *&n; * Exported kernel symbols for the low-level FAT-based fs support.&n; *&n; */
-DECL|macro|ASC_LINUX_VERSION
-mdefine_line|#define ASC_LINUX_VERSION(V, P, S)&t;(((V) * 65536) + ((P) * 256) + (S))
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/fat_cvf.h&gt;
-macro_line|#include &quot;msbuffer.h&quot;
 DECL|variable|fat_new_dir
 id|EXPORT_SYMBOL
 c_func
@@ -62,13 +58,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|fat_notify_change
-)paren
-suffix:semicolon
-DECL|variable|fat_parent_ino
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|fat_parent_ino
 )paren
 suffix:semicolon
 DECL|variable|fat_put_super

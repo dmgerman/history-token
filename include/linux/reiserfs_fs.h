@@ -7,6 +7,8 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;asm/unaligned.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; *  include/linux/reiser_fs.h&n; *&n; *  Reiser File System constants and structures&n; *&n; */
@@ -240,6 +242,8 @@ DECL|struct|offset_v2
 r_struct
 id|offset_v2
 (brace
+macro_line|#ifdef __LITTLE_ENDIAN
+multiline_comment|/* little endian version */
 DECL|member|k_offset
 id|__u64
 id|k_offset
@@ -252,6 +256,19 @@ id|k_type
 suffix:colon
 l_int|4
 suffix:semicolon
+macro_line|#else
+multiline_comment|/* big endian version */
+id|__u64
+id|k_type
+suffix:colon
+l_int|4
+suffix:semicolon
+id|__u64
+id|k_offset
+suffix:colon
+l_int|60
+suffix:semicolon
+macro_line|#endif
 )brace
 id|__attribute__
 (paren
@@ -260,6 +277,205 @@ id|__packed__
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifndef __LITTLE_ENDIAN
+r_typedef
+r_union
+(brace
+DECL|member|offset_v2
+r_struct
+id|offset_v2
+id|offset_v2
+suffix:semicolon
+DECL|member|linear
+id|__u64
+id|linear
+suffix:semicolon
+DECL|typedef|offset_v2_esafe_overlay
+)brace
+id|__attribute__
+(paren
+(paren
+id|__packed__
+)paren
+)paren
+id|offset_v2_esafe_overlay
+suffix:semicolon
+DECL|function|offset_v2_k_type
+r_static
+r_inline
+id|__u16
+id|offset_v2_k_type
+c_func
+(paren
+r_struct
+id|offset_v2
+op_star
+id|v2
+)paren
+(brace
+id|offset_v2_esafe_overlay
+id|tmp
+op_assign
+op_star
+(paren
+id|offset_v2_esafe_overlay
+op_star
+)paren
+id|v2
+suffix:semicolon
+id|tmp.linear
+op_assign
+id|le64_to_cpu
+c_func
+(paren
+id|tmp.linear
+)paren
+suffix:semicolon
+r_return
+id|tmp.offset_v2.k_type
+suffix:semicolon
+)brace
+DECL|function|set_offset_v2_k_type
+r_static
+r_inline
+r_void
+id|set_offset_v2_k_type
+c_func
+(paren
+r_struct
+id|offset_v2
+op_star
+id|v2
+comma
+r_int
+id|type
+)paren
+(brace
+id|offset_v2_esafe_overlay
+op_star
+id|tmp
+op_assign
+(paren
+id|offset_v2_esafe_overlay
+op_star
+)paren
+id|v2
+suffix:semicolon
+id|tmp-&gt;linear
+op_assign
+id|le64_to_cpu
+c_func
+(paren
+id|tmp-&gt;linear
+)paren
+suffix:semicolon
+id|tmp-&gt;offset_v2.k_type
+op_assign
+id|type
+suffix:semicolon
+id|tmp-&gt;linear
+op_assign
+id|le64_to_cpu
+c_func
+(paren
+id|tmp-&gt;linear
+)paren
+suffix:semicolon
+)brace
+DECL|function|offset_v2_k_offset
+r_static
+r_inline
+id|loff_t
+id|offset_v2_k_offset
+c_func
+(paren
+r_struct
+id|offset_v2
+op_star
+id|v2
+)paren
+(brace
+id|offset_v2_esafe_overlay
+id|tmp
+op_assign
+op_star
+(paren
+id|offset_v2_esafe_overlay
+op_star
+)paren
+id|v2
+suffix:semicolon
+id|tmp.linear
+op_assign
+id|le64_to_cpu
+c_func
+(paren
+id|tmp.linear
+)paren
+suffix:semicolon
+r_return
+id|tmp.offset_v2.k_offset
+suffix:semicolon
+)brace
+DECL|function|set_offset_v2_k_offset
+r_static
+r_inline
+r_void
+(def_block
+id|set_offset_v2_k_offset
+c_func
+(paren
+r_struct
+id|offset_v2
+op_star
+id|v2
+comma
+id|loff_t
+id|offset
+)paren
+(brace
+id|offset_v2_esafe_overlay
+op_star
+id|tmp
+op_assign
+(paren
+id|offset_v2_esafe_overlay
+op_star
+)paren
+id|v2
+suffix:semicolon
+id|tmp-&gt;linear
+op_assign
+id|le64_to_cpu
+c_func
+(paren
+id|tmp-&gt;linear
+)paren
+suffix:semicolon
+id|tmp-&gt;offset_v2.k_offset
+op_assign
+id|offset
+suffix:semicolon
+id|tmp-&gt;linear
+op_assign
+id|le64_to_cpu
+c_func
+(paren
+id|tmp-&gt;linear
+)paren
+suffix:semicolon
+)brace
+)def_block
+macro_line|#else
+DECL|macro|offset_v2_k_type
+macro_line|# define offset_v2_k_type(v2)           ((v2)-&gt;k_type)
+DECL|macro|set_offset_v2_k_type
+macro_line|# define set_offset_v2_k_type(v2,val)   (offset_v2_k_type(v2) = (val))
+DECL|macro|offset_v2_k_offset
+macro_line|# define offset_v2_k_offset(v2)         ((v2)-&gt;k_offset)
+DECL|macro|set_offset_v2_k_offset
+macro_line|# define set_offset_v2_k_offset(v2,val) (offset_v2_k_offset(v2) = (val))
+macro_line|#endif
 multiline_comment|/* Key of an item determines its location in the S+tree, and&n;   is composed of 4 components */
 DECL|struct|key
 r_struct
@@ -417,12 +633,12 @@ DECL|member|ih_item_len
 id|__u16
 id|ih_item_len
 suffix:semicolon
-multiline_comment|/* total size of the item body                  */
+multiline_comment|/* total size of the item body */
 DECL|member|ih_item_location
 id|__u16
 id|ih_item_location
 suffix:semicolon
-multiline_comment|/* an offset to the item body within the block  */
+multiline_comment|/* an offset to the item body within the block */
 multiline_comment|/* I thought we were going to use this&n;                                   for having lots of item types? Why&n;                                   don&squot;t you use this for item type&n;                                   not item version.  That is how you&n;                                   talked me into this field a year&n;                                   ago, remember?  I am still not&n;                                   convinced it needs to be 16 bits&n;                                   (for at least many years), but at&n;                                   least I can sympathize with that&n;                                   hope. Change the name from version&n;                                   to type, and tell people not to use&n;                                   FFFF in case 16 bits is someday too&n;                                   small and needs to be extended:-). */
 DECL|member|ih_version
 id|__u16
@@ -462,11 +678,16 @@ DECL|macro|put_ih_item_len
 mdefine_line|#define put_ih_item_len(ih, val)     do { (ih)-&gt;ih_item_len = cpu_to_le16(val); } while (0)
 singleline_comment|// FIXME: now would that work for other than i386 archs
 DECL|macro|unreachable_item
-mdefine_line|#define unreachable_item(ih) (ih-&gt;ih_version &amp; (1 &lt;&lt; 15))
+mdefine_line|#define unreachable_item(ih) (ih_version(ih) &amp; (1 &lt;&lt; 15))
 DECL|macro|get_ih_free_space
 mdefine_line|#define get_ih_free_space(ih) (ih_version (ih) == ITEM_VERSION_2 ? 0 : ih_free_space (ih))
 DECL|macro|set_ih_free_space
 mdefine_line|#define set_ih_free_space(ih,val) put_ih_free_space((ih), ((ih_version(ih) == ITEM_VERSION_2) ? 0 : (val)))
+multiline_comment|/* these operate on indirect items, where you&squot;ve got an array of ints&n;** at a possibly unaligned location.  These are a noop on ia32&n;** &n;** p is the array of __u32, i is the index into the array, v is the value&n;** to store there.&n;*/
+DECL|macro|get_block_num
+mdefine_line|#define get_block_num(p, i) le32_to_cpu(get_unaligned((p) + (i)))
+DECL|macro|put_block_num
+mdefine_line|#define put_block_num(p, i, v) put_unaligned(cpu_to_le32(v), (p) + (i))
 singleline_comment|//
 singleline_comment|// there are 5 item types currently
 singleline_comment|//
@@ -618,11 +839,19 @@ id|ITEM_VERSION_1
 )paren
 ques
 c_cond
-id|key-&gt;u.k_offset_v1.k_offset
-suffix:colon
-id|le64_to_cpu
+id|le32_to_cpu
+c_func
 (paren
-id|key-&gt;u.k_offset_v2.k_offset
+id|key-&gt;u.k_offset_v1.k_offset
+)paren
+suffix:colon
+id|offset_v2_k_offset
+c_func
+(paren
+op_amp
+(paren
+id|key-&gt;u.k_offset_v2
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -677,13 +906,22 @@ id|ITEM_VERSION_1
 ques
 c_cond
 id|uniqueness2type
+c_func
+(paren
+id|le32_to_cpu
+c_func
 (paren
 id|key-&gt;u.k_offset_v1.k_uniqueness
 )paren
+)paren
 suffix:colon
-id|le16_to_cpu
+id|offset_v2_k_type
+c_func
 (paren
-id|key-&gt;u.k_offset_v2.k_type
+op_amp
+(paren
+id|key-&gt;u.k_offset_v2
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -742,14 +980,22 @@ c_cond
 (paren
 id|key-&gt;u.k_offset_v1.k_offset
 op_assign
+id|cpu_to_le32
+(paren
 id|offset
 )paren
+)paren
 suffix:colon
+multiline_comment|/* jdm check */
 (paren
-id|key-&gt;u.k_offset_v2.k_offset
-op_assign
-id|cpu_to_le64
+id|set_offset_v2_k_offset
+c_func
 (paren
+op_amp
+(paren
+id|key-&gt;u.k_offset_v2
+)paren
+comma
 id|offset
 )paren
 )paren
@@ -814,17 +1060,26 @@ c_cond
 (paren
 id|key-&gt;u.k_offset_v1.k_uniqueness
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|type2uniqueness
+c_func
 (paren
 id|type
 )paren
 )paren
+)paren
 suffix:colon
 (paren
-id|key-&gt;u.k_offset_v2.k_type
-op_assign
-id|cpu_to_le16
+id|set_offset_v2_k_type
+c_func
 (paren
+op_amp
+(paren
+id|key-&gt;u.k_offset_v2
+)paren
+comma
 id|type
 )paren
 )paren
@@ -1105,7 +1360,27 @@ multiline_comment|/* kept only for compatibility */
 )brace
 suffix:semicolon
 DECL|macro|BLKH_SIZE
-mdefine_line|#define BLKH_SIZE (sizeof(struct block_head))
+mdefine_line|#define BLKH_SIZE                     (sizeof(struct block_head))
+DECL|macro|blkh_level
+mdefine_line|#define blkh_level(p_blkh)            (le16_to_cpu((p_blkh)-&gt;blk_level))
+DECL|macro|blkh_nr_item
+mdefine_line|#define blkh_nr_item(p_blkh)          (le16_to_cpu((p_blkh)-&gt;blk_nr_item))
+DECL|macro|blkh_free_space
+mdefine_line|#define blkh_free_space(p_blkh)       (le16_to_cpu((p_blkh)-&gt;blk_free_space))
+DECL|macro|blkh_reserved
+mdefine_line|#define blkh_reserved(p_blkh)         (le16_to_cpu((p_blkh)-&gt;blk_reserved))
+DECL|macro|set_blkh_level
+mdefine_line|#define set_blkh_level(p_blkh,val)    ((p_blkh)-&gt;blk_level = cpu_to_le16(val))
+DECL|macro|set_blkh_nr_item
+mdefine_line|#define set_blkh_nr_item(p_blkh,val)  ((p_blkh)-&gt;blk_nr_item = cpu_to_le16(val))
+DECL|macro|set_blkh_free_space
+mdefine_line|#define set_blkh_free_space(p_blkh,val) ((p_blkh)-&gt;blk_free_space = cpu_to_le16(val))
+DECL|macro|set_blkh_reserved
+mdefine_line|#define set_blkh_reserved(p_blkh,val) ((p_blkh)-&gt;blk_reserved = cpu_to_le16(val))
+DECL|macro|blkh_right_delim_key
+mdefine_line|#define blkh_right_delim_key(p_blkh)  ((p_blkh)-&gt;blk_right_delim_key)
+DECL|macro|set_blkh_right_delim_key
+mdefine_line|#define set_blkh_right_delim_key(p_blkh,val)  ((p_blkh)-&gt;blk_right_delim_key = val)
 multiline_comment|/*&n; * values for blk_level field of the struct block_head&n; */
 DECL|macro|FREE_LEVEL
 mdefine_line|#define FREE_LEVEL 0 /* when node gets removed from the tree its&n;&t;&t;&t;blk_level is set to FREE_LEVEL. It is then&n;&t;&t;&t;used to see whether the node is still in the&n;&t;&t;&t;tree */
@@ -1113,29 +1388,29 @@ DECL|macro|DISK_LEAF_NODE_LEVEL
 mdefine_line|#define DISK_LEAF_NODE_LEVEL  1 /* Leaf node level.*/
 multiline_comment|/* Given the buffer head of a formatted node, resolve to the block head of that node. */
 DECL|macro|B_BLK_HEAD
-mdefine_line|#define B_BLK_HEAD(p_s_bh)  ((struct block_head *)((p_s_bh)-&gt;b_data))
+mdefine_line|#define B_BLK_HEAD(p_s_bh)            ((struct block_head *)((p_s_bh)-&gt;b_data))
 multiline_comment|/* Number of items that are in buffer. */
 DECL|macro|B_NR_ITEMS
-mdefine_line|#define B_NR_ITEMS(p_s_bh)&t;  &t;(le16_to_cpu ( B_BLK_HEAD(p_s_bh)-&gt;blk_nr_item ))
+mdefine_line|#define B_NR_ITEMS(p_s_bh)            (blkh_nr_item(B_BLK_HEAD(p_s_bh)))
 DECL|macro|B_LEVEL
-mdefine_line|#define B_LEVEL(bh)&t;&t;&t;(le16_to_cpu ( B_BLK_HEAD(bh)-&gt;blk_level ))
+mdefine_line|#define B_LEVEL(p_s_bh)               (blkh_level(B_BLK_HEAD(p_s_bh)))
 DECL|macro|B_FREE_SPACE
-mdefine_line|#define B_FREE_SPACE(bh)&t;&t;(le16_to_cpu ( B_BLK_HEAD(bh)-&gt;blk_free_space ))
+mdefine_line|#define B_FREE_SPACE(p_s_bh)          (blkh_free_space(B_BLK_HEAD(p_s_bh)))
 DECL|macro|PUT_B_NR_ITEMS
-mdefine_line|#define PUT_B_NR_ITEMS(p_s_bh)&t;  &t;do { B_BLK_HEAD(p_s_bh)-&gt;blk_nr_item = cpu_to_le16(val); } while (0)
+mdefine_line|#define PUT_B_NR_ITEMS(p_s_bh,val)    do { set_blkh_nr_item(B_BLK_HEAD(p_s_bh),val); } while (0)
 DECL|macro|PUT_B_LEVEL
-mdefine_line|#define PUT_B_LEVEL(bh, val)&t;&t;do { B_BLK_HEAD(bh)-&gt;blk_level = cpu_to_le16(val); } while (0)
+mdefine_line|#define PUT_B_LEVEL(p_s_bh,val)       do { set_blkh_level(B_BLK_HEAD(p_s_bh),val); } while (0)
 DECL|macro|PUT_B_FREE_SPACE
-mdefine_line|#define PUT_B_FREE_SPACE(bh)&t;&t;do { B_BLK_HEAD(bh)-&gt;blk_free_space = cpu_to_le16(val); } while (0)
-multiline_comment|/* Get right delimiting key. */
+mdefine_line|#define PUT_B_FREE_SPACE(p_s_bh,val)  do { set_blkh_free_space(B_BLK_HEAD(p_s_bh),val); } while (0)
+multiline_comment|/* Get right delimiting key. -- little endian */
 DECL|macro|B_PRIGHT_DELIM_KEY
-mdefine_line|#define B_PRIGHT_DELIM_KEY(p_s_bh)&t;( &amp;(B_BLK_HEAD(p_s_bh)-&gt;blk_right_delim_key) )
+mdefine_line|#define B_PRIGHT_DELIM_KEY(p_s_bh)   (&amp;(blk_right_delim_key(B_BLK_HEAD(p_s_bh))
 multiline_comment|/* Does the buffer contain a disk leaf. */
 DECL|macro|B_IS_ITEMS_LEVEL
-mdefine_line|#define B_IS_ITEMS_LEVEL(p_s_bh)   &t;( B_BLK_HEAD(p_s_bh)-&gt;blk_level == DISK_LEAF_NODE_LEVEL )
+mdefine_line|#define B_IS_ITEMS_LEVEL(p_s_bh)     (B_LEVEL(p_s_bh) == DISK_LEAF_NODE_LEVEL)
 multiline_comment|/* Does the buffer contain a disk internal node */
 DECL|macro|B_IS_KEYS_LEVEL
-mdefine_line|#define B_IS_KEYS_LEVEL(p_s_bh) &t;( B_BLK_HEAD(p_s_bh)-&gt;blk_level &gt; DISK_LEAF_NODE_LEVEL &amp;&amp;&bslash;&n;&t;&t;&t;&t;&t;  B_BLK_HEAD(p_s_bh)-&gt;blk_level &lt;= MAX_HEIGHT )
+mdefine_line|#define B_IS_KEYS_LEVEL(p_s_bh)      (B_LEVEL(p_s_bh) &gt; DISK_LEAF_NODE_LEVEL &bslash;&n;                                            &amp;&amp; B_LEVEL(p_s_bh) &lt;= MAX_HEIGHT)
 multiline_comment|/***************************************************************************/
 multiline_comment|/*                             STAT DATA                                   */
 multiline_comment|/***************************************************************************/
@@ -1222,7 +1497,53 @@ id|__packed__
 )paren
 suffix:semicolon
 DECL|macro|SD_V1_SIZE
-mdefine_line|#define SD_V1_SIZE (sizeof(struct stat_data_v1))
+mdefine_line|#define SD_V1_SIZE              (sizeof(struct stat_data_v1))
+DECL|macro|stat_data_v1
+mdefine_line|#define stat_data_v1(ih)        (ih_version (ih) == ITEM_VERSION_1)
+DECL|macro|sd_v1_mode
+mdefine_line|#define sd_v1_mode(sdp)         (le16_to_cpu((sdp)-&gt;sd_mode))
+DECL|macro|set_sd_v1_mode
+mdefine_line|#define set_sd_v1_mode(sdp,v)   ((sdp)-&gt;sd_mode = cpu_to_le16(v))
+DECL|macro|sd_v1_nlink
+mdefine_line|#define sd_v1_nlink(sdp)        (le16_to_cpu((sdp)-&gt;sd_nlink))
+DECL|macro|set_sd_v1_nlink
+mdefine_line|#define set_sd_v1_nlink(sdp,v)  ((sdp)-&gt;sd_nlink = cpu_to_le16(v))
+DECL|macro|sd_v1_uid
+mdefine_line|#define sd_v1_uid(sdp)          (le16_to_cpu((sdp)-&gt;sd_uid))
+DECL|macro|set_sd_v1_uid
+mdefine_line|#define set_sd_v1_uid(sdp,v)    ((sdp)-&gt;sd_uid = cpu_to_le16(v))
+DECL|macro|sd_v1_gid
+mdefine_line|#define sd_v1_gid(sdp)          (le16_to_cpu((sdp)-&gt;sd_gid))
+DECL|macro|set_sd_v1_gid
+mdefine_line|#define set_sd_v1_gid(sdp,v)    ((sdp)-&gt;sd_gid = cpu_to_le16(v))
+DECL|macro|sd_v1_size
+mdefine_line|#define sd_v1_size(sdp)         (le32_to_cpu((sdp)-&gt;sd_size))
+DECL|macro|set_sd_v1_size
+mdefine_line|#define set_sd_v1_size(sdp,v)   ((sdp)-&gt;sd_size = cpu_to_le32(v))
+DECL|macro|sd_v1_atime
+mdefine_line|#define sd_v1_atime(sdp)        (le32_to_cpu((sdp)-&gt;sd_atime))
+DECL|macro|set_sd_v1_atime
+mdefine_line|#define set_sd_v1_atime(sdp,v)  ((sdp)-&gt;sd_atime = cpu_to_le32(v))
+DECL|macro|sd_v1_mtime
+mdefine_line|#define sd_v1_mtime(sdp)        (le32_to_cpu((sdp)-&gt;sd_mtime))
+DECL|macro|set_sd_v1_mtime
+mdefine_line|#define set_sd_v1_mtime(sdp,v)  ((sdp)-&gt;sd_mtime = cpu_to_le32(v))
+DECL|macro|sd_v1_ctime
+mdefine_line|#define sd_v1_ctime(sdp)        (le32_to_cpu((sdp)-&gt;sd_ctime))
+DECL|macro|set_sd_v1_ctime
+mdefine_line|#define set_sd_v1_ctime(sdp,v)  ((sdp)-&gt;sd_ctime = cpu_to_le32(v))
+DECL|macro|sd_v1_rdev
+mdefine_line|#define sd_v1_rdev(sdp)         (le32_to_cpu((sdp)-&gt;u.sd_rdev))
+DECL|macro|set_sd_v1_rdev
+mdefine_line|#define set_sd_v1_rdev(sdp,v)   ((sdp)-&gt;u.sd_rdev = cpu_to_le32(v))
+DECL|macro|sd_v1_blocks
+mdefine_line|#define sd_v1_blocks(sdp)       (le32_to_cpu((sdp)-&gt;u.sd_blocks))
+DECL|macro|set_sd_v1_blocks
+mdefine_line|#define set_sd_v1_blocks(sdp,v) ((sdp)-&gt;u.sd_blocks = cpu_to_le32(v))
+DECL|macro|sd_v1_first_direct_byte
+mdefine_line|#define sd_v1_first_direct_byte(sdp) &bslash;&n;                                (le32_to_cpu((sdp)-&gt;sd_first_direct_byte))
+DECL|macro|set_sd_v1_first_direct_byte
+mdefine_line|#define set_sd_v1_first_direct_byte(sdp,v) &bslash;&n;                                ((sdp)-&gt;sd_first_direct_byte = cpu_to_le32(v))
 multiline_comment|/* Stat Data on disk (reiserfs version of UFS disk inode minus the&n;   address blocks) */
 DECL|struct|stat_data
 r_struct
@@ -1311,8 +1632,56 @@ singleline_comment|// this is 40 bytes long
 singleline_comment|//
 DECL|macro|SD_SIZE
 mdefine_line|#define SD_SIZE (sizeof(struct stat_data))
-DECL|macro|stat_data_v1
-mdefine_line|#define stat_data_v1(ih) (ih_version (ih) == ITEM_VERSION_1)
+DECL|macro|SD_V2_SIZE
+mdefine_line|#define SD_V2_SIZE              SD_SIZE
+DECL|macro|stat_data_v2
+mdefine_line|#define stat_data_v2(ih)        (ih_version (ih) == ITEM_VERSION_2)
+DECL|macro|sd_v2_mode
+mdefine_line|#define sd_v2_mode(sdp)         (le16_to_cpu((sdp)-&gt;sd_mode))
+DECL|macro|set_sd_v2_mode
+mdefine_line|#define set_sd_v2_mode(sdp,v)   ((sdp)-&gt;sd_mode = cpu_to_le16(v))
+multiline_comment|/* sd_reserved */
+multiline_comment|/* set_sd_reserved */
+DECL|macro|sd_v2_nlink
+mdefine_line|#define sd_v2_nlink(sdp)        (le32_to_cpu((sdp)-&gt;sd_nlink))
+DECL|macro|set_sd_v2_nlink
+mdefine_line|#define set_sd_v2_nlink(sdp,v)  ((sdp)-&gt;sd_nlink = cpu_to_le32(v))
+DECL|macro|sd_v2_size
+mdefine_line|#define sd_v2_size(sdp)         (le64_to_cpu((sdp)-&gt;sd_size))
+DECL|macro|set_sd_v2_size
+mdefine_line|#define set_sd_v2_size(sdp,v)   ((sdp)-&gt;sd_size = cpu_to_le64(v))
+DECL|macro|sd_v2_uid
+mdefine_line|#define sd_v2_uid(sdp)          (le32_to_cpu((sdp)-&gt;sd_uid))
+DECL|macro|set_sd_v2_uid
+mdefine_line|#define set_sd_v2_uid(sdp,v)    ((sdp)-&gt;sd_uid = cpu_to_le32(v))
+DECL|macro|sd_v2_gid
+mdefine_line|#define sd_v2_gid(sdp)          (le32_to_cpu((sdp)-&gt;sd_gid))
+DECL|macro|set_sd_v2_gid
+mdefine_line|#define set_sd_v2_gid(sdp,v)    ((sdp)-&gt;sd_gid = cpu_to_le32(v))
+DECL|macro|sd_v2_atime
+mdefine_line|#define sd_v2_atime(sdp)        (le32_to_cpu((sdp)-&gt;sd_atime))
+DECL|macro|set_sd_v2_atime
+mdefine_line|#define set_sd_v2_atime(sdp,v)  ((sdp)-&gt;sd_atime = cpu_to_le32(v))
+DECL|macro|sd_v2_mtime
+mdefine_line|#define sd_v2_mtime(sdp)        (le32_to_cpu((sdp)-&gt;sd_mtime))
+DECL|macro|set_sd_v2_mtime
+mdefine_line|#define set_sd_v2_mtime(sdp,v)  ((sdp)-&gt;sd_mtime = cpu_to_le32(v))
+DECL|macro|sd_v2_ctime
+mdefine_line|#define sd_v2_ctime(sdp)        (le32_to_cpu((sdp)-&gt;sd_ctime))
+DECL|macro|set_sd_v2_ctime
+mdefine_line|#define set_sd_v2_ctime(sdp,v)  ((sdp)-&gt;sd_ctime = cpu_to_le32(v))
+DECL|macro|sd_v2_blocks
+mdefine_line|#define sd_v2_blocks(sdp)       (le32_to_cpu((sdp)-&gt;sd_blocks))
+DECL|macro|set_sd_v2_blocks
+mdefine_line|#define set_sd_v2_blocks(sdp,v) ((sdp)-&gt;sd_blocks = cpu_to_le32(v))
+DECL|macro|sd_v2_rdev
+mdefine_line|#define sd_v2_rdev(sdp)         (le32_to_cpu((sdp)-&gt;u.sd_rdev))
+DECL|macro|set_sd_v2_rdev
+mdefine_line|#define set_sd_v2_rdev(sdp,v)   ((sdp)-&gt;u.sd_rdev = cpu_to_le32(v))
+DECL|macro|sd_v2_generation
+mdefine_line|#define sd_v2_generation(sdp)   (le32_to_cpu((sdp)-&gt;u.sd_generation))
+DECL|macro|set_sd_v2_generation
+mdefine_line|#define set_sd_v2_generation(sdp,v) ((sdp)-&gt;u.sd_generation = cpu_to_le32(v))
 multiline_comment|/***************************************************************************/
 multiline_comment|/*                      DIRECTORY STRUCTURE                                */
 multiline_comment|/***************************************************************************/
@@ -1370,7 +1739,27 @@ id|__packed__
 )paren
 suffix:semicolon
 DECL|macro|DEH_SIZE
-mdefine_line|#define DEH_SIZE sizeof(struct reiserfs_de_head)
+mdefine_line|#define DEH_SIZE                  sizeof(struct reiserfs_de_head)
+DECL|macro|deh_offset
+mdefine_line|#define deh_offset(p_deh)         (le32_to_cpu((p_deh)-&gt;deh_offset))
+DECL|macro|deh_dir_id
+mdefine_line|#define deh_dir_id(p_deh)         (le32_to_cpu((p_deh)-&gt;deh_dir_id))
+DECL|macro|deh_objectid
+mdefine_line|#define deh_objectid(p_deh)       (le32_to_cpu((p_deh)-&gt;deh_objectid))
+DECL|macro|deh_location
+mdefine_line|#define deh_location(p_deh)       (le16_to_cpu((p_deh)-&gt;deh_location))
+DECL|macro|deh_state
+mdefine_line|#define deh_state(p_deh)          (le16_to_cpu((p_deh)-&gt;deh_state))
+DECL|macro|put_deh_offset
+mdefine_line|#define put_deh_offset(p_deh,v)   ((p_deh)-&gt;deh_offset = cpu_to_le32((v)))
+DECL|macro|put_deh_dir_id
+mdefine_line|#define put_deh_dir_id(p_deh,v)   ((p_deh)-&gt;deh_dir_id = cpu_to_le32((v)))
+DECL|macro|put_deh_objectid
+mdefine_line|#define put_deh_objectid(p_deh,v) ((p_deh)-&gt;deh_objectid = cpu_to_le32((v)))
+DECL|macro|put_deh_location
+mdefine_line|#define put_deh_location(p_deh,v) ((p_deh)-&gt;deh_location = cpu_to_le16((v)))
+DECL|macro|put_deh_state
+mdefine_line|#define put_deh_state(p_deh,v)    ((p_deh)-&gt;deh_state = cpu_to_le16((v)))
 multiline_comment|/* empty directory contains two entries &quot;.&quot; and &quot;..&quot; and their headers */
 DECL|macro|EMPTY_DIR_SIZE
 mdefine_line|#define EMPTY_DIR_SIZE &bslash;&n;(DEH_SIZE * 2 + ROUND_UP (strlen (&quot;.&quot;)) + ROUND_UP (strlen (&quot;..&quot;)))
@@ -1381,36 +1770,31 @@ DECL|macro|DEH_Statdata
 mdefine_line|#define DEH_Statdata 0&t;&t;&t;/* not used now */
 DECL|macro|DEH_Visible
 mdefine_line|#define DEH_Visible 2
-multiline_comment|/* bitops which deals with unaligned addrs; &n;   needed for alpha port. --zam */
-macro_line|#ifdef __alpha__
+multiline_comment|/* 64 bit systems (and the S/390) need to be aligned explicitly -jdm */
+macro_line|#if BITS_PER_LONG == 64 || defined(__s390__) || defined(__hppa__)
 DECL|macro|ADDR_UNALIGNED_BITS
-macro_line|#   define ADDR_UNALIGNED_BITS  (5)
+macro_line|#   define ADDR_UNALIGNED_BITS  (3)
 macro_line|#endif
+multiline_comment|/* These are only used to manipulate deh_state.&n; * Because of this, we&squot;ll use the ext2_ bit routines,&n; * since they are little endian */
 macro_line|#ifdef ADDR_UNALIGNED_BITS
 DECL|macro|aligned_address
 macro_line|#   define aligned_address(addr)           ((void *)((long)(addr) &amp; ~((1UL &lt;&lt; ADDR_UNALIGNED_BITS) - 1)))
 DECL|macro|unaligned_offset
 macro_line|#   define unaligned_offset(addr)          (((int)((long)(addr) &amp; ((1 &lt;&lt; ADDR_UNALIGNED_BITS) - 1))) &lt;&lt; 3)
 DECL|macro|set_bit_unaligned
-macro_line|#   define set_bit_unaligned(nr, addr)     set_bit((nr) + unaligned_offset(addr), aligned_address(addr))
+macro_line|#   define set_bit_unaligned(nr, addr)     ext2_set_bit((nr) + unaligned_offset(addr), aligned_address(addr))
 DECL|macro|clear_bit_unaligned
-macro_line|#   define clear_bit_unaligned(nr, addr)   clear_bit((nr) + unaligned_offset(addr), aligned_address(addr))
+macro_line|#   define clear_bit_unaligned(nr, addr)   ext2_clear_bit((nr) + unaligned_offset(addr), aligned_address(addr))
 DECL|macro|test_bit_unaligned
-macro_line|#   define test_bit_unaligned(nr, addr)    test_bit((nr) + unaligned_offset(addr), aligned_address(addr))
+macro_line|#   define test_bit_unaligned(nr, addr)    ext2_test_bit((nr) + unaligned_offset(addr), aligned_address(addr))
 macro_line|#else
 DECL|macro|set_bit_unaligned
-macro_line|#   define set_bit_unaligned(nr, addr)     set_bit(nr, addr)
+macro_line|#   define set_bit_unaligned(nr, addr)     ext2_set_bit(nr, addr)
 DECL|macro|clear_bit_unaligned
-macro_line|#   define clear_bit_unaligned(nr, addr)   clear_bit(nr, addr)
+macro_line|#   define clear_bit_unaligned(nr, addr)   ext2_clear_bit(nr, addr)
 DECL|macro|test_bit_unaligned
-macro_line|#   define test_bit_unaligned(nr, addr)    test_bit(nr, addr)
+macro_line|#   define test_bit_unaligned(nr, addr)    ext2_test_bit(nr, addr)
 macro_line|#endif
-DECL|macro|deh_dir_id
-mdefine_line|#define deh_dir_id(deh) (__le32_to_cpu ((deh)-&gt;deh_dir_id))
-DECL|macro|deh_objectid
-mdefine_line|#define deh_objectid(deh) (__le32_to_cpu ((deh)-&gt;deh_objectid))
-DECL|macro|deh_offset
-mdefine_line|#define deh_offset(deh) (__le32_to_cpu ((deh)-&gt;deh_offset))
 DECL|macro|mark_de_with_sd
 mdefine_line|#define mark_de_with_sd(deh)        set_bit_unaligned (DEH_Statdata, &amp;((deh)-&gt;deh_state))
 DECL|macro|mark_de_without_sd
@@ -1426,6 +1810,7 @@ mdefine_line|#define de_visible(deh)&t;    &t;    test_bit_unaligned (DEH_Visibl
 DECL|macro|de_hidden
 mdefine_line|#define de_hidden(deh)&t;    &t;    !test_bit_unaligned (DEH_Visible, &amp;((deh)-&gt;deh_state))
 multiline_comment|/* compose directory item containing &quot;.&quot; and &quot;..&quot; entries (entries are&n;   not aligned to 4 byte boundary) */
+multiline_comment|/* the last four params are LE */
 DECL|function|make_empty_dir_item_v1
 r_static
 r_inline
@@ -1473,18 +1858,21 @@ op_star
 id|body
 suffix:semicolon
 multiline_comment|/* direntry header of &quot;.&quot; */
+id|put_deh_offset
+c_func
+(paren
+op_amp
+(paren
 id|deh
 (braket
 l_int|0
 )braket
-dot
-id|deh_offset
-op_assign
-id|cpu_to_le32
-(paren
+)paren
+comma
 id|DOT_OFFSET
 )paren
 suffix:semicolon
+multiline_comment|/* these two are from make_le_item_head, and are are LE */
 id|deh
 (braket
 l_int|0
@@ -1492,10 +1880,7 @@ l_int|0
 dot
 id|deh_dir_id
 op_assign
-id|cpu_to_le32
-(paren
 id|dirid
-)paren
 suffix:semicolon
 id|deh
 (braket
@@ -1504,27 +1889,7 @@ l_int|0
 dot
 id|deh_objectid
 op_assign
-id|cpu_to_le32
-(paren
 id|objid
-)paren
-suffix:semicolon
-id|deh
-(braket
-l_int|0
-)braket
-dot
-id|deh_location
-op_assign
-id|cpu_to_le16
-(paren
-id|EMPTY_DIR_SIZE_V1
-op_minus
-id|strlen
-(paren
-l_string|&quot;.&quot;
-)paren
-)paren
 suffix:semicolon
 id|deh
 (braket
@@ -1534,6 +1899,27 @@ dot
 id|deh_state
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* Endian safe if 0 */
+id|put_deh_location
+c_func
+(paren
+op_amp
+(paren
+id|deh
+(braket
+l_int|0
+)braket
+)paren
+comma
+id|EMPTY_DIR_SIZE_V1
+op_minus
+id|strlen
+c_func
+(paren
+l_string|&quot;.&quot;
+)paren
+)paren
 suffix:semicolon
 id|mark_de_visible
 c_func
@@ -1548,19 +1934,22 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* direntry header of &quot;..&quot; */
+id|put_deh_offset
+c_func
+(paren
+op_amp
+(paren
 id|deh
 (braket
 l_int|1
 )braket
-dot
-id|deh_offset
-op_assign
-id|cpu_to_le32
-(paren
+)paren
+comma
 id|DOT_DOT_OFFSET
 )paren
 suffix:semicolon
 multiline_comment|/* key of &quot;..&quot; for the root directory */
+multiline_comment|/* these two are from the inode, and are are LE */
 id|deh
 (braket
 l_int|1
@@ -1568,10 +1957,7 @@ l_int|1
 dot
 id|deh_dir_id
 op_assign
-id|cpu_to_le32
-(paren
 id|par_dirid
-)paren
 suffix:semicolon
 id|deh
 (braket
@@ -1580,35 +1966,7 @@ l_int|1
 dot
 id|deh_objectid
 op_assign
-id|cpu_to_le32
-(paren
 id|par_objid
-)paren
-suffix:semicolon
-id|deh
-(braket
-l_int|1
-)braket
-dot
-id|deh_location
-op_assign
-id|cpu_to_le16
-(paren
-id|le16_to_cpu
-(paren
-id|deh
-(braket
-l_int|0
-)braket
-dot
-id|deh_location
-)paren
-op_minus
-id|strlen
-(paren
-l_string|&quot;..&quot;
-)paren
-)paren
 suffix:semicolon
 id|deh
 (braket
@@ -1618,6 +1976,37 @@ dot
 id|deh_state
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* Endian safe if 0 */
+id|put_deh_location
+c_func
+(paren
+op_amp
+(paren
+id|deh
+(braket
+l_int|1
+)braket
+)paren
+comma
+id|deh_location
+c_func
+(paren
+op_amp
+(paren
+id|deh
+(braket
+l_int|0
+)braket
+)paren
+)paren
+op_minus
+id|strlen
+c_func
+(paren
+l_string|&quot;..&quot;
+)paren
+)paren
 suffix:semicolon
 id|mark_de_visible
 c_func
@@ -1636,12 +2025,17 @@ id|memcpy
 (paren
 id|body
 op_plus
+id|deh_location
+c_func
+(paren
+op_amp
+(paren
 id|deh
 (braket
 l_int|0
 )braket
-dot
-id|deh_location
+)paren
+)paren
 comma
 l_string|&quot;.&quot;
 comma
@@ -1652,12 +2046,17 @@ id|memcpy
 (paren
 id|body
 op_plus
+id|deh_location
+c_func
+(paren
+op_amp
+(paren
 id|deh
 (braket
 l_int|1
 )braket
-dot
-id|deh_location
+)paren
+)paren
 comma
 l_string|&quot;..&quot;
 comma
@@ -1713,18 +2112,21 @@ op_star
 id|body
 suffix:semicolon
 multiline_comment|/* direntry header of &quot;.&quot; */
+id|put_deh_offset
+c_func
+(paren
+op_amp
+(paren
 id|deh
 (braket
 l_int|0
 )braket
-dot
-id|deh_offset
-op_assign
-id|cpu_to_le32
-(paren
+)paren
+comma
 id|DOT_OFFSET
 )paren
 suffix:semicolon
+multiline_comment|/* these two are from make_le_item_head, and are are LE */
 id|deh
 (braket
 l_int|0
@@ -1732,10 +2134,7 @@ l_int|0
 dot
 id|deh_dir_id
 op_assign
-id|cpu_to_le32
-(paren
 id|dirid
-)paren
 suffix:semicolon
 id|deh
 (braket
@@ -1744,30 +2143,7 @@ l_int|0
 dot
 id|deh_objectid
 op_assign
-id|cpu_to_le32
-(paren
 id|objid
-)paren
-suffix:semicolon
-id|deh
-(braket
-l_int|0
-)braket
-dot
-id|deh_location
-op_assign
-id|cpu_to_le16
-(paren
-id|EMPTY_DIR_SIZE
-op_minus
-id|ROUND_UP
-(paren
-id|strlen
-(paren
-l_string|&quot;.&quot;
-)paren
-)paren
-)paren
 suffix:semicolon
 id|deh
 (braket
@@ -1777,6 +2153,31 @@ dot
 id|deh_state
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* Endian safe if 0 */
+id|put_deh_location
+c_func
+(paren
+op_amp
+(paren
+id|deh
+(braket
+l_int|0
+)braket
+)paren
+comma
+id|EMPTY_DIR_SIZE
+op_minus
+id|ROUND_UP
+c_func
+(paren
+id|strlen
+c_func
+(paren
+l_string|&quot;.&quot;
+)paren
+)paren
+)paren
 suffix:semicolon
 id|mark_de_visible
 c_func
@@ -1791,19 +2192,22 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* direntry header of &quot;..&quot; */
+id|put_deh_offset
+c_func
+(paren
+op_amp
+(paren
 id|deh
 (braket
 l_int|1
 )braket
-dot
-id|deh_offset
-op_assign
-id|cpu_to_le32
-(paren
+)paren
+comma
 id|DOT_DOT_OFFSET
 )paren
 suffix:semicolon
 multiline_comment|/* key of &quot;..&quot; for the root directory */
+multiline_comment|/* these two are from the inode, and are are LE */
 id|deh
 (braket
 l_int|1
@@ -1811,10 +2215,7 @@ l_int|1
 dot
 id|deh_dir_id
 op_assign
-id|cpu_to_le32
-(paren
 id|par_dirid
-)paren
 suffix:semicolon
 id|deh
 (braket
@@ -1823,38 +2224,7 @@ l_int|1
 dot
 id|deh_objectid
 op_assign
-id|cpu_to_le32
-(paren
 id|par_objid
-)paren
-suffix:semicolon
-id|deh
-(braket
-l_int|1
-)braket
-dot
-id|deh_location
-op_assign
-id|cpu_to_le16
-(paren
-id|le16_to_cpu
-(paren
-id|deh
-(braket
-l_int|0
-)braket
-dot
-id|deh_location
-)paren
-op_minus
-id|ROUND_UP
-(paren
-id|strlen
-(paren
-l_string|&quot;..&quot;
-)paren
-)paren
-)paren
 suffix:semicolon
 id|deh
 (braket
@@ -1864,6 +2234,41 @@ dot
 id|deh_state
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* Endian safe if 0 */
+id|put_deh_location
+c_func
+(paren
+op_amp
+(paren
+id|deh
+(braket
+l_int|1
+)braket
+)paren
+comma
+id|deh_location
+c_func
+(paren
+op_amp
+(paren
+id|deh
+(braket
+l_int|0
+)braket
+)paren
+)paren
+op_minus
+id|ROUND_UP
+c_func
+(paren
+id|strlen
+c_func
+(paren
+l_string|&quot;..&quot;
+)paren
+)paren
+)paren
 suffix:semicolon
 id|mark_de_visible
 c_func
@@ -1882,12 +2287,17 @@ id|memcpy
 (paren
 id|body
 op_plus
+id|deh_location
+c_func
+(paren
+op_amp
+(paren
 id|deh
 (braket
 l_int|0
 )braket
-dot
-id|deh_location
+)paren
+)paren
 comma
 l_string|&quot;.&quot;
 comma
@@ -1898,12 +2308,17 @@ id|memcpy
 (paren
 id|body
 op_plus
+id|deh_location
+c_func
+(paren
+op_amp
+(paren
 id|deh
 (braket
 l_int|1
 )braket
-dot
-id|deh_location
+)paren
+)paren
 comma
 l_string|&quot;..&quot;
 comma
@@ -1914,11 +2329,11 @@ suffix:semicolon
 multiline_comment|/* array of the entry headers */
 multiline_comment|/* get item body */
 DECL|macro|B_I_PITEM
-mdefine_line|#define B_I_PITEM(bh,ih) ( (bh)-&gt;b_data + (ih)-&gt;ih_item_location )
+mdefine_line|#define B_I_PITEM(bh,ih) ( (bh)-&gt;b_data + ih_location(ih) )
 DECL|macro|B_I_DEH
 mdefine_line|#define B_I_DEH(bh,ih) ((struct reiserfs_de_head *)(B_I_PITEM(bh,ih)))
 multiline_comment|/* length of the directory entry in directory item. This define&n;   calculates length of i-th directory entry using directory entry&n;   locations from dir entry head. When it calculates length of 0-th&n;   directory entry, it uses length of whole item in place of entry&n;   location of the non-existent following entry in the calculation.&n;   See picture above.*/
-multiline_comment|/*&n;#define I_DEH_N_ENTRY_LENGTH(ih,deh,i) &bslash;&n;((i) ? (((deh)-1)-&gt;deh_location - (deh)-&gt;deh_location) : ((ih)-&gt;ih_item_len) - (deh)-&gt;deh_location)&n;*/
+multiline_comment|/*&n;#define I_DEH_N_ENTRY_LENGTH(ih,deh,i) &bslash;&n;((i) ? (deh_location((deh)-1) - deh_location((deh))) : (ih_item_len((ih)) - deh_location((deh))))&n;*/
 DECL|function|entry_length
 r_static
 r_inline
@@ -1961,44 +2376,40 @@ c_cond
 id|pos_in_item
 )paren
 r_return
-(paren
-id|le16_to_cpu
-(paren
+id|deh_location
+c_func
 (paren
 id|deh
 op_minus
 l_int|1
 )paren
-op_member_access_from_pointer
-id|deh_location
-)paren
 op_minus
-id|le16_to_cpu
+id|deh_location
+c_func
 (paren
-id|deh-&gt;deh_location
-)paren
+id|deh
 )paren
 suffix:semicolon
 r_return
+id|ih_item_len
+c_func
 (paren
-id|le16_to_cpu
-(paren
-id|ih-&gt;ih_item_len
+id|ih
 )paren
 op_minus
-id|le16_to_cpu
+id|deh_location
+c_func
 (paren
-id|deh-&gt;deh_location
-)paren
+id|deh
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/* number of entries in the directory item, depends on ENTRY_COUNT being at the start of directory dynamic data. */
 DECL|macro|I_ENTRY_COUNT
-mdefine_line|#define I_ENTRY_COUNT(ih) ((ih)-&gt;u.ih_entry_count)
+mdefine_line|#define I_ENTRY_COUNT(ih) (ih_entry_count((ih)))
 multiline_comment|/* name by bh, ih and entry_num */
 DECL|macro|B_I_E_NAME
-mdefine_line|#define B_I_E_NAME(bh,ih,entry_num) ((char *)(bh-&gt;b_data + ih-&gt;ih_item_location + (B_I_DEH(bh,ih)+(entry_num))-&gt;deh_location))
+mdefine_line|#define B_I_E_NAME(bh,ih,entry_num) ((char *)(bh-&gt;b_data + ih_location(ih) + deh_location(B_I_DEH(bh,ih)+(entry_num))))
 singleline_comment|// two entries per block (at least)
 singleline_comment|//#define REISERFS_MAX_NAME_LEN(block_size) 
 singleline_comment|//((block_size - BLKH_SIZE - IH_SIZE - DEH_SIZE * 2) / 2)
@@ -2073,7 +2484,7 @@ suffix:semicolon
 multiline_comment|/* these defines are useful when a particular member of a reiserfs_dir_entry is needed */
 multiline_comment|/* pointer to file name, stored in entry */
 DECL|macro|B_I_DEH_ENTRY_FILE_NAME
-mdefine_line|#define B_I_DEH_ENTRY_FILE_NAME(bh,ih,deh) (B_I_PITEM (bh, ih) + (deh)-&gt;deh_location)
+mdefine_line|#define B_I_DEH_ENTRY_FILE_NAME(bh,ih,deh) (B_I_PITEM (bh, ih) + deh_location(deh))
 multiline_comment|/* length of name */
 DECL|macro|I_DEH_N_ENTRY_FILE_NAME_LENGTH
 mdefine_line|#define I_DEH_N_ENTRY_FILE_NAME_LENGTH(ih,deh,entry_num) &bslash;&n;(I_DEH_N_ENTRY_LENGTH (ih, deh, entry_num) - (de_with_sd (deh) ? SD_SIZE : 0))
@@ -2114,14 +2525,22 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|DC_SIZE
 mdefine_line|#define DC_SIZE (sizeof(struct disk_child))
+DECL|macro|dc_block_number
+mdefine_line|#define dc_block_number(dc_p)&t;(le32_to_cpu((dc_p)-&gt;dc_block_number))
+DECL|macro|dc_size
+mdefine_line|#define dc_size(dc_p)&t;&t;(le16_to_cpu((dc_p)-&gt;dc_size))
+DECL|macro|put_dc_block_number
+mdefine_line|#define put_dc_block_number(dc_p, val)   do { (dc_p)-&gt;dc_block_number = cpu_to_le32(val); } while(0)
+DECL|macro|put_dc_size
+mdefine_line|#define put_dc_size(dc_p, val)   do { (dc_p)-&gt;dc_size = cpu_to_le16(val); } while(0)
 multiline_comment|/* Get disk child by buffer header and position in the tree node. */
 DECL|macro|B_N_CHILD
 mdefine_line|#define B_N_CHILD(p_s_bh,n_pos)  ((struct disk_child *)&bslash;&n;((p_s_bh)-&gt;b_data+BLKH_SIZE+B_NR_ITEMS(p_s_bh)*KEY_SIZE+DC_SIZE*(n_pos)))
 multiline_comment|/* Get disk child number by buffer header and position in the tree node. */
 DECL|macro|B_N_CHILD_NUM
-mdefine_line|#define B_N_CHILD_NUM(p_s_bh,n_pos) (le32_to_cpu (B_N_CHILD(p_s_bh,n_pos)-&gt;dc_block_number))
+mdefine_line|#define B_N_CHILD_NUM(p_s_bh,n_pos) (dc_block_number(B_N_CHILD(p_s_bh,n_pos)))
 DECL|macro|PUT_B_N_CHILD_NUM
-mdefine_line|#define PUT_B_N_CHILD_NUM(p_s_bh,n_pos, val) do { B_N_CHILD(p_s_bh,n_pos)-&gt;dc_block_number = cpu_to_le32(val); } while (0)
+mdefine_line|#define PUT_B_N_CHILD_NUM(p_s_bh,n_pos, val) (put_dc_block_number(B_N_CHILD(p_s_bh,n_pos), val ))
 multiline_comment|/* maximal value of field child_size in structure disk_child */
 multiline_comment|/* child size is the combined size of all items and their headers */
 DECL|macro|MAX_CHILD_SIZE
@@ -3164,10 +3583,10 @@ mdefine_line|#define keys_of_same_object comp_short_keys
 multiline_comment|/*#define COMP_KEYS(p_s_key1, p_s_key2)&t;&t;comp_keys((unsigned long *)(p_s_key1), (unsigned long *)(p_s_key2))&n;#define COMP_SHORT_KEYS(p_s_key1, p_s_key2)&t;comp_short_keys((unsigned long *)(p_s_key1), (unsigned long *)(p_s_key2))*/
 multiline_comment|/* number of blocks pointed to by the indirect item */
 DECL|macro|I_UNFM_NUM
-mdefine_line|#define I_UNFM_NUM(p_s_ih)&t;( (p_s_ih)-&gt;ih_item_len / UNFM_P_SIZE )
+mdefine_line|#define I_UNFM_NUM(p_s_ih)&t;( ih_item_len(p_s_ih) / UNFM_P_SIZE )
 multiline_comment|/* the used space within the unformatted node corresponding to pos within the item pointed to by ih */
 DECL|macro|I_POS_UNFM_SIZE
-mdefine_line|#define I_POS_UNFM_SIZE(ih,pos,size) (((pos) == I_UNFM_NUM(ih) - 1 ) ? (size) - (ih)-&gt;u.ih_free_space : (size))
+mdefine_line|#define I_POS_UNFM_SIZE(ih,pos,size) (((pos) == I_UNFM_NUM(ih) - 1 ) ? (size) - ih_free_space(ih) : (size))
 multiline_comment|/* number of bytes contained by the direct item or the unformatted nodes the indirect item points to */
 multiline_comment|/* get the item header */
 DECL|macro|B_N_PITEM_HEAD
@@ -3180,20 +3599,20 @@ DECL|macro|B_N_PKEY
 mdefine_line|#define B_N_PKEY(bh,item_num) ( &amp;(B_N_PITEM_HEAD(bh,item_num)-&gt;ih_key) )
 multiline_comment|/* get item body */
 DECL|macro|B_N_PITEM
-mdefine_line|#define B_N_PITEM(bh,item_num) ( (bh)-&gt;b_data + B_N_PITEM_HEAD((bh),(item_num))-&gt;ih_item_location)
+mdefine_line|#define B_N_PITEM(bh,item_num) ( (bh)-&gt;b_data + ih_location(B_N_PITEM_HEAD((bh),(item_num))))
 multiline_comment|/* get the stat data by the buffer header and the item order */
 DECL|macro|B_N_STAT_DATA
-mdefine_line|#define B_N_STAT_DATA(bh,nr) &bslash;&n;( (struct stat_data *)((bh)-&gt;b_data+B_N_PITEM_HEAD((bh),(nr))-&gt;ih_item_location ) )
+mdefine_line|#define B_N_STAT_DATA(bh,nr) &bslash;&n;( (struct stat_data *)((bh)-&gt;b_data + ih_location(B_N_PITEM_HEAD((bh),(nr))) ) )
 multiline_comment|/* following defines use reiserfs buffer header and item header */
 multiline_comment|/* get stat-data */
 DECL|macro|B_I_STAT_DATA
-mdefine_line|#define B_I_STAT_DATA(bh, ih) ( (struct stat_data * )((bh)-&gt;b_data + (ih)-&gt;ih_item_location) )
+mdefine_line|#define B_I_STAT_DATA(bh, ih) ( (struct stat_data * )((bh)-&gt;b_data + ih_location(ih)) )
 singleline_comment|// this is 3976 for size==4096
 DECL|macro|MAX_DIRECT_ITEM_LEN
 mdefine_line|#define MAX_DIRECT_ITEM_LEN(size) ((size) - BLKH_SIZE - 2*IH_SIZE - SD_SIZE - UNFM_P_SIZE)
 multiline_comment|/* indirect items consist of entries which contain blocknrs, pos&n;   indicates which entry, and B_I_POS_UNFM_POINTER resolves to the&n;   blocknr contained by the entry pos points to */
 DECL|macro|B_I_POS_UNFM_POINTER
-mdefine_line|#define B_I_POS_UNFM_POINTER(bh,ih,pos) (*(((unp_t *)B_I_PITEM(bh,ih)) + (pos)))
+mdefine_line|#define B_I_POS_UNFM_POINTER(bh,ih,pos) le32_to_cpu(*(((unp_t *)B_I_PITEM(bh,ih)) + (pos)))
 DECL|macro|PUT_B_I_POS_UNFM_POINTER
 mdefine_line|#define PUT_B_I_POS_UNFM_POINTER(bh,ih,pos, val) do {*(((unp_t *)B_I_PITEM(bh,ih)) + (pos)) = cpu_to_le32(val); } while (0)
 multiline_comment|/* Reiserfs buffer cache statistics. */
@@ -3408,6 +3827,24 @@ mdefine_line|#define journal_hash(t,dev,block) ((t)[_jhashfn((dev),(block)) &amp
 multiline_comment|/* finds n&squot;th buffer with 0 being the start of this commit.  Needs to go away, j_ap_blocks has changed&n;** since I created this.  One chunk of code in journal.c needs changing before deleting it&n;*/
 DECL|macro|JOURNAL_BUFFER
 mdefine_line|#define JOURNAL_BUFFER(j,n) ((j)-&gt;j_ap_blocks[((j)-&gt;j_start + (n)) % JOURNAL_BLOCK_COUNT])
+r_void
+id|reiserfs_commit_for_inode
+c_func
+(paren
+r_struct
+id|inode
+op_star
+)paren
+suffix:semicolon
+r_void
+id|reiserfs_update_inode_transaction
+c_func
+(paren
+r_struct
+id|inode
+op_star
+)paren
+suffix:semicolon
 r_void
 id|reiserfs_wait_on_write_block
 c_func
@@ -4183,9 +4620,13 @@ id|type
 suffix:semicolon
 id|type
 op_assign
-id|le16_to_cpu
+id|offset_v2_k_type
+c_func
 (paren
-id|key-&gt;u.k_offset_v2.k_type
+op_amp
+(paren
+id|key-&gt;u.k_offset_v2
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -6099,6 +6540,7 @@ id|__u32
 id|keyed_hash
 (paren
 r_const
+r_int
 r_char
 op_star
 id|msg
@@ -6111,6 +6553,7 @@ id|__u32
 id|yura_hash
 (paren
 r_const
+r_int
 r_char
 op_star
 id|msg
@@ -6123,6 +6566,7 @@ id|__u32
 id|r5_hash
 (paren
 r_const
+r_int
 r_char
 op_star
 id|msg

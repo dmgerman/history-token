@@ -1,8 +1,9 @@
-multiline_comment|/* $Id: iommu_common.c,v 1.5 2001/08/24 17:57:51 kanoj Exp $&n; * iommu_common.c: UltraSparc SBUS/PCI common iommu code.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: iommu_common.c,v 1.6 2001/10/09 02:24:33 davem Exp $&n; * iommu_common.c: UltraSparc SBUS/PCI common iommu code.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &quot;iommu_common.h&quot;
 multiline_comment|/* You are _strongly_ advised to enable the following debugging code&n; * any time you make changes to the sg code below, run it for a while&n; * with filesystems mounted read-only before buying the farm... -DaveM&n; */
 macro_line|#ifdef VERIFY_SG
 DECL|function|verify_lengths
+r_static
 r_int
 id|verify_lengths
 c_func
@@ -76,7 +77,7 @@ id|sg
 id|i
 )braket
 dot
-id|dvma_length
+id|dma_length
 suffix:semicolon
 id|i
 op_increment
@@ -88,7 +89,7 @@ id|sg
 id|i
 )braket
 dot
-id|dvma_length
+id|dma_length
 suffix:semicolon
 r_if
 c_cond
@@ -133,7 +134,7 @@ id|sg
 id|i
 )braket
 dot
-id|dvma_length
+id|dma_length
 suffix:semicolon
 id|i
 op_increment
@@ -152,7 +153,7 @@ id|sg
 id|i
 )braket
 dot
-id|dvma_address
+id|dma_address
 suffix:semicolon
 id|start
 op_assign
@@ -167,14 +168,14 @@ id|sg
 id|i
 )braket
 dot
-id|dvma_address
+id|dma_address
 op_plus
 id|sg
 (braket
 id|i
 )braket
 dot
-id|dvma_length
+id|dma_length
 suffix:semicolon
 id|end
 op_assign
@@ -233,6 +234,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|verify_one_map
+r_static
 r_int
 id|verify_one_map
 c_func
@@ -275,12 +277,10 @@ suffix:semicolon
 id|u32
 id|dlen
 op_assign
-id|dma_sg-&gt;dvma_length
+id|dma_sg-&gt;dma_length
 suffix:semicolon
 id|u32
 id|daddr
-op_assign
-id|dma_sg-&gt;dvma_address
 suffix:semicolon
 r_int
 r_int
@@ -289,6 +289,10 @@ suffix:semicolon
 r_int
 r_int
 id|sgaddr
+suffix:semicolon
+id|daddr
+op_assign
+id|dma_sg-&gt;dma_address
 suffix:semicolon
 id|sglen
 op_assign
@@ -590,6 +594,7 @@ id|nents
 suffix:semicolon
 )brace
 DECL|function|verify_maps
+r_static
 r_int
 id|verify_maps
 c_func
@@ -664,7 +669,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dma_sg-&gt;dvma_length
+id|dma_sg-&gt;dma_length
 op_eq
 l_int|0
 )paren
@@ -790,16 +795,17 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;verify_sglist: Crap, messed up mappings, dumping, iodma at %08x.&bslash;n&quot;
-comma
-(paren
-id|u32
+l_string|&quot;verify_sglist: Crap, messed up mappings, dumping, iodma at &quot;
 )paren
+suffix:semicolon
+id|printk
+c_func
 (paren
-id|sg-&gt;dvma_address
+l_string|&quot;%016lx.&bslash;n&quot;
+comma
+id|sg-&gt;dma_address
 op_amp
 id|IO_PAGE_MASK
-)paren
 )paren
 suffix:semicolon
 r_for
@@ -821,7 +827,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;sg(%d): address(%p) length(%x) &quot;
-l_string|&quot;dma_address[%08x] dma_length[%08x]&bslash;n&quot;
+l_string|&quot;dma_address[%016lx] dma_length[%016lx]&bslash;n&quot;
 comma
 id|i
 comma
@@ -844,14 +850,14 @@ id|sg
 id|i
 )braket
 dot
-id|dvma_address
+id|dma_address
 comma
 id|sg
 (braket
 id|i
 )braket
 dot
-id|dvma_length
+id|dma_length
 )paren
 suffix:semicolon
 )brace
@@ -964,11 +970,11 @@ id|addr
 )paren
 )paren
 (brace
-id|dma_sg-&gt;dvma_address
+id|dma_sg-&gt;dma_address
 op_assign
 id|dent_addr
 suffix:semicolon
-id|dma_sg-&gt;dvma_length
+id|dma_sg-&gt;dma_length
 op_assign
 id|dent_len
 suffix:semicolon
@@ -1023,11 +1029,11 @@ op_plus
 id|sg-&gt;length
 suffix:semicolon
 )brace
-id|dma_sg-&gt;dvma_address
+id|dma_sg-&gt;dma_address
 op_assign
 id|dent_addr
 suffix:semicolon
-id|dma_sg-&gt;dvma_length
+id|dma_sg-&gt;dma_length
 op_assign
 id|dent_len
 suffix:semicolon
