@@ -12,6 +12,8 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* #define DEBUG */
 macro_line|#ifdef DEBUG

@@ -21,20 +21,16 @@ id|buffers
 op_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/* insmod parameter: some programs (e.g. &#xfffd;vic&#xfffd;) do not allow to&n;   specify the used video-mode, so you have to tell this to the&n;   modules by hand, 0 = PAL, 1 = NTSC  */
+multiline_comment|/* insmod parameter: some programs (e.g. &#xfffd;vic&#xfffd;) do not allow to&n;   specify the used video-mode, so you have to tell this to the&n;   modules by hand, 0 = PAL (default), 1 = NTSC  */
 DECL|variable|mode
 r_static
 r_int
 id|mode
-op_assign
-l_int|0
 suffix:semicolon
-multiline_comment|/* debug levels: 0 -- no debugging outputs&n;&t;&t; 1 -- prints out entering (and exiting if useful) of functions&n;&t;&t; 2 -- prints out very, very detailed informations of what is going on&n;&t;&t; 3 -- both of the above */
+multiline_comment|/* debug levels: 0 -- no debugging outputs: default&n;&t;&t; 1 -- prints out entering (and exiting if useful) of functions&n;&t;&t; 2 -- prints out very, very detailed informations of what is going on&n;&t;&t; 3 -- both of the above */
 DECL|variable|saa7146_debug
 r_int
 id|saa7146_debug
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* insmod parameter */
 DECL|macro|dprintk
@@ -3236,7 +3232,11 @@ r_struct
 id|saa7146
 op_star
 )paren
-id|pdev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|pdev
+)paren
 )paren
 op_member_access_from_pointer
 id|i2c_bus
@@ -3277,7 +3277,11 @@ r_struct
 id|saa7146
 op_star
 )paren
-id|pdev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|pdev
+)paren
 )paren
 op_member_access_from_pointer
 id|i2c_bus
@@ -3417,9 +3421,13 @@ id|saa-&gt;device
 op_assign
 id|pdev
 suffix:semicolon
-id|saa-&gt;device-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
 id|saa
+)paren
 suffix:semicolon
 id|saa-&gt;card_type
 op_assign
@@ -3469,7 +3477,11 @@ id|saa7146
 op_star
 id|saa
 op_assign
-id|pdev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|pdev
+)paren
 suffix:semicolon
 id|dprintk
 c_func

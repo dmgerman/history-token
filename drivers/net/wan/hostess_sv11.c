@@ -581,10 +581,6 @@ id|sv11_device
 op_star
 id|sv
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Get the needed I/O space&n;&t; */
 r_if
 c_cond

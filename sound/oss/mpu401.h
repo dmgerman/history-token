@@ -49,7 +49,7 @@ op_star
 id|hw_config
 )paren
 suffix:semicolon
-r_void
+r_int
 id|attach_mpu401
 c_func
 (paren

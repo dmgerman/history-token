@@ -2,6 +2,7 @@ multiline_comment|/* IEEE-1284 operations for parport.&n; *&n; * This file is fo
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG /* undef me for production */

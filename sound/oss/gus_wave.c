@@ -895,10 +895,6 @@ id|data
 )paren
 (brace
 multiline_comment|/* Writes a byte to the DRAM */
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|outb
 c_func
 (paren

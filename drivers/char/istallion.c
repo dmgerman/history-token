@@ -2750,21 +2750,25 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
-suffix:semicolon
+DECL|variable|stli_timeron
 r_static
 r_int
 id|stli_timeron
 suffix:semicolon
 multiline_comment|/*&n; *&t;Define the calculation for the timeout routine.&n; */
+DECL|macro|STLI_TIMEOUT
 mdefine_line|#define&t;STLI_TIMEOUT&t;(jiffies + 1)
 multiline_comment|/*****************************************************************************/
 macro_line|#ifdef MODULE
 multiline_comment|/*&n; *&t;Loadable module initialization stuff.&n; */
+DECL|function|istallion_module_init
+r_static
 r_int
-id|init_module
+id|__init
+id|istallion_module_init
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -2806,10 +2810,14 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|istallion_module_exit
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|istallion_module_exit
 c_func
 (paren
+r_void
 )paren
 (brace
 id|stlibrd_t
@@ -3158,8 +3166,23 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|istallion_module_init
+id|module_init
+c_func
+(paren
+id|istallion_module_init
+)paren
+suffix:semicolon
+DECL|variable|istallion_module_exit
+id|module_exit
+c_func
+(paren
+id|istallion_module_exit
+)paren
+suffix:semicolon
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Check for any arguments passed in on the module load command line.&n; */
+DECL|function|stli_argbrds
 r_static
 r_void
 id|stli_argbrds
@@ -3303,6 +3326,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Convert an ascii string number into an unsigned long.&n; */
+DECL|function|stli_atol
 r_static
 r_int
 r_int
@@ -3484,6 +3508,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Parse the supplied argument string, into the board conf struct.&n; */
+DECL|function|stli_parsebrd
 r_static
 r_int
 id|stli_parsebrd
@@ -3766,6 +3791,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Local driver kernel malloc routine.&n; */
+DECL|function|stli_memalloc
 r_static
 r_void
 op_star
@@ -3791,6 +3817,7 @@ id|GFP_KERNEL
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_open
 r_static
 r_int
 id|stli_open
@@ -4340,6 +4367,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_close
 r_static
 r_void
 id|stli_close
@@ -4742,6 +4770,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Carry out first open operations on a port. This involves a number of&n; *&t;commands to be sent to the slave. We need to open the port, set the&n; *&t;notification events, set the initial port settings, get and set the&n; *&t;initial signal values. We sleep and wait in between each one. But&n; *&t;this still all happens pretty quickly.&n; */
+DECL|function|stli_initopen
 r_static
 r_int
 id|stli_initopen
@@ -5047,6 +5076,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Send an open message to the slave. This will sleep waiting for the&n; *&t;acknowledgement, so must have user context. We need to co-ordinate&n; *&t;with close events here, since we don&squot;t want open and close events&n; *&t;to overlap.&n; */
+DECL|function|stli_rawopen
 r_static
 r_int
 id|stli_rawopen
@@ -5351,6 +5381,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Send a close message to the slave. Normally this will sleep waiting&n; *&t;for the acknowledgement, but if wait parameter is 0 it will not. If&n; *&t;wait is true then must have user context (to sleep).&n; */
+DECL|function|stli_rawclose
 r_static
 r_int
 id|stli_rawclose
@@ -5661,6 +5692,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Send a command to the slave and wait for the response. This must&n; *&t;have user context (it sleeps). This routine is generic in that it&n; *&t;can send any type of command. Its purpose is to wait for that command&n; *&t;to complete (as opposed to initiating the command then returning).&n; */
+DECL|function|stli_cmdwait
 r_static
 r_int
 id|stli_cmdwait
@@ -5860,6 +5892,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Send the termios settings for this port to the slave. This sleeps&n; *&t;waiting for the command to complete - so must have user context.&n; */
+DECL|function|stli_setport
 r_static
 r_int
 id|stli_setport
@@ -5997,6 +6030,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Wait for a specified delay period, this is not a busy-loop. It will&n; *&t;give up the processor while waiting. Unfortunately this has some&n; *&t;rather intimate knowledge of the process management stuff.&n; */
+DECL|function|stli_delay
 r_static
 r_void
 id|stli_delay
@@ -6046,6 +6080,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Possibly need to wait for carrier (DCD signal) to come high. Say&n; *&t;maybe because if we are clocal then we don&squot;t need to wait...&n; */
+DECL|function|stli_waitcarrier
 r_static
 r_int
 id|stli_waitcarrier
@@ -6358,6 +6393,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Write routine. Take the data and put it in the shared memory ring&n; *&t;queue. If port is not already sending chars then need to mark the&n; *&t;service bits for this port.&n; */
+DECL|function|stli_write
 r_static
 r_int
 id|stli_write
@@ -7047,6 +7083,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Output a single character. We put it into a temporary local buffer&n; *&t;(for speed) then write out that buffer when the flushchars routine&n; *&t;is called. There is a safety catch here so that if some other port&n; *&t;writes chars before the current buffer has been, then we write them&n; *&t;first them do the new ports.&n; */
+DECL|function|stli_putchar
 r_static
 r_void
 id|stli_putchar
@@ -7136,6 +7173,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Transfer characters from the local TX cooking buffer to the board.&n; *&t;We sort of ignore the tty that gets passed in here. We rely on the&n; *&t;info stored with the TX cook buffer to tell us which port to flush&n; *&t;the data on. In any case we clean out the TX cook buffer, for re-use&n; *&t;by someone else.&n; */
+DECL|function|stli_flushchars
 r_static
 r_void
 id|stli_flushchars
@@ -7661,6 +7699,7 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_writeroom
 r_static
 r_int
 id|stli_writeroom
@@ -7946,6 +7985,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Return the number of characters in the transmit buffer. Normally we&n; *&t;will return the number of chars in the shared memory ring queue.&n; *&t;We need to kludge around the case where the shared memory buffer is&n; *&t;empty but not all characters have drained yet, for this case just&n; *&t;return that there is 1 character in the buffer!&n; */
+DECL|function|stli_charsinbuffer
 r_static
 r_int
 id|stli_charsinbuffer
@@ -8219,6 +8259,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Generate the serial struct info.&n; */
+DECL|function|stli_getserial
 r_static
 r_int
 id|stli_getserial
@@ -8362,6 +8403,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Set port according to the serial struct info.&n; *&t;At this point we do not do any auto-configure stuff, so we will&n; *&t;just quietly ignore any requests to change irq, etc.&n; */
+DECL|function|stli_setserial
 r_static
 r_int
 id|stli_setserial
@@ -8525,6 +8567,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_ioctl
 r_static
 r_int
 id|stli_ioctl
@@ -9414,6 +9457,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;This routine assumes that we have user context and can sleep.&n; *&t;Looks like it is true for the current ttys implementation..!!&n; */
+DECL|function|stli_settermios
 r_static
 r_void
 id|stli_settermios
@@ -9679,6 +9723,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Attempt to flow control who ever is sending us data. We won&squot;t really&n; *&t;do any flow control action here. We can&squot;t directly, and even if we&n; *&t;wanted to we would have to send a command to the slave. The slave&n; *&t;knows how to flow control, and will do so when its buffers reach its&n; *&t;internal high water marks. So what we will do is set a local state&n; *&t;bit that will stop us sending any RX data up from the poll routine&n; *&t;(which is the place where RX data from the slave is handled).&n; */
+DECL|function|stli_throttle
 r_static
 r_void
 id|stli_throttle
@@ -9750,6 +9795,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Unflow control the device sending us data... That means that all&n; *&t;we have to do is clear the RXSTOP state bit. The next poll call&n; *&t;will then be able to pass the RX data back up.&n; */
+DECL|function|stli_unthrottle
 r_static
 r_void
 id|stli_unthrottle
@@ -9821,6 +9867,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Stop the transmitter. Basically to do this we will just turn TX&n; *&t;interrupts off.&n; */
+DECL|function|stli_stop
 r_static
 r_void
 id|stli_stop
@@ -9967,6 +10014,7 @@ macro_line|#endif
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Start the transmitter again. Just turn TX interrupts back on.&n; */
+DECL|function|stli_start
 r_static
 r_void
 id|stli_start
@@ -10113,6 +10161,7 @@ macro_line|#endif
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Scheduler called hang up routine. This is called from the scheduler,&n; *&t;not direct from the driver &quot;poll&quot; routine. We can&squot;t call it there&n; *&t;since the real local hangup code will enable/disable the board and&n; *&t;other things that we can&squot;t do while handling the poll. Much easier&n; *&t;to deal with it some time later (don&squot;t really care when, hangups&n; *&t;aren&squot;t that time critical).&n; */
+DECL|function|stli_dohangup
 r_static
 r_void
 id|stli_dohangup
@@ -10188,6 +10237,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Hangup this port. This is pretty much like closing the port, only&n; *&t;a little more brutal. No waiting for data to drain. Shutdown the&n; *&t;port and maybe drop signals. This is rather tricky really. We want&n; *&t;to close the port as well.&n; */
+DECL|function|stli_hangup
 r_static
 r_void
 id|stli_hangup
@@ -10483,6 +10533,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Flush characters from the lower buffer. We may not have user context&n; *&t;so we cannot sleep waiting for it to complete. Also we need to check&n; *&t;if there is chars for this port in the TX cook buffer, and flush them&n; *&t;as well.&n; */
+DECL|function|stli_flushbuffer
 r_static
 r_void
 id|stli_flushbuffer
@@ -10742,6 +10793,7 @@ id|tty
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_breakctl
 r_static
 r_void
 id|stli_breakctl
@@ -10890,6 +10942,7 @@ suffix:semicolon
 multiline_comment|/*&n; *&n;&t;current-&gt;timeout = savetime;&n;&t;current-&gt;state = savestate;&n; */
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_waituntilsent
 r_static
 r_void
 id|stli_waituntilsent
@@ -11022,6 +11075,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_sendxchar
 r_static
 r_void
 id|stli_sendxchar
@@ -11213,8 +11267,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|macro|MAXLINE
 mdefine_line|#define&t;MAXLINE&t;&t;80
 multiline_comment|/*&n; *&t;Format info for a specified port. The line is deliberately limited&n; *&t;to 80 characters. (If it is too long it will be truncated, if too&n; *&t;short then padded with spaces).&n; */
+DECL|function|stli_portinfo
 r_static
 r_int
 id|stli_portinfo
@@ -11576,6 +11632,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Port info, read from the /proc file system.&n; */
+DECL|function|stli_readproc
 r_static
 r_int
 id|stli_readproc
@@ -11913,6 +11970,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Generic send command routine. This will send a message to the slave,&n; *&t;of the specified type with the specified argument. Must be very&n; *&t;careful of data that will be copied out from shared memory -&n; *&t;containing command results. The command completion is all done from&n; *&t;a poll routine that does not have user context. Therefore you cannot&n; *&t;copy back directly into user space, or to the kernel stack of a&n; *&t;process. This routine does not sleep, so can be called from anywhere.&n; */
+DECL|function|stli_sendcmd
 r_static
 r_void
 id|stli_sendcmd
@@ -12178,6 +12236,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Read data from shared memory. This assumes that the shared memory&n; *&t;is enabled and that interrupts are off. Basically we just empty out&n; *&t;the shared memory buffer into the tty buffer. Must be careful to&n; *&t;handle the case where we fill up the tty buffer, but still have&n; *&t;more chars to unload.&n; */
+DECL|function|stli_read
 r_static
 r_inline
 r_void
@@ -12534,6 +12593,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Set up and carry out any delayed commands. There is only a small set&n; *&t;of slave commands that can be done &quot;off-level&quot;. So it is not too&n; *&t;difficult to deal with them here.&n; */
+DECL|function|stli_dodelaycmd
 r_static
 r_inline
 r_void
@@ -12833,6 +12893,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Host command service checking. This handles commands or messages&n; *&t;coming from the slave to the host. Must have board shared memory&n; *&t;enabled and interrupts off when called. Notice that by servicing the&n; *&t;read data last we don&squot;t need to change the shared memory pointer&n; *&t;during processing (which is a slow IO operation).&n; *&t;Return value indicates if this port is still awaiting actions from&n; *&t;the slave (like open, command, or even TX data being sent). If 0&n; *&t;then port is still busy, otherwise no longer busy.&n; */
+DECL|function|stli_hostcmd
 r_static
 r_inline
 r_int
@@ -13611,6 +13672,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Service all ports on a particular board. Assumes that the boards&n; *&t;shared memory is enabled, and that the page pointer is pointed&n; *&t;at the cdk header structure.&n; */
+DECL|function|stli_brdpoll
 r_static
 r_inline
 r_void
@@ -13908,6 +13970,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Driver poll routine. This routine polls the boards in use and passes&n; *&t;messages back up to host when necessary. This is actually very&n; *&t;CPU efficient, since we will always have the kernel poll clock, it&n; *&t;adds only a few cycles when idle (since board service can be&n; *&t;determined very easily), but when loaded generates no interrupts&n; *&t;(with their expensive associated context change).&n; */
+DECL|function|stli_poll
 r_static
 r_void
 id|stli_poll
@@ -14036,6 +14099,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Translate the termios settings into the port setting structure of&n; *&t;the slave.&n; */
+DECL|function|stli_mkasyport
 r_static
 r_void
 id|stli_mkasyport
@@ -14541,6 +14605,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Construct a slave signals structure for setting the DTR and RTS&n; *&t;signals as specified.&n; */
+DECL|function|stli_mkasysigs
 r_static
 r_void
 id|stli_mkasysigs
@@ -14647,6 +14712,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Convert the signals returned from the slave into a local TIOCM type&n; *&t;signals value. We keep them locally in TIOCM format.&n; */
+DECL|function|stli_mktiocm
 r_static
 r_int
 id|stli_mktiocm
@@ -14774,6 +14840,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;All panels and ports actually attached have been worked out. All&n; *&t;we need to do here is set up the appropriate per port data structures.&n; */
+DECL|function|stli_initports
 r_static
 r_inline
 r_int
@@ -14990,6 +15057,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;All the following routines are board specific hardware operations.&n; */
+DECL|function|stli_ecpinit
 r_static
 r_void
 id|stli_ecpinit
@@ -15078,6 +15146,7 @@ id|ECP_ATMEMAR
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_ecpenable
 r_static
 r_void
 id|stli_ecpenable
@@ -15116,6 +15185,7 @@ id|ECP_ATCONFR
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_ecpdisable
 r_static
 r_void
 id|stli_ecpdisable
@@ -15154,6 +15224,7 @@ id|ECP_ATCONFR
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_ecpgetmemptr
 r_static
 r_char
 op_star
@@ -15277,6 +15348,7 @@ id|ptr
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_ecpreset
 r_static
 r_void
 id|stli_ecpreset
@@ -15339,6 +15411,7 @@ l_int|500
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_ecpintr
 r_static
 r_void
 id|stli_ecpintr
@@ -15374,6 +15447,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;The following set of functions act on ECP EISA boards.&n; */
+DECL|function|stli_ecpeiinit
 r_static
 r_void
 id|stli_ecpeiinit
@@ -15496,6 +15570,7 @@ id|ECP_EIMEMARH
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_ecpeienable
 r_static
 r_void
 id|stli_ecpeienable
@@ -15520,6 +15595,7 @@ id|ECP_EICONFR
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_ecpeidisable
 r_static
 r_void
 id|stli_ecpeidisable
@@ -15544,6 +15620,7 @@ id|ECP_EICONFR
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_ecpeigetmemptr
 r_static
 r_char
 op_star
@@ -15675,6 +15752,7 @@ id|ptr
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_ecpeireset
 r_static
 r_void
 id|stli_ecpeireset
@@ -15724,6 +15802,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;The following set of functions act on ECP MCA boards.&n; */
+DECL|function|stli_ecpmcenable
 r_static
 r_void
 id|stli_ecpmcenable
@@ -15748,6 +15827,7 @@ id|ECP_MCCONFR
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_ecpmcdisable
 r_static
 r_void
 id|stli_ecpmcdisable
@@ -15772,6 +15852,7 @@ id|ECP_MCCONFR
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_ecpmcgetmemptr
 r_static
 r_char
 op_star
@@ -15880,6 +15961,7 @@ id|ptr
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_ecpmcreset
 r_static
 r_void
 id|stli_ecpmcreset
@@ -15929,6 +16011,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;The following set of functions act on ECP PCI boards.&n; */
+DECL|function|stli_ecppciinit
 r_static
 r_void
 id|stli_ecppciinit
@@ -15991,6 +16074,7 @@ l_int|500
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_ecppcigetmemptr
 r_static
 r_char
 op_star
@@ -16114,6 +16198,7 @@ id|ptr
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_ecppcireset
 r_static
 r_void
 id|stli_ecppcireset
@@ -16163,6 +16248,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;The following routines act on ONboards.&n; */
+DECL|function|stli_onbinit
 r_static
 r_void
 id|stli_onbinit
@@ -16265,6 +16351,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_onbenable
 r_static
 r_void
 id|stli_onbenable
@@ -16307,6 +16394,7 @@ id|ONB_ATCONFR
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_onbdisable
 r_static
 r_void
 id|stli_onbdisable
@@ -16349,6 +16437,7 @@ id|ONB_ATCONFR
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_onbgetmemptr
 r_static
 r_char
 op_star
@@ -16440,6 +16529,7 @@ id|ptr
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_onbreset
 r_static
 r_void
 id|stli_onbreset
@@ -16503,6 +16593,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;The following routines act on ONboard EISA.&n; */
+DECL|function|stli_onbeinit
 r_static
 r_void
 id|stli_onbeinit
@@ -16639,6 +16730,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_onbeenable
 r_static
 r_void
 id|stli_onbeenable
@@ -16677,6 +16769,7 @@ id|ONB_EICONFR
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_onbedisable
 r_static
 r_void
 id|stli_onbedisable
@@ -16715,6 +16808,7 @@ id|ONB_EICONFR
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_onbegetmemptr
 r_static
 r_char
 op_star
@@ -16846,6 +16940,7 @@ id|ptr
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_onbereset
 r_static
 r_void
 id|stli_onbereset
@@ -16909,6 +17004,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;The following routines act on Brumby boards.&n; */
+DECL|function|stli_bbyinit
 r_static
 r_void
 id|stli_bbyinit
@@ -16985,6 +17081,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_bbygetmemptr
 r_static
 r_char
 op_star
@@ -17108,6 +17205,7 @@ id|ptr
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_bbyreset
 r_static
 r_void
 id|stli_bbyreset
@@ -17171,6 +17269,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;The following routines act on original old Stallion boards.&n; */
+DECL|function|stli_stalinit
 r_static
 r_void
 id|stli_stalinit
@@ -17211,6 +17310,7 @@ l_int|1000
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_stalgetmemptr
 r_static
 r_char
 op_star
@@ -17302,6 +17402,7 @@ id|ptr
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_stalreset
 r_static
 r_void
 id|stli_stalreset
@@ -17368,6 +17469,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Try to find an ECP board and initialize it. This handles only ECP&n; *&t;board types.&n; */
+DECL|function|stli_initecp
 r_static
 r_inline
 r_int
@@ -17996,6 +18098,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Try to find an ONboard, Brumby or Stallion board and initialize it.&n; *&t;This handles only these board types.&n; */
+DECL|function|stli_initonb
 r_static
 r_inline
 r_int
@@ -18572,6 +18675,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Start up a running board. This routine is only called after the&n; *&t;code has been down loaded to the board and is operational. It will&n; *&t;read in the memory map, and get the show on the road...&n; */
+DECL|function|stli_startbrd
 r_static
 r_int
 id|stli_startbrd
@@ -19108,6 +19212,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Probe and initialize the specified board.&n; */
+DECL|function|stli_brdinit
 r_static
 r_int
 id|__init
@@ -19326,6 +19431,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Probe around trying to find where the EISA boards shared memory&n; *&t;might be. This is a bit if hack, but it is the best we can do.&n; */
+DECL|function|stli_eisamemprobe
 r_static
 r_inline
 r_int
@@ -19775,6 +19881,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Probe around and try to find any EISA boards in system. The biggest&n; *&t;problem here is finding out what memory address is associated with&n; *&t;an EISA board after it is found. The registers of the ECPE and&n; *&t;ONboardE are not readable - so we can&squot;t read them from there. We&n; *&t;don&squot;t have access to the EISA CMOS (or EISA BIOS) so we don&squot;t&n; *&t;actually have any way to find out the real value. The best we can&n; *&t;do is go probing around in the usual places hoping we can find it.&n; */
+DECL|function|stli_findeisabrds
 r_static
 r_inline
 r_int
@@ -20076,6 +20183,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Find the next available board number that is free.&n; */
+DECL|function|stli_getbrdnr
 r_static
 r_inline
 r_int
@@ -20145,6 +20253,7 @@ suffix:semicolon
 multiline_comment|/*****************************************************************************/
 macro_line|#ifdef&t;CONFIG_PCI
 multiline_comment|/*&n; *&t;We have a Stallion board. Allocate a board structure and&n; *&t;initialize it. Read its IO and MEMORY resources from PCI&n; *&t;configuration space.&n; */
+DECL|function|stli_initpcibrd
 r_static
 r_inline
 r_int
@@ -20325,6 +20434,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Find all Stallion PCI boards that might be installed. Initialize each&n; *&t;one as it is found.&n; */
+DECL|function|stli_findpcibrds
 r_static
 r_inline
 r_int
@@ -20407,6 +20517,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Allocate a new board structure. Fill out the basic info in it.&n; */
+DECL|function|stli_allocbrd
 r_static
 id|stlibrd_t
 op_star
@@ -20490,6 +20601,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Scan through all the boards in the configuration and see what we&n; *&t;can find.&n; */
+DECL|function|stli_initbrds
 r_static
 r_inline
 r_int
@@ -20851,6 +20963,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Code to handle an &quot;staliomem&quot; read operation. This device is the &n; *&t;contents of the board shared memory. It is used for down loading&n; *&t;the slave image (and debugging :-)&n; */
+DECL|function|stli_memread
 r_static
 id|ssize_t
 id|stli_memread
@@ -21113,6 +21226,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Code to handle an &quot;staliomem&quot; write operation. This device is the &n; *&t;contents of the board shared memory. It is used for down loading&n; *&t;the slave image (and debugging :-)&n; */
+DECL|function|stli_memwrite
 r_static
 id|ssize_t
 id|stli_memwrite
@@ -21388,6 +21502,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Return the board stats structure to user app.&n; */
+DECL|function|stli_getbrdstats
 r_static
 r_int
 id|stli_getbrdstats
@@ -21583,6 +21698,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Resolve the referenced port number into a port struct pointer.&n; */
+DECL|function|stli_getport
 r_static
 id|stliport_t
 op_star
@@ -21707,6 +21823,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Return the port stats structure to user app. A NULL port struct&n; *&t;pointer passed in means that we need to find out from the app&n; *&t;what port to get stats for (used through board control device).&n; */
+DECL|function|stli_portcmdstats
 r_static
 r_int
 id|stli_portcmdstats
@@ -22027,6 +22144,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Return the port stats structure to user app. A NULL port struct&n; *&t;pointer passed in means that we need to find out from the app&n; *&t;what port to get stats for (used through board control device).&n; */
+DECL|function|stli_getportstats
 r_static
 r_int
 id|stli_getportstats
@@ -22173,6 +22291,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Clear the port stats structure. We also return it zeroed out...&n; */
+DECL|function|stli_clrportstats
 r_static
 r_int
 id|stli_clrportstats
@@ -22367,6 +22486,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Return the entire driver ports structure to a user app.&n; */
+DECL|function|stli_getportstruct
 r_static
 r_int
 id|stli_getportstruct
@@ -22463,6 +22583,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Return the entire driver board structure to a user app.&n; */
+DECL|function|stli_getbrdstruct
 r_static
 r_int
 id|stli_getbrdstruct
@@ -22573,6 +22694,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;The &quot;staliomem&quot; device is also required to do some special operations on&n; *&t;the board. We need to be able to send an interrupt to the board,&n; *&t;reset it, and start/stop it.&n; */
+DECL|function|stli_memioctl
 r_static
 r_int
 id|stli_memioctl
@@ -22910,6 +23032,7 @@ id|rc
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
+DECL|function|stli_init
 r_int
 id|__init
 id|stli_init
