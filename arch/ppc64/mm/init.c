@@ -883,23 +883,17 @@ op_star
 id|mm
 )paren
 (brace
+r_struct
+id|vm_area_struct
+op_star
+id|mp
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
 op_amp
 id|mm-&gt;page_table_lock
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mm-&gt;map_count
-)paren
-(brace
-r_struct
-id|vm_area_struct
-op_star
-id|mp
 suffix:semicolon
 r_for
 c_loop
@@ -926,22 +920,6 @@ comma
 id|mp-&gt;vm_end
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* MIKEC: It is not clear why this is needed */
-multiline_comment|/* paulus: it is needed to clear out stale HPTEs&n;&t;&t; * when an address space (represented by an mm_struct)&n;&t;&t; * is being destroyed. */
-id|__flush_tlb_range
-c_func
-(paren
-id|mm
-comma
-id|USER_START
-comma
-id|USER_END
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* XXX are there races with checking cpu_vm_mask? - Anton */
 id|mm-&gt;cpu_vm_mask
 op_assign
