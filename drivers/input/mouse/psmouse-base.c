@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &quot;psmouse.h&quot;
 macro_line|#include &quot;synaptics.h&quot;
 macro_line|#include &quot;logips2pp.h&quot;
@@ -2224,56 +2223,6 @@ id|psmouse
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Reinitialize mouse hardware after software suspend.&n; */
-DECL|function|psmouse_pm_callback
-r_static
-r_int
-id|psmouse_pm_callback
-c_func
-(paren
-r_struct
-id|pm_dev
-op_star
-id|dev
-comma
-id|pm_request_t
-id|request
-comma
-r_void
-op_star
-id|data
-)paren
-(brace
-r_struct
-id|psmouse
-op_star
-id|psmouse
-op_assign
-id|dev-&gt;data
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|request
-op_eq
-id|PM_RESUME
-)paren
-(brace
-id|psmouse-&gt;state
-op_assign
-id|PSMOUSE_IGNORE
-suffix:semicolon
-id|serio_reconnect
-c_func
-(paren
-id|psmouse-&gt;serio
-)paren
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * psmouse_connect() is a callback from the serio module when&n; * an unhandled serio port is found.&n; */
 DECL|function|psmouse_connect
 r_static
@@ -2296,11 +2245,6 @@ r_struct
 id|psmouse
 op_star
 id|psmouse
-suffix:semicolon
-r_struct
-id|pm_dev
-op_star
-id|pmdev
 suffix:semicolon
 r_if
 c_cond
@@ -2495,42 +2439,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|serio-&gt;type
-op_ne
-id|SERIO_PS_PSTHRU
-)paren
-(brace
-id|pmdev
-op_assign
-id|pm_register
-c_func
-(paren
-id|PM_SYS_DEV
-comma
-id|PM_SYS_UNKNOWN
-comma
-id|psmouse_pm_callback
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pmdev
-)paren
-(brace
-id|psmouse-&gt;dev.pm_dev
-op_assign
-id|pmdev
-suffix:semicolon
-id|pmdev-&gt;data
-op_assign
-id|psmouse
-suffix:semicolon
-)brace
-)brace
 id|sprintf
 c_func
 (paren
@@ -2697,37 +2605,6 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;psmouse: reconnect request, but serio is disconnected, ignoring...&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/* We need to reopen the serio port to reinitialize the i8042 controller */
-id|serio_close
-c_func
-(paren
-id|serio
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|serio_open
-c_func
-(paren
-id|serio
-comma
-id|dev
-)paren
-)paren
-(brace
-multiline_comment|/* do a disconnect here as serio_open leaves dev as NULL so disconnect&n;&t;&t; * will not be called automatically later&n;&t;&t; */
-id|psmouse_disconnect
-c_func
-(paren
-id|serio
 )paren
 suffix:semicolon
 r_return
