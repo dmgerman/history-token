@@ -217,20 +217,6 @@ id|version
 comma
 id|ret
 suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS64X
-comma
-l_string|&quot;sys_ipc - entered - pid=%ld current=%lx comm=%s &bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
-suffix:semicolon
 id|version
 op_assign
 id|call
@@ -732,20 +718,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS64X
-comma
-l_string|&quot;sys_ipc - exited - pid=%ld current=%lx comm=%s &bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -770,20 +742,6 @@ l_int|2
 suffix:semicolon
 r_int
 id|error
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS64X
-comma
-l_string|&quot;sys_pipe - entered - pid=%ld current=%lx comm=%s &bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
 suffix:semicolon
 id|error
 op_assign
@@ -824,20 +782,6 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS64X
-comma
-l_string|&quot;sys_pipe - exited - pid=%ld current=%lx comm=%s &bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
-suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -885,22 +829,6 @@ id|ret
 op_assign
 op_minus
 id|EBADF
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS64X
-comma
-l_string|&quot;sys_mmap - entered - addr=%lx, len=%lx - pid=%ld, comm=%s &bslash;n&quot;
-comma
-id|addr
-comma
-id|len
-comma
-id|current-&gt;pid
-comma
-id|current-&gt;comm
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -985,16 +913,6 @@ id|file
 suffix:semicolon
 id|out
 suffix:colon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS64X
-comma
-l_string|&quot;sys_mmap - exited - ret=%x &bslash;n&quot;
-comma
-id|ret
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -1054,20 +972,6 @@ op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS64X
-comma
-l_string|&quot;sys_uname - entered - pid=%ld current=%lx comm=%s &bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
-suffix:semicolon
 id|down_read
 c_func
 (paren
@@ -1107,20 +1011,6 @@ op_amp
 id|uts_sem
 )paren
 suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS64X
-comma
-l_string|&quot;sys_uname - exited - pid=%ld current=%lx comm=%s &bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
-suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -1139,20 +1029,6 @@ id|name
 (brace
 r_int
 id|error
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS64X
-comma
-l_string|&quot;sys_olduname - entered - pid=%ld current=%lx comm=%s &bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1339,20 +1215,6 @@ op_minus
 id|EFAULT
 suffix:colon
 l_int|0
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS64X
-comma
-l_string|&quot;sys_olduname - exited - pid=%ld current=%lx comm=%s &bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
 suffix:semicolon
 r_return
 id|error
