@@ -1668,13 +1668,12 @@ op_amp
 id|RTCF_BROADCAST
 op_logical_and
 op_logical_neg
-id|test_bit
+id|sock_flag
 c_func
 (paren
-id|SOCK_BROADCAST
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_BROADCAST
 )paren
 )paren
 r_goto
