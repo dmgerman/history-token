@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#ifdef CONFIG_INPUT_MOUSEDEV_PSAUX
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#endif
@@ -2574,6 +2575,26 @@ id|mousedev_fops
 )brace
 suffix:semicolon
 macro_line|#endif
+DECL|variable|mousedev_intf
+r_static
+r_struct
+id|device_interface
+id|mousedev_intf
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;mouse&quot;
+comma
+dot
+id|devclass
+op_assign
+op_amp
+id|input_devclass
+comma
+)brace
+suffix:semicolon
 DECL|function|mousedev_init
 r_static
 r_int
@@ -2584,6 +2605,13 @@ c_func
 r_void
 )paren
 (brace
+id|interface_register
+c_func
+(paren
+op_amp
+id|mousedev_intf
+)paren
+suffix:semicolon
 id|input_register_handler
 c_func
 (paren
@@ -2691,6 +2719,13 @@ c_func
 (paren
 op_amp
 id|mousedev_handler
+)paren
+suffix:semicolon
+id|interface_unregister
+c_func
+(paren
+op_amp
+id|mousedev_intf
 )paren
 suffix:semicolon
 )brace
