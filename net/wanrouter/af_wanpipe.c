@@ -1255,6 +1255,13 @@ op_assign
 id|wan_opt
 suffix:semicolon
 multiline_comment|/* Use timer to send data to the driver. This will act&n;         * as a BH handler for sendmsg functions */
+id|init_timer
+c_func
+(paren
+op_amp
+id|wan_opt-&gt;tx_timer
+)paren
+suffix:semicolon
 id|wan_opt-&gt;tx_timer.data
 op_assign
 (paren

@@ -352,6 +352,15 @@ id|AX25_VALUES_DS_TIMEOUT
 op_assign
 id|AX25_DEF_DS_TIMEOUT
 suffix:semicolon
+macro_line|#if defined(CONFIG_AX25_DAMA_SLAVE) || defined(CONFIG_AX25_DAMA_MASTER)
+id|init_timer
+c_func
+(paren
+op_amp
+id|ax25_dev-&gt;dama.slave_timer
+)paren
+suffix:semicolon
+macro_line|#endif
 id|spin_lock_bh
 c_func
 (paren
