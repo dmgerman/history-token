@@ -1036,6 +1036,28 @@ op_rshift
 l_int|32
 suffix:semicolon
 )brace
+DECL|function|jensen_ioportmap
+id|__EXTERN_INLINE
+r_void
+id|__iomem
+op_star
+id|jensen_ioportmap
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
+(paren
+r_void
+id|__iomem
+op_star
+)paren
+id|addr
+suffix:semicolon
+)brace
 DECL|function|jensen_ioremap
 id|__EXTERN_INLINE
 r_void
@@ -1059,23 +1081,11 @@ r_void
 id|__iomem
 op_star
 )paren
-id|addr
-suffix:semicolon
-)brace
-DECL|function|jensen_iounmap
-id|__EXTERN_INLINE
-r_void
-id|jensen_iounmap
-c_func
 (paren
-r_volatile
-r_void
-id|__iomem
-op_star
 id|addr
+op_plus
+l_int|0x100000000ul
 )paren
-(brace
-r_return
 suffix:semicolon
 )brace
 DECL|function|jensen_is_ioaddr
@@ -1098,49 +1108,73 @@ op_ge
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|jensen_is_mmio
+id|__EXTERN_INLINE
+r_int
+id|jensen_is_mmio
+c_func
+(paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|addr
+)paren
+(brace
+r_return
+(paren
+r_int
+r_int
+)paren
+id|addr
+op_ge
+l_int|0x100000000ul
+suffix:semicolon
+)brace
+multiline_comment|/* New-style ioread interface.  All the routines are so ugly for Jensen&n;   that it doesn&squot;t make sense to merge them.  */
+DECL|macro|IOPORT
+mdefine_line|#define IOPORT(OS, NS)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;__EXTERN_INLINE unsigned int jensen_ioread##NS(void __iomem *xaddr)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (jensen_is_mmio(xaddr))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return jensen_read##OS(xaddr - 0x100000000ul);&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return jensen_in##OS((unsigned long)xaddr);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;__EXTERN_INLINE void jensen_iowrite##NS(u##NS b, void __iomem *xaddr)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (jensen_is_mmio(xaddr))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;jensen_write##OS(b, xaddr - 0x100000000ul);&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;jensen_out##OS(b, (unsigned long)xaddr);&t;&t;&bslash;&n;}
+id|IOPORT
+c_func
+(paren
+id|b
+comma
+l_int|8
+)paren
+id|IOPORT
+c_func
+(paren
+id|w
+comma
+l_int|16
+)paren
+id|IOPORT
+c_func
+(paren
+id|l
+comma
+l_int|32
+)paren
+DECL|macro|IOPORT
+macro_line|#undef IOPORT
 DECL|macro|vuip
 macro_line|#undef vuip
-macro_line|#ifdef __WANT_IO_DEF
-DECL|macro|__inb
-mdefine_line|#define __inb&t;&t;jensen_inb
-DECL|macro|__inw
-mdefine_line|#define __inw&t;&t;jensen_inw
-DECL|macro|__inl
-mdefine_line|#define __inl&t;&t;jensen_inl
-DECL|macro|__outb
-mdefine_line|#define __outb&t;&t;jensen_outb
-DECL|macro|__outw
-mdefine_line|#define __outw&t;&t;jensen_outw
-DECL|macro|__outl
-mdefine_line|#define __outl&t;&t;jensen_outl
-DECL|macro|__readb
-mdefine_line|#define __readb&t;&t;jensen_readb
-DECL|macro|__readw
-mdefine_line|#define __readw&t;&t;jensen_readw
-DECL|macro|__writeb
-mdefine_line|#define __writeb&t;jensen_writeb
-DECL|macro|__writew
-mdefine_line|#define __writew&t;jensen_writew
-DECL|macro|__readl
-mdefine_line|#define __readl&t;&t;jensen_readl
-DECL|macro|__readq
-mdefine_line|#define __readq&t;&t;jensen_readq
-DECL|macro|__writel
-mdefine_line|#define __writel&t;jensen_writel
-DECL|macro|__writeq
-mdefine_line|#define __writeq&t;jensen_writeq
-DECL|macro|__ioremap
-mdefine_line|#define __ioremap&t;jensen_ioremap
-DECL|macro|__iounmap
-mdefine_line|#define __iounmap&t;jensen_iounmap
-DECL|macro|__is_ioaddr
-mdefine_line|#define __is_ioaddr(a)&t;jensen_is_ioaddr((unsigned long)(a))
-multiline_comment|/*&n; * The above have so much overhead that it probably doesn&squot;t make&n; * sense to have them inlined (better icache behaviour).&n; */
-DECL|macro|inb
-mdefine_line|#define inb(port) &bslash;&n;  (__builtin_constant_p(port)?__inb(port):_inb(port))
-DECL|macro|outb
-mdefine_line|#define outb(x, port) &bslash;&n;  (__builtin_constant_p(port)?__outb(x,port):_outb(x,port))
-macro_line|#endif /* __WANT_IO_DEF */
+DECL|macro|__IO_PREFIX
+macro_line|#undef __IO_PREFIX
+DECL|macro|__IO_PREFIX
+mdefine_line|#define __IO_PREFIX&t;&t;jensen
+DECL|macro|jensen_trivial_rw_bw
+mdefine_line|#define jensen_trivial_rw_bw&t;0
+DECL|macro|jensen_trivial_rw_lq
+mdefine_line|#define jensen_trivial_rw_lq&t;0
+DECL|macro|jensen_trivial_io_bw
+mdefine_line|#define jensen_trivial_io_bw&t;0
+DECL|macro|jensen_trivial_io_lq
+mdefine_line|#define jensen_trivial_io_lq&t;0
+DECL|macro|jensen_trivial_iounmap
+mdefine_line|#define jensen_trivial_iounmap&t;1
+macro_line|#include &lt;asm/io_trivial.h&gt;
 macro_line|#ifdef __IO_EXTERN_INLINE
 DECL|macro|__EXTERN_INLINE
 macro_line|#undef __EXTERN_INLINE

@@ -306,7 +306,7 @@ l_string|&quot;=&amp;r&quot;
 id|regx
 )paren
 suffix:colon
-l_string|&quot;0&quot;
+l_string|&quot;m&quot;
 (paren
 op_star
 id|lock
