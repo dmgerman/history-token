@@ -815,10 +815,12 @@ id|cc
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Calibrate CPU clock using legacy 8254 timer/counter. Stolen from&n; * arch/i386/time.c.&n; */
+DECL|macro|PIC_TICK_RATE
+mdefine_line|#define PIC_TICK_RATE&t;1193180UL
 DECL|macro|CALIBRATE_LATCH
-mdefine_line|#define CALIBRATE_LATCH&t;(52 * LATCH)
-DECL|macro|CALIBRATE_TIME
-mdefine_line|#define CALIBRATE_TIME&t;(52 * 1000020 / HZ)
+mdefine_line|#define CALIBRATE_LATCH&t;0xffff
+DECL|macro|TIMEOUT_COUNT
+mdefine_line|#define TIMEOUT_COUNT&t;0x100000
 r_static
 r_int
 r_int
@@ -899,10 +901,8 @@ suffix:semicolon
 r_do
 (brace
 id|count
-op_add_assign
-l_int|100
+op_increment
 suffix:semicolon
-multiline_comment|/* by 1 takes too long to timeout from 0 */
 )brace
 r_while
 c_loop
@@ -920,8 +920,8 @@ op_eq
 l_int|0
 op_logical_and
 id|count
-OG
-l_int|0
+OL
+id|TIMEOUT_COUNT
 )paren
 suffix:semicolon
 id|cc
@@ -939,30 +939,30 @@ c_cond
 (paren
 id|count
 op_le
-l_int|100
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* Error: ECPUTOOSLOW.  */
-r_if
-c_cond
-(paren
-id|cc
-op_le
-id|CALIBRATE_TIME
+l_int|1
+op_logical_or
+id|count
+op_eq
+id|TIMEOUT_COUNT
 )paren
 r_return
 l_int|0
 suffix:semicolon
 r_return
 (paren
+(paren
+r_int
+)paren
 id|cc
 op_star
-l_int|1000000UL
+id|PIC_TICK_RATE
 )paren
 op_div
-id|CALIBRATE_TIME
+(paren
+id|CALIBRATE_LATCH
+op_plus
+l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* The Linux interpretation of the CMOS clock register contents:&n;   When the Update-In-Progress (UIP) flag goes from 1 to 0, the&n;   RTC registers show the second which has precisely just started.&n;   Let&squot;s hope other operating systems interpret the RTC the same way.  */
