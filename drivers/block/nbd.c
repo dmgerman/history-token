@@ -556,11 +556,15 @@ op_logical_neg
 id|lo-&gt;sock
 )paren
 (brace
-id|FAIL
+id|printk
 c_func
 (paren
-l_string|&quot;Attempted sendmsg to closed socket&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;NBD: Attempted sendmsg to closed socket&bslash;n&quot;
 )paren
+suffix:semicolon
+r_goto
+id|error_out
 suffix:semicolon
 )brace
 id|result

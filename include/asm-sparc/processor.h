@@ -373,8 +373,17 @@ r_int
 id|flags
 )paren
 suffix:semicolon
-DECL|macro|get_wchan
-mdefine_line|#define get_wchan(__TSK) &bslash;&n;({&t;extern void scheduling_functions_start_here(void); &bslash;&n;&t;extern void scheduling_functions_end_here(void); &bslash;&n;&t;unsigned long pc, fp, bias = 0; &bslash;&n;&t;unsigned long task_base = (unsigned long) (__TSK); &bslash;&n;        unsigned long __ret = 0; &bslash;&n;&t;struct reg_window *rw; &bslash;&n;&t;int count = 0; &bslash;&n;&t;if (!(__TSK) || (__TSK) == current || &bslash;&n;            (__TSK)-&gt;state == TASK_RUNNING) &bslash;&n;&t;&t;goto __out; &bslash;&n;&t;fp = (__TSK)-&gt;thread_info-&gt;ksp + bias; &bslash;&n;&t;do { &bslash;&n;&t;&t;/* Bogus frame pointer? */ &bslash;&n;&t;&t;if (fp &lt; (task_base + sizeof(struct task_struct)) || &bslash;&n;&t;&t;    fp &gt;= (task_base + (2 * PAGE_SIZE))) &bslash;&n;&t;&t;&t;break; &bslash;&n;&t;&t;rw = (struct reg_window *) fp; &bslash;&n;&t;&t;pc = rw-&gt;ins[7]; &bslash;&n;&t;&t;if (pc &lt; ((unsigned long) scheduling_functions_start_here) || &bslash;&n;                    pc &gt;= ((unsigned long) scheduling_functions_end_here)) { &bslash;&n;&t;&t;&t;__ret = pc; &bslash;&n;&t;&t;&t;goto __out; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;fp = rw-&gt;ins[6] + bias; &bslash;&n;&t;} while (++count &lt; 16); &bslash;&n;__out:&t;__ret; &bslash;&n;})
+r_extern
+r_int
+r_int
+id|get_wchan
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
 DECL|macro|KSTK_EIP
 mdefine_line|#define KSTK_EIP(tsk)  ((tsk)-&gt;thread.kregs-&gt;pc)
 DECL|macro|KSTK_ESP

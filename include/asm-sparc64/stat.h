@@ -3,6 +3,7 @@ macro_line|#ifndef _SPARC64_STAT_H
 DECL|macro|_SPARC64_STAT_H
 mdefine_line|#define _SPARC64_STAT_H
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 DECL|struct|stat32
 r_struct
@@ -41,7 +42,7 @@ id|__kernel_off_t32
 id|st_size
 suffix:semicolon
 DECL|member|st_atime
-id|__kernel_time_t32
+id|compat_time_t
 id|st_atime
 suffix:semicolon
 DECL|member|__unused1
@@ -50,7 +51,7 @@ r_int
 id|__unused1
 suffix:semicolon
 DECL|member|st_mtime
-id|__kernel_time_t32
+id|compat_time_t
 id|st_mtime
 suffix:semicolon
 DECL|member|__unused2
@@ -59,7 +60,7 @@ r_int
 id|__unused2
 suffix:semicolon
 DECL|member|st_ctime
-id|__kernel_time_t32
+id|compat_time_t
 id|st_ctime
 suffix:semicolon
 DECL|member|__unused3

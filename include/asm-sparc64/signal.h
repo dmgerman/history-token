@@ -7,6 +7,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#endif
 macro_line|#endif
 multiline_comment|/* On the Sparc the signal handlers get passed a &squot;sub-signal&squot; code&n; * for certain signal types, which we document here.&n; */
@@ -485,7 +486,7 @@ r_int
 id|ss_flags
 suffix:semicolon
 DECL|member|ss_size
-id|__kernel_size_t32
+id|compat_size_t
 id|ss_size
 suffix:semicolon
 DECL|typedef|stack_t32

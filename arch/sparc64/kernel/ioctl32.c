@@ -1,6 +1,7 @@
 multiline_comment|/* $Id: ioctl32.c,v 1.136 2002/01/14 09:49:52 davem Exp $&n; * ioctl32.c: Conversion between 32bit and 64bit native ioctls.&n; *&n; * Copyright (C) 1997-2000  Jakub Jelinek  (jakub@redhat.com)&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * ioctls.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -1777,20 +1778,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|struct|timeval32
-r_struct
-id|timeval32
-(brace
-DECL|member|tv_sec
-r_int
-id|tv_sec
-suffix:semicolon
-DECL|member|tv_usec
-r_int
-id|tv_usec
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|function|do_siocgstamp
 r_static
 r_int
@@ -1811,13 +1798,13 @@ id|arg
 )paren
 (brace
 r_struct
-id|timeval32
+id|compat_timeval
 op_star
 id|up
 op_assign
 (paren
 r_struct
-id|timeval32
+id|compat_timeval
 op_star
 )paren
 id|arg
@@ -11387,11 +11374,11 @@ r_struct
 id|ppp_idle32
 (brace
 DECL|member|xmit_idle
-id|__kernel_time_t32
+id|compat_time_t
 id|xmit_idle
 suffix:semicolon
 DECL|member|recv_idle
-id|__kernel_time_t32
+id|compat_time_t
 id|recv_idle
 suffix:semicolon
 )brace

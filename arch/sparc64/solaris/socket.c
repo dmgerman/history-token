@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
@@ -2247,7 +2248,7 @@ r_int
 op_star
 id|kcmsg
 suffix:semicolon
-id|__kernel_size_t32
+id|compat_size_t
 id|cmlen
 suffix:semicolon
 r_if
@@ -2340,7 +2341,7 @@ id|kern_msg.msg_controllen
 op_minus
 r_sizeof
 (paren
-id|__kernel_size_t32
+id|compat_size_t
 )paren
 )paren
 )paren

@@ -166,26 +166,10 @@ DECL|typedef|__kernel_fsid_t
 id|__kernel_fsid_t
 suffix:semicolon
 multiline_comment|/* Now 32bit compatibility types */
-DECL|typedef|__kernel_size_t32
-r_typedef
-r_int
-r_int
-id|__kernel_size_t32
-suffix:semicolon
-DECL|typedef|__kernel_ssize_t32
-r_typedef
-r_int
-id|__kernel_ssize_t32
-suffix:semicolon
 DECL|typedef|__kernel_ptrdiff_t32
 r_typedef
 r_int
 id|__kernel_ptrdiff_t32
-suffix:semicolon
-DECL|typedef|__kernel_time_t32
-r_typedef
-r_int
-id|__kernel_time_t32
 suffix:semicolon
 DECL|typedef|__kernel_clock_t32
 r_typedef
