@@ -17,9 +17,13 @@ macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/seqlock.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-DECL|macro|DCACHE_PARANOIA
-mdefine_line|#define DCACHE_PARANOIA 1
 multiline_comment|/* #define DCACHE_DEBUG 1 */
+DECL|variable|sysctl_vfs_cache_pressure
+r_int
+id|sysctl_vfs_cache_pressure
+op_assign
+l_int|100
+suffix:semicolon
 DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t
 id|dcache_lock
@@ -2035,7 +2039,13 @@ id|nr
 suffix:semicolon
 )brace
 r_return
+(paren
 id|dentry_stat.nr_unused
+op_div
+l_int|100
+)paren
+op_star
+id|sysctl_vfs_cache_pressure
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * d_alloc&t;-&t;allocate a dcache entry&n; * @parent: parent of entry to allocate&n; * @name: qstr of the name&n; *&n; * Allocates a dentry. It returns %NULL if there is insufficient memory&n; * available. On a success the dentry is returned. The name passed in is&n; * copied and the copy passed in may be reused after this call.&n; */

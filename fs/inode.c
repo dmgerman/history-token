@@ -1677,7 +1677,13 @@ id|nr
 suffix:semicolon
 )brace
 r_return
+(paren
 id|inodes_stat.nr_unused
+op_div
+l_int|100
+)paren
+op_star
+id|sysctl_vfs_cache_pressure
 suffix:semicolon
 )brace
 r_static
