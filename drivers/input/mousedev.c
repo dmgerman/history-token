@@ -8,6 +8,7 @@ mdefine_line|#define MOUSEDEV_MIX&t;&t;31
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -45,6 +46,56 @@ macro_line|#ifndef CONFIG_INPUT_MOUSEDEV_SCREEN_Y
 DECL|macro|CONFIG_INPUT_MOUSEDEV_SCREEN_Y
 mdefine_line|#define CONFIG_INPUT_MOUSEDEV_SCREEN_Y&t;768
 macro_line|#endif
+DECL|variable|xres
+r_static
+r_int
+id|xres
+op_assign
+id|CONFIG_INPUT_MOUSEDEV_SCREEN_X
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|xres
+comma
+id|uint
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|xres
+comma
+l_string|&quot;Horizontal screen resolution&quot;
+)paren
+suffix:semicolon
+DECL|variable|yres
+r_static
+r_int
+id|yres
+op_assign
+id|CONFIG_INPUT_MOUSEDEV_SCREEN_Y
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|yres
+comma
+id|uint
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|yres
+comma
+l_string|&quot;Vertical screen resolution&quot;
+)paren
+suffix:semicolon
 DECL|struct|mousedev
 r_struct
 id|mousedev
@@ -246,20 +297,6 @@ r_static
 r_struct
 id|mousedev
 id|mousedev_mix
-suffix:semicolon
-DECL|variable|xres
-r_static
-r_int
-id|xres
-op_assign
-id|CONFIG_INPUT_MOUSEDEV_SCREEN_X
-suffix:semicolon
-DECL|variable|yres
-r_static
-r_int
-id|yres
-op_assign
-id|CONFIG_INPUT_MOUSEDEV_SCREEN_Y
 suffix:semicolon
 DECL|macro|fx
 mdefine_line|#define fx(i)  (list-&gt;old_x[(list-&gt;pkt_count - (i)) &amp; 03])
@@ -3074,38 +3111,6 @@ id|module_exit
 c_func
 (paren
 id|mousedev_exit
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|xres
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|xres
-comma
-l_string|&quot;Horizontal screen resolution&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|yres
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|yres
-comma
-l_string|&quot;Vertical screen resolution&quot;
 )paren
 suffix:semicolon
 eof
