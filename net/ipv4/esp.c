@@ -11,15 +11,11 @@ macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 DECL|macro|MAX_SG_ONSTACK
 mdefine_line|#define MAX_SG_ONSTACK 4
-multiline_comment|/* encapsulation data for use when post-processing the decapsulation */
-DECL|struct|esp_encap_data
+multiline_comment|/* decapsulation data for use when post-processing */
+DECL|struct|esp_decap_data
 r_struct
-id|esp_encap_data
+id|esp_decap_data
 (brace
-DECL|member|proto
-id|__u8
-id|proto
-suffix:semicolon
 DECL|member|saddr
 id|xfrm_address_t
 id|saddr
@@ -27,6 +23,10 @@ suffix:semicolon
 DECL|member|sport
 id|__u16
 id|sport
+suffix:semicolon
+DECL|member|proto
+id|__u8
+id|proto
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1570,7 +1570,7 @@ id|decap-&gt;decap_type
 )paren
 (brace
 r_struct
-id|esp_encap_data
+id|esp_decap_data
 op_star
 id|encap_data
 suffix:semicolon
@@ -1594,7 +1594,7 @@ id|encap_data
 op_assign
 (paren
 r_struct
-id|esp_encap_data
+id|esp_decap_data
 op_star
 )paren
 (paren
@@ -1828,7 +1828,7 @@ op_star
 id|encap
 suffix:semicolon
 r_struct
-id|esp_encap_data
+id|esp_decap_data
 op_star
 id|decap_data
 suffix:semicolon
@@ -1840,7 +1840,7 @@ id|decap_data
 op_assign
 (paren
 r_struct
-id|esp_encap_data
+id|esp_decap_data
 op_star
 )paren
 (paren
@@ -2782,6 +2782,39 @@ c_func
 r_void
 )paren
 (brace
+r_struct
+id|xfrm_decap_state
+id|decap
+suffix:semicolon
+r_if
+c_cond
+(paren
+r_sizeof
+(paren
+r_struct
+id|esp_decap_data
+)paren
+OL
+r_sizeof
+(paren
+id|decap.decap_data
+)paren
+)paren
+(brace
+r_extern
+r_void
+id|decap_data_too_small
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+id|decap_data_too_small
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 id|SET_MODULE_OWNER
 c_func
 (paren
