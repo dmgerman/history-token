@@ -46,6 +46,9 @@ DECL|macro|PORT_SUNZILOG
 mdefine_line|#define PORT_SUNZILOG&t;38
 DECL|macro|PORT_SUNSAB
 mdefine_line|#define PORT_SUNSAB&t;39
+multiline_comment|/* NEC v850.  */
+DECL|macro|PORT_NB85E_UART
+mdefine_line|#define PORT_NB85E_UART&t;40
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
