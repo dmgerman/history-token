@@ -1,11 +1,11 @@
-multiline_comment|/*&n;   SCSI Tape Driver for Linux version 1.1 and newer. See the accompanying&n;   file Documentation/scsi/st.txt for more information.&n;&n;   History:&n;   Rewritten from Dwayne Forsyth&squot;s SCSI tape driver by Kai Makisara.&n;   Contribution and ideas from several people including (in alphabetical&n;   order) Klaus Ehrenfried, Eugene Exarevsky, Eric Lee Green, Wolfgang Denk,&n;   Steve Hirsch, Andreas Koppenh&quot;ofer, Michael Leodolter, Eyal Lebedinsky,&n;   Michael Schaefer, J&quot;org Weule, and Eric Youngdale.&n;&n;   Copyright 1992 - 2002 Kai Makisara&n;   email Kai.Makisara@metla.fi&n;&n;   Last modified: Tue Oct 15 22:01:04 2002 by makisara&n;   Some small formal changes - aeb, 950809&n;&n;   Last modified: 18-JAN-1998 Richard Gooch &lt;rgooch@atnf.csiro.au&gt; Devfs support&n; */
+multiline_comment|/*&n;   SCSI Tape Driver for Linux version 1.1 and newer. See the accompanying&n;   file Documentation/scsi/st.txt for more information.&n;&n;   History:&n;   Rewritten from Dwayne Forsyth&squot;s SCSI tape driver by Kai Makisara.&n;   Contribution and ideas from several people including (in alphabetical&n;   order) Klaus Ehrenfried, Eugene Exarevsky, Eric Lee Green, Wolfgang Denk,&n;   Steve Hirsch, Andreas Koppenh&quot;ofer, Michael Leodolter, Eyal Lebedinsky,&n;   Michael Schaefer, J&quot;org Weule, and Eric Youngdale.&n;&n;   Copyright 1992 - 2002 Kai Makisara&n;   email Kai.Makisara@metla.fi&n;&n;   Last modified: Sat Dec 14 14:25:09 2002 by makisara&n;   Some small formal changes - aeb, 950809&n;&n;   Last modified: 18-JAN-1998 Richard Gooch &lt;rgooch@atnf.csiro.au&gt; Devfs support&n; */
 DECL|variable|verstr
 r_static
 r_char
 op_star
 id|verstr
 op_assign
-l_string|&quot;20021015&quot;
+l_string|&quot;20021214&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -4408,6 +4408,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|do_wait
+op_logical_and
+(paren
 (paren
 id|st_flags
 op_amp
@@ -4423,6 +4426,7 @@ id|O_ACCMODE
 )paren
 op_eq
 id|O_RDWR
+)paren
 )paren
 (brace
 id|retval
@@ -4724,7 +4728,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|scsi_device_get
 c_func
 (paren
@@ -4732,6 +4735,13 @@ id|STp-&gt;device
 )paren
 )paren
 (brace
+id|write_unlock
+c_func
+(paren
+op_amp
+id|st_dev_arr_lock
+)paren
+suffix:semicolon
 r_return
 (paren
 op_minus

@@ -161,7 +161,7 @@ id|cdriver
 suffix:semicolon
 r_extern
 r_int
-id|ccwgroup_create_dev
+id|ccwgroup_create
 (paren
 r_struct
 id|device

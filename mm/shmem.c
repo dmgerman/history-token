@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/shmem_fs.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* This magic number is used in glibc for posix shared memory */
 DECL|macro|TMPFS_MAGIC
@@ -2777,6 +2778,11 @@ r_struct
 id|page
 op_star
 id|page
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
 )paren
 (brace
 r_struct
@@ -2852,12 +2858,8 @@ id|info-&gt;flags
 op_amp
 id|VM_LOCKED
 )paren
-r_return
-id|fail_writepage
-c_func
-(paren
-id|page
-)paren
+r_goto
+id|redirty
 suffix:semicolon
 id|swap
 op_assign
@@ -2872,12 +2874,8 @@ c_cond
 op_logical_neg
 id|swap.val
 )paren
-r_return
-id|fail_writepage
-c_func
-(paren
-id|page
-)paren
+r_goto
+id|redirty
 suffix:semicolon
 id|spin_lock
 c_func
@@ -2991,34 +2989,18 @@ c_func
 id|swap
 )paren
 suffix:semicolon
-r_return
-id|fail_writepage
+id|redirty
+suffix:colon
+id|set_page_dirty
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
-)brace
-DECL|function|shmem_writepages
-r_static
-r_int
-id|shmem_writepages
-c_func
-(paren
-r_struct
-id|address_space
-op_star
-id|mapping
-comma
-r_struct
-id|writeback_control
-op_star
-id|wbc
-)paren
-(brace
 r_return
-l_int|0
+id|WRITEPAGE_ACTIVATE
 suffix:semicolon
+multiline_comment|/* Return with the page locked */
 )brace
 multiline_comment|/*&n; * shmem_getpage - either get the page from swap or allocate a new one&n; *&n; * If we allocate a new one we do not mark it dirty. That&squot;s up to the&n; * vm. If we swap it in we mark it dirty since we also free the swap&n; * entry since a page cannot live in both the swap and page cache&n; */
 DECL|function|shmem_getpage
@@ -8355,11 +8337,6 @@ dot
 id|writepage
 op_assign
 id|shmem_writepage
-comma
-dot
-id|writepages
-op_assign
-id|shmem_writepages
 comma
 dot
 id|set_page_dirty

@@ -35,10 +35,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|console_loglevel
-suffix:semicolon
 macro_line|#ifndef CONFIG_X86_WP_WORKS_OK
 multiline_comment|/*&n; * Ugly, ugly, but the goto&squot;s result in better assembly..&n; */
 DECL|function|__verify_write

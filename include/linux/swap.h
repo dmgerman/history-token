@@ -118,6 +118,9 @@ suffix:semicolon
 r_struct
 id|zone
 suffix:semicolon
+r_struct
+id|writeback_control
+suffix:semicolon
 multiline_comment|/*&n; * A swap extent maps a range of a swapfile&squot;s PAGE_SIZE pages onto a range of&n; * disk blocks.  A list of swap extents maps the entire swapfile.  (Where the&n; * term `swapfile&squot; refers to either a blockdevice or an IS_REG file.  Apart&n; * from setup, they&squot;re handled identically.&n; *&n; * We always assume that blocks are of size PAGE_SIZE.&n; */
 DECL|struct|swap_extent
 r_struct
@@ -604,6 +607,12 @@ c_func
 r_struct
 id|page
 op_star
+id|page
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
 )paren
 suffix:semicolon
 r_extern

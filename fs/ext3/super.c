@@ -103,6 +103,20 @@ op_star
 id|es
 )paren
 suffix:semicolon
+r_static
+r_int
+id|ext3_sync_fs
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_int
+id|wait
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_JBD_DEBUG
 DECL|variable|journal_no_write
 r_int
@@ -1987,73 +2001,66 @@ id|read_inode
 op_assign
 id|ext3_read_inode
 comma
-multiline_comment|/* BKL held */
 dot
 id|write_inode
 op_assign
 id|ext3_write_inode
 comma
-multiline_comment|/* BKL not held.  Don&squot;t need */
 dot
 id|dirty_inode
 op_assign
 id|ext3_dirty_inode
 comma
-multiline_comment|/* BKL not held.  We take it */
 dot
 id|put_inode
 op_assign
 id|ext3_put_inode
 comma
-multiline_comment|/* BKL not held.  Don&squot;t need */
 dot
 id|delete_inode
 op_assign
 id|ext3_delete_inode
 comma
-multiline_comment|/* BKL not held.  We take it */
 dot
 id|put_super
 op_assign
 id|ext3_put_super
 comma
-multiline_comment|/* BKL held */
 dot
 id|write_super
 op_assign
 id|ext3_write_super
 comma
-multiline_comment|/* BKL not held. We take it. Needed? */
+dot
+id|sync_fs
+op_assign
+id|ext3_sync_fs
+comma
 dot
 id|write_super_lockfs
 op_assign
 id|ext3_write_super_lockfs
 comma
-multiline_comment|/* BKL not held. Take it */
 dot
 id|unlockfs
 op_assign
 id|ext3_unlockfs
 comma
-multiline_comment|/* BKL not held.  We take it */
 dot
 id|statfs
 op_assign
 id|ext3_statfs
 comma
-multiline_comment|/* BKL not held. */
 dot
 id|remount_fs
 op_assign
 id|ext3_remount
 comma
-multiline_comment|/* BKL held */
 dot
 id|clear_inode
 op_assign
 id|ext3_clear_inode
 comma
-multiline_comment|/* BKL not needed. */
 )brace
 suffix:semicolon
 r_struct
@@ -7882,29 +7889,6 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Ext3 always journals updates to the superblock itself, so we don&squot;t&n; * have to propagate any other updates to the superblock on disk at this&n; * point.  Just start an async writeback to get the buffers on their way&n; * to the disk.&n; *&n; * This implicitly triggers the writebehind on sync().&n; */
-DECL|variable|do_sync_supers
-r_static
-r_int
-id|do_sync_supers
-op_assign
-l_int|0
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|do_sync_supers
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|do_sync_supers
-comma
-l_string|&quot;Write superblocks synchronously&quot;
-)paren
-suffix:semicolon
 DECL|function|ext3_write_super
 r_void
 id|ext3_write_super
@@ -7915,9 +7899,6 @@ op_star
 id|sb
 )paren
 (brace
-id|tid_t
-id|target
-suffix:semicolon
 id|lock_kernel
 c_func
 (paren
@@ -7940,7 +7921,53 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* aviro detector */
+id|sb-&gt;s_dirt
+op_assign
+l_int|0
+suffix:semicolon
+id|log_start_commit
+c_func
+(paren
+id|EXT3_SB
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|s_journal
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|ext3_sync_fs
+r_static
+r_int
+id|ext3_sync_fs
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_int
+id|wait
+)paren
+(brace
+id|tid_t
+id|target
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|sb-&gt;s_dirt
 op_assign
 l_int|0
@@ -7964,15 +7991,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|do_sync_supers
+id|wait
 )paren
-(brace
-id|unlock_super
-c_func
-(paren
-id|sb
-)paren
-suffix:semicolon
 id|log_wait_commit
 c_func
 (paren
@@ -7987,17 +8007,13 @@ comma
 id|target
 )paren
 suffix:semicolon
-id|lock_super
-c_func
-(paren
-id|sb
-)paren
-suffix:semicolon
-)brace
 id|unlock_kernel
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * LVM calls this function before a (read-only) snapshot is created.  This&n; * gives us a chance to flush the journal completely and mark the fs clean.&n; */

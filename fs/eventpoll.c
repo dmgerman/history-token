@@ -5483,13 +5483,17 @@ id|eventpoll_mnt
 r_goto
 id|eexit_4
 suffix:semicolon
-id|printk
+id|DNPRINTK
 c_func
+(paren
+l_int|3
+comma
 (paren
 id|KERN_INFO
 l_string|&quot;[%p] eventpoll: successfully initialized.&bslash;n&quot;
 comma
 id|current
+)paren
 )paren
 suffix:semicolon
 r_return

@@ -8370,6 +8370,11 @@ r_struct
 id|page
 op_star
 id|page
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
 )paren
 (brace
 r_struct
@@ -8832,6 +8837,11 @@ r_struct
 id|page
 op_star
 id|page
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
 )paren
 (brace
 r_struct
@@ -8852,6 +8862,8 @@ id|reiserfs_write_full_page
 c_func
 (paren
 id|page
+comma
+id|wbc
 )paren
 suffix:semicolon
 )brace

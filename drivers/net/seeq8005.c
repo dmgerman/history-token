@@ -3352,8 +3352,9 @@ id|net_device
 id|dev_seeq
 op_assign
 (brace
+dot
 id|init
-suffix:colon
+op_assign
 id|seeq8005_probe
 )brace
 suffix:semicolon

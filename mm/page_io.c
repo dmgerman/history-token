@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* for block_sync_page() */
 macro_line|#include &lt;linux/mpage.h&gt;
+macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 r_static
 r_struct
@@ -343,6 +344,11 @@ r_struct
 id|page
 op_star
 id|page
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
 )paren
 (brace
 r_struct
@@ -595,6 +601,18 @@ id|page
 r_int
 id|ret
 suffix:semicolon
+r_struct
+id|writeback_control
+id|swap_wbc
+op_assign
+(brace
+dot
+id|sync_mode
+op_assign
+id|WB_SYNC_ALL
+comma
+)brace
+suffix:semicolon
 id|lock_page
 c_func
 (paren
@@ -649,6 +667,9 @@ id|swap_writepage
 c_func
 (paren
 id|page
+comma
+op_amp
+id|swap_wbc
 )paren
 suffix:semicolon
 id|wait_on_page_writeback
