@@ -2826,12 +2826,12 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;Bootloader &amp; the kernel&quot;
+l_string|&quot;Bootloader&quot;
 comma
 dot
 id|size
 op_assign
-l_int|0x00200000
+l_int|0x00100000
 comma
 dot
 id|offset
@@ -2844,12 +2844,12 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;Data&quot;
+l_string|&quot;Kernel&quot;
 comma
 dot
 id|size
 op_assign
-l_int|0x00400000
+l_int|0x00100000
 comma
 dot
 id|offset
@@ -2859,6 +2859,11 @@ comma
 )brace
 comma
 (brace
+dot
+id|name
+op_assign
+l_string|&quot;root&quot;
+comma
 dot
 id|size
 op_assign
@@ -3502,7 +3507,7 @@ op_assign
 id|ARRAY_SIZE
 c_func
 (paren
-id|trizeps_parititons
+id|trizeps_partitions
 )paren
 suffix:semicolon
 )brace
