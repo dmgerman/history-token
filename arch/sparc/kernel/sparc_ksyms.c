@@ -624,7 +624,7 @@ c_func
 id|BTFIXUP_CALL
 c_func
 (paren
-id|__smp_processor_id
+id|__hard_smp_processor_id
 )paren
 )paren
 suffix:semicolon
