@@ -472,13 +472,16 @@ id|task
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PERFMON)
-r_extern
+id|DECLARE_PER_CPU
+c_func
+(paren
 r_int
-id|__per_cpu_data
+comma
 id|pfm_syst_wide
+)paren
 suffix:semicolon
 DECL|macro|PERFMON_IS_SYSWIDE
-macro_line|# define PERFMON_IS_SYSWIDE() (this_cpu(pfm_syst_wide) != 0)
+macro_line|# define PERFMON_IS_SYSWIDE() (get_cpu_var(pfm_syst_wide) != 0)
 macro_line|#else
 DECL|macro|PERFMON_IS_SYSWIDE
 macro_line|# define PERFMON_IS_SYSWIDE() (0)

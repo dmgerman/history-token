@@ -45,7 +45,7 @@ id|NR_CPUS
 )braket
 suffix:semicolon
 macro_line|#endif
-id|DECLARE_PER_CPU
+id|DEFINE_PER_CPU
 c_func
 (paren
 r_struct
@@ -54,10 +54,14 @@ comma
 id|cpu_info
 )paren
 suffix:semicolon
-DECL|variable|ia64_phys_stacked_size_p8
+id|DEFINE_PER_CPU
+c_func
+(paren
 r_int
 r_int
+comma
 id|ia64_phys_stacked_size_p8
+)paren
 suffix:semicolon
 DECL|variable|ia64_cycles_per_usec
 r_int
@@ -2128,7 +2132,11 @@ r_char
 op_star
 )paren
 op_amp
+id|__get_cpu_var
+c_func
+(paren
 id|cpu_info
+)paren
 op_minus
 id|__per_cpu_start
 )paren
@@ -2149,7 +2157,11 @@ r_char
 op_star
 )paren
 op_amp
+id|__get_cpu_var
+c_func
+(paren
 id|cpu_info
+)paren
 op_minus
 id|__per_cpu_start
 )paren
@@ -2493,7 +2505,11 @@ l_int|96
 suffix:semicolon
 )brace
 multiline_comment|/* size of physical stacked register partition plus 8 bytes: */
+id|__get_cpu_var
+c_func
+(paren
 id|ia64_phys_stacked_size_p8
+)paren
 op_assign
 id|num_phys_stacked
 op_star

@@ -88,7 +88,7 @@ DECL|macro|IPI_CPU_STOP
 mdefine_line|#define IPI_CPU_STOP&t;&t;1
 multiline_comment|/* This needs to be cacheline aligned because it is written to by *other* CPUs.  */
 r_static
-id|DECLARE_PER_CPU
+id|DEFINE_PER_CPU
 c_func
 (paren
 id|__u64

@@ -430,6 +430,16 @@ DECL|macro|__NR_share_large_pages
 mdefine_line|#define __NR_share_large_pages&t;&t;1236
 DECL|macro|__NR_unshare_large_pages
 mdefine_line|#define __NR_unshare_large_pages&t;1237
+DECL|macro|__NR_io_setup
+mdefine_line|#define __NR_io_setup&t;&t;&t;1238
+DECL|macro|__NR_io_destroy
+mdefine_line|#define __NR_io_destroy&t;&t;&t;1239
+DECL|macro|__NR_io_getevents
+mdefine_line|#define __NR_io_getevents&t;&t;1240
+DECL|macro|__NR_io_submit
+mdefine_line|#define __NR_io_submit&t;&t;&t;1241
+DECL|macro|__NR_io_cancel
+mdefine_line|#define __NR_io_cancel&t;&t;&t;1242
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
 r_extern
 r_int
