@@ -153,13 +153,13 @@ c_func
 (paren
 id|event
 comma
+l_int|0
+comma
 r_sizeof
 (paren
 r_struct
 id|sctp_ulpevent
 )paren
-comma
-l_int|0x00
 )paren
 suffix:semicolon
 id|event-&gt;msg_flags
