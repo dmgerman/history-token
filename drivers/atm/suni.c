@@ -1674,7 +1674,15 @@ suffix:semicolon
 id|PUT
 c_func
 (paren
-l_int|0
+(paren
+id|GET
+c_func
+(paren
+id|MT
+)paren
+op_amp
+id|SUNI_MT_DS27_53
+)paren
 comma
 id|MT
 )paren
