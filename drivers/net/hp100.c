@@ -1,5 +1,4 @@
 multiline_comment|/*&n;** hp100.c &n;** HP CASCADE Architecture Driver for 100VG-AnyLan Network Adapters&n;**&n;** $Id: hp100.c,v 1.58 2001/09/24 18:03:01 perex Exp perex $&n;**&n;** Based on the HP100 driver written by Jaroslav Kysela &lt;perex@jcu.cz&gt;&n;** Extended for new busmaster capable chipsets by &n;** Siegfried &quot;Frieder&quot; Loeffler (dg1sek) &lt;floeff@mathematik.uni-stuttgart.de&gt;&n;**&n;** Maintained by: Jaroslav Kysela &lt;perex@suse.cz&gt;&n;** &n;** This driver has only been tested with&n;** -- HP J2585B 10/100 Mbit/s PCI Busmaster&n;** -- HP J2585A 10/100 Mbit/s PCI &n;** -- HP J2970  10 Mbit/s PCI Combo 10base-T/BNC&n;** -- HP J2973  10 Mbit/s PCI 10base-T&n;** -- HP J2573  10/100 ISA&n;** -- Compex ReadyLink ENET100-VG4  10/100 Mbit/s PCI / EISA&n;** -- Compex FreedomLine 100/VG  10/100 Mbit/s ISA / EISA / PCI&n;** &n;** but it should also work with the other CASCADE based adapters.&n;**&n;** TODO:&n;**       -  J2573 seems to hang sometimes when in shared memory mode.&n;**       -  Mode for Priority TX&n;**       -  Check PCI registers, performance might be improved?&n;**       -  To reduce interrupt load in busmaster, one could switch off&n;**          the interrupts that are used to refill the queues whenever the&n;**          queues are filled up to more than a certain threshold.&n;**       -  some updates for EISA version of card&n;**&n;**&n;**   This code is free software; you can redistribute it and/or modify&n;**   it under the terms of the GNU General Public License as published by&n;**   the Free Software Foundation; either version 2 of the License, or&n;**   (at your option) any later version.&n;**&n;**   This code is distributed in the hope that it will be useful,&n;**   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;**   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;**   GNU General Public License for more details.&n;**&n;**   You should have received a copy of the GNU General Public License&n;**   along with this program; if not, write to the Free Software&n;**   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;**&n;** 1.57c -&gt; 1.58&n;**   - used indent to change coding-style&n;**   - added KTI DP-200 EISA ID&n;**   - ioremap is also used for low (&lt;1MB) memory (multi-architecture support)&n;**&n;** 1.57b -&gt; 1.57c - Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;**   - release resources on failure in init_module&n;**&n;** 1.57 -&gt; 1.57b - Jean II&n;**   - fix spinlocks, SMP is now working !&n;**&n;** 1.56 -&gt; 1.57&n;**   - updates for new PCI interface for 2.1 kernels&n;**&n;** 1.55 -&gt; 1.56&n;**   - removed printk in misc. interrupt and update statistics to allow&n;**     monitoring of card status&n;**   - timing changes in xmit routines, relogin to 100VG hub added when&n;**     driver does reset&n;**   - included fix for Compex FreedomLine PCI adapter&n;** &n;** 1.54 -&gt; 1.55&n;**   - fixed bad initialization in init_module&n;**   - added Compex FreedomLine adapter&n;**   - some fixes in card initialization&n;**&n;** 1.53 -&gt; 1.54&n;**   - added hardware multicast filter support (doesn&squot;t work)&n;**   - little changes in hp100_sense_lan routine &n;**     - added support for Coax and AUI (J2970)&n;**   - fix for multiple cards and hp100_mode parameter (insmod)&n;**   - fix for shared IRQ &n;**&n;** 1.52 -&gt; 1.53&n;**   - fixed bug in multicast support&n;**&n;*/
-macro_line|#error Please convert me to Documentation/DMA-mapping.txt
 DECL|macro|HP100_DEFAULT_PRIORITY_TX
 mdefine_line|#define HP100_DEFAULT_PRIORITY_TX 0
 DECL|macro|HP100_DEBUG
@@ -267,18 +266,17 @@ id|txring
 id|MAX_TX_PDL
 )braket
 suffix:semicolon
-DECL|member|page_vaddr
-id|u_int
-op_star
-id|page_vaddr
-suffix:semicolon
-multiline_comment|/* Virtual address of allocated page */
 DECL|member|page_vaddr_algn
 id|u_int
 op_star
 id|page_vaddr_algn
 suffix:semicolon
 multiline_comment|/* Aligned virtual address of allocated page */
+DECL|member|whatever_offset
+id|u_long
+id|whatever_offset
+suffix:semicolon
+multiline_comment|/* Offset to bus/phys/dma address */
 DECL|member|rxrcommit
 r_int
 id|rxrcommit
@@ -956,6 +954,46 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Conversion to new PCI API :&n; * Convert an address in a kernel buffer to a bus/phys/dma address.&n; * This work *only* for memory fragments part of lp-&gt;page_vaddr,&n; * because it was properly DMA allocated via pci_alloc_consistent(),&n; * so we just need to &quot;retreive&quot; the original mapping to bus/phys/dma&n; * address - Jean II */
+DECL|function|virt_to_whatever
+r_static
+r_inline
+id|dma_addr_t
+id|virt_to_whatever
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+id|u32
+op_star
+id|ptr
+)paren
+(brace
+r_return
+(paren
+(paren
+id|u_long
+)paren
+id|ptr
+)paren
+op_plus
+(paren
+(paren
+r_struct
+id|hp100_private
+op_star
+)paren
+(paren
+id|dev-&gt;priv
+)paren
+)paren
+op_member_access_from_pointer
+id|whatever_offset
+suffix:semicolon
+)brace
 multiline_comment|/* TODO: This function should not really be needed in a good design... */
 DECL|function|wait
 r_static
@@ -2332,6 +2370,32 @@ id|HP100_BM_READ
 )paren
 )paren
 (brace
+multiline_comment|/* Conversion to new PCI API :&n;&t;&t;&t; * I don&squot;t have the doc, but I assume that the card&n;&t;&t;&t; * can map the full 32bit address space.&n;&t;&t;&t; * Also, we can have EISA Busmaster cards (not tested),&n;&t;&t;&t; * so beware !!! - Jean II */
+r_if
+c_cond
+(paren
+(paren
+id|bus
+op_eq
+id|HP100_BUS_PCI
+)paren
+op_logical_and
+(paren
+id|pci_set_dma_mask
+c_func
+(paren
+id|pci_dev
+comma
+l_int|0xffffffff
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/* Gracefully fallback to shared memory */
+r_goto
+id|busmasterfail
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -2355,6 +2419,8 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|busmasterfail
+suffix:colon
 macro_line|#ifdef HP100_DEBUG
 id|printk
 c_func
@@ -2997,21 +3063,26 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* busmaster */
+id|dma_addr_t
+id|page_baddr
+suffix:semicolon
 multiline_comment|/* Get physically continous memory for TX &amp; RX PDLs    */
+multiline_comment|/* Conversion to new PCI API :&n;&t;&t; * Pages are always aligned and zeroed, no need to it ourself.&n;&t;&t; * Doc says should be OK for EISA bus as well - Jean II */
 r_if
 c_cond
 (paren
 (paren
-id|lp-&gt;page_vaddr
+id|lp-&gt;page_vaddr_algn
 op_assign
-id|kmalloc
+id|pci_alloc_consistent
 c_func
 (paren
-id|MAX_RINGSIZE
-op_plus
-l_int|0x0f
+id|lp-&gt;pci_dev
 comma
-id|GFP_KERNEL
+id|MAX_RINGSIZE
+comma
+op_amp
+id|page_baddr
 )paren
 )paren
 op_eq
@@ -3021,40 +3092,20 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|lp-&gt;page_vaddr_algn
+id|lp-&gt;whatever_offset
 op_assign
 (paren
 (paren
-id|u_int
-op_star
+id|u_long
 )paren
+id|page_baddr
+)paren
+op_minus
 (paren
 (paren
-(paren
-id|u_int
+id|u_long
 )paren
-(paren
-id|lp-&gt;page_vaddr
-)paren
-op_plus
-l_int|0x0f
-)paren
-op_amp
-op_complement
-l_int|0x0f
-)paren
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|lp-&gt;page_vaddr
-comma
-l_int|0
-comma
-id|MAX_RINGSIZE
-op_plus
-l_int|0x0f
+id|lp-&gt;page_vaddr_algn
 )paren
 suffix:semicolon
 macro_line|#ifdef HP100_DEBUG_BM
@@ -4750,6 +4801,7 @@ id|u_int
 op_star
 id|pageptr
 suffix:semicolon
+multiline_comment|/* Warning : increment by 4 - Jean II */
 r_int
 id|i
 suffix:semicolon
@@ -5015,9 +5067,11 @@ l_int|1
 suffix:semicolon
 id|ringptr-&gt;pdl_paddr
 op_assign
-id|virt_to_bus
+id|virt_to_whatever
 c_func
 (paren
+id|dev
+comma
 id|pdlptr
 op_plus
 l_int|1
@@ -5043,9 +5097,11 @@ op_assign
 (paren
 id|u_int
 )paren
-id|virt_to_bus
+id|virt_to_whatever
 c_func
 (paren
+id|dev
+comma
 id|pdlptr
 )paren
 suffix:semicolon
@@ -5140,9 +5196,11 @@ suffix:semicolon
 multiline_comment|/* +1; */
 id|ringptr-&gt;pdl_paddr
 op_assign
-id|virt_to_bus
+id|virt_to_whatever
 c_func
 (paren
+id|dev
+comma
 id|pdlptr
 )paren
 suffix:semicolon
@@ -5319,6 +5377,7 @@ id|ringptr-&gt;skb-&gt;data
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Conversion to new PCI API : map skbuf data to PCI bus.&n;&t;&t; * Doc says it&squot;s OK for EISA as well - Jean II */
 id|ringptr-&gt;pdl
 (braket
 l_int|0
@@ -5336,10 +5395,27 @@ op_assign
 (paren
 id|u_int
 )paren
-id|virt_to_bus
+id|pci_map_single
 c_func
 (paren
+(paren
+(paren
+r_struct
+id|hp100_private
+op_star
+)paren
+(paren
+id|dev-&gt;priv
+)paren
+)paren
+op_member_access_from_pointer
+id|pci_dev
+comma
 id|ringptr-&gt;skb-&gt;data
+comma
+id|MAX_ETHER_SIZE
+comma
+id|PCI_DMA_FROMDEVICE
 )paren
 )paren
 suffix:semicolon
@@ -6411,21 +6487,6 @@ id|i
 )paren
 suffix:semicolon
 multiline_comment|/* PDH: 1 Fragment &amp; length */
-id|ringptr-&gt;pdl
-(braket
-l_int|1
-)braket
-op_assign
-(paren
-id|u32
-)paren
-id|virt_to_bus
-c_func
-(paren
-id|skb-&gt;data
-)paren
-suffix:semicolon
-multiline_comment|/* 1st Frag: Adr. of data */
 r_if
 c_cond
 (paren
@@ -6456,6 +6517,33 @@ id|skb-&gt;len
 suffix:semicolon
 multiline_comment|/* 1st Frag: Length of frag */
 )brace
+multiline_comment|/* Conversion to new PCI API : map skbuf data to PCI bus.&n;&t; * Doc says it&squot;s OK for EISA as well - Jean II */
+id|ringptr-&gt;pdl
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+(paren
+id|u32
+)paren
+id|pci_map_single
+c_func
+(paren
+id|lp-&gt;pci_dev
+comma
+id|skb-&gt;data
+comma
+id|ringptr-&gt;pdl
+(braket
+l_int|2
+)braket
+comma
+id|PCI_DMA_TODEVICE
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* 1st Frag: Adr. of data */
 multiline_comment|/* Hand this PDL to the card. */
 id|hp100_outl
 c_func
@@ -6613,6 +6701,28 @@ id|donecount
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Conversion to new PCI API : NOP */
+id|pci_unmap_single
+c_func
+(paren
+id|lp-&gt;pci_dev
+comma
+(paren
+id|dma_addr_t
+)paren
+id|lp-&gt;txrhead-&gt;pdl
+(braket
+l_int|1
+)braket
+comma
+id|lp-&gt;txrhead-&gt;pdl
+(braket
+l_int|2
+)braket
+comma
+id|PCI_DMA_TODEVICE
+)paren
+suffix:semicolon
 id|dev_kfree_skb_any
 c_func
 (paren
@@ -8065,6 +8175,25 @@ op_assign
 id|header
 op_amp
 id|HP100_PKT_LEN_MASK
+)paren
+suffix:semicolon
+multiline_comment|/* Conversion to new PCI API : NOP */
+id|pci_unmap_single
+c_func
+(paren
+id|lp-&gt;pci_dev
+comma
+(paren
+id|dma_addr_t
+)paren
+id|ptr-&gt;pdl
+(braket
+l_int|3
+)braket
+comma
+id|MAX_ETHER_SIZE
+comma
+id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
 macro_line|#ifdef HP100_DEBUG_BM
@@ -12505,10 +12634,24 @@ op_eq
 l_int|1
 )paren
 multiline_comment|/* busmaster */
-id|kfree
+id|pci_free_consistent
 c_func
 (paren
-id|p-&gt;page_vaddr
+id|p-&gt;pci_dev
+comma
+id|MAX_RINGSIZE
+op_plus
+l_int|0x0f
+comma
+id|p-&gt;page_vaddr_algn
+comma
+id|virt_to_whatever
+c_func
+(paren
+id|d
+comma
+id|p-&gt;page_vaddr_algn
+)paren
 )paren
 suffix:semicolon
 r_if
