@@ -292,7 +292,7 @@ id|pci_dev
 op_star
 id|td
 op_assign
-id|agp_bridge.dev
+id|agp_bridge-&gt;dev
 comma
 op_star
 id|dev
@@ -438,7 +438,7 @@ c_func
 (paren
 id|td
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 op_plus
 l_int|0x0c
 comma
@@ -451,7 +451,7 @@ c_func
 (paren
 id|td
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 op_plus
 l_int|0x04
 comma
@@ -677,7 +677,7 @@ c_func
 (paren
 id|td
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 op_plus
 l_int|0x20
 comma
@@ -705,7 +705,7 @@ c_func
 (paren
 id|td
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 op_plus
 l_int|0x20
 comma
@@ -718,7 +718,7 @@ c_func
 (paren
 id|td
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 op_plus
 l_int|0x0c
 comma
@@ -1247,9 +1247,9 @@ suffix:semicolon
 id|pci_read_config_dword
 c_func
 (paren
-id|agp_bridge.dev
+id|agp_bridge-&gt;dev
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 op_plus
 l_int|0x04
 comma
@@ -1392,7 +1392,7 @@ id|pci_dev
 op_star
 id|td
 op_assign
-id|agp_bridge.dev
+id|agp_bridge-&gt;dev
 comma
 op_star
 id|dev
@@ -1587,7 +1587,7 @@ c_func
 (paren
 id|td
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 op_plus
 l_int|0x04
 comma
@@ -2034,7 +2034,7 @@ c_func
 (paren
 id|td
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 op_plus
 l_int|0x08
 comma
@@ -2077,7 +2077,7 @@ c_func
 (paren
 id|td
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 op_plus
 l_int|0x08
 comma
@@ -2244,9 +2244,9 @@ suffix:semicolon
 id|pci_read_config_dword
 c_func
 (paren
-id|agp_bridge.dev
+id|agp_bridge-&gt;dev
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 comma
 op_amp
 id|ncapid
@@ -2295,9 +2295,9 @@ l_int|3
 id|pci_read_config_dword
 c_func
 (paren
-id|agp_bridge.dev
+id|agp_bridge-&gt;dev
 comma
-id|agp_bridge.capndx
+id|agp_bridge-&gt;capndx
 op_plus
 l_int|0x4
 comma
