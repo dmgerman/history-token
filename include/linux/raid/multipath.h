@@ -26,10 +26,6 @@ DECL|member|operational
 r_int
 id|operational
 suffix:semicolon
-DECL|member|spare
-r_int
-id|spare
-suffix:semicolon
 DECL|member|used_slot
 r_int
 id|used_slot
