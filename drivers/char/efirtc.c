@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * EFI Time Services Driver for Linux&n; *&n; * Copyright (C) 1999 Hewlett-Packard Co&n; * Copyright (C) 1999 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * Based on skeleton from the drivers/char/rtc.c driver by P. Gortmaker&n; *&n; * This code provides a architected &amp; portable interface to the real time &n; * clock by using EFI instead of direct bit fiddling. The functionalities are &n; * quite different from the rtc.c driver. The only way to talk to the device &n; * is by using ioctl(). There is a /proc interface which provides the raw &n; * information.&n; *&n; * Please note that we have kept the API as close as possible from the &n; * legacy RTC. The standard /sbin/hwclock program should work normally &n; * when used to get/set the time.&n; *&n; * NOTES:&n; *&t;- Locking is required for safe execution of EFI calls with regards&n; *&t;  to interrrupts and SMP.&n; *&n; * TODO (December 1999):&n; * &t;- provide the API to set/get the WakeUp Alarm (different from the&n; *&t;  rtc.c alarm).&n; *&t;- SMP testing&n; * &t;- Add module support&n; */
+multiline_comment|/*&n; * EFI Time Services Driver for Linux&n; *&n; * Copyright (C) 1999 Hewlett-Packard Co&n; * Copyright (C) 1999 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * Based on skeleton from the drivers/char/rtc.c driver by P. Gortmaker&n; *&n; * This code provides an architected &amp; portable interface to the real time&n; * clock by using EFI instead of direct bit fiddling. The functionalities are &n; * quite different from the rtc.c driver. The only way to talk to the device &n; * is by using ioctl(). There is a /proc interface which provides the raw &n; * information.&n; *&n; * Please note that we have kept the API as close as possible to the&n; * legacy RTC. The standard /sbin/hwclock program should work normally &n; * when used to get/set the time.&n; *&n; * NOTES:&n; *&t;- Locking is required for safe execution of EFI calls with regards&n; *&t;  to interrrupts and SMP.&n; *&n; * TODO (December 1999):&n; * &t;- provide the API to set/get the WakeUp Alarm (different from the&n; *&t;  rtc.c alarm).&n; *&t;- SMP testing&n; * &t;- Add module support&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
@@ -1044,7 +1044,7 @@ op_amp
 id|efi_rtc_fops
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *&t;We export RAW EFI information to /proc/efirtc&n; */
+multiline_comment|/*&n; *&t;We export RAW EFI information to /proc/driver/efirtc&n; */
 r_static
 r_int
 DECL|function|efi_rtc_get_status
@@ -1078,6 +1078,48 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|eft
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|eft
+)paren
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|alm
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|alm
+)paren
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|cap
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|cap
+)paren
+)paren
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
