@@ -1768,7 +1768,16 @@ id|cpu_to_node_map
 id|cpu
 )braket
 op_assign
+(paren
 id|node
+op_ge
+l_int|0
+)paren
+ques
+c_cond
+id|node
+suffix:colon
+l_int|0
 suffix:semicolon
 r_if
 c_cond
