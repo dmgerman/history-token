@@ -3982,6 +3982,10 @@ DECL|macro|SMB_QUERY_LABEL_INFO
 mdefine_line|#define SMB_QUERY_LABEL_INFO        0x3ea
 DECL|macro|SMB_QUERY_FS_QUOTA_INFO
 mdefine_line|#define SMB_QUERY_FS_QUOTA_INFO     0x3ee
+DECL|macro|SMB_QUERY_FS_FULL_SIZE_INFO
+mdefine_line|#define SMB_QUERY_FS_FULL_SIZE_INFO 0x3ef
+DECL|macro|SMB_QUERY_OBJECTID_INFO
+mdefine_line|#define SMB_QUERY_OBJECTID_INFO     0x3f0
 DECL|struct|smb_com_transaction2_qfsi_req
 r_typedef
 r_struct
