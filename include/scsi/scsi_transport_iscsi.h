@@ -49,7 +49,9 @@ r_struct
 id|in_addr
 id|sin_addr
 suffix:semicolon
+DECL|member|u
 )brace
+id|u
 suffix:semicolon
 DECL|member|addr_type
 id|sa_family_t
@@ -125,9 +127,9 @@ mdefine_line|#define iscsi_port(x) &bslash;&n;&t;(((struct iscsi_class_session *
 DECL|macro|iscsi_addr_type
 mdefine_line|#define iscsi_addr_type(x) &bslash;&n;&t;(((struct iscsi_class_session *)&amp;(x)-&gt;starget_data)-&gt;addr_type)
 DECL|macro|iscsi_sin_addr
-mdefine_line|#define iscsi_sin_addr(x) &bslash;&n;&t;(((struct iscsi_class_session *)&amp;(x)-&gt;starget_data)-&gt;sin_addr)
+mdefine_line|#define iscsi_sin_addr(x) &bslash;&n;&t;(((struct iscsi_class_session *)&amp;(x)-&gt;starget_data)-&gt;u.sin_addr)
 DECL|macro|iscsi_sin6_addr
-mdefine_line|#define iscsi_sin6_addr(x) &bslash;&n;&t;(((struct iscsi_class_session *)&amp;(x)-&gt;starget_data)-&gt;sin6_addr)
+mdefine_line|#define iscsi_sin6_addr(x) &bslash;&n;&t;(((struct iscsi_class_session *)&amp;(x)-&gt;starget_data)-&gt;u.sin6_addr)
 DECL|macro|iscsi_tpgt
 mdefine_line|#define iscsi_tpgt(x) &bslash;&n;&t;(((struct iscsi_class_session *)&amp;(x)-&gt;starget_data)-&gt;tpgt)
 DECL|macro|iscsi_initial_r2t
