@@ -949,6 +949,9 @@ comma
 id|MAX_APICS
 )paren
 suffix:semicolon
+op_decrement
+id|num_processors
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
