@@ -576,14 +576,6 @@ op_amp
 id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
-id|jbd_debug
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;Resuming kjournald&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
