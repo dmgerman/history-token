@@ -452,7 +452,7 @@ op_star
 id|dst
 )paren
 op_member_access_from_pointer
-id|key.iif
+id|fl.iif
 suffix:semicolon
 id|h
 op_assign
