@@ -330,6 +330,15 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|x-&gt;encap
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|x-&gt;props.header_len
 op_assign
 r_sizeof

@@ -1651,6 +1651,14 @@ l_int|NULL
 r_goto
 id|error
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|x-&gt;encap
+)paren
+r_goto
+id|error
+suffix:semicolon
 id|esp
 op_assign
 id|kmalloc

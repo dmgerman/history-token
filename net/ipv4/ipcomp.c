@@ -1354,6 +1354,14 @@ id|x-&gt;calg
 r_goto
 id|out
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|x-&gt;encap
+)paren
+r_goto
+id|out
+suffix:semicolon
 id|err
 op_assign
 op_minus
