@@ -4782,11 +4782,7 @@ comma
 id|PROC_PID_INO
 )paren
 suffix:semicolon
-id|ei-&gt;file
-op_assign
-l_int|NULL
-suffix:semicolon
-id|ei-&gt;task
+id|ei-&gt;pde
 op_assign
 l_int|NULL
 suffix:semicolon

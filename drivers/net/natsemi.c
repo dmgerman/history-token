@@ -619,8 +619,13 @@ l_int|0xF8
 )brace
 suffix:semicolon
 multiline_comment|/* the values for the &squot;magic&squot; registers above (PGSEL=1) */
+macro_line|#ifdef CONFIG_NATSEMI_CABLE_MAGIC
+DECL|macro|PMDCSR_VAL
+mdefine_line|#define PMDCSR_VAL&t;0x1898
+macro_line|#else
 DECL|macro|PMDCSR_VAL
 mdefine_line|#define PMDCSR_VAL&t;0x189C
+macro_line|#endif
 DECL|macro|TSTDAT_VAL
 mdefine_line|#define TSTDAT_VAL&t;0x0
 DECL|macro|DSPCFG_VAL
@@ -6288,6 +6293,12 @@ op_amp
 id|IntrRxDone
 op_or
 id|IntrRxIntr
+op_or
+id|RxStatusFIFOOver
+op_or
+id|IntrRxErr
+op_or
+id|IntrRxOverrun
 )paren
 )paren
 id|netdev_rx

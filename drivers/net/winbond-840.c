@@ -1007,7 +1007,7 @@ DECL|member|tx_addr
 id|dma_addr_t
 id|tx_addr
 (braket
-id|RX_RING_SIZE
+id|TX_RING_SIZE
 )braket
 suffix:semicolon
 DECL|member|ring_dma_addr
