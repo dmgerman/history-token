@@ -9,6 +9,22 @@ macro_line|#include &lt;linux/param.h&gt;&t;/* for HZ */
 macro_line|#include &lt;asm/compat.h&gt;
 DECL|macro|compat_jiffies_to_clock_t
 mdefine_line|#define compat_jiffies_to_clock_t(x)&t;&bslash;&n;&t;&t;(((unsigned long)(x) * COMPAT_USER_HZ) / HZ)
+DECL|struct|compat_itimerspec
+r_struct
+id|compat_itimerspec
+(brace
+DECL|member|it_interval
+r_struct
+id|compat_timespec
+id|it_interval
+suffix:semicolon
+DECL|member|it_value
+r_struct
+id|compat_timespec
+id|it_value
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|compat_utimbuf
 r_struct
 id|compat_utimbuf
