@@ -3181,7 +3181,9 @@ comma
 l_string|&quot;%llu&bslash;n&quot;
 comma
 (paren
-id|__u64
+r_int
+r_int
+r_int
 )paren
 (paren
 (paren

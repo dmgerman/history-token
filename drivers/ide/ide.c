@@ -3074,6 +3074,10 @@ c_func
 (paren
 l_string|&quot;, LBAsect=%lld, high=%d, low=%d&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|sectors
 comma
 id|high
