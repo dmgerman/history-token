@@ -2295,7 +2295,7 @@ id|flags
 comma
 id|data
 comma
-id|usb_fill_super
+id|usbfs_fill_super
 )paren
 suffix:semicolon
 )brace
