@@ -2348,24 +2348,6 @@ id|idle
 r_if
 c_cond
 (paren
-id|MAJOR
-c_func
-(paren
-id|CURRENT-&gt;rq_dev
-)paren
-op_ne
-id|MAJOR_NR
-)paren
-id|panic
-c_func
-(paren
-id|DEVICE_NAME
-l_string|&quot;: request list destroyed&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|CURRENT-&gt;bh
 op_logical_and
 op_logical_neg
@@ -2386,13 +2368,9 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
-l_string|&quot;do_fd_req: dev=%x cmd=%d sec=%ld nr_sec=%ld buf=%p&bslash;n&quot;
+l_string|&quot;do_fd_req: dev=%s cmd=%d sec=%ld nr_sec=%ld buf=%p&bslash;n&quot;
 comma
-id|kdev_t_to_nr
-c_func
-(paren
-id|CURRENT-&gt;rq_dev
-)paren
+id|CURRENT-&gt;rq_disk-&gt;disk_name
 comma
 id|CURRENT-&gt;cmd
 comma

@@ -2147,21 +2147,11 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
-l_string|&quot;%s:got request. device : %d minor : %d command : %d  sector : %ld count : %ld, buffer: %p&bslash;n&quot;
+l_string|&quot;%s:got request. device : %s command : %d  sector : %ld count : %ld, buffer: %p&bslash;n&quot;
 comma
 id|DEVICE_NAME
 comma
-id|DEVICE_NR
-c_func
-(paren
-id|req-&gt;rq_dev
-)paren
-comma
-id|minor
-c_func
-(paren
-id|req-&gt;rq_dev
-)paren
+id|req-&gt;rq_disk-&gt;disk_name
 comma
 id|req-&gt;cmd
 comma

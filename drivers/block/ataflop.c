@@ -5616,12 +5616,8 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;redo_fd_request: CURRENT=%08lx CURRENT-&gt;dev=%04x CURRENT-&gt;sector=%ld&bslash;n&quot;
+l_string|&quot;redo_fd_request: CURRENT=%p dev=%s CURRENT-&gt;sector=%ld&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|CURRENT
 comma
 op_logical_neg
@@ -5632,9 +5628,9 @@ id|QUEUE
 )paren
 ques
 c_cond
-id|CURRENT-&gt;rq_dev
+id|CURRENT-&gt;rq_disk-&gt;disk_name
 suffix:colon
-l_int|0
+l_string|&quot;&quot;
 comma
 op_logical_neg
 id|blk_queue_empty
@@ -5667,24 +5663,6 @@ id|QUEUE
 )paren
 r_goto
 id|the_end
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|major
-c_func
-(paren
-id|CURRENT-&gt;rq_dev
-)paren
-op_ne
-id|MAJOR_NR
-)paren
-id|panic
-c_func
-(paren
-id|DEVICE_NAME
-l_string|&quot;: request list destroyed&quot;
-)paren
 suffix:semicolon
 id|device
 op_assign
