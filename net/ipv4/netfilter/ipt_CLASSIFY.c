@@ -183,9 +183,23 @@ id|hook_mask
 op_amp
 op_complement
 (paren
+(paren
+l_int|1
+op_lshift
+id|NF_IP_LOCAL_OUT
+)paren
+op_or
+(paren
+l_int|1
+op_lshift
+id|NF_IP_FORWARD
+)paren
+op_or
+(paren
 l_int|1
 op_lshift
 id|NF_IP_POST_ROUTING
+)paren
 )paren
 )paren
 (brace
@@ -193,7 +207,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;CLASSIFY: only valid in POST_ROUTING.&bslash;n&quot;
+l_string|&quot;CLASSIFY: only valid in LOCAL_OUT, FORWARD &quot;
+l_string|&quot;and POST_ROUTING.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -217,7 +232,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_WARNING
+id|KERN_ERR
 l_string|&quot;CLASSIFY: can only be called from &quot;
 l_string|&quot;&bslash;&quot;mangle&bslash;&quot; table, not &bslash;&quot;%s&bslash;&quot;.&bslash;n&quot;
 comma

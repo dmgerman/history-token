@@ -439,7 +439,7 @@ id|exp-&gt;help.exp_amanda_info
 suffix:semicolon
 id|exp_amanda_info-&gt;offset
 op_assign
-id|data
+id|tmp
 op_minus
 id|amanda_buffer
 suffix:semicolon
