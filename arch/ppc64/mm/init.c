@@ -961,26 +961,6 @@ suffix:semicolon
 )brace
 )brace
 r_void
-DECL|function|flush_tlb_all
-id|flush_tlb_all
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/* Implemented to just flush the vmalloc area.&n;&t; * vmalloc is the only user of flush_tlb_all.&n;&t; */
-id|__flush_tlb_range
-c_func
-(paren
-l_int|NULL
-comma
-id|VMALLOC_START
-comma
-id|VMALLOC_END
-)paren
-suffix:semicolon
-)brace
-r_void
 DECL|function|flush_tlb_mm
 id|flush_tlb_mm
 c_func

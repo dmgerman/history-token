@@ -4,15 +4,7 @@ mdefine_line|#define _PPC64_TLBFLUSH_H
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-multiline_comment|/*&n; * TLB flushing:&n; *&n; *  - flush_tlb_all() flushes all processes TLBs&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr) flushes one page&n; *  - flush_tlb_range(vma, start, end) flushes a range of pages&n; *  - flush_tlb_pgtables(mm, start, end) flushes a range of page tables&n; */
-r_extern
-r_void
-id|flush_tlb_all
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+multiline_comment|/*&n; * TLB flushing:&n; *&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr) flushes one page&n; *  - flush_tlb_range(vma, start, end) flushes a range of pages&n; *  - flush_tlb_kernel_range(start, end) flushes a range of kernel pages&n; *  - flush_tlb_pgtables(mm, start, end) flushes a range of page tables&n; */
 r_extern
 r_void
 id|flush_tlb_mm
@@ -60,6 +52,8 @@ id|end
 suffix:semicolon
 DECL|macro|flush_tlb_range
 mdefine_line|#define flush_tlb_range(vma, start, end) &bslash;&n;&t;__flush_tlb_range(vma-&gt;vm_mm, start, end)
+DECL|macro|flush_tlb_kernel_range
+mdefine_line|#define flush_tlb_kernel_range(start, end) &bslash;&n;&t;__flush_tlb_range(&amp;init_mm, (start), (end))
 DECL|function|flush_tlb_pgtables
 r_extern
 r_inline
