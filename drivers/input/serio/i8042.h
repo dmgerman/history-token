@@ -86,6 +86,9 @@ mdefine_line|#define I8042_RET_CTL_TEST&t;0x55
 multiline_comment|/*&n; * Expected maximum internal i8042 buffer size. This is used for flushing&n; * the i8042 buffers. 32 should be more than enough.&n; */
 DECL|macro|I8042_BUFFER_SIZE
 mdefine_line|#define I8042_BUFFER_SIZE&t;32
+multiline_comment|/*&n; * Number of AUX ports on controllers supporting active multiplexing&n; * specification&n; */
+DECL|macro|I8042_NUM_MUX_PORTS
+mdefine_line|#define I8042_NUM_MUX_PORTS&t;4
 multiline_comment|/*&n; * Debug.&n; */
 macro_line|#ifdef DEBUG
 DECL|variable|i8042_start

@@ -2056,6 +2056,7 @@ c_func
 (paren
 r_int
 r_char
+id|__iomem
 op_star
 id|pins
 comma
@@ -2285,6 +2286,7 @@ c_func
 (paren
 r_int
 r_char
+id|__iomem
 op_star
 id|vbios
 comma
@@ -2469,6 +2471,7 @@ c_func
 (paren
 r_int
 r_char
+id|__iomem
 op_star
 id|vbios
 comma
@@ -2518,6 +2521,7 @@ c_func
 (paren
 r_int
 r_char
+id|__iomem
 op_star
 id|vbios
 comma
@@ -2699,6 +2703,7 @@ c_func
 (paren
 r_int
 r_char
+id|__iomem
 op_star
 id|vbios
 comma
@@ -4506,6 +4511,7 @@ id|bios_valid
 (brace
 r_int
 r_char
+id|__iomem
 op_star
 id|b
 suffix:semicolon

@@ -88,6 +88,7 @@ id|mmio
 suffix:semicolon
 DECL|member|interlaced
 r_int
+r_int
 id|interlaced
 suffix:colon
 l_int|1

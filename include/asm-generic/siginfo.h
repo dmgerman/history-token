@@ -176,11 +176,6 @@ DECL|member|_stime
 id|clock_t
 id|_stime
 suffix:semicolon
-DECL|member|_rusage
-r_struct
-id|rusage
-id|_rusage
-suffix:semicolon
 DECL|member|_sigchld
 )brace
 id|_sigchld
@@ -248,8 +243,6 @@ DECL|macro|si_utime
 mdefine_line|#define si_utime&t;_sifields._sigchld._utime
 DECL|macro|si_stime
 mdefine_line|#define si_stime&t;_sifields._sigchld._stime
-DECL|macro|si_rusage
-mdefine_line|#define si_rusage&t;_sifields._sigchld._rusage
 DECL|macro|si_value
 mdefine_line|#define si_value&t;_sifields._rt._sigval
 DECL|macro|si_int
