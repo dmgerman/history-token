@@ -296,7 +296,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/* Size of the arry containing the mtops for a discipline */
+multiline_comment|/* Size of the array containing the mtops for a discipline */
 DECL|macro|TAPE_NR_MTOPS
 mdefine_line|#define TAPE_NR_MTOPS (MTMKPART+1)
 multiline_comment|/* Tape Discipline */
@@ -500,7 +500,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * The discipline irq function either returns an error code (&lt;0) which&n; * means that the request has failed with an error or one of the following:&n; */
 DECL|macro|TAPE_IO_SUCCESS
-mdefine_line|#define TAPE_IO_SUCCESS 0&t;/* request sucessful */
+mdefine_line|#define TAPE_IO_SUCCESS 0&t;/* request successful */
 DECL|macro|TAPE_IO_PENDING
 mdefine_line|#define TAPE_IO_PENDING 1&t;/* request still running */
 DECL|macro|TAPE_IO_RETRY

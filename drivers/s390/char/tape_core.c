@@ -3862,7 +3862,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;tape init: ($Revision: 1.21 $)&bslash;n&quot;
+l_string|&quot;tape init: ($Revision: 1.23 $)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|tape_proc_init
@@ -3933,7 +3933,7 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Linux on zSeries channel attached &quot;
-l_string|&quot;tape device driver ($Revision: 1.21 $)&quot;
+l_string|&quot;tape device driver ($Revision: 1.23 $)&quot;
 )paren
 suffix:semicolon
 DECL|variable|tape_init

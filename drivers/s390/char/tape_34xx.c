@@ -22,7 +22,7 @@ id|tape_3490
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Medium sense (asyncronous with callback) for 34xx tapes. There is no &squot;real&squot;&n; * medium sense call. So we just do a normal sense.&n; */
+multiline_comment|/*&n; * Medium sense (asynchronous with callback) for 34xx tapes. There is no &squot;real&squot;&n; * medium sense call. So we just do a normal sense.&n; */
 r_static
 r_void
 DECL|function|__tape_34xx_medium_sense_callback
@@ -73,7 +73,7 @@ id|sense
 op_assign
 id|request-&gt;cpdata
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * This isn&squot;t quite correct. But since INTERVENTION_REQUIRED&n;&t;&t; * means that the drive is &squot;neither ready nor online&squot; it is&n;&t;&t; * only slightly inaccurate to say there is no tape loaded if&n;&t;&t; * the drive isn&squot;t online...&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This isn&squot;t quite correct. But since INTERVENTION_REQUIRED&n;&t;&t; * means that the drive is &squot;neither ready nor on-line&squot; it is&n;&t;&t; * only slightly inaccurate to say there is no tape loaded if&n;&t;&t; * the drive isn&squot;t online...&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -418,7 +418,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Done Handler is called when dev stat = DEVICE-END (successfull operation)&n; */
+multiline_comment|/*&n; * Done Handler is called when dev stat = DEVICE-END (successful operation)&n; */
 r_static
 r_int
 DECL|function|tape_34xx_done
@@ -494,8 +494,8 @@ suffix:semicolon
 r_static
 r_inline
 r_int
-DECL|function|tape_34xx_erp_succeded
-id|tape_34xx_erp_succeded
+DECL|function|tape_34xx_erp_succeeded
+id|tape_34xx_erp_succeeded
 c_func
 (paren
 r_struct
@@ -514,7 +514,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;Error Recovery successfull for %s&bslash;n&quot;
+l_string|&quot;Error Recovery successful for %s&bslash;n&quot;
 comma
 id|tape_op_verbose
 (braket
@@ -1575,7 +1575,7 @@ suffix:semicolon
 r_case
 l_int|0x22
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Path equipment check. Might be drive adapter error, buffer&n;&t;&t; * error on the lower interface, internal path not useable,&n;&t;&t; * or error during cartridge load.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Path equipment check. Might be drive adapter error, buffer&n;&t;&t; * error on the lower interface, internal path not usable,&n;&t;&t; * or error during cartridge load.&n;&t;&t; */
 id|PRINT_WARN
 c_func
 (paren
@@ -1587,7 +1587,7 @@ id|PRINT_WARN
 c_func
 (paren
 l_string|&quot;drive adapter error, buffer error on the lower &quot;
-l_string|&quot;interface, internal path not useable, error &quot;
+l_string|&quot;interface, internal path not usable, error &quot;
 l_string|&quot;during cartridge load.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1608,7 +1608,7 @@ l_int|0x24
 suffix:colon
 multiline_comment|/*&n;&t;&t; * Load display check. Load display was command was issued,&n;&t;&t; * but the drive is displaying a drive check message. Can&n;&t;&t; * be threated as &quot;device end&quot;.&n;&t;&t; */
 r_return
-id|tape_34xx_erp_succeded
+id|tape_34xx_erp_succeeded
 c_func
 (paren
 id|device
@@ -1619,7 +1619,7 @@ suffix:semicolon
 r_case
 l_int|0x27
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Command reject. May indicate illegal channel program or&n;&t;&t; * buffer over/underrun. Since all channel programms are&n;&t;&t; * issued by this driver and ought be correct, we assume a&n;&t;&t; * over/underrun situaltion and retry the channel program.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Command reject. May indicate illegal channel program or&n;&t;&t; * buffer over/underrun. Since all channel programs are&n;&t;&t; * issued by this driver and ought be correct, we assume a&n;&t;&t; * over/underrun situation and retry the channel program.&n;&t;&t; */
 r_return
 id|tape_34xx_erp_retry
 c_func
@@ -1632,7 +1632,7 @@ suffix:semicolon
 r_case
 l_int|0x29
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Function incompatible. Either the tape is idrc compressed&n;&t;&t; * but the hardware isn&squot;t capable to do idrc, or a perform&n;&t;&t; * subsystem func is issued and the CU is not online.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Function incompatible. Either the tape is idrc compressed&n;&t;&t; * but the hardware isn&squot;t capable to do idrc, or a perform&n;&t;&t; * subsystem func is issued and the CU is not on-line.&n;&t;&t; */
 id|PRINT_WARN
 (paren
 l_string|&quot;Function incompatible. Try to switch off idrc&bslash;n&quot;
@@ -1685,7 +1685,7 @@ id|MS_UNLOADED
 )paren
 suffix:semicolon
 r_return
-id|tape_34xx_erp_succeded
+id|tape_34xx_erp_succeeded
 c_func
 (paren
 id|device
@@ -1836,7 +1836,7 @@ suffix:semicolon
 r_case
 l_int|0x33
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Load Failure. The catridge was not inserted correctly or&n;&t;&t; * the tape is not threaded correctly.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Load Failure. The cartridge was not inserted correctly or&n;&t;&t; * the tape is not threaded correctly.&n;&t;&t; */
 id|PRINT_WARN
 c_func
 (paren
@@ -2033,7 +2033,7 @@ suffix:semicolon
 r_case
 l_int|0x39
 suffix:colon
-multiline_comment|/* Backward at Beginnig of tape. */
+multiline_comment|/* Backward at Beginning of tape. */
 r_return
 id|tape_34xx_erp_failed
 c_func
@@ -2094,7 +2094,7 @@ suffix:semicolon
 r_case
 l_int|0x42
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Degraded mode. A condition that can cause degraded&n;&t;&t; * performace is detected.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Degraded mode. A condition that can cause degraded&n;&t;&t; * performance is detected.&n;&t;&t; */
 id|PRINT_WARN
 c_func
 (paren
@@ -2122,7 +2122,7 @@ comma
 id|MS_UNLOADED
 )paren
 suffix:semicolon
-multiline_comment|/* Some commands commands are sucessful even in this case */
+multiline_comment|/* Some commands commands are successful even in this case */
 r_if
 c_cond
 (paren
@@ -2187,7 +2187,7 @@ suffix:semicolon
 r_case
 l_int|0x44
 suffix:colon
-multiline_comment|/* Locate Block unsuccessfull. */
+multiline_comment|/* Locate Block unsuccessful. */
 r_if
 c_cond
 (paren
@@ -2253,11 +2253,11 @@ suffix:semicolon
 r_case
 l_int|0x46
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Drive not online. Drive may be switched offline,&n;&t;&t; * the power supply may be switched off or&n;&t;&t; * the drive address may not be set correctly.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Drive not on-line. Drive may be switched offline,&n;&t;&t; * the power supply may be switched off or&n;&t;&t; * the drive address may not be set correctly.&n;&t;&t; */
 id|PRINT_WARN
 c_func
 (paren
-l_string|&quot;The drive is not online.&quot;
+l_string|&quot;The drive is not on-line.&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2436,7 +2436,7 @@ op_eq
 id|tape_3490
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Maximum block size exeeded. This indicates, that&n;&t;&t;&t; * the block to be written is larger than allowed for&n;&t;&t;&t; * buffered mode.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Maximum block size exceeded. This indicates, that&n;&t;&t;&t; * the block to be written is larger than allowed for&n;&t;&t;&t; * buffered mode.&n;&t;&t;&t; */
 id|PRINT_WARN
 c_func
 (paren
@@ -2521,7 +2521,7 @@ id|MS_UNLOADED
 )paren
 suffix:semicolon
 r_return
-id|tape_34xx_erp_succeded
+id|tape_34xx_erp_succeeded
 c_func
 (paren
 id|device
@@ -2651,7 +2651,7 @@ multiline_comment|/* Global status intercept. */
 id|PRINT_WARN
 c_func
 (paren
-l_string|&quot;An global status intercept was recieved, &quot;
+l_string|&quot;An global status intercept was received, &quot;
 l_string|&quot;which will be recovered.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2786,7 +2786,7 @@ id|PRINT_WARN
 c_func
 (paren
 l_string|&quot;The volume is recorded using an incompatible &quot;
-l_string|&quot;compaction algorith, which is not supported by &quot;
+l_string|&quot;compaction algorithm, which is not supported by &quot;
 l_string|&quot;the control unit.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4168,7 +4168,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;34xx init: $Revision: 1.6 $&bslash;n&quot;
+l_string|&quot;34xx init: $Revision: 1.7 $&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Register driver for 3480/3490 tapes. */
@@ -4242,7 +4242,7 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Linux on zSeries channel attached 3480 tape &quot;
-l_string|&quot;device driver ($Revision: 1.6 $)&quot;
+l_string|&quot;device driver ($Revision: 1.7 $)&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
