@@ -7,7 +7,6 @@ singleline_comment|// Required Includes
 singleline_comment|//-------------------------------------------------
 macro_line|#include &quot;ip2types.h&quot;
 macro_line|#include &lt;asm/io.h&gt;  /* For inb, etc */
-macro_line|#include &lt;linux/version.h&gt;
 singleline_comment|//------------------------------------
 singleline_comment|// Defines for I/O instructions:
 singleline_comment|//------------------------------------

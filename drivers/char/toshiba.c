@@ -4,7 +4,6 @@ mdefine_line|#define TOSH_VERSION &quot;1.11 26/9/2001&quot;
 DECL|macro|TOSH_DEBUG
 mdefine_line|#define TOSH_DEBUG 0
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

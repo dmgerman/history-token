@@ -23,6 +23,7 @@ id|zftc_dat
 op_assign
 l_string|&quot;$Date: 1997/11/16 15:15:56 $&quot;
 suffix:semicolon
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/module.h&gt;

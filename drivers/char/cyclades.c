@@ -90,7 +90,6 @@ mdefine_line|#define&t;CY_UNLOCK(info,flags)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;do {
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 DECL|macro|cy_put_user

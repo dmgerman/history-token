@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * dz.c: Serial port driver for DECStations equiped &n; *       with the DZ chipset.&n; *&n; * Copyright (C) 1998 Olivier A. D. Lebaillif &n; *             &n; * Email: olivier.lebaillif@ifrsys.com&n; *&n; * [31-AUG-98] triemer&n; * Changed IRQ to use Harald&squot;s dec internals interrupts.h&n; * removed base_addr code - moving address assignment to setup.c&n; * Changed name of dz_init to rs_init to be consistent with tc code&n; * [13-NOV-98] triemer fixed code to receive characters&n; *    after patches by harald to irq code.  &n; * [09-JAN-99] triemer minor fix for schedule - due to removal of timeout&n; *            field from &quot;current&quot; - somewhere between 2.1.121 and 2.1.131&n;Qua Jun 27 15:02:26 BRT 2001&n; * [27-JUN-2001] Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - cleanups&n; *  &n; * Parts (C) 1999 David Airlie, airlied@linux.ie &n; * [07-SEP-99] Bugfixes &n; */
 multiline_comment|/* #define DEBUG_DZ 1 */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
