@@ -50,6 +50,13 @@ id|jprobes_stack
 id|MAX_STACK_SIZE
 )braket
 suffix:semicolon
+r_void
+id|jprobe_return_end
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * returns non-zero if opcode modifies the interrupt flag.&n; */
 DECL|function|is_IF_modifier
 r_static
@@ -93,7 +100,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|arch_prepare_kprobe
-r_void
+r_int
 id|arch_prepare_kprobe
 c_func
 (paren
@@ -106,7 +113,7 @@ id|p
 id|memcpy
 c_func
 (paren
-id|p-&gt;insn
+id|p-&gt;ainsn.insn
 comma
 id|p-&gt;addr
 comma
@@ -118,6 +125,21 @@ id|kprobe_opcode_t
 )paren
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|arch_remove_kprobe
+r_void
+id|arch_remove_kprobe
+c_func
+(paren
+r_struct
+id|kprobe
+op_star
+id|p
+)paren
+(brace
 )brace
 DECL|function|disarm_kprobe
 r_static
@@ -185,7 +207,7 @@ r_int
 r_int
 )paren
 op_amp
-id|p-&gt;insn
+id|p-&gt;ainsn.insn
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Interrupts are disabled on entry as trap3 is an interrupt gate and they&n; * remain disabled thorough out this function.&n; */
@@ -430,7 +452,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Called after single-stepping.  p-&gt;addr is the address of the&n; * instruction whose first byte has been replaced by the &quot;int 3&quot;&n; * instruction.  To avoid the SMP problems that can occur when we&n; * temporarily put back the original opcode to single-step, we&n; * single-stepped a copy of the instruction.  The address of this&n; * copy is p-&gt;insn.&n; *&n; * This function prepares to return from the post-single-step&n; * interrupt.  We have to fix up the stack as follows:&n; *&n; * 0) Except in the case of absolute or indirect jump or call instructions,&n; * the new eip is relative to the copied instruction.  We need to make&n; * it relative to the original instruction.&n; *&n; * 1) If the single-stepped instruction was pushfl, then the TF and IF&n; * flags are set in the just-pushed eflags, and may need to be cleared.&n; *&n; * 2) If the single-stepped instruction was a call, the return address&n; * that is atop the stack is the address following the copied instruction.&n; * We need to make it the address following the original instruction.&n; */
+multiline_comment|/*&n; * Called after single-stepping.  p-&gt;addr is the address of the&n; * instruction whose first byte has been replaced by the &quot;int 3&quot;&n; * instruction.  To avoid the SMP problems that can occur when we&n; * temporarily put back the original opcode to single-step, we&n; * single-stepped a copy of the instruction.  The address of this&n; * copy is p-&gt;ainsn.insn.&n; *&n; * This function prepares to return from the post-single-step&n; * interrupt.  We have to fix up the stack as follows:&n; *&n; * 0) Except in the case of absolute or indirect jump or call instructions,&n; * the new eip is relative to the copied instruction.  We need to make&n; * it relative to the original instruction.&n; *&n; * 1) If the single-stepped instruction was pushfl, then the TF and IF&n; * flags are set in the just-pushed eflags, and may need to be cleared.&n; *&n; * 2) If the single-stepped instruction was a call, the return address&n; * that is atop the stack is the address following the copied instruction.&n; * We need to make it the address following the original instruction.&n; */
 DECL|function|resume_execution
 r_static
 r_void
@@ -476,7 +498,7 @@ r_int
 r_int
 )paren
 op_amp
-id|p-&gt;insn
+id|p-&gt;ainsn.insn
 suffix:semicolon
 r_int
 r_int
@@ -491,7 +513,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|p-&gt;insn
+id|p-&gt;ainsn.insn
 (braket
 l_int|0
 )braket
@@ -543,7 +565,7 @@ r_if
 c_cond
 (paren
 (paren
-id|p-&gt;insn
+id|p-&gt;ainsn.insn
 (braket
 l_int|1
 )braket
@@ -579,7 +601,7 @@ c_cond
 (paren
 (paren
 (paren
-id|p-&gt;insn
+id|p-&gt;ainsn.insn
 (braket
 l_int|1
 )braket
@@ -593,7 +615,7 @@ op_logical_or
 multiline_comment|/* jmp near, absolute indirect */
 (paren
 (paren
-id|p-&gt;insn
+id|p-&gt;ainsn.insn
 (braket
 l_int|1
 )braket
@@ -1050,6 +1072,9 @@ r_volatile
 (paren
 l_string|&quot;       xchgl   %%ebx,%%esp     &bslash;n&quot;
 l_string|&quot;       int3&t;&t;&t;&bslash;n&quot;
+l_string|&quot;       .globl jprobe_return_end&t;&bslash;n&quot;
+l_string|&quot;       jprobe_return_end:&t;&bslash;n&quot;
+l_string|&quot;       nop&t;&t;&t;&bslash;n&quot;
 op_scope_resolution
 l_string|&quot;b&quot;
 (paren
@@ -1060,16 +1085,6 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|jprobe_return_end
-r_void
-id|jprobe_return_end
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
-suffix:semicolon
 DECL|function|longjmp_break_handler
 r_int
 id|longjmp_break_handler
