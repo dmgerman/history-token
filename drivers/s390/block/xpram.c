@@ -1780,10 +1780,10 @@ r_case
 id|BLKFLSBUF
 suffix:colon
 multiline_comment|/* flush, 0x1261 */
-id|fsync_dev
+id|fsync_bdev
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev
 )paren
 suffix:semicolon
 r_if
@@ -3892,34 +3892,7 @@ r_void
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* first of all, flush it all and reset all the data structures */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|xpram_devs
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|fsync_dev
-c_func
-(paren
-id|MKDEV
-c_func
-(paren
-id|xpram_major
-comma
-id|i
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* flush the devices */
+multiline_comment|/* first of all, reset all the data structures */
 macro_line|#if (XPRAM_VERSION == 22)
 id|blk_dev
 (braket

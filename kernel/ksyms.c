@@ -822,6 +822,13 @@ c_func
 id|fsync_dev
 )paren
 suffix:semicolon
+DECL|variable|fsync_bdev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fsync_bdev
+)paren
+suffix:semicolon
 DECL|variable|fsync_no_super
 id|EXPORT_SYMBOL
 c_func
@@ -1691,13 +1698,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|bmap
-)paren
-suffix:semicolon
-DECL|variable|sync_dev
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sync_dev
 )paren
 suffix:semicolon
 DECL|variable|devfs_register_partitions

@@ -8082,10 +8082,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* Sync the disks. */
 multiline_comment|/* XXX It would be nice to have some way to ensure that&n;&t; * nobody is dirtying any new buffers while we wait.&n;&t; * BenH: Moved to _after_ sleep request and changed video&n;&t; * drivers to vmalloc() during sleep request. This way, all&n;&t; * vmalloc&squot;s are done before actual sleep of block drivers */
-id|fsync_dev
+id|sys_sync
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Sleep can fail now. May not be very robust but useful for debugging */
@@ -8763,10 +8762,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* Sync the disks. */
 multiline_comment|/* XXX It would be nice to have some way to ensure that&n;&t; * nobody is dirtying any new buffers while we wait.&n;&t; * BenH: Moved to _after_ sleep request and changed video&n;&t; * drivers to vmalloc() during sleep request. This way, all&n;&t; * vmalloc&squot;s are done before actual sleep of block drivers */
-id|fsync_dev
+id|sys_sync
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Sleep can fail now. May not be very robust but useful for debugging */
@@ -9420,10 +9418,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* Sync the disks. */
 multiline_comment|/* XXX It would be nice to have some way to ensure that&n;&t; * nobody is dirtying any new buffers while we wait.&n;&t; * BenH: Moved to _after_ sleep request and changed video&n;&t; * drivers to vmalloc() during sleep request. This way, all&n;&t; * vmalloc&squot;s are done before actual sleep of block drivers */
-id|fsync_dev
+id|sys_sync
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Sleep can fail now. May not be very robust but useful for debugging */

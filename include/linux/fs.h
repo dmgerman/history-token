@@ -5387,8 +5387,8 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|sync_dev
+r_int
+id|fsync_dev
 c_func
 (paren
 id|kdev_t
@@ -5396,10 +5396,12 @@ id|kdev_t
 suffix:semicolon
 r_extern
 r_int
-id|fsync_dev
+id|fsync_bdev
 c_func
 (paren
-id|kdev_t
+r_struct
+id|block_device
+op_star
 )paren
 suffix:semicolon
 r_extern
