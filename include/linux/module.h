@@ -12,6 +12,8 @@ macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/stringify.h&gt;
+macro_line|#include &lt;linux/kobject.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/local.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
 multiline_comment|/* Not Yet Implemented */
@@ -264,6 +266,50 @@ id|MODULE_STATE_GOING
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* sysfs stuff */
+DECL|struct|module_attribute
+r_struct
+id|module_attribute
+(brace
+DECL|member|attr
+r_struct
+id|attribute
+id|attr
+suffix:semicolon
+DECL|member|param
+r_struct
+id|kernel_param
+op_star
+id|param
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|module_kobject
+r_struct
+id|module_kobject
+(brace
+multiline_comment|/* Everyone should have one of these. */
+DECL|member|kobj
+r_struct
+id|kobject
+id|kobj
+suffix:semicolon
+multiline_comment|/* We always have refcnt, we may have others from module_param(). */
+DECL|member|num_attributes
+r_int
+r_int
+id|num_attributes
+suffix:semicolon
+DECL|member|attr
+r_struct
+id|module_attribute
+id|attr
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|module
 r_struct
 id|module
@@ -286,6 +332,13 @@ id|name
 (braket
 id|MODULE_NAME_LEN
 )braket
+suffix:semicolon
+multiline_comment|/* Sysfs stuff. */
+DECL|member|mkobj
+r_struct
+id|module_kobject
+op_star
+id|mkobj
 suffix:semicolon
 multiline_comment|/* Exported symbols */
 DECL|member|syms
@@ -430,6 +483,12 @@ m_exit
 (paren
 r_void
 )paren
+suffix:semicolon
+multiline_comment|/* Fake kernel param for refcnt. */
+DECL|member|refcnt_param
+r_struct
+id|kernel_param
+id|refcnt_param
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_KALLSYMS
