@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 38 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 39 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -291,7 +291,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_convert_to_buffer&n; *&n; * PARAMETERS:  *Obj_desc       - Object to be converted.  Must be an&n; *                                Integer, Buffer, or String&n; *              Walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an ACPI Object to an Buffer&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_convert_to_buffer&n; *&n; * PARAMETERS:  *Obj_desc       - Object to be converted.  Must be an&n; *                                Integer, Buffer, or String&n; *              Walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an ACPI Object to a Buffer&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_convert_to_buffer
 id|acpi_ex_convert_to_buffer
@@ -578,7 +578,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_convert_ascii&n; *&n; * PARAMETERS:  Integer&n; *&n; * RETURN:      Actual string length&n; *&n; * DESCRIPTION: Convert an ACPI Integer to a hex string&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_convert_ascii&n; *&n; * PARAMETERS:  Integer         - Value to be converted&n; *              Base            - 10 or 16&n; *              String          - Where the string is returned&n; *&n; * RETURN:      Actual string length&n; *&n; * DESCRIPTION: Convert an ACPI Integer to a hex or decimal string&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_ex_convert_to_ascii
 id|acpi_ex_convert_to_ascii
@@ -1458,9 +1458,9 @@ id|source_desc
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_ERROR
+id|ACPI_DB_INFO
 comma
-l_string|&quot;Target does not allow conversion of type %s to %s&bslash;n&quot;
+l_string|&quot;Explicit operator, will store (%s) over existing type (%s)&bslash;n&quot;
 comma
 id|acpi_ut_get_object_type_name
 (paren

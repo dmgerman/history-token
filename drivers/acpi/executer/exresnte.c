@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresnte - AML Interpreter object resolution&n; *              $Revision: 58 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresnte - AML Interpreter object resolution&n; *              $Revision: 59 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -90,6 +90,46 @@ id|entry_type
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|entry_type
+op_eq
+id|INTERNAL_TYPE_ALIAS
+)paren
+(brace
+multiline_comment|/* There is always exactly one level of indirection */
+id|node
+op_assign
+(paren
+id|acpi_namespace_node
+op_star
+)paren
+id|node-&gt;object
+suffix:semicolon
+id|source_desc
+op_assign
+id|acpi_ns_get_attached_object
+(paren
+id|node
+)paren
+suffix:semicolon
+id|entry_type
+op_assign
+id|acpi_ns_get_type
+(paren
+(paren
+id|acpi_handle
+)paren
+id|node
+)paren
+suffix:semicolon
+op_star
+id|object_ptr
+op_assign
+id|node
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Several object types require no further processing:&n;&t; * 1) Devices rarely have an attached object, return the Node&n;&t; * 2) Method locals and arguments have a pseudo-Node&n;&t; */
 r_if
 c_cond
@@ -439,7 +479,7 @@ id|obj_desc
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* TYPE_Any is untyped, and thus there is no object associated with it */
+multiline_comment|/* TYPE_ANY is untyped, and thus there is no object associated with it */
 r_case
 id|ACPI_TYPE_ANY
 suffix:colon

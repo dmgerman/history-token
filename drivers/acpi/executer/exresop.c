@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresop - AML Interpreter operand/object resolution&n; *              $Revision: 57 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresop - AML Interpreter operand/object resolution&n; *              $Revision: 58 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -704,6 +704,12 @@ id|status
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Get the resolved object */
+id|obj_desc
+op_assign
+op_star
+id|stack_ptr
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Check the resulting object (value) type&n;&t;&t; */
 r_switch
 c_cond
@@ -779,13 +785,12 @@ r_case
 id|ARGI_INTEGER
 suffix:colon
 multiline_comment|/* Number */
-multiline_comment|/*&n;&t;&t;&t; * Need an operand of type ACPI_TYPE_INTEGER,&n;&t;&t;&t; * But we can implicitly convert from a STRING or BUFFER&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Need an operand of type ACPI_TYPE_INTEGER,&n;&t;&t;&t; * But we can implicitly convert from a STRING or BUFFER&n;&t;&t;&t; * Aka - &quot;Implicit Source Operand Conversion&quot;&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_ex_convert_to_integer
 (paren
-op_star
-id|stack_ptr
+id|obj_desc
 comma
 id|stack_ptr
 comma
@@ -818,12 +823,10 @@ l_string|&quot;Needed [Integer/String/Buffer], found [%s] %p&bslash;n&quot;
 comma
 id|acpi_ut_get_object_type_name
 (paren
-op_star
-id|stack_ptr
+id|obj_desc
 )paren
 comma
-op_star
-id|stack_ptr
+id|obj_desc
 )paren
 )paren
 suffix:semicolon
@@ -836,6 +839,22 @@ suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|status
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|obj_desc
+op_ne
+op_star
+id|stack_ptr
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * We just created a new object, remove a reference&n;&t;&t;&t;&t; * on the original operand object&n;&t;&t;&t;&t; */
+id|acpi_ut_remove_reference
+(paren
+id|obj_desc
 )paren
 suffix:semicolon
 )brace
@@ -845,13 +864,12 @@ suffix:semicolon
 r_case
 id|ARGI_BUFFER
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Need an operand of type ACPI_TYPE_BUFFER,&n;&t;&t;&t; * But we can implicitly convert from a STRING or INTEGER&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Need an operand of type ACPI_TYPE_BUFFER,&n;&t;&t;&t; * But we can implicitly convert from a STRING or INTEGER&n;&t;&t;&t; * Aka - &quot;Implicit Source Operand Conversion&quot;&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_ex_convert_to_buffer
 (paren
-op_star
-id|stack_ptr
+id|obj_desc
 comma
 id|stack_ptr
 comma
@@ -884,12 +902,10 @@ l_string|&quot;Needed [Integer/String/Buffer], found [%s] %p&bslash;n&quot;
 comma
 id|acpi_ut_get_object_type_name
 (paren
-op_star
-id|stack_ptr
+id|obj_desc
 )paren
 comma
-op_star
-id|stack_ptr
+id|obj_desc
 )paren
 )paren
 suffix:semicolon
@@ -905,19 +921,34 @@ id|status
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|obj_desc
+op_ne
+op_star
+id|stack_ptr
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * We just created a new object, remove a reference&n;&t;&t;&t;&t; * on the original operand object&n;&t;&t;&t;&t; */
+id|acpi_ut_remove_reference
+(paren
+id|obj_desc
+)paren
+suffix:semicolon
+)brace
 r_goto
 id|next_operand
 suffix:semicolon
 r_case
 id|ARGI_STRING
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Need an operand of type ACPI_TYPE_STRING,&n;&t;&t;&t; * But we can implicitly convert from a BUFFER or INTEGER&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Need an operand of type ACPI_TYPE_STRING,&n;&t;&t;&t; * But we can implicitly convert from a BUFFER or INTEGER&n;&t;&t;&t; * Aka - &quot;Implicit Source Operand Conversion&quot;&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_ex_convert_to_string
 (paren
-op_star
-id|stack_ptr
+id|obj_desc
 comma
 id|stack_ptr
 comma
@@ -954,12 +985,10 @@ l_string|&quot;Needed [Integer/String/Buffer], found [%s] %p&bslash;n&quot;
 comma
 id|acpi_ut_get_object_type_name
 (paren
-op_star
-id|stack_ptr
+id|obj_desc
 )paren
 comma
-op_star
-id|stack_ptr
+id|obj_desc
 )paren
 )paren
 suffix:semicolon
@@ -975,6 +1004,22 @@ id|status
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|obj_desc
+op_ne
+op_star
+id|stack_ptr
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * We just created a new object, remove a reference&n;&t;&t;&t;&t; * on the original operand object&n;&t;&t;&t;&t; */
+id|acpi_ut_remove_reference
+(paren
+id|obj_desc
+)paren
+suffix:semicolon
+)brace
 r_goto
 id|next_operand
 suffix:semicolon
@@ -987,8 +1032,7 @@ c_cond
 (paren
 id|ACPI_GET_OBJECT_TYPE
 (paren
-op_star
-id|stack_ptr
+id|obj_desc
 )paren
 )paren
 (brace
@@ -1015,12 +1059,10 @@ l_string|&quot;Needed [Integer/String/Buffer], found [%s] %p&bslash;n&quot;
 comma
 id|acpi_ut_get_object_type_name
 (paren
-op_star
-id|stack_ptr
+id|obj_desc
 )paren
 comma
-op_star
-id|stack_ptr
+id|obj_desc
 )paren
 )paren
 suffix:semicolon
@@ -1037,120 +1079,12 @@ r_case
 id|ARGI_DATAOBJECT
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * ARGI_DATAOBJECT is only used by the Size_of operator.&n;&t;&t;&t; * Need a buffer, string, package, or Ref_of reference.&n;&t;&t;&t; *&n;&t;&t;&t; * The only reference allowed here is a direct reference to&n;&t;&t;&t; * a namespace node.&n;&t;&t;&t; */
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|ACPI_GET_OBJECT_TYPE
-(paren
-op_star
-id|stack_ptr
-)paren
-op_eq
-id|INTERNAL_TYPE_REFERENCE
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-op_star
-id|stack_ptr
-)paren
-op_member_access_from_pointer
-id|reference.node
-)paren
-(brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;Needed [Node Reference], found [%p]&bslash;n&quot;
-comma
-op_star
-id|stack_ptr
-)paren
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|AE_AML_OPERAND_TYPE
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Get the object attached to the node */
-id|temp_node
-op_assign
-id|acpi_ns_get_attached_object
-(paren
-(paren
-op_star
-id|stack_ptr
-)paren
-op_member_access_from_pointer
-id|reference.node
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|temp_node
-)paren
-(brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;Node [%p] has no attached object&bslash;n&quot;
-comma
-(paren
-op_star
-id|stack_ptr
-)paren
-op_member_access_from_pointer
-id|reference.node
-)paren
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|AE_AML_OPERAND_TYPE
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Swap the reference object with the node&squot;s object.  Must add&n;&t;&t;&t;&t; * a reference to the node object, and remove a reference from&n;&t;&t;&t;&t; * the original reference object.&n;&t;&t;&t;&t; */
-id|acpi_ut_add_reference
-(paren
-id|temp_node
-)paren
-suffix:semicolon
-id|acpi_ut_remove_reference
-(paren
-op_star
-id|stack_ptr
-)paren
-suffix:semicolon
-(paren
-op_star
-id|stack_ptr
-)paren
-op_assign
-id|temp_node
-suffix:semicolon
-)brace
-macro_line|#endif
-multiline_comment|/* Need a buffer, string, package */
 r_switch
 c_cond
 (paren
 id|ACPI_GET_OBJECT_TYPE
 (paren
-op_star
-id|stack_ptr
+id|obj_desc
 )paren
 )paren
 (brace
@@ -1180,12 +1114,10 @@ l_string|&quot;Needed [Buf/Str/Pkg], found [%s] %p&bslash;n&quot;
 comma
 id|acpi_ut_get_object_type_name
 (paren
-op_star
-id|stack_ptr
+id|obj_desc
 )paren
 comma
-op_star
-id|stack_ptr
+id|obj_desc
 )paren
 )paren
 suffix:semicolon
@@ -1207,8 +1139,7 @@ c_cond
 (paren
 id|ACPI_GET_OBJECT_TYPE
 (paren
-op_star
-id|stack_ptr
+id|obj_desc
 )paren
 )paren
 (brace
@@ -1235,12 +1166,10 @@ l_string|&quot;Needed [Buf/Str/Pkg], found [%s] %p&bslash;n&quot;
 comma
 id|acpi_ut_get_object_type_name
 (paren
-op_star
-id|stack_ptr
+id|obj_desc
 )paren
 comma
-op_star
-id|stack_ptr
+id|obj_desc
 )paren
 )paren
 suffix:semicolon
@@ -1261,7 +1190,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Internal - Unknown ARGI type %X&bslash;n&quot;
+l_string|&quot;Internal - Unknown ARGI (required operand) type %X&bslash;n&quot;
 comma
 id|this_arg_type
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstore - AML Interpreter object store support&n; *              $Revision: 171 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstore - AML Interpreter object store support&n; *              $Revision: 172 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -885,7 +885,7 @@ op_ne
 id|target_desc
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Store the new New_desc as the new value of the Name, and set&n;&t;&t;&t; * the Name&squot;s type to that of the value being stored in it.&n;&t;&t;&t; * Source_desc reference count is incremented by Attach_object.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Store the new New_desc as the new value of the Name, and set&n;&t;&t;&t; * the Name&squot;s type to that of the value being stored in it.&n;&t;&t;&t; * Source_desc reference count is incremented by Attach_object.&n;&t;&t;&t; *&n;&t;&t;&t; * Note: This may change the type of the node if an explicit store&n;&t;&t;&t; * has been performed such that the node/object type has been&n;&t;&t;&t; * changed.&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_ns_attach_object
@@ -894,7 +894,7 @@ id|node
 comma
 id|new_desc
 comma
-id|target_type
+id|new_desc-&gt;common.type
 )paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT

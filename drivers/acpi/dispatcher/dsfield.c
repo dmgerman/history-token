@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsfield - Dispatcher field routines&n; *              $Revision: 67 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsfield - Dispatcher field routines&n; *              $Revision: 68 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -159,6 +159,13 @@ id|status
 )paren
 )paren
 (brace
+id|ACPI_REPORT_NSERROR
+(paren
+id|arg-&gt;common.value.string
+comma
+id|status
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|status
@@ -445,6 +452,18 @@ id|status
 )paren
 )paren
 (brace
+id|ACPI_REPORT_NSERROR
+(paren
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|arg-&gt;named.name
+comma
+id|status
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -459,20 +478,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-id|ACPI_REPORT_ERROR
-(paren
-(paren
-l_string|&quot;Field name [%4.4s] already exists in current scope&bslash;n&quot;
-comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|arg-&gt;named.name
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* Already exists, ignore error */
 )brace
 r_else
 (brace
@@ -661,6 +667,13 @@ id|status
 )paren
 )paren
 (brace
+id|ACPI_REPORT_NSERROR
+(paren
+id|arg-&gt;common.value.name
+comma
+id|status
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|status
@@ -869,6 +882,18 @@ id|status
 )paren
 )paren
 (brace
+id|ACPI_REPORT_NSERROR
+(paren
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|arg-&gt;named.name
+comma
+id|status
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -883,20 +908,6 @@ id|status
 )paren
 suffix:semicolon
 )brace
-id|ACPI_REPORT_ERROR
-(paren
-(paren
-l_string|&quot;Field name [%4.4s] already exists in current scope&bslash;n&quot;
-comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|arg-&gt;named.name
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* Name already exists, just ignore this error */
 id|status
 op_assign
@@ -996,6 +1007,13 @@ id|status
 )paren
 )paren
 (brace
+id|ACPI_REPORT_NSERROR
+(paren
+id|arg-&gt;common.value.name
+comma
+id|status
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|status
@@ -1037,6 +1055,13 @@ id|status
 )paren
 )paren
 (brace
+id|ACPI_REPORT_NSERROR
+(paren
+id|arg-&gt;common.value.string
+comma
+id|status
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|status
@@ -1157,6 +1182,13 @@ id|status
 )paren
 )paren
 (brace
+id|ACPI_REPORT_NSERROR
+(paren
+id|arg-&gt;common.value.string
+comma
+id|status
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|status
@@ -1197,6 +1229,13 @@ id|status
 )paren
 )paren
 (brace
+id|ACPI_REPORT_NSERROR
+(paren
+id|arg-&gt;common.value.string
+comma
+id|status
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|status

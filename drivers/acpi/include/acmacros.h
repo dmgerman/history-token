@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acmacros.h - C macros for the entire subsystem.&n; *       $Revision: 128 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acmacros.h - C macros for the entire subsystem.&n; *       $Revision: 130 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACMACROS_H__
 DECL|macro|__ACMACROS_H__
@@ -294,6 +294,8 @@ DECL|macro|ACPI_REPORT_ERROR
 mdefine_line|#define ACPI_REPORT_ERROR(fp)               {acpi_ut_report_error(_THIS_MODULE,__LINE__,_COMPONENT); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_os_printf ACPI_PARAM_LIST(fp);}
 DECL|macro|ACPI_REPORT_WARNING
 mdefine_line|#define ACPI_REPORT_WARNING(fp)             {acpi_ut_report_warning(_THIS_MODULE,__LINE__,_COMPONENT); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_os_printf ACPI_PARAM_LIST(fp);}
+DECL|macro|ACPI_REPORT_NSERROR
+mdefine_line|#define ACPI_REPORT_NSERROR(s,e)            acpi_ns_report_error(_THIS_MODULE,__LINE__,_COMPONENT, s, e);
 macro_line|#else
 DECL|macro|ACPI_REPORT_INFO
 mdefine_line|#define ACPI_REPORT_INFO(fp)                {acpi_ut_report_info(&quot;ACPI&quot;,__LINE__,_COMPONENT); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_os_printf ACPI_PARAM_LIST(fp);}
@@ -301,6 +303,8 @@ DECL|macro|ACPI_REPORT_ERROR
 mdefine_line|#define ACPI_REPORT_ERROR(fp)               {acpi_ut_report_error(&quot;ACPI&quot;,__LINE__,_COMPONENT); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_os_printf ACPI_PARAM_LIST(fp);}
 DECL|macro|ACPI_REPORT_WARNING
 mdefine_line|#define ACPI_REPORT_WARNING(fp)             {acpi_ut_report_warning(&quot;ACPI&quot;,__LINE__,_COMPONENT); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_os_printf ACPI_PARAM_LIST(fp);}
+DECL|macro|ACPI_REPORT_NSERROR
+mdefine_line|#define ACPI_REPORT_NSERROR(s,e)            acpi_ns_report_error(&quot;ACPI&quot;,__LINE__,_COMPONENT, s, e);
 macro_line|#endif
 multiline_comment|/* Error reporting.  These versions pass thru the module and line# */
 DECL|macro|_ACPI_REPORT_INFO

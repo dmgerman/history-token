@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evevent - Fixed and General Purpose Even handling and dispatch&n; *              $Revision: 91 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evevent - Fixed and General Purpose Even handling and dispatch&n; *              $Revision: 92 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -374,10 +374,10 @@ op_assign
 id|ACPI_INTERRUPT_NOT_HANDLED
 suffix:semicolon
 id|u32
-id|gpe_status
+id|fixed_status
 suffix:semicolon
 id|u32
-id|gpe_enable
+id|fixed_enable
 suffix:semicolon
 id|NATIVE_UINT_MAX32
 id|i
@@ -398,7 +398,7 @@ comma
 id|ACPI_REGISTER_PM1_STATUS
 comma
 op_amp
-id|gpe_status
+id|fixed_status
 )paren
 suffix:semicolon
 (paren
@@ -411,7 +411,7 @@ comma
 id|ACPI_REGISTER_PM1_ENABLE
 comma
 op_amp
-id|gpe_enable
+id|fixed_enable
 )paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
@@ -421,9 +421,9 @@ id|ACPI_DB_INTERRUPTS
 comma
 l_string|&quot;Fixed Acpi_event Block: Enable %08X Status %08X&bslash;n&quot;
 comma
-id|gpe_enable
+id|fixed_enable
 comma
-id|gpe_status
+id|fixed_status
 )paren
 )paren
 suffix:semicolon
@@ -448,7 +448,7 @@ r_if
 c_cond
 (paren
 (paren
-id|gpe_status
+id|fixed_status
 op_amp
 id|acpi_gbl_fixed_event_info
 (braket
@@ -459,7 +459,7 @@ id|status_bit_mask
 )paren
 op_logical_and
 (paren
-id|gpe_enable
+id|fixed_enable
 op_amp
 id|acpi_gbl_fixed_event_info
 (braket

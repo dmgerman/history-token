@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsutils - Utilities for accessing ACPI namespace, accessing&n; *                        parents and siblings and Scope manipulation&n; *              $Revision: 112 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsutils - Utilities for accessing ACPI namespace, accessing&n; *                        parents and siblings and Scope manipulation&n; *              $Revision: 113 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -10,6 +10,104 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nsutils&quot;
 )paren
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_report_error&n; *&n; * PARAMETERS:  Module_name         - Caller&squot;s module name (for error output)&n; *              Line_number         - Caller&squot;s line number (for error output)&n; *              Component_id        - Caller&squot;s component ID (for error output)&n; *              Message             - Error message to use on failure&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Print warning message&n; *&n; ******************************************************************************/
+r_void
+DECL|function|acpi_ns_report_error
+id|acpi_ns_report_error
+(paren
+id|NATIVE_CHAR
+op_star
+id|module_name
+comma
+id|u32
+id|line_number
+comma
+id|u32
+id|component_id
+comma
+r_char
+op_star
+id|internal_name
+comma
+id|acpi_status
+id|lookup_status
+)paren
+(brace
+id|acpi_status
+id|status
+suffix:semicolon
+r_char
+op_star
+id|name
+suffix:semicolon
+id|status
+op_assign
+id|acpi_ns_externalize_name
+(paren
+id|ACPI_UINT32_MAX
+comma
+id|internal_name
+comma
+l_int|NULL
+comma
+op_amp
+id|name
+)paren
+suffix:semicolon
+id|acpi_os_printf
+(paren
+l_string|&quot;%8s-%04d: *** Error: Looking up &quot;
+comma
+id|module_name
+comma
+id|line_number
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|name
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot;[%s]&quot;
+comma
+id|name
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot;[COULD NOT EXTERNALIZE NAME]&quot;
+)paren
+suffix:semicolon
+)brace
+id|acpi_os_printf
+(paren
+l_string|&quot; in namespace, %s&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|lookup_status
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|name
+)paren
+(brace
+id|ACPI_MEM_FREE
+(paren
+id|name
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_valid_root_prefix&n; *&n; * PARAMETERS:  Prefix          - Character to be checked&n; *&n; * RETURN:      TRUE if a valid prefix&n; *&n; * DESCRIPTION: Check if a character is a valid ACPI Root prefix&n; *&n; ******************************************************************************/
 id|u8
 DECL|function|acpi_ns_valid_root_prefix

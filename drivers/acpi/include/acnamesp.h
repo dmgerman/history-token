@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acnamesp.h - Namespace subcomponent prototypes and defines&n; *       $Revision: 126 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acnamesp.h - Namespace subcomponent prototypes and defines&n; *       $Revision: 127 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACNAMESP_H__
 DECL|macro|__ACNAMESP_H__
@@ -768,6 +768,27 @@ id|acpi_ns_local
 (paren
 id|acpi_object_type
 id|type
+)paren
+suffix:semicolon
+r_void
+id|acpi_ns_report_error
+(paren
+id|NATIVE_CHAR
+op_star
+id|module_name
+comma
+id|u32
+id|line_number
+comma
+id|u32
+id|component_id
+comma
+r_char
+op_star
+id|internal_name
+comma
+id|acpi_status
+id|lookup_status
 )paren
 suffix:semicolon
 id|acpi_status

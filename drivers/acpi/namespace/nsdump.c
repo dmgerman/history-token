@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsdump - table dumping routines for debug&n; *              $Revision: 140 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsdump - table dumping routines for debug&n; *              $Revision: 141 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -954,6 +954,28 @@ id|obj_desc-&gt;index_field.data_obj-&gt;common_field.node-&gt;name.ascii
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|INTERNAL_TYPE_ALIAS
+suffix:colon
+id|acpi_os_printf
+(paren
+l_string|&quot; Target %4.4s (%p)&bslash;n&quot;
+comma
+(paren
+(paren
+id|acpi_namespace_node
+op_star
+)paren
+id|obj_desc
+)paren
+op_member_access_from_pointer
+id|name.ascii
+comma
+id|obj_desc
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|acpi_os_printf
@@ -1553,7 +1575,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_TABLES
 comma
-l_string|&quot;name space not initialized!&bslash;n&quot;
+l_string|&quot;namespace not initialized!&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon

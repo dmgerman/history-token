@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exdump - Interpreter debug output routines&n; *              $Revision: 159 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exdump - Interpreter debug output routines&n; *              $Revision: 160 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -1289,6 +1289,61 @@ id|acpi_dbg_layer
 id|return_VOID
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+id|ACPI_GET_DESCRIPTOR_TYPE
+(paren
+id|obj_desc
+)paren
+op_eq
+id|ACPI_DESC_TYPE_NAMED
+)paren
+(brace
+id|acpi_ex_dump_node
+(paren
+(paren
+id|acpi_namespace_node
+op_star
+)paren
+id|obj_desc
+comma
+id|flags
+)paren
+suffix:semicolon
+id|acpi_os_printf
+(paren
+l_string|&quot;&bslash;nAttached Object (%p):&bslash;n&quot;
+comma
+(paren
+(paren
+id|acpi_namespace_node
+op_star
+)paren
+id|obj_desc
+)paren
+op_member_access_from_pointer
+id|object
+)paren
+suffix:semicolon
+id|acpi_ex_dump_object_descriptor
+(paren
+(paren
+(paren
+id|acpi_namespace_node
+op_star
+)paren
+id|obj_desc
+)paren
+op_member_access_from_pointer
+id|object
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
 )brace
 r_if
 c_cond

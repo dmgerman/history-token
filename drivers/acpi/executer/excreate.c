@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: excreate - Named object creation&n; *              $Revision: 93 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: excreate - Named object creation&n; *              $Revision: 94 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -25,7 +25,11 @@ id|walk_state
 (brace
 id|acpi_namespace_node
 op_star
-id|source_node
+id|target_node
+suffix:semicolon
+id|acpi_namespace_node
+op_star
+id|alias_node
 suffix:semicolon
 id|acpi_status
 id|status
@@ -36,7 +40,18 @@ l_string|&quot;Ex_create_alias&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Get the source/alias operands (both namespace nodes) */
-id|source_node
+id|alias_node
+op_assign
+(paren
+id|acpi_namespace_node
+op_star
+)paren
+id|walk_state-&gt;operands
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|target_node
 op_assign
 (paren
 id|acpi_namespace_node
@@ -47,33 +62,86 @@ id|walk_state-&gt;operands
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* Attach the original source object to the new Alias Node */
-id|status
-op_assign
-id|acpi_ns_attach_object
+r_if
+c_cond
 (paren
+id|target_node-&gt;type
+op_eq
+id|INTERNAL_TYPE_ALIAS
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Dereference an existing alias so that we don&squot;t create a chain&n;&t;&t; * of aliases.  With this code, we guarantee that an alias is&n;&t;&t; * always exactly one level of indirection away from the&n;&t;&t; * actual aliased name.&n;&t;&t; */
+id|target_node
+op_assign
 (paren
 id|acpi_namespace_node
 op_star
 )paren
-id|walk_state-&gt;operands
-(braket
-l_int|0
-)braket
+id|target_node-&gt;object
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * For objects that can never change (i.e., the NS node will&n;&t; * permanently point to the same object), we can simply attach&n;&t; * the object to the new NS node.  For other objects (such as&n;&t; * Integers, buffers, etc.), we have to point the Alias node&n;&t; * to the original Node.&n;&t; */
+r_switch
+c_cond
+(paren
+id|target_node-&gt;type
+)paren
+(brace
+r_case
+id|ACPI_TYPE_INTEGER
+suffix:colon
+r_case
+id|ACPI_TYPE_STRING
+suffix:colon
+r_case
+id|ACPI_TYPE_BUFFER
+suffix:colon
+r_case
+id|ACPI_TYPE_PACKAGE
+suffix:colon
+r_case
+id|ACPI_TYPE_BUFFER_FIELD
+suffix:colon
+multiline_comment|/*&n;&t;&t; * The new alias has the type ALIAS and points to the original&n;&t;&t; * NS node, not the object itself.  This is because for these&n;&t;&t; * types, the object can change dynamically via a Store.&n;&t;&t; */
+id|alias_node-&gt;type
+op_assign
+id|INTERNAL_TYPE_ALIAS
+suffix:semicolon
+id|alias_node-&gt;object
+op_assign
+(paren
+id|acpi_operand_object
+op_star
+)paren
+id|target_node
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* Attach the original source object to the new Alias Node */
+multiline_comment|/*&n;&t;&t; * The new alias assumes the type of the target, and it points&n;&t;&t; * to the same object.  The reference count of the object has an&n;&t;&t; * additional reference to prevent deletion out from under either the&n;&t;&t; * target node or the alias Node&n;&t;&t; */
+id|status
+op_assign
+id|acpi_ns_attach_object
+(paren
+id|alias_node
 comma
 id|acpi_ns_get_attached_object
 (paren
-id|source_node
+id|target_node
 )paren
 comma
-id|source_node-&gt;type
+id|target_node-&gt;type
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The new alias assumes the type of the source, but it points&n;&t; * to the same object.  The reference count of the object has an&n;&t; * additional reference to prevent deletion out from under either the&n;&t; * source or the alias Node&n;&t; */
+r_break
+suffix:semicolon
+)brace
 multiline_comment|/* Since both operands are Nodes, we don&squot;t need to delete them */
 id|return_ACPI_STATUS
 (paren
-id|status
+id|AE_OK
 )paren
 suffix:semicolon
 )brace
