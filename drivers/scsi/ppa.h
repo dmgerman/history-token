@@ -140,7 +140,8 @@ r_int
 id|ppa_in
 c_func
 (paren
-r_int
+id|ppa_struct
+op_star
 comma
 r_char
 op_star
@@ -153,7 +154,8 @@ r_int
 id|ppa_init
 c_func
 (paren
-r_int
+id|ppa_struct
+op_star
 )paren
 suffix:semicolon
 r_static
@@ -170,7 +172,8 @@ r_int
 id|ppa_out
 c_func
 (paren
-r_int
+id|ppa_struct
+op_star
 comma
 r_char
 op_star
