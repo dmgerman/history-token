@@ -2605,7 +2605,7 @@ c_func
 id|scsi_finish_command
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Function:&t;scsi_adjust_queue_depth()&n; *&n; * Purpose:&t;Allow low level drivers to tell us to change the queue depth&n; * &t;&t;on a specific SCSI device&n; *&n; * Arguments:&t;sdev&t;- SCSI Device in question&n; * &t;&t;tagged&t;- Do we use tagged queueing (non-0) or do we treat&n; * &t;&t;&t;  this device as an untagged device (0)&n; * &t;&t;tags&t;- Number of tags allowed if tagged queueing enabled,&n; * &t;&t;&t;  or number of commands the low level driver can&n; * &t;&t;&t;  queue up in non-tagged mode (as per cmd_per_lun).&n; *&n; * Returns:&t;Nothing&n; *&n; * Lock Status:&t;None held on entry&n; *&n; * Notes:&t;Low level drivers may call this at any time and we will do&n; * &t;&t;the right thing depending on whether or not the device is&n; * &t;&t;currently active and whether or not it even has the&n; * &t;&t;command blocks built yet.&n; *&n; * XXX(hch):&t;What exactly is device_request_lock trying to protect?&n; */
+multiline_comment|/*&n; * Function:&t;scsi_adjust_queue_depth()&n; *&n; * Purpose:&t;Allow low level drivers to tell us to change the queue depth&n; * &t;&t;on a specific SCSI device&n; *&n; * Arguments:&t;sdev&t;- SCSI Device in question&n; * &t;&t;tagged&t;- Do we use tagged queueing (non-0) or do we treat&n; * &t;&t;&t;  this device as an untagged device (0)&n; * &t;&t;tags&t;- Number of tags allowed if tagged queueing enabled,&n; * &t;&t;&t;  or number of commands the low level driver can&n; * &t;&t;&t;  queue up in non-tagged mode (as per cmd_per_lun).&n; *&n; * Returns:&t;Nothing&n; *&n; * Lock Status:&t;None held on entry&n; *&n; * Notes:&t;Low level drivers may call this at any time and we will do&n; * &t;&t;the right thing depending on whether or not the device is&n; * &t;&t;currently active and whether or not it even has the&n; * &t;&t;command blocks built yet.&n; */
 DECL|function|scsi_adjust_queue_depth
 r_void
 id|scsi_adjust_queue_depth
@@ -2623,13 +2623,6 @@ r_int
 id|tags
 )paren
 (brace
-r_static
-id|DEFINE_SPINLOCK
-c_func
-(paren
-id|device_request_lock
-)paren
-suffix:semicolon
 r_int
 r_int
 id|flags
@@ -2647,16 +2640,9 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|device_request_lock
+id|sdev-&gt;request_queue-&gt;queue_lock
 comma
 id|flags
-)paren
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-id|sdev-&gt;request_queue-&gt;queue_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Check to see if the queue is managed by the block layer&n;&t; * if it is, and we fail to adjust the depth, exit */
@@ -2755,17 +2741,10 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|spin_unlock
-c_func
-(paren
-id|sdev-&gt;request_queue-&gt;queue_lock
-)paren
-suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|device_request_lock
+id|sdev-&gt;request_queue-&gt;queue_lock
 comma
 id|flags
 )paren
