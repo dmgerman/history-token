@@ -691,6 +691,8 @@ multiline_comment|/* catch corner case where tick rollover occured &n;&t; * betw
 r_if
 c_cond
 (paren
+id|lost
+op_logical_and
 id|abs
 c_func
 (paren
