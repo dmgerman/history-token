@@ -680,7 +680,7 @@ op_logical_neg
 (paren
 id|np-&gt;device_id
 op_eq
-id|PCI_ID_LSI53C1010_2
+id|PCI_ID_LSI53C1010_66
 op_logical_and
 id|np-&gt;revision_id
 OL
@@ -722,7 +722,7 @@ op_logical_neg
 (paren
 id|np-&gt;device_id
 op_eq
-id|PCI_ID_LSI53C1010
+id|PCI_ID_LSI53C1010_33
 op_logical_and
 multiline_comment|/* np-&gt;revision_id &lt; 0xff */
 l_int|1

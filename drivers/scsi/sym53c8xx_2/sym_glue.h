@@ -88,22 +88,10 @@ mdefine_line|#define&t;printf_debug(args...)&t;printk(KERN_DEBUG args)
 DECL|macro|printf
 mdefine_line|#define&t;printf(args...)&t;&t;printk(args)
 multiline_comment|/*&n; *  Insert a delay in micro-seconds and milli-seconds.&n; */
-r_void
-id|sym_udelay
-c_func
-(paren
-r_int
-id|us
-)paren
-suffix:semicolon
-r_void
-id|sym_mdelay
-c_func
-(paren
-r_int
-id|ms
-)paren
-suffix:semicolon
+DECL|macro|sym_udelay
+mdefine_line|#define sym_udelay(us)&t;udelay(us)
+DECL|macro|sym_mdelay
+mdefine_line|#define sym_mdelay(ms)&t;mdelay(ms)
 multiline_comment|/*&n; *  Let the compiler know about driver data structure names.&n; */
 DECL|typedef|tcb_p
 r_typedef
@@ -449,16 +437,6 @@ id|Scsi_Host
 op_star
 id|host
 suffix:semicolon
-DECL|member|bus
-id|u_char
-id|bus
-suffix:semicolon
-multiline_comment|/* PCI BUS number&t;&t;*/
-DECL|member|device_fn
-id|u_char
-id|device_fn
-suffix:semicolon
-multiline_comment|/* PCI BUS device and function&t;*/
 DECL|member|mmio_va
 id|vm_offset_t
 id|mmio_va
@@ -522,14 +500,6 @@ multiline_comment|/*&n; *  Data structure used as input for the NVRAM reading.&n
 r_typedef
 r_struct
 (brace
-DECL|member|bus
-r_int
-id|bus
-suffix:semicolon
-DECL|member|device_fn
-id|u_char
-id|device_fn
-suffix:semicolon
 DECL|member|base
 id|u_long
 id|base
@@ -576,12 +546,6 @@ r_struct
 id|sym_nvram
 id|sym_nvram
 suffix:semicolon
-DECL|typedef|sym_chip
-r_typedef
-r_struct
-id|sym_pci_chip
-id|sym_chip
-suffix:semicolon
 r_typedef
 r_struct
 (brace
@@ -596,7 +560,8 @@ id|sym_slot
 id|s
 suffix:semicolon
 DECL|member|chip
-id|sym_chip
+r_struct
+id|sym_pci_chip
 id|chip
 suffix:semicolon
 DECL|member|nvram
