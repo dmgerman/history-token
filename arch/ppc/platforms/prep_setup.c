@@ -300,6 +300,8 @@ DECL|macro|PREP_IBM_CAROLINA_IDE_1
 mdefine_line|#define PREP_IBM_CAROLINA_IDE_1&t;0xf1
 DECL|macro|PREP_IBM_CAROLINA_IDE_2
 mdefine_line|#define PREP_IBM_CAROLINA_IDE_2&t;0xf2
+DECL|macro|PREP_IBM_CAROLINA_IDE_3
+mdefine_line|#define PREP_IBM_CAROLINA_IDE_3&t;0xf3
 multiline_comment|/* 7248-43P */
 DECL|macro|PREP_IBM_CAROLINA_SCSI_0
 mdefine_line|#define PREP_IBM_CAROLINA_SCSI_0&t;0xf4
