@@ -2060,7 +2060,9 @@ id|func
 (paren
 id|start
 comma
-id|len
+id|end
+op_minus
+id|start
 comma
 l_int|0
 )paren
