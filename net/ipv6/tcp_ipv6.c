@@ -6465,8 +6465,6 @@ id|inet6_sock_nr
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/* It is tricky place. Until this moment IPv4 tcp&n;&t;&t;   worked with IPv6 af_tcp.af_specific.&n;&t;&t;   Sync it now.&n;&t;&t; */
 id|tcp_sync_mss
 c_func
@@ -6668,8 +6666,6 @@ id|inet6_sock_nr
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|ip6_dst_store
 c_func
 (paren

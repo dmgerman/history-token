@@ -9073,6 +9073,11 @@ op_assign
 id|PF_WANPIPE
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|release
 op_assign
 id|wanpipe_release

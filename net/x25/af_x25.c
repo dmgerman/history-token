@@ -5544,6 +5544,11 @@ op_assign
 id|AF_X25
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|release
 op_assign
 id|x25_release

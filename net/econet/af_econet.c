@@ -2633,6 +2633,11 @@ op_assign
 id|PF_ECONET
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|release
 op_assign
 id|econet_release
