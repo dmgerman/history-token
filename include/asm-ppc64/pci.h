@@ -9,20 +9,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
-DECL|function|pcibios_assign_all_busses
-r_static
-r_inline
-r_int
-id|pcibios_assign_all_busses
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x1000
 DECL|macro|PCIBIOS_MIN_MEM
@@ -58,15 +44,33 @@ multiline_comment|/* We don&squot;t do dynamic PCI IRQ allocation */
 r_struct
 id|pci_dev
 suffix:semicolon
-r_extern
-r_char
-op_star
-id|pci_card_location
+DECL|macro|HAVE_ARCH_PCI_MWI
+mdefine_line|#define HAVE_ARCH_PCI_MWI 1
+DECL|function|pcibios_prep_mwi
+r_static
+r_inline
+r_int
+id|pcibios_prep_mwi
 c_func
 (paren
 r_struct
 id|pci_dev
 op_star
+id|dev
+)paren
+(brace
+multiline_comment|/* &n;&t; * pSeries firmware sets cacheline size and hardware treats&n;&t; * MWI the same as memory write, so we dont change cacheline size&n;&t; * or the MWI bit.&n;&t; */
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_extern
+r_int
+r_int
+id|pcibios_assign_all_busses
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 r_extern
@@ -192,14 +196,6 @@ id|nents
 comma
 r_int
 id|direction
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|pSeries_pcibios_init_early
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 DECL|function|pci_dma_sync_single
@@ -364,8 +360,27 @@ mdefine_line|#define pci_dac_dma_supported(pci_dev, mask)&t;(0)
 multiline_comment|/* The PCI address space does equal the physical memory&n; * address space.  The networking and block device layers use&n; * this boolean for bounce buffer decisions.&n; */
 DECL|macro|PCI_DMA_BUS_IS_PHYS
 mdefine_line|#define PCI_DMA_BUS_IS_PHYS&t;(0)
+r_extern
+r_void
+id|pcibios_resource_to_bus
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_struct
+id|pci_bus_region
+op_star
+id|region
+comma
+r_struct
+id|resource
+op_star
+id|res
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* __KERNEL__ */
-multiline_comment|/* generic pci stuff */
-macro_line|#include &lt;asm-generic/pci.h&gt;
 macro_line|#endif /* __PPC64_PCI_H */
 eof

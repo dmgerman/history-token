@@ -1372,11 +1372,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|pSeries_pcibios_init_early
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* The keyboard is not useful in the LPAR environment.&n;&t; * Leave all the interfaces NULL.&n;&t; */
 multiline_comment|/* lookup the first virtual terminal number in case we don&squot;t have a&n;&t; * com port. Zero is probably correct in case someone calls udbg&n;&t; * before the init. The property is a pair of numbers.  The first&n;&t; * is the starting termno (the one we use) and the second is the&n;&t; * number of terminals.&n;&t; */
 id|np

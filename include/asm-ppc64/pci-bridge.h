@@ -107,7 +107,7 @@ r_int
 r_int
 id|io_base_phys
 suffix:semicolon
-multiline_comment|/* Some machines (PReP) have a non 1:1 mapping of&n;&t; * the PCI memory space in the CPU bus space&n;&t; */
+multiline_comment|/* Some machines have a non 1:1 mapping of&n;&t; * the PCI memory space in the CPU bus space&n;&t; */
 DECL|member|pci_mem_offset
 r_int
 r_int
