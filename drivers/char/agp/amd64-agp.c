@@ -364,6 +364,15 @@ op_plus
 id|j
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|agp_bridge-&gt;gatt_table
+op_plus
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 )brace
 id|amd64_tlbflush
 c_func

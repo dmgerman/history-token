@@ -3007,6 +3007,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|writel
 c_func
 (paren
@@ -3017,6 +3018,16 @@ op_plus
 id|i
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|agp_bridge-&gt;gatt_table
+op_plus
+id|i
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -3497,6 +3508,7 @@ comma
 id|j
 op_increment
 )paren
+(brace
 id|writel
 c_func
 (paren
@@ -3518,6 +3530,16 @@ op_plus
 id|j
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|agp_bridge-&gt;gatt_table
+op_plus
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
+)brace
 id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|tlb_flush
@@ -3594,6 +3616,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|writel
 c_func
 (paren
@@ -3604,6 +3627,16 @@ op_plus
 id|i
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|agp_bridge-&gt;gatt_table
+op_plus
+id|i
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
+)brace
 id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|tlb_flush

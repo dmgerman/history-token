@@ -1006,6 +1006,7 @@ comma
 id|j
 op_increment
 )paren
+(brace
 id|writel
 c_func
 (paren
@@ -1029,6 +1030,18 @@ op_plus
 id|j
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|agp_bridge-&gt;gatt_table
+op_plus
+id|nvidia_private.pg_offset
+op_plus
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
+)brace
 id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|tlb_flush
