@@ -296,6 +296,13 @@ r_int
 id|snum
 )paren
 suffix:semicolon
+macro_line|#if (BITS_PER_LONG == 64)
+DECL|macro|TCP_ADDRCMP_ALIGN_BYTES
+mdefine_line|#define TCP_ADDRCMP_ALIGN_BYTES 8
+macro_line|#else
+DECL|macro|TCP_ADDRCMP_ALIGN_BYTES
+mdefine_line|#define TCP_ADDRCMP_ALIGN_BYTES 4
+macro_line|#endif
 multiline_comment|/* This is a TIME_WAIT bucket.  It works around the memory consumption&n; * problems of sockets in such a state on heavily loaded servers, but&n; * without violating the protocol specification.&n; */
 DECL|struct|tcp_tw_bucket
 r_struct
@@ -345,6 +352,17 @@ multiline_comment|/* these five are in inet_opt */
 DECL|member|tw_daddr
 id|__u32
 id|tw_daddr
+id|__attribute__
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+id|TCP_ADDRCMP_ALIGN_BYTES
+)paren
+)paren
+)paren
 suffix:semicolon
 DECL|member|tw_rcv_saddr
 id|__u32
