@@ -28,6 +28,13 @@ id|init
 r_int
 id|res
 suffix:semicolon
+id|init-&gt;socket_irq
+(braket
+l_int|0
+)braket
+op_assign
+id|TRIZEPS_IRQ_PCMCIA_IRQ0
+suffix:semicolon
 multiline_comment|/* Enable CF bus: */
 id|TRIZEPS_BCR_clear
 c_func
@@ -321,51 +328,6 @@ singleline_comment|//VS2=0 -&gt; vs_Xv=1
 )brace
 )brace
 multiline_comment|/**&n; *&n; *&n; ******************************************************/
-DECL|function|trizeps_pcmcia_get_irq_info
-r_static
-r_int
-(def_block
-id|trizeps_pcmcia_get_irq_info
-c_func
-(paren
-r_struct
-id|pcmcia_irq_info
-op_star
-id|info
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|info-&gt;sock
-)paren
-(brace
-r_case
-l_int|0
-suffix:colon
-id|info-&gt;irq
-op_assign
-id|TRIZEPS_IRQ_PCMCIA_IRQ0
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|1
-suffix:colon
-singleline_comment|// MFTB2 use only one Slot
-r_default
-suffix:colon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-)def_block
-multiline_comment|/**&n; *&n; *&n; ******************************************************/
 DECL|function|trizeps_pcmcia_configure_socket
 r_static
 r_int
@@ -629,11 +591,6 @@ dot
 id|socket_state
 op_assign
 id|trizeps_pcmcia_socket_state
-comma
-dot
-id|get_irq_info
-op_assign
-id|trizeps_pcmcia_get_irq_info
 comma
 dot
 id|configure_socket

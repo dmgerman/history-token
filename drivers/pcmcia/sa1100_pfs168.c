@@ -386,11 +386,6 @@ op_assign
 id|sa1111_pcmcia_socket_state
 comma
 dot
-id|get_irq_info
-op_assign
-id|sa1111_pcmcia_get_irq_info
-comma
-dot
 id|configure_socket
 op_assign
 id|pfs168_pcmcia_configure_socket

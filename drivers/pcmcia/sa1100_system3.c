@@ -31,6 +31,20 @@ op_star
 id|init
 )paren
 (brace
+id|init-&gt;socket_irq
+(braket
+l_int|0
+)braket
+op_assign
+id|IRQ_S0_READY_NINT
+suffix:semicolon
+id|init-&gt;socket_irq
+(braket
+l_int|1
+)braket
+op_assign
+id|IRQ_S1_READY_NINT
+suffix:semicolon
 multiline_comment|/* Don&squot;t need no CD and BVD* interrupts */
 r_return
 l_int|2
@@ -275,11 +289,6 @@ dot
 id|socket_state
 op_assign
 id|system3_pcmcia_socket_state
-comma
-dot
-id|get_irq_info
-op_assign
-id|sa1111_pcmcia_get_irq_info
 comma
 dot
 id|configure_socket

@@ -31,16 +31,6 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|sa1111_pcmcia_get_irq_info
-c_func
-(paren
-r_struct
-id|pcmcia_irq_info
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|sa1111_pcmcia_configure_socket
 c_func
 (paren
