@@ -263,6 +263,24 @@ comma
 id|xfsstats.xs_read_bytes
 )paren
 suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buffer
+op_plus
+id|len
+comma
+l_string|&quot;debug %u&bslash;n&quot;
+comma
+id|defined
+c_func
+(paren
+id|XFSDEBUG
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

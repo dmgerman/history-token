@@ -75,6 +75,11 @@ id|xfs_sysctl_val_t
 id|inherit_nodump
 suffix:semicolon
 multiline_comment|/* Inherit the &quot;nodump&quot; inode flag. */
+DECL|member|inherit_noatim
+id|xfs_sysctl_val_t
+id|inherit_noatim
+suffix:semicolon
+multiline_comment|/* Inherit the &quot;noatime&quot; inode flag. */
 DECL|typedef|xfs_param_t
 )brace
 id|xfs_param_t
@@ -126,6 +131,11 @@ DECL|enumerator|XFS_INHERIT_NODUMP
 id|XFS_INHERIT_NODUMP
 op_assign
 l_int|14
+comma
+DECL|enumerator|XFS_INHERIT_NOATIME
+id|XFS_INHERIT_NOATIME
+op_assign
+l_int|15
 comma
 )brace
 suffix:semicolon
