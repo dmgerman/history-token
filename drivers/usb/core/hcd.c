@@ -26,7 +26,7 @@ id|usb_bus_list
 )paren
 suffix:semicolon
 DECL|variable|usb_bus_list
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 (paren
 id|usb_bus_list
 )paren
@@ -73,7 +73,7 @@ id|usb_bus_list_lock
 suffix:semicolon
 multiline_comment|/* exported only for usbfs */
 DECL|variable|usb_bus_list_lock
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 (paren
 id|usb_bus_list_lock
 )paren
