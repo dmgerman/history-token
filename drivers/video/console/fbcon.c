@@ -12933,12 +12933,6 @@ comma
 id|fbcon_is_default
 )paren
 suffix:semicolon
-id|__unsafe
-c_func
-(paren
-id|THIS_MODULE
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
