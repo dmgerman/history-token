@@ -127,12 +127,6 @@ DECL|struct|net_bridge_port
 r_struct
 id|net_bridge_port
 (brace
-DECL|member|next
-r_struct
-id|net_bridge_port
-op_star
-id|next
-suffix:semicolon
 DECL|member|br
 r_struct
 id|net_bridge
@@ -144,6 +138,11 @@ r_struct
 id|net_device
 op_star
 id|dev
+suffix:semicolon
+DECL|member|list
+r_struct
+id|list_head
+id|list
 suffix:semicolon
 DECL|member|port_no
 r_int
@@ -221,8 +220,7 @@ id|lock
 suffix:semicolon
 DECL|member|port_list
 r_struct
-id|net_bridge_port
-op_star
+id|list_head
 id|port_list
 suffix:semicolon
 DECL|member|dev
