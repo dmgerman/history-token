@@ -1762,11 +1762,9 @@ id|exit_fs
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Turn us into a lazy TLB process if we&n; * aren&squot;t already..&n; */
-DECL|function|__exit_mm
-r_static
-r_inline
+DECL|function|exit_mm
 r_void
-id|__exit_mm
+id|exit_mm
 c_func
 (paren
 r_struct
@@ -1916,24 +1914,6 @@ id|mmput
 c_func
 (paren
 id|mm
-)paren
-suffix:semicolon
-)brace
-DECL|function|exit_mm
-r_void
-id|exit_mm
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-)paren
-(brace
-id|__exit_mm
-c_func
-(paren
-id|tsk
 )paren
 suffix:semicolon
 )brace
@@ -3144,7 +3124,7 @@ c_func
 id|code
 )paren
 suffix:semicolon
-id|__exit_mm
+id|exit_mm
 c_func
 (paren
 id|tsk
