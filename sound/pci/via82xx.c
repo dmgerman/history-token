@@ -1011,6 +1011,14 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* no need to set VRA on DXS channels */
+DECL|member|spdif_on
+r_int
+r_int
+id|spdif_on
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* only spdif rates work to external DACs */
 DECL|member|rmidi
 id|snd_rawmidi_t
 op_star
@@ -4663,6 +4671,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+id|u8
+id|val
+suffix:semicolon
 id|runtime-&gt;hw
 op_assign
 id|snd_via82xx_hw
@@ -4688,6 +4699,30 @@ suffix:semicolon
 id|ratep-&gt;used
 op_increment
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip-&gt;spdif_on
+)paren
+(brace
+id|runtime-&gt;hw.rates
+op_assign
+id|SNDRV_PCM_RATE_32000
+op_or
+id|SNDRV_PCM_RATE_44100
+op_or
+id|SNDRV_PCM_RATE_48000
+suffix:semicolon
+id|runtime-&gt;hw.rate_min
+op_assign
+l_int|32000
+suffix:semicolon
+id|runtime-&gt;hw.rate_max
+op_assign
+l_int|48000
+suffix:semicolon
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -6542,6 +6577,19 @@ id|oval
 op_amp
 op_complement
 id|VIA_REG_CAPTURE_CHANNEL_MIC
+suffix:semicolon
+multiline_comment|/* save the spdif flag for rate filtering */
+id|chip-&gt;spdif_on
+op_assign
+id|ucontrol-&gt;value.integer.value
+(braket
+l_int|0
+)braket
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
 suffix:semicolon
 r_if
 c_cond
