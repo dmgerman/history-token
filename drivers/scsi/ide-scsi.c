@@ -3199,6 +3199,15 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+id|DRIVER
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|busy
+op_decrement
+suffix:semicolon
 )brace
 DECL|function|idescsi_cleanup
 r_static
@@ -5325,7 +5334,8 @@ id|drive
 )paren
 op_member_access_from_pointer
 id|busy
-op_decrement
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 id|scsi_unregister

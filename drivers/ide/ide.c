@@ -5361,6 +5361,10 @@ op_amp
 id|ata_unused
 )paren
 suffix:semicolon
+id|drive-&gt;gendev.driver
+op_assign
+l_int|NULL
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -9680,6 +9684,13 @@ c_func
 (paren
 op_amp
 id|drivers_lock
+)paren
+suffix:semicolon
+id|driver_unregister
+c_func
+(paren
+op_amp
+id|driver-&gt;gen_driver
 )paren
 suffix:semicolon
 r_while
