@@ -325,6 +325,7 @@ comma
 l_string|&quot;N64 controller&quot;
 comma
 l_string|&quot;PSX controller&quot;
+comma
 l_string|&quot;PSX DDR controller&quot;
 )brace
 suffix:semicolon
@@ -1085,10 +1086,17 @@ id|gc_status_bit
 id|j
 )braket
 op_amp
+(paren
 id|gc-&gt;pads
 (braket
 id|GC_PSX
 )braket
+op_or
+id|gc-&gt;pads
+(braket
+id|GC_DDR
+)braket
+)paren
 )paren
 ques
 c_cond
@@ -1269,10 +1277,17 @@ id|gc_status_bit
 id|i
 )braket
 op_amp
+(paren
 id|gc-&gt;pads
 (braket
 id|GC_PSX
 )braket
+op_or
+id|gc-&gt;pads
+(braket
+id|GC_DDR
+)braket
+)paren
 )paren
 op_logical_and
 (paren
