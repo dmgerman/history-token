@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: nora.c,v 1.19 2001/04/26 15:40:23 dwmw2 Exp $&n; *&n; * This is so simple I love it.&n; */
+multiline_comment|/*&n; * $Id: nora.c,v 1.21 2001/10/02 15:05:14 dwmw2 Exp $&n; *&n; * This is so simple I love it.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -770,12 +770,6 @@ l_int|0xa00000
 )brace
 )brace
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|init_nora
-mdefine_line|#define init_nora init_module
-DECL|macro|cleanup_nora
-mdefine_line|#define cleanup_nora cleanup_module
-macro_line|#endif
 DECL|function|init_nora
 r_int
 id|__init
@@ -801,7 +795,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;cfi&quot;
+l_string|&quot;cfi_probe&quot;
 comma
 op_amp
 id|nora_map
@@ -942,6 +936,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_nora
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Red Hat, Inc. - David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;MTD map driver for Nora board&quot;
 )paren
 suffix:semicolon
 eof

@@ -1,8 +1,41 @@
-multiline_comment|/*&n; * JFFS -- Journaling Flash File System, Linux implementation.&n; *&n; * Copyright (C) 1999, 2000  Axis Communications AB.&n; *&n; * Created by Finn Hakansson &lt;finn@axis.com&gt;.&n; *&n; * This is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * $Id: intrep.h,v 1.11 2000/08/17 22:46:46 bmatthews Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS -- Journaling Flash File System, Linux implementation.&n; *&n; * Copyright (C) 1999, 2000  Axis Communications AB.&n; *&n; * Created by Finn Hakansson &lt;finn@axis.com&gt;.&n; *&n; * This is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * $Id: intrep.h,v 1.14 2001/09/23 23:28:37 dwmw2 Exp $&n; *&n; */
 macro_line|#ifndef __LINUX_JFFS_INTREP_H__
 DECL|macro|__LINUX_JFFS_INTREP_H__
 mdefine_line|#define __LINUX_JFFS_INTREP_H__
 macro_line|#include &quot;jffs_fm.h&quot;
+r_struct
+id|jffs_node
+op_star
+id|jffs_alloc_node
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|jffs_free_node
+c_func
+(paren
+r_struct
+id|jffs_node
+op_star
+id|n
+)paren
+suffix:semicolon
+r_int
+id|jffs_get_node_inuse
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+id|jffs_get_file_count
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 id|__u32
 id|jffs_checksum
 c_func

@@ -1835,6 +1835,8 @@ op_amp
 id|number
 comma
 id|self-&gt;mask
+comma
+id|self-&gt;nslots
 )paren
 suffix:semicolon
 multiline_comment|/* Check if the we got some results */
@@ -7118,6 +7120,8 @@ op_amp
 id|list.len
 comma
 id|self-&gt;mask
+comma
+id|self-&gt;nslots
 )paren
 suffix:semicolon
 multiline_comment|/* Check if the we got some results */

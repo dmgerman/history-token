@@ -1,10 +1,11 @@
-multiline_comment|/* &n; * Direct MTD block device access&n; *&n; * $Id: mtdblock.c,v 1.38 2000/11/27 08:50:22 dwmw2 Exp $&n; *&n; * 02-nov-2000&t;Nicolas Pitre&t;&t;Added read-modify-write with cache&n; */
+multiline_comment|/* &n; * Direct MTD block device access&n; *&n; * $Id: mtdblock.c,v 1.47 2001/10/02 15:05:11 dwmw2 Exp $&n; *&n; * 02-nov-2000&t;Nicolas Pitre&t;&t;Added read-modify-write with cache&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
+macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR MTD_BLOCK_MAJOR
 DECL|macro|DEVICE_NAME
@@ -504,7 +505,7 @@ r_int
 r_int
 id|sect_size
 op_assign
-id|mtd-&gt;erasesize
+id|mtdblk-&gt;cache_size
 suffix:semicolon
 r_int
 id|retlen
@@ -524,6 +525,27 @@ comma
 id|pos
 comma
 id|len
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sect_size
+)paren
+r_return
+id|MTD_WRITE
+(paren
+id|mtd
+comma
+id|pos
+comma
+id|len
+comma
+op_amp
+id|retlen
+comma
+id|buf
 )paren
 suffix:semicolon
 r_while
@@ -771,7 +793,7 @@ r_int
 r_int
 id|sect_size
 op_assign
-id|mtd-&gt;erasesize
+id|mtdblk-&gt;cache_size
 suffix:semicolon
 r_int
 id|retlen
@@ -791,6 +813,27 @@ comma
 id|pos
 comma
 id|len
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sect_size
+)paren
+r_return
+id|MTD_READ
+(paren
+id|mtd
+comma
+id|pos
+comma
+id|len
+comma
+op_amp
+id|retlen
+comma
+id|buf
 )paren
 suffix:semicolon
 r_while
@@ -942,6 +985,11 @@ id|mtdblk_dev
 op_star
 id|mtdblk
 suffix:semicolon
+r_struct
+id|mtd_info
+op_star
+id|mtd
+suffix:semicolon
 r_int
 id|dev
 suffix:semicolon
@@ -982,6 +1030,45 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|mtd
+op_assign
+id|get_mtd_device
+c_func
+(paren
+l_int|NULL
+comma
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mtd
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|MTD_ABSENT
+op_eq
+id|mtd-&gt;type
+)paren
+(brace
+id|put_mtd_device
+c_func
+(paren
+id|mtd
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|spin_lock
@@ -1050,6 +1137,12 @@ op_logical_neg
 id|mtdblk
 )paren
 (brace
+id|put_mtd_device
+c_func
+(paren
+id|mtd
+)paren
+suffix:semicolon
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
@@ -1077,34 +1170,8 @@ l_int|1
 suffix:semicolon
 id|mtdblk-&gt;mtd
 op_assign
-id|get_mtd_device
-c_func
-(paren
-l_int|NULL
-comma
-id|dev
-)paren
+id|mtd
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mtdblk-&gt;mtd
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|mtdblk
-)paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 id|init_MUTEX
 (paren
 op_amp
@@ -1115,6 +1182,20 @@ id|mtdblk-&gt;cache_state
 op_assign
 id|STATE_EMPTY
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|mtdblk-&gt;mtd-&gt;flags
+op_amp
+id|MTD_CAP_RAM
+)paren
+op_ne
+id|MTD_CAP_RAM
+op_logical_and
+id|mtdblk-&gt;mtd-&gt;erasesize
+)paren
+(brace
 id|mtdblk-&gt;cache_size
 op_assign
 id|mtdblk-&gt;mtd-&gt;erasesize
@@ -1152,6 +1233,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* OK, we&squot;ve created a new one. Add it to the list. */
 id|spin_lock
@@ -1224,6 +1306,11 @@ id|mtdblk-&gt;mtd-&gt;size
 op_div
 l_int|1024
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mtdblk-&gt;mtd-&gt;erasesize
+)paren
 id|mtd_blksizes
 (braket
 id|dev
@@ -1695,7 +1782,6 @@ id|leaving
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; 0x020300
 r_static
 id|DECLARE_MUTEX_LOCKED
 c_func
@@ -1710,23 +1796,6 @@ c_func
 id|thr_wq
 )paren
 suffix:semicolon
-macro_line|#else
-DECL|variable|thread_sem
-r_static
-r_struct
-id|semaphore
-id|thread_sem
-op_assign
-id|MUTEX_LOCKED
-suffix:semicolon
-DECL|variable|thr_wq
-id|DECLARE_WAIT_QUEUE_HEAD
-c_func
-(paren
-id|thr_wq
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|function|mtdblock_thread
 r_int
 id|mtdblock_thread
@@ -2210,6 +2279,10 @@ c_cond
 (paren
 op_logical_neg
 id|mtd
+op_logical_or
+id|mtd-&gt;type
+op_eq
+id|MTD_ABSENT
 )paren
 r_return
 suffix:semicolon
@@ -2271,6 +2344,10 @@ c_cond
 (paren
 op_logical_neg
 id|mtd
+op_logical_or
+id|mtd-&gt;type
+op_eq
+id|MTD_ABSENT
 )paren
 r_return
 suffix:semicolon
@@ -2284,12 +2361,6 @@ id|mtd-&gt;index
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|init_mtdblock
-mdefine_line|#define init_mtdblock init_module
-DECL|macro|cleanup_mtdblock
-mdefine_line|#define cleanup_mtdblock cleanup_module
 macro_line|#endif
 DECL|function|init_mtdblock
 r_int
@@ -2443,17 +2514,6 @@ id|MAJOR_NR
 op_assign
 id|mtd_sizes
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20320
-id|blk_dev
-(braket
-id|MAJOR_NR
-)braket
-dot
-id|request_fn
-op_assign
-id|mtdblock_request
-suffix:semicolon
-macro_line|#else
 id|blk_init_queue
 c_func
 (paren
@@ -2467,7 +2527,6 @@ op_amp
 id|mtdblock_request
 )paren
 suffix:semicolon
-macro_line|#endif
 id|kernel_thread
 (paren
 id|mtdblock_thread
@@ -2545,17 +2604,6 @@ id|DEVICE_NAME
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20320
-id|blk_dev
-(braket
-id|MAJOR_NR
-)braket
-dot
-id|request_fn
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#else
 id|blk_cleanup_queue
 c_func
 (paren
@@ -2566,7 +2614,6 @@ id|MAJOR_NR
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|blksize_size
 (braket
 id|MAJOR_NR
@@ -2594,6 +2641,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_mtdblock
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Nicolas Pitre &lt;nico@cam.org&gt; et al.&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Caching read/erase/writeback block device emulation access to MTD devices&quot;
 )paren
 suffix:semicolon
 eof

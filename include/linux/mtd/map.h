@@ -1,5 +1,5 @@
 multiline_comment|/* Overhauled routines for dealing with different mmap regions of flash */
-multiline_comment|/* $Id: map.h,v 1.24 2001/06/09 19:53:16 dwmw2 Exp $ */
+multiline_comment|/* $Id: map.h,v 1.25 2001/09/09 15:04:17 dwmw2 Exp $ */
 macro_line|#ifndef __LINUX_MTD_MAP_H__
 DECL|macro|__LINUX_MTD_MAP_H__
 mdefine_line|#define __LINUX_MTD_MAP_H__
@@ -307,6 +307,11 @@ id|map
 op_assign
 id|mtd-&gt;priv
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|map-&gt;fldrv-&gt;destroy
+)paren
 id|map-&gt;fldrv
 op_member_access_from_pointer
 id|destroy

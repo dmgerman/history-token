@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common code to handle map devices which are simple RAM&n; * (C) 2000 Red Hat. GPL&squot;d.&n; * $Id: map_ram.c,v 1.11 2001/06/08 15:34:04 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Common code to handle map devices which are simple RAM&n; * (C) 2000 Red Hat. GPL&squot;d.&n; * $Id: map_ram.c,v 1.14 2001/10/02 15:05:12 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -94,7 +94,7 @@ id|map_ram_probe
 comma
 id|name
 suffix:colon
-l_string|&quot;ram&quot;
+l_string|&quot;map_ram&quot;
 comma
 id|module
 suffix:colon
@@ -307,10 +307,6 @@ id|mtd-&gt;type
 op_assign
 id|MTD_RAM
 suffix:semicolon
-id|mtd-&gt;erasesize
-op_assign
-l_int|0x10000
-suffix:semicolon
 id|mtd-&gt;size
 op_assign
 id|map-&gt;size
@@ -341,6 +337,23 @@ id|mtd-&gt;erasesize
 op_assign
 id|PAGE_SIZE
 suffix:semicolon
+r_while
+c_loop
+(paren
+id|mtd-&gt;size
+op_amp
+(paren
+id|mtd-&gt;erasesize
+op_minus
+l_int|1
+)paren
+)paren
+(brace
+id|mtd-&gt;erasesize
+op_rshift_assign
+l_int|1
+suffix:semicolon
+)brace
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
@@ -560,14 +573,7 @@ id|mtd
 (brace
 multiline_comment|/* Nothing to see here */
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|map_ram_init
-mdefine_line|#define map_ram_init init_module
-DECL|macro|map_ram_exit
-mdefine_line|#define map_ram_exit cleanup_module
-macro_line|#endif
 DECL|function|map_ram_init
-r_static
 r_int
 id|__init
 id|map_ram_init
@@ -617,6 +623,24 @@ id|module_exit
 c_func
 (paren
 id|map_ram_exit
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David Woodhouse &lt;dwmw2@infradead.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;MTD chip driver for RAM chips&quot;
 )paren
 suffix:semicolon
 eof

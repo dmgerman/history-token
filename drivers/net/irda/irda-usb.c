@@ -1,4 +1,6 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Filename:      irda-usb.c&n; * Version:       0.9a&n; * Description:   IrDA-USB Driver&n; * Status:        Experimental &n; * Author:        Dag Brattli &lt;dag@brattli.net&gt;&n; *&n; *&t;Copyright (C) 2000, Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; *      Copyright (C) 2001, Dag Brattli &lt;dag@brattli.net&gt;&n; *      Copyright (C) 2001, Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *          &n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Filename:      irda-usb.c&n; * Version:       0.9b&n; * Description:   IrDA-USB Driver&n; * Status:        Experimental &n; * Author:        Dag Brattli &lt;dag@brattli.net&gt;&n; *&n; *&t;Copyright (C) 2000, Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; *      Copyright (C) 2001, Dag Brattli &lt;dag@brattli.net&gt;&n; *      Copyright (C) 2001, Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *          &n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *&t;&t;&t;    IMPORTANT NOTE&n; *&t;&t;&t;    --------------&n; *&n; * As of kernel 2.4.10, this is the state of compliance and testing of&n; * this driver (irda-usb) with regards to the USB low level drivers...&n; *&n; * This driver has been tested SUCCESSFULLY with the following drivers :&n; *&t;o usb-uhci&t;(For Intel/Via USB controllers)&n; *&t;o usb-ohci&t;(For other USB controllers)&n; *&n; * This driver has NOT been tested with the following drivers :&n; *&t;o usb-ehci&t;(USB 2.0 controllers)&n; *&n; * This driver WON&squot;T WORK with the following drivers :&n; *&t;o uhci&t;&t;(Alternate/JE driver for Intel/Via USB controllers)&n; * Amongst the reasons :&n; *&t;o uhci doesn&squot;t implement USB_ZERO_PACKET&n; *&t;o uhci non-compliant use of urb-&gt;timeout&n; *&n; * Jean II&n; */
+multiline_comment|/*------------------------------------------------------------------*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -13,6 +15,7 @@ macro_line|#include &lt;net/irda/irlap.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
 macro_line|#include &lt;net/irda/irda-usb.h&gt;
+multiline_comment|/*------------------------------------------------------------------*/
 DECL|variable|qos_mtt_bits
 r_static
 r_int
@@ -120,6 +123,7 @@ comma
 multiline_comment|/* The end */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Important note :&n; * Devices based on the SigmaTel chipset (0x66f, 0x4200) are not compliant&n; * with the USB-IrDA specification (and actually very very different), and&n; * there is no way this driver can support those devices, apart from&n; * a complete rewrite...&n; * Jean II&n; */
 id|MODULE_DEVICE_TABLE
 c_func
 (paren
@@ -769,6 +773,8 @@ suffix:semicolon
 id|purb-&gt;transfer_flags
 op_assign
 id|USB_QUEUE_BULK
+op_or
+id|USB_ASYNC_UNLINK
 suffix:semicolon
 id|purb-&gt;timeout
 op_assign
@@ -812,128 +818,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef IU_BUG_KICK_TX
-multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Send an empty URB to the dongle&n; * The goal there is to try to resynchronise with the dongle. An empty&n; * frame signify the end of a Tx frame. Jean II&n; */
-DECL|function|irda_usb_send_empty
-r_static
-r_inline
-r_void
-id|irda_usb_send_empty
-c_func
-(paren
-r_struct
-id|irda_usb_cb
-op_star
-id|self
-)paren
-(brace
-id|purb_t
-id|purb
-suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|0
-comma
-id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Grab the empty URB */
-id|purb
-op_assign
-op_amp
-id|self-&gt;empty_urb
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|purb-&gt;status
-op_ne
-id|USB_ST_NOERROR
-)paren
-(brace
-id|WARNING
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot;(), Empty URB still in use!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/* Submit the Empty URB */
-id|FILL_BULK_URB
-c_func
-(paren
-id|purb
-comma
-id|self-&gt;usbdev
-comma
-id|usb_sndbulkpipe
-c_func
-(paren
-id|self-&gt;usbdev
-comma
-id|self-&gt;bulk_out_ep
-)paren
-comma
-id|self-&gt;speed_buff
-comma
-id|IRDA_USB_SPEED_MTU
-comma
-id|speed_bulk_callback
-comma
-id|self
-)paren
-suffix:semicolon
-id|purb-&gt;transfer_buffer_length
-op_assign
-l_int|0
-suffix:semicolon
-id|purb-&gt;transfer_flags
-op_assign
-id|USB_QUEUE_BULK
-suffix:semicolon
-id|purb-&gt;timeout
-op_assign
-id|MSECS_TO_JIFFIES
-c_func
-(paren
-l_int|100
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|ret
-op_assign
-id|usb_submit_urb
-c_func
-(paren
-id|purb
-)paren
-)paren
-)paren
-(brace
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|0
-comma
-id|__FUNCTION__
-l_string|&quot;(), failed Empty URB&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif /* IU_BUG_KICK_TX */
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Note : this function will be called with both speed_urb and empty_urb...&n; */
 DECL|function|speed_bulk_callback
@@ -1323,27 +1207,29 @@ id|purb-&gt;transfer_buffer_length
 op_assign
 id|skb-&gt;len
 suffix:semicolon
+multiline_comment|/* Note : unlink *must* be Asynchronous because of the code in &n;&t; * irda_usb_net_timeout() -&gt; call in irq - Jean II */
 id|purb-&gt;transfer_flags
 op_assign
 id|USB_QUEUE_BULK
+op_or
+id|USB_ASYNC_UNLINK
 suffix:semicolon
-macro_line|#ifdef IU_USE_USB_ZERO_FLAG
-multiline_comment|/* This flag indicates that what we send is not a continuous stream&n;&t; * of data but separate frames. In this case, the USB layer will&n;&t; * insert empty packet to separate our frames.&n;&t; * This flag was previously called USB_DISABLE_SPD - Jean II */
+multiline_comment|/* This flag (USB_ZERO_PACKET) indicates that what we send is not&n;&t; * a continuous stream of data but separate packets.&n;&t; * In this case, the USB layer will insert an empty USB frame (TD)&n;&t; * after each of our packets that is exact multiple of the frame size.&n;&t; * This is how the dongle will detect the end of packet - Jean II */
 id|purb-&gt;transfer_flags
 op_or_assign
 id|USB_ZERO_PACKET
 suffix:semicolon
-macro_line|#endif /* IU_USE_USB_ZERO_FLAG */
+multiline_comment|/* Timeout need to be shorter than NET watchdog timer */
 id|purb-&gt;timeout
 op_assign
 id|MSECS_TO_JIFFIES
 c_func
 (paren
-l_int|100
+l_int|200
 )paren
 suffix:semicolon
 multiline_comment|/* Generate min turn time. FIXME: can we do better than this? */
-multiline_comment|/* Trying to a turnaround time at this level is trying to measure&n;&t; * processor clock cycle with a watch, approximate at best...&n;&t; *&n;&t; * What we know is the last time we received a frame over USB.&n;&t; * Due to latency over USB that depend on the USB load, we don&squot;t&n;&t; * know when this frame was received over IrDA (a few ms before ?)&n;&t; * Then, same story for our outgoing frame...&n;&t; *&n;&t; * In theory, the USB dongle is supposed to handle the turnaround&n;&t; * by itself (spec 1.0, chater 4, page 6). Who knows ??? That&squot;s&n;&t; * why this code is enabled only for dongles that doesn&squot;t meet&n;&t; * the spec.&n;&t; * Jean II */
+multiline_comment|/* Trying to a turnaround time at this level is trying to measure&n;&t; * processor clock cycle with a wrist-watch, approximate at best...&n;&t; *&n;&t; * What we know is the last time we received a frame over USB.&n;&t; * Due to latency over USB that depend on the USB load, we don&squot;t&n;&t; * know when this frame was received over IrDA (a few ms before ?)&n;&t; * Then, same story for our outgoing frame...&n;&t; *&n;&t; * In theory, the USB dongle is supposed to handle the turnaround&n;&t; * by itself (spec 1.0, chater 4, page 6). Who knows ??? That&squot;s&n;&t; * why this code is enabled only for dongles that doesn&squot;t meet&n;&t; * the spec.&n;&t; * Jean II */
 r_if
 c_cond
 (paren
@@ -1382,6 +1268,13 @@ id|self-&gt;now.tv_usec
 op_minus
 id|self-&gt;stamp.tv_usec
 suffix:semicolon
+macro_line|#ifdef IU_USB_MIN_RTT
+multiline_comment|/* Factor in USB delays -&gt; Get rid of udelay() that&n;&t;&t;&t; * would be lost in the noise - Jean II */
+id|diff
+op_sub_assign
+id|IU_USB_MIN_RTT
+suffix:semicolon
+macro_line|#endif /* IU_USB_MIN_RTT */
 r_if
 c_cond
 (paren
@@ -1431,6 +1324,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+multiline_comment|/* Ask USB to send the packet */
 r_if
 c_cond
 (paren
@@ -1474,37 +1368,6 @@ id|netdev-&gt;trans_start
 op_assign
 id|jiffies
 suffix:semicolon
-macro_line|#ifdef IU_BUG_KICK_TX
-multiline_comment|/* Kick Tx?&n;&t;&t; * If the packet is a multiple of 64, the USB layer&n;&t;&t; * should send an empty frame (a short packet) to signal&n;&t;&t; * the end of frame (that&squot;s part of the USB spec).&n;&t;&t; * If we enable USB_ZERO_PACKET, the USB layer will just do&n;&t;&t; * that (more efficiently) and this code is useless.&n;&t;&t; * Better keep this code until USB code clear up this mess...&n;&t;&t; *&n;&t;&t; * Note : we can&squot;t use the speed URB, because the frame&n;&t;&t; * might contain a speed change that may be deferred&n;&t;&t; * (so we have hard_xmit =&gt; tx_urb+empty_urb+speed_urb).&n;&t;&t; * Jean II */
-r_if
-c_cond
-(paren
-(paren
-id|skb-&gt;len
-op_mod
-id|self-&gt;bulk_out_mtu
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|2
-comma
-id|__FUNCTION__
-l_string|&quot;(), Kick Tx...&bslash;n&quot;
-)paren
-suffix:semicolon
-id|irda_usb_send_empty
-c_func
-(paren
-id|self
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* IU_BUG_KICK_TX */
 )brace
 id|spin_unlock_irqrestore
 c_func
@@ -1768,91 +1631,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef IU_BUG_KICK_TX
-multiline_comment|/* Check empty URB */
-id|purb
-op_assign
-op_amp
-(paren
-id|self-&gt;empty_urb
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|purb-&gt;status
-op_ne
-id|USB_ST_NOERROR
-)paren
-(brace
-id|WARNING
-c_func
-(paren
-l_string|&quot;%s: Empty change timed out, urb-&gt;status=%d, urb-&gt;transfer_flags=0x%04X&bslash;n&quot;
-comma
-id|netdev-&gt;name
-comma
-id|purb-&gt;status
-comma
-id|purb-&gt;transfer_flags
-)paren
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|purb-&gt;status
-)paren
-(brace
-r_case
-op_minus
-id|ECONNABORTED
-suffix:colon
-multiline_comment|/* -103 */
-r_case
-op_minus
-id|ECONNRESET
-suffix:colon
-multiline_comment|/* -104 */
-r_case
-op_minus
-id|ENOENT
-suffix:colon
-multiline_comment|/* -2 */
-id|purb-&gt;status
-op_assign
-id|USB_ST_NOERROR
-suffix:semicolon
-id|done
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|USB_ST_URB_PENDING
-suffix:colon
-multiline_comment|/* -EINPROGRESS == -115 */
-id|usb_unlink_urb
-c_func
-(paren
-id|purb
-)paren
-suffix:semicolon
-multiline_comment|/* Note : above will *NOT* call netif_wake_queue()&n;&t;&t;&t; * in completion handler - Jean II */
-id|done
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-multiline_comment|/* ??? */
-r_break
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif /* IU_BUG_KICK_TX */
 multiline_comment|/* Check speed URB */
 id|purb
 op_assign
@@ -1888,6 +1666,23 @@ id|purb-&gt;status
 )paren
 (brace
 r_case
+id|USB_ST_URB_PENDING
+suffix:colon
+multiline_comment|/* -EINPROGRESS == -115 */
+id|usb_unlink_urb
+c_func
+(paren
+id|purb
+)paren
+suffix:semicolon
+multiline_comment|/* Note : above will  *NOT* call netif_wake_queue()&n;&t;&t;&t; * in completion handler, we will come back here.&n;&t;&t;&t; * Jean II */
+id|done
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 op_minus
 id|ECONNABORTED
 suffix:colon
@@ -1899,9 +1694,17 @@ suffix:colon
 multiline_comment|/* -104 */
 r_case
 op_minus
+id|ETIMEDOUT
+suffix:colon
+multiline_comment|/* -110 */
+r_case
+op_minus
 id|ENOENT
 suffix:colon
-multiline_comment|/* -2 */
+multiline_comment|/* -2 (urb unlinked by us)  */
+r_default
+suffix:colon
+multiline_comment|/* ??? - Play safe */
 id|purb-&gt;status
 op_assign
 id|USB_ST_NOERROR
@@ -1916,28 +1719,6 @@ id|done
 op_assign
 l_int|1
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|USB_ST_URB_PENDING
-suffix:colon
-multiline_comment|/* -EINPROGRESS == -115 */
-id|usb_unlink_urb
-c_func
-(paren
-id|purb
-)paren
-suffix:semicolon
-multiline_comment|/* Note : above will call netif_wake_queue()&n;&t;&t;&t; * in completion handler - Jean II */
-id|done
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-multiline_comment|/* ??? */
 r_break
 suffix:semicolon
 )brace
@@ -2025,6 +1806,23 @@ id|purb-&gt;status
 )paren
 (brace
 r_case
+id|USB_ST_URB_PENDING
+suffix:colon
+multiline_comment|/* -EINPROGRESS == -115 */
+id|usb_unlink_urb
+c_func
+(paren
+id|purb
+)paren
+suffix:semicolon
+multiline_comment|/* Note : above will  *NOT* call netif_wake_queue()&n;&t;&t;&t; * in completion handler, because purb-&gt;status will&n;&t;&t;&t; * be -ENOENT. We will fix that at the next watchdog,&n;&t;&t;&t; * leaving more time to USB to recover...&n;&t;&t;&t; * Also, we are in interrupt, so we need to have&n;&t;&t;&t; * USB_ASYNC_UNLINK to work properly...&n;&t;&t;&t; * Jean II */
+id|done
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 op_minus
 id|ECONNABORTED
 suffix:colon
@@ -2036,9 +1834,19 @@ suffix:colon
 multiline_comment|/* -104 */
 r_case
 op_minus
+id|ETIMEDOUT
+suffix:colon
+multiline_comment|/* -110 */
+r_case
+op_minus
 id|ENOENT
 suffix:colon
-multiline_comment|/* -2 */
+multiline_comment|/* -2 (urb unlinked by us)  */
+r_default
+suffix:colon
+(brace
+)brace
+multiline_comment|/* ??? - Play safe */
 r_if
 c_cond
 (paren
@@ -2074,28 +1882,6 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|USB_ST_URB_PENDING
-suffix:colon
-multiline_comment|/* -EINPROGRESS == -115 */
-id|usb_unlink_urb
-c_func
-(paren
-id|purb
-)paren
-suffix:semicolon
-multiline_comment|/* Note : above will call netif_wake_queue()&n;&t;&t;&t; * in completion handler - Jean II */
-id|done
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-multiline_comment|/* ??? */
-r_break
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Maybe we need a reset */
@@ -2104,6 +1890,7 @@ multiline_comment|/* if(done == 0) */
 )brace
 multiline_comment|/************************* RECEIVE ROUTINES *************************/
 multiline_comment|/*&n; * Receive packets from the USB layer stack and pass them to the IrDA stack.&n; * Try to work around USB failures...&n; */
+multiline_comment|/*&n; * Note :&n; * Some of you may have noticed that most dongle have an interrupt in pipe&n; * that we don&squot;t use. Here is the little secret...&n; * When we hang a Rx URB on the bulk in pipe, it generates some USB traffic&n; * in every USB frame. This is unnecessary overhead.&n; * The interrupt in pipe will generate an event every time a packet is&n; * received. Reading an interrupt pipe adds minimal overhead, but has some&n; * latency (~1ms).&n; * If we are connected (speed != 9600), we want to minimise latency, so&n; * we just always hang the Rx URB and ignore the interrupt.&n; * If we are not connected (speed == 9600), there is usually no Rx traffic,&n; * and we want to minimise the USB overhead. In this case we should wait&n; * on the interrupt pipe and hang the Rx URB only when an interrupt is&n; * received.&n; * Jean II&n; */
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Submit a Rx URB to the USB layer to handle reception of a frame&n; *&n; * Important note :&n; * The function process_urb() in usb-uhci.c contains the following code :&n; * &gt;&t;urb-&gt;complete ((struct urb *) urb);&n; * &gt;&t;// Re-submit the URB if ring-linked&n; * &gt;&t;if (is_ring &amp;&amp; (urb-&gt;status != -ENOENT) &amp;&amp; !contains_killed) {&n; * &gt;&t;&t;urb-&gt;dev=usb_dev;&n; * &gt;&t;&t;uhci_submit_urb (urb);&n; * &gt;&t;}&n; * The way I see it is that if we submit more than one Rx URB at a&n; * time, the Rx URB can be automatically re-submitted after the&n; * completion handler is called.&n; * We make sure to disable this feature by setting urb-&gt;next to NULL&n; *&n; * My take is that it&squot;s a questionable feature, and quite difficult&n; * to control and to make work effectively.&n; * The outcome (re-submited or not) depend on various complex&n; * test (&squot;is_ring&squot; and &squot;contains_killed&squot;), and the completion handler&n; * don&squot;t have this information, so basically the driver has no way&n; * to know if URB are resubmitted or not. Yuck !&n; * If everything is perfect, it&squot;s cool, but the problem is when&n; * an URB is killed (timeout, call to unlink_urb(), ...), things get&n; * messy...&n; * The other problem is that this scheme deal only with the URB&n; * and ignore everything about the associated buffer. So, it would&n; * resubmit URB even if the buffer is still in use or non-existent.&n; * On the other hand, submitting ourself in the completion callback&n; * is quite trivial and work well (this function).&n; * Moreover, this scheme doesn&squot;t allow to have an idle URB, which is&n; * necessary to overcome some URB failures.&n; *&n; * Jean II&n; */
 DECL|function|irda_usb_submit
@@ -2268,6 +2055,7 @@ id|purb-&gt;transfer_flags
 op_assign
 id|USB_QUEUE_BULK
 suffix:semicolon
+multiline_comment|/* Note : unlink *must* be synchronous because of the code in &n;&t; * irda_usb_net_close() -&gt; free the skb - Jean II */
 id|purb-&gt;status
 op_assign
 id|USB_ST_NOERROR
@@ -3702,13 +3490,13 @@ id|irda_usb_net_timeout
 suffix:semicolon
 id|netdev-&gt;watchdog_timeo
 op_assign
-l_int|110
+l_int|250
 op_star
 id|HZ
 op_div
 l_int|1000
 suffix:semicolon
-multiline_comment|/* 110 ms &gt; USB timeout */
+multiline_comment|/* 250 ms &gt; USB timeout */
 id|netdev-&gt;open
 op_assign
 id|irda_usb_net_open

@@ -1,7 +1,7 @@
 multiline_comment|/* Linux driver for Disk-On-Chip 2000       */
 multiline_comment|/* (c) 1999 Machine Vision Holdings, Inc.   */
 multiline_comment|/* Author: David Woodhouse &lt;dwmw2@mvhi.com&gt; */
-multiline_comment|/* $Id: doc2000.h,v 1.13 2001/05/29 12:03:45 dwmw2 Exp $ */
+multiline_comment|/* $Id: doc2000.h,v 1.15 2001/09/19 00:22:15 dwmw2 Exp $ */
 macro_line|#ifndef __MTD_DOC2000_H__
 DECL|macro|__MTD_DOC2000_H__
 mdefine_line|#define __MTD_DOC2000_H__
@@ -254,6 +254,11 @@ r_struct
 id|mtd_info
 op_star
 id|nextdoc
+suffix:semicolon
+DECL|member|lock
+r_struct
+id|semaphore
+id|lock
 suffix:semicolon
 )brace
 suffix:semicolon

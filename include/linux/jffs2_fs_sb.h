@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: jffs2_fs_sb.h,v 1.15 2001/04/18 13:05:28 dwmw2 Exp $ */
+multiline_comment|/* $Id: jffs2_fs_sb.h,v 1.16 2001/09/18 20:15:18 dwmw2 Exp $ */
 macro_line|#ifndef _JFFS2_FS_SB
 DECL|macro|_JFFS2_FS_SB
 mdefine_line|#define _JFFS2_FS_SB
@@ -43,18 +43,18 @@ op_star
 id|gc_task
 suffix:semicolon
 multiline_comment|/* GC task struct */
-DECL|member|gc_thread_sem
+DECL|member|gc_thread_start
 r_struct
 id|semaphore
-id|gc_thread_sem
+id|gc_thread_start
 suffix:semicolon
-multiline_comment|/* GC thread startup mutex */
+multiline_comment|/* GC thread start mutex */
 DECL|member|gc_thread_exit
 r_struct
 id|completion
 id|gc_thread_exit
 suffix:semicolon
-multiline_comment|/* GC thread exit completion */
+multiline_comment|/* GC thread exit completion port */
 singleline_comment|//&t;__u32 gc_minfree_threshold;&t;/* GC trigger thresholds */
 singleline_comment|//&t;__u32 gc_maxdirty_threshold;
 DECL|member|alloc_sem

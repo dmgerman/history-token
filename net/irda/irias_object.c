@@ -1538,13 +1538,6 @@ id|ias_value
 op_star
 id|value
 suffix:semicolon
-r_int
-id|len
-suffix:semicolon
-r_char
-op_star
-id|new_str
-suffix:semicolon
 id|value
 op_assign
 id|kmalloc

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: chipreg.c,v 1.8 2001/06/09 19:58:19 dwmw2 Exp $&n; *&n; * Registration for chip drivers&n; *&n; */
+multiline_comment|/*&n; * $Id: chipreg.c,v 1.12 2001/10/02 15:29:53 dwmw2 Exp $&n; *&n; * Registration for chip drivers&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -321,6 +321,24 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|do_map_probe
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David Woodhouse &lt;dwmw2@infradead.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Core routines for registering and invoking MTD chip drivers&quot;
 )paren
 suffix:semicolon
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * NFTL mount code with extensive checks&n; *&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; *&n; * $Id: nftlmount.c,v 1.17 2001/06/02 20:33:20 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/* &n; * NFTL mount code with extensive checks&n; *&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; *&n; * $Id: nftlmount.c,v 1.23 2001/09/19 21:42:32 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -17,6 +17,14 @@ macro_line|#include &lt;linux/mtd/nftl.h&gt;
 macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 DECL|macro|SECTORSIZE
 mdefine_line|#define SECTORSIZE 512
+DECL|variable|nftlmountrev
+r_char
+id|nftlmountrev
+(braket
+)braket
+op_assign
+l_string|&quot;$Revision: 1.23 $&quot;
+suffix:semicolon
 multiline_comment|/* find_boot_record: Find the NFTL Media Header and its Spare copy which contains the&n; *&t;various device information of the NFTL partition and Bad Unit Table. Update&n; *&t;the ReplUnitTable[] table accroding to the Bad Unit Table. ReplUnitTable[]&n; *&t;is used for management of Erase Unit in other routines in nftl.c and nftlmount.c&n; */
 DECL|function|find_boot_record
 r_static
@@ -43,6 +51,8 @@ r_int
 id|block
 comma
 id|boot_record_count
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|retlen
@@ -61,6 +71,10 @@ op_assign
 op_amp
 id|nftl-&gt;MediaHdr
 suffix:semicolon
+r_int
+r_int
+id|i
+suffix:semicolon
 id|nftl-&gt;MediaUnit
 op_assign
 id|BLOCK_NIL
@@ -68,10 +82,6 @@ suffix:semicolon
 id|nftl-&gt;SpareMediaUnit
 op_assign
 id|BLOCK_NIL
-suffix:semicolon
-id|boot_record_count
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* search for a valid boot record */
 r_for
@@ -90,13 +100,123 @@ op_increment
 )paren
 (brace
 r_int
-r_int
-id|erase_mark
+id|ret
 suffix:semicolon
-multiline_comment|/* read ANAND header. To be safer with BIOS, also use erase mark as discriminant */
+multiline_comment|/* Check for ANAND header first. Then can whinge if it&squot;s found but later&n;&t;&t;   checks fail */
 r_if
 c_cond
 (paren
+(paren
+id|ret
+op_assign
+id|MTD_READ
+c_func
+(paren
+id|nftl-&gt;mtd
+comma
+id|block
+op_star
+id|nftl-&gt;EraseSize
+comma
+id|SECTORSIZE
+comma
+op_amp
+id|retlen
+comma
+id|buf
+)paren
+)paren
+)paren
+(brace
+r_static
+r_int
+id|warncount
+op_assign
+l_int|5
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|warncount
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Block read at 0x%x of mtd%d failed: %d&bslash;n&quot;
+comma
+id|block
+op_star
+id|nftl-&gt;EraseSize
+comma
+id|nftl-&gt;mtd-&gt;index
+comma
+id|ret
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+op_decrement
+id|warncount
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Further failures for this block will not be printed&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_continue
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|retlen
+OL
+l_int|6
+op_logical_or
+id|memcmp
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;ANAND&quot;
+comma
+l_int|6
+)paren
+)paren
+(brace
+multiline_comment|/* ANAND&bslash;0 not found. Continue */
+macro_line|#if 0
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;ANAND header not found at 0x%x in mtd%d&bslash;n&quot;
+comma
+id|block
+op_star
+id|nftl-&gt;EraseSize
+comma
+id|nftl-&gt;mtd-&gt;index
+)paren
+suffix:semicolon
+macro_line|#endif&t;&t;&t;
+r_continue
+suffix:semicolon
+)brace
+multiline_comment|/* To be safer with BIOS, also use erase mark as discriminant */
+r_if
+c_cond
+(paren
+(paren
+id|ret
+op_assign
 id|MTD_READOOB
 c_func
 (paren
@@ -125,10 +245,30 @@ id|h1
 OL
 l_int|0
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ANAND header found at 0x%x in mtd%d, but OOB data read failed (err %d)&bslash;n&quot;
+comma
+id|block
+op_star
+id|nftl-&gt;EraseSize
+comma
+id|nftl-&gt;mtd-&gt;index
+comma
+id|ret
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
-id|erase_mark
-op_assign
+)brace
+macro_line|#if 1 /* Some people seem to have devices without ECC or erase marks&n;&t; on the Media Header blocks. There are enough other sanity&n;&t; checks in here that we can probably do without it.&n;      */
+r_if
+c_cond
+(paren
 id|le16_to_cpu
 (paren
 (paren
@@ -136,20 +276,46 @@ id|h1.EraseMark
 op_or
 id|h1.EraseMark1
 )paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|erase_mark
 op_ne
 id|ERASE_MARK
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;ANAND header found at 0x%x in mtd%d, but erase mark not present (0x%04x,0x%04x instead)&bslash;n&quot;
+comma
+id|block
+op_star
+id|nftl-&gt;EraseSize
+comma
+id|nftl-&gt;mtd-&gt;index
+comma
+id|le16_to_cpu
+c_func
+(paren
+id|h1.EraseMark
+)paren
+comma
+id|le16_to_cpu
+c_func
+(paren
+id|h1.EraseMark1
+)paren
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
+multiline_comment|/* Finally reread to check ECC */
 r_if
 c_cond
 (paren
+(paren
+id|ret
+op_assign
 id|MTD_READECC
 c_func
 (paren
@@ -176,8 +342,160 @@ id|oob
 OL
 l_int|0
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;ANAND header found at 0x%x in mtd%d, but ECC read failed (err %d)&bslash;n&quot;
+comma
+id|block
+op_star
+id|nftl-&gt;EraseSize
+comma
+id|nftl-&gt;mtd-&gt;index
+comma
+id|ret
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
+multiline_comment|/* Paranoia. Check the ANAND header is still there after the ECC read */
+r_if
+c_cond
+(paren
+id|memcmp
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;ANAND&quot;
+comma
+l_int|6
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;ANAND header found at 0x%x in mtd%d, but went away on reread!&bslash;n&quot;
+comma
+id|block
+op_star
+id|nftl-&gt;EraseSize
+comma
+id|nftl-&gt;mtd-&gt;index
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;New data are: %02x %02x %02x %02x %02x %02x&bslash;n&quot;
+comma
+id|buf
+(braket
+l_int|0
+)braket
+comma
+id|buf
+(braket
+l_int|1
+)braket
+comma
+id|buf
+(braket
+l_int|2
+)braket
+comma
+id|buf
+(braket
+l_int|3
+)braket
+comma
+id|buf
+(braket
+l_int|4
+)braket
+comma
+id|buf
+(braket
+l_int|5
+)braket
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+macro_line|#endif
+multiline_comment|/* OK, we like it. */
+r_if
+c_cond
+(paren
+id|boot_record_count
+)paren
+(brace
+multiline_comment|/* We&squot;ve already processed one. So we just check if&n;&t;&t;&t;   this one is the same as the first one we found */
+r_if
+c_cond
+(paren
+id|memcmp
+c_func
+(paren
+id|mh
+comma
+id|buf
+comma
+r_sizeof
+(paren
+r_struct
+id|NFTLMediaHeader
+)paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;NFTL Media Headers at 0x%x and 0x%x disagree.&bslash;n&quot;
+comma
+id|nftl-&gt;MediaUnit
+op_star
+id|nftl-&gt;EraseSize
+comma
+id|block
+op_star
+id|nftl-&gt;EraseSize
+)paren
+suffix:semicolon
+multiline_comment|/* if (debug) Print both side by side */
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|boot_record_count
+op_eq
+l_int|1
+)paren
+id|nftl-&gt;SpareMediaUnit
+op_assign
+id|block
+suffix:semicolon
+id|boot_record_count
+op_increment
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+multiline_comment|/* This is the first we&squot;ve seen. Copy the media header structure into place */
 id|memcpy
 c_func
 (paren
@@ -192,36 +510,7 @@ id|NFTLMediaHeader
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|memcmp
-c_func
-(paren
-id|mh-&gt;DataOrgID
-comma
-l_string|&quot;ANAND&quot;
-comma
-l_int|6
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-multiline_comment|/* first boot record */
-r_if
-c_cond
-(paren
-id|boot_record_count
-op_eq
-l_int|0
-)paren
-(brace
-r_int
-r_int
-id|i
-suffix:semicolon
-multiline_comment|/* header found : read the bad block table data */
+multiline_comment|/* Do some sanity checks on it */
 r_if
 c_cond
 (paren
@@ -233,12 +522,14 @@ l_int|0xff
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot;Sorry, we don&squot;t support UnitSizeFactor &quot;
-l_string|&quot;of != 1 yet&bslash;n&quot;
+l_string|&quot;of != 1 yet.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_goto
-id|ReplUnitTable
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 id|nftl-&gt;nb_boot_blocks
@@ -265,7 +556,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;Potential NFTL Media Header found, but sanity check failed:&bslash;n&quot;
+l_string|&quot;NFTL Media Header sanity check failed:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -279,10 +570,10 @@ comma
 id|nftl-&gt;nb_blocks
 )paren
 suffix:semicolon
-r_goto
-id|ReplUnitTable
+r_return
+op_minus
+l_int|1
 suffix:semicolon
-multiline_comment|/* small consistency check */
 )brace
 id|nftl-&gt;numvunits
 op_assign
@@ -312,7 +603,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;Potential NFTL Media Header found, but sanity check failed:&bslash;n&quot;
+l_string|&quot;NFTL Media Header sanity check failed:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -328,12 +619,11 @@ comma
 id|nftl-&gt;nb_boot_blocks
 )paren
 suffix:semicolon
-r_goto
-id|ReplUnitTable
+r_return
+op_minus
+l_int|1
 suffix:semicolon
-multiline_comment|/* small consistency check */
 )brace
-multiline_comment|/* FixMe: with bad blocks, the total size available is not FormattedSize any&n;&t;&t;&t;&t;   more !!! */
 id|nftl-&gt;nr_sects
 op_assign
 id|nftl-&gt;numvunits
@@ -344,9 +634,20 @@ op_div
 id|SECTORSIZE
 )paren
 suffix:semicolon
-id|nftl-&gt;MediaUnit
+multiline_comment|/* If we&squot;re not using the last sectors in the device for some reason,&n;&t;&t;   reduce nb_blocks accordingly so we forget they&squot;re there */
+id|nftl-&gt;nb_blocks
 op_assign
-id|block
+id|le16_to_cpu
+c_func
+(paren
+id|mh-&gt;NumEraseUnits
+)paren
+op_plus
+id|le16_to_cpu
+c_func
+(paren
+id|mh-&gt;FirstPhysicalEUN
+)paren
 suffix:semicolon
 multiline_comment|/* read the Bad Erase Unit Table and modify ReplUnitTable[] accordingly */
 r_for
@@ -384,6 +685,9 @@ multiline_comment|/* read one sector for every SECTORSIZE of blocks */
 r_if
 c_cond
 (paren
+(paren
+id|ret
+op_assign
 id|MTD_READECC
 c_func
 (paren
@@ -411,12 +715,25 @@ op_star
 op_amp
 id|oob
 )paren
+)paren
 OL
 l_int|0
 )paren
-r_goto
-id|ReplUnitTable
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;Read of bad sector table failed (err %d)&bslash;n&quot;
+comma
+id|ret
+)paren
 suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* mark the Bad Erase Unit as RESERVED in ReplUnitTable */
 r_if
@@ -443,54 +760,24 @@ op_assign
 id|BLOCK_RESERVED
 suffix:semicolon
 )brace
-id|boot_record_count
-op_increment
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|boot_record_count
-op_eq
-l_int|1
-)paren
-(brace
-id|nftl-&gt;SpareMediaUnit
+id|nftl-&gt;MediaUnit
 op_assign
 id|block
 suffix:semicolon
 id|boot_record_count
 op_increment
 suffix:semicolon
-r_break
-suffix:semicolon
 )brace
-)brace
-id|ReplUnitTable
-suffix:colon
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|boot_record_count
-op_eq
-l_int|0
-)paren
-(brace
-multiline_comment|/* no boot record found */
+multiline_comment|/* foreach (block) */
 r_return
+id|boot_record_count
+ques
+c_cond
+l_int|0
+suffix:colon
 op_minus
 l_int|1
 suffix:semicolon
-)brace
-r_else
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 )brace
 DECL|function|memcmpb
 r_static

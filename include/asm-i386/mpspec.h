@@ -433,7 +433,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; *&t;Default configurations&n; *&n; *&t;1&t;2 CPU ISA 82489DX&n; *&t;2&t;2 CPU EISA 82489DX neither IRQ 0 timer nor IRQ 13 DMA chaining&n; *&t;3&t;2 CPU EISA 82489DX&n; *&t;4&t;2 CPU MCA 82489DX&n; *&t;5&t;2 CPU ISA+PCI&n; *&t;6&t;2 CPU EISA+PCI&n; *&t;7&t;2 CPU MCA+PCI&n; */
 DECL|macro|MAX_IRQ_SOURCES
-mdefine_line|#define MAX_IRQ_SOURCES 128
+mdefine_line|#define MAX_IRQ_SOURCES 256
 DECL|macro|MAX_MP_BUSSES
 mdefine_line|#define MAX_MP_BUSSES 32
 DECL|enum|mp_bustype
@@ -472,7 +472,7 @@ suffix:semicolon
 r_extern
 r_int
 r_int
-id|boot_cpu_id
+id|boot_cpu_physical_apicid
 suffix:semicolon
 r_extern
 r_int

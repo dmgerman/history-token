@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * mtdram - a test mtd device&n; * $Id: mtdram.c,v 1.24 2001/06/09 23:09:23 dwmw2 Exp $&n; * Author: Alexander Larsson &lt;alex@cendio.se&gt;&n; *&n; * Copyright (c) 1999 Alexander Larsson &lt;alex@cendio.se&gt;&n; *&n; * This code is GPL&n; *&n; */
+multiline_comment|/*&n; * mtdram - a test mtd device&n; * $Id: mtdram.c,v 1.25 2001/10/02 15:05:13 dwmw2 Exp $&n; * Author: Alexander Larsson &lt;alex@cendio.se&gt;&n; *&n; * Copyright (c) 1999 Alexander Larsson &lt;alex@cendio.se&gt;&n; *&n; * This code is GPL&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -461,15 +461,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|init_mtdram
-mdefine_line|#define init_mtdram init_module
-DECL|macro|cleanup_mtdram
-mdefine_line|#define cleanup_mtdram cleanup_module
-macro_line|#endif
-singleline_comment|//static void __exit cleanup_mtdram(void)
 DECL|function|cleanup_mtdram
-id|mod_exit_t
+r_static
+r_void
+id|__exit
 id|cleanup_mtdram
 c_func
 (paren
@@ -517,7 +512,8 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|init_mtdram
-id|mod_init_t
+r_int
+id|__init
 id|init_mtdram
 c_func
 (paren
@@ -739,6 +735,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_mtdram
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Alexander Larsson &lt;alexl@redhat.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Simulated MTD driver for testing&quot;
 )paren
 suffix:semicolon
 eof

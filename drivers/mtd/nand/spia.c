@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/spia.c&n; *&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@cotw.com)&n; *&n; * $Id: spia.c,v 1.11 2001/07/03 17:50:56 sjhill Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   SPIA board which utilizes the Toshiba TC58V64AFT part. This is&n; *   a 64Mibit (8MiB x 8 bits) NAND flash device.&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand/spia.c&n; *&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@cotw.com)&n; *&n; * $Id: spia.c,v 1.12 2001/10/02 15:05:14 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   SPIA board which utilizes the Toshiba TC58V64AFT part. This is&n; *   a 64Mibit (8MiB x 8 bits) NAND flash device.&n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -25,12 +25,6 @@ mdefine_line|#define SPIA_PEDR&t;= 0x0080&t;/*&n;&t;&t;&t;&t;&t; * IO offset to 
 DECL|macro|SPIA_PEDDR
 mdefine_line|#define SPIA_PEDDR&t;= 0x00c0&t;/*&n;&t;&t;&t;&t;&t; * IO offset to Port E data direction&n;&t;&t;&t;&t;&t; * register so we can control the IO&n;&t;&t;&t;&t;&t; * lines.&n;&t;&t;&t;&t;&t; */
 multiline_comment|/*&n; * Module stuff&n; */
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|spia_init
-mdefine_line|#define spia_init init_module
-DECL|macro|spia_cleanup
-mdefine_line|#define spia_cleanup cleanup_module
-macro_line|#endif
 DECL|variable|spia_io_base
 r_static
 r_int
@@ -465,4 +459,22 @@ id|spia_cleanup
 )paren
 suffix:semicolon
 macro_line|#endif
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Steven J. Hill &lt;sjhill@cotw.com&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Board-specific glue layer for NAND flash on SPIA board&quot;
+)paren
+suffix:semicolon
 eof

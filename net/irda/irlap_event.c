@@ -2452,7 +2452,7 @@ id|self-&gt;qos_rx
 suffix:semicolon
 macro_line|#if 0
 multiline_comment|/* &n;&t;&t; * We are allowed to send two frames, but this may increase&n;&t;&t; * the connect latency, so lets not do it for now.&n;&t;&t; */
-multiline_comment|/* What the hell is this ? - Jean II */
+multiline_comment|/* This is full of good intentions, but doesn&squot;t work in&n;&t;&t; * practice.&n;&t;&t; * After sending the first UA response, we switch the&n;&t;&t; * dongle to the negociated speed, which is usually&n;&t;&t; * different than 9600 kb/s.&n;&t;&t; * From there, there is two solutions :&n;&t;&t; * 1) The other end has received the first UA response :&n;&t;&t; * it will set up the connection, move to state LAP_NRM_P,&n;&t;&t; * and will ignore and drop the second UA response.&n;&t;&t; * Actually, it&squot;s even worse : the other side will almost&n;&t;&t; * immediately send a RR that will likely collide with the&n;&t;&t; * UA response (depending on negociated turnaround).&n;&t;&t; * 2) The other end has not received the first UA response,&n;&t;&t; * will stay at 9600 and will never see the second UA response.&n;&t;&t; * Jean II */
 id|irlap_send_ua_response_frame
 c_func
 (paren

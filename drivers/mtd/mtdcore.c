@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: mtdcore.c,v 1.30 2001/06/02 14:30:42 dwmw2 Exp $&n; *&n; * Core registration and callback routines for MTD&n; * drivers and users.&n; *&n; */
+multiline_comment|/*&n; * $Id: mtdcore.c,v 1.31 2001/10/02 15:05:11 dwmw2 Exp $&n; *&n; * Core registration and callback routines for MTD&n; * drivers and users.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1106,14 +1106,9 @@ macro_line|#endif
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/*====================================================================*/
 multiline_comment|/* Init code */
-macro_line|#if  LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|init_mtd
-mdefine_line|#define init_mtd init_module
-DECL|macro|cleanup_mtd
-mdefine_line|#define cleanup_mtd cleanup_module
-macro_line|#endif
 DECL|function|init_mtd
-id|mod_init_t
+r_int
+id|__init
 id|init_mtd
 c_func
 (paren
@@ -1182,7 +1177,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cleanup_mtd
-id|mod_exit_t
+r_static
+r_void
+id|__exit
 id|cleanup_mtd
 c_func
 (paren
@@ -1248,6 +1245,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_mtd
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David Woodhouse &lt;dwmw2@infradead.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Core MTD registration and access routines&quot;
 )paren
 suffix:semicolon
 eof

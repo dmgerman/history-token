@@ -1,4 +1,4 @@
-singleline_comment|// $Id: octagon-5066.c,v 1.17 2001/06/02 14:30:44 dwmw2 Exp $
+singleline_comment|// $Id: octagon-5066.c,v 1.19 2001/10/02 15:05:14 dwmw2 Exp $
 multiline_comment|/* ######################################################################&n;&n;   Octagon 5066 MTD Driver. &n;  &n;   The Octagon 5066 is a SBC based on AMD&squot;s 586-WB running at 133 MHZ. It&n;   comes with a builtin AMD 29F016 flash chip and a socketed EEPROM that&n;   is replacable by flash. Both units are mapped through a multiplexer&n;   into a 32k memory window at 0xe8000. The control register for the &n;   multiplexing unit is located at IO 0x208 with a bit map of&n;     0-5 Page Selection in 32k increments&n;     6-7 Device selection:&n;        00 SSD off&n;        01 SSD 0 (Socket)&n;        10 SSD 1 (Flash chip)&n;        11 undefined&n;  &n;   On each SSD, the first 128k is reserved for use by the bios&n;   (actually it IS the bios..) This only matters if you are booting off the &n;   flash, you must not put a file system starting there.&n;   &n;   The driver tries to do a detection algorithm to guess what sort of devices&n;   are plugged into the sockets.&n;   &n;   ##################################################################### */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -947,12 +947,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|init_oct5066
-mdefine_line|#define init_oct5066 init_module
-DECL|macro|cleanup_oct5066
-mdefine_line|#define cleanup_oct5066 cleanup_module
-macro_line|#endif
 DECL|function|cleanup_oct5066
 r_void
 id|cleanup_oct5066
@@ -1177,7 +1171,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;cfi&quot;
+l_string|&quot;cfi_probe&quot;
 comma
 op_amp
 id|oct5066_map
@@ -1229,7 +1223,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;ram&quot;
+l_string|&quot;map_ram&quot;
 comma
 op_amp
 id|oct5066_map
@@ -1255,7 +1249,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;rom&quot;
+l_string|&quot;map_rom&quot;
 comma
 op_amp
 id|oct5066_map
@@ -1335,6 +1329,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_oct5066
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Jason Gunthorpe &lt;jgg@deltatee.com&gt;, David Woodhouse &lt;dwmw2@infradead.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;MTD map driver for Octagon 5066 Single Board Computer&quot;
 )paren
 suffix:semicolon
 eof

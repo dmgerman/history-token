@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * Common code to handle map devices which are simple ROM&n; * (C) 2000 Red Hat. GPL&squot;d.&n; * $Id: map_rom.c,v 1.14 2001/06/02 14:30:43 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Common code to handle map devices which are simple ROM&n; * (C) 2000 Red Hat. GPL&squot;d.&n; * $Id: map_rom.c,v 1.17 2001/10/02 15:05:12 dwmw2 Exp $&n; */
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -80,7 +81,7 @@ id|map_rom_probe
 comma
 id|name
 suffix:colon
-l_string|&quot;rom&quot;
+l_string|&quot;map_rom&quot;
 comma
 id|module
 suffix:colon
@@ -183,6 +184,23 @@ id|mtd-&gt;erasesize
 op_assign
 l_int|131072
 suffix:semicolon
+r_while
+c_loop
+(paren
+id|mtd-&gt;size
+op_amp
+(paren
+id|mtd-&gt;erasesize
+op_minus
+l_int|1
+)paren
+)paren
+(brace
+id|mtd-&gt;erasesize
+op_rshift_assign
+l_int|1
+suffix:semicolon
+)brace
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
@@ -301,14 +319,9 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|map_rom_init
-mdefine_line|#define map_rom_init init_module
-DECL|macro|map_rom_exit
-mdefine_line|#define map_rom_exit cleanup_module
-macro_line|#endif
 DECL|function|map_rom_init
-id|mod_init_t
+r_int
+id|__init
 id|map_rom_init
 c_func
 (paren
@@ -327,7 +340,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|map_rom_exit
-id|mod_exit_t
+r_static
+r_void
+id|__exit
 id|map_rom_exit
 c_func
 (paren
@@ -354,6 +369,24 @@ id|module_exit
 c_func
 (paren
 id|map_rom_exit
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David Woodhouse &lt;dwmw2@infradead.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;MTD chip driver for ROM chips&quot;
 )paren
 suffix:semicolon
 eof

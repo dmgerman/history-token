@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: dbox2-flash.c,v 1.2 2001/04/26 15:42:43 dwmw2 Exp $&n; *&n; * Nokia / Sagem D-Box 2 flash driver&n; */
+multiline_comment|/*&n; * $Id: dbox2-flash.c,v 1.4 2001/10/02 15:05:14 dwmw2 Exp $&n; *&n; * Nokia / Sagem D-Box 2 flash driver&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -412,14 +412,9 @@ suffix:colon
 id|dbox2_flash_copy_to
 )brace
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|init_dbox2_flash
-mdefine_line|#define init_dbox2_flash init_module
-DECL|macro|cleanup_dbox2_flash
-mdefine_line|#define cleanup_dbox2_flash cleanup_module
-macro_line|#endif
 DECL|function|init_dbox2_flash
-id|mod_init_t
+r_int
+id|__init
 id|init_dbox2_flash
 c_func
 (paren
@@ -475,7 +470,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;cfi&quot;
+l_string|&quot;cfi_probe&quot;
 comma
 op_amp
 id|dbox2_flash_map
@@ -498,7 +493,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;cfi&quot;
+l_string|&quot;cfi_probe&quot;
 comma
 op_amp
 id|dbox2_flash_map
@@ -546,7 +541,9 @@ id|ENXIO
 suffix:semicolon
 )brace
 DECL|function|cleanup_dbox2_flash
-id|mod_exit_t
+r_static
+r_void
+id|__exit
 id|cleanup_dbox2_flash
 c_func
 (paren
@@ -606,6 +603,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_dbox2_flash
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;K&#xfffd;ri Dav&#xfffd;&#xfffd;sson &lt;kd@flaga.is&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;MTD map driver for Nokia/Sagem D-Box 2 board&quot;
 )paren
 suffix:semicolon
 eof

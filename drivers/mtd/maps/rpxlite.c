@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: rpxlite.c,v 1.12 2001/04/26 15:40:23 dwmw2 Exp $&n; *&n; * Handle mapping of the flash on the RPX Lite and CLLF boards&n; */
+multiline_comment|/*&n; * $Id: rpxlite.c,v 1.15 2001/10/02 15:05:14 dwmw2 Exp $&n; *&n; * Handle mapping of the flash on the RPX Lite and CLLF boards&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -32,7 +32,7 @@ id|ofs
 )paren
 (brace
 r_return
-id|readb
+id|__raw_readb
 c_func
 (paren
 id|map-&gt;map_priv_1
@@ -57,7 +57,7 @@ id|ofs
 )paren
 (brace
 r_return
-id|readw
+id|__raw_readw
 c_func
 (paren
 id|map-&gt;map_priv_1
@@ -82,7 +82,7 @@ id|ofs
 )paren
 (brace
 r_return
-id|readl
+id|__raw_readl
 c_func
 (paren
 id|map-&gt;map_priv_1
@@ -150,7 +150,7 @@ r_int
 id|adr
 )paren
 (brace
-id|writeb
+id|__raw_writeb
 c_func
 (paren
 id|d
@@ -158,6 +158,11 @@ comma
 id|map-&gt;map_priv_1
 op_plus
 id|adr
+)paren
+suffix:semicolon
+id|mb
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -179,7 +184,7 @@ r_int
 id|adr
 )paren
 (brace
-id|writew
+id|__raw_writew
 c_func
 (paren
 id|d
@@ -187,6 +192,11 @@ comma
 id|map-&gt;map_priv_1
 op_plus
 id|adr
+)paren
+suffix:semicolon
+id|mb
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -208,7 +218,7 @@ r_int
 id|adr
 )paren
 (brace
-id|writel
+id|__raw_writel
 c_func
 (paren
 id|d
@@ -216,6 +226,11 @@ comma
 id|map-&gt;map_priv_1
 op_plus
 id|adr
+)paren
+suffix:semicolon
+id|mb
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -312,12 +327,6 @@ suffix:colon
 id|rpxlite_copy_to
 )brace
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|init_rpxlite
-mdefine_line|#define init_rpxlite init_module
-DECL|macro|cleanup_rpxlite
-mdefine_line|#define cleanup_rpxlite cleanup_module
-macro_line|#endif
 DECL|function|init_rpxlite
 r_int
 id|__init
@@ -379,7 +388,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;cfi&quot;
+l_string|&quot;cfi_probe&quot;
 comma
 op_amp
 id|rpxlite_map
@@ -483,6 +492,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_rpxlite
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Arnold Christensen &lt;AKC@pel.dk&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;MTD map driver for RPX Lite and CLLF boards&quot;
 )paren
 suffix:semicolon
 eof

@@ -278,6 +278,7 @@ comma
 l_string|&quot;HP HSDL-1100/HSDL-2100&quot;
 comma
 l_string|&quot;HP HSDL-1100/HSDL-2100&quot;
+comma
 l_string|&quot;Supports SIR Mode only&quot;
 comma
 l_string|&quot;No dongle connected&quot;

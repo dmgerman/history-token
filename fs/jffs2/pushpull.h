@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * The original JFFS, from which the design for JFFS2 was derived,&n; * was designed and implemented by Axis Communications AB.&n; *&n; * The contents of this file are subject to the Red Hat eCos Public&n; * License Version 1.1 (the &quot;Licence&quot;); you may not use this file&n; * except in compliance with the Licence.  You may obtain a copy of&n; * the Licence at http://www.redhat.com/&n; *&n; * Software distributed under the Licence is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.&n; * See the Licence for the specific language governing rights and&n; * limitations under the Licence.&n; *&n; * The Original Code is JFFS2 - Journalling Flash File System, version 2&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the RHEPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the RHEPL or the GPL.&n; *&n; * $Id: pushpull.h,v 1.4 2001/03/15 15:38:24 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * The original JFFS, from which the design for JFFS2 was derived,&n; * was designed and implemented by Axis Communications AB.&n; *&n; * The contents of this file are subject to the Red Hat eCos Public&n; * License Version 1.1 (the &quot;Licence&quot;); you may not use this file&n; * except in compliance with the Licence.  You may obtain a copy of&n; * the Licence at http://www.redhat.com/&n; *&n; * Software distributed under the Licence is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.&n; * See the Licence for the specific language governing rights and&n; * limitations under the Licence.&n; *&n; * The Original Code is JFFS2 - Journalling Flash File System, version 2&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the RHEPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the RHEPL or the GPL.&n; *&n; * $Id: pushpull.h,v 1.5 2001/09/23 10:04:15 rmk Exp $&n; *&n; */
 macro_line|#ifndef __PUSHPULL_H__
 DECL|macro|__PUSHPULL_H__
 mdefine_line|#define __PUSHPULL_H__
@@ -73,6 +73,9 @@ op_star
 id|pp
 )paren
 suffix:semicolon
+DECL|function|pullbit
+r_static
+r_inline
 r_int
 id|pullbit
 c_func
@@ -82,7 +85,43 @@ id|pushpull
 op_star
 id|pp
 )paren
+(brace
+r_int
+id|bit
 suffix:semicolon
+id|bit
+op_assign
+(paren
+id|pp-&gt;buf
+(braket
+id|pp-&gt;ofs
+op_rshift
+l_int|3
+)braket
+op_rshift
+(paren
+l_int|7
+op_minus
+(paren
+id|pp-&gt;ofs
+op_amp
+l_int|7
+)paren
+)paren
+)paren
+op_amp
+l_int|1
+suffix:semicolon
+id|pp-&gt;ofs
+op_increment
+suffix:semicolon
+r_return
+id|bit
+suffix:semicolon
+)brace
+DECL|function|pulledbits
+r_static
+r_inline
 r_int
 id|pulledbits
 c_func
@@ -90,7 +129,12 @@ c_func
 r_struct
 id|pushpull
 op_star
+id|pp
 )paren
+(brace
+r_return
+id|pp-&gt;ofs
 suffix:semicolon
+)brace
 macro_line|#endif /* __PUSHPULL_H__ */
 eof

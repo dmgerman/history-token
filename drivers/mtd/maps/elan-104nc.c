@@ -1,4 +1,4 @@
-multiline_comment|/* elan-104nc.c -- MTD map driver for Arcom Control Systems ELAN-104NC&n; &n;   Copyright (C) 2000 Arcom Control System Ltd&n; &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n; &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n; &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n;&n;   $Id: elan-104nc.c,v 1.10 2001/06/02 14:30:44 dwmw2 Exp $&n;&n;The ELAN-104NC has up to 8 Mibyte of Intel StrataFlash (28F320/28F640) in x16&n;mode.  This drivers uses the CFI probe and Intel Extended Command Set drivers.&n;&n;The flash is accessed as follows:&n;&n;   32 kbyte memory window at 0xb0000-0xb7fff&n;   &n;   16 bit I/O port (0x22) for some sort of paging.&n;&n;The single flash device is divided into 3 partition which appear as seperate&n;MTD devices.&n;&n;Linux thinks that the I/O port is used by the PIC and hence check_region() will&n;always fail.  So we don&squot;t do it.  I just hope it doesn&squot;t break anything.&n;*/
+multiline_comment|/* elan-104nc.c -- MTD map driver for Arcom Control Systems ELAN-104NC&n; &n;   Copyright (C) 2000 Arcom Control System Ltd&n; &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n; &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n; &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n;&n;   $Id: elan-104nc.c,v 1.12 2001/10/02 15:05:14 dwmw2 Exp $&n;&n;The ELAN-104NC has up to 8 Mibyte of Intel StrataFlash (28F320/28F640) in x16&n;mode.  This drivers uses the CFI probe and Intel Extended Command Set drivers.&n;&n;The flash is accessed as follows:&n;&n;   32 kbyte memory window at 0xb0000-0xb7fff&n;   &n;   16 bit I/O port (0x22) for some sort of paging.&n;&n;The single flash device is divided into 3 partition which appear as seperate&n;MTD devices.&n;&n;Linux thinks that the I/O port is used by the PIC and hence check_region() will&n;always fail.  So we don&squot;t do it.  I just hope it doesn&squot;t break anything.&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -855,14 +855,10 @@ id|mtd_info
 op_star
 id|all_mtd
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|init_elan_104nc
-mdefine_line|#define init_elan_104nc init_module
-DECL|macro|cleanup_elan_104nc
-mdefine_line|#define cleanup_elan_104nc cleanup_module
-macro_line|#endif
 DECL|function|cleanup_elan_104nc
-id|mod_exit_t
+r_static
+r_void
+id|__exit
 id|cleanup_elan_104nc
 c_func
 (paren
@@ -908,7 +904,8 @@ id|PAGE_IO_SIZE
 suffix:semicolon
 )brace
 DECL|function|init_elan_104nc
-id|mod_init_t
+r_int
+id|__init
 id|init_elan_104nc
 c_func
 (paren
@@ -989,7 +986,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;cfi&quot;
+l_string|&quot;cfi_probe&quot;
 comma
 op_amp
 id|elan_104nc_map
@@ -1043,6 +1040,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_elan_104nc
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Arcom Control Systems Ltd.&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;MTD map driver for Arcom Control Systems ELAN-104NC&quot;
 )paren
 suffix:semicolon
 eof

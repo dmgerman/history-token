@@ -1,10 +1,11 @@
-multiline_comment|/*&n; * JFFS -- Journalling Flash File System, Linux implementation.&n; *&n; * Copyright (C) 1999, 2000  Axis Communications AB.&n; *&n; * Created by Finn Hakansson &lt;finn@axis.com&gt;.&n; *&n; * This is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * $Id: jffs.h,v 1.11 2000/08/04 12:46:34 dwmw2 Exp $&n; *&n; * Ported to Linux 2.3.x and MTD:&n; * Copyright (C) 2000  Alexander Larsson (alex@cendio.se), Cendio Systems AB&n; *&n; */
+multiline_comment|/*&n; * JFFS -- Journalling Flash File System, Linux implementation.&n; *&n; * Copyright (C) 1999, 2000  Axis Communications AB.&n; *&n; * Created by Finn Hakansson &lt;finn@axis.com&gt;.&n; *&n; * This is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * $Id: jffs.h,v 1.20 2001/09/18 21:33:37 dwmw2 Exp $&n; *&n; * Ported to Linux 2.3.x and MTD:&n; * Copyright (C) 2000  Alexander Larsson (alex@cendio.se), Cendio Systems AB&n; *&n; */
 macro_line|#ifndef __LINUX_JFFS_H__
 DECL|macro|__LINUX_JFFS_H__
 mdefine_line|#define __LINUX_JFFS_H__
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 DECL|macro|JFFS_VERSION_STRING
 mdefine_line|#define JFFS_VERSION_STRING &quot;1.0&quot;
-macro_line|#include &lt;linux/completion.h&gt;
 multiline_comment|/* This is a magic number that is used as an identification number for&n;   this file system.  It is written to the super_block structure.  */
 DECL|macro|JFFS_MAGIC_SB_BITMASK
 mdefine_line|#define JFFS_MAGIC_SB_BITMASK 0x07c0  /* 1984 */
@@ -528,15 +529,15 @@ suffix:semicolon
 multiline_comment|/* This stuff could be used for finding memory leaks.  */
 DECL|macro|JFFS_MEMORY_DEBUG
 mdefine_line|#define JFFS_MEMORY_DEBUG 0
-macro_line|#if defined(JFFS_MEMORY_DEBUG) &amp;&amp; JFFS_MEMORY_DEBUG
-r_extern
-r_int
-id|no_jffs_file
-suffix:semicolon
 r_extern
 r_int
 id|no_jffs_node
 suffix:semicolon
+r_extern
+r_int
+id|no_jffs_file
+suffix:semicolon
+macro_line|#if defined(JFFS_MEMORY_DEBUG) &amp;&amp; JFFS_MEMORY_DEBUG
 r_extern
 r_int
 id|no_jffs_control

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Simple MTD partitioning layer&n; *&n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: mtdpart.c,v 1.21 2001/06/09 16:33:32 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Simple MTD partitioning layer&n; *&n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: mtdpart.c,v 1.23 2001/10/02 15:05:11 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -918,6 +918,11 @@ id|slave-&gt;mtd.write
 op_assign
 id|part_write
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|master-&gt;sync
+)paren
 id|slave-&gt;mtd.sync
 op_assign
 id|part_sync
@@ -1298,6 +1303,24 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|del_mtd_partitions
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Nicolas Pitre &lt;nico@cam.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Generic support for partitioning of MTD devices&quot;
 )paren
 suffix:semicolon
 eof

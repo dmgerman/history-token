@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common Flash Interface support:&n; *   AMD &amp; Fujitsu Standard Vendor Command Set (ID 0x0002)&n; *&n; * Copyright (C) 2000 Crossnet Co. &lt;info@crossnet.co.jp&gt;&n; *&n; * 2_by_8 routines added by Simon Munton&n; *&n; * This code is GPL&n; *&n; * $Id: cfi_cmdset_0002.c,v 1.48 2001/06/03 01:32:57 nico Exp $&n; *&n; */
+multiline_comment|/*&n; * Common Flash Interface support:&n; *   AMD &amp; Fujitsu Standard Vendor Command Set (ID 0x0002)&n; *&n; * Copyright (C) 2000 Crossnet Co. &lt;info@crossnet.co.jp&gt;&n; *&n; * 2_by_8 routines added by Simon Munton&n; *&n; * This code is GPL&n; *&n; * $Id: cfi_cmdset_0002.c,v 1.51 2001/10/02 15:05:12 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/mtd/cfi.h&gt;
 DECL|macro|AMD_BOOTLOC_BUG
@@ -117,7 +118,9 @@ id|mtd_info
 op_star
 )paren
 suffix:semicolon
-r_void
+r_struct
+id|mtd_info
+op_star
 id|cfi_cmdset_0002
 c_func
 (paren
@@ -125,9 +128,6 @@ r_struct
 id|map_info
 op_star
 comma
-r_int
-comma
-r_int
 r_int
 )paren
 suffix:semicolon
@@ -151,8 +151,9 @@ op_assign
 (brace
 id|probe
 suffix:colon
-id|cfi_amdstd_setup
+l_int|NULL
 comma
+multiline_comment|/* Not usable directly */
 id|destroy
 suffix:colon
 id|cfi_amdstd_destroy
@@ -167,7 +168,9 @@ id|THIS_MODULE
 )brace
 suffix:semicolon
 DECL|function|cfi_cmdset_0002
-r_void
+r_struct
+id|mtd_info
+op_star
 id|cfi_cmdset_0002
 c_func
 (paren
@@ -178,10 +181,6 @@ id|map
 comma
 r_int
 id|primary
-comma
-r_int
-r_int
-id|base
 )paren
 (brace
 r_struct
@@ -210,13 +209,22 @@ id|major
 comma
 id|minor
 suffix:semicolon
-singleline_comment|//&t;struct cfi_pri_intelext *extp;
+id|__u32
+id|base
+op_assign
+id|cfi-&gt;chips
+(braket
+l_int|0
+)braket
+dot
+id|start
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|cfi-&gt;cfi_mode
 op_eq
-l_int|0
+l_int|1
 )paren
 (brace
 id|__u16
@@ -236,7 +244,7 @@ l_int|0x98
 comma
 l_int|0x55
 comma
-l_int|0
+id|base
 comma
 id|map
 comma
@@ -254,6 +262,8 @@ c_func
 (paren
 id|map
 comma
+id|base
+op_plus
 (paren
 id|adr
 op_plus
@@ -270,6 +280,8 @@ c_func
 (paren
 id|map
 comma
+id|base
+op_plus
 (paren
 id|adr
 op_plus
@@ -298,7 +310,7 @@ l_int|0xf0
 comma
 l_int|0x55
 comma
-l_int|0
+id|base
 comma
 id|map
 comma
@@ -448,7 +460,7 @@ l_int|0x98
 comma
 l_int|0x55
 comma
-l_int|0
+id|base
 comma
 id|map
 comma
@@ -466,6 +478,8 @@ c_func
 (paren
 id|map
 comma
+id|base
+op_plus
 (paren
 id|adr
 op_plus
@@ -554,37 +568,85 @@ id|swap
 suffix:semicolon
 )brace
 )brace
-)brace
-multiline_comment|/* If there was an old setup function, decrease its use count */
-r_if
+r_switch
 c_cond
 (paren
-id|map-&gt;fldrv
-)paren
-r_if
-c_cond
-(paren
-id|map-&gt;fldrv-&gt;module
+id|cfi-&gt;device_type
 )paren
 (brace
-id|__MOD_DEC_USE_COUNT
-c_func
-(paren
-id|map-&gt;fldrv-&gt;module
-)paren
+r_case
+id|CFI_DEVICETYPE_X8
+suffix:colon
+id|cfi-&gt;addr_unlock1
+op_assign
+l_int|0x555
 suffix:semicolon
-)brace
+id|cfi-&gt;addr_unlock2
+op_assign
+l_int|0x2aa
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|CFI_DEVICETYPE_X16
+suffix:colon
+id|cfi-&gt;addr_unlock1
+op_assign
+l_int|0xaaa
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|cfi-&gt;cmdset_priv
+id|map-&gt;buswidth
+op_eq
+id|cfi-&gt;interleave
 )paren
-id|kfree
+(brace
+multiline_comment|/* X16 chip(s) in X8 mode */
+id|cfi-&gt;addr_unlock2
+op_assign
+l_int|0x555
+suffix:semicolon
+)brace
+r_else
+(brace
+id|cfi-&gt;addr_unlock2
+op_assign
+l_int|0x554
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|CFI_DEVICETYPE_X32
+suffix:colon
+id|cfi-&gt;addr_unlock1
+op_assign
+l_int|0x1555
+suffix:semicolon
+id|cfi-&gt;addr_unlock2
+op_assign
+l_int|0xaaa
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
 c_func
 (paren
-id|cfi-&gt;cmdset_priv
+id|KERN_NOTICE
+l_string|&quot;Eep. Unknown cfi_cmdset_0002 device type %d&bslash;n&quot;
+comma
+id|cfi-&gt;device_type
 )paren
 suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* CFI mode */
 r_for
 c_loop
 (paren
@@ -648,7 +710,7 @@ l_int|0xf0
 comma
 l_int|0x55
 comma
-l_int|0
+id|base
 comma
 id|map
 comma
@@ -660,6 +722,11 @@ l_int|NULL
 )paren
 suffix:semicolon
 r_return
+id|cfi_amdstd_setup
+c_func
+(paren
+id|map
+)paren
 suffix:semicolon
 )brace
 DECL|function|cfi_amdstd_setup
@@ -4526,12 +4593,6 @@ id|cfi
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|cfi_amdstd_init
-mdefine_line|#define cfi_amdstd_init init_module
-DECL|macro|cfi_amdstd_exit
-mdefine_line|#define cfi_amdstd_exit cleanup_module
-macro_line|#endif
 DECL|variable|im_name
 r_static
 r_char
@@ -4542,7 +4603,8 @@ op_assign
 l_string|&quot;cfi_cmdset_0002&quot;
 suffix:semicolon
 DECL|function|cfi_amdstd_init
-id|mod_init_t
+r_int
+id|__init
 id|cfi_amdstd_init
 c_func
 (paren
@@ -4565,7 +4627,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cfi_amdstd_exit
-id|mod_exit_t
+r_static
+r_void
+id|__exit
 id|cfi_amdstd_exit
 c_func
 (paren
@@ -4591,6 +4655,24 @@ id|module_exit
 c_func
 (paren
 id|cfi_amdstd_exit
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Crossnet Co. &lt;info@crossnet.co.jp&gt; et al.&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;MTD chip driver for AMD/Fujitsu flash chips&quot;
 )paren
 suffix:semicolon
 eof

@@ -1,5 +1,4 @@
-multiline_comment|/*&n; * $Id: mtdchar.c,v 1.38.2.1 2001/06/09 17:31:16 dwmw2 Exp $&n; *&n; * Character-device access to raw MTD devices.&n; *&n; */
-macro_line|#include &lt;linux/mtd/compatmac.h&gt;
+multiline_comment|/*&n; * $Id: mtdchar.c,v 1.44 2001/10/02 15:05:11 dwmw2 Exp $&n; *&n; * Character-device access to raw MTD devices.&n; * Pure 2.4 version - compatibility cruft removed to mtdchar-compat.c&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -268,6 +267,25 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|MTD_ABSENT
+op_eq
+id|mtd-&gt;type
+)paren
+(brace
+id|put_mtd_device
+c_func
+(paren
+id|mtd
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 id|file-&gt;private_data
 op_assign
 id|mtd
@@ -309,7 +327,7 @@ multiline_comment|/* mtd_open */
 multiline_comment|/*====================================================================*/
 DECL|function|mtd_close
 r_static
-id|release_t
+r_int
 id|mtd_close
 c_func
 (paren
@@ -365,21 +383,11 @@ c_func
 id|mtd
 )paren
 suffix:semicolon
-id|release_return
-c_func
-(paren
+r_return
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* mtd_close */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0)
-DECL|macro|FILE_POS
-mdefine_line|#define FILE_POS *ppos
-macro_line|#else
-DECL|macro|FILE_POS
-mdefine_line|#define FILE_POS file-&gt;f_pos
-macro_line|#endif
 multiline_comment|/* FIXME: This _really_ needs to die. In 2.5, we should lock the&n;   userspace buffer down and use it directly with readv/writev.&n;*/
 DECL|macro|MAX_KMALLOC_SIZE
 mdefine_line|#define MAX_KMALLOC_SIZE 0x20000
@@ -451,7 +459,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|FILE_POS
+op_star
+id|ppos
 op_plus
 id|count
 OG
@@ -461,7 +470,8 @@ id|count
 op_assign
 id|mtd-&gt;size
 op_minus
-id|FILE_POS
+op_star
+id|ppos
 suffix:semicolon
 r_if
 c_cond
@@ -522,7 +532,8 @@ c_func
 (paren
 id|mtd
 comma
-id|FILE_POS
+op_star
+id|ppos
 comma
 id|len
 comma
@@ -539,7 +550,8 @@ op_logical_neg
 id|ret
 )paren
 (brace
-id|FILE_POS
+op_star
+id|ppos
 op_add_assign
 id|retlen
 suffix:semicolon
@@ -673,7 +685,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|FILE_POS
+op_star
+id|ppos
 op_eq
 id|mtd-&gt;size
 )paren
@@ -684,7 +697,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|FILE_POS
+op_star
+id|ppos
 op_plus
 id|count
 OG
@@ -694,7 +708,8 @@ id|count
 op_assign
 id|mtd-&gt;size
 op_minus
-id|FILE_POS
+op_star
+id|ppos
 suffix:semicolon
 r_if
 c_cond
@@ -791,7 +806,8 @@ id|mtd-&gt;write
 (paren
 id|mtd
 comma
-id|FILE_POS
+op_star
+id|ppos
 comma
 id|len
 comma
@@ -808,7 +824,8 @@ op_logical_neg
 id|ret
 )paren
 (brace
-id|FILE_POS
+op_star
+id|ppos
 op_add_assign
 id|retlen
 suffix:semicolon
@@ -1269,20 +1286,6 @@ op_amp
 id|waitq
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;  FIXME: Allow INTERRUPTIBLE. Which means&n;&t;&t;&t;  not having the wait_queue head on the stack.&n;&t;&t;&t;  &n;&t;&t;&t;  If the wq_head is on the stack, and we&n;&t;&t;&t;  leave because we got interrupted, then the&n;&t;&t;&t;  wq_head is no longer there when the&n;&t;&t;&t;  callback routine tries to wake us up.&n;&t;&t;&t;*/
-id|current-&gt;state
-op_assign
-id|TASK_UNINTERRUPTIBLE
-suffix:semicolon
-id|add_wait_queue
-c_func
-(paren
-op_amp
-id|waitq
-comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|mtd
@@ -1301,6 +1304,34 @@ c_cond
 op_logical_neg
 id|ret
 )paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|add_wait_queue
+c_func
+(paren
+op_amp
+id|waitq
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|erase-&gt;state
+op_ne
+id|MTD_ERASE_DONE
+op_logical_and
+id|erase-&gt;state
+op_ne
+id|MTD_ERASE_FAILED
+)paren
 id|schedule
 c_func
 (paren
@@ -1316,16 +1347,12 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
-suffix:semicolon
-r_if
-c_cond
+id|set_current_state
+c_func
 (paren
-op_logical_neg
-id|ret
+id|TASK_RUNNING
 )paren
+suffix:semicolon
 id|ret
 op_assign
 (paren
@@ -1333,7 +1360,13 @@ id|erase-&gt;state
 op_eq
 id|MTD_ERASE_FAILED
 )paren
+ques
+op_minus
+id|EIO
+suffix:colon
+l_int|0
 suffix:semicolon
+)brace
 id|kfree
 c_func
 (paren
@@ -2093,14 +2126,10 @@ id|mtd-&gt;index
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|init_mtdchar
-mdefine_line|#define init_mtdchar init_module
-DECL|macro|cleanup_mtdchar
-mdefine_line|#define cleanup_mtdchar cleanup_module
-macro_line|#endif
 DECL|function|init_mtdchar
-id|mod_init_t
+r_static
+r_int
+id|__init
 id|init_mtdchar
 c_func
 (paren
@@ -2192,7 +2221,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cleanup_mtdchar
-id|mod_exit_t
+r_static
+r_void
+id|__exit
 id|cleanup_mtdchar
 c_func
 (paren
@@ -2244,6 +2275,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_mtdchar
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David Woodhouse &lt;dwmw2@infradead.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Direct character-device access to MTD devices&quot;
 )paren
 suffix:semicolon
 eof

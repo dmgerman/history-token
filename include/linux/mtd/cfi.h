@@ -1,4 +1,4 @@
-multiline_comment|/* Common Flash Interface structures &n; * See http://support.intel.com/design/flash/technote/index.htm&n; * $Id: cfi.h,v 1.22 2001/07/06 09:29:07 dwmw2 Exp $&n; */
+multiline_comment|/* Common Flash Interface structures &n; * See http://support.intel.com/design/flash/technote/index.htm&n; * $Id: cfi.h,v 1.25 2001/09/04 07:06:21 dwmw2 Exp $&n; */
 macro_line|#ifndef __MTD_CFI_H__
 DECL|macro|__MTD_CFI_H__
 mdefine_line|#define __MTD_CFI_H__
@@ -481,7 +481,7 @@ suffix:semicolon
 multiline_comment|/* For now only one. We insist that all devs&n;&t;&t;&t;&t;  must be of the same type. */
 DECL|member|mfr
 DECL|member|id
-id|__u8
+r_int
 id|mfr
 comma
 id|id
@@ -1128,11 +1128,41 @@ c_cond
 (paren
 id|current-&gt;need_resched
 )paren
-id|schedule
+(brace
+r_int
+r_int
+id|t
+op_assign
+id|us
+op_star
+id|HZ
+op_div
+l_int|1000000
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|t
+OL
+l_int|1
+)paren
+id|t
+op_assign
+l_int|1
+suffix:semicolon
+id|set_current_state
 c_func
 (paren
+id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|t
+)paren
+suffix:semicolon
+)brace
 r_else
 macro_line|#endif
 id|udelay

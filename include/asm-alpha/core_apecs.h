@@ -1577,6 +1577,7 @@ id|apecs_iounmap
 c_func
 (paren
 r_int
+r_int
 id|addr
 )paren
 (brace

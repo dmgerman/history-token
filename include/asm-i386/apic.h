@@ -187,6 +187,14 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|clear_local_APIC
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|connect_bsp_APIC
 (paren
 r_void

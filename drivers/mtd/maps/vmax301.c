@@ -1,4 +1,4 @@
-singleline_comment|// $Id: vmax301.c,v 1.22 2001/06/02 14:30:44 dwmw2 Exp $
+singleline_comment|// $Id: vmax301.c,v 1.24 2001/10/02 15:05:14 dwmw2 Exp $
 multiline_comment|/* ######################################################################&n;&n;   Tempustech VMAX SBC301 MTD Driver.&n;  &n;   The VMAx 301 is a SBC based on . It&n;   comes with three builtin AMD 29F016B flash chips and a socket for SRAM or&n;   more flash. Each unit has it&squot;s own 8k mapping into a settable region &n;   (0xD8000). There are two 8k mappings for each MTD, the first is always set&n;   to the lower 8k of the device the second is paged. Writing a 16 bit page&n;   value to anywhere in the first 8k will cause the second 8k to page around.&n;&n;   To boot the device a bios extension must be installed into the first 8k &n;   of flash that is smart enough to copy itself down, page in the rest of &n;   itself and begin executing.&n;   &n;   ##################################################################### */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -808,12 +808,6 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|init_vmax301
-mdefine_line|#define init_vmax301 init_module
-DECL|macro|cleanup_vmax301
-mdefine_line|#define cleanup_vmax301 cleanup_module
-macro_line|#endif
 DECL|function|cleanup_vmax301
 r_static
 r_void
@@ -1004,7 +998,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;cfi&quot;
+l_string|&quot;cfi_probe&quot;
 comma
 op_amp
 id|vmax_map
@@ -1056,7 +1050,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;ram&quot;
+l_string|&quot;map_ram&quot;
 comma
 op_amp
 id|vmax_map
@@ -1082,7 +1076,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;rom&quot;
+l_string|&quot;map_rom&quot;
 comma
 op_amp
 id|vmax_map
@@ -1167,6 +1161,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_vmax301
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David Woodhouse &lt;dwmw2@infradead.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;MTD map driver for Tempustech VMAX SBC301 board&quot;
 )paren
 suffix:semicolon
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: mtdblock_ro.c,v 1.5 2001/06/10 01:41:53 dwmw2 Exp $&n; *&n; * Read-only version of the mtdblock device, without the &n; * read/erase/modify/writeback stuff&n; */
+multiline_comment|/*&n; * $Id: mtdblock_ro.c,v 1.9 2001/10/02 15:05:11 dwmw2 Exp $&n; *&n; * Read-only version of the mtdblock device, without the &n; * read/erase/modify/writeback stuff&n; */
 macro_line|#ifdef MTDBLOCK_DEBUG
 DECL|macro|DEBUGLVL
 mdefine_line|#define DEBUGLVL debug
@@ -6,6 +6,7 @@ macro_line|#endif&t;&t;&t;&t;&t;&t;&t;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
+macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR MTD_BLOCK_MAJOR
 DECL|macro|DEVICE_NAME
@@ -109,8 +110,6 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|mtd
 op_assign
 id|get_mtd_device
@@ -127,14 +126,31 @@ c_cond
 op_logical_neg
 id|mtd
 )paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|MTD_ABSENT
+op_eq
+id|mtd-&gt;type
+)paren
 (brace
-id|MOD_DEC_USE_COUNT
+id|put_mtd_device
+c_func
+(paren
+id|mtd
+)paren
 suffix:semicolon
 r_return
 op_minus
-id|ENODEV
+id|EINVAL
 suffix:semicolon
 )brace
+id|MOD_INC_USE_COUNT
+suffix:semicolon
 id|mtd_sizes
 (braket
 id|dev
@@ -795,12 +811,6 @@ id|mtdblock_ioctl
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|init_mtdblock
-mdefine_line|#define init_mtdblock init_module
-DECL|macro|cleanup_mtdblock
-mdefine_line|#define cleanup_mtdblock cleanup_module
-macro_line|#endif
 DECL|function|init_mtdblock
 r_int
 id|__init
@@ -880,17 +890,6 @@ id|MAJOR_NR
 op_assign
 id|mtd_sizes
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20320
-id|blk_dev
-(braket
-id|MAJOR_NR
-)braket
-dot
-id|request_fn
-op_assign
-id|mtdblock_request
-suffix:semicolon
-macro_line|#else
 id|blk_init_queue
 c_func
 (paren
@@ -904,7 +903,6 @@ op_amp
 id|mtdblock_request
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -927,6 +925,23 @@ comma
 id|DEVICE_NAME
 )paren
 suffix:semicolon
+id|blksize_size
+(braket
+id|MAJOR_NR
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
+id|blk_cleanup_queue
+c_func
+(paren
+id|BLK_DEFAULT_QUEUE
+c_func
+(paren
+id|MAJOR_NR
+)paren
+)paren
+suffix:semicolon
 )brace
 DECL|variable|init_mtdblock
 id|module_init
@@ -940,6 +955,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_mtdblock
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Erwin Authried &lt;eauth@softsys.co.at&gt; et al.&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Simple read-only block device emulation access to MTD devices&quot;
 )paren
 suffix:semicolon
 eof

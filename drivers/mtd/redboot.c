@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: redboot.c,v 1.4 2001/05/31 20:43:18 dwmw2 Exp $&n; *&n; * Parse RedBoot-style Flash Image System (FIS) tables and&n; * produce a Linux partition array to match.&n; */
+multiline_comment|/*&n; * $Id: redboot.c,v 1.5 2001/10/02 15:05:11 dwmw2 Exp $&n; *&n; * Parse RedBoot-style Flash Image System (FIS) tables and&n; * produce a Linux partition array to match.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -771,6 +771,24 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|parse_redboot_partitions
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Red Hat, Inc. - David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Parsing code for RedBoot Flash Image System (FIS) tables&quot;
 )paren
 suffix:semicolon
 eof

@@ -1,5 +1,6 @@
-multiline_comment|/* JEDEC Flash Interface.&n; * This is an older type of interface for self programming flash. It is &n; * commonly use in older AMD chips and is obsolete compared with CFI.&n; * It is called JEDEC because the JEDEC association distributes the ID codes&n; * for the chips.&n; *&n; * See the AMD flash databook for information on how to operate the interface.&n; *&n; * This code does not support anything wider than 8 bit flash chips, I am&n; * not going to guess how to send commands to them, plus I expect they will&n; * all speak CFI..&n; *&n; * $Id: jedec.c,v 1.8 2001/06/09 23:56:57 dwmw2 Exp $&n; */
+multiline_comment|/* JEDEC Flash Interface.&n; * This is an older type of interface for self programming flash. It is &n; * commonly use in older AMD chips and is obsolete compared with CFI.&n; * It is called JEDEC because the JEDEC association distributes the ID codes&n; * for the chips.&n; *&n; * See the AMD flash databook for information on how to operate the interface.&n; *&n; * This code does not support anything wider than 8 bit flash chips, I am&n; * not going to guess how to send commands to them, plus I expect they will&n; * all speak CFI..&n; *&n; * $Id: jedec.c,v 1.11 2001/10/02 15:05:12 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/mtd/jedec.h&gt;
+r_static
 r_struct
 id|mtd_info
 op_star
@@ -11,6 +12,7 @@ id|map_info
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|jedec_probe8
 c_func
@@ -30,6 +32,7 @@ op_star
 id|priv
 )paren
 suffix:semicolon
+r_static
 r_int
 id|jedec_probe16
 c_func
@@ -49,6 +52,7 @@ op_star
 id|priv
 )paren
 suffix:semicolon
+r_static
 r_int
 id|jedec_probe32
 c_func
@@ -318,6 +322,7 @@ op_star
 id|buf
 )paren
 suffix:semicolon
+r_static
 r_struct
 id|mtd_info
 op_star
@@ -351,17 +356,8 @@ id|THIS_MODULE
 )brace
 suffix:semicolon
 multiline_comment|/* Probe entry point */
-DECL|variable|priv
-r_struct
-id|jedec_private
-id|priv
-suffix:semicolon
-DECL|variable|__MTD
-r_struct
-id|mtd_info
-id|__MTD
-suffix:semicolon
 DECL|function|jedec_probe
+r_static
 r_struct
 id|mtd_info
 op_star
@@ -378,9 +374,11 @@ r_struct
 id|mtd_info
 op_star
 id|MTD
-op_assign
-op_amp
-id|__MTD
+suffix:semicolon
+r_struct
+id|jedec_private
+op_star
+id|priv
 suffix:semicolon
 r_int
 r_int
@@ -418,6 +416,68 @@ id|priv
 )paren
 )paren
 suffix:semicolon
+id|MTD
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|mtd_info
+)paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|jedec_private
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|MTD
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|MTD
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|mtd_info
+)paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|jedec_private
+)paren
+)paren
+suffix:semicolon
+id|priv
+op_assign
+(paren
+r_struct
+id|jedec_private
+op_star
+)paren
+op_amp
+id|MTD
+(braket
+l_int|1
+)braket
+suffix:semicolon
 id|my_bank_size
 op_assign
 id|map-&gt;size
@@ -436,6 +496,12 @@ id|printk
 c_func
 (paren
 l_string|&quot;mtd: Increase MAX_JEDEC_CHIPS, too many banks.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|MTD
 )paren
 suffix:semicolon
 r_return
@@ -488,7 +554,6 @@ id|map
 comma
 id|Base
 comma
-op_amp
 id|priv
 )paren
 op_eq
@@ -499,6 +564,12 @@ id|printk
 c_func
 (paren
 l_string|&quot;did recognize jedec chip&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|MTD
 )paren
 suffix:semicolon
 r_return
@@ -520,7 +591,6 @@ id|map
 comma
 id|Base
 comma
-op_amp
 id|priv
 )paren
 suffix:semicolon
@@ -538,7 +608,6 @@ id|map
 comma
 id|Base
 comma
-op_amp
 id|priv
 )paren
 suffix:semicolon
@@ -555,7 +624,7 @@ id|I
 op_assign
 l_int|0
 suffix:semicolon
-id|priv.chips
+id|priv-&gt;chips
 (braket
 id|I
 )braket
@@ -572,12 +641,12 @@ id|I
 op_increment
 )paren
 (brace
-singleline_comment|//&t;   printk(&quot;priv.chips[%d].jedec is %x&bslash;n&quot;,I,priv.chips[I].jedec);
-singleline_comment|//&t;   printk(&quot;priv.chips[%d].sectorsize is %lx&bslash;n&quot;,I,priv.chips[I].sectorsize);
+singleline_comment|//&t;   printk(&quot;priv-&gt;chips[%d].jedec is %x&bslash;n&quot;,I,priv-&gt;chips[I].jedec);
+singleline_comment|//&t;   printk(&quot;priv-&gt;chips[%d].sectorsize is %lx&bslash;n&quot;,I,priv-&gt;chips[I].sectorsize);
 r_if
 c_cond
 (paren
-id|priv.chips
+id|priv-&gt;chips
 (braket
 id|I
 )braket
@@ -588,7 +657,7 @@ id|SectorSize
 )paren
 id|SectorSize
 op_assign
-id|priv.chips
+id|priv-&gt;chips
 (braket
 id|I
 )braket
@@ -604,7 +673,7 @@ id|I
 op_assign
 l_int|0
 suffix:semicolon
-id|priv.chips
+id|priv-&gt;chips
 (braket
 id|I
 )braket
@@ -627,7 +696,7 @@ c_cond
 (paren
 id|SectorSize
 op_div
-id|priv.chips
+id|priv-&gt;chips
 (braket
 id|I
 )braket
@@ -635,7 +704,7 @@ dot
 id|sectorsize
 )paren
 op_star
-id|priv.chips
+id|priv-&gt;chips
 (braket
 id|I
 )braket
@@ -649,6 +718,12 @@ id|printk
 c_func
 (paren
 l_string|&quot;mtd: Failed. Device has incompatible mixed sector sizes&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|MTD
 )paren
 suffix:semicolon
 r_return
@@ -707,7 +782,7 @@ id|I
 op_assign
 l_int|0
 suffix:semicolon
-id|priv.chips
+id|priv-&gt;chips
 (braket
 id|I
 )braket
@@ -733,7 +808,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|priv.chips
+id|priv-&gt;chips
 (braket
 id|I
 op_plus
@@ -742,7 +817,7 @@ l_int|1
 dot
 id|jedec
 op_eq
-id|priv.chips
+id|priv-&gt;chips
 (braket
 id|I
 )braket
@@ -762,7 +837,7 @@ op_assign
 id|jedec_idtoinf
 c_func
 (paren
-id|priv.chips
+id|priv-&gt;chips
 (braket
 id|I
 )braket
@@ -771,7 +846,7 @@ id|jedec
 op_rshift
 l_int|8
 comma
-id|priv.chips
+id|priv-&gt;chips
 (braket
 id|I
 )braket
@@ -791,6 +866,12 @@ id|printk
 c_func
 (paren
 l_string|&quot;mtd: Internal Error, JEDEC not set&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|MTD
 )paren
 suffix:semicolon
 r_return
@@ -886,31 +967,37 @@ multiline_comment|/* Determine if the chips are organized in a linear fashion, o
 r_if
 c_cond
 (paren
-id|priv.size
+id|priv-&gt;size
 OL
 id|my_bank_size
 )paren
 id|my_bank_size
 op_assign
-id|priv.size
+id|priv-&gt;size
 suffix:semicolon
-id|priv.is_banked
+id|priv-&gt;is_banked
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|//printk(&quot;priv.size is %x, my_bank_size is %x&bslash;n&quot;,priv.size,my_bank_size);
-singleline_comment|//printk(&quot;priv.bank_fill[0] is %x&bslash;n&quot;,priv.bank_fill[0]);
+singleline_comment|//printk(&quot;priv-&gt;size is %x, my_bank_size is %x&bslash;n&quot;,priv-&gt;size,my_bank_size);
+singleline_comment|//printk(&quot;priv-&gt;bank_fill[0] is %x&bslash;n&quot;,priv-&gt;bank_fill[0]);
 r_if
 c_cond
 (paren
 op_logical_neg
-id|priv.size
+id|priv-&gt;size
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;priv.size is zero&bslash;n&quot;
+l_string|&quot;priv-&gt;size is zero&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|MTD
 )paren
 suffix:semicolon
 r_return
@@ -920,7 +1007,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|priv.size
+id|priv-&gt;size
 op_div
 id|my_bank_size
 )paren
@@ -928,14 +1015,14 @@ id|my_bank_size
 r_if
 c_cond
 (paren
-id|priv.size
+id|priv-&gt;size
 op_div
 id|my_bank_size
 op_eq
 l_int|1
 )paren
 (brace
-id|priv.size
+id|priv-&gt;size
 op_assign
 id|my_bank_size
 suffix:semicolon
@@ -951,7 +1038,7 @@ l_int|0
 suffix:semicolon
 id|I
 op_ne
-id|priv.size
+id|priv-&gt;size
 op_div
 id|my_bank_size
 op_minus
@@ -964,14 +1051,14 @@ op_increment
 r_if
 c_cond
 (paren
-id|priv.bank_fill
+id|priv-&gt;bank_fill
 (braket
 id|I
 )braket
 op_ne
 id|my_bank_size
 )paren
-id|priv.is_banked
+id|priv-&gt;is_banked
 op_assign
 l_int|1
 suffix:semicolon
@@ -979,16 +1066,16 @@ multiline_comment|/* This even could be eliminated, but new de-optimized read/wr
 id|printk
 c_func
 (paren
-l_string|&quot;priv.bank_fill[%d] is %lx, priv.bank_fill[0] is %lx&bslash;n&quot;
+l_string|&quot;priv-&gt;bank_fill[%d] is %lx, priv-&gt;bank_fill[0] is %lx&bslash;n&quot;
 comma
 id|I
 comma
-id|priv.bank_fill
+id|priv-&gt;bank_fill
 (braket
 id|I
 )braket
 comma
-id|priv.bank_fill
+id|priv-&gt;bank_fill
 (braket
 l_int|0
 )braket
@@ -997,12 +1084,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|priv.bank_fill
+id|priv-&gt;bank_fill
 (braket
 id|I
 )braket
 op_ne
-id|priv.bank_fill
+id|priv-&gt;bank_fill
 (braket
 l_int|0
 )braket
@@ -1011,7 +1098,13 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;mtd: Failed. Cannot handle unsymetric banking&bslash;n&quot;
+l_string|&quot;mtd: Failed. Cannot handle unsymmetric banking&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|MTD
 )paren
 suffix:semicolon
 r_return
@@ -1024,7 +1117,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|priv.is_banked
+id|priv-&gt;is_banked
 op_eq
 l_int|1
 )paren
@@ -1076,7 +1169,7 @@ suffix:semicolon
 singleline_comment|//   printk(&quot;MTD-&gt;erasesize is %x&bslash;n&quot;,(unsigned int)MTD-&gt;erasesize);
 id|MTD-&gt;size
 op_assign
-id|priv.size
+id|priv-&gt;size
 suffix:semicolon
 singleline_comment|//   printk(&quot;MTD-&gt;size is %x&bslash;n&quot;,(unsigned int)MTD-&gt;size);
 singleline_comment|//MTD-&gt;module = THIS_MODULE; // ? Maybe this should be the low level module?
@@ -1087,7 +1180,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|priv.is_banked
+id|priv-&gt;is_banked
 op_eq
 l_int|1
 )paren
@@ -1114,7 +1207,6 @@ id|map
 suffix:semicolon
 id|map-&gt;fldrv_priv
 op_assign
-op_amp
 id|priv
 suffix:semicolon
 id|map-&gt;fldrv
@@ -1766,6 +1858,7 @@ suffix:semicolon
 )brace
 singleline_comment|// Look for flash using an 8 bit bus interface
 DECL|function|jedec_probe8
+r_static
 r_int
 id|jedec_probe8
 c_func
@@ -1994,6 +2087,7 @@ macro_line|#undef flwrite
 )brace
 singleline_comment|// Look for flash using a 16 bit bus interface (ie 2 8-bit chips)
 DECL|function|jedec_probe16
+r_static
 r_int
 id|jedec_probe16
 c_func
@@ -2019,6 +2113,7 @@ suffix:semicolon
 )brace
 singleline_comment|// Look for flash using a 32 bit bus interface (ie 4 8-bit chips)
 DECL|function|jedec_probe32
+r_static
 r_int
 id|jedec_probe32
 c_func
@@ -4546,13 +4641,6 @@ id|chip-&gt;addrshift
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*}}}*/
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|jedec_probe_init
-mdefine_line|#define jedec_probe_init init_module
-DECL|macro|jedec_probe_exit
-mdefine_line|#define jedec_probe_exit cleanup_module
-macro_line|#endif
 DECL|function|jedec_probe_init
 r_int
 id|__init
@@ -4603,6 +4691,24 @@ id|module_exit
 c_func
 (paren
 id|jedec_probe_exit
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Jason Gunthorpe &lt;jgg@deltatee.com&gt; et al.&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Old MTD chip driver for JEDEC-compliant flash chips&quot;
 )paren
 suffix:semicolon
 eof

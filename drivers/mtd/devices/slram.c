@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;  $Id: slram.c,v 1.19 2001/06/02 20:33:20 dwmw2 Exp $&n;&n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;  $Id: slram.c,v 1.25 2001/10/02 15:05:13 dwmw2 Exp $&n;&n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -81,13 +81,6 @@ op_star
 id|map
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef MODULE
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212
-DECL|macro|init_slram
-mdefine_line|#define init_slram init_module
-DECL|macro|cleanup_slram
-mdefine_line|#define cleanup_slram cleanup_module
-macro_line|#endif
 id|MODULE_PARM
 c_func
 (paren
@@ -110,7 +103,6 @@ comma
 l_string|&quot;List of memory regions to map. &bslash;&quot;map=&lt;name&gt;, &lt;start&gt;, &lt;length / end&gt;&bslash;&quot;&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|slram_mtdlist
 r_static
 id|slram_mtd_list_t
@@ -479,8 +471,10 @@ op_star
 id|name
 comma
 r_int
+r_int
 id|start
 comma
+r_int
 r_int
 id|length
 )paren
@@ -531,7 +525,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
+op_star
 id|curmtd
+)paren
 )paren
 (brace
 id|E
@@ -955,22 +952,16 @@ suffix:semicolon
 id|T
 c_func
 (paren
-l_string|&quot;slram: Registered device %s from %dKiB to %dKiB&bslash;n&quot;
+l_string|&quot;slram: Registered device %s from %luKiB to %luKiB&bslash;n&quot;
 comma
 id|name
 comma
-(paren
-r_int
-)paren
 (paren
 id|start
 op_div
 l_int|1024
 )paren
 comma
-(paren
-r_int
-)paren
 (paren
 (paren
 id|start
@@ -1090,9 +1081,11 @@ suffix:semicolon
 )brace
 DECL|function|handle_unit
 r_int
+r_int
 id|handle_unit
 c_func
 (paren
+r_int
 r_int
 id|value
 comma
@@ -1179,8 +1172,10 @@ op_star
 id|buffer
 suffix:semicolon
 r_int
+r_int
 id|devstart
 suffix:semicolon
+r_int
 r_int
 id|devlength
 suffix:semicolon
@@ -1304,7 +1299,7 @@ suffix:semicolon
 id|T
 c_func
 (paren
-l_string|&quot;slram: devname=%s, devstart=%li, devlength=%li&bslash;n&quot;
+l_string|&quot;slram: devname=%s, devstart=0x%lx, devlength=0x%lx&bslash;n&quot;
 comma
 id|devname
 comma
@@ -1756,6 +1751,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_slram
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Jochen Schaeuble &lt;psionic@psionic.de&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;MTD driver for uncached system RAM&quot;
 )paren
 suffix:semicolon
 eof

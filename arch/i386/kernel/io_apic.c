@@ -30,13 +30,6 @@ id|nr_ioapic_registers
 id|MAX_IO_APICS
 )braket
 suffix:semicolon
-macro_line|#if CONFIG_SMP
-DECL|macro|TARGET_CPUS
-macro_line|# define TARGET_CPUS cpu_online_map
-macro_line|#else
-DECL|macro|TARGET_CPUS
-macro_line|# define TARGET_CPUS 0x01
-macro_line|#endif
 multiline_comment|/*&n; * Rough estimation of how many shared IRQs there are, can&n; * be changed anytime.&n; */
 DECL|macro|MAX_PLUS_SHARED_IRQS
 mdefine_line|#define MAX_PLUS_SHARED_IRQS NR_IRQS
@@ -2216,9 +2209,8 @@ id|dest_LowestPrio
 suffix:semicolon
 id|entry.dest_mode
 op_assign
-l_int|1
+id|INT_DELIVERY_MODE
 suffix:semicolon
-multiline_comment|/* logical delivery */
 id|entry.mask
 op_assign
 l_int|0
@@ -2595,9 +2587,8 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * We use logical delivery to get the timer IRQ&n;&t; * to the first CPU.&n;&t; */
 id|entry.dest_mode
 op_assign
-l_int|1
+id|INT_DELIVERY_MODE
 suffix:semicolon
-multiline_comment|/* logical delivery */
 id|entry.mask
 op_assign
 l_int|0
@@ -4426,6 +4417,19 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|clustered_apic_mode
+)paren
+multiline_comment|/* We don&squot;t have a good way to do this yet - hack */
+id|phys_id_present_map
+op_assign
+(paren
+id|u_long
+)paren
+l_int|0xf
+suffix:semicolon
 multiline_comment|/*&n;&t; * Set the IOAPIC ID to the value stored in the MPC table.&n;&t; */
 r_for
 c_loop
@@ -4634,6 +4638,33 @@ dot
 id|mpc_apicid
 op_assign
 id|i
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Setting %d in the phys_id_present_map&bslash;n&quot;
+comma
+id|mp_ioapics
+(braket
+id|apic
+)braket
+dot
+id|mpc_apicid
+)paren
+suffix:semicolon
+id|phys_id_present_map
+op_or_assign
+l_int|1
+op_lshift
+id|mp_ioapics
+(braket
+id|apic
+)braket
+dot
+id|mpc_apicid
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * We need to adjust the IRQ routing table&n;&t;&t; * if the ID changed.&n;&t;&t; */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: physmap.c,v 1.13 2001/06/10 00:14:55 dwmw2 Exp $&n; *&n; * Normal mappings of chips in physical memory&n; */
+multiline_comment|/*&n; * $Id: physmap.c,v 1.15 2001/10/02 15:05:14 dwmw2 Exp $&n; *&n; * Normal mappings of chips in physical memory&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -318,12 +318,6 @@ suffix:colon
 id|physmap_copy_to
 )brace
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|init_physmap
-mdefine_line|#define init_physmap init_module
-DECL|macro|cleanup_physmap
-mdefine_line|#define cleanup_physmap cleanup_module
-macro_line|#endif
 DECL|function|init_physmap
 r_int
 id|__init
@@ -381,7 +375,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;cfi&quot;
+l_string|&quot;cfi_probe&quot;
 comma
 op_amp
 id|physmap_map
@@ -485,6 +479,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_physmap
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David Woodhouse &lt;dwmw2@infradead.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Generic configurable MTD map driver&quot;
 )paren
 suffix:semicolon
 eof

@@ -9952,6 +9952,7 @@ id|i
 comma
 id|n
 suffix:semicolon
+multiline_comment|/* &n;&t; * WARNING - nasty evil hack ... if we print &gt; 8, it overflows the&n;&t; * page buffer and corrupts memory - this needs fixing properly&n;&t; */
 r_for
 c_loop
 (paren
@@ -9961,7 +9962,7 @@ l_int|0
 suffix:semicolon
 id|n
 OL
-id|NR_CPUS
+l_int|8
 suffix:semicolon
 id|n
 op_increment
@@ -9970,6 +9971,7 @@ id|c
 op_increment
 )paren
 (brace
+multiline_comment|/* for (n = 0; n &lt; NR_CPUS; n++, c++) { */
 r_int
 id|fpu_exception
 suffix:semicolon
@@ -10285,7 +10287,6 @@ id|buffer
 suffix:semicolon
 )brace
 DECL|variable|__initdata
-r_static
 r_int
 r_int
 id|cpu_initialized

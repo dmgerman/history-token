@@ -112,7 +112,6 @@ id|maxlvt
 suffix:semicolon
 )brace
 DECL|function|clear_local_APIC
-r_static
 r_void
 id|clear_local_APIC
 c_func
@@ -817,6 +816,46 @@ id|ver
 comma
 id|maxlvt
 suffix:semicolon
+multiline_comment|/* Pound the ESR really hard over the head with a big hammer - mbligh */
+r_if
+c_cond
+(paren
+id|esr_disable
+)paren
+(brace
+id|apic_write
+c_func
+(paren
+id|APIC_ESR
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|apic_write
+c_func
+(paren
+id|APIC_ESR
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|apic_write
+c_func
+(paren
+id|APIC_ESR
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|apic_write
+c_func
+(paren
+id|APIC_ESR
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 id|value
 op_assign
 id|apic_read
@@ -849,10 +888,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Double-check wether this APIC is really registered.&n;&t; */
+multiline_comment|/*&n;&t; * Double-check wether this APIC is really registered.&n;&t; * This is meaningless in clustered apic mode, so we skip it.&n;&t; */
 r_if
 c_cond
 (paren
+op_logical_neg
+id|clustered_apic_mode
+op_logical_and
 op_logical_neg
 id|test_bit
 c_func
@@ -877,7 +919,14 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Intel recommends to set DFR, LDR and TPR before enabling&n;&t; * an APIC.  See e.g. &quot;AP-388 82489DX User&squot;s Manual&quot; (Intel&n;&t; * document number 292116).  So here it goes...&n;&t; */
-multiline_comment|/*&n;&t; * Put the APIC into flat delivery mode.&n;&t; * Must be &quot;all ones&quot; explicitly for 82489DX.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|clustered_apic_mode
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * In clustered apic mode, the firmware does this for us &n;&t;&t; * Put the APIC into flat delivery mode.&n;&t;&t; * Must be &quot;all ones&quot; explicitly for 82489DX.&n;&t;&t; */
 id|apic_write_around
 c_func
 (paren
@@ -886,7 +935,7 @@ comma
 l_int|0xffffffff
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set up the logical destination ID.&n;&t; */
+multiline_comment|/*&n;&t;&t; * Set up the logical destination ID.&n;&t;&t; */
 id|value
 op_assign
 id|apic_read
@@ -923,6 +972,7 @@ comma
 id|value
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Set Task Priority to &squot;accept all&squot;. We never change this&n;&t; * later on.&n;&t; */
 id|value
 op_assign
@@ -1118,6 +1168,9 @@ c_func
 (paren
 id|ver
 )paren
+op_logical_and
+op_logical_neg
+id|esr_disable
 )paren
 (brace
 multiline_comment|/* !82489DX */
@@ -1207,12 +1260,27 @@ id|value
 suffix:semicolon
 )brace
 r_else
+(brace
+r_if
+c_cond
+(paren
+id|esr_disable
+)paren
+multiline_comment|/* &n;&t;&t;&t; * Something untraceble is creating bad interrupts on &n;&t;&t;&t; * secondary quads ... for the moment, just leave the&n;&t;&t;&t; * ESR disabled - we can&squot;t do anything useful with the&n;&t;&t;&t; * errors anyway - mbligh&n;&t;&t;&t; */
+id|printk
+c_func
+(paren
+l_string|&quot;Leaving ESR disabled.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
 id|printk
 c_func
 (paren
 l_string|&quot;No ESR for 82489DX.&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2172,7 +2240,7 @@ id|mp_lapic_addr
 op_assign
 id|APIC_DEFAULT_PHYS_BASE
 suffix:semicolon
-id|boot_cpu_id
+id|boot_cpu_physical_apicid
 op_assign
 l_int|0
 suffix:semicolon
@@ -2293,12 +2361,12 @@ multiline_comment|/*&n;&t; * Fetch the APIC ID of the BSP in case we have a&n;&t
 r_if
 c_cond
 (paren
-id|boot_cpu_id
+id|boot_cpu_physical_apicid
 op_eq
 op_minus
 l_int|1U
 )paren
-id|boot_cpu_id
+id|boot_cpu_physical_apicid
 op_assign
 id|GET_APIC_ID
 c_func
@@ -3532,7 +3600,7 @@ c_func
 (paren
 id|apic_version
 (braket
-id|boot_cpu_id
+id|boot_cpu_physical_apicid
 )braket
 )paren
 )paren
@@ -3543,7 +3611,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;BIOS bug, local APIC #%d not detected!...&bslash;n&quot;
 comma
-id|boot_cpu_id
+id|boot_cpu_physical_apicid
 )paren
 suffix:semicolon
 r_return
@@ -3570,7 +3638,7 @@ c_func
 (paren
 id|APIC_ID
 comma
-id|boot_cpu_id
+id|boot_cpu_physical_apicid
 )paren
 suffix:semicolon
 id|apic_pm_init2

@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *&n; *&t;vlsi_ir.h:&t;VLSI82C147 PCI IrDA controller driver for Linux&n; *&n; *&t;Version:&t;0.1, Aug 6, 2001&n; *&n; *&t;Copyright (c) 2001 Martin Diehl&n; *&n; *&t;This program is free software; you can redistribute it and/or &n; *&t;modify it under the terms of the GNU General Public License as &n; *&t;published by the Free Software Foundation; either version 2 of &n; *&t;the License, or (at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License &n; *&t;along with this program; if not, write to the Free Software &n; *&t;Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *&t;MA 02111-1307 USA&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; *&t;vlsi_ir.h:&t;VLSI82C147 PCI IrDA controller driver for Linux&n; *&n; *&t;Version:&t;0.3, Sep 30, 2001&n; *&n; *&t;Copyright (c) 2001 Martin Diehl&n; *&n; *&t;This program is free software; you can redistribute it and/or &n; *&t;modify it under the terms of the GNU General Public License as &n; *&t;published by the Free Software Foundation; either version 2 of &n; *&t;the License, or (at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License &n; *&t;along with this program; if not, write to the Free Software &n; *&t;Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *&t;MA 02111-1307 USA&n; *&n; ********************************************************************/
 macro_line|#ifndef IRDA_VLSI_FIR_H
 DECL|macro|IRDA_VLSI_FIR_H
 mdefine_line|#define IRDA_VLSI_FIR_H
@@ -29,7 +29,7 @@ multiline_comment|/* mainly legacy UART related */
 suffix:semicolon
 multiline_comment|/* ------------------------------------------ */
 multiline_comment|/* VLSI_PCI_CLKCTL: Clock Control Register (u8, rw) */
-multiline_comment|/* Three possible clock sources: either on-chip 48MHz PLL or&n; * external clock applied to EXTCLK pin. External clock may&n; * be either 48MHz or 40MHz, which is indicated by XCKSEL.&n; * CLKSTP controls whether the selected clock source gets&n; * connected to the IrDA block.&n; *&n; * On my HP OB-800 the BIOS sets external 40MHz clock as source&n; * when IrDA enabled and I&squot;ve never detected any PLL lock success.&n; * Apparently the 14.31818MHz OSC input required for the PLL to work&n; * is not connected and the 40MHz EXTCLK is provided externally.&n; * At least this is what makes the driver working for me.&n; */
+multiline_comment|/* Three possible clock sources: either on-chip 48MHz PLL or&n; * external clock applied to EXTCLK pin. External clock may&n; * be either 48MHz or 40MHz, which is indicated by XCKSEL.&n; * CLKSTP controls whether the selected clock source gets&n; * connected to the IrDA block.&n; *&n; * On my HP OB-800 the BIOS sets external 40MHz clock as source&n; * when IrDA enabled and I&squot;ve never detected any PLL lock success.&n; * Apparently the 14.3...MHz OSC input required for the PLL to work&n; * is not connected and the 40MHz EXTCLK is provided externally.&n; * At least this is what makes the driver working for me.&n; */
 DECL|enum|vlsi_pci_clkctl
 r_enum
 id|vlsi_pci_clkctl
@@ -40,7 +40,7 @@ id|CLKCTL_NO_PD
 op_assign
 l_int|0x04
 comma
-multiline_comment|/* PD# (inverted power down) signal,&n;&t;&t;&t;&t;&t;&t; * i.e. PLL is powered, if PD_INV is set */
+multiline_comment|/* PD# (inverted power down) signal,&n;&t;&t;&t;&t;&t;&t; * i.e. PLL is powered, if NO_PD set */
 DECL|enumerator|CLKCTL_LOCK
 id|CLKCTL_LOCK
 op_assign
@@ -71,7 +71,7 @@ DECL|enumerator|CLKCTL_WAKE
 id|CLKCTL_WAKE
 op_assign
 l_int|0x08
-multiline_comment|/* set to enable wakeup feature: whenever IR activity&n;&t;&t;&t;&t;&t;&t; * is detected, PD_INV gets set and CLKSTP cleared */
+multiline_comment|/* set to enable wakeup feature: whenever IR activity&n;&t;&t;&t;&t;&t;&t; * is detected, NO_PD gets set and CLKSTP cleared */
 )brace
 suffix:semicolon
 multiline_comment|/* ------------------------------------------ */
@@ -82,10 +82,10 @@ DECL|macro|DMA_MASK_MSTRPAGE
 mdefine_line|#define DMA_MASK_MSTRPAGE&t;0x00ffffff
 DECL|macro|MSTRPAGE_VALUE
 mdefine_line|#define MSTRPAGE_VALUE&t;&t;(DMA_MASK_MSTRPAGE &gt;&gt; 24)
-multiline_comment|/* PCI busmastering is somewhat special for this guy - in short:&n;&t; *&n;&t; * We select to operate using MSTRPAGE=0 fixed, use ISA DMA&n;&t; * address restrictions to make the PCI BM api aware of this,&n;&t; * but ensure the hardware is dealing with real 32bit access.&n;&t; *&n;&t; * In detail:&n;&t; * The chip executes normal 32bit busmaster cycles, i.e.&n;&t; * drives all 32 address lines. These addresses however are&n;&t; * composed of [0:23] taken from various busaddr-pointers&n;&t; * and [24:31] taken from the MSTRPAGE register in the VLSI82C147&n;&t; * config space. Therefore _all_ busmastering must be&n;&t; * targeted to/from one single 16MB (busaddr-) superpage!&n;&t; * The point is to make sure all the allocations for memory&n;&t; * locations with busmaster access (ring descriptors, buffers)&n;&t; * are indeed bus-mappable to the same 16MB range (for x86 this&n;&t; * means they must reside in the same 16MB physical memory address&n;&t; * range). The only constraint we have which supports &quot;several objects&n;&t; * mappable to common 16MB range&quot; paradigma, is the old ISA DMA&n;&t; * restriction to the first 16MB of physical address range.&n;&t; * Hence the approach here is to enable PCI busmaster support using&n;&t; * the correct 32bit dma-mask used by the chip. Afterwards the device&squot;s&n;&t; * dma-mask gets restricted to 24bit, which must be honoured by all&n;&t; * allocations for memory areas to be exposed to the chip.&n;&t; *&n;&t; * Note:&n;&t; * Don&squot;t be surprised to get &quot;Setting latency timer...&quot; messages every&n;&t; * time when PCI busmastering is enabled for the chip.&n;&t; * The chip has its PCI latency timer RO fixed at 0 - which is not a&n;&t; * problem here, because it is never requesting _burst_ transactions.&n;&t; */
+multiline_comment|/* PCI busmastering is somewhat special for this guy - in short:&n;&t; *&n;&t; * We select to operate using MSTRPAGE=0 fixed, use ISA DMA&n;&t; * address restrictions to make the PCI BM api aware of this,&n;&t; * but ensure the hardware is dealing with real 32bit access.&n;&t; *&n;&t; * In detail:&n;&t; * The chip executes normal 32bit busmaster cycles, i.e.&n;&t; * drives all 32 address lines. These addresses however are&n;&t; * composed of [0:23] taken from various busaddr-pointers&n;&t; * and [24:31] taken from the MSTRPAGE register in the VLSI82C147&n;&t; * config space. Therefore _all_ busmastering must be&n;&t; * targeted to/from one single 16MB (busaddr-) superpage!&n;&t; * The point is to make sure all the allocations for memory&n;&t; * locations with busmaster access (ring descriptors, buffers)&n;&t; * are indeed bus-mappable to the same 16MB range (for x86 this&n;&t; * means they must reside in the same 16MB physical memory address&n;&t; * range). The only constraint we have which supports &quot;several objects&n;&t; * mappable to common 16MB range&quot; paradigma, is the old ISA DMA&n;&t; * restriction to the first 16MB of physical address range.&n;&t; * Hence the approach here is to enable PCI busmaster support using&n;&t; * the correct 32bit dma-mask used by the chip. Afterwards the device&squot;s&n;&t; * dma-mask gets restricted to 24bit, which must be honoured somehow by&n;&t; * all allocations for memory areas to be exposed to the chip ...&n;&t; *&n;&t; * Note:&n;&t; * Don&squot;t be surprised to get &quot;Setting latency timer...&quot; messages every&n;&t; * time when PCI busmastering is enabled for the chip.&n;&t; * The chip has its PCI latency timer RO fixed at 0 - which is not a&n;&t; * problem here, because it is never requesting _burst_ transactions.&n;&t; */
 multiline_comment|/* ------------------------------------------ */
 multiline_comment|/* VLSI_PCIIRMISC: IR Miscellaneous Register (u8, rw) */
-multiline_comment|/* leagcy UART emulation - not used by this driver - would require:&n; * (see below for some register-value definitions)&n; *&n; *&t;- IRMISC_UARTEN must be set to enable UART address decoding&n; *&t;- IRMISC_UARTSEL configured&n; *&t;- IRCFG_MASTER must be cleared&n; *&t;- IRCFG_SIR must be set&n; *&t;- IRENABLE_IREN must be asserted 0-&gt;1 (and hence IRENABLE_SIR_ON)&n; */
+multiline_comment|/* legacy UART emulation - not used by this driver - would require:&n; * (see below for some register-value definitions)&n; *&n; *&t;- IRMISC_UARTEN must be set to enable UART address decoding&n; *&t;- IRMISC_UARTSEL configured&n; *&t;- IRCFG_MASTER must be cleared&n; *&t;- IRCFG_SIR must be set&n; *&t;- IRENABLE_IREN must be asserted 0-&gt;1 (and hence IRENABLE_SIR_ON)&n; */
 DECL|enum|vlsi_pci_irmisc
 r_enum
 id|vlsi_pci_irmisc
@@ -96,7 +96,7 @@ id|IRMISC_IRRAIL
 op_assign
 l_int|0x40
 comma
-multiline_comment|/* (ro?) IR rail power indication (and control?)&n;&t;&t;&t;&t;&t;&t; * 0=3.3V / 1=5V. Probably set during power-on?&n;&t;&t;&t;&t;&t;&t; * Not touched by driver */
+multiline_comment|/* (ro?) IR rail power indication (and control?)&n;&t;&t;&t;&t;&t;&t; * 0=3.3V / 1=5V. Probably set during power-on?&n;&t;&t;&t;&t;&t;&t; * unclear - not touched by driver */
 DECL|enumerator|IRMISC_IRPD
 id|IRMISC_IRPD
 op_assign
@@ -175,7 +175,7 @@ op_assign
 l_int|0x08
 comma
 multiline_comment|/* triggers ring processing (u16, wo) */
-multiline_comment|/* 0x0a-0x0f: reserved, duplicated UART regs */
+multiline_comment|/* 0x0a-0x0f: reserved / duplicated UART regs */
 DECL|enumerator|VLSI_PIO_IRCFG
 id|VLSI_PIO_IRCFG
 op_assign
@@ -217,12 +217,12 @@ id|VLSI_PIO_RCVBCNT
 op_assign
 l_int|0x1c
 multiline_comment|/* current receive-FIFO byte count (u16, ro) */
-multiline_comment|/* 0x1e-0x1f: reserved, duplicated UART regs */
+multiline_comment|/* 0x1e-0x1f: reserved / duplicated UART regs */
 )brace
 suffix:semicolon
 multiline_comment|/* ------------------------------------------ */
 multiline_comment|/* VLSI_PIO_IRINTR: Interrupt Register (u8, rw) */
-multiline_comment|/* enable-bits:&n; *&t;&t;1 = enable / 0 = disable&n; * interrupt condition bits:&n; * &t;&t;set according to corresponding interrupt source&n; *&t;&t;(regardless of the state of the enable bits)&n; *&t;&t;enable bit status indicated whether interrupt gets raised&n; *&t;&t;write-to-clear&n; * note: RPKTINT and TPKTINT behave different in legacy UART mode (which we don&squot;t use :-)&n; */
+multiline_comment|/* enable-bits:&n; *&t;&t;1 = enable / 0 = disable&n; * interrupt condition bits:&n; * &t;&t;set according to corresponding interrupt source&n; *&t;&t;(regardless of the state of the enable bits)&n; *&t;&t;enable bit status indicates whether interrupt gets raised&n; *&t;&t;write-to-clear&n; * note: RPKTINT and TPKTINT behave different in legacy UART mode (which we don&squot;t use :-)&n; */
 DECL|enum|vlsi_pio_irintr
 r_enum
 id|vlsi_pio_irintr
@@ -281,20 +281,20 @@ DECL|macro|IRINTR_INT_MASK
 mdefine_line|#define IRINTR_INT_MASK&t;&t;(IRINTR_ACTIVITY|IRINTR_RPKTINT|IRINTR_TPKTINT)
 multiline_comment|/* ------------------------------------------ */
 multiline_comment|/* VLSI_PIO_RINGPTR: Ring Pointer Read-Back Register (u16, ro) */
+multiline_comment|/* _both_ ring pointers are indices relative to the _entire_ rx,tx-ring!&n; * i.e. the referenced descriptor is located&n; * at RINGBASE + PTR * sizeof(descr) for rx and tx&n; * therefore, the tx-pointer has offset MAX_RING_DESCR&n; */
 DECL|macro|MAX_RING_DESCR
 mdefine_line|#define MAX_RING_DESCR&t;&t;64&t;/* tx, rx rings may contain up to 64 descr each */
-multiline_comment|/* _both_ ring pointers are indices relative to the _entire_ rx,tx-ring!&n; * i.e. the referenced descriptor is located&n; * at RINGBASE + PTR * sizeof(descr) for rx and tx&n; * therefore, the tx-pointer has offset by MAX_RING_DESCR&n; */
 DECL|macro|RINGPTR_RX_MASK
 mdefine_line|#define RINGPTR_RX_MASK&t;&t;(MAX_RING_DESCR-1)
 DECL|macro|RINGPTR_TX_MASK
-mdefine_line|#define RINGPTR_TX_MASK&t;&t;((MAX_RING_DESCR|(MAX_RING_DESCR-1))&lt;&lt;8)
+mdefine_line|#define RINGPTR_TX_MASK&t;&t;((MAX_RING_DESCR-1)&lt;&lt;8)
 DECL|macro|RINGPTR_GET_RX
 mdefine_line|#define RINGPTR_GET_RX(p)&t;((p)&amp;RINGPTR_RX_MASK)
 DECL|macro|RINGPTR_GET_TX
 mdefine_line|#define RINGPTR_GET_TX(p)&t;(((p)&amp;RINGPTR_TX_MASK)&gt;&gt;8)
 multiline_comment|/* ------------------------------------------ */
 multiline_comment|/* VLSI_PIO_RINGBASE: Ring Pointer Base Address Register (u16, ro) */
-multiline_comment|/* Contains [23:10] part of the ring base (bus-) address&n; * which must be 1k-alinged. [31:24] is taken from&n; * VLSI_PCI_MSTRPAGE above.&n; * The controler initiates non-burst PCI BM cycles to&n; * fetch and update the descriptors in the ring.&n; * Once fetched, the descriptor remains cached onchip&n; * until it gets closed and updated due to the ring&n; * processing state machine.&n; * The entire ring area is split in rx and tx areas with each&n; * area consisting of 64 descriptors of 8 bytes each.&n; * The rx(tx) ring is located at ringbase+0 (ringbase+8*64).&n; */
+multiline_comment|/* Contains [23:10] part of the ring base (bus-) address&n; * which must be 1k-alinged. [31:24] is taken from&n; * VLSI_PCI_MSTRPAGE above.&n; * The controller initiates non-burst PCI BM cycles to&n; * fetch and update the descriptors in the ring.&n; * Once fetched, the descriptor remains cached onchip&n; * until it gets closed and updated due to the ring&n; * processing state machine.&n; * The entire ring area is split in rx and tx areas with each&n; * area consisting of 64 descriptors of 8 bytes each.&n; * The rx(tx) ring is located at ringbase+0 (ringbase+64*8).&n; */
 DECL|macro|BUS_TO_RINGBASE
 mdefine_line|#define BUS_TO_RINGBASE(p)&t;(((p)&gt;&gt;10)&amp;0x3fff)
 multiline_comment|/* ------------------------------------------ */
@@ -310,10 +310,10 @@ DECL|macro|RINGSIZE_TO_TXSIZE
 mdefine_line|#define RINGSIZE_TO_TXSIZE(rs)&t;&t;((((rs)&amp;0xf000)&gt;&gt;10)+4)
 multiline_comment|/* ------------------------------------------ */
 multiline_comment|/* VLSI_PIO_PROMPT: Ring Prompting Register (u16, write-to-start) */
-multiline_comment|/* writing any value kicks the ring processing state machines&n; * for both tx, rx rings.&n; * currently enabled rings (according to IRENABLE_ENTXST, IRENABLE_ENRXST&n; * status reporting - see below) are considered as follows:&n; * &t;- active rings (currently owning an active descriptor)&n; *&t;  ignore the prompt and continue&n; *&t;- idle rings fetch the next descr from the ring and start&n; *&t;  their processing&n; */
+multiline_comment|/* writing any value kicks the ring processing state machines&n; * for both tx, rx rings as follows:&n; * &t;- active rings (currently owning an active descriptor)&n; *&t;  ignore the prompt and continue&n; *&t;- idle rings fetch the next descr from the ring and start&n; *&t;  their processing&n; */
 multiline_comment|/* ------------------------------------------ */
 multiline_comment|/* VLSI_PIO_IRCFG: IR Config Register (u16, rw) */
-multiline_comment|/* notes:&n; *&t;- not more than one SIR/MIR/FIR bit must be set at any time&n; *&t;- SIR, MIR, FIR and CRC16 select the configuration which will&n; *&t;  be applied now/next time if/when IRENABLE_IREN is _cleared_ (see below)&n; *&t;- besides allowing the PCI interface to execute busmaster cycles&n; *&t;  and therefore the ring SM to operate, the MSTR bit has side-effects:&n; *&t;  when MSTR is cleared, the RINGPTR&squot;s get reset and the legacy UART mode&n; *&t;  (in contrast to busmaster access mode) gets enabled.&n; *&t;- clearing ENRX or setting ENTX while data is received may stall the&n; *&t;  receive fifo until ENRX reenabled _and_ another packet arrives&n; *&t;- SIRFILT means the chip performs the required unwrapping of hardware&n; *&t;  headers (XBOF&squot;s, BOF/EOF) and un-escaping in the _receive_ direction.&n; *&t;  Only the resulting IrLAP payload is copied to the receive buffers -&n; *&t;  but with the 16bit FCS still encluded. Question remains, whether it&n; *&t;  was already checked or we should do it before passing the packet to IrLAP?&n; */
+multiline_comment|/* notes:&n; *&t;- not more than one SIR/MIR/FIR bit must be set at any time&n; *&t;- SIR, MIR, FIR and CRC16 select the configuration which will&n; *&t;  be applied on next 0-&gt;1 transition of IRENABLE_IREN (see below).&n; *&t;- besides allowing the PCI interface to execute busmaster cycles&n; *&t;  and therefore the ring SM to operate, the MSTR bit has side-effects:&n; *&t;  when MSTR is cleared, the RINGPTR&squot;s get reset and the legacy UART mode&n; *&t;  (in contrast to busmaster access mode) gets enabled.&n; *&t;- clearing ENRX or setting ENTX while data is received may stall the&n; *&t;  receive fifo until ENRX reenabled _and_ another packet arrives&n; *&t;- SIRFILT means the chip performs the required unwrapping of hardware&n; *&t;  headers (XBOF&squot;s, BOF/EOF) and un-escaping in the _receive_ direction.&n; *&t;  Only the resulting IrLAP payload is copied to the receive buffers -&n; *&t;  but with the 16bit FCS still encluded. Question remains, whether it&n; *&t;  was already checked or we should do it before passing the packet to IrLAP?&n; */
 DECL|enum|vlsi_pio_ircfg
 r_enum
 id|vlsi_pio_ircfg
@@ -412,7 +412,7 @@ id|IRENABLE_IREN
 op_assign
 l_int|0x8000
 comma
-multiline_comment|/* enable IR phy and gate mode config (rw) */
+multiline_comment|/* enable IR phy and gate the mode config (rw) */
 DECL|enumerator|IRENABLE_CFGER
 id|IRENABLE_CFGER
 op_assign
@@ -463,11 +463,11 @@ multiline_comment|/* VLSI_PIO_PHYCTL: IR Physical Layer Current Control Register
 multiline_comment|/* read-back of the currently applied physical layer status.&n; * applied from VLSI_PIO_NPHYCTL at rising edge of IRENABLE_IREN&n; * contents identical to VLSI_PIO_NPHYCTL (see below)&n; */
 multiline_comment|/* ------------------------------------------ */
 multiline_comment|/* VLSI_PIO_NPHYCTL: IR Physical Layer Next Control Register (u16, rw) */
-multiline_comment|/* latched during IRENABLE_IREN=0 and applied at 0-1 transition&n; *&n; * consists of BAUD[15:10], PLSWID[9:5] and PREAMB[4:0] bits defined as follows:&n; *&n; * SIR-mode:&t;BAUD = (115.2kHz / baudrate) - 1&n; *&t;&t;PLSWID = (pulsetime * freq / (BAUD+1)) - 1&n; *&t;&t;&t;where pulsetime is the requested IrPHY pulse width&n; *&t;&t;&t;and freq is 8(16)MHz for 40(48)MHz primary input clock&n; *&t;&t;PREAMB: dont care for SIR&n; *&n; *&t;&t;The nominal SIR pulse width is 3/16 bit time so we have PLSWID=12&n; *&t;&t;fixed for all SIR speeds at 40MHz input clock (PLSWID=24 at 48MHz).&n; *&t;&t;IrPHY also allows shorter pulses down to the nominal pulse duration&n; *&t;&t;at 115.2kbaud (minus some tolerance) which is 1.41 usec.&n; *&t;&t;Using the expression PLSWID = 12/(BAUD+1)-1 (multiplied by to for 48MHz)&n; *&t;&t;we get the minimum acceptable PLSWID values according to the VLSI&n; *&t;&t;specification, which provides 1.5 usec pulse width for all speeds (except&n; *&t;&t;for 2.4kbaud getting 6usec). This is well inside IrPHY v1.3 specs and&n; *&t;&t;reduces the transceiver power which drains the battery. At 9.6kbaud for&n; *&t;&t;example this makes more than 90% battery power saving!&n; *&n; * MIR-mode:&t;BAUD = 0&n; *&t;&t;PLSWID = 9(10) for 40(48) MHz input clock&n; *&t;&t;&t;to get nominal MIR pulse width&n; *&t;&t;PREAMB = 1&n; *&n; * FIR-mode:&t;BAUD = 0&n; *&t;&t;PLSWID: dont care&n; *&t;&t;PREAMB = 15&n; */
+multiline_comment|/* latched during IRENABLE_IREN=0 and applied at 0-1 transition&n; *&n; * consists of BAUD[15:10], PLSWID[9:5] and PREAMB[4:0] bits defined as follows:&n; *&n; * SIR-mode:&t;BAUD = (115.2kHz / baudrate) - 1&n; *&t;&t;PLSWID = (pulsetime * freq / (BAUD+1)) - 1&n; *&t;&t;&t;where pulsetime is the requested IrPHY pulse width&n; *&t;&t;&t;and freq is 8(16)MHz for 40(48)MHz primary input clock&n; *&t;&t;PREAMB: dont care for SIR&n; *&n; *&t;&t;The nominal SIR pulse width is 3/16 bit time so we have PLSWID=12&n; *&t;&t;fixed for all SIR speeds at 40MHz input clock (PLSWID=24 at 48MHz).&n; *&t;&t;IrPHY also allows shorter pulses down to the nominal pulse duration&n; *&t;&t;at 115.2kbaud (minus some tolerance) which is 1.41 usec.&n; *&t;&t;Using the expression PLSWID = 12/(BAUD+1)-1 (multiplied by to for 48MHz)&n; *&t;&t;we get the minimum acceptable PLSWID values according to the VLSI&n; *&t;&t;specification, which provides 1.5 usec pulse width for all speeds (except&n; *&t;&t;for 2.4kbaud getting 6usec). This is well inside IrPHY v1.3 specs and&n; *&t;&t;reduces the transceiver power which drains the battery. At 9.6kbaud for&n; *&t;&t;example this amounts to more than 90% battery power saving!&n; *&n; * MIR-mode:&t;BAUD = 0&n; *&t;&t;PLSWID = 9(10) for 40(48) MHz input clock&n; *&t;&t;&t;to get nominal MIR pulse width&n; *&t;&t;PREAMB = 1&n; *&n; * FIR-mode:&t;BAUD = 0&n; *&t;&t;PLSWID: dont care&n; *&t;&t;PREAMB = 15&n; */
 DECL|macro|BWP_TO_PHYCTL
 mdefine_line|#define BWP_TO_PHYCTL(B,W,P)&t;((((B)&amp;0x3f)&lt;&lt;10) | (((W)&amp;0x1f)&lt;&lt;5) | (((P)&amp;0x1f)&lt;&lt;0))
 DECL|macro|BAUD_BITS
-mdefine_line|#define BAUD_BITS(br)&t;&t;((115200/br)-1)
+mdefine_line|#define BAUD_BITS(br)&t;&t;((115200/(br))-1)
 r_static
 r_inline
 r_int
@@ -554,12 +554,16 @@ mdefine_line|#define PHYCTL_FIR&t;&t;BWP_TO_PHYCTL(0,0,15)
 multiline_comment|/* quite ugly, I know. But implementing these calculations here avoids&n; * having magic numbers in the code and allows some playing with pulsewidths&n; * without risk to violate the standards.&n; * FWIW, here is the table for reference:&n; *&n; * baudrate&t;BAUD&t;min-PLSWID&t;nom-PLSWID&t;PREAMB&n; *     2400&t;  47&t;   0(0)&t;&t;   12(24)&t;   0&n; *     9600&t;  11&t;   0(0)&t;&t;   12(24)&t;   0&n; *    19200&t;   5&t;   1(2)&t;&t;   12(24)&t;   0&n; *    38400&t;   2&t;   3(6)&t;           12(24)&t;   0&n; *    57600&t;   1&t;   5(10)&t;   12(24)&t;   0&n; *   115200&t;   0&t;  11(22)&t;   12(24)&t;   0&n; *&t;MIR&t;   0&t;    -&t;&t;    9(10)&t;   1&n; *&t;FIR&t;   0        -               0&t;&t;  15&n; *&n; * note: x(y) means x-value for 40MHz / y-value for 48MHz primary input clock&n; */
 multiline_comment|/* ------------------------------------------ */
 multiline_comment|/* VLSI_PIO_MAXPKT: Maximum Packet Length register (u16, rw) */
-multiline_comment|/* specifies the maximum legth (up to 4096 bytes), which a&n; * received frame may have - i.e. the size of the corresponding&n; * receive buffers. For simplicity we use the same length for&n; * receive and submit buffers. Therefore we use 3k to have&n; * enough space for a lot of XBOF&squot;s and escapes we may need at&n; * some point when wrapping MTU=2048 sized packets for transmission.&n; */
+multiline_comment|/* specifies the maximum legth (up to 4k - or (4k-1)? - bytes), which a&n; * received frame may have - i.e. the size of the corresponding&n; * receive buffers. For simplicity we use the same length for&n; * receive and submit buffers and increase transfer buffer size&n; * byond IrDA-MTU = 2048 so we have sufficient space left when&n; * packet size increases during wrapping due to XBOFs and CE&squot;s.&n; * Even for receiving unwrapped frames we need &gt;MAX_PACKET_LEN&n; * space since the controller appends FCS/CRC (2 or 4 bytes)&n; * so we use 2*IrDA-MTU for both directions and cover even the&n; * worst case, where all data bytes have to be escaped when wrapping.&n; * well, this wastes some memory - anyway, later we will&n; * either map skb&squot;s directly or use pci_pool allocator...&n; */
+DECL|macro|IRDA_MTU
+mdefine_line|#define IRDA_MTU&t;2048&t;&t;/* seems to be undefined elsewhere */
+DECL|macro|XFER_BUF_SIZE
+mdefine_line|#define XFER_BUF_SIZE&t;&t;(2*IRDA_MTU)
 DECL|macro|MAX_PACKET_LENGTH
-mdefine_line|#define MAX_PACKET_LENGTH&t;3172
+mdefine_line|#define MAX_PACKET_LENGTH&t;(XFER_BUF_SIZE-1) /* register uses only [11:0] */
 multiline_comment|/* ------------------------------------------ */
 multiline_comment|/* VLSI_PIO_RCVBCNT: Receive Byte Count Register (u16, ro) */
-multiline_comment|/* recive packet counter gets incremented on every non-filtered&n; * byte which was put in the receive fifo and reset for each&n; * new packet. Used to decide whether we are just in the middle&n; * of receiving receiving&n; */
+multiline_comment|/* recive packet counter gets incremented on every non-filtered&n; * byte which was put in the receive fifo and reset for each&n; * new packet. Used to decide whether we are just in the middle&n; * of receiving&n; */
 DECL|macro|RCVBCNT_MASK
 mdefine_line|#define RCVBCNT_MASK&t;0x0fff
 multiline_comment|/* ================================================================ */
@@ -655,15 +659,50 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-DECL|member|head
+DECL|member|data
 r_void
 op_star
+id|data
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|vlsi_ring
+r_struct
+id|vlsi_ring
+(brace
+DECL|member|size
+r_int
+id|size
+suffix:semicolon
+DECL|member|mask
+r_int
+id|mask
+suffix:semicolon
+DECL|member|head
+DECL|member|tail
+r_int
 id|head
+comma
+id|tail
+suffix:semicolon
+DECL|member|hw
+r_struct
+id|ring_descr
+op_star
+id|hw
+suffix:semicolon
+DECL|member|buf
+r_struct
+id|ring_entry
+id|buf
+(braket
+id|MAX_RING_DESCR
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* ------------------------------------------ */
-multiline_comment|/* our compound VLSI-PCI-IRDA device information */
+multiline_comment|/* our private compound VLSI-PCI-IRDA device information */
 DECL|struct|vlsi_irda_dev
 r_typedef
 r_struct
@@ -706,37 +745,23 @@ DECL|member|busaddr
 id|dma_addr_t
 id|busaddr
 suffix:semicolon
-DECL|member|ring_hw
-r_struct
-id|ring_descr
+DECL|member|virtaddr
+r_void
 op_star
-id|ring_hw
+id|virtaddr
 suffix:semicolon
-DECL|member|ring_buf
+DECL|member|tx_ring
+DECL|member|rx_ring
 r_struct
-id|ring_entry
-op_star
-id|ring_buf
+id|vlsi_ring
+id|tx_ring
+comma
+id|rx_ring
 suffix:semicolon
-DECL|member|tx_mask
-DECL|member|rx_mask
-r_int
-id|tx_mask
-comma
-id|rx_mask
-suffix:semicolon
-DECL|member|tx_put
-DECL|member|tx_get
-DECL|member|rx_put
-DECL|member|rx_get
-r_int
-id|tx_put
-comma
-id|tx_get
-comma
-id|rx_put
-comma
-id|rx_get
+DECL|member|last_rx
+r_struct
+id|timeval
+id|last_rx
 suffix:semicolon
 DECL|member|lock
 id|spinlock_t

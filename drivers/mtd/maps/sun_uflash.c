@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sun_uflash.c,v 1.2 2001/04/26 15:40:23 dwmw2 Exp $&n; *&n; * sun_uflash - Driver implementation for user-programmable flash&n; * present on many Sun Microsystems SME boardsets.&n; *&n; * This driver does NOT provide access to the OBP-flash for&n; * safety reasons-- use &lt;linux&gt;/drivers/sbus/char/flash.c instead.&n; *&n; * Copyright (c) 2001 Eric Brower (ebrower@usa.net)&n; *&n; */
+multiline_comment|/* $Id: sun_uflash.c,v 1.4 2001/10/02 15:05:14 dwmw2 Exp $&n; *&n; * sun_uflash - Driver implementation for user-programmable flash&n; * present on many Sun Microsystems SME boardsets.&n; *&n; * This driver does NOT provide access to the OBP-flash for&n; * safety reasons-- use &lt;linux&gt;/drivers/sbus/char/flash.c instead.&n; *&n; * Copyright (c) 2001 Eric Brower (ebrower@usa.net)&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -33,6 +33,11 @@ suffix:semicolon
 id|MODULE_SUPPORTED_DEVICE
 (paren
 l_string|&quot;userflash&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 r_static
@@ -654,7 +659,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;cfi&quot;
+l_string|&quot;cfi_probe&quot;
 comma
 op_amp
 id|pdev-&gt;map

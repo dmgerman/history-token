@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;  $Id: doc1000.c,v 1.11 2000/11/24 13:43:16 dwmw2 Exp $&n;&n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;  $Id: doc1000.c,v 1.15 2001/10/02 15:05:13 dwmw2 Exp $&n;&n;======================================================================*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -2135,12 +2135,6 @@ id|priv-&gt;wq
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined (MODULE) &amp;&amp; LINUX_VERSION_CODE &lt; 0x20211
-DECL|macro|init_doc1000
-mdefine_line|#define init_doc1000 init_module
-DECL|macro|cleanup_doc1000
-mdefine_line|#define cleanup_doc1000 cleanup_module
-macro_line|#endif
 DECL|function|init_doc1000
 r_int
 id|__init
@@ -2434,7 +2428,6 @@ id|mymtd
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20211
 DECL|variable|init_doc1000
 id|module_init
 c_func
@@ -2449,5 +2442,22 @@ c_func
 id|cleanup_doc1000
 )paren
 suffix:semicolon
-macro_line|#endif
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David Woodhouse &lt;dwmw2@infradead.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;MTD driver for DiskOnChip 1000&quot;
+)paren
+suffix:semicolon
 eof

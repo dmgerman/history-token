@@ -1,4 +1,4 @@
-multiline_comment|/* iflash.h $revision$ $date$ (David Hinds) */
+multiline_comment|/* $Id: iflash.h,v 1.2 2000/11/13 18:01:54 dwmw2 Exp $ */
 macro_line|#ifndef __MTD_IFLASH_H__
 DECL|macro|__MTD_IFLASH_H__
 mdefine_line|#define __MTD_IFLASH_H__

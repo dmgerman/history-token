@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Linux driver for Disk-On-Chip Millennium&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2001.c,v 1.34 2001/06/02 14:30:43 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Linux driver for Disk-On-Chip Millennium&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2001.c,v 1.35 2001/10/02 15:05:13 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
@@ -3951,12 +3951,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * Module stuff&n; *&n; ****************************************************************************/
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|cleanup_doc2001
-mdefine_line|#define cleanup_doc2001 cleanup_module
-DECL|macro|init_doc2001
-mdefine_line|#define init_doc2001 init_module
-macro_line|#endif
 DECL|function|init_doc2001
 r_int
 id|__init
@@ -4072,6 +4066,24 @@ id|module_init
 c_func
 (paren
 id|init_doc2001
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David Woodhouse &lt;dwmw2@infradead.org&gt; et al.&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Alternative driver for DiskOnChip Millennium&quot;
 )paren
 suffix:semicolon
 eof

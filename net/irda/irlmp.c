@@ -2867,18 +2867,6 @@ r_int
 id|nslots
 )paren
 (brace
-multiline_comment|/* Check if user wants to override the default */
-r_if
-c_cond
-(paren
-id|nslots
-op_eq
-id|DISCOVERY_DEFAULT_SLOTS
-)paren
-id|nslots
-op_assign
-id|sysctl_discovery_slots
-suffix:semicolon
 multiline_comment|/* Return current cached discovery log */
 id|irlmp_discovery_confirm
 c_func
@@ -2893,15 +2881,29 @@ c_cond
 op_logical_neg
 id|sysctl_discovery
 )paren
+(brace
+multiline_comment|/* Check if user wants to override the default */
+r_if
+c_cond
+(paren
+id|nslots
+op_eq
+id|DISCOVERY_DEFAULT_SLOTS
+)paren
+id|nslots
+op_assign
+id|sysctl_discovery_slots
+suffix:semicolon
 id|irlmp_do_discovery
 c_func
 (paren
 id|nslots
 )paren
 suffix:semicolon
-multiline_comment|/* Note : we never do expiry here. Expiry will run on the&n;&t; * discovery timer regardless of the state of sysctl_discovery&n;&t; * Jean II */
+multiline_comment|/* Note : we never do expiry here. Expiry will run on the&n;&t;&t; * discovery timer regardless of the state of sysctl_discovery&n;&t;&t; * Jean II */
 )brace
-multiline_comment|/*&n; * Function irlmp_get_discoveries (pn, mask)&n; *&n; *    Return the current discovery log&n; *&n; */
+)brace
+multiline_comment|/*&n; * Function irlmp_get_discoveries (pn, mask, slots)&n; *&n; *    Return the current discovery log&n; *&n; */
 DECL|function|irlmp_get_discoveries
 r_struct
 id|irda_device_info
@@ -2915,8 +2917,40 @@ id|pn
 comma
 id|__u16
 id|mask
+comma
+r_int
+id|nslots
 )paren
 (brace
+multiline_comment|/* If discovery is not enabled, it&squot;s likely that the discovery log&n;&t; * will be empty. So, we trigger a single discovery, so that next&n;&t; * time the user call us there might be some results in the log.&n;&t; * Jean II&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sysctl_discovery
+)paren
+(brace
+multiline_comment|/* Check if user wants to override the default */
+r_if
+c_cond
+(paren
+id|nslots
+op_eq
+id|DISCOVERY_DEFAULT_SLOTS
+)paren
+id|nslots
+op_assign
+id|sysctl_discovery_slots
+suffix:semicolon
+multiline_comment|/* Start discovery - will complete sometime later */
+id|irlmp_do_discovery
+c_func
+(paren
+id|nslots
+)paren
+suffix:semicolon
+multiline_comment|/* Note : we never do expiry here. Expiry will run on the&n;&t;&t; * discovery timer regardless of the state of sysctl_discovery&n;&t;&t; * Jean II */
+)brace
 multiline_comment|/* Return current cached discovery log */
 r_return
 id|irlmp_copy_discoveries

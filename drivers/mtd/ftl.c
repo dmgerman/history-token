@@ -1,4 +1,4 @@
-multiline_comment|/* This version ported to the Linux-MTD system by dwmw2@infradead.org&n; * $Id: ftl.c,v 1.35 2001/06/09 00:40:17 dwmw2 Exp $&n; *&n; * Fixes: Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * - fixes some leaks on failure in build_maps and ftl_notify_add, cleanups&n; *&n; * Based on:&n; */
+multiline_comment|/* This version ported to the Linux-MTD system by dwmw2@infradead.org&n; * $Id: ftl.c,v 1.39 2001/10/02 15:05:11 dwmw2 Exp $&n; *&n; * Fixes: Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * - fixes some leaks on failure in build_maps and ftl_notify_add, cleanups&n; *&n; * Based on:&n; */
 multiline_comment|/*======================================================================&n;&n;    A Flash Translation Layer memory card driver&n;&n;    This driver implements a disk-like block device driver with an&n;    apparent block size of 512 bytes for flash memory cards.&n;&n;    ftl_cs.c 1.62 2000/02/01 00:59:04&n;&n;    The contents of this file are subject to the Mozilla Public&n;    License Version 1.1 (the &quot;License&quot;); you may not use this file&n;    except in compliance with the License. You may obtain a copy of&n;    the License at http://www.mozilla.org/MPL/&n;&n;    Software distributed under the License is distributed on an &quot;AS&n;    IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, either express or&n;    implied. See the License for the specific language governing&n;    rights and limitations under the License.&n;&n;    The initial developer of the original code is David A. Hinds&n;    &lt;dhinds@pcmcia.sourceforge.org&gt;.  Portions created by David A. Hinds&n;    are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n;&n;    Alternatively, the contents of this file may be used under the&n;    terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n;    which case the provisions of the GPL are applicable instead of the&n;    above.  If you wish to allow the use of your version of this file&n;    only under the terms of the GPL and not to allow others to use&n;    your version of this file under the MPL, indicate your decision&n;    by deleting the provisions above and replace them with the notice&n;    and other provisions required by the GPL.  If you do not delete&n;    the provisions above, a recipient may use your version of this&n;    file under either the MPL or the GPL.&n;&n;    LEGAL NOTE: The FTL format is patented by M-Systems.  They have&n;    granted a license for its use with PCMCIA devices:&n;&n;     &quot;M-Systems grants a royalty-free, non-exclusive license under&n;      any presently existing M-Systems intellectual property rights&n;      necessary for the design and development of FTL-compatible&n;      drivers, file systems and utilities using the data formats with&n;      PCMCIA PC Cards as described in the PCMCIA Flash Translation&n;      Layer (FTL) Specification.&quot;&n;&n;    Use of the FTL format for non-PCMCIA applications may be an&n;    infringement of these patents.  For additional information,&n;    contact M-Systems (http://www.m-sys.com) directly.&n;      &n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mtd/compatmac.h&gt;
@@ -554,7 +554,14 @@ id|offset
 op_assign
 l_int|0
 suffix:semicolon
+(paren
 id|offset
+op_plus
+r_sizeof
+(paren
+id|header
+)paren
+)paren
 OL
 id|max_offset
 suffix:semicolon
@@ -5955,14 +5962,8 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|init_ftl
-mdefine_line|#define init_ftl init_module
-DECL|macro|cleanup_ftl
-mdefine_line|#define cleanup_ftl cleanup_module
-macro_line|#endif
 DECL|function|init_ftl
-id|mod_init_t
+r_int
 id|init_ftl
 c_func
 (paren
@@ -5990,7 +5991,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;$Id: ftl.c,v 1.35 2001/06/09 00:40:17 dwmw2 Exp $&bslash;n&quot;
+l_string|&quot;$Id: ftl.c,v 1.39 2001/10/02 15:05:11 dwmw2 Exp $&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -6129,7 +6130,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cleanup_ftl
-id|mod_exit_t
+r_static
+r_void
+id|__exit
 id|cleanup_ftl
 c_func
 (paren
@@ -6188,6 +6191,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_ftl
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual MPL/GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David Hinds &lt;dhinds@sonic.net&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Support code for Flash Translation Layer, used on PCMCIA devices and M-Systems DiskOnChip 1000&quot;
 )paren
 suffix:semicolon
 eof

@@ -14,7 +14,5 @@ DECL|macro|CMOS_READ
 mdefine_line|#define CMOS_READ(addr) ({ &bslash;&n;outb_p((addr),RTC_PORT(0)); &bslash;&n;inb_p(RTC_PORT(1)); &bslash;&n;})
 DECL|macro|CMOS_WRITE
 mdefine_line|#define CMOS_WRITE(val, addr) ({ &bslash;&n;outb_p((addr),RTC_PORT(0)); &bslash;&n;outb_p((val),RTC_PORT(1)); &bslash;&n;})
-DECL|macro|RTC_IRQ
-mdefine_line|#define RTC_IRQ 0&t;&t;/* Don&squot;t support interrupt features.  */
 macro_line|#endif /* __ASM_ALPHA_MC146818RTC_H */
 eof

@@ -1070,7 +1070,7 @@ id|cpuid
 )paren
 id|reboot_cpu
 op_assign
-id|boot_cpu_id
+id|boot_cpu_physical_apicid
 suffix:semicolon
 id|reboot_smp
 op_assign

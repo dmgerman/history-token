@@ -1,4 +1,4 @@
-multiline_comment|/* sbc_gxx.c -- MTD map driver for Arcom Control Systems SBC-MediaGX,&n;                SBC-GXm and SBC-GX1 series boards.&n; &n;   Copyright (C) 2001 Arcom Control System Ltd&n; &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n; &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n; &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n;&n;   $Id: sbc_gxx.c,v 1.17 2001/06/02 14:52:23 dwmw2 Exp $&n;&n;The SBC-MediaGX / SBC-GXx has up to 16 MiB of &n;Intel StrataFlash (28F320/28F640) in x8 mode.  &n;&n;This driver uses the CFI probe and Intel Extended Command Set drivers.&n;&n;The flash is accessed as follows:&n;&n;   16 kbyte memory window at 0xdc000-0xdffff&n;   &n;   Two IO address locations for paging&n;   &n;   0x258&n;       bit 0-7: address bit 14-21&n;   0x259&n;       bit 0-1: address bit 22-23&n;       bit 7:   0 - reset/powered down&n;                1 - device enabled&n;&n;The single flash device is divided into 3 partition which appear as &n;separate MTD devices.&n;&n;25/04/2001 AJL (Arcom)  Modified signon strings and partition sizes&n;                        (to support bzImages up to 638KiB-ish)&n;*/
+multiline_comment|/* sbc_gxx.c -- MTD map driver for Arcom Control Systems SBC-MediaGX,&n;                SBC-GXm and SBC-GX1 series boards.&n; &n;   Copyright (C) 2001 Arcom Control System Ltd&n; &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n; &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n; &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n;&n;   $Id: sbc_gxx.c,v 1.19 2001/10/02 15:05:14 dwmw2 Exp $&n;&n;The SBC-MediaGX / SBC-GXx has up to 16 MiB of &n;Intel StrataFlash (28F320/28F640) in x8 mode.  &n;&n;This driver uses the CFI probe and Intel Extended Command Set drivers.&n;&n;The flash is accessed as follows:&n;&n;   16 kbyte memory window at 0xdc000-0xdffff&n;   &n;   Two IO address locations for paging&n;   &n;   0x258&n;       bit 0-7: address bit 14-21&n;   0x259&n;       bit 0-1: address bit 22-23&n;       bit 7:   0 - reset/powered down&n;                1 - device enabled&n;&n;The single flash device is divided into 3 partition which appear as &n;separate MTD devices.&n;&n;25/04/2001 AJL (Arcom)  Modified signon strings and partition sizes&n;                        (to support bzImages up to 638KiB-ish)&n;*/
 singleline_comment|// Includes
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -759,14 +759,10 @@ id|mtd_info
 op_star
 id|all_mtd
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|init_sbc_gxx
-mdefine_line|#define init_sbc_gxx init_module
-DECL|macro|cleanup_sbc_gxx
-mdefine_line|#define cleanup_sbc_gxx cleanup_module
-macro_line|#endif
 DECL|function|cleanup_sbc_gxx
-id|mod_exit_t
+r_static
+r_void
+id|__exit
 id|cleanup_sbc_gxx
 c_func
 (paren
@@ -812,7 +808,8 @@ id|PAGE_IO_SIZE
 suffix:semicolon
 )brace
 DECL|function|init_sbc_gxx
-id|mod_init_t
+r_int
+id|__init
 id|init_sbc_gxx
 c_func
 (paren
@@ -931,7 +928,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;cfi&quot;
+l_string|&quot;cfi_probe&quot;
 comma
 op_amp
 id|sbc_gxx_map
@@ -985,6 +982,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_sbc_gxx
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Arcom Control Systems Ltd.&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;MTD map driver for SBC-GXm and SBC-GX1 series boards&quot;
 )paren
 suffix:semicolon
 eof

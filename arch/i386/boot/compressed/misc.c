@@ -380,6 +380,16 @@ id|lines
 comma
 id|cols
 suffix:semicolon
+macro_line|#ifdef CONFIG_MULTIQUAD
+DECL|variable|xquad_portio
+r_static
+r_void
+op_star
+id|xquad_portio
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
 macro_line|#include &quot;../../../../lib/inflate.c&quot;
 DECL|function|malloc
 r_static

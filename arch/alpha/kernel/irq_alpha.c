@@ -355,21 +355,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* If we had wanted SRM console printk echoing early, undo it now. */
-r_if
-c_cond
-(paren
-id|alpha_using_srm
-op_logical_and
-id|srmcons_output
-)paren
-(brace
-id|unregister_srm_console
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * machine error checks&n; */
 DECL|macro|MCHK_K_TPERR

@@ -18,6 +18,22 @@ macro_line|#endif
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#endif
 macro_line|#endif
+macro_line|#if CONFIG_SMP
+macro_line|# ifdef CONFIG_MULTIQUAD
+DECL|macro|TARGET_CPUS
+macro_line|#  define TARGET_CPUS 0xf     /* all CPUs in *THIS* quad */
+DECL|macro|INT_DELIVERY_MODE
+macro_line|#  define INT_DELIVERY_MODE 0     /* physical delivery on LOCAL quad */
+macro_line|# else
+DECL|macro|TARGET_CPUS
+macro_line|#  define TARGET_CPUS cpu_online_map
+DECL|macro|INT_DELIVERY_MODE
+macro_line|#  define INT_DELIVERY_MODE 1     /* logical delivery broadcast to all procs */
+macro_line|# endif
+macro_line|#else
+DECL|macro|TARGET_CPUS
+macro_line|# define TARGET_CPUS 0x01
+macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef ASSEMBLY
 multiline_comment|/*&n; * Private routines/data&n; */
@@ -142,10 +158,12 @@ id|cpu
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Some lowlevel functions might want to know about&n; * the real APIC ID &lt;-&gt; CPU # mapping.&n; */
+DECL|macro|MAX_APICID
+mdefine_line|#define MAX_APICID 256
 r_extern
 r_volatile
 r_int
-id|x86_apicid_to_cpu
+id|cpu_to_physical_apicid
 (braket
 id|NR_CPUS
 )braket
@@ -153,11 +171,40 @@ suffix:semicolon
 r_extern
 r_volatile
 r_int
-id|x86_cpu_to_apicid
+id|physical_apicid_to_cpu
+(braket
+id|MAX_APICID
+)braket
+suffix:semicolon
+r_extern
+r_volatile
+r_int
+id|cpu_to_logical_apicid
 (braket
 id|NR_CPUS
 )braket
 suffix:semicolon
+r_extern
+r_volatile
+r_int
+id|logical_apicid_to_cpu
+(braket
+id|MAX_APICID
+)braket
+suffix:semicolon
+macro_line|#ifndef clustered_apic_mode
+macro_line|#ifdef CONFIG_MULTIQUAD
+DECL|macro|clustered_apic_mode
+mdefine_line|#define clustered_apic_mode (1)
+DECL|macro|esr_disable
+mdefine_line|#define esr_disable (1)
+macro_line|#else /* !CONFIG_MULTIQUAD */
+DECL|macro|clustered_apic_mode
+mdefine_line|#define clustered_apic_mode (0)
+DECL|macro|esr_disable
+mdefine_line|#define esr_disable (0)
+macro_line|#endif /* CONFIG_MULTIQUAD */
+macro_line|#endif 
 multiline_comment|/*&n; * General functions that each host system must provide.&n; */
 r_extern
 r_void
@@ -205,6 +252,35 @@ op_star
 id|APIC_BASE
 op_plus
 id|APIC_ID
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|logical_smp_processor_id
+r_extern
+id|__inline
+r_int
+id|logical_smp_processor_id
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* we don&squot;t want to mark this access volatile - bad code generation */
+r_return
+id|GET_APIC_LOGICAL_ID
+c_func
+(paren
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+(paren
+id|APIC_BASE
+op_plus
+id|APIC_LDR
 )paren
 )paren
 suffix:semicolon

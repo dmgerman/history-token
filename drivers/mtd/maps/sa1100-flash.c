@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Flash memory access on SA11x0 based devices&n; * &n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; * &n; * $Id: sa1100-flash.c,v 1.15 2001/06/02 18:29:22 nico Exp $&n; */
+multiline_comment|/*&n; * Flash memory access on SA11x0 based devices&n; * &n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; * &n; * $Id: sa1100-flash.c,v 1.22 2001/10/02 10:04:52 rmk Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/mtd/partitions.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifndef CONFIG_ARCH_SA1100
 macro_line|#error This is for SA1100 architecture only
 macro_line|#endif
@@ -29,13 +30,10 @@ id|ofs
 )paren
 (brace
 r_return
-op_star
+id|readb
+c_func
 (paren
-id|__u8
-op_star
-)paren
-(paren
-id|WINDOW_ADDR
+id|map-&gt;map_priv_1
 op_plus
 id|ofs
 )paren
@@ -58,13 +56,10 @@ id|ofs
 )paren
 (brace
 r_return
-op_star
+id|readw
+c_func
 (paren
-id|__u16
-op_star
-)paren
-(paren
-id|WINDOW_ADDR
+id|map-&gt;map_priv_1
 op_plus
 id|ofs
 )paren
@@ -87,13 +82,10 @@ id|ofs
 )paren
 (brace
 r_return
-op_star
+id|readl
+c_func
 (paren
-id|__u32
-op_star
-)paren
-(paren
-id|WINDOW_ADDR
+id|map-&gt;map_priv_1
 op_plus
 id|ofs
 )paren
@@ -132,7 +124,7 @@ r_void
 op_star
 )paren
 (paren
-id|WINDOW_ADDR
+id|map-&gt;map_priv_1
 op_plus
 id|from
 )paren
@@ -160,18 +152,15 @@ r_int
 id|adr
 )paren
 (brace
-op_star
+id|writeb
+c_func
 (paren
-id|__u8
-op_star
-)paren
-(paren
-id|WINDOW_ADDR
+id|d
+comma
+id|map-&gt;map_priv_1
 op_plus
 id|adr
 )paren
-op_assign
-id|d
 suffix:semicolon
 )brace
 DECL|function|sa1100_write16
@@ -193,18 +182,15 @@ r_int
 id|adr
 )paren
 (brace
-op_star
+id|writew
+c_func
 (paren
-id|__u16
-op_star
-)paren
-(paren
-id|WINDOW_ADDR
+id|d
+comma
+id|map-&gt;map_priv_1
 op_plus
 id|adr
 )paren
-op_assign
-id|d
 suffix:semicolon
 )brace
 DECL|function|sa1100_write32
@@ -226,18 +212,15 @@ r_int
 id|adr
 )paren
 (brace
-op_star
+id|writel
+c_func
 (paren
-id|__u32
-op_star
-)paren
-(paren
-id|WINDOW_ADDR
+id|d
+comma
+id|map-&gt;map_priv_1
 op_plus
 id|adr
 )paren
-op_assign
-id|d
 suffix:semicolon
 )brace
 DECL|function|sa1100_copy_to
@@ -272,7 +255,7 @@ r_void
 op_star
 )paren
 (paren
-id|WINDOW_ADDR
+id|map-&gt;map_priv_1
 op_plus
 id|to
 )paren
@@ -283,11 +266,11 @@ id|len
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SA1100_BITSY
-DECL|function|bitsy_set_vpp
+macro_line|#ifdef CONFIG_SA1100_H3600
+DECL|function|h3600_set_vpp
 r_static
 r_void
-id|bitsy_set_vpp
+id|h3600_set_vpp
 c_func
 (paren
 r_struct
@@ -304,17 +287,17 @@ c_cond
 (paren
 id|vpp
 )paren
-id|set_bitsy_egpio
+id|set_h3600_egpio
 c_func
 (paren
-id|EGPIO_BITSY_VPP_ON
+id|EGPIO_H3600_VPP_ON
 )paren
 suffix:semicolon
 r_else
-id|clr_bitsy_egpio
+id|clr_h3600_egpio
 c_func
 (paren
-id|EGPIO_BITSY_VPP_ON
+id|EGPIO_H3600_VPP_ON
 )paren
 suffix:semicolon
 )brace
@@ -393,6 +376,11 @@ comma
 id|copy_to
 suffix:colon
 id|sa1100_copy_to
+comma
+id|map_priv_1
+suffix:colon
+id|WINDOW_ADDR
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Here are partition information for all known SA1100-based devices.&n; * See include/linux/mtd/partitions.h for definition of the mtd_partition&n; * structure.&n; * &n; * The *_max_flash_size is the maximum possible mapped flash size which&n; * is not necessarily the actual flash size.  It must correspond to the &n; * value specified in the mapping definition defined by the&n; * &quot;struct map_desc *_io_desc&quot; for the corresponding machine.&n; */
@@ -766,20 +754,20 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_SA1100_HUW_WEBPANEL */
-macro_line|#ifdef CONFIG_SA1100_BITSY
-DECL|variable|bitsy_max_flash_size
+macro_line|#ifdef CONFIG_SA1100_H3600
+DECL|variable|h3600_max_flash_size
 r_static
 r_int
 r_int
-id|bitsy_max_flash_size
+id|h3600_max_flash_size
 op_assign
 l_int|0x02000000
 suffix:semicolon
-DECL|variable|bitsy_partitions
+DECL|variable|h3600_partitions
 r_static
 r_struct
 id|mtd_partition
-id|bitsy_partitions
+id|h3600_partitions
 (braket
 )braket
 op_assign
@@ -787,7 +775,7 @@ op_assign
 (brace
 id|name
 suffix:colon
-l_string|&quot;BITSY boot firmware&quot;
+l_string|&quot;H3600 boot firmware&quot;
 comma
 id|size
 suffix:colon
@@ -806,7 +794,7 @@ comma
 (brace
 id|name
 suffix:colon
-l_string|&quot;BITSY kernel&quot;
+l_string|&quot;H3600 kernel&quot;
 comma
 id|size
 suffix:colon
@@ -820,7 +808,7 @@ comma
 (brace
 id|name
 suffix:colon
-l_string|&quot;BITSY params&quot;
+l_string|&quot;H3600 params&quot;
 comma
 id|size
 suffix:colon
@@ -835,7 +823,7 @@ comma
 macro_line|#ifdef CONFIG_JFFS2_FS
 id|name
 suffix:colon
-l_string|&quot;BITSY root jffs2&quot;
+l_string|&quot;H3600 root jffs2&quot;
 comma
 id|offset
 suffix:colon
@@ -847,7 +835,7 @@ id|MTDPART_SIZ_FULL
 macro_line|#else
 id|name
 suffix:colon
-l_string|&quot;BITSY initrd&quot;
+l_string|&quot;H3600 initrd&quot;
 comma
 id|size
 suffix:colon
@@ -861,7 +849,7 @@ comma
 (brace
 id|name
 suffix:colon
-l_string|&quot;BITSY root cramfs&quot;
+l_string|&quot;H3600 root cramfs&quot;
 comma
 id|size
 suffix:colon
@@ -875,7 +863,7 @@ comma
 (brace
 id|name
 suffix:colon
-l_string|&quot;BITSY usr cramfs&quot;
+l_string|&quot;H3600 usr cramfs&quot;
 comma
 id|size
 suffix:colon
@@ -889,7 +877,7 @@ comma
 (brace
 id|name
 suffix:colon
-l_string|&quot;BITSY usr local&quot;
+l_string|&quot;H3600 usr local&quot;
 comma
 id|offset
 suffix:colon
@@ -1132,7 +1120,7 @@ op_assign
 (brace
 id|name
 suffix:colon
-l_string|&quot;Bootloader + zImage&quot;
+l_string|&quot;zImage&quot;
 comma
 id|offset
 suffix:colon
@@ -1173,45 +1161,57 @@ id|MTDPART_SIZ_FULL
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_LART
-DECL|variable|lart_max_flash_size
+macro_line|#ifdef CONFIG_SA1100_GRAPHICSMASTER
+DECL|variable|graphicsmaster_max_flash_size
 r_static
 r_int
 r_int
-id|lart_max_flash_size
+id|graphicsmaster_max_flash_size
 op_assign
-l_int|0x00400000
+l_int|0x01000000
 suffix:semicolon
-DECL|variable|lart_partitions
+DECL|variable|graphicsmaster_partitions
 r_static
 r_struct
 id|mtd_partition
-id|lart_partitions
+id|graphicsmaster_partitions
 (braket
 )braket
 op_assign
 (brace
 (brace
+id|name
+suffix:colon
+l_string|&quot;zImage&quot;
+comma
 id|offset
 suffix:colon
 l_int|0
 comma
 id|size
 suffix:colon
-l_int|0x020000
+l_int|0x100000
 )brace
 comma
 (brace
+id|name
+suffix:colon
+l_string|&quot;ramdisk.gz&quot;
+comma
 id|offset
 suffix:colon
 id|MTDPART_OFS_APPEND
 comma
 id|size
 suffix:colon
-l_int|0x0e0000
+l_int|0x300000
 )brace
 comma
 (brace
+id|name
+suffix:colon
+l_string|&quot;User FS&quot;
+comma
 id|offset
 suffix:colon
 id|MTDPART_OFS_APPEND
@@ -1287,7 +1287,7 @@ l_int|0x00180000
 comma
 id|size
 suffix:colon
-l_int|0x00200000
+l_int|0x00280000
 comma
 )brace
 comma
@@ -1578,6 +1578,143 @@ l_int|0xA0000
 )brace
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_SA1100_STORK
+DECL|variable|stork_max_flash_size
+r_static
+r_int
+r_int
+id|stork_max_flash_size
+op_assign
+l_int|0x02000000
+suffix:semicolon
+DECL|variable|stork_partitions
+r_static
+r_struct
+id|mtd_partition
+id|stork_partitions
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|name
+suffix:colon
+l_string|&quot;STORK boot firmware&quot;
+comma
+id|size
+suffix:colon
+l_int|0x00040000
+comma
+id|offset
+suffix:colon
+l_int|0
+comma
+id|mask_flags
+suffix:colon
+id|MTD_WRITEABLE
+multiline_comment|/* force read-only */
+)brace
+comma
+(brace
+id|name
+suffix:colon
+l_string|&quot;STORK params&quot;
+comma
+id|size
+suffix:colon
+l_int|0x00040000
+comma
+id|offset
+suffix:colon
+l_int|0x40000
+)brace
+comma
+(brace
+id|name
+suffix:colon
+l_string|&quot;STORK kernel&quot;
+comma
+id|size
+suffix:colon
+l_int|0x00100000
+comma
+id|offset
+suffix:colon
+l_int|0x80000
+)brace
+comma
+(brace
+macro_line|#ifdef CONFIG_JFFS2_FS
+id|name
+suffix:colon
+l_string|&quot;STORK root jffs2&quot;
+comma
+id|offset
+suffix:colon
+l_int|0x00180000
+comma
+id|size
+suffix:colon
+id|MTDPART_SIZ_FULL
+macro_line|#else
+id|name
+suffix:colon
+l_string|&quot;STORK initrd&quot;
+comma
+id|size
+suffix:colon
+l_int|0x00100000
+comma
+id|offset
+suffix:colon
+l_int|0x00180000
+)brace
+comma
+(brace
+id|name
+suffix:colon
+l_string|&quot;STORK root cramfs&quot;
+comma
+id|size
+suffix:colon
+l_int|0x00300000
+comma
+id|offset
+suffix:colon
+l_int|0x00280000
+)brace
+comma
+(brace
+id|name
+suffix:colon
+l_string|&quot;STORK usr cramfs&quot;
+comma
+id|size
+suffix:colon
+l_int|0x00800000
+comma
+id|offset
+suffix:colon
+l_int|0x00580000
+)brace
+comma
+(brace
+id|name
+suffix:colon
+l_string|&quot;STORK usr local&quot;
+comma
+id|offset
+suffix:colon
+l_int|0x00d80000
+comma
+id|size
+suffix:colon
+id|MTDPART_SIZ_FULL
+macro_line|#endif
+)brace
+)brace
+suffix:semicolon
+macro_line|#endif
 DECL|macro|NB_OF
 mdefine_line|#define NB_OF(x)  (sizeof(x)/sizeof(x[0]))
 r_extern
@@ -1656,6 +1793,7 @@ r_char
 op_star
 id|part_type
 suffix:semicolon
+multiline_comment|/* Default flash buswidth */
 id|sa1100_map.buswidth
 op_assign
 (paren
@@ -1668,42 +1806,6 @@ c_cond
 l_int|2
 suffix:colon
 l_int|4
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;SA1100 flash: probing %d-bit flash bus&bslash;n&quot;
-comma
-id|sa1100_map.buswidth
-op_star
-l_int|8
-)paren
-suffix:semicolon
-id|mymtd
-op_assign
-id|do_map_probe
-c_func
-(paren
-l_string|&quot;cfi&quot;
-comma
-op_amp
-id|sa1100_map
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mymtd
-)paren
-r_return
-op_minus
-id|ENXIO
-suffix:semicolon
-id|mymtd-&gt;module
-op_assign
-id|THIS_MODULE
 suffix:semicolon
 multiline_comment|/*&n;&t; * Static partition definition selection&n;&t; */
 id|part_type
@@ -1766,11 +1868,11 @@ id|huw_webpanel_max_flash_size
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_BITSY
+macro_line|#ifdef CONFIG_SA1100_H3600
 r_if
 c_cond
 (paren
-id|machine_is_bitsy
+id|machine_is_h3600
 c_func
 (paren
 )paren
@@ -1778,23 +1880,23 @@ c_func
 (brace
 id|parts
 op_assign
-id|bitsy_partitions
+id|h3600_partitions
 suffix:semicolon
 id|nb_parts
 op_assign
 id|NB_OF
 c_func
 (paren
-id|bitsy_partitions
+id|h3600_partitions
 )paren
 suffix:semicolon
 id|sa1100_map.size
 op_assign
-id|bitsy_max_flash_size
+id|h3600_max_flash_size
 suffix:semicolon
 id|sa1100_map.set_vpp
 op_assign
-id|bitsy_set_vpp
+id|h3600_set_vpp
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -1880,13 +1982,26 @@ id|sa1100_map.size
 op_assign
 id|graphicsclient_max_flash_size
 suffix:semicolon
+id|sa1100_map.buswidth
+op_assign
+(paren
+id|MSC1
+op_amp
+id|MSC_RBW
+)paren
+ques
+c_cond
+l_int|2
+suffix:colon
+l_int|4
+suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_LART
+macro_line|#ifdef CONFIG_SA1100_GRAPHICSMASTER
 r_if
 c_cond
 (paren
-id|machine_is_lart
+id|machine_is_graphicsmaster
 c_func
 (paren
 )paren
@@ -1894,19 +2009,32 @@ c_func
 (brace
 id|parts
 op_assign
-id|lart_partitions
+id|graphicsmaster_partitions
 suffix:semicolon
 id|nb_parts
 op_assign
 id|NB_OF
 c_func
 (paren
-id|lart_partitions
+id|graphicsmaster_partitions
 )paren
 suffix:semicolon
 id|sa1100_map.size
 op_assign
-id|lart_max_flash_size
+id|graphicsmaster_max_flash_size
+suffix:semicolon
+id|sa1100_map.buswidth
+op_assign
+(paren
+id|MSC1
+op_amp
+id|MSC_RBW
+)paren
+ques
+c_cond
+l_int|2
+suffix:colon
+l_int|4
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -2054,27 +2182,73 @@ id|flexanet_max_flash_size
 suffix:semicolon
 )brace
 macro_line|#endif
+macro_line|#ifdef CONFIG_SA1100_STORK
+r_if
+c_cond
+(paren
+id|machine_is_stork
+c_func
+(paren
+)paren
+)paren
+(brace
+id|parts
+op_assign
+id|stork_partitions
+suffix:semicolon
+id|nb_parts
+op_assign
+id|NB_OF
+c_func
+(paren
+id|stork_partitions
+)paren
+suffix:semicolon
+id|sa1100_map.size
+op_assign
+id|stork_max_flash_size
+suffix:semicolon
+)brace
+macro_line|#endif
+multiline_comment|/*&n;&t; * Now let&squot;s probe for the actual flash.  Do it here since&n;&t; * specific machine settings might have been set above.&n;&t; */
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;SA1100 flash: probing %d-bit flash bus&bslash;n&quot;
+comma
+id|sa1100_map.buswidth
+op_star
+l_int|8
+)paren
+suffix:semicolon
+id|mymtd
+op_assign
+id|do_map_probe
+c_func
+(paren
+l_string|&quot;cfi_probe&quot;
+comma
+op_amp
+id|sa1100_map
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|nb_parts
+id|mymtd
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;MTD: no known flash definition for this SA1100 machine&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENXIO
 suffix:semicolon
-)brace
+id|mymtd-&gt;module
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 multiline_comment|/*&n;&t; * Dynamic partition selection stuff (might override the static ones)&n;&t; */
-macro_line|#ifdef CONFIG_MTD_SA1100_REDBOOT_PARTITIONS
+macro_line|#ifdef CONFIG_MTD_REDBOOT_PARTS
 r_if
 c_cond
 (paren
@@ -2114,7 +2288,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_MTD_SA1100_BOOTLDR_PARTITIONS
+macro_line|#ifdef CONFIG_MTD_BOOTLDR_PARTS
 r_if
 c_cond
 (paren
@@ -2272,6 +2446,24 @@ id|module_exit
 c_func
 (paren
 id|sa1100_mtd_cleanup
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Nicolas Pitre&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;SA1100 CFI map driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

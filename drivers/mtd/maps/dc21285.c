@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * MTD map driver for flash on the DC21285 (the StrongARM-110 companion chip)&n; *&n; * (C) 2000  Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; * &n; * $Id: dc21285.c,v 1.4 2001/04/26 15:40:23 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * MTD map driver for flash on the DC21285 (the StrongARM-110 companion chip)&n; *&n; * (C) 2000  Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; * &n; * $Id: dc21285.c,v 1.6 2001/10/02 15:05:14 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -610,7 +610,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;cfi&quot;
+l_string|&quot;cfi_probe&quot;
 comma
 op_amp
 id|dc21285_map
@@ -841,6 +841,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_dc21285
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Nicolas Pitre &lt;nico@cam.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;MTD map driver for DC21285 boards&quot;
 )paren
 suffix:semicolon
 eof

@@ -951,6 +951,8 @@ op_amp
 id|self-&gt;disco_number
 comma
 id|self-&gt;mask
+comma
+id|DISCOVERY_DEFAULT_SLOTS
 )paren
 suffix:semicolon
 multiline_comment|/* Check if the we got some results */
@@ -1126,6 +1128,8 @@ op_amp
 id|number
 comma
 l_int|0xffff
+comma
+id|DISCOVERY_DEFAULT_SLOTS
 )paren
 suffix:semicolon
 multiline_comment|/* Check if the we got some results */
@@ -1906,6 +1910,8 @@ op_amp
 id|number
 comma
 l_int|0xffff
+comma
+id|DISCOVERY_DEFAULT_SLOTS
 )paren
 suffix:semicolon
 multiline_comment|/* Check if the we got some results */

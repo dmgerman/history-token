@@ -285,13 +285,12 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Initial count 1 for user reference + 1 for swap cache */
 id|si-&gt;swap_map
 (braket
 id|offset
 )braket
 op_assign
-l_int|2
+l_int|1
 suffix:semicolon
 id|nr_swap_pages
 op_decrement
@@ -318,7 +317,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Callers of get_swap_page must hold swap_list_lock across the call,&n; * and across the following add_to_swap_cache, to guard against races&n; * with read_swap_cache_async.&n; */
 DECL|function|get_swap_page
 id|swp_entry_t
 id|get_swap_page
@@ -351,6 +349,11 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Out of memory */
+id|swap_list_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|type
 op_assign
 id|swap_list.next
@@ -533,6 +536,11 @@ multiline_comment|/* out of swap space */
 )brace
 id|out
 suffix:colon
+id|swap_list_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|entry
 suffix:semicolon

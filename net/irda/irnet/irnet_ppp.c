@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *&t;IrNET protocol module : Synchronous PPP over an IrDA socket.&n; *&n; *&t;&t;Jean II - HPL `00 - &lt;jt@hpl.hp.com&gt;&n; *&n; * This file implement the PPP interface and /dev/irnet character device.&n; * The PPP interface hook to the ppp_generic module, handle all our&n; *&t;relationship to the PPP code in the kernel (and by extension to pppd),&n; *&t;and exchange PPP frames with this module (send/receive).&n; * The /dev/irnet device is used primarily for 2 functions :&n; *&t;1) as a stub for pppd (the ppp daemon), so that we can appropriately&n; *&t;generate PPP sessions (we pretend we are a tty).&n; *&t;2) as a control channel (write commands, read events)&n; */
 macro_line|#include &quot;irnet_ppp.h&quot;&t;&t;/* Private header */
-macro_line|#include &lt;linux/module.h&gt;
+multiline_comment|/* Please put other headers in irnet.h - Thanks */
 multiline_comment|/************************* CONTROL CHANNEL *************************/
 multiline_comment|/*&n; * When a pppd instance is not active on /dev/irnet, it acts as a control&n; * channel.&n; * Writting allow to set up the IrDA destination of the IrNET channel,&n; * and any application may be read events happening in IrNET...&n; */
 multiline_comment|/*------------------------------------------------------------------*/
@@ -622,6 +622,8 @@ op_amp
 id|ap-&gt;disco_number
 comma
 id|mask
+comma
+id|DISCOVERY_DEFAULT_SLOTS
 )paren
 suffix:semicolon
 multiline_comment|/* Check if the we got some results */

@@ -1,7 +1,7 @@
 multiline_comment|/* Linux driver for NAND Flash Translation Layer      */
 multiline_comment|/* (c) 1999 Machine Vision Holdings, Inc.             */
 multiline_comment|/* Author: David Woodhouse &lt;dwmw2@infradead.org&gt;      */
-multiline_comment|/* $Id: nftlcore.c,v 1.73 2001/06/09 01:09:43 dwmw2 Exp $ */
+multiline_comment|/* $Id: nftlcore.c,v 1.82 2001/10/02 15:05:11 dwmw2 Exp $ */
 multiline_comment|/*&n;  The contents of this file are distributed under the GNU General&n;  Public License version 2. The author places no additional&n;  restrictions of any kind on it.&n; */
 DECL|macro|PRERELEASE
 mdefine_line|#define PRERELEASE
@@ -765,8 +765,7 @@ suffix:semicolon
 r_int
 id|silly
 op_assign
-op_minus
-l_int|1
+id|nftl-&gt;nb_blocks
 suffix:semicolon
 multiline_comment|/* Normally, we force a fold to happen before we run out of free blocks completely */
 r_if
@@ -1178,10 +1177,41 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SECTOR_IGNORE
-suffix:colon
-r_case
 id|SECTOR_DELETED
+suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|BlockFreeFound
+(braket
+id|block
+)braket
+)paren
+id|BlockMap
+(braket
+id|block
+)braket
+op_assign
+id|BLOCK_NIL
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;SECTOR_DELETED found after SECTOR_FREE &quot;
+l_string|&quot;in Virtual Unit Chain %d for block %d&bslash;n&quot;
+comma
+id|thisVUC
+comma
+id|block
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SECTOR_IGNORE
 suffix:colon
 r_break
 suffix:semicolon
@@ -1236,7 +1266,7 @@ c_cond
 id|inplace
 )paren
 (brace
-multiline_comment|/* We&squot;re being asked to be a fold-in-place. Check&n;&t;&t;   that all blocks are either present or SECTOR_FREE&n;&t;&t;   in the target block. If not, we&squot;re going to have&n;&t;&t;   to fold out-of-place anyway.&n;&t;&t;*/
+multiline_comment|/* We&squot;re being asked to be a fold-in-place. Check&n;&t;&t;   that all blocks which actually have data associated&n;&t;&t;   with them (i.e. BlockMap[block] != BLOCK_NIL) are &n;&t;&t;   either already present or SECTOR_FREE in the target&n;&t;&t;   block. If not, we&squot;re going to have to fold out-of-place&n;&t;&t;   anyway.&n;&t;&t;*/
 r_for
 c_loop
 (paren
@@ -1263,6 +1293,13 @@ id|block
 )braket
 op_ne
 id|SECTOR_FREE
+op_logical_and
+id|BlockMap
+(braket
+id|block
+)braket
+op_ne
+id|BLOCK_NIL
 op_logical_and
 id|BlockMap
 (braket
@@ -1882,7 +1919,11 @@ l_int|0
 suffix:semicolon
 id|chain
 OL
+id|le32_to_cpu
+c_func
+(paren
 id|nftl-&gt;MediaHdr.FormattedSize
+)paren
 op_div
 id|nftl-&gt;EraseSize
 suffix:semicolon
@@ -4151,8 +4192,13 @@ suffix:colon
 id|NFTL_notify_remove
 )brace
 suffix:semicolon
+r_extern
+r_char
+id|nftlmountrev
+(braket
+)braket
+suffix:semicolon
 DECL|function|init_nftl
-r_static
 r_int
 id|__init
 id|init_nftl
@@ -4164,19 +4210,14 @@ r_void
 r_int
 id|i
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;M-Systems NAND Flash Translation Layer driver. (C) 1999 MVHI&bslash;n&quot;
-)paren
-suffix:semicolon
 macro_line|#ifdef PRERELEASE 
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;$Id: nftlcore.c,v 1.73 2001/06/09 01:09:43 dwmw2 Exp $&bslash;n&quot;
+l_string|&quot;NFTL driver: nftlcore.c $Revision: 1.82 $, nftlmount.c %s&bslash;n&quot;
+comma
+id|nftlmountrev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -4328,6 +4369,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_nftl
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David Woodhouse &lt;dwmw2@infradead.org&gt;, Fabrice Bellard &lt;fabrice.bellard@netgem.com&gt; et al.&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Support code for NAND Flash Translation Layer, used on M-Systems DiskOnChip 2000 and Millennium&quot;
 )paren
 suffix:semicolon
 eof

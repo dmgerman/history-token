@@ -1,10 +1,10 @@
-multiline_comment|/*&n; * $Id: pmc551.h,v 1.3 2000/10/30 20:03:23 major Exp $&n; *&n; * PMC551 PCI Mezzanine Ram Device&n; *&n; * Author:&n; *       Mark Ferrell&n; *       Copyright 1999,2000 Nortel Networks&n; *&n; * License: &n; *&t; As part of this driver was derrived from the slram.c driver it falls&n; *&t; under the same license, which is GNU General Public License v2&n; */
+multiline_comment|/*&n; * $Id: pmc551.h,v 1.4 2001/06/12 16:19:38 major Exp $&n; *&n; * PMC551 PCI Mezzanine Ram Device&n; *&n; * Author:&n; *       Mark Ferrell&n; *       Copyright 1999,2000 Nortel Networks&n; *&n; * License: &n; *&t; As part of this driver was derrived from the slram.c driver it falls&n; *&t; under the same license, which is GNU General Public License v2&n; */
 macro_line|#ifndef __MTD_PMC551_H__
 DECL|macro|__MTD_PMC551_H__
 mdefine_line|#define __MTD_PMC551_H__
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 DECL|macro|PMC551_VERSION
-mdefine_line|#define PMC551_VERSION &quot;$Id: pmc551.h,v 1.3 2000/10/30 20:03:23 major Exp $&bslash;n&quot;&bslash;&n;       &quot;Ramix PMC551 PCI Mezzanine Ram Driver. (C) 1999,2000 Nortel Networks.&bslash;n&quot;
+mdefine_line|#define PMC551_VERSION &quot;$Id: pmc551.h,v 1.4 2001/06/12 16:19:38 major Exp $&bslash;n&quot;&bslash;&n;       &quot;Ramix PMC551 PCI Mezzanine Ram Driver. (C) 1999,2000 Nortel Networks.&bslash;n&quot;
 multiline_comment|/*&n; * Our personal and private information&n; */
 DECL|struct|mypriv
 r_struct
@@ -21,17 +21,17 @@ id|u_char
 op_star
 id|start
 suffix:semicolon
-DECL|member|mem_map0_base_val
+DECL|member|base_map0
 id|u32
-id|mem_map0_base_val
+id|base_map0
 suffix:semicolon
-DECL|member|curr_mem_map0_val
+DECL|member|curr_map0
 id|u32
-id|curr_mem_map0_val
+id|curr_map0
 suffix:semicolon
-DECL|member|aperture_size
+DECL|member|asize
 id|u32
-id|aperture_size
+id|asize
 suffix:semicolon
 DECL|member|nextpmc551
 r_struct
@@ -67,6 +67,31 @@ op_star
 comma
 id|u_char
 op_star
+)paren
+suffix:semicolon
+r_static
+r_int
+id|pmc551_point
+(paren
+r_struct
+id|mtd_info
+op_star
+id|mtd
+comma
+id|loff_t
+id|from
+comma
+r_int
+id|len
+comma
+r_int
+op_star
+id|retlen
+comma
+id|u_char
+op_star
+op_star
+id|mtdbuf
 )paren
 suffix:semicolon
 r_static
@@ -153,9 +178,5 @@ DECL|macro|PMC551_DRAM_BLK_SET_COL_MUX
 mdefine_line|#define PMC551_DRAM_BLK_SET_COL_MUX(x,v) (((x) &amp; ~0x00007000) | (((v) &amp; 0x7) &lt;&lt; 12))
 DECL|macro|PMC551_DRAM_BLK_SET_ROW_MUX
 mdefine_line|#define PMC551_DRAM_BLK_SET_ROW_MUX(x,v) (((x) &amp; ~0x00000f00) | (((v) &amp; 0xf) &lt;&lt; 8))
-DECL|macro|PMC551_ADDR_HIGH_MASK
-mdefine_line|#define PMC551_ADDR_HIGH_MASK&t;0x3ff00000
-DECL|macro|PMC551_ADDR_LOW_MASK
-mdefine_line|#define PMC551_ADDR_LOW_MASK&t;0x000fffff
 macro_line|#endif /* __MTD_PMC551_H__ */
 eof

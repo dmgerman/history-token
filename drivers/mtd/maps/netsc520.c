@@ -1,4 +1,4 @@
-multiline_comment|/* netsc520.c -- MTD map driver for AMD NetSc520 Demonstration Board&n; *&n; * Copyright (C) 2001 Mark Langsdorf (mark.langsdorf@amd.com)&n; *&t;based on sc520cdp.c by Sysgo Real-Time Solutions GmbH&n; *&n; * $Id: netsc520.c,v 1.3 2001/06/02 14:52:23 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n; *&n; * The NetSc520 is a demonstration board for the Elan Sc520 processor available&n; * from AMD.  It has a single back of 16 megs of 32-bit Flash ROM and another&n; * 16 megs of SDRAM.&n; */
+multiline_comment|/* netsc520.c -- MTD map driver for AMD NetSc520 Demonstration Board&n; *&n; * Copyright (C) 2001 Mark Langsdorf (mark.langsdorf@amd.com)&n; *&t;based on sc520cdp.c by Sysgo Real-Time Solutions GmbH&n; *&n; * $Id: netsc520.c,v 1.5 2001/10/02 15:05:14 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n; *&n; * The NetSc520 is a demonstration board for the Elan Sc520 processor available&n; * from AMD.  It has a single back of 16 megs of 32-bit Flash ROM and another&n; * 16 megs of SDRAM.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -345,12 +345,6 @@ id|mtd_info
 op_star
 id|mymtd
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|init_netsc520
-mdefine_line|#define init_netsc520 init_module
-DECL|macro|cleanup_netsc520
-mdefine_line|#define cleanup_netsc520 cleanup_module
-macro_line|#endif
 DECL|function|init_netsc520
 r_static
 r_int
@@ -409,7 +403,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;cfi&quot;
+l_string|&quot;cfi_probe&quot;
 comma
 op_amp
 id|netsc520_map
@@ -427,7 +421,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;ram&quot;
+l_string|&quot;map_ram&quot;
 comma
 op_amp
 id|netsc520_map
@@ -446,7 +440,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;rom&quot;
+l_string|&quot;map_rom&quot;
 comma
 op_amp
 id|netsc520_map
@@ -556,6 +550,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_netsc520
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Mark Langsdorf &lt;mark.langsdorf@amd.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;MTD map driver for AMD NetSc520 Demonstration Board&quot;
 )paren
 suffix:semicolon
 eof

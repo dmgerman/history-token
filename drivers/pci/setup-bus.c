@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 DECL|macro|DEBUG_CONFIG
-mdefine_line|#define DEBUG_CONFIG 1
+mdefine_line|#define DEBUG_CONFIG 0
 macro_line|#if DEBUG_CONFIG
 DECL|macro|DBGC
 macro_line|# define DBGC(args)     printk args

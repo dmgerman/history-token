@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common Flash Interface support:&n; *   Intel Extended Vendor Command Set (ID 0x0001)&n; *&n; * (C) 2000 Red Hat. GPL&squot;d&n; *&n; * $Id: cfi_cmdset_0001.c,v 1.80 2001/06/03 01:32:57 nico Exp $&n; *&n; * &n; * 10/10/2000&t;Nicolas Pitre &lt;nico@cam.org&gt;&n; * &t;- completely revamped method functions so they are aware and&n; * &t;  independent of the flash geometry (buswidth, interleave, etc.)&n; * &t;- scalability vs code size is completely set at compile-time&n; * &t;  (see include/linux/mtd/cfi.h for selection)&n; *&t;- optimized write buffer method&n; */
+multiline_comment|/*&n; * Common Flash Interface support:&n; *   Intel Extended Vendor Command Set (ID 0x0001)&n; *&n; * (C) 2000 Red Hat. GPL&squot;d&n; *&n; * $Id: cfi_cmdset_0001.c,v 1.87 2001/10/02 15:05:11 dwmw2 Exp $&n; *&n; * &n; * 10/10/2000&t;Nicolas Pitre &lt;nico@cam.org&gt;&n; * &t;- completely revamped method functions so they are aware and&n; * &t;  independent of the flash geometry (buswidth, interleave, etc.)&n; * &t;- scalability vs code size is completely set at compile-time&n; * &t;  (see include/linux/mtd/cfi.h for selection)&n; *&t;- optimized write buffer method&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/mtd/cfi.h&gt;
 macro_line|#include &lt;linux/mtd/compatmac.h&gt;
@@ -157,7 +158,9 @@ id|mtd_info
 op_star
 )paren
 suffix:semicolon
-r_void
+r_struct
+id|mtd_info
+op_star
 id|cfi_cmdset_0001
 c_func
 (paren
@@ -165,9 +168,6 @@ r_struct
 id|map_info
 op_star
 comma
-r_int
-comma
-r_int
 r_int
 )paren
 suffix:semicolon
@@ -191,15 +191,16 @@ op_assign
 (brace
 id|probe
 suffix:colon
-id|cfi_intelext_setup
+l_int|NULL
 comma
+multiline_comment|/* Not usable directly */
 id|destroy
 suffix:colon
 id|cfi_intelext_destroy
 comma
 id|name
 suffix:colon
-l_string|&quot;cfi_intel&quot;
+l_string|&quot;cfi_cmdset_0001&quot;
 comma
 id|module
 suffix:colon
@@ -207,262 +208,20 @@ id|THIS_MODULE
 )brace
 suffix:semicolon
 multiline_comment|/* #define DEBUG_LOCK_BITS */
-multiline_comment|/* This routine is made available to other mtd code via&n; * inter_module_register.  It must only be accessed through&n; * inter_module_get which will bump the use count of this module.  The&n; * addresses passed back in cfi are valid as long as the use count of&n; * this module is non-zero, i.e. between inter_module_get and&n; * inter_module_put.  Keith Owens &lt;kaos@ocs.com.au&gt; 29 Oct 2000.&n; */
-DECL|function|cfi_cmdset_0001
+multiline_comment|/* #define DEBUG_CFI_FEATURES */
+macro_line|#ifdef DEBUG_CFI_FEATURES
+DECL|function|cfi_tell_features
+r_static
 r_void
-id|cfi_cmdset_0001
+id|cfi_tell_features
 c_func
 (paren
-r_struct
-id|map_info
-op_star
-id|map
-comma
-r_int
-id|primary
-comma
-r_int
-r_int
-id|base
-)paren
-(brace
-r_struct
-id|cfi_private
-op_star
-id|cfi
-op_assign
-id|map-&gt;fldrv_priv
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 r_struct
 id|cfi_pri_intelext
 op_star
 id|extp
-suffix:semicolon
-r_int
-id|ofs_factor
-op_assign
-id|cfi-&gt;interleave
-op_star
-id|cfi-&gt;device_type
-suffix:semicolon
-id|__u16
-id|adr
-op_assign
-id|primary
-ques
-c_cond
-id|cfi-&gt;cfiq-&gt;P_ADR
-suffix:colon
-id|cfi-&gt;cfiq-&gt;A_ADR
-suffix:semicolon
-singleline_comment|//printk(&quot; Intel/Sharp Extended Query Table at 0x%4.4X&bslash;n&quot;, adr);
-r_if
-c_cond
-(paren
-op_logical_neg
-id|adr
-)paren
-r_return
-suffix:semicolon
-multiline_comment|/* Switch it into Query Mode */
-r_switch
-c_cond
-(paren
-id|CFIDEV_BUSWIDTH
 )paren
 (brace
-r_case
-l_int|1
-suffix:colon
-id|map
-op_member_access_from_pointer
-id|write8
-c_func
-(paren
-id|map
-comma
-l_int|0x98
-comma
-l_int|0x55
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|2
-suffix:colon
-id|map
-op_member_access_from_pointer
-id|write16
-c_func
-(paren
-id|map
-comma
-l_int|0x9898
-comma
-l_int|0xaa
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|4
-suffix:colon
-id|map
-op_member_access_from_pointer
-id|write32
-c_func
-(paren
-id|map
-comma
-l_int|0x98989898
-comma
-l_int|0x154
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-id|extp
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-op_star
-id|extp
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|extp
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Failed to allocate memory&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/* Read in the Extended Query Table */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-r_sizeof
-(paren
-op_star
-id|extp
-)paren
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-(paren
-(paren
-r_int
-r_char
-op_star
-)paren
-id|extp
-)paren
-(braket
-id|i
-)braket
-op_assign
-id|cfi_read_query
-c_func
-(paren
-id|map
-comma
-(paren
-id|base
-op_plus
-(paren
-(paren
-id|adr
-op_plus
-id|i
-)paren
-op_star
-id|cfi-&gt;interleave
-op_star
-id|cfi-&gt;device_type
-)paren
-)paren
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|extp-&gt;MajorVersion
-op_ne
-l_char|&squot;1&squot;
-op_logical_or
-(paren
-id|extp-&gt;MinorVersion
-template_param
-l_char|&squot;2&squot;
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;  Unknown IntelExt Extended Query version %c.%c.&bslash;n&quot;
-comma
-id|extp-&gt;MajorVersion
-comma
-id|extp-&gt;MinorVersion
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|extp
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/* Do some byteswapping if necessary */
-id|extp-&gt;FeatureSupport
-op_assign
-id|cfi32_to_cpu
-c_func
-(paren
-id|extp-&gt;FeatureSupport
-)paren
-suffix:semicolon
-id|extp-&gt;BlkStatusRegMask
-op_assign
-id|cfi32_to_cpu
-c_func
-(paren
-id|extp-&gt;BlkStatusRegMask
-)paren
-suffix:semicolon
-multiline_comment|/* Tell the user about it in lots of lovely detail */
-macro_line|#if 0  
 id|printk
 c_func
 (paren
@@ -805,97 +564,256 @@ op_amp
 l_int|0xf
 )paren
 suffix:semicolon
-macro_line|#endif&t;
-multiline_comment|/* OK. We like it. Take over the control of it. */
-multiline_comment|/* Switch it into Read Mode */
-r_switch
-c_cond
-(paren
-id|CFIDEV_BUSWIDTH
-)paren
-(brace
-r_case
-l_int|1
-suffix:colon
-id|map
-op_member_access_from_pointer
-id|write8
+)brace
+macro_line|#endif
+multiline_comment|/* This routine is made available to other mtd code via&n; * inter_module_register.  It must only be accessed through&n; * inter_module_get which will bump the use count of this module.  The&n; * addresses passed back in cfi are valid as long as the use count of&n; * this module is non-zero, i.e. between inter_module_get and&n; * inter_module_put.  Keith Owens &lt;kaos@ocs.com.au&gt; 29 Oct 2000.&n; */
+DECL|function|cfi_cmdset_0001
+r_struct
+id|mtd_info
+op_star
+id|cfi_cmdset_0001
 c_func
 (paren
+r_struct
+id|map_info
+op_star
 id|map
 comma
-l_int|0xff
+r_int
+id|primary
+)paren
+(brace
+r_struct
+id|cfi_private
+op_star
+id|cfi
+op_assign
+id|map-&gt;fldrv_priv
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|__u32
+id|base
+op_assign
+id|cfi-&gt;chips
+(braket
+l_int|0
+)braket
+dot
+id|start
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cfi-&gt;cfi_mode
+)paren
+(brace
+multiline_comment|/* &n;&t;&t; * It&squot;s a real CFI chip, not one for which the probe&n;&t;&t; * routine faked a CFI structure. So we read the feature&n;&t;&t; * table from it.&n;&t;&t; */
+id|__u16
+id|adr
+op_assign
+id|primary
+ques
+c_cond
+id|cfi-&gt;cfiq-&gt;P_ADR
+suffix:colon
+id|cfi-&gt;cfiq-&gt;A_ADR
+suffix:semicolon
+r_struct
+id|cfi_pri_intelext
+op_star
+id|extp
+suffix:semicolon
+r_int
+id|ofs_factor
+op_assign
+id|cfi-&gt;interleave
+op_star
+id|cfi-&gt;device_type
+suffix:semicolon
+singleline_comment|//printk(&quot; Intel/Sharp Extended Query Table at 0x%4.4X&bslash;n&quot;, adr);
+r_if
+c_cond
+(paren
+op_logical_neg
+id|adr
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* Switch it into Query Mode */
+id|cfi_send_gen_cmd
+c_func
+(paren
+l_int|0x98
 comma
 l_int|0x55
+comma
+id|base
+comma
+id|map
+comma
+id|cfi
+comma
+id|cfi-&gt;device_type
+comma
+l_int|NULL
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|2
-suffix:colon
-id|map
-op_member_access_from_pointer
-id|write16
+id|extp
+op_assign
+id|kmalloc
 c_func
 (paren
-id|map
-comma
-l_int|0xffff
-comma
-l_int|0xaa
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|4
-suffix:colon
-id|map
-op_member_access_from_pointer
-id|write32
-c_func
+r_sizeof
 (paren
-id|map
+op_star
+id|extp
+)paren
 comma
-l_int|0xffffffff
-comma
-l_int|0x154
+id|GFP_KERNEL
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/* If there was an old setup function, decrease its use count */
 r_if
 c_cond
 (paren
-id|map-&gt;fldrv
-)paren
-r_if
-c_cond
-(paren
-id|map-&gt;fldrv-&gt;module
+op_logical_neg
+id|extp
 )paren
 (brace
-id|__MOD_DEC_USE_COUNT
+id|printk
 c_func
 (paren
-id|map-&gt;fldrv-&gt;module
+id|KERN_ERR
+l_string|&quot;Failed to allocate memory&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+multiline_comment|/* Read in the Extended Query Table */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+r_sizeof
+(paren
+op_star
+id|extp
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+(paren
+(paren
+r_int
+r_char
+op_star
+)paren
+id|extp
+)paren
+(braket
+id|i
+)braket
+op_assign
+id|cfi_read_query
+c_func
+(paren
+id|map
+comma
+(paren
+id|base
+op_plus
+(paren
+(paren
+id|adr
+op_plus
+id|i
+)paren
+op_star
+id|ofs_factor
+)paren
+)paren
 )paren
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-id|cfi-&gt;cmdset_priv
+id|extp-&gt;MajorVersion
+op_ne
+l_char|&squot;1&squot;
+op_logical_or
+(paren
+id|extp-&gt;MinorVersion
+template_param
+l_char|&squot;2&squot;
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;  Unknown IntelExt Extended Query &quot;
+l_string|&quot;version %c.%c.&bslash;n&quot;
+comma
+id|extp-&gt;MajorVersion
+comma
+id|extp-&gt;MinorVersion
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
-id|cfi-&gt;cmdset_priv
+id|extp
 )paren
 suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+multiline_comment|/* Do some byteswapping if necessary */
+id|extp-&gt;FeatureSupport
+op_assign
+id|cfi32_to_cpu
+c_func
+(paren
+id|extp-&gt;FeatureSupport
+)paren
+suffix:semicolon
+id|extp-&gt;BlkStatusRegMask
+op_assign
+id|cfi32_to_cpu
+c_func
+(paren
+id|extp-&gt;BlkStatusRegMask
+)paren
+suffix:semicolon
+macro_line|#ifdef DEBUG_CFI_FEATURES
+multiline_comment|/* Tell the user about it in lots of lovely detail */
+id|cfi_tell_features
+c_func
+(paren
+id|extp
+)paren
+suffix:semicolon
+macro_line|#endif&t;
+multiline_comment|/* Install our own private info structure */
+id|cfi-&gt;cmdset_priv
+op_assign
+id|extp
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -946,62 +864,7 @@ id|cfi_intelext_chipdrv
 suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
-id|cfi-&gt;cmdset_priv
-op_assign
-id|extp
-suffix:semicolon
-macro_line|#if 1 /* Does this work? */
-id|cfi_send_gen_cmd
-c_func
-(paren
-l_int|0x90
-comma
-l_int|0x55
-comma
-id|base
-comma
-id|map
-comma
-id|cfi
-comma
-id|cfi-&gt;device_type
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|cfi-&gt;mfr
-op_assign
-id|cfi_read_query
-c_func
-(paren
-id|map
-comma
-id|base
-)paren
-suffix:semicolon
-id|cfi-&gt;id
-op_assign
-id|cfi_read_query
-c_func
-(paren
-id|map
-comma
-id|base
-op_plus
-id|ofs_factor
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;JEDEC ID: %2.2X %2.2X&bslash;n&quot;
-comma
-id|cfi-&gt;mfr
-comma
-id|cfi-&gt;id
-)paren
-suffix:semicolon
-macro_line|#endif
+multiline_comment|/* Make sure it&squot;s in read mode */
 id|cfi_send_gen_cmd
 c_func
 (paren
@@ -1009,7 +872,7 @@ l_int|0xff
 comma
 l_int|0x55
 comma
-l_int|0
+id|base
 comma
 id|map
 comma
@@ -1021,6 +884,11 @@ l_int|NULL
 )paren
 suffix:semicolon
 r_return
+id|cfi_intelext_setup
+c_func
+(paren
+id|map
+)paren
 suffix:semicolon
 )brace
 DECL|function|cfi_intelext_setup
@@ -1086,7 +954,7 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-singleline_comment|//printk(&quot;number of CFI chips: %d&bslash;n&quot;, cfi-&gt;numchips);
+singleline_comment|//printk(KERN_DEBUG &quot;number of CFI chips: %d&bslash;n&quot;, cfi-&gt;numchips);
 r_if
 c_cond
 (paren
@@ -1097,6 +965,7 @@ id|mtd
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Failed to allocate memory for MTD device&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1170,6 +1039,7 @@ id|mtd-&gt;eraseregions
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Failed to allocate memory for MTD erase region info&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1336,6 +1206,7 @@ multiline_comment|/* Argh */
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Sum of regions (%lx) != total size of set of interleaved chips (%lx)&bslash;n&quot;
 comma
 id|offset
@@ -1377,6 +1248,7 @@ op_increment
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%d: offset=0x%x,size=0x%x,blocks=%d&bslash;n&quot;
 comma
 id|i
@@ -1419,7 +1291,7 @@ c_cond
 id|cfi-&gt;cfiq-&gt;BufWriteTimeoutTyp
 )paren
 (brace
-singleline_comment|//printk( KERN_INFO&quot;Using buffer write method&bslash;n&quot; );
+singleline_comment|//printk(KERN_INFO &quot;Using buffer write method&bslash;n&quot; );
 id|mtd-&gt;write
 op_assign
 id|cfi_intelext_write_buffers
@@ -1427,7 +1299,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|//printk( KERN_INFO&quot;Using word write method&bslash;n&quot; );
+singleline_comment|//printk(KERN_INFO &quot;Using word write method&bslash;n&quot; );
 id|mtd-&gt;write
 op_assign
 id|cfi_intelext_write_words
@@ -1582,6 +1454,27 @@ id|chip-&gt;state
 r_case
 id|FL_ERASING
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+(paren
+r_struct
+id|cfi_pri_intelext
+op_star
+)paren
+id|cfi-&gt;cmdset_priv
+)paren
+op_member_access_from_pointer
+id|FeatureSupport
+op_amp
+l_int|2
+)paren
+r_goto
+id|sleep
+suffix:semicolon
+multiline_comment|/* We don&squot;t support erase suspend */
 id|cfi_write
 (paren
 id|map
@@ -1590,6 +1483,21 @@ id|CMD
 c_func
 (paren
 l_int|0xb0
+)paren
+comma
+id|cmd_addr
+)paren
+suffix:semicolon
+multiline_comment|/* If the flash has finished erasing, then &squot;erase suspend&squot;&n;&t;&t; * appears to make some (28F320) flash devices switch to&n;&t;&t; * &squot;read&squot; mode.  Make sure that we switch to &squot;read status&squot;&n;&t;&t; * mode so we get the right data. --rmk&n;&t;&t; */
+id|cfi_write
+c_func
+(paren
+id|map
+comma
+id|CMD
+c_func
+(paren
+l_int|0x70
 )paren
 comma
 id|cmd_addr
@@ -1661,6 +1569,21 @@ comma
 id|cmd_addr
 )paren
 suffix:semicolon
+multiline_comment|/* make sure we&squot;re in &squot;read status&squot; mode */
+id|cfi_write
+c_func
+(paren
+id|map
+comma
+id|CMD
+c_func
+(paren
+l_int|0x70
+)paren
+comma
+id|cmd_addr
+)paren
+suffix:semicolon
 id|chip-&gt;state
 op_assign
 id|FL_ERASING
@@ -1674,7 +1597,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Chip not ready after erase suspended&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;Chip not ready after erase &quot;
+l_string|&quot;suspended: status = 0x%x&bslash;n&quot;
+comma
+id|status
 )paren
 suffix:semicolon
 r_return
@@ -1828,6 +1755,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;waiting for chip to be ready timed out in read. WSM status = %x&bslash;n&quot;
 comma
 id|status
@@ -1855,6 +1783,8 @@ r_goto
 id|retry
 suffix:semicolon
 r_default
+suffix:colon
+id|sleep
 suffix:colon
 multiline_comment|/* Stick ourselves on a wait queue to be woken when&n;&t;&t;   someone changes the status */
 id|set_current_state
@@ -2311,6 +2241,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;waiting for chip to be ready timed out in read&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2579,6 +2510,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;waiting for chip to be ready timed out in word write&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3516,6 +3448,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;waiting for chip to be ready timed out in buffer write&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3709,6 +3642,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Chip not ready for buffer write. Xstatus = %x, status = %x&bslash;n&quot;
 comma
 id|status
@@ -4046,6 +3980,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;waiting for chip to be ready timed out in bufwrite&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4723,6 +4658,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;waiting for chip to be ready timed out in erase&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4941,7 +4877,7 @@ op_plus
 (paren
 id|HZ
 op_star
-l_int|2
+l_int|20
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME */
@@ -5011,6 +4947,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;waiting for erase to complete timed out. Xstatus = %x, status = %x.&bslash;n&quot;
 comma
 id|status
@@ -6079,6 +6016,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;waiting for chip to be ready timed out in lock&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6285,6 +6223,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;waiting for lock to complete timed out. Xstatus = %x, status = %x.&bslash;n&quot;
 comma
 id|status
@@ -6819,6 +6758,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;waiting for chip to be ready timed out in unlock&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7025,6 +6965,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;waiting for unlock to complete timed out. Xstatus = %x, status = %x.&bslash;n&quot;
 comma
 id|status
@@ -7501,6 +7442,7 @@ op_eq
 id|FL_PM_SUSPENDED
 )paren
 (brace
+multiline_comment|/* No need to force it into a known state here,&n;&t;&t;&t;&t;   because we&squot;re returning failure, and it didn&squot;t&n;&t;&t;&t;&t;   get power cycled */
 id|chip-&gt;state
 op_assign
 id|chip-&gt;oldstate
@@ -7588,6 +7530,7 @@ c_func
 id|chip-&gt;mutex
 )paren
 suffix:semicolon
+multiline_comment|/* Go to known state. Chip may have been power cycled */
 r_if
 c_cond
 (paren
@@ -7596,7 +7539,6 @@ op_eq
 id|FL_PM_SUSPENDED
 )paren
 (brace
-multiline_comment|/* We need to force it back to a known state. */
 id|cfi_write
 c_func
 (paren
@@ -7605,7 +7547,7 @@ comma
 id|CMD
 c_func
 (paren
-l_int|0xff
+l_int|0xFF
 )paren
 comma
 l_int|0
@@ -7670,12 +7612,6 @@ id|cfi
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|cfi_intelext_init
-mdefine_line|#define cfi_intelext_init init_module
-DECL|macro|cfi_intelext_exit
-mdefine_line|#define cfi_intelext_exit cleanup_module
-macro_line|#endif
 DECL|variable|im_name_1
 r_static
 r_char
@@ -7695,7 +7631,8 @@ op_assign
 l_string|&quot;cfi_cmdset_0003&quot;
 suffix:semicolon
 DECL|function|cfi_intelext_init
-id|mod_init_t
+r_int
+id|__init
 id|cfi_intelext_init
 c_func
 (paren
@@ -7729,7 +7666,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cfi_intelext_exit
-id|mod_exit_t
+r_static
+r_void
+id|__exit
 id|cfi_intelext_exit
 c_func
 (paren
@@ -7761,6 +7700,24 @@ id|module_exit
 c_func
 (paren
 id|cfi_intelext_exit
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David Woodhouse &lt;dwmw2@infradead.org&gt; et al.&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;MTD chip driver for Intel/Sharp flash chips&quot;
 )paren
 suffix:semicolon
 eof

@@ -88,7 +88,7 @@ DECL|variable|boot_cpuid
 r_int
 id|boot_cpuid
 suffix:semicolon
-multiline_comment|/* Using SRM callbacks for initial console output. This works from&n;   setup_arch() time through the end of init_IRQ(), as those places&n;   are under our control.&n;&n;   By default, OFF; set it with a bootcommand arg of &quot;srmcons&quot;.&n;*/
+multiline_comment|/*&n; * Using SRM callbacks for initial console output. This works from&n; * setup_arch() time through the end of time_init(), as those places&n; * are under our (Alpha) control.&n;&n; * &quot;srmcons&quot; specified in the boot command arguments allows us to&n; * see kernel messages during the period of time before the true&n; * console device is &quot;registered&quot; during console_init(). As of this&n; * version (2.4.10), time_init() is the last Alpha-specific code&n; * called before console_init(), so we put &quot;unregister&quot; code&n; * there to prevent schizophrenic console behavior later... ;-}&n; *&n; * By default, OFF; set it with a bootcommand arg of &quot;srmcons&quot;.&n; */
 DECL|variable|srmcons_output
 r_int
 id|srmcons_output
@@ -154,6 +154,8 @@ r_void
 id|get_sysnames
 c_func
 (paren
+r_int
+comma
 r_int
 comma
 r_int
@@ -2100,12 +2102,31 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Indentify and reconfigure for the current system.&n;&t; */
+id|cpu
+op_assign
+(paren
+r_struct
+id|percpu_struct
+op_star
+)paren
+(paren
+(paren
+r_char
+op_star
+)paren
+id|hwrpb
+op_plus
+id|hwrpb-&gt;processor_offset
+)paren
+suffix:semicolon
 id|get_sysnames
 c_func
 (paren
 id|hwrpb-&gt;sys_type
 comma
 id|hwrpb-&gt;sys_variation
+comma
+id|cpu-&gt;type
 comma
 op_amp
 id|type_name
@@ -2133,23 +2154,6 @@ op_logical_neg
 id|vec
 )paren
 (brace
-id|cpu
-op_assign
-(paren
-r_struct
-id|percpu_struct
-op_star
-)paren
-(paren
-(paren
-r_char
-op_star
-)paren
-id|hwrpb
-op_plus
-id|hwrpb-&gt;processor_offset
-)paren
-suffix:semicolon
 id|vec
 op_assign
 id|get_sysvec
@@ -3313,6 +3317,11 @@ l_int|10
 op_amp
 l_int|0x3f
 suffix:semicolon
+id|cpu
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+multiline_comment|/* make it usable */
 r_switch
 c_cond
 (paren
@@ -3368,6 +3377,24 @@ id|eb164_indices
 id|member
 )braket
 )braket
+suffix:semicolon
+multiline_comment|/* PC164 may show as EB164 variation with EV56 CPU,&n;&t;&t;&t;   but, since no true EB164 had anything but EV5... */
+r_if
+c_cond
+(paren
+id|vec
+op_eq
+op_amp
+id|eb164_mv
+op_logical_and
+id|cpu
+op_eq
+id|EV56_CPU
+)paren
+id|vec
+op_assign
+op_amp
+id|pc164_mv
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3478,10 +3505,6 @@ suffix:semicolon
 r_case
 id|ST_DEC_1000
 suffix:colon
-id|cpu
-op_and_assign
-l_int|0xffffffff
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3509,10 +3532,6 @@ suffix:semicolon
 r_case
 id|ST_DEC_NORITAKE
 suffix:colon
-id|cpu
-op_and_assign
-l_int|0xffffffff
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3540,10 +3559,6 @@ suffix:semicolon
 r_case
 id|ST_DEC_2100_A500
 suffix:colon
-id|cpu
-op_and_assign
-l_int|0xffffffff
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3782,6 +3797,9 @@ comma
 r_int
 id|variation
 comma
+r_int
+id|cpu
+comma
 r_char
 op_star
 op_star
@@ -3945,6 +3963,11 @@ op_amp
 l_int|0x3f
 suffix:semicolon
 multiline_comment|/* member ID is a bit-field */
+id|cpu
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+multiline_comment|/* make it usable */
 r_switch
 c_cond
 (paren
@@ -3982,6 +4005,30 @@ id|member
 )braket
 )braket
 suffix:semicolon
+multiline_comment|/* PC164 may show as EB164 variation, but with EV56 CPU,&n;&t;&t;   so, since no true EB164 had anything but EV5... */
+r_if
+c_cond
+(paren
+id|eb164_indices
+(braket
+id|member
+)braket
+op_eq
+l_int|0
+op_logical_and
+id|cpu
+op_eq
+id|EV56_CPU
+)paren
+op_star
+id|variation_name
+op_assign
+id|eb164_names
+(braket
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* make it PC164 */
 r_break
 suffix:semicolon
 r_case
@@ -4456,6 +4503,8 @@ c_func
 id|hwrpb-&gt;sys_type
 comma
 id|hwrpb-&gt;sys_variation
+comma
+id|cpu-&gt;type
 comma
 op_amp
 id|systype_name

@@ -408,6 +408,9 @@ op_star
 suffix:semicolon
 multiline_comment|/* linux/mm/page_alloc.c */
 multiline_comment|/* linux/mm/swap_state.c */
+DECL|macro|SWAP_CACHE_INFO
+mdefine_line|#define SWAP_CACHE_INFO
+macro_line|#ifdef SWAP_CACHE_INFO
 r_extern
 r_void
 id|show_swap_cache_info
@@ -416,8 +419,9 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif
 r_extern
-r_void
+r_int
 id|add_to_swap_cache
 c_func
 (paren
@@ -482,6 +486,14 @@ id|swp_entry_t
 )paren
 suffix:semicolon
 multiline_comment|/* linux/mm/oom_kill.c */
+r_extern
+r_int
+id|out_of_memory
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|oom_kill
@@ -634,30 +646,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|macro|SWAP_CACHE_INFO
-mdefine_line|#define SWAP_CACHE_INFO
-macro_line|#ifdef SWAP_CACHE_INFO
-r_extern
-r_int
-r_int
-id|swap_cache_add_total
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|swap_cache_del_total
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|swap_cache_find_total
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|swap_cache_find_success
-suffix:semicolon
-macro_line|#endif
 r_extern
 id|spinlock_t
 id|pagemap_lru_lock

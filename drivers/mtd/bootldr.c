@@ -1,9 +1,11 @@
-multiline_comment|/*&n; * Read flash partition table from Compaq Bootloader&n; *&n; * Copyright 2001 Compaq Computer Corporation.&n; *&n; * $Id: bootldr.c,v 1.4 2001/06/02 18:24:27 nico Exp $&n; *&n; * Use consistent with the GNU GPL is permitted,&n; * provided that this copyright notice is&n; * preserved in its entirety in all copies and derived works.&n; *&n; * COMPAQ COMPUTER CORPORATION MAKES NO WARRANTIES, EXPRESSED OR IMPLIED,&n; * AS TO THE USEFULNESS OR CORRECTNESS OF THIS CODE OR ITS&n; * FITNESS FOR ANY PARTICULAR PURPOSE.&n; *&n; */
+multiline_comment|/*&n; * Read flash partition table from Compaq Bootloader&n; *&n; * Copyright 2001 Compaq Computer Corporation.&n; *&n; * $Id: bootldr.c,v 1.6 2001/10/02 15:05:11 dwmw2 Exp $&n; *&n; * Use consistent with the GNU GPL is permitted,&n; * provided that this copyright notice is&n; * preserved in its entirety in all copies and derived works.&n; *&n; * COMPAQ COMPUTER CORPORATION MAKES NO WARRANTIES, EXPRESSED OR IMPLIED,&n; * AS TO THE USEFULNESS OR CORRECTNESS OF THIS CODE OR ITS&n; * FITNESS FOR ANY PARTICULAR PURPOSE.&n; *&n; */
 multiline_comment|/*&n; * Maintainer: Jamey Hicks (jamey.hicks@compaq.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/partitions.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
+macro_line|#include &lt;linux/bootmem.h&gt;
 DECL|macro|FLASH_PARTITION_NAMELEN
 mdefine_line|#define FLASH_PARTITION_NAMELEN 32
 DECL|enum|LFR_FLAGS
@@ -35,6 +37,10 @@ l_int|8
 multiline_comment|/* expand partition size to fit rest of flash */
 )brace
 suffix:semicolon
+singleline_comment|// the tags are parsed too early to malloc or alloc_bootmem so we&squot;ll fix it
+singleline_comment|// for now
+DECL|macro|MAX_NUM_PARTITIONS
+mdefine_line|#define MAX_NUM_PARTITIONS 8
 DECL|struct|FlashRegion
 r_typedef
 r_struct
@@ -85,7 +91,7 @@ r_struct
 id|FlashRegion
 id|partition
 (braket
-l_int|0
+l_int|8
 )braket
 suffix:semicolon
 DECL|typedef|BootldrFlashPartitionTable
@@ -106,6 +112,21 @@ DECL|macro|BOOTCAP_PARTITIONS
 mdefine_line|#define BOOTCAP_PARTITIONS (1&lt;&lt;1) /* partition table stored in params sector */
 DECL|macro|BOOTCAP_PARAMS_AFTER_BOOTLDR
 mdefine_line|#define BOOTCAP_PARAMS_AFTER_BOOTLDR (1&lt;&lt;2) /* params sector right after bootldr sector(s), else in last sector */
+DECL|variable|Table
+r_static
+r_struct
+id|BootldrFlashPartitionTable
+id|Table
+suffix:semicolon
+DECL|variable|partition_table
+r_static
+r_struct
+id|BootldrFlashPartitionTable
+op_star
+id|partition_table
+op_assign
+l_int|NULL
+suffix:semicolon
 DECL|function|parse_bootldr_partitions
 r_int
 id|parse_bootldr_partitions
@@ -158,17 +179,11 @@ id|namelen
 op_assign
 l_int|0
 suffix:semicolon
-r_struct
-id|BootldrFlashPartitionTable
-op_star
-id|partition_table
-op_assign
-l_int|NULL
-suffix:semicolon
 r_char
 op_star
 id|names
 suffix:semicolon
+macro_line|#if 0
 multiline_comment|/* verify bootldr magic */
 id|ret
 op_assign
@@ -291,6 +306,15 @@ comma
 id|partition_table_offset
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot;: ptable_addr=%#lx&bslash;n&quot;
+comma
+id|ptable_addr
+)paren
+suffix:semicolon
 multiline_comment|/* Read the partition table */
 id|partition_table
 op_assign
@@ -348,6 +372,17 @@ id|ret
 r_goto
 id|out
 suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+op_logical_neg
+id|partition_table
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -355,6 +390,15 @@ id|__FUNCTION__
 l_string|&quot;: magic=%#x&bslash;n&quot;
 comma
 id|partition_table-&gt;magic
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot;: numPartitions=%#x&bslash;n&quot;
+comma
+id|partition_table-&gt;npartitions
 )paren
 suffix:semicolon
 multiline_comment|/* check for partition table magic number */
@@ -370,6 +414,15 @@ id|out
 suffix:semicolon
 id|npartitions
 op_assign
+(paren
+id|partition_table-&gt;npartitions
+OG
+id|MAX_NUM_PARTITIONS
+)paren
+ques
+c_cond
+id|MAX_NUM_PARTITIONS
+suffix:colon
 id|partition_table-&gt;npartitions
 suffix:semicolon
 id|printk
@@ -476,6 +529,7 @@ op_plus
 id|namelen
 )paren
 suffix:semicolon
+singleline_comment|// from here we use the partition table
 r_for
 c_loop
 (paren
@@ -624,6 +678,7 @@ id|parts
 suffix:semicolon
 id|out
 suffix:colon
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -635,15 +690,199 @@ c_func
 id|partition_table
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|parse_tag_ptable
+r_static
+r_int
+id|__init
+id|parse_tag_ptable
+c_func
+(paren
+r_const
+r_struct
+id|tag
+op_star
+id|tag
+)paren
+(brace
+r_char
+id|buf
+(braket
+l_int|128
+)braket
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_int
+id|j
+suffix:semicolon
+id|partition_table
+op_assign
+op_amp
+id|Table
+suffix:semicolon
+macro_line|#ifdef CONFIG_DEBUG_LL    
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;ptable: magic = = 0x%lx  npartitions= %d &bslash;n&quot;
+comma
+id|tag-&gt;u.ptable.magic
+comma
+id|tag-&gt;u.ptable.npartitions
+)paren
+suffix:semicolon
+id|printascii
+c_func
+(paren
+id|buf
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|tag-&gt;u.ptable.npartitions
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;ptable: partition name = %s base= 0x%lx  size= 0x%lx flags= 0x%lx&bslash;n&quot;
+comma
+(paren
+r_char
+op_star
+)paren
+(paren
+op_amp
+id|tag-&gt;u.ptable.partition
+(braket
+id|i
+)braket
+dot
+id|name
+(braket
+l_int|0
+)braket
+)paren
+comma
+id|tag-&gt;u.ptable.partition
+(braket
+id|i
+)braket
+dot
+id|base
+comma
+id|tag-&gt;u.ptable.partition
+(braket
+id|i
+)braket
+dot
+id|size
+comma
+id|tag-&gt;u.ptable.partition
+(braket
+id|i
+)braket
+dot
+id|flags
+)paren
+suffix:semicolon
+id|printascii
+c_func
+(paren
+id|buf
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+id|memcpy
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|partition_table
+comma
+(paren
+r_void
+op_star
+)paren
+(paren
+op_amp
+(paren
+id|tag-&gt;u.ptable
+)paren
+)paren
+comma
+r_sizeof
+(paren
+id|partition_table
+)paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|FlashRegion
+)paren
+op_star
+id|tag-&gt;u.ptable.npartitions
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|__tagtable
+c_func
+(paren
+id|ATAG_PTABLE
+comma
+id|parse_tag_ptable
+)paren
+suffix:semicolon
 DECL|variable|parse_bootldr_partitions
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|parse_bootldr_partitions
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Compaq Computer Corporation&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Parsing code for Compaq bootldr partitions&quot;
 )paren
 suffix:semicolon
 eof

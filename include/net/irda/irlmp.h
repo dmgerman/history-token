@@ -695,6 +695,9 @@ id|pn
 comma
 id|__u16
 id|mask
+comma
+r_int
+id|nslots
 )paren
 suffix:semicolon
 r_void

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;pnc2000.c - mapper for Photron PNC-2000 board.&n; *&n; * Copyright (C) 2000 Crossnet Co. &lt;info@crossnet.co.jp&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: pnc2000.c,v 1.8 2001/06/10 00:09:45 dwmw2 Exp $&n; */
+multiline_comment|/*&n; *&t;pnc2000.c - mapper for Photron PNC-2000 board.&n; *&n; * Copyright (C) 2000 Crossnet Co. &lt;info@crossnet.co.jp&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: pnc2000.c,v 1.10 2001/10/02 15:05:14 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -388,12 +388,6 @@ id|mtd_info
 op_star
 id|mymtd
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|init_pnc2000
-mdefine_line|#define init_pnc2000 init_module
-DECL|macro|cleanup_pnc2000
-mdefine_line|#define cleanup_pnc2000 cleanup_module
-macro_line|#endif
 DECL|function|init_pnc2000
 r_int
 id|__init
@@ -419,7 +413,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;cfi&quot;
+l_string|&quot;cfi_probe&quot;
 comma
 op_amp
 id|pnc_map
@@ -494,6 +488,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_pnc2000
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Crossnet Co. &lt;info@crossnet.co.jp&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;MTD map driver for Photron PNC-2000 board&quot;
 )paren
 suffix:semicolon
 eof

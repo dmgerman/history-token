@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS -- Journaling Flash File System, Linux implementation.&n; *&n; * Copyright (C) 1999, 2000  Axis Communications AB.&n; *&n; * Created by Finn Hakansson &lt;finn@axis.com&gt;.&n; *&n; * This is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * $Id: jffs_fm.h,v 1.10 2000/08/17 15:42:44 dwmw2 Exp $&n; *&n; * Ported to Linux 2.3.x and MTD:&n; * Copyright (C) 2000  Alexander Larsson (alex@cendio.se), Cendio Systems AB&n; *&n; */
+multiline_comment|/*&n; * JFFS -- Journaling Flash File System, Linux implementation.&n; *&n; * Copyright (C) 1999, 2000  Axis Communications AB.&n; *&n; * Created by Finn Hakansson &lt;finn@axis.com&gt;.&n; *&n; * This is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * $Id: jffs_fm.h,v 1.13 2001/01/11 12:03:25 dwmw2 Exp $&n; *&n; * Ported to Linux 2.3.x and MTD:&n; * Copyright (C) 2000  Alexander Larsson (alex@cendio.se), Cendio Systems AB&n; *&n; */
 macro_line|#ifndef __LINUX_JFFS_FM_H__
 DECL|macro|__LINUX_JFFS_FM_H__
 mdefine_line|#define __LINUX_JFFS_FM_H__
@@ -45,9 +45,28 @@ DECL|macro|ASSERT
 mdefine_line|#define ASSERT(x) x
 multiline_comment|/* How many padding bytes should be inserted between two chunks of data&n;   on the flash?  */
 DECL|macro|JFFS_GET_PAD_BYTES
-mdefine_line|#define JFFS_GET_PAD_BYTES(size) ((JFFS_ALIGN_SIZE                     &bslash;&n;&t;&t;&t;&t;  - ((__u32)(size) % JFFS_ALIGN_SIZE)) &bslash;&n;&t;&t;&t;&t;  % JFFS_ALIGN_SIZE)
+mdefine_line|#define JFFS_GET_PAD_BYTES(size) ( (JFFS_ALIGN_SIZE-1) &amp; -(__u32)(size) )
 DECL|macro|JFFS_PAD
 mdefine_line|#define JFFS_PAD(size) ( (size + (JFFS_ALIGN_SIZE-1)) &amp; ~(JFFS_ALIGN_SIZE-1) )
+r_void
+id|jffs_free_fm
+c_func
+(paren
+r_struct
+id|jffs_fm
+op_star
+id|n
+)paren
+suffix:semicolon
+r_struct
+id|jffs_fm
+op_star
+id|jffs_alloc_fm
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|struct|jffs_node_ref
 r_struct
 id|jffs_node_ref
@@ -104,10 +123,6 @@ DECL|struct|jffs_fmcontrol
 r_struct
 id|jffs_fmcontrol
 (brace
-DECL|member|flash_start
-id|__u32
-id|flash_start
-suffix:semicolon
 DECL|member|flash_size
 id|__u32
 id|flash_size

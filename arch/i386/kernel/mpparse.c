@@ -95,10 +95,10 @@ r_int
 id|mp_lapic_addr
 suffix:semicolon
 multiline_comment|/* Processor that is doing the boot up */
-DECL|variable|boot_cpu_id
+DECL|variable|boot_cpu_physical_apicid
 r_int
 r_int
-id|boot_cpu_id
+id|boot_cpu_physical_apicid
 op_assign
 op_minus
 l_int|1U
@@ -717,7 +717,7 @@ c_func
 l_string|&quot;    Bootup CPU&bslash;n&quot;
 )paren
 suffix:semicolon
-id|boot_cpu_id
+id|boot_cpu_physical_apicid
 op_assign
 id|m-&gt;mpc_apicid
 suffix:semicolon
@@ -750,6 +750,23 @@ id|ver
 op_assign
 id|m-&gt;mpc_apicver
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|clustered_apic_mode
+)paren
+multiline_comment|/* Crude temporary hack. Assumes processors are sequential */
+id|phys_cpu_present_map
+op_or_assign
+l_int|1
+op_lshift
+(paren
+id|num_processors
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+r_else
 id|phys_cpu_present_map
 op_or_assign
 l_int|1
@@ -1654,6 +1671,22 @@ r_break
 suffix:semicolon
 )brace
 )brace
+)brace
+r_if
+c_cond
+(paren
+id|clustered_apic_mode
+op_logical_and
+id|nr_ioapics
+OG
+l_int|2
+)paren
+(brace
+multiline_comment|/* don&squot;t initialise IO apics on secondary quads */
+id|nr_ioapics
+op_assign
+l_int|2
+suffix:semicolon
 )brace
 r_if
 c_cond

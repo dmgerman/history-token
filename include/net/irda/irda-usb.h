@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Filename:      irda-usb.h&n; * Version:       0.9a&n; * Description:   IrDA-USB Driver&n; * Status:        Experimental &n; * Author:        Dag Brattli &lt;dag@brattli.net&gt;&n; *&n; *&t;Copyright (C) 2001, Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; *      Copyright (C) 2000, Dag Brattli &lt;dag@brattli.net&gt;&n; *      Copyright (C) 2001, Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *          &n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Filename:      irda-usb.h&n; * Version:       0.9b&n; * Description:   IrDA-USB Driver&n; * Status:        Experimental &n; * Author:        Dag Brattli &lt;dag@brattli.net&gt;&n; *&n; *&t;Copyright (C) 2001, Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; *      Copyright (C) 2000, Dag Brattli &lt;dag@brattli.net&gt;&n; *      Copyright (C) 2001, Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *          &n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *****************************************************************************/
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irlap.h&gt;
@@ -16,18 +16,15 @@ multiline_comment|/* When a Rx URB is passed back to us, we can&squot;t reuse it
 DECL|macro|IU_MAX_RX_URBS
 mdefine_line|#define IU_MAX_RX_URBS&t;(IU_MAX_ACTIVE_RX_URBS + 1)
 multiline_comment|/* Various ugly stuff to try to workaround generic problems */
-multiline_comment|/* The USB layer should send empty frames at the end of packets multiple&n; * of the frame size. As it doesn&squot;t do it by default, we need to do it&n; * ourselves... See also following option. */
-DECL|macro|IU_BUG_KICK_TX
-macro_line|#undef IU_BUG_KICK_TX
-multiline_comment|/* Use the USB_ZERO_PACKET flag instead of sending empty frame (above)&n; * Work only with usb-uhci.o so far. Please fix uhic.c and usb-ohci.c */
-DECL|macro|IU_USE_USB_ZERO_FLAG
-mdefine_line|#define IU_USE_USB_ZERO_FLAG
 multiline_comment|/* Send speed command in case of timeout, just for trying to get things sane */
 DECL|macro|IU_BUG_KICK_TIMEOUT
 mdefine_line|#define IU_BUG_KICK_TIMEOUT
 multiline_comment|/* Show the USB class descriptor */
 DECL|macro|IU_DUMP_CLASS_DESC
 macro_line|#undef IU_DUMP_CLASS_DESC 
+multiline_comment|/* Assume a minimum round trip latency for USB transfer (in us)...&n; * USB transfer are done in the next USB slot if there is no traffic&n; * (1/19 msec) and is done at 12 Mb/s :&n; * Waiting for slot + tx = (53us + 16us) * 2 = 137us minimum.&n; * Rx notification will only be done at the end of the USB frame period :&n; * OHCI : frame period = 1ms&n; * UHCI : frame period = 1ms, but notification can take 2 or 3 ms :-(&n; * EHCI : frame period = 125us */
+DECL|macro|IU_USB_MIN_RTT
+mdefine_line|#define IU_USB_MIN_RTT&t;&t;500&t;/* This should be safe in most cases */
 multiline_comment|/* Inbound header */
 DECL|macro|MEDIA_BUSY
 mdefine_line|#define MEDIA_BUSY    0x80
@@ -218,14 +215,6 @@ id|urb
 id|speed_urb
 suffix:semicolon
 multiline_comment|/* URB used to send speed commands */
-macro_line|#ifdef IU_BUG_KICK_TX
-DECL|member|empty_urb
-r_struct
-id|urb
-id|empty_urb
-suffix:semicolon
-multiline_comment|/* URB used to send empty commands */
-macro_line|#endif IU_BUG_KICK_TX
 DECL|member|netdev
 r_struct
 id|net_device

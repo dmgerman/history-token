@@ -2,7 +2,7 @@ multiline_comment|/* Linux driver for Disk-On-Chip devices&t;&t;&t;*/
 multiline_comment|/* Probe routines common to all DoC devices&t;&t;&t;*/
 multiline_comment|/* (c) 1999 Machine Vision Holdings, Inc.&t;&t;&t;*/
 multiline_comment|/* Author: David Woodhouse &lt;dwmw2@infradead.org&gt;&t;&t;*/
-multiline_comment|/* $Id: docprobe.c,v 1.27 2001/06/03 19:06:09 dwmw2 Exp $&t;*/
+multiline_comment|/* $Id: docprobe.c,v 1.30 2001/10/02 15:05:13 dwmw2 Exp $&t;*/
 multiline_comment|/* DOC_PASSIVE_PROBE:&n;   In order to ensure that the BIOS checksum is correct at boot time, and &n;   hence that the onboard BIOS extension gets executed, the DiskOnChip &n;   goes into reset mode when it is read sequentially: all registers &n;   return 0xff until the chip is woken up again by writing to the &n;   DOCControl register. &n;&n;   Unfortunately, this means that the probe for the DiskOnChip is unsafe, &n;   because one of the first things it does is write to where it thinks &n;   the DOCControl register should be - which may well be shared memory &n;   for another device. I&squot;ve had machines which lock up when this is &n;   attempted. Hence the possibility to do a passive probe, which will fail &n;   to detect a chip in reset mode, but is at least guaranteed not to lock&n;   the machine.&n;&n;   If you have this problem, uncomment the following line:&n;#define DOC_PASSIVE_PROBE&n;*/
 multiline_comment|/* DOC_SINGLE_DRIVER:&n;   Millennium driver has been merged into DOC2000 driver.&n;&n;   The newly-merged driver doesn&squot;t appear to work for writing. It&squot;s the&n;   same with the DiskOnChip 2000 and the Millennium. If you have a &n;   Millennium and you want write support to work, remove the definition&n;   of DOC_SINGLE_DRIVER below to use the old doc2001-specific driver.&n;&n;   Otherwise, it&squot;s left on in the hope that it&squot;ll annoy someone with&n;   a Millennium enough that they go through and work out what the &n;   difference is :)&n;*/
 DECL|macro|DOC_SINGLE_DRIVER
@@ -437,6 +437,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|docfound
+r_static
+r_int
+id|docfound
+suffix:semicolon
 DECL|function|DoC_Probe
 r_static
 r_void
@@ -541,6 +546,10 @@ id|physadr
 )paren
 )paren
 (brace
+id|docfound
+op_assign
+l_int|1
+suffix:semicolon
 id|mtd
 op_assign
 id|kmalloc
@@ -571,6 +580,7 @@ id|mtd
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Cannot allocate memory for data structures. Dropping.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -757,6 +767,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot;Cannot find driver for DiskOnChip %s at 0x%lX&bslash;n&quot;
 comma
 id|name
@@ -777,10 +788,6 @@ id|docptr
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * Module stuff&n; *&n; ****************************************************************************/
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|init_doc
-mdefine_line|#define init_doc init_module
-macro_line|#endif
 DECL|function|init_doc
 r_int
 id|__init
@@ -793,22 +800,6 @@ r_void
 r_int
 id|i
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;M-Systems DiskOnChip driver. (C) 1999 Machine Vision Holdings, Inc.&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#ifdef PRERELEASE
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;$Id: docprobe.c,v 1.27 2001/06/03 19:06:09 dwmw2 Exp $&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -818,7 +809,8 @@ id|doc_config_location
 id|printk
 c_func
 (paren
-l_string|&quot;Using configured probe address 0x%lx&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;Using configured DiskOnChip probe address 0x%lx&bslash;n&quot;
 comma
 id|doc_config_location
 )paren
@@ -859,6 +851,20 @@ id|i
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* No banner message any more. Print a message if no DiskOnChip&n;&t;   found, so the user knows we at least tried. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|docfound
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;No recognised DiskOnChip devices found&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* So it looks like we&squot;ve been used and we get unloaded */
 id|MOD_INC_USE_COUNT
 suffix:semicolon
@@ -873,6 +879,24 @@ id|module_init
 c_func
 (paren
 id|init_doc
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David Woodhouse &lt;dwmw2@infradead.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Probe code for DiskOnChip 2000 and Millennium devices&quot;
 )paren
 suffix:semicolon
 eof

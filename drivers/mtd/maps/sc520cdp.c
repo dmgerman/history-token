@@ -1,4 +1,4 @@
-multiline_comment|/* sc520cdp.c -- MTD map driver for AMD SC520 Customer Development Platform&n; *&n; * Copyright (C) 2001 Sysgo Real-Time Solutions GmbH&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n; *&n; * $Id: sc520cdp.c,v 1.7 2001/06/02 14:52:23 dwmw2 Exp $&n; *&n; *&n; * The SC520CDP is an evaluation board for the Elan SC520 processor available&n; * from AMD. It has two banks of 32-bit Flash ROM, each 8 Megabytes in size,&n; * and up to 512 KiB of 8-bit DIL Flash ROM.&n; * For details see http://www.amd.com/products/epd/desiging/evalboards/18.elansc520/520_cdp_brief/index.html&n; */
+multiline_comment|/* sc520cdp.c -- MTD map driver for AMD SC520 Customer Development Platform&n; *&n; * Copyright (C) 2001 Sysgo Real-Time Solutions GmbH&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n; *&n; * $Id: sc520cdp.c,v 1.9 2001/10/02 15:05:14 dwmw2 Exp $&n; *&n; *&n; * The SC520CDP is an evaluation board for the Elan SC520 processor available&n; * from AMD. It has two banks of 32-bit Flash ROM, each 8 Megabytes in size,&n; * and up to 512 KiB of 8-bit DIL Flash ROM.&n; * For details see http://www.amd.com/products/epd/desiging/evalboards/18.elansc520/520_cdp_brief/index.html&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -463,12 +463,6 @@ id|mymtd
 id|NUM_FLASH_BANKS
 )braket
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|init_sc520cdp
-mdefine_line|#define init_sc520cdp init_module
-DECL|macro|cleanup_sc520cdp
-mdefine_line|#define cleanup_sc520cdp cleanup_module
-macro_line|#endif
 macro_line|#ifdef REPROGRAM_PAR
 multiline_comment|/*&n;** The SC520 MMCR (memory mapped control register) region resides&n;** at 0xFFFEF000. The 16 Programmable Address Region (PAR) registers&n;** are at offset 0x88 in the MMCR:&n;*/
 DECL|macro|SC520_MMCR_BASE
@@ -936,7 +930,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;cfi&quot;
+l_string|&quot;cfi_probe&quot;
 comma
 op_amp
 id|sc520cdp_map
@@ -991,7 +985,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;rom&quot;
+l_string|&quot;map_rom&quot;
 comma
 op_amp
 id|sc520cdp_map
@@ -1167,6 +1161,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_sc520cdp
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Sysgo Real-Time Solutions GmbH&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;MTD map driver for AMD SC520 Customer Development Platform&quot;
 )paren
 suffix:semicolon
 eof

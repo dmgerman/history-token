@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ECC algorithm for M-systems disk on chip. We use the excellent Reed&n; * Solmon code of Phil Karn (karn@ka9q.ampr.org) available under the&n; * GNU GPL License. The rest is simply to convert the disk on chip&n; * syndrom into a standard syndom.&n; *&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; *&n; * $Id: docecc.c,v 1.1 2000/11/03 12:43:43 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * ECC algorithm for M-systems disk on chip. We use the excellent Reed&n; * Solmon code of Phil Karn (karn@ka9q.ampr.org) available under the&n; * GNU GPL License. The rest is simply to convert the disk on chip&n; * syndrom into a standard syndom.&n; *&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; *&n; * $Id: docecc.c,v 1.4 2001/10/02 15:05:13 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/mtd/compatmac.h&gt; /* for min() in older kernels */
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/doc2000.h&gt;
 multiline_comment|/* need to undef it (from asm/termbits.h) */
@@ -1899,11 +1900,9 @@ c_loop
 (paren
 id|i
 op_assign
-id|min_t
+id|min
 c_func
 (paren
-r_int
-comma
 id|deg_lambda
 comma
 id|NN
@@ -2641,4 +2640,22 @@ r_return
 id|nb_errors
 suffix:semicolon
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Fabrice Bellard &lt;fabrice.bellard@netgem.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;ECC code for correcting errors detected by DiskOnChip 2000 and Millennium ECC hardware&quot;
+)paren
+suffix:semicolon
 eof

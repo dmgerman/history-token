@@ -391,7 +391,7 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef INITRD_SIZE
+macro_line|#ifdef INITRD_IMAGE_SIZE
 r_static
 r_int
 r_int
@@ -461,7 +461,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef INITRD_SIZE
+macro_line|#ifdef INITRD_IMAGE_SIZE
 multiline_comment|/* The initrd must be page-aligned.  See below for the &n;&t;   cause of the magic number 5.  */
 id|initrd_start
 op_assign
@@ -544,7 +544,7 @@ id|envval
 suffix:semicolon
 multiline_comment|/* NOTE: *no* callbacks or printouts from here on out!!! */
 multiline_comment|/* This is a hack, as some consoles seem to get virtual 20000000 (ie&n;&t; * where the SRM console puts the kernel bootp image) memory&n;&t; * overlapping physical memory where the kernel wants to be put,&n;&t; * which causes real problems when attempting to copy the former to&n;&t; * the latter... :-(&n;&t; *&n;&t; * So, we first move the kernel virtual-to-physical way above where&n;&t; * we physically want the kernel to end up, then copy it from there&n;&t; * to its final resting place... ;-}&n;&t; *&n;&t; * Sigh...  */
-macro_line|#ifdef INITRD_SIZE
+macro_line|#ifdef INITRD_IMAGE_SIZE
 id|load
 c_func
 (paren
@@ -554,7 +554,7 @@ id|KERNEL_ORIGIN
 op_plus
 id|KERNEL_SIZE
 comma
-id|INITRD_SIZE
+id|INITRD_IMAGE_SIZE
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -616,7 +616,7 @@ comma
 id|envval
 )paren
 suffix:semicolon
-macro_line|#ifdef INITRD_SIZE
+macro_line|#ifdef INITRD_IMAGE_SIZE
 (paren
 (paren
 r_int
@@ -649,7 +649,7 @@ l_int|256
 l_int|1
 )braket
 op_assign
-id|INITRD_SIZE
+id|INITRD_IMAGE_SIZE
 suffix:semicolon
 macro_line|#endif
 id|runkernel

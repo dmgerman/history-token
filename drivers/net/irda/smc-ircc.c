@@ -524,7 +524,7 @@ l_int|0x04
 )brace
 comma
 (brace
-l_string|&quot;37N972&quot;
+l_string|&quot;37N971&quot;
 comma
 id|KEY55_1
 op_or
@@ -751,6 +751,13 @@ DECL|variable|ircc_sir
 r_static
 r_int
 id|ircc_sir
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|ircc_cfg
+r_static
+r_int
+id|ircc_cfg
 op_assign
 l_int|0
 suffix:semicolon
@@ -1756,6 +1763,38 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+multiline_comment|/* try user provided configuration register base address */
+r_if
+c_cond
+(paren
+id|ircc_cfg
+OG
+l_int|0
+)paren
+(brace
+id|MESSAGE
+c_func
+(paren
+l_string|&quot; Overriding configuration address 0x%04x&bslash;n&quot;
+comma
+id|ircc_cfg
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|smc_superio_fdc
+c_func
+(paren
+id|ircc_cfg
+)paren
+)paren
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Trys to open for all the SMC chipsets we know about */
 id|IRDA_DEBUG
 c_func
@@ -1788,6 +1827,20 @@ id|smc_superio_fdc
 c_func
 (paren
 l_int|0x370
+)paren
+)paren
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|smc_superio_fdc
+c_func
+(paren
+l_int|0xe0
 )paren
 )paren
 id|ret
@@ -5199,6 +5252,22 @@ c_func
 id|ircc_sir
 comma
 l_string|&quot;SIR Base Address&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|ircc_cfg
+comma
+l_string|&quot;1-4i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|ircc_cfg
+comma
+l_string|&quot;Configuration register base address&quot;
 )paren
 suffix:semicolon
 macro_line|#endif /* MODULE */

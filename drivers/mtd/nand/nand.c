@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/nand.c&n; *&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@cotw.com)&n; *&n; * $Id: nand.c,v 1.10 2001/03/20 07:26:01 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is the generic MTD driver for NAND flash devices. It should be&n; *   capable of working with almost all NAND chips currently available.&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand.c&n; *&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@cotw.com)&n; *&n; * $Id: nand.c,v 1.12 2001/10/02 15:05:14 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is the generic MTD driver for NAND flash devices. It should be&n; *   capable of working with almost all NAND chips currently available.&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/nand.h&gt;
 macro_line|#include &lt;linux/mtd/nand_ids.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef CONFIG_MTD_NAND_ECC
 macro_line|#include &lt;linux/mtd/nand_ecc.h&gt;
@@ -5634,6 +5635,24 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|nand_scan
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Steven J. Hill &lt;sjhill@cotw.com&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Generic NAND flash driver code&quot;
 )paren
 suffix:semicolon
 eof

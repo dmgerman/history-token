@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ocelot.c,v 1.4 2001/06/08 15:36:27 dwmw2 Exp $&n; *&n; * Flash on Momenco Ocelot&n; */
+multiline_comment|/*&n; * $Id: ocelot.c,v 1.6 2001/10/02 15:05:14 dwmw2 Exp $&n; *&n; * Flash on Momenco Ocelot&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -465,7 +465,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;ram&quot;
+l_string|&quot;map_ram&quot;
 comma
 op_amp
 id|ocelot_nvram_map
@@ -603,7 +603,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;rom&quot;
+l_string|&quot;map_rom&quot;
 comma
 op_amp
 id|ocelot_flash_map
@@ -827,6 +827,24 @@ id|module_exit
 c_func
 (paren
 id|cleanup_ocelot_maps
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Red Hat, Inc. - David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;MTD map driver for Momenco Ocelot board&quot;
 )paren
 suffix:semicolon
 eof
