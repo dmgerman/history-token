@@ -2751,6 +2751,8 @@ op_and_assign
 op_complement
 (paren
 id|TSTATE_ICC
+op_or
+id|TSTATE_XCC
 )paren
 suffix:semicolon
 id|regs-&gt;tstate
@@ -2758,7 +2760,11 @@ op_or_assign
 (paren
 id|tstate
 op_amp
+(paren
 id|TSTATE_ICC
+op_or
+id|TSTATE_XCC
+)paren
 )paren
 suffix:semicolon
 id|err
