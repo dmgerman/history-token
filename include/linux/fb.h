@@ -2235,6 +2235,13 @@ id|list_head
 id|modelist
 suffix:semicolon
 multiline_comment|/* mode list */
+DECL|member|mode
+r_struct
+id|fb_videomode
+op_star
+id|mode
+suffix:semicolon
+multiline_comment|/* current mode */
 DECL|member|fbops
 r_struct
 id|fb_ops
@@ -2247,6 +2254,13 @@ id|device
 op_star
 id|device
 suffix:semicolon
+DECL|member|class_device
+r_struct
+id|class_device
+op_star
+id|class_device
+suffix:semicolon
+multiline_comment|/* sysfs per device attrs */
 macro_line|#ifdef CONFIG_FB_TILEBLITTING
 DECL|member|tileops
 r_struct
@@ -2782,6 +2796,28 @@ r_struct
 id|fb_info
 op_star
 id|info
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|fb_init_class_device
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|fb_info
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|fb_cleanup_class_device
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|head
 )paren
 suffix:semicolon
 multiline_comment|/* drivers/video/fbmon.c */
