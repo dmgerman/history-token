@@ -571,7 +571,17 @@ op_amp
 id|I_DIRTY
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Someone redirtied the inode while were writing back&n;&t;&t;&t; * the pages: nothing to do.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Someone redirtied the inode while were writing back&n;&t;&t;&t; * the pages.&n;&t;&t;&t; */
+id|list_move
+c_func
+(paren
+op_amp
+id|inode-&gt;i_list
+comma
+op_amp
+id|sb-&gt;s_dirty
+)paren
+suffix:semicolon
 )brace
 r_else
 r_if
