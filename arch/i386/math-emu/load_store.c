@@ -166,6 +166,7 @@ l_int|8
 )brace
 suffix:semicolon
 DECL|variable|data_sizes_32
+r_static
 id|u_char
 r_const
 id|data_sizes_32

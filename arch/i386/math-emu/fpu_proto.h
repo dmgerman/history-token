@@ -4,14 +4,6 @@ mdefine_line|#define _FPU_PROTO_H
 multiline_comment|/* errors.c */
 r_extern
 r_void
-id|Un_impl
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|FPU_illegal
 c_func
 (paren
@@ -321,14 +313,6 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* fpu_aux.c */
-r_extern
-r_void
-id|fclex
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|finit

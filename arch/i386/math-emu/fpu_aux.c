@@ -15,6 +15,7 @@ r_void
 (brace
 )brace
 DECL|function|fclex
+r_static
 r_void
 id|fclex
 c_func

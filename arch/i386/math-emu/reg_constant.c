@@ -23,7 +23,7 @@ comma
 l_int|0x80000000
 )paren
 suffix:semicolon
-DECL|variable|CONST_2
+macro_line|#if 0
 id|FPU_REG
 r_const
 id|CONST_2
@@ -40,7 +40,6 @@ comma
 l_int|0x80000000
 )paren
 suffix:semicolon
-DECL|variable|CONST_HALF
 id|FPU_REG
 r_const
 id|CONST_HALF
@@ -58,7 +57,9 @@ comma
 l_int|0x80000000
 )paren
 suffix:semicolon
+macro_line|#endif  /*  0  */
 DECL|variable|CONST_L2T
+r_static
 id|FPU_REG
 r_const
 id|CONST_L2T
@@ -76,6 +77,7 @@ l_int|0xd49a784b
 )paren
 suffix:semicolon
 DECL|variable|CONST_L2E
+r_static
 id|FPU_REG
 r_const
 id|CONST_L2E
@@ -145,6 +147,7 @@ l_int|0xc90fdaa2
 )paren
 suffix:semicolon
 DECL|variable|CONST_LG2
+r_static
 id|FPU_REG
 r_const
 id|CONST_LG2
@@ -163,6 +166,7 @@ l_int|0x9a209a84
 )paren
 suffix:semicolon
 DECL|variable|CONST_LN2
+r_static
 id|FPU_REG
 r_const
 id|CONST_LN2

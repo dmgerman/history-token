@@ -13,7 +13,7 @@ multiline_comment|/* */
 DECL|macro|PRINT_MESSAGES
 macro_line|#undef PRINT_MESSAGES
 multiline_comment|/* */
-DECL|function|Un_impl
+macro_line|#if 0
 r_void
 id|Un_impl
 c_func
@@ -182,6 +182,7 @@ id|EX_Invalid
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  0  */
 multiline_comment|/*&n;   Called for opcodes which are illegal and which are known to result in a&n;   SIGILL with a real 80486.&n;   */
 DECL|function|FPU_illegal
 r_void
