@@ -6,15 +6,14 @@ mdefine_line|#define SCSI_NCR_DRIVER_NAME&t;&quot;ncr53c8xx-3.4.3b-20010512&quot
 DECL|macro|SCSI_NCR_DEBUG_FLAGS
 mdefine_line|#define SCSI_NCR_DEBUG_FLAGS&t;(0)
 multiline_comment|/*==========================================================&n;**&n;**      Include files&n;**&n;**==========================================================&n;*/
-DECL|macro|LinuxVersionCode
-mdefine_line|#define LinuxVersionCode(v, p, s) (((v)&lt;&lt;16)+((p)&lt;&lt;8)+(s))
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,17)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,17)
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#elif LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,93)
+macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
 macro_line|#include &lt;asm/spinlock.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/delay.h&gt;
@@ -30,9 +29,8 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,35)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,35)
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#endif
 macro_line|#ifndef&t;__init
@@ -43,7 +41,7 @@ macro_line|#ifndef&t;__initdata
 DECL|macro|__initdata
 mdefine_line|#define&t;__initdata
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt;= LinuxVersionCode(2,1,92)
+macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,1,92)
 macro_line|#include &lt;linux/bios32.h&gt;
 macro_line|#endif
 macro_line|#include &quot;scsi.h&quot;
@@ -91,7 +89,7 @@ macro_line|#include &quot;zalon.h&quot;
 macro_line|#endif
 macro_line|#include &quot;ncr53c8xx.h&quot;
 multiline_comment|/*&n;**&t;Donnot compile integrity checking code for Linux-2.3.0 &n;**&t;and above since SCSI data structures are not ready yet.&n;*/
-multiline_comment|/* #if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,3,0) */
+multiline_comment|/* #if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0) */
 macro_line|#if 0
 mdefine_line|#define&t;SCSI_NCR_INTEGRITY_CHECKING
 macro_line|#endif
@@ -1213,7 +1211,7 @@ id|done_list
 suffix:semicolon
 multiline_comment|/* Commands waiting for done()  */
 multiline_comment|/* callback to be invoked.      */
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,93)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
 DECL|member|smp_lock
 id|spinlock_t
 id|smp_lock
@@ -9775,7 +9773,7 @@ op_assign
 id|SCSI_NCR_MAX_LUN
 suffix:semicolon
 macro_line|#ifndef SCSI_NCR_IOMAPPED
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,29)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,29)
 id|instance-&gt;base
 op_assign
 (paren
@@ -10140,7 +10138,7 @@ suffix:colon
 id|SA_SHIRQ
 )paren
 op_or
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,2,0)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,2,0)
 (paren
 (paren
 id|driver_setup.irqm
@@ -29189,7 +29187,7 @@ suffix:semicolon
 multiline_comment|/*=========================================================================&n;**&t;End of proc file system stuff&n;**=========================================================================&n;*/
 macro_line|#endif
 multiline_comment|/*==========================================================&n;**&n;**&t;/proc directory entry.&n;**&n;**==========================================================&n;*/
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,3,27)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,27)
 DECL|variable|proc_scsi_ncr53c8xx
 r_static
 r_struct
@@ -29223,7 +29221,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* command line passed by insmod */
-macro_line|# if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,30)
+macro_line|# if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,30)
 id|MODULE_PARM
 c_func
 (paren
@@ -29253,7 +29251,7 @@ id|str
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,13)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,13)
 macro_line|#ifndef MODULE
 id|__setup
 c_func
@@ -29628,7 +29626,7 @@ id|tpnt
 (brace
 multiline_comment|/*&n;&t;**    Initialize driver general stuff.&n;&t;*/
 macro_line|#ifdef SCSI_NCR_PROC_INFO_SUPPORT
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,3,27)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,27)
 id|tpnt-&gt;proc_dir
 op_assign
 op_amp
@@ -29705,10 +29703,10 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,0)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 r_static
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,0) || defined(MODULE)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0) || defined(MODULE)
 macro_line|#ifdef ENABLE_SCSI_ZALON
 DECL|variable|driver_template
 id|Scsi_Host_Template
