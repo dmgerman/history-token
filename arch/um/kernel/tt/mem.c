@@ -21,9 +21,6 @@ id|brk_start
 r_if
 c_cond
 (paren
-op_logical_neg
-id|jail
-op_logical_or
 id|debug
 )paren
 (brace
