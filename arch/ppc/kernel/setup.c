@@ -884,6 +884,28 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+l_int|0x8083
+suffix:colon
+multiline_comment|/* e300 */
+id|maj
+op_assign
+id|PVR_MAJ
+c_func
+(paren
+id|pvr
+)paren
+suffix:semicolon
+id|min
+op_assign
+id|PVR_MIN
+c_func
+(paren
+id|pvr
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 l_int|0x8020
 suffix:colon
 multiline_comment|/* e500 */
