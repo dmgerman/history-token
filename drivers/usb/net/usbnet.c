@@ -11874,6 +11874,27 @@ id|ax8817x_info
 comma
 )brace
 comma
+(brace
+singleline_comment|// Sitecom LN-029 &quot;USB 2.0 10/100 Ethernet adapter&quot;
+id|USB_DEVICE
+(paren
+l_int|0x6189
+comma
+l_int|0x182d
+)paren
+comma
+dot
+id|driver_info
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|ax8817x_info
+comma
+)brace
+comma
 macro_line|#endif
 macro_line|#ifdef&t;CONFIG_USB_EPSON2888
 (brace
