@@ -14,6 +14,10 @@ macro_line|#ifndef asmlinkage
 DECL|macro|asmlinkage
 mdefine_line|#define asmlinkage CPP_ASMLINKAGE
 macro_line|#endif
+macro_line|#ifndef prevent_tail_call
+DECL|macro|prevent_tail_call
+macro_line|# define prevent_tail_call(ret) do { } while (0)
+macro_line|#endif
 macro_line|#ifndef __ALIGN
 DECL|macro|__ALIGN
 mdefine_line|#define __ALIGN&t;&t;.align 4,0x90

@@ -5730,6 +5730,9 @@ op_star
 id|ru
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5832,7 +5835,8 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-r_return
+id|ret
+op_assign
 id|do_wait
 c_func
 (paren
@@ -5846,6 +5850,16 @@ l_int|NULL
 comma
 id|ru
 )paren
+suffix:semicolon
+multiline_comment|/* avoid REGPARM breakage on x86: */
+id|prevent_tail_call
+c_func
+(paren
+id|ret
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|sys_wait4
@@ -5872,6 +5886,9 @@ op_star
 id|ru
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5894,7 +5911,8 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|do_wait
 c_func
 (paren
@@ -5910,6 +5928,16 @@ id|stat_addr
 comma
 id|ru
 )paren
+suffix:semicolon
+multiline_comment|/* avoid REGPARM breakage on x86: */
+id|prevent_tail_call
+c_func
+(paren
+id|ret
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 macro_line|#ifdef __ARCH_WANT_SYS_WAITPID
