@@ -1795,7 +1795,7 @@ mdefine_line|#define VN_CACHED(vp)&t;(LINVFS_GET_IP(vp)-&gt;i_mapping-&gt;nrpage
 DECL|macro|VN_DIRTY
 mdefine_line|#define VN_DIRTY(vp)&t;(!list_empty(&amp;(LINVFS_GET_IP(vp)-&gt;i_mapping-&gt;dirty_pages)))
 DECL|macro|VMODIFY
-mdefine_line|#define VMODIFY(vp)&t;{ VN_FLAGSET(vp, VMODIFIED); &bslash;&n;&t;&t;&t;mark_inode_dirty(LINVFS_GET_IP(vp)); }
+mdefine_line|#define VMODIFY(vp)&t;VN_FLAGSET(vp, VMODIFIED)
 DECL|macro|VUNMODIFY
 mdefine_line|#define VUNMODIFY(vp)&t;VN_FLAGCLR(vp, VMODIFIED)
 multiline_comment|/*&n; * Flags to VOP_SETATTR/VOP_GETATTR.&n; */

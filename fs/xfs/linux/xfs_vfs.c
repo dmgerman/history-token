@@ -1052,6 +1052,13 @@ comma
 l_string|&quot;vfs&quot;
 )paren
 suffix:semicolon
+id|init_waitqueue_head
+c_func
+(paren
+op_amp
+id|vfsp-&gt;vfs_wait_sync_task
+)paren
+suffix:semicolon
 r_return
 id|vfsp
 suffix:semicolon

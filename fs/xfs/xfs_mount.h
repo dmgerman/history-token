@@ -127,6 +127,9 @@ r_struct
 id|cred
 suffix:semicolon
 r_struct
+id|log
+suffix:semicolon
+r_struct
 id|vfs
 suffix:semicolon
 r_struct
@@ -1123,6 +1126,12 @@ op_star
 id|m_inodes
 suffix:semicolon
 multiline_comment|/* active inode list */
+DECL|member|m_del_inodes
+r_struct
+id|list_head
+id|m_del_inodes
+suffix:semicolon
+multiline_comment|/* inodes to reclaim */
 DECL|member|m_ilock
 id|mutex_t
 id|m_ilock
@@ -1154,7 +1163,8 @@ id|m_writeio_blocks
 suffix:semicolon
 multiline_comment|/* min write size blocks */
 DECL|member|m_log
-r_void
+r_struct
+id|log
 op_star
 id|m_log
 suffix:semicolon
@@ -1456,11 +1466,6 @@ r_int
 id|m_swidth
 suffix:semicolon
 multiline_comment|/* stripe width */
-DECL|member|m_lstripemask
-r_int
-id|m_lstripemask
-suffix:semicolon
-multiline_comment|/* log stripe mask */
 DECL|member|m_sinoalign
 r_int
 id|m_sinoalign
