@@ -551,6 +551,13 @@ c_func
 id|llc_exit
 )paren
 suffix:semicolon
+DECL|variable|llc_station_mac_sa
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|llc_station_mac_sa
+)paren
+suffix:semicolon
 DECL|variable|llc_sap_list
 id|EXPORT_SYMBOL
 c_func

@@ -3,6 +3,7 @@ DECL|macro|LLC_H
 mdefine_line|#define LLC_H
 multiline_comment|/*&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; * &t;&t; 2001-2003 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
 macro_line|#include &lt;linux/if.h&gt;
+macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 r_struct
@@ -124,6 +125,14 @@ id|llc_sap_list_lock
 suffix:semicolon
 r_extern
 r_int
+r_char
+id|llc_station_mac_sa
+(braket
+id|ETH_ALEN
+)braket
+suffix:semicolon
+r_extern
+r_int
 id|llc_rcv
 c_func
 (paren
@@ -141,6 +150,27 @@ r_struct
 id|packet_type
 op_star
 id|pt
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|llc_mac_hdr_init
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_int
+r_char
+op_star
+id|sa
+comma
+r_int
+r_char
+op_star
+id|da
 )paren
 suffix:semicolon
 r_extern
