@@ -203,14 +203,16 @@ id|client
 )paren
 suffix:semicolon
 r_static
-r_void
-id|lm90_update_client
+r_struct
+id|lm90_data
+op_star
+id|lm90_update_device
 c_func
 (paren
 r_struct
-id|i2c_client
+id|device
 op_star
-id|client
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Driver data (common to all clients)&n; */
@@ -325,7 +327,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|macro|show_temp
-mdefine_line|#define show_temp(value, converter) &bslash;&n;static ssize_t show_##value(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm90_data *data = i2c_get_clientdata(client); &bslash;&n;&t;lm90_update_client(client); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, converter(data-&gt;value)); &bslash;&n;}
+mdefine_line|#define show_temp(value, converter) &bslash;&n;static ssize_t show_##value(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct lm90_data *data = lm90_update_device(dev); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, converter(data-&gt;value)); &bslash;&n;}
 id|show_temp
 c_func
 (paren
@@ -447,7 +449,7 @@ id|LM90_REG_W_REMOTE_CRIT
 )paren
 suffix:semicolon
 DECL|macro|show_temp_hyst
-mdefine_line|#define show_temp_hyst(value, basereg) &bslash;&n;static ssize_t show_##value(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm90_data *data = i2c_get_clientdata(client); &bslash;&n;&t;lm90_update_client(client); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, TEMP1_FROM_REG(data-&gt;basereg) &bslash;&n;&t;&t;       - HYST_FROM_REG(data-&gt;temp_hyst)); &bslash;&n;}
+mdefine_line|#define show_temp_hyst(value, basereg) &bslash;&n;static ssize_t show_##value(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct lm90_data *data = lm90_update_device(dev); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, TEMP1_FROM_REG(data-&gt;basereg) &bslash;&n;&t;&t;       - HYST_FROM_REG(data-&gt;temp_hyst)); &bslash;&n;}
 id|show_temp_hyst
 c_func
 (paren
@@ -560,31 +562,14 @@ id|buf
 )paren
 (brace
 r_struct
-id|i2c_client
-op_star
-id|client
-op_assign
-id|to_i2c_client
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_struct
 id|lm90_data
 op_star
 id|data
 op_assign
-id|i2c_get_clientdata
+id|lm90_update_device
 c_func
 (paren
-id|client
-)paren
-suffix:semicolon
-id|lm90_update_client
-c_func
-(paren
-id|client
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -1478,18 +1463,31 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|lm90_update_client
+DECL|function|lm90_update_device
 r_static
-r_void
-id|lm90_update_client
+r_struct
+id|lm90_data
+op_star
+id|lm90_update_device
 c_func
 (paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
 r_struct
 id|i2c_client
 op_star
 id|client
+op_assign
+id|to_i2c_client
+c_func
+(paren
+id|dev
 )paren
-(brace
+suffix:semicolon
 r_struct
 id|lm90_data
 op_star
@@ -1762,6 +1760,9 @@ c_func
 op_amp
 id|data-&gt;update_lock
 )paren
+suffix:semicolon
+r_return
+id|data
 suffix:semicolon
 )brace
 DECL|function|sensors_lm90_init

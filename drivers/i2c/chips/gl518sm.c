@@ -409,14 +409,16 @@ id|value
 )paren
 suffix:semicolon
 r_static
-r_void
-id|gl518_update_client
+r_struct
+id|gl518_data
+op_star
+id|gl518_update_device
 c_func
 (paren
 r_struct
-id|i2c_client
+id|device
 op_star
-id|client
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* This is the driver that will be inserted */
@@ -469,9 +471,9 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|macro|show
-mdefine_line|#define show(type, suffix, value)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_##suffix(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&t;&bslash;&n;&t;struct gl518_data *data = i2c_get_clientdata(client);&t;&t;&bslash;&n;&t;gl518_update_client(client);&t;&t;&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, type##_FROM_REG(data-&gt;value));&t;&bslash;&n;}
+mdefine_line|#define show(type, suffix, value)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_##suffix(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct gl518_data *data = gl518_update_device(dev);&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, type##_FROM_REG(data-&gt;value));&t;&bslash;&n;}
 DECL|macro|show_fan
-mdefine_line|#define show_fan(suffix, value, index)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_##suffix(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&t;&bslash;&n;&t;struct gl518_data *data = i2c_get_clientdata(client);&t;&t;&bslash;&n;&t;gl518_update_client(client);&t;&t;&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, FAN_FROM_REG(data-&gt;value[index],&t;&bslash;&n;&t;&t;DIV_FROM_REG(data-&gt;fan_div[index])));&t;&t;&t;&bslash;&n;}
+mdefine_line|#define show_fan(suffix, value, index)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_##suffix(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct gl518_data *data = gl518_update_device(dev);&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, FAN_FROM_REG(data-&gt;value[index],&t;&bslash;&n;&t;&t;DIV_FROM_REG(data-&gt;fan_div[index])));&t;&t;&t;&bslash;&n;}
 id|show
 c_func
 (paren
@@ -2611,18 +2613,31 @@ id|value
 )paren
 suffix:semicolon
 )brace
-DECL|function|gl518_update_client
+DECL|function|gl518_update_device
 r_static
-r_void
-id|gl518_update_client
+r_struct
+id|gl518_data
+op_star
+id|gl518_update_device
 c_func
 (paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
 r_struct
 id|i2c_client
 op_star
 id|client
+op_assign
+id|to_i2c_client
+c_func
+(paren
+id|dev
 )paren
-(brace
+suffix:semicolon
 r_struct
 id|gl518_data
 op_star
@@ -3066,6 +3081,9 @@ c_func
 op_amp
 id|data-&gt;update_lock
 )paren
+suffix:semicolon
+r_return
+id|data
 suffix:semicolon
 )brace
 DECL|function|sensors_gl518sm_init

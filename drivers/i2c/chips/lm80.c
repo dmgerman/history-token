@@ -397,14 +397,16 @@ id|client
 )paren
 suffix:semicolon
 r_static
-r_void
-id|lm80_update_client
+r_struct
+id|lm80_data
+op_star
+id|lm80_update_device
 c_func
 (paren
 r_struct
-id|i2c_client
+id|device
 op_star
-id|client
+id|dev
 )paren
 suffix:semicolon
 r_static
@@ -488,7 +490,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|macro|show_in
-mdefine_line|#define show_in(suffix, value) &bslash;&n;static ssize_t show_in_##suffix(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm80_data *data = i2c_get_clientdata(client); &bslash;&n;&t;lm80_update_client(client); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, IN_FROM_REG(data-&gt;value)); &bslash;&n;}
+mdefine_line|#define show_in(suffix, value) &bslash;&n;static ssize_t show_in_##suffix(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct lm80_data *data = lm80_update_device(dev); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, IN_FROM_REG(data-&gt;value)); &bslash;&n;}
 id|show_in
 c_func
 (paren
@@ -961,7 +963,7 @@ l_int|6
 )paren
 suffix:semicolon
 DECL|macro|show_fan
-mdefine_line|#define show_fan(suffix, value, div) &bslash;&n;static ssize_t show_fan_##suffix(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm80_data *data = i2c_get_clientdata(client); &bslash;&n;&t;lm80_update_client(client); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, FAN_FROM_REG(data-&gt;value, &bslash;&n;&t;&t;       DIV_FROM_REG(data-&gt;div))); &bslash;&n;}
+mdefine_line|#define show_fan(suffix, value, div) &bslash;&n;static ssize_t show_fan_##suffix(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct lm80_data *data = lm80_update_device(dev); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, FAN_FROM_REG(data-&gt;value, &bslash;&n;&t;&t;       DIV_FROM_REG(data-&gt;div))); &bslash;&n;}
 id|show_fan
 c_func
 (paren
@@ -1027,7 +1029,7 @@ l_int|1
 )paren
 suffix:semicolon
 DECL|macro|show_fan_div
-mdefine_line|#define show_fan_div(suffix, value) &bslash;&n;static ssize_t show_fan_div##suffix(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm80_data *data = i2c_get_clientdata(client); &bslash;&n;&t;lm80_update_client(client); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, DIV_FROM_REG(data-&gt;value)); &bslash;&n;}
+mdefine_line|#define show_fan_div(suffix, value) &bslash;&n;static ssize_t show_fan_div##suffix(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct lm80_data *data = lm80_update_device(dev); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, DIV_FROM_REG(data-&gt;value)); &bslash;&n;}
 id|show_fan_div
 c_func
 (paren
@@ -1105,31 +1107,14 @@ id|buf
 )paren
 (brace
 r_struct
-id|i2c_client
-op_star
-id|client
-op_assign
-id|to_i2c_client
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_struct
 id|lm80_data
 op_star
 id|data
 op_assign
-id|i2c_get_clientdata
+id|lm80_update_device
 c_func
 (paren
-id|client
-)paren
-suffix:semicolon
-id|lm80_update_client
-c_func
-(paren
-id|client
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -1149,7 +1134,7 @@ id|data-&gt;temp
 suffix:semicolon
 )brace
 DECL|macro|show_temp
-mdefine_line|#define show_temp(suffix, value) &bslash;&n;static ssize_t show_temp_##suffix(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm80_data *data = i2c_get_clientdata(client); &bslash;&n;&t;lm80_update_client(client); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, TEMP_LIMIT_FROM_REG(data-&gt;value)); &bslash;&n;}
+mdefine_line|#define show_temp(suffix, value) &bslash;&n;static ssize_t show_temp_##suffix(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct lm80_data *data = lm80_update_device(dev); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, TEMP_LIMIT_FROM_REG(data-&gt;value)); &bslash;&n;}
 id|show_temp
 c_func
 (paren
@@ -1241,31 +1226,14 @@ id|buf
 )paren
 (brace
 r_struct
-id|i2c_client
-op_star
-id|client
-op_assign
-id|to_i2c_client
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_struct
 id|lm80_data
 op_star
 id|data
 op_assign
-id|i2c_get_clientdata
+id|lm80_update_device
 c_func
 (paren
-id|client
-)paren
-suffix:semicolon
-id|lm80_update_client
-c_func
-(paren
-id|client
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -2600,18 +2568,31 @@ l_int|0x01
 )paren
 suffix:semicolon
 )brace
-DECL|function|lm80_update_client
+DECL|function|lm80_update_device
 r_static
-r_void
-id|lm80_update_client
+r_struct
+id|lm80_data
+op_star
+id|lm80_update_device
 c_func
 (paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
 r_struct
 id|i2c_client
 op_star
 id|client
+op_assign
+id|to_i2c_client
+c_func
+(paren
+id|dev
 )paren
-(brace
+suffix:semicolon
 r_struct
 id|lm80_data
 op_star
@@ -2923,6 +2904,9 @@ c_func
 op_amp
 id|data-&gt;update_lock
 )paren
+suffix:semicolon
+r_return
+id|data
 suffix:semicolon
 )brace
 DECL|function|sensors_lm80_init

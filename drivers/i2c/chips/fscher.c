@@ -181,14 +181,16 @@ id|client
 )paren
 suffix:semicolon
 r_static
-r_void
-id|fscher_update_client
+r_struct
+id|fscher_data
+op_star
+id|fscher_update_device
 c_func
 (paren
 r_struct
-id|i2c_client
+id|device
 op_star
-id|client
+id|dev
 )paren
 suffix:semicolon
 r_static
@@ -386,7 +388,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|macro|sysfs_r
-mdefine_line|#define sysfs_r(kind, sub, offset, reg) &bslash;&n;static ssize_t show_##kind##sub (struct fscher_data *, char *, int); &bslash;&n;static ssize_t show_##kind##offset##sub (struct device *, char *); &bslash;&n;static ssize_t show_##kind##offset##sub (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct fscher_data *data = i2c_get_clientdata(client); &bslash;&n;&t;fscher_update_client(client); &bslash;&n;&t;return show_##kind##sub(data, buf, (offset)); &bslash;&n;}
+mdefine_line|#define sysfs_r(kind, sub, offset, reg) &bslash;&n;static ssize_t show_##kind##sub (struct fscher_data *, char *, int); &bslash;&n;static ssize_t show_##kind##offset##sub (struct device *, char *); &bslash;&n;static ssize_t show_##kind##offset##sub (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct fscher_data *data = fscher_update_device(dev); &bslash;&n;&t;return show_##kind##sub(data, buf, (offset)); &bslash;&n;}
 DECL|macro|sysfs_w
 mdefine_line|#define sysfs_w(kind, sub, offset, reg) &bslash;&n;static ssize_t set_##kind##sub (struct i2c_client *, struct fscher_data *, const char *, size_t, int, int); &bslash;&n;static ssize_t set_##kind##offset##sub (struct device *, const char *, size_t); &bslash;&n;static ssize_t set_##kind##offset##sub (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct fscher_data *data = i2c_get_clientdata(client); &bslash;&n;&t;return set_##kind##sub(client, data, buf, count, (offset), reg); &bslash;&n;}
 DECL|macro|sysfs_rw_n
@@ -1108,18 +1110,31 @@ id|FSCHER_REG_REVISION
 )paren
 suffix:semicolon
 )brace
-DECL|function|fscher_update_client
+DECL|function|fscher_update_device
 r_static
-r_void
-id|fscher_update_client
+r_struct
+id|fscher_data
+op_star
+id|fscher_update_device
 c_func
 (paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
 r_struct
 id|i2c_client
 op_star
 id|client
+op_assign
+id|to_i2c_client
+c_func
+(paren
+id|dev
 )paren
-(brace
+suffix:semicolon
 r_struct
 id|fscher_data
 op_star
@@ -1507,6 +1522,9 @@ c_func
 op_amp
 id|data-&gt;update_lock
 )paren
+suffix:semicolon
+r_return
+id|data
 suffix:semicolon
 )brace
 DECL|macro|FAN_INDEX_FROM_NUM

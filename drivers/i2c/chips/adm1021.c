@@ -346,14 +346,16 @@ id|value
 )paren
 suffix:semicolon
 r_static
-r_void
-id|adm1021_update_client
+r_struct
+id|adm1021_data
+op_star
+id|adm1021_update_device
 c_func
 (paren
 r_struct
-id|i2c_client
+id|device
 op_star
-id|client
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* (amalysh) read only mode, otherwise any limit&squot;s writing confuse BIOS */
@@ -413,7 +415,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|macro|show
-mdefine_line|#define show(value)&t;&bslash;&n;static ssize_t show_##value(struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&bslash;&n;&t;struct adm1021_data *data = i2c_get_clientdata(client);&t;&bslash;&n;&t;int temp;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;adm1021_update_client(client);&t;&t;&t;&t;&bslash;&n;&t;temp = TEMP_FROM_REG(data-&gt;value);&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, temp);&t;&t;&t;&bslash;&n;}
+mdefine_line|#define show(value)&t;&bslash;&n;static ssize_t show_##value(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct adm1021_data *data = adm1021_update_device(dev);&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, TEMP_FROM_REG(data-&gt;value));&t;&bslash;&n;}
 DECL|variable|temp_max
 id|show
 c_func
@@ -457,7 +459,7 @@ id|remote_temp_input
 )paren
 suffix:semicolon
 DECL|macro|show2
-mdefine_line|#define show2(value)&t;&bslash;&n;static ssize_t show_##value(struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&bslash;&n;&t;struct adm1021_data *data = i2c_get_clientdata(client);&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;adm1021_update_client(client);&t;&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, data-&gt;value);&t;&t;&bslash;&n;}
+mdefine_line|#define show2(value)&t;&bslash;&n;static ssize_t show_##value(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct adm1021_data *data = adm1021_update_device(dev);&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, data-&gt;value);&t;&t;&t;&bslash;&n;}
 DECL|variable|alarms
 id|show2
 c_func
@@ -1489,18 +1491,31 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|adm1021_update_client
+DECL|function|adm1021_update_device
 r_static
-r_void
-id|adm1021_update_client
+r_struct
+id|adm1021_data
+op_star
+id|adm1021_update_device
 c_func
 (paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
 r_struct
 id|i2c_client
 op_star
 id|client
+op_assign
+id|to_i2c_client
+c_func
+(paren
+id|dev
 )paren
-(brace
+suffix:semicolon
 r_struct
 id|adm1021_data
 op_star
@@ -1716,6 +1731,9 @@ c_func
 op_amp
 id|data-&gt;update_lock
 )paren
+suffix:semicolon
+r_return
+id|data
 suffix:semicolon
 )brace
 DECL|function|sensors_adm1021_init
