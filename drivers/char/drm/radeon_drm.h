@@ -984,6 +984,11 @@ DECL|enumerator|RADEON_INIT_R200_CP
 id|RADEON_INIT_R200_CP
 op_assign
 l_int|0x03
+comma
+DECL|enumerator|RADEON_INIT_R300_CP
+id|RADEON_INIT_R300_CP
+op_assign
+l_int|0x04
 DECL|member|func
 )brace
 id|func

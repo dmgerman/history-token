@@ -3818,7 +3818,11 @@ multiline_comment|/* We have to clear the depth and/or stencil buffers by&n;&t; 
 r_if
 c_cond
 (paren
-id|dev_priv-&gt;is_r200
+(paren
+id|dev_priv-&gt;microcode_version
+op_eq
+id|UCODE_R200
+)paren
 op_logical_and
 (paren
 id|flags
