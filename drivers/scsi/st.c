@@ -8063,10 +8063,32 @@ r_if
 c_cond
 (paren
 id|transfer
-OL
+op_le
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|transfer
+OL
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;%s: Failed to read %d byte block with %d byte transfer.&bslash;n&quot;
+comma
+id|name
+comma
+id|bytes
+op_minus
+id|transfer
+comma
+id|bytes
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8077,6 +8099,10 @@ l_int|0
 id|STps-&gt;drv_block
 op_add_assign
 l_int|1
+suffix:semicolon
+id|STbp-&gt;buffer_bytes
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 (paren
@@ -8421,6 +8447,18 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|STbp-&gt;buffer_bytes
+OL
+l_int|0
+)paren
+multiline_comment|/* Caused by bogus sense data */
+id|STbp-&gt;buffer_bytes
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* End of extended sense test */
 r_else
@@ -10586,7 +10624,7 @@ op_member_access_from_pointer
 id|syscall_result
 suffix:semicolon
 )brace
-multiline_comment|/* Send the mode page in the tape buffer to the drive. Assumes that the mode data&n;   in the buffer is correctly formatted. */
+multiline_comment|/* Send the mode page in the tape buffer to the drive. Assumes that the mode data&n;   in the buffer is correctly formatted. The long timeout is used if slow is non-zero. */
 DECL|function|write_mode_page
 r_static
 r_int
@@ -10599,6 +10637,9 @@ id|STp
 comma
 r_int
 id|page
+comma
+r_int
+id|slow
 )paren
 (brace
 r_int
@@ -10740,7 +10781,14 @@ l_int|4
 comma
 id|SCSI_DATA_WRITE
 comma
+(paren
+id|slow
+ques
+c_cond
+id|STp-&gt;long_timeout
+suffix:colon
 id|STp-&gt;timeout
+)paren
 comma
 l_int|0
 comma
@@ -11035,6 +11083,8 @@ c_func
 id|STp
 comma
 id|COMPRESSION_PAGE
+comma
+id|FALSE
 )paren
 suffix:semicolon
 r_if
@@ -15688,6 +15738,8 @@ c_func
 id|STp
 comma
 id|PART_PAGE
+comma
+id|TRUE
 )paren
 suffix:semicolon
 r_if
