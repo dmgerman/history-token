@@ -1377,9 +1377,22 @@ id|psmouse-&gt;pt_activate
 op_assign
 id|synaptics_pt_activate
 suffix:semicolon
-id|psmouse-&gt;ps2dev.serio-&gt;child
-op_assign
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;serio: %s port at %s&bslash;n&quot;
+comma
+id|serio-&gt;name
+comma
+id|psmouse-&gt;phys
+)paren
+suffix:semicolon
+id|serio_register_port
+c_func
+(paren
 id|serio
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; *&t;Functions to interpret the absolute mode packets&n; ****************************************************************************/
@@ -3097,6 +3110,12 @@ op_member_access_from_pointer
 r_private
 )paren
 suffix:semicolon
+id|psmouse
+op_member_access_from_pointer
+r_private
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 DECL|function|synaptics_reconnect
 r_static
@@ -3490,21 +3509,6 @@ id|SYN_NEWABS
 suffix:colon
 id|SYN_OLDABS
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|SYN_CAP_PASS_THROUGH
-c_func
-(paren
-id|priv-&gt;capabilities
-)paren
-)paren
-id|synaptics_pt_create
-c_func
-(paren
-id|psmouse
-)paren
-suffix:semicolon
 id|print_ident
 c_func
 (paren
@@ -3539,6 +3543,21 @@ suffix:semicolon
 id|psmouse-&gt;pktsize
 op_assign
 l_int|6
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|SYN_CAP_PASS_THROUGH
+c_func
+(paren
+id|priv-&gt;capabilities
+)paren
+)paren
+id|synaptics_pt_create
+c_func
+(paren
+id|psmouse
+)paren
 suffix:semicolon
 macro_line|#if defined(__i386__)
 multiline_comment|/*&n;&t; * Toshiba&squot;s KBC seems to have trouble handling data from&n;&t; * Synaptics as full rate, switch to lower rate which is roughly&n;&t; * thye same as rate of standard PS/2 mouse.&n;&t; */
