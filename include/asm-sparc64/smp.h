@@ -4,11 +4,11 @@ DECL|macro|_SPARC64_SMP_H
 mdefine_line|#define _SPARC64_SMP_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
-macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/cache.h&gt;
 multiline_comment|/* PROM provided per-processor information we need&n; * to start them all up.&n; */
 DECL|struct|prom_cpuinfo
 r_struct
