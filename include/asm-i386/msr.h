@@ -112,6 +112,8 @@ DECL|macro|MSR_K6_WHCR
 mdefine_line|#define MSR_K6_WHCR&t;&t;&t;0xC0000082
 DECL|macro|MSR_K6_UWCCR
 mdefine_line|#define MSR_K6_UWCCR&t;&t;&t;0xC0000085
+DECL|macro|MSR_K6_EPMR
+mdefine_line|#define MSR_K6_EPMR&t;&t;&t;0xC0000086
 DECL|macro|MSR_K6_PSOR
 mdefine_line|#define MSR_K6_PSOR&t;&t;&t;0xC0000087
 DECL|macro|MSR_K6_PFIR
@@ -122,6 +124,10 @@ DECL|macro|MSR_K7_PERFCTR0
 mdefine_line|#define MSR_K7_PERFCTR0&t;&t;&t;0xC0010004
 DECL|macro|MSR_K7_HWCR
 mdefine_line|#define MSR_K7_HWCR&t;&t;&t;0xC0010015
+DECL|macro|MSR_K7_FID_VID_CTL
+mdefine_line|#define MSR_K7_FID_VID_CTL&t;&t;0xC0010041
+DECL|macro|MSR_K7_VID_STATUS
+mdefine_line|#define MSR_K7_VID_STATUS&t;&t;0xC0010042
 multiline_comment|/* Centaur-Hauls/IDT defined MSRs. */
 DECL|macro|MSR_IDT_FCR1
 mdefine_line|#define MSR_IDT_FCR1&t;&t;&t;0x107
@@ -152,5 +158,9 @@ mdefine_line|#define MSR_IDT_MCR_CTRL&t;&t;0x120
 multiline_comment|/* VIA Cyrix defined MSRs*/
 DECL|macro|MSR_VIA_FCR
 mdefine_line|#define MSR_VIA_FCR&t;&t;&t;0x1107
+DECL|macro|MSR_VIA_LONGHAUL
+mdefine_line|#define MSR_VIA_LONGHAUL&t;&t;0x110a
+DECL|macro|MSR_VIA_BCR2
+mdefine_line|#define MSR_VIA_BCR2&t;&t;&t;0x1147
 macro_line|#endif /* __ASM_MSR_H */
 eof
