@@ -103,7 +103,7 @@ r_static
 r_int
 id|nTxLock
 op_assign
-l_int|2048
+l_int|4096
 suffix:semicolon
 multiline_comment|/* number of transaction locks */
 DECL|variable|TxLockLWM
@@ -111,7 +111,7 @@ r_static
 r_int
 id|TxLockLWM
 op_assign
-l_int|2048
+l_int|4096
 op_star
 dot
 l_int|4
@@ -122,7 +122,7 @@ r_static
 r_int
 id|TxLockHWM
 op_assign
-l_int|2048
+l_int|4096
 op_star
 dot
 l_int|8
