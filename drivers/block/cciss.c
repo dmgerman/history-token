@@ -1454,7 +1454,7 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 op_minus
-id|MAJOR_NR
+id|COMPAQ_CISS_MAJOR
 suffix:semicolon
 r_int
 id|dsk
@@ -1591,7 +1591,7 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 op_minus
-id|MAJOR_NR
+id|COMPAQ_CISS_MAJOR
 suffix:semicolon
 r_int
 id|dsk
@@ -1680,7 +1680,7 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 op_minus
-id|MAJOR_NR
+id|COMPAQ_CISS_MAJOR
 suffix:semicolon
 r_int
 id|dsk
@@ -3361,7 +3361,7 @@ c_func
 id|dev
 )paren
 op_minus
-id|MAJOR_NR
+id|COMPAQ_CISS_MAJOR
 suffix:semicolon
 r_if
 c_cond
@@ -11603,7 +11603,7 @@ c_cond
 id|register_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|COMPAQ_CISS_MAJOR
 op_plus
 id|i
 comma
@@ -11626,7 +11626,7 @@ id|KERN_ERR
 l_string|&quot;cciss:  Unable to get major number &quot;
 l_string|&quot;%d for %s&bslash;n&quot;
 comma
-id|MAJOR_NR
+id|COMPAQ_CISS_MAJOR
 op_plus
 id|i
 comma
@@ -11736,7 +11736,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|COMPAQ_CISS_MAJOR
 op_plus
 id|i
 comma
@@ -12044,7 +12044,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|COMPAQ_CISS_MAJOR
 op_plus
 id|i
 comma
@@ -12321,7 +12321,7 @@ id|j
 suffix:semicolon
 id|disk-&gt;major
 op_assign
-id|MAJOR_NR
+id|COMPAQ_CISS_MAJOR
 op_plus
 id|i
 suffix:semicolon
@@ -12586,7 +12586,7 @@ multiline_comment|/* unhook from SCSI subsystem */
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|COMPAQ_CISS_MAJOR
 op_plus
 id|i
 comma

@@ -12,14 +12,12 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR XT_DISK_MAJOR
-macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &quot;xd.h&quot;
 r_static
 r_void
@@ -579,7 +577,7 @@ c_cond
 id|register_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|XT_DISK_MAJOR
 comma
 l_string|&quot;xd&quot;
 comma
@@ -593,7 +591,7 @@ c_func
 (paren
 l_string|&quot;xd: Unable to get major number %d&bslash;n&quot;
 comma
-id|MAJOR_NR
+id|XT_DISK_MAJOR
 )paren
 suffix:semicolon
 r_goto
@@ -796,7 +794,7 @@ id|i
 suffix:semicolon
 id|disk-&gt;major
 op_assign
-id|MAJOR_NR
+id|XT_DISK_MAJOR
 suffix:semicolon
 id|disk-&gt;first_minor
 op_assign
@@ -1022,7 +1020,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|XT_DISK_MAJOR
 comma
 l_string|&quot;xd&quot;
 )paren
@@ -6673,7 +6671,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|XT_DISK_MAJOR
 comma
 l_string|&quot;xd&quot;
 )paren

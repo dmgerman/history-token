@@ -1,10 +1,6 @@
 multiline_comment|/*&n; * acsi.c -- Device driver for Atari ACSI hard disks&n; *&n; * Copyright 1994 Roman Hodek &lt;Roman.Hodek@informatik.uni-erlangen.de&gt;&n; *&n; * Some parts are based on hd.c by Linus Torvalds&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive for&n; * more details.&n; *&n; */
 multiline_comment|/*&n; * Still to in this file:&n; *  - If a command ends with an error status (!= 0), the following&n; *    REQUEST SENSE commands (4 to fill the ST-DMA FIFO) are done by&n; *    polling the _IRQ signal (not interrupt-driven). This should be&n; *    avoided in future because it takes up a non-neglectible time in&n; *    the interrupt service routine while interrupts are disabled.&n; *    Maybe a timer interrupt will get lost :-(&n; */
 multiline_comment|/*&n; * General notes:&n; *&n; *  - All ACSI devices (disks, CD-ROMs, ...) use major number 28.&n; *    Minors are organized like it is with SCSI: The upper 4 bits&n; *    identify the device, the lower 4 bits the partition.&n; *    The device numbers (the upper 4 bits) are given in the same&n; *    order as the devices are found on the bus.&n; *  - Up to 8 LUNs are supported for each target (if CONFIG_ACSI_MULTI_LUN&n; *    is defined), but only a total of 16 devices (due to minor&n; *    numbers...). Note that Atari allows only a maximum of 4 targets&n; *    (i.e. controllers, not devices) on the ACSI bus!&n; *  - A optimizing scheme similar to SCSI scatter-gather is implemented.&n; *  - Removable media are supported. After a medium change to device&n; *    is reinitialized (partition check etc.). Also, if the device&n; *    knows the PREVENT/ALLOW MEDIUM REMOVAL command, the door should&n; *    be locked and unlocked when mounting the first or unmounting the&n; *    last filesystem on the device. The code is untested, because I&n; *    don&squot;t have a removable hard disk.&n; *&n; */
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR ACSI_MAJOR
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;ACSI&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -3533,8 +3529,7 @@ id|CURRENT-&gt;bh
 id|panic
 c_func
 (paren
-id|DEVICE_NAME
-l_string|&quot;: block not locked&quot;
+l_string|&quot;ACSI: block not locked&quot;
 )paren
 suffix:semicolon
 )brace
@@ -6302,7 +6297,7 @@ c_cond
 id|register_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|ACSI_MAJOR
 comma
 l_string|&quot;ad&quot;
 comma
@@ -6317,7 +6312,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;Unable to get major %d for ACSI&bslash;n&quot;
 comma
-id|MAJOR_NR
+id|ACSI_MAJOR
 )paren
 suffix:semicolon
 id|err
@@ -6829,7 +6824,7 @@ id|i
 suffix:semicolon
 id|disk-&gt;major
 op_assign
-id|MAJOR_NR
+id|ACSI_MAJOR
 suffix:semicolon
 id|disk-&gt;first_minor
 op_assign
@@ -6937,7 +6932,7 @@ suffix:colon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|ACSI_MAJOR
 comma
 l_string|&quot;ad&quot;
 )paren
@@ -7029,7 +7024,7 @@ c_cond
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|ACSI_MAJOR
 comma
 l_string|&quot;ad&quot;
 )paren

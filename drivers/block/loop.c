@@ -21,8 +21,6 @@ macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_bdev() */
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR LOOP_MAJOR
 DECL|variable|max_loop
 r_static
 r_int
@@ -4458,7 +4456,7 @@ c_cond
 id|register_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|LOOP_MAJOR
 comma
 l_string|&quot;loop&quot;
 comma
@@ -4474,7 +4472,7 @@ id|KERN_WARNING
 l_string|&quot;Unable to get major number %d for loop&quot;
 l_string|&quot; device&bslash;n&quot;
 comma
-id|MAJOR_NR
+id|LOOP_MAJOR
 )paren
 suffix:semicolon
 r_return
@@ -4866,7 +4864,7 @@ c_cond
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|LOOP_MAJOR
 comma
 l_string|&quot;loop&quot;
 )paren

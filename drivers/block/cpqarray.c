@@ -18,6 +18,9 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|SMART2_DRIVER_VERSION
@@ -46,17 +49,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR COMPAQ_SMART2_MAJOR
-DECL|macro|LOCAL_END_REQUEST
-mdefine_line|#define LOCAL_END_REQUEST
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;ida&quot;
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (minor(device) &gt;&gt; 4)
-macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &quot;cpqarray.h&quot;
 macro_line|#include &quot;ida_cmd.h&quot;
 macro_line|#include &quot;smart1,2.h&quot;
@@ -1404,7 +1396,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|COMPAQ_SMART2_MAJOR
 op_plus
 id|i
 comma
@@ -1666,7 +1658,7 @@ c_cond
 id|register_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|COMPAQ_SMART2_MAJOR
 op_plus
 id|i
 comma
@@ -1688,7 +1680,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;cpqarray: Unable to get major number %d for ida&bslash;n&quot;
 comma
-id|MAJOR_NR
+id|COMPAQ_SMART2_MAJOR
 op_plus
 id|i
 )paren
@@ -1771,7 +1763,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|COMPAQ_SMART2_MAJOR
 op_plus
 id|i
 comma
@@ -2223,7 +2215,7 @@ id|j
 suffix:semicolon
 id|disk-&gt;major
 op_assign
-id|MAJOR_NR
+id|COMPAQ_SMART2_MAJOR
 op_plus
 id|i
 suffix:semicolon
@@ -2409,7 +2401,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|COMPAQ_SMART2_MAJOR
 op_plus
 id|i
 comma
@@ -3853,7 +3845,7 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 op_minus
-id|MAJOR_NR
+id|COMPAQ_SMART2_MAJOR
 suffix:semicolon
 r_int
 id|dsk
@@ -3994,7 +3986,7 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 op_minus
-id|MAJOR_NR
+id|COMPAQ_SMART2_MAJOR
 suffix:semicolon
 id|hba
 (braket
@@ -5215,7 +5207,7 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 op_minus
-id|MAJOR_NR
+id|COMPAQ_SMART2_MAJOR
 suffix:semicolon
 r_int
 id|dsk
@@ -7209,7 +7201,7 @@ c_func
 id|dev
 )paren
 op_minus
-id|MAJOR_NR
+id|COMPAQ_SMART2_MAJOR
 suffix:semicolon
 id|spin_lock_irqsave
 c_func

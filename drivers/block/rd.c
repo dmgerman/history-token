@@ -9,14 +9,9 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_bdev() */
 macro_line|#include &lt;linux/backing-dev.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-multiline_comment|/*&n; * 35 has been officially registered as the RAMDISK major number, but&n; * so is the original MAJOR number of 1.  We&squot;re using 1 in&n; * include/linux/major.h for now&n; */
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR RAMDISK_MAJOR
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* The RAM disk size is now a parameter */
 DECL|macro|NUM_RAMDISKS
 mdefine_line|#define NUM_RAMDISKS 16&t;&t;/* This cannot be overridden (yet) */ 
@@ -1418,7 +1413,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|RAMDISK_MAJOR
 comma
 l_string|&quot;ramdisk&quot;
 )paren
@@ -1505,7 +1500,7 @@ id|ENOMEM
 suffix:semicolon
 id|initrd_disk-&gt;major
 op_assign
-id|MAJOR_NR
+id|RAMDISK_MAJOR
 suffix:semicolon
 id|initrd_disk-&gt;first_minor
 op_assign
@@ -1570,7 +1565,7 @@ c_cond
 id|register_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|RAMDISK_MAJOR
 comma
 l_string|&quot;ramdisk&quot;
 comma
@@ -1584,7 +1579,7 @@ c_func
 (paren
 l_string|&quot;RAMDISK: Could not get major %d&quot;
 comma
-id|MAJOR_NR
+id|RAMDISK_MAJOR
 )paren
 suffix:semicolon
 id|err
@@ -1649,7 +1644,7 @@ suffix:semicolon
 multiline_comment|/* rd_size is given in kB */
 id|disk-&gt;major
 op_assign
-id|MAJOR_NR
+id|RAMDISK_MAJOR
 suffix:semicolon
 id|disk-&gt;first_minor
 op_assign
@@ -1776,7 +1771,7 @@ l_string|&quot;rd/initrd&quot;
 comma
 id|DEVFS_FL_DEFAULT
 comma
-id|MAJOR_NR
+id|RAMDISK_MAJOR
 comma
 id|INITRD_MINOR
 comma

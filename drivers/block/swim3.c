@@ -8,6 +8,8 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/fd.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
+macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dbdma.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -15,12 +17,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mediabay.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR&t;FLOPPY_MAJOR
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
-macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 DECL|variable|swim3_queue
 r_static
 r_struct
@@ -5024,7 +5020,7 @@ c_cond
 id|register_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 comma
 l_string|&quot;fd&quot;
 comma
@@ -5039,7 +5035,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;Unable to get major %d for floppy&bslash;n&quot;
 comma
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 )paren
 suffix:semicolon
 id|err
@@ -5090,7 +5086,7 @@ id|i
 suffix:semicolon
 id|disk-&gt;major
 op_assign
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 suffix:semicolon
 id|disk-&gt;first_minor
 op_assign
@@ -5563,7 +5559,7 @@ id|floppy_name
 comma
 id|DEVFS_FL_DEFAULT
 comma
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 comma
 id|floppy_count
 comma

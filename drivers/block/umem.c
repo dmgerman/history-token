@@ -127,8 +127,6 @@ r_static
 r_int
 id|major_nr
 suffix:semicolon
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR&t;(major_nr)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 DECL|struct|cardinfo
@@ -5026,7 +5024,7 @@ suffix:colon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|major_nr
 comma
 l_string|&quot;umem&quot;
 )paren
@@ -5119,7 +5117,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|major_nr
 comma
 l_string|&quot;umem&quot;
 )paren
