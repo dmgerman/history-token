@@ -231,19 +231,15 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* Not now, but complain so we now where we failed. */
 id|err
 op_assign
-id|__raw
+id|raw
 c_func
 (paren
 id|master
-comma
-l_int|1
-comma
-l_int|0
 )paren
 suffix:semicolon
-singleline_comment|//Not now, but complain so we now where we failed.
 r_if
 c_cond
 (paren

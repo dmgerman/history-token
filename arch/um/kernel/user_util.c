@@ -633,19 +633,13 @@ id|status
 suffix:semicolon
 )brace
 )brace
-DECL|function|__raw
+DECL|function|raw
 r_int
-id|__raw
+id|raw
 c_func
 (paren
 r_int
 id|fd
-comma
-r_int
-id|complain
-comma
-r_int
-id|now
 )paren
 (brace
 r_struct
@@ -654,9 +648,6 @@ id|tt
 suffix:semicolon
 r_int
 id|err
-suffix:semicolon
-r_int
-id|when
 suffix:semicolon
 id|CATCH_EINTR
 c_func
@@ -681,11 +672,6 @@ OL
 l_int|0
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|complain
-)paren
 id|printk
 c_func
 (paren
@@ -706,20 +692,6 @@ op_amp
 id|tt
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|now
-)paren
-id|when
-op_assign
-id|TCSANOW
-suffix:semicolon
-r_else
-id|when
-op_assign
-id|TCSADRAIN
-suffix:semicolon
 id|CATCH_EINTR
 c_func
 (paren
@@ -730,7 +702,7 @@ c_func
 (paren
 id|fd
 comma
-id|when
+id|TCSADRAIN
 comma
 op_amp
 id|tt
@@ -745,11 +717,6 @@ OL
 l_int|0
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|complain
-)paren
 id|printk
 c_func
 (paren
@@ -763,7 +730,7 @@ op_minus
 id|errno
 suffix:semicolon
 )brace
-multiline_comment|/*XXX: tcsetattr could have applied only some changes&n;&t; * (and cfmakeraw() is a set of changes) */
+multiline_comment|/* XXX tcsetattr could have applied only some changes&n;&t; * (and cfmakeraw() is a set of changes) */
 r_return
 l_int|0
 suffix:semicolon
