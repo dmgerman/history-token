@@ -181,16 +181,6 @@ r_return
 id|Z_VERSION_ERROR
 suffix:semicolon
 multiline_comment|/* initialize state */
-r_if
-c_cond
-(paren
-id|z
-op_eq
-l_int|NULL
-)paren
-r_return
-id|Z_STREAM_ERROR
-suffix:semicolon
 id|z-&gt;msg
 op_assign
 l_int|NULL

@@ -1028,6 +1028,22 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ScatterGatherPool
+op_eq
+l_int|NULL
+)paren
+r_return
+id|DAC960_Failure
+c_func
+(paren
+id|Controller
+comma
+l_string|&quot;AUXILIARY STRUCTURE CREATION (SG)&quot;
+)paren
+suffix:semicolon
 id|RequestSensePool
 op_assign
 id|pci_pool_create
@@ -1053,14 +1069,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ScatterGatherPool
-op_eq
-l_int|NULL
-op_logical_or
 id|RequestSensePool
 op_eq
 l_int|NULL
 )paren
+(brace
+id|pci_pool_destroy
+c_func
+(paren
+id|ScatterGatherPool
+)paren
+suffix:semicolon
 r_return
 id|DAC960_Failure
 c_func
@@ -1070,6 +1089,7 @@ comma
 l_string|&quot;AUXILIARY STRUCTURE CREATION (SG)&quot;
 )paren
 suffix:semicolon
+)brace
 id|Controller-&gt;ScatterGatherPool
 op_assign
 id|ScatterGatherPool

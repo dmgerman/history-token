@@ -7748,6 +7748,16 @@ comma
 id|addr
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|vma
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 id|write
 op_assign
 (paren
