@@ -325,11 +325,5 @@ DECL|macro|pgoff_to_pte
 mdefine_line|#define pgoff_to_pte(off) ((pte_t) { _PAGE_FILE, (off) })
 DECL|macro|PTE_FILE_MAX_BITS
 mdefine_line|#define PTE_FILE_MAX_BITS       32
-r_extern
-r_struct
-id|kmem_cache_s
-op_star
-id|pae_pgd_cachep
-suffix:semicolon
 macro_line|#endif /* _I386_PGTABLE_3LEVEL_H */
 eof
