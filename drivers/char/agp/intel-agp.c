@@ -512,9 +512,11 @@ r_void
 id|writel
 c_func
 (paren
-id|I810_PGETBL_CTL
+l_int|0
 comma
 id|intel_i810_private.registers
+op_plus
+id|I810_PGETBL_CTL
 )paren
 suffix:semicolon
 id|readl
@@ -2149,7 +2151,7 @@ id|ENOMEM
 suffix:semicolon
 id|temp
 op_assign
-id|readb
+id|readl
 c_func
 (paren
 id|intel_i830_private.registers
