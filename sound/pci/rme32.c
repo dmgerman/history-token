@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   ALSA driver for RME Digi32, Digi32/8 and Digi32 PRO audio interfaces&n; *&n; *&t;Copyright (c) 2002 Martin Langer &lt;martin-langer@gmx.de&gt;&n; *&n; *      Thanks to :        Anders Torger &lt;torger@ludd.luth.se&gt;,&n; *                         Henk Hesselink &lt;henk@anda.nl&gt;&n; *                         for writing the digi96-driver &n; *                         and RME for all informations.&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; * &n; * &n; * ****************************************************************************&n; * &n; * Note #1 &quot;Sek&squot;d models&quot; ................................... martin 2002-12-07&n; * &n; * Identical soundcards by Sek&squot;d were labeled:&n; * RME Digi 32     = Sek&squot;d Prodif 32&n; * RME Digi 32 Pro = Sek&squot;d Prodif 96&n; * RME Digi 32/8   = Sek&squot;d Prodif Gold&n; * &n; * ****************************************************************************&n; * &n; * Note #2 &quot;full duplex mode&quot; ............................... martin 2002-12-07&n; * &n; * Full duplex doesn&squot;t work. All cards (32, 32/8, 32Pro) are working identical&n; * in this mode. Rec data and play data are using the same buffer therefore. At&n; * first you have got the playing bits in the buffer and then (after playing&n; * them) they were overwitten by the captured sound of the CS8412/14. Both &n; * modes (play/record) are running harmonically hand in hand in the same buffer&n; * and you have only one start bit plus one interrupt bit to control this &n; * paired action.&n; * This is opposite to the latter rme96 where playing and capturing is totally&n; * separated and so their full duplex mode is supported by alsa (using two &n; * start bits and two interrupts for two different buffers). &n; * But due to the wrong sequence of playing and capturing ALSA shows no solved&n; * full duplex support for the rme32 at the moment. That&squot;s bad, but I&squot;m not&n; * able to solve it. Are you motivated enough to solve this problem now? Your&n; * patch would be welcome!&n; * &n; * ****************************************************************************&n; */
+multiline_comment|/*&n; *   ALSA driver for RME Digi32, Digi32/8 and Digi32 PRO audio interfaces&n; *&n; *&t;Copyright (c) 2002, 2003 Martin Langer &lt;martin-langer@gmx.de&gt;&n; *&n; *      Thanks to :        Anders Torger &lt;torger@ludd.luth.se&gt;,&n; *                         Henk Hesselink &lt;henk@anda.nl&gt;&n; *                         for writing the digi96-driver &n; *                         and RME for all informations.&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; * &n; * &n; * ****************************************************************************&n; * &n; * Note #1 &quot;Sek&squot;d models&quot; ................................... martin 2002-12-07&n; * &n; * Identical soundcards by Sek&squot;d were labeled:&n; * RME Digi 32     = Sek&squot;d Prodif 32&n; * RME Digi 32 Pro = Sek&squot;d Prodif 96&n; * RME Digi 32/8   = Sek&squot;d Prodif Gold&n; * &n; * ****************************************************************************&n; * &n; * Note #2 &quot;full duplex mode&quot; ............................... martin 2002-12-07&n; * &n; * Full duplex doesn&squot;t work. All cards (32, 32/8, 32Pro) are working identical&n; * in this mode. Rec data and play data are using the same buffer therefore. At&n; * first you have got the playing bits in the buffer and then (after playing&n; * them) they were overwitten by the captured sound of the CS8412/14. Both &n; * modes (play/record) are running harmonically hand in hand in the same buffer&n; * and you have only one start bit plus one interrupt bit to control this &n; * paired action.&n; * This is opposite to the latter rme96 where playing and capturing is totally&n; * separated and so their full duplex mode is supported by alsa (using two &n; * start bits and two interrupts for two different buffers). &n; * But due to the wrong sequence of playing and capturing ALSA shows no solved&n; * full duplex support for the rme32 at the moment. That&squot;s bad, but I&squot;m not&n; * able to solve it. Are you motivated enough to solve this problem now? Your&n; * patch would be welcome!&n; * &n; * ****************************************************************************&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -14,6 +14,7 @@ macro_line|#include &lt;sound/asoundef.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
+macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|variable|index
 r_static
@@ -577,16 +578,6 @@ suffix:semicolon
 r_static
 r_void
 id|snd_rme32_proc_init
-c_func
-(paren
-id|rme32_t
-op_star
-id|rme32
-)paren
-suffix:semicolon
-r_static
-r_void
-id|snd_rme32_proc_done
 c_func
 (paren
 id|rme32_t
@@ -7635,7 +7626,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;Clock Mode&quot;
+l_string|&quot;Sample Clock Source&quot;
 comma
 dot
 id|info

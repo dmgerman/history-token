@@ -4285,7 +4285,7 @@ id|mode
 suffix:semicolon
 id|entry-&gt;c.device.major
 op_assign
-id|major
+id|_major
 suffix:semicolon
 id|entry-&gt;c.device.minor
 op_assign
@@ -4419,7 +4419,7 @@ id|dname
 comma
 id|DEVFS_FL_DEFAULT
 comma
-id|major
+id|_major
 comma
 id|minor
 comma

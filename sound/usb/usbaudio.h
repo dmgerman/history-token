@@ -257,11 +257,14 @@ DECL|struct|snd_usb_midi_endpoint_info
 r_struct
 id|snd_usb_midi_endpoint_info
 (brace
-DECL|member|epnum
-r_int16
-id|epnum
+DECL|member|out_ep
+DECL|member|in_ep
+r_int8
+id|out_ep
+comma
+id|in_ep
 suffix:semicolon
-multiline_comment|/* ep number, -1 autodetect */
+multiline_comment|/* ep number, 0 autodetect */
 DECL|member|out_cables
 r_uint16
 id|out_cables

@@ -9475,12 +9475,6 @@ id|ep_quirk
 op_assign
 (brace
 dot
-id|epnum
-op_assign
-op_minus
-l_int|1
-comma
-dot
 id|out_cables
 op_assign
 l_int|0x0007
