@@ -32,10 +32,6 @@ DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(format, args...) printk(&quot;%s: &quot; format, dev-&gt;name , ## args)
 DECL|macro|DPRINTD
 mdefine_line|#define DPRINTD(format, args...) DummyCall(&quot;%s: &quot; format, dev-&gt;name , ## args)
-DECL|macro|MIN
-mdefine_line|#define MIN(X, Y) ((X) &lt; (Y) ? (X) : (Y))
-DECL|macro|MAX
-mdefine_line|#define MAX(X, Y) ((X) &gt; (Y) ? (X) : (Y))
 multiline_comment|/* version and credits */
 macro_line|#ifndef PCMCIA
 DECL|variable|__initdata
@@ -3219,7 +3215,7 @@ id|ti-&gt;page_mask
 (brace
 id|ti-&gt;avail_shared_ram
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|ti-&gt;mapped_ram_size
@@ -3240,11 +3236,15 @@ suffix:colon
 multiline_comment|/* 8KB shared RAM */
 id|ti-&gt;dhb_size4mb
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|ti-&gt;dhb_size4mb
 comma
+(paren
+r_int
+r_int
+)paren
 l_int|2048
 )paren
 suffix:semicolon
@@ -3258,11 +3258,15 @@ l_int|2
 suffix:semicolon
 id|ti-&gt;dhb_size16mb
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|ti-&gt;dhb_size16mb
 comma
+(paren
+r_int
+r_int
+)paren
 l_int|2048
 )paren
 suffix:semicolon
@@ -3282,11 +3286,15 @@ suffix:colon
 multiline_comment|/* 16KB shared RAM */
 id|ti-&gt;dhb_size4mb
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|ti-&gt;dhb_size4mb
 comma
+(paren
+r_int
+r_int
+)paren
 l_int|4464
 )paren
 suffix:semicolon
@@ -3300,11 +3308,15 @@ l_int|4
 suffix:semicolon
 id|ti-&gt;dhb_size16mb
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|ti-&gt;dhb_size16mb
 comma
+(paren
+r_int
+r_int
+)paren
 l_int|4096
 )paren
 suffix:semicolon
@@ -3325,11 +3337,15 @@ suffix:colon
 multiline_comment|/* 32KB shared RAM */
 id|ti-&gt;dhb_size4mb
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|ti-&gt;dhb_size4mb
 comma
+(paren
+r_int
+r_int
+)paren
 l_int|4464
 )paren
 suffix:semicolon
@@ -3343,11 +3359,15 @@ l_int|6
 suffix:semicolon
 id|ti-&gt;dhb_size16mb
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|ti-&gt;dhb_size16mb
 comma
+(paren
+r_int
+r_int
+)paren
 l_int|10240
 )paren
 suffix:semicolon
@@ -3367,11 +3387,15 @@ suffix:colon
 multiline_comment|/* 63.5KB shared RAM */
 id|ti-&gt;dhb_size4mb
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|ti-&gt;dhb_size4mb
 comma
+(paren
+r_int
+r_int
+)paren
 l_int|4464
 )paren
 suffix:semicolon
@@ -3385,11 +3409,15 @@ l_int|6
 suffix:semicolon
 id|ti-&gt;dhb_size16mb
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|ti-&gt;dhb_size16mb
 comma
+(paren
+r_int
+r_int
+)paren
 l_int|16384
 )paren
 suffix:semicolon
@@ -3409,11 +3437,15 @@ suffix:colon
 multiline_comment|/* 64KB   shared RAM */
 id|ti-&gt;dhb_size4mb
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|ti-&gt;dhb_size4mb
 comma
+(paren
+r_int
+r_int
+)paren
 l_int|4464
 )paren
 suffix:semicolon
@@ -3427,11 +3459,15 @@ l_int|6
 suffix:semicolon
 id|ti-&gt;dhb_size16mb
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|ti-&gt;dhb_size16mb
 comma
+(paren
+r_int
+r_int
+)paren
 l_int|17960
 )paren
 suffix:semicolon
