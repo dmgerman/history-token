@@ -611,6 +611,8 @@ op_assign
 op_amp
 id|ktype_sysdev
 suffix:semicolon
+id|error
+op_assign
 id|kobject_set_name
 c_func
 (paren
@@ -628,6 +630,14 @@ id|cls-&gt;kset.kobj
 comma
 id|sysdev-&gt;id
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_return
+id|error
 suffix:semicolon
 id|pr_debug
 c_func

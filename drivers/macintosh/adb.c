@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Device driver for the Apple Desktop Bus&n; * and the /dev/adb device on macintoshes.&n; *&n; * Copyright (C) 1996 Paul Mackerras.&n; *&n; * Modified to declare controllers as structures, added&n; * client notification of bus reset and handles PowerBook&n; * sleep, by Benjamin Herrenschmidt.&n; *&n; * To do:&n; *&n; * - /proc/adb to list the devices and infos&n; * - more /dev/adb to allow userland to receive the&n; *   flow of auto-polling datas from a given device.&n; * - move bus probe to a kernel thread&n; */
+multiline_comment|/*&n; * Device driver for the Apple Desktop Bus&n; * and the /dev/adb device on macintoshes.&n; *&n; * Copyright (C) 1996 Paul Mackerras.&n; *&n; * Modified to declare controllers as structures, added&n; * client notification of bus reset and handles PowerBook&n; * sleep, by Benjamin Herrenschmidt.&n; *&n; * To do:&n; *&n; * - /sys/bus/adb to list the devices and infos&n; * - more /dev/adb to allow userland to receive the&n; *   flow of auto-polling datas from a given device.&n; * - move bus probe to a kernel thread&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -19,6 +18,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#ifdef CONFIG_PPC
@@ -110,6 +110,13 @@ comma
 macro_line|#endif
 l_int|NULL
 )brace
+suffix:semicolon
+DECL|variable|adb_dev_class
+r_static
+r_struct
+id|class_simple
+op_star
+id|adb_dev_class
 suffix:semicolon
 DECL|variable|adb_controller
 r_struct
@@ -3865,6 +3872,11 @@ id|adb_fops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|llseek
 op_assign
 id|no_llseek
@@ -3914,6 +3926,7 @@ op_amp
 id|adb_fops
 )paren
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -3923,10 +3936,37 @@ comma
 id|ADB_MAJOR
 )paren
 suffix:semicolon
-r_else
-id|devfs_mk_cdev
+r_return
+suffix:semicolon
+)brace
+id|adb_dev_class
+op_assign
+id|class_simple_create
 c_func
 (paren
+id|THIS_MODULE
+comma
+l_string|&quot;adb&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|adb_dev_class
+)paren
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
+id|class_simple_device_add
+c_func
+(paren
+id|adb_dev_class
+comma
 id|MKDEV
 c_func
 (paren
@@ -3935,11 +3975,7 @@ comma
 l_int|0
 )paren
 comma
-id|S_IFCHR
-op_or
-id|S_IRUSR
-op_or
-id|S_IWUSR
+l_int|NULL
 comma
 l_string|&quot;adb&quot;
 )paren

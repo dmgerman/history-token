@@ -140,7 +140,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* This is the fundamental function for registering boot/module&n;   parameters.  perm sets the visibility in driverfs: 000 means it&squot;s&n;   not there, read bits mean it&squot;s readable, write bits mean it&squot;s&n;   writable. */
 DECL|macro|__module_param_call
-mdefine_line|#define __module_param_call(prefix, name, set, get, arg, perm)&t;&t;&bslash;&n;&t;static char __param_str_##name[] __initdata = prefix #name;&t;&bslash;&n;&t;static struct kernel_param const __param_##name&t;&t;&t;&bslash;&n;&t;__attribute_used__&t;&t;&t;&t;&t;&t;&bslash;&n;    __attribute__ ((unused,__section__ (&quot;__param&quot;),aligned(sizeof(void *)))) &bslash;&n;&t;= { __param_str_##name, perm, set, get, arg }
+mdefine_line|#define __module_param_call(prefix, name, set, get, arg, perm)&t;&t;&bslash;&n;&t;static char __param_str_##name[] = prefix #name;&t;&t;&bslash;&n;&t;static struct kernel_param const __param_##name&t;&t;&t;&bslash;&n;&t;__attribute_used__&t;&t;&t;&t;&t;&t;&bslash;&n;    __attribute__ ((unused,__section__ (&quot;__param&quot;),aligned(sizeof(void *)))) &bslash;&n;&t;= { __param_str_##name, perm, set, get, arg }
 DECL|macro|module_param_call
 mdefine_line|#define module_param_call(name, set, get, arg, perm)&t;&t;&t;      &bslash;&n;&t;__module_param_call(MODULE_PARAM_PREFIX, name, set, get, arg, perm)
 multiline_comment|/* Helper functions: type is byte, short, ushort, int, uint, long,&n;   ulong, charp, bool or invbool, or XXX if you define param_get_XXX,&n;   param_set_XXX and param_check_XXX. */
@@ -150,7 +150,7 @@ DECL|macro|module_param
 mdefine_line|#define module_param(name, type, perm)&t;&t;&t;&t;&bslash;&n;&t;module_param_named(name, name, type, perm)
 multiline_comment|/* Actually copy string: maxlen param is usually sizeof(string). */
 DECL|macro|module_param_string
-mdefine_line|#define module_param_string(name, string, len, perm)&t;&t;&t;&bslash;&n;&t;static struct kparam_string __param_string_##name __initdata&t;&bslash;&n;&t;&t;= { len, string };&t;&t;&t;&t;&t;&bslash;&n;&t;module_param_call(name, param_set_copystring, param_get_charp,&t;&bslash;&n;&t;&t;   &amp;__param_string_##name, perm)
+mdefine_line|#define module_param_string(name, string, len, perm)&t;&t;&t;&bslash;&n;&t;static struct kparam_string __param_string_##name&t;&t;&bslash;&n;&t;&t;= { len, string };&t;&t;&t;&t;&t;&bslash;&n;&t;module_param_call(name, param_set_copystring, param_get_charp,&t;&bslash;&n;&t;&t;   &amp;__param_string_##name, perm)
 multiline_comment|/* Called on module insert or kernel boot */
 r_extern
 r_int
