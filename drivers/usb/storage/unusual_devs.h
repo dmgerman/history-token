@@ -1172,6 +1172,31 @@ comma
 id|US_FL_SINGLE_LUN
 )paren
 comma
+multiline_comment|/* Reported by Johann Cardon &lt;johann.cardon@free.fr&gt;&n; * This entry is needed only because the device reports&n; * bInterfaceClass = 0xff (vendor-specific)&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x057b
+comma
+l_int|0x0022
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;Y-E Data&quot;
+comma
+l_string|&quot;Silicon Media R/W&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+comma
 multiline_comment|/* Fabrizio Fellini &lt;fello@libero.it&gt; */
 id|UNUSUAL_DEV
 c_func
