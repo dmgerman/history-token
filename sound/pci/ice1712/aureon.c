@@ -914,7 +914,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|2
+id|voices
 suffix:semicolon
 id|i
 op_increment
@@ -4019,6 +4019,11 @@ id|eeprom_data
 op_assign
 id|aureon51_eeprom
 comma
+dot
+id|driver
+op_assign
+l_string|&quot;Aureon51&quot;
+comma
 )brace
 comma
 (brace
@@ -4060,6 +4065,11 @@ id|eeprom_data
 op_assign
 id|aureon71_eeprom
 comma
+dot
+id|driver
+op_assign
+l_string|&quot;Aureon71&quot;
+comma
 )brace
 comma
 (brace
@@ -4096,6 +4106,11 @@ dot
 id|eeprom_data
 op_assign
 id|aureon71_eeprom
+comma
+dot
+id|driver
+op_assign
+l_string|&quot;Aureon71&quot;
 comma
 )brace
 comma
@@ -4138,6 +4153,12 @@ id|eeprom_data
 op_assign
 id|prodigy71_eeprom
 comma
+dot
+id|driver
+op_assign
+l_string|&quot;Prodigy71&quot;
+comma
+multiline_comment|/* should be identical with Aureon71 */
 )brace
 comma
 (brace
