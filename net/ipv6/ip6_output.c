@@ -1256,6 +1256,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ip6_call_ra_chain
+r_static
 r_int
 id|ip6_call_ra_chain
 c_func
