@@ -6347,7 +6347,7 @@ l_string|&quot;Unable to set block size.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|set_blk_size_err_out_now
+id|err_out_now
 suffix:semicolon
 )brace
 multiline_comment|/* Get the size of the device in units of NTFS_BLOCK_SIZE bytes. */
@@ -6390,7 +6390,7 @@ l_string|&quot;Not an NTFS volume.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|set_blk_size_err_out_now
+id|err_out_now
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Extract the data from the boot sector and setup the ntfs super block&n;&t; * using it.&n;&t; */
@@ -6436,7 +6436,7 @@ l_string|&quot;Unsupported NTFS filesystem.&quot;
 )paren
 suffix:semicolon
 r_goto
-id|set_blk_size_err_out_now
+id|err_out_now
 suffix:semicolon
 )brace
 multiline_comment|/* &n;&t; * TODO: When we start coping with sector sizes different from&n;&t; * NTFS_BLOCK_SIZE, we now probably need to set the blocksize of the&n;&t; * device (probably to NTFS_BLOCK_SIZE).&n;&t; */
@@ -6969,18 +6969,7 @@ l_string|&quot;seconds.  Have a nice day...&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|set_blk_size_err_out_now
-suffix:colon
 multiline_comment|/* Errors at this stage are irrelevant. */
-singleline_comment|// FIXME: This should be done in fs/super.c::get_sb_bdev() itself! (AIA)
-id|sb_set_blocksize
-c_func
-(paren
-id|sb
-comma
-id|sb-&gt;s_old_blocksize
-)paren
-suffix:semicolon
 id|err_out_now
 suffix:colon
 id|sb-&gt;u.generic_sbp
@@ -7708,7 +7697,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Anton Altaparmakov &lt;aia21@cam.ac.uk&gt;&quot;
+l_string|&quot;Anton Altaparmakov &lt;aia21@cantab.net&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
