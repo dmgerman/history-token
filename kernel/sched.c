@@ -10387,11 +10387,7 @@ c_func
 (paren
 id|p
 comma
-id|task_rq
-c_func
-(paren
-id|p
-)paren
+id|rq
 )paren
 suffix:semicolon
 id|retval
@@ -10423,11 +10419,7 @@ c_func
 (paren
 id|p
 comma
-id|task_rq
-c_func
-(paren
-id|p
-)paren
+id|rq
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Reschedule if we are currently running on this runqueue and&n;&t;&t; * our priority decreased, or if we are not currently running on&n;&t;&t; * this runqueue and our priority is higher than the current&squot;s&n;&t;&t; */
