@@ -41,35 +41,9 @@ id|group
 )paren
 suffix:semicolon
 multiline_comment|/* These must be implemented by the specific architecture */
-multiline_comment|/* Total size to allocate for the non-releasable code; return len or&n;   -error.  mod-&gt;core_size is the current generic tally. */
+multiline_comment|/* Adjust arch-specific sections.  Return 0 on success.  */
 r_int
-id|module_core_size
-c_func
-(paren
-r_const
-id|Elf_Ehdr
-op_star
-id|hdr
-comma
-r_const
-id|Elf_Shdr
-op_star
-id|sechdrs
-comma
-r_const
-r_char
-op_star
-id|secstrings
-comma
-r_struct
-id|module
-op_star
-id|mod
-)paren
-suffix:semicolon
-multiline_comment|/* Total size of (if any) sections to be freed after init.  Return 0&n;   for none, len, or -error. mod-&gt;init_size is the current generic&n;   tally. */
-r_int
-id|module_init_size
+id|module_frob_arch_sections
 c_func
 (paren
 r_const
