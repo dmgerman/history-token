@@ -132,7 +132,7 @@ id|emu
 comma
 id|page
 comma
-id|emu-&gt;silent_page_dmaaddr
+id|emu-&gt;silent_page.addr
 )paren
 suffix:semicolon
 )brace

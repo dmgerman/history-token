@@ -2010,7 +2010,7 @@ op_assign
 r_int
 r_int
 )paren
-id|hw-&gt;silent_page_dmaaddr
+id|hw-&gt;silent_page.addr
 op_lshift
 l_int|1
 )paren
