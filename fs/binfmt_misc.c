@@ -3245,7 +3245,7 @@ id|bm_fs_type
 suffix:semicolon
 )brace
 DECL|variable|init_misc_binfmt
-id|module_init
+id|core_initcall
 c_func
 (paren
 id|init_misc_binfmt
