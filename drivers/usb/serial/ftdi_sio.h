@@ -35,8 +35,6 @@ multiline_comment|/* (the VID is the standard ftdi vid (FTDI_VID) */
 DECL|macro|FTDI_VNHCPCUSB_D_PID
 mdefine_line|#define FTDI_VNHCPCUSB_D_PID 0xfe38 /* Product Id */
 multiline_comment|/*&n; * The following are the values for the Matrix Orbital LCD displays,&n; * which are the FT232BM ( similar to the 8U232AM )&n; */
-DECL|macro|FTDI_MTXORB_VID
-mdefine_line|#define FTDI_MTXORB_VID                FTDI_VID        /* Matrix Orbital Product Id */
 DECL|macro|FTDI_MTXORB_0_PID
 mdefine_line|#define FTDI_MTXORB_0_PID      0xFA00  /* Matrix Orbital Product Id */
 DECL|macro|FTDI_MTXORB_1_PID
@@ -51,6 +49,9 @@ DECL|macro|FTDI_MTXORB_5_PID
 mdefine_line|#define FTDI_MTXORB_5_PID      0xFA05  /* Matrix Orbital Product Id */
 DECL|macro|FTDI_MTXORB_6_PID
 mdefine_line|#define FTDI_MTXORB_6_PID      0xFA06  /* Matrix Orbital Product Id */
+multiline_comment|/*&n; * The following are the values for the Perle Systems&n; * UltraPort USB serial converters&n; */
+DECL|macro|FTDI_PERLE_ULTRAPORT_PID
+mdefine_line|#define FTDI_PERLE_ULTRAPORT_PID 0xF0C0&t;/* Perle UltraPort Product Id */
 multiline_comment|/*&n; * The following are the values for the Sealevel SeaLINK+ adapters.&n; * (Original list sent by Tuan Hoang.  Ian Abbott renamed the macros and&n; * removed some PIDs that don&squot;t seem to match any existing products.)&n; */
 DECL|macro|SEALEVEL_VID
 mdefine_line|#define SEALEVEL_VID&t;&t;0x0c52&t;/* Sealevel Vendor ID */

@@ -1774,15 +1774,15 @@ l_int|0x1001
 comma
 l_int|0x1000
 comma
-l_int|0x5009
+l_int|0x9999
 comma
 l_string|&quot;Casio&quot;
 comma
 l_string|&quot;QV DigitalCamera&quot;
 comma
-id|US_SC_8070
+id|US_SC_DEVICE
 comma
-id|US_PR_CB
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
@@ -2028,6 +2028,31 @@ comma
 l_string|&quot;Medion&quot;
 comma
 l_string|&quot;MD 7425&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
+multiline_comment|/*&n; * Entry for Jenoptik JD 5200z3&n; *&n; * email: car.busse@gmx.de&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0d96
+comma
+l_int|0x5200
+comma
+l_int|0x0001
+comma
+l_int|0x0200
+comma
+l_string|&quot;Jenoptik&quot;
+comma
+l_string|&quot;JD 5200 z3&quot;
 comma
 id|US_SC_DEVICE
 comma
