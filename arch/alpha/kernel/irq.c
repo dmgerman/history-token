@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *&t;linux/arch/alpha/kernel/irq.c&n; *&n; *&t;Copyright (C) 1995 Linus Torvalds&n; *&n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -1863,6 +1864,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|request_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|request_irq
+)paren
+suffix:semicolon
 r_void
 DECL|function|free_irq
 id|free_irq
@@ -2055,6 +2063,13 @@ r_return
 suffix:semicolon
 )brace
 )brace
+DECL|variable|free_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|free_irq
+)paren
+suffix:semicolon
 r_int
 DECL|function|show_interrupts
 id|show_interrupts
@@ -3007,6 +3022,13 @@ r_return
 id|val
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_on
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_on
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Return a mask of triggered interrupts (this&n; * can handle only legacy ISA interrupts).&n; */
 r_int
 r_int
@@ -3269,6 +3291,13 @@ r_return
 id|irq_found
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_off
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|function|synchronize_irq
 r_void

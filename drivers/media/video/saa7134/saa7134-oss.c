@@ -3541,9 +3541,9 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------ */
-DECL|function|saa7134_oss_init
+DECL|function|saa7134_oss_init1
 r_int
-id|saa7134_oss_init
+id|saa7134_oss_init1
 c_func
 (paren
 r_struct

@@ -207,7 +207,7 @@ id|reqfid
 suffix:semicolon
 r_static
 r_int
-id|drv_verify
+id|powernowk8_verify
 c_func
 (paren
 r_struct
@@ -218,7 +218,7 @@ id|pol
 suffix:semicolon
 r_static
 r_int
-id|drv_target
+id|powernowk8_target
 c_func
 (paren
 r_struct
@@ -236,7 +236,7 @@ suffix:semicolon
 r_static
 r_int
 id|__init
-id|drv_cpu_init
+id|powernowk8_cpu_init
 c_func
 (paren
 r_struct

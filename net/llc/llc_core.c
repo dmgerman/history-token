@@ -390,11 +390,6 @@ id|func
 op_assign
 id|llc_rcv
 comma
-dot
-id|data
-op_assign
-id|PKT_CAN_SHARE_SKB
-comma
 )brace
 suffix:semicolon
 DECL|variable|llc_tr_packet_type
@@ -417,11 +412,6 @@ dot
 id|func
 op_assign
 id|llc_rcv
-comma
-dot
-id|data
-op_assign
-id|PKT_CAN_SHARE_SKB
 comma
 )brace
 suffix:semicolon

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/init/main.c&n; *&n; *  Copyright (C) 1991, 1992
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -458,6 +459,15 @@ op_lshift
 l_int|12
 )paren
 suffix:semicolon
+macro_line|#ifndef __ia64__
+DECL|variable|loops_per_jiffy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|loops_per_jiffy
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* This is the number of bits of precision for the loops_per_jiffy.  Each&n;   bit takes on average 1.5/HZ seconds.  This (like the original) is a little&n;   better than 1% */
 DECL|macro|LPS_PREC
 mdefine_line|#define LPS_PREC 8
@@ -1020,6 +1030,13 @@ id|__per_cpu_offset
 (braket
 id|NR_CPUS
 )braket
+suffix:semicolon
+DECL|variable|__per_cpu_offset
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__per_cpu_offset
+)paren
 suffix:semicolon
 DECL|function|setup_per_cpu_areas
 r_static

@@ -3,6 +3,7 @@ multiline_comment|/* vsprintf.c -- Lars Wirzenius &amp; Linus Torvalds. */
 multiline_comment|/*&n; * Wirzenius wrote this portably, Torvalds fucked it up :-)&n; */
 multiline_comment|/* &n; * Fri Jul 13 2001 Crutcher Dunnavant &lt;crutcher+kernel@datastacks.com&gt;&n; * - changed to provide snprintf and vsnprintf functions&n; */
 macro_line|#include &lt;stdarg.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
@@ -166,6 +167,13 @@ r_return
 id|result
 suffix:semicolon
 )brace
+DECL|variable|simple_strtoul
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|simple_strtoul
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * simple_strtol - convert a string to a signed long&n; * @cp: The start of the string&n; * @endp: A pointer to the end of the parsed string will be placed here&n; * @base: The number base to use&n; */
 DECL|function|simple_strtol
 r_int
@@ -223,6 +231,13 @@ id|base
 )paren
 suffix:semicolon
 )brace
+DECL|variable|simple_strtol
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|simple_strtol
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * simple_strtoull - convert a string to an unsigned long long&n; * @cp: The start of the string&n; * @endp: A pointer to the end of the parsed string will be placed here&n; * @base: The number base to use&n; */
 DECL|function|simple_strtoull
 r_int
@@ -396,6 +411,13 @@ r_return
 id|result
 suffix:semicolon
 )brace
+DECL|variable|simple_strtoull
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|simple_strtoull
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * simple_strtoll - convert a string to a signed long long&n; * @cp: The start of the string&n; * @endp: A pointer to the end of the parsed string will be placed here&n; * @base: The number base to use&n; */
 DECL|function|simple_strtoll
 r_int
@@ -2197,6 +2219,13 @@ op_minus
 id|buf
 suffix:semicolon
 )brace
+DECL|variable|vsnprintf
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vsnprintf
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * snprintf - Format a string and place it in a buffer&n; * @buf: The buffer to place the result into&n; * @size: The size of the buffer, including the trailing null space&n; * @fmt: The format string to use&n; * @...: Arguments for the format string&n; */
 DECL|function|snprintf
 r_int
@@ -2258,6 +2287,13 @@ r_return
 id|i
 suffix:semicolon
 )brace
+DECL|variable|snprintf
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snprintf
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * vsprintf - Format a string and place it in a buffer&n; * @buf: The buffer to place the result into&n; * @fmt: The format string to use&n; * @args: Arguments for the format string&n; *&n; * Call this function if you are already dealing with a va_list.&n; * You probably want sprintf instead.&n; */
 DECL|function|vsprintf
 r_int
@@ -2291,6 +2327,13 @@ id|args
 )paren
 suffix:semicolon
 )brace
+DECL|variable|vsprintf
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vsprintf
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * sprintf - Format a string and place it in a buffer&n; * @buf: The buffer to place the result into&n; * @fmt: The format string to use&n; * @...: Arguments for the format string&n; */
 DECL|function|sprintf
 r_int
@@ -2347,6 +2390,13 @@ r_return
 id|i
 suffix:semicolon
 )brace
+DECL|variable|sprintf
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sprintf
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * vsscanf - Unformat a buffer into a list of arguments&n; * @buf:&t;input buffer&n; * @fmt:&t;format of buffer&n; * @args:&t;arguments&n; */
 DECL|function|vsscanf
 r_int
@@ -3400,6 +3450,13 @@ r_return
 id|num
 suffix:semicolon
 )brace
+DECL|variable|vsscanf
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vsscanf
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * sscanf - Unformat a buffer into a list of arguments&n; * @buf:&t;input buffer&n; * @fmt:&t;formatting of buffer&n; * @...:&t;resulting arguments&n; */
 DECL|function|sscanf
 r_int
@@ -3457,4 +3514,11 @@ r_return
 id|i
 suffix:semicolon
 )brace
+DECL|variable|sscanf
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sscanf
+)paren
+suffix:semicolon
 eof

@@ -4,21 +4,26 @@ DECL|macro|_BTTVP_H_
 mdefine_line|#define _BTTVP_H_
 macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|BTTV_VERSION_CODE
-mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,9,11)
+mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,9,12)
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;media/video-buf.h&gt;
 macro_line|#include &lt;media/audiochip.h&gt;
 macro_line|#include &lt;media/tuner.h&gt;
 macro_line|#include &quot;bt848.h&quot;
 macro_line|#include &quot;bttv.h&quot;
 macro_line|#include &quot;btcx-risc.h&quot;
+macro_line|#ifdef CONFIG_VIDEO_IR
+macro_line|#include &quot;ir-common.h&quot;
+macro_line|#endif
 macro_line|#ifdef __KERNEL__
 DECL|macro|FORMAT_FLAGS_DITHER
 mdefine_line|#define FORMAT_FLAGS_DITHER       0x01
@@ -369,6 +374,13 @@ DECL|member|resources
 r_int
 id|resources
 suffix:semicolon
+macro_line|#ifdef VIDIOC_G_PRIORITY 
+DECL|member|prio
+r_enum
+id|v4l2_priority
+id|prio
+suffix:semicolon
+macro_line|#endif
 DECL|member|type
 r_enum
 id|v4l2_buf_type
@@ -770,6 +782,38 @@ id|videobuf_queue_ops
 id|bttv_vbi_qops
 suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------- */
+multiline_comment|/* bttv-input.c                                               */
+r_int
+id|bttv_input_init
+c_func
+(paren
+r_struct
+id|bttv
+op_star
+id|btv
+)paren
+suffix:semicolon
+r_void
+id|bttv_input_fini
+c_func
+(paren
+r_struct
+id|bttv
+op_star
+id|btv
+)paren
+suffix:semicolon
+r_void
+id|bttv_input_irq
+c_func
+(paren
+r_struct
+id|bttv
+op_star
+id|btv
+)paren
+suffix:semicolon
+multiline_comment|/* ---------------------------------------------------------- */
 multiline_comment|/* bttv-driver.c                                              */
 multiline_comment|/* insmod options */
 r_extern
@@ -805,6 +849,17 @@ suffix:semicolon
 r_extern
 r_int
 id|init_bttv_i2c
+c_func
+(paren
+r_struct
+id|bttv
+op_star
+id|btv
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|fini_bttv_i2c
 c_func
 (paren
 r_struct
@@ -925,6 +980,47 @@ suffix:semicolon
 multiline_comment|/* Currently programmed ofreq */
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_VIDEO_IR
+multiline_comment|/* for gpio-connected remote control */
+DECL|struct|bttv_input
+r_struct
+id|bttv_input
+(brace
+DECL|member|dev
+r_struct
+id|input_dev
+id|dev
+suffix:semicolon
+DECL|member|ir
+r_struct
+id|ir_input_state
+id|ir
+suffix:semicolon
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|32
+)braket
+suffix:semicolon
+DECL|member|phys
+r_char
+id|phys
+(braket
+l_int|32
+)braket
+suffix:semicolon
+DECL|member|mask_keycode
+id|u32
+id|mask_keycode
+suffix:semicolon
+DECL|member|mask_keydown
+id|u32
+id|mask_keydown
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif
 DECL|struct|bttv
 r_struct
 id|bttv
@@ -990,6 +1086,11 @@ DECL|member|pinnacle_id
 r_int
 r_int
 id|pinnacle_id
+suffix:semicolon
+DECL|member|svhs
+r_int
+r_int
+id|svhs
 suffix:semicolon
 DECL|member|pll
 r_struct
@@ -1057,18 +1158,34 @@ multiline_comment|/* video4linux (1) */
 DECL|member|video_dev
 r_struct
 id|video_device
+op_star
 id|video_dev
 suffix:semicolon
 DECL|member|radio_dev
 r_struct
 id|video_device
+op_star
 id|radio_dev
 suffix:semicolon
 DECL|member|vbi_dev
 r_struct
 id|video_device
+op_star
 id|vbi_dev
 suffix:semicolon
+multiline_comment|/* infrared remote */
+DECL|member|has_remote
+r_int
+id|has_remote
+suffix:semicolon
+macro_line|#ifdef CONFIG_VIDEO_IR
+DECL|member|remote
+r_struct
+id|bttv_input
+op_star
+id|remote
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* locking */
 DECL|member|s_lock
 id|spinlock_t
@@ -1088,6 +1205,13 @@ r_struct
 id|semaphore
 id|reslock
 suffix:semicolon
+macro_line|#ifdef VIDIOC_G_PRIORITY 
+DECL|member|prio
+r_struct
+id|v4l2_prio_state
+id|prio
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* video state */
 DECL|member|input
 r_int
@@ -1122,7 +1246,7 @@ id|saturation
 suffix:semicolon
 DECL|member|fbuf
 r_struct
-id|video_buffer
+id|v4l2_framebuffer
 id|fbuf
 suffix:semicolon
 DECL|member|field_count
@@ -1150,6 +1274,10 @@ suffix:semicolon
 DECL|member|opt_adc_crush
 r_int
 id|opt_adc_crush
+suffix:semicolon
+DECL|member|opt_vcr_hack
+r_int
+id|opt_vcr_hack
 suffix:semicolon
 multiline_comment|/* radio data/state */
 DECL|member|has_radio
@@ -1229,6 +1357,10 @@ id|bttv_buffer_set
 id|curr
 suffix:semicolon
 multiline_comment|/* active buffers      */
+DECL|member|new_input
+r_int
+id|new_input
+suffix:semicolon
 DECL|member|cap_ctl
 r_int
 r_int

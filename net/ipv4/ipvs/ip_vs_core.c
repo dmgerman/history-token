@@ -1752,6 +1752,7 @@ comma
 id|pp
 )paren
 suffix:semicolon
+multiline_comment|/* do not touch skb anymore */
 id|atomic_inc
 c_func
 (paren
@@ -2482,11 +2483,7 @@ c_func
 id|IP_OFFSET
 )paren
 op_logical_and
-(paren
-id|pp-&gt;minhlen
-op_logical_or
 id|pp-&gt;dont_defrag
-)paren
 )paren
 )paren
 r_return
@@ -3210,8 +3207,15 @@ c_func
 id|cp
 )paren
 suffix:semicolon
+id|kfree_skb
+c_func
+(paren
+op_star
+id|pskb
+)paren
+suffix:semicolon
 r_return
-id|NF_DROP
+id|NF_STOLEN
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *      Check if the packet is for VS/NAT connections, then send it&n; *      immediately.&n; *      Called by ip_fw_compact to detect packets for VS/NAT before&n; *      they are changed by ipchains masquerading code.&n; */
@@ -3572,11 +3576,7 @@ c_func
 id|IP_OFFSET
 )paren
 op_logical_and
-(paren
-id|pp-&gt;minhlen
-op_logical_or
 id|pp-&gt;dont_defrag
-)paren
 )paren
 )paren
 r_return
@@ -3714,6 +3714,7 @@ comma
 id|offset
 )paren
 suffix:semicolon
+multiline_comment|/* do not touch skb anymore */
 id|out
 suffix:colon
 id|__ip_vs_conn_put
@@ -4102,6 +4103,7 @@ comma
 id|pp
 )paren
 suffix:semicolon
+multiline_comment|/* do not touch skb anymore */
 r_else
 (brace
 id|IP_VS_DBG_RL

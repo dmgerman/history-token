@@ -606,6 +606,13 @@ id|stack
 )paren
 suffix:semicolon
 )brace
+DECL|variable|dump_stack
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dump_stack
+)paren
+suffix:semicolon
 macro_line|#ifndef __LP64__
 DECL|variable|kstack_depth_to_print
 r_static

@@ -1,4 +1,5 @@
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init_task.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -60,6 +61,20 @@ id|task_struct
 id|init_task
 op_assign
 id|INIT_TASK
+c_func
+(paren
+id|init_task
+)paren
+suffix:semicolon
+DECL|variable|init_mm
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|init_mm
+)paren
+suffix:semicolon
+DECL|variable|init_task
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|init_task

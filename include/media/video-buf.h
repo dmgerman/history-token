@@ -66,7 +66,7 @@ id|nr_pages
 )paren
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
-multiline_comment|/*&n; * A small set of helper functions to manage buffers (both userland&n; * and kernel) for DMA.&n; *&n; * videobuf_init_*_dmabuf()&n; *&t;creates a buffer.  The userland version takes a userspace&n; *&t;pointer + length.  The kernel version just wants the size and&n; *&t;does memory allocation too using vmalloc_32().&n; *&n; * videobuf_pci_*_dmabuf()&n; *&t;see Documentation/DMA-mapping.txt, these functions to&n; *&t;basically the same.  The map function does also build a&n; *&t;scatterlist for the buffer (and unmap frees it ...)&n; *&n; * videobuf_free_dmabuf()&n; *&t;no comment ...&n; *&n; */
+multiline_comment|/*&n; * A small set of helper functions to manage buffers (both userland&n; * and kernel) for DMA.&n; *&n; * videobuf_dma_init_*()&n; *&t;creates a buffer.  The userland version takes a userspace&n; *&t;pointer + length.  The kernel version just wants the size and&n; *&t;does memory allocation too using vmalloc_32().&n; *&n; * videobuf_dma_pci_*()&n; *&t;see Documentation/DMA-mapping.txt, these functions to&n; *&t;basically the same.  The map function does also build a&n; *&t;scatterlist for the buffer (and unmap frees it ...)&n; *&n; * videobuf_dma_free()&n; *&t;no comment ...&n; *&n; */
 DECL|struct|videobuf_dmabuf
 r_struct
 id|videobuf_dmabuf
@@ -88,6 +88,11 @@ DECL|member|vmalloc
 r_void
 op_star
 id|vmalloc
+suffix:semicolon
+multiline_comment|/* for overlay buffers (pci-pci dma) */
+DECL|member|bus_addr
+id|dma_addr_t
+id|bus_addr
 suffix:semicolon
 multiline_comment|/* common */
 DECL|member|sglist
@@ -142,6 +147,25 @@ id|dma
 comma
 r_int
 id|direction
+comma
+r_int
+id|nr_pages
+)paren
+suffix:semicolon
+r_int
+id|videobuf_dma_init_overlay
+c_func
+(paren
+r_struct
+id|videobuf_dmabuf
+op_star
+id|dma
+comma
+r_int
+id|direction
+comma
+id|dma_addr_t
+id|addr
 comma
 r_int
 id|nr_pages
@@ -302,6 +326,12 @@ r_int
 r_int
 id|height
 suffix:semicolon
+DECL|member|bytesperline
+r_int
+r_int
+id|bytesperline
+suffix:semicolon
+multiline_comment|/* use only if != 0 */
 DECL|member|size
 r_int
 r_int
@@ -329,11 +359,16 @@ id|stream
 suffix:semicolon
 multiline_comment|/* QBUF/DQBUF list */
 multiline_comment|/* for mmap&squot;ed buffers */
+DECL|member|memory
+r_enum
+id|v4l2_memory
+id|memory
+suffix:semicolon
 DECL|member|boff
 r_int
 id|boff
 suffix:semicolon
-multiline_comment|/* buffer offset (mmap) */
+multiline_comment|/* buffer offset (mmap + overlay) */
 DECL|member|bsize
 r_int
 id|bsize
@@ -585,6 +620,11 @@ r_struct
 id|videobuf_buffer
 op_star
 id|vb
+comma
+r_struct
+id|v4l2_framebuffer
+op_star
+id|fbuf
 )paren
 suffix:semicolon
 r_void
@@ -909,6 +949,10 @@ comma
 r_int
 r_int
 id|bsize
+comma
+r_enum
+id|v4l2_memory
+id|memory
 )paren
 suffix:semicolon
 r_int

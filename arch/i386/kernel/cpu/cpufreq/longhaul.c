@@ -1537,11 +1537,11 @@ id|memcpy
 (paren
 id|clock_ratio
 comma
-id|longhaul1_clock_ratio
+id|samuel1_clock_ratio
 comma
 r_sizeof
 (paren
-id|longhaul1_clock_ratio
+id|samuel1_clock_ratio
 )paren
 )paren
 suffix:semicolon
@@ -1580,15 +1580,16 @@ id|longhaul_version
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* Note, this is not a typo, early Samuel2&squot;s had Samuel1 ratios. */
 id|memcpy
 (paren
 id|clock_ratio
 comma
-id|longhaul1_clock_ratio
+id|samuel1_clock_ratio
 comma
 r_sizeof
 (paren
-id|longhaul1_clock_ratio
+id|samuel1_clock_ratio
 )paren
 )paren
 suffix:semicolon
@@ -1613,6 +1614,18 @@ dot
 dot
 l_int|15
 suffix:colon
+r_if
+c_cond
+(paren
+id|c-&gt;x86_mask
+OL
+l_int|8
+)paren
+id|cpuname
+op_assign
+l_string|&quot;C3 &squot;Samuel 2&squot; [C5B]&quot;
+suffix:semicolon
+r_else
 id|cpuname
 op_assign
 l_string|&quot;C3 &squot;Ezra&squot; [C5C]&quot;
@@ -1625,11 +1638,11 @@ id|memcpy
 (paren
 id|clock_ratio
 comma
-id|longhaul2_clock_ratio
+id|ezra_clock_ratio
 comma
 r_sizeof
 (paren
-id|longhaul2_clock_ratio
+id|ezra_clock_ratio
 )paren
 )paren
 suffix:semicolon
@@ -1669,11 +1682,11 @@ id|memcpy
 (paren
 id|clock_ratio
 comma
-id|longhaul3_clock_ratio
+id|ezrat_clock_ratio
 comma
 r_sizeof
 (paren
-id|longhaul3_clock_ratio
+id|ezrat_clock_ratio
 )paren
 )paren
 suffix:semicolon
@@ -1681,17 +1694,17 @@ id|memcpy
 (paren
 id|eblcr_table
 comma
-id|c5m_eblcr
+id|ezrat_eblcr
 comma
 r_sizeof
 (paren
-id|c5m_eblcr
+id|ezrat_eblcr
 )paren
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/*&n;&t;case 9:&n;&t;&t;cpuname = &quot;C3 &squot;Nehemiah&squot; [C5N]&quot;;&n;&t;&t;longhaul_version=3;&n;&t;&t;numscales=32;&n;&t;*/
+multiline_comment|/*&n;&t;case 9:&n;&t;&t;cpuname = &quot;C3 &squot;Nehemiah&squot; [C5N]&quot;;&n;&t;&t;longhaul_version=3;&n;&t;&t;numscales=32;&n;&t;&t;memcpy (clock_ratio, nehemiah_clock_ratio, sizeof(nehemiah_clock_ratio));&n;&t;&t;memcpy (eblcr_table, nehemiah_eblcr, sizeof(nehemiah_eblcr));&n;&t;*/
 r_default
 suffix:colon
 id|cpuname
@@ -1859,7 +1872,7 @@ l_int|6
 dot
 dot
 dot
-l_int|7
+l_int|8
 suffix:colon
 r_return
 id|cpufreq_register_driver
@@ -1868,19 +1881,6 @@ c_func
 op_amp
 id|longhaul_driver
 )paren
-suffix:semicolon
-r_case
-l_int|8
-suffix:colon
-id|printk
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;Ezra-T unsupported: Waiting on updated docs &quot;
-l_string|&quot;from VIA before this is usable.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
 suffix:semicolon
 r_case
 l_int|9

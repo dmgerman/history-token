@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/kernel/timer.c&n; *&n; *  Kernel internal timers, kernel timekeeping, basic process system calls&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  1997-01-28  Modified by Finn Arne Gangstad to make timers scale better.&n; *&n; *  1997-09-10  Updated NTP code according to technical memorandum Jan &squot;96&n; *              &quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; *  1998-12-24  Fixed a xtime SMP race (we need the xtime_lock rw spinlock to&n; *              serialize accesses to xtime/lost_ticks).&n; *                              Copyright (C) 1998  Andrea Arcangeli&n; *  1999-03-10  Improved NTP compatibility by Ulrich Windl&n; *  2002-05-31&t;Move sys_sysinfo here and make its locking sane, Robert Love&n; *  2000-10-05  Implemented scalable SMP per-CPU timer handling.&n; *                              Copyright (C) 2000, 2001, 2002  Ingo Molnar&n; *              Designed by David S. Miller, Alexey Kuznetsov and Ingo Molnar&n; */
 macro_line|#include &lt;linux/kernel_stat.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -747,6 +748,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|__mod_timer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__mod_timer
+)paren
+suffix:semicolon
 multiline_comment|/***&n; * add_timer_on - start a timer on a particular CPU&n; * @timer: the timer to be added&n; * @cpu: the CPU to start it on&n; *&n; * This is not very scalable on SMP. Double adds are not possible.&n; */
 DECL|function|add_timer_on
 r_void
@@ -885,6 +893,13 @@ id|expires
 )paren
 suffix:semicolon
 )brace
+DECL|variable|mod_timer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mod_timer
+)paren
+suffix:semicolon
 multiline_comment|/***&n; * del_timer - deactive a timer.&n; * @timer: the timer to be deactivated&n; *&n; * del_timer() deactivates a timer - this works on both active and inactive&n; * timers.&n; *&n; * The function returns whether it has deactivated a pending timer or not.&n; * (ie. del_timer() of an inactive timer returns 0, del_timer() of an&n; * active timer returns 1.)&n; */
 DECL|function|del_timer
 r_int
@@ -980,6 +995,13 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|del_timer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|del_timer
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/***&n; * del_timer_sync - deactivate a timer and wait for the handler to finish.&n; * @timer: the timer to be deactivated&n; *&n; * This function only differs from del_timer() on SMP: besides deactivating&n; * the timer it also makes sure the handler has finished executing on other&n; * CPUs.&n; *&n; * Synchronization rules: callers must prevent restarting of the timer,&n; * otherwise this function is meaningless. It must not be called from&n; * interrupt contexts. Upon exit the timer is not queued and the handler&n; * is not running on any CPU.&n; *&n; * The function returns whether it has deactivated a pending timer or not.&n; */
 DECL|function|del_timer_sync
@@ -1110,6 +1132,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|del_timer_sync
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|del_timer_sync
+)paren
+suffix:semicolon
 macro_line|#endif
 DECL|function|cascade
 r_static
@@ -1511,6 +1540,13 @@ id|aligned
 l_int|16
 )paren
 )paren
+)paren
+suffix:semicolon
+DECL|variable|xtime
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xtime
 )paren
 suffix:semicolon
 multiline_comment|/* Don&squot;t completely fail for HZ &gt; 500.  */
@@ -2791,6 +2827,13 @@ id|__cacheline_aligned_in_smp
 op_assign
 id|SEQLOCK_UNLOCKED
 suffix:semicolon
+DECL|variable|xtime_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xtime_lock
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * This function runs timers and the timer-tq in bottom half context.&n; */
 DECL|function|run_timer_softirq
@@ -3313,6 +3356,13 @@ suffix:colon
 id|timeout
 suffix:semicolon
 )brace
+DECL|variable|schedule_timeout
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|schedule_timeout
+)paren
+suffix:semicolon
 multiline_comment|/* Thread ID - the internal kernel &quot;pid&quot; */
 DECL|function|sys_gettid
 id|asmlinkage

@@ -3198,7 +3198,7 @@ suffix:semicolon
 id|COPYMEM
 c_func
 (paren
-id|open-&gt;op_verf
+id|open-&gt;op_verf.data
 comma
 l_int|8
 )paren
@@ -3667,11 +3667,11 @@ suffix:semicolon
 id|COPYMEM
 c_func
 (paren
-id|readdir-&gt;rd_verf
+id|readdir-&gt;rd_verf.data
 comma
 r_sizeof
 (paren
-id|nfs4_verifier
+id|readdir-&gt;rd_verf.data
 )paren
 )paren
 suffix:semicolon
@@ -4026,7 +4026,7 @@ suffix:semicolon
 id|COPYMEM
 c_func
 (paren
-id|setclientid-&gt;se_verf
+id|setclientid-&gt;se_verf.data
 comma
 l_int|8
 )paren
@@ -7993,7 +7993,7 @@ suffix:semicolon
 id|WRITEMEM
 c_func
 (paren
-id|commit-&gt;co_verf
+id|commit-&gt;co_verf.data
 comma
 l_int|8
 )paren
@@ -10242,7 +10242,7 @@ suffix:semicolon
 id|WRITEMEM
 c_func
 (paren
-id|write-&gt;wr_verifier
+id|write-&gt;wr_verifier.data
 comma
 l_int|8
 )paren

@@ -132,6 +132,13 @@ c_func
 id|noautodma
 )paren
 suffix:semicolon
+DECL|variable|ide_bus_type
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ide_bus_type
+)paren
+suffix:semicolon
 DECL|variable|ide_probe
 r_int
 (paren

@@ -1,6 +1,7 @@
 multiline_comment|/* $Id: power.c,v 1.10 2001/12/11 01:57:16 davem Exp $&n; * power.c: Power management driver.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -167,6 +168,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_power_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_power_off
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 DECL|function|powerd
 r_static

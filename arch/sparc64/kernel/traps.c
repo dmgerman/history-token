@@ -1,6 +1,7 @@
 multiline_comment|/* $Id: traps.c,v 1.85 2002/02/09 19:49:31 davem Exp $&n; * arch/sparc64/kernel/traps.c&n; *&n; * Copyright (C) 1995,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1997,1999,2000 Jakub Jelinek (jakub@redhat.com)&n; */
 multiline_comment|/*&n; * I like traps on v9, :))))&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;  /* for jiffies */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
@@ -8926,6 +8927,13 @@ id|ksp
 )paren
 suffix:semicolon
 )brace
+DECL|variable|dump_stack
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dump_stack
+)paren
+suffix:semicolon
 DECL|function|die_if_kernel
 r_void
 id|die_if_kernel

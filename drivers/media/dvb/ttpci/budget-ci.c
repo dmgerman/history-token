@@ -1363,6 +1363,16 @@ comma
 id|BUDGET_TT_HW_DISEQC
 )paren
 suffix:semicolon
+id|MAKE_BUDGET_INFO
+c_func
+(paren
+id|ttbt2
+comma
+l_string|&quot;TT-Budget/WinTV-NOVA-T  PCI&quot;
+comma
+id|BUDGET_TT
+)paren
+suffix:semicolon
 DECL|variable|pci_tbl
 r_static
 r_struct
@@ -1390,6 +1400,16 @@ comma
 l_int|0x13c2
 comma
 l_int|0x100f
+)paren
+comma
+id|MAKE_EXTENSION_PCI
+c_func
+(paren
+id|ttbt2
+comma
+l_int|0x13c2
+comma
+l_int|0x1011
 )paren
 comma
 (brace

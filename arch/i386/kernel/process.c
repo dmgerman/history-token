@@ -107,6 +107,13 @@ id|hlt_counter
 op_increment
 suffix:semicolon
 )brace
+DECL|variable|disable_hlt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|disable_hlt
+)paren
+suffix:semicolon
 DECL|function|enable_hlt
 r_void
 id|enable_hlt
@@ -119,6 +126,13 @@ id|hlt_counter
 op_decrement
 suffix:semicolon
 )brace
+DECL|variable|enable_hlt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|enable_hlt
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * We use this if we don&squot;t have any better&n; * idle routine..&n; */
 DECL|function|default_idle
 r_void

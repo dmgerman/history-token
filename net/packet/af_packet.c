@@ -373,12 +373,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *&t;When we registered the protocol we saved the socket in the data&n;&t; *&t;field for just this event.&n;&t; */
 id|sk
 op_assign
-(paren
-r_struct
-id|sock
-op_star
-)paren
-id|pt-&gt;data
+id|pt-&gt;af_packet_priv
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Yank back the headers [hope the device set this&n;&t; *&t;right or kerboom...]&n;&t; *&n;&t; *&t;Incoming packets have ll header pulled,&n;&t; *&t;push it back.&n;&t; *&n;&t; *&t;For outgoing ones skb-&gt;data == skb-&gt;mac.raw&n;&t; *&t;so that this procedure is noop.&n;&t; */
 r_if
@@ -957,12 +952,7 @@ id|drop
 suffix:semicolon
 id|sk
 op_assign
-(paren
-r_struct
-id|sock
-op_star
-)paren
-id|pt-&gt;data
+id|pt-&gt;af_packet_priv
 suffix:semicolon
 id|po
 op_assign
@@ -1409,12 +1399,7 @@ id|drop
 suffix:semicolon
 id|sk
 op_assign
-(paren
-r_struct
-id|sock
-op_star
-)paren
-id|pt-&gt;data
+id|pt-&gt;af_packet_priv
 suffix:semicolon
 id|po
 op_assign
@@ -3331,12 +3316,8 @@ op_assign
 id|packet_rcv_spkt
 suffix:semicolon
 macro_line|#endif
-id|po-&gt;prot_hook.data
+id|po-&gt;prot_hook.af_packet_priv
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|sk
 suffix:semicolon
 r_if

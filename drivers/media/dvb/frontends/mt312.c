@@ -274,7 +274,7 @@ op_minus
 id|EREMOTEIO
 suffix:semicolon
 )brace
-macro_line|#ifdef MT312_DEBUG
+macro_line|#if MT312_DEBUG
 (brace
 r_int
 id|i
@@ -375,7 +375,7 @@ r_struct
 id|i2c_msg
 id|msg
 suffix:semicolon
-macro_line|#ifdef MT312_DEBUG
+macro_line|#if MT312_DEBUG
 (brace
 r_int
 id|i

@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Generic pidhash and scalable, time-bounded PID allocator&n; *&n; * (C) 2002 William Irwin, IBM&n; * (C) 2002 Ingo Molnar, Red Hat&n; *&n; * pid-structures are backing objects for tasks sharing a given ID to chain&n; * against. There is very little to them aside from hashing them and&n; * parking tasks using given ID&squot;s on a list.&n; *&n; * The hash is always changed with the tasklist_lock write-acquired,&n; * and the hash is only accessed with the tasklist_lock at least&n; * read-acquired, so there&squot;s no additional SMP locking needed here.&n; *&n; * We have a list of bitmap pages, which bitmaps represent the PID space.&n; * Allocating and freeing PIDs is completely lockless. The worst-case&n; * allocation scenario when all but one out of 1 million PIDs possible are&n; * allocated already: the scanning of 32 list entries and at most PAGE_SIZE&n; * bytes. The typical fastpath is a single successful setbit. Freeing is O(1).&n; */
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
@@ -928,6 +929,13 @@ id|PIDTYPE_PID
 )paren
 suffix:semicolon
 )brace
+DECL|variable|find_task_by_pid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|find_task_by_pid
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This function switches the PIDs if a non-leader thread calls&n; * sys_execve() - this must be done without releasing the PID.&n; * (which a detach_pid() would eventually do.)&n; */
 DECL|function|switch_exec_pids
 r_void

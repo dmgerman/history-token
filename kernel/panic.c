@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/kernel/panic.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
 multiline_comment|/*&n; * This function is used through-out the kernel (including mm and fs)&n; * to indicate a major problem.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
@@ -30,11 +31,25 @@ DECL|variable|tainted
 r_int
 id|tainted
 suffix:semicolon
+DECL|variable|panic_timeout
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|panic_timeout
+)paren
+suffix:semicolon
 DECL|variable|panic_notifier_list
 r_struct
 id|notifier_block
 op_star
 id|panic_notifier_list
+suffix:semicolon
+DECL|variable|panic_notifier_list
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|panic_notifier_list
+)paren
 suffix:semicolon
 DECL|function|panic_setup
 r_static
@@ -315,6 +330,13 @@ suffix:semicolon
 )paren
 suffix:semicolon
 )brace
+DECL|variable|panic
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|panic
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;print_tainted - return a string to represent the kernel taint state.&n; *&n; *  &squot;P&squot; - Proprietary module has been loaded.&n; *  &squot;F&squot; - Module has been forcibly loaded.&n; *  &squot;S&squot; - SMP with CPUs not designed for SMP.&n; *&n; *&t;The string is overwritten by the next call to print_taint().&n; */
 DECL|function|print_tainted
 r_const

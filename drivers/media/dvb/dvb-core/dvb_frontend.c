@@ -3314,6 +3314,16 @@ op_assign
 l_int|1
 comma
 dot
+id|readers
+op_assign
+(paren
+op_complement
+l_int|0
+)paren
+op_minus
+l_int|1
+comma
+dot
 id|fops
 op_assign
 op_amp
