@@ -6142,17 +6142,6 @@ id|oep
 op_plus
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pins
-OG
-l_int|16
-)paren
-id|pins
-op_assign
-l_int|16
-suffix:semicolon
 id|u-&gt;out
 (braket
 id|oep
