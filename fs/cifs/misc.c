@@ -413,6 +413,12 @@ op_amp
 id|ret_buf-&gt;tconSem
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_CIFS_STATS
+id|ret_buf-&gt;stat_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+macro_line|#endif
 id|write_unlock
 c_func
 (paren
