@@ -1585,8 +1585,6 @@ id|hcd_to_bus
 id|hcd
 )paren
 suffix:semicolon
-id|bus-&gt;root_hub
-op_assign
 id|udev
 op_assign
 id|usb_alloc_dev
@@ -1702,6 +1700,8 @@ c_cond
 (paren
 id|hcd_register_root
 (paren
+id|udev
+comma
 id|hcd
 )paren
 op_ne
@@ -1724,10 +1724,6 @@ id|ehci_reset
 (paren
 id|ehci
 )paren
-suffix:semicolon
-id|bus-&gt;root_hub
-op_assign
-l_int|0
 suffix:semicolon
 id|usb_put_dev
 (paren

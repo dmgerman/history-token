@@ -2385,6 +2385,14 @@ comma
 id|bus_list
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bus-&gt;root_hub
+)paren
+r_continue
+suffix:semicolon
 id|dev
 op_assign
 id|match_device

@@ -1089,6 +1089,11 @@ r_int
 id|hcd_register_root
 (paren
 r_struct
+id|usb_device
+op_star
+id|usb_dev
+comma
+r_struct
 id|usb_hcd
 op_star
 id|hcd
@@ -1114,12 +1119,7 @@ suffix:semicolon
 r_return
 id|usb_register_root_hub
 (paren
-id|hcd_to_bus
-(paren
-id|hcd
-)paren
-op_member_access_from_pointer
-id|root_hub
+id|usb_dev
 comma
 id|hcd-&gt;self.controller
 )paren

@@ -6282,8 +6282,6 @@ id|usb_register_bus
 id|bus
 )paren
 suffix:semicolon
-id|bus-&gt;root_hub
-op_assign
 id|root
 op_assign
 id|usb_alloc_dev
@@ -6342,6 +6340,8 @@ id|retval
 op_assign
 id|hcd_register_root
 (paren
+id|root
+comma
 op_amp
 id|dum-&gt;hcd
 )paren
@@ -6350,10 +6350,6 @@ op_ne
 l_int|0
 )paren
 (brace
-id|bus-&gt;root_hub
-op_assign
-l_int|0
-suffix:semicolon
 id|usb_put_dev
 (paren
 id|root

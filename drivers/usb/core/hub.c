@@ -3724,15 +3724,24 @@ id|ops
 op_assign
 id|bus-&gt;op
 suffix:semicolon
-op_star
-id|pdev
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/* mark the device as inactive, so any further urb submissions for&n;&t; * this device will fail.&n;&t; */
 id|udev-&gt;state
 op_assign
 id|USB_STATE_NOTATTACHED
+suffix:semicolon
+multiline_comment|/* lock the bus list on behalf of HCDs unregistering their root hubs */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|udev-&gt;parent
+)paren
+id|down
+c_func
+(paren
+op_amp
+id|usb_bus_list_lock
+)paren
 suffix:semicolon
 id|down
 c_func
@@ -3799,7 +3808,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Free the device number and remove the /proc/bus/usb entry */
+multiline_comment|/* Free the device number, remove the /proc/bus/usb entry and&n;&t; * the sysfs attributes, and delete the parent&squot;s children[]&n;&t; * (or root_hub) pointer.&n;&t; */
 id|dev_dbg
 (paren
 op_amp
@@ -3820,6 +3829,17 @@ c_func
 id|udev
 )paren
 suffix:semicolon
+id|usb_remove_sysfs_dev_files
+c_func
+(paren
+id|udev
+)paren
+suffix:semicolon
+op_star
+id|pdev
+op_assign
+l_int|NULL
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -3827,10 +3847,17 @@ op_amp
 id|udev-&gt;serialize
 )paren
 suffix:semicolon
-id|usb_remove_sysfs_dev_files
+r_if
+c_cond
+(paren
+op_logical_neg
+id|udev-&gt;parent
+)paren
+id|up
 c_func
 (paren
-id|udev
+op_amp
+id|usb_bus_list_lock
 )paren
 suffix:semicolon
 id|device_unregister
@@ -5696,14 +5723,6 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
-multiline_comment|/* now dev is visible to other tasks */
-id|hdev-&gt;children
-(braket
-id|port
-)braket
-op_assign
-id|udev
-suffix:semicolon
 id|retval
 op_assign
 l_int|0
@@ -6280,7 +6299,7 @@ r_goto
 id|loop
 suffix:semicolon
 )brace
-multiline_comment|/* reset, get descriptor, add to hub&squot;s children */
+multiline_comment|/* reset and get descriptor */
 id|status
 op_assign
 id|hub_port_init
@@ -6486,6 +6505,13 @@ id|port
 )paren
 suffix:semicolon
 multiline_comment|/* Run it through the hoops (find a driver, etc) */
+id|hdev-&gt;children
+(braket
+id|port
+)braket
+op_assign
+id|udev
+suffix:semicolon
 id|status
 op_assign
 id|usb_new_device

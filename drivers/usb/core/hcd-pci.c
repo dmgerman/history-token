@@ -788,11 +788,6 @@ id|usb_hcd
 op_star
 id|hcd
 suffix:semicolon
-r_struct
-id|usb_device
-op_star
-id|hub
-suffix:semicolon
 id|hcd
 op_assign
 id|pci_get_drvdata
@@ -829,10 +824,6 @@ id|BUG
 (paren
 )paren
 suffix:semicolon
-id|hub
-op_assign
-id|hcd-&gt;self.root_hub
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -855,7 +846,7 @@ suffix:semicolon
 id|usb_disconnect
 (paren
 op_amp
-id|hub
+id|hcd-&gt;self.root_hub
 )paren
 suffix:semicolon
 id|hcd-&gt;driver-&gt;stop

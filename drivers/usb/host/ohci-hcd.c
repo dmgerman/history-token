@@ -1660,8 +1660,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* connect the virtual root hub */
-id|bus-&gt;root_hub
-op_assign
 id|udev
 op_assign
 id|usb_alloc_dev
@@ -1716,6 +1714,8 @@ c_cond
 (paren
 id|hcd_register_root
 (paren
+id|udev
+comma
 op_amp
 id|ohci-&gt;hcd
 )paren
@@ -1727,10 +1727,6 @@ id|usb_put_dev
 (paren
 id|udev
 )paren
-suffix:semicolon
-id|bus-&gt;root_hub
-op_assign
-l_int|NULL
 suffix:semicolon
 id|disable
 (paren

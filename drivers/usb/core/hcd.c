@@ -2215,7 +2215,7 @@ id|EXPORT_SYMBOL
 id|usb_deregister_bus
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * usb_register_root_hub - called by HCD to register its root hub &n; * @usb_dev: the usb root hub device to be registered.&n; * @parent_dev: the parent device of this root hub.&n; *&n; * The USB host controller calls this function to register the root hub&n; * properly with the USB subsystem.  It sets up the device properly in&n; * the device model tree, and then calls usb_new_device() to register the&n; * usb device.  It also assigns the root hub&squot;s USB address (always 1).&n; */
+multiline_comment|/**&n; * usb_register_root_hub - called by HCD to register its root hub &n; * @usb_dev: the usb root hub device to be registered.&n; * @parent_dev: the parent device of this root hub.&n; *&n; * The USB host controller calls this function to register the root hub&n; * properly with the USB subsystem.  It sets up the device properly in&n; * the device tree and stores the root_hub pointer in the bus structure,&n; * then calls usb_new_device() to register the usb device.  It also&n; * assigns the root hub&squot;s USB address (always 1).&n; */
 DECL|function|usb_register_root_hub
 r_int
 id|usb_register_root_hub
@@ -2271,6 +2271,16 @@ suffix:semicolon
 id|usb_dev-&gt;state
 op_assign
 id|USB_STATE_ADDRESS
+suffix:semicolon
+id|down
+(paren
+op_amp
+id|usb_bus_list_lock
+)paren
+suffix:semicolon
+id|usb_dev-&gt;bus-&gt;root_hub
+op_assign
+id|usb_dev
 suffix:semicolon
 id|usb_dev-&gt;epmaxpacketin
 (braket
@@ -2352,6 +2362,11 @@ c_cond
 (paren
 id|retval
 )paren
+(brace
+id|usb_dev-&gt;bus-&gt;root_hub
+op_assign
+l_int|NULL
+suffix:semicolon
 id|dev_err
 (paren
 id|parent_dev
@@ -2361,6 +2376,13 @@ comma
 id|usb_dev-&gt;dev.bus_id
 comma
 id|retval
+)paren
+suffix:semicolon
+)brace
+id|up
+(paren
+op_amp
+id|usb_bus_list_lock
 )paren
 suffix:semicolon
 r_return
