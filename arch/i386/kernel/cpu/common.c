@@ -2,6 +2,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
@@ -9,6 +11,25 @@ macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &quot;cpu.h&quot;
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_struct
+id|desc_struct
+comma
+id|cpu_gdt_table
+(braket
+id|GDT_ENTRIES
+)braket
+)paren
+suffix:semicolon
+DECL|variable|cpu_gdt_table
+id|EXPORT_PER_CPU_SYMBOL
+c_func
+(paren
+id|cpu_gdt_table
+)paren
+suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_int
@@ -2267,24 +2288,19 @@ id|X86_CR4_TSD
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Initialize the per-CPU GDT with the boot GDT,&n;&t; * and set up the GDT descriptor:&n;&t; */
-r_if
-c_cond
-(paren
-id|cpu
-)paren
-(brace
 id|memcpy
 c_func
 (paren
+op_amp
+id|per_cpu
+c_func
+(paren
 id|cpu_gdt_table
-(braket
+comma
 id|cpu
-)braket
+)paren
 comma
 id|cpu_gdt_table
-(braket
-l_int|0
-)braket
 comma
 id|GDT_SIZE
 )paren
@@ -2311,22 +2327,29 @@ op_assign
 r_int
 r_int
 )paren
+op_amp
+id|per_cpu
+c_func
+(paren
 id|cpu_gdt_table
-(braket
+comma
 id|cpu
-)braket
+)paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Set up the per-thread TLS descriptor cache:&n;&t; */
 id|memcpy
 c_func
 (paren
 id|thread-&gt;tls_array
 comma
+op_amp
+id|per_cpu
+c_func
+(paren
 id|cpu_gdt_table
-(braket
+comma
 id|cpu
-)braket
+)paren
 comma
 id|GDT_ENTRY_TLS_ENTRIES
 op_star
@@ -2417,10 +2440,13 @@ comma
 id|t
 )paren
 suffix:semicolon
+id|per_cpu
+c_func
+(paren
 id|cpu_gdt_table
-(braket
+comma
 id|cpu
-)braket
+)paren
 (braket
 id|GDT_ENTRY_TSS
 )braket
@@ -2453,10 +2479,13 @@ op_amp
 id|doublefault_tss
 )paren
 suffix:semicolon
+id|per_cpu
+c_func
+(paren
 id|cpu_gdt_table
-(braket
+comma
 id|cpu
-)braket
+)paren
 (braket
 id|GDT_ENTRY_DOUBLEFAULT_TSS
 )braket
