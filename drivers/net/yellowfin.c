@@ -1639,7 +1639,7 @@ c_func
 (paren
 id|pdev
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 r_goto
@@ -5809,7 +5809,6 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* 16 byte align the IP header */
-macro_line|#if HAS_IP_COPYSUM
 id|eth_copy_and_sum
 c_func
 (paren
@@ -5830,24 +5829,6 @@ comma
 id|pkt_len
 )paren
 suffix:semicolon
-macro_line|#else
-id|memcpy
-c_func
-(paren
-id|skb_put
-c_func
-(paren
-id|skb
-comma
-id|pkt_len
-)paren
-comma
-id|rx_skb-&gt;tail
-comma
-id|pkt_len
-)paren
-suffix:semicolon
-macro_line|#endif
 id|pci_dma_sync_single_for_device
 c_func
 (paren

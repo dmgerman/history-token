@@ -31,6 +31,8 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;eepro&quot;
 DECL|macro|compat_dev_kfree_skb
 mdefine_line|#define compat_dev_kfree_skb( skb, mode ) dev_kfree_skb( (skb) )
 multiline_comment|/* I had reports of looong delays with SLOW_DOWN defined as udelay(2) */
@@ -966,6 +968,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|eepro_probe
 r_struct
 id|net_device
@@ -1093,6 +1096,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|printEEPROMInfo
 r_static
 r_void
@@ -2060,7 +2064,7 @@ id|ioaddr
 comma
 id|EEPRO_IO_EXTENT
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 (brace

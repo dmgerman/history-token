@@ -1,4 +1,5 @@
 multiline_comment|/*   &n; *  Copyright (C) 2003,2004 Aurelien Alleaume &lt;slts@free.fr&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
+macro_line|#include &quot;prismcompat.h&quot;
 macro_line|#include &quot;islpci_dev.h&quot;
 macro_line|#include &quot;islpci_mgt.h&quot;
 macro_line|#include &quot;isl_oid.h&quot;
@@ -126,15 +127,18 @@ id|c
 id|c
 op_increment
 suffix:semicolon
-r_if
-c_cond
+r_return
 (paren
 id|c
 op_ge
 l_int|14
 )paren
-r_return
+ques
+c_cond
 l_int|0
+suffix:colon
+op_increment
+id|c
 suffix:semicolon
 )brace
 r_else
@@ -181,24 +185,26 @@ id|c
 id|c
 op_increment
 suffix:semicolon
-r_if
-c_cond
+r_return
 (paren
 id|c
 op_ge
 l_int|12
 )paren
-r_return
+ques
+c_cond
 l_int|0
+suffix:colon
+(paren
+id|c
+op_plus
+l_int|37
+)paren
 suffix:semicolon
 )brace
 r_else
 r_return
 l_int|0
-suffix:semicolon
-r_return
-op_increment
-id|c
 suffix:semicolon
 )brace
 DECL|macro|OID_STRUCT
@@ -2634,7 +2640,7 @@ c_func
 id|priv
 )paren
 op_ge
-id|PRV_STATE_INIT
+id|PRV_STATE_READY
 )paren
 (brace
 id|ret
@@ -2912,7 +2918,7 @@ c_func
 id|priv
 )paren
 op_ge
-id|PRV_STATE_INIT
+id|PRV_STATE_READY
 )paren
 (brace
 id|ret
@@ -3138,7 +3144,7 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;mgt_get_request(0x%x): received data length was bigger &quot;
-l_string|&quot;than expected (%d &gt; %d). Memory is probably corrupted... &quot;
+l_string|&quot;than expected (%d &gt; %d). Memory is probably corrupted...&quot;
 comma
 id|oid
 comma
@@ -3523,6 +3529,103 @@ id|OID_INL_OUTPUTPOWER
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* update the MAC addr. */
+r_static
+r_int
+DECL|function|mgt_update_addr
+id|mgt_update_addr
+c_func
+(paren
+id|islpci_private
+op_star
+id|priv
+)paren
+(brace
+r_struct
+id|islpci_mgmtframe
+op_star
+id|res
+suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|ret
+op_assign
+id|islpci_mgt_transaction
+c_func
+(paren
+id|priv-&gt;ndev
+comma
+id|PIMFOR_OP_GET
+comma
+id|isl_oid
+(braket
+id|GEN_OID_MACADDRESS
+)braket
+dot
+id|oid
+comma
+l_int|NULL
+comma
+id|isl_oid
+(braket
+id|GEN_OID_MACADDRESS
+)braket
+dot
+id|size
+comma
+op_amp
+id|res
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|ret
+op_eq
+l_int|0
+)paren
+op_logical_and
+id|res
+op_logical_and
+(paren
+id|res-&gt;header-&gt;operation
+op_ne
+id|PIMFOR_OP_ERROR
+)paren
+)paren
+id|memcpy
+c_func
+(paren
+id|priv-&gt;ndev-&gt;dev_addr
+comma
+id|res-&gt;data
+comma
+l_int|6
+)paren
+suffix:semicolon
+r_else
+id|ret
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|res
+)paren
+id|islpci_mgt_release
+c_func
+(paren
+id|res
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 r_void
 DECL|function|mgt_commit
 id|mgt_commit
@@ -3538,10 +3641,6 @@ id|rvalue
 suffix:semicolon
 id|u32
 id|u
-suffix:semicolon
-r_union
-id|oid_res_t
-id|r
 suffix:semicolon
 r_if
 c_cond
@@ -3626,6 +3725,14 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|rvalue
+op_or_assign
+id|mgt_update_addr
+c_func
+(paren
+id|priv
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3644,38 +3751,6 @@ id|priv-&gt;ndev-&gt;name
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* update the MAC addr. As it&squot;s not cached, no lock will be acquired by&n;&t; * the mgt_get_request&n;&t; */
-id|mgt_get_request
-c_func
-(paren
-id|priv
-comma
-id|GEN_OID_MACADDRESS
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-op_amp
-id|r
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|priv-&gt;ndev-&gt;dev_addr
-comma
-id|r.ptr
-comma
-l_int|6
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|r.ptr
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* This will tell you if you are allowed to answer a mlme(ex) request .*/
 r_inline
@@ -3763,8 +3838,6 @@ suffix:semicolon
 id|i
 OL
 id|OID_NUM_LAST
-op_minus
-l_int|1
 suffix:semicolon
 id|i
 op_increment
@@ -3794,7 +3867,7 @@ id|oid
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|OID_NUM_LAST
 suffix:semicolon
 )brace
 r_int
@@ -3895,7 +3968,9 @@ id|str
 comma
 id|PRIV_STR_SIZE
 comma
-l_string|&quot;age=%u&bslash;nchannel=%u&bslash;n&bslash;&n;&t;&t;&t;&t;        capinfo=0x%X&bslash;nrates=0x%X&bslash;nbasic_rates=0x%X&bslash;n&quot;
+l_string|&quot;age=%u&bslash;nchannel=%u&bslash;n&quot;
+l_string|&quot;capinfo=0x%X&bslash;nrates=0x%X&bslash;n&quot;
+l_string|&quot;basic_rates=0x%X&bslash;n&quot;
 comma
 id|bss-&gt;age
 comma
@@ -3968,7 +4043,9 @@ id|PRIV_STR_SIZE
 op_minus
 id|k
 comma
-l_string|&quot;bss[%u] : &bslash;nage=%u&bslash;nchannel=%u&bslash;ncapinfo=0x%X&bslash;nrates=0x%X&bslash;nbasic_rates=0x%X&bslash;n&quot;
+l_string|&quot;bss[%u] : &bslash;nage=%u&bslash;nchannel=%u&bslash;n&quot;
+l_string|&quot;capinfo=0x%X&bslash;nrates=0x%X&bslash;n&quot;
+l_string|&quot;basic_rates=0x%X&bslash;n&quot;
 comma
 id|i
 comma
@@ -4114,7 +4191,7 @@ id|str
 comma
 id|PRIV_STR_SIZE
 comma
-l_string|&quot;id=0x%X&bslash;nstate=0x%X&bslash;n&bslash;&n;&t;&t;&t;         code=0x%X&bslash;n&quot;
+l_string|&quot;id=0x%X&bslash;nstate=0x%X&bslash;ncode=0x%X&bslash;n&quot;
 comma
 id|mlme-&gt;id
 comma
@@ -4145,7 +4222,8 @@ id|str
 comma
 id|PRIV_STR_SIZE
 comma
-l_string|&quot;id=0x%X&bslash;nstate=0x%X&bslash;n&bslash;&n;&t;&t;&t;         code=0x%X&bslash;nsize=0x%X&bslash;n&quot;
+l_string|&quot;id=0x%X&bslash;nstate=0x%X&bslash;n&quot;
+l_string|&quot;code=0x%X&bslash;nsize=0x%X&bslash;n&quot;
 comma
 id|mlme-&gt;id
 comma

@@ -28,6 +28,8 @@ id|__devinitdata
 op_assign
 l_string|&quot;defxx.c:v1.06 2003/08/04  Lawrence V. Stefani and others&bslash;n&quot;
 suffix:semicolon
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;defxx&quot;
 DECL|macro|DYNAMIC_BUFFERS
 mdefine_line|#define DYNAMIC_BUFFERS 1
 DECL|macro|SKBUFF_RX_COPYBREAK
@@ -659,7 +661,7 @@ id|PFI_K_CSR_IO_LEN
 suffix:colon
 id|PI_ESIC_K_CSR_IO_LEN
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 (brace
@@ -668,7 +670,7 @@ id|printk
 id|KERN_ERR
 l_string|&quot;%s: Cannot reserve I/O resource 0x%x @ 0x%lx, aborting&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|DRV_NAME
 comma
 id|PFI_K_CSR_IO_LEN
 comma

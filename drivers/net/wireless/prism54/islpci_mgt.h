@@ -4,17 +4,6 @@ DECL|macro|_ISLPCI_MGT_H
 mdefine_line|#define _ISLPCI_MGT_H
 macro_line|#include &lt;linux/wireless.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,41)
-macro_line|# include &lt;linux/workqueue.h&gt;
-macro_line|#else
-macro_line|# include &lt;linux/tqueue.h&gt;
-DECL|macro|work_struct
-macro_line|# define work_struct tq_struct
-DECL|macro|INIT_WORK
-macro_line|# define INIT_WORK INIT_TQUEUE
-DECL|macro|schedule_work
-macro_line|# define schedule_work schedule_task
-macro_line|#endif
 multiline_comment|/*&n; *  Function definitions&n; */
 DECL|macro|K_DEBUG
 mdefine_line|#define K_DEBUG(f, m, args...) do { if(f &amp; m) printk(KERN_DEBUG args); } while(0)
@@ -26,15 +15,8 @@ r_extern
 r_int
 id|pc_debug
 suffix:semicolon
-DECL|variable|init_wds
-r_static
-r_const
-r_int
-id|init_wds
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* help compiler optimize away dead code */
+DECL|macro|init_wds
+mdefine_line|#define init_wds 0&t;/* help compiler optimize away dead code */
 multiline_comment|/* General driver definitions */
 DECL|macro|PCIVENDOR_INTERSIL
 mdefine_line|#define PCIVENDOR_INTERSIL                      0x1260UL

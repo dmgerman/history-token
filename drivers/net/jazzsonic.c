@@ -21,6 +21,8 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/jazz.h&gt;
 macro_line|#include &lt;asm/jazzdma.h&gt;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;jazzsonic&quot;
 DECL|macro|SREGS_PAD
 mdefine_line|#define SREGS_PAD(n)    u16 n;
 macro_line|#include &quot;sonic.h&quot;
@@ -460,7 +462,7 @@ id|base_addr
 comma
 l_int|0x100
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 r_return

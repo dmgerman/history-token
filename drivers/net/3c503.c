@@ -506,6 +506,7 @@ id|EL2_IO_EXTENT
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|el2_probe
 r_struct
 id|net_device
@@ -620,6 +621,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Probe for the Etherlink II card at I/O port base IOADDR,&n;   returning non-zero on success.  If found, set the station&n;   address and memory parameters in DEVICE. */
 r_static
 r_int
@@ -669,7 +671,7 @@ id|ioaddr
 comma
 id|EL2_IO_EXTENT
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 r_return
@@ -689,7 +691,7 @@ l_int|0x400
 comma
 l_int|8
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 (brace

@@ -52,6 +52,8 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &quot;sun3_82586.h&quot;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;sun3_82586&quot;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG       /* debug on */
 DECL|macro|SYSBUSVAL
@@ -1312,7 +1314,7 @@ id|ioaddr
 comma
 id|SUN3_82586_TOTAL_SIZE
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 r_return

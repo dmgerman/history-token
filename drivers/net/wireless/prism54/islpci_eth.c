@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
+macro_line|#include &quot;prismcompat.h&quot;
 macro_line|#include &quot;isl_38xx.h&quot;
 macro_line|#include &quot;islpci_eth.h&quot;
 macro_line|#include &quot;islpci_mgt.h&quot;
@@ -262,11 +263,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|curr_frag
 op_minus
 id|priv-&gt;free_data_tx
 op_ge
 id|ISL38XX_CB_TX_QSIZE
+)paren
 )paren
 (brace
 id|printk
@@ -314,6 +319,9 @@ multiline_comment|/* Check alignment and WDS frame formatting. The start of the 
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 (paren
 (paren
 r_int
@@ -324,6 +332,7 @@ l_int|0x03
 )paren
 op_or
 id|init_wds
+)paren
 )paren
 (brace
 multiline_comment|/* get the number of bytes to add and re-allign */
@@ -674,9 +683,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|pci_map_address
 op_eq
 l_int|0
+)paren
 )paren
 (brace
 id|printk
@@ -924,7 +937,11 @@ multiline_comment|/* extract the relevant data from the header */
 id|u32
 id|clock
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|hdr-&gt;clock
+)paren
 suffix:semicolon
 id|u8
 id|rate
@@ -934,7 +951,7 @@ suffix:semicolon
 id|u16
 id|freq
 op_assign
-id|be16_to_cpu
+id|le16_to_cpu
 c_func
 (paren
 id|hdr-&gt;freq
@@ -1003,7 +1020,7 @@ c_cond
 id|newskb
 )paren
 (brace
-id|kfree_skb
+id|dev_kfree_skb_irq
 c_func
 (paren
 op_star
@@ -1046,7 +1063,7 @@ id|avs_80211_1_header
 suffix:semicolon
 id|avs-&gt;version
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|P80211CAPTURE_VERSION
@@ -1054,7 +1071,7 @@ id|P80211CAPTURE_VERSION
 suffix:semicolon
 id|avs-&gt;length
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 r_sizeof
@@ -1066,15 +1083,19 @@ id|avs_80211_1_header
 suffix:semicolon
 id|avs-&gt;mactime
 op_assign
-id|__cpu_to_be64
+id|cpu_to_be64
+c_func
+(paren
+id|le64_to_cpu
 c_func
 (paren
 id|clock
 )paren
+)paren
 suffix:semicolon
 id|avs-&gt;hosttime
 op_assign
-id|__cpu_to_be64
+id|cpu_to_be64
 c_func
 (paren
 id|jiffies
@@ -1082,7 +1103,7 @@ id|jiffies
 suffix:semicolon
 id|avs-&gt;phytype
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 l_int|6
@@ -1091,7 +1112,7 @@ suffix:semicolon
 multiline_comment|/*OFDM: 6 for (g), 8 for (a) */
 id|avs-&gt;channel
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|channel_of_freq
@@ -1103,7 +1124,7 @@ id|freq
 suffix:semicolon
 id|avs-&gt;datarate
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|rate
@@ -1113,7 +1134,7 @@ l_int|5
 suffix:semicolon
 id|avs-&gt;antenna
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 l_int|0
@@ -1122,7 +1143,7 @@ suffix:semicolon
 multiline_comment|/*unknown */
 id|avs-&gt;priority
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 l_int|0
@@ -1131,24 +1152,26 @@ suffix:semicolon
 multiline_comment|/*unknown */
 id|avs-&gt;ssi_type
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
-l_int|2
+l_int|3
 )paren
 suffix:semicolon
 multiline_comment|/*2: dBm, 3: raw RSSI */
 id|avs-&gt;ssi_signal
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|rssi
+op_amp
+l_int|0x7f
 )paren
 suffix:semicolon
 id|avs-&gt;ssi_noise
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|priv-&gt;local_iwstatistics.qual.noise
@@ -1157,7 +1180,7 @@ suffix:semicolon
 multiline_comment|/*better than &squot;undefined&squot;, I assume */
 id|avs-&gt;preamble
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 l_int|0
@@ -1166,7 +1189,7 @@ suffix:semicolon
 multiline_comment|/*unknown */
 id|avs-&gt;encoding
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 l_int|0
@@ -1534,9 +1557,13 @@ multiline_comment|/* take care of monitor mode and spy monitoring. */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|priv-&gt;iw_mode
 op_eq
 id|IW_MODE_MONITOR
+)paren
 )paren
 id|discard
 op_assign
@@ -1554,6 +1581,9 @@ r_else
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|skb-&gt;data
 (braket
 l_int|2
@@ -1562,6 +1592,7 @@ id|ETH_ALEN
 )braket
 op_eq
 l_int|0
+)paren
 )paren
 (brace
 multiline_comment|/* The packet has a rx_annex. Read it for spy monitoring, Then&n;&t;&t;&t; * remove it, while keeping the 2 leading MAC addr.&n;&t;&t;&t; */
@@ -1706,10 +1737,14 @@ macro_line|#endif
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|discard
 )paren
+)paren
 (brace
-id|dev_kfree_skb
+id|dev_kfree_skb_irq
 c_func
 (paren
 id|skb
@@ -1756,9 +1791,6 @@ id|ISL38XX_CB_RX_QSIZE
 )paren
 (brace
 multiline_comment|/* allocate an sk_buff for received data frames storage&n;&t;&t; * include any required allignment operations */
-r_if
-c_cond
-(paren
 id|skb
 op_assign
 id|dev_alloc_skb
@@ -1768,10 +1800,17 @@ id|MAX_FRAGMENT_SIZE_RX
 op_plus
 l_int|2
 )paren
-comma
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
 id|skb
 op_eq
 l_int|NULL
+)paren
 )paren
 (brace
 multiline_comment|/* error allocating an sk_buff structure elements */
@@ -1786,6 +1825,23 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|skb_reserve
+c_func
+(paren
+id|skb
+comma
+(paren
+l_int|4
+op_minus
+(paren
+r_int
+)paren
+id|skb-&gt;data
+)paren
+op_amp
+l_int|0x03
+)paren
+suffix:semicolon
 multiline_comment|/* store the new skb structure pointer */
 id|index
 op_assign
@@ -1847,6 +1903,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|priv-&gt;pci_map_rx_address
 (braket
 id|index
@@ -1856,6 +1915,7 @@ op_eq
 id|dma_addr_t
 )paren
 l_int|NULL
+)paren
 )paren
 (brace
 multiline_comment|/* error mapping the buffer to device accessable memory address */
@@ -1868,7 +1928,7 @@ l_string|&quot;Error mapping DMA address&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* free the skbuf structure before aborting */
-id|dev_kfree_skb
+id|dev_kfree_skb_irq
 c_func
 (paren
 (paren

@@ -27,6 +27,8 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;smc9194.h&quot;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;smc9194&quot;
 multiline_comment|/*------------------------------------------------------------------------&n; .&n; . Configuration options, for the experienced user to change.&n; .&n; -------------------------------------------------------------------------*/
 multiline_comment|/*&n; . Do you want to use 32 bit xfers?  This should work on all chips, as&n; . the chipset is designed to accommodate them.&n;*/
 macro_line|#ifdef __sh__
@@ -1969,7 +1971,7 @@ id|ioaddr
 comma
 id|SMC_IO_EXTENT
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 r_return
@@ -2569,7 +2571,7 @@ id|smc_interrupt
 comma
 l_int|0
 comma
-id|dev-&gt;name
+id|DRV_NAME
 comma
 id|dev
 )paren
@@ -2585,7 +2587,7 @@ c_func
 (paren
 l_string|&quot;%s: unable to get IRQ %d (irqval=%d).&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|DRV_NAME
 comma
 id|dev-&gt;irq
 comma

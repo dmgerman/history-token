@@ -457,7 +457,7 @@ c_func
 (paren
 l_string|&quot;%s: unable to request interrupt %d.&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|name
 comma
 id|dev-&gt;irq
 )paren

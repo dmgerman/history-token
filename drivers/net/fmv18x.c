@@ -29,6 +29,8 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;fmv18x&quot;
 DECL|variable|__initdata
 r_static
 r_int
@@ -614,7 +616,7 @@ id|ioaddr
 comma
 id|FMV18X_IO_EXTENT
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 r_return
@@ -796,7 +798,7 @@ id|net_interrupt
 comma
 l_int|0
 comma
-id|dev-&gt;name
+id|DRV_NAME
 comma
 id|dev
 )paren

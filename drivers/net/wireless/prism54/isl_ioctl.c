@@ -4,8 +4,8 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &quot;prismcompat.h&quot;
 macro_line|#include &quot;isl_ioctl.h&quot;
 macro_line|#include &quot;islpci_mgt.h&quot;
 macro_line|#include &quot;isl_oid.h&quot;&t;&t;/* additional types and defs for isl38xx fw */
@@ -532,37 +532,6 @@ id|init_mode
 )paren
 suffix:semicolon
 )brace
-r_void
-DECL|function|prism54_mib_init_work
-id|prism54_mib_init_work
-c_func
-(paren
-id|islpci_private
-op_star
-id|priv
-)paren
-(brace
-id|down_write
-c_func
-(paren
-op_amp
-id|priv-&gt;mib_sem
-)paren
-suffix:semicolon
-id|mgt_commit
-c_func
-(paren
-id|priv
-)paren
-suffix:semicolon
-id|up_write
-c_func
-(paren
-op_amp
-id|priv-&gt;mib_sem
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* this will be executed outside of atomic context thanks to&n; * schedule_work(), thus we can as well use sleeping semaphore&n; * locking */
 r_void
 DECL|function|prism54_update_stats
@@ -604,8 +573,7 @@ id|priv-&gt;stats_sem
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* missing stats are :&n; *  iwstatistics.qual.updated&n; *  iwstatistics.discard.nwid&t;    &n; *  iwstatistics.discard.fragment&t;    &n; *  iwstatistics.discard.misc&n; *  iwstatistics.miss.beacon */
-multiline_comment|/* Noise floor.&n; * I&squot;m not sure if the unit is dBm.&n; * Note : If we are not connected, this value seems to be irrevelant. */
+multiline_comment|/* Noise floor.&n; * I&squot;m not sure if the unit is dBm.&n; * Note : If we are not connected, this value seems to be irrelevant. */
 id|mgt_get_request
 c_func
 (paren
@@ -647,29 +615,15 @@ op_assign
 id|r.ptr
 suffix:semicolon
 multiline_comment|/* copy this MAC to the bss */
-r_for
-c_loop
+id|memcpy
+c_func
 (paren
-id|j
-op_assign
-l_int|0
-suffix:semicolon
-id|j
-OL
-l_int|6
-suffix:semicolon
-id|j
-op_increment
-)paren
 id|bss.address
-(braket
-id|j
-)braket
-op_assign
+comma
 id|data
-(braket
-id|j
-)braket
+comma
+l_int|6
+)paren
 suffix:semicolon
 id|kfree
 c_func
@@ -1553,7 +1507,6 @@ l_int|20
 suffix:colon
 id|vwrq-&gt;value
 suffix:semicolon
-multiline_comment|/* set the ed threshold. */
 r_return
 id|mgt_set_request
 c_func
@@ -1868,7 +1821,7 @@ id|PRV_STATE_INIT
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* Request the device for the supported frequencies&n;&t; * not really revelant since some devices will report the 5 GHz band&n;&t; * frequencies even if they don&squot;t support them.&n;&t; */
+multiline_comment|/* Request the device for the supported frequencies&n;&t; * not really relevant since some devices will report the 5 GHz band&n;&t; * frequencies even if they don&squot;t support them.&n;&t; */
 id|rvalue
 op_assign
 id|mgt_get_request
@@ -1898,7 +1851,6 @@ id|range-&gt;num_frequency
 op_assign
 id|freq-&gt;nr
 suffix:semicolon
-multiline_comment|/* Frequencies are not listed in the right order. The reordering is probably&n;&t; * firmware dependant and thus should work for everyone.&n;&t; */
 id|m
 op_assign
 id|min
@@ -1922,8 +1874,6 @@ suffix:semicolon
 id|i
 OL
 id|m
-op_minus
-l_int|12
 suffix:semicolon
 id|i
 op_increment
@@ -1938,8 +1888,6 @@ id|m
 op_assign
 id|freq-&gt;mhz
 (braket
-l_int|12
-op_plus
 id|i
 )braket
 suffix:semicolon
@@ -1959,63 +1907,14 @@ id|i
 dot
 id|i
 op_assign
-id|i
-op_plus
-l_int|1
-suffix:semicolon
-)brace
-r_for
-c_loop
+id|channel_of_freq
+c_func
 (paren
-id|i
-op_assign
-id|m
-op_minus
-l_int|12
-suffix:semicolon
-id|i
-OL
-id|m
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|range-&gt;freq
-(braket
-id|i
-)braket
-dot
-id|m
-op_assign
 id|freq-&gt;mhz
 (braket
 id|i
-op_minus
-id|m
-op_plus
-l_int|12
 )braket
-suffix:semicolon
-id|range-&gt;freq
-(braket
-id|i
-)braket
-dot
-id|e
-op_assign
-l_int|6
-suffix:semicolon
-id|range-&gt;freq
-(braket
-id|i
-)braket
-dot
-id|i
-op_assign
-id|i
-op_plus
-l_int|23
+)paren
 suffix:semicolon
 )brace
 id|kfree
@@ -2547,11 +2446,15 @@ suffix:semicolon
 multiline_comment|/* Add frequency. (short) bss-&gt;channel is the frequency in MHz */
 id|iwe.u.freq.m
 op_assign
+id|channel_of_freq
+c_func
+(paren
 id|bss-&gt;channel
+)paren
 suffix:semicolon
 id|iwe.u.freq.e
 op_assign
-l_int|6
+l_int|0
 suffix:semicolon
 id|iwe.cmd
 op_assign
@@ -2869,7 +2772,7 @@ id|noise
 op_assign
 id|r.u
 suffix:semicolon
-multiline_comment|/* Ask the device for a list of known bss. We can report at most&n;&t; * IW_MAX_AP=64 to the range struct. But the device won&squot;t repport anything&n;&t; * if you change the value of MAXBSS=24. Anyway 24 AP It is probably enough.&n;&t; */
+multiline_comment|/* Ask the device for a list of known bss. We can report at most&n;&t; * IW_MAX_AP=64 to the range struct. But the device won&squot;t repport anything&n;&t; * if you change the value of IWMAX_BSS=24.&n;&t; */
 id|rvalue
 op_or_assign
 id|mgt_get_request
@@ -4069,7 +3972,7 @@ r_return
 id|rvalue
 suffix:semicolon
 )brace
-multiline_comment|/* Here we have (min,max) = max retries for (small frames, big frames). Where&n; * big frame &lt;=&gt;  bigger than the rts threshold&n; * small frame &lt;=&gt;  smaller than the rts threshold&n; * This is not really the behavior expected by the wireless tool but it seems&n; * to be a common behavior in other drivers.&n; * &n; * It seems that playing with this tends to hang the card -&gt; DISABLED&n; */
+multiline_comment|/* Here we have (min,max) = max retries for (small frames, big frames). Where&n; * big frame &lt;=&gt;  bigger than the rts threshold&n; * small frame &lt;=&gt;  smaller than the rts threshold&n; * This is not really the behavior expected by the wireless tool but it seems&n; * to be a common behavior in other drivers.&n; */
 r_static
 r_int
 DECL|function|prism54_set_retry
@@ -4199,8 +4102,6 @@ r_if
 c_cond
 (paren
 id|slimit
-op_ne
-l_int|0
 )paren
 id|rvalue
 op_assign
@@ -4221,8 +4122,6 @@ r_if
 c_cond
 (paren
 id|llimit
-op_ne
-l_int|0
 )paren
 id|rvalue
 op_or_assign
@@ -4243,8 +4142,6 @@ r_if
 c_cond
 (paren
 id|lifetime
-op_ne
-l_int|0
 )paren
 id|rvalue
 op_or_assign
@@ -4725,7 +4622,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* now read the flags     */
+multiline_comment|/* now read the flags */
 r_if
 c_cond
 (paren
@@ -5479,7 +5376,6 @@ op_star
 id|extra
 )paren
 (brace
-multiline_comment|/*&n;&t;   u32 *i = (int *) extra;&n;&t;   int param = *i;&n;&t;   int u = *(i + 1);&n;&t; */
 id|u32
 id|oid
 op_assign
@@ -8336,7 +8232,7 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* Note : the following should never happen since we don&squot;t run the card in&n;&t;&t; * extended mode.&n;&t;&t; * Note : &quot;mlme&quot; is actually a &quot;struct obj_mlmeex *&quot; here, but this&n;&t;&t; * is backward compatible layout-wise with &quot;struct obj_mlme&quot;.&n;&t;&t; */
+multiline_comment|/* Note : &quot;mlme&quot; is actually a &quot;struct obj_mlmeex *&quot; here, but this&n;&t;&t; * is backward compatible layout-wise with &quot;struct obj_mlme&quot;.&n;&t;&t; */
 r_case
 id|DOT11_OID_DEAUTHENTICATEEX
 suffix:colon
@@ -8498,6 +8394,13 @@ c_func
 id|frame-&gt;header-&gt;oid
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|n
+op_ne
+id|OID_NUM_LAST
+)paren
 id|prism54_process_trap_helper
 c_func
 (paren
@@ -8848,278 +8751,6 @@ id|ARPHRD_IEEE80211_PRISM
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-)brace
-r_int
-DECL|function|prism54_set_maxframeburst
-id|prism54_set_maxframeburst
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|ndev
-comma
-r_struct
-id|iw_request_info
-op_star
-id|info
-comma
-id|__u32
-op_star
-id|uwrq
-comma
-r_char
-op_star
-id|extra
-)paren
-(brace
-id|islpci_private
-op_star
-id|priv
-op_assign
-id|netdev_priv
-c_func
-(paren
-id|ndev
-)paren
-suffix:semicolon
-id|u32
-id|max_burst
-suffix:semicolon
-id|max_burst
-op_assign
-(paren
-op_star
-id|uwrq
-)paren
-ques
-c_cond
-op_star
-id|uwrq
-suffix:colon
-id|CARD_DEFAULT_MAXFRAMEBURST
-suffix:semicolon
-id|mgt_set_request
-c_func
-(paren
-id|priv
-comma
-id|DOT11_OID_MAXFRAMEBURST
-comma
-l_int|0
-comma
-op_amp
-id|max_burst
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINPROGRESS
-suffix:semicolon
-multiline_comment|/* Call commit handler */
-)brace
-r_int
-DECL|function|prism54_get_maxframeburst
-id|prism54_get_maxframeburst
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|ndev
-comma
-r_struct
-id|iw_request_info
-op_star
-id|info
-comma
-id|__u32
-op_star
-id|uwrq
-comma
-r_char
-op_star
-id|extra
-)paren
-(brace
-id|islpci_private
-op_star
-id|priv
-op_assign
-id|netdev_priv
-c_func
-(paren
-id|ndev
-)paren
-suffix:semicolon
-r_union
-id|oid_res_t
-id|r
-suffix:semicolon
-r_int
-id|rvalue
-suffix:semicolon
-id|rvalue
-op_assign
-id|mgt_get_request
-c_func
-(paren
-id|priv
-comma
-id|DOT11_OID_MAXFRAMEBURST
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-op_amp
-id|r
-)paren
-suffix:semicolon
-op_star
-id|uwrq
-op_assign
-id|r.u
-suffix:semicolon
-r_return
-id|rvalue
-suffix:semicolon
-)brace
-r_int
-DECL|function|prism54_set_profile
-id|prism54_set_profile
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|ndev
-comma
-r_struct
-id|iw_request_info
-op_star
-id|info
-comma
-id|__u32
-op_star
-id|uwrq
-comma
-r_char
-op_star
-id|extra
-)paren
-(brace
-id|islpci_private
-op_star
-id|priv
-op_assign
-id|netdev_priv
-c_func
-(paren
-id|ndev
-)paren
-suffix:semicolon
-id|u32
-id|profile
-suffix:semicolon
-id|profile
-op_assign
-(paren
-op_star
-id|uwrq
-)paren
-ques
-c_cond
-op_star
-id|uwrq
-suffix:colon
-id|CARD_DEFAULT_PROFILE
-suffix:semicolon
-id|mgt_set_request
-c_func
-(paren
-id|priv
-comma
-id|DOT11_OID_PROFILES
-comma
-l_int|0
-comma
-op_amp
-id|profile
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINPROGRESS
-suffix:semicolon
-multiline_comment|/* Call commit handler */
-)brace
-r_int
-DECL|function|prism54_get_profile
-id|prism54_get_profile
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|ndev
-comma
-r_struct
-id|iw_request_info
-op_star
-id|info
-comma
-id|__u32
-op_star
-id|uwrq
-comma
-r_char
-op_star
-id|extra
-)paren
-(brace
-id|islpci_private
-op_star
-id|priv
-op_assign
-id|netdev_priv
-c_func
-(paren
-id|ndev
-)paren
-suffix:semicolon
-r_union
-id|oid_res_t
-id|r
-suffix:semicolon
-r_int
-id|rvalue
-suffix:semicolon
-id|rvalue
-op_assign
-id|mgt_get_request
-c_func
-(paren
-id|priv
-comma
-id|DOT11_OID_PROFILES
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-op_amp
-id|r
-)paren
-suffix:semicolon
-op_star
-id|uwrq
-op_assign
-id|r.u
-suffix:semicolon
-r_return
-id|rvalue
 suffix:semicolon
 )brace
 r_int
@@ -9538,7 +9169,15 @@ suffix:semicolon
 )brace
 )brace
 r_return
+(paren
 id|ret
+ques
+c_cond
+id|ret
+suffix:colon
+op_minus
+id|EINPROGRESS
+)paren
 suffix:semicolon
 )brace
 r_static
@@ -9990,7 +9629,7 @@ mdefine_line|#define PRISM54_DBG_GET_OID&t;SIOCIWFIRSTPRIV+15
 DECL|macro|PRISM54_DBG_SET_OID
 mdefine_line|#define PRISM54_DBG_SET_OID&t;SIOCIWFIRSTPRIV+16
 DECL|macro|PRISM54_GET_OID
-mdefine_line|#define PRISM54_GET_OID&t;   SIOCIWFIRSTPRIV+17
+mdefine_line|#define PRISM54_GET_OID&t;&t;SIOCIWFIRSTPRIV+17
 DECL|macro|PRISM54_SET_OID_U32
 mdefine_line|#define PRISM54_SET_OID_U32&t;SIOCIWFIRSTPRIV+18
 DECL|macro|PRISM54_SET_OID_STR
@@ -10002,20 +9641,20 @@ mdefine_line|#define PRISM54_GET_PRISMHDR&t;SIOCIWFIRSTPRIV+23
 DECL|macro|PRISM54_SET_PRISMHDR
 mdefine_line|#define PRISM54_SET_PRISMHDR&t;SIOCIWFIRSTPRIV+24
 DECL|macro|IWPRIV_SET_U32
-mdefine_line|#define IWPRIV_SET_U32(n,x)&t;{ n, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, &quot;set_&quot;x }
+mdefine_line|#define IWPRIV_SET_U32(n,x)&t;{ n, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, &quot;s_&quot;x }
 DECL|macro|IWPRIV_SET_SSID
-mdefine_line|#define IWPRIV_SET_SSID(n,x)&t;{ n, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_FIXED | 1, 0, &quot;set_&quot;x }
+mdefine_line|#define IWPRIV_SET_SSID(n,x)&t;{ n, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_FIXED | 1, 0, &quot;s_&quot;x }
 DECL|macro|IWPRIV_SET_ADDR
-mdefine_line|#define IWPRIV_SET_ADDR(n,x)&t;{ n, IW_PRIV_TYPE_ADDR | IW_PRIV_SIZE_FIXED | 1, 0, &quot;set_&quot;x }
+mdefine_line|#define IWPRIV_SET_ADDR(n,x)&t;{ n, IW_PRIV_TYPE_ADDR | IW_PRIV_SIZE_FIXED | 1, 0, &quot;s_&quot;x }
 DECL|macro|IWPRIV_GET
-mdefine_line|#define IWPRIV_GET(n,x)&t;{ n, 0, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_FIXED | PRIV_STR_SIZE, &quot;get_&quot;x }
+mdefine_line|#define IWPRIV_GET(n,x)&t;{ n, 0, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_FIXED | PRIV_STR_SIZE, &quot;g_&quot;x }
 DECL|macro|IWPRIV_U32
 mdefine_line|#define IWPRIV_U32(n,x)&t;&t;IWPRIV_SET_U32(n,x), IWPRIV_GET(n,x)
 DECL|macro|IWPRIV_SSID
 mdefine_line|#define IWPRIV_SSID(n,x)&t;IWPRIV_SET_SSID(n,x), IWPRIV_GET(n,x)
 DECL|macro|IWPRIV_ADDR
 mdefine_line|#define IWPRIV_ADDR(n,x)&t;IWPRIV_SET_ADDR(n,x), IWPRIV_GET(n,x)
-multiline_comment|/* Note : limited to 128 private ioctls */
+multiline_comment|/* Note : limited to 128 private ioctls (wireless tools 26) */
 DECL|variable|prism54_private_args
 r_static
 r_const
@@ -10220,7 +9859,7 @@ l_int|256
 comma
 l_int|0
 comma
-l_string|&quot;dbg_get_oid&quot;
+l_string|&quot;dbg_set_oid&quot;
 )brace
 comma
 multiline_comment|/* --- sub-ioctls handlers --- */

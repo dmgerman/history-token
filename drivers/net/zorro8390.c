@@ -12,6 +12,8 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &quot;8390.h&quot;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME&t;&quot;zorro8390&quot;
 DECL|macro|NE_BASE
 mdefine_line|#define NE_BASE&t;&t;(dev-&gt;base_addr)
 DECL|macro|NE_CMD
@@ -424,7 +426,7 @@ id|NE_IO_EXTENT
 op_star
 l_int|2
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 (brace
@@ -901,7 +903,7 @@ id|ei_interrupt
 comma
 id|SA_SHIRQ
 comma
-id|dev-&gt;name
+id|DRV_NAME
 comma
 id|dev
 )paren

@@ -27,6 +27,8 @@ id|__initdata
 op_assign
 l_string|&quot;82596.c $Revision: 1.5 $&bslash;n&quot;
 suffix:semicolon
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME&t;&quot;82596&quot;
 multiline_comment|/* DEBUG flags&n; */
 DECL|macro|DEB_INIT
 mdefine_line|#define DEB_INIT&t;0x0001
@@ -4975,7 +4977,7 @@ id|ioaddr
 comma
 id|I596_TOTAL_SIZE
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 (brace

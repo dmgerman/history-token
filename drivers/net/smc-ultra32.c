@@ -20,6 +20,8 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;8390.h&quot;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;smc-ultra32&quot;
 r_static
 r_int
 id|ultra32_probe1
@@ -464,7 +466,7 @@ id|ioaddr
 comma
 id|ULTRA32_IO_EXTENT
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 r_return

@@ -1377,6 +1377,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|express_probe
 r_struct
 id|net_device
@@ -1484,6 +1485,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * open and initialize the adapter, ready for use&n; */
 DECL|function|eexp_open
 r_static
