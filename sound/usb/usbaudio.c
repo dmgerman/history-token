@@ -3361,6 +3361,16 @@ id|subs-&gt;curpacksize
 op_assign
 id|maxsize
 suffix:semicolon
+id|subs-&gt;curframesize
+op_assign
+id|bytes_to_frames
+c_func
+(paren
+id|runtime
+comma
+id|subs-&gt;curpacksize
+)paren
+suffix:semicolon
 multiline_comment|/* allocate a temporary buffer for playback */
 r_if
 c_cond

@@ -8,6 +8,7 @@ macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/ac97_codec.h&gt;
 macro_line|#include &lt;sound/asoundef.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
+macro_line|#include &quot;ac97_patch.h&quot;
 multiline_comment|/*&n; *  Chip specific initialization&n; */
 DECL|function|patch_wolfson00
 r_int
@@ -1518,6 +1519,54 @@ comma
 id|AC97_AD_JACK_SPDIF
 comma
 l_int|0x0010
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|patch_ad1980
+r_int
+id|patch_ad1980
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+(brace
+r_int
+r_int
+id|misc
+suffix:semicolon
+id|patch_ad1881
+c_func
+(paren
+id|ac97
+)paren
+suffix:semicolon
+multiline_comment|/* Switch FRONT/SURROUND LINE-OUT/HP-OUT default connection */
+multiline_comment|/* it seems that most vendors connect line-out connector to headphone out of AC&squot;97 */
+id|misc
+op_assign
+id|snd_ac97_read
+c_func
+(paren
+id|ac97
+comma
+id|AC97_AD_MISC
+)paren
+suffix:semicolon
+id|snd_ac97_write_cache
+c_func
+(paren
+id|ac97
+comma
+id|AC97_AD_MISC
+comma
+id|misc
+op_or
+l_int|0x0420
 )paren
 suffix:semicolon
 r_return

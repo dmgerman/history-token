@@ -198,6 +198,16 @@ l_int|NULL
 )brace
 comma
 (brace
+l_int|0x454d4300
+comma
+l_int|0xffffff00
+comma
+l_string|&quot;eMicro&quot;
+comma
+l_int|NULL
+)brace
+comma
+(brace
 l_int|0x45838300
 comma
 l_int|0xffffff00
@@ -243,6 +253,16 @@ comma
 l_int|0xffffff00
 comma
 l_string|&quot;National Semiconductor&quot;
+comma
+l_int|NULL
+)brace
+comma
+(brace
+l_int|0x50534300
+comma
+l_int|0xffffff00
+comma
+l_string|&quot;Philips&quot;
 comma
 l_int|NULL
 )brace
@@ -468,6 +488,16 @@ id|patch_ad1881
 )brace
 comma
 (brace
+l_int|0x41445370
+comma
+l_int|0xffffffff
+comma
+l_string|&quot;AD1980&quot;
+comma
+id|patch_ad1980
+)brace
+comma
+(brace
 l_int|0x41445372
 comma
 l_int|0xffffffff
@@ -668,6 +698,17 @@ id|patch_conexant
 )brace
 comma
 (brace
+l_int|0x454d4328
+comma
+l_int|0xffffffff
+comma
+l_string|&quot;28028&quot;
+comma
+l_int|NULL
+)brace
+comma
+singleline_comment|// same as TR28028?
+(brace
 l_int|0x45838308
 comma
 l_int|0xffffffff
@@ -735,6 +776,16 @@ comma
 l_int|0xffffffff
 comma
 l_string|&quot;LM4549&quot;
+comma
+l_int|NULL
+)brace
+comma
+(brace
+l_int|0x50534304
+comma
+l_int|0xffffffff
+comma
+l_string|&quot;UCB1400&quot;
 comma
 l_int|NULL
 )brace
@@ -10036,6 +10087,10 @@ id|HZ
 suffix:semicolon
 r_do
 (brace
+r_int
+r_int
+id|ext_mid
+suffix:semicolon
 multiline_comment|/* use preliminary reads to settle the communication */
 id|snd_ac97_read
 c_func
@@ -10061,7 +10116,36 @@ comma
 id|AC97_VENDOR_ID2
 )paren
 suffix:semicolon
-multiline_comment|/* test if we can write to the PCM volume register */
+multiline_comment|/* modem? */
+id|ext_mid
+op_assign
+id|snd_ac97_read
+c_func
+(paren
+id|ac97
+comma
+id|AC97_EXTENDED_MID
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ext_mid
+op_ne
+l_int|0xffff
+op_logical_and
+(paren
+id|ext_mid
+op_amp
+l_int|1
+)paren
+op_ne
+l_int|0
+)paren
+r_goto
+id|__access_ok
+suffix:semicolon
+multiline_comment|/* test if we can write to the record gain volume register */
 id|snd_ac97_write_cache
 c_func
 (paren
@@ -10119,7 +10203,7 @@ id|jiffies
 )paren
 )paren
 suffix:semicolon
-id|snd_printd
+id|snd_printk
 c_func
 (paren
 l_string|&quot;AC&squot;97 %d:%d does not respond - RESET [REC_GAIN = 0x%x]&bslash;n&quot;
@@ -10144,16 +10228,6 @@ suffix:semicolon
 )brace
 id|__access_ok
 suffix:colon
-id|ac97-&gt;caps
-op_assign
-id|snd_ac97_read
-c_func
-(paren
-id|ac97
-comma
-id|AC97_RESET
-)paren
-suffix:semicolon
 id|ac97-&gt;id
 op_assign
 id|snd_ac97_read
@@ -10175,28 +10249,6 @@ id|ac97
 comma
 id|AC97_VENDOR_ID2
 )paren
-suffix:semicolon
-id|ac97-&gt;ext_id
-op_assign
-id|snd_ac97_read
-c_func
-(paren
-id|ac97
-comma
-id|AC97_EXTENDED_ID
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ac97-&gt;ext_id
-op_eq
-l_int|0xffff
-)paren
-multiline_comment|/* invalid combination */
-id|ac97-&gt;ext_id
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -10233,6 +10285,107 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+multiline_comment|/* test for AC&squot;97 */
+multiline_comment|/* test if we can write to the record gain volume register */
+id|snd_ac97_write_cache
+c_func
+(paren
+id|ac97
+comma
+id|AC97_REC_GAIN
+comma
+l_int|0x8a06
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|snd_ac97_read
+c_func
+(paren
+id|ac97
+comma
+id|AC97_REC_GAIN
+)paren
+)paren
+op_eq
+l_int|0x8a06
+)paren
+(brace
+id|ac97-&gt;scaps
+op_or_assign
+id|AC97_SCAP_AUDIO
+suffix:semicolon
+id|ac97-&gt;caps
+op_assign
+id|snd_ac97_read
+c_func
+(paren
+id|ac97
+comma
+id|AC97_RESET
+)paren
+suffix:semicolon
+id|ac97-&gt;ext_id
+op_assign
+id|snd_ac97_read
+c_func
+(paren
+id|ac97
+comma
+id|AC97_EXTENDED_ID
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ac97-&gt;ext_id
+op_eq
+l_int|0xffff
+)paren
+multiline_comment|/* invalid combination */
+id|ac97-&gt;ext_id
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* test for MC&squot;97 */
+id|ac97-&gt;ext_mid
+op_assign
+id|snd_ac97_read
+c_func
+(paren
+id|ac97
+comma
+id|AC97_EXTENDED_MID
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ac97-&gt;ext_mid
+op_eq
+l_int|0xffff
+)paren
+multiline_comment|/* invalid combination */
+id|ac97-&gt;ext_mid
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ac97-&gt;ext_mid
+op_amp
+l_int|1
+)paren
+id|ac97-&gt;scaps
+op_or_assign
+id|AC97_SCAP_MODEM
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10244,6 +10397,14 @@ id|__ready_ok
 suffix:semicolon
 multiline_comment|/* FIXME: add powerdown control */
 multiline_comment|/* nothing should be in powerdown mode */
+r_if
+c_cond
+(paren
+id|ac97-&gt;scaps
+op_amp
+id|AC97_SCAP_AUDIO
+)paren
+(brace
 id|snd_ac97_write_cache_test
 c_func
 (paren
@@ -10361,6 +10522,7 @@ comma
 id|ac97-&gt;addr
 )paren
 suffix:semicolon
+)brace
 id|__ready_ok
 suffix:colon
 r_if
@@ -10375,6 +10537,13 @@ op_assign
 l_int|48000
 suffix:semicolon
 multiline_comment|/* standard value */
+r_if
+c_cond
+(paren
+id|ac97-&gt;scaps
+op_amp
+id|AC97_SCAP_AUDIO
+)paren
 id|ac97-&gt;addr
 op_assign
 (paren
@@ -10384,6 +10553,17 @@ id|AC97_EI_ADDR_MASK
 )paren
 op_rshift
 id|AC97_EI_ADDR_SHIFT
+suffix:semicolon
+r_else
+id|ac97-&gt;addr
+op_assign
+(paren
+id|ac97-&gt;ext_mid
+op_amp
+id|AC97_MEI_ADDR_MASK
+)paren
+op_rshift
+id|AC97_MEI_ADDR_SHIFT
 suffix:semicolon
 r_if
 c_cond
@@ -10674,6 +10854,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ac97-&gt;scaps
+op_amp
+id|AC97_SCAP_AUDIO
+)paren
+(brace
+r_if
+c_cond
+(paren
 (paren
 id|err
 op_assign
@@ -10682,7 +10870,7 @@ c_func
 (paren
 id|card
 comma
-l_string|&quot;AC97&quot;
+l_string|&quot;AC97a&quot;
 )paren
 )paren
 OL
@@ -10698,6 +10886,44 @@ suffix:semicolon
 r_return
 id|err
 suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|ac97-&gt;scaps
+op_amp
+id|AC97_SCAP_MODEM
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|snd_component_add
+c_func
+(paren
+id|card
+comma
+l_string|&quot;AC97m&quot;
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|snd_ac97_free
+c_func
+(paren
+id|ac97
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -10810,6 +11036,8 @@ comma
 id|tmp
 comma
 id|ext
+comma
+id|mext
 suffix:semicolon
 r_static
 r_const
@@ -10935,7 +11163,7 @@ l_string|&quot;Capabilities     :%s%s%s%s%s%s&bslash;n&quot;
 comma
 id|val
 op_amp
-l_int|0x0001
+id|AC97_BC_DEDICATED_MIC
 ques
 c_cond
 l_string|&quot; -dedicated MIC PCM IN channel-&quot;
@@ -10944,7 +11172,7 @@ l_string|&quot;&quot;
 comma
 id|val
 op_amp
-l_int|0x0002
+id|AC97_BC_RESERVED1
 ques
 c_cond
 l_string|&quot; -reserved1-&quot;
@@ -10953,7 +11181,7 @@ l_string|&quot;&quot;
 comma
 id|val
 op_amp
-l_int|0x0004
+id|AC97_BC_BASS_TREBLE
 ques
 c_cond
 l_string|&quot; -bass &amp; treble-&quot;
@@ -10962,7 +11190,7 @@ l_string|&quot;&quot;
 comma
 id|val
 op_amp
-l_int|0x0008
+id|AC97_BC_SIM_STEREO
 ques
 c_cond
 l_string|&quot; -simulated stereo-&quot;
@@ -10971,7 +11199,7 @@ l_string|&quot;&quot;
 comma
 id|val
 op_amp
-l_int|0x0010
+id|AC97_BC_HEADPHONE
 ques
 c_cond
 l_string|&quot; -headphone out-&quot;
@@ -10980,7 +11208,7 @@ l_string|&quot;&quot;
 comma
 id|val
 op_amp
-l_int|0x0020
+id|AC97_BC_LOUDNESS
 ques
 c_cond
 l_string|&quot; -loudness-&quot;
@@ -10992,7 +11220,7 @@ id|tmp
 op_assign
 id|ac97-&gt;caps
 op_amp
-l_int|0x00c0
+id|AC97_BC_DAC_MASK
 suffix:semicolon
 id|snd_iprintf
 c_func
@@ -11003,7 +11231,7 @@ l_string|&quot;DAC resolution   : %s%s%s%s&bslash;n&quot;
 comma
 id|tmp
 op_eq
-l_int|0x0000
+id|AC97_BC_16BIT_DAC
 ques
 c_cond
 l_string|&quot;16-bit&quot;
@@ -11012,7 +11240,7 @@ l_string|&quot;&quot;
 comma
 id|tmp
 op_eq
-l_int|0x0040
+id|AC97_BC_18BIT_DAC
 ques
 c_cond
 l_string|&quot;18-bit&quot;
@@ -11021,7 +11249,7 @@ l_string|&quot;&quot;
 comma
 id|tmp
 op_eq
-l_int|0x0080
+id|AC97_BC_20BIT_DAC
 ques
 c_cond
 l_string|&quot;20-bit&quot;
@@ -11030,7 +11258,7 @@ l_string|&quot;&quot;
 comma
 id|tmp
 op_eq
-l_int|0x00c0
+id|AC97_BC_DAC_MASK
 ques
 c_cond
 l_string|&quot;???&quot;
@@ -11042,7 +11270,7 @@ id|tmp
 op_assign
 id|ac97-&gt;caps
 op_amp
-l_int|0x0300
+id|AC97_BC_ADC_MASK
 suffix:semicolon
 id|snd_iprintf
 c_func
@@ -11053,7 +11281,7 @@ l_string|&quot;ADC resolution   : %s%s%s%s&bslash;n&quot;
 comma
 id|tmp
 op_eq
-l_int|0x0000
+id|AC97_BC_16BIT_ADC
 ques
 c_cond
 l_string|&quot;16-bit&quot;
@@ -11062,7 +11290,7 @@ l_string|&quot;&quot;
 comma
 id|tmp
 op_eq
-l_int|0x0100
+id|AC97_BC_18BIT_ADC
 ques
 c_cond
 l_string|&quot;18-bit&quot;
@@ -11071,7 +11299,7 @@ l_string|&quot;&quot;
 comma
 id|tmp
 op_eq
-l_int|0x0200
+id|AC97_BC_20BIT_ADC
 ques
 c_cond
 l_string|&quot;20-bit&quot;
@@ -11080,7 +11308,7 @@ l_string|&quot;&quot;
 comma
 id|tmp
 op_eq
-l_int|0x0300
+id|AC97_BC_ADC_MASK
 ques
 c_cond
 l_string|&quot;???&quot;
@@ -11258,7 +11486,8 @@ id|ext
 op_eq
 l_int|0
 )paren
-r_return
+r_goto
+id|__modem
 suffix:semicolon
 id|snd_iprintf
 c_func
@@ -11269,23 +11498,23 @@ l_string|&quot;Extended ID      : codec=%i rev=%i%s%s%s%s DSA=%i%s%s%s%s&bslash;
 comma
 (paren
 id|ext
-op_rshift
-l_int|14
-)paren
 op_amp
-l_int|3
+id|AC97_EI_ADDR_MASK
+)paren
+op_rshift
+id|AC97_EI_ADDR_SHIFT
 comma
 (paren
 id|ext
-op_rshift
-l_int|10
-)paren
 op_amp
-l_int|3
+id|AC97_EI_REV_MASK
+)paren
+op_rshift
+id|AC97_EI_REV_SHIFT
 comma
 id|ext
 op_amp
-l_int|0x0200
+id|AC97_EI_AMAP
 ques
 c_cond
 l_string|&quot; AMAP&quot;
@@ -11294,7 +11523,7 @@ l_string|&quot;&quot;
 comma
 id|ext
 op_amp
-l_int|0x0100
+id|AC97_EI_LDAC
 ques
 c_cond
 l_string|&quot; LDAC&quot;
@@ -11303,7 +11532,7 @@ l_string|&quot;&quot;
 comma
 id|ext
 op_amp
-l_int|0x0080
+id|AC97_EI_SDAC
 ques
 c_cond
 l_string|&quot; SDAC&quot;
@@ -11312,7 +11541,7 @@ l_string|&quot;&quot;
 comma
 id|ext
 op_amp
-l_int|0x0040
+id|AC97_EI_CDAC
 ques
 c_cond
 l_string|&quot; CDAC&quot;
@@ -11321,15 +11550,15 @@ l_string|&quot;&quot;
 comma
 (paren
 id|ext
-op_rshift
-l_int|4
-)paren
 op_amp
-l_int|3
+id|AC97_EI_DACS_SLOT_MASK
+)paren
+op_rshift
+id|AC97_EI_DACS_SLOT_SHIFT
 comma
 id|ext
 op_amp
-l_int|0x0008
+id|AC97_EI_VRM
 ques
 c_cond
 l_string|&quot; VRM&quot;
@@ -11338,7 +11567,7 @@ l_string|&quot;&quot;
 comma
 id|ext
 op_amp
-l_int|0x0004
+id|AC97_EI_SPDIF
 ques
 c_cond
 l_string|&quot; SPDIF&quot;
@@ -11347,7 +11576,7 @@ l_string|&quot;&quot;
 comma
 id|ext
 op_amp
-l_int|0x0002
+id|AC97_EI_DRA
 ques
 c_cond
 l_string|&quot; DRA&quot;
@@ -11356,7 +11585,7 @@ l_string|&quot;&quot;
 comma
 id|ext
 op_amp
-l_int|0x0001
+id|AC97_EI_VRA
 ques
 c_cond
 l_string|&quot; VRA&quot;
@@ -11383,7 +11612,7 @@ l_string|&quot;Extended status  :%s%s%s%s%s%s%s%s%s%s%s%s%s%s&bslash;n&quot;
 comma
 id|val
 op_amp
-l_int|0x4000
+id|AC97_EA_PRL
 ques
 c_cond
 l_string|&quot; PRL&quot;
@@ -11392,7 +11621,7 @@ l_string|&quot;&quot;
 comma
 id|val
 op_amp
-l_int|0x2000
+id|AC97_EA_PRK
 ques
 c_cond
 l_string|&quot; PRK&quot;
@@ -11401,7 +11630,7 @@ l_string|&quot;&quot;
 comma
 id|val
 op_amp
-l_int|0x1000
+id|AC97_EA_PRJ
 ques
 c_cond
 l_string|&quot; PRJ&quot;
@@ -11410,7 +11639,7 @@ l_string|&quot;&quot;
 comma
 id|val
 op_amp
-l_int|0x0800
+id|AC97_EA_PRI
 ques
 c_cond
 l_string|&quot; PRI&quot;
@@ -11419,7 +11648,7 @@ l_string|&quot;&quot;
 comma
 id|val
 op_amp
-l_int|0x0400
+id|AC97_EA_SPCV
 ques
 c_cond
 l_string|&quot; SPCV&quot;
@@ -11428,7 +11657,7 @@ l_string|&quot;&quot;
 comma
 id|val
 op_amp
-l_int|0x0200
+id|AC97_EA_MDAC
 ques
 c_cond
 l_string|&quot; MADC&quot;
@@ -11437,7 +11666,7 @@ l_string|&quot;&quot;
 comma
 id|val
 op_amp
-l_int|0x0100
+id|AC97_EA_LDAC
 ques
 c_cond
 l_string|&quot; LDAC&quot;
@@ -11446,7 +11675,7 @@ l_string|&quot;&quot;
 comma
 id|val
 op_amp
-l_int|0x0080
+id|AC97_EA_SDAC
 ques
 c_cond
 l_string|&quot; SDAC&quot;
@@ -11455,7 +11684,7 @@ l_string|&quot;&quot;
 comma
 id|val
 op_amp
-l_int|0x0040
+id|AC97_EA_CDAC
 ques
 c_cond
 l_string|&quot; CDAC&quot;
@@ -11464,7 +11693,7 @@ l_string|&quot;&quot;
 comma
 id|ext
 op_amp
-l_int|0x0004
+id|AC97_EI_SPDIF
 ques
 c_cond
 id|spdif_slots
@@ -11472,17 +11701,17 @@ id|spdif_slots
 (paren
 id|val
 op_amp
-l_int|0x0030
+id|AC97_EA_SPSA_SLOT_MASK
 )paren
 op_rshift
-l_int|4
+id|AC97_EA_SPSA_SLOT_SHIFT
 )braket
 suffix:colon
 l_string|&quot;&quot;
 comma
 id|val
 op_amp
-l_int|0x0008
+id|AC97_EA_VRM
 ques
 c_cond
 l_string|&quot; VRM&quot;
@@ -11491,7 +11720,7 @@ l_string|&quot;&quot;
 comma
 id|val
 op_amp
-l_int|0x0004
+id|AC97_EA_SPDIF
 ques
 c_cond
 l_string|&quot; SPDIF&quot;
@@ -11500,7 +11729,7 @@ l_string|&quot;&quot;
 comma
 id|val
 op_amp
-l_int|0x0002
+id|AC97_EA_DRA
 ques
 c_cond
 l_string|&quot; DRA&quot;
@@ -11509,7 +11738,7 @@ l_string|&quot;&quot;
 comma
 id|val
 op_amp
-l_int|0x0001
+id|AC97_EA_VRA
 ques
 c_cond
 l_string|&quot; VRA&quot;
@@ -11522,7 +11751,7 @@ c_cond
 (paren
 id|ext
 op_amp
-l_int|1
+id|AC97_EI_VRA
 )paren
 (brace
 multiline_comment|/* VRA */
@@ -11551,7 +11780,7 @@ c_cond
 (paren
 id|ext
 op_amp
-l_int|0x0080
+id|AC97_EI_SDAC
 )paren
 (brace
 id|val
@@ -11580,7 +11809,7 @@ c_cond
 (paren
 id|ext
 op_amp
-l_int|0x0100
+id|AC97_EI_LDAC
 )paren
 (brace
 id|val
@@ -11630,7 +11859,7 @@ c_cond
 (paren
 id|ext
 op_amp
-l_int|0x0008
+id|AC97_EI_VRM
 )paren
 (brace
 id|val
@@ -11660,7 +11889,7 @@ c_cond
 (paren
 id|ext
 op_amp
-l_int|0x0004
+id|AC97_EI_SPDIF
 )paren
 op_logical_or
 (paren
@@ -11707,7 +11936,7 @@ l_string|&quot;SPDIF Control    :%s%s%s%s Category=0x%x Generation=%i%s%s%s&bsla
 comma
 id|val
 op_amp
-l_int|0x0001
+id|AC97_SC_PRO
 ques
 c_cond
 l_string|&quot; PRO&quot;
@@ -11716,7 +11945,7 @@ l_string|&quot; Consumer&quot;
 comma
 id|val
 op_amp
-l_int|0x0002
+id|AC97_SC_NAUDIO
 ques
 c_cond
 l_string|&quot; Non-audio&quot;
@@ -11725,7 +11954,7 @@ l_string|&quot; PCM&quot;
 comma
 id|val
 op_amp
-l_int|0x0004
+id|AC97_SC_COPY
 ques
 c_cond
 l_string|&quot; Copyright&quot;
@@ -11734,7 +11963,7 @@ l_string|&quot;&quot;
 comma
 id|val
 op_amp
-l_int|0x0008
+id|AC97_SC_PRE
 ques
 c_cond
 l_string|&quot; Preemph50/15&quot;
@@ -11744,15 +11973,15 @@ comma
 (paren
 id|val
 op_amp
-l_int|0x07f0
+id|AC97_SC_CC_MASK
 )paren
 op_rshift
-l_int|4
+id|AC97_SC_CC_SHIFT
 comma
 (paren
 id|val
 op_amp
-l_int|0x0800
+id|AC97_SC_L
 )paren
 op_rshift
 l_int|11
@@ -11769,10 +11998,10 @@ id|spdif_rates_cs4205
 (paren
 id|val
 op_amp
-l_int|0x3000
+id|AC97_SC_SPSR_MASK
 )paren
 op_rshift
-l_int|12
+id|AC97_SC_SPSR_SHIFT
 )braket
 suffix:colon
 id|spdif_rates
@@ -11780,10 +12009,10 @@ id|spdif_rates
 (paren
 id|val
 op_amp
-l_int|0x3000
+id|AC97_SC_SPSR_MASK
 )paren
 op_rshift
-l_int|12
+id|AC97_SC_SPSR_SHIFT
 )braket
 comma
 (paren
@@ -11796,7 +12025,7 @@ c_cond
 (paren
 id|val
 op_amp
-l_int|0x4000
+id|AC97_SC_DRS
 ques
 c_cond
 l_string|&quot; Validity&quot;
@@ -11807,7 +12036,7 @@ suffix:colon
 (paren
 id|val
 op_amp
-l_int|0x4000
+id|AC97_SC_DRS
 ques
 c_cond
 l_string|&quot; DRS&quot;
@@ -11825,7 +12054,7 @@ c_cond
 (paren
 id|val
 op_amp
-l_int|0x8000
+id|AC97_SC_V
 ques
 c_cond
 l_string|&quot; Enabled&quot;
@@ -11836,7 +12065,7 @@ suffix:colon
 (paren
 id|val
 op_amp
-l_int|0x8000
+id|AC97_SC_V
 ques
 c_cond
 l_string|&quot; Validity&quot;
@@ -11846,6 +12075,88 @@ l_string|&quot;&quot;
 )paren
 suffix:semicolon
 )brace
+id|__modem
+suffix:colon
+id|mext
+op_assign
+id|snd_ac97_read
+c_func
+(paren
+id|ac97
+comma
+id|AC97_EXTENDED_MID
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mext
+op_eq
+l_int|0
+)paren
+r_return
+suffix:semicolon
+id|snd_iprintf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;Extended modem ID: codec=%i %s%s%s%s%s&bslash;n&quot;
+comma
+(paren
+id|mext
+op_amp
+id|AC97_MEI_ADDR_MASK
+)paren
+op_rshift
+id|AC97_MEI_ADDR_SHIFT
+comma
+id|mext
+op_amp
+id|AC97_MEI_CID2
+ques
+c_cond
+l_string|&quot; CID2&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+id|mext
+op_amp
+id|AC97_MEI_CID1
+ques
+c_cond
+l_string|&quot; CID1&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+id|mext
+op_amp
+id|AC97_MEI_HEADSET
+ques
+c_cond
+l_string|&quot; HSET&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+id|mext
+op_amp
+id|AC97_MEI_LINE2
+ques
+c_cond
+l_string|&quot; LIN2&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+id|mext
+op_amp
+id|AC97_MEI_LINE1
+ques
+c_cond
+l_string|&quot; LIN1&quot;
+suffix:colon
+l_string|&quot;&quot;
+)paren
+suffix:semicolon
 )brace
 DECL|function|snd_ac97_proc_read
 r_static

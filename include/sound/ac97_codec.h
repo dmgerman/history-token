@@ -49,7 +49,7 @@ multiline_comment|/* range 0x28-0x3a - AUDIO AC&squot;97 2.0 extensions */
 DECL|macro|AC97_EXTENDED_ID
 mdefine_line|#define AC97_EXTENDED_ID&t;0x28&t;/* Extended Audio ID */
 DECL|macro|AC97_EXTENDED_STATUS
-mdefine_line|#define AC97_EXTENDED_STATUS&t;0x2a&t;/* Extended Audio Status */
+mdefine_line|#define AC97_EXTENDED_STATUS&t;0x2a&t;/* Extended Audio Status and Control */
 DECL|macro|AC97_PCM_FRONT_DAC_RATE
 mdefine_line|#define AC97_PCM_FRONT_DAC_RATE 0x2c&t;/* PCM Front DAC Rate */
 DECL|macro|AC97_PCM_SURR_DAC_RATE
@@ -67,11 +67,68 @@ mdefine_line|#define AC97_SURROUND_MASTER&t;0x38&t;/* Surround (Rear) Master Vol
 DECL|macro|AC97_SPDIF
 mdefine_line|#define AC97_SPDIF&t;&t;0x3a&t;/* S/PDIF control */
 multiline_comment|/* range 0x3c-0x58 - MODEM */
+DECL|macro|AC97_EXTENDED_MID
+mdefine_line|#define AC97_EXTENDED_MID&t;0x3c&t;/* Extended Modem ID */
+DECL|macro|AC97_EXTENDED_MSTATUS
+mdefine_line|#define AC97_EXTENDED_MSTATUS&t;0x3e&t;/* Extended Modem Status and Control */
+DECL|macro|AC97_LINE1_RATE
+mdefine_line|#define AC97_LINE1_RATE&t;&t;0x40&t;/* Line1 DAC/ADC Rate */
+DECL|macro|AC97_LINE2_RATE
+mdefine_line|#define AC97_LINE2_RATE&t;&t;0x42&t;/* Line2 DAC/ADC Rate */
+DECL|macro|AC97_HANDSET_RATE
+mdefine_line|#define AC97_HANDSET_RATE&t;0x44&t;/* Handset DAC/ADC Rate */
+DECL|macro|AC97_LINE1_LEVEL
+mdefine_line|#define AC97_LINE1_LEVEL&t;0x46&t;/* Line1 DAC/ADC Level */
+DECL|macro|AC97_LINE2_LEVEL
+mdefine_line|#define AC97_LINE2_LEVEL&t;0x48&t;/* Line2 DAC/ADC Level */
+DECL|macro|AC97_HANDSET_LEVEL
+mdefine_line|#define AC97_HANDSET_LEVEL&t;0x4a&t;/* Handset DAC/ADC Level */
+DECL|macro|AC97_GPIO_CFG
+mdefine_line|#define AC97_GPIO_CFG&t;&t;0x4c&t;/* GPIO Configuration */
+DECL|macro|AC97_GPIO_POLARITY
+mdefine_line|#define AC97_GPIO_POLARITY&t;0x4e&t;/* GPIO Pin Polarity/Type, 0=low, 1=high active */
+DECL|macro|AC97_GPIO_STICKY
+mdefine_line|#define AC97_GPIO_STICKY&t;0x50&t;/* GPIO Pin Sticky, 0=not, 1=sticky */
+DECL|macro|AC97_GPIO_WAKEUP
+mdefine_line|#define AC97_GPIO_WAKEUP&t;0x52&t;/* GPIO Pin Wakeup, 0=no int, 1=yes int */
+DECL|macro|AC97_GPIO_STATUS
+mdefine_line|#define AC97_GPIO_STATUS&t;0x54&t;/* GPIO Pin Status, slot 12 */
+DECL|macro|AC97_MISC_AFE
+mdefine_line|#define AC97_MISC_AFE&t;&t;0x56&t;/* Miscellaneous Modem AFE Status and Control */
 multiline_comment|/* range 0x5a-0x7b - Vendor Specific */
 DECL|macro|AC97_VENDOR_ID1
 mdefine_line|#define AC97_VENDOR_ID1&t;&t;0x7c&t;/* Vendor ID1 */
 DECL|macro|AC97_VENDOR_ID2
 mdefine_line|#define AC97_VENDOR_ID2&t;&t;0x7e&t;/* Vendor ID2 / revision */
+multiline_comment|/* basic capabilities (reset register) */
+DECL|macro|AC97_BC_DEDICATED_MIC
+mdefine_line|#define AC97_BC_DEDICATED_MIC&t;0x0001&t;/* Dedicated Mic PCM In Channel */
+DECL|macro|AC97_BC_RESERVED1
+mdefine_line|#define AC97_BC_RESERVED1&t;0x0002&t;/* Reserved (was Modem Line Codec support) */
+DECL|macro|AC97_BC_BASS_TREBLE
+mdefine_line|#define AC97_BC_BASS_TREBLE&t;0x0004&t;/* Bass &amp; Treble Control */
+DECL|macro|AC97_BC_SIM_STEREO
+mdefine_line|#define AC97_BC_SIM_STEREO&t;0x0008&t;/* Simulated stereo */
+DECL|macro|AC97_BC_HEADPHONE
+mdefine_line|#define AC97_BC_HEADPHONE&t;0x0010&t;/* Headphone Out Support */
+DECL|macro|AC97_BC_LOUDNESS
+mdefine_line|#define AC97_BC_LOUDNESS&t;0x0020&t;/* Loudness (bass boost) Supporqt */
+DECL|macro|AC97_BC_16BIT_DAC
+mdefine_line|#define AC97_BC_16BIT_DAC&t;0x0000&t;/* 16-bit DAC resolution */
+DECL|macro|AC97_BC_18BIT_DAC
+mdefine_line|#define AC97_BC_18BIT_DAC&t;0x0040&t;/* 18-bit DAC resolution */
+DECL|macro|AC97_BC_20BIT_DAC
+mdefine_line|#define AC97_BC_20BIT_DAC&t;0x0080&t;/* 20-bit DAC resolution */
+DECL|macro|AC97_BC_DAC_MASK
+mdefine_line|#define AC97_BC_DAC_MASK&t;0x00c0
+DECL|macro|AC97_BC_16BIT_ADC
+mdefine_line|#define AC97_BC_16BIT_ADC&t;0x0000&t;/* 16-bit ADC resolution */
+DECL|macro|AC97_BC_18BIT_ADC
+mdefine_line|#define AC97_BC_18BIT_ADC&t;0x0100&t;/* 18-bit ADC resolution */
+DECL|macro|AC97_BC_20BIT_ADC
+mdefine_line|#define AC97_BC_20BIT_ADC&t;0x0200&t;/* 20-bit ADC resolution */
+DECL|macro|AC97_BC_ADC_MASK
+mdefine_line|#define AC97_BC_ADC_MASK&t;0x0300
 multiline_comment|/* extended audio ID bit defines */
 DECL|macro|AC97_EI_VRA
 mdefine_line|#define AC97_EI_VRA&t;&t;0x0001&t;/* Variable bit rate supported */
@@ -96,9 +153,9 @@ mdefine_line|#define AC97_EI_AMAP&t;&t;0x0200&t;/* indicates optional slot/DAC m
 DECL|macro|AC97_EI_REV_MASK
 mdefine_line|#define AC97_EI_REV_MASK&t;0x0c00&t;/* AC&squot;97 revision mask */
 DECL|macro|AC97_EI_REV_22
-mdefine_line|#define AC97_EI_REV_22&t;&t;0x0100&t;/* AC&squot;97 revision 2.2 */
+mdefine_line|#define AC97_EI_REV_22&t;&t;0x0400&t;/* AC&squot;97 revision 2.2 */
 DECL|macro|AC97_EI_REV_SHIFT
-mdefine_line|#define AC97_EI_REV_SHIFT&t;8
+mdefine_line|#define AC97_EI_REV_SHIFT&t;10
 DECL|macro|AC97_EI_ADDR_MASK
 mdefine_line|#define AC97_EI_ADDR_MASK&t;0xc000&t;/* physical codec ID (address) */
 DECL|macro|AC97_EI_ADDR_SHIFT
@@ -153,10 +210,14 @@ DECL|macro|AC97_SC_PRE
 mdefine_line|#define AC97_SC_PRE&t;&t;0x0008&t;/* Preemphasis status */
 DECL|macro|AC97_SC_CC_MASK
 mdefine_line|#define AC97_SC_CC_MASK&t;&t;0x07f0&t;/* Category Code mask */
+DECL|macro|AC97_SC_CC_SHIFT
+mdefine_line|#define AC97_SC_CC_SHIFT&t;4
 DECL|macro|AC97_SC_L
 mdefine_line|#define AC97_SC_L&t;&t;0x0800&t;/* Generation Level status */
 DECL|macro|AC97_SC_SPSR_MASK
-mdefine_line|#define AC97_SC_SPSR_MASK&t;0xcfff&t;/* S/PDIF Sample Rate bits */
+mdefine_line|#define AC97_SC_SPSR_MASK&t;0x3000&t;/* S/PDIF Sample Rate bits */
+DECL|macro|AC97_SC_SPSR_SHIFT
+mdefine_line|#define AC97_SC_SPSR_SHIFT&t;12
 DECL|macro|AC97_SC_SPSR_44K
 mdefine_line|#define AC97_SC_SPSR_44K&t;0x0000&t;/* Use 44.1kHz Sample rate */
 DECL|macro|AC97_SC_SPSR_48K
@@ -167,6 +228,21 @@ DECL|macro|AC97_SC_DRS
 mdefine_line|#define AC97_SC_DRS&t;&t;0x4000&t;/* Double Rate S/PDIF */
 DECL|macro|AC97_SC_V
 mdefine_line|#define AC97_SC_V&t;&t;0x8000&t;/* Validity status */
+multiline_comment|/* extended modem ID bit defines */
+DECL|macro|AC97_MEI_LINE1
+mdefine_line|#define AC97_MEI_LINE1&t;&t;0x0001&t;/* Line1 present */
+DECL|macro|AC97_MEI_LINE2
+mdefine_line|#define AC97_MEI_LINE2&t;&t;0x0002&t;/* Line2 present */
+DECL|macro|AC97_MEI_HEADSET
+mdefine_line|#define AC97_MEI_HEADSET&t;0x0004&t;/* Headset present */
+DECL|macro|AC97_MEI_CID1
+mdefine_line|#define AC97_MEI_CID1&t;&t;0x0008&t;/* caller ID decode for Line1 is supported */
+DECL|macro|AC97_MEI_CID2
+mdefine_line|#define AC97_MEI_CID2&t;&t;0x0010&t;/* caller ID decode for Line2 is supported */
+DECL|macro|AC97_MEI_ADDR_MASK
+mdefine_line|#define AC97_MEI_ADDR_MASK&t;0xc000&t;/* physical codec ID (address) */
+DECL|macro|AC97_MEI_ADDR_SHIFT
+mdefine_line|#define AC97_MEI_ADDR_SHIFT&t;14
 multiline_comment|/* specific - SigmaTel */
 DECL|macro|AC97_SIGMATEL_ANALOG
 mdefine_line|#define AC97_SIGMATEL_ANALOG&t;0x6c&t;/* Analog Special */
@@ -222,10 +298,14 @@ mdefine_line|#define AC97_CXR_SPDIF_PCM&t;0x0
 DECL|macro|AC97_CXR_SPDIF_AC3
 mdefine_line|#define AC97_CXR_SPDIF_AC3&t;0x2
 multiline_comment|/* ac97-&gt;scaps */
+DECL|macro|AC97_SCAP_AUDIO
+mdefine_line|#define AC97_SCAP_AUDIO&t;&t;(1&lt;&lt;0)&t;/* audio AC&squot;97 codec */
+DECL|macro|AC97_SCAP_MODEM
+mdefine_line|#define AC97_SCAP_MODEM&t;&t;(1&lt;&lt;1)&t;/* modem AC&squot;97 codec */
 DECL|macro|AC97_SCAP_SURROUND_DAC
-mdefine_line|#define AC97_SCAP_SURROUND_DAC&t;(1&lt;&lt;0)&t;/* surround L&amp;R DACs are present */
+mdefine_line|#define AC97_SCAP_SURROUND_DAC&t;(1&lt;&lt;2)&t;/* surround L&amp;R DACs are present */
 DECL|macro|AC97_SCAP_CENTER_LFE_DAC
-mdefine_line|#define AC97_SCAP_CENTER_LFE_DAC (1&lt;&lt;1)&t;/* center and LFE DACs are present */
+mdefine_line|#define AC97_SCAP_CENTER_LFE_DAC (1&lt;&lt;3)&t;/* center and LFE DACs are present */
 multiline_comment|/* ac97-&gt;flags */
 DECL|macro|AC97_HAS_PC_BEEP
 mdefine_line|#define AC97_HAS_PC_BEEP&t;(1&lt;&lt;0)&t;/* force PC Speaker usage */
@@ -399,6 +479,12 @@ r_int
 id|ext_id
 suffix:semicolon
 multiline_comment|/* extended feature identification (register 28) */
+DECL|member|ext_mid
+r_int
+r_int
+id|ext_mid
+suffix:semicolon
+multiline_comment|/* extended modem ID (register 3C) */
 DECL|member|scaps
 r_int
 r_int

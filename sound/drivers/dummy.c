@@ -1977,7 +1977,7 @@ l_int|0
 )braket
 op_ne
 id|left
-op_logical_and
+op_logical_or
 id|dummy-&gt;mixer_volume
 (braket
 id|addr
