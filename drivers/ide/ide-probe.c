@@ -2269,7 +2269,6 @@ id|hwif-&gt;gendev
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PPC
 DECL|function|wait_hwif_ready
 r_static
 r_int
@@ -2421,7 +2420,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n; * This routine only knows how to look for drive units 0 and 1&n; * on an interface, so any setting of MAX_DRIVES &gt; 2 won&squot;t work here.&n; */
 DECL|function|probe_hwif
 r_static
@@ -2584,7 +2582,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC
 multiline_comment|/* This is needed on some PPCs and a bunch of BIOS-less embedded&n;&t; * platforms. Typical cases are:&n;&t; * &n;&t; *  - The firmware hard reset the disk before booting the kernel,&n;&t; *    the drive is still doing it&squot;s poweron-reset sequence, that&n;&t; *    can take up to 30 seconds&n;&t; *  - The firmware does nothing (or no firmware), the device is&n;&t; *    still in POST state (same as above actually).&n;&t; *  - Some CD/DVD/Writer combo drives tend to drive the bus during&n;&t; *    their reset sequence even when they are non-selected slave&n;&t; *    devices, thus preventing discovery of the main HD&n;&t; *    &n;&t; *  Doing this wait-for-busy should not harm any existing configuration&n;&t; *  (at least things won&squot;t be worse than what current code does, that&n;&t; *  is blindly go &amp; talk to the drive) and fix some issues like the&n;&t; *  above.&n;&t; *  &n;&t; *  BenH.&n;&t; */
 r_if
 c_cond
@@ -2604,7 +2601,6 @@ comma
 id|hwif-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PPC */
 multiline_comment|/*&n;&t; * Second drive should only exist if first drive was found,&n;&t; * but a lot of cdrom drives are configured as single slaves.&n;&t; */
 r_for
 c_loop
