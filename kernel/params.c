@@ -1045,6 +1045,9 @@ r_struct
 id|kernel_param
 id|kp
 suffix:semicolon
+r_char
+id|save
+suffix:semicolon
 multiline_comment|/* Get the name right for errors. */
 id|kp.name
 op_assign
@@ -1082,9 +1085,6 @@ r_do
 r_int
 id|len
 suffix:semicolon
-r_char
-id|save
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1119,7 +1119,7 @@ comma
 l_string|&quot;,&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Temporarily nul-terminate and parse */
+multiline_comment|/* nul-terminate and parse */
 id|save
 op_assign
 id|val
@@ -1151,19 +1151,6 @@ op_amp
 id|kp
 )paren
 suffix:semicolon
-(paren
-(paren
-r_char
-op_star
-)paren
-id|val
-)paren
-(braket
-id|len
-)braket
-op_assign
-id|save
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1191,11 +1178,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|val
-(braket
-op_minus
-l_int|1
-)braket
+id|save
 op_eq
 l_char|&squot;,&squot;
 )paren

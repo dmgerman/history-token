@@ -56,11 +56,6 @@ mdefine_line|#define CMOS_WRITE(x,y)
 DECL|macro|RTC_INIT
 mdefine_line|#define RTC_INIT() (-1)
 macro_line|#endif
-multiline_comment|/* conversions to and from the stupid RTC internal format */
-DECL|macro|BCD_TO_BIN
-mdefine_line|#define BCD_TO_BIN(x) x = (((x &amp; 0xf0) &gt;&gt; 3) * 5 + (x &amp; 0xf))
-DECL|macro|BIN_TO_BCD
-mdefine_line|#define BIN_TO_BCD(x) x = (x % 10) | ((x / 10) &lt;&lt; 4) 
 multiline_comment|/*&n; * The struct used to pass data via the following ioctl. Similar to the&n; * struct tm in &lt;time.h&gt;, but it needs to be here so that the kernel &n; * source is self contained, allowing cross-compiles, etc. etc.&n; */
 DECL|struct|rtc_time
 r_struct

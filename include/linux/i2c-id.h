@@ -198,6 +198,10 @@ DECL|macro|I2C_DRIVERID_VT8231
 mdefine_line|#define I2C_DRIVERID_VT8231 1034
 DECL|macro|I2C_DRIVERID_SMARTBATT
 mdefine_line|#define I2C_DRIVERID_SMARTBATT 1035
+DECL|macro|I2C_DRIVERID_BMCSENSORS
+mdefine_line|#define I2C_DRIVERID_BMCSENSORS 1036
+DECL|macro|I2C_DRIVERID_FS451
+mdefine_line|#define I2C_DRIVERID_FS451 1037
 multiline_comment|/*&n; * ---- Adapter types ----------------------------------------------------&n; *&n; * First, we distinguish between several algorithms to access the hardware&n; * interface types, as a PCF 8584 needs other care than a bit adapter.&n; */
 DECL|macro|I2C_ALGO_NONE
 mdefine_line|#define I2C_ALGO_NONE&t;0x000000
@@ -221,6 +225,10 @@ DECL|macro|I2C_ALGO_SAA7134
 mdefine_line|#define I2C_ALGO_SAA7134 0x090000
 DECL|macro|I2C_ALGO_MPC824X
 mdefine_line|#define I2C_ALGO_MPC824X 0x0a0000&t;/* Motorola 8240 / 8245         */
+DECL|macro|I2C_ALGO_IPMI
+mdefine_line|#define I2C_ALGO_IPMI &t;0x0b0000&t;/* IPMI dummy adapter */
+DECL|macro|I2C_ALGO_IPMB
+mdefine_line|#define I2C_ALGO_IPMB &t;0x0c0000&t;/* IPMB adapter */
 DECL|macro|I2C_ALGO_EC
 mdefine_line|#define I2C_ALGO_EC     0x100000        /* ACPI embedded controller     */
 DECL|macro|I2C_ALGO_MPC8XX
@@ -267,6 +275,8 @@ DECL|macro|I2C_HW_B_PPORT
 mdefine_line|#define I2C_HW_B_PPORT  0x0c&t;/* Primitive parallel port adapter&t;*/
 DECL|macro|I2C_HW_B_SAVG
 mdefine_line|#define I2C_HW_B_SAVG&t;0x0d&t;/* Savage 4                     &t;*/
+DECL|macro|I2C_HW_B_SCX200
+mdefine_line|#define I2C_HW_B_SCX200&t;0x0e&t;/* Nat&squot;l Semi SCx200 I2C        &t;*/
 DECL|macro|I2C_HW_B_RIVA
 mdefine_line|#define I2C_HW_B_RIVA&t;0x10&t;/* Riva based graphics cards&t;&t;*/
 DECL|macro|I2C_HW_B_IOC
@@ -320,8 +330,16 @@ DECL|macro|I2C_HW_SMBUS_SIS645
 mdefine_line|#define I2C_HW_SMBUS_SIS645&t;0x09
 DECL|macro|I2C_HW_SMBUS_AMD8111
 mdefine_line|#define I2C_HW_SMBUS_AMD8111&t;0x0a
+DECL|macro|I2C_HW_SMBUS_SCX200
+mdefine_line|#define I2C_HW_SMBUS_SCX200&t;0x0b
 multiline_comment|/* --- ISA pseudo-adapter&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_ISA
 mdefine_line|#define I2C_HW_ISA 0x00
+multiline_comment|/* --- IPMI pseudo-adapter&t;&t;&t;&t;&t;&t;*/
+DECL|macro|I2C_HW_IPMI
+mdefine_line|#define I2C_HW_IPMI 0x00
+multiline_comment|/* --- IPMB adapter&t;&t;&t;&t;&t;&t;*/
+DECL|macro|I2C_HW_IPMB
+mdefine_line|#define I2C_HW_IPMB 0x00
 macro_line|#endif /* I2C_ID_H */
 eof

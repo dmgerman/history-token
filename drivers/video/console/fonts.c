@@ -3,10 +3,10 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/font.h&gt;
 macro_line|#if defined(__mc68000__) || defined(CONFIG_APUS)
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#endif
+macro_line|#include &quot;font.h&quot;
 DECL|macro|NO_FONTS
 mdefine_line|#define NO_FONTS
 DECL|variable|fonts
@@ -282,31 +282,6 @@ r_return
 id|g
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
-suffix:semicolon
-macro_line|#endif
 DECL|variable|fonts
 id|EXPORT_SYMBOL
 c_func

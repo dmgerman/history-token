@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;asm/vsyscall.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
 DECL|variable|jiffies_64

@@ -45,14 +45,6 @@ macro_line|#endif
 multiline_comment|/* change this if you have some constant time drift */
 DECL|macro|USECS_PER_JIFFY
 mdefine_line|#define USECS_PER_JIFFY&t;(1000000/HZ)
-macro_line|#ifndef BCD_TO_BIN
-DECL|macro|BCD_TO_BIN
-mdefine_line|#define BCD_TO_BIN(val) ((val)=((val)&amp;15) + ((val)&gt;&gt;4)*10)
-macro_line|#endif
-macro_line|#ifndef BIN_TO_BCD
-DECL|macro|BIN_TO_BCD
-mdefine_line|#define BIN_TO_BCD(val) ((val)=(((val)/10)&lt;&lt;4) + (val)%10)
-macro_line|#endif
 DECL|function|dummy_set_rtc
 r_static
 r_int

@@ -1,5 +1,12 @@
 multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * [ Initialisation is based on Linus&squot;  ]&n; * [ uhci code and gregs ohci fragments ]&n; * [ (C) Copyright 1999 Linus Torvalds  ]&n; * [ (C) Copyright 1999 Gregory P. Smith]&n; * &n; * &n; * OHCI is the main &quot;non-Intel/VIA&quot; standard for USB 1.1 host controller&n; * interfaces (though some non-x86 Intel chips use it).  It supports&n; * smarter hardware than UHCI.  A download link for the spec available&n; * through the http://www.usb.org website.&n; *&n; * History:&n; * &n; * 2002/09/03 get rid of ed hashtables, rework periodic scheduling and&n; * &t;bandwidth accounting; if debugging, show schedules in driverfs&n; * 2002/07/19 fixes to management of ED and schedule state.&n; * 2002/06/09 SA-1111 support (Christopher Hoover)&n; * 2002/06/01 remember frame when HC won&squot;t see EDs any more; use that info&n; *&t;to fix urb unlink races caused by interrupt latency assumptions;&n; *&t;minor ED field and function naming updates&n; * 2002/01/18 package as a patch for 2.5.3; this should match the&n; *&t;2.4.17 kernel modulo some bugs being fixed.&n; *&n; * 2001/10/18 merge pmac cleanup (Benjamin Herrenschmidt) and bugfixes&n; *&t;from post-2.4.5 patches.&n; * 2001/09/20 URB_ZERO_PACKET support; hcca_dma portability, OPTi warning&n; * 2001/09/07 match PCI PM changes, errnos from Linus&squot; tree&n; * 2001/05/05 fork 2.4.5 version into &quot;hcd&quot; framework, cleanup, simplify;&n; *&t;pbook pci quirks gone (please fix pbook pci sw!) (db)&n; *&n; * 2001/04/08 Identify version on module load (gb)&n; * 2001/03/24 td/ed hashing to remove bus_to_virt (Steve Longerbeam);&n; &t;pci_map_single (db)&n; * 2001/03/21 td and dev/ed allocation uses new pci_pool API (db)&n; * 2001/03/07 hcca allocation uses pci_alloc_consistent (Steve Longerbeam)&n; *&n; * 2000/09/26 fixed races in removing the private portion of the urb&n; * 2000/09/07 disable bulk and control lists when unlinking the last&n; *&t;endpoint descriptor in order to avoid unrecoverable errors on&n; *&t;the Lucent chips. (rwc@sgi)&n; * 2000/08/29 use bandwidth claiming hooks (thanks Randy!), fix some&n; *&t;urb unlink probs, indentation fixes&n; * 2000/08/11 various oops fixes mostly affecting iso and cleanup from&n; *&t;device unplugs.&n; * 2000/06/28 use PCI hotplug framework, for better power management&n; *&t;and for Cardbus support (David Brownell)&n; * 2000/earlier:  fixes for NEC/Lucent chips; suspend/resume handling&n; *&t;when the controller loses power; handle UE; cleanup; ...&n; *&n; * v5.2 1999/12/07 URB 3rd preview, &n; * v5.1 1999/11/30 URB 2nd preview, cpia, (usb-scsi)&n; * v5.0 1999/11/22 URB Technical preview, Paul Mackerras powerbook susp/resume &n; * &t;i386: HUB, Keyboard, Mouse, Printer &n; *&n; * v4.3 1999/10/27 multiple HCs, bulk_request&n; * v4.2 1999/09/05 ISO API alpha, new dev alloc, neg Error-codes&n; * v4.1 1999/08/27 Randy Dunlap&squot;s - ISO API first impl.&n; * v4.0 1999/08/18 &n; * v3.0 1999/06/25 &n; * v2.1 1999/05/09  code clean up&n; * v2.0 1999/05/04 &n; * v1.0 1999/04/27 initial release&n; *&n; * This file is licenced under the GPL.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_USB_DEBUG
+DECL|macro|DEBUG
+macro_line|#&t;define DEBUG
+macro_line|#else
+DECL|macro|DEBUG
+macro_line|#&t;undef DEBUG
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -13,13 +20,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;  /* for in_interrupt () */
-macro_line|#ifdef CONFIG_USB_DEBUG
-DECL|macro|DEBUG
-macro_line|#&t;define DEBUG
-macro_line|#else
-DECL|macro|DEBUG
-macro_line|#&t;undef DEBUG
-macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &quot;../core/hcd.h&quot;
@@ -933,9 +933,12 @@ op_amp
 id|OHCI_CTRL_IR
 )paren
 (brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;USB HC TakeOver from BIOS/SMM&quot;
+op_star
+id|ohci-&gt;hcd.controller
+comma
+l_string|&quot;USB HC TakeOver from BIOS/SMM&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* this timeout is arbitrary.  we make it long, so systems&n;&t;&t; * depending on usb keyboards may be usable even if the&n;&t;&t; * BIOS/SMM code seems pretty broken.&n;&t;&t; */
@@ -986,9 +989,12 @@ op_eq
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;USB HC TakeOver failed!&quot;
+op_star
+id|ohci-&gt;hcd.controller
+comma
+l_string|&quot;USB HC TakeOver failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1007,9 +1013,12 @@ op_amp
 id|ohci-&gt;regs-&gt;intrdisable
 )paren
 suffix:semicolon
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;USB HC reset_hc %s: ctrl = 0x%x ;&quot;
+op_star
+id|ohci-&gt;hcd.controller
+comma
+l_string|&quot;USB HC reset_hc %s: ctrl = 0x%x ;&bslash;n&quot;
 comma
 id|ohci-&gt;hcd.self.bus_name
 comma
@@ -1086,8 +1095,11 @@ op_eq
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 (paren
+op_star
+id|ohci-&gt;hcd.controller
+comma
 l_string|&quot;USB HC reset timed out!&quot;
 )paren
 suffix:semicolon
@@ -1629,7 +1641,6 @@ id|hcd-&gt;self.bus_name
 )paren
 suffix:semicolon
 singleline_comment|// e.g. due to PCI Master/Target Abort
-macro_line|#ifdef&t;DEBUG
 id|ohci_dump
 (paren
 id|ohci
@@ -1637,7 +1648,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif
 id|hc_reset
 (paren
 id|ohci
@@ -1773,11 +1783,12 @@ id|hcd_to_ohci
 id|hcd
 )paren
 suffix:semicolon
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;%s: stop %s controller%s&quot;
+op_star
+id|hcd-&gt;controller
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;stop %s controller%s&bslash;n&quot;
 comma
 id|hcfs2string
 (paren
@@ -1794,7 +1805,6 @@ suffix:colon
 l_string|&quot;&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;DEBUG
 id|ohci_dump
 (paren
 id|ohci
@@ -1802,7 +1812,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

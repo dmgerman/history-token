@@ -12532,12 +12532,10 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|tty_register_devfs
+id|tty_register_device
 (paren
 op_amp
 id|console_driver
-comma
-id|DEVFS_FL_DEFAULT
 comma
 id|console_driver.minor_start
 op_plus

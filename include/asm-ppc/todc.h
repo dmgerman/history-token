@@ -567,14 +567,6 @@ DECL|macro|TODC_ALLOC
 mdefine_line|#define&t;TODC_ALLOC()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;static todc_info_t todc_info_alloc;&t;&t;&t;&t;&bslash;&n;&t;todc_info_t *todc_info = &amp;todc_info_alloc;
 DECL|macro|TODC_INIT
 mdefine_line|#define&t;TODC_INIT(clock_type, as0, as1, data, bits) {&t;&t;&t;&bslash;&n;&t;todc_info-&gt;rtc_type = clock_type;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;nvram_as0  = (unsigned char *)(as0);&t;&t;&t;&bslash;&n;&t;todc_info-&gt;nvram_as1  = (unsigned char *)(as1);&t;&t;&t;&bslash;&n;&t;todc_info-&gt;nvram_data = (unsigned char *)(data);&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;as0_bits = (bits);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;year          = clock_type ##_YEAR;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;month         = clock_type ##_MONTH;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;day_of_month  = clock_type ##_DOM;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;day_of_week   = clock_type ##_DOW;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;hours         = clock_type ##_HOURS;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;minutes       = clock_type ##_MINUTES;&t;&t;&bslash;&n;&t;todc_info-&gt;seconds       = clock_type ##_SECONDS;&t;&t;&bslash;&n;&t;todc_info-&gt;control_b     = clock_type ##_CNTL_B;&t;&t;&bslash;&n;&t;todc_info-&gt;control_a     = clock_type ##_CNTL_A;&t;&t;&bslash;&n;&t;todc_info-&gt;watchdog      = clock_type ##_WATCHDOG;&t;&t;&bslash;&n;&t;todc_info-&gt;interrupts    = clock_type ##_INTERRUPTS;&t;&t;&bslash;&n;&t;todc_info-&gt;alarm_date    = clock_type ##_ALARM_DATE;&t;&t;&bslash;&n;&t;todc_info-&gt;alarm_hour    = clock_type ##_ALARM_HOUR;&t;&t;&bslash;&n;&t;todc_info-&gt;alarm_minutes = clock_type ##_ALARM_MINUTES;&t;&t;&bslash;&n;&t;todc_info-&gt;alarm_seconds = clock_type ##_ALARM_SECONDS;&t;&t;&bslash;&n;&t;todc_info-&gt;century       = clock_type ##_CENTURY;&t;&t;&bslash;&n;&t;todc_info-&gt;flags         = clock_type ##_FLAGS;&t;&t;&t;&bslash;&n;}
-macro_line|#ifndef BCD_TO_BIN
-DECL|macro|BCD_TO_BIN
-mdefine_line|#define BCD_TO_BIN(val) ((val)=((val)&amp;15) + ((val)&gt;&gt;4)*10)
-macro_line|#endif
-macro_line|#ifndef BIN_TO_BCD
-DECL|macro|BIN_TO_BCD
-mdefine_line|#define BIN_TO_BCD(val) ((val)=(((val)/10)&lt;&lt;4) + (val)%10)
-macro_line|#endif
 r_extern
 id|todc_info_t
 op_star

@@ -29,6 +29,8 @@ DECL|macro|STACK_MAGIC
 mdefine_line|#define STACK_MAGIC&t;0xdeadbeef
 DECL|macro|ARRAY_SIZE
 mdefine_line|#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+DECL|macro|ALIGN
+mdefine_line|#define ALIGN(x,a) (((x)+(a)-1)&amp;~((a)-1))
 DECL|macro|KERN_EMERG
 mdefine_line|#define&t;KERN_EMERG&t;&quot;&lt;0&gt;&quot;&t;/* system is unusable&t;&t;&t;*/
 DECL|macro|KERN_ALERT

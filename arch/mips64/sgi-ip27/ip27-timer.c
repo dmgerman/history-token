@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;&t;&t;
+macro_line|#include &lt;linux/bcd.h&gt;&t;&t;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/sgialib.h&gt;
 macro_line|#include &lt;asm/sn/ioc3.h&gt;

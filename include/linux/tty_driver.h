@@ -528,5 +528,10 @@ DECL|macro|SERIAL_TYPE_NORMAL
 mdefine_line|#define SERIAL_TYPE_NORMAL&t;1
 DECL|macro|SERIAL_TYPE_CALLOUT
 mdefine_line|#define SERIAL_TYPE_CALLOUT&t;2
+r_extern
+r_struct
+id|device_class
+id|tty_devclass
+suffix:semicolon
 macro_line|#endif /* #ifdef _LINUX_TTY_DRIVER_H */
 eof

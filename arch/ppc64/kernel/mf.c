@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/iSeries/mf_proc.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_proc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/bcd.h&gt;
 r_extern
 r_struct
 id|pci_dev

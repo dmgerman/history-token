@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;

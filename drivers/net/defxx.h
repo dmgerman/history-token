@@ -3695,9 +3695,6 @@ DECL|macro|XMT_BUFF_K_SA
 mdefine_line|#define XMT_BUFF_K_SA&t;&t;7&t;&t;&t;&t;/* six byte source address */
 DECL|macro|XMT_BUFF_K_DATA
 mdefine_line|#define XMT_BUFF_K_DATA&t;&t;13&t;&t;&t;&t;/* offset to start of packet data */
-multiline_comment|/*&n; * Macro evaluates to &quot;value&quot; aligned to &quot;size&quot; bytes.  Make sure that&n; * &quot;size&quot; is greater than 0 bytes.&n; */
-DECL|macro|ALIGN
-mdefine_line|#define ALIGN(value,size) ((value + (size - 1)) &amp; ~(size - 1))
 multiline_comment|/* Macro for checking a &quot;value&quot; is within a specific range */
 DECL|macro|IN_RANGE
 mdefine_line|#define IN_RANGE(value,low,high) ((value &gt;= low) &amp;&amp; (value &lt;= high))

@@ -654,21 +654,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef _DEBUG_REFCOUNT
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;capiminor_alloc %d&bslash;n&quot;
-comma
-id|GET_USE_COUNT
-c_func
-(paren
-id|THIS_MODULE
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|memset
 c_func
 (paren
@@ -894,21 +879,6 @@ id|mp
 suffix:semicolon
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-macro_line|#ifdef _DEBUG_REFCOUNT
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;capiminor_free %d&bslash;n&quot;
-comma
-id|GET_USE_COUNT
-c_func
-(paren
-id|THIS_MODULE
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|capiminor_find
 r_struct
@@ -4564,21 +4534,6 @@ op_star
 )paren
 id|mp
 suffix:semicolon
-macro_line|#ifdef _DEBUG_REFCOUNT
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;capi_tty_open %d&bslash;n&quot;
-comma
-id|GET_USE_COUNT
-c_func
-(paren
-id|THIS_MODULE
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

@@ -123,7 +123,7 @@ id|agp
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|maxes_table
 r_static
 r_struct
 id|agp_max_table
@@ -131,7 +131,6 @@ id|maxes_table
 (braket
 l_int|9
 )braket
-id|__initdata
 op_assign
 (brace
 (brace
@@ -192,7 +191,6 @@ suffix:semicolon
 DECL|function|agp_find_max
 r_static
 r_int
-id|__init
 id|agp_find_max
 (paren
 r_void
