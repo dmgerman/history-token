@@ -4221,36 +4221,6 @@ id|ret
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|function|handle_diverter
-r_static
-r_inline
-r_void
-id|handle_diverter
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-(brace
-macro_line|#ifdef CONFIG_NET_DIVERT
-multiline_comment|/* if diversion is supported on device, then divert */
-r_if
-c_cond
-(paren
-id|skb-&gt;dev-&gt;divert
-op_logical_and
-id|skb-&gt;dev-&gt;divert-&gt;divert
-)paren
-id|divert_frame
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
 DECL|function|__handle_bridge
 r_static
 r_inline
@@ -8400,7 +8370,6 @@ op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_NET_DIVERT
 id|ret
 op_assign
 id|alloc_divert_blk
@@ -8417,7 +8386,6 @@ id|ret
 r_goto
 id|out
 suffix:semicolon
-macro_line|#endif /* CONFIG_NET_DIVERT */
 id|dev-&gt;iflink
 op_assign
 op_minus
@@ -8677,14 +8645,12 @@ id|ret
 suffix:semicolon
 id|out_err
 suffix:colon
-macro_line|#ifdef CONFIG_NET_DIVERT
 id|free_divert_blk
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 r_goto
 id|out
 suffix:semicolon
@@ -9277,14 +9243,12 @@ op_logical_neg
 id|dev-&gt;master
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_DIVERT
 id|free_divert_blk
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 id|kobject_unregister
 c_func
 (paren
