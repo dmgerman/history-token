@@ -1006,6 +1006,23 @@ op_star
 id|fsdqops
 )paren
 suffix:semicolon
+DECL|struct|quota_module_name
+r_struct
+id|quota_module_name
+(brace
+DECL|member|qm_fmt_id
+r_int
+id|qm_fmt_id
+suffix:semicolon
+DECL|member|qm_mod_name
+r_char
+op_star
+id|qm_mod_name
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|INIT_QUOTA_MODULE_NAMES
+mdefine_line|#define INIT_QUOTA_MODULE_NAMES {&bslash;&n;&t;{QFMT_VFS_OLD, &quot;quota_v1&quot;},&bslash;&n;&t;{QFMT_VFS_V0, &quot;quota_v2&quot;},&bslash;&n;&t;{0, NULL}}
 macro_line|#else
 macro_line|# /* nodep */ include &lt;sys/cdefs.h&gt;
 id|__BEGIN_DECLS
