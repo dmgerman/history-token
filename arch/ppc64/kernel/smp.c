@@ -2337,7 +2337,7 @@ macro_line|#ifdef CONFIG_DEBUGGER
 r_case
 id|PPC_MSG_DEBUGGER_BREAK
 suffix:colon
-id|debugger
+id|debugger_ipi
 c_func
 (paren
 id|regs
