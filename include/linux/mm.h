@@ -274,13 +274,6 @@ r_int
 id|index
 suffix:semicolon
 multiline_comment|/* Our offset within mapping. */
-DECL|member|next_hash
-r_struct
-id|page
-op_star
-id|next_hash
-suffix:semicolon
-multiline_comment|/* Next page sharing our hash bucket in&n;&t;&t;&t;&t;&t;   the pagecache hash table. */
 DECL|member|count
 id|atomic_t
 id|count
@@ -298,21 +291,12 @@ id|list_head
 id|lru
 suffix:semicolon
 multiline_comment|/* Pageout list, eg. active_list;&n;&t;&t;&t;&t;&t;   protected by pagemap_lru_lock !! */
-DECL|member|pprev_hash
-r_struct
-id|page
-op_star
-op_star
-id|pprev_hash
+DECL|member|private
+r_int
+r_int
+r_private
 suffix:semicolon
-multiline_comment|/* Complement to *next_hash. */
-DECL|member|buffers
-r_struct
-id|buffer_head
-op_star
-id|buffers
-suffix:semicolon
-multiline_comment|/* Buffer maps us to a disk block. */
+multiline_comment|/* fs-private opaque data */
 multiline_comment|/*&n;&t; * On machines where all RAM is mapped into kernel address space,&n;&t; * we can simply calculate the virtual address. On machines with&n;&t; * highmem some memory is mapped into kernel virtual memory&n;&t; * dynamically, so we need a place to store that address.&n;&t; * Note that this field could be 16 bits on x86 ... ;)&n;&t; *&n;&t; * Architectures with slow multiplication can define&n;&t; * WANT_PAGE_VIRTUAL in asm/page.h&n;&t; */
 macro_line|#if defined(CONFIG_HIGHMEM) || defined(WANT_PAGE_VIRTUAL)
 DECL|member|virtual
@@ -326,7 +310,7 @@ DECL|typedef|mem_map_t
 )brace
 id|mem_map_t
 suffix:semicolon
-multiline_comment|/*&n; * Methods to modify the page usage count.&n; *&n; * What counts for a page usage:&n; * - cache mapping   (page-&gt;mapping)&n; * - disk mapping    (page-&gt;buffers)&n; * - page mapped in a task&squot;s page tables, each mapping&n; *   is counted separately&n; *&n; * Also, many kernel routines increase the page count before a critical&n; * routine so they can be sure the page doesn&squot;t go away from under them.&n; */
+multiline_comment|/*&n; * Methods to modify the page usage count.&n; *&n; * What counts for a page usage:&n; * - cache mapping   (page-&gt;mapping)&n; * - private data    (page-&gt;private)&n; * - page mapped in a task&squot;s page tables, each mapping&n; *   is counted separately&n; *&n; * Also, many kernel routines increase the page count before a critical&n; * routine so they can be sure the page doesn&squot;t go away from under them.&n; */
 DECL|macro|get_page
 mdefine_line|#define get_page(p)&t;&t;atomic_inc(&amp;(p)-&gt;count)
 DECL|macro|put_page
@@ -337,7 +321,7 @@ DECL|macro|page_count
 mdefine_line|#define page_count(p)&t;&t;atomic_read(&amp;(p)-&gt;count)
 DECL|macro|set_page_count
 mdefine_line|#define set_page_count(p,v) &t;atomic_set(&amp;(p)-&gt;count, v)
-multiline_comment|/*&n; * Various page-&gt;flags bits:&n; *&n; * PG_reserved is set for special pages, which can never be swapped&n; * out. Some of them might not even exist (eg empty_bad_page)...&n; *&n; * Multiple processes may &quot;see&quot; the same page. E.g. for untouched&n; * mappings of /dev/null, all processes see the same page full of&n; * zeroes, and text pages of executables and shared libraries have&n; * only one copy in memory, at most, normally.&n; *&n; * For the non-reserved pages, page-&gt;count denotes a reference count.&n; *   page-&gt;count == 0 means the page is free.&n; *   page-&gt;count == 1 means the page is used for exactly one purpose&n; *   (e.g. a private data page of one process).&n; *&n; * A page may be used for kmalloc() or anyone else who does a&n; * __get_free_page(). In this case the page-&gt;count is at least 1, and&n; * all other fields are unused but should be 0 or NULL. The&n; * management of this page is the responsibility of the one who uses&n; * it.&n; *&n; * The other pages (we may call them &quot;process pages&quot;) are completely&n; * managed by the Linux memory manager: I/O, buffers, swapping etc.&n; * The following discussion applies only to them.&n; *&n; * A page may belong to an inode&squot;s memory mapping. In this case,&n; * page-&gt;mapping is the pointer to the inode, and page-&gt;index is the&n; * file offset of the page, in units of PAGE_CACHE_SIZE.&n; *&n; * A page may have buffers allocated to it. In this case,&n; * page-&gt;buffers is a circular list of these buffer heads. Else,&n; * page-&gt;buffers == NULL.&n; *&n; * For pages belonging to inodes, the page-&gt;count is the number of&n; * attaches, plus 1 if buffers are allocated to the page, plus one&n; * for the page cache itself.&n; *&n; * All pages belonging to an inode are in these doubly linked lists:&n; * mapping-&gt;clean_pages, mapping-&gt;dirty_pages and mapping-&gt;locked_pages;&n; * using the page-&gt;list list_head. These fields are also used for&n; * freelist managemet (when page-&gt;count==0).&n; *&n; * There is also a hash table mapping (mapping,index) to the page&n; * in memory if present. The lists for this hash table use the fields&n; * page-&gt;next_hash and page-&gt;pprev_hash.&n; *&n; * All process pages can do I/O:&n; * - inode pages may need to be read from disk,&n; * - inode pages which have been modified and are MAP_SHARED may need&n; *   to be written to disk,&n; * - private pages which have been modified may need to be swapped out&n; *   to swap space and (later) to be read back into memory.&n; * During disk I/O, PG_locked is used. This bit is set before I/O&n; * and reset when I/O completes. page_waitqueue(page) is a wait queue of all&n; * tasks waiting for the I/O on this page to complete.&n; * PG_uptodate tells whether the page&squot;s contents is valid.&n; * When a read completes, the page becomes uptodate, unless a disk I/O&n; * error happened.&n; *&n; * For choosing which pages to swap out, inode pages carry a&n; * PG_referenced bit, which is set any time the system accesses&n; * that page through the (mapping,index) hash table. This referenced&n; * bit, together with the referenced bit in the page tables, is used&n; * to manipulate page-&gt;age and move the page across the active,&n; * inactive_dirty and inactive_clean lists.&n; *&n; * Note that the referenced bit, the page-&gt;lru list_head and the&n; * active, inactive_dirty and inactive_clean lists are protected by&n; * the pagemap_lru_lock, and *NOT* by the usual PG_locked bit!&n; *&n; * PG_skip is used on sparc/sparc64 architectures to &quot;skip&quot; certain&n; * parts of the address space.&n; *&n; * PG_error is set to indicate that an I/O error occurred on this page.&n; *&n; * PG_arch_1 is an architecture specific page state bit.  The generic&n; * code guarantees that this bit is cleared for a page when it first&n; * is entered into the page cache.&n; *&n; * PG_highmem pages are not permanently mapped into the kernel virtual&n; * address space, they need to be kmapped separately for doing IO on&n; * the pages. The struct page (these bits with information) are always&n; * mapped into kernel address space...&n; */
+multiline_comment|/*&n; * Various page-&gt;flags bits:&n; *&n; * PG_reserved is set for special pages, which can never be swapped&n; * out. Some of them might not even exist (eg empty_bad_page)...&n; *&n; * Multiple processes may &quot;see&quot; the same page. E.g. for untouched&n; * mappings of /dev/null, all processes see the same page full of&n; * zeroes, and text pages of executables and shared libraries have&n; * only one copy in memory, at most, normally.&n; *&n; * For the non-reserved pages, page-&gt;count denotes a reference count.&n; *   page-&gt;count == 0 means the page is free.&n; *   page-&gt;count == 1 means the page is used for exactly one purpose&n; *   (e.g. a private data page of one process).&n; *&n; * A page may be used for kmalloc() or anyone else who does a&n; * __get_free_page(). In this case the page-&gt;count is at least 1, and&n; * all other fields are unused but should be 0 or NULL. The&n; * management of this page is the responsibility of the one who uses&n; * it.&n; *&n; * The other pages (we may call them &quot;process pages&quot;) are completely&n; * managed by the Linux memory manager: I/O, buffers, swapping etc.&n; * The following discussion applies only to them.&n; *&n; * A page may belong to an inode&squot;s memory mapping. In this case,&n; * page-&gt;mapping is the pointer to the inode, and page-&gt;index is the&n; * file offset of the page, in units of PAGE_CACHE_SIZE.&n; *&n; * A page contains an opaque `private&squot; member, which belongs to the&n; * page&squot;s address_space.  Usually, this is the address of a circular&n; * list of the page&squot;s disk buffers.&n; *&n; * The PG_private bitflag is set if page-&gt;private contains a valid&n; * value.&n; * For pages belonging to inodes, the page-&gt;count is the number of&n; * attaches, plus 1 if `private&squot; contains something, plus one for&n; * the page cache itself.&n; *&n; * All pages belonging to an inode are in these doubly linked lists:&n; * mapping-&gt;clean_pages, mapping-&gt;dirty_pages and mapping-&gt;locked_pages;&n; * using the page-&gt;list list_head. These fields are also used for&n; * freelist managemet (when page-&gt;count==0).&n; *&n; * There is also a per-mapping radix tree mapping index to the page&n; * in memory if present. The tree is rooted at mapping-&gt;root.  &n; *&n; * All process pages can do I/O:&n; * - inode pages may need to be read from disk,&n; * - inode pages which have been modified and are MAP_SHARED may need&n; *   to be written to disk,&n; * - private pages which have been modified may need to be swapped out&n; *   to swap space and (later) to be read back into memory.&n; * During disk I/O, PG_locked is used. This bit is set before I/O&n; * and reset when I/O completes. page_waitqueue(page) is a wait queue of all&n; * tasks waiting for the I/O on this page to complete.&n; * PG_uptodate tells whether the page&squot;s contents is valid.&n; * When a read completes, the page becomes uptodate, unless a disk I/O&n; * error happened.&n; *&n; * For choosing which pages to swap out, inode pages carry a&n; * PG_referenced bit, which is set any time the system accesses&n; * that page through the (mapping,index) hash table. This referenced&n; * bit, together with the referenced bit in the page tables, is used&n; * to manipulate page-&gt;age and move the page across the active,&n; * inactive_dirty and inactive_clean lists.&n; *&n; * Note that the referenced bit, the page-&gt;lru list_head and the&n; * active, inactive_dirty and inactive_clean lists are protected by&n; * the pagemap_lru_lock, and *NOT* by the usual PG_locked bit!&n; *&n; * PG_skip is used on sparc/sparc64 architectures to &quot;skip&quot; certain&n; * parts of the address space.&n; *&n; * PG_error is set to indicate that an I/O error occurred on this page.&n; *&n; * PG_arch_1 is an architecture specific page state bit.  The generic&n; * code guarantees that this bit is cleared for a page when it first&n; * is entered into the page cache.&n; *&n; * PG_highmem pages are not permanently mapped into the kernel virtual&n; * address space, they need to be kmapped separately for doing IO on&n; * the pages. The struct page (these bits with information) are always&n; * mapped into kernel address space...&n; */
 DECL|macro|PG_locked
 mdefine_line|#define PG_locked&t;&t; 0&t;/* Page is locked. Don&squot;t touch. */
 DECL|macro|PG_error
@@ -368,6 +352,8 @@ DECL|macro|PG_reserved
 mdefine_line|#define PG_reserved&t;&t;14
 DECL|macro|PG_launder
 mdefine_line|#define PG_launder&t;&t;15&t;/* written out by VM pressure.. */
+DECL|macro|PG_private
+mdefine_line|#define PG_private&t;&t;16&t;/* Has something at -&gt;private */
 multiline_comment|/* Make it prettier to test the above... */
 DECL|macro|UnlockPage
 mdefine_line|#define UnlockPage(page)&t;unlock_page(page)
@@ -399,6 +385,12 @@ DECL|macro|SetPageLaunder
 mdefine_line|#define SetPageLaunder(page)&t;set_bit(PG_launder, &amp;(page)-&gt;flags)
 DECL|macro|__SetPageReserved
 mdefine_line|#define __SetPageReserved(page)&t;__set_bit(PG_reserved, &amp;(page)-&gt;flags)
+DECL|macro|SetPagePrivate
+mdefine_line|#define SetPagePrivate(page)&t;set_bit(PG_private, &amp;(page)-&gt;flags)
+DECL|macro|ClearPagePrivate
+mdefine_line|#define ClearPagePrivate(page)&t;clear_bit(PG_private, &amp;(page)-&gt;flags)
+DECL|macro|PagePrivate
+mdefine_line|#define PagePrivate(page)&t;test_bit(PG_private, &amp;(page)-&gt;flags)
 multiline_comment|/*&n; * The zone field is never updated after free_area_init_core()&n; * sets it, so none of the operations on it need to be atomic.&n; */
 DECL|macro|NODE_SHIFT
 mdefine_line|#define NODE_SHIFT 4
@@ -1188,7 +1180,11 @@ id|page
 op_minus
 op_logical_neg
 op_logical_neg
-id|page-&gt;buffers
+id|PagePrivate
+c_func
+(paren
+id|page
+)paren
 op_eq
 l_int|1
 suffix:semicolon
@@ -1626,6 +1622,63 @@ comma
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/* readahead.c */
+r_void
+id|do_page_cache_readahead
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|offset
+comma
+r_int
+r_int
+id|nr_to_read
+)paren
+suffix:semicolon
+r_void
+id|page_cache_readahead
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|offset
+)paren
+suffix:semicolon
+r_void
+id|page_cache_readaround
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|offset
+)paren
+suffix:semicolon
+r_void
+id|handle_ra_thrashing
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+)paren
+suffix:semicolon
 multiline_comment|/* vma is the first one with  address &lt; vma-&gt;vm_end,&n; * and even  address &lt; vma-&gt;vm_start. Have to extend vma. */
 DECL|function|expand_stack
 r_static
@@ -1849,6 +1902,36 @@ comma
 r_int
 r_int
 id|addr
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pdflush_operation
+c_func
+(paren
+r_void
+(paren
+op_star
+id|fn
+)paren
+(paren
+r_int
+r_int
+)paren
+comma
+r_int
+r_int
+id|arg0
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pdflush_flush
+c_func
+(paren
+r_int
+r_int
+id|nr_pages
 )paren
 suffix:semicolon
 r_extern

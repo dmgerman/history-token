@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/radix-tree.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 r_struct
@@ -228,12 +229,14 @@ DECL|macro|BLKGETSIZE
 mdefine_line|#define BLKGETSIZE _IO(0x12,96)&t;/* return device size /512 (long *arg) */
 DECL|macro|BLKFLSBUF
 mdefine_line|#define BLKFLSBUF  _IO(0x12,97)&t;/* flush buffer cache */
-macro_line|#if 0&t;&t;&t;&t;/* Obsolete, these don&squot;t do anything. */
+DECL|macro|BLKRASET
 mdefine_line|#define BLKRASET   _IO(0x12,98)&t;/* set read ahead for block device */
+DECL|macro|BLKRAGET
 mdefine_line|#define BLKRAGET   _IO(0x12,99)&t;/* get current read ahead setting */
+DECL|macro|BLKFRASET
 mdefine_line|#define BLKFRASET  _IO(0x12,100)/* set filesystem (mm/filemap.c) read-ahead */
+DECL|macro|BLKFRAGET
 mdefine_line|#define BLKFRAGET  _IO(0x12,101)/* get filesystem (mm/filemap.c) read-ahead */
-macro_line|#endif
 DECL|macro|BLKSECTSET
 mdefine_line|#define BLKSECTSET _IO(0x12,102)/* set max sectors per request (ll_rw_blk.c) */
 DECL|macro|BLKSECTGET
@@ -571,6 +574,15 @@ id|offset
 suffix:semicolon
 DECL|macro|touch_buffer
 mdefine_line|#define touch_buffer(bh)&t;mark_page_accessed(bh-&gt;b_page)
+multiline_comment|/* If we *know* page-&gt;private refers to buffer_heads */
+DECL|macro|page_buffers
+mdefine_line|#define page_buffers(page)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!PagePrivate(page))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;BUG();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;((struct buffer_head *)(page)-&gt;private);&t;&bslash;&n;&t;})
+DECL|macro|page_has_buffers
+mdefine_line|#define page_has_buffers(page)&t;PagePrivate(page)
+DECL|macro|set_page_buffers
+mdefine_line|#define set_page_buffers(page, buffers)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;SetPagePrivate(page);&t;&t;&t;&t;&bslash;&n;&t;&t;page-&gt;private = (unsigned long)buffers;&t;&t;&bslash;&n;&t;} while (0)
+DECL|macro|clear_page_buffers
+mdefine_line|#define clear_page_buffers(page)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ClearPagePrivate(page);&t;&t;&t;&t;&bslash;&n;&t;&t;page-&gt;private = 0;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 macro_line|#include &lt;linux/pipe_fs_i.h&gt;
 multiline_comment|/* #include &lt;linux/umsdos_fs_i.h&gt; */
 multiline_comment|/*&n; * Attribute flags.  These should be or-ed together to figure out what&n; * has been changed!&n; */
@@ -829,6 +841,17 @@ DECL|struct|address_space
 r_struct
 id|address_space
 (brace
+DECL|member|page_tree
+r_struct
+id|radix_tree_root
+id|page_tree
+suffix:semicolon
+multiline_comment|/* radix tree of all pages */
+DECL|member|page_lock
+id|rwlock_t
+id|page_lock
+suffix:semicolon
+multiline_comment|/* and rwlock protecting it */
 DECL|member|clean_pages
 r_struct
 id|list_head
@@ -1310,6 +1333,47 @@ suffix:semicolon
 multiline_comment|/* posix.1b rt signal to be delivered on IO */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Track a single file&squot;s readahead state&n; */
+DECL|struct|file_ra_state
+r_struct
+id|file_ra_state
+(brace
+DECL|member|start
+r_int
+r_int
+id|start
+suffix:semicolon
+multiline_comment|/* Current window */
+DECL|member|size
+r_int
+r_int
+id|size
+suffix:semicolon
+DECL|member|next_size
+r_int
+r_int
+id|next_size
+suffix:semicolon
+multiline_comment|/* Next window size */
+DECL|member|prev_page
+r_int
+r_int
+id|prev_page
+suffix:semicolon
+multiline_comment|/* Cache last read() position */
+DECL|member|ahead_start
+r_int
+r_int
+id|ahead_start
+suffix:semicolon
+multiline_comment|/* Ahead window */
+DECL|member|ahead_size
+r_int
+r_int
+id|ahead_size
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|file
 r_struct
 id|file
@@ -1354,23 +1418,6 @@ DECL|member|f_pos
 id|loff_t
 id|f_pos
 suffix:semicolon
-DECL|member|f_reada
-DECL|member|f_ramax
-DECL|member|f_raend
-DECL|member|f_ralen
-DECL|member|f_rawin
-r_int
-r_int
-id|f_reada
-comma
-id|f_ramax
-comma
-id|f_raend
-comma
-id|f_ralen
-comma
-id|f_rawin
-suffix:semicolon
 DECL|member|f_owner
 r_struct
 id|fown_struct
@@ -1387,6 +1434,11 @@ suffix:semicolon
 DECL|member|f_error
 r_int
 id|f_error
+suffix:semicolon
+DECL|member|f_ra
+r_struct
+id|file_ra_state
+id|f_ra
 suffix:semicolon
 DECL|member|f_version
 r_int
@@ -3897,6 +3949,16 @@ op_star
 comma
 r_int
 )paren
+)paren
+suffix:semicolon
+r_void
+id|generic_shutdown_super
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
 )paren
 suffix:semicolon
 r_void

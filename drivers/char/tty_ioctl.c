@@ -866,7 +866,6 @@ c_func
 (paren
 id|tail
 comma
-op_amp
 id|tty-&gt;read_flags
 )paren
 op_logical_and

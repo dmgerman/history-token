@@ -1792,9 +1792,9 @@ suffix:semicolon
 )brace
 macro_line|#ifdef __KERNEL__
 DECL|macro|ext2_set_bit
-mdefine_line|#define ext2_set_bit(nr, addr)&t;&t;__test_and_set_bit((nr) ^ 0x18, addr)
+mdefine_line|#define ext2_set_bit(nr, addr)&t;__test_and_set_bit((nr) ^ 0x18, (unsigned long *)(addr))
 DECL|macro|ext2_clear_bit
-mdefine_line|#define ext2_clear_bit(nr, addr)&t;__test_and_clear_bit((nr) ^ 0x18, addr)
+mdefine_line|#define ext2_clear_bit(nr, addr) __test_and_clear_bit((nr) ^ 0x18, (unsigned long *)(addr))
 DECL|function|ext2_test_bit
 r_static
 id|__inline__

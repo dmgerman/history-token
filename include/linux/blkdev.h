@@ -445,6 +445,11 @@ id|prep_rq_fn
 op_star
 id|prep_rq_fn
 suffix:semicolon
+multiline_comment|/*&n;&t; * The VM-level readahead tunable for this device.  In&n;&t; * units of 512-byte sectors.&n;&t; */
+DECL|member|ra_sectors
+r_int
+id|ra_sectors
+suffix:semicolon
 multiline_comment|/*&n;&t; * The queue owner gets to use this for whatever they like.&n;&t; * ll_rw_blk doesn&squot;t touch it.&n;&t; */
 DECL|member|queuedata
 r_void
@@ -1034,6 +1039,27 @@ id|pfn
 suffix:semicolon
 r_extern
 r_int
+id|blk_set_readahead
+c_func
+(paren
+id|kdev_t
+id|dev
+comma
+r_int
+id|sectors
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|blk_get_readahead
+c_func
+(paren
+id|kdev_t
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|blk_rq_map_sg
 c_func
 (paren
@@ -1096,11 +1122,6 @@ DECL|macro|MAX_SECTORS
 mdefine_line|#define MAX_SECTORS 255
 DECL|macro|MAX_SEGMENT_SIZE
 mdefine_line|#define MAX_SEGMENT_SIZE&t;65536
-multiline_comment|/* read-ahead in pages.. */
-DECL|macro|MAX_READAHEAD
-mdefine_line|#define MAX_READAHEAD&t;31
-DECL|macro|MIN_READAHEAD
-mdefine_line|#define MIN_READAHEAD&t;3
 DECL|macro|blkdev_entry_to_request
 mdefine_line|#define blkdev_entry_to_request(entry) list_entry((entry), struct request, queuelist)
 r_extern

@@ -250,8 +250,6 @@ multiline_comment|/*&n; * options passed in raidrun:&n; */
 DECL|macro|MAX_CHUNK_SIZE
 mdefine_line|#define MAX_CHUNK_SIZE (4096*1024)
 multiline_comment|/*&n; * default readahead&n; */
-DECL|macro|MD_READAHEAD
-mdefine_line|#define MD_READAHEAD&t;MAX_READAHEAD
 DECL|function|disk_faulty
 r_static
 r_inline
