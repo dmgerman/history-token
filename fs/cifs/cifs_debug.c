@@ -972,7 +972,7 @@ op_assign
 id|create_proc_read_entry
 c_func
 (paren
-l_string|&quot;oplockEnabled&quot;
+l_string|&quot;OplockEnabled&quot;
 comma
 l_int|0
 comma
@@ -1161,7 +1161,7 @@ suffix:semicolon
 id|remove_proc_entry
 c_func
 (paren
-l_string|&quot;oplockEnabled&quot;
+l_string|&quot;OplockEnabled&quot;
 comma
 id|proc_fs_cifs
 )paren
