@@ -1695,6 +1695,15 @@ suffix:colon
 r_case
 id|ask_all
 suffix:colon
+r_if
+c_cond
+(paren
+id|is_new
+)paren
+id|sym-&gt;flags
+op_or_assign
+id|SYMBOL_NEW
+suffix:semicolon
 id|conf_askvalue
 c_func
 (paren
