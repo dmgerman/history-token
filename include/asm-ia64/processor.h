@@ -1074,55 +1074,16 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_static
-r_inline
-r_struct
-id|task_struct
-op_star
-DECL|function|ia64_get_fpu_owner
-id|ia64_get_fpu_owner
-(paren
-r_void
-)paren
-(brace
-r_return
-(paren
-r_struct
-id|task_struct
-op_star
-)paren
-id|ia64_get_kr
-c_func
-(paren
-id|IA64_KR_FPU_OWNER
-)paren
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_void
-DECL|function|ia64_set_fpu_owner
-id|ia64_set_fpu_owner
-(paren
-r_struct
-id|task_struct
-op_star
-id|t
-)paren
-(brace
-id|ia64_set_kr
-c_func
-(paren
-id|IA64_KR_FPU_OWNER
-comma
-(paren
-r_int
-r_int
-)paren
-id|t
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/*&n; * The following three macros can&squot;t be inline functions because we don&squot;t have struct&n; * task_struct at this point.&n; */
+multiline_comment|/* Return TRUE if task T owns the fph partition of the CPU we&squot;re running on. */
+DECL|macro|ia64_is_local_fpu_owner
+mdefine_line|#define ia64_is_local_fpu_owner(t)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct task_struct *__ia64_islfo_task = (t);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(__ia64_islfo_task-&gt;thread.last_fph_cpu == smp_processor_id()&t;&t;&t;&t;&bslash;&n;&t; &amp;&amp; __ia64_islfo_task == (struct task_struct *) ia64_get_kr(IA64_KR_FPU_OWNER));&t;&bslash;&n;})
+multiline_comment|/* Mark task T as owning the fph partition of the CPU we&squot;re running on. */
+DECL|macro|ia64_set_local_fpu_owner
+mdefine_line|#define ia64_set_local_fpu_owner(t) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct task_struct *__ia64_slfo_task = (t);&t;&t;&t;&t;&t;&bslash;&n;&t;__ia64_slfo_task-&gt;thread.last_fph_cpu = smp_processor_id();&t;&t;&t;&bslash;&n;&t;ia64_set_kr(IA64_KR_FPU_OWNER, (unsigned long) __ia64_slfo_task);&t;&t;&bslash;&n;} while (0)
+multiline_comment|/* Mark the fph partition of task T as being invalid on all CPUs.  */
+DECL|macro|ia64_drop_fpu
+mdefine_line|#define ia64_drop_fpu(t)&t;((t)-&gt;thread.last_fph_cpu = -1)
 r_extern
 r_void
 id|__ia64_init_fpu

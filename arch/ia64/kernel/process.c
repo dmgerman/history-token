@@ -1464,11 +1464,13 @@ op_or
 id|THREAD_FLAGS_TO_SET
 )paren
 suffix:semicolon
-id|p-&gt;thread.last_fph_cpu
-op_assign
-op_minus
-l_int|1
+id|ia64_drop_fpu
+c_func
+(paren
+id|p
+)paren
 suffix:semicolon
+multiline_comment|/* don&squot;t pick up stale state from a CPU&squot;s fph */
 macro_line|#ifdef CONFIG_IA32_SUPPORT
 multiline_comment|/*&n;&t; * If we&squot;re cloning an IA32 task then save the IA32 extra&n;&t; * state from the current task to the new task&n;&t; */
 r_if
@@ -2582,24 +2584,12 @@ op_or
 id|IA64_THREAD_DBG_VALID
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-r_if
-c_cond
-(paren
-id|ia64_get_fpu_owner
+id|ia64_drop_fpu
 c_func
 (paren
-)paren
-op_eq
 id|current
 )paren
-id|ia64_set_fpu_owner
-c_func
-(paren
-l_int|0
-)paren
 suffix:semicolon
-macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_PERFMON
 multiline_comment|/*&n; * by the time we get here, the task is detached from the tasklist. This is important&n; * because it means that no other tasks can ever find it as a notified task, therfore there&n; * is no race condition between this code and let&squot;s say a pfm_context_create().&n; * Conversely, the pfm_cleanup_notifiers() cannot try to access a task&squot;s pfm context if this&n; * other task is in the middle of its own pfm_context_exit() because it would already be out of&n; * the task list. Note that this case is very unlikely between a direct child and its parents&n; * (if it is the notified process) because of the way the exit is notified via SIGCHLD.&n; */
@@ -2681,24 +2671,12 @@ id|exit_thread
 r_void
 )paren
 (brace
-macro_line|#ifndef CONFIG_SMP
-r_if
-c_cond
-(paren
-id|ia64_get_fpu_owner
+id|ia64_drop_fpu
 c_func
 (paren
-)paren
-op_eq
 id|current
 )paren
-id|ia64_set_fpu_owner
-c_func
-(paren
-l_int|0
-)paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_PERFMON
 multiline_comment|/* if needed, stop monitoring and flush state to perfmon context */
 r_if

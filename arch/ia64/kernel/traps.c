@@ -943,9 +943,15 @@ id|task_struct
 op_star
 id|fpu_owner
 op_assign
-id|ia64_get_fpu_owner
+(paren
+r_struct
+id|task_struct
+op_star
+)paren
+id|ia64_get_kr
 c_func
 (paren
+id|IA64_KR_FPU_OWNER
 )paren
 suffix:semicolon
 r_if
@@ -970,7 +976,7 @@ id|fpu_owner
 suffix:semicolon
 )brace
 macro_line|#endif /* !CONFIG_SMP */
-id|ia64_set_fpu_owner
+id|ia64_set_local_fpu_owner
 c_func
 (paren
 id|current
