@@ -161,6 +161,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+multiline_comment|/* kill uninitialised var warning */
 )brace
 id|pci_write_config_dword
 c_func
