@@ -513,6 +513,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|tcpSesReconnectCount
+)paren
+suffix:semicolon
 id|server-&gt;tcpStatus
 op_assign
 id|CifsGood
@@ -1383,6 +1390,20 @@ l_int|1
 comma
 (paren
 l_string|&quot;No task to wake, unknown frame rcvd!&quot;
+)paren
+)paren
+suffix:semicolon
+id|cifs_dump_mem
+c_func
+(paren
+l_string|&quot;Received Data is: &quot;
+comma
+id|temp
+comma
+r_sizeof
+(paren
+r_struct
+id|smb_hdr
 )paren
 )paren
 suffix:semicolon

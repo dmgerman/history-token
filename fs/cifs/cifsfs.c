@@ -2319,6 +2319,8 @@ id|schedule_timeout
 c_func
 (paren
 l_int|1
+op_star
+id|HZ
 )paren
 suffix:semicolon
 id|spin_lock
@@ -2452,6 +2454,15 @@ id|rc
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* releasing a stale oplock after recent reconnection &n;&t;&t;&t;&t;of smb session using a now incorrect file &n;&t;&t;&t;&t;handle is not a data integrity issue but do  &n;&t;&t;&t;&t;not bother sending an oplock release if session &n;&t;&t;&t;&t;to server still is disconnected since oplock &n;&t;&t;&t;&t;already released by the server in that case */
+r_if
+c_cond
+(paren
+id|pTcon-&gt;tidStatus
+op_ne
+id|CifsNeedReconnect
+)paren
+(brace
 id|rc
 op_assign
 id|CIFSSMBLock
@@ -2491,6 +2502,7 @@ id|rc
 )paren
 )paren
 suffix:semicolon
+)brace
 )brace
 r_else
 id|spin_unlock
@@ -2590,6 +2602,24 @@ c_func
 (paren
 op_amp
 id|tconInfoAllocCount
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|tcpSesReconnectCount
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|tconInfoReconnectCount
 comma
 l_int|0
 )paren

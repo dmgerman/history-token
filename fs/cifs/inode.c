@@ -3076,6 +3076,11 @@ id|open_file-&gt;pfile
 )paren
 op_logical_and
 (paren
+op_logical_neg
+id|open_file-&gt;invalidHandle
+)paren
+op_logical_and
+(paren
 (paren
 id|open_file-&gt;pfile-&gt;f_flags
 op_amp

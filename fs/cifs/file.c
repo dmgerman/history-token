@@ -3261,6 +3261,13 @@ r_break
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|open_file-&gt;closePend
+)paren
+(brace
 id|rc
 op_assign
 id|CIFSSMBSetFileSize
@@ -3279,6 +3286,17 @@ comma
 id|FALSE
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|rc
+op_assign
+op_minus
+id|EBADF
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 )brace
 id|cFYI
 c_func
@@ -3811,6 +3829,7 @@ op_amp
 id|current_offset
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3846,6 +3865,7 @@ suffix:semicolon
 )brace
 )brace
 r_else
+(brace
 op_star
 id|poffset
 op_add_assign

@@ -414,6 +414,7 @@ comma
 id|ses-&gt;server-&gt;secMode
 )paren
 suffix:semicolon
+multiline_comment|/* length = sprintf(buf, &quot;&bslash;nMIDs: &bslash;n&quot;);&n;&t;&t;&t;buf += length;&n;&n;&t;&t;&t;spin_lock(&amp;GlobalMid_Lock);&n;&t;&t;&t;list_for_each(tmp1, &amp;ses-&gt;server-&gt;pending_mid_q) {&n;&t;&t;&t;&t;mid_entry = list_entry(tmp1, struct&n;&t;&t;&t;&t;&t;mid_q_entry,&n;&t;&t;&t;&t;&t;qhead);&n;&t;&t;&t;&t;if(mid_entry) {&n;&t;&t;&t;&t;&t;length = sprintf(buf,&quot;State: %d com: %d pid: %d tsk: %p&bslash;n&quot;,mid_entry-&gt;midState,mid_entry-&gt;command,mid_entry-&gt;pid,mid_entry-&gt;tsk);&n;&t;&t;&t;&t;&t;buf += length;&n;&t;&t;&t;&t;}&n;&t;&t;&t;}&n;&t;&t;&t;spin_unlock(&amp;GlobalMid_Lock); */
 )brace
 )brace
 id|read_unlock
@@ -774,6 +775,28 @@ comma
 l_string|&quot;Active Operations (MIDs in use): %d&bslash;n&quot;
 comma
 id|midCount.counter
+)paren
+suffix:semicolon
+id|length
+op_add_assign
+id|item_length
+suffix:semicolon
+id|buf
+op_add_assign
+id|item_length
+suffix:semicolon
+id|item_length
+op_assign
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;%d sessions and %d shares reconnected after failure&bslash;n&quot;
+comma
+id|tcpSesReconnectCount.counter
+comma
+id|tconInfoReconnectCount.counter
 )paren
 suffix:semicolon
 id|length

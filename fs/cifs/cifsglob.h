@@ -963,6 +963,16 @@ id|GLOBAL_EXTERN
 id|atomic_t
 id|tconInfoAllocCount
 suffix:semicolon
+DECL|variable|tcpSesReconnectCount
+id|GLOBAL_EXTERN
+id|atomic_t
+id|tcpSesReconnectCount
+suffix:semicolon
+DECL|variable|tconInfoReconnectCount
+id|GLOBAL_EXTERN
+id|atomic_t
+id|tconInfoReconnectCount
+suffix:semicolon
 multiline_comment|/* Various Debug counters to remove someday (BB) */
 DECL|variable|bufAllocCount
 id|GLOBAL_EXTERN
