@@ -2684,16 +2684,19 @@ c_cond
 (paren
 op_logical_neg
 id|instance
+op_logical_or
+op_logical_neg
+id|instance-&gt;usb_dev
 )paren
 (brace
 id|dbg
 (paren
-l_string|&quot;NULL instance!&quot;
+l_string|&quot;NULL data!&quot;
 )paren
 suffix:semicolon
 r_return
 op_minus
-id|EINVAL
+id|ENODEV
 suffix:semicolon
 )brace
 r_if
@@ -2842,6 +2845,10 @@ id|kfree
 (paren
 id|instance
 )paren
+suffix:semicolon
+id|dev-&gt;dev_data
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************&n;*&n;* ATM helper functions&n;*&n;****************************************************************************/
@@ -3133,11 +3140,14 @@ c_cond
 (paren
 op_logical_neg
 id|instance
+op_logical_or
+op_logical_neg
+id|instance-&gt;usb_dev
 )paren
 (brace
 id|dbg
 (paren
-l_string|&quot;NULL instance!&quot;
+l_string|&quot;NULL data!&quot;
 )paren
 suffix:semicolon
 r_return
