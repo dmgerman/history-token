@@ -2887,7 +2887,7 @@ id|stop_a_enabled
 )paren
 r_return
 suffix:semicolon
-id|printk
+id|prom_printf
 c_func
 (paren
 l_string|&quot;&bslash;n&quot;
