@@ -74,6 +74,8 @@ DECL|variable|nonblock_open
 r_static
 r_int
 id|nonblock_open
+op_assign
+l_int|1
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
