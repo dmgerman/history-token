@@ -166,6 +166,7 @@ id|cpu_devclass
 r_if
 c_cond
 (paren
+(paren
 id|error
 op_assign
 id|driver_register
@@ -173,6 +174,7 @@ c_func
 (paren
 op_amp
 id|cpu_driver
+)paren
 )paren
 )paren
 id|devclass_unregister
