@@ -15,7 +15,9 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;
+macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
 macro_line|#include &lt;linux/if_vlan.h&gt;
+macro_line|#endif
 macro_line|#ifdef SIOCETHTOOL
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#endif
@@ -597,10 +599,14 @@ DECL|macro|BOARD_IDX_OVERFLOW
 mdefine_line|#define BOARD_IDX_OVERFLOW&t;-1
 macro_line|#if (defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)) &amp;&amp; &bslash;&n;&t;defined(NETIF_F_HW_VLAN_RX)
 DECL|macro|ACENIC_DO_VLAN
-mdefine_line|#define ACENIC_DO_VLAN&t;1
+mdefine_line|#define ACENIC_DO_VLAN&t;&t;1
+DECL|macro|ACE_RCB_VLAN_FLAG
+mdefine_line|#define ACE_RCB_VLAN_FLAG&t;RCB_FLG_VLAN_ASSIST
 macro_line|#else
 DECL|macro|ACENIC_DO_VLAN
-mdefine_line|#define ACENIC_DO_VLAN&t;0
+mdefine_line|#define ACENIC_DO_VLAN&t;&t;0
+DECL|macro|ACE_RCB_VLAN_FLAG
+mdefine_line|#define ACE_RCB_VLAN_FLAG&t;0
 macro_line|#endif
 macro_line|#include &quot;acenic.h&quot;
 multiline_comment|/*&n; * These must be defined before the firmware is included.&n; */
@@ -774,7 +780,7 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;acenic.c: v0.88 03/14/2002  Jes Sorensen, linux-acenic@SunSITE.dk&bslash;n&quot;
+l_string|&quot;acenic.c: v0.89 03/15/2002  Jes Sorensen, linux-acenic@SunSITE.dk&bslash;n&quot;
 l_string|&quot;                            http://home.cern.ch/~jes/gige/acenic.html&bslash;n&quot;
 suffix:semicolon
 DECL|variable|root_dev
@@ -4508,13 +4514,9 @@ op_assign
 id|RCB_FLG_TCP_UDP_SUM
 op_or
 id|RCB_FLG_NO_PSEUDO_HDR
+op_or
+id|ACE_RCB_VLAN_FLAG
 suffix:semicolon
-macro_line|#if ACENIC_DO_VLAN
-id|info-&gt;rx_std_ctrl.flags
-op_or_assign
-id|RCB_FLG_VLAN_ASSIST
-suffix:semicolon
-macro_line|#endif
 id|memset
 c_func
 (paren
@@ -4597,13 +4599,9 @@ op_assign
 id|RCB_FLG_TCP_UDP_SUM
 op_or
 id|RCB_FLG_NO_PSEUDO_HDR
+op_or
+id|ACE_RCB_VLAN_FLAG
 suffix:semicolon
-macro_line|#if ACENIC_DO_VLAN
-id|info-&gt;rx_jumbo_ctrl.flags
-op_or_assign
-id|RCB_FLG_VLAN_ASSIST
-suffix:semicolon
-macro_line|#endif
 id|memset
 c_func
 (paren
@@ -4716,13 +4714,9 @@ op_assign
 id|RCB_FLG_TCP_UDP_SUM
 op_or
 id|RCB_FLG_NO_PSEUDO_HDR
+op_or
+id|ACE_RCB_VLAN_FLAG
 suffix:semicolon
-macro_line|#if ACENIC_DO_VLAN
-id|info-&gt;rx_mini_ctrl.flags
-op_or_assign
-id|RCB_FLG_VLAN_ASSIST
-suffix:semicolon
-macro_line|#endif
 r_for
 c_loop
 (paren
@@ -4970,6 +4964,8 @@ op_assign
 id|RCB_FLG_TCP_UDP_SUM
 op_or
 id|RCB_FLG_NO_PSEUDO_HDR
+op_or
+id|ACE_RCB_VLAN_FLAG
 suffix:semicolon
 multiline_comment|/*&n;&t; * The Tigon I does not like having the TX ring in host memory ;-(&n;&t; */
 r_if
@@ -4990,12 +4986,6 @@ macro_line|#if TX_COAL_INTS_ONLY
 id|tmp
 op_or_assign
 id|RCB_FLG_COAL_INT_ONLY
-suffix:semicolon
-macro_line|#endif
-macro_line|#if ACENIC_DO_VLAN
-id|tmp
-op_or_assign
-id|RCB_FLG_VLAN_ASSIST
 suffix:semicolon
 macro_line|#endif
 id|info-&gt;tx_ctrl.flags
@@ -5116,7 +5106,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: more then %i NICs detected, &quot;
+l_string|&quot;%s: more than %i NICs detected, &quot;
 l_string|&quot;ignoring module parameters!&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7724,40 +7714,6 @@ r_return
 id|evtcsm
 suffix:semicolon
 )brace
-macro_line|#if ACENIC_DO_VLAN
-DECL|function|ace_vlan_rx
-r_static
-r_int
-id|ace_vlan_rx
-c_func
-(paren
-r_struct
-id|ace_private
-op_star
-id|ap
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-comma
-id|u16
-id|vlan_tag
-)paren
-(brace
-r_return
-id|vlan_hwaccel_rx
-c_func
-(paren
-id|skb
-comma
-id|ap-&gt;vlgrp
-comma
-id|vlan_tag
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 DECL|function|ace_rx_int
 r_static
 r_void
@@ -8097,8 +8053,6 @@ r_if
 c_cond
 (paren
 id|ap-&gt;vlgrp
-op_ne
-l_int|NULL
 op_logical_and
 (paren
 id|bd_flags
@@ -8107,12 +8061,12 @@ id|BD_FLG_VLAN_TAG
 )paren
 )paren
 (brace
-id|ace_vlan_rx
+id|vlan_hwaccel_rx
 c_func
 (paren
-id|ap
-comma
 id|skb
+comma
+id|ap-&gt;vlgrp
 comma
 id|retdesc-&gt;vlan
 )paren
