@@ -184,16 +184,6 @@ id|new_ops
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|zft_cmpr_ops
-op_star
-id|zft_cmpr_unregister
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|zft_cmpr_lock
 c_func
