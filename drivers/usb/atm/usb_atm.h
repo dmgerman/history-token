@@ -14,9 +14,9 @@ mdefine_line|#define UDSL_MAX_RCV_BUFS&t;&t;8
 DECL|macro|UDSL_MAX_SND_BUFS
 mdefine_line|#define UDSL_MAX_SND_BUFS&t;&t;8
 DECL|macro|UDSL_MAX_RCV_BUF_SIZE
-mdefine_line|#define UDSL_MAX_RCV_BUF_SIZE&t;&t;1024 /* ATM cells */
+mdefine_line|#define UDSL_MAX_RCV_BUF_SIZE&t;&t;1024&t;/* ATM cells */
 DECL|macro|UDSL_MAX_SND_BUF_SIZE
-mdefine_line|#define UDSL_MAX_SND_BUF_SIZE&t;&t;1024 /* ATM cells */
+mdefine_line|#define UDSL_MAX_SND_BUF_SIZE&t;&t;1024&t;/* ATM cells */
 DECL|macro|UDSL_DEFAULT_RCV_URBS
 mdefine_line|#define UDSL_DEFAULT_RCV_URBS&t;&t;2
 DECL|macro|UDSL_DEFAULT_SND_URBS
@@ -26,9 +26,9 @@ mdefine_line|#define UDSL_DEFAULT_RCV_BUFS&t;&t;4
 DECL|macro|UDSL_DEFAULT_SND_BUFS
 mdefine_line|#define UDSL_DEFAULT_SND_BUFS&t;&t;4
 DECL|macro|UDSL_DEFAULT_RCV_BUF_SIZE
-mdefine_line|#define UDSL_DEFAULT_RCV_BUF_SIZE&t;64 /* ATM cells */
+mdefine_line|#define UDSL_DEFAULT_RCV_BUF_SIZE&t;64&t;/* ATM cells */
 DECL|macro|UDSL_DEFAULT_SND_BUF_SIZE
-mdefine_line|#define UDSL_DEFAULT_SND_BUF_SIZE&t;64 /* ATM cells */
+mdefine_line|#define UDSL_DEFAULT_SND_BUF_SIZE&t;64&t;/* ATM cells */
 DECL|macro|ATM_CELL_HEADER
 mdefine_line|#define ATM_CELL_HEADER&t;&t;&t;(ATM_CELL_SIZE - ATM_CELL_PAYLOAD)
 DECL|macro|UDSL_NUM_CELLS
@@ -437,6 +437,7 @@ suffix:semicolon
 r_extern
 r_void
 id|udsl_instance_disconnect
+c_func
 (paren
 r_struct
 id|udsl_instance_data

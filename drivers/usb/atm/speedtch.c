@@ -1,6 +1,7 @@
 multiline_comment|/******************************************************************************&n; *  speedtch.c  -  Alcatel SpeedTouch USB xDSL modem driver&n; *&n; *  Copyright (C) 2001, Alcatel&n; *  Copyright (C) 2003, Duncan Sands&n; *  Copyright (C) 2004, David Woodhouse&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the Free&n; *  Software Foundation; either version 2 of the License, or (at your option)&n; *  any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for&n; *  more details.&n; *&n; *  You should have received a copy of the GNU General Public License along with&n; *  this program; if not, write to the Free Software Foundation, Inc., 59&n; *  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; ******************************************************************************/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/gfp.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
@@ -9,6 +10,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -28,17 +30,11 @@ macro_line|#if defined(CONFIG_FW_LOADER) || defined(CONFIG_FW_LOADER_MODULE)
 DECL|macro|USE_FW_LOADER
 macro_line|#&t;define USE_FW_LOADER
 macro_line|#endif
-macro_line|#ifdef DEBUG
-DECL|macro|DEBUG_ON
-mdefine_line|#define DEBUG_ON(x)&t;BUG_ON(x)
-macro_line|#else
-DECL|macro|DEBUG_ON
-mdefine_line|#define DEBUG_ON(x)&t;do { if (x); } while (0)
-macro_line|#endif
 macro_line|#ifdef VERBOSE_DEBUG
 r_static
 r_int
 id|udsl_print_packet
+c_func
 (paren
 r_const
 r_int
@@ -86,15 +82,15 @@ mdefine_line|#define CTRL_TIMEOUT (2*HZ)
 DECL|macro|DATA_TIMEOUT
 mdefine_line|#define DATA_TIMEOUT (2*HZ)
 DECL|macro|OFFSET_7
-mdefine_line|#define OFFSET_7  0 /* size 1 */
+mdefine_line|#define OFFSET_7  0&t;&t;/* size 1 */
 DECL|macro|OFFSET_b
-mdefine_line|#define OFFSET_b  1 /* size 8 */
+mdefine_line|#define OFFSET_b  1&t;&t;/* size 8 */
 DECL|macro|OFFSET_d
-mdefine_line|#define OFFSET_d  9 /* size 4 */
+mdefine_line|#define OFFSET_d  9&t;&t;/* size 4 */
 DECL|macro|OFFSET_e
-mdefine_line|#define OFFSET_e 13 /* size 1 */
+mdefine_line|#define OFFSET_e 13&t;&t;/* size 1 */
 DECL|macro|OFFSET_f
-mdefine_line|#define OFFSET_f 14 /* size 1 */
+mdefine_line|#define OFFSET_f 14&t;&t;/* size 1 */
 DECL|macro|TOTAL
 mdefine_line|#define TOTAL    15
 DECL|macro|SIZE_7
@@ -122,6 +118,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|module_param
+c_func
 (paren
 id|dl_512_first
 comma
@@ -131,6 +128,7 @@ l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
+c_func
 (paren
 id|dl_512_first
 comma
@@ -138,6 +136,7 @@ l_string|&quot;Read 512 bytes before sending firmware&quot;
 )paren
 suffix:semicolon
 id|module_param
+c_func
 (paren
 id|sw_buffering
 comma
@@ -147,6 +146,7 @@ l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
+c_func
 (paren
 id|sw_buffering
 comma
@@ -176,6 +176,7 @@ op_assign
 (brace
 (brace
 id|USB_DEVICE
+c_func
 (paren
 id|SPEEDTOUCH_VENDORID
 comma
@@ -188,6 +189,7 @@ comma
 )brace
 suffix:semicolon
 id|MODULE_DEVICE_TABLE
+c_func
 (paren
 id|usb
 comma
@@ -202,10 +204,6 @@ DECL|member|u
 r_struct
 id|udsl_instance_data
 id|u
-suffix:semicolon
-DECL|member|revision
-id|u16
-id|revision
 suffix:semicolon
 multiline_comment|/* Status */
 DECL|member|int_urb
@@ -232,19 +230,13 @@ r_struct
 id|timer_list
 id|poll_timer
 suffix:semicolon
-DECL|member|fwname
-r_char
-id|fwname
-(braket
-l_int|25
-)braket
-suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* USB */
 r_static
 r_int
 id|speedtch_usb_probe
+c_func
 (paren
 r_struct
 id|usb_interface
@@ -261,6 +253,7 @@ suffix:semicolon
 r_static
 r_void
 id|speedtch_usb_disconnect
+c_func
 (paren
 r_struct
 id|usb_interface
@@ -271,6 +264,7 @@ suffix:semicolon
 r_static
 r_int
 id|speedtch_usb_ioctl
+c_func
 (paren
 r_struct
 id|usb_interface
@@ -289,6 +283,7 @@ suffix:semicolon
 r_static
 r_void
 id|speedtch_handle_int
+c_func
 (paren
 r_struct
 id|urb
@@ -304,6 +299,7 @@ suffix:semicolon
 r_static
 r_void
 id|speedtch_poll_status
+c_func
 (paren
 r_struct
 id|speedtch_instance_data
@@ -355,6 +351,7 @@ DECL|function|speedtch_got_firmware
 r_static
 r_void
 id|speedtch_got_firmware
+c_func
 (paren
 r_struct
 id|speedtch_instance_data
@@ -374,6 +371,7 @@ op_star
 id|intf
 suffix:semicolon
 id|down
+c_func
 (paren
 op_amp
 id|instance-&gt;u.serialize
@@ -412,6 +410,7 @@ c_cond
 id|err
 op_assign
 id|usb_set_interface
+c_func
 (paren
 id|instance-&gt;u.usb_dev
 comma
@@ -425,6 +424,7 @@ l_int|0
 )paren
 (brace
 id|dbg
+c_func
 (paren
 l_string|&quot;speedtch_got_firmware: usb_set_interface returned %d!&quot;
 comma
@@ -457,6 +457,7 @@ id|intf
 op_logical_and
 op_logical_neg
 id|usb_driver_claim_interface
+c_func
 (paren
 op_amp
 id|speedtch_usb_driver
@@ -530,6 +531,7 @@ id|err
 (brace
 multiline_comment|/* Doesn&squot;t matter; we&squot;ll poll anyway */
 id|dbg
+c_func
 (paren
 l_string|&quot;speedtch_got_firmware: Submission of interrupt URB failed %d&quot;
 comma
@@ -547,6 +549,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|usb_driver_release_interface
+c_func
 (paren
 op_amp
 id|speedtch_usb_driver
@@ -578,6 +581,7 @@ op_assign
 id|UDSL_LOADED_FIRMWARE
 suffix:semicolon
 id|tasklet_schedule
+c_func
 (paren
 op_amp
 id|instance-&gt;u.receive_tasklet
@@ -586,12 +590,14 @@ suffix:semicolon
 id|out
 suffix:colon
 id|up
+c_func
 (paren
 op_amp
 id|instance-&gt;u.serialize
 )paren
 suffix:semicolon
 id|wake_up_interruptible
+c_func
 (paren
 op_amp
 id|instance-&gt;u.firmware_waiters
@@ -602,6 +608,7 @@ DECL|function|speedtch_set_swbuff
 r_static
 r_int
 id|speedtch_set_swbuff
+c_func
 (paren
 r_struct
 id|speedtch_instance_data
@@ -1001,6 +1008,7 @@ DECL|function|speedtch_start_synchro
 r_static
 r_int
 id|speedtch_start_synchro
+c_func
 (paren
 r_struct
 id|speedtch_instance_data
@@ -1105,6 +1113,7 @@ DECL|function|speedtch_handle_int
 r_static
 r_void
 id|speedtch_handle_int
+c_func
 (paren
 r_struct
 id|urb
@@ -1205,7 +1214,7 @@ r_case
 op_minus
 id|ESHUTDOWN
 suffix:colon
-multiline_comment|/* this urb is terminated, clean up */
+multiline_comment|/* this urb is terminated; clean up */
 id|dbg
 c_func
 (paren
@@ -1386,6 +1395,7 @@ suffix:semicolon
 id|ret
 op_assign
 id|usb_submit_urb
+c_func
 (paren
 id|urb
 comma
@@ -1398,6 +1408,7 @@ c_cond
 id|ret
 )paren
 id|err
+c_func
 (paren
 l_string|&quot;%s - usb_submit_urb failed with result %d&quot;
 comma
@@ -2028,6 +2039,7 @@ DECL|function|speedtch_timer_poll
 r_static
 r_void
 id|speedtch_timer_poll
+c_func
 (paren
 r_int
 r_int
@@ -2040,8 +2052,7 @@ op_star
 id|instance
 op_assign
 (paren
-r_struct
-id|speedtch_instance_data
+r_void
 op_star
 )paren
 id|data
@@ -2069,52 +2080,47 @@ id|HZ
 )paren
 suffix:semicolon
 )brace
-DECL|function|speedtch_firmware_load
+macro_line|#ifdef USE_FW_LOADER
+DECL|function|speedtch_upload_firmware
 r_static
 r_void
-id|speedtch_firmware_load
+id|speedtch_upload_firmware
 c_func
 (paren
+r_struct
+id|speedtch_instance_data
+op_star
+id|instance
+comma
 r_const
 r_struct
 id|firmware
 op_star
 id|fw1
 comma
-r_void
-op_star
-id|context
-)paren
-(brace
 r_const
 r_struct
 id|firmware
 op_star
 id|fw2
-suffix:semicolon
+)paren
+(brace
 r_int
 r_char
 op_star
 id|buffer
 suffix:semicolon
 r_struct
-id|speedtch_instance_data
+id|usb_device
 op_star
-id|instance
+id|usb_dev
 op_assign
-id|context
+id|instance-&gt;u.usb_dev
 suffix:semicolon
 r_struct
 id|usb_interface
 op_star
 id|intf
-suffix:semicolon
-r_struct
-id|usb_device
-op_star
-id|dev
-op_assign
-id|instance-&gt;u.usb_dev
 suffix:semicolon
 r_int
 id|actual_length
@@ -2122,23 +2128,12 @@ comma
 id|ret
 suffix:semicolon
 r_int
-id|pg
+id|offset
 suffix:semicolon
 id|dbg
-(paren
-l_string|&quot;speedtch_firmware_load&quot;
-)paren
-suffix:semicolon
-id|ret
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|BUG_ON
 c_func
 (paren
-op_logical_neg
-id|instance
+l_string|&quot;speedtch_upload_firmware&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2149,8 +2144,9 @@ op_logical_neg
 id|intf
 op_assign
 id|usb_ifnum_to_if
+c_func
 (paren
-id|dev
+id|usb_dev
 comma
 l_int|2
 )paren
@@ -2158,8 +2154,9 @@ l_int|2
 )paren
 (brace
 id|dbg
+c_func
 (paren
-l_string|&quot;speedtch_firmware_load: interface not found!&quot;
+l_string|&quot;speedtch_upload_firmware: interface not found!&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2173,297 +2170,30 @@ op_logical_neg
 (paren
 id|buffer
 op_assign
-id|kmalloc
 (paren
-l_int|0x1000
-comma
+r_int
+r_char
+op_star
+)paren
+id|__get_free_page
+c_func
+(paren
 id|GFP_KERNEL
 )paren
 )paren
 )paren
 (brace
 id|dbg
+c_func
 (paren
-l_string|&quot;speedtch_firmware_load: no memory for buffer!&quot;
+l_string|&quot;speedtch_upload_firmware: no memory for buffer!&quot;
 )paren
 suffix:semicolon
 r_goto
 id|fail
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|fw1
-)paren
-(brace
-id|dbg
-(paren
-l_string|&quot;speedtch_firmware_load: no firmware &squot;speedtch_boot_rev%d.%02x&quot;
-comma
-id|instance-&gt;revision
-op_rshift
-l_int|8
-comma
-id|instance-&gt;revision
-op_amp
-l_int|0xff
-)paren
-suffix:semicolon
-id|snprintf
-c_func
-(paren
-id|instance-&gt;fwname
-comma
-r_sizeof
-(paren
-id|instance-&gt;fwname
-)paren
-comma
-l_string|&quot;speedtch_boot_rev%d&quot;
-comma
-id|instance-&gt;revision
-op_rshift
-l_int|8
-)paren
-suffix:semicolon
-id|ret
-op_assign
-id|request_firmware
-c_func
-(paren
-op_amp
-id|fw1
-comma
-id|instance-&gt;fwname
-comma
-op_amp
-id|dev-&gt;dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
-)paren
-(brace
-id|dbg
-(paren
-l_string|&quot;speedtch_firmware_load: no firmware &squot;%s&squot;&quot;
-comma
-id|instance-&gt;fwname
-)paren
-suffix:semicolon
-id|strlcpy
-c_func
-(paren
-id|instance-&gt;fwname
-comma
-l_string|&quot;speedtch_boot&quot;
-comma
-r_sizeof
-(paren
-id|instance-&gt;fwname
-)paren
-)paren
-suffix:semicolon
-id|ret
-op_assign
-id|request_firmware
-c_func
-(paren
-op_amp
-id|fw1
-comma
-id|instance-&gt;fwname
-comma
-op_amp
-id|dev-&gt;dev
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
-)paren
-(brace
-id|dbg
-(paren
-l_string|&quot;speedtch_firmware_load: no firmware &squot;%s&squot;&quot;
-comma
-id|instance-&gt;fwname
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;speedtch: No boot firmware found. Assuming userspace firmware loader&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|fail_buf
-suffix:semicolon
-)brace
-)brace
-id|snprintf
-c_func
-(paren
-id|instance-&gt;fwname
-comma
-r_sizeof
-(paren
-id|instance-&gt;fwname
-)paren
-comma
-l_string|&quot;speedtch_main_rev%d.%02x&quot;
-comma
-id|instance-&gt;revision
-op_rshift
-l_int|8
-comma
-id|instance-&gt;revision
-op_amp
-l_int|0xff
-)paren
-suffix:semicolon
-id|ret
-op_assign
-id|request_firmware
-c_func
-(paren
-op_amp
-id|fw2
-comma
-id|instance-&gt;fwname
-comma
-op_amp
-id|dev-&gt;dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
-)paren
-(brace
-id|dbg
-(paren
-l_string|&quot;speedtch_firmware_load: no firmware &squot;%s&squot;&quot;
-comma
-id|instance-&gt;fwname
-)paren
-suffix:semicolon
-id|snprintf
-c_func
-(paren
-id|instance-&gt;fwname
-comma
-r_sizeof
-(paren
-id|instance-&gt;fwname
-)paren
-comma
-l_string|&quot;speedtch_main_rev%d&quot;
-comma
-id|instance-&gt;revision
-op_rshift
-l_int|8
-)paren
-suffix:semicolon
-id|ret
-op_assign
-id|request_firmware
-c_func
-(paren
-op_amp
-id|fw2
-comma
-id|instance-&gt;fwname
-comma
-op_amp
-id|dev-&gt;dev
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
-)paren
-(brace
-id|dbg
-(paren
-l_string|&quot;speedtch_firmware_load: no firmware &squot;%s&squot;&quot;
-comma
-id|instance-&gt;fwname
-)paren
-suffix:semicolon
-id|strlcpy
-c_func
-(paren
-id|instance-&gt;fwname
-comma
-l_string|&quot;speedtch_main&quot;
-comma
-r_sizeof
-(paren
-id|instance-&gt;fwname
-)paren
-)paren
-suffix:semicolon
-id|ret
-op_assign
-id|request_firmware
-c_func
-(paren
-op_amp
-id|fw2
-comma
-id|instance-&gt;fwname
-comma
-op_amp
-id|dev-&gt;dev
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
-)paren
-(brace
-id|dbg
-(paren
-l_string|&quot;speedtch_firmware_load: no firmware &squot;%s&squot;&quot;
-comma
-id|instance-&gt;fwname
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;speedtch: No main firmware found. Assuming userspace firmware loader&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|fail_buf
-suffix:semicolon
-)brace
-multiline_comment|/* OK, we have the firmware. So try to claim interface #2 and actually&n;&t;   try uploading it. There&squot;s a slight possibility that the userspace&n;&t;   modem_run could be running too, and may have beaten us to it */
+multiline_comment|/* A user-space firmware loader may already have claimed interface #2 */
 r_if
 c_cond
 (paren
@@ -2471,6 +2201,7 @@ c_cond
 id|ret
 op_assign
 id|usb_driver_claim_interface
+c_func
 (paren
 op_amp
 id|speedtch_usb_driver
@@ -2485,14 +2216,15 @@ l_int|0
 )paren
 (brace
 id|dbg
+c_func
 (paren
-l_string|&quot;speedtch_firmware_start: interface in use (%d)!&quot;
+l_string|&quot;speedtch_upload_firmware: interface in use (%d)!&quot;
 comma
 id|ret
 )paren
 suffix:semicolon
 r_goto
-id|fail_fw2
+id|fail_free
 suffix:semicolon
 )brace
 multiline_comment|/* URB 7 */
@@ -2506,12 +2238,14 @@ multiline_comment|/* some modems need a read before writing the firmware */
 id|ret
 op_assign
 id|usb_bulk_msg
+c_func
 (paren
-id|instance-&gt;u.usb_dev
+id|usb_dev
 comma
 id|usb_rcvbulkpipe
+c_func
 (paren
-id|instance-&gt;u.usb_dev
+id|usb_dev
 comma
 id|SPEEDTCH_ENDPOINT_FIRMWARE
 )paren
@@ -2541,8 +2275,9 @@ op_minus
 id|ETIMEDOUT
 )paren
 id|dbg
+c_func
 (paren
-l_string|&quot;speedtch_firmware_load: read BLOCK0 from modem failed (%d)!&quot;
+l_string|&quot;speedtch_upload_firmware: read BLOCK0 from modem failed (%d)!&quot;
 comma
 id|ret
 )paren
@@ -2551,7 +2286,7 @@ r_else
 id|dbg
 c_func
 (paren
-l_string|&quot;speedtch_firmware_load: BLOCK0 downloaded (%d bytes)&quot;
+l_string|&quot;speedtch_upload_firmware: BLOCK0 downloaded (%d bytes)&quot;
 comma
 id|ret
 )paren
@@ -2561,18 +2296,17 @@ multiline_comment|/* URB 8 : both leds are static green */
 r_for
 c_loop
 (paren
-id|pg
+id|offset
 op_assign
 l_int|0
 suffix:semicolon
-id|pg
-op_star
-l_int|0x1000
+id|offset
 OL
 id|fw1-&gt;size
 suffix:semicolon
-id|pg
-op_increment
+id|offset
+op_add_assign
+id|PAGE_SIZE
 )paren
 (brace
 r_int
@@ -2583,15 +2317,11 @@ c_func
 (paren
 r_int
 comma
-l_int|0x1000
+id|PAGE_SIZE
 comma
 id|fw1-&gt;size
 op_minus
-(paren
-id|pg
-op_star
-l_int|0x1000
-)paren
+id|offset
 )paren
 suffix:semicolon
 id|memcpy
@@ -2601,11 +2331,7 @@ id|buffer
 comma
 id|fw1-&gt;data
 op_plus
-(paren
-id|pg
-op_star
-l_int|0x1000
-)paren
+id|offset
 comma
 id|thislen
 )paren
@@ -2613,12 +2339,14 @@ suffix:semicolon
 id|ret
 op_assign
 id|usb_bulk_msg
+c_func
 (paren
-id|instance-&gt;u.usb_dev
+id|usb_dev
 comma
 id|usb_sndbulkpipe
+c_func
 (paren
-id|instance-&gt;u.usb_dev
+id|usb_dev
 comma
 id|SPEEDTCH_ENDPOINT_FIRMWARE
 )paren
@@ -2642,8 +2370,9 @@ l_int|0
 )paren
 (brace
 id|dbg
+c_func
 (paren
-l_string|&quot;speedtch_firmware_load: write BLOCK1 to modem failed (%d)!&quot;
+l_string|&quot;speedtch_upload_firmware: write BLOCK1 to modem failed (%d)!&quot;
 comma
 id|ret
 )paren
@@ -2655,7 +2384,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;speedtch_firmware_load: BLOCK1 uploaded (%d bytes)&quot;
+l_string|&quot;speedtch_upload_firmware: BLOCK1 uploaded (%d bytes)&quot;
 comma
 id|fw1-&gt;size
 )paren
@@ -2666,12 +2395,14 @@ multiline_comment|/* URB 11 */
 id|ret
 op_assign
 id|usb_bulk_msg
+c_func
 (paren
-id|instance-&gt;u.usb_dev
+id|usb_dev
 comma
 id|usb_rcvbulkpipe
+c_func
 (paren
-id|instance-&gt;u.usb_dev
+id|usb_dev
 comma
 id|SPEEDTCH_ENDPOINT_FIRMWARE
 )paren
@@ -2695,8 +2426,9 @@ l_int|0
 )paren
 (brace
 id|dbg
+c_func
 (paren
-l_string|&quot;speedtch_firmware_load: read BLOCK2 from modem failed (%d)!&quot;
+l_string|&quot;speedtch_upload_firmware: read BLOCK2 from modem failed (%d)!&quot;
 comma
 id|ret
 )paren
@@ -2708,7 +2440,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;speedtch_firmware_load: BLOCK2 downloaded (%d bytes)&quot;
+l_string|&quot;speedtch_upload_firmware: BLOCK2 downloaded (%d bytes)&quot;
 comma
 id|actual_length
 )paren
@@ -2717,18 +2449,17 @@ multiline_comment|/* URBs 12 to 139 - USB led blinking green, ADSL led off */
 r_for
 c_loop
 (paren
-id|pg
+id|offset
 op_assign
 l_int|0
 suffix:semicolon
-id|pg
-op_star
-l_int|0x1000
+id|offset
 OL
 id|fw2-&gt;size
 suffix:semicolon
-id|pg
-op_increment
+id|offset
+op_add_assign
+id|PAGE_SIZE
 )paren
 (brace
 r_int
@@ -2739,15 +2470,11 @@ c_func
 (paren
 r_int
 comma
-l_int|0x1000
+id|PAGE_SIZE
 comma
 id|fw2-&gt;size
 op_minus
-(paren
-id|pg
-op_star
-l_int|0x1000
-)paren
+id|offset
 )paren
 suffix:semicolon
 id|memcpy
@@ -2757,11 +2484,7 @@ id|buffer
 comma
 id|fw2-&gt;data
 op_plus
-(paren
-id|pg
-op_star
-l_int|0x1000
-)paren
+id|offset
 comma
 id|thislen
 )paren
@@ -2769,12 +2492,14 @@ suffix:semicolon
 id|ret
 op_assign
 id|usb_bulk_msg
+c_func
 (paren
-id|instance-&gt;u.usb_dev
+id|usb_dev
 comma
 id|usb_sndbulkpipe
+c_func
 (paren
-id|instance-&gt;u.usb_dev
+id|usb_dev
 comma
 id|SPEEDTCH_ENDPOINT_FIRMWARE
 )paren
@@ -2798,8 +2523,9 @@ l_int|0
 )paren
 (brace
 id|dbg
+c_func
 (paren
-l_string|&quot;speedtch_firmware_load: write BLOCK3 to modem failed (%d)!&quot;
+l_string|&quot;speedtch_upload_firmware: write BLOCK3 to modem failed (%d)!&quot;
 comma
 id|ret
 )paren
@@ -2812,7 +2538,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;speedtch_firmware_load: BLOCK3 uploaded (%d bytes)&quot;
+l_string|&quot;speedtch_upload_firmware: BLOCK3 uploaded (%d bytes)&quot;
 comma
 id|fw2-&gt;size
 )paren
@@ -2822,12 +2548,14 @@ multiline_comment|/* URB 142 */
 id|ret
 op_assign
 id|usb_bulk_msg
+c_func
 (paren
-id|instance-&gt;u.usb_dev
+id|usb_dev
 comma
 id|usb_rcvbulkpipe
+c_func
 (paren
-id|instance-&gt;u.usb_dev
+id|usb_dev
 comma
 id|SPEEDTCH_ENDPOINT_FIRMWARE
 )paren
@@ -2853,7 +2581,7 @@ l_int|0
 id|dbg
 c_func
 (paren
-l_string|&quot;speedtch_firmware_load: read BLOCK4 from modem failed (%d)!&quot;
+l_string|&quot;speedtch_upload_firmware: read BLOCK4 from modem failed (%d)!&quot;
 comma
 id|ret
 )paren
@@ -2866,7 +2594,7 @@ multiline_comment|/* success */
 id|dbg
 c_func
 (paren
-l_string|&quot;speedtch_firmware_load: BLOCK4 downloaded (%d bytes)&quot;
+l_string|&quot;speedtch_upload_firmware: BLOCK4 downloaded (%d bytes)&quot;
 comma
 id|actual_length
 )paren
@@ -2923,14 +2651,23 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-r_goto
-id|fail_fw2
+id|free_page
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|buffer
+)paren
 suffix:semicolon
-multiline_comment|/* The got_firmware(0) is a NOP anyway */
+r_return
+suffix:semicolon
 id|fail_release
 suffix:colon
-multiline_comment|/* We only release interface #2 if loading the firmware failed; we don&squot;t&n;&t;   do it if we succeeded. This prevents the userspace modem_run tool from&n;&t;   trying to load the firmware itself */
+multiline_comment|/* Only release interface #2 if uploading failed; we don&squot;t release it&n;&t;   we succeeded.  This prevents the userspace tools from trying to load&n;&t;   the firmware themselves */
 id|usb_driver_release_interface
+c_func
 (paren
 op_amp
 id|speedtch_usb_driver
@@ -2938,17 +2675,10 @@ comma
 id|intf
 )paren
 suffix:semicolon
-id|fail_fw2
-suffix:colon
-id|release_firmware
-c_func
-(paren
-id|fw2
-)paren
-suffix:semicolon
-id|fail_buf
+id|fail_free
 suffix:colon
 id|kfree
+c_func
 (paren
 id|buffer
 )paren
@@ -2956,12 +2686,280 @@ suffix:semicolon
 id|fail
 suffix:colon
 id|speedtch_got_firmware
+c_func
 (paren
 id|instance
 comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
+DECL|function|speedtch_find_firmware
+r_static
+r_int
+id|speedtch_find_firmware
+c_func
+(paren
+r_struct
+id|speedtch_instance_data
+op_star
+id|instance
+comma
+r_int
+id|phase
+comma
+r_const
+r_struct
+id|firmware
+op_star
+op_star
+id|fw_p
+)paren
+(brace
+r_char
+id|buf
+(braket
+l_int|24
+)braket
+suffix:semicolon
+r_const
+id|u16
+id|bcdDevice
+op_assign
+id|instance-&gt;u.usb_dev-&gt;descriptor.bcdDevice
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;speedtch-%d.bin.%x.%02x&quot;
+comma
+id|phase
+comma
+id|bcdDevice
+op_rshift
+l_int|8
+comma
+id|bcdDevice
+op_amp
+l_int|0xff
+)paren
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;speedtch_find_firmware: looking for %s&bslash;n&quot;
+comma
+id|buf
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_firmware
+c_func
+(paren
+id|fw_p
+comma
+id|buf
+comma
+op_amp
+id|instance-&gt;u.usb_dev-&gt;dev
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;speedtch-%d.bin.%x&quot;
+comma
+id|phase
+comma
+id|bcdDevice
+op_rshift
+l_int|8
+)paren
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;speedtch_find_firmware: looking for %s&bslash;n&quot;
+comma
+id|buf
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_firmware
+c_func
+(paren
+id|fw_p
+comma
+id|buf
+comma
+op_amp
+id|instance-&gt;u.usb_dev-&gt;dev
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;speedtch-%d.bin&quot;
+comma
+id|phase
+)paren
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;speedtch_find_firmware: looking for %s&bslash;n&quot;
+comma
+id|buf
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_firmware
+c_func
+(paren
+id|fw_p
+comma
+id|buf
+comma
+op_amp
+id|instance-&gt;u.usb_dev-&gt;dev
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|dev_warn
+c_func
+(paren
+op_amp
+id|instance-&gt;u.usb_dev-&gt;dev
+comma
+l_string|&quot;no stage %d firmware found!&quot;
+comma
+id|phase
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOENT
+suffix:semicolon
+)brace
+DECL|function|speedtch_load_firmware
+r_static
+r_int
+id|speedtch_load_firmware
+c_func
+(paren
+r_void
+op_star
+id|arg
+)paren
+(brace
+r_const
+r_struct
+id|firmware
+op_star
+id|fw1
+comma
+op_star
+id|fw2
+suffix:semicolon
+r_struct
+id|speedtch_instance_data
+op_star
+id|instance
+op_assign
+id|arg
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|instance
+)paren
+suffix:semicolon
+id|daemonize
+c_func
+(paren
+l_string|&quot;firmware/speedtch&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|speedtch_find_firmware
+c_func
+(paren
+id|instance
+comma
+l_int|1
+comma
+op_amp
+id|fw1
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|speedtch_find_firmware
+c_func
+(paren
+id|instance
+comma
+l_int|2
+comma
+op_amp
+id|fw2
+)paren
+)paren
+(brace
+id|speedtch_upload_firmware
+c_func
+(paren
+id|instance
+comma
+id|fw1
+comma
+id|fw2
+)paren
+suffix:semicolon
+id|release_firmware
+c_func
+(paren
+id|fw2
+)paren
+suffix:semicolon
+)brace
+id|release_firmware
+c_func
+(paren
+id|fw1
+)paren
+suffix:semicolon
+)brace
 id|udsl_put_instance
 c_func
 (paren
@@ -2969,11 +2967,16 @@ op_amp
 id|instance-&gt;u
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+macro_line|#endif /* USE_FW_LOADER */
 DECL|function|speedtch_firmware_start
 r_static
 r_void
 id|speedtch_firmware_start
+c_func
 (paren
 r_struct
 id|speedtch_instance_data
@@ -2987,11 +2990,13 @@ id|ret
 suffix:semicolon
 macro_line|#endif
 id|dbg
+c_func
 (paren
 l_string|&quot;speedtch_firmware_start&quot;
 )paren
 suffix:semicolon
 id|down
+c_func
 (paren
 op_amp
 id|instance-&gt;u.serialize
@@ -3007,6 +3012,7 @@ id|UDSL_LOADING_FIRMWARE
 )paren
 (brace
 id|up
+c_func
 (paren
 op_amp
 id|instance-&gt;u.serialize
@@ -3020,6 +3026,7 @@ op_assign
 id|UDSL_LOADING_FIRMWARE
 suffix:semicolon
 id|up
+c_func
 (paren
 op_amp
 id|instance-&gt;u.serialize
@@ -3033,49 +3040,18 @@ id|instance-&gt;u
 )paren
 suffix:semicolon
 macro_line|#ifdef USE_FW_LOADER
-id|snprintf
-c_func
-(paren
-id|instance-&gt;fwname
-comma
-r_sizeof
-(paren
-id|instance-&gt;fwname
-)paren
-comma
-l_string|&quot;speedtch_boot_rev%d.%02x&quot;
-comma
-id|instance-&gt;revision
-op_rshift
-l_int|8
-comma
-id|instance-&gt;revision
-op_amp
-l_int|0xff
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Look for %s&bslash;n&quot;
-comma
-id|instance-&gt;fwname
-)paren
-suffix:semicolon
 id|ret
 op_assign
-id|request_firmware_nowait
+id|kernel_thread
+c_func
 (paren
-id|THIS_MODULE
-comma
-id|instance-&gt;fwname
-comma
-op_amp
-id|instance-&gt;u.usb_dev-&gt;dev
+id|speedtch_load_firmware
 comma
 id|instance
 comma
-id|speedtch_firmware_load
+id|CLONE_FS
+op_or
+id|CLONE_FILES
 )paren
 suffix:semicolon
 r_if
@@ -3089,15 +3065,17 @@ r_return
 suffix:semicolon
 multiline_comment|/* OK */
 id|dbg
+c_func
 (paren
-l_string|&quot;speedtch_firmware_start: request_firmware_nowait failed (%d)!&quot;
+l_string|&quot;speedtch_firmware_start: kernel_thread failed (%d)!&quot;
 comma
 id|ret
 )paren
 suffix:semicolon
 multiline_comment|/* Just pretend it never happened... hope modem_run happens */
-macro_line|#endif /* USE_FW_LOADER */
+macro_line|#endif&t;&t;&t;&t;/* USE_FW_LOADER */
 id|speedtch_got_firmware
+c_func
 (paren
 id|instance
 comma
@@ -3116,6 +3094,7 @@ DECL|function|speedtch_firmware_wait
 r_static
 r_int
 id|speedtch_firmware_wait
+c_func
 (paren
 r_struct
 id|udsl_instance_data
@@ -3124,6 +3103,7 @@ id|instance
 )paren
 (brace
 id|speedtch_firmware_start
+c_func
 (paren
 (paren
 r_void
@@ -3136,6 +3116,7 @@ r_if
 c_cond
 (paren
 id|wait_event_interruptible
+c_func
 (paren
 id|instance-&gt;firmware_waiters
 comma
@@ -3169,6 +3150,7 @@ DECL|function|speedtch_usb_ioctl
 r_static
 r_int
 id|speedtch_usb_ioctl
+c_func
 (paren
 r_struct
 id|usb_interface
@@ -3190,11 +3172,13 @@ op_star
 id|instance
 op_assign
 id|usb_get_intfdata
+c_func
 (paren
 id|intf
 )paren
 suffix:semicolon
 id|dbg
+c_func
 (paren
 l_string|&quot;speedtch_usb_ioctl entered&quot;
 )paren
@@ -3207,6 +3191,7 @@ id|instance
 )paren
 (brace
 id|dbg
+c_func
 (paren
 l_string|&quot;speedtch_usb_ioctl: NULL instance!&quot;
 )paren
@@ -3230,6 +3215,7 @@ op_assign
 id|ATM_PHY_SIG_FOUND
 suffix:semicolon
 id|speedtch_got_firmware
+c_func
 (paren
 id|instance
 comma
@@ -3271,6 +3257,7 @@ DECL|function|speedtch_usb_probe
 r_static
 r_int
 id|speedtch_usb_probe
+c_func
 (paren
 r_struct
 id|usb_interface
@@ -3324,6 +3311,7 @@ id|SIZE_7
 )braket
 suffix:semicolon
 id|dbg
+c_func
 (paren
 l_string|&quot;speedtch_usb_probe: trying device with vendor=0x%x, product=0x%x, ifnum %d&quot;
 comma
@@ -3366,32 +3354,35 @@ op_minus
 id|ENODEV
 suffix:semicolon
 id|dbg
+c_func
 (paren
 l_string|&quot;speedtch_usb_probe: device accepted&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* instance init */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
 id|instance
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|speedtch_instance_data
+op_star
+id|instance
 )paren
 comma
 id|GFP_KERNEL
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|instance
 )paren
 (brace
 id|dbg
+c_func
 (paren
 l_string|&quot;speedtch_usb_probe: no memory for instance data!&quot;
 )paren
@@ -3402,6 +3393,7 @@ id|ENOMEM
 suffix:semicolon
 )brace
 id|memset
+c_func
 (paren
 id|instance
 comma
@@ -3421,6 +3413,7 @@ c_cond
 id|ret
 op_assign
 id|usb_set_interface
+c_func
 (paren
 id|dev
 comma
@@ -3442,6 +3435,7 @@ c_cond
 id|ret
 op_assign
 id|usb_set_interface
+c_func
 (paren
 id|dev
 comma
@@ -3521,50 +3515,9 @@ comma
 id|instance
 )paren
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|dev-&gt;descriptor.bcdDevice
-)paren
-(brace
-r_case
-l_int|0x0000
-suffix:colon
-r_case
-l_int|0x0200
-suffix:colon
-r_case
-l_int|0x0400
-suffix:colon
-r_case
-l_int|0x0401
-suffix:colon
-id|instance-&gt;revision
-op_assign
-id|dev-&gt;descriptor.bcdDevice
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|instance-&gt;revision
-op_assign
-l_int|0x200
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Unexpected SpeedTouch revision %04x, treating as Rev 2.00.&bslash;n&quot;
-comma
-id|dev-&gt;descriptor.bcdDevice
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 multiline_comment|/* set MAC address, it is stored in the serial number */
 id|memset
+c_func
 (paren
 id|instance-&gt;u.atm_dev-&gt;esi
 comma
@@ -3580,6 +3533,7 @@ r_if
 c_cond
 (paren
 id|usb_string
+c_func
 (paren
 id|dev
 comma
@@ -3595,6 +3549,7 @@ id|mac_str
 op_eq
 l_int|12
 )paren
+(brace
 r_for
 c_loop
 (paren
@@ -3616,6 +3571,7 @@ id|i
 op_assign
 (paren
 id|hex2int
+c_func
 (paren
 id|mac_str
 (braket
@@ -3630,6 +3586,7 @@ l_int|16
 op_plus
 (paren
 id|hex2int
+c_func
 (paren
 id|mac_str
 (braket
@@ -3642,6 +3599,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* First check whether the modem already seems to be alive */
 id|ret
 op_assign
@@ -3707,12 +3665,14 @@ suffix:semicolon
 r_else
 (brace
 id|speedtch_firmware_start
+c_func
 (paren
 id|instance
 )paren
 suffix:semicolon
 )brace
 id|usb_set_intfdata
+c_func
 (paren
 id|intf
 comma
@@ -3725,6 +3685,7 @@ suffix:semicolon
 id|fail
 suffix:colon
 id|kfree
+c_func
 (paren
 id|instance
 )paren
@@ -3738,6 +3699,7 @@ DECL|function|speedtch_usb_disconnect
 r_static
 r_void
 id|speedtch_usb_disconnect
+c_func
 (paren
 r_struct
 id|usb_interface
@@ -3751,11 +3713,13 @@ op_star
 id|instance
 op_assign
 id|usb_get_intfdata
+c_func
 (paren
 id|intf
 )paren
 suffix:semicolon
 id|dbg
+c_func
 (paren
 l_string|&quot;speedtch_usb_disconnect entered&quot;
 )paren
@@ -3768,6 +3732,7 @@ id|instance
 )paren
 (brace
 id|dbg
+c_func
 (paren
 l_string|&quot;speedtch_usb_disconnect: NULL instance!&quot;
 )paren
@@ -3775,6 +3740,8 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/*QQ need to handle disconnects on interface #2 while uploading firmware */
+multiline_comment|/*QQ and what about interface #1? */
 r_if
 c_cond
 (paren
@@ -3843,6 +3810,7 @@ id|instance-&gt;u
 suffix:semicolon
 multiline_comment|/* clean up */
 id|usb_set_intfdata
+c_func
 (paren
 id|intf
 comma
@@ -3863,11 +3831,13 @@ r_static
 r_int
 id|__init
 id|speedtch_usb_init
+c_func
 (paren
 r_void
 )paren
 (brace
 id|dbg
+c_func
 (paren
 l_string|&quot;speedtch_usb_init: driver version &quot;
 id|DRIVER_VERSION
@@ -3875,6 +3845,7 @@ id|DRIVER_VERSION
 suffix:semicolon
 r_return
 id|usb_register
+c_func
 (paren
 op_amp
 id|speedtch_usb_driver
@@ -3886,16 +3857,19 @@ r_static
 r_void
 id|__exit
 id|speedtch_usb_cleanup
+c_func
 (paren
 r_void
 )paren
 (brace
 id|dbg
+c_func
 (paren
 l_string|&quot;speedtch_usb_cleanup entered&quot;
 )paren
 suffix:semicolon
 id|usb_deregister
+c_func
 (paren
 op_amp
 id|speedtch_usb_driver
@@ -3904,35 +3878,41 @@ suffix:semicolon
 )brace
 DECL|variable|speedtch_usb_init
 id|module_init
+c_func
 (paren
 id|speedtch_usb_init
 )paren
 suffix:semicolon
 DECL|variable|speedtch_usb_cleanup
 id|module_exit
+c_func
 (paren
 id|speedtch_usb_cleanup
 )paren
 suffix:semicolon
 DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
+c_func
 (paren
 id|DRIVER_AUTHOR
 )paren
 suffix:semicolon
 DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
+c_func
 (paren
 id|DRIVER_DESC
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
+c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|DRIVER_VERSION
 id|MODULE_VERSION
+c_func
 (paren
 id|DRIVER_VERSION
 )paren
