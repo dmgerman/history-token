@@ -7982,11 +7982,6 @@ id|pmd
 )paren
 )paren
 (brace
-id|preempt_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ptep
 op_assign
 id|pte_offset_map
@@ -8023,11 +8018,6 @@ id|pte_unmap
 c_func
 (paren
 id|ptep
-)paren
-suffix:semicolon
-id|preempt_enable
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
