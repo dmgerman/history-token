@@ -5142,9 +5142,6 @@ id|whiteheat_private
 op_star
 id|info
 suffix:semicolon
-r_int
-id|timeout
-suffix:semicolon
 id|__u8
 op_star
 id|transfer_buffer
