@@ -593,6 +593,9 @@ comma
 DECL|enumerator|TCA_TCINDEX_POLICE
 id|TCA_TCINDEX_POLICE
 comma
+DECL|enumerator|TCA_TCINDEX_ACT
+id|TCA_TCINDEX_ACT
+comma
 DECL|enumerator|__TCA_TCINDEX_MAX
 id|__TCA_TCINDEX_MAX
 )brace
