@@ -93,9 +93,7 @@ r_struct
 id|xfs_iocore
 op_star
 comma
-r_const
-r_struct
-id|iovec
+r_void
 op_star
 comma
 r_int
@@ -125,7 +123,7 @@ id|xfs_off_t
 suffix:semicolon
 macro_line|#else
 DECL|macro|xfs_rw_enter_trace
-mdefine_line|#define xfs_rw_enter_trace(tag, io, iovec, segs, offset, ioflags)
+mdefine_line|#define xfs_rw_enter_trace(tag, io, data, size, offset, ioflags)
 DECL|macro|xfs_inval_cached_trace
 mdefine_line|#define xfs_inval_cached_trace(io, offset, len, first, last)
 macro_line|#endif

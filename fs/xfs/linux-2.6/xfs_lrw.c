@@ -51,11 +51,9 @@ id|xfs_iocore_t
 op_star
 id|io
 comma
-r_const
-r_struct
-id|iovec
+r_void
 op_star
-id|iovp
+id|data
 comma
 r_int
 id|segs
@@ -147,10 +145,7 @@ comma
 r_void
 op_star
 )paren
-(paren
-id|__psint_t
-)paren
-id|iovp
+id|data
 comma
 (paren
 r_void
