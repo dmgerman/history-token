@@ -1,4 +1,4 @@
-multiline_comment|/**&n; *&n; * $Id: phram.c,v 1.1 2003/08/21 17:52:30 joern Exp $&n; *&n; * Copyright (c) Jochen Schaeuble &lt;psionic@psionic.de&gt;&n; * 07/2003&t;rewritten by Joern Engel &lt;joern@wh.fh-wedel.de&gt;&n; *&n; * DISCLAIMER:  This driver makes use of Rusty&squot;s excellent module code,&n; * so it will not work for 2.4 without changes and it wont work for 2.4&n; * as a module without major changes.  Oh well!&n; *&n; * Usage:&n; *&n; * one commend line parameter per device, each in the form:&n; *   phram=&lt;name&gt;,&lt;start&gt;,&lt;len&gt;&n; * &lt;name&gt; may be up to 63 characters.&n; * &lt;start&gt; and &lt;len&gt; can be octal, decimal or hexadecimal.  If followed&n; * by &quot;k&quot;, &quot;M&quot; or &quot;G&quot;, the numbers will be interpreted as kilo, mega or&n; * gigabytes.&n; *&n; */
+multiline_comment|/**&n; *&n; * $Id: phram.c,v 1.2 2004/08/09 13:19:44 dwmw2 Exp $&n; *&n; * Copyright (c) Jochen Schaeuble &lt;psionic@psionic.de&gt;&n; * 07/2003&t;rewritten by Joern Engel &lt;joern@wh.fh-wedel.de&gt;&n; *&n; * DISCLAIMER:  This driver makes use of Rusty&squot;s excellent module code,&n; * so it will not work for 2.4 without changes and it wont work for 2.4&n; * as a module without major changes.  Oh well!&n; *&n; * Usage:&n; *&n; * one commend line parameter per device, each in the form:&n; *   phram=&lt;name&gt;,&lt;start&gt;,&lt;len&gt;&n; * &lt;name&gt; may be up to 63 characters.&n; * &lt;start&gt; and &lt;len&gt; can be octal, decimal or hexadecimal.  If followed&n; * by &quot;k&quot;, &quot;M&quot; or &quot;G&quot;, the numbers will be interpreted as kilo, mega or&n; * gigabytes.&n; *&n; */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -88,23 +88,7 @@ id|instr-&gt;state
 op_assign
 id|MTD_ERASE_DONE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|instr-&gt;callback
-)paren
-(paren
-op_star
-(paren
-id|instr-&gt;callback
-)paren
-)paren
-(paren
-id|instr
-)paren
-suffix:semicolon
-r_else
-id|kfree
+id|mtd_erase_callback
 c_func
 (paren
 id|instr

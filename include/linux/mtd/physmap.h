@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * For boards with physically mapped flash and using &n; * drivers/mtd/maps/physmap.c mapping driver.&n; *&n; * $Id: physmap.h,v 1.2 2004/07/14 17:48:46 dwmw2 Exp $&n; *&n; * Copyright (C) 2003 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
+multiline_comment|/*&n; * For boards with physically mapped flash and using &n; * drivers/mtd/maps/physmap.c mapping driver.&n; *&n; * $Id: physmap.h,v 1.3 2004/07/21 00:16:15 jwboyer Exp $&n; *&n; * Copyright (C) 2003 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
 macro_line|#ifndef __LINUX_MTD_PHYSMAP__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if defined(CONFIG_MTD_PHYSMAP) 
@@ -28,7 +28,7 @@ r_int
 id|size
 comma
 r_int
-id|buswidth
+id|bankwidth
 comma
 r_void
 (paren
@@ -52,9 +52,9 @@ id|physmap_map.size
 op_assign
 id|size
 suffix:semicolon
-id|physmap_map.buswidth
+id|physmap_map.bankwidth
 op_assign
-id|buswidth
+id|bankwidth
 suffix:semicolon
 id|physmap_map.set_vpp
 op_assign

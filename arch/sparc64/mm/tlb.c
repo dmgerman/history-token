@@ -307,11 +307,6 @@ c_cond
 (paren
 op_logical_neg
 id|mapping
-op_logical_or
-id|mapping
-op_eq
-op_amp
-id|swapper_space
 )paren
 r_goto
 id|no_cache_flush
