@@ -57,16 +57,41 @@ suffix:semicolon
 multiline_comment|/* POSIX.1b timers */
 r_struct
 (brace
-DECL|member|_timer1
-r_int
-r_int
-id|_timer1
+DECL|member|_tid
+id|timer_t
+id|_tid
 suffix:semicolon
-DECL|member|_timer2
+multiline_comment|/* timer id */
+DECL|member|_overrun
 r_int
-r_int
-id|_timer2
+id|_overrun
 suffix:semicolon
+multiline_comment|/* overrun count */
+DECL|member|_pad
+r_char
+id|_pad
+(braket
+r_sizeof
+(paren
+id|__ARCH_SI_UID_T
+)paren
+op_minus
+r_sizeof
+(paren
+r_int
+)paren
+)braket
+suffix:semicolon
+DECL|member|_sigval
+id|sigval_t
+id|_sigval
+suffix:semicolon
+multiline_comment|/* same as below */
+DECL|member|_sys_private
+r_int
+id|_sys_private
+suffix:semicolon
+multiline_comment|/* not to be passed to user */
 DECL|member|_timer
 )brace
 id|_timer
