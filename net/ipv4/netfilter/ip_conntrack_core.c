@@ -142,6 +142,11 @@ r_struct
 id|ip_conntrack
 id|ip_conntrack_untracked
 suffix:semicolon
+DECL|variable|ip_ct_log_invalid
+r_int
+r_int
+id|ip_ct_log_invalid
+suffix:semicolon
 id|DEFINE_PER_CPU
 c_func
 (paren

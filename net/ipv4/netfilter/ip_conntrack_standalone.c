@@ -49,13 +49,6 @@ comma
 id|ip_conntrack_stat
 )paren
 suffix:semicolon
-DECL|variable|ip_ct_log_invalid
-r_int
-r_int
-id|ip_ct_log_invalid
-op_assign
-l_int|0
-suffix:semicolon
 DECL|function|kill_proto
 r_static
 r_int
