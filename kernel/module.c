@@ -4846,6 +4846,14 @@ dot
 id|st_name
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%s: please compile with -fno-common&bslash;n&quot;
+comma
+id|mod-&gt;name
+)paren
+suffix:semicolon
 id|ret
 op_assign
 op_minus
