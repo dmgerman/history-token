@@ -2773,19 +2773,6 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
-macro_line|#ifdef CONFIG_JFS_POSIX_ACL
-r_return
-id|jfs_permission
-c_func
-(paren
-id|inode
-comma
-id|MAY_WRITE
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-macro_line|#else
 r_return
 id|permission
 c_func
@@ -2797,7 +2784,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|__jfs_setxattr
 r_int
@@ -3592,7 +3578,6 @@ op_star
 id|name
 )paren
 (brace
-macro_line|#ifdef CONFIG_JFS_POSIX_ACL
 r_if
 c_cond
 (paren
@@ -3614,18 +3599,6 @@ l_int|0
 suffix:semicolon
 )brace
 r_return
-id|jfs_permission
-c_func
-(paren
-id|inode
-comma
-id|MAY_READ
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-macro_line|#else
-r_return
 id|permission
 c_func
 (paren
@@ -3636,7 +3609,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|__jfs_getxattr
 id|ssize_t
