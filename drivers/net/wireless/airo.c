@@ -25,14 +25,13 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_PCI
-DECL|variable|__devinitdata
+DECL|variable|card_ids
 r_static
 r_struct
 id|pci_device_id
 id|card_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

@@ -4903,14 +4903,13 @@ id|data-&gt;update_lock
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|via686a_pci_ids
 r_static
 r_struct
 id|pci_device_id
 id|via686a_pci_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

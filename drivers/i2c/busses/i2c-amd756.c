@@ -1193,14 +1193,13 @@ comma
 id|NFORCE
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|amd756_ids
 r_static
 r_struct
 id|pci_device_id
 id|amd756_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

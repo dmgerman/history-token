@@ -694,14 +694,13 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;5530 only. The 5510/5520 decode is different.&n; */
-DECL|variable|__devinitdata
+DECL|variable|id_tbl
 r_static
 r_struct
 id|pci_device_id
 id|id_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

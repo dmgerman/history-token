@@ -1194,14 +1194,13 @@ c_func
 l_string|&quot;Haroldo Gamal &lt;gamal@alternex.com.br&gt;&quot;
 )paren
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|snd_korg1212_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_korg1212_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

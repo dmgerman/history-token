@@ -495,14 +495,13 @@ comma
 id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|snd_emu10k1_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_emu10k1_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

@@ -1649,14 +1649,13 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|vt596_ids
 r_static
 r_struct
 id|pci_device_id
 id|vt596_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

@@ -8470,14 +8470,13 @@ multiline_comment|/* End init_PCI */
 macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n;#ifdef MODULE&n;#define firestream_init init_module&n;#endif &n;*/
-DECL|variable|__devinitdata
+DECL|variable|firestream_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|firestream_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

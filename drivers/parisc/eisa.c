@@ -1848,7 +1848,6 @@ DECL|variable|eisa_tbl
 r_static
 r_struct
 id|parisc_device_id
-id|__devinitdata
 id|eisa_tbl
 (braket
 )braket

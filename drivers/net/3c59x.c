@@ -1375,14 +1375,13 @@ comma
 multiline_comment|/* 0 terminated list. */
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|vortex_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|vortex_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

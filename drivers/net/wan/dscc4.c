@@ -8585,14 +8585,13 @@ comma
 id|dscc4_setup
 )paren
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|dscc4_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|dscc4_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

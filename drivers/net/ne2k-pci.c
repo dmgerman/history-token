@@ -335,14 +335,13 @@ comma
 )brace
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|ne2k_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|ne2k_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

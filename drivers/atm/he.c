@@ -14517,14 +14517,13 @@ comma
 l_string|&quot;use SDH framing (default 0)&quot;
 )paren
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|he_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|he_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

@@ -936,14 +936,13 @@ id|card
 )brace
 macro_line|#endif
 multiline_comment|/****************************************************************&n; *&n; * Various data the driver needs&n; *&n; *&n; */
-DECL|variable|__initdata
+DECL|variable|via_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|via_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

@@ -6357,14 +6357,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|__initdata
+DECL|variable|agp_intel_pci_table
 r_static
 r_struct
 id|pci_device_id
 id|agp_intel_pci_table
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

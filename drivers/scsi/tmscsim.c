@@ -99,14 +99,13 @@ macro_line|#  define USE_SPINLOCKS 2
 macro_line|# endif
 macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,99)
-DECL|variable|__initdata
+DECL|variable|tmscsim_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|tmscsim_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

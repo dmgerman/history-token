@@ -4075,14 +4075,13 @@ macro_line|#ifndef PCI_ANY_ID
 DECL|macro|PCI_ANY_ID
 mdefine_line|#define PCI_ANY_ID 0
 macro_line|#endif
-DECL|variable|__devinitdata
+DECL|variable|id_table
 r_static
 r_struct
 id|pci_device_id
 id|id_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

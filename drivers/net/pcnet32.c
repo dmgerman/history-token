@@ -45,14 +45,13 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * PCI device identifiers for &quot;new style&quot; Linux PCI Device Drivers&n; */
-DECL|variable|__devinitdata
+DECL|variable|pcnet32_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|pcnet32_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

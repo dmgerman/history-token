@@ -7907,14 +7907,13 @@ id|ENOIOCTLCMD
 suffix:semicolon
 )brace
 )brace
-DECL|variable|__devinitdata
+DECL|variable|imsttfb_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|imsttfb_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

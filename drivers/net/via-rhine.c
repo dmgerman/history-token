@@ -539,14 +539,13 @@ id|HasWOL
 comma
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|via_rhine_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|via_rhine_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

@@ -951,14 +951,13 @@ comma
 comma
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|sis96x_ids
 r_static
 r_struct
 id|pci_device_id
 id|sis96x_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
