@@ -174,6 +174,8 @@ DECL|macro|IPS_REMOVE_HOST
 mdefine_line|#define IPS_REMOVE_HOST(shost)
 DECL|macro|IPS_SCSI_SET_DEVICE
 mdefine_line|#define IPS_SCSI_SET_DEVICE(sh,ha)   scsi_set_pci_device(sh, (ha)-&gt;pcidev)
+DECL|macro|IPS_PRINTK
+mdefine_line|#define IPS_PRINTK(level, pcidev, format, arg...)                 &bslash;&n;            printk(level &quot;%s %s:&quot; format , (pcidev)-&gt;driver-&gt;name ,     &bslash;&n;            (pcidev)-&gt;slot_name , ## arg)
 macro_line|#else
 DECL|macro|IPS_REGISTER_HOSTS
 mdefine_line|#define IPS_REGISTER_HOSTS(SHT)      (!ips_detect(SHT))
@@ -185,6 +187,8 @@ DECL|macro|IPS_REMOVE_HOST
 mdefine_line|#define IPS_REMOVE_HOST(shost)       scsi_remove_host(shost)
 DECL|macro|IPS_SCSI_SET_DEVICE
 mdefine_line|#define IPS_SCSI_SET_DEVICE(sh,ha)   scsi_set_device(sh, &amp;(ha)-&gt;pcidev-&gt;dev)
+DECL|macro|IPS_PRINTK
+mdefine_line|#define IPS_PRINTK(level, pcidev, format, arg...)                 &bslash;&n;            dev_printk(level , &amp;((pcidev)-&gt;dev) , format , ## arg)
 macro_line|#endif
 macro_line|#ifndef MDELAY
 DECL|macro|MDELAY
