@@ -1172,6 +1172,13 @@ op_amp
 id|shost-&gt;eh_cmd_q
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|shost-&gt;starved_list
+)paren
+suffix:semicolon
 id|init_waitqueue_head
 c_func
 (paren

@@ -1381,6 +1381,11 @@ id|list_head
 id|cmd_list
 suffix:semicolon
 multiline_comment|/* queue of in use SCSI Command structures */
+DECL|member|starved_entry
+r_struct
+id|list_head
+id|starved_entry
+suffix:semicolon
 DECL|member|current_cmnd
 id|Scsi_Cmnd
 op_star
@@ -1658,13 +1663,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* support remapping  */
-DECL|member|starved
-r_int
-id|starved
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* unable to process commands because&n;&t;&t;&t;&t;   host busy */
 singleline_comment|//&t;unsigned sync:1;&t;/* Sync transfer state, managed by host */
 singleline_comment|//&t;unsigned wide:1;&t;/* WIDE transfer state, managed by host */
 DECL|member|device_blocked

@@ -1903,6 +1903,13 @@ op_amp
 id|sdev-&gt;cmd_list
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|sdev-&gt;starved_entry
+)paren
+suffix:semicolon
 id|spin_lock_init
 c_func
 (paren
