@@ -1168,6 +1168,25 @@ DECL|typedef|TxD_t
 )brace
 id|TxD_t
 suffix:semicolon
+multiline_comment|/* Structure to hold the phy and virt addr of every TxDL. */
+DECL|struct|list_info_hold
+r_typedef
+r_struct
+id|list_info_hold
+(brace
+DECL|member|list_phy_addr
+id|dma_addr_t
+id|list_phy_addr
+suffix:semicolon
+DECL|member|list_virt_addr
+r_void
+op_star
+id|list_virt_addr
+suffix:semicolon
+DECL|typedef|list_info_hold_t
+)brace
+id|list_info_hold_t
+suffix:semicolon
 multiline_comment|/* Rx descriptor structure */
 DECL|struct|_RxD_t
 r_typedef
@@ -1352,41 +1371,11 @@ id|u16
 id|mc_pause_threshold_q4q7
 suffix:semicolon
 multiline_comment|/* tx side stuff */
-DECL|member|txd_list_mem
-r_void
-op_star
-id|txd_list_mem
-suffix:semicolon
-multiline_comment|/* original pointer to allocated mem */
-DECL|member|txd_list_mem_phy
-id|dma_addr_t
-id|txd_list_mem_phy
-suffix:semicolon
-DECL|member|txd_list_mem_sz
-id|u32
-id|txd_list_mem_sz
-suffix:semicolon
 multiline_comment|/* logical pointer of start of each Tx FIFO */
 DECL|member|tx_FIFO_start
 id|TxFIFO_element_t
 op_star
 id|tx_FIFO_start
-(braket
-id|MAX_TX_FIFOS
-)braket
-suffix:semicolon
-multiline_comment|/* The Phy and virtual mem loactions of the Tx descriptors. */
-DECL|member|txdl_start
-id|TxD_t
-op_star
-id|txdl_start
-(braket
-id|MAX_TX_FIFOS
-)braket
-suffix:semicolon
-DECL|member|txdl_start_phy
-id|dma_addr_t
-id|txdl_start_phy
 (braket
 id|MAX_TX_FIFOS
 )braket
@@ -1714,6 +1703,15 @@ r_int
 id|pkt_cnt
 (braket
 id|MAX_RX_RINGS
+)braket
+suffix:semicolon
+multiline_comment|/* Place holder of all the TX List&squot;s Phy and Virt addresses. */
+DECL|member|list_info
+id|list_info_hold_t
+op_star
+id|list_info
+(braket
+id|MAX_TX_FIFOS
 )braket
 suffix:semicolon
 multiline_comment|/*  Id timer, used to blink NIC to physically identify NIC. */
