@@ -828,7 +828,8 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* FALL THROUGH */
+r_return
+suffix:semicolon
 r_case
 id|PCI_VENDOR_ID_NVIDIA
 suffix:colon
