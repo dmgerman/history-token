@@ -12,8 +12,6 @@ macro_line|#include &lt;asm/platform.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-DECL|macro|RES_COUNT
-mdefine_line|#define RES_COUNT(res) ((sizeof((res))/sizeof(struct resource)))
 multiline_comment|/*&n; * Platform Dependent Interrupt Priorities.&n; */
 multiline_comment|/* Using defaults defined in irq.h */
 DECL|macro|RES
@@ -101,16 +99,28 @@ DECL|macro|SMSC_DEVICE_REV_INDEX
 mdefine_line|#define SMSC_DEVICE_REV_INDEX&t;0x21
 DECL|macro|SMSC_ACTIVATE_INDEX
 mdefine_line|#define SMSC_ACTIVATE_INDEX&t;0x30
+DECL|macro|SMSC_PRIMARY_BASE_INDEX
+mdefine_line|#define SMSC_PRIMARY_BASE_INDEX  0x60
+DECL|macro|SMSC_SECONDARY_BASE_INDEX
+mdefine_line|#define SMSC_SECONDARY_BASE_INDEX 0x62
 DECL|macro|SMSC_PRIMARY_INT_INDEX
 mdefine_line|#define SMSC_PRIMARY_INT_INDEX&t;0x70
 DECL|macro|SMSC_SECONDARY_INT_INDEX
 mdefine_line|#define SMSC_SECONDARY_INT_INDEX 0x72
+DECL|macro|SMSC_IDE1_DEVICE
+mdefine_line|#define SMSC_IDE1_DEVICE&t;1
 DECL|macro|SMSC_KEYBOARD_DEVICE
-mdefine_line|#define SMSC_KEYBOARD_DEVICE 7
+mdefine_line|#define SMSC_KEYBOARD_DEVICE&t;7
+DECL|macro|SMSC_CONFIG_REGISTERS
+mdefine_line|#define SMSC_CONFIG_REGISTERS&t;8
 DECL|macro|SMSC_SUPERIO_READ_INDEXED
 mdefine_line|#define SMSC_SUPERIO_READ_INDEXED(index) ({ &bslash;&n;&t;outb((index), SMSC_INDEX_PORT_ADDR); &bslash;&n;&t;inb(SMSC_DATA_PORT_ADDR); })
 DECL|macro|SMSC_SUPERIO_WRITE_INDEXED
 mdefine_line|#define SMSC_SUPERIO_WRITE_INDEXED(val, index) ({ &bslash;&n;&t;outb((index), SMSC_INDEX_PORT_ADDR); &bslash;&n;&t;outb((val),   SMSC_DATA_PORT_ADDR); })
+DECL|macro|IDE1_PRIMARY_BASE
+mdefine_line|#define IDE1_PRIMARY_BASE&t;0x01f0
+DECL|macro|IDE1_SECONDARY_BASE
+mdefine_line|#define IDE1_SECONDARY_BASE&t;0x03f6
 DECL|variable|smsc_superio_virt
 r_int
 r_int
@@ -206,7 +216,7 @@ comma
 dot
 id|io_res_count
 op_assign
-id|RES_COUNT
+id|ARRAY_SIZE
 c_func
 (paren
 id|io_resources
@@ -220,7 +230,7 @@ comma
 dot
 id|kram_res_count
 op_assign
-id|RES_COUNT
+id|ARRAY_SIZE
 c_func
 (paren
 id|kram_resources
@@ -234,7 +244,7 @@ comma
 dot
 id|xram_res_count
 op_assign
-id|RES_COUNT
+id|ARRAY_SIZE
 c_func
 (paren
 id|xram_resources
@@ -248,7 +258,7 @@ comma
 dot
 id|rom_res_count
 op_assign
-id|RES_COUNT
+id|ARRAY_SIZE
 c_func
 (paren
 id|rom_resources
@@ -525,6 +535,136 @@ comma
 id|SMSC_SECONDARY_INT_INDEX
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IDE
+multiline_comment|/*&n;&t; * Only IDE1 exists on the Cayman&n;&t; */
+multiline_comment|/* Power it on */
+id|SMSC_SUPERIO_WRITE_INDEXED
+c_func
+(paren
+l_int|1
+op_lshift
+id|SMSC_IDE1_DEVICE
+comma
+l_int|0x22
+)paren
+suffix:semicolon
+id|SMSC_SUPERIO_WRITE_INDEXED
+c_func
+(paren
+id|SMSC_IDE1_DEVICE
+comma
+id|SMCS_LOGICAL_DEV_INDEX
+)paren
+suffix:semicolon
+id|SMSC_SUPERIO_WRITE_INDEXED
+c_func
+(paren
+l_int|1
+comma
+id|SMSC_ACTIVATE_INDEX
+)paren
+suffix:semicolon
+id|SMSC_SUPERIO_WRITE_INDEXED
+c_func
+(paren
+id|IDE1_PRIMARY_BASE
+op_rshift
+l_int|8
+comma
+id|SMSC_PRIMARY_BASE_INDEX
+op_plus
+l_int|0
+)paren
+suffix:semicolon
+id|SMSC_SUPERIO_WRITE_INDEXED
+c_func
+(paren
+id|IDE1_PRIMARY_BASE
+op_amp
+l_int|0xff
+comma
+id|SMSC_PRIMARY_BASE_INDEX
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+id|SMSC_SUPERIO_WRITE_INDEXED
+c_func
+(paren
+id|IDE1_SECONDARY_BASE
+op_rshift
+l_int|8
+comma
+id|SMSC_SECONDARY_BASE_INDEX
+op_plus
+l_int|0
+)paren
+suffix:semicolon
+id|SMSC_SUPERIO_WRITE_INDEXED
+c_func
+(paren
+id|IDE1_SECONDARY_BASE
+op_amp
+l_int|0xff
+comma
+id|SMSC_SECONDARY_BASE_INDEX
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+id|SMSC_SUPERIO_WRITE_INDEXED
+c_func
+(paren
+l_int|14
+comma
+id|SMSC_PRIMARY_INT_INDEX
+)paren
+suffix:semicolon
+id|SMSC_SUPERIO_WRITE_INDEXED
+c_func
+(paren
+id|SMSC_CONFIG_REGISTERS
+comma
+id|SMCS_LOGICAL_DEV_INDEX
+)paren
+suffix:semicolon
+id|SMSC_SUPERIO_WRITE_INDEXED
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xc2
+)paren
+suffix:semicolon
+multiline_comment|/* GP42 = nIDE1_OE */
+id|SMSC_SUPERIO_WRITE_INDEXED
+c_func
+(paren
+l_int|0x01
+comma
+l_int|0xc5
+)paren
+suffix:semicolon
+multiline_comment|/* GP45 = IDE1_IRQ */
+id|SMSC_SUPERIO_WRITE_INDEXED
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xc6
+)paren
+suffix:semicolon
+multiline_comment|/* GP46 = nIOROP */
+id|SMSC_SUPERIO_WRITE_INDEXED
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xc7
+)paren
+suffix:semicolon
+multiline_comment|/* GP47 = nIOWOP */
+macro_line|#endif
 multiline_comment|/* Exit the configuraton state */
 id|outb
 c_func
