@@ -3769,17 +3769,6 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
-DECL|member|shutdown
-r_int
-(paren
-op_star
-id|shutdown
-)paren
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
 DECL|member|flushcache
 r_int
 (paren
