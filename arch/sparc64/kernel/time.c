@@ -98,6 +98,8 @@ id|sparc64_tick_ops
 op_star
 id|tick_ops
 suffix:semicolon
+DECL|macro|TICK_PRIV_BIT
+mdefine_line|#define TICK_PRIV_BIT&t;(1UL &lt;&lt; 63)
 DECL|function|tick_disable_protection
 r_static
 r_void
@@ -112,22 +114,22 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;&t;sethi&t;%%hi(0x80000000), %%g1&bslash;n&quot;
 l_string|&quot;&t;ba,pt&t;%%xcc, 1f&bslash;n&quot;
-l_string|&quot;&t; sllx&t;%%g1, 32, %%g1&bslash;n&quot;
+l_string|&quot;&t; nop&bslash;n&quot;
 l_string|&quot;&t;.align&t;64&bslash;n&quot;
 l_string|&quot;1:&t;rd&t;%%tick, %%g2&bslash;n&quot;
 l_string|&quot;&t;add&t;%%g2, 6, %%g2&bslash;n&quot;
-l_string|&quot;&t;andn&t;%%g2, %%g1, %%g2&bslash;n&quot;
+l_string|&quot;&t;andn&t;%%g2, %0, %%g2&bslash;n&quot;
 l_string|&quot;&t;wrpr&t;%%g2, 0, %%tick&bslash;n&quot;
 l_string|&quot;&t;rdpr&t;%%tick, %%g0&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
-multiline_comment|/* no inputs */
+l_string|&quot;r&quot;
+(paren
+id|TICK_PRIV_BIT
+)paren
 suffix:colon
-l_string|&quot;g1&quot;
-comma
 l_string|&quot;g2&quot;
 )paren
 suffix:semicolon
@@ -153,6 +155,7 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;&t;rd&t;%%tick, %%g1&bslash;n&quot;
+l_string|&quot;&t;andn&t;%%g1, %1, %%g1&bslash;n&quot;
 l_string|&quot;&t;ba,pt&t;%%xcc, 1f&bslash;n&quot;
 l_string|&quot;&t; add&t;%%g1, %0, %%g1&bslash;n&quot;
 l_string|&quot;&t;.align&t;64&bslash;n&quot;
@@ -164,6 +167,11 @@ suffix:colon
 l_string|&quot;r&quot;
 (paren
 id|offset
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|TICK_PRIV_BIT
 )paren
 suffix:colon
 l_string|&quot;g1&quot;
@@ -199,6 +207,9 @@ id|ret
 suffix:semicolon
 r_return
 id|ret
+op_amp
+op_complement
+id|TICK_PRIV_BIT
 suffix:semicolon
 )brace
 DECL|function|tick_get_compare
@@ -306,8 +317,9 @@ c_func
 l_string|&quot;rd&t;%%tick, %0&bslash;n&bslash;t&quot;
 l_string|&quot;add&t;%0, %2, %0&bslash;n&bslash;t&quot;
 l_string|&quot;wrpr&t;%0, 0, %%tick&bslash;n&bslash;t&quot;
+l_string|&quot;andn&t;%0, %4, %1&bslash;n&bslash;t&quot;
 l_string|&quot;ba,pt&t;%%xcc, 1f&bslash;n&bslash;t&quot;
-l_string|&quot; add&t;%0, %3, %1&bslash;n&bslash;t&quot;
+l_string|&quot; add&t;%1, %3, %1&bslash;n&bslash;t&quot;
 l_string|&quot;.align&t;64&bslash;n&quot;
 l_string|&quot;1:&bslash;n&bslash;t&quot;
 l_string|&quot;wr&t;%1, 0, %%tick_cmpr&bslash;n&bslash;t&quot;
@@ -331,6 +343,11 @@ comma
 l_string|&quot;r&quot;
 (paren
 id|offset
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|TICK_PRIV_BIT
 )paren
 )paren
 suffix:semicolon
@@ -400,15 +417,16 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;&t;sethi&t;%%hi(0x80000000), %%g1&bslash;n&quot;
-l_string|&quot;&t;sllx&t;%%g1, 32, %%g1&bslash;n&quot;
 l_string|&quot;&t;rd&t;%%asr24, %%g2&bslash;n&quot;
-l_string|&quot;&t;andn&t;%%g2, %%g1, %%g2&bslash;n&quot;
+l_string|&quot;&t;andn&t;%%g2, %0, %%g2&bslash;n&quot;
 l_string|&quot;&t;wr&t;%%g2, 0, %%asr24&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
-multiline_comment|/* no inputs */
+l_string|&quot;r&quot;
+(paren
+id|TICK_PRIV_BIT
+)paren
 suffix:colon
 l_string|&quot;g1&quot;
 comma
@@ -420,6 +438,7 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;&t;rd&t;%%asr24, %%g1&bslash;n&quot;
+l_string|&quot;&t;andn&t;%%g1, %1, %%g1&bslash;n&quot;
 l_string|&quot;&t;add&t;%%g1, %0, %%g1&bslash;n&quot;
 l_string|&quot;&t;wr&t;%%g1, 0x0, %%asr25&quot;
 suffix:colon
@@ -428,6 +447,11 @@ suffix:colon
 l_string|&quot;r&quot;
 (paren
 id|offset
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|TICK_PRIV_BIT
 )paren
 suffix:colon
 l_string|&quot;g1&quot;
@@ -462,6 +486,9 @@ id|ret
 suffix:semicolon
 r_return
 id|ret
+op_amp
+op_complement
+id|TICK_PRIV_BIT
 suffix:semicolon
 )brace
 DECL|function|stick_get_compare
@@ -523,7 +550,8 @@ c_func
 l_string|&quot;rd&t;%%asr24, %0&bslash;n&bslash;t&quot;
 l_string|&quot;add&t;%0, %2, %0&bslash;n&bslash;t&quot;
 l_string|&quot;wr&t;%0, 0, %%asr24&bslash;n&bslash;t&quot;
-l_string|&quot;add&t;%0, %3, %1&bslash;n&bslash;t&quot;
+l_string|&quot;andn&t;%0, %4, %1&bslash;n&bslash;t&quot;
+l_string|&quot;add&t;%1, %3, %1&bslash;n&bslash;t&quot;
 l_string|&quot;wr&t;%1, 0, %%asr25&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -544,6 +572,11 @@ comma
 l_string|&quot;r&quot;
 (paren
 id|offset
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|TICK_PRIV_BIT
 )paren
 )paren
 suffix:semicolon
@@ -970,11 +1003,7 @@ c_func
 )paren
 op_amp
 op_complement
-(paren
-l_int|1UL
-op_lshift
-l_int|63
-)paren
+id|TICK_PRIV_BIT
 suffix:semicolon
 id|__hbird_write_compare
 c_func
@@ -1002,11 +1031,7 @@ c_func
 )paren
 op_amp
 op_complement
-(paren
-l_int|1UL
-op_lshift
-l_int|63
-)paren
+id|TICK_PRIV_BIT
 suffix:semicolon
 )brace
 DECL|function|hbtick_get_compare
@@ -1064,11 +1089,7 @@ suffix:semicolon
 id|val
 op_and_assign
 op_complement
-(paren
-l_int|1UL
-op_lshift
-l_int|63
-)paren
+id|TICK_PRIV_BIT
 suffix:semicolon
 id|__hbird_write_compare
 c_func
@@ -1108,11 +1129,7 @@ suffix:semicolon
 id|val
 op_and_assign
 op_complement
-(paren
-l_int|1UL
-op_lshift
-l_int|63
-)paren
+id|TICK_PRIV_BIT
 suffix:semicolon
 id|__hbird_write_compare
 c_func
