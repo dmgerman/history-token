@@ -2243,7 +2243,7 @@ comma
 id|sys_ni_syscall
 )paren
 DECL|macro|__NR_waitid
-mdefine_line|#define __NR_waitid&t;&t;(253)
+mdefine_line|#define __NR_waitid&t;&t;247
 id|__SYSCALL
 c_func
 (paren
