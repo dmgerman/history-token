@@ -1058,6 +1058,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|WATCHDOG_MINOR
+id|MODULE_ALIAS_MISCDEV
+c_func
+(paren
+id|WATCHDOG_MINOR
+)paren
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
