@@ -517,7 +517,8 @@ c_cond
 (paren
 id|serial-&gt;num_bulk_out
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;write_urb
 )paren
@@ -527,7 +528,8 @@ c_cond
 (paren
 id|serial-&gt;num_bulk_in
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;read_urb
 )paren

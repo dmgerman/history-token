@@ -401,7 +401,7 @@ op_logical_neg
 op_decrement
 id|touchkit-&gt;open
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|touchkit-&gt;irq
@@ -1077,7 +1077,7 @@ op_amp
 id|touchkit-&gt;input
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|touchkit-&gt;irq

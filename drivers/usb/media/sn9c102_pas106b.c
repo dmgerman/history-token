@@ -1,4 +1,4 @@
-multiline_comment|/***************************************************************************&n; * Driver for PAS106B image sensor connected to the SN9C10[12] PC Camera   *&n; * Controllers                                                             *&n; *                                                                         *&n; * Copyright (C) 2004 by Luca Risolia &lt;luca.risolia@studio.unibo.it&gt;       *&n; *                                                                         *&n; * This program is free software; you can redistribute it and/or modify    *&n; * it under the terms of the GNU General Public License as published by    *&n; * the Free Software Foundation; either version 2 of the License, or       *&n; * (at your option) any later version.                                     *&n; *                                                                         *&n; * This program is distributed in the hope that it will be useful,         *&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of          *&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *&n; * GNU General Public License for more details.                            *&n; *                                                                         *&n; * You should have received a copy of the GNU General Public License       *&n; * along with this program; if not, write to the Free Software             *&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.               *&n; ***************************************************************************/
+multiline_comment|/***************************************************************************&n; * Driver for PAS106B image sensor connected to the SN9C10x PC Camera      *&n; * Controllers                                                             *&n; *                                                                         *&n; * Copyright (C) 2004 by Luca Risolia &lt;luca.risolia@studio.unibo.it&gt;       *&n; *                                                                         *&n; * This program is free software; you can redistribute it and/or modify    *&n; * it under the terms of the GNU General Public License as published by    *&n; * the Free Software Foundation; either version 2 of the License, or       *&n; * (at your option) any later version.                                     *&n; *                                                                         *&n; * This program is distributed in the hope that it will be useful,         *&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of          *&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *&n; * GNU General Public License for more details.                            *&n; *                                                                         *&n; * You should have received a copy of the GNU General Public License       *&n; * along with this program; if not, write to the Free Software             *&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.               *&n; ***************************************************************************/
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;sn9c102_sensor.h&quot;
 DECL|variable|pas106b
@@ -502,8 +502,6 @@ comma
 l_int|0x0c
 comma
 id|ctrl-&gt;value
-op_amp
-l_int|0x1f
 )paren
 suffix:semicolon
 r_break
@@ -521,8 +519,6 @@ comma
 l_int|0x09
 comma
 id|ctrl-&gt;value
-op_amp
-l_int|0x1f
 )paren
 suffix:semicolon
 r_break
@@ -540,8 +536,6 @@ comma
 l_int|0x0e
 comma
 id|ctrl-&gt;value
-op_amp
-l_int|0x1f
 )paren
 suffix:semicolon
 r_break
@@ -560,11 +554,7 @@ l_int|0x0d
 comma
 l_int|0x1f
 op_minus
-(paren
 id|ctrl-&gt;value
-op_amp
-l_int|0x1f
-)paren
 )paren
 suffix:semicolon
 r_break
@@ -582,8 +572,6 @@ comma
 l_int|0x0f
 comma
 id|ctrl-&gt;value
-op_amp
-l_int|0x03
 )paren
 suffix:semicolon
 r_break
@@ -609,6 +597,12 @@ l_int|0x01
 suffix:semicolon
 r_return
 id|err
+ques
+c_cond
+op_minus
+id|EIO
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|pas106b_set_crop

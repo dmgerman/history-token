@@ -71,6 +71,8 @@ DECL|macro|US_FL_FIX_INQUIRY
 mdefine_line|#define US_FL_FIX_INQUIRY     0x00000040 /* INQUIRY response needs faking   */
 DECL|macro|US_FL_FIX_CAPACITY
 mdefine_line|#define US_FL_FIX_CAPACITY    0x00000080 /* READ CAPACITY response too big  */
+DECL|macro|US_FL_IGNORE_RESIDUE
+mdefine_line|#define US_FL_IGNORE_RESIDUE  0x00000100 /* reported residue is wrong&t;    */
 multiline_comment|/* Dynamic flag definitions: used in set_bit() etc. */
 DECL|macro|US_FLIDX_URB_ACTIVE
 mdefine_line|#define US_FLIDX_URB_ACTIVE&t;18  /* 0x00040000  current_urb is in use  */
@@ -374,6 +376,17 @@ id|wait_queue_head_t
 id|dev_reset_wait
 suffix:semicolon
 multiline_comment|/* wait during reset    */
+DECL|member|scsi_scan_wait
+id|wait_queue_head_t
+id|scsi_scan_wait
+suffix:semicolon
+multiline_comment|/* wait before scanning */
+DECL|member|scsi_scan_done
+r_struct
+id|completion
+id|scsi_scan_done
+suffix:semicolon
+multiline_comment|/* scan thread end&t; */
 multiline_comment|/* subdriver information */
 DECL|member|extra
 r_void

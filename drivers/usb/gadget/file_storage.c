@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/dcache.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
@@ -32,6 +33,7 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/uts.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
@@ -44,7 +46,7 @@ mdefine_line|#define DRIVER_DESC&t;&t;&quot;File-backed Storage Gadget&quot;
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME&t;&t;&quot;g_file_storage&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&t;&quot;28 July 2004&quot;
+mdefine_line|#define DRIVER_VERSION&t;&t;&quot;31 August 2004&quot;
 DECL|variable|longname
 r_static
 r_const
@@ -2077,6 +2079,33 @@ comma
 singleline_comment|// self-powered
 )brace
 suffix:semicolon
+r_static
+r_struct
+id|usb_otg_descriptor
+DECL|variable|otg_desc
+id|otg_desc
+op_assign
+(brace
+dot
+id|bLength
+op_assign
+r_sizeof
+(paren
+id|otg_desc
+)paren
+comma
+dot
+id|bDescriptorType
+op_assign
+id|USB_DT_OTG
+comma
+dot
+id|bmAttributes
+op_assign
+id|USB_OTG_SRP
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* There is only one interface. */
 r_static
 r_struct
@@ -2243,6 +2272,14 @@ id|usb_descriptor_header
 op_star
 )paren
 op_amp
+id|otg_desc
+comma
+(paren
+r_struct
+id|usb_descriptor_header
+op_star
+)paren
+op_amp
 id|intf_desc
 comma
 (paren
@@ -2273,6 +2310,8 @@ l_int|NULL
 comma
 )brace
 suffix:semicolon
+DECL|macro|FS_FUNCTION_PRE_EP_ENTRIES
+mdefine_line|#define FS_FUNCTION_PRE_EP_ENTRIES&t;2
 macro_line|#ifdef&t;CONFIG_USB_GADGET_DUALSPEED
 multiline_comment|/*&n; * USB 2.0 devices need to expose both high speed and full speed&n; * descriptors, unless they only run at full speed.&n; *&n; * That means alternate endpoint descriptors (bigger packets)&n; * and a &quot;device qualifier&quot; ... plus more construction options&n; * for the config descriptor.&n; */
 r_static
@@ -2445,6 +2484,14 @@ id|usb_descriptor_header
 op_star
 )paren
 op_amp
+id|otg_desc
+comma
+(paren
+r_struct
+id|usb_descriptor_header
+op_star
+)paren
+op_amp
 id|intf_desc
 comma
 (paren
@@ -2475,6 +2522,8 @@ l_int|NULL
 comma
 )brace
 suffix:semicolon
+DECL|macro|HS_FUNCTION_PRE_EP_ENTRIES
+mdefine_line|#define HS_FUNCTION_PRE_EP_ENTRIES&t;2
 multiline_comment|/* Maxpacket and other transfer characteristics vary by speed. */
 DECL|macro|ep_desc
 mdefine_line|#define ep_desc(g,fs,hs)&t;(((g)-&gt;speed==USB_SPEED_HIGH) ? (hs) : (fs))
@@ -2559,9 +2608,10 @@ r_int
 id|populate_config_buf
 c_func
 (paren
-r_enum
-id|usb_device_speed
-id|speed
+r_struct
+id|usb_gadget
+op_star
+id|gadget
 comma
 id|u8
 op_star
@@ -2574,6 +2624,12 @@ r_int
 id|index
 )paren
 (brace
+r_enum
+id|usb_device_speed
+id|speed
+op_assign
+id|gadget-&gt;speed
+suffix:semicolon
 r_int
 id|len
 suffix:semicolon
@@ -2629,6 +2685,16 @@ macro_line|#endif
 id|function
 op_assign
 id|fs_function
+suffix:semicolon
+multiline_comment|/* for now, don&squot;t advertise srp-only devices */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|gadget-&gt;is_otg
+)paren
+id|function
+op_increment
 suffix:semicolon
 id|len
 op_assign
@@ -4023,7 +4089,7 @@ op_assign
 id|populate_config_buf
 c_func
 (paren
-id|fsg-&gt;gadget-&gt;speed
+id|fsg-&gt;gadget
 comma
 id|req-&gt;buf
 comma
@@ -4701,6 +4767,19 @@ suffix:semicolon
 id|fsg-&gt;thread_wakeup_needed
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+id|refrigerator
+c_func
+(paren
+id|PF_FREEZE
+)paren
 suffix:semicolon
 r_return
 (paren
@@ -7928,21 +8007,13 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Wait for a short time and then try again */
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 op_ne
 l_int|0
@@ -14607,7 +14678,7 @@ c_cond
 id|gadget_is_lh7a40x
 c_func
 (paren
-id|gadget
+id|fsg-&gt;gadget
 )paren
 )paren
 id|mod_data.release
@@ -14615,6 +14686,23 @@ op_assign
 id|__constant_cpu_to_le16
 (paren
 l_int|0x0309
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_n9604
+c_func
+(paren
+id|fsg-&gt;gadget
+)paren
+)paren
+id|mod_data.release
+op_assign
+id|__constant_cpu_to_le16
+(paren
+l_int|0x030a
 )paren
 suffix:semicolon
 r_else
@@ -15535,7 +15623,7 @@ id|fs_function
 (braket
 id|i
 op_plus
-l_int|1
+id|FS_FUNCTION_PRE_EP_ENTRIES
 )braket
 op_assign
 l_int|NULL
@@ -15545,7 +15633,7 @@ id|hs_function
 (braket
 id|i
 op_plus
-l_int|1
+id|HS_FUNCTION_PRE_EP_ENTRIES
 )braket
 op_assign
 l_int|NULL
@@ -15569,6 +15657,21 @@ op_assign
 id|fs_intr_in_desc.bEndpointAddress
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|gadget-&gt;is_otg
+)paren
+(brace
+id|otg_desc.bmAttributes
+op_or_assign
+id|USB_OTG_HNP
+comma
+id|config_desc.bmAttributes
+op_or_assign
+id|USB_CONFIG_ATT_WAKEUP
+suffix:semicolon
+)brace
 id|rc
 op_assign
 op_minus

@@ -1,7 +1,215 @@
-multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * (C) Copyright 2002 Hewlett-Packard Company&n; *&n; * Bus Glue for Sharp LH7A404&n; *&n; * Written by Christopher Hoover &lt;ch@hpl.hp.com&gt;&n; * Based on fragments of previous driver by Rusell King et al.&n; *&n; * Modified for LH7A404 from ohci-sa1111.c&n; *  by Durgesh Pattamatta &lt;pattamattad@sharpsec.com&gt;&n; *&n; * This file is licenced under the GPL.&n; */
-macro_line|#include &lt;asm/hardware.h&gt;
+multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * (C) Copyright 2002 Hewlett-Packard Company&n; *&n; * Bus Glue for pxa27x&n; *&n; * Written by Christopher Hoover &lt;ch@hpl.hp.com&gt;&n; * Based on fragments of previous driver by Russell King et al.&n; *&n; * Modified for LH7A404 from ohci-sa1111.c&n; *  by Durgesh Pattamatta &lt;pattamattad@sharpsec.com&gt;&n; *&n; * Modified for pxa27x from ohci-lh7a404.c&n; *  by Nick Bane &lt;nick@cecomputing.co.uk&gt; 26-8-2004&n; *&n; * This file is licenced under the GPL.&n; */
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
-macro_line|#include &lt;asm/arch/hardware.h&gt;
+macro_line|#include &lt;asm/hardware.h&gt;
+DECL|macro|PMM_NPS_MODE
+mdefine_line|#define PMM_NPS_MODE           1
+DECL|macro|PMM_GLOBAL_MODE
+mdefine_line|#define PMM_GLOBAL_MODE        2
+DECL|macro|PMM_PERPORT_MODE
+mdefine_line|#define PMM_PERPORT_MODE       3
+DECL|macro|PXA_UHC_MAX_PORTNUM
+mdefine_line|#define PXA_UHC_MAX_PORTNUM    3
+DECL|macro|UHCRHPS
+mdefine_line|#define UHCRHPS(x)              __REG2( 0x4C000050, (x)&lt;&lt;2 )
+DECL|variable|pxa27x_ohci_pmm_state
+r_static
+r_int
+id|pxa27x_ohci_pmm_state
+suffix:semicolon
+multiline_comment|/*&n;  PMM_NPS_MODE -- PMM Non-power switching mode&n;      Ports are powered continuously.&n;&n;  PMM_GLOBAL_MODE -- PMM global switching mode&n;      All ports are powered at the same time.&n;&n;  PMM_PERPORT_MODE -- PMM per port switching mode&n;      Ports are powered individually.&n; */
+DECL|function|pxa27x_ohci_select_pmm
+r_static
+r_int
+id|pxa27x_ohci_select_pmm
+c_func
+(paren
+r_int
+id|mode
+)paren
+(brace
+id|pxa27x_ohci_pmm_state
+op_assign
+id|mode
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|mode
+)paren
+(brace
+r_case
+id|PMM_NPS_MODE
+suffix:colon
+id|UHCRHDA
+op_or_assign
+id|RH_A_NPS
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PMM_GLOBAL_MODE
+suffix:colon
+id|UHCRHDA
+op_and_assign
+op_complement
+(paren
+id|RH_A_NPS
+op_amp
+id|RH_A_PSM
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PMM_PERPORT_MODE
+suffix:colon
+id|UHCRHDA
+op_and_assign
+op_complement
+(paren
+id|RH_A_NPS
+)paren
+suffix:semicolon
+id|UHCRHDA
+op_or_assign
+id|RH_A_PSM
+suffix:semicolon
+multiline_comment|/* Set port power control mask bits, only 3 ports. */
+id|UHCRHDB
+op_or_assign
+(paren
+l_int|0x7
+op_lshift
+l_int|17
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Invalid mode %d, set to non-power switch mode.&bslash;n&quot;
+comma
+id|mode
+)paren
+suffix:semicolon
+id|pxa27x_ohci_pmm_state
+op_assign
+id|PMM_NPS_MODE
+suffix:semicolon
+id|UHCRHDA
+op_or_assign
+id|RH_A_NPS
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n;  If you select PMM_PERPORT_MODE, you should set the port power&n; */
+DECL|function|pxa27x_ohci_set_port_power
+r_static
+r_int
+id|pxa27x_ohci_set_port_power
+c_func
+(paren
+r_int
+id|port
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|pxa27x_ohci_pmm_state
+op_eq
+id|PMM_PERPORT_MODE
+)paren
+op_logical_and
+(paren
+id|port
+OG
+l_int|0
+)paren
+op_logical_and
+(paren
+id|port
+OL
+id|PXA_UHC_MAX_PORTNUM
+)paren
+)paren
+(brace
+id|UHCRHPS
+c_func
+(paren
+id|port
+)paren
+op_or_assign
+l_int|0x100
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/*&n;  If you select PMM_PERPORT_MODE, you should set the port power&n; */
+DECL|function|pxa27x_ohci_clear_port_power
+r_static
+r_int
+id|pxa27x_ohci_clear_port_power
+c_func
+(paren
+r_int
+id|port
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|pxa27x_ohci_pmm_state
+op_eq
+id|PMM_PERPORT_MODE
+)paren
+op_logical_and
+(paren
+id|port
+OG
+l_int|0
+)paren
+op_logical_and
+(paren
+id|port
+OL
+id|PXA_UHC_MAX_PORTNUM
+)paren
+)paren
+(brace
+id|UHCRHPS
+c_func
+(paren
+id|port
+)paren
+op_or_assign
+l_int|0x200
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 r_extern
 r_int
 id|usb_disabled
@@ -11,10 +219,10 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-DECL|function|lh7a404_start_hc
+DECL|function|pxa27x_start_hc
 r_static
 r_void
-id|lh7a404_start_hc
+id|pxa27x_start_hc
 c_func
 (paren
 r_struct
@@ -23,43 +231,115 @@ op_star
 id|dev
 )paren
 (brace
-id|printk
+id|pxa_set_cken
 c_func
 (paren
-id|KERN_DEBUG
-id|__FILE__
-l_string|&quot;: starting LH7A404 OHCI USB Controller&bslash;n&quot;
+id|CKEN10_USBHOST
+comma
+l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Now, carefully enable the USB clock, and take&n;&t; * the USB host controller out of reset.&n;&t; */
-id|CSC_PWRCNT
+id|UHCHR
 op_or_assign
-id|CSC_PWRCNT_USBH_EN
+id|UHCHR_FHR
 suffix:semicolon
-multiline_comment|/* Enable clock */
 id|udelay
 c_func
 (paren
-l_int|1000
+l_int|11
 )paren
 suffix:semicolon
-id|USBH_CMDSTATUS
-op_assign
-id|OHCI_HCR
+id|UHCHR
+op_and_assign
+op_complement
+id|UHCHR_FHR
 suffix:semicolon
-id|printk
+id|UHCHR
+op_or_assign
+id|UHCHR_FSBIR
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|UHCHR
+op_amp
+id|UHCHR_FSBIR
+)paren
+id|cpu_relax
 c_func
 (paren
-id|KERN_DEBUG
-id|__FILE__
-l_string|&quot;: Clock to USB host has been enabled &bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* This could be properly abstracted away through the&n;&t;   device data the day more machines are supported and&n;&t;   their differences can be figured out correctly. */
+r_if
+c_cond
+(paren
+id|machine_is_mainstone
+c_func
+(paren
+)paren
+)paren
+(brace
+multiline_comment|/* setup Port1 GPIO pin. */
+id|pxa_gpio_mode
+c_func
+(paren
+l_int|88
+op_or
+id|GPIO_ALT_FN_1_IN
+)paren
+suffix:semicolon
+multiline_comment|/* USBHPWR1 */
+id|pxa_gpio_mode
+c_func
+(paren
+l_int|89
+op_or
+id|GPIO_ALT_FN_2_OUT
+)paren
+suffix:semicolon
+multiline_comment|/* USBHPEN1 */
+multiline_comment|/* Set the Power Control Polarity Low and Power Sense&n;&t;&t;   Polarity Low to active low. Supply power to USB ports. */
+id|UHCHR
+op_assign
+(paren
+id|UHCHR
+op_or
+id|UHCHR_PCPL
+op_or
+id|UHCHR_PSPL
+)paren
+op_amp
+op_complement
+(paren
+id|UHCHR_SSEP1
+op_or
+id|UHCHR_SSEP2
+op_or
+id|UHCHR_SSEP3
+op_or
+id|UHCHR_SSE
 )paren
 suffix:semicolon
 )brace
-DECL|function|lh7a404_stop_hc
+id|UHCHR
+op_and_assign
+op_complement
+id|UHCHR_SSE
+suffix:semicolon
+id|UHCHIE
+op_assign
+(paren
+id|UHCHIE_UPRIE
+op_or
+id|UHCHIE_RWIE
+)paren
+suffix:semicolon
+)brace
+DECL|function|pxa27x_stop_hc
 r_static
 r_void
-id|lh7a404_stop_hc
+id|pxa27x_stop_hc
 c_func
 (paren
 r_struct
@@ -68,62 +348,43 @@ op_star
 id|dev
 )paren
 (brace
-id|printk
+id|UHCHR
+op_or_assign
+id|UHCHR_FHR
+suffix:semicolon
+id|udelay
 c_func
 (paren
-id|KERN_DEBUG
-id|__FILE__
-l_string|&quot;: stopping LH7A404 OHCI USB Controller&bslash;n&quot;
+l_int|11
 )paren
 suffix:semicolon
-id|CSC_PWRCNT
+id|UHCHR
 op_and_assign
 op_complement
-id|CSC_PWRCNT_USBH_EN
+id|UHCHR_FHR
 suffix:semicolon
-multiline_comment|/* Disable clock */
-)brace
-multiline_comment|/*-------------------------------------------------------------------------*/
-DECL|function|usb_hcd_lh7a404_hcim_irq
-r_static
-id|irqreturn_t
-id|usb_hcd_lh7a404_hcim_irq
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|__hcd
-comma
-r_struct
-id|pt_regs
-op_star
-id|r
-)paren
-(brace
-r_struct
-id|usb_hcd
-op_star
-id|hcd
-op_assign
-id|__hcd
+id|UHCCOMS
+op_or_assign
+l_int|1
 suffix:semicolon
-r_return
-id|usb_hcd_irq
+id|udelay
 c_func
 (paren
-id|irq
+l_int|10
+)paren
+suffix:semicolon
+id|pxa_set_cken
+c_func
+(paren
+id|CKEN10_USBHOST
 comma
-id|hcd
-comma
-id|r
+l_int|0
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 r_void
-id|usb_hcd_lh7a404_remove
+id|usb_hcd_pxa27x_remove
 (paren
 r_struct
 id|usb_hcd
@@ -136,10 +397,10 @@ op_star
 suffix:semicolon
 multiline_comment|/* configure so an HC device and id are always provided */
 multiline_comment|/* always called with process context; sleeping is OK */
-multiline_comment|/**&n; * usb_hcd_lh7a404_probe - initialize LH7A404-based HCDs&n; * Context: !in_interrupt()&n; *&n; * Allocates basic resources for this USB host controller, and&n; * then invokes the start() method for the HCD associated with it&n; * through the hotplug entry&squot;s driver_data.&n; *&n; */
-DECL|function|usb_hcd_lh7a404_probe
+multiline_comment|/**&n; * usb_hcd_pxa27x_probe - initialize pxa27x-based HCDs&n; * Context: !in_interrupt()&n; *&n; * Allocates basic resources for this USB host controller, and&n; * then invokes the start() method for the HCD associated with it&n; * through the hotplug entry&squot;s driver_data.&n; *&n; */
+DECL|function|usb_hcd_pxa27x_probe
 r_int
-id|usb_hcd_lh7a404_probe
+id|usb_hcd_pxa27x_probe
 (paren
 r_const
 r_struct
@@ -221,10 +482,72 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|lh7a404_start_hc
+id|pxa27x_start_hc
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* Select Power Management Mode */
+id|pxa27x_ohci_select_pmm
+c_func
+(paren
+id|PMM_PERPORT_MODE
+)paren
+suffix:semicolon
+multiline_comment|/* If choosing PMM_PERPORT_MODE, we should set the port power before we use it. */
+r_if
+c_cond
+(paren
+id|pxa27x_ohci_set_port_power
+c_func
+(paren
+l_int|1
+)paren
+OL
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Setting port 1 power failed.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pxa27x_ohci_clear_port_power
+c_func
+(paren
+l_int|2
+)paren
+OL
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Setting port 2 power failed.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pxa27x_ohci_clear_port_power
+c_func
+(paren
+l_int|3
+)paren
+OL
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Setting port 3 power failed.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|addr
@@ -394,7 +717,7 @@ id|request_irq
 (paren
 id|hcd-&gt;irq
 comma
-id|usb_hcd_lh7a404_hcim_irq
+id|usb_hcd_irq
 comma
 id|SA_INTERRUPT
 comma
@@ -414,7 +737,11 @@ l_int|0
 id|pr_debug
 c_func
 (paren
-l_string|&quot;request_irq failed&quot;
+l_string|&quot;request_irq(%d) failed with retval %d&bslash;n&quot;
+comma
+id|hcd-&gt;irq
+comma
+id|retval
 )paren
 suffix:semicolon
 id|retval
@@ -428,7 +755,7 @@ suffix:semicolon
 )brace
 id|pr_debug
 (paren
-l_string|&quot;%s (LH7A404) at 0x%p, irq %d&quot;
+l_string|&quot;%s (pxa27x) at 0x%p, irq %d&quot;
 comma
 id|hcd-&gt;description
 comma
@@ -458,11 +785,11 @@ id|hcd
 suffix:semicolon
 id|hcd-&gt;self.bus_name
 op_assign
-l_string|&quot;lh7a404&quot;
+l_string|&quot;pxa27x&quot;
 suffix:semicolon
 id|hcd-&gt;product_desc
 op_assign
-l_string|&quot;LH7A404 OHCI&quot;
+l_string|&quot;PXA27x OHCI&quot;
 suffix:semicolon
 id|INIT_LIST_HEAD
 (paren
@@ -491,7 +818,7 @@ OL
 l_int|0
 )paren
 (brace
-id|usb_hcd_lh7a404_remove
+id|usb_hcd_pxa27x_remove
 c_func
 (paren
 id|hcd
@@ -533,7 +860,7 @@ id|hcd
 suffix:semicolon
 id|err1
 suffix:colon
-id|lh7a404_stop_hc
+id|pxa27x_stop_hc
 c_func
 (paren
 id|dev
@@ -572,10 +899,10 @@ suffix:semicolon
 )brace
 multiline_comment|/* may be called without controller electrically present */
 multiline_comment|/* may be called with controller, bus, and devices active */
-multiline_comment|/**&n; * usb_hcd_lh7a404_remove - shutdown processing for LH7A404-based HCDs&n; * @dev: USB Host Controller being removed&n; * Context: !in_interrupt()&n; *&n; * Reverses the effect of usb_hcd_lh7a404_probe(), first invoking&n; * the HCD&squot;s stop() method.  It is always called from a thread&n; * context, normally &quot;rmmod&quot;, &quot;apmd&quot;, or something similar.&n; *&n; */
-DECL|function|usb_hcd_lh7a404_remove
+multiline_comment|/**&n; * usb_hcd_pxa27x_remove - shutdown processing for pxa27x-based HCDs&n; * @dev: USB Host Controller being removed&n; * Context: !in_interrupt()&n; *&n; * Reverses the effect of usb_hcd_pxa27x_probe(), first invoking&n; * the HCD&squot;s stop() method.  It is always called from a thread&n; * context, normally &quot;rmmod&quot;, &quot;apmd&quot;, or something similar.&n; *&n; */
+DECL|function|usb_hcd_pxa27x_remove
 r_void
-id|usb_hcd_lh7a404_remove
+id|usb_hcd_pxa27x_remove
 (paren
 r_struct
 id|usb_hcd
@@ -665,7 +992,7 @@ id|hcd-&gt;driver-&gt;hcd_free
 id|hcd
 )paren
 suffix:semicolon
-id|lh7a404_stop_hc
+id|pxa27x_stop_hc
 c_func
 (paren
 id|dev
@@ -703,8 +1030,8 @@ multiline_comment|/*------------------------------------------------------------
 r_static
 r_int
 id|__devinit
-DECL|function|ohci_lh7a404_start
-id|ohci_lh7a404_start
+DECL|function|ohci_pxa27x_start
+id|ohci_pxa27x_start
 (paren
 r_struct
 id|usb_hcd
@@ -729,7 +1056,7 @@ id|ohci_dbg
 (paren
 id|ohci
 comma
-l_string|&quot;ohci_lh7a404_start, ohci:%p&quot;
+l_string|&quot;ohci_pxa27x_start, ohci:%p&quot;
 comma
 id|ohci
 )paren
@@ -788,12 +1115,12 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-DECL|variable|ohci_lh7a404_hc_driver
+DECL|variable|ohci_pxa27x_hc_driver
 r_static
 r_const
 r_struct
 id|hc_driver
-id|ohci_lh7a404_hc_driver
+id|ohci_pxa27x_hc_driver
 op_assign
 (brace
 dot
@@ -816,12 +1143,8 @@ multiline_comment|/*&n;&t; * basic lifecycle operations&n;&t; */
 dot
 id|start
 op_assign
-id|ohci_lh7a404_start
+id|ohci_pxa27x_start
 comma
-macro_line|#ifdef&t;CONFIG_PM
-multiline_comment|/* suspend:&t;&t;ohci_lh7a404_suspend,  -- tbd */
-multiline_comment|/* resume:&t;&t;ohci_lh7a404_resume,   -- tbd */
-macro_line|#endif /*CONFIG_PM*/
 dot
 id|stop
 op_assign
@@ -871,13 +1194,25 @@ id|hub_control
 op_assign
 id|ohci_hub_control
 comma
+macro_line|#ifdef  CONFIG_USB_SUSPEND
+dot
+id|hub_suspend
+op_assign
+id|ohci_hub_suspend
+comma
+dot
+id|hub_resume
+op_assign
+id|ohci_hub_resume
+comma
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-DECL|function|ohci_hcd_lh7a404_drv_probe
+DECL|function|ohci_hcd_pxa27x_drv_probe
 r_static
 r_int
-id|ohci_hcd_lh7a404_drv_probe
+id|ohci_hcd_pxa27x_drv_probe
 c_func
 (paren
 r_struct
@@ -909,7 +1244,7 @@ id|ret
 suffix:semicolon
 id|pr_debug
 (paren
-l_string|&quot;In ohci_hcd_lh7a404_drv_probe&quot;
+l_string|&quot;In ohci_hcd_pxa27x_drv_probe&quot;
 )paren
 suffix:semicolon
 r_if
@@ -926,11 +1261,11 @@ id|ENODEV
 suffix:semicolon
 id|ret
 op_assign
-id|usb_hcd_lh7a404_probe
+id|usb_hcd_pxa27x_probe
 c_func
 (paren
 op_amp
-id|ohci_lh7a404_hc_driver
+id|ohci_pxa27x_hc_driver
 comma
 op_amp
 id|hcd
@@ -957,10 +1292,10 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|ohci_hcd_lh7a404_drv_remove
+DECL|function|ohci_hcd_pxa27x_drv_remove
 r_static
 r_int
-id|ohci_hcd_lh7a404_drv_remove
+id|ohci_hcd_pxa27x_drv_remove
 c_func
 (paren
 r_struct
@@ -991,7 +1326,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|usb_hcd_lh7a404_remove
+id|usb_hcd_pxa27x_remove
 c_func
 (paren
 id|hcd
@@ -1011,19 +1346,78 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*TBD*/
-multiline_comment|/*static int ohci_hcd_lh7a404_drv_suspend(struct device *dev)&n;{&n;&t;struct platform_device *pdev = to_platform_device(dev);&n;&t;struct usb_hcd *hcd = dev_get_drvdata(dev);&n;&n;&t;return 0;&n;}&n;static int ohci_hcd_lh7a404_drv_resume(struct device *dev)&n;{&n;&t;struct platform_device *pdev = to_platform_device(dev);&n;&t;struct usb_hcd *hcd = dev_get_drvdata(dev);&n;&n;&n;&t;return 0;&n;}&n;*/
-DECL|variable|ohci_hcd_lh7a404_driver
+DECL|function|ohci_hcd_pxa27x_drv_suspend
+r_static
+r_int
+id|ohci_hcd_pxa27x_drv_suspend
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+id|u32
+id|state
+comma
+id|u32
+id|level
+)paren
+(brace
+singleline_comment|//&t;struct platform_device *pdev = to_platform_device(dev);
+singleline_comment|//&t;struct usb_hcd *hcd = dev_get_drvdata(dev);
+id|printk
+c_func
+(paren
+l_string|&quot;%s: not implemented yet&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|ohci_hcd_pxa27x_drv_resume
+r_static
+r_int
+id|ohci_hcd_pxa27x_drv_resume
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+id|u32
+id|state
+)paren
+(brace
+singleline_comment|//&t;struct platform_device *pdev = to_platform_device(dev);
+singleline_comment|//&t;struct usb_hcd *hcd = dev_get_drvdata(dev);
+id|printk
+c_func
+(paren
+l_string|&quot;%s: not implemented yet&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|ohci_hcd_pxa27x_driver
 r_static
 r_struct
 id|device_driver
-id|ohci_hcd_lh7a404_driver
+id|ohci_hcd_pxa27x_driver
 op_assign
 (brace
 dot
 id|name
 op_assign
-l_string|&quot;lh7a404-ohci&quot;
+l_string|&quot;pxa27x-ohci&quot;
 comma
 dot
 id|bus
@@ -1034,22 +1428,30 @@ comma
 dot
 id|probe
 op_assign
-id|ohci_hcd_lh7a404_drv_probe
+id|ohci_hcd_pxa27x_drv_probe
 comma
 dot
 id|remove
 op_assign
-id|ohci_hcd_lh7a404_drv_remove
+id|ohci_hcd_pxa27x_drv_remove
 comma
-multiline_comment|/*.suspend&t;= ohci_hcd_lh7a404_drv_suspend, */
-multiline_comment|/*.resume&t;= ohci_hcd_lh7a404_drv_resume, */
+dot
+id|suspend
+op_assign
+id|ohci_hcd_pxa27x_drv_suspend
+comma
+dot
+id|resume
+op_assign
+id|ohci_hcd_pxa27x_drv_resume
+comma
 )brace
 suffix:semicolon
-DECL|function|ohci_hcd_lh7a404_init
+DECL|function|ohci_hcd_pxa27x_init
 r_static
 r_int
 id|__init
-id|ohci_hcd_lh7a404_init
+id|ohci_hcd_pxa27x_init
 (paren
 r_void
 )paren
@@ -1057,7 +1459,7 @@ r_void
 id|pr_debug
 (paren
 id|DRIVER_INFO
-l_string|&quot; (LH7A404)&quot;
+l_string|&quot; (pxa27x)&quot;
 )paren
 suffix:semicolon
 id|pr_debug
@@ -1082,15 +1484,15 @@ id|driver_register
 c_func
 (paren
 op_amp
-id|ohci_hcd_lh7a404_driver
+id|ohci_hcd_pxa27x_driver
 )paren
 suffix:semicolon
 )brace
-DECL|function|ohci_hcd_lh7a404_cleanup
+DECL|function|ohci_hcd_pxa27x_cleanup
 r_static
 r_void
 id|__exit
-id|ohci_hcd_lh7a404_cleanup
+id|ohci_hcd_pxa27x_cleanup
 (paren
 r_void
 )paren
@@ -1099,20 +1501,20 @@ id|driver_unregister
 c_func
 (paren
 op_amp
-id|ohci_hcd_lh7a404_driver
+id|ohci_hcd_pxa27x_driver
 )paren
 suffix:semicolon
 )brace
-DECL|variable|ohci_hcd_lh7a404_init
+DECL|variable|ohci_hcd_pxa27x_init
 id|module_init
 (paren
-id|ohci_hcd_lh7a404_init
+id|ohci_hcd_pxa27x_init
 )paren
 suffix:semicolon
-DECL|variable|ohci_hcd_lh7a404_cleanup
+DECL|variable|ohci_hcd_pxa27x_cleanup
 id|module_exit
 (paren
-id|ohci_hcd_lh7a404_cleanup
+id|ohci_hcd_pxa27x_cleanup
 )paren
 suffix:semicolon
 eof

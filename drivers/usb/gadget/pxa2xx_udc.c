@@ -60,10 +60,6 @@ suffix:semicolon
 singleline_comment|// #define&t;USE_DMA
 singleline_comment|// #define&t;USE_OUT_DMA
 singleline_comment|// #define&t;DISABLE_TEST_MODE
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|macro|UDC_PROC_FILE
-mdefine_line|#define&t;UDC_PROC_FILE
-macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_IXP4XX
 DECL|macro|USE_DMA
 macro_line|#undef USE_DMA
@@ -73,13 +69,6 @@ macro_line|#error &quot;Can&squot;t configure both IXP and PXA&quot;
 macro_line|#endif
 macro_line|#endif
 macro_line|#include &quot;pxa2xx_udc.h&quot;
-macro_line|#ifdef CONFIG_EMBEDDED
-multiline_comment|/* few strings, and little code to use them */
-DECL|macro|DEBUG
-macro_line|#undef&t;DEBUG
-DECL|macro|UDC_PROC_FILE
-macro_line|#undef&t;UDC_PROC_FILE
-macro_line|#endif
 macro_line|#ifdef&t;USE_DMA
 DECL|variable|use_dma
 r_static
@@ -4483,7 +4472,7 @@ singleline_comment|// current versions must always be self-powered
 )brace
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#ifdef UDC_PROC_FILE
+macro_line|#ifdef CONFIG_USB_GADGET_DEBUG_FILES
 DECL|variable|proc_node_name
 r_static
 r_const
@@ -5303,12 +5292,12 @@ DECL|macro|create_proc_files
 mdefine_line|#define create_proc_files() &bslash;&n;&t;create_proc_read_entry(proc_node_name, 0, NULL, udc_proc_read, dev)
 DECL|macro|remove_proc_files
 mdefine_line|#define remove_proc_files() &bslash;&n;&t;remove_proc_entry(proc_node_name, NULL)
-macro_line|#else&t;/* !UDC_PROC_FILE */
+macro_line|#else&t;/* !CONFIG_USB_GADGET_DEBUG_FILES */
 DECL|macro|create_proc_files
 mdefine_line|#define create_proc_files() do {} while (0)
 DECL|macro|remove_proc_files
 mdefine_line|#define remove_proc_files() do {} while (0)
-macro_line|#endif&t;/* UDC_PROC_FILE */
+macro_line|#endif&t;/* CONFIG_USB_GADGET_DEBUG_FILES */
 multiline_comment|/* &quot;function&quot; sysfs attribute */
 r_static
 id|ssize_t
