@@ -1,31 +1,4 @@
 multiline_comment|/*&n; *  linux/arch/m32r/kernel/setup_oaks32r.c&n; *&n; *  Setup routines for OAKS32R Board&n; *&n; *  Copyright (c) 2002-2004   Hiroyuki Kondo, Hirokazu Takata,&n; *                            Hitoshi Yamamoto, Mamoru Sakugawa&n; */
-DECL|variable|rcsid
-r_static
-r_char
-op_star
-id|rcsid
-op_assign
-l_string|&quot;$Id: setup_oaks32r.c,v 1.1 2004/03/31 05:06:18 sakugawa Exp $&quot;
-suffix:semicolon
-DECL|function|use_rcsid
-r_static
-r_void
-id|use_rcsid
-c_func
-(paren
-r_void
-)paren
-(brace
-id|rcsid
-op_assign
-id|rcsid
-suffix:semicolon
-id|use_rcsid
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

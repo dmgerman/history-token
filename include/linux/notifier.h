@@ -101,6 +101,9 @@ DECL|macro|NOTIFY_STOP_MASK
 mdefine_line|#define NOTIFY_STOP_MASK&t;0x8000&t;&t;/* Don&squot;t call further */
 DECL|macro|NOTIFY_BAD
 mdefine_line|#define NOTIFY_BAD&t;&t;(NOTIFY_STOP_MASK|0x0002)&t;/* Bad/Veto action&t;*/
+multiline_comment|/*&n; * Clean way to return from the notifier and stop further calls.&n; */
+DECL|macro|NOTIFY_STOP
+mdefine_line|#define NOTIFY_STOP&t;&t;(NOTIFY_OK|NOTIFY_STOP_MASK)
 multiline_comment|/*&n; *&t;Declared notifiers so far. I can imagine quite a few more chains&n; *&t;over time (eg laptop power reset chains, reboot chain (to clean &n; *&t;device units up), device [un]mount chain, module load/unload chain,&n; *&t;low memory chain, screenblank chain (for plug in modular screenblankers) &n; *&t;VC switch chains (for loadable kernel svgalib VC switch helpers) etc...&n; */
 multiline_comment|/* netdevice notifier chain */
 DECL|macro|NETDEV_UP

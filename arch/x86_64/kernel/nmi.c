@@ -1253,7 +1253,7 @@ comma
 id|SIGINT
 )paren
 op_eq
-id|NOTIFY_BAD
+id|NOTIFY_STOP
 )paren
 (brace
 id|alert_counter

@@ -1865,6 +1865,11 @@ id|entropy
 op_assign
 l_int|0
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* if over the trickle threshold, use only 1 in 4096 samples */
 r_if
 c_cond
@@ -1884,7 +1889,8 @@ op_amp
 l_int|0xfff
 )paren
 )paren
-r_return
+r_goto
+id|out
 suffix:semicolon
 multiline_comment|/*&n;&t; * Use get_cycles() if implemented, otherwise fall back to&n;&t; * jiffies.&n;&t; */
 id|time
@@ -2059,6 +2065,13 @@ comma
 id|time
 comma
 id|entropy
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

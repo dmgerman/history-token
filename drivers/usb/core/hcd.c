@@ -2060,6 +2060,13 @@ comma
 id|usbcore_name
 )paren
 suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|usb_bus_list_lock
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|E2BIG

@@ -137,15 +137,12 @@ r_int
 id|options
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * EEH_POSSIBLE_ERROR() -- test for possible MMIO failure.&n; *&n; * Order this macro for performance.&n; * If EEH is off for a device and it is a memory BAR, ioremap will&n; * map it to the IOREGION.  In this case addr == vaddr and since these&n; * should be in registers we compare them first.  Next we check for&n; * ff&squot;s which indicates a (very) possible failure.&n; *&n; * If this macro yields TRUE, the caller relays to eeh_check_failure()&n; * which does further tests out of line.&n; */
-DECL|macro|EEH_POSSIBLE_IO_ERROR
-mdefine_line|#define EEH_POSSIBLE_IO_ERROR(val, type)&t;((val) == (type)~0)
+multiline_comment|/*&n; * EEH_POSSIBLE_ERROR() -- test for possible MMIO failure.&n; *&n; * If this macro yields TRUE, the caller relays to eeh_check_failure()&n; * which does further tests out of line.&n; */
+DECL|macro|EEH_POSSIBLE_ERROR
+mdefine_line|#define EEH_POSSIBLE_ERROR(val, type)&t;((val) == (type)~0)
 multiline_comment|/*&n; * Reads from a device which has been isolated by EEH will return&n; * all 1s.  This macro gives an all-1s value of the given size (in&n; * bytes: 1, 2, or 4) for comparing with the result of a read.&n; */
 DECL|macro|EEH_IO_ERROR_VALUE
 mdefine_line|#define EEH_IO_ERROR_VALUE(size)&t;(~0U &gt;&gt; ((4 - (size)) * 8))
-multiline_comment|/*&n; * The vaddr will equal the addr if EEH checking is disabled for&n; * this device.  This is because eeh_ioremap() will not have&n; * remapped to 0xA0, and thus both vaddr and addr will be 0xE0...&n; */
-DECL|macro|EEH_POSSIBLE_ERROR
-mdefine_line|#define EEH_POSSIBLE_ERROR(addr, vaddr, val, type) &bslash;&n;&t;&t;((vaddr) != (addr) &amp;&amp; EEH_POSSIBLE_IO_ERROR(val, type))
 multiline_comment|/* &n; * MMIO read/write operations with EEH support.&n; */
 DECL|function|eeh_readb
 r_static
@@ -190,10 +187,6 @@ c_cond
 id|EEH_POSSIBLE_ERROR
 c_func
 (paren
-id|addr
-comma
-id|vaddr
-comma
 id|val
 comma
 id|u8
@@ -294,10 +287,6 @@ c_cond
 id|EEH_POSSIBLE_ERROR
 c_func
 (paren
-id|addr
-comma
-id|vaddr
-comma
 id|val
 comma
 id|u16
@@ -398,10 +387,6 @@ c_cond
 id|EEH_POSSIBLE_ERROR
 c_func
 (paren
-id|addr
-comma
-id|vaddr
-comma
 id|val
 comma
 id|u16
@@ -502,10 +487,6 @@ c_cond
 id|EEH_POSSIBLE_ERROR
 c_func
 (paren
-id|addr
-comma
-id|vaddr
-comma
 id|val
 comma
 id|u32
@@ -606,10 +587,6 @@ c_cond
 id|EEH_POSSIBLE_ERROR
 c_func
 (paren
-id|addr
-comma
-id|vaddr
-comma
 id|val
 comma
 id|u32
@@ -710,10 +687,6 @@ c_cond
 id|EEH_POSSIBLE_ERROR
 c_func
 (paren
-id|addr
-comma
-id|vaddr
-comma
 id|val
 comma
 id|u64
@@ -814,10 +787,6 @@ c_cond
 id|EEH_POSSIBLE_ERROR
 c_func
 (paren
-id|addr
-comma
-id|vaddr
-comma
 id|val
 comma
 id|u64
@@ -1099,11 +1068,6 @@ id|src
 suffix:semicolon
 r_void
 op_star
-id|vsrcsave
-op_assign
-id|vsrc
-comma
-op_star
 id|destsave
 op_assign
 id|dest
@@ -1383,10 +1347,6 @@ op_logical_and
 id|EEH_POSSIBLE_ERROR
 c_func
 (paren
-id|srcsave
-comma
-id|vsrcsave
-comma
 (paren
 op_star
 (paren
@@ -1741,7 +1701,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|EEH_POSSIBLE_IO_ERROR
+id|EEH_POSSIBLE_ERROR
 c_func
 (paren
 id|val
@@ -1858,7 +1818,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|EEH_POSSIBLE_IO_ERROR
+id|EEH_POSSIBLE_ERROR
 c_func
 (paren
 id|val
@@ -1975,7 +1935,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|EEH_POSSIBLE_IO_ERROR
+id|EEH_POSSIBLE_ERROR
 c_func
 (paren
 id|val
@@ -2085,7 +2045,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|EEH_POSSIBLE_IO_ERROR
+id|EEH_POSSIBLE_ERROR
 c_func
 (paren
 (paren
@@ -2169,7 +2129,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|EEH_POSSIBLE_IO_ERROR
+id|EEH_POSSIBLE_ERROR
 c_func
 (paren
 (paren
@@ -2253,7 +2213,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|EEH_POSSIBLE_IO_ERROR
+id|EEH_POSSIBLE_ERROR
 c_func
 (paren
 (paren

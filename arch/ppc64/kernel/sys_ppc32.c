@@ -3247,6 +3247,11 @@ id|pt_regs
 suffix:semicolon
 id|current-&gt;thread.regs
 op_assign
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
 id|childregs
 suffix:semicolon
 )brace

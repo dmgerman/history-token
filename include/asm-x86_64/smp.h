@@ -337,5 +337,36 @@ macro_line|#include &lt;asm/thread_info.h&gt;
 DECL|macro|stack_smp_processor_id
 mdefine_line|#define stack_smp_processor_id() &bslash;&n;({ &t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct thread_info *ti;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__(&quot;andq %%rsp,%0; &quot;:&quot;=r&quot; (ti) : &quot;0&quot; (CURRENT_MASK));&t;&bslash;&n;&t;ti-&gt;cpu;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 macro_line|#endif
+macro_line|#ifndef __ASSEMBLY__
+DECL|function|logical_smp_processor_id
+r_static
+id|__inline
+r_int
+id|logical_smp_processor_id
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* we don&squot;t want to mark this access volatile - bad code generation */
+r_return
+id|GET_APIC_LOGICAL_ID
+c_func
+(paren
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+(paren
+id|APIC_BASE
+op_plus
+id|APIC_LDR
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#endif
 eof

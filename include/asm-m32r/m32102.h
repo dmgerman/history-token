@@ -1,8 +1,7 @@
 macro_line|#ifndef _M32102_H_
 DECL|macro|_M32102_H_
 mdefine_line|#define _M32102_H_
-multiline_comment|/*&n; * Mitsubishi M32R 32102 group&n; * Copyright (c) 2001 [Hitoshi Yamamoto] All rights reserved.&n; */
-multiline_comment|/* $Id$ */
+multiline_comment|/*&n; * Renesas M32R 32102 group&n; *&n; * Copyright (c) 2001  Hitoshi Yamamoto&n; * Copyright (c) 2003, 2004  Renesas Technology Corp.&n; */
 multiline_comment|/*======================================================================*&n; * Special Function Register&n; *======================================================================*/
 DECL|macro|M32R_SFR_OFFSET
 mdefine_line|#define M32R_SFR_OFFSET  (0x00E00000)  /* 0x00E00000-0x00EFFFFF 1[MB] */
