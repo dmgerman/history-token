@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;au88x0.h&quot;
 macro_line|#include &lt;linux/gameport.h&gt;
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 DECL|macro|VORTEX_GAME_DWAIT
 mdefine_line|#define VORTEX_GAME_DWAIT&t;20&t;/* 20 ms */
 DECL|variable|gameport
@@ -352,4 +353,38 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|function|vortex_gameport_register
+r_static
+r_inline
+r_int
+id|vortex_gameport_register
+c_func
+(paren
+id|vortex_t
+op_star
+id|vortex
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|vortex_gameport_unregister
+r_static
+r_inline
+r_int
+id|vortex_gameport_unregister
+c_func
+(paren
+id|vortex_t
+op_star
+id|vortex
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 eof
