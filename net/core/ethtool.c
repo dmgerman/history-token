@@ -3610,6 +3610,13 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 )brace
+DECL|variable|dev_ethtool
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dev_ethtool
+)paren
+suffix:semicolon
 DECL|variable|ethtool_op_get_link
 id|EXPORT_SYMBOL
 c_func
