@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  acpi_osl.c - OS-dependent functions ($Revision: 65 $)&n; *&n; *  Copyright (C) 2000 Andrew Henroid&n; *  Copyright (C) 2001 Andrew Grover&n; *  Copyright (C) 2001 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; */
+multiline_comment|/*&n; *  acpi_osl.c - OS-dependent functions ($Revision: 69 $)&n; *&n; *  Copyright (C) 2000 Andrew Henroid&n; *  Copyright (C) 2001 Andrew Grover&n; *  Copyright (C) 2001 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -262,7 +262,7 @@ DECL|function|acpi_os_allocate
 id|acpi_os_allocate
 c_func
 (paren
-id|u32
+id|ACPI_SIZE
 id|size
 )paren
 (brace
@@ -282,7 +282,7 @@ DECL|function|acpi_os_callocate
 id|acpi_os_callocate
 c_func
 (paren
-id|u32
+id|ACPI_SIZE
 id|size
 )paren
 (brace
@@ -340,9 +340,9 @@ c_func
 id|u32
 id|flags
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|ACPI_POINTER
 op_star
-id|phys_addr
+id|addr
 )paren
 (brace
 macro_line|#ifndef CONFIG_ACPI_EFI
@@ -357,7 +357,7 @@ c_func
 (paren
 id|flags
 comma
-id|phys_addr
+id|addr
 )paren
 )paren
 )paren
@@ -375,13 +375,16 @@ id|AE_NOT_FOUND
 suffix:semicolon
 )brace
 macro_line|#else /*CONFIG_ACPI_EFI*/
+id|addr-&gt;pointer_type
+op_assign
+id|ACPI_PHYSICAL_POINTER
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|efi.acpi20
 )paren
-op_star
-id|phys_addr
+id|addr-&gt;pointer.physical
 op_assign
 (paren
 id|ACPI_PHYSICAL_ADDRESS
@@ -394,8 +397,7 @@ c_cond
 (paren
 id|efi.acpi
 )paren
-op_star
-id|phys_addr
+id|addr-&gt;pointer.physical
 op_assign
 (paren
 id|ACPI_PHYSICAL_ADDRESS
@@ -412,8 +414,7 @@ id|PREFIX
 l_string|&quot;System description tables not found&bslash;n&quot;
 )paren
 suffix:semicolon
-op_star
-id|phys_addr
+id|addr-&gt;pointer.physical
 op_assign
 l_int|0
 suffix:semicolon
@@ -434,7 +435,7 @@ c_func
 id|ACPI_PHYSICAL_ADDRESS
 id|phys
 comma
-id|u32
+id|ACPI_SIZE
 id|size
 comma
 r_void
@@ -502,7 +503,7 @@ r_void
 op_star
 id|virt
 comma
-id|u32
+id|ACPI_SIZE
 id|size
 )paren
 (brace
@@ -1425,8 +1426,10 @@ c_cond
 op_logical_neg
 id|module_name
 )paren
-r_return
+id|return_ACPI_STATUS
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1451,12 +1454,16 @@ id|module_name
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+(paren
 id|AE_ERROR
+)paren
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
+(paren
 id|AE_OK
+)paren
 suffix:semicolon
 )brace
 id|acpi_status
@@ -1531,8 +1538,10 @@ op_logical_or
 op_logical_neg
 id|dpc-&gt;function
 )paren
-r_return
+id|return_ACPI_STATUS
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
@@ -1561,8 +1570,10 @@ c_func
 id|dpc
 )paren
 suffix:semicolon
-r_return
-l_int|1
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
+)paren
 suffix:semicolon
 )brace
 r_static
@@ -1616,7 +1627,7 @@ l_string|&quot;Invalid (NULL) context.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 id|ACPI_DEBUG_PRINT
@@ -1674,6 +1685,8 @@ id|dpc
 )paren
 suffix:semicolon
 )brace
+id|return_VOID
+suffix:semicolon
 )brace
 id|acpi_status
 DECL|function|acpi_os_queue_for_execution
@@ -1726,8 +1739,10 @@ c_cond
 op_logical_neg
 id|function
 )paren
-r_return
+id|return_ACPI_STATUS
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Queue via DPC:&n;&t; * --------------&n;&t; * Note that we have to use two different processes for queuing DPCs:&n;&t; *&t; Interrupt-Level: Use schedule_task; can&squot;t spawn a new thread.&n;&t; *&t;    Kernel-Level: Spawn a new kernel thread, as schedule_task has&n;&t; *&t;&t;&t;  its limitations (e.g. single-threaded model), and&n;&t; *&t;&t;&t;  all other task queues run at interrupt-level.&n;&t; */
 r_switch
@@ -1765,8 +1780,10 @@ c_cond
 op_logical_neg
 id|dpc
 )paren
-r_return
+id|return_ACPI_STATUS
+(paren
 id|AE_NO_MEMORY
+)paren
 suffix:semicolon
 id|dpc-&gt;function
 op_assign
@@ -1855,8 +1872,10 @@ c_cond
 op_logical_neg
 id|dpc
 )paren
-r_return
+id|return_ACPI_STATUS
+(paren
 id|AE_NO_MEMORY
+)paren
 suffix:semicolon
 id|dpc-&gt;function
 op_assign
@@ -1875,8 +1894,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 id|acpi_status
@@ -1925,8 +1946,10 @@ c_cond
 op_logical_neg
 id|sem
 )paren
-r_return
+id|return_ACPI_STATUS
+(paren
 id|AE_NO_MEMORY
+)paren
 suffix:semicolon
 id|sema_init
 c_func
@@ -1959,8 +1982,10 @@ id|initial_units
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+(paren
 id|AE_OK
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * TODO: A better way to delete semaphores?  Linux doesn&squot;t have a&n; * &squot;delete_semaphore()&squot; function -- may result in an invalid&n; * pointer dereference for non-synchronized consumers.&t;Should&n; * we at least check for blocked threads and signal/cancel them?&n; */
@@ -1996,8 +2021,10 @@ c_cond
 op_logical_neg
 id|sem
 )paren
-r_return
+id|return_ACPI_STATUS
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
@@ -2020,8 +2047,10 @@ id|sem
 op_assign
 l_int|NULL
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+(paren
 id|AE_OK
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * TODO: The kernel doesn&squot;t have a &squot;down_timeout&squot; function -- had to&n; * improvise.  The process is to sleep for one scheduler quantum&n; * until the semaphore becomes available.  Downside is that this&n; * may result in starvation for timeout-based waits when there&squot;s&n; * lots of semaphore activity.&n; *&n; * TODO: Support for units &gt; 1?&n; */
@@ -2079,8 +2108,10 @@ OL
 l_int|1
 )paren
 )paren
-r_return
+id|return_ACPI_STATUS
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2089,8 +2120,10 @@ id|units
 OG
 l_int|1
 )paren
-r_return
+id|return_ACPI_STATUS
+(paren
 id|AE_SUPPORT
+)paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
@@ -2288,8 +2321,10 @@ id|timeout
 )paren
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * TODO: Support for units &gt; 1?&n; */
@@ -2334,8 +2369,10 @@ OL
 l_int|1
 )paren
 )paren
-r_return
+id|return_ACPI_STATUS
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2344,8 +2381,10 @@ id|units
 OG
 l_int|1
 )paren
-r_return
+id|return_ACPI_STATUS
+(paren
 id|AE_SUPPORT
+)paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
@@ -2366,8 +2405,10 @@ c_func
 id|sem
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+(paren
 id|AE_OK
+)paren
 suffix:semicolon
 )brace
 id|u32

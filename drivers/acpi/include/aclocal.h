@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: aclocal.h - Internal data types used across the ACPI subsystem&n; *       $Revision: 159 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: aclocal.h - Internal data types used across the ACPI subsystem&n; *       $Revision: 162 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACLOCAL_H__
 DECL|macro|__ACLOCAL_H__
@@ -206,6 +206,26 @@ DECL|typedef|acpi_interpreter_mode
 id|acpi_interpreter_mode
 suffix:semicolon
 multiline_comment|/*&n; * The Node describes a named object that appears in the AML&n; * An Acpi_node is used to store Nodes.&n; *&n; * Data_type is used to differentiate between internal descriptors, and MUST&n; * be the first byte in this structure.&n; */
+DECL|union|acpi_name_union
+r_typedef
+r_union
+id|acpi_name_union
+(brace
+DECL|member|integer
+id|u32
+id|integer
+suffix:semicolon
+DECL|member|ascii
+r_char
+id|ascii
+(braket
+l_int|4
+)braket
+suffix:semicolon
+DECL|typedef|ACPI_NAME_UNION
+)brace
+id|ACPI_NAME_UNION
+suffix:semicolon
 DECL|struct|acpi_node
 r_typedef
 r_struct
@@ -226,7 +246,7 @@ id|u16
 id|owner_id
 suffix:semicolon
 DECL|member|name
-id|u32
+id|ACPI_NAME_UNION
 id|name
 suffix:semicolon
 multiline_comment|/* ACPI Name, always 4 chars per ACPI spec */
@@ -517,13 +537,18 @@ multiline_comment|/* Information about each GPE register block */
 r_typedef
 r_struct
 (brace
+DECL|member|address_space_id
+id|u8
+id|address_space_id
+suffix:semicolon
+DECL|member|block_address
+id|acpi_generic_address
+op_star
+id|block_address
+suffix:semicolon
 DECL|member|register_count
 id|u16
 id|register_count
-suffix:semicolon
-DECL|member|block_address
-id|u16
-id|block_address
 suffix:semicolon
 DECL|member|block_base_number
 id|u8
@@ -537,14 +562,14 @@ multiline_comment|/* Information about a particular GPE register pair */
 r_typedef
 r_struct
 (brace
-DECL|member|status_addr
-id|u16
-id|status_addr
+DECL|member|status_address
+id|acpi_generic_address
+id|status_address
 suffix:semicolon
 multiline_comment|/* Address of status reg */
-DECL|member|enable_addr
-id|u16
-id|enable_addr
+DECL|member|enable_address
+id|acpi_generic_address
+id|enable_address
 suffix:semicolon
 multiline_comment|/* Address of enable reg */
 DECL|member|status
@@ -703,7 +728,7 @@ r_struct
 id|acpi_obj_mutex
 suffix:semicolon
 DECL|macro|ACPI_STATE_COMMON
-mdefine_line|#define ACPI_STATE_COMMON                  /* Two 32-bit fields and a pointer */&bslash;&n;&t;u8                      data_type;          /* To differentiate various internal objs */&bslash;&n;&t;u8                      flags; &bslash;&n;&t;u16                     value; &bslash;&n;&t;u16                     state; &bslash;&n;&t;u16                     acpi_eval; &bslash;&n;&t;void                    *next; &bslash;&n;
+mdefine_line|#define ACPI_STATE_COMMON                  /* Two 32-bit fields and a pointer */&bslash;&n;&t;u8                      data_type;          /* To differentiate various internal objs */&bslash;&n;&t;u8                      flags;      &bslash;&n;&t;u16                     value;      &bslash;&n;&t;u16                     state;      &bslash;&n;&t;u16                     reserved;   &bslash;&n;&t;void                    *next;      &bslash;&n;
 DECL|struct|acpi_common_state
 r_typedef
 r_struct

@@ -2240,13 +2240,13 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
+r_case
+id|ide_dma_off_quietly
+suffix:colon
 id|set_high
 op_assign
 l_int|0
 suffix:semicolon
-r_case
-id|ide_dma_off_quietly
-suffix:colon
 id|outb
 c_func
 (paren

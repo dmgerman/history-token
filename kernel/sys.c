@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 multiline_comment|/*&n; * this is where the system-wide overflow UID and GID are defined, for&n; * architectures that now have 32-bit UID/GID but didn&squot;t in the past&n; */
 DECL|variable|overflowuid
 r_int
@@ -371,9 +372,6 @@ op_minus
 id|ENOSYS
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * What we want is __attribute__((weak,alias(&quot;sys_ni_syscall&quot;))),&n; * but it doesn&squot;t work on sparc64, so we just do it by hand&n; */
-DECL|macro|cond_syscall
-mdefine_line|#define cond_syscall(x) asm(&quot;.weak&bslash;t&quot; #x &quot;&bslash;n&bslash;t.set&bslash;t&quot; #x &quot;,sys_ni_syscall&quot;);
 id|cond_syscall
 c_func
 (paren

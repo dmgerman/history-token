@@ -249,10 +249,8 @@ DECL|typedef|slb_dword1
 )brace
 id|slb_dword1
 suffix:semicolon
-DECL|struct|_SLBE
 r_typedef
 r_struct
-id|_SLBE
 (brace
 r_union
 (brace
@@ -339,18 +337,22 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* HPTE is &quot;bolted&quot; */
+DECL|member|lock
 r_int
 r_int
+id|lock
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Software use */
+multiline_comment|/* lock on pSeries SMP */
+DECL|member|l
 r_int
 r_int
+id|l
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Reserved */
+multiline_comment|/* Virtual page is large (L=1) or 4 KB (L=0) */
 DECL|member|h
 r_int
 r_int
@@ -370,91 +372,6 @@ multiline_comment|/* Valid (v=1) or invalid (v=0) */
 DECL|typedef|Hpte_dword0
 )brace
 id|Hpte_dword0
-suffix:semicolon
-r_typedef
-r_struct
-(brace
-r_int
-r_int
-suffix:colon
-l_int|6
-suffix:semicolon
-multiline_comment|/* unused - padding */
-DECL|member|ac
-r_int
-r_int
-id|ac
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Address compare */
-DECL|member|r
-r_int
-r_int
-id|r
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Referenced */
-DECL|member|c
-r_int
-r_int
-id|c
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Changed */
-DECL|member|w
-r_int
-r_int
-id|w
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Write-thru cache mode */
-DECL|member|i
-r_int
-r_int
-id|i
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Cache inhibited */
-DECL|member|m
-r_int
-r_int
-id|m
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Memory coherence required */
-DECL|member|g
-r_int
-r_int
-id|g
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Guarded */
-DECL|member|n
-r_int
-r_int
-id|n
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* No-execute */
-DECL|member|pp
-r_int
-r_int
-id|pp
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* Page protection bits 1:2 */
-DECL|typedef|Hpte_flags
-)brace
-id|Hpte_flags
 suffix:semicolon
 r_typedef
 r_struct
@@ -592,10 +509,8 @@ DECL|typedef|Hpte_dword1_flags
 )brace
 id|Hpte_dword1_flags
 suffix:semicolon
-DECL|struct|_HPTE
 r_typedef
 r_struct
-id|_HPTE
 (brace
 r_union
 (brace
@@ -619,113 +534,13 @@ r_int
 r_int
 id|dword1
 suffix:semicolon
-r_struct
-(brace
-DECL|member|pp0
-r_int
-r_int
-id|pp0
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Page protection bit 0 */
-DECL|member|ts
-r_int
-r_int
-id|ts
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Tag set bit */
-DECL|member|rpn
-r_int
-r_int
-id|rpn
-suffix:colon
-l_int|50
-suffix:semicolon
-multiline_comment|/* Real page number */
-r_int
-r_int
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* Unused */
-DECL|member|ac
-r_int
-r_int
-id|ac
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Address compare bit */
-DECL|member|r
-r_int
-r_int
-id|r
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Referenced */
-DECL|member|c
-r_int
-r_int
-id|c
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Changed */
-DECL|member|w
-r_int
-r_int
-id|w
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Write-thru cache mode */
-DECL|member|i
-r_int
-r_int
-id|i
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Cache inhibited */
-DECL|member|m
-r_int
-r_int
-id|m
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Memory coherence */
-DECL|member|g
-r_int
-r_int
-id|g
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Guarded */
-DECL|member|n
-r_int
-r_int
-id|n
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* No-execute page if N=1 */
-DECL|member|pp
-r_int
-r_int
-id|pp
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* Page protection bit 1:2 */
 DECL|member|dw1
-)brace
+id|Hpte_dword1
 id|dw1
+suffix:semicolon
+DECL|member|flags
+id|Hpte_dword1_flags
+id|flags
 suffix:semicolon
 DECL|member|dw1
 )brace
@@ -837,6 +652,8 @@ DECL|macro|PT_SHIFT
 mdefine_line|#define PT_SHIFT (12)&t;&t;&t;/* Page Table */
 DECL|macro|PT_MASK
 mdefine_line|#define PT_MASK  0x02FF
+DECL|macro|LARGE_PAGE_SHIFT
+mdefine_line|#define LARGE_PAGE_SHIFT 24
 DECL|function|hpt_hash
 r_static
 r_inline
@@ -905,11 +722,9 @@ op_xor
 id|page
 suffix:semicolon
 )brace
-DECL|macro|PG_SHIFT
-mdefine_line|#define PG_SHIFT (12)&t;&t;&t;/* Page Entry */
 DECL|function|_tlbie
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|_tlbie
 c_func
@@ -917,18 +732,139 @@ c_func
 r_int
 r_int
 id|va
+comma
+r_int
+id|large
 )paren
 (brace
-id|__asm__
-id|__volatile__
+id|asm
+r_volatile
 (paren
-l_string|&quot; &bslash;n&bslash;&n;&t;&t;clrldi&t;%0,%0,16 &bslash;n&bslash;&n;&t;&t;ptesync&t;&t; &bslash;n&bslash;&n;&t;&t;tlbie&t;%0&t; &bslash;n&bslash;&n;&t;&t;eieio&t;&t; &bslash;n&bslash;&n;&t;&t;tlbsync&t;&t; &bslash;n&bslash;&n;&t;&t;ptesync&quot;
+l_string|&quot;ptesync&quot;
+suffix:colon
+suffix:colon
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|large
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;clrldi&t;%0,%0,16&bslash;n&bslash;&n;&t;&t;&t;      tlbie&t;%0,1&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
 (paren
 id|va
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;clrldi&t;%0,%0,16&bslash;n&bslash;&n;&t;&t;&t;      tlbie&t;%0,0&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|va
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;eieio; tlbsync; ptesync&quot;
+suffix:colon
+suffix:colon
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|function|_tlbiel
+r_static
+r_inline
+r_void
+id|_tlbiel
+c_func
+(paren
+r_int
+r_int
+id|va
+comma
+r_int
+id|large
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;ptesync&quot;
+suffix:colon
+suffix:colon
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|large
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;clrldi&t;%0,%0,16&bslash;n&bslash;&n;&t;&t;&t;      tlbiel&t;%0,1&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|va
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;clrldi&t;%0,%0,16&bslash;n&bslash;&n;&t;&t;&t;      tlbiel&t;%0,0&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|va
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;ptesync&quot;
+suffix:colon
+suffix:colon
 suffix:colon
 l_string|&quot;memory&quot;
 )paren

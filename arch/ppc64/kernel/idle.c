@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Idle daemon for PowerPC.  Idle daemon will handle any action&n; * that needs to be taken when the system becomes idle.&n; *&n; * Written by Cort Dougan (cort@cs.nmt.edu)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * idle.c&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
+macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/iSeries/LparData.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCall.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
@@ -35,7 +36,6 @@ id|minYieldTime
 op_assign
 l_int|0xffffffffffffffffUL
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_ISERIES
 DECL|function|yield_shared_processor
 r_static
 r_void
@@ -45,11 +45,6 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|Paca
-op_star
-id|paca
-suffix:semicolon
 r_int
 r_int
 id|tb
@@ -57,19 +52,6 @@ suffix:semicolon
 r_int
 r_int
 id|yieldTime
-suffix:semicolon
-id|paca
-op_assign
-(paren
-r_struct
-id|Paca
-op_star
-)paren
-id|mfspr
-c_func
-(paren
-id|SPRG3
-)paren
 suffix:semicolon
 id|HvCall_setEnabledInterrupts
 c_func
@@ -132,8 +114,13 @@ id|minYieldTime
 op_assign
 id|yieldTime
 suffix:semicolon
-multiline_comment|/* The decrementer stops during the yield.  Force a fake decrementer&n;&t; * here and let the timer_interrupt code sort out the actual time.&n;&t; */
-id|paca-&gt;xLpPaca.xIntDword.xFields.xDecrInt
+multiline_comment|/*&n;&t; * The decrementer stops during the yield.  Force a fake decrementer&n;&t; * here and let the timer_interrupt code sort out the actual time.&n;&t; */
+id|get_paca
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|xLpPaca.xIntDword.xFields.xDecrInt
 op_assign
 l_int|1
 suffix:semicolon
@@ -143,10 +130,9 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PPC_ISERIES */
-DECL|function|idled
+DECL|function|cpu_idle
 r_int
-id|idled
+id|cpu_idle
 c_func
 (paren
 r_void
@@ -160,14 +146,10 @@ suffix:semicolon
 r_int
 id|oldval
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_ISERIES
 r_int
 r_int
 id|CTRL
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/* endless loop with no priority at all */
-macro_line|#ifdef CONFIG_PPC_ISERIES
 multiline_comment|/* ensure iSeries run light will be out when idle */
 id|current-&gt;thread.flags
 op_and_assign
@@ -195,29 +177,11 @@ comma
 id|CTRL
 )paren
 suffix:semicolon
-macro_line|#endif
-id|printk
-c_func
-(paren
-l_string|&quot;cpu %d hits idle loop&bslash;n&quot;
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
 id|paca
 op_assign
-(paren
-r_struct
-id|Paca
-op_star
-)paren
-id|mfspr
+id|get_paca
 c_func
 (paren
-id|SPRG3
 )paren
 suffix:semicolon
 r_while
@@ -226,28 +190,6 @@ c_loop
 l_int|1
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|need_resched
-c_func
-(paren
-)paren
-)paren
-id|schedule
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_for
-c_loop
-(paren
-suffix:semicolon
-suffix:semicolon
-)paren
-(brace
-macro_line|#ifdef CONFIG_PPC_ISERIES
 r_if
 c_cond
 (paren
@@ -284,16 +226,20 @@ c_func
 suffix:semicolon
 )brace
 r_else
-macro_line|#endif
 (brace
+id|oldval
+op_assign
+id|test_and_clear_thread_flag
+c_func
+(paren
+id|TIF_NEED_RESCHED
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|need_resched
-c_func
-(paren
-)paren
+id|oldval
 )paren
 (brace
 id|set_thread_flag
@@ -306,14 +252,12 @@ r_while
 c_loop
 (paren
 op_logical_neg
-id|test_thread_flag
+id|need_resched
 c_func
 (paren
-id|TIF_NEED_RESCHED
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_PPC_ISERIES
 id|HMT_medium
 c_func
 (paren
@@ -333,13 +277,17 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|HMT_low
 c_func
 (paren
 )paren
 suffix:semicolon
 )brace
+id|HMT_medium
+c_func
+(paren
+)paren
+suffix:semicolon
 id|clear_thread_flag
 c_func
 (paren
@@ -347,12 +295,15 @@ id|TIF_POLLING_NRFLAG
 )paren
 suffix:semicolon
 )brace
-)brace
-id|HMT_medium
+r_else
+(brace
+id|set_need_resched
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
@@ -371,7 +322,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * SMP entry into the idle task - calls the same thing as the&n; * non-smp versions. -- Cort&n; */
+macro_line|#else /* CONFIG_PPC_ISERIES */
 DECL|function|cpu_idle
 r_int
 id|cpu_idle
@@ -380,13 +331,86 @@ c_func
 r_void
 )paren
 (brace
-id|idled
+r_int
+id|oldval
+suffix:semicolon
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+(brace
+id|oldval
+op_assign
+id|test_and_clear_thread_flag
+c_func
+(paren
+id|TIF_NEED_RESCHED
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|oldval
+)paren
+(brace
+id|set_thread_flag
+c_func
+(paren
+id|TIF_POLLING_NRFLAG
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_logical_neg
+id|need_resched
+c_func
+(paren
+)paren
+)paren
+(brace
+id|barrier
 c_func
 (paren
 )paren
 suffix:semicolon
+id|HMT_low
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+id|HMT_medium
+c_func
+(paren
+)paren
+suffix:semicolon
+id|clear_thread_flag
+c_func
+(paren
+id|TIF_POLLING_NRFLAG
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|set_need_resched
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_PPC_ISERIES */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg2 - AML execution - opcodes with 2 arguments&n; *              $Revision: 104 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg2 - AML execution - opcodes with 2 arguments&n; *              $Revision: 105 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -77,23 +77,39 @@ id|operand
 l_int|0
 )braket
 suffix:semicolon
-multiline_comment|/* The node must refer to a device or thermal zone or processor */
-r_switch
+multiline_comment|/* Notifies allowed on this object? */
+r_if
 c_cond
+(paren
+op_logical_neg
+id|acpi_ev_is_notify_object
+(paren
+id|node
+)paren
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Unexpected notify object type [%s]&bslash;n&quot;
+comma
+id|acpi_ut_get_type_name
 (paren
 id|node-&gt;type
 )paren
-(brace
-r_case
-id|ACPI_TYPE_DEVICE
-suffix:colon
-r_case
-id|ACPI_TYPE_THERMAL
-suffix:colon
-r_case
-id|ACPI_TYPE_PROCESSOR
-suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Dispatch the notify to the appropriate handler&n;&t;&t;&t; * NOTE: the request is queued for execution after this method&n;&t;&t;&t; * completes.  The notify handlers are NOT invoked synchronously&n;&t;&t;&t; * from this thread -- because handlers may in turn run other&n;&t;&t;&t; * control methods.&n;&t;&t;&t; */
+)paren
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|AE_AML_OPERAND_TYPE
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t; * Dispatch the notify to the appropriate handler&n;&t;&t; * NOTE: the request is queued for execution after this method&n;&t;&t; * completes.  The notify handlers are NOT invoked synchronously&n;&t;&t; * from this thread -- because handlers may in turn run other&n;&t;&t; * control methods.&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ev_queue_notify_request
@@ -111,28 +127,6 @@ op_member_access_from_pointer
 id|integer.value
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;Unexpected notify object type %X&bslash;n&quot;
-comma
-id|node-&gt;type
-)paren
-)paren
-suffix:semicolon
-id|status
-op_assign
-id|AE_AML_OPERAND_TYPE
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_default

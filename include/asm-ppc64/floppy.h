@@ -35,12 +35,6 @@ macro_line|#ifdef CONFIG_PCI
 macro_line|#include &lt;linux/pci.h&gt;
 DECL|macro|fd_dma_setup
 mdefine_line|#define fd_dma_setup(addr,size,mode,io) ppc64_fd_dma_setup(addr,size,mode,io)
-r_extern
-r_struct
-id|pci_dev
-op_star
-id|ppc64_floppy_dev
-suffix:semicolon
 r_static
 id|__inline__
 r_int
@@ -123,7 +117,7 @@ multiline_comment|/* different from last time -- unmap prev */
 id|pci_unmap_single
 c_func
 (paren
-id|ppc64_floppy_dev
+l_int|NULL
 comma
 id|bus_addr
 comma
@@ -150,7 +144,7 @@ op_assign
 id|pci_map_single
 c_func
 (paren
-id|ppc64_floppy_dev
+l_int|NULL
 comma
 id|addr
 comma

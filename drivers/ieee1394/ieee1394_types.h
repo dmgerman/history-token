@@ -7,20 +7,6 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
-macro_line|#include &quot;linux22compat.h&quot;
-macro_line|#else
-DECL|macro|V22_COMPAT_MOD_INC_USE_COUNT
-mdefine_line|#define V22_COMPAT_MOD_INC_USE_COUNT do {} while (0)
-DECL|macro|V22_COMPAT_MOD_DEC_USE_COUNT
-mdefine_line|#define V22_COMPAT_MOD_DEC_USE_COUNT do {} while (0)
-DECL|macro|OWNER_THIS_MODULE
-mdefine_line|#define OWNER_THIS_MODULE owner: THIS_MODULE,
-DECL|macro|INIT_TQ_LINK
-mdefine_line|#define INIT_TQ_LINK(tq) INIT_LIST_HEAD(&amp;(tq).list)
-DECL|macro|INIT_TQ_HEAD
-mdefine_line|#define INIT_TQ_HEAD(tq) INIT_LIST_HEAD(&amp;(tq))
-macro_line|#endif
 multiline_comment|/* The great kdev_t changeover in 2.5.x */
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#ifndef minor
@@ -42,14 +28,14 @@ DECL|macro|min
 macro_line|# define min(x,y) ({ &bslash;&n;&t;const typeof(x) _x = (x);       &bslash;&n;&t;const typeof(y) _y = (y);       &bslash;&n;&t;(void) (&amp;_x == &amp;_y);            &bslash;&n;&t;_x &lt; _y ? _x : _y; })
 macro_line|# endif
 macro_line|#endif /* Linux version &lt; 2.4.12 */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,18)
-macro_line|#include &lt;asm/spinlock.h&gt;
-macro_line|#else
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#endif
 macro_line|#ifndef list_for_each_safe
 DECL|macro|list_for_each_safe
 mdefine_line|#define list_for_each_safe(pos, n, head) &bslash;&n;&t;for (pos = (head)-&gt;next, n = pos-&gt;next; pos != (head); &bslash;&n;&t;&t;pos = n, n = pos-&gt;next)
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,5)
+DECL|macro|pte_offset_kernel
+mdefine_line|#define pte_offset_kernel pte_offset
 macro_line|#endif
 macro_line|#ifndef MIN
 DECL|macro|MIN
@@ -82,8 +68,9 @@ DECL|macro|LOCAL_BUS
 mdefine_line|#define LOCAL_BUS 0xffc0
 DECL|macro|ALL_NODES
 mdefine_line|#define ALL_NODES 0x003f
+multiline_comment|/* Can be used to consistently print a node/bus ID. */
 DECL|macro|NODE_BUS_FMT
-mdefine_line|#define NODE_BUS_FMT    &quot;%d:%d&quot;
+mdefine_line|#define NODE_BUS_FMT    &quot;%02d:%04d&quot;
 DECL|macro|NODE_BUS_ARGS
 mdefine_line|#define NODE_BUS_ARGS(nodeid) &bslash;&n;&t;(nodeid &amp; NODE_MASK), ((nodeid &amp; BUS_MASK) &gt;&gt; 6)
 DECL|macro|HPSB_PRINT

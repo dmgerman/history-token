@@ -371,6 +371,12 @@ id|dir
 suffix:semicolon
 r_int
 r_int
+id|start
+op_assign
+id|address
+suffix:semicolon
+r_int
+r_int
 id|end
 op_assign
 id|address
@@ -430,9 +436,12 @@ id|end
 )paren
 )paren
 suffix:semicolon
-id|flush_tlb_all
+id|flush_tlb_kernel_range
 c_func
 (paren
+id|start
+comma
+id|end
 )paren
 suffix:semicolon
 )brace

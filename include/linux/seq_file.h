@@ -3,6 +3,8 @@ DECL|macro|_LINUX_SEQ_FILE_H
 mdefine_line|#define _LINUX_SEQ_FILE_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 r_struct
 id|seq_operations
 suffix:semicolon

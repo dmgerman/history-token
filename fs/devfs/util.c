@@ -1,4 +1,4 @@
-multiline_comment|/*  devfs (Device FileSystem) utilities.&n;&n;    Copyright (C) 1999-2001  Richard Gooch&n;&n;    This library is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU Library General Public&n;    License as published by the Free Software Foundation; either&n;    version 2 of the License, or (at your option) any later version.&n;&n;    This library is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;    Library General Public License for more details.&n;&n;    You should have received a copy of the GNU Library General Public&n;    License along with this library; if not, write to the Free&n;    Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;    Richard Gooch may be reached by email at  rgooch@atnf.csiro.au&n;    The postal address is:&n;      Richard Gooch, c/o ATNF, P. O. Box 76, Epping, N.S.W., 2121, Australia.&n;&n;    ChangeLog&n;&n;    19991031   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created.&n;    19991103   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created &lt;_devfs_convert_name&gt; and supported SCSI and IDE CD-ROMs&n;    20000203   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Changed operations pointer type to void *.&n;    20000621   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Changed interface to &lt;devfs_register_series&gt;.&n;    20000622   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Took account of interface change to &lt;devfs_mk_symlink&gt;.&n;               Took account of interface change to &lt;devfs_mk_dir&gt;.&n;    20010519   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Documentation cleanup.&n;    20010709   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created &lt;devfs_*alloc_major&gt; and &lt;devfs_*alloc_devnum&gt;.&n;    20010710   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created &lt;devfs_*alloc_unique_number&gt;.&n;    20010730   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Documentation typo fix.&n;    20010806   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Made &lt;block_semaphore&gt; and &lt;char_semaphore&gt; private.&n;    20010813   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Fixed bug in &lt;devfs_alloc_unique_number&gt;: limited to 128 numbers&n;    20010818   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Updated major masks up to Linus&squot; &quot;no new majors&quot; proclamation.&n;&t;       Block: were 126 now 122 free, char: were 26 now 19 free.&n;*/
+multiline_comment|/*  devfs (Device FileSystem) utilities.&n;&n;    Copyright (C) 1999-2002  Richard Gooch&n;&n;    This library is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU Library General Public&n;    License as published by the Free Software Foundation; either&n;    version 2 of the License, or (at your option) any later version.&n;&n;    This library is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;    Library General Public License for more details.&n;&n;    You should have received a copy of the GNU Library General Public&n;    License along with this library; if not, write to the Free&n;    Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;    Richard Gooch may be reached by email at  rgooch@atnf.csiro.au&n;    The postal address is:&n;      Richard Gooch, c/o ATNF, P. O. Box 76, Epping, N.S.W., 2121, Australia.&n;&n;    ChangeLog&n;&n;    19991031   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created.&n;    19991103   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created &lt;_devfs_convert_name&gt; and supported SCSI and IDE CD-ROMs&n;    20000203   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Changed operations pointer type to void *.&n;    20000621   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Changed interface to &lt;devfs_register_series&gt;.&n;    20000622   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Took account of interface change to &lt;devfs_mk_symlink&gt;.&n;               Took account of interface change to &lt;devfs_mk_dir&gt;.&n;    20010519   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Documentation cleanup.&n;    20010709   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created &lt;devfs_*alloc_major&gt; and &lt;devfs_*alloc_devnum&gt;.&n;    20010710   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created &lt;devfs_*alloc_unique_number&gt;.&n;    20010730   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Documentation typo fix.&n;    20010806   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Made &lt;block_semaphore&gt; and &lt;char_semaphore&gt; private.&n;    20010813   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Fixed bug in &lt;devfs_alloc_unique_number&gt;: limited to 128 numbers&n;    20010818   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Updated major masks up to Linus&squot; &quot;no new majors&quot; proclamation.&n;&t;       Block: were 126 now 122 free, char: were 26 now 19 free.&n;    20020324   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Fixed bug in &lt;devfs_alloc_unique_number&gt;: was clearing beyond&n;&t;       bitfield.&n;    20020326   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Fixed bitfield data type for &lt;devfs_*alloc_devnum&gt;.&n;               Made major bitfield type and initialiser 64 bit safe.&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
@@ -263,14 +263,24 @@ id|spinlock_t
 id|lock
 suffix:semicolon
 DECL|member|bits
-id|__u32
+r_int
+r_int
 id|bits
 (braket
-l_int|8
+l_int|256
+op_div
+id|BITS_PER_LONG
 )braket
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#if BITS_PER_LONG == 32
+DECL|macro|INITIALISER64
+macro_line|#  define INITIALISER64(low,high) (low), (high)
+macro_line|#else
+DECL|macro|INITIALISER64
+macro_line|#  define INITIALISER64(low,high) ( (high) &lt;&lt; 32 | (low) )
+macro_line|#endif
 multiline_comment|/*  Block majors already assigned:&n;    0-3, 7-9, 11-63, 65-99, 101-113, 120-127, 199, 201, 240-255&n;    Total free: 122&n;*/
 DECL|variable|block_major_list
 r_static
@@ -282,30 +292,39 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 comma
 (brace
+id|INITIALISER64
+(paren
 l_int|0xfffffb8f
 comma
-multiline_comment|/*  Majors 0   to 31   */
 l_int|0xffffffff
+)paren
 comma
-multiline_comment|/*  Majors 32  to 63   */
+multiline_comment|/*  Majors 0-31,    32-63    */
+id|INITIALISER64
+(paren
 l_int|0xfffffffe
 comma
-multiline_comment|/*  Majors 64  to 95   */
 l_int|0xff03ffef
+)paren
 comma
-multiline_comment|/*  Majors 96  to 127  */
+multiline_comment|/*  Majors 64-95,   96-127   */
+id|INITIALISER64
+(paren
 l_int|0x00000000
 comma
-multiline_comment|/*  Majors 128 to 159  */
 l_int|0x00000000
+)paren
 comma
-multiline_comment|/*  Majors 160 to 191  */
+multiline_comment|/*  Majors 128-159, 160-191  */
+id|INITIALISER64
+(paren
 l_int|0x00000280
 comma
-multiline_comment|/*  Majors 192 to 223  */
 l_int|0xffff0000
+)paren
+comma
+multiline_comment|/*  Majors 192-223, 224-255  */
 )brace
-multiline_comment|/*  Majors 224 to 255  */
 )brace
 suffix:semicolon
 multiline_comment|/*  Char majors already assigned:&n;    0-7, 9-151, 154-158, 160-211, 216-221, 224-230, 240-255&n;    Total free: 19&n;*/
@@ -319,30 +338,39 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 comma
 (brace
+id|INITIALISER64
+(paren
 l_int|0xfffffeff
 comma
-multiline_comment|/*  Majors 0   to 31   */
+l_int|0xffffffff
+)paren
+comma
+multiline_comment|/*  Majors 0-31,    32-63    */
+id|INITIALISER64
+(paren
 l_int|0xffffffff
 comma
-multiline_comment|/*  Majors 32  to 63   */
 l_int|0xffffffff
+)paren
 comma
-multiline_comment|/*  Majors 64  to 95   */
-l_int|0xffffffff
-comma
-multiline_comment|/*  Majors 96  to 127  */
+multiline_comment|/*  Majors 64-95,   96-127   */
+id|INITIALISER64
+(paren
 l_int|0x7cffffff
 comma
-multiline_comment|/*  Majors 128 to 159  */
 l_int|0xffffffff
+)paren
 comma
-multiline_comment|/*  Majors 160 to 191  */
+multiline_comment|/*  Majors 128-159, 160-191  */
+id|INITIALISER64
+(paren
 l_int|0x3f0fffff
 comma
-multiline_comment|/*  Majors 192 to 223  */
 l_int|0xffff007f
+)paren
+comma
+multiline_comment|/*  Majors 192-223, 224-255  */
 )brace
-multiline_comment|/*  Majors 224 to 255  */
 )brace
 suffix:semicolon
 multiline_comment|/**&n; *&t;devfs_alloc_major - Allocate a major number.&n; *&t;@type: The type of the major (DEVFS_SPECIAL_CHR or DEVFS_SPECIAL_BLK)&n;&n; *&t;Returns the allocated major, else -1 if none are available.&n; *&t;This routine is thread safe and does not block.&n; */
@@ -528,10 +556,13 @@ r_int
 id|major
 suffix:semicolon
 DECL|member|bits
-id|__u32
+r_int
+r_int
 id|bits
 (braket
-l_int|8
+l_int|256
+op_div
+id|BITS_PER_LONG
 )braket
 suffix:semicolon
 DECL|member|next
@@ -722,7 +753,6 @@ id|semaphore
 suffix:semicolon
 r_return
 id|mk_kdev
-c_func
 (paren
 id|entry-&gt;major
 comma
@@ -841,7 +871,6 @@ id|semaphore
 suffix:semicolon
 r_return
 id|mk_kdev
-c_func
 (paren
 id|entry-&gt;major
 comma
@@ -893,7 +922,6 @@ r_if
 c_cond
 (paren
 id|kdev_none
-c_func
 (paren
 id|devnum
 )paren
@@ -1067,10 +1095,6 @@ r_int
 r_int
 id|length
 suffix:semicolon
-id|__u32
-op_star
-id|bits
-suffix:semicolon
 multiline_comment|/*  Get around stupid lack of semaphore initialiser  */
 id|spin_lock
 (paren
@@ -1118,6 +1142,10 @@ OL
 l_int|1
 )paren
 (brace
+r_void
+op_star
+id|bits
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 30 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 32 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -372,7 +372,7 @@ op_amp
 id|ANOBJ_DATA_WIDTH_32
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * We are running a method that exists in a 32-bit ACPI table.&n;&t;&t;&t; * Truncate the value to 32 bits by zeroing out the upper&n;&t;&t;&t; * 32-bit field&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * We are running a method that exists in a 32-bit ACPI table.&n;&t;&t;&t; * Use only 32 bits of the Integer for conversion.&n;&t;&t;&t; */
 id|integer_size
 op_assign
 r_sizeof
@@ -493,6 +493,16 @@ id|AE_TYPE
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Mark buffer initialized */
+(paren
+op_star
+id|result_desc
+)paren
+op_member_access_from_pointer
+id|common.flags
+op_or_assign
+id|AOPOBJ_DATA_VALID
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_OK
@@ -859,7 +869,7 @@ op_amp
 id|ANOBJ_DATA_WIDTH_32
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * We are running a method that exists in a 32-bit ACPI table.&n;&t;&t;&t; * Truncate the value to 32 bits by zeroing out the upper&n;&t;&t;&t; * 32-bit field&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * We are running a method that exists in a 32-bit ACPI table.&n;&t;&t;&t; * Use only 32 bits of the Integer&n;&t;&t;&t; */
 id|integer_size
 op_assign
 r_sizeof

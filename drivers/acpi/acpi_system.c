@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  acpi_system.c - ACPI System Driver ($Revision: 40 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
+multiline_comment|/*&n; *  acpi_system.c - ACPI System Driver ($Revision: 45 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/acpi.h&gt;
@@ -141,7 +142,7 @@ c_func
 id|ACPI_STATE_S5
 )paren
 suffix:semicolon
-id|acpi_disable_irqs
+id|ACPI_DISABLE_IRQS
 c_func
 (paren
 )paren
@@ -150,11 +151,6 @@ id|acpi_enter_sleep_state
 c_func
 (paren
 id|ACPI_STATE_S5
-)paren
-suffix:semicolon
-id|acpi_disable_irqs
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -198,7 +194,7 @@ id|RESUME_POWER_ON
 )paren
 suffix:semicolon
 multiline_comment|/* enable interrupts once again */
-id|acpi_enable_irqs
+id|ACPI_ENABLE_IRQS
 c_func
 (paren
 )paren
@@ -352,7 +348,7 @@ macro_line|#endif
 )brace
 macro_line|#ifdef HAVE_NEW_DEVICE_MODEL
 multiline_comment|/* disable interrupts&n;&t; * Note that acpi_suspend -- our caller -- will do this once we return.&n;&t; * But, we want it done early, so we don&squot;t get any suprises during&n;&t; * the device suspend sequence.&n;&t; */
-id|acpi_disable_irqs
+id|ACPI_DISABLE_IRQS
 c_func
 (paren
 )paren
@@ -566,7 +562,7 @@ r_return
 id|status
 suffix:semicolon
 multiline_comment|/* disable interrupts and flush caches */
-id|acpi_disable_irqs
+id|ACPI_DISABLE_IRQS
 c_func
 (paren
 )paren
@@ -599,7 +595,7 @@ id|state
 )paren
 suffix:semicolon
 multiline_comment|/* make sure interrupts are enabled */
-id|acpi_enable_irqs
+id|ACPI_ENABLE_IRQS
 c_func
 (paren
 )paren
@@ -1680,9 +1676,6 @@ id|size
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
-id|var
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1846,10 +1839,6 @@ op_assign
 (brace
 l_char|&squot;&bslash;0&squot;
 )brace
-suffix:semicolon
-id|u32
-op_star
-id|pvar
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
@@ -4247,6 +4236,60 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;                                 Driver Interface&n;   -------------------------------------------------------------------------- */
+macro_line|#if defined(CONFIG_MAGIC_SYSRQ) &amp;&amp; defined(CONFIG_PM)
+multiline_comment|/* Simple wrapper calling power down function. */
+DECL|function|acpi_sysrq_power_off
+r_static
+r_void
+id|acpi_sysrq_power_off
+c_func
+(paren
+r_int
+id|key
+comma
+r_struct
+id|pt_regs
+op_star
+id|pt_regs
+comma
+r_struct
+id|kbd_struct
+op_star
+id|kbd
+comma
+r_struct
+id|tty_struct
+op_star
+id|tty
+)paren
+(brace
+id|acpi_power_off
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|sysrq_acpi_poweroff_op
+r_struct
+id|sysrq_key_op
+id|sysrq_acpi_poweroff_op
+op_assign
+(brace
+id|handler
+suffix:colon
+op_amp
+id|acpi_sysrq_power_off
+comma
+id|help_msg
+suffix:colon
+l_string|&quot;Off&quot;
+comma
+id|action_msg
+suffix:colon
+l_string|&quot;Power Off&bslash;n&quot;
+)brace
+suffix:semicolon
+macro_line|#endif  /* CONFIG_MAGIC_SYSRQ */
 r_static
 r_int
 DECL|function|acpi_system_add
@@ -4495,10 +4538,21 @@ id|system-&gt;states
 id|ACPI_STATE_S5
 )braket
 )paren
+(brace
 id|pm_power_off
 op_assign
 id|acpi_power_off
 suffix:semicolon
+id|register_sysrq_key
+c_func
+(paren
+l_char|&squot;o&squot;
+comma
+op_amp
+id|sysrq_acpi_poweroff_op
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 id|end
 suffix:colon
@@ -4592,10 +4646,21 @@ id|system-&gt;states
 id|ACPI_STATE_S5
 )braket
 )paren
+(brace
+id|unregister_sysrq_key
+c_func
+(paren
+l_char|&squot;o&squot;
+comma
+op_amp
+id|sysrq_acpi_poweroff_op
+)paren
+suffix:semicolon
 id|pm_power_off
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
 macro_line|#endif
 id|acpi_system_remove_fs
 c_func

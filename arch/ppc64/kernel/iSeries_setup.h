@@ -2,7 +2,6 @@ multiline_comment|/*&n; *    Copyright (c) 2000 Mike Corrigan &lt;mikejc@us.ibm.
 macro_line|#ifndef&t;__ISERIES_SETUP_H__
 DECL|macro|__ISERIES_SETUP_H__
 mdefine_line|#define&t;__ISERIES_SETUP_H__
-macro_line|#include &lt;linux/seq_file.h&gt;
 r_extern
 r_void
 id|iSeries_init_early
@@ -54,10 +53,6 @@ r_struct
 id|seq_file
 op_star
 id|m
-comma
-r_int
-r_int
-id|cpu_id
 )paren
 suffix:semicolon
 r_extern

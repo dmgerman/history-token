@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * iSeries_pci.c&n; *&n; * Copyright (C) 2001 Allan Trautman, IBM Corporation&n; *&n; * iSeries specific routines for PCI.&n; * &n; * Based on code from pci.c and iSeries_pci.c 32bit&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/list.h&gt; 
 macro_line|#include &lt;linux/string.h&gt;
@@ -13,11 +14,11 @@ macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/Naca.h&gt;
 macro_line|#include &lt;asm/flight_recorder.h&gt;
+macro_line|#include &lt;asm/pci_dma.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallPci.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallSm.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallXm.h&gt;
 macro_line|#include &lt;asm/iSeries/LparData.h&gt;
-macro_line|#include &lt;asm/iSeries/iSeries_dma.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_irq.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_pci.h&gt;
 macro_line|#include &lt;asm/iSeries/mf.h&gt;
@@ -235,11 +236,10 @@ c_func
 id|HvBusNumber
 id|Bus
 comma
-id|HvSubBusNumber
-id|SubBus
-comma
-r_int
-id|MaxAgents
+r_struct
+id|HvCallPci_BridgeInfo
+op_star
+id|Info
 )paren
 suffix:semicolon
 r_void
@@ -252,12 +252,10 @@ suffix:semicolon
 r_struct
 id|pci_dev
 suffix:semicolon
-DECL|variable|Global_Device_List
-id|LIST_HEAD
-c_func
-(paren
-id|Global_Device_List
-)paren
+r_extern
+r_struct
+id|list_head
+id|iSeries_Global_Device_List
 suffix:semicolon
 DECL|variable|DeviceCount
 r_int
@@ -389,6 +387,22 @@ suffix:semicolon
 id|udbg_printf
 c_func
 (paren
+l_string|&quot;     - LSlot     = 0x%02X&bslash;n&quot;
+comma
+id|DevNode-&gt;LogicalSlot
+)paren
+suffix:semicolon
+id|udbg_printf
+c_func
+(paren
+l_string|&quot;     - TceTable  = 0x%p&bslash;n  &quot;
+comma
+id|DevNode-&gt;DevTceTable
+)paren
+suffix:semicolon
+id|udbg_printf
+c_func
+(paren
 l_string|&quot;     - DSA       = 0x%04X&bslash;n&quot;
 comma
 id|ISERIES_DSA
@@ -435,7 +449,7 @@ id|list_head
 op_star
 id|Device_Node_Ptr
 op_assign
-id|Global_Device_List.next
+id|iSeries_Global_Device_List.next
 suffix:semicolon
 r_while
 c_loop
@@ -443,7 +457,7 @@ c_loop
 id|Device_Node_Ptr
 op_ne
 op_amp
-id|Global_Device_List
+id|iSeries_Global_Device_List
 )paren
 (brace
 id|dumpDevice_Node
@@ -494,9 +508,7 @@ c_func
 (paren
 id|PPCDBG_BUSWALK
 comma
-l_string|&quot;- &quot;
-id|__FUNCTION__
-l_string|&quot; 0x%02X.%02X.%02X Function: %02X&bslash;n&quot;
+l_string|&quot;-build_device_node 0x%02X.%02X.%02X Function: %02X&bslash;n&quot;
 comma
 id|Bus
 comma
@@ -554,7 +566,7 @@ op_amp
 id|DeviceNode-&gt;Device_List
 comma
 op_amp
-id|Global_Device_List
+id|iSeries_Global_Device_List
 )paren
 suffix:semicolon
 multiline_comment|/*DeviceNode-&gt;DsaAddr      = ((u64)Bus&lt;&lt;48)+((u64)SubBus&lt;&lt;40)+((u64)0x10&lt;&lt;32); */
@@ -782,8 +794,7 @@ c_func
 (paren
 id|PPCDBG_BUSWALK
 comma
-id|__FUNCTION__
-l_string|&quot; Entry&bslash;n&quot;
+l_string|&quot;find_and_init_phbs Entry&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Check all possible buses. */
@@ -939,18 +950,12 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|pci_controller
-op_star
-id|phb
-suffix:semicolon
 id|PPCDBG
 c_func
 (paren
 id|PPCDBG_BUSWALK
 comma
-id|__FUNCTION__
-l_string|&quot; Entry.&bslash;n&quot;
+l_string|&quot;iSeries_pcibios_init Entry.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|iSeries_IoMmTable_Initialize
@@ -963,43 +968,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Create the TCE Tables */
-id|phb
-op_assign
-id|hose_head
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|phb
-op_ne
-l_int|NULL
-)paren
-(brace
-id|create_pci_bus_tce_table
-c_func
-(paren
-id|phb-&gt;local_number
-)paren
-suffix:semicolon
-id|PCIFR
-c_func
-(paren
-l_string|&quot;Bus 0x%04X TCE Table %p&quot;
-comma
-id|phb-&gt;local_number
-comma
-id|tceTables
-(braket
-id|phb-&gt;local_number
-)braket
-)paren
-suffix:semicolon
-id|phb
-op_assign
-id|phb-&gt;next
-suffix:semicolon
-)brace
 id|pci_assign_all_busses
 op_assign
 l_int|0
@@ -1009,8 +977,7 @@ c_func
 (paren
 id|PPCDBG_BUSWALK
 comma
-id|__FUNCTION__
-l_string|&quot; Exit.&bslash;n&quot;
+l_string|&quot;iSeries_pcibios_init Exit.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1050,13 +1017,18 @@ c_func
 (paren
 id|PPCDBG_BUSWALK
 comma
-id|__FUNCTION__
-l_string|&quot; Entry.&bslash;n&quot;
+l_string|&quot;iSeries_pcibios_fixup Entry.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/******************************************************/
 multiline_comment|/* Fix up at the device node and pci_dev relationship */
 multiline_comment|/******************************************************/
+id|mf_displaySrc
+c_func
+(paren
+l_int|0xC9000100
+)paren
+suffix:semicolon
 id|pci_for_each_dev
 c_func
 (paren
@@ -1147,6 +1119,16 @@ comma
 id|Buffer
 )paren
 suffix:semicolon
+id|create_pci_bus_tce_table
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|DeviceNode
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -1174,13 +1156,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|// This is test code. 
-singleline_comment|//mf_displaySrc(0xC9000100);
-singleline_comment|//Pci_IoTest();
-singleline_comment|// Pci_CfgIoTest(); 
-singleline_comment|// mf_displaySrc(0xC9000500);
-singleline_comment|// Pci_MMIoTest(); 
-singleline_comment|//mf_displaySrc(0xC9000999);
+id|mf_displaySrc
+c_func
+(paren
+l_int|0xC9000200
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; * iSeries_pcibios_fixup_bus(int Bus)&n; *&n; ***********************************************************************/
 DECL|function|iSeries_pcibios_fixup_bus
@@ -1199,34 +1180,10 @@ c_func
 (paren
 id|PPCDBG_BUSWALK
 comma
-id|__FUNCTION__
-l_string|&quot;(0x%04X) Entry.&bslash;n&quot;
+l_string|&quot;iSeries_pcibios_fixup_bus(0x%04X) Entry.&bslash;n&quot;
 comma
 id|PciBus-&gt;number
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/***********************************************************************&n; * find_floppy(void) &n; *&t;&n; * Finds the default floppy device, if the system has one, and returns &n; * the pci_dev for the isa bridge for the floppy device.  &n; *&n; * Note: On iSeries there will only be a virtual diskette. &n; ***********************************************************************/
-r_struct
-id|pci_dev
-op_star
-DECL|function|find_floppy
-id|find_floppy
-c_func
-(paren
-r_void
-)paren
-(brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_BUSWALK
-comma
-l_string|&quot;- Find Floppy pci_dev.. None on iSeries.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; * fixup_resources(struct pci_dev *dev) &n; *&t;&n; ***********************************************************************/
@@ -1246,8 +1203,7 @@ c_func
 (paren
 id|PPCDBG_BUSWALK
 comma
-id|__FUNCTION__
-l_string|&quot; PciDev %p&bslash;n&quot;
+l_string|&quot;fixup_resources PciDev %p&bslash;n&quot;
 comma
 id|PciDev
 )paren
@@ -1599,13 +1555,33 @@ c_func
 (paren
 id|PPCDBG_BUSWALK
 comma
-l_string|&quot;PCI: BridgeInfo, Type: 0x%02X, SubBus 0x%02X, MaxAgents 0x%02X&bslash;n&quot;
+l_string|&quot;PCI: BridgeInfo, Type:0x%02X, SubBus:0x%02X, MaxAgents:0x%02X, MaxSubBus: 0x%02X, LSlot: 0x%02X&bslash;n&quot;
 comma
 id|BridgeInfo-&gt;busUnitInfo.deviceType
 comma
 id|BridgeInfo-&gt;subBusNumber
 comma
 id|BridgeInfo-&gt;maxAgents
+comma
+id|BridgeInfo-&gt;maxSubBusNumber
+comma
+id|BridgeInfo-&gt;logicalSlotNumber
+)paren
+suffix:semicolon
+id|PCIFR
+c_func
+(paren
+l_string|&quot;BridgeInfo, Type:0x%02X, SubBus:0x%02X, MaxAgents:0x%02X, MaxSubBus: 0x%02X, LSlot: 0x%02X&quot;
+comma
+id|BridgeInfo-&gt;busUnitInfo.deviceType
+comma
+id|BridgeInfo-&gt;subBusNumber
+comma
+id|BridgeInfo-&gt;maxAgents
+comma
+id|BridgeInfo-&gt;maxSubBusNumber
+comma
+id|BridgeInfo-&gt;logicalSlotNumber
 )paren
 suffix:semicolon
 r_if
@@ -1622,9 +1598,7 @@ c_func
 (paren
 id|Bus
 comma
-id|BridgeInfo-&gt;subBusNumber
-comma
-id|BridgeInfo-&gt;maxAgents
+id|BridgeInfo
 )paren
 suffix:semicolon
 )brace
@@ -1680,17 +1654,21 @@ c_func
 id|HvBusNumber
 id|Bus
 comma
-id|HvSubBusNumber
-id|SubBus
-comma
-r_int
-id|MaxAgents
+r_struct
+id|HvCallPci_BridgeInfo
+op_star
+id|BridgeInfo
 )paren
 (brace
 r_struct
 id|iSeries_Device_Node
 op_star
 id|DeviceNode
+suffix:semicolon
+id|HvSubBusNumber
+id|SubBus
+op_assign
+id|BridgeInfo-&gt;subBusNumber
 suffix:semicolon
 id|u16
 id|VendorId
@@ -1805,7 +1783,7 @@ l_int|1
 suffix:semicolon
 id|IdSel
 op_le
-id|MaxAgents
+id|BridgeInfo-&gt;maxAgents
 suffix:semicolon
 op_increment
 id|IdSel
@@ -1919,20 +1897,6 @@ suffix:semicolon
 op_increment
 id|DeviceCount
 suffix:semicolon
-id|PCIFR
-c_func
-(paren
-l_string|&quot;Device(%4d): 0x%02X.%02X.%02X&quot;
-comma
-id|DeviceCount
-comma
-id|Bus
-comma
-id|SubBus
-comma
-id|AgentId
-)paren
-suffix:semicolon
 id|DeviceNode
 op_assign
 id|build_device_node
@@ -1954,6 +1918,28 @@ suffix:semicolon
 id|DeviceNode-&gt;Irq
 op_assign
 id|Irq
+suffix:semicolon
+id|DeviceNode-&gt;LogicalSlot
+op_assign
+id|BridgeInfo-&gt;logicalSlotNumber
+suffix:semicolon
+id|PCIFR
+c_func
+(paren
+l_string|&quot;Device(%4d): 0x%02X.%02X.%02X 0x%02X 0x%04X&quot;
+comma
+id|DeviceCount
+comma
+id|Bus
+comma
+id|SubBus
+comma
+id|AgentId
+comma
+id|DeviceNode-&gt;LogicalSlot
+comma
+id|DeviceNode-&gt;Vendor
+)paren
 suffix:semicolon
 multiline_comment|/***********************************************************&n;&t;&t;&t;&t;&t; * On the first device/function, assign irq to slot&n;&t;&t;&t;&t;&t; ***********************************************************/
 r_if
@@ -2229,7 +2215,7 @@ id|list_head
 op_star
 id|Device_Node_Ptr
 op_assign
-id|Global_Device_List.next
+id|iSeries_Global_Device_List.next
 suffix:semicolon
 r_int
 id|Bus
@@ -2247,7 +2233,7 @@ c_loop
 id|Device_Node_Ptr
 op_ne
 op_amp
-id|Global_Device_List
+id|iSeries_Global_Device_List
 )paren
 (brace
 r_struct

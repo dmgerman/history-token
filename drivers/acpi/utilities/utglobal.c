@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 153 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 155 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEFINE_ACPI_GLOBALS
 mdefine_line|#define DEFINE_ACPI_GLOBALS
@@ -33,6 +33,11 @@ l_string|&quot;UNKNOWN_STATUS_CODE&quot;
 suffix:semicolon
 id|acpi_status
 id|sub_status
+suffix:semicolon
+id|ACPI_FUNCTION_NAME
+(paren
+l_string|&quot;Format_exception&quot;
+)paren
 suffix:semicolon
 id|sub_status
 op_assign
@@ -69,8 +74,11 @@ id|acpi_gbl_exception_names_env
 id|sub_status
 )braket
 suffix:semicolon
-)brace
 r_break
+suffix:semicolon
+)brace
+r_goto
+id|unknown
 suffix:semicolon
 r_case
 id|AE_CODE_PROGRAMMER
@@ -92,8 +100,11 @@ op_minus
 l_int|1
 )braket
 suffix:semicolon
-)brace
 r_break
+suffix:semicolon
+)brace
+r_goto
+id|unknown
 suffix:semicolon
 r_case
 id|AE_CODE_ACPI_TABLES
@@ -115,8 +126,11 @@ op_minus
 l_int|1
 )braket
 suffix:semicolon
-)brace
 r_break
+suffix:semicolon
+)brace
+r_goto
+id|unknown
 suffix:semicolon
 r_case
 id|AE_CODE_AML
@@ -138,8 +152,11 @@ op_minus
 l_int|1
 )braket
 suffix:semicolon
-)brace
 r_break
+suffix:semicolon
+)brace
+r_goto
+id|unknown
 suffix:semicolon
 r_case
 id|AE_CODE_CONTROL
@@ -161,14 +178,41 @@ op_minus
 l_int|1
 )braket
 suffix:semicolon
-)brace
 r_break
+suffix:semicolon
+)brace
+r_goto
+id|unknown
 suffix:semicolon
 r_default
 suffix:colon
-r_break
+r_goto
+id|unknown
 suffix:semicolon
 )brace
+r_return
+(paren
+(paren
+r_const
+r_char
+op_star
+)paren
+id|exception
+)paren
+suffix:semicolon
+id|unknown
+suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Unknown exception code: 0x%8.8X&bslash;n&quot;
+comma
+id|status
+)paren
+)paren
+suffix:semicolon
 r_return
 (paren
 (paren
@@ -382,44 +426,34 @@ multiline_comment|/* 02 String           */
 id|ACPI_NS_NORMAL
 comma
 multiline_comment|/* 03 Buffer           */
-id|ACPI_NS_LOCAL
+id|ACPI_NS_NORMAL
 comma
 multiline_comment|/* 04 Package          */
 id|ACPI_NS_NORMAL
 comma
 multiline_comment|/* 05 Field_unit       */
 id|ACPI_NS_NEWSCOPE
-op_or
-id|ACPI_NS_LOCAL
 comma
 multiline_comment|/* 06 Device           */
-id|ACPI_NS_LOCAL
+id|ACPI_NS_NORMAL
 comma
-multiline_comment|/* 07 Acpi_event       */
+multiline_comment|/* 07 Event            */
 id|ACPI_NS_NEWSCOPE
-op_or
-id|ACPI_NS_LOCAL
 comma
 multiline_comment|/* 08 Method           */
-id|ACPI_NS_LOCAL
+id|ACPI_NS_NORMAL
 comma
 multiline_comment|/* 09 Mutex            */
-id|ACPI_NS_LOCAL
+id|ACPI_NS_NORMAL
 comma
 multiline_comment|/* 10 Region           */
 id|ACPI_NS_NEWSCOPE
-op_or
-id|ACPI_NS_LOCAL
 comma
 multiline_comment|/* 11 Power            */
 id|ACPI_NS_NEWSCOPE
-op_or
-id|ACPI_NS_LOCAL
 comma
 multiline_comment|/* 12 Processor        */
 id|ACPI_NS_NEWSCOPE
-op_or
-id|ACPI_NS_LOCAL
 comma
 multiline_comment|/* 13 Thermal          */
 id|ACPI_NS_NORMAL
@@ -2122,6 +2156,10 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Miscellaneous variables */
+id|acpi_gbl_table_flags
+op_assign
+id|ACPI_PHYSICAL_POINTER
+suffix:semicolon
 id|acpi_gbl_rsdp_original_location
 op_assign
 l_int|0
@@ -2180,7 +2218,7 @@ id|acpi_gbl_root_node
 op_assign
 l_int|NULL
 suffix:semicolon
-id|acpi_gbl_root_node_struct.name
+id|acpi_gbl_root_node_struct.name.integer
 op_assign
 id|ACPI_ROOT_NAME
 suffix:semicolon

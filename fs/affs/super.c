@@ -18,13 +18,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
-r_int
-op_star
-id|blk_size
-(braket
-)braket
-suffix:semicolon
-r_extern
 r_struct
 id|timezone
 id|sys_tz
@@ -1690,11 +1683,11 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;AFFS: initial blksize=%d, blocks=%d&bslash;n&quot;
+l_string|&quot;AFFS: initial blocksize=%d, #blocks=%d&bslash;n&quot;
 comma
 l_int|512
 comma
-id|blocks
+id|size
 )paren
 suffix:semicolon
 id|affs_set_blocksize

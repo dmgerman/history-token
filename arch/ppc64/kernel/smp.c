@@ -210,18 +210,28 @@ id|cpu
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * XICS only has a single IPI, so encode the messages per CPU&n; */
-DECL|variable|xics_ipi_message
+DECL|struct|xics_ipi_struct
+r_struct
+id|xics_ipi_struct
+(brace
+DECL|member|value
 r_volatile
 r_int
 r_int
+id|value
+suffix:semicolon
+DECL|variable|____cacheline_aligned
+)brace
+id|____cacheline_aligned
+suffix:semicolon
+DECL|variable|__cacheline_aligned
+r_struct
+id|xics_ipi_struct
 id|xics_ipi_message
 (braket
 id|NR_CPUS
 )braket
-op_assign
-(brace
-l_int|0
-)brace
+id|__cacheline_aligned
 suffix:semicolon
 DECL|macro|smp_message_pass
 mdefine_line|#define smp_message_pass(t,m,d,w) ppc_md.smp_message_pass((t),(m),(d),(w))
@@ -1283,6 +1293,8 @@ id|xics_ipi_message
 (braket
 id|i
 )braket
+dot
+id|value
 )paren
 suffix:semicolon
 id|mb
@@ -1420,91 +1432,6 @@ id|prof_multiplier
 suffix:semicolon
 )brace
 )brace
-DECL|variable|migration_lock
-r_static
-id|spinlock_t
-id|migration_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-DECL|variable|new_task
-r_static
-id|task_t
-op_star
-id|new_task
-suffix:semicolon
-multiline_comment|/*&n; * This function sends a &squot;task migration&squot; IPI to another CPU.&n; * Must be called from syscall contexts, with interrupts *enabled*.&n; */
-DECL|function|smp_migrate_task
-r_void
-id|smp_migrate_task
-c_func
-(paren
-r_int
-id|cpu
-comma
-id|task_t
-op_star
-id|p
-)paren
-(brace
-multiline_comment|/*&n;&t; * The target CPU will unlock the migration spinlock:&n;&t; */
-id|spin_lock
-c_func
-(paren
-op_amp
-id|migration_lock
-)paren
-suffix:semicolon
-id|new_task
-op_assign
-id|p
-suffix:semicolon
-id|smp_message_pass
-c_func
-(paren
-id|cpu
-comma
-id|PPC_MSG_MIGRATE_TASK
-comma
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Task migration callback.&n; */
-DECL|function|smp_task_migration_interrupt
-r_static
-r_void
-id|smp_task_migration_interrupt
-c_func
-(paren
-r_void
-)paren
-(brace
-id|task_t
-op_star
-id|p
-suffix:semicolon
-multiline_comment|/* Should we ACK the IPI interrupt early? */
-id|p
-op_assign
-id|new_task
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|migration_lock
-)paren
-suffix:semicolon
-id|sched_task_migrated
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
-)brace
 DECL|function|smp_message_recv
 r_void
 id|smp_message_recv
@@ -1546,16 +1473,14 @@ c_func
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#if 0
 r_case
 id|PPC_MSG_MIGRATE_TASK
 suffix:colon
-id|smp_task_migration_interrupt
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* spare */
 r_break
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_XMON
 r_case
 id|PPC_MSG_XMON_BREAK
@@ -1597,8 +1522,6 @@ r_int
 id|cpu
 )paren
 (brace
-multiline_comment|/*&n;&t; * This is only used if `cpu&squot; is running an idle task,&n;&t; * so it will reschedule itself anyway...&n;&t; *&n;&t; * This isn&squot;t the case anymore since the other CPU could be&n;&t; * sleeping and won&squot;t reschedule until the next interrupt (such&n;&t; * as the timer).&n;&t; *  -- Cort&n;&t; */
-multiline_comment|/* This is only used if `cpu&squot; is running an idle task,&n;&t;   so it will reschedule itself anyway... */
 id|smp_message_pass
 c_func
 (paren

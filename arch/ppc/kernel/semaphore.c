@@ -3,6 +3,7 @@ multiline_comment|/*&n; * PowerPC-specific semaphore code.&n; *&n; * Copyright (
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;asm/errno.h&gt;
 multiline_comment|/*&n; * Atomically update sem-&gt;count.&n; * This does the equivalent of the following:&n; *&n; *&t;old_count = sem-&gt;count;&n; *&t;tmp = MAX(old_count, 0) + incr;&n; *&t;sem-&gt;count = tmp;&n; *&t;return old_count;&n; */
 DECL|function|__sem_update_count
 r_static

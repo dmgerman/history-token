@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
+macro_line|#include &lt;asm/init.h&gt;
 macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/iSeries/HvCallXm.h&gt;
 macro_line|#endif
@@ -108,6 +109,11 @@ DECL|variable|tb_to_us
 r_int
 id|tb_to_us
 suffix:semicolon
+DECL|variable|processor_freq
+r_int
+r_int
+id|processor_freq
+suffix:semicolon
 DECL|variable|rtc_lock
 id|spinlock_t
 id|rtc_lock
@@ -157,6 +163,20 @@ suffix:semicolon
 r_extern
 r_char
 id|_stext
+suffix:semicolon
+r_void
+id|ppc_adjtimex
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|variable|adjusting_time
+r_static
+r_int
+id|adjusting_time
+op_assign
+l_int|0
 suffix:semicolon
 DECL|function|ppc_do_profile
 r_static
@@ -769,6 +789,22 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|adjusting_time
+op_logical_and
+(paren
+id|time_adjust
+op_eq
+l_int|0
+)paren
+)paren
+id|ppc_adjtimex
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 id|paca-&gt;next_jiffy_update_tb
 op_add_assign
@@ -1158,9 +1194,9 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function is a copy of the architecture independent function&n; * but which calls do_settimeofday rather than setting the xtime&n; * fields itself.  This way, the fields which are used for &n; * do_settimeofday get updated too.&n; */
-DECL|function|ppc64_sys_stime
+DECL|function|ppc64_sys32_stime
 r_int
-id|ppc64_sys_stime
+id|ppc64_sys32_stime
 c_func
 (paren
 r_int
@@ -1174,19 +1210,6 @@ suffix:semicolon
 r_struct
 id|timeval
 id|myTimeval
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS32
-comma
-l_string|&quot;ppc64_sys_stime - entered - tptr=%p, *tptr=0x%x &bslash;n&quot;
-comma
-id|tptr
-comma
-op_star
-id|tptr
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1232,12 +1255,70 @@ op_amp
 id|myTimeval
 )paren
 suffix:semicolon
-id|PPCDBG
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * This function is a copy of the architecture independent function&n; * but which calls do_settimeofday rather than setting the xtime&n; * fields itself.  This way, the fields which are used for &n; * do_settimeofday get updated too.&n; */
+DECL|function|ppc64_sys_stime
+r_int
+id|ppc64_sys_stime
 c_func
 (paren
-id|PPCDBG_SYS32
+r_int
+op_star
+id|tptr
+)paren
+(brace
+r_int
+id|value
+suffix:semicolon
+r_struct
+id|timeval
+id|myTimeval
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_SYS_TIME
+)paren
+)paren
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|value
 comma
-l_string|&quot;ppc64_sys_stime - exiting w/ 0 &bslash;n&quot;
+id|tptr
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+id|myTimeval.tv_sec
+op_assign
+id|value
+suffix:semicolon
+id|myTimeval.tv_usec
+op_assign
+l_int|0
+suffix:semicolon
+id|do_settimeofday
+c_func
+(paren
+op_amp
+id|myTimeval
 )paren
 suffix:semicolon
 r_return
@@ -1336,6 +1417,10 @@ id|do_gtod.vars
 l_int|0
 )braket
 suffix:semicolon
+id|do_gtod.var_idx
+op_assign
+l_int|0
+suffix:semicolon
 id|do_gtod.varp-&gt;stamp_xsec
 op_assign
 id|xtime.tv_sec
@@ -1370,6 +1455,10 @@ id|tb_last_stamp
 op_plus
 id|xtime_sync_interval
 suffix:semicolon
+id|time_freq
+op_assign
+l_int|0
+suffix:semicolon
 id|xtime.tv_usec
 op_assign
 l_int|0
@@ -1402,7 +1491,8 @@ id|tb_ticks_per_jiffy
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * After adjtimex is called, adjust the conversion of tb ticks&n; * to microseconds to keep do_gettimeofday synchronized &n; * with ntpd.&n;&n; * Use the time_freq and time_offset computed by adjtimex to &n; * adjust the frequency.&n;*/
+multiline_comment|/* &n; * After adjtimex is called, adjust the conversion of tb ticks&n; * to microseconds to keep do_gettimeofday synchronized &n; * with ntpd.&n;&n; * Use the time_adjust, time_freq and time_offset computed by adjtimex to &n; * adjust the frequency.&n;*/
+multiline_comment|/* #define DEBUG_PPC_ADJTIMEX 1 */
 DECL|function|ppc_adjtimex
 r_void
 id|ppc_adjtimex
@@ -1449,6 +1539,15 @@ id|gettimeofday_vars
 op_star
 id|temp_varp
 suffix:semicolon
+r_int
+id|temp_idx
+suffix:semicolon
+r_int
+id|singleshot_ppm
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Compute parts per million frequency adjustment to accomplish the time adjustment&n;&t;   implied by time_offset to be applied over the elapsed time indicated by time_constant.&n;&t;   Use SHIFT_USEC to get it into the same units as time_freq. */
 r_if
 c_cond
 (paren
@@ -1499,12 +1598,108 @@ op_plus
 id|time_constant
 suffix:semicolon
 )brace
+multiline_comment|/* If there is a single shot time adjustment in progress */
+r_if
+c_cond
+(paren
+id|time_adjust
+)paren
+(brace
+macro_line|#ifdef DEBUG_PPC_ADJTIMEX
+id|printk
+c_func
+(paren
+l_string|&quot;ppc_adjtimex: &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|adjusting_time
+op_eq
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;starting &quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;single shot time_adjust = %ld&bslash;n&quot;
+comma
+id|time_adjust
+)paren
+suffix:semicolon
+macro_line|#endif&t;
+id|adjusting_time
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Compute parts per million frequency adjustment to match time_adjust */
+id|singleshot_ppm
+op_assign
+id|tickadj
+op_star
+id|HZ
+suffix:semicolon
+multiline_comment|/* The adjustment should be tickadj*HZ to match the code in linux/kernel/timer.c, but&n;&t;&t;   experiments show that this is too large. 3/4 of tickadj*HZ seems about right */
+id|singleshot_ppm
+op_sub_assign
+id|singleshot_ppm
+op_div
+l_int|4
+suffix:semicolon
+multiline_comment|/* Use SHIFT_USEC to get it into the same units as time_freq */
+id|singleshot_ppm
+op_lshift_assign
+id|SHIFT_USEC
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|time_adjust
+OL
+l_int|0
+)paren
+id|singleshot_ppm
+op_assign
+op_minus
+id|singleshot_ppm
+suffix:semicolon
+)brace
+r_else
+(brace
+macro_line|#ifdef DEBUG_PPC_ADJTIMEX
+r_if
+c_cond
+(paren
+id|adjusting_time
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;ppc_adjtimex: ending single shot time_adjust&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+id|adjusting_time
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* Add up all of the frequency adjustments */
 id|delta_freq
 op_assign
 id|time_freq
 op_plus
 id|ltemp
+op_plus
+id|singleshot_ppm
 suffix:semicolon
+multiline_comment|/* Compute a new value for tb_ticks_per_sec based on the frequency adjustment */
 id|den
 op_assign
 l_int|1000000
@@ -1582,6 +1777,31 @@ op_minus
 id|tb_ticks_per_sec_delta
 suffix:semicolon
 )brace
+macro_line|#ifdef DEBUG_PPC_ADJTIMEX
+id|printk
+c_func
+(paren
+l_string|&quot;ppc_adjtimex: ltemp = %ld, time_freq = %ld, singleshot_ppm = %ld&bslash;n&quot;
+comma
+id|ltemp
+comma
+id|time_freq
+comma
+id|singleshot_ppm
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;ppc_adjtimex: tb_ticks_per_sec - base = %ld  new = %ld&bslash;n&quot;
+comma
+id|tb_ticks_per_sec
+comma
+id|new_tb_ticks_per_sec
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Compute a new value of tb_to_xs (used to convert tb to microseconds and a new value of &n;&t;   stamp_xsec which is the time (in 1/2^20 second units) corresponding to tb_orig_stamp.  This &n;&t;   new value of stamp_xsec compensates for the change in frequency (implied by the new tb_to_xs)&n;&t;   which guarantees that the current time remains the same */
 id|tb_ticks
 op_assign
 id|get_tb
@@ -1647,17 +1867,15 @@ id|old_xsec
 op_minus
 id|new_xsec
 suffix:semicolon
+multiline_comment|/* There are two copies of tb_to_xs and stamp_xsec so that no lock is needed to access and use these&n;&t;   values in do_gettimeofday.  We alternate the copies and as long as a reasonable time elapses between&n;&t;   changes, there will never be inconsistent values.  ntpd has a minimum of one minute between updates */
 r_if
 c_cond
 (paren
-id|do_gtod.varp
+id|do_gtod.var_idx
 op_eq
-op_amp
-id|do_gtod.vars
-(braket
 l_int|0
-)braket
 )paren
+(brace
 id|temp_varp
 op_assign
 op_amp
@@ -1666,7 +1884,13 @@ id|do_gtod.vars
 l_int|1
 )braket
 suffix:semicolon
+id|temp_idx
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 r_else
+(brace
 id|temp_varp
 op_assign
 op_amp
@@ -1675,6 +1899,11 @@ id|do_gtod.vars
 l_int|0
 )braket
 suffix:semicolon
+id|temp_idx
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|temp_varp-&gt;tb_to_xs
 op_assign
 id|new_tb_to_xs
@@ -1691,6 +1920,10 @@ suffix:semicolon
 id|do_gtod.varp
 op_assign
 id|temp_varp
+suffix:semicolon
+id|do_gtod.var_idx
+op_assign
+id|temp_idx
 suffix:semicolon
 id|write_unlock_irqrestore
 c_func

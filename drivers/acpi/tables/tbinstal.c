@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbinstal - ACPI table installation and removal&n; *              $Revision: 55 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbinstal - ACPI table installation and removal&n; *              $Revision: 57 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -278,7 +278,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * We only &quot;recognize&quot; a limited number of ACPI tables -- namely, the&n;&t; * ones that are used by the subsystem (DSDT, FADT, etc.)&n;&t; *&n;&t; * An AE_NOT_FOUND means that the table was not recognized.&n;&t; * This can be any one of many valid ACPI tables, it just isn&squot;t one of&n;&t; * the tables that is consumed by the core subsystem&n;&t; */
+multiline_comment|/*&n;&t; * We only &quot;recognize&quot; a limited number of ACPI tables -- namely, the&n;&t; * ones that are used by the subsystem (DSDT, FADT, etc.)&n;&t; *&n;&t; * An AE_TABLE_NOT_SUPPORTED means that the table was not recognized.&n;&t; * This can be any one of many valid ACPI tables, it just isn&squot;t one of&n;&t; * the tables that is consumed by the core subsystem&n;&t; */
 id|status
 op_assign
 id|acpi_tb_match_signature
@@ -291,18 +291,46 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ACPI_SUCCESS
+id|ACPI_FAILURE
 (paren
 id|status
 )paren
 )paren
 (brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+id|status
+op_assign
+id|acpi_tb_validate_table_header
+(paren
+id|table_header
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Return the table type and length via the info struct */
 id|table_info-&gt;length
 op_assign
 id|table_header-&gt;length
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Validate checksum for _most_ tables,&n;&t;&t; * even the ones whose signature we don&squot;t recognize&n;&t;&t; */
+multiline_comment|/*&n;&t; * Validate checksum for _most_ tables,&n;&t; * even the ones whose signature we don&squot;t recognize&n;&t; */
 r_if
 c_cond
 (paren
@@ -337,7 +365,6 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-)brace
 )brace
 )brace
 id|return_ACPI_STATUS
@@ -668,16 +695,6 @@ id|ACPI_MTX_TABLES
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Free the table */
-id|acpi_tb_free_acpi_tables_of_type
-(paren
-op_amp
-id|acpi_gbl_acpi_tables
-(braket
-id|type
-)braket
-)paren
-suffix:semicolon
 multiline_comment|/* Clear the appropriate &quot;typed&quot; global table pointer */
 r_switch
 c_cond
@@ -741,6 +758,16 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* Free the table */
+id|acpi_tb_free_acpi_tables_of_type
+(paren
+op_amp
+id|acpi_gbl_acpi_tables
+(braket
+id|type
+)braket
+)paren
+suffix:semicolon
 (paren
 r_void
 )paren

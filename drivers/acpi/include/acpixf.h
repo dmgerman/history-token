@@ -98,9 +98,9 @@ id|acpi_find_root_pointer
 id|u32
 id|flags
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|ACPI_POINTER
 op_star
-id|rsdp_physical_address
+id|rsdp_address
 )paren
 suffix:semicolon
 id|acpi_status

@@ -154,8 +154,9 @@ r_extern
 r_struct
 id|pci_dev
 op_star
-id|ppc64_floppy_dev
+id|ppc64_isabridge_dev
 suffix:semicolon
+multiline_comment|/* may be NULL if no ISA bus */
 multiline_comment|/*******************************************************************&n; * PCI device_node operations&n; *******************************************************************/
 r_struct
 id|device_node

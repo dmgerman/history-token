@@ -3,6 +3,7 @@ macro_line|#ifndef _OHCI1394_H
 DECL|macro|_OHCI1394_H
 mdefine_line|#define _OHCI1394_H
 macro_line|#include &quot;ieee1394_types.h&quot;
+macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|OHCI1394_DRIVER_NAME
 mdefine_line|#define OHCI1394_DRIVER_NAME      &quot;ohci1394&quot;
 DECL|macro|OHCI1394_MAX_AT_REQ_RETRIES
@@ -469,7 +470,7 @@ id|self_id_errors
 suffix:semicolon
 multiline_comment|/* IRQ hooks, for video1394 and dv1394 */
 DECL|macro|OHCI1394_MAX_IRQ_HOOKS
-mdefine_line|#define OHCI1394_MAX_IRQ_HOOKS 4
+mdefine_line|#define OHCI1394_MAX_IRQ_HOOKS 16
 DECL|struct|ohci1394_irq_hook
 r_struct
 id|ohci1394_irq_hook
@@ -790,7 +791,7 @@ mdefine_line|#define OHCI1394_AsRspRcvContextControlClear  0x1E4
 DECL|macro|OHCI1394_AsRspRcvCommandPtr
 mdefine_line|#define OHCI1394_AsRspRcvCommandPtr           0x1EC
 multiline_comment|/* Isochronous transmit registers */
-multiline_comment|/* Add (32 * n) for context n */
+multiline_comment|/* Add (16 * n) for context n */
 DECL|macro|OHCI1394_IsoXmitContextBase
 mdefine_line|#define OHCI1394_IsoXmitContextBase           0x200
 DECL|macro|OHCI1394_IsoXmitContextControlSet
@@ -873,6 +874,27 @@ DECL|macro|DMA_CTL_BRANCH
 mdefine_line|#define DMA_CTL_BRANCH                   0x000c0000
 DECL|macro|DMA_CTL_WAIT
 mdefine_line|#define DMA_CTL_WAIT                     0x00030000
+multiline_comment|/* OHCI evt_* error types, table 3-2 of the OHCI 1.1 spec. */
+DECL|macro|EVT_NO_STATUS
+mdefine_line|#define EVT_NO_STATUS&t;&t;0x0&t;/* No event status */
+DECL|macro|EVT_RESERVED
+mdefine_line|#define EVT_RESERVED&t;&t;0x1&t;/* Reserved, not used !!! */
+DECL|macro|EVT_LONG_PACKET
+mdefine_line|#define EVT_LONG_PACKET&t;&t;0x2&t;/* The revc data was longer than the buf */
+DECL|macro|EVT_MISSING_ACK
+mdefine_line|#define EVT_MISSING_ACK&t;&t;0x3&t;/* A subaction gap was detected before an ack&n;&t;&t;&t;&t;&t;   arrived, or recv&squot;d ack had a parity error */
+DECL|macro|EVT_UNDERRUN
+mdefine_line|#define EVT_UNDERRUN&t;&t;0x4&t;/* Underrun on corresponding FIFO, packet&n;&t;&t;&t;&t;&t;   truncated */
+DECL|macro|EVT_OVERRUN
+mdefine_line|#define EVT_OVERRUN&t;&t;0x5&t;/* A recv FIFO overflowed on reception of ISO&n;&t;&t;&t;&t;&t;   packet */
+DECL|macro|EVT_DESCRIPTOR_READ
+mdefine_line|#define EVT_DESCRIPTOR_READ&t;0x6&t;/* An unrecoverable error occured while host was&n;&t;&t;&t;&t;&t;   reading a descriptor block */
+DECL|macro|EVT_DATA_READ
+mdefine_line|#define EVT_DATA_READ&t;&t;0x7&t;/* An error occured while host controller was&n;&t;&t;&t;&t;&t;   attempting to read from host memory in the data&n;&t;&t;&t;&t;&t;   stage of descriptor processing */
+DECL|macro|EVT_DATA_WRITE
+mdefine_line|#define EVT_DATA_WRITE&t;&t;0x8&t;/* An error occured while host controller was&n;&t;&t;&t;&t;&t;   attempting to write either during the data stage&n;&t;&t;&t;&t;&t;   of descriptor processing, or when processing a single&n;&t;&t;&t;&t;&t;   16-bit host memory write */
+DECL|macro|EVT_BUS_RESET
+mdefine_line|#define EVT_BUS_RESET&t;&t;0x9&t;/* Identifies a PHY packet in the recv buffer as&n;&t;&t;&t;&t;&t;   being a synthesized bus reset packet */
 DECL|macro|OHCI1394_TCODE_PHY
 mdefine_line|#define OHCI1394_TCODE_PHY               0xE
 r_void

@@ -3,6 +3,7 @@ DECL|macro|_PPC64_PGTABLE_H
 mdefine_line|#define _PPC64_PGTABLE_H
 multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the ppc64 hashed page table.&n; */
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* For TASK_SIZE */
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -91,8 +92,9 @@ DECL|macro|_PAGE_DIRTY
 mdefine_line|#define _PAGE_DIRTY&t;0x080UL&t;/* C: page changed */
 DECL|macro|_PAGE_ACCESSED
 mdefine_line|#define _PAGE_ACCESSED&t;0x100UL&t;/* R: page referenced */
-DECL|macro|_PAGE_HPTENOIX
+macro_line|#if 0
 mdefine_line|#define _PAGE_HPTENOIX&t;0x200UL /* software: pte HPTE slot unknown */
+macro_line|#endif
 DECL|macro|_PAGE_HASHPTE
 mdefine_line|#define _PAGE_HASHPTE&t;0x400UL&t;/* software: pte has an associated HPTE */
 DECL|macro|_PAGE_EXEC
@@ -103,7 +105,7 @@ DECL|macro|_PAGE_GROUP_IX
 mdefine_line|#define _PAGE_GROUP_IX  0x7000UL /* software: HPTE index within group */
 multiline_comment|/* Bits 0x7000 identify the index within an HPT Group */
 DECL|macro|_PAGE_HPTEFLAGS
-mdefine_line|#define _PAGE_HPTEFLAGS (_PAGE_HASHPTE | _PAGE_HPTENOIX | _PAGE_SECONDARY | _PAGE_GROUP_IX)
+mdefine_line|#define _PAGE_HPTEFLAGS (_PAGE_HASHPTE | _PAGE_SECONDARY | _PAGE_GROUP_IX)
 multiline_comment|/* PAGE_MASK gives the right answer below, but only by accident */
 multiline_comment|/* It should be preserving the high 48 bits and then specifically */
 multiline_comment|/* preserving _PAGE_SECONDARY | _PAGE_GROUP_IX */
@@ -214,10 +216,10 @@ DECL|macro|pmd_present
 mdefine_line|#define&t;pmd_present(pmd)&t;((pmd_val(pmd)) != 0)
 DECL|macro|pmd_clear
 mdefine_line|#define&t;pmd_clear(pmdp)&t;&t;(pmd_val(*(pmdp)) = 0)
-DECL|macro|pmd_page
-mdefine_line|#define pmd_page(pmd)&t;&t;(__bpn_to_ba(pmd_val(pmd)))
 DECL|macro|pmd_page_kernel
-mdefine_line|#define pmd_page_kernel(pmd)&t;pmd_page(pmd)
+mdefine_line|#define pmd_page_kernel(pmd)&t;(__bpn_to_ba(pmd_val(pmd)))
+DECL|macro|pmd_page
+mdefine_line|#define pmd_page(pmd)&t;&t;virt_to_page(pmd_page_kernel(pmd))
 DECL|macro|pgd_set
 mdefine_line|#define pgd_set(pgdp, pmdp)&t;(pgd_val(*(pgdp)) = (__ba_to_bpn(pmdp)))
 DECL|macro|pgd_none
@@ -240,7 +242,7 @@ DECL|macro|pmd_offset
 mdefine_line|#define pmd_offset(dir,addr) &bslash;&n;  ((pmd_t *) pgd_page(*(dir)) + (((addr) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD - 1)))
 multiline_comment|/* Find an entry in the third-level page table.. */
 DECL|macro|pte_offset_kernel
-mdefine_line|#define pte_offset_kernel(dir,addr) &bslash;&n;  ((pte_t *) pmd_page(*(dir)) + (((addr) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1)))
+mdefine_line|#define pte_offset_kernel(dir,addr) &bslash;&n;  ((pte_t *) pmd_page_kernel(*(dir)) + (((addr) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1)))
 DECL|macro|pte_offset_map
 mdefine_line|#define pte_offset_map(dir,addr)&t;pte_offset_kernel((dir), (addr))
 DECL|macro|pte_offset_map_nested
@@ -920,179 +922,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_struct
-id|mm_struct
-suffix:semicolon
-r_struct
-id|vm_area_struct
-suffix:semicolon
-r_extern
-r_void
-id|local_flush_tlb_all
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|local_flush_tlb_mm
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|local_flush_tlb_page
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|vmaddr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|local_flush_tlb_range
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-comma
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|end
-)paren
-suffix:semicolon
-DECL|macro|flush_tlb_all
-mdefine_line|#define flush_tlb_all local_flush_tlb_all
-DECL|macro|flush_tlb_mm
-mdefine_line|#define flush_tlb_mm local_flush_tlb_mm
-DECL|macro|flush_tlb_page
-mdefine_line|#define flush_tlb_page local_flush_tlb_page
-DECL|macro|flush_tlb_range
-mdefine_line|#define flush_tlb_range(vma, start, end) local_flush_tlb_range(vma-&gt;vm_mm, start, end)
-DECL|function|flush_tlb_pgtables
-r_extern
-r_inline
-r_void
-id|flush_tlb_pgtables
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-comma
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|end
-)paren
-(brace
-multiline_comment|/* PPC has hw page tables. */
-)brace
-multiline_comment|/*&n; * No cache flushing is required when address mappings are&n; * changed, because the caches on PowerPCs are physically&n; * addressed.&n; */
-DECL|macro|flush_cache_all
-mdefine_line|#define flush_cache_all()&t;&t;do { } while (0)
-DECL|macro|flush_cache_mm
-mdefine_line|#define flush_cache_mm(mm)&t;&t;do { } while (0)
-DECL|macro|flush_cache_range
-mdefine_line|#define flush_cache_range(vma, a, b)&t;do { } while (0)
-DECL|macro|flush_cache_page
-mdefine_line|#define flush_cache_page(vma, p)&t;do { } while (0)
-DECL|macro|flush_page_to_ram
-mdefine_line|#define flush_page_to_ram(page)&t;&t;do { } while (0)
-r_extern
-r_void
-id|flush_icache_user_range
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_struct
-id|page
-op_star
-id|page
-comma
-r_int
-r_int
-id|addr
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|flush_icache_range
-c_func
-(paren
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__flush_dcache_icache
-c_func
-(paren
-r_void
-op_star
-id|page_va
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|flush_dcache_page
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|flush_icache_page
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_struct
-id|page
-op_star
-id|page
-)paren
-suffix:semicolon
 r_extern
 r_int
 r_int
@@ -1155,38 +984,27 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Page tables may have changed.  We don&squot;t need to do anything here&n; * as entries are faulted into the hash table by the low-level&n; * data/instruction access exception handlers.&n; */
+macro_line|#if 0
 multiline_comment|/*&n; * We won&squot;t be able to use update_mmu_cache to update the &n; * hardware page table because we need to update the pte&n; * as well, but we don&squot;t get the address of the pte, only&n; * its value.&n; */
-DECL|macro|update_mmu_cache
 mdefine_line|#define update_mmu_cache(vma, addr, pte)&t;do { } while (0)
+macro_line|#else
+multiline_comment|/*&n; * This gets called at the end of handling a page fault, when&n; * the kernel has put a new PTE into the page table for the process.&n; * We use it to put a corresponding HPTE into the hash table&n; * ahead of time, instead of waiting for the inevitable extra&n; * hash-table miss exception.&n; */
 r_extern
 r_void
-id|flush_hash_segments
+id|update_mmu_cache
 c_func
 (paren
-r_int
-id|low_vsid
-comma
-r_int
-id|high_vsid
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|flush_hash_page
-c_func
-(paren
-r_int
-r_int
-id|context
+r_struct
+id|vm_area_struct
+op_star
 comma
 r_int
 r_int
-id|ea
 comma
 id|pte_t
-id|pte
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Encode and de-code a swap entry */
 DECL|macro|SWP_TYPE
 mdefine_line|#define SWP_TYPE(entry)&t;&t;&t;(((entry).val &gt;&gt; 1) &amp; 0x3f)

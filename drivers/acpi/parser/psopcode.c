@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psopcode - Parser/Interpreter opcode information table&n; *              $Revision: 64 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psopcode - Parser/Interpreter opcode information table&n; *              $Revision: 66 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -314,7 +314,7 @@ mdefine_line|#define ARGI_BREAK_OP                   ARG_NONE
 DECL|macro|ARGI_BREAK_POINT_OP
 mdefine_line|#define ARGI_BREAK_POINT_OP             ARG_NONE
 DECL|macro|ARGI_BUFFER_OP
-mdefine_line|#define ARGI_BUFFER_OP                  ARGI_INVALID_OPCODE
+mdefine_line|#define ARGI_BUFFER_OP                  ARGI_LIST1 (ARGI_INTEGER)
 DECL|macro|ARGI_BYTE_OP
 mdefine_line|#define ARGI_BYTE_OP                    ARGI_INVALID_OPCODE
 DECL|macro|ARGI_BYTELIST_OP
@@ -444,7 +444,7 @@ mdefine_line|#define ARGI_ONE_OP                     ARG_NONE
 DECL|macro|ARGI_ONES_OP
 mdefine_line|#define ARGI_ONES_OP                    ARG_NONE
 DECL|macro|ARGI_PACKAGE_OP
-mdefine_line|#define ARGI_PACKAGE_OP                 ARGI_INVALID_OPCODE
+mdefine_line|#define ARGI_PACKAGE_OP                 ARGI_LIST1 (ARGI_INTEGER)
 DECL|macro|ARGI_POWER_RES_OP
 mdefine_line|#define ARGI_POWER_RES_OP               ARGI_INVALID_OPCODE
 DECL|macro|ARGI_PROCESSOR_OP
@@ -506,7 +506,7 @@ mdefine_line|#define ARGI_TYPE_OP                    ARGI_LIST1 (ARGI_ANYTYPE)
 DECL|macro|ARGI_UNLOAD_OP
 mdefine_line|#define ARGI_UNLOAD_OP                  ARGI_LIST1 (ARGI_DDBHANDLE)
 DECL|macro|ARGI_VAR_PACKAGE_OP
-mdefine_line|#define ARGI_VAR_PACKAGE_OP             ARGI_INVALID_OPCODE
+mdefine_line|#define ARGI_VAR_PACKAGE_OP             ARGI_LIST1 (ARGI_INTEGER)
 DECL|macro|ARGI_WAIT_OP
 mdefine_line|#define ARGI_WAIT_OP                    ARGI_LIST2 (ARGI_EVENT,      ARGI_INTEGER)
 DECL|macro|ARGI_WHILE_OP
@@ -516,7 +516,7 @@ mdefine_line|#define ARGI_WORD_OP                    ARGI_INVALID_OPCODE
 DECL|macro|ARGI_ZERO_OP
 mdefine_line|#define ARGI_ZERO_OP                    ARG_NONE
 multiline_comment|/*&n; * Summary of opcode types/flags&n; */
-multiline_comment|/******************************************************************************&n;&n; Opcodes that have associated namespace objects (AML_NSOBJECT flag)&n;&n;&t;AML_SCOPE_OP&n;&t;AML_DEVICE_OP&n;&t;AML_THERMAL_ZONE_OP&n;&t;AML_METHOD_OP&n;&t;AML_POWER_RES_OP&n;&t;AML_PROCESSOR_OP&n;&t;AML_FIELD_OP&n;&t;AML_INDEX_FIELD_OP&n;&t;AML_BANK_FIELD_OP&n;&t;AML_NAME_OP&n;&t;AML_ALIAS_OP&n;&t;AML_MUTEX_OP&n;&t;AML_EVENT_OP&n;&t;AML_REGION_OP&n;&t;AML_CREATE_FIELD_OP&n;&t;AML_CREATE_BIT_FIELD_OP&n;&t;AML_CREATE_BYTE_FIELD_OP&n;&t;AML_CREATE_WORD_FIELD_OP&n;&t;AML_CREATE_DWORD_FIELD_OP&n;&t;AML_CREATE_QWORD_FIELD_OP&n;&t;AML_INT_NAMEDFIELD_OP&n;&t;AML_INT_METHODCALL_OP&n;&t;AML_INT_NAMEPATH_OP&n;&n;  Opcodes that are &quot;namespace&quot; opcodes (AML_NSOPCODE flag)&n;&n;&t;AML_SCOPE_OP&n;&t;AML_DEVICE_OP&n;&t;AML_THERMAL_ZONE_OP&n;&t;AML_METHOD_OP&n;&t;AML_POWER_RES_OP&n;&t;AML_PROCESSOR_OP&n;&t;AML_FIELD_OP&n;&t;AML_INDEX_FIELD_OP&n;&t;AML_BANK_FIELD_OP&n;&t;AML_NAME_OP&n;&t;AML_ALIAS_OP&n;&t;AML_MUTEX_OP&n;&t;AML_EVENT_OP&n;&t;AML_REGION_OP&n;&t;AML_INT_NAMEDFIELD_OP&n;&n;  Opcodes that have an associated namespace node (AML_NSNODE flag)&n;&n;&t;AML_SCOPE_OP&n;&t;AML_DEVICE_OP&n;&t;AML_THERMAL_ZONE_OP&n;&t;AML_METHOD_OP&n;&t;AML_POWER_RES_OP&n;&t;AML_PROCESSOR_OP&n;&t;AML_NAME_OP&n;&t;AML_ALIAS_OP&n;&t;AML_MUTEX_OP&n;&t;AML_EVENT_OP&n;&t;AML_REGION_OP&n;&t;AML_CREATE_FIELD_OP&n;&t;AML_CREATE_BIT_FIELD_OP&n;&t;AML_CREATE_BYTE_FIELD_OP&n;&t;AML_CREATE_WORD_FIELD_OP&n;&t;AML_CREATE_DWORD_FIELD_OP&n;&t;AML_CREATE_QWORD_FIELD_OP&n;&t;AML_INT_NAMEDFIELD_OP&n;&t;AML_INT_METHODCALL_OP&n;&t;AML_INT_NAMEPATH_OP&n;&n;  Opcodes that define named ACPI objects (AML_NAMED flag)&n;&n;&t;AML_SCOPE_OP&n;&t;AML_DEVICE_OP&n;&t;AML_THERMAL_ZONE_OP&n;&t;AML_METHOD_OP&n;&t;AML_POWER_RES_OP&n;&t;AML_PROCESSOR_OP&n;&t;AML_NAME_OP&n;&t;AML_ALIAS_OP&n;&t;AML_MUTEX_OP&n;&t;AML_EVENT_OP&n;&t;AML_REGION_OP&n;&t;AML_INT_NAMEDFIELD_OP&n;&n;  Opcodes that contain executable AML as part of the definition that&n;  must be deferred until needed&n;&n;&t;AML_METHOD_OP&n;&t;AML_VAR_PACKAGE_OP&n;&t;AML_CREATE_FIELD_OP&n;&t;AML_CREATE_BIT_FIELD_OP&n;&t;AML_CREATE_BYTE_FIELD_OP&n;&t;AML_CREATE_WORD_FIELD_OP&n;&t;AML_CREATE_DWORD_FIELD_OP&n;&t;AML_CREATE_QWORD_FIELD_OP&n;&t;AML_REGION_OP&n;&n;  Field opcodes&n;&n;&t;AML_CREATE_FIELD_OP&n;&t;AML_FIELD_OP&n;&t;AML_INDEX_FIELD_OP&n;&t;AML_BANK_FIELD_OP&n;&n;  Field &quot;Create&quot; opcodes&n;&n;&t;AML_CREATE_FIELD_OP&n;&t;AML_CREATE_BIT_FIELD_OP&n;&t;AML_CREATE_BYTE_FIELD_OP&n;&t;AML_CREATE_WORD_FIELD_OP&n;&t;AML_CREATE_DWORD_FIELD_OP&n;&t;AML_CREATE_QWORD_FIELD_OP&n;&n;******************************************************************************/
+multiline_comment|/******************************************************************************&n;&n; Opcodes that have associated namespace objects (AML_NSOBJECT flag)&n;&n;&t;AML_SCOPE_OP&n;&t;AML_DEVICE_OP&n;&t;AML_THERMAL_ZONE_OP&n;&t;AML_METHOD_OP&n;&t;AML_POWER_RES_OP&n;&t;AML_PROCESSOR_OP&n;&t;AML_FIELD_OP&n;&t;AML_INDEX_FIELD_OP&n;&t;AML_BANK_FIELD_OP&n;&t;AML_NAME_OP&n;&t;AML_ALIAS_OP&n;&t;AML_MUTEX_OP&n;&t;AML_EVENT_OP&n;&t;AML_REGION_OP&n;&t;AML_CREATE_FIELD_OP&n;&t;AML_CREATE_BIT_FIELD_OP&n;&t;AML_CREATE_BYTE_FIELD_OP&n;&t;AML_CREATE_WORD_FIELD_OP&n;&t;AML_CREATE_DWORD_FIELD_OP&n;&t;AML_CREATE_QWORD_FIELD_OP&n;&t;AML_INT_NAMEDFIELD_OP&n;&t;AML_INT_METHODCALL_OP&n;&t;AML_INT_NAMEPATH_OP&n;&n;  Opcodes that are &quot;namespace&quot; opcodes (AML_NSOPCODE flag)&n;&n;&t;AML_SCOPE_OP&n;&t;AML_DEVICE_OP&n;&t;AML_THERMAL_ZONE_OP&n;&t;AML_METHOD_OP&n;&t;AML_POWER_RES_OP&n;&t;AML_PROCESSOR_OP&n;&t;AML_FIELD_OP&n;&t;AML_INDEX_FIELD_OP&n;&t;AML_BANK_FIELD_OP&n;&t;AML_NAME_OP&n;&t;AML_ALIAS_OP&n;&t;AML_MUTEX_OP&n;&t;AML_EVENT_OP&n;&t;AML_REGION_OP&n;&t;AML_INT_NAMEDFIELD_OP&n;&n;  Opcodes that have an associated namespace node (AML_NSNODE flag)&n;&n;&t;AML_SCOPE_OP&n;&t;AML_DEVICE_OP&n;&t;AML_THERMAL_ZONE_OP&n;&t;AML_METHOD_OP&n;&t;AML_POWER_RES_OP&n;&t;AML_PROCESSOR_OP&n;&t;AML_NAME_OP&n;&t;AML_ALIAS_OP&n;&t;AML_MUTEX_OP&n;&t;AML_EVENT_OP&n;&t;AML_REGION_OP&n;&t;AML_CREATE_FIELD_OP&n;&t;AML_CREATE_BIT_FIELD_OP&n;&t;AML_CREATE_BYTE_FIELD_OP&n;&t;AML_CREATE_WORD_FIELD_OP&n;&t;AML_CREATE_DWORD_FIELD_OP&n;&t;AML_CREATE_QWORD_FIELD_OP&n;&t;AML_INT_NAMEDFIELD_OP&n;&t;AML_INT_METHODCALL_OP&n;&t;AML_INT_NAMEPATH_OP&n;&n;  Opcodes that define named ACPI objects (AML_NAMED flag)&n;&n;&t;AML_SCOPE_OP&n;&t;AML_DEVICE_OP&n;&t;AML_THERMAL_ZONE_OP&n;&t;AML_METHOD_OP&n;&t;AML_POWER_RES_OP&n;&t;AML_PROCESSOR_OP&n;&t;AML_NAME_OP&n;&t;AML_ALIAS_OP&n;&t;AML_MUTEX_OP&n;&t;AML_EVENT_OP&n;&t;AML_REGION_OP&n;&t;AML_INT_NAMEDFIELD_OP&n;&n;  Opcodes that contain executable AML as part of the definition that&n;  must be deferred until needed&n;&n;&t;AML_METHOD_OP&n;&t;AML_VAR_PACKAGE_OP&n;&t;AML_CREATE_FIELD_OP&n;&t;AML_CREATE_BIT_FIELD_OP&n;&t;AML_CREATE_BYTE_FIELD_OP&n;&t;AML_CREATE_WORD_FIELD_OP&n;&t;AML_CREATE_DWORD_FIELD_OP&n;&t;AML_CREATE_QWORD_FIELD_OP&n;&t;AML_REGION_OP&n;&t;AML_BUFFER_OP&n;&n;  Field opcodes&n;&n;&t;AML_CREATE_FIELD_OP&n;&t;AML_FIELD_OP&n;&t;AML_INDEX_FIELD_OP&n;&t;AML_BANK_FIELD_OP&n;&n;  Field &quot;Create&quot; opcodes&n;&n;&t;AML_CREATE_FIELD_OP&n;&t;AML_CREATE_BIT_FIELD_OP&n;&t;AML_CREATE_BYTE_FIELD_OP&n;&t;AML_CREATE_WORD_FIELD_OP&n;&t;AML_CREATE_DWORD_FIELD_OP&n;&t;AML_CREATE_QWORD_FIELD_OP&n;&n;******************************************************************************/
 multiline_comment|/*&n; * Master Opcode information table.  A summary of everything we know about each opcode, all in one place.&n; */
 DECL|variable|acpi_gbl_aml_op_info
 r_static
@@ -726,11 +726,13 @@ id|ARGI_BUFFER_OP
 comma
 id|ACPI_TYPE_BUFFER
 comma
-id|AML_CLASS_ARGUMENT
+id|AML_CLASS_CREATE
 comma
-id|AML_TYPE_DATA_TERM
+id|AML_TYPE_CREATE_OBJECT
 comma
 id|AML_HAS_ARGS
+op_or
+id|AML_DEFER
 )paren
 comma
 multiline_comment|/* 0A */
@@ -744,11 +746,13 @@ id|ARGI_PACKAGE_OP
 comma
 id|ACPI_TYPE_PACKAGE
 comma
-id|AML_CLASS_ARGUMENT
+id|AML_CLASS_CREATE
 comma
-id|AML_TYPE_DATA_TERM
+id|AML_TYPE_CREATE_OBJECT
 comma
 id|AML_HAS_ARGS
+op_or
+id|AML_DEFER
 )paren
 comma
 multiline_comment|/* 0B */
@@ -2735,9 +2739,9 @@ id|ARGI_VAR_PACKAGE_OP
 comma
 id|ACPI_TYPE_PACKAGE
 comma
-id|AML_CLASS_ARGUMENT
+id|AML_CLASS_CREATE
 comma
-id|AML_TYPE_DATA_TERM
+id|AML_TYPE_CREATE_OBJECT
 comma
 id|AML_HAS_ARGS
 op_or
@@ -2994,6 +2998,29 @@ op_or
 id|AML_NAMED
 )paren
 comma
+multiline_comment|/* 7D */
+id|ACPI_OP
+(paren
+l_string|&quot;[EvalSubTree]&quot;
+comma
+id|ARGP_SCOPE_OP
+comma
+id|ARGI_SCOPE_OP
+comma
+id|INTERNAL_TYPE_SCOPE
+comma
+id|AML_CLASS_NAMED_OBJECT
+comma
+id|AML_TYPE_NAMED_NO_OBJ
+comma
+id|AML_HAS_ARGS
+op_or
+id|AML_NSOBJECT
+op_or
+id|AML_NSOPCODE
+op_or
+id|AML_NSNODE
+)paren
 multiline_comment|/*! [End] no source code translation !*/
 )brace
 suffix:semicolon
@@ -3127,7 +3154,7 @@ l_int|0x64
 comma
 l_int|0x6A
 comma
-id|_UNK
+l_int|0x7D
 comma
 multiline_comment|/* 0x38 */
 id|_UNK

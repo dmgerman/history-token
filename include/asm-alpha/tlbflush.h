@@ -448,5 +448,7 @@ r_int
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
+DECL|macro|flush_tlb_kernel_range
+mdefine_line|#define flush_tlb_kernel_range(start, end) flush_tlb_all()
 macro_line|#endif /* _ALPHA_TLBFLUSH_H */
 eof

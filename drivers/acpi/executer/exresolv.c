@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresolv - AML Interpreter object resolution&n; *              $Revision: 106 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresolv - AML Interpreter object resolution&n; *              $Revision: 109 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -149,7 +149,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_EXEC
 comma
 l_string|&quot;Resolved object %p&bslash;n&quot;
 comma
@@ -303,7 +303,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_EXEC
 comma
 l_string|&quot;[Arg/Local %d] Value_obj is %p&bslash;n&quot;
 comma
@@ -537,6 +537,30 @@ multiline_comment|/* switch (Opcode) */
 r_break
 suffix:semicolon
 multiline_comment|/* case INTERNAL_TYPE_REFERENCE */
+r_case
+id|ACPI_TYPE_BUFFER
+suffix:colon
+id|status
+op_assign
+id|acpi_ds_get_buffer_arguments
+(paren
+id|stack_desc
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_TYPE_PACKAGE
+suffix:colon
+id|status
+op_assign
+id|acpi_ds_get_package_arguments
+(paren
+id|stack_desc
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 multiline_comment|/*&n;&t; * These cases may never happen here, but just in case..&n;&t; */
 r_case
 id|ACPI_TYPE_BUFFER_FIELD
@@ -567,6 +591,8 @@ id|status
 op_assign
 id|acpi_ex_read_data_from_field
 (paren
+id|walk_state
+comma
 id|stack_desc
 comma
 op_amp

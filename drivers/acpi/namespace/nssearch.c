@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nssearch - Namespace search&n; *              $Revision: 83 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nssearch - Namespace search&n; *              $Revision: 84 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -114,7 +114,7 @@ multiline_comment|/* Check for match against the name */
 r_if
 c_cond
 (paren
-id|next_node-&gt;name
+id|next_node-&gt;name.integer
 op_eq
 id|target_name
 )paren
@@ -229,7 +229,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_NAMES
 comma
-l_string|&quot;Name %4.4s (type %X) not found at %p&bslash;n&quot;
+l_string|&quot;Name %4.4s Type [%s] not found at %p&bslash;n&quot;
 comma
 (paren
 r_char
@@ -238,7 +238,10 @@ op_star
 op_amp
 id|target_name
 comma
+id|acpi_ut_get_type_name
+(paren
 id|type
+)paren
 comma
 id|next_node
 )paren
@@ -346,7 +349,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_NAMES
 comma
-l_string|&quot;[%4.4s] type %X is local(no search)&bslash;n&quot;
+l_string|&quot;[%4.4s] type [%s] must be local to this scope (no parent search)&bslash;n&quot;
 comma
 (paren
 r_char
@@ -355,7 +358,10 @@ op_star
 op_amp
 id|target_name
 comma
+id|acpi_ut_get_type_name
+(paren
 id|type
+)paren
 )paren
 )paren
 suffix:semicolon

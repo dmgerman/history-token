@@ -361,7 +361,7 @@ DECL|macro|physRpn_to_absRpn
 mdefine_line|#define physRpn_to_absRpn(rpn) (rpn)
 DECL|macro|absolute_to_phys
 mdefine_line|#define absolute_to_phys(aa) (aa)
-macro_line|#endif /* CONFIG_MSCHUNKS */
+macro_line|#endif /* !CONFIG_MSCHUNKS */
 r_static
 r_inline
 r_int

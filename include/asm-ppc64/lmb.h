@@ -13,7 +13,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|MAX_LMB_REGIONS
-mdefine_line|#define MAX_LMB_REGIONS 32
+mdefine_line|#define MAX_LMB_REGIONS 64
 DECL|union|lmb_reg_property
 r_union
 id|lmb_reg_property
@@ -79,6 +79,11 @@ DECL|member|size
 r_int
 r_int
 id|size
+suffix:semicolon
+DECL|member|iosize
+r_int
+r_int
+id|iosize
 suffix:semicolon
 DECL|member|lcd_size
 r_int
@@ -152,6 +157,7 @@ r_int
 r_int
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MSCHUNKS
 r_extern
 r_int
 id|lmb_add_io
@@ -166,6 +172,7 @@ r_int
 id|size
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_MSCHUNKS */
 r_extern
 r_int
 id|lmb_reserve

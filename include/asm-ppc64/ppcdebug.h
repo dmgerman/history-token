@@ -167,5 +167,9 @@ macro_line|#ifndef PPCDBG_ENTER_DEBUGGER
 DECL|macro|PPCDBG_ENTER_DEBUGGER
 mdefine_line|#define PPCDBG_ENTER_DEBUGGER() do {;} while(0)
 macro_line|#endif
+macro_line|#ifndef PPCDBG_ENTER_DEBUGGER_REGS
+DECL|macro|PPCDBG_ENTER_DEBUGGER_REGS
+mdefine_line|#define PPCDBG_ENTER_DEBUGGER_REGS(A) do {;} while(0)
+macro_line|#endif
 macro_line|#endif /*__PPCDEBUG_H */
 eof

@@ -34,10 +34,11 @@ id|args
 l_int|16
 )braket
 suffix:semicolon
-DECL|member|lock
+macro_line|#if 0
 id|spinlock_t
 id|lock
 suffix:semicolon
+macro_line|#endif
 DECL|member|rets
 id|rtas_arg_t
 op_star

@@ -69,7 +69,8 @@ id|length
 suffix:semicolon
 multiline_comment|/*  Array length in bytes  */
 DECL|member|bits
-id|__u32
+r_int
+r_int
 op_star
 id|bits
 suffix:semicolon
