@@ -556,7 +556,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;IT87xx&quot;
+l_string|&quot;it87&quot;
 comma
 dot
 id|id

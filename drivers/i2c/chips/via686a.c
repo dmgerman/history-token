@@ -3348,7 +3348,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;VIA686A&quot;
+l_string|&quot;via686a&quot;
 comma
 dot
 id|id

@@ -380,7 +380,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;ADM1021-MAX1617&quot;
+l_string|&quot;adm1021&quot;
 comma
 dot
 id|id
