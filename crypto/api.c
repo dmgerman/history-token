@@ -225,7 +225,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;blocksize  : %d&bslash;n&quot;
+l_string|&quot;blocksize  : %Zd&bslash;n&quot;
 comma
 id|alg-&gt;cra_blocksize
 )paren
@@ -246,7 +246,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;keysize    : %d&bslash;n&quot;
+l_string|&quot;keysize    : %Zd&bslash;n&quot;
 comma
 id|alg-&gt;cra_cipher.cia_keysize
 )paren
@@ -256,7 +256,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;ivsize     : %d&bslash;n&quot;
+l_string|&quot;ivsize     : %Zd&bslash;n&quot;
 comma
 id|alg-&gt;cra_cipher.cia_ivsize
 )paren
@@ -271,7 +271,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;digestsize : %d&bslash;n&quot;
+l_string|&quot;digestsize : %Zd&bslash;n&quot;
 comma
 id|alg-&gt;cra_digest.dia_digestsize
 )paren

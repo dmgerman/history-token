@@ -4,12 +4,53 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|SHA1_DIGEST_SIZE
 mdefine_line|#define SHA1_DIGEST_SIZE&t;20
 DECL|macro|SHA1_HMAC_BLOCK_SIZE
 mdefine_line|#define SHA1_HMAC_BLOCK_SIZE&t;64
-DECL|macro|rol
-mdefine_line|#define rol(value, bits) (((value) &lt;&lt; (bits)) | ((value) &gt;&gt; (32 - (bits))))
+DECL|function|rol
+r_static
+r_inline
+id|u32
+id|rol
+c_func
+(paren
+id|u32
+id|value
+comma
+id|u32
+id|bits
+)paren
+(brace
+r_return
+(paren
+(paren
+(paren
+id|value
+)paren
+op_lshift
+(paren
+id|bits
+)paren
+)paren
+op_or
+(paren
+(paren
+id|value
+)paren
+op_rshift
+(paren
+l_int|32
+op_minus
+(paren
+id|bits
+)paren
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* blk0() and blk() perform the initial expand. */
 multiline_comment|/* I got the idea of expanding during the round function from SSLeay */
 DECL|macro|blk0

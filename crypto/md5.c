@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|MD5_DIGEST_SIZE
 mdefine_line|#define MD5_DIGEST_SIZE&t;&t;16
 DECL|macro|MD5_HMAC_BLOCK_SIZE

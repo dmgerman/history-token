@@ -159,7 +159,7 @@ id|TVMEMSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;template (%d) too big for tvmem (%d)&bslash;n&quot;
+l_string|&quot;template (%Zd) too big for tvmem (%d)&bslash;n&quot;
 comma
 id|tsize
 comma
@@ -607,7 +607,7 @@ id|TVMEMSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;template (%d) too big for tvmem (%d)&bslash;n&quot;
+l_string|&quot;template (%Zd) too big for tvmem (%d)&bslash;n&quot;
 comma
 id|tsize
 comma
@@ -1107,7 +1107,7 @@ id|TVMEMSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;template (%d) too big for tvmem (%d)&bslash;n&quot;
+l_string|&quot;template (%Zd) too big for tvmem (%d)&bslash;n&quot;
 comma
 id|tsize
 comma
@@ -1555,7 +1555,7 @@ id|TVMEMSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;template (%d) too big for tvmem (%d)&bslash;n&quot;
+l_string|&quot;template (%Zd) too big for tvmem (%d)&bslash;n&quot;
 comma
 id|tsize
 comma
@@ -2060,7 +2060,7 @@ id|TVMEMSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;template (%d) too big for tvmem (%d)&bslash;n&quot;
+l_string|&quot;template (%Zd) too big for tvmem (%d)&bslash;n&quot;
 comma
 id|tsize
 comma
@@ -5245,7 +5245,7 @@ id|TVMEMSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;template (%d) too big for tvmem (%d)&bslash;n&quot;
+l_string|&quot;template (%Zd) too big for tvmem (%d)&bslash;n&quot;
 comma
 id|tsize
 comma
@@ -6375,7 +6375,7 @@ id|TVMEMSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;template (%d) too big for tvmem (%d)&bslash;n&quot;
+l_string|&quot;template (%Zd) too big for tvmem (%d)&bslash;n&quot;
 comma
 id|tsize
 comma
@@ -7048,7 +7048,7 @@ id|TVMEMSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;template (%d) too big for tvmem (%d)&bslash;n&quot;
+l_string|&quot;template (%Zd) too big for tvmem (%d)&bslash;n&quot;
 comma
 id|tsize
 comma
