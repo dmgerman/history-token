@@ -616,7 +616,7 @@ id|VLAN_VID_MASK
 op_logical_or
 (paren
 id|vlan_id
-op_le
+OL
 l_int|0
 )paren
 )paren
