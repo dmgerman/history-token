@@ -5075,6 +5075,13 @@ id|hdr-&gt;e_shstrndx
 dot
 id|sh_offset
 suffix:semicolon
+multiline_comment|/* And these should exist, but gcc whinges if we don&squot;t init them */
+id|symindex
+op_assign
+id|strindex
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -6077,6 +6084,22 @@ id|i
 op_increment
 )paren
 (brace
+r_const
+r_char
+op_star
+id|strtab
+op_assign
+(paren
+r_char
+op_star
+)paren
+id|sechdrs
+(braket
+id|strindex
+)braket
+dot
+id|sh_addr
+suffix:semicolon
 r_if
 c_cond
 (paren
