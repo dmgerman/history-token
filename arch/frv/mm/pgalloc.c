@@ -197,7 +197,13 @@ c_func
 (paren
 id|pmd
 op_amp
+(paren
+l_int|0x3f00
+op_or
 id|xAMPRx_SS
+op_or
+l_int|0xe
+)paren
 )paren
 suffix:semicolon
 r_for

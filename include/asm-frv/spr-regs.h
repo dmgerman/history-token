@@ -315,7 +315,7 @@ mdefine_line|#define ESRx_EC_ILL_INSN&t;0x0000000a&t;/* - illegal_instruction */
 DECL|macro|ESRx_EC_MP_EXCEP
 mdefine_line|#define ESRx_EC_MP_EXCEP&t;0x0000001c&t;/* - mp_exception */
 DECL|macro|ESRx_EC_DATA_ACCESS
-mdefine_line|#define ESRx_EC_DATA_ACCESS&t;0x00000024&t;/* - data_access_error */
+mdefine_line|#define ESRx_EC_DATA_ACCESS&t;0x00000020&t;/* - data_access_error */
 DECL|macro|ESRx_EC_DIVISION
 mdefine_line|#define ESRx_EC_DIVISION&t;0x00000026&t;/* - division_exception */
 DECL|macro|ESRx_EC_ITLB_MISS

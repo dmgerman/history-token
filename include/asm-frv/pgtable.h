@@ -335,7 +335,7 @@ mdefine_line|#define PAGE_KERNEL_RO&t;&t;MAKE_GLOBAL(__PAGE_KERNEL_RO)
 DECL|macro|PAGE_KERNEL_NOCACHE
 mdefine_line|#define PAGE_KERNEL_NOCACHE&t;MAKE_GLOBAL(__PAGE_KERNEL_NOCACHE)
 DECL|macro|_PAGE_TABLE
-mdefine_line|#define _PAGE_TABLE&t;&t;(_PAGE_PRESENT | xAMPRx_SS_16Kb | xAMPRx_D | _PAGE_ACCESSED)
+mdefine_line|#define _PAGE_TABLE&t;&t;(_PAGE_PRESENT | xAMPRx_SS_16Kb)
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * The FR451 can do execute protection by virtue of having separate TLB miss handlers for&n; * instruction access and for data access. However, we don&squot;t have enough reserved bits to say&n; * &quot;execute only&quot;, so we don&squot;t bother. If you can read it, you can execute it and vice versa.&n; */
 DECL|macro|__P000
@@ -980,8 +980,6 @@ mdefine_line|#define pgd_index_k(addr) pgd_index(addr)
 multiline_comment|/* Find an entry in the third-level page table.. */
 DECL|macro|__pte_index
 mdefine_line|#define __pte_index(address) ((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
-DECL|macro|pte_offset
-mdefine_line|#define pte_offset(dir, address) ((pte_t *) pmd_page(*(dir)) + __pte_index(address))
 multiline_comment|/*&n; * the pte page can be thought of an array like this: pte_t[PTRS_PER_PTE]&n; *&n; * this macro returns the index of the entry in the pte page which would&n; * control the given virtual address&n; */
 DECL|macro|pte_index
 mdefine_line|#define pte_index(address) &bslash;&n;&t;&t;(((address) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))

@@ -1161,7 +1161,7 @@ id|pmd_k
 suffix:semicolon
 id|pte_k
 op_assign
-id|pte_offset
+id|pte_offset_kernel
 c_func
 (paren
 id|pmd_k
