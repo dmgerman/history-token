@@ -78,16 +78,16 @@ r_int
 id|addr
 )paren
 (brace
-macro_line|#ifdef __s390x__
 r_if
 c_cond
 (paren
 id|addr
 op_ge
-l_int|0x80000000
+l_int|0x7ff00000
 )paren
 r_return
 suffix:semicolon
+macro_line|#ifdef __s390x__
 id|asm
 r_volatile
 (paren

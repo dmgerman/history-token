@@ -2201,9 +2201,10 @@ id|arg
 op_eq
 id|KD_TEXT
 )paren
-id|unblank_screen
+id|do_unblank_screen
 c_func
 (paren
+l_int|1
 )paren
 suffix:semicolon
 r_else
@@ -4755,9 +4756,10 @@ id|vc_mode
 op_eq
 id|KD_TEXT
 )paren
-id|unblank_screen
+id|do_unblank_screen
 c_func
 (paren
+l_int|1
 )paren
 suffix:semicolon
 r_else
@@ -4841,9 +4843,10 @@ id|vc_mode
 op_eq
 id|KD_TEXT
 )paren
-id|unblank_screen
+id|do_unblank_screen
 c_func
 (paren
+l_int|1
 )paren
 suffix:semicolon
 r_else

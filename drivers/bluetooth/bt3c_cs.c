@@ -526,11 +526,10 @@ op_logical_neg
 id|info
 )paren
 (brace
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;bt3c_cs: Call of write_wakeup for unknown device.&bslash;n&quot;
+l_string|&quot;Unknown device&quot;
 )paren
 suffix:semicolon
 r_return
@@ -649,11 +648,10 @@ op_ne
 id|skb-&gt;len
 )paren
 (brace
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;bt3c_cs: very strange&bslash;n&quot;
+l_string|&quot;Very strange&quot;
 )paren
 suffix:semicolon
 )brace
@@ -715,11 +713,10 @@ op_logical_neg
 id|info
 )paren
 (brace
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;bt3c_cs: Call of receive for unknown device.&bslash;n&quot;
+l_string|&quot;Unknown device&quot;
 )paren
 suffix:semicolon
 r_return
@@ -796,11 +793,10 @@ id|GFP_ATOMIC
 )paren
 )paren
 (brace
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;bt3c_cs: Can&squot;t allocate mem for new packet.&bslash;n&quot;
+l_string|&quot;Can&squot;t allocate mem for new packet&quot;
 )paren
 suffix:semicolon
 r_return
@@ -890,11 +886,10 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* Unknown packet */
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;bt3c_cs: Unknown HCI packet with type 0x%02x received.&bslash;n&quot;
+l_string|&quot;Unknown HCI packet with type 0x%02x received&quot;
 comma
 id|info-&gt;rx_skb-&gt;pkt_type
 )paren
@@ -1143,11 +1138,10 @@ op_logical_neg
 id|info
 )paren
 (brace
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;bt3c_cs: Call of irq %d for unknown device.&bslash;n&quot;
+l_string|&quot;Call of irq %d for unknown device&quot;
 comma
 id|irq
 )paren
@@ -1210,11 +1204,10 @@ op_eq
 l_int|0x7f
 )paren
 (brace
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;bt3c_cs: STRANGE stat=%04x&bslash;n&quot;
+l_string|&quot;Very strange (stat=0x%04x)&quot;
 comma
 id|stat
 )paren
@@ -1254,18 +1247,17 @@ l_int|0x7002
 op_amp
 l_int|0x10
 suffix:semicolon
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;bt3c_cs: antena %s&bslash;n&quot;
+l_string|&quot;Antenna %s&quot;
 comma
 id|stat
 ques
 c_cond
-l_string|&quot;OUT&quot;
+l_string|&quot;out&quot;
 suffix:colon
-l_string|&quot;IN&quot;
+l_string|&quot;in&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1290,7 +1282,7 @@ op_amp
 l_int|0x0002
 )paren
 (brace
-singleline_comment|//printk(&quot;bt3c_cs: ACK %04x&bslash;n&quot;, stat);
+singleline_comment|//BT_ERR(&quot;Ack (stat=0x%04x)&quot;, stat);
 id|clear_bit
 c_func
 (paren
@@ -1489,11 +1481,10 @@ op_logical_neg
 id|hdev
 )paren
 (brace
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;bt3c_cs: Frame for unknown HCI device (hdev=NULL).&quot;
+l_string|&quot;Frame for unknown HCI device (hdev=NULL)&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1708,11 +1699,10 @@ c_cond
 (paren
 id|err
 )paren
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;bt3c_cs: Failed to run &bslash;&quot;%s pccard %s&bslash;&quot; (errno=%d).&bslash;n&quot;
+l_string|&quot;Failed to run &bslash;&quot;%s pccard %s&bslash;&quot; (errno=%d)&quot;
 comma
 id|FW_LOADER
 comma
@@ -1821,11 +1811,10 @@ op_logical_neg
 id|hdev
 )paren
 (brace
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;bt3c_cs: Can&squot;t allocate HCI device.&bslash;n&quot;
+l_string|&quot;Can&squot;t allocate HCI device&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1885,11 +1874,10 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;bt3c_cs: Can&squot;t register HCI device.&bslash;n&quot;
+l_string|&quot;Can&squot;t register HCI device&quot;
 )paren
 suffix:semicolon
 id|hci_free_dev
@@ -1941,11 +1929,10 @@ id|hdev
 OL
 l_int|0
 )paren
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;bt3c_cs: Can&squot;t unregister HCI device %s.&bslash;n&quot;
+l_string|&quot;Can&squot;t unregister HCI device %s&quot;
 comma
 id|hdev-&gt;name
 )paren
@@ -2960,11 +2947,10 @@ op_ne
 id|CS_SUCCESS
 )paren
 (brace
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_NOTICE
-l_string|&quot;bt3c_cs: No usable port range found. Giving up.&bslash;n&quot;
+l_string|&quot;No usable port range found&quot;
 )paren
 suffix:semicolon
 id|cs_error

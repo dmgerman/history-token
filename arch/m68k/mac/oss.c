@@ -10,7 +10,6 @@ macro_line|#include &lt;asm/macintosh.h&gt;
 macro_line|#include &lt;asm/macints.h&gt;
 macro_line|#include &lt;asm/mac_via.h&gt;
 macro_line|#include &lt;asm/mac_oss.h&gt;
-macro_line|#include &lt;asm/unistd.h&gt;
 DECL|variable|oss_present
 r_int
 id|oss_present

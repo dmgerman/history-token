@@ -619,20 +619,6 @@ op_assign
 op_amp
 id|hydra_close
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|ei_status.priv
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|root_hydra_dev
-suffix:semicolon
-id|root_hydra_dev
-op_assign
-id|dev
-suffix:semicolon
-macro_line|#endif
 id|NS8390_init
 c_func
 (paren

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * eth1394.h -- Ethernet driver for Linux IEEE-1394 Subsy
 macro_line|#ifndef __ETH1394_H
 DECL|macro|__ETH1394_H
 mdefine_line|#define __ETH1394_H
+macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &quot;ieee1394.h&quot;
 multiline_comment|/* Register for incoming packets. This is 4096 bytes, which supports up to&n; * S3200 (per Table 16-3 of IEEE 1394b-2002). */
 DECL|macro|ETHER1394_REGION_ADDR_LEN

@@ -3,13 +3,16 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &quot;dm.h&quot;
+DECL|macro|PFX
+mdefine_line|#define PFX&t;&quot;crypt: &quot;
 multiline_comment|/*&n; * per bio private data&n; */
 DECL|struct|crypt_io
 r_struct
@@ -1605,7 +1608,8 @@ l_int|5
 (brace
 id|ti-&gt;error
 op_assign
-l_string|&quot;dm-crypt: Not enough arguments&quot;
+id|PFX
+l_string|&quot;Not enough arguments&quot;
 suffix:semicolon
 r_return
 op_minus
@@ -1649,7 +1653,8 @@ id|tmp
 id|DMWARN
 c_func
 (paren
-l_string|&quot;dm-crypt: Unexpected additional cipher options&quot;
+id|PFX
+l_string|&quot;Unexpected additional cipher options&quot;
 )paren
 suffix:semicolon
 id|key_size
@@ -1696,7 +1701,8 @@ l_int|NULL
 (brace
 id|ti-&gt;error
 op_assign
-l_string|&quot;dm-crypt: Cannot allocate transparent encryption context&quot;
+id|PFX
+l_string|&quot;Cannot allocate transparent encryption context&quot;
 suffix:semicolon
 r_return
 op_minus
@@ -1745,7 +1751,8 @@ r_else
 (brace
 id|ti-&gt;error
 op_assign
-l_string|&quot;dm-crypt: Invalid chaining mode&quot;
+id|PFX
+l_string|&quot;Invalid chaining mode&quot;
 suffix:semicolon
 r_goto
 id|bad1
@@ -1784,7 +1791,8 @@ id|tfm
 (brace
 id|ti-&gt;error
 op_assign
-l_string|&quot;dm-crypt: Error allocating crypto tfm&quot;
+id|PFX
+l_string|&quot;Error allocating crypto tfm&quot;
 suffix:semicolon
 r_goto
 id|bad1
@@ -1793,9 +1801,30 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tfm-&gt;crt_u.cipher.cit_decrypt_iv
+id|crypto_tfm_alg_type
+c_func
+(paren
+id|tfm
+)paren
+op_ne
+id|CRYPTO_ALG_TYPE_CIPHER
+)paren
+(brace
+id|ti-&gt;error
+op_assign
+id|PFX
+l_string|&quot;Expected cipher algorithm&quot;
+suffix:semicolon
+r_goto
+id|bad2
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|tfm-&gt;crt_cipher.cit_decrypt_iv
 op_logical_and
-id|tfm-&gt;crt_u.cipher.cit_encrypt_iv
+id|tfm-&gt;crt_cipher.cit_encrypt_iv
 )paren
 multiline_comment|/* at least a 32 bit sector number should fit in our buffer */
 id|cc-&gt;iv_size
@@ -1841,7 +1870,8 @@ id|cc-&gt;iv_generator
 id|DMWARN
 c_func
 (paren
-l_string|&quot;dm-crypt: Selected cipher does not support IVs&quot;
+id|PFX
+l_string|&quot;Selected cipher does not support IVs&quot;
 )paren
 suffix:semicolon
 id|cc-&gt;iv_generator
@@ -1873,7 +1903,8 @@ id|cc-&gt;io_pool
 (brace
 id|ti-&gt;error
 op_assign
-l_string|&quot;dm-crypt: Cannot allocate crypt io mempool&quot;
+id|PFX
+l_string|&quot;Cannot allocate crypt io mempool&quot;
 suffix:semicolon
 r_goto
 id|bad2
@@ -1902,7 +1933,8 @@ id|cc-&gt;page_pool
 (brace
 id|ti-&gt;error
 op_assign
-l_string|&quot;dm-crypt: Cannot allocate page mempool&quot;
+id|PFX
+l_string|&quot;Cannot allocate page mempool&quot;
 suffix:semicolon
 r_goto
 id|bad3
@@ -1956,7 +1988,8 @@ l_int|0
 (brace
 id|ti-&gt;error
 op_assign
-l_string|&quot;dm-crypt: Error decoding key&quot;
+id|PFX
+l_string|&quot;Error decoding key&quot;
 suffix:semicolon
 r_goto
 id|bad4
@@ -1965,7 +1998,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tfm-&gt;crt_u.cipher
+id|tfm-&gt;crt_cipher
 dot
 id|cit_setkey
 c_func
@@ -1982,7 +2015,8 @@ l_int|0
 (brace
 id|ti-&gt;error
 op_assign
-l_string|&quot;dm-crypt: Error setting key&quot;
+id|PFX
+l_string|&quot;Error setting key&quot;
 suffix:semicolon
 r_goto
 id|bad4
@@ -2010,7 +2044,8 @@ l_int|1
 (brace
 id|ti-&gt;error
 op_assign
-l_string|&quot;dm-crypt: Invalid iv_offset sector&quot;
+id|PFX
+l_string|&quot;Invalid iv_offset sector&quot;
 suffix:semicolon
 r_goto
 id|bad4
@@ -2038,7 +2073,8 @@ l_int|1
 (brace
 id|ti-&gt;error
 op_assign
-l_string|&quot;dm-crypt: Invalid device sector&quot;
+id|PFX
+l_string|&quot;Invalid device sector&quot;
 suffix:semicolon
 r_goto
 id|bad4
@@ -2074,7 +2110,8 @@ id|cc-&gt;dev
 (brace
 id|ti-&gt;error
 op_assign
-l_string|&quot;dm-crypt: Device lookup failed&quot;
+id|PFX
+l_string|&quot;Device lookup failed&quot;
 suffix:semicolon
 r_goto
 id|bad4
@@ -2428,16 +2465,66 @@ suffix:semicolon
 )brace
 )brace
 r_else
+(brace
+multiline_comment|/*&n;&t;&t; * The block layer might modify the bvec array, so always&n;&t;&t; * copy the required bvecs because we need the original&n;&t;&t; * one in order to decrypt the whole bio data *afterwards*.&n;&t;&t; */
 id|clone
 op_assign
-id|bio_clone
+id|bio_alloc
+c_func
+(paren
+id|GFP_NOIO
+comma
+id|bio_segments
 c_func
 (paren
 id|bio
-comma
-id|GFP_NOIO
+)paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|clone
+)paren
+(brace
+id|clone-&gt;bi_idx
+op_assign
+l_int|0
+suffix:semicolon
+id|clone-&gt;bi_vcnt
+op_assign
+id|bio_segments
+c_func
+(paren
+id|bio
+)paren
+suffix:semicolon
+id|clone-&gt;bi_size
+op_assign
+id|bio-&gt;bi_size
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|clone-&gt;bi_io_vec
+comma
+id|bio_iovec
+c_func
+(paren
+id|bio
+)paren
+comma
+r_sizeof
+(paren
+r_struct
+id|bio_vec
+)paren
+op_star
+id|clone-&gt;bi_vcnt
+)paren
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
@@ -2827,7 +2914,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|cc-&gt;tfm-&gt;crt_u.cipher.cit_mode
+id|cc-&gt;tfm-&gt;crt_cipher.cit_mode
 )paren
 (brace
 r_case
@@ -3095,6 +3182,7 @@ suffix:semicolon
 id|DMERR
 c_func
 (paren
+id|PFX
 l_string|&quot;couldn&squot;t create kcryptd&quot;
 )paren
 suffix:semicolon
@@ -3122,7 +3210,8 @@ l_int|0
 id|DMERR
 c_func
 (paren
-l_string|&quot;crypt: register failed %d&quot;
+id|PFX
+l_string|&quot;register failed %d&quot;
 comma
 id|r
 )paren
@@ -3184,7 +3273,8 @@ l_int|0
 id|DMERR
 c_func
 (paren
-l_string|&quot;crypt: unregister failed %d&quot;
+id|PFX
+l_string|&quot;unregister failed %d&quot;
 comma
 id|r
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/arm/icside.c&n; *&n; * Copyright (c) 1996-2002 Russell King.&n; *&n; * Changelog:&n; *  08-Jun-1996&t;RMK&t;Created&n; *  12-Sep-1997&t;RMK&t;Added interrupt enable/disable&n; *  17-Apr-1999&t;RMK&t;Added support for V6 EASI&n; *  22-May-1999&t;RMK&t;Added support for V6 DMA&n; */
+multiline_comment|/*&n; * linux/drivers/ide/arm/icside.c&n; *&n; * Copyright (c) 1996-2003 Russell King.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -717,7 +717,6 @@ op_assign
 id|blk_rq_map_sg
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 id|rq
@@ -1509,6 +1508,10 @@ comma
 id|dma_mode
 )paren
 suffix:semicolon
+id|drive-&gt;waiting_for_dma
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1539,8 +1542,6 @@ id|rq
 suffix:semicolon
 id|task_ioreg_t
 id|cmd
-op_assign
-id|WIN_NOP
 suffix:semicolon
 r_if
 c_cond
@@ -1556,10 +1557,6 @@ id|DMA_MODE_READ
 )paren
 )paren
 r_return
-l_int|1
-suffix:semicolon
-id|drive-&gt;waiting_for_dma
-op_assign
 l_int|1
 suffix:semicolon
 r_if
@@ -1586,20 +1583,6 @@ op_ne
 l_int|NULL
 )paren
 suffix:semicolon
-id|ide_set_handler
-c_func
-(paren
-id|drive
-comma
-id|icside_dmaintr
-comma
-l_int|2
-op_star
-id|WAIT_CMD
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * FIX ME to use only ACB ide_task_t args Struct&n;&t; */
 macro_line|#if 0
 (brace
@@ -1609,7 +1592,7 @@ id|args
 op_assign
 id|rq-&gt;special
 suffix:semicolon
-id|command
+id|cmd
 op_assign
 id|args-&gt;tfRegister
 (braket
@@ -1663,18 +1646,20 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* issue cmd to drive */
-id|HWIF
+id|ide_execute_command
 c_func
 (paren
 id|drive
-)paren
-op_member_access_from_pointer
-id|OUTB
-c_func
-(paren
+comma
 id|cmd
 comma
-id|IDE_COMMAND_REG
+id|icside_dmaintr
+comma
+l_int|2
+op_star
+id|WAIT_CMD
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -1686,6 +1671,7 @@ id|drive
 suffix:semicolon
 )brace
 DECL|function|icside_dma_write
+r_static
 r_int
 id|icside_dma_write
 c_func
@@ -1710,8 +1696,6 @@ id|rq
 suffix:semicolon
 id|task_ioreg_t
 id|cmd
-op_assign
-id|WIN_NOP
 suffix:semicolon
 r_if
 c_cond
@@ -1727,10 +1711,6 @@ id|DMA_MODE_WRITE
 )paren
 )paren
 r_return
-l_int|1
-suffix:semicolon
-id|drive-&gt;waiting_for_dma
-op_assign
 l_int|1
 suffix:semicolon
 r_if
@@ -1757,20 +1737,6 @@ op_ne
 l_int|NULL
 )paren
 suffix:semicolon
-id|ide_set_handler
-c_func
-(paren
-id|drive
-comma
-id|icside_dmaintr
-comma
-l_int|2
-op_star
-id|WAIT_CMD
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * FIX ME to use only ACB ide_task_t args Struct&n;&t; */
 macro_line|#if 0
 (brace
@@ -1780,7 +1746,7 @@ id|args
 op_assign
 id|rq-&gt;special
 suffix:semicolon
-id|command
+id|cmd
 op_assign
 id|args-&gt;tfRegister
 (braket
@@ -1834,18 +1800,20 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* issue cmd to drive */
-id|HWIF
+id|ide_execute_command
 c_func
 (paren
 id|drive
-)paren
-op_member_access_from_pointer
-id|OUTB
-c_func
-(paren
+comma
 id|cmd
 comma
-id|IDE_COMMAND_REG
+id|icside_dmaintr
+comma
+l_int|2
+op_star
+id|WAIT_CMD
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
