@@ -141,14 +141,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-macro_line|#if (LINUX_VERSION_CODE &lt; 0x020111)
-id|register_symtab
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
