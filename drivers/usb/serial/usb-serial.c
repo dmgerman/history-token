@@ -2234,16 +2234,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|usb_put_dev
-c_func
-(paren
-id|serial-&gt;dev
-)paren
-suffix:semicolon
-id|serial-&gt;dev
-op_assign
-l_int|NULL
-suffix:semicolon
 id|serial_shutdown
 (paren
 id|serial
@@ -2455,6 +2445,12 @@ multiline_comment|/* return the minor range that this device had */
 id|return_serial
 (paren
 id|serial
+)paren
+suffix:semicolon
+id|usb_put_dev
+c_func
+(paren
+id|serial-&gt;dev
 )paren
 suffix:semicolon
 multiline_comment|/* free up any memory that we allocated */
