@@ -969,6 +969,16 @@ r_int
 id|flow
 )paren
 suffix:semicolon
+id|kdev_t
+id|uart_console_device
+c_func
+(paren
+r_struct
+id|console
+op_star
+id|co
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Port/driver registration/removal&n; */
 r_int
 id|uart_register_driver

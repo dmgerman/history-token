@@ -593,6 +593,11 @@ DECL|member|cflag
 r_int
 id|cflag
 suffix:semicolon
+DECL|member|data
+r_void
+op_star
+id|data
+suffix:semicolon
 DECL|member|next
 r_struct
 id|console
