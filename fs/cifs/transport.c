@@ -5,14 +5,15 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &quot;cifspdu.h&quot;
 macro_line|#include &quot;cifsglob.h&quot;
 macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
 r_extern
-id|kmem_cache_t
+id|mempool_t
 op_star
-id|cifs_mid_cachep
+id|cifs_mid_poolp
 suffix:semicolon
 r_extern
 id|kmem_cache_t
@@ -93,12 +94,14 @@ r_struct
 id|mid_q_entry
 op_star
 )paren
-id|kmem_cache_alloc
+id|mempool_alloc
 c_func
 (paren
-id|cifs_mid_cachep
+id|cifs_mid_poolp
 comma
 id|SLAB_KERNEL
+op_or
+id|SLAB_NOFS
 )paren
 suffix:semicolon
 r_if
@@ -256,12 +259,12 @@ c_func
 id|midEntry-&gt;resp_buf
 )paren
 suffix:semicolon
-id|kmem_cache_free
+id|mempool_free
 c_func
 (paren
-id|cifs_mid_cachep
-comma
 id|midEntry
+comma
+id|cifs_mid_poolp
 )paren
 suffix:semicolon
 )brace
