@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/fadvise.h&gt;
 multiline_comment|/*&n; * POSIX_FADV_WILLNEED could set PG_Referenced, and POSIX_FADV_NOREUSE could&n; * deactivate the pages and clear PG_Referenced.&n; */
 DECL|function|sys_fadvise64_64
+id|asmlinkage
 r_int
 id|sys_fadvise64_64
 c_func
@@ -264,6 +265,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|sys_fadvise64
+id|asmlinkage
 r_int
 id|sys_fadvise64
 c_func
