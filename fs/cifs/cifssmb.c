@@ -19461,7 +19461,8 @@ comma
 op_amp
 id|bytes_returned
 comma
-l_int|0
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 r_if
