@@ -3317,6 +3317,7 @@ id|slots_inuse
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_COMPAT
 id|register_ioctl32_conversion
 c_func
 (paren
@@ -3325,6 +3326,7 @@ comma
 id|mraid_mm_compat_ioctl
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
