@@ -24,7 +24,7 @@ r_void
 id|do_suspend_lowlevel_s4bios
 c_func
 (paren
-r_int
+r_void
 )paren
 suffix:semicolon
 r_extern
@@ -32,7 +32,7 @@ r_void
 id|do_suspend_lowlevel
 c_func
 (paren
-r_int
+r_void
 )paren
 suffix:semicolon
 DECL|variable|acpi_suspend_states
@@ -248,7 +248,6 @@ suffix:colon
 id|do_suspend_lowlevel
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -275,7 +274,6 @@ r_else
 id|do_suspend_lowlevel_s4bios
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 r_break
