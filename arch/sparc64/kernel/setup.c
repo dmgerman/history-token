@@ -245,7 +245,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|save_and_cli
+multiline_comment|/* XXX Revisit the locking here someday.  This is a debugging&n;&t; * XXX feature so it isnt all that critical.  -DaveM&n;&t; */
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1235,7 +1236,7 @@ op_amp
 id|prom_entry_lock
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
