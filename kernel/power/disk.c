@@ -465,11 +465,6 @@ id|in_suspend
 op_assign
 l_int|1
 suffix:semicolon
-id|local_irq_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -485,13 +480,19 @@ c_func
 r_goto
 id|Done
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|in_suspend
+)paren
+(brace
 id|pr_debug
 c_func
 (paren
 l_string|&quot;PM: writing image.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * FIXME: Leftover from swsusp. Are they necessary?&n;&t; */
+multiline_comment|/*&n;&t;&t; * FIXME: Leftover from swsusp. Are they necessary?&n;&t;&t; */
 id|mb
 c_func
 (paren
@@ -514,8 +515,6 @@ c_cond
 (paren
 op_logical_neg
 id|error
-op_logical_and
-id|in_suspend
 )paren
 (brace
 id|error
@@ -533,6 +532,7 @@ l_string|&quot;PM: Power down failed.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+)brace
 r_else
 id|pr_debug
 c_func
@@ -547,11 +547,6 @@ c_func
 suffix:semicolon
 id|Done
 suffix:colon
-id|local_irq_enable
-c_func
-(paren
-)paren
-suffix:semicolon
 id|finish
 c_func
 (paren
@@ -626,11 +621,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|local_irq_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* FIXME: The following (comment and mdelay()) are from swsusp.&n;&t; * Are they really necessary?&n;&t; *&n;&t; * We do not want some readahead with DMA to corrupt our memory, right?&n;&t; * Do it with disabled interrupts for best effect. That way, if some&n;&t; * driver scheduled DMA, we have good chance for DMA to finish ;-).&n;&t; */
 id|pr_debug
 c_func
@@ -651,11 +641,6 @@ l_string|&quot;PM: Restoring saved image.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|swsusp_restore
-c_func
-(paren
-)paren
-suffix:semicolon
-id|local_irq_enable
 c_func
 (paren
 )paren
