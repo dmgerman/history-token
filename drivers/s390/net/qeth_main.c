@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_main.c ($Revision: 1.132 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  Utz Bacher (utz.bacher@de.ibm.com)&n; *&t;&t; Rewritten by&n; *&t;&t;&t;  Frank Pavlic (pavlic@de.ibm.com) and&n; *&t;&t; &t;  Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; *&n; *    $Revision: 1.132 $&t; $Date: 2004/08/19 12:39:43 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_main.c ($Revision: 1.138 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  Utz Bacher (utz.bacher@de.ibm.com)&n; *&t;&t; Rewritten by&n; *&t;&t;&t;  Frank Pavlic (pavlic@de.ibm.com) and&n; *&t;&t; &t;  Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; *&n; *    $Revision: 1.138 $&t; $Date: 2004/09/17 10:40:53 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/***&n; * eye catcher; just for debugging purposes&n; */
 r_void
 r_volatile
@@ -49,7 +49,7 @@ macro_line|#include &quot;qeth.h&quot;
 macro_line|#include &quot;qeth_mpc.h&quot;
 macro_line|#include &quot;qeth_fs.h&quot;
 DECL|macro|VERSION_QETH_C
-mdefine_line|#define VERSION_QETH_C &quot;$Revision: 1.132 $&quot;
+mdefine_line|#define VERSION_QETH_C &quot;$Revision: 1.138 $&quot;
 DECL|variable|version
 r_static
 r_const
@@ -21762,6 +21762,12 @@ id|kmalloc
 c_func
 (paren
 id|req_len
+op_plus
+r_sizeof
+(paren
+r_struct
+id|qeth_snmp_ureq_hdr
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -21799,6 +21805,12 @@ comma
 id|udata
 comma
 id|req_len
+op_plus
+r_sizeof
+(paren
+r_struct
+id|qeth_snmp_ureq_hdr
+)paren
 )paren
 )paren
 (brace
@@ -28522,7 +28534,7 @@ id|IPA_IP_FRAGMENTATION
 id|PRINT_INFO
 c_func
 (paren
-l_string|&quot;IP fragmentation not supported on %s&bslash;n&quot;
+l_string|&quot;Hardware IP fragmentation not supported on %s&bslash;n&quot;
 comma
 id|card-&gt;info.if_name
 )paren
@@ -28555,7 +28567,7 @@ id|rc
 id|PRINT_WARN
 c_func
 (paren
-l_string|&quot;Could not start IP fragmentation &quot;
+l_string|&quot;Could not start Hardware IP fragmentation &quot;
 l_string|&quot;assist on %s: 0x%x&bslash;n&quot;
 comma
 id|card-&gt;info.if_name
@@ -28568,7 +28580,7 @@ r_else
 id|PRINT_INFO
 c_func
 (paren
-l_string|&quot;IP fragmentation enabled &bslash;n&quot;
+l_string|&quot;Hardware IP fragmentation enabled &bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
