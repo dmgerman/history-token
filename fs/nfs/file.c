@@ -264,8 +264,16 @@ id|flags
 r_if
 c_cond
 (paren
+(paren
 id|flags
 op_amp
+(paren
+id|O_APPEND
+op_or
+id|O_DIRECT
+)paren
+)paren
+op_eq
 (paren
 id|O_APPEND
 op_or
@@ -338,7 +346,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|res
 )paren
 r_return
