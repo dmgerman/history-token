@@ -46,19 +46,6 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Modular too */
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &quot;lec.h&quot;
-macro_line|#include &quot;lec_arpc.h&quot;
-macro_line|#include &quot;resources.h&quot;  /* for bind_vcc() */
-macro_line|#if 0
-mdefine_line|#define DPRINTK printk
-macro_line|#else
-DECL|macro|DPRINTK
-mdefine_line|#define DPRINTK(format,args...)
-macro_line|#endif
 r_extern
 r_struct
 id|net_bridge_fdb_entry
@@ -92,6 +79,19 @@ op_star
 id|ent
 )paren
 suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Modular too */
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &quot;lec.h&quot;
+macro_line|#include &quot;lec_arpc.h&quot;
+macro_line|#include &quot;resources.h&quot;  /* for bind_vcc() */
+macro_line|#if 0
+mdefine_line|#define DPRINTK printk
+macro_line|#else
+DECL|macro|DPRINTK
+mdefine_line|#define DPRINTK(format,args...)
+macro_line|#endif
 DECL|variable|lec_arp_spinlock
 r_static
 id|spinlock_t
