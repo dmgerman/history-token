@@ -1924,8 +1924,27 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
+r_static
+r_inline
+r_void
+DECL|function|ia64_hint_pause
+id|ia64_hint_pause
+(paren
+r_void
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;hint @pause&quot;
+op_scope_resolution
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
 DECL|macro|cpu_relax
-mdefine_line|#define cpu_relax()&t;barrier()
+mdefine_line|#define cpu_relax()&t;ia64_hint_pause()
 r_static
 r_inline
 r_void
