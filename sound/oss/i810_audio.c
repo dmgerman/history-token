@@ -20,6 +20,8 @@ macro_line|#include &lt;linux/ac97_codec.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;1.00&quot;
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_82801
 DECL|macro|PCI_DEVICE_ID_INTEL_82801
 mdefine_line|#define PCI_DEVICE_ID_INTEL_82801&t;0x2415
@@ -316,8 +318,6 @@ DECL|macro|INT_GPI
 mdefine_line|#define INT_GPI&t;&t;(1&lt;&lt;0)
 DECL|macro|INT_MASK
 mdefine_line|#define INT_MASK (INT_SEC|INT_PRI|INT_MC|INT_PO|INT_PI|INT_MO|INT_NI|INT_GPI)
-DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;0.24&quot;
 multiline_comment|/* magic numbers to protect our data structures */
 DECL|macro|I810_CARD_MAGIC
 mdefine_line|#define I810_CARD_MAGIC&t;&t;0x5072696E /* &quot;Prin&quot; */
