@@ -194,6 +194,13 @@ c_func
 id|__ioremap
 )paren
 suffix:semicolon
+DECL|variable|ioremap_nocache
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ioremap_nocache
+)paren
+suffix:semicolon
 DECL|variable|iounmap
 id|EXPORT_SYMBOL
 c_func
