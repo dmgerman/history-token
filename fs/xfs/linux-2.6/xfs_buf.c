@@ -5690,6 +5690,10 @@ r_int
 r_int
 id|age
 suffix:semicolon
+id|xfs_buftarg_t
+op_star
+id|target
+suffix:semicolon
 id|xfs_buf_t
 op_star
 id|pb
@@ -5913,6 +5917,10 @@ comma
 id|pb_list
 )paren
 suffix:semicolon
+id|target
+op_assign
+id|pb-&gt;pb_target
+suffix:semicolon
 id|list_del_init
 c_func
 (paren
@@ -5929,7 +5937,7 @@ suffix:semicolon
 id|blk_run_address_space
 c_func
 (paren
-id|pb-&gt;pb_target-&gt;pbr_mapping
+id|target-&gt;pbr_mapping
 )paren
 suffix:semicolon
 )brace
