@@ -15088,7 +15088,7 @@ c_func
 (paren
 id|CE_NOTE
 comma
-l_string|&quot;Ending XFS recovery on filesystem: %s (dev: %d/%d)&quot;
+l_string|&quot;Ending XFS recovery on filesystem: %s (dev: %s)&quot;
 comma
 id|log-&gt;l_mp-&gt;m_fsname
 comma
