@@ -5766,11 +5766,6 @@ id|budget
 op_assign
 id|netdev_max_backlog
 suffix:semicolon
-id|preempt_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 id|local_irq_disable
 c_func
 (paren
@@ -5903,11 +5898,6 @@ suffix:semicolon
 id|out
 suffix:colon
 id|local_irq_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-id|preempt_enable
 c_func
 (paren
 )paren
