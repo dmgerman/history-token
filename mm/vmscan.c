@@ -2946,17 +2946,9 @@ suffix:semicolon
 multiline_comment|/* Let kswapd poll it */
 id|max_scan
 op_assign
-id|max
-c_func
-(paren
 id|zone-&gt;nr_inactive
 op_rshift
 id|priority
-comma
-id|SWAP_CLUSTER_MAX
-op_star
-l_int|2UL
-)paren
 suffix:semicolon
 id|ret
 op_add_assign
@@ -3400,17 +3392,6 @@ op_assign
 id|zone-&gt;nr_inactive
 op_rshift
 id|priority
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|max_scan
-OL
-id|SWAP_CLUSTER_MAX
-)paren
-id|max_scan
-op_assign
-id|SWAP_CLUSTER_MAX
 suffix:semicolon
 id|reclaimed
 op_assign
