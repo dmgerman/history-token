@@ -28,7 +28,7 @@ mdefine_line|#define NEW_LOCK
 macro_line|#ifdef NEW_LOCK
 multiline_comment|/*&n; * Try to get the lock.  If we fail to get the lock, make a non-standard call to&n; * ia64_spinlock_contention().  We do not use a normal call because that would force all&n; * callers of spin_lock() to be non-leaf routines.  Instead, ia64_spinlock_contention() is&n; * carefully coded to touch only those registers that spin_lock() marks &quot;clobbered&quot;.&n; */
 DECL|macro|IA64_SPINLOCK_CLOBBERS
-mdefine_line|#define IA64_SPINLOCK_CLOBBERS &quot;ar.pfs&quot;, &quot;p14&quot;, &quot;r28&quot;, &quot;r29&quot;, &quot;r30&quot;, &quot;b6&quot;, &quot;memory&quot;
+mdefine_line|#define IA64_SPINLOCK_CLOBBERS &quot;ar.ccv&quot;, &quot;ar.pfs&quot;, &quot;p14&quot;, &quot;r28&quot;, &quot;r29&quot;, &quot;r30&quot;, &quot;b6&quot;, &quot;memory&quot;
 r_static
 r_inline
 r_void
