@@ -164,6 +164,43 @@ id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Do we need to erase the effects of a prior journal_flush? */
+r_if
+c_cond
+(paren
+id|journal-&gt;j_flags
+op_amp
+id|JFS_FLUSHED
+)paren
+(brace
+id|jbd_debug
+c_func
+(paren
+l_int|3
+comma
+l_string|&quot;super block updated&bslash;n&quot;
+)paren
+suffix:semicolon
+id|journal_update_superblock
+c_func
+(paren
+id|journal
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|jbd_debug
+c_func
+(paren
+l_int|3
+comma
+l_string|&quot;superblock not updated&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 id|J_ASSERT
 c_func
 (paren
@@ -202,6 +239,13 @@ comma
 id|commit_transaction-&gt;t_tid
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 id|commit_transaction-&gt;t_state
 op_assign
 id|T_LOCKED
@@ -217,8 +261,6 @@ r_while
 c_loop
 (paren
 id|commit_transaction-&gt;t_updates
-op_ne
-l_int|0
 )paren
 (brace
 id|DEFINE_WAIT
@@ -252,9 +294,23 @@ op_amp
 id|commit_transaction-&gt;t_handle_lock
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 id|schedule
 c_func
 (paren
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
 id|spin_lock
@@ -290,43 +346,6 @@ op_le
 id|journal-&gt;j_max_transaction_buffers
 )paren
 suffix:semicolon
-multiline_comment|/* Do we need to erase the effects of a prior journal_flush? */
-r_if
-c_cond
-(paren
-id|journal-&gt;j_flags
-op_amp
-id|JFS_FLUSHED
-)paren
-(brace
-id|jbd_debug
-c_func
-(paren
-l_int|3
-comma
-l_string|&quot;super block updated&bslash;n&quot;
-)paren
-suffix:semicolon
-id|journal_update_superblock
-c_func
-(paren
-id|journal
-comma
-l_int|1
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|jbd_debug
-c_func
-(paren
-l_int|3
-comma
-l_string|&quot;superblock not updated&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * First thing we are allowed to do is to discard any remaining&n;&t; * BJ_Reserved buffers.  Note, it is _not_ permissible to assume&n;&t; * that there are no such buffers: if a large filesystem&n;&t; * operation like a truncate needs to split itself over multiple&n;&t; * transactions, then it may try to do a journal_restart() while&n;&t; * there are still BJ_Reserved buffers outstanding.  These must&n;&t; * be released cleanly from the current transaction.&n;&t; *&n;&t; * In this case, the filesystem must still reserve write access&n;&t; * again before modifying the buffer in the new transaction, but&n;&t; * we do not require it to remember exactly which old buffers it&n;&t; * has reserved.  This is consistent with the existing behaviour&n;&t; * that multiple journal_get_write_access() calls to the same&n;&t; * buffer are perfectly permissable.&n;&t; */
 r_while
 c_loop
@@ -376,7 +395,6 @@ op_amp
 id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
-multiline_comment|/* First part of the commit: force the revoke list out to disk.&n;&t; * The revoke code generates its own metadata blocks on disk for this.&n;&t; *&n;&t; * It is important that we do this while the transaction is&n;&t; * still locked.  Generating the revoke records should not&n;&t; * generate any IO stalls, so this should be quick; and doing&n;&t; * the work while we have the transaction locked means that we&n;&t; * only ever have to maintain the revoke list for one&n;&t; * transaction at a time.&n;&t; */
 id|jbd_debug
 (paren
 l_int|3
@@ -389,13 +407,6 @@ id|journal_switch_revoke_table
 c_func
 (paren
 id|journal
-)paren
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
 id|commit_transaction-&gt;t_state
