@@ -758,14 +758,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|journal-&gt;j_list_lock
-)paren
-suffix:semicolon
-r_break
+r_goto
+id|write_out_data
 suffix:semicolon
 )brace
 id|__journal_unfile_buffer
