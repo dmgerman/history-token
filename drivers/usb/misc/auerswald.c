@@ -33,13 +33,19 @@ multiline_comment|/* Private declarations for Auerswald USB driver              
 multiline_comment|/* Auerswald Vendor ID */
 DECL|macro|ID_AUERSWALD
 mdefine_line|#define ID_AUERSWALD  &t;0x09BF
-macro_line|#ifndef AUER_MINOR_BASE&t;&t;/* allow external override */
+macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
+multiline_comment|/* we can have up to 256 devices at once */
+DECL|macro|AUER_MINOR_BASE
+mdefine_line|#define AUER_MINOR_BASE&t;0
+DECL|macro|AUER_MAX_DEVICES
+mdefine_line|#define AUER_MAX_DEVICES 256
+macro_line|#else
 DECL|macro|AUER_MINOR_BASE
 mdefine_line|#define AUER_MINOR_BASE&t;112&t;/* auerswald driver minor number */
-macro_line|#endif
 multiline_comment|/* we can have up to this number of device plugged in at once */
 DECL|macro|AUER_MAX_DEVICES
 mdefine_line|#define AUER_MAX_DEVICES 16
+macro_line|#endif
 multiline_comment|/* prefix for the device descriptors in /dev/usb */
 DECL|macro|AU_PREFIX
 mdefine_line|#define AU_PREFIX&t;&quot;auer&quot;
@@ -677,6 +683,11 @@ comma
 id|pauerscon_t
 id|scp
 )paren
+suffix:semicolon
+r_extern
+r_struct
+id|usb_driver
+id|auerswald_driver
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------*/
 multiline_comment|/* USB chain helper functions                                        */
@@ -7045,13 +7056,28 @@ op_amp
 id|cp-&gt;bufferwait
 )paren
 suffix:semicolon
-multiline_comment|/* find a free slot in the device table */
 id|down
 (paren
 op_amp
 id|dev_table_mutex
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|usb_register_dev
+(paren
+op_amp
+id|auerswald_driver
+comma
+l_int|1
+comma
+op_amp
+id|dtindex
+)paren
+)paren
+(brace
+multiline_comment|/* find a free slot in the device table */
 r_for
 c_loop
 (paren
@@ -7104,6 +7130,7 @@ suffix:semicolon
 r_goto
 id|pfail
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Give the device a name */
 id|sprintf
@@ -7618,6 +7645,17 @@ id|devfs_unregister
 id|cp-&gt;devfs
 )paren
 suffix:semicolon
+multiline_comment|/* give back our USB minor number */
+id|usb_deregister_dev
+(paren
+op_amp
+id|auerswald_driver
+comma
+l_int|1
+comma
+id|cp-&gt;dtindex
+)paren
+suffix:semicolon
 multiline_comment|/* Stop the interrupt endpoint */
 id|auerswald_int_release
 (paren
@@ -7923,6 +7961,11 @@ DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 (paren
 id|DRIVER_DESC
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|auerswald_init

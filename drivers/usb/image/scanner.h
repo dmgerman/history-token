@@ -1256,10 +1256,17 @@ mdefine_line|#define SCANNER_IOCTL_PRODUCT _IOR(&squot;U&squot;, 0x21, int)
 multiline_comment|/* send/recv a control message to the scanner */
 DECL|macro|SCANNER_IOCTL_CTRLMSG
 mdefine_line|#define SCANNER_IOCTL_CTRLMSG _IOWR(&squot;U&squot;, 0x22, struct usb_ctrlrequest)
+macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
+DECL|macro|SCN_MAX_MNR
+mdefine_line|#define SCN_MAX_MNR 256
+DECL|macro|SCN_BASE_MNR
+mdefine_line|#define SCN_BASE_MNR 0
+macro_line|#else
 DECL|macro|SCN_MAX_MNR
 mdefine_line|#define SCN_MAX_MNR 16&t;&t;/* We&squot;re allocated 16 minors */
 DECL|macro|SCN_BASE_MNR
 mdefine_line|#define SCN_BASE_MNR 48&t;&t;/* USB Scanners start at minor 48 */
+macro_line|#endif
 r_static
 id|DECLARE_MUTEX
 (paren

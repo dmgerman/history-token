@@ -23,8 +23,13 @@ mdefine_line|#define DRIVER_AUTHOR &quot;Deti Fliegl, deti@fliegl.de&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;DAB-USB Interface Driver for Linux (c)1999&quot;
 multiline_comment|/* --------------------------------------------------------------------- */
+macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
+DECL|macro|NRDABUSB
+mdefine_line|#define NRDABUSB 256
+macro_line|#else
 DECL|macro|NRDABUSB
 mdefine_line|#define NRDABUSB 4
+macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------*/
 DECL|variable|dabusb
 r_static
@@ -40,6 +45,11 @@ r_int
 id|buffers
 op_assign
 l_int|256
+suffix:semicolon
+r_extern
+r_struct
+id|usb_driver
+id|dabusb_driver
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------*/
 DECL|function|dabusb_add_buf_tail
@@ -3144,6 +3154,21 @@ l_int|0x9999
 r_return
 l_int|NULL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|usb_register_dev
+(paren
+op_amp
+id|dabusb_driver
+comma
+l_int|1
+comma
+op_amp
+id|devnum
+)paren
+)paren
+(brace
 id|devnum
 op_assign
 id|dabusb_find_struct
@@ -3161,6 +3186,7 @@ l_int|1
 r_return
 l_int|NULL
 suffix:semicolon
+)brace
 id|s
 op_assign
 op_amp
@@ -3182,6 +3208,10 @@ suffix:semicolon
 id|s-&gt;usbdev
 op_assign
 id|usbdev
+suffix:semicolon
+id|s-&gt;devnum
+op_assign
+id|devnum
 suffix:semicolon
 r_if
 c_cond
@@ -3327,6 +3357,16 @@ id|dbg
 c_func
 (paren
 l_string|&quot;dabusb_disconnect&quot;
+)paren
+suffix:semicolon
+id|usb_deregister_dev
+(paren
+op_amp
+id|dabusb_driver
+comma
+l_int|1
+comma
+id|s-&gt;devnum
 )paren
 suffix:semicolon
 id|s-&gt;remove_pending
