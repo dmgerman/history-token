@@ -456,6 +456,10 @@ c_loop
 (paren
 op_decrement
 id|i
+op_logical_and
+id|nidx
+OL
+id|tree-&gt;node_count
 )paren
 suffix:semicolon
 id|spin_unlock
