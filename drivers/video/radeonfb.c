@@ -3271,7 +3271,7 @@ op_assign
 id|INPLL
 c_func
 (paren
-id|X_MPLL_REF_FB_DIV
+id|M_SPLL_REF_FB_DIV
 )paren
 suffix:semicolon
 id|ref_div

@@ -35,6 +35,8 @@ DECL|macro|PAD_CTLR_STRENGTH
 mdefine_line|#define PAD_CTLR_STRENGTH                      0x0168  
 DECL|macro|PAD_CTLR_UPDATE
 mdefine_line|#define PAD_CTLR_UPDATE                        0x016C
+DECL|macro|PAD_CTLR_MISC
+mdefine_line|#define PAD_CTLR_MISC                          0x0aa0
 DECL|macro|AGP_CNTL
 mdefine_line|#define AGP_CNTL                               0x0174
 DECL|macro|BM_STATUS
@@ -129,30 +131,46 @@ DECL|macro|CRTC_GEN_CNTL
 mdefine_line|#define CRTC_GEN_CNTL                          0x0050  
 DECL|macro|MEM_CNTL
 mdefine_line|#define MEM_CNTL                               0x0140  
+DECL|macro|MC_CNTL
+mdefine_line|#define MC_CNTL                                0x0140
 DECL|macro|EXT_MEM_CNTL
 mdefine_line|#define EXT_MEM_CNTL                           0x0144  
+DECL|macro|MC_TIMING_CNTL
+mdefine_line|#define MC_TIMING_CNTL                         0x0144
 DECL|macro|MC_AGP_LOCATION
 mdefine_line|#define MC_AGP_LOCATION                        0x014C  
 DECL|macro|MEM_IO_CNTL_A0
 mdefine_line|#define MEM_IO_CNTL_A0                         0x0178  
+DECL|macro|MEM_REFRESH_CNTL
+mdefine_line|#define MEM_REFRESH_CNTL                       0x0178
 DECL|macro|MEM_INIT_LATENCY_TIMER
 mdefine_line|#define MEM_INIT_LATENCY_TIMER                 0x0154  
+DECL|macro|MC_INIT_GFX_LAT_TIMER
+mdefine_line|#define MC_INIT_GFX_LAT_TIMER                  0x0154
 DECL|macro|MEM_SDRAM_MODE_REG
 mdefine_line|#define MEM_SDRAM_MODE_REG                     0x0158  
 DECL|macro|AGP_BASE
 mdefine_line|#define AGP_BASE                               0x0170  
 DECL|macro|MEM_IO_CNTL_A1
 mdefine_line|#define MEM_IO_CNTL_A1                         0x017C  
+DECL|macro|MC_READ_CNTL_AB
+mdefine_line|#define MC_READ_CNTL_AB                        0x017C
 DECL|macro|MEM_IO_CNTL_B0
 mdefine_line|#define MEM_IO_CNTL_B0                         0x0180
+DECL|macro|MC_INIT_MISC_LAT_TIMER
+mdefine_line|#define MC_INIT_MISC_LAT_TIMER                 0x0180
 DECL|macro|MEM_IO_CNTL_B1
 mdefine_line|#define MEM_IO_CNTL_B1                         0x0184
+DECL|macro|MC_IOPAD_CNTL
+mdefine_line|#define MC_IOPAD_CNTL                          0x0184
 DECL|macro|MC_DEBUG
 mdefine_line|#define MC_DEBUG                               0x0188
 DECL|macro|MC_STATUS
 mdefine_line|#define MC_STATUS                              0x0150  
 DECL|macro|MEM_IO_OE_CNTL
 mdefine_line|#define MEM_IO_OE_CNTL                         0x018C  
+DECL|macro|MC_CHIP_IO_OE_CNTL_AB
+mdefine_line|#define MC_CHIP_IO_OE_CNTL_AB                  0x018C
 DECL|macro|MC_FB_LOCATION
 mdefine_line|#define MC_FB_LOCATION                         0x0148  
 DECL|macro|HOST_PATH_CNTL
@@ -761,6 +779,20 @@ DECL|macro|TMDS_TRANSMITTER_CNTL
 mdefine_line|#define TMDS_TRANSMITTER_CNTL&t;&t;       0x02a4
 DECL|macro|MPP_TB_CONFIG
 mdefine_line|#define MPP_TB_CONFIG            &t;       0x01c0
+DECL|macro|PAMAC0_DLY_CNTL
+mdefine_line|#define PAMAC0_DLY_CNTL                        0x0a94
+DECL|macro|PAMAC1_DLY_CNTL
+mdefine_line|#define PAMAC1_DLY_CNTL                        0x0a98
+DECL|macro|PAMAC2_DLY_CNTL
+mdefine_line|#define PAMAC2_DLY_CNTL                        0x0a9c
+DECL|macro|FW_CNTL
+mdefine_line|#define FW_CNTL                                0x0118
+DECL|macro|FCP_CNTL
+mdefine_line|#define FCP_CNTL                               0x0910
+DECL|macro|VGA_DDA_ON_OFF
+mdefine_line|#define VGA_DDA_ON_OFF                         0x02ec
+DECL|macro|TV_MASTER_CNTL
+mdefine_line|#define TV_MASTER_CNTL                         0x0800
 singleline_comment|//#define BASE_CODE&t;&t;&t;       0x0f0b
 DECL|macro|BIOS_0_SCRATCH
 mdefine_line|#define BIOS_0_SCRATCH&t;&t;&t;       0x0010
@@ -817,8 +849,8 @@ DECL|macro|VCLK_ECP_CNTL
 mdefine_line|#define VCLK_ECP_CNTL                              0x0008
 DECL|macro|HTOTAL_CNTL
 mdefine_line|#define HTOTAL_CNTL                                0x0009
-DECL|macro|X_MPLL_REF_FB_DIV
-mdefine_line|#define X_MPLL_REF_FB_DIV                          0x000a
+DECL|macro|M_SPLL_REF_FB_DIV
+mdefine_line|#define M_SPLL_REF_FB_DIV                          0x000a
 DECL|macro|AGP_PLL_CNTL
 mdefine_line|#define AGP_PLL_CNTL                               0x000b
 DECL|macro|SPLL_CNTL
@@ -952,6 +984,10 @@ DECL|macro|CFG_ATI_REV_ID_MASK
 mdefine_line|#define CFG_ATI_REV_ID_MASK&t;&t;&t;   (0xf &lt;&lt; 16)
 DECL|macro|CFG_ATI_REV_A11
 mdefine_line|#define CFG_ATI_REV_A11&t;&t;&t;&t;   (0 &lt;&lt; 16)
+DECL|macro|CFG_ATI_REV_A12
+mdefine_line|#define CFG_ATI_REV_A12&t;&t;&t;&t;   (1 &lt;&lt; 16)
+DECL|macro|CFG_ATI_REV_A13
+mdefine_line|#define CFG_ATI_REV_A13&t;&t;&t;&t;   (2 &lt;&lt; 16)
 multiline_comment|/* CRTC_EXT_CNTL bit constants */
 DECL|macro|VGA_ATI_LINEAR
 mdefine_line|#define VGA_ATI_LINEAR                             0x00000008
@@ -1071,12 +1107,28 @@ DECL|macro|FP_FPON
 mdefine_line|#define FP_FPON&t;&t;&t;&t;&t;   (1 &lt;&lt; 0)
 DECL|macro|FP_TMDS_EN
 mdefine_line|#define FP_TMDS_EN&t;&t;&t;&t;   (1 &lt;&lt; 2)
+DECL|macro|FP_PANEL_FORMAT
+mdefine_line|#define FP_PANEL_FORMAT                            (1 &lt;&lt; 3)
 DECL|macro|FP_EN_TMDS
 mdefine_line|#define FP_EN_TMDS&t;&t;&t;&t;   (1 &lt;&lt; 7)
 DECL|macro|FP_DETECT_SENSE
 mdefine_line|#define FP_DETECT_SENSE&t;&t;&t;&t;   (1 &lt;&lt; 8)
+DECL|macro|R200_FP_SOURCE_SEL_MASK
+mdefine_line|#define R200_FP_SOURCE_SEL_MASK                    (3 &lt;&lt; 10)
+DECL|macro|R200_FP_SOURCE_SEL_CRTC1
+mdefine_line|#define R200_FP_SOURCE_SEL_CRTC1                   (0 &lt;&lt; 10)
+DECL|macro|R200_FP_SOURCE_SEL_CRTC2
+mdefine_line|#define R200_FP_SOURCE_SEL_CRTC2                   (1 &lt;&lt; 10)
+DECL|macro|R200_FP_SOURCE_SEL_RMX
+mdefine_line|#define R200_FP_SOURCE_SEL_RMX                     (2 &lt;&lt; 10)
+DECL|macro|R200_FP_SOURCE_SEL_TRANS
+mdefine_line|#define R200_FP_SOURCE_SEL_TRANS                   (3 &lt;&lt; 10)
+DECL|macro|FP_SEL_CRTC1
+mdefine_line|#define FP_SEL_CRTC1&t;&t;&t;&t;   (0 &lt;&lt; 13)
 DECL|macro|FP_SEL_CRTC2
 mdefine_line|#define FP_SEL_CRTC2&t;&t;&t;&t;   (1 &lt;&lt; 13)
+DECL|macro|FP_USE_VGA_HSYNC
+mdefine_line|#define FP_USE_VGA_HSYNC                           (1 &lt;&lt; 14)
 DECL|macro|FP_CRTC_DONT_SHADOW_HPAR
 mdefine_line|#define FP_CRTC_DONT_SHADOW_HPAR&t;&t;   (1 &lt;&lt; 15)
 DECL|macro|FP_CRTC_DONT_SHADOW_VPAR
@@ -1237,6 +1289,8 @@ mdefine_line|#define DAC_CMP_EN                                 (1 &lt;&lt;  3)
 DECL|macro|DAC_CMP_OUTPUT
 mdefine_line|#define DAC_CMP_OUTPUT                             (1 &lt;&lt;  7)
 multiline_comment|/* DAC_CNTL2 bit constants */
+DECL|macro|DAC2_EXPAND_MODE
+mdefine_line|#define DAC2_EXPAND_MODE&t;&t;&t;   (1 &lt;&lt; 14)
 DECL|macro|DAC2_CMP_EN
 mdefine_line|#define DAC2_CMP_EN                                (1 &lt;&lt; 7)
 DECL|macro|DAC2_PALETTE_ACCESS_CNTL
@@ -1280,6 +1334,16 @@ DECL|macro|MEM_REQ_UNLOCK
 mdefine_line|#define MEM_REQ_UNLOCK                             0x00000000
 DECL|macro|MEM_REQ_LOCK
 mdefine_line|#define MEM_REQ_LOCK                               0x00800000
+DECL|macro|MEM_NUM_CHANNELS_MASK
+mdefine_line|#define MEM_NUM_CHANNELS_MASK &t;&t;&t;   0x00000001
+DECL|macro|MEM_USE_B_CH_ONLY
+mdefine_line|#define MEM_USE_B_CH_ONLY                          0x00000002
+DECL|macro|RV100_MEM_HALF_MODE
+mdefine_line|#define RV100_MEM_HALF_MODE                        0x00000008
+DECL|macro|R300_MEM_NUM_CHANNELS_MASK
+mdefine_line|#define R300_MEM_NUM_CHANNELS_MASK                 0x00000003
+DECL|macro|R300_MEM_USE_CD_CH_ONLY
+mdefine_line|#define R300_MEM_USE_CD_CH_ONLY                    0x00000004
 multiline_comment|/* RBBM_SOFT_RESET bit constants */
 DECL|macro|SOFT_RESET_CP
 mdefine_line|#define SOFT_RESET_CP           &t;&t;   (1 &lt;&lt;  0)
@@ -1734,9 +1798,10 @@ DECL|macro|MC_IND_INDEX
 mdefine_line|#define MC_IND_INDEX                           0x01F8
 DECL|macro|MC_IND_DATA
 mdefine_line|#define MC_IND_DATA                            0x01FC
-DECL|macro|MEM_REFRESH_CNTL
-mdefine_line|#define MEM_REFRESH_CNTL                       0x0178
-singleline_comment|// CLK_PIN_CNTL
+multiline_comment|/* PAD_CTLR_STRENGTH */
+DECL|macro|PAD_MANUAL_OVERRIDE
+mdefine_line|#define PAD_MANUAL_OVERRIDE&t;&t;0x80000000
+singleline_comment|// pllCLK_PIN_CNTL
 DECL|macro|CLK_PIN_CNTL__OSC_EN_MASK
 mdefine_line|#define CLK_PIN_CNTL__OSC_EN_MASK                          0x00000001L
 DECL|macro|CLK_PIN_CNTL__OSC_EN
@@ -1785,54 +1850,54 @@ DECL|macro|CLK_PIN_CNTL__XTALIN_ALWAYS_ONb
 mdefine_line|#define CLK_PIN_CNTL__XTALIN_ALWAYS_ONb                    0x00080000L
 DECL|macro|CLK_PIN_CNTL__PWRSEQ_DELAY_MASK
 mdefine_line|#define CLK_PIN_CNTL__PWRSEQ_DELAY_MASK                    0xff000000L
-singleline_comment|// CLK_PWRMGT_CNTL_M6
-DECL|macro|CLK_PWRMGT_CNTL_M6__MPLL_PWRMGT_OFF__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__MPLL_PWRMGT_OFF__SHIFT         0x00000000
-DECL|macro|CLK_PWRMGT_CNTL_M6__SPLL_PWRMGT_OFF__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__SPLL_PWRMGT_OFF__SHIFT         0x00000001
-DECL|macro|CLK_PWRMGT_CNTL_M6__PPLL_PWRMGT_OFF__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__PPLL_PWRMGT_OFF__SHIFT         0x00000002
-DECL|macro|CLK_PWRMGT_CNTL_M6__P2PLL_PWRMGT_OFF__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__P2PLL_PWRMGT_OFF__SHIFT        0x00000003
-DECL|macro|CLK_PWRMGT_CNTL_M6__MCLK_TURNOFF__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__MCLK_TURNOFF__SHIFT            0x00000004
-DECL|macro|CLK_PWRMGT_CNTL_M6__SCLK_TURNOFF__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__SCLK_TURNOFF__SHIFT            0x00000005
-DECL|macro|CLK_PWRMGT_CNTL_M6__PCLK_TURNOFF__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__PCLK_TURNOFF__SHIFT            0x00000006
-DECL|macro|CLK_PWRMGT_CNTL_M6__P2CLK_TURNOFF__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__P2CLK_TURNOFF__SHIFT           0x00000007
-DECL|macro|CLK_PWRMGT_CNTL_M6__MC_CH_MODE__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__MC_CH_MODE__SHIFT              0x00000008
-DECL|macro|CLK_PWRMGT_CNTL_M6__TEST_MODE__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__TEST_MODE__SHIFT               0x00000009
-DECL|macro|CLK_PWRMGT_CNTL_M6__GLOBAL_PMAN_EN__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__GLOBAL_PMAN_EN__SHIFT          0x0000000a
-DECL|macro|CLK_PWRMGT_CNTL_M6__ENGINE_DYNCLK_MODE__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__ENGINE_DYNCLK_MODE__SHIFT      0x0000000c
-DECL|macro|CLK_PWRMGT_CNTL_M6__ACTIVE_HILO_LAT__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__ACTIVE_HILO_LAT__SHIFT         0x0000000d
-DECL|macro|CLK_PWRMGT_CNTL_M6__DISP_DYN_STOP_LAT__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__DISP_DYN_STOP_LAT__SHIFT       0x0000000f
-DECL|macro|CLK_PWRMGT_CNTL_M6__MC_BUSY__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__MC_BUSY__SHIFT                 0x00000010
-DECL|macro|CLK_PWRMGT_CNTL_M6__MC_INT_CNTL__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__MC_INT_CNTL__SHIFT             0x00000011
-DECL|macro|CLK_PWRMGT_CNTL_M6__MC_SWITCH__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__MC_SWITCH__SHIFT               0x00000012
-DECL|macro|CLK_PWRMGT_CNTL_M6__DLL_READY__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__DLL_READY__SHIFT               0x00000013
-DECL|macro|CLK_PWRMGT_CNTL_M6__DISP_PM__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__DISP_PM__SHIFT                 0x00000014
-DECL|macro|CLK_PWRMGT_CNTL_M6__DYN_STOP_MODE__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__DYN_STOP_MODE__SHIFT           0x00000015
-DECL|macro|CLK_PWRMGT_CNTL_M6__CG_NO1_DEBUG__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__CG_NO1_DEBUG__SHIFT            0x00000018
-DECL|macro|CLK_PWRMGT_CNTL_M6__TVPLL_PWRMGT_OFF__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__TVPLL_PWRMGT_OFF__SHIFT        0x0000001e
-DECL|macro|CLK_PWRMGT_CNTL_M6__TVCLK_TURNOFF__SHIFT
-mdefine_line|#define&t;CLK_PWRMGT_CNTL_M6__TVCLK_TURNOFF__SHIFT           0x0000001f
-singleline_comment|// P2PLL_CNTL
+singleline_comment|// pllCLK_PWRMGT_CNTL
+DECL|macro|CLK_PWRMGT_CNTL__MPLL_PWRMGT_OFF__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__MPLL_PWRMGT_OFF__SHIFT         0x00000000
+DECL|macro|CLK_PWRMGT_CNTL__SPLL_PWRMGT_OFF__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__SPLL_PWRMGT_OFF__SHIFT         0x00000001
+DECL|macro|CLK_PWRMGT_CNTL__PPLL_PWRMGT_OFF__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__PPLL_PWRMGT_OFF__SHIFT         0x00000002
+DECL|macro|CLK_PWRMGT_CNTL__P2PLL_PWRMGT_OFF__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__P2PLL_PWRMGT_OFF__SHIFT        0x00000003
+DECL|macro|CLK_PWRMGT_CNTL__MCLK_TURNOFF__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__MCLK_TURNOFF__SHIFT            0x00000004
+DECL|macro|CLK_PWRMGT_CNTL__SCLK_TURNOFF__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__SCLK_TURNOFF__SHIFT            0x00000005
+DECL|macro|CLK_PWRMGT_CNTL__PCLK_TURNOFF__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__PCLK_TURNOFF__SHIFT            0x00000006
+DECL|macro|CLK_PWRMGT_CNTL__P2CLK_TURNOFF__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__P2CLK_TURNOFF__SHIFT           0x00000007
+DECL|macro|CLK_PWRMGT_CNTL__MC_CH_MODE__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__MC_CH_MODE__SHIFT              0x00000008
+DECL|macro|CLK_PWRMGT_CNTL__TEST_MODE__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__TEST_MODE__SHIFT               0x00000009
+DECL|macro|CLK_PWRMGT_CNTL__GLOBAL_PMAN_EN__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__GLOBAL_PMAN_EN__SHIFT          0x0000000a
+DECL|macro|CLK_PWRMGT_CNTL__ENGINE_DYNCLK_MODE__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__ENGINE_DYNCLK_MODE__SHIFT      0x0000000c
+DECL|macro|CLK_PWRMGT_CNTL__ACTIVE_HILO_LAT__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__ACTIVE_HILO_LAT__SHIFT         0x0000000d
+DECL|macro|CLK_PWRMGT_CNTL__DISP_DYN_STOP_LAT__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__DISP_DYN_STOP_LAT__SHIFT       0x0000000f
+DECL|macro|CLK_PWRMGT_CNTL__MC_BUSY__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__MC_BUSY__SHIFT                 0x00000010
+DECL|macro|CLK_PWRMGT_CNTL__MC_INT_CNTL__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__MC_INT_CNTL__SHIFT             0x00000011
+DECL|macro|CLK_PWRMGT_CNTL__MC_SWITCH__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__MC_SWITCH__SHIFT               0x00000012
+DECL|macro|CLK_PWRMGT_CNTL__DLL_READY__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__DLL_READY__SHIFT               0x00000013
+DECL|macro|CLK_PWRMGT_CNTL__DISP_PM__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__DISP_PM__SHIFT                 0x00000014
+DECL|macro|CLK_PWRMGT_CNTL__DYN_STOP_MODE__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__DYN_STOP_MODE__SHIFT           0x00000015
+DECL|macro|CLK_PWRMGT_CNTL__CG_NO1_DEBUG__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__CG_NO1_DEBUG__SHIFT            0x00000018
+DECL|macro|CLK_PWRMGT_CNTL__TVPLL_PWRMGT_OFF__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__TVPLL_PWRMGT_OFF__SHIFT        0x0000001e
+DECL|macro|CLK_PWRMGT_CNTL__TVCLK_TURNOFF__SHIFT
+mdefine_line|#define&t;CLK_PWRMGT_CNTL__TVCLK_TURNOFF__SHIFT           0x0000001f
+singleline_comment|// pllP2PLL_CNTL
 DECL|macro|P2PLL_CNTL__P2PLL_RESET_MASK
 mdefine_line|#define P2PLL_CNTL__P2PLL_RESET_MASK                       0x00000001L
 DECL|macro|P2PLL_CNTL__P2PLL_RESET
@@ -1879,7 +1944,7 @@ DECL|macro|P2PLL_CNTL__P2PLL_DISABLE_AUTO_RESET_MASK
 mdefine_line|#define P2PLL_CNTL__P2PLL_DISABLE_AUTO_RESET_MASK          0x00080000L
 DECL|macro|P2PLL_CNTL__P2PLL_DISABLE_AUTO_RESET
 mdefine_line|#define P2PLL_CNTL__P2PLL_DISABLE_AUTO_RESET               0x00080000L
-singleline_comment|// PIXCLKS_CNTL
+singleline_comment|// pllPIXCLKS_CNTL
 DECL|macro|PIXCLKS_CNTL__PIX2CLK_SRC_SEL__SHIFT
 mdefine_line|#define&t;PIXCLKS_CNTL__PIX2CLK_SRC_SEL__SHIFT               0x00000000
 DECL|macro|PIXCLKS_CNTL__PIX2CLK_INVERT__SHIFT
@@ -1902,50 +1967,46 @@ DECL|macro|PIXCLKS_CNTL__PIXCLK_LVDS_ALWAYS_ONb__SHIFT
 mdefine_line|#define&t;PIXCLKS_CNTL__PIXCLK_LVDS_ALWAYS_ONb__SHIFT        0x0000000e
 DECL|macro|PIXCLKS_CNTL__PIXCLK_TMDS_ALWAYS_ONb__SHIFT
 mdefine_line|#define&t;PIXCLKS_CNTL__PIXCLK_TMDS_ALWAYS_ONb__SHIFT        0x0000000f
-singleline_comment|// PIXCLKS_CNTL
+singleline_comment|// pllPIXCLKS_CNTL
 DECL|macro|PIXCLKS_CNTL__PIX2CLK_SRC_SEL_MASK
 mdefine_line|#define PIXCLKS_CNTL__PIX2CLK_SRC_SEL_MASK                 0x00000003L
-DECL|macro|PIXCLKS_CNTL__PIX2CLK_INVERT_MASK
-mdefine_line|#define PIXCLKS_CNTL__PIX2CLK_INVERT_MASK                  0x00000010L
 DECL|macro|PIXCLKS_CNTL__PIX2CLK_INVERT
 mdefine_line|#define PIXCLKS_CNTL__PIX2CLK_INVERT                       0x00000010L
-DECL|macro|PIXCLKS_CNTL__PIX2CLK_SRC_INVERT_MASK
-mdefine_line|#define PIXCLKS_CNTL__PIX2CLK_SRC_INVERT_MASK              0x00000020L
 DECL|macro|PIXCLKS_CNTL__PIX2CLK_SRC_INVERT
 mdefine_line|#define PIXCLKS_CNTL__PIX2CLK_SRC_INVERT                   0x00000020L
-DECL|macro|PIXCLKS_CNTL__PIX2CLK_ALWAYS_ONb_MASK
-mdefine_line|#define PIXCLKS_CNTL__PIX2CLK_ALWAYS_ONb_MASK              0x00000040L
 DECL|macro|PIXCLKS_CNTL__PIX2CLK_ALWAYS_ONb
 mdefine_line|#define PIXCLKS_CNTL__PIX2CLK_ALWAYS_ONb                   0x00000040L
-DECL|macro|PIXCLKS_CNTL__PIX2CLK_DAC_ALWAYS_ONb_MASK
-mdefine_line|#define PIXCLKS_CNTL__PIX2CLK_DAC_ALWAYS_ONb_MASK          0x00000080L
 DECL|macro|PIXCLKS_CNTL__PIX2CLK_DAC_ALWAYS_ONb
 mdefine_line|#define PIXCLKS_CNTL__PIX2CLK_DAC_ALWAYS_ONb               0x00000080L
-DECL|macro|PIXCLKS_CNTL__PIXCLK_TV_SRC_SEL_MASK
-mdefine_line|#define PIXCLKS_CNTL__PIXCLK_TV_SRC_SEL_MASK               0x00000100L
 DECL|macro|PIXCLKS_CNTL__PIXCLK_TV_SRC_SEL
 mdefine_line|#define PIXCLKS_CNTL__PIXCLK_TV_SRC_SEL                    0x00000100L
-DECL|macro|PIXCLKS_CNTL__PIXCLK_BLEND_ALWAYS_ONb_MASK
-mdefine_line|#define PIXCLKS_CNTL__PIXCLK_BLEND_ALWAYS_ONb_MASK         0x00000800L
 DECL|macro|PIXCLKS_CNTL__PIXCLK_BLEND_ALWAYS_ONb
 mdefine_line|#define PIXCLKS_CNTL__PIXCLK_BLEND_ALWAYS_ONb              0x00000800L
-DECL|macro|PIXCLKS_CNTL__PIXCLK_GV_ALWAYS_ONb_MASK
-mdefine_line|#define PIXCLKS_CNTL__PIXCLK_GV_ALWAYS_ONb_MASK            0x00001000L
 DECL|macro|PIXCLKS_CNTL__PIXCLK_GV_ALWAYS_ONb
 mdefine_line|#define PIXCLKS_CNTL__PIXCLK_GV_ALWAYS_ONb                 0x00001000L
-DECL|macro|PIXCLKS_CNTL__PIXCLK_DIG_TMDS_ALWAYS_ONb_MASK
-mdefine_line|#define PIXCLKS_CNTL__PIXCLK_DIG_TMDS_ALWAYS_ONb_MASK      0x00002000L
 DECL|macro|PIXCLKS_CNTL__PIXCLK_DIG_TMDS_ALWAYS_ONb
 mdefine_line|#define PIXCLKS_CNTL__PIXCLK_DIG_TMDS_ALWAYS_ONb           0x00002000L
-DECL|macro|PIXCLKS_CNTL__PIXCLK_LVDS_ALWAYS_ONb_MASK
-mdefine_line|#define PIXCLKS_CNTL__PIXCLK_LVDS_ALWAYS_ONb_MASK          0x00004000L
 DECL|macro|PIXCLKS_CNTL__PIXCLK_LVDS_ALWAYS_ONb
 mdefine_line|#define PIXCLKS_CNTL__PIXCLK_LVDS_ALWAYS_ONb               0x00004000L
-DECL|macro|PIXCLKS_CNTL__PIXCLK_TMDS_ALWAYS_ONb_MASK
-mdefine_line|#define PIXCLKS_CNTL__PIXCLK_TMDS_ALWAYS_ONb_MASK          0x00008000L
 DECL|macro|PIXCLKS_CNTL__PIXCLK_TMDS_ALWAYS_ONb
 mdefine_line|#define PIXCLKS_CNTL__PIXCLK_TMDS_ALWAYS_ONb               0x00008000L
-singleline_comment|// P2PLL_DIV_0
+DECL|macro|PIXCLKS_CNTL__DISP_TVOUT_PIXCLK_TV_ALWAYS_ONb
+mdefine_line|#define PIXCLKS_CNTL__DISP_TVOUT_PIXCLK_TV_ALWAYS_ONb      (1 &lt;&lt; 9)
+DECL|macro|PIXCLKS_CNTL__R300_DVOCLK_ALWAYS_ONb
+mdefine_line|#define PIXCLKS_CNTL__R300_DVOCLK_ALWAYS_ONb               (1 &lt;&lt; 10)
+DECL|macro|PIXCLKS_CNTL__R300_PIXCLK_DVO_ALWAYS_ONb
+mdefine_line|#define PIXCLKS_CNTL__R300_PIXCLK_DVO_ALWAYS_ONb           (1 &lt;&lt; 13)
+DECL|macro|PIXCLKS_CNTL__R300_PIXCLK_TRANS_ALWAYS_ONb
+mdefine_line|#define PIXCLKS_CNTL__R300_PIXCLK_TRANS_ALWAYS_ONb         (1 &lt;&lt; 16)
+DECL|macro|PIXCLKS_CNTL__R300_PIXCLK_TVO_ALWAYS_ONb
+mdefine_line|#define PIXCLKS_CNTL__R300_PIXCLK_TVO_ALWAYS_ONb           (1 &lt;&lt; 17)
+DECL|macro|PIXCLKS_CNTL__R300_P2G2CLK_ALWAYS_ONb
+mdefine_line|#define PIXCLKS_CNTL__R300_P2G2CLK_ALWAYS_ONb              (1 &lt;&lt; 18)
+DECL|macro|PIXCLKS_CNTL__R300_P2G2CLK_DAC_ALWAYS_ONb
+mdefine_line|#define PIXCLKS_CNTL__R300_P2G2CLK_DAC_ALWAYS_ONb          (1 &lt;&lt; 19)
+DECL|macro|PIXCLKS_CNTL__R300_DISP_DAC_PIXCLK_DAC2_BLANK_OFF
+mdefine_line|#define PIXCLKS_CNTL__R300_DISP_DAC_PIXCLK_DAC2_BLANK_OFF  (1 &lt;&lt; 23)
+singleline_comment|// pllP2PLL_DIV_0
 DECL|macro|P2PLL_DIV_0__P2PLL_FB_DIV_MASK
 mdefine_line|#define P2PLL_DIV_0__P2PLL_FB_DIV_MASK                     0x000007ffL
 DECL|macro|P2PLL_DIV_0__P2PLL_ATOMIC_UPDATE_W_MASK
@@ -1958,235 +2019,178 @@ DECL|macro|P2PLL_DIV_0__P2PLL_ATOMIC_UPDATE_R
 mdefine_line|#define P2PLL_DIV_0__P2PLL_ATOMIC_UPDATE_R                 0x00008000L
 DECL|macro|P2PLL_DIV_0__P2PLL_POST_DIV_MASK
 mdefine_line|#define P2PLL_DIV_0__P2PLL_POST_DIV_MASK                   0x00070000L
-singleline_comment|// SCLK_CNTL_M6
-DECL|macro|SCLK_CNTL_M6__SCLK_SRC_SEL_MASK
-mdefine_line|#define SCLK_CNTL_M6__SCLK_SRC_SEL_MASK                    0x00000007L
-DECL|macro|SCLK_CNTL_M6__CP_MAX_DYN_STOP_LAT_MASK
-mdefine_line|#define SCLK_CNTL_M6__CP_MAX_DYN_STOP_LAT_MASK             0x00000008L
-DECL|macro|SCLK_CNTL_M6__CP_MAX_DYN_STOP_LAT
-mdefine_line|#define SCLK_CNTL_M6__CP_MAX_DYN_STOP_LAT                  0x00000008L
-DECL|macro|SCLK_CNTL_M6__HDP_MAX_DYN_STOP_LAT_MASK
-mdefine_line|#define SCLK_CNTL_M6__HDP_MAX_DYN_STOP_LAT_MASK            0x00000010L
-DECL|macro|SCLK_CNTL_M6__HDP_MAX_DYN_STOP_LAT
-mdefine_line|#define SCLK_CNTL_M6__HDP_MAX_DYN_STOP_LAT                 0x00000010L
-DECL|macro|SCLK_CNTL_M6__TV_MAX_DYN_STOP_LAT_MASK
-mdefine_line|#define SCLK_CNTL_M6__TV_MAX_DYN_STOP_LAT_MASK             0x00000020L
-DECL|macro|SCLK_CNTL_M6__TV_MAX_DYN_STOP_LAT
-mdefine_line|#define SCLK_CNTL_M6__TV_MAX_DYN_STOP_LAT                  0x00000020L
-DECL|macro|SCLK_CNTL_M6__E2_MAX_DYN_STOP_LAT_MASK
-mdefine_line|#define SCLK_CNTL_M6__E2_MAX_DYN_STOP_LAT_MASK             0x00000040L
-DECL|macro|SCLK_CNTL_M6__E2_MAX_DYN_STOP_LAT
-mdefine_line|#define SCLK_CNTL_M6__E2_MAX_DYN_STOP_LAT                  0x00000040L
-DECL|macro|SCLK_CNTL_M6__SE_MAX_DYN_STOP_LAT_MASK
-mdefine_line|#define SCLK_CNTL_M6__SE_MAX_DYN_STOP_LAT_MASK             0x00000080L
-DECL|macro|SCLK_CNTL_M6__SE_MAX_DYN_STOP_LAT
-mdefine_line|#define SCLK_CNTL_M6__SE_MAX_DYN_STOP_LAT                  0x00000080L
-DECL|macro|SCLK_CNTL_M6__IDCT_MAX_DYN_STOP_LAT_MASK
-mdefine_line|#define SCLK_CNTL_M6__IDCT_MAX_DYN_STOP_LAT_MASK           0x00000100L
-DECL|macro|SCLK_CNTL_M6__IDCT_MAX_DYN_STOP_LAT
-mdefine_line|#define SCLK_CNTL_M6__IDCT_MAX_DYN_STOP_LAT                0x00000100L
-DECL|macro|SCLK_CNTL_M6__VIP_MAX_DYN_STOP_LAT_MASK
-mdefine_line|#define SCLK_CNTL_M6__VIP_MAX_DYN_STOP_LAT_MASK            0x00000200L
-DECL|macro|SCLK_CNTL_M6__VIP_MAX_DYN_STOP_LAT
-mdefine_line|#define SCLK_CNTL_M6__VIP_MAX_DYN_STOP_LAT                 0x00000200L
-DECL|macro|SCLK_CNTL_M6__RE_MAX_DYN_STOP_LAT_MASK
-mdefine_line|#define SCLK_CNTL_M6__RE_MAX_DYN_STOP_LAT_MASK             0x00000400L
-DECL|macro|SCLK_CNTL_M6__RE_MAX_DYN_STOP_LAT
-mdefine_line|#define SCLK_CNTL_M6__RE_MAX_DYN_STOP_LAT                  0x00000400L
-DECL|macro|SCLK_CNTL_M6__PB_MAX_DYN_STOP_LAT_MASK
-mdefine_line|#define SCLK_CNTL_M6__PB_MAX_DYN_STOP_LAT_MASK             0x00000800L
-DECL|macro|SCLK_CNTL_M6__PB_MAX_DYN_STOP_LAT
-mdefine_line|#define SCLK_CNTL_M6__PB_MAX_DYN_STOP_LAT                  0x00000800L
-DECL|macro|SCLK_CNTL_M6__TAM_MAX_DYN_STOP_LAT_MASK
-mdefine_line|#define SCLK_CNTL_M6__TAM_MAX_DYN_STOP_LAT_MASK            0x00001000L
-DECL|macro|SCLK_CNTL_M6__TAM_MAX_DYN_STOP_LAT
-mdefine_line|#define SCLK_CNTL_M6__TAM_MAX_DYN_STOP_LAT                 0x00001000L
-DECL|macro|SCLK_CNTL_M6__TDM_MAX_DYN_STOP_LAT_MASK
-mdefine_line|#define SCLK_CNTL_M6__TDM_MAX_DYN_STOP_LAT_MASK            0x00002000L
-DECL|macro|SCLK_CNTL_M6__TDM_MAX_DYN_STOP_LAT
-mdefine_line|#define SCLK_CNTL_M6__TDM_MAX_DYN_STOP_LAT                 0x00002000L
-DECL|macro|SCLK_CNTL_M6__RB_MAX_DYN_STOP_LAT_MASK
-mdefine_line|#define SCLK_CNTL_M6__RB_MAX_DYN_STOP_LAT_MASK             0x00004000L
-DECL|macro|SCLK_CNTL_M6__RB_MAX_DYN_STOP_LAT
-mdefine_line|#define SCLK_CNTL_M6__RB_MAX_DYN_STOP_LAT                  0x00004000L
-DECL|macro|SCLK_CNTL_M6__FORCE_DISP2_MASK
-mdefine_line|#define SCLK_CNTL_M6__FORCE_DISP2_MASK                     0x00008000L
-DECL|macro|SCLK_CNTL_M6__FORCE_DISP2
-mdefine_line|#define SCLK_CNTL_M6__FORCE_DISP2                          0x00008000L
-DECL|macro|SCLK_CNTL_M6__FORCE_CP_MASK
-mdefine_line|#define SCLK_CNTL_M6__FORCE_CP_MASK                        0x00010000L
-DECL|macro|SCLK_CNTL_M6__FORCE_CP
-mdefine_line|#define SCLK_CNTL_M6__FORCE_CP                             0x00010000L
-DECL|macro|SCLK_CNTL_M6__FORCE_HDP_MASK
-mdefine_line|#define SCLK_CNTL_M6__FORCE_HDP_MASK                       0x00020000L
-DECL|macro|SCLK_CNTL_M6__FORCE_HDP
-mdefine_line|#define SCLK_CNTL_M6__FORCE_HDP                            0x00020000L
-DECL|macro|SCLK_CNTL_M6__FORCE_DISP1_MASK
-mdefine_line|#define SCLK_CNTL_M6__FORCE_DISP1_MASK                     0x00040000L
-DECL|macro|SCLK_CNTL_M6__FORCE_DISP1
-mdefine_line|#define SCLK_CNTL_M6__FORCE_DISP1                          0x00040000L
-DECL|macro|SCLK_CNTL_M6__FORCE_TOP_MASK
-mdefine_line|#define SCLK_CNTL_M6__FORCE_TOP_MASK                       0x00080000L
-DECL|macro|SCLK_CNTL_M6__FORCE_TOP
-mdefine_line|#define SCLK_CNTL_M6__FORCE_TOP                            0x00080000L
-DECL|macro|SCLK_CNTL_M6__FORCE_E2_MASK
-mdefine_line|#define SCLK_CNTL_M6__FORCE_E2_MASK                        0x00100000L
-DECL|macro|SCLK_CNTL_M6__FORCE_E2
-mdefine_line|#define SCLK_CNTL_M6__FORCE_E2                             0x00100000L
-DECL|macro|SCLK_CNTL_M6__FORCE_SE_MASK
-mdefine_line|#define SCLK_CNTL_M6__FORCE_SE_MASK                        0x00200000L
-DECL|macro|SCLK_CNTL_M6__FORCE_SE
-mdefine_line|#define SCLK_CNTL_M6__FORCE_SE                             0x00200000L
-DECL|macro|SCLK_CNTL_M6__FORCE_IDCT_MASK
-mdefine_line|#define SCLK_CNTL_M6__FORCE_IDCT_MASK                      0x00400000L
-DECL|macro|SCLK_CNTL_M6__FORCE_IDCT
-mdefine_line|#define SCLK_CNTL_M6__FORCE_IDCT                           0x00400000L
-DECL|macro|SCLK_CNTL_M6__FORCE_VIP_MASK
-mdefine_line|#define SCLK_CNTL_M6__FORCE_VIP_MASK                       0x00800000L
-DECL|macro|SCLK_CNTL_M6__FORCE_VIP
-mdefine_line|#define SCLK_CNTL_M6__FORCE_VIP                            0x00800000L
-DECL|macro|SCLK_CNTL_M6__FORCE_RE_MASK
-mdefine_line|#define SCLK_CNTL_M6__FORCE_RE_MASK                        0x01000000L
-DECL|macro|SCLK_CNTL_M6__FORCE_RE
-mdefine_line|#define SCLK_CNTL_M6__FORCE_RE                             0x01000000L
-DECL|macro|SCLK_CNTL_M6__FORCE_PB_MASK
-mdefine_line|#define SCLK_CNTL_M6__FORCE_PB_MASK                        0x02000000L
-DECL|macro|SCLK_CNTL_M6__FORCE_PB
-mdefine_line|#define SCLK_CNTL_M6__FORCE_PB                             0x02000000L
-DECL|macro|SCLK_CNTL_M6__FORCE_TAM_MASK
-mdefine_line|#define SCLK_CNTL_M6__FORCE_TAM_MASK                       0x04000000L
-DECL|macro|SCLK_CNTL_M6__FORCE_TAM
-mdefine_line|#define SCLK_CNTL_M6__FORCE_TAM                            0x04000000L
-DECL|macro|SCLK_CNTL_M6__FORCE_TDM_MASK
-mdefine_line|#define SCLK_CNTL_M6__FORCE_TDM_MASK                       0x08000000L
-DECL|macro|SCLK_CNTL_M6__FORCE_TDM
-mdefine_line|#define SCLK_CNTL_M6__FORCE_TDM                            0x08000000L
-DECL|macro|SCLK_CNTL_M6__FORCE_RB_MASK
-mdefine_line|#define SCLK_CNTL_M6__FORCE_RB_MASK                        0x10000000L
-DECL|macro|SCLK_CNTL_M6__FORCE_RB
-mdefine_line|#define SCLK_CNTL_M6__FORCE_RB                             0x10000000L
-DECL|macro|SCLK_CNTL_M6__FORCE_TV_SCLK_MASK
-mdefine_line|#define SCLK_CNTL_M6__FORCE_TV_SCLK_MASK                   0x20000000L
-DECL|macro|SCLK_CNTL_M6__FORCE_TV_SCLK
-mdefine_line|#define SCLK_CNTL_M6__FORCE_TV_SCLK                        0x20000000L
-DECL|macro|SCLK_CNTL_M6__FORCE_SUBPIC_MASK
-mdefine_line|#define SCLK_CNTL_M6__FORCE_SUBPIC_MASK                    0x40000000L
-DECL|macro|SCLK_CNTL_M6__FORCE_SUBPIC
-mdefine_line|#define SCLK_CNTL_M6__FORCE_SUBPIC                         0x40000000L
-DECL|macro|SCLK_CNTL_M6__FORCE_OV0_MASK
-mdefine_line|#define SCLK_CNTL_M6__FORCE_OV0_MASK                       0x80000000L
-DECL|macro|SCLK_CNTL_M6__FORCE_OV0
-mdefine_line|#define SCLK_CNTL_M6__FORCE_OV0                            0x80000000L
+singleline_comment|// pllSCLK_CNTL
+DECL|macro|SCLK_CNTL__SCLK_SRC_SEL_MASK
+mdefine_line|#define SCLK_CNTL__SCLK_SRC_SEL_MASK                    0x00000007L
+DECL|macro|SCLK_CNTL__CP_MAX_DYN_STOP_LAT
+mdefine_line|#define SCLK_CNTL__CP_MAX_DYN_STOP_LAT                  0x00000008L
+DECL|macro|SCLK_CNTL__HDP_MAX_DYN_STOP_LAT
+mdefine_line|#define SCLK_CNTL__HDP_MAX_DYN_STOP_LAT                 0x00000010L
+DECL|macro|SCLK_CNTL__TV_MAX_DYN_STOP_LAT
+mdefine_line|#define SCLK_CNTL__TV_MAX_DYN_STOP_LAT                  0x00000020L
+DECL|macro|SCLK_CNTL__E2_MAX_DYN_STOP_LAT
+mdefine_line|#define SCLK_CNTL__E2_MAX_DYN_STOP_LAT                  0x00000040L
+DECL|macro|SCLK_CNTL__SE_MAX_DYN_STOP_LAT
+mdefine_line|#define SCLK_CNTL__SE_MAX_DYN_STOP_LAT                  0x00000080L
+DECL|macro|SCLK_CNTL__IDCT_MAX_DYN_STOP_LAT
+mdefine_line|#define SCLK_CNTL__IDCT_MAX_DYN_STOP_LAT                0x00000100L
+DECL|macro|SCLK_CNTL__VIP_MAX_DYN_STOP_LAT
+mdefine_line|#define SCLK_CNTL__VIP_MAX_DYN_STOP_LAT                 0x00000200L
+DECL|macro|SCLK_CNTL__RE_MAX_DYN_STOP_LAT
+mdefine_line|#define SCLK_CNTL__RE_MAX_DYN_STOP_LAT                  0x00000400L
+DECL|macro|SCLK_CNTL__PB_MAX_DYN_STOP_LAT
+mdefine_line|#define SCLK_CNTL__PB_MAX_DYN_STOP_LAT                  0x00000800L
+DECL|macro|SCLK_CNTL__TAM_MAX_DYN_STOP_LAT
+mdefine_line|#define SCLK_CNTL__TAM_MAX_DYN_STOP_LAT                 0x00001000L
+DECL|macro|SCLK_CNTL__TDM_MAX_DYN_STOP_LAT
+mdefine_line|#define SCLK_CNTL__TDM_MAX_DYN_STOP_LAT                 0x00002000L
+DECL|macro|SCLK_CNTL__RB_MAX_DYN_STOP_LAT
+mdefine_line|#define SCLK_CNTL__RB_MAX_DYN_STOP_LAT                  0x00004000L
+DECL|macro|SCLK_CNTL__DYN_STOP_LAT_MASK
+mdefine_line|#define SCLK_CNTL__DYN_STOP_LAT_MASK                     0x00007ff8
+DECL|macro|SCLK_CNTL__FORCE_DISP2
+mdefine_line|#define SCLK_CNTL__FORCE_DISP2                          0x00008000L
+DECL|macro|SCLK_CNTL__FORCE_CP
+mdefine_line|#define SCLK_CNTL__FORCE_CP                             0x00010000L
+DECL|macro|SCLK_CNTL__FORCE_HDP
+mdefine_line|#define SCLK_CNTL__FORCE_HDP                            0x00020000L
+DECL|macro|SCLK_CNTL__FORCE_DISP1
+mdefine_line|#define SCLK_CNTL__FORCE_DISP1                          0x00040000L
+DECL|macro|SCLK_CNTL__FORCE_TOP
+mdefine_line|#define SCLK_CNTL__FORCE_TOP                            0x00080000L
+DECL|macro|SCLK_CNTL__FORCE_E2
+mdefine_line|#define SCLK_CNTL__FORCE_E2                             0x00100000L
+DECL|macro|SCLK_CNTL__FORCE_SE
+mdefine_line|#define SCLK_CNTL__FORCE_SE                             0x00200000L
+DECL|macro|SCLK_CNTL__FORCE_IDCT
+mdefine_line|#define SCLK_CNTL__FORCE_IDCT                           0x00400000L
+DECL|macro|SCLK_CNTL__FORCE_VIP
+mdefine_line|#define SCLK_CNTL__FORCE_VIP                            0x00800000L
+DECL|macro|SCLK_CNTL__FORCE_RE
+mdefine_line|#define SCLK_CNTL__FORCE_RE                             0x01000000L
+DECL|macro|SCLK_CNTL__FORCE_PB
+mdefine_line|#define SCLK_CNTL__FORCE_PB                             0x02000000L
+DECL|macro|SCLK_CNTL__FORCE_TAM
+mdefine_line|#define SCLK_CNTL__FORCE_TAM                            0x04000000L
+DECL|macro|SCLK_CNTL__FORCE_TDM
+mdefine_line|#define SCLK_CNTL__FORCE_TDM                            0x08000000L
+DECL|macro|SCLK_CNTL__FORCE_RB
+mdefine_line|#define SCLK_CNTL__FORCE_RB                             0x10000000L
+DECL|macro|SCLK_CNTL__FORCE_TV_SCLK
+mdefine_line|#define SCLK_CNTL__FORCE_TV_SCLK                        0x20000000L
+DECL|macro|SCLK_CNTL__FORCE_SUBPIC
+mdefine_line|#define SCLK_CNTL__FORCE_SUBPIC                         0x40000000L
+DECL|macro|SCLK_CNTL__FORCE_OV0
+mdefine_line|#define SCLK_CNTL__FORCE_OV0                            0x80000000L
+DECL|macro|SCLK_CNTL__R300_FORCE_VAP
+mdefine_line|#define SCLK_CNTL__R300_FORCE_VAP                       (1&lt;&lt;21)
+DECL|macro|SCLK_CNTL__R300_FORCE_SR
+mdefine_line|#define SCLK_CNTL__R300_FORCE_SR                        (1&lt;&lt;25)
+DECL|macro|SCLK_CNTL__R300_FORCE_PX
+mdefine_line|#define SCLK_CNTL__R300_FORCE_PX                        (1&lt;&lt;26)
+DECL|macro|SCLK_CNTL__R300_FORCE_TX
+mdefine_line|#define SCLK_CNTL__R300_FORCE_TX                        (1&lt;&lt;27)
+DECL|macro|SCLK_CNTL__R300_FORCE_US
+mdefine_line|#define SCLK_CNTL__R300_FORCE_US                        (1&lt;&lt;28)
+DECL|macro|SCLK_CNTL__R300_FORCE_SU
+mdefine_line|#define SCLK_CNTL__R300_FORCE_SU                        (1&lt;&lt;30)
+DECL|macro|SCLK_CNTL__FORCEON_MASK
+mdefine_line|#define SCLK_CNTL__FORCEON_MASK                         0xffff8000L
+singleline_comment|// pllSCLK_CNTL2
+DECL|macro|SCLK_CNTL2__R300_TCL_MAX_DYN_STOP_LAT
+mdefine_line|#define SCLK_CNTL2__R300_TCL_MAX_DYN_STOP_LAT           (1&lt;&lt;10)
+DECL|macro|SCLK_CNTL2__R300_GA_MAX_DYN_STOP_LAT
+mdefine_line|#define SCLK_CNTL2__R300_GA_MAX_DYN_STOP_LAT            (1&lt;&lt;11)
+DECL|macro|SCLK_CNTL2__R300_CBA_MAX_DYN_STOP_LAT
+mdefine_line|#define SCLK_CNTL2__R300_CBA_MAX_DYN_STOP_LAT           (1&lt;&lt;12)
+DECL|macro|SCLK_CNTL2__R300_FORCE_TCL
+mdefine_line|#define SCLK_CNTL2__R300_FORCE_TCL                      (1&lt;&lt;13)
+DECL|macro|SCLK_CNTL2__R300_FORCE_CBA
+mdefine_line|#define SCLK_CNTL2__R300_FORCE_CBA                      (1&lt;&lt;14)
+DECL|macro|SCLK_CNTL2__R300_FORCE_GA
+mdefine_line|#define SCLK_CNTL2__R300_FORCE_GA                       (1&lt;&lt;15)
 singleline_comment|// SCLK_MORE_CNTL
-DECL|macro|SCLK_MORE_CNTL__DISPREGS_MAX_DYN_STOP_LAT_MASK
-mdefine_line|#define SCLK_MORE_CNTL__DISPREGS_MAX_DYN_STOP_LAT_MASK     0x00000001L
 DECL|macro|SCLK_MORE_CNTL__DISPREGS_MAX_DYN_STOP_LAT
 mdefine_line|#define SCLK_MORE_CNTL__DISPREGS_MAX_DYN_STOP_LAT          0x00000001L
-DECL|macro|SCLK_MORE_CNTL__MC_GUI_MAX_DYN_STOP_LAT_MASK
-mdefine_line|#define SCLK_MORE_CNTL__MC_GUI_MAX_DYN_STOP_LAT_MASK       0x00000002L
 DECL|macro|SCLK_MORE_CNTL__MC_GUI_MAX_DYN_STOP_LAT
 mdefine_line|#define SCLK_MORE_CNTL__MC_GUI_MAX_DYN_STOP_LAT            0x00000002L
-DECL|macro|SCLK_MORE_CNTL__MC_HOST_MAX_DYN_STOP_LAT_MASK
-mdefine_line|#define SCLK_MORE_CNTL__MC_HOST_MAX_DYN_STOP_LAT_MASK      0x00000004L
 DECL|macro|SCLK_MORE_CNTL__MC_HOST_MAX_DYN_STOP_LAT
 mdefine_line|#define SCLK_MORE_CNTL__MC_HOST_MAX_DYN_STOP_LAT           0x00000004L
-DECL|macro|SCLK_MORE_CNTL__FORCE_DISPREGS_MASK
-mdefine_line|#define SCLK_MORE_CNTL__FORCE_DISPREGS_MASK                0x00000100L
 DECL|macro|SCLK_MORE_CNTL__FORCE_DISPREGS
 mdefine_line|#define SCLK_MORE_CNTL__FORCE_DISPREGS                     0x00000100L
-DECL|macro|SCLK_MORE_CNTL__FORCE_MC_GUI_MASK
-mdefine_line|#define SCLK_MORE_CNTL__FORCE_MC_GUI_MASK                  0x00000200L
 DECL|macro|SCLK_MORE_CNTL__FORCE_MC_GUI
 mdefine_line|#define SCLK_MORE_CNTL__FORCE_MC_GUI                       0x00000200L
-DECL|macro|SCLK_MORE_CNTL__FORCE_MC_HOST_MASK
-mdefine_line|#define SCLK_MORE_CNTL__FORCE_MC_HOST_MASK                 0x00000400L
 DECL|macro|SCLK_MORE_CNTL__FORCE_MC_HOST
 mdefine_line|#define SCLK_MORE_CNTL__FORCE_MC_HOST                      0x00000400L
-DECL|macro|SCLK_MORE_CNTL__STOP_SCLK_EN_MASK
-mdefine_line|#define SCLK_MORE_CNTL__STOP_SCLK_EN_MASK                  0x00001000L
 DECL|macro|SCLK_MORE_CNTL__STOP_SCLK_EN
 mdefine_line|#define SCLK_MORE_CNTL__STOP_SCLK_EN                       0x00001000L
-DECL|macro|SCLK_MORE_CNTL__STOP_SCLK_A_MASK
-mdefine_line|#define SCLK_MORE_CNTL__STOP_SCLK_A_MASK                   0x00002000L
 DECL|macro|SCLK_MORE_CNTL__STOP_SCLK_A
 mdefine_line|#define SCLK_MORE_CNTL__STOP_SCLK_A                        0x00002000L
-DECL|macro|SCLK_MORE_CNTL__STOP_SCLK_B_MASK
-mdefine_line|#define SCLK_MORE_CNTL__STOP_SCLK_B_MASK                   0x00004000L
 DECL|macro|SCLK_MORE_CNTL__STOP_SCLK_B
 mdefine_line|#define SCLK_MORE_CNTL__STOP_SCLK_B                        0x00004000L
-DECL|macro|SCLK_MORE_CNTL__STOP_SCLK_C_MASK
-mdefine_line|#define SCLK_MORE_CNTL__STOP_SCLK_C_MASK                   0x00008000L
 DECL|macro|SCLK_MORE_CNTL__STOP_SCLK_C
 mdefine_line|#define SCLK_MORE_CNTL__STOP_SCLK_C                        0x00008000L
-DECL|macro|SCLK_MORE_CNTL__HALF_SPEED_SCLK_MASK
-mdefine_line|#define SCLK_MORE_CNTL__HALF_SPEED_SCLK_MASK               0x00010000L
 DECL|macro|SCLK_MORE_CNTL__HALF_SPEED_SCLK
 mdefine_line|#define SCLK_MORE_CNTL__HALF_SPEED_SCLK                    0x00010000L
-DECL|macro|SCLK_MORE_CNTL__IO_CG_VOLTAGE_DROP_MASK
-mdefine_line|#define SCLK_MORE_CNTL__IO_CG_VOLTAGE_DROP_MASK            0x00020000L
 DECL|macro|SCLK_MORE_CNTL__IO_CG_VOLTAGE_DROP
 mdefine_line|#define SCLK_MORE_CNTL__IO_CG_VOLTAGE_DROP                 0x00020000L
-DECL|macro|SCLK_MORE_CNTL__TVFB_SOFT_RESET_MASK
-mdefine_line|#define SCLK_MORE_CNTL__TVFB_SOFT_RESET_MASK               0x00040000L
 DECL|macro|SCLK_MORE_CNTL__TVFB_SOFT_RESET
 mdefine_line|#define SCLK_MORE_CNTL__TVFB_SOFT_RESET                    0x00040000L
-DECL|macro|SCLK_MORE_CNTL__VOLTAGE_DROP_SYNC_MASK
-mdefine_line|#define SCLK_MORE_CNTL__VOLTAGE_DROP_SYNC_MASK             0x00080000L
 DECL|macro|SCLK_MORE_CNTL__VOLTAGE_DROP_SYNC
 mdefine_line|#define SCLK_MORE_CNTL__VOLTAGE_DROP_SYNC                  0x00080000L
-DECL|macro|SCLK_MORE_CNTL__VOLTAGE_DELAY_SEL_MASK
-mdefine_line|#define SCLK_MORE_CNTL__VOLTAGE_DELAY_SEL_MASK             0x00300000L
-DECL|macro|SCLK_MORE_CNTL__IDLE_DELAY_HALF_SCLK_MASK
-mdefine_line|#define SCLK_MORE_CNTL__IDLE_DELAY_HALF_SCLK_MASK          0x00400000L
 DECL|macro|SCLK_MORE_CNTL__IDLE_DELAY_HALF_SCLK
 mdefine_line|#define SCLK_MORE_CNTL__IDLE_DELAY_HALF_SCLK               0x00400000L
-DECL|macro|SCLK_MORE_CNTL__AGP_BUSY_HALF_SCLK_MASK
-mdefine_line|#define SCLK_MORE_CNTL__AGP_BUSY_HALF_SCLK_MASK            0x00800000L
 DECL|macro|SCLK_MORE_CNTL__AGP_BUSY_HALF_SCLK
 mdefine_line|#define SCLK_MORE_CNTL__AGP_BUSY_HALF_SCLK                 0x00800000L
 DECL|macro|SCLK_MORE_CNTL__CG_SPARE_RD_C_MASK
 mdefine_line|#define SCLK_MORE_CNTL__CG_SPARE_RD_C_MASK                 0xff000000L
-singleline_comment|// MCLK_CNTL_M6
-DECL|macro|MCLK_CNTL_M6__MCLKA_SRC_SEL_MASK
-mdefine_line|#define MCLK_CNTL_M6__MCLKA_SRC_SEL_MASK                   0x00000007L
-DECL|macro|MCLK_CNTL_M6__YCLKA_SRC_SEL_MASK
-mdefine_line|#define MCLK_CNTL_M6__YCLKA_SRC_SEL_MASK                   0x00000070L
-DECL|macro|MCLK_CNTL_M6__MCLKB_SRC_SEL_MASK
-mdefine_line|#define MCLK_CNTL_M6__MCLKB_SRC_SEL_MASK                   0x00000700L
-DECL|macro|MCLK_CNTL_M6__YCLKB_SRC_SEL_MASK
-mdefine_line|#define MCLK_CNTL_M6__YCLKB_SRC_SEL_MASK                   0x00007000L
-DECL|macro|MCLK_CNTL_M6__FORCE_MCLKA_MASK
-mdefine_line|#define MCLK_CNTL_M6__FORCE_MCLKA_MASK                     0x00010000L
-DECL|macro|MCLK_CNTL_M6__FORCE_MCLKA
-mdefine_line|#define MCLK_CNTL_M6__FORCE_MCLKA                          0x00010000L
-DECL|macro|MCLK_CNTL_M6__FORCE_MCLKB_MASK
-mdefine_line|#define MCLK_CNTL_M6__FORCE_MCLKB_MASK                     0x00020000L
-DECL|macro|MCLK_CNTL_M6__FORCE_MCLKB
-mdefine_line|#define MCLK_CNTL_M6__FORCE_MCLKB                          0x00020000L
-DECL|macro|MCLK_CNTL_M6__FORCE_YCLKA_MASK
-mdefine_line|#define MCLK_CNTL_M6__FORCE_YCLKA_MASK                     0x00040000L
-DECL|macro|MCLK_CNTL_M6__FORCE_YCLKA
-mdefine_line|#define MCLK_CNTL_M6__FORCE_YCLKA                          0x00040000L
-DECL|macro|MCLK_CNTL_M6__FORCE_YCLKB_MASK
-mdefine_line|#define MCLK_CNTL_M6__FORCE_YCLKB_MASK                     0x00080000L
-DECL|macro|MCLK_CNTL_M6__FORCE_YCLKB
-mdefine_line|#define MCLK_CNTL_M6__FORCE_YCLKB                          0x00080000L
-DECL|macro|MCLK_CNTL_M6__FORCE_MC_MASK
-mdefine_line|#define MCLK_CNTL_M6__FORCE_MC_MASK                        0x00100000L
-DECL|macro|MCLK_CNTL_M6__FORCE_MC
-mdefine_line|#define MCLK_CNTL_M6__FORCE_MC                             0x00100000L
-DECL|macro|MCLK_CNTL_M6__FORCE_AIC_MASK
-mdefine_line|#define MCLK_CNTL_M6__FORCE_AIC_MASK                       0x00200000L
-DECL|macro|MCLK_CNTL_M6__FORCE_AIC
-mdefine_line|#define MCLK_CNTL_M6__FORCE_AIC                            0x00200000L
-DECL|macro|MCLK_CNTL_M6__MRDCKA0_SOUTSEL_MASK
-mdefine_line|#define MCLK_CNTL_M6__MRDCKA0_SOUTSEL_MASK                 0x03000000L
-DECL|macro|MCLK_CNTL_M6__MRDCKA1_SOUTSEL_MASK
-mdefine_line|#define MCLK_CNTL_M6__MRDCKA1_SOUTSEL_MASK                 0x0c000000L
-DECL|macro|MCLK_CNTL_M6__MRDCKB0_SOUTSEL_MASK
-mdefine_line|#define MCLK_CNTL_M6__MRDCKB0_SOUTSEL_MASK                 0x30000000L
-DECL|macro|MCLK_CNTL_M6__MRDCKB1_SOUTSEL_MASK
-mdefine_line|#define MCLK_CNTL_M6__MRDCKB1_SOUTSEL_MASK                 0xc0000000L
+DECL|macro|SCLK_MORE_CNTL__FORCEON
+mdefine_line|#define SCLK_MORE_CNTL__FORCEON                            0x00000700L
+singleline_comment|// MCLK_CNTL
+DECL|macro|MCLK_CNTL__MCLKA_SRC_SEL_MASK
+mdefine_line|#define MCLK_CNTL__MCLKA_SRC_SEL_MASK                   0x00000007L
+DECL|macro|MCLK_CNTL__YCLKA_SRC_SEL_MASK
+mdefine_line|#define MCLK_CNTL__YCLKA_SRC_SEL_MASK                   0x00000070L
+DECL|macro|MCLK_CNTL__MCLKB_SRC_SEL_MASK
+mdefine_line|#define MCLK_CNTL__MCLKB_SRC_SEL_MASK                   0x00000700L
+DECL|macro|MCLK_CNTL__YCLKB_SRC_SEL_MASK
+mdefine_line|#define MCLK_CNTL__YCLKB_SRC_SEL_MASK                   0x00007000L
+DECL|macro|MCLK_CNTL__FORCE_MCLKA_MASK
+mdefine_line|#define MCLK_CNTL__FORCE_MCLKA_MASK                     0x00010000L
+DECL|macro|MCLK_CNTL__FORCE_MCLKA
+mdefine_line|#define MCLK_CNTL__FORCE_MCLKA                          0x00010000L
+DECL|macro|MCLK_CNTL__FORCE_MCLKB_MASK
+mdefine_line|#define MCLK_CNTL__FORCE_MCLKB_MASK                     0x00020000L
+DECL|macro|MCLK_CNTL__FORCE_MCLKB
+mdefine_line|#define MCLK_CNTL__FORCE_MCLKB                          0x00020000L
+DECL|macro|MCLK_CNTL__FORCE_YCLKA_MASK
+mdefine_line|#define MCLK_CNTL__FORCE_YCLKA_MASK                     0x00040000L
+DECL|macro|MCLK_CNTL__FORCE_YCLKA
+mdefine_line|#define MCLK_CNTL__FORCE_YCLKA                          0x00040000L
+DECL|macro|MCLK_CNTL__FORCE_YCLKB_MASK
+mdefine_line|#define MCLK_CNTL__FORCE_YCLKB_MASK                     0x00080000L
+DECL|macro|MCLK_CNTL__FORCE_YCLKB
+mdefine_line|#define MCLK_CNTL__FORCE_YCLKB                          0x00080000L
+DECL|macro|MCLK_CNTL__FORCE_MC_MASK
+mdefine_line|#define MCLK_CNTL__FORCE_MC_MASK                        0x00100000L
+DECL|macro|MCLK_CNTL__FORCE_MC
+mdefine_line|#define MCLK_CNTL__FORCE_MC                             0x00100000L
+DECL|macro|MCLK_CNTL__FORCE_AIC_MASK
+mdefine_line|#define MCLK_CNTL__FORCE_AIC_MASK                       0x00200000L
+DECL|macro|MCLK_CNTL__FORCE_AIC
+mdefine_line|#define MCLK_CNTL__FORCE_AIC                            0x00200000L
+DECL|macro|MCLK_CNTL__MRDCKA0_SOUTSEL_MASK
+mdefine_line|#define MCLK_CNTL__MRDCKA0_SOUTSEL_MASK                 0x03000000L
+DECL|macro|MCLK_CNTL__MRDCKA1_SOUTSEL_MASK
+mdefine_line|#define MCLK_CNTL__MRDCKA1_SOUTSEL_MASK                 0x0c000000L
+DECL|macro|MCLK_CNTL__MRDCKB0_SOUTSEL_MASK
+mdefine_line|#define MCLK_CNTL__MRDCKB0_SOUTSEL_MASK                 0x30000000L
+DECL|macro|MCLK_CNTL__MRDCKB1_SOUTSEL_MASK
+mdefine_line|#define MCLK_CNTL__MRDCKB1_SOUTSEL_MASK                 0xc0000000L
+DECL|macro|MCLK_CNTL__R300_DISABLE_MC_MCLKA
+mdefine_line|#define MCLK_CNTL__R300_DISABLE_MC_MCLKA                (1 &lt;&lt; 21)
+DECL|macro|MCLK_CNTL__R300_DISABLE_MC_MCLKB
+mdefine_line|#define MCLK_CNTL__R300_DISABLE_MC_MCLKB                (1 &lt;&lt; 21)
 singleline_comment|// MCLK_MISC
 DECL|macro|MCLK_MISC__SCLK_SOURCED_FROM_MPLL_SEL_MASK
 mdefine_line|#define MCLK_MISC__SCLK_SOURCED_FROM_MPLL_SEL_MASK         0x00000003L
@@ -2247,32 +2251,22 @@ mdefine_line|#define MCLK_MISC__CGM_SPARE_A_MASK                        0x0e0000
 singleline_comment|// VCLK_ECP_CNTL
 DECL|macro|VCLK_ECP_CNTL__VCLK_SRC_SEL_MASK
 mdefine_line|#define VCLK_ECP_CNTL__VCLK_SRC_SEL_MASK                   0x00000003L
-DECL|macro|VCLK_ECP_CNTL__VCLK_INVERT_MASK
-mdefine_line|#define VCLK_ECP_CNTL__VCLK_INVERT_MASK                    0x00000010L
 DECL|macro|VCLK_ECP_CNTL__VCLK_INVERT
 mdefine_line|#define VCLK_ECP_CNTL__VCLK_INVERT                         0x00000010L
-DECL|macro|VCLK_ECP_CNTL__PIXCLK_SRC_INVERT_MASK
-mdefine_line|#define VCLK_ECP_CNTL__PIXCLK_SRC_INVERT_MASK              0x00000020L
 DECL|macro|VCLK_ECP_CNTL__PIXCLK_SRC_INVERT
 mdefine_line|#define VCLK_ECP_CNTL__PIXCLK_SRC_INVERT                   0x00000020L
-DECL|macro|VCLK_ECP_CNTL__PIXCLK_ALWAYS_ONb_MASK
-mdefine_line|#define VCLK_ECP_CNTL__PIXCLK_ALWAYS_ONb_MASK              0x00000040L
 DECL|macro|VCLK_ECP_CNTL__PIXCLK_ALWAYS_ONb
 mdefine_line|#define VCLK_ECP_CNTL__PIXCLK_ALWAYS_ONb                   0x00000040L
-DECL|macro|VCLK_ECP_CNTL__PIXCLK_DAC_ALWAYS_ONb_MASK
-mdefine_line|#define VCLK_ECP_CNTL__PIXCLK_DAC_ALWAYS_ONb_MASK          0x00000080L
 DECL|macro|VCLK_ECP_CNTL__PIXCLK_DAC_ALWAYS_ONb
 mdefine_line|#define VCLK_ECP_CNTL__PIXCLK_DAC_ALWAYS_ONb               0x00000080L
 DECL|macro|VCLK_ECP_CNTL__ECP_DIV_MASK
 mdefine_line|#define VCLK_ECP_CNTL__ECP_DIV_MASK                        0x00000300L
-DECL|macro|VCLK_ECP_CNTL__ECP_FORCE_ON_MASK
-mdefine_line|#define VCLK_ECP_CNTL__ECP_FORCE_ON_MASK                   0x00040000L
 DECL|macro|VCLK_ECP_CNTL__ECP_FORCE_ON
 mdefine_line|#define VCLK_ECP_CNTL__ECP_FORCE_ON                        0x00040000L
-DECL|macro|VCLK_ECP_CNTL__SUBCLK_FORCE_ON_MASK
-mdefine_line|#define VCLK_ECP_CNTL__SUBCLK_FORCE_ON_MASK                0x00080000L
 DECL|macro|VCLK_ECP_CNTL__SUBCLK_FORCE_ON
 mdefine_line|#define VCLK_ECP_CNTL__SUBCLK_FORCE_ON                     0x00080000L
+DECL|macro|VCLK_ECP_CNTL__R300_DISP_DAC_PIXCLK_DAC_BLANK_OFF
+mdefine_line|#define VCLK_ECP_CNTL__R300_DISP_DAC_PIXCLK_DAC_BLANK_OFF  (1&lt;&lt;23)
 singleline_comment|// PLL_PWRMGT_CNTL
 DECL|macro|PLL_PWRMGT_CNTL__MPLL_TURNOFF_MASK
 mdefine_line|#define PLL_PWRMGT_CNTL__MPLL_TURNOFF_MASK                 0x00000001L
@@ -2332,99 +2326,99 @@ DECL|macro|PLL_PWRMGT_CNTL__TCL_BYPASS_DISABLE_MASK
 mdefine_line|#define PLL_PWRMGT_CNTL__TCL_BYPASS_DISABLE_MASK           0x00100000L
 DECL|macro|PLL_PWRMGT_CNTL__TCL_BYPASS_DISABLE
 mdefine_line|#define PLL_PWRMGT_CNTL__TCL_BYPASS_DISABLE                0x00100000L
-DECL|macro|PLL_PWRMGT_CNTL__TCL_CLOCK_ACTIVE_RD_MASK
-mdefine_line|#define PLL_PWRMGT_CNTL__TCL_CLOCK_ACTIVE_RD_MASK          0x00200000L
+DECL|macro|PLL_PWRMGT_CNTL__TCL_CLOCK_CTIVE_RD_MASK
+mdefine_line|#define PLL_PWRMGT_CNTL__TCL_CLOCK_CTIVE_RD_MASK          0x00200000L
 DECL|macro|PLL_PWRMGT_CNTL__TCL_CLOCK_ACTIVE_RD
 mdefine_line|#define PLL_PWRMGT_CNTL__TCL_CLOCK_ACTIVE_RD               0x00200000L
 DECL|macro|PLL_PWRMGT_CNTL__CG_NO2_DEBUG_MASK
 mdefine_line|#define PLL_PWRMGT_CNTL__CG_NO2_DEBUG_MASK                 0xff000000L
-singleline_comment|// CLK_PWRMGT_CNTL_M6
-DECL|macro|CLK_PWRMGT_CNTL_M6__MPLL_PWRMGT_OFF_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__MPLL_PWRMGT_OFF_MASK           0x00000001L
-DECL|macro|CLK_PWRMGT_CNTL_M6__MPLL_PWRMGT_OFF
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__MPLL_PWRMGT_OFF                0x00000001L
-DECL|macro|CLK_PWRMGT_CNTL_M6__SPLL_PWRMGT_OFF_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__SPLL_PWRMGT_OFF_MASK           0x00000002L
-DECL|macro|CLK_PWRMGT_CNTL_M6__SPLL_PWRMGT_OFF
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__SPLL_PWRMGT_OFF                0x00000002L
-DECL|macro|CLK_PWRMGT_CNTL_M6__PPLL_PWRMGT_OFF_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__PPLL_PWRMGT_OFF_MASK           0x00000004L
-DECL|macro|CLK_PWRMGT_CNTL_M6__PPLL_PWRMGT_OFF
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__PPLL_PWRMGT_OFF                0x00000004L
-DECL|macro|CLK_PWRMGT_CNTL_M6__P2PLL_PWRMGT_OFF_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__P2PLL_PWRMGT_OFF_MASK          0x00000008L
-DECL|macro|CLK_PWRMGT_CNTL_M6__P2PLL_PWRMGT_OFF
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__P2PLL_PWRMGT_OFF               0x00000008L
-DECL|macro|CLK_PWRMGT_CNTL_M6__MCLK_TURNOFF_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__MCLK_TURNOFF_MASK              0x00000010L
-DECL|macro|CLK_PWRMGT_CNTL_M6__MCLK_TURNOFF
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__MCLK_TURNOFF                   0x00000010L
-DECL|macro|CLK_PWRMGT_CNTL_M6__SCLK_TURNOFF_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__SCLK_TURNOFF_MASK              0x00000020L
-DECL|macro|CLK_PWRMGT_CNTL_M6__SCLK_TURNOFF
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__SCLK_TURNOFF                   0x00000020L
-DECL|macro|CLK_PWRMGT_CNTL_M6__PCLK_TURNOFF_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__PCLK_TURNOFF_MASK              0x00000040L
-DECL|macro|CLK_PWRMGT_CNTL_M6__PCLK_TURNOFF
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__PCLK_TURNOFF                   0x00000040L
-DECL|macro|CLK_PWRMGT_CNTL_M6__P2CLK_TURNOFF_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__P2CLK_TURNOFF_MASK             0x00000080L
-DECL|macro|CLK_PWRMGT_CNTL_M6__P2CLK_TURNOFF
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__P2CLK_TURNOFF                  0x00000080L
-DECL|macro|CLK_PWRMGT_CNTL_M6__MC_CH_MODE_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__MC_CH_MODE_MASK                0x00000100L
-DECL|macro|CLK_PWRMGT_CNTL_M6__MC_CH_MODE
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__MC_CH_MODE                     0x00000100L
-DECL|macro|CLK_PWRMGT_CNTL_M6__TEST_MODE_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__TEST_MODE_MASK                 0x00000200L
-DECL|macro|CLK_PWRMGT_CNTL_M6__TEST_MODE
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__TEST_MODE                      0x00000200L
-DECL|macro|CLK_PWRMGT_CNTL_M6__GLOBAL_PMAN_EN_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__GLOBAL_PMAN_EN_MASK            0x00000400L
-DECL|macro|CLK_PWRMGT_CNTL_M6__GLOBAL_PMAN_EN
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__GLOBAL_PMAN_EN                 0x00000400L
-DECL|macro|CLK_PWRMGT_CNTL_M6__ENGINE_DYNCLK_MODE_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__ENGINE_DYNCLK_MODE_MASK        0x00001000L
-DECL|macro|CLK_PWRMGT_CNTL_M6__ENGINE_DYNCLK_MODE
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__ENGINE_DYNCLK_MODE             0x00001000L
-DECL|macro|CLK_PWRMGT_CNTL_M6__ACTIVE_HILO_LAT_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__ACTIVE_HILO_LAT_MASK           0x00006000L
-DECL|macro|CLK_PWRMGT_CNTL_M6__DISP_DYN_STOP_LAT_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__DISP_DYN_STOP_LAT_MASK         0x00008000L
-DECL|macro|CLK_PWRMGT_CNTL_M6__DISP_DYN_STOP_LAT
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__DISP_DYN_STOP_LAT              0x00008000L
-DECL|macro|CLK_PWRMGT_CNTL_M6__MC_BUSY_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__MC_BUSY_MASK                   0x00010000L
-DECL|macro|CLK_PWRMGT_CNTL_M6__MC_BUSY
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__MC_BUSY                        0x00010000L
-DECL|macro|CLK_PWRMGT_CNTL_M6__MC_INT_CNTL_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__MC_INT_CNTL_MASK               0x00020000L
-DECL|macro|CLK_PWRMGT_CNTL_M6__MC_INT_CNTL
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__MC_INT_CNTL                    0x00020000L
-DECL|macro|CLK_PWRMGT_CNTL_M6__MC_SWITCH_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__MC_SWITCH_MASK                 0x00040000L
-DECL|macro|CLK_PWRMGT_CNTL_M6__MC_SWITCH
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__MC_SWITCH                      0x00040000L
-DECL|macro|CLK_PWRMGT_CNTL_M6__DLL_READY_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__DLL_READY_MASK                 0x00080000L
-DECL|macro|CLK_PWRMGT_CNTL_M6__DLL_READY
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__DLL_READY                      0x00080000L
-DECL|macro|CLK_PWRMGT_CNTL_M6__DISP_PM_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__DISP_PM_MASK                   0x00100000L
-DECL|macro|CLK_PWRMGT_CNTL_M6__DISP_PM
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__DISP_PM                        0x00100000L
-DECL|macro|CLK_PWRMGT_CNTL_M6__DYN_STOP_MODE_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__DYN_STOP_MODE_MASK             0x00e00000L
-DECL|macro|CLK_PWRMGT_CNTL_M6__CG_NO1_DEBUG_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__CG_NO1_DEBUG_MASK              0x3f000000L
-DECL|macro|CLK_PWRMGT_CNTL_M6__TVPLL_PWRMGT_OFF_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__TVPLL_PWRMGT_OFF_MASK          0x40000000L
-DECL|macro|CLK_PWRMGT_CNTL_M6__TVPLL_PWRMGT_OFF
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__TVPLL_PWRMGT_OFF               0x40000000L
-DECL|macro|CLK_PWRMGT_CNTL_M6__TVCLK_TURNOFF_MASK
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__TVCLK_TURNOFF_MASK             0x80000000L
-DECL|macro|CLK_PWRMGT_CNTL_M6__TVCLK_TURNOFF
-mdefine_line|#define CLK_PWRMGT_CNTL_M6__TVCLK_TURNOFF                  0x80000000L
+singleline_comment|// CLK_PWRMGT_CNTL
+DECL|macro|CLK_PWRMGT_CNTL__MPLL_PWRMGT_OFF_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__MPLL_PWRMGT_OFF_MASK           0x00000001L
+DECL|macro|CLK_PWRMGT_CNTL__MPLL_PWRMGT_OFF
+mdefine_line|#define CLK_PWRMGT_CNTL__MPLL_PWRMGT_OFF                0x00000001L
+DECL|macro|CLK_PWRMGT_CNTL__SPLL_PWRMGT_OFF_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__SPLL_PWRMGT_OFF_MASK           0x00000002L
+DECL|macro|CLK_PWRMGT_CNTL__SPLL_PWRMGT_OFF
+mdefine_line|#define CLK_PWRMGT_CNTL__SPLL_PWRMGT_OFF                0x00000002L
+DECL|macro|CLK_PWRMGT_CNTL__PPLL_PWRMGT_OFF_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__PPLL_PWRMGT_OFF_MASK           0x00000004L
+DECL|macro|CLK_PWRMGT_CNTL__PPLL_PWRMGT_OFF
+mdefine_line|#define CLK_PWRMGT_CNTL__PPLL_PWRMGT_OFF                0x00000004L
+DECL|macro|CLK_PWRMGT_CNTL__P2PLL_PWRMGT_OFF_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__P2PLL_PWRMGT_OFF_MASK          0x00000008L
+DECL|macro|CLK_PWRMGT_CNTL__P2PLL_PWRMGT_OFF
+mdefine_line|#define CLK_PWRMGT_CNTL__P2PLL_PWRMGT_OFF               0x00000008L
+DECL|macro|CLK_PWRMGT_CNTL__MCLK_TURNOFF_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__MCLK_TURNOFF_MASK              0x00000010L
+DECL|macro|CLK_PWRMGT_CNTL__MCLK_TURNOFF
+mdefine_line|#define CLK_PWRMGT_CNTL__MCLK_TURNOFF                   0x00000010L
+DECL|macro|CLK_PWRMGT_CNTL__SCLK_TURNOFF_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__SCLK_TURNOFF_MASK              0x00000020L
+DECL|macro|CLK_PWRMGT_CNTL__SCLK_TURNOFF
+mdefine_line|#define CLK_PWRMGT_CNTL__SCLK_TURNOFF                   0x00000020L
+DECL|macro|CLK_PWRMGT_CNTL__PCLK_TURNOFF_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__PCLK_TURNOFF_MASK              0x00000040L
+DECL|macro|CLK_PWRMGT_CNTL__PCLK_TURNOFF
+mdefine_line|#define CLK_PWRMGT_CNTL__PCLK_TURNOFF                   0x00000040L
+DECL|macro|CLK_PWRMGT_CNTL__P2CLK_TURNOFF_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__P2CLK_TURNOFF_MASK             0x00000080L
+DECL|macro|CLK_PWRMGT_CNTL__P2CLK_TURNOFF
+mdefine_line|#define CLK_PWRMGT_CNTL__P2CLK_TURNOFF                  0x00000080L
+DECL|macro|CLK_PWRMGT_CNTL__MC_CH_MODE_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__MC_CH_MODE_MASK                0x00000100L
+DECL|macro|CLK_PWRMGT_CNTL__MC_CH_MODE
+mdefine_line|#define CLK_PWRMGT_CNTL__MC_CH_MODE                     0x00000100L
+DECL|macro|CLK_PWRMGT_CNTL__TEST_MODE_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__TEST_MODE_MASK                 0x00000200L
+DECL|macro|CLK_PWRMGT_CNTL__TEST_MODE
+mdefine_line|#define CLK_PWRMGT_CNTL__TEST_MODE                      0x00000200L
+DECL|macro|CLK_PWRMGT_CNTL__GLOBAL_PMAN_EN_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__GLOBAL_PMAN_EN_MASK            0x00000400L
+DECL|macro|CLK_PWRMGT_CNTL__GLOBAL_PMAN_EN
+mdefine_line|#define CLK_PWRMGT_CNTL__GLOBAL_PMAN_EN                 0x00000400L
+DECL|macro|CLK_PWRMGT_CNTL__ENGINE_DYNCLK_MODE_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__ENGINE_DYNCLK_MODE_MASK        0x00001000L
+DECL|macro|CLK_PWRMGT_CNTL__ENGINE_DYNCLK_MODE
+mdefine_line|#define CLK_PWRMGT_CNTL__ENGINE_DYNCLK_MODE             0x00001000L
+DECL|macro|CLK_PWRMGT_CNTL__ACTIVE_HILO_LAT_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__ACTIVE_HILO_LAT_MASK           0x00006000L
+DECL|macro|CLK_PWRMGT_CNTL__DISP_DYN_STOP_LAT_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__DISP_DYN_STOP_LAT_MASK         0x00008000L
+DECL|macro|CLK_PWRMGT_CNTL__DISP_DYN_STOP_LAT
+mdefine_line|#define CLK_PWRMGT_CNTL__DISP_DYN_STOP_LAT              0x00008000L
+DECL|macro|CLK_PWRMGT_CNTL__MC_BUSY_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__MC_BUSY_MASK                   0x00010000L
+DECL|macro|CLK_PWRMGT_CNTL__MC_BUSY
+mdefine_line|#define CLK_PWRMGT_CNTL__MC_BUSY                        0x00010000L
+DECL|macro|CLK_PWRMGT_CNTL__MC_INT_CNTL_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__MC_INT_CNTL_MASK               0x00020000L
+DECL|macro|CLK_PWRMGT_CNTL__MC_INT_CNTL
+mdefine_line|#define CLK_PWRMGT_CNTL__MC_INT_CNTL                    0x00020000L
+DECL|macro|CLK_PWRMGT_CNTL__MC_SWITCH_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__MC_SWITCH_MASK                 0x00040000L
+DECL|macro|CLK_PWRMGT_CNTL__MC_SWITCH
+mdefine_line|#define CLK_PWRMGT_CNTL__MC_SWITCH                      0x00040000L
+DECL|macro|CLK_PWRMGT_CNTL__DLL_READY_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__DLL_READY_MASK                 0x00080000L
+DECL|macro|CLK_PWRMGT_CNTL__DLL_READY
+mdefine_line|#define CLK_PWRMGT_CNTL__DLL_READY                      0x00080000L
+DECL|macro|CLK_PWRMGT_CNTL__DISP_PM_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__DISP_PM_MASK                   0x00100000L
+DECL|macro|CLK_PWRMGT_CNTL__DISP_PM
+mdefine_line|#define CLK_PWRMGT_CNTL__DISP_PM                        0x00100000L
+DECL|macro|CLK_PWRMGT_CNTL__DYN_STOP_MODE_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__DYN_STOP_MODE_MASK             0x00e00000L
+DECL|macro|CLK_PWRMGT_CNTL__CG_NO1_DEBUG_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__CG_NO1_DEBUG_MASK              0x3f000000L
+DECL|macro|CLK_PWRMGT_CNTL__TVPLL_PWRMGT_OFF_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__TVPLL_PWRMGT_OFF_MASK          0x40000000L
+DECL|macro|CLK_PWRMGT_CNTL__TVPLL_PWRMGT_OFF
+mdefine_line|#define CLK_PWRMGT_CNTL__TVPLL_PWRMGT_OFF               0x40000000L
+DECL|macro|CLK_PWRMGT_CNTL__TVCLK_TURNOFF_MASK
+mdefine_line|#define CLK_PWRMGT_CNTL__TVCLK_TURNOFF_MASK             0x80000000L
+DECL|macro|CLK_PWRMGT_CNTL__TVCLK_TURNOFF
+mdefine_line|#define CLK_PWRMGT_CNTL__TVCLK_TURNOFF                  0x80000000L
 singleline_comment|// BUS_CNTL1
 DECL|macro|BUS_CNTL1__PMI_IO_DISABLE_MASK
 mdefine_line|#define BUS_CNTL1__PMI_IO_DISABLE_MASK                     0x00000001L
@@ -3449,18 +3443,28 @@ DECL|macro|MDLL_RDCKB__MRDCKB1_BP_SEL_MASK
 mdefine_line|#define MDLL_RDCKB__MRDCKB1_BP_SEL_MASK                    0x80000000L
 DECL|macro|MDLL_RDCKB__MRDCKB1_BP_SEL
 mdefine_line|#define MDLL_RDCKB__MRDCKB1_BP_SEL                         0x80000000L
-DECL|macro|pllVCLK_ECP_CNTL
-mdefine_line|#define pllVCLK_ECP_CNTL                            0x0008
-DECL|macro|pllDISP_TEST_MACRO_RW_WRITE
-mdefine_line|#define pllDISP_TEST_MACRO_RW_WRITE                 0x001A
-DECL|macro|pllDISP_TEST_MACRO_RW_READ
-mdefine_line|#define pllDISP_TEST_MACRO_RW_READ                  0x001B
-DECL|macro|pllDISP_TEST_MACRO_RW_DATA
-mdefine_line|#define pllDISP_TEST_MACRO_RW_DATA                  0x001C
-DECL|macro|pllDISP_TEST_MACRO_RW_CNTL
-mdefine_line|#define pllDISP_TEST_MACRO_RW_CNTL                  0x001D
-DECL|macro|pllPIXCLKS_CNTL
-mdefine_line|#define pllPIXCLKS_CNTL                             0x002D
+DECL|macro|MDLL_R300_RDCK__MRDCKA_SLEEP
+mdefine_line|#define MDLL_R300_RDCK__MRDCKA_SLEEP                       0x00000001L
+DECL|macro|MDLL_R300_RDCK__MRDCKA_RESET
+mdefine_line|#define MDLL_R300_RDCK__MRDCKA_RESET                       0x00000002L
+DECL|macro|MDLL_R300_RDCK__MRDCKB_SLEEP
+mdefine_line|#define MDLL_R300_RDCK__MRDCKB_SLEEP                       0x00000004L
+DECL|macro|MDLL_R300_RDCK__MRDCKB_RESET
+mdefine_line|#define MDLL_R300_RDCK__MRDCKB_RESET                       0x00000008L
+DECL|macro|MDLL_R300_RDCK__MRDCKC_SLEEP
+mdefine_line|#define MDLL_R300_RDCK__MRDCKC_SLEEP                       0x00000010L
+DECL|macro|MDLL_R300_RDCK__MRDCKC_RESET
+mdefine_line|#define MDLL_R300_RDCK__MRDCKC_RESET                       0x00000020L
+DECL|macro|MDLL_R300_RDCK__MRDCKD_SLEEP
+mdefine_line|#define MDLL_R300_RDCK__MRDCKD_SLEEP                       0x00000040L
+DECL|macro|MDLL_R300_RDCK__MRDCKD_RESET
+mdefine_line|#define MDLL_R300_RDCK__MRDCKD_RESET                       0x00000080L
+DECL|macro|pllCLK_PIN_CNTL
+mdefine_line|#define pllCLK_PIN_CNTL                             0x0001
+DECL|macro|pllPPLL_CNTL
+mdefine_line|#define pllPPLL_CNTL                                0x0002
+DECL|macro|pllPPLL_REF_DIV
+mdefine_line|#define pllPPLL_REF_DIV                             0x0003
 DECL|macro|pllPPLL_DIV_0
 mdefine_line|#define pllPPLL_DIV_0                               0x0004
 DECL|macro|pllPPLL_DIV_1
@@ -3469,28 +3473,54 @@ DECL|macro|pllPPLL_DIV_2
 mdefine_line|#define pllPPLL_DIV_2                               0x0006
 DECL|macro|pllPPLL_DIV_3
 mdefine_line|#define pllPPLL_DIV_3                               0x0007
+DECL|macro|pllVCLK_ECP_CNTL
+mdefine_line|#define pllVCLK_ECP_CNTL                            0x0008
 DECL|macro|pllHTOTAL_CNTL
 mdefine_line|#define pllHTOTAL_CNTL                              0x0009
-DECL|macro|pllPLL_TEST_CNTL_M6
-mdefine_line|#define pllPLL_TEST_CNTL_M6                         0x0013
-DECL|macro|pllP2PLL_DIV_0
-mdefine_line|#define pllP2PLL_DIV_0                              0x002C
-DECL|macro|pllHTOTAL2_CNTL
-mdefine_line|#define pllHTOTAL2_CNTL                             0x002E
-DECL|macro|pllCLK_PIN_CNTL
-mdefine_line|#define pllCLK_PIN_CNTL                             0x0001
-DECL|macro|pllPPLL_CNTL
-mdefine_line|#define pllPPLL_CNTL                                0x0002
-DECL|macro|pllPPLL_REF_DIV
-mdefine_line|#define pllPPLL_REF_DIV                             0x0003
-DECL|macro|pllSPLL_CNTL
-mdefine_line|#define pllSPLL_CNTL                                0x000C
-DECL|macro|pllSPLL_AUX_CNTL
-mdefine_line|#define pllSPLL_AUX_CNTL                            0x0024
-DECL|macro|pllSCLK_CNTL_M6
-mdefine_line|#define pllSCLK_CNTL_M6                             0x000D
+DECL|macro|pllM_SPLL_REF_FB_DIV
+mdefine_line|#define pllM_SPLL_REF_FB_DIV                        0x000A
 DECL|macro|pllAGP_PLL_CNTL
 mdefine_line|#define pllAGP_PLL_CNTL                             0x000B
+DECL|macro|pllSPLL_CNTL
+mdefine_line|#define pllSPLL_CNTL                                0x000C
+DECL|macro|pllSCLK_CNTL
+mdefine_line|#define pllSCLK_CNTL                                0x000D
+DECL|macro|pllMPLL_CNTL
+mdefine_line|#define pllMPLL_CNTL                                0x000E
+DECL|macro|pllMDLL_CKO
+mdefine_line|#define pllMDLL_CKO                                 0x000F
+DECL|macro|pllMDLL_RDCKA
+mdefine_line|#define pllMDLL_RDCKA                               0x0010
+DECL|macro|pllMDLL_RDCKB
+mdefine_line|#define pllMDLL_RDCKB                               0x0011
+DECL|macro|pllMCLK_CNTL
+mdefine_line|#define pllMCLK_CNTL                                0x0012
+DECL|macro|pllPLL_TEST_CNTL
+mdefine_line|#define pllPLL_TEST_CNTL                            0x0013
+DECL|macro|pllCLK_PWRMGT_CNTL
+mdefine_line|#define pllCLK_PWRMGT_CNTL                          0x0014
+DECL|macro|pllPLL_PWRMGT_CNTL
+mdefine_line|#define pllPLL_PWRMGT_CNTL                          0x0015
+DECL|macro|pllCG_TEST_MACRO_RW_WRITE
+mdefine_line|#define pllCG_TEST_MACRO_RW_WRITE                   0x0016
+DECL|macro|pllCG_TEST_MACRO_RW_READ
+mdefine_line|#define pllCG_TEST_MACRO_RW_READ                    0x0017
+DECL|macro|pllCG_TEST_MACRO_RW_DATA
+mdefine_line|#define pllCG_TEST_MACRO_RW_DATA                    0x0018
+DECL|macro|pllCG_TEST_MACRO_RW_CNTL
+mdefine_line|#define pllCG_TEST_MACRO_RW_CNTL                    0x0019
+DECL|macro|pllDISP_TEST_MACRO_RW_WRITE
+mdefine_line|#define pllDISP_TEST_MACRO_RW_WRITE                 0x001A
+DECL|macro|pllDISP_TEST_MACRO_RW_READ
+mdefine_line|#define pllDISP_TEST_MACRO_RW_READ                  0x001B
+DECL|macro|pllDISP_TEST_MACRO_RW_DATA
+mdefine_line|#define pllDISP_TEST_MACRO_RW_DATA                  0x001C
+DECL|macro|pllDISP_TEST_MACRO_RW_CNTL
+mdefine_line|#define pllDISP_TEST_MACRO_RW_CNTL                  0x001D
+DECL|macro|pllSCLK_CNTL2
+mdefine_line|#define pllSCLK_CNTL2                               0x001E
+DECL|macro|pllMCLK_MISC
+mdefine_line|#define pllMCLK_MISC                                0x001F
 DECL|macro|pllTV_PLL_FINE_CNTL
 mdefine_line|#define pllTV_PLL_FINE_CNTL                         0x0020
 DECL|macro|pllTV_PLL_CNTL
@@ -3499,10 +3529,20 @@ DECL|macro|pllTV_PLL_CNTL1
 mdefine_line|#define pllTV_PLL_CNTL1                             0x0022
 DECL|macro|pllTV_DTO_INCREMENTS
 mdefine_line|#define pllTV_DTO_INCREMENTS                        0x0023
+DECL|macro|pllSPLL_AUX_CNTL
+mdefine_line|#define pllSPLL_AUX_CNTL                            0x0024
+DECL|macro|pllMPLL_AUX_CNTL
+mdefine_line|#define pllMPLL_AUX_CNTL                            0x0025
 DECL|macro|pllP2PLL_CNTL
 mdefine_line|#define pllP2PLL_CNTL                               0x002A
 DECL|macro|pllP2PLL_REF_DIV
 mdefine_line|#define pllP2PLL_REF_DIV                            0x002B
+DECL|macro|pllP2PLL_DIV_0
+mdefine_line|#define pllP2PLL_DIV_0                              0x002C
+DECL|macro|pllPIXCLKS_CNTL
+mdefine_line|#define pllPIXCLKS_CNTL                             0x002D
+DECL|macro|pllHTOTAL2_CNTL
+mdefine_line|#define pllHTOTAL2_CNTL                             0x002E
 DECL|macro|pllSSPLL_CNTL
 mdefine_line|#define pllSSPLL_CNTL                               0x0030
 DECL|macro|pllSSPLL_REF_DIV
@@ -3515,34 +3555,6 @@ DECL|macro|pllSS_TST_CNTL
 mdefine_line|#define pllSS_TST_CNTL                              0x0034
 DECL|macro|pllSCLK_MORE_CNTL
 mdefine_line|#define pllSCLK_MORE_CNTL                           0x0035
-DECL|macro|pllCLK_PWRMGT_CNTL_M6
-mdefine_line|#define pllCLK_PWRMGT_CNTL_M6                       0x0014
-DECL|macro|pllPLL_PWRMGT_CNTL
-mdefine_line|#define pllPLL_PWRMGT_CNTL                          0x0015
-DECL|macro|pllM_SPLL_REF_FB_DIV
-mdefine_line|#define pllM_SPLL_REF_FB_DIV                        0x000A
-DECL|macro|pllMPLL_CNTL
-mdefine_line|#define pllMPLL_CNTL                                0x000E
-DECL|macro|pllMPLL_AUX_CNTL
-mdefine_line|#define pllMPLL_AUX_CNTL                            0x0025
-DECL|macro|pllMDLL_CKO
-mdefine_line|#define pllMDLL_CKO                                 0x000F
-DECL|macro|pllMDLL_RDCKA
-mdefine_line|#define pllMDLL_RDCKA                               0x0010
-DECL|macro|pllMDLL_RDCKB
-mdefine_line|#define pllMDLL_RDCKB                               0x0011
-DECL|macro|pllMCLK_CNTL_M6
-mdefine_line|#define pllMCLK_CNTL_M6                             0x0012
-DECL|macro|pllMCLK_MISC
-mdefine_line|#define pllMCLK_MISC                                0x001F
-DECL|macro|pllCG_TEST_MACRO_RW_WRITE
-mdefine_line|#define pllCG_TEST_MACRO_RW_WRITE                   0x0016
-DECL|macro|pllCG_TEST_MACRO_RW_READ
-mdefine_line|#define pllCG_TEST_MACRO_RW_READ                    0x0017
-DECL|macro|pllCG_TEST_MACRO_RW_DATA
-mdefine_line|#define pllCG_TEST_MACRO_RW_DATA                    0x0018
-DECL|macro|pllCG_TEST_MACRO_RW_CNTL
-mdefine_line|#define pllCG_TEST_MACRO_RW_CNTL                    0x0019
 DECL|macro|ixMC_PERF_CNTL
 mdefine_line|#define ixMC_PERF_CNTL                             0x0000
 DECL|macro|ixMC_PERF_SEL
@@ -3585,6 +3597,52 @@ DECL|macro|ixREG_COLLAR_WRITE
 mdefine_line|#define ixREG_COLLAR_WRITE                         0x0013
 DECL|macro|ixREG_COLLAR_READ
 mdefine_line|#define ixREG_COLLAR_READ                          0x0014
+DECL|macro|ixR300_MC_IMP_CNTL
+mdefine_line|#define ixR300_MC_IMP_CNTL                         0x0018
+DECL|macro|ixR300_MC_CHP_IO_CNTL_A0
+mdefine_line|#define ixR300_MC_CHP_IO_CNTL_A0                   0x0019
+DECL|macro|ixR300_MC_CHP_IO_CNTL_A1
+mdefine_line|#define ixR300_MC_CHP_IO_CNTL_A1                   0x001a
+DECL|macro|ixR300_MC_CHP_IO_CNTL_B0
+mdefine_line|#define ixR300_MC_CHP_IO_CNTL_B0                   0x001b
+DECL|macro|ixR300_MC_CHP_IO_CNTL_B1
+mdefine_line|#define ixR300_MC_CHP_IO_CNTL_B1                   0x001c
+DECL|macro|ixR300_MC_CHP_IO_CNTL_C0
+mdefine_line|#define ixR300_MC_CHP_IO_CNTL_C0                   0x001d
+DECL|macro|ixR300_MC_CHP_IO_CNTL_C1
+mdefine_line|#define ixR300_MC_CHP_IO_CNTL_C1                   0x001e
+DECL|macro|ixR300_MC_CHP_IO_CNTL_D0
+mdefine_line|#define ixR300_MC_CHP_IO_CNTL_D0                   0x001f
+DECL|macro|ixR300_MC_CHP_IO_CNTL_D1
+mdefine_line|#define ixR300_MC_CHP_IO_CNTL_D1                   0x0020
+DECL|macro|ixR300_MC_IMP_CNTL_0
+mdefine_line|#define ixR300_MC_IMP_CNTL_0                       0x0021
+DECL|macro|ixR300_MC_ELPIDA_CNTL
+mdefine_line|#define ixR300_MC_ELPIDA_CNTL                      0x0022
+DECL|macro|ixR300_MC_CHP_IO_OE_CNTL_CD
+mdefine_line|#define ixR300_MC_CHP_IO_OE_CNTL_CD                0x0023
+DECL|macro|ixR300_MC_READ_CNTL_CD
+mdefine_line|#define ixR300_MC_READ_CNTL_CD                     0x0024
+DECL|macro|ixR300_MC_MC_INIT_WR_LAT_TIMER
+mdefine_line|#define ixR300_MC_MC_INIT_WR_LAT_TIMER             0x0025
+DECL|macro|ixR300_MC_DEBUG_CNTL
+mdefine_line|#define ixR300_MC_DEBUG_CNTL                       0x0026
+DECL|macro|ixR300_MC_BIST_CNTL_0
+mdefine_line|#define ixR300_MC_BIST_CNTL_0                      0x0028
+DECL|macro|ixR300_MC_BIST_CNTL_1
+mdefine_line|#define ixR300_MC_BIST_CNTL_1                      0x0029
+DECL|macro|ixR300_MC_BIST_CNTL_2
+mdefine_line|#define ixR300_MC_BIST_CNTL_2                      0x002a
+DECL|macro|ixR300_MC_BIST_CNTL_3
+mdefine_line|#define ixR300_MC_BIST_CNTL_3                      0x002b
+DECL|macro|ixR300_MC_BIST_CNTL_4
+mdefine_line|#define ixR300_MC_BIST_CNTL_4                      0x002c
+DECL|macro|ixR300_MC_BIST_CNTL_5
+mdefine_line|#define ixR300_MC_BIST_CNTL_5                      0x002d
+DECL|macro|ixR300_MC_IMP_STATUS
+mdefine_line|#define ixR300_MC_IMP_STATUS                       0x002e
+DECL|macro|ixR300_MC_DLL_CNTL
+mdefine_line|#define ixR300_MC_DLL_CNTL                         0x002f
 DECL|macro|NB_TOM
 mdefine_line|#define NB_TOM                                     0x15C
 macro_line|#endif&t;/* _RADEON_H */
