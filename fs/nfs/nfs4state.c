@@ -799,9 +799,9 @@ c_func
 (paren
 id|clp
 comma
-l_int|0
+id|NFS4_CALLBACK
 comma
-l_int|0
+id|nfs_callback_tcpport
 )paren
 suffix:semicolon
 r_if
