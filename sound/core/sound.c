@@ -98,13 +98,6 @@ comma
 l_string|&quot;Count of auto-loadable soundcards.&quot;
 )paren
 suffix:semicolon
-DECL|variable|CONFIG_SND_MAJOR
-id|MODULE_ALIAS_CHARDEV_MAJOR
-c_func
-(paren
-id|CONFIG_SND_MAJOR
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|module_param
 c_func
