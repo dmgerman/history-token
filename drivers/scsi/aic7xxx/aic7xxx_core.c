@@ -17159,14 +17159,14 @@ r_int
 id|error
 )paren
 (brace
-id|bus_addr_t
+id|dma_addr_t
 op_star
 id|baddr
 suffix:semicolon
 id|baddr
 op_assign
 (paren
-id|bus_addr_t
+id|dma_addr_t
 op_star
 )paren
 id|arg
@@ -18180,7 +18180,7 @@ id|sg_map_node
 op_star
 id|sg_map
 suffix:semicolon
-id|bus_addr_t
+id|dma_addr_t
 id|physaddr
 suffix:semicolon
 r_struct
@@ -20116,7 +20116,7 @@ id|AHC_39BIT_ADDRESSING
 ques
 c_cond
 (paren
-id|bus_addr_t
+id|dma_addr_t
 )paren
 l_int|0x7FFFFFFFFFULL
 suffix:colon
