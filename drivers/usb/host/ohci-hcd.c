@@ -137,6 +137,30 @@ comma
 l_string|&quot;true (not default) to switch port power&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Some boards leave IR set wrongly, since they fail BIOS/SMM handshakes */
+DECL|variable|no_handshake
+r_static
+r_int
+id|no_handshake
+op_assign
+l_int|0
+suffix:semicolon
+id|module_param
+(paren
+id|no_handshake
+comma
+r_bool
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|no_handshake
+comma
+l_string|&quot;true (not default) disables BIOS handshake&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * queue up an urb for anything except the root hub&n; */
 DECL|function|ohci_urb_enqueue
@@ -1167,6 +1191,9 @@ multiline_comment|/* SMM owns the HC?  not for long! */
 r_if
 c_cond
 (paren
+op_logical_neg
+id|no_handshake
+op_logical_and
 id|ohci_readl
 (paren
 op_amp
