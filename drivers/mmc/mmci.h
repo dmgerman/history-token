@@ -264,10 +264,10 @@ r_int
 id|oldstat
 suffix:semicolon
 multiline_comment|/* pio stuff */
-DECL|member|buffer
-r_void
-op_star
-id|buffer
+DECL|member|offset
+r_int
+r_int
+id|offset
 suffix:semicolon
 DECL|member|size
 r_int
