@@ -1298,6 +1298,36 @@ suffix:semicolon
 )brace
 )brace
 r_void
+DECL|function|KernelFPUnavailableException
+id|KernelFPUnavailableException
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Illegal floating point used in kernel (task=0x%016lx, pc=0x%016lx, trap=0x%08x)&bslash;n&quot;
+comma
+id|current
+comma
+id|regs-&gt;nip
+comma
+id|regs-&gt;trap
+)paren
+suffix:semicolon
+id|panic
+c_func
+(paren
+l_string|&quot;Unrecoverable FP Unavailable Exception in Kernel&quot;
+)paren
+suffix:semicolon
+)brace
+r_void
 DECL|function|SingleStepException
 id|SingleStepException
 c_func

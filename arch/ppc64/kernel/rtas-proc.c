@@ -698,7 +698,7 @@ l_int|NULL
 )paren
 op_logical_or
 (paren
-id|naca-&gt;platform
+id|systemcfg-&gt;platform
 op_eq
 id|PLATFORM_ISERIES_LPAR
 )paren

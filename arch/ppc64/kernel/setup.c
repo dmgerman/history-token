@@ -425,7 +425,7 @@ id|itLpNaca.xLparInstalled
 op_eq
 l_int|1
 )paren
-id|naca-&gt;platform
+id|systemcfg-&gt;platform
 op_assign
 id|PLATFORM_ISERIES_LPAR
 suffix:semicolon
@@ -433,7 +433,7 @@ macro_line|#endif
 r_switch
 c_cond
 (paren
-id|naca-&gt;platform
+id|systemcfg-&gt;platform
 )paren
 (brace
 macro_line|#ifdef CONFIG_PPC_ISERIES
@@ -500,7 +500,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|naca-&gt;platform
+id|systemcfg-&gt;platform
 op_amp
 id|PLATFORM_PSERIES
 )paren
@@ -534,81 +534,15 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;naca                       = 0x%p&bslash;n&quot;
+l_string|&quot;naca                          = 0x%p&bslash;n&quot;
 comma
 id|naca
 )paren
 suffix:semicolon
-macro_line|#if 0
 id|printk
 c_func
 (paren
-l_string|&quot;naca-&gt;processorCount       = 0x%x&bslash;n&quot;
-comma
-id|naca-&gt;processorCount
-)paren
-suffix:semicolon
-macro_line|#endif
-id|printk
-c_func
-(paren
-l_string|&quot;naca-&gt;physicalMemorySize   = 0x%lx&bslash;n&quot;
-comma
-id|naca-&gt;physicalMemorySize
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;naca-&gt;dCacheL1LineSize     = 0x%x&bslash;n&quot;
-comma
-id|naca-&gt;dCacheL1LineSize
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;naca-&gt;dCacheL1LogLineSize  = 0x%x&bslash;n&quot;
-comma
-id|naca-&gt;dCacheL1LogLineSize
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;naca-&gt;dCacheL1LinesPerPage = 0x%x&bslash;n&quot;
-comma
-id|naca-&gt;dCacheL1LinesPerPage
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;naca-&gt;iCacheL1LineSize     = 0x%x&bslash;n&quot;
-comma
-id|naca-&gt;iCacheL1LineSize
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;naca-&gt;iCacheL1LogLineSize  = 0x%x&bslash;n&quot;
-comma
-id|naca-&gt;iCacheL1LogLineSize
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;naca-&gt;iCacheL1LinesPerPage = 0x%x&bslash;n&quot;
-comma
-id|naca-&gt;iCacheL1LinesPerPage
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;naca-&gt;pftSize              = 0x%lx&bslash;n&quot;
+l_string|&quot;naca-&gt;pftSize                 = 0x%lx&bslash;n&quot;
 comma
 id|naca-&gt;pftSize
 )paren
@@ -616,7 +550,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;naca-&gt;debug_switch         = 0x%lx&bslash;n&quot;
+l_string|&quot;naca-&gt;debug_switch            = 0x%lx&bslash;n&quot;
 comma
 id|naca-&gt;debug_switch
 )paren
@@ -624,7 +558,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;naca-&gt;interrupt_controller = 0x%d&bslash;n&quot;
+l_string|&quot;naca-&gt;interrupt_controller    = 0x%d&bslash;n&quot;
 comma
 id|naca-&gt;interrupt_controller
 )paren
@@ -632,7 +566,47 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;htab_data.htab             = 0x%p&bslash;n&quot;
+l_string|&quot;systemcf                      = 0x%p&bslash;n&quot;
+comma
+id|systemcfg
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;systemcfg-&gt;processorCount     = 0x%x&bslash;n&quot;
+comma
+id|systemcfg-&gt;processorCount
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;systemcfg-&gt;physicalMemorySize = 0x%lx&bslash;n&quot;
+comma
+id|systemcfg-&gt;physicalMemorySize
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;systemcfg-&gt;dCacheL1LineSize   = 0x%x&bslash;n&quot;
+comma
+id|systemcfg-&gt;dCacheL1LineSize
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;systemcfg-&gt;iCacheL1LineSize   = 0x%x&bslash;n&quot;
+comma
+id|systemcfg-&gt;iCacheL1LineSize
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;htab_data.htab                = 0x%p&bslash;n&quot;
 comma
 id|htab_data.htab
 )paren
@@ -640,7 +614,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;htab_data.num_ptegs        = 0x%lx&bslash;n&quot;
+l_string|&quot;htab_data.num_ptegs           = 0x%lx&bslash;n&quot;
 comma
 id|htab_data.htab_num_ptegs
 )paren
@@ -654,7 +628,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|naca-&gt;platform
+id|systemcfg-&gt;platform
 op_amp
 id|PLATFORM_PSERIES
 )paren
@@ -687,7 +661,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|naca-&gt;platform
+id|systemcfg-&gt;platform
 )paren
 (brace
 macro_line|#ifdef CONFIG_PPC_ISERIES
@@ -1053,7 +1027,7 @@ multiline_comment|/*&n;&t; * Assume here that all clock rates are the same in a&
 r_if
 c_cond
 (paren
-id|naca-&gt;platform
+id|systemcfg-&gt;platform
 op_ne
 id|PLATFORM_ISERIES_LPAR
 )paren
@@ -2011,11 +1985,11 @@ macro_line|#endif /* CONFIG_XMON */
 multiline_comment|/*&n;&t; * Set cache line size based on type of cpu as a default.&n;&t; * Systems with OF can look in the properties on the cpu node(s)&n;&t; * for a possibly more accurate value.&n;&t; */
 id|dcache_bsize
 op_assign
-id|naca-&gt;dCacheL1LineSize
+id|systemcfg-&gt;dCacheL1LineSize
 suffix:semicolon
 id|icache_bsize
 op_assign
-id|naca-&gt;iCacheL1LineSize
+id|systemcfg-&gt;iCacheL1LineSize
 suffix:semicolon
 multiline_comment|/* reboot on panic */
 id|panic_timeout

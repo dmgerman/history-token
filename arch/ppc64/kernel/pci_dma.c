@@ -378,7 +378,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|naca-&gt;platform
+id|systemcfg-&gt;platform
 op_eq
 id|PLATFORM_ISERIES_LPAR
 )paren
@@ -3168,7 +3168,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|naca-&gt;platform
+id|systemcfg-&gt;platform
 op_eq
 id|PLATFORM_PSERIES_LPAR
 )paren
@@ -3297,7 +3297,7 @@ multiline_comment|/*************************************************************
 r_if
 c_cond
 (paren
-id|naca-&gt;platform
+id|systemcfg-&gt;platform
 op_eq
 id|PLATFORM_ISERIES_LPAR
 )paren
@@ -3400,7 +3400,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|naca-&gt;platform
+id|systemcfg-&gt;platform
 op_eq
 id|PLATFORM_PSERIES
 )paren

@@ -826,7 +826,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|rtas_proc_dir
+id|proc_ppc64.rtas
 )paren
 (brace
 id|printk
@@ -871,7 +871,7 @@ id|S_IRUSR
 op_or
 id|S_IWUSR
 comma
-id|rtas_proc_dir
+id|proc_ppc64.rtas
 )paren
 )paren
 op_ne
@@ -909,7 +909,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|rtas_proc_dir
+id|proc_ppc64.rtas
 )paren
 r_return
 suffix:semicolon
@@ -918,7 +918,7 @@ c_func
 (paren
 id|FIRMWARE_FLASH_NAME
 comma
-id|rtas_proc_dir
+id|proc_ppc64.rtas
 )paren
 suffix:semicolon
 )brace

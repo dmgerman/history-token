@@ -482,6 +482,11 @@ id|udbg_getc_poll
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* this is for modules, since _machine can be a define -- Cort */
+DECL|member|ppc_machine
+r_int
+id|ppc_machine
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* functions for dealing with other cpus */
 DECL|member|smp_ops

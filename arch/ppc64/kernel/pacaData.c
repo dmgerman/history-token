@@ -15,6 +15,12 @@ id|naca_struct
 op_star
 id|naca
 suffix:semicolon
+DECL|variable|systemcfg
+r_struct
+id|systemcfg
+op_star
+id|systemcfg
+suffix:semicolon
 multiline_comment|/* The Paca is an array with one entry per processor.  Each contains an &n; * ItLpPaca, which contains the information shared between the &n; * hypervisor and Linux.  Each also contains an ItLpRegSave area which&n; * is used by the hypervisor to save registers.&n; * On systems with hardware multi-threading, there are two threads&n; * per processor.  The Paca array must contain an entry for each thread.&n; * The VPD Areas will give a max logical processors = 2 * max physical&n; * processors.  The processor VPD array needs one entry per physical&n; * processor (not thread).&n; */
 DECL|macro|PACAINITDATA
 mdefine_line|#define PACAINITDATA(number,start,lpq,asrr,asrv)&t;&t;&t;    &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;.xLpPacaPtr = &amp;paca[number].xLpPaca,&t;&t;&t;&t;    &bslash;&n;&t;.xLpRegSavePtr = &amp;paca[number].xRegSav,&t;&t;&t;&t;    &bslash;&n;&t;.xPacaIndex = (number),&t;&t;/* Paca Index */&t;&t;    &bslash;&n;&t;.default_decr = 0x00ff0000,&t;/* Initial Decr */&t;&t;    &bslash;&n;&t;.xStab_data = {&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.real = (asrr),&t;&t;/* Real pointer to segment table */ &bslash;&n;&t;&t;.virt = (asrv),&t;&t;/* Virt pointer to segment table */ &bslash;&n;&t;&t;.next_round_robin = 1&t;/* Round robin index */&t;&t;    &bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;.lpQueuePtr = (lpq),&t;&t;/* &amp;xItLpQueue, */&t;&t;    &bslash;&n;&t;/* .xRtas = {&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.lock = SPIN_LOCK_UNLOCKED&t;&t;&t;&t;    &bslash;&n;&t;}, */&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;.xProcStart = (start),&t;&t;/* Processor start */&t;&t;    &bslash;&n;&t;.xLpPaca = {&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.xDesc = 0xd397d781,&t;/* &quot;LpPa&quot; */&t;&t;&t;    &bslash;&n;&t;&t;.xSize = sizeof(struct ItLpPaca),&t;&t;&t;    &bslash;&n;&t;&t;.xFPRegsInUse = 1,&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.xDynProcStatus = 2,&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.xDecrVal = 0x00ff0000,&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.xEndOfQuantum = 0xffffffffffffffff&t;&t;&t;    &bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;.xRegSav = {&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.xDesc = 0xd397d9e2,&t;/* &quot;LpRS&quot; */&t;&t;&t;    &bslash;&n;&t;&t;.xSize = sizeof(struct ItLpRegSave)&t;&t;&t;    &bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;.exception_sp =&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;(&amp;paca[number].exception_stack[0]) - EXC_FRAME_SIZE,&t;    &bslash;&n;}
@@ -41,7 +47,7 @@ id|xItLpQueue
 comma
 l_int|0
 comma
-l_int|0xc000000000005000
+id|STAB0_VIRT_ADDR
 )paren
 comma
 macro_line|#else
@@ -54,9 +60,9 @@ l_int|1
 comma
 l_int|0
 comma
-l_int|0x5000
+id|STAB0_PHYS_ADDR
 comma
-l_int|0xc000000000005000
+id|STAB0_VIRT_ADDR
 )paren
 comma
 macro_line|#endif
