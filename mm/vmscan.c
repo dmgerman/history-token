@@ -1484,17 +1484,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * zone-&gt;lru_lock is heavily contented.  We relieve it by quickly privatising&n; * a batch of pages and working on them outside the lock.  Any pages which were&n; * not freed will be added back to the LRU.&n; *&n; * shrink_cache() is passed the number of pages to try to free, and returns&n; * the number of pages which were reclaimed.&n; *&n; * For pagecache intensive workloads, the first loop here is the hottest spot&n; * in the kernel (apart from the copy_*_user functions).&n; */
+multiline_comment|/*&n; * zone-&gt;lru_lock is heavily contented.  We relieve it by quickly privatising&n; * a batch of pages and working on them outside the lock.  Any pages which were&n; * not freed will be added back to the LRU.&n; *&n; * shrink_cache() is passed the number of pages to scan and returns the number&n; * of pages which were reclaimed.&n; *&n; * For pagecache intensive workloads, the first loop here is the hottest spot&n; * in the kernel (apart from the copy_*_user functions).&n; */
 r_static
 r_int
 DECL|function|shrink_cache
 id|shrink_cache
 c_func
 (paren
-r_const
-r_int
-id|nr_pages
-comma
 r_struct
 id|zone
 op_star
@@ -1523,28 +1519,9 @@ id|pagevec
 id|pvec
 suffix:semicolon
 r_int
-id|nr_to_process
-suffix:semicolon
-r_int
 id|ret
 op_assign
 l_int|0
-suffix:semicolon
-multiline_comment|/*&n;&t; * Try to ensure that we free `nr_pages&squot; pages in one pass of the loop.&n;&t; */
-id|nr_to_process
-op_assign
-id|nr_pages
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|nr_to_process
-OL
-id|SWAP_CLUSTER_MAX
-)paren
-id|nr_to_process
-op_assign
-id|SWAP_CLUSTER_MAX
 suffix:semicolon
 id|pagevec_init
 c_func
@@ -1573,10 +1550,6 @@ c_loop
 id|max_scan
 OG
 l_int|0
-op_logical_and
-id|ret
-OL
-id|nr_pages
 )paren
 (brace
 r_struct
@@ -1603,7 +1576,7 @@ c_loop
 id|nr_scan
 op_increment
 OL
-id|nr_to_process
+id|SWAP_CLUSTER_MAX
 op_logical_and
 op_logical_neg
 id|list_empty
@@ -2740,7 +2713,7 @@ id|pgdeactivate
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Try to reclaim `nr_pages&squot; from this zone.  Returns the number of reclaimed&n; * pages.  This is a basic per-zone page freer.  Used by both kswapd and&n; * direct reclaim.&n; */
+multiline_comment|/*&n; * Scan `nr_pages&squot; from this zone.  Returns the number of reclaimed pages.&n; * This is a basic per-zone page freer.  Used by both kswapd and direct reclaim.&n; */
 r_static
 r_int
 DECL|function|shrink_zone
@@ -2758,10 +2731,6 @@ comma
 r_int
 r_int
 id|gfp_mask
-comma
-r_const
-r_int
-id|nr_pages
 comma
 r_int
 op_star
@@ -2784,7 +2753,7 @@ op_assign
 r_int
 r_int
 )paren
-id|nr_pages
+id|SWAP_CLUSTER_MAX
 op_star
 id|zone-&gt;nr_active
 op_div
@@ -2874,8 +2843,6 @@ r_return
 id|shrink_cache
 c_func
 (paren
-id|nr_pages
-comma
 id|zone
 comma
 id|gfp_mask
@@ -2909,9 +2876,6 @@ comma
 r_int
 id|gfp_mask
 comma
-r_int
-id|nr_pages
-comma
 r_struct
 id|page_state
 op_star
@@ -2944,17 +2908,6 @@ id|i
 op_increment
 )paren
 (brace
-r_int
-id|to_reclaim
-op_assign
-id|max
-c_func
-(paren
-id|nr_pages
-comma
-id|SWAP_CLUSTER_MAX
-)paren
-suffix:semicolon
 r_struct
 id|zone
 op_star
@@ -2991,27 +2944,19 @@ id|DEF_PRIORITY
 r_continue
 suffix:semicolon
 multiline_comment|/* Let kswapd poll it */
-multiline_comment|/*&n;&t;&t; * If we cannot reclaim `nr_pages&squot; pages by scanning twice&n;&t;&t; * that many pages then fall back to the next zone.&n;&t;&t; */
 id|max_scan
 op_assign
+id|max
+c_func
+(paren
 id|zone-&gt;nr_inactive
 op_rshift
 id|priority
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|max_scan
-OL
-id|to_reclaim
+comma
+id|SWAP_CLUSTER_MAX
 op_star
-l_int|2
+l_int|2UL
 )paren
-id|max_scan
-op_assign
-id|to_reclaim
-op_star
-l_int|2
 suffix:semicolon
 id|ret
 op_add_assign
@@ -3023,8 +2968,6 @@ comma
 id|max_scan
 comma
 id|gfp_mask
-comma
-id|to_reclaim
 comma
 id|total_scanned
 comma
@@ -3064,12 +3007,6 @@ r_int
 id|ret
 op_assign
 l_int|0
-suffix:semicolon
-r_const
-r_int
-id|nr_pages
-op_assign
-id|SWAP_CLUSTER_MAX
 suffix:semicolon
 r_int
 id|nr_reclaimed
@@ -3163,8 +3100,6 @@ id|total_scanned
 comma
 id|gfp_mask
 comma
-id|nr_pages
-comma
 op_amp
 id|ps
 )paren
@@ -3197,7 +3132,7 @@ c_cond
 (paren
 id|nr_reclaimed
 op_ge
-id|nr_pages
+id|SWAP_CLUSTER_MAX
 )paren
 (brace
 id|ret
@@ -3422,9 +3357,6 @@ r_int
 id|max_scan
 suffix:semicolon
 r_int
-id|to_reclaim
-suffix:semicolon
-r_int
 id|reclaimed
 suffix:semicolon
 r_if
@@ -3442,39 +3374,21 @@ r_if
 c_cond
 (paren
 id|nr_pages
+op_eq
+l_int|0
 )paren
 (brace
-multiline_comment|/* Software suspend */
-id|to_reclaim
-op_assign
-id|min
-c_func
-(paren
-id|to_free
-comma
-id|SWAP_CLUSTER_MAX
-op_star
-l_int|8
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* Zone balancing */
-id|to_reclaim
-op_assign
-id|zone-&gt;pages_high
-op_minus
-id|zone-&gt;free_pages
-suffix:semicolon
+multiline_comment|/* Not software suspend */
 r_if
 c_cond
 (paren
-id|to_reclaim
+id|zone-&gt;free_pages
 op_le
-l_int|0
+id|zone-&gt;pages_high
 )paren
-r_continue
+id|all_zones_ok
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 id|zone-&gt;temp_priority
@@ -3486,21 +3400,6 @@ op_assign
 id|zone-&gt;nr_inactive
 op_rshift
 id|priority
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|max_scan
-OL
-id|to_reclaim
-op_star
-l_int|2
-)paren
-id|max_scan
-op_assign
-id|to_reclaim
-op_star
-l_int|2
 suffix:semicolon
 r_if
 c_cond
@@ -3523,8 +3422,6 @@ comma
 id|max_scan
 comma
 id|GFP_KERNEL
-comma
-id|to_reclaim
 comma
 op_amp
 id|total_scanned
@@ -3571,18 +3468,6 @@ l_int|2
 id|zone-&gt;all_unreclaimable
 op_assign
 l_int|1
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * If this scan failed to reclaim `to_reclaim&squot; or more&n;&t;&t;&t; * pages, we&squot;re getting into trouble.  Need to scan&n;&t;&t;&t; * some more, and throttle kswapd.   Note that this zone&n;&t;&t;&t; * may now have sufficient free pages due to freeing&n;&t;&t;&t; * activity by some other process.   That&squot;s OK - we&squot;ll&n;&t;&t;&t; * pick that info up on the next pass through the loop.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|reclaimed
-OL
-id|to_reclaim
-)paren
-id|all_zones_ok
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 r_if
