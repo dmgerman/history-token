@@ -27,14 +27,13 @@ comma
 l_string|&quot;Intel(R) 815 (Internal Graphics with AGP) Framebuffer Device&quot;
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|i810fb_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|i810fb_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

@@ -8141,14 +8141,13 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-DECL|variable|__devinitdata
+DECL|variable|neofb_devices
 r_static
 r_struct
 id|pci_device_id
 id|neofb_devices
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

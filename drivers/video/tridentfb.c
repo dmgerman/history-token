@@ -6177,14 +6177,13 @@ id|tridentfb_fix.mmio_len
 suffix:semicolon
 )brace
 multiline_comment|/* List of boards that we are trying to support */
-DECL|variable|__devinitdata
+DECL|variable|trident_devices
 r_static
 r_struct
 id|pci_device_id
 id|trident_devices
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

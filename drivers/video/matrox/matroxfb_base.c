@@ -11001,14 +11001,13 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|matroxfb_devices
 r_static
 r_struct
 id|pci_device_id
 id|matroxfb_devices
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 macro_line|#ifdef CONFIG_FB_MATROX_MILLENIUM
