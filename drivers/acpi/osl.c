@@ -2273,6 +2273,18 @@ id|timeout
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|in_atomic
+c_func
+(paren
+)paren
+)paren
+id|timeout
+op_assign
+l_int|0
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -2645,7 +2657,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|in_interrupt
+id|in_atomic
 c_func
 (paren
 )paren
