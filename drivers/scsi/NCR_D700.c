@@ -1411,6 +1411,11 @@ op_amp
 id|NCR_D700_driver
 )paren
 suffix:semicolon
+id|scsi_sysfs_release_attributes
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|variable|NCR_D700_init
 id|module_init

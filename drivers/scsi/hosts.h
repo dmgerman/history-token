@@ -1079,5 +1079,16 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|scsi_sysfs_release_attributes
+c_func
+(paren
+r_struct
+id|SHT
+op_star
+id|hostt
+)paren
+suffix:semicolon
 macro_line|#endif
 eof
