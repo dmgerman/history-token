@@ -1315,6 +1315,16 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|child
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 id|pci_proc_attach_bus
 c_func
