@@ -2349,7 +2349,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* &quot;pci=noacpi&quot; disables ACPI interrupt routing */
+multiline_comment|/* &quot;pci=noacpi&quot; disable ACPI IRQ routing and PCI scan */
 r_else
 r_if
 c_cond
@@ -2361,6 +2361,29 @@ c_func
 id|from
 comma
 l_string|&quot;pci=noacpi&quot;
+comma
+l_int|10
+)paren
+)paren
+(brace
+id|acpi_disable_pci
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* &quot;acpi=noirq&quot; disables ACPI interrupt routing */
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|from
+comma
+l_string|&quot;acpi=noirq&quot;
 comma
 l_int|10
 )paren

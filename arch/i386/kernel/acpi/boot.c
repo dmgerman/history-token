@@ -62,12 +62,35 @@ macro_line|#endif&t;/* CONFIG_X86_LOCAL_APIC */
 macro_line|#endif&t;/* X86 */
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
+macro_line|#ifdef CONFIG_ACPI_PCI
 DECL|variable|__initdata
 r_int
 id|acpi_noirq
 id|__initdata
 suffix:semicolon
 multiline_comment|/* skip ACPI IRQ initialization */
+DECL|variable|__initdata
+r_int
+id|acpi_pci_disabled
+id|__initdata
+suffix:semicolon
+multiline_comment|/* skip ACPI PCI scan and IRQ initialization */
+macro_line|#else
+DECL|variable|__initdata
+r_int
+id|acpi_noirq
+id|__initdata
+op_assign
+l_int|1
+suffix:semicolon
+DECL|variable|__initdata
+r_int
+id|acpi_pci_disabled
+id|__initdata
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 DECL|variable|__initdata
 r_int
 id|acpi_ht
