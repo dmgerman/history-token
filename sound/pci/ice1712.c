@@ -5286,6 +5286,10 @@ r_case
 id|ICE1712_SUBDEVICE_DELTA1010
 suffix:colon
 r_case
+id|ICE1712_SUBDEVICE_DELTA1010LT
+suffix:colon
+singleline_comment|// check it --jk
+r_case
 id|ICE1712_SUBDEVICE_DELTADIO2496
 suffix:colon
 r_case
@@ -19866,6 +19870,9 @@ suffix:semicolon
 multiline_comment|/* follow thru */
 r_case
 id|ICE1712_SUBDEVICE_DELTA1010
+suffix:colon
+r_case
+id|ICE1712_SUBDEVICE_STDSP24
 suffix:colon
 id|ice-&gt;num_adcs
 op_assign

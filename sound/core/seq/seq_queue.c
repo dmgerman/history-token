@@ -2080,6 +2080,7 @@ c_func
 (paren
 id|client
 comma
+op_amp
 id|queue-&gt;clients_bitmap
 )paren
 )paren
@@ -2097,6 +2098,7 @@ c_func
 (paren
 id|client
 comma
+op_amp
 id|queue-&gt;clients_bitmap
 )paren
 )paren
@@ -2205,6 +2207,7 @@ c_func
 (paren
 id|client
 comma
+op_amp
 id|q-&gt;clients_bitmap
 )paren
 ques

@@ -228,6 +228,17 @@ macro_line|#ifndef PCI_DEVICE_ID_VIA_8233_5
 DECL|macro|PCI_DEVICE_ID_VIA_8233_5
 mdefine_line|#define PCI_DEVICE_ID_VIA_8233_5&t;0x3059
 macro_line|#endif
+multiline_comment|/* revision numbers */
+DECL|macro|VIA_REV_PRE_8233
+mdefine_line|#define VIA_REV_PRE_8233&t;0x10&t;/* not in market */
+DECL|macro|VIA_REV_8233C
+mdefine_line|#define VIA_REV_8233C&t;&t;0x20&t;/* 2 rec, 4 pb, 1 multi-pb */
+DECL|macro|VIA_REV_8233
+mdefine_line|#define VIA_REV_8233&t;&t;0x30&t;/* 2 rec, 4 pb, 1 multi-pb, spdif */
+DECL|macro|VIA_REV_8233A
+mdefine_line|#define VIA_REV_8233A&t;&t;0x40&t;/* 1 rec, 1 multi-pb, spdf */
+DECL|macro|VIA_REV_8235
+mdefine_line|#define VIA_REV_8235&t;&t;0x50&t;/* 2 rec, 4 pb, 1 multi-pb, spdif */
 DECL|macro|VIAREG
 mdefine_line|#define VIAREG(via, x) ((via)-&gt;port + VIA_REG_##x)
 multiline_comment|/* offsets */
@@ -265,8 +276,8 @@ DECL|macro|VIA_REG_OFFSET_TABLE_PTR
 mdefine_line|#define VIA_REG_OFFSET_TABLE_PTR&t;0x04&t;/* dword - channel table pointer */
 DECL|macro|VIA_REG_OFFSET_CURR_PTR
 mdefine_line|#define VIA_REG_OFFSET_CURR_PTR&t;&t;0x04&t;/* dword - channel current pointer */
-DECL|macro|VIA_REG_OFFSET_TYPE
-mdefine_line|#define VIA_REG_OFFSET_TYPE&t;&t;0x08&t;/* long - stop index, channel type, sample rate */
+DECL|macro|VIA_REG_OFFSET_STOP_IDX
+mdefine_line|#define VIA_REG_OFFSET_STOP_IDX&t;&t;0x08&t;/* dword - stop index, channel type, sample rate */
 DECL|macro|VIA_REG_TYPE_16BIT
 mdefine_line|#define   VIA_REG_TYPE_16BIT&t;&t;0x00200000&t;/* RW */
 DECL|macro|VIA_REG_TYPE_STEREO
@@ -277,7 +288,7 @@ DECL|macro|VIA_REG_OFFSET_CURR_INDEX
 mdefine_line|#define VIA_REG_OFFSET_CURR_INDEX&t;0x0f&t;/* byte - channel current index */
 DECL|macro|VIA_NUM_OF_DMA_CHANNELS
 mdefine_line|#define VIA_NUM_OF_DMA_CHANNELS&t;2
-multiline_comment|/* playback block */
+multiline_comment|/* playback block (VT8233/8233C) - channels 0-3 (0-0x3f) */
 DECL|macro|VIA_REG_PLAYBACK_STATUS
 mdefine_line|#define VIA_REG_PLAYBACK_STATUS&t;&t;0x00&t;/* byte - channel status */
 DECL|macro|VIA_REG_PLAYBACK_CONTROL
@@ -290,12 +301,37 @@ DECL|macro|VIA_REG_PLAYBACK_TABLE_PTR
 mdefine_line|#define VIA_REG_PLAYBACK_TABLE_PTR&t;0x04&t;/* dword - channel table pointer */
 DECL|macro|VIA_REG_PLAYBACK_CURR_PTR
 mdefine_line|#define VIA_REG_PLAYBACK_CURR_PTR&t;0x04&t;/* dword - channel current pointer */
-DECL|macro|VIA_REG_PLAYBACK_TYPE
-mdefine_line|#define VIA_REG_PLAYBACK_TYPE&t;&t;0x08    /* long - stop index, channel type, sample rate */ /* byte - channel type */
+DECL|macro|VIA_REG_PLAYBACK_STOP_IDX
+mdefine_line|#define VIA_REG_PLAYBACK_STOP_IDX&t;0x08    /* dword - stop index, channel type, sample rate */
 DECL|macro|VIA_REG_PLAYBACK_CURR_COUNT
 mdefine_line|#define VIA_REG_PLAYBACK_CURR_COUNT&t;0x0c&t;/* dword - channel current count (24 bit) */
 DECL|macro|VIA_REG_PLAYBACK_CURR_INDEX
 mdefine_line|#define VIA_REG_PLAYBACK_CURR_INDEX&t;0x0f&t;/* byte - channel current index */
+multiline_comment|/* multi-channel playback */
+DECL|macro|VIA_REG_MULTPLAY_STATUS
+mdefine_line|#define VIA_REG_MULTPLAY_STATUS&t;&t;0x40&t;/* byte - channel status */
+DECL|macro|VIA_REG_MULTPLAY_CONTROL
+mdefine_line|#define VIA_REG_MULTPLAY_CONTROL&t;0x41&t;/* byte - channel control */
+DECL|macro|VIA_REG_MULTPLAY_FORMAT
+mdefine_line|#define VIA_REG_MULTPLAY_FORMAT&t;&t;0x42&t;/* byte - format and channels */
+DECL|macro|VIA_REG_MULTPLAY_FMT_8BIT
+mdefine_line|#define   VIA_REG_MULTPLAY_FMT_8BIT&t;0x00
+DECL|macro|VIA_REG_MULTPLAY_FMT_16BIT
+mdefine_line|#define   VIA_REG_MULTPLAY_FMT_16BIT&t;0x80
+DECL|macro|VIA_REG_MULTPLAY_FMT_CH_MASK
+mdefine_line|#define   VIA_REG_MULTPLAY_FMT_CH_MASK&t;0x70&t;/* # channels &lt;&lt; 4 (valid = 1,2,4,6) */
+DECL|macro|VIA_REG_MULTPLAY_SCRATCH
+mdefine_line|#define VIA_REG_MULTPLAY_SCRATCH&t;0x43&t;/* byte - nop */
+DECL|macro|VIA_REG_MULTPLAY_TABLE_PTR
+mdefine_line|#define VIA_REG_MULTPLAY_TABLE_PTR&t;0x44&t;/* dword - channel table pointer */
+DECL|macro|VIA_REG_MULTPLAY_CURR_PTR
+mdefine_line|#define VIA_REG_MULTPLAY_CURR_PTR&t;0x44&t;/* dword - channel current pointer */
+DECL|macro|VIA_REG_MULTPLAY_STOP_IDX
+mdefine_line|#define VIA_REG_MULTPLAY_STOP_IDX&t;0x48    /* dword - stop index, slots */
+DECL|macro|VIA_REG_MULTPLAY_CURR_COUNT
+mdefine_line|#define VIA_REG_MULTPLAY_CURR_COUNT&t;0x4c&t;/* dword - channel current count (24 bit) */
+DECL|macro|VIA_REG_MULTIPLAY_CURR_INDEX
+mdefine_line|#define VIA_REG_MULTIPLAY_CURR_INDEX&t;0x4f&t;/* byte - channel current index */
 multiline_comment|/* capture block */
 DECL|macro|VIA_REG_CAPTURE_STATUS
 mdefine_line|#define VIA_REG_CAPTURE_STATUS&t;&t;0x60&t;/* byte - channel status */
@@ -311,12 +347,14 @@ DECL|macro|VIA_REG_CAPTURE_CHANNEL_MIC
 mdefine_line|#define   VIA_REG_CAPTURE_CHANNEL_MIC&t;0x4
 DECL|macro|VIA_REG_CAPTURE_CHANNEL_LINE
 mdefine_line|#define   VIA_REG_CAPTURE_CHANNEL_LINE&t;0
+DECL|macro|VIA_REG_CAPTURE_SELECT_CODEC
+mdefine_line|#define   VIA_REG_CAPTURE_SELECT_CODEC&t;0x03&t;/* recording source codec (0 = primary) */
 DECL|macro|VIA_REG_CAPTURE_TABLE_PTR
 mdefine_line|#define VIA_REG_CAPTURE_TABLE_PTR&t;0x64&t;/* dword - channel table pointer */
 DECL|macro|VIA_REG_CAPTURE_CURR_PTR
 mdefine_line|#define VIA_REG_CAPTURE_CURR_PTR&t;0x64&t;/* dword - channel current pointer */
-DECL|macro|VIA_REG_CAPTURE_TYPE
-mdefine_line|#define VIA_REG_CAPTURE_TYPE&t;&t;0x68&t;/* byte - channel type */
+DECL|macro|VIA_REG_CAPTURE_STOP_IDX
+mdefine_line|#define VIA_REG_CAPTURE_STOP_IDX&t;0x68&t;/* dword - stop index */
 DECL|macro|VIA_REG_CAPTURE_CURR_COUNT
 mdefine_line|#define VIA_REG_CAPTURE_CURR_COUNT&t;0x6c&t;/* dword - channel current count (24 bit) */
 DECL|macro|VIA_REG_CAPTURE_CURR_INDEX
@@ -994,7 +1032,7 @@ c_func
 (paren
 id|port
 op_plus
-id|VIA_REG_OFFSET_TYPE
+id|VIA_REG_OFFSET_STOP_IDX
 )paren
 comma
 id|inl
@@ -1277,6 +1315,182 @@ op_plus
 id|VIA_REG_OFFSET_TABLE_PTR
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|viadev-&gt;reg_offset
+op_eq
+id|VIA_REG_MULTPLAY_STATUS
+)paren
+(brace
+r_int
+r_int
+id|slots
+suffix:semicolon
+r_int
+id|fmt
+op_assign
+(paren
+id|runtime-&gt;format
+op_eq
+id|SNDRV_PCM_FORMAT_S16_LE
+)paren
+ques
+c_cond
+id|VIA_REG_MULTPLAY_FMT_16BIT
+suffix:colon
+id|VIA_REG_MULTPLAY_FMT_8BIT
+suffix:semicolon
+id|fmt
+op_or_assign
+id|runtime-&gt;channels
+op_lshift
+l_int|4
+suffix:semicolon
+id|outb
+c_func
+(paren
+id|fmt
+comma
+id|chip-&gt;port
+op_plus
+id|VIA_REG_MULTPLAY_FORMAT
+)paren
+suffix:semicolon
+multiline_comment|/* set sample number to slot 3, 4, 7, 8, 6, 9 */
+r_switch
+c_cond
+(paren
+id|runtime-&gt;channels
+)paren
+(brace
+r_case
+l_int|1
+suffix:colon
+id|slots
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+id|slots
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|0
+)paren
+op_or
+(paren
+l_int|2
+op_lshift
+l_int|4
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|4
+suffix:colon
+id|slots
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|0
+)paren
+op_or
+(paren
+l_int|2
+op_lshift
+l_int|4
+)paren
+op_or
+(paren
+l_int|3
+op_lshift
+l_int|8
+)paren
+op_or
+(paren
+l_int|4
+op_lshift
+l_int|12
+)paren
+suffix:semicolon
+r_case
+l_int|6
+suffix:colon
+id|slots
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|0
+)paren
+op_or
+(paren
+l_int|2
+op_lshift
+l_int|4
+)paren
+op_or
+(paren
+l_int|5
+op_lshift
+l_int|8
+)paren
+op_or
+(paren
+l_int|6
+op_lshift
+l_int|12
+)paren
+op_or
+(paren
+l_int|3
+op_lshift
+l_int|16
+)paren
+op_or
+(paren
+l_int|4
+op_lshift
+l_int|20
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|slots
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* STOP index is never reached */
+id|outl
+c_func
+(paren
+l_int|0xff000000
+op_or
+id|slots
+comma
+id|chip-&gt;port
+op_plus
+id|VIA_REG_MULTPLAY_STOP_IDX
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|outl
 c_func
 (paren
@@ -1307,9 +1521,10 @@ comma
 multiline_comment|/* STOP index is never reached */
 id|port
 op_plus
-id|VIA_REG_OFFSET_TYPE
+id|VIA_REG_OFFSET_STOP_IDX
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1603,13 +1818,9 @@ c_cond
 id|inb
 c_func
 (paren
-id|VIAREG
-c_func
-(paren
-id|chip
-comma
-id|PLAYBACK_STATUS
-)paren
+id|chip-&gt;port
+op_plus
+id|chip-&gt;playback.reg_offset
 )paren
 op_amp
 (paren
@@ -1633,13 +1844,9 @@ c_cond
 id|inb
 c_func
 (paren
-id|VIAREG
-c_func
-(paren
-id|chip
-comma
-id|CAPTURE_STATUS
-)paren
+id|chip-&gt;port
+op_plus
+id|chip-&gt;capture.reg_offset
 )paren
 op_amp
 (paren
@@ -1808,10 +2015,6 @@ id|runtime
 op_assign
 id|substream-&gt;runtime
 suffix:semicolon
-r_int
-r_int
-id|tmp
-suffix:semicolon
 id|snd_ac97_set_rate
 c_func
 (paren
@@ -1832,6 +2035,18 @@ id|chip-&gt;playback
 comma
 id|substream
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip-&gt;playback.reg_offset
+op_ne
+id|VIA_REG_MULTPLAY_STATUS
+)paren
+(brace
+r_int
+r_int
+id|tmp
 suffix:semicolon
 multiline_comment|/* I don&squot;t understand this stuff but its from the documentation and this way it works */
 id|outb
@@ -1872,7 +2087,7 @@ c_func
 (paren
 id|chip
 comma
-id|PLAYBACK_TYPE
+id|PLAYBACK_STOP_IDX
 )paren
 )paren
 op_amp
@@ -1901,10 +2116,11 @@ c_func
 (paren
 id|chip
 comma
-id|PLAYBACK_TYPE
+id|PLAYBACK_STOP_IDX
 )paren
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2184,7 +2400,7 @@ l_int|1
 comma
 id|channels_max
 suffix:colon
-l_int|2
+l_int|6
 comma
 id|buffer_bytes_max
 suffix:colon
@@ -2290,6 +2506,46 @@ l_int|0
 comma
 )brace
 suffix:semicolon
+DECL|variable|channels
+r_static
+r_int
+r_int
+id|channels
+(braket
+)braket
+op_assign
+(brace
+l_int|1
+comma
+l_int|2
+comma
+l_int|4
+comma
+l_int|6
+)brace
+suffix:semicolon
+DECL|macro|CHANNELS
+mdefine_line|#define CHANNELS sizeof(channels) / sizeof(channels[0])
+DECL|variable|hw_constraints_channels
+r_static
+id|snd_pcm_hw_constraint_list_t
+id|hw_constraints_channels
+op_assign
+(brace
+id|count
+suffix:colon
+id|CHANNELS
+comma
+id|list
+suffix:colon
+id|channels
+comma
+id|mask
+suffix:colon
+l_int|0
+comma
+)brace
+suffix:semicolon
 DECL|function|snd_via8233_playback_open
 r_static
 r_int
@@ -2365,6 +2621,19 @@ l_int|0
 )paren
 r_return
 id|err
+suffix:semicolon
+id|snd_pcm_hw_constraint_list
+c_func
+(paren
+id|runtime
+comma
+l_int|0
+comma
+id|SNDRV_PCM_HW_PARAM_CHANNELS
+comma
+op_amp
+id|hw_constraints_channels
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -3562,9 +3831,17 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* initialize offsets */
+macro_line|#if 0
 id|chip-&gt;playback.reg_offset
 op_assign
 id|VIA_REG_PLAYBACK_STATUS
+suffix:semicolon
+multiline_comment|/* this doesn&squot;t work on VIA8233A */
+macro_line|#endif
+multiline_comment|/* we use multi-channel playback mode, since this mode is supported&n;&t; * by all VIA8233 models (and obviously suitable for our purpose).&n;&t; */
+id|chip-&gt;playback.reg_offset
+op_assign
+id|VIA_REG_MULTPLAY_STATUS
 suffix:semicolon
 id|chip-&gt;capture.reg_offset
 op_assign

@@ -6,7 +6,7 @@ macro_line|#include &quot;seq_kernel.h&quot;
 macro_line|#include &quot;seq_device.h&quot;
 macro_line|#include &quot;soundfont.h&quot;
 macro_line|#include &quot;seq_midi_emul.h&quot;
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef CONFIG_SND_SEQUENCER_OSS
 macro_line|#include &quot;seq_oss.h&quot;
 macro_line|#endif
 macro_line|#include &quot;emux_legacy.h&quot;
@@ -271,7 +271,7 @@ op_star
 id|chset
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef CONFIG_SND_SEQUENCER_OSS
 DECL|member|oss_ioctl
 r_int
 (paren
@@ -367,6 +367,14 @@ r_int
 id|midi_devidx
 suffix:semicolon
 multiline_comment|/* device offset of virtual midi */
+DECL|member|linear_panning
+r_int
+r_int
+id|linear_panning
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* panning is linear (sbawe = 1, emu10k1 = 0) */
 multiline_comment|/* private */
 DECL|member|num_voices
 r_int
@@ -453,7 +461,7 @@ op_star
 id|proc
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef CONFIG_SND_SEQUENCER_OSS
 DECL|member|oss_synth
 id|snd_seq_device_t
 op_star
@@ -507,7 +515,7 @@ op_star
 id|effect
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef CONFIG_SND_SEQUENCER_OSS
 DECL|member|oss_arg
 id|snd_seq_oss_arg_t
 op_star

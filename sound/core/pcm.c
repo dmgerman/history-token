@@ -1017,7 +1017,7 @@ id|state
 )braket
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)
 macro_line|#include &lt;linux/soundcard.h&gt;
 DECL|function|snd_pcm_oss_format_name
 r_const
@@ -1518,7 +1518,7 @@ comma
 id|runtime-&gt;tick_time
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)
 r_if
 c_cond
 (paren
@@ -2712,7 +2712,7 @@ comma
 op_star
 id|prev
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)
 id|init_MUTEX
 c_func
 (paren
@@ -3199,7 +3199,7 @@ comma
 op_star
 id|substream_next
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)
 id|snd_pcm_oss_setup_t
 op_star
 id|setup
@@ -3245,7 +3245,7 @@ c_func
 id|pstr
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)
 r_for
 c_loop
 (paren
@@ -5128,6 +5128,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_pcm_release_substream
+)paren
+suffix:semicolon
+DECL|variable|snd_pcm_format_name
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_pcm_format_name
+)paren
+suffix:semicolon
+DECL|variable|snd_pcm_subformat_name
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_pcm_subformat_name
 )paren
 suffix:semicolon
 multiline_comment|/* pcm_native.c */

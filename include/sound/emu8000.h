@@ -20,6 +20,10 @@ DECL|macro|EMU8000_RAM_WRITE
 mdefine_line|#define EMU8000_RAM_WRITE  1
 DECL|macro|EMU8000_RAM_CLOSE
 mdefine_line|#define EMU8000_RAM_CLOSE  2
+DECL|macro|EMU8000_RAM_MODE_MASK
+mdefine_line|#define EMU8000_RAM_MODE_MASK&t;0x03
+DECL|macro|EMU8000_RAM_RIGHT
+mdefine_line|#define EMU8000_RAM_RIGHT&t;0x10&t;/* use &squot;right&squot; DMA channel */
 r_enum
 (brace
 DECL|enumerator|EMU8000_CONTROL_BASS
@@ -172,6 +176,12 @@ id|controls
 id|EMU8000_NUM_CONTROLS
 )braket
 suffix:semicolon
+DECL|member|pcm
+id|snd_pcm_t
+op_star
+id|pcm
+suffix:semicolon
+multiline_comment|/* pcm on emu8000 wavetable */
 DECL|typedef|emu8000_t
 )brace
 id|emu8000_t

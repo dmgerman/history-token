@@ -41,11 +41,11 @@ suffix:semicolon
 id|MODULE_DEVICES
 c_func
 (paren
-l_string|&quot;{{Intel,82801AA},&quot;
-l_string|&quot;{Intel,82901AB},&quot;
-l_string|&quot;{Intel,82801BA},&quot;
-l_string|&quot;{Intel,ICH3},&quot;
-l_string|&quot;{Intel,ICH4},&quot;
+l_string|&quot;{{Intel,82801AA-ICH},&quot;
+l_string|&quot;{Intel,82901AB-ICH0},&quot;
+l_string|&quot;{Intel,82801BA-ICH2},&quot;
+l_string|&quot;{Intel,82801CA-ICH3},&quot;
+l_string|&quot;{Intel,82801DB-ICH4},&quot;
 l_string|&quot;{Intel,MX440},&quot;
 l_string|&quot;{SiS,SI7012},&quot;
 l_string|&quot;{NVidia,NForce Audio},&quot;
@@ -6742,13 +6742,19 @@ op_assign
 (brace
 id|PCI_DEVICE_ID_INTEL_82801
 comma
-l_string|&quot;Intel ICH 82801AA&quot;
+l_string|&quot;Intel 82801AA-ICH&quot;
 )brace
 comma
 (brace
 id|PCI_DEVICE_ID_INTEL_82901
 comma
-l_string|&quot;Intel ICH 82901AB&quot;
+l_string|&quot;Intel 82901AB-ICH0&quot;
+)brace
+comma
+(brace
+id|PCI_DEVICE_ID_INTEL_82801BA
+comma
+l_string|&quot;Intel 82801BA-ICH2&quot;
 )brace
 comma
 (brace
@@ -6760,13 +6766,13 @@ comma
 (brace
 id|PCI_DEVICE_ID_INTEL_ICH3
 comma
-l_string|&quot;Intel ICH3&quot;
+l_string|&quot;Intel 82801CA-ICH3&quot;
 )brace
 comma
 (brace
 id|PCI_DEVICE_ID_INTEL_ICH4
 comma
-l_string|&quot;Intel ICH4&quot;
+l_string|&quot;Intel 82801DB-ICH4&quot;
 )brace
 comma
 (brace

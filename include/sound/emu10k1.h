@@ -3374,7 +3374,15 @@ id|gpr_valid
 (braket
 l_int|0x100
 op_div
-l_int|32
+(paren
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+op_star
+l_int|8
+)paren
 )braket
 suffix:semicolon
 multiline_comment|/* bitmask of valid initializers */
@@ -3418,7 +3426,15 @@ id|tram_valid
 (braket
 l_int|0xa0
 op_div
-l_int|32
+(paren
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+op_star
+l_int|8
+)paren
 )braket
 suffix:semicolon
 multiline_comment|/* bitmask of valid initializers */
@@ -3447,7 +3463,15 @@ id|code_valid
 (braket
 l_int|512
 op_div
-l_int|32
+(paren
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+op_star
+l_int|8
+)paren
 )braket
 suffix:semicolon
 multiline_comment|/* bitmask of valid instructions */

@@ -1107,7 +1107,7 @@ id|opl3-&gt;sys_timer_status
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef CONFIG_SND_SEQUENCER_OSS
 id|snd_opl3_init_seq_oss
 c_func
 (paren
@@ -1161,7 +1161,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef CONFIG_SND_SEQUENCER_OSS
 id|snd_opl3_free_seq_oss
 c_func
 (paren

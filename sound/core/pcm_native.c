@@ -1531,7 +1531,7 @@ op_minus
 id|EBADFD
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)
 r_if
 c_cond
 (paren
@@ -2483,6 +2483,11 @@ id|runtime-&gt;buffer_size
 op_minus
 id|status-&gt;avail
 suffix:semicolon
+r_else
+id|status-&gt;delay
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -2504,6 +2509,11 @@ id|SNDRV_PCM_STATE_RUNNING
 id|status-&gt;delay
 op_assign
 id|status-&gt;avail
+suffix:semicolon
+r_else
+id|status-&gt;delay
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 id|status-&gt;avail_max
@@ -3050,12 +3060,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|snd_pcm_running
-c_func
-(paren
-id|substream
-)paren
+id|substream-&gt;runtime-&gt;status-&gt;state
+op_ne
+id|SNDRV_PCM_STATE_RUNNING
+op_logical_and
+id|substream-&gt;runtime-&gt;status-&gt;state
+op_ne
+id|SNDRV_PCM_STATE_DRAINING
 )paren
 r_return
 op_minus
@@ -12871,7 +12882,6 @@ op_star
 id|area
 )paren
 (brace
-macro_line|#if 0
 id|snd_pcm_substream_t
 op_star
 id|substream
@@ -12889,7 +12899,6 @@ op_amp
 id|substream-&gt;runtime-&gt;mmap_count
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|snd_pcm_mmap_data_close
 r_static

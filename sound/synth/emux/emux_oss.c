@@ -2,7 +2,7 @@ multiline_comment|/*&n; *  Interface for OSS sequencer emulation&n; *&n; *  Copy
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef CONFIG_SND_SEQUENCER_OSS
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;emux_voice.h&quot;
@@ -2103,5 +2103,5 @@ id|hop
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_SND_OSSEMUL */
+macro_line|#endif /* CONFIG_SND_SEQUENCER_OSS */
 eof

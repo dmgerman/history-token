@@ -4961,7 +4961,7 @@ c_func
 (paren
 id|pcm-&gt;name
 comma
-l_string|&quot; (chip)&quot;
+l_string|&quot; (codec)&quot;
 )paren
 suffix:semicolon
 r_if
