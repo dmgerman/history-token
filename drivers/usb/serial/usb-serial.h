@@ -117,8 +117,15 @@ r_void
 op_star
 r_private
 suffix:semicolon
+DECL|member|dev
+r_struct
+id|device
+id|dev
+suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|to_usb_serial_port
+mdefine_line|#define to_usb_serial_port(d) container_of(d, struct usb_serial_port, dev)
 multiline_comment|/**&n; * usb_serial - structure used by the usb-serial core for a device&n; * @magic: magic number for internal validity of this pointer.&n; * @dev: pointer to the struct usb_device for this device&n; * @type: pointer to the struct usb_serial_device_type for this device&n; * @interface: pointer to the struct usb_interface for this device&n; * @minor: the starting minor number for this device&n; * @num_ports: the number of ports this device has&n; * @num_interrupt_in: number of interrupt in endpoints we have&n; * @num_bulk_in: number of bulk in endpoints we have&n; * @num_bulk_out: number of bulk out endpoints we have&n; * @vendor: vendor id of this device&n; * @product: product id of this device&n; * @port: array of struct usb_serial_port structures for the different ports.&n; * @private: place to put any driver specific information that is needed.  The&n; *&t;usb-serial driver is required to manage this data, the usb-serial core&n; *&t;will not touch this.&n; */
 DECL|struct|usb_serial
 r_struct
@@ -237,6 +244,11 @@ r_struct
 id|list_head
 id|driver_list
 suffix:semicolon
+DECL|member|driver
+r_struct
+id|device_driver
+id|driver
+suffix:semicolon
 DECL|member|probe
 r_int
 (paren
@@ -287,6 +299,32 @@ r_struct
 id|usb_serial
 op_star
 id|serial
+)paren
+suffix:semicolon
+DECL|member|port_probe
+r_int
+(paren
+op_star
+id|port_probe
+)paren
+(paren
+r_struct
+id|usb_serial_port
+op_star
+id|port
+)paren
+suffix:semicolon
+DECL|member|port_remove
+r_int
+(paren
+op_star
+id|port_remove
+)paren
+(paren
+r_struct
+id|usb_serial_port
+op_star
+id|port
 )paren
 suffix:semicolon
 multiline_comment|/* serial function calls */
@@ -519,6 +557,8 @@ id|regs
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|to_usb_serial_driver
+mdefine_line|#define to_usb_serial_driver(d) container_of(d, struct usb_serial_device_type, driver)
 r_extern
 r_int
 id|usb_serial_register
