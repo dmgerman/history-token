@@ -759,6 +759,7 @@ id|buf
 (braket
 id|NFS_MAXPATHLEN
 )braket
+id|__initdata
 suffix:semicolon
 r_char
 op_star
