@@ -281,8 +281,8 @@ DECL|macro|IT87_REG_FAN
 mdefine_line|#define IT87_REG_FAN(nr)       (0x0d + (nr))
 DECL|macro|IT87_REG_FAN_MIN
 mdefine_line|#define IT87_REG_FAN_MIN(nr)   (0x10 + (nr))
-DECL|macro|IT87_REG_FAN_CTRL
-mdefine_line|#define IT87_REG_FAN_CTRL      0x13
+DECL|macro|IT87_REG_FAN_MAIN_CTRL
+mdefine_line|#define IT87_REG_FAN_MAIN_CTRL 0x13
 DECL|macro|IT87_REG_VIN
 mdefine_line|#define IT87_REG_VIN(nr)       (0x20 + (nr))
 DECL|macro|IT87_REG_TEMP
@@ -292,9 +292,9 @@ mdefine_line|#define IT87_REG_VIN_MAX(nr)   (0x30 + (nr) * 2)
 DECL|macro|IT87_REG_VIN_MIN
 mdefine_line|#define IT87_REG_VIN_MIN(nr)   (0x31 + (nr) * 2)
 DECL|macro|IT87_REG_TEMP_HIGH
-mdefine_line|#define IT87_REG_TEMP_HIGH(nr) (0x40 + ((nr) * 2))
+mdefine_line|#define IT87_REG_TEMP_HIGH(nr) (0x40 + (nr) * 2)
 DECL|macro|IT87_REG_TEMP_LOW
-mdefine_line|#define IT87_REG_TEMP_LOW(nr)  (0x41 + ((nr) * 2))
+mdefine_line|#define IT87_REG_TEMP_LOW(nr)  (0x41 + (nr) * 2)
 DECL|macro|IT87_REG_I2C_ADDR
 mdefine_line|#define IT87_REG_I2C_ADDR      0x48
 DECL|macro|IT87_REG_VIN_ENABLE
@@ -304,9 +304,9 @@ mdefine_line|#define IT87_REG_TEMP_ENABLE   0x51
 DECL|macro|IT87_REG_CHIPID
 mdefine_line|#define IT87_REG_CHIPID        0x58
 DECL|macro|IN_TO_REG
-mdefine_line|#define IN_TO_REG(val)  (SENSORS_LIMIT((((val) * 10 + 8)/16),0,255))
+mdefine_line|#define IN_TO_REG(val)  (SENSORS_LIMIT((((val) + 8)/16),0,255))
 DECL|macro|IN_FROM_REG
-mdefine_line|#define IN_FROM_REG(val) (((val) *  16) / 10)
+mdefine_line|#define IN_FROM_REG(val) ((val) * 16)
 DECL|function|FAN_TO_REG
 r_static
 r_inline
@@ -372,9 +372,9 @@ suffix:semicolon
 DECL|macro|FAN_FROM_REG
 mdefine_line|#define FAN_FROM_REG(val,div) ((val)==0?-1:(val)==255?0:1350000/((val)*(div)))
 DECL|macro|TEMP_TO_REG
-mdefine_line|#define TEMP_TO_REG(val) (SENSORS_LIMIT(((val)&lt;0?(((val)-5)/10):&bslash;&n;&t;&t;&t;&t;&t;((val)+5)/10),0,255))
+mdefine_line|#define TEMP_TO_REG(val) (SENSORS_LIMIT(((val)&lt;0?(((val)-500)/1000):&bslash;&n;&t;&t;&t;&t;&t;((val)+500)/1000),-128,127))
 DECL|macro|TEMP_FROM_REG
-mdefine_line|#define TEMP_FROM_REG(val) (((val)&gt;0x80?(val)-0x100:(val))*10)
+mdefine_line|#define TEMP_FROM_REG(val) (((val)&gt;0x80?(val)-0x100:(val))*1000)
 DECL|macro|VID_FROM_REG
 mdefine_line|#define VID_FROM_REG(val) ((val)==0x1f?0:(val)&gt;=0x10?510-(val)*10:&bslash;&n;&t;&t;&t;&t;205-(val)*5)
 DECL|macro|ALARMS_FROM_REG
@@ -738,8 +738,6 @@ id|data-&gt;in
 id|nr
 )braket
 )paren
-op_star
-l_int|10
 )paren
 suffix:semicolon
 )brace
@@ -789,8 +787,6 @@ id|data-&gt;in_min
 id|nr
 )braket
 )paren
-op_star
-l_int|10
 )paren
 suffix:semicolon
 )brace
@@ -840,8 +836,6 @@ id|data-&gt;in_max
 id|nr
 )braket
 )paren
-op_star
-l_int|10
 )paren
 suffix:semicolon
 )brace
@@ -903,8 +897,6 @@ l_int|NULL
 comma
 l_int|10
 )paren
-op_div
-l_int|10
 suffix:semicolon
 id|data-&gt;in_min
 (braket
@@ -996,8 +988,6 @@ l_int|NULL
 comma
 l_int|10
 )paren
-op_div
-l_int|10
 suffix:semicolon
 id|data-&gt;in_max
 (braket
@@ -1184,8 +1174,6 @@ id|data-&gt;temp
 id|nr
 )braket
 )paren
-op_star
-l_int|100
 )paren
 suffix:semicolon
 )brace
@@ -1235,8 +1223,6 @@ id|data-&gt;temp_high
 id|nr
 )braket
 )paren
-op_star
-l_int|100
 )paren
 suffix:semicolon
 )brace
@@ -1286,8 +1272,6 @@ id|data-&gt;temp_low
 id|nr
 )braket
 )paren
-op_star
-l_int|100
 )paren
 suffix:semicolon
 )brace
@@ -1348,8 +1332,6 @@ l_int|NULL
 comma
 l_int|10
 )paren
-op_div
-l_int|100
 suffix:semicolon
 id|data-&gt;temp_high
 (braket
@@ -1440,8 +1422,6 @@ l_int|NULL
 comma
 l_int|10
 )paren
-op_div
-l_int|100
 suffix:semicolon
 id|data-&gt;temp_low
 (braket
@@ -3602,7 +3582,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* The SMBus locks itself, but ISA access must be locked explicitely! &n;   We don&squot;t want to lock the whole ISA bus, so we lock each client&n;   separately.&n;   We ignore the IT87 BUSY flag at this moment - it could lead to deadlocks,&n;   would slow down the IT87 access and should not be necessary. &n;   There are some ugly typecasts here, but the good new is - they should&n;   nowhere else be necessary! */
+multiline_comment|/* The SMBus locks itself, but ISA access must be locked explicitely! &n;   We don&squot;t want to lock the whole ISA bus, so we lock each client&n;   separately.&n;   We ignore the IT87 BUSY flag at this moment - it could lead to deadlocks,&n;   would slow down the IT87 access and should not be necessary. */
 DECL|function|it87_read_value
 r_static
 r_int
@@ -3691,7 +3671,7 @@ id|reg
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* The SMBus locks itself, but ISA access muse be locked explicitely! &n;   We don&squot;t want to lock the whole ISA bus, so we lock each client&n;   separately.&n;   We ignore the IT87 BUSY flag at this moment - it could lead to deadlocks,&n;   would slow down the IT87 access and should not be necessary. &n;   There are some ugly typecasts here, but the good new is - they should&n;   nowhere else be necessary! */
+multiline_comment|/* The SMBus locks itself, but ISA access muse be locked explicitely! &n;   We don&squot;t want to lock the whole ISA bus, so we lock each client&n;   separately.&n;   We ignore the IT87 BUSY flag at this moment - it could lead to deadlocks,&n;   would slow down the IT87 access and should not be necessary. */
 DECL|function|it87_write_value
 r_static
 r_int
@@ -3913,7 +3893,7 @@ c_func
 (paren
 id|client
 comma
-id|IT87_REG_FAN_CTRL
+id|IT87_REG_FAN_MAIN_CTRL
 )paren
 suffix:semicolon
 r_if
@@ -3944,7 +3924,7 @@ c_func
 (paren
 id|client
 comma
-id|IT87_REG_FAN_CTRL
+id|IT87_REG_FAN_MAIN_CTRL
 comma
 id|tmp
 )paren
