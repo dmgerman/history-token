@@ -173,6 +173,7 @@ multiline_comment|/* Valid image is on the disk, if we continue we risk serious 
 id|printk
 c_func
 (paren
+id|KERN_CRIT
 l_string|&quot;Please power me down manually&bslash;n&quot;
 )paren
 suffix:semicolon

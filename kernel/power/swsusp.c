@@ -87,11 +87,13 @@ op_assign
 l_int|NULL
 suffix:semicolon
 DECL|variable|pagedir_save
+r_static
 id|suspend_pagedir_t
 op_star
 id|pagedir_save
 suffix:semicolon
 DECL|variable|__nosavedata
+r_static
 r_int
 id|pagedir_order
 id|__nosavedata
@@ -161,26 +163,6 @@ suffix:semicolon
 multiline_comment|/*&n; * XXX: We try to keep some more pages free so that I/O operations succeed&n; * without paging. Might this be more?&n; */
 DECL|macro|PAGES_FOR_IO
 mdefine_line|#define PAGES_FOR_IO&t;512
-DECL|variable|name_suspend
-r_static
-r_const
-r_char
-id|name_suspend
-(braket
-)braket
-op_assign
-l_string|&quot;Suspend Machine: &quot;
-suffix:semicolon
-DECL|variable|name_resume
-r_static
-r_const
-r_char
-id|name_resume
-(braket
-)braket
-op_assign
-l_string|&quot;Resume Machine: &quot;
-suffix:semicolon
 multiline_comment|/*&n; * Saving part...&n; */
 multiline_comment|/* We memorize in swapfile_used what swap devices are used for suspension */
 DECL|macro|SWAPFILE_UNUSED
@@ -726,7 +708,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;free_data - Free the swap entries used by the saved image.&n; *&n; *&t;Walk the list of used swap entries and free each one. &n; */
+multiline_comment|/**&n; *&t;data_free - Free the swap entries used by the saved image.&n; *&n; *&t;Walk the list of used swap entries and free each one. &n; *&t;This is only used for cleanup when suspend fails.&n; */
 DECL|function|data_free
 r_static
 r_void
@@ -798,7 +780,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;write_data - Write saved image to swap.&n; *&n; *&t;Walk the list of pages in the image and sync each one to swap.&n; */
+multiline_comment|/**&n; *&t;data_write - Write saved image to swap.&n; *&n; *&t;Walk the list of pages in the image and sync each one to swap.&n; */
 DECL|function|data_write
 r_static
 r_int
@@ -1124,7 +1106,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;free_pagedir - Free pages used by the page directory.&n; */
+multiline_comment|/**&n; *&t;free_pagedir_entries - Free pages used by the page directory.&n; *&n; *&t;This is used during suspend for error recovery.&n; */
 DECL|function|free_pagedir_entries
 r_static
 r_void
@@ -1134,11 +1116,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|num
-op_assign
-id|swsusp_info.pagedir_pages
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -1151,7 +1128,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|num
+id|swsusp_info.pagedir_pages
 suffix:semicolon
 id|i
 op_increment
@@ -2425,7 +2402,7 @@ op_assign
 id|order
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;alloc_pagedir - Allocate the page directory.&n; *&n; *&t;First, determine exactly how many contiguous pages we need, &n; *&t;allocate them, then mark each &squot;unsavable&squot;.&n; */
+multiline_comment|/**&n; *&t;alloc_pagedir - Allocate the page directory.&n; *&n; *&t;First, determine exactly how many contiguous pages we need and&n; *&t;allocate them.&n; */
 DECL|function|alloc_pagedir
 r_static
 r_int
@@ -2848,9 +2825,7 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;%sNot enough free pages for highmem&bslash;n&quot;
-comma
-id|name_suspend
+l_string|&quot;Suspend machine: Not enough free pages for highmem&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3226,11 +3201,9 @@ id|orig_address
 OL
 id|addre
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
