@@ -1,14 +1,14 @@
 macro_line|#ifndef _ASM_IA64_IRQ_H
 DECL|macro|_ASM_IA64_IRQ_H
 mdefine_line|#define _ASM_IA64_IRQ_H
-multiline_comment|/*&n; * Copyright (C) 1999-2000, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * 11/24/98&t;S.Eranian &t;updated TIMER_IRQ and irq_cannonicalize&n; * 01/20/99&t;S.Eranian&t;added keyboard interrupt&n; * 02/29/00     D.Mosberger&t;moved most things into hw_irq.h&n; */
+multiline_comment|/*&n; * Copyright (C) 1999-2000, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * 11/24/98&t;S.Eranian &t;updated TIMER_IRQ and irq_canonicalize&n; * 01/20/99&t;S.Eranian&t;added keyboard interrupt&n; * 02/29/00     D.Mosberger&t;moved most things into hw_irq.h&n; */
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;256
 r_static
 id|__inline__
 r_int
-DECL|function|irq_cannonicalize
-id|irq_cannonicalize
+DECL|function|irq_canonicalize
+id|irq_canonicalize
 (paren
 r_int
 id|irq

@@ -542,8 +542,8 @@ suffix:semicolon
 r_static
 r_int
 r_int
-DECL|function|pplus_irq_cannonicalize
-id|pplus_irq_cannonicalize
+DECL|function|pplus_irq_canonicalize
+id|pplus_irq_canonicalize
 c_func
 (paren
 id|u_int
@@ -1572,9 +1572,9 @@ id|ppc_md.show_cpuinfo
 op_assign
 id|pplus_show_cpuinfo
 suffix:semicolon
-id|ppc_md.irq_cannonicalize
+id|ppc_md.irq_canonicalize
 op_assign
-id|pplus_irq_cannonicalize
+id|pplus_irq_canonicalize
 suffix:semicolon
 id|ppc_md.init_IRQ
 op_assign

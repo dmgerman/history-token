@@ -7,11 +7,11 @@ mdefine_line|#define TIMER_IRQ 0
 multiline_comment|/*&n; * 16 8259A IRQ&squot;s, 208 potential APIC interrupt sources.&n; * Right now the APIC is mostly only used for SMP.&n; * 256 vectors is an architectural limit. (we can have&n; * more than 256 devices theoretically, but they will&n; * have to use shared interrupts)&n; * Since vectors 0x00-0x1f are used/reserved for the CPU,&n; * the usable vector space is 0x20-0xff (224 vectors)&n; */
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS 224
-DECL|function|irq_cannonicalize
+DECL|function|irq_canonicalize
 r_static
 id|__inline__
 r_int
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 r_int

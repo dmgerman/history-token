@@ -1261,7 +1261,7 @@ id|ppc_md.show_percpuinfo
 op_assign
 id|m8xx_show_percpuinfo
 suffix:semicolon
-id|ppc_md.irq_cannonicalize
+id|ppc_md.irq_canonicalize
 op_assign
 l_int|NULL
 suffix:semicolon

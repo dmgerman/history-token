@@ -17068,7 +17068,7 @@ id|i
 suffix:semicolon
 id|info-&gt;irq_level
 op_assign
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 id|info-&gt;irq_level

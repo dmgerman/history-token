@@ -547,8 +547,8 @@ suffix:semicolon
 )brace
 r_static
 id|u32
-DECL|function|mcpn765_irq_cannonicalize
-id|mcpn765_irq_cannonicalize
+DECL|function|mcpn765_irq_canonicalize
+id|mcpn765_irq_canonicalize
 c_func
 (paren
 id|u32
@@ -1419,9 +1419,9 @@ id|ppc_md.show_cpuinfo
 op_assign
 id|mcpn765_show_cpuinfo
 suffix:semicolon
-id|ppc_md.irq_cannonicalize
+id|ppc_md.irq_canonicalize
 op_assign
-id|mcpn765_irq_cannonicalize
+id|mcpn765_irq_canonicalize
 suffix:semicolon
 id|ppc_md.init_IRQ
 op_assign

@@ -5639,7 +5639,7 @@ suffix:semicolon
 )brace
 id|new_serial.irq
 op_assign
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 id|new_serial.irq
@@ -10988,7 +10988,7 @@ l_int|0
 suffix:semicolon
 id|state-&gt;irq
 op_assign
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 id|state-&gt;irq

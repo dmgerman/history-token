@@ -2481,7 +2481,7 @@ id|HIGH_BITS_OFFSET
 suffix:semicolon
 id|new_serial.irq
 op_assign
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 id|new_serial.irq

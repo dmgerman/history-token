@@ -7717,7 +7717,7 @@ id|port
 suffix:semicolon
 id|up-&gt;port.irq
 op_assign
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 id|old_serial_port
