@@ -231,6 +231,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;&t;membar&t;&t;#StoreLoad | #LoadLoad&bslash;n&quot;
 l_string|&quot;&t;mov&t;&t;%0, %%g5&bslash;n&quot;
 l_string|&quot;1:&t;lduw&t;&t;[%2], %%g7&bslash;n&quot;
 l_string|&quot;&t;cas&t;&t;[%2], %%g7, %0&bslash;n&quot;
@@ -290,6 +291,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;&t;membar&t;&t;#StoreLoad | #LoadLoad&bslash;n&quot;
 l_string|&quot;&t;mov&t;&t;%0, %%g5&bslash;n&quot;
 l_string|&quot;1:&t;ldx&t;&t;[%2], %%g7&bslash;n&quot;
 l_string|&quot;&t;casx&t;&t;[%2], %%g7, %0&bslash;n&quot;
@@ -448,6 +450,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;membar #StoreLoad | #LoadLoad&bslash;n&quot;
 l_string|&quot;cas [%2], %3, %0&bslash;n&bslash;t&quot;
 l_string|&quot;membar #StoreLoad | #StoreStore&quot;
 suffix:colon
@@ -504,6 +507,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;membar #StoreLoad | #LoadLoad&bslash;n&quot;
 l_string|&quot;casx [%2], %3, %0&bslash;n&bslash;t&quot;
 l_string|&quot;membar #StoreLoad | #StoreStore&quot;
 suffix:colon

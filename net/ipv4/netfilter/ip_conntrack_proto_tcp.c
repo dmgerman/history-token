@@ -2214,6 +2214,10 @@ id|state-&gt;last_seq
 op_eq
 id|seq
 op_logical_and
+id|state-&gt;last_ack
+op_eq
+id|ack
+op_logical_and
 id|state-&gt;last_end
 op_eq
 id|end
@@ -2230,6 +2234,10 @@ suffix:semicolon
 id|state-&gt;last_seq
 op_assign
 id|seq
+suffix:semicolon
+id|state-&gt;last_ack
+op_assign
+id|ack
 suffix:semicolon
 id|state-&gt;last_end
 op_assign

@@ -871,7 +871,8 @@ id|domains
 (brace
 multiline_comment|/* Slot does not have dynamically-removable children */
 r_return
-l_int|1
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 r_if
@@ -1033,6 +1034,8 @@ r_if
 c_cond
 (paren
 id|rc
+OL
+l_int|0
 )paren
 (brace
 r_return
@@ -1286,6 +1289,8 @@ r_if
 c_cond
 (paren
 id|rc
+op_ge
+l_int|0
 )paren
 (brace
 r_if
@@ -1421,7 +1426,7 @@ suffix:semicolon
 r_return
 (paren
 id|rc
-op_eq
+op_ge
 l_int|0
 )paren
 suffix:semicolon

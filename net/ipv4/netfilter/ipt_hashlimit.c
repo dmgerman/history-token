@@ -2241,7 +2241,7 @@ r_int
 r_int
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
