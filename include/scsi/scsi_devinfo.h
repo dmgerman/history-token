@@ -40,5 +40,7 @@ DECL|macro|BLIST_REPORTLUN2
 mdefine_line|#define BLIST_REPORTLUN2&t;0x20000&t;/* try REPORT_LUNS even for SCSI-2 devs&n; &t;&t;&t;&t;&t;   (if HBA supports more than 8 LUNs) */
 DECL|macro|BLIST_NOREPORTLUN
 mdefine_line|#define BLIST_NOREPORTLUN&t;0x40000&t;/* don&squot;t try REPORT_LUNS scan (SCSI-3 devs) */
+DECL|macro|BLIST_NOT_LOCKABLE
+mdefine_line|#define BLIST_NOT_LOCKABLE&t;0x80000&t;/* don&squot;t use PREVENT-ALLOW commands */
 macro_line|#endif
 eof
