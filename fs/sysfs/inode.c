@@ -542,8 +542,9 @@ mdefine_line|#define to_subsys(k) container_of(k,struct subsystem,kset.kobj)
 DECL|macro|to_sattr
 mdefine_line|#define to_sattr(a) container_of(a,struct subsys_attribute,attr)
 multiline_comment|/**&n; * Subsystem file operations.&n; * These operations allow subsystems to have files that can be &n; * read/written. &n; */
-DECL|function|subsys_attr_show
+r_static
 id|ssize_t
+DECL|function|subsys_attr_show
 id|subsys_attr_show
 c_func
 (paren
@@ -560,12 +561,6 @@ comma
 r_char
 op_star
 id|page
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_struct
@@ -611,17 +606,18 @@ id|s
 comma
 id|page
 comma
-id|count
+id|PAGE_SIZE
 comma
-id|off
+l_int|0
 )paren
 suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|subsys_attr_store
+r_static
 id|ssize_t
+DECL|function|subsys_attr_store
 id|subsys_attr_store
 c_func
 (paren
@@ -639,12 +635,6 @@ r_const
 r_char
 op_star
 id|page
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_struct
@@ -690,9 +680,9 @@ id|s
 comma
 id|page
 comma
-id|count
+id|PAGE_SIZE
 comma
-id|off
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -830,10 +820,6 @@ comma
 id|attr
 comma
 id|buffer-&gt;page
-comma
-id|PAGE_SIZE
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1165,10 +1151,6 @@ comma
 id|attr
 comma
 id|buffer-&gt;page
-comma
-id|PAGE_SIZE
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
