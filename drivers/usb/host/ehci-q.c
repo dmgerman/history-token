@@ -1322,7 +1322,7 @@ id|stopped
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* magic dummy for some short reads; qh won&squot;t advance */
+multiline_comment|/* magic dummy for some short reads; qh won&squot;t advance.&n;&t;&t;&t; * that silicon quirk can kick in with this dummy too.&n;&t;&t;&t; */
 )brace
 r_else
 r_if
@@ -1333,13 +1333,12 @@ id|IS_SHORT_READ
 id|token
 )paren
 op_logical_and
+op_logical_neg
 (paren
-id|qh-&gt;hw_alt_next
+id|qtd-&gt;hw_alt_next
 op_amp
-id|QTD_MASK
+id|EHCI_LIST_END
 )paren
-op_eq
-id|ehci-&gt;async-&gt;hw_alt_next
 )paren
 (brace
 id|stopped
