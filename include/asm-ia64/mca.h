@@ -364,13 +364,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#if defined(IA64_MCA_DEBUG_INFO)
-DECL|macro|IA64_MCA_DEBUG
-macro_line|# define IA64_MCA_DEBUG(fmt...)&t;printk(fmt)
-macro_line|#else
-DECL|macro|IA64_MCA_DEBUG
-macro_line|# define IA64_MCA_DEBUG(fmt...)
-macro_line|#endif
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_MCA_H */
 eof

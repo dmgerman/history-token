@@ -23,6 +23,13 @@ macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/mca.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
+macro_line|#if defined(IA64_MCA_DEBUG_INFO)
+DECL|macro|IA64_MCA_DEBUG
+macro_line|# define IA64_MCA_DEBUG(fmt...)&t;printk(fmt)
+macro_line|#else
+DECL|macro|IA64_MCA_DEBUG
+macro_line|# define IA64_MCA_DEBUG(fmt...)
+macro_line|#endif
 DECL|struct|ia64_fptr
 r_typedef
 r_struct
@@ -446,8 +453,10 @@ id|irq_safe
 id|IA64_MCA_DEBUG
 c_func
 (paren
-l_string|&quot;ia64_log_get: SAL error record type %d retrieved. &quot;
+l_string|&quot;%s: SAL error record type %d retrieved. &quot;
 l_string|&quot;Record length = %ld&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|sal_info_type
 comma
@@ -638,7 +647,9 @@ id|ptregs
 id|IA64_MCA_DEBUG
 c_func
 (paren
-l_string|&quot;ia64_mca_cpe_int_handler: received interrupt. CPU:%d vector = %#x&bslash;n&quot;
+l_string|&quot;%s: received interrupt. CPU:%d vector = %#x&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|smp_processor_id
 c_func
@@ -1993,8 +2004,10 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ia64_mca_platform_init: failed to register Corrected &quot;
-l_string|&quot;Platform Error interrupt vector with SAL.&bslash;n&quot;
+l_string|&quot;Failed to register Corrected Platform &quot;
+l_string|&quot;Error interrupt vector with SAL (status %ld)&bslash;n&quot;
+comma
+id|isrv.status
 )paren
 suffix:semicolon
 r_return
@@ -2003,8 +2016,10 @@ suffix:semicolon
 id|IA64_MCA_DEBUG
 c_func
 (paren
-l_string|&quot;ia64_mca_platform_init: corrected platform error &quot;
+l_string|&quot;%s: corrected platform error &quot;
 l_string|&quot;vector %#x setup and enabled&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|cpev
 )paren
@@ -2047,8 +2062,10 @@ suffix:semicolon
 id|IA64_MCA_DEBUG
 c_func
 (paren
-l_string|&quot;ia64_mca_platform_init: CPU %d corrected &quot;
+l_string|&quot;%s: CPU %d corrected &quot;
 l_string|&quot;machine check vector %#x setup and enabled.&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|smp_processor_id
 c_func
@@ -2061,7 +2078,9 @@ suffix:semicolon
 id|IA64_MCA_DEBUG
 c_func
 (paren
-l_string|&quot;ia64_mca_platform_init: CPU %d CMCV = %#016lx&bslash;n&quot;
+l_string|&quot;%s: CPU %d CMCV = %#016lx&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|smp_processor_id
 c_func
@@ -2116,8 +2135,10 @@ id|cmcv.cmcv_regval
 id|IA64_MCA_DEBUG
 c_func
 (paren
-l_string|&quot;ia64_mca_cmc_vector_disable: CPU %d corrected &quot;
+l_string|&quot;%s: CPU %d corrected &quot;
 l_string|&quot;machine check vector %#x disabled.&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|smp_processor_id
 c_func
@@ -2168,8 +2189,10 @@ id|cmcv.cmcv_regval
 id|IA64_MCA_DEBUG
 c_func
 (paren
-l_string|&quot;ia64_mca_cmc_vector_enable: CPU %d corrected &quot;
+l_string|&quot;%s: CPU %d corrected &quot;
 l_string|&quot;machine check vector %#x enabled.&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|smp_processor_id
 c_func
@@ -2691,7 +2714,9 @@ suffix:semicolon
 id|IA64_MCA_DEBUG
 c_func
 (paren
-l_string|&quot;ia64_mca_cmc_int_handler: received interrupt vector = %#x on CPU %d&bslash;n&quot;
+l_string|&quot;%s: received interrupt vector = %#x on CPU %d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|cmc_irq
 comma
@@ -2817,9 +2842,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: WARNING: Switching to polling CMC handler, error records may be lost&bslash;n&quot;
-comma
-id|__FUNCTION__
+l_string|&quot;WARNING: Switching to polling CMC handler; error records may be lost&bslash;n&quot;
 )paren
 suffix:semicolon
 id|mod_timer
@@ -2998,9 +3021,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Returning to interrupt driven CMC handler&bslash;n&quot;
-comma
-id|__FUNCTION__
+l_string|&quot;Returning to interrupt driven CMC handler&bslash;n&quot;
 )paren
 suffix:semicolon
 id|schedule_work
@@ -3564,7 +3585,9 @@ multiline_comment|/* platform specific */
 id|IA64_MCA_DEBUG
 c_func
 (paren
-l_string|&quot;ia64_mca_init: begin&bslash;n&quot;
+l_string|&quot;%s: begin&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/* Clear the Rendez checkin flag for all cpus */
@@ -3641,8 +3664,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ia64_mca_init: increasing MCA rendezvous timeout from &quot;
-l_string|&quot;%ld to %ld&bslash;n&quot;
+l_string|&quot;Increasing MCA rendezvous timeout from &quot;
+l_string|&quot;%ld to %ld milliseconds&bslash;n&quot;
 comma
 id|timeout
 comma
@@ -3660,8 +3683,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ia64_mca_init: Failed to register rendezvous interrupt &quot;
-l_string|&quot;with SAL.  rc = %ld&bslash;n&quot;
+l_string|&quot;Failed to register rendezvous interrupt &quot;
+l_string|&quot;with SAL (status %ld)&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -3700,8 +3723,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ia64_mca_init: Failed to register wakeup interrupt with SAL.  &quot;
-l_string|&quot;rc = %ld&bslash;n&quot;
+l_string|&quot;Failed to register wakeup interrupt with SAL &quot;
+l_string|&quot;(status %ld)&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -3712,7 +3735,9 @@ suffix:semicolon
 id|IA64_MCA_DEBUG
 c_func
 (paren
-l_string|&quot;ia64_mca_init: registered mca rendezvous spinloop and wakeup mech.&bslash;n&quot;
+l_string|&quot;%s: registered MCA rendezvous spinloop and wakeup mech.&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|ia64_mc_info.imi_mca_handler
@@ -3763,8 +3788,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ia64_mca_init: Failed to register os mca handler with SAL.  &quot;
-l_string|&quot;rc = %ld&bslash;n&quot;
+l_string|&quot;Failed to register OS MCA handler with SAL &quot;
+l_string|&quot;(status %ld)&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -3775,7 +3800,9 @@ suffix:semicolon
 id|IA64_MCA_DEBUG
 c_func
 (paren
-l_string|&quot;ia64_mca_init: registered os mca handler with SAL at 0x%lx, gp = 0x%lx&bslash;n&quot;
+l_string|&quot;%s: registered OS MCA handler with SAL at 0x%lx, gp = 0x%lx&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|ia64_mc_info.imi_mca_handler
 comma
@@ -3814,7 +3841,9 @@ suffix:semicolon
 id|IA64_MCA_DEBUG
 c_func
 (paren
-l_string|&quot;ia64_mca_init: os init handler at %lx&bslash;n&quot;
+l_string|&quot;%s: OS INIT handler at %lx&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|ia64_mc_info.imi_monarch_init_handler
 )paren
@@ -3866,8 +3895,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ia64_mca_init: Failed to register m/s init handlers with SAL. &quot;
-l_string|&quot;rc = %ld&bslash;n&quot;
+l_string|&quot;Failed to register m/s INIT handlers with SAL &quot;
+l_string|&quot;(status %ld)&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -3878,7 +3907,9 @@ suffix:semicolon
 id|IA64_MCA_DEBUG
 c_func
 (paren
-l_string|&quot;ia64_mca_init: registered os init handler with SAL&bslash;n&quot;
+l_string|&quot;%s: registered OS INIT handler with SAL&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Configure the CMCI/P vector and handler. Interrupts for CMC are&n;&t; *  per-processor, so AP CMC interrupts are setup in smp_callin() (smpboot.c).&n;&t; */
@@ -4045,7 +4076,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Mca related initialization done&bslash;n&quot;
+l_string|&quot;MCA related initialization done&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
