@@ -1060,6 +1060,13 @@ c_func
 id|ip_mc_dec_group
 )paren
 suffix:semicolon
+DECL|variable|ip_mc_join_group
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_mc_join_group
+)paren
+suffix:semicolon
 DECL|variable|ip_finish_output
 id|EXPORT_SYMBOL
 c_func
