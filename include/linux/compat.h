@@ -713,6 +713,23 @@ op_star
 id|from
 )paren
 suffix:semicolon
+r_int
+id|get_compat_sigevent
+c_func
+(paren
+r_struct
+id|sigevent
+op_star
+id|event
+comma
+r_const
+r_struct
+id|compat_sigevent
+id|__user
+op_star
+id|u_event
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_COMPAT */
 macro_line|#endif /* _LINUX_COMPAT_H */
 eof

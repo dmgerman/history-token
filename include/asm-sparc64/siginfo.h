@@ -28,58 +28,5 @@ DECL|macro|EMT_TAGOVF
 mdefine_line|#define EMT_TAGOVF&t;(__SI_FAULT|1)&t;/* tag overflow */
 DECL|macro|NSIGEMT
 mdefine_line|#define NSIGEMT&t;&t;1
-macro_line|#ifdef __KERNEL__
-macro_line|#ifdef CONFIG_COMPAT
-DECL|struct|sigevent32
-r_typedef
-r_struct
-id|sigevent32
-(brace
-DECL|member|sigev_value
-id|compat_sigval_t
-id|sigev_value
-suffix:semicolon
-DECL|member|sigev_signo
-r_int
-id|sigev_signo
-suffix:semicolon
-DECL|member|sigev_notify
-r_int
-id|sigev_notify
-suffix:semicolon
-r_union
-(brace
-DECL|member|_pad
-r_int
-id|_pad
-(braket
-id|COMPAT_SIGEV_PAD_SIZE
-)braket
-suffix:semicolon
-r_struct
-(brace
-DECL|member|_function
-id|u32
-id|_function
-suffix:semicolon
-DECL|member|_attribute
-id|u32
-id|_attribute
-suffix:semicolon
-multiline_comment|/* really pthread_attr_t */
-DECL|member|_sigev_thread
-)brace
-id|_sigev_thread
-suffix:semicolon
-DECL|member|_sigev_un
-)brace
-id|_sigev_un
-suffix:semicolon
-DECL|typedef|sigevent_t32
-)brace
-id|sigevent_t32
-suffix:semicolon
-macro_line|#endif /* CONFIG_COMPAT */
-macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof
