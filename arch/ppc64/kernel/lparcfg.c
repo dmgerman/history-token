@@ -1391,7 +1391,7 @@ l_int|2
 op_star
 l_int|8
 )paren
-op_logical_and
+op_amp
 l_int|0xffff
 )paren
 suffix:semicolon
@@ -1624,7 +1624,7 @@ l_int|0
 op_star
 l_int|8
 )paren
-op_logical_and
+op_amp
 l_int|0xffff
 )paren
 suffix:semicolon
@@ -1650,7 +1650,7 @@ l_int|3
 op_star
 l_int|8
 )paren
-op_logical_and
+op_amp
 l_int|0xffff
 )paren
 suffix:semicolon
@@ -1676,7 +1676,7 @@ l_int|2
 op_star
 l_int|8
 )paren
-op_logical_and
+op_amp
 l_int|0xffff
 )paren
 suffix:semicolon
@@ -1702,7 +1702,7 @@ l_int|6
 op_star
 l_int|8
 )paren
-op_logical_and
+op_amp
 l_int|0x40
 )paren
 suffix:semicolon
