@@ -709,6 +709,16 @@ id|walk_in
 comma
 id|bsize
 )paren
+op_logical_and
+op_logical_neg
+id|scatterwalk_across_pages
+c_func
+(paren
+op_amp
+id|walk_out
+comma
+id|bsize
+)paren
 )paren
 suffix:semicolon
 id|scatterwalk_done
