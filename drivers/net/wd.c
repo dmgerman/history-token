@@ -2231,7 +2231,7 @@ c_func
 (paren
 id|io
 comma
-l_string|&quot;WD80x3 I/O base address(es)&quot;
+l_string|&quot;I/O base address(es)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -2239,7 +2239,7 @@ c_func
 (paren
 id|irq
 comma
-l_string|&quot;WD80x3 IRQ number(s) (ignored for PureData boards)&quot;
+l_string|&quot;IRQ number(s) (ignored for PureData boards)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -2247,7 +2247,7 @@ c_func
 (paren
 id|mem
 comma
-l_string|&quot;WD80x3 memory base address(es)(ignored for PureData boards)&quot;
+l_string|&quot;memory base address(es)(ignored for PureData boards)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -2255,7 +2255,13 @@ c_func
 (paren
 id|mem_end
 comma
-l_string|&quot;WD80x3 memory end address(es)&quot;
+l_string|&quot;memory end address(es)&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;ISA Western Digital wd8003/wd8013 ; SMC Elite, Elite16 ethernet driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

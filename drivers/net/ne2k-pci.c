@@ -140,7 +140,7 @@ c_func
 (paren
 id|debug
 comma
-l_string|&quot;PCI NE2000 debug level (1-2)&quot;
+l_string|&quot;debug level (1-2)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -148,7 +148,7 @@ c_func
 (paren
 id|options
 comma
-l_string|&quot;PCI NE2000: Bit 5: full duplex&quot;
+l_string|&quot;Bit 5: full duplex&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -156,7 +156,7 @@ c_func
 (paren
 id|full_duplex
 comma
-l_string|&quot;PCI NE2000 full duplex setting(s) (1)&quot;
+l_string|&quot;full duplex setting(s) (1)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Some defines that people can play with if so inclined. */

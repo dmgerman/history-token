@@ -1561,7 +1561,7 @@ c_func
 (paren
 id|io
 comma
-l_string|&quot;ac3200 I/O base adress(es)&quot;
+l_string|&quot;I/O base adress(es)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1569,7 +1569,7 @@ c_func
 (paren
 id|irq
 comma
-l_string|&quot;ac3200 IRQ number(s)&quot;
+l_string|&quot;IRQ number(s)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1577,7 +1577,19 @@ c_func
 (paren
 id|mem
 comma
-l_string|&quot;ac3200 Memory base address(es)&quot;
+l_string|&quot;Memory base address(es)&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Ansel AC3200 EISA ethernet driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 r_int
@@ -1811,12 +1823,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* MODULE */
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 "&f;"
 multiline_comment|/*&n; * Local variables:&n; * compile-command: &quot;gcc -D__KERNEL__ -I/usr/src/linux/net/inet -Wall -Wstrict-prototypes -O6 -m486 -c ac3200.c&quot;&n; *  version-control: t&n; *  kept-new-versions: 5&n; *  tab-width: 4&n; * End:&n; */
 eof
