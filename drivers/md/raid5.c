@@ -2294,16 +2294,15 @@ id|rdev-&gt;in_sync
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * if recovery was running, stop it now.&n;&t;&t;&t; */
-r_if
-c_cond
+multiline_comment|/*&n;&t;&t;&t; * if recovery was running, make sure it aborts.&n;&t;&t;&t; */
+id|set_bit
+c_func
 (paren
-id|mddev-&gt;recovery_running
+id|MD_RECOVERY_ERR
+comma
+op_amp
+id|mddev-&gt;recovery
 )paren
-id|mddev-&gt;recovery_running
-op_assign
-op_minus
-id|EIO
 suffix:semicolon
 )brace
 id|rdev-&gt;faulty

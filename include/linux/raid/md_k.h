@@ -662,16 +662,22 @@ r_int
 id|resync_mark_cnt
 suffix:semicolon
 multiline_comment|/* blocks written at resync_mark */
-multiline_comment|/* recovery_running is 0 for no recovery/resync,&n;&t; * 1 for active recovery&n;&t; * 2 for active resync&n;&t; * -error for an error (e.g. -EINTR)&n;&t; * it can only be set &gt; 0 under reconfig_sem&n;&t; */
-DECL|member|recovery_running
+multiline_comment|/* recovery/resync flags &n;&t; * RUNNING:  a thread is running, or about to be started&n;&t; * SYNC:     actually doing a resync, not a recovery&n;&t; * ERR:      and IO error was detected - abort the resync/recovery&n;&t; * INTR:     someone requested a (clean) early abort.&n;&t; * DONE:     thread is done and is waiting to be reaped&n;&t; */
+DECL|macro|MD_RECOVERY_RUNNING
+mdefine_line|#define&t;MD_RECOVERY_RUNNING&t;0
+DECL|macro|MD_RECOVERY_SYNC
+mdefine_line|#define&t;MD_RECOVERY_SYNC&t;1
+DECL|macro|MD_RECOVERY_ERR
+mdefine_line|#define&t;MD_RECOVERY_ERR&t;&t;2
+DECL|macro|MD_RECOVERY_INTR
+mdefine_line|#define&t;MD_RECOVERY_INTR&t;3
+DECL|macro|MD_RECOVERY_DONE
+mdefine_line|#define&t;MD_RECOVERY_DONE&t;4
+DECL|member|recovery
 r_int
-id|recovery_running
-suffix:semicolon
-DECL|member|recovery_error
 r_int
-id|recovery_error
+id|recovery
 suffix:semicolon
-multiline_comment|/* error from recovery write */
 DECL|member|in_sync
 r_int
 id|in_sync
@@ -685,10 +691,6 @@ suffix:semicolon
 DECL|member|active
 id|atomic_t
 id|active
-suffix:semicolon
-DECL|member|spares
-r_int
-id|spares
 suffix:semicolon
 DECL|member|degraded
 r_int

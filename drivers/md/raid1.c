@@ -2399,16 +2399,15 @@ suffix:semicolon
 id|conf-&gt;working_disks
 op_decrement
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * if recovery was running, stop it now.&n;&t;&t; */
-r_if
-c_cond
+multiline_comment|/*&n;&t;&t; * if recovery is running, make sure it aborts.&n;&t;&t; */
+id|set_bit
+c_func
 (paren
-id|mddev-&gt;recovery_running
+id|MD_RECOVERY_ERR
+comma
+op_amp
+id|mddev-&gt;recovery
 )paren
-id|mddev-&gt;recovery_running
-op_assign
-op_minus
-id|EIO
 suffix:semicolon
 )brace
 id|rdev-&gt;in_sync
