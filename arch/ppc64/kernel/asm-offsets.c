@@ -13,7 +13,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
@@ -266,21 +265,6 @@ r_struct
 id|task_struct
 comma
 id|mm
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* naca */
-id|DEFINE
-c_func
-(paren
-id|PACA
-comma
-m_offsetof
-(paren
-r_struct
-id|naca_struct
-comma
-id|paca
 )paren
 )paren
 suffix:semicolon

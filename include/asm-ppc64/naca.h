@@ -3,7 +3,6 @@ DECL|macro|_NACA_H
 mdefine_line|#define _NACA_H
 multiline_comment|/* &n; * c 2001 PPC 64 Team, IBM Corp&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;asm/types.h&gt;
-macro_line|#include &lt;asm/systemcfg.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 DECL|struct|naca_struct
 r_struct
@@ -27,13 +26,6 @@ id|u64
 id|xRamDiskSize
 suffix:semicolon
 multiline_comment|/* In pages                  0x10 */
-DECL|member|paca
-r_struct
-id|paca_struct
-op_star
-id|paca
-suffix:semicolon
-multiline_comment|/* Ptr to an array of pacas  0x18 */
 DECL|member|debug_switch
 id|u64
 id|debug_switch
