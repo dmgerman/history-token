@@ -1,4 +1,4 @@
-multiline_comment|/* Hey EMACS -*- linux-c -*-&n; *&n; * tiglusb -- Texas Instruments&squot; USB GraphLink (aka SilverLink) driver.&n; * Target: Texas Instruments graphing calculators (http://lpg.ticalc.org).&n; *&n; * Copyright (C) 2001-2002:&n; *   Romain Lievin &lt;roms@lpg.ticalc.org&gt;&n; *   Julien BLACHE &lt;jb@technologeek.org&gt;&n; * under the terms of the GNU General Public License.&n; *&n; * Based on dabusb.c, printer.c &amp; scanner.c&n; *&n; * Please see the file: linux/Documentation/usb/SilverLink.txt&n; * and the website at:  http://lpg.ticalc.org/prj_usb/&n; * for more info.&n; *&n; * History :&n; *  16/07/2002 : v1.04 -- Julien BLACHE &lt;jb@jblache.org&gt;&n; *    + removed useless usblp_cleanup()&n; *    + removed {un,}lock_kernel() as suggested on lkml&n; *    + inlined clear_pipes() (used once)&n; *    + inlined clear_device() (small, used twice)&n; *    + removed tiglusb_find_struct() (used once, simple code)&n; *    + replaced down() with down_interruptible() wherever possible&n; *    + fixed double unregistering wrt devfs, causing devfs&n; *      to force an oops when the device is deconnected&n; *    + removed unused fields from struct tiglusb_t&n; */
+multiline_comment|/* Hey EMACS -*- linux-c -*-&n; *&n; * tiglusb -- Texas Instruments&squot; USB GraphLink (aka SilverLink) driver.&n; * Target: Texas Instruments graphing calculators (http://lpg.ticalc.org).&n; *&n; * Copyright (C) 2001-2002:&n; *   Romain Lievin &lt;roms@lpg.ticalc.org&gt;&n; *   Julien BLACHE &lt;jb@technologeek.org&gt;&n; * under the terms of the GNU General Public License.&n; *&n; * Based on dabusb.c, printer.c &amp; scanner.c&n; *&n; * Please see the file: linux/Documentation/usb/SilverLink.txt&n; * and the website at:  http://lpg.ticalc.org/prj_usb/&n; * for more info.&n; *&n; * History :&n; *   1.0x, Romain &amp; Julien: initial submit.&n; *   1.03, Greg Kroah: modifications.&n; *   1.04, Julien: clean-up &amp; fixes; Romain: 2.4 backport.&n; *   1.05, Randy Dunlap: bug fix with the timeout parameter (divide-by-zero).&n; *   1.06, Romain: synched with 2.5, version/firmware changed (confusing).&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/ticable.h&gt;
 macro_line|#include &quot;tiglusb.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;1.04&quot;
+mdefine_line|#define DRIVER_VERSION &quot;1.06&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR  &quot;Romain Lievin &lt;roms@lpg.ticalc.org&gt; &amp; Julien Blache &lt;jb@jblache.org&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -1413,7 +1413,7 @@ suffix:semicolon
 multiline_comment|/* Display firmware version */
 id|info
 (paren
-l_string|&quot;link cable version %i.%02x&quot;
+l_string|&quot;firmware revision %i.%02x&quot;
 comma
 id|dev-&gt;descriptor.bcdDevice
 op_rshift
@@ -1447,6 +1447,12 @@ op_star
 id|intf
 )paren
 (brace
+r_char
+id|name
+(braket
+l_int|32
+)braket
+suffix:semicolon
 id|ptiglusb_t
 id|s
 op_assign
@@ -1661,8 +1667,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|timeout
+op_le
+l_int|0
 )paren
 id|timeout
 op_assign
@@ -1825,15 +1832,16 @@ suffix:semicolon
 id|info
 (paren
 id|DRIVER_DESC
-l_string|&quot;, &quot;
+l_string|&quot;, version &quot;
 id|DRIVER_VERSION
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|timeout
+op_le
+l_int|0
 )paren
 id|timeout
 op_assign
