@@ -901,6 +901,8 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+DECL|macro|HAVE_NETDEV_POLL
+mdefine_line|#define HAVE_NETDEV_POLL
 DECL|member|poll
 r_int
 (paren
