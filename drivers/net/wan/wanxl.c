@@ -1449,9 +1449,10 @@ r_int
 id|wanxl_attach
 c_func
 (paren
-id|hdlc_device
+r_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 comma
 r_int
 r_int
@@ -1469,7 +1470,11 @@ op_assign
 id|hdlc_to_port
 c_func
 (paren
-id|hdlc
+id|dev_to_hdlc
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_if

@@ -212,7 +212,7 @@ op_member_access_from_pointer
 id|attach
 c_func
 (paren
-id|hdlc
+id|dev
 comma
 id|new_settings.encoding
 comma

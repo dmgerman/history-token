@@ -241,9 +241,9 @@ id|attach
 )paren
 (paren
 r_struct
-id|hdlc_device_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 comma
 r_int
 r_int

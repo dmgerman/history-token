@@ -4239,9 +4239,10 @@ r_int
 DECL|function|fst_attach
 id|fst_attach
 (paren
-id|hdlc_device
+r_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 comma
 r_int
 r_int
