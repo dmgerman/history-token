@@ -6555,7 +6555,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|hfcpci_remove
+)paren
 comma
 dot
 id|id_table
