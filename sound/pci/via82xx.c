@@ -9395,24 +9395,6 @@ comma
 dot
 id|device
 op_assign
-l_int|0x5002
-comma
-dot
-id|action
-op_assign
-id|VIA_DXS_ENABLE
-)brace
-comma
-multiline_comment|/* Gigabyte GA-7VAX */
-(brace
-dot
-id|vendor
-op_assign
-l_int|0x1458
-comma
-dot
-id|device
-op_assign
 l_int|0xa002
 comma
 dot
