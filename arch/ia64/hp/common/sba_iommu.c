@@ -613,6 +613,11 @@ id|rcnt
 comma
 id|ptr
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 op_star
 id|ptr
 )paren
@@ -4360,7 +4365,7 @@ suffix:semicolon
 id|DBG_INIT
 c_func
 (paren
-l_string|&quot;%s() hpa 0x%lx IOV %dMB (%d bits) PDIR size 0x%0x&bslash;n&quot;
+l_string|&quot;%s() hpa %p IOV %dMB (%d bits) PDIR size 0x%0x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -4762,9 +4767,6 @@ l_string|&quot;Couldn&squot;t allocate PDIR spill page&bslash;n&quot;
 suffix:semicolon
 id|poison_addr
 op_assign
-(paren
-id|u64
-)paren
 id|addr
 suffix:semicolon
 r_for
@@ -6148,9 +6150,6 @@ id|sba_resource_map
 )paren
 suffix:semicolon
 )brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 macro_line|#endif
 r_void
@@ -6497,12 +6496,13 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|sba_init
-id|device_initcall
+id|subsys_initcall
 c_func
 (paren
 id|sba_init
 )paren
 suffix:semicolon
+multiline_comment|/* must be initialized after ACPI etc., but before any drivers... */
 r_static
 r_int
 id|__init
