@@ -2293,8 +2293,6 @@ id|rc
 op_assign
 l_int|NULL
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2393,8 +2391,6 @@ comma
 id|name
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 id|up
 c_func
@@ -2457,8 +2453,6 @@ c_func
 op_amp
 id|debug_lock
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|out
 suffix:colon
