@@ -1956,7 +1956,7 @@ macro_line|#endif
 multiline_comment|/* let&squot;s send the command via the control pipe */
 id|result
 op_assign
-id|usb_stor_control_msg
+id|usb_stor_ctrl_transfer
 c_func
 (paren
 id|us
@@ -2070,7 +2070,7 @@ multiline_comment|/* read the configuration information from ISD200.  Use this t
 multiline_comment|/* determine what the special ATA CDB bytes are.                */
 id|result
 op_assign
-id|usb_stor_control_msg
+id|usb_stor_ctrl_transfer
 c_func
 (paren
 id|us

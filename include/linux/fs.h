@@ -3163,7 +3163,7 @@ op_star
 comma
 r_int
 comma
-r_int
+id|dev_t
 )paren
 suffix:semicolon
 DECL|member|rename
@@ -5015,7 +5015,7 @@ op_star
 comma
 id|umode_t
 comma
-r_int
+id|dev_t
 )paren
 suffix:semicolon
 multiline_comment|/* Invalid inode operations -- fs/bad_inode.c */

@@ -181,7 +181,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|rdev
 )paren
 suffix:semicolon
@@ -4314,7 +4314,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|rdev
 comma
 r_int
@@ -5696,7 +5696,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|rdev
 )paren
 (brace

@@ -421,8 +421,8 @@ c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|usb_interface_descriptor
+op_star
+id|interface-&gt;altsetting
 )paren
 op_star
 id|interface-&gt;max_altsetting
@@ -469,7 +469,8 @@ op_ge
 id|interface-&gt;max_altsetting
 )paren
 (brace
-r_void
+r_struct
+id|usb_host_interface
 op_star
 id|ptr
 suffix:semicolon
@@ -495,7 +496,9 @@ id|USB_MAXALTSETTING
 id|warn
 c_func
 (paren
-l_string|&quot;too many alternate settings (max %d)&quot;
+l_string|&quot;too many alternate settings (incr %d max %d)&bslash;n&quot;
+comma
+id|USB_ALTSETTINGALLOC
 comma
 id|USB_MAXALTSETTING
 )paren
@@ -507,17 +510,13 @@ suffix:semicolon
 )brace
 id|ptr
 op_assign
-id|interface-&gt;altsetting
-suffix:semicolon
-id|interface-&gt;altsetting
-op_assign
 id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|usb_interface_descriptor
+op_star
+id|ptr
 )paren
 op_star
 id|interface-&gt;max_altsetting
@@ -528,8 +527,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|interface-&gt;altsetting
+id|ptr
+op_eq
+l_int|NULL
 )paren
 (brace
 id|err
@@ -537,10 +537,6 @@ c_func
 (paren
 l_string|&quot;couldn&squot;t kmalloc interface-&gt;altsetting&quot;
 )paren
-suffix:semicolon
-id|interface-&gt;altsetting
-op_assign
-id|ptr
 suffix:semicolon
 r_return
 op_minus
@@ -550,14 +546,14 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|interface-&gt;altsetting
-comma
 id|ptr
+comma
+id|interface-&gt;altsetting
 comma
 r_sizeof
 (paren
-r_struct
-id|usb_interface_descriptor
+op_star
+id|interface-&gt;altsetting
 )paren
 op_star
 id|oldmas
@@ -566,8 +562,12 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|ptr
+id|interface-&gt;altsetting
 )paren
+suffix:semicolon
+id|interface-&gt;altsetting
+op_assign
+id|ptr
 suffix:semicolon
 )brace
 id|ifp
