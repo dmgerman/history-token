@@ -6908,6 +6908,8 @@ l_string|&quot;Error from RTS LOW urb&quot;
 )paren
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/* Note change no line if hupcl is off */
 multiline_comment|/* shutdown our bulk read */
 r_if
 c_cond
@@ -6915,15 +6917,25 @@ c_cond
 id|port-&gt;read_urb
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|usb_unlink_urb
 (paren
 id|port-&gt;read_urb
 )paren
+OL
+l_int|0
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;Error unlinking read urb&quot;
+)paren
 suffix:semicolon
 )brace
-multiline_comment|/* unlink the running write urbs */
 )brace
-multiline_comment|/* Note change no line is hupcl is off */
 )brace
 multiline_comment|/* if (serial-&gt;dev) */
 )brace
