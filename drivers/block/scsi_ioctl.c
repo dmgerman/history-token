@@ -1658,7 +1658,6 @@ id|cgc.timeout
 suffix:semicolon
 id|hdr.cmdp
 op_assign
-op_amp
 (paren
 (paren
 r_struct
