@@ -1554,7 +1554,7 @@ l_string|&quot;jffs_create_file(): Failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|no_jffs_file
@@ -1686,11 +1686,11 @@ op_increment
 suffix:semicolon
 id|c-&gt;root
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|c-&gt;gc_task
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|c-&gt;hash_len
 op_assign
@@ -3095,7 +3095,7 @@ id|jffs_node
 op_star
 id|node
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|jffs_fmcontrol
@@ -3654,7 +3654,7 @@ op_minus
 id|start
 )paren
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -3918,7 +3918,7 @@ op_minus
 id|start
 )paren
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -4023,7 +4023,7 @@ op_minus
 id|start
 )paren
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_continue
@@ -4136,7 +4136,7 @@ op_minus
 id|start
 )paren
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_continue
@@ -4331,7 +4331,7 @@ op_minus
 id|start
 )paren
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Reuse this unused struct jffs_node.  */
@@ -4545,7 +4545,7 @@ op_minus
 id|start
 )paren
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Reuse this unused struct jffs_node.  */
@@ -4631,7 +4631,7 @@ op_minus
 id|start
 )paren
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Reuse this unused struct jffs_node.  */
@@ -4691,7 +4691,7 @@ op_minus
 id|start
 )paren
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Reuse this unused struct jffs_node.  */
@@ -4838,7 +4838,7 @@ c_func
 (paren
 id|c
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|raw_inode
@@ -4969,7 +4969,7 @@ id|node
 suffix:semicolon
 id|node
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Don&squot;t free the node!  */
 )brace
@@ -4994,7 +4994,7 @@ op_minus
 id|start
 )paren
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|D3
@@ -5315,11 +5315,11 @@ id|node
 suffix:semicolon
 id|node-&gt;version_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|node-&gt;version_next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|f-&gt;highest_version
 op_assign
@@ -5378,7 +5378,7 @@ id|f-&gt;version_tail
 suffix:semicolon
 id|node-&gt;version_next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|f-&gt;version_tail-&gt;version_next
 op_assign
@@ -5437,7 +5437,7 @@ id|node-&gt;version
 multiline_comment|/* Insert at the bottom of the list.  */
 id|node-&gt;version_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|node-&gt;version_next
 op_assign
@@ -6242,15 +6242,15 @@ id|f
 suffix:semicolon
 id|f-&gt;parent
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|f-&gt;sibling_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|f-&gt;sibling_next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 l_int|0
@@ -6298,7 +6298,7 @@ suffix:semicolon
 )brace
 id|f-&gt;sibling_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|parent-&gt;children
 op_assign
@@ -9311,7 +9311,7 @@ id|f-&gt;size
 multiline_comment|/* A simple append.  This is the most common operation.  */
 id|node-&gt;range_next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|node-&gt;range_prev
 op_assign
@@ -9581,20 +9581,20 @@ l_int|0
 suffix:semicolon
 id|virtual_node-&gt;fm
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* This is a virtual data holder.  */
 id|virtual_node-&gt;version_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|virtual_node-&gt;version_next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|virtual_node-&gt;range_next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Are there any data at all in the file yet?  */
 r_if
@@ -9636,7 +9636,7 @@ id|node-&gt;data_offset
 suffix:semicolon
 id|virtual_node-&gt;range_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|f-&gt;range_head
 op_assign
