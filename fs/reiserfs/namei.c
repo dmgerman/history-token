@@ -4176,18 +4176,10 @@ id|JOURNAL_PER_BALANCE_CNT
 op_star
 l_int|3
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|S_ISDIR
+id|lock_kernel
 c_func
 (paren
-id|inode-&gt;i_mode
 )paren
-)paren
-r_return
-op_minus
-id|EPERM
 suffix:semicolon
 r_if
 c_cond
@@ -4198,6 +4190,11 @@ id|REISERFS_LINK_MAX
 )paren
 (brace
 singleline_comment|//FIXME: sd_nlink is 32 bit for new files
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EMLINK
@@ -4277,6 +4274,11 @@ comma
 id|jbegin_count
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -4326,6 +4328,11 @@ comma
 id|dir-&gt;i_sb
 comma
 id|jbegin_count
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

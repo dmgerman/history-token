@@ -3977,6 +3977,11 @@ id|dentry-&gt;d_name.name
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Drop the dentry in advance to force a new lookup.&n;&t; * Since nfs_proc_link doesn&squot;t return a file handle,&n;&t; * we can&squot;t use the existing dentry.&n;&t; */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|d_drop
 c_func
 (paren
@@ -4012,6 +4017,11 @@ id|dir
 comma
 op_amp
 id|dentry-&gt;d_name
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

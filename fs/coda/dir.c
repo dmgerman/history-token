@@ -1761,6 +1761,11 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|coda_vfs_stat.link
 op_increment
 suffix:semicolon
@@ -1781,10 +1786,17 @@ comma
 id|len
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EPERM
 suffix:semicolon
+)brace
 id|CDEBUG
 c_func
 (paren
@@ -1894,6 +1906,11 @@ comma
 l_string|&quot;link result %d&bslash;n&quot;
 comma
 id|error
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

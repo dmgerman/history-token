@@ -2396,6 +2396,13 @@ id|dentry
 (brace
 r_int
 id|ret
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ret
 op_assign
 id|jffs2_do_link
 c_func
@@ -2432,6 +2439,11 @@ id|old_dentry-&gt;d_inode-&gt;i_count
 )paren
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
