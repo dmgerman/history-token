@@ -278,9 +278,7 @@ r_struct
 id|vc_data
 op_star
 comma
-r_struct
-id|console_font_op
-op_star
+r_int
 )paren
 suffix:semicolon
 DECL|member|con_resize
