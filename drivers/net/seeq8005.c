@@ -1711,8 +1711,6 @@ r_int
 r_char
 op_star
 id|buf
-op_assign
-id|skb-&gt;data
 suffix:semicolon
 r_if
 c_cond
@@ -1747,6 +1745,10 @@ op_assign
 id|ETH_ZLEN
 suffix:semicolon
 )brace
+id|buf
+op_assign
+id|skb-&gt;data
+suffix:semicolon
 multiline_comment|/* Block a timer-based transmit from overlapping */
 id|netif_stop_queue
 c_func
