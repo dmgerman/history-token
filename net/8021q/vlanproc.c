@@ -18,7 +18,6 @@ macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &quot;vlanproc.h&quot;
 macro_line|#include &quot;vlan.h&quot;
 multiline_comment|/****** Function Prototypes *************************************************/
-macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* Proc filesystem interface */
 r_static
 id|ssize_t
@@ -1569,60 +1568,4 @@ r_return
 id|cnt
 suffix:semicolon
 )brace
-macro_line|#else /* No CONFIG_PROC_FS */
-multiline_comment|/*&n; *&t;No /proc - output stubs&n; */
-DECL|function|vlan_proc_init
-r_int
-id|__init
-id|vlan_proc_init
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|vlan_proc_cleanup
-r_void
-id|vlan_proc_cleanup
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-suffix:semicolon
-)brace
-DECL|function|vlan_proc_add_dev
-r_int
-id|vlan_proc_add_dev
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|vlandev
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|vlan_proc_rem_dev
-r_int
-id|vlan_proc_rem_dev
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|vlandev
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif /* No CONFIG_PROC_FS */
 eof
