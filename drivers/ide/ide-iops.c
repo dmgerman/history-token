@@ -951,9 +951,9 @@ c_func
 id|default_hwif_transport
 )paren
 suffix:semicolon
-DECL|function|read_24
+DECL|function|ide_read_24
 id|u32
-id|read_24
+id|ide_read_24
 (paren
 id|ide_drive_t
 op_star
@@ -1021,11 +1021,11 @@ op_or
 id|sect
 suffix:semicolon
 )brace
-DECL|variable|read_24
+DECL|variable|ide_read_24
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|read_24
+id|ide_read_24
 )paren
 suffix:semicolon
 DECL|function|SELECT_DRIVE
