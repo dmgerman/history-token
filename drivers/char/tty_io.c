@@ -122,7 +122,7 @@ id|NR_LDISCS
 suffix:semicolon
 multiline_comment|/* line disc dispatch table&t;*/
 multiline_comment|/* Semaphore to protect creating and releasing a tty */
-r_static
+DECL|variable|tty_sem
 id|DECLARE_MUTEX
 c_func
 (paren

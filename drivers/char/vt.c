@@ -11578,6 +11578,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * We take tty_sem in here to prevent another thread from coming in via init_dev&n; * and taking a ref against the tty while we&squot;re in the process of forgetting&n; * about it and cleaning things up.&n; *&n; * This is because vcs_remove_devfs() can sleep and will drop the BKL.&n; */
 DECL|function|con_close
 r_static
 r_void
@@ -11595,6 +11596,13 @@ op_star
 id|filp
 )paren
 (brace
+id|down
+c_func
+(paren
+op_amp
+id|tty_sem
+)paren
+suffix:semicolon
 id|acquire_console_sem
 c_func
 (paren
@@ -11648,12 +11656,27 @@ c_func
 id|tty
 )paren
 suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|tty_sem
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * tty_sem is released, but we still hold BKL, so there is&n;&t;&t; * still exclusion against init_dev()&n;&t;&t; */
 r_return
 suffix:semicolon
 )brace
 id|release_console_sem
 c_func
 (paren
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|tty_sem
 )paren
 suffix:semicolon
 )brace
