@@ -2573,11 +2573,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cpuid_eax
-c_func
-(paren
-l_int|0x80000000
-)paren
+id|c-&gt;x86_cpuid_level
 OL
 l_int|0x80000004
 )paren
@@ -2723,11 +2719,7 @@ id|edx
 suffix:semicolon
 id|n
 op_assign
-id|cpuid_eax
-c_func
-(paren
-l_int|0x80000000
-)paren
+id|c-&gt;x86_cpuid_level
 suffix:semicolon
 r_if
 c_cond
@@ -3058,11 +3050,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cpuid_eax
-c_func
-(paren
-l_int|0x80000000
-)paren
+id|c-&gt;x86_cpuid_level
 op_ge
 l_int|0x80000008
 )paren
@@ -3459,11 +3447,7 @@ id|c
 suffix:semicolon
 id|n
 op_assign
-id|cpuid_eax
-c_func
-(paren
-l_int|0x80000000
-)paren
+id|c-&gt;x86_cpuid_level
 suffix:semicolon
 r_if
 c_cond
@@ -3669,6 +3653,10 @@ suffix:colon
 id|c
 op_minus
 id|cpu_data
+suffix:semicolon
+id|c-&gt;x86_cpuid_level
+op_assign
+l_int|0
 suffix:semicolon
 id|memset
 c_func
@@ -3911,6 +3899,10 @@ c_func
 l_int|0x80000000
 )paren
 suffix:semicolon
+id|c-&gt;x86_cpuid_level
+op_assign
+id|xlvl
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3990,6 +3982,7 @@ op_eq
 l_int|0x80860000
 )paren
 (brace
+multiline_comment|/* Don&squot;t set x86_cpuid_level here for now to not confuse. */
 r_if
 c_cond
 (paren
