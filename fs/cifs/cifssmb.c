@@ -10847,7 +10847,7 @@ op_plus
 id|le16_to_cpu
 c_func
 (paren
-id|pSMBr-&gt;ParameterOffset
+id|pSMBr-&gt;t2.ParameterOffset
 )paren
 comma
 r_sizeof
@@ -10868,7 +10868,7 @@ op_plus
 id|le16_to_cpu
 c_func
 (paren
-id|pSMBr-&gt;DataOffset
+id|pSMBr-&gt;t2.DataOffset
 )paren
 suffix:semicolon
 id|memcpy
@@ -10881,7 +10881,7 @@ comma
 id|le16_to_cpu
 c_func
 (paren
-id|pSMBr-&gt;DataCount
+id|pSMBr-&gt;t2.DataCount
 )paren
 )paren
 suffix:semicolon
@@ -12384,7 +12384,7 @@ op_assign
 id|le16_to_cpu
 c_func
 (paren
-id|pSMBr-&gt;DataOffset
+id|pSMBr-&gt;t2.DataOffset
 )paren
 suffix:semicolon
 id|cFYI
@@ -12815,7 +12815,7 @@ op_assign
 id|le16_to_cpu
 c_func
 (paren
-id|pSMBr-&gt;DataOffset
+id|pSMBr-&gt;t2.DataOffset
 )paren
 suffix:semicolon
 r_if
@@ -13188,7 +13188,7 @@ op_assign
 id|le16_to_cpu
 c_func
 (paren
-id|pSMBr-&gt;DataOffset
+id|pSMBr-&gt;t2.DataOffset
 )paren
 suffix:semicolon
 r_if
@@ -13561,7 +13561,7 @@ op_assign
 id|le16_to_cpu
 c_func
 (paren
-id|pSMBr-&gt;DataOffset
+id|pSMBr-&gt;t2.DataOffset
 )paren
 suffix:semicolon
 r_if
