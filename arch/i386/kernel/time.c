@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -432,6 +433,20 @@ op_amp
 id|rtc_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|efi_enabled
+)paren
+id|retval
+op_assign
+id|efi_set_rtc_mmss
+c_func
+(paren
+id|nowtime
+)paren
+suffix:semicolon
+r_else
 id|retval
 op_assign
 id|mach_set_rtc_mmss
@@ -607,6 +622,37 @@ op_div
 l_int|2
 )paren
 (brace
+multiline_comment|/* horrible...FIXME */
+r_if
+c_cond
+(paren
+id|efi_enabled
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|efi_set_rtc_mmss
+c_func
+(paren
+id|xtime.tv_sec
+)paren
+op_eq
+l_int|0
+)paren
+id|last_rtc_update
+op_assign
+id|xtime.tv_sec
+suffix:semicolon
+r_else
+id|last_rtc_update
+op_assign
+id|xtime.tv_sec
+op_minus
+l_int|600
+suffix:semicolon
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -738,6 +784,19 @@ op_amp
 id|rtc_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|efi_enabled
+)paren
+id|retval
+op_assign
+id|efi_get_time
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
 id|retval
 op_assign
 id|mach_get_cmos_time

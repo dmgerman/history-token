@@ -28,6 +28,7 @@ macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
 multiline_comment|/*&n; * This is one of the first .c files built. Error out early&n; * if we have compiler trouble..&n; */
@@ -1516,6 +1517,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86
+r_if
+c_cond
+(paren
+id|efi_enabled
+)paren
+id|efi_enter_virtual_mode
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|fork_init
 c_func
 (paren
