@@ -3,7 +3,7 @@ macro_line|#ifndef __UM_ARCHPARAM_I386_H
 DECL|macro|__UM_ARCHPARAM_I386_H
 mdefine_line|#define __UM_ARCHPARAM_I386_H
 multiline_comment|/********* Bits for asm-um/elf.h ************/
-macro_line|#include &quot;user.h&quot;
+macro_line|#include &lt;asm/user.h&gt;
 r_extern
 r_char
 op_star

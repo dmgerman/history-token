@@ -2,7 +2,7 @@ multiline_comment|/* &n; * Copyright (C) 2000, 2001, 2002 Jeff Dike (jdike@karay
 macro_line|#ifndef __SYS_SIGCONTEXT_I386_H
 DECL|macro|__SYS_SIGCONTEXT_I386_H
 mdefine_line|#define __SYS_SIGCONTEXT_I386_H
-macro_line|#include &quot;sc.h&quot;
+macro_line|#include &lt;sysdep/sc.h&gt;
 DECL|macro|IP_RESTART_SYSCALL
 mdefine_line|#define IP_RESTART_SYSCALL(ip) ((ip) -= 2)
 DECL|macro|SC_RESTART_SYSCALL
