@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: dbox2-flash.c,v 1.9 2003/05/21 12:45:18 dwmw2 Exp $&n; *&n; * D-Box 2 flash driver&n; */
+multiline_comment|/*&n; * $Id: dbox2-flash.c,v 1.11 2004/07/12 21:59:43 dwmw2 Exp $&n; *&n; * D-Box 2 flash driver&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/mtd/partitions.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 multiline_comment|/* partition_info gives details on the logical partitions that the split the&n; * single flash device into. If the size if zero we use up to the end of the&n; * device. */
 DECL|variable|partition_info
 r_static
@@ -46,7 +47,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;flfs (ppcboot)&quot;
+l_string|&quot;FLFS (U-Boot)&quot;
 comma
 dot
 id|size
@@ -70,7 +71,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;root (cramfs)&quot;
+l_string|&quot;Root (SquashFS)&quot;
 comma
 dot
 id|size
@@ -94,7 +95,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;var (jffs2)&quot;
+l_string|&quot;var (JFFS2)&quot;
 comma
 dot
 id|size
@@ -118,7 +119,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;flash without bootloader&quot;
+l_string|&quot;Flash without bootloader&quot;
 comma
 dot
 id|size
@@ -142,7 +143,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;complete flash&quot;
+l_string|&quot;Complete Flash&quot;
 comma
 dot
 id|size
@@ -191,7 +192,7 @@ op_assign
 id|WINDOW_SIZE
 comma
 dot
-id|buswidth
+id|bankwidth
 op_assign
 l_int|4
 comma
@@ -281,7 +282,7 @@ id|mymtd
 )paren
 (brace
 singleline_comment|// Probe for single Intel 28F640
-id|dbox2_flash_map.buswidth
+id|dbox2_flash_map.bankwidth
 op_assign
 l_int|2
 suffix:semicolon

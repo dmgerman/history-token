@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ocelot.c,v 1.12 2003/05/21 12:45:19 dwmw2 Exp $&n; *&n; * Flash on Momenco Ocelot&n; */
+multiline_comment|/*&n; * $Id: ocelot.c,v 1.13 2004/07/12 21:59:44 dwmw2 Exp $&n; *&n; * Flash on Momenco Ocelot&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -150,7 +150,7 @@ op_assign
 id|FLASH_WINDOW_SIZE
 comma
 dot
-id|buswidth
+id|bankwidth
 op_assign
 id|FLASH_BUSWIDTH
 comma
@@ -178,7 +178,7 @@ op_assign
 id|NVRAM_WINDOW_SIZE
 comma
 dot
-id|buswidth
+id|bankwidth
 op_assign
 id|NVRAM_BUSWIDTH
 comma

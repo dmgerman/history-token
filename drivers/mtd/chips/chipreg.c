@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: chipreg.c,v 1.15 2003/05/21 15:15:05 dwmw2 Exp $&n; *&n; * Registration for chip drivers&n; *&n; */
+multiline_comment|/*&n; * $Id: chipreg.c,v 1.16 2003/05/29 09:36:15 dwmw2 Exp $&n; *&n; * Registration for chip drivers&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: impa7.c,v 1.9 2003/06/23 11:47:43 dwmw2 Exp $&n; *&n; * Handle mapping of the NOR flash on implementa A7 boards&n; *&n; * Copyright 2002 SYSGO Real-Time Solutions GmbH&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; * $Id: impa7.c,v 1.11 2004/07/14 09:52:55 dwmw2 Exp $&n; *&n; * Handle mapping of the NOR flash on implementa A7 boards&n; *&n; * Copyright 2002 SYSGO Real-Time Solutions GmbH&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -22,9 +22,9 @@ DECL|macro|NUM_FLASHBANKS
 mdefine_line|#define NUM_FLASHBANKS 2
 DECL|macro|BUSWIDTH
 mdefine_line|#define BUSWIDTH     4
-multiline_comment|/* can be { &quot;cfi_probe&quot;, &quot;jedec_probe&quot;, &quot;map_rom&quot;, 0 }; */
+multiline_comment|/* can be { &quot;cfi_probe&quot;, &quot;jedec_probe&quot;, &quot;map_rom&quot;, NULL } */
 DECL|macro|PROBETYPES
-mdefine_line|#define PROBETYPES { &quot;jedec_probe&quot;, 0 }
+mdefine_line|#define PROBETYPES { &quot;jedec_probe&quot;, NULL }
 DECL|macro|MSG_PREFIX
 mdefine_line|#define MSG_PREFIX &quot;impA7:&quot;   /* prefix for our printk()&squot;s */
 DECL|macro|MTDID
@@ -38,10 +38,6 @@ id|impa7_mtd
 (braket
 id|NUM_FLASHBANKS
 )braket
-op_assign
-(brace
-l_int|0
-)brace
 suffix:semicolon
 DECL|variable|impa7_map
 r_static
@@ -65,7 +61,7 @@ op_assign
 id|WINDOW_SIZE0
 comma
 dot
-id|buswidth
+id|bankwidth
 op_assign
 id|BUSWIDTH
 comma
@@ -83,7 +79,7 @@ op_assign
 id|WINDOW_SIZE1
 comma
 dot
-id|buswidth
+id|bankwidth
 op_assign
 id|BUSWIDTH
 comma

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: mbx860.c,v 1.5 2003/05/21 12:45:19 dwmw2 Exp $&n; *&n; * Handle mapping of the flash on MBX860 boards&n; *&n; * Author:&t;Anton Todorov&n; * Copyright:&t;(C) 2001 Emness Technology&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+multiline_comment|/*&n; * $Id: mbx860.c,v 1.6 2004/07/12 21:59:44 dwmw2 Exp $&n; *&n; * Handle mapping of the flash on MBX860 boards&n; *&n; * Author:&t;Anton Todorov&n; * Copyright:&t;(C) 2001 Emness Technology&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -62,7 +62,7 @@ op_assign
 id|WINDOW_ADDR
 comma
 dot
-id|buswidth
+id|bankwidth
 op_assign
 l_int|4
 comma

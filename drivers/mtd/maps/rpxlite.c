@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: rpxlite.c,v 1.19 2003/05/21 12:45:19 dwmw2 Exp $&n; *&n; * Handle mapping of the flash on the RPX Lite and CLLF boards&n; */
+multiline_comment|/*&n; * $Id: rpxlite.c,v 1.20 2004/07/12 21:59:44 dwmw2 Exp $&n; *&n; * Handle mapping of the flash on the RPX Lite and CLLF boards&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -35,7 +35,7 @@ op_assign
 id|WINDOW_SIZE
 comma
 dot
-id|buswidth
+id|bankwidth
 op_assign
 l_int|4
 comma

@@ -1,14 +1,254 @@
 multiline_comment|/* Overhauled routines for dealing with different mmap regions of flash */
-multiline_comment|/* $Id: map.h,v 1.34 2003/05/28 12:42:22 dwmw2 Exp $ */
+multiline_comment|/* $Id: map.h,v 1.43 2004/07/14 13:30:27 dwmw2 Exp $ */
 macro_line|#ifndef __LINUX_MTD_MAP_H__
 DECL|macro|__LINUX_MTD_MAP_H__
 mdefine_line|#define __LINUX_MTD_MAP_H__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-multiline_comment|/* The map stuff is very simple. You fill in your struct map_info with&n;   a handful of routines for accessing the device, making sure they handle&n;   paging etc. correctly if your device needs it. Then you pass it off&n;   to a chip driver which deals with a mapped device - generally either&n;   do_cfi_probe() or do_ram_probe(), either of which will return a &n;   struct mtd_info if they liked what they saw. At which point, you&n;   fill in the mtd-&gt;module with your own module address, and register &n;   it.&n;   &n;   The mtd-&gt;priv field will point to the struct map_info, and any further&n;   private data required by the chip driver is linked from the &n;   mtd-&gt;priv-&gt;fldrv_priv field. This allows the map driver to get at &n;   the destructor function map-&gt;fldrv_destroy() when it&squot;s tired&n;   of living.&n;*/
+macro_line|#include &lt;asm/bug.h&gt;
+macro_line|#ifdef CONFIG_MTD_MAP_BANK_WIDTH_1
+DECL|macro|map_bankwidth
+mdefine_line|#define map_bankwidth(map) 1
+DECL|macro|map_bankwidth_is_1
+mdefine_line|#define map_bankwidth_is_1(map) (map_bankwidth(map) == 1)
+DECL|macro|map_bankwidth_is_large
+mdefine_line|#define map_bankwidth_is_large(map) (0)
+DECL|macro|map_words
+mdefine_line|#define map_words(map) (1)
+DECL|macro|MAX_MAP_BANKWIDTH
+mdefine_line|#define MAX_MAP_BANKWIDTH 1
+macro_line|#else
+DECL|macro|map_bankwidth_is_1
+mdefine_line|#define map_bankwidth_is_1(map) (0)
+macro_line|#endif
+macro_line|#ifdef CONFIG_MTD_MAP_BANK_WIDTH_2
+macro_line|# ifdef map_bankwidth
+DECL|macro|map_bankwidth
+macro_line|#  undef map_bankwidth
+DECL|macro|map_bankwidth
+macro_line|#  define map_bankwidth(map) ((map)-&gt;bankwidth)
+macro_line|# else
+DECL|macro|map_bankwidth
+macro_line|#  define map_bankwidth(map) 2
+DECL|macro|map_bankwidth_is_large
+macro_line|#  define map_bankwidth_is_large(map) (0)
+DECL|macro|map_words
+macro_line|#  define map_words(map) (1)
+macro_line|# endif
+DECL|macro|map_bankwidth_is_2
+mdefine_line|#define map_bankwidth_is_2(map) (map_bankwidth(map) == 2)
+DECL|macro|MAX_MAP_BANKWIDTH
+macro_line|#undef MAX_MAP_BANKWIDTH
+DECL|macro|MAX_MAP_BANKWIDTH
+mdefine_line|#define MAX_MAP_BANKWIDTH 2
+macro_line|#else
+DECL|macro|map_bankwidth_is_2
+mdefine_line|#define map_bankwidth_is_2(map) (0)
+macro_line|#endif
+macro_line|#ifdef CONFIG_MTD_MAP_BANK_WIDTH_4
+macro_line|# ifdef map_bankwidth
+DECL|macro|map_bankwidth
+macro_line|#  undef map_bankwidth
+DECL|macro|map_bankwidth
+macro_line|#  define map_bankwidth(map) ((map)-&gt;bankwidth)
+macro_line|# else
+DECL|macro|map_bankwidth
+macro_line|#  define map_bankwidth(map) 4
+DECL|macro|map_bankwidth_is_large
+macro_line|#  define map_bankwidth_is_large(map) (0)
+DECL|macro|map_words
+macro_line|#  define map_words(map) (1)
+macro_line|# endif
+DECL|macro|map_bankwidth_is_4
+mdefine_line|#define map_bankwidth_is_4(map) (map_bankwidth(map) == 4)
+DECL|macro|MAX_MAP_BANKWIDTH
+macro_line|#undef MAX_MAP_BANKWIDTH
+DECL|macro|MAX_MAP_BANKWIDTH
+mdefine_line|#define MAX_MAP_BANKWIDTH 4
+macro_line|#else
+DECL|macro|map_bankwidth_is_4
+mdefine_line|#define map_bankwidth_is_4(map) (0)
+macro_line|#endif
+macro_line|#ifdef CONFIG_MTD_MAP_BANK_WIDTH_8
+macro_line|# ifdef map_bankwidth
+DECL|macro|map_bankwidth
+macro_line|#  undef map_bankwidth
+DECL|macro|map_bankwidth
+macro_line|#  define map_bankwidth(map) ((map)-&gt;bankwidth)
+macro_line|#  if BITS_PER_LONG &lt; 64
+DECL|macro|map_bankwidth_is_large
+macro_line|#   undef map_bankwidth_is_large
+DECL|macro|map_bankwidth_is_large
+macro_line|#   define map_bankwidth_is_large(map) (map_bankwidth(map) &gt; BITS_PER_LONG/8)
+DECL|macro|map_words
+macro_line|#   undef map_words
+DECL|macro|map_words
+macro_line|#   define map_words(map) (map_bankwidth(map) / sizeof(unsigned long))
+macro_line|#  endif
+macro_line|# else
+DECL|macro|map_bankwidth
+macro_line|#  define map_bankwidth(map) 8
+DECL|macro|map_bankwidth_is_large
+macro_line|#  define map_bankwidth_is_large(map) (BITS_PER_LONG &lt; 64)
+DECL|macro|map_words
+macro_line|#  define map_words(map) (map_bankwidth(map) / sizeof(unsigned long))
+macro_line|# endif
+DECL|macro|map_bankwidth_is_8
+mdefine_line|#define map_bankwidth_is_8(map) (map_bankwidth(map) == 8)
+DECL|macro|MAX_MAP_BANKWIDTH
+macro_line|#undef MAX_MAP_BANKWIDTH
+DECL|macro|MAX_MAP_BANKWIDTH
+mdefine_line|#define MAX_MAP_BANKWIDTH 8
+macro_line|#else
+DECL|macro|map_bankwidth_is_8
+mdefine_line|#define map_bankwidth_is_8(map) (0)
+macro_line|#endif
+macro_line|#ifdef CONFIG_MTD_MAP_BANK_WIDTH_16
+macro_line|# ifdef map_bankwidth
+DECL|macro|map_bankwidth
+macro_line|#  undef map_bankwidth
+DECL|macro|map_bankwidth
+macro_line|#  define map_bankwidth(map) ((map)-&gt;bankwidth)
+DECL|macro|map_bankwidth_is_large
+macro_line|#  undef map_bankwidth_is_large
+DECL|macro|map_bankwidth_is_large
+macro_line|#  define map_bankwidth_is_large(map) (map_bankwidth(map) &gt; BITS_PER_LONG/8)
+DECL|macro|map_words
+macro_line|#  undef map_words
+DECL|macro|map_words
+macro_line|#  define map_words(map) (map_bankwidth(map) / sizeof(unsigned long))
+macro_line|# else
+DECL|macro|map_bankwidth
+macro_line|#  define map_bankwidth(map) 16
+DECL|macro|map_bankwidth_is_large
+macro_line|#  define map_bankwidth_is_large(map) (1)
+DECL|macro|map_words
+macro_line|#  define map_words(map) (map_bankwidth(map) / sizeof(unsigned long))
+macro_line|# endif
+DECL|macro|map_bankwidth_is_16
+mdefine_line|#define map_bankwidth_is_16(map) (map_bankwidth(map) == 16)
+DECL|macro|MAX_MAP_BANKWIDTH
+macro_line|#undef MAX_MAP_BANKWIDTH
+DECL|macro|MAX_MAP_BANKWIDTH
+mdefine_line|#define MAX_MAP_BANKWIDTH 16
+macro_line|#else
+DECL|macro|map_bankwidth_is_16
+mdefine_line|#define map_bankwidth_is_16(map) (0)
+macro_line|#endif
+macro_line|#ifdef CONFIG_MTD_MAP_BANK_WIDTH_32
+macro_line|# ifdef map_bankwidth
+DECL|macro|map_bankwidth
+macro_line|#  undef map_bankwidth
+DECL|macro|map_bankwidth
+macro_line|#  define map_bankwidth(map) ((map)-&gt;bankwidth)
+DECL|macro|map_bankwidth_is_large
+macro_line|#  undef map_bankwidth_is_large
+DECL|macro|map_bankwidth_is_large
+macro_line|#  define map_bankwidth_is_large(map) (map_bankwidth(map) &gt; BITS_PER_LONG/8)
+DECL|macro|map_words
+macro_line|#  undef map_words
+DECL|macro|map_words
+macro_line|#  define map_words(map) (map_bankwidth(map) / sizeof(unsigned long))
+macro_line|# else
+DECL|macro|map_bankwidth
+macro_line|#  define map_bankwidth(map) 32
+DECL|macro|map_bankwidth_is_large
+macro_line|#  define map_bankwidth_is_large(map) (1)
+DECL|macro|map_words
+macro_line|#  define map_words(map) (map_bankwidth(map) / sizeof(unsigned long))
+macro_line|# endif
+DECL|macro|map_bankwidth_is_32
+mdefine_line|#define map_bankwidth_is_32(map) (map_bankwidth(map) == 32)
+DECL|macro|MAX_MAP_BANKWIDTH
+macro_line|#undef MAX_MAP_BANKWIDTH
+DECL|macro|MAX_MAP_BANKWIDTH
+mdefine_line|#define MAX_MAP_BANKWIDTH 32
+macro_line|#else
+DECL|macro|map_bankwidth_is_32
+mdefine_line|#define map_bankwidth_is_32(map) (0)
+macro_line|#endif
+macro_line|#ifndef map_bankwidth
+macro_line|#error &quot;No bus width supported. What&squot;s the point?&quot;
+macro_line|#endif
+DECL|function|map_bankwidth_supported
+r_static
+r_inline
+r_int
+id|map_bankwidth_supported
+c_func
+(paren
+r_int
+id|w
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|w
+)paren
+(brace
+macro_line|#ifdef CONFIG_MTD_MAP_BANK_WIDTH_1
+r_case
+l_int|1
+suffix:colon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MTD_MAP_BANK_WIDTH_2
+r_case
+l_int|2
+suffix:colon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MTD_MAP_BANK_WIDTH_4
+r_case
+l_int|4
+suffix:colon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MTD_MAP_BANK_WIDTH_8
+r_case
+l_int|8
+suffix:colon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MTD_MAP_BANK_WIDTH_16
+r_case
+l_int|16
+suffix:colon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MTD_MAP_BANK_WIDTH_32
+r_case
+l_int|32
+suffix:colon
+macro_line|#endif
+r_return
+l_int|1
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
+DECL|macro|MAX_MAP_LONGS
+mdefine_line|#define MAX_MAP_LONGS ( ((MAX_MAP_BANKWIDTH*8) + BITS_PER_LONG - 1) / BITS_PER_LONG )
+r_typedef
+r_union
+(brace
+DECL|member|x
+r_int
+r_int
+id|x
+(braket
+id|MAX_MAP_LONGS
+)braket
+suffix:semicolon
+DECL|typedef|map_word
+)brace
+id|map_word
+suffix:semicolon
+multiline_comment|/* The map stuff is very simple. You fill in your struct map_info with&n;   a handful of routines for accessing the device, making sure they handle&n;   paging etc. correctly if your device needs it. Then you pass it off&n;   to a chip probe routine -- either JEDEC or CFI probe or both -- via&n;   do_map_probe(). If a chip is recognised, the probe code will invoke the&n;   appropriate chip driver (if present) and return a struct mtd_info.&n;   At which point, you fill in the mtd-&gt;module with your own module &n;   address, and register it with the MTD core code. Or you could partition&n;   it and register the partitions instead, or keep it for your own private&n;   use; whatever.&n;   &n;   The mtd-&gt;priv field will point to the struct map_info, and any further&n;   private data required by the chip driver is linked from the &n;   mtd-&gt;priv-&gt;fldrv_priv field. This allows the map driver to get at &n;   the destructor function map-&gt;fldrv_destroy() when it&squot;s tired&n;   of living.&n;*/
 DECL|struct|map_info
 r_struct
 id|map_info
@@ -40,17 +280,17 @@ r_void
 op_star
 id|cached
 suffix:semicolon
-DECL|member|buswidth
+DECL|member|bankwidth
 r_int
-id|buswidth
+id|bankwidth
 suffix:semicolon
-multiline_comment|/* in octets */
+multiline_comment|/* in octets. This isn&squot;t necessarily the width&n;&t;&t;       of actual bus cycles -- it&squot;s the repeat interval&n;&t;&t;      in bytes, before you are talking to the first chip again.&n;&t;&t;      */
 macro_line|#ifdef CONFIG_MTD_COMPLEX_MAPPINGS
-DECL|member|read8
-id|u8
+DECL|member|read
+id|map_word
 (paren
 op_star
-id|read8
+id|read
 )paren
 (paren
 r_struct
@@ -61,52 +301,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-DECL|member|read16
-id|u16
-(paren
-op_star
-id|read16
-)paren
-(paren
-r_struct
-id|map_info
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-DECL|member|read32
-id|u32
-(paren
-op_star
-id|read32
-)paren
-(paren
-r_struct
-id|map_info
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-DECL|member|read64
-id|u64
-(paren
-op_star
-id|read64
-)paren
-(paren
-r_struct
-id|map_info
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-multiline_comment|/* If it returned a &squot;long&squot; I&squot;d call it readl.&n;&t; * It doesn&squot;t.&n;&t; * I won&squot;t.&n;&t; * dwmw2 */
 DECL|member|copy_from
 r_void
 (paren
@@ -127,69 +321,19 @@ comma
 id|ssize_t
 )paren
 suffix:semicolon
-DECL|member|write8
+DECL|member|write
 r_void
 (paren
 op_star
-id|write8
+id|write
 )paren
 (paren
 r_struct
 id|map_info
 op_star
 comma
-id|u8
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-DECL|member|write16
-r_void
-(paren
-op_star
-id|write16
-)paren
-(paren
-r_struct
-id|map_info
-op_star
-comma
-id|u16
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-DECL|member|write32
-r_void
-(paren
-op_star
-id|write32
-)paren
-(paren
-r_struct
-id|map_info
-op_star
-comma
-id|u32
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-DECL|member|write64
-r_void
-(paren
-op_star
-id|write64
-)paren
-(paren
-r_struct
-id|map_info
-op_star
-comma
-id|u64
+r_const
+id|map_word
 comma
 r_int
 r_int
@@ -218,6 +362,24 @@ id|ssize_t
 suffix:semicolon
 multiline_comment|/* We can perhaps put in &squot;point&squot; and &squot;unpoint&squot; methods, if we really&n;&t;   want to enable XIP for non-linear mappings. Not yet though. */
 macro_line|#endif
+multiline_comment|/* It&squot;s possible for the map driver to use cached memory in its&n;&t;   copy_from implementation (and _only_ with copy_from).  However,&n;&t;   when the chip driver knows some flash area has changed contents,&n;&t;   it will signal it to the map driver through this routine to let&n;&t;   the map driver invalidate the corresponding cache as needed.&n;&t;   If there is no cache to care about this can be set to NULL. */
+DECL|member|inval_cache
+r_void
+(paren
+op_star
+id|inval_cache
+)paren
+(paren
+r_struct
+id|map_info
+op_star
+comma
+r_int
+r_int
+comma
+id|ssize_t
+)paren
+suffix:semicolon
 multiline_comment|/* set_vpp() must handle being reentered -- enable, enable, disable &n;&t;   must leave it enabled. */
 DECL|member|set_vpp
 r_void
@@ -354,45 +516,604 @@ DECL|macro|ENABLE_VPP
 mdefine_line|#define ENABLE_VPP(map) do { if(map-&gt;set_vpp) map-&gt;set_vpp(map, 1); } while(0)
 DECL|macro|DISABLE_VPP
 mdefine_line|#define DISABLE_VPP(map) do { if(map-&gt;set_vpp) map-&gt;set_vpp(map, 0); } while(0)
-macro_line|#ifdef CONFIG_MTD_COMPLEX_MAPPINGS
-DECL|macro|map_read8
-mdefine_line|#define map_read8(map, ofs) (map)-&gt;read8(map, ofs)
-DECL|macro|map_read16
-mdefine_line|#define map_read16(map, ofs) (map)-&gt;read16(map, ofs)
-DECL|macro|map_read32
-mdefine_line|#define map_read32(map, ofs) (map)-&gt;read32(map, ofs)
-DECL|macro|map_read64
-mdefine_line|#define map_read64(map, ofs) (map)-&gt;read64(map, ofs)
-DECL|macro|map_copy_from
-mdefine_line|#define map_copy_from(map, to, from, len) (map)-&gt;copy_from(map, to, from, len)
-DECL|macro|map_write8
-mdefine_line|#define map_write8(map, datum, ofs) (map)-&gt;write8(map, datum, ofs)
-DECL|macro|map_write16
-mdefine_line|#define map_write16(map, datum, ofs) (map)-&gt;write16(map, datum, ofs)
-DECL|macro|map_write32
-mdefine_line|#define map_write32(map, datum, ofs) (map)-&gt;write32(map, datum, ofs)
-DECL|macro|map_write64
-mdefine_line|#define map_write64(map, datum, ofs) (map)-&gt;write64(map, datum, ofs)
-DECL|macro|map_copy_to
-mdefine_line|#define map_copy_to(map, to, from, len) (map)-&gt;copy_to(map, to, from, len)
-r_extern
-r_void
-id|simple_map_init
+DECL|macro|INVALIDATE_CACHED_RANGE
+mdefine_line|#define INVALIDATE_CACHED_RANGE(map, from, size) &bslash;&n;&t;do { if(map-&gt;inval_cache) map-&gt;inval_cache(map, from, size); } while(0)
+DECL|function|map_word_equal
+r_static
+r_inline
+r_int
+id|map_word_equal
 c_func
 (paren
 r_struct
 id|map_info
 op_star
+id|map
+comma
+id|map_word
+id|val1
+comma
+id|map_word
+id|val2
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|map_words
+c_func
+(paren
+id|map
 )paren
 suffix:semicolon
-DECL|macro|map_is_linear
-mdefine_line|#define map_is_linear(map) (map-&gt;phys != NO_XIP)
-macro_line|#else
-DECL|function|map_read8
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|val1.x
+(braket
+id|i
+)braket
+op_ne
+id|val2.x
+(braket
+id|i
+)braket
+)paren
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+DECL|function|map_word_and
 r_static
 r_inline
-id|u8
-id|map_read8
+id|map_word
+id|map_word_and
+c_func
+(paren
+r_struct
+id|map_info
+op_star
+id|map
+comma
+id|map_word
+id|val1
+comma
+id|map_word
+id|val2
+)paren
+(brace
+id|map_word
+id|r
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|map_words
+c_func
+(paren
+id|map
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|r.x
+(braket
+id|i
+)braket
+op_assign
+id|val1.x
+(braket
+id|i
+)braket
+op_amp
+id|val2.x
+(braket
+id|i
+)braket
+suffix:semicolon
+)brace
+r_return
+id|r
+suffix:semicolon
+)brace
+DECL|function|map_word_or
+r_static
+r_inline
+id|map_word
+id|map_word_or
+c_func
+(paren
+r_struct
+id|map_info
+op_star
+id|map
+comma
+id|map_word
+id|val1
+comma
+id|map_word
+id|val2
+)paren
+(brace
+id|map_word
+id|r
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|map_words
+c_func
+(paren
+id|map
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|r.x
+(braket
+id|i
+)braket
+op_assign
+id|val1.x
+(braket
+id|i
+)braket
+op_or
+id|val2.x
+(braket
+id|i
+)braket
+suffix:semicolon
+)brace
+r_return
+id|r
+suffix:semicolon
+)brace
+DECL|macro|map_word_andequal
+mdefine_line|#define map_word_andequal(m, a, b, z) map_word_equal(m, z, map_word_and(m, a, b))
+DECL|function|map_word_bitsset
+r_static
+r_inline
+r_int
+id|map_word_bitsset
+c_func
+(paren
+r_struct
+id|map_info
+op_star
+id|map
+comma
+id|map_word
+id|val1
+comma
+id|map_word
+id|val2
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|map_words
+c_func
+(paren
+id|map
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|val1.x
+(braket
+id|i
+)braket
+op_amp
+id|val2.x
+(braket
+id|i
+)braket
+)paren
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|map_word_load
+r_static
+r_inline
+id|map_word
+id|map_word_load
+c_func
+(paren
+r_struct
+id|map_info
+op_star
+id|map
+comma
+r_const
+r_void
+op_star
+id|ptr
+)paren
+(brace
+id|map_word
+id|r
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|map_bankwidth_is_1
+c_func
+(paren
+id|map
+)paren
+)paren
+id|r.x
+(braket
+l_int|0
+)braket
+op_assign
+op_star
+(paren
+r_int
+r_char
+op_star
+)paren
+id|ptr
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|map_bankwidth_is_2
+c_func
+(paren
+id|map
+)paren
+)paren
+id|r.x
+(braket
+l_int|0
+)braket
+op_assign
+id|get_unaligned
+c_func
+(paren
+(paren
+r_uint16
+op_star
+)paren
+id|ptr
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|map_bankwidth_is_4
+c_func
+(paren
+id|map
+)paren
+)paren
+id|r.x
+(braket
+l_int|0
+)braket
+op_assign
+id|get_unaligned
+c_func
+(paren
+(paren
+r_uint32
+op_star
+)paren
+id|ptr
+)paren
+suffix:semicolon
+macro_line|#if BITS_PER_LONG &gt;= 64
+r_else
+r_if
+c_cond
+(paren
+id|map_bankwidth_is_8
+c_func
+(paren
+id|map
+)paren
+)paren
+id|r.x
+(braket
+l_int|0
+)braket
+op_assign
+id|get_unaligned
+c_func
+(paren
+(paren
+r_uint64
+op_star
+)paren
+id|ptr
+)paren
+suffix:semicolon
+macro_line|#endif
+r_else
+r_if
+c_cond
+(paren
+id|map_bankwidth_is_large
+c_func
+(paren
+id|map
+)paren
+)paren
+id|memcpy
+c_func
+(paren
+id|r.x
+comma
+id|ptr
+comma
+id|map-&gt;bankwidth
+)paren
+suffix:semicolon
+r_return
+id|r
+suffix:semicolon
+)brace
+DECL|function|map_word_load_partial
+r_static
+r_inline
+id|map_word
+id|map_word_load_partial
+c_func
+(paren
+r_struct
+id|map_info
+op_star
+id|map
+comma
+id|map_word
+id|orig
+comma
+r_const
+r_int
+r_char
+op_star
+id|buf
+comma
+r_int
+id|start
+comma
+r_int
+id|len
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|map_bankwidth_is_large
+c_func
+(paren
+id|map
+)paren
+)paren
+(brace
+r_char
+op_star
+id|dest
+op_assign
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|orig
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|dest
+op_plus
+id|start
+comma
+id|buf
+comma
+id|len
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+id|start
+suffix:semicolon
+id|i
+OL
+id|start
+op_plus
+id|len
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_int
+id|bitpos
+suffix:semicolon
+macro_line|#ifdef __LITTLE_ENDIAN
+id|bitpos
+op_assign
+id|i
+op_star
+l_int|8
+suffix:semicolon
+macro_line|#else /* __BIG_ENDIAN */
+id|bitpos
+op_assign
+(paren
+id|map_bankwidth
+c_func
+(paren
+id|map
+)paren
+op_minus
+l_int|1
+op_minus
+id|i
+)paren
+op_star
+l_int|8
+suffix:semicolon
+macro_line|#endif
+id|orig.x
+(braket
+l_int|0
+)braket
+op_and_assign
+op_complement
+(paren
+l_int|0xff
+op_lshift
+id|bitpos
+)paren
+suffix:semicolon
+id|orig.x
+(braket
+l_int|0
+)braket
+op_or_assign
+id|buf
+(braket
+id|i
+)braket
+op_lshift
+id|bitpos
+suffix:semicolon
+)brace
+)brace
+r_return
+id|orig
+suffix:semicolon
+)brace
+DECL|function|map_word_ff
+r_static
+r_inline
+id|map_word
+id|map_word_ff
+c_func
+(paren
+r_struct
+id|map_info
+op_star
+id|map
+)paren
+(brace
+id|map_word
+id|r
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|map_words
+c_func
+(paren
+id|map
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|r.x
+(braket
+id|i
+)braket
+op_assign
+op_complement
+l_int|0UL
+suffix:semicolon
+)brace
+r_return
+id|r
+suffix:semicolon
+)brace
+DECL|function|inline_map_read
+r_static
+r_inline
+id|map_word
+id|inline_map_read
 c_func
 (paren
 r_struct
@@ -405,7 +1126,23 @@ r_int
 id|ofs
 )paren
 (brace
-r_return
+id|map_word
+id|r
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|map_bankwidth_is_1
+c_func
+(paren
+id|map
+)paren
+)paren
+id|r.x
+(braket
+l_int|0
+)braket
+op_assign
 id|__raw_readb
 c_func
 (paren
@@ -414,25 +1151,21 @@ op_plus
 id|ofs
 )paren
 suffix:semicolon
-)brace
-DECL|function|map_read16
-r_static
-r_inline
-id|u16
-id|map_read16
+r_else
+r_if
+c_cond
+(paren
+id|map_bankwidth_is_2
 c_func
 (paren
-r_struct
-id|map_info
-op_star
 id|map
-comma
-r_int
-r_int
-id|ofs
 )paren
-(brace
-r_return
+)paren
+id|r.x
+(braket
+l_int|0
+)braket
+op_assign
 id|__raw_readw
 c_func
 (paren
@@ -441,25 +1174,21 @@ op_plus
 id|ofs
 )paren
 suffix:semicolon
-)brace
-DECL|function|map_read32
-r_static
-r_inline
-id|u32
-id|map_read32
+r_else
+r_if
+c_cond
+(paren
+id|map_bankwidth_is_4
 c_func
 (paren
-r_struct
-id|map_info
-op_star
 id|map
-comma
-r_int
-r_int
-id|ofs
 )paren
-(brace
-r_return
+)paren
+id|r.x
+(braket
+l_int|0
+)braket
+op_assign
 id|__raw_readl
 c_func
 (paren
@@ -468,36 +1197,23 @@ op_plus
 id|ofs
 )paren
 suffix:semicolon
-)brace
-DECL|function|map_read64
-r_static
-r_inline
-id|u64
-id|map_read64
+macro_line|#if BITS_PER_LONG &gt;= 64
+r_else
+r_if
+c_cond
+(paren
+id|map_bankwidth_is_8
 c_func
 (paren
-r_struct
-id|map_info
-op_star
 id|map
-comma
-r_int
-r_int
-id|ofs
 )paren
-(brace
-macro_line|#ifndef CONFIG_MTD_CFI_B8 /* 64-bit mappings */
-id|BUG
-c_func
-(paren
 )paren
-suffix:semicolon
-r_return
+id|r.x
+(braket
 l_int|0
-suffix:semicolon
-macro_line|#else
-r_return
-id|__raw_readll
+)braket
+op_assign
+id|__raw_readq
 c_func
 (paren
 id|map-&gt;virt
@@ -506,12 +1222,37 @@ id|ofs
 )paren
 suffix:semicolon
 macro_line|#endif
+r_else
+r_if
+c_cond
+(paren
+id|map_bankwidth_is_large
+c_func
+(paren
+id|map
+)paren
+)paren
+id|memcpy_fromio
+c_func
+(paren
+id|r.x
+comma
+id|map-&gt;virt
+op_plus
+id|ofs
+comma
+id|map-&gt;bankwidth
+)paren
+suffix:semicolon
+r_return
+id|r
+suffix:semicolon
 )brace
-DECL|function|map_write8
+DECL|function|inline_map_write
 r_static
 r_inline
 r_void
-id|map_write8
+id|inline_map_write
 c_func
 (paren
 r_struct
@@ -519,7 +1260,8 @@ id|map_info
 op_star
 id|map
 comma
-id|u8
+r_const
+id|map_word
 id|datum
 comma
 r_int
@@ -527,129 +1269,119 @@ r_int
 id|ofs
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|map_bankwidth_is_1
+c_func
+(paren
+id|map
+)paren
+)paren
 id|__raw_writeb
 c_func
 (paren
-id|datum
+id|datum.x
+(braket
+l_int|0
+)braket
 comma
 id|map-&gt;virt
 op_plus
 id|ofs
 )paren
 suffix:semicolon
-id|mb
+r_else
+r_if
+c_cond
+(paren
+id|map_bankwidth_is_2
 c_func
 (paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|map_write16
-r_static
-r_inline
-r_void
-id|map_write16
-c_func
-(paren
-r_struct
-id|map_info
-op_star
 id|map
-comma
-id|u16
-id|datum
-comma
-r_int
-r_int
-id|ofs
 )paren
-(brace
+)paren
 id|__raw_writew
 c_func
 (paren
-id|datum
+id|datum.x
+(braket
+l_int|0
+)braket
 comma
 id|map-&gt;virt
 op_plus
 id|ofs
 )paren
 suffix:semicolon
-id|mb
+r_else
+r_if
+c_cond
+(paren
+id|map_bankwidth_is_4
 c_func
 (paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|map_write32
-r_static
-r_inline
-r_void
-id|map_write32
-c_func
-(paren
-r_struct
-id|map_info
-op_star
 id|map
-comma
-id|u32
-id|datum
-comma
-r_int
-r_int
-id|ofs
 )paren
-(brace
+)paren
 id|__raw_writel
 c_func
 (paren
-id|datum
+id|datum.x
+(braket
+l_int|0
+)braket
 comma
 id|map-&gt;virt
 op_plus
 id|ofs
 )paren
 suffix:semicolon
-id|mb
+macro_line|#if BITS_PER_LONG &gt;= 64
+r_else
+r_if
+c_cond
+(paren
+id|map_bankwidth_is_8
 c_func
 (paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|map_write64
-r_static
-r_inline
-r_void
-id|map_write64
-c_func
-(paren
-r_struct
-id|map_info
-op_star
 id|map
-comma
-id|u64
-id|datum
-comma
-r_int
-r_int
-id|ofs
 )paren
-(brace
-macro_line|#ifndef CONFIG_MTD_CFI_B8 /* 64-bit mappings */
-id|BUG
+)paren
+id|__raw_writeq
 c_func
 (paren
-)paren
-suffix:semicolon
-macro_line|#else
-id|__raw_writell
-c_func
-(paren
-id|datum
+id|datum.x
+(braket
+l_int|0
+)braket
 comma
 id|map-&gt;virt
 op_plus
 id|ofs
+)paren
+suffix:semicolon
+macro_line|#endif
+r_else
+r_if
+c_cond
+(paren
+id|map_bankwidth_is_large
+c_func
+(paren
+id|map
+)paren
+)paren
+id|memcpy_toio
+c_func
+(paren
+id|map-&gt;virt
+op_plus
+id|ofs
+comma
+id|datum.x
+comma
+id|map-&gt;bankwidth
 )paren
 suffix:semicolon
 id|mb
@@ -657,13 +1389,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif /* CFI_B8 */
 )brace
-DECL|function|map_copy_from
+DECL|function|inline_map_copy_from
 r_static
 r_inline
 r_void
-id|map_copy_from
+id|inline_map_copy_from
 c_func
 (paren
 r_struct
@@ -683,6 +1414,28 @@ id|ssize_t
 id|len
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|map-&gt;cached
+)paren
+id|memcpy
+c_func
+(paren
+id|to
+comma
+(paren
+r_char
+op_star
+)paren
+id|map-&gt;cached
+op_plus
+id|from
+comma
+id|len
+)paren
+suffix:semicolon
+r_else
 id|memcpy_fromio
 c_func
 (paren
@@ -696,11 +1449,11 @@ id|len
 )paren
 suffix:semicolon
 )brace
-DECL|function|map_copy_to
+DECL|function|inline_map_copy_to
 r_static
 r_inline
 r_void
-id|map_copy_to
+id|inline_map_copy_to
 c_func
 (paren
 r_struct
@@ -734,8 +1487,38 @@ id|len
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_MTD_COMPLEX_MAPPINGS
+DECL|macro|map_read
+mdefine_line|#define map_read(map, ofs) (map)-&gt;read(map, ofs)
+DECL|macro|map_copy_from
+mdefine_line|#define map_copy_from(map, to, from, len) (map)-&gt;copy_from(map, to, from, len)
+DECL|macro|map_write
+mdefine_line|#define map_write(map, datum, ofs) (map)-&gt;write(map, datum, ofs)
+DECL|macro|map_copy_to
+mdefine_line|#define map_copy_to(map, to, from, len) (map)-&gt;copy_to(map, to, from, len)
+r_extern
+r_void
+id|simple_map_init
+c_func
+(paren
+r_struct
+id|map_info
+op_star
+)paren
+suffix:semicolon
+DECL|macro|map_is_linear
+mdefine_line|#define map_is_linear(map) (map-&gt;phys != NO_XIP)
+macro_line|#else
+DECL|macro|map_read
+mdefine_line|#define map_read(map, ofs) inline_map_read(map, ofs)
+DECL|macro|map_copy_from
+mdefine_line|#define map_copy_from(map, to, from, len) inline_map_copy_from(map, to, from, len)
+DECL|macro|map_write
+mdefine_line|#define map_write(map, datum, ofs) inline_map_write(map, datum, ofs)
+DECL|macro|map_copy_to
+mdefine_line|#define map_copy_to(map, to, from, len) inline_map_copy_to(map, to, from, len)
 DECL|macro|simple_map_init
-mdefine_line|#define simple_map_init(map) do { } while (0)
+mdefine_line|#define simple_map_init(map) BUG_ON(!map_bankwidth_supported((map)-&gt;bankwidth))
 DECL|macro|map_is_linear
 mdefine_line|#define map_is_linear(map) (1)
 macro_line|#endif /* !CONFIG_MTD_COMPLEX_MAPPINGS */
