@@ -489,27 +489,6 @@ id|urb_compl_count
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,6,4)
-r_if
-c_cond
-(paren
-(paren
-id|ret
-op_assign
-id|dvb_register_adapter
-c_func
-(paren
-op_amp
-id|dib-&gt;adapter
-comma
-id|DRIVER_DESC
-)paren
-)paren
-OL
-l_int|0
-)paren
-(brace
-macro_line|#else
 r_if
 c_cond
 (paren
@@ -531,7 +510,6 @@ OL
 l_int|0
 )paren
 (brace
-macro_line|#endif
 id|deb_info
 c_func
 (paren
