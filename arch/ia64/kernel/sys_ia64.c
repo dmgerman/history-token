@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/file.h&gt;&t;&t;/* doh, must come after sched.h...
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
+macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;asm/shmparam.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_int

@@ -1255,6 +1255,8 @@ comma
 id|mapping
 comma
 id|idx
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 id|unlock_page
