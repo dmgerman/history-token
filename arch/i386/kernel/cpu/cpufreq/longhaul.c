@@ -246,7 +246,7 @@ l_int|2
 op_logical_or
 id|longhaul_version
 op_eq
-l_int|4
+l_int|3
 )paren
 (brace
 r_if
@@ -525,7 +525,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|4
+l_int|3
 suffix:colon
 id|rdmsrl
 (paren
@@ -1052,7 +1052,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|4
+l_int|3
 suffix:colon
 id|rdmsrl
 (paren
@@ -1947,7 +1947,7 @@ l_int|9
 suffix:colon
 id|longhaul_version
 op_assign
-l_int|4
+l_int|3
 suffix:semicolon
 id|numscales
 op_assign
