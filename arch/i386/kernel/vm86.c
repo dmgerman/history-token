@@ -90,6 +90,12 @@ r_int
 r_int
 id|tmp
 suffix:semicolon
+multiline_comment|/*&n;&t; * This gets called from entry.S with interrupts disabled, but&n;&t; * from process context. Enable interrupts here, before trying&n;&t; * to access user space.&n;&t; */
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

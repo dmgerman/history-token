@@ -1037,6 +1037,8 @@ DECL|macro|PCI_DEVICE_ID_SI_652
 mdefine_line|#define PCI_DEVICE_ID_SI_652&t;&t;0x0652
 DECL|macro|PCI_DEVICE_ID_SI_655
 mdefine_line|#define PCI_DEVICE_ID_SI_655&t;&t;0x0655
+DECL|macro|PCI_DEVICE_ID_SI_661
+mdefine_line|#define PCI_DEVICE_ID_SI_661&t;&t;0x0661
 DECL|macro|PCI_DEVICE_ID_SI_730
 mdefine_line|#define PCI_DEVICE_ID_SI_730&t;&t;0x0730
 DECL|macro|PCI_DEVICE_ID_SI_733
@@ -1049,6 +1051,8 @@ DECL|macro|PCI_DEVICE_ID_SI_735
 mdefine_line|#define PCI_DEVICE_ID_SI_735&t;&t;0x0735
 DECL|macro|PCI_DEVICE_ID_SI_740
 mdefine_line|#define PCI_DEVICE_ID_SI_740&t;&t;0x0740
+DECL|macro|PCI_DEVICE_ID_SI_741
+mdefine_line|#define PCI_DEVICE_ID_SI_741&t;&t;0x0741
 DECL|macro|PCI_DEVICE_ID_SI_745
 mdefine_line|#define PCI_DEVICE_ID_SI_745&t;&t;0x0745
 DECL|macro|PCI_DEVICE_ID_SI_746
@@ -1063,6 +1067,8 @@ DECL|macro|PCI_DEVICE_ID_SI_752
 mdefine_line|#define PCI_DEVICE_ID_SI_752&t;&t;0x0752
 DECL|macro|PCI_DEVICE_ID_SI_755
 mdefine_line|#define PCI_DEVICE_ID_SI_755&t;&t;0x0755
+DECL|macro|PCI_DEVICE_ID_SI_760
+mdefine_line|#define PCI_DEVICE_ID_SI_760&t;&t;0x0760
 DECL|macro|PCI_DEVICE_ID_SI_900
 mdefine_line|#define PCI_DEVICE_ID_SI_900&t;&t;0x0900
 DECL|macro|PCI_DEVICE_ID_SI_961
