@@ -6,6 +6,7 @@ macro_line|#include &lt;sched.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &lt;sys/ptrace.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
@@ -138,6 +139,35 @@ c_func
 id|old_pid
 comma
 id|SIGKILL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ptrace
+c_func
+(paren
+id|PTRACE_SETOPTIONS
+comma
+id|new_pid
+comma
+l_int|0
+comma
+(paren
+r_void
+op_star
+)paren
+id|PTRACE_O_TRACESYSGOOD
+)paren
+OL
+l_int|0
+)paren
+id|tracer_panic
+c_func
+(paren
+l_string|&quot;do_exec: PTRACE_SETOPTIONS failed, errno = %d&quot;
+comma
+id|errno
 )paren
 suffix:semicolon
 r_if

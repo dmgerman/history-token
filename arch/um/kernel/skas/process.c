@@ -7,6 +7,7 @@ macro_line|#include &lt;setjmp.h&gt;
 macro_line|#include &lt;sched.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &lt;sys/ptrace.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
 macro_line|#include &lt;sys/user.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
@@ -191,17 +192,7 @@ id|local_using_sysemu
 r_int
 id|err
 comma
-id|syscall_nr
-comma
 id|status
-suffix:semicolon
-id|syscall_nr
-op_assign
-id|PT_SYSCALL_NR
-c_func
-(paren
-id|regs-&gt;skas.regs
-)paren
 suffix:semicolon
 id|UPT_SYSCALL_NR
 c_func
@@ -209,27 +200,12 @@ c_func
 id|regs
 )paren
 op_assign
-id|syscall_nr
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|syscall_nr
-OL
-l_int|0
-)paren
-(brace
-id|relay_signal
+id|PT_SYSCALL_NR
 c_func
 (paren
-id|SIGTRAP
-comma
-id|regs
+id|regs-&gt;skas.regs
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -340,7 +316,11 @@ c_func
 id|status
 )paren
 op_ne
+(paren
 id|SIGTRAP
+op_plus
+l_int|0x80
+)paren
 )paren
 )paren
 (brace
@@ -634,6 +614,35 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ptrace
+c_func
+(paren
+id|PTRACE_SETOPTIONS
+comma
+id|pid
+comma
+l_int|NULL
+comma
+(paren
+r_void
+op_star
+)paren
+id|PTRACE_O_TRACESYSGOOD
+)paren
+OL
+l_int|0
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;start_userspace : PTRACE_SETOPTIONS failed, errno=%d&bslash;n&quot;
+comma
+id|errno
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|munmap
 c_func
 (paren
@@ -834,6 +843,8 @@ r_break
 suffix:semicolon
 r_case
 id|SIGTRAP
+op_plus
+l_int|0x80
 suffix:colon
 id|handle_trap
 c_func
@@ -843,6 +854,28 @@ comma
 id|regs
 comma
 id|local_using_sysemu
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SIGTRAP
+suffix:colon
+id|UPT_SYSCALL_NR
+c_func
+(paren
+id|regs
+)paren
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|relay_signal
+c_func
+(paren
+id|SIGTRAP
+comma
+id|regs
 )paren
 suffix:semicolon
 r_break

@@ -175,6 +175,16 @@ id|local_using_sysemu
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|do_sigtrap
+c_func
+(paren
+r_void
+op_star
+id|task
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|is_valid_pid
 c_func

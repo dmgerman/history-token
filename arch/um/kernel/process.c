@@ -9,6 +9,7 @@ macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;setjmp.h&gt;
 macro_line|#include &lt;sys/time.h&gt;
 macro_line|#include &lt;sys/ptrace.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
@@ -1439,6 +1440,37 @@ op_amp
 id|stack
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ptrace
+c_func
+(paren
+id|PTRACE_SETOPTIONS
+comma
+id|pid
+comma
+l_int|0
+comma
+(paren
+r_void
+op_star
+)paren
+id|PTRACE_O_TRACESYSGOOD
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|panic
+c_func
+(paren
+l_string|&quot;check_ptrace: PTRACE_SETOPTIONS failed, errno = %d&quot;
+comma
+id|errno
+)paren
+suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
@@ -1523,14 +1555,18 @@ c_func
 id|status
 )paren
 op_ne
+(paren
 id|SIGTRAP
+op_plus
+l_int|0x80
+)paren
 )paren
 )paren
 (brace
 id|panic
 c_func
 (paren
-l_string|&quot;check_ptrace : expected SIGTRAP, &quot;
+l_string|&quot;check_ptrace : expected SIGTRAP + 0x80, &quot;
 l_string|&quot;got status = %d&quot;
 comma
 id|status
