@@ -233,6 +233,13 @@ op_amp
 id|uhci-&gt;port_c_suspend
 )paren
 suffix:semicolon
+multiline_comment|/* The controller won&squot;t actually turn off the RD bit until&n;&t;&t; * it has had a chance to send a low-speed EOP sequence,&n;&t;&t; * which takes 3 bit times (= 2 microseconds).  We&squot;ll delay&n;&t;&t; * slightly longer for good luck. */
+id|udelay
+c_func
+(paren
+l_int|4
+)paren
+suffix:semicolon
 )brace
 )brace
 DECL|function|uhci_check_resume
