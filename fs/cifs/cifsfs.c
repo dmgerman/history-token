@@ -2673,7 +2673,7 @@ id|cifs_min_rcv
 op_assign
 l_int|64
 suffix:semicolon
-id|cFYI
+id|cERROR
 c_func
 (paren
 l_int|1

@@ -909,9 +909,13 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;SMB Request/Response Buffer: %d&bslash;n&quot;
+l_string|&quot;SMB Request/Response Buffer: %d Pool size: %d&bslash;n&quot;
 comma
 id|bufAllocCount.counter
+comma
+id|cifs_min_rcv
+op_plus
+id|tcpSesAllocCount.counter
 )paren
 suffix:semicolon
 id|length
@@ -929,9 +933,11 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;SMB Small Req/Resp Buffer: %d&bslash;n&quot;
+l_string|&quot;SMB Small Req/Resp Buffer: %d Pool size: %d&bslash;n&quot;
 comma
 id|smBufAllocCount.counter
+comma
+id|cifs_min_small
 )paren
 suffix:semicolon
 id|length
