@@ -3029,7 +3029,7 @@ comma
 op_complement
 l_int|0UL
 comma
-l_int|0
+l_int|1
 comma
 id|pcmcia_align
 comma
@@ -3263,7 +3263,7 @@ id|min
 comma
 id|max
 comma
-l_int|0
+l_int|1
 comma
 id|pcmcia_align
 comma
