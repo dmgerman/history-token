@@ -505,7 +505,7 @@ id|devfs_mk_dir
 (paren
 l_int|NULL
 comma
-id|xd_gendisk.major_name
+l_string|&quot;xd&quot;
 comma
 l_int|NULL
 )paren

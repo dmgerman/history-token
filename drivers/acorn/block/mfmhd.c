@@ -5214,7 +5214,7 @@ l_int|0
 comma
 id|major_name
 suffix:colon
-l_string|&quot;mfm&quot;
+l_string|&quot;mfma&quot;
 comma
 id|minor_shift
 suffix:colon
@@ -5237,7 +5237,7 @@ l_int|64
 comma
 id|major_name
 suffix:colon
-l_string|&quot;mfm&quot;
+l_string|&quot;mfmb&quot;
 comma
 id|minor_shift
 suffix:colon

@@ -3287,7 +3287,7 @@ comma
 dot
 id|major_name
 op_assign
-l_string|&quot;hd&quot;
+l_string|&quot;hda&quot;
 comma
 dot
 id|minor_shift
@@ -3321,7 +3321,7 @@ comma
 dot
 id|major_name
 op_assign
-l_string|&quot;hd&quot;
+l_string|&quot;hdb&quot;
 comma
 dot
 id|minor_shift

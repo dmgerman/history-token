@@ -1769,6 +1769,12 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
+id|gd-&gt;major_name
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
 id|gd-&gt;part
 )paren
 suffix:semicolon
