@@ -363,14 +363,6 @@ op_star
 id|line
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|setup_tracer_winch
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|macro|__channel_help
 mdefine_line|#define __channel_help(fn, prefix) &bslash;&n;__uml_help(fn, prefix &quot;[0-9]*=&lt;channel description&gt;&bslash;n&quot; &bslash;&n;&quot;    Attach a console or serial line to a host channel.  See&bslash;n&quot; &bslash;&n;&quot;    http:
 singleline_comment|//user-mode-linux.sourceforge.net/input.html for a complete&bslash;n&quot; &bslash;
