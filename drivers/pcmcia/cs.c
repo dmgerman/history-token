@@ -9315,13 +9315,6 @@ c_func
 id|pcmcia_suspend_card
 )paren
 suffix:semicolon
-DECL|variable|pcmcia_validate_cis
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pcmcia_validate_cis
-)paren
-suffix:semicolon
 DECL|variable|dead_socket
 id|EXPORT_SYMBOL
 c_func

@@ -1703,5 +1703,23 @@ op_star
 id|parse
 )paren
 suffix:semicolon
+r_int
+id|pccard_validate_cis
+c_func
+(paren
+r_struct
+id|pcmcia_socket
+op_star
+id|s
+comma
+r_int
+r_int
+id|function
+comma
+id|cisinfo_t
+op_star
+id|info
+)paren
+suffix:semicolon
 macro_line|#endif /* LINUX_CISTPL_H */
 eof

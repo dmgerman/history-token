@@ -1246,10 +1246,12 @@ id|s-&gt;cis_virt
 (brace
 id|ret
 op_assign
-id|pcmcia_validate_cis
+id|pccard_validate_cis
 c_func
 (paren
-id|s-&gt;clients
+id|s
+comma
+id|BIND_FN_ALL
 comma
 id|info
 )paren

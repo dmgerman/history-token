@@ -4014,10 +4014,12 @@ id|s-&gt;parent
 suffix:semicolon
 id|ret
 op_assign
-id|pcmcia_validate_cis
+id|pccard_validate_cis
 c_func
 (paren
-id|s-&gt;handle
+id|s-&gt;parent
+comma
+id|BIND_FN_ALL
 comma
 op_amp
 id|buf.cisinfo
