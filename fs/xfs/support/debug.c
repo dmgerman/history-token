@@ -223,6 +223,9 @@ id|level
 r_case
 id|CE_CONT
 suffix:colon
+r_case
+id|CE_WARN
+suffix:colon
 id|printk
 c_func
 (paren
@@ -327,6 +330,9 @@ id|level
 (brace
 r_case
 id|CE_CONT
+suffix:colon
+r_case
+id|CE_WARN
 suffix:colon
 id|printk
 c_func
