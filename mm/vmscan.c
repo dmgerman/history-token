@@ -870,6 +870,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|mapping-&gt;a_ops-&gt;writepage
+op_eq
+id|fail_writepage
+)paren
+r_goto
+id|activate_locked
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 id|may_enter_fs
 )paren
