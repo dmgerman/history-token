@@ -1052,8 +1052,7 @@ id|mem
 id|panic
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot;: out of memory&quot;
+l_string|&quot;ebus_alloc: out of memory&quot;
 )paren
 suffix:semicolon
 id|memset
