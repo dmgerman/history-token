@@ -81,7 +81,7 @@ l_int|30
 op_star
 id|USER_HZ
 comma
-l_int|60
+l_int|7200
 op_star
 id|USER_HZ
 )brace
