@@ -271,6 +271,11 @@ r_int
 r_int
 id|max
 suffix:semicolon
+DECL|member|inuse_pages
+r_int
+r_int
+id|inuse_pages
+suffix:semicolon
 DECL|member|next
 r_int
 id|next
