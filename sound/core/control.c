@@ -5080,7 +5080,7 @@ r_case
 id|SNDRV_CTL_IOCTL_ELEM_REPLACE
 suffix:colon
 r_return
-id|snd_ctl_elem_add
+id|snd_ctl_elem_add_user
 c_func
 (paren
 id|ctl
