@@ -2087,7 +2087,8 @@ suffix:semicolon
 multiline_comment|/* timeout for commands known to take long time*/
 multiline_comment|/* Mode characteristics */
 DECL|member|modes
-id|ST_mode
+r_struct
+id|st_modedef
 id|modes
 (braket
 id|ST_NBR_MODES
@@ -2112,7 +2113,8 @@ id|nbr_partitions
 suffix:semicolon
 multiline_comment|/* zero until partition support enabled */
 DECL|member|ps
-id|ST_partstat
+r_struct
+id|st_partstat
 id|ps
 (braket
 id|ST_NBR_PARTITIONS
