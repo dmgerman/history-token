@@ -5890,6 +5890,13 @@ id|hid-&gt;iofl
 )paren
 )paren
 )paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 id|timeout
 op_assign
 id|schedule_timeout
@@ -5898,6 +5905,7 @@ c_func
 id|timeout
 )paren
 suffix:semicolon
+)brace
 id|set_current_state
 c_func
 (paren
