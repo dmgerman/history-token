@@ -4604,6 +4604,8 @@ id|AC97_MIC
 comma
 id|AC97_LINE
 comma
+id|AC97_CD
+comma
 id|AC97_VIDEO
 comma
 id|AC97_AUX
