@@ -74,6 +74,39 @@ id|pci_dev
 op_star
 id|alim7101_pmu
 suffix:semicolon
+macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+id|MODULE_PARM
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_NOWAYOUT)&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *&t;Whack the dog&n; */
 DECL|function|wdt_timer_ping
 r_static
@@ -354,10 +387,17 @@ c_cond
 id|count
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nowayout
+)paren
+(brace
 r_int
 id|ofs
 suffix:semicolon
-multiline_comment|/* note: just in case someone wrote the magic character&n;&t;&t; * five months ago... */
+multiline_comment|/* note: just in case someone wrote the magic character&n;&t;&t;&t; * five months ago... */
 id|wdt_expect_close
 op_assign
 l_int|0
@@ -394,12 +434,10 @@ op_plus
 id|ofs
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -407,7 +445,6 @@ id|c
 op_eq
 l_char|&squot;V&squot;
 )paren
-(brace
 id|wdt_expect_close
 op_assign
 l_int|1
@@ -522,7 +559,6 @@ op_star
 id|file
 )paren
 (brace
-macro_line|#ifdef CONFIG_WDT_NOWAYOUT
 r_if
 c_cond
 (paren
@@ -536,7 +572,6 @@ c_func
 suffix:semicolon
 )brace
 r_else
-(brace
 id|printk
 c_func
 (paren
@@ -544,14 +579,6 @@ id|OUR_NAME
 l_string|&quot;: device file closed unexpectedly. Will not stop the WDT!&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
-macro_line|#else
-id|wdt_turnoff
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|clear_bit
 c_func
 (paren
@@ -596,10 +623,19 @@ id|watchdog_info
 id|ident
 op_assign
 (brace
-l_int|0
+dot
+id|options
+op_assign
+id|WDIOF_MAGICCLOSE
 comma
+dot
+id|firmware_version
+op_assign
 l_int|1
 comma
+dot
+id|identity
+op_assign
 l_string|&quot;ALiM7101&quot;
 )brace
 suffix:semicolon
