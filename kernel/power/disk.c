@@ -128,10 +128,9 @@ id|mode
 r_case
 id|PM_DISK_PLATFORM
 suffix:colon
-id|device_power_down
+id|device_shutdown
 c_func
 (paren
-id|PMSG_SUSPEND
 )paren
 suffix:semicolon
 id|error
