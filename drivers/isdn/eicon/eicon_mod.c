@@ -12,7 +12,7 @@ macro_line|#ifdef CONFIG_MCA
 macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#endif /* CONFIG_MCA */
 macro_line|#include &quot;eicon.h&quot;
-macro_line|#include &quot;../avmb1/capicmd.h&quot;  /* this should be moved in a common place */
+macro_line|#include &lt;linux/isdn/capicmd.h&gt;
 DECL|macro|N_DATA
 macro_line|#undef N_DATA
 macro_line|#include &quot;adapter.h&quot;

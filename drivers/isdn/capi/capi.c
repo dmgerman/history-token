@@ -28,8 +28,8 @@ macro_line|#include &lt;linux/capi.h&gt;
 macro_line|#include &lt;linux/kernelcapi.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#include &quot;capiutil.h&quot;
-macro_line|#include &quot;capicmd.h&quot;
+macro_line|#include &lt;linux/isdn/capiutil.h&gt;
+macro_line|#include &lt;linux/isdn/capicmd.h&gt;
 macro_line|#if defined(CONFIG_ISDN_CAPI_CAPIFS) || defined(CONFIG_ISDN_CAPI_CAPIFS_MODULE)
 macro_line|#include &quot;capifs.h&quot;
 macro_line|#endif

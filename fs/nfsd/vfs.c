@@ -4411,13 +4411,6 @@ id|S_IALLUGO
 op_or
 id|S_IFLNK
 suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|dentry-&gt;d_inode-&gt;i_sem
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|notify_change
@@ -4426,13 +4419,6 @@ c_func
 id|dnew
 comma
 id|iap
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_if

@@ -15,9 +15,9 @@ macro_line|#include &lt;linux/kernelcapi.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &quot;capicmd.h&quot;
-macro_line|#include &quot;capiutil.h&quot;
-macro_line|#include &quot;capilli.h&quot;
+macro_line|#include &lt;linux/isdn/capicmd.h&gt;
+macro_line|#include &lt;linux/isdn/capiutil.h&gt;
+macro_line|#include &lt;linux/isdn/capilli.h&gt;
 macro_line|#ifdef CONFIG_AVMB1_COMPAT
 macro_line|#include &lt;linux/b1lli.h&gt;
 macro_line|#endif
