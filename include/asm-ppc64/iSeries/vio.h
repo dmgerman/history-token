@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
 multiline_comment|/* iSeries virtual I/O events use the subtype field in&n; * HvLpEvent to figure out what kind of vio event is coming&n; * in.  We use a table to route these, and this defines&n; * the maximum number of distinct subtypes&n; */
 DECL|macro|VIO_MAX_SUBTYPES
-mdefine_line|#define VIO_MAX_SUBTYPES 7
+mdefine_line|#define VIO_MAX_SUBTYPES 8
 multiline_comment|/* Each subtype can register a handler to process their events.&n; * The handler must have this interface.&n; */
 DECL|typedef|vio_event_handler_t
 r_typedef
@@ -218,6 +218,11 @@ DECL|enumerator|viomajorsubtype_tape
 id|viomajorsubtype_tape
 op_assign
 l_int|0x0600
+comma
+DECL|enumerator|viomajorsubtype_scsi
+id|viomajorsubtype_scsi
+op_assign
+l_int|0x0700
 )brace
 suffix:semicolon
 DECL|enum|vioconfigsubtype
