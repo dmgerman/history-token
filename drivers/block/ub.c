@@ -3161,13 +3161,6 @@ id|sc
 op_assign
 id|urb-&gt;context
 suffix:semicolon
-id|del_timer
-c_func
-(paren
-op_amp
-id|sc-&gt;work_timer
-)paren
-suffix:semicolon
 id|ub_complete
 c_func
 (paren
@@ -3217,6 +3210,13 @@ op_amp
 id|sc-&gt;lock
 comma
 id|flags
+)paren
+suffix:semicolon
+id|del_timer
+c_func
+(paren
+op_amp
+id|sc-&gt;work_timer
 )paren
 suffix:semicolon
 id|ub_scsi_dispatch
