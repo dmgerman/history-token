@@ -6630,7 +6630,7 @@ mdefine_line|#define USB_VENDOR_ID_ESSENTIAL_REALITY&t;0x0d7f
 DECL|macro|USB_DEVICE_ID_ESSENTIAL_REALITY_P5
 mdefine_line|#define USB_DEVICE_ID_ESSENTIAL_REALITY_P5 0x0100
 DECL|macro|USB_VENDOR_ID_A4TECH
-mdefine_line|#define USB_VENDOR_ID_A4TECH&t;&t;0x09DA
+mdefine_line|#define USB_VENDOR_ID_A4TECH&t;&t;0x09da
 DECL|macro|USB_DEVICE_ID_A4TECH_WCP32PU
 mdefine_line|#define USB_DEVICE_ID_A4TECH_WCP32PU&t;0x0006
 DECL|macro|USB_VENDOR_ID_CYPRESS
@@ -6697,6 +6697,10 @@ DECL|macro|USB_DEVICE_ID_MCC_PMD1024LS
 mdefine_line|#define USB_DEVICE_ID_MCC_PMD1024LS&t;0x0076
 DECL|macro|USB_DEVICE_ID_MCC_PMD1208LS
 mdefine_line|#define USB_DEVICE_ID_MCC_PMD1208LS&t;0x007a
+DECL|macro|USB_VENDOR_ID_CHICONY
+mdefine_line|#define USB_VENDOR_ID_CHICONY&t;&t;0x04f2
+DECL|macro|USB_DEVICE_ID_CHICONY_USBHUB_KB
+mdefine_line|#define USB_DEVICE_ID_CHICONY_USBHUB_KB&t;0x0100
 multiline_comment|/*&n; * Alphabetically sorted blacklist by quirk type.&n; */
 DECL|struct|hid_blacklist
 r_static
@@ -7286,6 +7290,14 @@ comma
 id|USB_VENDOR_ID_ATEN
 comma
 id|USB_DEVICE_ID_ATEN_4PORTKVMC
+comma
+id|HID_QUIRK_NOGET
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_CHICONY
+comma
+id|USB_DEVICE_ID_CHICONY_USBHUB_KB
 comma
 id|HID_QUIRK_NOGET
 )brace
