@@ -10650,13 +10650,6 @@ c_func
 id|__skb_linearize
 )paren
 suffix:semicolon
-DECL|variable|call_netdevice_notifiers
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|call_netdevice_notifiers
-)paren
-suffix:semicolon
 DECL|variable|dev_add_pack
 id|EXPORT_SYMBOL
 c_func
