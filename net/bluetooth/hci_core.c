@@ -1660,6 +1660,8 @@ comma
 id|do_inquiry
 op_assign
 l_int|0
+comma
+id|max_rsp
 suffix:semicolon
 r_int
 id|timeo
@@ -1796,6 +1798,20 @@ l_int|0
 r_goto
 id|done
 suffix:semicolon
+multiline_comment|/* for unlimited number of responses we will use buffer with 255 entries */
+id|max_rsp
+op_assign
+(paren
+id|ir.num_rsp
+op_eq
+l_int|0
+)paren
+ques
+c_cond
+l_int|255
+suffix:colon
+id|ir.num_rsp
+suffix:semicolon
 multiline_comment|/* cache_dump can&squot;t sleep. Therefore we allocate temp buffer and then&n;&t; * copy it to the user space.&n;&t; */
 r_if
 c_cond
@@ -1813,7 +1829,7 @@ r_struct
 id|inquiry_info
 )paren
 op_star
-id|ir.num_rsp
+id|max_rsp
 comma
 id|GFP_KERNEL
 )paren
@@ -1842,7 +1858,7 @@ c_func
 (paren
 id|hdev
 comma
-id|ir.num_rsp
+id|max_rsp
 comma
 id|buf
 )paren
