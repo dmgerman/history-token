@@ -638,7 +638,7 @@ r_int
 id|raddr
 suffix:semicolon
 r_return
-id|sys_shmat
+id|do_shmat
 c_func
 (paren
 id|shmid

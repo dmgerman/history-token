@@ -826,7 +826,7 @@ id|raddr
 suffix:semicolon
 id|err
 op_assign
-id|sys_shmat
+id|do_shmat
 (paren
 id|first
 comma
@@ -888,7 +888,7 @@ suffix:colon
 multiline_comment|/* iBCS2 emulator entry point */
 id|err
 op_assign
-id|sys_shmat
+id|do_shmat
 (paren
 id|first
 comma

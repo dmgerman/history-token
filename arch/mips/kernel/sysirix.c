@@ -4253,7 +4253,7 @@ r_case
 l_int|0
 suffix:colon
 r_return
-id|sys_shmat
+id|do_shmat
 c_func
 (paren
 (paren

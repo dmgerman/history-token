@@ -825,7 +825,7 @@ id|raddr
 suffix:semicolon
 id|ret
 op_assign
-id|sys_shmat
+id|do_shmat
 (paren
 id|first
 comma
@@ -892,7 +892,7 @@ id|EINVAL
 suffix:semicolon
 multiline_comment|/* The &quot;(ulong *) third&quot; is valid _only_ because of the kernel segment thing */
 r_return
-id|sys_shmat
+id|do_shmat
 (paren
 id|first
 comma
