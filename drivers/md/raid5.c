@@ -5335,8 +5335,6 @@ id|syncing
 op_logical_and
 (paren
 id|uptodate
-op_plus
-id|failed
 OL
 id|disks
 )paren
