@@ -10,7 +10,7 @@ mdefine_line|#define cpu_clear(cpu, map)&t;&t;do { (void)(cpu); cpus_coerce(map)
 DECL|macro|cpu_isset
 mdefine_line|#define cpu_isset(cpu, map)&t;&t;((void)(cpu), cpus_coerce(map) != 0UL)
 DECL|macro|cpu_test_and_set
-mdefine_line|#define cpu_test_and_set(cpu, map)&t;((void)(cpu), test_and_set_bit(0, (map).mask))
+mdefine_line|#define cpu_test_and_set(cpu, map)&t;((void)(cpu), test_and_set_bit(0, &amp;(map)))
 DECL|macro|cpus_and
 mdefine_line|#define cpus_and(dst, src1, src2)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (cpus_coerce(src1) &amp;&amp; cpus_coerce(src2))&t;&t;&bslash;&n;&t;&t;&t;cpus_coerce(dst) = 1UL;&t;&t;&t;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;cpus_coerce(dst) = 0UL;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|cpus_or
