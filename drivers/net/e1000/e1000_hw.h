@@ -1896,7 +1896,7 @@ mdefine_line|#define E1000_EERD     0x00014  /* EEPROM Read - RW */
 DECL|macro|E1000_CTRL_EXT
 mdefine_line|#define E1000_CTRL_EXT 0x00018  /* Extended Device Control - RW */
 DECL|macro|E1000_FLA
-mdefine_line|#define E1000_FLA      0x0001C  /* Flash Access Register - RW */
+mdefine_line|#define E1000_FLA      0x0001C  /* Flash Access - RW */
 DECL|macro|E1000_MDIC
 mdefine_line|#define E1000_MDIC     0x00020  /* MDI Control - RW */
 DECL|macro|E1000_FCAL
@@ -2140,6 +2140,8 @@ mdefine_line|#define E1000_FFVT     0x09800  /* Flexible Filter Value Table - RW
 multiline_comment|/* Register Set (82542)&n; *&n; * Some of the 82542 registers are located at different offsets than they are&n; * in more current versions of the 8254x. Despite the difference in location,&n; * the registers function in the same manner.&n; */
 DECL|macro|E1000_82542_CTRL
 mdefine_line|#define E1000_82542_CTRL     E1000_CTRL
+DECL|macro|E1000_82542_CTRL_DUP
+mdefine_line|#define E1000_82542_CTRL_DUP E1000_CTRL_DUP
 DECL|macro|E1000_82542_STATUS
 mdefine_line|#define E1000_82542_STATUS   E1000_STATUS
 DECL|macro|E1000_82542_EECD

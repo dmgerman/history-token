@@ -1872,9 +1872,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|eeprom_buff
-op_eq
-l_int|NULL
 )paren
 (brace
 r_return
