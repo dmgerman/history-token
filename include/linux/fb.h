@@ -763,15 +763,6 @@ DECL|struct|fb_copyarea
 r_struct
 id|fb_copyarea
 (brace
-DECL|member|sx
-id|__u32
-id|sx
-suffix:semicolon
-multiline_comment|/* screen-relative */
-DECL|member|sy
-id|__u32
-id|sy
-suffix:semicolon
 DECL|member|dx
 id|__u32
 id|dx
@@ -787,6 +778,14 @@ suffix:semicolon
 DECL|member|height
 id|__u32
 id|height
+suffix:semicolon
+DECL|member|sx
+id|__u32
+id|sx
+suffix:semicolon
+DECL|member|sy
+id|__u32
+id|sy
 suffix:semicolon
 )brace
 suffix:semicolon
