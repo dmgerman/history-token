@@ -326,6 +326,11 @@ id|xfrm_dst
 op_star
 id|xdst
 suffix:semicolon
+r_int
+id|tunnel
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -432,6 +437,10 @@ id|i
 op_member_access_from_pointer
 id|props.saddr.a4
 suffix:semicolon
+id|tunnel
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 id|header_len
 op_add_assign
@@ -454,9 +463,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|remote
-op_ne
-id|fl_tunnel.fl4_dst
+id|tunnel
 )paren
 (brace
 id|fl_tunnel.fl4_src
