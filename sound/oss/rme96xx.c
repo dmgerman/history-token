@@ -13,10 +13,12 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;asm/dma.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &quot;rme96xx.h&quot;
 DECL|macro|NR_DEVICE
 mdefine_line|#define NR_DEVICE 2
@@ -3047,23 +3049,33 @@ id|__devinitdata
 op_assign
 (brace
 (brace
+dot
+id|vendor
+op_assign
 id|PCI_VENDOR_ID_RME
 comma
+dot
+id|device
+op_assign
 id|PCI_DEVICE_ID_RME9652
 comma
+dot
+id|subvendor
+op_assign
 id|PCI_ANY_ID
 comma
+dot
+id|subdevice
+op_assign
 id|PCI_ANY_ID
 comma
-l_int|0
-comma
-l_int|0
 )brace
 comma
 (brace
 l_int|0
 comma
 )brace
+comma
 )brace
 suffix:semicolon
 id|MODULE_DEVICE_TABLE
@@ -3081,21 +3093,26 @@ id|pci_driver
 id|rme96xx_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;rme96xx&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|id_table
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|rme96xx_probe
 comma
+dot
 id|remove
-suffix:colon
+op_assign
 id|rme96xx_remove
+comma
 )brace
 suffix:semicolon
 DECL|function|init_rme96xx
@@ -5175,9 +5192,7 @@ op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
-r_int
-id|hwp
-suffix:semicolon
+multiline_comment|/* int hwp; */
 id|DBG
 c_func
 (paren
@@ -6468,37 +6483,45 @@ id|rme96xx_audio_fops
 op_assign
 (brace
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
 macro_line|#endif
+dot
 id|read
-suffix:colon
+op_assign
 id|rme96xx_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|rme96xx_write
 comma
+dot
 id|poll
-suffix:colon
+op_assign
 id|rme96xx_poll
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|rme96xx_ioctl
 comma
+dot
 id|mmap
-suffix:colon
+op_assign
 id|rm96xx_mmap
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|rme96xx_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|rme96xx_release
 )brace
 suffix:semicolon
@@ -6898,21 +6921,25 @@ id|rme96xx_mixer_fops
 op_assign
 (brace
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
 macro_line|#endif
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|rme96xx_mixer_ioctl
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|rme96xx_mixer_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|rme96xx_mixer_release
 comma
 )brace
