@@ -37,7 +37,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
 multiline_comment|/* default maximum number of failures */
 DECL|macro|IDE_DEFAULT_MAX_FAILURES
 mdefine_line|#define IDE_DEFAULT_MAX_FAILURES &t;1

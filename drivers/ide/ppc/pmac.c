@@ -23,7 +23,6 @@ macro_line|#ifdef CONFIG_PMAC_PBOOK
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
 macro_line|#endif
-macro_line|#include &quot;ide_modes.h&quot;
 r_extern
 r_void
 id|ide_do_request

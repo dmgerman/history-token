@@ -20,7 +20,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
 multiline_comment|/*&n; *&t;IDE library routines. These are plug in code that most &n; *&t;drivers can use but occasionally may be weird enough&n; *&t;to want to do their own thing with&n; *&n; *&t;Add common non I/O op stuff here. Make sure it has proper&n; *&t;kernel-doc function headers or your patch will be rejected&n; */
 multiline_comment|/**&n; *&t;ide_xfer_verbose&t;-&t;return IDE mode names&n; *&t;@xfer_rate: rate to name&n; *&n; *&t;Returns a constant string giving the name of the mode&n; *&t;requested.&n; */
 DECL|function|ide_xfer_verbose
@@ -714,6 +713,7 @@ c_func
 id|ide_dma_enable
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Standard (generic) timings for PIO modes, from ATA2 specification.&n; * These timings are for access to the IDE data port register *only*.&n; * Some drives may specify a mode, while also specifying a different&n; * value for cycle_time (from drive identification data).&n; */
 DECL|variable|ide_pio_timings
 r_const
 id|ide_pio_timings_t
@@ -785,6 +785,7 @@ c_func
 id|ide_pio_timings
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Shared data/functions for determining best PIO mode for an IDE drive.&n; * Most of this stuff originally lived in cmd640.c, and changes to the&n; * ide_pio_blacklist[] table should be made with EXTREME CAUTION to avoid&n; * breaking the fragile cmd640.c support.&n; */
 multiline_comment|/*&n; * Black list. Some drives incorrectly report their maximal PIO mode,&n; * at least in respect to CMD640. Here we keep info on some known drives.&n; */
 DECL|struct|ide_pio_info
 r_static
