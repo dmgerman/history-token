@@ -718,8 +718,6 @@ id|hdev-&gt;flags
 r_return
 l_int|0
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|write_lock_irqsave
 c_func
 (paren
@@ -768,7 +766,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 r_else
-(brace
 id|clear_bit
 c_func
 (paren
@@ -778,9 +775,6 @@ op_amp
 id|hdev-&gt;flags
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
 id|write_unlock_irqrestore
 c_func
 (paren
@@ -1025,8 +1019,6 @@ id|husb-&gt;completion_lock
 comma
 id|flags
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -3422,6 +3414,10 @@ suffix:semicolon
 id|hdev-&gt;destruct
 op_assign
 id|hci_usb_destruct
+suffix:semicolon
+id|hdev-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 r_if
 c_cond
