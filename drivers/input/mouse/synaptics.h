@@ -30,6 +30,17 @@ id|psmouse
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|synaptics_pt_init
+c_func
+(paren
+r_struct
+id|psmouse
+op_star
+id|psmouse
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|synaptics_disconnect
 c_func
@@ -55,6 +66,8 @@ DECL|macro|SYN_QUE_SERIAL_NUMBER_SUFFIX
 mdefine_line|#define SYN_QUE_SERIAL_NUMBER_SUFFIX&t;0x07
 DECL|macro|SYN_QUE_RESOLUTION
 mdefine_line|#define SYN_QUE_RESOLUTION&t;&t;0x08
+DECL|macro|SYN_QUE_EXT_CAPAB
+mdefine_line|#define SYN_QUE_EXT_CAPAB&t;&t;0x09
 multiline_comment|/* synatics modes */
 DECL|macro|SYN_BIT_ABSOLUTE_MODE
 mdefine_line|#define SYN_BIT_ABSOLUTE_MODE&t;&t;(1 &lt;&lt; 7)
@@ -64,6 +77,8 @@ DECL|macro|SYN_BIT_SLEEP_MODE
 mdefine_line|#define SYN_BIT_SLEEP_MODE&t;&t;(1 &lt;&lt; 3)
 DECL|macro|SYN_BIT_DISABLE_GESTURE
 mdefine_line|#define SYN_BIT_DISABLE_GESTURE&t;&t;(1 &lt;&lt; 2)
+DECL|macro|SYN_BIT_FOUR_BYTE_CLIENT
+mdefine_line|#define SYN_BIT_FOUR_BYTE_CLIENT&t;(1 &lt;&lt; 1)
 DECL|macro|SYN_BIT_W_MODE
 mdefine_line|#define SYN_BIT_W_MODE&t;&t;&t;(1 &lt;&lt; 0)
 multiline_comment|/* synaptics model ID bits */
@@ -86,6 +101,8 @@ mdefine_line|#define SYN_MODEL_GEOMETRY(m)&t;&t;((m) &amp; 0x0f)
 multiline_comment|/* synaptics capability bits */
 DECL|macro|SYN_CAP_EXTENDED
 mdefine_line|#define SYN_CAP_EXTENDED(c)&t;&t;((c) &amp; (1 &lt;&lt; 23))
+DECL|macro|SYN_CAP_PASS_THROUGH
+mdefine_line|#define SYN_CAP_PASS_THROUGH(c)&t;&t;((c) &amp; (1 &lt;&lt; 7))
 DECL|macro|SYN_CAP_SLEEP
 mdefine_line|#define SYN_CAP_SLEEP(c)&t;&t;((c) &amp; (1 &lt;&lt; 4))
 DECL|macro|SYN_CAP_FOUR_BUTTON
@@ -96,6 +113,10 @@ DECL|macro|SYN_CAP_PALMDETECT
 mdefine_line|#define SYN_CAP_PALMDETECT(c)&t;&t;((c) &amp; (1 &lt;&lt; 0))
 DECL|macro|SYN_CAP_VALID
 mdefine_line|#define SYN_CAP_VALID(c)&t;&t;((((c) &amp; 0x00ff00) &gt;&gt; 8) == 0x47)
+DECL|macro|SYN_EXT_CAP_REQUESTS
+mdefine_line|#define SYN_EXT_CAP_REQUESTS(c)&t;&t;((((c) &amp; 0x700000) &gt;&gt; 20) == 1)
+DECL|macro|SYN_CAP_MULTI_BUTTON_NO
+mdefine_line|#define SYN_CAP_MULTI_BUTTON_NO(ec)&t;(((ec) &amp; 0x00f000) &gt;&gt; 12)
 multiline_comment|/* synaptics modes query bits */
 DECL|macro|SYN_MODE_ABSOLUTE
 mdefine_line|#define SYN_MODE_ABSOLUTE(m)&t;&t;((m) &amp; (1 &lt;&lt; 7))
@@ -118,6 +139,11 @@ DECL|macro|SYN_ID_MINOR
 mdefine_line|#define SYN_ID_MINOR(i) &t;&t;(((i) &gt;&gt; 16) &amp; 0xff)
 DECL|macro|SYN_ID_IS_SYNAPTICS
 mdefine_line|#define SYN_ID_IS_SYNAPTICS(i)&t;&t;((((i) &gt;&gt; 8) &amp; 0xff) == 0x47)
+multiline_comment|/* synaptics special commands */
+DECL|macro|SYN_PS_SET_MODE2
+mdefine_line|#define SYN_PS_SET_MODE2&t;&t;0x14
+DECL|macro|SYN_PS_CLIENT_CMD
+mdefine_line|#define SYN_PS_CLIENT_CMD&t;&t;0x28
 multiline_comment|/*&n; * A structure to describe the state of the touchpad hardware (buttons and pad)&n; */
 DECL|struct|synaptics_hw_state
 r_struct
@@ -155,6 +181,38 @@ DECL|member|down
 r_int
 id|down
 suffix:semicolon
+DECL|member|b0
+r_int
+id|b0
+suffix:semicolon
+DECL|member|b1
+r_int
+id|b1
+suffix:semicolon
+DECL|member|b2
+r_int
+id|b2
+suffix:semicolon
+DECL|member|b3
+r_int
+id|b3
+suffix:semicolon
+DECL|member|b4
+r_int
+id|b4
+suffix:semicolon
+DECL|member|b5
+r_int
+id|b5
+suffix:semicolon
+DECL|member|b6
+r_int
+id|b6
+suffix:semicolon
+DECL|member|b7
+r_int
+id|b7
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|synaptics_data
@@ -176,6 +234,13 @@ r_int
 id|capabilities
 suffix:semicolon
 multiline_comment|/* Capabilities */
+DECL|member|ext_cap
+r_int
+r_int
+r_int
+id|ext_cap
+suffix:semicolon
+multiline_comment|/* Extended Capabilities */
 DECL|member|identity
 r_int
 r_int
@@ -184,35 +249,24 @@ id|identity
 suffix:semicolon
 multiline_comment|/* Identification */
 multiline_comment|/* Data for normal processing */
-DECL|member|proto_buf
+DECL|member|out_of_sync
 r_int
-r_char
-id|proto_buf
-(braket
-l_int|6
-)braket
-suffix:semicolon
-multiline_comment|/* Buffer for Packet */
-DECL|member|last_byte
 r_int
-r_char
-id|last_byte
+id|out_of_sync
 suffix:semicolon
-multiline_comment|/* last received byte */
-DECL|member|inSync
-r_int
-id|inSync
-suffix:semicolon
-multiline_comment|/* Packets in sync */
-DECL|member|proto_buf_tail
-r_int
-id|proto_buf_tail
-suffix:semicolon
+multiline_comment|/* # of packets out of sync */
 DECL|member|old_w
 r_int
 id|old_w
 suffix:semicolon
 multiline_comment|/* Previous w value */
+DECL|member|ptport
+r_struct
+id|serio
+op_star
+id|ptport
+suffix:semicolon
+multiline_comment|/* pass-through port */
 )brace
 suffix:semicolon
 macro_line|#endif /* _SYNAPTICS_H */
