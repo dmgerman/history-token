@@ -231,6 +231,8 @@ DECL|macro|HERMES_RXSTAT_UNDECRYPTABLE
 mdefine_line|#define&t;HERMES_RXSTAT_UNDECRYPTABLE&t;(0x0002)
 DECL|macro|HERMES_RXSTAT_MACPORT
 mdefine_line|#define&t;HERMES_RXSTAT_MACPORT&t;&t;(0x0700)
+DECL|macro|HERMES_RXSTAT_PCF
+mdefine_line|#define HERMES_RXSTAT_PCF&t;&t;(0x1000)&t;/* Frame was received in CF period */
 DECL|macro|HERMES_RXSTAT_MSGTYPE
 mdefine_line|#define&t;HERMES_RXSTAT_MSGTYPE&t;&t;(0xE000)
 DECL|macro|HERMES_RXSTAT_1042
@@ -647,7 +649,7 @@ id|reg_spacing
 )paren
 suffix:semicolon
 r_int
-id|hermes_reset
+id|hermes_init
 c_func
 (paren
 id|hermes_t
@@ -815,36 +817,6 @@ op_eq
 id|HERMES_MAGIC
 suffix:semicolon
 )brace
-DECL|function|hermes_enable_interrupt
-r_static
-r_inline
-r_void
-id|hermes_enable_interrupt
-c_func
-(paren
-id|hermes_t
-op_star
-id|hw
-comma
-id|u16
-id|events
-)paren
-(brace
-id|hw-&gt;inten
-op_or_assign
-id|events
-suffix:semicolon
-id|hermes_write_regn
-c_func
-(paren
-id|hw
-comma
-id|INTEN
-comma
-id|hw-&gt;inten
-)paren
-suffix:semicolon
-)brace
 DECL|function|hermes_set_irqmask
 r_static
 r_inline
@@ -976,7 +948,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|macro|HERMES_BYTES_TO_RECLEN
-mdefine_line|#define HERMES_BYTES_TO_RECLEN(n) ( ((n) % 2) ? (((n)+1)/2)+1 : ((n)/2)+1 )
+mdefine_line|#define HERMES_BYTES_TO_RECLEN(n) ( (((n)+1)/2) + 1 )
 DECL|macro|HERMES_RECLEN_TO_BYTES
 mdefine_line|#define HERMES_RECLEN_TO_BYTES(n) ( ((n)-1) * 2 )
 multiline_comment|/* Note that for the next two, the count is in 16-bit words, not bytes */
