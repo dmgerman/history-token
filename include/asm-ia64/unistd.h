@@ -491,6 +491,14 @@ DECL|macro|__NR_kexec_load
 mdefine_line|#define __NR_kexec_load&t;&t;&t;1268
 DECL|macro|__NR_vserver
 mdefine_line|#define __NR_vserver&t;&t;&t;1269
+DECL|macro|__NR_waitid
+mdefine_line|#define __NR_waitid&t;&t;&t;1270
+DECL|macro|__NR_add_key
+mdefine_line|#define __NR_add_key&t;&t;&t;1271
+DECL|macro|__NR_request_key
+mdefine_line|#define __NR_request_key&t;&t;1272
+DECL|macro|__NR_keyctl
+mdefine_line|#define __NR_keyctl&t;&t;&t;1273
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|NR_syscalls
@@ -989,7 +997,7 @@ r_int
 id|sigsetsize
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * Note, this macro can only be used in the file which defines sys_ni_syscall, i.e., in&n; * kernel/sys.c.  This version causes warnings because the declaration isn&squot;t a&n; * proper prototype, but we can&squot;t use __typeof__ either, because not all cond_syscall()&n; * declarations have prototypes at the moment.&n; */
+multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * Note, this macro can only be used in the file which defines sys_ni_syscall, i.e., in&n; * kernel/sys_ni.c.  This version causes warnings because the declaration isn&squot;t a&n; * proper prototype, but we can&squot;t use __typeof__ either, because not all cond_syscall()&n; * declarations have prototypes at the moment.&n; */
 DECL|macro|cond_syscall
 mdefine_line|#define cond_syscall(x) asmlinkage long x (void) __attribute__((weak,alias(&quot;sys_ni_syscall&quot;)));
 macro_line|#endif /* !__ASSEMBLY__ */

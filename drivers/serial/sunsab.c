@@ -42,6 +42,7 @@ multiline_comment|/* Generic UART port&t;*/
 DECL|member|regs
 r_union
 id|sab82532_async_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -5045,6 +5046,11 @@ id|sunserial_current_minor
 op_add_assign
 id|num_channels
 suffix:semicolon
+id|sunsab_console_init
+c_func
+(paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5082,11 +5088,6 @@ id|up-&gt;port
 )paren
 suffix:semicolon
 )brace
-id|sunsab_console_init
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

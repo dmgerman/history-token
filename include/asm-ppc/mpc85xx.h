@@ -92,6 +92,8 @@ DECL|macro|MPC85xx_IRQ_IIC1
 mdefine_line|#define MPC85xx_IRQ_IIC1&t;(27 + MPC85xx_OPENPIC_IRQ_OFFSET)
 DECL|macro|MPC85xx_IRQ_PERFMON
 mdefine_line|#define MPC85xx_IRQ_PERFMON&t;(28 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_SEC2
+mdefine_line|#define MPC85xx_IRQ_SEC2&t;(29 + MPC85xx_OPENPIC_IRQ_OFFSET)
 DECL|macro|MPC85xx_IRQ_CPM
 mdefine_line|#define MPC85xx_IRQ_CPM&t;&t;(30 + MPC85xx_OPENPIC_IRQ_OFFSET)
 multiline_comment|/* The 12 external interrupt lines */
@@ -164,6 +166,10 @@ DECL|macro|MPC85xx_PERFMON_OFFSET
 mdefine_line|#define MPC85xx_PERFMON_OFFSET&t;(0xe1000)
 DECL|macro|MPC85xx_PERFMON_SIZE
 mdefine_line|#define MPC85xx_PERFMON_SIZE&t;(0x01000)
+DECL|macro|MPC85xx_SEC2_OFFSET
+mdefine_line|#define MPC85xx_SEC2_OFFSET&t;(0x30000)
+DECL|macro|MPC85xx_SEC2_SIZE
+mdefine_line|#define MPC85xx_SEC2_SIZE&t;(0x10000)
 DECL|macro|MPC85xx_UART0_OFFSET
 mdefine_line|#define MPC85xx_UART0_OFFSET&t;(0x04500)
 DECL|macro|MPC85xx_UART0_SIZE

@@ -41,14 +41,6 @@ DECL|variable|i2o_config_lock
 r_static
 id|spinlock_t
 id|i2o_config_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-DECL|variable|i2o_wait_queue
-r_struct
-id|wait_queue
-op_star
-id|i2o_wait_queue
 suffix:semicolon
 DECL|macro|MODINC
 mdefine_line|#define MODINC(x,y) ((x) = ((x) + 1) % (y))
@@ -141,6 +133,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*&n; *&t;Each of these describes an i2o message handler. They are&n; *&t;multiplexed by the i2o_core code&n; */
 DECL|variable|i2o_config_driver
+r_static
 r_struct
 id|i2o_driver
 id|i2o_config_driver
@@ -980,6 +973,7 @@ id|buffer
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -1468,6 +1462,7 @@ id|buffer
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -1950,6 +1945,7 @@ id|arg
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -2213,6 +2209,7 @@ id|arg
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -2382,6 +2379,7 @@ id|fp
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -3947,6 +3945,7 @@ id|sb
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -5519,6 +5518,13 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;  (C) Copyright 1999 Red Hat Software&bslash;n&quot;
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|i2o_config_lock
 )paren
 suffix:semicolon
 r_if

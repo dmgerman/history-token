@@ -1,5 +1,6 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxfevnt - External Interfaces, ACPI event disable/enable&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acevents.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
@@ -369,6 +370,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_enable_event
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_enable_event
+)paren
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_set_gpe_type&n; *&n; * PARAMETERS:  gpe_device      - Parent GPE Device&n; *              gpe_number      - GPE level within the GPE block&n; *              Type            - New GPE type&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enable an ACPI event (general purpose)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_set_gpe_type
@@ -460,6 +468,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_set_gpe_type
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_set_gpe_type
+)paren
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_enable_gpe&n; *&n; * PARAMETERS:  gpe_device      - Parent GPE Device&n; *              gpe_number      - GPE level within the GPE block&n; *              Flags           - Just enable, or also wake enable?&n; *                                Called from ISR or not&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enable an ACPI event (general purpose)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_enable_gpe
@@ -582,6 +597,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_enable_gpe
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_enable_gpe
+)paren
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_disable_gpe&n; *&n; * PARAMETERS:  gpe_device      - Parent GPE Device&n; *              gpe_number      - GPE level within the GPE block&n; *              Flags           - Just disable, or also wake disable?&n; *                                Called from ISR or not&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Disable an ACPI event (general purpose)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_disable_gpe
@@ -839,7 +861,15 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_disable_event
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_disable_event
+)paren
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_clear_event&n; *&n; * PARAMETERS:  Event           - The fixed event to be cleared&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Clear an ACPI event (fixed)&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 DECL|function|acpi_clear_event
 id|acpi_clear_event
@@ -896,6 +926,14 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_clear_event
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_clear_event
+)paren
+suffix:semicolon
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_clear_gpe&n; *&n; * PARAMETERS:  gpe_device      - Parent GPE Device&n; *              gpe_number      - GPE level within the GPE block&n; *              Flags           - Called from an ISR or not&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Clear an ACPI event (general purpose)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_clear_gpe
@@ -1015,6 +1053,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_FUTURE_USAGE
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_event_status&n; *&n; * PARAMETERS:  Event           - The fixed event&n; *              Event Status    - Where the current status of the event will&n; *                                be returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Obtains and returns the current status of the event&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_event_status
@@ -1215,6 +1254,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_install_gpe_block&n; *&n; * PARAMETERS:  gpe_device          - Handle to the parent GPE Block Device&n; *              gpe_block_address   - Address and space_iD&n; *              register_count      - Number of GPE register pairs in the block&n; *              interrupt_level     - H/W interrupt for the block&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create and Install a block of GPE registers&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_install_gpe_block
@@ -1449,6 +1489,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_install_gpe_block
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_install_gpe_block
+)paren
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_remove_gpe_block&n; *&n; * PARAMETERS:  gpe_device          - Handle to the parent GPE Block Device&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a previously installed block of GPE registers&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_remove_gpe_block
@@ -1595,4 +1642,11 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_remove_gpe_block
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_remove_gpe_block
+)paren
+suffix:semicolon
 eof

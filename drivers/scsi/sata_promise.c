@@ -15,7 +15,7 @@ macro_line|#include &quot;sata_promise.h&quot;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;sata_promise&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.00&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.01&quot;
 r_enum
 (brace
 DECL|enumerator|PDC_PKT_SUBMIT
@@ -769,11 +769,11 @@ id|ap
 )paren
 (brace
 r_struct
-id|pci_dev
+id|device
 op_star
-id|pdev
+id|dev
 op_assign
-id|ap-&gt;host_set-&gt;pdev
+id|ap-&gt;host_set-&gt;dev
 suffix:semicolon
 r_struct
 id|pdc_port_priv
@@ -845,15 +845,17 @@ id|pp
 suffix:semicolon
 id|pp-&gt;pkt
 op_assign
-id|pci_alloc_consistent
+id|dma_alloc_coherent
 c_func
 (paren
-id|pdev
+id|dev
 comma
 l_int|128
 comma
 op_amp
 id|pp-&gt;pkt_dma
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -912,11 +914,11 @@ id|ap
 )paren
 (brace
 r_struct
-id|pci_dev
+id|device
 op_star
-id|pdev
+id|dev
 op_assign
-id|ap-&gt;host_set-&gt;pdev
+id|ap-&gt;host_set-&gt;dev
 suffix:semicolon
 r_struct
 id|pdc_port_priv
@@ -929,10 +931,10 @@ id|ap-&gt;private_data
 op_assign
 l_int|NULL
 suffix:semicolon
-id|pci_free_consistent
+id|dma_free_coherent
 c_func
 (paren
-id|pdev
+id|dev
 comma
 l_int|128
 comma
@@ -2548,9 +2550,13 @@ id|probe_ent
 )paren
 )paren
 suffix:semicolon
-id|probe_ent-&gt;pdev
+id|probe_ent-&gt;dev
 op_assign
+id|pci_dev_to_dev
+c_func
+(paren
 id|pdev
+)paren
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
@@ -2927,6 +2933,13 @@ c_func
 id|pci
 comma
 id|pdc_ata_pci_tbl
+)paren
+suffix:semicolon
+DECL|variable|DRV_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_VERSION
 )paren
 suffix:semicolon
 DECL|variable|pdc_ata_init

@@ -83,6 +83,7 @@ DECL|member|vaddr
 r_volatile
 r_struct
 id|iic_regs
+id|__iomem
 op_star
 id|vaddr
 suffix:semicolon

@@ -22,12 +22,16 @@ DECL|macro|RAID6
 mdefine_line|#define RAID6&t;&t;  8UL
 DECL|macro|RAID10
 mdefine_line|#define&t;RAID10&t;&t;  9UL
+DECL|macro|FAULTY
+mdefine_line|#define FAULTY&t;&t;  10UL
 DECL|macro|MAX_PERSONALITY
-mdefine_line|#define MAX_PERSONALITY   10UL
+mdefine_line|#define MAX_PERSONALITY   11UL
 DECL|macro|LEVEL_MULTIPATH
 mdefine_line|#define&t;LEVEL_MULTIPATH&t;&t;(-4)
 DECL|macro|LEVEL_LINEAR
 mdefine_line|#define&t;LEVEL_LINEAR&t;&t;(-1)
+DECL|macro|LEVEL_FAULTY
+mdefine_line|#define&t;LEVEL_FAULTY&t;&t;(-5)
 DECL|macro|MaxSector
 mdefine_line|#define MaxSector (~(sector_t)0)
 DECL|macro|MD_THREAD_NAME_MAX
@@ -48,6 +52,12 @@ c_cond
 id|pers
 )paren
 (brace
+r_case
+id|FAULTY
+suffix:colon
+r_return
+id|LEVEL_FAULTY
+suffix:semicolon
 r_case
 id|MULTIPATH
 suffix:colon
@@ -130,6 +140,12 @@ c_cond
 id|level
 )paren
 (brace
+r_case
+id|LEVEL_FAULTY
+suffix:colon
+r_return
+id|FAULTY
+suffix:semicolon
 r_case
 id|LEVEL_MULTIPATH
 suffix:colon
@@ -1054,6 +1070,24 @@ id|mddev
 comma
 r_int
 id|raid_disks
+)paren
+suffix:semicolon
+DECL|member|reconfig
+r_int
+(paren
+op_star
+id|reconfig
+)paren
+(paren
+id|mddev_t
+op_star
+id|mddev
+comma
+r_int
+id|layout
+comma
+r_int
+id|chunk_size
 )paren
 suffix:semicolon
 )brace

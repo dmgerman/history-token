@@ -1,14 +1,175 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-iop3xx/iop321-setup.c&n; *&n; * Author: Nicolas Pitre &lt;nico@cam.org&gt;&n; * Copyright (C) 2001 MontaVista Software, Inc.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
+DECL|macro|IOP321_UART_XTAL
+mdefine_line|#define IOP321_UART_XTAL 1843200
+multiline_comment|/*&n; * Standard IO mapping for all IOP321 based systems&n; */
+DECL|variable|__initdata
+r_static
+r_struct
+id|map_desc
+id|iop321_std_desc
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+multiline_comment|/* virtual     physical      length      type */
+multiline_comment|/* mem mapped registers */
+(brace
+id|IOP321_VIRT_MEM_BASE
+comma
+id|IOP321_PHY_MEM_BASE
+comma
+l_int|0x00002000
+comma
+id|MT_DEVICE
+)brace
+comma
+multiline_comment|/* PCI IO space */
+(brace
+l_int|0xfe000000
+comma
+l_int|0x90000000
+comma
+l_int|0x00020000
+comma
+id|MT_DEVICE
+)brace
+)brace
+suffix:semicolon
+macro_line|#ifdef CONFIG_ARCH_IQ80321
+DECL|macro|UARTBASE
+mdefine_line|#define UARTBASE IQ80321_UART
+DECL|macro|IRQ_UART
+mdefine_line|#define IRQ_UART IRQ_IQ80321_UART
+macro_line|#endif
+macro_line|#ifdef CONFIG_ARCH_IQ31244
+DECL|macro|UARTBASE
+mdefine_line|#define UARTBASE IQ31244_UART
+DECL|macro|IRQ_UART
+mdefine_line|#define IRQ_UART IRQ_IQ31244_UART
+macro_line|#endif
+DECL|variable|iop321_serial_ports
+r_static
+r_struct
+id|uart_port
+id|iop321_serial_ports
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|membase
+op_assign
+(paren
+r_char
+op_star
+)paren
+(paren
+id|UARTBASE
+)paren
+comma
+dot
+id|mapbase
+op_assign
+(paren
+id|UARTBASE
+)paren
+comma
+dot
+id|irq
+op_assign
+id|IRQ_UART
+comma
+dot
+id|flags
+op_assign
+id|UPF_SKIP_TEST
+comma
+dot
+id|iotype
+op_assign
+id|UPIO_MEM
+comma
+dot
+id|regshift
+op_assign
+l_int|0
+comma
+dot
+id|uartclk
+op_assign
+id|IOP321_UART_XTAL
+comma
+dot
+id|line
+op_assign
+l_int|0
+comma
+dot
+id|type
+op_assign
+id|PORT_16550A
+comma
+dot
+id|fifosize
+op_assign
+l_int|16
+)brace
+)brace
+suffix:semicolon
+DECL|function|iop321_map_io
+r_void
+id|__init
+id|iop321_map_io
+c_func
+(paren
+r_void
+)paren
+(brace
+id|iotable_init
+c_func
+(paren
+id|iop321_std_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|iop321_std_desc
+)paren
+)paren
+suffix:semicolon
+id|early_serial_setup
+c_func
+(paren
+op_amp
+id|iop321_serial_ports
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_ARCH_IQ80321
 r_extern
 r_void
@@ -55,35 +216,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-r_static
-r_void
-id|__init
-DECL|function|fixup_iop321
-id|fixup_iop321
-c_func
-(paren
-r_struct
-id|machine_desc
-op_star
-id|desc
-comma
-r_struct
-id|tag
-op_star
-id|tags
-comma
-r_char
-op_star
-op_star
-id|cmdline
-comma
-r_struct
-id|meminfo
-op_star
-id|mi
-)paren
-(brace
-)brace
 macro_line|#if defined(CONFIG_ARCH_IQ80321)
 id|MACHINE_START
 c_func
@@ -104,12 +236,7 @@ id|PHYS_OFFSET
 comma
 id|IQ80321_UART
 comma
-l_int|0xfe800000
-)paren
-id|FIXUP
-c_func
-(paren
-id|fixup_iop321
+id|IQ80321_UART
 )paren
 id|MAPIO
 c_func
@@ -125,7 +252,7 @@ dot
 id|timer
 op_assign
 op_amp
-id|iop331_timer
+id|iop321_timer
 comma
 id|BOOT_PARAMS
 c_func
@@ -169,7 +296,7 @@ dot
 id|timer
 op_assign
 op_amp
-id|iop331_timer
+id|iop321_timer
 comma
 id|BOOT_PARAMS
 c_func

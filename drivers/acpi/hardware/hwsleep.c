@@ -1,5 +1,6 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: hwsleep.c - ACPI Hardware Sleep/Wake Interface&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;acpi/acpi.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_HARDWARE
@@ -81,6 +82,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_get_firmware_waking_vector&n; *&n; * PARAMETERS:  *physical_address   - Output buffer where contents of&n; *                                    the firmware_waking_vector field of&n; *                                    the FACS will be stored.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Access function for firmware_waking_vector field in FACS&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 DECL|function|acpi_get_firmware_waking_vector
 id|acpi_get_firmware_waking_vector
@@ -149,6 +151,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_enter_sleep_state_prep&n; *&n; * PARAMETERS:  sleep_state         - Which sleep state to enter&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Prepare to enter a system sleep state (see ACPI 2.0 spec p 231)&n; *              This function must execute with interrupts enabled.&n; *              We break sleeping into 2 stages so that OSPM can handle&n; *              various OS-specific tasks between the two steps.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_enter_sleep_state_prep
@@ -880,6 +883,13 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_enter_sleep_state
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_enter_sleep_state
+)paren
+suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_enter_sleep_state_s4bios&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform a S4 bios request.&n; *              THIS FUNCTION MUST BE CALLED WITH INTERRUPTS DISABLED&n; *&n; ******************************************************************************/
 id|acpi_status
 id|asmlinkage
@@ -1064,6 +1074,13 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_enter_sleep_state_s4bios
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_enter_sleep_state_s4bios
+)paren
+suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_leave_sleep_state&n; *&n; * PARAMETERS:  sleep_state         - Which sleep state we just exited&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform OS-independent ACPI cleanup after a sleep&n; *              Called with interrupts ENABLED.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_leave_sleep_state

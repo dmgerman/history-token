@@ -1872,7 +1872,6 @@ suffix:semicolon
 DECL|function|quirk_via_irqpic
 r_static
 r_void
-id|__devinit
 id|quirk_via_irqpic
 c_func
 (paren
@@ -3469,10 +3468,10 @@ DECL|macro|EHCI_USBLEGCTLSTS
 mdefine_line|#define EHCI_USBLEGCTLSTS&t;4&t;&t;/* legacy control/status */
 DECL|macro|EHCI_USBLEGCTLSTS_SOOE
 mdefine_line|#define EHCI_USBLEGCTLSTS_SOOE&t;(1 &lt;&lt; 13)&t;/* SMI on ownership change */
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_int
 id|usb_early_handoff
-id|__initdata
+id|__devinitdata
 op_assign
 l_int|0
 suffix:semicolon
@@ -4807,7 +4806,7 @@ macro_line|#ifdef CONFIG_SCSI_SATA
 DECL|function|quirk_intel_ide_combined
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_intel_ide_combined
 c_func
 (paren
@@ -5072,15 +5071,15 @@ id|quirk_intel_ide_combined
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SCSI_SATA */
-DECL|variable|pciehp_msi_quirk
+DECL|variable|pcie_mch_quirk
 r_int
-id|pciehp_msi_quirk
+id|pcie_mch_quirk
 suffix:semicolon
-DECL|function|quirk_pciehp_msi
+DECL|function|quirk_pcie_mch
 r_static
 r_void
 id|__devinit
-id|quirk_pciehp_msi
+id|quirk_pcie_mch
 c_func
 (paren
 r_struct
@@ -5089,7 +5088,7 @@ op_star
 id|pdev
 )paren
 (brace
-id|pciehp_msi_quirk
+id|pcie_mch_quirk
 op_assign
 l_int|1
 suffix:semicolon
@@ -5099,9 +5098,29 @@ c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
 comma
-id|PCI_DEVICE_ID_INTEL_SMCH
+id|PCI_DEVICE_ID_INTEL_E7520_MCH
 comma
-id|quirk_pciehp_msi
+id|quirk_pcie_mch
+)paren
+suffix:semicolon
+id|DECLARE_PCI_FIXUP_FINAL
+c_func
+(paren
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_E7320_MCH
+comma
+id|quirk_pcie_mch
+)paren
+suffix:semicolon
+id|DECLARE_PCI_FIXUP_FINAL
+c_func
+(paren
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_E7525_MCH
+comma
+id|quirk_pcie_mch
 )paren
 suffix:semicolon
 DECL|function|pci_do_fixups
@@ -5319,11 +5338,20 @@ id|end
 )paren
 suffix:semicolon
 )brace
-DECL|variable|pciehp_msi_quirk
+DECL|variable|pcie_mch_quirk
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|pciehp_msi_quirk
+id|pcie_mch_quirk
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_HOTPLUG
+DECL|variable|pci_fixup_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_fixup_device
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

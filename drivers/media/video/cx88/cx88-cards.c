@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: cx88-cards.c,v 1.44 2004/10/12 07:33:22 kraxel Exp $&n; *&n; * device driver for Conexant 2388x based TV cards&n; * card-specific stuff.&n; *&n; * (c) 2003 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: cx88-cards.c,v 1.47 2004/11/03 09:04:50 kraxel Exp $&n; *&n; * device driver for Conexant 2388x based TV cards&n; * card-specific stuff.&n; *&n; * (c) 2003 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -1343,7 +1343,7 @@ comma
 dot
 id|vmux
 op_assign
-l_int|0
+l_int|1
 comma
 dot
 id|gpio0
@@ -1361,7 +1361,7 @@ comma
 dot
 id|vmux
 op_assign
-l_int|1
+l_int|2
 comma
 dot
 id|gpio0
@@ -1717,6 +1717,70 @@ comma
 comma
 dot
 id|blackbird
+op_assign
+l_int|1
+comma
+)brace
+comma
+(braket
+id|CX88_BOARD_DVICO_FUSIONHDTV_DVB_T_PLUS
+)braket
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;DVICO FusionHDTV DVB-T Plus&quot;
+comma
+dot
+id|tuner_type
+op_assign
+id|TUNER_ABSENT
+comma
+multiline_comment|/* No analog tuner */
+dot
+id|input
+op_assign
+(brace
+(brace
+dot
+id|type
+op_assign
+id|CX88_VMUX_COMPOSITE1
+comma
+dot
+id|vmux
+op_assign
+l_int|1
+comma
+dot
+id|gpio0
+op_assign
+l_int|0x000027df
+comma
+)brace
+comma
+(brace
+dot
+id|type
+op_assign
+id|CX88_VMUX_SVIDEO
+comma
+dot
+id|vmux
+op_assign
+l_int|2
+comma
+dot
+id|gpio0
+op_assign
+l_int|0x000027df
+comma
+)brace
+)brace
+comma
+dot
+id|dvb
 op_assign
 l_int|1
 comma
@@ -2106,6 +2170,24 @@ dot
 id|card
 op_assign
 id|CX88_BOARD_PROVIDEO_PV259
+comma
+)brace
+comma
+(brace
+dot
+id|subvendor
+op_assign
+l_int|0x18AC
+comma
+dot
+id|subdevice
+op_assign
+l_int|0xDB10
+comma
+dot
+id|card
+op_assign
+id|CX88_BOARD_DVICO_FUSIONHDTV_DVB_T_PLUS
 comma
 )brace
 )brace

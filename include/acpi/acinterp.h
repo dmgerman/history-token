@@ -1087,6 +1087,7 @@ id|u32
 id|line_number
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 r_void
 id|acpi_ex_dump_object_descriptor
 (paren
@@ -1157,6 +1158,7 @@ id|acpi_physical_address
 id|value
 )paren
 suffix:semicolon
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*&n; * exnames - interpreter/scanner name load/execute&n; */
 r_char
 op_star

@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;  $Id: slram.c,v 1.31 2004/08/09 13:19:44 dwmw2 Exp $&n;&n;  This driver provides a method to access memory not used by the kernel&n;  itself (i.e. if the kernel commandline mem=xxx is used). To actually&n;  use slram at least mtdblock or mtdchar is required (for block or&n;  character device access).&n;&n;  Usage:&n;&n;  if compiled as loadable module:&n;    modprobe slram map=&lt;name&gt;,&lt;start&gt;,&lt;end/offset&gt;&n;  if statically linked into the kernel use the following kernel cmd.line&n;    slram=&lt;name&gt;,&lt;start&gt;,&lt;end/offset&gt;&n;&n;  &lt;name&gt;: name of the device that will be listed in /proc/mtd&n;  &lt;start&gt;: start of the memory region, decimal or hex (0xabcdef)&n;  &lt;end/offset&gt;: end of the memory region. It&squot;s possible to use +0x1234&n;                to specify the offset instead of the absolute address&n;    &n;  NOTE:&n;  With slram it&squot;s only possible to map a contigous memory region. Therfore&n;  if there&squot;s a device mapped somewhere in the region specified slram will&n;  fail to load (see kernel log if modprobe fails).&n;&n;  -&n;  &n;  Jochen Schaeuble &lt;psionic@psionic.de&gt;&n;&n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;  $Id: slram.c,v 1.32 2004/11/16 18:29:01 dwmw2 Exp $&n;&n;  This driver provides a method to access memory not used by the kernel&n;  itself (i.e. if the kernel commandline mem=xxx is used). To actually&n;  use slram at least mtdblock or mtdchar is required (for block or&n;  character device access).&n;&n;  Usage:&n;&n;  if compiled as loadable module:&n;    modprobe slram map=&lt;name&gt;,&lt;start&gt;,&lt;end/offset&gt;&n;  if statically linked into the kernel use the following kernel cmd.line&n;    slram=&lt;name&gt;,&lt;start&gt;,&lt;end/offset&gt;&n;&n;  &lt;name&gt;: name of the device that will be listed in /proc/mtd&n;  &lt;start&gt;: start of the memory region, decimal or hex (0xabcdef)&n;  &lt;end/offset&gt;: end of the memory region. It&squot;s possible to use +0x1234&n;                to specify the offset instead of the absolute address&n;    &n;  NOTE:&n;  With slram it&squot;s only possible to map a contigous memory region. Therfore&n;  if there&squot;s a device mapped somewhere in the region specified slram will&n;  fail to load (see kernel log if modprobe fails).&n;&n;  -&n;  &n;  Jochen Schaeuble &lt;psionic@psionic.de&gt;&n;&n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -109,6 +109,7 @@ id|slram_mtdlist
 op_assign
 l_int|NULL
 suffix:semicolon
+r_static
 r_int
 id|slram_erase
 c_func
@@ -122,6 +123,7 @@ id|erase_info
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|slram_point
 c_func
@@ -142,6 +144,7 @@ op_star
 op_star
 )paren
 suffix:semicolon
+r_static
 r_void
 id|slram_unpoint
 c_func
@@ -158,6 +161,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_static
 r_int
 id|slram_read
 c_func
@@ -177,6 +181,7 @@ id|u_char
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|slram_write
 c_func
@@ -198,6 +203,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|function|slram_erase
+r_static
 r_int
 id|slram_erase
 c_func
@@ -262,6 +268,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|slram_point
+r_static
 r_int
 id|slram_point
 c_func
@@ -314,6 +321,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|slram_unpoint
+r_static
 r_void
 id|slram_unpoint
 c_func
@@ -336,6 +344,7 @@ id|len
 (brace
 )brace
 DECL|function|slram_read
+r_static
 r_int
 id|slram_read
 c_func
@@ -392,6 +401,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|slram_write
+r_static
 r_int
 id|slram_write
 c_func
@@ -450,6 +460,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*====================================================================*/
 DECL|function|register_device
+r_static
 r_int
 id|register_device
 c_func
@@ -1002,6 +1013,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|unregister_devices
+r_static
 r_void
 id|unregister_devices
 c_func
@@ -1068,6 +1080,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|handle_unit
+r_static
 r_int
 r_int
 id|handle_unit
@@ -1138,6 +1151,7 @@ id|value
 suffix:semicolon
 )brace
 DECL|function|parse_cmdline
+r_static
 r_int
 id|parse_cmdline
 c_func
@@ -1388,6 +1402,7 @@ id|mtd_slram_setup
 suffix:semicolon
 macro_line|#endif
 DECL|function|init_slram
+r_static
 r_int
 id|init_slram
 c_func

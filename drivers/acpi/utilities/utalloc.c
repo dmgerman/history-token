@@ -1758,6 +1758,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_dump_allocation_info&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Print some info about the outstanding allocations.&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_FUTURE_USAGE
 r_void
 DECL|function|acpi_ut_dump_allocation_info
 id|acpi_ut_dump_allocation_info
@@ -1775,6 +1776,7 @@ multiline_comment|/*&n;&t;ACPI_DEBUG_PRINT (TRACE_ALLOCATIONS | TRACE_TABLES,&n;
 id|return_VOID
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_dump_allocations&n; *&n; * PARAMETERS:  Component           - Component(s) to dump info for.&n; *              Module              - Module to dump info for.  NULL means all.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Print a list of all outstanding allocations.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ut_dump_allocations

@@ -302,7 +302,7 @@ op_or
 (paren
 l_int|1
 op_lshift
-id|NF_IP6_PRE_ROUTING
+id|NF_IP6_FORWARD
 )paren
 )paren
 )paren

@@ -2824,10 +2824,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|netif_running
+c_func
 (paren
-id|ndev-&gt;flags
-op_amp
-id|IFF_UP
+id|ndev
 )paren
 )paren
 (brace
@@ -3050,6 +3050,9 @@ c_cond
 (paren
 op_logical_neg
 id|in_dev
+op_logical_or
+op_logical_neg
+id|in_dev-&gt;ifa_list
 )paren
 (brace
 id|rcu_read_unlock

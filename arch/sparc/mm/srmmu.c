@@ -7532,6 +7532,10 @@ id|srmmu_name
 op_assign
 l_string|&quot;ROSS HyperSparc&quot;
 suffix:semicolon
+id|srmmu_modtype
+op_assign
+id|HyperSparc
+suffix:semicolon
 id|init_vac_layout
 c_func
 (paren

@@ -8113,17 +8113,26 @@ op_div
 id|lowmem_pages
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; * When interpreting these watermarks, just keep in mind that:&n;&t;&t; * zone-&gt;pages_min == (zone-&gt;pages_min * 4) / 4;&n;&t;&t; */
 id|zone-&gt;pages_low
 op_assign
+(paren
 id|zone-&gt;pages_min
 op_star
-l_int|2
+l_int|5
+)paren
+op_div
+l_int|4
 suffix:semicolon
 id|zone-&gt;pages_high
 op_assign
+(paren
 id|zone-&gt;pages_min
 op_star
-l_int|3
+l_int|6
+)paren
+op_div
+l_int|4
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -8136,7 +8145,7 @@ id|flags
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Initialise min_free_kbytes.&n; *&n; * For small machines we want it small (128k min).  For large machines&n; * we want it large (16MB max).  But it is not linear, because network&n; * bandwidth does not increase linearly with machine size.  We use&n; *&n; *&t;min_free_kbytes = sqrt(lowmem_kbytes)&n; *&n; * which yields&n; *&n; * 16MB:&t;128k&n; * 32MB:&t;181k&n; * 64MB:&t;256k&n; * 128MB:&t;362k&n; * 256MB:&t;512k&n; * 512MB:&t;724k&n; * 1024MB:&t;1024k&n; * 2048MB:&t;1448k&n; * 4096MB:&t;2048k&n; * 8192MB:&t;2896k&n; * 16384MB:&t;4096k&n; */
+multiline_comment|/*&n; * Initialise min_free_kbytes.&n; *&n; * For small machines we want it small (128k min).  For large machines&n; * we want it large (64MB max).  But it is not linear, because network&n; * bandwidth does not increase linearly with machine size.  We use&n; *&n; * &t;min_free_kbytes = 4 * sqrt(lowmem_kbytes), for better accuracy:&n; *&t;min_free_kbytes = sqrt(lowmem_kbytes * 16)&n; *&n; * which yields&n; *&n; * 16MB:&t;512k&n; * 32MB:&t;724k&n; * 64MB:&t;1024k&n; * 128MB:&t;1448k&n; * 256MB:&t;2048k&n; * 512MB:&t;2896k&n; * 1024MB:&t;4096k&n; * 2048MB:&t;5792k&n; * 4096MB:&t;8192k&n; * 8192MB:&t;11584k&n; * 16384MB:&t;16384k&n; */
 DECL|function|init_per_zone_pages_min
 r_static
 r_int
@@ -8170,6 +8179,8 @@ id|int_sqrt
 c_func
 (paren
 id|lowmem_kbytes
+op_star
+l_int|16
 )paren
 suffix:semicolon
 r_if
@@ -8188,11 +8199,11 @@ c_cond
 (paren
 id|min_free_kbytes
 OG
-l_int|16384
+l_int|65536
 )paren
 id|min_free_kbytes
 op_assign
-l_int|16384
+l_int|65536
 suffix:semicolon
 id|setup_per_zone_pages_min
 c_func

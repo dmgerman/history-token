@@ -1,8 +1,8 @@
 multiline_comment|/*&n;&t;drivers/net/tulip/interrupt.c&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@pobox.com&gt;&n;&t;Copyright 2000,2001  The Linux Kernel Team&n;&t;Written/copyright 1994-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Please refer to Documentation/DocBook/tulip-user.{pdf,ps,html}&n;&t;for more information on this driver, or visit the project&n;&t;Web page at http://sourceforge.net/projects/tulip/&n;&n;*/
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;tulip.h&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
 DECL|variable|tulip_rx_copybreak
 r_int
 id|tulip_rx_copybreak

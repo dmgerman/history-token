@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    $Id: cx88-tvaudio.c,v 1.22 2004/10/11 13:45:51 kraxel Exp $&n;&n;    cx88x-audio.c - Conexant CX23880/23881 audio downstream driver driver&n;&n;     (c) 2001 Michael Eskin, Tom Zakrajsek [Windows version]&n;     (c) 2002 Yurij Sysoev &lt;yurij@naturesoft.net&gt;&n;     (c) 2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    -----------------------------------------------------------------------&n;&n;    Lot of voodoo here.  Even the data sheet doesn&squot;t help to&n;    understand what is going on here, the documentation for the audio&n;    part of the cx2388x chip is *very* bad.&n;&n;    Some of this comes from party done linux driver sources I got from&n;    [undocumented].&n;&n;    Some comes from the dscaler sources, one of the dscaler driver guy works&n;    for Conexant ...&n;    &n;    -----------------------------------------------------------------------&n;    &n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    $Id: cx88-tvaudio.c,v 1.24 2004/10/25 11:51:00 kraxel Exp $&n;&n;    cx88x-audio.c - Conexant CX23880/23881 audio downstream driver driver&n;&n;     (c) 2001 Michael Eskin, Tom Zakrajsek [Windows version]&n;     (c) 2002 Yurij Sysoev &lt;yurij@naturesoft.net&gt;&n;     (c) 2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    -----------------------------------------------------------------------&n;&n;    Lot of voodoo here.  Even the data sheet doesn&squot;t help to&n;    understand what is going on here, the documentation for the audio&n;    part of the cx2388x chip is *very* bad.&n;&n;    Some of this comes from party done linux driver sources I got from&n;    [undocumented].&n;&n;    Some comes from the dscaler sources, one of the dscaler driver guy works&n;    for Conexant ...&n;&n;    -----------------------------------------------------------------------&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -2612,6 +2612,37 @@ id|core-&gt;tvaudio
 )paren
 (brace
 r_case
+id|WW_NICAM_I
+suffix:colon
+multiline_comment|/* gives at least mono according to the dscaler guys */
+multiline_comment|/* so use use that while nicam is broken ...         */
+id|dprintk
+c_func
+(paren
+l_string|&quot;%s PAL-I mono (status: unknown)&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|set_audio_registers
+c_func
+(paren
+id|core
+comma
+id|a2_table1
+)paren
+suffix:semicolon
+id|cx_write
+c_func
+(paren
+id|AUD_CTL
+comma
+id|EN_A2_FORCE_MONO1
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|WW_A2_BG
 suffix:colon
 id|dprintk
@@ -3002,9 +3033,7 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|WW_NICAM_I
-suffix:colon
+singleline_comment|// case WW_NICAM_I:
 r_case
 id|WW_NICAM_BGDKL
 suffix:colon
@@ -3016,6 +3045,9 @@ id|core
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|WW_NICAM_I
+suffix:colon
 r_case
 id|WW_A2_BG
 suffix:colon

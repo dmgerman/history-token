@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#if defined(CONFIG_X86_IO_APIC) &amp;&amp; defined(CONFIG_SMP)
 DECL|function|quirk_intel_irqbalance
 r_void
-id|__init
+id|__devinit
 id|quirk_intel_irqbalance
 c_func
 (paren
@@ -179,7 +179,7 @@ c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
 comma
-id|PCI_DEVICE_ID_INTEL_SMCH
+id|PCI_DEVICE_ID_INTEL_E7520_MCH
 comma
 id|quirk_intel_irqbalance
 )paren

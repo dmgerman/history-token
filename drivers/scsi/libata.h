@@ -5,7 +5,7 @@ mdefine_line|#define __LIBATA_H__
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;libata&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.02&quot;&t;/* must be exactly four chars */
+mdefine_line|#define DRV_VERSION&t;&quot;1.10&quot;&t;/* must be exactly four chars */
 DECL|struct|ata_scsi_args
 r_struct
 id|ata_scsi_args

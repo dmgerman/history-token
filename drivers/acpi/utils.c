@@ -862,6 +862,13 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_extract_package
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_extract_package
+)paren
+suffix:semicolon
 id|acpi_status
 DECL|function|acpi_evaluate_integer
 id|acpi_evaluate_integer
@@ -1017,6 +1024,13 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_evaluate_integer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_evaluate_integer
+)paren
+suffix:semicolon
 macro_line|#if 0
 id|acpi_status
 id|acpi_evaluate_string
@@ -1621,4 +1635,11 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_evaluate_reference
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_evaluate_reference
+)paren
+suffix:semicolon
 eof

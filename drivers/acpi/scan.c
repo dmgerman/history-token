@@ -2454,6 +2454,13 @@ id|count
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_bus_register_driver
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_bus_register_driver
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * acpi_bus_unregister_driver &n; * --------------------------&n; * Unregisters a driver with the ACPI bus.  Searches the namespace for all&n; * devices that match the driver&squot;s criteria and unbinds.&n; */
 r_int
 DECL|function|acpi_bus_unregister_driver
@@ -2536,6 +2543,13 @@ id|error
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_bus_unregister_driver
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_bus_unregister_driver
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * acpi_bus_find_driver &n; * --------------------&n; * Parses the list of registered drivers looking for a driver applicable for&n; * the specified device.&n; */
 r_static
 r_int
@@ -4302,6 +4316,13 @@ id|result
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_bus_add
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_bus_add
+)paren
+suffix:semicolon
 DECL|function|acpi_bus_scan
 r_int
 id|acpi_bus_scan
@@ -4620,6 +4641,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_bus_scan
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_bus_scan
+)paren
+suffix:semicolon
 r_int
 DECL|function|acpi_bus_trim
 id|acpi_bus_trim

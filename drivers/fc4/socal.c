@@ -4711,6 +4711,7 @@ id|hw_cq
 op_assign
 (paren
 id|socal_hw_cq
+id|__iomem
 op_star
 )paren
 (paren
@@ -4728,6 +4729,7 @@ id|hw_cq
 op_assign
 (paren
 id|socal_hw_cq
+id|__iomem
 op_star
 )paren
 (paren
@@ -4750,6 +4752,7 @@ id|hw_cq
 op_assign
 (paren
 id|socal_hw_cq
+id|__iomem
 op_star
 )paren
 (paren
@@ -4767,6 +4770,7 @@ id|hw_cq
 op_assign
 (paren
 id|socal_hw_cq
+id|__iomem
 op_star
 )paren
 (paren
@@ -4789,6 +4793,7 @@ id|hw_cq
 op_assign
 (paren
 id|socal_hw_cq
+id|__iomem
 op_star
 )paren
 (paren

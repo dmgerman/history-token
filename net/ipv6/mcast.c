@@ -822,7 +822,7 @@ op_eq
 id|ifindex
 )paren
 op_logical_and
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -830,8 +830,6 @@ id|mc_lst-&gt;addr
 comma
 id|addr
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 r_struct
@@ -1462,7 +1460,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -1470,8 +1468,6 @@ id|pmc-&gt;addr
 comma
 id|group
 )paren
-op_eq
-l_int|0
 )paren
 r_break
 suffix:semicolon
@@ -2135,7 +2131,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -2143,8 +2139,6 @@ id|pmc-&gt;addr
 comma
 id|group
 )paren
-op_eq
-l_int|0
 )paren
 r_break
 suffix:semicolon
@@ -2550,7 +2544,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 id|group
@@ -2558,8 +2552,6 @@ comma
 op_amp
 id|pmc-&gt;addr
 )paren
-op_eq
-l_int|0
 )paren
 r_break
 suffix:semicolon
@@ -2844,7 +2836,7 @@ id|mc-&gt;next
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -2852,8 +2844,6 @@ id|mc-&gt;addr
 comma
 id|mc_addr
 )paren
-op_eq
-l_int|0
 )paren
 r_break
 suffix:semicolon
@@ -2917,7 +2907,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -2928,8 +2918,6 @@ id|i
 comma
 id|src_addr
 )paren
-op_eq
-l_int|0
 )paren
 r_break
 suffix:semicolon
@@ -3364,9 +3352,12 @@ op_amp
 id|im-&gt;mca_lock
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|pmc-&gt;mca_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|pmc-&gt;idev
 op_assign
@@ -3526,7 +3517,7 @@ id|pmc-&gt;next
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -3534,8 +3525,6 @@ id|pmc-&gt;mca_addr
 comma
 id|pmca
 )paren
-op_eq
-l_int|0
 )paren
 r_break
 suffix:semicolon
@@ -3870,7 +3859,7 @@ id|mc-&gt;next
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -3878,8 +3867,6 @@ id|mc-&gt;mca_addr
 comma
 id|addr
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 id|mc-&gt;mca_users
@@ -4027,9 +4014,12 @@ comma
 l_int|2
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|mc-&gt;mca_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* initial mode is (EX, empty) */
 id|mc-&gt;mca_sfmode
@@ -4165,7 +4155,7 @@ id|ma-&gt;next
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -4173,8 +4163,6 @@ id|ma-&gt;mca_addr
 comma
 id|addr
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 r_if
@@ -4461,7 +4449,7 @@ id|mc-&gt;next
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -4469,8 +4457,6 @@ id|mc-&gt;mca_addr
 comma
 id|group
 )paren
-op_eq
-l_int|0
 )paren
 r_break
 suffix:semicolon
@@ -4523,7 +4509,7 @@ id|psf-&gt;sf_next
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -4531,8 +4517,6 @@ id|psf-&gt;sf_addr
 comma
 id|src_addr
 )paren
-op_eq
-l_int|0
 )paren
 r_break
 suffix:semicolon
@@ -4906,7 +4890,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -4918,8 +4902,6 @@ comma
 op_amp
 id|psf-&gt;sf_addr
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 id|psf-&gt;sf_gsresp
@@ -5397,7 +5379,8 @@ id|group_type
 op_ne
 id|IPV6_ADDR_ANY
 op_logical_and
-id|ipv6_addr_cmp
+op_logical_neg
+id|ipv6_addr_equal
 c_func
 (paren
 id|group
@@ -5405,8 +5388,6 @@ comma
 op_amp
 id|ma-&gt;mca_addr
 )paren
-op_ne
-l_int|0
 )paren
 r_continue
 suffix:semicolon
@@ -5680,7 +5661,7 @@ id|ma-&gt;next
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -5688,8 +5669,6 @@ id|ma-&gt;mca_addr
 comma
 id|addrp
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 id|spin_lock
@@ -8476,7 +8455,7 @@ id|psf-&gt;sf_next
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -8484,8 +8463,6 @@ id|psf-&gt;sf_addr
 comma
 id|psfsrc
 )paren
-op_eq
-l_int|0
 )paren
 r_break
 suffix:semicolon
@@ -8686,7 +8663,7 @@ id|pmc-&gt;next
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 id|pmca
@@ -8694,8 +8671,6 @@ comma
 op_amp
 id|pmc-&gt;mca_addr
 )paren
-op_eq
-l_int|0
 )paren
 r_break
 suffix:semicolon
@@ -8984,7 +8959,7 @@ id|psf-&gt;sf_next
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -8992,8 +8967,6 @@ id|psf-&gt;sf_addr
 comma
 id|psfsrc
 )paren
-op_eq
-l_int|0
 )paren
 r_break
 suffix:semicolon
@@ -9345,7 +9318,7 @@ id|pmc-&gt;next
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 id|pmca
@@ -9353,8 +9326,6 @@ comma
 op_amp
 id|pmc-&gt;mca_addr
 )paren
-op_eq
-l_int|0
 )paren
 r_break
 suffix:semicolon
@@ -10383,9 +10354,12 @@ op_amp
 id|idev-&gt;lock
 )paren
 suffix:semicolon
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|idev-&gt;mc_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|idev-&gt;mc_gq_running
 op_assign

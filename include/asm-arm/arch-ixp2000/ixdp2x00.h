@@ -39,7 +39,7 @@ DECL|macro|IXDP2X00_GPIO_SCL
 mdefine_line|#define&t;IXDP2X00_GPIO_SCL&t;&t;0x07
 DECL|macro|IXDP2X00_GPIO_SDA
 mdefine_line|#define&t;IXDP2X00_GPIO_SDA&t;&t;0x06
-multiline_comment|/*&n; * PCI devfns for on-board devices. We need these to be able to&n; * properly translte IRQs and for device removal.&n; */
+multiline_comment|/*&n; * PCI devfns for on-board devices. We need these to be able to&n; * properly translate IRQs and for device removal.&n; */
 DECL|macro|IXDP2400_SLAVE_ENET_DEVFN
 mdefine_line|#define&t;IXDP2400_SLAVE_ENET_DEVFN&t;0x18&t;/* Bus 1 */
 DECL|macro|IXDP2400_MASTER_ENET_DEVFN

@@ -142,8 +142,9 @@ id|irq
 suffix:semicolon
 multiline_comment|/* IRQ used by this board */
 DECL|member|bar0
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|bar0
 suffix:semicolon
 multiline_comment|/* ioremapped bar0 */
@@ -444,9 +445,7 @@ c_func
 id|tpam_card
 op_star
 comma
-r_const
-r_void
-op_star
+id|u32
 comma
 id|u32
 )paren
@@ -459,8 +458,7 @@ c_func
 id|tpam_card
 op_star
 comma
-r_void
-op_star
+id|u32
 comma
 r_const
 r_void
@@ -477,9 +475,7 @@ c_func
 id|tpam_card
 op_star
 comma
-r_const
-r_void
-op_star
+id|u32
 )paren
 suffix:semicolon
 r_extern
@@ -493,9 +489,7 @@ comma
 r_void
 op_star
 comma
-r_const
-r_void
-op_star
+id|u32
 comma
 id|u32
 )paren
@@ -512,9 +506,7 @@ r_void
 id|__user
 op_star
 comma
-r_const
-r_void
-op_star
+id|u32
 comma
 id|u32
 )paren
@@ -527,8 +519,7 @@ c_func
 id|tpam_card
 op_star
 comma
-r_void
-op_star
+id|u32
 comma
 r_const
 r_void

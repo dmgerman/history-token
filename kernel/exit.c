@@ -2025,9 +2025,6 @@ id|p-&gt;exit_signal
 op_assign
 id|SIGCHLD
 suffix:semicolon
-id|p-&gt;self_exec_id
-op_increment
-suffix:semicolon
 r_if
 c_cond
 (paren

@@ -6,6 +6,7 @@ mdefine_line|#define __ACTABLES_H__
 multiline_comment|/* Used in acpi_tb_map_acpi_table for size parameter if table header is to be used */
 DECL|macro|SIZE_IN_HEADER
 mdefine_line|#define SIZE_IN_HEADER          0
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_tb_handle_to_object
 (paren
@@ -19,6 +20,7 @@ op_star
 id|table_desc
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * tbconvrt - Table conversion routines&n; */
 id|acpi_status
 id|acpi_tb_convert_to_xsdt

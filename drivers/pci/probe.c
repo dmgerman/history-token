@@ -676,31 +676,36 @@ comma
 id|l
 )paren
 suffix:semicolon
+id|sz
+op_assign
+id|pci_size
+c_func
+(paren
+id|l
+comma
+id|sz
+comma
+l_int|0xffffffff
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-op_complement
 id|sz
 )paren
+(brace
+multiline_comment|/* This BAR needs &gt; 4GB?  Wow. */
 id|res-&gt;end
-op_assign
-id|res-&gt;start
-op_plus
-l_int|0xffffffff
-op_plus
-(paren
-(paren
+op_or_assign
 (paren
 r_int
 r_int
 )paren
-op_complement
 id|sz
-)paren
 op_lshift
 l_int|32
-)paren
 suffix:semicolon
+)brace
 macro_line|#else
 r_if
 c_cond
@@ -848,7 +853,7 @@ op_assign
 (paren
 id|l
 op_amp
-id|PCI_ROM_ADDRESS_ENABLE
+id|IORESOURCE_ROM_ENABLE
 )paren
 op_or
 id|IORESOURCE_MEM
@@ -1308,6 +1313,15 @@ op_amp
 id|mem_limit_hi
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Some bridges set the base &gt; limit by default, and some&n;&t;&t; * (broken) BIOSes do not initialize them.  If we find&n;&t;&t; * this, just assume they are not being used.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|mem_base_hi
+op_le
+id|mem_limit_hi
+)paren
+(brace
 macro_line|#if BITS_PER_LONG == 64
 id|base
 op_or_assign
@@ -1344,15 +1358,20 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;PCI: Unable to handle 64-bit address space for %s&bslash;n&quot;
+l_string|&quot;PCI: Unable to handle 64-bit address space for bridge %s&bslash;n&quot;
 comma
-id|child-&gt;name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
 macro_line|#endif
+)brace
 )brace
 r_if
 c_cond
@@ -2257,6 +2276,15 @@ multiline_comment|/* &quot;Unknown power state&quot; */
 id|dev-&gt;current_state
 op_assign
 l_int|4
+suffix:semicolon
+multiline_comment|/* Early fixups, before probing the BARs */
+id|pci_fixup_device
+c_func
+(paren
+id|pci_fixup_early
+comma
+id|dev
+)paren
 suffix:semicolon
 r_switch
 c_cond

@@ -629,30 +629,35 @@ suffix:semicolon
 DECL|member|lx_krn
 r_struct
 id|leo_lx_krn
+id|__iomem
 op_star
 id|lx_krn
 suffix:semicolon
 DECL|member|lc_ss0_usr
 r_struct
 id|leo_lc_ss0_usr
+id|__iomem
 op_star
 id|lc_ss0_usr
 suffix:semicolon
 DECL|member|ld_ss0
 r_struct
 id|leo_ld_ss0
+id|__iomem
 op_star
 id|ld_ss0
 suffix:semicolon
 DECL|member|ld_ss1
 r_struct
 id|leo_ld_ss1
+id|__iomem
 op_star
 id|ld_ss1
 suffix:semicolon
 DECL|member|cursor
 r_struct
 id|leo_cursor
+id|__iomem
 op_star
 id|cursor
 suffix:semicolon
@@ -704,6 +709,7 @@ c_func
 (paren
 r_struct
 id|leo_lx_krn
+id|__iomem
 op_star
 id|lx_krn
 )paren
@@ -787,6 +793,7 @@ id|info-&gt;par
 suffix:semicolon
 r_struct
 id|leo_lx_krn
+id|__iomem
 op_star
 id|lx_krn
 op_assign
@@ -971,6 +978,7 @@ id|info-&gt;par
 suffix:semicolon
 r_struct
 id|leo_lx_krn
+id|__iomem
 op_star
 id|lx_krn
 op_assign
@@ -999,7 +1007,7 @@ id|blank
 )paren
 (brace
 r_case
-l_int|0
+id|FB_BLANK_UNBLANK
 suffix:colon
 multiline_comment|/* Unblanking */
 id|val
@@ -1032,19 +1040,19 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|1
+id|FB_BLANK_NORMAL
 suffix:colon
 multiline_comment|/* Normal blanking */
 r_case
-l_int|2
+id|FB_BLANK_VSYNC_SUSPEND
 suffix:colon
 multiline_comment|/* VESA blank (vsync off) */
 r_case
-l_int|3
+id|FB_BLANK_HSYNC_SUSPEND
 suffix:colon
 multiline_comment|/* VESA blank (hsync off) */
 r_case
-l_int|4
+id|FB_BLANK_POWERDOWN
 suffix:colon
 multiline_comment|/* Poweroff */
 id|val
@@ -1529,6 +1537,7 @@ id|info-&gt;par
 suffix:semicolon
 r_struct
 id|leo_lx_krn
+id|__iomem
 op_star
 id|lx_krn
 op_assign
@@ -1839,12 +1848,14 @@ id|info-&gt;par
 suffix:semicolon
 r_struct
 id|leo_ld
+id|__iomem
 op_star
 id|ss
 op_assign
 (paren
 r_struct
 id|leo_ld
+id|__iomem
 op_star
 )paren
 id|par-&gt;ld_ss0
@@ -2344,6 +2355,7 @@ id|all-&gt;info.screen_base
 op_assign
 (paren
 r_char
+id|__iomem
 op_star
 )paren
 id|prom_getintdefault
@@ -2365,10 +2377,6 @@ id|all-&gt;info.screen_base
 )paren
 id|all-&gt;info.screen_base
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -2387,11 +2395,6 @@ l_string|&quot;leo ram&quot;
 suffix:semicolon
 id|all-&gt;par.lc_ss0_usr
 op_assign
-(paren
-r_struct
-id|leo_lc_ss0_usr
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -2410,11 +2413,6 @@ l_string|&quot;leolc ss0usr&quot;
 suffix:semicolon
 id|all-&gt;par.ld_ss0
 op_assign
-(paren
-r_struct
-id|leo_ld_ss0
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -2433,11 +2431,6 @@ l_string|&quot;leold ss0&quot;
 suffix:semicolon
 id|all-&gt;par.ld_ss1
 op_assign
-(paren
-r_struct
-id|leo_ld_ss1
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -2456,11 +2449,6 @@ l_string|&quot;leold ss1&quot;
 suffix:semicolon
 id|all-&gt;par.lx_krn
 op_assign
-(paren
-r_struct
-id|leo_lx_krn
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -2479,11 +2467,6 @@ l_string|&quot;leolx krn&quot;
 suffix:semicolon
 id|all-&gt;par.cursor
 op_assign
-(paren
-r_struct
-id|leo_cursor
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren

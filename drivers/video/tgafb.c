@@ -2487,7 +2487,7 @@ id|blank
 )paren
 (brace
 r_case
-l_int|0
+id|FB_BLANK_UNBLANK
 suffix:colon
 multiline_comment|/* Unblanking */
 r_if
@@ -2540,7 +2540,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|1
+id|FB_BLANK_NORMAL
 suffix:colon
 multiline_comment|/* Normal blanking */
 id|TGA_WRITE_REG
@@ -2560,7 +2560,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|2
+id|FB_BLANK_VSYNC_SUSPEND
 suffix:colon
 multiline_comment|/* VESA blank (vsync off) */
 id|TGA_WRITE_REG
@@ -2594,7 +2594,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|3
+id|FB_BLANK_HSYNC_SUSPEND
 suffix:colon
 multiline_comment|/* VESA blank (hsync off) */
 id|TGA_WRITE_REG
@@ -2628,7 +2628,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|4
+id|FB_BLANK_POWERDOWN
 suffix:colon
 multiline_comment|/* Poweroff */
 id|TGA_WRITE_REG
@@ -3283,9 +3283,12 @@ op_star
 id|data
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|regs_base
-comma
+suffix:semicolon
+r_void
+id|__iomem
 op_star
 id|fb_base
 suffix:semicolon
@@ -4490,9 +4493,12 @@ comma
 id|j
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|regs_base
-comma
+suffix:semicolon
+r_void
+id|__iomem
 op_star
 id|fb_base
 suffix:semicolon
@@ -5080,6 +5086,7 @@ op_star
 id|info-&gt;par
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|tga_regs
 op_assign
@@ -5337,21 +5344,26 @@ op_star
 id|info-&gt;par
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|tga_regs
 op_assign
 id|par-&gt;tga_regs_base
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|tga_fb
 op_assign
 id|par-&gt;tga_fb_base
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|src
-comma
+suffix:semicolon
+r_void
+id|__iomem
 op_star
 id|dst
 suffix:semicolon
@@ -5663,9 +5675,12 @@ comma
 id|xincr_first
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|tga_regs
-comma
+suffix:semicolon
+r_void
+id|__iomem
 op_star
 id|tga_fb
 suffix:semicolon
@@ -6073,9 +6088,12 @@ r_int
 id|j
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|sfb
-comma
+suffix:semicolon
+r_void
+id|__iomem
 op_star
 id|dfb
 suffix:semicolon
@@ -6182,10 +6200,12 @@ op_logical_and
 (paren
 (paren
 r_int
+r_int
 )paren
 id|sfb
 op_or
 (paren
+r_int
 r_int
 )paren
 id|dfb
@@ -6450,9 +6470,12 @@ r_int
 id|n32
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|tga_regs
-comma
+suffix:semicolon
+r_void
+id|__iomem
 op_star
 id|tga_fb
 suffix:semicolon
@@ -6663,9 +6686,12 @@ r_int
 id|j
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|sfb
-comma
+suffix:semicolon
+r_void
+id|__iomem
 op_star
 id|dfb
 suffix:semicolon
@@ -7335,6 +7361,7 @@ op_star
 id|all
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|mem_base
 suffix:semicolon
@@ -7580,10 +7607,6 @@ id|tgafb_ops
 suffix:semicolon
 id|all-&gt;info.screen_base
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|all-&gt;par.tga_fb_base
 suffix:semicolon
 id|all-&gt;info.par

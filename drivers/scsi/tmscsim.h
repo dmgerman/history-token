@@ -11,14 +11,10 @@ DECL|macro|MAX_ADAPTER_NUM
 mdefine_line|#define MAX_ADAPTER_NUM &t;4
 DECL|macro|MAX_SG_LIST_BUF
 mdefine_line|#define MAX_SG_LIST_BUF &t;16&t;/* Not used */
-DECL|macro|MAX_CMD_PER_LUN
-mdefine_line|#define MAX_CMD_PER_LUN &t;32
-DECL|macro|MAX_CMD_QUEUE
-mdefine_line|#define MAX_CMD_QUEUE&t;&t;MAX_CMD_PER_LUN+MAX_CMD_PER_LUN/2+1&t;
 DECL|macro|MAX_SCSI_ID
 mdefine_line|#define MAX_SCSI_ID&t;&t;8
 DECL|macro|MAX_SRB_CNT
-mdefine_line|#define MAX_SRB_CNT&t;&t;MAX_CMD_QUEUE+1&t;/* Max number of started commands */
+mdefine_line|#define MAX_SRB_CNT&t;&t;50&t;/* Max number of started commands */
 DECL|macro|SEL_TIMEOUT
 mdefine_line|#define SEL_TIMEOUT&t;&t;153&t;/* 250 ms selection timeout (@ 40 MHz) */
 DECL|macro|pci_dma_lo32
@@ -217,10 +213,6 @@ suffix:semicolon
 DECL|member|GoingSRBCnt
 id|u8
 id|GoingSRBCnt
-suffix:semicolon
-DECL|member|MaxCommand
-id|u8
-id|MaxCommand
 suffix:semicolon
 DECL|member|TagMask
 id|u32

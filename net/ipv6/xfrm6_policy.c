@@ -258,8 +258,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -269,8 +268,7 @@ op_amp
 id|fl_dst_prefix
 )paren
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -556,7 +554,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+op_logical_neg
+id|ipv6_addr_equal
 c_func
 (paren
 id|remote

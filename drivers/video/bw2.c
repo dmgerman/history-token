@@ -291,6 +291,7 @@ suffix:semicolon
 DECL|member|regs
 r_struct
 id|bw2_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -353,6 +354,7 @@ id|info-&gt;par
 suffix:semicolon
 r_struct
 id|bw2_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -381,7 +383,7 @@ id|blank
 )paren
 (brace
 r_case
-l_int|0
+id|FB_BLANK_UNBLANK
 suffix:colon
 multiline_comment|/* Unblanking */
 id|val
@@ -414,19 +416,19 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|1
+id|FB_BLANK_NORMAL
 suffix:colon
 multiline_comment|/* Normal blanking */
 r_case
-l_int|2
+id|FB_BLANK_VSYNC_SUSPEND
 suffix:colon
 multiline_comment|/* VESA blank (vsync off) */
 r_case
-l_int|3
+id|FB_BLANK_HSYNC_SUSPEND
 suffix:colon
 multiline_comment|/* VESA blank (hsync off) */
 r_case
-l_int|4
+id|FB_BLANK_POWERDOWN
 suffix:colon
 multiline_comment|/* Poweroff */
 id|val
@@ -1151,6 +1153,7 @@ l_int|2
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|regp
 op_assign
@@ -1158,6 +1161,7 @@ op_amp
 (paren
 (paren
 id|u8
+id|__iomem
 op_star
 )paren
 id|par-&gt;regs
@@ -1447,11 +1451,6 @@ l_int|0
 suffix:semicolon
 id|all-&gt;par.regs
 op_assign
-(paren
-r_struct
-id|bw2_regs
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -1524,6 +1523,7 @@ id|all-&gt;info.screen_base
 op_assign
 (paren
 r_char
+id|__iomem
 op_star
 )paren
 id|prom_getintdefault
@@ -1545,10 +1545,6 @@ id|all-&gt;info.screen_base
 )paren
 id|all-&gt;info.screen_base
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren

@@ -62,6 +62,7 @@ suffix:semicolon
 DECL|member|cmds
 r_struct
 id|dbdma_cmd
+id|__iomem
 op_star
 id|cmds
 suffix:semicolon
@@ -121,6 +122,7 @@ DECL|member|dma
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|dma
 suffix:semicolon
@@ -318,6 +320,7 @@ DECL|member|awacs
 r_volatile
 r_struct
 id|awacs_regs
+id|__iomem
 op_star
 id|awacs
 suffix:semicolon
@@ -337,12 +340,14 @@ suffix:semicolon
 DECL|member|latch_base
 r_int
 r_char
+id|__iomem
 op_star
 id|latch_base
 suffix:semicolon
 DECL|member|macio_base
 r_int
 r_char
+id|__iomem
 op_star
 id|macio_base
 suffix:semicolon
@@ -691,10 +696,6 @@ op_star
 id|i2c
 )paren
 suffix:semicolon
-DECL|macro|snd_pmac_keywest_write
-mdefine_line|#define snd_pmac_keywest_write(i2c,cmd,len,data) i2c_smbus_write_block_data((i2c)-&gt;client, cmd, len, data)
-DECL|macro|snd_pmac_keywest_write_byte
-mdefine_line|#define snd_pmac_keywest_write_byte(i2c,cmd,data) i2c_smbus_write_byte_data((i2c)-&gt;client, cmd, data)
 multiline_comment|/* misc */
 r_int
 id|snd_pmac_boolean_stereo_info

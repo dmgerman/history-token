@@ -115,21 +115,25 @@ suffix:semicolon
 multiline_comment|/* remapped memory spaces */
 DECL|member|registers
 r_void
+id|__iomem
 op_star
 id|registers
 suffix:semicolon
 DECL|member|local_rom
 r_void
+id|__iomem
 op_star
 id|local_rom
 suffix:semicolon
 DECL|member|local_ram
 r_void
+id|__iomem
 op_star
 id|local_ram
 suffix:semicolon
 DECL|member|aux_port
 r_void
+id|__iomem
 op_star
 id|aux_port
 suffix:semicolon

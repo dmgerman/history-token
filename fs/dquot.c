@@ -3204,7 +3204,7 @@ r_if
 c_cond
 (paren
 id|dquot-&gt;dq_dqb.dqb_curinodes
-OL
+op_le
 id|dquot-&gt;dq_dqb.dqb_isoftlimit
 )paren
 id|dquot-&gt;dq_dqb.dqb_itime
@@ -3264,7 +3264,7 @@ c_func
 (paren
 id|dquot-&gt;dq_dqb.dqb_curspace
 )paren
-OL
+op_le
 id|dquot-&gt;dq_dqb.dqb_bsoftlimit
 )paren
 id|dquot-&gt;dq_dqb.dqb_btime

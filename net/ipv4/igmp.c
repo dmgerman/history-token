@@ -5567,13 +5567,19 @@ op_assign
 id|IGMP_Unsolicited_Report_Count
 suffix:semicolon
 macro_line|#endif
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|in_dev-&gt;mc_list_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|in_dev-&gt;mc_tomb_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Device going up */

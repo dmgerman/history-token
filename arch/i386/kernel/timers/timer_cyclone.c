@@ -1063,6 +1063,7 @@ suffix:semicolon
 multiline_comment|/************************************************************/
 multiline_comment|/* cyclone timer_opts struct */
 DECL|variable|timer_cyclone
+r_static
 r_struct
 id|timer_opts
 id|timer_cyclone
@@ -1072,11 +1073,6 @@ dot
 id|name
 op_assign
 l_string|&quot;cyclone&quot;
-comma
-dot
-id|init
-op_assign
-id|init_cyclone
 comma
 dot
 id|mark_offset
@@ -1097,6 +1093,26 @@ dot
 id|delay
 op_assign
 id|delay_cyclone
+comma
+)brace
+suffix:semicolon
+DECL|variable|timer_cyclone_init
+r_struct
+id|init_timer_opts
+id|__initdata
+id|timer_cyclone_init
+op_assign
+(brace
+dot
+id|init
+op_assign
+id|init_cyclone
+comma
+dot
+id|opts
+op_assign
+op_amp
+id|timer_cyclone
 comma
 )brace
 suffix:semicolon

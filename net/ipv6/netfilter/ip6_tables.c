@@ -6597,9 +6597,12 @@ r_private
 op_member_access_from_pointer
 id|number
 suffix:semicolon
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|table-&gt;lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|list_prepend
 c_func

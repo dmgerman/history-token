@@ -1,4 +1,4 @@
-multiline_comment|/* linux/include/asm-arm/arch-s3c2410/regs-iic.h&n; *&n; * Copyright (c) 2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 I2C Controller&n; *&n; *  Changelog:&n; *&t;03-Oct-2004  BJD  Initial include for Linux&n;*/
+multiline_comment|/* linux/include/asm-arm/arch-s3c2410/regs-iic.h&n; *&n; * Copyright (c) 2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 I2C Controller&n; *&n; *  Changelog:&n; *&t;03-Oct-2004  BJD  Initial include for Linux&n; *&t;08-Nov-2004  BJD  Added S3C2440 filter register&n;*/
 macro_line|#ifndef __ASM_ARCH_REGS_IIC_H
 DECL|macro|__ASM_ARCH_REGS_IIC_H
 mdefine_line|#define __ASM_ARCH_REGS_IIC_H __FILE__
@@ -13,6 +13,8 @@ DECL|macro|S3C2410_IICADD
 mdefine_line|#define S3C2410_IICADD    S3C2410_IICREG(0x08)
 DECL|macro|S3C2410_IICDS
 mdefine_line|#define S3C2410_IICDS     S3C2410_IICREG(0x0C)
+DECL|macro|S3C2440_IICLC
+mdefine_line|#define S3C2440_IICLC&t;  S3C2410_IICREG(0x10)
 DECL|macro|S3C2410_IICCON_ACKEN
 mdefine_line|#define S3C2410_IICCON_ACKEN&t;&t;(1&lt;&lt;7)
 DECL|macro|S3C2410_IICCON_TXDIV_16
@@ -51,5 +53,17 @@ DECL|macro|S3C2410_IICSTAT_ADDR0
 mdefine_line|#define S3C2410_IICSTAT_ADDR0&t;&t;(1&lt;&lt;1)
 DECL|macro|S3C2410_IICSTAT_LASTBIT
 mdefine_line|#define S3C2410_IICSTAT_LASTBIT&t;&t;(1&lt;&lt;0)
+DECL|macro|S3C2410_IICLC_SDA_DELAY0
+mdefine_line|#define S3C2410_IICLC_SDA_DELAY0&t;(0 &lt;&lt; 0)
+DECL|macro|S3C2410_IICLC_SDA_DELAY5
+mdefine_line|#define S3C2410_IICLC_SDA_DELAY5&t;(1 &lt;&lt; 0)
+DECL|macro|S3C2410_IICLC_SDA_DELAY10
+mdefine_line|#define S3C2410_IICLC_SDA_DELAY10&t;(2 &lt;&lt; 0)
+DECL|macro|S3C2410_IICLC_SDA_DELAY15
+mdefine_line|#define S3C2410_IICLC_SDA_DELAY15&t;(3 &lt;&lt; 0)
+DECL|macro|S3C2410_IICLC_SDA_DELAY_MASK
+mdefine_line|#define S3C2410_IICLC_SDA_DELAY_MASK&t;(3 &lt;&lt; 0)
+DECL|macro|S3C2410_IICLC_FILTER_ON
+mdefine_line|#define S3C2410_IICLC_FILTER_ON&t;&t;(1&lt;&lt;2)
 macro_line|#endif /* __ASM_ARCH_REGS_IIC_H */
 eof

@@ -595,6 +595,26 @@ DECL|macro|outl_p
 mdefine_line|#define outl_p(val,port) ((port)&lt;1024 ? isa_outl_p((val),(port)) : out_le32((port),(val)))
 macro_line|#endif
 macro_line|#endif /* CONFIG_PCI */
+macro_line|#if !defined(CONFIG_ISA) &amp;&amp; !defined(CONFIG_PCI) &amp;&amp; defined(CONFIG_HP300)
+multiline_comment|/*&n; * We need to define dummy functions otherwise drivers/serial/8250.c doesn&squot;t link&n; */
+DECL|macro|inb
+mdefine_line|#define inb(port)        0xff
+DECL|macro|inb_p
+mdefine_line|#define inb_p(port)      0xff
+DECL|macro|outb
+mdefine_line|#define outb(val,port)   do { } while (0)
+DECL|macro|outb_p
+mdefine_line|#define outb_p(val,port) do { } while (0)
+multiline_comment|/*&n; * These should be valid on any ioremap()ed region&n; */
+DECL|macro|readb
+mdefine_line|#define readb(addr)      in_8(addr)
+DECL|macro|writeb
+mdefine_line|#define writeb(val,addr) out_8((addr),(val))
+DECL|macro|readl
+mdefine_line|#define readl(addr)      in_le32(addr)
+DECL|macro|writel
+mdefine_line|#define writel(val,addr) out_le32((addr),(val))
+macro_line|#endif
 DECL|macro|mmiowb
 mdefine_line|#define mmiowb()
 DECL|function|ioremap
@@ -713,26 +733,6 @@ id|IOMAP_FULL_CACHING
 )paren
 suffix:semicolon
 )brace
-macro_line|#if !defined(CONFIG_ISA) &amp;&amp; !defined(CONFIG_PCI) &amp;&amp; defined(CONFIG_HP300)
-multiline_comment|/*&n; * We need to define dummy functions otherwise drivers/serial/8250.c doesn&squot;t link&n; */
-DECL|macro|inb
-mdefine_line|#define inb(port)        0xff
-DECL|macro|inb_p
-mdefine_line|#define inb_p(port)      0xff
-DECL|macro|outb
-mdefine_line|#define outb(val,port)   do { } while (0)
-DECL|macro|outb_p
-mdefine_line|#define outb_p(val,port) do { } while (0)
-multiline_comment|/*&n; * These should be valid on any ioremap()ed region&n; */
-DECL|macro|readb
-mdefine_line|#define readb(addr)      in_8(addr)
-DECL|macro|writeb
-mdefine_line|#define writeb(val,addr) out_8((addr),(val))
-DECL|macro|readl
-mdefine_line|#define readl(addr)      in_le32(addr)
-DECL|macro|writel
-mdefine_line|#define writel(val,addr) out_le32((addr),(val))
-macro_line|#endif
 multiline_comment|/* m68k caches aren&squot;t DMA coherent */
 r_extern
 r_void

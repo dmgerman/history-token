@@ -306,6 +306,7 @@ id|node
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Namespace modification - nsmodify&n; */
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_ns_unload_namespace
 (paren
@@ -320,7 +321,9 @@ id|acpi_handle
 id|start_handle
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Namespace dump/print utilities - nsdump&n; */
+macro_line|#ifdef ACPI_FUTURE_USAGE
 r_void
 id|acpi_ns_dump_tables
 (paren
@@ -331,6 +334,7 @@ id|u32
 id|max_depth
 )paren
 suffix:semicolon
+macro_line|#endif
 r_void
 id|acpi_ns_dump_entry
 (paren
@@ -369,6 +373,7 @@ op_star
 id|pathname
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_ns_dump_one_device
 (paren
@@ -394,6 +399,7 @@ id|acpi_ns_dump_root_devices
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 id|acpi_status
 id|acpi_ns_dump_one_object
 (paren
@@ -413,6 +419,7 @@ op_star
 id|return_value
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 r_void
 id|acpi_ns_dump_objects
 (paren
@@ -432,6 +439,7 @@ id|acpi_handle
 id|start_handle
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Namespace evaluation functions - nseval&n; */
 id|acpi_status
 id|acpi_ns_evaluate_by_handle
@@ -487,6 +495,7 @@ id|info
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Parent/Child/Peer utility functions&n; */
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_name
 id|acpi_ns_find_parent_name
 (paren
@@ -496,6 +505,7 @@ op_star
 id|node_to_search
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Name and Scope manipulation - nsnames&n; */
 id|u32
 id|acpi_ns_opens_scope

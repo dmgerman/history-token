@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  acpi_bus.c - ACPI Bus Driver ($Revision: 80 $)&n; *&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
@@ -37,6 +38,13 @@ DECL|variable|acpi_fadt
 id|FADT_DESCRIPTOR
 id|acpi_fadt
 suffix:semicolon
+DECL|variable|acpi_fadt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_fadt
+)paren
+suffix:semicolon
 DECL|variable|acpi_root
 r_struct
 id|acpi_device
@@ -48,6 +56,13 @@ r_struct
 id|proc_dir_entry
 op_star
 id|acpi_root_dir
+suffix:semicolon
+DECL|variable|acpi_root_dir
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_root_dir
+)paren
 suffix:semicolon
 DECL|macro|STRUCT_TO_INT
 mdefine_line|#define STRUCT_TO_INT(s)&t;(*((int*)&amp;s))
@@ -149,6 +164,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_bus_get_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_bus_get_device
+)paren
+suffix:semicolon
 r_int
 DECL|function|acpi_bus_get_status
 id|acpi_bus_get_status
@@ -321,6 +343,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_bus_get_status
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_bus_get_status
+)paren
+suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                                 Power Management&n;   -------------------------------------------------------------------------- */
 r_int
 DECL|function|acpi_bus_get_power
@@ -517,6 +546,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_bus_get_power
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_bus_get_power
+)paren
+suffix:semicolon
 r_int
 DECL|function|acpi_bus_set_power
 id|acpi_bus_set_power
@@ -926,6 +962,13 @@ id|result
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_bus_set_power
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_bus_set_power
+)paren
+suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                                Event Management&n;   -------------------------------------------------------------------------- */
 DECL|variable|acpi_bus_event_lock
 r_static
@@ -1106,6 +1149,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_bus_generate_event
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_bus_generate_event
+)paren
+suffix:semicolon
 r_int
 DECL|function|acpi_bus_receive_event
 id|acpi_bus_receive_event
@@ -1314,6 +1364,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_bus_receive_event
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_bus_receive_event
+)paren
+suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                             Notification Handling&n;   -------------------------------------------------------------------------- */
 r_static
 r_int

@@ -1,5 +1,6 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: hwtimer.c - ACPI Power Management Timer Interface&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;acpi/acpi.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_HARDWARE
@@ -112,6 +113,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_get_timer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_get_timer
+)paren
+suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_get_timer_duration&n; *&n; * PARAMETERS:  start_ticks         - Starting timestamp&n; *              end_ticks           - End timestamp&n; *              time_elapsed        - Where the elapsed time is returned&n; *&n; * RETURN:      Status and time_elapsed&n; *&n; * DESCRIPTION: Computes the time elapsed (in microseconds) between two&n; *              PM Timer time stamps, taking into account the possibility of&n; *              rollovers, the timer resolution, and timer frequency.&n; *&n; *              The PM Timer&squot;s clock ticks at roughly 3.6 times per&n; *              _microsecond_, and its clock continues through Cx state&n; *              transitions (unlike many CPU timestamp counters) -- making it&n; *              a versatile and accurate timer.&n; *&n; *              Note that this function accommodates only a single timer&n; *              rollover.  Thus for 24-bit timers, this function should only&n; *              be used for calculating durations less than ~4.6 seconds&n; *              (~20 minutes for 32-bit timers) -- calculations below:&n; *&n; *              2**24 Ticks / 3,600,000 Ticks/Sec = 4.66 sec&n; *              2**32 Ticks / 3,600,000 Ticks/Sec = 1193 sec or 19.88 minutes&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_timer_duration
@@ -271,4 +279,11 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_get_timer_duration
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_get_timer_duration
+)paren
+suffix:semicolon
 eof

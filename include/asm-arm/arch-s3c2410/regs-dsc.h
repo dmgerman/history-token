@@ -4,17 +4,17 @@ DECL|macro|__ASM_ARCH_REGS_DSC_H
 mdefine_line|#define __ASM_ARCH_REGS_DSC_H &quot;2440-dsc&quot;
 macro_line|#ifdef CONFIG_CPU_S3C2440
 DECL|macro|S3C2440_DSC0
-mdefine_line|#define S3C2440_DSC0&t;   S3C2410_GPIOREG(0xc0)
+mdefine_line|#define S3C2440_DSC0&t;   S3C2410_GPIOREG(0xc4)
 DECL|macro|S3C2440_DSC1
-mdefine_line|#define S3C2440_DSC1&t;   S3C2410_GPIOREG(0xc4)
+mdefine_line|#define S3C2440_DSC1&t;   S3C2410_GPIOREG(0xc8)
 DECL|macro|S3C2440_SELECT_DSC0
 mdefine_line|#define S3C2440_SELECT_DSC0 (0)
 DECL|macro|S3C2440_SELECT_DSC1
 mdefine_line|#define S3C2440_SELECT_DSC1 (1&lt;&lt;31)
 DECL|macro|S3C2440_DSC_GETSHIFT
 mdefine_line|#define S3C2440_DSC_GETSHIFT(x) ((x) &amp; 31)
-DECL|macro|S3C2440_DSC0_ENABLE
-mdefine_line|#define S3C2440_DSC0_ENABLE     (1&lt;&lt;31)
+DECL|macro|S3C2440_DSC0_DISABLE
+mdefine_line|#define S3C2440_DSC0_DISABLE&t;(1&lt;&lt;31)
 DECL|macro|S3C2440_DSC0_ADDR
 mdefine_line|#define S3C2440_DSC0_ADDR       (S3C2440_SELECT_DSC0 | 8)
 DECL|macro|S3C2440_DSC0_ADDR_12mA
@@ -79,30 +79,30 @@ DECL|macro|S3C2440_DSC0_DATA0_6mA
 mdefine_line|#define S3C2440_DSC0_DATA0_6mA  (3&lt;&lt;0)
 DECL|macro|S3C2440_DSC0_DATA0_MASK
 mdefine_line|#define S3C2440_DSC0_DATA0_MASK (3&lt;&lt;0)
-DECL|macro|S3C2440_DSC1_SCK0
-mdefine_line|#define S3C2440_DSC1_SCK0       (S3C2440_SELECT_DSC1 | 28)
-DECL|macro|S3C2440_DSC1_SCK0_12mA
-mdefine_line|#define S3C2440_DSC1_SCK0_12mA  (0&lt;&lt;28)
-DECL|macro|S3C2440_DSC1_SCK0_10mA
-mdefine_line|#define S3C2440_DSC1_SCK0_10mA  (1&lt;&lt;28)
-DECL|macro|S3C2440_DSC1_SCK0_8mA
-mdefine_line|#define S3C2440_DSC1_SCK0_8mA   (2&lt;&lt;28)
-DECL|macro|S3C2440_DSC1_SCK0_6mA
-mdefine_line|#define S3C2440_DSC1_SCK0_6mA   (3&lt;&lt;28)
-DECL|macro|S3C2440_DSC1_SCK0_MASK
-mdefine_line|#define S3C2440_DSC1_SCK0_MASK  (3&lt;&lt;28)
 DECL|macro|S3C2440_DSC1_SCK1
-mdefine_line|#define S3C2440_DSC1_SCK1       (S3C2440_SELECT_DSC1 | 26)
+mdefine_line|#define S3C2440_DSC1_SCK1       (S3C2440_SELECT_DSC1 | 28)
 DECL|macro|S3C2440_DSC1_SCK1_12mA
-mdefine_line|#define S3C2440_DSC1_SCK1_12mA  (0&lt;&lt;26)
+mdefine_line|#define S3C2440_DSC1_SCK1_12mA  (0&lt;&lt;28)
 DECL|macro|S3C2440_DSC1_SCK1_10mA
-mdefine_line|#define S3C2440_DSC1_SCK1_10mA  (1&lt;&lt;26)
+mdefine_line|#define S3C2440_DSC1_SCK1_10mA  (1&lt;&lt;28)
 DECL|macro|S3C2440_DSC1_SCK1_8mA
-mdefine_line|#define S3C2440_DSC1_SCK1_8mA   (2&lt;&lt;26)
+mdefine_line|#define S3C2440_DSC1_SCK1_8mA   (2&lt;&lt;28)
 DECL|macro|S3C2440_DSC1_SCK1_6mA
-mdefine_line|#define S3C2440_DSC1_SCK1_6mA   (3&lt;&lt;26)
+mdefine_line|#define S3C2440_DSC1_SCK1_6mA   (3&lt;&lt;28)
 DECL|macro|S3C2440_DSC1_SCK1_MASK
-mdefine_line|#define S3C2440_DSC1_SCK1_MASK  (3&lt;&lt;26)
+mdefine_line|#define S3C2440_DSC1_SCK1_MASK  (3&lt;&lt;28)
+DECL|macro|S3C2440_DSC1_SCK0
+mdefine_line|#define S3C2440_DSC1_SCK0       (S3C2440_SELECT_DSC1 | 26)
+DECL|macro|S3C2440_DSC1_SCK0_12mA
+mdefine_line|#define S3C2440_DSC1_SCK0_12mA  (0&lt;&lt;26)
+DECL|macro|S3C2440_DSC1_SCK0_10mA
+mdefine_line|#define S3C2440_DSC1_SCK0_10mA  (1&lt;&lt;26)
+DECL|macro|S3C2440_DSC1_SCK0_8mA
+mdefine_line|#define S3C2440_DSC1_SCK0_8mA   (2&lt;&lt;26)
+DECL|macro|S3C2440_DSC1_SCK0_6mA
+mdefine_line|#define S3C2440_DSC1_SCK0_6mA   (3&lt;&lt;26)
+DECL|macro|S3C2440_DSC1_SCK0_MASK
+mdefine_line|#define S3C2440_DSC1_SCK0_MASK  (3&lt;&lt;26)
 DECL|macro|S3C2440_DSC1_SCKE
 mdefine_line|#define S3C2440_DSC1_SCKE       (S3C2440_SELECT_DSC1 | 24)
 DECL|macro|S3C2440_DSC1_SCKE_10mA

@@ -10612,7 +10612,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;pmc[%u]=0x%lx ld=%d apmu=%d flags=0x%lx all_pmcs=0x%lx used_pmds=0x%lx eventid=%ld smpl_pmds=0x%lx reset_pmds=0x%lx reloads_pmcs=0x%lx used_monitors=0x%lx ovfl_regs=0x%lx&bslash;n&quot;
+l_string|&quot;pmc[%u]=0x%lx ld=%d apmu=%d flags=0x%x all_pmcs=0x%lx used_pmds=0x%lx eventid=%ld smpl_pmds=0x%lx reset_pmds=0x%lx reloads_pmcs=0x%lx used_monitors=0x%lx ovfl_regs=0x%lx&bslash;n&quot;
 comma
 id|cnum
 comma
@@ -17343,6 +17343,20 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;  * pfm_handle_work() is currently called with interrupts disabled.&n;&t;  * The down_interruptible call may sleep, therefore we&n;&t;  * must re-enable interrupts to avoid deadlocks. It is&n;&t;  * safe to do so because this function is called ONLY&n;&t;  * when returning to user level (PUStk=1), in which case&n;&t;  * there is no risk of kernel stack overflow due to deep&n;&t;  * interrupt nesting.&n;&t;  */
+id|BUG_ON
+c_func
+(paren
+id|flags
+op_amp
+id|IA64_PSR_I
+)paren
+suffix:semicolon
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|DPRINT
 c_func
 (paren
@@ -17369,6 +17383,12 @@ l_string|&quot;after block sleeping ret=%d&bslash;n&quot;
 comma
 id|ret
 )paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * disable interrupts to restore state we had upon entering&n;&t; * this function&n;&t; */
+id|local_irq_disable
+c_func
+(paren
 )paren
 suffix:semicolon
 id|PROTECT_CTX

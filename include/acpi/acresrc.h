@@ -28,6 +28,7 @@ op_star
 id|ret_buffer
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_rs_get_prs_method_data
 (paren
@@ -40,6 +41,7 @@ op_star
 id|ret_buffer
 )paren
 suffix:semicolon
+macro_line|#endif
 id|acpi_status
 id|acpi_rs_get_method_data
 (paren
@@ -111,6 +113,7 @@ id|output_buffer
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Function prototypes called from acpi_rs_create*&n; */
+macro_line|#ifdef ACPI_FUTURE_USAGE
 r_void
 id|acpi_rs_dump_irq
 (paren
@@ -245,6 +248,7 @@ op_star
 id|route_table
 )paren
 suffix:semicolon
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 id|acpi_status
 id|acpi_rs_get_byte_stream_start
 (paren

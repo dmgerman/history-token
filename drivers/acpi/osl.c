@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  acpi_osl.c - OS-dependent functions ($Revision: 83 $)&n; *&n; *  Copyright (C) 2000       Andrew Henroid&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -47,6 +48,13 @@ multiline_comment|/* stuff for debugger support */
 DECL|variable|acpi_in_debugger
 r_int
 id|acpi_in_debugger
+suffix:semicolon
+DECL|variable|acpi_in_debugger
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_in_debugger
+)paren
 suffix:semicolon
 r_extern
 r_char
@@ -215,6 +223,13 @@ id|args
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_os_printf
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_os_printf
+)paren
+suffix:semicolon
 r_void
 DECL|function|acpi_os_vprintf
 id|acpi_os_vprintf
@@ -321,6 +336,13 @@ id|ptr
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_os_free
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_os_free
+)paren
+suffix:semicolon
 id|acpi_status
 DECL|function|acpi_os_get_root_pointer
 id|acpi_os_get_root_pointer
@@ -568,6 +590,7 @@ id|virt
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 DECL|function|acpi_os_get_physical_address
 id|acpi_os_get_physical_address
@@ -609,6 +632,7 @@ r_return
 id|AE_OK
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|macro|ACPI_MAX_OVERRIDE_LEN
 mdefine_line|#define ACPI_MAX_OVERRIDE_LEN 100
 DECL|variable|acpi_os_name
@@ -968,6 +992,13 @@ l_int|1000
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_os_sleep
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_os_sleep
+)paren
+suffix:semicolon
 r_void
 DECL|function|acpi_os_stall
 id|acpi_os_stall
@@ -1016,6 +1047,13 @@ id|delay
 suffix:semicolon
 )brace
 )brace
+DECL|variable|acpi_os_stall
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_os_stall
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Support ACPI 3.0 AML Timer operand&n; * Returns 64-bit free-running, monotonically increasing timer&n; * with 100ns granularity&n; */
 id|u64
 DECL|function|acpi_os_get_timer
@@ -1155,6 +1193,13 @@ r_return
 id|AE_OK
 suffix:semicolon
 )brace
+DECL|variable|acpi_os_read_port
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_os_read_port
+)paren
+suffix:semicolon
 id|acpi_status
 DECL|function|acpi_os_write_port
 id|acpi_os_write_port
@@ -1227,6 +1272,13 @@ r_return
 id|AE_OK
 suffix:semicolon
 )brace
+DECL|variable|acpi_os_write_port
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_os_write_port
+)paren
+suffix:semicolon
 id|acpi_status
 DECL|function|acpi_os_read_memory
 id|acpi_os_read_memory
@@ -1698,6 +1750,13 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_os_read_pci_configuration
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_os_read_pci_configuration
+)paren
+suffix:semicolon
 id|acpi_status
 DECL|function|acpi_os_write_pci_configuration
 id|acpi_os_write_pci_configuration
@@ -2455,6 +2514,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_os_queue_for_execution
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_os_queue_for_execution
+)paren
+suffix:semicolon
 r_void
 DECL|function|acpi_os_wait_events_complete
 id|acpi_os_wait_events_complete
@@ -2472,6 +2538,13 @@ id|kacpid_wq
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_os_wait_events_complete
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_os_wait_events_complete
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Allocate the memory for a spinlock and initialize it.&n; */
 id|acpi_status
 DECL|function|acpi_os_create_lock
@@ -2798,6 +2871,13 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_os_create_semaphore
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_os_create_semaphore
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * TODO: A better way to delete semaphores?  Linux doesn&squot;t have a&n; * &squot;delete_semaphore()&squot; function -- may result in an invalid&n; * pointer dereference for non-synchronized consumers.&t;Should&n; * we at least check for blocked threads and signal/cancel them?&n; */
 id|acpi_status
 DECL|function|acpi_os_delete_semaphore
@@ -2863,6 +2943,13 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_os_delete_semaphore
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_os_delete_semaphore
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * TODO: The kernel doesn&squot;t have a &squot;down_timeout&squot; function -- had to&n; * improvise.  The process is to sleep for one scheduler quantum&n; * until the semaphore becomes available.  Downside is that this&n; * may result in starvation for timeout-based waits when there&squot;s&n; * lots of semaphore activity.&n; *&n; * TODO: Support for units &gt; 1?&n; */
 id|acpi_status
 DECL|function|acpi_os_wait_semaphore
@@ -3142,6 +3229,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_os_wait_semaphore
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_os_wait_semaphore
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * TODO: Support for units &gt; 1?&n; */
 id|acpi_status
 DECL|function|acpi_os_signal_semaphore
@@ -3226,6 +3320,14 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_os_signal_semaphore
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_os_signal_semaphore
+)paren
+suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|u32
 DECL|function|acpi_os_get_line
 id|acpi_os_get_line
@@ -3281,6 +3383,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/* Assumes no unreadable holes inbetween */
 id|u8
 DECL|function|acpi_os_readable
@@ -3337,6 +3440,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|u8
 DECL|function|acpi_os_writable
 id|acpi_os_writable
@@ -3355,6 +3459,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 id|u32
 DECL|function|acpi_os_get_thread_id
 id|acpi_os_get_thread_id
@@ -3424,6 +3529,13 @@ r_return
 id|AE_OK
 suffix:semicolon
 )brace
+DECL|variable|acpi_os_signal
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_os_signal
+)paren
+suffix:semicolon
 r_int
 id|__init
 DECL|function|acpi_os_name_setup

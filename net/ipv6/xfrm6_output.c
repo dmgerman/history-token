@@ -282,11 +282,9 @@ c_func
 id|dst
 )paren
 op_minus
-r_sizeof
-(paren
-r_struct
-id|ipv6hdr
-)paren
+id|dst-&gt;header_len
+op_minus
+id|dst-&gt;trailer_len
 suffix:semicolon
 r_if
 c_cond

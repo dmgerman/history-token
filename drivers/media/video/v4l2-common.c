@@ -42,10 +42,10 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 multiline_comment|/*&n; *&n; *&t;V 4 L 2   D R I V E R   H E L P E R   A P I&n; *&n; */
 multiline_comment|/*&n; *  Video Standard Operations (contributed by Michael Schimek)&n; */
+macro_line|#if 0 /* seems to have no users */
 multiline_comment|/* This is the recommended method to deal with the framerate fields. More&n;   sophisticated drivers will access the fields directly. */
 r_int
 r_int
-DECL|function|v4l2_video_std_fps
 id|v4l2_video_std_fps
 c_func
 (paren
@@ -91,6 +91,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|v4l2_video_std_fps
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Fill in the fields of a v4l2_standard structure according to the&n;   &squot;id&squot; and &squot;transmission&squot; parameters.  Returns negative on error.  */
 DECL|function|v4l2_video_std_construct
 r_int
@@ -1093,13 +1100,6 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------------- */
-DECL|variable|v4l2_video_std_fps
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|v4l2_video_std_fps
-)paren
-suffix:semicolon
 DECL|variable|v4l2_video_std_construct
 id|EXPORT_SYMBOL
 c_func

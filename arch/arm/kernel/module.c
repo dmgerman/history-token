@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm/kernel/module.c&n; *&n; *  Copyright (C) 2002 Russell King.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Module allocation method suggested by Andi Kleen.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
@@ -7,6 +8,17 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#ifdef CONFIG_XIP_KERNEL
+multiline_comment|/*&n; * The XIP kernel text is mapped in the module area for modules and&n; * some other stuff to work without any indirect relocations.&n; * MODULE_START is redefined here and not in asm/memory.h to avoid&n; * recompiling the whole kernel when CONFIG_XIP_KERNEL is turned on/off.&n; */
+r_extern
+r_void
+id|_etext
+suffix:semicolon
+DECL|macro|MODULE_START
+macro_line|#undef MODULE_START
+DECL|macro|MODULE_START
+mdefine_line|#define MODULE_START&t;(((unsigned long)&amp;_etext + ~PGDIR_MASK) &amp; PGDIR_MASK)
+macro_line|#endif
 DECL|function|module_alloc
 r_void
 op_star

@@ -932,7 +932,11 @@ id|MODE_SENSE_10
 suffix:colon
 id|length
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|fst-&gt;Count
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon

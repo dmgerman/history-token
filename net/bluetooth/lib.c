@@ -35,6 +35,7 @@ l_int|100
 )braket
 suffix:semicolon
 r_int
+r_int
 id|i
 suffix:semicolon
 id|printk
@@ -191,6 +192,7 @@ op_star
 )paren
 id|src
 suffix:semicolon
+r_int
 r_int
 id|i
 suffix:semicolon

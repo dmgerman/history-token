@@ -6,17 +6,19 @@ DECL|macro|mcfsim_h
 mdefine_line|#define&t;mcfsim_h
 multiline_comment|/****************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/*&n; *&t;Include 5204, 5206, 5249, 5272, 5282, 5307 or 5407 specific addresses.&n; */
+multiline_comment|/*&n; *&t;Include 5204, 5206/e, 5249, 5270/5271, 5272, 5280/5282, 5307 or&n; *&t;5407 specific addresses.&n; */
 macro_line|#if defined(CONFIG_M5204)
 macro_line|#include &lt;asm/m5204sim.h&gt;
 macro_line|#elif defined(CONFIG_M5206) || defined(CONFIG_M5206e)
 macro_line|#include &lt;asm/m5206sim.h&gt;
 macro_line|#elif defined(CONFIG_M5249)
 macro_line|#include &lt;asm/m5249sim.h&gt;
+macro_line|#elif defined(CONFIG_M527x)
+macro_line|#include &lt;asm/m527xsim.h&gt;
 macro_line|#elif defined(CONFIG_M5272)
 macro_line|#include &lt;asm/m5272sim.h&gt;
-macro_line|#elif defined(CONFIG_M5282)
-macro_line|#include &lt;asm/m5282sim.h&gt;
+macro_line|#elif defined(CONFIG_M528x)
+macro_line|#include &lt;asm/m528xsim.h&gt;
 macro_line|#elif defined(CONFIG_M5307)
 macro_line|#include &lt;asm/m5307sim.h&gt;
 macro_line|#elif defined(CONFIG_M5407)

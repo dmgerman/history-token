@@ -20,7 +20,7 @@ DECL|function|init_chipset_generic
 r_static
 r_int
 r_int
-id|__init
+id|__devinit
 id|init_chipset_generic
 (paren
 r_struct
@@ -41,7 +41,7 @@ suffix:semicolon
 DECL|function|init_hwif_generic
 r_static
 r_void
-id|__init
+id|__devinit
 id|init_hwif_generic
 (paren
 id|ide_hwif_t

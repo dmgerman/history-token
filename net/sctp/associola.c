@@ -256,9 +256,12 @@ comma
 id|ep-&gt;base.bind_addr.port
 )paren
 suffix:semicolon
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|asoc-&gt;base.addr_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|asoc-&gt;state
 op_assign

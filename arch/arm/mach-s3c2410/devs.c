@@ -12,7 +12,18 @@ macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/arch/regs-serial.h&gt;
 macro_line|#include &quot;devs.h&quot;
+multiline_comment|/* Serial port registrations */
+DECL|variable|s3c24xx_uart_devs
+r_struct
+id|platform_device
+op_star
+id|s3c24xx_uart_devs
+(braket
+l_int|3
+)braket
+suffix:semicolon
 multiline_comment|/* USB Host Controller */
 DECL|variable|s3c_usb_resource
 r_static

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/nand/rtc_from4.c&n; *&n; *  Copyright (C) 2004  Red Hat, Inc.&n; * &n; *  Derived from drivers/mtd/nand/spia.c&n; *       Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; *&n; * $Id: rtc_from4.c,v 1.6 2004/10/05 22:11:46 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Overview:&n; *   This is a device driver for the AG-AND flash device found on the&n; *   Renesas Technology Corp. Flash ROM 4-slot interface board (FROM_BOARD4), &n; *   which utilizes the Renesas HN29V1G91T-30 part. &n; *   This chip is a 1 GBibit (128MiB x 8 bits) AG-AND flash device.&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand/rtc_from4.c&n; *&n; *  Copyright (C) 2004  Red Hat, Inc.&n; * &n; *  Derived from drivers/mtd/nand/spia.c&n; *       Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; *&n; * $Id: rtc_from4.c,v 1.7 2004/11/04 12:53:10 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Overview:&n; *   This is a device driver for the AG-AND flash device found on the&n; *   Renesas Technology Corp. Flash ROM 4-slot interface board (FROM_BOARD4), &n; *   which utilizes the Renesas HN29V1G91T-30 part. &n; *   This chip is a 1 GBibit (128MiB x 8 bits) AG-AND flash device.&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -95,14 +95,6 @@ id|P2SEGADDR
 c_func
 (paren
 id|RTC_FROM4_FIO_BASE
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|rtc_from4_fio_base
-comma
-l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 DECL|variable|partition_info

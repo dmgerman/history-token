@@ -87,9 +87,8 @@ op_assign
 l_int|0
 suffix:semicolon
 r_extern
-r_volatile
 r_int
-id|no_more_logging
+id|no_logging
 suffix:semicolon
 DECL|variable|error_log_cnt
 r_volatile
@@ -663,7 +662,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|no_more_logging
+id|no_logging
 op_logical_and
 op_logical_neg
 (paren
@@ -708,10 +707,10 @@ c_cond
 (paren
 id|fatal
 op_logical_or
-id|no_more_logging
+id|no_logging
 )paren
 (brace
-id|no_more_logging
+id|no_logging
 op_assign
 l_int|1
 suffix:semicolon
@@ -1009,7 +1008,7 @@ op_eq
 l_int|0
 op_logical_and
 op_logical_neg
-id|no_more_logging
+id|no_logging
 )paren
 id|nvram_clear_error_log
 c_func
@@ -1550,11 +1549,6 @@ r_goto
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* We can use rtas_log_buf now */
-id|no_more_logging
-op_assign
-l_int|0
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1601,6 +1595,11 @@ comma
 op_amp
 id|err_type
 )paren
+suffix:semicolon
+multiline_comment|/* We can use rtas_log_buf now */
+id|no_logging
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond

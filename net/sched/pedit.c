@@ -63,6 +63,7 @@ mdefine_line|#define tcf_ht tcf_pedit_ht
 DECL|macro|CONFIG_NET_ACT_INIT
 mdefine_line|#define CONFIG_NET_ACT_INIT 1
 macro_line|#include &lt;net/pkt_act.h&gt;
+r_static
 r_int
 DECL|function|tcf_pedit_init
 id|tcf_pedit_init
@@ -321,6 +322,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|tcf_pedit_cleanup
 id|tcf_pedit_cleanup
@@ -371,6 +373,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;**&n;*/
+r_static
 r_int
 DECL|function|tcf_pedit
 id|tcf_pedit
@@ -709,6 +712,7 @@ r_return
 id|p-&gt;action
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|tcf_pedit_dump
 id|tcf_pedit_dump

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Flash memory access on Alchemy Db1550 board&n; * &n; * $Id: db1550-flash.c,v 1.6 2004/10/20 05:50:19 ppopov Exp $&n; *&n; * (C) 2004 Embedded Edge, LLC, based on db1550-flash.c:&n; * (C) 2003, 2004 Pete Popov &lt;ppopov@embeddedalley.com&gt;&n; * &n; */
+multiline_comment|/*&n; * Flash memory access on Alchemy Db1550 board&n; * &n; * $Id: db1550-flash.c,v 1.7 2004/11/04 13:24:14 gleixner Exp $&n; *&n; * (C) 2004 Embedded Edge, LLC, based on db1550-flash.c:&n; * (C) 2003, 2004 Pete Popov &lt;ppopov@embeddedalley.com&gt;&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -385,11 +385,6 @@ l_int|8
 suffix:semicolon
 id|db1550_map.virt
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap
 c_func
 (paren

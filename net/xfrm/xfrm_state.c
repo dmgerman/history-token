@@ -830,9 +830,12 @@ id|x-&gt;lft.hard_packet_limit
 op_assign
 id|XFRM_INF
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|x-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 )brace
 r_return

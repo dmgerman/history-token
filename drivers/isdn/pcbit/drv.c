@@ -3501,14 +3501,15 @@ id|BANK3
 )paren
 suffix:semicolon
 macro_line|#endif
-op_star
+id|writeb
+c_func
 (paren
+l_int|0x40
+comma
 id|dev-&gt;sh_mem
 op_plus
 id|BANK4
 )paren
-op_assign
-l_int|0x40U
 suffix:semicolon
 multiline_comment|/* warn the upper layer */
 id|ctl.driver

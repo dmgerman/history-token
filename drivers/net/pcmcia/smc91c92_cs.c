@@ -9789,11 +9789,11 @@ suffix:semicolon
 id|outw
 c_func
 (paren
+id|tmp
+comma
 id|ioaddr
 op_plus
 id|TCR
-comma
-id|tmp
 )paren
 suffix:semicolon
 r_return

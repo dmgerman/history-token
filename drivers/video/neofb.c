@@ -5498,7 +5498,7 @@ id|blank_mode
 )paren
 (brace
 r_case
-l_int|4
+id|FB_BLANK_POWERDOWN
 suffix:colon
 multiline_comment|/* powerdown - both sync lines down */
 id|seqflags
@@ -5551,7 +5551,7 @@ macro_line|#endif
 r_break
 suffix:semicolon
 r_case
-l_int|3
+id|FB_BLANK_HSYNC_SUSPEND
 suffix:colon
 multiline_comment|/* hsync off */
 id|seqflags
@@ -5571,7 +5571,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|2
+id|FB_BLANK_VSYNC_SUSPEND
 suffix:colon
 multiline_comment|/* vsync off */
 id|seqflags
@@ -5591,7 +5591,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|1
+id|FB_BLANK_NORMAL
 suffix:colon
 multiline_comment|/* just blank screen (backlight stays on) */
 id|seqflags
@@ -5614,7 +5614,7 @@ multiline_comment|/* no hsync/vsync suppression */
 r_break
 suffix:semicolon
 r_case
-l_int|0
+id|FB_BLANK_UNBLANK
 suffix:colon
 multiline_comment|/* unblank */
 id|seqflags
@@ -6214,8 +6214,6 @@ comma
 id|d_pitch
 comma
 id|data_len
-comma
-id|i
 suffix:semicolon
 singleline_comment|// The data is padded for the hardware
 id|d_pitch
@@ -6461,33 +6459,16 @@ op_amp
 id|par-&gt;neo2200-&gt;xyExt
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|data_len
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|writeb
+id|memcpy_toio
 c_func
 (paren
-id|image-&gt;data
-(braket
-id|i
-)braket
-comma
 id|par-&gt;mmio_vbase
 op_plus
 l_int|0x100000
-op_plus
-id|i
+comma
+id|image-&gt;data
+comma
+id|data_len
 )paren
 suffix:semicolon
 )brace

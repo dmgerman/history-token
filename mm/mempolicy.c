@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/mempolicy.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|policy_cache
 r_static
@@ -2521,10 +2522,10 @@ id|err
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_COMPAT
-DECL|function|compat_get_mempolicy
+DECL|function|compat_sys_get_mempolicy
 id|asmlinkage
 r_int
-id|compat_get_mempolicy
+id|compat_sys_get_mempolicy
 c_func
 (paren
 r_int
@@ -2689,10 +2690,10 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|compat_set_mempolicy
+DECL|function|compat_sys_set_mempolicy
 id|asmlinkage
 r_int
-id|compat_set_mempolicy
+id|compat_sys_set_mempolicy
 c_func
 (paren
 r_int
@@ -2823,10 +2824,10 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|function|compat_mbind
+DECL|function|compat_sys_mbind
 id|asmlinkage
 r_int
-id|compat_mbind
+id|compat_sys_mbind
 c_func
 (paren
 id|compat_ulong_t
@@ -4260,31 +4261,25 @@ id|start
 op_ge
 id|p-&gt;end
 )paren
-(brace
 id|n
 op_assign
 id|n-&gt;rb_right
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
 (paren
 id|end
-OL
+op_le
 id|p-&gt;start
 )paren
-(brace
 id|n
 op_assign
 id|n-&gt;rb_left
 suffix:semicolon
-)brace
 r_else
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond

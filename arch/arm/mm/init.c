@@ -33,12 +33,14 @@ id|PTRS_PER_PGD
 )braket
 suffix:semicolon
 r_extern
-r_char
+r_void
 id|_stext
 comma
 id|_text
 comma
 id|_etext
+comma
+id|__data_start
 comma
 id|_end
 comma
@@ -1041,6 +1043,27 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * Register the kernel text and data with bootmem.&n;&t; * Note that this can only be in node 0.&n;&t; */
+macro_line|#ifdef CONFIG_XIP_KERNEL
+id|reserve_bootmem_node
+c_func
+(paren
+id|pgdat
+comma
+id|__pa
+c_func
+(paren
+op_amp
+id|__data_start
+)paren
+comma
+op_amp
+id|_end
+op_minus
+op_amp
+id|__data_start
+)paren
+suffix:semicolon
+macro_line|#else
 id|reserve_bootmem_node
 c_func
 (paren
@@ -1060,6 +1083,7 @@ op_amp
 id|_stext
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Reserve the page tables.  These are already in use,&n;&t; * and can only be in node 0.&n;&t; */
 id|reserve_bootmem_node
 c_func
@@ -1910,7 +1934,7 @@ op_amp
 id|_end
 op_minus
 op_amp
-id|_etext
+id|__data_start
 suffix:semicolon
 id|initpages
 op_assign

@@ -65,6 +65,7 @@ id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * acpi_os_get_pci_id&n; * ------------------&n; * This function is used by the ACPI Interpreter (a.k.a. Core Subsystem)&n; * to resolve PCI information for ACPI-PCI devices defined in the namespace.&n; * This typically occurs when resolving PCI operation region information.&n; */
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 DECL|function|acpi_os_get_pci_id
 id|acpi_os_get_pci_id
@@ -254,6 +255,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 r_int
 DECL|function|acpi_pci_bind
 id|acpi_pci_bind

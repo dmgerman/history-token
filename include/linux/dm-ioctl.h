@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2001 - 2003 Sistina Software (UK) Limited.&n; *&n; * This file is released under the LGPL.&n; */
+multiline_comment|/*&n; * Copyright (C) 2001 - 2003 Sistina Software (UK) Limited.&n; * Copyright (C) 2004 Red Hat, Inc. All rights reserved.&n; *&n; * This file is released under the LGPL.&n; */
 macro_line|#ifndef _LINUX_DM_IOCTL_V4_H
 DECL|macro|_LINUX_DM_IOCTL_V4_H
 mdefine_line|#define _LINUX_DM_IOCTL_V4_H
@@ -11,7 +11,7 @@ DECL|macro|DM_NAME_LEN
 mdefine_line|#define DM_NAME_LEN 128
 DECL|macro|DM_UUID_LEN
 mdefine_line|#define DM_UUID_LEN 129
-multiline_comment|/*&n; * A traditional ioctl interface for the device mapper.&n; *&n; * Each device can have two tables associated with it, an&n; * &squot;active&squot; table which is the one currently used by io passing&n; * through the device, and an &squot;inactive&squot; one which is a table&n; * that is being prepared as a replacement for the &squot;active&squot; one.&n; *&n; * DM_VERSION:&n; * Just get the version information for the ioctl interface.&n; *&n; * DM_REMOVE_ALL:&n; * Remove all dm devices, destroy all tables.  Only really used&n; * for debug.&n; *&n; * DM_LIST_DEVICES:&n; * Get a list of all the dm device names.&n; *&n; * DM_DEV_CREATE:&n; * Create a new device, neither the &squot;active&squot; or &squot;inactive&squot; table&n; * slots will be filled.  The device will be in suspended state&n; * after creation, however any io to the device will get errored&n; * since it will be out-of-bounds.&n; *&n; * DM_DEV_REMOVE:&n; * Remove a device, destroy any tables.&n; *&n; * DM_DEV_RENAME:&n; * Rename a device.&n; *&n; * DM_SUSPEND:&n; * This performs both suspend and resume, depending which flag is&n; * passed in.&n; * Suspend: This command will not return until all pending io to&n; * the device has completed.  Further io will be deferred until&n; * the device is resumed.&n; * Resume: It is no longer an error to issue this command on an&n; * unsuspended device.  If a table is present in the &squot;inactive&squot;&n; * slot, it will be moved to the active slot, then the old table&n; * from the active slot will be _destroyed_.  Finally the device&n; * is resumed.&n; *&n; * DM_DEV_STATUS:&n; * Retrieves the status for the table in the &squot;active&squot; slot.&n; *&n; * DM_DEV_WAIT:&n; * Wait for a significant event to occur to the device.  This&n; * could either be caused by an event triggered by one of the&n; * targets of the table in the &squot;active&squot; slot, or a table change.&n; *&n; * DM_TABLE_LOAD:&n; * Load a table into the &squot;inactive&squot; slot for the device.  The&n; * device does _not_ need to be suspended prior to this command.&n; *&n; * DM_TABLE_CLEAR:&n; * Destroy any table in the &squot;inactive&squot; slot (ie. abort).&n; *&n; * DM_TABLE_DEPS:&n; * Return a set of device dependencies for the &squot;active&squot; table.&n; *&n; * DM_TABLE_STATUS:&n; * Return the targets status for the &squot;active&squot; table.&n; */
+multiline_comment|/*&n; * A traditional ioctl interface for the device mapper.&n; *&n; * Each device can have two tables associated with it, an&n; * &squot;active&squot; table which is the one currently used by io passing&n; * through the device, and an &squot;inactive&squot; one which is a table&n; * that is being prepared as a replacement for the &squot;active&squot; one.&n; *&n; * DM_VERSION:&n; * Just get the version information for the ioctl interface.&n; *&n; * DM_REMOVE_ALL:&n; * Remove all dm devices, destroy all tables.  Only really used&n; * for debug.&n; *&n; * DM_LIST_DEVICES:&n; * Get a list of all the dm device names.&n; *&n; * DM_DEV_CREATE:&n; * Create a new device, neither the &squot;active&squot; or &squot;inactive&squot; table&n; * slots will be filled.  The device will be in suspended state&n; * after creation, however any io to the device will get errored&n; * since it will be out-of-bounds.&n; *&n; * DM_DEV_REMOVE:&n; * Remove a device, destroy any tables.&n; *&n; * DM_DEV_RENAME:&n; * Rename a device.&n; *&n; * DM_SUSPEND:&n; * This performs both suspend and resume, depending which flag is&n; * passed in.&n; * Suspend: This command will not return until all pending io to&n; * the device has completed.  Further io will be deferred until&n; * the device is resumed.&n; * Resume: It is no longer an error to issue this command on an&n; * unsuspended device.  If a table is present in the &squot;inactive&squot;&n; * slot, it will be moved to the active slot, then the old table&n; * from the active slot will be _destroyed_.  Finally the device&n; * is resumed.&n; *&n; * DM_DEV_STATUS:&n; * Retrieves the status for the table in the &squot;active&squot; slot.&n; *&n; * DM_DEV_WAIT:&n; * Wait for a significant event to occur to the device.  This&n; * could either be caused by an event triggered by one of the&n; * targets of the table in the &squot;active&squot; slot, or a table change.&n; *&n; * DM_TABLE_LOAD:&n; * Load a table into the &squot;inactive&squot; slot for the device.  The&n; * device does _not_ need to be suspended prior to this command.&n; *&n; * DM_TABLE_CLEAR:&n; * Destroy any table in the &squot;inactive&squot; slot (ie. abort).&n; *&n; * DM_TABLE_DEPS:&n; * Return a set of device dependencies for the &squot;active&squot; table.&n; *&n; * DM_TABLE_STATUS:&n; * Return the targets status for the &squot;active&squot; table.&n; *&n; * DM_TARGET_MSG:&n; * Pass a message string to the target at a specific offset of a device.&n; */
 multiline_comment|/*&n; * All ioctl arguments consist of a single chunk of memory, with&n; * this structure at the start.  If a uuid is specified any&n; * lookup (eg. for a DM_INFO) will be done on that, *not* the&n; * name.&n; */
 DECL|struct|dm_ioctl
 r_struct
@@ -189,6 +189,25 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Used to pass message to a target&n; */
+DECL|struct|dm_target_msg
+r_struct
+id|dm_target_msg
+(brace
+DECL|member|sector
+r_uint64
+id|sector
+suffix:semicolon
+multiline_comment|/* Device sector */
+DECL|member|message
+r_char
+id|message
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * If you change this make sure you make the corresponding change&n; * to dm-ioctl.c:lookup_ioctl()&n; */
 r_enum
 (brace
@@ -240,6 +259,9 @@ multiline_comment|/* Added later */
 DECL|enumerator|DM_LIST_VERSIONS_CMD
 id|DM_LIST_VERSIONS_CMD
 comma
+DECL|enumerator|DM_TARGET_MSG_CMD
+id|DM_TARGET_MSG_CMD
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * The dm_ioctl struct passed into the ioctl is just the header&n; * on a larger chunk of memory.  On x86-64 and other&n; * architectures the dm-ioctl struct will be padded to an 8 byte&n; * boundary so the size will be different, which would change the&n; * ioctl code - yes I really messed up.  This hack forces these&n; * architectures to have the correct ioctl code.&n; */
@@ -280,6 +302,8 @@ DECL|macro|DM_TABLE_STATUS_32
 mdefine_line|#define DM_TABLE_STATUS_32  _IOWR(DM_IOCTL, DM_TABLE_STATUS_CMD, ioctl_struct)
 DECL|macro|DM_LIST_VERSIONS_32
 mdefine_line|#define DM_LIST_VERSIONS_32 _IOWR(DM_IOCTL, DM_LIST_VERSIONS_CMD, ioctl_struct)
+DECL|macro|DM_TARGET_MSG_32
+mdefine_line|#define DM_TARGET_MSG_32    _IOWR(DM_IOCTL, DM_TARGET_MSG_CMD, ioctl_struct)
 macro_line|#endif
 DECL|macro|DM_IOCTL
 mdefine_line|#define DM_IOCTL 0xfd
@@ -311,14 +335,16 @@ DECL|macro|DM_TABLE_STATUS
 mdefine_line|#define DM_TABLE_STATUS  _IOWR(DM_IOCTL, DM_TABLE_STATUS_CMD, struct dm_ioctl)
 DECL|macro|DM_LIST_VERSIONS
 mdefine_line|#define DM_LIST_VERSIONS _IOWR(DM_IOCTL, DM_LIST_VERSIONS_CMD, struct dm_ioctl)
+DECL|macro|DM_TARGET_MSG
+mdefine_line|#define DM_TARGET_MSG&t; _IOWR(DM_IOCTL, DM_TARGET_MSG_CMD, struct dm_ioctl)
 DECL|macro|DM_VERSION_MAJOR
 mdefine_line|#define DM_VERSION_MAJOR&t;4
 DECL|macro|DM_VERSION_MINOR
-mdefine_line|#define DM_VERSION_MINOR&t;1
+mdefine_line|#define DM_VERSION_MINOR&t;3
 DECL|macro|DM_VERSION_PATCHLEVEL
 mdefine_line|#define DM_VERSION_PATCHLEVEL&t;0
 DECL|macro|DM_VERSION_EXTRA
-mdefine_line|#define DM_VERSION_EXTRA&t;&quot;-ioctl (2003-12-10)&quot;
+mdefine_line|#define DM_VERSION_EXTRA&t;&quot;-ioctl (2004-09-30)&quot;
 multiline_comment|/* Status bits */
 DECL|macro|DM_READONLY_FLAG
 mdefine_line|#define DM_READONLY_FLAG&t;(1 &lt;&lt; 0) /* In/Out */

@@ -1462,9 +1462,12 @@ op_assign
 id|ip_expire
 suffix:semicolon
 multiline_comment|/* expire function&t;*/
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|qp-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|atomic_set
 c_func

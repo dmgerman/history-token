@@ -30,6 +30,7 @@ mdefine_line|#define MY_TAB_SIZE     16
 DECL|macro|MY_TAB_MASK
 mdefine_line|#define MY_TAB_MASK     15
 DECL|variable|idx_gen
+r_static
 id|u32
 id|idx_gen
 suffix:semicolon
@@ -187,6 +188,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|tcf_ipt_init
 id|tcf_ipt_init
@@ -967,6 +969,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|tcf_ipt_cleanup
 id|tcf_ipt_cleanup
@@ -1016,6 +1019,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|tcf_ipt
 id|tcf_ipt
@@ -1232,6 +1236,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|tcf_ipt_dump
 id|tcf_ipt_dump
@@ -1525,6 +1530,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|variable|act_ipt_ops
+r_static
 r_struct
 id|tc_action_ops
 id|act_ipt_ops

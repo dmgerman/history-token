@@ -60,7 +60,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;sym53c500_cs.c 0.9b 2004/05/10 (Bob Tracy)&quot;
+l_string|&quot;sym53c500_cs.c 0.9c 2004/10/27 (Bob Tracy)&quot;
 suffix:semicolon
 macro_line|#else
 DECL|macro|DEBUG
@@ -77,7 +77,7 @@ id|irq_mask
 op_assign
 l_int|0xdeb8
 suffix:semicolon
-multiline_comment|/* 3, 6, 7, 9-12, 14, 15 */
+multiline_comment|/* 3-5, 7, 9-12, 14, 15 */
 DECL|variable|irq_list
 r_static
 r_int
@@ -3239,7 +3239,7 @@ id|irq_level
 comma
 id|SYM53C500_intr
 comma
-l_int|0
+id|SA_SHIRQ
 comma
 l_string|&quot;SYM53C500&quot;
 comma

@@ -16,11 +16,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SA1100_VICTOR
-multiline_comment|/* power off unconditionally */
-DECL|macro|arch_reset
-mdefine_line|#define arch_reset(x) machine_power_off()
-macro_line|#else
 DECL|function|arch_reset
 r_static
 r_inline
@@ -57,5 +52,4 @@ id|RSRR_SWR
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 eof

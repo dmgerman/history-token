@@ -221,6 +221,7 @@ id|acpi_size
 id|size
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_os_get_physical_address
 (paren
@@ -233,6 +234,7 @@ op_star
 id|physical_address
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Interrupt handlers&n; */
 id|acpi_status
 id|acpi_os_install_interrupt_handler
@@ -434,6 +436,7 @@ id|acpi_size
 id|length
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|u8
 id|acpi_os_writable
 (paren
@@ -445,6 +448,7 @@ id|acpi_size
 id|length
 )paren
 suffix:semicolon
+macro_line|#endif
 id|u64
 id|acpi_os_get_timer
 (paren
@@ -498,6 +502,7 @@ id|destination
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Debug input&n; */
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|u32
 id|acpi_os_get_line
 (paren
@@ -506,6 +511,7 @@ op_star
 id|buffer
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Directory manipulation&n; */
 r_void
 op_star

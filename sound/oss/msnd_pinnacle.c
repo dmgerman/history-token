@@ -152,7 +152,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|PCTODSP_OFFSET
@@ -168,7 +168,7 @@ op_plus
 id|JQS_wHead
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|PCTODSP_OFFSET
@@ -209,7 +209,7 @@ op_add_assign
 id|DAQDS__size
 )paren
 (brace
-id|isa_writew
+id|writew
 c_func
 (paren
 id|PCTODSP_BASED
@@ -230,7 +230,7 @@ op_plus
 id|DAQDS_wStart
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0
@@ -240,7 +240,7 @@ op_plus
 id|DAQDS_wSize
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|1
@@ -250,7 +250,7 @@ op_plus
 id|DAQDS_wFormat
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|dev.play_sample_size
@@ -260,7 +260,7 @@ op_plus
 id|DAQDS_wSampleSize
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|dev.play_channels
@@ -270,7 +270,7 @@ op_plus
 id|DAQDS_wChannels
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|dev.play_sample_rate
@@ -280,7 +280,7 @@ op_plus
 id|DAQDS_wSampleRate
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|HIMT_PLAY_DONE
@@ -294,7 +294,7 @@ op_plus
 id|DAQDS_wIntMsg
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|n
@@ -329,7 +329,7 @@ id|dev.last_recbank
 op_assign
 l_int|2
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|PCTODSP_OFFSET
@@ -345,7 +345,7 @@ op_plus
 id|JQS_wHead
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|PCTODSP_OFFSET
@@ -381,7 +381,7 @@ op_plus
 id|HP_BLKS
 )paren
 suffix:semicolon
-id|isa_memset_io
+id|memset_io
 c_func
 (paren
 id|dev.base
@@ -437,7 +437,7 @@ op_add_assign
 id|DAQDS__size
 )paren
 (brace
-id|isa_writew
+id|writew
 c_func
 (paren
 id|PCTODSP_BASED
@@ -460,7 +460,7 @@ op_plus
 id|DAQDS_wStart
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|DAR_BUFF_SIZE
@@ -470,7 +470,7 @@ op_plus
 id|DAQDS_wSize
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|1
@@ -480,7 +480,7 @@ op_plus
 id|DAQDS_wFormat
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|dev.rec_sample_size
@@ -490,7 +490,7 @@ op_plus
 id|DAQDS_wSampleSize
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|dev.rec_channels
@@ -500,7 +500,7 @@ op_plus
 id|DAQDS_wChannels
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|dev.rec_sample_rate
@@ -510,7 +510,7 @@ op_plus
 id|DAQDS_wSampleRate
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|HIMT_RECORD_DONE
@@ -524,7 +524,7 @@ op_plus
 id|DAQDS_wIntMsg
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|n
@@ -682,7 +682,7 @@ id|file-&gt;f_mode
 op_amp
 id|FMODE_WRITE
 )paren
-id|isa_writew
+id|writew
 c_func
 (paren
 id|data
@@ -699,7 +699,7 @@ id|file-&gt;f_mode
 op_amp
 id|FMODE_READ
 )paren
-id|isa_writew
+id|writew
 c_func
 (paren
 id|data
@@ -1345,7 +1345,7 @@ id|file-&gt;f_mode
 op_amp
 id|FMODE_WRITE
 )paren
-id|isa_writew
+id|writew
 c_func
 (paren
 id|data
@@ -1362,7 +1362,7 @@ id|file-&gt;f_mode
 op_amp
 id|FMODE_READ
 )paren
-id|isa_writew
+id|writew
 c_func
 (paren
 id|data
@@ -1536,7 +1536,7 @@ id|file-&gt;f_mode
 op_amp
 id|FMODE_WRITE
 )paren
-id|isa_writew
+id|writew
 c_func
 (paren
 id|data
@@ -1553,7 +1553,7 @@ id|file-&gt;f_mode
 op_amp
 id|FMODE_READ
 )paren
-id|isa_writew
+id|writew
 c_func
 (paren
 id|data
@@ -1701,11 +1701,11 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|update_volm
-mdefine_line|#define update_volm(a,b)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;isa_writew((dev.left_levels[a] &gt;&gt; 1) *&t;&t;&t;&t;&bslash;&n;&t;       isa_readw(dev.SMA + SMA_wCurrMastVolLeft) / 0xffff,&t;&bslash;&n;&t;       dev.SMA + SMA_##b##Left);&t;&t;&t;&t;&bslash;&n;&t;isa_writew((dev.right_levels[a] &gt;&gt; 1)  *&t;&t;&t;&bslash;&n;&t;       isa_readw(dev.SMA + SMA_wCurrMastVolRight) / 0xffff,&t;&bslash;&n;&t;       dev.SMA + SMA_##b##Right);
+mdefine_line|#define update_volm(a,b)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;writew((dev.left_levels[a] &gt;&gt; 1) *&t;&t;&t;&t;&bslash;&n;&t;       readw(dev.SMA + SMA_wCurrMastVolLeft) / 0xffff,&t;&bslash;&n;&t;       dev.SMA + SMA_##b##Left);&t;&t;&t;&t;&bslash;&n;&t;writew((dev.right_levels[a] &gt;&gt; 1)  *&t;&t;&t;&bslash;&n;&t;       readw(dev.SMA + SMA_wCurrMastVolRight) / 0xffff,&t;&bslash;&n;&t;       dev.SMA + SMA_##b##Right);
 DECL|macro|update_potm
-mdefine_line|#define update_potm(d,s,ar)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;isa_writeb((dev.left_levels[d] &gt;&gt; 8) *&t;&t;&t;&t;&bslash;&n;&t;       isa_readw(dev.SMA + SMA_wCurrMastVolLeft) / 0xffff,&t;&bslash;&n;&t;       dev.SMA + SMA_##s##Left);&t;&t;&t;&t;&bslash;&n;&t;isa_writeb((dev.right_levels[d] &gt;&gt; 8) *&t;&t;&t;&t;&bslash;&n;&t;       isa_readw(dev.SMA + SMA_wCurrMastVolRight) / 0xffff,&t;&bslash;&n;&t;       dev.SMA + SMA_##s##Right);&t;&t;&t;&t;&bslash;&n;&t;if (msnd_send_word(&amp;dev, 0, 0, ar) == 0)&t;&t;&t;&bslash;&n;&t;&t;chk_send_dsp_cmd(&amp;dev, HDEX_AUX_REQ);
+mdefine_line|#define update_potm(d,s,ar)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;writeb((dev.left_levels[d] &gt;&gt; 8) *&t;&t;&t;&t;&bslash;&n;&t;       readw(dev.SMA + SMA_wCurrMastVolLeft) / 0xffff,&t;&bslash;&n;&t;       dev.SMA + SMA_##s##Left);&t;&t;&t;&t;&bslash;&n;&t;writeb((dev.right_levels[d] &gt;&gt; 8) *&t;&t;&t;&t;&bslash;&n;&t;       readw(dev.SMA + SMA_wCurrMastVolRight) / 0xffff,&t;&bslash;&n;&t;       dev.SMA + SMA_##s##Right);&t;&t;&t;&t;&bslash;&n;&t;if (msnd_send_word(&amp;dev, 0, 0, ar) == 0)&t;&t;&t;&bslash;&n;&t;&t;chk_send_dsp_cmd(&amp;dev, HDEX_AUX_REQ);
 DECL|macro|update_pot
-mdefine_line|#define update_pot(d,s,ar)&t;&t;&t;&t;&bslash;&n;&t;isa_writeb(dev.left_levels[d] &gt;&gt; 8,&t;&t;&bslash;&n;&t;       dev.SMA + SMA_##s##Left);&t;&t;&bslash;&n;&t;isa_writeb(dev.right_levels[d] &gt;&gt; 8,&t;&t;&bslash;&n;&t;       dev.SMA + SMA_##s##Right);&t;&t;&bslash;&n;&t;if (msnd_send_word(&amp;dev, 0, 0, ar) == 0)&t;&bslash;&n;&t;&t;chk_send_dsp_cmd(&amp;dev, HDEX_AUX_REQ);
+mdefine_line|#define update_pot(d,s,ar)&t;&t;&t;&t;&bslash;&n;&t;writeb(dev.left_levels[d] &gt;&gt; 8,&t;&t;&bslash;&n;&t;       dev.SMA + SMA_##s##Left);&t;&t;&bslash;&n;&t;writeb(dev.right_levels[d] &gt;&gt; 8,&t;&t;&bslash;&n;&t;       dev.SMA + SMA_##s##Right);&t;&t;&bslash;&n;&t;if (msnd_send_word(&amp;dev, 0, 0, ar) == 0)&t;&bslash;&n;&t;&t;chk_send_dsp_cmd(&amp;dev, HDEX_AUX_REQ);
 DECL|function|mixer_set
 r_static
 r_int
@@ -1821,7 +1821,7 @@ id|SOUND_MIXER_LINE
 suffix:colon
 multiline_comment|/* line pot control */
 multiline_comment|/* scaled by IMIX in digital mix */
-id|isa_writeb
+id|writeb
 c_func
 (paren
 id|bLeft
@@ -1831,7 +1831,7 @@ op_plus
 id|SMA_bInPotPosLeft
 )paren
 suffix:semicolon
-id|isa_writeb
+id|writeb
 c_func
 (paren
 id|bRight
@@ -1876,7 +1876,7 @@ id|SOUND_MIXER_MIC
 suffix:colon
 multiline_comment|/* mic pot control */
 multiline_comment|/* scaled by IMIX in digital mix */
-id|isa_writeb
+id|writeb
 c_func
 (paren
 id|bLeft
@@ -1886,7 +1886,7 @@ op_plus
 id|SMA_bMicPotPosLeft
 )paren
 suffix:semicolon
-id|isa_writeb
+id|writeb
 c_func
 (paren
 id|bRight
@@ -1930,7 +1930,7 @@ r_case
 id|SOUND_MIXER_VOLUME
 suffix:colon
 multiline_comment|/* master volume */
-id|isa_writew
+id|writew
 c_func
 (paren
 id|wLeft
@@ -1940,7 +1940,7 @@ op_plus
 id|SMA_wCurrMastVolLeft
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|wRight
@@ -3655,7 +3655,7 @@ suffix:semicolon
 multiline_comment|/* Increment the tail and check for queue wrap */
 id|wTmp
 op_assign
-id|isa_readw
+id|readw
 c_func
 (paren
 id|dev.DARQ
@@ -3674,7 +3674,7 @@ c_cond
 (paren
 id|wTmp
 OG
-id|isa_readw
+id|readw
 c_func
 (paren
 id|dev.DARQ
@@ -3691,7 +3691,7 @@ c_loop
 (paren
 id|wTmp
 op_eq
-id|isa_readw
+id|readw
 c_func
 (paren
 id|dev.DARQ
@@ -3708,7 +3708,7 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|wTmp
@@ -3732,7 +3732,7 @@ suffix:semicolon
 multiline_comment|/* Get length of data */
 id|size
 op_assign
-id|isa_readw
+id|readw
 c_func
 (paren
 id|DAQD
@@ -3751,23 +3751,17 @@ op_plus
 id|HP_BLKS
 )paren
 suffix:semicolon
-id|msnd_fifo_write
+id|msnd_fifo_write_io
 c_func
 (paren
 op_amp
 id|dev.DARF
 comma
-(paren
-r_char
-op_star
-)paren
-(paren
 id|dev.base
 op_plus
 id|bank
 op_star
 id|DAR_BUFF_SIZE
-)paren
 comma
 id|size
 )paren
@@ -3817,7 +3811,7 @@ id|DAQD
 suffix:semicolon
 id|DAPQ_tail
 op_assign
-id|isa_readw
+id|readw
 c_func
 (paren
 id|dev.DAPQ
@@ -3830,7 +3824,7 @@ c_loop
 (paren
 id|DAPQ_tail
 op_ne
-id|isa_readw
+id|readw
 c_func
 (paren
 id|dev.DAPQ
@@ -3880,23 +3874,17 @@ id|flags
 suffix:semicolon
 id|n
 op_assign
-id|msnd_fifo_read
+id|msnd_fifo_read_io
 c_func
 (paren
 op_amp
 id|dev.DAPF
 comma
-(paren
-r_char
-op_star
-)paren
-(paren
 id|dev.base
 op_plus
 id|bank_num
 op_star
 id|DAP_BUFF_SIZE
-)paren
 comma
 id|DAP_BUFF_SIZE
 )paren
@@ -3915,23 +3903,17 @@ r_else
 (brace
 id|n
 op_assign
-id|msnd_fifo_read
+id|msnd_fifo_read_io
 c_func
 (paren
 op_amp
 id|dev.DAPF
 comma
-(paren
-r_char
-op_star
-)paren
-(paren
 id|dev.base
 op_plus
 id|bank_num
 op_star
 id|DAP_BUFF_SIZE
-)paren
 comma
 id|DAP_BUFF_SIZE
 )paren
@@ -3966,7 +3948,7 @@ op_plus
 id|DAPQ_DATA_BUFF
 suffix:semicolon
 multiline_comment|/* Write size of this bank */
-id|isa_writew
+id|writew
 c_func
 (paren
 id|n
@@ -3995,7 +3977,7 @@ c_func
 id|DAQDS__size
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|DAPQ_tail
@@ -5072,7 +5054,7 @@ multiline_comment|/* Evaluate queued DSP messages */
 r_while
 c_loop
 (paren
-id|isa_readw
+id|readw
 c_func
 (paren
 id|dev.DSPQ
@@ -5080,7 +5062,7 @@ op_plus
 id|JQS_wTail
 )paren
 op_ne
-id|isa_readw
+id|readw
 c_func
 (paren
 id|dev.DSPQ
@@ -5096,14 +5078,14 @@ suffix:semicolon
 id|eval_dsp_msg
 c_func
 (paren
-id|isa_readw
+id|readw
 c_func
 (paren
 id|dev.pwDSPQData
 op_plus
 l_int|2
 op_star
-id|isa_readw
+id|readw
 c_func
 (paren
 id|dev.DSPQ
@@ -5119,7 +5101,7 @@ c_cond
 (paren
 id|wTmp
 op_assign
-id|isa_readw
+id|readw
 c_func
 (paren
 id|dev.DSPQ
@@ -5130,7 +5112,7 @@ op_plus
 l_int|1
 )paren
 OG
-id|isa_readw
+id|readw
 c_func
 (paren
 id|dev.DSPQ
@@ -5138,7 +5120,7 @@ op_plus
 id|JQS_wSize
 )paren
 )paren
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0
@@ -5149,7 +5131,7 @@ id|JQS_wHead
 )paren
 suffix:semicolon
 r_else
-id|isa_writew
+id|writew
 c_func
 (paren
 id|wTmp
@@ -5580,7 +5562,7 @@ id|KERN_INFO
 id|LOGNAME
 l_string|&quot;: %s revision %s, Xilinx version %s, &quot;
 macro_line|#endif /* MSND_CLASSIC */
-l_string|&quot;I/O 0x%x-0x%x, IRQ %d, memory mapped to 0x%lX-0x%lX&bslash;n&quot;
+l_string|&quot;I/O 0x%x-0x%x, IRQ %d, memory mapped to %p-%p&bslash;n&quot;
 comma
 id|dev.name
 comma
@@ -5671,7 +5653,7 @@ id|initted
 (brace
 id|mastVolLeft
 op_assign
-id|isa_readw
+id|readw
 c_func
 (paren
 id|dev.SMA
@@ -5681,7 +5663,7 @@ id|SMA_wCurrMastVolLeft
 suffix:semicolon
 id|mastVolRight
 op_assign
-id|isa_readw
+id|readw
 c_func
 (paren
 id|dev.SMA
@@ -5697,7 +5679,7 @@ id|mastVolRight
 op_assign
 l_int|0
 suffix:semicolon
-id|isa_memset_io
+id|memset_io
 c_func
 (paren
 id|dev.base
@@ -5727,7 +5709,7 @@ op_plus
 id|HP_BLKS
 )paren
 suffix:semicolon
-id|isa_memset_io
+id|memset_io
 c_func
 (paren
 id|dev.base
@@ -5874,7 +5856,7 @@ id|DSPQ_BUFF_SIZE
 suffix:semicolon
 multiline_comment|/* Setup some DSP values */
 macro_line|#ifndef MSND_CLASSIC
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|1
@@ -5884,7 +5866,7 @@ op_plus
 id|SMA_wCurrPlayFormat
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|dev.play_sample_size
@@ -5894,7 +5876,7 @@ op_plus
 id|SMA_wCurrPlaySampleSize
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|dev.play_channels
@@ -5904,7 +5886,7 @@ op_plus
 id|SMA_wCurrPlayChannels
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|dev.play_sample_rate
@@ -5915,7 +5897,7 @@ id|SMA_wCurrPlaySampleRate
 )paren
 suffix:semicolon
 macro_line|#endif
-id|isa_writew
+id|writew
 c_func
 (paren
 id|dev.play_sample_rate
@@ -5925,7 +5907,7 @@ op_plus
 id|SMA_wCalFreqAtoD
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|mastVolLeft
@@ -5935,7 +5917,7 @@ op_plus
 id|SMA_wCurrMastVolLeft
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|mastVolRight
@@ -5946,7 +5928,7 @@ id|SMA_wCurrMastVolRight
 )paren
 suffix:semicolon
 macro_line|#ifndef MSND_CLASSIC
-id|isa_writel
+id|writel
 c_func
 (paren
 l_int|0x00010000
@@ -5956,7 +5938,7 @@ op_plus
 id|SMA_dwCurrPlayPitch
 )paren
 suffix:semicolon
-id|isa_writel
+id|writel
 c_func
 (paren
 l_int|0x00000001
@@ -5967,7 +5949,7 @@ id|SMA_dwCurrPlayRate
 )paren
 suffix:semicolon
 macro_line|#endif
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0x303
@@ -5996,7 +5978,7 @@ id|WORD
 id|srate
 )paren
 (brace
-id|isa_writew
+id|writew
 c_func
 (paren
 id|srate
@@ -6013,10 +5995,10 @@ id|dev.calibrate_signal
 op_eq
 l_int|0
 )paren
-id|isa_writew
+id|writew
 c_func
 (paren
-id|isa_readw
+id|readw
 c_func
 (paren
 id|dev.SMA
@@ -6032,10 +6014,10 @@ id|SMA_wCurrHostStatusFlags
 )paren
 suffix:semicolon
 r_else
-id|isa_writew
+id|writew
 c_func
 (paren
-id|isa_readw
+id|readw
 c_func
 (paren
 id|dev.SMA
@@ -6201,7 +6183,7 @@ id|EBUSY
 suffix:semicolon
 )brace
 macro_line|#endif
-id|isa_memcpy_toio
+id|memcpy_toio
 c_func
 (paren
 id|dev.base
@@ -6441,7 +6423,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|isa_readw
+id|readw
 c_func
 (paren
 id|dev.base
@@ -8993,7 +8975,13 @@ id|irq
 suffix:semicolon
 id|dev.base
 op_assign
+id|ioremap
+c_func
+(paren
 id|mem
+comma
+l_int|0x8000
+)paren
 suffix:semicolon
 id|dev.fifosize
 op_assign

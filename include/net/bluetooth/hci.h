@@ -237,6 +237,10 @@ DECL|macro|HCI_LM_ENCRYPT
 mdefine_line|#define HCI_LM_ENCRYPT&t;0x0004
 DECL|macro|HCI_LM_TRUSTED
 mdefine_line|#define HCI_LM_TRUSTED&t;0x0008
+DECL|macro|HCI_LM_RELIABLE
+mdefine_line|#define HCI_LM_RELIABLE&t;0x0010
+DECL|macro|HCI_LM_SECURE
+mdefine_line|#define HCI_LM_SECURE&t;0x0020
 multiline_comment|/* -----  HCI Commands ---- */
 multiline_comment|/* OGF &amp; OCF values */
 multiline_comment|/* Informational Parameters */
@@ -872,6 +876,24 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+DECL|macro|OCF_CHANGE_CONN_LINK_KEY
+mdefine_line|#define OCF_CHANGE_CONN_LINK_KEY 0x0015
+DECL|struct|hci_cp_change_conn_link_key
+r_struct
+id|hci_cp_change_conn_link_key
+(brace
+DECL|member|handle
+id|__u16
+id|handle
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 DECL|macro|OCF_READ_REMOTE_FEATURES
 mdefine_line|#define OCF_READ_REMOTE_FEATURES 0x001B
 DECL|struct|hci_cp_read_rmt_features
@@ -1290,6 +1312,28 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+DECL|macro|HCI_EV_CHANGE_CONN_LINK_KEY_COMPLETE
+mdefine_line|#define HCI_EV_CHANGE_CONN_LINK_KEY_COMPLETE&t;0x09
+DECL|struct|hci_ev_change_conn_link_key_complete
+r_struct
+id|hci_ev_change_conn_link_key_complete
+(brace
+DECL|member|status
+id|__u8
+id|status
+suffix:semicolon
+DECL|member|handle
+id|__u16
+id|handle
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 DECL|macro|HCI_EV_QOS_SETUP_COMPLETE
 mdefine_line|#define HCI_EV_QOS_SETUP_COMPLETE&t;0x0D
 DECL|struct|hci_qos
@@ -1433,6 +1477,36 @@ suffix:semicolon
 DECL|member|role
 id|__u8
 id|role
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+DECL|macro|HCI_EV_MODE_CHANGE
+mdefine_line|#define HCI_EV_MODE_CHANGE&t;0x14
+DECL|struct|hci_ev_mode_change
+r_struct
+id|hci_ev_mode_change
+(brace
+DECL|member|status
+id|__u8
+id|status
+suffix:semicolon
+DECL|member|handle
+id|__u16
+id|handle
+suffix:semicolon
+DECL|member|mode
+id|__u8
+id|mode
+suffix:semicolon
+DECL|member|interval
+id|__u16
+id|interval
 suffix:semicolon
 )brace
 id|__attribute__

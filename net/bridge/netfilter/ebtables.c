@@ -5994,9 +5994,12 @@ r_private
 op_assign
 id|newinfo
 suffix:semicolon
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|table-&gt;lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|ret
 op_assign

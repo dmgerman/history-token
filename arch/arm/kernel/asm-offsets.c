@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/thread_info.h&gt;
+macro_line|#include &lt;asm/memory.h&gt;
 multiline_comment|/*&n; * Make sure that the compiler and target are compatible.&n; */
 macro_line|#if defined(__APCS_26__)
 macro_line|#error Sorry, your compiler targets APCS-26 but this kernel requires APCS-32
@@ -297,6 +298,14 @@ c_func
 id|PAGE_SZ
 comma
 id|PAGE_SIZE
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|VIRT_OFFSET
+comma
+id|PAGE_OFFSET
 )paren
 suffix:semicolon
 id|BLANK

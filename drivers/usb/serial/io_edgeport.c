@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Edgeport USB Serial Converter driver&n; *&n; * Copyright (C) 2000 Inside Out Networks, All rights reserved.&n; * Copyright (C) 2001-2002 Greg Kroah-Hartman &lt;greg@kroah.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * Supports the following devices:&n; *&t;Edgeport/4&n; *&t;Edgeport/4t&n; *&t;Edgeport/2&n; *&t;Edgeport/4i&n; *&t;Edgeport/2i&n; *&t;Edgeport/421&n; *&t;Edgeport/21&n; *&t;Rapidport/4&n; *&t;Edgeport/8&n; *&t;Edgeport/2D8&n; *&t;Edgeport/4D8&n; *&t;Edgeport/8i&n; *&n; * Version history:&n; * &n; * 2003_04_03 al borchers&n; *  - fixed a bug (that shows up with dosemu) where the tty struct is&n; *    used in a callback after it has been freed&n; *&n; * 2.3 2002_03_08 greg kroah-hartman&n; *&t;- fixed bug when multiple devices were attached at the same time.&n; *&n; * 2.2 2001_11_14 greg kroah-hartman&n; *&t;- fixed bug in edge_close that kept the port from being used more&n; *&t;  than once.&n; *&t;- fixed memory leak on device removal.&n; *&t;- fixed potential double free of memory when command urb submitting&n; *&t;  failed.&n; *&t;- other small cleanups when the device is removed&n; *&t;&n; * 2.1 2001_07_09 greg kroah-hartman&n; *&t;- added support for TIOCMBIS and TIOCMBIC.&n; *&n; *     (04/08/2001) gb&n; *&t;- Identify version on module load.&n; *&n; * 2.0 2001_03_05 greg kroah-hartman&n; *&t;- reworked entire driver to fit properly in with the other usb-serial&n; *&t;  drivers.  Occasional oopses still happen, but it&squot;s a good start.&n; *&n; * 1.2.3 (02/23/2001) greg kroah-hartman&n; *&t;- changed device table to work properly for 2.4.x final format.&n; *&t;- fixed problem with dropping data at high data rates.&n; *&n; * 1.2.2 (11/27/2000) greg kroah-hartman&n; *&t;- cleaned up more NTisms.&n; *&t;- Added device table for 2.4.0-test11&n; *&n; * 1.2.1 (11/08/2000) greg kroah-hartman&n; *&t;- Started to clean up NTisms.&n; *&t;- Fixed problem with dev field of urb for kernels &gt;= 2.4.0-test9&n; *&n; * 1.2 (10/17/2000) David Iacovelli&n; * &t;Remove all EPIC code and GPL source&n; *  Fix RELEVANT_IFLAG macro to include flow control &n; *  changes port configuration changes.&n; *  Fix redefinition of SERIAL_MAGIC&n; *  Change all timeout values to 5 seconds&n; *  Tried to fix the UHCI multiple urb submission, but failed miserably.&n; *  it seems to work fine with OHCI.&n; *  ( Greg take a look at the #if 0 at end of WriteCmdUsb() we must &n; *    find a way to work arount this UHCI bug )&n; *&n; * 1.1 (10/11/2000) David Iacovelli&n; *  Fix XON/XOFF flow control to support both IXON and IXOFF&n; *&n; * 0.9.27 (06/30/2000) David Iacovelli&n; *  Added transmit queue and now allocate urb for command writes.&n; *&n; * 0.9.26 (06/29/2000) David Iacovelli&n; *  Add support for 80251 based edgeport&n; *&n; * 0.9.25 (06/27/2000) David Iacovelli&n; *  Do not close the port if it has multiple opens.&n; *&n; * 0.9.24 (05/26/2000) David Iacovelli&n; *  Add IOCTLs to support RXTX and JAVA POS &n; *  and first cut at running BlackBox Demo&n; *&n; * 0.9.23 (05/24/2000) David Iacovelli&n; *  Add IOCTLs to support RXTX and JAVA POS&n; *&n; * 0.9.22 (05/23/2000) David Iacovelli&n; *  fixed bug in enumeration.  If epconfig turns on mapping by&n; *  path after a device is already plugged in, we now update&n; *  the mapping correctly&n; *&n; * 0.9.21 (05/16/2000) David Iacovelli&n; *  Added BlockUntilChaseResp() to also wait for txcredits&n; *  Updated the way we allocate and handle write URBs &n; *&t;Add debug code to dump buffers&n; *&n; * 0.9.20 (05/01/2000) David Iacovelli&n; *&t;change driver to use usb/tts/&n; *&n; * 0.9.19 (05/01/2000) David Iacovelli&n; *  Update code to compile if DEBUG is off&n; *&n; * 0.9.18 (04/28/2000) David Iacovelli&n; *  cleanup and test tty_register with devfs&n; *&n; * 0.9.17 (04/27/2000) greg kroah-hartman&n; * &t;changed tty_register around to be like the way it&n; * &t;was before, but now it works properly with devfs.&n; *&n; * 0.9.16 (04/26/2000) david iacovelli&n; *  Fixed bug in GetProductInfo()&n; *&n; * 0.9.15 (04/25/2000) david iacovelli&n; *&t;Updated enumeration&n; *&n; * 0.9.14 (04/24/2000) david iacovelli&n; *  Removed all config/status IOCTLS and &n; *  converted to using /proc/edgeport&n; *  still playing with devfs&n; *&n; * 0.9.13 (04/24/2000) david iacovelli&n; *  Removed configuration based on ttyUSB0&n; *  Added support for configuration using /prod/edgeport&n; *  first attempt at using devfs (not working yet!)&n; *  Added IOCTL to GetProductInfo()&n; *  Added support for custom baud rates&n; *&t;Add support for random port numbers&n; *&n; * 0.9.12 (04/18/2000) david iacovelli&n; *&t;added additional configuration IOCTLs&n; *  use ttyUSB0 for configuration&n; *&n; * 0.9.11 (04/17/2000) greg kroah-hartman&n; *&t;fixed module initialization race conditions.&n; *&t;made all urbs dynamically allocated.&n; *&t;made driver devfs compatible. now it only registers the tty device&n; *&t;when the device is actually plugged in.&n; *&n; * 0.9.10 (04/13/2000) greg kroah-hartman&n; *&t;added proc interface framework.&n; *&n; * 0.9.9 (04/13/2000) david iacovelli&n; *&t;added enumeration code and ioctls to configure the device&n; *&n; * 0.9.8 (04/12/2000) david iacovelli&n; *  Change interrupt read start when device is plugged in&n; *  and stop when device is removed&n; *&t;process interrupt reads when all ports are closed &n; *  (keep value of rxBytesAvail consistent with the edgeport)&n; *  set the USB_BULK_QUEUE flag so that we can shove a bunch &n; *  of urbs at once down the pipe &n; *&n; * 0.9.7 (04/10/2000) david iacovelli&n; * &t;start to add enumeration code.&n; *  generate serial number for epic devices&n; *  add support for kdb&n; *&n; * 0.9.6 (03/30/2000) david iacovelli&n; *  add IOCTL to get string, manufacture, and boot descriptors&n; *&n; * 0.9.5 (03/14/2000) greg kroah-hartman&n; *&t;more error checking added to SerialOpen to try to fix UHCI open problem&n; *&n; * 0.9.4 (03/09/2000) greg kroah-hartman&n; *&t;added more error checking to handle oops when data is hanging&n; *&t;around and tty is abruptly closed.&n; *&n; * 0.9.3 (03/09/2000) david iacovelli&n; *&t;Add epic support for xon/xoff chars&n; *&t;play with performance&n; *&n; * 0.9.2 (03/08/2000) greg kroah-hartman&n; *&t;changed most &quot;info&quot; calls to &quot;dbg&quot;&n; *&t;implemented flow control properly in the termios call&n; *&n; * 0.9.1 (03/08/2000) david iacovelli&n; *&t;added EPIC support&n; *&t;enabled bootloader update&n; *&n; * 0.9 (03/08/2000) greg kroah-hartman&n; *&t;Release to IO networks.&n; *&t;Integrated changes that David made&n; *  made getting urbs for writing SMP safe&n; *&n; * 0.8 (03/07/2000) greg kroah-hartman&n; *&t;Release to IO networks.&n; *&t;Fixed problems that were seen in code by David.&n; *  Now both Edgeport/4 and Edgeport/2 works properly.&n; *  Changed most of the functions to use port instead of serial.&n; *&n; * 0.7 (02/27/2000) greg kroah-hartman&n; *&t;Milestone 3 release.&n; *&t;Release to IO Networks&n; *&t;ioctl for waiting on line change implemented.&n; *&t;ioctl for getting statistics implemented.&n; *&t;multiport support working.&n; *&t;lsr and msr registers are now handled properly.&n; *&t;change break now hooked up and working.&n; *&t;support for all known Edgeport devices.&n; *&n; * 0.6 (02/22/2000) greg kroah-hartman&n; *&t;Release to IO networks.&n; *&t;CHASE is implemented correctly when port is closed.&n; *&t;SerialOpen now blocks correctly until port is fully opened.&n; *&n; * 0.5 (02/20/2000) greg kroah-hartman&n; *&t;Release to IO networks.&n; *&t;Known problems:&n; *&t;&t;modem status register changes are not sent on to the user&n; *&t;&t;CHASE is not implemented when the port is closed.&n; *&n; * 0.4 (02/16/2000) greg kroah-hartman&n; *&t;Second cut at the CeBit demo.&n; *&t;Doesn&squot;t leak memory on every write to the port&n; *&t;Still small leaks on startup.&n; *&t;Added support for Edgeport/2 and Edgeport/8&n; *&n; * 0.3 (02/15/2000) greg kroah-hartman&n; *&t;CeBit demo release.&n; *&t;Force the line settings to 4800, 8, 1, e for the demo.&n; *&t;Warning! This version leaks memory like crazy!&n; *&n; * 0.2 (01/30/2000) greg kroah-hartman&n; *&t;Milestone 1 release.&n; *&t;Device is found by USB subsystem, enumerated, fimware is downloaded&n; *&t;and the descriptors are printed to the debug log, config is set, and&n; *&t;green light starts to blink. Open port works, and data can be sent&n; *&t;and received at the default settings of the UART. Loopback connector&n; *&t;and debug log confirms this.&n; * &n; * 0.1 (01/23/2000) greg kroah-hartman&n; *&t;Initial release to help IO Networks try to set up their test system. &n; *&t;Edgeport4 is recognized, firmware is downloaded, config is set so &n; *&t;device blinks green light every 3 sec. Port is bound, but opening,&n; *&t;closing, and sending data do not work properly.&n; * &n; */
+multiline_comment|/*&n; * Edgeport USB Serial Converter driver&n; *&n; * Copyright (C) 2000 Inside Out Networks, All rights reserved.&n; * Copyright (C) 2001-2002 Greg Kroah-Hartman &lt;greg@kroah.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * Supports the following devices:&n; *&t;Edgeport/4&n; *&t;Edgeport/4t&n; *&t;Edgeport/2&n; *&t;Edgeport/4i&n; *&t;Edgeport/2i&n; *&t;Edgeport/421&n; *&t;Edgeport/21&n; *&t;Rapidport/4&n; *&t;Edgeport/8&n; *&t;Edgeport/2D8&n; *&t;Edgeport/4D8&n; *&t;Edgeport/8i&n; *&n; * For questions or problems with this driver, contact Inside Out&n; * Networks technical support, or Peter Berger &lt;pberger@brimson.com&gt;,&n; * or Al Borchers &lt;alborchers@steinerpoint.com&gt;.&n; *&n; * Version history:&n; * &n; * 2003_04_03 al borchers&n; *  - fixed a bug (that shows up with dosemu) where the tty struct is&n; *    used in a callback after it has been freed&n; *&n; * 2.3 2002_03_08 greg kroah-hartman&n; *&t;- fixed bug when multiple devices were attached at the same time.&n; *&n; * 2.2 2001_11_14 greg kroah-hartman&n; *&t;- fixed bug in edge_close that kept the port from being used more&n; *&t;  than once.&n; *&t;- fixed memory leak on device removal.&n; *&t;- fixed potential double free of memory when command urb submitting&n; *&t;  failed.&n; *&t;- other small cleanups when the device is removed&n; *&t;&n; * 2.1 2001_07_09 greg kroah-hartman&n; *&t;- added support for TIOCMBIS and TIOCMBIC.&n; *&n; *     (04/08/2001) gb&n; *&t;- Identify version on module load.&n; *&n; * 2.0 2001_03_05 greg kroah-hartman&n; *&t;- reworked entire driver to fit properly in with the other usb-serial&n; *&t;  drivers.  Occasional oopses still happen, but it&squot;s a good start.&n; *&n; * 1.2.3 (02/23/2001) greg kroah-hartman&n; *&t;- changed device table to work properly for 2.4.x final format.&n; *&t;- fixed problem with dropping data at high data rates.&n; *&n; * 1.2.2 (11/27/2000) greg kroah-hartman&n; *&t;- cleaned up more NTisms.&n; *&t;- Added device table for 2.4.0-test11&n; *&n; * 1.2.1 (11/08/2000) greg kroah-hartman&n; *&t;- Started to clean up NTisms.&n; *&t;- Fixed problem with dev field of urb for kernels &gt;= 2.4.0-test9&n; *&n; * 1.2 (10/17/2000) David Iacovelli&n; * &t;Remove all EPIC code and GPL source&n; *  Fix RELEVANT_IFLAG macro to include flow control &n; *  changes port configuration changes.&n; *  Fix redefinition of SERIAL_MAGIC&n; *  Change all timeout values to 5 seconds&n; *  Tried to fix the UHCI multiple urb submission, but failed miserably.&n; *  it seems to work fine with OHCI.&n; *  ( Greg take a look at the #if 0 at end of WriteCmdUsb() we must &n; *    find a way to work arount this UHCI bug )&n; *&n; * 1.1 (10/11/2000) David Iacovelli&n; *  Fix XON/XOFF flow control to support both IXON and IXOFF&n; *&n; * 0.9.27 (06/30/2000) David Iacovelli&n; *  Added transmit queue and now allocate urb for command writes.&n; *&n; * 0.9.26 (06/29/2000) David Iacovelli&n; *  Add support for 80251 based edgeport&n; *&n; * 0.9.25 (06/27/2000) David Iacovelli&n; *  Do not close the port if it has multiple opens.&n; *&n; * 0.9.24 (05/26/2000) David Iacovelli&n; *  Add IOCTLs to support RXTX and JAVA POS &n; *  and first cut at running BlackBox Demo&n; *&n; * 0.9.23 (05/24/2000) David Iacovelli&n; *  Add IOCTLs to support RXTX and JAVA POS&n; *&n; * 0.9.22 (05/23/2000) David Iacovelli&n; *  fixed bug in enumeration.  If epconfig turns on mapping by&n; *  path after a device is already plugged in, we now update&n; *  the mapping correctly&n; *&n; * 0.9.21 (05/16/2000) David Iacovelli&n; *  Added BlockUntilChaseResp() to also wait for txcredits&n; *  Updated the way we allocate and handle write URBs &n; *&t;Add debug code to dump buffers&n; *&n; * 0.9.20 (05/01/2000) David Iacovelli&n; *&t;change driver to use usb/tts/&n; *&n; * 0.9.19 (05/01/2000) David Iacovelli&n; *  Update code to compile if DEBUG is off&n; *&n; * 0.9.18 (04/28/2000) David Iacovelli&n; *  cleanup and test tty_register with devfs&n; *&n; * 0.9.17 (04/27/2000) greg kroah-hartman&n; * &t;changed tty_register around to be like the way it&n; * &t;was before, but now it works properly with devfs.&n; *&n; * 0.9.16 (04/26/2000) david iacovelli&n; *  Fixed bug in GetProductInfo()&n; *&n; * 0.9.15 (04/25/2000) david iacovelli&n; *&t;Updated enumeration&n; *&n; * 0.9.14 (04/24/2000) david iacovelli&n; *  Removed all config/status IOCTLS and &n; *  converted to using /proc/edgeport&n; *  still playing with devfs&n; *&n; * 0.9.13 (04/24/2000) david iacovelli&n; *  Removed configuration based on ttyUSB0&n; *  Added support for configuration using /prod/edgeport&n; *  first attempt at using devfs (not working yet!)&n; *  Added IOCTL to GetProductInfo()&n; *  Added support for custom baud rates&n; *&t;Add support for random port numbers&n; *&n; * 0.9.12 (04/18/2000) david iacovelli&n; *&t;added additional configuration IOCTLs&n; *  use ttyUSB0 for configuration&n; *&n; * 0.9.11 (04/17/2000) greg kroah-hartman&n; *&t;fixed module initialization race conditions.&n; *&t;made all urbs dynamically allocated.&n; *&t;made driver devfs compatible. now it only registers the tty device&n; *&t;when the device is actually plugged in.&n; *&n; * 0.9.10 (04/13/2000) greg kroah-hartman&n; *&t;added proc interface framework.&n; *&n; * 0.9.9 (04/13/2000) david iacovelli&n; *&t;added enumeration code and ioctls to configure the device&n; *&n; * 0.9.8 (04/12/2000) david iacovelli&n; *  Change interrupt read start when device is plugged in&n; *  and stop when device is removed&n; *&t;process interrupt reads when all ports are closed &n; *  (keep value of rxBytesAvail consistent with the edgeport)&n; *  set the USB_BULK_QUEUE flag so that we can shove a bunch &n; *  of urbs at once down the pipe &n; *&n; * 0.9.7 (04/10/2000) david iacovelli&n; * &t;start to add enumeration code.&n; *  generate serial number for epic devices&n; *  add support for kdb&n; *&n; * 0.9.6 (03/30/2000) david iacovelli&n; *  add IOCTL to get string, manufacture, and boot descriptors&n; *&n; * 0.9.5 (03/14/2000) greg kroah-hartman&n; *&t;more error checking added to SerialOpen to try to fix UHCI open problem&n; *&n; * 0.9.4 (03/09/2000) greg kroah-hartman&n; *&t;added more error checking to handle oops when data is hanging&n; *&t;around and tty is abruptly closed.&n; *&n; * 0.9.3 (03/09/2000) david iacovelli&n; *&t;Add epic support for xon/xoff chars&n; *&t;play with performance&n; *&n; * 0.9.2 (03/08/2000) greg kroah-hartman&n; *&t;changed most &quot;info&quot; calls to &quot;dbg&quot;&n; *&t;implemented flow control properly in the termios call&n; *&n; * 0.9.1 (03/08/2000) david iacovelli&n; *&t;added EPIC support&n; *&t;enabled bootloader update&n; *&n; * 0.9 (03/08/2000) greg kroah-hartman&n; *&t;Release to IO networks.&n; *&t;Integrated changes that David made&n; *  made getting urbs for writing SMP safe&n; *&n; * 0.8 (03/07/2000) greg kroah-hartman&n; *&t;Release to IO networks.&n; *&t;Fixed problems that were seen in code by David.&n; *  Now both Edgeport/4 and Edgeport/2 works properly.&n; *  Changed most of the functions to use port instead of serial.&n; *&n; * 0.7 (02/27/2000) greg kroah-hartman&n; *&t;Milestone 3 release.&n; *&t;Release to IO Networks&n; *&t;ioctl for waiting on line change implemented.&n; *&t;ioctl for getting statistics implemented.&n; *&t;multiport support working.&n; *&t;lsr and msr registers are now handled properly.&n; *&t;change break now hooked up and working.&n; *&t;support for all known Edgeport devices.&n; *&n; * 0.6 (02/22/2000) greg kroah-hartman&n; *&t;Release to IO networks.&n; *&t;CHASE is implemented correctly when port is closed.&n; *&t;SerialOpen now blocks correctly until port is fully opened.&n; *&n; * 0.5 (02/20/2000) greg kroah-hartman&n; *&t;Release to IO networks.&n; *&t;Known problems:&n; *&t;&t;modem status register changes are not sent on to the user&n; *&t;&t;CHASE is not implemented when the port is closed.&n; *&n; * 0.4 (02/16/2000) greg kroah-hartman&n; *&t;Second cut at the CeBit demo.&n; *&t;Doesn&squot;t leak memory on every write to the port&n; *&t;Still small leaks on startup.&n; *&t;Added support for Edgeport/2 and Edgeport/8&n; *&n; * 0.3 (02/15/2000) greg kroah-hartman&n; *&t;CeBit demo release.&n; *&t;Force the line settings to 4800, 8, 1, e for the demo.&n; *&t;Warning! This version leaks memory like crazy!&n; *&n; * 0.2 (01/30/2000) greg kroah-hartman&n; *&t;Milestone 1 release.&n; *&t;Device is found by USB subsystem, enumerated, fimware is downloaded&n; *&t;and the descriptors are printed to the debug log, config is set, and&n; *&t;green light starts to blink. Open port works, and data can be sent&n; *&t;and received at the default settings of the UART. Loopback connector&n; *&t;and debug log confirms this.&n; * &n; * 0.1 (01/23/2000) greg kroah-hartman&n; *&t;Initial release to help IO Networks try to set up their test system. &n; *&t;Edgeport4 is recognized, firmware is downloaded, config is set so &n; *&t;device blinks green light every 3 sec. Port is bound, but opening,&n; *&t;closing, and sending data do not work properly.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
@@ -20,7 +20,7 @@ macro_line|#include &quot;io_ionsp.h&quot;&t;&t;/* info for the iosp messages */
 macro_line|#include &quot;io_16654.h&quot;&t;&t;/* 16654 UART defines */
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v2.3&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v2.7&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman &lt;greg@kroah.com&gt; and David Iacovelli&quot;
 DECL|macro|DRIVER_DESC
@@ -57,11 +57,6 @@ DECL|macro|OPEN_TIMEOUT
 mdefine_line|#define OPEN_TIMEOUT&t;&t;(5*HZ)&t;&t;/* 5 seconds */
 DECL|macro|COMMAND_TIMEOUT
 mdefine_line|#define COMMAND_TIMEOUT&t;&t;(5*HZ)&t;&t;/* 5 seconds */
-DECL|variable|debug
-r_static
-r_int
-id|debug
-suffix:semicolon
 multiline_comment|/* receive port state */
 DECL|enum|RXSTATE
 r_enum
@@ -164,6 +159,10 @@ r_char
 id|write_in_progress
 suffix:semicolon
 multiline_comment|/* TRUE while a write URB is outstanding */
+DECL|member|ep_lock
+id|spinlock_t
+id|ep_lock
+suffix:semicolon
 DECL|member|shadowLCR
 id|__u8
 id|shadowLCR
@@ -327,6 +326,14 @@ op_star
 id|read_urb
 suffix:semicolon
 multiline_comment|/* our bulk read urb */
+DECL|member|read_in_progress
+r_int
+id|read_in_progress
+suffix:semicolon
+DECL|member|es_lock
+id|spinlock_t
+id|es_lock
+suffix:semicolon
 DECL|member|bulk_out_endpoint
 id|__u8
 id|bulk_out_endpoint
@@ -535,6 +542,19 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* local variables */
+DECL|variable|debug
+r_static
+r_int
+id|debug
+suffix:semicolon
+DECL|variable|low_latency
+r_static
+r_int
+id|low_latency
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* tty low latency flag, on by default */
 DECL|variable|CmdUrbs
 r_static
 r_int
@@ -841,7 +861,7 @@ comma
 suffix:semicolon
 multiline_comment|/* function prototypes for all of our local functions */
 r_static
-r_int
+r_void
 id|process_rcvd_data
 (paren
 r_struct
@@ -872,6 +892,29 @@ id|byte2
 comma
 id|__u8
 id|byte3
+)paren
+suffix:semicolon
+r_static
+r_void
+id|edge_tty_recv
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_struct
+id|tty_struct
+op_star
+id|tty
+comma
+r_int
+r_char
+op_star
+id|data
+comma
+r_int
+id|length
 )paren
 suffix:semicolon
 r_static
@@ -2327,6 +2370,13 @@ c_cond
 id|bytes_avail
 )paren
 (brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|edge_serial-&gt;es_lock
+)paren
+suffix:semicolon
 id|edge_serial-&gt;rxBytesAvail
 op_add_assign
 id|bytes_avail
@@ -2334,37 +2384,39 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;%s - bytes_avail = %d, rxBytesAvail %d&quot;
+l_string|&quot;%s - bytes_avail=%d, rxBytesAvail=%d, read_in_progress=%d&quot;
 comma
 id|__FUNCTION__
 comma
 id|bytes_avail
 comma
 id|edge_serial-&gt;rxBytesAvail
+comma
+id|edge_serial-&gt;read_in_progress
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|edge_serial-&gt;rxBytesAvail
 OG
 l_int|0
-)paren
 op_logical_and
-(paren
-id|edge_serial-&gt;read_urb-&gt;status
-op_ne
-op_minus
-id|EINPROGRESS
-)paren
+op_logical_neg
+id|edge_serial-&gt;read_in_progress
 )paren
 (brace
 id|dbg
 c_func
 (paren
-l_string|&quot; --- Posting a read&quot;
+l_string|&quot;%s - posting a read&quot;
+comma
+id|__FUNCTION__
 )paren
+suffix:semicolon
+id|edge_serial-&gt;read_in_progress
+op_assign
+id|TRUE
 suffix:semicolon
 multiline_comment|/* we have pending bytes on the bulk in pipe, send a request */
 id|edge_serial-&gt;read_urb-&gt;dev
@@ -2387,18 +2439,32 @@ c_cond
 id|result
 )paren
 (brace
-id|dbg
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - usb_submit_urb(read bulk) failed with result = %d&quot;
+op_amp
+id|edge_serial-&gt;serial-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - usb_submit_urb(read bulk) failed with result = %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
 id|result
 )paren
 suffix:semicolon
+id|edge_serial-&gt;read_in_progress
+op_assign
+id|FALSE
+suffix:semicolon
 )brace
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|edge_serial-&gt;es_lock
+)paren
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/* grab the txcredits for the ports if available */
@@ -2471,9 +2537,23 @@ c_cond
 id|edge_port-&gt;open
 )paren
 (brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|edge_port-&gt;ep_lock
+)paren
+suffix:semicolon
 id|edge_port-&gt;txCredits
 op_add_assign
 id|txCredits
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|edge_port-&gt;ep_lock
+)paren
 suffix:semicolon
 id|dbg
 c_func
@@ -2493,11 +2573,10 @@ c_cond
 (paren
 id|edge_port-&gt;port-&gt;tty
 )paren
-id|wake_up_interruptible
+id|tty_wakeup
 c_func
 (paren
-op_amp
-id|edge_port-&gt;port-&gt;tty-&gt;write_wait
+id|edge_port-&gt;port-&gt;tty
 )paren
 suffix:semicolon
 singleline_comment|// Since we have more credit, check if more data can be sent
@@ -2618,6 +2697,10 @@ comma
 id|urb-&gt;status
 )paren
 suffix:semicolon
+id|edge_serial-&gt;read_in_progress
+op_assign
+id|FALSE
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -2625,8 +2708,25 @@ r_if
 c_cond
 (paren
 id|urb-&gt;actual_length
+op_eq
+l_int|0
 )paren
 (brace
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - read bulk callback with no data&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|edge_serial-&gt;read_in_progress
+op_assign
+id|FALSE
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|raw_data_length
 op_assign
 id|urb-&gt;actual_length
@@ -2644,6 +2744,13 @@ comma
 id|raw_data_length
 comma
 id|data
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|edge_serial-&gt;es_lock
 )paren
 suffix:semicolon
 multiline_comment|/* decrement our rxBytes available by the number that we just got */
@@ -2676,27 +2783,19 @@ multiline_comment|/* check to see if there&squot;s any more data for us to read 
 r_if
 c_cond
 (paren
-(paren
 id|edge_serial-&gt;rxBytesAvail
 OG
 l_int|0
-)paren
-op_logical_and
-(paren
-id|edge_serial-&gt;read_urb-&gt;status
-op_ne
-op_minus
-id|EINPROGRESS
-)paren
 )paren
 (brace
 id|dbg
 c_func
 (paren
-l_string|&quot; --- Posting a read&quot;
+l_string|&quot;%s - posting a read&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/* there is, so resubmit our urb */
 id|edge_serial-&gt;read_urb-&gt;dev
 op_assign
 id|edge_serial-&gt;serial-&gt;dev
@@ -2730,9 +2829,26 @@ comma
 id|status
 )paren
 suffix:semicolon
+id|edge_serial-&gt;read_in_progress
+op_assign
+id|FALSE
+suffix:semicolon
 )brace
 )brace
+r_else
+(brace
+id|edge_serial-&gt;read_in_progress
+op_assign
+id|FALSE
+suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|edge_serial-&gt;es_lock
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; * edge_bulk_out_data_callback&n; *&t;this is the callback function for when we have finished sending serial data&n; *&t;on the bulk out endpoint.&n; *****************************************************************************/
 DECL|function|edge_bulk_out_data_callback
@@ -2955,11 +3071,10 @@ id|tty
 op_logical_and
 id|edge_port-&gt;open
 )paren
-id|wake_up_interruptible
+id|tty_wakeup
 c_func
 (paren
-op_amp
-id|tty-&gt;write_wait
+id|tty
 )paren
 suffix:semicolon
 multiline_comment|/* we have completed the command */
@@ -3041,7 +3156,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-multiline_comment|/* force low_latency on so that our tty_push actually forces the data through, &n;&t;   otherwise it is scheduled, and with high data rates (like with OHCI) data&n;&t;   can get lost. */
 r_if
 c_cond
 (paren
@@ -3049,7 +3163,7 @@ id|port-&gt;tty
 )paren
 id|port-&gt;tty-&gt;low_latency
 op_assign
-l_int|1
+id|low_latency
 suffix:semicolon
 multiline_comment|/* see if we&squot;ve set up our endpoint info yet (can&squot;t set it up in edge_startup&n;&t;   as the structures were not set up at that time.) */
 id|serial
@@ -3175,6 +3289,10 @@ id|edge_bulk_in_callback
 comma
 id|edge_serial
 )paren
+suffix:semicolon
+id|edge_serial-&gt;read_in_progress
+op_assign
+id|FALSE
 suffix:semicolon
 multiline_comment|/* start interrupt read for this edgeport&n;&t;&t; * this interrupt will continue as long as the edgeport is connected */
 id|response
@@ -3429,6 +3547,10 @@ l_int|0
 comma
 id|GFP_KERNEL
 )paren
+suffix:semicolon
+id|edge_port-&gt;write_in_progress
+op_assign
+id|FALSE
 suffix:semicolon
 r_if
 c_cond
@@ -3952,6 +4074,10 @@ id|usb_free_urb
 id|edge_port-&gt;write_urb
 )paren
 suffix:semicolon
+id|edge_port-&gt;write_urb
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -3964,6 +4090,10 @@ c_func
 (paren
 id|edge_port-&gt;txfifo.fifo
 )paren
+suffix:semicolon
+id|edge_port-&gt;txfifo.fifo
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 id|dbg
@@ -4024,6 +4154,10 @@ suffix:semicolon
 r_int
 id|secondhalf
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -4050,6 +4184,15 @@ id|fifo
 op_assign
 op_amp
 id|edge_port-&gt;txfifo
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|edge_port-&gt;ep_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 singleline_comment|// calculate number of bytes to put in fifo
 id|copySize
@@ -4104,8 +4247,8 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|finish_write
 suffix:semicolon
 )brace
 singleline_comment|// queue the data&t;
@@ -4266,6 +4409,17 @@ id|secondhalf
 suffix:semicolon
 singleline_comment|// No need to check for wrap since we can not get to end of fifo in this part
 )brace
+id|finish_write
+suffix:colon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|edge_port-&gt;ep_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|send_more_port_data
 c_func
 (paren
@@ -4352,6 +4506,10 @@ suffix:semicolon
 r_int
 id|secondhalf
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -4360,6 +4518,15 @@ comma
 id|__FUNCTION__
 comma
 id|edge_port-&gt;port-&gt;number
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|edge_port-&gt;ep_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -4391,7 +4558,8 @@ comma
 id|edge_port-&gt;write_in_progress
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|exit_send
 suffix:semicolon
 )brace
 singleline_comment|// since the amount of data in the fifo will always fit into the
@@ -4428,7 +4596,8 @@ comma
 id|edge_port-&gt;txCredits
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|exit_send
 suffix:semicolon
 )brace
 singleline_comment|// lock this write
@@ -4500,7 +4669,8 @@ id|edge_port-&gt;write_in_progress
 op_assign
 id|FALSE
 suffix:semicolon
-r_return
+r_goto
+id|exit_send
 suffix:semicolon
 )brace
 id|buffer
@@ -4707,12 +4877,17 @@ id|status
 )paren
 (brace
 multiline_comment|/* something went wrong */
-id|dbg
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - usb_submit_urb(write bulk) failed&quot;
+op_amp
+id|edge_port-&gt;port-&gt;dev
+comma
+l_string|&quot;%s - usb_submit_urb(write bulk) failed, status = %d, data lost&bslash;n&quot;
 comma
 id|__FUNCTION__
+comma
+id|status
 )paren
 suffix:semicolon
 id|edge_port-&gt;write_in_progress
@@ -4743,6 +4918,17 @@ comma
 id|fifo-&gt;count
 )paren
 suffix:semicolon
+id|exit_send
+suffix:colon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|edge_port-&gt;ep_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; * edge_write_room&n; *&t;this function is called by the tty driver when it wants to know how many&n; *&t;bytes of data we can accept for a specific port.&n; *&t;If successful, we return the amount of room that we have for this port&n; *&t;(the txCredits), &n; *&t;Otherwise we return a negative error number.&n; *****************************************************************************/
 DECL|function|edge_write_room
@@ -4769,6 +4955,10 @@ id|port
 suffix:semicolon
 r_int
 id|room
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 id|dbg
 c_func
@@ -4831,11 +5021,29 @@ id|EINVAL
 suffix:semicolon
 )brace
 singleline_comment|// total of both buffers is still txCredit
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|edge_port-&gt;ep_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|room
 op_assign
 id|edge_port-&gt;txCredits
 op_minus
 id|edge_port-&gt;txfifo.count
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|edge_port-&gt;ep_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|dbg
 c_func
@@ -4876,6 +5084,10 @@ id|port
 suffix:semicolon
 r_int
 id|num_chars
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 id|dbg
 c_func
@@ -4927,6 +5139,15 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|edge_port-&gt;ep_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|num_chars
 op_assign
 id|edge_port-&gt;maxTxCredits
@@ -4934,6 +5155,15 @@ op_minus
 id|edge_port-&gt;txCredits
 op_plus
 id|edge_port-&gt;txfifo.count
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|edge_port-&gt;ep_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5380,25 +5610,13 @@ id|old_termios
 r_if
 c_cond
 (paren
-(paren
 id|cflag
 op_eq
 id|old_termios-&gt;c_cflag
-)paren
 op_logical_and
-(paren
-id|RELEVANT_IFLAG
-c_func
-(paren
 id|tty-&gt;termios-&gt;c_iflag
-)paren
 op_eq
-id|RELEVANT_IFLAG
-c_func
-(paren
 id|old_termios-&gt;c_iflag
-)paren
-)paren
 )paren
 (brace
 id|dbg
@@ -5422,11 +5640,7 @@ id|__FUNCTION__
 comma
 id|tty-&gt;termios-&gt;c_cflag
 comma
-id|RELEVANT_IFLAG
-c_func
-(paren
 id|tty-&gt;termios-&gt;c_iflag
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -5444,11 +5658,7 @@ id|__FUNCTION__
 comma
 id|old_termios-&gt;c_cflag
 comma
-id|RELEVANT_IFLAG
-c_func
-(paren
 id|old_termios-&gt;c_iflag
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -5525,6 +5735,19 @@ id|result
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|edge_port-&gt;ep_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5550,6 +5773,15 @@ op_assign
 id|TIOCSER_TEMT
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|edge_port-&gt;ep_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6653,7 +6885,7 @@ suffix:semicolon
 multiline_comment|/*****************************************************************************&n; * process_rcvd_data&n; *&t;this function handles the data received on the bulk in pipe.&n; *****************************************************************************/
 DECL|function|process_rcvd_data
 r_static
-r_int
+r_void
 id|process_rcvd_data
 (paren
 r_struct
@@ -6690,9 +6922,6 @@ id|lastBufferLength
 suffix:semicolon
 id|__u16
 id|rxLen
-suffix:semicolon
-r_int
-id|i
 suffix:semicolon
 id|dbg
 c_func
@@ -7018,56 +7247,17 @@ comma
 id|edge_serial-&gt;rxPort
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|rxLen
-suffix:semicolon
-op_increment
-id|i
-)paren
-(brace
-multiline_comment|/* if we insert more than TTY_FLIPBUF_SIZE characters, we drop them. */
-r_if
-c_cond
-(paren
-id|tty-&gt;flip.count
-op_ge
-id|TTY_FLIPBUF_SIZE
-)paren
-(brace
-id|tty_flip_buffer_push
+id|edge_tty_recv
 c_func
 (paren
-id|tty
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* this doesn&squot;t actually push the data through unless tty-&gt;low_latency is set */
-id|tty_insert_flip_char
-c_func
-(paren
+op_amp
+id|edge_serial-&gt;serial-&gt;dev-&gt;dev
+comma
 id|tty
 comma
 id|buffer
-(braket
-id|i
-)braket
 comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-id|tty_flip_buffer_push
-c_func
-(paren
-id|tty
+id|rxLen
 )paren
 suffix:semicolon
 )brace
@@ -7116,9 +7306,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; * process_rcvd_status&n; *&t;this function handles the any status messages received on the bulk in pipe.&n; *****************************************************************************/
 DECL|function|process_rcvd_status
@@ -7480,6 +7667,143 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/*****************************************************************************&n; * edge_tty_recv&n; *&t;this function passes data on to the tty flip buffer&n; *****************************************************************************/
+DECL|function|edge_tty_recv
+r_static
+r_void
+id|edge_tty_recv
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_struct
+id|tty_struct
+op_star
+id|tty
+comma
+r_int
+r_char
+op_star
+id|data
+comma
+r_int
+id|length
+)paren
+(brace
+r_int
+id|cnt
+suffix:semicolon
+r_do
+(brace
+r_if
+c_cond
+(paren
+id|tty-&gt;flip.count
+op_ge
+id|TTY_FLIPBUF_SIZE
+)paren
+(brace
+id|tty_flip_buffer_push
+c_func
+(paren
+id|tty
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tty-&gt;flip.count
+op_ge
+id|TTY_FLIPBUF_SIZE
+)paren
+(brace
+id|dev_err
+c_func
+(paren
+id|dev
+comma
+l_string|&quot;%s - dropping data, %d bytes lost&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|length
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+)brace
+id|cnt
+op_assign
+id|min
+c_func
+(paren
+id|length
+comma
+id|TTY_FLIPBUF_SIZE
+op_minus
+id|tty-&gt;flip.count
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|tty-&gt;flip.char_buf_ptr
+comma
+id|data
+comma
+id|cnt
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|tty-&gt;flip.flag_buf_ptr
+comma
+l_int|0
+comma
+id|cnt
+)paren
+suffix:semicolon
+id|tty-&gt;flip.char_buf_ptr
+op_add_assign
+id|cnt
+suffix:semicolon
+id|tty-&gt;flip.flag_buf_ptr
+op_add_assign
+id|cnt
+suffix:semicolon
+id|tty-&gt;flip.count
+op_add_assign
+id|cnt
+suffix:semicolon
+id|data
+op_add_assign
+id|cnt
+suffix:semicolon
+id|length
+op_sub_assign
+id|cnt
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|length
+OG
+l_int|0
+)paren
+suffix:semicolon
+id|tty_flip_buffer_push
+c_func
+(paren
+id|tty
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*****************************************************************************&n; * handle_new_msr&n; *&t;this function handles any change to the msr register for a port.&n; *****************************************************************************/
 DECL|function|handle_new_msr
 r_static
@@ -7696,24 +8020,20 @@ id|lsrData
 op_logical_and
 id|edge_port-&gt;port-&gt;tty
 )paren
-(brace
-id|tty_insert_flip_char
+id|edge_tty_recv
 c_func
 (paren
+op_amp
+id|edge_port-&gt;port-&gt;dev
+comma
 id|edge_port-&gt;port-&gt;tty
 comma
+op_amp
 id|data
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
-id|tty_flip_buffer_push
-c_func
-(paren
-id|edge_port-&gt;port-&gt;tty
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* update input line counters */
 id|icount
 op_assign
@@ -8591,12 +8911,17 @@ id|status
 )paren
 (brace
 multiline_comment|/* something went wrong */
-id|dbg
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - usb_submit_urb(write bulk) failed&quot;
+op_amp
+id|edge_port-&gt;port-&gt;dev
+comma
+l_string|&quot;%s - usb_submit_urb(write command) failed, status = %d&bslash;n&quot;
 comma
 id|__FUNCTION__
+comma
+id|status
 )paren
 suffix:semicolon
 id|usb_kill_urb
@@ -8610,6 +8935,9 @@ c_func
 (paren
 id|urb
 )paren
+suffix:semicolon
+id|CmdUrbs
+op_decrement
 suffix:semicolon
 r_return
 id|status
@@ -8919,12 +9247,6 @@ suffix:semicolon
 id|__u16
 id|custom
 suffix:semicolon
-id|__u16
-id|round1
-suffix:semicolon
-id|__u16
-id|round
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -8989,6 +9311,10 @@ r_if
 c_cond
 (paren
 id|baudrate
+OG
+l_int|50
+op_logical_and
+id|baudrate
 OL
 l_int|230400
 )paren
@@ -9000,50 +9326,17 @@ op_assign
 id|__u16
 )paren
 (paren
+(paren
 l_int|230400L
+op_plus
+id|baudrate
+op_div
+l_int|2
+)paren
 op_div
 id|baudrate
 )paren
 suffix:semicolon
-singleline_comment|// Check for round off
-id|round1
-op_assign
-(paren
-id|__u16
-)paren
-(paren
-l_int|2304000L
-op_div
-id|baudrate
-)paren
-suffix:semicolon
-id|round
-op_assign
-(paren
-id|__u16
-)paren
-(paren
-id|round1
-op_minus
-(paren
-id|custom
-op_star
-l_int|10
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|round
-OG
-l_int|4
-)paren
-(brace
-id|custom
-op_increment
-suffix:semicolon
-)brace
 op_star
 id|divisor
 op_assign
@@ -9203,6 +9496,10 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; * change_port_settings&n; *&t;This routine is called to set the UART on the device to match the specified&n; *&t;new settings.&n; *****************************************************************************/
+macro_line|#ifndef CMSPAR
+DECL|macro|CMSPAR
+mdefine_line|#define CMSPAR 0
+macro_line|#endif
 DECL|function|change_port_settings
 r_static
 r_void
@@ -9424,6 +9721,52 @@ op_amp
 id|PARENB
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|cflag
+op_amp
+id|CMSPAR
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cflag
+op_amp
+id|PARODD
+)paren
+(brace
+id|lParity
+op_assign
+id|LCR_PAR_MARK
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - parity = mark&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|lParity
+op_assign
+id|LCR_PAR_SPACE
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - parity = space&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -10507,7 +10850,11 @@ c_func
 id|record-&gt;Addr
 )paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|record-&gt;Len
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -10643,7 +10990,7 @@ c_func
 op_amp
 id|serial-&gt;dev-&gt;dev
 comma
-l_string|&quot;%s - Out of memory&quot;
+l_string|&quot;%s - Out of memory&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -10664,6 +11011,13 @@ r_sizeof
 r_struct
 id|edgeport_serial
 )paren
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|edge_serial-&gt;es_lock
 )paren
 suffix:semicolon
 id|edge_serial-&gt;serial
@@ -10869,7 +11223,7 @@ c_func
 op_amp
 id|serial-&gt;dev-&gt;dev
 comma
-l_string|&quot;%s - Out of memory&quot;
+l_string|&quot;%s - Out of memory&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -10904,6 +11258,13 @@ r_sizeof
 r_struct
 id|edgeport_port
 )paren
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|edge_port-&gt;ep_lock
 )paren
 suffix:semicolon
 id|edge_port-&gt;port
@@ -11224,6 +11585,26 @@ c_func
 id|debug
 comma
 l_string|&quot;Debug enabled or not&quot;
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|low_latency
+comma
+r_bool
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;Low latency enabled or not&quot;
 )paren
 suffix:semicolon
 eof

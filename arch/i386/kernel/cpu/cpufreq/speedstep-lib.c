@@ -8,15 +8,8 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &quot;speedstep-lib.h&quot;
-multiline_comment|/* DEBUG&n; *   Define it if you want verbose debug output, e.g. for bug reporting&n; */
-singleline_comment|//#define SPEEDSTEP_DEBUG
-macro_line|#ifdef SPEEDSTEP_DEBUG
 DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) printk(msg)
-macro_line|#else
-DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) do { } while(0)
-macro_line|#endif
+mdefine_line|#define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_DRIVER, &quot;speedstep-lib&quot;, msg)
 macro_line|#ifdef CONFIG_X86_SPEEDSTEP_RELAXED_CAP_CHECK
 DECL|variable|relaxed_check
 r_static
@@ -222,8 +215,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;speedstep-lib: P3 - MSR_IA32_EBL_CR_POWERON: 0x%x 0x%x&bslash;n&quot;
+l_string|&quot;P3 - MSR_IA32_EBL_CR_POWERON: 0x%x 0x%x&bslash;n&quot;
 comma
 id|msr_lo
 comma
@@ -283,10 +275,18 @@ id|processor
 op_eq
 id|SPEEDSTEP_PROCESSOR_PIII_C_EARLY
 )paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;workaround for early PIIIs&bslash;n&quot;
+)paren
+suffix:semicolon
 id|msr_lo
 op_and_assign
 l_int|0x03c00000
 suffix:semicolon
+)brace
 r_else
 id|msr_lo
 op_and_assign
@@ -328,6 +328,30 @@ id|j
 op_increment
 suffix:semicolon
 )brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;speed is %u&bslash;n&quot;
+comma
+(paren
+id|msr_decode_mult
+(braket
+id|j
+)braket
+dot
+id|ratio
+op_star
+id|msr_decode_fsb
+(braket
+id|i
+)braket
+dot
+id|value
+op_star
+l_int|100
+)paren
+)paren
+suffix:semicolon
 r_return
 (paren
 id|msr_decode_mult
@@ -376,8 +400,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;speedstep-lib: PM - MSR_IA32_EBL_CR_POWERON: 0x%x 0x%x&bslash;n&quot;
+l_string|&quot;PM - MSR_IA32_EBL_CR_POWERON: 0x%x 0x%x&bslash;n&quot;
 comma
 id|msr_lo
 comma
@@ -421,10 +444,17 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;speedstep-lib: bits 22-26 are 0x%x&bslash;n&quot;
+l_string|&quot;bits 22-26 are 0x%x, speed is %u&bslash;n&quot;
 comma
 id|msr_tmp
+comma
+(paren
+id|msr_tmp
+op_star
+l_int|100
+op_star
+l_int|1000
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -481,8 +511,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;speedstep-lib: P4 - MSR_EBC_FREQUENCY_ID: 0x%x 0x%x&bslash;n&quot;
+l_string|&quot;P4 - MSR_EBC_FREQUENCY_ID: 0x%x 0x%x&bslash;n&quot;
 comma
 id|msr_lo
 comma
@@ -580,12 +609,17 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;speedstep-lib: P4 - FSB %u kHz; Multiplier %u&bslash;n&quot;
+l_string|&quot;P4 - FSB %u kHz; Multiplier %u; Speed %u kHz&bslash;n&quot;
 comma
 id|fsb
 comma
 id|mult
+comma
+(paren
+id|fsb
+op_star
+id|mult
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -691,6 +725,16 @@ id|msr_lo
 comma
 id|msr_hi
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;x86: %x, model: %x&bslash;n&quot;
+comma
+id|c-&gt;x86
+comma
+id|c-&gt;x86_model
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -751,7 +795,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;ebx value is %x, x86_mask is %x&bslash;n&quot;
 comma
 id|ebx
@@ -863,6 +906,14 @@ c_func
 l_int|0x00000001
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;ebx is %x&bslash;n&quot;
+comma
+id|ebx
+)paren
+suffix:semicolon
 id|ebx
 op_and_assign
 l_int|0x000000FF
@@ -899,8 +950,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;cpufreq: Coppermine: MSR_IA32_EBL_CR_POWERON is 0x%x, 0x%x&bslash;n&quot;
+l_string|&quot;Coppermine: MSR_IA32_EBL_CR_POWERON is 0x%x, 0x%x&bslash;n&quot;
 comma
 id|msr_lo
 comma
@@ -935,8 +985,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;cpufreq: Coppermine: MSR_IA32_PLATFORM ID is 0x%x, 0x%x&bslash;n&quot;
+l_string|&quot;Coppermine: MSR_IA32_PLATFORM ID is 0x%x, 0x%x&bslash;n&quot;
 comma
 id|msr_lo
 comma
@@ -981,9 +1030,17 @@ id|c-&gt;x86_mask
 op_eq
 l_int|0x01
 )paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;early PIII version&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 id|SPEEDSTEP_PROCESSOR_PIII_C_EARLY
 suffix:semicolon
+)brace
 r_else
 r_return
 id|SPEEDSTEP_PROCESSOR_PIII_C
@@ -1077,6 +1134,12 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;trying to determine both speeds&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* get current speed */
 id|prev_speed
 op_assign
@@ -1095,6 +1158,14 @@ id|prev_speed
 r_return
 op_minus
 id|EIO
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;previous seped is %u&bslash;n&quot;
+comma
+id|prev_speed
+)paren
 suffix:semicolon
 id|local_irq_save
 c_func
@@ -1135,6 +1206,15 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;low seped is %u&bslash;n&quot;
+comma
+op_star
+id|low_speed
+)paren
+suffix:semicolon
 multiline_comment|/* switch to high state */
 id|set_state
 c_func
@@ -1168,6 +1248,15 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;high seped is %u&bslash;n&quot;
+comma
+op_star
+id|high_speed
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

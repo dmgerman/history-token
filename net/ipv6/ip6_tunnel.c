@@ -341,8 +341,7 @@ id|t-&gt;next
 r_if
 c_cond
 (paren
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 id|local
@@ -351,8 +350,7 @@ op_amp
 id|t-&gt;parms.laddr
 )paren
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 id|remote
@@ -894,8 +892,7 @@ id|t-&gt;next
 r_if
 c_cond
 (paren
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 id|local
@@ -904,8 +901,7 @@ op_amp
 id|t-&gt;parms.laddr
 )paren
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 id|remote
@@ -2252,8 +2248,7 @@ id|hdr
 )paren
 (brace
 r_return
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp

@@ -1,4 +1,4 @@
-multiline_comment|/* linux/include/asm/arch-s3c2410/regs-sdi.h&n; *&n; * Copyright (c) 2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;      http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 MMC/SDIO register definitions&n; *&n; *  Changelog:&n; *    18-Aug-2004 Ben Dooks      Created initial file&n;*/
+multiline_comment|/* linux/include/asm/arch-s3c2410/regs-sdi.h&n; *&n; * Copyright (c) 2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;      http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 MMC/SDIO register definitions&n; *&n; *  Changelog:&n; *    18-Aug-2004 Ben Dooks      Created initial file&n; *    29-Nov-2004 Koen Martens   Added some missing defines, fixed duplicates&n; *    29-Nov-2004 Ben Dooks&t; Updated Koen&squot;s patch&n;*/
 macro_line|#ifndef __ASM_ARM_REGS_SDI
 DECL|macro|__ASM_ARM_REGS_SDI
 mdefine_line|#define __ASM_ARM_REGS_SDI &quot;regs-sdi.h&quot;
@@ -86,8 +86,11 @@ DECL|macro|S3C2410_SDIDCON_DMAEN
 mdefine_line|#define S3C2410_SDIDCON_DMAEN         (1&lt;&lt;15)
 DECL|macro|S3C2410_SDIDCON_STOP
 mdefine_line|#define S3C2410_SDIDCON_STOP          (1&lt;&lt;14)
-DECL|macro|S3C2410_SDIDCON_XFER_MASK
-mdefine_line|#define S3C2410_SDIDCON_XFER_MASK     (3&lt;&lt;12)
+DECL|macro|S3C2410_SDIDCON_DATMODE
+mdefine_line|#define S3C2410_SDIDCON_DATMODE&t;      (3&lt;&lt;12)
+DECL|macro|S3C2410_SDIDCON_BLKNUM
+mdefine_line|#define S3C2410_SDIDCON_BLKNUM        (0x7ff)
+multiline_comment|/* constants for S3C2410_SDIDCON_DATMODE */
 DECL|macro|S3C2410_SDIDCON_XFER_READY
 mdefine_line|#define S3C2410_SDIDCON_XFER_READY    (0&lt;&lt;12)
 DECL|macro|S3C2410_SDIDCON_XFER_CHKSTART
@@ -103,7 +106,7 @@ mdefine_line|#define S3C2410_SDIDSTA_RDYWAITREQ    (1&lt;&lt;10)
 DECL|macro|S3C2410_SDIDSTA_SDIOIRQDETECT
 mdefine_line|#define S3C2410_SDIDSTA_SDIOIRQDETECT (1&lt;&lt;9)
 DECL|macro|S3C2410_SDIDSTA_FIFOFAIL
-mdefine_line|#define S3C2410_SDIDSTA_FIFOFAIL      (1&lt;&lt;8)
+mdefine_line|#define S3C2410_SDIDSTA_FIFOFAIL      (1&lt;&lt;8)&t;/* reserved on 2440 */
 DECL|macro|S3C2410_SDIDSTA_CRCFAIL
 mdefine_line|#define S3C2410_SDIDSTA_CRCFAIL       (1&lt;&lt;7)
 DECL|macro|S3C2410_SDIDSTA_RXCRCFAIL
@@ -114,24 +117,26 @@ DECL|macro|S3C2410_SDIDSTA_XFERFINISH
 mdefine_line|#define S3C2410_SDIDSTA_XFERFINISH    (1&lt;&lt;4)
 DECL|macro|S3C2410_SDIDSTA_BUSYFINISH
 mdefine_line|#define S3C2410_SDIDSTA_BUSYFINISH    (1&lt;&lt;3)
+DECL|macro|S3C2410_SDIDSTA_SBITERR
+mdefine_line|#define S3C2410_SDIDSTA_SBITERR       (1&lt;&lt;2)&t;/* reserved on 2410a/2440 */
 DECL|macro|S3C2410_SDIDSTA_TXDATAON
 mdefine_line|#define S3C2410_SDIDSTA_TXDATAON      (1&lt;&lt;1)
 DECL|macro|S3C2410_SDIDSTA_RXDATAON
 mdefine_line|#define S3C2410_SDIDSTA_RXDATAON      (1&lt;&lt;0)
-DECL|macro|S3C2410_SDIFSTA_TXFULL
-mdefine_line|#define S3C2410_SDIFSTA_TXFULL         (1&lt;&lt;13)
-DECL|macro|S3C2410_SDIFSTA_RXFULL
-mdefine_line|#define S3C2410_SDIFSTA_RXFULL         (1&lt;&lt;12)
+DECL|macro|S3C2410_SDIFSTA_TFDET
+mdefine_line|#define S3C2410_SDIFSTA_TFDET          (1&lt;&lt;13)
+DECL|macro|S3C2410_SDIFSTA_RFDET
+mdefine_line|#define S3C2410_SDIFSTA_RFDET          (1&lt;&lt;12)
 DECL|macro|S3C2410_SDIFSTA_TXHALF
 mdefine_line|#define S3C2410_SDIFSTA_TXHALF         (1&lt;&lt;11)
 DECL|macro|S3C2410_SDIFSTA_TXEMPTY
 mdefine_line|#define S3C2410_SDIFSTA_TXEMPTY        (1&lt;&lt;10)
-DECL|macro|S3C2410_SDIFSTA_RXLAST
-mdefine_line|#define S3C2410_SDIFSTA_RXLAST         (1&lt;&lt;9)
-DECL|macro|S3C2410_SDIFSTA_RXFULL
-mdefine_line|#define S3C2410_SDIFSTA_RXFULL         (1&lt;&lt;8)
-DECL|macro|S3C2410_SDIFSTA_RXHALF
-mdefine_line|#define S3C2410_SDIFSTA_RXHALF         (1&lt;&lt;7)
+DECL|macro|S3C2410_SDIFSTA_RFLAST
+mdefine_line|#define S3C2410_SDIFSTA_RFLAST         (1&lt;&lt;9)
+DECL|macro|S3C2410_SDIFSTA_RFFULL
+mdefine_line|#define S3C2410_SDIFSTA_RFFULL         (1&lt;&lt;8)
+DECL|macro|S3C2410_SDIFSTA_RFHALF
+mdefine_line|#define S3C2410_SDIFSTA_RFHALF         (1&lt;&lt;7)
 DECL|macro|S3C2410_SDIFSTA_COUNTMASK
 mdefine_line|#define S3C2410_SDIFSTA_COUNTMASK      (0x7f)
 DECL|macro|S3C2410_SDIIMSK_RESPONSECRC
@@ -158,6 +163,8 @@ DECL|macro|S3C2410_SDIIMSK_DATAFINISH
 mdefine_line|#define S3C2410_SDIIMSK_DATAFINISH     (1&lt;&lt;7)
 DECL|macro|S3C2410_SDIIMSK_BUSYFINISH
 mdefine_line|#define S3C2410_SDIIMSK_BUSYFINISH     (1&lt;&lt;6)
+DECL|macro|S3C2410_SDIIMSK_SBITERR
+mdefine_line|#define S3C2410_SDIIMSK_SBITERR        (1&lt;&lt;5)&t;/* reserved 2440/2410a */
 DECL|macro|S3C2410_SDIIMSK_TXFIFOHALF
 mdefine_line|#define S3C2410_SDIIMSK_TXFIFOHALF     (1&lt;&lt;4)
 DECL|macro|S3C2410_SDIIMSK_TXFIFOEMPTY

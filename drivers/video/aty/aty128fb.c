@@ -9200,7 +9200,7 @@ c_cond
 (paren
 id|blank
 op_amp
-id|VESA_VSYNC_SUSPEND
+id|FB_BLANK_VSYNC_SUSPEND
 )paren
 id|state
 op_or_assign
@@ -9211,7 +9211,7 @@ c_cond
 (paren
 id|blank
 op_amp
-id|VESA_HSYNC_SUSPEND
+id|FB_BLANK_HSYNC_SUSPEND
 )paren
 id|state
 op_or_assign
@@ -9222,7 +9222,7 @@ c_cond
 (paren
 id|blank
 op_amp
-id|VESA_POWERDOWN
+id|FB_BLANK_POWERDOWN
 )paren
 id|state
 op_or_assign
@@ -10731,7 +10731,7 @@ l_int|2
 op_logical_or
 id|state
 op_eq
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 )paren
 r_return
 l_int|0
@@ -10814,7 +10814,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_assign
 id|state
 suffix:semicolon
@@ -10855,7 +10855,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_eq
 l_int|0
 )paren
@@ -10871,7 +10871,7 @@ multiline_comment|/* Wakeup chip */
 r_if
 c_cond
 (paren
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_eq
 l_int|2
 )paren
@@ -10951,7 +10951,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_assign
 l_int|0
 suffix:semicolon

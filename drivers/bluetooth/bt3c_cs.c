@@ -148,6 +148,7 @@ DECL|typedef|bt3c_info_t
 )brace
 id|bt3c_info_t
 suffix:semicolon
+r_static
 r_void
 id|bt3c_config
 c_func
@@ -157,6 +158,7 @@ op_star
 id|link
 )paren
 suffix:semicolon
+r_static
 r_void
 id|bt3c_release
 c_func
@@ -166,6 +168,7 @@ op_star
 id|link
 )paren
 suffix:semicolon
+r_static
 r_int
 id|bt3c_event
 c_func
@@ -188,6 +191,7 @@ id|dev_info
 op_assign
 l_string|&quot;bt3c_cs&quot;
 suffix:semicolon
+r_static
 id|dev_link_t
 op_star
 id|bt3c_attach
@@ -196,6 +200,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_static
 r_void
 id|bt3c_detach
 c_func
@@ -242,6 +247,7 @@ mdefine_line|#define ADDR_H   3
 DECL|macro|CONTROL
 mdefine_line|#define CONTROL  4
 DECL|function|bt3c_address
+r_static
 r_inline
 r_void
 id|bt3c_address
@@ -286,6 +292,7 @@ id|ADDR_H
 suffix:semicolon
 )brace
 DECL|function|bt3c_put
+r_static
 r_inline
 r_void
 id|bt3c_put
@@ -330,6 +337,7 @@ id|DATA_H
 suffix:semicolon
 )brace
 DECL|function|bt3c_io_write
+r_static
 r_inline
 r_void
 id|bt3c_io_write
@@ -366,6 +374,7 @@ id|value
 suffix:semicolon
 )brace
 DECL|function|bt3c_get
+r_static
 r_inline
 r_int
 r_int
@@ -406,6 +415,7 @@ id|value
 suffix:semicolon
 )brace
 DECL|function|bt3c_read
+r_static
 r_inline
 r_int
 r_int
@@ -2205,6 +2215,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|bt3c_open
+r_static
 r_int
 id|bt3c_open
 c_func
@@ -2449,6 +2460,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|bt3c_close
+r_static
 r_int
 id|bt3c_close
 c_func
@@ -2511,6 +2523,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|bt3c_attach
+r_static
 id|dev_link_t
 op_star
 id|bt3c_attach
@@ -2753,6 +2766,7 @@ id|link
 suffix:semicolon
 )brace
 DECL|function|bt3c_detach
+r_static
 r_void
 id|bt3c_detach
 c_func
@@ -3022,6 +3036,7 @@ id|parse
 suffix:semicolon
 )brace
 DECL|function|bt3c_config
+r_static
 r_void
 id|bt3c_config
 c_func
@@ -3653,6 +3668,7 @@ id|link
 suffix:semicolon
 )brace
 DECL|function|bt3c_release
+r_static
 r_void
 id|bt3c_release
 c_func
@@ -3716,6 +3732,7 @@ id|DEV_CONFIG
 suffix:semicolon
 )brace
 DECL|function|bt3c_event
+r_static
 r_int
 id|bt3c_event
 c_func

@@ -131,6 +131,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|tcf_mirred_init
 id|tcf_mirred_init
@@ -501,6 +502,7 @@ r_return
 r_new
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|tcf_mirred_cleanup
 id|tcf_mirred_cleanup
@@ -550,6 +552,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|tcf_mirred
 id|tcf_mirred
@@ -884,6 +887,7 @@ r_return
 id|p-&gt;action
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|tcf_mirred_dump
 id|tcf_mirred_dump

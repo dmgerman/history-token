@@ -3,7 +3,7 @@ DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA&t;&t;&t;ZFCP_LOG_AREA_SCSI
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_SCSI_REVISION
-mdefine_line|#define ZFCP_SCSI_REVISION &quot;$Revision: 1.71 $&quot;
+mdefine_line|#define ZFCP_SCSI_REVISION &quot;$Revision: 1.73 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_void

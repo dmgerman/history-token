@@ -471,6 +471,10 @@ mdefine_line|#define HARD_RESET_NOW() ({&t;&t;&bslash;&n;        asm(&quot;&t;&t
 macro_line|#elif defined(CONFIG_NETtel) || defined(CONFIG_eLIA) || defined(CONFIG_DISKtel) || defined(CONFIG_SECUREEDGEMP3) || defined(CONFIG_CLEOPATRA)
 DECL|macro|HARD_RESET_NOW
 mdefine_line|#define HARD_RESET_NOW() ({&t;&t;&bslash;&n;        asm(&quot;&t;&t;&t;&t;&bslash;&n;&t;movew #0x2700, %sr;&t;&t;&bslash;&n;&t;moveal #0x10000044, %a0;&t;&bslash;&n;&t;movel #0xffffffff, (%a0);&t;&bslash;&n;&t;moveal #0x10000001, %a0;&t;&bslash;&n;&t;moveb #0x00, (%a0);&t;&t;&bslash;&n;        moveal #0xf0000004, %a0;&t;&bslash;&n;        moveal (%a0), %a0;&t;&t;&bslash;&n;        jmp (%a0);&t;&t;&t;&bslash;&n;        &quot;);&t;&t;&t;&t;&bslash;&n;})
+macro_line|#elif defined(CONFIG_M528x)
+multiline_comment|/*&n; * The MCF528x has a bit (SOFTRST) in memory (Reset Control Register RCR),&n; * that when set, resets the MCF528x.&n; */
+DECL|macro|HARD_RESET_NOW
+mdefine_line|#define HARD_RESET_NOW() &bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned char volatile *reset;&t;&t;&bslash;&n;&t;asm(&quot;move.w&t;#0x2700, %sr&quot;);&t;&t;&bslash;&n;&t;reset = ((volatile unsigned short *)(MCF_IPSBAR + 0x110000));&t;&bslash;&n;&t;while(1)&t;&t;&t;&t;&bslash;&n;&t;*reset |= (0x01 &lt;&lt; 7);&bslash;&n;})
 macro_line|#else
 DECL|macro|HARD_RESET_NOW
 mdefine_line|#define HARD_RESET_NOW() ({&t;&t;&bslash;&n;        asm(&quot;&t;&t;&t;&t;&bslash;&n;&t;movew #0x2700, %sr;&t;&t;&bslash;&n;        moveal #0x4, %a0;&t;&t;&bslash;&n;        moveal (%a0), %a0;&t;&t;&bslash;&n;        jmp (%a0);&t;&t;&t;&bslash;&n;        &quot;);&t;&t;&t;&t;&bslash;&n;})

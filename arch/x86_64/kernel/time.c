@@ -1095,7 +1095,7 @@ c_cond
 (paren
 id|lost_count
 op_eq
-l_int|100
+l_int|1000
 op_logical_and
 op_logical_neg
 id|warned

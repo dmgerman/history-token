@@ -106,6 +106,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_get_gpe_status&n; *&n; * PARAMETERS:  gpe_event_info      - Info block for the GPE to queried&n; *              event_status        - Where the GPE status is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Return the status of a single GPE.&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 DECL|function|acpi_hw_get_gpe_status
 id|acpi_hw_get_gpe_status
@@ -250,6 +251,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_disable_gpe_block&n; *&n; * PARAMETERS:  gpe_xrupt_info      - GPE Interrupt info&n; *              gpe_block           - Gpe Block info&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Disable all GPEs within a GPE block&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_disable_gpe_block

@@ -113,15 +113,6 @@ r_void
 suffix:semicolon
 r_static
 r_void
-id|openpic_set_priority
-c_func
-(paren
-id|u_int
-id|pri
-)paren
-suffix:semicolon
-r_static
-r_void
 id|openpic_set_spurious
 c_func
 (paren
@@ -1839,9 +1830,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* notused */
 DECL|function|openpic_set_priority
-r_static
 r_void
-id|__init
 id|openpic_set_priority
 c_func
 (paren
@@ -3590,6 +3579,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|openpic_set_priority
+c_func
+(paren
+l_int|0xf
+)paren
+suffix:semicolon
 id|open_pic.enable
 op_assign
 id|openpic_cached_enable_irq
@@ -4039,6 +4034,12 @@ suffix:semicolon
 id|open_pic.disable
 op_assign
 id|openpic_disable_irq
+suffix:semicolon
+id|openpic_set_priority
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/s3c2440.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Samsung S3C2440 Mobile CPU support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *&t;24-Aug-2004 BJD  Start of s3c2440 support&n; *&t;12-Oct-2004 BJD&t; Moved clock info out to clock.c&n; *&t;01-Nov-2004 BJD  Fixed clock build code&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/s3c2440.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Samsung S3C2440 Mobile CPU support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *&t;24-Aug-2004 BJD  Start of s3c2440 support&n; *&t;12-Oct-2004 BJD&t; Moved clock info out to clock.c&n; *&t;01-Nov-2004 BJD  Fixed clock build code&n; *&t;09-Nov-2004 BJD  Added sysdev for power management&n; *&t;04-Nov-2004 BJD  New serial registration&n; *&t;15-Nov-2004 BJD  Rename the i2c device for the s3c2440&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
@@ -15,9 +16,14 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware/clock.h&gt;
 macro_line|#include &lt;asm/arch/regs-clock.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
+macro_line|#include &lt;asm/arch/regs-gpio.h&gt;
+macro_line|#include &lt;asm/arch/regs-gpioj.h&gt;
+macro_line|#include &lt;asm/arch/regs-dsc.h&gt;
 macro_line|#include &quot;s3c2440.h&quot;
 macro_line|#include &quot;clock.h&quot;
+macro_line|#include &quot;devs.h&quot;
 macro_line|#include &quot;cpu.h&quot;
+macro_line|#include &quot;pm.h&quot;
 DECL|variable|s3c2440_clock_tick_rate
 r_int
 id|s3c2440_clock_tick_rate
@@ -366,6 +372,78 @@ op_amp
 id|s3c_uart2
 )brace
 suffix:semicolon
+multiline_comment|/* uart initialisation */
+DECL|variable|s3c2440_uart_count
+r_static
+r_int
+id|__initdata
+id|s3c2440_uart_count
+suffix:semicolon
+DECL|function|s3c2440_init_uarts
+r_void
+id|__init
+id|s3c2440_init_uarts
+c_func
+(paren
+r_struct
+id|s3c2410_uartcfg
+op_star
+id|cfg
+comma
+r_int
+id|no
+)paren
+(brace
+r_struct
+id|platform_device
+op_star
+id|platdev
+suffix:semicolon
+r_int
+id|uart
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|uart
+op_assign
+l_int|0
+suffix:semicolon
+id|uart
+OL
+id|no
+suffix:semicolon
+id|uart
+op_increment
+comma
+id|cfg
+op_increment
+)paren
+(brace
+id|platdev
+op_assign
+id|uart_devices
+(braket
+id|cfg-&gt;hwport
+)braket
+suffix:semicolon
+id|s3c24xx_uart_devs
+(braket
+id|uart
+)braket
+op_assign
+id|platdev
+suffix:semicolon
+id|platdev-&gt;dev.platform_data
+op_assign
+id|cfg
+suffix:semicolon
+)brace
+id|s3c2440_uart_count
+op_assign
+id|uart
+suffix:semicolon
+)brace
 multiline_comment|/* s3c2440 specific clock sources */
 DECL|variable|s3c2440_clk_cam
 r_static
@@ -411,6 +489,150 @@ dot
 id|ctrlbit
 op_assign
 id|S3C2440_CLKCON_CAMERA
+)brace
+suffix:semicolon
+macro_line|#ifdef CONFIG_PM
+DECL|variable|s3c2440_sleep
+r_struct
+id|sleep_save
+id|s3c2440_sleep
+(braket
+)braket
+op_assign
+(brace
+id|SAVE_ITEM
+c_func
+(paren
+id|S3C2440_DSC0
+)paren
+comma
+id|SAVE_ITEM
+c_func
+(paren
+id|S3C2440_DSC1
+)paren
+comma
+id|SAVE_ITEM
+c_func
+(paren
+id|S3C2440_GPJDAT
+)paren
+comma
+id|SAVE_ITEM
+c_func
+(paren
+id|S3C2440_GPJCON
+)paren
+comma
+id|SAVE_ITEM
+c_func
+(paren
+id|S3C2440_GPJUP
+)paren
+)brace
+suffix:semicolon
+DECL|function|s3c2440_suspend
+r_static
+r_int
+id|s3c2440_suspend
+c_func
+(paren
+r_struct
+id|sys_device
+op_star
+id|dev
+comma
+id|u32
+id|state
+)paren
+(brace
+id|s3c2410_pm_do_save
+c_func
+(paren
+id|s3c2440_sleep
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|s3c2440_sleep
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|s3c2440_resume
+r_static
+r_int
+id|s3c2440_resume
+c_func
+(paren
+r_struct
+id|sys_device
+op_star
+id|dev
+)paren
+(brace
+id|s3c2410_pm_do_restore
+c_func
+(paren
+id|s3c2440_sleep
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|s3c2440_sleep
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|macro|s3c2440_suspend
+mdefine_line|#define s3c2440_suspend NULL
+DECL|macro|s3c2440_resume
+mdefine_line|#define s3c2440_resume  NULL
+macro_line|#endif
+DECL|variable|s3c2440_sysclass
+r_static
+r_struct
+id|sysdev_class
+id|s3c2440_sysclass
+op_assign
+(brace
+id|set_kset_name
+c_func
+(paren
+l_string|&quot;s3c2440-core&quot;
+)paren
+comma
+dot
+id|suspend
+op_assign
+id|s3c2440_suspend
+comma
+dot
+id|resume
+op_assign
+id|s3c2440_resume
+)brace
+suffix:semicolon
+DECL|variable|s3c2440_sysdev
+r_static
+r_struct
+id|sys_device
+id|s3c2440_sysdev
+op_assign
+(brace
+dot
+id|cls
+op_assign
+op_amp
+id|s3c2440_sysclass
+comma
 )brace
 suffix:semicolon
 DECL|function|s3c2440_map_io
@@ -657,6 +879,11 @@ op_amp
 id|s3c2440_clk_cam
 )paren
 suffix:semicolon
+multiline_comment|/* rename any peripherals used differing from the s3c2410 */
+id|s3c_device_i2c.name
+op_assign
+l_string|&quot;s3c2440-i2c&quot;
+suffix:semicolon
 )brace
 DECL|function|s3c2440_init
 r_int
@@ -678,16 +905,58 @@ l_string|&quot;S3C2440: Initialising architecture&bslash;n&quot;
 suffix:semicolon
 id|ret
 op_assign
+id|sysdev_class_register
+c_func
+(paren
+op_amp
+id|s3c2440_sysclass
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+l_int|0
+)paren
+id|ret
+op_assign
+id|sysdev_register
+c_func
+(paren
+op_amp
+id|s3c2440_sysdev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;failed to register sysdev for s3c2440&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+l_int|0
+)paren
+id|ret
+op_assign
 id|platform_add_devices
 c_func
 (paren
-id|uart_devices
+id|s3c24xx_uart_devs
 comma
-id|ARRAY_SIZE
-c_func
-(paren
-id|uart_devices
-)paren
+id|s3c2440_uart_count
 )paren
 suffix:semicolon
 r_return

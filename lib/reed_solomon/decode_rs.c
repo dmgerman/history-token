@@ -1,5 +1,5 @@
-multiline_comment|/* &n; * lib/reed_solomon/decode_rs.c&n; *&n; * Overview:&n; *   Generic Reed Solomon encoder / decoder library&n; *   &n; * Copyright 2002, Phil Karn, KA9Q&n; * May be used under the terms of the GNU General Public License (GPL)&n; *&n; * Adaption to the kernel by Thomas Gleixner (tglx@linutronix.de)&n; *&n; * $Id: decode_rs.c,v 1.5 2004/10/05 22:07:53 gleixner Exp $&n; *&n; */
-multiline_comment|/* Generic data witdh independend code which is included by the &n; * wrappers.&n; */
+multiline_comment|/* &n; * lib/reed_solomon/decode_rs.c&n; *&n; * Overview:&n; *   Generic Reed Solomon encoder / decoder library&n; *   &n; * Copyright 2002, Phil Karn, KA9Q&n; * May be used under the terms of the GNU General Public License (GPL)&n; *&n; * Adaption to the kernel by Thomas Gleixner (tglx@linutronix.de)&n; *&n; * $Id: decode_rs.c,v 1.6 2004/10/22 15:41:47 gleixner Exp $&n; *&n; */
+multiline_comment|/* Generic data width independent code which is included by the &n; * wrappers.&n; */
 (brace
 r_int
 id|deg_lambda
@@ -73,7 +73,7 @@ id|discr_r
 comma
 id|syn_error
 suffix:semicolon
-multiline_comment|/* Err+Eras Locator poly and syndrome poly The maximum value&n;&t; * of nroots is 8. So the neccecary stacksize will be about&n;&t; * 220 bytes max.&n;&t; */
+multiline_comment|/* Err+Eras Locator poly and syndrome poly The maximum value&n;&t; * of nroots is 8. So the necessary stack size will be about&n;&t; * 220 bytes max.&n;&t; */
 r_uint16
 id|lambda
 (braket
@@ -164,7 +164,7 @@ r_return
 op_minus
 id|ERANGE
 suffix:semicolon
-multiline_comment|/* Deos the caller provide the syndrome ? */
+multiline_comment|/* Does the caller provide the syndrome ? */
 r_if
 c_cond
 (paren

@@ -1012,9 +1012,12 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|policy-&gt;lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|init_timer
 c_func
@@ -1594,6 +1597,11 @@ c_cond
 id|delpol
 )paren
 r_break
+suffix:semicolon
+id|p
+op_assign
+op_amp
+id|pol-&gt;next
 suffix:semicolon
 )brace
 r_if

@@ -1,5 +1,6 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxface - External interfaces for ACPI events&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
 macro_line|#include &lt;acpi/acevents.h&gt;
@@ -11,6 +12,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;evxface&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_install_exception_handler&n; *&n; * PARAMETERS:  Handler         - Pointer to the handler function for the&n; *                                event&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Saves the pointer to the handler function&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 DECL|function|acpi_install_exception_handler
 id|acpi_install_exception_handler
@@ -85,6 +87,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_install_fixed_event_handler&n; *&n; * PARAMETERS:  Event           - Event type to enable.&n; *              Handler         - Pointer to the handler function for the&n; *                                event&n; *              Context         - Value passed to the handler on each GPE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Saves the pointer to the handler function and then enables the&n; *              event.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_install_fixed_event_handler
@@ -266,6 +269,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_install_fixed_event_handler
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_install_fixed_event_handler
+)paren
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_remove_fixed_event_handler&n; *&n; * PARAMETERS:  Event           - Event type to disable.&n; *              Handler         - Address of the handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Disables the event and unregisters the event handler.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_remove_fixed_event_handler
@@ -401,6 +411,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_remove_fixed_event_handler
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_remove_fixed_event_handler
+)paren
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_install_notify_handler&n; *&n; * PARAMETERS:  Device          - The device for which notifies will be handled&n; *              handler_type    - The type of handler:&n; *                                  ACPI_SYSTEM_NOTIFY: system_handler (00-7f)&n; *                                  ACPI_DEVICE_NOTIFY: driver_handler (80-ff)&n; *                                  ACPI_ALL_NOTIFY:  both system and device&n; *              Handler         - Address of the handler&n; *              Context         - Value passed to the handler on each GPE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for notifies on an ACPI device&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_install_notify_handler
@@ -821,6 +838,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_install_notify_handler
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_install_notify_handler
+)paren
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_remove_notify_handler&n; *&n; * PARAMETERS:  Device          - The device for which notifies will be handled&n; *              handler_type    - The type of handler:&n; *                                  ACPI_SYSTEM_NOTIFY: system_handler (00-7f)&n; *                                  ACPI_DEVICE_NOTIFY: driver_handler (80-ff)&n; *                                  ACPI_ALL_NOTIFY:  both system and device&n; *              Handler         - Address of the handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a handler for notifies on an ACPI device&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_remove_notify_handler
@@ -1292,6 +1316,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_remove_notify_handler
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_remove_notify_handler
+)paren
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_install_gpe_handler&n; *&n; * PARAMETERS:  gpe_number      - The GPE number within the GPE block&n; *              gpe_block       - GPE block (NULL == FADT GPEs)&n; *              Type            - Whether this GPE should be treated as an&n; *                                edge- or level-triggered interrupt.&n; *              Address         - Address of the handler&n; *              Context         - Value passed to the handler on each GPE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for a General Purpose Event.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_install_gpe_handler
@@ -1539,6 +1570,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_install_gpe_handler
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_install_gpe_handler
+)paren
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_remove_gpe_handler&n; *&n; * PARAMETERS:  gpe_number      - The event to remove a handler&n; *              gpe_block       - GPE block (NULL == FADT GPEs)&n; *              Address         - Address of the handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a handler for a General Purpose acpi_event.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_remove_gpe_handler
@@ -1792,6 +1830,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_remove_gpe_handler
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_remove_gpe_handler
+)paren
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_acquire_global_lock&n; *&n; * PARAMETERS:  Timeout         - How long the caller is willing to wait&n; *              out_handle      - A handle to the lock if acquired&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Acquire the ACPI Global Lock&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_acquire_global_lock
@@ -1877,6 +1922,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_acquire_global_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_acquire_global_lock
+)paren
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_release_global_lock&n; *&n; * PARAMETERS:  Handle      - Returned from acpi_acquire_global_lock&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Release the ACPI Global Lock&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_release_global_lock
@@ -1915,4 +1967,11 @@ id|status
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_release_global_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_release_global_lock
+)paren
+suffix:semicolon
 eof
