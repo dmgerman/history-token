@@ -7607,17 +7607,19 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* decode response */
-id|pSMBr-&gt;DataOffset
+id|__u32
+id|data_offset
 op_assign
-id|le16_to_cpu
+id|le32_to_cpu
 c_func
 (paren
 id|pSMBr-&gt;DataOffset
 )paren
 suffix:semicolon
-id|pSMBr-&gt;DataCount
+id|__u32
+id|data_count
 op_assign
-id|le16_to_cpu
+id|le32_to_cpu
 c_func
 (paren
 id|pSMBr-&gt;DataCount
@@ -7633,7 +7635,7 @@ l_int|2
 )paren
 op_logical_or
 (paren
-id|pSMBr-&gt;DataOffset
+id|data_offset
 OG
 l_int|512
 )paren
@@ -7650,10 +7652,10 @@ r_else
 r_if
 c_cond
 (paren
-id|pSMBr-&gt;DataCount
+id|data_count
 op_logical_and
 (paren
-id|pSMBr-&gt;DataCount
+id|data_count
 OL
 l_int|2048
 )paren
@@ -7678,7 +7680,7 @@ op_star
 op_amp
 id|pSMBr-&gt;hdr.Protocol
 op_plus
-id|pSMBr-&gt;DataOffset
+id|data_offset
 )paren
 suffix:semicolon
 r_if
