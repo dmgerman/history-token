@@ -3695,6 +3695,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|status
+op_eq
+l_int|0xffffffff
+)paren
+multiline_comment|/* we are not yet resumed */
+r_return
+id|IRQ_NONE
+suffix:semicolon
+r_if
+c_cond
+(paren
 (paren
 id|status
 op_amp

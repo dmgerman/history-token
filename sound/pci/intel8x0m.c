@@ -2332,6 +2332,26 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|status
+op_eq
+l_int|0xffffffff
+)paren
+(brace
+multiline_comment|/* we are not yet resumed */
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|chip-&gt;reg_lock
+)paren
+suffix:semicolon
+r_return
+id|IRQ_NONE
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 (paren
 id|status
 op_amp
