@@ -185,6 +185,7 @@ l_int|64
 suffix:semicolon
 DECL|member|ram
 id|u8
+id|__iomem
 op_star
 id|ram
 suffix:semicolon
@@ -197,6 +198,7 @@ id|atyfb_par
 DECL|member|aty_cmap_regs
 r_struct
 id|aty_cmap_regs
+id|__iomem
 op_star
 id|aty_cmap_regs
 suffix:semicolon
@@ -221,8 +223,9 @@ op_star
 id|cursor
 suffix:semicolon
 DECL|member|ati_regbase
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|ati_regbase
 suffix:semicolon
 DECL|member|clk_wr_offset
