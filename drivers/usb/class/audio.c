@@ -2011,7 +2011,7 @@ id|i
 op_amp
 id|FLG_URB0RUNNING
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|u-&gt;durb
@@ -2029,7 +2029,7 @@ id|i
 op_amp
 id|FLG_URB1RUNNING
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|u-&gt;durb
@@ -2047,7 +2047,7 @@ id|i
 op_amp
 id|FLG_SYNC0RUNNING
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|u-&gt;surb
@@ -2065,7 +2065,7 @@ id|i
 op_amp
 id|FLG_SYNC1RUNNING
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|u-&gt;surb
@@ -5237,7 +5237,7 @@ id|i
 op_amp
 id|FLG_URB0RUNNING
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|u-&gt;durb
@@ -5255,7 +5255,7 @@ id|i
 op_amp
 id|FLG_URB1RUNNING
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|u-&gt;durb
@@ -5273,7 +5273,7 @@ id|i
 op_amp
 id|FLG_SYNC0RUNNING
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|u-&gt;surb
@@ -5291,7 +5291,7 @@ id|i
 op_amp
 id|FLG_SYNC1RUNNING
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|u-&gt;surb
