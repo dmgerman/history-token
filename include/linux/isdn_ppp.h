@@ -116,6 +116,8 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/ppp_defs.h&gt;
 DECL|macro|DECOMP_ERR_NOMEM
 mdefine_line|#define DECOMP_ERR_NOMEM&t;(-10)
 DECL|macro|MP_END_FRAG
@@ -513,11 +515,11 @@ id|ippp_ccp_reset_states
 id|state
 suffix:semicolon
 multiline_comment|/* State of this transaction */
-DECL|member|icr
+DECL|member|ccp
 r_struct
-id|ippp_ccp_reset
+id|ippp_ccp
 op_star
-id|icr
+id|ccp
 suffix:semicolon
 multiline_comment|/* Backlink */
 DECL|member|id
@@ -525,7 +527,7 @@ r_int
 r_char
 id|id
 suffix:semicolon
-multiline_comment|/* Backlink id index */
+multiline_comment|/* id index */
 DECL|member|ta
 r_int
 r_char
@@ -585,54 +587,6 @@ r_char
 id|lastid
 suffix:semicolon
 multiline_comment|/* Last id allocated by the engine */
-DECL|member|xmit_reset
-r_void
-(paren
-op_star
-id|xmit_reset
-)paren
-(paren
-r_void
-op_star
-id|priv
-comma
-r_int
-id|proto
-comma
-r_int
-r_char
-id|code
-comma
-r_int
-r_char
-id|id
-comma
-r_int
-r_char
-op_star
-id|data
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
-DECL|member|kick_up
-r_void
-(paren
-op_star
-id|kick_up
-)paren
-(paren
-r_void
-op_star
-id|priv
-)paren
-suffix:semicolon
-DECL|member|priv
-r_void
-op_star
-id|priv
-suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */

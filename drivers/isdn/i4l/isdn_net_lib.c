@@ -8383,17 +8383,6 @@ id|mlp
 op_assign
 id|idev-&gt;mlp
 suffix:semicolon
-r_int
-id|was_busy
-suffix:semicolon
-id|was_busy
-op_assign
-id|isdn_net_local_busy
-c_func
-(paren
-id|mlp
-)paren
-suffix:semicolon
 id|idev-&gt;frame_cnt
 op_decrement
 suffix:semicolon
@@ -8410,14 +8399,6 @@ id|isdn_BUG
 c_func
 (paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|was_busy
-)paren
-r_return
 suffix:semicolon
 r_if
 c_cond
@@ -9140,6 +9121,7 @@ c_func
 id|idev
 )paren
 )paren
+(brace
 id|isdn_net_writebuf_skb
 c_func
 (paren
@@ -9148,7 +9130,9 @@ comma
 id|skb
 )paren
 suffix:semicolon
+)brace
 r_else
+(brace
 id|skb_queue_tail
 c_func
 (paren
@@ -9158,6 +9142,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* ====================================================================== */
 multiline_comment|/* receive path                                                           */
