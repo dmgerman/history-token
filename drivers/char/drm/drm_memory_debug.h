@@ -804,10 +804,10 @@ id|calloc
 )paren
 (paren
 r_int
-id|size
+id|nmemb
 comma
 r_int
-id|nmemb
+id|size
 comma
 r_int
 id|area
