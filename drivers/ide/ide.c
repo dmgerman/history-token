@@ -655,6 +655,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_PCI
 r_static
 r_struct
 id|pci_device_id
@@ -677,6 +678,9 @@ comma
 )brace
 )brace
 suffix:semicolon
+macro_line|#else
+mdefine_line|#define pci_default 0
+macro_line|#endif /* CONFIG_PCI */
 r_if
 c_cond
 (paren
