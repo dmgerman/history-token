@@ -1,13 +1,6 @@
 multiline_comment|/*&n; *                  QLOGIC LINUX SOFTWARE&n; *&n; * QLogic ISP2x00 device driver for Linux 2.6.x&n; * Copyright (C) 2003 QLogic Corporation&n; * (www.qlogic.com)&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; */
 macro_line|#include &quot;qla_os.h&quot;
 macro_line|#include &quot;qla_def.h&quot;
-multiline_comment|/* XXX(hch): this is ugly, but we don&squot;t want to pull in exioctl.h */
-macro_line|#ifndef EXT_DEF_PORTSPEED_1GBIT
-DECL|macro|EXT_DEF_PORTSPEED_1GBIT
-mdefine_line|#define EXT_DEF_PORTSPEED_1GBIT&t;&t;1
-DECL|macro|EXT_DEF_PORTSPEED_2GBIT
-mdefine_line|#define EXT_DEF_PORTSPEED_2GBIT&t;&t;2
-macro_line|#endif
 r_static
 r_void
 id|qla2x00_mbx_completion
@@ -2177,9 +2170,9 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|ha-&gt;current_speed
+id|ha-&gt;link_data_rate
 op_assign
-id|EXT_DEF_PORTSPEED_1GBIT
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2234,19 +2227,12 @@ l_int|1
 )braket
 )braket
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|ha-&gt;link_data_rate
+op_assign
 id|mb
 (braket
 l_int|1
 )braket
-op_eq
-l_int|1
-)paren
-id|ha-&gt;current_speed
-op_assign
-id|EXT_DEF_PORTSPEED_2GBIT
 suffix:semicolon
 )brace
 id|DEBUG2
@@ -2360,11 +2346,10 @@ id|ha-&gt;flags.management_server_logged_in
 op_assign
 l_int|0
 suffix:semicolon
-id|ha-&gt;current_speed
+id|ha-&gt;link_data_rate
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* reset value */
 multiline_comment|/* Update AEN queue. */
 id|qla2x00_enqueue_aen
 c_func
@@ -2779,7 +2764,15 @@ multiline_comment|/*&n;&t;&t; * If a single remote port just logged into (or log
 r_if
 c_cond
 (paren
-id|IS_QLA23XX
+op_logical_neg
+id|IS_QLA2100
+c_func
+(paren
+id|ha
+)paren
+op_logical_and
+op_logical_neg
+id|IS_QLA2200
 c_func
 (paren
 id|ha
@@ -3803,7 +3796,15 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|IS_QLA23XX
+op_logical_neg
+id|IS_QLA2100
+c_func
+(paren
+id|ha
+)paren
+op_logical_and
+op_logical_neg
+id|IS_QLA2200
 c_func
 (paren
 id|ha
