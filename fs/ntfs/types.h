@@ -2,10 +2,44 @@ multiline_comment|/*&n; * types.h - Defines for NTFS Linux kernel driver specifi
 macro_line|#ifndef _LINUX_NTFS_TYPES_H
 DECL|macro|_LINUX_NTFS_TYPES_H
 mdefine_line|#define _LINUX_NTFS_TYPES_H
+macro_line|#include &lt;linux/types.h&gt;
+DECL|typedef|le16
+r_typedef
+id|__le16
+id|le16
+suffix:semicolon
+DECL|typedef|le32
+r_typedef
+id|__le32
+id|le32
+suffix:semicolon
+DECL|typedef|le64
+r_typedef
+id|__le64
+id|le64
+suffix:semicolon
+DECL|typedef|sle16
+r_typedef
+id|__u16
+id|__bitwise
+id|sle16
+suffix:semicolon
+DECL|typedef|sle32
+r_typedef
+id|__u32
+id|__bitwise
+id|sle32
+suffix:semicolon
+DECL|typedef|sle64
+r_typedef
+id|__u64
+id|__bitwise
+id|sle64
+suffix:semicolon
 multiline_comment|/* 2-byte Unicode character type. */
 DECL|typedef|ntfschar
 r_typedef
-id|u16
+id|le16
 id|ntfschar
 suffix:semicolon
 DECL|macro|UCHAR_T_SIZE_BITS
@@ -16,16 +50,31 @@ r_typedef
 id|s64
 id|VCN
 suffix:semicolon
+DECL|typedef|leVCN
+r_typedef
+id|sle64
+id|leVCN
+suffix:semicolon
 DECL|typedef|LCN
 r_typedef
 id|s64
 id|LCN
+suffix:semicolon
+DECL|typedef|leLCN
+r_typedef
+id|sle64
+id|leLCN
 suffix:semicolon
 multiline_comment|/*&n; * The NTFS journal $LogFile uses log sequence numbers which are signed 64-bit&n; * values.  We define our own type LSN, to allow for type checking and better&n; * code readability.&n; */
 DECL|typedef|LSN
 r_typedef
 id|s64
 id|LSN
+suffix:semicolon
+DECL|typedef|leLSN
+r_typedef
+id|sle64
+id|leLSN
 suffix:semicolon
 multiline_comment|/**&n; * runlist_element - in memory vcn to lcn mapping array element&n; * @vcn:&t;starting vcn of the current array element&n; * @lcn:&t;starting lcn of the current array element&n; * @length:&t;length in clusters of the current array element&n; *&n; * The last vcn (in fact the last vcn + 1) is reached when length == 0.&n; *&n; * When lcn == -1 this means that the count vcns starting at vcn are not&n; * physically allocated (i.e. this is a hole / data is sparse).&n; */
 r_typedef

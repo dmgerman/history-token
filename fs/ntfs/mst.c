@@ -239,6 +239,13 @@ id|u32
 id|size
 )paren
 (brace
+id|le16
+op_star
+id|usa_pos
+comma
+op_star
+id|data_pos
+suffix:semicolon
 id|u16
 id|usa_ofs
 comma
@@ -246,12 +253,8 @@ id|usa_count
 comma
 id|usn
 suffix:semicolon
-id|u16
-op_star
-id|usa_pos
-comma
-op_star
-id|data_pos
+id|le16
+id|le_usn
 suffix:semicolon
 multiline_comment|/* Sanity check + only fixup if it makes sense. */
 r_if
@@ -338,7 +341,7 @@ multiline_comment|/* Position of usn in update sequence array. */
 id|usa_pos
 op_assign
 (paren
-id|u16
+id|le16
 op_star
 )paren
 (paren
@@ -376,7 +379,7 @@ id|usn
 op_assign
 l_int|1
 suffix:semicolon
-id|usn
+id|le_usn
 op_assign
 id|cpu_to_le16
 c_func
@@ -387,13 +390,13 @@ suffix:semicolon
 op_star
 id|usa_pos
 op_assign
-id|usn
+id|le_usn
 suffix:semicolon
 multiline_comment|/* Position in data of first u16 that needs fixing up. */
 id|data_pos
 op_assign
 (paren
-id|u16
+id|le16
 op_star
 )paren
 id|b
@@ -402,7 +405,7 @@ id|NTFS_BLOCK_SIZE
 op_div
 r_sizeof
 (paren
-id|u16
+id|le16
 )paren
 op_minus
 l_int|1
@@ -429,7 +432,7 @@ multiline_comment|/* Apply fixup to data. */
 op_star
 id|data_pos
 op_assign
-id|usn
+id|le_usn
 suffix:semicolon
 multiline_comment|/* Increment position in data as well. */
 id|data_pos
@@ -438,7 +441,7 @@ id|NTFS_BLOCK_SIZE
 op_div
 r_sizeof
 (paren
-id|u16
+id|le16
 )paren
 suffix:semicolon
 )brace
@@ -457,7 +460,7 @@ op_star
 id|b
 )paren
 (brace
-id|u16
+id|le16
 op_star
 id|usa_pos
 comma
@@ -488,7 +491,7 @@ multiline_comment|/* Position of usn in update sequence array. */
 id|usa_pos
 op_assign
 (paren
-id|u16
+id|le16
 op_star
 )paren
 id|b
@@ -497,14 +500,14 @@ id|usa_ofs
 op_div
 r_sizeof
 (paren
-id|u16
+id|le16
 )paren
 suffix:semicolon
 multiline_comment|/* Position in protected data of first u16 that needs fixing up. */
 id|data_pos
 op_assign
 (paren
-id|u16
+id|le16
 op_star
 )paren
 id|b
@@ -513,7 +516,7 @@ id|NTFS_BLOCK_SIZE
 op_div
 r_sizeof
 (paren
-id|u16
+id|le16
 )paren
 op_minus
 l_int|1
@@ -543,7 +546,7 @@ id|NTFS_BLOCK_SIZE
 op_div
 r_sizeof
 (paren
-id|u16
+id|le16
 )paren
 suffix:semicolon
 )brace

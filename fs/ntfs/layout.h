@@ -29,7 +29,7 @@ r_typedef
 r_struct
 (brace
 DECL|member|bytes_per_sector
-id|u16
+id|le16
 id|bytes_per_sector
 suffix:semicolon
 multiline_comment|/* Size of a sector in bytes. */
@@ -39,7 +39,7 @@ id|sectors_per_cluster
 suffix:semicolon
 multiline_comment|/* Size of a cluster in sectors. */
 DECL|member|reserved_sectors
-id|u16
+id|le16
 id|reserved_sectors
 suffix:semicolon
 multiline_comment|/* zero */
@@ -49,12 +49,12 @@ id|fats
 suffix:semicolon
 multiline_comment|/* zero */
 DECL|member|root_entries
-id|u16
+id|le16
 id|root_entries
 suffix:semicolon
 multiline_comment|/* zero */
 DECL|member|sectors
-id|u16
+id|le16
 id|sectors
 suffix:semicolon
 multiline_comment|/* zero */
@@ -64,27 +64,27 @@ id|media_type
 suffix:semicolon
 multiline_comment|/* 0xf8 = hard disk */
 DECL|member|sectors_per_fat
-id|u16
+id|le16
 id|sectors_per_fat
 suffix:semicolon
 multiline_comment|/* zero */
 DECL|member|sectors_per_track
-id|u16
+id|le16
 id|sectors_per_track
 suffix:semicolon
 multiline_comment|/* irrelevant */
 DECL|member|heads
-id|u16
+id|le16
 id|heads
 suffix:semicolon
 multiline_comment|/* irrelevant */
 DECL|member|hidden_sectors
-id|u32
+id|le32
 id|hidden_sectors
 suffix:semicolon
 multiline_comment|/* zero */
 DECL|member|large_sectors
-id|u32
+id|le32
 id|large_sectors
 suffix:semicolon
 multiline_comment|/* zero */
@@ -111,7 +111,7 @@ l_int|3
 suffix:semicolon
 multiline_comment|/* Irrelevant (jump to boot up code).*/
 DECL|member|oem_id
-id|u64
+id|le64
 id|oem_id
 suffix:semicolon
 multiline_comment|/* Magic &quot;NTFS    &quot;. */
@@ -130,17 +130,17 @@ suffix:semicolon
 multiline_comment|/* zero, NTFS diskedit.exe states that&n;&t;&t;&t;&t;&t;   this is actually:&n;&t;&t;&t;&t;&t;&t;__u8 physical_drive;&t;// 0x80&n;&t;&t;&t;&t;&t;&t;__u8 current_head;&t;// zero&n;&t;&t;&t;&t;&t;&t;__u8 extended_boot_signature;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;// 0x80&n;&t;&t;&t;&t;&t;&t;__u8 unused;&t;&t;// zero&n;&t;&t;&t;&t;&t; */
 DECL|member|number_of_sectors
 multiline_comment|/*0x28*/
-id|s64
+id|sle64
 id|number_of_sectors
 suffix:semicolon
 multiline_comment|/* Number of sectors in volume. Gives&n;&t;&t;&t;&t;&t;   maximum volume size of 2^63 sectors.&n;&t;&t;&t;&t;&t;   Assuming standard sector size of 512&n;&t;&t;&t;&t;&t;   bytes, the maximum byte size is&n;&t;&t;&t;&t;&t;   approx. 4.7x10^21 bytes. (-; */
 DECL|member|mft_lcn
-id|s64
+id|sle64
 id|mft_lcn
 suffix:semicolon
 multiline_comment|/* Cluster location of mft data. */
 DECL|member|mftmirr_lcn
-id|s64
+id|sle64
 id|mftmirr_lcn
 suffix:semicolon
 multiline_comment|/* Cluster location of copy of mft. */
@@ -171,12 +171,12 @@ l_int|3
 suffix:semicolon
 multiline_comment|/* zero */
 DECL|member|volume_serial_number
-id|u64
+id|le64
 id|volume_serial_number
 suffix:semicolon
 multiline_comment|/* Irrelevant (serial number). */
 DECL|member|checksum
-id|u32
+id|le32
 id|checksum
 suffix:semicolon
 multiline_comment|/* Boot sector checksum. */
@@ -190,7 +190,7 @@ l_int|426
 suffix:semicolon
 multiline_comment|/* Irrelevant (boot up code). */
 DECL|member|end_of_sector_marker
-id|u16
+id|le16
 id|end_of_sector_marker
 suffix:semicolon
 multiline_comment|/* End of bootsector magic. Always is&n;&t;&t;&t;&t;&t;   0xaa55 in little endian. */
@@ -206,159 +206,147 @@ id|__packed__
 id|NTFS_BOOT_SECTOR
 suffix:semicolon
 multiline_comment|/*&n; * Magic identifiers present at the beginning of all ntfs record containing&n; * records (like mft records for example).&n; */
-r_typedef
-r_enum
-(brace
 multiline_comment|/* Found in $MFT/$DATA. */
-DECL|enumerator|magic_FILE
-id|magic_FILE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x454c4946
-)paren
-comma
-multiline_comment|/* Mft entry. */
-DECL|enumerator|magic_INDX
-id|magic_INDX
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x58444e49
-)paren
-comma
-multiline_comment|/* Index buffer. */
-DECL|enumerator|magic_HOLE
-id|magic_HOLE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x454c4f48
-)paren
-comma
-multiline_comment|/* ? (NTFS 3.0+?) */
+DECL|macro|magic_FILE
+mdefine_line|#define magic_FILE const_cpu_to_le32(0x454c4946) /* Mft entry. */
+DECL|macro|magic_INDX
+mdefine_line|#define magic_INDX const_cpu_to_le32(0x58444e49) /* Index buffer. */
+DECL|macro|magic_HOLE
+mdefine_line|#define magic_HOLE const_cpu_to_le32(0x454c4f48) /* ? (NTFS 3.0+?) */
 multiline_comment|/* Found in $LogFile/$DATA. */
-DECL|enumerator|magic_RSTR
-id|magic_RSTR
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x52545352
-)paren
-comma
-multiline_comment|/* Restart page. */
-DECL|enumerator|magic_RCRD
-id|magic_RCRD
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x44524352
-)paren
-comma
-multiline_comment|/* Log record page. */
+DECL|macro|magic_RSTR
+mdefine_line|#define magic_RSTR const_cpu_to_le32(0x52545352) /* Restart page. */
+DECL|macro|magic_RCRD
+mdefine_line|#define magic_RCRD const_cpu_to_le32(0x44524352) /* Log record page. */
 multiline_comment|/* Found in $LogFile/$DATA.  (May be found in $MFT/$DATA, also?) */
-DECL|enumerator|magic_CHKD
-id|magic_CHKD
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x424b4843
-)paren
-comma
-multiline_comment|/* Modified by chkdsk. */
+DECL|macro|magic_CHKD
+mdefine_line|#define magic_CHKD const_cpu_to_le32(0x424b4843) /* Modified by chkdsk. */
 multiline_comment|/* Found in all ntfs record containing records. */
-DECL|enumerator|magic_BAAD
-id|magic_BAAD
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x44414142
-)paren
-comma
-multiline_comment|/* Failed multi sector&n;&t;&t;&t;&t;&t;&t;       transfer was detected. */
-multiline_comment|/*&n;&t; * Found in $LogFile/$DATA when a page is full or 0xff bytes and is&n;&t; * thus not initialized.  User has to initialize the page before using&n;&t; * it.&n;&t; */
-DECL|enumerator|magic_empty
-id|magic_empty
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0xffffffff
-)paren
-comma
-multiline_comment|/* Record is empty and has&n;&t;&t;&t;&t;&t;&t;       to be initialized before&n;&t;&t;&t;&t;&t;&t;       it can be used. */
-DECL|typedef|NTFS_RECORD_TYPES
-)brace
-id|NTFS_RECORD_TYPES
+DECL|macro|magic_BAAD
+mdefine_line|#define magic_BAAD const_cpu_to_le32(0x44414142) /* Failed multi sector&n;&t;&t;&t;&t;&t;&t;    transfer was detected. */
+multiline_comment|/*&n; * Found in $LogFile/$DATA when a page is full or 0xff bytes and is thus not&n; * initialized.  User has to initialize the page before using it.&n; */
+DECL|macro|magic_empty
+mdefine_line|#define magic_empty const_cpu_to_le32(0xffffffff)/* Record is empty and has to&n;&t;&t;&t;&t;&t;&t;    be initialized before it&n;&t;&t;&t;&t;&t;&t;    can be used. */
+DECL|typedef|NTFS_RECORD_TYPE
+r_typedef
+id|le32
+id|NTFS_RECORD_TYPE
 suffix:semicolon
 multiline_comment|/*&n; * Generic magic comparison macros. Finally found a use for the ## preprocessor&n; * operator! (-8&n; */
+DECL|function|__ntfs_is_magic
+r_static
+r_inline
+id|BOOL
+id|__ntfs_is_magic
+c_func
+(paren
+id|le32
+id|x
+comma
+id|NTFS_RECORD_TYPE
+id|r
+)paren
+(brace
+r_return
+(paren
+id|x
+op_eq
+(paren
+id|__force
+id|le32
+)paren
+id|r
+)paren
+suffix:semicolon
+)brace
 DECL|macro|ntfs_is_magic
-mdefine_line|#define ntfs_is_magic(x, m)&t;(   (u32)(x) == magic_##m )
+mdefine_line|#define ntfs_is_magic(x, m)&t;__ntfs_is_magic(x, magic_##m)
+DECL|function|__ntfs_is_magicp
+r_static
+r_inline
+id|BOOL
+id|__ntfs_is_magicp
+c_func
+(paren
+id|le32
+op_star
+id|p
+comma
+id|NTFS_RECORD_TYPE
+id|r
+)paren
+(brace
+r_return
+(paren
+op_star
+id|p
+op_eq
+(paren
+id|__force
+id|le32
+)paren
+id|r
+)paren
+suffix:semicolon
+)brace
 DECL|macro|ntfs_is_magicp
-mdefine_line|#define ntfs_is_magicp(p, m)&t;( *(u32*)(p) == magic_##m )
-multiline_comment|/*&n; * Specialised magic comparison macros for the NTFS_RECORD_TYPES defined above.&n; */
+mdefine_line|#define ntfs_is_magicp(p, m)&t;__ntfs_is_magicp(p, magic_##m)
+multiline_comment|/*&n; * Specialised magic comparison macros for the NTFS_RECORD_TYPEs defined above.&n; */
 DECL|macro|ntfs_is_file_record
-mdefine_line|#define ntfs_is_file_record(x)&t;( ntfs_is_magic (x, FILE) )
+mdefine_line|#define ntfs_is_file_record(x)&t;&t;( ntfs_is_magic (x, FILE) )
 DECL|macro|ntfs_is_file_recordp
-mdefine_line|#define ntfs_is_file_recordp(p)&t;( ntfs_is_magicp(p, FILE) )
+mdefine_line|#define ntfs_is_file_recordp(p)&t;&t;( ntfs_is_magicp(p, FILE) )
 DECL|macro|ntfs_is_mft_record
-mdefine_line|#define ntfs_is_mft_record(x)&t;( ntfs_is_file_record(x) )
+mdefine_line|#define ntfs_is_mft_record(x)&t;&t;( ntfs_is_file_record (x) )
 DECL|macro|ntfs_is_mft_recordp
-mdefine_line|#define ntfs_is_mft_recordp(p)&t;( ntfs_is_file_recordp(p) )
+mdefine_line|#define ntfs_is_mft_recordp(p)&t;&t;( ntfs_is_file_recordp(p) )
 DECL|macro|ntfs_is_indx_record
-mdefine_line|#define ntfs_is_indx_record(x)&t;( ntfs_is_magic (x, INDX) )
+mdefine_line|#define ntfs_is_indx_record(x)&t;&t;( ntfs_is_magic (x, INDX) )
 DECL|macro|ntfs_is_indx_recordp
-mdefine_line|#define ntfs_is_indx_recordp(p)&t;( ntfs_is_magicp(p, INDX) )
+mdefine_line|#define ntfs_is_indx_recordp(p)&t;&t;( ntfs_is_magicp(p, INDX) )
 DECL|macro|ntfs_is_hole_record
-mdefine_line|#define ntfs_is_hole_record(x)&t;( ntfs_is_magic (x, HOLE) )
+mdefine_line|#define ntfs_is_hole_record(x)&t;&t;( ntfs_is_magic (x, HOLE) )
 DECL|macro|ntfs_is_hole_recordp
-mdefine_line|#define ntfs_is_hole_recordp(p)&t;( ntfs_is_magicp(p, HOLE) )
+mdefine_line|#define ntfs_is_hole_recordp(p)&t;&t;( ntfs_is_magicp(p, HOLE) )
 DECL|macro|ntfs_is_rstr_record
-mdefine_line|#define ntfs_is_rstr_record(x)&t;( ntfs_is_magic (x, RSTR) )
+mdefine_line|#define ntfs_is_rstr_record(x)&t;&t;( ntfs_is_magic (x, RSTR) )
 DECL|macro|ntfs_is_rstr_recordp
-mdefine_line|#define ntfs_is_rstr_recordp(p)&t;( ntfs_is_magicp(p, RSTR) )
+mdefine_line|#define ntfs_is_rstr_recordp(p)&t;&t;( ntfs_is_magicp(p, RSTR) )
 DECL|macro|ntfs_is_rcrd_record
-mdefine_line|#define ntfs_is_rcrd_record(x)&t;( ntfs_is_magic (x, RCRD) )
+mdefine_line|#define ntfs_is_rcrd_record(x)&t;&t;( ntfs_is_magic (x, RCRD) )
 DECL|macro|ntfs_is_rcrd_recordp
-mdefine_line|#define ntfs_is_rcrd_recordp(p)&t;( ntfs_is_magicp(p, RCRD) )
+mdefine_line|#define ntfs_is_rcrd_recordp(p)&t;&t;( ntfs_is_magicp(p, RCRD) )
 DECL|macro|ntfs_is_chkd_record
-mdefine_line|#define ntfs_is_chkd_record(x)&t;( ntfs_is_magic (x, CHKD) )
+mdefine_line|#define ntfs_is_chkd_record(x)&t;&t;( ntfs_is_magic (x, CHKD) )
 DECL|macro|ntfs_is_chkd_recordp
-mdefine_line|#define ntfs_is_chkd_recordp(p)&t;( ntfs_is_magicp(p, CHKD) )
+mdefine_line|#define ntfs_is_chkd_recordp(p)&t;&t;( ntfs_is_magicp(p, CHKD) )
 DECL|macro|ntfs_is_baad_record
-mdefine_line|#define ntfs_is_baad_record(x)&t;( ntfs_is_magic (x, BAAD) )
+mdefine_line|#define ntfs_is_baad_record(x)&t;&t;( ntfs_is_magic (x, BAAD) )
 DECL|macro|ntfs_is_baad_recordp
-mdefine_line|#define ntfs_is_baad_recordp(p)&t;( ntfs_is_magicp(p, BAAD) )
+mdefine_line|#define ntfs_is_baad_recordp(p)&t;&t;( ntfs_is_magicp(p, BAAD) )
 DECL|macro|ntfs_is_empty_record
 mdefine_line|#define ntfs_is_empty_record(x)&t;&t;( ntfs_is_magic (x, empty) )
 DECL|macro|ntfs_is_empty_recordp
 mdefine_line|#define ntfs_is_empty_recordp(p)&t;( ntfs_is_magicp(p, empty) )
-multiline_comment|/*&n; * The Update Sequence Array (usa) is an array of the u16 values which belong&n; * to the end of each sector protected by the update sequence record in which&n; * this array is contained. Note that the first entry is the Update Sequence&n; * Number (usn), a cyclic counter of how many times the protected record has&n; * been written to disk. The values 0 and -1 (ie. 0xffff) are not used. All&n; * last u16&squot;s of each sector have to be equal to the usn (during reading) or&n; * are set to it (during writing). If they are not, an incomplete multi sector&n; * transfer has occurred when the data was written.&n; * The maximum size for the update sequence array is fixed to:&n; *&t;maximum size = usa_ofs + (usa_count * 2) = 510 bytes&n; * The 510 bytes comes from the fact that the last u16 in the array has to&n; * (obviously) finish before the last u16 of the first 512-byte sector.&n; * This formula can be used as a consistency check in that usa_ofs +&n; * (usa_count * 2) has to be less than or equal to 510.&n; */
+multiline_comment|/*&n; * The Update Sequence Array (usa) is an array of the le16 values which belong&n; * to the end of each sector protected by the update sequence record in which&n; * this array is contained. Note that the first entry is the Update Sequence&n; * Number (usn), a cyclic counter of how many times the protected record has&n; * been written to disk. The values 0 and -1 (ie. 0xffff) are not used. All&n; * last le16&squot;s of each sector have to be equal to the usn (during reading) or&n; * are set to it (during writing). If they are not, an incomplete multi sector&n; * transfer has occurred when the data was written.&n; * The maximum size for the update sequence array is fixed to:&n; *&t;maximum size = usa_ofs + (usa_count * 2) = 510 bytes&n; * The 510 bytes comes from the fact that the last le16 in the array has to&n; * (obviously) finish before the last le16 of the first 512-byte sector.&n; * This formula can be used as a consistency check in that usa_ofs +&n; * (usa_count * 2) has to be less than or equal to 510.&n; */
 r_typedef
 r_struct
 (brace
 DECL|member|magic
-id|NTFS_RECORD_TYPES
+id|NTFS_RECORD_TYPE
 id|magic
 suffix:semicolon
-multiline_comment|/* A four-byte magic identifying the&n;&t;&t;&t;&t;&t;   record type and/or status. */
+multiline_comment|/* A four-byte magic identifying the record&n;&t;&t;&t;&t;   type and/or status. */
 DECL|member|usa_ofs
-id|u16
+id|le16
 id|usa_ofs
 suffix:semicolon
 multiline_comment|/* Offset to the Update Sequence Array (usa)&n;&t;&t;&t;&t;   from the start of the ntfs record. */
 DECL|member|usa_count
-id|u16
+id|le16
 id|usa_count
 suffix:semicolon
-multiline_comment|/* Number of u16 sized entries in the usa&n;&t;&t;&t;&t;   including the Update Sequence Number (usn),&n;&t;&t;&t;&t;   thus the number of fixups is the usa_count&n;&t;&t;&t;&t;   minus 1. */
+multiline_comment|/* Number of le16 sized entries in the usa&n;&t;&t;&t;&t;   including the Update Sequence Number (usn),&n;&t;&t;&t;&t;   thus the number of fixups is the usa_count&n;&t;&t;&t;&t;   minus 1. */
 DECL|typedef|NTFS_RECORD
 )brace
 id|__attribute__
@@ -477,40 +465,13 @@ DECL|typedef|NTFS_SYSTEM_FILES
 id|NTFS_SYSTEM_FILES
 suffix:semicolon
 multiline_comment|/*&n; * These are the so far known MFT_RECORD_* flags (16-bit) which contain&n; * information about the mft record in which they are present.&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|MFT_RECORD_IN_USE
-id|MFT_RECORD_IN_USE
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x0001
-)paren
-comma
-DECL|enumerator|MFT_RECORD_IS_DIRECTORY
-id|MFT_RECORD_IS_DIRECTORY
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x0002
-)paren
-comma
-DECL|enumerator|MFT_REC_SPACE_FILLER
-id|MFT_REC_SPACE_FILLER
-op_assign
-l_int|0xffff
-multiline_comment|/* Just to make flags 16-bit. */
+DECL|macro|MFT_RECORD_IN_USE
+mdefine_line|#define MFT_RECORD_IN_USE&t;const_cpu_to_le16(0x0001)
+DECL|macro|MFT_RECORD_IS_DIRECTORY
+mdefine_line|#define MFT_RECORD_IS_DIRECTORY&t;const_cpu_to_le16(0x0002)
 DECL|typedef|MFT_RECORD_FLAGS
-)brace
-id|__attribute__
-(paren
-(paren
-id|__packed__
-)paren
-)paren
+r_typedef
+id|le16
 id|MFT_RECORD_FLAGS
 suffix:semicolon
 multiline_comment|/*&n; * mft references (aka file references or file record segment references) are&n; * used whenever a structure needs to refer to a record in the mft.&n; *&n; * A reference consists of a 48-bit index into the mft and a 16-bit sequence&n; * number used to detect stale references.&n; *&n; * For error reporting purposes we treat the 48-bit index as a signed quantity.&n; *&n; * The sequence number is a circular counter (skipping 0) describing how many&n; * times the referenced mft record has been (re)used. This has to match the&n; * sequence number of the mft record being referenced, otherwise the reference&n; * is considered stale and removed (FIXME: only ntfsck or the driver itself?).&n; *&n; * If the sequence number is zero it is assumed that no sequence number&n; * consistency checking should be performed.&n; *&n; * FIXME: Since inodes are 32-bit as of now, the driver needs to always check&n; * for high_part being 0 and if not either BUG(), cause a panic() or handle&n; * the situation in some other way. This shouldn&squot;t be a problem as a volume has&n; * to become HUGE in order to need more than 32-bits worth of mft records.&n; * Assuming the standard mft record size of 1kb only the records (never mind&n; * the non-resident attributes, etc.) would require 4Tb of space on their own&n; * for the first 32 bits worth of records. This is only if some strange person&n; * doesn&squot;t decide to foul play and make the mft sparse which would be a really&n; * horrible thing to do as it would trash our current driver implementation. )-:&n; * Do I hear screams &quot;we want 64-bit inodes!&quot; ?!? (-;&n; *&n; * FIXME: The mft zone is defined as the first 12% of the volume. This space is&n; * reserved so that the mft can grow contiguously and hence doesn&squot;t become&n; * fragmented. Volume free space includes the empty part of the mft zone and&n; * when the volume&squot;s free 88% are used up, the mft zone is shrunk by a factor&n; * of 2, thus making more space available for more files/data. This process is&n; * repeated everytime there is no more free space except for the mft zone until&n; * there really is no more free space.&n; */
@@ -541,6 +502,11 @@ r_typedef
 id|u64
 id|MFT_REF
 suffix:semicolon
+DECL|typedef|leMFT_REF
+r_typedef
+id|le64
+id|leMFT_REF
+suffix:semicolon
 DECL|macro|MREF
 mdefine_line|#define MREF(x)&t;&t;((unsigned long)((x) &amp; MFT_REF_MASK_CPU))
 DECL|macro|MSEQNO
@@ -562,41 +528,41 @@ r_struct
 multiline_comment|/*Ofs*/
 multiline_comment|/*  0&t;NTFS_RECORD; -- Unfolded here as gcc doesn&squot;t like unnamed structs. */
 DECL|member|magic
-id|NTFS_RECORD_TYPES
+id|NTFS_RECORD_TYPE
 id|magic
 suffix:semicolon
 multiline_comment|/* Usually the magic is &quot;FILE&quot;. */
 DECL|member|usa_ofs
-id|u16
+id|le16
 id|usa_ofs
 suffix:semicolon
 multiline_comment|/* See NTFS_RECORD definition above. */
 DECL|member|usa_count
-id|u16
+id|le16
 id|usa_count
 suffix:semicolon
 multiline_comment|/* See NTFS_RECORD definition above. */
 DECL|member|lsn
 multiline_comment|/*  8*/
-id|u64
+id|le64
 id|lsn
 suffix:semicolon
 multiline_comment|/* $LogFile sequence number for this record.&n;&t;&t;&t;&t;   Changed every time the record is modified. */
 DECL|member|sequence_number
 multiline_comment|/* 16*/
-id|u16
+id|le16
 id|sequence_number
 suffix:semicolon
 multiline_comment|/* Number of times this mft record has been&n;&t;&t;&t;&t;   reused. (See description for MFT_REF&n;&t;&t;&t;&t;   above.) NOTE: The increment (skipping zero)&n;&t;&t;&t;&t;   is done when the file is deleted. NOTE: If&n;&t;&t;&t;&t;   this is zero it is left zero. */
 DECL|member|link_count
 multiline_comment|/* 18*/
-id|u16
+id|le16
 id|link_count
 suffix:semicolon
 multiline_comment|/* Number of hard links, i.e. the number of&n;&t;&t;&t;&t;   directory entries referencing this record.&n;&t;&t;&t;&t;   NOTE: Only used in mft base records.&n;&t;&t;&t;&t;   NOTE: When deleting a directory entry we&n;&t;&t;&t;&t;   check the link_count and if it is 1 we&n;&t;&t;&t;&t;   delete the file. Otherwise we delete the&n;&t;&t;&t;&t;   FILE_NAME_ATTR being referenced by the&n;&t;&t;&t;&t;   directory entry from the mft record and&n;&t;&t;&t;&t;   decrement the link_count.&n;&t;&t;&t;&t;   FIXME: Careful with Win32 + DOS names! */
 DECL|member|attrs_offset
 multiline_comment|/* 20*/
-id|u16
+id|le16
 id|attrs_offset
 suffix:semicolon
 multiline_comment|/* Byte offset to the first attribute in this&n;&t;&t;&t;&t;   mft record from the start of the mft record.&n;&t;&t;&t;&t;   NOTE: Must be aligned to 8-byte boundary. */
@@ -608,34 +574,34 @@ suffix:semicolon
 multiline_comment|/* Bit array of MFT_RECORD_FLAGS. When a file&n;&t;&t;&t;&t;   is deleted, the MFT_RECORD_IN_USE flag is&n;&t;&t;&t;&t;   set to zero. */
 DECL|member|bytes_in_use
 multiline_comment|/* 24*/
-id|u32
+id|le32
 id|bytes_in_use
 suffix:semicolon
 multiline_comment|/* Number of bytes used in this mft record.&n;&t;&t;&t;&t;   NOTE: Must be aligned to 8-byte boundary. */
 DECL|member|bytes_allocated
 multiline_comment|/* 28*/
-id|u32
+id|le32
 id|bytes_allocated
 suffix:semicolon
 multiline_comment|/* Number of bytes allocated for this mft&n;&t;&t;&t;&t;   record. This should be equal to the mft&n;&t;&t;&t;&t;   record size. */
 DECL|member|base_mft_record
 multiline_comment|/* 32*/
-id|MFT_REF
+id|leMFT_REF
 id|base_mft_record
 suffix:semicolon
 multiline_comment|/* This is zero for base mft records.&n;&t;&t;&t;&t;   When it is not zero it is a mft reference&n;&t;&t;&t;&t;   pointing to the base mft record to which&n;&t;&t;&t;&t;   this record belongs (this is then used to&n;&t;&t;&t;&t;   locate the attribute list attribute present&n;&t;&t;&t;&t;   in the base record which describes this&n;&t;&t;&t;&t;   extension record and hence might need&n;&t;&t;&t;&t;   modification when the extension record&n;&t;&t;&t;&t;   itself is modified, also locating the&n;&t;&t;&t;&t;   attribute list also means finding the other&n;&t;&t;&t;&t;   potential extents, belonging to the non-base&n;&t;&t;&t;&t;   mft record). */
 DECL|member|next_attr_instance
 multiline_comment|/* 40*/
-id|u16
+id|le16
 id|next_attr_instance
 suffix:semicolon
-multiline_comment|/* The instance number that will be&n;&t;&t;&t;&t;   assigned to the next attribute added to this&n;&t;&t;&t;&t;   mft record. NOTE: Incremented each time&n;&t;&t;&t;&t;   after it is used. NOTE: Every time the mft&n;&t;&t;&t;&t;   record is reused this number is set to zero.&n;&t;&t;&t;&t;   NOTE: The first instance number is always 0.&n;&t;&t;&t;&t; */
+multiline_comment|/* The instance number that will be assigned to&n;&t;&t;&t;&t;   the next attribute added to this mft record.&n;&t;&t;&t;&t;   NOTE: Incremented each time after it is used.&n;&t;&t;&t;&t;   NOTE: Every time the mft record is reused&n;&t;&t;&t;&t;   this number is set to zero.  NOTE: The first&n;&t;&t;&t;&t;   instance number is always 0. */
 multiline_comment|/* sizeof() = 42 bytes */
 multiline_comment|/* NTFS 3.1+ (Windows XP and above) introduce the following additions. */
 multiline_comment|/* 42*/
-singleline_comment|//u16 reserved;&t;&t;/* Reserved/alignment. */
+singleline_comment|//le16 reserved;&t;/* Reserved/alignment. */
 multiline_comment|/* 44*/
-singleline_comment|//u32 mft_record_number;/* Number of this mft record. */
+singleline_comment|//le32 mft_record_number;/* Number of this mft record. */
 multiline_comment|/* sizeof() = 48 bytes */
 multiline_comment|/*&n; * When (re)using the mft record, we place the update sequence array at this&n; * offset, i.e. before we start with the attributes. This also makes sense,&n; * otherwise we could run into problems with the update sequence array&n; * containing in itself the last two bytes of a sector which would mean that&n; * multi sector transfer protection wouldn&squot;t work. As you can&squot;t protect data&n; * by overwriting it since you then can&squot;t get it back...&n; * When reading we obviously use the data from the ntfs record header.&n; */
 DECL|typedef|MFT_RECORD
@@ -648,295 +614,80 @@ id|__packed__
 )paren
 id|MFT_RECORD
 suffix:semicolon
-multiline_comment|/*&n; * System defined attributes (32-bit). Each attribute type has a corresponding&n; * attribute name (Unicode string of maximum 64 character length) as described&n; * by the attribute definitions present in the data attribute of the $AttrDef&n; * system file. On NTFS 3.0 volumes the names are just as the types are named&n; * in the below enum exchanging AT_ for the dollar sign ($). If that isn&squot;t a&n; * revealing choice of symbol... (-;&n; */
+multiline_comment|/*&n; * System defined attributes (32-bit).  Each attribute type has a corresponding&n; * attribute name (Unicode string of maximum 64 character length) as described&n; * by the attribute definitions present in the data attribute of the $AttrDef&n; * system file.  On NTFS 3.0 volumes the names are just as the types are named&n; * in the below defines exchanging AT_ for the dollar sign ($).  If that is not&n; * a revealing choice of symbol I do not know what is... (-;&n; */
+DECL|macro|AT_UNUSED
+mdefine_line|#define AT_UNUSED&t;&t;&t;const_cpu_to_le32(         0)
+DECL|macro|AT_STANDARD_INFORMATION
+mdefine_line|#define AT_STANDARD_INFORMATION&t;&t;const_cpu_to_le32(      0x10)
+DECL|macro|AT_ATTRIBUTE_LIST
+mdefine_line|#define AT_ATTRIBUTE_LIST&t;&t;const_cpu_to_le32(      0x20)
+DECL|macro|AT_FILE_NAME
+mdefine_line|#define AT_FILE_NAME&t;&t;&t;const_cpu_to_le32(      0x30)
+DECL|macro|AT_OBJECT_ID
+mdefine_line|#define AT_OBJECT_ID&t;&t;&t;const_cpu_to_le32(      0x40)
+DECL|macro|AT_SECURITY_DESCRIPTOR
+mdefine_line|#define AT_SECURITY_DESCRIPTOR&t;&t;const_cpu_to_le32(      0x50)
+DECL|macro|AT_VOLUME_NAME
+mdefine_line|#define AT_VOLUME_NAME&t;&t;&t;const_cpu_to_le32(      0x60)
+DECL|macro|AT_VOLUME_INFORMATION
+mdefine_line|#define AT_VOLUME_INFORMATION&t;&t;const_cpu_to_le32(      0x70)
+DECL|macro|AT_DATA
+mdefine_line|#define AT_DATA&t;&t;&t;&t;const_cpu_to_le32(      0x80)
+DECL|macro|AT_INDEX_ROOT
+mdefine_line|#define AT_INDEX_ROOT&t;&t;&t;const_cpu_to_le32(      0x90)
+DECL|macro|AT_INDEX_ALLOCATION
+mdefine_line|#define AT_INDEX_ALLOCATION&t;&t;const_cpu_to_le32(      0xa0)
+DECL|macro|AT_BITMAP
+mdefine_line|#define AT_BITMAP&t;&t;&t;const_cpu_to_le32(      0xb0)
+DECL|macro|AT_REPARSE_POINT
+mdefine_line|#define AT_REPARSE_POINT&t;&t;const_cpu_to_le32(      0xc0)
+DECL|macro|AT_EA_INFORMATION
+mdefine_line|#define AT_EA_INFORMATION&t;&t;const_cpu_to_le32(      0xd0)
+DECL|macro|AT_EA
+mdefine_line|#define AT_EA&t;&t;&t;&t;const_cpu_to_le32(      0xe0)
+DECL|macro|AT_PROPERTY_SET
+mdefine_line|#define AT_PROPERTY_SET&t;&t;&t;const_cpu_to_le32(      0xf0)
+DECL|macro|AT_LOGGED_UTILITY_STREAM
+mdefine_line|#define AT_LOGGED_UTILITY_STREAM&t;const_cpu_to_le32(     0x100)
+DECL|macro|AT_FIRST_USER_DEFINED_ATTRIBUTE
+mdefine_line|#define AT_FIRST_USER_DEFINED_ATTRIBUTE&t;const_cpu_to_le32(    0x1000)
+DECL|macro|AT_END
+mdefine_line|#define AT_END&t;&t;&t;&t;const_cpu_to_le32(0xffffffff)
+DECL|typedef|ATTR_TYPE
 r_typedef
-r_enum
-(brace
-DECL|enumerator|AT_UNUSED
-id|AT_UNUSED
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0
-)paren
-comma
-DECL|enumerator|AT_STANDARD_INFORMATION
-id|AT_STANDARD_INFORMATION
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x10
-)paren
-comma
-DECL|enumerator|AT_ATTRIBUTE_LIST
-id|AT_ATTRIBUTE_LIST
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x20
-)paren
-comma
-DECL|enumerator|AT_FILE_NAME
-id|AT_FILE_NAME
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x30
-)paren
-comma
-DECL|enumerator|AT_OBJECT_ID
-id|AT_OBJECT_ID
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x40
-)paren
-comma
-DECL|enumerator|AT_SECURITY_DESCRIPTOR
-id|AT_SECURITY_DESCRIPTOR
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x50
-)paren
-comma
-DECL|enumerator|AT_VOLUME_NAME
-id|AT_VOLUME_NAME
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x60
-)paren
-comma
-DECL|enumerator|AT_VOLUME_INFORMATION
-id|AT_VOLUME_INFORMATION
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x70
-)paren
-comma
-DECL|enumerator|AT_DATA
-id|AT_DATA
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x80
-)paren
-comma
-DECL|enumerator|AT_INDEX_ROOT
-id|AT_INDEX_ROOT
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x90
-)paren
-comma
-DECL|enumerator|AT_INDEX_ALLOCATION
-id|AT_INDEX_ALLOCATION
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0xa0
-)paren
-comma
-DECL|enumerator|AT_BITMAP
-id|AT_BITMAP
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0xb0
-)paren
-comma
-DECL|enumerator|AT_REPARSE_POINT
-id|AT_REPARSE_POINT
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0xc0
-)paren
-comma
-DECL|enumerator|AT_EA_INFORMATION
-id|AT_EA_INFORMATION
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0xd0
-)paren
-comma
-DECL|enumerator|AT_EA
-id|AT_EA
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0xe0
-)paren
-comma
-DECL|enumerator|AT_PROPERTY_SET
-id|AT_PROPERTY_SET
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0xf0
-)paren
-comma
-DECL|enumerator|AT_LOGGED_UTILITY_STREAM
-id|AT_LOGGED_UTILITY_STREAM
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x100
-)paren
-comma
-DECL|enumerator|AT_FIRST_USER_DEFINED_ATTRIBUTE
-id|AT_FIRST_USER_DEFINED_ATTRIBUTE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x1000
-)paren
-comma
-DECL|enumerator|AT_END
-id|AT_END
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0xffffffff
-)paren
-comma
-DECL|typedef|ATTR_TYPES
-)brace
-id|ATTR_TYPES
+id|le32
+id|ATTR_TYPE
 suffix:semicolon
-multiline_comment|/*&n; * The collation rules for sorting views/indexes/etc (32-bit).&n; *&n; * COLLATION_UNICODE_STRING - Collate Unicode strings by comparing their binary&n; *&t;Unicode values, except that when a character can be uppercased, the&n; *&t;upper case value collates before the lower case one.&n; * COLLATION_FILE_NAME - Collate file names as Unicode strings. The collation&n; *&t;is done very much like COLLATION_UNICODE_STRING. In fact I have no idea&n; *&t;what the difference is. Perhaps the difference is that file names&n; *&t;would treat some special characters in an odd way (see&n; *&t;unistr.c::ntfs_collate_names() and unistr.c::legal_ansi_char_array[]&n; *&t;for what I mean but COLLATION_UNICODE_STRING would not give any special&n; *&t;treatment to any characters at all, but this is speculation.&n; * COLLATION_NTOFS_ULONG - Sorting is done according to ascending u32 key&n; *&t;values. E.g. used for $SII index in FILE_Secure, which sorts by&n; *&t;security_id (u32).&n; * COLLATION_NTOFS_SID - Sorting is done according to ascending SID values.&n; *&t;E.g. used for $O index in FILE_Extend/$Quota.&n; * COLLATION_NTOFS_SECURITY_HASH - Sorting is done first by ascending hash&n; *&t;values and second by ascending security_id values. E.g. used for $SDH&n; *&t;index in FILE_Secure.&n; * COLLATION_NTOFS_ULONGS - Sorting is done according to a sequence of ascending&n; *&t;u32 key values. E.g. used for $O index in FILE_Extend/$ObjId, which&n; *&t;sorts by object_id (16-byte), by splitting up the object_id in four&n; *&t;u32 values and using them as individual keys. E.g. take the following&n; *&t;two security_ids, stored as follows on disk:&n; *&t;&t;1st: a1 61 65 b7 65 7b d4 11 9e 3d 00 e0 81 10 42 59&n; *&t;&t;2nd: 38 14 37 d2 d2 f3 d4 11 a5 21 c8 6b 79 b1 97 45&n; *&t;To compare them, they are split into four u32 values each, like so:&n; *&t;&t;1st: 0xb76561a1 0x11d47b65 0xe0003d9e 0x59421081&n; *&t;&t;2nd: 0xd2371438 0x11d4f3d2 0x6bc821a5 0x4597b179&n; *&t;Now, it is apparent why the 2nd object_id collates after the 1st: the&n; *&t;first u32 value of the 1st object_id is less than the first u32 of&n; *&t;the 2nd object_id. If the first u32 values of both object_ids were&n; *&t;equal then the second u32 values would be compared, etc.&n; */
+multiline_comment|/*&n; * The collation rules for sorting views/indexes/etc (32-bit).&n; *&n; * COLLATION_BINARY - Collate by binary compare where the first byte is most&n; *&t;significant.&n; * COLLATION_UNICODE_STRING - Collate Unicode strings by comparing their binary&n; *&t;Unicode values, except that when a character can be uppercased, the&n; *&t;upper case value collates before the lower case one.&n; * COLLATION_FILE_NAME - Collate file names as Unicode strings. The collation&n; *&t;is done very much like COLLATION_UNICODE_STRING. In fact I have no idea&n; *&t;what the difference is. Perhaps the difference is that file names&n; *&t;would treat some special characters in an odd way (see&n; *&t;unistr.c::ntfs_collate_names() and unistr.c::legal_ansi_char_array[]&n; *&t;for what I mean but COLLATION_UNICODE_STRING would not give any special&n; *&t;treatment to any characters at all, but this is speculation.&n; * COLLATION_NTOFS_ULONG - Sorting is done according to ascending le32 key&n; *&t;values. E.g. used for $SII index in FILE_Secure, which sorts by&n; *&t;security_id (le32).&n; * COLLATION_NTOFS_SID - Sorting is done according to ascending SID values.&n; *&t;E.g. used for $O index in FILE_Extend/$Quota.&n; * COLLATION_NTOFS_SECURITY_HASH - Sorting is done first by ascending hash&n; *&t;values and second by ascending security_id values. E.g. used for $SDH&n; *&t;index in FILE_Secure.&n; * COLLATION_NTOFS_ULONGS - Sorting is done according to a sequence of ascending&n; *&t;le32 key values. E.g. used for $O index in FILE_Extend/$ObjId, which&n; *&t;sorts by object_id (16-byte), by splitting up the object_id in four&n; *&t;le32 values and using them as individual keys. E.g. take the following&n; *&t;two security_ids, stored as follows on disk:&n; *&t;&t;1st: a1 61 65 b7 65 7b d4 11 9e 3d 00 e0 81 10 42 59&n; *&t;&t;2nd: 38 14 37 d2 d2 f3 d4 11 a5 21 c8 6b 79 b1 97 45&n; *&t;To compare them, they are split into four le32 values each, like so:&n; *&t;&t;1st: 0xb76561a1 0x11d47b65 0xe0003d9e 0x59421081&n; *&t;&t;2nd: 0xd2371438 0x11d4f3d2 0x6bc821a5 0x4597b179&n; *&t;Now, it is apparent why the 2nd object_id collates after the 1st: the&n; *&t;first le32 value of the 1st object_id is less than the first le32 of&n; *&t;the 2nd object_id. If the first le32 values of both object_ids were&n; *&t;equal then the second le32 values would be compared, etc.&n; */
+DECL|macro|COLLATION_BINARY
+mdefine_line|#define COLLATION_BINARY&t;&t;const_cpu_to_le32(0x00)
+DECL|macro|COLLATION_FILE_NAME
+mdefine_line|#define COLLATION_FILE_NAME&t;&t;const_cpu_to_le32(0x01)
+DECL|macro|COLLATION_UNICODE_STRING
+mdefine_line|#define COLLATION_UNICODE_STRING&t;const_cpu_to_le32(0x02)
+DECL|macro|COLLATION_NTOFS_ULONG
+mdefine_line|#define COLLATION_NTOFS_ULONG&t;&t;const_cpu_to_le32(0x10)
+DECL|macro|COLLATION_NTOFS_SID
+mdefine_line|#define COLLATION_NTOFS_SID&t;&t;const_cpu_to_le32(0x11)
+DECL|macro|COLLATION_NTOFS_SECURITY_HASH
+mdefine_line|#define COLLATION_NTOFS_SECURITY_HASH&t;const_cpu_to_le32(0x12)
+DECL|macro|COLLATION_NTOFS_ULONGS
+mdefine_line|#define COLLATION_NTOFS_ULONGS&t;&t;const_cpu_to_le32(0x13)
+DECL|typedef|COLLATION_RULE
 r_typedef
-r_enum
-(brace
-DECL|enumerator|COLLATION_BINARY
-id|COLLATION_BINARY
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00
-)paren
-comma
-multiline_comment|/* Collate by&n;&t;&t;&t;&t;&t;binary compare where the first byte is&n;&t;&t;&t;&t;&t;most significant. */
-DECL|enumerator|COLLATION_FILE_NAME
-id|COLLATION_FILE_NAME
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x01
-)paren
-comma
-multiline_comment|/* Collate file&n;&t;&t;&t;&t;&t;names as Unicode strings. */
-DECL|enumerator|COLLATION_UNICODE_STRING
-id|COLLATION_UNICODE_STRING
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x02
-)paren
-comma
-multiline_comment|/* Collate Unicode&n;&t;&t;&t;&t;&t;strings by comparing their binary&n;&t;&t;&t;&t;&t;Unicode values, except that when a&n;&t;&t;&t;&t;&t;character can be uppercased, the upper&n;&t;&t;&t;&t;&t;case value collates before the lower&n;&t;&t;&t;&t;&t;case one. */
-DECL|enumerator|COLLATION_NTOFS_ULONG
-id|COLLATION_NTOFS_ULONG
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x10
-)paren
-comma
-DECL|enumerator|COLLATION_NTOFS_SID
-id|COLLATION_NTOFS_SID
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x11
-)paren
-comma
-DECL|enumerator|COLLATION_NTOFS_SECURITY_HASH
-id|COLLATION_NTOFS_SECURITY_HASH
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x12
-)paren
-comma
-DECL|enumerator|COLLATION_NTOFS_ULONGS
-id|COLLATION_NTOFS_ULONGS
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x13
-)paren
-comma
-DECL|typedef|COLLATION_RULES
-)brace
-id|COLLATION_RULES
+id|le32
+id|COLLATION_RULE
 suffix:semicolon
-multiline_comment|/*&n; * The flags (32-bit) describing attribute properties in the attribute&n; * definition structure. FIXME: This information is from Regis&squot;s information&n; * and, according to him, it is not certain and probably incomplete.&n; * The INDEXABLE flag is fairly certainly correct as only the file name&n; * attribute has this flag set and this is the only attribute indexed in NT4.&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|INDEXABLE
-id|INDEXABLE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x02
-)paren
-comma
-multiline_comment|/* Attribute can be&n;&t;&t;&t;&t;&t;&t;&t;   indexed. */
-DECL|enumerator|NEED_TO_REGENERATE
-id|NEED_TO_REGENERATE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x40
-)paren
-comma
-multiline_comment|/* Need to regenerate&n;&t;&t;&t;&t;&t;&t;&t;   during regeneration&n;&t;&t;&t;&t;&t;&t;&t;   phase. */
-DECL|enumerator|CAN_BE_NON_RESIDENT
-id|CAN_BE_NON_RESIDENT
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x80
-)paren
-comma
-multiline_comment|/* Attribute can be&n;&t;&t;&t;&t;&t;&t;&t;   non-resident. */
+multiline_comment|/*&n; * The flags (32-bit) describing attribute properties in the attribute&n; * definition structure.  FIXME: This information is from Regis&squot;s information&n; * and, according to him, it is not certain and probably incomplete.&n; * The INDEXABLE flag is fairly certainly correct as only the file name&n; * attribute has this flag set and this is the only attribute indexed in NT4.&n; */
+DECL|macro|INDEXABLE
+mdefine_line|#define INDEXABLE&t;    const_cpu_to_le32(0x02) /* Attribute can be&n;&t;&t;&t;&t;&t;&t;       indexed. */
+DECL|macro|NEED_TO_REGENERATE
+mdefine_line|#define NEED_TO_REGENERATE  const_cpu_to_le32(0x40) /* Need to regenerate&n;&t;&t;&t;&t;&t;&t;       during regeneration&n;&t;&t;&t;&t;&t;&t;       phase. */
+DECL|macro|CAN_BE_NON_RESIDENT
+mdefine_line|#define CAN_BE_NON_RESIDENT const_cpu_to_le32(0x80) /* Attribute can be&n;&t;&t;&t;&t;&t;&t;       non-resident. */
 DECL|typedef|ATTR_DEF_FLAGS
-)brace
+r_typedef
+id|le32
 id|ATTR_DEF_FLAGS
 suffix:semicolon
 multiline_comment|/*&n; * The data attribute of FILE_AttrDef contains a sequence of attribute&n; * definitions for the NTFS volume. With this, it is supposed to be safe for an&n; * older NTFS driver to mount a volume containing a newer NTFS version without&n; * damaging it (that&squot;s the theory. In practice it&squot;s: not damaging it too much).&n; * Entries are sorted by attribute type. The flags describe whether the&n; * attribute can be resident/non-resident and possibly other things, but the&n; * actual bits are unknown.&n; */
@@ -955,19 +706,19 @@ suffix:semicolon
 multiline_comment|/* Unicode name of the attribute. Zero&n;&t;&t;&t;&t;&t;   terminated. */
 DECL|member|type
 multiline_comment|/* 80*/
-id|ATTR_TYPES
+id|ATTR_TYPE
 id|type
 suffix:semicolon
 multiline_comment|/* Type of the attribute. */
 DECL|member|display_rule
 multiline_comment|/* 84*/
-id|u32
+id|le32
 id|display_rule
 suffix:semicolon
 multiline_comment|/* Default display rule.&n;&t;&t;&t;&t;&t;   FIXME: What does it mean? (AIA) */
 DECL|member|collation_rule
 multiline_comment|/* 88*/
-id|COLLATION_RULES
+id|COLLATION_RULE
 id|collation_rule
 suffix:semicolon
 multiline_comment|/* Default collation rule. */
@@ -979,13 +730,13 @@ suffix:semicolon
 multiline_comment|/* Flags describing the attribute. */
 DECL|member|min_size
 multiline_comment|/* 90*/
-id|u64
+id|le64
 id|min_size
 suffix:semicolon
 multiline_comment|/* Optional minimum attribute size. */
 DECL|member|max_size
 multiline_comment|/* 98*/
-id|u64
+id|le64
 id|max_size
 suffix:semicolon
 multiline_comment|/* Maximum size of attribute. */
@@ -1001,75 +752,26 @@ id|__packed__
 id|ATTR_DEF
 suffix:semicolon
 multiline_comment|/*&n; * Attribute flags (16-bit).&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|ATTR_IS_COMPRESSED
-id|ATTR_IS_COMPRESSED
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x0001
-)paren
-comma
-DECL|enumerator|ATTR_COMPRESSION_MASK
-id|ATTR_COMPRESSION_MASK
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x00ff
-)paren
-comma
-multiline_comment|/* Compression&n;&t;&t;&t;&t;&t;&t;method mask. Also, first&n;&t;&t;&t;&t;&t;&t;illegal value. */
-DECL|enumerator|ATTR_IS_ENCRYPTED
-id|ATTR_IS_ENCRYPTED
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x4000
-)paren
-comma
-DECL|enumerator|ATTR_IS_SPARSE
-id|ATTR_IS_SPARSE
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x8000
-)paren
-comma
+DECL|macro|ATTR_IS_COMPRESSED
+mdefine_line|#define ATTR_IS_COMPRESSED    const_cpu_to_le16(0x0001)
+DECL|macro|ATTR_COMPRESSION_MASK
+mdefine_line|#define&t;ATTR_COMPRESSION_MASK const_cpu_to_le16(0x00ff) /* Compression method&n;&t;&t;&t;&t;&t;&t;&t;   mask.  Also, first&n;&t;&t;&t;&t;&t;&t;&t;   illegal value. */
+DECL|macro|ATTR_IS_ENCRYPTED
+mdefine_line|#define ATTR_IS_ENCRYPTED     const_cpu_to_le16(0x4000)
+DECL|macro|ATTR_IS_SPARSE
+mdefine_line|#define ATTR_IS_SPARSE&t;      const_cpu_to_le16(0x8000)
 DECL|typedef|ATTR_FLAGS
-)brace
-id|__attribute__
-(paren
-(paren
-id|__packed__
-)paren
-)paren
+r_typedef
+id|le16
 id|ATTR_FLAGS
 suffix:semicolon
 multiline_comment|/*&n; * Attribute compression.&n; *&n; * Only the data attribute is ever compressed in the current ntfs driver in&n; * Windows. Further, compression is only applied when the data attribute is&n; * non-resident. Finally, to use compression, the maximum allowed cluster size&n; * on a volume is 4kib.&n; *&n; * The compression method is based on independently compressing blocks of X&n; * clusters, where X is determined from the compression_unit value found in the&n; * non-resident attribute record header (more precisely: X = 2^compression_unit&n; * clusters). On Windows NT/2k, X always is 16 clusters (compression_unit = 4).&n; *&n; * There are three different cases of how a compression block of X clusters&n; * can be stored:&n; *&n; *   1) The data in the block is all zero (a sparse block):&n; *&t;  This is stored as a sparse block in the runlist, i.e. the runlist&n; *&t;  entry has length = X and lcn = -1. The mapping pairs array actually&n; *&t;  uses a delta_lcn value length of 0, i.e. delta_lcn is not present at&n; *&t;  all, which is then interpreted by the driver as lcn = -1.&n; *&t;  NOTE: Even uncompressed files can be sparse on NTFS 3.0 volumes, then&n; *&t;  the same principles apply as above, except that the length is not&n; *&t;  restricted to being any particular value.&n; *&n; *   2) The data in the block is not compressed:&n; *&t;  This happens when compression doesn&squot;t reduce the size of the block&n; *&t;  in clusters. I.e. if compression has a small effect so that the&n; *&t;  compressed data still occupies X clusters, then the uncompressed data&n; *&t;  is stored in the block.&n; *&t;  This case is recognised by the fact that the runlist entry has&n; *&t;  length = X and lcn &gt;= 0. The mapping pairs array stores this as&n; *&t;  normal with a run length of X and some specific delta_lcn, i.e.&n; *&t;  delta_lcn has to be present.&n; *&n; *   3) The data in the block is compressed:&n; *&t;  The common case. This case is recognised by the fact that the run&n; *&t;  list entry has length L &lt; X and lcn &gt;= 0. The mapping pairs array&n; *&t;  stores this as normal with a run length of X and some specific&n; *&t;  delta_lcn, i.e. delta_lcn has to be present. This runlist entry is&n; *&t;  immediately followed by a sparse entry with length = X - L and&n; *&t;  lcn = -1. The latter entry is to make up the vcn counting to the&n; *&t;  full compression block size X.&n; *&n; * In fact, life is more complicated because adjacent entries of the same type&n; * can be coalesced. This means that one has to keep track of the number of&n; * clusters handled and work on a basis of X clusters at a time being one&n; * block. An example: if length L &gt; X this means that this particular runlist&n; * entry contains a block of length X and part of one or more blocks of length&n; * L - X. Another example: if length L &lt; X, this does not necessarily mean that&n; * the block is compressed as it might be that the lcn changes inside the block&n; * and hence the following runlist entry describes the continuation of the&n; * potentially compressed block. The block would be compressed if the&n; * following runlist entry describes at least X - L sparse clusters, thus&n; * making up the compression block length as described in point 3 above. (Of&n; * course, there can be several runlist entries with small lengths so that the&n; * sparse entry does not follow the first data containing entry with&n; * length &lt; X.)&n; *&n; * NOTE: At the end of the compressed attribute value, there most likely is not&n; * just the right amount of data to make up a compression block, thus this data&n; * is not even attempted to be compressed. It is just stored as is, unless&n; * the number of clusters it occupies is reduced when compressed in which case&n; * it is stored as a compressed compression block, complete with sparse&n; * clusters at the end.&n; */
 multiline_comment|/*&n; * Flags of resident attributes (8-bit).&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|RESIDENT_ATTR_IS_INDEXED
-id|RESIDENT_ATTR_IS_INDEXED
-op_assign
-l_int|0x01
-comma
-multiline_comment|/* Attribute is referenced in an index&n;&t;&t;&t;&t;&t;    (has implications for deleting and&n;&t;&t;&t;&t;&t;    modifying the attribute). */
+DECL|macro|RESIDENT_ATTR_IS_INDEXED
+mdefine_line|#define RESIDENT_ATTR_IS_INDEXED 0x01 /* Attribute is referenced in an index&n;&t;&t;&t;&t;&t; (has implications for deleting and&n;&t;&t;&t;&t;&t; modifying the attribute). */
 DECL|typedef|RESIDENT_ATTR_FLAGS
-)brace
-id|__attribute__
-(paren
-(paren
-id|__packed__
-)paren
-)paren
+r_typedef
+id|u8
 id|RESIDENT_ATTR_FLAGS
 suffix:semicolon
 multiline_comment|/*&n; * Attribute record header. Always aligned to 8-byte boundary.&n; */
@@ -1079,13 +781,13 @@ r_struct
 multiline_comment|/*Ofs*/
 DECL|member|type
 multiline_comment|/*  0*/
-id|ATTR_TYPES
+id|ATTR_TYPE
 id|type
 suffix:semicolon
 multiline_comment|/* The (32-bit) type of the attribute. */
 DECL|member|length
 multiline_comment|/*  4*/
-id|u32
+id|le32
 id|length
 suffix:semicolon
 multiline_comment|/* Byte size of the resident part of the&n;&t;&t;&t;&t;   attribute (aligned to 8-byte boundary).&n;&t;&t;&t;&t;   Used to get to the next attribute. */
@@ -1103,7 +805,7 @@ suffix:semicolon
 multiline_comment|/* Unicode character size of name of attribute.&n;&t;&t;&t;&t;   0 if unnamed. */
 DECL|member|name_offset
 multiline_comment|/* 10*/
-id|u16
+id|le16
 id|name_offset
 suffix:semicolon
 multiline_comment|/* If name_length != 0, the byte offset to the&n;&t;&t;&t;&t;   beginning of the name from the attribute&n;&t;&t;&t;&t;   record. Note that the name is stored as a&n;&t;&t;&t;&t;   Unicode string. When creating, place offset&n;&t;&t;&t;&t;   just at the end of the record header. Then,&n;&t;&t;&t;&t;   follow with attribute value or mapping pairs&n;&t;&t;&t;&t;   array, resident and non-resident attributes&n;&t;&t;&t;&t;   respectively, aligning to an 8-byte&n;&t;&t;&t;&t;   boundary. */
@@ -1115,7 +817,7 @@ suffix:semicolon
 multiline_comment|/* Flags describing the attribute. */
 DECL|member|instance
 multiline_comment|/* 14*/
-id|u16
+id|le16
 id|instance
 suffix:semicolon
 multiline_comment|/* The instance of this attribute record. This&n;&t;&t;&t;&t;   number is unique within this mft record (see&n;&t;&t;&t;&t;   MFT_RECORD/next_attribute_instance notes in&n;&t;&t;&t;&t;   in mft.h for more details). */
@@ -1127,13 +829,13 @@ r_struct
 (brace
 DECL|member|value_length
 multiline_comment|/* 16 */
-id|u32
+id|le32
 id|value_length
 suffix:semicolon
 multiline_comment|/* Byte size of attribute value. */
 DECL|member|value_offset
 multiline_comment|/* 20 */
-id|u16
+id|le16
 id|value_offset
 suffix:semicolon
 multiline_comment|/* Byte offset of the attribute&n;&t;&t;&t;&t;&t;     value from the start of the&n;&t;&t;&t;&t;&t;     attribute record. When creating,&n;&t;&t;&t;&t;&t;     align to 8-byte boundary if we&n;&t;&t;&t;&t;&t;     have a name present as this might&n;&t;&t;&t;&t;&t;     not have a length of a multiple&n;&t;&t;&t;&t;&t;     of 8-bytes. */
@@ -1164,19 +866,19 @@ r_struct
 (brace
 DECL|member|lowest_vcn
 multiline_comment|/* 16*/
-id|VCN
+id|leVCN
 id|lowest_vcn
 suffix:semicolon
 multiline_comment|/* Lowest valid virtual cluster number&n;&t;&t;&t;&t;for this portion of the attribute value or&n;&t;&t;&t;&t;0 if this is the only extent (usually the&n;&t;&t;&t;&t;case). - Only when an attribute list is used&n;&t;&t;&t;&t;does lowest_vcn != 0 ever occur. */
 DECL|member|highest_vcn
 multiline_comment|/* 24*/
-id|VCN
+id|leVCN
 id|highest_vcn
 suffix:semicolon
 multiline_comment|/* Highest valid vcn of this extent of&n;&t;&t;&t;&t;the attribute value. - Usually there is only one&n;&t;&t;&t;&t;portion, so this usually equals the attribute&n;&t;&t;&t;&t;value size in clusters minus 1. Can be -1 for&n;&t;&t;&t;&t;zero length files. Can be 0 for &quot;single extent&quot;&n;&t;&t;&t;&t;attributes. */
 DECL|member|mapping_pairs_offset
 multiline_comment|/* 32*/
-id|u16
+id|le16
 id|mapping_pairs_offset
 suffix:semicolon
 multiline_comment|/* Byte offset from the&n;&t;&t;&t;&t;beginning of the structure to the mapping pairs&n;&t;&t;&t;&t;array which contains the mappings between the&n;&t;&t;&t;&t;vcns and the logical cluster numbers (lcns).&n;&t;&t;&t;&t;When creating, place this at the end of this&n;&t;&t;&t;&t;record header aligned to 8-byte boundary. */
@@ -1198,26 +900,26 @@ multiline_comment|/* Align to 8-byte boundary. */
 multiline_comment|/* The sizes below are only used when lowest_vcn is zero, as otherwise it would&n;   be difficult to keep them up-to-date.*/
 DECL|member|allocated_size
 multiline_comment|/* 40*/
-id|s64
+id|sle64
 id|allocated_size
 suffix:semicolon
 multiline_comment|/* Byte size of disk space&n;&t;&t;&t;&t;allocated to hold the attribute value. Always&n;&t;&t;&t;&t;is a multiple of the cluster size. When a file&n;&t;&t;&t;&t;is compressed, this field is a multiple of the&n;&t;&t;&t;&t;compression block size (2^compression_unit) and&n;&t;&t;&t;&t;it represents the logically allocated space&n;&t;&t;&t;&t;rather than the actual on disk usage. For this&n;&t;&t;&t;&t;use the compressed_size (see below). */
 DECL|member|data_size
 multiline_comment|/* 48*/
-id|s64
+id|sle64
 id|data_size
 suffix:semicolon
 multiline_comment|/* Byte size of the attribute&n;&t;&t;&t;&t;value. Can be larger than allocated_size if&n;&t;&t;&t;&t;attribute value is compressed or sparse. */
 DECL|member|initialized_size
 multiline_comment|/* 56*/
-id|s64
+id|sle64
 id|initialized_size
 suffix:semicolon
 multiline_comment|/* Byte size of initialized&n;&t;&t;&t;&t;portion of the attribute value. Usually equals&n;&t;&t;&t;&t;data_size. */
 multiline_comment|/* sizeof(uncompressed attr) = 64*/
 DECL|member|compressed_size
 multiline_comment|/* 64*/
-id|s64
+id|sle64
 id|compressed_size
 suffix:semicolon
 multiline_comment|/* Byte size of the attribute&n;&t;&t;&t;&t;value after compression. Only present when&n;&t;&t;&t;&t;compressed. Always is a multiple of the&n;&t;&t;&t;&t;cluster size. Represents the actual amount of&n;&t;&t;&t;&t;disk space being used on the disk. */
@@ -1257,182 +959,53 @@ r_typedef
 id|ATTR_RECORD
 id|ATTR_REC
 suffix:semicolon
-multiline_comment|/*&n; * File attribute flags (32-bit).&n; */
-r_typedef
-r_enum
-(brace
-multiline_comment|/*&n;&t; * These flags are only present in the STANDARD_INFORMATION attribute&n;&t; * (in the field file_attributes).&n;&t; */
-DECL|enumerator|FILE_ATTR_READONLY
-id|FILE_ATTR_READONLY
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000001
-)paren
-comma
-DECL|enumerator|FILE_ATTR_HIDDEN
-id|FILE_ATTR_HIDDEN
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000002
-)paren
-comma
-DECL|enumerator|FILE_ATTR_SYSTEM
-id|FILE_ATTR_SYSTEM
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000004
-)paren
-comma
+multiline_comment|/*&n; * File attribute flags (32-bit).&n; *&n; * The following flags are only present in the STANDARD_INFORMATION attribute&n; * (in the field file_attributes).&n; */
+DECL|macro|FILE_ATTR_READONLY
+mdefine_line|#define&t;FILE_ATTR_READONLY&t;&t;const_cpu_to_le32(0x00000001)
+DECL|macro|FILE_ATTR_HIDDEN
+mdefine_line|#define&t;FILE_ATTR_HIDDEN&t;&t;const_cpu_to_le32(0x00000002)
+DECL|macro|FILE_ATTR_SYSTEM
+mdefine_line|#define&t;FILE_ATTR_SYSTEM&t;&t;const_cpu_to_le32(0x00000004)
 multiline_comment|/* Old DOS volid. Unused in NT.&t;= cpu_to_le32(0x00000008), */
-DECL|enumerator|FILE_ATTR_DIRECTORY
-id|FILE_ATTR_DIRECTORY
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000010
-)paren
-comma
-multiline_comment|/* FILE_ATTR_DIRECTORY is not considered valid in NT. It is reserved&n;&t;   for the DOS SUBDIRECTORY flag. */
-DECL|enumerator|FILE_ATTR_ARCHIVE
-id|FILE_ATTR_ARCHIVE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000020
-)paren
-comma
-DECL|enumerator|FILE_ATTR_DEVICE
-id|FILE_ATTR_DEVICE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000040
-)paren
-comma
-DECL|enumerator|FILE_ATTR_NORMAL
-id|FILE_ATTR_NORMAL
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000080
-)paren
-comma
-DECL|enumerator|FILE_ATTR_TEMPORARY
-id|FILE_ATTR_TEMPORARY
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000100
-)paren
-comma
-DECL|enumerator|FILE_ATTR_SPARSE_FILE
-id|FILE_ATTR_SPARSE_FILE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000200
-)paren
-comma
-DECL|enumerator|FILE_ATTR_REPARSE_POINT
-id|FILE_ATTR_REPARSE_POINT
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000400
-)paren
-comma
-DECL|enumerator|FILE_ATTR_COMPRESSED
-id|FILE_ATTR_COMPRESSED
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000800
-)paren
-comma
-DECL|enumerator|FILE_ATTR_OFFLINE
-id|FILE_ATTR_OFFLINE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00001000
-)paren
-comma
-DECL|enumerator|FILE_ATTR_NOT_CONTENT_INDEXED
-id|FILE_ATTR_NOT_CONTENT_INDEXED
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00002000
-)paren
-comma
-DECL|enumerator|FILE_ATTR_ENCRYPTED
-id|FILE_ATTR_ENCRYPTED
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00004000
-)paren
-comma
-DECL|enumerator|FILE_ATTR_VALID_FLAGS
-id|FILE_ATTR_VALID_FLAGS
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00007fb7
-)paren
-comma
-multiline_comment|/* FILE_ATTR_VALID_FLAGS masks out the old DOS VolId and the&n;&t;   FILE_ATTR_DEVICE and preserves everything else. This mask&n;&t;   is used to obtain all flags that are valid for reading. */
-DECL|enumerator|FILE_ATTR_VALID_SET_FLAGS
-id|FILE_ATTR_VALID_SET_FLAGS
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x000031a7
-)paren
-comma
-multiline_comment|/* FILE_ATTR_VALID_SET_FLAGS masks out the old DOS VolId, the&n;&t;   F_A_DEVICE, F_A_DIRECTORY, F_A_SPARSE_FILE, F_A_REPARSE_POINT,&n;&t;   F_A_COMPRESSED and F_A_ENCRYPTED and preserves the rest. This mask&n;&t;   is used to to obtain all flags that are valid for setting. */
-multiline_comment|/*&n;&t; * These flags are only present in the FILE_NAME attribute (in the&n;&t; * field file_attributes).&n;&t; */
-DECL|enumerator|FILE_ATTR_DUP_FILE_NAME_INDEX_PRESENT
-id|FILE_ATTR_DUP_FILE_NAME_INDEX_PRESENT
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x10000000
-)paren
-comma
-multiline_comment|/* This is a copy of the corresponding bit from the mft record, telling&n;&t;   us whether this is a directory or not, i.e. whether it has an&n;&t;   index root attribute or not. */
-DECL|enumerator|FILE_ATTR_DUP_VIEW_INDEX_PRESENT
-id|FILE_ATTR_DUP_VIEW_INDEX_PRESENT
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x20000000
-)paren
-comma
-multiline_comment|/* This is a copy of the corresponding bit from the mft record, telling&n;&t;   us whether this file has a view index present (eg. object id index,&n;&t;   quota index, one of the security indexes or the encrypting file&n;&t;   system related indexes). */
+DECL|macro|FILE_ATTR_DIRECTORY
+mdefine_line|#define FILE_ATTR_DIRECTORY&t;&t;const_cpu_to_le32(0x00000010)
+multiline_comment|/* FILE_ATTR_DIRECTORY is not considered valid in NT.  It is reserved for the&n;   DOS SUBDIRECTORY flag. */
+DECL|macro|FILE_ATTR_ARCHIVE
+mdefine_line|#define FILE_ATTR_ARCHIVE&t;&t;const_cpu_to_le32(0x00000020)
+DECL|macro|FILE_ATTR_DEVICE
+mdefine_line|#define FILE_ATTR_DEVICE&t;&t;const_cpu_to_le32(0x00000040)
+DECL|macro|FILE_ATTR_NORMAL
+mdefine_line|#define FILE_ATTR_NORMAL&t;&t;const_cpu_to_le32(0x00000080)
+DECL|macro|FILE_ATTR_TEMPORARY
+mdefine_line|#define FILE_ATTR_TEMPORARY&t;&t;const_cpu_to_le32(0x00000100)
+DECL|macro|FILE_ATTR_SPARSE_FILE
+mdefine_line|#define FILE_ATTR_SPARSE_FILE&t;&t;const_cpu_to_le32(0x00000200)
+DECL|macro|FILE_ATTR_REPARSE_POINT
+mdefine_line|#define FILE_ATTR_REPARSE_POINT&t;&t;const_cpu_to_le32(0x00000400)
+DECL|macro|FILE_ATTR_COMPRESSED
+mdefine_line|#define FILE_ATTR_COMPRESSED&t;&t;const_cpu_to_le32(0x00000800)
+DECL|macro|FILE_ATTR_OFFLINE
+mdefine_line|#define FILE_ATTR_OFFLINE&t;&t;const_cpu_to_le32(0x00001000)
+DECL|macro|FILE_ATTR_NOT_CONTENT_INDEXED
+mdefine_line|#define FILE_ATTR_NOT_CONTENT_INDEXED&t;const_cpu_to_le32(0x00002000)
+DECL|macro|FILE_ATTR_ENCRYPTED
+mdefine_line|#define FILE_ATTR_ENCRYPTED&t;&t;const_cpu_to_le32(0x00004000)
+DECL|macro|FILE_ATTR_VALID_FLAGS
+mdefine_line|#define FILE_ATTR_VALID_FLAGS&t;&t;const_cpu_to_le32(0x00007fb7)
+multiline_comment|/* FILE_ATTR_VALID_FLAGS masks out the old DOS VolId and the FILE_ATTR_DEVICE&n;   and preserves everything else.  This mask is used to obtain all flags that&n;   are valid for reading. */
+DECL|macro|FILE_ATTR_VALID_SET_FLAGS
+mdefine_line|#define FILE_ATTR_VALID_SET_FLAGS&t;const_cpu_to_le32(0x000031a7)
+multiline_comment|/* FILE_ATTR_VALID_SET_FLAGS masks out the old DOS VolId, the F_A_DEVICE,&n;   F_A_DIRECTORY, F_A_SPARSE_FILE, F_A_REPARSE_POINT, F_A_COMPRESSED, and&n;   F_A_ENCRYPTED and preserves the rest.  This mask is used to to obtain all&n;   flags that are valid for setting. */
+multiline_comment|/*&n; * The following flags are only present in the FILE_NAME attribute (in the&n; * field file_attributes).&n; */
+DECL|macro|FILE_ATTR_DUP_FILE_NAME_INDEX_PRESENT
+mdefine_line|#define FILE_ATTR_DUP_FILE_NAME_INDEX_PRESENT&t;const_cpu_to_le32(0x10000000)
+multiline_comment|/* This is a copy of the corresponding bit from the mft record, telling us&n;   whether this is a directory or not, i.e. whether it has an index root&n;   attribute or not. */
+DECL|macro|FILE_ATTR_DUP_VIEW_INDEX_PRESENT
+mdefine_line|#define FILE_ATTR_DUP_VIEW_INDEX_PRESENT&t;const_cpu_to_le32(0x20000000)
+multiline_comment|/* This is a copy of the corresponding bit from the mft record, telling us&n;   whether this file has a view index present (eg. object id index, quota&n;   index, one of the security indexes or the encrypting file system related&n;   indexes). */
 DECL|typedef|FILE_ATTR_FLAGS
-)brace
+r_typedef
+id|le32
 id|FILE_ATTR_FLAGS
 suffix:semicolon
 multiline_comment|/*&n; * NOTE on times in NTFS: All times are in MS standard time format, i.e. they&n; * are the number of 100-nanosecond intervals since 1st January 1601, 00:00:00&n; * universal coordinated time (UTC). (In Linux time starts 1st January 1970,&n; * 00:00:00 UTC and is stored as the number of 1-second intervals since then.)&n; */
@@ -1443,25 +1016,25 @@ r_struct
 multiline_comment|/*Ofs*/
 DECL|member|creation_time
 multiline_comment|/*  0*/
-id|s64
+id|sle64
 id|creation_time
 suffix:semicolon
 multiline_comment|/* Time file was created. Updated when&n;&t;&t;&t;&t;&t;   a filename is changed(?). */
 DECL|member|last_data_change_time
 multiline_comment|/*  8*/
-id|s64
+id|sle64
 id|last_data_change_time
 suffix:semicolon
 multiline_comment|/* Time the data attribute was last&n;&t;&t;&t;&t;&t;   modified. */
 DECL|member|last_mft_change_time
 multiline_comment|/* 16*/
-id|s64
+id|sle64
 id|last_mft_change_time
 suffix:semicolon
 multiline_comment|/* Time this mft record was last&n;&t;&t;&t;&t;&t;   modified. */
 DECL|member|last_access_time
 multiline_comment|/* 24*/
-id|s64
+id|sle64
 id|last_access_time
 suffix:semicolon
 multiline_comment|/* Approximate time when the file was&n;&t;&t;&t;&t;&t;   last accessed (obviously this is not&n;&t;&t;&t;&t;&t;   updated on read-only volumes). In&n;&t;&t;&t;&t;&t;   Windows this is only updated when&n;&t;&t;&t;&t;&t;   accessed if some time delta has&n;&t;&t;&t;&t;&t;   passed since the last update. Also,&n;&t;&t;&t;&t;&t;   last access times updates can be&n;&t;&t;&t;&t;&t;   disabled altogether for speed. */
@@ -1503,43 +1076,43 @@ r_struct
 multiline_comment|/*&n; * If a volume has been upgraded from a previous NTFS version, then these&n; * fields are present only if the file has been accessed since the upgrade.&n; * Recognize the difference by comparing the length of the resident attribute&n; * value. If it is 48, then the following fields are missing. If it is 72 then&n; * the fields are present. Maybe just check like this:&n; *&t;if (resident.ValueLength &lt; sizeof(STANDARD_INFORMATION)) {&n; *&t;&t;Assume NTFS 1.2- format.&n; *&t;&t;If (volume version is 3.x)&n; *&t;&t;&t;Upgrade attribute to NTFS 3.x format.&n; *&t;&t;else&n; *&t;&t;&t;Use NTFS 1.2- format for access.&n; *&t;} else&n; *&t;&t;Use NTFS 3.x format for access.&n; * Only problem is that it might be legal to set the length of the value to&n; * arbitrarily large values thus spoiling this check. - But chkdsk probably&n; * views that as a corruption, assuming that it behaves like this for all&n; * attributes.&n; */
 DECL|member|maximum_versions
 multiline_comment|/* 36*/
-id|u32
+id|le32
 id|maximum_versions
 suffix:semicolon
 multiline_comment|/* Maximum allowed versions for&n;&t;&t;&t;&t;file. Zero if version numbering is disabled. */
 DECL|member|version_number
 multiline_comment|/* 40*/
-id|u32
+id|le32
 id|version_number
 suffix:semicolon
 multiline_comment|/* This file&squot;s version (if any).&n;&t;&t;&t;&t;Set to zero if maximum_versions is zero. */
 DECL|member|class_id
 multiline_comment|/* 44*/
-id|u32
+id|le32
 id|class_id
 suffix:semicolon
 multiline_comment|/* Class id from bidirectional&n;&t;&t;&t;&t;class id index (?). */
 DECL|member|owner_id
 multiline_comment|/* 48*/
-id|u32
+id|le32
 id|owner_id
 suffix:semicolon
 multiline_comment|/* Owner_id of the user owning&n;&t;&t;&t;&t;the file. Translate via $Q index in FILE_Extend&n;&t;&t;&t;&t;/$Quota to the quota control entry for the user&n;&t;&t;&t;&t;owning the file. Zero if quotas are disabled. */
 DECL|member|security_id
 multiline_comment|/* 52*/
-id|u32
+id|le32
 id|security_id
 suffix:semicolon
 multiline_comment|/* Security_id for the file.&n;&t;&t;&t;&t;Translate via $SII index and $SDS data stream&n;&t;&t;&t;&t;in FILE_Secure to the security descriptor. */
 DECL|member|quota_charged
 multiline_comment|/* 56*/
-id|u64
+id|le64
 id|quota_charged
 suffix:semicolon
 multiline_comment|/* Byte size of the charge to&n;&t;&t;&t;&t;the quota for all streams of the file. Note: Is&n;&t;&t;&t;&t;zero if quotas are disabled. */
 DECL|member|usn
 multiline_comment|/* 64*/
-id|u64
+id|le64
 id|usn
 suffix:semicolon
 multiline_comment|/* Last update sequence number&n;&t;&t;&t;&t;of the file. This is a direct index into the&n;&t;&t;&t;&t;change (aka usn) journal file. It is zero if&n;&t;&t;&t;&t;the usn journal is disabled.&n;&t;&t;&t;&t;NOTE: To disable the journal need to delete&n;&t;&t;&t;&t;the journal file itself and to then walk the&n;&t;&t;&t;&t;whole mft and set all Usn entries in all mft&n;&t;&t;&t;&t;records to zero! (This can take a while!)&n;&t;&t;&t;&t;The journal is FILE_Extend/$UsnJrnl. Win2k&n;&t;&t;&t;&t;will recreate the journal and initiate&n;&t;&t;&t;&t;logging if necessary when mounting the&n;&t;&t;&t;&t;partition. This, in contrast to disabling the&n;&t;&t;&t;&t;journal is a very fast process, so the user&n;&t;&t;&t;&t;won&squot;t even notice it. */
@@ -1581,13 +1154,13 @@ r_struct
 multiline_comment|/*Ofs*/
 DECL|member|type
 multiline_comment|/*  0*/
-id|ATTR_TYPES
+id|ATTR_TYPE
 id|type
 suffix:semicolon
 multiline_comment|/* Type of referenced attribute. */
 DECL|member|length
 multiline_comment|/*  4*/
-id|u16
+id|le16
 id|length
 suffix:semicolon
 multiline_comment|/* Byte size of this entry (8-byte aligned). */
@@ -1605,19 +1178,19 @@ suffix:semicolon
 multiline_comment|/* Byte offset to beginning of attribute name&n;&t;&t;&t;&t;   (always set this to where the name would&n;&t;&t;&t;&t;   start even if unnamed). */
 DECL|member|lowest_vcn
 multiline_comment|/*  8*/
-id|VCN
+id|leVCN
 id|lowest_vcn
 suffix:semicolon
 multiline_comment|/* Lowest virtual cluster number of this portion&n;&t;&t;&t;&t;   of the attribute value. This is usually 0. It&n;&t;&t;&t;&t;   is non-zero for the case where one attribute&n;&t;&t;&t;&t;   does not fit into one mft record and thus&n;&t;&t;&t;&t;   several mft records are allocated to hold&n;&t;&t;&t;&t;   this attribute. In the latter case, each mft&n;&t;&t;&t;&t;   record holds one extent of the attribute and&n;&t;&t;&t;&t;   there is one attribute list entry for each&n;&t;&t;&t;&t;   extent. NOTE: This is DEFINITELY a signed&n;&t;&t;&t;&t;   value! The windows driver uses cmp, followed&n;&t;&t;&t;&t;   by jg when comparing this, thus it treats it&n;&t;&t;&t;&t;   as signed. */
 DECL|member|mft_reference
 multiline_comment|/* 16*/
-id|MFT_REF
+id|leMFT_REF
 id|mft_reference
 suffix:semicolon
 multiline_comment|/* The reference of the mft record holding&n;&t;&t;&t;&t;   the ATTR_RECORD for this portion of the&n;&t;&t;&t;&t;   attribute value. */
 DECL|member|instance
 multiline_comment|/* 24*/
-id|u16
+id|le16
 id|instance
 suffix:semicolon
 multiline_comment|/* If lowest_vcn = 0, the instance of the&n;&t;&t;&t;&t;   attribute being referenced; otherwise 0. */
@@ -1645,41 +1218,21 @@ multiline_comment|/*&n; * The maximum allowed length for a file name.&n; */
 DECL|macro|MAXIMUM_FILE_NAME_LENGTH
 mdefine_line|#define MAXIMUM_FILE_NAME_LENGTH&t;255
 multiline_comment|/*&n; * Possible namespaces for filenames in ntfs (8-bit).&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|FILE_NAME_POSIX
-id|FILE_NAME_POSIX
-op_assign
-l_int|0x00
-comma
-multiline_comment|/* This is the largest namespace. It is case sensitive and&n;&t;&t;   allows all Unicode characters except for: &squot;&bslash;0&squot; and &squot;/&squot;.&n;&t;&t;   Beware that in WinNT/2k files which eg have the same name&n;&t;&t;   except for their case will not be distinguished by the&n;&t;&t;   standard utilities and thus a &quot;del filename&quot; will delete&n;&t;&t;   both &quot;filename&quot; and &quot;fileName&quot; without warning. */
-DECL|enumerator|FILE_NAME_WIN32
-id|FILE_NAME_WIN32
-op_assign
-l_int|0x01
-comma
-multiline_comment|/* The standard WinNT/2k NTFS long filenames. Case insensitive.&n;&t;&t;   All Unicode chars except: &squot;&bslash;0&squot;, &squot;&quot;&squot;, &squot;*&squot;, &squot;/&squot;, &squot;:&squot;, &squot;&lt;&squot;,&n;&t;&t;   &squot;&gt;&squot;, &squot;?&squot;, &squot;&bslash;&squot; and &squot;|&squot;. Further, names cannot end with a &squot;.&squot;&n;&t;&t;   or a space. */
-DECL|enumerator|FILE_NAME_DOS
-id|FILE_NAME_DOS
-op_assign
-l_int|0x02
-comma
-multiline_comment|/* The standard DOS filenames (8.3 format). Uppercase only.&n;&t;&t;   All 8-bit characters greater space, except: &squot;&quot;&squot;, &squot;*&squot;, &squot;+&squot;,&n;&t;&t;   &squot;,&squot;, &squot;/&squot;, &squot;:&squot;, &squot;;&squot;, &squot;&lt;&squot;, &squot;=&squot;, &squot;&gt;&squot;, &squot;?&squot; and &squot;&bslash;&squot;. */
-DECL|enumerator|FILE_NAME_WIN32_AND_DOS
-id|FILE_NAME_WIN32_AND_DOS
-op_assign
-l_int|0x03
-comma
-multiline_comment|/* 3 means that both the Win32 and the DOS filenames are&n;&t;&t;   identical and hence have been saved in this single filename&n;&t;&t;   record. */
+DECL|macro|FILE_NAME_POSIX
+mdefine_line|#define FILE_NAME_POSIX&t;&t;0x00
+multiline_comment|/* This is the largest namespace. It is case sensitive and allows all&n;&t;   Unicode characters except for: &squot;&bslash;0&squot; and &squot;/&squot;.  Beware that in&n;&t;   WinNT/2k files which eg have the same name except for their case&n;&t;   will not be distinguished by the standard utilities and thus a &quot;del&n;&t;   filename&quot; will delete both &quot;filename&quot; and &quot;fileName&quot; without&n;&t;   warning. */
+DECL|macro|FILE_NAME_WIN32
+mdefine_line|#define FILE_NAME_WIN32&t;&t;0x01
+multiline_comment|/* The standard WinNT/2k NTFS long filenames. Case insensitive.  All&n;&t;   Unicode chars except: &squot;&bslash;0&squot;, &squot;&quot;&squot;, &squot;*&squot;, &squot;/&squot;, &squot;:&squot;, &squot;&lt;&squot;, &squot;&gt;&squot;, &squot;?&squot;, &squot;&bslash;&squot;,&n;&t;   and &squot;|&squot;.  Further, names cannot end with a &squot;.&squot; or a space. */
+DECL|macro|FILE_NAME_DOS
+mdefine_line|#define FILE_NAME_DOS&t;&t;0x02
+multiline_comment|/* The standard DOS filenames (8.3 format). Uppercase only.  All 8-bit&n;&t;   characters greater space, except: &squot;&quot;&squot;, &squot;*&squot;, &squot;+&squot;, &squot;,&squot;, &squot;/&squot;, &squot;:&squot;, &squot;;&squot;,&n;&t;   &squot;&lt;&squot;, &squot;=&squot;, &squot;&gt;&squot;, &squot;?&squot;, and &squot;&bslash;&squot;. */
+DECL|macro|FILE_NAME_WIN32_AND_DOS
+mdefine_line|#define FILE_NAME_WIN32_AND_DOS&t;0x03
+multiline_comment|/* 3 means that both the Win32 and the DOS filenames are identical and&n;&t;   hence have been saved in this single filename record. */
 DECL|typedef|FILE_NAME_TYPE_FLAGS
-)brace
-id|__attribute__
-(paren
-(paren
-id|__packed__
-)paren
-)paren
+r_typedef
+id|u8
 id|FILE_NAME_TYPE_FLAGS
 suffix:semicolon
 multiline_comment|/*&n; * Attribute: Filename (0x30).&n; *&n; * NOTE: Always resident.&n; * NOTE: All fields, except the parent_directory, are only updated when the&n; *&t; filename is changed. Until then, they just become out of sync with&n; *&t; reality and the more up to date values are present in the standard&n; *&t; information attribute.&n; * NOTE: There is conflicting information about the meaning of each of the time&n; *&t; fields but the meaning as defined below has been verified to be&n; *&t; correct by practical experimentation on Windows NT4 SP6a and is hence&n; *&t; assumed to be the one and only correct interpretation.&n; */
@@ -1689,43 +1242,43 @@ r_struct
 multiline_comment|/*hex ofs*/
 DECL|member|parent_directory
 multiline_comment|/*  0*/
-id|MFT_REF
+id|leMFT_REF
 id|parent_directory
 suffix:semicolon
 multiline_comment|/* Directory this filename is&n;&t;&t;&t;&t;&t;   referenced from. */
 DECL|member|creation_time
 multiline_comment|/*  8*/
-id|s64
+id|sle64
 id|creation_time
 suffix:semicolon
 multiline_comment|/* Time file was created. */
 DECL|member|last_data_change_time
 multiline_comment|/* 10*/
-id|s64
+id|sle64
 id|last_data_change_time
 suffix:semicolon
 multiline_comment|/* Time the data attribute was last&n;&t;&t;&t;&t;&t;   modified. */
 DECL|member|last_mft_change_time
 multiline_comment|/* 18*/
-id|s64
+id|sle64
 id|last_mft_change_time
 suffix:semicolon
 multiline_comment|/* Time this mft record was last&n;&t;&t;&t;&t;&t;   modified. */
 DECL|member|last_access_time
 multiline_comment|/* 20*/
-id|s64
+id|sle64
 id|last_access_time
 suffix:semicolon
 multiline_comment|/* Time this mft record was last&n;&t;&t;&t;&t;&t;   accessed. */
 DECL|member|allocated_size
 multiline_comment|/* 28*/
-id|s64
+id|sle64
 id|allocated_size
 suffix:semicolon
 multiline_comment|/* Byte size of allocated space for the&n;&t;&t;&t;&t;&t;   data attribute. NOTE: Is a multiple&n;&t;&t;&t;&t;&t;   of the cluster size. */
 DECL|member|data_size
 multiline_comment|/* 30*/
-id|s64
+id|sle64
 id|data_size
 suffix:semicolon
 multiline_comment|/* Byte size of actual data in data&n;&t;&t;&t;&t;&t;   attribute. */
@@ -1743,13 +1296,13 @@ r_struct
 (brace
 DECL|member|packed_ea_size
 multiline_comment|/* 3c*/
-id|u16
+id|le16
 id|packed_ea_size
 suffix:semicolon
 multiline_comment|/* Size of the buffer needed to&n;&t;&t;&t;&t;&t;&t;   pack the extended attributes&n;&t;&t;&t;&t;&t;&t;   (EAs), if such are present.*/
 DECL|member|reserved
 multiline_comment|/* 3e*/
-id|u16
+id|le16
 id|reserved
 suffix:semicolon
 multiline_comment|/* Reserved for alignment. */
@@ -1768,7 +1321,7 @@ r_struct
 (brace
 DECL|member|reparse_point_tag
 multiline_comment|/* 3c*/
-id|u32
+id|le32
 id|reparse_point_tag
 suffix:semicolon
 multiline_comment|/* Type of reparse point,&n;&t;&t;&t;&t;&t;&t;   present only in reparse&n;&t;&t;&t;&t;&t;&t;   points and only if there are&n;&t;&t;&t;&t;&t;&t;   no EAs. */
@@ -1828,17 +1381,17 @@ r_typedef
 r_struct
 (brace
 DECL|member|data1
-id|u32
+id|le32
 id|data1
 suffix:semicolon
 multiline_comment|/* The first eight hexadecimal digits of the GUID. */
 DECL|member|data2
-id|u16
+id|le16
 id|data2
 suffix:semicolon
 multiline_comment|/* The first group of four hexadecimal digits. */
 DECL|member|data3
-id|u16
+id|le16
 id|data3
 suffix:semicolon
 multiline_comment|/* The second group of four hexadecimal digits. */
@@ -1865,7 +1418,7 @@ r_typedef
 r_struct
 (brace
 DECL|member|mft_reference
-id|MFT_REF
+id|leMFT_REF
 id|mft_reference
 suffix:semicolon
 multiline_comment|/* Mft record containing the object_id in&n;&t;&t;&t;&t;   the index entry key. */
@@ -2258,22 +1811,22 @@ DECL|typedef|RELATIVE_IDENTIFIERS
 id|RELATIVE_IDENTIFIERS
 suffix:semicolon
 multiline_comment|/*&n; * The universal well-known SIDs:&n; *&n; *&t;NULL_SID&t;&t;&t;S-1-0-0&n; *&t;WORLD_SID&t;&t;&t;S-1-1-0&n; *&t;LOCAL_SID&t;&t;&t;S-1-2-0&n; *&t;CREATOR_OWNER_SID&t;&t;S-1-3-0&n; *&t;CREATOR_GROUP_SID&t;&t;S-1-3-1&n; *&t;CREATOR_OWNER_SERVER_SID&t;S-1-3-2&n; *&t;CREATOR_GROUP_SERVER_SID&t;S-1-3-3&n; *&n; *&t;(Non-unique IDs)&t;&t;S-1-4&n; *&n; * NT well-known SIDs:&n; *&n; *&t;NT_AUTHORITY_SID&t;S-1-5&n; *&t;DIALUP_SID&t;&t;S-1-5-1&n; *&n; *&t;NETWORD_SID&t;&t;S-1-5-2&n; *&t;BATCH_SID&t;&t;S-1-5-3&n; *&t;INTERACTIVE_SID&t;&t;S-1-5-4&n; *&t;SERVICE_SID&t;&t;S-1-5-6&n; *&t;ANONYMOUS_LOGON_SID&t;S-1-5-7&t;&t;(aka null logon session)&n; *&t;PROXY_SID&t;&t;S-1-5-8&n; *&t;SERVER_LOGON_SID&t;S-1-5-9&t;&t;(aka domain controller account)&n; *&t;SELF_SID&t;&t;S-1-5-10&t;(self RID)&n; *&t;AUTHENTICATED_USER_SID&t;S-1-5-11&n; *&t;RESTRICTED_CODE_SID&t;S-1-5-12&t;(running restricted code)&n; *&t;TERMINAL_SERVER_SID&t;S-1-5-13&t;(running on terminal server)&n; *&n; *&t;(Logon IDs)&t;&t;S-1-5-5-X-Y&n; *&n; *&t;(NT non-unique IDs)&t;S-1-5-0x15-...&n; *&n; *&t;(Built-in domain)&t;S-1-5-0x20&n; */
-multiline_comment|/*&n; * The SID_IDENTIFIER_AUTHORITY is a 48-bit value used in the SID structure.&n; */
+multiline_comment|/*&n; * The SID_IDENTIFIER_AUTHORITY is a 48-bit value used in the SID structure.&n; *&n; * NOTE: This is stored as a big endian number, hence the high_part comes&n; * before the low_part.&n; */
 r_typedef
 r_union
 (brace
 r_struct
 (brace
-DECL|member|low
-id|u32
-id|low
-suffix:semicolon
-multiline_comment|/* Low 32-bits. */
-DECL|member|high
+DECL|member|high_part
 id|u16
-id|high
+id|high_part
 suffix:semicolon
 multiline_comment|/* High 16-bits. */
+DECL|member|low_part
+id|u32
+id|low_part
+suffix:semicolon
+multiline_comment|/* Low 32-bits. */
 DECL|member|parts
 )brace
 id|__attribute__
@@ -2319,7 +1872,7 @@ id|SID_IDENTIFIER_AUTHORITY
 id|identifier_authority
 suffix:semicolon
 DECL|member|sub_authority
-id|u32
+id|le32
 id|sub_authority
 (braket
 l_int|1
@@ -2363,157 +1916,67 @@ DECL|typedef|SID_CONSTANTS
 id|SID_CONSTANTS
 suffix:semicolon
 multiline_comment|/*&n; * The predefined ACE types (8-bit, see below).&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|ACCESS_MIN_MS_ACE_TYPE
-id|ACCESS_MIN_MS_ACE_TYPE
-op_assign
-l_int|0
-comma
-DECL|enumerator|ACCESS_ALLOWED_ACE_TYPE
-id|ACCESS_ALLOWED_ACE_TYPE
-op_assign
-l_int|0
-comma
-DECL|enumerator|ACCESS_DENIED_ACE_TYPE
-id|ACCESS_DENIED_ACE_TYPE
-op_assign
-l_int|1
-comma
-DECL|enumerator|SYSTEM_AUDIT_ACE_TYPE
-id|SYSTEM_AUDIT_ACE_TYPE
-op_assign
-l_int|2
-comma
-DECL|enumerator|SYSTEM_ALARM_ACE_TYPE
-id|SYSTEM_ALARM_ACE_TYPE
-op_assign
-l_int|3
-comma
-multiline_comment|/* Not implemented as of Win2k. */
-DECL|enumerator|ACCESS_MAX_MS_V2_ACE_TYPE
-id|ACCESS_MAX_MS_V2_ACE_TYPE
-op_assign
-l_int|3
-comma
-DECL|enumerator|ACCESS_ALLOWED_COMPOUND_ACE_TYPE
-id|ACCESS_ALLOWED_COMPOUND_ACE_TYPE
-op_assign
-l_int|4
-comma
-DECL|enumerator|ACCESS_MAX_MS_V3_ACE_TYPE
-id|ACCESS_MAX_MS_V3_ACE_TYPE
-op_assign
-l_int|4
-comma
+DECL|macro|ACCESS_MIN_MS_ACE_TYPE
+mdefine_line|#define ACCESS_MIN_MS_ACE_TYPE&t;&t;&t;0
+DECL|macro|ACCESS_ALLOWED_ACE_TYPE
+mdefine_line|#define ACCESS_ALLOWED_ACE_TYPE&t;&t;&t;0
+DECL|macro|ACCESS_DENIED_ACE_TYPE
+mdefine_line|#define ACCESS_DENIED_ACE_TYPE&t;&t;&t;1
+DECL|macro|SYSTEM_AUDIT_ACE_TYPE
+mdefine_line|#define SYSTEM_AUDIT_ACE_TYPE&t;&t;&t;2
+DECL|macro|SYSTEM_ALARM_ACE_TYPE
+mdefine_line|#define SYSTEM_ALARM_ACE_TYPE&t;&t;&t;3 /* Not implemented as of&n;&t;&t;&t;&t;&t;&t;     Win2k. */
+DECL|macro|ACCESS_MAX_MS_V2_ACE_TYPE
+mdefine_line|#define ACCESS_MAX_MS_V2_ACE_TYPE&t;&t;3
+DECL|macro|ACCESS_ALLOWED_COMPOUND_ACE_TYPE
+mdefine_line|#define ACCESS_ALLOWED_COMPOUND_ACE_TYPE&t;4
+DECL|macro|ACCESS_MAX_MS_V3_ACE_TYPE
+mdefine_line|#define ACCESS_MAX_MS_V3_ACE_TYPE&t;&t;4
 multiline_comment|/* The following are Win2k only. */
-DECL|enumerator|ACCESS_MIN_MS_OBJECT_ACE_TYPE
-id|ACCESS_MIN_MS_OBJECT_ACE_TYPE
-op_assign
-l_int|5
-comma
-DECL|enumerator|ACCESS_ALLOWED_OBJECT_ACE_TYPE
-id|ACCESS_ALLOWED_OBJECT_ACE_TYPE
-op_assign
-l_int|5
-comma
-DECL|enumerator|ACCESS_DENIED_OBJECT_ACE_TYPE
-id|ACCESS_DENIED_OBJECT_ACE_TYPE
-op_assign
-l_int|6
-comma
-DECL|enumerator|SYSTEM_AUDIT_OBJECT_ACE_TYPE
-id|SYSTEM_AUDIT_OBJECT_ACE_TYPE
-op_assign
-l_int|7
-comma
-DECL|enumerator|SYSTEM_ALARM_OBJECT_ACE_TYPE
-id|SYSTEM_ALARM_OBJECT_ACE_TYPE
-op_assign
-l_int|8
-comma
-DECL|enumerator|ACCESS_MAX_MS_OBJECT_ACE_TYPE
-id|ACCESS_MAX_MS_OBJECT_ACE_TYPE
-op_assign
-l_int|8
-comma
-DECL|enumerator|ACCESS_MAX_MS_V4_ACE_TYPE
-id|ACCESS_MAX_MS_V4_ACE_TYPE
-op_assign
-l_int|8
-comma
-multiline_comment|/* This one is for WinNT&amp;2k. */
-DECL|enumerator|ACCESS_MAX_MS_ACE_TYPE
-id|ACCESS_MAX_MS_ACE_TYPE
-op_assign
-l_int|8
-comma
+DECL|macro|ACCESS_MIN_MS_OBJECT_ACE_TYPE
+mdefine_line|#define ACCESS_MIN_MS_OBJECT_ACE_TYPE&t;&t;5
+DECL|macro|ACCESS_ALLOWED_OBJECT_ACE_TYPE
+mdefine_line|#define ACCESS_ALLOWED_OBJECT_ACE_TYPE&t;&t;5
+DECL|macro|ACCESS_DENIED_OBJECT_ACE_TYPE
+mdefine_line|#define ACCESS_DENIED_OBJECT_ACE_TYPE&t;&t;6
+DECL|macro|SYSTEM_AUDIT_OBJECT_ACE_TYPE
+mdefine_line|#define SYSTEM_AUDIT_OBJECT_ACE_TYPE&t;&t;7
+DECL|macro|SYSTEM_ALARM_OBJECT_ACE_TYPE
+mdefine_line|#define SYSTEM_ALARM_OBJECT_ACE_TYPE&t;&t;8
+DECL|macro|ACCESS_MAX_MS_OBJECT_ACE_TYPE
+mdefine_line|#define ACCESS_MAX_MS_OBJECT_ACE_TYPE&t;&t;8
+DECL|macro|ACCESS_MAX_MS_V4_ACE_TYPE
+mdefine_line|#define ACCESS_MAX_MS_V4_ACE_TYPE&t;&t;8
+multiline_comment|/* This one is for WinNT/2k. */
+DECL|macro|ACCESS_MAX_MS_ACE_TYPE
+mdefine_line|#define&t;ACCESS_MAX_MS_ACE_TYPE&t;&t;&t;8
 DECL|typedef|ACE_TYPES
-)brace
-id|__attribute__
-(paren
-(paren
-id|__packed__
-)paren
-)paren
+r_typedef
+id|u8
 id|ACE_TYPES
 suffix:semicolon
 multiline_comment|/*&n; * The ACE flags (8-bit) for audit and inheritance (see below).&n; *&n; * SUCCESSFUL_ACCESS_ACE_FLAG is only used with system audit and alarm ACE&n; * types to indicate that a message is generated (in Windows!) for successful&n; * accesses.&n; *&n; * FAILED_ACCESS_ACE_FLAG is only used with system audit and alarm ACE types&n; * to indicate that a message is generated (in Windows!) for failed accesses.&n; */
-r_typedef
-r_enum
-(brace
 multiline_comment|/* The inheritance flags. */
-DECL|enumerator|OBJECT_INHERIT_ACE
-id|OBJECT_INHERIT_ACE
-op_assign
-l_int|0x01
-comma
-DECL|enumerator|CONTAINER_INHERIT_ACE
-id|CONTAINER_INHERIT_ACE
-op_assign
-l_int|0x02
-comma
-DECL|enumerator|NO_PROPAGATE_INHERIT_ACE
-id|NO_PROPAGATE_INHERIT_ACE
-op_assign
-l_int|0x04
-comma
-DECL|enumerator|INHERIT_ONLY_ACE
-id|INHERIT_ONLY_ACE
-op_assign
-l_int|0x08
-comma
-DECL|enumerator|INHERITED_ACE
-id|INHERITED_ACE
-op_assign
-l_int|0x10
-comma
-multiline_comment|/* Win2k only. */
-DECL|enumerator|VALID_INHERIT_FLAGS
-id|VALID_INHERIT_FLAGS
-op_assign
-l_int|0x1f
-comma
+DECL|macro|OBJECT_INHERIT_ACE
+mdefine_line|#define OBJECT_INHERIT_ACE&t;&t;0x01
+DECL|macro|CONTAINER_INHERIT_ACE
+mdefine_line|#define CONTAINER_INHERIT_ACE&t;&t;0x02
+DECL|macro|NO_PROPAGATE_INHERIT_ACE
+mdefine_line|#define NO_PROPAGATE_INHERIT_ACE&t;0x04
+DECL|macro|INHERIT_ONLY_ACE
+mdefine_line|#define INHERIT_ONLY_ACE&t;&t;0x08
+DECL|macro|INHERITED_ACE
+mdefine_line|#define INHERITED_ACE&t;&t;&t;0x10&t;/* Win2k only. */
+DECL|macro|VALID_INHERIT_FLAGS
+mdefine_line|#define VALID_INHERIT_FLAGS&t;&t;0x1f
 multiline_comment|/* The audit flags. */
-DECL|enumerator|SUCCESSFUL_ACCESS_ACE_FLAG
-id|SUCCESSFUL_ACCESS_ACE_FLAG
-op_assign
-l_int|0x40
-comma
-DECL|enumerator|FAILED_ACCESS_ACE_FLAG
-id|FAILED_ACCESS_ACE_FLAG
-op_assign
-l_int|0x80
-comma
+DECL|macro|SUCCESSFUL_ACCESS_ACE_FLAG
+mdefine_line|#define SUCCESSFUL_ACCESS_ACE_FLAG&t;0x40
+DECL|macro|FAILED_ACCESS_ACE_FLAG
+mdefine_line|#define FAILED_ACCESS_ACE_FLAG&t;&t;0x80
 DECL|typedef|ACE_FLAGS
-)brace
-id|__attribute__
-(paren
-(paren
-id|__packed__
-)paren
-)paren
+r_typedef
+id|u8
 id|ACE_FLAGS
 suffix:semicolon
 multiline_comment|/*&n; * An ACE is an access-control entry in an access-control list (ACL).&n; * An ACE defines access to an object for a specific user or group or defines&n; * the types of access that generate system-administration messages or alarms&n; * for a specific user or group. The user or group is identified by a security&n; * identifier (SID).&n; *&n; * Each ACE starts with an ACE_HEADER structure (aligned on 4-byte boundary),&n; * which specifies the type and size of the ACE. The format of the subsequent&n; * data depends on the ACE type.&n; */
@@ -2535,7 +1998,7 @@ suffix:semicolon
 multiline_comment|/* Flags describing the ACE. */
 DECL|member|size
 multiline_comment|/*  2*/
-id|u16
+id|le16
 id|size
 suffix:semicolon
 multiline_comment|/* Size in bytes of the ACE. */
@@ -2549,304 +2012,98 @@ id|__packed__
 )paren
 id|ACE_HEADER
 suffix:semicolon
-multiline_comment|/*&n; * The access mask (32-bit). Defines the access rights.&n; */
-r_typedef
-r_enum
-(brace
-multiline_comment|/*&n;&t; * The specific rights (bits 0 to 15). Depend on the type of the&n;&t; * object being secured by the ACE.&n;&t; */
+multiline_comment|/*&n; * The access mask (32-bit). Defines the access rights.&n; *&n; * The specific rights (bits 0 to 15).  These depend on the type of the object&n; * being secured by the ACE.&n; */
 multiline_comment|/* Specific rights for files and directories are as follows: */
 multiline_comment|/* Right to read data from the file. (FILE) */
-DECL|enumerator|FILE_READ_DATA
-id|FILE_READ_DATA
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000001
-)paren
-comma
+DECL|macro|FILE_READ_DATA
+mdefine_line|#define FILE_READ_DATA&t;&t;&t;const_cpu_to_le32(0x00000001)
 multiline_comment|/* Right to list contents of a directory. (DIRECTORY) */
-DECL|enumerator|FILE_LIST_DIRECTORY
-id|FILE_LIST_DIRECTORY
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000001
-)paren
-comma
+DECL|macro|FILE_LIST_DIRECTORY
+mdefine_line|#define FILE_LIST_DIRECTORY&t;&t;const_cpu_to_le32(0x00000001)
 multiline_comment|/* Right to write data to the file. (FILE) */
-DECL|enumerator|FILE_WRITE_DATA
-id|FILE_WRITE_DATA
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000002
-)paren
-comma
+DECL|macro|FILE_WRITE_DATA
+mdefine_line|#define FILE_WRITE_DATA&t;&t;&t;const_cpu_to_le32(0x00000002)
 multiline_comment|/* Right to create a file in the directory. (DIRECTORY) */
-DECL|enumerator|FILE_ADD_FILE
-id|FILE_ADD_FILE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000002
-)paren
-comma
+DECL|macro|FILE_ADD_FILE
+mdefine_line|#define FILE_ADD_FILE&t;&t;&t;const_cpu_to_le32(0x00000002)
 multiline_comment|/* Right to append data to the file. (FILE) */
-DECL|enumerator|FILE_APPEND_DATA
-id|FILE_APPEND_DATA
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000004
-)paren
-comma
+DECL|macro|FILE_APPEND_DATA
+mdefine_line|#define FILE_APPEND_DATA&t;&t;const_cpu_to_le32(0x00000004)
 multiline_comment|/* Right to create a subdirectory. (DIRECTORY) */
-DECL|enumerator|FILE_ADD_SUBDIRECTORY
-id|FILE_ADD_SUBDIRECTORY
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000004
-)paren
-comma
+DECL|macro|FILE_ADD_SUBDIRECTORY
+mdefine_line|#define FILE_ADD_SUBDIRECTORY&t;&t;const_cpu_to_le32(0x00000004)
 multiline_comment|/* Right to read extended attributes. (FILE/DIRECTORY) */
-DECL|enumerator|FILE_READ_EA
-id|FILE_READ_EA
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000008
-)paren
-comma
+DECL|macro|FILE_READ_EA
+mdefine_line|#define FILE_READ_EA&t;&t;&t;const_cpu_to_le32(0x00000008)
 multiline_comment|/* Right to write extended attributes. (FILE/DIRECTORY) */
-DECL|enumerator|FILE_WRITE_EA
-id|FILE_WRITE_EA
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000010
-)paren
-comma
+DECL|macro|FILE_WRITE_EA
+mdefine_line|#define FILE_WRITE_EA&t;&t;&t;const_cpu_to_le32(0x00000010)
 multiline_comment|/* Right to execute a file. (FILE) */
-DECL|enumerator|FILE_EXECUTE
-id|FILE_EXECUTE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000020
-)paren
-comma
+DECL|macro|FILE_EXECUTE
+mdefine_line|#define FILE_EXECUTE&t;&t;&t;const_cpu_to_le32(0x00000020)
 multiline_comment|/* Right to traverse the directory. (DIRECTORY) */
-DECL|enumerator|FILE_TRAVERSE
-id|FILE_TRAVERSE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000020
-)paren
-comma
-multiline_comment|/*&n;&t; * Right to delete a directory and all the files it contains (its&n;&t; * children), even if the files are read-only. (DIRECTORY)&n;&t; */
-DECL|enumerator|FILE_DELETE_CHILD
-id|FILE_DELETE_CHILD
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000040
-)paren
-comma
+DECL|macro|FILE_TRAVERSE
+mdefine_line|#define FILE_TRAVERSE&t;&t;&t;const_cpu_to_le32(0x00000020)
+multiline_comment|/*&n; * Right to delete a directory and all the files it contains (its children),&n; * even if the files are read-only. (DIRECTORY)&n; */
+DECL|macro|FILE_DELETE_CHILD
+mdefine_line|#define FILE_DELETE_CHILD&t;&t;const_cpu_to_le32(0x00000040)
 multiline_comment|/* Right to read file attributes. (FILE/DIRECTORY) */
-DECL|enumerator|FILE_READ_ATTRIBUTES
-id|FILE_READ_ATTRIBUTES
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000080
-)paren
-comma
+DECL|macro|FILE_READ_ATTRIBUTES
+mdefine_line|#define FILE_READ_ATTRIBUTES&t;&t;const_cpu_to_le32(0x00000080)
 multiline_comment|/* Right to change file attributes. (FILE/DIRECTORY) */
-DECL|enumerator|FILE_WRITE_ATTRIBUTES
-id|FILE_WRITE_ATTRIBUTES
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000100
-)paren
-comma
-multiline_comment|/*&n;&t; * The standard rights (bits 16 to 23). Are independent of the type of&n;&t; * object being secured.&n;&t; */
+DECL|macro|FILE_WRITE_ATTRIBUTES
+mdefine_line|#define FILE_WRITE_ATTRIBUTES&t;&t;const_cpu_to_le32(0x00000100)
+multiline_comment|/*&n; * The standard rights (bits 16 to 23).  These are independent of the type of&n; * object being secured.&n; */
 multiline_comment|/* Right to delete the object. */
-DECL|enumerator|DELETE
-id|DELETE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00010000
-)paren
-comma
-multiline_comment|/*&n;&t; * Right to read the information in the object&squot;s security descriptor,&n;&t; * not including the information in the SACL. I.e. right to read the&n;&t; * security descriptor and owner.&n;&t; */
-DECL|enumerator|READ_CONTROL
-id|READ_CONTROL
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00020000
-)paren
-comma
+DECL|macro|DELETE
+mdefine_line|#define DELETE&t;&t;&t;&t;const_cpu_to_le32(0x00010000)
+multiline_comment|/*&n; * Right to read the information in the object&squot;s security descriptor, not&n; * including the information in the SACL. I.e. right to read the security&n; * descriptor and owner.&n; */
+DECL|macro|READ_CONTROL
+mdefine_line|#define READ_CONTROL&t;&t;&t;const_cpu_to_le32(0x00020000)
 multiline_comment|/* Right to modify the DACL in the object&squot;s security descriptor. */
-DECL|enumerator|WRITE_DAC
-id|WRITE_DAC
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00040000
-)paren
-comma
+DECL|macro|WRITE_DAC
+mdefine_line|#define WRITE_DAC&t;&t;&t;const_cpu_to_le32(0x00040000)
 multiline_comment|/* Right to change the owner in the object&squot;s security descriptor. */
-DECL|enumerator|WRITE_OWNER
-id|WRITE_OWNER
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00080000
-)paren
-comma
-multiline_comment|/*&n;&t; * Right to use the object for synchronization. Enables a process to&n;&t; * wait until the object is in the signalled state. Some object types&n;&t; * do not support this access right.&n;&t; */
-DECL|enumerator|SYNCHRONIZE
-id|SYNCHRONIZE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00100000
-)paren
-comma
-multiline_comment|/*&n;&t; * The following STANDARD_RIGHTS_* are combinations of the above for&n;&t; * convenience and are defined by the Win32 API.&n;&t; */
+DECL|macro|WRITE_OWNER
+mdefine_line|#define WRITE_OWNER&t;&t;&t;const_cpu_to_le32(0x00080000)
+multiline_comment|/*&n; * Right to use the object for synchronization. Enables a process to wait until&n; * the object is in the signalled state. Some object types do not support this&n; * access right.&n; */
+DECL|macro|SYNCHRONIZE
+mdefine_line|#define SYNCHRONIZE&t;&t;&t;const_cpu_to_le32(0x00100000)
+multiline_comment|/*&n; * The following STANDARD_RIGHTS_* are combinations of the above for&n; * convenience and are defined by the Win32 API.&n; */
 multiline_comment|/* These are currently defined to READ_CONTROL. */
-DECL|enumerator|STANDARD_RIGHTS_READ
-id|STANDARD_RIGHTS_READ
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00020000
-)paren
-comma
-DECL|enumerator|STANDARD_RIGHTS_WRITE
-id|STANDARD_RIGHTS_WRITE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00020000
-)paren
-comma
-DECL|enumerator|STANDARD_RIGHTS_EXECUTE
-id|STANDARD_RIGHTS_EXECUTE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00020000
-)paren
-comma
+DECL|macro|STANDARD_RIGHTS_READ
+mdefine_line|#define STANDARD_RIGHTS_READ&t;&t;const_cpu_to_le32(0x00020000)
+DECL|macro|STANDARD_RIGHTS_WRITE
+mdefine_line|#define STANDARD_RIGHTS_WRITE&t;&t;const_cpu_to_le32(0x00020000)
+DECL|macro|STANDARD_RIGHTS_EXECUTE
+mdefine_line|#define STANDARD_RIGHTS_EXECUTE&t;&t;const_cpu_to_le32(0x00020000)
 multiline_comment|/* Combines DELETE, READ_CONTROL, WRITE_DAC, and WRITE_OWNER access. */
-DECL|enumerator|STANDARD_RIGHTS_REQUIRED
-id|STANDARD_RIGHTS_REQUIRED
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x000f0000
-)paren
-comma
-multiline_comment|/*&n;&t; * Combines DELETE, READ_CONTROL, WRITE_DAC, WRITE_OWNER, and&n;&t; * SYNCHRONIZE access.&n;&t; */
-DECL|enumerator|STANDARD_RIGHTS_ALL
-id|STANDARD_RIGHTS_ALL
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x001f0000
-)paren
-comma
-multiline_comment|/*&n;&t; * The access system ACL and maximum allowed access types (bits 24 to&n;&t; * 25, bits 26 to 27 are reserved).&n;&t; */
-DECL|enumerator|ACCESS_SYSTEM_SECURITY
-id|ACCESS_SYSTEM_SECURITY
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x01000000
-)paren
-comma
-DECL|enumerator|MAXIMUM_ALLOWED
-id|MAXIMUM_ALLOWED
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x02000000
-)paren
-comma
-multiline_comment|/*&n;&t; * The generic rights (bits 28 to 31). These map onto the standard and&n;&t; * specific rights.&n;&t; */
+DECL|macro|STANDARD_RIGHTS_REQUIRED
+mdefine_line|#define STANDARD_RIGHTS_REQUIRED&t;const_cpu_to_le32(0x000f0000)
+multiline_comment|/*&n; * Combines DELETE, READ_CONTROL, WRITE_DAC, WRITE_OWNER, and&n; * SYNCHRONIZE access.&n; */
+DECL|macro|STANDARD_RIGHTS_ALL
+mdefine_line|#define STANDARD_RIGHTS_ALL&t;&t;const_cpu_to_le32(0x001f0000)
+multiline_comment|/*&n; * The access system ACL and maximum allowed access types (bits 24 to&n; * 25, bits 26 to 27 are reserved).&n; */
+DECL|macro|ACCESS_SYSTEM_SECURITY
+mdefine_line|#define ACCESS_SYSTEM_SECURITY&t;&t;const_cpu_to_le32(0x01000000)
+DECL|macro|MAXIMUM_ALLOWED
+mdefine_line|#define MAXIMUM_ALLOWED&t;&t;&t;const_cpu_to_le32(0x02000000)
+multiline_comment|/*&n; * The generic rights (bits 28 to 31). These map onto the standard and specific&n; * rights.&n; */
 multiline_comment|/* Read, write, and execute access. */
-DECL|enumerator|GENERIC_ALL
-id|GENERIC_ALL
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x10000000
-)paren
-comma
+DECL|macro|GENERIC_ALL
+mdefine_line|#define GENERIC_ALL&t;&t;&t;const_cpu_to_le32(0x10000000)
 multiline_comment|/* Execute access. */
-DECL|enumerator|GENERIC_EXECUTE
-id|GENERIC_EXECUTE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x20000000
-)paren
-comma
-multiline_comment|/*&n;&t; * Write access. For files, this maps onto:&n;&t; *&t;FILE_APPEND_DATA | FILE_WRITE_ATTRIBUTES | FILE_WRITE_DATA |&n;&t; *&t;FILE_WRITE_EA | STANDARD_RIGHTS_WRITE | SYNCHRONIZE&n;&t; * For directories, the mapping has the same numberical value. See&n;&t; * above for the descriptions of the rights granted.&n;&t; */
-DECL|enumerator|GENERIC_WRITE
-id|GENERIC_WRITE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x40000000
-)paren
-comma
-multiline_comment|/*&n;&t; * Read access. For files, this maps onto:&n;&t; *&t;FILE_READ_ATTRIBUTES | FILE_READ_DATA | FILE_READ_EA |&n;&t; *&t;STANDARD_RIGHTS_READ | SYNCHRONIZE&n;&t; * For directories, the mapping has the same numberical value. See&n;&t; * above for the descriptions of the rights granted.&n;&t; */
-DECL|enumerator|GENERIC_READ
-id|GENERIC_READ
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x80000000
-)paren
-comma
+DECL|macro|GENERIC_EXECUTE
+mdefine_line|#define GENERIC_EXECUTE&t;&t;&t;const_cpu_to_le32(0x20000000)
+multiline_comment|/*&n; * Write access. For files, this maps onto:&n; *&t;FILE_APPEND_DATA | FILE_WRITE_ATTRIBUTES | FILE_WRITE_DATA |&n; *&t;FILE_WRITE_EA | STANDARD_RIGHTS_WRITE | SYNCHRONIZE&n; * For directories, the mapping has the same numberical value.  See above for&n; * the descriptions of the rights granted.&n; */
+DECL|macro|GENERIC_WRITE
+mdefine_line|#define GENERIC_WRITE&t;&t;&t;const_cpu_to_le32(0x40000000)
+multiline_comment|/*&n; * Read access. For files, this maps onto:&n; *&t;FILE_READ_ATTRIBUTES | FILE_READ_DATA | FILE_READ_EA |&n; *&t;STANDARD_RIGHTS_READ | SYNCHRONIZE&n; * For directories, the mapping has the same numberical value.  See above for&n; * the descriptions of the rights granted.&n; */
+DECL|macro|GENERIC_READ
+mdefine_line|#define GENERIC_READ&t;&t;&t;const_cpu_to_le32(0x80000000)
 DECL|typedef|ACCESS_MASK
-)brace
+r_typedef
+id|le32
 id|ACCESS_MASK
 suffix:semicolon
 multiline_comment|/*&n; * The generic mapping array. Used to denote the mapping of each generic&n; * access right to a specific access mask.&n; *&n; * FIXME: What exactly is this and what is it for? (AIA)&n; */
@@ -2896,7 +2153,7 @@ id|flags
 suffix:semicolon
 multiline_comment|/* Flags describing the ACE. */
 DECL|member|size
-id|u16
+id|le16
 id|size
 suffix:semicolon
 multiline_comment|/* Size in bytes of the ACE. */
@@ -2932,29 +2189,13 @@ comma
 id|SYSTEM_ALARM_ACE
 suffix:semicolon
 multiline_comment|/*&n; * The object ACE flags (32-bit).&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|ACE_OBJECT_TYPE_PRESENT
-id|ACE_OBJECT_TYPE_PRESENT
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|1
-)paren
-comma
-DECL|enumerator|ACE_INHERITED_OBJECT_TYPE_PRESENT
-id|ACE_INHERITED_OBJECT_TYPE_PRESENT
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|2
-)paren
-comma
+DECL|macro|ACE_OBJECT_TYPE_PRESENT
+mdefine_line|#define ACE_OBJECT_TYPE_PRESENT&t;&t;&t;const_cpu_to_le32(1)
+DECL|macro|ACE_INHERITED_OBJECT_TYPE_PRESENT
+mdefine_line|#define ACE_INHERITED_OBJECT_TYPE_PRESENT&t;const_cpu_to_le32(2)
 DECL|typedef|OBJECT_ACE_FLAGS
-)brace
+r_typedef
+id|le32
 id|OBJECT_ACE_FLAGS
 suffix:semicolon
 r_typedef
@@ -2972,7 +2213,7 @@ id|flags
 suffix:semicolon
 multiline_comment|/* Flags describing the ACE. */
 DECL|member|size
-id|u16
+id|le16
 id|size
 suffix:semicolon
 multiline_comment|/* Size in bytes of the ACE. */
@@ -3037,17 +2278,17 @@ id|u8
 id|alignment1
 suffix:semicolon
 DECL|member|size
-id|u16
+id|le16
 id|size
 suffix:semicolon
 multiline_comment|/* Allocated space in bytes for ACL. Includes this&n;&t;&t;&t;   header, the ACEs and the remaining free space. */
 DECL|member|ace_count
-id|u16
+id|le16
 id|ace_count
 suffix:semicolon
 multiline_comment|/* Number of ACEs in the ACL. */
 DECL|member|alignment2
-id|u16
+id|le16
 id|alignment2
 suffix:semicolon
 multiline_comment|/* sizeof() = 8 bytes */
@@ -3112,143 +2353,37 @@ DECL|typedef|ACL_CONSTANTS
 id|ACL_CONSTANTS
 suffix:semicolon
 multiline_comment|/*&n; * The security descriptor control flags (16-bit).&n; *&n; * SE_OWNER_DEFAULTED - This boolean flag, when set, indicates that the SID&n; *&t;pointed to by the Owner field was provided by a defaulting mechanism&n; *&t;rather than explicitly provided by the original provider of the&n; *&t;security descriptor.  This may affect the treatment of the SID with&n; *&t;respect to inheritence of an owner.&n; *&n; * SE_GROUP_DEFAULTED - This boolean flag, when set, indicates that the SID in&n; *&t;the Group field was provided by a defaulting mechanism rather than&n; *&t;explicitly provided by the original provider of the security&n; *&t;descriptor.  This may affect the treatment of the SID with respect to&n; *&t;inheritence of a primary group.&n; *&n; * SE_DACL_PRESENT - This boolean flag, when set, indicates that the security&n; *&t;descriptor contains a discretionary ACL.  If this flag is set and the&n; *&t;Dacl field of the SECURITY_DESCRIPTOR is null, then a null ACL is&n; *&t;explicitly being specified.&n; *&n; * SE_DACL_DEFAULTED - This boolean flag, when set, indicates that the ACL&n; *&t;pointed to by the Dacl field was provided by a defaulting mechanism&n; *&t;rather than explicitly provided by the original provider of the&n; *&t;security descriptor.  This may affect the treatment of the ACL with&n; *&t;respect to inheritence of an ACL.  This flag is ignored if the&n; *&t;DaclPresent flag is not set.&n; *&n; * SE_SACL_PRESENT - This boolean flag, when set,  indicates that the security&n; *&t;descriptor contains a system ACL pointed to by the Sacl field.  If this&n; *&t;flag is set and the Sacl field of the SECURITY_DESCRIPTOR is null, then&n; *&t;an empty (but present) ACL is being specified.&n; *&n; * SE_SACL_DEFAULTED - This boolean flag, when set, indicates that the ACL&n; *&t;pointed to by the Sacl field was provided by a defaulting mechanism&n; *&t;rather than explicitly provided by the original provider of the&n; *&t;security descriptor.  This may affect the treatment of the ACL with&n; *&t;respect to inheritence of an ACL.  This flag is ignored if the&n; *&t;SaclPresent flag is not set.&n; *&n; * SE_SELF_RELATIVE - This boolean flag, when set, indicates that the security&n; *&t;descriptor is in self-relative form.  In this form, all fields of the&n; *&t;security descriptor are contiguous in memory and all pointer fields are&n; *&t;expressed as offsets from the beginning of the security descriptor.&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|SE_OWNER_DEFAULTED
-id|SE_OWNER_DEFAULTED
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x0001
-)paren
-comma
-DECL|enumerator|SE_GROUP_DEFAULTED
-id|SE_GROUP_DEFAULTED
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x0002
-)paren
-comma
-DECL|enumerator|SE_DACL_PRESENT
-id|SE_DACL_PRESENT
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x0004
-)paren
-comma
-DECL|enumerator|SE_DACL_DEFAULTED
-id|SE_DACL_DEFAULTED
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x0008
-)paren
-comma
-DECL|enumerator|SE_SACL_PRESENT
-id|SE_SACL_PRESENT
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x0010
-)paren
-comma
-DECL|enumerator|SE_SACL_DEFAULTED
-id|SE_SACL_DEFAULTED
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x0020
-)paren
-comma
-DECL|enumerator|SE_DACL_AUTO_INHERIT_REQ
-id|SE_DACL_AUTO_INHERIT_REQ
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x0100
-)paren
-comma
-DECL|enumerator|SE_SACL_AUTO_INHERIT_REQ
-id|SE_SACL_AUTO_INHERIT_REQ
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x0200
-)paren
-comma
-DECL|enumerator|SE_DACL_AUTO_INHERITED
-id|SE_DACL_AUTO_INHERITED
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x0400
-)paren
-comma
-DECL|enumerator|SE_SACL_AUTO_INHERITED
-id|SE_SACL_AUTO_INHERITED
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x0800
-)paren
-comma
-DECL|enumerator|SE_DACL_PROTECTED
-id|SE_DACL_PROTECTED
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x1000
-)paren
-comma
-DECL|enumerator|SE_SACL_PROTECTED
-id|SE_SACL_PROTECTED
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x2000
-)paren
-comma
-DECL|enumerator|SE_RM_CONTROL_VALID
-id|SE_RM_CONTROL_VALID
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x4000
-)paren
-comma
-DECL|enumerator|SE_SELF_RELATIVE
-id|SE_SELF_RELATIVE
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x8000
-)paren
-comma
+DECL|macro|SE_OWNER_DEFAULTED
+mdefine_line|#define SE_OWNER_DEFAULTED&t;&t;const_cpu_to_le16(0x0001)
+DECL|macro|SE_GROUP_DEFAULTED
+mdefine_line|#define SE_GROUP_DEFAULTED&t;&t;const_cpu_to_le16(0x0002)
+DECL|macro|SE_DACL_PRESENT
+mdefine_line|#define SE_DACL_PRESENT&t;&t;&t;const_cpu_to_le16(0x0004)
+DECL|macro|SE_DACL_DEFAULTED
+mdefine_line|#define SE_DACL_DEFAULTED&t;&t;const_cpu_to_le16(0x0008)
+DECL|macro|SE_SACL_PRESENT
+mdefine_line|#define SE_SACL_PRESENT&t;&t;&t;const_cpu_to_le16(0x0010)
+DECL|macro|SE_SACL_DEFAULTED
+mdefine_line|#define SE_SACL_DEFAULTED&t;&t;const_cpu_to_le16(0x0020)
+DECL|macro|SE_DACL_AUTO_INHERIT_REQ
+mdefine_line|#define SE_DACL_AUTO_INHERIT_REQ&t;const_cpu_to_le16(0x0100)
+DECL|macro|SE_SACL_AUTO_INHERIT_REQ
+mdefine_line|#define SE_SACL_AUTO_INHERIT_REQ&t;const_cpu_to_le16(0x0200)
+DECL|macro|SE_DACL_AUTO_INHERITED
+mdefine_line|#define SE_DACL_AUTO_INHERITED&t;&t;const_cpu_to_le16(0x0400)
+DECL|macro|SE_SACL_AUTO_INHERITED
+mdefine_line|#define SE_SACL_AUTO_INHERITED&t;&t;const_cpu_to_le16(0x0800)
+DECL|macro|SE_DACL_PROTECTED
+mdefine_line|#define SE_DACL_PROTECTED&t;&t;const_cpu_to_le16(0x1000)
+DECL|macro|SE_SACL_PROTECTED
+mdefine_line|#define SE_SACL_PROTECTED&t;&t;const_cpu_to_le16(0x2000)
+DECL|macro|SE_RM_CONTROL_VALID
+mdefine_line|#define SE_RM_CONTROL_VALID&t;&t;const_cpu_to_le16(0x4000)
+DECL|macro|SE_SELF_RELATIVE
+mdefine_line|#define SE_SELF_RELATIVE&t;&t;const_cpu_to_le16(0x8000)
 DECL|typedef|SECURITY_DESCRIPTOR_CONTROL
-)brace
-id|__attribute__
-(paren
-(paren
-id|__packed__
-)paren
-)paren
+r_typedef
+id|le16
 id|SECURITY_DESCRIPTOR_CONTROL
 suffix:semicolon
 multiline_comment|/*&n; * Self-relative security descriptor. Contains the owner and group SIDs as well&n; * as the sacl and dacl ACLs inside the security descriptor itself.&n; */
@@ -3270,22 +2405,22 @@ id|control
 suffix:semicolon
 multiline_comment|/* Flags qualifying the type of&n;&t;&t;&t;   the descriptor as well as the following fields. */
 DECL|member|owner
-id|u32
+id|le32
 id|owner
 suffix:semicolon
 multiline_comment|/* Byte offset to a SID representing an object&squot;s&n;&t;&t;&t;   owner. If this is NULL, no owner SID is present in&n;&t;&t;&t;   the descriptor. */
 DECL|member|group
-id|u32
+id|le32
 id|group
 suffix:semicolon
 multiline_comment|/* Byte offset to a SID representing an object&squot;s&n;&t;&t;&t;   primary group. If this is NULL, no primary group&n;&t;&t;&t;   SID is present in the descriptor. */
 DECL|member|sacl
-id|u32
+id|le32
 id|sacl
 suffix:semicolon
 multiline_comment|/* Byte offset to a system ACL. Only valid, if&n;&t;&t;&t;   SE_SACL_PRESENT is set in the control field. If&n;&t;&t;&t;   SE_SACL_PRESENT is set but sacl is NULL, a NULL ACL&n;&t;&t;&t;   is specified. */
 DECL|member|dacl
-id|u32
+id|le32
 id|dacl
 suffix:semicolon
 multiline_comment|/* Byte offset to a discretionary ACL. Only valid, if&n;&t;&t;&t;   SE_DACL_PRESENT is set in the control field. If&n;&t;&t;&t;   SE_DACL_PRESENT is set but dacl is NULL, a NULL ACL&n;&t;&t;&t;   (unconditionally granting access) is specified. */
@@ -3392,22 +2527,22 @@ r_typedef
 r_struct
 (brace
 DECL|member|hash
-id|u32
+id|le32
 id|hash
 suffix:semicolon
 multiline_comment|/* Hash of the security descriptor. */
 DECL|member|security_id
-id|u32
+id|le32
 id|security_id
 suffix:semicolon
 multiline_comment|/* The security_id assigned to the descriptor. */
 DECL|member|offset
-id|u64
+id|le64
 id|offset
 suffix:semicolon
 multiline_comment|/* Byte offset of this entry in the $SDS stream. */
 DECL|member|length
-id|u32
+id|le32
 id|length
 suffix:semicolon
 multiline_comment|/* Size in bytes of this entry in $SDS stream. */
@@ -3428,22 +2563,22 @@ r_struct
 multiline_comment|/*Ofs*/
 multiline_comment|/*  0&t;SECURITY_DESCRIPTOR_HEADER; -- Unfolded here as gcc doesn&squot;t like&n;&t;&t;&t;&t;       unnamed structs. */
 DECL|member|hash
-id|u32
+id|le32
 id|hash
 suffix:semicolon
 multiline_comment|/* Hash of the security descriptor. */
 DECL|member|security_id
-id|u32
+id|le32
 id|security_id
 suffix:semicolon
 multiline_comment|/* The security_id assigned to the descriptor. */
 DECL|member|offset
-id|u64
+id|le64
 id|offset
 suffix:semicolon
 multiline_comment|/* Byte offset of this entry in the $SDS stream. */
 DECL|member|length
-id|u32
+id|le32
 id|length
 suffix:semicolon
 multiline_comment|/* Size in bytes of this entry in $SDS stream. */
@@ -3468,7 +2603,7 @@ r_typedef
 r_struct
 (brace
 DECL|member|security_id
-id|u32
+id|le32
 id|security_id
 suffix:semicolon
 multiline_comment|/* The security_id assigned to the descriptor. */
@@ -3487,12 +2622,12 @@ r_typedef
 r_struct
 (brace
 DECL|member|hash
-id|u32
+id|le32
 id|hash
 suffix:semicolon
 multiline_comment|/* Hash of the security descriptor. */
 DECL|member|security_id
-id|u32
+id|le32
 id|security_id
 suffix:semicolon
 multiline_comment|/* The security_id assigned to the descriptor. */
@@ -3529,99 +2664,28 @@ id|__packed__
 id|VOLUME_NAME
 suffix:semicolon
 multiline_comment|/*&n; * Possible flags for the volume (16-bit).&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|VOLUME_IS_DIRTY
-id|VOLUME_IS_DIRTY
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x0001
-)paren
-comma
-DECL|enumerator|VOLUME_RESIZE_LOG_FILE
-id|VOLUME_RESIZE_LOG_FILE
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x0002
-)paren
-comma
-DECL|enumerator|VOLUME_UPGRADE_ON_MOUNT
-id|VOLUME_UPGRADE_ON_MOUNT
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x0004
-)paren
-comma
-DECL|enumerator|VOLUME_MOUNTED_ON_NT4
-id|VOLUME_MOUNTED_ON_NT4
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x0008
-)paren
-comma
-DECL|enumerator|VOLUME_DELETE_USN_UNDERWAY
-id|VOLUME_DELETE_USN_UNDERWAY
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x0010
-)paren
-comma
-DECL|enumerator|VOLUME_REPAIR_OBJECT_ID
-id|VOLUME_REPAIR_OBJECT_ID
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x0020
-)paren
-comma
-DECL|enumerator|VOLUME_MODIFIED_BY_CHKDSK
-id|VOLUME_MODIFIED_BY_CHKDSK
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x8000
-)paren
-comma
-DECL|enumerator|VOLUME_FLAGS_MASK
-id|VOLUME_FLAGS_MASK
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x803f
-)paren
-comma
+DECL|macro|VOLUME_IS_DIRTY
+mdefine_line|#define VOLUME_IS_DIRTY&t;&t;&t;const_cpu_to_le16(0x0001)
+DECL|macro|VOLUME_RESIZE_LOG_FILE
+mdefine_line|#define VOLUME_RESIZE_LOG_FILE&t;&t;const_cpu_to_le16(0x0002)
+DECL|macro|VOLUME_UPGRADE_ON_MOUNT
+mdefine_line|#define VOLUME_UPGRADE_ON_MOUNT&t;&t;const_cpu_to_le16(0x0004)
+DECL|macro|VOLUME_MOUNTED_ON_NT4
+mdefine_line|#define VOLUME_MOUNTED_ON_NT4&t;&t;const_cpu_to_le16(0x0008)
+DECL|macro|VOLUME_DELETE_USN_UNDERWAY
+mdefine_line|#define VOLUME_DELETE_USN_UNDERWAY&t;const_cpu_to_le16(0x0010)
+DECL|macro|VOLUME_REPAIR_OBJECT_ID
+mdefine_line|#define VOLUME_REPAIR_OBJECT_ID&t;&t;const_cpu_to_le16(0x0020)
+DECL|macro|VOLUME_MODIFIED_BY_CHKDSK
+mdefine_line|#define VOLUME_MODIFIED_BY_CHKDSK&t;const_cpu_to_le16(0x8000)
+DECL|macro|VOLUME_FLAGS_MASK
+mdefine_line|#define VOLUME_FLAGS_MASK&t;&t;const_cpu_to_le16(0x803f)
 multiline_comment|/* To make our life easier when checking if we must mount read-only. */
-DECL|enumerator|VOLUME_MUST_MOUNT_RO_MASK
-id|VOLUME_MUST_MOUNT_RO_MASK
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|0x8037
-)paren
-comma
+DECL|macro|VOLUME_MUST_MOUNT_RO_MASK
+mdefine_line|#define VOLUME_MUST_MOUNT_RO_MASK&t;const_cpu_to_le16(0x8037)
 DECL|typedef|VOLUME_FLAGS
-)brace
-id|__attribute__
-(paren
-(paren
-id|__packed__
-)paren
-)paren
+r_typedef
+id|le16
 id|VOLUME_FLAGS
 suffix:semicolon
 multiline_comment|/*&n; * Attribute: Volume information (0x70).&n; *&n; * NOTE: Always resident.&n; * NOTE: Present only in FILE_Volume.&n; * NOTE: Windows 2000 uses NTFS 3.0 while Windows NT4 service pack 6a uses&n; *&t; NTFS 1.2. I haven&squot;t personally seen other values yet.&n; */
@@ -3629,7 +2693,7 @@ r_typedef
 r_struct
 (brace
 DECL|member|reserved
-id|u64
+id|le64
 id|reserved
 suffix:semicolon
 multiline_comment|/* Not used (yet?). */
@@ -3680,50 +2744,21 @@ id|__packed__
 )paren
 id|DATA_ATTR
 suffix:semicolon
-multiline_comment|/*&n; * Index header flags (8-bit).&n; */
-r_typedef
-r_enum
-(brace
-multiline_comment|/* When index header is in an index root attribute: */
-DECL|enumerator|SMALL_INDEX
-id|SMALL_INDEX
-op_assign
-l_int|0
-comma
-multiline_comment|/* The index is small enough to fit inside the&n;&t;&t;&t;&t;index root attribute and there is no index&n;&t;&t;&t;&t;allocation attribute present. */
-DECL|enumerator|LARGE_INDEX
-id|LARGE_INDEX
-op_assign
-l_int|1
-comma
-multiline_comment|/* The index is too large to fit in the index&n;&t;&t;&t;&t;root attribute and/or an index allocation&n;&t;&t;&t;&t;attribute is present. */
-multiline_comment|/*&n;&t; * When index header is in an index block, i.e. is part of index&n;&t; * allocation attribute:&n;&t; */
-DECL|enumerator|LEAF_NODE
-id|LEAF_NODE
-op_assign
-l_int|0
-comma
-multiline_comment|/* This is a leaf node, i.e. there are no more&n;&t;&t;&t;&t;nodes branching off it. */
-DECL|enumerator|INDEX_NODE
-id|INDEX_NODE
-op_assign
-l_int|1
-comma
-multiline_comment|/* This node indexes other nodes, i.e. is not a&n;&t;&t;&t;&t;leaf node. */
-DECL|enumerator|NODE_MASK
-id|NODE_MASK
-op_assign
-l_int|1
-comma
-multiline_comment|/* Mask for accessing the *_NODE bits. */
+multiline_comment|/*&n; * Index header flags (8-bit).&n; *&n; * When index header is in an index root attribute:&n; */
+DECL|macro|SMALL_INDEX
+mdefine_line|#define SMALL_INDEX 0 /* The index is small enough to fit inside the index root&n;&t;&t;&t; attribute and there is no index allocation attribute&n;&t;&t;&t; present. */
+DECL|macro|LARGE_INDEX
+mdefine_line|#define LARGE_INDEX 1 /* The index is too large to fit in the index root&n;&t;&t;&t; attribute and/or an index allocation attribute is&n;&t;&t;&t; present. */
+multiline_comment|/*&n; * When index header is in an index block, i.e. is part of index allocation&n; * attribute:&n; */
+DECL|macro|LEAF_NODE
+mdefine_line|#define LEAF_NODE  0 /* This is a leaf node, i.e. there are no more nodes&n;&t;&t;&t;branching off it. */
+DECL|macro|INDEX_NODE
+mdefine_line|#define INDEX_NODE 1 /* This node indexes other nodes, i.e. it is not a leaf&n;&t;&t;&t;node. */
+DECL|macro|NODE_MASK
+mdefine_line|#define NODE_MASK  1 /* Mask for accessing the *_NODE bits. */
 DECL|typedef|INDEX_HEADER_FLAGS
-)brace
-id|__attribute__
-(paren
-(paren
-id|__packed__
-)paren
-)paren
+r_typedef
+id|u8
 id|INDEX_HEADER_FLAGS
 suffix:semicolon
 multiline_comment|/*&n; * This is the header for indexes, describing the INDEX_ENTRY records, which&n; * follow the INDEX_HEADER. Together the index header and the index entries&n; * make up a complete index.&n; *&n; * IMPORTANT NOTE: The offset, length and size structure members are counted&n; * relative to the start of the index header structure and not relative to the&n; * start of the index root or index allocation structures themselves.&n; */
@@ -3731,17 +2766,17 @@ r_typedef
 r_struct
 (brace
 DECL|member|entries_offset
-id|u32
+id|le32
 id|entries_offset
 suffix:semicolon
 multiline_comment|/* Byte offset to first INDEX_ENTRY&n;&t;&t;&t;&t;&t;   aligned to 8-byte boundary. */
 DECL|member|index_length
-id|u32
+id|le32
 id|index_length
 suffix:semicolon
 multiline_comment|/* Data size of the index in bytes,&n;&t;&t;&t;&t;&t;   i.e. bytes used from allocated&n;&t;&t;&t;&t;&t;   size, aligned to 8-byte boundary. */
 DECL|member|allocated_size
-id|u32
+id|le32
 id|allocated_size
 suffix:semicolon
 multiline_comment|/* Byte size of this index (block),&n;&t;&t;&t;&t;&t;   multiple of 8 bytes. */
@@ -3774,17 +2809,17 @@ r_typedef
 r_struct
 (brace
 DECL|member|type
-id|ATTR_TYPES
+id|ATTR_TYPE
 id|type
 suffix:semicolon
 multiline_comment|/* Type of the indexed attribute. Is&n;&t;&t;&t;&t;&t;   $FILE_NAME for directories, zero&n;&t;&t;&t;&t;&t;   for view indexes. No other values&n;&t;&t;&t;&t;&t;   allowed. */
 DECL|member|collation_rule
-id|COLLATION_RULES
+id|COLLATION_RULE
 id|collation_rule
 suffix:semicolon
 multiline_comment|/* Collation rule used to sort the&n;&t;&t;&t;&t;&t;   index entries. If type is $FILE_NAME,&n;&t;&t;&t;&t;&t;   this must be COLLATION_FILE_NAME. */
 DECL|member|index_block_size
-id|u32
+id|le32
 id|index_block_size
 suffix:semicolon
 multiline_comment|/* Size of each index block in bytes (in&n;&t;&t;&t;&t;&t;   the index allocation attribute). */
@@ -3822,29 +2857,29 @@ r_struct
 (brace
 multiline_comment|/*  0&t;NTFS_RECORD; -- Unfolded here as gcc doesn&squot;t like unnamed structs. */
 DECL|member|magic
-id|NTFS_RECORD_TYPES
+id|NTFS_RECORD_TYPE
 id|magic
 suffix:semicolon
 multiline_comment|/* Magic is &quot;INDX&quot;. */
 DECL|member|usa_ofs
-id|u16
+id|le16
 id|usa_ofs
 suffix:semicolon
 multiline_comment|/* See NTFS_RECORD definition. */
 DECL|member|usa_count
-id|u16
+id|le16
 id|usa_count
 suffix:semicolon
 multiline_comment|/* See NTFS_RECORD definition. */
 DECL|member|lsn
 multiline_comment|/*  8*/
-id|s64
+id|sle64
 id|lsn
 suffix:semicolon
 multiline_comment|/* $LogFile sequence number of the last&n;&t;&t;&t;&t;   modification of this index block. */
 DECL|member|index_block_vcn
 multiline_comment|/* 16*/
-id|VCN
+id|leVCN
 id|index_block_vcn
 suffix:semicolon
 multiline_comment|/* Virtual cluster number of the index block.&n;&t;&t;&t;&t;   If the cluster_size on the volume is &lt;= the&n;&t;&t;&t;&t;   index_block_size of the directory,&n;&t;&t;&t;&t;   index_block_vcn counts in units of clusters,&n;&t;&t;&t;&t;   and in units of sectors otherwise. */
@@ -3876,12 +2911,12 @@ r_typedef
 r_struct
 (brace
 DECL|member|reparse_tag
-id|u32
+id|le32
 id|reparse_tag
 suffix:semicolon
 multiline_comment|/* Reparse point type (inc. flags). */
 DECL|member|file_id
-id|MFT_REF
+id|leMFT_REF
 id|file_id
 suffix:semicolon
 multiline_comment|/* Mft record of the file containing the&n;&t;&t;&t;&t;   reparse point attribute. */
@@ -3895,123 +2930,36 @@ id|__packed__
 )paren
 id|REPARSE_INDEX_KEY
 suffix:semicolon
-multiline_comment|/*&n; * Quota flags (32-bit).&n; */
-r_typedef
-r_enum
-(brace
-multiline_comment|/* The user quota flags. Names explain meaning. */
-DECL|enumerator|QUOTA_FLAG_DEFAULT_LIMITS
-id|QUOTA_FLAG_DEFAULT_LIMITS
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000001
-)paren
-comma
-DECL|enumerator|QUOTA_FLAG_LIMIT_REACHED
-id|QUOTA_FLAG_LIMIT_REACHED
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000002
-)paren
-comma
-DECL|enumerator|QUOTA_FLAG_ID_DELETED
-id|QUOTA_FLAG_ID_DELETED
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000004
-)paren
-comma
-DECL|enumerator|QUOTA_FLAG_USER_MASK
-id|QUOTA_FLAG_USER_MASK
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000007
-)paren
-comma
+multiline_comment|/*&n; * Quota flags (32-bit).&n; *&n; * The user quota flags.  Names explain meaning.&n; */
+DECL|macro|QUOTA_FLAG_DEFAULT_LIMITS
+mdefine_line|#define QUOTA_FLAG_DEFAULT_LIMITS&t;const_cpu_to_le32(0x00000001)
+DECL|macro|QUOTA_FLAG_LIMIT_REACHED
+mdefine_line|#define QUOTA_FLAG_LIMIT_REACHED&t;const_cpu_to_le32(0x00000002)
+DECL|macro|QUOTA_FLAG_ID_DELETED
+mdefine_line|#define QUOTA_FLAG_ID_DELETED&t;&t;const_cpu_to_le32(0x00000004)
+DECL|macro|QUOTA_FLAG_USER_MASK
+mdefine_line|#define QUOTA_FLAG_USER_MASK&t;&t;const_cpu_to_le32(0x00000007)
 multiline_comment|/* Bit mask for user quota flags. */
-multiline_comment|/* These flags are only present in the quota defaults index entry,&n;&t;   i.e. in the entry where owner_id = QUOTA_DEFAULTS_ID. */
-DECL|enumerator|QUOTA_FLAG_TRACKING_ENABLED
-id|QUOTA_FLAG_TRACKING_ENABLED
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000010
-)paren
-comma
-DECL|enumerator|QUOTA_FLAG_ENFORCEMENT_ENABLED
-id|QUOTA_FLAG_ENFORCEMENT_ENABLED
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000020
-)paren
-comma
-DECL|enumerator|QUOTA_FLAG_TRACKING_REQUESTED
-id|QUOTA_FLAG_TRACKING_REQUESTED
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000040
-)paren
-comma
-DECL|enumerator|QUOTA_FLAG_LOG_THRESHOLD
-id|QUOTA_FLAG_LOG_THRESHOLD
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000080
-)paren
-comma
-DECL|enumerator|QUOTA_FLAG_LOG_LIMIT
-id|QUOTA_FLAG_LOG_LIMIT
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000100
-)paren
-comma
-DECL|enumerator|QUOTA_FLAG_OUT_OF_DATE
-id|QUOTA_FLAG_OUT_OF_DATE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000200
-)paren
-comma
-DECL|enumerator|QUOTA_FLAG_CORRUPT
-id|QUOTA_FLAG_CORRUPT
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000400
-)paren
-comma
-DECL|enumerator|QUOTA_FLAG_PENDING_DELETES
-id|QUOTA_FLAG_PENDING_DELETES
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000800
-)paren
-comma
+multiline_comment|/* These flags are only present in the quota defaults index entry, i.e. in the&n;   entry where owner_id = QUOTA_DEFAULTS_ID. */
+DECL|macro|QUOTA_FLAG_TRACKING_ENABLED
+mdefine_line|#define QUOTA_FLAG_TRACKING_ENABLED&t;const_cpu_to_le32(0x00000010)
+DECL|macro|QUOTA_FLAG_ENFORCEMENT_ENABLED
+mdefine_line|#define QUOTA_FLAG_ENFORCEMENT_ENABLED&t;const_cpu_to_le32(0x00000020)
+DECL|macro|QUOTA_FLAG_TRACKING_REQUESTED
+mdefine_line|#define QUOTA_FLAG_TRACKING_REQUESTED&t;const_cpu_to_le32(0x00000040)
+DECL|macro|QUOTA_FLAG_LOG_THRESHOLD
+mdefine_line|#define QUOTA_FLAG_LOG_THRESHOLD&t;const_cpu_to_le32(0x00000080)
+DECL|macro|QUOTA_FLAG_LOG_LIMIT
+mdefine_line|#define QUOTA_FLAG_LOG_LIMIT&t;&t;const_cpu_to_le32(0x00000100)
+DECL|macro|QUOTA_FLAG_OUT_OF_DATE
+mdefine_line|#define QUOTA_FLAG_OUT_OF_DATE&t;&t;const_cpu_to_le32(0x00000200)
+DECL|macro|QUOTA_FLAG_CORRUPT
+mdefine_line|#define QUOTA_FLAG_CORRUPT&t;&t;const_cpu_to_le32(0x00000400)
+DECL|macro|QUOTA_FLAG_PENDING_DELETES
+mdefine_line|#define QUOTA_FLAG_PENDING_DELETES&t;const_cpu_to_le32(0x00000800)
 DECL|typedef|QUOTA_FLAGS
-)brace
+r_typedef
+id|le32
 id|QUOTA_FLAGS
 suffix:semicolon
 multiline_comment|/*&n; * The system file FILE_Extend/$Quota contains two indexes $O and $Q. Quotas&n; * are on a per volume and per user basis.&n; *&n; * The $Q index contains one entry for each existing user_id on the volume. The&n; * index key is the user_id of the user/group owning this quota control entry,&n; * i.e. the key is the owner_id. The user_id of the owner of a file, i.e. the&n; * owner_id, is found in the standard information attribute. The collation rule&n; * for $Q is COLLATION_NTOFS_ULONG.&n; *&n; * The $O index contains one entry for each user/group who has been assigned&n; * a quota on that volume. The index key holds the SID of the user_id the&n; * entry belongs to, i.e. the owner_id. The collation rule for $O is&n; * COLLATION_NTOFS_SID.&n; *&n; * The $O index entry data is the user_id of the user corresponding to the SID.&n; * This user_id is used as an index into $Q to find the quota control entry&n; * associated with the SID.&n; *&n; * The $Q index entry data is the quota control entry and is defined below.&n; */
@@ -4019,7 +2967,7 @@ r_typedef
 r_struct
 (brace
 DECL|member|version
-id|u32
+id|le32
 id|version
 suffix:semicolon
 multiline_comment|/* Currently equals 2. */
@@ -4029,27 +2977,27 @@ id|flags
 suffix:semicolon
 multiline_comment|/* Flags describing this quota entry. */
 DECL|member|bytes_used
-id|u64
+id|le64
 id|bytes_used
 suffix:semicolon
 multiline_comment|/* How many bytes of the quota are in use. */
 DECL|member|change_time
-id|s64
+id|sle64
 id|change_time
 suffix:semicolon
 multiline_comment|/* Last time this quota entry was changed. */
 DECL|member|threshold
-id|s64
+id|sle64
 id|threshold
 suffix:semicolon
 multiline_comment|/* Soft quota (-1 if not limited). */
 DECL|member|limit
-id|s64
+id|sle64
 id|limit
 suffix:semicolon
 multiline_comment|/* Hard quota (-1 if not limited). */
 DECL|member|exceeded_time
-id|s64
+id|sle64
 id|exceeded_time
 suffix:semicolon
 multiline_comment|/* How long the soft quota has been exceeded. */
@@ -4069,40 +3017,12 @@ id|__packed__
 id|QUOTA_CONTROL_ENTRY
 suffix:semicolon
 multiline_comment|/*&n; * Predefined owner_id values (32-bit).&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|QUOTA_INVALID_ID
-id|QUOTA_INVALID_ID
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000000
-)paren
-comma
-DECL|enumerator|QUOTA_DEFAULTS_ID
-id|QUOTA_DEFAULTS_ID
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000001
-)paren
-comma
-DECL|enumerator|QUOTA_FIRST_USER_ID
-id|QUOTA_FIRST_USER_ID
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000100
-)paren
-comma
-DECL|typedef|PREDEFINED_OWNER_IDS
-)brace
-id|PREDEFINED_OWNER_IDS
-suffix:semicolon
+DECL|macro|QUOTA_INVALID_ID
+mdefine_line|#define QUOTA_INVALID_ID&t;const_cpu_to_le32(0x00000000)
+DECL|macro|QUOTA_DEFAULTS_ID
+mdefine_line|#define QUOTA_DEFAULTS_ID&t;const_cpu_to_le32(0x00000001)
+DECL|macro|QUOTA_FIRST_USER_ID
+mdefine_line|#define QUOTA_FIRST_USER_ID&t;const_cpu_to_le32(0x00000100)
 multiline_comment|/*&n; * Current constants for quota control entries.&n; */
 r_typedef
 r_enum
@@ -4118,43 +3038,13 @@ DECL|typedef|QUOTA_CONTROL_ENTRY_CONSTANTS
 id|QUOTA_CONTROL_ENTRY_CONSTANTS
 suffix:semicolon
 multiline_comment|/*&n; * Index entry flags (16-bit).&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|INDEX_ENTRY_NODE
-id|INDEX_ENTRY_NODE
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|1
-)paren
-comma
-multiline_comment|/* This entry contains a&n;&t;&t;&t;&t;&t;      sub-node, i.e. a reference to an&n;&t;&t;&t;&t;&t;      index block in form of a virtual&n;&t;&t;&t;&t;&t;      cluster number (see below). */
-DECL|enumerator|INDEX_ENTRY_END
-id|INDEX_ENTRY_END
-op_assign
-id|const_cpu_to_le16
-c_func
-(paren
-l_int|2
-)paren
-comma
-multiline_comment|/* This signifies the last&n;&t;&t;&t;&t;&t;      entry in an index block.  The&n;&t;&t;&t;&t;&t;      index entry does not represent a&n;&t;&t;&t;&t;&t;      file but it can point to a&n;&t;&t;&t;&t;&t;      sub-node. */
-DECL|enumerator|INDEX_ENTRY_SPACE_FILLER
-id|INDEX_ENTRY_SPACE_FILLER
-op_assign
-l_int|0xffff
-comma
-multiline_comment|/* Just to force 16-bit width. */
+DECL|macro|INDEX_ENTRY_NODE
+mdefine_line|#define INDEX_ENTRY_NODE const_cpu_to_le16(1) /* This entry contains a&n;&t;&t;&t;sub-node, i.e. a reference to an index block in form of&n;&t;&t;&t;a virtual cluster number (see below). */
+DECL|macro|INDEX_ENTRY_END
+mdefine_line|#define INDEX_ENTRY_END  const_cpu_to_le16(2) /* This signifies the last entry&n;&t;&t;&t;in an index block.  The index entry does not represent&n;&t;&t;&t;a file but it can point to a sub-node. */
 DECL|typedef|INDEX_ENTRY_FLAGS
-)brace
-id|__attribute__
-(paren
-(paren
-id|__packed__
-)paren
-)paren
+r_typedef
+id|le16
 id|INDEX_ENTRY_FLAGS
 suffix:semicolon
 multiline_comment|/*&n; * This the index entry header (see below).&n; */
@@ -4168,7 +3058,7 @@ r_struct
 (brace
 multiline_comment|/* Only valid when INDEX_ENTRY_END is not set. */
 DECL|member|indexed_file
-id|MFT_REF
+id|leMFT_REF
 id|indexed_file
 suffix:semicolon
 multiline_comment|/* The mft reference of the file&n;&t;&t;&t;&t;&t;&t;   described by this index&n;&t;&t;&t;&t;&t;&t;   entry. Used for directory&n;&t;&t;&t;&t;&t;&t;   indexes. */
@@ -4186,17 +3076,17 @@ r_struct
 (brace
 multiline_comment|/* Used for views/indexes to find the entry&squot;s data. */
 DECL|member|data_offset
-id|u16
+id|le16
 id|data_offset
 suffix:semicolon
 multiline_comment|/* Data byte offset from this&n;&t;&t;&t;&t;&t;&t;   INDEX_ENTRY. Follows the&n;&t;&t;&t;&t;&t;&t;   index key. */
 DECL|member|data_length
-id|u16
+id|le16
 id|data_length
 suffix:semicolon
 multiline_comment|/* Data length in bytes. */
 DECL|member|reservedV
-id|u32
+id|le32
 id|reservedV
 suffix:semicolon
 multiline_comment|/* Reserved (zero). */
@@ -4222,13 +3112,13 @@ id|data
 suffix:semicolon
 DECL|member|length
 multiline_comment|/*  8*/
-id|u16
+id|le16
 id|length
 suffix:semicolon
 multiline_comment|/* Byte size of this index entry, multiple of&n;&t;&t;&t;&t;    8-bytes. */
 DECL|member|key_length
 multiline_comment|/* 10*/
-id|u16
+id|le16
 id|key_length
 suffix:semicolon
 multiline_comment|/* Byte size of the key value, which is in the&n;&t;&t;&t;&t;    index entry. It follows field reserved. Not&n;&t;&t;&t;&t;    multiple of 8-bytes. */
@@ -4240,7 +3130,7 @@ suffix:semicolon
 multiline_comment|/* Bit field of INDEX_ENTRY_* flags. */
 DECL|member|reserved
 multiline_comment|/* 14*/
-id|u16
+id|le16
 id|reserved
 suffix:semicolon
 multiline_comment|/* Reserved/align to 8-byte boundary. */
@@ -4267,7 +3157,7 @@ r_struct
 (brace
 multiline_comment|/* Only valid when INDEX_ENTRY_END is not set. */
 DECL|member|indexed_file
-id|MFT_REF
+id|leMFT_REF
 id|indexed_file
 suffix:semicolon
 multiline_comment|/* The mft reference of the file&n;&t;&t;&t;&t;&t;&t;   described by this index&n;&t;&t;&t;&t;&t;&t;   entry. Used for directory&n;&t;&t;&t;&t;&t;&t;   indexes. */
@@ -4285,17 +3175,17 @@ r_struct
 (brace
 multiline_comment|/* Used for views/indexes to find the entry&squot;s data. */
 DECL|member|data_offset
-id|u16
+id|le16
 id|data_offset
 suffix:semicolon
 multiline_comment|/* Data byte offset from this&n;&t;&t;&t;&t;&t;&t;   INDEX_ENTRY. Follows the&n;&t;&t;&t;&t;&t;&t;   index key. */
 DECL|member|data_length
-id|u16
+id|le16
 id|data_length
 suffix:semicolon
 multiline_comment|/* Data length in bytes. */
 DECL|member|reservedV
-id|u32
+id|le32
 id|reservedV
 suffix:semicolon
 multiline_comment|/* Reserved (zero). */
@@ -4320,12 +3210,12 @@ id|__packed__
 id|data
 suffix:semicolon
 DECL|member|length
-id|u16
+id|le16
 id|length
 suffix:semicolon
 multiline_comment|/* Byte size of this index entry, multiple of&n;&t;&t;&t;&t;    8-bytes. */
 DECL|member|key_length
-id|u16
+id|le16
 id|key_length
 suffix:semicolon
 multiline_comment|/* Byte size of the key value, which is in the&n;&t;&t;&t;&t;    index entry. It follows field reserved. Not&n;&t;&t;&t;&t;    multiple of 8-bytes. */
@@ -4335,7 +3225,7 @@ id|flags
 suffix:semicolon
 multiline_comment|/* Bit field of INDEX_ENTRY_* flags. */
 DECL|member|reserved
-id|u16
+id|le16
 id|reserved
 suffix:semicolon
 multiline_comment|/* Reserved/align to 8-byte boundary. */
@@ -4374,7 +3264,7 @@ id|sid
 suffix:semicolon
 multiline_comment|/* $O index in FILE_Extend/$Quota:&n;&t;&t;&t;&t;&t;   SID of the owner of the user_id. */
 DECL|member|owner_id
-id|u32
+id|le32
 id|owner_id
 suffix:semicolon
 multiline_comment|/* $Q index in FILE_Extend/$Quota:&n;&t;&t;&t;&t;&t;   user_id of the owner of the quota&n;&t;&t;&t;&t;&t;   control entry in the data part of&n;&t;&t;&t;&t;&t;   the index. */
@@ -4389,7 +3279,7 @@ id|__packed__
 id|key
 suffix:semicolon
 multiline_comment|/* The (optional) index data is inserted here when creating. */
-singleline_comment|// VCN vcn;&t;/* If INDEX_ENTRY_NODE bit in flags is set, the last
+singleline_comment|// leVCN vcn;&t;/* If INDEX_ENTRY_NODE bit in flags is set, the last
 singleline_comment|//&t;&t;   eight bytes of this index entry contain the virtual
 singleline_comment|//&t;&t;   cluster number of the index block that holds the
 singleline_comment|//&t;&t;   entries immediately preceding the current entry (the
@@ -4433,156 +3323,51 @@ id|__packed__
 )paren
 id|BITMAP_ATTR
 suffix:semicolon
-multiline_comment|/*&n; * The reparse point tag defines the type of the reparse point. It also&n; * includes several flags, which further describe the reparse point.&n; *&n; * The reparse point tag is an unsigned 32-bit value divided in three parts:&n; *&n; * 1. The least significant 16 bits (i.e. bits 0 to 15) specifiy the type of&n; *    the reparse point.&n; * 2. The 13 bits after this (i.e. bits 16 to 28) are reserved for future use.&n; * 3. The most significant three bits are flags describing the reparse point.&n; *    They are defined as follows:&n; *&t;bit 29: Name surrogate bit. If set, the filename is an alias for&n; *&t;&t;another object in the system.&n; *&t;bit 30: High-latency bit. If set, accessing the first byte of data will&n; *&t;&t;be slow. (E.g. the data is stored on a tape drive.)&n; *&t;bit 31: Microsoft bit. If set, the tag is owned by Microsoft. User&n; *&t;&t;defined tags have to use zero here.&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|IO_REPARSE_TAG_IS_ALIAS
-id|IO_REPARSE_TAG_IS_ALIAS
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x20000000
-)paren
-comma
-DECL|enumerator|IO_REPARSE_TAG_IS_HIGH_LATENCY
-id|IO_REPARSE_TAG_IS_HIGH_LATENCY
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x40000000
-)paren
-comma
-DECL|enumerator|IO_REPARSE_TAG_IS_MICROSOFT
-id|IO_REPARSE_TAG_IS_MICROSOFT
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x80000000
-)paren
-comma
-DECL|enumerator|IO_REPARSE_TAG_RESERVED_ZERO
-id|IO_REPARSE_TAG_RESERVED_ZERO
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000000
-)paren
-comma
-DECL|enumerator|IO_REPARSE_TAG_RESERVED_ONE
-id|IO_REPARSE_TAG_RESERVED_ONE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000001
-)paren
-comma
-DECL|enumerator|IO_REPARSE_TAG_RESERVED_RANGE
-id|IO_REPARSE_TAG_RESERVED_RANGE
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x00000001
-)paren
-comma
-DECL|enumerator|IO_REPARSE_TAG_NSS
-id|IO_REPARSE_TAG_NSS
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x68000005
-)paren
-comma
-DECL|enumerator|IO_REPARSE_TAG_NSS_RECOVER
-id|IO_REPARSE_TAG_NSS_RECOVER
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x68000006
-)paren
-comma
-DECL|enumerator|IO_REPARSE_TAG_SIS
-id|IO_REPARSE_TAG_SIS
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x68000007
-)paren
-comma
-DECL|enumerator|IO_REPARSE_TAG_DFS
-id|IO_REPARSE_TAG_DFS
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x68000008
-)paren
-comma
-DECL|enumerator|IO_REPARSE_TAG_MOUNT_POINT
-id|IO_REPARSE_TAG_MOUNT_POINT
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0x88000003
-)paren
-comma
-DECL|enumerator|IO_REPARSE_TAG_HSM
-id|IO_REPARSE_TAG_HSM
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0xa8000004
-)paren
-comma
-DECL|enumerator|IO_REPARSE_TAG_SYMBOLIC_LINK
-id|IO_REPARSE_TAG_SYMBOLIC_LINK
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0xe8000000
-)paren
-comma
-DECL|enumerator|IO_REPARSE_TAG_VALID_VALUES
-id|IO_REPARSE_TAG_VALID_VALUES
-op_assign
-id|const_cpu_to_le32
-c_func
-(paren
-l_int|0xe000ffff
-)paren
-comma
-DECL|typedef|PREDEFINED_REPARSE_TAGS
-)brace
-id|PREDEFINED_REPARSE_TAGS
-suffix:semicolon
+multiline_comment|/*&n; * The reparse point tag defines the type of the reparse point. It also&n; * includes several flags, which further describe the reparse point.&n; *&n; * The reparse point tag is an unsigned 32-bit value divided in three parts:&n; *&n; * 1. The least significant 16 bits (i.e. bits 0 to 15) specifiy the type of&n; *    the reparse point.&n; * 2. The 13 bits after this (i.e. bits 16 to 28) are reserved for future use.&n; * 3. The most significant three bits are flags describing the reparse point.&n; *    They are defined as follows:&n; *&t;bit 29: Name surrogate bit. If set, the filename is an alias for&n; *&t;&t;another object in the system.&n; *&t;bit 30: High-latency bit. If set, accessing the first byte of data will&n; *&t;&t;be slow. (E.g. the data is stored on a tape drive.)&n; *&t;bit 31: Microsoft bit. If set, the tag is owned by Microsoft. User&n; *&t;&t;defined tags have to use zero here.&n; *&n; * These are the predefined reparse point tags:&n; */
+DECL|macro|IO_REPARSE_TAG_IS_ALIAS
+mdefine_line|#define IO_REPARSE_TAG_IS_ALIAS&t;&t;const_cpu_to_le32(0x20000000)
+DECL|macro|IO_REPARSE_TAG_IS_HIGH_LATENCY
+mdefine_line|#define IO_REPARSE_TAG_IS_HIGH_LATENCY&t;const_cpu_to_le32(0x40000000)
+DECL|macro|IO_REPARSE_TAG_IS_MICROSOFT
+mdefine_line|#define IO_REPARSE_TAG_IS_MICROSOFT&t;const_cpu_to_le32(0x80000000)
+DECL|macro|IO_REPARSE_TAG_RESERVED_ZERO
+mdefine_line|#define IO_REPARSE_TAG_RESERVED_ZERO&t;const_cpu_to_le32(0x00000000)
+DECL|macro|IO_REPARSE_TAG_RESERVED_ONE
+mdefine_line|#define IO_REPARSE_TAG_RESERVED_ONE&t;const_cpu_to_le32(0x00000001)
+DECL|macro|IO_REPARSE_TAG_RESERVED_RANGE
+mdefine_line|#define IO_REPARSE_TAG_RESERVED_RANGE&t;const_cpu_to_le32(0x00000001)
+DECL|macro|IO_REPARSE_TAG_NSS
+mdefine_line|#define IO_REPARSE_TAG_NSS&t;&t;const_cpu_to_le32(0x68000005)
+DECL|macro|IO_REPARSE_TAG_NSS_RECOVER
+mdefine_line|#define IO_REPARSE_TAG_NSS_RECOVER&t;const_cpu_to_le32(0x68000006)
+DECL|macro|IO_REPARSE_TAG_SIS
+mdefine_line|#define IO_REPARSE_TAG_SIS&t;&t;const_cpu_to_le32(0x68000007)
+DECL|macro|IO_REPARSE_TAG_DFS
+mdefine_line|#define IO_REPARSE_TAG_DFS&t;&t;const_cpu_to_le32(0x68000008)
+DECL|macro|IO_REPARSE_TAG_MOUNT_POINT
+mdefine_line|#define IO_REPARSE_TAG_MOUNT_POINT&t;const_cpu_to_le32(0x88000003)
+DECL|macro|IO_REPARSE_TAG_HSM
+mdefine_line|#define IO_REPARSE_TAG_HSM&t;&t;const_cpu_to_le32(0xa8000004)
+DECL|macro|IO_REPARSE_TAG_SYMBOLIC_LINK
+mdefine_line|#define IO_REPARSE_TAG_SYMBOLIC_LINK&t;const_cpu_to_le32(0xe8000000)
+DECL|macro|IO_REPARSE_TAG_VALID_VALUES
+mdefine_line|#define IO_REPARSE_TAG_VALID_VALUES&t;const_cpu_to_le32(0xe000ffff)
 multiline_comment|/*&n; * Attribute: Reparse point (0xc0).&n; *&n; * NOTE: Can be resident or non-resident.&n; */
 r_typedef
 r_struct
 (brace
 DECL|member|reparse_tag
-id|u32
+id|le32
 id|reparse_tag
 suffix:semicolon
 multiline_comment|/* Reparse point type (inc. flags). */
 DECL|member|reparse_data_length
-id|u16
+id|le16
 id|reparse_data_length
 suffix:semicolon
 multiline_comment|/* Byte size of reparse data. */
 DECL|member|reserved
-id|u16
+id|le16
 id|reserved
 suffix:semicolon
 multiline_comment|/* Align to 8-byte boundary. */
@@ -4609,17 +3394,17 @@ r_typedef
 r_struct
 (brace
 DECL|member|ea_length
-id|u16
+id|le16
 id|ea_length
 suffix:semicolon
 multiline_comment|/* Byte size of the packed extended&n;&t;&t;&t;&t;   attributes. */
 DECL|member|need_ea_count
-id|u16
+id|le16
 id|need_ea_count
 suffix:semicolon
 multiline_comment|/* The number of extended attributes which have&n;&t;&t;&t;&t;   the NEED_EA bit set. */
 DECL|member|ea_query_length
-id|u32
+id|le32
 id|ea_query_length
 suffix:semicolon
 multiline_comment|/* Byte size of the buffer required to query&n;&t;&t;&t;&t;   the extended attributes when calling&n;&t;&t;&t;&t;   ZwQueryEaFile() in Windows NT/2k. I.e. the&n;&t;&t;&t;&t;   byte size of the unpacked extended&n;&t;&t;&t;&t;   attributes. */
@@ -4634,22 +3419,11 @@ id|__packed__
 id|EA_INFORMATION
 suffix:semicolon
 multiline_comment|/*&n; * Extended attribute flags (8-bit).&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|NEED_EA
-id|NEED_EA
-op_assign
-l_int|0x80
-comma
+DECL|macro|NEED_EA
+mdefine_line|#define NEED_EA&t;0x80
 DECL|typedef|EA_FLAGS
-)brace
-id|__attribute__
-(paren
-(paren
-id|__packed__
-)paren
-)paren
+r_typedef
+id|u8
 id|EA_FLAGS
 suffix:semicolon
 multiline_comment|/*&n; * Attribute: Extended attribute (EA) (0xe0).&n; *&n; * NOTE: Always non-resident. (Is this true?)&n; *&n; * Like the attribute list and the index buffer list, the EA attribute value is&n; * a sequence of EA_ATTR variable length records.&n; *&n; * FIXME: It appears weird that the EA name is not unicode. Is it true?&n; */
@@ -4657,7 +3431,7 @@ r_typedef
 r_struct
 (brace
 DECL|member|next_entry_offset
-id|u32
+id|le32
 id|next_entry_offset
 suffix:semicolon
 multiline_comment|/* Offset to the next EA_ATTR. */
@@ -4672,7 +3446,7 @@ id|ea_name_length
 suffix:semicolon
 multiline_comment|/* Length of the name of the EA in bytes. */
 DECL|member|ea_value_length
-id|u16
+id|le16
 id|ea_value_length
 suffix:semicolon
 multiline_comment|/* Byte size of the EA&squot;s value. */

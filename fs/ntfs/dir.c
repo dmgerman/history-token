@@ -928,6 +928,11 @@ id|sle64_to_cpup
 c_func
 (paren
 (paren
+id|sle64
+op_star
+)paren
+(paren
+(paren
 id|u8
 op_star
 )paren
@@ -940,6 +945,7 @@ id|ie-&gt;length
 )paren
 op_minus
 l_int|8
+)paren
 )paren
 suffix:semicolon
 id|ia_mapping
@@ -1895,6 +1901,11 @@ id|sle64_to_cpup
 c_func
 (paren
 (paren
+id|sle64
+op_star
+)paren
+(paren
+(paren
 id|u8
 op_star
 )paren
@@ -1907,6 +1918,7 @@ id|ie-&gt;length
 )paren
 op_minus
 l_int|8
+)paren
 )paren
 suffix:semicolon
 r_if

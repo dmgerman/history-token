@@ -176,7 +176,7 @@ id|ntfs_attr_lookup
 c_func
 (paren
 r_const
-id|ATTR_TYPES
+id|ATTR_TYPE
 id|type
 comma
 r_const

@@ -11,10 +11,13 @@ id|BOOL
 id|ntfs_is_collation_rule_supported
 c_func
 (paren
-id|COLLATION_RULES
+id|COLLATION_RULE
 id|cr
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 multiline_comment|/*&n;&t; * FIXME:  At the moment we only support COLLATION_BINARY and&n;&t; * COLLATION_NTOFS_ULONG, so we return false for everything else for&n;&t; * now.&n;&t; */
 r_if
 c_cond
@@ -34,7 +37,7 @@ id|COLLATION_NTOFS_ULONG
 r_return
 id|FALSE
 suffix:semicolon
-id|cr
+id|i
 op_assign
 id|le32_to_cpu
 c_func
@@ -50,13 +53,13 @@ c_func
 (paren
 (paren
 (paren
-id|cr
+id|i
 op_ge
 l_int|0
 )paren
 op_logical_and
 (paren
-id|cr
+id|i
 op_le
 l_int|0x02
 )paren
@@ -64,13 +67,13 @@ l_int|0x02
 op_logical_or
 (paren
 (paren
-id|cr
+id|i
 op_ge
 l_int|0x10
 )paren
 op_logical_and
 (paren
-id|cr
+id|i
 op_le
 l_int|0x13
 )paren
@@ -93,7 +96,7 @@ id|ntfs_volume
 op_star
 id|vol
 comma
-id|COLLATION_RULES
+id|COLLATION_RULE
 id|cr
 comma
 r_const

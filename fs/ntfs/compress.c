@@ -445,7 +445,7 @@ id|le16_to_cpup
 c_func
 (paren
 (paren
-id|u16
+id|le16
 op_star
 )paren
 id|cb
@@ -669,7 +669,7 @@ id|le16_to_cpup
 c_func
 (paren
 (paren
-id|u16
+id|le16
 op_star
 )paren
 id|cb
@@ -772,7 +772,7 @@ id|le16_to_cpup
 c_func
 (paren
 (paren
-id|u16
+id|le16
 op_star
 )paren
 id|cb
@@ -1113,7 +1113,7 @@ id|le16_to_cpup
 c_func
 (paren
 (paren
-id|u16
+id|le16
 op_star
 )paren
 id|cb

@@ -520,7 +520,7 @@ id|inode
 op_star
 id|base_vi
 comma
-id|ATTR_TYPES
+id|ATTR_TYPE
 id|type
 comma
 id|ntfschar
@@ -8328,7 +8328,7 @@ r_int
 id|sync
 )paren
 (brace
-id|s64
+id|sle64
 id|nt
 suffix:semicolon
 id|ntfs_inode
