@@ -6165,8 +6165,20 @@ op_assign
 id|sd-&gt;cache_nice_tries
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; * We were unbalanced, but unsuccessful in move_tasks(),&n;&t;&t; * so bump the balance_interval to lessen the lock contention.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|sd-&gt;balance_interval
+OL
+id|sd-&gt;max_interval
+)paren
+id|sd-&gt;balance_interval
+op_increment
+suffix:semicolon
 )brace
 r_else
+(brace
 id|sd-&gt;nr_balance_failed
 op_assign
 l_int|0
@@ -6176,6 +6188,7 @@ id|sd-&gt;balance_interval
 op_assign
 id|sd-&gt;min_interval
 suffix:semicolon
+)brace
 r_return
 id|nr_moved
 suffix:semicolon
