@@ -1,4 +1,5 @@
 multiline_comment|/* &n; * Copyright (C) 2000 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;asm/mman.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
 macro_line|#include &quot;asm/unistd.h&quot;
@@ -215,6 +216,67 @@ id|a.exp
 comma
 id|a.tvp
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/* The i386 version skips reading from %esi, the fourth argument. So we must do&n; * this, too.&n; */
+DECL|function|sys_clone
+r_int
+id|sys_clone
+c_func
+(paren
+r_int
+r_int
+id|clone_flags
+comma
+r_int
+r_int
+id|newsp
+comma
+r_int
+op_star
+id|parent_tid
+comma
+r_int
+id|unused
+comma
+r_int
+op_star
+id|child_tid
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+multiline_comment|/* XXX: normal arch do here this pass, and also pass the regs to&n;&t; * do_fork, instead of NULL. Currently the arch-independent code&n;&t; * ignores these values, while the UML code (actually it&squot;s&n;&t; * copy_thread) does the right thing. But this should change,&n;&t; probably. */
+multiline_comment|/*if (!newsp)&n;&t;&t;newsp = UPT_SP(current-&gt;thread.regs);*/
+id|current-&gt;thread.forking
+op_assign
+l_int|1
+suffix:semicolon
+id|ret
+op_assign
+id|do_fork
+c_func
+(paren
+id|clone_flags
+comma
+id|newsp
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+id|parent_tid
+comma
+id|child_tid
+)paren
+suffix:semicolon
+id|current-&gt;thread.forking
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
