@@ -3360,7 +3360,7 @@ id|ENOSYS
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* caller has locked the hub */
+multiline_comment|/* caller has locked the hub and must own the device lock */
 DECL|function|hub_reset
 r_static
 r_int
@@ -3438,7 +3438,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|usb_reset_device
+id|__usb_reset_device
 c_func
 (paren
 id|hdev
