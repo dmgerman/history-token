@@ -744,6 +744,7 @@ r_int
 comma
 id|options
 )paren
+macro_line|#include &lt;linux/linkage.h&gt;
 id|asmlinkage
 r_int
 r_int
