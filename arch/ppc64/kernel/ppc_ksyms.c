@@ -34,6 +34,7 @@ macro_line|#include &lt;asm/abs_addr.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/iSeries/HvCallSc.h&gt;
+macro_line|#include &lt;asm/iSeries/LparData.h&gt;
 macro_line|#endif
 r_extern
 r_int
@@ -195,6 +196,15 @@ c_func
 id|__down
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_ISERIES
+DECL|variable|itLpNaca
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|itLpNaca
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|csum_partial
 id|EXPORT_SYMBOL
 c_func
