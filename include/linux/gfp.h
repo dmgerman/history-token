@@ -21,6 +21,8 @@ DECL|macro|__GFP_HIGHIO
 mdefine_line|#define __GFP_HIGHIO&t;0x80&t;/* Can start high mem physical IO? */
 DECL|macro|__GFP_FS
 mdefine_line|#define __GFP_FS&t;0x100&t;/* Can call down to low-level FS? */
+DECL|macro|__GFP_COLD
+mdefine_line|#define __GFP_COLD&t;0x200&t;/* Cache-cold page required */
 DECL|macro|GFP_NOHIGHIO
 mdefine_line|#define GFP_NOHIGHIO&t;(             __GFP_WAIT | __GFP_IO)
 DECL|macro|GFP_NOIO
@@ -244,7 +246,6 @@ DECL|macro|__get_free_page
 mdefine_line|#define __get_free_page(gfp_mask) &bslash;&n;&t;&t;__get_free_pages((gfp_mask),0)
 DECL|macro|__get_dma_pages
 mdefine_line|#define __get_dma_pages(gfp_mask, order) &bslash;&n;&t;&t;__get_free_pages((gfp_mask) | GFP_DMA,(order))
-multiline_comment|/*&n; * There is only one &squot;core&squot; page-freeing function.&n; */
 r_extern
 r_void
 id|FASTCALL
@@ -279,6 +280,36 @@ comma
 r_int
 r_int
 id|order
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|free_hot_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|free_cold_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
 )paren
 )paren
 suffix:semicolon

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 macro_line|#include &lt;asm/numnodes.h&gt;
@@ -64,6 +65,55 @@ macro_line|#else
 DECL|macro|ZONE_PADDING
 mdefine_line|#define ZONE_PADDING(name)
 macro_line|#endif
+DECL|struct|per_cpu_pages
+r_struct
+id|per_cpu_pages
+(brace
+DECL|member|count
+r_int
+id|count
+suffix:semicolon
+multiline_comment|/* number of pages in the list */
+DECL|member|low
+r_int
+id|low
+suffix:semicolon
+multiline_comment|/* low watermark, refill needed */
+DECL|member|high
+r_int
+id|high
+suffix:semicolon
+multiline_comment|/* high watermark, emptying needed */
+DECL|member|batch
+r_int
+id|batch
+suffix:semicolon
+multiline_comment|/* chunk size for buddy add/remove */
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+multiline_comment|/* the list of pages */
+)brace
+suffix:semicolon
+DECL|struct|per_cpu_pageset
+r_struct
+id|per_cpu_pageset
+(brace
+DECL|member|pcp
+r_struct
+id|per_cpu_pages
+id|pcp
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* 0: hot.  1: cold */
+DECL|variable|____cacheline_aligned_in_smp
+)brace
+id|____cacheline_aligned_in_smp
+suffix:semicolon
 multiline_comment|/*&n; * On machines where it is needed (eg PCs) we divide physical memory&n; * into multiple physical zones. On a PC we have 3 zones:&n; *&n; * ZONE_DMA&t;  &lt; 16 MB&t;ISA DMA capable memory&n; * ZONE_NORMAL&t;16-896 MB&t;direct mapped by the kernel&n; * ZONE_HIGHMEM&t; &gt; 896 MB&t;only page cache and user processes&n; */
 DECL|struct|zone
 r_struct
@@ -150,6 +200,18 @@ DECL|member|wait_table_bits
 r_int
 r_int
 id|wait_table_bits
+suffix:semicolon
+id|ZONE_PADDING
+c_func
+(paren
+id|_pad3_
+)paren
+r_struct
+id|per_cpu_pageset
+id|pageset
+(braket
+id|NR_CPUS
+)braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * Discontig memory support fields.&n;&t; */
 DECL|member|zone_pgdat

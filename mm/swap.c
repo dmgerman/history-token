@@ -206,7 +206,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This path almost never happens - pages are normally freed via pagevecs.&n; */
+multiline_comment|/*&n; * This path almost never happens for VM activity - pages are normally&n; * freed via pagevecs.  But it gets used by networking.&n; */
 DECL|function|__page_cache_release
 r_void
 id|__page_cache_release
@@ -288,12 +288,10 @@ c_cond
 (paren
 id|page
 )paren
-id|__free_pages_ok
+id|free_hot_page
 c_func
 (paren
 id|page
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
