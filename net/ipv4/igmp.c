@@ -294,30 +294,6 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;Send an IGMP report.&n; */
 DECL|macro|IGMP_SIZE
 mdefine_line|#define IGMP_SIZE (sizeof(struct igmphdr)+sizeof(struct iphdr)+4)
-multiline_comment|/* Don&squot;t just hand NF_HOOK skb-&gt;dst-&gt;output, in case netfilter hook&n;   changes route */
-r_static
-r_inline
-r_int
-DECL|function|output_maybe_reroute
-id|output_maybe_reroute
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-(brace
-r_return
-id|skb-&gt;dst
-op_member_access_from_pointer
-id|output
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-)brace
 DECL|function|igmp_send_report
 r_static
 r_int
@@ -726,7 +702,7 @@ l_int|NULL
 comma
 id|rt-&gt;u.dst.dev
 comma
-id|output_maybe_reroute
+id|dst_output
 )paren
 suffix:semicolon
 )brace
