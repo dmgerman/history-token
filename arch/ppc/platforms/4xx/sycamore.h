@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; *    Copyright 2000 MontaVista Software Inc.&n; * &t;Author: Armin Kuster &lt;akuster@mvista.com&gt;&n; * &t;&t;MontaVista Software, Inc.&n; *&n; *    Module name: sycamore.h&n; *&n; *    Description:&n; *      Macros, definitions, and data structures specific to the IBM PowerPC&n; *      based boards.&n; *&n; *      This includes:&n; *&n; *         405GP &quot;Sycamore&quot; evaluation board&n; *&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/4xx/sycamore.h&n; *&n; * Macros, definitions, and data structures specific to the IBM PowerPC&n; * 405GPr &quot;Sycamore&quot; evaluation board.&n; *&n; * Author: Armin Kuster &lt;akuster@mvista.com&gt;&n; *&n; * 2000 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_SYCAMORE_H__
 DECL|macro|__ASM_SYCAMORE_H__

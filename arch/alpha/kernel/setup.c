@@ -1054,6 +1054,27 @@ op_assign
 id|end
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Except for the NUMA systems (wildfire, marvel) all of the &n;&t; * Alpha systems we run on support 32GB of memory or less.&n;&t; * Since the NUMA systems introduce large holes in memory addressing,&n;&t; * we can get into a situation where there is not enough contiguous&n;&t; * memory for the memory map. &n;&t; *&n;&t; * Limit memory to the first 32GB to limit the NUMA systems to &n;&t; * memory on their first node (wildfire) or 2 (marvel) to avoid &n;&t; * not being able to produce the memory map. In order to access &n;&t; * all of the memory on the NUMA systems, build with discontiguous&n;&t; * memory support.&n;&t; *&n;&t; * If the user specified a memory limit, let that memory limit stand.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mem_size_limit
+)paren
+id|mem_size_limit
+op_assign
+(paren
+l_int|32ul
+op_star
+l_int|1024
+op_star
+l_int|1024
+op_star
+l_int|1024
+)paren
+op_rshift
+id|PAGE_SHIFT
+suffix:semicolon
 r_if
 c_cond
 (paren

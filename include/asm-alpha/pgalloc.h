@@ -3,6 +3,7 @@ DECL|macro|_ALPHA_PGALLOC_H
 mdefine_line|#define _ALPHA_PGALLOC_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/mmzone.h&gt;
 multiline_comment|/*      &n; * Allocate and free page tables. The xxx_kernel() versions are&n; * used to allocate a kernel page table - this turns on ASN bits&n; * if any.&n; */
 r_static
 r_inline
@@ -36,14 +37,10 @@ id|pte_t
 op_star
 )paren
 (paren
-(paren
+id|page_to_pa
+c_func
 (paren
 id|pte
-op_minus
-id|mem_map
-)paren
-op_lshift
-id|PAGE_SHIFT
 )paren
 op_plus
 id|PAGE_OFFSET

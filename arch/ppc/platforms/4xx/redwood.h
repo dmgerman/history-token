@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *    Copyright 2001 MontaVista Software Inc.&n; *&t;PPC405 modifications&n; * &t;Author: MontaVista Software, Inc.&n; *         &t;frank_rowand@mvista.com or source@mvista.com&n; *&n; *    Module name: redwood.h&n; *&n; *    Description:&n; *      Macros, definitions, and data structures specific to the IBM PowerPC&n; *      STB03xxx &quot;Redwood&quot; evaluation board.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/4xx/redwood.h&n; *&n; * Macros, definitions, and data structures specific to the IBM PowerPC&n; * STB03xxx &quot;Redwood&quot; evaluation board.&n; *&n; * Author: Frank Rowand &lt;frank_rowand@mvista.com&gt;, or source@mvista.com&n; * &n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_REDWOOD_H__
 DECL|macro|__ASM_REDWOOD_H__

@@ -14,6 +14,10 @@ DECL|macro|CCB_SET_TERM_CTL
 mdefine_line|#define CCB_SET_TERM_CTL&t;0x05
 DECL|macro|CCB_PROCESS_KEYCODE
 mdefine_line|#define CCB_PROCESS_KEYCODE&t;0x06
+DECL|macro|CCB_OPEN_CONSOLE
+mdefine_line|#define CCB_OPEN_CONSOLE&t;0x07
+DECL|macro|CCB_CLOSE_CONSOLE
+mdefine_line|#define CCB_CLOSE_CONSOLE&t;0x08
 DECL|macro|CCB_OPEN
 mdefine_line|#define CCB_OPEN&t;&t;0x10
 DECL|macro|CCB_CLOSE
@@ -84,6 +88,31 @@ id|s
 comma
 r_int
 id|length
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|callback_getc
+c_func
+(paren
+r_int
+id|unit
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|callback_open_console
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|callback_close_console
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 r_extern

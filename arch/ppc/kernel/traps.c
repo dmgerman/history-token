@@ -1169,19 +1169,6 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|isbpt
-)paren
-id|mtspr
-c_func
-(paren
-id|SPRN_DBSR
-comma
-id|DBSR_TIE
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_MATH_EMULATION
 r_if
 c_cond
@@ -1706,26 +1693,13 @@ r_struct
 id|pt_regs
 op_star
 id|regs
+comma
+r_int
+r_int
+id|debug_status
 )paren
 (brace
-r_int
-r_int
-id|debug_status
-suffix:semicolon
-id|debug_status
-op_assign
-id|mfspr
-c_func
-(paren
-id|SPRN_DBSR
-)paren
-suffix:semicolon
-id|regs-&gt;msr
-op_and_assign
-op_complement
-id|MSR_DE
-suffix:semicolon
-multiline_comment|/* Turn off &squot;debug&squot; bit */
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -1735,14 +1709,6 @@ id|DBSR_TIE
 )paren
 (brace
 multiline_comment|/* trap instruction*/
-id|mtspr
-c_func
-(paren
-id|SPRN_DBSR
-comma
-id|DBSR_TIE
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1770,7 +1736,7 @@ id|regs
 )paren
 suffix:semicolon
 )brace
-r_else
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1780,29 +1746,6 @@ id|DBSR_IC
 )paren
 (brace
 multiline_comment|/* instruction completion */
-id|mtspr
-c_func
-(paren
-id|SPRN_DBSR
-comma
-id|DBSR_IC
-)paren
-suffix:semicolon
-id|mtspr
-c_func
-(paren
-id|SPRN_DBCR0
-comma
-id|mfspr
-c_func
-(paren
-id|SPRN_DBCR0
-)paren
-op_amp
-op_complement
-id|DBCR0_IC
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1820,6 +1763,11 @@ id|regs
 )paren
 )paren
 r_return
+suffix:semicolon
+id|current-&gt;thread.dbcr0
+op_and_assign
+op_complement
+id|DBCR0_IC
 suffix:semicolon
 id|_exception
 c_func

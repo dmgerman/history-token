@@ -7,7 +7,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef MAX_HWIFS
 DECL|macro|MAX_HWIFS
-mdefine_line|#define MAX_HWIFS&t;4
+mdefine_line|#define MAX_HWIFS&t;CONFIG_IDE_MAX_HWIFS
 macro_line|#endif
 DECL|function|ide_default_irq
 r_static

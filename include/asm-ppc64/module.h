@@ -1,14 +1,38 @@
 macro_line|#ifndef _ASM_PPC64_MODULE_H
 DECL|macro|_ASM_PPC64_MODULE_H
 mdefine_line|#define _ASM_PPC64_MODULE_H
-multiline_comment|/*&n; * This file contains the PPC architecture specific module code.&n; *&n; * Copyright (C) 2001 PPC 64 Team, IBM Corp&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
-DECL|macro|module_map
-mdefine_line|#define module_map(x)&t;&t;vmalloc(x)
-DECL|macro|module_unmap
-mdefine_line|#define module_unmap(x)&t;&t;vfree(x)
-DECL|macro|arch_init_modules
-mdefine_line|#define arch_init_modules(x)&t;do { } while (0)
-DECL|macro|module_arch_init
-mdefine_line|#define module_arch_init(x)  (0)
+DECL|struct|mod_arch_specific
+r_struct
+id|mod_arch_specific
+(brace
+multiline_comment|/* Index of stubs section within module. */
+DECL|member|stubs_section
+r_int
+r_int
+id|stubs_section
+suffix:semicolon
+multiline_comment|/* What section is the TOC? */
+DECL|member|toc_section
+r_int
+r_int
+id|toc_section
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|Elf_Shdr
+mdefine_line|#define Elf_Shdr Elf64_Shdr
+DECL|macro|Elf_Sym
+mdefine_line|#define Elf_Sym Elf64_Sym
+DECL|macro|Elf_Ehdr
+mdefine_line|#define Elf_Ehdr Elf64_Ehdr
+multiline_comment|/* Make empty section for module_frob_arch_sections to expand. */
+macro_line|#ifdef MODULE
+id|asm
+c_func
+(paren
+l_string|&quot;.section .stubs,&bslash;&quot;ax&bslash;&quot;,@nobits; .align 3; .previous&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* _ASM_PPC64_MODULE_H */
 eof

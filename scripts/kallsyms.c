@@ -699,7 +699,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;&bslash;t.byte 0x%02x ; .asciz&bslash;t&bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
+l_string|&quot;&bslash;t.byte 0x%02x&bslash;n&bslash;t.asciz&bslash;t&bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
 id|k
 comma

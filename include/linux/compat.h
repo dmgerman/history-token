@@ -62,6 +62,22 @@ id|tms_cstime
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|_COMPAT_NSIG_WORDS
+mdefine_line|#define _COMPAT_NSIG_WORDS&t;(_COMPAT_NSIG / _COMPAT_NSIG_BPW)
+r_typedef
+r_struct
+(brace
+DECL|member|sig
+id|compat_sigset_word
+id|sig
+(braket
+id|_COMPAT_NSIG_WORDS
+)braket
+suffix:semicolon
+DECL|typedef|compat_sigset_t
+)brace
+id|compat_sigset_t
+suffix:semicolon
 r_extern
 r_int
 id|cp_compat_stat

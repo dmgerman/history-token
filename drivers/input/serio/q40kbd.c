@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -120,7 +119,7 @@ id|regs
 r_if
 c_cond
 (paren
-id|IRQ_KEYB_MASK
+id|Q40_IRQ_KEYB_MASK
 op_amp
 id|master_inb
 c_func
@@ -161,7 +160,8 @@ id|KEYBOARD_UNLOCK_REG
 suffix:semicolon
 )brace
 DECL|function|q40kbd_init
-r_void
+r_static
+r_int
 id|__init
 id|q40kbd_init
 c_func
@@ -173,6 +173,16 @@ r_int
 id|maxread
 op_assign
 l_int|100
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|MACH_IS_Q40
+)paren
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 multiline_comment|/* allocate the IRQ */
 id|request_irq
@@ -197,7 +207,7 @@ id|maxread
 op_decrement
 op_logical_and
 (paren
-id|IRQ_KEYB_MASK
+id|Q40_IRQ_KEYB_MASK
 op_amp
 id|master_inb
 c_func
@@ -244,8 +254,12 @@ id|KERN_INFO
 l_string|&quot;serio: Q40 kbd registered&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|q40kbd_exit
+r_static
 r_void
 id|__exit
 id|q40kbd_exit

@@ -1471,6 +1471,8 @@ comma
 id|link
 )paren
 suffix:semicolon
+macro_line|#warning This doesn&squot;t protect you.  You need some real fix for your races.
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -1499,6 +1501,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#endif
 id|scsi_unregister_host
 c_func
 (paren

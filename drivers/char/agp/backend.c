@@ -7,6 +7,8 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;agp.h&quot;
 multiline_comment|/* Due to XFree86 brain-damage, we can&squot;t go to 1.0 until they&n; * fix some real stupidity. It&squot;s only by chance we can bump&n; * past 0.99 at all due to some boolean logic error. */
 DECL|macro|AGPGART_VERSION_MAJOR
@@ -809,14 +811,34 @@ r_int
 id|agp_register_driver
 (paren
 r_struct
-id|pci_dev
+id|agp_driver
 op_star
-id|dev
+id|drv
 )paren
 (brace
 r_int
 id|ret_val
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|drv-&gt;dev
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+(paren
+id|KERN_DEBUG
+id|PFX
+l_string|&quot;Erk, registering with no pci_dev!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -837,12 +859,27 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+multiline_comment|/* Grab reference on the chipset driver. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|drv-&gt;owner
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|ret_val
 op_assign
 id|agp_backend_initialize
 c_func
 (paren
-id|dev
+id|drv-&gt;dev
 )paren
 suffix:semicolon
 r_if
@@ -850,15 +887,9 @@ c_cond
 (paren
 id|ret_val
 )paren
-(brace
-id|agp_bridge.type
-op_assign
-id|NOT_SUPPORTED
+r_goto
+id|err_out
 suffix:semicolon
-r_return
-id|ret_val
-suffix:semicolon
-)brace
 id|ret_val
 op_assign
 id|agp_frontend_initialize
@@ -871,20 +902,10 @@ c_cond
 (paren
 id|ret_val
 )paren
-(brace
-id|agp_bridge.type
-op_assign
-id|NOT_SUPPORTED
+r_goto
+id|frontend_err
 suffix:semicolon
-id|agp_backend_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|ret_val
-suffix:semicolon
-)brace
+multiline_comment|/* FIXME: What to do with this? */
 id|inter_module_register
 c_func
 (paren
@@ -916,13 +937,38 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|frontend_err
+suffix:colon
+id|agp_backend_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
+id|err_out
+suffix:colon
+id|agp_bridge.type
+op_assign
+id|NOT_SUPPORTED
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|drv-&gt;owner
+)paren
+suffix:semicolon
+r_return
+id|ret_val
+suffix:semicolon
 )brace
 DECL|function|agp_unregister_driver
 r_int
 id|agp_unregister_driver
 c_func
 (paren
-r_void
+r_struct
+id|agp_driver
+op_star
+id|drv
 )paren
 (brace
 id|agp_bridge.type
@@ -953,6 +999,12 @@ l_string|&quot;drm_agp&quot;
 suffix:semicolon
 id|agp_count
 op_decrement
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|drv-&gt;owner
+)paren
 suffix:semicolon
 r_return
 l_int|0

@@ -18,13 +18,6 @@ macro_line|#endif
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#endif
 macro_line|#endif
-macro_line|#ifdef CONFIG_X86_NUMAQ
-DECL|macro|INT_DELIVERY_MODE
-mdefine_line|#define INT_DELIVERY_MODE 0     /* physical delivery on LOCAL quad */
-macro_line|#else
-DECL|macro|INT_DELIVERY_MODE
-mdefine_line|#define INT_DELIVERY_MODE 1     /* logical delivery broadcast to all procs */
-macro_line|#endif
 DECL|macro|BAD_APICID
 mdefine_line|#define BAD_APICID 0xFFu
 macro_line|#ifdef CONFIG_SMP
@@ -190,35 +183,6 @@ c_func
 (paren
 id|cpu_callout_map
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/* Mapping from cpu number to logical apicid */
-r_extern
-r_volatile
-id|u8
-id|cpu_2_logical_apicid
-(braket
-)braket
-suffix:semicolon
-DECL|function|cpu_to_logical_apicid
-r_static
-r_inline
-r_int
-id|cpu_to_logical_apicid
-c_func
-(paren
-r_int
-id|cpu
-)paren
-(brace
-r_return
-(paren
-r_int
-)paren
-id|cpu_2_logical_apicid
-(braket
-id|cpu
-)braket
 suffix:semicolon
 )brace
 r_extern

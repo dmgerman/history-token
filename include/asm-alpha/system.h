@@ -18,7 +18,7 @@ DECL|macro|KERNEL_START_PHYS
 mdefine_line|#define KERNEL_START_PHYS&t;0x300000 /* Old bootloaders hardcoded this.  */
 macro_line|#else
 DECL|macro|KERNEL_START_PHYS
-mdefine_line|#define KERNEL_START_PHYS&t;0x800000 /* Wildfire has a huge console */
+mdefine_line|#define KERNEL_START_PHYS&t;0x1000000 /* required: Wildfire/Titan/Marvel */
 macro_line|#endif
 DECL|macro|KERNEL_START
 mdefine_line|#define KERNEL_START&t;(PAGE_OFFSET+KERNEL_START_PHYS)
