@@ -1505,11 +1505,11 @@ id|pci_dev
 op_star
 id|pci_dev
 suffix:semicolon
-DECL|member|pci_ops
+DECL|member|pci_bus
 r_struct
-id|pci_ops
+id|pci_bus
 op_star
-id|pci_ops
+id|pci_bus
 suffix:semicolon
 DECL|member|proc_entry
 r_struct
@@ -1549,14 +1549,7 @@ DECL|member|bus
 id|u8
 id|bus
 suffix:semicolon
-DECL|member|device
-id|u8
-id|device
-suffix:semicolon
-DECL|member|function
-id|u8
-id|function
-suffix:semicolon
+multiline_comment|/* bus number for the pci hotplug controller */
 DECL|member|rev
 id|u8
 id|rev
