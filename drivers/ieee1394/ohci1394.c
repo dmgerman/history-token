@@ -1728,6 +1728,27 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ohci-&gt;max_packet_size
+OL
+l_int|512
+)paren
+(brace
+id|HPSB_WARNING
+c_func
+(paren
+l_string|&quot;warning: Invalid max packet size of %d, setting to 512&quot;
+comma
+id|ohci-&gt;max_packet_size
+)paren
+suffix:semicolon
+id|ohci-&gt;max_packet_size
+op_assign
+l_int|512
+suffix:semicolon
+)brace
 multiline_comment|/* Don&squot;t accept phy packets into AR request context */
 id|reg_write
 c_func
