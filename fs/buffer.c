@@ -688,6 +688,25 @@ c_func
 id|sb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sb-&gt;s_op
+op_logical_and
+id|sb-&gt;s_op-&gt;sync_fs
+)paren
+(brace
+id|sb-&gt;s_op
+op_member_access_from_pointer
+id|sync_fs
+c_func
+(paren
+id|sb
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
 id|unlock_super
 c_func
 (paren
@@ -794,7 +813,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* All mappings and inodes, including block devices */
+multiline_comment|/* All mappings, inodes and their blockdevs */
 id|DQUOT_SYNC
 c_func
 (paren
@@ -807,13 +826,27 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Write the superblocks */
+id|sync_filesystems
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* Start syncing the filesystems */
+id|sync_filesystems
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* Waitingly sync the filesystems */
 id|sync_inodes
 c_func
 (paren
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* All the mappings and inodes, again. */
+multiline_comment|/* Mappings, inodes and blockdevs, again. */
 r_return
 l_int|0
 suffix:semicolon
