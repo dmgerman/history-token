@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;base.h&quot;
 DECL|macro|to_intf
-mdefine_line|#define to_intf(node) container_of(node,struct device_interface,subsys.kobj.entry)
+mdefine_line|#define to_intf(node) container_of(node,struct device_interface,kset.kobj.entry)
 DECL|macro|to_data
 mdefine_line|#define to_data(e) container_of(e,struct intf_data,kobj.entry)
 multiline_comment|/**&n; *&t;intf_dev_link - create sysfs symlink for interface.&n; *&t;@data:&t;interface data descriptor.&n; *&n; *&t;Create a symlink &squot;phys&squot; in the interface&squot;s directory to &n; */
@@ -45,7 +45,7 @@ id|sysfs_create_link
 c_func
 (paren
 op_amp
-id|data-&gt;intf-&gt;subsys.kobj
+id|data-&gt;intf-&gt;kset.kobj
 comma
 op_amp
 id|data-&gt;dev-&gt;kobj
@@ -89,7 +89,7 @@ id|sysfs_remove_link
 c_func
 (paren
 op_amp
-id|data-&gt;intf-&gt;subsys.kobj
+id|data-&gt;intf-&gt;kset.kobj
 comma
 id|name
 )paren
@@ -125,10 +125,10 @@ op_assign
 id|intf-&gt;devnum
 op_increment
 suffix:semicolon
-id|data-&gt;kobj.subsys
+id|data-&gt;kobj.kset
 op_assign
 op_amp
-id|intf-&gt;subsys
+id|intf-&gt;kset
 suffix:semicolon
 id|kobject_register
 c_func
@@ -335,7 +335,7 @@ c_func
 id|entry
 comma
 op_amp
-id|cls-&gt;devices
+id|cls-&gt;devices.list
 )paren
 id|add
 c_func
@@ -399,23 +399,26 @@ suffix:semicolon
 id|strncpy
 c_func
 (paren
-id|intf-&gt;subsys.kobj.name
+id|intf-&gt;kset.kobj.name
 comma
 id|intf-&gt;name
 comma
 id|KOBJ_NAME_LEN
 )paren
 suffix:semicolon
-id|intf-&gt;subsys.kobj.subsys
-op_assign
-op_amp
+id|kset_set_kset_s
+c_func
+(paren
+id|intf
+comma
 id|cls-&gt;subsys
+)paren
 suffix:semicolon
-id|subsystem_register
+id|kset_register
 c_func
 (paren
 op_amp
-id|intf-&gt;subsys
+id|intf-&gt;kset
 )paren
 suffix:semicolon
 id|add_intf
@@ -460,7 +463,7 @@ c_func
 id|entry
 comma
 op_amp
-id|intf-&gt;subsys.list
+id|intf-&gt;kset.list
 )paren
 (brace
 r_struct
@@ -530,11 +533,11 @@ c_func
 id|intf
 )paren
 suffix:semicolon
-id|subsystem_unregister
+id|kset_unregister
 c_func
 (paren
 op_amp
-id|intf-&gt;subsys
+id|intf-&gt;kset
 )paren
 suffix:semicolon
 id|put_devclass
@@ -583,7 +586,7 @@ c_func
 id|node
 comma
 op_amp
-id|cls-&gt;subsys.list
+id|cls-&gt;subsys.kset.list
 )paren
 (brace
 r_struct
