@@ -5816,22 +5816,12 @@ c_cond
 (paren
 id|rt
 )paren
-(brace
-multiline_comment|/* It is safe only because&n;&t;&t;&t;&t;&t;&t;   we aer in BH */
-id|dst_release
-c_func
-(paren
-op_amp
-id|rt-&gt;u.dst
-)paren
-suffix:semicolon
 id|ip6_del_rt
 c_func
 (paren
 id|rt
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 r_else
