@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 multiline_comment|/* Taken over from the old code... */
 multiline_comment|/* POSIX UID/GID verification for setting inode attributes. */
 DECL|function|inode_change_ok
@@ -697,6 +698,25 @@ id|inode-&gt;i_op
 op_logical_and
 id|inode-&gt;i_op-&gt;setattr
 )paren
+(brace
+id|error
+op_assign
+id|security_ops
+op_member_access_from_pointer
+id|inode_setattr
+c_func
+(paren
+id|dentry
+comma
+id|attr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error
+)paren
 id|error
 op_assign
 id|inode-&gt;i_op
@@ -709,6 +729,7 @@ comma
 id|attr
 )paren
 suffix:semicolon
+)brace
 r_else
 (brace
 id|error
@@ -717,6 +738,24 @@ id|inode_change_ok
 c_func
 (paren
 id|inode
+comma
+id|attr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error
+)paren
+id|error
+op_assign
+id|security_ops
+op_member_access_from_pointer
+id|inode_setattr
+c_func
+(paren
+id|dentry
 comma
 id|attr
 )paren

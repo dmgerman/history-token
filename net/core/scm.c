@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
@@ -908,6 +909,26 @@ op_increment
 (brace
 r_int
 id|new_fd
+suffix:semicolon
+id|err
+op_assign
+id|security_ops
+op_member_access_from_pointer
+id|file_receive
+c_func
+(paren
+id|fp
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_break
 suffix:semicolon
 id|err
 op_assign

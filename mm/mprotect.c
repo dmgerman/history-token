@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -1617,6 +1618,26 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|error
+op_assign
+id|security_ops
+op_member_access_from_pointer
+id|file_mprotect
+c_func
+(paren
+id|vma
+comma
+id|prot
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_goto
+id|out
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
@@ -1963,6 +1964,28 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|error
+op_assign
+id|security_ops
+op_member_access_from_pointer
+id|file_mmap
+c_func
+(paren
+id|file
+comma
+id|prot
+comma
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_return
+id|error
+suffix:semicolon
 multiline_comment|/* Clear old maps */
 id|error
 op_assign
