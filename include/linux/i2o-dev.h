@@ -39,17 +39,18 @@ DECL|struct|i2o_cmd_passthru
 r_struct
 id|i2o_cmd_passthru
 (brace
+DECL|member|iop
+r_int
+r_int
+id|iop
+suffix:semicolon
+multiline_comment|/* IOP unit number */
 DECL|member|msg
 r_void
 op_star
 id|msg
 suffix:semicolon
 multiline_comment|/* message */
-DECL|member|iop
-r_int
-id|iop
-suffix:semicolon
-multiline_comment|/* number of the I2O controller, to which the&n;&t;&t;&t;&t;   message should go to */
 )brace
 suffix:semicolon
 DECL|struct|i2o_cmd_hrtlct

@@ -575,7 +575,7 @@ id|ocp_device_resume
 comma
 )brace
 suffix:semicolon
-multiline_comment|/**&n; *&t;ocp_register_driver&t;-&t;Register an OCP driver&n; *&t;@drv: pointer to statically defined ocp_driver structure&n; *&n; *&t;The driver&squot;s probe() callback is called either recursively&n; *&t;by this function or upon later call of ocp_driver_init&n; *&n; *&t;NOTE: Detection of devices is a 2 pass step on this implementation,&n; *&t;hotswap isn&squot;t supported. First, all OCP devices are put in the device&n; *&t;list, _then_ all drivers are probed on each match.&n; *&n; *&t;This function returns a count of how many devices actually matched&n; *&t;(whether the probe routine returned 0 or -ENODEV, a different error&n; *&t;code isn&squot;t considered as a match).&n; */
+multiline_comment|/**&n; *&t;ocp_register_driver&t;-&t;Register an OCP driver&n; *&t;@drv: pointer to statically defined ocp_driver structure&n; *&n; *&t;The driver&squot;s probe() callback is called either recursively&n; *&t;by this function or upon later call of ocp_driver_init&n; *&n; *&t;NOTE: Detection of devices is a 2 pass step on this implementation,&n; *&t;hotswap isn&squot;t supported. First, all OCP devices are put in the device&n; *&t;list, _then_ all drivers are probed on each match.&n; */
 r_int
 DECL|function|ocp_register_driver
 id|ocp_register_driver
@@ -611,22 +611,13 @@ op_assign
 id|ocp_device_remove
 suffix:semicolon
 multiline_comment|/* register with core */
-id|count
-op_assign
+r_return
 id|driver_register
 c_func
 (paren
 op_amp
 id|drv-&gt;driver
 )paren
-suffix:semicolon
-r_return
-id|count
-ques
-c_cond
-id|count
-suffix:colon
-l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;ocp_unregister_driver&t;-&t;Unregister an OCP driver&n; *&t;@drv: pointer to statically defined ocp_driver structure&n; *&n; *&t;The driver&squot;s remove() callback is called recursively&n; *&t;by this function for any device already registered&n; */

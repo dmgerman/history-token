@@ -2453,6 +2453,74 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_INT_TAU */
+DECL|function|AltivecUnavailException
+r_void
+id|AltivecUnavailException
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_static
+r_int
+id|kernel_altivec_count
+suffix:semicolon
+macro_line|#ifndef CONFIG_ALTIVEC
+r_if
+c_cond
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+(brace
+multiline_comment|/* A user program has executed an altivec instruction,&n;&t;&t;   but this kernel doesn&squot;t support altivec. */
+id|_exception
+c_func
+(paren
+id|SIGILL
+comma
+id|regs
+comma
+id|ILL_ILLOPC
+comma
+id|regs-&gt;nip
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+macro_line|#endif
+multiline_comment|/* The kernel has executed an altivec instruction without&n;&t;   first enabling altivec.  Whinge but let it do it. */
+r_if
+c_cond
+(paren
+op_increment
+id|kernel_altivec_count
+OL
+l_int|10
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;AltiVec used in kernel (task=%p, pc=%x)&bslash;n&quot;
+comma
+id|current
+comma
+id|regs-&gt;nip
+)paren
+suffix:semicolon
+id|regs-&gt;msr
+op_or_assign
+id|MSR_VEC
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_ALTIVEC
 r_void
 DECL|function|AltivecAssistException
@@ -2465,6 +2533,9 @@ op_star
 id|regs
 )paren
 (brace
+r_int
+id|err
+suffix:semicolon
 id|preempt_disable
 c_func
 (paren
@@ -2488,7 +2559,75 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|err
+op_assign
+id|emulate_altivec
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_eq
+l_int|0
+)paren
+(brace
+id|regs-&gt;nip
+op_add_assign
+l_int|4
+suffix:semicolon
+multiline_comment|/* skip emulated instruction */
+id|emulate_single_step
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|EFAULT
+)paren
+(brace
+multiline_comment|/* got an error reading the instruction */
+id|_exception
+c_func
+(paren
+id|SIGSEGV
+comma
+id|regs
+comma
+id|SEGV_ACCERR
+comma
+id|regs-&gt;nip
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* didn&squot;t recognize the instruction */
 multiline_comment|/* XXX quick hack for now: set the non-Java bit in the VSCR */
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;unrecognized altivec instruction &quot;
+l_string|&quot;in %s at %lx&bslash;n&quot;
+comma
+id|current-&gt;comm
+comma
+id|regs-&gt;nip
+)paren
+suffix:semicolon
 id|current-&gt;thread.vscr.u
 (braket
 l_int|3
@@ -2496,6 +2635,7 @@ l_int|3
 op_or_assign
 l_int|0x10000
 suffix:semicolon
+)brace
 )brace
 macro_line|#endif /* CONFIG_ALTIVEC */
 DECL|function|trap_init

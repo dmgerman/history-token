@@ -1541,11 +1541,13 @@ c_cond
 (paren
 id|rtas_block_list
 op_ge
-(paren
 l_int|4UL
-op_lshift
-l_int|20
-)paren
+op_star
+l_int|1024
+op_star
+l_int|1024
+op_star
+l_int|1024
 )paren
 (brace
 id|printk

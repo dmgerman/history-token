@@ -1400,7 +1400,7 @@ op_assign
 id|vmalloc
 c_func
 (paren
-id|rtas_error_log_max
+id|rtas_error_log_buffer_max
 op_star
 id|LOG_NUMBER
 )paren
@@ -1774,7 +1774,7 @@ op_assign
 id|create_proc_entry
 c_func
 (paren
-l_string|&quot;ppc64/error_log&quot;
+l_string|&quot;ppc64/rtas/error_log&quot;
 comma
 id|S_IRUSR
 comma
