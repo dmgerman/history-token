@@ -5841,12 +5841,39 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Throw away all mft data page cache pages to allow a clean umount.&n;&t; * All inodes should by now be written out and clean so this should not&n;&t; * loose any data while removing all the pages which have the dirty bit&n;&t; * set.&n;&t; */
+multiline_comment|/*&n;&t; * If any dirty inodes are left, throw away all mft data page cache&n;&t; * pages to allow a clean umount.  This should never happen any more&n;&t; * due to mft.c::ntfs_mft_writepage() cleaning all the dirty pages as&n;&t; * the underlying mft records are written out and cleaned.  If it does,&n;&t; * happen anyway, we want to know...&n;&t; */
 id|ntfs_commit_inode
 c_func
 (paren
 id|vol-&gt;mft_ino
 )paren
+suffix:semicolon
+id|write_inode_now
+c_func
+(paren
+id|vol-&gt;mft_ino
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|vfs_sb-&gt;s_dirty
+)paren
+)paren
+(brace
+r_char
+op_star
+id|s1
+comma
+op_star
+id|s2
 suffix:semicolon
 id|down
 c_func
@@ -5888,25 +5915,72 @@ c_func
 op_amp
 id|vfs_sb-&gt;s_dirty
 )paren
-op_logical_or
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|vfs_sb-&gt;s_io
 )paren
-)paren
+(brace
+r_static
+r_char
+op_star
+id|_s1
+op_assign
+l_string|&quot;inodes&quot;
+suffix:semicolon
+r_static
+r_char
+op_star
+id|_s2
+op_assign
+l_string|&quot;&quot;
+suffix:semicolon
+id|s1
+op_assign
+id|_s1
+suffix:semicolon
+id|s2
+op_assign
+id|_s2
+suffix:semicolon
+)brace
+r_else
+(brace
+r_static
+r_char
+op_star
+id|_s1
+op_assign
+l_string|&quot;mft pages&quot;
+suffix:semicolon
+r_static
+r_char
+op_star
+id|_s2
+op_assign
+l_string|&quot;They have been thrown away.  &quot;
+suffix:semicolon
+id|s1
+op_assign
+id|_s1
+suffix:semicolon
+id|s2
+op_assign
+id|_s2
+suffix:semicolon
+)brace
 id|ntfs_error
 c_func
 (paren
 id|vfs_sb
 comma
-l_string|&quot;Dirty inodes found at umount time.  &quot;
-l_string|&quot;They have been thrown away and their changes &quot;
-l_string|&quot;have been lost.  You should run chkdsk.&quot;
+l_string|&quot;Dirty %s found at umount time.  %s&quot;
+l_string|&quot;You should run chkdsk.  Please email &quot;
+l_string|&quot;linux-ntfs-dev@lists.sourceforge.net and say &quot;
+l_string|&quot;that you saw this message.  Thank you.&quot;
+comma
+id|s1
+comma
+id|s2
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif /* NTFS_RW */
 id|iput
 c_func
