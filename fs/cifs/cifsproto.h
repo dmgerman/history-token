@@ -1057,6 +1057,9 @@ comma
 id|__u64
 id|gid
 comma
+id|dev_t
+id|dev
+comma
 r_const
 r_struct
 id|nls_table

@@ -417,6 +417,9 @@ id|__u64
 op_minus
 l_int|1
 comma
+l_int|0
+multiline_comment|/* dev */
+comma
 id|cifs_sb-&gt;local_nls
 )paren
 suffix:semicolon
