@@ -1,30 +1,18 @@
 multiline_comment|/*&n; * kallsyms.c: in-kernel printing of symbolic oopses and stack traces.&n; *&n; * Rewritten and vastly simplified by Rusty Russell for in-kernel&n; * module loader:&n; *   Copyright 2002 Rusty Russell &lt;rusty@rustcorp.com.au&gt; IBM Corporation&n; * Stem compression by Andi Kleen.&n; */
 macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-DECL|variable|kallsyms_dummy
-r_static
-r_char
-id|kallsyms_dummy
-suffix:semicolon
 multiline_comment|/* These will be re-linked against their real values during the second link stage */
 r_extern
 r_int
 r_int
 id|kallsyms_addresses
 (braket
-l_int|1
 )braket
 id|__attribute__
 c_func
 (paren
 (paren
 id|weak
-comma
-id|alias
-c_func
-(paren
-l_string|&quot;kallsyms_dummy&quot;
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -37,12 +25,6 @@ c_func
 (paren
 (paren
 id|weak
-comma
-id|alias
-c_func
-(paren
-l_string|&quot;kallsyms_dummy&quot;
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -50,19 +32,12 @@ r_extern
 r_char
 id|kallsyms_names
 (braket
-l_int|1
 )braket
 id|__attribute__
 c_func
 (paren
 (paren
 id|weak
-comma
-id|alias
-c_func
-(paren
-l_string|&quot;kallsyms_dummy&quot;
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -118,21 +93,11 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* This kernel should never had been booted. */
-r_if
-c_cond
-(paren
-(paren
-r_void
-op_star
-)paren
-id|kallsyms_addresses
-op_eq
-op_amp
-id|kallsyms_dummy
-)paren
-id|BUG
+id|BUG_ON
 c_func
 (paren
+op_logical_neg
+id|kallsyms_addresses
 )paren
 suffix:semicolon
 id|namebuf
