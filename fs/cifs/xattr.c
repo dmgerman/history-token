@@ -15,8 +15,16 @@ mdefine_line|#define CIFS_XATTR_USER_PREFIX &quot;user.&quot;
 DECL|macro|CIFS_XATTR_SYSTEM_PREFIX
 mdefine_line|#define CIFS_XATTR_SYSTEM_PREFIX &quot;system.&quot;
 DECL|macro|CIFS_XATTR_OS2_PREFIX
-mdefine_line|#define CIFS_XATTR_OS2_PREFIX &quot;os2.&quot; /* BB should check for this someday */
-multiline_comment|/* also note could add check for security prefix XATTR_SECURITY_PREFIX */
+mdefine_line|#define CIFS_XATTR_OS2_PREFIX &quot;os2.&quot;
+DECL|macro|CIFS_XATTR_SECURITY_PREFIX
+mdefine_line|#define CIFS_XATTR_SECURITY_PREFIX &quot;.security&quot;
+DECL|macro|CIFS_XATTR_TRUSTED_PREFIX
+mdefine_line|#define CIFS_XATTR_TRUSTED_PREFIX &quot;trusted.&quot;
+DECL|macro|XATTR_TRUSTED_PREFIX_LEN
+mdefine_line|#define XATTR_TRUSTED_PREFIX_LEN  8
+DECL|macro|XATTR_SECURITY_PREFIX_LEN
+mdefine_line|#define XATTR_SECURITY_PREFIX_LEN 9
+multiline_comment|/* BB need to add server (Samba e.g) support for security and trusted prefix */
 DECL|function|cifs_removexattr
 r_int
 id|cifs_removexattr
@@ -1199,6 +1207,62 @@ l_string|&quot;query POSIX default ACL not supported yet&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|ea_name
+comma
+id|CIFS_XATTR_TRUSTED_PREFIX
+comma
+id|XATTR_TRUSTED_PREFIX_LEN
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Trusted xattr namespace not supported yet&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|ea_name
+comma
+id|CIFS_XATTR_SECURITY_PREFIX
+comma
+id|XATTR_SECURITY_PREFIX_LEN
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Security xattr namespace not supported yet&quot;
+)paren
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
