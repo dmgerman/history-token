@@ -426,6 +426,23 @@ suffix:semicolon
 r_typedef
 r_enum
 (brace
+DECL|enumerator|e1000_smart_speed_default
+id|e1000_smart_speed_default
+op_assign
+l_int|0
+comma
+DECL|enumerator|e1000_smart_speed_on
+id|e1000_smart_speed_on
+comma
+DECL|enumerator|e1000_smart_speed_off
+id|e1000_smart_speed_off
+DECL|typedef|e1000_smart_speed
+)brace
+id|e1000_smart_speed
+suffix:semicolon
+r_typedef
+r_enum
+(brace
 DECL|enumerator|e1000_polarity_reversal_enabled
 id|e1000_polarity_reversal_enabled
 op_assign
@@ -1473,6 +1490,8 @@ DECL|macro|E1000_DEV_ID_82546GB_FIBER
 mdefine_line|#define E1000_DEV_ID_82546GB_FIBER       0x107A
 DECL|macro|E1000_DEV_ID_82546GB_SERDES
 mdefine_line|#define E1000_DEV_ID_82546GB_SERDES      0x107B
+DECL|macro|E1000_DEV_ID_82546GB_PCIE
+mdefine_line|#define E1000_DEV_ID_82546GB_PCIE        0x108A
 DECL|macro|E1000_DEV_ID_82547EI
 mdefine_line|#define E1000_DEV_ID_82547EI             0x1019
 DECL|macro|NODE_ADDRESS_SIZE
@@ -3045,6 +3064,10 @@ suffix:semicolon
 DECL|member|speed_downgraded
 id|boolean_t
 id|speed_downgraded
+suffix:semicolon
+DECL|member|smart_speed
+id|e1000_smart_speed
+id|smart_speed
 suffix:semicolon
 DECL|member|dsp_config_state
 id|e1000_dsp_config
