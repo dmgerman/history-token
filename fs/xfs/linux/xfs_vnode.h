@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; *&n; * Portions Copyright (c) 1989, 1993&n; *      The Regents of the University of California.  All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions and the following disclaimer.&n; * 2. Redistributions in binary form must reproduce the above copyright&n; *    notice, this list of conditions and the following disclaimer in the&n; *    documentation and/or other materials provided with the distribution.&n; * 3. All advertising materials mentioning features or use of this software&n; *    must display the following acknowledgement:&n; *      This product includes software developed by the University of&n; *      California, Berkeley and its contributors.&n; * 4. Neither the name of the University nor the names of its contributors&n; *    may be used to endorse or promote products derived from this software&n; *    without specific prior written permission.&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE&n; * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; */
 macro_line|#ifndef __XFS_VNODE_H__
 DECL|macro|__XFS_VNODE_H__
 mdefine_line|#define __XFS_VNODE_H__
@@ -17,59 +17,38 @@ suffix:semicolon
 r_struct
 id|attrlist_cursor_kern
 suffix:semicolon
-multiline_comment|/*&n; * Vnode types (unrelated to on-disk inodes).  VNON means no type.&n; */
+multiline_comment|/*&n; * Vnode types.  VNON means no type.&n; */
 DECL|enum|vtype
-r_typedef
+DECL|enumerator|VNON
+DECL|enumerator|VREG
+DECL|enumerator|VDIR
+DECL|enumerator|VBLK
+DECL|enumerator|VCHR
+DECL|enumerator|VLNK
+DECL|enumerator|VFIFO
+DECL|enumerator|VBAD
+DECL|enumerator|VSOCK
 r_enum
 id|vtype
 (brace
-DECL|enumerator|VNON
 id|VNON
-op_assign
-l_int|0
 comma
-DECL|enumerator|VREG
 id|VREG
-op_assign
-l_int|1
 comma
-DECL|enumerator|VDIR
 id|VDIR
-op_assign
-l_int|2
 comma
-DECL|enumerator|VBLK
 id|VBLK
-op_assign
-l_int|3
 comma
-DECL|enumerator|VCHR
 id|VCHR
-op_assign
-l_int|4
 comma
-DECL|enumerator|VLNK
 id|VLNK
-op_assign
-l_int|5
 comma
-DECL|enumerator|VFIFO
 id|VFIFO
-op_assign
-l_int|6
 comma
-DECL|enumerator|VBAD
 id|VBAD
-op_assign
-l_int|7
 comma
-DECL|enumerator|VSOCK
 id|VSOCK
-op_assign
-l_int|8
-DECL|typedef|vtype_t
 )brace
-id|vtype_t
 suffix:semicolon
 DECL|typedef|vnumber_t
 r_typedef
@@ -213,7 +192,7 @@ DECL|macro|LINVFS_GET_VP
 mdefine_line|#define LINVFS_GET_VP(inode)&t;((vnode_t *)list_entry(inode, vnode_t, v_inode))
 DECL|macro|LINVFS_GET_IP
 mdefine_line|#define LINVFS_GET_IP(vp)&t;(&amp;(vp)-&gt;v_inode)
-multiline_comment|/*&n; * Conversion between vnode types/modes and encoded type/mode as&n; * seen by stat(2) and mknod(2).&n; */
+multiline_comment|/*&n; * Convert between vnode types and inode formats (since POSIX.1&n; * defines mode word of stat structure in terms of inode formats).&n; */
 r_extern
 r_enum
 id|vtype
@@ -222,17 +201,17 @@ id|iftovt_tab
 )braket
 suffix:semicolon
 r_extern
-id|ushort
+id|u_short
 id|vttoif_tab
 (braket
 )braket
 suffix:semicolon
 DECL|macro|IFTOVT
-mdefine_line|#define IFTOVT(M)       (iftovt_tab[((M) &amp; S_IFMT) &gt;&gt; 12])
+mdefine_line|#define IFTOVT(mode)&t;(iftovt_tab[((mode) &amp; S_IFMT) &gt;&gt; 12])
 DECL|macro|VTTOIF
-mdefine_line|#define VTTOIF(T)       (vttoif_tab[(int)(T)])
+mdefine_line|#define VTTOIF(indx)&t;(vttoif_tab[(int)(indx)])
 DECL|macro|MAKEIMODE
-mdefine_line|#define MAKEIMODE(T, M)&t;(VTTOIF(T) | ((M) &amp; ~S_IFMT))
+mdefine_line|#define MAKEIMODE(indx, mode)&t;(int)(VTTOIF(indx) | (mode))
 multiline_comment|/*&n; * Vnode flags.&n; */
 DECL|macro|VINACT
 mdefine_line|#define VINACT&t;&t;       0x1&t;/* vnode is being inactivated&t;*/
@@ -1333,7 +1312,7 @@ DECL|macro|FI_REMAPF
 mdefine_line|#define FI_REMAPF&t;&t;1&t;/* Do a remapf prior to the operation */
 DECL|macro|FI_REMAPF_LOCKED
 mdefine_line|#define FI_REMAPF_LOCKED&t;2&t;/* Do a remapf prior to the operation.&n;&t;&t;&t;&t;&t;   Prevent VM access to the pages until&n;&t;&t;&t;&t;&t;   the operation completes. */
-multiline_comment|/*&n; * Vnode attributes.  va_mask indicates those attributes the caller&n; * wants to set (setattr) or extract (getattr).&n; */
+multiline_comment|/*&n; * Vnode attributes.  va_mask indicates those attributes the caller&n; * wants to set or extract.&n; */
 DECL|struct|vattr
 r_typedef
 r_struct
@@ -1343,9 +1322,10 @@ DECL|member|va_mask
 r_int
 id|va_mask
 suffix:semicolon
-multiline_comment|/* bit-mask of attributes */
+multiline_comment|/* bit-mask of attributes present */
 DECL|member|va_type
-id|vtype_t
+r_enum
+id|vtype
 id|va_type
 suffix:semicolon
 multiline_comment|/* vnode type (for create) */
@@ -1353,7 +1333,12 @@ DECL|member|va_mode
 id|mode_t
 id|va_mode
 suffix:semicolon
-multiline_comment|/* file access mode */
+multiline_comment|/* file access mode and type */
+DECL|member|va_nlink
+id|nlink_t
+id|va_nlink
+suffix:semicolon
+multiline_comment|/* number of references to file */
 DECL|member|va_uid
 id|uid_t
 id|va_uid
@@ -1368,52 +1353,50 @@ DECL|member|va_nodeid
 id|xfs_ino_t
 id|va_nodeid
 suffix:semicolon
-multiline_comment|/* node id */
-DECL|member|va_nlink
-id|nlink_t
-id|va_nlink
-suffix:semicolon
-multiline_comment|/* number of references to file */
+multiline_comment|/* file id */
 DECL|member|va_size
 id|xfs_off_t
 id|va_size
 suffix:semicolon
 multiline_comment|/* file size in bytes */
+DECL|member|va_blocksize
+id|u_long
+id|va_blocksize
+suffix:semicolon
+multiline_comment|/* blocksize preferred for i/o */
 DECL|member|va_atime
-id|timespec_t
+r_struct
+id|timespec
 id|va_atime
 suffix:semicolon
 multiline_comment|/* time of last access */
 DECL|member|va_mtime
-id|timespec_t
+r_struct
+id|timespec
 id|va_mtime
 suffix:semicolon
 multiline_comment|/* time of last modification */
 DECL|member|va_ctime
-id|timespec_t
+r_struct
+id|timespec
 id|va_ctime
 suffix:semicolon
-multiline_comment|/* time file ``created&squot;&squot; */
+multiline_comment|/* time file changed */
+DECL|member|va_gen
+id|u_int
+id|va_gen
+suffix:semicolon
+multiline_comment|/* generation number of file */
 DECL|member|va_rdev
 id|xfs_dev_t
 id|va_rdev
 suffix:semicolon
-multiline_comment|/* device the file represents */
-DECL|member|va_blksize
-id|u_long
-id|va_blksize
-suffix:semicolon
-multiline_comment|/* fundamental block size */
+multiline_comment|/* device the special file represents */
 DECL|member|va_nblocks
 id|__int64_t
 id|va_nblocks
 suffix:semicolon
-multiline_comment|/* # of blocks allocated */
-DECL|member|va_vcode
-id|u_long
-id|va_vcode
-suffix:semicolon
-multiline_comment|/* version code */
+multiline_comment|/* number of blocks allocated */
 DECL|member|va_xflags
 id|u_long
 id|va_xflags
@@ -1439,11 +1422,6 @@ r_int
 id|va_projid
 suffix:semicolon
 multiline_comment|/* project id */
-DECL|member|va_gencount
-id|u_int
-id|va_gencount
-suffix:semicolon
-multiline_comment|/* object generation count */
 DECL|typedef|vattr_t
 )brace
 id|vattr_t
@@ -1517,16 +1495,21 @@ DECL|macro|XFS_AT_UPDTIMES
 mdefine_line|#define XFS_AT_UPDTIMES&t;(XFS_AT_UPDATIME|XFS_AT_UPDMTIME|XFS_AT_UPDCTIME)
 DECL|macro|XFS_AT_NOSET
 mdefine_line|#define XFS_AT_NOSET&t;(XFS_AT_NLINK|XFS_AT_RDEV|XFS_AT_FSID|XFS_AT_NODEID|&bslash;&n;&t;&t;XFS_AT_TYPE|XFS_AT_BLKSIZE|XFS_AT_NBLOCKS|XFS_AT_VCODE|&bslash;&n;&t;&t;XFS_AT_NEXTENTS|XFS_AT_ANEXTENTS|XFS_AT_GENCOUNT)
-DECL|macro|VREAD
-mdefine_line|#define VREAD&t;&t;00400
-DECL|macro|VWRITE
-mdefine_line|#define VWRITE&t;&t;00200
-DECL|macro|VEXEC
-mdefine_line|#define VEXEC&t;&t;00100
+multiline_comment|/*&n; *  Modes.&n; */
+DECL|macro|VSUID
+mdefine_line|#define VSUID&t;S_ISUID&t;&t;/* set user id on execution */
 DECL|macro|VSGID
-mdefine_line|#define VSGID&t;&t;02000&t;&t;/* set group id on execution */
+mdefine_line|#define VSGID&t;S_ISGID&t;&t;/* set group id on execution */
+DECL|macro|VSVTX
+mdefine_line|#define VSVTX&t;S_ISVTX&t;&t;/* save swapped text even after use */
+DECL|macro|VREAD
+mdefine_line|#define VREAD&t;S_IRUSR&t;&t;/* read, write, execute permissions */
+DECL|macro|VWRITE
+mdefine_line|#define VWRITE&t;S_IWUSR
+DECL|macro|VEXEC
+mdefine_line|#define VEXEC&t;S_IXUSR
 DECL|macro|MODEMASK
-mdefine_line|#define MODEMASK&t;07777&t;&t;/* mode bits plus permission bits */
+mdefine_line|#define MODEMASK S_IALLUGO&t;/* mode bits plus permission bits */
 multiline_comment|/*&n; * Check whether mandatory file locking is enabled.&n; */
 DECL|macro|MANDLOCK
 mdefine_line|#define MANDLOCK(vp, mode)&t;&bslash;&n;&t;((vp)-&gt;v_type == VREG &amp;&amp; ((mode) &amp; (VSGID|(VEXEC&gt;&gt;3))) == VSGID)
@@ -1796,20 +1779,12 @@ mdefine_line|#define VUNMODIFY(vp)&t;VN_FLAGCLR(vp, VMODIFIED)
 multiline_comment|/*&n; * Flags to VOP_SETATTR/VOP_GETATTR.&n; */
 DECL|macro|ATTR_UTIME
 mdefine_line|#define&t;ATTR_UTIME&t;0x01&t;/* non-default utime(2) request */
-DECL|macro|ATTR_EXEC
-mdefine_line|#define&t;ATTR_EXEC&t;0x02&t;/* invocation from exec(2) */
-DECL|macro|ATTR_COMM
-mdefine_line|#define&t;ATTR_COMM&t;0x04&t;/* yield common vp attributes */
 DECL|macro|ATTR_DMI
 mdefine_line|#define&t;ATTR_DMI&t;0x08&t;/* invocation from a DMI function */
 DECL|macro|ATTR_LAZY
 mdefine_line|#define&t;ATTR_LAZY&t;0x80&t;/* set/get attributes lazily */
 DECL|macro|ATTR_NONBLOCK
 mdefine_line|#define&t;ATTR_NONBLOCK&t;0x100&t;/* return EAGAIN if operation would block */
-DECL|macro|ATTR_NOLOCK
-mdefine_line|#define ATTR_NOLOCK&t;0x200&t;/* Don&squot;t grab any conflicting locks */
-DECL|macro|ATTR_NOSIZETOK
-mdefine_line|#define ATTR_NOSIZETOK&t;0x400&t;/* Don&squot;t get the DVN_SIZE_READ token */
 multiline_comment|/*&n; * Flags to VOP_FSYNC and VOP_RECLAIM.&n; */
 DECL|macro|FSYNC_NOWAIT
 mdefine_line|#define FSYNC_NOWAIT&t;0&t;/* asynchronous flush */

@@ -416,7 +416,7 @@ id|XFS_DIFLAG_REALTIME
 (brace
 macro_line|#if 0
 multiline_comment|/* Large block sizes confuse various&n;&t;&t;&t; * user space programs, so letting the&n;&t;&t;&t; * stripe size through is not a good&n;&t;&t;&t; * idea for now.&n;&t;&t;&t; */
-id|vap-&gt;va_blksize
+id|vap-&gt;va_blocksize
 op_assign
 id|mp-&gt;m_swidth
 ques
@@ -445,7 +445,7 @@ id|mp-&gt;m_writeio_log
 )paren
 suffix:semicolon
 macro_line|#else
-id|vap-&gt;va_blksize
+id|vap-&gt;va_blocksize
 op_assign
 multiline_comment|/*&n;&t;&t;&t;&t; * Return the largest of the preferred buffer&n;&t;&t;&t;&t; * sizes since doing small I/Os into larger&n;&t;&t;&t;&t; * buffers causes buffers to be decommissioned.&n;&t;&t;&t;&t; * The value returned is in bytes.&n;&t;&t;&t;&t; */
 l_int|1
@@ -466,7 +466,7 @@ macro_line|#endif
 r_else
 (brace
 multiline_comment|/*&n;&t;&t;&t; * If the file blocks are being allocated from a&n;&t;&t;&t; * realtime partition, then return the inode&squot;s&n;&t;&t;&t; * realtime extent size or the realtime volume&squot;s&n;&t;&t;&t; * extent size.&n;&t;&t;&t; */
-id|vap-&gt;va_blksize
+id|vap-&gt;va_blocksize
 op_assign
 id|ip-&gt;i_d.di_extsize
 ques
@@ -491,7 +491,7 @@ id|vap-&gt;va_rdev
 op_assign
 id|ip-&gt;i_df.if_u2.if_rdev
 suffix:semicolon
-id|vap-&gt;va_blksize
+id|vap-&gt;va_blocksize
 op_assign
 id|BLKDEV_IOSIZE
 suffix:semicolon
@@ -719,13 +719,9 @@ id|vap-&gt;va_anextents
 op_assign
 l_int|0
 suffix:semicolon
-id|vap-&gt;va_gencount
+id|vap-&gt;va_gen
 op_assign
 id|ip-&gt;i_d.di_gen
-suffix:semicolon
-id|vap-&gt;va_vcode
-op_assign
-l_int|0L
 suffix:semicolon
 id|all_done
 suffix:colon
@@ -3595,14 +3591,12 @@ id|XFS_IFINLINE
 (brace
 id|error
 op_assign
-id|uiomove
+id|uio_read
 c_func
 (paren
 id|ip-&gt;i_df.if_u1.if_data
 comma
 id|pathlen
-comma
-id|UIO_READ
 comma
 id|uiop
 )paren
@@ -3778,7 +3772,7 @@ id|byte_cnt
 suffix:semicolon
 id|error
 op_assign
-id|uiomove
+id|uio_read
 c_func
 (paren
 id|XFS_BUF_PTR
@@ -3788,8 +3782,6 @@ id|bp
 )paren
 comma
 id|byte_cnt
-comma
-id|UIO_READ
 comma
 id|uiop
 )paren

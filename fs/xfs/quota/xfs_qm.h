@@ -329,11 +329,11 @@ id|xfs_dquot_acct_t
 suffix:semicolon
 multiline_comment|/*&n; * Users are allowed to have a usage exceeding their softlimit for&n; * a period this long.&n; */
 DECL|macro|XFS_QM_BTIMELIMIT
-mdefine_line|#define XFS_QM_BTIMELIMIT&t;DQ_BTIMELIMIT
+mdefine_line|#define XFS_QM_BTIMELIMIT&t;(7 * 24*60*60)          /* 1 week */
 DECL|macro|XFS_QM_RTBTIMELIMIT
-mdefine_line|#define XFS_QM_RTBTIMELIMIT&t;DQ_BTIMELIMIT
+mdefine_line|#define XFS_QM_RTBTIMELIMIT&t;(7 * 24*60*60)          /* 1 week */
 DECL|macro|XFS_QM_ITIMELIMIT
-mdefine_line|#define XFS_QM_ITIMELIMIT&t;DQ_FTIMELIMIT
+mdefine_line|#define XFS_QM_ITIMELIMIT&t;(7 * 24*60*60)          /* 1 week */
 DECL|macro|XFS_QM_BWARNLIMIT
 mdefine_line|#define XFS_QM_BWARNLIMIT&t;5
 DECL|macro|XFS_QM_IWARNLIMIT
