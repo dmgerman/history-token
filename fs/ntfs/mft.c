@@ -124,6 +124,19 @@ op_minus
 id|ENOENT
 )paren
 suffix:semicolon
+id|ntfs_error
+c_func
+(paren
+id|vol-&gt;sb
+comma
+l_string|&quot;Attemt to read mft record 0x%lx, &quot;
+l_string|&quot;which is beyond the end of the mft.  &quot;
+l_string|&quot;This is probably a bug in the ntfs &quot;
+l_string|&quot;driver.&quot;
+comma
+id|ni-&gt;mft_no
+)paren
+suffix:semicolon
 r_goto
 id|err_out
 suffix:semicolon
@@ -155,6 +168,33 @@ id|page
 )paren
 )paren
 (brace
+multiline_comment|/* Catch multi sector transfer fixup errors. */
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+id|ntfs_is_mft_recordp
+c_func
+(paren
+(paren
+id|le32
+op_star
+)paren
+(paren
+id|page_address
+c_func
+(paren
+id|page
+)paren
+op_plus
+id|ofs
+)paren
+)paren
+)paren
+)paren
+(brace
 id|ni-&gt;page
 op_assign
 id|page
@@ -173,6 +213,33 @@ op_plus
 id|ofs
 suffix:semicolon
 )brace
+id|ntfs_error
+c_func
+(paren
+id|vol-&gt;sb
+comma
+l_string|&quot;Mft record 0x%lx is corrupt.  &quot;
+l_string|&quot;Run chkdsk.&quot;
+comma
+id|ni-&gt;mft_no
+)paren
+suffix:semicolon
+id|ntfs_unmap_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|page
+op_assign
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|EIO
+)paren
+suffix:semicolon
+)brace
 id|err_out
 suffix:colon
 id|ni-&gt;page
@@ -182,21 +249,6 @@ suffix:semicolon
 id|ni-&gt;page_ofs
 op_assign
 l_int|0
-suffix:semicolon
-id|ntfs_error
-c_func
-(paren
-id|vol-&gt;sb
-comma
-l_string|&quot;Failed with error code %lu.&quot;
-comma
-op_minus
-id|PTR_ERR
-c_func
-(paren
-id|page
-)paren
-)paren
 suffix:semicolon
 r_return
 (paren

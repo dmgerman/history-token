@@ -13,7 +13,7 @@ macro_line|#include &quot;mft.h&quot;
 macro_line|#include &quot;runlist.h&quot;
 macro_line|#include &quot;types.h&quot;
 macro_line|#include &quot;ntfs.h&quot;
-multiline_comment|/**&n; * ntfs_end_buffer_async_read - async io completion for reading attributes&n; * @bh:&t;&t;buffer head on which io is completed&n; * @uptodate:&t;whether @bh is now uptodate or not&n; *&n; * Asynchronous I/O completion handler for reading pages belonging to the&n; * attribute address space of an inode. The inodes can either be files or&n; * directories or they can be fake inodes describing some attribute.&n; *&n; * If NInoMstProtected(), perform the post read mst fixups when all IO on the&n; * page has been completed and mark the page uptodate or set the error bit on&n; * the page. To determine the size of the records that need fixing up, we cheat&n; * a little bit by setting the index_block_size in ntfs_inode to the ntfs&n; * record size, and index_block_size_bits, to the log(base 2) of the ntfs&n; * record size.&n; */
+multiline_comment|/**&n; * ntfs_end_buffer_async_read - async io completion for reading attributes&n; * @bh:&t;&t;buffer head on which io is completed&n; * @uptodate:&t;whether @bh is now uptodate or not&n; *&n; * Asynchronous I/O completion handler for reading pages belonging to the&n; * attribute address space of an inode.  The inodes can either be files or&n; * directories or they can be fake inodes describing some attribute.&n; *&n; * If NInoMstProtected(), perform the post read mst fixups when all IO on the&n; * page has been completed and mark the page uptodate or set the error bit on&n; * the page.  To determine the size of the records that need fixing up, we&n; * cheat a little bit by setting the index_block_size in ntfs_inode to the ntfs&n; * record size, and index_block_size_bits, to the log(base 2) of the ntfs&n; * record size.&n; */
 DECL|function|ntfs_end_buffer_async_read
 r_static
 r_void
@@ -311,7 +311,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If none of the buffers had errors then we can set the page uptodate,&n;&t; * but we first have to perform the post read mst fixups, if the&n;&t; * attribute is mst protected, i.e. if NInoMstProteced(ni) is true.&n;&t; */
+multiline_comment|/*&n;&t; * If none of the buffers had errors then we can set the page uptodate,&n;&t; * but we first have to perform the post read mst fixups, if the&n;&t; * attribute is mst protected, i.e. if NInoMstProteced(ni) is true.&n;&t; * Note we ignore fixup errors as those are detected when&n;&t; * map_mft_record() is called which gives us per record granularity&n;&t; * rather than per page granularity.&n;&t; */
 r_if
 c_cond
 (paren
@@ -357,8 +357,6 @@ r_int
 id|i
 comma
 id|recs
-comma
-id|nr_err
 suffix:semicolon
 id|u32
 id|rec_size
@@ -372,6 +370,14 @@ op_assign
 id|PAGE_CACHE_SIZE
 op_div
 id|rec_size
+suffix:semicolon
+multiline_comment|/* Should have been verified before we got here... */
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|recs
+)paren
 suffix:semicolon
 id|addr
 op_assign
@@ -388,8 +394,6 @@ c_loop
 (paren
 id|i
 op_assign
-id|nr_err
-op_assign
 l_int|0
 suffix:semicolon
 id|i
@@ -399,14 +403,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|likely
-c_func
-(paren
-op_logical_neg
 id|post_read_mst_fixup
 c_func
 (paren
@@ -424,50 +420,7 @@ id|rec_size
 comma
 id|rec_size
 )paren
-)paren
-)paren
-r_continue
 suffix:semicolon
-id|nr_err
-op_increment
-suffix:semicolon
-id|ntfs_error
-c_func
-(paren
-id|ni-&gt;vol-&gt;sb
-comma
-l_string|&quot;post_read_mst_fixup() failed, &quot;
-l_string|&quot;corrupt %s record 0x%llx. Run chkdsk.&quot;
-comma
-id|ni-&gt;mft_no
-ques
-c_cond
-l_string|&quot;index&quot;
-suffix:colon
-l_string|&quot;mft&quot;
-comma
-(paren
-r_int
-r_int
-r_int
-)paren
-(paren
-(paren
-(paren
-id|s64
-)paren
-id|page-&gt;index
-op_lshift
-id|PAGE_CACHE_SHIFT
-op_rshift
-id|ni-&gt;itype.index.block_size_bits
-)paren
-op_plus
-id|i
-)paren
-)paren
-suffix:semicolon
-)brace
 id|flush_dcache_page
 c_func
 (paren
@@ -494,28 +447,7 @@ c_func
 (paren
 id|page
 )paren
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|likely
-c_func
-(paren
-op_logical_neg
-id|nr_err
 op_logical_and
-id|recs
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|likely
-c_func
-(paren
 id|page_uptodate
 )paren
 )paren
@@ -525,28 +457,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|ntfs_error
-c_func
-(paren
-id|ni-&gt;vol-&gt;sb
-comma
-l_string|&quot;Setting page error, &quot;
-l_string|&quot;index 0x%lx.&quot;
-comma
-id|page-&gt;index
-)paren
-suffix:semicolon
-id|SetPageError
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-)brace
-)brace
 )brace
 id|unlock_page
 c_func
