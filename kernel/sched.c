@@ -3255,7 +3255,7 @@ id|new_cpu
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Find the busiest node. All previous node loads contribute with a&n; * geometrically deccaying weight to the load measure:&n; *      load_{t} = load_{t-1}/2 + nr_node_running_{t}&n; * This way sudden load peaks are flattened out a bit.&n; * Node load is divided by nr_cpus_node() in order to compare nodes&n; * of different cpu count but also [first] multiplied by 10 to&n; * provide better resolution.&n; */
+multiline_comment|/*&n; * Find the busiest node. All previous node loads contribute with a&n; * geometrically deccaying weight to the load measure:&n; *      load_{t} = load_{t-1}/2 + nr_node_running_{t}&n; * This way sudden load peaks are flattened out a bit.&n; * Node load is divided by nr_cpus_node() in order to compare nodes&n; * of different cpu count but also [first] multiplied by NR_CPUS to&n; * provide better resolution.&n; */
 DECL|function|find_busiest_node
 r_static
 r_int
@@ -3312,7 +3312,7 @@ l_int|1
 )paren
 op_plus
 (paren
-l_int|10
+id|NR_CPUS
 op_star
 id|atomic_read
 c_func
@@ -3375,7 +3375,7 @@ l_int|1
 )paren
 op_plus
 (paren
-l_int|10
+id|NR_CPUS
 op_star
 id|atomic_read
 c_func
