@@ -297,8 +297,6 @@ id|data
 comma
 id|size
 comma
-id|HZ
-op_star
 id|USB_CTRL_GET_TIMEOUT
 )paren
 suffix:semicolon
@@ -364,7 +362,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 )brace
@@ -413,7 +411,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 )brace
@@ -462,7 +460,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 )brace
@@ -857,7 +855,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* use a short timeout for hub/port status fetches */
 DECL|macro|USB_STS_TIMEOUT
-mdefine_line|#define&t;USB_STS_TIMEOUT&t;&t;1
+mdefine_line|#define&t;USB_STS_TIMEOUT&t;&t;1000
 DECL|macro|USB_STS_RETRIES
 mdefine_line|#define&t;USB_STS_RETRIES&t;&t;5
 multiline_comment|/*&n; * USB 2.0 spec Section 11.24.2.6&n; */
@@ -939,8 +937,6 @@ op_star
 id|data
 )paren
 comma
-id|HZ
-op_star
 id|USB_STS_TIMEOUT
 )paren
 suffix:semicolon
@@ -1031,8 +1027,6 @@ op_star
 id|data
 )paren
 comma
-id|HZ
-op_star
 id|USB_STS_TIMEOUT
 )paren
 suffix:semicolon
@@ -1359,7 +1353,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 )brace
@@ -4738,8 +4732,6 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
-op_star
 id|USB_CTRL_SET_TIMEOUT
 )paren
 suffix:semicolon
@@ -7661,8 +7653,6 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
-op_star
 id|USB_CTRL_SET_TIMEOUT
 )paren
 suffix:semicolon
@@ -8143,11 +8133,9 @@ comma
 id|i
 ques
 c_cond
-id|HZ
-op_star
 id|USB_CTRL_GET_TIMEOUT
 suffix:colon
-id|HZ
+l_int|1000
 )paren
 )paren
 suffix:semicolon
@@ -11259,8 +11247,6 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
-op_star
 id|USB_CTRL_SET_TIMEOUT
 )paren
 suffix:semicolon
