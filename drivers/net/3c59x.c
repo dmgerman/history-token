@@ -5725,6 +5725,35 @@ id|i
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Unfortunately an all zero eeprom passes the checksum and this&n;&t;   gets found in the wild in failure cases. Crypto is hard 8) */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_valid_ether_addr
+c_func
+(paren
+id|dev-&gt;dev_addr
+)paren
+)paren
+(brace
+id|retval
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;*** EEPROM MAC address is invalid.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|free_ring
+suffix:semicolon
+multiline_comment|/* With every pack */
+)brace
 id|EL3WINDOW
 c_func
 (paren
