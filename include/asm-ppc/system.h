@@ -347,16 +347,6 @@ r_int
 r_int
 id|rtas_data
 suffix:semicolon
-r_extern
-r_void
-id|dump_regs
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
 r_static
 id|__inline__
 r_int

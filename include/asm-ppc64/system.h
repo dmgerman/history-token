@@ -40,6 +40,13 @@ mdefine_line|#define smp_wmb()&t;__asm__ __volatile__(&quot;&quot;: : :&quot;mem
 DECL|macro|smp_read_barrier_depends
 mdefine_line|#define smp_read_barrier_depends()  do { } while(0)
 macro_line|#endif /* CONFIG_SMP */
+macro_line|#ifdef __KERNEL__
+r_struct
+id|task_struct
+suffix:semicolon
+r_struct
+id|pt_regs
+suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUGGER
 r_extern
 r_int
@@ -390,9 +397,6 @@ c_func
 r_int
 )paren
 suffix:semicolon
-r_struct
-id|task_struct
-suffix:semicolon
 r_extern
 r_struct
 id|task_struct
@@ -430,19 +434,6 @@ r_struct
 id|thread_struct
 op_star
 id|next
-)paren
-suffix:semicolon
-r_struct
-id|pt_regs
-suffix:semicolon
-r_extern
-r_void
-id|dump_regs
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
 )paren
 suffix:semicolon
 DECL|function|__is_processor
@@ -911,5 +902,6 @@ suffix:semicolon
 )brace
 DECL|macro|cmpxchg
 mdefine_line|#define cmpxchg(ptr,o,n)&t;&t;&t;&t;&t;&t; &bslash;&n;  ({&t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;     __typeof__(*(ptr)) _o_ = (o);&t;&t;&t;&t;&t; &bslash;&n;     __typeof__(*(ptr)) _n_ = (n);&t;&t;&t;&t;&t; &bslash;&n;     (__typeof__(*(ptr))) __cmpxchg((ptr), (unsigned long)_o_,&t;&t; &bslash;&n;&t;&t;&t;&t;    (unsigned long)_n_, sizeof(*(ptr))); &bslash;&n;  })
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof
