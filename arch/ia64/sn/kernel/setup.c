@@ -1508,10 +1508,6 @@ id|nasid
 op_assign
 l_int|0
 suffix:semicolon
-id|lboard_t
-op_star
-id|brd
-suffix:semicolon
 multiline_comment|/* Setup ionodes with memory */
 r_for
 c_loop

@@ -122,6 +122,9 @@ r_return
 suffix:semicolon
 id|xswitch_info-&gt;vhdl
 (braket
+(paren
+r_int
+)paren
 id|port
 )braket
 op_assign
@@ -153,6 +156,9 @@ suffix:semicolon
 r_return
 id|xswitch_info-&gt;vhdl
 (braket
+(paren
+r_int
+)paren
 id|port
 )braket
 suffix:semicolon
@@ -184,6 +190,9 @@ r_return
 suffix:semicolon
 id|xswitch_info-&gt;master_vhdl
 (braket
+(paren
+r_int
+)paren
 id|port
 )braket
 op_assign
@@ -215,6 +224,9 @@ suffix:semicolon
 r_return
 id|xswitch_info-&gt;master_vhdl
 (braket
+(paren
+r_int
+)paren
 id|port
 )braket
 suffix:semicolon
