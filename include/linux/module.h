@@ -58,6 +58,35 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE
+macro_line|#ifdef KBUILD_MODNAME
+DECL|variable|__module_name
+r_static
+r_const
+r_char
+id|__module_name
+(braket
+id|MODULE_NAME_LEN
+)braket
+id|__attribute__
+c_func
+(paren
+(paren
+id|section
+c_func
+(paren
+l_string|&quot;.gnu.linkonce.modname&quot;
+)paren
+)paren
+)paren
+op_assign
+"&bslash;"
+id|__stringify
+c_func
+(paren
+id|KBUILD_MODNAME
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* For replacement modutils, use an alias not a pointer. */
 DECL|macro|MODULE_GENERIC_TABLE
 mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&t;&t;&bslash;&n;static const unsigned long __module_##gtype##_size&t;&t;&bslash;&n;  __attribute__ ((unused)) = sizeof(struct gtype##_id);&t;&t;&bslash;&n;static const struct gtype##_id * __module_##gtype##_table&t;&bslash;&n;  __attribute__ ((unused)) = name;&t;&t;&t;&t;&bslash;&n;extern const struct gtype##_id __mod_##gtype##_table&t;&t;&bslash;&n;  __attribute__ ((unused, alias(__stringify(name))))
@@ -657,9 +686,8 @@ DECL|macro|mod_bound
 mdefine_line|#define mod_bound(p, n, m)&t;&t;&t;&t;&t;&bslash;&n;(((m)-&gt;module_init&t;&t;&t;&t;&t;&t;&bslash;&n;  &amp;&amp; __mod_between((p),(n),(m)-&gt;module_init,(m)-&gt;init_size))&t;&bslash;&n; || __mod_between((p),(n),(m)-&gt;module_core,(m)-&gt;core_size))
 multiline_comment|/* Old-style &quot;I&squot;ll just call it init_module and it&squot;ll be run at&n;   insert&quot;.  Use module_init(myroutine) instead. */
 macro_line|#ifdef MODULE
-multiline_comment|/* Used as &quot;int init_module(void) { ... }&quot;.  Get funky to insert modname. */
 DECL|macro|init_module
-mdefine_line|#define init_module(voidarg)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__initfn(void);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;char __module_name[] __attribute__((section(&quot;.modulename&quot;))) =&t;&bslash;&n;&t;__stringify(KBUILD_MODNAME);&t;&t;&t;&t;&t;&bslash;&n;&t;int __initfn(void)
+mdefine_line|#define init_module(voidarg) __initfn(void)
 DECL|macro|cleanup_module
 mdefine_line|#define cleanup_module(voidarg) __exitfn(void)
 macro_line|#endif
