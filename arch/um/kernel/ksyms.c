@@ -187,6 +187,13 @@ id|find_iomem
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_MODE_TT
+DECL|variable|strncpy_from_user_tt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strncpy_from_user_tt
+)paren
+suffix:semicolon
 DECL|variable|copy_from_user_tt
 id|EXPORT_SYMBOL
 c_func
@@ -203,6 +210,13 @@ id|copy_to_user_tt
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_MODE_SKAS
+DECL|variable|strncpy_from_user_skas
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strncpy_from_user_skas
+)paren
+suffix:semicolon
 DECL|variable|copy_to_user_skas
 id|EXPORT_SYMBOL
 c_func
