@@ -4178,7 +4178,7 @@ r_return
 id|n
 suffix:semicolon
 )brace
-r_void
+r_int
 id|__init
 DECL|function|proc_prep_residual_init
 id|proc_prep_residual_init
@@ -4205,6 +4205,9 @@ id|proc_prep_residual_read
 comma
 l_int|NULL
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|proc_prep_residual_init
