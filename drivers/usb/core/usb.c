@@ -2566,14 +2566,6 @@ op_amp
 id|dev-&gt;dev
 )paren
 suffix:semicolon
-multiline_comment|/* Decrement the reference count, it&squot;ll auto free everything when */
-multiline_comment|/* it hits 0 which could very well be now */
-id|usb_put_dev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * usb_choose_address - pick device address (usbcore-internal)&n; * @dev: newly detected device (in DEFAULT state)&n; *&n; * Picks a device address.  It&squot;s up to the hub (or root hub) driver&n; * to handle and manage enumeration, starting from the DEFAULT state.&n; * Only hub drivers (but not virtual root hub drivers for host&n; * controllers) should ever call this.&n; */
 DECL|function|usb_choose_address
@@ -2805,12 +2797,6 @@ id|dev-&gt;dev.driver_data
 op_assign
 op_amp
 id|usb_generic_driver_data
-suffix:semicolon
-id|usb_get_dev
-c_func
-(paren
-id|dev
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3328,12 +3314,6 @@ id|dev-&gt;devnum
 op_assign
 op_minus
 l_int|1
-suffix:semicolon
-id|usb_put_dev
-c_func
-(paren
-id|dev
-)paren
 suffix:semicolon
 r_return
 id|err
