@@ -1923,6 +1923,12 @@ c_func
 id|SNDRV_PCM_IOCTL_INFO
 )paren
 comma
+id|MAP_COMPAT
+c_func
+(paren
+id|SNDRV_PCM_IOCTL_TSTAMP
+)paren
+comma
 (brace
 id|SNDRV_PCM_IOCTL_HW_REFINE32
 comma

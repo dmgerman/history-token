@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Low-level ALSA driver for the ENSONIQ SoundScape PnP&n; *   Copyright (c) by Chris Rankin&n; *&n; *   This driver was written in part using information obtained from&n; *   the OSS/Free SoundScape driver, written by Hannu Savolainen.&n; *&n; *   FIXME (deadlock for alsa-kernel):&n; *     - use ISA PnP scheme used by all ALSA ISA drivers&n; *     - add non-MODULE build option&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
+multiline_comment|/*&n; *   Low-level ALSA driver for the ENSONIQ SoundScape PnP&n; *   Copyright (c) by Chris Rankin&n; *&n; *   This driver was written in part using information obtained from&n; *   the OSS/Free SoundScape driver, written by Hannu Savolainen.&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -1596,9 +1596,6 @@ id|data
 comma
 r_int
 id|size
-comma
-r_int
-id|dmasize
 )paren
 (brace
 r_int
@@ -1622,7 +1619,11 @@ c_func
 op_amp
 id|dma
 comma
-id|dmasize
+id|PAGE_ALIGN
+c_func
+(paren
+id|size
+)paren
 )paren
 )paren
 r_return
@@ -2006,8 +2007,6 @@ r_sizeof
 (paren
 id|bb-&gt;code
 )paren
-comma
-id|PAGE_SIZE
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -2105,7 +2104,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Upload the microcode into the SoundScape. The&n; * microcode is 64K of data, and if we try to copy&n; * it into a local variable then we will SMASH THE&n; * KERNEL&squot;S STACK! We therefore leave it in USER&n; * SPACE, and save ourselves from copying it at all.&n; *&n; * We assume that the caller has already verified the&n; * userspace memory addresses.&n; */
+multiline_comment|/*&n; * Upload the microcode into the SoundScape. The&n; * microcode is 64K of data, and if we try to copy&n; * it into a local variable then we will SMASH THE&n; * KERNEL&squot;S STACK! We therefore leave it in USER&n; * SPACE, and save ourselves from copying it at all.&n; */
 DECL|function|sscape_upload_microcode
 r_static
 r_int
@@ -2128,8 +2127,53 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_char
+op_star
+id|code
+suffix:semicolon
 r_int
+id|err
+comma
 id|ret
+suffix:semicolon
+multiline_comment|/*&n;&t; * We are going to have to copy this data into a special&n;&t; * DMA-able buffer before we can upload it. We shall therefore&n;&t; * just check that the data pointer is valid for now.&n;&t; *&n;&t; * NOTE: This buffer is 64K long! That&squot;s WAY too big to&n;&t; *       copy into a stack-temporary anyway.&n;&t; */
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|code
+comma
+op_amp
+id|mc-&gt;code
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|verify_area
+c_func
+(paren
+id|VERIFY_READ
+comma
+id|code
+comma
+l_int|65536
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+r_return
+id|err
 suffix:semicolon
 r_if
 c_cond
@@ -2142,16 +2186,9 @@ c_func
 (paren
 id|sscape
 comma
-id|mc-&gt;code
+id|code
 comma
-r_sizeof
-(paren
-id|mc-&gt;code
-)paren
-comma
-id|PAGE_SIZE
-op_star
-l_int|16
+l_int|65536
 )paren
 )paren
 op_eq
@@ -2493,32 +2530,6 @@ id|sscape_microcode
 op_star
 )paren
 id|arg
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * We are going to have to copy this data into a special&n;&t;&t;&t; * DMA-able buffer before we can upload it. We shall therefore&n;&t;&t;&t; * just check that the data pointer is valid for now.&n;&t;&t;&t; *&n;&t;&t;&t; * NOTE: This buffer is 64K long! That&squot;s WAY too big to&n;&t;&t;&t; *       copy into a stack-temporary anyway.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|err
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-id|mc-&gt;code
-comma
-r_sizeof
-(paren
-id|mc-&gt;code
-)paren
-)paren
-)paren
-op_ne
-l_int|0
-)paren
-r_return
-id|err
 suffix:semicolon
 id|err
 op_assign

@@ -6733,6 +6733,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|num_ins
+op_eq
+l_int|1
+)paren
+multiline_comment|/* only one ? nonsense! */
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|check_ignored_ctl
 c_func
 (paren

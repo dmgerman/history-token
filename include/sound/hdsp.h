@@ -199,16 +199,14 @@ id|_snd_hdsp_firmware
 DECL|member|firmware_data
 r_int
 r_int
+op_star
 id|firmware_data
-(braket
-l_int|24413
-)braket
 suffix:semicolon
+multiline_comment|/* 24413 long words */
 )brace
 suffix:semicolon
-multiline_comment|/* This ioctl is marked bad because the type is bigger than the IOCTL description */
 DECL|macro|SNDRV_HDSP_IOCTL_UPLOAD_FIRMWARE
-mdefine_line|#define SNDRV_HDSP_IOCTL_UPLOAD_FIRMWARE _IOW_BAD(&squot;H&squot;, 0x42, hdsp_firmware_t)
+mdefine_line|#define SNDRV_HDSP_IOCTL_UPLOAD_FIRMWARE _IOW(&squot;H&squot;, 0x42, hdsp_firmware_t)
 DECL|typedef|hdsp_version_t
 r_typedef
 r_struct

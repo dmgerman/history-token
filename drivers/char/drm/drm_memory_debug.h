@@ -1974,7 +1974,7 @@ suffix:semicolon
 )brace
 macro_line|#if __REALLY_HAVE_AGP
 DECL|function|alloc_agp
-id|agp_memory
+id|DRM_AGP_MEM
 op_star
 id|DRM
 c_func
@@ -1989,7 +1989,7 @@ id|u32
 id|type
 )paren
 (brace
-id|agp_memory
+id|DRM_AGP_MEM
 op_star
 id|handle
 suffix:semicolon
@@ -2130,7 +2130,7 @@ c_func
 id|free_agp
 )paren
 (paren
-id|agp_memory
+id|DRM_AGP_MEM
 op_star
 id|handle
 comma
@@ -2284,7 +2284,7 @@ c_func
 id|bind_agp
 )paren
 (paren
-id|agp_memory
+id|DRM_AGP_MEM
 op_star
 id|handle
 comma
@@ -2437,7 +2437,7 @@ c_func
 id|unbind_agp
 )paren
 (paren
-id|agp_memory
+id|DRM_AGP_MEM
 op_star
 id|handle
 )paren
