@@ -335,6 +335,9 @@ DECL|macro|DEV_BUSY
 mdefine_line|#define DEV_BUSY&t;&t;0x80
 DECL|macro|DEV_OK
 mdefine_line|#define DEV_OK(l) &bslash;&n;    ((l) &amp;&amp; ((l-&gt;state &amp; ~DEV_BUSY) == (DEV_CONFIG|DEV_PRESENT)))
+r_struct
+id|pcmcia_socket
+suffix:semicolon
 r_extern
 r_struct
 id|bus_type
@@ -404,6 +407,42 @@ op_star
 id|driver
 )paren
 suffix:semicolon
+DECL|struct|pcmcia_device
+r_struct
+id|pcmcia_device
+(brace
+multiline_comment|/* the socket and the device_no [for multifunction devices]&n;&t;   uniquely define a pcmcia_device */
+DECL|member|socket
+r_struct
+id|pcmcia_socket
+op_star
+id|socket
+suffix:semicolon
+DECL|member|device_no
+id|u8
+id|device_no
+suffix:semicolon
+multiline_comment|/* the hardware &quot;function&quot; device; certain subdevices can&n;&t; * share one hardware &quot;function&quot; device. */
+DECL|member|func
+id|u8
+id|func
+suffix:semicolon
+DECL|member|socket_device_list
+r_struct
+id|list_head
+id|socket_device_list
+suffix:semicolon
+DECL|member|dev
+r_struct
+id|device
+id|dev
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|to_pcmcia_dev
+mdefine_line|#define to_pcmcia_dev(n) container_of(n, struct pcmcia_device, dev)
+DECL|macro|to_pcmcia_drv
+mdefine_line|#define to_pcmcia_drv(n) container_of(n, struct pcmcia_driver, drv)
 multiline_comment|/* error reporting */
 r_void
 id|cs_error
