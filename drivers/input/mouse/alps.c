@@ -501,12 +501,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|priv-&gt;model
+op_eq
+id|ALPS_MODEL_DUALPOINT
+)paren
+op_logical_and
+(paren
 id|z
 op_eq
 l_int|127
 )paren
+)paren
 (brace
-multiline_comment|/* DualPoint stick is relative, not absolute */
+multiline_comment|/* DualPoint stick, relative packet */
 r_if
 c_cond
 (paren
@@ -1872,8 +1880,14 @@ op_star
 id|psmouse
 )paren
 (brace
-r_int
-id|model
+r_struct
+id|alps_data
+op_star
+id|priv
+op_assign
+id|psmouse
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_int
 r_char
@@ -1886,7 +1900,7 @@ r_if
 c_cond
 (paren
 (paren
-id|model
+id|priv-&gt;model
 op_assign
 id|alps_get_model
 c_func
@@ -1904,7 +1918,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|model
+id|priv-&gt;model
 op_eq
 id|ALPS_MODEL_DUALPOINT
 op_logical_and
@@ -1978,7 +1992,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|model
+id|priv-&gt;model
 op_eq
 id|ALPS_MODEL_DUALPOINT
 op_logical_and
@@ -2048,9 +2062,6 @@ id|param
 l_int|4
 )braket
 suffix:semicolon
-r_int
-id|model
-suffix:semicolon
 id|psmouse
 op_member_access_from_pointer
 r_private
@@ -2096,7 +2107,7 @@ r_if
 c_cond
 (paren
 (paren
-id|model
+id|priv-&gt;model
 op_assign
 id|alps_get_model
 c_func
@@ -2116,7 +2127,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;ALPS Touchpad (%s) detected&bslash;n&quot;
 comma
-id|model
+id|priv-&gt;model
 op_eq
 id|ALPS_MODEL_GLIDEPOINT
 ques
@@ -2129,7 +2140,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|model
+id|priv-&gt;model
 op_eq
 id|ALPS_MODEL_DUALPOINT
 op_logical_and
@@ -2228,7 +2239,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|model
+id|priv-&gt;model
 op_eq
 id|ALPS_MODEL_DUALPOINT
 op_logical_and

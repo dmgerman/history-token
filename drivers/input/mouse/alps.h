@@ -29,6 +29,11 @@ DECL|struct|alps_data
 r_struct
 id|alps_data
 (brace
+DECL|member|model
+r_int
+id|model
+suffix:semicolon
+multiline_comment|/* Glidepoint or Dualpoint */
 DECL|member|prev_fin
 r_int
 id|prev_fin
