@@ -392,6 +392,7 @@ op_star
 id|get_options
 c_func
 (paren
+r_const
 r_char
 op_star
 id|str
