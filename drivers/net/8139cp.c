@@ -19,6 +19,8 @@ macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/in.h&gt;
+macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
