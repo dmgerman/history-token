@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;video/tgafb.h&gt;
+macro_line|#include &lt;linux/selection.h&gt;
 multiline_comment|/*&n; * Local functions.&n; */
 r_static
 r_int
