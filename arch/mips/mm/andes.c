@@ -264,6 +264,42 @@ id|page
 (brace
 multiline_comment|/* XXX */
 )brace
+DECL|function|__andes_flush_icache_range
+r_static
+r_void
+id|__andes_flush_icache_range
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+(brace
+multiline_comment|/* XXX */
+)brace
+DECL|function|andes_flush_icache_page
+r_static
+r_void
+id|andes_flush_icache_page
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+multiline_comment|/* XXX */
+)brace
 DECL|function|andes_flush_cache_sigtramp
 r_static
 r_void
@@ -339,17 +375,6 @@ id|page
 (brace
 multiline_comment|/* XXX */
 )brace
-DECL|function|load_pgd
-r_void
-id|load_pgd
-c_func
-(paren
-r_int
-r_int
-id|pg_dir
-)paren
-(brace
-)brace
 DECL|function|pgd_init
 r_void
 id|pgd_init
@@ -406,6 +431,10 @@ id|_flush_cache_all
 op_assign
 id|andes_flush_cache_all
 suffix:semicolon
+id|___flush_cache_all
+op_assign
+id|andes_flush_cache_all
+suffix:semicolon
 id|_flush_cache_mm
 op_assign
 id|andes_flush_cache_mm
@@ -425,6 +454,14 @@ suffix:semicolon
 id|_flush_page_to_ram
 op_assign
 id|andes_flush_page_to_ram
+suffix:semicolon
+id|_flush_icache_page
+op_assign
+id|andes_flush_icache_page
+suffix:semicolon
+id|_flush_icache_range
+op_assign
+id|andes_flush_icache_range
 suffix:semicolon
 id|flush_cache_all
 c_func

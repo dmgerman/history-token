@@ -5,8 +5,16 @@ multiline_comment|/*&n; *  include/asm-s390/bitops.h&n; *&n; *  S390 version&n; 
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * bit 0 is the LSB of *addr; bit 31 is the MSB of *addr;&n; * bit 32 is the LSB of *(addr+4). That combined with the&n; * big endian byte order on S390 give the following bit&n; * order in memory:&n; *    1f 1e 1d 1c 1b 1a 19 18 17 16 15 14 13 12 11 10 &bslash;&n; *    0f 0e 0d 0c 0b 0a 09 08 07 06 05 04 03 02 01 00&n; * after that follows the next long with bit numbers&n; *    3f 3e 3d 3c 3b 3a 39 38 37 36 35 34 33 32 31 30&n; *    2f 2e 2d 2c 2b 2a 29 28 27 26 25 24 23 22 21 20&n; * The reason for this bit ordering is the fact that&n; * in the architecture independent code bits operations&n; * of the form &quot;flags |= (1 &lt;&lt; bitnr)&quot; are used INTERMIXED&n; * with operation of the form &quot;set_bit(bitnr, flags)&quot;.&n; */
 multiline_comment|/* set ALIGN_CS to 1 if the SMP safe bit operations should&n; * align the address to 4 byte boundary. It seems to work&n; * without the alignment. &n; */
+macro_line|#ifdef __KERNEL__
 DECL|macro|ALIGN_CS
 mdefine_line|#define ALIGN_CS 0
+macro_line|#else
+DECL|macro|ALIGN_CS
+mdefine_line|#define ALIGN_CS 1
+macro_line|#ifndef CONFIG_SMP
+macro_line|#error &quot;bitops won&squot;t work without CONFIG_SMP&quot;
+macro_line|#endif
+macro_line|#endif
 multiline_comment|/* bitmap tables from arch/S390/kernel/bitmap.S */
 r_extern
 r_const
@@ -1835,6 +1843,8 @@ r_return
 id|oldbit
 suffix:semicolon
 )brace
+DECL|macro|__test_and_set_bit
+mdefine_line|#define __test_and_set_bit(X,Y)&t;&t;test_and_set_bit_simple(X,Y)
 multiline_comment|/*&n; * fast, non-SMP test_and_clear_bit routine&n; */
 DECL|function|test_and_clear_bit_simple
 r_static
@@ -1917,6 +1927,8 @@ r_return
 id|oldbit
 suffix:semicolon
 )brace
+DECL|macro|__test_and_clear_bit
+mdefine_line|#define __test_and_clear_bit(X,Y)&t;test_and_clear_bit_simple(X,Y)
 multiline_comment|/*&n; * fast, non-SMP test_and_change_bit routine&n; */
 DECL|function|test_and_change_bit_simple
 r_static
@@ -1999,6 +2011,8 @@ r_return
 id|oldbit
 suffix:semicolon
 )brace
+DECL|macro|__test_and_change_bit
+mdefine_line|#define __test_and_change_bit(X,Y)&t;test_and_change_bit_simple(X,Y)
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|set_bit
 mdefine_line|#define set_bit             set_bit_cs

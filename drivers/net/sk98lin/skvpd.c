@@ -1,6 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skvpd.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.27 $&n; * Date:&t;$Date: 2000/08/10 11:29:06 $&n; * Purpose:&t;Shared software to read and write VPD data&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2000 SysKonnect,&n; *&t;a business unit of Schneider &amp; Koch &amp; Co. Datensysteme GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skvpd.c,v $&n; *&t;Revision 1.27  2000/08/10 11:29:06  rassmann&n; *&t;Editorial changes.&n; *&t;Preserving 32-bit alignment in structs for the adapter context.&n; *&t;Removed unused function VpdWriteDword() (#if 0).&n; *&t;Made VpdReadKeyword() available for SKDIAG only.&n; *&t;&n; *&t;Revision 1.26  2000/06/13 08:00:01  mkarl&n; *&t;additional cast to avoid compile problems in 64 bit environment&n; *&t;&n; *&t;Revision 1.25  1999/11/22 13:39:32  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.24  1999/03/11 14:25:49  malthoff&n; *&t;Replace __STDC__ with SK_KR_PROTO.&n; *&t;&n; *&t;Revision 1.23  1999/01/11 15:13:11  gklug&n; *&t;fix: syntax error&n; *&t;&n; *&t;Revision 1.22  1998/10/30 06:41:15  gklug&n; *&t;rmv: WARNING&n; *&t;&n; *&t;Revision 1.21  1998/10/29 07:15:14  gklug&n; *&t;fix: Write Stream function needs verify.&n; *&t;&n; *&t;Revision 1.20  1998/10/28 18:05:08  gklug&n; *&t;chg: no DEBUG in VpdMayWrite&n; *&t;&n; *&t;Revision 1.19  1998/10/28 15:56:11  gklug&n; *&t;fix: Return len at end of ReadStream&n; *&t;fix: Write even less than 4 bytes correctly&n; *&t;&n; *&t;Revision 1.18  1998/10/28 09:00:47  gklug&n; *&t;fix: unreferenced local vars&n; *&t;&n; *&t;Revision 1.17  1998/10/28 08:25:45  gklug&n; *&t;fix: WARNING&n; *&t;&n; *&t;Revision 1.16  1998/10/28 08:17:30  gklug&n; *&t;fix: typo&n; *&t;&n; *&t;Revision 1.15  1998/10/28 07:50:32  gklug&n; *&t;fix: typo&n; *&t;&n; *&t;Revision 1.14  1998/10/28 07:20:38  gklug&n; *&t;chg: Interface functions to use IoC as parameter as well&n; *&t;fix: VpdRead/WriteDWord now returns SK_U32&n; *&t;chg: VPD_IN/OUT names conform to SK_IN/OUT&n; *&t;add: usage of VPD_IN/OUT8 macros&n; *&t;add: VpdRead/Write Stream functions to r/w a stream of data&n; *&t;fix: VpdTransferBlock swapped illeagal&n; *&t;add: VpdMayWrite&n; *&t;&n; *&t;Revision 1.13  1998/10/22 10:02:37  gklug&n; *&t;fix: SysKonnectFileId typo&n; *&t;&n; *&t;Revision 1.12  1998/10/20 10:01:01  gklug&n; *&t;fix: parameter to SkOsGetTime&n; *&t;&n; *&t;Revision 1.11  1998/10/15 12:51:48  malthoff&n; *&t;Remove unrequired parameter p in vpd_setup_para().&n; *&t;&n; *&t;Revision 1.10  1998/10/08 14:52:43  malthoff&n; *&t;Remove CvsId by SysKonnectFileId.&n; *&t;&n; *&t;Revision 1.9  1998/09/16 07:33:52  malthoff&n; *&t;remove memcmp() by SK_MEMCMP and&n; *&t;memcpy() by SK_MEMCPY() to be&n; *&t;independant from the &squot;C&squot; Standard Library.&n; *&t;&n; *&t;Revision 1.8  1998/08/19 12:52:35  malthoff&n; *&t;compiler fix: use SK_VPD_KEY instead of S_VPD.&n; *&t;&n; *&t;Revision 1.7  1998/08/19 08:14:01  gklug&n; *&t;fix: remove struct keyword as much as possible from the c-code (see CCC)&n; *&t;&n; *&t;Revision 1.6  1998/08/18 13:03:58  gklug&n; *&t;SkOsGetTime now returns SK_U64&n; *&t;&n; *&t;Revision 1.5  1998/08/18 08:17:29  malthoff&n; *&t;Ensure we issue a VPD read in vpd_read_dword().&n; *&t;Discard all VPD keywords other than Vx or Yx, where&n; *&t;x is &squot;0..9&squot; or &squot;A..Z&squot;.&n; *&t;&n; *&t;Revision 1.4  1998/07/03 14:52:19  malthoff&n; *&t;Add category SK_DBGCAT_FATAL to some debug macros.&n; *&t;bug fix: correct the keyword name check in vpd_write().&n; *&t;&n; *&t;Revision 1.3  1998/06/26 11:16:53  malthoff&n; *&t;Correct the modified File Identifier.&n; *&t;&n; *&t;Revision 1.2  1998/06/26 11:13:43  malthoff&n; *&t;Modify the File Identifier.&n; *&t;&n; *&t;Revision 1.1  1998/06/19 14:11:08  malthoff&n; *&t;Created, Tests with AIX were performed successfully&n; *&t;&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skvpd.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.26 $&n; * Date:&t;$Date: 2000/06/13 08:00:01 $&n; * Purpose:&t;Shared software to read and write VPD data&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998,1999 SysKonnect,&n; *&t;a business unit of Schneider &amp; Koch &amp; Co. Datensysteme GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skvpd.c,v $&n; *&t;Revision 1.26  2000/06/13 08:00:01  mkarl&n; *&t;additional cast to avoid compile problems in 64 bit environment&n; *&t;&n; *&t;Revision 1.25  1999/11/22 13:39:32  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.24  1999/03/11 14:25:49  malthoff&n; *&t;Replace __STDC__ with SK_KR_PROTO.&n; *&t;&n; *&t;Revision 1.23  1999/01/11 15:13:11  gklug&n; *&t;fix: syntax error&n; *&t;&n; *&t;Revision 1.22  1998/10/30 06:41:15  gklug&n; *&t;rmv: WARNING&n; *&t;&n; *&t;Revision 1.21  1998/10/29 07:15:14  gklug&n; *&t;fix: Write Stream function needs verify.&n; *&t;&n; *&t;Revision 1.20  1998/10/28 18:05:08  gklug&n; *&t;chg: no DEBUG in VpdMayWrite&n; *&t;&n; *&t;Revision 1.19  1998/10/28 15:56:11  gklug&n; *&t;fix: Return len at end of ReadStream&n; *&t;fix: Write even less than 4 bytes correctly&n; *&t;&n; *&t;Revision 1.18  1998/10/28 09:00:47  gklug&n; *&t;fix: unreferenced local vars&n; *&t;&n; *&t;Revision 1.17  1998/10/28 08:25:45  gklug&n; *&t;fix: WARNING&n; *&t;&n; *&t;Revision 1.16  1998/10/28 08:17:30  gklug&n; *&t;fix: typo&n; *&t;&n; *&t;Revision 1.15  1998/10/28 07:50:32  gklug&n; *&t;fix: typo&n; *&t;&n; *&t;Revision 1.14  1998/10/28 07:20:38  gklug&n; *&t;chg: Interface functions to use IoC as parameter as well&n; *&t;fix: VpdRead/WriteDWord now return SK_U32&n; *&t;chg: VPD_IN/OUT names conform to SK_IN/OUT&n; *&t;add: usage of VPD_IN/OUT8 macros&n; *&t;add: VpdRead/Write Stream functions to r/w a stream of data&n; *&t;fix: VpdTransferBlock swapped illeagal&n; *&t;add: VpdMayWrite&n; *&t;&n; *&t;Revision 1.13  1998/10/22 10:02:37  gklug&n; *&t;fix: SysKonnectFileId typo&n; *&t;&n; *&t;Revision 1.12  1998/10/20 10:01:01  gklug&n; *&t;fix: parameter to SkOsGetTime&n; *&t;&n; *&t;Revision 1.11  1998/10/15 12:51:48  malthoff&n; *&t;Remove unrequired parameter p in vpd_setup_para().&n; *&t;&n; *&t;Revision 1.10  1998/10/08 14:52:43  malthoff&n; *&t;Remove CvsId by SysKonnectFileId.&n; *&t;&n; *&t;Revision 1.9  1998/09/16 07:33:52  malthoff&n; *&t;remove memcmp() by SK_MEMCMP and&n; *&t;memcpy() by SK_MEMCPY() to be&n; *&t;independant from the &squot;C&squot; Standard Library.&n; *&t;&n; *&t;Revision 1.8  1998/08/19 12:52:35  malthoff&n; *&t;compiler fix: use SK_VPD_KEY instead of S_VPD.&n; *&t;&n; *&t;Revision 1.7  1998/08/19 08:14:01  gklug&n; *&t;fix: remove struct keyword as much as possible from the c-code (see CCC)&n; *&t;&n; *&t;Revision 1.6  1998/08/18 13:03:58  gklug&n; *&t;SkOsGetTime now returns SK_U64&n; *&t;&n; *&t;Revision 1.5  1998/08/18 08:17:29  malthoff&n; *&t;Ensure we issue a VPD read in vpd_read_dword().&n; *&t;Discard all VPD keywords other than Vx or Yx, where&n; *&t;x is &squot;0..9&squot; or &squot;A..Z&squot;.&n; *&t;&n; *&t;Revision 1.4  1998/07/03 14:52:19  malthoff&n; *&t;Add category SK_DBGCAT_FATAL to some debug macros.&n; *&t;bug fix: correct the keyword name check in vpd_write().&n; *&t;&n; *&t;Revision 1.3  1998/06/26 11:16:53  malthoff&n; *&t;Correct the modified File Identifier.&n; *&t;&n; *&t;Revision 1.2  1998/06/26 11:13:43  malthoff&n; *&t;Modify the File Identifier.&n; *&t;&n; *&t;Revision 1.1  1998/06/19 14:11:08  malthoff&n; *&t;Created, Tests with AIX were performed successfully&n; *&t;&n; *&n; ******************************************************************************/
 multiline_comment|/*&n;&t;Please refer skvpd.txt for infomation how to include this module&n; */
 DECL|variable|SysKonnectFileId
 r_static
@@ -10,7 +10,7 @@ id|SysKonnectFileId
 (braket
 )braket
 op_assign
-l_string|&quot;@(#)$Id: skvpd.c,v 1.27 2000/08/10 11:29:06 rassmann Exp $ (C) SK&quot;
+l_string|&quot;@(#)$Id: skvpd.c,v 1.26 2000/06/13 08:00:01 mkarl Exp $ (C) SK&quot;
 suffix:semicolon
 macro_line|#include &quot;h/skdrv1st.h&quot;
 macro_line|#include &quot;h/sktypes.h&quot;
@@ -146,7 +146,9 @@ l_string|&quot;ERROR:vpd wait timeout&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 id|VPD_IN16
@@ -199,10 +201,11 @@ id|event
 suffix:semicolon
 )brace
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
-macro_line|#ifdef SKDIAG
 multiline_comment|/*&n; * Read the dword at address &squot;addr&squot; from the VPD EEPROM.&n; *&n; * Needed Time:&t;MIN 1,3 ms&t;MAX 2,6 ms&n; *&n; * Note: The DWord is returned in the endianess of the machine the routine&n; *       is running on.&n; *&n; * Returns the data read.&n; */
 DECL|function|VpdReadDWord
 id|SK_U32
@@ -318,10 +321,8 @@ id|Rtv
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;
-singleline_comment|// SKDIAG
-macro_line|#if 0
-multiline_comment|/*&n;&t;Write the dword &squot;data&squot; at address &squot;addr&squot; into the VPD EEPROM, and&n;&t;verify that the data is written.&n;&n; Needed Time:&n;&n;.&t;&t;&t;&t;MIN&t;&t;MAX&n;. -------------------------------------------------------------------&n;. write&t;&t;&t;&t;1.8 ms&t;&t;3.6 ms&n;. internal write cyles&t;&t;0.7 ms&t;&t;7.0 ms&n;. -------------------------------------------------------------------&n;. over all program time&t; &t;2.5 ms&t;&t;10.6 ms&n;. read&t;&t;&t;&t;1.3 ms&t;&t;2.6 ms&n;. -------------------------------------------------------------------&n;. over all &t;&t;&t;3.8 ms&t;&t;13.2 ms&n;.&n;&n;&n; Returns&t;0:&t;success&n;&t;&t;&t;1:&t;error,&t;I2C transfer does not terminate&n;&t;&t;&t;2:&t;error,&t;data verify error&n;&n; */
+multiline_comment|/*&n;&t;Write the dword &squot;data&squot; at address &squot;addr&squot; into the VPD EEPROM, and&n;&t;verify that the data is written.&n;&n; Needed Time:&n;&n;.&t;&t;&t;&t;MIN&t;&t;MAX&n;. -------------------------------------------------------------------&n;. write&t;&t;&t;&t;1.8 ms&t;&t;3.6 ms&n;. internal write cyles&t;&t;0.7 ms&t;&t;7.0 ms&n;. -------------------------------------------------------------------&n;. over all program time&t; &t;2.5 ms&t;&t;10.6 ms&n;. read&t;&t;&t;&t;1.3 ms&t;&t;2.6 ms&n;. -------------------------------------------------------------------&n;. over all &t;&t;&t;3.8 ms&t;&t;13.2 ms&n;.&n;&n;&n; Returns&t;0:&t;success&n;&t;&t;1:&t;error,&t;I2C transfer does not terminate&n;&t;&t;2:&t;error,&t;data verify error&n;&n; */
+DECL|function|VpdWriteDWord
 r_static
 r_int
 id|VpdWriteDWord
@@ -434,7 +435,9 @@ l_string|&quot;Write Timed Out&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -472,15 +475,17 @@ l_string|&quot;Data Verify Error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|2
+)paren
 suffix:semicolon
 )brace
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
-multiline_comment|/* VpdWriteDWord */
-macro_line|#endif&t;/* 0 */
 multiline_comment|/*&n; *&t;Read one Stream of &squot;len&squot; bytes of VPD data, starting at &squot;addr&squot; from&n; *&t;or to the I2C EEPROM.&n; *&n; * Returns number of bytes read / written.&n; */
 DECL|function|VpdWriteStream
 r_static
@@ -622,7 +627,9 @@ l_int|0
 )paren
 (brace
 r_return
+(paren
 id|i
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -748,6 +755,7 @@ l_string|&quot;Write Timed Out&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 id|i
 op_minus
 (paren
@@ -756,6 +764,7 @@ op_mod
 r_sizeof
 (paren
 id|SK_U32
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -815,6 +824,7 @@ l_string|&quot;Verify Timed Out&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 id|i
 op_minus
 (paren
@@ -823,6 +833,7 @@ op_mod
 r_sizeof
 (paren
 id|SK_U32
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1043,7 +1054,9 @@ l_int|0
 )paren
 (brace
 r_return
+(paren
 id|i
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -1074,7 +1087,9 @@ id|buf
 suffix:semicolon
 )brace
 r_return
+(paren
 id|Len
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Read ore wirtes &squot;len&squot; bytes of VPD data, starting at &squot;addr&squot; from&n; *&t;or to the I2C EEPROM.&n; *&n; * Returns number of bytes read / written.&n; */
@@ -1489,7 +1504,9 @@ l_string|&quot;Block Read Error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* find the end tag of the RO area */
@@ -1751,7 +1768,9 @@ id|pAC-&gt;vpd.v.vpd_free_rw
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;find the Keyword &squot;key&squot; in the VPD buffer and fills the&n; *&t;parameter sturct &squot;p&squot; with it&squot;s values&n; *&n; * returns&t;*p&t;success&n; *&t;&t;0:&t;parameter was not found or VPD encoding error&n; */
@@ -1895,7 +1914,9 @@ id|p-&gt;p_len
 )paren
 suffix:semicolon
 r_return
+(paren
 id|p
+)paren
 suffix:semicolon
 )brace
 id|v
@@ -2422,7 +2443,9 @@ l_string|&quot;Encoding Error: invalid end tag&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -2970,7 +2993,9 @@ l_string|&quot;VPD Encoding Error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|6
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -2979,7 +3004,7 @@ id|rtv
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Read the contents of the VPD EEPROM and copy it to the&n; *&t;VPD buffer if not already done.&n; *&n; * return:&t;A pointer to the vpd_status structure. The structure contains&n; *&t;&t;this fields.&n; */
+multiline_comment|/*&n; *&t;Read the contents of the VPD EEPROM and copy it to the&n; *&t;VPD buffer if not already done.&n; *&n; * return:&t;A pointer to the vpd_status structure. The structure contain&n; *&t;&t;this fields.&n; */
 DECL|function|VpdStat
 id|SK_VPD_STATUS
 op_star
@@ -3020,8 +3045,10 @@ id|IoC
 suffix:semicolon
 )brace
 r_return
+(paren
 op_amp
 id|pAC-&gt;vpd.v
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Read the contents of the VPD EEPROM and copy it to the VPD&n; *&t;buffer if not already done.&n; *&t;Scan the VPD buffer for VPD keywords and create the VPD&n; *&t;keyword list by copying the keywords to &squot;buf&squot;, all after&n; *&t;each other and terminated with a &squot;&bslash;0&squot;.&n; *&n; * Exceptions:&t;o The Resource Type ID String (product name) is called &quot;Name&quot;&n; *&t;&t;o The VPD end tags &squot;RV&squot; and &squot;RW&squot; are not listed&n; *&n; *&t;The number of copied keywords is counted in &squot;elements&squot;.&n; *&n; * returns&t;0:&t;success&n; *&t;&t;2:&t;buffer overfull, one or more keywords are missing&n; *&t;&t;6:&t;fatal VPD error&n; *&n; *&t;example values after returning:&n; *&n; *&t;&t;buf =&t;&quot;Name&bslash;0PN&bslash;0EC&bslash;0MN&bslash;0SN&bslash;0CP&bslash;0VF&bslash;0VL&bslash;0YA&bslash;0&quot;&n; *&t;&t;*len =&t;&t;30&n; *&t;&t;*elements =&t; 9&n; */
@@ -3126,7 +3153,9 @@ l_string|&quot;VPD Init Error, terminated&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|6
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -3226,7 +3255,9 @@ l_string|&quot;buffer overflow&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|2
+)paren
 suffix:semicolon
 )brace
 id|v
@@ -3423,7 +3454,9 @@ op_assign
 id|n
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Read the contents of the VPD EEPROM and copy it to the&n; *&t;VPD buffer if not already done. Search for the VPD keyword&n; *&t;&squot;key&squot; and copy its value to &squot;buf&squot;. Add a terminating &squot;&bslash;0&squot;.&n; *&t;If the value does not fit into the buffer cut it after&n; *&t;&squot;len&squot; - 1 bytes.&n; *&n; * returns&t;0:&t;success&n; *&t;&t;1:&t;keyword not found&n; *&t;&t;2:&t;value string was cut&n; *&t;&t;3:&t;VPD transfer timeout&n; *&t;&t;6:&t;fatal VPD error&n; */
@@ -3524,7 +3557,9 @@ l_string|&quot;vpd init error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|6
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -3898,7 +3933,9 @@ l_string|&quot;vpd init error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|6
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -3989,7 +4026,9 @@ l_string|&quot;vpd write error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 id|rtv2
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -4085,7 +4124,9 @@ l_string|&quot;vpd init error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|6
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -4215,7 +4256,9 @@ l_string|&quot;vpd encoding error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|6
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -4332,7 +4375,9 @@ l_string|&quot;transfer timed out&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|3
+)paren
 suffix:semicolon
 )brace
 )brace

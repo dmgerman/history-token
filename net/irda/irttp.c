@@ -5629,8 +5629,7 @@ id|self-&gt;magic
 op_ne
 id|TTP_TSAP_MAGIC
 )paren
-r_return
-id|len
+r_break
 suffix:semicolon
 id|len
 op_add_assign

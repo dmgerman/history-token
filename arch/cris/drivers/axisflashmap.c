@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Physical mapping layer for MTD using the Axis partitiontable format&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; *&n; * This file is under the GPL.&n; *&n; * First partition is always sector 0 regardless of if we find a partitiontable&n; * or not. In the start of the next sector, there can be a partitiontable that&n; * tells us what other partitions to define. If there isn&squot;t, we use a default&n; * partition split defined below.&n; *&n; * $Log: axisflashmap.c,v $&n; * Revision 1.7  2001/04/05 13:41:46  markusl&n; * Updated according to review remarks&n; *&n; * Revision 1.6  2001/03/07 09:21:21  bjornw&n; * No need to waste .data&n; *&n; * Revision 1.5  2001/03/06 16:27:01  jonashg&n; * Probe the entire flash area for flash devices.&n; *&n; * Revision 1.4  2001/02/23 12:47:15  bjornw&n; * Uncached flash in LOW_MAP moved from 0xe to 0x8&n; *&n; * Revision 1.3  2001/02/16 12:11:45  jonashg&n; * MTD driver amd_flash is now included in MTD CVS repository.&n; * (It&squot;s now in drivers/mtd).&n; *&n; * Revision 1.2  2001/02/09 11:12:22  jonashg&n; * Support for AMD compatible non-CFI flash chips.&n; * Only tested with Toshiba TC58FVT160 so far.&n; *&n; * Revision 1.1  2001/01/12 17:01:18  bjornw&n; * * Added axisflashmap.c, a physical mapping for MTD that reads and understands&n; *   Axis partition-table format.&n; *&n; *&n; */
+multiline_comment|/*&n; * Physical mapping layer for MTD using the Axis partitiontable format&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; *&n; * This file is under the GPL.&n; *&n; * First partition is always sector 0 regardless of if we find a partitiontable&n; * or not. In the start of the next sector, there can be a partitiontable that&n; * tells us what other partitions to define. If there isn&squot;t, we use a default&n; * partition split defined below.&n; *&n; * $Log: axisflashmap.c,v $&n; * Revision 1.12  2001/06/11 09:50:30  jonashg&n; * Oops, 2MB is 0x200000 bytes.&n; *&n; * Revision 1.11  2001/06/08 11:39:44  jonashg&n; * Changed sizes and offsets in axis_default_partitions to use&n; * CONFIG_ETRAX_PTABLE_SECTOR.&n; *&n; * Revision 1.10  2001/05/29 09:42:03  jonashg&n; * Use macro for end marker length instead of sizeof.&n; *&n; * Revision 1.9  2001/05/29 08:52:52  jonashg&n; * Gave names to the magic fours (size of the ptable end marker).&n; *&n; * Revision 1.8  2001/05/28 15:36:20  jonashg&n; * * Removed old comment about ptable location in flash (it&squot;s a CONFIG_ option).&n; * * Variable ptable was initialized twice to the same value.&n; *&n; * Revision 1.7  2001/04/05 13:41:46  markusl&n; * Updated according to review remarks&n; *&n; * Revision 1.6  2001/03/07 09:21:21  bjornw&n; * No need to waste .data&n; *&n; * Revision 1.5  2001/03/06 16:27:01  jonashg&n; * Probe the entire flash area for flash devices.&n; *&n; * Revision 1.4  2001/02/23 12:47:15  bjornw&n; * Uncached flash in LOW_MAP moved from 0xe to 0x8&n; *&n; * Revision 1.3  2001/02/16 12:11:45  jonashg&n; * MTD driver amd_flash is now included in MTD CVS repository.&n; * (It&squot;s now in drivers/mtd).&n; *&n; * Revision 1.2  2001/02/09 11:12:22  jonashg&n; * Support for AMD compatible non-CFI flash chips.&n; * Only tested with Toshiba TC58FVT160 so far.&n; *&n; * Revision 1.1  2001/01/12 17:01:18  bjornw&n; * * Added axisflashmap.c, a physical mapping for MTD that reads and understands&n; *   Axis partition-table format.&n; *&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -307,6 +307,7 @@ DECL|macro|MAX_PARTITIONS
 mdefine_line|#define MAX_PARTITIONS         7  
 DECL|macro|NUM_DEFAULT_PARTITIONS
 mdefine_line|#define NUM_DEFAULT_PARTITIONS 3
+multiline_comment|/* Default flash size is 2MB. CONFIG_ETRAX_PTABLE_SECTOR is most likely the&n; * size of one flash block and &quot;filesystem&quot;-partition needs 5 blocks to be able&n; * to use JFFS.&n; */
 DECL|variable|axis_default_partitions
 r_static
 r_struct
@@ -338,7 +339,13 @@ l_string|&quot;kernel&quot;
 comma
 id|size
 suffix:colon
-l_int|0x1a0000
+l_int|0x200000
+op_minus
+(paren
+l_int|6
+op_star
+id|CONFIG_ETRAX_PTABLE_SECTOR
+)paren
 comma
 id|offset
 suffix:colon
@@ -352,13 +359,17 @@ l_string|&quot;filesystem&quot;
 comma
 id|size
 suffix:colon
-l_int|0x50000
+l_int|5
+op_star
+id|CONFIG_ETRAX_PTABLE_SECTOR
 comma
 id|offset
 suffix:colon
+l_int|0x200000
+op_minus
 (paren
-l_int|0x1a0000
-op_plus
+l_int|5
+op_star
 id|CONFIG_ETRAX_PTABLE_SECTOR
 )paren
 )brace
@@ -594,7 +605,6 @@ id|mymtd-&gt;module
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-multiline_comment|/* The partition-table is at an offset within the second &n;&t; * sector of the flash. We _define_ this to be at offset 64k&n;&t; * even if the actual sector-size in the flash changes.. for&n;&t; * now at least.&n;&t; */
 id|ptable_head
 op_assign
 (paren
@@ -635,7 +645,7 @@ r_struct
 id|partitiontable_entry
 )paren
 op_plus
-l_int|4
+id|PARTITIONTABLE_END_MARKER_SIZE
 )paren
 )paren
 op_logical_and
@@ -661,7 +671,7 @@ id|ptable_head
 op_plus
 id|ptable_head-&gt;size
 op_minus
-l_int|4
+id|PARTITIONTABLE_END_MARKER_SIZE
 )paren
 op_eq
 id|PARTITIONTABLE_END_MARKER
@@ -796,27 +806,6 @@ id|ptable_head-&gt;checksum
 )paren
 suffix:semicolon
 multiline_comment|/* Read the entries and use/show the info.  */
-id|ptable
-op_assign
-(paren
-r_struct
-id|partitiontable_entry
-op_star
-)paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|ptable_head
-op_plus
-r_sizeof
-(paren
-op_star
-id|ptable_head
-)paren
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren

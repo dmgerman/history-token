@@ -1,6 +1,7 @@
-multiline_comment|/*!***************************************************************************&n;*!&n;*! FILE NAME  : ds1302.c&n;*!&n;*! DESCRIPTION: Implements an interface for the DS1302 RTC through Etrax I/O&n;*!&n;*! Functions exported: ds1302_readreg, ds1302_writereg, ds1302_init, get_rtc_status&n;*!&n;*! $Log: ds1302.c,v $&n;*! Revision 1.3  2001/03/26 16:03:06  bjornw&n;*! Needs linux/config.h&n;*!&n;*! Revision 1.2  2001/03/20 19:42:00  bjornw&n;*! Use the ETRAX prefix on the DS1302 options&n;*!&n;*! Revision 1.1  2001/03/20 09:13:50  magnusmn&n;*! Linux 2.4 port&n;*!&n;*! Revision 1.10  2000/07/05 15:38:23  bjornw&n;*! Dont update kernel time when a RTC_SET_TIME is done&n;*!&n;*! Revision 1.9  2000/03/02 15:42:59  macce&n;*! * Hack to make RTC work on all 2100/2400&n;*!&n;*! Revision 1.8  2000/02/23 16:59:18  torbjore&n;*! added setup of R_GEN_CONFIG when RTC is connected to the generic port.&n;*!&n;*! Revision 1.7  2000/01/17 15:51:43  johana&n;*! Added RTC_SET_CHARGE ioctl to enable trickle charger.&n;*!&n;*! Revision 1.6  1999/10/27 13:19:47  bjornw&n;*! Added update_xtime_from_cmos which reads back the updated RTC into the kernel.&n;*! /dev/rtc calls it now.&n;*!&n;*! Revision 1.5  1999/10/27 12:39:37  bjornw&n;*! Disabled superuser check. Anyone can now set the time.&n;*!&n;*! Revision 1.4  1999/09/02 13:27:46  pkj&n;*! Added shadow for R_PORT_PB_CONFIG.&n;*! Renamed port_g_shadow to port_g_data_shadow.&n;*!&n;*! Revision 1.3  1999/09/02 08:28:06  pkj&n;*! Made it possible to select either port PB or the generic port for the RST&n;*! signal line to the DS1302 RTC.&n;*! Also make sure the RST bit is configured as output on Port PB (if used).&n;*!&n;*! Revision 1.2  1999/09/01 14:47:20  bjornw&n;*! Added support for /dev/rtc operations with ioctl RD_TIME and SET_TIME to read&n;*! and set the date. Register as major 121.&n;*!&n;*! Revision 1.1  1999/09/01 09:45:29  bjornw&n;*! Implemented a DS1302 RTC driver.&n;*!&n;*!&n;*! ---------------------------------------------------------------------------&n;*!&n;*! (C) Copyright 1999, 2000, 2001  Axis Communications AB, LUND, SWEDEN&n;*!&n;*! $Id: ds1302.c,v 1.3 2001/03/26 16:03:06 bjornw Exp $&n;*!&n;*!***************************************************************************/
+multiline_comment|/*!***************************************************************************&n;*!&n;*! FILE NAME  : ds1302.c&n;*!&n;*! DESCRIPTION: Implements an interface for the DS1302 RTC through Etrax I/O&n;*!&n;*! Functions exported: ds1302_readreg, ds1302_writereg, ds1302_init, get_rtc_status&n;*!&n;*! $Log: ds1302.c,v $&n;*! Revision 1.11  2001/06/14 12:35:52  jonashg&n;*! The ATA hack is back. It is unfortunately the only way to set g27 to output.&n;*!&n;*! Revision 1.9  2001/06/14 10:00:14  jonashg&n;*! No need for tempudelay to be inline anymore (had to adjust the usec to&n;*! loops conversion because of this to make it slow enough to be a udelay).&n;*!&n;*! Revision 1.8  2001/06/14 08:06:32  jonashg&n;*! Made tempudelay delay usecs (well, just a tad more).&n;*!&n;*! Revision 1.7  2001/06/13 14:18:11  jonashg&n;*! Only allow processes with SYS_TIME capability to set time and charge.&n;*!&n;*! Revision 1.6  2001/06/12 15:22:07  jonashg&n;*! * Made init function __init.&n;*! * Parameter to out_byte() is unsigned char.&n;*! * The magic number 42 has got a name.&n;*! * Removed comment about /proc (nothing is exported there).&n;*!&n;*! Revision 1.5  2001/06/12 14:35:13  jonashg&n;*! Gave the module a name and added it to printk&squot;s.&n;*!&n;*! Revision 1.4  2001/05/31 14:53:40  jonashg&n;*! Made tempudelay() inline so that the watchdog doesn&squot;t reset (see&n;*! function comment).&n;*!&n;*! Revision 1.3  2001/03/26 16:03:06  bjornw&n;*! Needs linux/config.h&n;*!&n;*! Revision 1.2  2001/03/20 19:42:00  bjornw&n;*! Use the ETRAX prefix on the DS1302 options&n;*!&n;*! Revision 1.1  2001/03/20 09:13:50  magnusmn&n;*! Linux 2.4 port&n;*!&n;*! Revision 1.10  2000/07/05 15:38:23  bjornw&n;*! Dont update kernel time when a RTC_SET_TIME is done&n;*!&n;*! Revision 1.9  2000/03/02 15:42:59  macce&n;*! * Hack to make RTC work on all 2100/2400&n;*!&n;*! Revision 1.8  2000/02/23 16:59:18  torbjore&n;*! added setup of R_GEN_CONFIG when RTC is connected to the generic port.&n;*!&n;*! Revision 1.7  2000/01/17 15:51:43  johana&n;*! Added RTC_SET_CHARGE ioctl to enable trickle charger.&n;*!&n;*! Revision 1.6  1999/10/27 13:19:47  bjornw&n;*! Added update_xtime_from_cmos which reads back the updated RTC into the kernel.&n;*! /dev/rtc calls it now.&n;*!&n;*! Revision 1.5  1999/10/27 12:39:37  bjornw&n;*! Disabled superuser check. Anyone can now set the time.&n;*!&n;*! Revision 1.4  1999/09/02 13:27:46  pkj&n;*! Added shadow for R_PORT_PB_CONFIG.&n;*! Renamed port_g_shadow to port_g_data_shadow.&n;*!&n;*! Revision 1.3  1999/09/02 08:28:06  pkj&n;*! Made it possible to select either port PB or the generic port for the RST&n;*! signal line to the DS1302 RTC.&n;*! Also make sure the RST bit is configured as output on Port PB (if used).&n;*!&n;*! Revision 1.2  1999/09/01 14:47:20  bjornw&n;*! Added support for /dev/rtc operations with ioctl RD_TIME and SET_TIME to read&n;*! and set the date. Register as major 121.&n;*!&n;*! Revision 1.1  1999/09/01 09:45:29  bjornw&n;*! Implemented a DS1302 RTC driver.&n;*!&n;*!&n;*! ---------------------------------------------------------------------------&n;*!&n;*! (C) Copyright 1999, 2000, 2001  Axis Communications AB, LUND, SWEDEN&n;*!&n;*! $Id: ds1302.c,v 1.11 2001/06/14 12:35:52 jonashg Exp $&n;*!&n;*!***************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
@@ -12,8 +13,18 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/rtc.h&gt;
 DECL|macro|RTC_MAJOR_NR
 mdefine_line|#define RTC_MAJOR_NR 121 /* local major, change later */
+DECL|variable|ds1302_name
+r_static
+r_const
+r_char
+id|ds1302_name
+(braket
+)braket
+op_assign
+l_string|&quot;ds1302&quot;
+suffix:semicolon
 multiline_comment|/* The DS1302 might be connected to different bits on different products. &n; * It has three signals - SDA, SCL and RST. RST and SCL are always outputs,&n; * but SDA can have a selected direction.&n; * For now, only PORT_PB is hardcoded.&n; */
-multiline_comment|/* The RST bit may be on either the Generic Port or Port PB */
+multiline_comment|/* The RST bit may be on either the Generic Port or Port PB. */
 macro_line|#ifdef CONFIG_ETRAX_DS1302_RST_ON_GENERIC_PORT
 DECL|macro|TK_RST_OUT
 mdefine_line|#define TK_RST_OUT(x) REG_SHADOW_SET(R_PORT_G_DATA,  port_g_data_shadow,  CONFIG_ETRAX_DS1302_RSTBIT, x)
@@ -44,33 +55,35 @@ id|tempudelay
 c_func
 (paren
 r_int
-id|time
+id|usecs
 )paren
 (brace
+r_volatile
 r_int
-id|i
+id|loops
 suffix:semicolon
 r_for
 c_loop
 (paren
-id|i
+id|loops
 op_assign
+id|usecs
+op_star
+l_int|12
+suffix:semicolon
+id|loops
+OG
 l_int|0
 suffix:semicolon
-id|i
-OL
-id|time
-op_star
-l_int|10000
-suffix:semicolon
-id|i
-op_increment
+id|loops
+op_decrement
 )paren
 (brace
+multiline_comment|/* nothing */
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* send 8 bits */
+multiline_comment|/* Send 8 bits. */
 r_static
 r_void
 DECL|function|out_byte
@@ -78,6 +91,7 @@ id|out_byte
 c_func
 (paren
 r_int
+r_char
 id|x
 )paren
 (brace
@@ -102,7 +116,7 @@ op_decrement
 suffix:semicolon
 )paren
 (brace
-multiline_comment|/* the chip latches incoming bits on the rising edge of SCL */
+multiline_comment|/* The chip latches incoming bits on the rising edge of SCL. */
 id|TK_SCL_OUT
 c_func
 (paren
@@ -166,7 +180,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* Read byte. Bits come LSB first, on the falling edge of SCL.&n;&t; * Assume SDA is in input direction already&n;&t; */
+multiline_comment|/* Read byte. Bits come LSB first, on the falling edge of SCL.&n;&t; * Assume SDA is in input direction already.&n;&t; */
 id|TK_SDA_DIR
 c_func
 (paren
@@ -229,7 +243,7 @@ r_return
 id|x
 suffix:semicolon
 )brace
-multiline_comment|/* prepares for a transaction by de-activating RST (active-low) */
+multiline_comment|/* Prepares for a transaction by de-activating RST (active-low). */
 r_static
 r_void
 DECL|function|start
@@ -270,7 +284,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* ends a transaction by taking RST active again */
+multiline_comment|/* Ends a transaction by taking RST active again. */
 r_static
 r_void
 DECL|function|stop
@@ -293,7 +307,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* enable writing */
+multiline_comment|/* Enable writing. */
 r_static
 r_void
 DECL|function|ds1302_wenable
@@ -328,7 +342,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* disable writing */
+multiline_comment|/* Disable writing. */
 r_static
 r_void
 DECL|function|ds1302_wdisable
@@ -363,7 +377,9 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* probe for the chip by writing something to its RAM and try reading it back */
+multiline_comment|/* Probe for the chip by writing something to its RAM and try reading it back. */
+DECL|macro|MAGIC_PATTERN
+mdefine_line|#define MAGIC_PATTERN 0x42
 r_static
 r_int
 DECL|function|ds1302_probe
@@ -396,7 +412,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* try to talk to timekeeper */
+multiline_comment|/* Try to talk to timekeeper. */
 id|ds1302_wenable
 c_func
 (paren
@@ -417,7 +433,7 @@ multiline_comment|/* write RAM byte 0 */
 id|out_byte
 c_func
 (paren
-l_int|0x42
+id|MAGIC_PATTERN
 )paren
 suffix:semicolon
 multiline_comment|/* write something magic */
@@ -445,7 +461,7 @@ c_func
 )paren
 )paren
 op_eq
-l_int|0x42
+id|MAGIC_PATTERN
 )paren
 (brace
 r_char
@@ -467,13 +483,17 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;DS1302 RTC found.&bslash;n&quot;
+l_string|&quot;%s: RTC found.&bslash;n&quot;
+comma
+id|ds1302_name
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;SDA, SCL, RST on PB%i, PB%i, %s%i&bslash;n&quot;
+l_string|&quot;%s: SDA, SCL, RST on PB%i, PB%i, %s%i&bslash;n&quot;
+comma
+id|ds1302_name
 comma
 id|CONFIG_ETRAX_DS1302_SDABIT
 comma
@@ -516,7 +536,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;DS1302 RTC not found.&bslash;n&quot;
+l_string|&quot;%s: RTC not found.&bslash;n&quot;
+comma
+id|ds1302_name
 )paren
 suffix:semicolon
 id|retval
@@ -528,7 +550,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* read a byte from the selected register in the DS1302 */
+multiline_comment|/* Read a byte from the selected register in the DS1302. */
 r_int
 r_char
 DECL|function|ds1302_readreg
@@ -560,7 +582,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Read register */
+multiline_comment|/* read register */
 id|x
 op_assign
 id|in_byte
@@ -577,7 +599,7 @@ r_return
 id|x
 suffix:semicolon
 )brace
-multiline_comment|/* write a byte to the selected register */
+multiline_comment|/* Write a byte to the selected register. */
 r_void
 DECL|function|ds1302_writereg
 id|ds1302_writereg
@@ -613,7 +635,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Write register */
+multiline_comment|/* write register */
 id|out_byte
 c_func
 (paren
@@ -799,7 +821,7 @@ comma
 l_int|31
 )brace
 suffix:semicolon
-multiline_comment|/* ioctl that supports RTC_RD_TIME and RTC_SET_TIME (read and set time/date) */
+multiline_comment|/* ioctl that supports RTC_RD_TIME and RTC_SET_TIME (read and set time/date). */
 r_static
 r_int
 DECL|function|rtc_ioctl
@@ -838,7 +860,7 @@ id|cmd
 r_case
 id|RTC_RD_TIME
 suffix:colon
-multiline_comment|/* Read the time/date from RTC&t;*/
+multiline_comment|/* read the time/date from RTC&t;*/
 (brace
 r_struct
 id|rtc_time
@@ -885,7 +907,7 @@ suffix:semicolon
 r_case
 id|RTC_SET_TIME
 suffix:colon
-multiline_comment|/* Set the RTC */
+multiline_comment|/* set the RTC */
 (brace
 r_struct
 id|rtc_time
@@ -915,21 +937,20 @@ r_int
 r_int
 id|yrs
 suffix:semicolon
-macro_line|#if 0
 r_if
 c_cond
 (paren
 op_logical_neg
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_TIME
 )paren
 )paren
 r_return
 op_minus
-id|EACCES
+id|EPERM
 suffix:semicolon
-macro_line|#endif&t;&t;&t;
 r_if
 c_cond
 (paren
@@ -1220,7 +1241,7 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* notice that at this point, the RTC is updated but the kernel&n;&t;&t;&t; * is still running with the old time. you need to set that&n;&t;&t;&t; * separately with settimeofday or adjtimex.&n;&t;&t;&t; */
+multiline_comment|/* Notice that at this point, the RTC is updated but&n;&t;&t;&t; * the kernel is still running with the old time.&n;&t;&t;&t; * You need to set that separately with settimeofday&n;&t;&t;&t; * or adjtimex.&n;&t;&t;&t; */
 r_return
 l_int|0
 suffix:semicolon
@@ -1228,7 +1249,7 @@ suffix:semicolon
 r_case
 id|RTC_SET_CHARGE
 suffix:colon
-multiline_comment|/* Set the RTC TRICKLE CHARGE register */
+multiline_comment|/* set the RTC TRICKLE CHARGE register */
 (brace
 r_int
 id|tcs_val
@@ -1239,21 +1260,20 @@ id|save_control
 comma
 id|save_freq_select
 suffix:semicolon
-macro_line|#if 0
 r_if
 c_cond
 (paren
 op_logical_neg
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_TIME
 )paren
 )paren
 r_return
 op_minus
-id|EACCES
+id|EPERM
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1311,7 +1331,6 @@ id|ENOIOCTLCMD
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *&t;Info exported via &quot;/proc/rtc&quot;.&n; */
 r_int
 DECL|function|get_rtc_status
 id|get_rtc_status
@@ -1375,7 +1394,7 @@ op_minus
 id|buf
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;The various file operations we support.&n; */
+multiline_comment|/* The various file operations we support. */
 DECL|variable|rtc_fops
 r_static
 r_struct
@@ -1393,8 +1412,9 @@ id|rtc_ioctl
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* just probe for the RTC and register the device to handle the ioctl needed */
+multiline_comment|/* Just probe for the RTC and register the device to handle the ioctl needed. */
 r_int
+id|__init
 DECL|function|ds1302_init
 id|ds1302_init
 c_func
@@ -1402,7 +1422,6 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* Ugly hack to handle both 2100 and 2400 hardware.&n;    Remove...&n; */
 r_if
 c_cond
 (paren
@@ -1414,7 +1433,7 @@ c_func
 )paren
 (brace
 macro_line|#ifdef CONFIG_ETRAX_DS1302_RST_ON_GENERIC_PORT
-multiline_comment|/*&n;     &t;* Make sure that R_GEN_CONFIG is &n;     &t;* setup correct.&n;     &t;*/
+multiline_comment|/*&n;&t;&t; * The only way to set g27 to output is to enable ATA.&n;&t;&t; *&n;&t;&t; * Make sure that R_GEN_CONFIG is setup correct.&n;&t;&t; */
 id|genconfig_shadow
 op_assign
 (paren
@@ -1458,12 +1477,10 @@ c_func
 (paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 macro_line|#else
 r_return
 op_minus
@@ -1479,7 +1496,7 @@ c_func
 (paren
 id|RTC_MAJOR_NR
 comma
-l_string|&quot;rtc&quot;
+id|ds1302_name
 comma
 op_amp
 id|rtc_fops
@@ -1489,7 +1506,10 @@ id|rtc_fops
 id|printk
 c_func
 (paren
-l_string|&quot;unable to get major %d for rtc&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: unable to get major %d for rtc&bslash;n&quot;
+comma
+id|ds1302_name
 comma
 id|RTC_MAJOR_NR
 )paren

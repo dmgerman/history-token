@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/cris/mm/tlb.c&n; *&n; *  Copyright (C) 2000  Axis Communications AB&n; *  &n; *  Authors:   Bjorn Wesen (bjornw@axis.com)&n; *&n; */
+multiline_comment|/*&n; *  linux/arch/cris/mm/tlb.c&n; *&n; *  Copyright (C) 2000, 2001  Axis Communications AB&n; *  &n; *  Authors:   Bjorn Wesen (bjornw@axis.com)&n; *&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/svinto.h&gt;
+macro_line|#include &lt;asm/mmu_context.h&gt;
 DECL|macro|D
 mdefine_line|#define D(x)
 multiline_comment|/* CRIS in Etrax100LX TLB */
@@ -948,6 +949,11 @@ c_func
 id|next
 )paren
 suffix:semicolon
+multiline_comment|/* remember the pgd for the fault handlers&n;&t; * this is similar to the pgd register in some other CPU&squot;s.&n;&t; * we need our own copy of it because current and active_mm&n;&t; * might be invalid at points where we still need to derefer&n;&t; * the pgd.&n;&t; */
+id|current_pgd
+op_assign
+id|next-&gt;pgd
+suffix:semicolon
 multiline_comment|/* switch context in the MMU */
 id|D
 c_func
@@ -1047,16 +1053,26 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 id|i
 OL
-id|NUM_PAGEID
+r_sizeof
+(paren
+id|page_id_map
+)paren
+op_div
+r_sizeof
+(paren
+id|page_id_map
+(braket
+l_int|0
+)braket
+)paren
 suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|page_id_map
 (braket
 id|i
@@ -1064,7 +1080,6 @@ id|i
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 multiline_comment|/* invalidate the entire TLB */
 id|flush_tlb_all
 c_func

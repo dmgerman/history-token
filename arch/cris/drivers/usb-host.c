@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * usb-host.c: ETRAX 100LX USB Host Controller Driver (HCD)&n; *&n; * Copyright (c) 2001 Axis Communications AB.&n; *&n; * $Id: usb-host.c,v 1.8 2001/02/27 13:52:48 bjornw Exp $&n; *&n; */
+multiline_comment|/*&n; * usb-host.c: ETRAX 100LX USB Host Controller Driver (HCD)&n; *&n; * Copyright (c) 2001 Axis Communications AB.&n; *&n; * $Id: usb-host.c,v 1.9 2001/05/09 12:54:12 johana Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -14,16 +14,17 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/svinto.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;usb-host.h&quot;
 DECL|macro|ETRAX_USB_HC_IRQ
-mdefine_line|#define ETRAX_USB_HC_IRQ 31
+mdefine_line|#define ETRAX_USB_HC_IRQ USB_HC_IRQ_NBR
 DECL|macro|ETRAX_USB_RX_IRQ
-mdefine_line|#define ETRAX_USB_RX_IRQ 25
+mdefine_line|#define ETRAX_USB_RX_IRQ USB_DMA_RX_IRQ_NBR
 DECL|macro|ETRAX_USB_TX_IRQ
-mdefine_line|#define ETRAX_USB_TX_IRQ 24
+mdefine_line|#define ETRAX_USB_TX_IRQ USB_DMA_TX_IRQ_NBR
 DECL|variable|usb_hcd_version
 r_static
 r_const
@@ -31,7 +32,7 @@ r_char
 op_star
 id|usb_hcd_version
 op_assign
-l_string|&quot;$Revision: 1.8 $&quot;
+l_string|&quot;$Revision: 1.9 $&quot;
 suffix:semicolon
 DECL|macro|KERN_DEBUG
 macro_line|#undef KERN_DEBUG
@@ -11210,7 +11211,7 @@ c_cond
 id|request_dma
 c_func
 (paren
-l_int|8
+id|USB_TX_DMA_NBR
 comma
 l_string|&quot;ETRAX 100LX built-in USB (Tx)&quot;
 )paren
@@ -11240,7 +11241,7 @@ c_cond
 id|request_dma
 c_func
 (paren
-l_int|9
+id|USB_RX_DMA_NBR
 comma
 l_string|&quot;ETRAX 100LX built-in USB (Rx)&quot;
 )paren
@@ -11264,7 +11265,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#if 0  /* Moved to head.S */        
+macro_line|#if 0  /* Moved to head.S */
 op_star
 id|R_GEN_CONFIG
 op_assign
@@ -11913,13 +11914,13 @@ suffix:semicolon
 id|free_dma
 c_func
 (paren
-l_int|8
+id|USB_TX_DMA_NBR
 )paren
 suffix:semicolon
 id|free_dma
 c_func
 (paren
-l_int|9
+id|USB_RX_DMA_NBR
 )paren
 suffix:semicolon
 id|usb_deregister_bus

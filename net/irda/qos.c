@@ -5,12 +5,6 @@ macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/parameters.h&gt;
 macro_line|#include &lt;net/irda/qos.h&gt;
 macro_line|#include &lt;net/irda/irlap.h&gt;
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-macro_line|#include &lt;net/irda/irlap_comp.h&gt;
-macro_line|#include &quot;../../drivers/net/zlib.h&quot;
-DECL|macro|CI_BZIP2
-mdefine_line|#define CI_BZIP2  27 /* Random pick */
-macro_line|#endif
 multiline_comment|/*&n; * Maximum values of the baud rate we negociate with the other end.&n; * Most often, you don&squot;t have to change that, because Linux-IrDA will&n; * use the maximum offered by the link layer, which usually works fine.&n; * In some very rare cases, you may want to limit it to lower speeds...&n; */
 DECL|variable|sysctl_max_baud_rate
 r_int
@@ -286,22 +280,6 @@ l_int|40
 )brace
 suffix:semicolon
 multiline_comment|/* secs */
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-DECL|variable|compressions
-id|__u32
-id|compressions
-(braket
-)braket
-op_assign
-(brace
-id|CI_BZIP2
-comma
-id|CI_DEFLATE
-comma
-id|CI_DEFLATE_DRAFT
-)brace
-suffix:semicolon
-macro_line|#endif
 DECL|variable|max_line_capacities
 id|__u32
 id|max_line_capacities
@@ -944,14 +922,6 @@ r_new
 op_member_access_from_pointer
 id|additional_bofs.bits
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-id|qos-&gt;compression.bits
-op_and_assign
-r_new
-op_member_access_from_pointer
-id|compression.bits
-suffix:semicolon
-macro_line|#endif
 id|irda_qos_bits_to_value
 c_func
 (paren
@@ -1057,12 +1027,6 @@ id|qos-&gt;additional_bofs.bits
 op_assign
 l_int|0xff
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION&t;
-id|qos-&gt;compression.bits
-op_assign
-l_int|0x03
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * Function irlap_adjust_qos_settings (qos)&n; *&n; *     Adjust QoS settings in case some values are not possible to use because&n; *     of other settings&n; */
 DECL|function|irlap_adjust_qos_settings
@@ -1294,13 +1258,6 @@ id|skb
 r_int
 id|ret
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-r_int
-id|comp_seen
-op_assign
-id|FALSE
-suffix:semicolon
-macro_line|#endif
 id|ret
 op_assign
 id|irda_param_extract_all
@@ -1316,33 +1273,6 @@ op_amp
 id|irlap_param_info
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-r_if
-c_cond
-(paren
-op_logical_neg
-id|comp_seen
-)paren
-(brace
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|4
-comma
-id|__FUNCTION__
-l_string|&quot;(), Compression not seen!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|self-&gt;qos_tx.compression.bits
-op_assign
-l_int|0x00
-suffix:semicolon
-id|self-&gt;qos_rx.compression.bits
-op_assign
-l_int|0x00
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Convert the negotiated bits to values */
 id|irda_qos_bits_to_value
 c_func
@@ -1435,18 +1365,6 @@ comma
 id|self-&gt;qos_tx.link_disc_time.value
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|2
-comma
-l_string|&quot;Setting COMPRESSION to %d&bslash;n&quot;
-comma
-id|self-&gt;qos_tx.compression.value
-)paren
-suffix:semicolon
-macro_line|#endif&t;
 r_return
 id|ret
 suffix:semicolon
@@ -2670,34 +2588,5 @@ id|add_bofs
 id|index
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-id|index
-op_assign
-id|msb_index
-c_func
-(paren
-id|qos-&gt;compression.bits
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|index
-op_ge
-l_int|0
-)paren
-id|qos-&gt;compression.value
-op_assign
-id|compressions
-(braket
-id|index
-)braket
-suffix:semicolon
-r_else
-id|qos-&gt;compression.value
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 )brace
 eof

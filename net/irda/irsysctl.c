@@ -10,7 +10,6 @@ DECL|macro|NET_IRDA
 mdefine_line|#define NET_IRDA 412 /* Random number */
 DECL|enumerator|DISCOVERY
 DECL|enumerator|DEVNAME
-DECL|enumerator|COMPRESSION
 DECL|enumerator|DEBUG
 DECL|enumerator|SLOTS
 DECL|enumerator|DISCOVERY_TIMEOUT
@@ -21,8 +20,6 @@ op_assign
 l_int|1
 comma
 id|DEVNAME
-comma
-id|COMPRESSION
 comma
 id|DEBUG
 comma
@@ -224,27 +221,6 @@ id|do_devname
 comma
 op_amp
 id|sysctl_string
-)brace
-comma
-(brace
-id|COMPRESSION
-comma
-l_string|&quot;compression&quot;
-comma
-op_amp
-id|sysctl_compression
-comma
-r_sizeof
-(paren
-r_int
-)paren
-comma
-l_int|0644
-comma
-l_int|NULL
-comma
-op_amp
-id|proc_dointvec
 )brace
 comma
 macro_line|#ifdef CONFIG_IRDA_DEBUG

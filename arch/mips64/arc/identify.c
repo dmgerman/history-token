@@ -120,9 +120,19 @@ l_int|0
 suffix:semicolon
 id|i
 OL
+(paren
 r_sizeof
 (paren
 id|mach_table
+)paren
+op_div
+r_sizeof
+(paren
+id|mach_table
+(braket
+l_int|0
+)braket
+)paren
 )paren
 suffix:semicolon
 id|i
@@ -156,28 +166,12 @@ id|i
 suffix:semicolon
 )brace
 )brace
-id|prom_printf
+id|panic
 c_func
 (paren
-l_string|&quot;&bslash;nYeee, could not determine architecture type &lt;%s&gt;&bslash;n&quot;
+l_string|&quot;&bslash;nYeee, could not determine architecture type &lt;%s&gt;&quot;
 comma
 id|s
-)paren
-suffix:semicolon
-id|prom_printf
-c_func
-(paren
-l_string|&quot;press a key to reboot&bslash;n&quot;
-)paren
-suffix:semicolon
-id|prom_getchar
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ArcEnterInteractiveMode
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return

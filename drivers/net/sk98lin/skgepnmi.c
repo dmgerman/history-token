@@ -1,6 +1,6 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Name:&t;skgepnmi.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.78 $&n; * Date:&t;$Date: 2000/09/12 10:44:58 $&n; * Purpose:&t;Private Network Management Interface&n; *&n; ****************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998,1999 SysKonnect,&n; *&t;a business unit of Schneider &amp; Koch &amp; Co. Datensysteme GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/*****************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skgepnmi.c,v $&n; *&t;Revision 1.78  2000/09/12 10:44:58  cgoos&n; *&t;Fixed SK_PNMI_STORE_U32 calls with typecasted argument.&n; *&t;&n; *&t;Revision 1.77  2000/09/07 08:10:19  rwahl&n; *&t;- Modified algorithm for 64bit NDIS statistic counters;&n; *&t;  returns 64bit or 32bit value depending on passed buffer&n; *&t;  size. Indicate capability for 64bit NDIS counter, if passed&n; *&t;  buffer size is zero. OID_GEN_XMIT_ERROR, OID_GEN_RCV_ERROR,&n; *&t;  and OID_GEN_RCV_NO_BUFFER handled as 64bit counter, too.&n; *&t;- corrected OID_SKGE_RLMT_PORT_PREFERRED.&n; *&t;&n; *&t;Revision 1.76  2000/08/03 15:23:39  rwahl&n; *&t;- Correction for FrameTooLong counter has to be moved to OID handling&n; *&t;  routines (instead of statistic counter routine).&n; *&t;- Fix in XMAC Reset Event handling: Only offset counter for hardware&n; *&t;  statistic registers are updated.&n; *&t;&n; *&t;Revision 1.75  2000/08/01 16:46:05  rwahl&n; *&t;- Added StatRxLongFrames counter and correction of FrameTooLong counter.&n; *&t;- Added directive to control width (default = 32bit) of NDIS statistic&n; *&t;  counters (SK_NDIS_64BIT_CTR).&n; *&t;&n; *&t;Revision 1.74  2000/07/04 11:41:53  rwahl&n; *&t;- Added volition connector type.&n; *&t;&n; *&t;Revision 1.73  2000/03/15 16:33:10  rwahl&n; *&t;Fixed bug 10510; wrong reset of virtual port statistic counters.&n; *&t;&n; *&t;Revision 1.72  1999/12/06 16:15:53  rwahl&n; *&t;Fixed problem of instance range for current and factory MAC address.&n; *&t;&n; *&t;Revision 1.71  1999/12/06 10:14:20  rwahl&n; *&t;Fixed bug 10476; set operation for PHY_OPERATION_MODE.&n; *&t;&n; *&t;Revision 1.70  1999/11/22 13:33:34  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.69  1999/10/18 11:42:15  rwahl&n; *&t;Added typecasts for checking event dependent param (debug only).&n; *&t;&n; *&t;Revision 1.68  1999/10/06 09:35:59  cgoos&n; *&t;Added state check to PHY_READ call (hanged if called during startup).&n; *&t;&n; *&t;Revision 1.67  1999/09/22 09:53:20  rwahl&n; *&t;- Read Broadcom register for updating fcs error counter (1000Base-T).&n; *&t;&n; *&t;Revision 1.66  1999/08/26 13:47:56  rwahl&n; *&t;Added SK_DRIVER_SENDEVENT when queueing RLMT_CHANGE_THRES trap.&n; *&t;&n; *&t;Revision 1.65  1999/07/26 07:49:35  cgoos&n; *&t;Added two typecasts to avoid compiler warnings.&n; *&t;&n; *&t;Revision 1.64  1999/05/20 09:24:12  cgoos&n; *&t;Changes for 1000Base-T (sensors, Master/Slave).&n; *&t;&n; *&t;Revision 1.63  1999/04/13 15:11:58  mhaveman&n; *&t;Moved include of rlmt.h to header skgepnmi.h because some macros&n; *&t;are needed there.&n; *&t;&n; *&t;Revision 1.62  1999/04/13 15:08:07  mhaveman&n; *&t;Replaced again SK_RLMT_CHECK_LINK with SK_PNMI_RLMT_MODE_CHK_LINK&n; *&t;to grant unified interface by only using the PNMI header file.&n; *&t;SK_PNMI_RLMT_MODE_CHK_LINK is defined the same as SK_RLMT_CHECK_LINK.&n; *&t;&n; *&t;Revision 1.61  1999/04/13 15:02:48  mhaveman&n; *&t;Changes caused by review:&n; *&t;-Changed some comments&n; *&t;-Removed redundant check for OID_SKGE_PHYS_FAC_ADDR&n; *&t;-Optimized PRESET check.&n; *&t;-Meaning of error SK_ADDR_DUPLICATE_ADDRESS changed. Set of same&n; *&t; address will now not cause this error. Removed corresponding check.&n; *&t;&n; *&t;Revision 1.60  1999/03/23 10:41:23  mhaveman&n; *&t;Added comments.&n; *&t;&n; *&t;Revision 1.59  1999/02/19 08:01:28  mhaveman&n; *&t;Fixed bug 10372 that after counter reset all ports were displayed&n; *&t;as inactive.&n; *&t;&n; *&t;Revision 1.58  1999/02/16 18:04:47  mhaveman&n; *&t;Fixed problem of twisted OIDs SENSOR_WAR_TIME and SENSOR_ERR_TIME.&n; *&t;&n; *&t;Revision 1.56  1999/01/27 12:29:11  mhaveman&n; *&t;SkTimerStart was called with time value in milli seconds but needs&n; *&t;micro seconds.&n; *&t;&n; *&t;Revision 1.55  1999/01/25 15:00:38  mhaveman&n; *&t;Added support to allow multiple ports to be active. If this feature in&n; *&t;future will be used, the Management Data Base variables PORT_ACTIVE&n; *&t;and PORT_PREFERED should be moved to the port specific part of RLMT.&n; *&t;Currently they return the values of the first active physical port&n; *&t;found. A set to the virtual port will actually change all active&n; *&t;physical ports. A get returns the melted values of all active physical&n; *&t;ports. If the port values differ a return value INDETERMINATED will&n; *&t;be returned. This effects especially the CONF group.&n; *&t;&n; *&t;Revision 1.54  1999/01/19 10:10:22  mhaveman&n; *&t;-Fixed bug 10354: Counter values of virtual port were wrong after port&n; *&t; switches&n; *&t;-Added check if a switch to the same port is notified.&n; *&t;&n; *&t;Revision 1.53  1999/01/07 09:25:21  mhaveman&n; *&t;Forgot to initialize a variable.&n; *&t;&n; *&t;Revision 1.52  1999/01/05 10:34:33  mhaveman&n; *&t;Fixed little error in RlmtChangeEstimate calculation.&n; *&t;&n; *&t;Revision 1.51  1999/01/05 09:59:07  mhaveman&n; *&t;-Moved timer start to init level 2&n; *&t;-Redesigned port switch average calculation to avoid 64bit&n; *&t; arithmetic.&n; *&t;&n; *&t;Revision 1.50  1998/12/10 15:13:59  mhaveman&n; *&t;-Fixed: PHYS_CUR_ADDR returned wrong addresses&n; *&t;-Fixed: RLMT_PORT_PREFERED and RLMT_CHANGE_THRES preset returned&n; *&t;        always BAD_VALUE.&n; *&t;-Fixed: TRAP buffer seemed to sometimes suddenly empty&n; *&t;&n; *&t;Revision 1.49  1998/12/09 16:17:07  mhaveman&n; *&t;Fixed: Couldnot delete VPD keys on UNIX.&n; *&t;&n; *&t;Revision 1.48  1998/12/09 14:11:10  mhaveman&n; *&t;-Add: Debugmessage for XMAC_RESET suppressed to minimize output.&n; *&t;-Fixed: RlmtChangeThreshold will now be initialized.&n; *&t;-Fixed: VPD_ENTRIES_LIST extended value with unnecessary space char.&n; *&t;-Fixed: On VPD key creation an invalid key name could be created&n; *&t;        (e.g. A5)&n; *&t;-Some minor changes in comments and code.&n; *&t;&n; *&t;Revision 1.47  1998/12/08 16:00:31  mhaveman&n; *&t;-Fixed: For RLMT_PORT_ACTIVE will now be returned a 0 if no port&n; *&t;&t;is active.&n; *&t;-Fixed: For the RLMT statistics group only the last value was&n; *&t;&t;returned and the rest of the buffer was filled with 0xff&n; *&t;-Fixed: Mysteriously the preset on RLMT_MODE still returned&n; *&t;&t;BAD_VALUE.&n; *&t;Revision 1.46  1998/12/08 10:04:56  mhaveman&n; *&t;-Fixed: Preset on RLMT_MODE returned always BAD_VALUE error.&n; *&t;-Fixed: Alignment error in GetStruct&n; *&t;-Fixed: If for Get/Preset/SetStruct the buffer size is equal or&n; *&t;        larger than SK_PNMI_MIN_STRUCT_SIZE the return value is stored&n; *&t;&t;to the buffer. In this case the caller should always return&n; *&t;        ok to its upper routines. Only if the buffer size is less&n; *&t;        than SK_PNMI_MIN_STRUCT_SIZE and the return value is unequal&n; *&t;        to 0, an error should be returned by the caller.&n; *&t;-Fixed: Wrong number of instances with RLMT statistic.&n; *&t;-Fixed: Return now SK_LMODE_STAT_UNKNOWN if the LinkModeStatus is 0.&n; *&t;&n; *&t;Revision 1.45  1998/12/03 17:17:24  mhaveman&n; *&t;-Removed for VPD create action the buffer size limitation to 4 bytes.&n; *&t;-Pass now physical/active physical port to ADDR for CUR_ADDR set&n; *&t;&n; *&t;Revision 1.44  1998/12/03 15:14:35  mhaveman&n; *&t;Another change to Vpd instance evaluation.&n; *&n; *&t;Revision 1.43  1998/12/03 14:18:10  mhaveman&n; *&t;-Fixed problem in PnmiSetStruct. It was impossible to set any value.&n; *&t;-Removed VPD key evaluation for VPD_FREE_BYTES and VPD_ACTION.&n; *&t;&n; *&t;Revision 1.42  1998/12/03 11:31:47  mhaveman&n; *&t;Inserted cast to satisfy lint.&n; *&t;&n; *&t;Revision 1.41  1998/12/03 11:28:16  mhaveman&n; *&t;Removed SK_PNMI_CHECKPTR&n; *&t;&n; *&t;Revision 1.40  1998/12/03 11:19:07  mhaveman&n; *&t;Fixed problems&n; *&t;-A set to virtual port will now be ignored. A set with broadcast&n; *&t; address to any port will be ignored.&n; *&t;-GetStruct function made VPD instance calculation wrong.&n; *&t;-Prefered port returned -1 instead of 0.&n; *&t;&n; *&t;Revision 1.39  1998/11/26 15:30:29  mhaveman&n; *&t;Added sense mode to link mode.&n; *&t;&n; *&t;Revision 1.38  1998/11/23 15:34:00  mhaveman&n; *&t;-Fixed bug for RX counters. On an RX overflow interrupt the high&n; *&t; words of all RX counters were incremented.&n; *&t;-SET operations on FLOWCTRL_MODE and LINK_MODE accept now the&n; *&t; value 0, which has no effect. It is useful for multiple instance&n; *&t; SETs.&n; *&t;&n; *&t;Revision 1.37  1998/11/20 08:02:04  mhaveman&n; *&t;-Fixed: Ports were compared with MAX_SENSORS&n; *&t;-Fixed: Crash in GetTrapEntry with MEMSET macro&n; *&t;-Fixed: Conversions between physical, logical port index and instance&n; *&t;&n; *&t;Revision 1.36  1998/11/16 07:48:53  mhaveman&n; *&t;Casted SK_DRIVER_SENDEVENT with (void) to eleminate compiler warnings&n; *&t;on Solaris.&n; *&t;&n; *&t;Revision 1.35  1998/11/16 07:45:34  mhaveman&n; *&t;SkAddrOverride now returns value and will be checked.&n; *&t;&n; *&t;Revision 1.34  1998/11/10 13:40:37  mhaveman&n; *&t;Needed to change interface, because NT driver needs a return value&n; *&t;of needed buffer space on TOO_SHORT errors. Therefore all&n; *&t;SkPnmiGet/Preset/Set functions now have a pointer to the length&n; *&t;parameter, where the needed space on error is returned.&n; *&t;&n; *&t;Revision 1.33  1998/11/03 13:52:46  mhaveman&n; *&t;Made file lint conform.&n; *&t;&n; *&t;Revision 1.32  1998/11/03 13:19:07  mhaveman&n; *&t;The events SK_HWEV_SET_LMODE and SK_HWEV_SET_FLOWMODE pass now in&n; *&t;Para32[0] the physical MAC index and in Para32[1] the new mode.&n; *&t;&n; *&t;Revision 1.31  1998/11/03 12:30:40  gklug&n; *&t;fix: compiler warning memset&n; *&n; *&t;Revision 1.30  1998/11/03 12:04:46  mhaveman&n; *&t;Fixed problem in SENSOR_VALUE, which wrote beyond the buffer end&n; *&t;Fixed alignment problem with CHIPSET.&n; *&t;&n; *&t;Revision 1.29  1998/11/02 11:23:54  mhaveman&n; *&t;Corrected SK_ERROR_LOG to SK_ERR_LOG. Sorry.&n; *&t;&n; *&t;Revision 1.28  1998/11/02 10:47:16  mhaveman&n; *&t;Added syslog messages for internal errors.&n; *&t;&n; *&t;Revision 1.27  1998/10/30 15:48:06  mhaveman&n; *&t;Fixed problems after simulation of SK_PNMI_EVT_CHG_EST_TIMER and&n; *&t;RlmtChangeThreshold calculation.&n; *&t;&n; *&t;Revision 1.26  1998/10/29 15:36:55  mhaveman&n; *&t;-Fixed bug in trap buffer handling.&n; *&t;-OID_SKGE_DRIVER_DESCR, OID_SKGE_DRIVER_VERSION, OID_SKGE_HW_DESCR,&n; *&t; OID_SKGE_HW_VERSION, OID_SKGE_VPD_ENTRIES_LIST, OID_SKGE_VPD_KEY,&n; *&t; OID_SKGE_VPD_VALUE, and OID_SKGE_SENSOR_DESCR return values with&n; *&t; a leading octet before each string storing the string length.&n; *&t;-Perform a RlmtUpdate during SK_PNMI_EVT_XMAC_RESET to minimize&n; *&t; RlmtUpdate calls in GetStatVal.&n; *&t;-Inserted SK_PNMI_CHECKFLAGS macro increase readability.&n; *&t;&n; *&t;Revision 1.25  1998/10/29 08:50:36  mhaveman&n; *&t;Fixed problems after second event simulation.&n; *&t;&n; *&t;Revision 1.24  1998/10/28 08:44:37  mhaveman&n; *&t;-Fixed alignment problem&n; *&t;-Fixed problems during event simulation&n; *&t;-Fixed sequence of error return code (INSTANCE -&gt; ACCESS -&gt; SHORT)&n; *&t;-Changed type of parameter Instance back to SK_U32 because of VPD&n; *&t;-Updated new VPD function calls&n; *&t;&n; *&t;Revision 1.23  1998/10/23 10:16:37  mhaveman&n; *&t;Fixed bugs after buffer test simulation.&n; *&t;&n; *&t;Revision 1.22  1998/10/21 13:23:52  mhaveman&n; *&t;-Call syntax of SkOsGetTime() changed to SkOsGetTime(pAc).&n; *&t;-Changed calculation of hundrets of seconds.&n; *&t;&n; *&t;Revision 1.20  1998/10/20 07:30:45  mhaveman&n; *&t;Made type changes to unsigned integer where possible.&n; *&t;&n; *&t;Revision 1.19  1998/10/19 10:51:30  mhaveman&n; *&t;-Made Bug fixes after simulation run&n; *&t;-Renamed RlmtMAC... to RlmtPort...&n; *&t;-Marked workarounds with Errata comments&n; *&t;&n; *&t;Revision 1.18  1998/10/14 07:50:08  mhaveman&n; *&t;-For OID_SKGE_LINK_STATUS the link down detection has moved from RLMT&n; *&t; to HWACCESS.&n; *&t;-Provided all MEMCPY/MEMSET macros with (char *) pointers, because&n; *&t; Solaris throwed warnings when mapping to bcopy/bset.&n; *&t;&n; *&t;Revision 1.17  1998/10/13 07:42:01  mhaveman&n; *&t;-Added OIDs OID_SKGE_TRAP_NUMBER and OID_SKGE_ALL_DATA&n; *&t;-Removed old cvs history entries&n; *&t;-Renamed MacNumber to PortNumber&n; *&t;&n; *&t;Revision 1.16  1998/10/07 10:52:49  mhaveman&n; *&t;-Inserted handling of some OID_GEN_ Ids for windows&n; *&t;-Fixed problem with 803.2 statistic.&n; *&t;&n; *&t;Revision 1.15  1998/10/01 09:16:29  mhaveman&n; *&t;Added Debug messages for function call and UpdateFlag tracing.&n; *&t;&n; *&t;Revision 1.14  1998/09/30 13:39:09  mhaveman&n; *&t;-Reduced namings of &squot;MAC&squot; by replacing them with &squot;PORT&squot;.&n; *&t;-Completed counting of OID_SKGE_RX_HW_ERROR_CTS,&n; *       OID_SKGE_TX_HW_ERROR_CTS,&n; *&t; OID_SKGE_IN_ERRORS_CTS, and OID_SKGE_OUT_ERROR_CTS.&n; *&t;-SET check for RlmtMode&n; *&t;&n; *&t;Revision 1.13  1998/09/28 13:13:08  mhaveman&n; *&t;Hide strcmp, strlen, and strncpy behind macros SK_STRCMP, SK_STRLEN,&n; *&t;and SK_STRNCPY. (Same reasons as for mem.. and MEM..)&n; *&t;&n; *&t;Revision 1.12  1998/09/16 08:18:36  cgoos&n; *&t;Fix: XM_INxx and XM_OUTxx called with different parameter order:&n; *      sometimes IoC,Mac,...  sometimes Mac,IoC,... Now always first variant.&n; *&t;Fix: inserted &quot;Pnmi.&quot; into some pAC-&gt;pDriverDescription / Version.&n; *&t;Change: memset, memcpy to makros SK_MEMSET, SK_MEMCPY&n; *&n; *&t;Revision 1.11  1998/09/04 17:01:45  mhaveman&n; *&t;Added SyncCounter as macro and OID_SKGE_.._NO_DESCR_CTS to&n; *&t;OID_SKGE_RX_NO_BUF_CTS.&n; *&t;&n; *&t;Revision 1.10  1998/09/04 14:35:35  mhaveman&n; *&t;Added macro counters, that are counted by driver.&n; *&t;&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Name:&t;skgepnmi.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.87 $&n; * Date:&t;$Date: 2001/04/06 13:35:09 $&n; * Purpose:&t;Private Network Management Interface&n; *&n; ****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2001 SysKonnect GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skgepnmi.c,v $&n; *&t;Revision 1.87  2001/04/06 13:35:09  mkunz&n; *&t;-Bugs fixed in handling of OID_SKGE_MTU and the VPD OID&squot;s&n; *&t;&n; *&t;Revision 1.86  2001/03/09 09:18:03  mkunz&n; *&t;Changes in SK_DBG_MSG&n; *&t;&n; *&t;Revision 1.85  2001/03/08 09:37:31  mkunz&n; *&t;Bugfix in ResetCounter for Pnmi.Port structure&n; *&t;&n; *&t;Revision 1.84  2001/03/06 09:04:55  mkunz&n; *&t;Made some changes in instance calculation&n; *&t;C&t;^VS:&n; *&t;&n; *&t;Revision 1.83  2001/02/15 09:15:32  mkunz&n; *&t;Necessary changes for dual net mode added&n; *&t;&n; *&t;Revision 1.82  2001/02/07 08:24:19  mkunz&n; *&t;-Made changes in handling of OID_SKGE_MTU&n; *&t;&n; *&t;Revision 1.81  2001/02/06 09:58:00  mkunz&n; *&t;-Vpd bug fixed&n; *&t;-OID_SKGE_MTU added&n; *&t;-pnmi support for dual net mode. Interface function and macros extended&n; *&t;&n; *&t;Revision 1.80  2001/01/22 13:41:35  rassmann&n; *&t;Supporting two nets on dual-port adapters.&n; *&t;&n; *&t;Revision 1.79  2000/12/05 14:57:40  cgoos&n; *&t;SetStruct failed before first Link Up (link mode of virtual&n; *&t;port &quot;INDETERMINATED&quot;).&n; *&t;&n; *&t;Revision 1.78  2000/09/12 10:44:58  cgoos&n; *&t;Fixed SK_PNMI_STORE_U32 calls with typecasted argument.&n; *&t;&n; *&t;Revision 1.77  2000/09/07 08:10:19  rwahl&n; *&t;- Modified algorithm for 64bit NDIS statistic counters;&n; *&t;  returns 64bit or 32bit value depending on passed buffer&n; *&t;  size. Indicate capability for 64bit NDIS counter, if passed&n; *&t;  buffer size is zero. OID_GEN_XMIT_ERROR, OID_GEN_RCV_ERROR,&n; *&t;  and OID_GEN_RCV_NO_BUFFER handled as 64bit counter, too.&n; *&t;- corrected OID_SKGE_RLMT_PORT_PREFERRED.&n; *&t;&n; *&t;Revision 1.76  2000/08/03 15:23:39  rwahl&n; *&t;- Correction for FrameTooLong counter has to be moved to OID handling&n; *&t;  routines (instead of statistic counter routine).&n; *&t;- Fix in XMAC Reset Event handling: Only offset counter for hardware&n; *&t;  statistic registers are updated.&n; *&t;&n; *&t;Revision 1.75  2000/08/01 16:46:05  rwahl&n; *&t;- Added StatRxLongFrames counter and correction of FrameTooLong counter.&n; *&t;- Added directive to control width (default = 32bit) of NDIS statistic&n; *&t;  counters (SK_NDIS_64BIT_CTR).&n; *&t;&n; *&t;Revision 1.74  2000/07/04 11:41:53  rwahl&n; *&t;- Added volition connector type.&n; *&t;&n; *&t;Revision 1.73  2000/03/15 16:33:10  rwahl&n; *&t;Fixed bug 10510; wrong reset of virtual port statistic counters.&n; *&t;&n; *&t;Revision 1.72  1999/12/06 16:15:53  rwahl&n; *&t;Fixed problem of instance range for current and factory MAC address.&n; *&t;&n; *&t;Revision 1.71  1999/12/06 10:14:20  rwahl&n; *&t;Fixed bug 10476; set operation for PHY_OPERATION_MODE.&n; *&t;&n; *&t;Revision 1.70  1999/11/22 13:33:34  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.69  1999/10/18 11:42:15  rwahl&n; *&t;Added typecasts for checking event dependent param (debug only).&n; *&t;&n; *&t;Revision 1.68  1999/10/06 09:35:59  cgoos&n; *&t;Added state check to PHY_READ call (hanged if called during startup).&n; *&t;&n; *&t;Revision 1.67  1999/09/22 09:53:20  rwahl&n; *&t;- Read Broadcom register for updating fcs error counter (1000Base-T).&n; *&n; *&t;Revision 1.66  1999/08/26 13:47:56  rwahl&n; *&t;Added SK_DRIVER_SENDEVENT when queueing RLMT_CHANGE_THRES trap.&n; *&t;&n; *&t;Revision 1.65  1999/07/26 07:49:35  cgoos&n; *&t;Added two typecasts to avoid compiler warnings.&n; *&t;&n; *&t;Revision 1.64  1999/05/20 09:24:12  cgoos&n; *&t;Changes for 1000Base-T (sensors, Master/Slave).&n; *&n; *&t;Revision 1.63  1999/04/13 15:11:58  mhaveman&n; *&t;Moved include of rlmt.h to header skgepnmi.h because some macros&n; *&t;are needed there.&n; *&t;&n; *&t;Revision 1.62  1999/04/13 15:08:07  mhaveman&n; *&t;Replaced again SK_RLMT_CHECK_LINK with SK_PNMI_RLMT_MODE_CHK_LINK&n; *&t;to grant unified interface by only using the PNMI header file.&n; *&t;SK_PNMI_RLMT_MODE_CHK_LINK is defined the same as SK_RLMT_CHECK_LINK.&n; *&t;&n; *&t;Revision 1.61  1999/04/13 15:02:48  mhaveman&n; *&t;Changes caused by review:&n; *&t;-Changed some comments&n; *&t;-Removed redundant check for OID_SKGE_PHYS_FAC_ADDR&n; *&t;-Optimized PRESET check.&n; *&t;-Meaning of error SK_ADDR_DUPLICATE_ADDRESS changed. Set of same&n; *&t; address will now not cause this error. Removed corresponding check.&n; *&t;&n; *&t;Revision 1.60  1999/03/23 10:41:23  mhaveman&n; *&t;Added comments.&n; *&t;&n; *&t;Revision 1.59  1999/02/19 08:01:28  mhaveman&n; *&t;Fixed bug 10372 that after counter reset all ports were displayed&n; *&t;as inactive.&n; *&t;&n; *&t;Revision 1.58  1999/02/16 18:04:47  mhaveman&n; *&t;Fixed problem of twisted OIDs SENSOR_WAR_TIME and SENSOR_ERR_TIME.&n; *&t;&n; *&t;Revision 1.56  1999/01/27 12:29:11  mhaveman&n; *&t;SkTimerStart was called with time value in milli seconds but needs&n; *&t;micro seconds.&n; *&t;&n; *&t;Revision 1.55  1999/01/25 15:00:38  mhaveman&n; *&t;Added support to allow multiple ports to be active. If this feature in&n; *&t;future will be used, the Management Data Base variables PORT_ACTIVE&n; *&t;and PORT_PREFERED should be moved to the port specific part of RLMT.&n; *&t;Currently they return the values of the first active physical port&n; *&t;found. A set to the virtual port will actually change all active&n; *&t;physical ports. A get returns the melted values of all active physical&n; *&t;ports. If the port values differ a return value INDETERMINATED will&n; *&t;be returned. This effects especially the CONF group.&n; *&t;&n; *&t;Revision 1.54  1999/01/19 10:10:22  mhaveman&n; *&t;-Fixed bug 10354: Counter values of virtual port were wrong after port&n; *&t; switches&n; *&t;-Added check if a switch to the same port is notified.&n; *&t;&n; *&t;Revision 1.53  1999/01/07 09:25:21  mhaveman&n; *&t;Forgot to initialize a variable.&n; *&t;&n; *&t;Revision 1.52  1999/01/05 10:34:33  mhaveman&n; *&t;Fixed little error in RlmtChangeEstimate calculation.&n; *&t;&n; *&t;Revision 1.51  1999/01/05 09:59:07  mhaveman&n; *&t;-Moved timer start to init level 2&n; *&t;-Redesigned port switch average calculation to avoid 64bit&n; *&t; arithmetic.&n; *&t;&n; *&t;Revision 1.50  1998/12/10 15:13:59  mhaveman&n; *&t;-Fixed: PHYS_CUR_ADDR returned wrong addresses&n; *&t;-Fixed: RLMT_PORT_PREFERED and RLMT_CHANGE_THRES preset returned&n; *&t;        always BAD_VALUE.&n; *&t;-Fixed: TRAP buffer seemed to sometimes suddenly empty&n; *&t;&n; *&t;Revision 1.49  1998/12/09 16:17:07  mhaveman&n; *&t;Fixed: Couldnot delete VPD keys on UNIX.&n; *&t;&n; *&t;Revision 1.48  1998/12/09 14:11:10  mhaveman&n; *&t;-Add: Debugmessage for XMAC_RESET supressed to minimize output.&n; *&t;-Fixed: RlmtChangeThreshold will now be initialized.&n; *&t;-Fixed: VPD_ENTRIES_LIST extended value with unnecessary space char.&n; *&t;-Fixed: On VPD key creation an invalid key name could be created&n; *&t;        (e.g. A5)&n; *&t;-Some minor changes in comments and code.&n; *&t;&n; *&t;Revision 1.47  1998/12/08 16:00:31  mhaveman&n; *&t;-Fixed: For RLMT_PORT_ACTIVE will now be returned a 0 if no port&n; *&t;&t;is active.&n; *&t;-Fixed: For the RLMT statistics group only the last value was&n; *&t;&t;returned and the rest of the buffer was filled with 0xff&n; *&t;-Fixed: Mysteriously the preset on RLMT_MODE still returned&n; *&t;&t;BAD_VALUE.&n; *&t;Revision 1.46  1998/12/08 10:04:56  mhaveman&n; *&t;-Fixed: Preset on RLMT_MODE returned always BAD_VALUE error.&n; *&t;-Fixed: Alignment error in GetStruct&n; *&t;-Fixed: If for Get/Preset/SetStruct the buffer size is equal or&n; *&t;        larger than SK_PNMI_MIN_STRUCT_SIZE the return value is stored&n; *&t;&t;to the buffer. In this case the caller should always return&n; *&t;        ok to its upper routines. Only if the buffer size is less&n; *&t;        than SK_PNMI_MIN_STRUCT_SIZE and the return value is unequal&n; *&t;        to 0, an error should be returned by the caller.&n; *&t;-Fixed: Wrong number of instances with RLMT statistic.&n; *&t;-Fixed: Return now SK_LMODE_STAT_UNKNOWN if the LinkModeStatus is 0.&n; *&t;&n; *&t;Revision 1.45  1998/12/03 17:17:24  mhaveman&n; *&t;-Removed for VPD create action the buffer size limitation to 4 bytes.&n; *&t;-Pass now physical/active physical port to ADDR for CUR_ADDR set&n; *&t;&n; *&t;Revision 1.44  1998/12/03 15:14:35  mhaveman&n; *&t;Another change to Vpd instance evaluation.&n; *&n; *&t;Revision 1.43  1998/12/03 14:18:10  mhaveman&n; *&t;-Fixed problem in PnmiSetStruct. It was impossible to set any value.&n; *&t;-Removed VPD key evaluation for VPD_FREE_BYTES and VPD_ACTION.&n; *&n; *&t;Revision 1.42  1998/12/03 11:31:47  mhaveman&n; *&t;Inserted cast to satisfy lint.&n; *&t;&n; *&t;Revision 1.41  1998/12/03 11:28:16  mhaveman&n; *&t;Removed SK_PNMI_CHECKPTR&n; *&t;&n; *&t;Revision 1.40  1998/12/03 11:19:07  mhaveman&n; *&t;Fixed problems&n; *&t;-A set to virtual port will now be ignored. A set with broadcast&n; *&t; address to any port will be ignored.&n; *&t;-GetStruct function made VPD instance calculation wrong.&n; *&t;-Prefered port returned -1 instead of 0.&n; *&t;&n; *&t;Revision 1.39  1998/11/26 15:30:29  mhaveman&n; *&t;Added sense mode to link mode.&n; *&t;&n; *&t;Revision 1.38  1998/11/23 15:34:00  mhaveman&n; *&t;-Fixed bug for RX counters. On an RX overflow interrupt the high&n; *&t; words of all RX counters were incremented.&n; *&t;-SET operations on FLOWCTRL_MODE and LINK_MODE accept now the&n; *&t; value 0, which has no effect. It is usefull for multiple instance&n; *&t; SETs.&n; *&t;&n; *&t;Revision 1.37  1998/11/20 08:02:04  mhaveman&n; *&t;-Fixed: Ports were compared with MAX_SENSORS&n; *&t;-Fixed: Crash in GetTrapEntry with MEMSET macro&n; *&t;-Fixed: Conversions between physical, logical port index and instance&n; *&t;&n; *&t;Revision 1.36  1998/11/16 07:48:53  mhaveman&n; *&t;Casted SK_DRIVER_SENDEVENT with (void) to eleminate compiler warnings&n; *&t;on Solaris.&n; *&t;&n; *&t;Revision 1.35  1998/11/16 07:45:34  mhaveman&n; *&t;SkAddrOverride now returns value and will be checked.&n; *&n; *&t;Revision 1.34  1998/11/10 13:40:37  mhaveman&n; *&t;Needed to change interface, because NT driver needs a return value&n; *&t;of needed buffer space on TOO_SHORT errors. Therefore all&n; *&t;SkPnmiGet/Preset/Set functions now have a pointer to the length&n; *&t;parameter, where the needed space on error is returned.&n; *&t;&n; *&t;Revision 1.33  1998/11/03 13:52:46  mhaveman&n; *&t;Made file lint conform.&n; *&t;&n; *&t;Revision 1.32  1998/11/03 13:19:07  mhaveman&n; *&t;The events SK_HWEV_SET_LMODE and SK_HWEV_SET_FLOWMODE pass now in&n; *&t;Para32[0] the physical MAC index and in Para32[1] the new mode.&n; *&t;&n; *&t;Revision 1.31  1998/11/03 12:30:40  gklug&n; *&t;fix: compiler warning memset&n; *&n; *&t;Revision 1.30  1998/11/03 12:04:46  mhaveman&n; *&t;Fixed problem in SENSOR_VALUE, which wrote beyond the buffer end&n; *&t;Fixed alignment problem with CHIPSET.&n; *&n; *&t;Revision 1.29  1998/11/02 11:23:54  mhaveman&n; *&t;Corrected SK_ERROR_LOG to SK_ERR_LOG. Sorry.&n; *&t;&n; *&t;Revision 1.28  1998/11/02 10:47:16  mhaveman&n; *&t;Added syslog messages for internal errors.&n; *&t;&n; *&t;Revision 1.27  1998/10/30 15:48:06  mhaveman&n; *&t;Fixed problems after simulation of SK_PNMI_EVT_CHG_EST_TIMER and&n; *&t;RlmtChangeThreshold calculation.&n; *&t;&n; *&t;Revision 1.26  1998/10/29 15:36:55  mhaveman&n; *&t;-Fixed bug in trap buffer handling.&n; *&t;-OID_SKGE_DRIVER_DESCR, OID_SKGE_DRIVER_VERSION, OID_SKGE_HW_DESCR,&n; *&t; OID_SKGE_HW_VERSION, OID_SKGE_VPD_ENTRIES_LIST, OID_SKGE_VPD_KEY,&n; *&t; OID_SKGE_VPD_VALUE, and OID_SKGE_SENSOR_DESCR return values with&n; *&t; a leading octet before each string storing the string length.&n; *&t;-Perform a RlmtUpdate during SK_PNMI_EVT_XMAC_RESET to minimize&n; *&t; RlmtUpdate calls in GetStatVal.&n; *&t;-Inserted SK_PNMI_CHECKFLAGS macro increase readability.&n; *&t;&n; *&t;Revision 1.25  1998/10/29 08:50:36  mhaveman&n; *&t;Fixed problems after second event simulation.&n; *&t;&n; *&t;Revision 1.24  1998/10/28 08:44:37  mhaveman&n; *&t;-Fixed alignment problem&n; *&t;-Fixed problems during event simulation&n; *&t;-Fixed sequence of error return code (INSTANCE -&gt; ACCESS -&gt; SHORT)&n; *&t;-Changed type of parameter Instance back to SK_U32 because of VPD&n; *&t;-Updated new VPD function calls&n; *&n; *&t;Revision 1.23  1998/10/23 10:16:37  mhaveman&n; *&t;Fixed bugs after buffer test simulation.&n; *&t;&n; *&t;Revision 1.22  1998/10/21 13:23:52  mhaveman&n; *&t;-Call syntax of SkOsGetTime() changed to SkOsGetTime(pAc).&n; *&t;-Changed calculation of hundrets of seconds.&n; *&n; *&t;Revision 1.20  1998/10/20 07:30:45  mhaveman&n; *&t;Made type changes to unsigned integer where possible.&n; *&t;&n; *&t;Revision 1.19  1998/10/19 10:51:30  mhaveman&n; *&t;-Made Bug fixes after simulation run&n; *&t;-Renamed RlmtMAC... to RlmtPort...&n; *&t;-Marked workarounds with Errata comments&n; *&t;&n; *&t;Revision 1.18  1998/10/14 07:50:08  mhaveman&n; *&t;-For OID_SKGE_LINK_STATUS the link down detection has moved from RLMT&n; *&t; to HWACCESS.&n; *&t;-Provided all MEMCPY/MEMSET macros with (char *) pointers, because&n; *&t; Solaris throwed warnings when mapping to bcopy/bset.&n; *&n; *&t;Revision 1.17  1998/10/13 07:42:01  mhaveman&n; *&t;-Added OIDs OID_SKGE_TRAP_NUMBER and OID_SKGE_ALL_DATA&n; *&t;-Removed old cvs history entries&n; *&t;-Renamed MacNumber to PortNumber&n; *&n; *&t;Revision 1.16  1998/10/07 10:52:49  mhaveman&n; *&t;-Inserted handling of some OID_GEN_ Ids for windows&n; *&t;-Fixed problem with 803.2 statistic.&n; *&t;&n; *&t;Revision 1.15  1998/10/01 09:16:29  mhaveman&n; *&t;Added Debug messages for function call and UpdateFlag tracing.&n; *&t;&n; *&t;Revision 1.14  1998/09/30 13:39:09  mhaveman&n; *&t;-Reduced namings of &squot;MAC&squot; by replacing them with &squot;PORT&squot;.&n; *&t;-Completed counting of OID_SKGE_RX_HW_ERROR_CTS,&n; *       OID_SKGE_TX_HW_ERROR_CTS,&n; *&t; OID_SKGE_IN_ERRORS_CTS, and OID_SKGE_OUT_ERROR_CTS.&n; *&t;-SET check for RlmtMode&n; *&t;&n; *&t;Revision 1.13  1998/09/28 13:13:08  mhaveman&n; *&t;Hide strcmp, strlen, and strncpy behind macros SK_STRCMP, SK_STRLEN,&n; *&t;and SK_STRNCPY. (Same reasons as for mem.. and MEM..)&n; *&t;&n; *&t;Revision 1.12  1998/09/16 08:18:36  cgoos&n; *&t;Fix: XM_INxx and XM_OUTxx called with different parameter order:&n; *      sometimes IoC,Mac,...  sometimes Mac,IoC,... Now always first variant.&n; *&t;Fix: inserted &quot;Pnmi.&quot; into some pAC-&gt;pDriverDescription / Version.&n; *&t;Change: memset, memcpy to makros SK_MEMSET, SK_MEMCPY&n; *&n; *&t;Revision 1.11  1998/09/04 17:01:45  mhaveman&n; *&t;Added SyncCounter as macro and OID_SKGE_.._NO_DESCR_CTS to&n; *&t;OID_SKGE_RX_NO_BUF_CTS.&n; *&t;&n; *&t;Revision 1.10  1998/09/04 14:35:35  mhaveman&n; *&t;Added macro counters, that are counted by driver.&n; *&t;&n; ****************************************************************************/
 DECL|variable|SysKonnectFileId
 r_static
 r_const
@@ -9,7 +9,7 @@ id|SysKonnectFileId
 (braket
 )braket
 op_assign
-l_string|&quot;@(#) $Id: skgepnmi.c,v 1.78 2000/09/12 10:44:58 cgoos Exp $&quot;
+l_string|&quot;@(#) $Id: skgepnmi.c,v 1.87 2001/04/06 13:35:09 mkunz Exp $&quot;
 l_string|&quot; (C) SysKonnect.&quot;
 suffix:semicolon
 macro_line|#include &quot;h/skdrv1st.h&quot;
@@ -66,6 +66,9 @@ id|pLen
 comma
 id|SK_U32
 id|Instance
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_int
@@ -93,6 +96,9 @@ id|pLen
 comma
 id|SK_U32
 id|Instance
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_int
@@ -120,6 +126,9 @@ id|pLen
 comma
 id|SK_U32
 id|Instance
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_int
@@ -141,6 +150,9 @@ r_int
 r_int
 op_star
 id|pLen
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_int
@@ -162,6 +174,9 @@ r_int
 r_int
 op_star
 id|pLen
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_int
@@ -183,6 +198,9 @@ r_int
 r_int
 op_star
 id|pLen
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_int
@@ -237,6 +255,9 @@ comma
 r_int
 r_int
 id|TableIndex
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_static
@@ -334,6 +355,9 @@ comma
 r_int
 r_int
 id|TableIndex
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_static
@@ -369,6 +393,9 @@ comma
 r_int
 r_int
 id|TableIndex
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_static
@@ -411,6 +438,9 @@ comma
 r_int
 r_int
 id|StatIndex
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_static
@@ -519,6 +549,9 @@ comma
 r_int
 r_int
 id|TableIndex
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_static
@@ -554,6 +587,9 @@ comma
 r_int
 r_int
 id|TableIndex
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_static
@@ -589,6 +625,9 @@ comma
 r_int
 r_int
 id|TableIndex
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_static
@@ -645,6 +684,9 @@ comma
 r_int
 r_int
 id|TableIndex
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_static
@@ -680,6 +722,9 @@ comma
 r_int
 r_int
 id|TableIndex
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_static
@@ -715,6 +760,9 @@ comma
 r_int
 r_int
 id|TableIndex
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_static
@@ -740,6 +788,9 @@ r_int
 r_int
 op_star
 id|pLen
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_static
@@ -771,6 +822,9 @@ id|pLen
 comma
 id|SK_U32
 id|Instance
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_static
@@ -845,6 +899,9 @@ id|pAC
 comma
 id|SK_IOC
 id|IoC
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_static
@@ -880,6 +937,9 @@ comma
 r_int
 r_int
 id|TableIndex
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_static
@@ -915,6 +975,9 @@ comma
 r_int
 r_int
 id|TableIndex
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_static
@@ -928,6 +991,9 @@ id|pAC
 comma
 id|SK_IOC
 id|IoC
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_static
@@ -963,6 +1029,9 @@ comma
 r_int
 r_int
 id|TableIndex
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 r_static
@@ -1031,6 +1100,9 @@ comma
 r_int
 r_int
 id|TableIndex
+comma
+id|SK_U32
+id|NetIndex
 )paren
 suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * Global variables&n; */
@@ -5291,9 +5363,29 @@ comma
 l_int|0
 )brace
 comma
+(brace
+id|OID_SKGE_MTU
+comma
+l_int|1
+comma
+l_int|0
+comma
+id|SK_PNMI_MAI_OFF
+c_func
+(paren
+id|MtuSize
+)paren
+comma
+id|SK_PNMI_RW
+comma
+id|MacPrivateConf
+comma
+l_int|0
+)brace
+comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Table for hardware register saving on resets and port switches&n;*/
+multiline_comment|/*&n; * Table for hardware register saving on resets and port switches&n; */
 DECL|variable|StatAddress
 r_static
 r_const
@@ -5904,6 +5996,10 @@ id|ActiveFlag
 op_assign
 id|SK_FALSE
 suffix:semicolon
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_assign
+id|SK_FALSE
+suffix:semicolon
 )brace
 r_break
 suffix:semicolon
@@ -6310,7 +6406,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * SkPnmiGetVar - Retrieves the value of a single OID&n; *&n; * Description:&n; *&t;Calls a general sub-function for all this stuff. If the instance&n; *&t;-1 is passed, the values of all instances are returned in an&n; *&t;array of values.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occurred&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to take&n; *&t;                         the data.&n; *&t;SK_PNMI_ERR_UNKNOWN_OID  The requested OID is unknown&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * SkPnmiGetVar - Retrieves the value of a single OID&n; *&n; * Description:&n; *&t;Calls a general sub-function for all this stuff. If the instance&n; *&t;-1 is passed, the values of all instances are returned in an&n; *&t;array of values.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occured&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to take&n; *&t;                         the data.&n; *&t;SK_PNMI_ERR_UNKNOWN_OID  The requested OID is unknown&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
 DECL|function|SkPnmiGetVar
 r_int
 id|SkPnmiGetVar
@@ -6342,8 +6438,12 @@ comma
 multiline_comment|/* On call: buffer length. On return: used buffer */
 id|SK_U32
 id|Instance
-)paren
+comma
 multiline_comment|/* Instance (1..n) that is to be queried or -1 */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 id|SK_DBG_MSG
 c_func
@@ -6355,12 +6455,16 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;PNMI: SkPnmiGetVar: Called, Id=0x%x, BufLen=%d&bslash;n&quot;
+l_string|&quot;PNMI: SkPnmiGetVar: Called, Id=0x%x, BufLen=%d, Instance=%d, NetIndex=%d&bslash;n&quot;
 comma
 id|Id
 comma
 op_star
 id|pLen
+comma
+id|Instance
+comma
+id|NetIndex
 )paren
 )paren
 suffix:semicolon
@@ -6386,11 +6490,13 @@ comma
 id|pLen
 comma
 id|Instance
+comma
+id|NetIndex
 )paren
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * SkPnmiPreSetVar - Presets the value of a single OID&n; *&n; * Description:&n; *&t;Calls a general sub-function for all this stuff. The preset does&n; *&t;the same as a set, but returns just before finally setting the&n; *&t;new value. This is useful to check if a set might be successful.&n; *&t;If as instance a -1 is passed, an array of values is supposed and&n; *&t;all instance of the OID will be set.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occurred.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; *&t;SK_PNMI_ERR_READ_ONLY    The OID is read-only and cannot be set.&n; *&t;SK_PNMI_ERR_UNKNOWN_OID  The requested OID is unknown.&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * SkPnmiPreSetVar - Presets the value of a single OID&n; *&n; * Description:&n; *&t;Calls a general sub-function for all this stuff. The preset does&n; *&t;the same as a set, but returns just before finally setting the&n; *&t;new value. This is usefull to check if a set might be successfull.&n; *&t;If as instance a -1 is passed, an array of values is supposed and&n; *&t;all instance of the OID will be set.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occured.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; *&t;SK_PNMI_ERR_READ_ONLY    The OID is read-only and cannot be set.&n; *&t;SK_PNMI_ERR_UNKNOWN_OID  The requested OID is unknown.&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
 DECL|function|SkPnmiPreSetVar
 r_int
 id|SkPnmiPreSetVar
@@ -6422,8 +6528,12 @@ comma
 multiline_comment|/* Total length of mgmt data */
 id|SK_U32
 id|Instance
-)paren
+comma
 multiline_comment|/* Instance (1..n) that is to be set or -1 */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 id|SK_DBG_MSG
 c_func
@@ -6435,12 +6545,16 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;PNMI: SkPnmiPreSetVar: Called, Id=0x%x, BufLen=%d&bslash;n&quot;
+l_string|&quot;PNMI: SkPnmiPreSetVar: Called, Id=0x%x, BufLen=%d, Instance=%d, NetIndex=%d&bslash;n&quot;
 comma
 id|Id
 comma
 op_star
 id|pLen
+comma
+id|Instance
+comma
+id|NetIndex
 )paren
 )paren
 suffix:semicolon
@@ -6466,11 +6580,13 @@ comma
 id|pLen
 comma
 id|Instance
+comma
+id|NetIndex
 )paren
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * SkPnmiSetVar - Sets the value of a single OID&n; *&n; * Description:&n; *&t;Calls a general sub-function for all this stuff. The preset does&n; *&t;the same as a set, but returns just before finally setting the&n; *&t;new value. This is useful to check if a set might be successful.&n; *&t;If as instance a -1 is passed, an array of values is supposed and&n; *&t;all instance of the OID will be set.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occurred.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; *&t;SK_PNMI_ERR_READ_ONLY    The OID is read-only and cannot be set.&n; *&t;SK_PNMI_ERR_UNKNOWN_OID  The requested OID is unknown.&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * SkPnmiSetVar - Sets the value of a single OID&n; *&n; * Description:&n; *&t;Calls a general sub-function for all this stuff. The preset does&n; *&t;the same as a set, but returns just before finally setting the&n; *&t;new value. This is usefull to check if a set might be successfull.&n; *&t;If as instance a -1 is passed, an array of values is supposed and&n; *&t;all instance of the OID will be set.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occured.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; *&t;SK_PNMI_ERR_READ_ONLY    The OID is read-only and cannot be set.&n; *&t;SK_PNMI_ERR_UNKNOWN_OID  The requested OID is unknown.&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
 DECL|function|SkPnmiSetVar
 r_int
 id|SkPnmiSetVar
@@ -6502,8 +6618,12 @@ comma
 multiline_comment|/* Total length of mgmt data */
 id|SK_U32
 id|Instance
-)paren
+comma
 multiline_comment|/* Instance (1..n) that is to be set or -1 */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 id|SK_DBG_MSG
 c_func
@@ -6515,12 +6635,16 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;PNMI: SkPnmiSetVar: Called, Id=0x%x, BufLen=%d&bslash;n&quot;
+l_string|&quot;PNMI: SkPnmiSetVar: Called, Id=0x%x, BufLen=%d, Instance=%d, NetIndex=%d&bslash;n&quot;
 comma
 id|Id
 comma
 op_star
 id|pLen
+comma
+id|Instance
+comma
+id|NetIndex
 )paren
 )paren
 suffix:semicolon
@@ -6546,11 +6670,13 @@ comma
 id|pLen
 comma
 id|Instance
+comma
+id|NetIndex
 )paren
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * SkPnmiGetStruct - Retrieves the management database in SK_PNMI_STRUCT_DATA&n; *&n; * Description:&n; *&t;Runs through the IdTable, queries the single OIDs and stores the&n; *&t;returned data into the management database structure&n; *&t;SK_PNMI_STRUCT_DATA. The offset of the OID in the structure&n; *&t;is stored in the IdTable. The return value of the function will also&n; *&t;be stored in SK_PNMI_STRUCT_DATA if the passed buffer has the&n; *&t;minimum size of SK_PNMI_MIN_STRUCT_SIZE.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occurred&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to take&n; *&t;                         the data.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * SkPnmiGetStruct - Retrieves the management database in SK_PNMI_STRUCT_DATA&n; *&n; * Description:&n; *&t;Runs through the IdTable, queries the single OIDs and stores the&n; *&t;returned data into the management database structure&n; *&t;SK_PNMI_STRUCT_DATA. The offset of the OID in the structure&n; *&t;is stored in the IdTable. The return value of the function will also&n; *&t;be stored in SK_PNMI_STRUCT_DATA if the passed buffer has the&n; *&t;minimum size of SK_PNMI_MIN_STRUCT_SIZE.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occured&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to take&n; *&t;                         the data.&n; *&t;SK_PNMI_ERR_UNKNOWN_NET  The requested NetIndex doesn&squot;t exist &n; */
 DECL|function|SkPnmiGetStruct
 r_int
 id|SkPnmiGetStruct
@@ -6574,8 +6700,12 @@ r_int
 r_int
 op_star
 id|pLen
-)paren
+comma
 multiline_comment|/* Length of buffer */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 r_int
 id|Ret
@@ -6606,10 +6736,10 @@ suffix:semicolon
 r_char
 id|KeyArr
 (braket
-id|SK_PNMI_VPD_ARR_SIZE
+id|SK_PNMI_VPD_ENTRIES
 )braket
 (braket
-id|SK_PNMI_VPD_STR_SIZE
+id|SK_PNMI_VPD_KEY_SIZE
 )braket
 suffix:semicolon
 id|SK_DBG_MSG
@@ -6622,10 +6752,12 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;PNMI: SkPnmiGetStruct: Called, BufLen=%d&bslash;n&quot;
+l_string|&quot;PNMI: SkPnmiGetStruct: Called, BufLen=%d, NetIndex=%d&bslash;n&quot;
 comma
 op_star
 id|pLen
+comma
+id|NetIndex
 )paren
 )paren
 suffix:semicolon
@@ -6672,6 +6804,21 @@ suffix:semicolon
 r_return
 (paren
 id|SK_PNMI_ERR_TOO_SHORT
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;     * Check NetIndex&n;     */
+r_if
+c_cond
+(paren
+id|NetIndex
+op_ge
+id|pAC-&gt;Rlmt.NumNets
+)paren
+(brace
+r_return
+(paren
+id|SK_PNMI_ERR_UNKNOWN_NET
 )paren
 suffix:semicolon
 )brace
@@ -6745,6 +6892,8 @@ c_func
 id|pAC
 comma
 id|IoC
+comma
+id|NetIndex
 )paren
 )paren
 op_ne
@@ -7039,9 +7188,16 @@ op_eq
 id|OID_SKGE_VPD_ACTION
 )paren
 (brace
-id|SK_PNMI_READ_U32
+id|SK_STRNCPY
 c_func
 (paren
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|Instance
+comma
 id|KeyArr
 (braket
 id|InstanceCnt
@@ -7049,7 +7205,7 @@ op_minus
 l_int|1
 )braket
 comma
-id|Instance
+l_int|4
 )paren
 suffix:semicolon
 )brace
@@ -7107,6 +7263,8 @@ comma
 id|Instance
 comma
 id|TableIndex
+comma
+id|NetIndex
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * An unknown instance error means that we reached&n;&t;&t;&t; * the last instance of that variable. Proceed with&n;&t;&t;&t; * the next OID in the table and ignore the return&n;&t;&t;&t; * code.&n;&t;&t;&t; */
@@ -7209,7 +7367,7 @@ id|SK_PNMI_ERR_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * SkPnmiPreSetStruct - Presets the management database in SK_PNMI_STRUCT_DATA&n; *&n; * Description:&n; *&t;Calls a general sub-function for all this set stuff. The preset does&n; *&t;the same as a set, but returns just before finally setting the&n; *&t;new value. This is useful to check if a set might be successful.&n; *&t;The sub-function runs through the IdTable, checks which OIDs are able&n; *&t;to set, and calls the handler function of the OID to perform the&n; *&t;preset. The return value of the function will also be stored in&n; *&t;SK_PNMI_STRUCT_DATA if the passed buffer has the minimum size of&n; *&t;SK_PNMI_MIN_STRUCT_SIZE.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occurred.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * SkPnmiPreSetStruct - Presets the management database in SK_PNMI_STRUCT_DATA&n; *&n; * Description:&n; *&t;Calls a general sub-function for all this set stuff. The preset does&n; *&t;the same as a set, but returns just before finally setting the&n; *&t;new value. This is usefull to check if a set might be successfull.&n; *&t;The sub-function runs through the IdTable, checks which OIDs are able&n; *&t;to set, and calls the handler function of the OID to perform the&n; *&t;preset. The return value of the function will also be stored in&n; *&t;SK_PNMI_STRUCT_DATA if the passed buffer has the minimum size of&n; *&t;SK_PNMI_MIN_STRUCT_SIZE.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occured.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; */
 DECL|function|SkPnmiPreSetStruct
 r_int
 id|SkPnmiPreSetStruct
@@ -7233,8 +7391,12 @@ r_int
 r_int
 op_star
 id|pLen
-)paren
+comma
 multiline_comment|/* Length of buffer */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 id|SK_DBG_MSG
 c_func
@@ -7246,10 +7408,12 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;PNMI: SkPnmiPreSetStruct: Called, BufLen=%d&bslash;n&quot;
+l_string|&quot;PNMI: SkPnmiPreSetStruct: Called, BufLen=%d, NetIndex=%d&bslash;n&quot;
 comma
 op_star
 id|pLen
+comma
+id|NetIndex
 )paren
 )paren
 suffix:semicolon
@@ -7271,11 +7435,13 @@ op_star
 id|pBuf
 comma
 id|pLen
+comma
+id|NetIndex
 )paren
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * SkPnmiSetStruct - Sets the management database in SK_PNMI_STRUCT_DATA&n; *&n; * Description:&n; *&t;Calls a general sub-function for all this set stuff. The return value&n; *&t;of the function will also be stored in SK_PNMI_STRUCT_DATA if the&n; *&t;passed buffer has the minimum size of SK_PNMI_MIN_STRUCT_SIZE.&n; *&t;The sub-function runs through the IdTable, checks which OIDs are able&n; *&t;to set, and calls the handler function of the OID to perform the&n; *&t;set. The return value of the function will also be stored in&n; *&t;SK_PNMI_STRUCT_DATA if the passed buffer has the minimum size of&n; *&t;SK_PNMI_MIN_STRUCT_SIZE.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occurred.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * SkPnmiSetStruct - Sets the management database in SK_PNMI_STRUCT_DATA&n; *&n; * Description:&n; *&t;Calls a general sub-function for all this set stuff. The return value&n; *&t;of the function will also be stored in SK_PNMI_STRUCT_DATA if the&n; *&t;passed buffer has the minimum size of SK_PNMI_MIN_STRUCT_SIZE.&n; *&t;The sub-function runs through the IdTable, checks which OIDs are able&n; *&t;to set, and calls the handler function of the OID to perform the&n; *&t;set. The return value of the function will also be stored in&n; *&t;SK_PNMI_STRUCT_DATA if the passed buffer has the minimum size of&n; *&t;SK_PNMI_MIN_STRUCT_SIZE.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occured.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; */
 DECL|function|SkPnmiSetStruct
 r_int
 id|SkPnmiSetStruct
@@ -7299,8 +7465,12 @@ r_int
 r_int
 op_star
 id|pLen
-)paren
+comma
 multiline_comment|/* Length of buffer */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 id|SK_DBG_MSG
 c_func
@@ -7312,10 +7482,12 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;PNMI: SkPnmiSetStruct: Called, BufLen=%d&bslash;n&quot;
+l_string|&quot;PNMI: SkPnmiSetStruct: Called, BufLen=%d, NetIndex=%d&bslash;n&quot;
 comma
 op_star
 id|pLen
+comma
+id|NetIndex
 )paren
 )paren
 suffix:semicolon
@@ -7337,11 +7509,13 @@ op_star
 id|pBuf
 comma
 id|pLen
+comma
+id|NetIndex
 )paren
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * SkPnmiEvent - Event handler&n; *&n; * Description:&n; *&t;Handles the following events:&n; *&t;SK_PNMI_EVT_SIRQ_OVERFLOW     When a hardware counter overflows an&n; *&t;                              interrupt will be generated which is&n; *&t;                              first handled by SIRQ which generates a&n; *&t;                              this event. The event increments the&n; *&t;                              upper 32 bit of the 64 bit counter.&n; *&t;SK_PNMI_EVT_SEN_XXX           The event is generated by the I2C module&n; *&t;                              when a sensor reports a warning or&n; *&t;                              error. The event will store a trap&n; *&t;                              message in the trap buffer.&n; *&t;SK_PNMI_EVT_CHG_EST_TIMER     The timer event was initiated by this&n; *&t;                              module and is used to calculate the&n; *&t;                              port switches per hour.&n; *&t;SK_PNMI_EVT_CLEAR_COUNTER     The event clears all counters and&n; *&t;                              timestamps.&n; *&t;SK_PNMI_EVT_XMAC_RESET        The event is generated by the driver&n; *&t;                              before a hard reset of the XMAC is&n; *&t;                              performed. All counters will be saved&n; *&t;                              and added to the hardware counter&n; *&t;                              values after reset to grant continuous&n; *&t;                              counter values.&n; *&t;SK_PNMI_EVT_RLMT_PORT_UP      Generated by RLMT to notify that a port&n; *&t;                              went logically up. A trap message will&n; *&t;                              be stored to the trap buffer.&n; *&t;SK_PNMI_EVT_RLMT_PORT_DOWN    Generated by RLMT to notify that a port&n; *&t;                              went logically down. A trap message will&n; *&t;                              be stored to the trap buffer.&n; *&t;SK_PNMI_EVT_RLMT_PORT_SWITCH  Generated by RLMT to notify that the&n; *&t;                              active port switched. PNMI will split&n; *&t;                              this into two message ACTIVE_DOWN and&n; *&t;                              ACTIVE_UP to be future compatible with&n; *&t;                              load balancing and card fail over.&n; *&t;SK_PNMI_EVT_RLMT_SEGMENTATION Generated by RLMT to notify that two&n; *&t;                              spanning tree root bridges were&n; *&t;                              detected. A trap message will be stored&n; *&t;                              to the trap buffer.&n; *&t;SK_PNMI_EVT_RLMT_ACTIVE_DOWN  Notifies PNMI that an active port went&n; *&t;                              down. PNMI will not further add the&n; *&t;                              statistic values to the virtual port.&n; *&t;SK_PNMI_EVT_RLMT_ACTIVE_UP    Notifies PNMI that a port went up and&n; *&t;                              is now an active port. PNMI will now&n; *&t;                              add the statistic data of this port to&n; *&t;                              the virtual port.&n; *&n; * Returns:&n; *&t;Always 0&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * SkPnmiEvent - Event handler&n; *&n; * Description:&n; *&t;Handles the following events:&n; *&t;SK_PNMI_EVT_SIRQ_OVERFLOW     When a hardware counter overflows an&n; *&t;                              interrupt will be generated which is&n; *&t;                              first handled by SIRQ which generates a&n; *&t;                              this event. The event increments the&n; *&t;                              upper 32 bit of the 64 bit counter.&n; *&t;SK_PNMI_EVT_SEN_XXX           The event is generated by the I2C module&n; *&t;                              when a sensor reports a warning or&n; *&t;                              error. The event will store a trap&n; *&t;                              message in the trap buffer.&n; *&t;SK_PNMI_EVT_CHG_EST_TIMER     The timer event was initiated by this&n; *&t;                              module and is used to calculate the&n; *&t;                              port switches per hour.&n; *&t;SK_PNMI_EVT_CLEAR_COUNTER     The event clears all counters and&n; *&t;                              timestamps.&n; *&t;SK_PNMI_EVT_XMAC_RESET        The event is generated by the driver&n; *&t;                              before a hard reset of the XMAC is&n; *&t;                              performed. All counters will be saved&n; *&t;                              and added to the hardware counter&n; *&t;                              values after reset to grant continuous&n; *&t;                              counter values.&n; *&t;SK_PNMI_EVT_RLMT_PORT_UP      Generated by RLMT to notify that a port&n; *&t;                              went logically up. A trap message will&n; *&t;                              be stored to the trap buffer.&n; *&t;SK_PNMI_EVT_RLMT_PORT_DOWN    Generated by RLMT to notify that a port&n; *&t;                              went logically down. A trap message will&n; *&t;                              be stored to the trap buffer.&n; *&t;SK_PNMI_EVT_RLMT_SEGMENTATION Generated by RLMT to notify that two&n; *&t;                              spanning tree root bridges were&n; *&t;                              detected. A trap message will be stored&n; *&t;                              to the trap buffer.&n; *&t;SK_PNMI_EVT_RLMT_ACTIVE_DOWN  Notifies PNMI that an active port went&n; *&t;                              down. PNMI will not further add the&n; *&t;                              statistic values to the virtual port.&n; *&t;SK_PNMI_EVT_RLMT_ACTIVE_UP    Notifies PNMI that a port went up and&n; *&t;                              is now an active port. PNMI will now&n; *&t;                              add the statistic data of this port to&n; *&t;                              the virtual port.&n; *&t;SK_PNMI_EVT_RLMT_SET_NETS     Notifies PNMI about the net mode. The first Parameter&n; *&t;                              contains the number of nets. 1 means single net, 2 means&n; *&t;                              dual net. The second Parameter is -1&n; *&n; * Returns:&n; *&t;Always 0&n; */
 DECL|function|SkPnmiEvent
 r_int
 id|SkPnmiEvent
@@ -7368,6 +7542,10 @@ multiline_comment|/* Event dependent parameter */
 r_int
 r_int
 id|PhysPortIndex
+suffix:semicolon
+r_int
+r_int
+id|MaxNetNumber
 suffix:semicolon
 r_int
 id|CounterIndex
@@ -7408,6 +7586,9 @@ suffix:semicolon
 id|SK_PNMI_ESTIMATE
 op_star
 id|pEst
+suffix:semicolon
+id|SK_U32
+id|NetIndex
 suffix:semicolon
 macro_line|#ifdef DEBUG
 r_if
@@ -8265,6 +8446,49 @@ suffix:semicolon
 r_case
 id|SK_PNMI_EVT_CLEAR_COUNTER
 suffix:colon
+multiline_comment|/*&n;&t;&t; *  Param.Para32[0] contains the NetIndex (0 ..1).&n;&t;&t; *  Param.Para32[1] is reserved, contains -1.&n;&t;&t; */
+id|NetIndex
+op_assign
+(paren
+id|SK_U32
+)paren
+id|Param.Para32
+(braket
+l_int|0
+)braket
+suffix:semicolon
+macro_line|#ifdef DEBUG
+r_if
+c_cond
+(paren
+id|NetIndex
+op_ge
+id|pAC-&gt;Rlmt.NumNets
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_PNMI
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;PNMI: ERR: SkPnmiEvent: SK_PNMI_EVT_CLEAR_COUNTER parameter wrong, NetIndex=%d&bslash;n&quot;
+comma
+id|NetIndex
+)paren
+)paren
+suffix:semicolon
+r_return
+(paren
+l_int|0
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n;&t;&t; * Set all counters and timestamps to zero&n;&t;&t; */
 id|ResetCounter
 c_func
@@ -8272,8 +8496,11 @@ c_func
 id|pAC
 comma
 id|IoC
+comma
+id|NetIndex
 )paren
 suffix:semicolon
+multiline_comment|/* the according NetIndex is required&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;as a Parameter of the Event */
 r_break
 suffix:semicolon
 r_case
@@ -8488,7 +8715,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n;&t;&t; * Store a trap message in the trap buffer and generate&n;&t;&t; * an event for user space applications with the&n;&t;&t; * SK_DRIVER_SENDEVENT macro.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Store a trap message in the trap buffer and generate an event for&n;&t;&t; * user space applications with the SK_DRIVER_SENDEVENT macro.&n;&t;&t; */
 id|QueueRlmtPortTrap
 c_func
 (paren
@@ -8568,7 +8795,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n;&t;&t; * Store a trap message in the trap buffer and generate&n;&t;&t; * an event for user space applications with the&n;&t;&t; * SK_DRIVER_SENDEVENT macro.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Store a trap message in the trap buffer and generate an event for&n;&t;&t; * user space applications with the SK_DRIVER_SENDEVENT macro.&n;&t;&t; */
 id|QueueRlmtPortTrap
 c_func
 (paren
@@ -8613,6 +8840,16 @@ id|Param.Para32
 l_int|0
 )braket
 suffix:semicolon
+id|NetIndex
+op_assign
+(paren
+id|SK_U32
+)paren
+id|Param.Para32
+(braket
+l_int|1
+)braket
+suffix:semicolon
 macro_line|#ifdef DEBUG
 r_if
 c_cond
@@ -8639,7 +8876,50 @@ id|PhysPortIndex
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|NetIndex
+op_ge
+id|pAC-&gt;Rlmt.NumNets
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_PNMI
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;PNMI: ERR: SkPnmiEvent: SK_PNMI_EVT_RLMT_ACTIVE_DOWN parameter too high, NetIndex=%d&bslash;n&quot;
+comma
+id|NetIndex
+)paren
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
+multiline_comment|/*&n;&t;&t; * For now, ignore event if NetIndex != 0.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|Param.Para32
+(braket
+l_int|1
+)braket
+op_ne
+l_int|0
+)paren
+(brace
+r_return
+(paren
+l_int|0
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Nothing to do if port is already inactive&n;&t;&t; */
 r_if
 c_cond
@@ -8659,7 +8939,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Update statistic counters to calculate new offset&n;&t;&t; * for the virtual port and increment semaphore to&n;&t;&t; * indicate that an update was already done.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Update statistic counters to calculate new offset for the virtual&n;&t;&t; * port and increment semaphore to indicate that an update was already&n;&t;&t; * done.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -8695,7 +8975,7 @@ suffix:semicolon
 id|pAC-&gt;Pnmi.MacUpdatedFlag
 op_increment
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Calculate new counter offset for virtual port to&n;&t;&t; * grant continous counting on port switches. The virtual&n;&t;&t; * port consists of all currently active ports. The port&n;&t;&t; * down event indicates that a port is removed fromt the&n;&t;&t; * virtual port. Therefore add the counter value of the&n;&t;&t; * removed port to the CounterOffset for the virtual port&n;&t;&t; * to grant the same counter value.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Calculate new counter offset for virtual port to grant continous&n;&t;&t; * counting on port switches. The virtual port consists of all currently&n;&t;&t; * active ports. The port down event indicates that a port is removed&n;&t;&t; * from the virtual port. Therefore add the counter value of the removed&n;&t;&t; * port to the CounterOffset for the virtual port to grant the same&n;&t;&t; * counter value.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -8777,6 +9057,16 @@ id|Param.Para32
 l_int|0
 )braket
 suffix:semicolon
+id|NetIndex
+op_assign
+(paren
+id|SK_U32
+)paren
+id|Param.Para32
+(braket
+l_int|1
+)braket
+suffix:semicolon
 macro_line|#ifdef DEBUG
 r_if
 c_cond
@@ -8803,7 +9093,50 @@ id|PhysPortIndex
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|NetIndex
+op_ge
+id|pAC-&gt;Rlmt.NumNets
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_PNMI
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;PNMI: ERR: SkPnmiEvent: SK_PNMI_EVT_RLMT_ACTIVE_UP parameter too high, NetIndex=%d&bslash;n&quot;
+comma
+id|NetIndex
+)paren
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
+multiline_comment|/*&n;&t;&t; * For now, ignore event if NetIndex != 0.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|Param.Para32
+(braket
+l_int|1
+)braket
+op_ne
+l_int|0
+)paren
+(brace
+r_return
+(paren
+l_int|0
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Nothing to do if port is already active&n;&t;&t; */
 r_if
 c_cond
@@ -8822,7 +9155,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Statistic maintanence&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Statistic maintenance&n;&t;&t; */
 id|pAC-&gt;Pnmi.RlmtChangeCts
 op_increment
 suffix:semicolon
@@ -8838,7 +9171,7 @@ id|pAC
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Store a trap message in the trap buffer and generate&n;&t;&t; * an event for user space applications with the&n;&t;&t; * SK_DRIVER_SENDEVENT macro.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Store a trap message in the trap buffer and generate an event for&n;&t;&t; * user space applications with the SK_DRIVER_SENDEVENT macro.&n;&t;&t; */
 id|QueueRlmtNewMacTrap
 c_func
 (paren
@@ -8858,7 +9191,7 @@ comma
 id|IoC
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Update statistic counters to calculate new offset&n;&t;&t; * for the virtual port and increment semaphore to indicate&n;&t;&t; * that an update was already done.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Update statistic counters to calculate new offset for the virtual&n;&t;&t; * port and increment semaphore to indicate that an update was&n;&t;&t; * already done.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -8894,7 +9227,7 @@ suffix:semicolon
 id|pAC-&gt;Pnmi.MacUpdatedFlag
 op_increment
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Calculate new counter offset for virtual port to&n;&t;&t; * grant continous counting on port switches. A new port&n;&t;&t; * is added to the virtual port. Therefore substract the&n;&t;&t; * counter value of the new port from the CounterOffset&n;&t;&t; * for the virtual port to grant the same value.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Calculate new counter offset for virtual port to grant continous&n;&t;&t; * counting on port switches. A new port is added to the virtual port.&n;&t;&t; * Therefore substract the counter value of the new port from the&n;&t;&t; * CounterOffset for the virtual port to grant the same value.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -8963,87 +9296,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SK_PNMI_EVT_RLMT_PORT_SWITCH
-suffix:colon
-multiline_comment|/*&n;&t;&t; * This event becomes obsolete if RLMT generates directly&n;&t;&t; * the events SK_PNMI_EVT_RLMT_ACTIVE_DOWN and&n;&t;&t; * SK_PNMI_EVT_RLMT_ACTIVE_UP. The events are here emulated.&n;&t;&t; * PNMI handles that multiple ports may become active. &n;&t;&t; * Increment semaphore to indicate that an update was&n;&t;&t; * already done.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|MacUpdate
-c_func
-(paren
-id|pAC
-comma
-id|IoC
-comma
-l_int|0
-comma
-id|pAC-&gt;GIni.GIMacsFound
-op_minus
-l_int|1
-)paren
-op_ne
-id|SK_PNMI_ERR_OK
-)paren
-(brace
-id|SK_PNMI_CHECKFLAGS
-c_func
-(paren
-l_string|&quot;SkPnmiEvent: On return&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
-id|pAC-&gt;Pnmi.MacUpdatedFlag
-op_increment
-suffix:semicolon
-id|SkPnmiEvent
-c_func
-(paren
-id|pAC
-comma
-id|IoC
-comma
-id|SK_PNMI_EVT_RLMT_ACTIVE_DOWN
-comma
-id|Param
-)paren
-suffix:semicolon
-id|Param.Para32
-(braket
-l_int|0
-)braket
-op_assign
-id|Param.Para32
-(braket
-l_int|1
-)braket
-suffix:semicolon
-id|SkPnmiEvent
-c_func
-(paren
-id|pAC
-comma
-id|IoC
-comma
-id|SK_PNMI_EVT_RLMT_ACTIVE_UP
-comma
-id|Param
-)paren
-suffix:semicolon
-id|pAC-&gt;Pnmi.MacUpdatedFlag
-op_decrement
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
 id|SK_PNMI_EVT_RLMT_SEGMENTATION
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Store a trap message in the trap buffer and generate&n;&t;&t; * an event for user space applications with the&n;&t;&t; * SK_DRIVER_SENDEVENT macro.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Para.Para32[0] contains the NetIndex.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Store a trap message in the trap buffer and generate an event for&n;&t;&t; * user space applications with the SK_DRIVER_SENDEVENT macro.&n;&t;&t; */
 id|QueueSimpleTrap
 c_func
 (paren
@@ -9065,6 +9321,82 @@ id|IoC
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|SK_PNMI_EVT_RLMT_SET_NETS
+suffix:colon
+multiline_comment|/*&n;&t;&t; *  Param.Para32[0] contains the number of Nets.&n;&t;&t; *  Param.Para32[1] is reserved, contains -1.&n;&t;&t; */
+multiline_comment|/*&n;    &t; * Check number of nets&n;&t;&t; */
+id|MaxNetNumber
+op_assign
+id|pAC-&gt;GIni.GIMacsFound
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+(paren
+r_int
+r_int
+)paren
+id|Param.Para32
+(braket
+l_int|0
+)braket
+OL
+l_int|1
+)paren
+op_logical_or
+(paren
+(paren
+r_int
+r_int
+)paren
+id|Param.Para32
+(braket
+l_int|0
+)braket
+OG
+id|MaxNetNumber
+)paren
+)paren
+(brace
+r_return
+(paren
+id|SK_PNMI_ERR_UNKNOWN_NET
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+r_int
+r_int
+)paren
+id|Param.Para32
+(braket
+l_int|0
+)braket
+op_eq
+l_int|1
+)paren
+(brace
+multiline_comment|/* single net mode */
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_assign
+id|SK_FALSE
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* dual net mode */
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_assign
+id|SK_TRUE
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 r_break
@@ -9083,7 +9415,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * Private functions&n; *&n; */
-multiline_comment|/*****************************************************************************&n; *&n; * PnmiVar - Gets, presets, and sets single OIDs&n; *&n; * Description:&n; *&t;Looks up the requested OID, calls the corresponding handler&n; *&t;function, and passes the parameters with the get, preset, or&n; *&t;set command. The function is called by SkGePnmiGetVar,&n; *&t;SkGePnmiPreSetVar, or SkGePnmiSetVar.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_XXX. For details have a look to the description of the&n; *&t;calling functions.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * PnmiVar - Gets, presets, and sets single OIDs&n; *&n; * Description:&n; *&t;Looks up the requested OID, calls the corresponding handler&n; *&t;function, and passes the parameters with the get, preset, or&n; *&t;set command. The function is called by SkGePnmiGetVar,&n; *&t;SkGePnmiPreSetVar, or SkGePnmiSetVar.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_XXX. For details have a look to the description of the&n; *&t;calling functions.&n; *&t;SK_PNMI_ERR_UNKNOWN_NET  The requested NetIndex doesn&squot;t exist &n; */
 DECL|function|PnmiVar
 r_static
 r_int
@@ -9120,8 +9452,12 @@ comma
 multiline_comment|/* Total length of mgmt data */
 id|SK_U32
 id|Instance
-)paren
+comma
 multiline_comment|/* Instance (1..n) that is to be set or -1 */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 r_int
 r_int
@@ -9164,6 +9500,21 @@ id|SK_PNMI_ERR_UNKNOWN_OID
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* &n;     * Check NetIndex &n;     */
+r_if
+c_cond
+(paren
+id|NetIndex
+op_ge
+id|pAC-&gt;Rlmt.NumNets
+)paren
+(brace
+r_return
+(paren
+id|SK_PNMI_ERR_UNKNOWN_NET
+)paren
+suffix:semicolon
+)brace
 id|SK_PNMI_CHECKFLAGS
 c_func
 (paren
@@ -9195,6 +9546,8 @@ comma
 id|Instance
 comma
 id|TableIndex
+comma
+id|NetIndex
 )paren
 suffix:semicolon
 id|SK_PNMI_CHECKFLAGS
@@ -9209,7 +9562,7 @@ id|Ret
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * PnmiStruct - Presets and Sets data in structure SK_PNMI_STRUCT_DATA&n; *&n; * Description:&n; *&t;The return value of the function will also be stored in&n; *&t;SK_PNMI_STRUCT_DATA if the passed buffer has the minimum size of&n; *&t;SK_PNMI_MIN_STRUCT_SIZE. The sub-function runs through the IdTable,&n; *&t;checks which OIDs are able to set, and calls the handler function of&n; *&t;the OID to perform the set. The return value of the function will&n; *&t;also be stored in SK_PNMI_STRUCT_DATA if the passed buffer has the&n; *&t;minimum size of SK_PNMI_MIN_STRUCT_SIZE. The function is called&n; *&t;by SkGePnmiPreSetStruct and SkGePnmiSetStruct.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_XXX. The codes are described in the calling functions.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * PnmiStruct - Presets and Sets data in structure SK_PNMI_STRUCT_DATA&n; *&n; * Description:&n; *&t;The return value of the function will also be stored in&n; *&t;SK_PNMI_STRUCT_DATA if the passed buffer has the minimum size of&n; *&t;SK_PNMI_MIN_STRUCT_SIZE. The sub-function runs through the IdTable,&n; *&t;checks which OIDs are able to set, and calls the handler function of&n; *&t;the OID to perform the set. The return value of the function will&n; *&t;also be stored in SK_PNMI_STRUCT_DATA if the passed buffer has the&n; *&t;minimum size of SK_PNMI_MIN_STRUCT_SIZE. The function is called&n; *&t;by SkGePnmiPreSetStruct and SkGePnmiSetStruct.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_XXX. The codes are described in the calling functions.&n; *&t;SK_PNMI_ERR_UNKNOWN_NET  The requested NetIndex doesn&squot;t exist &n; */
 DECL|function|PnmiStruct
 r_static
 r_int
@@ -9238,8 +9591,12 @@ r_int
 r_int
 op_star
 id|pLen
-)paren
+comma
 multiline_comment|/* Length of buffer */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 r_int
 id|Ret
@@ -9318,6 +9675,21 @@ id|SK_PNMI_ERR_TOO_SHORT
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* &n;     * Check NetIndex &n;     */
+r_if
+c_cond
+(paren
+id|NetIndex
+op_ge
+id|pAC-&gt;Rlmt.NumNets
+)paren
+(brace
+r_return
+(paren
+id|SK_PNMI_ERR_UNKNOWN_NET
+)paren
+suffix:semicolon
+)brace
 id|SK_PNMI_CHECKFLAGS
 c_func
 (paren
@@ -9337,6 +9709,8 @@ c_func
 id|pAC
 comma
 id|IoC
+comma
+id|NetIndex
 )paren
 )paren
 op_ne
@@ -9563,6 +9937,8 @@ comma
 id|Instance
 comma
 id|TableIndex
+comma
+id|NetIndex
 )paren
 suffix:semicolon
 r_if
@@ -9707,6 +10083,8 @@ comma
 id|Instance
 comma
 id|TableIndex
+comma
+id|NetIndex
 )paren
 suffix:semicolon
 r_if
@@ -9857,7 +10235,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * OidStruct - Handler of OID_SKGE_ALL_DATA&n; *&n; * Description:&n; *&t;This OID performs a Get/Preset/SetStruct call and returns all data&n; *&t;in a SK_PNMI_STRUCT_DATA structure.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occurred.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; *&t;SK_PNMI_ERR_READ_ONLY    The OID is read-only and cannot be set.&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * OidStruct - Handler of OID_SKGE_ALL_DATA&n; *&n; * Description:&n; *&t;This OID performs a Get/Preset/SetStruct call and returns all data&n; *&t;in a SK_PNMI_STRUCT_DATA structure.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occured.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; *&t;SK_PNMI_ERR_READ_ONLY    The OID is read-only and cannot be set.&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
 DECL|function|OidStruct
 r_static
 r_int
@@ -9899,8 +10277,12 @@ multiline_comment|/* Instance (1..n) that is to be queried or -1 */
 r_int
 r_int
 id|TableIndex
-)paren
+comma
 multiline_comment|/* Index to the Id table */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 r_if
 c_cond
@@ -9984,6 +10366,8 @@ comma
 id|pBuf
 comma
 id|pLen
+comma
+id|NetIndex
 )paren
 )paren
 suffix:semicolon
@@ -10002,6 +10386,8 @@ comma
 id|pBuf
 comma
 id|pLen
+comma
+id|NetIndex
 )paren
 )paren
 suffix:semicolon
@@ -10020,6 +10406,8 @@ comma
 id|pBuf
 comma
 id|pLen
+comma
+id|NetIndex
 )paren
 )paren
 suffix:semicolon
@@ -10047,7 +10435,7 @@ id|SK_PNMI_ERR_GENERAL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * Perform - OID handler of OID_SKGE_ACTION&n; *&n; * Description:&n; *&t;None.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occurred.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; *&t;SK_PNMI_ERR_READ_ONLY    The OID is read-only and cannot be set.&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * Perform - OID handler of OID_SKGE_ACTION&n; *&n; * Description:&n; *&t;None.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occured.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; *&t;SK_PNMI_ERR_READ_ONLY    The OID is read-only and cannot be set.&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
 DECL|function|Perform
 r_static
 r_int
@@ -10089,8 +10477,12 @@ multiline_comment|/* Instance (1..n) that is to be queried or -1 */
 r_int
 r_int
 id|TableIndex
-)paren
+comma
 multiline_comment|/* Index to the Id table */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 r_int
 id|Ret
@@ -10361,6 +10753,8 @@ c_func
 id|pAC
 comma
 id|IoC
+comma
+id|NetIndex
 )paren
 suffix:semicolon
 r_break
@@ -10391,7 +10785,7 @@ id|SK_PNMI_ERR_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * Mac8023Stat - OID handler of OID_GEN_XXX and OID_802_3_XXX&n; *&n; * Description:&n; *&t;Retrieves the statistic values of the virtual port (logical&n; *&t;index 0). Only special OIDs of NDIS are handled which consist&n; *&t;of a 32 bit instead of a 64 bit value. The OIDs are public&n; *&t;because perhaps some other platform can use them too.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occurred.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * Mac8023Stat - OID handler of OID_GEN_XXX and OID_802_3_XXX&n; *&n; * Description:&n; *&t;Retrieves the statistic values of the virtual port (logical&n; *&t;index 0). Only special OIDs of NDIS are handled which consist&n; *&t;of a 32 bit instead of a 64 bit value. The OIDs are public&n; *&t;because perhaps some other platform can use them too.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occured.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
 DECL|function|Mac8023Stat
 r_static
 r_int
@@ -10433,8 +10827,12 @@ multiline_comment|/* Instance (1..n) that is to be queried or -1 */
 r_int
 r_int
 id|TableIndex
-)paren
+comma
 multiline_comment|/* Index to the Id table */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 r_int
 id|Ret
@@ -10674,7 +11072,12 @@ c_func
 id|pBuf
 comma
 op_amp
-id|pAC-&gt;Addr.PermanentMacAddress
+id|pAC-&gt;Addr.Net
+(braket
+id|NetIndex
+)braket
+dot
+id|PermanentMacAddress
 )paren
 suffix:semicolon
 op_star
@@ -10696,7 +11099,12 @@ c_func
 id|pBuf
 comma
 op_amp
-id|pAC-&gt;Addr.CurrentMacAddress
+id|pAC-&gt;Addr.Net
+(braket
+id|NetIndex
+)braket
+dot
+id|CurrentMacAddress
 )paren
 suffix:semicolon
 op_star
@@ -10728,6 +11136,8 @@ id|TableIndex
 )braket
 dot
 id|Param
+comma
+id|NetIndex
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * by default 32bit values are evaluated&n;&t;&t; */
@@ -10796,7 +11206,7 @@ id|SK_PNMI_ERR_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * MacPrivateStat - OID handler function of OID_SKGE_STAT_XXX&n; *&n; * Description:&n; *&t;Retrieves the XMAC statistic data.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occurred.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * MacPrivateStat - OID handler function of OID_SKGE_STAT_XXX&n; *&n; * Description:&n; *&t;Retrieves the XMAC statistic data.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occured.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
 DECL|function|MacPrivateStat
 r_static
 r_int
@@ -10838,8 +11248,12 @@ multiline_comment|/* Instance (1..n) that is to be queried or -1 */
 r_int
 r_int
 id|TableIndex
-)paren
+comma
 multiline_comment|/* Index to the Id table */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 r_int
 r_int
@@ -10883,6 +11297,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_eq
+id|SK_TRUE
+)paren
+(brace
+multiline_comment|/* Dual net mode */
+id|LogPortMax
+op_decrement
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 (paren
 id|Instance
 op_ne
@@ -10896,6 +11323,8 @@ l_int|1
 )paren
 )paren
 (brace
+multiline_comment|/* Only one specific instance is queried */
+multiline_comment|/* Check instance range */
 r_if
 c_cond
 (paren
@@ -10940,6 +11369,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* Instance == (SK_U32)(-1), get all Instances of that OID */
 id|LogPortIndex
 op_assign
 l_int|0
@@ -11020,7 +11450,7 @@ id|IoC
 comma
 l_int|0
 comma
-id|PhysPortMax
+id|pAC-&gt;GIni.GIMacsFound
 op_minus
 l_int|1
 )paren
@@ -11093,6 +11523,8 @@ id|TableIndex
 )braket
 dot
 id|Param
+comma
+id|NetIndex
 )paren
 op_minus
 id|GetStatVal
@@ -11105,6 +11537,8 @@ comma
 id|LogPortIndex
 comma
 id|SK_PNMI_HRX_LONGFRAMES
+comma
+id|NetIndex
 )paren
 suffix:semicolon
 id|SK_PNMI_STORE_U64
@@ -11138,6 +11572,8 @@ id|TableIndex
 )braket
 dot
 id|Param
+comma
+id|NetIndex
 )paren
 suffix:semicolon
 id|SK_PNMI_STORE_U64
@@ -11175,7 +11611,7 @@ id|SK_PNMI_ERR_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * Addr - OID handler function of OID_SKGE_PHYS_CUR_ADDR and _FAC_ADDR&n; *&n; * Description:&n; *&t;Get/Presets/Sets the current and factory MAC address. The MAC&n; *&t;address of the virtual port, which is reported to the OS, may&n; *&t;not be changed, but the physical ones. A set to the virtual port&n; *&t;will be ignored. No error should be reported because otherwise&n; *&t;a multiple instance set (-1) would always fail.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occurred.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; *&t;SK_PNMI_ERR_READ_ONLY    The OID is read-only and cannot be set.&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * Addr - OID handler function of OID_SKGE_PHYS_CUR_ADDR and _FAC_ADDR&n; *&n; * Description:&n; *&t;Get/Presets/Sets the current and factory MAC address. The MAC&n; *&t;address of the virtual port, which is reported to the OS, may&n; *&t;not be changed, but the physical ones. A set to the virtual port&n; *&t;will be ignored. No error should be reported because otherwise&n; *&t;a multiple instance set (-1) would always fail.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occured.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; *&t;SK_PNMI_ERR_READ_ONLY    The OID is read-only and cannot be set.&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
 DECL|function|Addr
 r_static
 r_int
@@ -11217,8 +11653,12 @@ multiline_comment|/* Instance (1..n) that is to be queried or -1 */
 r_int
 r_int
 id|TableIndex
-)paren
+comma
 multiline_comment|/* Index to the Id table */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 r_int
 id|Ret
@@ -11249,7 +11689,7 @@ id|Offset
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Calculate instance if wished&n;&t; */
+multiline_comment|/*&n;&t; * Calculate instance if wished. MAC index 0 is the virtual&n;&t; * MAC.&n;&t; */
 id|PhysPortMax
 op_assign
 id|pAC-&gt;GIni.GIMacsFound
@@ -11262,6 +11702,19 @@ c_func
 id|PhysPortMax
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_eq
+id|SK_TRUE
+)paren
+(brace
+multiline_comment|/* Dual net mode */
+id|LogPortMax
+op_decrement
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -11278,6 +11731,8 @@ l_int|1
 )paren
 )paren
 (brace
+multiline_comment|/* Only one specific instance is queried */
+multiline_comment|/* Check instance range */
 r_if
 c_cond
 (paren
@@ -11322,6 +11777,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* Instance == (SK_U32)(-1), get all Instances of that OID */
 id|LogPortIndex
 op_assign
 l_int|0
@@ -11411,7 +11867,10 @@ op_plus
 id|Offset
 comma
 op_amp
-id|pAC-&gt;Addr
+id|pAC-&gt;Addr.Net
+(braket
+id|NetIndex
+)braket
 dot
 id|CurrentMacAddress
 )paren
@@ -11437,9 +11896,7 @@ op_plus
 id|Offset
 comma
 op_amp
-id|pAC-&gt;Addr
-dot
-id|Port
+id|pAC-&gt;Addr.Port
 (braket
 id|PhysPortIndex
 )braket
@@ -11473,7 +11930,10 @@ op_plus
 id|Offset
 comma
 op_amp
-id|pAC-&gt;Addr
+id|pAC-&gt;Addr.Net
+(braket
+id|NetIndex
+)braket
 dot
 id|PermanentMacAddress
 )paren
@@ -11499,9 +11959,7 @@ op_plus
 id|Offset
 comma
 op_amp
-id|pAC-&gt;Addr
-dot
-id|Port
+id|pAC-&gt;Addr.Port
 (braket
 id|PhysPortIndex
 )braket
@@ -11794,7 +12252,7 @@ id|SK_PNMI_ERR_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * CsumStat - OID handler function of OID_SKGE_CHKSM_XXX&n; *&n; * Description:&n; *&t;Retrieves the statistic values of the CSUM module. The CSUM data&n; *&t;structure must be available in the SK_AC even if the CSUM module&n; *&t;is not included, because PNMI reads the statistic data from the&n; *&t;CSUM part of SK_AC directly.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occurred.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * CsumStat - OID handler function of OID_SKGE_CHKSM_XXX&n; *&n; * Description:&n; *&t;Retrieves the statistic values of the CSUM module. The CSUM data&n; *&t;structure must be available in the SK_AC even if the CSUM module&n; *&t;is not included, because PNMI reads the statistic data from the&n; *&t;CSUM part of SK_AC directly.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occured.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
 DECL|function|CsumStat
 r_static
 r_int
@@ -11836,8 +12294,12 @@ multiline_comment|/* Instance (1..n) that is to be queried or -1 */
 r_int
 r_int
 id|TableIndex
-)paren
+comma
 multiline_comment|/* Index to the Id table */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 r_int
 r_int
@@ -11910,11 +12372,9 @@ l_int|1
 suffix:semicolon
 id|Limit
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|Instance
+id|Index
+op_plus
+l_int|1
 suffix:semicolon
 )brace
 r_else
@@ -12013,6 +12473,9 @@ id|StatVal
 op_assign
 id|pAC-&gt;Csum.ProtoStats
 (braket
+id|NetIndex
+)braket
+(braket
 id|Index
 )braket
 dot
@@ -12026,6 +12489,9 @@ suffix:colon
 id|StatVal
 op_assign
 id|pAC-&gt;Csum.ProtoStats
+(braket
+id|NetIndex
+)braket
 (braket
 id|Index
 )braket
@@ -12041,6 +12507,9 @@ id|StatVal
 op_assign
 id|pAC-&gt;Csum.ProtoStats
 (braket
+id|NetIndex
+)braket
+(braket
 id|Index
 )braket
 dot
@@ -12055,6 +12524,9 @@ id|StatVal
 op_assign
 id|pAC-&gt;Csum.ProtoStats
 (braket
+id|NetIndex
+)braket
+(braket
 id|Index
 )braket
 dot
@@ -12068,6 +12540,9 @@ suffix:colon
 id|StatVal
 op_assign
 id|pAC-&gt;Csum.ProtoStats
+(braket
+id|NetIndex
+)braket
 (braket
 id|Index
 )braket
@@ -12131,7 +12606,7 @@ id|SK_PNMI_ERR_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * SensorStat - OID handler function of OID_SKGE_SENSOR_XXX&n; *&n; * Description:&n; *&t;Retrieves the statistic values of the I2C module, which handles&n; *&t;the temperature and voltage sensors.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occurred.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * SensorStat - OID handler function of OID_SKGE_SENSOR_XXX&n; *&n; * Description:&n; *&t;Retrieves the statistic values of the I2C module, which handles&n; *&t;the temperature and voltage sensors.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occured.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
 DECL|function|SensorStat
 r_static
 r_int
@@ -12173,8 +12648,12 @@ multiline_comment|/* Instance (1..n) that is to be queried or -1 */
 r_int
 r_int
 id|TableIndex
-)paren
+comma
 multiline_comment|/* Index to the Id table */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 r_int
 r_int
@@ -13067,7 +13546,7 @@ id|SK_PNMI_ERR_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * Vpd - OID handler function of OID_SKGE_VPD_XXX&n; *&n; * Description:&n; *&t;Get/preset/set of VPD data. As instance the name of a VPD key&n; *&t;can be passed. The Instance parameter is a SK_U32 and can be&n; *&t;used as a string buffer for the VPD key, because their maximum&n; *&t;length is 4 byte.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occurred.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; *&t;SK_PNMI_ERR_READ_ONLY    The OID is read-only and cannot be set.&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * Vpd - OID handler function of OID_SKGE_VPD_XXX&n; *&n; * Description:&n; *&t;Get/preset/set of VPD data. As instance the name of a VPD key&n; *&t;can be passed. The Instance parameter is a SK_U32 and can be&n; *&t;used as a string buffer for the VPD key, because their maximum&n; *&t;length is 4 byte.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occured.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; *&t;SK_PNMI_ERR_READ_ONLY    The OID is read-only and cannot be set.&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
 DECL|function|Vpd
 r_static
 r_int
@@ -13109,8 +13588,12 @@ multiline_comment|/* Instance (1..n) that is to be queried or -1 */
 r_int
 r_int
 id|TableIndex
-)paren
+comma
 multiline_comment|/* Index to the Id table */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 id|SK_VPD_STATUS
 op_star
@@ -13129,16 +13612,16 @@ suffix:semicolon
 r_char
 id|KeyArr
 (braket
-id|SK_PNMI_VPD_ARR_SIZE
+id|SK_PNMI_VPD_ENTRIES
 )braket
 (braket
-id|SK_PNMI_VPD_STR_SIZE
+id|SK_PNMI_VPD_KEY_SIZE
 )braket
 suffix:semicolon
 r_char
 id|KeyStr
 (braket
-id|SK_PNMI_VPD_STR_SIZE
+id|SK_PNMI_VPD_KEY_SIZE
 )braket
 suffix:semicolon
 r_int
@@ -14826,7 +15309,7 @@ id|SK_PNMI_ERR_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * General - OID handler function of various single instance OIDs&n; *&n; * Description:&n; *&t;The code is simple. No description necessary.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occurred.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * General - OID handler function of various single instance OIDs&n; *&n; * Description:&n; *&t;The code is simple. No description necessary.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occured.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
 DECL|function|General
 r_static
 r_int
@@ -14868,8 +15351,12 @@ multiline_comment|/* Instance (1..n) that is to be queried or -1 */
 r_int
 r_int
 id|TableIndex
-)paren
+comma
 multiline_comment|/* Index to the Id table */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 r_int
 id|Ret
@@ -15366,6 +15853,8 @@ comma
 l_int|0
 comma
 id|SK_PNMI_HRX_MISSED
+comma
+id|NetIndex
 )paren
 op_plus
 id|GetStatVal
@@ -15378,6 +15867,8 @@ comma
 l_int|0
 comma
 id|SK_PNMI_HRX_FRAMING
+comma
+id|NetIndex
 )paren
 op_plus
 id|GetStatVal
@@ -15390,6 +15881,8 @@ comma
 l_int|0
 comma
 id|SK_PNMI_HRX_OVERFLOW
+comma
+id|NetIndex
 )paren
 op_plus
 id|GetStatVal
@@ -15402,6 +15895,8 @@ comma
 l_int|0
 comma
 id|SK_PNMI_HRX_JABBER
+comma
+id|NetIndex
 )paren
 op_plus
 id|GetStatVal
@@ -15414,6 +15909,8 @@ comma
 l_int|0
 comma
 id|SK_PNMI_HRX_CARRIER
+comma
+id|NetIndex
 )paren
 op_plus
 id|GetStatVal
@@ -15426,6 +15923,8 @@ comma
 l_int|0
 comma
 id|SK_PNMI_HRX_IRLENGTH
+comma
+id|NetIndex
 )paren
 op_plus
 id|GetStatVal
@@ -15438,6 +15937,8 @@ comma
 l_int|0
 comma
 id|SK_PNMI_HRX_SYMBOL
+comma
+id|NetIndex
 )paren
 op_plus
 id|GetStatVal
@@ -15450,6 +15951,8 @@ comma
 l_int|0
 comma
 id|SK_PNMI_HRX_SHORTS
+comma
+id|NetIndex
 )paren
 op_plus
 id|GetStatVal
@@ -15462,6 +15965,8 @@ comma
 l_int|0
 comma
 id|SK_PNMI_HRX_RUNT
+comma
+id|NetIndex
 )paren
 op_plus
 id|GetStatVal
@@ -15474,6 +15979,8 @@ comma
 l_int|0
 comma
 id|SK_PNMI_HRX_TOO_LONG
+comma
+id|NetIndex
 )paren
 op_minus
 id|GetStatVal
@@ -15486,6 +15993,8 @@ comma
 l_int|0
 comma
 id|SK_PNMI_HRX_LONGFRAMES
+comma
+id|NetIndex
 )paren
 op_plus
 id|GetStatVal
@@ -15498,6 +16007,8 @@ comma
 l_int|0
 comma
 id|SK_PNMI_HRX_FCS
+comma
+id|NetIndex
 )paren
 op_plus
 id|GetStatVal
@@ -15510,6 +16021,8 @@ comma
 l_int|0
 comma
 id|SK_PNMI_HRX_CEXT
+comma
+id|NetIndex
 )paren
 suffix:semicolon
 r_break
@@ -15535,6 +16048,8 @@ comma
 l_int|0
 comma
 id|SK_PNMI_HTX_EXCESS_COL
+comma
+id|NetIndex
 )paren
 op_plus
 id|GetStatVal
@@ -15547,6 +16062,8 @@ comma
 l_int|0
 comma
 id|SK_PNMI_HTX_LATE_COL
+comma
+id|NetIndex
 )paren
 op_plus
 id|GetStatVal
@@ -15559,6 +16076,8 @@ comma
 l_int|0
 comma
 id|SK_PNMI_HTX_UNDERRUN
+comma
+id|NetIndex
 )paren
 op_plus
 id|GetStatVal
@@ -15571,6 +16090,8 @@ comma
 l_int|0
 comma
 id|SK_PNMI_HTX_CARRIER
+comma
+id|NetIndex
 )paren
 op_plus
 id|GetStatVal
@@ -15583,6 +16104,8 @@ comma
 l_int|0
 comma
 id|SK_PNMI_HTX_EXCESS_COL
+comma
+id|NetIndex
 )paren
 suffix:semicolon
 r_break
@@ -16514,10 +17037,45 @@ suffix:semicolon
 r_case
 id|OID_SKGE_TX_SW_QUEUE_LEN
 suffix:colon
+multiline_comment|/* Dual net mode */
+r_if
+c_cond
+(paren
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_eq
+id|SK_TRUE
+)paren
+(brace
 id|Val64
 op_assign
-id|pAC-&gt;Pnmi.TxSwQueueLen
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|TxSwQueueLen
 suffix:semicolon
+)brace
+multiline_comment|/* Single net mode */
+r_else
+(brace
+id|Val64
+op_assign
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|0
+)braket
+dot
+id|TxSwQueueLen
+op_plus
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|1
+)braket
+dot
+id|TxSwQueueLen
+suffix:semicolon
+)brace
 id|SK_PNMI_STORE_U64
 c_func
 (paren
@@ -16539,10 +17097,45 @@ suffix:semicolon
 r_case
 id|OID_SKGE_TX_SW_QUEUE_MAX
 suffix:colon
+multiline_comment|/* Dual net mode */
+r_if
+c_cond
+(paren
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_eq
+id|SK_TRUE
+)paren
+(brace
 id|Val64
 op_assign
-id|pAC-&gt;Pnmi.TxSwQueueMax
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|TxSwQueueMax
 suffix:semicolon
+)brace
+multiline_comment|/* Single net mode */
+r_else
+(brace
+id|Val64
+op_assign
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|0
+)braket
+dot
+id|TxSwQueueMax
+op_plus
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|1
+)braket
+dot
+id|TxSwQueueMax
+suffix:semicolon
+)brace
 id|SK_PNMI_STORE_U64
 c_func
 (paren
@@ -16564,10 +17157,45 @@ suffix:semicolon
 r_case
 id|OID_SKGE_TX_RETRY
 suffix:colon
+multiline_comment|/* Dual net mode */
+r_if
+c_cond
+(paren
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_eq
+id|SK_TRUE
+)paren
+(brace
 id|Val64
 op_assign
-id|pAC-&gt;Pnmi.TxRetryCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|TxRetryCts
 suffix:semicolon
+)brace
+multiline_comment|/* Single net mode */
+r_else
+(brace
+id|Val64
+op_assign
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|0
+)braket
+dot
+id|TxRetryCts
+op_plus
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|1
+)braket
+dot
+id|TxRetryCts
+suffix:semicolon
+)brace
 id|SK_PNMI_STORE_U64
 c_func
 (paren
@@ -16589,10 +17217,45 @@ suffix:semicolon
 r_case
 id|OID_SKGE_RX_INTR_CTS
 suffix:colon
+multiline_comment|/* Dual net mode */
+r_if
+c_cond
+(paren
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_eq
+id|SK_TRUE
+)paren
+(brace
 id|Val64
 op_assign
-id|pAC-&gt;Pnmi.RxIntrCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|RxIntrCts
 suffix:semicolon
+)brace
+multiline_comment|/* Single net mode */
+r_else
+(brace
+id|Val64
+op_assign
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|0
+)braket
+dot
+id|RxIntrCts
+op_plus
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|1
+)braket
+dot
+id|RxIntrCts
+suffix:semicolon
+)brace
 id|SK_PNMI_STORE_U64
 c_func
 (paren
@@ -16614,10 +17277,45 @@ suffix:semicolon
 r_case
 id|OID_SKGE_TX_INTR_CTS
 suffix:colon
+multiline_comment|/* Dual net mode */
+r_if
+c_cond
+(paren
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_eq
+id|SK_TRUE
+)paren
+(brace
 id|Val64
 op_assign
-id|pAC-&gt;Pnmi.TxIntrCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|TxIntrCts
 suffix:semicolon
+)brace
+multiline_comment|/* Single net mode */
+r_else
+(brace
+id|Val64
+op_assign
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|0
+)braket
+dot
+id|TxIntrCts
+op_plus
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|1
+)braket
+dot
+id|TxIntrCts
+suffix:semicolon
+)brace
 id|SK_PNMI_STORE_U64
 c_func
 (paren
@@ -16639,10 +17337,45 @@ suffix:semicolon
 r_case
 id|OID_SKGE_RX_NO_BUF_CTS
 suffix:colon
+multiline_comment|/* Dual net mode */
+r_if
+c_cond
+(paren
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_eq
+id|SK_TRUE
+)paren
+(brace
 id|Val64
 op_assign
-id|pAC-&gt;Pnmi.RxNoBufCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|RxNoBufCts
 suffix:semicolon
+)brace
+multiline_comment|/* Single net mode */
+r_else
+(brace
+id|Val64
+op_assign
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|0
+)braket
+dot
+id|RxNoBufCts
+op_plus
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|1
+)braket
+dot
+id|RxNoBufCts
+suffix:semicolon
+)brace
 id|SK_PNMI_STORE_U64
 c_func
 (paren
@@ -16664,10 +17397,45 @@ suffix:semicolon
 r_case
 id|OID_SKGE_TX_NO_BUF_CTS
 suffix:colon
+multiline_comment|/* Dual net mode */
+r_if
+c_cond
+(paren
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_eq
+id|SK_TRUE
+)paren
+(brace
 id|Val64
 op_assign
-id|pAC-&gt;Pnmi.TxNoBufCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|TxNoBufCts
 suffix:semicolon
+)brace
+multiline_comment|/* Single net mode */
+r_else
+(brace
+id|Val64
+op_assign
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|0
+)braket
+dot
+id|TxNoBufCts
+op_plus
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|1
+)braket
+dot
+id|TxNoBufCts
+suffix:semicolon
+)brace
 id|SK_PNMI_STORE_U64
 c_func
 (paren
@@ -16689,10 +17457,45 @@ suffix:semicolon
 r_case
 id|OID_SKGE_TX_USED_DESCR_NO
 suffix:colon
+multiline_comment|/* Dual net mode */
+r_if
+c_cond
+(paren
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_eq
+id|SK_TRUE
+)paren
+(brace
 id|Val64
 op_assign
-id|pAC-&gt;Pnmi.TxUsedDescrNo
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|TxUsedDescrNo
 suffix:semicolon
+)brace
+multiline_comment|/* Single net mode */
+r_else
+(brace
+id|Val64
+op_assign
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|0
+)braket
+dot
+id|TxUsedDescrNo
+op_plus
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|1
+)braket
+dot
+id|TxUsedDescrNo
+suffix:semicolon
+)brace
 id|SK_PNMI_STORE_U64
 c_func
 (paren
@@ -16714,10 +17517,45 @@ suffix:semicolon
 r_case
 id|OID_SKGE_RX_DELIVERED_CTS
 suffix:colon
+multiline_comment|/* Dual net mode */
+r_if
+c_cond
+(paren
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_eq
+id|SK_TRUE
+)paren
+(brace
 id|Val64
 op_assign
-id|pAC-&gt;Pnmi.RxDeliveredCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|RxDeliveredCts
 suffix:semicolon
+)brace
+multiline_comment|/* Single net mode */
+r_else
+(brace
+id|Val64
+op_assign
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|0
+)braket
+dot
+id|RxDeliveredCts
+op_plus
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|1
+)braket
+dot
+id|RxDeliveredCts
+suffix:semicolon
+)brace
 id|SK_PNMI_STORE_U64
 c_func
 (paren
@@ -16739,10 +17577,45 @@ suffix:semicolon
 r_case
 id|OID_SKGE_RX_OCTETS_DELIV_CTS
 suffix:colon
+multiline_comment|/* Dual net mode */
+r_if
+c_cond
+(paren
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_eq
+id|SK_TRUE
+)paren
+(brace
 id|Val64
 op_assign
-id|pAC-&gt;Pnmi.RxOctetsDeliveredCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|RxOctetsDeliveredCts
 suffix:semicolon
+)brace
+multiline_comment|/* Single net mode */
+r_else
+(brace
+id|Val64
+op_assign
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|0
+)braket
+dot
+id|RxOctetsDeliveredCts
+op_plus
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|1
+)braket
+dot
+id|RxOctetsDeliveredCts
+suffix:semicolon
+)brace
 id|SK_PNMI_STORE_U64
 c_func
 (paren
@@ -16806,12 +17679,49 @@ suffix:semicolon
 r_case
 id|OID_SKGE_IN_ERRORS_CTS
 suffix:colon
+multiline_comment|/* Dual net mode */
+r_if
+c_cond
+(paren
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_eq
+id|SK_TRUE
+)paren
+(brace
 id|Val64
 op_assign
 id|Val64RxHwErrs
 op_plus
-id|pAC-&gt;Pnmi.RxNoBufCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|RxNoBufCts
 suffix:semicolon
+)brace
+multiline_comment|/* Single net mode */
+r_else
+(brace
+id|Val64
+op_assign
+id|Val64RxHwErrs
+op_plus
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|0
+)braket
+dot
+id|RxNoBufCts
+op_plus
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|1
+)braket
+dot
+id|RxNoBufCts
+suffix:semicolon
+)brace
 id|SK_PNMI_STORE_U64
 c_func
 (paren
@@ -16833,12 +17743,49 @@ suffix:semicolon
 r_case
 id|OID_SKGE_OUT_ERROR_CTS
 suffix:colon
+multiline_comment|/* Dual net mode */
+r_if
+c_cond
+(paren
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_eq
+id|SK_TRUE
+)paren
+(brace
 id|Val64
 op_assign
 id|Val64TxHwErrs
 op_plus
-id|pAC-&gt;Pnmi.TxNoBufCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|TxNoBufCts
 suffix:semicolon
+)brace
+multiline_comment|/* Single net mode */
+r_else
+(brace
+id|Val64
+op_assign
+id|Val64TxHwErrs
+op_plus
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|0
+)braket
+dot
+id|TxNoBufCts
+op_plus
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|1
+)braket
+dot
+id|TxNoBufCts
+suffix:semicolon
+)brace
 id|SK_PNMI_STORE_U64
 c_func
 (paren
@@ -16860,10 +17807,45 @@ suffix:semicolon
 r_case
 id|OID_SKGE_ERR_RECOVERY_CTS
 suffix:colon
+multiline_comment|/* Dual net mode */
+r_if
+c_cond
+(paren
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_eq
+id|SK_TRUE
+)paren
+(brace
 id|Val64
 op_assign
-id|pAC-&gt;Pnmi.ErrRecoveryCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|ErrRecoveryCts
 suffix:semicolon
+)brace
+multiline_comment|/* Single net mode */
+r_else
+(brace
+id|Val64
+op_assign
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|0
+)braket
+dot
+id|ErrRecoveryCts
+op_plus
+id|pAC-&gt;Pnmi.Port
+(braket
+l_int|1
+)braket
+dot
+id|ErrRecoveryCts
+suffix:semicolon
+)brace
 id|SK_PNMI_STORE_U64
 c_func
 (paren
@@ -16951,7 +17933,12 @@ id|Val64
 op_assign
 id|Val64RxHwErrs
 op_plus
-id|pAC-&gt;Pnmi.RxNoBufCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|RxNoBufCts
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * by default 32bit values are evaluated&n;&t;&t; */
 r_if
@@ -16961,9 +17948,6 @@ op_logical_neg
 id|Is64BitReq
 )paren
 (brace
-id|SK_U32
-id|Val32
-suffix:semicolon
 id|Val32
 op_assign
 (paren
@@ -17016,7 +18000,12 @@ id|Val64
 op_assign
 id|Val64TxHwErrs
 op_plus
-id|pAC-&gt;Pnmi.TxNoBufCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|TxNoBufCts
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * by default 32bit values are evaluated&n;&t;&t; */
 r_if
@@ -17026,9 +18015,6 @@ op_logical_neg
 id|Is64BitReq
 )paren
 (brace
-id|SK_U32
-id|Val32
-suffix:semicolon
 id|Val32
 op_assign
 (paren
@@ -17079,7 +18065,12 @@ id|OID_GEN_RCV_NO_BUFFER
 suffix:colon
 id|Val64
 op_assign
-id|pAC-&gt;Pnmi.RxNoBufCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|RxNoBufCts
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * by default 32bit values are evaluated&n;&t;&t; */
 r_if
@@ -17089,9 +18080,6 @@ op_logical_neg
 id|Is64BitReq
 )paren
 (brace
-id|SK_U32
-id|Val32
-suffix:semicolon
 id|Val32
 op_assign
 (paren
@@ -17145,7 +18133,12 @@ op_assign
 (paren
 id|SK_U32
 )paren
-id|pAC-&gt;Pnmi.TxSwQueueLen
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|TxSwQueueLen
 suffix:semicolon
 id|SK_PNMI_STORE_U32
 c_func
@@ -17228,7 +18221,7 @@ id|SK_PNMI_ERR_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * Rlmt - OID handler function of OID_SKGE_RLMT_XXX single instance.&n; *&n; * Description:&n; *&t;Get/Presets/Sets the RLMT OIDs.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occurred.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; *&t;SK_PNMI_ERR_READ_ONLY    The OID is read-only and cannot be set.&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * Rlmt - OID handler function of OID_SKGE_RLMT_XXX single instance.&n; *&n; * Description:&n; *&t;Get/Presets/Sets the RLMT OIDs.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occured.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; *&t;SK_PNMI_ERR_READ_ONLY    The OID is read-only and cannot be set.&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
 DECL|function|Rlmt
 r_static
 r_int
@@ -17270,8 +18263,12 @@ multiline_comment|/* Instance (1..n) that is to be queried or -1 */
 r_int
 r_int
 id|TableIndex
-)paren
+comma
 multiline_comment|/* Index to the Id table */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 r_int
 id|Ret
@@ -17485,6 +18482,8 @@ c_func
 id|pAC
 comma
 id|IoC
+comma
+id|NetIndex
 )paren
 )paren
 op_ne
@@ -17521,7 +18520,12 @@ op_assign
 (paren
 r_char
 )paren
-id|pAC-&gt;Rlmt.RlmtMode
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|0
+)braket
+dot
+id|RlmtMode
 suffix:semicolon
 op_star
 id|pLen
@@ -17638,7 +18642,12 @@ r_char
 id|SK_PNMI_PORT_PHYS2LOG
 c_func
 (paren
-id|pAC-&gt;Rlmt.MacPreferred
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIndex
+)braket
+dot
+id|Preference
 )paren
 suffix:semicolon
 op_star
@@ -17916,6 +18925,13 @@ op_star
 id|pBuf
 )paren
 suffix:semicolon
+id|EventParam.Para32
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -18079,6 +19095,13 @@ id|pBuf
 op_minus
 l_int|1
 suffix:semicolon
+id|EventParam.Para32
+(braket
+l_int|1
+)braket
+op_assign
+id|NetIndex
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -18232,7 +19255,7 @@ id|SK_PNMI_ERR_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * RlmtStat - OID handler function of OID_SKGE_RLMT_XXX multiple instance.&n; *&n; * Description:&n; *&t;Performs get requests on multiple instance variables.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occurred.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * RlmtStat - OID handler function of OID_SKGE_RLMT_XXX multiple instance.&n; *&n; * Description:&n; *&t;Performs get requests on multiple instance variables.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occured.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
 DECL|function|RlmtStat
 r_static
 r_int
@@ -18274,8 +19297,12 @@ multiline_comment|/* Instance (1..n) that is to be queried or -1 */
 r_int
 r_int
 id|TableIndex
-)paren
+comma
 multiline_comment|/* Index to the Id table */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 r_int
 r_int
@@ -18323,6 +19350,7 @@ l_int|1
 )paren
 )paren
 (brace
+multiline_comment|/* Check instance range */
 r_if
 c_cond
 (paren
@@ -18350,12 +19378,28 @@ id|SK_PNMI_ERR_UNKNOWN_INST
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Single net mode */
 id|PhysPortIndex
 op_assign
 id|Instance
 op_minus
 l_int|1
 suffix:semicolon
+multiline_comment|/* Dual net mode */
+r_if
+c_cond
+(paren
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_eq
+id|SK_TRUE
+)paren
+(brace
+id|PhysPortIndex
+op_assign
+id|NetIndex
+suffix:semicolon
+)brace
+multiline_comment|/* Both net modes */
 id|Limit
 op_assign
 id|PhysPortIndex
@@ -18365,6 +19409,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* Single net mode */
 id|PhysPortIndex
 op_assign
 l_int|0
@@ -18373,6 +19418,26 @@ id|Limit
 op_assign
 id|PhysPortMax
 suffix:semicolon
+multiline_comment|/* Dual net mode */
+r_if
+c_cond
+(paren
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_eq
+id|SK_TRUE
+)paren
+(brace
+id|PhysPortIndex
+op_assign
+id|NetIndex
+suffix:semicolon
+id|Limit
+op_assign
+id|PhysPortIndex
+op_plus
+l_int|1
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * Currently only get requests are allowed.&n;&t; */
 r_if
@@ -18537,6 +19602,8 @@ c_func
 id|pAC
 comma
 id|IoC
+comma
+id|NetIndex
 )paren
 )paren
 op_ne
@@ -18846,7 +19913,7 @@ id|SK_PNMI_ERR_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * MacPrivateConf - OID handler function of OIDs concerning the configuration&n; *&n; * Description:&n; *&t;Get/Presets/Sets the OIDs concerning the configuration.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occurred.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; *&t;SK_PNMI_ERR_READ_ONLY    The OID is read-only and cannot be set.&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * MacPrivateConf - OID handler function of OIDs concerning the configuration&n; *&n; * Description:&n; *&t;Get/Presets/Sets the OIDs concerning the configuration.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occured.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; *&t;SK_PNMI_ERR_READ_ONLY    The OID is read-only and cannot be set.&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
 DECL|function|MacPrivateConf
 r_static
 r_int
@@ -18888,8 +19955,12 @@ multiline_comment|/* Instance (1..n) that is to be queried or -1 */
 r_int
 r_int
 id|TableIndex
-)paren
+comma
 multiline_comment|/* Index to the Id table */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 r_int
 r_int
@@ -18924,6 +19995,9 @@ suffix:semicolon
 id|SK_EVPARA
 id|EventParam
 suffix:semicolon
+id|SK_U32
+id|Val32
+suffix:semicolon
 multiline_comment|/*&n;&t; * Calculate instance if wished. MAC index 0 is the virtual&n;&t; * MAC.&n;&t; */
 id|PhysPortMax
 op_assign
@@ -18940,6 +20014,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_eq
+id|SK_TRUE
+)paren
+(brace
+multiline_comment|/* Dual net mode */
+id|LogPortMax
+op_decrement
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 (paren
 id|Instance
 op_ne
@@ -18953,6 +20040,8 @@ l_int|1
 )paren
 )paren
 (brace
+multiline_comment|/* Only one specific instance is queried */
+multiline_comment|/* Check instance range */
 r_if
 c_cond
 (paren
@@ -18997,6 +20086,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* Instance == (SK_U32)(-1), get all Instances of that OID */
 id|LogPortIndex
 op_assign
 l_int|0
@@ -19088,6 +20178,37 @@ op_star
 r_sizeof
 (paren
 id|SK_U8
+)paren
+suffix:semicolon
+r_return
+(paren
+id|SK_PNMI_ERR_TOO_SHORT
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|OID_SKGE_MTU
+suffix:colon
+r_if
+c_cond
+(paren
+op_star
+id|pLen
+OL
+r_sizeof
+(paren
+id|SK_U32
+)paren
+)paren
+(brace
+op_star
+id|pLen
+op_assign
+r_sizeof
+(paren
+id|SK_U32
 )paren
 suffix:semicolon
 r_return
@@ -19867,6 +20988,40 @@ r_char
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|OID_SKGE_MTU
+suffix:colon
+id|Val32
+op_assign
+id|SK_DRIVER_GET_MTU
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|NetIndex
+)paren
+suffix:semicolon
+id|SK_PNMI_STORE_U32
+c_func
+(paren
+id|pBuf
+op_plus
+id|Offset
+comma
+id|Val32
+)paren
+suffix:semicolon
+id|Offset
+op_add_assign
+r_sizeof
+(paren
+id|SK_U32
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|SK_ERR_LOG
@@ -19969,6 +21124,60 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+r_case
+id|OID_SKGE_MTU
+suffix:colon
+r_if
+c_cond
+(paren
+op_star
+id|pLen
+OL
+r_sizeof
+(paren
+id|SK_U32
+)paren
+)paren
+(brace
+op_star
+id|pLen
+op_assign
+r_sizeof
+(paren
+id|SK_U32
+)paren
+suffix:semicolon
+r_return
+(paren
+id|SK_PNMI_ERR_TOO_SHORT
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_star
+id|pLen
+op_ne
+r_sizeof
+(paren
+id|SK_U32
+)paren
+)paren
+(brace
+op_star
+id|pLen
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+(paren
+id|SK_PNMI_ERR_BAD_VALUE
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 op_star
@@ -20040,8 +21249,28 @@ r_if
 c_cond
 (paren
 id|Val8
-template_param
+OL
+id|SK_LMODE_HALF
+op_logical_or
+(paren
+id|LogPortIndex
+op_ne
+l_int|0
+op_logical_and
+id|Val8
+OG
 id|SK_LMODE_AUTOSENSE
+)paren
+op_logical_or
+(paren
+id|LogPortIndex
+op_eq
+l_int|0
+op_logical_and
+id|Val8
+OG
+id|SK_LMODE_INDETERMINATED
+)paren
 )paren
 (brace
 op_star
@@ -20281,8 +21510,28 @@ r_if
 c_cond
 (paren
 id|Val8
-template_param
+OL
+id|SK_FLOW_MODE_NONE
+op_logical_or
+(paren
+id|LogPortIndex
+op_ne
+l_int|0
+op_logical_and
+id|Val8
+OG
 id|SK_FLOW_MODE_SYM_OR_REM
+)paren
+op_logical_or
+(paren
+id|LogPortIndex
+op_eq
+l_int|0
+op_logical_and
+id|Val8
+OG
+id|SK_FLOW_MODE_INDETERMINATED
+)paren
 )paren
 (brace
 op_star
@@ -20523,8 +21772,28 @@ r_if
 c_cond
 (paren
 id|Val8
-template_param
+OL
+id|SK_MS_MODE_AUTO
+op_logical_or
+(paren
+id|LogPortIndex
+op_ne
+l_int|0
+op_logical_and
+id|Val8
+OG
 id|SK_MS_MODE_SLAVE
+)paren
+op_logical_or
+(paren
+id|LogPortIndex
+op_eq
+l_int|0
+op_logical_and
+id|Val8
+OG
+id|SK_MS_MODE_INDETERMINATED
+)paren
 )paren
 (brace
 op_star
@@ -20729,6 +21998,119 @@ r_char
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|OID_SKGE_MTU
+suffix:colon
+multiline_comment|/* Check the value range */
+id|Val32
+op_assign
+op_star
+(paren
+id|SK_U32
+op_star
+)paren
+(paren
+id|pBuf
+op_plus
+id|Offset
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|Val32
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* mtu of this port remains unchanged */
+id|Offset
+op_add_assign
+r_sizeof
+(paren
+id|SK_U32
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|SK_DRIVER_PRESET_MTU
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|NetIndex
+comma
+id|Val32
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+op_star
+id|pLen
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+(paren
+id|SK_PNMI_ERR_BAD_VALUE
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* The preset ends here */
+r_if
+c_cond
+(paren
+id|Action
+op_eq
+id|SK_PNMI_PRESET
+)paren
+(brace
+r_return
+(paren
+id|SK_PNMI_ERR_OK
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|SK_DRIVER_SET_MTU
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|NetIndex
+comma
+id|Val32
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+r_return
+(paren
+id|SK_PNMI_ERR_GENERAL
+)paren
+suffix:semicolon
+)brace
+id|Offset
+op_add_assign
+r_sizeof
+(paren
+id|SK_U32
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|SK_ERR_LOG
@@ -20761,7 +22143,7 @@ id|SK_PNMI_ERR_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * Monitor - OID handler function for RLMT_MONITOR_XXX&n; *&n; * Description:&n; *&t;Because RLMT currently does not support the monitoring of&n; *&t;remote adapter cards, we return always an empty table.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occurred.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; *&t;SK_PNMI_ERR_READ_ONLY    The OID is read-only and cannot be set.&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * Monitor - OID handler function for RLMT_MONITOR_XXX&n; *&n; * Description:&n; *&t;Because RLMT currently does not support the monitoring of&n; *&t;remote adapter cards, we return always an empty table.&n; *&n; * Returns:&n; *&t;SK_PNMI_ERR_OK           The request was successfully performed.&n; *&t;SK_PNMI_ERR_GENERAL      A general severe internal error occured.&n; *&t;SK_PNMI_ERR_TOO_SHORT    The passed buffer is too short to contain&n; *&t;                         the correct data (e.g. a 32bit value is&n; *&t;                         needed, but a 16 bit value was passed).&n; *&t;SK_PNMI_ERR_BAD_VALUE    The passed value is not in the valid&n; *&t;                         value range.&n; *&t;SK_PNMI_ERR_READ_ONLY    The OID is read-only and cannot be set.&n; *&t;SK_PNMI_ERR_UNKNOWN_INST The requested instance of the OID doesn&squot;t&n; *                               exist (e.g. port instance 3 on a two port&n; *&t;                         adapter.&n; */
 DECL|function|Monitor
 r_static
 r_int
@@ -20803,8 +22185,12 @@ multiline_comment|/* Instance (1..n) that is to be queried or -1 */
 r_int
 r_int
 id|TableIndex
-)paren
+comma
 multiline_comment|/* Index to the Id table */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 r_int
 r_int
@@ -21807,7 +23193,7 @@ id|Result
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * CalculateLinkModeStatus - Determins the link mode status of a phys. port&n; *&n; * Description:&n; *&t;The COMMON module only tells us if the mode is half or full duplex.&n; *&t;But in the decade of auto sensing it is useful for the user to&n; *&t;know if the mode was negotiated or forced. Therefore we have a&n; *&t;look to the mode, which was last used by the negotiation process.&n; *&n; * Returns:&n; *&t;The link mode status&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * CalculateLinkModeStatus - Determins the link mode status of a phys. port&n; *&n; * Description:&n; *&t;The COMMON module only tells us if the mode is half or full duplex.&n; *&t;But in the decade of auto sensing it is usefull for the user to&n; *&t;know if the mode was negotiated or forced. Therefore we have a&n; *&t;look to the mode, which was last used by the negotiation process.&n; *&n; * Returns:&n; *&t;The link mode status&n; */
 DECL|function|CalculateLinkModeStatus
 r_static
 id|SK_U8
@@ -21942,12 +23328,12 @@ r_int
 r_int
 id|BufKeysLen
 op_assign
-l_int|128
+id|SK_PNMI_VPD_BUFSIZE
 suffix:semicolon
 r_char
 id|BufKeys
 (braket
-l_int|128
+id|SK_PNMI_VPD_BUFSIZE
 )braket
 suffix:semicolon
 r_int
@@ -22058,7 +23444,7 @@ c_cond
 op_star
 id|pKeyNo
 OG
-id|SK_PNMI_VPD_ARR_SIZE
+id|SK_PNMI_VPD_ENTRIES
 )paren
 (brace
 id|SK_ERR_LOG
@@ -22076,7 +23462,7 @@ suffix:semicolon
 op_star
 id|pKeyNo
 op_assign
-id|SK_PNMI_VPD_ARR_SIZE
+id|SK_PNMI_VPD_ENTRIES
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Now build an array of fixed string length size and copy&n;&t; * the keys together.&n;&t; */
@@ -22124,7 +23510,7 @@ id|Offset
 op_minus
 id|StartOffset
 OG
-id|SK_PNMI_VPD_STR_SIZE
+id|SK_PNMI_VPD_KEY_SIZE
 )paren
 (brace
 id|SK_ERR_LOG
@@ -22152,7 +23538,7 @@ id|pKeyArr
 op_plus
 id|Index
 op_star
-id|SK_PNMI_VPD_STR_SIZE
+id|SK_PNMI_VPD_KEY_SIZE
 comma
 op_amp
 id|BufKeys
@@ -22160,7 +23546,7 @@ id|BufKeys
 id|StartOffset
 )braket
 comma
-id|SK_PNMI_VPD_STR_SIZE
+id|SK_PNMI_VPD_KEY_SIZE
 )paren
 suffix:semicolon
 id|Index
@@ -22189,7 +23575,7 @@ id|pKeyArr
 op_plus
 id|Index
 op_star
-id|SK_PNMI_VPD_STR_SIZE
+id|SK_PNMI_VPD_KEY_SIZE
 comma
 op_amp
 id|BufKeys
@@ -22197,7 +23583,7 @@ id|BufKeys
 id|StartOffset
 )braket
 comma
-id|SK_PNMI_VPD_STR_SIZE
+id|SK_PNMI_VPD_KEY_SIZE
 )paren
 suffix:semicolon
 )brace
@@ -22317,8 +23703,12 @@ comma
 multiline_comment|/* Pointer to adapter context */
 id|SK_IOC
 id|IoC
-)paren
+comma
 multiline_comment|/* IO context handle */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 id|SK_EVPARA
 id|EventParam
@@ -22356,6 +23746,24 @@ r_sizeof
 id|EventParam
 )paren
 )paren
+suffix:semicolon
+id|EventParam.Para32
+(braket
+l_int|0
+)braket
+op_assign
+id|NetIndex
+suffix:semicolon
+id|EventParam.Para32
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -22486,7 +23894,7 @@ comma
 id|StatReg
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * It is an auto-clearing register. If the command bits&n;&t;&t; * went to zero again, the statistics are transferred.&n;&t;&t; * Normally the command should be executed immediately.&n;&t;&t; * But just to be sure we execute a loop.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * It is an auto-clearing register. If the command bits&n;&t;&t; * went to zero again, the statistics are transfered.&n;&t;&t; * Normally the command should be executed immediately.&n;&t;&t; * But just to be sure we execute a loop.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -22592,8 +24000,12 @@ multiline_comment|/* Index of the logical Port to be processed */
 r_int
 r_int
 id|StatIndex
-)paren
+comma
 multiline_comment|/* Index to statistic value */
+id|SK_U32
+id|NetIndex
+)paren
+multiline_comment|/* NetIndex (0..n), in single net mode allways zero */
 (brace
 r_int
 r_int
@@ -22608,6 +24020,38 @@ id|Val
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pAC-&gt;Pnmi.DualNetActiveFlag
+op_eq
+id|SK_TRUE
+)paren
+(brace
+multiline_comment|/* Dual net mode */
+id|PhysPortIndex
+op_assign
+id|NetIndex
+suffix:semicolon
+id|Val
+op_assign
+id|GetPhysStatVal
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|PhysPortIndex
+comma
+id|StatIndex
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* end of dual net mode */
+r_else
+(brace
+multiline_comment|/* single net mode */
 r_if
 c_cond
 (paren
@@ -22700,6 +24144,8 @@ id|StatIndex
 )paren
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/* end of single net mode */
 r_return
 (paren
 id|Val
@@ -23110,8 +24556,11 @@ comma
 multiline_comment|/* Pointer to adapter context */
 id|SK_IOC
 id|IoC
-)paren
+comma
 multiline_comment|/* IO context handle */
+id|SK_U32
+id|NetIndex
+)paren
 (brace
 r_int
 r_int
@@ -23152,6 +24601,24 @@ id|EventParam
 )paren
 suffix:semicolon
 multiline_comment|/* Notify RLMT module */
+id|EventParam.Para32
+(braket
+l_int|0
+)braket
+op_assign
+id|NetIndex
+suffix:semicolon
+id|EventParam.Para32
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
+suffix:semicolon
 id|SkEventQueue
 c_func
 (paren
@@ -23163,6 +24630,13 @@ id|SK_RLMT_STATS_CLEAR
 comma
 id|EventParam
 )paren
+suffix:semicolon
+id|EventParam.Para32
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* Notify SIRQ module */
 id|SkEventQueue
@@ -23448,48 +24922,98 @@ id|pAC-&gt;Pnmi.RlmtChangeEstimate.Estimate
 op_assign
 l_int|0
 suffix:semicolon
-id|pAC-&gt;Pnmi.TxSwQueueMax
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|TxSwQueueMax
 op_assign
 l_int|0
 suffix:semicolon
-id|pAC-&gt;Pnmi.TxRetryCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|TxRetryCts
 op_assign
 l_int|0
 suffix:semicolon
-id|pAC-&gt;Pnmi.RxIntrCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|RxIntrCts
 op_assign
 l_int|0
 suffix:semicolon
-id|pAC-&gt;Pnmi.TxIntrCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|TxIntrCts
 op_assign
 l_int|0
 suffix:semicolon
-id|pAC-&gt;Pnmi.RxNoBufCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|RxNoBufCts
 op_assign
 l_int|0
 suffix:semicolon
-id|pAC-&gt;Pnmi.TxNoBufCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|TxNoBufCts
 op_assign
 l_int|0
 suffix:semicolon
-id|pAC-&gt;Pnmi.TxUsedDescrNo
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|TxUsedDescrNo
 op_assign
 l_int|0
 suffix:semicolon
-id|pAC-&gt;Pnmi.RxDeliveredCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|RxDeliveredCts
 op_assign
 l_int|0
 suffix:semicolon
-id|pAC-&gt;Pnmi.RxOctetsDeliveredCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|RxOctetsDeliveredCts
 op_assign
 l_int|0
 suffix:semicolon
-id|pAC-&gt;Pnmi.ErrRecoveryCts
+id|pAC-&gt;Pnmi.Port
+(braket
+id|NetIndex
+)braket
+dot
+id|ErrRecoveryCts
 op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * GetTrapEntry - Get an entry in the trap buffer&n; *&n; * Description:&n; *&t;The trap buffer stores various events. A user application somehow&n; *&t;gets notified that an event occurred and retrieves the trap buffer&n; *&t;contens (or simply polls the buffer). The buffer is organized as&n; *&t;a ring which stores the newest traps at the beginning. The oldest&n; *&t;traps are overwritten by the newest ones. Each trap entry has a&n; *&t;unique number, so that applications may detect new trap entries.&n; *&n; * Returns:&n; *&t;A pointer to the trap entry&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * GetTrapEntry - Get an entry in the trap buffer&n; *&n; * Description:&n; *&t;The trap buffer stores various events. A user application somehow&n; *&t;gets notified that an event occured and retrieves the trap buffer&n; *&t;contens (or simply polls the buffer). The buffer is organized as&n; *&t;a ring which stores the newest traps at the beginning. The oldest&n; *&t;traps are overwritten by the newest ones. Each trap entry has a&n; *&t;unique number, so that applications may detect new trap entries.&n; *&n; * Returns:&n; *&t;A pointer to the trap entry&n; */
 DECL|function|GetTrapEntry
 r_static
 r_char

@@ -482,8 +482,7 @@ r_struct
 id|linux_vdirent
 (brace
 DECL|member|namelen
-r_int
-r_int
+id|ULONG
 id|namelen
 suffix:semicolon
 DECL|member|attr
@@ -626,7 +625,7 @@ suffix:semicolon
 multiline_comment|/* XXX imperical, should be define */
 )brace
 suffix:semicolon
-multiline_comment|/* This describes the vector containing fuction pointers to the ARC&n;   firmware functions.  */
+multiline_comment|/* This describes the vector containing function pointers to the ARC&n;   firmware functions.  */
 DECL|struct|linux_romvec
 r_struct
 id|linux_romvec

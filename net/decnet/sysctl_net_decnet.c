@@ -14,8 +14,6 @@ macro_line|#include &lt;net/dn_route.h&gt;
 DECL|variable|decnet_debug_level
 r_int
 id|decnet_debug_level
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|decnet_time_wait
 r_int

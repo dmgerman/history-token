@@ -41,9 +41,9 @@ mdefine_line|#define PT_DCCR      17
 DECL|macro|PT_SRP
 mdefine_line|#define PT_SRP       18
 DECL|macro|PT_IRP
-mdefine_line|#define PT_IRP       19
+mdefine_line|#define PT_IRP       19    /* This is actually the debugged process&squot; PC */
 DECL|macro|PT_CSRINSTR
-mdefine_line|#define PT_CSRINSTR  20    /* CPU Status record remnants - valid if frametype == busfault */
+mdefine_line|#define PT_CSRINSTR  20    /* CPU Status record remnants -&n;&t;&t;&t;      valid if frametype == busfault */
 DECL|macro|PT_CSRADDR
 mdefine_line|#define PT_CSRADDR   21
 DECL|macro|PT_CSRDATA
@@ -54,14 +54,9 @@ DECL|macro|PT_MAX
 mdefine_line|#define PT_MAX       23
 multiline_comment|/* Frame types */
 DECL|macro|CRIS_FRAME_NORMAL
-mdefine_line|#define CRIS_FRAME_NORMAL   0  /* normal frame without SBFS stacking */
+mdefine_line|#define CRIS_FRAME_NORMAL   0 /* normal frame without SBFS stacking */
 DECL|macro|CRIS_FRAME_BUSFAULT
-mdefine_line|#define CRIS_FRAME_BUSFAULT 1  /* frame stacked using SBFS, need RBF return path */
-multiline_comment|/* Arbitrarily choose the same ptrace numbers as used by the Sparc code. */
-DECL|macro|PTRACE_GETREGS
-mdefine_line|#define PTRACE_GETREGS            12
-DECL|macro|PTRACE_SETREGS
-mdefine_line|#define PTRACE_SETREGS            13
+mdefine_line|#define CRIS_FRAME_BUSFAULT 1 /* frame stacked using SBFS, need RBF return&n;&t;&t;&t;&t; path */
 multiline_comment|/* pt_regs not only specifices the format in the user-struct during&n; * ptrace but is also the frame format used in the kernel prologue/epilogues &n; * themselves&n; */
 DECL|struct|pt_regs
 r_struct
@@ -84,25 +79,21 @@ r_int
 r_int
 id|r13
 suffix:semicolon
-multiline_comment|/* 8 */
 DECL|member|r12
 r_int
 r_int
 id|r12
 suffix:semicolon
-multiline_comment|/* 12 */
 DECL|member|r11
 r_int
 r_int
 id|r11
 suffix:semicolon
-multiline_comment|/* 16 */
 DECL|member|r10
 r_int
 r_int
 id|r10
 suffix:semicolon
-multiline_comment|/* 20 */
 DECL|member|r9
 r_int
 r_int
@@ -173,6 +164,7 @@ r_int
 r_int
 id|irp
 suffix:semicolon
+multiline_comment|/* This is actually the debugged process&squot; PC */
 DECL|member|csrinstr
 r_int
 r_int
@@ -190,7 +182,7 @@ id|csrdata
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* switch_stack is the extra stuff pushed onto the stack in _resume (entry.S) when&n;   doing a context-switch. it is used (apart from in resume) when a new thread is made &n;   and we need to make _resume (which is starting it for the first time) realise what&n;   is going on. &n;&n;   actually, the use is very close to the thread struct (TSS) in that both the switch_stack&n;   and the TSS are used to keep thread stuff when switching in _resume.&n;*/
+multiline_comment|/* switch_stack is the extra stuff pushed onto the stack in _resume (entry.S)&n; * when doing a context-switch. it is used (apart from in resume) when a new&n; * thread is made and we need to make _resume (which is starting it for the&n; * first time) realise what is going on.&n; *&n; * Actually, the use is very close to the thread struct (TSS) in that both the&n; * switch_stack and the TSS are used to keep thread stuff when switching in&n; * _resume.&n; */
 DECL|struct|switch_stack
 r_struct
 id|switch_stack
@@ -254,6 +246,11 @@ multiline_comment|/* ip that _resume will return to */
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+multiline_comment|/* Arbitrarily choose the same ptrace numbers as used by the Sparc code. */
+DECL|macro|PTRACE_GETREGS
+mdefine_line|#define PTRACE_GETREGS            12
+DECL|macro|PTRACE_SETREGS
+mdefine_line|#define PTRACE_SETREGS            13
 multiline_comment|/* bit 8 is user-mode flag */
 DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) ((regs)-&gt;dccr &amp; 0x100)

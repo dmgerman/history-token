@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: traps.c,v 1.11 2001/04/04 09:43:31 orjanf Exp $&n; *&n; *  linux/arch/cris/traps.c&n; *&n; *  Here we handle the break vectors not used by the system call &n; *  mechanism, as well as some general stack/register dumping &n; *  things.&n; * &n; *  Copyright (C) 2000,2001 Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen&n; *&n; */
+multiline_comment|/* $Id: traps.c,v 1.12 2001/05/15 15:46:40 bjornw Exp $&n; *&n; *  linux/arch/cris/traps.c&n; *&n; *  Here we handle the break vectors not used by the system call &n; *  mechanism, as well as some general stack/register dumping &n; *  things.&n; * &n; *  Copyright (C) 2000,2001 Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

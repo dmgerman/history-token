@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: process.c,v 1.13 2001/03/20 19:44:06 bjornw Exp $&n; * &n; *  linux/arch/cris/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (C) 2000, 2001  Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen (bjornw@axis.com)&n; *&n; *  $Log: process.c,v $&n; *  Revision 1.13  2001/03/20 19:44:06  bjornw&n; *  Use the 7th syscall argument for regs instead of current_regs&n; *&n; */
+multiline_comment|/* $Id: process.c,v 1.14 2001/05/29 11:27:59 markusl Exp $&n; * &n; *  linux/arch/cris/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (C) 2000, 2001  Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen (bjornw@axis.com)&n; *&n; *  $Log: process.c,v $&n; *  Revision 1.14  2001/05/29 11:27:59  markusl&n; *  Fixed so that hard_reset_now will do reset even if watchdog wasn&squot;t enabled&n; *&n; *  Revision 1.13  2001/03/20 19:44:06  bjornw&n; *  Use the 7th syscall argument for regs instead of current_regs&n; *&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
@@ -150,7 +150,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* if the watchdog is enabled, we can simply disable interrupts and go&n; * into an eternal loop, and the watchdog will reset the CPU after 0.1s&n; */
+multiline_comment|/* if the watchdog is enabled, we can simply disable interrupts and go&n; * into an eternal loop, and the watchdog will reset the CPU after 0.1s&n; * if on the other hand the watchdog wasn&squot;t enabled, we just enable it and wait&n; */
 DECL|function|hard_reset_now
 r_void
 id|hard_reset_now
@@ -169,6 +169,32 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_ETRAX_WATCHDOG
+multiline_comment|/* Since we dont plan to keep on reseting the watchdog,&n;&t;   the key can be arbitrary hence three */
+op_star
+id|R_WATCHDOG
+op_assign
+id|IO_FIELD
+c_func
+(paren
+id|R_WATCHDOG
+comma
+id|key
+comma
+l_int|3
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_WATCHDOG
+comma
+id|enable
+comma
+id|start
+)paren
+suffix:semicolon
+macro_line|#endif
 r_while
 c_loop
 (paren

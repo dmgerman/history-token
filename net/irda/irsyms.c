@@ -9,9 +9,6 @@ macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irmod.h&gt;
 macro_line|#include &lt;net/irda/irlap.h&gt;
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-macro_line|#include &lt;net/irda/irlap_comp.h&gt;
-macro_line|#endif /* CONFIG_IRDA_COMPRESSION */
 macro_line|#include &lt;net/irda/irlmp.h&gt;
 macro_line|#include &lt;net/irda/iriap.h&gt;
 macro_line|#include &lt;net/irda/irias_object.h&gt;
@@ -138,16 +135,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-macro_line|#ifdef CONFIG_IRDA_DEFLATE
-r_extern
-id|irda_deflate_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_IRDA_DEFLATE */
-macro_line|#endif /* CONFIG_IRDA_COMPRESSION */
 multiline_comment|/* IrTTP */
 DECL|variable|irttp_open_tsap
 id|EXPORT_SYMBOL
@@ -599,22 +586,6 @@ c_func
 id|irlap_close
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-DECL|variable|irda_unregister_compressor
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|irda_unregister_compressor
-)paren
-suffix:semicolon
-DECL|variable|irda_register_compressor
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|irda_register_compressor
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_IRDA_COMPRESSION */
 DECL|variable|irda_init_max_qos_capabilies
 id|EXPORT_SYMBOL
 c_func
@@ -843,15 +814,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-macro_line|#ifdef CONFIG_IRDA_DEFLATE
-id|irda_deflate_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_IRDA_DEFLATE */
-macro_line|#endif /* CONFIG_IRDA_COMPRESSION */
 r_return
 l_int|0
 suffix:semicolon

@@ -14,16 +14,12 @@ multiline_comment|/*&n; * global module flag&n; */
 DECL|variable|sb_be_quiet
 r_int
 id|sb_be_quiet
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|detected_devc
 r_static
 id|sb_devc
 op_star
 id|detected_devc
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* For communication from probe to init */
 DECL|variable|last_devc
@@ -31,8 +27,6 @@ r_static
 id|sb_devc
 op_star
 id|last_devc
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* For MPU401 initialization */
 DECL|variable|jazz_irq_bits
@@ -107,16 +101,12 @@ DECL|variable|smw_free
 r_void
 op_star
 id|smw_free
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n; * Jazz16 chipset specific control variables&n; */
 DECL|variable|jazz16_base
 r_static
 r_int
 id|jazz16_base
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Not detected */
 DECL|variable|jazz16_bits
@@ -124,8 +114,6 @@ r_static
 r_int
 r_char
 id|jazz16_bits
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* I/O relocation bits */
 DECL|variable|jazz16_lock
@@ -145,23 +133,17 @@ r_int
 r_char
 op_star
 id|smw_ucode
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|smw_ucodeLen
 r_static
 r_int
 id|smw_ucodeLen
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 DECL|variable|last_sb
 id|sb_devc
 op_star
 id|last_sb
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* Last sb loaded */
 DECL|function|sb_dsp_command

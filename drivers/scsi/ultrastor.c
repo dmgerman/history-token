@@ -386,8 +386,6 @@ multiline_comment|/* Set this to 1 to reset the SCSI bus on error.  */
 DECL|variable|ultrastor_bus_reset
 r_int
 id|ultrastor_bus_reset
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Allowed BIOS base addresses (NULL indicates reserved) */
 DECL|variable|bios_segment_table

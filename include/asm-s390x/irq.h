@@ -2957,8 +2957,8 @@ DECL|macro|s390irq_spin_lock_irqsave
 mdefine_line|#define s390irq_spin_lock_irqsave(irq,flags) &bslash;&n;        spin_lock_irqsave(&amp;(ioinfo[irq]-&gt;irq_lock), flags)
 DECL|macro|s390irq_spin_unlock_irqrestore
 mdefine_line|#define s390irq_spin_unlock_irqrestore(irq,flags) &bslash;&n;        spin_unlock_irqrestore(&amp;(ioinfo[irq]-&gt;irq_lock), flags)
-macro_line|#endif /* __KERNEL__ */
 DECL|macro|touch_nmi_watchdog
 mdefine_line|#define touch_nmi_watchdog() do { } while(0)
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

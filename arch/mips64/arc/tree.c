@@ -541,17 +541,6 @@ id|p
 )paren
 suffix:semicolon
 )brace
-id|prom_printf
-c_func
-(paren
-l_string|&quot;press a key&bslash;n&quot;
-)paren
-suffix:semicolon
-id|prom_getchar
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 macro_line|#endif /* DEBUG_PROM_TREE  */
 eof

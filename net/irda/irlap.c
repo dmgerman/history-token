@@ -16,7 +16,6 @@ macro_line|#include &lt;net/irda/irlap_frame.h&gt;
 macro_line|#include &lt;net/irda/irlap.h&gt;
 macro_line|#include &lt;net/irda/timer.h&gt;
 macro_line|#include &lt;net/irda/qos.h&gt;
-macro_line|#include &lt;net/irda/irlap_comp.h&gt;
 DECL|variable|irlap
 id|hashbin_t
 op_star
@@ -144,36 +143,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-id|irlap_compressors
-op_assign
-id|hashbin_new
-c_func
-(paren
-id|HB_LOCAL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|irlap_compressors
-op_eq
-l_int|NULL
-)paren
-(brace
-id|WARNING
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot;(), can&squot;t allocate compressors hashbin!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -208,19 +177,6 @@ id|FREE_FUNC
 id|__irlap_close
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-id|hashbin_delete
-c_func
-(paren
-id|irlap_compressors
-comma
-(paren
-id|FREE_FUNC
-)paren
-id|kfree
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * Function irlap_open (driver)&n; *&n; *    Initialize IrLAP layer&n; *&n; */
 DECL|function|irlap_open
@@ -1008,51 +964,6 @@ op_plus
 id|LAP_CTRL_HEADER
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-r_if
-c_cond
-(paren
-id|self-&gt;qos_tx.compression.value
-)paren
-(brace
-id|skb_get
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-multiline_comment|/*LEVEL4*/
-id|skb
-op_assign
-id|irlap_decompress_frame
-c_func
-(paren
-id|self
-comma
-id|skb
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|skb
-)paren
-(brace
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|1
-comma
-id|__FUNCTION__
-l_string|&quot;(), Decompress error!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 id|skb_get
 c_func
 (paren
@@ -1122,44 +1033,6 @@ id|__FUNCTION__
 l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-r_if
-c_cond
-(paren
-id|self-&gt;qos_tx.compression.value
-)paren
-(brace
-id|skb
-op_assign
-id|irlap_compress_frame
-c_func
-(paren
-id|self
-comma
-id|skb
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|skb
-)paren
-(brace
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|1
-comma
-id|__FUNCTION__
-l_string|&quot;(), Compress error!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 id|ASSERT
 c_func
 (paren
@@ -1677,14 +1550,6 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-id|irda_free_compression
-c_func
-(paren
-id|self
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Flush queues */
 id|irlap_flush_all_queues
 c_func
@@ -2912,25 +2777,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_RECYCLE_RR
-r_if
-c_cond
-(paren
-id|self-&gt;recycle_rr_skb
-)paren
-(brace
-id|dev_kfree_skb
-c_func
-(paren
-id|self-&gt;recycle_rr_skb
-)paren
-suffix:semicolon
-id|self-&gt;recycle_rr_skb
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * Function irlap_setspeed (self, speed)&n; *&n; *    Change the speed of the IrDA port&n; *&n; */
 DECL|function|irlap_change_speed
@@ -3018,190 +2864,6 @@ id|skb
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-DECL|function|irlap_init_comp_qos_capabilities
-r_void
-id|irlap_init_comp_qos_capabilities
-c_func
-(paren
-r_struct
-id|irlap_cb
-op_star
-id|self
-)paren
-(brace
-r_struct
-id|irda_compressor
-op_star
-id|comp
-suffix:semicolon
-id|__u8
-id|mask
-suffix:semicolon
-multiline_comment|/* Current bit tested */
-r_int
-id|i
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|self
-op_ne
-l_int|NULL
-comma
-r_return
-suffix:semicolon
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|self-&gt;magic
-op_eq
-id|LAP_MAGIC
-comma
-r_return
-suffix:semicolon
-)paren
-suffix:semicolon
-multiline_comment|/* &n;&t; *  Find out which compressors we support. We do this be checking that&n;&t; *  the corresponding compressor for each bit set in the QoS bits has &n;&t; *  actually been loaded. Ths is sort of hairy code but that is what &n;&t; *  you get when you do a little bit flicking :-)&n;&t; */
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|4
-comma
-id|__FUNCTION__
-l_string|&quot;(), comp bits 0x%02x&bslash;n&quot;
-comma
-id|self-&gt;qos_rx.compression.bits
-)paren
-suffix:semicolon
-id|mask
-op_assign
-l_int|0x80
-suffix:semicolon
-multiline_comment|/* Start with testing MSB */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|8
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|4
-comma
-id|__FUNCTION__
-l_string|&quot;(), testing bit %d&bslash;n&quot;
-comma
-l_int|8
-op_minus
-id|i
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|self-&gt;qos_rx.compression.bits
-op_amp
-id|mask
-)paren
-(brace
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|4
-comma
-id|__FUNCTION__
-l_string|&quot;(), bit %d is set by defalt&bslash;n&quot;
-comma
-l_int|8
-op_minus
-id|i
-)paren
-suffix:semicolon
-id|comp
-op_assign
-id|hashbin_find
-c_func
-(paren
-id|irlap_compressors
-comma
-id|compressions
-(braket
-id|msb_index
-c_func
-(paren
-id|mask
-)paren
-)braket
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|comp
-)paren
-(brace
-multiline_comment|/* Protocol not supported, so clear the bit */
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|4
-comma
-id|__FUNCTION__
-l_string|&quot;(), Compression &quot;
-l_string|&quot;protocol %d has not been loaded!&bslash;n&quot;
-comma
-id|compressions
-(braket
-id|msb_index
-c_func
-(paren
-id|mask
-)paren
-)braket
-)paren
-suffix:semicolon
-id|self-&gt;qos_rx.compression.bits
-op_and_assign
-op_complement
-id|mask
-suffix:semicolon
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|4
-comma
-id|__FUNCTION__
-l_string|&quot;(), comp bits 0x%02x&bslash;n&quot;
-comma
-id|self-&gt;qos_rx.compression.bits
-)paren
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* Try the next bit */
-id|mask
-op_rshift_assign
-l_int|1
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif&t;
 multiline_comment|/*&n; * Function irlap_init_qos_capabilities (self, qos)&n; *&n; *    Initialize QoS for this IrLAP session, What we do is to compute the&n; *    intersection of the QoS capabilities for the user, driver and for&n; *    IrLAP itself. Normally, IrLAP will not specify any values, but it can&n; *    be used to restrict certain values.&n; */
 DECL|function|irlap_init_qos_capabilities
 r_void
@@ -3260,14 +2922,6 @@ op_amp
 id|self-&gt;qos_rx
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-id|irlap_init_comp_qos_capabilities
-c_func
-(paren
-id|self
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Apply drivers QoS capabilities */
 id|irda_qos_compute_intersection
 c_func
@@ -3330,12 +2984,6 @@ id|self-&gt;qos_rx.link_disc_time.bits
 op_and_assign
 id|qos_user-&gt;link_disc_time.bits
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-id|self-&gt;qos_rx.compression.bits
-op_and_assign
-id|qos_user-&gt;compression.bits
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* Use 500ms in IrLAP for now */
 id|self-&gt;qos_rx.max_turn_time.bits
@@ -3605,12 +3253,10 @@ c_cond
 (paren
 id|now
 )paren
-(brace
 id|self-&gt;bofs_count
 op_assign
 id|self-&gt;next_bofs
 suffix:semicolon
-)brace
 multiline_comment|/* Set the negociated link speed (may need the new xbofs value) */
 id|irlap_change_speed
 c_func
@@ -3641,7 +3287,7 @@ comma
 id|self-&gt;qos_tx.max_turn_time.value
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Set N1 to 0 if Link Disconnect/Threshold Time = 3 and set it to &n;&t; *  3 seconds otherwise. See page 71 in IrLAP for more details.&n;&t; *  TODO: these values should be calculated from the final timer&n;         *  as well&n;&t; */
+multiline_comment|/* &n;&t; *  Initialize timeout values, some of the rules are listed on &n;&t; *  page 92 in IrLAP.&n;&t; */
 id|ASSERT
 c_func
 (paren
@@ -3653,6 +3299,44 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|self-&gt;qos_rx.max_turn_time.value
+op_ne
+l_int|0
+comma
+r_return
+suffix:semicolon
+)paren
+suffix:semicolon
+multiline_comment|/* The poll timeout applies only to the primary station.&n;&t; * It defines the maximum time the primary stay in XMIT mode&n;&t; * before timeout and turning the link around (sending a RR).&n;&t; * Or, this is how much we can keep the pf bit in primary mode.&n;&t; * Therefore, it must be lower or equal than our *OWN* max turn around.&n;&t; * Jean II */
+id|self-&gt;poll_timeout
+op_assign
+id|self-&gt;qos_tx.max_turn_time.value
+op_star
+id|HZ
+op_div
+l_int|1000
+suffix:semicolon
+multiline_comment|/* The Final timeout applies only to the primary station.&n;&t; * It defines the maximum time the primary wait (mostly in RECV mode)&n;&t; * for an answer from the secondary station before polling it again.&n;&t; * Therefore, it must be greater or equal than our *PARTNER*&n;&t; * max turn around time - Jean II */
+id|self-&gt;final_timeout
+op_assign
+id|self-&gt;qos_rx.max_turn_time.value
+op_star
+id|HZ
+op_div
+l_int|1000
+suffix:semicolon
+multiline_comment|/* The Watchdog Bit timeout applies only to the secondary station.&n;&t; * It defines the maximum time the secondary wait (mostly in RECV mode)&n;&t; * for poll from the primary station before getting annoyed.&n;&t; * Therefore, it must be greater or equal than our *PARTNER*&n;&t; * max turn around time - Jean II */
+id|self-&gt;wd_timeout
+op_assign
+id|self-&gt;final_timeout
+op_star
+l_int|2
+suffix:semicolon
+multiline_comment|/*&n;&t; * N1 and N2 are maximum retry count for *both* the final timer&n;&t; * and the wd timer (with a factor 2) as defined above.&n;&t; * After N1 retry of a timer, we give a warning to the user.&n;&t; * After N2 retry, we consider the link dead and disconnect it.&n;&t; * Jean II&n;&t; */
+multiline_comment|/*&n;&t; *  Set N1 to 0 if Link Disconnect/Threshold Time = 3 and set it to &n;&t; *  3 seconds otherwise. See page 71 in IrLAP for more details.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3664,15 +3348,15 @@ multiline_comment|/* &n;&t;&t; * If we set N1 to 0, it will trigger immediately,
 id|self-&gt;N1
 op_assign
 op_minus
-l_int|1
+l_int|2
 suffix:semicolon
-multiline_comment|/* Disable */
+multiline_comment|/* Disable - Need to be multiple of 2*/
 r_else
 id|self-&gt;N1
 op_assign
 l_int|3000
 op_div
-id|self-&gt;qos_tx.max_turn_time.value
+id|self-&gt;qos_rx.max_turn_time.value
 suffix:semicolon
 id|IRDA_DEBUG
 c_func
@@ -3684,13 +3368,14 @@ comma
 id|self-&gt;N1
 )paren
 suffix:semicolon
+multiline_comment|/* Set N2 to match our own disconnect time */
 id|self-&gt;N2
 op_assign
 id|self-&gt;qos_tx.link_disc_time.value
 op_star
 l_int|1000
 op_div
-id|self-&gt;qos_tx.max_turn_time.value
+id|self-&gt;qos_rx.max_turn_time.value
 suffix:semicolon
 id|IRDA_DEBUG
 c_func
@@ -3702,64 +3387,6 @@ comma
 id|self-&gt;N2
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; *  Initialize timeout values, some of the rules are listed on &n;&t; *  page 92 in IrLAP.&n;&t; */
-id|self-&gt;poll_timeout
-op_assign
-id|self-&gt;qos_tx.max_turn_time.value
-op_star
-id|HZ
-op_div
-l_int|1000
-suffix:semicolon
-id|self-&gt;wd_timeout
-op_assign
-id|self-&gt;poll_timeout
-op_star
-l_int|2
-suffix:semicolon
-multiline_comment|/* &n;&t; * Be careful to keep our promises to the peer device about how long&n;&t; * time it can keep the pf bit. So here we must use the rx_qos value&n;&t; */
-id|self-&gt;final_timeout
-op_assign
-id|self-&gt;qos_rx.max_turn_time.value
-op_star
-id|HZ
-op_div
-l_int|1000
-suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-r_if
-c_cond
-(paren
-id|self-&gt;qos_tx.compression.value
-)paren
-(brace
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|1
-comma
-id|__FUNCTION__
-l_string|&quot;(), Initializing compression&bslash;n&quot;
-)paren
-suffix:semicolon
-id|irda_set_compression
-c_func
-(paren
-id|self
-comma
-id|self-&gt;qos_tx.compression.value
-)paren
-suffix:semicolon
-id|irlap_compressor_init
-c_func
-(paren
-id|self
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * Function irlap_set_local_busy (self, status)&n; *&n; *    &n; *&n; */
 DECL|function|irlap_set_local_busy
@@ -4287,22 +3914,6 @@ comma
 id|self-&gt;qos_tx.link_disc_time.value
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-id|len
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|buf
-op_plus
-id|len
-comma
-l_string|&quot;%d&quot;
-comma
-id|self-&gt;qos_tx.compression.value
-)paren
-suffix:semicolon
-macro_line|#endif
 id|len
 op_add_assign
 id|sprintf
@@ -4413,22 +4024,6 @@ comma
 id|self-&gt;qos_rx.link_disc_time.value
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-id|len
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|buf
-op_plus
-id|len
-comma
-l_string|&quot;%d&quot;
-comma
-id|self-&gt;qos_rx.compression.value
-)paren
-suffix:semicolon
-macro_line|#endif
 id|len
 op_add_assign
 id|sprintf

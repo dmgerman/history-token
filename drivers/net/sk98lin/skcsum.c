@@ -1,6 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skcsum.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.7 $&n; * Date:&t;$Date: 2000/06/29 13:17:05 $&n; * Purpose:&t;Store/verify Internet checksum in send/receive packets.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2000 SysKonnect,&n; *&t;a business unit of Schneider &amp; Koch &amp; Co. Datensysteme GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skcsum.c,v $&n; *&t;Revision 1.7  2000/06/29 13:17:05  rassmann&n; *&t;Corrected reception of a packet with UDP checksum == 0 (which means there&n; *&t;is no UDP checksum).&n; *&t;&n; *&t;Revision 1.6  2000/02/21 12:35:10  cgoos&n; *&t;Fixed license header comment.&n; *&t;&n; *&t;Revision 1.5  2000/02/21 11:05:19  cgoos&n; *&t;Merged changes back to common source.&n; *&t;Fixed rx path for BIG ENDIAN architecture.&n; *&t;&n; *&t;Revision 1.1  1999/07/26 15:28:12  mkarl&n; *&t;added return SKCS_STATUS_IP_CSUM_ERROR_UDP and&n; *&t;SKCS_STATUS_IP_CSUM_ERROR_TCP to pass the NidsTester&n; *&t;changed from common source to windows specific source&n; *&t;therefore restarting with v1.0&n; *&t;&n; *&t;Revision 1.3  1999/05/10 08:39:33  mkarl&n; *&t;prevent overflows in SKCS_HTON16&n; *&t;fixed a bug in pseudo header checksum calculation&n; *&t;added some comments&n; *&t;&n; *&t;Revision 1.2  1998/10/22 11:53:28  swolf&n; *&t;Now using SK_DBG_MSG.&n; *&t;&n; *&t;Revision 1.1  1998/09/01 15:35:41  swolf&n; *&t;initial revision&n; *&n; *&t;13-May-1998 sw&t;Created.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skcsum.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.8 $&n; * Date:&t;$Date: 2001/02/06 11:15:36 $&n; * Purpose:&t;Store/verify Internet checksum in send/receive packets.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2001 SysKonnect GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skcsum.c,v $&n; *&t;Revision 1.8  2001/02/06 11:15:36  rassmann&n; *&t;Supporting two nets on dual-port adapters.&n; *&t;&n; *&t;Revision 1.7  2000/06/29 13:17:05  rassmann&n; *&t;Corrected reception of a packet with UDP checksum == 0 (which means there&n; *&t;is no UDP checksum).&n; *&t;&n; *&t;Revision 1.6  2000/02/21 12:35:10  cgoos&n; *&t;Fixed license header comment.&n; *&t;&n; *&t;Revision 1.5  2000/02/21 11:05:19  cgoos&n; *&t;Merged changes back to common source.&n; *&t;Fixed rx path for BIG ENDIAN architecture.&n; *&t;&n; *&t;Revision 1.1  1999/07/26 15:28:12  mkarl&n; *&t;added return SKCS_STATUS_IP_CSUM_ERROR_UDP and&n; *&t;SKCS_STATUS_IP_CSUM_ERROR_TCP to pass the NidsTester&n; *&t;changed from common source to windows specific source&n; *&t;therefore restarting with v1.0&n; *&t;&n; *&t;Revision 1.3  1999/05/10 08:39:33  mkarl&n; *&t;prevent overflows in SKCS_HTON16&n; *&t;fixed a bug in pseudo header checksum calculation&n; *&t;added some comments&n; *&t;&n; *&t;Revision 1.2  1998/10/22 11:53:28  swolf&n; *&t;Now using SK_DBG_MSG.&n; *&t;&n; *&t;Revision 1.1  1998/09/01 15:35:41  swolf&n; *&t;initial revision&n; *&n; *&t;13-May-1998 sw&t;Created.&n; *&n; ******************************************************************************/
 macro_line|#ifdef SK_USE_CSUM&t;/* Check if CSUM is to be used. */
 macro_line|#ifndef lint
 DECL|variable|SysKonnectFileId
@@ -12,7 +12,7 @@ id|SysKonnectFileId
 )braket
 op_assign
 l_string|&quot;@(#)&quot;
-l_string|&quot;$Id: skcsum.c,v 1.7 2000/06/29 13:17:05 rassmann Exp $&quot;
+l_string|&quot;$Id: skcsum.c,v 1.8 2001/02/06 11:15:36 rassmann Exp $&quot;
 l_string|&quot; (C) SysKonnect.&quot;
 suffix:semicolon
 macro_line|#endif&t;/* !lint */
@@ -96,8 +96,12 @@ multiline_comment|/* IP header. */
 id|SKCS_PACKET_INFO
 op_star
 id|pPacketInfo
-)paren
+comma
 multiline_comment|/* Packet information struct. */
+r_int
+id|NetNumber
+)paren
+multiline_comment|/* Net number */
 (brace
 multiline_comment|/* Internet Header Version found in IP header. */
 r_int
@@ -191,6 +195,9 @@ l_int|0
 suffix:semicolon
 id|pAc-&gt;Csum.ProtoStats
 (braket
+id|NetNumber
+)braket
+(braket
 id|SKCS_PROTO_STATS_IP
 )braket
 dot
@@ -252,6 +259,9 @@ l_int|0
 suffix:semicolon
 id|pAc-&gt;Csum.ProtoStats
 (braket
+id|NetNumber
+)braket
+(braket
 id|SKCS_PROTO_STATS_IP
 )braket
 dot
@@ -263,6 +273,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* This is an IPv4 frame with a header of valid length. */
 id|pAc-&gt;Csum.ProtoStats
+(braket
+id|NetNumber
+)braket
 (braket
 id|SKCS_PROTO_STATS_IP
 )braket
@@ -339,6 +352,9 @@ op_assign
 op_amp
 id|pAc-&gt;Csum.ProtoStats
 (braket
+id|NetNumber
+)braket
+(braket
 id|SKCS_PROTO_STATS_TCP
 )braket
 suffix:semicolon
@@ -371,6 +387,9 @@ id|NextLevelProtoStats
 op_assign
 op_amp
 id|pAc-&gt;Csum.ProtoStats
+(braket
+id|NetNumber
+)braket
 (braket
 id|SKCS_PROTO_STATS_UDP
 )braket
@@ -604,8 +623,12 @@ comma
 multiline_comment|/* Hardware checksum 1. */
 r_int
 id|Checksum2
-)paren
+comma
 multiline_comment|/* Hardware checksum 2. */
+r_int
+id|NetNumber
+)paren
+multiline_comment|/* Net number */
 (brace
 multiline_comment|/* Internet Header Version found in IP header. */
 r_int
@@ -703,6 +726,9 @@ id|InternetHeaderVersion
 suffix:semicolon
 id|pAc-&gt;Csum.ProtoStats
 (braket
+id|NetNumber
+)braket
+(braket
 id|SKCS_PROTO_STATS_IP
 )braket
 dot
@@ -758,6 +784,9 @@ id|IpHeaderLength
 )paren
 suffix:semicolon
 id|pAc-&gt;Csum.ProtoStats
+(braket
+id|NetNumber
+)braket
 (braket
 id|SKCS_PROTO_STATS_IP
 )braket
@@ -865,6 +894,9 @@ l_int|0xFFFF
 (brace
 id|pAc-&gt;Csum.ProtoStats
 (braket
+id|NetNumber
+)braket
+(braket
 id|SKCS_PROTO_STATS_IP
 )braket
 dot
@@ -909,6 +941,9 @@ c_cond
 (paren
 (paren
 id|pAc-&gt;Csum.ReceiveFlags
+(braket
+id|NetNumber
+)braket
 op_amp
 id|SKCS_PROTO_TCP
 )paren
@@ -926,6 +961,9 @@ op_assign
 op_amp
 id|pAc-&gt;Csum.ProtoStats
 (braket
+id|NetNumber
+)braket
+(braket
 id|SKCS_PROTO_STATS_TCP
 )braket
 suffix:semicolon
@@ -936,6 +974,9 @@ c_cond
 (paren
 (paren
 id|pAc-&gt;Csum.ReceiveFlags
+(braket
+id|NetNumber
+)braket
 op_amp
 id|SKCS_PROTO_UDP
 )paren
@@ -952,6 +993,9 @@ id|NextLevelProtoStats
 op_assign
 op_amp
 id|pAc-&gt;Csum.ProtoStats
+(braket
+id|NetNumber
+)braket
 (braket
 id|SKCS_PROTO_STATS_UDP
 )braket
@@ -1263,11 +1307,17 @@ multiline_comment|/* Offset for hardware checksum 1. */
 r_int
 op_star
 id|pChecksum2Offset
-)paren
+comma
 multiline_comment|/* Offset for hardware checksum 2. */
+r_int
+id|NetNumber
+)paren
 (brace
 multiline_comment|/* Save the receive flags. */
 id|pAc-&gt;Csum.ReceiveFlags
+(braket
+id|NetNumber
+)braket
 op_assign
 id|ReceiveFlags
 suffix:semicolon
@@ -1447,13 +1497,16 @@ multiline_comment|/* Event dependent parameter. */
 r_int
 id|ProtoIndex
 suffix:semicolon
+r_int
+id|NetNumber
+suffix:semicolon
 r_switch
 c_cond
 (paren
 id|Event
 )paren
 (brace
-multiline_comment|/*&n;&t; * Clear protocol statistics.&n;&t; *&n;&t; * Param - Protocol index, or -1 for all protocols.&n;&t; */
+multiline_comment|/*&n;&t; * Clear protocol statistics.&n;&t; *&n;&t; * Param - Protocol index, or -1 for all protocols.&n;&t; *&t;&t; - Net number.&n;&t; */
 r_case
 id|SK_CSUM_EVENT_CLEAR_PROTO_STATS
 suffix:colon
@@ -1465,6 +1518,16 @@ r_int
 id|Param.Para32
 (braket
 l_int|0
+)braket
+suffix:semicolon
+id|NetNumber
+op_assign
+(paren
+r_int
+)paren
+id|Param.Para32
+(braket
+l_int|1
 )braket
 suffix:semicolon
 r_if
@@ -1482,6 +1545,9 @@ c_func
 op_amp
 id|pAc-&gt;Csum.ProtoStats
 (braket
+id|NetNumber
+)braket
+(braket
 l_int|0
 )braket
 comma
@@ -1490,6 +1556,9 @@ comma
 r_sizeof
 (paren
 id|pAc-&gt;Csum.ProtoStats
+(braket
+id|NetNumber
+)braket
 )paren
 )paren
 suffix:semicolon
@@ -1503,6 +1572,9 @@ c_func
 op_amp
 id|pAc-&gt;Csum.ProtoStats
 (braket
+id|NetNumber
+)braket
+(braket
 id|ProtoIndex
 )braket
 comma
@@ -1511,6 +1583,9 @@ comma
 r_sizeof
 (paren
 id|pAc-&gt;Csum.ProtoStats
+(braket
+id|NetNumber
+)braket
 (braket
 id|ProtoIndex
 )braket

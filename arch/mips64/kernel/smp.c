@@ -11,6 +11,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#ifdef CONFIG_SGI_IP27
 macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/intr.h&gt;
@@ -21,8 +22,6 @@ DECL|macro|DORESCHED
 mdefine_line|#define DORESCHED&t;0xab
 DECL|macro|DOCALL
 mdefine_line|#define DOCALL&t;&t;0xbc
-DECL|macro|IRQ_TO_SWLEVEL
-mdefine_line|#define IRQ_TO_SWLEVEL(i)&t;i + 7&t;/* Delete this from here */
 DECL|function|sendintr
 r_static
 r_void
@@ -96,7 +95,7 @@ id|destid
 )paren
 )paren
 comma
-id|IRQ_TO_SWLEVEL
+id|FAST_IRQ_TO_LEVEL
 c_func
 (paren
 id|irq

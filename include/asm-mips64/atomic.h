@@ -18,8 +18,10 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 DECL|macro|ATOMIC_INIT
 mdefine_line|#define ATOMIC_INIT(i)    { (i) }
+multiline_comment|/*&n; * atomic_read - read atomic variable&n; * @v: pointer of type atomic_t&n; *&n; * Atomically reads the value of @v.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
 DECL|macro|atomic_read
 mdefine_line|#define atomic_read(v)&t;((v)-&gt;counter)
+multiline_comment|/*&n; * atomic_set - set atomic variable&n; * @v: pointer of type atomic_t&n; * @i: required value&n; *&n; * Atomically sets the value of @v to @i.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
 DECL|macro|atomic_set
 mdefine_line|#define atomic_set(v,i)&t;((v)-&gt;counter = (i))
 DECL|function|atomic_add
@@ -73,6 +75,7 @@ id|v-&gt;counter
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * atomic_sub - subtract the atomic variable&n; * @i: integer value to subtract&n; * @v: pointer of type atomic_t&n; *&n; * Atomically subtracts @i from @v.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
 DECL|function|atomic_sub
 r_extern
 id|__inline__
@@ -259,14 +262,20 @@ DECL|macro|atomic_dec_return
 mdefine_line|#define atomic_dec_return(v) atomic_sub_return(1,(v))
 DECL|macro|atomic_inc_return
 mdefine_line|#define atomic_inc_return(v) atomic_add_return(1,(v))
+multiline_comment|/*&n; * atomic_sub_and_test - subtract value from variable and test result&n; * @i: integer value to subtract&n; * @v: pointer of type atomic_t&n; *&n; * Atomically subtracts @i from @v and returns&n; * true if the result is zero, or false for all&n; * other cases.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
 DECL|macro|atomic_sub_and_test
 mdefine_line|#define atomic_sub_and_test(i,v) (atomic_sub_return((i), (v)) == 0)
+multiline_comment|/*&n; * atomic_inc_and_test - increment and test&n; * @v: pointer of type atomic_t&n; *&n; * Atomically increments @v by 1&n; * and returns true if the result is zero, or false for all&n; * other cases.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; * atomic_inc_and_test is currently not implemented for mips64.&n; */
+multiline_comment|/*&n; * atomic_dec_and_test - decrement by 1 and test&n; * @v: pointer of type atomic_t&n; *&n; * Atomically decrements @v by 1 and&n; * returns true if the result is 0, or false for all other&n; * cases.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
 DECL|macro|atomic_dec_and_test
 mdefine_line|#define atomic_dec_and_test(v) (atomic_sub_return(1, (v)) == 0)
+multiline_comment|/*&n; * atomic_inc - increment atomic variable&n; * @v: pointer of type atomic_t&n; *&n; * Atomically increments @v by 1.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
 DECL|macro|atomic_inc
 mdefine_line|#define atomic_inc(v) atomic_add(1,(v))
+multiline_comment|/*&n; * atomic_dec - decrement and test&n; * @v: pointer of type atomic_t&n; *&n; * Atomically decrements @v by 1.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
 DECL|macro|atomic_dec
 mdefine_line|#define atomic_dec(v) atomic_sub(1,(v))
+multiline_comment|/*&n; * atomic_add_negative - add and test if negative&n; * @v: pointer of type atomic_t&n; * @i: integer value to add&n; *&n; * Atomically adds @i to @v and returns true&n; * if the result is negative, or false when&n; * result is greater than or equal to zero.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; *&n; * atomic_add_negative is currently not implemented for mips64.&n; */
 macro_line|#endif /* defined(__KERNEL__) */
 macro_line|#endif /* _ASM_ATOMIC_H */
 eof

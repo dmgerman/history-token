@@ -3715,6 +3715,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|ppp_net_init
 id|ppp_net_init

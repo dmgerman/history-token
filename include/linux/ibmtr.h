@@ -5,15 +5,13 @@ multiline_comment|/* Definitions for an IBM Token Ring card. */
 multiline_comment|/* This file is distributed under the GNU GPL   */
 multiline_comment|/* ported to the Alpha architecture 02/20/96 (just used the HZ macro) */
 DECL|macro|TR_RETRY_INTERVAL
-mdefine_line|#define TR_RETRY_INTERVAL (5*HZ) /* 500 on PC = 5 s */
-DECL|macro|TR_RESET_INTERVAL
-mdefine_line|#define TR_RESET_INTERVAL (HZ/20) /* 5 on PC = 50 ms */
+mdefine_line|#define TR_RETRY_INTERVAL&t;(30*HZ)&t;/* 500 on PC = 5 s */
+DECL|macro|TR_RST_TIME
+mdefine_line|#define TR_RST_TIME&t;&t;(HZ/20) /* 5 on PC = 50 ms */
 DECL|macro|TR_BUSY_INTERVAL
-mdefine_line|#define TR_BUSY_INTERVAL (HZ/5) /* 5 on PC = 200 ms */
+mdefine_line|#define TR_BUSY_INTERVAL&t;(HZ/5)&t;/* 5 on PC = 200 ms */
 DECL|macro|TR_SPIN_INTERVAL
-mdefine_line|#define TR_SPIN_INTERVAL (3*HZ) /* 3 seconds before init timeout */
-DECL|macro|TR_RETRIES
-mdefine_line|#define TR_RETRIES 6            /* number of open retries */ 
+mdefine_line|#define TR_SPIN_INTERVAL&t;(3*HZ)&t;/* 3 seconds before init timeout */
 DECL|macro|TR_ISA
 mdefine_line|#define TR_ISA 1
 DECL|macro|TR_MCA
@@ -22,22 +20,16 @@ DECL|macro|TR_ISAPNP
 mdefine_line|#define TR_ISAPNP 3
 DECL|macro|NOTOK
 mdefine_line|#define NOTOK 0
-DECL|macro|TOKDEBUG
-mdefine_line|#define TOKDEBUG 1
 DECL|macro|IBMTR_SHARED_RAM_SIZE
 mdefine_line|#define IBMTR_SHARED_RAM_SIZE 0x10000
 DECL|macro|IBMTR_IO_EXTENT
 mdefine_line|#define IBMTR_IO_EXTENT 4
 DECL|macro|IBMTR_MAX_ADAPTERS
-mdefine_line|#define IBMTR_MAX_ADAPTERS 2
+mdefine_line|#define IBMTR_MAX_ADAPTERS 4
 DECL|macro|CHANNEL_ID
 mdefine_line|#define CHANNEL_ID      0X1F30
 DECL|macro|AIP
 mdefine_line|#define AIP             0X1F00
-DECL|macro|AIPCHKSUM1
-mdefine_line|#define AIPCHKSUM1      0X1F60
-DECL|macro|AIPCHKSUM2
-mdefine_line|#define AIPCHKSUM2      0X1FF0
 DECL|macro|AIPADAPTYPE
 mdefine_line|#define AIPADAPTYPE     0X1FA0
 DECL|macro|AIPDATARATE
@@ -54,26 +46,19 @@ DECL|macro|AIP16MBDHB
 mdefine_line|#define AIP16MBDHB      0X1FAC
 DECL|macro|AIPFID
 mdefine_line|#define AIPFID&t;&t;0X1FBA
-multiline_comment|/* Note, 0xA20 == 0x220 since motherboard decodes 10 bits.  I left everything&n;   the way my documentation had it, ie: 0x0A20.     */
-DECL|macro|ADAPTINTCNTRL
-mdefine_line|#define ADAPTINTCNTRL   0x02f0  /* Adapter interrupt control */
 DECL|macro|ADAPTRESET
 mdefine_line|#define ADAPTRESET      0x1     /* Control Adapter reset (add to base) */
 DECL|macro|ADAPTRESETREL
 mdefine_line|#define ADAPTRESETREL   0x2     /* Release Adapter from reset ( &quot;&quot;&quot;)  */
 DECL|macro|ADAPTINTREL
 mdefine_line|#define ADAPTINTREL&t;0x3 &t;/* Adapter interrupt release */
-DECL|macro|MMIOStartLocP
-mdefine_line|#define MMIOStartLocP   0x0a20  /* Primary adapter&squot;s starting MMIO area */
-DECL|macro|MMIOStartLocA
-mdefine_line|#define MMIOStartLocA   0x0a24  /* Alternate adapter&squot;s starting MMIO area */
 DECL|macro|GLOBAL_INT_ENABLE
 mdefine_line|#define GLOBAL_INT_ENABLE 0x02f0
 multiline_comment|/* MMIO bits 0-4 select register */
 DECL|macro|RRR_EVEN
-mdefine_line|#define RRR_EVEN        0x00    /* Shared RAM relocation registers - even and odd */
+mdefine_line|#define RRR_EVEN       0x00 /* Shared RAM relocation registers - even and odd */
 multiline_comment|/* Used to set the starting address of shared RAM  */
-multiline_comment|/* Bits 1 through 7 of this register map to bits 13 through 19 of the shared RAM address.*/
+multiline_comment|/* Bits 1 through 7 of this register map to bits 13 through 19 of the shared&n;   RAM address.*/
 multiline_comment|/* ie: 0x02 sets RAM address to ...ato!  issy su wazzoo !! GODZILLA!!! */
 DECL|macro|RRR_ODD
 mdefine_line|#define RRR_ODD         0x01
@@ -88,26 +73,23 @@ mdefine_line|#define WWOR_EVEN       0x04    /* Write window open registers - ev
 DECL|macro|WWOR_ODD
 mdefine_line|#define WWOR_ODD        0x05
 DECL|macro|WWCR_EVEN
-mdefine_line|#define WWCR_EVEN       0x06    /* Write window close registers - even and odd */
+mdefine_line|#define WWCR_EVEN       0x06   /* Write window close registers - even and odd */
 DECL|macro|WWCR_ODD
 mdefine_line|#define WWCR_ODD        0x07
 multiline_comment|/* Interrupt status registers - PC system  - even and odd */
 DECL|macro|ISRP_EVEN
 mdefine_line|#define ISRP_EVEN       0x08
 DECL|macro|TCR_INT
-mdefine_line|#define TCR_INT 0x10    /* Bit 4 - Timer interrupt.  The TVR_EVEN timer has&n;                                                                   expired. */
+mdefine_line|#define TCR_INT    0x10    /* Bit 4 - Timer interrupt.  The TVR_EVEN timer has&n;                                                                   expired. */
 DECL|macro|ERR_INT
-mdefine_line|#define ERR_INT 0x08    /* Bit 3 - Error interrupt.  The adapter has had an&n;                                                                   internal error. */
+mdefine_line|#define ERR_INT&t;   0x08    /* Bit 3 - Error interrupt.  The adapter has had an&n;                                                            internal error. */
 DECL|macro|ACCESS_INT
-mdefine_line|#define ACCESS_INT 0x04    /* Bit 2 - Access interrupt.  You have attempted to&n;                                                           write to an invalid area of shared RAM or an invalid&n;                                                                   register within the MMIO. */
-multiline_comment|/*      In addition, the following bits within ISRP_EVEN can be turned on or off by you */
-multiline_comment|/*      to control the interrupt processing:   */
-DECL|macro|INT_IRQ
-mdefine_line|#define INT_IRQ 0x80    /* Bit 7 - If 0 the adapter will issue a CHCK, if 1 and&n;                                                              IRQ.  This should normally be set (by you) to 1.  */
+mdefine_line|#define ACCESS_INT 0x04    /* Bit 2 - Access interrupt.  You have attempted to&n;&t;&t;&t;&t;      write to an invalid area of shared RAM&n;&t;&t;&t;&t;      or an invalid register within the MMIO. */
+multiline_comment|/* In addition, the following bits within ISRP_EVEN can be turned on or off   */
+multiline_comment|/* by you to control the interrupt processing:   */
 DECL|macro|INT_ENABLE
-mdefine_line|#define INT_ENABLE 0x40 /* Bit 6 - Interrupt enable.  If 0, no interrupts will&n;                                                                   occur.  If 1, interrupts will occur normally.&n;                                                                   Normally set to 1.  */
-multiline_comment|/* Bit 0 - Primary or alternate adapter.  Set to zero if this adapter is the primary adapter,*/
-multiline_comment|/*         1 if this adapter is the alternate adapter. */
+mdefine_line|#define INT_ENABLE 0x40 /* Bit 6 - Interrupt enable.  If 0, no interrupts will&n;                                   occur.  If 1, interrupts will occur normally.&n;                                                         Normally set to 1.  */
+multiline_comment|/* Bit 0 - Primary or alternate adapter.  Set to zero if this adapter is the&n;&t;&t;primary adapter, 1 if this adapter is the alternate adapter. */
 DECL|macro|ISRP_ODD
 mdefine_line|#define ISRP_ODD        0x09
 DECL|macro|ADAP_CHK_INT
@@ -115,14 +97,14 @@ mdefine_line|#define ADAP_CHK_INT 0x40 /* Bit 6 - Adapter check.  the adapter ha
 DECL|macro|SRB_RESP_INT
 mdefine_line|#define SRB_RESP_INT 0x20 /* Bit 5 - SRB response.  The adapter has accepted&n;                             an SRB request and set the return code within&n;                             the SRB. */
 DECL|macro|ASB_FREE_INT
-mdefine_line|#define ASB_FREE_INT 0x10 /* Bit 4 - ASB free.  The adapter has read the ASB&n;                                                                          and this area can be safely reused. This interrupt&n;                                                                          is only used if your application has set the ASB&n;                                                                          free request bit in ISRA_ODD or if an error was&n;                                                                detected in your response. */
+mdefine_line|#define ASB_FREE_INT 0x10 /* Bit 4 - ASB free.  The adapter has read the ASB&n;                             and this area can be safely reused. This interrupt&n;                             is only used if your application has set the ASB&n;                             free request bit in ISRA_ODD or if an error was&n;                             detected in your response. */
 DECL|macro|ARB_CMD_INT
-mdefine_line|#define ARB_CMD_INT  0x08 /* Bit 3 - ARB command.  The adapter has given you a&n;                                                                          command for action.  The command is located in the&n;                                                                          ARB area of shared memory. */
+mdefine_line|#define ARB_CMD_INT  0x08 /* Bit 3 - ARB command.  The adapter has given you a&n;                             command for action.  The command is located in the&n;                             ARB area of shared memory. */
 DECL|macro|SSB_RESP_INT
-mdefine_line|#define SSB_RESP_INT 0x04 /* Bit 2 - SSB response.  The adapter has posted a&n;                                                                          response to your SRB (the response is located in&n;                                                                          the SSB area of shared memory). */
+mdefine_line|#define SSB_RESP_INT 0x04 /* Bit 2 - SSB response.  The adapter has posted a&n;                             response to your SRB (the response is located in&n;                             the SSB area of shared memory). */
 multiline_comment|/* Bit 1 - Bridge frame forward complete. */
 DECL|macro|ISRA_EVEN
-mdefine_line|#define ISRA_EVEN       0x0A    /* Interrupt status registers - adapter  - even and odd */
+mdefine_line|#define ISRA_EVEN 0x0A /*Interrupt status registers - adapter  - even and odd */
 multiline_comment|/* Bit 7 - Internal parity error (on adapter&squot;s internal bus) */
 multiline_comment|/* Bit 6 - Timer interrupt pending */
 multiline_comment|/* Bit 5 - Access interrupt (attempt by adapter to access illegal address) */
@@ -130,19 +112,15 @@ multiline_comment|/* Bit 4 - Adapter microcode problem (microcode dead-man timer
 multiline_comment|/* Bit 3 - Adapter processor check status */
 multiline_comment|/* Bit 2 - Reserved */
 multiline_comment|/* Bit 1 - Adapter hardware interrupt mask (prevents internal interrupts) */
-multiline_comment|/* Bit 0 - Adapter software interrupt mask (prevents internal software interrupts) */
+multiline_comment|/* Bit 0 - Adapter software interrupt mask (prevents internal software ints) */
 DECL|macro|ISRA_ODD
 mdefine_line|#define ISRA_ODD        0x0B
 DECL|macro|CMD_IN_SRB
-mdefine_line|#define CMD_IN_SRB 0x20 /* Bit 5  - Indicates that you have placed a new&n;                           command in the SRB and are ready for the adapter to&n;                           process the command. */
+mdefine_line|#define CMD_IN_SRB  0x20 /* Bit 5  - Indicates that you have placed a new&n;                           command in the SRB and are ready for the adapter to&n;                           process the command. */
 DECL|macro|RESP_IN_ASB
-mdefine_line|#define RESP_IN_ASB 0x10 /* Bit 4 - Indicates that you have placed a response&n;                                                                    (an ASB) in the shared RAM which is available for&n;                                                                         the adapter&squot;s use. */
-multiline_comment|/* Bit 3 - Indicates that you are ready to put an SRB in the shared RAM, but that a previous */
-multiline_comment|/*         command is still pending.  The adapter will then interrupt you when the previous */
-multiline_comment|/*         command is completed */
-multiline_comment|/* Bit 2 - Indicates that you are ready to put an ASB in the shared RAM, but that a previous */
-multiline_comment|/*         ASB is still pending.  The adapter will then interrupt you when the previous ASB */
-multiline_comment|/*         is copied.  */
+mdefine_line|#define RESP_IN_ASB 0x10 /* Bit 4 - Indicates that you have placed a response&n;                            (an ASB) in the shared RAM which is available for&n;                            the adapter&squot;s use. */
+multiline_comment|/* Bit 3 - Indicates that you are ready to put an SRB in the shared RAM, but&n;&t;that a previous command is still pending.  The adapter will then&n;&t;interrupt you when the previous command is completed */
+multiline_comment|/* Bit 2 - Indicates that you are ready to put an ASB in the shared RAM, but&n;&t;that a previous ASB is still pending.  The adapter will then interrupt&n;&t;you when the previous ASB is copied.  */
 DECL|macro|ARB_FREE
 mdefine_line|#define ARB_FREE 0x2
 DECL|macro|SSB_FREE
@@ -160,7 +138,7 @@ mdefine_line|#define SRPR_EVEN       0x18    /* Shared RAM paging registers - ev
 DECL|macro|SRPR_ENABLE_PAGING
 mdefine_line|#define SRPR_ENABLE_PAGING 0xc0
 DECL|macro|SRPR_ODD
-mdefine_line|#define SRPR_ODD        0x19 /* Not used. */
+mdefine_line|#define SRPR_ODD        0x19&t;/* Not used. */
 DECL|macro|TOKREAD
 mdefine_line|#define TOKREAD         0x60
 DECL|macro|TOKOR
@@ -177,7 +155,7 @@ multiline_comment|/* 11 is used to read from a register */
 multiline_comment|/* MMIO bits 7-8 select area of interest.. see below */
 multiline_comment|/* 00 selects attachment control area. */
 multiline_comment|/* 01 is reserved. */
-multiline_comment|/* 10 selects adapter identification area A containing the adapter encoded address. */
+multiline_comment|/* 10 selects adapter identification area A containing the adapter encoded&n;&t;address. */
 multiline_comment|/* 11 selects the adapter identification area B containing test patterns. */
 DECL|macro|PCCHANNELID
 mdefine_line|#define PCCHANNELID 5049434F3631313039393020
@@ -193,34 +171,29 @@ DECL|macro|ACA_RW
 mdefine_line|#define ACA_RW 0x00
 macro_line|#ifdef ENABLE_PAGING
 DECL|macro|SET_PAGE
-mdefine_line|#define SET_PAGE(x) (isa_writeb((x), &bslash;&n;  ti-&gt;mmio + ACA_OFFSET + ACA_RW + SRPR_EVEN))
+mdefine_line|#define SET_PAGE(x) (writeb((x), ti-&gt;mmio + ACA_OFFSET+ ACA_RW + SRPR_EVEN))
 macro_line|#else
 DECL|macro|SET_PAGE
 mdefine_line|#define SET_PAGE(x)
 macro_line|#endif
-DECL|enumerator|IN_PROGRESS
-DECL|enumerator|SUCCESS
-DECL|enumerator|FAILURE
-DECL|enumerator|CLOSED
-DECL|typedef|open_state
-r_typedef
-r_enum
-(brace
-id|IN_PROGRESS
-comma
-id|SUCCESS
-comma
-id|FAILURE
-comma
-id|CLOSED
-)brace
-id|open_state
-suffix:semicolon
 multiline_comment|/* do_tok_int possible values */
 DECL|macro|FIRST_INT
 mdefine_line|#define FIRST_INT 1
 DECL|macro|NOT_FIRST
 mdefine_line|#define NOT_FIRST 2
+DECL|enumerator|CLOSED
+DECL|enumerator|OPEN
+DECL|typedef|open_state
+r_typedef
+r_enum
+(brace
+id|CLOSED
+comma
+id|OPEN
+)brace
+id|open_state
+suffix:semicolon
+singleline_comment|//staic const char *printstate[] = { &quot;CLOSED&quot;,&quot;OPEN&quot;};
 DECL|struct|tok_info
 r_struct
 id|tok_info
@@ -266,6 +239,11 @@ DECL|member|shared_ram_paging
 r_int
 r_char
 id|shared_ram_paging
+suffix:semicolon
+DECL|member|turbo
+r_int
+r_char
+id|turbo
 suffix:semicolon
 DECL|member|dhb_size4mb
 r_int
@@ -313,10 +291,6 @@ r_int
 r_char
 id|do_tok_int
 suffix:semicolon
-DECL|member|wait_for_tok_int
-id|wait_queue_head_t
-id|wait_for_tok_int
-suffix:semicolon
 DECL|member|wait_for_reset
 id|wait_queue_head_t
 id|wait_for_reset
@@ -339,9 +313,9 @@ r_char
 id|mapped_ram_size
 suffix:semicolon
 multiline_comment|/* size of RAM page */
-DECL|member|sram
+DECL|member|sram_virt
 id|__u32
-id|sram
+id|sram_virt
 suffix:semicolon
 multiline_comment|/* Shared memory base address */
 DECL|member|init_srb
@@ -410,14 +384,53 @@ r_struct
 id|net_device_stats
 id|tr_stats
 suffix:semicolon
-DECL|member|auto_ringspeedsave
+DECL|member|auto_speedsave
 r_int
 r_char
-id|auto_ringspeedsave
+id|auto_speedsave
 suffix:semicolon
 DECL|member|open_status
+DECL|member|sap_status
 id|open_state
 id|open_status
+comma
+id|sap_status
+suffix:semicolon
+DECL|enumerator|MANUAL
+DECL|enumerator|AUTOMATIC
+DECL|member|open_mode
+r_enum
+(brace
+id|MANUAL
+comma
+id|AUTOMATIC
+)brace
+id|open_mode
+suffix:semicolon
+DECL|enumerator|FAIL
+DECL|enumerator|RESTART
+DECL|enumerator|REOPEN
+DECL|member|open_action
+r_enum
+(brace
+id|FAIL
+comma
+id|RESTART
+comma
+id|REOPEN
+)brace
+id|open_action
+suffix:semicolon
+DECL|enumerator|NO
+DECL|enumerator|YES
+DECL|member|open_failure
+r_enum
+(brace
+id|NO
+comma
+id|YES
+)brace
+id|open_failure
 suffix:semicolon
 DECL|member|readlog_pending
 r_int
@@ -439,15 +452,6 @@ DECL|member|ring_speed
 r_int
 r_char
 id|ring_speed
-suffix:semicolon
-DECL|member|func_addr
-id|__u32
-id|func_addr
-suffix:semicolon
-DECL|member|retry_count
-r_int
-r_int
-id|retry_count
 suffix:semicolon
 DECL|member|lock
 id|spinlock_t
@@ -712,55 +716,6 @@ l_int|18
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|srb_open_response
-r_struct
-id|srb_open_response
-(brace
-DECL|member|command
-r_int
-r_char
-id|command
-suffix:semicolon
-DECL|member|reserved1
-r_int
-r_char
-id|reserved1
-suffix:semicolon
-DECL|member|ret_code
-r_int
-r_char
-id|ret_code
-suffix:semicolon
-DECL|member|reserved2
-r_int
-r_char
-id|reserved2
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|error_code
-id|__u16
-id|error_code
-suffix:semicolon
-DECL|member|asb_addr
-id|__u16
-id|asb_addr
-suffix:semicolon
-DECL|member|srb_addr
-id|__u16
-id|srb_addr
-suffix:semicolon
-DECL|member|arb_addr
-id|__u16
-id|arb_addr
-suffix:semicolon
-DECL|member|ssb_addr
-id|__u16
-id|ssb_addr
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|dlc_open_sap
 r_struct
 id|dlc_open_sap
@@ -893,184 +848,6 @@ id|station_id
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|srb_interrupt
-r_struct
-id|srb_interrupt
-(brace
-DECL|member|command
-r_int
-r_char
-id|command
-suffix:semicolon
-DECL|member|cmd_corr
-r_int
-r_char
-id|cmd_corr
-suffix:semicolon
-DECL|member|ret_code
-r_int
-r_char
-id|ret_code
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|srb_read_log
-r_struct
-id|srb_read_log
-(brace
-DECL|member|command
-r_int
-r_char
-id|command
-suffix:semicolon
-DECL|member|reserved1
-r_int
-r_char
-id|reserved1
-suffix:semicolon
-DECL|member|ret_code
-r_int
-r_char
-id|ret_code
-suffix:semicolon
-DECL|member|reserved2
-r_int
-r_char
-id|reserved2
-suffix:semicolon
-DECL|member|line_errors
-r_int
-r_char
-id|line_errors
-suffix:semicolon
-DECL|member|internal_errors
-r_int
-r_char
-id|internal_errors
-suffix:semicolon
-DECL|member|burst_errors
-r_int
-r_char
-id|burst_errors
-suffix:semicolon
-DECL|member|A_C_errors
-r_int
-r_char
-id|A_C_errors
-suffix:semicolon
-DECL|member|abort_delimiters
-r_int
-r_char
-id|abort_delimiters
-suffix:semicolon
-DECL|member|reserved3
-r_int
-r_char
-id|reserved3
-suffix:semicolon
-DECL|member|lost_frames
-r_int
-r_char
-id|lost_frames
-suffix:semicolon
-DECL|member|recv_congest_count
-r_int
-r_char
-id|recv_congest_count
-suffix:semicolon
-DECL|member|frame_copied_errors
-r_int
-r_char
-id|frame_copied_errors
-suffix:semicolon
-DECL|member|frequency_errors
-r_int
-r_char
-id|frequency_errors
-suffix:semicolon
-DECL|member|token_errors
-r_int
-r_char
-id|token_errors
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|asb_xmit_resp
-r_struct
-id|asb_xmit_resp
-(brace
-DECL|member|command
-r_int
-r_char
-id|command
-suffix:semicolon
-DECL|member|cmd_corr
-r_int
-r_char
-id|cmd_corr
-suffix:semicolon
-DECL|member|ret_code
-r_int
-r_char
-id|ret_code
-suffix:semicolon
-DECL|member|reserved
-r_int
-r_char
-id|reserved
-suffix:semicolon
-DECL|member|station_id
-id|__u16
-id|station_id
-suffix:semicolon
-DECL|member|frame_length
-id|__u16
-id|frame_length
-suffix:semicolon
-DECL|member|hdr_length
-r_int
-r_char
-id|hdr_length
-suffix:semicolon
-DECL|member|rsap_value
-r_int
-r_char
-id|rsap_value
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|arb_xmit_req
-r_struct
-id|arb_xmit_req
-(brace
-DECL|member|command
-r_int
-r_char
-id|command
-suffix:semicolon
-DECL|member|cmd_corr
-r_int
-r_char
-id|cmd_corr
-suffix:semicolon
-DECL|member|reserved1
-r_int
-r_char
-id|reserved1
-(braket
-l_int|2
-)braket
-suffix:semicolon
-DECL|member|station_id
-id|__u16
-id|station_id
-suffix:semicolon
-DECL|member|dhb_address
-id|__u16
-id|dhb_address
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|arb_rec_req
 r_struct
 id|arb_rec_req
@@ -1155,7 +932,14 @@ DECL|struct|rec_buf
 r_struct
 id|rec_buf
 (brace
-multiline_comment|/*&t;unsigned char reserved1[2]; */
+DECL|member|reserved1
+r_int
+r_char
+id|reserved1
+(braket
+l_int|2
+)braket
+suffix:semicolon
 DECL|member|buf_ptr
 id|__u16
 id|buf_ptr
@@ -1164,6 +948,11 @@ DECL|member|reserved2
 r_int
 r_char
 id|reserved2
+suffix:semicolon
+DECL|member|receive_fs
+r_int
+r_char
+id|receive_fs
 suffix:semicolon
 DECL|member|buf_len
 id|__u16
@@ -1176,103 +965,6 @@ id|data
 (braket
 l_int|0
 )braket
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|arb_dlc_status
-r_struct
-id|arb_dlc_status
-(brace
-DECL|member|command
-r_int
-r_char
-id|command
-suffix:semicolon
-DECL|member|reserved1
-r_int
-r_char
-id|reserved1
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|station_id
-id|__u16
-id|station_id
-suffix:semicolon
-DECL|member|status
-id|__u16
-id|status
-suffix:semicolon
-DECL|member|frmr_data
-r_int
-r_char
-id|frmr_data
-(braket
-l_int|5
-)braket
-suffix:semicolon
-DECL|member|access_prio
-r_int
-r_char
-id|access_prio
-suffix:semicolon
-DECL|member|rem_addr
-r_int
-r_char
-id|rem_addr
-(braket
-id|TR_ALEN
-)braket
-suffix:semicolon
-DECL|member|rsap_value
-r_int
-r_char
-id|rsap_value
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|arb_ring_stat_change
-r_struct
-id|arb_ring_stat_change
-(brace
-DECL|member|command
-r_int
-r_char
-id|command
-suffix:semicolon
-DECL|member|reserved1
-r_int
-r_char
-id|reserved1
-(braket
-l_int|5
-)braket
-suffix:semicolon
-DECL|member|ring_status
-id|__u16
-id|ring_status
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|srb_close_adapter
-r_struct
-id|srb_close_adapter
-(brace
-DECL|member|command
-r_int
-r_char
-id|command
-suffix:semicolon
-DECL|member|reserved1
-r_int
-r_char
-id|reserved1
-suffix:semicolon
-DECL|member|ret_code
-r_int
-r_char
-id|ret_code
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1313,5 +1005,5 @@ l_int|4
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif /* __LINUX_IBMTR_H__ */
+macro_line|#endif
 eof

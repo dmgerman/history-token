@@ -1325,6 +1325,7 @@ r_void
 (brace
 multiline_comment|/* For now, nothing... */
 )brace
+macro_line|#ifdef CONFIG_SMP
 DECL|variable|__global_cli
 id|EXPORT_SYMBOL
 c_func
@@ -1353,6 +1354,7 @@ c_func
 id|__global_restore_flags
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|global_bh_lock
 id|EXPORT_SYMBOL
 c_func

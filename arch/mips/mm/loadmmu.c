@@ -1,13 +1,14 @@
-multiline_comment|/*&n; * loadmmu.c: Setup cpu/cache specific function ptrs at boot time.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; *&n; * $Id: loadmmu.c,v 1.17 2000/03/13 10:33:05 raiko Exp $&n; */
+multiline_comment|/*&n; * loadmmu.c: Setup cpu/cache specific function ptrs at boot time.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bootinfo.h&gt;
 multiline_comment|/* memory functions */
 DECL|variable|_clear_page
 r_void
@@ -43,6 +44,16 @@ r_void
 (paren
 op_star
 id|_flush_cache_all
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|variable|___flush_cache_all
+r_void
+(paren
+op_star
+id|___flush_cache_all
 )paren
 (paren
 r_void
@@ -124,6 +135,40 @@ op_star
 id|page
 )paren
 suffix:semicolon
+DECL|variable|_flush_icache_range
+r_void
+(paren
+op_star
+id|_flush_icache_range
+)paren
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+suffix:semicolon
+DECL|variable|_flush_icache_page
+r_void
+(paren
+op_star
+id|_flush_icache_page
+)paren
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
 multiline_comment|/* DMA cache operations. */
 DECL|variable|_dma_cache_wback_inv
 r_void
@@ -173,17 +218,14 @@ r_int
 id|size
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_R3000
 r_extern
 r_void
-id|ld_mmu_r2300
+id|ld_mmu_r23000
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_R4X00) || defined(CONFIG_CPU_R4300) || &bslash;&n;    defined(CONFIG_CPU_R5000) || defined(CONFIG_CPU_NEVADA)
 r_extern
 r_void
 id|ld_mmu_r4xx0
@@ -192,8 +234,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_CPU_R6000
+r_extern
+r_void
+id|ld_mmu_r5432
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|ld_mmu_r6000
@@ -202,8 +250,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_CPU_R8000
+r_extern
+r_void
+id|ld_mmu_rm7k
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|ld_mmu_tfp
@@ -212,8 +266,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_CPU_R10000
 r_extern
 r_void
 id|ld_mmu_andes
@@ -222,7 +274,22 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
+r_extern
+r_void
+id|ld_mmu_sb1
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ld_mmu_mips32
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|loadmmu
 r_void
 id|__init
@@ -232,10 +299,72 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|mips_cpu.options
+op_amp
+id|MIPS_CPU_4KTLB
+)paren
+(brace
+macro_line|#if defined(CONFIG_CPU_R4X00) || defined(CONFIG_CPU_R4300) || &bslash;&n;    defined(CONFIG_CPU_R5000) || defined(CONFIG_CPU_NEVADA)
+id|printk
+c_func
+(paren
+l_string|&quot;Loading R4000 MMU routines.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ld_mmu_r4xx0
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_CPU_RM7000)
+id|printk
+c_func
+(paren
+l_string|&quot;Loading RM7000 MMU routines.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ld_mmu_rm7k
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_CPU_R5432)
+id|printk
+c_func
+(paren
+l_string|&quot;Loading R5432 MMU routines.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ld_mmu_r5432
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_CPU_MIPS32)
+id|printk
+c_func
+(paren
+l_string|&quot;Loading MIPS32 MMU routines.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ld_mmu_mips32
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+r_else
 r_switch
 c_cond
 (paren
-id|mips_cputype
+id|mips_cpu.cputype
 )paren
 (brace
 macro_line|#ifdef CONFIG_CPU_R3000
@@ -249,75 +378,24 @@ r_case
 id|CPU_R3000A
 suffix:colon
 r_case
+id|CPU_TX3912
+suffix:colon
+r_case
+id|CPU_TX3922
+suffix:colon
+r_case
+id|CPU_TX3927
+suffix:colon
+r_case
 id|CPU_R3081E
 suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;Loading R[23]00 MMU routines.&bslash;n&quot;
+l_string|&quot;Loading R[23]000 MMU routines.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ld_mmu_r2300
-c_func
-(paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_R4X00) || defined(CONFIG_CPU_R4300) || &bslash;&n;    defined(CONFIG_CPU_R5000) || defined(CONFIG_CPU_NEVADA)
-r_case
-id|CPU_R4000PC
-suffix:colon
-r_case
-id|CPU_R4000SC
-suffix:colon
-r_case
-id|CPU_R4000MC
-suffix:colon
-r_case
-id|CPU_R4200
-suffix:colon
-r_case
-id|CPU_R4300
-suffix:colon
-r_case
-id|CPU_R4400PC
-suffix:colon
-r_case
-id|CPU_R4400SC
-suffix:colon
-r_case
-id|CPU_R4400MC
-suffix:colon
-r_case
-id|CPU_R4600
-suffix:colon
-r_case
-id|CPU_R4640
-suffix:colon
-r_case
-id|CPU_R4650
-suffix:colon
-r_case
-id|CPU_R4700
-suffix:colon
-r_case
-id|CPU_R5000
-suffix:colon
-r_case
-id|CPU_R5000A
-suffix:colon
-r_case
-id|CPU_NEVADA
-suffix:colon
-id|printk
-c_func
-(paren
-l_string|&quot;Loading R4000 MMU routines.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|ld_mmu_r4xx0
+id|ld_mmu_r23000
 c_func
 (paren
 )paren
@@ -343,9 +421,26 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_CPU_SB1
+r_case
+id|CPU_SB1
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Loading SB1 MMU routines.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ld_mmu_sb1
+c_func
+(paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
-multiline_comment|/* XXX We need an generic routine in the MIPS port&n;&t;&t; * XXX to jabber stuff onto the screen on all machines&n;&t;&t; * XXX before the console is setup.  The ARCS prom&n;&t;&t; * XXX routines look good for this, but only the SGI&n;&t;&t; * XXX code has a full library for that at this time.&n;&t;&t; */
 id|panic
 c_func
 (paren

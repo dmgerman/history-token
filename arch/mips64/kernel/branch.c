@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: branch.c,v 1.1 1999/10/09 20:55:05 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Branch and jump emulation.&n; *&n; * Copyright (C) 1996, 1997 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Branch and jump emulation.&n; *&n; * Copyright (C) 1996, 1997 by Ralf Baechle&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -172,6 +172,9 @@ suffix:colon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|regs-&gt;regs
 (braket
 id|insn.i_format.rs
@@ -211,6 +214,9 @@ suffix:colon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|regs-&gt;regs
 (braket
 id|insn.i_format.rs
@@ -259,6 +265,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|regs-&gt;regs
 (braket
 id|insn.i_format.rs
@@ -307,6 +316,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|regs-&gt;regs
 (braket
 id|insn.i_format.rs
@@ -478,6 +490,9 @@ multiline_comment|/* rt field assumed to be zero */
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|regs-&gt;regs
 (braket
 id|insn.i_format.rs
@@ -518,6 +533,9 @@ multiline_comment|/* rt field assumed to be zero */
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|regs-&gt;regs
 (braket
 id|insn.i_format.rs

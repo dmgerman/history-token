@@ -175,11 +175,13 @@ mdefine_line|#define LED_ACTIVE_SET_G(x) &bslash;&n;         REG_SHADOW_SET(R_PO
 DECL|macro|LED_ACTIVE_SET_R
 mdefine_line|#define LED_ACTIVE_SET_R(x) &bslash;&n;         REG_SHADOW_SET(R_PORT_PB_DATA, port_pb_data_shadow, CONFIG_ETRAX_LED2R, !(x))
 DECL|macro|LED_DISK_WRITE
-mdefine_line|#define LED_DISK_WRITE(x) &bslash;&n;         REG_SHADOW_SET(R_PORT_PB_DATA, port_pa_data_shadow, CONFIG_ETRAX_LED3R, !(x))
+mdefine_line|#define LED_DISK_WRITE(x) &bslash;&n;         REG_SHADOW_SET(R_PORT_PB_DATA, port_pb_data_shadow, CONFIG_ETRAX_LED3R, !(x))
 DECL|macro|LED_DISK_READ
-mdefine_line|#define LED_DISK_READ(x) &bslash;&n;         REG_SHADOW_SET(R_PORT_PB_DATA, port_pa_data_shadow, CONFIG_ETRAX_LED3G, !(x))     
+mdefine_line|#define LED_DISK_READ(x) &bslash;&n;         REG_SHADOW_SET(R_PORT_PB_DATA, port_pb_data_shadow, CONFIG_ETRAX_LED3G, !(x))     
 macro_line|#endif
 macro_line|#ifdef CONFIG_ETRAX_CSP0_LEDS
+DECL|macro|CONFIGURABLE_LEDS
+mdefine_line|#define CONFIGURABLE_LEDS&bslash;&n;        ((1 &lt;&lt; CONFIG_ETRAX_LED1G ) | (1 &lt;&lt; CONFIG_ETRAX_LED1R ) |&bslash;&n;         (1 &lt;&lt; CONFIG_ETRAX_LED2G ) | (1 &lt;&lt; CONFIG_ETRAX_LED2R ) |&bslash;&n;         (1 &lt;&lt; CONFIG_ETRAX_LED3G ) | (1 &lt;&lt; CONFIG_ETRAX_LED3R ) |&bslash;&n;         (1 &lt;&lt; CONFIG_ETRAX_LED4G ) | (1 &lt;&lt; CONFIG_ETRAX_LED4R ) |&bslash;&n;         (1 &lt;&lt; CONFIG_ETRAX_LED5G ) | (1 &lt;&lt; CONFIG_ETRAX_LED5R ) |&bslash;&n;         (1 &lt;&lt; CONFIG_ETRAX_LED6G ) | (1 &lt;&lt; CONFIG_ETRAX_LED6R ) |&bslash;&n;         (1 &lt;&lt; CONFIG_ETRAX_LED7G ) | (1 &lt;&lt; CONFIG_ETRAX_LED7R ) |&bslash;&n;         (1 &lt;&lt; CONFIG_ETRAX_LED8Y ) | (1 &lt;&lt; CONFIG_ETRAX_LED9Y ) |&bslash;&n;         (1 &lt;&lt; CONFIG_ETRAX_LED10Y ) |(1 &lt;&lt; CONFIG_ETRAX_LED11Y )|&bslash;&n;         (1 &lt;&lt; CONFIG_ETRAX_LED12R ))
 DECL|macro|LED_NETWORK_SET_G
 mdefine_line|#define LED_NETWORK_SET_G(x) &bslash;&n;         REG_SHADOW_SET(port_csp0_addr, port_csp0_shadow, CONFIG_ETRAX_LED1G, !(x))
 DECL|macro|LED_NETWORK_SET_R
@@ -193,9 +195,17 @@ mdefine_line|#define LED_DISK_WRITE(x) &bslash;&n;         REG_SHADOW_SET(port_c
 DECL|macro|LED_DISK_READ
 mdefine_line|#define LED_DISK_READ(x) &bslash;&n;         REG_SHADOW_SET(port_csp0_addr, port_csp0_shadow, CONFIG_ETRAX_LED3G, !(x))
 DECL|macro|LED_BIT_SET
-mdefine_line|#define LED_BIT_SET(x) &bslash;&n;         REG_SHADOW_SET(port_csp0_addr, port_csp0_shadow, x, 1)
+mdefine_line|#define LED_BIT_SET(x)&bslash;&n;        do{&bslash;&n;                if((( 1 &lt;&lt; x) &amp; CONFIGURABLE_LEDS)  != 0)&bslash;&n;                       REG_SHADOW_SET(port_csp0_addr, port_csp0_shadow, x, 1);&bslash;&n;        }while(0)
 DECL|macro|LED_BIT_CLR
-mdefine_line|#define LED_BIT_CLR(x) &bslash;&n;          REG_SHADOW_SET(port_csp0_addr, port_csp0_shadow, x, 0)        
+mdefine_line|#define LED_BIT_CLR(x)&bslash;&n;        do{&bslash;&n;                if((( 1 &lt;&lt; x) &amp; CONFIGURABLE_LEDS)  != 0)&bslash;&n;                       REG_SHADOW_SET(port_csp0_addr, port_csp0_shadow, x, 0);&bslash;&n;        }while(0)
+macro_line|#endif
+macro_line|#
+macro_line|#ifdef CONFIG_ETRAX_SOFT_SHUTDOWN
+DECL|macro|SOFT_SHUTDOWN
+mdefine_line|#define SOFT_SHUTDOWN() &bslash;&n;          REG_SHADOW_SET(port_csp0_addr, port_csp0_shadow, CONFIG_ETRAX_SHUTDOWN_BIT, 1)
+macro_line|#else
+DECL|macro|SOFT_SHUTDOWN
+mdefine_line|#define SOFT_SHUTDOWN()
 macro_line|#endif
 multiline_comment|/*&n; * Change virtual addresses to physical addresses and vv.&n; */
 DECL|function|virt_to_phys

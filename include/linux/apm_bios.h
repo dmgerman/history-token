@@ -104,6 +104,18 @@ DECL|member|get_power_status_broken
 r_int
 id|get_power_status_broken
 suffix:semicolon
+DECL|member|allow_ints
+r_int
+id|allow_ints
+suffix:semicolon
+DECL|member|realmode_power_off
+r_int
+id|realmode_power_off
+suffix:semicolon
+DECL|member|disabled
+r_int
+id|disabled
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * The APM function codes&n; */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Export MIPS64-specific functions needed for loadable modules.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 1999, 2000 by Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * Export MIPS64-specific functions needed for loadable modules.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001 by Ralf Baechle&n; * Copyright (C) 1999, 2000, 2001 Silicon Graphics, Inc.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -340,29 +340,8 @@ c_func
 id|invalid_pte_table
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Semaphore stuff&n; */
-DECL|variable|__down_read
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__down_read
-)paren
-suffix:semicolon
-DECL|variable|__down_write
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__down_write
-)paren
-suffix:semicolon
-DECL|variable|__rwsem_wake
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__rwsem_wake
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Base address of ports for Intel style I/O.&n; */
+macro_line|#if defined (CONFIG_PCI) || defined (CONFIG_ISA)
 DECL|variable|mips_io_port_base
 id|EXPORT_SYMBOL
 c_func
@@ -370,6 +349,7 @@ c_func
 id|mips_io_port_base
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Kernel hacking ...&n; */
 macro_line|#include &lt;asm/branch.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -454,11 +434,11 @@ c_func
 id|get_wchan
 )paren
 suffix:semicolon
-DECL|variable|flush_tlb_page
+DECL|variable|_flush_tlb_page
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|flush_tlb_page
+id|_flush_tlb_page
 )paren
 suffix:semicolon
 eof

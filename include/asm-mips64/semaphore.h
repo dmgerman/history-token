@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996  Linus Torvalds&n; * Copyright (C) 1998, 1999, 2000  Ralf Baechle&n; * Copyright (C) 1999, 2000  Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996  Linus Torvalds&n; * Copyright (C) 1998, 1999, 2000, 2001  Ralf Baechle&n; * Copyright (C) 1999, 2000, 2001  Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_SEMAPHORE_H
 DECL|macro|_ASM_SEMAPHORE_H
 mdefine_line|#define _ASM_SEMAPHORE_H
@@ -324,97 +324,21 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-dot
-id|set
-id|mips3
-l_int|0
-suffix:colon
-id|lld
-op_mod
-l_int|1
-comma
-op_mod
-l_int|4
-id|dli
-op_mod
-l_int|3
-comma
-l_int|0x0000000100000000
-id|dsubu
-op_mod
-l_int|1
-comma
-op_mod
-l_int|3
-id|li
-op_mod
-l_int|0
-comma
-l_int|0
-id|bgez
-op_mod
-l_int|1
-comma
-l_float|2f
-id|sll
-op_mod
-l_int|2
-comma
-op_mod
-l_int|1
-comma
-l_int|0
-id|blez
-op_mod
-l_int|2
-comma
-l_float|1f
-id|daddiu
-op_mod
-l_int|1
-comma
-op_mod
-l_int|1
-comma
-op_minus
-l_int|1
-id|b
-l_float|2f
-l_int|1
-suffix:colon
-id|daddu
-op_mod
-l_int|1
-comma
-op_mod
-l_int|1
-comma
-op_mod
-l_int|3
-id|li
-op_mod
-l_int|0
-comma
-l_int|1
-l_int|2
-suffix:colon
-id|scd
-op_mod
-l_int|1
-comma
-op_mod
-l_int|4
-id|beqz
-op_mod
-l_int|1
-comma
-l_int|0
-id|b
-dot
-id|set
-id|mips0
-"&quot;"
+l_string|&quot;.set&bslash;tmips3&bslash;t&bslash;t&bslash;t# down_trylock&bslash;n&quot;
+l_string|&quot;0:&bslash;tlld&bslash;t%1, %4&bslash;n&bslash;t&quot;
+l_string|&quot;&bslash;tdli&bslash;t%3, 0x0000000100000000&bslash;n&bslash;t&quot;
+l_string|&quot;&bslash;tdsubu&bslash;t%1, %3&bslash;n&bslash;t&quot;
+l_string|&quot;&bslash;tli&bslash;t%0, 0&bslash;n&bslash;t&quot;
+l_string|&quot;&bslash;tbgez&bslash;t%1, 2f&bslash;n&bslash;t&quot;
+l_string|&quot;&bslash;tsll&bslash;t%2, %1, 0&bslash;n&bslash;t&quot;
+l_string|&quot;&bslash;tblez&bslash;t%2, 1f&bslash;n&bslash;t&quot;
+l_string|&quot;&bslash;tdaddiu&bslash;t%1, %1, -1&bslash;n&bslash;t&quot;
+l_string|&quot;&bslash;tb&bslash;t2f&bslash;n&quot;
+l_string|&quot;1:&bslash;tdaddu&bslash;t%1, %1, %3&bslash;n&bslash;t&quot;
+l_string|&quot;&bslash;tli&bslash;t%0, 1&bslash;n&quot;
+l_string|&quot;2:&bslash;tscd&bslash;t%1, %4&bslash;n&bslash;t&quot;
+l_string|&quot;&bslash;tbeqz&bslash;t%1, 0b&bslash;n&bslash;t&quot;
+l_string|&quot;&bslash;t.set&bslash;tmips0&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren

@@ -1,5 +1,4 @@
-multiline_comment|/*!**************************************************************************&n;*!&n;*!  FILE NAME:      e100eeprom.c&n;*!&n;*!  DESCRIPTION:    Implements an interface for i2c compatible eeproms to run&n;*!                  under linux.&n;*!                  Supports 2k, 8k(?) and 16k&n;*!                  Uses adaptive timing adjustents by Johan.Adolfsson@axis.com&n;*!                  Probing results:&n;*!                    8k or not is detected (the assumes 2k or 16k)&n;*!                    2k or 16k detected using test reads and writes.&n;*!&n;*!  FUNCTIONS:&n;*!&n;*!  (Exported)&n;*!              eeprom_init()&n;*!&n;*!  (Local)&n;*!&n;*!              eeprom_open()&n;*!              eeprom_lseek()&n;*!              eeprom_read()&n;*!              eeprom_write()&n;*!              eeprom_close()&n;*!              eeprom_address()&n;*!              eeprom_disable_write_protect()&n;*!&n;*!&n;*!  $Id: eeprom.c,v 1.3 2001/03/19 16:04:46 markusl Exp $&n;*!&n;*!------------------------------------------------------------------------&n;*!  HISTORY&n;*!&n;*!  DATE          NAME              CHANGES&n;*!  ----          ----              -------&n;*!  Aug  28 1999  Edgar Iglesias    Initial Version&n;*!  Aug  31 1999  Edgar Iglesias    Allow simultaneous users.&n;*!  Sep  03 1999  Edgar Iglesias    Updated probe.&n;*!  Sep  03 1999  Edgar Iglesias    Added bail-out stuff if we get interrupted&n;*!                                  in the spin-lock.&n;*!&n;*!  $Log: eeprom.c,v $&n;*!  Revision 1.3  2001/03/19 16:04:46  markusl&n;*!  Fixed init of fops struct&n;*!&n;*!  Revision 1.2  2001/03/19 10:35:07  markusl&n;*!  2.4 port of eeprom driver&n;*!&n;*!  Revision 1.8  2000/05/18 10:42:25  edgar&n;*!  Make sure to end write cycle on _every_ write&n;*!&n;*!  Revision 1.7  2000/01/17 17:41:01  johana&n;*!  Adjusted probing and return -ENOSPC when writing outside EEPROM&n;*!&n;*!  Revision 1.6  2000/01/17 15:50:36  johana&n;*!  Added adaptive timing adjustments and fixed autoprobing for 2k and 16k(?)&n;*!  EEPROMs&n;*!&n;*!  Revision 1.5  1999/09/03 15:07:37  edgar&n;*!  Added bail-out check to the spinlock&n;*!&n;*!  Revision 1.4  1999/09/03 12:11:17  bjornw&n;*!  Proper atomicity (need to use spinlocks, not if&squot;s). users -&gt; busy.&n;*!&n;*!&n;*!        (c) 1999 Axis Communications AB, Lund, Sweden&n;*!**************************************************************************/
-multiline_comment|/********************** INCLUDE FILES SECTION ******************************/
+multiline_comment|/*!*****************************************************************************&n;*!&n;*!  Implements an interface for i2c compatible eeproms to run under linux.&n;*!  Supports 2k, 8k(?) and 16k. Uses adaptive timing adjustents by&n;*!  Johan.Adolfsson@axis.com&n;*!&n;*!  Probing results:&n;*!    8k or not is detected (the assumes 2k or 16k)&n;*!    2k or 16k detected using test reads and writes.&n;*!&n;*!------------------------------------------------------------------------&n;*!  HISTORY&n;*!&n;*!  DATE          NAME              CHANGES&n;*!  ----          ----              -------&n;*!  Aug  28 1999  Edgar Iglesias    Initial Version&n;*!  Aug  31 1999  Edgar Iglesias    Allow simultaneous users.&n;*!  Sep  03 1999  Edgar Iglesias    Updated probe.&n;*!  Sep  03 1999  Edgar Iglesias    Added bail-out stuff if we get interrupted&n;*!                                  in the spin-lock.&n;*!&n;*!  $Log: eeprom.c,v $&n;*!  Revision 1.5  2001/06/14 14:39:51  jonashg&n;*!  Forgot to use name when registering the driver.&n;*!&n;*!  Revision 1.4  2001/06/14 14:35:47  jonashg&n;*!  * Gave driver a name and used it in printk&squot;s.&n;*!  * Cleanup.&n;*!&n;*!  Revision 1.3  2001/03/19 16:04:46  markusl&n;*!  Fixed init of fops struct&n;*!&n;*!  Revision 1.2  2001/03/19 10:35:07  markusl&n;*!  2.4 port of eeprom driver&n;*!&n;*!  Revision 1.8  2000/05/18 10:42:25  edgar&n;*!  Make sure to end write cycle on _every_ write&n;*!&n;*!  Revision 1.7  2000/01/17 17:41:01  johana&n;*!  Adjusted probing and return -ENOSPC when writing outside EEPROM&n;*!&n;*!  Revision 1.6  2000/01/17 15:50:36  johana&n;*!  Added adaptive timing adjustments and fixed autoprobing for 2k and 16k(?)&n;*!  EEPROMs&n;*!&n;*!  Revision 1.5  1999/09/03 15:07:37  edgar&n;*!  Added bail-out check to the spinlock&n;*!&n;*!  Revision 1.4  1999/09/03 12:11:17  bjornw&n;*!  Proper atomicity (need to use spinlocks, not if&squot;s). users -&gt; busy.&n;*!&n;*!&n;*!        (c) 1999 Axis Communications AB, Lund, Sweden&n;*!*****************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -7,7 +6,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;i2c.h&quot;
-multiline_comment|/********************** CONSTANT AND MACRO SECTION *************************/
 DECL|macro|D
 mdefine_line|#define D(x) 
 multiline_comment|/* If we should use adaptive timing or not: */
@@ -18,7 +16,7 @@ DECL|macro|EEPROM_MINOR_NR
 mdefine_line|#define EEPROM_MINOR_NR 0
 DECL|macro|MAX_WRITEDELAY_US
 mdefine_line|#define MAX_WRITEDELAY_US 10000 /* 10 ms according to spec for 2KB EEPROM */
-multiline_comment|/*&n; *  this one defines how many times to try when eeprom fails.&n; */
+multiline_comment|/* This one defines how many times to try when eeprom fails. */
 DECL|macro|EEPROM_RETRIES
 mdefine_line|#define EEPROM_RETRIES 10
 DECL|macro|EEPROM_2KB
@@ -31,7 +29,6 @@ DECL|macro|EEPROM_16KB
 mdefine_line|#define EEPROM_16KB (16 * 1024)
 DECL|macro|i2c_delay
 mdefine_line|#define i2c_delay(x) udelay(x)
-multiline_comment|/********************** TYPE DEFINITION SECTION ****************************/
 multiline_comment|/*&n; *  This structure describes the attached eeprom chip.&n; *  The values are probed for.&n; */
 DECL|struct|eeprom_type
 r_struct
@@ -57,9 +54,8 @@ r_int
 r_int
 id|usec_delay_writecycles
 suffix:semicolon
-multiline_comment|/* Min time between write cycles (up to 10ms for some models) */
+multiline_comment|/* Min time between write cycles&n;&t;&t;&t;&t;&t;   (up to 10ms for some models) */
 DECL|member|usec_delay_step
-r_int
 r_int
 r_int
 id|usec_delay_step
@@ -83,17 +79,17 @@ DECL|member|retry_cnt_addr
 r_int
 id|retry_cnt_addr
 suffix:semicolon
-multiline_comment|/* Used to keep track of number of retries for&n;                     adaptive timing adjustments */
+multiline_comment|/* Used to keep track of number of retries for&n;                         adaptive timing adjustments */
 DECL|member|retry_cnt_read
 r_int
 id|retry_cnt_read
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/********************** LOCAL FUNCTION DECLARATION SECTION *****************/
 r_static
 r_int
 id|eeprom_open
+c_func
 (paren
 r_struct
 id|inode
@@ -126,6 +122,7 @@ suffix:semicolon
 r_static
 id|ssize_t
 id|eeprom_read
+c_func
 (paren
 r_struct
 id|file
@@ -213,7 +210,6 @@ c_func
 (paren
 r_int
 r_int
-r_int
 id|addr
 comma
 r_const
@@ -250,8 +246,16 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/********************** GLOBAL VARIABLE DECLARATION SECTION ****************/
-multiline_comment|/********************** LOCAL VARIABLE DECLARATION SECTION *****************/
+DECL|variable|eeprom_name
+r_static
+r_const
+r_char
+id|eeprom_name
+(braket
+)braket
+op_assign
+l_string|&quot;eeprom&quot;
+suffix:semicolon
 multiline_comment|/* chip description */
 DECL|variable|eeprom
 r_static
@@ -259,7 +263,7 @@ r_struct
 id|eeprom_type
 id|eeprom
 suffix:semicolon
-multiline_comment|/*&n; *  This is the exported file-operations structure&n; *  for this device.&n; */
+multiline_comment|/* This is the exported file-operations structure for this device. */
 DECL|variable|eeprom_fops
 r_struct
 id|file_operations
@@ -287,8 +291,7 @@ suffix:colon
 id|eeprom_close
 )brace
 suffix:semicolon
-multiline_comment|/********************** FUNCTION DEFINITION SECTION ************************/
-multiline_comment|/*#**************************************************************************&n;*#                                                            &n;*# FUNCTION NAME: eeprom_init&n;*#                                                            &n;*# PARAMETERS   : none&n;*#                                                            &n;*# RETURNS      : 0 if OK&n;*#                                                            &n;*# SIDE EFFECTS : &n;*#                                                            &n;*# DESCRIPTION  : eeprom init call. Probes for different eeprom models.&n;*#                                                            &n;*#---------------------------------------------------------------------------&n;*# HISTORY                                                    &n;*#                                                            &n;*# DATE         NAME            CHANGES                       &n;*# ----         ----            -------                       &n;*# Aug 28 1999  Edgar Iglesias  Initial version               &n;*# Sep 03 1999  Edgar Iglesias  Updated probing. Added forced values.&n;*#&n;*#**************************************************************************/
+multiline_comment|/* eeprom init call. Probes for different eeprom models. */
 DECL|function|eeprom_init
 r_int
 id|__init
@@ -323,7 +326,7 @@ c_func
 (paren
 id|EEPROM_MAJOR_NR
 comma
-l_string|&quot;mem&quot;
+id|eeprom_name
 comma
 op_amp
 id|eeprom_fops
@@ -333,7 +336,10 @@ id|eeprom_fops
 id|printk
 c_func
 (paren
-l_string|&quot;unable to get major %d for eeprom device&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: unable to get major %d for eeprom device&bslash;n&quot;
+comma
+id|eeprom_name
 comma
 id|EEPROM_MAJOR_NR
 )paren
@@ -349,7 +355,7 @@ c_func
 l_string|&quot;EEPROM char device v0.3, (c) 2000 Axis Communications AB&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;   *  Note: Most of this probing method was taken from the printserver (5470e)&n;   *        codebase. It did not contain a way of finding the 16Kb chips&n;   *        (M24128 or variants). The method used here might not work&n;   *        for all models. If you encounter problems the easiest way&n;   *        is probably to define your model within #ifdef&squot;s, and hard-&n;   *        code it.&n;   *&n;   */
+multiline_comment|/*&n;   *  Note: Most of this probing method was taken from the printserver (5470e)&n;   *        codebase. It did not contain a way of finding the 16Kb chips&n;   *        (M24128 or variants). The method used here might not work&n;   *        for all models. If you encounter problems the easiest way&n;   *        is probably to define your model within #ifdef&squot;s, and hard-&n;   *        code it.&n;   */
 id|eeprom.size
 op_assign
 l_int|0
@@ -405,7 +411,7 @@ suffix:semicolon
 multiline_comment|/* Im not sure this will work... :) */
 multiline_comment|/* assume 2Kb, if failure go for 16Kb */
 multiline_comment|/* Test with 16kB settings.. */
-multiline_comment|/* If it&squot;s a 2kB EEPROM and we address it outside it&squot;s range&n;     * it will mirror the address space:&n;     * 1. We read two locations (that are mirrored), &n;     *    if the content differs * it&squot;s a 16kB EEPROM.&n;     * 2. if it doesn&squot;t differ - write diferent value to one of the locations,&n;     *    check the other - if content still is the same it&squot;s a 2k EEPROM,&n;     *    restore original data.&n;     *    &n;     */
+multiline_comment|/* If it&squot;s a 2kB EEPROM and we address it outside it&squot;s range&n;     * it will mirror the address space:&n;     * 1. We read two locations (that are mirrored), &n;     *    if the content differs * it&squot;s a 16kB EEPROM.&n;     * 2. if it doesn&squot;t differ - write diferent value to one of the locations,&n;     *    check the other - if content still is the same it&squot;s a 2k EEPROM,&n;     *    restore original data.&n;     */
 DECL|macro|LOC1
 mdefine_line|#define LOC1 8
 DECL|macro|LOC2
@@ -462,7 +468,10 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;Failed to read in 2k mode!&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: Failed to read in 2k mode!&bslash;n&quot;
+comma
+id|eeprom_name
 )paren
 suffix:semicolon
 )brace
@@ -568,7 +577,10 @@ multiline_comment|/* It&squot;s 16k */
 id|printk
 c_func
 (paren
-l_string|&quot;16k detected in step 1&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: 16k detected in step 1&bslash;n&quot;
+comma
+id|eeprom_name
 )paren
 suffix:semicolon
 id|eeprom.size
@@ -682,7 +694,10 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;read and write differs! Not 16kB&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: read and write differs! Not 16kB&bslash;n&quot;
+comma
+id|eeprom_name
 )paren
 suffix:semicolon
 id|loc1
@@ -722,7 +737,11 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;eeprom: Restore 2k failed during probe EEPROM might be corrupt!&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: Restore 2k failed during probe,&quot;
+l_string|&quot; EEPROM might be corrupt!&bslash;n&quot;
+comma
+id|eeprom_name
 )paren
 suffix:semicolon
 )brace
@@ -766,7 +785,10 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;Failed to write back 2k start!&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: Failed to write back 2k start!&bslash;n&quot;
+comma
+id|eeprom_name
 )paren
 suffix:semicolon
 )brace
@@ -838,7 +860,10 @@ multiline_comment|/* Restore data */
 id|printk
 c_func
 (paren
-l_string|&quot;2k detected in step 2&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: 2k detected in step 2&bslash;n&quot;
+comma
+id|eeprom_name
 )paren
 suffix:semicolon
 id|loc1
@@ -878,7 +903,11 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;eeprom: Restore 2k failed during probe EEPROM might be corrupt!&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: Restore 2k failed during probe,&quot;
+l_string|&quot; EEPROM might be corrupt!&bslash;n&quot;
+comma
+id|eeprom_name
 )paren
 suffix:semicolon
 )brace
@@ -892,7 +921,10 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;16k detected in step 2&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: 16k detected in step 2&bslash;n&quot;
+comma
+id|eeprom_name
 )paren
 suffix:semicolon
 id|loc1
@@ -934,7 +966,11 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;eeprom: Restore 16k failed during probe EEPROM might be corrupt!&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: Restore 16k failed during probe,&quot;
+l_string|&quot; EEPROM might be corrupt!&bslash;n&quot;
+comma
+id|eeprom_name
 )paren
 suffix:semicolon
 )brace
@@ -960,7 +996,10 @@ id|success
 id|printk
 c_func
 (paren
-l_string|&quot;eeprom: Probing failed!, using 2KB!&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: Probing failed!, using 2KB!&bslash;n&quot;
+comma
+id|eeprom_name
 )paren
 suffix:semicolon
 id|eeprom.size
@@ -1074,9 +1113,11 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;e100eeprom: &quot;
+l_string|&quot;%s: &quot;
 id|EETEXT
 l_string|&quot; i2c compatible 2Kb eeprom.&bslash;n&quot;
+comma
+id|eeprom_name
 )paren
 suffix:semicolon
 id|eeprom.sequential_write_pagesize
@@ -1097,9 +1138,11 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;e100eeprom: &quot;
+l_string|&quot;%s: &quot;
 id|EETEXT
 l_string|&quot; i2c compatible 8Kb eeprom.&bslash;n&quot;
+comma
+id|eeprom_name
 )paren
 suffix:semicolon
 id|eeprom.sequential_write_pagesize
@@ -1120,9 +1163,11 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;e100eeprom: &quot;
+l_string|&quot;%s: &quot;
 id|EETEXT
 l_string|&quot; i2c compatible 16Kb eeprom.&bslash;n&quot;
+comma
+id|eeprom_name
 )paren
 suffix:semicolon
 id|eeprom.sequential_write_pagesize
@@ -1144,7 +1189,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;e100eeprom: Did not find a supported eeprom&bslash;n&quot;
+l_string|&quot;%s: Did not find a supported eeprom&bslash;n&quot;
+comma
+id|eeprom_name
 )paren
 suffix:semicolon
 r_break
@@ -1159,7 +1206,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*#**************************************************************************&n;*#                                                            &n;*# FUNCTION NAME: eeprom_open&n;*#                                                            &n;*# PARAMETERS   : inode    : Pointer to the inode&n;*#                file     : Pointer to the file&n;*#                                                            &n;*# RETURNS      : 0 if OK&n;*#                                                            &n;*# SIDE EFFECTS : &n;*#                                                            &n;*# DESCRIPTION  : Opens the device.&n;*#                                                            &n;*#---------------------------------------------------------------------------&n;*# HISTORY                                                    &n;*#                                                            &n;*# DATE         NAME            CHANGES                       &n;*# ----         ----            -------                       &n;*# Aug 28 1999  Edgar Iglesias  Initial version               &n;*# Sep 03 1999  Edgar Iglesias  Removed users check.&n;*#&n;*#**************************************************************************/
+multiline_comment|/* Opens the device. */
 DECL|function|eeprom_open
 r_static
 r_int
@@ -1230,7 +1277,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-multiline_comment|/*#**************************************************************************&n;*#                                                            &n;*# FUNCTION NAME: eeprom_lseek&n;*#                                                            &n;*# PARAMETERS   : file     : Pointer to the file&n;*#                offset   : The offset (in bytes)&n;*#                orig     : look at the note&n;*#                                                            &n;*# RETURNS      : 0 if OK&n;*#                                                            &n;*# SIDE EFFECTS : &n;*#                                                            &n;*# DESCRIPTION  : Changes the current file position.&n;*#                                                            &n;*#---------------------------------------------------------------------------&n;*# HISTORY                                                    &n;*#                                                            &n;*# DATE         NAME            CHANGES                       &n;*# ----         ----            -------                       &n;*# Aug 28 1999  Edgar Iglesias  Initial version&n;*# Sep 03 1999  Edgar Iglesias  Return -EOVERFLOW when beyond eeprom size.&n;*#&n;*#**************************************************************************/
+multiline_comment|/* Changes the current file position. */
 DECL|function|eeprom_lseek
 r_static
 id|loff_t
@@ -1335,7 +1382,7 @@ id|file-&gt;f_pos
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*#**************************************************************************&n;*#                                                            &n;*# FUNCTION NAME: eeprom_read&n;*#                                                            &n;*# PARAMETERS   : inode    : Pointer to the inode&n;*#                file     : Pointer to the file&n;*#                buf      : Destination buffer&n;*#                count    : max nr bytes to read&n;*#                                                            &n;*# RETURNS      : number of read bytes.&n;*#                                                            &n;*# SIDE EFFECTS : updates file-&gt;f_pos&n;*#                                                            &n;*# DESCRIPTION  : Reads data from eeprom.&n;*#                                                            &n;*#---------------------------------------------------------------------------&n;*# HISTORY                                                    &n;*#                                                            &n;*# DATE         NAME            CHANGES                       &n;*# ----         ----            -------                       &n;*# Jan 17 2000  Johan Adolfsson Initial version&n;*#&n;*#**************************************************************************/
+multiline_comment|/* Reads data from eeprom. */
 DECL|function|eeprom_read_buf
 r_static
 r_int
@@ -1378,7 +1425,7 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*#**************************************************************************&n;*#                                                            &n;*# FUNCTION NAME: eeprom_read&n;*#                                                            &n;*# PARAMETERS   : file     : Pointer to the file&n;*#                buf      : Destination buffer&n;*#                count    : max nr bytes to read&n;*#                                                            &n;*# RETURNS      : number of read bytes.&n;*#                                                            &n;*# SIDE EFFECTS : updates file-&gt;f_pos&n;*#                                                            &n;*# DESCRIPTION  : Reads data from eeprom.&n;*#                                                            &n;*#---------------------------------------------------------------------------&n;*# HISTORY                                                    &n;*#                                                            &n;*# DATE         NAME            CHANGES                       &n;*# ----         ----            -------                       &n;*# Aug 28 1999  Edgar Iglesias  Initial version               &n;*# Aug 31 1999  Edgar Iglesias  Made operation atomic with wait queues&n;*# Sep 03 1999  Edgar Iglesias  Added bail-out stuff if we get interrupted&n;*#                              in the spin-lock.&n;*#&n;*#**************************************************************************/
+multiline_comment|/* Reads data from eeprom. */
 DECL|function|eeprom_read
 r_static
 id|ssize_t
@@ -1490,8 +1537,11 @@ id|p
 id|printk
 c_func
 (paren
-l_string|&quot;eeprom: Read failed to address the eeprom: &quot;
+id|KERN_INFO
+l_string|&quot;%s: Read failed to address the eeprom: &quot;
 l_string|&quot;0x%08X (%i) page: %i&bslash;n&quot;
+comma
+id|eeprom_name
 comma
 id|p
 comma
@@ -1609,14 +1659,13 @@ r_return
 id|read
 suffix:semicolon
 )brace
-multiline_comment|/*#**************************************************************************&n;*#                                                            &n;*# FUNCTION NAME: eeprom_write_buf&n;*#                                                            &n;*# PARAMETERS   : addr     : Address to write to&n;*#                buf      : Data buffer to write from&n;*#                count    : number bytes to write&n;*#                                                            &n;*# RETURNS      : number of bytes actualy written.&n;*#                                                            &n;*# SIDE EFFECTS : None&n;*#             &n;*# DESCRIPTION  : Writes data to eeprom.&n;*#                                                            &n;*#---------------------------------------------------------------------------&n;*# HISTORY                                                    &n;*#                                                            &n;*# DATE         NAME            CHANGES                       &n;*# ----         ----            -------                       &n;*# Jan 17 2000  Johan Adolfsson Initial vesion&n;*#&n;*#**************************************************************************/
+multiline_comment|/* Writes data to eeprom. */
 DECL|function|eeprom_write_buf
 r_static
 r_int
 id|eeprom_write_buf
 c_func
 (paren
-r_int
 r_int
 r_int
 id|addr
@@ -1654,7 +1703,7 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*#**************************************************************************&n;*#                                                            &n;*# FUNCTION NAME: eeprom_write&n;*#                                                            &n;*# PARAMETERS   : file     : Pointer to the file&n;*#                buf      : Data buffer to write from&n;*#                count    : number bytes to write&n;*#                                                            &n;*# RETURNS      : number of bytes actualy written.&n;*#                                                            &n;*# SIDE EFFECTS : updates file-&gt;f_pos&n;*#             &n;*# DESCRIPTION  : Writes data to eeprom.&n;*#                                                            &n;*#---------------------------------------------------------------------------&n;*# HISTORY                                                    &n;*#                                                            &n;*# DATE         NAME            CHANGES                       &n;*# ----         ----            -------                       &n;*# Aug 28 1999  Edgar Iglesias  Initial version               &n;*# Aug 31 1999  Edgar Iglesias  Made operation atomic with wait queues&n;*# Sep 03 1999  Edgar Iglesias  Moved the actual reading to read_from_eeprom&n;*# Sep 03 1999  Edgar Iglesias  Added bail-out stuff if we get interrupted&n;*#                              in the spin-lock.&n;*# May 18 2000  Edgar Iglesias  Make sure to end write cycle after every write.&n;*#&n;*#**************************************************************************/
+multiline_comment|/* Writes data to eeprom. */
 DECL|function|eeprom_write
 r_static
 id|ssize_t
@@ -1789,7 +1838,11 @@ id|p
 id|printk
 c_func
 (paren
-l_string|&quot;eeprom: Write failed to address the eeprom: 0x%08X (%i) &bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: Write failed to address the eeprom: &quot;
+l_string|&quot;0x%08X (%i) &bslash;n&quot;
+comma
+id|eeprom_name
 comma
 id|p
 comma
@@ -2098,7 +2151,10 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;eeprom: write error, retrying. %d&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: write error, retrying. %d&bslash;n&quot;
+comma
+id|eeprom_name
 comma
 id|i
 )paren
@@ -2185,7 +2241,7 @@ r_return
 id|written
 suffix:semicolon
 )brace
-multiline_comment|/*#**************************************************************************&n;*#                                                            &n;*# FUNCTION NAME: eeprom_close&n;*#                                                            &n;*# PARAMETERS   : inode    : Pointer to the inode&n;*#                file     : Pointer to the file&n;*#&n;*# RETURNS      : nothing&n;*#&n;*# SIDE EFFECTS :&n;*#&n;*# DESCRIPTION  : Closes the device.&n;*#&n;*#---------------------------------------------------------------------------&n;*# HISTORY                                                    &n;*#&n;*# DATE         NAME            CHANGES                       &n;*# ----         ----            -------                       &n;*# Aug 28 1999  Edgar Iglesias  Initial version               &n;*# Sep 03 1999  Edgar Iglesias  Removed eeprom.users stuff.&n;*#&n;*#**************************************************************************/
+multiline_comment|/* Closes the device. */
 DECL|function|eeprom_close
 r_static
 r_int
@@ -2208,7 +2264,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*#**************************************************************************&n;*#                                                            &n;*# FUNCTION NAME: eeprom_address&n;*#                                                            &n;*# PARAMETERS   : addr     : Address to be given to eeprom&n;*#&n;*# RETURNS      : 1 if OK, 0 if failure.&n;*#&n;*# SIDE EFFECTS :&n;*#&n;*# DESCRIPTION  : Sets the current address of the eeprom.&n;*#&n;*#---------------------------------------------------------------------------&n;*# HISTORY                                                    &n;*#&n;*# DATE         NAME            CHANGES                       &n;*# ----         ----            -------                       &n;*# Aug 28 1999  Edgar Iglesias  Initial version               &n;*# Sep 03 1999  Edgar Iglesias  Corrected typo.&n;*#&n;*#**************************************************************************/
+multiline_comment|/* Sets the current address of the eeprom. */
 DECL|function|eeprom_address
 r_static
 r_int
@@ -2405,7 +2461,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*#**************************************************************************&n;*#                                                            &n;*# FUNCTION NAME: read_from_eeprom&n;*#                                                            &n;*# PARAMETERS   : buf      : Destination buffer.&n;*#                count    : Number of bytes to read.&n;*#&n;*# RETURNS      : number of read bytes or -EFAULT.&n;*#&n;*# SIDE EFFECTS :&n;*#&n;*# DESCRIPTION  : Reads from current adress.&n;*#&n;*#---------------------------------------------------------------------------&n;*# HISTORY                                                    &n;*#&n;*# DATE         NAME            CHANGES                       &n;*# ----         ----            -------                       &n;*# Sep 03 1999  Edgar Iglesias  Initial version               &n;*#&n;*#**************************************************************************/
+multiline_comment|/* Reads from current adress. */
 DECL|function|read_from_eeprom
 r_static
 r_int
@@ -2486,7 +2542,10 @@ id|EEPROM_RETRIES
 id|printk
 c_func
 (paren
-l_string|&quot;eeprom: failed to read from eeprom&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: failed to read from eeprom&bslash;n&quot;
+comma
+id|eeprom_name
 )paren
 suffix:semicolon
 id|i2c_stop
@@ -2546,7 +2605,7 @@ r_return
 id|read
 suffix:semicolon
 )brace
-multiline_comment|/*#**************************************************************************&n;*#                                                            &n;*# FUNCTION NAME: eeprom_disable_write_protect&n;*#                                                            &n;*# PARAMETERS   : None&n;*#&n;*# RETURNS      : Nothing&n;*#&n;*# SIDE EFFECTS :&n;*#&n;*# DESCRIPTION  : Disables write protection if applicable&n;*#&n;*#---------------------------------------------------------------------------&n;*# HISTORY                                                    &n;*#&n;*# DATE         NAME            CHANGES                       &n;*# ----         ----            -------                       &n;*# Jan 14 2000  Johan Adolfsson Initial version (from PS pareerom.c)&n;*#&n;*#**************************************************************************/
+multiline_comment|/* Disables write protection if applicable. */
 DECL|macro|DBP_SAVE
 mdefine_line|#define DBP_SAVE(x)
 DECL|macro|ax_printf
@@ -2759,7 +2818,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Step 3 Set BP1, BP0, and/or WPEN bits (write 00000110 to address 1FFFh*/
+multiline_comment|/* Step 3 Set BP1, BP0, and/or WPEN bits (write 00000110 to address 1FFFh */
 id|i2c_start
 c_func
 (paren
@@ -2861,5 +2920,4 @@ c_func
 id|eeprom_init
 )paren
 suffix:semicolon
-multiline_comment|/********************** END OF FILE e100eeprom.c *****************************/
 eof

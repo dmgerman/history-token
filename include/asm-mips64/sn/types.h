@@ -9,12 +9,6 @@ r_int
 r_int
 id|cpuid_t
 suffix:semicolon
-DECL|typedef|cpumask_t
-r_typedef
-r_int
-r_int
-id|cpumask_t
-suffix:semicolon
 DECL|typedef|cnodemask_t
 r_typedef
 r_int

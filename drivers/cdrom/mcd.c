@@ -31,35 +31,24 @@ id|mcd_blocksizes
 (braket
 l_int|1
 )braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
 suffix:semicolon
 multiline_comment|/* I added A flag to drop to 1x speed if too many errors 0 = 1X ; 1 = 2X */
 DECL|variable|mcdDouble
 r_static
 r_int
 id|mcdDouble
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* How many sectors to hold at 1x speed counter */
 DECL|variable|mcd1xhold
 r_static
 r_int
 id|mcd1xhold
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Is the drive connected properly and responding?? */
 DECL|variable|mcdPresent
 r_static
 r_int
 id|mcdPresent
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#if 0
 mdefine_line|#define TEST1 /* &lt;int-..&gt; */
@@ -205,8 +194,6 @@ macro_line|#ifdef WORK_AROUND_MITSUMI_BUG_93
 DECL|variable|mitsumi_bug_93_wait
 r_int
 id|mitsumi_bug_93_wait
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif /* WORK_AROUND_MITSUMI_BUG_93 */
 DECL|variable|mcd_port

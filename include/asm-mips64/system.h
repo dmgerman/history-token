@@ -38,7 +38,7 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * For cli() we have to insert nops to make shure that the new value&n; * has actually arrived in the status register before the end of this&n; * macro.&n; * R4000/R4400 need three nops, the R4600 two nops and the R10000 needs&n; * no nops at all.&n; */
+multiline_comment|/*&n; * For cli() we have to insert nops to make sure that the new value&n; * has actually arrived in the status register before the end of this&n; * macro.&n; * R4000/R4400 need three nops, the R4600 two nops and the R10000 needs&n; * no nops at all.&n; */
 r_extern
 id|__inline__
 r_void

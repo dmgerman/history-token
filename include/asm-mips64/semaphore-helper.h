@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * SMP- and interrupt-safe semaphores helper functions.&n; *&n; * (C) Copyright 1996 Linus Torvalds&n; * (C) Copyright 1999 Andrea Arcangeli&n; * (C) Copyright 1999 Ralf Baechle&n; * (C) Copyright 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * SMP- and interrupt-safe semaphores helper functions.&n; *&n; * (C) Copyright 1996 Linus Torvalds&n; * (C) Copyright 1999 Andrea Arcangeli&n; * (C) Copyright 1999, 2001 Ralf Baechle&n; * (C) Copyright 1999, 2001 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_SEMAPHORE_HELPER_H
 DECL|macro|_ASM_SEMAPHORE_HELPER_H
 mdefine_line|#define _ASM_SEMAPHORE_HELPER_H
@@ -108,100 +108,22 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-dot
-id|set
-id|push
-dot
-id|set
-id|noat
-l_int|0
-suffix:colon
-id|lld
-op_mod
-l_int|1
-comma
-op_mod
-l_int|2
-id|li
-op_mod
-l_int|0
-comma
-l_int|0
-id|sll
-"$"
-l_int|1
-comma
-op_mod
-l_int|1
-comma
-l_int|0
-id|blez
-"$"
-l_int|1
-comma
-l_float|1f
-id|daddiu
-op_mod
-l_int|1
-comma
-op_mod
-l_int|1
-comma
-op_minus
-l_int|1
-id|li
-op_mod
-l_int|0
-comma
-l_int|1
-id|b
-l_float|2f
-l_int|1
-suffix:colon
-id|beqz
-op_mod
-l_int|3
-comma
-l_float|2f
-id|li
-op_mod
-l_int|0
-comma
-op_mod
-l_int|4
-id|dli
-"$"
-l_int|1
-comma
-l_int|0x0000000100000000
-id|daddu
-op_mod
-l_int|1
-comma
-op_mod
-l_int|1
-comma
-"$"
-l_int|1
-l_int|2
-suffix:colon
-id|scd
-op_mod
-l_int|1
-comma
-op_mod
-l_int|2
-id|beqz
-op_mod
-l_int|1
-comma
-l_int|0
-id|b
-dot
-id|set
-id|pop
-"&quot;"
+l_string|&quot;.set&bslash;tpush&bslash;t&bslash;t&bslash;t# waking_non_zero_interruptible&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;
+l_string|&quot;0:&bslash;tlld&bslash;t%1, %2&bslash;n&bslash;t&quot;
+l_string|&quot;li&bslash;t%0, 0&bslash;n&bslash;t&quot;
+l_string|&quot;sll&bslash;t$1, %1, 0&bslash;n&bslash;t&quot;
+l_string|&quot;blez&bslash;t$1, 1f&bslash;n&bslash;t&quot;
+l_string|&quot;daddiu&bslash;t%1, %1, -1&bslash;n&bslash;t&quot;
+l_string|&quot;li&bslash;t%0, 1&bslash;n&bslash;t&quot;
+l_string|&quot;b&bslash;t2f&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;tbeqz&bslash;t%3, 2f&bslash;n&bslash;t&quot;
+l_string|&quot;li&bslash;t%0, %4&bslash;n&bslash;t&quot;
+l_string|&quot;dli&bslash;t$1, 0x0000000100000000&bslash;n&bslash;t&quot;
+l_string|&quot;daddu&bslash;t%1, %1, $1&bslash;n&bslash;t&quot;
+l_string|&quot;2:&bslash;tscd&bslash;t%1, %2&bslash;n&bslash;t&quot;
+l_string|&quot;beqz&bslash;t%1, 0b&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tpop&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -240,133 +162,27 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-dot
-id|set
-id|push
-dot
-id|set
-id|noat
-l_int|0
-suffix:colon
-id|lld
-op_mod
-l_int|1
-comma
-op_mod
-l_int|2
-id|li
-op_mod
-l_int|0
-comma
-l_int|0
-id|blez
-op_mod
-l_int|1
-comma
-l_float|1f
-id|dli
-"$"
-l_int|1
-comma
-l_int|0x0000000100000000
-id|dsubu
-op_mod
-l_int|1
-comma
-op_mod
-l_int|1
-comma
-"$"
-l_int|1
-id|li
-op_mod
-l_int|0
-comma
-l_int|1
-id|b
-l_float|2f
-l_int|1
-suffix:colon
-id|beqz
-op_mod
-l_int|3
-comma
-l_float|2f
-id|li
-op_mod
-l_int|0
-comma
-op_mod
-l_int|4
+l_string|&quot;.set&bslash;tpush&bslash;t&bslash;t&bslash;t# waking_non_zero_interruptible&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;t&t;noat&bslash;n&quot;
+l_string|&quot;0:&bslash;tlld&bslash;t%1, %2&bslash;n&bslash;t&quot;
+l_string|&quot;li&bslash;t%0, 0&bslash;n&bslash;t&quot;
+l_string|&quot;blez&bslash;t%1, 1f&bslash;n&bslash;t&quot;
+l_string|&quot;dli&bslash;t$1, 0x0000000100000000&bslash;n&bslash;t&quot;
+l_string|&quot;dsubu&bslash;t%1, %1, $1&bslash;n&bslash;t&quot;
+l_string|&quot;li&bslash;t%0, 1&bslash;n&bslash;t&quot;
+l_string|&quot;b&bslash;t2f&bslash;n&quot;
+l_string|&quot;1:&bslash;tbeqz&bslash;t%3, 2f&bslash;n&bslash;t&quot;
+l_string|&quot;li&bslash;t%0, %4&bslash;n&bslash;t&quot;
 multiline_comment|/* &n;&t; * It would be nice to assume that sem-&gt;count&n;&t; * is != -1, but we will guard against that case&n;&t; */
-id|daddiu
-"$"
-l_int|1
-comma
-op_mod
-l_int|1
-comma
-l_int|1
-id|dsll32
-"$"
-l_int|1
-comma
-"$"
-l_int|1
-comma
-l_int|0
-id|dsrl32
-"$"
-l_int|1
-comma
-"$"
-l_int|1
-comma
-l_int|0
-id|dsrl32
-op_mod
-l_int|1
-comma
-op_mod
-l_int|1
-comma
-l_int|0
-id|dsll32
-op_mod
-l_int|1
-comma
-op_mod
-l_int|1
-comma
-l_int|0
-op_logical_or
-op_mod
-l_int|1
-comma
-op_mod
-l_int|1
-comma
-"$"
-l_int|1
-l_int|2
-suffix:colon
-id|scd
-op_mod
-l_int|1
-comma
-op_mod
-l_int|2
-id|beqz
-op_mod
-l_int|1
-comma
-l_int|0
-id|b
-dot
-id|set
-id|pop
-"&quot;"
+l_string|&quot;daddiu&bslash;t$1, %1, 1&bslash;n&bslash;t&quot;
+l_string|&quot;dsll32&bslash;t$1, $1, 0&bslash;n&bslash;t&quot;
+l_string|&quot;dsrl32&bslash;t$1, $1, 0&bslash;n&bslash;t&quot;
+l_string|&quot;dsrl32&bslash;t%1, %1, 0&bslash;n&bslash;t&quot;
+l_string|&quot;dsll32&bslash;t%1, %1, 0&bslash;n&bslash;t&quot;
+l_string|&quot;or&bslash;t%1, %1, $1&bslash;n&quot;
+l_string|&quot;2:&bslash;tscd&bslash;t%1, %2&bslash;n&bslash;t&quot;
+l_string|&quot;beqz&bslash;t&t;%1, 0b&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tpop&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -400,8 +216,6 @@ id|EINTR
 )paren
 )paren
 suffix:semicolon
-macro_line|#else
-macro_line|#error &quot;MIPS but neither __MIPSEL__ nor __MIPSEB__?&quot;
 macro_line|#endif
 r_return
 id|ret

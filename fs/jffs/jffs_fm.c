@@ -131,9 +131,17 @@ c_cond
 op_logical_neg
 id|mtd
 )paren
+(brace
+id|kfree
+c_func
+(paren
+id|fmc
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
+)brace
 multiline_comment|/* Retrieve the size of the flash memory.  */
 id|fmc-&gt;flash_start
 op_assign

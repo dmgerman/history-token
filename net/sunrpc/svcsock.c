@@ -1362,7 +1362,7 @@ c_func
 (paren
 id|skb
 comma
-id|GFP_ATOMIC
+id|GFP_KERNEL
 )paren
 op_ne
 l_int|0

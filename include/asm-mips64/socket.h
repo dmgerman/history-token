@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1997, 1999, 2000 Ralf Baechle&n; * Copyright (C) 2000 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1997, 1999, 2000, 2001 Ralf Baechle&n; * Copyright (C) 2000, 2001 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_SOCKET_H
 DECL|macro|_ASM_SOCKET_H
 mdefine_line|#define _ASM_SOCKET_H
@@ -45,7 +45,7 @@ mdefine_line|#define SO_SNDTIMEO&t;0x1005&t;/* send timeout */
 DECL|macro|SO_RCVTIMEO
 mdefine_line|#define SO_RCVTIMEO &t;0x1006&t;/* receive timeout */
 DECL|macro|SO_ACCEPTCONN
-mdefine_line|#define SO_ACCEPTCONN&t;0x1007
+mdefine_line|#define SO_ACCEPTCONN&t;0x1009
 multiline_comment|/* linux-specific, might as well be the same as on i386 */
 DECL|macro|SO_NO_CHECK
 mdefine_line|#define SO_NO_CHECK&t;11

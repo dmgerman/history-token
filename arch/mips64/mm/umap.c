@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: umap.c,v 1.4 2000/01/29 01:41:59 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 Linus Torvalds&n; * Copyright (C) 1997 Miguel de Icaza&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 Linus Torvalds&n; * Copyright (C) 1997 Miguel de Icaza&n; * Copyright (C) 2001 Ralf Baechle&n; */
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
@@ -393,6 +394,13 @@ id|task-&gt;mm-&gt;mmap_sem
 )paren
 suffix:semicolon
 )brace
+DECL|variable|remove_mapping
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|remove_mapping
+)paren
+suffix:semicolon
 DECL|function|vmalloc_uncached
 r_void
 op_star
@@ -404,9 +412,13 @@ id|size
 )paren
 (brace
 r_return
-id|vmalloc_prot
+id|__vmalloc
 (paren
 id|size
+comma
+id|GFP_KERNEL
+op_or
+id|__GFP_HIGHMEM
 comma
 id|PAGE_KERNEL_UNCACHED
 )paren

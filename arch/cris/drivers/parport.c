@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: parport.c,v 1.4 2001/04/06 13:04:02 hugo Exp $&n; * &n; * Elinux parallel port driver&n; * NOTE!&n; *   Since par0 shares DMA with ser2 and par 1 shares DMA with ser3&n; *   this should be handled if both are enabled at the same time.&n; *   THIS IS NOT HANDLED YET!&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; * &n; * Author: Fredrik Hugosson&n; *&n; */
+multiline_comment|/* $Id: parport.c,v 1.5 2001/05/09 12:38:42 johana Exp $&n; * &n; * Elinux parallel port driver&n; * NOTE!&n; *   Since par0 shares DMA with ser2 and par 1 shares DMA with ser3&n; *   this should be handled if both are enabled at the same time.&n; *   THIS IS NOT HANDLED YET!&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; * &n; * Author: Fredrik Hugosson&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
@@ -1826,13 +1826,13 @@ macro_line|#ifdef CONFIG_ETRAX_PAR0_DMA
 id|RESET_DMA
 c_func
 (paren
-l_int|2
+id|PAR0_TX_DMA_NBR
 )paren
 suffix:semicolon
 id|WAIT_DMA
 c_func
 (paren
-l_int|2
+id|PAR0_TX_DMA_NBR
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT2
@@ -1850,13 +1850,13 @@ macro_line|#ifdef CONFIG_ETRAX_PAR1_DMA
 id|RESET_DMA
 c_func
 (paren
-l_int|4
+id|PAR1_TX_DMA_NBR
 )paren
 suffix:semicolon
 id|WAIT_DMA
 c_func
 (paren
-l_int|4
+id|PAR1_TX_DMA_NBR
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT3

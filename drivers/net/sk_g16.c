@@ -657,12 +657,24 @@ op_assign
 id|SK_IO_PORTS
 suffix:semicolon
 multiline_comment|/* SK_G16 supported ports */
+r_static
+r_int
+id|version_printed
+suffix:semicolon
 multiline_comment|/* get preconfigured base_addr from dev which is done in Space.c */
 r_int
 id|base_addr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|version_printed
+op_increment
+op_eq
+l_int|0
+)paren
 id|PRINTK
 c_func
 (paren
@@ -675,11 +687,6 @@ id|rcsid
 )paren
 )paren
 suffix:semicolon
-id|rcsid
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* We do not want to use this further */
 r_if
 c_cond
 (paren
@@ -4874,6 +4881,7 @@ multiline_comment|/* End of SK_print_dev() */
 multiline_comment|/*-&n; * Function       : SK_print_ram&n; * Author         : Patrick J.D. Weichmann&n; * Date Created   : 94/06/02&n; *&n; * Description    : This function is used to check how are things set up&n; *                  in the 16KB RAM. Also the pointers to the receive and &n; *                  transmit descriptor rings and rx and tx buffers locations.&n; *                  It contains a minor bug in printing, but has no effect to the values&n; *                  only newlines are not correct.&n; *&n; * Parameters     : I : struct net_device *dev - SK_G16 device structure&n; * Return Value   : None&n; * Errors         : None&n; * Globals        : None&n; * Update History :&n; *     YY/MM/DD  uid  Description&n;-*/
 DECL|function|SK_print_ram
 r_void
+id|__init
 id|SK_print_ram
 c_func
 (paren

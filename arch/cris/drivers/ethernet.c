@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ethernet.c,v 1.12 2001/04/05 11:43:11 tobiasa Exp $&n; *&n; * e100net.c: A network driver for the ETRAX 100LX network controller.&n; *&n; * Copyright (c) 1998-2001 Axis Communications AB.&n; *&n; * The outline of this driver comes from skeleton.c.&n; *&n; * $Log: ethernet.c,v $&n; * Revision 1.12  2001/04/05 11:43:11  tobiasa&n; * Check dev before panic.&n; *&n; * Revision 1.11  2001/04/04 11:21:05  markusl&n; * Updated according to review remarks&n; *&n; * Revision 1.10  2001/03/26 16:03:06  bjornw&n; * Needs linux/config.h&n; *&n; * Revision 1.9  2001/03/19 14:47:48  pkj&n; * * Make sure there is always a pause after the network LEDs are&n; *   changed so they will not look constantly lit during heavy traffic.&n; * * Always use HZ when setting times relative to jiffies.&n; * * Use LED_NETWORK_SET() when setting the network LEDs.&n; *&n; * Revision 1.8  2001/02/27 13:52:48  bjornw&n; * malloc.h -&gt; slab.h&n; *&n; * Revision 1.7  2001/02/23 13:46:38  bjornw&n; * Spellling check&n; *&n; * Revision 1.6  2001/01/26 15:21:04  starvik&n; * Don&squot;t disable interrupts while reading MDIO registers (MDIO is slow)&n; * Corrected promiscuous mode&n; * Improved deallocation of IRQs (&quot;ifconfig eth0 down&quot; now works)&n; *&n; * Revision 1.5  2000/11/29 17:22:22  bjornw&n; * Get rid of the udword types legacy stuff&n; *&n; * Revision 1.4  2000/11/22 16:36:09  bjornw&n; * Please marketing by using the correct case when spelling Etrax.&n; *&n; * Revision 1.3  2000/11/21 16:43:04  bjornw&n; * Minor short-&gt;int change&n; *&n; * Revision 1.2  2000/11/08 14:27:57  bjornw&n; * 2.4 port&n; *&n; * Revision 1.1  2000/11/06 13:56:00  bjornw&n; * Verbatim copy of the 1.24 version of e100net.c from elinux&n; *&n; * Revision 1.24  2000/10/04 15:55:23  bjornw&n; * * Use virt_to_phys etc. for DMA addresses&n; * * Removed bogus CHECKSUM_UNNECESSARY&n; *&n; *&n; */
+multiline_comment|/* $Id: ethernet.c,v 1.17 2001/06/11 12:43:46 olof Exp $&n; *&n; * e100net.c: A network driver for the ETRAX 100LX network controller.&n; *&n; * Copyright (c) 1998-2001 Axis Communications AB.&n; *&n; * The outline of this driver comes from skeleton.c.&n; *&n; * $Log: ethernet.c,v $&n; * Revision 1.17  2001/06/11 12:43:46  olof&n; * Modified defines for network LED behavior&n; *&n; * Revision 1.16  2001/05/30 06:12:46  markusl&n; * TxDesc.next should not be set to NULL&n; *&n; * Revision 1.15  2001/05/29 10:27:04  markusl&n; * Updated after review remarks:&n; * +Use IO_EXTRACT&n; * +Handle underrun&n; *&n; * Revision 1.14  2001/05/29 09:20:14  jonashg&n; * Use driver name on printk output so one can tell which driver that complains.&n; *&n; * Revision 1.13  2001/05/09 12:35:59  johana&n; * Use DMA_NBR and IRQ_NBR defines from dma.h and irq.h&n; *&n; * Revision 1.12  2001/04/05 11:43:11  tobiasa&n; * Check dev before panic.&n; *&n; * Revision 1.11  2001/04/04 11:21:05  markusl&n; * Updated according to review remarks&n; *&n; * Revision 1.10  2001/03/26 16:03:06  bjornw&n; * Needs linux/config.h&n; *&n; * Revision 1.9  2001/03/19 14:47:48  pkj&n; * * Make sure there is always a pause after the network LEDs are&n; *   changed so they will not look constantly lit during heavy traffic.&n; * * Always use HZ when setting times relative to jiffies.&n; * * Use LED_NETWORK_SET() when setting the network LEDs.&n; *&n; * Revision 1.8  2001/02/27 13:52:48  bjornw&n; * malloc.h -&gt; slab.h&n; *&n; * Revision 1.7  2001/02/23 13:46:38  bjornw&n; * Spellling check&n; *&n; * Revision 1.6  2001/01/26 15:21:04  starvik&n; * Don&squot;t disable interrupts while reading MDIO registers (MDIO is slow)&n; * Corrected promiscuous mode&n; * Improved deallocation of IRQs (&quot;ifconfig eth0 down&quot; now works)&n; *&n; * Revision 1.5  2000/11/29 17:22:22  bjornw&n; * Get rid of the udword types legacy stuff&n; *&n; * Revision 1.4  2000/11/22 16:36:09  bjornw&n; * Please marketing by using the correct case when spelling Etrax.&n; *&n; * Revision 1.3  2000/11/21 16:43:04  bjornw&n; * Minor short-&gt;int change&n; *&n; * Revision 1.2  2000/11/08 14:27:57  bjornw&n; * 2.4 port&n; *&n; * Revision 1.1  2000/11/06 13:56:00  bjornw&n; * Verbatim copy of the 1.24 version of e100net.c from elinux&n; *&n; * Revision 1.24  2000/10/04 15:55:23  bjornw&n; * * Use virt_to_phys etc. for DMA addresses&n; * * Removed bogus CHECKSUM_UNNECESSARY&n; *&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -20,16 +20,13 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;asm/svinto.h&gt;     /* DMA and register descriptions */
 macro_line|#include &lt;asm/io.h&gt;         /* LED_* I/O functions */
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 singleline_comment|//#define ETHDEBUG
 DECL|macro|D
 mdefine_line|#define D(x)
-DECL|macro|ETH_TX_DMA
-mdefine_line|#define ETH_TX_DMA 0
-DECL|macro|ETH_RX_DMA
-mdefine_line|#define ETH_RX_DMA 1
 multiline_comment|/*&n; * The name of the card. Is used for messages and in the requests for&n; * io regions, irqs and dma channels&n; */
 DECL|variable|cardname
 r_static
@@ -82,12 +79,6 @@ id|lock
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|NETWORK_DMARX_IRQ
-mdefine_line|#define NETWORK_DMARX_IRQ 17  /* irq 17 is the DMA1 irq */
-DECL|macro|NETWORK_DMATX_IRQ
-mdefine_line|#define NETWORK_DMATX_IRQ 16  /* irq 16 is the DMA0 irq */
-DECL|macro|NETWORK_STATUS_IRQ
-mdefine_line|#define NETWORK_STATUS_IRQ 6  /* irq 6 is the network irq */
 multiline_comment|/* Dma descriptors etc. */
 DECL|macro|RX_BUF_SIZE
 mdefine_line|#define RX_BUF_SIZE 32768
@@ -559,7 +550,10 @@ id|dev
 id|printk
 c_func
 (paren
-l_string|&quot;dev == NULL. Should this happen?&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;%s: dev == NULL. Should this happen?&bslash;n&quot;
+comma
+id|cardname
 )paren
 suffix:semicolon
 id|dev
@@ -639,12 +633,12 @@ suffix:semicolon
 multiline_comment|/* now setup our etrax specific stuff */
 id|dev-&gt;irq
 op_assign
-id|NETWORK_DMARX_IRQ
+id|NETWORK_DMA_RX_IRQ_NBR
 suffix:semicolon
 multiline_comment|/* we really use DMATX as well... */
 id|dev-&gt;dma
 op_assign
-l_int|1
+id|NETWORK_RX_DMA_NBR
 suffix:semicolon
 multiline_comment|/* fill in our handlers so the network layer can talk to us in the future */
 id|dev-&gt;open
@@ -1200,25 +1194,25 @@ multiline_comment|/* Reset and wait for the DMA channels */
 id|RESET_DMA
 c_func
 (paren
-l_int|0
+id|NETWORK_TX_DMA_NBR
 )paren
 suffix:semicolon
 id|RESET_DMA
 c_func
 (paren
-l_int|1
+id|NETWORK_RX_DMA_NBR
 )paren
 suffix:semicolon
 id|WAIT_DMA
 c_func
 (paren
-l_int|0
+id|NETWORK_TX_DMA_NBR
 )paren
 suffix:semicolon
 id|WAIT_DMA
 c_func
 (paren
-l_int|1
+id|NETWORK_RX_DMA_NBR
 )paren
 suffix:semicolon
 multiline_comment|/* Initialise the etrax network controller */
@@ -1229,7 +1223,7 @@ c_cond
 id|request_irq
 c_func
 (paren
-id|NETWORK_DMARX_IRQ
+id|NETWORK_DMA_RX_IRQ_NBR
 comma
 id|e100rx_interrupt
 comma
@@ -1256,7 +1250,7 @@ c_cond
 id|request_irq
 c_func
 (paren
-id|NETWORK_DMATX_IRQ
+id|NETWORK_DMA_TX_IRQ_NBR
 comma
 id|e100tx_interrupt
 comma
@@ -1283,7 +1277,7 @@ c_cond
 id|request_irq
 c_func
 (paren
-id|NETWORK_STATUS_IRQ
+id|NETWORK_STATUS_IRQ_NBR
 comma
 id|e100nw_interrupt
 comma
@@ -1310,7 +1304,7 @@ c_cond
 id|request_dma
 c_func
 (paren
-id|ETH_TX_DMA
+id|NETWORK_TX_DMA_NBR
 comma
 id|cardname
 )paren
@@ -1326,7 +1320,7 @@ c_cond
 id|request_dma
 c_func
 (paren
-id|ETH_RX_DMA
+id|NETWORK_RX_DMA_NBR
 comma
 id|cardname
 )paren
@@ -1338,13 +1332,13 @@ multiline_comment|/* this will cause some &squot;trying to free free irq&squot; 
 id|free_dma
 c_func
 (paren
-id|ETH_TX_DMA
+id|NETWORK_TX_DMA_NBR
 )paren
 suffix:semicolon
 id|free_irq
 c_func
 (paren
-id|NETWORK_DMARX_IRQ
+id|NETWORK_DMA_RX_IRQ_NBR
 comma
 (paren
 r_void
@@ -1356,7 +1350,7 @@ suffix:semicolon
 id|free_irq
 c_func
 (paren
-id|NETWORK_DMATX_IRQ
+id|NETWORK_DMA_TX_IRQ_NBR
 comma
 (paren
 r_void
@@ -1368,7 +1362,7 @@ suffix:semicolon
 id|free_irq
 c_func
 (paren
-id|NETWORK_STATUS_IRQ
+id|NETWORK_STATUS_IRQ_NBR
 comma
 (paren
 r_void
@@ -2263,13 +2257,13 @@ multiline_comment|/* reset the TX DMA in case it has hung on something */
 id|RESET_DMA
 c_func
 (paren
-l_int|0
+id|NETWORK_TX_DMA_NBR
 )paren
 suffix:semicolon
 id|WAIT_DMA
 c_func
 (paren
-l_int|0
+id|NETWORK_TX_DMA_NBR
 )paren
 suffix:semicolon
 multiline_comment|/* Reset the tranceiver. */
@@ -2674,7 +2668,10 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;tx weird interrupt&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;%s: tx weird interrupt&bslash;n&quot;
+comma
+id|cardname
 )paren
 suffix:semicolon
 )brace
@@ -2737,6 +2734,50 @@ op_assign
 op_star
 id|R_IRQ_MASK0_RD
 suffix:semicolon
+multiline_comment|/* check for underrun irq */
+r_if
+c_cond
+(paren
+id|irqbits
+op_amp
+id|IO_STATE
+c_func
+(paren
+id|R_IRQ_MASK0_RD
+comma
+id|underrun
+comma
+id|active
+)paren
+)paren
+(brace
+op_star
+id|R_NETWORK_TR_CTRL
+op_assign
+id|IO_STATE
+c_func
+(paren
+id|R_NETWORK_TR_CTRL
+comma
+id|clr_error
+comma
+id|clr
+)paren
+suffix:semicolon
+id|np-&gt;stats.tx_errors
+op_increment
+suffix:semicolon
+id|D
+c_func
+(paren
+id|printk
+c_func
+(paren
+l_string|&quot;ethernet receiver underrun!&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* check for overrun irq */
 r_if
 c_cond
@@ -3351,20 +3392,20 @@ multiline_comment|/* Stop the receiver and the transmitter */
 id|RESET_DMA
 c_func
 (paren
-l_int|0
+id|NETWORK_TX_DMA_NBR
 )paren
 suffix:semicolon
 id|RESET_DMA
 c_func
 (paren
-l_int|1
+id|NETWORK_RX_DMA_NBR
 )paren
 suffix:semicolon
 multiline_comment|/* Flush the Tx and disable Rx here. */
 id|free_irq
 c_func
 (paren
-id|NETWORK_DMARX_IRQ
+id|NETWORK_DMA_RX_IRQ_NBR
 comma
 (paren
 r_void
@@ -3376,7 +3417,7 @@ suffix:semicolon
 id|free_irq
 c_func
 (paren
-id|NETWORK_DMATX_IRQ
+id|NETWORK_DMA_TX_IRQ_NBR
 comma
 (paren
 r_void
@@ -3388,7 +3429,7 @@ suffix:semicolon
 id|free_irq
 c_func
 (paren
-id|NETWORK_STATUS_IRQ
+id|NETWORK_STATUS_IRQ_NBR
 comma
 (paren
 r_void
@@ -3400,13 +3441,13 @@ suffix:semicolon
 id|free_dma
 c_func
 (paren
-id|ETH_TX_DMA
+id|NETWORK_TX_DMA_NBR
 )paren
 suffix:semicolon
 id|free_dma
 c_func
 (paren
-id|ETH_RX_DMA
+id|NETWORK_RX_DMA_NBR
 )paren
 suffix:semicolon
 multiline_comment|/* Update the statistics here. */
@@ -3450,40 +3491,52 @@ suffix:semicolon
 multiline_comment|/* update stats relevant to reception errors */
 id|es-&gt;rx_fifo_errors
 op_add_assign
+id|IO_EXTRACT
+c_func
+(paren
+id|R_REC_COUNTERS
+comma
+id|congestion
+comma
 id|r
-op_rshift
-l_int|24
+)paren
 suffix:semicolon
-multiline_comment|/* fifo overrun */
 id|es-&gt;rx_crc_errors
 op_add_assign
+id|IO_EXTRACT
+c_func
+(paren
+id|R_REC_COUNTERS
+comma
+id|crc_error
+comma
 id|r
-op_amp
-l_int|0xff
+)paren
 suffix:semicolon
-multiline_comment|/* crc error */
 id|es-&gt;rx_frame_errors
 op_add_assign
+id|IO_EXTRACT
+c_func
 (paren
+id|R_REC_COUNTERS
+comma
+id|alignment_error
+comma
 id|r
-op_rshift
-l_int|8
 )paren
-op_amp
-l_int|0xff
 suffix:semicolon
-multiline_comment|/* alignment error */
 id|es-&gt;rx_length_errors
 op_add_assign
+id|IO_EXTRACT
+c_func
 (paren
+id|R_REC_COUNTERS
+comma
+id|oversize
+comma
 id|r
-op_rshift
-l_int|16
 )paren
-op_amp
-l_int|0xff
 suffix:semicolon
-multiline_comment|/* oversized frames */
 )brace
 r_static
 r_void
@@ -3507,34 +3560,38 @@ suffix:semicolon
 multiline_comment|/* update stats relevant to transmission errors */
 id|es-&gt;collisions
 op_add_assign
+id|IO_EXTRACT
+c_func
 (paren
+id|R_TR_COUNTERS
+comma
+id|single_col
+comma
 id|r
-op_amp
-l_int|0xff
 )paren
 op_plus
+id|IO_EXTRACT
+c_func
 (paren
-(paren
+id|R_TR_COUNTERS
+comma
+id|multiple_col
+comma
 id|r
-op_rshift
-l_int|8
-)paren
-op_amp
-l_int|0xff
 )paren
 suffix:semicolon
-multiline_comment|/* single_col + multiple_col */
 id|es-&gt;tx_errors
 op_add_assign
+id|IO_EXTRACT
+c_func
 (paren
+id|R_TR_COUNTERS
+comma
+id|deferred
+comma
 id|r
-op_rshift
-l_int|24
 )paren
-op_amp
-l_int|0xff
 suffix:semicolon
-multiline_comment|/* deferred transmit frames */
 )brace
 multiline_comment|/*&n; * Get the current statistics.&n; * This may be called with the card open or closed.&n; */
 r_static
@@ -4166,7 +4223,7 @@ r_int
 id|active
 )paren
 (brace
-macro_line|#ifdef CONFIG_LED_OFF_DURING_ACTIVITY
+macro_line|#if defined(CONFIG_ETRAX_NETWORK_LED_ON_WHEN_LINK)
 r_int
 id|light_leds
 op_assign
@@ -4176,7 +4233,7 @@ op_eq
 id|NO_NETWORK_ACTIVITY
 )paren
 suffix:semicolon
-macro_line|#else
+macro_line|#elif defined(CONFIG_ETRAX_NETWORK_LED_ON_WHEN_ACTIVITY)
 r_int
 id|light_leds
 op_assign
@@ -4186,6 +4243,8 @@ op_eq
 id|NETWORK_ACTIVITY
 )paren
 suffix:semicolon
+macro_line|#else
+macro_line|#error &quot;Define either CONFIG_ETRAX_NETWORK_LED_ON_WHEN_LINK or CONFIG_ETRAX_NETWORK_LED_ON_WHEN_ACTIVITY&quot;
 macro_line|#endif
 r_if
 c_cond

@@ -147,6 +147,8 @@ DECL|macro|SMART_READ_LOG_SECTOR
 mdefine_line|#define SMART_READ_LOG_SECTOR&t;0xd5
 DECL|macro|SMART_WRITE_LOG_SECTOR
 mdefine_line|#define SMART_WRITE_LOG_SECTOR&t;0xd6
+DECL|macro|SMART_WRITE_THRESHOLDS
+mdefine_line|#define SMART_WRITE_THRESHOLDS&t;0xd7
 DECL|macro|SMART_ENABLE
 mdefine_line|#define SMART_ENABLE&t;&t;0xd8
 DECL|macro|SMART_DISABLE
@@ -256,6 +258,8 @@ DECL|macro|MCR_ERR
 mdefine_line|#define MCR_ERR&t;&t;0x08&t;/* media change request */
 DECL|macro|ID_ERR
 mdefine_line|#define ID_ERR&t;&t;0x10&t;/* ID field not found */
+DECL|macro|MC_ERR
+mdefine_line|#define MC_ERR&t;&t;0x20&t;/* media changed */
 DECL|macro|ECC_ERR
 mdefine_line|#define ECC_ERR&t;&t;0x40&t;/* Uncorrectable ECC error */
 DECL|macro|BBD_ERR
@@ -295,6 +299,8 @@ DECL|macro|HDIO_GET_UNMASKINTR
 mdefine_line|#define HDIO_GET_UNMASKINTR&t;0x0302&t;/* get current unmask setting */
 DECL|macro|HDIO_GET_MULTCOUNT
 mdefine_line|#define HDIO_GET_MULTCOUNT&t;0x0304&t;/* get current IDE blockmode setting */
+DECL|macro|HDIO_GET_QDMA
+mdefine_line|#define HDIO_GET_QDMA&t;&t;0x0305&t;/* get use-qdma flag */
 DECL|macro|HDIO_OBSOLETE_IDENTITY
 mdefine_line|#define HDIO_OBSOLETE_IDENTITY&t;0x0307&t;/* OBSOLETE, DO NOT USE: returns 142 bytes */
 DECL|macro|HDIO_GET_KEEPSETTINGS
@@ -309,10 +315,18 @@ DECL|macro|HDIO_GET_NICE
 mdefine_line|#define HDIO_GET_NICE&t;&t;0x030c&t;/* get nice flags */
 DECL|macro|HDIO_GET_IDENTITY
 mdefine_line|#define HDIO_GET_IDENTITY&t;0x030d&t;/* get IDE identification info */
+DECL|macro|HDIO_GET_WCACHE
+mdefine_line|#define HDIO_GET_WCACHE&t;&t;0x030e&t;/* get write cache mode on|off */
+DECL|macro|HDIO_GET_ACOUSTIC
+mdefine_line|#define HDIO_GET_ACOUSTIC&t;0x030f&t;/* get acoustic value */
+DECL|macro|HDIO_GET_BUSSTATE
+mdefine_line|#define HDIO_GET_BUSSTATE&t;0x031a&t;/* get the bus state of the hwif */
+DECL|macro|HDIO_TRISTATE_HWIF
+mdefine_line|#define HDIO_TRISTATE_HWIF&t;0x031b&t;/* OBSOLETE - use SET_BUSSTATE */
 DECL|macro|HDIO_DRIVE_RESET
 mdefine_line|#define HDIO_DRIVE_RESET&t;0x031c&t;/* execute a device reset */
-DECL|macro|HDIO_TRISTATE_HWIF
-mdefine_line|#define HDIO_TRISTATE_HWIF&t;0x031d&t;/* execute a channel tristate */
+DECL|macro|HDIO_DRIVE_TASKFILE
+mdefine_line|#define HDIO_DRIVE_TASKFILE&t;0x031d&t;/* execute raw taskfile */
 DECL|macro|HDIO_DRIVE_TASK
 mdefine_line|#define HDIO_DRIVE_TASK&t;&t;0x031e&t;/* execute task and special drive command */
 DECL|macro|HDIO_DRIVE_CMD
@@ -340,6 +354,29 @@ DECL|macro|HDIO_SET_NICE
 mdefine_line|#define HDIO_SET_NICE&t;&t;0x0329&t;/* set nice flags */
 DECL|macro|HDIO_UNREGISTER_HWIF
 mdefine_line|#define HDIO_UNREGISTER_HWIF&t;0x032a  /* unregister interface */
+DECL|macro|HDIO_SET_WCACHE
+mdefine_line|#define HDIO_SET_WCACHE&t;&t;0x032b&t;/* change write cache enable-disable */
+DECL|macro|HDIO_SET_ACOUSTIC
+mdefine_line|#define HDIO_SET_ACOUSTIC&t;0x032c&t;/* change acoustic behavior */
+DECL|macro|HDIO_SET_BUSSTATE
+mdefine_line|#define HDIO_SET_BUSSTATE&t;0x032d&t;/* set the bus state of the hwif */
+DECL|macro|HDIO_SET_QDMA
+mdefine_line|#define HDIO_SET_QDMA&t;&t;0x032e&t;/* change use-qdma flag */
+multiline_comment|/* bus states */
+r_enum
+(brace
+DECL|enumerator|BUSSTATE_OFF
+id|BUSSTATE_OFF
+op_assign
+l_int|0
+comma
+DECL|enumerator|BUSSTATE_ON
+id|BUSSTATE_ON
+comma
+DECL|enumerator|BUSSTATE_TRISTATE
+id|BUSSTATE_TRISTATE
+)brace
+suffix:semicolon
 multiline_comment|/* BIG GEOMETRY */
 DECL|struct|hd_big_geometry
 r_struct

@@ -752,7 +752,7 @@ c_cond
 id|vendev
 op_eq
 (paren
-id|PCI_VENDOR_ID_APPLE_BANDIT
+id|PCI_DEVICE_ID_APPLE_BANDIT
 op_lshift
 l_int|16
 )paren

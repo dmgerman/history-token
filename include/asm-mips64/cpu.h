@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: cpu.h,v 1.1 1999/10/19 20:51:53 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * cpu.h: Values of the PRId register used to match up&n; *        various MIPS cpu types.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * cpu.h: Values of the PRId register used to match up&n; *        various MIPS cpu types.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
 macro_line|#ifndef _ASM_CPU_H
 DECL|macro|_ASM_CPU_H
 mdefine_line|#define _ASM_CPU_H
@@ -6,9 +6,9 @@ multiline_comment|/*&n; * Assigned values for the product ID register.  In order
 DECL|macro|PRID_IMP_R2000
 mdefine_line|#define PRID_IMP_R2000    0x0100
 DECL|macro|PRID_IMP_R3000
-mdefine_line|#define PRID_IMP_R3000    0x0200
+mdefine_line|#define PRID_IMP_R3000    0x0200&t;/* Same as R2000A  */
 DECL|macro|PRID_IMP_R6000
-mdefine_line|#define PRID_IMP_R6000    0x0300
+mdefine_line|#define PRID_IMP_R6000    0x0300&t;/* Same as R3000A  */
 DECL|macro|PRID_IMP_R4000
 mdefine_line|#define PRID_IMP_R4000    0x0400
 DECL|macro|PRID_IMP_R6000A
@@ -17,6 +17,8 @@ DECL|macro|PRID_IMP_R10000
 mdefine_line|#define PRID_IMP_R10000   0x0900
 DECL|macro|PRID_IMP_R4300
 mdefine_line|#define PRID_IMP_R4300    0x0b00
+DECL|macro|PRID_IMP_R12000
+mdefine_line|#define PRID_IMP_R12000   0x0e00
 DECL|macro|PRID_IMP_R8000
 mdefine_line|#define PRID_IMP_R8000    0x1000
 DECL|macro|PRID_IMP_R4600
@@ -26,7 +28,7 @@ mdefine_line|#define PRID_IMP_R4700    0x2100
 DECL|macro|PRID_IMP_R4640
 mdefine_line|#define PRID_IMP_R4640    0x2200
 DECL|macro|PRID_IMP_R4650
-mdefine_line|#define PRID_IMP_R4650    0x2200&t;&t;/* Same as R4640 */
+mdefine_line|#define PRID_IMP_R4650    0x2200&t;/* Same as R4640 */
 DECL|macro|PRID_IMP_R5000
 mdefine_line|#define PRID_IMP_R5000    0x2300
 DECL|macro|PRID_IMP_SONIC

@@ -1,12 +1,10 @@
-multiline_comment|/* $Id: bitops.h,v 1.4 2001/02/28 04:26:11 hp Exp $ */
-multiline_comment|/* all of these should probably be rewritten in assembler for speed. */
+multiline_comment|/* asm/bitops.h for Linux/CRIS&n; *&n; * TODO: asm versions if speed is needed&n; *       set_bit, clear_bit and change_bit wastes cycles being only&n; *       macros into test_and_set_bit etc.&n; *       kernel-doc things (**) for macros are disabled&n; *&n; * All bit operations return 0 if the bit was cleared before the&n; * operation and != 0 if it was not.&n; *&n; * bit 0 is the LSB of addr; bit 32 is the LSB of (addr+1).&n; */
 macro_line|#ifndef _CRIS_BITOPS_H
 DECL|macro|_CRIS_BITOPS_H
 mdefine_line|#define _CRIS_BITOPS_H
 multiline_comment|/* Currently this is unsuitable for consumption outside the kernel.  */
 macro_line|#ifdef __KERNEL__ 
 macro_line|#include &lt;asm/system.h&gt;
-multiline_comment|/*&n; * These have to be done with inline assembly: that way the bit-setting&n; * is guaranteed to be atomic. All bit operations return 0 if the bit&n; * was cleared before the operation and != 0 if it was not.&n; *&n; * bit 0 is the LSB of addr; bit 32 is the LSB of (addr+1).&n; */
 multiline_comment|/*&n; * Some hacks to defeat gcc over-optimizations..&n; */
 DECL|struct|__dummy
 DECL|member|a
@@ -26,14 +24,21 @@ DECL|macro|ADDR
 mdefine_line|#define ADDR (*(struct __dummy *) addr)
 DECL|macro|CONST_ADDR
 mdefine_line|#define CONST_ADDR (*(const struct __dummy *) addr)
+multiline_comment|/*&n; * set_bit - Atomically set a bit in memory&n; * @nr: the bit to set&n; * @addr: the address to start counting from&n; *&n; * This function is atomic and may not be reordered.  See __set_bit()&n; * if you do not require the atomic guarantees.&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; */
 DECL|macro|set_bit
 mdefine_line|#define set_bit(nr, addr)    (void)test_and_set_bit(nr, addr)
+multiline_comment|/*&n; * clear_bit - Clears a bit in memory&n; * @nr: Bit to clear&n; * @addr: Address to start counting from&n; *&n; * clear_bit() is atomic and may not be reordered.  However, it does&n; * not contain a memory barrier, so if it is used for locking purposes,&n; * you should call smp_mb__before_clear_bit() and/or smp_mb__after_clear_bit()&n; * in order to ensure changes are visible on other processors.&n; */
 DECL|macro|clear_bit
 mdefine_line|#define clear_bit(nr, addr)  (void)test_and_clear_bit(nr, addr)
+multiline_comment|/*&n; * change_bit - Toggle a bit in memory&n; * @nr: Bit to clear&n; * @addr: Address to start counting from&n; *&n; * change_bit() is atomic and may not be reordered.&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; */
 DECL|macro|change_bit
 mdefine_line|#define change_bit(nr, addr) (void)test_and_change_bit(nr, addr)
+multiline_comment|/*&n; * __change_bit - Toggle a bit in memory&n; * @nr: the bit to set&n; * @addr: the address to start counting from&n; *&n; * Unlike change_bit(), this function is non-atomic and may be reordered.&n; * If it&squot;s called on the same region of memory simultaneously, the effect&n; * may be that only one operation succeeds.&n; */
+DECL|macro|__change_bit
+mdefine_line|#define __change_bit(nr, addr) (void)__test_and_change_bit(nr, addr)
+multiline_comment|/**&n; * test_and_set_bit - Set a bit and return its old value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.  &n; * It also implies a memory barrier.&n; */
 DECL|function|test_and_set_bit
-r_extern
+r_static
 id|__inline__
 r_int
 id|test_and_set_bit
@@ -127,8 +132,9 @@ DECL|macro|smp_mb__before_clear_bit
 mdefine_line|#define smp_mb__before_clear_bit()      barrier()
 DECL|macro|smp_mb__after_clear_bit
 mdefine_line|#define smp_mb__after_clear_bit()       barrier()
+multiline_comment|/**&n; * test_and_clear_bit - Clear a bit and return its old value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.  &n; * It also implies a memory barrier.&n; */
 DECL|function|test_and_clear_bit
-r_extern
+r_static
 id|__inline__
 r_int
 id|test_and_clear_bit
@@ -218,8 +224,80 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * __test_and_clear_bit - Clear a bit and return its old value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is non-atomic and can be reordered.  &n; * If two examples of this operation race, one can appear to succeed&n; * but actually fail.  You must protect multiple accesses with a lock.&n; */
+DECL|function|__test_and_clear_bit
+r_static
+id|__inline__
+r_int
+id|__test_and_clear_bit
+c_func
+(paren
+r_int
+id|nr
+comma
+r_void
+op_star
+id|addr
+)paren
+(brace
+r_int
+r_int
+id|mask
+comma
+id|retval
+suffix:semicolon
+r_int
+r_int
+op_star
+id|adr
+op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
+id|addr
+suffix:semicolon
+id|adr
+op_add_assign
+id|nr
+op_rshift
+l_int|5
+suffix:semicolon
+id|mask
+op_assign
+l_int|1
+op_lshift
+(paren
+id|nr
+op_amp
+l_int|0x1f
+)paren
+suffix:semicolon
+id|retval
+op_assign
+(paren
+id|mask
+op_amp
+op_star
+id|adr
+)paren
+op_ne
+l_int|0
+suffix:semicolon
+op_star
+id|adr
+op_and_assign
+op_complement
+id|mask
+suffix:semicolon
+r_return
+id|retval
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * test_and_change_bit - Change a bit and return its new value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.  &n; * It also implies a memory barrier.&n; */
 DECL|function|test_and_change_bit
-r_extern
+r_static
 id|__inline__
 r_int
 id|test_and_change_bit
@@ -308,9 +386,79 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This routine doesn&squot;t need to be atomic.&n; */
+multiline_comment|/* WARNING: non atomic and it can be reordered! */
+DECL|function|__test_and_change_bit
+r_static
+id|__inline__
+r_int
+id|__test_and_change_bit
+c_func
+(paren
+r_int
+id|nr
+comma
+r_void
+op_star
+id|addr
+)paren
+(brace
+r_int
+r_int
+id|mask
+comma
+id|retval
+suffix:semicolon
+r_int
+r_int
+op_star
+id|adr
+op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
+id|addr
+suffix:semicolon
+id|adr
+op_add_assign
+id|nr
+op_rshift
+l_int|5
+suffix:semicolon
+id|mask
+op_assign
+l_int|1
+op_lshift
+(paren
+id|nr
+op_amp
+l_int|0x1f
+)paren
+suffix:semicolon
+id|retval
+op_assign
+(paren
+id|mask
+op_amp
+op_star
+id|adr
+)paren
+op_ne
+l_int|0
+suffix:semicolon
+op_star
+id|adr
+op_xor_assign
+id|mask
+suffix:semicolon
+r_return
+id|retval
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * test_bit - Determine whether a bit is set&n; * @nr: bit number to test&n; * @addr: Address to start counting from&n; *&n; * This routine doesn&squot;t need to be atomic.&n; */
 DECL|function|test_bit
-r_extern
+r_static
 id|__inline__
 r_int
 id|test_bit
@@ -373,7 +521,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Find-bit routines..&n; */
 multiline_comment|/*&n; * ffz = Find First Zero in word. Undefined if no zero exists,&n; * so code should check against ~0UL first..&n; */
 DECL|function|ffz
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -413,7 +561,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Find first one in word. Undefined if no one exists,&n; * so code should check against 0UL first..&n; */
 DECL|function|find_first_one
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -454,8 +602,9 @@ r_return
 id|result
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * find_next_zero_bit - find the first zero bit in a memory region&n; * @addr: The address to base the search on&n; * @offset: The bitnumber to start searching at&n; * @size: The maximum size to search&n; */
 DECL|function|find_next_zero_bit
-r_extern
+r_static
 id|__inline__
 r_int
 id|find_next_zero_bit
@@ -645,6 +794,7 @@ id|tmp
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * find_first_zero_bit - find the first zero bit in a memory region&n; * @addr: The address to start the search at&n; * @size: The maximum size to search&n; *&n; * Returns the bit-number of the first zero bit, not the number of the byte&n; * containing a bit.&n; */
 DECL|macro|find_first_zero_bit
 mdefine_line|#define find_first_zero_bit(addr, size) &bslash;&n;        find_next_zero_bit((addr), (size), 0)
 DECL|macro|ext2_set_bit

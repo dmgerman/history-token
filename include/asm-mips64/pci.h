@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci.h,v 1.4 2000/02/24 00:13:20 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
 macro_line|#ifndef _ASM_PCI_H
 DECL|macro|_ASM_PCI_H
 mdefine_line|#define _ASM_PCI_H
@@ -462,9 +462,40 @@ id|sg-&gt;length
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/* Return the index of the PCI controller for device PDEV. */
+DECL|function|pci_dma_supported
+r_extern
+r_inline
+r_int
+id|pci_dma_supported
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+id|dma_addr_t
+id|mask
+)paren
+(brace
+multiline_comment|/*&n;&t; * we fall back to GFP_DMA when the mask isn&squot;t all 1s,&n;&t; * so we can&squot;t guarantee allocations that must be&n;&t; * within a tighter range than GFP_DMA..&n;&t; */
+r_if
+c_cond
+(paren
+id|mask
+OL
+l_int|0x00ffffff
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* Return the index of the PCI controller for device. */
 DECL|macro|pci_controller_num
-mdefine_line|#define pci_controller_num(PDEV)&t;(0)
+mdefine_line|#define pci_controller_num(pdev)&t;(0)
 multiline_comment|/*&n; * These macros should be used after a pci_map_sg call has been done&n; * to get bus addresses of each of the SG entries and their lengths.&n; * You should only work with the number of sg entries pci_map_sg&n; * returns, or alternatively stop on the first sg_dma_len(sg) which&n; * is 0.&n; */
 DECL|macro|sg_dma_address
 mdefine_line|#define sg_dma_address(sg)&t;((unsigned long)((sg)-&gt;address))

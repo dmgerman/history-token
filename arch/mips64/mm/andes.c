@@ -1122,24 +1122,8 @@ l_int|0
 id|printk
 c_func
 (paren
-"&quot;"
-id|update_mmu_cache
-suffix:colon
-id|Wheee
-comma
-id|bogus
-id|tlbpid
-id|mmpid
-op_assign
-op_mod
-id|d
-id|tlbpid
-op_assign
-op_mod
-id|d
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;update_mmu_cache: Wheee, bogus tlbpid mmpid=%d &quot;
+l_string|&quot;tlbpid=%d&bslash;n&quot;
 comma
 (paren
 r_int

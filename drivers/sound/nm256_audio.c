@@ -12,15 +12,11 @@ macro_line|#include &quot;nm256_coeff.h&quot;
 DECL|variable|nm256_debug
 r_int
 id|nm256_debug
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|force_load
 r_static
 r_int
 id|force_load
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* &n; * The size of the playback reserve.  When the playback buffer has less&n; * than NM256_PLAY_WMARK_SIZE bytes to output, we request a new&n; * buffer.&n; */
 DECL|macro|NM256_PLAY_WMARK_SIZE
@@ -425,15 +421,11 @@ DECL|variable|usecache
 r_static
 r_int
 id|usecache
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|buffertop
 r_static
 r_int
 id|buffertop
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Check to see if we&squot;re using the bank of cached coefficients. */
 r_int

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995 - 2000 by Ralf Baechle&n; * Copyright (C) 1999, 2000 by Silicon Graphics, Inc.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -37,6 +38,10 @@ r_int
 r_int
 id|write
 )paren
+suffix:semicolon
+r_extern
+r_int
+id|console_loglevel
 suffix:semicolon
 multiline_comment|/*&n; * Macro for exception fixup code to access integer registers.&n; */
 DECL|macro|dpf_reg
@@ -121,33 +126,76 @@ suffix:semicolon
 )brace
 r_extern
 id|spinlock_t
-id|console_lock
-comma
 id|timerlist_lock
 suffix:semicolon
-multiline_comment|/*&n; * Unlock any spinlocks which will prevent us from getting the&n; * message out (timerlist_lock is acquired through the&n; * console unblank code)&n; */
+multiline_comment|/*&n; * Unlock any spinlocks which will prevent us from getting the&n; * message out (timerlist_lock is aquired through the&n; * console unblank code)&n; */
 DECL|function|bust_spinlocks
 r_void
 id|bust_spinlocks
 c_func
 (paren
-r_void
+r_int
+id|yes
 )paren
 (brace
 id|spin_lock_init
 c_func
 (paren
 op_amp
-id|console_lock
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
 id|timerlist_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|yes
+)paren
+(brace
+id|oops_in_progress
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+id|global_irq_lock
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Many serial drivers do __global_cli() */
+macro_line|#endif
+)brace
+r_else
+(brace
+r_int
+id|loglevel_save
+op_assign
+id|console_loglevel
+suffix:semicolon
+id|unblank_screen
+c_func
+(paren
+)paren
+suffix:semicolon
+id|oops_in_progress
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * OK, the message is on the console.  Now we call printk()&n;&t;&t; * without oops_in_progress set so that printk will give klogd&n;&t;&t; * a poke.  Hold onto your hats...&n;&t;&t; */
+id|console_loglevel
+op_assign
+l_int|15
+suffix:semicolon
+multiline_comment|/* NMI oopser may have shut the console up */
+id|printk
+c_func
+(paren
+l_string|&quot; &quot;
+)paren
+suffix:semicolon
+id|console_loglevel
+op_assign
+id|loglevel_save
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * This routine handles page faults.  It determines the address,&n; * and the problem, and then passes it off to one of the appropriate&n; * routines.&n; */
 id|asmlinkage
@@ -195,6 +243,17 @@ id|fixup
 suffix:semicolon
 id|siginfo_t
 id|info
+suffix:semicolon
+multiline_comment|/*&n;&t; * We fault-in kernel-space virtual memory on-demand. The&n;&t; * &squot;reference&squot; page table is init_mm.pgd.&n;&t; *&n;&t; * NOTE! We MUST NOT take any locks for this case. We may&n;&t; * be in an interrupt or a critical region, and should&n;&t; * only copy the information from the master page table,&n;&t; * nothing more.&n;&t; */
+r_if
+c_cond
+(paren
+id|address
+op_ge
+id|TASK_SIZE
+)paren
+r_goto
+id|vmalloc_fault
 suffix:semicolon
 id|info.si_code
 op_assign
@@ -414,43 +473,8 @@ op_amp
 id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Quickly check for vmalloc range faults.&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-op_logical_neg
-id|vma
-)paren
-op_logical_and
-(paren
-id|address
-op_ge
-id|VMALLOC_START
-)paren
-op_logical_and
-(paren
-id|address
-OL
-id|VMALLOC_END
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Fix vmalloc invalidate fault&bslash;n&quot;
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-(brace
-suffix:semicolon
-)brace
-)brace
+id|bad_area_nosemaphore
+suffix:colon
 r_if
 c_cond
 (paren
@@ -600,6 +624,7 @@ multiline_comment|/*&n;&t; * Oops. The kernel tried to access some bad page. We&
 id|bust_spinlocks
 c_func
 (paren
+l_int|1
 )paren
 suffix:semicolon
 id|printk
@@ -646,6 +671,12 @@ id|do_exit
 c_func
 (paren
 id|SIGKILL
+)paren
+suffix:semicolon
+id|bust_spinlocks
+c_func
+(paren
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * We ran out of memory, or some other thing happened to us that made&n; * us unable to handle the page fault gracefully.&n; */
@@ -742,6 +773,16 @@ id|regs
 )paren
 r_goto
 id|no_context
+suffix:semicolon
+r_return
+suffix:semicolon
+id|vmalloc_fault
+suffix:colon
+id|panic
+c_func
+(paren
+l_string|&quot;Pagefault for kernel virtual memory&quot;
+)paren
 suffix:semicolon
 )brace
 eof

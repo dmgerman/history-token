@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/mips/mm/umap.c&n; *&n; * (C) Copyright 1994 Linus Torvalds&n; *&n; * Changes:&n; *&n; * Modified from Linus source to removing active mappings from any&n; * task.  This is required for implementing the virtual graphics&n; * interface for direct rendering on the SGI - miguel.&n; *&n; * Added a routine to map a vmalloc()ed area into user space, this one&n; * is required by the /dev/shmiq driver - miguel.&n; */
+multiline_comment|/*&n; * (C) Copyright 1994 Linus Torvalds&n; *&n; * Changes:&n; *&n; * Modified from Linus source to removing active mappings from any&n; * task.  This is required for implementing the virtual graphics&n; * interface for direct rendering on the SGI - miguel.&n; *&n; * Added a routine to map a vmalloc()ed area into user space, this one&n; * is required by the /dev/shmiq driver - miguel.&n; */
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
@@ -393,6 +394,13 @@ id|task-&gt;mm-&gt;mmap_sem
 )paren
 suffix:semicolon
 )brace
+DECL|variable|remove_mapping
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|remove_mapping
+)paren
+suffix:semicolon
 DECL|function|vmalloc_uncached
 r_void
 op_star
@@ -753,6 +761,8 @@ op_assign
 id|pte_alloc
 c_func
 (paren
+id|current-&gt;mm
+comma
 id|pmd
 comma
 id|address
@@ -889,6 +899,8 @@ op_assign
 id|pmd_alloc
 c_func
 (paren
+id|current-&gt;mm
+comma
 id|dir
 comma
 id|from

@@ -290,6 +290,7 @@ id|inbound
 )paren
 suffix:semicolon
 DECL|variable|async_ops
+r_static
 r_struct
 id|ppp_channel_ops
 id|async_ops
@@ -1105,7 +1106,9 @@ id|ppp_asynctty_wakeup
 comma
 )brace
 suffix:semicolon
+r_static
 r_int
+id|__init
 DECL|function|ppp_async_init
 id|ppp_async_init
 c_func

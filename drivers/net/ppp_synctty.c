@@ -210,6 +210,7 @@ id|count
 )paren
 suffix:semicolon
 DECL|variable|sync_ops
+r_static
 r_struct
 id|ppp_channel_ops
 id|sync_ops
@@ -1330,7 +1331,9 @@ id|ppp_sync_wakeup
 comma
 )brace
 suffix:semicolon
+r_static
 r_int
+id|__init
 DECL|function|ppp_sync_init
 id|ppp_sync_init
 c_func

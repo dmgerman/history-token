@@ -1572,6 +1572,11 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|local_flush_tlb
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * this function sends a &squot;reschedule&squot; IPI to another CPU.&n; * it goes straight through and wastes no time serializing&n; * anything. Worst case is that we lose a reschedule ...&n; */
 DECL|function|smp_send_reschedule
@@ -1954,14 +1959,7 @@ id|func
 comma
 id|info
 comma
-l_int|1
-)paren
-suffix:semicolon
-(paren
-id|func
-)paren
-(paren
-id|info
+id|wait
 )paren
 suffix:semicolon
 r_return
@@ -2791,6 +2789,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|smp_ctl_clear_bit
+)paren
+suffix:semicolon
+DECL|variable|smp_num_cpus
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|smp_num_cpus
 )paren
 suffix:semicolon
 eof

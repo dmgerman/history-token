@@ -33,5 +33,10 @@ DECL|macro|IO_LED_SETBIT
 mdefine_line|#define IO_LED_SETBIT 0xB
 DECL|macro|IO_LED_CLRBIT
 mdefine_line|#define IO_LED_CLRBIT 0xC
+multiline_comment|/* SHUTDOWN ioctl */
+DECL|macro|IO_SHUTDOWN
+mdefine_line|#define IO_SHUTDOWN   0xD
+DECL|macro|IO_GET_PWR_BT
+mdefine_line|#define IO_GET_PWR_BT 0xE
 macro_line|#endif
 eof

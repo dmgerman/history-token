@@ -10,12 +10,7 @@ macro_line|#endif
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/sgidefs.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
-multiline_comment|/*&n; * clear_bit() doesn&squot;t provide any barrier for the compiler.&n; */
-DECL|macro|smp_mb__before_clear_bit
-mdefine_line|#define smp_mb__before_clear_bit()&t;barrier()
-DECL|macro|smp_mb__after_clear_bit
-mdefine_line|#define smp_mb__after_clear_bit()&t;barrier()
-multiline_comment|/*&n; * These functions for MIPS ISA &gt; 1 are interrupt and SMP proof and&n; * interrupt friendly&n; */
+multiline_comment|/*&n; * set_bit - Atomically set a bit in memory&n; * @nr: the bit to set&n; * @addr: the address to start counting from&n; *&n; * This function is atomic and may not be reordered.  See __set_bit()&n; * if you do not require the atomic guarantees.&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; */
 r_extern
 id|__inline__
 r_void
@@ -98,7 +93,7 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* WARNING: non atomic and it can be reordered! */
+multiline_comment|/*&n; * __set_bit - Set a bit in memory&n; * @nr: the bit to set&n; * @addr: the address to start counting from&n; *&n; * Unlike set_bit(), this function is non-atomic and may be reordered.&n; * If it&squot;s called on the same region of memory simultaneously, the effect&n; * may be that only one operation succeeds.&n; */
 DECL|function|__set_bit
 r_extern
 id|__inline__
@@ -147,6 +142,7 @@ l_int|0x3f
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * clear_bit - Clears a bit in memory&n; * @nr: Bit to clear&n; * @addr: Address to start counting from&n; *&n; * clear_bit() is atomic and may not be reordered.  However, it does&n; * not contain a memory barrier, so if it is used for locking purposes,&n; * you should call smp_mb__before_clear_bit() and/or smp_mb__after_clear_bit()&n; * in order to ensure changes are visible on other processors.&n; */
 r_extern
 id|__inline__
 r_void
@@ -230,6 +226,11 @@ id|m
 )paren
 suffix:semicolon
 )brace
+DECL|macro|smp_mb__before_clear_bit
+mdefine_line|#define smp_mb__before_clear_bit()&t;barrier()
+DECL|macro|smp_mb__after_clear_bit
+mdefine_line|#define smp_mb__after_clear_bit()&t;barrier()
+multiline_comment|/*&n; * change_bit - Toggle a bit in memory&n; * @nr: Bit to clear&n; * @addr: Address to start counting from&n; *&n; * change_bit() is atomic and may not be reordered.&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; */
 r_extern
 id|__inline__
 r_void
@@ -310,6 +311,56 @@ id|m
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * __change_bit - Toggle a bit in memory&n; * @nr: the bit to set&n; * @addr: the address to start counting from&n; *&n; * Unlike change_bit(), this function is non-atomic and may be reordered.&n; * If it&squot;s called on the same region of memory simultaneously, the effect&n; * may be that only one operation succeeds.&n; */
+DECL|function|__change_bit
+r_extern
+id|__inline__
+r_void
+id|__change_bit
+c_func
+(paren
+r_int
+id|nr
+comma
+r_volatile
+r_void
+op_star
+id|addr
+)paren
+(brace
+r_int
+r_int
+op_star
+id|m
+op_assign
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+id|addr
+)paren
+op_plus
+(paren
+id|nr
+op_rshift
+l_int|6
+)paren
+suffix:semicolon
+op_star
+id|m
+op_xor_assign
+l_int|1UL
+op_lshift
+(paren
+id|nr
+op_amp
+l_int|0x3f
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * test_and_set_bit - Set a bit and return its old value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.  &n; * It also implies a memory barrier.&n; */
 r_extern
 id|__inline__
 r_int
@@ -408,10 +459,11 @@ op_ne
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|__test_and_set_bit
+multiline_comment|/*&n; * __test_and_set_bit - Set a bit and return its old value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is non-atomic and can be reordered.  &n; * If two examples of this operation race, one can appear to succeed&n; * but actually fail.  You must protect multiple accesses with a lock.&n; */
 r_extern
 id|__inline__
 r_int
+DECL|function|__test_and_set_bit
 id|__test_and_set_bit
 c_func
 (paren
@@ -425,26 +477,33 @@ id|addr
 )paren
 (brace
 r_int
+r_int
 id|mask
 comma
 id|retval
 suffix:semicolon
-r_volatile
 r_int
 op_star
 id|a
 op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
 id|addr
 suffix:semicolon
 id|a
 op_add_assign
+(paren
 id|nr
 op_rshift
 l_int|6
+)paren
 suffix:semicolon
 id|mask
 op_assign
-l_int|1
+l_int|1UL
 op_lshift
 (paren
 id|nr
@@ -455,6 +514,7 @@ suffix:semicolon
 id|retval
 op_assign
 (paren
+(paren
 id|mask
 op_amp
 op_star
@@ -462,6 +522,7 @@ id|a
 )paren
 op_ne
 l_int|0
+)paren
 suffix:semicolon
 op_star
 id|a
@@ -472,6 +533,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * test_and_clear_bit - Clear a bit and return its old value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.  &n; * It also implies a memory barrier.&n; */
 r_extern
 id|__inline__
 r_int
@@ -571,10 +633,11 @@ op_ne
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|__test_and_clear_bit
+multiline_comment|/*&n; * __test_and_clear_bit - Clear a bit and return its old value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is non-atomic and can be reordered.  &n; * If two examples of this operation race, one can appear to succeed&n; * but actually fail.  You must protect multiple accesses with a lock.&n; */
 r_extern
 id|__inline__
 r_int
+DECL|function|__test_and_clear_bit
 id|__test_and_clear_bit
 c_func
 (paren
@@ -588,26 +651,34 @@ id|addr
 )paren
 (brace
 r_int
+r_int
 id|mask
 comma
 id|retval
 suffix:semicolon
-r_volatile
+r_int
 r_int
 op_star
 id|a
 op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
 id|addr
 suffix:semicolon
 id|a
 op_add_assign
+(paren
 id|nr
 op_rshift
 l_int|6
+)paren
 suffix:semicolon
 id|mask
 op_assign
-l_int|1
+l_int|1UL
 op_lshift
 (paren
 id|nr
@@ -618,6 +689,7 @@ suffix:semicolon
 id|retval
 op_assign
 (paren
+(paren
 id|mask
 op_amp
 op_star
@@ -625,6 +697,7 @@ id|a
 )paren
 op_ne
 l_int|0
+)paren
 suffix:semicolon
 op_star
 id|a
@@ -636,6 +709,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * test_and_change_bit - Change a bit and return its new value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.  &n; * It also implies a memory barrier.&n; */
 r_extern
 id|__inline__
 r_int
@@ -734,6 +808,82 @@ op_ne
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * __test_and_change_bit - Change a bit and return its old value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is non-atomic and can be reordered.  &n; * If two examples of this operation race, one can appear to succeed&n; * but actually fail.  You must protect multiple accesses with a lock.&n; */
+r_extern
+id|__inline__
+r_int
+DECL|function|__test_and_change_bit
+id|__test_and_change_bit
+c_func
+(paren
+r_int
+id|nr
+comma
+r_volatile
+r_void
+op_star
+id|addr
+)paren
+(brace
+r_int
+r_int
+id|mask
+comma
+id|retval
+suffix:semicolon
+r_int
+r_int
+op_star
+id|a
+op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
+id|addr
+suffix:semicolon
+id|a
+op_add_assign
+(paren
+id|nr
+op_rshift
+l_int|6
+)paren
+suffix:semicolon
+id|mask
+op_assign
+l_int|1UL
+op_lshift
+(paren
+id|nr
+op_amp
+l_int|0x3f
+)paren
+suffix:semicolon
+id|retval
+op_assign
+(paren
+(paren
+id|mask
+op_amp
+op_star
+id|a
+)paren
+op_ne
+l_int|0
+)paren
+suffix:semicolon
+op_star
+id|a
+op_xor_assign
+id|mask
+suffix:semicolon
+r_return
+id|retval
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * test_bit - Determine whether a bit is set&n; * @nr: bit number to test&n; * @addr: Address to start counting from&n; */
 r_extern
 id|__inline__
 r_int
@@ -757,7 +907,8 @@ op_amp
 (paren
 (paren
 (paren
-r_const
+r_volatile
+r_int
 r_int
 op_star
 )paren
@@ -779,6 +930,7 @@ suffix:semicolon
 )brace
 macro_line|#ifndef __MIPSEB__
 multiline_comment|/* Little endian versions. */
+multiline_comment|/*&n; * find_first_zero_bit - find the first zero bit in a memory region&n; * @addr: The address to start the search at&n; * @size: The maximum size to search&n; *&n; * Returns the bit-number of the first zero bit, not the number of the byte&n; * containing a bit.&n; */
 r_extern
 id|__inline__
 r_int
@@ -886,6 +1038,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * find_next_zero_bit - find the first zero bit in a memory region&n; * @addr: The address to base the search on&n; * @offset: The bitnumber to start searching at&n; * @size: The maximum size to search&n; */
 r_extern
 id|__inline__
 r_int
@@ -1051,7 +1204,7 @@ id|res
 suffix:semicolon
 )brace
 macro_line|#endif /* !(__MIPSEB__) */
-multiline_comment|/*&n; * ffz = Find First Zero in word. Undefined if no zero exists,&n; * so code should check against ~0UL first..&n; */
+multiline_comment|/*&n; * ffz - find first zero in word.&n; * @word: The word to search&n; *&n; * Undefined if no zero exists, so code should check against ~0UL first.&n; */
 DECL|function|ffz
 r_extern
 id|__inline__
@@ -1181,10 +1334,10 @@ id|k
 suffix:semicolon
 )brace
 macro_line|#ifdef __KERNEL__
-multiline_comment|/*&n; * ffs: find first bit set. This is defined the same way as&n; * the libc and compiler builtin ffs routines, therefore&n; * differs in spirit from the above ffz (man ffs).&n; */
+multiline_comment|/*&n; * ffs - find first bit set&n; * @x: the word to search&n; *&n; * This is defined the same way as&n; * the libc and compiler builtin ffs routines, therefore&n; * differs in spirit from the above ffz (man ffs).&n; */
 DECL|macro|ffs
 mdefine_line|#define ffs(x) generic_ffs(x)
-multiline_comment|/*&n; * hweightN: returns the hamming weight (i.e. the number&n; * of bits set) of a N-bit word&n; */
+multiline_comment|/*&n; * hweightN - returns the hamming weight of a N-bit word&n; * @x: the word to weigh&n; *&n; * The Hamming Weight of a number is the total number of bits set in it.&n; */
 DECL|macro|hweight32
 mdefine_line|#define hweight32(x) generic_hweight32(x)
 DECL|macro|hweight16
@@ -1193,7 +1346,7 @@ DECL|macro|hweight8
 mdefine_line|#define hweight8(x)  generic_hweight8(x)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#ifdef __MIPSEB__
-multiline_comment|/*&n; * find_next_zero_bit() finds the first zero bit in a bit string of length&n; * &squot;size&squot; bits, starting the search at bit &squot;offset&squot;. This is largely based&n; * on Linus&squot;s ALPHA routines, which are pretty portable BTW.&n; */
+multiline_comment|/*&n; * find_next_zero_bit - find the first zero bit in a memory region&n; * @addr: The address to base the search on&n; * @offset: The bitnumber to start searching at&n; * @size: The maximum size to search&n; */
 r_extern
 id|__inline__
 r_int

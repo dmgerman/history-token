@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: setup.c,v 1.14 2001/04/03 12:54:12 starvik Exp $&n; *&n; *  linux/arch/cris/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (c) 2001  Axis Communications AB&n; */
+multiline_comment|/* $Id: setup.c,v 1.16 2001/05/15 01:23:13 hp Exp $&n; *&n; *  linux/arch/cris/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (c) 2001  Axis Communications AB&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of initialization&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -391,6 +391,7 @@ id|cpu_info
 )braket
 op_assign
 (brace
+multiline_comment|/* The first four models will never ever run this code and are&n;&t;   only here for display.  */
 (brace
 l_string|&quot;ETRAX 1&quot;
 comma
@@ -407,7 +408,6 @@ comma
 l_int|0
 )brace
 comma
-multiline_comment|/* Don&squot;t say it HAS_TOKENRING - there are&n;&t;&t;&t;&t;   lethal bugs in that chip that&n;&t;&t;&t;&t;   prevents T-R from ever working.&n;&t;&t;&t;&t;   Never go there, and never lead anyone&n;&t;&t;&t;&t;   into believing it can work.  BTW:&n;&t;&t;&t;&t;   Anyone working on a T-R network&n;&t;&t;&t;&t;   driver? :-) :-) :-) :-/ */
 (brace
 l_string|&quot;ETRAX 3&quot;
 comma

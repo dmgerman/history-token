@@ -1340,14 +1340,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* No more connections, so close IrLAP */
-id|irlmp_next_lap_state
-c_func
-(paren
-id|self
-comma
-id|LAP_STANDBY
-)paren
-suffix:semicolon
+multiline_comment|/* We don&squot;t want to change state just yet, because&n;&t;&t;&t; * we want to reflect accurately the real state of&n;&t;&t;&t; * the LAP, not the the state we whish it was in,&n;&t;&t;&t; * so that we don&squot;t loose LM_LAP_CONNECT_REQUEST.&n;&t;&t;&t; * In some cases, IrLAP won&squot;t close the LAP&n;&t;&t;&t; * immediately. For example, it might still be&n;&t;&t;&t; * retrying packets or waiting for the pf bit.&n;&t;&t;&t; * As the LAP always send a DISCONNECT_INDICATION&n;&t;&t;&t; * in PCLOSE or SCLOSE, just change state on that.&n;&t;&t;&t; * Jean II */
 id|irlap_disconnect_request
 c_func
 (paren
@@ -1372,14 +1365,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|irlmp_next_lap_state
-c_func
-(paren
-id|self
-comma
-id|LAP_STANDBY
-)paren
-suffix:semicolon
+multiline_comment|/* Same reasoning as above - keep state */
 id|irlap_disconnect_request
 c_func
 (paren
@@ -1657,14 +1643,6 @@ suffix:semicolon
 r_case
 id|LM_CONNECT_INDICATION
 suffix:colon
-id|irlmp_next_lsap_state
-c_func
-(paren
-id|self
-comma
-id|LSAP_CONNECT_PEND
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1687,6 +1665,14 @@ id|self-&gt;conn_skb
 op_assign
 id|skb
 suffix:semicolon
+id|irlmp_next_lsap_state
+c_func
+(paren
+id|self
+comma
+id|LSAP_CONNECT_PEND
+)paren
+suffix:semicolon
 id|irlmp_do_lap_event
 c_func
 (paren
@@ -1695,6 +1681,17 @@ comma
 id|LM_LAP_CONNECT_REQUEST
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* Start watchdog timer&n;&t;&t; * This is not mentionned in the spec, but there is a rare&n;&t;&t; * race condition that can get the socket stuck.&n;&t;&t; * If we receive this event while our LAP is closing down,&n;&t;&t; * the LM_LAP_CONNECT_REQUEST get lost and we get stuck in&n;&t;&t; * CONNECT_PEND state forever.&n;&t;&t; * Anyway, it make sense to make sure that we always have&n;&t;&t; * a backup plan. 1 second is plenty (should be immediate).&n;&t;&t; * Jean II */
+id|irlmp_start_watchdog_timer
+c_func
+(paren
+id|self
+comma
+l_int|1
+op_star
+id|HZ
 )paren
 suffix:semicolon
 r_break
@@ -1913,6 +1910,38 @@ id|LSAP_DATA_TRANSFER_READY
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|LM_WATCHDOG_TIMEOUT
+suffix:colon
+multiline_comment|/* May happen, who knows...&n;&t;&t; * Jean II */
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+id|__FUNCTION__
+l_string|&quot;() WATCHDOG_TIMEOUT!&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Here, we should probably disconnect proper */
+id|self-&gt;dlsap_sel
+op_assign
+id|LSAP_ANY
+suffix:semicolon
+id|self-&gt;conn_skb
+op_assign
+l_int|NULL
+suffix:semicolon
+id|irlmp_next_lsap_state
+c_func
+(paren
+id|self
+comma
+id|LSAP_DISCONNECTED
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|IRDA_DEBUG
@@ -2021,6 +2050,33 @@ multiline_comment|/* Keep state */
 r_break
 suffix:semicolon
 r_case
+id|LM_CONNECT_INDICATION
+suffix:colon
+multiline_comment|/* Will happen in some rare cases when the socket get stuck,&n;&t;&t; * the other side retries the connect request.&n;&t;&t; * We just unstuck the socket - Jean II */
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+id|__FUNCTION__
+l_string|&quot;(), LM_CONNECT_INDICATION, &quot;
+l_string|&quot;LSAP stuck in CONNECT_PEND state...&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Keep state */
+id|irlmp_do_lap_event
+c_func
+(paren
+id|self-&gt;lap
+comma
+id|LM_LAP_CONNECT_REQUEST
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|LM_CONNECT_RESPONSE
 suffix:colon
 id|IRDA_DEBUG
@@ -2086,6 +2142,38 @@ c_func
 id|self
 comma
 id|skb
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|LM_WATCHDOG_TIMEOUT
+suffix:colon
+multiline_comment|/* Will happen in some rare cases because of a race condition.&n;&t;&t; * Just make sure we don&squot;t stay there forever...&n;&t;&t; * Jean II */
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+id|__FUNCTION__
+l_string|&quot;() WATCHDOG_TIMEOUT!&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Go back to disconnected mode, keep the socket waiting */
+id|self-&gt;dlsap_sel
+op_assign
+id|LSAP_ANY
+suffix:semicolon
+id|self-&gt;conn_skb
+op_assign
+l_int|NULL
+suffix:semicolon
+id|irlmp_next_lsap_state
+c_func
+(paren
+id|self
+comma
+id|LSAP_DISCONNECTED
 )paren
 suffix:semicolon
 r_break

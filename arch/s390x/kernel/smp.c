@@ -1844,14 +1844,7 @@ id|func
 comma
 id|info
 comma
-l_int|1
-)paren
-suffix:semicolon
-(paren
-id|func
-)paren
-(paren
-id|info
+id|wait
 )paren
 suffix:semicolon
 r_return

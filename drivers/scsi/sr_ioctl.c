@@ -334,6 +334,24 @@ dot
 id|device
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|SRpnt
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Unable to allocate SCSI request in sr_do_ioctl&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|SRpnt-&gt;sr_data_direction
 op_assign
 id|readwrite

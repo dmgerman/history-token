@@ -19,8 +19,6 @@ DECL|macro|PI_MIN_TURN_TIME
 mdefine_line|#define PI_MIN_TURN_TIME 0x86
 DECL|macro|PI_LINK_DISC
 mdefine_line|#define PI_LINK_DISC     0x08
-DECL|macro|PI_COMPRESSION
-mdefine_line|#define PI_COMPRESSION   0x07 /* Just a random pick */
 DECL|macro|IR_115200_MAX
 mdefine_line|#define IR_115200_MAX 0x3f
 multiline_comment|/* Baud rates (first byte) */
@@ -103,13 +101,6 @@ DECL|member|power
 id|qos_value_t
 id|power
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-multiline_comment|/* An experimental non IrDA field */
-DECL|member|compression
-id|qos_value_t
-id|compression
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 r_extern

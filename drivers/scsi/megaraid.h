@@ -41,7 +41,7 @@ mdefine_line|#define M_RD_IOCTL_CMD_NEW&t;&t;0x81
 DECL|macro|M_RD_DRIVER_IOCTL_INTERFACE
 mdefine_line|#define M_RD_DRIVER_IOCTL_INTERFACE&t;0x82
 DECL|macro|MEGARAID_VERSION
-mdefine_line|#define MEGARAID_VERSION &quot;v1.14g-ac2 (Release Date: Mar 22, 2001; 19:34:02)&quot;
+mdefine_line|#define MEGARAID_VERSION &quot;v1.15d (Release Date: Wed May 30 17:30:41 EDT 2001)&quot;
 DECL|macro|MEGARAID_IOCTL_VERSION
 mdefine_line|#define MEGARAID_IOCTL_VERSION &t;114
 multiline_comment|/* Methods */
@@ -166,6 +166,23 @@ DECL|macro|ENABLE_INTR
 mdefine_line|#define ENABLE_INTR(base)&t;WRITE_PORT(base,I_TOGGLE_PORT,ENABLE_INTR_BYTE)
 DECL|macro|DISABLE_INTR
 mdefine_line|#define DISABLE_INTR(base)&t;WRITE_PORT(base,I_TOGGLE_PORT,DISABLE_INTR_BYTE)
+multiline_comment|/* Define AMI&squot;s PCI codes */
+macro_line|#ifndef PCI_VENDOR_ID_AMI
+DECL|macro|PCI_VENDOR_ID_AMI
+mdefine_line|#define PCI_VENDOR_ID_AMI&t;&t;0x101E
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_AMI_MEGARAID
+DECL|macro|PCI_DEVICE_ID_AMI_MEGARAID
+mdefine_line|#define PCI_DEVICE_ID_AMI_MEGARAID&t;0x9010
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_AMI_MEGARAID2
+DECL|macro|PCI_DEVICE_ID_AMI_MEGARAID2
+mdefine_line|#define PCI_DEVICE_ID_AMI_MEGARAID2&t;0x9060
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_AMI_MEGARAID3
+DECL|macro|PCI_DEVICE_ID_AMI_MEGARAID3
+mdefine_line|#define PCI_DEVICE_ID_AMI_MEGARAID3&t;0x1960
+macro_line|#endif
 multiline_comment|/* Special Adapter Commands */
 DECL|macro|FW_FIRE_WRITE
 mdefine_line|#define FW_FIRE_WRITE   &t;0x2C
@@ -2145,7 +2162,6 @@ mdefine_line|#define&t;&t;IS_BIOS_ENABLED&t;&t;0x62
 DECL|macro|GET_BIOS
 mdefine_line|#define&t;&t;GET_BIOS&t;&t;0x01
 multiline_comment|/*================================================================&n; *&n; *                    Function prototypes&n; *&n; *================================================================&n; */
-r_static
 r_const
 r_char
 op_star
@@ -2163,7 +2179,6 @@ id|Scsi_Host_Template
 op_star
 )paren
 suffix:semicolon
-r_static
 r_int
 id|megaraid_release
 (paren
@@ -2172,7 +2187,6 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
-r_static
 r_int
 id|megaraid_command
 (paren
@@ -2180,7 +2194,6 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
-r_static
 r_int
 id|megaraid_abort
 (paren
@@ -2188,7 +2201,6 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
-r_static
 r_int
 id|megaraid_reset
 (paren
@@ -2199,7 +2211,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-r_static
 r_int
 id|megaraid_queue
 (paren
@@ -2217,7 +2228,6 @@ op_star
 )paren
 )paren
 suffix:semicolon
-r_static
 r_int
 id|megaraid_biosparam
 (paren
@@ -2230,7 +2240,6 @@ r_int
 op_star
 )paren
 suffix:semicolon
-r_static
 r_int
 id|megaraid_proc_info
 (paren
@@ -2376,7 +2385,7 @@ r_void
 op_star
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)  
 r_static
 id|mega_scb
 op_star

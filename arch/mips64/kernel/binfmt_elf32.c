@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Support for 32-bit Linux/MIPS ELF binaries.&n; *&n; * Copyright (C) 1999 Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; *&n; * Heavily inspired by the 32-bit Sparc compat code which is&n; * Copyright (C) 1995, 1996, 1997, 1998 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1995, 1996, 1997, 1998 Jakub Jelinek   (jj@ultra.linux.cz)&n; */
+multiline_comment|/*&n; * Support for 32-bit Linux/MIPS ELF binaries.&n; *&n; * Copyright (C) 1999, 2001 Ralf Baechle&n; * Copyright (C) 1999, 2001 Silicon Graphics, Inc.&n; *&n; * Heavily inspired by the 32-bit Sparc compat code which is&n; * Copyright (C) 1995, 1996, 1997, 1998 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1995, 1996, 1997, 1998 Jakub Jelinek   (jj@ultra.linux.cz)&n; */
 DECL|macro|ELF_ARCH
 mdefine_line|#define ELF_ARCH&t;&t;EM_MIPS
 DECL|macro|ELF_CLASS
@@ -43,7 +43,7 @@ id|ELF_NFPREG
 )braket
 suffix:semicolon
 DECL|macro|elf_check_arch
-mdefine_line|#define elf_check_arch(x)&t;&bslash;&n;&t;((x)-&gt;e_machine == EM_MIPS || (x)-&gt;e_machine == EM_MIPS_RS4_BE)
+mdefine_line|#define elf_check_arch(x)&t;&bslash;&n;&t;((x)-&gt;e_machine == EM_MIPS)
 DECL|macro|TASK32_SIZE
 mdefine_line|#define TASK32_SIZE&t;&t;0x80000000UL
 DECL|macro|ELF_ET_DYN_BASE

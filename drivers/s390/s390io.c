@@ -6812,6 +6812,14 @@ op_star
 id|__LC_SUBCHANNEL_ID
 )paren
 suffix:semicolon
+r_int
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * take fast exit if CPU is in sync. I/O state&n;&t; *&n;&t; * Note: we have to turn off the WAIT bit and re-disable&n;&t; *       interrupts prior to return as this was the initial&n;&t; *       entry condition to synchronous I/O.&n;&t; */
 r_if
 c_cond
@@ -6854,10 +6862,28 @@ op_eq
 id|IO_INTERRUPT_TYPE
 )paren
 (brace
+id|irq_enter
+c_func
+(paren
+id|cpu
+comma
+op_minus
+l_int|1
+)paren
+suffix:semicolon
 id|do_adapter_IO
 c_func
 (paren
 id|tpi_info-&gt;intparm
+)paren
+suffix:semicolon
+id|irq_exit
+c_func
+(paren
+id|cpu
+comma
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -6885,6 +6911,14 @@ r_return
 suffix:semicolon
 multiline_comment|/* this keeps the device boxed ... */
 )brace
+id|irq_enter
+c_func
+(paren
+id|cpu
+comma
+id|irq
+)paren
+suffix:semicolon
 id|s390irq_spin_lock
 c_func
 (paren
@@ -6900,6 +6934,14 @@ suffix:semicolon
 id|s390irq_spin_unlock
 c_func
 (paren
+id|irq
+)paren
+suffix:semicolon
+id|irq_exit
+c_func
+(paren
+id|cpu
+comma
 id|irq
 )paren
 suffix:semicolon
@@ -9700,11 +9742,23 @@ c_cond
 (paren
 id|rc
 )paren
-singleline_comment|// can only happen if stsch/msch fails
+multiline_comment|/* can only happen if stsch/msch fails */
+(brace
 id|sync_isc_cnt
 op_assign
 l_int|0
 suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|sync_isc
+comma
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -12724,23 +12778,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ret
 )paren
-(brace
-id|free_irq
-c_func
-(paren
-id|irq
-comma
-op_amp
-id|devstat
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-singleline_comment|// fixme ! fast exit ... grr
-)brace
-r_else
 (brace
 id|ioinfo
 (braket
@@ -15916,15 +15956,47 @@ r_if
 c_cond
 (paren
 id|ret
+op_eq
+op_minus
+id|EIO
 )paren
 (brace
 macro_line|#ifdef CONFIG_DEBUG_IO
 id|printk
 c_func
 (paren
+l_string|&quot;PathVerification(%04X) - I/O error &quot;
+l_string|&quot;on device %04X&bslash;n&quot;
+comma
+id|irq
+comma
+id|ioinfo
+(braket
+id|irq
+)braket
+op_member_access_from_pointer
+id|schib.pmcw.dev
+)paren
+suffix:semicolon
+macro_line|#endif
+id|ioinfo
+(braket
+id|irq
+)braket
+op_member_access_from_pointer
+id|ui.flags.pgid_supp
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+macro_line|#ifdef CONFIG_DEBUG_IO
+id|printk
+c_func
+(paren
 l_string|&quot;PathVerification(%04X) &quot;
-l_string|&quot;- Device %04X doesn&squot;t &quot;
-l_string|&quot; support path grouping&bslash;n&quot;
+l_string|&quot;- Unexpected error on device %04X&bslash;n&quot;
 comma
 id|irq
 comma
@@ -16432,9 +16504,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* endif */
 )brace
-macro_line|#ifdef CONFIG_DEBUG_IO
 r_else
 (brace
+macro_line|#ifdef CONFIG_DEBUG_IO
 id|printk
 c_func
 (paren
@@ -16496,9 +16568,12 @@ l_int|7
 )braket
 )paren
 suffix:semicolon
+macro_line|#endif
+id|retry
+op_decrement
+suffix:semicolon
 )brace
 multiline_comment|/* endif */
-macro_line|#endif
 )brace
 r_else
 r_if
@@ -16529,6 +16604,11 @@ suffix:semicolon
 id|retry
 op_assign
 l_int|0
+suffix:semicolon
+id|irq_ret
+op_assign
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* endif */
@@ -16564,6 +16644,21 @@ OG
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|retry
+op_eq
+l_int|0
+)paren
+(brace
+id|irq_ret
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+multiline_comment|/* endif */
 r_if
 c_cond
 (paren
@@ -17136,6 +17231,21 @@ OG
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|retry
+op_eq
+l_int|0
+)paren
+(brace
+id|irq_ret
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+multiline_comment|/* endif */
 r_if
 c_cond
 (paren
@@ -17780,6 +17890,22 @@ id|irq_desc.dev_id
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|MACHINE_IS_VM
+)paren
+id|cpcmd
+c_func
+(paren
+l_string|&quot;IPL&quot;
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_else
 id|do_reipl
 c_func
 (paren

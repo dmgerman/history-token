@@ -126,9 +126,7 @@ r_char
 op_star
 )paren
 suffix:semicolon
-DECL|macro|__HAVE_ARCH_MEMCHR
-macro_line|#undef __HAVE_ARCH_MEMCHR
-macro_line|#if 0
+DECL|function|memchr
 r_static
 r_inline
 r_void
@@ -195,7 +193,6 @@ r_return
 id|ptr
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|strcpy
 r_static
 id|__inline__
@@ -249,9 +246,7 @@ r_return
 id|tmp
 suffix:semicolon
 )brace
-DECL|macro|__HAVE_ARCH_STRLEN
-macro_line|#undef __HAVE_ARCH_STRLEN
-macro_line|#if 0
+DECL|function|strlen
 r_static
 id|__inline__
 r_int
@@ -296,10 +291,7 @@ r_return
 id|len
 suffix:semicolon
 )brace
-macro_line|#endif
-DECL|macro|__HAVE_ARCH_STRCAT
-macro_line|#undef __HAVE_ARCH_STRCAT
-macro_line|#if 0
+DECL|function|strcat
 r_static
 id|__inline__
 r_char
@@ -356,7 +348,6 @@ r_return
 id|tmp
 suffix:semicolon
 )brace
-macro_line|#endif
 r_extern
 r_void
 op_star

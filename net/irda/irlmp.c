@@ -1277,8 +1277,16 @@ multiline_comment|/*  &n;&t; * Find the link to where we should try to connect s
 r_if
 c_cond
 (paren
+(paren
 op_logical_neg
 id|saddr
+)paren
+op_logical_or
+(paren
+id|saddr
+op_eq
+id|DEV_ADDR_ANY
+)paren
 )paren
 (brace
 r_if

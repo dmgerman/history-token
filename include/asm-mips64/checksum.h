@@ -1,7 +1,8 @@
-multiline_comment|/* $Id: checksum.h,v 1.6 2000/02/18 22:06:19 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1997, 1998, 1999 by Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1997, 1998, 1999 by Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) 2001 Thiemo Seufer.&n; */
 macro_line|#ifndef _ASM_CHECKSUM_H
 DECL|macro|_ASM_CHECKSUM_H
 mdefine_line|#define _ASM_CHECKSUM_H
+macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * computes the checksum of a memory block at buff, length len,&n; * and adds in &quot;sum&quot; (32-bit)&n; *&n; * returns a 32-bit number suitable for feeding into itself&n; * or csum_tcpudp_magic&n; *&n; * this function must be called with even lengths, except&n; * for the last fragment, which may be odd&n; *&n; * it&squot;s best to have buff aligned on a 32-bit boundary&n; */
 r_int
 r_int
@@ -55,11 +56,11 @@ suffix:semicolon
 multiline_comment|/*&n; * Copy and checksum to user&n; */
 DECL|macro|HAVE_CSUM_COPY_USER
 mdefine_line|#define HAVE_CSUM_COPY_USER
+DECL|function|csum_and_copy_to_user
 r_extern
 r_inline
 r_int
 r_int
-DECL|function|csum_and_copy_to_user
 id|csum_and_copy_to_user
 (paren
 r_const
@@ -149,12 +150,12 @@ id|sum
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Fold a partial checksum without adding pseudo headers&n; */
+DECL|function|csum_fold
 r_static
 r_inline
 r_int
 r_int
 r_int
-DECL|function|csum_fold
 id|csum_fold
 c_func
 (paren
@@ -166,56 +167,14 @@ id|sum
 id|__asm__
 c_func
 (paren
-"&quot;"
-dot
-id|set
-id|noat
-id|sll
-"$"
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-l_int|16
-id|addu
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|sltu
-"$"
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|srl
-op_mod
-l_int|0
-comma
-op_mod
-l_int|0
-comma
-l_int|16
-id|addu
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|xori
-op_mod
-l_int|0
-comma
-l_int|0xffff
-dot
-id|set
-id|at
-"&quot;"
+l_string|&quot;.set&bslash;tnoat&bslash;t&bslash;t&bslash;t# csum_fold&bslash;n&bslash;t&quot;
+l_string|&quot;sll&bslash;t$1,%0,16&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0,$1&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1,%0,$1&bslash;n&bslash;t&quot;
+l_string|&quot;srl&bslash;t%0,%0,16&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0,$1&bslash;n&bslash;t&quot;
+l_string|&quot;xori&bslash;t%0,0xffff&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tat&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -235,11 +194,11 @@ id|sum
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;This is a version of ip_compute_csum() optimized for IP headers,&n; *&t;which always checksum on 4 octet boundaries.&n; *&n; *&t;By Jorge Cwik &lt;jorge@laser.satlink.net&gt;, adapted for linux by&n; *&t;Arnt Gulbrandsen.&n; */
+DECL|function|ip_fast_csum
 r_static
 r_inline
 r_int
 r_int
-DECL|function|ip_fast_csum
 id|ip_fast_csum
 c_func
 (paren
@@ -266,182 +225,32 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-dot
-id|set
-id|noreorder
-dot
-id|set
-id|noat
-id|lw
-op_mod
-l_int|0
-comma
-(paren
-op_mod
-l_int|1
-)paren
-id|subu
-op_mod
-l_int|2
-comma
-l_int|4
-id|dsll
-op_mod
-l_int|2
-comma
-l_int|2
-id|lw
-op_mod
-l_int|3
-comma
-l_int|4
-(paren
-op_mod
-l_int|1
-)paren
-id|daddu
-op_mod
-l_int|2
-comma
-op_mod
-l_int|1
-id|addu
-op_mod
-l_int|0
-comma
-op_mod
-l_int|3
-id|sltu
-"$"
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-op_mod
-l_int|3
-id|lw
-op_mod
-l_int|3
-comma
-l_int|8
-(paren
-op_mod
-l_int|1
-)paren
-id|addu
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|addu
-op_mod
-l_int|0
-comma
-op_mod
-l_int|3
-id|sltu
-"$"
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-op_mod
-l_int|3
-id|lw
-op_mod
-l_int|3
-comma
-l_int|12
-(paren
-op_mod
-l_int|1
-)paren
-id|addu
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|addu
-op_mod
-l_int|0
-comma
-op_mod
-l_int|3
-id|sltu
-"$"
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-op_mod
-l_int|3
-id|addu
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-l_int|1
-suffix:colon
-id|lw
-op_mod
-l_int|3
-comma
-l_int|16
-(paren
-op_mod
-l_int|1
-)paren
-id|daddiu
-op_mod
-l_int|1
-comma
-l_int|4
-id|addu
-op_mod
-l_int|0
-comma
-op_mod
-l_int|3
-id|sltu
-"$"
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-op_mod
-l_int|3
-id|bne
-op_mod
-l_int|2
-comma
-op_mod
-l_int|1
-comma
-l_int|1
-id|b
-id|addu
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-l_int|2
-suffix:colon
-dot
-id|set
-id|at
-dot
-id|set
-id|reorder
-"&quot;"
+l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# ip_fast_csum&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;
+l_string|&quot;lw&bslash;t%0, (%1)&bslash;n&bslash;t&quot;
+l_string|&quot;subu&bslash;t%2, 4&bslash;n&bslash;t&quot;
+l_string|&quot;dsll&bslash;t%2, 2&bslash;n&bslash;t&quot;
+l_string|&quot;lw&bslash;t%3, 4(%1)&bslash;n&bslash;t&quot;
+l_string|&quot;daddu&bslash;t%2, %1&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, %3&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, %3&bslash;n&bslash;t&quot;
+l_string|&quot;lw&bslash;t%3, 8(%1)&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, %3&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, %3&bslash;n&bslash;t&quot;
+l_string|&quot;lw&bslash;t%3, 12(%1)&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, %3&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, %3&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, $1&bslash;n&quot;
+l_string|&quot;1:&bslash;tlw&bslash;t%3, 16(%1)&bslash;n&bslash;t&quot;
+l_string|&quot;daddiu&bslash;t%1, 4&bslash;n&quot;
+l_string|&quot;addu&bslash;t%0, %3&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, %3&bslash;n&bslash;t&quot;
+l_string|&quot;bne&bslash;t%2, %1, 1b&bslash;n&bslash;t&quot;
+l_string|&quot; addu&bslash;t%0, $1&bslash;n&quot;
+l_string|&quot;2:&bslash;t.set&bslash;tat&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;treorder&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -485,11 +294,11 @@ id|sum
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * computes the checksum of the TCP/UDP pseudo-header&n; * returns a 16-bit checksum, already complemented&n; */
+DECL|function|csum_tcpudp_nofold
 r_static
 r_inline
 r_int
 r_int
-DECL|function|csum_tcpudp_nofold
 id|csum_tcpudp_nofold
 c_func
 (paren
@@ -517,55 +326,14 @@ id|sum
 id|__asm__
 c_func
 (paren
-"&quot;"
-dot
-id|set
-id|noat
-id|daddu
-op_mod
-l_int|0
-comma
-op_mod
-l_int|2
-id|daddu
-op_mod
-l_int|0
-comma
-op_mod
-l_int|3
-id|daddu
-op_mod
-l_int|0
-comma
-op_mod
-l_int|4
-id|dsll32
-"$"
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-l_int|0
-id|daddu
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-macro_line|# never results in an overflow
-id|dsrl32
-op_mod
-l_int|0
-comma
-op_mod
-l_int|0
-comma
-l_int|0
-dot
-id|set
-id|at
-"&quot;"
+l_string|&quot;.set&bslash;tnoat&bslash;t&bslash;t&bslash;t# csum_tcpudp_nofold&bslash;n&bslash;t&quot;
+l_string|&quot;daddu&bslash;t%0, %2&bslash;n&bslash;t&quot;
+l_string|&quot;daddu&bslash;t%0, %3&bslash;n&bslash;t&quot;
+l_string|&quot;daddu&bslash;t%0, %4&bslash;n&bslash;t&quot;
+l_string|&quot;dsll32&bslash;t$1, %0, 0&bslash;n&bslash;t&quot;
+l_string|&quot;daddu&bslash;t%0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;dsrl32&bslash;t%0, %0, 0&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tat&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -574,17 +342,12 @@ id|sum
 suffix:colon
 l_string|&quot;0&quot;
 (paren
-id|sum
+id|daddr
 )paren
 comma
 l_string|&quot;r&quot;
 (paren
 id|saddr
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|daddr
 )paren
 comma
 macro_line|#ifdef __MIPSEL__
@@ -604,6 +367,7 @@ id|proto
 op_star
 l_int|256
 )paren
+comma
 macro_line|#else
 l_string|&quot;r&quot;
 (paren
@@ -617,7 +381,12 @@ l_int|16
 op_plus
 id|len
 )paren
+comma
 macro_line|#endif
+l_string|&quot;r&quot;
+(paren
+id|sum
+)paren
 suffix:colon
 l_string|&quot;$1&quot;
 )paren
@@ -627,12 +396,12 @@ id|sum
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * computes the checksum of the TCP/UDP pseudo-header&n; * returns a 16-bit checksum, already complemented&n; */
+DECL|function|csum_tcpudp_magic
 r_static
 r_inline
 r_int
 r_int
 r_int
-DECL|function|csum_tcpudp_magic
 id|csum_tcpudp_magic
 c_func
 (paren
@@ -678,11 +447,11 @@ id|sum
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * this routine is used for miscellaneous IP-like checksums, mainly&n; * in icmp.c&n; */
+DECL|function|ip_compute_csum
 r_static
 r_inline
 r_int
 r_int
-DECL|function|ip_compute_csum
 id|ip_compute_csum
 c_func
 (paren
@@ -713,12 +482,12 @@ suffix:semicolon
 )brace
 DECL|macro|_HAVE_ARCH_IPV6_CSUM
 mdefine_line|#define _HAVE_ARCH_IPV6_CSUM
+DECL|function|csum_ipv6_magic
 r_static
 r_inline
 r_int
 r_int
 r_int
-DECL|function|csum_ipv6_magic
 id|csum_ipv6_magic
 c_func
 (paren
@@ -747,299 +516,47 @@ id|sum
 id|__asm__
 c_func
 (paren
-"&quot;"
-dot
-id|set
-id|noreorder
-dot
-id|set
-id|noat
-id|addu
-op_mod
-l_int|0
-comma
-op_mod
-l_int|5
-macro_line|# proto (long in network byte order)
-id|sltu
-"$"
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-op_mod
-l_int|5
-id|addu
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|addu
-op_mod
-l_int|0
-comma
-op_mod
-l_int|6
-macro_line|# csum
-id|sltu
-"$"
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-op_mod
-l_int|6
-id|lw
-op_mod
-l_int|1
-comma
-l_int|0
-(paren
-op_mod
-l_int|2
-)paren
-macro_line|# four words source address
-id|addu
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|addu
-op_mod
-l_int|0
-comma
-op_mod
-l_int|1
-id|sltu
-"$"
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|lw
-op_mod
-l_int|1
-comma
-l_int|4
-(paren
-op_mod
-l_int|2
-)paren
-id|addu
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|addu
-op_mod
-l_int|0
-comma
-op_mod
-l_int|1
-id|sltu
-"$"
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|lw
-op_mod
-l_int|1
-comma
-l_int|8
-(paren
-op_mod
-l_int|2
-)paren
-id|addu
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|addu
-op_mod
-l_int|0
-comma
-op_mod
-l_int|1
-id|sltu
-"$"
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|lw
-op_mod
-l_int|1
-comma
-l_int|12
-(paren
-op_mod
-l_int|2
-)paren
-id|addu
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|addu
-op_mod
-l_int|0
-comma
-op_mod
-l_int|1
-id|sltu
-"$"
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|lw
-op_mod
-l_int|1
-comma
-l_int|0
-(paren
-op_mod
-l_int|3
-)paren
-id|addu
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|addu
-op_mod
-l_int|0
-comma
-op_mod
-l_int|1
-id|sltu
-"$"
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|lw
-op_mod
-l_int|1
-comma
-l_int|4
-(paren
-op_mod
-l_int|3
-)paren
-id|addu
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|addu
-op_mod
-l_int|0
-comma
-op_mod
-l_int|1
-id|sltu
-"$"
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|lw
-op_mod
-l_int|1
-comma
-l_int|8
-(paren
-op_mod
-l_int|3
-)paren
-id|addu
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|addu
-op_mod
-l_int|0
-comma
-op_mod
-l_int|1
-id|sltu
-"$"
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|lw
-op_mod
-l_int|1
-comma
-l_int|12
-(paren
-op_mod
-l_int|3
-)paren
-id|addu
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-id|addu
-op_mod
-l_int|0
-comma
-op_mod
-l_int|1
-id|sltu
-"$"
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-dot
-id|set
-id|noat
-dot
-id|set
-id|noreorder
-"&quot;"
+l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# csum_ipv6_magic&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, %5&bslash;t&bslash;t&bslash;t# proto (long in network byte order)&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, %5&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, %6&bslash;t&bslash;t&bslash;t# csum&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, %6&bslash;n&bslash;t&quot;
+l_string|&quot;lw&bslash;t%1, 0(%2)&bslash;t&bslash;t&bslash;t# four words source address&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, %1&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;lw&bslash;t%1, 4(%2)&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, %1&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;lw&bslash;t%1, 8(%2)&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, %1&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;lw&bslash;t%1, 12(%2)&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, %1&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;lw&bslash;t%1, 0(%3)&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, %1&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;lw&bslash;t%1, 4(%3)&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, %1&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;lw&bslash;t%1, 8(%3)&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, %1&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;lw&bslash;t%1, 12(%3)&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, %1&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tnoreorder&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren

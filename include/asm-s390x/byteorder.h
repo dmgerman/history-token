@@ -91,17 +91,17 @@ id|x
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;   lrvg %0,%1&bslash;n&quot;
-l_string|&quot;   stg  %0,%1&quot;
+l_string|&quot;   lrvg 0,%0&bslash;n&quot;
+l_string|&quot;   stg  0,%0&quot;
 suffix:colon
-suffix:colon
-l_string|&quot;m&quot;
+l_string|&quot;+m&quot;
 (paren
 op_star
 id|x
 )paren
 suffix:colon
-l_string|&quot;memory&quot;
+suffix:colon
+l_string|&quot;0&quot;
 )paren
 suffix:semicolon
 )brace
@@ -192,17 +192,17 @@ id|x
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;   lrv  %0,%1&bslash;n&quot;
-l_string|&quot;   st   %0,%1&quot;
+l_string|&quot;   lrv  0,%0&bslash;n&quot;
+l_string|&quot;   st   0,%0&quot;
 suffix:colon
-suffix:colon
-l_string|&quot;m&quot;
+l_string|&quot;+m&quot;
 (paren
 op_star
 id|x
 )paren
 suffix:colon
-l_string|&quot;memory&quot;
+suffix:colon
+l_string|&quot;0&quot;
 )paren
 suffix:semicolon
 )brace
@@ -293,28 +293,34 @@ id|x
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;   lrvh %0,%1&bslash;n&quot;
-l_string|&quot;   sth  %0,%1&quot;
+l_string|&quot;   lrvh 0,%0&bslash;n&quot;
+l_string|&quot;   sth  0,%0&quot;
 suffix:colon
-suffix:colon
-l_string|&quot;m&quot;
+l_string|&quot;+m&quot;
 (paren
 op_star
 id|x
 )paren
 suffix:colon
-l_string|&quot;memory&quot;
+suffix:colon
+l_string|&quot;0&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|macro|__arch__swab64
+mdefine_line|#define __arch__swab64(x) ___arch__swab64(x)
 DECL|macro|__arch__swab32
 mdefine_line|#define __arch__swab32(x) ___arch__swab32(x)
 DECL|macro|__arch__swab16
 mdefine_line|#define __arch__swab16(x) ___arch__swab16(x)
+DECL|macro|__arch__swab64p
+mdefine_line|#define __arch__swab64p(x) ___arch__swab64p(x)
 DECL|macro|__arch__swab32p
 mdefine_line|#define __arch__swab32p(x) ___arch__swab32p(x)
 DECL|macro|__arch__swab16p
 mdefine_line|#define __arch__swab16p(x) ___arch__swab16p(x)
+DECL|macro|__arch__swab64s
+mdefine_line|#define __arch__swab64s(x) ___arch__swab64s(x)
 DECL|macro|__arch__swab32s
 mdefine_line|#define __arch__swab32s(x) ___arch__swab32s(x)
 DECL|macro|__arch__swab16s

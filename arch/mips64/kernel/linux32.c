@@ -3834,9 +3834,6 @@ id|i-&gt;tv_usec
 )paren
 )paren
 suffix:semicolon
-r_return
-id|ENOSYS
-suffix:semicolon
 )brace
 r_static
 r_inline
@@ -3911,9 +3908,6 @@ id|i-&gt;it_value.tv_usec
 )paren
 )paren
 )paren
-suffix:semicolon
-r_return
-id|ENOSYS
 suffix:semicolon
 )brace
 r_static
@@ -3999,12 +3993,12 @@ c_func
 (paren
 id|VERIFY_WRITE
 comma
-id|i
+id|o
 comma
 r_sizeof
 (paren
 op_star
-id|i
+id|o
 )paren
 )paren
 op_logical_or
@@ -4046,9 +4040,6 @@ id|o-&gt;it_value.tv_usec
 )paren
 )paren
 )paren
-suffix:semicolon
-r_return
-id|ENOSYS
 suffix:semicolon
 )brace
 r_extern

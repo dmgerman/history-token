@@ -39,7 +39,7 @@ id|ELF_NFPREG
 suffix:semicolon
 multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong &n; * architecture or OS.&n; */
 DECL|macro|elf_check_arch
-mdefine_line|#define elf_check_arch(hdr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __res = 1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct elfhdr *__h = (hdr);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((__h-&gt;e_machine != EM_MIPS) &amp;&amp;&t;&t;&t;&t;&bslash;&n;&t;    (__h-&gt;e_machine != EM_MIPS_RS4_BE))&t;&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sizeof(elf_caddr_t) == 8 &amp;&amp;&t;&t;&t;&t;&t;&bslash;&n;&t;    __h-&gt;e_ident[EI_CLASS] == ELFCLASS32)&t;&t;&t;&bslash;&n;&t;        __res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define elf_check_arch(hdr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __res = 1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct elfhdr *__h = (hdr);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__h-&gt;e_machine != EM_MIPS)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sizeof(elf_caddr_t) == 8 &amp;&amp;&t;&t;&t;&t;&t;&bslash;&n;&t;    __h-&gt;e_ident[EI_CLASS] == ELFCLASS32)&t;&t;&t;&bslash;&n;&t;        __res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/*&n; * These are used to set parameters in the core dumps.&n; */
 DECL|macro|ELF_CLASS
 mdefine_line|#define ELF_CLASS&t;ELFCLASS64

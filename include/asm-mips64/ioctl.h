@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1999 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1999, 2001 by Ralf Baechle&n; */
 macro_line|#ifndef _ASM_IOCTL_H
 DECL|macro|_ASM_IOCTL_H
 mdefine_line|#define _ASM_IOCTL_H
@@ -27,9 +27,6 @@ DECL|macro|_IOC_SIZESHIFT
 mdefine_line|#define _IOC_SIZESHIFT&t;(_IOC_TYPESHIFT+_IOC_TYPEBITS)
 DECL|macro|_IOC_DIRSHIFT
 mdefine_line|#define _IOC_DIRSHIFT&t;(_IOC_SIZESHIFT+_IOC_SIZEBITS)
-multiline_comment|/*&n; * We to additionally limit parameters to a maximum 255 bytes.&n; */
-DECL|macro|_IOC_SLMASK
-mdefine_line|#define _IOC_SLMASK&t;0xff
 multiline_comment|/*&n; * Direction bits _IOC_NONE could be 0, but OSF/1 gives it a bit.&n; * And this turns out useful to catch old ioctl numbers in header&n; * files for us.&n; */
 DECL|macro|_IOC_NONE
 mdefine_line|#define _IOC_NONE&t;1U
@@ -47,7 +44,7 @@ mdefine_line|#define _IOC_IN&t;&t;0x80000000
 DECL|macro|_IOC_INOUT
 mdefine_line|#define _IOC_INOUT&t;(IOC_IN|IOC_OUT)
 DECL|macro|_IOC
-mdefine_line|#define _IOC(dir,type,nr,size) &bslash;&n;&t;(((dir)  &lt;&lt; _IOC_DIRSHIFT) | &bslash;&n;&t; ((type) &lt;&lt; _IOC_TYPESHIFT) | &bslash;&n;&t; ((nr)   &lt;&lt; _IOC_NRSHIFT) | &bslash;&n;&t; (((size) &amp; _IOC_SLMASK) &lt;&lt; _IOC_SIZESHIFT))
+mdefine_line|#define _IOC(dir,type,nr,size) &bslash;&n;&t;(((dir)  &lt;&lt; _IOC_DIRSHIFT) | &bslash;&n;&t; ((type) &lt;&lt; _IOC_TYPESHIFT) | &bslash;&n;&t; ((nr)   &lt;&lt; _IOC_NRSHIFT) | &bslash;&n;&t; ((size) &lt;&lt; _IOC_SIZESHIFT))
 multiline_comment|/* used to create numbers */
 DECL|macro|_IO
 mdefine_line|#define _IO(type,nr)&t;&t;_IOC(_IOC_NONE,(type),(nr),0)

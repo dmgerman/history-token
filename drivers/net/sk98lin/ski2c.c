@@ -1,7 +1,7 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;ski2c.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.44 $&n; * Date:&t;$Date: 2000/08/07 15:49:03 $&n; * Purpose:&t;Funktions to access Voltage and Temperature Sensor&n; *&t;&t;(taken from Monalisa (taken from Concentrator))&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2000 SysKonnect,&n; *&t;a business unit of Schneider &amp; Koch &amp; Co. Datensysteme GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: ski2c.c,v $&n; *&t;Revision 1.44  2000/08/07 15:49:03  gklug&n; *&t;fix: SK_INFAST only in NetWare driver&n; *&t;&n; *&t;Revision 1.43  2000/08/03 14:28:17  rassmann&n; *&t;- Added function to wait for I2C being ready before resetting the board.&n; *&t;- Replaced one duplicate &quot;out of range&quot; message with correct one.&n; *&t;&n; *&t;Revision 1.42  1999/11/22 13:35:12  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.41  1999/09/14 14:11:30  malthoff&n; *&t;The 1000BT Dual Link adapter has got only one Fan.&n; *&t;The second Fan has been removed.&n; *&t;&n; *&t;Revision 1.40  1999/05/27 13:37:27  malthoff&n; *&t;Set divisor of 1 for fan count calculation.&n; *&t;&n; *&t;Revision 1.39  1999/05/20 14:54:43  malthoff&n; *&t;I2c.DummyReads is not used in Diagnostics.&n; *&t;&n; *&t;Revision 1.38  1999/05/20 09:20:56  cgoos&n; *&t;Changes for 1000Base-T (up to 9 sensors and fans).&n; *&t;&n; *&t;Revision 1.37  1999/03/25 15:11:36  gklug&n; *&t;fix: reset error flag if sensor reads correct value&n; *&t;&n; *&t;Revision 1.36  1999/01/07 14:11:16  gklug&n; *&t;fix: break added&n; *&t;&n; *&t;Revision 1.35  1999/01/05 15:31:49  gklug&n; *&t;fix: CLEAR STAT command is now added correctly&n; *&t;&n; *&t;Revision 1.34  1998/12/01 13:45:16  gklug&n; *&t;fix: introduced Init level, because we don&squot;t need reinits&n; *&t;&n; *&t;Revision 1.33  1998/11/09 14:54:25  malthoff&n; *&t;Modify I2C Transfer Timeout handling for Diagnostics.&n; *&t;&n; *&t;Revision 1.32  1998/11/03 06:54:35  gklug&n; *&t;fix: Need dummy reads at the beginning to init sensors&n; *&n; *&t;Revision 1.31  1998/11/03 06:42:42  gklug&n; *&t;fix: select correctVIO range only if between warning levels&n; *&t;&n; *&t;Revision 1.30  1998/11/02 07:36:53  gklug&n; *&t;fix: Error should not include WARNING message&n; *&t;&n; *&t;Revision 1.29  1998/10/30 15:07:43  malthoff&n; *&t;Disable &squot;I2C does not compelete&squot; error log for diagnostics.&n; *&t;&n; *&t;Revision 1.28  1998/10/22 09:48:11  gklug&n; *&t;fix: SysKonnectFileId typo&n; *&t;&n; *&t;Revision 1.27  1998/10/20 09:59:46  gklug&n; *&t;add: parameter to SkOsGetTime&n; *&t;&n; *&t;Revision 1.26  1998/10/09 06:10:59  malthoff&n; *&t;Remove ID_sccs by SysKonnectFileId.&n; *&t;&n; *&t;Revision 1.25  1998/09/08 12:40:26  gklug&n; *&t;fix: syntax error in if clause&n; *&t;&n; *&t;Revision 1.24  1998/09/08 12:19:42  gklug&n; *&t;chg: INIT Level checking&n; *&t;&n; *&t;Revision 1.23  1998/09/08 07:37:20  gklug&n; *&t;fix: log error if PCI_IO voltage sensor could not be initialized&n; *&t;&n; *&t;Revision 1.22  1998/09/04 08:30:03  malthoff&n; *&t;Bugfixes during SK_DIAG testing:&n; *&t;- correct NS2BCLK() macro&n; *&t;- correct SkI2cSndDev()&n; *&t;- correct SkI2cWait() loop waiting for an event&n; *&t;&n; *&t;Revision 1.21  1998/08/27 14:46:01  gklug&n; *&t;chg: if-then-else replaced by switch&n; *&n; *&t;Revision 1.20  1998/08/27 14:40:07  gklug&n; *&t;test: integral types&n; *&t;&n; *&t;Revision 1.19  1998/08/25 07:51:54  gklug&n; *&t;fix: typos for compiling&n; *&t;&n; *&t;Revision 1.18  1998/08/25 06:12:24  gklug&n; *&t;add: count errors and warnings&n; *&t;fix: check not the sensor state but the ErrFlag!&n; *&t;&n; *&t;Revision 1.17  1998/08/25 05:56:48  gklug&n; *&t;add: CheckSensor function&n; *&t;&n; *&t;Revision 1.16  1998/08/20 11:41:10  gklug&n; *&t;chg: omit STRCPY macro by using char * as Sensor Description&n; *&t;&n; *&t;Revision 1.15  1998/08/20 11:37:35  gklug&n; *&t;chg: change Ioc to IoC&n; *&t;&n; *&t;Revision 1.14  1998/08/20 11:32:52  gklug&n; *&t;fix: Para compile error&n; *&t;&n; *&t;Revision 1.13  1998/08/20 11:27:41  gklug&n; *&t;fix: Compile bugs with new awrning constants&n; *&t;&n; *&t;Revision 1.12  1998/08/20 08:53:05  gklug&n; *&t;fix: compiler errors&n; *&t;add: Threshold values&n; *&t;&n; *&t;Revision 1.11  1998/08/19 12:39:22  malthoff&n; *&t;Compiler Fix: Some names have changed.&n; *&t;&n; *&t;Revision 1.10  1998/08/19 12:20:56  gklug&n; *&t;fix: remove struct from C files (see CCC)&n; *&t;&n; *&t;Revision 1.9  1998/08/19 06:28:46  malthoff&n; *&t;SkOsGetTime returns SK_U64 now.&n; *&t;&n; *&t;Revision 1.8  1998/08/17 13:53:33  gklug&n; *&t;fix: Parameter of event function and its result&n; *&t;&n; *&t;Revision 1.7  1998/08/17 07:02:15  malthoff&n; *&t;Modify the functions for accessing the I2C SW Registers.&n; *&t;Modify SkI2cWait().&n; *&t;Put Lm80RcvReg into sklm80.c&n; *&t;Remove Compiler Errors.&n; *&t;&n; *&t;Revision 1.6  1998/08/14 07:13:20  malthoff&n; *&t;remove pAc with pAC&n; *&t;remove smc with pAC&n; *&t;change names to new convention&n; *&n; *&t;Revision 1.5  1998/08/14 06:24:49  gklug&n; *&t;add: init level 1 and 2&n; *&n; *&t;Revision 1.4  1998/08/12 14:31:12  gklug&n; *&t;add: error log for unknown event&n; *&n; *&t;Revision 1.3  1998/08/12 13:37:04  gklug&n; *&t;add: Init 0 function&n; *&n; *&t;Revision 1.2  1998/08/11 07:27:15  gklug&n; *&t;add: functions of the interface&n; *&t;adapt rest of source to C coding Conventions&n; *&t;rmv: unneccessary code taken from Mona Lisa&n; *&n; *&t;Revision 1.1  1998/06/19 14:28:43  malthoff&n; *&t;Created. Sources taken from ML Projekt.&n; *&t;Sources have to be reworked for GE.&n; *&n; *&n; ******************************************************************************/
-multiline_comment|/*&n;&t;I2C Protocol&n;*/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;ski2c.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.47 $&n; * Date:&t;$Date: 2001/04/05 11:38:09 $&n; * Purpose:&t;Functions to access Voltage and Temperature Sensor&n; *&t;&t;&t;(taken from Monalisa (taken from Concentrator))&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2001 SysKonnect GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: ski2c.c,v $&n; *&t;Revision 1.47  2001/04/05 11:38:09  rassmann&n; *&t;Set SenState to idle in SkI2cWaitIrq().&n; *&t;Changed error message in SkI2cWaitIrq().&n; *&t;&n; *&t;Revision 1.46  2001/04/02 14:03:35  rassmann&n; *&t;Changed pAC to IoC in SK_IN32().&n; *&t;&n; *&t;Revision 1.45  2001/03/21 12:12:49  rassmann&n; *&t;Resetting I2C_READY interrupt in SkI2cInit1().&n; *&t;&n; *&t;Revision 1.44  2000/08/07 15:49:03  gklug&n; *&t;Fix: SK_INFAST only in NetWare driver.&n; *&t;&n; *&t;Revision 1.43  2000/08/03 14:28:17  rassmann&n; *&t;Added function to wait for I2C being ready before resetting the board.&n; *&t;Replaced one duplicate &quot;out of range&quot; message with correct one.&n; *&t;&n; *&t;Revision 1.42  1999/11/22 13:35:12  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.41  1999/09/14 14:11:30  malthoff&n; *&t;The 1000BT Dual Link adapter has got only one Fan.&n; *&t;The second Fan has been removed.&n; *&t;&n; *&t;Revision 1.40  1999/05/27 13:37:27  malthoff&n; *&t;Set divisor of 1 for fan count calculation.&n; *&t;&n; *&t;Revision 1.39  1999/05/20 14:54:43  malthoff&n; *&t;I2c.DummyReads is not used in Diagnostics.&n; *&t;&n; *&t;Revision 1.38  1999/05/20 09:20:56  cgoos&n; *&t;Changes for 1000Base-T (up to 9 sensors and fans).&n; *&t;&n; *&t;Revision 1.37  1999/03/25 15:11:36  gklug&n; *&t;fix: reset error flag if sensor reads correct value&n; *&t;&n; *&t;Revision 1.36  1999/01/07 14:11:16  gklug&n; *&t;fix: break added&n; *&t;&n; *&t;Revision 1.35  1999/01/05 15:31:49  gklug&n; *&t;fix: CLEAR STAT command is now added correctly&n; *&t;&n; *&t;Revision 1.34  1998/12/01 13:45:16  gklug&n; *&t;fix: introduced Init level, because we don&squot;t need reinits&n; *&t;&n; *&t;Revision 1.33  1998/11/09 14:54:25  malthoff&n; *&t;Modify I2C Transfer Timeout handling for Diagnostics.&n; *&t;&n; *&t;Revision 1.32  1998/11/03 06:54:35  gklug&n; *&t;fix: Need dummy reads at the beginning to init sensors&n; *&n; *&t;Revision 1.31  1998/11/03 06:42:42  gklug&n; *&t;fix: select correctVIO range only if between warning levels&n; *&t;&n; *&t;Revision 1.30  1998/11/02 07:36:53  gklug&n; *&t;fix: Error should not include WARNING message&n; *&t;&n; *&t;Revision 1.29  1998/10/30 15:07:43  malthoff&n; *&t;Disable &squot;I2C does not compelete&squot; error log for diagnostics.&n; *&t;&n; *&t;Revision 1.28  1998/10/22 09:48:11  gklug&n; *&t;fix: SysKonnectFileId typo&n; *&t;&n; *&t;Revision 1.27  1998/10/20 09:59:46  gklug&n; *&t;add: parameter to SkOsGetTime&n; *&t;&n; *&t;Revision 1.26  1998/10/09 06:10:59  malthoff&n; *&t;Remove ID_sccs by SysKonnectFileId.&n; *&t;&n; *&t;Revision 1.25  1998/09/08 12:40:26  gklug&n; *&t;fix: syntax error in if clause&n; *&t;&n; *&t;Revision 1.24  1998/09/08 12:19:42  gklug&n; *&t;chg: INIT Level checking&n; *&t;&n; *&t;Revision 1.23  1998/09/08 07:37:20  gklug&n; *&t;fix: log error if PCI_IO voltage sensor could not be initialized&n; *&t;&n; *&t;Revision 1.22  1998/09/04 08:30:03  malthoff&n; *&t;Bugfixes during SK_DIAG testing:&n; *&t;- correct NS2BCLK() macro&n; *&t;- correct SkI2cSndDev()&n; *&t;- correct SkI2cWait() loop waiting for an event&n; *&t;&n; *&t;Revision 1.21  1998/08/27 14:46:01  gklug&n; *&t;chg: if-then-else replaced by switch&n; *&n; *&t;Revision 1.20  1998/08/27 14:40:07  gklug&n; *&t;test: integral types&n; *&t;&n; *&t;Revision 1.19  1998/08/25 07:51:54  gklug&n; *&t;fix: typos for compiling&n; *&t;&n; *&t;Revision 1.18  1998/08/25 06:12:24  gklug&n; *&t;add: count errors and warnings&n; *&t;fix: check not the sensor state but the ErrFlag!&n; *&t;&n; *&t;Revision 1.17  1998/08/25 05:56:48  gklug&n; *&t;add: CheckSensor function&n; *&t;&n; *&t;Revision 1.16  1998/08/20 11:41:10  gklug&n; *&t;chg: omit STRCPY macro by using char * as Sensor Description&n; *&t;&n; *&t;Revision 1.15  1998/08/20 11:37:35  gklug&n; *&t;chg: change Ioc to IoC&n; *&t;&n; *&t;Revision 1.14  1998/08/20 11:32:52  gklug&n; *&t;fix: Para compile error&n; *&t;&n; *&t;Revision 1.13  1998/08/20 11:27:41  gklug&n; *&t;fix: Compile bugs with new awrning constants&n; *&t;&n; *&t;Revision 1.12  1998/08/20 08:53:05  gklug&n; *&t;fix: compiler errors&n; *&t;add: Threshold values&n; *&t;&n; *&t;Revision 1.11  1998/08/19 12:39:22  malthoff&n; *&t;Compiler Fix: Some names have changed.&n; *&t;&n; *&t;Revision 1.10  1998/08/19 12:20:56  gklug&n; *&t;fix: remove struct from C files (see CCC)&n; *&t;&n; *&t;Revision 1.9  1998/08/19 06:28:46  malthoff&n; *&t;SkOsGetTime returns SK_U64 now.&n; *&t;&n; *&t;Revision 1.8  1998/08/17 13:53:33  gklug&n; *&t;fix: Parameter of event function and its result&n; *&t;&n; *&t;Revision 1.7  1998/08/17 07:02:15  malthoff&n; *&t;Modify the functions for accessing the I2C SW Registers.&n; *&t;Modify SkI2cWait().&n; *&t;Put Lm80RcvReg into sklm80.c&n; *&t;Remove Compiler Errors.&n; *&t;&n; *&t;Revision 1.6  1998/08/14 07:13:20  malthoff&n; *&t;remove pAc with pAC&n; *&t;remove smc with pAC&n; *&t;change names to new convention&n; *&n; *&t;Revision 1.5  1998/08/14 06:24:49  gklug&n; *&t;add: init level 1 and 2&n; *&n; *&t;Revision 1.4  1998/08/12 14:31:12  gklug&n; *&t;add: error log for unknown event&n; *&n; *&t;Revision 1.3  1998/08/12 13:37:04  gklug&n; *&t;add: Init 0 function&n; *&n; *&t;Revision 1.2  1998/08/11 07:27:15  gklug&n; *&t;add: functions of the interface&n; *&t;adapt rest of source to C coding Conventions&n; *&t;rmv: unneccessary code taken from Mona Lisa&n; *&n; *&t;Revision 1.1  1998/06/19 14:28:43  malthoff&n; *&t;Created. Sources taken from ML Projekt.&n; *&t;Sources have to be reworked for GE.&n; *&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *&t;I2C Protocol&n; */
 DECL|variable|SysKonnectFileId
 r_static
 r_const
@@ -10,13 +10,13 @@ id|SysKonnectFileId
 (braket
 )braket
 op_assign
-l_string|&quot;$Id: ski2c.c,v 1.44 2000/08/07 15:49:03 gklug Exp $&quot;
+l_string|&quot;$Id: ski2c.c,v 1.47 2001/04/05 11:38:09 rassmann Exp $&quot;
 suffix:semicolon
 macro_line|#include &quot;h/skdrv1st.h&quot;&t;&t;/* Driver Specific Definitions */
 macro_line|#include &quot;h/lm80.h&quot;
 macro_line|#include &quot;h/skdrv2nd.h&quot;&t;&t;/* Adapter Control- and Driver specific Def. */
 macro_line|#ifdef __C2MAN__
-multiline_comment|/*&n;&t;I2C protocol implemetation.&n;&n;&t;General Description:&n;&n;&t;The I2C protocol is used for the temperature sensors and for&n;&t;the serial EEPROM which hold the configuration.&n;&n;&t;This file covers functions that allow to read write and do&n;&t;some bulk requests a specified I2C address.&n;&n;&t;The Genesis has 2 I2C buses. One for the EEPROM which holds&n;&t;the VPD Data and one for temperature and voltage sensor.&n;&t;The following picture shows the I2C buses, I2C devices and&n;&t;there control registers.&n;&n;&t;Note: The VPD functions are in skvpd.c&n;.&n;.&t;PCI Config I2C Bus for VPD Data:&n;.&n;.&t;&t;      +------------+&n;.&t;&t;      | VPD EEPROM |&n;.&t;&t;      +------------+&n;.&t;&t;&t;     |&n;.&t;&t;&t;     | &lt;-- I2C&n;.&t;&t;&t;     |&n;.&t;&t; +-----------+-----------+&n;.&t;&t; |&t;&t;&t; |&n;.&t;+-----------------+&t;+-----------------+&n;.&t;| PCI_VPD_ADR_REG |&t;| PCI_VPD_DAT_REG |&n;.&t;+-----------------+&t;+-----------------+&n;.&n;.&n;.&t;I2C Bus for LM80 sensor:&n;.&n;.&t;&t;&t;+-----------------+&n;.&t;&t;&t;| Temperature and |&n;.&t;&t;&t;| Voltage Sensor  |&n;.&t;&t;&t;| &t;LM80&t;  |&n;.&t;&t;&t;+-----------------+&n;.&t;&t;&t;&t;|&n;.&t;&t;&t;&t;|&n;.&t;&t;&t;I2C --&gt; |&n;.&t;&t;&t;&t;|&n;.&t;&t;&t;     +----+&n;.&t;     +--------------&gt;| OR |&lt;--+&n;.&t;     |&t;&t;     +----+   |&n;.     +------+------+&t;&t;      |&n;.     |&t;&t;    |&t;&t;      |&n;. +--------+&t;+--------+&t;+----------+&n;. | B2_I2C |&t;| B2_I2C |&t;|  B2_I2C  |&n;. | _CTRL  |&t;| _DATA  |&t;|   _SW    |&n;. +--------+&t;+--------+&t;+----------+&n;.&n;&t;The I2C bus may be driven by the B2_I2C_SW or by the B2_I2C_CTRL&n;&t;and B2_I2C_DATA registers.&n;&t;For driver software it is recommended to use the I2C control and&n;&t;data register, because I2C bus timing is done by the ASIC and&n;&t;an interrupt may be received when the I2C request is completed.&n;&n;&t;Clock Rate Timing:&t;&t;&t;MIN&t;MAX&t;generated by&n;&t;&t;VPD EEPROM:&t;&t;&t;50 kHz&t;100 kHz&t;&t;HW&n;&t;&t;LM80 over I2C Ctrl/Data reg.&t;50 kHz&t;100 kHz&t;&t;HW&n;&t;&t;LM80 over B2_I2C_SW register&t;0&t;400 kHz&t;&t;SW&n;&n;&t;Note:&t;The clock generated by the hardware is dependend on the&n;&t;&t;PCI clock. If the PCI bus clock is 33 MHz, the I2C/VPD&n;&t;&t;clock is 50 kHz.&n; */
+multiline_comment|/*&n;&t;I2C protocol implementation.&n;&n;&t;General Description:&n;&n;&t;The I2C protocol is used for the temperature sensors and for&n;&t;the serial EEPROM which hold the configuration.&n;&n;&t;This file covers functions that allow to read write and do&n;&t;some bulk requests a specified I2C address.&n;&n;&t;The Genesis has 2 I2C buses. One for the EEPROM which holds&n;&t;the VPD Data and one for temperature and voltage sensor.&n;&t;The following picture shows the I2C buses, I2C devices and&n;&t;there control registers.&n;&n;&t;Note: The VPD functions are in skvpd.c&n;.&n;.&t;PCI Config I2C Bus for VPD Data:&n;.&n;.&t;&t;      +------------+&n;.&t;&t;      | VPD EEPROM |&n;.&t;&t;      +------------+&n;.&t;&t;&t;     |&n;.&t;&t;&t;     | &lt;-- I2C&n;.&t;&t;&t;     |&n;.&t;&t; +-----------+-----------+&n;.&t;&t; |&t;&t;&t; |&n;.&t;+-----------------+&t;+-----------------+&n;.&t;| PCI_VPD_ADR_REG |&t;| PCI_VPD_DAT_REG |&n;.&t;+-----------------+&t;+-----------------+&n;.&n;.&n;.&t;I2C Bus for LM80 sensor:&n;.&n;.&t;&t;&t;+-----------------+&n;.&t;&t;&t;| Temperature and |&n;.&t;&t;&t;| Voltage Sensor  |&n;.&t;&t;&t;| &t;LM80&t;  |&n;.&t;&t;&t;+-----------------+&n;.&t;&t;&t;&t;|&n;.&t;&t;&t;&t;|&n;.&t;&t;&t;I2C --&gt; |&n;.&t;&t;&t;&t;|&n;.&t;&t;&t;     +----+&n;.&t;     +--------------&gt;| OR |&lt;--+&n;.&t;     |&t;&t;     +----+   |&n;.     +------+------+&t;&t;      |&n;.     |&t;&t;    |&t;&t;      |&n;. +--------+&t;+--------+&t;+----------+&n;. | B2_I2C |&t;| B2_I2C |&t;|  B2_I2C  |&n;. | _CTRL  |&t;| _DATA  |&t;|   _SW    |&n;. +--------+&t;+--------+&t;+----------+&n;.&n;&t;The I2C bus may be driven by the B2_I2C_SW or by the B2_I2C_CTRL&n;&t;and B2_I2C_DATA registers.&n;&t;For driver software it is recommended to use the I2C control and&n;&t;data register, because I2C bus timing is done by the ASIC and&n;&t;an interrupt may be received when the I2C request is completed.&n;&n;&t;Clock Rate Timing:&t;&t;&t;MIN&t;MAX&t;generated by&n;&t;&t;VPD EEPROM:&t;&t;&t;50 kHz&t;100 kHz&t;&t;HW&n;&t;&t;LM80 over I2C Ctrl/Data reg.&t;50 kHz&t;100 kHz&t;&t;HW&n;&t;&t;LM80 over B2_I2C_SW register&t;0&t;400 kHz&t;&t;SW&n;&n;&t;Note:&t;The clock generated by the hardware is dependend on the&n;&t;&t;PCI clock. If the PCI bus clock is 33 MHz, the I2C/VPD&n;&t;&t;clock is 50 kHz.&n; */
 DECL|function|intro
 id|intro
 c_func
@@ -903,9 +903,9 @@ id|pAC
 comma
 id|SK_ERRCL_SW
 comma
-id|SKERR_I2C_E002
+id|SKERR_I2C_E016
 comma
-id|SKERR_I2C_E002MSG
+id|SKERR_I2C_E016MSG
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* !SK_DIAG */
@@ -915,7 +915,7 @@ suffix:semicolon
 id|SK_IN32
 c_func
 (paren
-id|pAC
+id|IoC
 comma
 id|B0_ISRC
 comma
@@ -935,6 +935,10 @@ id|IS_I2C_READY
 op_eq
 l_int|0
 )paren
+suffix:semicolon
+id|pSen-&gt;SenState
+op_assign
+id|SK_SEN_IDLE
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -1103,7 +1107,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* SkI2cRead */
 macro_line|#endif&t;/* SK_DIAG */
-multiline_comment|/*&n; * read a sensor&squot;s value&n; *&n; * This function read a sensors value from the I2C sensor chip. The sensor&n; * is defined by its index into the sensors database in the struct pAC points&n; * to.&n; * Returns&t;1 if the read is completed&n; *&t;&t;0 if the read must be continued (I2C Bus still allocated)&n; */
+multiline_comment|/*&n; * read a sensor&squot;s value&n; *&n; * This function reads a sensor&squot;s value from the I2C sensor chip. The sensor&n; * is defined by its index into the sensors database in the struct pAC points&n; * to.&n; * Returns&n; *&t;&t;1 if the read is completed&n; *&t;&t;0 if the read must be continued (I2C Bus still allocated)&n; */
 DECL|function|SkI2cReadSensor
 r_int
 id|SkI2cReadSensor
@@ -2224,8 +2228,19 @@ id|pAC-&gt;I2c.DummyReads
 op_assign
 id|pAC-&gt;I2c.MaxSens
 suffix:semicolon
+multiline_comment|/* Clear the interrupt source */
+id|SK_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|B2_I2C_IRQ
+comma
+id|I2C_CLR_IRQ
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* !SK_DIAG */
-multiline_comment|/* Now we are IO initialized */
+multiline_comment|/* Now we are I/O initialized */
 id|pAC-&gt;I2c.InitLevel
 op_assign
 id|SK_INIT_IO
@@ -2235,7 +2250,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* SkI2cInit1 */
-multiline_comment|/*&n; * Init level 2: Start first sensors read&n; */
+multiline_comment|/*&n; * Init level 2: Start first sensor read.&n; */
 DECL|function|SkI2cInit2
 r_static
 r_int
@@ -2322,7 +2337,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* SkI2cInit2*/
-multiline_comment|/*&n; * Initialize I2C devices&n; *&n; * Get the first voltage value and discard it.&n; * Go into temperature read mode. A default pointer is not set.&n; *&n; * The things to be done depend on the init level in the parameter list:&n; * Level 0:&n; *&t;Initialize only the data structures. Do NOT access hardware.&n; * Level 1:&n; *&t;Initialize hardware through SK_IN?OUT commands. Do NOT use interrupts.&n; * Level 2:&n; *&t;Everything is possible. Interrupts may be used from now on.&n; *&n; * return:&t;0 = success&n; *&t;&t;other = error.&n; */
+multiline_comment|/*&n; * Initialize I2C devices&n; *&n; * Get the first voltage value and discard it.&n; * Go into temperature read mode. A default pointer is not set.&n; *&n; * The things to be done depend on the init level in the parameter list:&n; * Level 0:&n; *&t;Initialize only the data structures. Do NOT access hardware.&n; * Level 1:&n; *&t;Initialize hardware through SK_IN / SK_OUT commands. Do NOT use interrupts.&n; * Level 2:&n; *&t;Everything is possible. Interrupts may be used from now on.&n; *&n; * return:&n; *&t;0 = success&n; *&t;other = error.&n; */
 DECL|function|SkI2cInit
 r_int
 id|SkI2cInit
@@ -2472,7 +2487,7 @@ multiline_comment|/* Is sensor too low? */
 id|SK_U64
 id|CurrTime
 suffix:semicolon
-multiline_comment|/* current Time */
+multiline_comment|/* Current Time */
 id|SK_BOOL
 id|DoTrapSend
 suffix:semicolon
@@ -2509,7 +2524,7 @@ c_func
 id|pAC
 )paren
 suffix:semicolon
-multiline_comment|/* Set para to the most useful setting:&n;&t; * The current sensor.&n;&t; */
+multiline_comment|/* Set para to the most useful setting: The current sensor. */
 id|ParaLocal.Para64
 op_assign
 (paren
@@ -2517,8 +2532,7 @@ id|SK_U64
 )paren
 id|pAC-&gt;I2c.CurrSens
 suffix:semicolon
-multiline_comment|/* Check the Value against the thresholds */
-multiline_comment|/* First: Error Thresholds */
+multiline_comment|/* Check the Value against the thresholds. First: Error Thresholds */
 id|TooHigh
 op_assign
 (paren

@@ -621,6 +621,10 @@ DECL|member|start_count
 r_int
 id|start_count
 suffix:semicolon
+DECL|member|suspended
+r_int
+id|suspended
+suffix:semicolon
 DECL|member|active_bank
 id|u32
 id|active_bank
@@ -708,7 +712,6 @@ id|list_head
 id|states
 suffix:semicolon
 multiline_comment|/* List of states for this unit */
-multiline_comment|/* For the moment we do not traverse list of states so it is&n;&t; * entirely useless. Will be used (PM) or killed. XXX */
 )brace
 suffix:semicolon
 DECL|struct|ymf_dmabuf
@@ -754,11 +757,6 @@ r_int
 id|total_bytes
 suffix:semicolon
 multiline_comment|/* total bytes dmaed by hardware */
-DECL|member|error
-r_int
-id|error
-suffix:semicolon
-multiline_comment|/* number of over/underruns */
 DECL|member|wait
 id|wait_queue_head_t
 id|wait

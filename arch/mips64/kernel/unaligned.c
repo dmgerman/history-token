@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/branch.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/inst.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|STR
 mdefine_line|#define STR(x)  __STR(x)
 DECL|macro|__STR
@@ -768,6 +769,13 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|die_if_kernel
+(paren
+l_string|&quot;Unhandled kernel unaligned access&quot;
+comma
+id|regs
+)paren
+suffix:semicolon
 id|send_sig
 c_func
 (paren
@@ -782,6 +790,13 @@ r_return
 suffix:semicolon
 id|sigbus
 suffix:colon
+id|die_if_kernel
+(paren
+l_string|&quot;Unhandled kernel unaligned access&quot;
+comma
+id|regs
+)paren
+suffix:semicolon
 id|send_sig
 c_func
 (paren
@@ -796,6 +811,13 @@ r_return
 suffix:semicolon
 id|sigill
 suffix:colon
+id|die_if_kernel
+(paren
+l_string|&quot;Unhandled kernel unaligned access or invalid instruction&quot;
+comma
+id|regs
+)paren
+suffix:semicolon
 id|send_sig
 c_func
 (paren
@@ -900,6 +922,13 @@ r_return
 suffix:semicolon
 id|sigbus
 suffix:colon
+id|die_if_kernel
+(paren
+l_string|&quot;Kernel unaligned instruction access&quot;
+comma
+id|regs
+)paren
+suffix:semicolon
 id|force_sig
 c_func
 (paren

@@ -3660,11 +3660,6 @@ id|devicename
 (braket
 l_int|9
 )braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
 suffix:semicolon
 DECL|variable|sun3lance_dev
 r_static

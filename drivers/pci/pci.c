@@ -785,7 +785,7 @@ r_if
 c_cond
 (paren
 id|dev-&gt;current_state
-op_eq
+op_ge
 l_int|3
 )paren
 id|pmcsr
@@ -4526,6 +4526,11 @@ r_class
 comma
 id|dev-&gt;hdr_type
 )paren
+suffix:semicolon
+multiline_comment|/* &quot;Unknown power state&quot; */
+id|dev-&gt;current_state
+op_assign
+l_int|4
 suffix:semicolon
 r_switch
 c_cond

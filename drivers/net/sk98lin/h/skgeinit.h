@@ -1,6 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skgeinit.h&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.46 $&n; * Date:&t;$Date: 2000/08/10 11:28:00 $&n; * Purpose:&t;Structures and prototypes for the GE Init Module&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2000 SysKonnect,&n; *&t;a business unit of Schneider &amp; Koch &amp; Co. Datensysteme GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skgeinit.h,v $&n; *&t;Revision 1.46  2000/08/10 11:28:00  rassmann&n; *&t;Editorial changes.&n; *&t;Preserving 32-bit alignment in structs for the adapter context.&n; *&t;&n; *&t;Revision 1.45  1999/11/22 13:56:19  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.44  1999/10/26 07:34:15  malthoff&n; *&t;The define SK_LNK_ON has been lost in v1.41.&n; *&t;&n; *&t;Revision 1.43  1999/10/06 09:30:16  cgoos&n; *&t;Changed SK_XM_THR_JUMBO.&n; *&t;&n; *&t;Revision 1.42  1999/09/16 12:58:26  cgoos&n; *&t;Changed SK_LED_STANDY macro to be independent of HW link sync.&n; *&t;&n; *&t;Revision 1.41  1999/07/30 06:56:14  malthoff&n; *&t;Correct comment for SK_MS_STAT_UNSET.&n; *&t;&n; *&t;Revision 1.40  1999/05/27 13:38:46  cgoos&n; *&t;Added SK_BMU_TX_WM.&n; *&t;Made SK_BMU_TX_WM and SK_BMU_RX_WM user-definable.&n; *&t;Changed XMAC Tx treshold to max. values.&n; *&t;&n; *&t;Revision 1.39  1999/05/20 14:35:26  malthoff&n; *&t;Remove prototypes for SkGeLinkLED().&n; *&t;&n; *&t;Revision 1.38  1999/05/19 11:59:12  cgoos&n; *&t;Added SK_MS_CAP_INDETERMINATED define.&n; *&t;&n; *&t;Revision 1.37  1999/05/19 07:32:33  cgoos&n; *&t;Changes for 1000Base-T.&n; *&t;LED-defines for HWAC_LINK_LED macro.&n; *&t;&n; *&t;Revision 1.36  1999/04/08 14:00:24  gklug&n; *&t;add:Port struct field PLinkResCt&n; *&t;&n; *&t;Revision 1.35  1999/03/25 07:43:07  malthoff&n; *&t;Add error string for SKERR_HWI_E018MSG.&n; *&t;&n; *&t;Revision 1.34  1999/03/12 16:25:57  malthoff&n; *&t;Remove PPollRxD and PPollTxD.&n; *&t;Add SKERR_HWI_E017MSG. and SK_DPOLL_MAX.&n; *&t;&n; *&t;Revision 1.33  1999/03/12 13:34:41  malthoff&n; *&t;Add Autonegotiation error codes.&n; *&t;Change defines for parameter Mode in SkXmSetRxCmd().&n; *&t;Replace __STDC__ by SK_KR_PROTO.&n; *&t;&n; *&t;Revision 1.32  1999/01/25 14:40:20  mhaveman&n; *&t;Added new return states for the virtual management port if multiple&n; *&t;ports are active but differently configured.&n; *&t;&n; *&t;Revision 1.31  1998/12/11 15:17:02  gklug&n; *&t;add: Link partnet autoneg states : Unknown Manual and Autonegotiation&n; *&t;&n; *&t;Revision 1.30  1998/12/07 12:17:04  gklug&n; *&t;add: Link Partner autonegotiation flag&n; *&t;&n; *&t;Revision 1.29  1998/12/01 10:54:42  gklug&n; *&t;add: variables for XMAC Errata&n; *&t;&n; *&t;Revision 1.28  1998/12/01 10:14:15  gklug&n; *&t;add: PIsave saves the Interrupt status word&n; *&t;&n; *&t;Revision 1.27  1998/11/26 15:24:52  mhaveman&n; *&t;Added link status states SK_LMODE_STAT_AUTOHALF and&n; *&t;SK_LMODE_STAT_AUTOFULL which are used by PNMI.&n; *&t;&n; *&t;Revision 1.26  1998/11/26 14:53:01  gklug&n; *&t;add:autoNeg Timeout variable&n; *&t;&n; *&t;Revision 1.25  1998/11/26 08:58:50  gklug&n; *&t;add: Link Mode configuration (AUTO Sense mode)&n; *&t;&n; *&t;Revision 1.24  1998/11/24 13:30:27  gklug&n; *&t;add: PCheckPar to port struct&n; *&t;&n; *&t;Revision 1.23  1998/11/18 13:23:26  malthoff&n; *&t;Add SK_PKT_TO_MAX.&n; *&t;&n; *&t;Revision 1.22  1998/11/18 13:19:54  gklug&n; *&t;add: PPrevShorts and PLinkBroken to port struct for WA XMAC Errata #C1&n; *&n; *&t;Revision 1.21  1998/10/26 08:02:57  malthoff&n; *&t;Add GIRamOffs.&n; *&t;&n; *&t;Revision 1.20  1998/10/19 07:28:37  malthoff&n; *&t;Add prototyp for SkGeInitRamIface().&n; *&t;&n; *&t;Revision 1.19  1998/10/14 14:47:48  malthoff&n; *&t;SK_TIMER should not be defined for Diagnostics.&n; *&t;Add SKERR_HWI_E015MSG and SKERR_HWI_E016MSG.&n; *&t;&n; *&t;Revision 1.18  1998/10/14 14:00:03  gklug&n; *&t;add: timer to port struct for workaround of Errata #2&n; *&t;&n; *&t;Revision 1.17  1998/10/14 11:23:09  malthoff&n; *&t;Add prototype for SkXmAutoNegDone().&n; *&t;Fix SkXmSetRxCmd() prototype statement.&n; *&n; *&t;Revision 1.16  1998/10/14 05:42:29  gklug&n; *&t;add: HWLinkUp flag to Port struct&n; *&t;&n; *&t;Revision 1.15  1998/10/09 08:26:33  malthoff&n; *&t;Rename SK_RB_ULPP_B to SK_RB_LLPP_B.&n; *&t;&n; *&t;Revision 1.14  1998/10/09 07:11:13  malthoff&n; *&t;bug fix: SK_FACT_53 is 85 not 117.&n; *&t;Rework time out init values.&n; *&t;Add GIPortUsage and corresponding defines.&n; *&t;Add some error log messages.&n; *&t;&n; *&t;Revision 1.13  1998/10/06 14:13:14  malthoff&n; *&t;Add prototyp for SkGeLoadLnkSyncCnt().&n; *&n; *&t;Revision 1.12  1998/10/05 11:29:53  malthoff&n; *&t;bug fix: A comment was not closed.&n; *&n; *&t;Revision 1.11  1998/10/05 08:01:59  malthoff&n; *&t;Add default Timeout- Threshold- and&n; *&t;Watermark constants. Add QRam start and end&n; *&t;variables. Also add vars to store the polling&n; *&t;mode and receive command. Add new Error Log&n; *&t;Messages and function prototypes.&n; *&n; *&t;Revision 1.10  1998/09/28 13:34:48  malthoff&n; *&t;Add mode bits for LED functions.&n; *&t;Move Autoneg and Flow Ctrl bits from shgesirq.h&n; *&t;Add the required Error Log Entries&n; *&t;and Function Prototypes.&n; *&n; *&t;Revision 1.9  1998/09/16 14:38:41  malthoff&n; *&t;Rework the SK_LNK_xxx defines.&n; *&t;Add error log message defines.&n; *&t;Add prototypes for skxmac2.c&n; *&n; *&t;Revision 1.8  1998/09/11 05:29:18  gklug&n; *&t;add: init state of a port&n; *&n; *&t;Revision 1.7  1998/09/08 08:35:52  gklug&n; *&t;add: defines of the Init Levels&n; *&n; *&t;Revision 1.6  1998/09/03 13:48:42  gklug&n; *&t;add: Link strati, capabilities to Port struct&n; *&n; *&t;Revision 1.5  1998/09/03 13:30:59  malthoff&n; *&t;Add SK_LNK_BLINK and SK_LNK_PERM.&n; *&n; *&t;Revision 1.4  1998/09/03 09:55:31  malthoff&n; *&t;Add constants for parameters Dir and RstMode&n; *&t;when calling SkGeStopPort().&n; *&t;Rework the prototyp section.&n; *&t;Add Queue Address offsets PRxQOff, PXsQOff, and PXaQOff.&n; *&t;Remove Ioc with IoC.&n; *&n; *&t;Revision 1.3  1998/08/19 09:11:54  gklug&n; *&t;fix: struct are removed from c-source (see CCC)&n; *&t;add: typedefs for all structs&n; *&n; *&t;Revision 1.2  1998/07/28 12:38:26  malthoff&n; *&t;The prototypes got the parameter &squot;IoC&squot;.&n; *&n; *&t;Revision 1.1  1998/07/23 09:50:24  malthoff&n; *&t;Created.&n; *&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skgeinit.h&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.51 $&n; * Date:&t;$Date: 2001/02/09 12:26:38 $&n; * Purpose:&t;Structures and prototypes for the GE Init Module&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2001 SysKonnect GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skgeinit.h,v $&n; *&t;Revision 1.51  2001/02/09 12:26:38  cgoos&n; *&t;Inserted #ifdef DIAG for half duplex workaround timer.&n; *&t;&n; *&t;Revision 1.50  2001/02/07 07:56:40  rassmann&n; *&t;Corrected copyright.&n; *&t;&n; *&t;Revision 1.49  2001/01/31 15:32:18  gklug&n; *&t;fix: problem with autosensing an SR8800 switch&n; *&t;add: counter for autoneg timeouts&n; *&t;&n; *&t;Revision 1.48  2000/11/09 11:30:10  rassmann&n; *&t;WA: Waiting after releasing reset until BCom chip is accessible.&n; *&t;&n; *&t;Revision 1.47  2000/10/18 12:22:40  cgoos&n; *&t;Added workaround for half duplex hangup.&n; *&t;&n; *&t;Revision 1.46  2000/08/10 11:28:00  rassmann&n; *&t;Editorial changes.&n; *&t;Preserving 32-bit alignment in structs for the adapter context.&n; *&t;&n; *&t;Revision 1.45  1999/11/22 13:56:19  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.44  1999/10/26 07:34:15  malthoff&n; *&t;The define SK_LNK_ON has been lost in v1.41.&n; *&t;&n; *&t;Revision 1.43  1999/10/06 09:30:16  cgoos&n; *&t;Changed SK_XM_THR_JUMBO.&n; *&t;&n; *&t;Revision 1.42  1999/09/16 12:58:26  cgoos&n; *&t;Changed SK_LED_STANDY macro to be independent of HW link sync.&n; *&t;&n; *&t;Revision 1.41  1999/07/30 06:56:14  malthoff&n; *&t;Correct comment for SK_MS_STAT_UNSET.&n; *&t;&n; *&t;Revision 1.40  1999/05/27 13:38:46  cgoos&n; *&t;Added SK_BMU_TX_WM.&n; *&t;Made SK_BMU_TX_WM and SK_BMU_RX_WM user-definable.&n; *&t;Changed XMAC Tx treshold to max. values.&n; *&t;&n; *&t;Revision 1.39  1999/05/20 14:35:26  malthoff&n; *&t;Remove prototypes for SkGeLinkLED().&n; *&t;&n; *&t;Revision 1.38  1999/05/19 11:59:12  cgoos&n; *&t;Added SK_MS_CAP_INDETERMINATED define.&n; *&t;&n; *&t;Revision 1.37  1999/05/19 07:32:33  cgoos&n; *&t;Changes for 1000Base-T.&n; *&t;LED-defines for HWAC_LINK_LED macro.&n; *&t;&n; *&t;Revision 1.36  1999/04/08 14:00:24  gklug&n; *&t;add:Port struct field PLinkResCt&n; *&t;&n; *&t;Revision 1.35  1999/03/25 07:43:07  malthoff&n; *&t;Add error string for SKERR_HWI_E018MSG.&n; *&t;&n; *&t;Revision 1.34  1999/03/12 16:25:57  malthoff&n; *&t;Remove PPollRxD and PPollTxD.&n; *&t;Add SKERR_HWI_E017MSG. and SK_DPOLL_MAX.&n; *&t;&n; *&t;Revision 1.33  1999/03/12 13:34:41  malthoff&n; *&t;Add Autonegotiation error codes.&n; *&t;Change defines for parameter Mode in SkXmSetRxCmd().&n; *&t;Replace __STDC__ by SK_KR_PROTO.&n; *&t;&n; *&t;Revision 1.32  1999/01/25 14:40:20  mhaveman&n; *&t;Added new return states for the virtual management port if multiple&n; *&t;ports are active but differently configured.&n; *&t;&n; *&t;Revision 1.31  1998/12/11 15:17:02  gklug&n; *&t;add: Link partnet autoneg states : Unknown Manual and Autonegotiation&n; *&t;&n; *&t;Revision 1.30  1998/12/07 12:17:04  gklug&n; *&t;add: Link Partner autonegotiation flag&n; *&t;&n; *&t;Revision 1.29  1998/12/01 10:54:42  gklug&n; *&t;add: variables for XMAC Errata&n; *&t;&n; *&t;Revision 1.28  1998/12/01 10:14:15  gklug&n; *&t;add: PIsave saves the Interrupt status word&n; *&t;&n; *&t;Revision 1.27  1998/11/26 15:24:52  mhaveman&n; *&t;Added link status states SK_LMODE_STAT_AUTOHALF and&n; *&t;SK_LMODE_STAT_AUTOFULL which are used by PNMI.&n; *&t;&n; *&t;Revision 1.26  1998/11/26 14:53:01  gklug&n; *&t;add:autoNeg Timeout variable&n; *&t;&n; *&t;Revision 1.25  1998/11/26 08:58:50  gklug&n; *&t;add: Link Mode configuration (AUTO Sense mode)&n; *&t;&n; *&t;Revision 1.24  1998/11/24 13:30:27  gklug&n; *&t;add: PCheckPar to port struct&n; *&t;&n; *&t;Revision 1.23  1998/11/18 13:23:26  malthoff&n; *&t;Add SK_PKT_TO_MAX.&n; *&t;&n; *&t;Revision 1.22  1998/11/18 13:19:54  gklug&n; *&t;add: PPrevShorts and PLinkBroken to port struct for WA XMAC Errata #C1&n; *&n; *&t;Revision 1.21  1998/10/26 08:02:57  malthoff&n; *&t;Add GIRamOffs.&n; *&t;&n; *&t;Revision 1.20  1998/10/19 07:28:37  malthoff&n; *&t;Add prototyp for SkGeInitRamIface().&n; *&t;&n; *&t;Revision 1.19  1998/10/14 14:47:48  malthoff&n; *&t;SK_TIMER should not be defined for Diagnostics.&n; *&t;Add SKERR_HWI_E015MSG and SKERR_HWI_E016MSG.&n; *&t;&n; *&t;Revision 1.18  1998/10/14 14:00:03  gklug&n; *&t;add: timer to port struct for workaround of Errata #2&n; *&t;&n; *&t;Revision 1.17  1998/10/14 11:23:09  malthoff&n; *&t;Add prototype for SkXmAutoNegDone().&n; *&t;Fix SkXmSetRxCmd() prototype statement.&n; *&n; *&t;Revision 1.16  1998/10/14 05:42:29  gklug&n; *&t;add: HWLinkUp flag to Port struct&n; *&t;&n; *&t;Revision 1.15  1998/10/09 08:26:33  malthoff&n; *&t;Rename SK_RB_ULPP_B to SK_RB_LLPP_B.&n; *&t;&n; *&t;Revision 1.14  1998/10/09 07:11:13  malthoff&n; *&t;bug fix: SK_FACT_53 is 85 not 117.&n; *&t;Rework time out init values.&n; *&t;Add GIPortUsage and corresponding defines.&n; *&t;Add some error log messages.&n; *&t;&n; *&t;Revision 1.13  1998/10/06 14:13:14  malthoff&n; *&t;Add prototyp for SkGeLoadLnkSyncCnt().&n; *&n; *&t;Revision 1.12  1998/10/05 11:29:53  malthoff&n; *&t;bug fix: A comment was not closed.&n; *&n; *&t;Revision 1.11  1998/10/05 08:01:59  malthoff&n; *&t;Add default Timeout- Threshold- and&n; *&t;Watermark constants. Add QRam start and end&n; *&t;variables. Also add vars to store the polling&n; *&t;mode and receive command. Add new Error Log&n; *&t;Messages and function prototypes.&n; *&n; *&t;Revision 1.10  1998/09/28 13:34:48  malthoff&n; *&t;Add mode bits for LED functions.&n; *&t;Move Autoneg and Flow Ctrl bits from shgesirq.h&n; *&t;Add the required Error Log Entries&n; *&t;and Function Prototypes.&n; *&n; *&t;Revision 1.9  1998/09/16 14:38:41  malthoff&n; *&t;Rework the SK_LNK_xxx defines.&n; *&t;Add error log message defines.&n; *&t;Add prototypes for skxmac2.c&n; *&n; *&t;Revision 1.8  1998/09/11 05:29:18  gklug&n; *&t;add: init state of a port&n; *&n; *&t;Revision 1.7  1998/09/08 08:35:52  gklug&n; *&t;add: defines of the Init Levels&n; *&n; *&t;Revision 1.6  1998/09/03 13:48:42  gklug&n; *&t;add: Link strati, capabilities to Port struct&n; *&n; *&t;Revision 1.5  1998/09/03 13:30:59  malthoff&n; *&t;Add SK_LNK_BLINK and SK_LNK_PERM.&n; *&n; *&t;Revision 1.4  1998/09/03 09:55:31  malthoff&n; *&t;Add constants for parameters Dir and RstMode&n; *&t;when calling SkGeStopPort().&n; *&t;Rework the prototyp section.&n; *&t;Add Queue Address offsets PRxQOff, PXsQOff, and PXaQOff.&n; *&t;Remove Ioc with IoC.&n; *&n; *&t;Revision 1.3  1998/08/19 09:11:54  gklug&n; *&t;fix: struct are removed from c-source (see CCC)&n; *&t;add: typedefs for all structs&n; *&n; *&t;Revision 1.2  1998/07/28 12:38:26  malthoff&n; *&t;The prototypes got the parameter &squot;IoC&squot;.&n; *&n; *&t;Revision 1.1  1998/07/23 09:50:24  malthoff&n; *&t;Created.&n; *&n; *&n; ******************************************************************************/
 macro_line|#ifndef __INC_SKGEINIT_H_
 DECL|macro|__INC_SKGEINIT_H_
 mdefine_line|#define __INC_SKGEINIT_H_
@@ -249,6 +249,9 @@ mdefine_line|#define&t;SK_LIPA_AUTO&t;2&t;/* Link partner is in autonegotiation 
 multiline_comment|/*&n; * Define Maximum Restarts before restart is ignored (3com WA)&n; */
 DECL|macro|SK_MAX_LRESTART
 mdefine_line|#define&t;SK_MAX_LRESTART&t;3&t;/* Max. 3 times the link is restarted */
+multiline_comment|/*&n; * define max. autonegotiation timeouts before link detection in sense mode is&n; * reset.&n; */
+DECL|macro|SK_MAX_ANEG_TO
+mdefine_line|#define&t;SK_MAX_ANEG_TO&t;10&t;/* Max. 10 times the sense mode is reset */
 multiline_comment|/* structures *****************************************************************/
 multiline_comment|/*&n; * Port Structure&n; */
 DECL|struct|s_GePort
@@ -283,6 +286,17 @@ id|SK_U64
 id|PRxLim
 suffix:semicolon
 multiline_comment|/* Previous RxOk Counter checking */
+DECL|member|LastOctets
+id|SK_U64
+id|LastOctets
+suffix:semicolon
+multiline_comment|/* For half duplex hang check */
+macro_line|#ifndef SK_DIAG
+DECL|member|HalfDupChkTimer
+id|SK_TIMER
+id|HalfDupChkTimer
+suffix:semicolon
+macro_line|#endif
 DECL|member|PLinkResCt
 r_int
 id|PLinkResCt
@@ -293,6 +307,11 @@ r_int
 id|PAutoNegTimeOut
 suffix:semicolon
 multiline_comment|/* AutoNegotiation timeout current value */
+DECL|member|PAutoNegTOCt
+r_int
+id|PAutoNegTOCt
+suffix:semicolon
+multiline_comment|/* AutoNeg Timeout Counter */
 DECL|member|PRxQSize
 r_int
 id|PRxQSize
@@ -353,6 +372,16 @@ r_int
 id|PXaQOff
 suffix:semicolon
 multiline_comment|/* Asynchronous Tx Queue Address Offset */
+DECL|member|PhyType
+r_int
+id|PhyType
+suffix:semicolon
+multiline_comment|/* PHY used on this port */
+DECL|member|PhyAddr
+id|SK_U16
+id|PhyAddr
+suffix:semicolon
+multiline_comment|/* MDIO/MDC PHY address */
 DECL|member|PRxCmd
 id|SK_U16
 id|PRxCmd
@@ -368,6 +397,10 @@ id|SK_U16
 id|PSsave
 suffix:semicolon
 multiline_comment|/* Saved PHY status word */
+DECL|member|Align01
+id|SK_U16
+id|Align01
+suffix:semicolon
 DECL|member|PHWLinkUp
 id|SK_BOOL
 id|PHWLinkUp
@@ -388,6 +421,10 @@ id|SK_BOOL
 id|PCheckPar
 suffix:semicolon
 multiline_comment|/* Do we check for parity errors ? */
+DECL|member|HalfDupTimerActive
+id|SK_BOOL
+id|HalfDupTimerActive
+suffix:semicolon
 DECL|member|PLinkCap
 id|SK_U8
 id|PLinkCap
@@ -448,16 +485,10 @@ id|SK_U8
 id|PLipaAutoNeg
 suffix:semicolon
 multiline_comment|/* Autonegotiation possible with Link Partner */
-DECL|member|PhyAddr
-id|SK_U16
-id|PhyAddr
+DECL|member|Align02
+id|SK_U8
+id|Align02
 suffix:semicolon
-multiline_comment|/* MDIO/MDC PHY address */
-DECL|member|PhyType
-r_int
-id|PhyType
-suffix:semicolon
-multiline_comment|/* PHY used on this port */
 DECL|typedef|SK_GEPORT
 )brace
 id|SK_GEPORT

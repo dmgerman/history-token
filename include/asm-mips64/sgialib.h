@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sgialib.h,v 1.3 1999/12/04 03:59:12 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * SGI ARCS firmware interface library for the Linux kernel.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * SGI ARCS firmware interface library for the Linux kernel.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 2001 Ralf Baechle (ralf@gnu.org)&n; */
 macro_line|#ifndef _ASM_SGIALIB_H
 DECL|macro|_ASM_SGIALIB_H
 mdefine_line|#define _ASM_SGIALIB_H
@@ -267,7 +267,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* Environemt variable routines. */
+multiline_comment|/* Environment variable routines. */
 r_extern
 id|PCHAR
 id|ArcGetEnvironmentVariable
@@ -279,7 +279,7 @@ id|name
 suffix:semicolon
 r_extern
 id|LONG
-id|SetEnvironmentVariable
+id|ArcSetEnvironmentVariable
 c_func
 (paren
 id|PCHAR
@@ -570,7 +570,7 @@ id|envp
 suffix:semicolon
 multiline_comment|/* Misc. routines. */
 r_extern
-r_void
+id|VOID
 id|prom_halt
 c_func
 (paren
@@ -585,7 +585,7 @@ id|noreturn
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|VOID
 id|prom_powerdown
 c_func
 (paren
@@ -600,7 +600,7 @@ id|noreturn
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|VOID
 id|prom_restart
 c_func
 (paren
@@ -634,7 +634,7 @@ id|VOID
 id|ArcEnterInteractiveMode
 c_func
 (paren
-r_void
+id|VOID
 )paren
 id|__attribute__
 c_func

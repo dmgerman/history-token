@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 r_extern
 r_int
 r_int
-id|loops_per_sec
+id|loops_per_jiffy
 suffix:semicolon
 r_extern
 id|__inline__
@@ -54,7 +54,7 @@ id|usecs
 comma
 r_int
 r_int
-id|lps
+id|lpj
 )paren
 (brace
 r_int
@@ -63,9 +63,9 @@ id|lo
 suffix:semicolon
 id|usecs
 op_mul_assign
-l_int|0x000010c6f7a0b5edUL
+l_int|0x00068db8bac710cbUL
 suffix:semicolon
-multiline_comment|/* 2**64 / 1000000 */
+multiline_comment|/* 2**64 / (1000000 / HZ) */
 id|__asm__
 c_func
 (paren
@@ -88,7 +88,7 @@ id|usecs
 comma
 l_string|&quot;r&quot;
 (paren
-id|lps
+id|lpj
 )paren
 )paren
 suffix:semicolon
@@ -104,7 +104,7 @@ DECL|macro|__udelay_val
 mdefine_line|#define __udelay_val cpu_data[smp_processor_id()].udelay_val
 macro_line|#else
 DECL|macro|__udelay_val
-mdefine_line|#define __udelay_val loops_per_sec
+mdefine_line|#define __udelay_val loops_per_jiffy
 macro_line|#endif
 DECL|macro|udelay
 mdefine_line|#define udelay(usecs) __udelay((usecs),__udelay_val)

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * r4xx0.c: R4000 processor variant specific MMU/Cache routines.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1997, 1998, 1999, 2000 Ralf Baechle (ralf@gnu.org)&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * r4xx0.c: R4000 processor variant specific MMU/Cache routines.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1997, 1998, 1999, 2000, 2001 Ralf Baechle (ralf@gnu.org)&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -678,7 +678,7 @@ l_string|&quot;ld&bslash;t%2,-16(%1)&bslash;n&bslash;t&quot;
 l_string|&quot;ld&bslash;t%3,-8(%1)&bslash;n&bslash;t&quot;
 l_string|&quot;sd&bslash;t%2,-16(%0)&bslash;n&bslash;t&quot;
 l_string|&quot;bne&bslash;t$1,%0,1b&bslash;n&bslash;t&quot;
-l_string|&quot; sd&bslash;t%4,-8(%0)&bslash;n&bslash;t&quot;
+l_string|&quot; sd&bslash;t%3,-8(%0)&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;tat&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;treorder&quot;
 suffix:colon
@@ -3138,7 +3138,6 @@ id|mm
 op_ne
 l_int|0
 )paren
-(brace
 r_return
 suffix:semicolon
 id|start
@@ -3304,6 +3303,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|r4k_flush_cache_range_d16i16
 id|r4k_flush_cache_range_d16i16
 c_func
 (paren
@@ -3385,6 +3385,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|r4k_flush_cache_range_d32i32
 id|r4k_flush_cache_range_d32i32
 c_func
 (paren
@@ -3465,6 +3466,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * On architectures like the Sparc, we could get rid of lines in&n; * the cache created only by a certain context, but on the MIPS&n; * (and actually certain Sparc&squot;s) we cannot.&n; */
+DECL|function|r4k_flush_cache_mm_s16d16i16
 r_static
 r_void
 id|r4k_flush_cache_mm_s16d16i16
@@ -3513,6 +3515,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
+DECL|function|r4k_flush_cache_mm_s32d16i16
 r_static
 r_void
 id|r4k_flush_cache_mm_s32d16i16
@@ -3561,6 +3564,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
+DECL|function|r4k_flush_cache_mm_s64d16i16
 r_static
 r_void
 id|r4k_flush_cache_mm_s64d16i16
@@ -3609,6 +3613,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
+DECL|function|r4k_flush_cache_mm_s128d16i16
 r_static
 r_void
 id|r4k_flush_cache_mm_s128d16i16
@@ -3657,6 +3662,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
+DECL|function|r4k_flush_cache_mm_s32d32i32
 r_static
 r_void
 id|r4k_flush_cache_mm_s32d32i32
@@ -3705,6 +3711,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
+DECL|function|r4k_flush_cache_mm_s64d32i32
 r_static
 r_void
 id|r4k_flush_cache_mm_s64d32i32
@@ -3753,6 +3760,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
+DECL|function|r4k_flush_cache_mm_s128d32i32
 r_static
 r_void
 id|r4k_flush_cache_mm_s128d32i32
@@ -3801,6 +3809,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
+DECL|function|r4k_flush_cache_mm_d16i16
 r_static
 r_void
 id|r4k_flush_cache_mm_d16i16
@@ -3849,6 +3858,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
+DECL|function|r4k_flush_cache_mm_d32i32
 r_static
 r_void
 id|r4k_flush_cache_mm_d32i32
@@ -3899,6 +3909,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|r4k_flush_cache_page_s16d16i16
 id|r4k_flush_cache_page_s16d16i16
 c_func
 (paren
@@ -4105,6 +4116,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|r4k_flush_cache_page_s32d16i16
 id|r4k_flush_cache_page_s32d16i16
 c_func
 (paren
@@ -4311,6 +4323,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|r4k_flush_cache_page_s64d16i16
 id|r4k_flush_cache_page_s64d16i16
 c_func
 (paren
@@ -4517,6 +4530,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|r4k_flush_cache_page_s128d16i16
 id|r4k_flush_cache_page_s128d16i16
 c_func
 (paren
@@ -4723,6 +4737,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|r4k_flush_cache_page_s32d32i32
 id|r4k_flush_cache_page_s32d32i32
 c_func
 (paren
@@ -4929,6 +4944,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|r4k_flush_cache_page_s64d32i32
 id|r4k_flush_cache_page_s64d32i32
 c_func
 (paren
@@ -5135,6 +5151,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|r4k_flush_cache_page_s128d32i32
 id|r4k_flush_cache_page_s128d32i32
 c_func
 (paren
@@ -5341,6 +5358,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|r4k_flush_cache_page_d16i16
 id|r4k_flush_cache_page_d16i16
 c_func
 (paren
@@ -5525,6 +5543,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|r4k_flush_cache_page_d32i32
 id|r4k_flush_cache_page_d32i32
 c_func
 (paren
@@ -5722,6 +5741,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|r4k_flush_cache_page_d32i32_r4600
 id|r4k_flush_cache_page_d32i32_r4600
 c_func
 (paren
@@ -5925,6 +5945,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|function|r4k_flush_page_to_ram_s16
 r_static
 r_void
 id|r4k_flush_page_to_ram_s16
@@ -5951,6 +5972,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
+DECL|function|r4k_flush_page_to_ram_s32
 r_static
 r_void
 id|r4k_flush_page_to_ram_s32
@@ -5977,6 +5999,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
+DECL|function|r4k_flush_page_to_ram_s64
 r_static
 r_void
 id|r4k_flush_page_to_ram_s64
@@ -6003,6 +6026,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
+DECL|function|r4k_flush_page_to_ram_s128
 r_static
 r_void
 id|r4k_flush_page_to_ram_s128
@@ -6029,6 +6053,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
+DECL|function|r4k_flush_page_to_ram_d16
 r_static
 r_void
 id|r4k_flush_page_to_ram_d16
@@ -6071,6 +6096,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|function|r4k_flush_page_to_ram_d32
 r_static
 r_void
 id|r4k_flush_page_to_ram_d32
@@ -6116,6 +6142,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Writeback and invalidate the primary cache dcache before DMA.&n; *&n; * R4600 v2.0 bug: &quot;The CACHE instructions Hit_Writeback_Inv_D,&n; * Hit_Writeback_D, Hit_Invalidate_D and Create_Dirty_Exclusive_D will only&n; * operate correctly if the internal data cache refill buffer is empty.  These&n; * CACHE instructions should be separated from any potential data cache miss&n; * by a load instruction to an uncached address to empty the response buffer.&quot;&n; * (Revision 2.0 device errata from IDT available on http://www.idt.com/&n; * in .pdf format.)&n; */
 r_static
 r_void
+DECL|function|r4k_dma_cache_wback_inv_pc
 id|r4k_dma_cache_wback_inv_pc
 c_func
 (paren
@@ -6143,6 +6170,10 @@ c_cond
 (paren
 id|size
 op_ge
+(paren
+r_int
+r_int
+)paren
 id|dcache_size
 )paren
 (brace
@@ -6176,6 +6207,10 @@ id|addr
 op_amp
 op_complement
 (paren
+(paren
+r_int
+r_int
+)paren
 id|dc_lsize
 op_minus
 l_int|1
@@ -6191,6 +6226,10 @@ id|size
 op_amp
 op_complement
 (paren
+(paren
+r_int
+r_int
+)paren
 id|dc_lsize
 op_minus
 l_int|1
@@ -6241,6 +6280,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|r4k_dma_cache_wback_inv_sc
 id|r4k_dma_cache_wback_inv_sc
 c_func
 (paren
@@ -6264,6 +6304,10 @@ c_cond
 (paren
 id|size
 op_ge
+(paren
+r_int
+r_int
+)paren
 id|scache_size
 )paren
 (brace
@@ -6281,6 +6325,10 @@ id|addr
 op_amp
 op_complement
 (paren
+(paren
+r_int
+r_int
+)paren
 id|sc_lsize
 op_minus
 l_int|1
@@ -6296,6 +6344,10 @@ id|size
 op_amp
 op_complement
 (paren
+(paren
+r_int
+r_int
+)paren
 id|sc_lsize
 op_minus
 l_int|1
@@ -6331,6 +6383,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|r4k_dma_cache_inv_pc
 id|r4k_dma_cache_inv_pc
 c_func
 (paren
@@ -6358,6 +6411,10 @@ c_cond
 (paren
 id|size
 op_ge
+(paren
+r_int
+r_int
+)paren
 id|dcache_size
 )paren
 (brace
@@ -6391,6 +6448,10 @@ id|addr
 op_amp
 op_complement
 (paren
+(paren
+r_int
+r_int
+)paren
 id|dc_lsize
 op_minus
 l_int|1
@@ -6406,6 +6467,10 @@ id|size
 op_amp
 op_complement
 (paren
+(paren
+r_int
+r_int
+)paren
 id|dc_lsize
 op_minus
 l_int|1
@@ -6456,6 +6521,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|r4k_dma_cache_inv_sc
 id|r4k_dma_cache_inv_sc
 c_func
 (paren
@@ -6479,6 +6545,10 @@ c_cond
 (paren
 id|size
 op_ge
+(paren
+r_int
+r_int
+)paren
 id|scache_size
 )paren
 (brace
@@ -6496,6 +6566,10 @@ id|addr
 op_amp
 op_complement
 (paren
+(paren
+r_int
+r_int
+)paren
 id|sc_lsize
 op_minus
 l_int|1
@@ -6511,6 +6585,10 @@ id|size
 op_amp
 op_complement
 (paren
+(paren
+r_int
+r_int
+)paren
 id|sc_lsize
 op_minus
 l_int|1
@@ -6546,6 +6624,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|r4k_dma_cache_wback
 id|r4k_dma_cache_wback
 c_func
 (paren
@@ -6566,6 +6645,7 @@ l_string|&quot;r4k_dma_cache called - should not happen.&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * While we&squot;re protected against bad userland addresses we don&squot;t care&n; * very much about what happens in that case.  Usually a segmentation&n; * fault will dump the process later on anyway ...&n; */
+DECL|function|r4k_flush_cache_sigtramp
 r_static
 r_void
 id|r4k_flush_cache_sigtramp
@@ -6588,6 +6668,10 @@ id|addr
 op_amp
 op_complement
 (paren
+(paren
+r_int
+r_int
+)paren
 id|dc_lsize
 op_minus
 l_int|1
@@ -6621,6 +6705,10 @@ id|addr
 op_amp
 op_complement
 (paren
+(paren
+r_int
+r_int
+)paren
 id|ic_lsize
 op_minus
 l_int|1
@@ -6641,6 +6729,7 @@ id|ic_lsize
 )paren
 suffix:semicolon
 )brace
+DECL|function|r4600v20k_flush_cache_sigtramp
 r_static
 r_void
 id|r4600v20k_flush_cache_sigtramp
@@ -6667,6 +6756,10 @@ id|addr
 op_amp
 op_complement
 (paren
+(paren
+r_int
+r_int
+)paren
 id|dc_lsize
 op_minus
 l_int|1
@@ -6708,6 +6801,10 @@ id|addr
 op_amp
 op_complement
 (paren
+(paren
+r_int
+r_int
+)paren
 id|ic_lsize
 op_minus
 l_int|1
@@ -6740,6 +6837,7 @@ DECL|macro|NTLB_ENTRIES
 mdefine_line|#define NTLB_ENTRIES       48  /* Fixed on all R4XX0 variants... */
 DECL|macro|NTLB_ENTRIES_HALF
 mdefine_line|#define NTLB_ENTRIES_HALF  24  /* Fixed on all R4XX0 variants... */
+DECL|function|r4k_flush_tlb_all
 r_static
 r_inline
 r_void
@@ -6856,6 +6954,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|function|r4k_flush_tlb_mm
 r_static
 r_void
 id|r4k_flush_tlb_mm
@@ -6949,6 +7048,7 @@ id|flags
 suffix:semicolon
 )brace
 )brace
+DECL|function|r4k_flush_tlb_range
 r_static
 r_void
 id|r4k_flush_tlb_range
@@ -7245,6 +7345,7 @@ id|flags
 suffix:semicolon
 )brace
 )brace
+DECL|function|r4k_flush_tlb_page
 r_static
 r_void
 id|r4k_flush_tlb_page
@@ -7423,6 +7524,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|r4k_flush_cache_l2
 id|r4k_flush_cache_l2
 c_func
 (paren
@@ -7431,6 +7533,7 @@ r_void
 (brace
 )brace
 multiline_comment|/* We will need multiple versions of update_mmu_cache(), one that just&n; * updates the TLB with the new pte(s), and another which also checks&n; * for the R4k &quot;end of page&quot; hardware bug and does the needy.&n; */
+DECL|function|r4k_update_mmu_cache
 r_static
 r_void
 id|r4k_update_mmu_cache
@@ -7726,7 +7829,6 @@ id|flags
 suffix:semicolon
 )brace
 macro_line|#if 0
-DECL|function|r4k_update_mmu_cache_hwbug
 r_static
 r_void
 id|r4k_update_mmu_cache_hwbug
@@ -9222,6 +9324,16 @@ id|CP0_PRID
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MIPS_UNCACHED
+id|set_cp0_config
+c_func
+(paren
+id|CONF_CM_CMASK
+comma
+id|CONF_CM_UNCACHED
+)paren
+suffix:semicolon
+macro_line|#else
 id|set_cp0_config
 c_func
 (paren
@@ -9230,6 +9342,7 @@ comma
 id|CONF_CM_CACHABLE_NONCOHERENT
 )paren
 suffix:semicolon
+macro_line|#endif /* UNCACHED */
 id|probe_icache
 c_func
 (paren

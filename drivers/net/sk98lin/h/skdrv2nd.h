@@ -1,6 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skdrv2nd.h&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.7 $&n; * Date:&t;$Date: 1999/09/28 12:38:21 $&n; * Purpose:&t;Second header file for driver and all other modules&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998,1999 SysKonnect,&n; *&t;a business unit of Schneider &amp; Koch &amp; Co. Datensysteme GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skdrv2nd.h,v $&n; *&t;Revision 1.7  1999/09/28 12:38:21  cgoos&n; *&t;Added CheckQueue to SK_AC.&n; *&t;&n; *&t;Revision 1.6  1999/07/27 08:04:05  cgoos&n; *&t;Added checksumming variables to SK_AC.&n; *&t;&n; *&t;Revision 1.5  1999/03/29 12:33:26  cgoos&n; *&t;Rreversed to fine lock granularity.&n; *&t;&n; *&t;Revision 1.4  1999/03/15 12:14:02  cgoos&n; *&t;Added DriverLock to SK_AC.&n; *&t;Removed other locks.&n; *&t;&n; *&t;Revision 1.3  1999/03/01 08:52:27  cgoos&n; *&t;Changed pAC-&gt;PciDev declaration.&n; *&t;&n; *&t;Revision 1.2  1999/02/18 10:57:14  cgoos&n; *&t;Removed SkDrvTimeStamp prototype.&n; *&t;Fixed SkGeOsGetTime prototype.&n; *&t;&n; *&t;Revision 1.1  1999/02/16 07:41:01  cgoos&n; *&t;First version.&n; *&t;&n; *&t;&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skdrv2nd.h&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.12.2.1 $&n; * Date:&t;$Date: 2001/03/12 16:50:59 $&n; * Purpose:&t;Second header file for driver and all other modules&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2001 SysKonnect,&n; *&t;a business unit of Schneider &amp; Koch &amp; Co. Datensysteme GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skdrv2nd.h,v $&n; *&t;Revision 1.12.2.1  2001/03/12 16:50:59  mlindner&n; *&t;chg: kernel 2.4 adaption&n; *&t;&n; *&t;Revision 1.12  2001/03/01 12:52:15  mlindner&n; *&t;Fixed ring size&n; *&n; *&t;Revision 1.11  2001/02/19 13:28:02  mlindner&n; *&t;Changed PNMI parameter values&n; *&n; *&t;Revision 1.10  2001/01/22 14:16:04  mlindner&n; *&t;added ProcFs functionality&n; *&t;Dual Net functionality integrated&n; *&t;Rlmt networks added&n; *&n; *&t;Revision 1.1  2000/10/05 19:46:50  phargrov&n; *&t;Add directory src/vipk_devs_nonlbl/vipk_sk98lin/&n; *&t;This is the SysKonnect SK-98xx Gigabit Ethernet driver,&n; *&t;contributed by SysKonnect.&n; *&n; *&t;Revision 1.9  2000/02/21 10:39:55  cgoos&n; *&t;Added flag for jumbo support usage.&n; *&n; *&t;Revision 1.8  1999/11/22 13:50:44  cgoos&n; *&t;Changed license header to GPL.&n; *&t;Fixed two comments.&n; *&n; *&t;Revision 1.7  1999/09/28 12:38:21  cgoos&n; *&t;Added CheckQueue to SK_AC.&n; *&t;&n; *&t;Revision 1.6  1999/07/27 08:04:05  cgoos&n; *&t;Added checksumming variables to SK_AC.&n; *&t;&n; *&t;Revision 1.5  1999/03/29 12:33:26  cgoos&n; *&t;Rreversed to fine lock granularity.&n; *&t;&n; *&t;Revision 1.4  1999/03/15 12:14:02  cgoos&n; *&t;Added DriverLock to SK_AC.&n; *&t;Removed other locks.&n; *&t;&n; *&t;Revision 1.3  1999/03/01 08:52:27  cgoos&n; *&t;Changed pAC-&gt;PciDev declaration.&n; *&t;&n; *&t;Revision 1.2  1999/02/18 10:57:14  cgoos&n; *&t;Removed SkDrvTimeStamp prototype.&n; *&t;Fixed SkGeOsGetTime prototype.&n; *&t;&n; *&t;Revision 1.1  1999/02/16 07:41:01  cgoos&n; *&t;First version.&n; *&t;&n; *&t;&n; *&n; ******************************************************************************/
 multiline_comment|/******************************************************************************&n; *&n; * Description:&n; *&n; * This is the second include file of the driver, which includes all other&n; * neccessary files and defines all structures and constants used by the&n; * driver and the common modules.&n; *&n; * Include File Hierarchy:&n; *&n; *&t;see skge.c&n; *&n; ******************************************************************************/
 macro_line|#ifndef __INC_SKDRV2ND_H
 DECL|macro|__INC_SKDRV2ND_H
@@ -262,6 +262,13 @@ DECL|macro|SK_DRIVER_SENDEVENT
 mdefine_line|#define SK_DRIVER_SENDEVENT(pAC, IoC)&t;0
 DECL|macro|SK_DRIVER_SELFTEST
 mdefine_line|#define SK_DRIVER_SELFTEST(pAC, IoC)&t;0
+multiline_comment|/* For get mtu you must add an own function */
+DECL|macro|SK_DRIVER_GET_MTU
+mdefine_line|#define SK_DRIVER_GET_MTU(pAc,IoC,i)&t;0
+DECL|macro|SK_DRIVER_SET_MTU
+mdefine_line|#define SK_DRIVER_SET_MTU(pAc,IoC,i,v)&t;0
+DECL|macro|SK_DRIVER_PRESET_MTU
+mdefine_line|#define SK_DRIVER_PRESET_MTU(pAc,IoC,i,v)&t;0
 multiline_comment|/* TX and RX descriptors *****************************************************/
 DECL|typedef|RXD
 r_typedef
@@ -619,6 +626,39 @@ DECL|macro|IRQ_MASK
 mdefine_line|#define IRQ_MASK&t;(IRQ_SW | IRQ_EOB_RX1 | IRQ_EOF_RX1 | &bslash;&n;&t;&t;&t;IRQ_EOB_RX2 | IRQ_EOF_RX2 | &bslash;&n;&t;&t;&t;IRQ_EOB_SY_TX1 | IRQ_EOF_SY_TX1 | &bslash;&n;&t;&t;&t;IRQ_EOB_AS_TX1 | IRQ_EOF_AS_TX1 | &bslash;&n;&t;&t;&t;IRQ_EOB_SY_TX2 | IRQ_EOF_SY_TX2 | &bslash;&n;&t;&t;&t;IRQ_EOB_AS_TX2 | IRQ_EOF_AS_TX2 | &bslash;&n;&t;&t;&t;IRQ_HW_ERROR | IRQ_PKT_TOUT_RX1 | IRQ_PKT_TOUT_RX2 | &bslash;&n;&t;&t;&t;IRQ_PKT_TOUT_TX1 | IRQ_PKT_TOUT_TX2 | &bslash;&n;&t;&t;&t;IRQ_I2C_READY | IRQ_EXTERNAL_REG | IRQ_TIMER | &bslash;&n;&t;&t;&t;IRQ_MAC1 | &bslash;&n;&t;&t;&t;IRQ_MAC2 | &bslash;&n;&t;&t;&t;IRQ_CHK_RX1 | IRQ_CHK_RX2 | &bslash;&n;&t;&t;&t;IRQ_CHK_SY_TX1 | IRQ_CHK_AS_TX1 | &bslash;&n;&t;&t;&t;IRQ_CHK_SY_TX2 | IRQ_CHK_AS_TX2)
 DECL|macro|IRQ_HWE_MASK
 mdefine_line|#define IRQ_HWE_MASK&t;0x00000FFF /* enable all HW irqs */
+DECL|typedef|DEV_NET
+r_typedef
+r_struct
+id|s_DevNet
+id|DEV_NET
+suffix:semicolon
+DECL|struct|s_DevNet
+r_struct
+id|s_DevNet
+(brace
+DECL|member|PortNr
+r_int
+id|PortNr
+suffix:semicolon
+DECL|member|NetNr
+r_int
+id|NetNr
+suffix:semicolon
+DECL|member|Mtu
+r_int
+id|Mtu
+suffix:semicolon
+DECL|member|Up
+r_int
+id|Up
+suffix:semicolon
+DECL|member|pAC
+id|SK_AC
+op_star
+id|pAC
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|typedef|TX_PORT
 r_typedef
 r_struct
@@ -824,6 +864,11 @@ r_int
 id|RlmtMode
 suffix:semicolon
 multiline_comment|/* link check mode to set */
+DECL|member|RlmtNets
+r_int
+id|RlmtNets
+suffix:semicolon
+multiline_comment|/* Number of nets */
 DECL|member|IoBase
 id|SK_IOC
 id|IoBase
@@ -863,6 +908,9 @@ r_struct
 id|net_device
 op_star
 id|dev
+(braket
+l_int|2
+)braket
 suffix:semicolon
 multiline_comment|/* pointer to device struct */
 DECL|member|Name
@@ -934,6 +982,11 @@ r_int
 id|ActivePort
 suffix:semicolon
 multiline_comment|/* the active XMAC port */
+DECL|member|MaxPorts
+r_int
+id|MaxPorts
+suffix:semicolon
+multiline_comment|/* number of activated ports */
 DECL|member|TxDescrPerRing
 r_int
 id|TxDescrPerRing

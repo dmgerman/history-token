@@ -543,7 +543,7 @@ DECL|macro|INT2_TCLEAR_T0CLR
 mdefine_line|#define INT2_TCLEAR_T0CLR      0x1        /* Clear timer0 IRQ */
 DECL|macro|INT2_TCLEAR_T1CLR
 mdefine_line|#define INT2_TCLEAR_T1CLR      0x2        /* Clear timer1 IRQ */
-multiline_comment|/* I am guesing there are only two unused registers here &n; * but I could be wrong...&t;&t;&t;- andrewb&n; */
+multiline_comment|/* I am guessing there are only two unused registers here &n; * but I could be wrong...&t;&t;&t;- andrewb&n; */
 multiline_comment|/*&t;u32 _unused[3]; */
 DECL|member|_unused
 id|u32

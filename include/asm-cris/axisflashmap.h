@@ -90,6 +90,8 @@ suffix:semicolon
 multiline_comment|/* ended by an end marker: */
 DECL|macro|PARTITIONTABLE_END_MARKER
 mdefine_line|#define PARTITIONTABLE_END_MARKER 0xFFFFFFFF
+DECL|macro|PARTITIONTABLE_END_MARKER_SIZE
+mdefine_line|#define PARTITIONTABLE_END_MARKER_SIZE 4
 multiline_comment|/*#define PARTITION_TYPE_RESCUE 0x0000?*/
 multiline_comment|/* Not used, maybe it should? */
 DECL|macro|PARTITION_TYPE_PARAM

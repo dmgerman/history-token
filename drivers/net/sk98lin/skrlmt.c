@@ -1,6 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skrlmt.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.49 $&n; * Date:&t;$Date: 1999/11/22 13:38:02 $&n; * Purpose:&t;Manage links on SK-NET Adapters, esp. redundant ones.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998,1999 SysKonnect,&n; *&t;a business unit of Schneider &amp; Koch &amp; Co. Datensysteme GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skrlmt.c,v $&n; *&t;Revision 1.49  1999/11/22 13:38:02  cgoos&n; *&t;Changed license header to GPL.&n; *&t;Added initialization to some variables to avoid compiler warnings.&n; *&t;&n; *&t;Revision 1.48  1999/10/04 14:01:17  rassmann&n; *&t;Corrected reaction to reception of BPDU frames.&n; *&t;Added parameter descriptions to &quot;For Readme&quot; section skrlmt.txt.&n; *&t;Clarified usage of lookahead result *pForRlmt.&n; *&t;Requested driver to present RLMT packets as soon as poosible.&n; *&t;&n; *&t;Revision 1.47  1999/07/20 12:53:36  rassmann&n; *&t;Fixed documentation errors for lookahead macros.&n; *&t;&n; *&t;Revision 1.46  1999/05/28 13:29:16  rassmann&n; *&t;Replaced C++-style comment.&n; *&t;&n; *&t;Revision 1.45  1999/05/28 13:28:08  rassmann&n; *&t;Corrected syntax error (xxx).&n; *&t;&n; *&t;Revision 1.44  1999/05/28 11:15:54  rassmann&n; *&t;Changed behaviour to reflect Design Spec v1.2.&n; *&t;Controlling Link LED(s).&n; *&t;Introduced RLMT Packet Version field in RLMT Packet.&n; *&t;Newstyle lookahead macros (checking meta-information before looking at&n; *&t;  the packet).&n; *&t;&n; *&t;Revision 1.43  1999/01/28 13:12:43  rassmann&n; *&t;Corrected Lookahead (bug introduced in previous Rev.).&n; *&t;&n; *&t;Revision 1.42  1999/01/28 12:50:41  rassmann&n; *&t;Not using broadcast time stamps in CheckLinkState mode.&n; *&t;&n; *&t;Revision 1.41  1999/01/27 14:13:02  rassmann&n; *&t;Monitoring broadcast traffic.&n; *&t;Switching more reliably and not too early if switch is&n; *&t; configured for spanning tree.&n; *&t;&n; *&t;Revision 1.40  1999/01/22 13:17:30  rassmann&n; *&t;Informing PNMI of NET_UP.&n; *&t;Clearing RLMT multicast addresses before first setting them.&n; *&t;Reporting segmentation earlier, setting a &quot;quiet time&quot;&n; *&t; after a report.&n; *&t;&n; *&t;Revision 1.39  1998/12/10 15:29:53  rassmann&n; *&t;Corrected SuspectStatus in SkRlmtBuildCheckChain().&n; *&t;Corrected CHECK_SEG mode.&n; *&t;&n; *&t;Revision 1.38  1998/12/08 13:11:23  rassmann&n; *&t;Stopping SegTimer at RlmtStop.&n; *&t;&n; *&t;Revision 1.37  1998/12/07 16:51:42  rassmann&n; *&t;Corrected comments.&n; *&t;&n; *&t;Revision 1.36  1998/12/04 10:58:56  rassmann&n; *&t;Setting next pointer to NULL when receiving.&n; *&t;&n; *&t;Revision 1.35  1998/12/03 16:12:42  rassmann&n; *&t;Ignoring/correcting illegal PrefPort values.&n; *&t;&n; *&t;Revision 1.34  1998/12/01 11:45:35  rassmann&n; *&t;Code cleanup.&n; *&t;&n; *&t;Revision 1.33  1998/12/01 10:29:32  rassmann&n; *&t;Starting standby ports before getting the net up.&n; *&t;Checking if a port is started when the link comes up.&n; *&t;&n; *&t;Revision 1.32  1998/11/30 16:19:50  rassmann&n; *&t;New default for PortNoRx.&n; *&t;&n; *&t;Revision 1.31  1998/11/27 19:17:13  rassmann&n; *&t;Corrected handling of LINK_DOWN coming shortly after LINK_UP.&n; *&t;&n; *&t;Revision 1.30  1998/11/24 12:37:31  rassmann&n; *&t;Implemented segmentation check.&n; *&t;&n; *&t;Revision 1.29  1998/11/18 13:04:32  rassmann&n; *&t;Secured PortUpTimer event.&n; *&t;Waiting longer before starting standby port(s).&n; *&t;&n; *&t;Revision 1.28  1998/11/17 13:43:04  rassmann&n; *&t;Handling (logical) tx failure.&n; *&t;Sending packet on logical address after PORT_SWITCH.&n; *&t;&n; *&t;Revision 1.27  1998/11/13 17:09:50  rassmann&n; *&t;Secured some events against being called in wrong state.&n; *&t;&n; *&t;Revision 1.26  1998/11/13 16:56:54  rassmann&n; *&t;Added macro version of SkRlmtLookaheadPacket.&n; *&t;&n; *&t;Revision 1.25  1998/11/06 18:06:04  rassmann&n; *&t;Corrected timing when RLMT checks fail.&n; *&t;Clearing tx counter earlier in periodical checks.&n; *&t;&n; *&t;Revision 1.24  1998/11/05 10:37:27  rassmann&n; *&t;Checking destination address in Lookahead.&n; *&t;&n; *&t;Revision 1.23  1998/11/03 13:53:49  rassmann&n; *&t;RLMT should switch now (at least in mode 3).&n; *&t;&n; *&t;Revision 1.22  1998/10/29 14:34:49  rassmann&n; *&t;Clearing SK_RLMT struct at startup.&n; *&t;Initializing PortsUp during SK_RLMT_START.&n; *&t;&n; *&t;Revision 1.21  1998/10/28 11:30:17  rassmann&n; *&t;Default mode is now SK_RLMT_CHECK_LOC_LINK.&n; *&t;&n; *&t;Revision 1.20  1998/10/26 16:02:03  rassmann&n; *&t;Ignoring LINK_DOWN for links that are down.&n; *&t;&n; *&t;Revision 1.19  1998/10/22 15:54:01  rassmann&n; *&t;Corrected EtherLen.&n; *&t;Starting Link Check when second port comes up.&n; *&t;&n; *&t;Revision 1.18  1998/10/22 11:39:50  rassmann&n; *&t;Corrected signed/unsigned mismatches.&n; *&t;Corrected receive list handling and address recognition.&n; *&t;&n; *&t;Revision 1.17  1998/10/19 17:01:20  rassmann&n; *&t;More detailed checking of received packets.&n; *&t;&n; *&t;Revision 1.16  1998/10/15 15:16:34  rassmann&n; *&t;Finished Spanning Tree checking.&n; *&t;Checked with lint.&n; *&t;&n; *&t;Revision 1.15  1998/09/24 19:16:07  rassmann&n; *&t;Code cleanup.&n; *&t;Introduced Timer for PORT_DOWN due to no RX.&n; *&t;&n; *&t;Revision 1.14  1998/09/18 20:27:14  rassmann&n; *&t;Added address override.&n; *&t;&n; *&t;Revision 1.13  1998/09/16 11:31:48  rassmann&n; *&t;Including skdrv1st.h again. :(&n; *&t;&n; *&t;Revision 1.12  1998/09/16 11:09:50  rassmann&n; *&t;Syntax corrections.&n; *&t;&n; *&t;Revision 1.11  1998/09/15 12:32:03  rassmann&n; *&t;Syntax correction.&n; *&t;&n; *&t;Revision 1.10  1998/09/15 11:28:49  rassmann&n; *&t;Syntax corrections.&n; *&t;&n; *&t;Revision 1.9  1998/09/14 17:07:37  rassmann&n; *&t;Added code for port checking via LAN.&n; *&t;Changed Mbuf definition.&n; *&t;&n; *&t;Revision 1.8  1998/09/07 11:14:14  rassmann&n; *&t;Syntax corrections.&n; *&t;&n; *&t;Revision 1.7  1998/09/07 09:06:07  rassmann&n; *&t;Syntax corrections.&n; *&t;&n; *&t;Revision 1.6  1998/09/04 19:41:33  rassmann&n; *&t;Syntax corrections.&n; *&t;Started entering code for checking local links.&n; *&t;&n; *&t;Revision 1.5  1998/09/04 12:14:27  rassmann&n; *&t;Interface cleanup.&n; *&t;&n; *&t;Revision 1.4  1998/09/02 16:55:28  rassmann&n; *&t;Updated to reflect new DRV/HWAC/RLMT interface.&n; *&t;&n; *&t;Revision 1.3  1998/08/27 14:29:03  rassmann&n; *&t;Code cleanup.&n; *&t;&n; *&t;Revision 1.2  1998/08/27 14:26:24  rassmann&n; *&t;Updated interface.&n; *&t;&n; *&t;Revision 1.1  1998/08/21 08:26:49  rassmann&n; *&t;First public version.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skrlmt.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.61 $&n; * Date:&t;$Date: 2001/03/14 12:52:08 $&n; * Purpose:&t;Manage links on SK-NET Adapters, esp. redundant ones.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2001 SysKonnect GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skrlmt.c,v $&n; *&t;Revision 1.61  2001/03/14 12:52:08  rassmann&n; *&t;Fixed reporting of active port up/down to PNMI.&n; *&t;&n; *&t;Revision 1.60  2001/02/21 16:02:25  gklug&n; *&t;fix: when RLMT starts set Active Port for PNMI&n; *&t;&n; *&t;Revision 1.59  2001/02/16 14:38:19  rassmann&n; *&t;Initializing some pointers earlier in the init phase.&n; *&t;Rx Mbufs are freed if the net which they belong to is stopped.&n; *&t;&n; *&t;Revision 1.58  2001/02/14 14:06:31  rassmann&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.57  2001/02/05 14:25:26  rassmann&n; *&t;Prepared RLMT for transparent operation.&n; *&t;&n; *&t;Revision 1.56  2001/01/30 10:29:09  rassmann&n; *&t;Not checking switching befor RlmtStart.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.55  2001/01/22 13:41:38  rassmann&n; *&t;Supporting two nets on dual-port adapters.&n; *&t;&n; *&t;Revision 1.54  2000/11/30 13:25:07  rassmann&n; *&t;Setting SK_TICK_INCR to 1 by default.&n; *&t;&n; *&t;Revision 1.53  2000/11/30 10:48:07  cgoos&n; *&t;Changed definition of SK_RLMT_BC_DELTA.&n; *&t;&n; *&t;Revision 1.52  2000/11/27 12:50:03  rassmann&n; *&t;Checking ports after receiving broadcasts.&n; *&t;&n; *&t;Revision 1.51  2000/11/17 08:58:00  rassmann&n; *&t;Moved CheckSwitch from SK_RLMT_PACKET_RECEIVED to SK_RLMT_TIM event.&n; *&t;&n; *&t;Revision 1.50  2000/11/09 12:24:34  rassmann&n; *&t;Indicating that segmentation check is not running anymore after&n; *&t;  SkRlmtCheckSeg().&n; *&t;Restarting segmentation timer after segmentation log.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.49  1999/11/22 13:38:02  cgoos&n; *&t;Changed license header to GPL.&n; *&t;Added initialization to some variables to avoid compiler warnings.&n; *&t;&n; *&t;Revision 1.48  1999/10/04 14:01:17  rassmann&n; *&t;Corrected reaction to reception of BPDU frames (#10441).&n; *&t;&n; *&t;Revision 1.47  1999/07/20 12:53:36  rassmann&n; *&t;Fixed documentation errors for lookahead macros.&n; *&t;&n; *&t;Revision 1.46  1999/05/28 13:29:16  rassmann&n; *&t;Replaced C++-style comment.&n; *&t;&n; *&t;Revision 1.45  1999/05/28 13:28:08  rassmann&n; *&t;Corrected syntax error (xxx).&n; *&t;&n; *&t;Revision 1.44  1999/05/28 11:15:54  rassmann&n; *&t;Changed behaviour to reflect Design Spec v1.2.&n; *&t;Controlling Link LED(s).&n; *&t;Introduced RLMT Packet Version field in RLMT Packet.&n; *&t;Newstyle lookahead macros (checking meta-information before looking at&n; *&t;  the packet).&n; *&t;&n; *&t;Revision 1.43  1999/01/28 13:12:43  rassmann&n; *&t;Corrected Lookahead (bug introduced in previous Rev.).&n; *&t;&n; *&t;Revision 1.42  1999/01/28 12:50:41  rassmann&n; *&t;Not using broadcast time stamps in CheckLinkState mode.&n; *&t;&n; *&t;Revision 1.41  1999/01/27 14:13:02  rassmann&n; *&t;Monitoring broadcast traffic.&n; *&t;Switching more reliably and not too early if switch is&n; *&t; configured for spanning tree.&n; *&t;&n; *&t;Revision 1.40  1999/01/22 13:17:30  rassmann&n; *&t;Informing PNMI of NET_UP.&n; *&t;Clearing RLMT multicast addresses before setting them for the first time.&n; *&t;Reporting segmentation earlier, setting a &quot;quiet time&quot;&n; *&t; after a report.&n; *&t;&n; *&t;Revision 1.39  1998/12/10 15:29:53  rassmann&n; *&t;Corrected SuspectStatus in SkRlmtBuildCheckChain().&n; *&t;Corrected CHECK_SEG mode.&n; *&t;&n; *&t;Revision 1.38  1998/12/08 13:11:23  rassmann&n; *&t;Stopping SegTimer at RlmtStop.&n; *&t;&n; *&t;Revision 1.37  1998/12/07 16:51:42  rassmann&n; *&t;Corrected comments.&n; *&t;&n; *&t;Revision 1.36  1998/12/04 10:58:56  rassmann&n; *&t;Setting next pointer to NULL when receiving.&n; *&t;&n; *&t;Revision 1.35  1998/12/03 16:12:42  rassmann&n; *&t;Ignoring/correcting illegal PrefPort values.&n; *&t;&n; *&t;Revision 1.34  1998/12/01 11:45:35  rassmann&n; *&t;Code cleanup.&n; *&t;&n; *&t;Revision 1.33  1998/12/01 10:29:32  rassmann&n; *&t;Starting standby ports before getting the net up.&n; *&t;Checking if a port is started when the link comes up.&n; *&t;&n; *&t;Revision 1.32  1998/11/30 16:19:50  rassmann&n; *&t;New default for PortNoRx.&n; *&t;&n; *&t;Revision 1.31  1998/11/27 19:17:13  rassmann&n; *&t;Corrected handling of LINK_DOWN coming shortly after LINK_UP.&n; *&t;&n; *&t;Revision 1.30  1998/11/24 12:37:31  rassmann&n; *&t;Implemented segmentation check.&n; *&t;&n; *&t;Revision 1.29  1998/11/18 13:04:32  rassmann&n; *&t;Secured PortUpTimer event.&n; *&t;Waiting longer before starting standby port(s).&n; *&t;&n; *&t;Revision 1.28  1998/11/17 13:43:04  rassmann&n; *&t;Handling (logical) tx failure.&n; *&t;Sending packet on logical address after PORT_SWITCH.&n; *&t;&n; *&t;Revision 1.27  1998/11/13 17:09:50  rassmann&n; *&t;Secured some events against being called in wrong state.&n; *&t;&n; *&t;Revision 1.26  1998/11/13 16:56:54  rassmann&n; *&t;Added macro version of SkRlmtLookaheadPacket.&n; *&t;&n; *&t;Revision 1.25  1998/11/06 18:06:04  rassmann&n; *&t;Corrected timing when RLMT checks fail.&n; *&t;Clearing tx counter earlier in periodical checks.&n; *&t;&n; *&t;Revision 1.24  1998/11/05 10:37:27  rassmann&n; *&t;Checking destination address in Lookahead.&n; *&t;&n; *&t;Revision 1.23  1998/11/03 13:53:49  rassmann&n; *&t;RLMT should switch now (at least in mode 3).&n; *&t;&n; *&t;Revision 1.22  1998/10/29 14:34:49  rassmann&n; *&t;Clearing SK_RLMT struct at startup.&n; *&t;Initializing PortsUp during SK_RLMT_START.&n; *&t;&n; *&t;Revision 1.21  1998/10/28 11:30:17  rassmann&n; *&t;Default mode is now SK_RLMT_CHECK_LOC_LINK.&n; *&t;&n; *&t;Revision 1.20  1998/10/26 16:02:03  rassmann&n; *&t;Ignoring LINK_DOWN for links that are down.&n; *&t;&n; *&t;Revision 1.19  1998/10/22 15:54:01  rassmann&n; *&t;Corrected EtherLen.&n; *&t;Starting Link Check when second port comes up.&n; *&t;&n; *&t;Revision 1.18  1998/10/22 11:39:50  rassmann&n; *&t;Corrected signed/unsigned mismatches.&n; *&t;Corrected receive list handling and address recognition.&n; *&t;&n; *&t;Revision 1.17  1998/10/19 17:01:20  rassmann&n; *&t;More detailed checking of received packets.&n; *&t;&n; *&t;Revision 1.16  1998/10/15 15:16:34  rassmann&n; *&t;Finished Spanning Tree checking.&n; *&t;Checked with lint.&n; *&t;&n; *&t;Revision 1.15  1998/09/24 19:16:07  rassmann&n; *&t;Code cleanup.&n; *&t;Introduced Timer for PORT_DOWN due to no RX.&n; *&t;&n; *&t;Revision 1.14  1998/09/18 20:27:14  rassmann&n; *&t;Added address override.&n; *&t;&n; *&t;Revision 1.13  1998/09/16 11:31:48  rassmann&n; *&t;Including skdrv1st.h again. :(&n; *&t;&n; *&t;Revision 1.12  1998/09/16 11:09:50  rassmann&n; *&t;Syntax corrections.&n; *&t;&n; *&t;Revision 1.11  1998/09/15 12:32:03  rassmann&n; *&t;Syntax correction.&n; *&t;&n; *&t;Revision 1.10  1998/09/15 11:28:49  rassmann&n; *&t;Syntax corrections.&n; *&t;&n; *&t;Revision 1.9  1998/09/14 17:07:37  rassmann&n; *&t;Added code for port checking via LAN.&n; *&t;Changed Mbuf definition.&n; *&t;&n; *&t;Revision 1.8  1998/09/07 11:14:14  rassmann&n; *&t;Syntax corrections.&n; *&t;&n; *&t;Revision 1.7  1998/09/07 09:06:07  rassmann&n; *&t;Syntax corrections.&n; *&t;&n; *&t;Revision 1.6  1998/09/04 19:41:33  rassmann&n; *&t;Syntax corrections.&n; *&t;Started entering code for checking local links.&n; *&t;&n; *&t;Revision 1.5  1998/09/04 12:14:27  rassmann&n; *&t;Interface cleanup.&n; *&t;&n; *&t;Revision 1.4  1998/09/02 16:55:28  rassmann&n; *&t;Updated to reflect new DRV/HWAC/RLMT interface.&n; *&t;&n; *&t;Revision 1.3  1998/08/27 14:29:03  rassmann&n; *&t;Code cleanup.&n; *&t;&n; *&t;Revision 1.2  1998/08/27 14:26:24  rassmann&n; *&t;Updated interface.&n; *&t;&n; *&t;Revision 1.1  1998/08/21 08:26:49  rassmann&n; *&t;First public version.&n; *&n; ******************************************************************************/
 multiline_comment|/******************************************************************************&n; *&n; * Description:&n; *&n; * This module contains code for Link ManagemenT (LMT) of SK-NET Adapters.&n; * It is mainly intended for adapters with more than one link.&n; * For such adapters, this module realizes Redundant Link ManagemenT (RLMT).&n; *&n; * Include File Hierarchy:&n; *&n; *&t;&quot;skdrv1st.h&quot;&n; *&t;&quot;skdrv2nd.h&quot;&n; *&n; ******************************************************************************/
 macro_line|#ifndef&t;lint
 DECL|variable|SysKonnectFileId
@@ -11,14 +11,13 @@ id|SysKonnectFileId
 (braket
 )braket
 op_assign
-l_string|&quot;@(#) $Id: skrlmt.c,v 1.49 1999/11/22 13:38:02 cgoos Exp $ (C) SysKonnect.&quot;
+l_string|&quot;@(#) $Id: skrlmt.c,v 1.61 2001/03/14 12:52:08 rassmann Exp $ (C) SysKonnect.&quot;
 suffix:semicolon
 macro_line|#endif&t;/* !defined(lint) */
 DECL|macro|__SKRLMT_C
 mdefine_line|#define __SKRLMT_C
 macro_line|#ifdef __cplusplus
-id|xxxx
-multiline_comment|/* not supported yet - force error */
+macro_line|#error C++ is not yet supported.
 r_extern
 l_string|&quot;C&quot;
 (brace
@@ -34,24 +33,29 @@ macro_line|#ifndef DEBUG
 DECL|macro|RLMT_STATIC
 mdefine_line|#define RLMT_STATIC&t;static
 macro_line|#else&t;/* DEBUG */
+DECL|macro|RLMT_STATIC
 mdefine_line|#define RLMT_STATIC
 macro_line|#ifndef SK_LITTLE_ENDIAN
 multiline_comment|/* First 32 bits */
+DECL|macro|OFFS_LO32
 mdefine_line|#define OFFS_LO32&t;1
 multiline_comment|/* Second 32 bits */
+DECL|macro|OFFS_HI32
 mdefine_line|#define OFFS_HI32&t;0
 macro_line|#else&t;/* SK_LITTLE_ENDIAN */
 multiline_comment|/* First 32 bits */
+DECL|macro|OFFS_LO32
 mdefine_line|#define OFFS_LO32&t;0
 multiline_comment|/* Second 32 bits */
+DECL|macro|OFFS_HI32
 mdefine_line|#define OFFS_HI32&t;1
 macro_line|#endif&t;/* SK_LITTLE_ENDIAN */
 macro_line|#endif&t;/* DEBUG */
 multiline_comment|/* ----- Private timeout values ----- */
 DECL|macro|SK_RLMT_MIN_TO_VAL
-mdefine_line|#define SK_RLMT_MIN_TO_VAL&t;&t;   125000&t;/* 1/8 sec. */
+mdefine_line|#define SK_RLMT_MIN_TO_VAL&t;&t;&t;   125000&t;/* 1/8 sec. */
 DECL|macro|SK_RLMT_DEF_TO_VAL
-mdefine_line|#define SK_RLMT_DEF_TO_VAL&t;&t;  1000000&t;/* 1 sec. */
+mdefine_line|#define SK_RLMT_DEF_TO_VAL&t;&t;&t;  1000000&t;/* 1 sec. */
 DECL|macro|SK_RLMT_PORTDOWN_TIM_VAL
 mdefine_line|#define SK_RLMT_PORTDOWN_TIM_VAL&t;   900000&t;/* another 0.9 sec. */
 DECL|macro|SK_RLMT_PORTSTART_TIM_VAL
@@ -59,47 +63,52 @@ mdefine_line|#define SK_RLMT_PORTSTART_TIM_VAL&t;   100000&t;/* 0.1 sec. */
 DECL|macro|SK_RLMT_PORTUP_TIM_VAL
 mdefine_line|#define SK_RLMT_PORTUP_TIM_VAL&t;&t;  2500000&t;/* 2.5 sec. */
 DECL|macro|SK_RLMT_SEG_TO_VAL
-mdefine_line|#define SK_RLMT_SEG_TO_VAL&t;&t;900000000&t;/* 15 min. */
-multiline_comment|/*&n; * Amount that a time stamp must be later to be recognized as &quot;substantially&n; * later&quot;. This is about 1/128 sec.&n; */
+mdefine_line|#define SK_RLMT_SEG_TO_VAL&t;&t;&t;900000000&t;/* 15 min. */
+multiline_comment|/* Assume tick counter increment is 1 - may be set OS-dependent. */
+macro_line|#ifndef SK_TICK_INCR
+DECL|macro|SK_TICK_INCR
+mdefine_line|#define SK_TICK_INCR&t;SK_CONSTU64(1)
+macro_line|#endif&t;/* !defined(SK_TICK_INCR) */
+multiline_comment|/*&n; * Amount that a time stamp must be later to be recognized as &quot;substantially&n; * later&quot;. This is about 1/128 sec, but above 1 tick counter increment.&n; */
 DECL|macro|SK_RLMT_BC_DELTA
-mdefine_line|#define SK_RLMT_BC_DELTA&t;((SK_TICKS_PER_SEC &gt;&gt; 7) + 1)
+mdefine_line|#define SK_RLMT_BC_DELTA&t;&t;(1 + ((SK_TICKS_PER_SEC &gt;&gt; 7) &gt; SK_TICK_INCR ? &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;(SK_TICKS_PER_SEC &gt;&gt; 7) : SK_TICK_INCR))
 multiline_comment|/* ----- Private RLMT defaults ----- */
 DECL|macro|SK_RLMT_DEF_PREF_PORT
-mdefine_line|#define SK_RLMT_DEF_PREF_PORT&t;0&t;&t;&t;/* &quot;Lower&quot; port. */
+mdefine_line|#define SK_RLMT_DEF_PREF_PORT&t;0&t;&t;&t;&t;&t;/* &quot;Lower&quot; port. */
 DECL|macro|SK_RLMT_DEF_MODE
-mdefine_line|#define SK_RLMT_DEF_MODE &t;SK_RLMT_CHECK_LINK&t;/* Default RLMT Mode. */
+mdefine_line|#define SK_RLMT_DEF_MODE &t;&t;SK_RLMT_CHECK_LINK&t;/* Default RLMT Mode. */
 multiline_comment|/* ----- Private RLMT checking states ----- */
 DECL|macro|SK_RLMT_RCS_SEG
-mdefine_line|#define SK_RLMT_RCS_SEG&t;&t;1&t;/* RLMT Check State: check seg. */
+mdefine_line|#define SK_RLMT_RCS_SEG&t;&t;&t;1&t;&t;/* RLMT Check State: check seg. */
 DECL|macro|SK_RLMT_RCS_START_SEG
-mdefine_line|#define SK_RLMT_RCS_START_SEG&t;2&t;/* RLMT Check State: start check seg. */
+mdefine_line|#define SK_RLMT_RCS_START_SEG&t;2&t;&t;/* RLMT Check State: start check seg. */
 DECL|macro|SK_RLMT_RCS_SEND_SEG
-mdefine_line|#define SK_RLMT_RCS_SEND_SEG&t;4&t;/* RLMT Check State: send BPDU packet */
+mdefine_line|#define SK_RLMT_RCS_SEND_SEG&t;4&t;&t;/* RLMT Check State: send BPDU packet */
 DECL|macro|SK_RLMT_RCS_REPORT_SEG
-mdefine_line|#define SK_RLMT_RCS_REPORT_SEG&t;8&t;/* RLMT Check State: report seg. */
+mdefine_line|#define SK_RLMT_RCS_REPORT_SEG&t;8&t;&t;/* RLMT Check State: report seg. */
 multiline_comment|/* ----- Private PORT checking states ----- */
 DECL|macro|SK_RLMT_PCS_TX
-mdefine_line|#define SK_RLMT_PCS_TX&t;&t;1&t;/* Port Check State: check tx. */
+mdefine_line|#define SK_RLMT_PCS_TX&t;&t;&t;1&t;&t;/* Port Check State: check tx. */
 DECL|macro|SK_RLMT_PCS_RX
-mdefine_line|#define SK_RLMT_PCS_RX&t;&t;2&t;/* Port Check State: check rx. */
+mdefine_line|#define SK_RLMT_PCS_RX&t;&t;&t;2&t;&t;/* Port Check State: check rx. */
 multiline_comment|/* ----- Private PORT events ----- */
 multiline_comment|/* Note: Update simulation when changing these. */
 DECL|macro|SK_RLMT_PORTSTART_TIM
 mdefine_line|#define SK_RLMT_PORTSTART_TIM&t;1100&t;/* Port start timeout. */
 DECL|macro|SK_RLMT_PORTUP_TIM
-mdefine_line|#define SK_RLMT_PORTUP_TIM&t;1101&t;/* Port can now go up. */
+mdefine_line|#define SK_RLMT_PORTUP_TIM&t;&t;1101&t;/* Port can now go up. */
 DECL|macro|SK_RLMT_PORTDOWN_RX_TIM
 mdefine_line|#define SK_RLMT_PORTDOWN_RX_TIM&t;1102&t;/* Port did not receive once ... */
 DECL|macro|SK_RLMT_PORTDOWN
-mdefine_line|#define SK_RLMT_PORTDOWN&t;1103&t;/* Port went down. */
+mdefine_line|#define SK_RLMT_PORTDOWN&t;&t;1103&t;/* Port went down. */
 DECL|macro|SK_RLMT_PORTDOWN_TX_TIM
 mdefine_line|#define SK_RLMT_PORTDOWN_TX_TIM&t;1104&t;/* Partner did not receive ... */
 multiline_comment|/* ----- Private RLMT events ----- */
 multiline_comment|/* Note: Update simulation when changing these. */
 DECL|macro|SK_RLMT_TIM
-mdefine_line|#define SK_RLMT_TIM&t;&t;2100&t;/* RLMT timeout. */
+mdefine_line|#define SK_RLMT_TIM&t;&t;&t;&t;2100&t;/* RLMT timeout. */
 DECL|macro|SK_RLMT_SEG_TIM
-mdefine_line|#define SK_RLMT_SEG_TIM&t;&t;2101&t;/* RLMT segmentation check timeout. */
+mdefine_line|#define SK_RLMT_SEG_TIM&t;&t;&t;2101&t;/* RLMT segmentation check timeout. */
 DECL|macro|TO_SHORTEN
 mdefine_line|#define TO_SHORTEN(tim)&t;((tim) / 2)
 multiline_comment|/* Error numbers and messages. */
@@ -145,110 +154,110 @@ DECL|macro|SKERR_RLMT_E010_MSG
 mdefine_line|#define SKERR_RLMT_E010_MSG&t;&quot;Ignored illegal Preferred Port.&quot;
 multiline_comment|/* LLC field values. */
 DECL|macro|LLC_COMMAND_RESPONSE_BIT
-mdefine_line|#define LLC_COMMAND_RESPONSE_BIT&t;1
+mdefine_line|#define LLC_COMMAND_RESPONSE_BIT&t;&t;1
 DECL|macro|LLC_TEST_COMMAND
-mdefine_line|#define LLC_TEST_COMMAND&t;&t;0xE3
+mdefine_line|#define LLC_TEST_COMMAND&t;&t;&t;&t;0xE3
 DECL|macro|LLC_UI
-mdefine_line|#define LLC_UI&t;&t;&t;&t;0x03
+mdefine_line|#define LLC_UI&t;&t;&t;&t;&t;&t;&t;0x03
 multiline_comment|/* RLMT Packet fields. */
 DECL|macro|SK_RLMT_DSAP
-mdefine_line|#define&t;SK_RLMT_DSAP&t;&t;&t;0
+mdefine_line|#define&t;SK_RLMT_DSAP&t;&t;&t;&t;&t;0
 DECL|macro|SK_RLMT_SSAP
-mdefine_line|#define&t;SK_RLMT_SSAP&t;&t;&t;0
+mdefine_line|#define&t;SK_RLMT_SSAP&t;&t;&t;&t;&t;0
 DECL|macro|SK_RLMT_CTRL
-mdefine_line|#define SK_RLMT_CTRL&t;&t;&t;(LLC_TEST_COMMAND)
+mdefine_line|#define SK_RLMT_CTRL&t;&t;&t;&t;&t;(LLC_TEST_COMMAND)
 DECL|macro|SK_RLMT_INDICATOR0
-mdefine_line|#define SK_RLMT_INDICATOR0&t;&t;0x53&t;/* S */
+mdefine_line|#define SK_RLMT_INDICATOR0&t;&t;&t;&t;0x53&t;/* S */
 DECL|macro|SK_RLMT_INDICATOR1
-mdefine_line|#define SK_RLMT_INDICATOR1&t;&t;0x4B&t;/* K */
+mdefine_line|#define SK_RLMT_INDICATOR1&t;&t;&t;&t;0x4B&t;/* K */
 DECL|macro|SK_RLMT_INDICATOR2
-mdefine_line|#define SK_RLMT_INDICATOR2&t;&t;0x2D&t;/* - */
+mdefine_line|#define SK_RLMT_INDICATOR2&t;&t;&t;&t;0x2D&t;/* - */
 DECL|macro|SK_RLMT_INDICATOR3
-mdefine_line|#define SK_RLMT_INDICATOR3&t;&t;0x52&t;/* R */
+mdefine_line|#define SK_RLMT_INDICATOR3&t;&t;&t;&t;0x52&t;/* R */
 DECL|macro|SK_RLMT_INDICATOR4
-mdefine_line|#define SK_RLMT_INDICATOR4&t;&t;0x4C&t;/* L */
+mdefine_line|#define SK_RLMT_INDICATOR4&t;&t;&t;&t;0x4C&t;/* L */
 DECL|macro|SK_RLMT_INDICATOR5
-mdefine_line|#define SK_RLMT_INDICATOR5&t;&t;0x4D&t;/* M */
+mdefine_line|#define SK_RLMT_INDICATOR5&t;&t;&t;&t;0x4D&t;/* M */
 DECL|macro|SK_RLMT_INDICATOR6
-mdefine_line|#define SK_RLMT_INDICATOR6&t;&t;0x54&t;/* T */
+mdefine_line|#define SK_RLMT_INDICATOR6&t;&t;&t;&t;0x54&t;/* T */
 DECL|macro|SK_RLMT_PACKET_VERSION
-mdefine_line|#define SK_RLMT_PACKET_VERSION&t;0
+mdefine_line|#define SK_RLMT_PACKET_VERSION&t;&t;&t;0
 multiline_comment|/* RLMT SPT Flag values. */
 DECL|macro|SK_RLMT_SPT_FLAG_CHANGE
-mdefine_line|#define&t;SK_RLMT_SPT_FLAG_CHANGE&t;&t;0x01
+mdefine_line|#define&t;SK_RLMT_SPT_FLAG_CHANGE&t;&t;&t;0x01
 DECL|macro|SK_RLMT_SPT_FLAG_CHANGE_ACK
-mdefine_line|#define&t;SK_RLMT_SPT_FLAG_CHANGE_ACK&t;0x80
+mdefine_line|#define&t;SK_RLMT_SPT_FLAG_CHANGE_ACK&t;&t;0x80
 multiline_comment|/* RLMT SPT Packet fields. */
 DECL|macro|SK_RLMT_SPT_DSAP
-mdefine_line|#define&t;SK_RLMT_SPT_DSAP&t;&t;0x42
+mdefine_line|#define&t;SK_RLMT_SPT_DSAP&t;&t;&t;&t;0x42
 DECL|macro|SK_RLMT_SPT_SSAP
-mdefine_line|#define&t;SK_RLMT_SPT_SSAP&t;&t;0x42
+mdefine_line|#define&t;SK_RLMT_SPT_SSAP&t;&t;&t;&t;0x42
 DECL|macro|SK_RLMT_SPT_CTRL
-mdefine_line|#define SK_RLMT_SPT_CTRL&t;&t;(LLC_UI)
+mdefine_line|#define SK_RLMT_SPT_CTRL&t;&t;&t;&t;(LLC_UI)
 DECL|macro|SK_RLMT_SPT_PROTOCOL_ID0
-mdefine_line|#define&t;SK_RLMT_SPT_PROTOCOL_ID0&t;0x00
+mdefine_line|#define&t;SK_RLMT_SPT_PROTOCOL_ID0&t;&t;0x00
 DECL|macro|SK_RLMT_SPT_PROTOCOL_ID1
-mdefine_line|#define&t;SK_RLMT_SPT_PROTOCOL_ID1&t;0x00
+mdefine_line|#define&t;SK_RLMT_SPT_PROTOCOL_ID1&t;&t;0x00
 DECL|macro|SK_RLMT_SPT_PROTOCOL_VERSION_ID
 mdefine_line|#define&t;SK_RLMT_SPT_PROTOCOL_VERSION_ID&t;0x00
 DECL|macro|SK_RLMT_SPT_BPDU_TYPE
-mdefine_line|#define&t;SK_RLMT_SPT_BPDU_TYPE&t;&t;0x00
+mdefine_line|#define&t;SK_RLMT_SPT_BPDU_TYPE&t;&t;&t;0x00
 DECL|macro|SK_RLMT_SPT_FLAGS
-mdefine_line|#define&t;SK_RLMT_SPT_FLAGS&t;&t;0x00&t;/* ?? */
+mdefine_line|#define&t;SK_RLMT_SPT_FLAGS&t;&t;&t;&t;0x00&t;/* ?? */
 DECL|macro|SK_RLMT_SPT_ROOT_ID0
-mdefine_line|#define&t;SK_RLMT_SPT_ROOT_ID0&t;&t;0xFF&t;/* Lowest possible priority. */
+mdefine_line|#define&t;SK_RLMT_SPT_ROOT_ID0&t;&t;&t;0xFF&t;/* Lowest possible priority. */
 DECL|macro|SK_RLMT_SPT_ROOT_ID1
-mdefine_line|#define&t;SK_RLMT_SPT_ROOT_ID1&t;&t;0xFF&t;/* Lowest possible priority. */
+mdefine_line|#define&t;SK_RLMT_SPT_ROOT_ID1&t;&t;&t;0xFF&t;/* Lowest possible priority. */
 multiline_comment|/* Remaining 6 bytes will be the current port address. */
 DECL|macro|SK_RLMT_SPT_ROOT_PATH_COST0
-mdefine_line|#define&t;SK_RLMT_SPT_ROOT_PATH_COST0&t;0x00
+mdefine_line|#define&t;SK_RLMT_SPT_ROOT_PATH_COST0&t;&t;0x00
 DECL|macro|SK_RLMT_SPT_ROOT_PATH_COST1
-mdefine_line|#define&t;SK_RLMT_SPT_ROOT_PATH_COST1&t;0x00
+mdefine_line|#define&t;SK_RLMT_SPT_ROOT_PATH_COST1&t;&t;0x00
 DECL|macro|SK_RLMT_SPT_ROOT_PATH_COST2
-mdefine_line|#define&t;SK_RLMT_SPT_ROOT_PATH_COST2&t;0x00
+mdefine_line|#define&t;SK_RLMT_SPT_ROOT_PATH_COST2&t;&t;0x00
 DECL|macro|SK_RLMT_SPT_ROOT_PATH_COST3
-mdefine_line|#define&t;SK_RLMT_SPT_ROOT_PATH_COST3&t;0x00
+mdefine_line|#define&t;SK_RLMT_SPT_ROOT_PATH_COST3&t;&t;0x00
 DECL|macro|SK_RLMT_SPT_BRIDGE_ID0
-mdefine_line|#define&t;SK_RLMT_SPT_BRIDGE_ID0&t;&t;0xFF&t;/* Lowest possible priority. */
+mdefine_line|#define&t;SK_RLMT_SPT_BRIDGE_ID0&t;&t;&t;0xFF&t;/* Lowest possible priority. */
 DECL|macro|SK_RLMT_SPT_BRIDGE_ID1
-mdefine_line|#define&t;SK_RLMT_SPT_BRIDGE_ID1&t;&t;0xFF&t;/* Lowest possible priority. */
+mdefine_line|#define&t;SK_RLMT_SPT_BRIDGE_ID1&t;&t;&t;0xFF&t;/* Lowest possible priority. */
 multiline_comment|/* Remaining 6 bytes will be the current port address. */
 DECL|macro|SK_RLMT_SPT_PORT_ID0
-mdefine_line|#define&t;SK_RLMT_SPT_PORT_ID0&t;&t;0xFF&t;/* Lowest possible priority. */
+mdefine_line|#define&t;SK_RLMT_SPT_PORT_ID0&t;&t;&t;0xFF&t;/* Lowest possible priority. */
 DECL|macro|SK_RLMT_SPT_PORT_ID1
-mdefine_line|#define&t;SK_RLMT_SPT_PORT_ID1&t;&t;0xFF&t;/* Lowest possible priority. */
+mdefine_line|#define&t;SK_RLMT_SPT_PORT_ID1&t;&t;&t;0xFF&t;/* Lowest possible priority. */
 DECL|macro|SK_RLMT_SPT_MSG_AGE0
-mdefine_line|#define&t;SK_RLMT_SPT_MSG_AGE0&t;&t;0x00
+mdefine_line|#define&t;SK_RLMT_SPT_MSG_AGE0&t;&t;&t;0x00
 DECL|macro|SK_RLMT_SPT_MSG_AGE1
-mdefine_line|#define&t;SK_RLMT_SPT_MSG_AGE1&t;&t;0x00
+mdefine_line|#define&t;SK_RLMT_SPT_MSG_AGE1&t;&t;&t;0x00
 DECL|macro|SK_RLMT_SPT_MAX_AGE0
-mdefine_line|#define&t;SK_RLMT_SPT_MAX_AGE0&t;&t;0x00
+mdefine_line|#define&t;SK_RLMT_SPT_MAX_AGE0&t;&t;&t;0x00
 DECL|macro|SK_RLMT_SPT_MAX_AGE1
-mdefine_line|#define&t;SK_RLMT_SPT_MAX_AGE1&t;&t;0xFF
+mdefine_line|#define&t;SK_RLMT_SPT_MAX_AGE1&t;&t;&t;0xFF
 DECL|macro|SK_RLMT_SPT_HELLO_TIME0
-mdefine_line|#define&t;SK_RLMT_SPT_HELLO_TIME0&t;&t;0x00
+mdefine_line|#define&t;SK_RLMT_SPT_HELLO_TIME0&t;&t;&t;0x00
 DECL|macro|SK_RLMT_SPT_HELLO_TIME1
-mdefine_line|#define&t;SK_RLMT_SPT_HELLO_TIME1&t;&t;0xFF
+mdefine_line|#define&t;SK_RLMT_SPT_HELLO_TIME1&t;&t;&t;0xFF
 DECL|macro|SK_RLMT_SPT_FWD_DELAY0
-mdefine_line|#define&t;SK_RLMT_SPT_FWD_DELAY0&t;&t;0x00
+mdefine_line|#define&t;SK_RLMT_SPT_FWD_DELAY0&t;&t;&t;0x00
 DECL|macro|SK_RLMT_SPT_FWD_DELAY1
-mdefine_line|#define&t;SK_RLMT_SPT_FWD_DELAY1&t;&t;0x40
+mdefine_line|#define&t;SK_RLMT_SPT_FWD_DELAY1&t;&t;&t;0x40
 multiline_comment|/* Size defines. */
 DECL|macro|SK_RLMT_MIN_PACKET_SIZE
-mdefine_line|#define SK_RLMT_MIN_PACKET_SIZE&t;34
+mdefine_line|#define SK_RLMT_MIN_PACKET_SIZE&t;&t;&t;34
 DECL|macro|SK_RLMT_MAX_PACKET_SIZE
-mdefine_line|#define SK_RLMT_MAX_PACKET_SIZE&t;(SK_RLMT_MAX_TX_BUF_SIZE)
+mdefine_line|#define SK_RLMT_MAX_PACKET_SIZE&t;&t;&t;(SK_RLMT_MAX_TX_BUF_SIZE)
 DECL|macro|SK_PACKET_DATA_LEN
-mdefine_line|#define SK_PACKET_DATA_LEN&t;(SK_RLMT_MAX_PACKET_SIZE - &bslash;&n;&t;&t;&t;&t; SK_RLMT_MIN_PACKET_SIZE)
+mdefine_line|#define SK_PACKET_DATA_LEN&t;&t;&t;&t;(SK_RLMT_MAX_PACKET_SIZE - &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;SK_RLMT_MIN_PACKET_SIZE)
 multiline_comment|/* ----- RLMT packet types ----- */
 DECL|macro|SK_PACKET_ANNOUNCE
-mdefine_line|#define SK_PACKET_ANNOUNCE&t;1&t;/* Port announcement. */
+mdefine_line|#define SK_PACKET_ANNOUNCE&t;&t;&t;&t;1&t;/* Port announcement. */
 DECL|macro|SK_PACKET_ALIVE
-mdefine_line|#define SK_PACKET_ALIVE&t;&t;2&t;/* Alive packet to port. */
+mdefine_line|#define SK_PACKET_ALIVE&t;&t;&t;&t;&t;2&t;/* Alive packet to port. */
 DECL|macro|SK_PACKET_ADDR_CHANGED
-mdefine_line|#define SK_PACKET_ADDR_CHANGED&t;3&t;/* Port address changed. */
+mdefine_line|#define SK_PACKET_ADDR_CHANGED&t;&t;&t;3&t;/* Port address changed. */
 DECL|macro|SK_PACKET_CHECK_TX
-mdefine_line|#define SK_PACKET_CHECK_TX&t;4&t;/* Check your tx line. */
+mdefine_line|#define SK_PACKET_CHECK_TX&t;&t;&t;&t;4&t;/* Check your tx line. */
 macro_line|#ifdef SK_LITTLE_ENDIAN
 DECL|macro|SK_U16_TO_NETWORK_ORDER
 mdefine_line|#define SK_U16_TO_NETWORK_ORDER(Val,Addr) { &bslash;&n;&t;SK_U8&t;*_Addr = (SK_U8*)(Addr); &bslash;&n;&t;SK_U16&t;_Val = (SK_U16)(Val); &bslash;&n;&t;*_Addr++ = (SK_U8)(_Val &gt;&gt; 8); &bslash;&n;&t;*_Addr = (SK_U8)(_Val &amp; 0xFF); &bslash;&n;}
@@ -337,7 +346,7 @@ id|RlmtPacketVersion
 l_int|2
 )braket
 suffix:semicolon
-multiline_comment|/* RLMT Packet version */
+multiline_comment|/* RLMT Packet version. */
 DECL|member|Data
 id|SK_U8
 id|Data
@@ -541,6 +550,9 @@ id|pAC
 comma
 id|SK_IOC
 id|IoC
+comma
+id|SK_U32
+id|NetIdx
 )paren
 suffix:semicolon
 id|RLMT_STATIC
@@ -554,9 +566,28 @@ id|pAC
 comma
 id|SK_IOC
 id|IoC
+comma
+id|SK_U32
+id|NetIdx
 )paren
 suffix:semicolon
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtInit - initialize data, set state to init&n; *&n; * Description:&n; *&n; *&t;SK_INIT_DATA&n; *&t;============&n; *&n; *&t;This routine initializes all RLMT-related variables to a known state.&n; *&t;The initial state is SK_RLMT_RS_INIT.&n; *&t;All ports are initialized to SK_RLMT_PS_INIT.&n; *&n; *&n; *&t;SK_INIT_IO&n; *&t;==========&n; *&n; *&t;Nothing.&n; *&n; *&n; *&t;SK_INIT_RUN&n; *&t;===========&n; *&n; *&t;Determine the adapter&squot;s random value.&n; *&t;Set the hw registers, the &quot;logical adapter address&quot;, the&n; *&t;RLMT multicast address, and eventually the BPDU multicast address.&n; *&n; * Context:&n; *&t;init, pageable&n; *&n; * Returns:&n; *&t;Nothing.&n; */
+id|RLMT_STATIC
+r_void
+id|SkRlmtEvtSetNets
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+id|SK_IOC
+id|IoC
+comma
+id|SK_EVPARA
+id|Para
+)paren
+suffix:semicolon
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtInit - initialize data, set state to init&n; *&n; * Description:&n; *&n; *&t;SK_INIT_DATA&n; *&t;============&n; *&n; *&t;This routine initializes all RLMT-related variables to a known state.&n; *&t;The initial state is SK_RLMT_RS_INIT.&n; *&t;All ports are initialized to SK_RLMT_PS_INIT.&n; *&n; *&n; *&t;SK_INIT_IO&n; *&t;==========&n; *&n; *&t;Nothing.&n; *&n; *&n; *&t;SK_INIT_RUN&n; *&t;===========&n; *&n; *&t;Determine the adapter&squot;s random value.&n; *&t;Set the hw registers, the &quot;logical MAC address&quot;, the&n; *&t;RLMT multicast address, and eventually the BPDU multicast address.&n; *&n; * Context:&n; *&t;init, pageable&n; *&n; * Returns:&n; *&t;Nothing.&n; */
 DECL|function|SkRlmtInit
 r_void
 id|SkRlmtInit
@@ -566,15 +597,15 @@ id|SK_AC
 op_star
 id|pAC
 comma
-multiline_comment|/* adapter context */
+multiline_comment|/* Adapter Context */
 id|SK_IOC
 id|IoC
 comma
-multiline_comment|/* I/O context */
+multiline_comment|/* I/O Context */
 r_int
 id|Level
 )paren
-multiline_comment|/* initialization level */
+multiline_comment|/* Initialization Level */
 (brace
 id|SK_U32
 id|i
@@ -699,37 +730,191 @@ id|RootIdSet
 op_assign
 id|SK_FALSE
 suffix:semicolon
+id|pAC-&gt;Rlmt.Port
+(braket
+id|i
+)braket
+dot
+id|PortNumber
+op_assign
+id|i
+suffix:semicolon
+id|pAC-&gt;Rlmt.Port
+(braket
+id|i
+)braket
+dot
+id|Net
+op_assign
+op_amp
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|pAC-&gt;Rlmt.Port
+(braket
+id|i
+)braket
+dot
+id|AddrPort
+op_assign
+op_amp
+id|pAC-&gt;Addr.Port
+(braket
+id|i
+)braket
+suffix:semicolon
 )brace
-id|pAC-&gt;Rlmt.RlmtState
+id|pAC-&gt;Rlmt.NumNets
+op_assign
+l_int|1
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|SK_MAX_NETS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|RlmtState
 op_assign
 id|SK_RLMT_RS_INIT
 suffix:semicolon
-id|pAC-&gt;Rlmt.RootIdSet
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|RootIdSet
 op_assign
 id|SK_FALSE
 suffix:semicolon
-id|pAC-&gt;Rlmt.MacPreferred
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|Preference
 op_assign
 l_int|0xFFFFFFFF
 suffix:semicolon
 multiline_comment|/* Automatic. */
-id|pAC-&gt;Rlmt.PrefPort
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|PrefPort
 op_assign
 id|SK_RLMT_DEF_PREF_PORT
 suffix:semicolon
-id|pAC-&gt;Rlmt.MacActive
-op_assign
-id|pAC-&gt;Rlmt.PrefPort
-suffix:semicolon
 multiline_comment|/* Just assuming. */
-id|pAC-&gt;Rlmt.RlmtMode
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|ActivePort
+op_assign
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|PrefPort
+suffix:semicolon
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|RlmtMode
 op_assign
 id|SK_RLMT_DEF_MODE
 suffix:semicolon
-id|pAC-&gt;Rlmt.TimeoutValue
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|TimeoutValue
 op_assign
 id|SK_RLMT_DEF_TO_VAL
 suffix:semicolon
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|NetNumber
+op_assign
+id|i
+suffix:semicolon
+)brace
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|0
+)braket
+dot
+id|Port
+(braket
+l_int|0
+)braket
+op_assign
+op_amp
+id|pAC-&gt;Rlmt.Port
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|0
+)braket
+dot
+id|Port
+(braket
+l_int|1
+)braket
+op_assign
+op_amp
+id|pAC-&gt;Rlmt.Port
+(braket
+l_int|1
+)braket
+suffix:semicolon
+macro_line|#if SK_MAX_NETS &gt; 1
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|1
+)braket
+dot
+id|Port
+(braket
+l_int|0
+)braket
+op_assign
+op_amp
+id|pAC-&gt;Rlmt.Port
+(braket
+l_int|1
+)braket
+suffix:semicolon
+macro_line|#endif&t;/* SK_MAX_NETS &gt; 1 */
 r_break
 suffix:semicolon
 r_case
@@ -751,6 +936,15 @@ comma
 id|pAC-&gt;GIni.GIMacsFound
 )paren
 )paren
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|0
+)braket
+dot
+id|NumPorts
+op_assign
+id|pAC-&gt;GIni.GIMacsFound
+suffix:semicolon
 multiline_comment|/* Initialize HW registers? */
 r_if
 c_cond
@@ -765,7 +959,14 @@ id|Para.Para32
 l_int|0
 )braket
 op_assign
-id|SK_RLMT_CHECK_LINK
+id|SK_RLMT_MODE_CLS
+suffix:semicolon
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0
 suffix:semicolon
 (paren
 r_void
@@ -788,6 +989,41 @@ suffix:semicolon
 r_case
 id|SK_INIT_RUN
 suffix:colon
+multiline_comment|/* Ensure RLMT is set to one net. */
+r_if
+c_cond
+(paren
+id|pAC-&gt;Rlmt.NumNets
+OG
+l_int|1
+)paren
+(brace
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_assign
+l_int|1
+suffix:semicolon
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|SkRlmtEvtSetNets
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Para
+)paren
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -860,11 +1096,13 @@ id|Random
 id|j
 )braket
 op_xor_assign
-id|pAC-&gt;Addr.Port
+id|pAC-&gt;Rlmt.Port
 (braket
 id|i
 )braket
 dot
+id|AddrPort
+op_member_access_from_pointer
 id|CurrentMacAddress.a
 (braket
 id|SK_MAC_ADDR_LEN
@@ -914,7 +1152,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.RlmtMode
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|0
+)braket
+dot
+id|RlmtMode
 op_amp
 id|SK_RLMT_CHECK_SEG
 )paren
@@ -975,8 +1218,12 @@ c_func
 id|SK_AC
 op_star
 id|pAC
+comma
+multiline_comment|/* Adapter Context */
+id|SK_U32
+id|NetIdx
 )paren
-multiline_comment|/* adapter context */
+multiline_comment|/* Net Number */
 (brace
 id|SK_U32
 id|i
@@ -984,22 +1231,33 @@ suffix:semicolon
 id|SK_U32
 id|NumMacsUp
 suffix:semicolon
-id|SK_U32
+id|SK_RLMT_PORT
+op_star
+id|FirstMacUp
+suffix:semicolon
+id|SK_RLMT_PORT
+op_star
+id|PrevMacUp
+suffix:semicolon
 id|FirstMacUp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
-id|SK_U32
 id|PrevMacUp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 (paren
-id|pAC-&gt;Rlmt.RlmtMode
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|RlmtMode
 op_amp
 id|SK_RLMT_CHECK_LOC_LINK
 )paren
@@ -1014,20 +1272,27 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-(paren
-id|SK_U32
-)paren
-id|pAC-&gt;GIni.GIMacsFound
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|NumPorts
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
-id|pAC-&gt;Rlmt.Port
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|PortsChecked
 op_assign
 l_int|0
@@ -1035,7 +1300,7 @@ suffix:semicolon
 )brace
 r_return
 suffix:semicolon
-multiline_comment|/* Nothing to build. */
+multiline_comment|/* Done. */
 )brace
 id|SK_DBG_MSG
 c_func
@@ -1063,38 +1328,55 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-(paren
-id|SK_U32
-)paren
-id|pAC-&gt;GIni.GIMacsFound
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|NumPorts
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
-id|pAC-&gt;Rlmt.Port
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|PortsChecked
 op_assign
 l_int|0
 suffix:semicolon
-id|pAC-&gt;Rlmt.Port
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|PortsSuspect
 op_assign
 l_int|0
 suffix:semicolon
-id|pAC-&gt;Rlmt.Port
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|CheckingState
 op_and_assign
 op_complement
@@ -1109,11 +1391,16 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|pAC-&gt;Rlmt.Port
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|LinkDown
 )paren
 (brace
@@ -1127,66 +1414,82 @@ l_int|0
 (brace
 id|FirstMacUp
 op_assign
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|Port
+(braket
 id|i
+)braket
 suffix:semicolon
 )brace
 r_else
 (brace
-id|pAC-&gt;Rlmt.Port
+id|pAC-&gt;Rlmt.Net
 (braket
-id|PrevMacUp
+id|NetIdx
 )braket
 dot
+id|Port
+(braket
+id|i
+)braket
+op_member_access_from_pointer
 id|PortCheck
 (braket
-id|pAC-&gt;Rlmt.Port
+id|pAC-&gt;Rlmt.Net
 (braket
-id|PrevMacUp
+id|NetIdx
 )braket
 dot
+id|Port
+(braket
+id|i
+)braket
+op_member_access_from_pointer
 id|PortsChecked
 )braket
 dot
 id|CheckAddr
 op_assign
-id|pAC-&gt;Addr.Port
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|Port
 (braket
 id|i
 )braket
-dot
-id|CurrentMacAddress
+op_member_access_from_pointer
+id|AddrPort-&gt;CurrentMacAddress
 suffix:semicolon
-id|pAC-&gt;Rlmt.Port
+id|PrevMacUp-&gt;PortCheck
 (braket
-id|PrevMacUp
-)braket
-dot
-id|PortCheck
-(braket
-id|pAC-&gt;Rlmt.Port
-(braket
-id|PrevMacUp
-)braket
-dot
-id|PortsChecked
+id|PrevMacUp-&gt;PortsChecked
 )braket
 dot
 id|SuspectTx
 op_assign
 id|SK_FALSE
 suffix:semicolon
-id|pAC-&gt;Rlmt.Port
-(braket
-id|PrevMacUp
-)braket
-dot
-id|PortsChecked
+id|PrevMacUp-&gt;PortsChecked
 op_increment
 suffix:semicolon
 )brace
 id|PrevMacUp
 op_assign
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|Port
+(braket
 id|i
+)braket
 suffix:semicolon
 id|NumMacsUp
 op_increment
@@ -1201,55 +1504,25 @@ OG
 l_int|1
 )paren
 (brace
-id|pAC-&gt;Rlmt.Port
+id|PrevMacUp-&gt;PortCheck
 (braket
-id|PrevMacUp
-)braket
-dot
-id|PortCheck
-(braket
-id|pAC-&gt;Rlmt.Port
-(braket
-id|PrevMacUp
-)braket
-dot
-id|PortsChecked
+id|PrevMacUp-&gt;PortsChecked
 )braket
 dot
 id|CheckAddr
 op_assign
-id|pAC-&gt;Addr.Port
-(braket
-id|FirstMacUp
-)braket
-dot
-id|CurrentMacAddress
+id|FirstMacUp-&gt;AddrPort-&gt;CurrentMacAddress
 suffix:semicolon
-id|pAC-&gt;Rlmt.Port
+id|PrevMacUp-&gt;PortCheck
 (braket
-id|PrevMacUp
-)braket
-dot
-id|PortCheck
-(braket
-id|pAC-&gt;Rlmt.Port
-(braket
-id|PrevMacUp
-)braket
-dot
-id|PortsChecked
+id|PrevMacUp-&gt;PortsChecked
 )braket
 dot
 id|SuspectTx
 op_assign
 id|SK_FALSE
 suffix:semicolon
-id|pAC-&gt;Rlmt.Port
-(braket
-id|PrevMacUp
-)braket
-dot
-id|PortsChecked
+id|PrevMacUp-&gt;PortsChecked
 op_increment
 suffix:semicolon
 )brace
@@ -1263,10 +1536,12 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-(paren
-id|SK_U32
-)paren
-id|pAC-&gt;GIni.GIMacsFound
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|NumPorts
 suffix:semicolon
 id|i
 op_increment
@@ -1284,20 +1559,30 @@ comma
 (paren
 l_string|&quot;Port %d checks %d other ports: %2X.&bslash;n&quot;
 comma
-id|i
+id|NetIdx
 comma
-id|pAC-&gt;Rlmt.Port
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|PortsChecked
 comma
-id|pAC-&gt;Rlmt.Port
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|PortCheck
 (braket
 l_int|0
@@ -1315,243 +1600,6 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* SkRlmtBuildCheckChain */
-macro_line|#ifdef SK_RLMT_SLOW_LOOKAHEAD
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtLookaheadPacket - examine received packet shortly, count s-th&n; *&n; * Description:&n; *&t;This routine examines each received packet fast and short and&n; *&t;increments some counters.&n; *&t;The received packet has to be stored virtually contiguous.&n; *&t;This function does the following:&n; *&t;- Increment some counters.&n; *&t;- Ensure length is sufficient.&n; *&t;- Ensure that destination address is physical port address,&n; *&t;  RLMT multicast, or BPDU multicast address.&n; *&n; * Notes:&n; *&t;This function is fully reentrant while the fast path is not blocked.&n; *&n; * Context:&n; *&t;isr/dpr, not pageable&n; *&n; * Returns:&n; *&t;SK_FALSE packet for upper layers&n; *&t;SK_TRUE  packet for RLMT&n; */
-DECL|function|SkRlmtLookaheadPacket
-id|SK_BOOL
-id|SkRlmtLookaheadPacket
-c_func
-(paren
-id|SK_AC
-op_star
-id|pAC
-comma
-multiline_comment|/* adapter context */
-id|SK_U32
-id|PortIdx
-comma
-multiline_comment|/* receiving port */
-id|SK_U8
-op_star
-id|pLaPacket
-comma
-multiline_comment|/* received packet&squot;s data */
-r_int
-id|PacketLength
-comma
-multiline_comment|/* received packet&squot;s length */
-multiline_comment|/* Necessary? */
-r_int
-id|LaLength
-)paren
-multiline_comment|/* lookahead length */
-(brace
-r_int
-id|i
-suffix:semicolon
-id|SK_BOOL
-id|IsBc
-suffix:semicolon
-multiline_comment|/* Broadcast address? */
-r_int
-id|RxDest
-suffix:semicolon
-multiline_comment|/* Receive destination? */
-r_int
-id|Offset
-suffix:semicolon
-multiline_comment|/* Offset of data to present to LOOKAHEAD. */
-r_int
-id|NumBytes
-suffix:semicolon
-multiline_comment|/* #Bytes to present to LOOKAHEAD. */
-id|SK_RLMT_PACKET
-op_star
-id|pRPacket
-suffix:semicolon
-id|SK_ADDR_PORT
-op_star
-id|pAPort
-suffix:semicolon
-macro_line|#ifdef DEBUG
-id|PacketLength
-op_assign
-id|PacketLength
-suffix:semicolon
-macro_line|#endif&t;/* DEBUG */
-id|pRPacket
-op_assign
-(paren
-id|SK_RLMT_PACKET
-op_star
-)paren
-id|pLaPacket
-suffix:semicolon
-id|pAPort
-op_assign
-op_amp
-id|pAC-&gt;Addr.Port
-(braket
-id|PortIdx
-)braket
-suffix:semicolon
-macro_line|#ifdef DEBUG
-r_if
-c_cond
-(paren
-id|pLaPacket
-op_eq
-l_int|NULL
-)paren
-(brace
-multiline_comment|/* Create error log entry. */
-id|SK_ERR_LOG
-c_func
-(paren
-id|pAC
-comma
-id|SK_ERRCL_SW
-comma
-id|SKERR_RLMT_E001
-comma
-id|SKERR_RLMT_E001_MSG
-)paren
-suffix:semicolon
-id|SK_DBG_MSG
-c_func
-(paren
-id|pAC
-comma
-id|SK_DBGMOD_RLMT
-comma
-id|SK_DBGCAT_RX
-comma
-(paren
-l_string|&quot;SkRlmtLookaheadPacket: NULL pointer.&bslash;n&quot;
-)paren
-)paren
-r_return
-(paren
-id|SK_FALSE
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif&t;/* DEBUG */
-multiline_comment|/* Drivers should get IsBc from the descriptor. */
-id|IsBc
-op_assign
-id|SK_TRUE
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|IsBc
-op_logical_and
-id|i
-OL
-id|SK_MAC_ADDR_LEN
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|IsBc
-op_assign
-id|IsBc
-op_logical_and
-(paren
-id|pLaPacket
-(braket
-id|i
-)braket
-op_eq
-l_int|0xFF
-)paren
-suffix:semicolon
-)brace
-id|SK_RLMT_PRE_LOOKAHEAD
-c_func
-(paren
-id|pAC
-comma
-id|PortIdx
-comma
-id|PacketLength
-comma
-id|IsBc
-comma
-op_amp
-id|Offset
-comma
-op_amp
-id|NumBytes
-)paren
-r_if
-c_cond
-(paren
-id|NumBytes
-op_eq
-l_int|0
-)paren
-(brace
-r_return
-(paren
-id|SK_FALSE
-)paren
-suffix:semicolon
-)brace
-id|SK_RLMT_LOOKAHEAD
-c_func
-(paren
-id|pAC
-comma
-id|PortIdx
-comma
-op_amp
-id|pLaPacket
-(braket
-id|Offset
-)braket
-comma
-id|IsBc
-comma
-id|pLaPacket
-(braket
-l_int|0
-)braket
-op_amp
-l_int|1
-comma
-multiline_comment|/* Drivers: Get info from descriptor. */
-op_amp
-id|RxDest
-)paren
-r_if
-c_cond
-(paren
-id|RxDest
-op_amp
-id|SK_RLMT_RX_RLMT
-)paren
-(brace
-r_return
-(paren
-id|SK_TRUE
-)paren
-suffix:semicolon
-)brace
-r_return
-(paren
-id|SK_FALSE
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* SkRlmtLookaheadPacket */
-macro_line|#endif&t;/* SK_RLMT_SLOW_LOOKAHEAD */
 multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtBuildPacket - build an RLMT packet&n; *&n; * Description:&n; *&t;This routine sets up an RLMT packet.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&n; * Returns:&n; *&t;NULL or pointer to RLMT mbuf&n; */
 DECL|function|SkRlmtBuildPacket
 id|RLMT_STATIC
@@ -1564,15 +1612,15 @@ id|SK_AC
 op_star
 id|pAC
 comma
-multiline_comment|/* adapter context */
+multiline_comment|/* Adapter Context */
 id|SK_IOC
 id|IoC
 comma
-multiline_comment|/* I/O context */
+multiline_comment|/* I/O Context */
 id|SK_U32
-id|PortIdx
+id|PortNumber
 comma
-multiline_comment|/* sending port */
+multiline_comment|/* Sending port */
 id|SK_U16
 id|PacketType
 comma
@@ -1581,12 +1629,12 @@ id|SK_MAC_ADDR
 op_star
 id|SrcAddr
 comma
-multiline_comment|/* source address */
+multiline_comment|/* Source address */
 id|SK_MAC_ADDR
 op_star
 id|DestAddr
 )paren
-multiline_comment|/* destination address */
+multiline_comment|/* Destination address */
 (brace
 r_int
 id|i
@@ -1761,7 +1809,7 @@ id|i
 op_assign
 id|pAC-&gt;Rlmt.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 dot
 id|Random
@@ -1816,7 +1864,7 @@ id|Length
 suffix:semicolon
 id|pMb-&gt;PortIdx
 op_assign
-id|PortIdx
+id|PortNumber
 suffix:semicolon
 id|Length
 op_sub_assign
@@ -1844,7 +1892,7 @@ id|SK_PACKET_ALIVE
 (brace
 id|pAC-&gt;Rlmt.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 dot
 id|TxHelloCts
@@ -1871,15 +1919,15 @@ id|SK_AC
 op_star
 id|pAC
 comma
-multiline_comment|/* adapter context */
+multiline_comment|/* Adapter Context */
 id|SK_IOC
 id|IoC
 comma
-multiline_comment|/* I/O context */
+multiline_comment|/* I/O Context */
 id|SK_U32
-id|PortIdx
+id|PortNumber
 )paren
-multiline_comment|/* sending port */
+multiline_comment|/* Sending port */
 (brace
 r_int
 id|i
@@ -1955,7 +2003,7 @@ id|i
 op_assign
 id|pAC-&gt;Addr.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 dot
 id|CurrentMacAddress.a
@@ -2058,7 +2106,7 @@ l_int|1
 op_assign
 id|SK_RLMT_SPT_BRIDGE_ID1
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Use virtual address as bridge ID and filter these packets&n;&t;&t; * on receive.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Use logical MAC address as bridge ID and filter these packets&n;&t;&t; * on receive.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -2088,7 +2136,17 @@ op_plus
 l_int|2
 )braket
 op_assign
-id|pAC-&gt;Addr.CurrentMacAddress.a
+id|pAC-&gt;Addr.Net
+(braket
+id|pAC-&gt;Rlmt.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|Net-&gt;NetNumber
+)braket
+dot
+id|CurrentMacAddress.a
 (braket
 id|i
 )braket
@@ -2175,7 +2233,7 @@ id|Length
 suffix:semicolon
 id|pMb-&gt;PortIdx
 op_assign
-id|PortIdx
+id|PortNumber
 suffix:semicolon
 id|Length
 op_sub_assign
@@ -2195,7 +2253,7 @@ l_int|0
 suffix:semicolon
 id|pAC-&gt;Rlmt.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 dot
 id|TxSpHelloReqCts
@@ -2220,14 +2278,15 @@ id|SK_AC
 op_star
 id|pAC
 comma
-multiline_comment|/* adapter context */
+multiline_comment|/* Adapter Context */
 id|SK_IOC
 id|IoC
 comma
-multiline_comment|/* I/O context */
+multiline_comment|/* I/O Context */
 id|SK_U32
-id|PortIdx
+id|PortNumber
 )paren
+multiline_comment|/* Sending port */
 (brace
 r_int
 id|j
@@ -2244,13 +2303,18 @@ op_assign
 op_amp
 id|pAC-&gt;Rlmt.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.RlmtMode
+id|pAC-&gt;Rlmt.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|Net-&gt;RlmtMode
 op_amp
 id|SK_RLMT_CHECK_LOC_LINK
 )paren
@@ -2267,7 +2331,7 @@ id|SK_RLMT_PCS_RX
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Port is suspicious. Send the RLMT packet to the&n;&t;&t;&t; * RLMT multicast address.&n;&t;&t;&t; */
+multiline_comment|/* Port is suspicious. Send the RLMT packet to the RLMT mc addr. */
 r_if
 c_cond
 (paren
@@ -2281,14 +2345,14 @@ id|pAC
 comma
 id|IoC
 comma
-id|PortIdx
+id|PortNumber
 comma
 id|SK_PACKET_ALIVE
 comma
 op_amp
 id|pAC-&gt;Addr.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 dot
 id|CurrentMacAddress
@@ -2346,14 +2410,14 @@ id|pAC
 comma
 id|IoC
 comma
-id|PortIdx
+id|PortNumber
 comma
 id|SK_PACKET_ALIVE
 comma
 op_amp
 id|pAC-&gt;Addr.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 dot
 id|CurrentMacAddress
@@ -2391,13 +2455,23 @@ r_if
 c_cond
 (paren
 (paren
-id|pAC-&gt;Rlmt.RlmtMode
+id|pAC-&gt;Rlmt.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|Net-&gt;RlmtMode
 op_amp
 id|SK_RLMT_CHECK_SEG
 )paren
 op_logical_and
 (paren
-id|pAC-&gt;Rlmt.CheckingState
+id|pAC-&gt;Rlmt.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|Net-&gt;CheckingState
 op_amp
 id|SK_RLMT_RCS_SEND_SEG
 )paren
@@ -2417,14 +2491,19 @@ id|pAC
 comma
 id|IoC
 comma
-id|PortIdx
+id|PortNumber
 )paren
 )paren
 op_ne
 l_int|NULL
 )paren
 (brace
-id|pAC-&gt;Rlmt.CheckingState
+id|pAC-&gt;Rlmt.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|Net-&gt;CheckingState
 op_and_assign
 op_complement
 id|SK_RLMT_RCS_SEND_SEG
@@ -2457,7 +2536,7 @@ comma
 (paren
 l_string|&quot;SkRlmtSend: BPDU Packet on Port %u.&bslash;n&quot;
 comma
-id|PortIdx
+id|PortNumber
 )paren
 )paren
 )brace
@@ -2466,7 +2545,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* SkRlmtSend */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtPortReceives - check if port is (going) down and bring it up&n; *&n; * Description:&n; *&t;This routine checks if a port who received a non-BPDU packet&n; *&t;needs to go up or needs to be stopped going down.&n; *&n;* Context:&n; *&t;runtime, pageable?&n; *&n; * Returns:&n; *&t;Nothing.&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtPortReceives - check if port is (going) down and bring it up&n; *&n; * Description:&n; *&t;This routine checks if a port who received a non-BPDU packet&n; *&t;needs to go up or needs to be stopped going down.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&n; * Returns:&n; *&t;Nothing.&n; */
 DECL|function|SkRlmtPortReceives
 id|RLMT_STATIC
 r_void
@@ -2477,15 +2556,15 @@ id|SK_AC
 op_star
 id|pAC
 comma
-multiline_comment|/* adapter context */
+multiline_comment|/* Adapter Context */
 id|SK_IOC
 id|IoC
 comma
-multiline_comment|/* I/O context */
+multiline_comment|/* I/O Context */
 id|SK_U32
-id|PortIdx
+id|PortNumber
 )paren
-multiline_comment|/* port to check */
+multiline_comment|/* Port to check */
 (brace
 id|SK_RLMT_PORT
 op_star
@@ -2499,7 +2578,7 @@ op_assign
 op_amp
 id|pAC-&gt;Rlmt.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 suffix:semicolon
 id|pRPort-&gt;PortNoRx
@@ -2554,7 +2633,18 @@ id|Para.Para32
 l_int|0
 )braket
 op_assign
-id|PortIdx
+id|PortNumber
+suffix:semicolon
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
 suffix:semicolon
 id|SkTimerStart
 c_func
@@ -2575,15 +2665,24 @@ comma
 id|Para
 )paren
 suffix:semicolon
+id|pRPort-&gt;CheckingState
+op_and_assign
+op_complement
+id|SK_RLMT_PCS_RX
+suffix:semicolon
+multiline_comment|/* pAC-&gt;Rlmt.CheckSwitch = SK_TRUE; */
 id|SkRlmtCheckSwitch
 c_func
 (paren
 id|pAC
 comma
 id|IoC
+comma
+id|pRPort-&gt;Net-&gt;NetNumber
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* PortDown &amp;&amp; !SuspectTx */
 r_else
 r_if
 c_cond
@@ -2617,25 +2716,29 @@ op_amp
 id|pRPort-&gt;DownRxTimer
 )paren
 suffix:semicolon
+id|pRPort-&gt;CheckingState
+op_and_assign
+op_complement
+id|SK_RLMT_PCS_RX
+suffix:semicolon
+multiline_comment|/* pAC-&gt;Rlmt.CheckSwitch = SK_TRUE; */
 id|SkRlmtCheckSwitch
 c_func
 (paren
 id|pAC
 comma
 id|IoC
+comma
+id|pRPort-&gt;Net-&gt;NetNumber
 )paren
 suffix:semicolon
 )brace
-id|pRPort-&gt;CheckingState
-op_and_assign
-op_complement
-id|SK_RLMT_PCS_RX
-suffix:semicolon
+multiline_comment|/* PortGoingDown */
 r_return
 suffix:semicolon
 )brace
 multiline_comment|/* SkRlmtPortReceives */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtPacketReceive - receive a packet for closer examination&n; *&n; * Description:&n; *&t;This routine examines a packet more closely than SkRlmtLookahead*().&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&n; * Returns:&n; *&t;Nothing.&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtPacketReceive - receive a packet for closer examination&n; *&n; * Description:&n; *&t;This routine examines a packet more closely than SK_RLMT_LOOKAHEAD.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&n; * Returns:&n; *&t;Nothing.&n; */
 DECL|function|SkRlmtPacketReceive
 id|RLMT_STATIC
 r_void
@@ -2646,16 +2749,16 @@ id|SK_AC
 op_star
 id|pAC
 comma
-multiline_comment|/* adapter context */
+multiline_comment|/* Adapter Context */
 id|SK_IOC
 id|IoC
 comma
-multiline_comment|/* I/O context */
+multiline_comment|/* I/O Context */
 id|SK_MBUF
 op_star
 id|pMb
 )paren
-multiline_comment|/* received packet */
+multiline_comment|/* Received packet */
 (brace
 macro_line|#ifdef xDEBUG
 r_extern
@@ -2682,7 +2785,7 @@ id|SK_U16
 id|PacketType
 suffix:semicolon
 id|SK_U32
-id|PortIdx
+id|PortNumber
 suffix:semicolon
 id|SK_ADDR_PORT
 op_star
@@ -2703,7 +2806,7 @@ suffix:semicolon
 id|SK_EVPARA
 id|Para
 suffix:semicolon
-id|PortIdx
+id|PortNumber
 op_assign
 id|pMb-&gt;PortIdx
 suffix:semicolon
@@ -2712,7 +2815,7 @@ op_assign
 op_amp
 id|pAC-&gt;Addr.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 suffix:semicolon
 id|pRPort
@@ -2720,7 +2823,7 @@ op_assign
 op_amp
 id|pAC-&gt;Rlmt.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 suffix:semicolon
 id|SK_DBG_MSG
@@ -2733,9 +2836,9 @@ comma
 id|SK_DBGCAT_RX
 comma
 (paren
-l_string|&quot;SkRlmtPacketReceive: PortIdx == %d.&bslash;n&quot;
+l_string|&quot;SkRlmtPacketReceive: PortNumber == %d.&bslash;n&quot;
 comma
-id|PortIdx
+id|PortNumber
 )paren
 )paren
 id|pRPacket
@@ -2787,7 +2890,7 @@ id|pAC
 comma
 id|IoC
 comma
-id|PortIdx
+id|PortNumber
 )paren
 suffix:semicolon
 )brace
@@ -2823,7 +2926,7 @@ id|pRPacket-&gt;DstAddr
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Not sent to current MAC or registered MC address&n;&t;&t; * =&gt; Trash it.&n;&t;&t; */
+multiline_comment|/* Not sent to current MAC or registered MC address =&gt; Trash it. */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -2898,7 +3001,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t; * CAUTION: Do not check for duplicate MAC&n;&t;&t; * address in RLMT Alive Reply packets.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * CAUTION: Do not check for duplicate MAC address in RLMT Alive Reply&n;&t;&t; * packets (they have the LLC_COMMAND_RESPONSE_BIT set in&n;&t;&t; * pRPacket-&gt;SSap).&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3251,12 +3354,6 @@ comma
 l_string|&quot;SkRlmtPacketReceive: Alive Reply.&bslash;n&quot;
 )paren
 )paren
-multiline_comment|/* Alive Reply Packet. */
-macro_line|#if 0
-id|pRPort-&gt;RlmtAcksPerTimeSlot
-op_increment
-suffix:semicolon
-macro_line|#endif&t;/* 0 */
 r_if
 c_cond
 (paren
@@ -3264,7 +3361,7 @@ op_logical_neg
 (paren
 id|pAC-&gt;Addr.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 dot
 id|PromMode
@@ -3352,7 +3449,18 @@ id|Para.Para32
 l_int|0
 )braket
 op_assign
-id|PortIdx
+id|PortNumber
+suffix:semicolon
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
 suffix:semicolon
 id|SkTimerStart
 c_func
@@ -3406,11 +3514,6 @@ l_string|&quot;SkRlmtPacketReceive: Alive Request.&bslash;n&quot;
 id|pRPort-&gt;RxHelloCts
 op_increment
 suffix:semicolon
-macro_line|#if 0
-id|pRPort-&gt;RlmtChksPerTimeSlot
-op_increment
-suffix:semicolon
-macro_line|#endif&t;/* 0 */
 multiline_comment|/* Answer. */
 r_for
 c_loop
@@ -3444,7 +3547,7 @@ id|i
 op_assign
 id|pAC-&gt;Addr.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 dot
 id|CurrentMacAddress.a
@@ -3492,7 +3595,7 @@ comma
 l_string|&quot;SkRlmtPacketReceive: Check your tx line.&bslash;n&quot;
 )paren
 )paren
-multiline_comment|/*&n;&t;&t;&t; * A port checking us requests us to check our tx line.&n;&t;&t;&t; */
+multiline_comment|/* A port checking us requests us to check our tx line. */
 id|pRPort-&gt;CheckingState
 op_or_assign
 id|SK_RLMT_PCS_TX
@@ -3503,7 +3606,18 @@ id|Para.Para32
 l_int|0
 )braket
 op_assign
-id|PortIdx
+id|PortNumber
+suffix:semicolon
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
 suffix:semicolon
 id|SkTimerStart
 c_func
@@ -3547,14 +3661,14 @@ id|pAC
 comma
 id|IoC
 comma
-id|PortIdx
+id|PortNumber
 comma
 id|SK_PACKET_ALIVE
 comma
 op_amp
 id|pAC-&gt;Addr.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 dot
 id|CurrentMacAddress
@@ -3603,6 +3717,8 @@ id|SkRlmtBuildCheckChain
 c_func
 (paren
 id|pAC
+comma
+id|pRPort-&gt;Net-&gt;NetNumber
 )paren
 suffix:semicolon
 id|SkDrvFreeRlmtMbuf
@@ -3698,7 +3814,19 @@ l_int|2
 )braket
 comma
 op_amp
-id|pAC-&gt;Addr.CurrentMacAddress.a
+id|pAC-&gt;Addr.Net
+(braket
+id|pAC-&gt;Rlmt
+dot
+id|Port
+(braket
+id|PortNumber
+)braket
+dot
+id|Net-&gt;NetNumber
+)braket
+dot
+id|CurrentMacAddress.a
 (braket
 l_int|0
 )braket
@@ -3727,26 +3855,49 @@ l_int|2
 )paren
 op_logical_and
 (paren
-id|pAC-&gt;Rlmt.LinksUp
+id|pAC-&gt;Rlmt.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|Net-&gt;LinksUp
 OG
 l_int|1
 )paren
 op_logical_and
 (paren
-id|pAC-&gt;Rlmt.RlmtMode
+id|pAC-&gt;Rlmt.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|Net-&gt;RlmtMode
 op_amp
 id|SK_RLMT_CHECK_SEG
 )paren
+op_ne
+l_int|0
 op_logical_and
-op_logical_neg
 (paren
-id|pAC-&gt;Rlmt.CheckingState
+id|pAC-&gt;Rlmt.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|Net-&gt;CheckingState
 op_amp
 id|SK_RLMT_RCS_SEG
 )paren
+op_eq
+l_int|0
 )paren
 (brace
-id|pAC-&gt;Rlmt.CheckingState
+id|pAC-&gt;Rlmt.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|Net-&gt;CheckingState
 op_or_assign
 id|SK_RLMT_RCS_START_SEG
 op_or
@@ -3784,6 +3935,61 @@ id|pRPort-&gt;RootIdSet
 op_assign
 id|SK_TRUE
 suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_DUMP
+comma
+(paren
+l_string|&quot;Root ID %d: %02x %02x %02x %02x %02x %02x %02x %02x.&bslash;n&quot;
+comma
+id|PortNumber
+comma
+id|pRPort-&gt;Root.Id
+(braket
+l_int|0
+)braket
+comma
+id|pRPort-&gt;Root.Id
+(braket
+l_int|1
+)braket
+comma
+id|pRPort-&gt;Root.Id
+(braket
+l_int|2
+)braket
+comma
+id|pRPort-&gt;Root.Id
+(braket
+l_int|3
+)braket
+comma
+id|pRPort-&gt;Root.Id
+(braket
+l_int|4
+)braket
+comma
+id|pRPort-&gt;Root.Id
+(braket
+l_int|5
+)braket
+comma
+id|pRPort-&gt;Root.Id
+(braket
+l_int|6
+)braket
+comma
+id|pRPort-&gt;Root.Id
+(braket
+l_int|7
+)braket
+)paren
+)paren
 )brace
 id|SkDrvFreeRlmtMbuf
 c_func
@@ -3798,9 +4004,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.CheckingState
+(paren
+id|pAC-&gt;Rlmt.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|Net-&gt;CheckingState
 op_amp
 id|SK_RLMT_RCS_REPORT_SEG
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|SkRlmtCheckSeg
@@ -3809,6 +4024,13 @@ c_func
 id|pAC
 comma
 id|IoC
+comma
+id|pAC-&gt;Rlmt.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|Net-&gt;NetNumber
 )paren
 suffix:semicolon
 )brace
@@ -3855,15 +4077,15 @@ id|SK_AC
 op_star
 id|pAC
 comma
-multiline_comment|/* adapter context */
+multiline_comment|/* Adapter Context */
 id|SK_IOC
 id|IoC
 comma
-multiline_comment|/* I/O context */
+multiline_comment|/* I/O Context */
 id|SK_U32
-id|PortIdx
+id|PortNumber
 )paren
-multiline_comment|/* port to check */
+multiline_comment|/* Port to check */
 (brace
 r_int
 id|i
@@ -3883,7 +4105,7 @@ op_assign
 op_amp
 id|pAC-&gt;Rlmt.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 suffix:semicolon
 r_if
@@ -3910,7 +4132,7 @@ comma
 (paren
 l_string|&quot;SkRlmtCheckPort %d: No (%d) receives in last time slot.&bslash;n&quot;
 comma
-id|PortIdx
+id|PortNumber
 comma
 id|pRPort-&gt;PacketsPerTimeSlot
 )paren
@@ -3922,26 +4144,46 @@ c_cond
 id|pRPort-&gt;PortNoRx
 op_logical_and
 (paren
-id|pAC-&gt;Rlmt.LinksUp
+id|pAC-&gt;Rlmt.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|Net-&gt;LinksUp
 OG
 l_int|1
 )paren
 op_logical_and
 (paren
-id|pAC-&gt;Rlmt.RlmtMode
+id|pAC-&gt;Rlmt.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|Net-&gt;RlmtMode
 op_amp
 id|SK_RLMT_CHECK_SEG
 )paren
 op_logical_and
 op_logical_neg
 (paren
-id|pAC-&gt;Rlmt.CheckingState
+id|pAC-&gt;Rlmt.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|Net-&gt;CheckingState
 op_amp
 id|SK_RLMT_RCS_SEG
 )paren
 )paren
 (brace
-id|pAC-&gt;Rlmt.CheckingState
+id|pAC-&gt;Rlmt.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|Net-&gt;CheckingState
 op_or_assign
 id|SK_RLMT_RCS_START_SEG
 op_or
@@ -3980,7 +4222,12 @@ op_assign
 id|TO_SHORTEN
 c_func
 (paren
-id|pAC-&gt;Rlmt.TimeoutValue
+id|pAC-&gt;Rlmt.Port
+(braket
+id|PortNumber
+)braket
+dot
+id|Net-&gt;TimeoutValue
 )paren
 suffix:semicolon
 r_if
@@ -4012,13 +4259,24 @@ id|Para.Para32
 l_int|0
 )braket
 op_assign
-id|PortIdx
+id|PortNumber
 suffix:semicolon
 id|pRPort-&gt;CheckingState
 op_or_assign
 id|SK_RLMT_PCS_RX
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * What shall we do if the port checked&n;&t;&t;&t;&t; * by this one receives our request&n;&t;&t;&t;&t; * frames?  What&squot;s bad - our rx line&n;&t;&t;&t;&t; * or his tx line?&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * What shall we do if the port checked by this one receives&n;&t;&t;&t;&t; * our request frames?  What&squot;s bad - our rx line or his tx line?&n;&t;&t;&t;&t; */
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
+suffix:semicolon
 id|SkTimerStart
 c_func
 (paren
@@ -4092,14 +4350,14 @@ id|pAC
 comma
 id|IoC
 comma
-id|PortIdx
+id|PortNumber
 comma
 id|SK_PACKET_CHECK_TX
 comma
 op_amp
 id|pAC-&gt;Addr.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 dot
 id|CurrentMacAddress
@@ -4161,7 +4419,7 @@ comma
 (paren
 l_string|&quot;SkRlmtCheckPort %d: %d (%d) receives in last time slot.&bslash;n&quot;
 comma
-id|PortIdx
+id|PortNumber
 comma
 id|pRPort-&gt;PacketsPerTimeSlot
 op_minus
@@ -4177,9 +4435,26 @@ id|pAC
 comma
 id|IoC
 comma
-id|PortIdx
+id|PortNumber
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pAC-&gt;Rlmt.CheckSwitch
+)paren
+(brace
+id|SkRlmtCheckSwitch
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|pRPort-&gt;Net-&gt;NetNumber
+)paren
+suffix:semicolon
+)brace
 id|NewTimeout
 op_assign
 id|SK_RLMT_DEF_TO_VAL
@@ -4203,24 +4478,24 @@ id|SK_AC
 op_star
 id|pAC
 comma
-multiline_comment|/* adapter context */
+multiline_comment|/* Adapter Context */
 id|SK_IOC
 id|IoC
 comma
-multiline_comment|/* I/O context */
+multiline_comment|/* I/O Context */
 id|SK_U32
-id|A
+id|Active
 comma
-multiline_comment|/* active port */
+multiline_comment|/* Active port */
 id|SK_U32
-id|P
+id|PrefPort
 comma
-multiline_comment|/* preferred port */
+multiline_comment|/* Preferred port */
 id|SK_U32
 op_star
-id|N
+id|pSelect
 )paren
-multiline_comment|/* new active port */
+multiline_comment|/* New active port */
 (brace
 id|SK_U64
 id|BcTimeStamp
@@ -4259,6 +4534,7 @@ id|i
 op_increment
 )paren
 (brace
+macro_line|#ifdef xDEBUG
 id|SK_DBG_MSG
 c_func
 (paren
@@ -4269,7 +4545,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;TimeStamp Port %d: %.08x%.08x.&bslash;n&quot;
+l_string|&quot;TimeStamp Port %d: %08x %08x.&bslash;n&quot;
 comma
 id|i
 comma
@@ -4312,6 +4588,7 @@ id|OFFS_LO32
 )paren
 )paren
 )paren
+macro_line|#endif&t;/* DEBUG */
 r_if
 c_cond
 (paren
@@ -4358,7 +4635,7 @@ dot
 id|BcTimeStamp
 suffix:semicolon
 op_star
-id|N
+id|pSelect
 op_assign
 id|i
 suffix:semicolon
@@ -4375,6 +4652,7 @@ c_cond
 id|PortFound
 )paren
 (brace
+macro_line|#if 0
 id|SK_DBG_MSG
 c_func
 (paren
@@ -4388,9 +4666,10 @@ comma
 l_string|&quot;Port %d received the last broadcast.&bslash;n&quot;
 comma
 op_star
-id|N
+id|pSelect
 )paren
 )paren
+macro_line|#endif&t;/* 0 */
 multiline_comment|/* Look if another port&squot;s time stamp is similar. */
 r_for
 c_loop
@@ -4416,7 +4695,7 @@ c_cond
 id|i
 op_eq
 op_star
-id|N
+id|pSelect
 )paren
 (brace
 r_continue
@@ -4470,6 +4749,7 @@ id|PortFound
 op_assign
 id|SK_FALSE
 suffix:semicolon
+macro_line|#ifdef xDEBUG
 id|SK_DBG_MSG
 c_func
 (paren
@@ -4480,19 +4760,18 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;Port %d received a broadcast %s.&bslash;n&quot;
+l_string|&quot;Port %d received a broadcast at a similar time.&bslash;n&quot;
 comma
 id|i
-comma
-l_string|&quot;at a similar time&quot;
 )paren
 )paren
+macro_line|#endif&t;/* DEBUG */
 r_break
 suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifdef DEBUG
+macro_line|#ifdef xDEBUG
 r_if
 c_cond
 (paren
@@ -4509,12 +4788,22 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_CHECK_SWITCH found Port %d receiving %s.&bslash;n&quot;
+l_string|&quot;SK_RLMT_CHECK_SWITCH found Port %d receiving the substantially latest broadcast (%d).&bslash;n&quot;
 comma
 op_star
-id|N
+id|pSelect
 comma
-l_string|&quot;the substantially latest broadcast&quot;
+id|BcTimeStamp
+op_minus
+id|pAC-&gt;Rlmt.Port
+(braket
+l_int|1
+op_minus
+op_star
+id|pSelect
+)braket
+dot
+id|BcTimeStamp
 )paren
 )paren
 )brace
@@ -4537,24 +4826,24 @@ id|SK_AC
 op_star
 id|pAC
 comma
-multiline_comment|/* adapter context */
+multiline_comment|/* Adapter Context */
 id|SK_IOC
 id|IoC
 comma
-multiline_comment|/* I/O context */
+multiline_comment|/* I/O Context */
 id|SK_U32
-id|A
+id|Active
 comma
-multiline_comment|/* active port */
+multiline_comment|/* Active port */
 id|SK_U32
-id|P
+id|PrefPort
 comma
-multiline_comment|/* preferred port */
+multiline_comment|/* Preferred port */
 id|SK_U32
 op_star
-id|N
+id|pSelect
 )paren
-multiline_comment|/* new active port */
+multiline_comment|/* New active port */
 (brace
 id|SK_U32
 id|i
@@ -4610,7 +4899,7 @@ id|SK_RLMT_PCS_RX
 )paren
 (brace
 op_star
-id|N
+id|pSelect
 op_assign
 id|i
 suffix:semicolon
@@ -4620,7 +4909,7 @@ c_cond
 op_logical_neg
 id|pAC-&gt;Rlmt.Port
 (braket
-id|A
+id|Active
 )braket
 dot
 id|PortDown
@@ -4629,7 +4918,7 @@ op_logical_neg
 (paren
 id|pAC-&gt;Rlmt.Port
 (braket
-id|A
+id|Active
 )braket
 dot
 id|CheckingState
@@ -4639,9 +4928,9 @@ id|SK_RLMT_PCS_RX
 )paren
 (brace
 op_star
-id|N
+id|pSelect
 op_assign
-id|A
+id|Active
 suffix:semicolon
 )brace
 r_if
@@ -4650,7 +4939,7 @@ c_cond
 op_logical_neg
 id|pAC-&gt;Rlmt.Port
 (braket
-id|P
+id|PrefPort
 )braket
 dot
 id|PortDown
@@ -4659,7 +4948,7 @@ op_logical_neg
 (paren
 id|pAC-&gt;Rlmt.Port
 (braket
-id|P
+id|PrefPort
 )braket
 dot
 id|CheckingState
@@ -4669,9 +4958,9 @@ id|SK_RLMT_PCS_RX
 )paren
 (brace
 op_star
-id|N
+id|pSelect
 op_assign
-id|P
+id|PrefPort
 suffix:semicolon
 )brace
 id|PortFound
@@ -4691,7 +4980,7 @@ comma
 l_string|&quot;SK_RLMT_CHECK_SWITCH found Port %d up and not check RX.&bslash;n&quot;
 comma
 op_star
-id|N
+id|pSelect
 )paren
 )paren
 r_break
@@ -4716,28 +5005,28 @@ id|SK_AC
 op_star
 id|pAC
 comma
-multiline_comment|/* adapter context */
+multiline_comment|/* Adapter Context */
 id|SK_IOC
 id|IoC
 comma
-multiline_comment|/* I/O context */
+multiline_comment|/* I/O Context */
 id|SK_U32
-id|A
+id|Active
 comma
-multiline_comment|/* active port */
+multiline_comment|/* Active port */
 id|SK_U32
-id|P
+id|PrefPort
 comma
-multiline_comment|/* preferred port */
+multiline_comment|/* Preferred port */
 id|SK_U32
 op_star
-id|N
+id|pSelect
 comma
-multiline_comment|/* new active port */
+multiline_comment|/* New active port */
 id|SK_BOOL
 id|AutoNegDone
 )paren
-multiline_comment|/* successfully auto-negotiated? */
+multiline_comment|/* Successfully auto-negotiated? */
 (brace
 id|SK_U32
 id|i
@@ -4791,7 +5080,7 @@ id|AutoNegDone
 )paren
 (brace
 op_star
-id|N
+id|pSelect
 op_assign
 id|i
 suffix:semicolon
@@ -4800,7 +5089,7 @@ c_cond
 (paren
 id|pAC-&gt;Rlmt.Port
 (braket
-id|A
+id|Active
 )braket
 dot
 id|PortState
@@ -4809,7 +5098,7 @@ id|SK_RLMT_PS_UP
 op_logical_and
 id|pAC-&gt;GIni.GP
 (braket
-id|A
+id|Active
 )braket
 dot
 id|PAutoNegFail
@@ -4818,9 +5107,9 @@ id|AutoNegDone
 )paren
 (brace
 op_star
-id|N
+id|pSelect
 op_assign
-id|A
+id|Active
 suffix:semicolon
 )brace
 r_if
@@ -4828,7 +5117,7 @@ c_cond
 (paren
 id|pAC-&gt;Rlmt.Port
 (braket
-id|P
+id|PrefPort
 )braket
 dot
 id|PortState
@@ -4837,7 +5126,7 @@ id|SK_RLMT_PS_UP
 op_logical_and
 id|pAC-&gt;GIni.GP
 (braket
-id|P
+id|PrefPort
 )braket
 dot
 id|PAutoNegFail
@@ -4846,9 +5135,9 @@ id|AutoNegDone
 )paren
 (brace
 op_star
-id|N
+id|pSelect
 op_assign
-id|P
+id|PrefPort
 suffix:semicolon
 )brace
 id|PortFound
@@ -4868,7 +5157,7 @@ comma
 l_string|&quot;SK_RLMT_CHECK_SWITCH found Port %d up.&bslash;n&quot;
 comma
 op_star
-id|N
+id|pSelect
 )paren
 )paren
 r_break
@@ -4893,39 +5182,41 @@ id|SK_AC
 op_star
 id|pAC
 comma
-multiline_comment|/* adapter context */
+multiline_comment|/* Adapter Context */
 id|SK_IOC
 id|IoC
 comma
-multiline_comment|/* I/O context */
+multiline_comment|/* I/O Context */
 id|SK_U32
-id|A
+id|Active
 comma
-multiline_comment|/* active port */
+multiline_comment|/* Active port */
 id|SK_U32
-id|P
+id|PrefPort
 comma
-multiline_comment|/* preferred port */
+multiline_comment|/* Preferred port */
 id|SK_U32
 op_star
-id|N
+id|pSelect
 comma
-multiline_comment|/* new active port */
+multiline_comment|/* New active port */
 id|SK_BOOL
 id|AutoNegDone
 )paren
-multiline_comment|/* successfully auto-negotiated? */
+multiline_comment|/* Successfully auto-negotiated? */
 (brace
 id|SK_U64
 id|GuTimeStamp
-op_assign
-l_int|0
 suffix:semicolon
 id|SK_U32
 id|i
 suffix:semicolon
 id|SK_BOOL
 id|PortFound
+suffix:semicolon
+id|GuTimeStamp
+op_assign
+l_int|0
 suffix:semicolon
 id|PortFound
 op_assign
@@ -4982,7 +5273,7 @@ dot
 id|GuTimeStamp
 suffix:semicolon
 op_star
-id|N
+id|pSelect
 op_assign
 id|i
 suffix:semicolon
@@ -5013,7 +5304,7 @@ c_loop
 id|i
 op_assign
 op_star
-id|N
+id|pSelect
 op_plus
 l_int|1
 suffix:semicolon
@@ -5069,7 +5360,7 @@ dot
 id|GuTimeStamp
 suffix:semicolon
 op_star
-id|N
+id|pSelect
 op_assign
 id|i
 suffix:semicolon
@@ -5088,7 +5379,7 @@ comma
 l_string|&quot;SK_RLMT_CHECK_SWITCH found Port %d going up.&bslash;n&quot;
 comma
 op_star
-id|N
+id|pSelect
 )paren
 )paren
 r_return
@@ -5109,28 +5400,28 @@ id|SK_AC
 op_star
 id|pAC
 comma
-multiline_comment|/* adapter context */
+multiline_comment|/* Adapter Context */
 id|SK_IOC
 id|IoC
 comma
-multiline_comment|/* I/O context */
+multiline_comment|/* I/O Context */
 id|SK_U32
-id|A
+id|Active
 comma
-multiline_comment|/* active port */
+multiline_comment|/* Active port */
 id|SK_U32
-id|P
+id|PrefPort
 comma
-multiline_comment|/* preferred port */
+multiline_comment|/* Preferred port */
 id|SK_U32
 op_star
-id|N
+id|pSelect
 comma
-multiline_comment|/* new active port */
+multiline_comment|/* New active port */
 id|SK_BOOL
 id|AutoNegDone
 )paren
-multiline_comment|/* successfully auto-negotiated? */
+multiline_comment|/* Successfully auto-negotiated? */
 (brace
 id|SK_U32
 id|i
@@ -5184,7 +5475,7 @@ id|AutoNegDone
 )paren
 (brace
 op_star
-id|N
+id|pSelect
 op_assign
 id|i
 suffix:semicolon
@@ -5193,7 +5484,7 @@ c_cond
 (paren
 id|pAC-&gt;Rlmt.Port
 (braket
-id|A
+id|Active
 )braket
 dot
 id|PortState
@@ -5202,7 +5493,7 @@ id|SK_RLMT_PS_DOWN
 op_logical_and
 id|pAC-&gt;GIni.GP
 (braket
-id|A
+id|Active
 )braket
 dot
 id|PAutoNegFail
@@ -5211,9 +5502,9 @@ id|AutoNegDone
 )paren
 (brace
 op_star
-id|N
+id|pSelect
 op_assign
-id|A
+id|Active
 suffix:semicolon
 )brace
 r_if
@@ -5221,7 +5512,7 @@ c_cond
 (paren
 id|pAC-&gt;Rlmt.Port
 (braket
-id|P
+id|PrefPort
 )braket
 dot
 id|PortState
@@ -5230,7 +5521,7 @@ id|SK_RLMT_PS_DOWN
 op_logical_and
 id|pAC-&gt;GIni.GP
 (braket
-id|P
+id|PrefPort
 )braket
 dot
 id|PAutoNegFail
@@ -5239,9 +5530,9 @@ id|AutoNegDone
 )paren
 (brace
 op_star
-id|N
+id|pSelect
 op_assign
-id|P
+id|PrefPort
 suffix:semicolon
 )brace
 id|PortFound
@@ -5261,7 +5552,7 @@ comma
 l_string|&quot;SK_RLMT_CHECK_SWITCH found Port %d down.&bslash;n&quot;
 comma
 op_star
-id|N
+id|pSelect
 )paren
 )paren
 r_break
@@ -5286,20 +5577,24 @@ id|SK_AC
 op_star
 id|pAC
 comma
-multiline_comment|/* adapter context */
+multiline_comment|/* Adapter Context */
 id|SK_IOC
 id|IoC
+comma
+multiline_comment|/* I/O Context */
+id|SK_U32
+id|NetIdx
 )paren
-multiline_comment|/* I/O context */
+multiline_comment|/* Net index */
 (brace
 id|SK_EVPARA
 id|Para
 suffix:semicolon
 id|SK_U32
-id|A
+id|Active
 suffix:semicolon
 id|SK_U32
-id|P
+id|PrefPort
 suffix:semicolon
 id|SK_U32
 id|i
@@ -5307,41 +5602,54 @@ suffix:semicolon
 id|SK_BOOL
 id|PortFound
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pAC-&gt;Rlmt.RlmtState
-op_eq
-id|SK_RLMT_RS_INIT
-)paren
-(brace
-r_return
-suffix:semicolon
-)brace
-id|A
+id|Active
 op_assign
-id|pAC-&gt;Rlmt.MacActive
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|ActivePort
 suffix:semicolon
 multiline_comment|/* Index of active port. */
-id|P
+id|PrefPort
 op_assign
-id|pAC-&gt;Rlmt.PrefPort
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|PrefPort
 suffix:semicolon
 multiline_comment|/* Index of preferred port. */
 id|PortFound
 op_assign
 id|SK_FALSE
 suffix:semicolon
+id|pAC-&gt;Rlmt.CheckSwitch
+op_assign
+id|SK_FALSE
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.LinksUp
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|LinksUp
 op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Last link went down - shut down the net.&n;&t;&t; */
-id|pAC-&gt;Rlmt.RlmtState
+multiline_comment|/* Last link went down - shut down the net. */
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|RlmtState
 op_assign
 id|SK_RLMT_RS_NET_DOWN
 suffix:semicolon
@@ -5351,6 +5659,13 @@ l_int|0
 )braket
 op_assign
 id|SK_RLMT_NET_DOWN_TEMP
+suffix:semicolon
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_assign
+id|NetIdx
 suffix:semicolon
 id|SkEventQueue
 c_func
@@ -5364,28 +5679,85 @@ comma
 id|Para
 )paren
 suffix:semicolon
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_assign
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|Port
+(braket
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|ActivePort
+)braket
+op_member_access_from_pointer
+id|PortNumber
+suffix:semicolon
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_assign
+id|NetIdx
+suffix:semicolon
+id|SkEventQueue
+c_func
+(paren
+id|pAC
+comma
+id|SKGE_PNMI
+comma
+id|SK_PNMI_EVT_RLMT_ACTIVE_DOWN
+comma
+id|Para
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* pAC-&gt;Rlmt.LinksUp == 0 */
 r_else
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.LinksUp
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|LinksUp
 op_eq
 l_int|1
 op_logical_and
-id|pAC-&gt;Rlmt.RlmtState
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|RlmtState
 op_eq
 id|SK_RLMT_RS_NET_DOWN
 )paren
 (brace
 multiline_comment|/* First link came up - get the net up. */
-id|pAC-&gt;Rlmt.RlmtState
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|RlmtState
 op_assign
 id|SK_RLMT_RS_NET_UP
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If pAC-&gt;Rlmt.MacActive != Para.Para32[0],&n;&t;&t; * the DRV switches to the port that came up.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If pAC-&gt;Rlmt.ActivePort != Para.Para32[0],&n;&t;&t; * the DRV switches to the port that came up.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -5395,10 +5767,12 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-(paren
-id|SK_U32
-)paren
-id|pAC-&gt;GIni.GIMacsFound
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|NumPorts
 suffix:semicolon
 id|i
 op_increment
@@ -5408,11 +5782,16 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|pAC-&gt;Rlmt.Port
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|LinkDown
 )paren
 (brace
@@ -5420,34 +5799,44 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|pAC-&gt;Rlmt.Port
+id|pAC-&gt;Rlmt.Net
 (braket
-id|A
+id|NetIdx
 )braket
 dot
+id|Port
+(braket
+id|Active
+)braket
+op_member_access_from_pointer
 id|LinkDown
 )paren
 (brace
 id|i
 op_assign
-id|A
+id|Active
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
 op_logical_neg
-id|pAC-&gt;Rlmt.Port
+id|pAC-&gt;Rlmt.Net
 (braket
-id|P
+id|NetIdx
 )braket
 dot
+id|Port
+(braket
+id|PrefPort
+)braket
+op_member_access_from_pointer
 id|LinkDown
 )paren
 (brace
 id|i
 op_assign
-id|P
+id|PrefPort
 suffix:semicolon
 )brace
 id|PortFound
@@ -5469,14 +5858,24 @@ id|Para.Para32
 l_int|0
 )braket
 op_assign
-id|pAC-&gt;Rlmt.MacActive
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|Port
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|PortNumber
 suffix:semicolon
 id|Para.Para32
 (braket
 l_int|1
 )braket
 op_assign
-id|i
+id|NetIdx
 suffix:semicolon
 id|SkEventQueue
 c_func
@@ -5485,12 +5884,17 @@ id|pAC
 comma
 id|SKGE_PNMI
 comma
-id|SK_PNMI_EVT_RLMT_PORT_SWITCH
+id|SK_PNMI_EVT_RLMT_ACTIVE_UP
 comma
 id|Para
 )paren
 suffix:semicolon
-id|pAC-&gt;Rlmt.MacActive
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|ActivePort
 op_assign
 id|i
 suffix:semicolon
@@ -5499,7 +5903,24 @@ id|Para.Para32
 l_int|0
 )braket
 op_assign
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|Port
+(braket
 id|i
+)braket
+op_member_access_from_pointer
+id|PortNumber
+suffix:semicolon
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_assign
+id|NetIdx
 suffix:semicolon
 id|SkEventQueue
 c_func
@@ -5517,6 +5938,19 @@ r_if
 c_cond
 (paren
 (paren
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|RlmtMode
+op_amp
+id|SK_RLMT_TRANSPARENT
+)paren
+op_eq
+l_int|0
+op_logical_and
+(paren
 id|Para.pParaPtr
 op_assign
 id|SkRlmtBuildPacket
@@ -5526,12 +5960,27 @@ id|pAC
 comma
 id|IoC
 comma
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|Port
+(braket
 id|i
+)braket
+op_member_access_from_pointer
+id|PortNumber
 comma
 id|SK_PACKET_ANNOUNCE
 comma
 op_amp
-id|pAC-&gt;Addr.CurrentMacAddress
+id|pAC-&gt;Addr.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|CurrentMacAddress
 comma
 op_amp
 id|SkRlmtMcAddr
@@ -5541,7 +5990,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Send packet to RLMT multicast address&n;&t;&t;&t;&t; * to force switches to learn the new&n;&t;&t;&t;&t; * location of the address.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Send announce packet to RLMT multicast address to force&n;&t;&t;&t;&t; * switches to learn the new location of the logical MAC address.&n;&t;&t;&t;&t; */
 id|SkEventQueue
 c_func
 (paren
@@ -5574,22 +6023,29 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* LinksUp == 1 &amp;&amp; RlmtState == SK_RLMT_RS_NET_DOWN */
 r_else
 (brace
+multiline_comment|/* Cannot be reached in dual-net mode. */
 id|Para.Para32
 (braket
 l_int|0
 )braket
 op_assign
-id|A
+id|Active
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Preselection:&n;&t;&t; *   If RLMT Mode != CheckLinkState&n;&t;&t; *     select port that received a broadcast frame&n;&t;&t; *     substantially later than all other ports&n;&t;&t; *   else select first port that is not SuspectRx&n;&t;&t; *   else select first port that is PortUp&n;&t;&t; *   else select port that is PortGoingUp for the longest time&n;&t;&t; *   else select first port that is PortDown&n;&t;&t; *   else stop.&n;&t;&t; *&n;&t;&t; * For the preselected port:&n;&t;&t; *   If ActivePort is equal in quality, select ActivePort.&n;&t;&t; *&n;&t;&t; *   If PrefPort is equal in quality, select PrefPort.&n;&t;&t; *&n;&t;&t; *   If MacActive != SelectedPort,&n;&t;&t; *     If old ActivePort is LinkDown,&n;&t;&t; *       SwitchHard&n;&t;&t; *     else&n;&t;&t; *       SwitchSoft&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Preselection:&n;&t;&t; *&t;If RLMT Mode != CheckLinkState&n;&t;&t; *&t;&t;select port that received a broadcast frame substantially later&n;&t;&t; *&t;&t;than all other ports&n;&t;&t; *&t;else select first port that is not SuspectRx&n;&t;&t; *&t;else select first port that is PortUp&n;&t;&t; *&t;else select port that is PortGoingUp for the longest time&n;&t;&t; *&t;else select first port that is PortDown&n;&t;&t; *&t;else stop.&n;&t;&t; *&n;&t;&t; * For the preselected port:&n;&t;&t; *&t;If ActivePort is equal in quality, select ActivePort.&n;&t;&t; *&n;&t;&t; *&t;If PrefPort is equal in quality, select PrefPort.&n;&t;&t; *&n;&t;&t; *&t;If ActivePort != SelectedPort,&n;&t;&t; *&t;&t;If old ActivePort is LinkDown,&n;&t;&t; *&t;&t;&t;SwitchHard&n;&t;&t; *&t;&t;else&n;&t;&t; *&t;&t;&t;SwitchSoft&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.RlmtMode
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|0
+)braket
+dot
+id|RlmtMode
 op_ne
-id|SK_RLMT_CHECK_LINK
+id|SK_RLMT_MODE_CLS
 )paren
 (brace
 r_if
@@ -5608,9 +6064,9 @@ id|pAC
 comma
 id|IoC
 comma
-id|A
+id|Active
 comma
-id|P
+id|PrefPort
 comma
 op_amp
 id|Para.Para32
@@ -5636,9 +6092,9 @@ id|pAC
 comma
 id|IoC
 comma
-id|A
+id|Active
 comma
-id|P
+id|PrefPort
 comma
 op_amp
 id|Para.Para32
@@ -5649,6 +6105,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* pAC-&gt;Rlmt.RlmtMode != SK_RLMT_MODE_CLS */
 r_if
 c_cond
 (paren
@@ -5665,9 +6122,9 @@ id|pAC
 comma
 id|IoC
 comma
-id|A
+id|Active
 comma
-id|P
+id|PrefPort
 comma
 op_amp
 id|Para.Para32
@@ -5695,9 +6152,9 @@ id|pAC
 comma
 id|IoC
 comma
-id|A
+id|Active
 comma
-id|P
+id|PrefPort
 comma
 op_amp
 id|Para.Para32
@@ -5725,9 +6182,9 @@ id|pAC
 comma
 id|IoC
 comma
-id|A
+id|Active
 comma
-id|P
+id|PrefPort
 comma
 op_amp
 id|Para.Para32
@@ -5755,9 +6212,9 @@ id|pAC
 comma
 id|IoC
 comma
-id|A
+id|Active
 comma
-id|P
+id|PrefPort
 comma
 op_amp
 id|Para.Para32
@@ -5772,9 +6229,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.RlmtMode
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|0
+)braket
+dot
+id|RlmtMode
 op_ne
-id|SK_RLMT_CHECK_LINK
+id|SK_RLMT_MODE_CLS
 )paren
 (brace
 r_if
@@ -5793,9 +6255,9 @@ id|pAC
 comma
 id|IoC
 comma
-id|A
+id|Active
 comma
-id|P
+id|PrefPort
 comma
 op_amp
 id|Para.Para32
@@ -5823,9 +6285,9 @@ id|pAC
 comma
 id|IoC
 comma
-id|A
+id|Active
 comma
-id|P
+id|PrefPort
 comma
 op_amp
 id|Para.Para32
@@ -5838,6 +6300,7 @@ id|AUTONEG_FAILED
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* pAC-&gt;Rlmt.RlmtMode != SK_RLMT_MODE_CLS */
 r_if
 c_cond
 (paren
@@ -5852,15 +6315,80 @@ id|Para.Para32
 l_int|1
 )braket
 op_ne
-id|A
+id|Active
 )paren
 (brace
-id|pAC-&gt;Rlmt.MacActive
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Active: %d, Para1: %d.&bslash;n&quot;
+comma
+id|Active
+comma
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)paren
+)paren
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|ActivePort
 op_assign
 id|Para.Para32
 (braket
 l_int|1
 )braket
+suffix:semicolon
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_assign
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|Port
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+op_member_access_from_pointer
+id|PortNumber
+suffix:semicolon
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_assign
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|Port
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+op_member_access_from_pointer
+id|PortNumber
 suffix:semicolon
 id|SK_HWAC_LINK_LED
 c_func
@@ -5882,7 +6410,7 @@ c_cond
 (paren
 id|pAC-&gt;Rlmt.Port
 (braket
-id|A
+id|Active
 )braket
 dot
 id|LinkDown
@@ -5931,6 +6459,33 @@ id|Para
 )paren
 suffix:semicolon
 )brace
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_assign
+id|NetIdx
+suffix:semicolon
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_assign
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|Port
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+op_member_access_from_pointer
+id|PortNumber
+suffix:semicolon
 id|SkEventQueue
 c_func
 (paren
@@ -5938,7 +6493,41 @@ id|pAC
 comma
 id|SKGE_PNMI
 comma
-id|SK_PNMI_EVT_RLMT_PORT_SWITCH
+id|SK_PNMI_EVT_RLMT_ACTIVE_DOWN
+comma
+id|Para
+)paren
+suffix:semicolon
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_assign
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|Port
+(braket
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|ActivePort
+)braket
+op_member_access_from_pointer
+id|PortNumber
+suffix:semicolon
+id|SkEventQueue
+c_func
+(paren
+id|pAC
+comma
+id|SKGE_PNMI
+comma
+id|SK_PNMI_EVT_RLMT_ACTIVE_UP
 comma
 id|Para
 )paren
@@ -5946,6 +6535,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|RlmtMode
+op_amp
+id|SK_RLMT_TRANSPARENT
+)paren
+op_eq
+l_int|0
+op_logical_and
 (paren
 id|Para.pParaPtr
 op_assign
@@ -5958,13 +6560,18 @@ id|IoC
 comma
 id|Para.Para32
 (braket
-l_int|1
+l_int|0
 )braket
 comma
 id|SK_PACKET_ANNOUNCE
 comma
 op_amp
-id|pAC-&gt;Addr.CurrentMacAddress
+id|pAC-&gt;Addr.Net
+(braket
+id|NetIdx
+)braket
+dot
+id|CurrentMacAddress
 comma
 op_amp
 id|SkRlmtMcAddr
@@ -5974,7 +6581,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * Send &quot;new&quot; packet to RLMT multicast&n;&t;&t;&t;&t;&t; * address to force switches to learn&n;&t;&t;&t;&t;&t; * the new location of the MAC address.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * Send announce packet to RLMT multicast address to force&n;&t;&t;&t;&t;&t; * switches to learn the new location of the logical&n;&t;&t;&t;&t;&t; * MAC address.&n;&t;&t;&t;&t;&t; */
 id|SkEventQueue
 c_func
 (paren
@@ -5988,8 +6595,11 @@ id|Para
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* (Para.pParaPtr = SkRlmtBuildPacket(...)) != NULL */
 )brace
+multiline_comment|/* Para.Para32[1] != Active */
 )brace
+multiline_comment|/* PortFound */
 r_else
 (brace
 id|SK_ERR_LOG
@@ -6006,6 +6616,7 @@ id|SKERR_RLMT_E004_MSG
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* LinksUp &gt; 1 || LinksUp == 1 &amp;&amp; RlmtState != SK_RLMT_RS_NET_DOWN */
 r_return
 suffix:semicolon
 )brace
@@ -6021,21 +6632,40 @@ id|SK_AC
 op_star
 id|pAC
 comma
-multiline_comment|/* adapter context */
+multiline_comment|/* Adapter Context */
 id|SK_IOC
 id|IoC
+comma
+multiline_comment|/* I/O Context */
+id|SK_U32
+id|NetIdx
 )paren
-multiline_comment|/* I/O context */
+multiline_comment|/* Net number */
 (brace
-id|SK_BOOL
-id|Equal
+id|SK_EVPARA
+id|Para
+suffix:semicolon
+id|SK_RLMT_NET
+op_star
+id|pNet
 suffix:semicolon
 id|SK_U32
 id|i
 comma
 id|j
 suffix:semicolon
-id|pAC-&gt;Rlmt.RootIdSet
+id|SK_BOOL
+id|Equal
+suffix:semicolon
+id|pNet
+op_assign
+op_amp
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetIdx
+)braket
+suffix:semicolon
+id|pNet-&gt;RootIdSet
 op_assign
 id|SK_FALSE
 suffix:semicolon
@@ -6052,10 +6682,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-(paren
-id|SK_U32
-)paren
-id|pAC-&gt;GIni.GIMacsFound
+id|pNet-&gt;NumPorts
 suffix:semicolon
 id|i
 op_increment
@@ -6064,19 +6691,19 @@ op_increment
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.Port
+id|pNet-&gt;Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|LinkDown
 op_logical_or
 op_logical_neg
-id|pAC-&gt;Rlmt.Port
+id|pNet-&gt;Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|RootIdSet
 )paren
 (brace
@@ -6090,88 +6717,88 @@ id|pAC
 comma
 id|SK_DBGMOD_RLMT
 comma
-id|SK_DBGCAT_CTRL
+id|SK_DBGCAT_DUMP
 comma
 (paren
 l_string|&quot;Root ID %d: %02x %02x %02x %02x %02x %02x %02x %02x.&bslash;n&quot;
 comma
 id|i
 comma
-id|pAC-&gt;Rlmt.Port
+id|pNet-&gt;Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|Root.Id
 (braket
 l_int|0
 )braket
 comma
-id|pAC-&gt;Rlmt.Port
+id|pNet-&gt;Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|Root.Id
 (braket
 l_int|1
 )braket
 comma
-id|pAC-&gt;Rlmt.Port
+id|pNet-&gt;Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|Root.Id
 (braket
 l_int|2
 )braket
 comma
-id|pAC-&gt;Rlmt.Port
+id|pNet-&gt;Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|Root.Id
 (braket
 l_int|3
 )braket
 comma
-id|pAC-&gt;Rlmt.Port
+id|pNet-&gt;Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|Root.Id
 (braket
 l_int|4
 )braket
 comma
-id|pAC-&gt;Rlmt.Port
+id|pNet-&gt;Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|Root.Id
 (braket
 l_int|5
 )braket
 comma
-id|pAC-&gt;Rlmt.Port
+id|pNet-&gt;Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|Root.Id
 (braket
 l_int|6
 )braket
 comma
-id|pAC-&gt;Rlmt.Port
+id|pNet-&gt;Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|Root.Id
 (braket
 l_int|7
@@ -6182,19 +6809,19 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|pAC-&gt;Rlmt.RootIdSet
+id|pNet-&gt;RootIdSet
 )paren
 (brace
-id|pAC-&gt;Rlmt.Root
+id|pNet-&gt;Root
 op_assign
-id|pAC-&gt;Rlmt.Port
+id|pNet-&gt;Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|Root
 suffix:semicolon
-id|pAC-&gt;Rlmt.RootIdSet
+id|pNet-&gt;RootIdSet
 op_assign
 id|SK_TRUE
 suffix:semicolon
@@ -6218,17 +6845,17 @@ op_increment
 (brace
 id|Equal
 op_and_assign
-id|pAC-&gt;Rlmt.Port
+id|pNet-&gt;Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|Root.Id
 (braket
 id|j
 )braket
 op_eq
-id|pAC-&gt;Rlmt.Root.Id
+id|pNet-&gt;Root.Id
 (braket
 id|j
 )braket
@@ -6263,7 +6890,24 @@ comma
 id|SKERR_RLMT_E005_MSG
 )paren
 suffix:semicolon
-macro_line|#ifdef SK_PNMI_EVT_SEGMENTATION
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_assign
+id|NetIdx
+suffix:semicolon
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
+suffix:semicolon
 id|SkEventQueue
 c_func
 (paren
@@ -6271,21 +6915,66 @@ id|pAC
 comma
 id|SKGE_PNMI
 comma
-id|SK_PNMI_EVT_SEGMENTATION
+id|SK_PNMI_EVT_RLMT_SEGMENTATION
 comma
 id|Para
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* SK_PNMI_EVT_SEGMENTATION */
-id|pAC-&gt;Rlmt.CheckingState
+id|pNet-&gt;CheckingState
 op_and_assign
 op_complement
 id|SK_RLMT_RCS_REPORT_SEG
+suffix:semicolon
+multiline_comment|/* 2000-03-06 RA: New. */
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_assign
+id|NetIdx
+suffix:semicolon
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+id|SkTimerStart
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+op_amp
+id|pNet-&gt;SegTimer
+comma
+id|SK_RLMT_SEG_TO_VAL
+comma
+id|SKGE_RLMT
+comma
+id|SK_RLMT_SEG_TIM
+comma
+id|Para
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* for (i = 0; i &lt; pNet-&gt;NumPorts; i++) */
+multiline_comment|/* 2000-03-06 RA: Moved here. */
+multiline_comment|/* Segmentation check not running anymore. */
+id|pNet-&gt;CheckingState
+op_and_assign
+op_complement
+id|SK_RLMT_RCS_SEG
+suffix:semicolon
 )brace
 multiline_comment|/* SkRlmtCheckSeg */
 multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtPortStart - initialize port variables and start port&n; *&n; * Description:&n; *&t;This routine initializes a port&squot;s variables and issues a PORT_START&n; *&t;to the HWAC module.  This handles retries if the start fails or the&n; *&t;link eventually goes down.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&n; * Returns:&n; *&t;Nothing&n; */
@@ -6299,22 +6988,22 @@ id|SK_AC
 op_star
 id|pAC
 comma
-multiline_comment|/* adapter context */
+multiline_comment|/* Adapter Context */
 id|SK_IOC
 id|IoC
 comma
-multiline_comment|/* I/O context */
+multiline_comment|/* I/O Context */
 id|SK_U32
-id|PortIdx
+id|PortNumber
 )paren
-multiline_comment|/* event code */
+multiline_comment|/* Port number */
 (brace
 id|SK_EVPARA
 id|Para
 suffix:semicolon
 id|pAC-&gt;Rlmt.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 dot
 id|PortState
@@ -6323,7 +7012,7 @@ id|SK_RLMT_PS_LINK_DOWN
 suffix:semicolon
 id|pAC-&gt;Rlmt.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 dot
 id|PortStarted
@@ -6332,7 +7021,7 @@ id|SK_TRUE
 suffix:semicolon
 id|pAC-&gt;Rlmt.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 dot
 id|LinkDown
@@ -6341,7 +7030,7 @@ id|SK_TRUE
 suffix:semicolon
 id|pAC-&gt;Rlmt.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 dot
 id|PortDown
@@ -6350,7 +7039,7 @@ id|SK_TRUE
 suffix:semicolon
 id|pAC-&gt;Rlmt.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 dot
 id|CheckingState
@@ -6359,7 +7048,7 @@ l_int|0
 suffix:semicolon
 id|pAC-&gt;Rlmt.Port
 (braket
-id|PortIdx
+id|PortNumber
 )braket
 dot
 id|RootIdSet
@@ -6371,7 +7060,18 @@ id|Para.Para32
 l_int|0
 )braket
 op_assign
-id|PortIdx
+id|PortNumber
+suffix:semicolon
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
 suffix:semicolon
 id|SkEventQueue
 c_func
@@ -6387,77 +7087,30 @@ id|Para
 suffix:semicolon
 )brace
 multiline_comment|/* SkRlmtPortStart */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtEvent - a PORT- or an RLMT-specific event happened&n; *&n; * Description:&n; *&t;This routine handles PORT- and RLMT-specific events.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;0&n; */
-DECL|function|SkRlmtEvent
-r_int
-id|SkRlmtEvent
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtEvtPortStartTim - PORT_START_TIM&n; *&n; * Description:&n; *&t;This routine handles PORT_START_TIM events.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;Nothing&n; */
+DECL|function|SkRlmtEvtPortStartTim
+id|RLMT_STATIC
+r_void
+id|SkRlmtEvtPortStartTim
 c_func
 (paren
 id|SK_AC
 op_star
 id|pAC
 comma
-multiline_comment|/* adapter context */
+multiline_comment|/* Adapter Context */
 id|SK_IOC
 id|IoC
 comma
-multiline_comment|/* I/O context */
-id|SK_U32
-id|Event
-comma
-multiline_comment|/* event code */
+multiline_comment|/* I/O Context */
 id|SK_EVPARA
 id|Para
 )paren
-multiline_comment|/* event-specific parameter */
+multiline_comment|/* SK_U32 PortNumber; SK_U32 -1 */
 (brace
 id|SK_U32
 id|i
-comma
-id|j
 suffix:semicolon
-id|SK_RLMT_PORT
-op_star
-id|pRPort
-suffix:semicolon
-id|SK_EVPARA
-id|Para2
-suffix:semicolon
-id|SK_MBUF
-op_star
-id|pMb
-suffix:semicolon
-id|SK_MBUF
-op_star
-id|pNextMb
-suffix:semicolon
-id|SK_MAC_ADDR
-op_star
-id|pOldMacAddr
-suffix:semicolon
-id|SK_MAC_ADDR
-op_star
-id|pNewMacAddr
-suffix:semicolon
-id|SK_U32
-id|Timeout
-suffix:semicolon
-id|SK_U32
-id|NewTimeout
-suffix:semicolon
-id|SK_U32
-id|PrevRlmtMode
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|Event
-)paren
-(brace
-r_case
-id|SK_RLMT_PORTSTART_TIM
-suffix:colon
-multiline_comment|/* From RLMT via TIME. */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -6468,17 +7121,59 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_PORTSTART_TIMEOUT Port %d Event (%d) BEGIN.&bslash;n&quot;
+l_string|&quot;SK_RLMT_PORTSTART_TIMEOUT Port %d Event BEGIN.&bslash;n&quot;
 comma
 id|Para.Para32
 (braket
 l_int|0
 )braket
+)paren
+)paren
+r_if
+c_cond
+(paren
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_ne
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
 comma
-id|Event
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Bad Parameter.&bslash;n&quot;
 )paren
 )paren
-multiline_comment|/*&n;&t;&t; * Used to start non-preferred ports if the preferred one&n;&t;&t; * does not come up.&n;&t;&t; * This timeout needs only be set when starting the first&n;&t;&t; * (preferred) port.&n;&t;&t; */
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_PORTSTART_TIMEOUT Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Used to start non-preferred ports if the preferred one&n;&t; * does not come up.&n;&t; * This timeout needs only be set when starting the first&n;&t; * (preferred) port.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6503,10 +7198,15 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-(paren
-id|SK_U32
-)paren
-id|pAC-&gt;GIni.GIMacsFound
+id|pAC-&gt;Rlmt.Port
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|Net-&gt;NumPorts
 suffix:semicolon
 id|i
 op_increment
@@ -6518,9 +7218,17 @@ c_cond
 op_logical_neg
 id|pAC-&gt;Rlmt.Port
 (braket
-id|i
+id|Para.Para32
+(braket
+l_int|0
+)braket
 )braket
 dot
+id|Net-&gt;Port
+(braket
+id|i
+)braket
+op_member_access_from_pointer
 id|PortStarted
 )paren
 (brace
@@ -6531,7 +7239,20 @@ id|pAC
 comma
 id|IoC
 comma
+id|pAC-&gt;Rlmt.Port
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|Net-&gt;Port
+(braket
 id|i
+)braket
+op_member_access_from_pointer
+id|PortNumber
 )paren
 suffix:semicolon
 )brace
@@ -6547,17 +7268,42 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_PORTSTART_TIMEOUT Event (%d) END.&bslash;n&quot;
+l_string|&quot;SK_RLMT_PORTSTART_TIMEOUT Event END.&bslash;n&quot;
+)paren
+)paren
+)brace
+multiline_comment|/* SkRlmtEvtPortStartTim */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtEvtLinkUp - LINK_UP&n; *&n; * Description:&n; *&t;This routine handles LLINK_UP events.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;Nothing&n; */
+DECL|function|SkRlmtEvtLinkUp
+id|RLMT_STATIC
+r_void
+id|SkRlmtEvtLinkUp
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
 comma
-id|Event
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+id|SK_EVPARA
+id|Para
 )paren
-)paren
-r_break
+multiline_comment|/* SK_U32 PortNumber; SK_U32 Undefined */
+(brace
+id|SK_U32
+id|i
 suffix:semicolon
-r_case
-id|SK_RLMT_LINK_UP
-suffix:colon
-multiline_comment|/* From SIRQ. */
+id|SK_RLMT_PORT
+op_star
+id|pRPort
+suffix:semicolon
+id|SK_EVPARA
+id|Para2
+suffix:semicolon
 id|SK_DBG_MSG
 c_func
 (paren
@@ -6568,14 +7314,12 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_LINK_UP Port %d Event (%d) BEGIN.&bslash;n&quot;
+l_string|&quot;SK_RLMT_LINK_UP Port %d Event BEGIN.&bslash;n&quot;
 comma
 id|Para.Para32
 (braket
 l_int|0
 )braket
-comma
-id|Event
 )paren
 )paren
 id|pRPort
@@ -6618,12 +7362,10 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_LINK_UP Event (%d) EMPTY.&bslash;n&quot;
-comma
-id|Event
+l_string|&quot;SK_RLMT_LINK_UP Event EMPTY.&bslash;n&quot;
 )paren
 )paren
-r_break
+r_return
 suffix:semicolon
 )brace
 r_if
@@ -6644,12 +7386,10 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_LINK_UP Event (%d) EMPTY.&bslash;n&quot;
-comma
-id|Event
+l_string|&quot;SK_RLMT_LINK_UP Event EMPTY.&bslash;n&quot;
 )paren
 )paren
-r_break
+r_return
 suffix:semicolon
 )brace
 id|SkTimerStop
@@ -6706,12 +7446,15 @@ id|pRPort-&gt;BcTimeStamp
 op_assign
 l_int|0
 suffix:semicolon
+id|pRPort-&gt;Net-&gt;LinksUp
+op_increment
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.LinksUp
+id|pRPort-&gt;Net-&gt;LinksUp
 op_eq
-l_int|0
+l_int|1
 )paren
 (brace
 id|SK_HWAC_LINK_LED
@@ -6748,9 +7491,6 @@ id|SK_LED_STANDBY
 )paren
 suffix:semicolon
 )brace
-id|pAC-&gt;Rlmt.LinksUp
-op_increment
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -6760,10 +7500,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-(paren
-id|SK_U32
-)paren
-id|pAC-&gt;GIni.GIMacsFound
+id|pRPort-&gt;Net-&gt;NumPorts
 suffix:semicolon
 id|i
 op_increment
@@ -6773,11 +7510,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|pAC-&gt;Rlmt.Port
+id|pRPort-&gt;Net-&gt;Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|PortStarted
 )paren
 (brace
@@ -6788,7 +7525,12 @@ id|pAC
 comma
 id|IoC
 comma
+id|pRPort-&gt;Net-&gt;Port
+(braket
 id|i
+)braket
+op_member_access_from_pointer
+id|PortNumber
 )paren
 suffix:semicolon
 )brace
@@ -6799,12 +7541,14 @@ c_func
 id|pAC
 comma
 id|IoC
+comma
+id|pRPort-&gt;Net-&gt;NetNumber
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.LinksUp
+id|pRPort-&gt;Net-&gt;LinksUp
 op_ge
 l_int|2
 )paren
@@ -6812,7 +7556,7 @@ l_int|2
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.RlmtMode
+id|pRPort-&gt;Net-&gt;RlmtMode
 op_amp
 id|SK_RLMT_CHECK_LOC_LINK
 )paren
@@ -6822,29 +7566,51 @@ id|SkRlmtBuildCheckChain
 c_func
 (paren
 id|pAC
+comma
+id|pRPort-&gt;Net-&gt;NetNumber
 )paren
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t; * If the first link comes up, start the periodical&n;&t;&t; * RLMT timeout.&n;&t;&t; */
+multiline_comment|/* If the first link comes up, start the periodical RLMT timeout. */
 r_if
 c_cond
 (paren
-id|pAC-&gt;GIni.GIMacsFound
+id|pRPort-&gt;Net-&gt;NumPorts
 OG
 l_int|1
 op_logical_and
-id|pAC-&gt;Rlmt.LinksUp
+id|pRPort-&gt;Net-&gt;LinksUp
 op_eq
 l_int|1
 op_logical_and
 (paren
-id|pAC-&gt;Rlmt.RlmtMode
+id|pRPort-&gt;Net-&gt;RlmtMode
 op_amp
 id|SK_RLMT_CHECK_OTHERS
 )paren
+op_ne
+l_int|0
 )paren
 (brace
+id|Para2.Para32
+(braket
+l_int|0
+)braket
+op_assign
+id|pRPort-&gt;Net-&gt;NetNumber
+suffix:semicolon
+id|Para2.Para32
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
+suffix:semicolon
 id|SkTimerStart
 c_func
 (paren
@@ -6853,18 +7619,33 @@ comma
 id|IoC
 comma
 op_amp
-id|pAC-&gt;Rlmt.LocTimer
+id|pRPort-&gt;Net-&gt;LocTimer
 comma
-id|pAC-&gt;Rlmt.TimeoutValue
+id|pRPort-&gt;Net-&gt;TimeoutValue
 comma
 id|SKGE_RLMT
 comma
 id|SK_RLMT_TIM
 comma
-id|Para
+id|Para2
 )paren
 suffix:semicolon
 )brace
+id|Para2
+op_assign
+id|Para
+suffix:semicolon
+id|Para2.Para32
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
+suffix:semicolon
 id|SkTimerStart
 c_func
 (paren
@@ -6881,18 +7662,28 @@ id|SKGE_RLMT
 comma
 id|SK_RLMT_PORTUP_TIM
 comma
-id|Para
+id|Para2
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Later:&n;&t;&t; * if (pAC-&gt;Rlmt.RlmtMode &amp; SK_RLMT_CHECK_LOC_LINK) &amp;&amp;&n;&t;&t; */
+multiline_comment|/* Later: if (pAC-&gt;Rlmt.RlmtMode &amp; SK_RLMT_CHECK_LOC_LINK) &amp;&amp; */
 r_if
 c_cond
 (paren
 (paren
-id|pAC-&gt;Rlmt.RlmtMode
+id|pRPort-&gt;Net-&gt;RlmtMode
+op_amp
+id|SK_RLMT_TRANSPARENT
+)paren
+op_eq
+l_int|0
+op_logical_and
+(paren
+id|pRPort-&gt;Net-&gt;RlmtMode
 op_amp
 id|SK_RLMT_CHECK_LINK
 )paren
+op_ne
+l_int|0
 op_logical_and
 (paren
 id|Para2.pParaPtr
@@ -6947,7 +7738,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.RlmtMode
+id|pRPort-&gt;Net-&gt;RlmtMode
 op_amp
 id|SK_RLMT_CHECK_SEG
 )paren
@@ -6987,7 +7778,7 @@ id|RootIdSet
 op_assign
 id|SK_FALSE
 suffix:semicolon
-id|pAC-&gt;Rlmt.CheckingState
+id|pRPort-&gt;Net-&gt;CheckingState
 op_or_assign
 id|SK_RLMT_RCS_SEG
 op_or
@@ -7005,6 +7796,17 @@ comma
 id|Para2
 )paren
 suffix:semicolon
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
+suffix:semicolon
 id|SkTimerStart
 c_func
 (paren
@@ -7013,7 +7815,7 @@ comma
 id|IoC
 comma
 op_amp
-id|pAC-&gt;Rlmt.SegTimer
+id|pRPort-&gt;Net-&gt;SegTimer
 comma
 id|SK_RLMT_SEG_TO_VAL
 comma
@@ -7036,17 +7838,36 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_LINK_UP Event (%d) END.&bslash;n&quot;
+l_string|&quot;SK_RLMT_LINK_UP Event END.&bslash;n&quot;
+)paren
+)paren
+)brace
+multiline_comment|/* SkRlmtEvtLinkUp */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtEvtPortUpTim - PORT_UP_TIM&n; *&n; * Description:&n; *&t;This routine handles PORT_UP_TIM events.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;Nothing&n; */
+DECL|function|SkRlmtEvtPortUpTim
+id|RLMT_STATIC
+r_void
+id|SkRlmtEvtPortUpTim
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
 comma
-id|Event
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+id|SK_EVPARA
+id|Para
 )paren
-)paren
-r_break
+multiline_comment|/* SK_U32 PortNumber; SK_U32 -1 */
+(brace
+id|SK_RLMT_PORT
+op_star
+id|pRPort
 suffix:semicolon
-r_case
-id|SK_RLMT_PORTUP_TIM
-suffix:colon
-multiline_comment|/* From RLMT via TIME. */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -7057,16 +7878,58 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_PORTUP_TIM Port %d Event (%d) BEGIN.&bslash;n&quot;
+l_string|&quot;SK_RLMT_PORTUP_TIM Port %d Event BEGIN.&bslash;n&quot;
 comma
 id|Para.Para32
 (braket
 l_int|0
 )braket
+)paren
+)paren
+r_if
+c_cond
+(paren
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_ne
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
 comma
-id|Event
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Bad Parameter.&bslash;n&quot;
 )paren
 )paren
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_PORTUP_TIM Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
 id|pRPort
 op_assign
 op_amp
@@ -7100,17 +7963,15 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_PORTUP_TIM Port %d Event (%d) EMPTY.&bslash;n&quot;
+l_string|&quot;SK_RLMT_PORTUP_TIM Port %d Event EMPTY.&bslash;n&quot;
 comma
 id|Para.Para32
 (braket
 l_int|0
 )braket
-comma
-id|Event
 )paren
 )paren
-r_break
+r_return
 suffix:semicolon
 )brace
 id|pRPort-&gt;PortDown
@@ -7121,15 +7982,23 @@ id|pRPort-&gt;PortState
 op_assign
 id|SK_RLMT_PS_UP
 suffix:semicolon
-id|pAC-&gt;Rlmt.PortsUp
+id|pRPort-&gt;Net-&gt;PortsUp
 op_increment
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.RlmtState
+id|pRPort-&gt;Net-&gt;RlmtState
 op_ne
 id|SK_RLMT_RS_INIT
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pAC-&gt;Rlmt.NumNets
+op_le
+l_int|1
 )paren
 (brace
 id|SkRlmtCheckSwitch
@@ -7138,8 +8007,11 @@ c_func
 id|pAC
 comma
 id|IoC
+comma
+id|pRPort-&gt;Net-&gt;NetNumber
 )paren
 suffix:semicolon
+)brace
 id|SkEventQueue
 c_func
 (paren
@@ -7163,25 +8035,40 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_PORTUP_TIM Event (%d) END.&bslash;n&quot;
+l_string|&quot;SK_RLMT_PORTUP_TIM Event END.&bslash;n&quot;
+)paren
+)paren
+)brace
+multiline_comment|/* SkRlmtEvtPortUpTim */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtEvtPortDownTim - PORT_DOWN_*&n; *&n; * Description:&n; *&t;This routine handles PORT_DOWN_* events.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;Nothing&n; */
+DECL|function|SkRlmtEvtPortDownX
+id|RLMT_STATIC
+r_void
+id|SkRlmtEvtPortDownX
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
 comma
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+id|SK_U32
 id|Event
+comma
+multiline_comment|/* Event code */
+id|SK_EVPARA
+id|Para
 )paren
-)paren
-r_break
+multiline_comment|/* SK_U32 PortNumber; SK_U32 -1 */
+(brace
+id|SK_RLMT_PORT
+op_star
+id|pRPort
 suffix:semicolon
-r_case
-id|SK_RLMT_PORTDOWN
-suffix:colon
-multiline_comment|/* From RLMT. */
-r_case
-id|SK_RLMT_PORTDOWN_RX_TIM
-suffix:colon
-multiline_comment|/* From RLMT via TIME. */
-r_case
-id|SK_RLMT_PORTDOWN_TX_TIM
-suffix:colon
-multiline_comment|/* From RLMT via TIME. */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -7202,6 +8089,50 @@ comma
 id|Event
 )paren
 )paren
+r_if
+c_cond
+(paren
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_ne
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Bad Parameter.&bslash;n&quot;
+)paren
+)paren
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_PORTDOWN* Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
 id|pRPort
 op_assign
 op_amp
@@ -7248,7 +8179,7 @@ comma
 id|Event
 )paren
 )paren
-r_break
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Stop port&squot;s timers. */
@@ -7305,7 +8236,7 @@ op_logical_neg
 id|pRPort-&gt;PortDown
 )paren
 (brace
-id|pAC-&gt;Rlmt.PortsUp
+id|pRPort-&gt;Net-&gt;PortsUp
 op_decrement
 suffix:semicolon
 id|pRPort-&gt;PortDown
@@ -7329,29 +8260,16 @@ id|pRPort-&gt;PacketsPerTimeSlot
 op_assign
 l_int|0
 suffix:semicolon
-id|pRPort-&gt;DataPacketsPerTimeSlot
-op_assign
-l_int|0
-suffix:semicolon
+multiline_comment|/* pRPort-&gt;DataPacketsPerTimeSlot = 0; */
 id|pRPort-&gt;BpduPacketsPerTimeSlot
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if 0
-id|pRPort-&gt;RlmtChksPerTimeSlot
-op_assign
-l_int|0
-suffix:semicolon
-id|pRPort-&gt;RlmtAcksPerTimeSlot
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif&t;/* 0 */
-multiline_comment|/*&n;&t;&t; * RA;:;: To be checked:&n;&t;&t; * - actions at RLMT_STOP: We should not switch anymore.&n;&t;&t; */
+multiline_comment|/*&n;&t; * RA;:;: To be checked:&n;&t; * - actions at RLMT_STOP: We should not switch anymore.&n;&t; */
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.RlmtState
+id|pRPort-&gt;Net-&gt;RlmtState
 op_ne
 id|SK_RLMT_RS_INIT
 )paren
@@ -7364,7 +8282,12 @@ id|Para.Para32
 l_int|0
 )braket
 op_eq
-id|pAC-&gt;Rlmt.MacActive
+id|pRPort-&gt;Net-&gt;Port
+(braket
+id|pRPort-&gt;Net-&gt;ActivePort
+)braket
+op_member_access_from_pointer
+id|PortNumber
 )paren
 (brace
 multiline_comment|/* Active Port went down. */
@@ -7374,6 +8297,8 @@ c_func
 id|pAC
 comma
 id|IoC
+comma
+id|pRPort-&gt;Net-&gt;NetNumber
 )paren
 suffix:semicolon
 )brace
@@ -7393,12 +8318,44 @@ comma
 id|Event
 )paren
 )paren
-r_break
+)brace
+multiline_comment|/* SkRlmtEvtPortDownX */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtEvtLinkDown - LINK_DOWN&n; *&n; * Description:&n; *&t;This routine handles LINK_DOWN events.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;Nothing&n; */
+DECL|function|SkRlmtEvtLinkDown
+id|RLMT_STATIC
+r_void
+id|SkRlmtEvtLinkDown
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+id|SK_EVPARA
+id|Para
+)paren
+multiline_comment|/* SK_U32 PortNumber; SK_U32 Undefined */
+(brace
+id|SK_RLMT_PORT
+op_star
+id|pRPort
 suffix:semicolon
-r_case
-id|SK_RLMT_LINK_DOWN
-suffix:colon
-multiline_comment|/* From SIRQ. */
+id|pRPort
+op_assign
+op_amp
+id|pAC-&gt;Rlmt.Port
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+suffix:semicolon
 id|SK_DBG_MSG
 c_func
 (paren
@@ -7409,14 +8366,12 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_LINK_DOWN Port %d Event (%d) BEGIN.&bslash;n&quot;
+l_string|&quot;SK_RLMT_LINK_DOWN Port %d Event BEGIN.&bslash;n&quot;
 comma
 id|Para.Para32
 (braket
 l_int|0
 )braket
-comma
-id|Event
 )paren
 )paren
 r_if
@@ -7434,30 +8389,14 @@ dot
 id|LinkDown
 )paren
 (brace
-id|pAC-&gt;Rlmt.LinksUp
+id|pRPort-&gt;Net-&gt;LinksUp
 op_decrement
 suffix:semicolon
-id|pAC-&gt;Rlmt.Port
-(braket
-id|Para.Para32
-(braket
-l_int|0
-)braket
-)braket
-dot
-id|LinkDown
+id|pRPort-&gt;LinkDown
 op_assign
 id|SK_TRUE
 suffix:semicolon
-id|pAC-&gt;Rlmt.Port
-(braket
-id|Para.Para32
-(braket
-l_int|0
-)braket
-)braket
-dot
-id|PortState
+id|pRPort-&gt;PortState
 op_assign
 id|SK_RLMT_PS_LINK_DOWN
 suffix:semicolon
@@ -7479,9 +8418,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.RlmtMode
+(paren
+id|pRPort-&gt;Net-&gt;RlmtMode
 op_amp
 id|SK_RLMT_CHECK_LOC_LINK
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Build the check chain. */
@@ -7489,10 +8432,20 @@ id|SkRlmtBuildCheckChain
 c_func
 (paren
 id|pAC
+comma
+id|pRPort-&gt;Net-&gt;NetNumber
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/* Ensure that port is marked down. */
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 (paren
 r_void
 )paren
@@ -7519,17 +8472,49 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_LINK_DOWN Event (%d) END.&bslash;n&quot;
+l_string|&quot;SK_RLMT_LINK_DOWN Event END.&bslash;n&quot;
+)paren
+)paren
+)brace
+multiline_comment|/* SkRlmtEvtLinkDown */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtEvtPortAddr - PORT_ADDR&n; *&n; * Description:&n; *&t;This routine handles PORT_ADDR events.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;Nothing&n; */
+DECL|function|SkRlmtEvtPortAddr
+id|RLMT_STATIC
+r_void
+id|SkRlmtEvtPortAddr
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
 comma
-id|Event
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+id|SK_EVPARA
+id|Para
 )paren
-)paren
-r_break
+multiline_comment|/* SK_U32 PortNumber; SK_U32 -1 */
+(brace
+id|SK_U32
+id|i
+comma
+id|j
 suffix:semicolon
-r_case
-id|SK_RLMT_PORT_ADDR
-suffix:colon
-multiline_comment|/* From ADDR. */
+id|SK_RLMT_PORT
+op_star
+id|pRPort
+suffix:semicolon
+id|SK_MAC_ADDR
+op_star
+id|pOldMacAddr
+suffix:semicolon
+id|SK_MAC_ADDR
+op_star
+id|pNewMacAddr
+suffix:semicolon
 id|SK_DBG_MSG
 c_func
 (paren
@@ -7540,16 +8525,58 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_PORT_ADDR Port %d Event (%d) BEGIN.&bslash;n&quot;
+l_string|&quot;SK_RLMT_PORT_ADDR Port %d Event BEGIN.&bslash;n&quot;
 comma
 id|Para.Para32
 (braket
 l_int|0
 )braket
+)paren
+)paren
+r_if
+c_cond
+(paren
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_ne
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
 comma
-id|Event
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Bad Parameter.&bslash;n&quot;
 )paren
 )paren
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_PORT_ADDR Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* Port&squot;s physical MAC address changed. */
 id|pOldMacAddr
 op_assign
@@ -7577,7 +8604,7 @@ l_int|0
 dot
 id|CurrentMacAddress
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * NOTE: This is not scalable for solutions where ports are&n;&t;&t; *&t; checked remotely.  There, we need to send an RLMT&n;&t;&t; *&t; address change packet - and how do we ensure delivery?&n;&t;&t; */
+multiline_comment|/*&n;&t; * NOTE: This is not scalable for solutions where ports are&n;&t; *&t; checked remotely.  There, we need to send an RLMT&n;&t; *&t; address change packet - and how do we ensure delivery?&n;&t; */
 r_for
 c_loop
 (paren
@@ -7659,18 +8686,41 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_PORT_ADDR Event (%d) END.&bslash;n&quot;
+l_string|&quot;SK_RLMT_PORT_ADDR Event END.&bslash;n&quot;
+)paren
+)paren
+)brace
+multiline_comment|/* SkRlmtEvtPortAddr */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtEvtStart - START&n; *&n; * Description:&n; *&t;This routine handles START events.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;Nothing&n; */
+DECL|function|SkRlmtEvtStart
+id|RLMT_STATIC
+r_void
+id|SkRlmtEvtStart
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
 comma
-id|Event
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+id|SK_EVPARA
+id|Para
 )paren
-)paren
-r_break
+multiline_comment|/* SK_U32 NetNumber; SK_U32 -1 */
+(brace
+id|SK_EVPARA
+id|Para2
 suffix:semicolon
-multiline_comment|/* ----- RLMT events ----- */
-r_case
-id|SK_RLMT_START
-suffix:colon
-multiline_comment|/* From DRV. */
+id|SK_U32
+id|PortIdx
+suffix:semicolon
+id|SK_U32
+id|PortNumber
+suffix:semicolon
 id|SK_DBG_MSG
 c_func
 (paren
@@ -7681,15 +8731,115 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_START Event (%d) BEGIN.&bslash;n&quot;
+l_string|&quot;SK_RLMT_START Net %d Event BEGIN.&bslash;n&quot;
 comma
-id|Event
+id|Para.Para32
+(braket
+l_int|0
+)braket
 )paren
 )paren
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.RlmtState
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_ne
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Bad Parameter.&bslash;n&quot;
+)paren
+)paren
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_START Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_ge
+id|pAC-&gt;Rlmt.NumNets
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Bad NetNumber %d.&bslash;n&quot;
+comma
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)paren
+)paren
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_START Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|RlmtState
 op_ne
 id|SK_RLMT_RS_INIT
 )paren
@@ -7704,23 +8854,71 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_START Event (%d) EMPTY.&bslash;n&quot;
-comma
-id|Event
+l_string|&quot;SK_RLMT_START Event EMPTY.&bslash;n&quot;
 )paren
 )paren
-r_break
+r_return
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.PrefPort
+id|pAC-&gt;Rlmt.NetsStarted
 op_ge
-(paren
-id|SK_U32
+id|pAC-&gt;Rlmt.NumNets
 )paren
-id|pAC-&gt;GIni.GIMacsFound
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;All nets should have been started.&bslash;n&quot;
+)paren
+)paren
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_START Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|PrefPort
+op_ge
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|NumPorts
 )paren
 (brace
 id|SK_ERR_LOG
@@ -7736,12 +8934,22 @@ id|SKERR_RLMT_E009_MSG
 )paren
 suffix:semicolon
 multiline_comment|/* Change PrefPort to internal default. */
-id|Para.Para32
+id|Para2.Para32
 (braket
 l_int|0
 )braket
 op_assign
 l_int|0xFFFFFFFF
+suffix:semicolon
+id|Para2.Para32
+(braket
+l_int|1
+)braket
+op_assign
+id|Para.Para32
+(braket
+l_int|0
+)braket
 suffix:semicolon
 (paren
 r_void
@@ -7755,63 +8963,88 @@ id|IoC
 comma
 id|SK_RLMT_PREFPORT_CHANGE
 comma
-id|Para
+id|Para2
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|pAC-&gt;GIni.GIMacsFound
-op_eq
-l_int|1
-op_logical_and
-id|pAC-&gt;Rlmt.RlmtMode
-op_ne
-id|SK_RLMT_CHECK_LINK
-)paren
-(brace
+id|PortIdx
+op_assign
+id|pAC-&gt;Rlmt.Net
+(braket
 id|Para.Para32
 (braket
 l_int|0
 )braket
+)braket
+dot
+id|PrefPort
+suffix:semicolon
+id|PortNumber
 op_assign
-id|SK_RLMT_CHECK_LINK
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|Port
+(braket
+id|PortIdx
+)braket
+op_member_access_from_pointer
+id|PortNumber
 suffix:semicolon
-(paren
-r_void
-)paren
-id|SkRlmtEvent
-c_func
-(paren
-id|pAC
-comma
-id|IoC
-comma
-id|SK_RLMT_MODE_CHANGE
-comma
-id|Para
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif&t;/* 0 */
-id|pAC-&gt;Rlmt.LinksUp
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|LinksUp
 op_assign
 l_int|0
 suffix:semicolon
-id|pAC-&gt;Rlmt.PortsUp
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|PortsUp
 op_assign
 l_int|0
 suffix:semicolon
-id|pAC-&gt;Rlmt.CheckingState
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|CheckingState
 op_assign
 l_int|0
 suffix:semicolon
-id|pAC-&gt;Rlmt.RlmtState
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|RlmtState
 op_assign
 id|SK_RLMT_RS_NET_DOWN
 suffix:semicolon
+multiline_comment|/* Start preferred port. */
 id|SkRlmtPortStart
 c_func
 (paren
@@ -7819,7 +9052,7 @@ id|pAC
 comma
 id|IoC
 comma
-id|pAC-&gt;Rlmt.PrefPort
+id|PortNumber
 )paren
 suffix:semicolon
 multiline_comment|/* Start Timer (for first port only). */
@@ -7828,7 +9061,18 @@ id|Para2.Para32
 l_int|0
 )braket
 op_assign
-id|pAC-&gt;Rlmt.PrefPort
+id|PortNumber
+suffix:semicolon
+id|Para2.Para32
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
 suffix:semicolon
 id|SkTimerStart
 c_func
@@ -7840,7 +9084,7 @@ comma
 op_amp
 id|pAC-&gt;Rlmt.Port
 (braket
-id|pAC-&gt;Rlmt.PrefPort
+id|PortNumber
 )braket
 dot
 id|UpTimer
@@ -7854,27 +9098,9 @@ comma
 id|Para2
 )paren
 suffix:semicolon
-id|SK_DBG_MSG
-c_func
-(paren
-id|pAC
-comma
-id|SK_DBGMOD_RLMT
-comma
-id|SK_DBGCAT_CTRL
-comma
-(paren
-l_string|&quot;SK_RLMT_START Event (%d) END.&bslash;n&quot;
-comma
-id|Event
-)paren
-)paren
-r_break
+id|pAC-&gt;Rlmt.NetsStarted
+op_increment
 suffix:semicolon
-r_case
-id|SK_RLMT_STOP
-suffix:colon
-multiline_comment|/* From DRV. */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -7885,15 +9111,160 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_STOP Event (%d) BEGIN.&bslash;n&quot;
+l_string|&quot;SK_RLMT_START Event END.&bslash;n&quot;
+)paren
+)paren
+)brace
+multiline_comment|/* SkRlmtEvtStart */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtEvtStop - STOP&n; *&n; * Description:&n; *&t;This routine handles STOP events.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;Nothing&n; */
+DECL|function|SkRlmtEvtStop
+id|RLMT_STATIC
+r_void
+id|SkRlmtEvtStop
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
 comma
-id|Event
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+id|SK_EVPARA
+id|Para
+)paren
+multiline_comment|/* SK_U32 NetNumber; SK_U32 -1 */
+(brace
+id|SK_EVPARA
+id|Para2
+suffix:semicolon
+id|SK_U32
+id|PortNumber
+suffix:semicolon
+id|SK_U32
+id|i
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_STOP Net %d Event BEGIN.&bslash;n&quot;
+comma
+id|Para.Para32
+(braket
+l_int|0
+)braket
 )paren
 )paren
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.RlmtState
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_ne
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Bad Parameter.&bslash;n&quot;
+)paren
+)paren
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_STOP Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_ge
+id|pAC-&gt;Rlmt.NumNets
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Bad NetNumber %d.&bslash;n&quot;
+comma
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)paren
+)paren
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_STOP Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|RlmtState
 op_eq
 id|SK_RLMT_RS_INIT
 )paren
@@ -7908,12 +9279,47 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_STOP Event (%d) EMPTY.&bslash;n&quot;
+l_string|&quot;SK_RLMT_STOP Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|pAC-&gt;Rlmt.NetsStarted
+op_eq
+l_int|0
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
 comma
-id|Event
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;All nets are stopped.&bslash;n&quot;
 )paren
 )paren
-r_break
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_STOP Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Stop RLMT timers. */
@@ -7925,7 +9331,15 @@ comma
 id|IoC
 comma
 op_amp
-id|pAC-&gt;Rlmt.LocTimer
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|LocTimer
 )paren
 suffix:semicolon
 id|SkTimerStop
@@ -7936,15 +9350,39 @@ comma
 id|IoC
 comma
 op_amp
-id|pAC-&gt;Rlmt.SegTimer
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|SegTimer
 )paren
 suffix:semicolon
-multiline_comment|/* Stop Net. */
-id|pAC-&gt;Rlmt.RlmtState
+multiline_comment|/* Stop net. */
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|RlmtState
 op_assign
 id|SK_RLMT_RS_INIT
 suffix:semicolon
-id|pAC-&gt;Rlmt.RootIdSet
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|RootIdSet
 op_assign
 id|SK_FALSE
 suffix:semicolon
@@ -7955,6 +9393,17 @@ l_int|0
 op_assign
 id|SK_RLMT_NET_DOWN_FINAL
 suffix:semicolon
+id|Para2.Para32
+(braket
+l_int|1
+)braket
+op_assign
+id|Para.Para32
+(braket
+l_int|0
+)braket
+suffix:semicolon
+multiline_comment|/* Net# */
 id|SkEventQueue
 c_func
 (paren
@@ -7977,21 +9426,43 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-(paren
-id|SK_U32
-)paren
-id|pAC-&gt;GIni.GIMacsFound
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|NumPorts
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
+id|PortNumber
+op_assign
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|Port
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|PortNumber
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|pAC-&gt;Rlmt.Port
 (braket
-id|i
+id|PortNumber
 )braket
 dot
 id|PortState
@@ -8009,7 +9480,7 @@ comma
 op_amp
 id|pAC-&gt;Rlmt.Port
 (braket
-id|i
+id|PortNumber
 )braket
 dot
 id|UpTimer
@@ -8025,7 +9496,7 @@ comma
 op_amp
 id|pAC-&gt;Rlmt.Port
 (braket
-id|i
+id|PortNumber
 )braket
 dot
 id|DownRxTimer
@@ -8041,7 +9512,7 @@ comma
 op_amp
 id|pAC-&gt;Rlmt.Port
 (braket
-id|i
+id|PortNumber
 )braket
 dot
 id|DownTxTimer
@@ -8049,7 +9520,7 @@ id|DownTxTimer
 suffix:semicolon
 id|pAC-&gt;Rlmt.Port
 (braket
-id|i
+id|PortNumber
 )braket
 dot
 id|PortState
@@ -8058,7 +9529,7 @@ id|SK_RLMT_PS_INIT
 suffix:semicolon
 id|pAC-&gt;Rlmt.Port
 (braket
-id|i
+id|PortNumber
 )braket
 dot
 id|RootIdSet
@@ -8067,7 +9538,7 @@ id|SK_FALSE
 suffix:semicolon
 id|pAC-&gt;Rlmt.Port
 (braket
-id|i
+id|PortNumber
 )braket
 dot
 id|PortStarted
@@ -8079,7 +9550,18 @@ id|Para2.Para32
 l_int|0
 )braket
 op_assign
-id|i
+id|PortNumber
+suffix:semicolon
+id|Para2.Para32
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
 suffix:semicolon
 id|SkEventQueue
 c_func
@@ -8095,6 +9577,9 @@ id|Para2
 suffix:semicolon
 )brace
 )brace
+id|pAC-&gt;Rlmt.NetsStarted
+op_decrement
+suffix:semicolon
 id|SK_DBG_MSG
 c_func
 (paren
@@ -8105,17 +9590,48 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_STOP Event (%d) END.&bslash;n&quot;
+l_string|&quot;SK_RLMT_STOP Event END.&bslash;n&quot;
+)paren
+)paren
+)brace
+multiline_comment|/* SkRlmtEvtStop */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtEvtTim - TIM&n; *&n; * Description:&n; *&t;This routine handles TIM events.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;Nothing&n; */
+DECL|function|SkRlmtEvtTim
+id|RLMT_STATIC
+r_void
+id|SkRlmtEvtTim
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
 comma
-id|Event
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+id|SK_EVPARA
+id|Para
 )paren
-)paren
-r_break
+multiline_comment|/* SK_U32 NetNumber; SK_U32 -1 */
+(brace
+id|SK_RLMT_PORT
+op_star
+id|pRPort
 suffix:semicolon
-r_case
-id|SK_RLMT_TIM
-suffix:colon
-multiline_comment|/* From RLMT via TIME. */
+id|SK_U32
+id|Timeout
+suffix:semicolon
+id|SK_U32
+id|NewTimeout
+suffix:semicolon
+id|SK_U32
+id|PortNumber
+suffix:semicolon
+id|SK_U32
+id|i
+suffix:semicolon
 macro_line|#if 0
 id|SK_DBG_MSG
 c_func
@@ -8127,29 +9643,88 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_TIM Event (%d) BEGIN.&bslash;n&quot;
-comma
-id|Event
+l_string|&quot;SK_RLMT_TIM Event BEGIN.&bslash;n&quot;
 )paren
 )paren
 macro_line|#endif&t;/* 0 */
 r_if
 c_cond
 (paren
-op_logical_neg
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_ne
 (paren
-id|pAC-&gt;Rlmt.RlmtMode
+id|SK_U32
+)paren
+op_minus
+l_int|1
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Bad Parameter.&bslash;n&quot;
+)paren
+)paren
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_TIM Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|RlmtMode
 op_amp
 id|SK_RLMT_CHECK_OTHERS
 )paren
+op_eq
+l_int|0
 op_logical_or
-id|pAC-&gt;Rlmt.LinksUp
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|LinksUp
 op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Mode changed or all links down:&n;&t;&t;&t; * No more link checking.&n;&t;&t;&t; */
-r_break
+multiline_comment|/* Mode changed or all links down: No more link checking. */
+r_return
 suffix:semicolon
 )brace
 macro_line|#if 0
@@ -8181,21 +9756,43 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-(paren
-id|SK_U32
-)paren
-id|pAC-&gt;GIni.GIMacsFound
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|NumPorts
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
+id|PortNumber
+op_assign
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|Port
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|PortNumber
+suffix:semicolon
 id|pRPort
 op_assign
 op_amp
 id|pAC-&gt;Rlmt.Port
 (braket
-id|i
+id|PortNumber
 )braket
 suffix:semicolon
 r_if
@@ -8214,7 +9811,7 @@ id|pAC
 comma
 id|IoC
 comma
-id|i
+id|PortNumber
 )paren
 suffix:semicolon
 r_if
@@ -8230,45 +9827,48 @@ op_assign
 id|Timeout
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t;&t; * This counter should be set to 0 for all&n;&t;&t;&t;&t; * ports before the first frame is sent in the&n;&t;&t;&t;&t; * next loop.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * These counters should be set to 0 for all ports before the&n;&t;&t;&t; * first frame is sent in the next loop.&n;&t;&t;&t; */
 id|pRPort-&gt;PacketsPerTimeSlot
 op_assign
 l_int|0
 suffix:semicolon
-id|pRPort-&gt;DataPacketsPerTimeSlot
-op_assign
-l_int|0
-suffix:semicolon
+multiline_comment|/* pRPort-&gt;DataPacketsPerTimeSlot = 0; */
 id|pRPort-&gt;BpduPacketsPerTimeSlot
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if 0
-id|pRPort-&gt;RlmtChksPerTimeSlot
-op_assign
-l_int|0
-suffix:semicolon
-id|pRPort-&gt;RlmtAcksPerTimeSlot
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif&t;/* 0 */
 )brace
 )brace
-id|pAC-&gt;Rlmt.TimeoutValue
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|TimeoutValue
 op_assign
 id|NewTimeout
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.LinksUp
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|LinksUp
 OG
 l_int|1
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * If checking remote ports, also send packets if&n;&t;&t;&t; *   (LinksUp == 1) &amp;&amp;&n;&t;&t;&t; *   this port checks at least one (remote) port.&n;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t; * Must be new loop, as SkRlmtCheckPort can request to&n;&t;&t;&t; * check segmentation when e.g. checking the last port.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If checking remote ports, also send packets if&n;&t;&t; *   (LinksUp == 1) &amp;&amp;&n;&t;&t; *   this port checks at least one (remote) port.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Must be new loop, as SkRlmtCheckPort can request to&n;&t;&t; * check segmentation when e.g. checking the last port.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -8278,31 +9878,40 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-(paren
-id|SK_U32
-)paren
-id|pAC-&gt;GIni.GIMacsFound
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|NumPorts
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
-id|pRPort
-op_assign
-op_amp
-id|pAC-&gt;Rlmt.Port
-(braket
-id|i
-)braket
-suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|pRPort-&gt;LinkDown
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|Port
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|LinkDown
 )paren
 (brace
-multiline_comment|/* !PortDown? */
 id|SkRlmtSend
 c_func
 (paren
@@ -8310,7 +9919,20 @@ id|pAC
 comma
 id|IoC
 comma
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|Port
+(braket
 id|i
+)braket
+op_member_access_from_pointer
+id|PortNumber
 )paren
 suffix:semicolon
 )brace
@@ -8324,9 +9946,25 @@ comma
 id|IoC
 comma
 op_amp
-id|pAC-&gt;Rlmt.LocTimer
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|LocTimer
 comma
-id|pAC-&gt;Rlmt.TimeoutValue
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|TimeoutValue
 comma
 id|SKGE_RLMT
 comma
@@ -8338,18 +9976,42 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.LinksUp
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|LinksUp
 OG
 l_int|1
 op_logical_and
 (paren
-id|pAC-&gt;Rlmt.RlmtMode
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|RlmtMode
 op_amp
 id|SK_RLMT_CHECK_SEG
 )paren
 op_logical_and
 (paren
-id|pAC-&gt;Rlmt.CheckingState
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|CheckingState
 op_amp
 id|SK_RLMT_RCS_START_SEG
 )paren
@@ -8363,7 +10025,15 @@ comma
 id|IoC
 comma
 op_amp
-id|pAC-&gt;Rlmt.SegTimer
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|SegTimer
 comma
 id|SK_RLMT_SEG_TO_VAL
 comma
@@ -8374,12 +10044,28 @@ comma
 id|Para
 )paren
 suffix:semicolon
-id|pAC-&gt;Rlmt.CheckingState
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|CheckingState
 op_and_assign
 op_complement
 id|SK_RLMT_RCS_START_SEG
 suffix:semicolon
-id|pAC-&gt;Rlmt.CheckingState
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|CheckingState
 op_or_assign
 id|SK_RLMT_RCS_SEG
 op_or
@@ -8397,17 +10083,38 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_TIM Event (%d) END.&bslash;n&quot;
-comma
-id|Event
+l_string|&quot;SK_RLMT_TIM Event END.&bslash;n&quot;
 )paren
 )paren
 macro_line|#endif&t;/* 0 */
-r_break
+)brace
+multiline_comment|/* SkRlmtEvtTim */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtEvtSegTim - SEG_TIM&n; *&n; * Description:&n; *&t;This routine handles SEG_TIM events.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;Nothing&n; */
+DECL|function|SkRlmtEvtSegTim
+id|RLMT_STATIC
+r_void
+id|SkRlmtEvtSegTim
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+id|SK_EVPARA
+id|Para
+)paren
+multiline_comment|/* SK_U32 NetNumber; SK_U32 -1 */
+(brace
+macro_line|#ifdef XDEBUG
+r_int
+id|j
 suffix:semicolon
-r_case
-id|SK_RLMT_SEG_TIM
-suffix:colon
+macro_line|#endif&t;/* DEBUG */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -8418,44 +10125,94 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_SEG_TIM Event (%d) BEGIN.&bslash;n&quot;
+l_string|&quot;SK_RLMT_SEG_TIM Event BEGIN.&bslash;n&quot;
+)paren
+)paren
+r_if
+c_cond
+(paren
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_ne
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
 comma
-id|Event
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Bad Parameter.&bslash;n&quot;
 )paren
 )paren
-macro_line|#ifdef DEBUG
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_SEG_TIM Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
+macro_line|#ifdef xDEBUG
 r_for
 c_loop
 (paren
-id|i
+id|j
 op_assign
 l_int|0
 suffix:semicolon
 id|i
 OL
-(paren
-id|SK_U32
-)paren
-id|pAC-&gt;GIni.GIMacsFound
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|NumPorts
 suffix:semicolon
-id|i
+id|j
 op_increment
 )paren
 (brace
+id|SK_ADDR_PORT
+op_star
+id|pAPort
+suffix:semicolon
+id|SK_U32
+id|k
+suffix:semicolon
+id|SK_U16
+op_star
+id|InAddr
+suffix:semicolon
 id|SK_U8
 id|InAddr8
 (braket
 l_int|6
 )braket
 suffix:semicolon
-id|SK_U16
-op_star
-id|InAddr
-suffix:semicolon
-id|SK_ADDR_PORT
-op_star
-id|pAPort
-suffix:semicolon
 id|InAddr
 op_assign
 (paren
@@ -8470,39 +10227,61 @@ l_int|0
 suffix:semicolon
 id|pAPort
 op_assign
-op_amp
-id|pAC-&gt;Addr.Port
+id|pAC-&gt;Rlmt.Net
 (braket
-id|i
+id|Para.Para32
+(braket
+l_int|0
 )braket
+)braket
+dot
+id|Port
+(braket
+id|j
+)braket
+op_member_access_from_pointer
+id|AddrPort
 suffix:semicolon
 r_for
 c_loop
 (paren
-id|j
+id|k
 op_assign
 l_int|0
 suffix:semicolon
-id|j
+id|k
 OL
 id|pAPort-&gt;NextExactMatchRlmt
 suffix:semicolon
-id|j
+id|k
 op_increment
 )paren
 (brace
-multiline_comment|/* Get exact match address j from port i. */
+multiline_comment|/* Get exact match address k from port j. */
 id|XM_INADDR
 c_func
 (paren
 id|IoC
 comma
-id|i
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|Port
+(braket
+id|j
+)braket
+op_member_access_from_pointer
+id|PortNumber
 comma
 id|XM_EXM
 c_func
 (paren
-id|j
+id|k
 )paren
 comma
 id|InAddr
@@ -8520,9 +10299,22 @@ comma
 (paren
 l_string|&quot;MC address %d on Port %u: %02x %02x %02x %02x %02x %02x --  %02x %02x %02x %02x %02x %02x.&bslash;n&quot;
 comma
-id|j
+id|k
 comma
-id|i
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|Port
+(braket
+id|j
+)braket
+op_member_access_from_pointer
+id|PortNumber
 comma
 id|InAddr8
 (braket
@@ -8556,7 +10348,7 @@ l_int|5
 comma
 id|pAPort-&gt;Exact
 (braket
-id|j
+id|k
 )braket
 dot
 id|a
@@ -8566,7 +10358,7 @@ l_int|0
 comma
 id|pAPort-&gt;Exact
 (braket
-id|j
+id|k
 )braket
 dot
 id|a
@@ -8576,7 +10368,7 @@ l_int|1
 comma
 id|pAPort-&gt;Exact
 (braket
-id|j
+id|k
 )braket
 dot
 id|a
@@ -8586,7 +10378,7 @@ l_int|2
 comma
 id|pAPort-&gt;Exact
 (braket
-id|j
+id|k
 )braket
 dot
 id|a
@@ -8596,7 +10388,7 @@ l_int|3
 comma
 id|pAPort-&gt;Exact
 (braket
-id|j
+id|k
 )braket
 dot
 id|a
@@ -8606,7 +10398,7 @@ l_int|4
 comma
 id|pAPort-&gt;Exact
 (braket
-id|j
+id|k
 )braket
 dot
 id|a
@@ -8618,17 +10410,17 @@ l_int|5
 )brace
 )brace
 macro_line|#endif&t;/* DEBUG */
-id|pAC-&gt;Rlmt.CheckingState
-op_and_assign
-op_complement
-id|SK_RLMT_RCS_SEG
-suffix:semicolon
 id|SkRlmtCheckSeg
 c_func
 (paren
 id|pAC
 comma
 id|IoC
+comma
+id|Para.Para32
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 id|SK_DBG_MSG
@@ -8641,17 +10433,44 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_SEG_TIM Event (%d) END.&bslash;n&quot;
+l_string|&quot;SK_RLMT_SEG_TIM Event END.&bslash;n&quot;
+)paren
+)paren
+)brace
+multiline_comment|/* SkRlmtEvtSegTim */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtEvtPacketRx - PACKET_RECEIVED&n; *&n; * Description:&n; *&t;This routine handles PACKET_RECEIVED events.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;Nothing&n; */
+DECL|function|SkRlmtEvtPacketRx
+id|RLMT_STATIC
+r_void
+id|SkRlmtEvtPacketRx
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
 comma
-id|Event
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+id|SK_EVPARA
+id|Para
 )paren
-)paren
-r_break
+multiline_comment|/* SK_MBUF *pMb */
+(brace
+id|SK_MBUF
+op_star
+id|pMb
 suffix:semicolon
-r_case
-id|SK_RLMT_PACKET_RECEIVED
-suffix:colon
-multiline_comment|/* From DRV. */
+id|SK_MBUF
+op_star
+id|pNextMb
+suffix:semicolon
+id|SK_U32
+id|NetNumber
+suffix:semicolon
+macro_line|#if 0
 id|SK_DBG_MSG
 c_func
 (paren
@@ -8662,11 +10481,10 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_PACKET_RECEIVED Event (%d) BEGIN.&bslash;n&quot;
-comma
-id|Event
+l_string|&quot;SK_RLMT_PACKET_RECEIVED Event BEGIN.&bslash;n&quot;
 )paren
 )paren
+macro_line|#endif&t;/* 0 */
 multiline_comment|/* Should we ignore frames during port switching? */
 macro_line|#ifdef DEBUG
 id|pMb
@@ -8743,6 +10561,41 @@ id|pMb-&gt;pNext
 op_assign
 l_int|NULL
 suffix:semicolon
+id|NetNumber
+op_assign
+id|pAC-&gt;Rlmt.Port
+(braket
+id|pMb-&gt;PortIdx
+)braket
+dot
+id|Net-&gt;NetNumber
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pAC-&gt;Rlmt.Net
+(braket
+id|NetNumber
+)braket
+dot
+id|RlmtState
+op_eq
+id|SK_RLMT_RS_INIT
+)paren
+(brace
+id|SkDrvFreeRlmtMbuf
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|pMb
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|SkRlmtPacketReceive
 c_func
 (paren
@@ -8754,6 +10607,8 @@ id|pMb
 )paren
 suffix:semicolon
 )brace
+)brace
+macro_line|#if 0
 id|SK_DBG_MSG
 c_func
 (paren
@@ -8764,17 +10619,40 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_PACKET_RECEIVED Event (%d) END.&bslash;n&quot;
+l_string|&quot;SK_RLMT_PACKET_RECEIVED Event END.&bslash;n&quot;
+)paren
+)paren
+macro_line|#endif&t;/* 0 */
+)brace
+multiline_comment|/* SkRlmtEvtPacketRx */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtEvtStatsClear - STATS_CLEAR&n; *&n; * Description:&n; *&t;This routine handles STATS_CLEAR events.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;Nothing&n; */
+DECL|function|SkRlmtEvtStatsClear
+id|RLMT_STATIC
+r_void
+id|SkRlmtEvtStatsClear
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
 comma
-id|Event
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+id|SK_EVPARA
+id|Para
 )paren
-)paren
-r_break
+multiline_comment|/* SK_U32 NetNumber; SK_U32 -1 */
+(brace
+id|SK_U32
+id|i
 suffix:semicolon
-r_case
-id|SK_RLMT_STATS_CLEAR
-suffix:colon
-multiline_comment|/* From PNMI. */
+id|SK_RLMT_PORT
+op_star
+id|pRPort
+suffix:semicolon
 id|SK_DBG_MSG
 c_func
 (paren
@@ -8785,12 +10663,99 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_STATS_CLEAR Event (%d) BEGIN.&bslash;n&quot;
+l_string|&quot;SK_RLMT_STATS_CLEAR Event BEGIN.&bslash;n&quot;
+)paren
+)paren
+r_if
+c_cond
+(paren
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_ne
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
 comma
-id|Event
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Bad Parameter.&bslash;n&quot;
 )paren
 )paren
-multiline_comment|/* Clear statistics for virtual and physical ports. */
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_STATS_CLEAR Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_ge
+id|pAC-&gt;Rlmt.NumNets
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Bad NetNumber %d.&bslash;n&quot;
+comma
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)paren
+)paren
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_STATS_CLEAR Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* Clear statistics for logical and physical ports. */
 r_for
 c_loop
 (paren
@@ -8800,48 +10765,54 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-(paren
-id|SK_U32
-)paren
-id|pAC-&gt;GIni.GIMacsFound
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|NumPorts
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
+id|pRPort
+op_assign
+op_amp
 id|pAC-&gt;Rlmt.Port
+(braket
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)braket
+dot
+id|Port
 (braket
 id|i
 )braket
-dot
-id|TxHelloCts
+op_member_access_from_pointer
+id|PortNumber
+)braket
+suffix:semicolon
+id|pRPort-&gt;TxHelloCts
 op_assign
 l_int|0
 suffix:semicolon
-id|pAC-&gt;Rlmt.Port
-(braket
-id|i
-)braket
-dot
-id|RxHelloCts
+id|pRPort-&gt;RxHelloCts
 op_assign
 l_int|0
 suffix:semicolon
-id|pAC-&gt;Rlmt.Port
-(braket
-id|i
-)braket
-dot
-id|TxSpHelloReqCts
+id|pRPort-&gt;TxSpHelloReqCts
 op_assign
 l_int|0
 suffix:semicolon
-id|pAC-&gt;Rlmt.Port
-(braket
-id|i
-)braket
-dot
-id|RxSpHelloCts
+id|pRPort-&gt;RxSpHelloCts
 op_assign
 l_int|0
 suffix:semicolon
@@ -8856,17 +10827,121 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_STATS_CLEAR Event (%d) END.&bslash;n&quot;
+l_string|&quot;SK_RLMT_STATS_CLEAR Event END.&bslash;n&quot;
+)paren
+)paren
+)brace
+multiline_comment|/* SkRlmtEvtStatsClear */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtEvtStatsUpdate - STATS_UPDATE&n; *&n; * Description:&n; *&t;This routine handles STATS_UPDATE events.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;Nothing&n; */
+DECL|function|SkRlmtEvtStatsUpdate
+id|RLMT_STATIC
+r_void
+id|SkRlmtEvtStatsUpdate
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
 comma
-id|Event
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+id|SK_EVPARA
+id|Para
+)paren
+multiline_comment|/* SK_U32 NetNumber; SK_U32 -1 */
+(brace
+r_if
+c_cond
+(paren
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_ne
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Bad Parameter.&bslash;n&quot;
 )paren
 )paren
-r_break
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_STATS_UPDATE Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
 suffix:semicolon
-r_case
-id|SK_RLMT_STATS_UPDATE
-suffix:colon
-multiline_comment|/* From PNMI. */
+)brace
+r_if
+c_cond
+(paren
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_ge
+id|pAC-&gt;Rlmt.NumNets
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Bad NetNumber %d.&bslash;n&quot;
+comma
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)paren
+)paren
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_STATS_UPDATE Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
 macro_line|#if 0
 id|SK_DBG_MSG
 c_func
@@ -8878,13 +10953,10 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_STATS_UPDATE Event (%d) BEGIN.&bslash;n&quot;
-comma
-id|Event
+l_string|&quot;SK_RLMT_STATS_UPDATE Event BEGIN.&bslash;n&quot;
 )paren
 )paren
-multiline_comment|/* Update statistics. */
-multiline_comment|/* Currently always up-to-date. */
+multiline_comment|/* Update statistics - currently always up-to-date. */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -8895,18 +10967,33 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_STATS_UPDATE Event (%d) END.&bslash;n&quot;
-comma
-id|Event
+l_string|&quot;SK_RLMT_STATS_UPDATE Event END.&bslash;n&quot;
 )paren
 )paren
 macro_line|#endif&t;/* 0 */
-r_break
-suffix:semicolon
-r_case
-id|SK_RLMT_PREFPORT_CHANGE
-suffix:colon
-multiline_comment|/* From PNMI. */
+)brace
+multiline_comment|/* SkRlmtEvtStatsUpdate */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtEvtPrefportChange - PREFPORT_CHANGE&n; *&n; * Description:&n; *&t;This routine handles PREFPORT_CHANGE events.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;Nothing&n; */
+DECL|function|SkRlmtEvtPrefportChange
+id|RLMT_STATIC
+r_void
+id|SkRlmtEvtPrefportChange
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+id|SK_EVPARA
+id|Para
+)paren
+multiline_comment|/* SK_U32 PortIndex; SK_U32 NetNumber */
+(brace
 id|SK_DBG_MSG
 c_func
 (paren
@@ -8917,16 +11004,59 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_PREFPORT_CHANGE to Port %d Event (%d) BEGIN.&bslash;n&quot;
+l_string|&quot;SK_RLMT_PREFPORT_CHANGE to Port %d Event BEGIN.&bslash;n&quot;
 comma
 id|Para.Para32
 (braket
 l_int|0
 )braket
+)paren
+)paren
+r_if
+c_cond
+(paren
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_ge
+id|pAC-&gt;Rlmt.NumNets
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
 comma
-id|Event
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Bad NetNumber %d.&bslash;n&quot;
+comma
+id|Para.Para32
+(braket
+l_int|1
+)braket
 )paren
 )paren
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_PREFPORT_CHANGE Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* 0xFFFFFFFF == auto-mode. */
 r_if
 c_cond
@@ -8939,7 +11069,15 @@ op_eq
 l_int|0xFFFFFFFF
 )paren
 (brace
-id|pAC-&gt;Rlmt.PrefPort
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|PrefPort
 op_assign
 id|SK_RLMT_DEF_PREF_PORT
 suffix:semicolon
@@ -8954,10 +11092,15 @@ id|Para.Para32
 l_int|0
 )braket
 op_ge
-(paren
-id|SK_U32
-)paren
-id|pAC-&gt;GIni.GIMacsFound
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|NumPorts
 )paren
 (brace
 id|SK_ERR_LOG
@@ -8982,15 +11125,21 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_PREFPORT_CHANGE Event (%d) EMPTY.&bslash;n&quot;
-comma
-id|Event
+l_string|&quot;SK_RLMT_PREFPORT_CHANGE Event EMPTY.&bslash;n&quot;
 )paren
 )paren
-r_break
+r_return
 suffix:semicolon
 )brace
-id|pAC-&gt;Rlmt.PrefPort
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|PrefPort
 op_assign
 id|Para.Para32
 (braket
@@ -8998,20 +11147,89 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
-id|pAC-&gt;Rlmt.MacPreferred
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|Preference
 op_assign
 id|Para.Para32
 (braket
 l_int|0
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|RlmtState
+op_ne
+id|SK_RLMT_RS_INIT
+)paren
+(brace
 id|SkRlmtCheckSwitch
 c_func
 (paren
 id|pAC
 comma
 id|IoC
+comma
+id|Para.Para32
+(braket
+l_int|1
+)braket
 )paren
+suffix:semicolon
+)brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_PREFPORT_CHANGE Event END.&bslash;n&quot;
+)paren
+)paren
+)brace
+multiline_comment|/* SkRlmtEvtPrefportChange */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtEvtSetNets - SET_NETS&n; *&n; * Description:&n; *&t;This routine handles SET_NETS events.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;Nothing&n; */
+DECL|function|SkRlmtEvtSetNets
+id|RLMT_STATIC
+r_void
+id|SkRlmtEvtSetNets
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+id|SK_EVPARA
+id|Para
+)paren
+multiline_comment|/* SK_U32 NumNets; SK_U32 -1 */
+(brace
+r_int
+id|i
 suffix:semicolon
 id|SK_DBG_MSG
 c_func
@@ -9023,44 +11241,24 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_PREFPORT_CHANGE Event (%d) END.&bslash;n&quot;
-comma
-id|Event
-)paren
-)paren
-r_break
-suffix:semicolon
-r_case
-id|SK_RLMT_MODE_CHANGE
-suffix:colon
-multiline_comment|/* From PNMI. */
-id|SK_DBG_MSG
-c_func
-(paren
-id|pAC
-comma
-id|SK_DBGMOD_RLMT
-comma
-id|SK_DBGCAT_CTRL
-comma
-(paren
-l_string|&quot;SK_RLMT_MODE_CHANGE Event (%d) BEGIN.&bslash;n&quot;
-comma
-id|Event
+l_string|&quot;SK_RLMT_SET_NETS Event BEGIN.&bslash;n&quot;
 )paren
 )paren
 r_if
 c_cond
 (paren
-id|pAC-&gt;GIni.GIMacsFound
-OL
-l_int|2
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_ne
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
 )paren
 (brace
-id|pAC-&gt;Rlmt.RlmtMode
-op_assign
-id|SK_RLMT_CHECK_LINK
-suffix:semicolon
 id|SK_DBG_MSG
 c_func
 (paren
@@ -9071,7 +11269,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;Forced RLMT mode to CLS on single link adapter.&bslash;n&quot;
+l_string|&quot;Bad Parameter.&bslash;n&quot;
 )paren
 )paren
 id|SK_DBG_MSG
@@ -9084,27 +11282,342 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_MODE_CHANGE Event (%d) EMPTY.&bslash;n&quot;
-comma
-id|Event
+l_string|&quot;SK_RLMT_SET_NETS Event EMPTY.&bslash;n&quot;
 )paren
 )paren
-r_break
+r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Update RLMT mode. */
-id|PrevRlmtMode
-op_assign
-id|pAC-&gt;Rlmt.RlmtMode
+r_if
+c_cond
+(paren
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_eq
+l_int|0
+op_logical_or
+id|Para.Para32
+(braket
+l_int|0
+)braket
+OG
+id|SK_MAX_NETS
+op_logical_or
+id|Para.Para32
+(braket
+l_int|0
+)braket
+OG
+(paren
+id|SK_U32
+)paren
+id|pAC-&gt;GIni.GIMacsFound
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Bad number of nets: %d.&bslash;n&quot;
+comma
+id|Para.Para32
+(braket
+l_int|0
+)braket
+)paren
+)paren
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_SET_NETS Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
 suffix:semicolon
-id|pAC-&gt;Rlmt.RlmtMode
+)brace
+r_if
+c_cond
+(paren
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_eq
+id|pAC-&gt;Rlmt.NumNets
+)paren
+(brace
+multiline_comment|/* No change. */
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_SET_NETS Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* Entering and leaving dual mode only allowed while nets are stopped. */
+r_if
+c_cond
+(paren
+id|pAC-&gt;Rlmt.NetsStarted
+OG
+l_int|0
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Changing dual mode only allowed while all nets are stopped.&bslash;n&quot;
+)paren
+)paren
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_SET_NETS Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_eq
+l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pAC-&gt;Rlmt.NumNets
+OG
+l_int|1
+)paren
+(brace
+multiline_comment|/* Clear logical MAC addr from second net&squot;s active port. */
+(paren
+r_void
+)paren
+id|SkAddrOverride
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|1
+)braket
+dot
+id|Port
+(braket
+id|pAC-&gt;Addr
+dot
+id|Net
+(braket
+l_int|1
+)braket
+dot
+id|ActivePort
+)braket
+op_member_access_from_pointer
+id|PortNumber
+comma
+l_int|NULL
+comma
+id|SK_ADDR_CLEAR_LOGICAL
+)paren
+suffix:semicolon
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|1
+)braket
+dot
+id|NumPorts
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|pAC-&gt;Rlmt.NumNets
 op_assign
 id|Para.Para32
 (braket
 l_int|0
 )braket
-op_or
-id|SK_RLMT_CHECK_LINK
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+(paren
+id|SK_U32
+)paren
+id|i
+OL
+id|pAC-&gt;Rlmt.NumNets
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|RlmtState
+op_assign
+id|SK_RLMT_RS_INIT
+suffix:semicolon
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|RootIdSet
+op_assign
+id|SK_FALSE
+suffix:semicolon
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|Preference
+op_assign
+l_int|0xFFFFFFFF
+suffix:semicolon
+multiline_comment|/* &quot;Automatic&quot; */
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|PrefPort
+op_assign
+id|SK_RLMT_DEF_PREF_PORT
+suffix:semicolon
+multiline_comment|/* Just assuming. */
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|ActivePort
+op_assign
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|PrefPort
+suffix:semicolon
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|RlmtMode
+op_assign
+id|SK_RLMT_DEF_MODE
+suffix:semicolon
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|TimeoutValue
+op_assign
+id|SK_RLMT_DEF_TO_VAL
+suffix:semicolon
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|NetNumber
+op_assign
+id|i
+suffix:semicolon
+)brace
+id|pAC-&gt;Rlmt.Port
+(braket
+l_int|1
+)braket
+dot
+id|Net
+op_assign
+op_amp
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|0
+)braket
+dot
+id|NumPorts
+op_assign
+id|pAC-&gt;GIni.GIMacsFound
+suffix:semicolon
+id|SkEventQueue
+c_func
+(paren
+id|pAC
+comma
+id|SKGE_PNMI
+comma
+id|SK_PNMI_EVT_RLMT_SET_NETS
+comma
+id|Para
+)paren
 suffix:semicolon
 id|SK_DBG_MSG
 c_func
@@ -9116,11 +11629,462 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;RLMT: Changed Mode to %X.&bslash;n&quot;
+l_string|&quot;RLMT: Changed to one net with two ports.&bslash;n&quot;
+)paren
+)paren
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_eq
+l_int|2
+)paren
+(brace
+id|pAC-&gt;Rlmt.Port
+(braket
+l_int|1
+)braket
+dot
+id|Net
+op_assign
+op_amp
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|1
+)braket
+suffix:semicolon
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|1
+)braket
+dot
+id|NumPorts
+op_assign
+id|pAC-&gt;GIni.GIMacsFound
+op_minus
+l_int|1
+suffix:semicolon
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|0
+)braket
+dot
+id|NumPorts
+op_assign
+id|pAC-&gt;GIni.GIMacsFound
+op_minus
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|1
+)braket
+dot
+id|NumPorts
+suffix:semicolon
+id|pAC-&gt;Rlmt.NumNets
+op_assign
+id|Para.Para32
+(braket
+l_int|0
+)braket
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+(paren
+id|SK_U32
+)paren
+id|i
+OL
+id|pAC-&gt;Rlmt.NumNets
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|RlmtState
+op_assign
+id|SK_RLMT_RS_INIT
+suffix:semicolon
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|RootIdSet
+op_assign
+id|SK_FALSE
+suffix:semicolon
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|Preference
+op_assign
+l_int|0xFFFFFFFF
+suffix:semicolon
+multiline_comment|/* &quot;Automatic&quot; */
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|PrefPort
+op_assign
+id|SK_RLMT_DEF_PREF_PORT
+suffix:semicolon
+multiline_comment|/* Just assuming. */
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|ActivePort
+op_assign
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|PrefPort
+suffix:semicolon
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|RlmtMode
+op_assign
+id|SK_RLMT_DEF_MODE
+suffix:semicolon
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|TimeoutValue
+op_assign
+id|SK_RLMT_DEF_TO_VAL
+suffix:semicolon
+id|pAC-&gt;Rlmt.Net
+(braket
+id|i
+)braket
+dot
+id|NetNumber
+op_assign
+id|i
+suffix:semicolon
+)brace
+multiline_comment|/* Set logical MAC addr on second net&squot;s active port. */
+(paren
+r_void
+)paren
+id|SkAddrOverride
+c_func
+(paren
+id|pAC
 comma
-id|pAC-&gt;Rlmt.RlmtMode
+id|IoC
+comma
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|1
+)braket
+dot
+id|Port
+(braket
+id|pAC-&gt;Addr
+dot
+id|Net
+(braket
+l_int|1
+)braket
+dot
+id|ActivePort
+)braket
+op_member_access_from_pointer
+id|PortNumber
+comma
+l_int|NULL
+comma
+id|SK_ADDR_SET_LOGICAL
+)paren
+suffix:semicolon
+id|SkEventQueue
+c_func
+(paren
+id|pAC
+comma
+id|SKGE_PNMI
+comma
+id|SK_PNMI_EVT_RLMT_SET_NETS
+comma
+id|Para
+)paren
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;RLMT: Changed to two nets with one port each.&bslash;n&quot;
 )paren
 )paren
+)brace
+r_else
+(brace
+multiline_comment|/* Not implemented for more than two nets. */
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SetNets not implemented for more than two nets.&bslash;n&quot;
+)paren
+)paren
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_SET_NETS Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_SET_NETS Event END.&bslash;n&quot;
+)paren
+)paren
+)brace
+multiline_comment|/* SkRlmtSetNets */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtEvtModeChange - MODE_CHANGE&n; *&n; * Description:&n; *&t;This routine handles MODE_CHANGE events.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;Nothing&n; */
+DECL|function|SkRlmtEvtModeChange
+id|RLMT_STATIC
+r_void
+id|SkRlmtEvtModeChange
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+id|SK_EVPARA
+id|Para
+)paren
+multiline_comment|/* SK_U32 NewMode; SK_U32 NetNumber */
+(brace
+id|SK_EVPARA
+id|Para2
+suffix:semicolon
+id|SK_U32
+id|i
+suffix:semicolon
+id|SK_U32
+id|PrevRlmtMode
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_MODE_CHANGE Event BEGIN.&bslash;n&quot;
+)paren
+)paren
+r_if
+c_cond
+(paren
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_ge
+id|pAC-&gt;Rlmt.NumNets
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Bad NetNumber %d.&bslash;n&quot;
+comma
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)paren
+)paren
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_MODE_CHANGE Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_or_assign
+id|SK_RLMT_CHECK_LINK
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|NumPorts
+OL
+l_int|2
+op_logical_and
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_ne
+id|SK_RLMT_MODE_CLS
+)paren
+(brace
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|RlmtMode
+op_assign
+id|SK_RLMT_MODE_CLS
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Forced RLMT mode to CLS on single port net.&bslash;n&quot;
+)paren
+)paren
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_RLMT
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SK_RLMT_MODE_CHANGE Event EMPTY.&bslash;n&quot;
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* Update RLMT mode. */
+id|PrevRlmtMode
+op_assign
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|RlmtMode
+suffix:semicolon
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|RlmtMode
+op_assign
+id|Para.Para32
+(braket
+l_int|0
+)braket
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9131,31 +12095,79 @@ id|SK_RLMT_CHECK_LOC_LINK
 )paren
 op_ne
 (paren
-id|pAC-&gt;Rlmt.RlmtMode
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|RlmtMode
 op_amp
 id|SK_RLMT_CHECK_LOC_LINK
 )paren
 )paren
 (brace
+multiline_comment|/* SK_RLMT_CHECK_LOC_LINK bit changed. */
 r_if
 c_cond
 (paren
-op_logical_neg
 (paren
 id|PrevRlmtMode
 op_amp
 id|SK_RLMT_CHECK_OTHERS
 )paren
+op_eq
+l_int|0
 op_logical_and
-id|pAC-&gt;GIni.GIMacsFound
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|NumPorts
 OG
 l_int|1
 op_logical_and
-id|pAC-&gt;Rlmt.PortsUp
-op_eq
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|PortsUp
+op_ge
 l_int|1
 )paren
 (brace
+multiline_comment|/* 20001207 RA: Was &quot;PortsUp == 1&quot;. */
+id|Para2.Para32
+(braket
+l_int|0
+)braket
+op_assign
+id|Para.Para32
+(braket
+l_int|1
+)braket
+suffix:semicolon
+id|Para2.Para32
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
+suffix:semicolon
 id|SkTimerStart
 c_func
 (paren
@@ -9164,15 +12176,31 @@ comma
 id|IoC
 comma
 op_amp
-id|pAC-&gt;Rlmt.LocTimer
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|LocTimer
 comma
-id|pAC-&gt;Rlmt.TimeoutValue
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|TimeoutValue
 comma
 id|SKGE_RLMT
 comma
 id|SK_RLMT_TIM
 comma
-id|Para
+id|Para2
 )paren
 suffix:semicolon
 )brace
@@ -9187,12 +12215,21 @@ id|SK_RLMT_CHECK_SEG
 )paren
 op_ne
 (paren
-id|pAC-&gt;Rlmt.RlmtMode
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|RlmtMode
 op_amp
 id|SK_RLMT_CHECK_SEG
 )paren
 )paren
 (brace
+multiline_comment|/* SK_RLMT_CHECK_SEG bit changed. */
 r_for
 c_loop
 (paren
@@ -9202,10 +12239,15 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-(paren
-id|SK_U32
-)paren
-id|pAC-&gt;GIni.GIMacsFound
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|NumPorts
 suffix:semicolon
 id|i
 op_increment
@@ -9221,7 +12263,20 @@ id|pAC
 comma
 id|IoC
 comma
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|Port
+(braket
 id|i
+)braket
+op_member_access_from_pointer
+id|PortNumber
 comma
 id|SK_ADDR_PERMANENT
 op_or
@@ -9239,7 +12294,20 @@ id|pAC
 comma
 id|IoC
 comma
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|Port
+(braket
 id|i
+)braket
+op_member_access_from_pointer
+id|PortNumber
 comma
 op_amp
 id|SkRlmtMcAddr
@@ -9250,9 +12318,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.RlmtMode
+(paren
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|RlmtMode
 op_amp
 id|SK_RLMT_CHECK_SEG
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Add BPDU MC address. */
@@ -9266,7 +12346,20 @@ id|pAC
 comma
 id|IoC
 comma
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|Port
+(braket
 id|i
+)braket
+op_member_access_from_pointer
+id|PortNumber
 comma
 op_amp
 id|BridgeMcAddr
@@ -9277,7 +12370,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.RlmtState
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|RlmtState
 op_ne
 id|SK_RLMT_RS_INIT
 )paren
@@ -9286,11 +12387,19 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|pAC-&gt;Rlmt.Port
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|LinkDown
 op_logical_and
 (paren
@@ -9310,11 +12419,19 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|pAC-&gt;Rlmt.Port
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|Port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|RootIdSet
 op_assign
 id|SK_FALSE
@@ -9344,18 +12461,65 @@ id|pAC
 comma
 id|IoC
 comma
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|Port
+(braket
 id|i
+)braket
+op_member_access_from_pointer
+id|PortNumber
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* for ... */
 r_if
 c_cond
 (paren
-id|pAC-&gt;Rlmt.RlmtMode
+(paren
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|RlmtMode
 op_amp
 id|SK_RLMT_CHECK_SEG
 )paren
+op_ne
+l_int|0
+)paren
 (brace
+id|Para2.Para32
+(braket
+l_int|0
+)braket
+op_assign
+id|Para.Para32
+(braket
+l_int|1
+)braket
+suffix:semicolon
+id|Para2.Para32
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|SK_U32
+)paren
+op_minus
+l_int|1
+suffix:semicolon
 id|SkTimerStart
 c_func
 (paren
@@ -9364,7 +12528,15 @@ comma
 id|IoC
 comma
 op_amp
-id|pAC-&gt;Rlmt.SegTimer
+id|pAC-&gt;Rlmt.Net
+(braket
+id|Para.Para32
+(braket
+l_int|1
+)braket
+)braket
+dot
+id|SegTimer
 comma
 id|SK_RLMT_SEG_TO_VAL
 comma
@@ -9372,11 +12544,12 @@ id|SKGE_RLMT
 comma
 id|SK_RLMT_SEG_TIM
 comma
-id|Para
+id|Para2
 )paren
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* SK_RLMT_CHECK_SEG bit changed. */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -9387,13 +12560,309 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;SK_RLMT_MODE_CHANGE Event (%d) END.&bslash;n&quot;
+l_string|&quot;SK_RLMT_MODE_CHANGE Event END.&bslash;n&quot;
+)paren
+)paren
+)brace
+multiline_comment|/* SkRlmtEvtModeChange */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkRlmtEvent - a PORT- or an RLMT-specific event happened&n; *&n; * Description:&n; *&t;This routine calls subroutines to handle PORT- and RLMT-specific events.&n; *&n; * Context:&n; *&t;runtime, pageable?&n; *&t;may be called after SK_INIT_IO&n; *&n; * Returns:&n; *&t;0&n; */
+DECL|function|SkRlmtEvent
+r_int
+id|SkRlmtEvent
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
 comma
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+id|SK_U32
+id|Event
+comma
+multiline_comment|/* Event code */
+id|SK_EVPARA
+id|Para
+)paren
+multiline_comment|/* Event-specific parameter */
+(brace
+r_switch
+c_cond
+(paren
 id|Event
 )paren
+(brace
+multiline_comment|/* ----- PORT events ----- */
+r_case
+id|SK_RLMT_PORTSTART_TIM
+suffix:colon
+multiline_comment|/* From RLMT via TIME. */
+id|SkRlmtEvtPortStartTim
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Para
 )paren
+suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|SK_RLMT_LINK_UP
+suffix:colon
+multiline_comment|/* From SIRQ. */
+id|SkRlmtEvtLinkUp
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Para
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_RLMT_PORTUP_TIM
+suffix:colon
+multiline_comment|/* From RLMT via TIME. */
+id|SkRlmtEvtPortUpTim
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Para
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_RLMT_PORTDOWN
+suffix:colon
+multiline_comment|/* From RLMT. */
+r_case
+id|SK_RLMT_PORTDOWN_RX_TIM
+suffix:colon
+multiline_comment|/* From RLMT via TIME. */
+r_case
+id|SK_RLMT_PORTDOWN_TX_TIM
+suffix:colon
+multiline_comment|/* From RLMT via TIME. */
+id|SkRlmtEvtPortDownX
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Event
+comma
+id|Para
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_RLMT_LINK_DOWN
+suffix:colon
+multiline_comment|/* From SIRQ. */
+id|SkRlmtEvtLinkDown
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Para
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_RLMT_PORT_ADDR
+suffix:colon
+multiline_comment|/* From ADDR. */
+id|SkRlmtEvtPortAddr
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Para
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* ----- RLMT events ----- */
+r_case
+id|SK_RLMT_START
+suffix:colon
+multiline_comment|/* From DRV. */
+id|SkRlmtEvtStart
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Para
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_RLMT_STOP
+suffix:colon
+multiline_comment|/* From DRV. */
+id|SkRlmtEvtStop
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Para
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_RLMT_TIM
+suffix:colon
+multiline_comment|/* From RLMT via TIME. */
+id|SkRlmtEvtTim
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Para
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_RLMT_SEG_TIM
+suffix:colon
+id|SkRlmtEvtSegTim
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Para
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_RLMT_PACKET_RECEIVED
+suffix:colon
+multiline_comment|/* From DRV. */
+id|SkRlmtEvtPacketRx
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Para
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_RLMT_STATS_CLEAR
+suffix:colon
+multiline_comment|/* From PNMI. */
+id|SkRlmtEvtStatsClear
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Para
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_RLMT_STATS_UPDATE
+suffix:colon
+multiline_comment|/* From PNMI. */
+id|SkRlmtEvtStatsUpdate
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Para
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_RLMT_PREFPORT_CHANGE
+suffix:colon
+multiline_comment|/* From PNMI. */
+id|SkRlmtEvtPrefportChange
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Para
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_RLMT_MODE_CHANGE
+suffix:colon
+multiline_comment|/* From PNMI. */
+id|SkRlmtEvtModeChange
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Para
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_RLMT_SET_NETS
+suffix:colon
+multiline_comment|/* From DRV. */
+id|SkRlmtEvtSetNets
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Para
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* ----- Unknown events ----- */
 r_default
 suffix:colon
 multiline_comment|/* Create error log entry. */
@@ -9427,6 +12896,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* switch() */
 r_return
 (paren
 l_int|0

@@ -2299,6 +2299,7 @@ l_int|NULL
 (brace
 multiline_comment|/*&n;&t;&t; * Queue was empty.&n;&t;&t; */
 )brace
+r_else
 r_if
 c_cond
 (paren

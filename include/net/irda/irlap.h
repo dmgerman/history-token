@@ -20,19 +20,8 @@ DECL|macro|LAP_ADDR_HEADER
 mdefine_line|#define LAP_ADDR_HEADER 1  /* IrLAP Address Header */
 DECL|macro|LAP_CTRL_HEADER
 mdefine_line|#define LAP_CTRL_HEADER 1  /* IrLAP Control Header */
-DECL|macro|LAP_COMP_HEADER
-mdefine_line|#define LAP_COMP_HEADER 1  /* IrLAP Compression Header */
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-DECL|macro|LAP_MAX_HEADER
-macro_line|#  define LAP_MAX_HEADER  (LAP_ADDR_HEADER + LAP_CTRL_HEADER + LAP_COMP_HEADER)
-DECL|macro|IRDA_COMPRESSED
-macro_line|#  define IRDA_COMPRESSED 1
-DECL|macro|IRDA_NORMAL
-macro_line|#  define IRDA_NORMAL     0
-macro_line|#else
 DECL|macro|LAP_MAX_HEADER
 mdefine_line|#define LAP_MAX_HEADER (LAP_ADDR_HEADER + LAP_CTRL_HEADER)
-macro_line|#endif
 DECL|macro|BROADCAST
 mdefine_line|#define BROADCAST  0xffffffff /* Broadcast device address */
 DECL|macro|CBROADCAST
@@ -55,41 +44,6 @@ DECL|macro|NS_UNEXPECTED
 mdefine_line|#define NS_UNEXPECTED   0
 DECL|macro|NS_INVALID
 mdefine_line|#define NS_INVALID     -1
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-multiline_comment|/*  &n; *  Just some shortcuts (may give you strange compiler errors if you change &n; *  them :-)&n; */
-DECL|macro|irda_compress
-mdefine_line|#define irda_compress    (*self-&gt;compessor.cp-&gt;compress)
-DECL|macro|irda_comp_free
-mdefine_line|#define irda_comp_free   (*self-&gt;compressor.cp-&gt;comp_free)
-DECL|macro|irda_decompress
-mdefine_line|#define irda_decompress  (*self-&gt;decompressor.cp-&gt;decompress)
-DECL|macro|irda_decomp_free
-mdefine_line|#define irda_decomp_free (*self-&gt;decompressor.cp-&gt;decomp_free)
-DECL|macro|irda_incomp
-mdefine_line|#define irda_incomp      (*self-&gt;decompressor.cp-&gt;incomp)
-DECL|struct|irda_compressor
-r_struct
-id|irda_compressor
-(brace
-DECL|member|q
-id|irda_queue_t
-id|q
-suffix:semicolon
-DECL|member|cp
-r_struct
-id|compressor
-op_star
-id|cp
-suffix:semicolon
-DECL|member|state
-r_void
-op_star
-id|state
-suffix:semicolon
-multiline_comment|/* Not used by IrDA */
-)brace
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Main structure of IrLAP */
 DECL|struct|irlap_cb
 r_struct
@@ -388,18 +342,6 @@ r_int
 id|next_bofs
 suffix:semicolon
 multiline_comment|/* Negotiated extra BOFs after next frame */
-macro_line|#ifdef CONFIG_IRDA_COMPRESSION
-DECL|member|compressor
-r_struct
-id|irda_compressor
-id|compressor
-suffix:semicolon
-DECL|member|decompressor
-r_struct
-id|irda_compressor
-id|decompressor
-suffix:semicolon
-macro_line|#endif /* CONFIG_IRDA_COMPRESSION */
 )brace
 suffix:semicolon
 r_extern

@@ -151,17 +151,31 @@ suffix:semicolon
 multiline_comment|/* 12-13 */
 DECL|member|status
 r_int
-r_int
+r_char
 id|status
 suffix:semicolon
-multiline_comment|/* 14-15 */
+multiline_comment|/* 14 */
+DECL|member|fifo_len
+r_int
+r_char
+id|fifo_len
+suffix:semicolon
+multiline_comment|/* 15 */
 DECL|typedef|etrax_dma_descr
 )brace
 id|etrax_dma_descr
 suffix:semicolon
+multiline_comment|/* Use this for constant numbers only */
+DECL|macro|RESET_DMA_NUM
+mdefine_line|#define RESET_DMA_NUM( n ) &bslash;&n;  *R_DMA_CH##n##_CMD = IO_STATE( R_DMA_CH0_CMD, cmd, reset )
+multiline_comment|/* Use this for constant numbers or symbols, &n; * having two macros makes it possible to use constant expressions. &n; */
 DECL|macro|RESET_DMA
-mdefine_line|#define RESET_DMA( n ) &bslash;&n;  *R_DMA_CH##n##_CMD = IO_STATE( R_DMA_CH0_CMD, cmd, reset )
+mdefine_line|#define RESET_DMA( n ) RESET_DMA_NUM( n )
+multiline_comment|/* Use this for constant numbers only */
+DECL|macro|WAIT_DMA_NUM
+mdefine_line|#define WAIT_DMA_NUM( n ) &bslash;&n;  while( (*R_DMA_CH##n##_CMD &amp; IO_MASK( R_DMA_CH0_CMD, cmd )) != &bslash;&n;         IO_STATE( R_DMA_CH0_CMD, cmd, hold ) )
+multiline_comment|/* Use this for constant numbers or symbols &n; * having two macros makes it possible to use constant expressions. &n; */
 DECL|macro|WAIT_DMA
-mdefine_line|#define WAIT_DMA( n ) &bslash;&n;  while( (*R_DMA_CH##n##_CMD &amp; IO_MASK( R_DMA_CH0_CMD, cmd )) != &bslash;&n;         IO_STATE( R_DMA_CH0_CMD, cmd, hold ) )
+mdefine_line|#define WAIT_DMA( n ) WAIT_DMA_NUM( n )
 macro_line|#endif
 eof

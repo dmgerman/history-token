@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file &quot;COPYING&quot; in the main directory of this&n; * archive for more details.&n; *&n; * Copyright (C) 2000 - 2001 by Kanoj Sarcar (kanoj@sgi.com)&n; * Copyright (C) 2000 - 2001 by Silicon Graphics, Inc.&n; */
 macro_line|#ifndef __ASM_SMP_H
 DECL|macro|__ASM_SMP_H
 mdefine_line|#define __ASM_SMP_H
@@ -101,16 +102,57 @@ id|NR_CPUS
 suffix:semicolon
 DECL|macro|cpu_logical_map
 mdefine_line|#define cpu_logical_map(cpu)  __cpu_logical_map[cpu]
-multiline_comment|/* Good enough for toy^Wupto 64 CPU Origins.  */
-r_extern
-r_int
-r_int
-id|cpu_present_mask
-suffix:semicolon
-DECL|macro|cpu_online_map
-mdefine_line|#define cpu_online_map cpu_present_mask
 macro_line|#endif
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID&t;(-1)
-macro_line|#endif __ASM_SMP_H
+macro_line|#if (NR_CPUS &lt;= _MIPS_SZLONG)
+DECL|typedef|cpumask_t
+r_typedef
+r_int
+r_int
+id|cpumask_t
+suffix:semicolon
+DECL|macro|CPUMASK_CLRALL
+mdefine_line|#define CPUMASK_CLRALL(p)&t;(p) = 0
+DECL|macro|CPUMASK_SETB
+mdefine_line|#define CPUMASK_SETB(p, bit)&t;(p) |= 1 &lt;&lt; (bit)
+DECL|macro|CPUMASK_CLRB
+mdefine_line|#define CPUMASK_CLRB(p, bit)&t;(p) &amp;= ~(1ULL &lt;&lt; (bit))
+DECL|macro|CPUMASK_TSTB
+mdefine_line|#define CPUMASK_TSTB(p, bit)&t;((p) &amp; (1ULL &lt;&lt; (bit)))
+macro_line|#elif (NR_CPUS &lt;= 128)
+multiline_comment|/*&n; * The foll should work till 128 cpus.&n; */
+DECL|macro|CPUMASK_SIZE
+mdefine_line|#define CPUMASK_SIZE&t;&t;(NR_CPUS/_MIPS_SZLONG)
+DECL|macro|CPUMASK_INDEX
+mdefine_line|#define CPUMASK_INDEX(bit)&t;((bit) &gt;&gt; 6)
+DECL|macro|CPUMASK_SHFT
+mdefine_line|#define CPUMASK_SHFT(bit)&t;((bit) &amp; 0x3f)
+r_typedef
+r_struct
+(brace
+DECL|member|_bits
+r_int
+r_int
+id|_bits
+(braket
+id|CPUMASK_SIZE
+)braket
+suffix:semicolon
+DECL|typedef|cpumask_t
+)brace
+id|cpumask_t
+suffix:semicolon
+DECL|macro|CPUMASK_CLRALL
+mdefine_line|#define&t;CPUMASK_CLRALL(p)&t;(p)._bits[0] = 0, (p)._bits[1] = 0
+DECL|macro|CPUMASK_SETB
+mdefine_line|#define CPUMASK_SETB(p, bit)&t;(p)._bits[CPUMASK_INDEX(bit)] |= &bslash;&n;&t;&t;&t;&t;&t;(1ULL &lt;&lt; CPUMASK_SHFT(bit))
+DECL|macro|CPUMASK_CLRB
+mdefine_line|#define CPUMASK_CLRB(p, bit)&t;(p)._bits[CPUMASK_INDEX(bit)] &amp;= &bslash;&n;&t;&t;&t;&t;&t;~(1ULL &lt;&lt; CPUMASK_SHFT(bit))
+DECL|macro|CPUMASK_TSTB
+mdefine_line|#define CPUMASK_TSTB(p, bit)&t;((p)._bits[CPUMASK_INDEX(bit)] &amp; &bslash;&n;&t;&t;&t;&t;&t;(1ULL &lt;&lt; CPUMASK_SHFT(bit)))
+macro_line|#else
+macro_line|#error cpumask macros only defined for 128p kernels
+macro_line|#endif
+macro_line|#endif /* __ASM_SMP_H */
 eof

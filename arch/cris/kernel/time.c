@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: time.c,v 1.4 2000/10/17 14:44:58 bjornw Exp $&n; *&n; *  linux/arch/cris/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *  Copyright (C) 1999, 2000 Axis Communications AB&n; *&n; * 1994-07-02    Alan Modra&n; *&t;fixed set_rtc_mmss, fixed time.year for &gt;= 2000, new mktime&n; * 1995-03-26    Markus Kuhn&n; *      fixed 500 ms bug at call to set_rtc_mmss, fixed DS12887&n; *      precision CMOS clock update&n; * 1996-05-03    Ingo Molnar&n; *      fixed time warps in do_[slow|fast]_gettimeoffset()&n; * 1997-09-10&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; *&n; * Linux/CRIS specific code:&n; *&n; * Authors:    Bjorn Wesen&n; *&n; */
+multiline_comment|/* $Id: time.c,v 1.6 2001/05/29 11:29:42 markusl Exp $&n; *&n; *  linux/arch/cris/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *  Copyright (C) 1999, 2000 Axis Communications AB&n; *&n; * 1994-07-02    Alan Modra&n; *&t;fixed set_rtc_mmss, fixed time.year for &gt;= 2000, new mktime&n; * 1995-03-26    Markus Kuhn&n; *      fixed 500 ms bug at call to set_rtc_mmss, fixed DS12887&n; *      precision CMOS clock update&n; * 1996-05-03    Ingo Molnar&n; *      fixed time warps in do_[slow|fast]_gettimeoffset()&n; * 1997-09-10&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; *&n; * Linux/CRIS specific code:&n; *&n; * Authors:    Bjorn Wesen&n; *&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -93,7 +93,7 @@ id|jiffies_t
 op_assign
 id|jiffies
 suffix:semicolon
-multiline_comment|/*&n;&t; * avoiding timer inconsistencies (they are rare, but they happen)...&n;&t; * there are three kinds of problems that must be avoided here:&n;&t; *  1. the timer counter underflows&n;&t; *  2. hardware problem with the timer, not giving us continuous time,&n;&t; *     the counter does small &quot;jumps&quot; upwards on some Pentium systems,&n;&t; *     thus causes time warps&n;&t; *  3. we are after the timer interrupt, but the bottom half handler&n;&t; *     hasn&squot;t executed yet.&n;&t; */
+multiline_comment|/*&n;&t; * avoiding timer inconsistencies (they are rare, but they happen)...&n;&t; * there are three kinds of problems that must be avoided here:&n;&t; *  1. the timer counter underflows&n;&t; *  2. we are after the timer interrupt, but the bottom half handler&n;&t; *     hasn&squot;t executed yet.&n; */
 r_if
 c_cond
 (paren
@@ -472,7 +472,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* Except from the Etrax100 HSDD about the built-in watchdog:&n; *&n; * 3.10.4 Watchdog timer&n;&n; * When the watchdog timer is started, it generates an NMI if the watchdog&n; * isn&squot;t restarted or stopped within 0.1 s. If it still isn&squot;t restarted or&n; * stopped after an additional 3.3 ms, the watchdog resets the chip.&n; * The watchdog timer is stopped after reset. The watchdog timer is controlled&n; * by the R_WATCHDOG register. The R_WATCHDOG register contains an enable bit&n; * and a 3-bit key value. The effect of writing to the R_WATCHDOG register is&n; * described in the table below:&n; * &n; *   Watchdog    Value written:&n; *   state:      To enable:  To key:      Operation:&n; *   --------    ----------  -------      ----------&n; *   stopped         0         X          No effect.&n; *   stopped         1       key_val      Start watchdog with key = key_val.&n; *   started         0       ~key         Stop watchdog&n; *   started         1       ~key         Restart watchdog with key = ~key.&n; *   started         X       new_key_val  Change key to new_key_val.&n; * &n; * Note: &squot;~&squot; is the bitwise NOT operator.&n; * &n; */
+multiline_comment|/* Excerpt from the Etrax100 HSDD about the built-in watchdog:&n; *&n; * 3.10.4 Watchdog timer&n;&n; * When the watchdog timer is started, it generates an NMI if the watchdog&n; * isn&squot;t restarted or stopped within 0.1 s. If it still isn&squot;t restarted or&n; * stopped after an additional 3.3 ms, the watchdog resets the chip.&n; * The watchdog timer is stopped after reset. The watchdog timer is controlled&n; * by the R_WATCHDOG register. The R_WATCHDOG register contains an enable bit&n; * and a 3-bit key value. The effect of writing to the R_WATCHDOG register is&n; * described in the table below:&n; * &n; *   Watchdog    Value written:&n; *   state:      To enable:  To key:      Operation:&n; *   --------    ----------  -------      ----------&n; *   stopped         0         X          No effect.&n; *   stopped         1       key_val      Start watchdog with key = key_val.&n; *   started         0       ~key         Stop watchdog&n; *   started         1       ~key         Restart watchdog with key = ~key.&n; *   started         X       new_key_val  Change key to new_key_val.&n; * &n; * Note: &squot;~&squot; is the bitwise NOT operator.&n; * &n; */
 multiline_comment|/* right now, starting the watchdog is the same as resetting it */
 DECL|macro|start_watchdog
 mdefine_line|#define start_watchdog reset_watchdog
@@ -487,10 +487,6 @@ multiline_comment|/* arbitrary number */
 multiline_comment|/* number of pages to consider &quot;out of memory&quot;. it is normal that the memory&n; * is used though, so put this really low.&n; */
 DECL|macro|WATCHDOG_MIN_FREE_PAGES
 mdefine_line|#define WATCHDOG_MIN_FREE_PAGES 8
-r_extern
-r_int
-id|nr_free_pages
-suffix:semicolon
 r_static
 r_inline
 r_void
@@ -507,6 +503,9 @@ r_if
 c_cond
 (paren
 id|nr_free_pages
+c_func
+(paren
+)paren
 OG
 id|WATCHDOG_MIN_FREE_PAGES
 )paren

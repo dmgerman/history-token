@@ -2274,9 +2274,13 @@ op_increment
 r_if
 c_cond
 (paren
+(paren
 id|ptr-&gt;flags
 op_amp
 id|SWP_USED
+)paren
+op_logical_and
+id|ptr-&gt;swap_map
 )paren
 (brace
 r_char

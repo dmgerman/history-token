@@ -310,7 +310,7 @@ DECL|macro|CAUSEB_BD
 mdefine_line|#define  CAUSEB_BD&t;&t;31
 DECL|macro|CAUSEF_BD
 mdefine_line|#define  CAUSEF_BD&t;&t;(1   &lt;&lt; 31)
-multiline_comment|/*&n; * Bits in the coprozessor 0 config register.&n; */
+multiline_comment|/*&n; * Bits in the coprocessor 0 config register.&n; */
 DECL|macro|CONF_CM_CACHABLE_NO_WA
 mdefine_line|#define CONF_CM_CACHABLE_NO_WA&t;&t;0
 DECL|macro|CONF_CM_CACHABLE_WA
@@ -335,7 +335,7 @@ DECL|macro|CONF_IB
 mdefine_line|#define CONF_IB&t;&t;&t;&t;(1 &lt;&lt;  5)
 DECL|macro|CONF_SC
 mdefine_line|#define CONF_SC&t;&t;&t;&t;(1 &lt;&lt; 17)
-multiline_comment|/*&n; * R10000 performance counter definitions.&n; *&n; * FIXME: The R10000 performance counter opens a nice way to implement CPU&n; *        time accounting with a precission of one cycle.  I don&squot;t have&n; *        R10000 silicon but just a manual, so ...&n; */
+multiline_comment|/*&n; * R10000 performance counter definitions.&n; *&n; * FIXME: The R10000 performance counter opens a nice way to implement CPU&n; *        time accounting with a precision of one cycle.  I don&squot;t have&n; *        R10000 silicon but just a manual, so ...&n; */
 multiline_comment|/*&n; * Events counted by counter #0&n; */
 DECL|macro|CE0_CYCLES
 mdefine_line|#define CE0_CYCLES&t;&t;&t;0

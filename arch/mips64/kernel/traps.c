@@ -1133,8 +1133,7 @@ op_amp
 id|CAUSEF_BD
 )paren
 id|epc
-op_add_assign
-l_int|4
+op_increment
 suffix:semicolon
 r_if
 c_cond

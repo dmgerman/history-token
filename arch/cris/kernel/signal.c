@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/cris/kernel/signal.c&n; *&n; *  Based on arch/i386/kernel/signal.c by&n; *     Copyright (C) 1991, 1992  Linus Torvalds&n; *     1997-11-28  Modified for POSIX.1b signals by Richard Henderson *&n; *&n; *  Ideas also taken from arch/arm.&n; *&n; *  Copyright (C) 2000 Axis Communications AB&n; *&n; *  Authors:  Bjorn Wesen (bjornw@axis.com)&n; *&n; */
+multiline_comment|/*&n; *  linux/arch/cris/kernel/signal.c&n; *&n; *  Based on arch/i386/kernel/signal.c by&n; *     Copyright (C) 1991, 1992  Linus Torvalds&n; *     1997-11-28  Modified for POSIX.1b signals by Richard Henderson *&n; *&n; *  Ideas also taken from arch/arm.&n; *&n; *  Copyright (C) 2000, 2001 Axis Communications AB&n; *&n; *  Authors:  Bjorn Wesen (bjornw@axis.com)&n; *&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -327,9 +327,9 @@ comma
 id|regs
 )paren
 )paren
+multiline_comment|/* We will get here twice: once to call the signal&n;&t;&t;&t;   handler, then again to return from the&n;&t;&t;&t;   sigsuspend system call.  When calling the&n;&t;&t;&t;   signal handler, R10 holds the signal number as&n;&t;&t;&t;   set through do_signal.  The sigsuspend call&n;&t;&t;&t;   will return with the restored value set above;&n;&t;&t;&t;   always -EINTR.  */
 r_return
-op_minus
-id|EINTR
+id|regs-&gt;r10
 suffix:semicolon
 )brace
 )brace
@@ -477,9 +477,9 @@ comma
 id|regs
 )paren
 )paren
+multiline_comment|/* We will get here twice: once to call the signal&n;&t;&t;&t;   handler, then again to return from the&n;&t;&t;&t;   sigsuspend system call.  When calling the&n;&t;&t;&t;   signal handler, R10 holds the signal number as&n;&t;&t;&t;   set through do_signal.  The sigsuspend call&n;&t;&t;&t;   will return with the restored value set above;&n;&t;&t;&t;   always -EINTR.  */
 r_return
-op_minus
-id|EINTR
+id|regs-&gt;r10
 suffix:semicolon
 )brace
 )brace
@@ -1672,6 +1672,11 @@ op_assign
 id|return_ip
 suffix:semicolon
 multiline_comment|/* what we enter LATER */
+id|regs-&gt;r10
+op_assign
+id|sig
+suffix:semicolon
+multiline_comment|/* first argument is signo */
 multiline_comment|/* actually move the usp to reflect the stacked frame */
 id|wrusp
 c_func
@@ -1919,7 +1924,6 @@ op_amp
 id|frame-&gt;retcode
 suffix:semicolon
 multiline_comment|/* This is movu.w __NR_sigreturn, r9; break 13; */
-multiline_comment|/* TODO: check byteorder */
 id|err
 op_or_assign
 id|__put_user
@@ -1999,6 +2003,11 @@ op_assign
 id|return_ip
 suffix:semicolon
 multiline_comment|/* what we enter LATER */
+id|regs-&gt;r10
+op_assign
+id|sig
+suffix:semicolon
+multiline_comment|/* first argument is signo */
 multiline_comment|/* actually move the usp to reflect the stacked frame */
 id|wrusp
 c_func

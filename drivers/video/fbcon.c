@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/video/fbcon.c -- Low level frame buffer based console driver&n; *&n; *&t;Copyright (C) 1995 Geert Uytterhoeven&n; *&n; *&n; *  This file is based on the original Amiga console driver (amicon.c):&n; *&n; *&t;Copyright (C) 1993 Hamish Macdonald&n; *&t;&t;&t;   Greg Harp&n; *&t;Copyright (C) 1994 David Carter [carter@compsci.bristol.ac.uk]&n; *&n; *&t;      with work by William Rucklidge (wjr@cs.cornell.edu)&n; *&t;&t;&t;   Geert Uytterhoeven&n; *&t;&t;&t;   Jes Sorensen (jds@kom.auc.dk)&n; *&t;&t;&t;   Martin Apel&n; *&n; *  and on the original Atari console driver (atacon.c):&n; *&n; *&t;Copyright (C) 1993 Bjoern Brauel&n; *&t;&t;&t;   Roman Hodek&n; *&n; *&t;      with work by Guenther Kelleter&n; *&t;&t;&t;   Martin Schaller&n; *&t;&t;&t;   Andreas Schwab&n; *&n; *  Hardware cursor support added by Emmanuel Marty (core@ggi-project.org)&n; *  Smart redraw scrolling, arbitrary font width support, 512char font support&n; *  and software scrollback added by &n; *                         Jakub Jelinek (jj@ultra.linux.cz)&n; *&n; *  Random hacking by Martin Mares &lt;mj@ucw.cz&gt;&n; *&n; *&n; *  The low level operations for the various display memory organizations are&n; *  now in separate source files.&n; *&n; *  Currently the following organizations are supported:&n; *&n; *    o afb&t;&t;&t;Amiga bitplanes&n; *    o cfb{2,4,8,16,24,32}&t;Packed pixels&n; *    o ilbm&t;&t;&t;Amiga interleaved bitplanes&n; *    o iplan2p[248]&t;&t;Atari interleaved bitplanes&n; *    o mfb&t;&t;&t;Monochrome&n; *    o vga&t;&t;&t;VGA characters/attributes&n; *&n; *  To do:&n; *&n; *    - Implement 16 plane mode (iplan2p16)&n; *&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
+multiline_comment|/*&n; *  linux/drivers/video/fbcon.c -- Low level frame buffer based console driver&n; *&n; *&t;Copyright (C) 1995 Geert Uytterhoeven&n; *&n; *&n; *  This file is based on the original Amiga console driver (amicon.c):&n; *&n; *&t;Copyright (C) 1993 Hamish Macdonald&n; *&t;&t;&t;   Greg Harp&n; *&t;Copyright (C) 1994 David Carter [carter@compsci.bristol.ac.uk]&n; *&n; *&t;      with work by William Rucklidge (wjr@cs.cornell.edu)&n; *&t;&t;&t;   Geert Uytterhoeven&n; *&t;&t;&t;   Jes Sorensen (jds@kom.auc.dk)&n; *&t;&t;&t;   Martin Apel&n; *&n; *  and on the original Atari console driver (atacon.c):&n; *&n; *&t;Copyright (C) 1993 Bjoern Brauel&n; *&t;&t;&t;   Roman Hodek&n; *&n; *&t;      with work by Guenther Kelleter&n; *&t;&t;&t;   Martin Schaller&n; *&t;&t;&t;   Andreas Schwab&n; *&n; *  Hardware cursor support added by Emmanuel Marty (core@ggi-project.org)&n; *  Smart redraw scrolling, arbitrary font width support, 512char font support&n; *  and software scrollback added by &n; *                         Jakub Jelinek (jj@ultra.linux.cz)&n; *&n; *  Random hacking by Martin Mares &lt;mj@ucw.cz&gt;&n; *&n; *&t;2001 - Documented with DocBook&n; *&t;- Brad Douglas &lt;brad@neruo.com&gt;&n; *&n; *  The low level operations for the various display memory organizations are&n; *  now in separate source files.&n; *&n; *  Currently the following organizations are supported:&n; *&n; *    o afb&t;&t;&t;Amiga bitplanes&n; *    o cfb{2,4,8,16,24,32}&t;Packed pixels&n; *    o ilbm&t;&t;&t;Amiga interleaved bitplanes&n; *    o iplan2p[248]&t;&t;Atari interleaved bitplanes&n; *    o mfb&t;&t;&t;Monochrome&n; *    o vga&t;&t;&t;VGA characters/attributes&n; *&n; *  To do:&n; *&n; *    - Implement 16 plane mode (iplan2p16)&n; *&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
 DECL|macro|FBCONDEBUG
 macro_line|#undef FBCONDEBUG
 macro_line|#include &lt;linux/config.h&gt;
@@ -744,6 +744,7 @@ id|cursor_timer
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;PROC_CONSOLE - find the attached tty or visible console&n; *&t;@info: frame buffer info structure&n; *&n; *&t;Finds the tty attached to the process or visible console if&n; *&t;the process is not directly attached to a tty (e.g. remote&n; *&t;user) for device @info.&n; *&n; *&t;Returns -1 errno on error, or tty/visible console number&n; *&t;on success.&n; *&n; */
 DECL|function|PROC_CONSOLE
 r_int
 id|PROC_CONSOLE
@@ -819,6 +820,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;set_all_vcs - set all virtual consoles to match&n; *&t;@fbidx: frame buffer index (e.g. fb0, fb1, ...)&n; *&t;@fb: frame buffer ops structure&n; *&t;@var: frame buffer screen structure to set&n; *&t;@info: frame buffer info structure&n; *&n; *&t;Set all virtual consoles to match screen info set in @var&n; *&t;for device @info.&n; *&n; *&t;Returns negative errno on error, or zero on success.&n; *&n; */
 DECL|function|set_all_vcs
 r_int
 id|set_all_vcs
@@ -930,6 +932,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;set_con2fb_map - map console to frame buffer device&n; *&t;@unit: virtual console number to map&n; *&t;@newidx: frame buffer index to map virtual console to&n; *&n; *&t;Maps a virtual console @unit to a frame buffer device&n; *&t;@newidx.&n; *&n; */
 DECL|function|set_con2fb_map
 r_void
 id|set_con2fb_map
@@ -5328,6 +5331,11 @@ comma
 id|d
 )paren
 suffix:semicolon
+id|console_conditional_schedule
+c_func
+(paren
+)paren
+suffix:semicolon
 id|s
 op_increment
 suffix:semicolon
@@ -5376,6 +5384,11 @@ comma
 id|x
 )paren
 suffix:semicolon
+id|console_conditional_schedule
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5403,6 +5416,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+multiline_comment|/**&n; *&t;fbcon_redraw_clear - clear area of the screen&n; *&t;@conp: stucture pointing to current active virtual console&n; *&t;@p: display structure&n; *&t;@sy: starting Y coordinate&n; *&t;@sx: starting X coordinate&n; *&t;@height: height of area to clear&n; *&t;@width: width of area to clear&n; *&n; *&t;Clears a specified area of the screen.  All dimensions are in&n; *&t;pixels.&n; *&n; */
 DECL|function|fbcon_redraw_clear
 r_void
 id|fbcon_redraw_clear
@@ -5481,7 +5495,7 @@ id|x
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* This cannot be used together with ypan or ywrap */
+multiline_comment|/**&n; *&t;fbcon_redraw_bmove - copy area of screen to another area&n; *&t;@p: display structure&n; *&t;@sy: origin Y coordinate&n; *&t;@sx: origin X coordinate&n; *&t;@dy: destination Y coordinate&n; *&t;@dx: destination X coordinate&n; *&t;@h: height of area to copy&n; *&t;@w: width of area to copy&n; *&n; *&t;Copies an area of the screen to another area of the same screen.&n; *&t;All dimensions are in pixels.&n; *&n; *&t;Note that this function cannot be used together with ypan or&n; *&t;ywrap.&n; *&n; */
 DECL|function|fbcon_redraw_bmove
 r_void
 id|fbcon_redraw_bmove

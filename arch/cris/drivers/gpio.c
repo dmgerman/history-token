@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: gpio.c,v 1.7 2001/04/04 13:30:08 matsfg Exp $&n; *&n; * Etrax general port I/O device&n; *&n; * Copyright (c) 1999, 2000, 2001 Axis Communications AB&n; *&n; * Authors:    Bjorn Wesen      (initial version)&n; *             Ola Knutsson     (LED handling)&n; *             Johan Adolfsson  (read/set directions)&n; *&n; * $Log: gpio.c,v $&n; * Revision 1.7  2001/04/04 13:30:08  matsfg&n; * Added bitset and bitclear for leds. Calls init_ioremap to set up memmapping&n; *&n; * Revision 1.6  2001/03/26 16:03:06  bjornw&n; * Needs linux/config.h&n; *&n; * Revision 1.5  2001/03/26 14:22:03  bjornw&n; * Namechange of some config options&n; *&n; * Revision 1.4  2001/02/27 13:52:48  bjornw&n; * malloc.h -&gt; slab.h&n; *&n; * Revision 1.3  2001/01/24 15:06:48  bjornw&n; * gpio_wq correct type&n; *&n; * Revision 1.2  2001/01/18 16:07:30  bjornw&n; * 2.4 port&n; *&n; * Revision 1.1  2001/01/18 15:55:16  bjornw&n; * Verbatim copy of etraxgpio.c from elinux 2.0 added&n; *&n; *&n; */
+multiline_comment|/* $Id: gpio.c,v 1.9 2001/05/04 14:16:07 matsfg Exp $&n; *&n; * Etrax general port I/O device&n; *&n; * Copyright (c) 1999, 2000, 2001 Axis Communications AB&n; *&n; * Authors:    Bjorn Wesen      (initial version)&n; *             Ola Knutsson     (LED handling)&n; *             Johan Adolfsson  (read/set directions)&n; *&n; * $Log: gpio.c,v $&n; * Revision 1.9  2001/05/04 14:16:07  matsfg&n; * Corrected spelling error&n; *&n; * Revision 1.8  2001/04/27 13:55:26  matsfg&n; * Moved initioremap.&n; * Turns off all LEDS on init.&n; * Added support for shutdown and powerbutton.&n; *&n; * Revision 1.7  2001/04/04 13:30:08  matsfg&n; * Added bitset and bitclear for leds. Calls init_ioremap to set up memmapping&n; *&n; * Revision 1.6  2001/03/26 16:03:06  bjornw&n; * Needs linux/config.h&n; *&n; * Revision 1.5  2001/03/26 14:22:03  bjornw&n; * Namechange of some config options&n; *&n; * Revision 1.4  2001/02/27 13:52:48  bjornw&n; * malloc.h -&gt; slab.h&n; *&n; * Revision 1.3  2001/01/24 15:06:48  bjornw&n; * gpio_wq correct type&n; *&n; * Revision 1.2  2001/01/18 16:07:30  bjornw&n; * 2.4 port&n; *&n; * Revision 1.1  2001/01/18 15:55:16  bjornw&n; * Verbatim copy of etraxgpio.c from elinux 2.0 added&n; *&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -847,6 +847,37 @@ r_return
 op_star
 id|priv-&gt;dir_shadow
 suffix:semicolon
+r_case
+id|IO_SHUTDOWN
+suffix:colon
+id|SOFT_SHUTDOWN
+c_func
+(paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|IO_GET_PWR_BT
+suffix:colon
+macro_line|#if defined (CONFIG_ETRAX_SOFT_SHUTDOWN)
+r_return
+(paren
+op_star
+id|R_PORT_G_DATA
+op_amp
+(paren
+l_int|1
+op_lshift
+id|CONFIG_ETRAX_POWERBUTTON_BIT
+)paren
+)paren
+suffix:semicolon
+macro_line|#else
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 (brace
@@ -902,29 +933,6 @@ r_int
 r_char
 id|red
 suffix:semicolon
-r_static
-r_int
-id|initialized
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|initialized
-)paren
-(brace
-id|initialized
-op_assign
-l_int|1
-suffix:semicolon
-id|init_ioremap
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -1049,6 +1057,8 @@ r_void
 (brace
 r_int
 id|res
+comma
+id|i
 suffix:semicolon
 multiline_comment|/* do the formalities */
 id|res
@@ -1083,6 +1093,62 @@ r_return
 id|res
 suffix:semicolon
 )brace
+multiline_comment|/* Clear all leds */
+macro_line|#if defined (CONFIG_ETRAX_CSP0_LEDS) ||  defined (CONFIG_ETRAX_PA_LEDS)         || defined (CONFIG_ETRAX_PB_LEDS) 
+id|init_ioremap
+c_func
+(paren
+)paren
+suffix:semicolon
+id|LED_NETWORK_SET
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|LED_ACTIVE_SET
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|LED_DISK_READ
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|LED_DISK_WRITE
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#if defined (CONFIG_ETRAX_CSP0_LEDS)
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|32
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|LED_BIT_SET
+c_func
+(paren
+id|i
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#endif
 id|printk
 c_func
 (paren

@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * This file contains the MIPS architecture specific IDE code.&n; *&n; * Copyright (C) 1994-1996  Linus Torvalds &amp; authors&n; */
-multiline_comment|/*&n; *  This file contains the MIPS architecture specific IDE code.&n; */
 macro_line|#ifndef __ASM_IDE_H
 DECL|macro|__ASM_IDE_H
 mdefine_line|#define __ASM_IDE_H
@@ -625,6 +624,32 @@ id|extent
 )paren
 suffix:semicolon
 )brace
+macro_line|#if defined(CONFIG_SWAP_IO_SPACE) &amp;&amp; defined(__MIPSEB__)
+macro_line|#ifdef insl
+DECL|macro|insl
+macro_line|#undef insl
+macro_line|#endif
+macro_line|#ifdef outsl
+DECL|macro|outsl
+macro_line|#undef outsl
+macro_line|#endif
+macro_line|#ifdef insw
+DECL|macro|insw
+macro_line|#undef insw
+macro_line|#endif
+macro_line|#ifdef outsw
+DECL|macro|outsw
+macro_line|#undef outsw
+macro_line|#endif
+DECL|macro|insw
+mdefine_line|#define insw(p,a,c)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned short *ptr = (unsigned short *)(a);&t;&t;&t;&bslash;&n;&t;unsigned int i = (c);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;while (i--)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*ptr++ = inw(p);&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|insl
+mdefine_line|#define insl(p,a,c)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long *ptr = (unsigned long *)(a);&t;&t;&t;&bslash;&n;&t;unsigned int i = (c);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;while (i--)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*ptr++ = inl(p);&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|outsw
+mdefine_line|#define outsw(p,a,c)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned short *ptr = (unsigned short *)(a);&t;&t;&t;&bslash;&n;&t;unsigned int i = (c);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;while (i--)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;outw(*ptr++, (p));&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|outsl
+mdefine_line|#define outsl(p,a,c) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long *ptr = (unsigned long *)(a);&t;&t;&t;&bslash;&n;&t;unsigned int i = (c);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;while (i--)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;outl(*ptr++, (p));&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|#endif /* defined(CONFIG_SWAP_IO_SPACE) &amp;&amp; defined(__MIPSEB__)  */
 multiline_comment|/*&n; * The following are not needed for the non-m68k ports&n; */
 DECL|macro|ide_ack_intr
 mdefine_line|#define ide_ack_intr(hwif)&t;&t;(1)

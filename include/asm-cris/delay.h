@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: delay.h,v 1.3 2001/02/23 13:47:33 bjornw Exp $ */
+multiline_comment|/* $Id: delay.h,v 1.4 2001/05/31 06:40:53 markusl Exp $ */
 macro_line|#ifndef _CRIS_DELAY_H
 DECL|macro|_CRIS_DELAY_H
 mdefine_line|#define _CRIS_DELAY_H
@@ -28,22 +28,18 @@ r_int
 id|loops
 )paren
 (brace
-multiline_comment|/* need to be a great deal of nops, because Etrax shuts off IRQ&squot;s during a branch&n;&t;   and we depend on the irq&squot;s to measure the time! */
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;move.d %0,r0&bslash;n&quot;
+l_string|&quot;move.d %0,r0&bslash;n&bslash;t&quot;
 l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;nop&bslash;n&bslash;t&quot;
-l_string|&quot;nop&bslash;n&bslash;t&quot;
-l_string|&quot;nop&bslash;n&bslash;t&quot;
-l_string|&quot;nop&bslash;n&bslash;t&quot;
-l_string|&quot;nop&bslash;n&bslash;t&quot;
-l_string|&quot;nop&bslash;n&bslash;t&quot;
+l_string|&quot;cmpq 0,r0&bslash;n&bslash;t&quot;
+l_string|&quot;beq 2f&bslash;n&bslash;t&quot;
 l_string|&quot;nop&bslash;n&bslash;t&quot;
 l_string|&quot;subq 1,r0&bslash;n&bslash;t&quot;
-l_string|&quot;bne 1b&bslash;n&bslash;t&quot;
+l_string|&quot;ba 1b&bslash;n&bslash;t&quot;
 l_string|&quot;nop&bslash;n&bslash;t&quot;
+l_string|&quot;2:&bslash;n&bslash;t&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
@@ -52,8 +48,6 @@ id|loops
 )paren
 suffix:colon
 l_string|&quot;r0&quot;
-comma
-l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
@@ -85,36 +79,5 @@ id|loops_per_usec
 )paren
 suffix:semicolon
 )brace
-DECL|function|muldiv
-r_extern
-id|__inline__
-r_int
-r_int
-id|muldiv
-c_func
-(paren
-r_int
-r_int
-id|a
-comma
-r_int
-r_int
-id|b
-comma
-r_int
-r_int
-id|c
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;muldiv called!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif /* defined(_ETRAX_DELAY_H) */
+macro_line|#endif /* defined(_CRIS_DELAY_H) */
 eof

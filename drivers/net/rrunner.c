@@ -122,6 +122,42 @@ id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt;= 0x20400
+DECL|variable|__initdata
+r_static
+r_struct
+id|pci_device_id
+id|rrunner_pci_tbl
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+(brace
+id|PCI_VENDOR_ID_ESSENTIAL
+comma
+id|PCI_DEVICE_ID_ESSENTIAL_ROADRUNNER
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
+)brace
+multiline_comment|/* Terminating entry */
+)brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|rrunner_pci_tbl
+)paren
+suffix:semicolon
+macro_line|#endif /* LINUX_VERSION_CODE &gt;= 0x20400 */
 macro_line|#ifdef NEW_NETINIT
 DECL|function|rr_hippi_probe
 r_int
@@ -191,20 +227,6 @@ id|ENODEV
 suffix:semicolon
 id|probed
 op_increment
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-multiline_comment|/* is PCI BIOS even present? */
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 id|version_disp
 op_assign
@@ -345,6 +367,12 @@ suffix:semicolon
 id|dev-&gt;irq
 op_assign
 id|pdev-&gt;irq
+suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|dev-&gt;open
 op_assign
@@ -5254,8 +5282,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 id|ecode
 suffix:semicolon
@@ -6184,8 +6210,6 @@ c_func
 op_amp
 id|rrpriv-&gt;lock
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

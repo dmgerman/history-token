@@ -65,6 +65,14 @@ id|cpu
 suffix:semicolon
 DECL|macro|activate_mm
 mdefine_line|#define activate_mm(prev,next) switch_mm((prev),(next),NULL,smp_processor_id())
+multiline_comment|/* current active pgd - this is similar to other processors pgd &n; * registers like cr3 on the i386&n; */
+r_extern
+r_volatile
+id|pgd_t
+op_star
+id|current_pgd
+suffix:semicolon
+multiline_comment|/* defined in arch/cris/mm/fault.c */
 DECL|function|enter_lazy_tlb
 r_static
 r_inline

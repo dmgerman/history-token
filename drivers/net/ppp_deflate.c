@@ -2466,7 +2466,7 @@ op_increment
 suffix:semicolon
 )brace
 multiline_comment|/*************************************************************&n; * Module interface table&n; *************************************************************/
-multiline_comment|/* These are in ppp.c */
+multiline_comment|/* These are in ppp_generic.c */
 r_extern
 r_int
 id|ppp_register_compressor
@@ -2590,6 +2590,7 @@ multiline_comment|/* decomp_stat */
 suffix:semicolon
 DECL|function|deflate_init
 r_int
+id|__init
 id|deflate_init
 c_func
 (paren
@@ -2633,6 +2634,7 @@ suffix:semicolon
 )brace
 DECL|function|deflate_cleanup
 r_void
+id|__exit
 id|deflate_cleanup
 c_func
 (paren

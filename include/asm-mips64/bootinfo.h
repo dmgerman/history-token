@@ -77,7 +77,7 @@ DECL|macro|GROUP_ACN_NAMES
 mdefine_line|#define GROUP_ACN_NAMES { &quot;ACN&quot; }
 multiline_comment|/*&n; * Valid machtype for group SGI&n; */
 DECL|macro|MACH_SGI_INDY
-mdefine_line|#define MACH_SGI_INDY&t;&t;0&t;/* R4?K and R5K Indy workstaions */
+mdefine_line|#define MACH_SGI_INDY&t;&t;0&t;/* R4?K and R5K Indy workstations */
 DECL|macro|MACH_SGI_CHALLENGE_S
 mdefine_line|#define MACH_SGI_CHALLENGE_S&t;1       /* The Challenge S server */
 DECL|macro|MACH_SGI_INDIGO2
@@ -154,6 +154,14 @@ DECL|macro|CPU_NAMES
 mdefine_line|#define CPU_NAMES { &quot;unknown&quot;, &quot;R2000&quot;, &quot;R3000&quot;, &quot;R3000A&quot;, &quot;R3041&quot;, &quot;R3051&quot;, &bslash;&n;        &quot;R3052&quot;, &quot;R3081&quot;, &quot;R3081E&quot;, &quot;R4000PC&quot;, &quot;R4000SC&quot;, &quot;R4000MC&quot;,         &bslash;&n;        &quot;R4200&quot;, &quot;R4400PC&quot;, &quot;R4400SC&quot;, &quot;R4400MC&quot;, &quot;R4600&quot;, &quot;R6000&quot;,          &bslash;&n;        &quot;R6000A&quot;, &quot;R8000&quot;, &quot;R10000&quot;, &quot;R4300&quot;, &quot;R4650&quot;, &quot;R4700&quot;, &quot;R5000&quot;,     &bslash;&n;        &quot;R5000A&quot;, &quot;R4640&quot;, &quot;Nevada&quot; }
 DECL|macro|CL_SIZE
 mdefine_line|#define CL_SIZE      (80)
+DECL|macro|BOOT_MEM_MAP_MAX
+mdefine_line|#define BOOT_MEM_MAP_MAX        32
+DECL|macro|BOOT_MEM_RAM
+mdefine_line|#define BOOT_MEM_RAM            1
+DECL|macro|BOOT_MEM_ROM_DATA
+mdefine_line|#define BOOT_MEM_ROM_DATA       2
+DECL|macro|BOOT_MEM_RESERVED
+mdefine_line|#define BOOT_MEM_RESERVED       3
 macro_line|#ifndef _LANGUAGE_ASSEMBLY
 multiline_comment|/*&n; * Some machine parameters passed by the bootloaders. &n; */
 DECL|struct|drive_info_struct
@@ -193,6 +201,65 @@ r_extern
 r_int
 r_int
 id|mips_tlb_entries
+suffix:semicolon
+multiline_comment|/*&n; * A memory map that&squot;s built upon what was determined&n; * or specified on the command line.&n; */
+DECL|struct|boot_mem_map
+r_struct
+id|boot_mem_map
+(brace
+DECL|member|nr_map
+r_int
+id|nr_map
+suffix:semicolon
+r_struct
+(brace
+DECL|member|addr
+r_int
+r_int
+id|addr
+suffix:semicolon
+multiline_comment|/* start of memory segment */
+DECL|member|size
+r_int
+r_int
+id|size
+suffix:semicolon
+multiline_comment|/* size of memory segment */
+DECL|member|type
+r_int
+id|type
+suffix:semicolon
+multiline_comment|/* type of memory segment */
+DECL|member|map
+)brace
+id|map
+(braket
+id|BOOT_MEM_MAP_MAX
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|boot_mem_map
+id|boot_mem_map
+suffix:semicolon
+r_extern
+r_void
+id|add_memory_region
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|size
+comma
+r_int
+id|type
+)paren
 suffix:semicolon
 macro_line|#endif /* _LANGUAGE_ASSEMBLY */
 macro_line|#endif /* _ASM_BOOTINFO_H */

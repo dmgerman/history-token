@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 2000 by Ralf Baechle at alii&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 2001 by Ralf Baechle at alii&n; * Copyright (C) 1999, 2000, 2001 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_PGTABLE_H
 DECL|macro|_ASM_PGTABLE_H
 mdefine_line|#define _ASM_PGTABLE_H
@@ -236,16 +236,28 @@ DECL|macro|__WRITEABLE
 mdefine_line|#define __WRITEABLE&t;(_PAGE_WRITE | _PAGE_SILENT_WRITE | _PAGE_MODIFIED)
 DECL|macro|_PAGE_CHG_MASK
 mdefine_line|#define _PAGE_CHG_MASK  (PAGE_MASK | _PAGE_ACCESSED | _PAGE_MODIFIED | _CACHE_MASK)
+macro_line|#ifdef CONFIG_MIPS_UNCACHED
+DECL|macro|PAGE_CACHABLE_DEFAULT
+mdefine_line|#define PAGE_CACHABLE_DEFAULT _CACHE_UNCACHED
+macro_line|#else /* ! UNCACHED */
+macro_line|#ifdef CONFIG_SGI_IP22
+DECL|macro|PAGE_CACHABLE_DEFAULT
+mdefine_line|#define PAGE_CACHABLE_DEFAULT _CACHE_CACHABLE_NONCOHERENT
+macro_line|#else /* ! IP22 */
+DECL|macro|PAGE_CACHABLE_DEFAULT
+mdefine_line|#define PAGE_CACHABLE_DEFAULT _CACHE_CACHABLE_COW
+macro_line|#endif /* IP22 */
+macro_line|#endif /* UNCACHED */
 DECL|macro|PAGE_NONE
-mdefine_line|#define PAGE_NONE&t;__pgprot(_PAGE_PRESENT | _CACHE_CACHABLE_COW)
+mdefine_line|#define PAGE_NONE&t;__pgprot(_PAGE_PRESENT | PAGE_CACHABLE_DEFAULT)
 DECL|macro|PAGE_SHARED
-mdefine_line|#define PAGE_SHARED     __pgprot(_PAGE_PRESENT | _PAGE_READ | _PAGE_WRITE | &bslash;&n;&t;&t;&t;_CACHE_CACHABLE_COW)
+mdefine_line|#define PAGE_SHARED     __pgprot(_PAGE_PRESENT | _PAGE_READ | _PAGE_WRITE | &bslash;&n;&t;&t;&t;PAGE_CACHABLE_DEFAULT)
 DECL|macro|PAGE_COPY
-mdefine_line|#define PAGE_COPY       __pgprot(_PAGE_PRESENT | _PAGE_READ | &bslash;&n;&t;&t;&t;_CACHE_CACHABLE_COW)
+mdefine_line|#define PAGE_COPY       __pgprot(_PAGE_PRESENT | _PAGE_READ | &bslash;&n;&t;&t;&t;PAGE_CACHABLE_DEFAULT)
 DECL|macro|PAGE_READONLY
-mdefine_line|#define PAGE_READONLY   __pgprot(_PAGE_PRESENT | _PAGE_READ | &bslash;&n;&t;&t;&t;_CACHE_CACHABLE_COW)
+mdefine_line|#define PAGE_READONLY   __pgprot(_PAGE_PRESENT | _PAGE_READ | &bslash;&n;&t;&t;&t;PAGE_CACHABLE_DEFAULT)
 DECL|macro|PAGE_KERNEL
-mdefine_line|#define PAGE_KERNEL&t;__pgprot(_PAGE_PRESENT | __READABLE | __WRITEABLE | &bslash;&n;&t;&t;&t;_CACHE_CACHABLE_COW)
+mdefine_line|#define PAGE_KERNEL&t;__pgprot(_PAGE_PRESENT | __READABLE | __WRITEABLE | &bslash;&n;&t;&t;&t;PAGE_CACHABLE_DEFAULT)
 DECL|macro|PAGE_USERIO
 mdefine_line|#define PAGE_USERIO     __pgprot(_PAGE_PRESENT | _PAGE_READ | _PAGE_WRITE | &bslash;&n;&t;&t;&t;_CACHE_UNCACHED)
 DECL|macro|PAGE_KERNEL_UNCACHED
@@ -290,33 +302,7 @@ DECL|macro|pmd_ERROR
 mdefine_line|#define pmd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pmd %016lx.&bslash;n&quot;, __FILE__, __LINE__, pmd_val(e))
 DECL|macro|pgd_ERROR
 mdefine_line|#define pgd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pgd %016lx.&bslash;n&quot;, __FILE__, __LINE__, pgd_val(e))
-multiline_comment|/*&n; * BAD_PAGETABLE is used when we need a bogus page-table, while&n; * BAD_PAGE is used for a bogus page.&n; *&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
-r_extern
-id|pte_t
-id|__bad_page
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-id|pte_t
-op_star
-id|__bad_pagetable
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-id|pmd_t
-op_star
-id|__bad_pmd_table
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+multiline_comment|/*&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
 r_extern
 r_int
 r_int
@@ -327,12 +313,6 @@ r_int
 r_int
 id|zero_page_mask
 suffix:semicolon
-DECL|macro|BAD_PAGETABLE
-mdefine_line|#define BAD_PAGETABLE __bad_pagetable()
-DECL|macro|BAD_PMDTABLE
-mdefine_line|#define BAD_PMDTABLE __bad_pmd_table()
-DECL|macro|BAD_PAGE
-mdefine_line|#define BAD_PAGE __bad_page()
 DECL|macro|ZERO_PAGE
 mdefine_line|#define ZERO_PAGE(vaddr) &bslash;&n;&t;(virt_to_page(empty_zero_page + (((unsigned long)(vaddr)) &amp; zero_page_mask)))
 multiline_comment|/* number of bits that fit into a memory pointer */
@@ -553,7 +533,7 @@ op_amp
 id|_PAGE_PRESENT
 suffix:semicolon
 )brace
-multiline_comment|/* Certain architectures need to do special things when pte&squot;s&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
+multiline_comment|/*&n; * Certain architectures need to do special things when pte&squot;s&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
 DECL|function|set_pte
 r_extern
 r_inline
@@ -600,6 +580,11 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * (pmds are folded into pgds so this doesnt get actually called,&n; * but the define is needed for a generic inline function.)&n; */
+DECL|macro|set_pmd
+mdefine_line|#define set_pmd(pmdptr, pmdval) (*(pmdptr) = pmdval)
+DECL|macro|set_pgd
+mdefine_line|#define set_pgd(pgdptr, pgdval) (*(pgdptr) = pgdval)
 multiline_comment|/*&n; * Empty pmd entries point to the invalid_pte_table.&n; */
 DECL|function|pmd_none
 r_extern
@@ -643,12 +628,34 @@ c_func
 (paren
 id|pmd
 )paren
-op_eq
+op_amp
+op_complement
+id|PAGE_MASK
+suffix:semicolon
+)brace
+DECL|function|pmd_present
+r_extern
+r_inline
+r_int
+id|pmd_present
+c_func
+(paren
+id|pmd_t
+id|pmd
+)paren
+(brace
+r_return
+id|pmd_val
+c_func
+(paren
+id|pmd
+)paren
+op_ne
 (paren
 r_int
 r_int
 )paren
-id|empty_bad_page_table
+id|invalid_pte_table
 suffix:semicolon
 )brace
 DECL|function|pmd_clear
@@ -722,12 +729,34 @@ c_func
 (paren
 id|pgd
 )paren
-op_eq
+op_amp
+op_complement
+id|PAGE_MASK
+suffix:semicolon
+)brace
+DECL|function|pgd_present
+r_extern
+r_inline
+r_int
+id|pgd_present
+c_func
+(paren
+id|pgd_t
+id|pgd
+)paren
+(brace
+r_return
+id|pgd_val
+c_func
+(paren
+id|pgd
+)paren
+op_ne
 (paren
 r_int
 r_int
 )paren
-id|empty_bad_pmd_table
+id|invalid_pmd_table
 suffix:semicolon
 )brace
 DECL|function|pgd_clear
@@ -758,7 +787,7 @@ id|invalid_pmd_table
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Permanent address of a page.  On MIPS64 we never have highmem, so this&n; * is simple.&n; * called on a highmem page.&n; */
+multiline_comment|/*&n; * Permanent address of a page.  On MIPS64 we never have highmem, so this&n; * is simple.&n; */
 DECL|macro|page_address
 mdefine_line|#define page_address(page)&t;((page)-&gt;virtual)
 macro_line|#ifndef CONFIG_DISCONTIGMEM
@@ -2087,7 +2116,7 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
-l_string|&quot;mfc0 %0, $4&bslash;n&bslash;t&quot;
+l_string|&quot;dmfc0 %0, $4&bslash;n&bslash;t&quot;
 l_string|&quot;.set reorder&quot;
 suffix:colon
 l_string|&quot;=r&quot;
@@ -2117,7 +2146,7 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
-l_string|&quot;mtc0 %0, $4&bslash;n&bslash;t&quot;
+l_string|&quot;dmtc0 %0, $4&bslash;n&bslash;t&quot;
 l_string|&quot;.set reorder&quot;
 suffix:colon
 suffix:colon

@@ -210,7 +210,7 @@ l_int|0x08
 comma
 l_int|0xb0
 comma
-l_int|0xf0
+l_int|0xf8
 comma
 id|nsc_ircc_probe_338
 comma
@@ -618,9 +618,6 @@ id|chip-&gt;name
 suffix:semicolon
 id|chip
 op_increment
-comma
-id|i
-op_increment
 )paren
 (brace
 id|IRDA_DEBUG
@@ -791,7 +788,7 @@ id|io
 id|i
 )braket
 OL
-l_int|2000
+l_int|0x2000
 )paren
 (brace
 id|chip
@@ -2392,7 +2389,7 @@ op_assign
 (paren
 id|reg
 op_rshift
-l_int|4
+l_int|3
 )paren
 op_amp
 l_int|0x01

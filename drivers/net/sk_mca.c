@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/mca.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -244,6 +245,7 @@ multiline_comment|/* deduce resources out of POS registers */
 DECL|function|getaddrs
 r_static
 r_void
+id|__init
 id|getaddrs
 c_func
 (paren
@@ -467,6 +469,7 @@ multiline_comment|/* check for both cards:&n;   When the MC2 is turned off, it w
 DECL|function|dofind
 r_static
 r_int
+id|__init
 id|dofind
 c_func
 (paren
@@ -1675,6 +1678,7 @@ multiline_comment|/* probe for device&squot;s irq */
 DECL|function|ProbeIRQ
 r_static
 r_int
+id|__init
 id|ProbeIRQ
 c_func
 (paren
@@ -3712,6 +3716,7 @@ suffix:semicolon
 multiline_comment|/* counts through slots when probing multiple devices */
 DECL|function|skmca_probe
 r_int
+id|__init
 id|skmca_probe
 c_func
 (paren
@@ -4657,14 +4662,10 @@ macro_line|#endif
 DECL|variable|irq
 r_int
 id|irq
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|io
 r_int
 id|io
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|init_module
 r_int

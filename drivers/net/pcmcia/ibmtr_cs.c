@@ -1,12 +1,11 @@
-multiline_comment|/*======================================================================&n;&n;    A PCMCIA token-ring driver for IBM-based cards&n;&n;    This driver supports the IBM PCMCIA Token-Ring Card.&n;    Written by Steve Kipisz, kipisz@vnet.ibm.com or&n;                             bungy@ibm.net&n;&n;    Written 1995,1996.&n;&n;    This code is based on pcnet_cs.c from David Hinds.&n;    &n;    V2.2.0 February 1999 - Mike Phillips phillim@amtrak.com&n;&n;    Linux V2.2.x presented significant changes to the underlying&n;    ibmtr.c code.  Mainly the code became a lot more organized and&n;    modular.&n;&n;    This caused the old PCMCIA Token Ring driver to give up and go &n;    home early. Instead of just patching the old code to make it &n;    work, the PCMCIA code has been streamlined, updated and possibly&n;    improved.&n;&n;    This code now only contains code required for the Card Services.&n;    All we do here is set the card up enough so that the real ibmtr.c&n;    driver can find it and work with it properly.&n;&n;    i.e. We set up the io port, irq, mmio memory and shared ram memory.&n;    This enables ibmtr_probe in ibmtr.c to find the card and configure it&n;    as though it was a normal ISA and/or PnP card.&n;&n;    There is some confusion with the difference between available shared&n;    ram and the amount actually reserved from memory.  ibmtr.c sets up&n;    several offsets depending upon the actual on-board memory, not the&n;    reserved memory.  We need to get around this to allow the cards to &n;    work with other cards in restricted memory space.  Therefore the &n;    pcmcia_reality_check function.&n;&n;    TODO&n;&t;- Write the suspend / resume functions. &n;&t;- Fix Kernel Oops when removing card before ifconfig down&n;&n;    CHANGES&n;&n;    v2.2.5 April 1999 Mike Phillips (phillim@amtrak.com)&n;    Obscure bug fix, required changed to ibmtr.c not ibmtr_cs.c&n;    &n;    v2.2.7 May 1999 Mike Phillips (phillim@amtrak.com)&n;    Updated to version 2.2.7 to match the first version of the kernel&n;    that the modification to ibmtr.c were incorporated into.&n;    &n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    A PCMCIA token-ring driver for IBM-based cards&n;&n;    This driver supports the IBM PCMCIA Token-Ring Card.&n;    Written by Steve Kipisz, kipisz@vnet.ibm.com or&n;                             bungy@ibm.net&n;&n;    Written 1995,1996.&n;&n;    This code is based on pcnet_cs.c from David Hinds.&n;    &n;    V2.2.0 February 1999 - Mike Phillips phillim@amtrak.com&n;&n;    Linux V2.2.x presented significant changes to the underlying&n;    ibmtr.c code.  Mainly the code became a lot more organized and&n;    modular.&n;&n;    This caused the old PCMCIA Token Ring driver to give up and go &n;    home early. Instead of just patching the old code to make it &n;    work, the PCMCIA code has been streamlined, updated and possibly&n;    improved.&n;&n;    This code now only contains code required for the Card Services.&n;    All we do here is set the card up enough so that the real ibmtr.c&n;    driver can find it and work with it properly.&n;&n;    i.e. We set up the io port, irq, mmio memory and shared ram&n;    memory.  This enables ibmtr_probe in ibmtr.c to find the card and&n;    configure it as though it was a normal ISA and/or PnP card.&n;&n;    CHANGES&n;&n;    v2.2.5 April 1999 Mike Phillips (phillim@amtrak.com)&n;    Obscure bug fix, required changed to ibmtr.c not ibmtr_cs.c&n;    &n;    v2.2.7 May 1999 Mike Phillips (phillim@amtrak.com)&n;    Updated to version 2.2.7 to match the first version of the kernel&n;    that the modification to ibmtr.c were incorporated into.&n;    &n;    v2.2.17 July 2000 Burt Silverman (burts@us.ibm.com)&n;    Address translation feature of PCMCIA controller is usable so&n;    memory windows can be placed in High memory (meaning above&n;    0xFFFFF.)&n;&n;======================================================================*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/malloc.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -45,8 +44,9 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;ibmtr_cs.c 1.10 1996/01/06 05:19:00 (Steve Kipisz)&bslash;n&quot;
-l_string|&quot;           2.2.7 1999/05/03 12:00:00 (Mike Phillips)&bslash;n&quot;
+l_string|&quot;ibmtr_cs.c 1.10   1996/01/06 05:19:00 (Steve Kipisz)&bslash;n&quot;
+l_string|&quot;           2.2.7  1999/05/03 12:00:00 (Mike Phillips)&bslash;n&quot;
+l_string|&quot;           2.4.2  2001/30/28 Midnight (Burt Silverman)&bslash;n&quot;
 suffix:semicolon
 macro_line|#else
 DECL|macro|DEBUG
@@ -80,12 +80,16 @@ DECL|variable|mmiobase
 r_static
 id|u_long
 id|mmiobase
+op_assign
+l_int|0xce000
 suffix:semicolon
 multiline_comment|/* SRAM base address */
 DECL|variable|srambase
 r_static
 id|u_long
 id|srambase
+op_assign
+l_int|0xd0000
 suffix:semicolon
 multiline_comment|/* SRAM size 8,16,32,64 */
 DECL|variable|sramsize
@@ -93,7 +97,7 @@ r_static
 id|u_long
 id|sramsize
 op_assign
-l_int|16
+l_int|64
 suffix:semicolon
 multiline_comment|/* Ringspeed 4,16 */
 DECL|variable|ringspeed
@@ -171,6 +175,9 @@ r_struct
 id|net_device
 op_star
 id|dev
+comma
+id|u_int
+id|mmiobase
 )paren
 suffix:semicolon
 r_static
@@ -240,16 +247,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-r_int
-r_char
-id|pcmcia_reality_check
-c_func
-(paren
-r_int
-r_char
-id|gss
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|trdev_init
@@ -278,29 +275,6 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|tok_init_card
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_char
-id|get_sram_size
-c_func
-(paren
-r_struct
-id|tok_info
-op_star
-id|ti
-)paren
-suffix:semicolon
 multiline_comment|/*====================================================================*/
 DECL|struct|ibmtr_dev_t
 r_typedef
@@ -317,7 +291,6 @@ id|net_device
 op_star
 id|dev
 suffix:semicolon
-multiline_comment|/* Changed for 2.2.0 */
 DECL|member|node
 id|dev_node_t
 id|node
@@ -621,17 +594,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|dev-&gt;priv
-op_assign
-op_amp
-id|info-&gt;ti
-suffix:semicolon
-id|link-&gt;irq.Instance
-op_assign
-id|info-&gt;dev
-op_assign
-id|dev
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -650,6 +612,17 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+id|dev-&gt;priv
+op_assign
+op_amp
+id|info-&gt;ti
+suffix:semicolon
+id|link-&gt;irq.Instance
+op_assign
+id|info-&gt;dev
+op_assign
+id|dev
+suffix:semicolon
 id|dev-&gt;init
 op_assign
 op_amp
@@ -919,14 +892,22 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|link-&gt;dev
+id|info-&gt;dev
 )paren
+(brace
 id|unregister_trdev
 c_func
 (paren
 id|info-&gt;dev
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|info-&gt;dev
+)paren
+suffix:semicolon
+)brace
 id|kfree
 c_func
 (paren
@@ -998,10 +979,6 @@ id|buf
 (braket
 l_int|64
 )braket
-suffix:semicolon
-r_int
-r_char
-id|Shared_Ram_Base
 suffix:semicolon
 id|DEBUG
 c_func
@@ -1201,12 +1178,10 @@ suffix:semicolon
 id|req.Attributes
 op_or_assign
 id|WIN_USE_WAIT
-op_or
-id|WIN_STRICT_ALIGN
 suffix:semicolon
 id|req.Base
 op_assign
-id|mmiobase
+l_int|0
 suffix:semicolon
 id|req.Size
 op_assign
@@ -1237,7 +1212,7 @@ id|req
 suffix:semicolon
 id|mem.CardOffset
 op_assign
-id|req.Base
+id|mmiobase
 suffix:semicolon
 id|mem.Page
 op_assign
@@ -1279,12 +1254,10 @@ suffix:semicolon
 id|req.Attributes
 op_or_assign
 id|WIN_USE_WAIT
-op_or
-id|WIN_MAP_BELOW_1MB
 suffix:semicolon
 id|req.Base
 op_assign
-id|srambase
+l_int|0
 suffix:semicolon
 id|req.Size
 op_assign
@@ -1317,7 +1290,7 @@ id|req
 suffix:semicolon
 id|mem.CardOffset
 op_assign
-id|req.Base
+id|srambase
 suffix:semicolon
 id|mem.Page
 op_assign
@@ -1334,19 +1307,24 @@ op_amp
 id|mem
 )paren
 suffix:semicolon
-id|Shared_Ram_Base
+id|ti-&gt;sram_base
 op_assign
-id|req.Base
+id|mem.CardOffset
 op_rshift
 l_int|12
 suffix:semicolon
-id|ti-&gt;sram
+id|ti-&gt;sram_virt
 op_assign
-l_int|0
-suffix:semicolon
-id|ti-&gt;sram_base
-op_assign
-id|Shared_Ram_Base
+(paren
+id|u_long
+)paren
+id|ioremap
+c_func
+(paren
+id|req.Base
+comma
+id|req.Size
+)paren
 suffix:semicolon
 id|CS_CHECK
 c_func
@@ -1364,6 +1342,8 @@ id|ibmtr_hw_setup
 c_func
 (paren
 id|dev
+comma
+id|mmiobase
 )paren
 suffix:semicolon
 id|i
@@ -1717,6 +1697,20 @@ op_amp
 id|DEV_CONFIG
 )paren
 (brace
+multiline_comment|/* set flag to bypass normal interrupt code */
+(paren
+(paren
+r_struct
+id|tok_info
+op_star
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|sram_virt
+op_or_assign
+l_int|1
+suffix:semicolon
 id|netif_device_detach
 c_func
 (paren
@@ -1866,15 +1860,11 @@ r_struct
 id|net_device
 op_star
 id|dev
+comma
+id|u_int
+id|mmiobase
 )paren
 (brace
-r_struct
-id|tok_info
-op_star
-id|ti
-op_assign
-id|dev-&gt;priv
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -1883,10 +1873,7 @@ multiline_comment|/* First nibble provides 4 bits of mmio */
 id|i
 op_assign
 (paren
-(paren
-r_int
-)paren
-id|ti-&gt;mmio
+id|mmiobase
 op_rshift
 l_int|16
 )paren
@@ -1908,10 +1895,7 @@ l_int|0x10
 op_or
 (paren
 (paren
-(paren
-r_int
-)paren
-id|ti-&gt;mmio
+id|mmiobase
 op_rshift
 l_int|12
 )paren
@@ -2003,7 +1987,7 @@ comma
 id|dev-&gt;base_addr
 )paren
 suffix:semicolon
-multiline_comment|/* X40 will release the card for use */
+multiline_comment|/* 0x40 will release the card for use */
 id|outb
 c_func
 (paren
@@ -2013,31 +1997,6 @@ id|dev-&gt;base_addr
 )paren
 suffix:semicolon
 r_return
-suffix:semicolon
-)brace
-multiline_comment|/*======================================================================&n;  &n;    A sweet little function that circumvents the problem with&n;    ibmtr.c trying to use more memory than we can allocate for&n;    the PCMCIA card.  ibmtr.c just assumes that if a card has &n;    64K of shared ram, the entire 64K must be mapped into memory,&n;    whereas resources are sometimes a little tight in card services&n;    so we fool ibmtr.c into thinking the card has less memory on&n;    it than it has.&n;    &n;======================================================================*/
-DECL|function|pcmcia_reality_check
-r_int
-r_char
-id|pcmcia_reality_check
-c_func
-(paren
-r_int
-r_char
-id|gss
-)paren
-(brace
-r_return
-(paren
-id|gss
-OL
-id|sramsize
-)paren
-ques
-c_cond
-id|sramsize
-suffix:colon
-id|gss
 suffix:semicolon
 )brace
 multiline_comment|/*====================================================================*/
@@ -2059,7 +2018,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s&bslash;n&quot;
+l_string|&quot;%s&quot;
 comma
 id|version
 )paren
