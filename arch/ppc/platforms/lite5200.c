@@ -33,6 +33,7 @@ multiline_comment|/* For board/shared resources like PSCs                       
 multiline_comment|/* ======================================================================== */
 multiline_comment|/* Be sure not to load conficting devices : e.g. loading the UART drivers for&n; * PSC1 and then also loading a AC97 for this same PSC.&n; * For details about how to create an entry, look in the doc of the concerned&n; * driver ( eg drivers/serial/mpc52xx_uart.c for the PSC in uart mode )&n; */
 DECL|variable|board_ocp
+r_static
 r_struct
 id|ocp_def
 id|board_ocp
@@ -162,15 +163,16 @@ r_void
 )paren
 (brace
 r_struct
+id|mpc52xx_intr
+id|__iomem
+op_star
+id|intr
+suffix:semicolon
+r_struct
 id|mpc52xx_xlb
 id|__iomem
 op_star
 id|xlb
-suffix:semicolon
-r_struct
-id|mpc52xx_intr
-op_star
-id|intr
 suffix:semicolon
 id|u32
 id|intr_ctrl
@@ -192,11 +194,6 @@ id|mpc52xx_xlb
 suffix:semicolon
 id|intr
 op_assign
-(paren
-r_struct
-id|mpc52xx_intr
-op_star
-)paren
 id|ioremap
 c_func
 (paren
