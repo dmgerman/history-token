@@ -12968,6 +12968,8 @@ id|get_random_bytes
 c_func
 (paren
 id|dev_addr
+op_plus
+l_int|3
 comma
 l_int|3
 )paren
