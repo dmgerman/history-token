@@ -2054,11 +2054,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * Hardcode to GP size.  I am not sure where to get this info&n;&t; * in general, as there does not appear to be a slb-size OF&n;&t; * entry.  At least in Condor and earlier.  DRENG &n;&t; */
-id|_naca-&gt;slb_size
-op_assign
-l_int|64
-suffix:semicolon
 multiline_comment|/* Add an eye catcher and the systemcfg layout version number */
 id|strcpy
 c_func

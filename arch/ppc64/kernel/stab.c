@@ -1513,7 +1513,7 @@ c_cond
 (paren
 id|castout_entry
 op_ge
-id|naca-&gt;slb_size
+id|SLB_NUM_ENTRIES
 )paren
 id|castout_entry
 op_assign

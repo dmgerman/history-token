@@ -2217,11 +2217,6 @@ id|klimit
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Hardcode to GP size.  I am not sure where to get this info. DRENG&n;&t; */
-id|naca-&gt;slb_size
-op_assign
-l_int|64
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set up the variables that describe the cache line sizes&n; * for this machine.&n; */
 DECL|function|setup_iSeries_cache_sizes
