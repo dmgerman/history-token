@@ -10541,6 +10541,7 @@ op_logical_or
 id|strategy
 )paren
 (brace
+multiline_comment|/* RetransTime */
 id|t-&gt;neigh_vars
 (braket
 l_int|3
@@ -10562,6 +10563,34 @@ suffix:semicolon
 id|t-&gt;neigh_vars
 (braket
 l_int|3
+)braket
+dot
+id|extra1
+op_assign
+id|dev
+suffix:semicolon
+multiline_comment|/* ReachableTime */
+id|t-&gt;neigh_vars
+(braket
+l_int|4
+)braket
+dot
+id|proc_handler
+op_assign
+id|handler
+suffix:semicolon
+id|t-&gt;neigh_vars
+(braket
+l_int|4
+)braket
+dot
+id|strategy
+op_assign
+id|strategy
+suffix:semicolon
+id|t-&gt;neigh_vars
+(braket
+l_int|4
 )braket
 dot
 id|extra1
