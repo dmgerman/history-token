@@ -3402,11 +3402,24 @@ template_param
 id|size
 )paren
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: Early error in slab %s&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|name
+)paren
+suffix:semicolon
 id|BUG
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 macro_line|#if DEBUG
 id|WARN_ON
 c_func
