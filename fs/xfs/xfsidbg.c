@@ -7743,6 +7743,7 @@ id|pb_flag_vals
 )braket
 op_assign
 (brace
+multiline_comment|/*  0 */
 l_string|&quot;READ&quot;
 comma
 l_string|&quot;WRITE&quot;
@@ -7751,6 +7752,7 @@ l_string|&quot;MAPPED&quot;
 comma
 l_string|&quot;PARTIAL&quot;
 comma
+multiline_comment|/*  4 */
 l_string|&quot;ASYNC&quot;
 comma
 l_string|&quot;NONE&quot;
@@ -7761,6 +7763,7 @@ l_string|&quot;FREED&quot;
 comma
 l_string|&quot;SYNC&quot;
 comma
+multiline_comment|/*  9 */
 l_string|&quot;MAPPABLE&quot;
 comma
 l_string|&quot;STALE&quot;
@@ -7769,6 +7772,7 @@ l_string|&quot;FS_MANAGED&quot;
 comma
 l_string|&quot;RELEASE&quot;
 comma
+multiline_comment|/* 13 */
 l_string|&quot;LOCK&quot;
 comma
 l_string|&quot;TRYLOCK&quot;
@@ -7779,27 +7783,37 @@ l_string|&quot;FILE_ALLOCATE&quot;
 comma
 l_string|&quot;DONT_BLOCK&quot;
 comma
+multiline_comment|/* 18 */
 l_string|&quot;DIRECT&quot;
 comma
 l_string|&quot;LOCKABLE&quot;
 comma
-l_string|&quot;NEXT_KEY&quot;
+l_string|&quot;PRIVATE_BH&quot;
 comma
 l_string|&quot;ENTER_PAGES&quot;
 comma
+multiline_comment|/* 22 */
 l_string|&quot;ALL_PAGES_MAPPED&quot;
 comma
 l_string|&quot;SOME_INVALID_PAGES&quot;
 comma
 l_string|&quot;ADDR_ALLOCATED&quot;
 comma
+multiline_comment|/* 25 */
 l_string|&quot;MEM_ALLOCATED&quot;
 comma
-l_string|&quot;GRIO&quot;
+l_string|&quot;INVALID26&quot;
 comma
 l_string|&quot;FORCEIO&quot;
 comma
-l_string|&quot;SHUTDOWN&quot;
+l_string|&quot;FLUSH&quot;
+comma
+multiline_comment|/* 29 */
+l_string|&quot;READ_AHEAD&quot;
+comma
+l_string|&quot;INVALID30&quot;
+comma
+l_string|&quot;FS_RESERVED&quot;
 comma
 l_int|NULL
 )brace
@@ -7819,15 +7833,15 @@ l_string|&quot;HOLE&quot;
 comma
 l_string|&quot;DELAY&quot;
 comma
-l_string|&quot;FLUSH_OVERLAPS&quot;
+l_string|&quot;INVALID0x08&quot;
 comma
-l_string|&quot;READAHEAD&quot;
+l_string|&quot;INVALID0x10&quot;
 comma
 l_string|&quot;UNWRITTEN&quot;
 comma
-l_string|&quot;DONTALLOC&quot;
+l_string|&quot;INVALID0x40&quot;
 comma
-l_string|&quot;NEW&quot;
+l_string|&quot;INVALID0x80&quot;
 comma
 l_int|NULL
 )brace
