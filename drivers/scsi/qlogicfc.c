@@ -660,6 +660,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Each element in mbox_param is an 8 bit bitmap where each bit indicates&n;   if that mbox should be copied as input.  For example 0x2 would mean&n;   only copy mbox1. */
 DECL|variable|mbox_param
+r_static
 r_const
 id|u_char
 id|mbox_param
