@@ -756,6 +756,7 @@ c_cond
 (paren
 id|result
 )paren
+(brace
 id|dprintk
 c_func
 (paren
@@ -763,6 +764,11 @@ id|KERN_INFO
 l_string|&quot;cpufreq: fails an aquiring ownership of a SMI interface.&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 multiline_comment|/* detect low and high frequency */
 id|result
 op_assign
