@@ -27,6 +27,10 @@ mdefine_line|#define NB85E_UART_CKSR_ADDR(n)&t;&t;(NB85E_UART_BASE_ADDR(n) + 0x6
 DECL|macro|NB85E_UART_BRGC_ADDR
 mdefine_line|#define NB85E_UART_BRGC_ADDR(n)&t;&t;(NB85E_UART_BASE_ADDR(n) + 0x7)
 macro_line|#endif
+macro_line|#ifndef NB85E_UART_CKSR_MAX_FREQ
+DECL|macro|NB85E_UART_CKSR_MAX_FREQ
+mdefine_line|#define NB85E_UART_CKSR_MAX_FREQ (25*1000*1000)
+macro_line|#endif
 multiline_comment|/* UART config registers.  */
 DECL|macro|NB85E_UART_ASIM
 mdefine_line|#define NB85E_UART_ASIM(n)&t;(*(volatile u8 *)NB85E_UART_ASIM_ADDR(n))
@@ -81,8 +85,6 @@ DECL|macro|NB85E_UART_CKSR
 mdefine_line|#define NB85E_UART_CKSR(n)&t;(*(volatile u8 *)NB85E_UART_CKSR_ADDR(n))
 DECL|macro|NB85E_UART_CKSR_MAX
 mdefine_line|#define NB85E_UART_CKSR_MAX&t;11
-DECL|macro|NB85E_UART_CKSR_MAX_FREQ
-mdefine_line|#define NB85E_UART_CKSR_MAX_FREQ (25*1000*1000)
 DECL|macro|NB85E_UART_BRGC
 mdefine_line|#define NB85E_UART_BRGC(n)&t;(*(volatile u8 *)NB85E_UART_BRGC_ADDR(n))
 multiline_comment|/* This UART doesn&squot;t implement RTS/CTS by default, but some platforms&n;   implement them externally, so check to see if &lt;asm/machdep.h&gt; defined&n;   anything.  */
