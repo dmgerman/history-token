@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;AX.25 release 037&n; *&n; *&t;This code REQUIRES 2.1.15 or higher/ NET3.038&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Most of this code is based on the SDL diagrams published in the 7th&n; *&t;ARRL Computer Networking Conference papers. The diagrams have mistakes&n; *&t;in them, but are mostly correct. Before you modify the code could you&n; *&t;read the SDL diagrams as the code is not obvious and probably very&n; *&t;easy to break;&n; *&n; *&t;History&n; *&t;AX.25 036&t;Jonathan(G4KLX)&t;Cloned from ax25_in.c&n; *&t;&t;&t;Joerg(DL1BKE)&t;Fixed it.&n; *&t;AX.25 037&t;Jonathan(G4KLX)&t;New timer architecture.&n; *&t;&t;&t;Joerg(DL1BKE)&t;ax25-&gt;n2count never got reset&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Copyright (C) Jonathan Naylor G4KLX (g4klx@g4klx.demon.co.uk)&n; * Copyright (C) Joerg Reuter DL1BKE (jreuter@yaina.de)&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -207,7 +207,7 @@ c_func
 id|ax25
 )paren
 suffix:semicolon
-multiline_comment|/* according to DK4EG&#xfffd;s spec we are required to&n;&t;&t;&t; * send a RR RESPONSE FINAL NR=0. &n;&t;&t;&t; */
+multiline_comment|/* according to DK4EG&#xfffd;s spec we are required to&n;&t;&t; * send a RR RESPONSE FINAL NR=0.&n;&t;&t; */
 id|ax25_std_enquiry_response
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;AX.25 release 037&n; *&n; *&t;This code REQUIRES 2.1.15 or higher/ NET3.038&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Most of this code is based on the SDL diagrams published in the 7th&n; *&t;ARRL Computer Networking Conference papers. The diagrams have mistakes&n; *&t;in them, but are mostly correct. Before you modify the code could you&n; *&t;read the SDL diagrams as the code is not obvious and probably very&n; *&t;easy to break;&n; *&n; *&t;History&n; *&t;AX.25 036&t;Jonathan(G4KLX)&t;Cloned from ax25_out.c and ax25_subr.c.&n; *&t;&t;&t;Joerg(DL1BKE)&t;Changed ax25_ds_enquiry_response(),&n; *&t;&t;&t;&t;&t;fixed ax25_dama_on() and ax25_dama_off().&n; *&t;AX.25 037&t;Jonathan(G4KLX)&t;New timer architecture.&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Copyright (C) Jonathan Naylor G4KLX (g4klx@g4klx.demon.co.uk)&n; * Copyright (C) Joerg Reuter DL1BKE (jreuter@yaina.de)&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;net/ax25.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
@@ -51,7 +52,7 @@ id|ax25_cb
 op_star
 id|ax25o
 suffix:semicolon
-multiline_comment|/* Please note that neither DK4EG&#xfffd;s nor DG2FEF&#xfffd;s&n;&t; * DAMA spec mention the following behaviour as seen&n;&t; * with TheFirmware:&n;&t; *&n;&t; * &t;DB0ACH-&gt;DL1BKE &lt;RR C P R0&gt; [DAMA]&n;&t; *&t;DL1BKE-&gt;DB0ACH &lt;I NR=0 NS=0&gt;&n;&t; *&t;DL1BKE-7-&gt;DB0PRA-6 DB0ACH &lt;I C S3 R5&gt;&n;&t; *&t;DL1BKE-&gt;DB0ACH &lt;RR R F R0&gt;&n;&t; *&n;&t; * The Flexnet DAMA Master implementation apparently&n;&t; * insists on the &quot;proper&quot; AX.25 behaviour:&n;&t; *&n;&t; * &t;DB0ACH-&gt;DL1BKE &lt;RR C P R0&gt; [DAMA]&n;&t; *&t;DL1BKE-&gt;DB0ACH &lt;RR R F R0&gt;&n;&t; *&t;DL1BKE-&gt;DB0ACH &lt;I NR=0 NS=0&gt;&n;&t; *&t;DL1BKE-7-&gt;DB0PRA-6 DB0ACH &lt;I C S3 R5&gt;&n;&t; *&n;&t; * Flexnet refuses to send us *any* I frame if we send&n;&t; * a REJ in case AX25_COND_REJECT is set. It is superfluous in &n;&t; * this mode anyway (a RR or RNR invokes the retransmission).&n;&t; * Is this a Flexnet bug?&n;&t; */
+multiline_comment|/* Please note that neither DK4EG&#xfffd;s nor DG2FEF&#xfffd;s&n;&t; * DAMA spec mention the following behaviour as seen&n;&t; * with TheFirmware:&n;&t; *&n;&t; * &t;DB0ACH-&gt;DL1BKE &lt;RR C P R0&gt; [DAMA]&n;&t; *&t;DL1BKE-&gt;DB0ACH &lt;I NR=0 NS=0&gt;&n;&t; *&t;DL1BKE-7-&gt;DB0PRA-6 DB0ACH &lt;I C S3 R5&gt;&n;&t; *&t;DL1BKE-&gt;DB0ACH &lt;RR R F R0&gt;&n;&t; *&n;&t; * The Flexnet DAMA Master implementation apparently&n;&t; * insists on the &quot;proper&quot; AX.25 behaviour:&n;&t; *&n;&t; * &t;DB0ACH-&gt;DL1BKE &lt;RR C P R0&gt; [DAMA]&n;&t; *&t;DL1BKE-&gt;DB0ACH &lt;RR R F R0&gt;&n;&t; *&t;DL1BKE-&gt;DB0ACH &lt;I NR=0 NS=0&gt;&n;&t; *&t;DL1BKE-7-&gt;DB0PRA-6 DB0ACH &lt;I C S3 R5&gt;&n;&t; *&n;&t; * Flexnet refuses to send us *any* I frame if we send&n;&t; * a REJ in case AX25_COND_REJECT is set. It is superfluous in&n;&t; * this mode anyway (a RR or RNR invokes the retransmission).&n;&t; * Is this a Flexnet bug?&n;&t; */
 id|ax25_std_enquiry_response
 c_func
 (paren
@@ -123,6 +124,13 @@ id|ax25_ds_set_timer
 c_func
 (paren
 id|ax25-&gt;ax25_dev
+)paren
+suffix:semicolon
+id|spin_lock_bh
+c_func
+(paren
+op_amp
+id|ax25_list_lock
 )paren
 suffix:semicolon
 r_for
@@ -249,6 +257,13 @@ id|ax25o
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|ax25_list_lock
+)paren
+suffix:semicolon
 )brace
 DECL|function|ax25_ds_establish_data_link
 r_void
@@ -293,7 +308,7 @@ id|ax25
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;:::FIXME:::&n; *&t;This is a kludge. Not all drivers recognize kiss commands. &n; *&t;We need a driver level  request to switch duplex mode, that does &n; *&t;either SCC changing, PI config or KISS as required. Currently&n; *&t;this request isn&squot;t reliable.&n; */
+multiline_comment|/*&n; *&t;:::FIXME:::&n; *&t;This is a kludge. Not all drivers recognize kiss commands.&n; *&t;We need a driver level  request to switch duplex mode, that does&n; *&t;either SCC changing, PI config or KISS as required. Currently&n; *&t;this request isn&squot;t reliable.&n; */
 DECL|function|ax25_kiss_cmd
 r_static
 r_void
@@ -396,7 +411,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;A nasty problem arises if we count the number of DAMA connections&n; *&t;wrong, especially when connections on the device already existed&n; *&t;and our network node (or the sysop) decides to turn on DAMA Master&n; *&t;mode. We thus flag the &squot;real&squot; slave connections with &n; *&t;ax25-&gt;dama_slave=1 and look on every disconnect if still slave&n; *&t;connections exist.&n; */
+multiline_comment|/*&n; *&t;A nasty problem arises if we count the number of DAMA connections&n; *&t;wrong, especially when connections on the device already existed&n; *&t;and our network node (or the sysop) decides to turn on DAMA Master&n; *&t;mode. We thus flag the &squot;real&squot; slave connections with&n; *&t;ax25-&gt;dama_slave=1 and look on every disconnect if still slave&n; *&t;connections exist.&n; */
 DECL|function|ax25_check_dama_slave
 r_static
 r_int
@@ -411,6 +426,18 @@ id|ax25_dev
 id|ax25_cb
 op_star
 id|ax25
+suffix:semicolon
+r_int
+id|res
+op_assign
+l_int|0
+suffix:semicolon
+id|spin_lock_bh
+c_func
+(paren
+op_amp
+id|ax25_list_lock
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -444,11 +471,23 @@ id|ax25-&gt;state
 OG
 id|AX25_STATE_1
 )paren
-r_return
+(brace
+id|res
+op_assign
 l_int|1
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|ax25_list_lock
+)paren
+suffix:semicolon
 r_return
-l_int|0
+id|res
 suffix:semicolon
 )brace
 DECL|function|ax25_dev_dama_on

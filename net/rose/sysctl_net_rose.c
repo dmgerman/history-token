@@ -1,4 +1,4 @@
-multiline_comment|/* -*- linux-c -*-&n; * sysctl_net_rose.c: sysctl interface to net ROSE subsystem.&n; *&n; * Begun April 1, 1996, Mike Shaver.&n; * Added /proc/sys/net/rose directory entry (empty =) ). [MS]&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Copyright (C) 1996 Mike Shaver (shaver@zeroknowledge.com)&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
