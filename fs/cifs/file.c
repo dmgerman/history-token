@@ -9003,7 +9003,7 @@ id|page-&gt;index
 op_lshift
 id|PAGE_CACHE_SHIFT
 suffix:semicolon
-id|cERROR
+id|cFYI
 c_func
 (paren
 l_int|1
@@ -9069,6 +9069,7 @@ op_amp
 id|offset
 )paren
 suffix:semicolon
+multiline_comment|/* if this returns an error should we try using another&n;&t;&t;file handle if there is one - how would we lock it&n;&t;&t;to prevent close of that handle racing with this read? */
 )brace
 multiline_comment|/* BB should we pass any errors back? e.g. if we do not have read access to the file */
 r_return
