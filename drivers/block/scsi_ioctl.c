@@ -447,12 +447,6 @@ c_func
 id|VERIFY_16
 )paren
 comma
-id|safe_for_read
-c_func
-(paren
-id|READ_BUFFER
-)paren
-comma
 multiline_comment|/* Audio CD commands */
 id|safe_for_read
 c_func
