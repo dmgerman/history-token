@@ -4674,8 +4674,6 @@ id|ac97
 r_int
 r_int
 id|val
-comma
-id|reg
 suffix:semicolon
 r_int
 id|spdif

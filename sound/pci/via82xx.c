@@ -9339,6 +9339,24 @@ id|VIA_DXS_48K
 )brace
 comma
 (brace
+dot
+id|vendor
+op_assign
+l_int|0x1297
+comma
+dot
+id|device
+op_assign
+l_int|0xc160
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_ENABLE
+)brace
+comma
+multiline_comment|/* Shuttle SK41G */
+(brace
 )brace
 multiline_comment|/* terminator */
 )brace
