@@ -776,8 +776,6 @@ suffix:semicolon
 r_int
 r_int
 id|invalue
-comma
-id|invalue2
 suffix:semicolon
 r_int
 r_int
@@ -1089,29 +1087,9 @@ id|longhaul.val
 suffix:semicolon
 singleline_comment|//TODO: Nehemiah may have borken MaxMHzBR.
 singleline_comment|// need to extrapolate from FSB.
-id|invalue2
+id|minmult
 op_assign
-id|longhaul.bits.MinMHzBR
-suffix:semicolon
-id|invalue
-op_assign
-id|longhaul.bits.MaxMHzBR
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|longhaul.bits.MaxMHzBR4
-)paren
-id|invalue
-op_add_assign
-l_int|16
-suffix:semicolon
-id|maxmult
-op_assign
-id|multipliers
-(braket
-id|invalue
-)braket
+l_int|50
 suffix:semicolon
 id|maxmult
 op_assign
@@ -1125,26 +1103,10 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot; invalue: %ld  maxmult: %d &bslash;n&quot;
-comma
-id|invalue
+l_string|&quot; maxmult: %d &bslash;n&quot;
 comma
 id|maxmult
 )paren
-suffix:semicolon
-id|dprintk
-c_func
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot; invalue2: %ld &bslash;n&quot;
-comma
-id|invalue2
-)paren
-suffix:semicolon
-id|minmult
-op_assign
-l_int|50
 suffix:semicolon
 r_switch
 c_cond
