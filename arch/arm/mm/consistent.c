@@ -433,7 +433,7 @@ id|page
 r_goto
 id|no_page
 suffix:semicolon
-multiline_comment|/*&n;&t; * Invalidate any data that might be lurking in the&n;&t; * kernel direct-mapped region.&n;&t; */
+multiline_comment|/*&n;&t; * Invalidate any data that might be lurking in the&n;&t; * kernel direct-mapped region for device DMA.&n;&t; */
 (brace
 r_int
 r_int
@@ -449,7 +449,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|invalidate_dcache_range
+id|dmac_inv_range
 c_func
 (paren
 id|kaddr
@@ -1158,7 +1158,7 @@ c_func
 id|consistent_init
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * make an area consistent.&n; */
+multiline_comment|/*&n; * make an area consistent for devices.&n; */
 DECL|function|consistent_sync
 r_void
 id|consistent_sync
@@ -1203,7 +1203,7 @@ r_case
 id|DMA_FROM_DEVICE
 suffix:colon
 multiline_comment|/* invalidate only */
-id|invalidate_dcache_range
+id|dmac_inv_range
 c_func
 (paren
 id|start
@@ -1217,7 +1217,7 @@ r_case
 id|DMA_TO_DEVICE
 suffix:colon
 multiline_comment|/* writeback only */
-id|clean_dcache_range
+id|dmac_clean_range
 c_func
 (paren
 id|start
@@ -1231,7 +1231,7 @@ r_case
 id|DMA_BIDIRECTIONAL
 suffix:colon
 multiline_comment|/* writeback and invalidate */
-id|flush_dcache_range
+id|dmac_flush_range
 c_func
 (paren
 id|start
