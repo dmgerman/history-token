@@ -3,26 +3,24 @@ macro_line|#ifndef __ASM_SH_MMZONE_H
 DECL|macro|__ASM_SH_MMZONE_H
 mdefine_line|#define __ASM_SH_MMZONE_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_DISCONTIGMEM
 multiline_comment|/* Currently, just for HP690 */
 DECL|macro|PHYSADDR_TO_NID
 mdefine_line|#define PHYSADDR_TO_NID(phys)&t;((((phys) - __MEMORY_START) &gt;= 0x01000000)?1:0)
-DECL|macro|NR_NODES
-mdefine_line|#define NR_NODES 2
 r_extern
 id|pg_data_t
 id|discontig_page_data
 (braket
-id|NR_NODES
+id|MAX_NUMNODES
 )braket
 suffix:semicolon
 r_extern
 id|bootmem_data_t
 id|discontig_node_bdata
 (braket
-id|NR_NODES
+id|MAX_NUMNODES
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_DISCONTIGMEM
 multiline_comment|/*&n; * Following are macros that each numa implmentation must define.&n; */
 multiline_comment|/*&n; * Given a kernel address, find the home node of the underlying memory.&n; */
 DECL|macro|KVADDR_TO_NID
@@ -61,7 +59,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NR_NODES
+id|MAX_NUMNODES
 suffix:semicolon
 id|i
 op_increment
