@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/ccwgroup.c&n; *  bus driver for ccwgroup&n; *   $Revision: 1.23 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *                       IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/ccwgroup.c&n; *  bus driver for ccwgroup&n; *   $Revision: 1.24 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *                       IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -1226,9 +1226,17 @@ id|ccwgroup_device
 op_star
 id|gdev
 suffix:semicolon
+r_struct
+id|ccwgroup_driver
+op_star
+id|gdrv
+suffix:semicolon
 r_int
 r_int
 id|value
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 id|gdev
 op_assign
@@ -1247,6 +1255,27 @@ id|dev-&gt;driver
 r_return
 id|count
 suffix:semicolon
+id|gdrv
+op_assign
+id|to_ccwgroupdrv
+(paren
+id|gdev-&gt;dev.driver
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|gdrv-&gt;owner
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|value
 op_assign
 id|simple_strtoul
@@ -1258,6 +1287,10 @@ l_int|0
 comma
 l_int|0
 )paren
+suffix:semicolon
+id|ret
+op_assign
+id|count
 suffix:semicolon
 r_if
 c_cond
@@ -1287,12 +1320,19 @@ id|gdev
 )paren
 suffix:semicolon
 r_else
-r_return
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+id|module_put
+c_func
+(paren
+id|gdrv-&gt;owner
+)paren
+suffix:semicolon
 r_return
-id|count
+id|ret
 suffix:semicolon
 )brace
 r_static

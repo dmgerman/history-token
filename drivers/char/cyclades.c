@@ -23700,6 +23700,10 @@ id|cy_serial_driver-&gt;name
 op_assign
 l_string|&quot;ttyC&quot;
 suffix:semicolon
+id|cy_serial_driver-&gt;devfs_name
+op_assign
+l_string|&quot;tts/C&quot;
+suffix:semicolon
 id|cy_serial_driver-&gt;major
 op_assign
 id|CYCLADES_MAJOR

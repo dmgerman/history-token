@@ -338,13 +338,6 @@ op_assign
 id|pa
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|page
-OL
-l_int|0x80000000UL
-)paren
 id|diag10
 c_func
 (paren

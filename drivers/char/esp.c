@@ -10859,6 +10859,10 @@ id|esp_driver-&gt;name
 op_assign
 l_string|&quot;ttyP&quot;
 suffix:semicolon
+id|esp_driver-&gt;devfs_name
+op_assign
+l_string|&quot;tts/P&quot;
+suffix:semicolon
 id|esp_driver-&gt;major
 op_assign
 id|ESP_IN_MAJOR
